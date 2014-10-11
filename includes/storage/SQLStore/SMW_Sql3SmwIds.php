@@ -1,6 +1,7 @@
 <?php
 
 use SMW\SQLStore\PropertyStatisticsTable;
+use SMW\SQLStore\ItemByIdFinder;
 
 /**
  * @ingroup SMWStore
@@ -92,6 +93,7 @@ class SMWSql3SmwIds {
 	protected $propmiss_debug = 0;
 	protected $reghit_debug = 0;
 	protected $regmiss_debug = 0;
+
 	static protected $singleton_debug = null;
 
 	/**
@@ -113,6 +115,11 @@ class SMWSql3SmwIds {
 	 * @var array
 	 */
 	protected $prop_ids = array();
+
+	/**
+	 * @var ItemByIdFinder
+	 */
+	private $itemByIdFinder;
 
 	/**
 	 * Cache for property sortkeys.
@@ -180,6 +187,8 @@ class SMWSql3SmwIds {
 		'_ASKFO' =>  35,
 		'_ASKSI' =>  36,
 		'_ASKDE' =>  37,
+//		'_ASKDU' =>  38,
+//		'_ASKID' =>  39
 	);
 
 	/**
@@ -192,6 +201,9 @@ class SMWSql3SmwIds {
 		$this->store = $store;
 		// Yes, this is a hack, but we only use it for convenient debugging:
 		self::$singleton_debug = $this;
+
+		// Either inject the class directly or an IdGeneratorFactory class instead
+		$this->itemByIdFinder = new ItemByIdFinder( $this->store->getDatabase(), self::tableName );
 	}
 
 	/**
@@ -713,19 +725,35 @@ class SMWSql3SmwIds {
 		if ( strpos( $title, ' ' ) !== false ) {
 			throw new MWException("Somebody tried to use spaces in a cache title! ($title)");
 		}
+
+		$hashKey = self::getRegularHashKey( $title, $namespace, $interwiki, $subobject );
+
 		if ( $namespace == SMW_NS_PROPERTY && $interwiki === '' && $subobject === '' ) {
 			$this->checkPropertySizeLimit();
 			$this->prop_ids[$title] = $id;
 			$this->prop_sortkeys[$title] = $sortkey;
 		} else {
-			$hashKey = self::getRegularHashKey( $title, $namespace, $interwiki, $subobject );
 			$this->checkRegularSizeLimit();
 			$this->regular_ids[$hashKey] = $id;
 			$this->regular_sortkeys[$hashKey] = $sortkey;
 		}
+
+		$this->itemByIdFinder->getIdCache()->save( $id, $hashKey );
+
 		if ( $interwiki == SMW_SQL3_SMWREDIIW ) { // speed up detection of redirects when fetching IDs
 			$this->setCache(  $title, $namespace, '', $subobject, 0, '' );
 		}
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param integer $id
+	 *
+	 * @return DIWikiPage|null
+	 */
+	public function getDataItemForId( $id ) {
+		return $this->itemByIdFinder->getDataItemForId( $id );
 	}
 
 	/**
@@ -798,14 +826,19 @@ class SMWSql3SmwIds {
 	 * @param string $subobject
 	 */
 	public function deleteCache( $title, $namespace, $interwiki, $subobject ) {
+
 		if ( $namespace == SMW_NS_PROPERTY && $interwiki === '' && $subobject === '' ) {
+			$id = $this->regular_ids[$title];
 			unset( $this->regular_ids[$title] );
 			unset( $this->regular_sortkeys[$title] );
 		} else {
 			$hashKey = self::getRegularHashKey( $title, $namespace, $interwiki, $subobject );
+			$id = $this->regular_ids[$hashKey];
 			unset( $this->regular_ids[$hashKey] );
 			unset( $this->regular_sortkeys[$hashKey] );
 		}
+
+		$this->itemByIdFinder->getIdCache()->delete( $id );
 	}
 
 	/**
@@ -843,6 +876,7 @@ class SMWSql3SmwIds {
 		$this->prop_sortkeys = array();
 		$this->regular_ids = array();
 		$this->regular_sortkeys = array();
+		$this->itemByIdFinder->getIdCache()->reset();
 	}
 
 	/**
