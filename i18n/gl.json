@@ -235,7 +235,7 @@
 	"smw_smwadmin_datarefreshprogress": "<strong>Xa hai unha actualización en curso.</strong>\nÉ normal que os progresos de actualización vaian lentos, xa que só se refrescan os datos nos pequenos anacos nos que un usuario accede ao wiki.\nPara finalizar esta actualización máis rápido, pode invocar a escritura <code>runJobs.php</code> de mantemento de MediaWiki (use a opción <code>--maxjobs 1000</code> para restrinxir o número de actualizacións feitas nunha quenda).\nProgreso estimado da actualización actual:",
 	"smw_smwadmin_datarefreshbutton": "Comezar a actualizar os datos",
 	"smw_smwadmin_datarefreshstop": "Deter esta actualización",
-	"smw_smwadmin_datarefreshstopconfirm": "Si, estou seguro.",
+	"smw_smwadmin_datarefreshstopconfirm": "Si, estou {{GENDER:$1|seguro|segura}}.",
 	"smw_smwadmin_support": "Obtendo a asistencia",
 	"smw_smwadmin_supportdocu": "Diversas fontes poden axudalo en caso de problemas:",
 	"smw_smwadmin_installfile": "Se experimenta problemas durante a súa instalación, comece comprobando a guía no <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">ficheiro INSTALL</a>.",
