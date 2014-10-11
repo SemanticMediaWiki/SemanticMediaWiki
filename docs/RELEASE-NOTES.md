@@ -15,6 +15,7 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #520 Fixed the `SPAPRQLStore` query selection for subobjects for namespace condition
 * #543 Removes invalid category value links to `SearchByProperty` on `Special:Browse` (bug 33449)
 * #537 Fixed parameter encoding in `Special:SearchByProperty` for hyphens and spaces (bug 16150)
+* #566 Fixed the `SPARQLStore` query result display for moved pages (a.k.a. "gost" pages)
 
 ## Internal changes
 
@@ -22,7 +23,7 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #486 Added support for `Jena Fuseki` 1.1.0
 * #487 Added an internal cache to improve `SPARQLStore` redirect lookup performance
 * #512, #521 Added benchmark tests for different components such as job-queue, maintenance script, queries etc.
-* #523 Enforces a non-display of the Factbox for a `delete action` and re-enable the Factbox for an undeleted page
+* #523 Disabled the Factbox display for a `delete action` and re-enable the Factbox for an undeleted page
 * #532 Added `UrlEncoder` to recognize all special characters when creating a manual link to `Special:Browse`
 * #534 Added a value hash to `SQLStore::fetchSemanticData` to ensure that only distinct values are displayed
 * #557 Added `SMW::Store::selectQueryResultBefore` and `SMW::Store::selectQueryResultAfter` hook
