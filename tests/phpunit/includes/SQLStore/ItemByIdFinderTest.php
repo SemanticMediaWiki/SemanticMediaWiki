@@ -3,7 +3,7 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\SQLStore\ItemByIdFinder;
-use SMW\Cache\InMemoryCache;
+use SMW\Cache\FixedInMemoryCache;
 
 /**
  * @covers \SMW\SQLStore\ItemByIdFinder
@@ -51,7 +51,7 @@ class ItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( array( 'smw_id' => 42 ) ) )
 			->will( $this->returnValue( $row ) );
 
-		$cache = new InMemoryCache();
+		$cache = new FixedInMemoryCache();
 		$instance = new ItemByIdFinder( $connection, 'foo', $cache );
 
 		$this->assertInstanceOf(
@@ -75,7 +75,7 @@ class ItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->never() )
 			->method( 'selectRow' );
 
-		$cache = new InMemoryCache();
+		$cache = new FixedInMemoryCache();
 		$cache->save( 42, 'Foo#0##' );
 
 		$instance = new ItemByIdFinder( $connection, 'foo', $cache );

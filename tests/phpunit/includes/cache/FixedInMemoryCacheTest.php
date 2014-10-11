@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Cache;
 
-use SMW\Cache\InMemoryCache;
+use SMW\Cache\FixedInMemoryCache;
 
 /**
- * @covers \SMW\Cache\InMemoryCache
+ * @covers \SMW\Cache\FixedInMemoryCache
  *
  * @group SMW
  * @group SMWExtension
@@ -15,19 +15,19 @@ use SMW\Cache\InMemoryCache;
  *
  * @author mwjames
  */
-class InMemoryCacheTest extends \PHPUnit_Framework_TestCase {
+class FixedInMemoryCacheTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\Cache\InMemoryCache',
-			new InMemoryCache()
+			'\SMW\Cache\FixedInMemoryCache',
+			new FixedInMemoryCache()
 		);
 	}
 
 	public function testItemRemoval() {
 
-		$instance = new InMemoryCache( 5 );
+		$instance = new FixedInMemoryCache( 5 );
 
 		$instance->save( 'foo', array( 'foo' ) );
 		$instance->save( 42, null );
@@ -44,6 +44,7 @@ class InMemoryCacheTest extends \PHPUnit_Framework_TestCase {
 		$instance->delete( 'foo' );
 
 		$this->assertFalse( $instance->contains( 'foo' ) );
+		$this->assertFalse( $instance->delete( 'foo' ) );
 
 		$stats = $instance->getStats();
 		$this->assertEquals(
@@ -54,7 +55,7 @@ class InMemoryCacheTest extends \PHPUnit_Framework_TestCase {
 
 	public function testReset() {
 
-		$instance = new InMemoryCache( 5 );
+		$instance = new FixedInMemoryCache( 5 );
 
 		$instance->save( 'foo', array( 'foo' ) );
 		$instance->save( 42, null );
@@ -76,7 +77,7 @@ class InMemoryCacheTest extends \PHPUnit_Framework_TestCase {
 
 	public function testLeastRecentlyUsedShiftForLimitedCacheSize() {
 
-		$instance = new InMemoryCache( 5 );
+		$instance = new FixedInMemoryCache( 5 );
 		$instance->save( 'berlin', array( 'berlin' ) );
 
 		$this->assertEquals(
@@ -107,7 +108,7 @@ class InMemoryCacheTest extends \PHPUnit_Framework_TestCase {
 		$instance->save( 'rio', 'rio' );
 		$this->assertFalse( $instance->fetch( 'london' ) );
 
-		// 東京 would be next LRU slot but setting it again will move it to MRU
+		// 東京 would be the next LRU slot but setting it again will move it to MRU
 		// and push 北京 into the next LRU position
 		$instance->save( '東京', '東京' );
 

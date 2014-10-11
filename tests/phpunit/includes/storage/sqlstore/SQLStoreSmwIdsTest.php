@@ -30,9 +30,17 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$store = $this->getMockBuilder( 'SMWSQLStore3' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getDatabase' )
+			->will( $this->returnValue( $connection ) );
 
 		$this->assertInstanceOf( $this->getClass(), new SMWSql3SmwIds( $store ) );
 	}

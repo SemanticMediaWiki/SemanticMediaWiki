@@ -3,13 +3,16 @@
 namespace SMW\Cache;
 
 /**
- * Implements a simple LRU (Least Recently Used) algorithm for an in-memory
+ * Implements a simple LRU (Least Recently Used) algorithm for a fixed in-memory
  * hashmap
+ *
+ * @note For a size of more than 10K it is suggested to use PHP's SplFixedArray
+ * instead as it is optimized for large array sets
  *
  * @license GNU GPL v2+
  * @since 2.1
  */
-class InMemoryCache implements Cache {
+class FixedInMemoryCache implements Cache {
 
 	/**
 	 * @var array
@@ -48,9 +51,7 @@ class InMemoryCache implements Cache {
 	/**
 	 * @since 2.1
 	 *
-	 * @param string|integer $id
-	 *
-	 * @return boolean
+	 * {@inheritDoc}
 	 */
 	public function contains( $id ) {
 		return isset( $this->cache[ $id ] ) || array_key_exists( $id, $this->cache );
@@ -59,9 +60,7 @@ class InMemoryCache implements Cache {
 	/**
 	 * @since 2.1
 	 *
-	 * @param string|integer $id
-	 *
-	 * @return mixed|boolean
+	 * {@inheritDoc}
 	 */
 	public function fetch( $id ) {
 
@@ -77,8 +76,7 @@ class InMemoryCache implements Cache {
 	/**
 	 * @since 2.1
 	 *
-	 * @param mixed $id
-	 * @param mixed $value
+	 * {@inheritDoc}
 	 */
 	public function save( $id, $value, $ttl = 0 ) {
 		$this->count++;
@@ -98,9 +96,7 @@ class InMemoryCache implements Cache {
 	/**
 	 * @since 2.1
 	 *
-	 * @param mixed $id
-	 *
-	 * @return boolean
+	 * {@inheritDoc}
 	 */
 	public function delete( $id ) {
 
@@ -126,7 +122,7 @@ class InMemoryCache implements Cache {
 	/**
 	 * @since 2.1
 	 *
-	 * @return array
+	 * {@inheritDoc}
 	 */
 	public function getStats() {
 		return array(

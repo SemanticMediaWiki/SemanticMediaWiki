@@ -2,7 +2,8 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Cache\InMemoryCache;
+use SMW\Cache\FixedInMemoryCache;
+use SMW\MediaWiki\Database;
 use SMW\Cache\Cache;
 
 use SMW\DIProperty;
@@ -34,11 +35,11 @@ class ItemByIdFinder {
 	/**
 	 * @since 2.1
 	 *
-	 * @param Databse $dbConnection
+	 * @param Database $dbConnection
 	 * @param string $tableName
 	 * @param Cache|null $idCache
 	 */
-	public function __construct( $dbConnection, $tableName, Cache $idCache = null ) {
+	public function __construct( Database $dbConnection, $tableName, Cache $idCache = null ) {
 		$this->dbConnection = $dbConnection;
 		$this->tableName = $tableName;
 		$this->idCache = $idCache;
@@ -52,7 +53,7 @@ class ItemByIdFinder {
 	public function getIdCache() {
 
 		if ( $this->idCache === null ) {
-			$this->idCache = new InMemoryCache( 500 );
+			$this->idCache = new FixedInMemoryCache( 500 );
 		}
 
 		return $this->idCache;
