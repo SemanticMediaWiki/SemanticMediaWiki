@@ -16,7 +16,8 @@
 			"Shirayuki",
 			"Siebrand",
 			"Umherirrender",
-			"Тест"
+			"Тест",
+			"Liuxinyu970226"
 		]
 	},
 	"smw-desc": "{{desc|name=Semantic MediaWiki|url=http://www.mediawiki.org/wiki/Extension:Semantic_MediaWiki}}",
@@ -231,7 +232,7 @@
 	"smw_inverse_label_property": "Can as well be translated as \"Name of\", or \"Denomination of the inverse propery\". The inverse property is one having both its direction, and its source/target sets inverted. For example, the property \"is child of\" is the inverse propery of \"is parent of\".",
 	"pageproperty": "This is the name of [[Special:PageProperty]].",
 	"smw_pp_docu": "This is the introductory message at the top of [[Special:PageProperty]].",
-	"smw_pp_from": "This is the text describing a textbox on [[Special:PageProperty]] where the name of a page is expected to be typed in.",
+	"smw_pp_from": "This is the text describing a textbox on [[Special:PageProperty]] where the name of a page is expected to be typed in.\n{{Identical|From page}}",
 	"smw_pp_type": "This is the text describing a textbox on [[Special:PageProperty]] where the name of a property is expected to be typed in.\n\n{{Identical|Property}}",
 	"smw_pp_submit": "This is the name of the submit button on [[Special:PageProperty]] to trigger the search.\n\n{{Identical|Find results}}",
 	"smw_result_prev": "This is the text of the link on [[Special:Ask]] or [[Special:SearchByProperty]] that allows to return to the previous page containing results for the query.\n\n{{Identical|Previous}}",
