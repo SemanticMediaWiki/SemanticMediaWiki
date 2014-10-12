@@ -308,5 +308,9 @@
 	"smw-sp-admin-idlookup-title": "Informationen zu Objektkennungen ermitteln",
 	"smw-sp-admin-idlookup-docu": "Gibt Informationen zu internen Objektkennungen aus, die jeweils ein semantisches Informationsobjekt (Wikiseite, Subobjekt, usw.) repräsentieren.",
 	"smw-sp-admin-idlookup-objectid": "Objektkennung:",
-	"smw-livepreview-loading": "Lade …"
+	"smw-livepreview-loading": "Lade …",
+	"smw-sp-searchbyproperty-description": "Diese Seite stellt eine einfache [https://www.semantic-mediawiki.org/wiki/Help:Semantisches_Browsen Browsing-Oberfläche] zum Finden von Objekten, beschrieben durch ein Attribut und einen benannten Wert, zur Verfügung. Andere verfügbare Suchoberflächen schließen die [[Special:PageProperty|Seitenattributsuche]] und den [[Special:Ask|Abfragengenerator]] ein.",
+	"smw-sp-searchbyproperty-resultlist-header": "Ergebnisliste",
+	"smw-sp-searchbyproperty-nonvaluequery": "Eine Liste mit Werten, die das zugeordnete Attribut „$1“ haben.",
+	"smw-sp-searchbyproperty-valuequery": "Eine Liste mit Seiten, die das Attribut „$1“ mit dem kommentierten Wert „$2“ haben."
 }
