@@ -1,5 +1,5 @@
 
-Tests are developed and used to verify that an expected behaviour does occur within specified boundaries where parameters specify the requirements in which results are accepted or rejected.
+Tests are developed and used to verify that an expected behaviour does occur for the described boundaries with parameters specifying the requirements in which results can be accepted or need to be rejected.
 
 - Unit test in most cases refers to a test that confirms that an expected technical specification for a unit, module, or class is supported
 - Integration test combines multiple components and verifies its interplay between those modules
@@ -7,7 +7,7 @@ Tests are developed and used to verify that an expected behaviour does occur wit
 
 # PHPUnit
 
-[PHPUnit][phpunit] provides the necessary environment to execute unit tests within PHP. Information about how to work with PHPunit can be found at [smw.org][smw] and [mediawiki.org][mw-phpunit-testing].
+Most tests for SMW are written for and executable by [PHPUnit][phpunit]. PHPUnit provides the necessary environment to execute unit tests within PHP. Information about how to work with PHPunit can be found at [smw.org][smw] and [mediawiki.org][mw-phpunit-testing].
 
 In case PHUnit is not already installed, use `composer require phpunit/phpunit:~4.1` to install the package and execute the tests by simply running the `mw-phpunit-runner.php` script from the test directory or use [`phpunit`][mw-phpunit-testing] together with the PHPUnit configuration file and MediaWiki's `phpunit.php` loader.
 
@@ -16,6 +16,8 @@ php mw-phpunit-runner.php [options]
 ```
 
 ## Writing tests
+
+Writing meaningful tests isn't easy nor is it complicated but it requires some diligence on how to setup a test and its environment. One simple rule is to avoid to use of hidden expectations or inheritance as remedy for the "less code is good code" aesthetics. Allow the code to be readable and if possible follow the [arrange, act, assert][aaa] pattern and yet again __"Don't do magic"__.
 
 ### Test cases
 
@@ -32,7 +34,7 @@ Another possibility is to use MediaWiki's XML format to import fixtures (in form
 
 ## Integration tests
 
-Additional services can be enabled on Travis-CI to expand the test environment, available at present:
+Integration tests are vital to confirm expected behaviour of a component from an integrative perspective that occurs through the interplay with its surroundings. `SMW\Tests\Integration\` contains most of the tests that target the validation of reciprocity with MediaWiki together with listed services such as:
 
 - `FUSEKI`: Jena Fuskei 1.0.2 is integrated
 - `VIRTUOSO`: Virtuoso-opensource-6.1 is integrated
@@ -59,3 +61,4 @@ Running qunit tests in connection with MediaWiki requires to execute [Special:Ja
 [mw-qunit-testing]: https://www.mediawiki.org/wiki/Manual:JavaScript_unit_testing
 [issue-136]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/136
 [phpunit-fixtures]: http://phpunit.de/manual/current/en/fixtures.html
+[aaa]: http://c2.com/cgi/wiki?ArrangeActAssert
