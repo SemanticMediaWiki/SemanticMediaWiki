@@ -263,5 +263,8 @@
 	"smw-sp-properties-cache-info": "Wymienione dane zostały pobrane z [https://www.semantic-mediawiki.org/wiki/Caching cache] i były ostatnio aktualizowane $1.",
 	"smw-sp-properties-header-label": "Lista właściwości",
 	"smw-sp-admin-settings-title": "Ustawienia konfiguracji",
-	"smw-livepreview-loading": "Trwa ładowanie…"
+	"smw-livepreview-loading": "Trwa ładowanie…",
+	"smw-sp-searchbyproperty-resultlist-header": "Lista wyników",
+	"smw-sp-searchbyproperty-nonvaluequery": "Lista wartości, które mają przypisaną właściwość „$1”.",
+	"smw-sp-searchbyproperty-valuequery": "Lista stron, które mają właściwość „$1” z wartością „$2”."
 }

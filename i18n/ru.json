@@ -300,5 +300,9 @@
 	"smw-sp-admin-idlookup-title": "Поиск ObjectId",
 	"smw-sp-admin-idlookup-docu": "Отображает сведения об идентификаторе внутреннего объекта, который представляет отдельные сущности (вики-страницу, подобъект и т.д.) в Семантической МедиаВики.",
 	"smw-sp-admin-idlookup-objectid": "Идентификатор объекта:",
-	"smw-livepreview-loading": "Загрузка…"
+	"smw-livepreview-loading": "Загрузка…",
+	"smw-sp-searchbyproperty-description": "На этой странице предоставлен простой [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces интерфейс просмотра] для нахождения сущностей по описанным свойствам и именованным значениям. Другие доступные интерфейсы поиска включают в себя [[Special:PageProperty|страницу поиск свойств]] и [[Special:Ask|построитель поисковых запросов]].",
+	"smw-sp-searchbyproperty-resultlist-header": "Список результатов",
+	"smw-sp-searchbyproperty-nonvaluequery": "Список значений, которые имеют назначенное свойство «$1».",
+	"smw-sp-searchbyproperty-valuequery": "Список страниц, которые содержат свойство «$1» с объявленным значением «$2»."
 }
