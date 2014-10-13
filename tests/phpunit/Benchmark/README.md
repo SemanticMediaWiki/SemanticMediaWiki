@@ -15,6 +15,8 @@ Benchmarks are not performed in isolation and therefore run in concert with the 
 
 When running PHPUnit, use `--group semantic-mediawiki-benchmark` to indicate whether an annotated benchmark test is expected to perform an output and is run according to the listed order described by `phpunit.xml.dist`.
 
+The following [video][video] demonstrates on how to install PHPUnit and to run the benchmark tests from a shell environment.
+
 ### Benchmark git changes
 
 When using `git`, it is relatively easy to run tests and see if a change introduces a significant regression or improvement in terms of performance over the existing `master` branch by comparing test results of the `master` against a `feature` branch.
@@ -32,3 +34,5 @@ When using `git`, it is relatively easy to run tests and see if a change introdu
 
 ## See also
 - Running Semantic MediaWiki related [Benchmark HHVM 3.3 vs. Zend PHP 5.6](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/513) tests
+
+[video]: https://vimeo.com/108833255
