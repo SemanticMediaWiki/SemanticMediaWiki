@@ -1,19 +1,19 @@
 ## Benchmark tests
 
-Benchmark tests use PHPUnit as integration platform and are not always the right tool to represent a performance yardstick (as it depends on environmental factors such as hardware and software constraints and might not be under the control of the test environment) but can identify performance regressions among newly introduced features.
+Benchmark tests are to use PHPUnit as integration platform and do not always represent the best tool for a performance comparison (as it depends on environmental factors such as hardware and software constraints which might not be under the control of the tester) but it can help to identify performance regressions among newly introduced features that run with the same environmental specification.
 
 - `ImportPageCopyBenchmarkTest` to perform import and page copy benchmarks
-- `JobQueueBenchmarkTest` to gather data on the jobs
-- `MaintenanceBenchmarkTest` to gather data on the maintenance scripts
-- `StandardQueryEngineBenchmarkTest` to perform tests for different query conditions (ought to be executable on each store)
+- `JobQueueBenchmarkTest` to gather data for listed jobs
+- `MaintenanceBenchmarkTest` to gather data for listed maintenance scripts
+- `StandardQueryEngineBenchmarkTest` to perform tests for different query conditions that are ought to be executable on each store
 - `ExtraQueryEngineBenchmarkTest` to perform tests for query conditions that might not be executable on each store
 - `PageEditBenchmarkTest` to perform edits for different (#set, #subobject, template) annotation methods
 
-Benchmarks are not performed in isolation and run in concert with the `MediaWiki` infrastucture to determine the overall performance impact during execution.
+Benchmarks are not performed in isolation and therefore run in concert with the `MediaWiki` infrastucture to determine the overall performance impact during execution.
 
 ### Use PHPUnit
 
-When running PHPUnit, use `--group semantic-mediawiki-benchmark` to indicate whether an annotated benchmark test is expected to perform an output and is run according to the the listed order of `phpunit.xml.dist`.
+When running PHPUnit, use `--group semantic-mediawiki-benchmark` to indicate whether an annotated benchmark test is expected to perform an output and is run according to the listed order described by `phpunit.xml.dist`.
 
 ### Benchmark git changes
 
