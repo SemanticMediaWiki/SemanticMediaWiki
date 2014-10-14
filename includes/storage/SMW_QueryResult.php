@@ -1,6 +1,7 @@
 <?php
 
 use SMW\SerializerFactory;
+use SMW\HashBuilder;
 
 /**
  * Objects of this class encapsulate the result of a query in SMW. They
@@ -355,6 +356,7 @@ class SMWQueryResult {
 	 * @return string
 	 */
 	public function getHash() {
-		return md5( FormatJson::encode( $this->serializeToArray() ) );
+		return HashBuilder::createHashIdForContent( $this->serializeToArray() );
 	}
+
 }
