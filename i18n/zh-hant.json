@@ -232,7 +232,7 @@
 	"smw_smwadmin_datarefreshstopconfirm": "是的，我{{GENDER:$1|確認}}。",
 	"smw_smwadmin_support": "獲得協助",
 	"smw_smwadmin_supportdocu": "遇到問題時，可以使用以下資源獲得幫助：",
-	"smw_smwadmin_installfile": "如果安裝遇到問題，請先仔細閱讀<a href= \"http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL\">INSTALL 文件</a>中的指引。",
+	"smw_smwadmin_installfile": "如果安裝遇到問題，請先仔細閱讀<a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">INSTALL 文件</a>中的指引。",
 	"smw_smwadmin_smwhomepage": "Semantic MediaWiki 的完整使用者文件請查閱 <b><a href=\"http://semantic-mediawiki.org\">semantic-mediawiki.org</a></b>。",
 	"smw_smwadmin_mediazilla": "臭蟲可到<a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>報告。",
 	"smw_smwadmin_questions": "如果有問題或建議，可加入<a href=  \"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\" >Semantic MediaWiki 使用者論壇</a>參與討論。",
