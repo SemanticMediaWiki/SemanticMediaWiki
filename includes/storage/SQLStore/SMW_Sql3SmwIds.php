@@ -2,6 +2,7 @@
 
 use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\SQLStore\ItemByIdFinder;
+use SMW\HashBuilder;
 
 /**
  * @ingroup SMWStore
@@ -726,7 +727,7 @@ class SMWSql3SmwIds {
 			throw new MWException("Somebody tried to use spaces in a cache title! ($title)");
 		}
 
-		$hashKey = self::getRegularHashKey( $title, $namespace, $interwiki, $subobject );
+		$hashKey = HashBuilder::createHashIdFromSegments( $title, $namespace, $interwiki, $subobject );
 
 		if ( $namespace == SMW_NS_PROPERTY && $interwiki === '' && $subobject === '' ) {
 			$this->checkPropertySizeLimit();
@@ -776,7 +777,7 @@ class SMWSql3SmwIds {
 				return false;
 			}
 		} else {
-			$hashKey = self::getRegularHashKey( $title, $namespace, $interwiki, $subobject );
+			$hashKey = HashBuilder::createHashIdFromSegments( $title, $namespace, $interwiki, $subobject );
 			if ( array_key_exists( $hashKey, $this->regular_ids ) ) {
 				$this->reghit_debug++;
 				return $this->regular_ids[$hashKey];
@@ -805,7 +806,7 @@ class SMWSql3SmwIds {
 				return false;
 			}
 		} else {
-			$hashKey = self::getRegularHashKey( $title, $namespace, $interwiki, $subobject );
+			$hashKey = HashBuilder::createHashIdFromSegments( $title, $namespace, $interwiki, $subobject );
 			if ( array_key_exists( $hashKey, $this->regular_sortkeys ) ) {
 				return $this->regular_sortkeys[$hashKey];
 			} else {
@@ -832,7 +833,7 @@ class SMWSql3SmwIds {
 			unset( $this->regular_ids[$title] );
 			unset( $this->regular_sortkeys[$title] );
 		} else {
-			$hashKey = self::getRegularHashKey( $title, $namespace, $interwiki, $subobject );
+			$hashKey = HashBuilder::createHashIdFromSegments( $title, $namespace, $interwiki, $subobject );
 			$id = $this->regular_ids[$hashKey];
 			unset( $this->regular_ids[$hashKey] );
 			unset( $this->regular_sortkeys[$hashKey] );
@@ -910,20 +911,6 @@ class SMWSql3SmwIds {
 				unset( $this->regular_sortkeys[$key] );
 			}
 		}
-	}
-
-	/**
-	 * Get the hash key for regular (non-property) pages.
-	 *
-	 * @since 1.8
-	 * @param string $title
-	 * @param integer $namespace
-	 * @param string $interwiki
-	 * @param string $subobject
-	 * @return string
-	 */
-	protected static function getRegularHashKey( $title, $namespace, $interwiki, $subobject ) {
-		return "$title#$namespace#$interwiki#$subobject";
 	}
 
 	/**

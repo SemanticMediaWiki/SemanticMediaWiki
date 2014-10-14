@@ -8,6 +8,7 @@ use SMW\Cache\Cache;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\HashBuilder;
 
 /**
  * @license GNU GPL v2+
@@ -86,27 +87,17 @@ class ItemByIdFinder {
 				return null;
 			}
 
-			$item = $this->createHashKey(
+			$hash = HashBuilder::createHashIdFromSegments(
 				$row->smw_title,
 				$row->smw_namespace,
 				$row->smw_iw,
 				$row->smw_subobject
 			);
 
-			$this->getIdCache()->save( $id, $item );
+			$this->getIdCache()->save( $id, $hash );
 		}
 
-		list( $title, $namespace, $interwiki, $subobject ) = explode( '#', $this->getIdCache()->fetch( $id ) );
-
-		if ( $title{0} === '_' ) {
-			$title = DIProperty::findPropertyLabel( $title );
-		}
-
-		return new DIWikiPage( $title, $namespace, $interwiki, $subobject );
-	}
-
-	private function createHashKey( $title, $namespace, $interwiki, $subobject ) {
-		return "$title#$namespace#$interwiki#$subobject";
+		return HashBuilder::newDiWikiPageFromHash( $this->getIdCache()->fetch( $id ) );
 	}
 
 }

@@ -1,5 +1,7 @@
 <?php
 
+use SMW\HashBuilder;
+
 /**
  * This file contains the class for representing queries in SMW, each
  * consisting of a query description and possible query parameters.
@@ -263,7 +265,7 @@ class SMWQuery {
 	 * @return string
 	 */
 	public function getHash() {
-		return md5( json_encode( $this->toArray() ) );
+		return HashBuilder::createHashIdForContent( $this->toArray() );
 	}
 
 }
