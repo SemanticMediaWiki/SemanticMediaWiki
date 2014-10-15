@@ -305,5 +305,8 @@
 	"smw-sp-admin-idlookup-docu": "显示关于表示语义MediaWiki中具体实体（wiki页面、子对象等）的内部对象Id的详细信息。",
 	"smw-sp-admin-idlookup-objectid": "对象ID：",
 	"smw-livepreview-loading": "正在载入...",
-	"smw-sp-searchbyproperty-resultlist-header": "结果列表"
+	"smw-sp-searchbyproperty-description": "此页面提供一个简单的[https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces 浏览界面]用于发现一个属性和一个命名值定义的实体。其他可用搜索界面包括[[Special:PageProperty|页面属性搜索]]和[[Special:Ask|询问查询生成器]]。",
+	"smw-sp-searchbyproperty-resultlist-header": "结果列表",
+	"smw-sp-searchbyproperty-nonvaluequery": "分配属性“$1”的值列表。",
+	"smw-sp-searchbyproperty-valuequery": "注释有属性“$1”带值“$2”的页面列表。"
 }
