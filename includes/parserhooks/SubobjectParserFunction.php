@@ -113,7 +113,7 @@ class SubobjectParserFunction {
 		$this->firstElementAsProperty = $this->firstElementAsProperty && !$isAnonymous;
 
 		if ( $this->firstElementAsProperty || $isAnonymous ) {
-			return $this->subobject->generateId( new HashIdGenerator( $parameters->toArray(), '_' ) );
+			return HashBuilder::createHashIdForContent( $parameters->toArray(), '_' );
 		}
 
 		return $parameters->getFirst();
