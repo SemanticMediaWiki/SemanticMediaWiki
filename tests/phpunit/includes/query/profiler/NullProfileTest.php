@@ -1,64 +1,67 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Query\Profiler;
 
-use SMW\HashIdGenerator;
 use SMW\Query\Profiler\NullProfile;
 use SMW\Subobject;
+
+use Title;
 
 /**
  * @covers \SMW\Query\Profiler\NullProfile
  *
- *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class NullProfileTest extends SemanticMediaWikiTestCase {
+class NullProfileTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\Query\Profiler\NullProfile';
-	}
+	public function testCanConstruct() {
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return NullProfile
-	 */
-	private function newInstance() {
-		return new NullProfile(
-			new Subobject( $this->newTitle() ),
-			new HashIdGenerator( 'Foo' )
+		$subobject = $this->getMockBuilder( '\SMW\Subobject' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'\SMW\Query\Profiler\NullProfile',
+			new NullProfile( $subobject, 'abc' )
 		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
-	}
+	public function testMethodAccess() {
 
-	/**
-	 * @since 1.9
-	 */
-	public function testAvailableMethods() {
+		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
+		$instance = new NullProfile( $subobject, 'adcb944aa33b2c972470b73964c547c0' );
 
-		$instance = $this->newInstance();
 		$instance->addAnnotation();
 
-		$this->assertInstanceOf( '\SMW\DIProperty', $instance->getProperty() );
-		$this->assertInstanceOf( '\SMWDIContainer', $instance->getContainer() );
-		$this->assertInstanceOf( '\SMWContainerSemanticData', $instance->getSemanticData() );
-		$this->assertEmpty( $instance->getErrors() );
+		$this->assertInstanceOf(
+			'\SMW\DIProperty',
+			$instance->getProperty()
+		);
 
+		$this->assertInstanceOf(
+			'\SMWDIContainer',
+			$instance->getContainer()
+		);
+
+		$this->assertInstanceOf(
+			'\SMWContainerSemanticData',
+			$instance->getSemanticData()
+		);
+
+		$this->assertEmpty(
+			$instance->getErrors()
+		);
+
+		$this->assertEquals(
+			'_QUERYadcb944aa33b2c972470b73964c547c0',
+			$subobject->getId()
+		);
 	}
 
 }

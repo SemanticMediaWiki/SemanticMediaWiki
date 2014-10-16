@@ -478,7 +478,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	private function newSubobject( Title $title, $property = 'Quuy', $value = 'Xeer' ) {
 
 		$subobject = new Subobject( $title );
-		$subobject->setEmptySemanticDataForId( 'Foo' );
+		$subobject->setEmptyContainerForId( 'Foo' );
 
 		$subobject->addDataValue(
 			DataValueFactory::getInstance()->newPropertyValue( $property, $value )

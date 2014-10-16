@@ -26,6 +26,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	private $application;
 	private $semanticDataValidator;
+	private $smwgQMaxLimit;
 
 	protected function setUp() {
 		parent::setUp();
@@ -34,10 +35,15 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->application = Application::getInstance();
 		$this->application->getSettings()->set( 'smwgQueryDurationEnabled', false );
+
+		// FIXME in the Query do not use global scope
+		$this->smwgQMaxLimit = $GLOBALS['smwgQMaxLimit'];
+		$GLOBALS['smwgQMaxLimit'] = 1000;
 	}
 
 	protected function tearDown() {
 		$this->application->clear();
+		$GLOBALS['smwgQMaxLimit'] = $this->smwgQMaxLimit;
 
 		parent::tearDown();
 	}
@@ -128,6 +134,51 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$instance->setShowMode( true );
 
 		$this->assertTrue( $showMode->getValue( $instance ) );
+	}
+
+	public function testQueryIdStabilityForFixedSetOfParameters() {
+
+		$parserData = $this->application->newParserData(
+			Title::newFromText( __METHOD__ ),
+			new ParserOutput()
+		);
+
+		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new AskParserFunction(
+			$parserData,
+			$messageFormatter
+		);
+
+		$params = array(
+			'[[Modification date::+]]',
+			'?Modification date',
+			'format=list'
+		);
+
+		$instance->parse( $params );
+
+		$this->assertTrue(
+			$parserData->getSemanticData()->hasSubSemanticData( '_QUERY702bb82fc5ac212df176709f98b4f5b9' )
+		);
+
+		// Limit is a factor that influences the query id, count uses the
+		// max limit available in $GLOBALS['smwgQMaxLimit'] therefore we set
+		// the limit to make the test independent from possible other settings
+
+		$params = array(
+			'[[Modification date::+]]',
+			'?Modification date',
+			'format=count'
+		);
+
+		$instance->parse( $params );
+
+		$this->assertTrue(
+			$parserData->getSemanticData()->hasSubSemanticData( '_QUERYf161b0f405d169d1f038812484619c1f' )
+		);
 	}
 
 	/**

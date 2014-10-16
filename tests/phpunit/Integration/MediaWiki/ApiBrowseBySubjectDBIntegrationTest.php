@@ -105,7 +105,7 @@ class ApiBrowseBySubjectDBIntegrationTest extends MwDBaseUnitTestCase {
 		);
 
 		$subobject = new Subobject( $semanticData->getSubject()->getTitle() );
-		$subobject->setEmptySemanticDataForId( 'Foo' );
+		$subobject->setEmptyContainerForId( 'Foo' );
 
 		$subobject->addDataValue(
 			$this->dataValueFactory->newPropertyValue( __METHOD__ , 'Bam' )

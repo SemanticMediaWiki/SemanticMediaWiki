@@ -93,14 +93,14 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider firstElementDataProvider
 	 */
-	public function testFirstElementAsProperty( $isEnabled , array $parameters, array $expected ) {
+	public function testFirstElementForPropertyLabel( $isEnabled , array $parameters, array $expected ) {
 
 		$parserOutput = new ParserOutput();
 		$title        = Title::newFromText( __METHOD__ );
 		$subobject    = new Subobject( $title );
 
 		$instance = $this->acquireInstance( $subobject, $parserOutput );
-		$instance->setFirstElementAsProperty( $isEnabled  );
+		$instance->setFirstElementForPropertyLabel( $isEnabled  );
 
 		$instance->parse( new ParserParameterFormatter( $parameters ) );
 
@@ -143,7 +143,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testSubobjectIdStabilityForFixedParameterSet() {
+	public function testSubobjectIdStabilityForFixedSetOfParameters() {
 
 		$parameters = array(
 			'Foo=Bar'

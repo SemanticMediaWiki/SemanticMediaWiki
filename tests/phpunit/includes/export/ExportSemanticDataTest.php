@@ -267,7 +267,7 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$subobject = new Subobject( $semanticData->getSubject()->getTitle() );
-		$subobject->setEmptySemanticDataforId( 'Foo' );
+		$subobject->setEmptyContainerForId( 'Foo' );
 
 		$semanticData->addPropertyObjectValue(
 			$subobject->getProperty(),

@@ -1,12 +1,11 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Query\Profiler;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
+use SMW\Tests\Util\UtilityFactory;
 
 use SMW\Query\Profiler\FormatProfile;
 use SMW\Query\Profiler\NullProfile;
-use SMW\HashIdGenerator;
 use SMW\Subobject;
 
 use Title;
@@ -14,61 +13,56 @@ use Title;
 /**
  * @covers \SMW\Query\Profiler\FormatProfile
  *
- *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 class FormatProfileTest extends \PHPUnit_Framework_TestCase {
 
-	public function getClass() {
-		return '\SMW\Query\Profiler\FormatProfile';
+	private $semanticDataValidator;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 	}
 
-	/**
-	 * @return FormatProfile
-	 */
-	private function newInstance( $format = 'Foo' ) {
+	public function testCanConstruct() {
+
+		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\Profiler\ProfileAnnotator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'\SMW\Query\Profiler\FormatProfile',
+			new FormatProfile( $profileAnnotator, 'table' )
+		);
+	}
+
+	public function testCreateProfile() {
 
 		$profiler = new NullProfile(
 			new Subobject( Title::newFromText( __METHOD__ ) ),
-			new HashIdGenerator( 'Foo' )
+			'foo'
 		);
 
-		return new FormatProfile( $profiler, $format );
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testCanConstruct() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testCreateProfile() {
-
-		$instance = $this->newInstance( 'Foo' );
+		$instance = new FormatProfile( $profiler, 'table' );
 		$instance->addAnnotation();
 
 		$expected = array(
 			'propertyCount'  => 1,
 			'propertyKeys'   => array( '_ASKFO' ),
-			'propertyValues' => array( 'Foo' )
+			'propertyValues' => array( 'table' )
 		);
 
-		$semanticDataValidator = new SemanticDataValidator;
-		$semanticDataValidator->assertThatPropertiesAreSet(
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
 			$instance->getContainer()->getSemanticData()
 		);
-
 	}
 
 }

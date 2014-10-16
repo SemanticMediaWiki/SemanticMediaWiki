@@ -2,13 +2,9 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
+use SMW\Tests\Util\UtilityFactory;
 
-use SMW\Query\Profiler\DescriptionProfile;
-use SMW\Query\Profiler\FormatProfile;
-use SMW\Query\Profiler\NullProfile;
-use SMW\HashIdGenerator;
-use SMW\Subobject;
+use SMW\Query\Profiler\QueryProfilerFactory;
 
 use SMWQueryProcessor;
 
@@ -16,7 +12,6 @@ use Title;
 
 /**
  * @covers \SMWQueryProcessor
- *
  *
  * @group SMW
  * @group SMWExtension
@@ -30,48 +25,45 @@ use Title;
  */
 class ProfileAnnotatorQueryProcessorIntegrationTest extends \PHPUnit_Framework_TestCase {
 
-	private function runQueryProcessor( array $rawParams ) {
-		return SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
-			$rawParams,
-			SMW_OUTPUT_WIKI,
-			SMWQueryProcessor::INLINE_QUERY,
-			false
-		);
-	}
+	private $semanticDataValidator;
 
-	private function newInstance( $rawparams, $description, $format ) {
+	protected function setUp() {
+		parent::setUp();
 
-		$instance = new NullProfile(
-			new Subobject( Title::newFromText( __METHOD__ ) ),
-			new HashIdGenerator( $rawparams )
-		);
-
-		$instance = new DescriptionProfile( $instance, $description );
-		$instance = new FormatProfile( $instance, $format );
-
-		return $instance;
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 	}
 
 	/**
 	 * @dataProvider queryDataProvider
 	 */
-	public function testCreateProfile( array $rawparams, array $expected ) {
+	public function testCreateProfile( array $rawParams, array $expected ) {
 
-		list( $query, $formattedParams ) = $this->runQueryProcessor( $rawparams );
+		list( $query, $formattedParams ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
+			$rawParams,
+			SMW_OUTPUT_WIKI,
+			SMWQueryProcessor::INLINE_QUERY,
+			false
+		);
 
-		$instance = $this->newInstance(
-			$rawparams,
-			$query->getDescription(),
+		$queryProfilerFactory = new QueryProfilerFactory();
+
+		$profileAnnotator = $queryProfilerFactory->newQueryProfiler(
+			Title::newFromText( __METHOD__ ),
+			$query,
 			$formattedParams['format']->getValue()
 		);
 
-		$instance->addAnnotation();
+		$profileAnnotator->addAnnotation();
 
-		$this->assertInstanceOf( '\SMW\SemanticData', $instance->getContainer()->getSemanticData() );
+		$this->assertInstanceOf(
+			'\SMW\SemanticData',
+			$profileAnnotator->getContainer()->getSemanticData()
+		);
 
-		$semanticDataValidator = new SemanticDataValidator;
-		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $instance->getContainer()->getSemanticData() );
-
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$profileAnnotator->getContainer()->getSemanticData()
+		);
 	}
 
 	public function queryDataProvider() {

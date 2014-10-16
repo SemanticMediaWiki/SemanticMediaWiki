@@ -130,7 +130,7 @@ class NumericPropertyValueQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		);
 
 		$subobject = new Subobject( $semanticData->getSubject()->getTitle() );
-		$subobject->setEmptySemanticDataForId( 'SomeSubobject' );
+		$subobject->setEmptyContainerForId( 'SomeSubobject' );
 
 		$subobject->addDataValue( $expectedDataValueToMatchCondition );
 
@@ -225,7 +225,7 @@ class NumericPropertyValueQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		);
 
 		$subobject = new Subobject( $semanticDataWithSubobject->getSubject()->getTitle() );
-		$subobject->setEmptySemanticDataForId( 'SomeSubobjectToDifferentSubject' );
+		$subobject->setEmptyContainerForId( 'SomeSubobjectToDifferentSubject' );
 
 		$subobject->addDataValue( $expectedDataValueToMatchCondition );
 

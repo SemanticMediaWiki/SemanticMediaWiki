@@ -100,7 +100,7 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 		$semanticData = new SemanticData( $subject );
 
 		$subobject = new Subobject( $subject->getTitle() );
-		$subobject->setEmptySemanticDataForId( 'SomeSubobject' );
+		$subobject->setEmptyContainerForId( 'SomeSubobject' );
 
 		$subobject->getSemanticData()->addDataValue(
 			DataValueFactory::getInstance()->newPropertyValue( 'Foo', 'Bar' )

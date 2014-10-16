@@ -202,7 +202,7 @@ class BerlinFactsheet {
 		}
 
 		$subobject = new Subobject( $this->targetSubject->getTitle() );
-		$subobject->setEmptySemanticDataforId( 'Berlin#Demographics' );
+		$subobject->setEmptyContainerForId( 'Berlin#Demographics' );
 
 		$yearProperty = new YearProperty();
 

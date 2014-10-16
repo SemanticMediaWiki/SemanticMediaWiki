@@ -104,7 +104,7 @@ class Subobject {
 	 * @return self
 	 * @throws InvalidArgumentException
 	 */
-	public function setEmptySemanticDataForId( $identifier ) {
+	public function setEmptyContainerForId( $identifier ) {
 
 		if ( $identifier === '' ) {
 			throw new InvalidArgumentException( 'Expected a valid (non-empty) indentifier' );
@@ -126,7 +126,7 @@ class Subobject {
 	 * @deprecated since 2.0
 	 */
 	public function setSemanticData( $identifier ) {
-		$this->setEmptySemanticDataForId( $identifier );
+		$this->setEmptyContainerForId( $identifier );
 	}
 
 	/**
