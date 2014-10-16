@@ -176,7 +176,7 @@ class SubqueryDBIntegrationTest extends MwDBaseUnitTestCase {
 			->newEmptySemanticData();
 
 		$subobject = new Subobject( $semanticDataOfWonderland->getSubject()->getTitle() );
-		$subobject->setEmptySemanticDataForId( 'SomeSubobjectOnWonderland' );
+		$subobject->setEmptyContainerForId( 'SomeSubobjectOnWonderland' );
 
 		$subobject->addDataValue(
 			$this->newDataValueForPagePropertyValue( 'MemberOf', 'Wonderland' )
@@ -274,7 +274,7 @@ class SubqueryDBIntegrationTest extends MwDBaseUnitTestCase {
 			->newEmptySemanticData();
 
 		$subobject = new Subobject( $semanticDataOfWonderland->getSubject()->getTitle() );
-		$subobject->setEmptySemanticDataForId( 'SomeSubobjectOnWonderland' );
+		$subobject->setEmptyContainerForId( 'SomeSubobjectOnWonderland' );
 
 		$subobject->addDataValue(
 			$this->newDataValueForPagePropertyValue( 'MemberOf', 'Wonderland' )

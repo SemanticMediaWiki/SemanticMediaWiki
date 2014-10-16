@@ -3,41 +3,38 @@
 namespace SMW\Query\Profiler;
 
 use SMW\Subobject;
-use SMW\IdGenerator;
 use SMW\DIProperty;
 
 /**
- * Provides access to the Null object for handling profiling data
- *
- * @ingroup SMW
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 class NullProfile implements ProfileAnnotator {
 
-	/** @var Subobject */
-	protected $subobject;
+	/**
+	 * @var Subobject
+	 */
+	private $subobject;
 
-	/** @var string */
-	protected $queryId = null;
+	/**
+	 * @var string
+	 */
+	private $queryId = null;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param Subobject $subobject
-	 * @param IdGenerator $queryId
+	 * @param string $queryId
 	 */
-	public function __construct( Subobject $subobject, IdGenerator $queryId ) {
+	public function __construct( Subobject $subobject, $queryId ) {
 		$this->subobject = $subobject;
 		$this->queryId = $queryId;
 	}
 
 	/**
-	 * Returns errors collected during processing
-	 *
 	 * @since 1.9
 	 *
 	 * @return array
@@ -85,9 +82,12 @@ class NullProfile implements ProfileAnnotator {
 	 * @since 1.9
 	 */
 	public function addAnnotation() {
-		$this->subobject->setSemanticData(
-			$this->subobject->generateId( $this->queryId->setPrefix( '_QUERY' ) )
-		);
+		$this->subobject->setEmptyContainerForId( '_QUERY' . $this->queryId );
+
+	//	$this->getSemanticData()->addPropertyObjectValue(
+	//		new DIProperty( '_ASKID' ),
+	//		new DIBlob( $this->queryId )
+	//	);
 	}
 
 }

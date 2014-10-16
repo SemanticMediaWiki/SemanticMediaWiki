@@ -1,12 +1,11 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Query\Profiler;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
+use SMW\Tests\Util\UtilityFactory;
 
 use SMW\Query\Profiler\DurationProfile;
 use SMW\Query\Profiler\NullProfile;
-use SMW\HashIdGenerator;
 use SMW\Subobject;
 
 use Title;
@@ -14,62 +13,55 @@ use Title;
 /**
  * @covers \SMW\Query\Profiler\DurationProfile
  *
- *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 class DurationProfileTest extends \PHPUnit_Framework_TestCase {
 
-	public function getClass() {
-		return '\SMW\Query\Profiler\DurationProfile';
+	private $semanticDataValidator;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 	}
 
-	/**
-	 * @return DurationProfile
-	 */
-	private function newInstance( $duration = 0 ) {
-
-		$profiler = new NullProfile(
-			new Subobject( Title::newFromText( __METHOD__ ) ),
-			new HashIdGenerator( 'Foo' )
-		);
-
-		return new DurationProfile( $profiler, $duration );
-	}
-
-	/**
-	 * @since 1.9
-	 */
 	public function testCanConstruct() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
+
+		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\Profiler\ProfileAnnotator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'\SMW\Query\Profiler\DurationProfile',
+			new DurationProfile( $profileAnnotator, 0.42 )
+		);
 	}
 
 	/**
 	 * @dataProvider durationDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testCreateProfile( $duration, $expected ) {
 
-		$instance = $this->newInstance( $duration );
+		$profiler = new NullProfile(
+			new Subobject( Title::newFromText( __METHOD__ ) ),
+			'foo'
+		);
+
+		$instance = new DurationProfile( $profiler, $duration );
 		$instance->addAnnotation();
 
-		$semanticDataValidator = new SemanticDataValidator;
-		$semanticDataValidator->assertThatPropertiesAreSet(
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
 			$instance->getContainer()->getSemanticData()
 		);
-
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function durationDataProvider() {
 
 		$provider = array();

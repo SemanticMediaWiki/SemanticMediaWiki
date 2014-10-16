@@ -18,17 +18,25 @@ class SubobjectParserFunction {
 
 	const PARAM_SORTKEY = '@sortkey';
 
-	/** @var ParserData */
+	/**
+	 * @var ParserData
+	 */
 	protected $parserData;
 
-	/** @var Subobject */
+	/**
+	 * @var Subobject
+	 */
 	protected $subobject;
 
-	/** @var MessageFormatter */
+	/**
+	 * @var MessageFormatter
+	 */
 	protected $messageFormatter;
 
-	/** @var boolean */
-	protected $firstElementAsProperty = false;
+	/**
+	 * @var boolean
+	 */
+	private $useFirstElementForPropertyLabel = false;
 
 	/**
 	 * @since 1.9
@@ -46,12 +54,12 @@ class SubobjectParserFunction {
 	/**
 	 * @since 1.9
 	 *
-	 * @param boolean $firstElementAsProperty
+	 * @param boolean $useFirstElementForPropertyLabel
 	 *
 	 * @return SubobjectParserFunction
 	 */
-	public function setFirstElementAsProperty( $firstElementAsProperty = true ) {
-		$this->firstElementAsProperty = (bool)$firstElementAsProperty;
+	public function setFirstElementForPropertyLabel( $useFirstElementForPropertyLabel = true ) {
+		$this->useFirstElementForPropertyLabel = (bool)$useFirstElementForPropertyLabel;
 		return $this;
 	}
 
@@ -84,7 +92,7 @@ class SubobjectParserFunction {
 
 		$subject = $this->parserData->getSemanticData()->getSubject();
 
-		$this->subobject->setEmptySemanticDataForId( $this->createSubobjectId( $parameters ) );
+		$this->subobject->setEmptyContainerForId( $this->createSubobjectId( $parameters ) );
 
 		foreach ( $this->transformParametersToArray( $parameters ) as $property => $values ) {
 
@@ -106,22 +114,22 @@ class SubobjectParserFunction {
 		}
 	}
 
-	protected function createSubobjectId( ArrayFormatter $parameters ) {
+	private function createSubobjectId( ArrayFormatter $parameters ) {
 
 		$isAnonymous = in_array( $parameters->getFirst(), array( null, '' ,'-' ) );
 
-		$this->firstElementAsProperty = $this->firstElementAsProperty && !$isAnonymous;
+		$this->useFirstElementForPropertyLabel = $this->useFirstElementForPropertyLabel && !$isAnonymous;
 
-		if ( $this->firstElementAsProperty || $isAnonymous ) {
-			return $this->subobject->generateId( new HashIdGenerator( $parameters->toArray(), '_' ) );
+		if ( $this->useFirstElementForPropertyLabel || $isAnonymous ) {
+			return HashBuilder::createHashIdForContent( $parameters->toArray(), '_' );
 		}
 
 		return $parameters->getFirst();
 	}
 
-	protected function transformParametersToArray( ArrayFormatter $parameters ) {
+	private function transformParametersToArray( ArrayFormatter $parameters ) {
 
-		if ( $this->firstElementAsProperty ) {
+		if ( $this->useFirstElementForPropertyLabel ) {
 			$parameters->addParameter(
 				$parameters->getFirst(),
 				$this->parserData->getTitle()->getPrefixedText()

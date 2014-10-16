@@ -1,14 +1,11 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Query\Profiler;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
-use SMW\Tests\Util\Mock\MockObjectBuilder;
-use SMW\Tests\Util\Mock\CoreMockObjectRepository;
+use SMW\Tests\Util\UtilityFactory;
 
 use SMW\Query\Profiler\DescriptionProfile;
 use SMW\Query\Profiler\NullProfile;
-use SMW\HashIdGenerator;
 use SMW\Subobject;
 
 use Title;
@@ -16,73 +13,76 @@ use Title;
 /**
  * @covers \SMW\Query\Profiler\DescriptionProfile
  *
- *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 class DescriptionProfileTest extends \PHPUnit_Framework_TestCase {
 
-	public function getClass() {
-		return '\SMW\Query\Profiler\DescriptionProfile';
+	private $semanticDataValidator;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 	}
 
-	/**
-	 * @return DescriptionProfile
-	 */
-	private function newInstance( $description = null ) {
+	public function testCanConstruct() {
 
-		if ( $description === null ) {
-			$mockBuilder = new MockObjectBuilder( new CoreMockObjectRepository() );
-			$description = $mockBuilder->newObject( 'QueryDescription' );
-		}
+		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\Profiler\ProfileAnnotator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'\SMW\Query\Profiler\DescriptionProfile',
+			new DescriptionProfile( $profileAnnotator, $description )
+		);
+	}
+
+	public function testCreateProfile() {
+
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$description->expects( $this->once() )
+			->method( 'getQueryString' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$description->expects( $this->once() )
+			->method( 'getSize' )
+			->will( $this->returnValue( 2 ) );
+
+		$description->expects( $this->once() )
+			->method( 'getDepth' )
+			->will( $this->returnValue( 42 ) );
 
 		$profiler = new NullProfile(
 			new Subobject( Title::newFromText( __METHOD__ ) ),
-			new HashIdGenerator( 'Foo' )
+			'ichimarukyuu'
 		);
 
-		return new DescriptionProfile( $profiler, $description );
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testCanConstruct() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testCreateProfile() {
-
-		$mockBuilder = new MockObjectBuilder( new CoreMockObjectRepository() );
-		$description = $mockBuilder->newObject( 'QueryDescription', array(
-			'getQueryString' => 'Foo',
-			'getSize'  => 55,
-			'getDepth' => 9001
-		) );
-
-		$instance = $this->newInstance( $description );
+		$instance = new DescriptionProfile( $profiler, $description );
 		$instance->addAnnotation();
 
 		$expected = array(
 			'propertyCount'  => 3,
 			'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE' ),
-			'propertyValues' => array( 'Foo', 55, 9001 )
+			'propertyValues' => array( 'Foo', 2, 42 )
 		);
 
-		$semanticDataValidator = new SemanticDataValidator;
-		$semanticDataValidator->assertThatPropertiesAreSet(
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
 			$instance->getContainer()->getSemanticData()
 		);
-
 	}
 
 }

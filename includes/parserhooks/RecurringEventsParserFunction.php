@@ -52,7 +52,7 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 	 */
 	public function parse( ArrayFormatter $parameters ) {
 
-		$this->setFirstElementAsProperty( true );
+		$this->setFirstElementForPropertyLabel( true );
 
 		// Get recurring events
 		$this->events = new RecurringEvents( $parameters->toArray(), $this->settings );

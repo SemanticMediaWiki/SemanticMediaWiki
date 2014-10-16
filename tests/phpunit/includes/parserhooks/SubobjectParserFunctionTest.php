@@ -2,7 +2,7 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
+use SMW\Tests\Util\UtilityFactory;
 
 use SMW\SubobjectParserFunction;
 use SMW\Subobject;
@@ -18,7 +18,6 @@ use ParserOutput;
 /**
  * @covers \SMW\SubobjectParserFunction
  *
- *
  * @group SMW
  * @group SMWExtension
  *
@@ -28,6 +27,14 @@ use ParserOutput;
  * @author mwjames
  */
 class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
+
+	private $semanticDataValidator;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+	}
 
 	public function testCanConstruct() {
 
@@ -86,14 +93,14 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider firstElementDataProvider
 	 */
-	public function testFirstElementAsProperty( $isEnabled , array $parameters, array $expected ) {
+	public function testFirstElementForPropertyLabel( $isEnabled , array $parameters, array $expected ) {
 
 		$parserOutput = new ParserOutput();
 		$title        = Title::newFromText( __METHOD__ );
 		$subobject    = new Subobject( $title );
 
 		$instance = $this->acquireInstance( $subobject, $parserOutput );
-		$instance->setFirstElementAsProperty( $isEnabled  );
+		$instance->setFirstElementForPropertyLabel( $isEnabled  );
 
 		$instance->parse( new ParserParameterFormatter( $parameters ) );
 
@@ -107,10 +114,9 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// Add generated title text as property value due to the auto reference
 		// setting
 		$expected['propertyValues'][] = $title->getText();
-		$semanticDataValidator = new SemanticDataValidator;
 
 		foreach ( $parserData->getSemanticData()->getSubSemanticData() as $containerSemanticData ){
-			$semanticDataValidator->assertThatPropertiesAreSet(
+			$this->semanticDataValidator->assertThatPropertiesAreSet(
 				$expected,
 				$containerSemanticData
 			);
@@ -137,6 +143,24 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testSubobjectIdStabilityForFixedSetOfParameters() {
+
+		$parameters = array(
+			'Foo=Bar'
+		);
+
+		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
+
+		$instance = $this->acquireInstance( $subobject );
+		$instance->parse( new ParserParameterFormatter( $parameters ) );
+
+		// Expected to be stable for PHP and HHVM as well
+		$this->assertEquals(
+			'_be96d37a4d7c35be8673cb4229b8fdec',
+			$subobject->getId()
+		);
+	}
+
 	protected function setupInstanceAndAssertSemanticData( array $parameters, array $expected ) {
 
 		$parserOutput = new ParserOutput();
@@ -157,10 +181,8 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$subSemanticData = $parserData->getSemanticData()->getSubSemanticData();
 
-		$semanticDataValidator = new SemanticDataValidator();
-
 		foreach ( $subSemanticData as $actualSemanticDataToAssert ){
-			$semanticDataValidator->assertThatPropertiesAreSet(
+			$this->semanticDataValidator->assertThatPropertiesAreSet(
 				$expected,
 				$actualSemanticDataToAssert
 			);

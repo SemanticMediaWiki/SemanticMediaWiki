@@ -10,8 +10,6 @@ use SMWQueryProcessor;
  *
  * @see http://www.semantic-mediawiki.org/wiki/Help:Ask
  *
- * @ingroup ParserFunction
- *
  * @license GNU GPL v2+
  * @since 1.9
  *
@@ -60,6 +58,17 @@ class AskParserFunction {
 	}
 
 	/**
+	 * {{#ask}} is disabled (see $smwgQEnabled)
+	 *
+	 * @since 1.9
+	 *
+	 * @return string|null
+	 */
+	public function isQueryDisabled() {
+		return $this->messageFormatter->addFromKey( 'smw_iq_disabled' )->getHtml();
+	}
+
+	/**
 	 * Parse parameters, return results from the query printer and update the
 	 * ParserOutput with meta data from the query
 	 *
@@ -87,35 +96,19 @@ class AskParserFunction {
 			array_shift( $rawParams );
 		}
 
-		$this->runQueryProcessor( $rawParams );
-		$this->runQueryProfiler( $rawParams );
-
+		$this->doFetchResultsForRawParameters( $rawParams );
 		$this->parserData->updateOutput();
 
 		return $this->result;
 	}
 
-	/**
-	 * {{#ask}} is disabled (see $smwgQEnabled)
-	 *
-	 * @since 1.9
-	 *
-	 * @return string|null
-	 */
-	public function isQueryDisabled() {
-		return $this->messageFormatter->addFromKey( 'smw_iq_disabled' )->getHtml();
-	}
-
-	/**
-	 * @since  1.9
-	 */
-	private function runQueryProcessor( array $rawParams ) {
+	private function doFetchResultsForRawParameters( array $rawParams ) {
 
 		// FIXME QueryDuration should be a property of the QueryProcessor or
 		// QueryEngine but since we don't want to open the pandora's box and
 		// increase issues within the current QueryProcessor implementation
 		// we will track the time outside of the actual execution framework
-		$this->queryDuration = 0;
+		$queryDuration = 0;
 		$start = microtime( true );
 
 		list( $this->query, $this->params ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
@@ -133,23 +126,25 @@ class AskParserFunction {
 		);
 
 		if ( Application::getInstance()->getSettings()->get( 'smwgQueryDurationEnabled' ) ) {
-			$this->queryDuration = microtime( true ) - $start;
+			$queryDuration = microtime( true ) - $start;
 		}
+
+		$this->createQueryProfile(
+			$this->query,
+			$this->params['format']->getValue(),
+			$queryDuration
+		);
 	}
 
-	/**
-	 * @since  1.9
-	 */
-	private function runQueryProfiler( array $rawParams ) {
+	private function createQueryProfile( $query, $format, $duration ) {
 
 		$queryProfilerFactory = Application::getInstance()->newQueryProfilerFactory();
 
 		$profiler = $queryProfilerFactory->newQueryProfiler(
 			$this->parserData->getTitle(),
-			$this->query->getDescription(),
-			$rawParams,
-			$this->params['format']->getValue(),
-			$this->queryDuration
+			$query,
+			$format,
+			$duration
 		);
 
 		$profiler->addAnnotation();

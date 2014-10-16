@@ -50,7 +50,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	public function testSetEmptySemanticData() {
 
 		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
-		$instance->setEmptySemanticDataForId( 'Foo' );
+		$instance->setEmptyContainerForId( 'Foo' );
 
 		$this->assertInstanceOf(
 			'\Title',
@@ -386,7 +386,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 			$id = $instance->generateId( new HashIdGenerator( rand( 10, 10000 ), '_' ) );
 		}
 
-		$instance->setEmptySemanticDataForId( $id );
+		$instance->setEmptyContainerForId( $id );
 
 		return $instance;
 	}

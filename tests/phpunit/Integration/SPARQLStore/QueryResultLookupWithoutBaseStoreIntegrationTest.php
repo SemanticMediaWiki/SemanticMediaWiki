@@ -173,7 +173,7 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$subobject = new Subobject( $semanticData->getSubject()->getTitle() );
-		$subobject->setEmptySemanticDataForId( 'SubobjectToTestReferenceAfterUpdate' );
+		$subobject->setEmptyContainerForId( 'SubobjectToTestReferenceAfterUpdate' );
 
 		$property = new DIProperty( 'SomeNumericPropertyToCompareReference' );
 		$property->setPropertyTypeId( '_num' );

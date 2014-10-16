@@ -5,7 +5,7 @@ namespace SMW\Query\Profiler;
 use SMW\Query\Language\Description;
 
 use SMW\Subobject;
-use SMW\HashIdGenerator;
+use SMWQuery as Query;
 
 use Title;
 
@@ -20,18 +20,23 @@ class QueryProfilerFactory {
 	/**
 	 * @since 2.1
 	 *
+	 * @param Title $title
+	 * @param Query $query
+	 * @param string $format
+	 * @param integer|null $duration
+	 *
 	 * @return ProfileAnnotator
 	 */
-	public function newQueryProfiler( Title $title, Description $description, array $queryParameters, $queryFormat, $queryDuration ) {
+	public function newQueryProfiler( Title $title, Query $query, $format, $duration = null ) {
 
 		$profiler = new NullProfile(
 			new Subobject( $title ),
-			new HashIdGenerator( $queryParameters )
+			$query->getHash()
 		);
 
-		$profiler = new DescriptionProfile( $profiler, $description );
-		$profiler = new FormatProfile( $profiler, $queryFormat );
-		$profiler = new DurationProfile( $profiler, $queryDuration );
+		$profiler = new DescriptionProfile( $profiler, $query->getDescription() );
+		$profiler = new FormatProfile( $profiler, $format );
+		$profiler = new DurationProfile( $profiler, $duration );
 
 		return $profiler;
 	}
