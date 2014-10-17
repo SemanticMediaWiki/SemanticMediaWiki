@@ -1,56 +1,39 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use SMW\DocumentationParserFunction;
 
 /**
- * Tests for the DocumentationParserFunction class
+ * @covers \SMW\DocumentationParserFunction
  *
- * @file
+ * @group SMW
+ * @group SMWExtension
  *
  * @license GNU GPL v2+
  * @since   1.9
  *
  * @author mwjames
  */
+class DocumentationParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
-/**
- * @covers \SMW\DocumentationParserFunction
- *
- *
- * @group SMW
- * @group SMWExtension
- */
-class DocumentationParserFunctionTest extends ParserTestCase {
+	public function testCanConstruct() {
 
-	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string
-	 */
-	public function getClass() {
-		return '\SMW\DocumentationParserFunction';
+		$this->assertInstanceOf(
+			'\SMW\DocumentationParserFunction',
+			new DocumentationParserFunction()
+		);
 	}
 
-	/**
-	 * @test DocumentationParserFunction::__construct
-	 *
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$instance = new DocumentationParserFunction();
-		$this->assertInstanceOf( $this->getClass(), $instance );
-	}
-
-	/**
-	 * @test DocumentationParserFunction::staticInit
-	 *
-	 * @since 1.9
-	 */
 	public function testStaticInit() {
-		$parser = $this->getParser( $this->newTitle(), $this->getUser() );
-		$result = DocumentationParserFunction::staticInit( $parser );
-		$this->assertTrue( $result );
+
+		$parser = $this->getMockBuilder( '\Parser' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertTrue(
+			DocumentationParserFunction::staticInit( $parser )
+		);
 	}
+
 }

@@ -203,6 +203,8 @@ class FactboxCache {
 			$requestContext
 		);
 
+		$factbox->useInPreview( $requestContext->getRequest()->getCheck( 'wpPreview' ) );
+
 		if ( $factbox->doBuild()->isVisible() ) {
 
 			$contentParser = $application->newContentParser( $title );
