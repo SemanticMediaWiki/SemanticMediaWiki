@@ -217,6 +217,17 @@ class Application {
 	/**
 	 * @since 2.1
 	 *
+	 * @param Language|null $language
+	 *
+	 * @return MessageBuilder
+	 */
+	public function newMessageBuilder( Language $language = null ) {
+		return new MessageBuilder( $language );
+	}
+
+	/**
+	 * @since 2.1
+	 *
 	 * @param Title $title
 	 * @param Language|null $language
 	 *
@@ -228,7 +239,7 @@ class Application {
 			$language = $title->getPageLanguage();
 		}
 
-		$messageBuilder = new MessageBuilder( $language );
+		$messageBuilder = $this->newMessageBuilder( $language );
 
 		return new HtmlFormBuilder( $title, $messageBuilder );
 	}

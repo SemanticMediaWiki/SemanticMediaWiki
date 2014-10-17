@@ -1,19 +1,18 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
-use SMW\ContentProcessor;
 use SMW\ParserData;
 use SMW\Settings;
 use SMW\Factbox;
 use SMW\Application;
 
+use ReflectionClass;
 use ParserOutput;
 use Title;
 
 /**
  * @covers \SMW\Factbox
- *
  *
  * @group SMW
  * @group SMWExtension
@@ -23,45 +22,38 @@ use Title;
  *
  * @author mwjames
  */
-class FactboxMagicWordsTest extends SemanticMediaWikiTestCase {
+class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string
-	 */
-	public function getClass() {
-		return '\SMW\Factbox';
+	private $application;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->application = Application::getInstance();
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return Factbox
-	 */
-	private function newInstance( ParserData $parserData = null, Settings $settings = null, $context = null ) {
+	protected function tearDown() {
+		$this->application->clear();
 
-		$mockStore = $this->newMockBuilder()->newObject( 'Store' );
-		$context->setTitle( $parserData->getTitle() );
-
-		return new Factbox( $mockStore, $parserData, $settings, $context );
+		parent::tearDown();
 	}
 
 	/**
 	 * @dataProvider textDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testMagicWordsFromParserOutputExtension( $text, array $expected ) {
 
-		$title        = $this->newTitle();
+		$title  = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
-		$settings     = Settings::newFromArray( array(
+
+		$settings = Settings::newFromArray( array(
 			'smwgNamespacesWithSemanticLinks' => array( $title->getNamespace() => true ),
 			'smwgLinksInValues' => false,
 			'smwgInlineErrors'  => true,
 			)
 		);
 
-		Application::getInstance()->registerObject( 'Settings', $settings );
+		$this->application->registerObject( 'Settings', $settings );
 
 		$parserData = new ParserData( $title, $parserOutput );
 
@@ -72,54 +64,61 @@ class FactboxMagicWordsTest extends SemanticMediaWikiTestCase {
 			$expected['magicWords'],
 			$this->getMagicwords( $parserOutput )
 		);
-
-		Application::clear();
 	}
 
 	/**
 	 * @dataProvider textDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testGetMagicWords( $text, array $expected ) {
 
-		$title    = $this->newTitle();
-		$settings = $this->newSettings( array(
+		$title = Title::newFromText( __METHOD__ );
+
+		$settings = Settings::newFromArray( array(
 			'smwgShowFactboxEdit' => SMW_FACTBOX_HIDDEN,
 			'smwgShowFactbox'     => SMW_FACTBOX_HIDDEN
 			)
 		);
 
-		// Simulated preview context for when it is expected
-		if ( isset( $expected['preview'] ) && $expected['preview'] ) {
-			$context = $this->newContext( array( 'wpPreview' => true ) );
-			$context->setTitle( $title );
-		} else {
-			$context = $this->newContext();
-			$context->setTitle( $title );
-		}
+		$this->application->registerObject( 'Settings', $settings );
 
-		$mockParserOutput = $this->newMockBuilder()->newObject( 'ParserOutput', array(
-			'getExtensionData' => $expected['magicWords']
-		) );
+		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parserOutput->expects( $this->any() )
+			->method( 'getExtensionData' )
+			->will( $this->returnValue( $expected['magicWords'] ) );
 
 		// MW 1.19, 1.20
-		$mockParserOutput->mSMWMagicWords = $expected['magicWords'];
+		$parserOutput->mSMWMagicWords = $expected['magicWords'];
 
-		$instance = $this->newInstance(
-			new ParserData( $title, $mockParserOutput ),
-			$settings,
-			$context
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new Factbox(
+			$store,
+			new ParserData( $title, $parserOutput ),
+			$messageBuilder
 		);
 
-		$reflector = $this->newReflector();
+		if ( isset( $expected['preview'] ) && $expected['preview'] ) {
+			$instance->useInPreview( true );
+		}
+
+		$reflector = new ReflectionClass( '\SMW\Factbox' );
+
 		$magic = $reflector->getMethod( 'getMagicWords' );
 		$magic->setAccessible( true );
 
 		$result = $magic->invoke( $instance );
+
 		$this->assertInternalType( 'integer', $result );
 		$this->assertEquals( $expected['constants'], $result );
-
 	}
 
 	/**

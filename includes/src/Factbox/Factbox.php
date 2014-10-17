@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMW\MediaWiki\MessageBuilder;
+
 use SMWInfolink;
 use SMWOutputs;
 
@@ -23,45 +25,63 @@ use Html;
  */
 class Factbox {
 
-	/** @var Store */
+	/**
+	 * @var Store
+	 */
 	protected $store;
 
-	/** @var ParserData */
+	/**
+	 * @var ParserData
+	 */
 	protected $parserData;
 
-	/** @var Settings */
-	protected $settings;
-
-	/** @var TableFormatter */
+	/**
+	 * @var TableFormatter
+	 */
 	protected $tableFormatter;
 
-	/** @var IContextSource */
-	protected $context;
+	/**
+	 * @var MessageBuilder
+	 */
+	protected $messageBuilder;
 
-	/** @var boolean */
+	/**
+	 * @var boolean
+	 */
 	protected $isVisible = false;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	protected $content = null;
+
+	/**
+	 * @var boolean
+	 */
+	private $useInPreview = false;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param Store $store
 	 * @param IParserData $parserData
-	 * @param Settings $settings
-	 * @param IContextSource $context
+	 * @param MessageBuilder $messageBuilder
 	 */
-	public function __construct(
-		Store $store,
-		ParserData $parserData,
-		Settings $settings,
-		IContextSource $context
-	) {
+	public function __construct( Store $store, ParserData $parserData, MessageBuilder $messageBuilder ) {
 		$this->store = $store;
 		$this->parserData = $parserData;
-		$this->settings = $settings;
-		$this->context = $context;
+		$this->messageBuilder = $messageBuilder;
+	}
+
+	/**
+	 * @note contains information about wpPreview
+	 *
+	 * @since 2.1
+	 *
+	 * @param boolean
+	 */
+	public function useInPreview( $preview ) {
+		$this->useInPreview = $preview;
 	}
 
 	/**
@@ -127,6 +147,7 @@ class Factbox {
 	 */
 	protected function getMagicWords() {
 
+		$settings = Application::getInstance()->getSettings();
 		$parserOutput = $this->parserData->getOutput();
 
 		// Prior MW 1.21 mSMWMagicWords is used (see SMW\ParserTextProcessor)
@@ -143,10 +164,10 @@ class Factbox {
 			$showfactbox = SMW_FACTBOX_NONEMPTY;
 		} elseif ( in_array( 'SMW_NOFACTBOX', $mws ) ) {
 			$showfactbox = SMW_FACTBOX_HIDDEN;
-		} elseif ( $this->context->getRequest()->getCheck( 'wpPreview' ) ) {
-			$showfactbox = $this->settings->get( 'smwgShowFactboxEdit' );
+		} elseif ( $this->useInPreview ) {
+			$showfactbox = $settings->get( 'smwgShowFactboxEdit' );
 		} else {
-			$showfactbox = $this->settings->get( 'smwgShowFactbox' );
+			$showfactbox = $settings->get( 'smwgShowFactbox' );
 		}
 
 		return $showfactbox;
@@ -280,12 +301,12 @@ class Factbox {
 		);
 
 		$this->tableFormatter->addHeaderItem( 'span',
-			$this->context->msg( 'smw_factbox_head', $browselink->getWikiText() )->inContentLanguage()->text(),
+			$this->messageBuilder->getMessage( 'smw_factbox_head', $browselink->getWikiText() )->inContentLanguage()->text(),
 			array( 'class' => 'smwfactboxhead' )
 		);
 
 		$rdflink = SMWInfolink::newInternalLink(
-			$this->context->msg( 'smw_viewasrdf' )->inContentLanguage()->text(),
+			$this->messageBuilder->getMessage( 'smw_viewasrdf' )->inContentLanguage()->text(),
 			$subject->getTitle()->getPageLanguage()->getNsText( NS_SPECIAL ) . ':ExportRDF/' . $dataValue->getWikiValue(),
 			'rdflink'
 		);
@@ -353,7 +374,7 @@ class Factbox {
 			);
 
 			$this->tableFormatter->addTableCell(
-				$this->context->getLanguage()->listToText( $valuesHtml ),
+				$this->messageBuilder->listToCommaSeparatedText( $valuesHtml ),
 				$attributes['values']
 			);
 

@@ -1,255 +1,286 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use SMW\Tests\Util\UtilityFactory;
+use SMW\Tests\Util\Mock\MockObjectBuilder;
+use SMW\Tests\Util\Mock\CoreMockObjectRepository;
+use SMW\Tests\Util\Mock\MediaWikiMockObjectRepository;
 
-use SMW\DataValueFactory;
+use SMW\Application;
 use SMW\TableFormatter;
 use SMW\ParserData;
 use SMW\Factbox;
-use SMW\Settings;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 
+use ReflectionClass;
 use ParserOutput;
 use Title;
 
 /**
  * @covers \SMW\Factbox
  *
- *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class FactboxTest extends ParserTestCase {
+class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 	private $stringValidator;
+	private $application;
+	private $mockbuilder;
 
 	protected function setUp() {
 		parent::setUp();
 
+		$this->application = Application::getInstance();
 		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
+
+		// This needs to be fixed but not now
+		$this->mockbuilder = new MockObjectBuilder();
+		$this->mockbuilder->registerRepository( new CoreMockObjectRepository() );
+		$this->mockbuilder->registerRepository( new MediaWikiMockObjectRepository() );
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getClass() {
-		return '\SMW\Factbox';
+	protected function tearDown() {
+		$this->application->clear();
+
+		parent::tearDown();
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return Factbox
-	 */
-	private function newInstance( ParserData $parserData = null, Settings $settings = null, $context = null ) {
+	public function testCanConstruct() {
 
-		if ( $parserData === null ) {
-			$parserData = $this->newParserData( $this->newTitle(), $this->newParserOutput() );
-		}
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
 
-		if ( $settings === null ) {
-			$settings = $this->newSettings();
-		}
+		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		if ( $context === null ) {
-			$context = $this->newContext();
-		}
+		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$mockStore = $this->newMockBuilder()->newObject( 'Store' );
-		$context->setTitle( $parserData->getTitle() );
-
-		return new Factbox( $mockStore, $parserData, $settings, $context );
+		$this->assertInstanceOf(
+			'\SMW\Factbox',
+			new Factbox( $store, $parserData, $messageBuilder )
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
-	}
-
-	/**
-	 * Use a mock/stub object to verify the return value to getContent and
-	 * isolate the method from other dependencies during test
-	 *
-	 * @since 1.9
-	 */
 	public function testGetContent() {
 
-		$text    = __METHOD__;
-		$title   = $this->newTitle();
+		$text = __METHOD__;
 
-		$context = $this->newContext();
-		$context->setTitle( $title );
+		$parserData = new ParserData(
+			Title::newFromText( __METHOD__ ),
+			new ParserOutput()
+		);
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		// Build Factbox stub object to encapsulate the method
 		// without the need for other dependencies to occur
-		$factbox = $this->getMock( $this->getClass(),
+		$instance = $this->getMock( '\SMW\Factbox',
 			array( 'fetchContent', 'getMagicWords' ),
 			array(
-				$this->newMockBuilder()->newObject( 'Store' ),
-				$this->newParserData( $title, $this->newParserOutput() ),
-				$this->newSettings(),
-				$context
+				$store,
+				$parserData,
+				$messageBuilder
 			)
 		);
 
-		$factbox->expects( $this->any() )
+		$instance->expects( $this->any() )
 			->method( 'getMagicWords' )
 			->will( $this->returnValue( 'Lula' ) );
 
-		$factbox->expects( $this->any() )
+		$instance->expects( $this->any() )
 			->method( 'fetchContent' )
 			->will( $this->returnValue( $text ) );
 
-		// Check before execution
-		$this->assertFalse( $factbox->isVisible() );
-		$factbox->doBuild();
+		$this->assertFalse( $instance->isVisible() );
 
-		$this->assertInternalType( 'string', $factbox->getContent() );
-		$this->assertEquals( $text, $factbox->getContent() );
+		$instance->doBuild();
 
-		// Check after execution
-		$this->assertTrue( $factbox->isVisible() );
+		$this->assertInternalType(
+			'string',
+			$instance->getContent()
+		);
 
+		$this->assertEquals(
+			$text,
+			$instance->getContent()
+		);
+
+		$this->assertTrue( $instance->isVisible() );
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testGetContentRoundTrip() {
+	public function testGetContentRoundTripForNonEmptyContent() {
 
-		$settings = $this->newSettings( array(
-			'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY
-		) );
+		$subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
 
-		$mockTitle = $this->newMockBuilder()->newObject( 'Title', array(
-			'getPageLanguage' => $this->getLanguage(),
-		) );
+		$this->application->getSettings()->set('smwgShowFactbox', SMW_FACTBOX_NONEMPTY );
 
-		$mockSubject = $this->newMockBuilder()->newObject( 'DIWikiPage', array(
-			'getTitle' => $mockTitle,
-			'getDBkey' => $mockTitle->getDBkey()
-		) );
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
 
-		$mockDIProperty =  $this->newMockBuilder()->newObject( 'DIProperty', array(
-			'isUserDefined' => true,
-			'isShown'       => true,
-			'getLabel'      => $this->newRandomString( 10, 'property' )
-		) );
-
-		$mockSemanticData = $this->newMockBuilder()->newObject( 'SemanticData', array(
-			'getSubject'           => $mockSubject,
+		$mockSemanticData = $this->mockbuilder->newObject( 'SemanticData', array(
+			'getSubject'           => $subject,
 			'hasVisibleProperties' => true,
-			'getPropertyValues'    => array( $mockSubject ),
-			'getProperties'        => array( $mockDIProperty )
+			'getPropertyValues'    => array( $subject ),
+			'getProperties'        => array( DIProperty::newFromUserLabel( 'SomeFancyProperty' ) )
 		) );
 
 		$parserOutput = $this->setupParserOutput( $mockSemanticData );
 
-		$instance = $this->newInstance( $this->newParserData( $mockTitle , $parserOutput ), $settings );
+		$message = $this->getMockBuilder( '\Message' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$message->expects( $this->any() )
+			->method( 'inContentLanguage' )
+			->will( $this->returnSelf() );
+
+		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageBuilder->expects( $this->any() )
+			->method( 'getMessage' )
+			->will( $this->returnValue( $message ) );
+
+		$instance = new Factbox( $store, new ParserData( $subject->getTitle() , $parserOutput ), $messageBuilder );
 		$result   = $instance->doBuild()->getContent();
 
-		$this->assertInternalType( 'string', $result );
-		$this->assertContains( $mockTitle->getDBkey(), $result );
-		$this->assertEquals( $mockTitle, $instance->getTitle() );
+		$this->assertInternalType(
+			'string',
+			$result
+		);
 
+		$this->assertContains(
+			$subject->getDBkey(),
+			 $result
+		);
+
+		$this->assertEquals(
+			$subject->getTitle(),
+			$instance->getTitle()
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testCreateTable() {
 
-		$parserData = $this->newParserData( $this->newTitle(), $this->newParserOutput() );
-		$instance   = $this->newInstance( $parserData );
+		$parserData = new ParserData(
+			Title::newFromText( __METHOD__ ),
+			new ParserOutput()
+		);
 
-		$reflector = $this->newReflector();
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$message = $this->getMockBuilder( '\Message' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$message->expects( $this->any() )
+			->method( 'inContentLanguage' )
+			->will( $this->returnSelf() );
+
+		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageBuilder->expects( $this->any() )
+			->method( 'getMessage' )
+			->will( $this->returnValue( $message ) );
+
+		$instance = new Factbox( $store, $parserData, $messageBuilder );
+
+		$reflector = new ReflectionClass( '\SMW\Factbox' );
 		$createTable  = $reflector->getMethod( 'createTable' );
 		$createTable->setAccessible( true );
 
-		$result = $createTable->invoke( $instance, $parserData->getData() );
-		$this->assertInternalType( 'string', $result );
-
+		$this->assertInternalType(
+			'string',
+			$createTable->invoke( $instance, $parserData->getSemanticData() )
+		);
 	}
 
 	/**
 	 * @dataProvider fetchContentDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testFetchContent( $mockParserData ) {
+	public function testFetchContent( $parserData ) {
 
-		$instance   = $this->newInstance( $mockParserData );
-		$reflector  = $this->newReflector();
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new Factbox( $store, $parserData, $messageBuilder );
+
+		$reflector = new ReflectionClass( '\SMW\Factbox' );
 
 		$fetchContent = $reflector->getMethod( 'fetchContent' );
 		$fetchContent->setAccessible( true );
 
-		$this->assertInternalType( 'string', $fetchContent->invoke( $instance, SMW_FACTBOX_NONEMPTY ) );
-		$this->assertEmpty( $fetchContent->invoke( $instance, SMW_FACTBOX_HIDDEN ) );
+		$this->assertInternalType(
+			'string',
+			$fetchContent->invoke( $instance, SMW_FACTBOX_NONEMPTY )
+		);
 
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testCreateTableOnHistoricalData() {
-
-		$parserData = $this->newParserData( $this->newTitle(), $this->newParserOutput() );
-		$instance   = $this->newInstance( $parserData, null, $this->newContext( array( 'oldid' => 9001 ) ) );
-
-		$reflector  = $this->newReflector();
-
-		$createTable = $reflector->getMethod( 'createTable' );
-		$createTable->setAccessible( true );
-
-		$result = $createTable->invoke( $instance, $parserData->getData() );
-		$this->assertInternalType( 'string', $result );
-
+		$this->assertEmpty(
+			$fetchContent->invoke( $instance, SMW_FACTBOX_HIDDEN )
+		);
 	}
 
 	/**
 	 * @dataProvider contentDataProvider
-	 *
-	 * Use a mock/stub in order for getTable to return canned content to test
-	 * fetchContent.
-	 *
-	 * @since 1.9
 	 */
 	public function testGetContentDataSimulation( $setup, $expected ) {
 
-		$mockSemanticData = $this->newMockBuilder()->newObject( 'SemanticData', array(
+		$mockSemanticData = $this->mockbuilder->newObject( 'SemanticData', array(
 			'hasVisibleSpecialProperties' => $setup['hasVisibleSpecialProperties'],
 			'hasVisibleProperties'        => $setup['hasVisibleProperties'],
 			'isEmpty'                     => $setup['isEmpty']
 		) );
 
-		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
+		$mockStore = $this->mockbuilder->newObject( 'Store', array(
 			'getSemanticData' => $mockSemanticData,
 		) );
 
-		$mockParserData = $this->newMockBuilder()->newObject( 'ParserData', array(
-			'getSubject'  => $this->newMockBuilder()->newObject( 'DIWikiPage' ),
+		$mockParserData = $this->mockbuilder->newObject( 'ParserData', array(
+			'getSubject'  => $this->mockbuilder->newObject( 'DIWikiPage' ),
 			'getData'     => null
 		) );
 
+		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		// Build Factbox stub object to encapsulate the method
 		// without the need for other dependencies to occur
-		$factbox = $this->getMock( $this->getClass(),
+		$factbox = $this->getMock( '\SMW\Factbox',
 			array( 'createTable' ),
 			array(
 				$mockStore,
 				$mockParserData,
-				$this->newSettings(),
-				$this->newContext()
+				$messageBuilder
 			)
 		);
 
@@ -257,13 +288,19 @@ class FactboxTest extends ParserTestCase {
 			->method( 'createTable' )
 			->will( $this->returnValue( $setup['invokedContent'] ) );
 
-		$reflector = $this->newReflector();
+		$reflector = new ReflectionClass( '\SMW\Factbox' );
 		$fetchContent = $reflector->getMethod( 'fetchContent' );
 		$fetchContent->setAccessible( true );
 
-		$this->assertInternalType( 'string', $fetchContent->invoke( $factbox ) );
-		$this->assertEquals( $expected, $fetchContent->invoke( $factbox, $setup['showFactbox'] ) );
+		$this->assertInternalType(
+			'string',
+			$fetchContent->invoke( $factbox )
+		);
 
+		$this->assertEquals(
+			$expected,
+			$fetchContent->invoke( $factbox, $setup['showFactbox'] )
+		);
 	}
 
 	/**
@@ -335,22 +372,38 @@ class FactboxTest extends ParserTestCase {
 		return $provider;
 	}
 
-	/**
-	 * Get access to the tableFormatter object in order to verify that the
-	 * getTableHeader does return some expected content
-	 *
-	 * @since 1.9
-	 */
 	public function testGetTableHeader() {
 
-		$title      = $this->newTitle();
-		$reflector  = $this->newReflector();
-		$parserData = $this->newParserData( $title, $this->newParserOutput() );
-		$instance   = $this->newInstance( $parserData );
+		$title = Title::newFromText( __METHOD__ );
 
-		$mockSubject = $this->newMockBuilder()->newObject( 'DIWikiPage', array(
-			'getTitle' => $title
-		) );
+		$parserData = new ParserData(
+			$title,
+			new ParserOutput()
+		);
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$message = $this->getMockBuilder( '\Message' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$message->expects( $this->any() )
+			->method( 'inContentLanguage' )
+			->will( $this->returnSelf() );
+
+		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageBuilder->expects( $this->any() )
+			->method( 'getMessage' )
+			->will( $this->returnValue( $message ) );
+
+		$instance = new Factbox( $store, $parserData, $messageBuilder );
+
+		$reflector = new ReflectionClass( '\SMW\Factbox' );
 
 		$tableFormatter = $reflector->getProperty( 'tableFormatter' );
 		$tableFormatter->setAccessible( true );
@@ -358,7 +411,7 @@ class FactboxTest extends ParserTestCase {
 
 		$getTableHeader = $reflector->getMethod( 'getTableHeader' );
 		$getTableHeader->setAccessible( true );
-		$getTableHeader->invoke( $instance, $mockSubject );
+		$getTableHeader->invoke( $instance, DIWikiPage::newFromTitle( $title ) );
 
 		// "smwfactboxhead"/"smwrdflink" is used for doing a lazy check on
 		// behalf of the invoked content
@@ -366,7 +419,6 @@ class FactboxTest extends ParserTestCase {
 
 		$this->stringValidator->assertThatStringContains(
 			array(
-				'span class="swmfactboxheadbrowse"',
 				'span class="smwrdflink"'
 			),
 			$header
@@ -375,28 +427,36 @@ class FactboxTest extends ParserTestCase {
 
 	/**
 	 * @dataProvider tableContentDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testGetTableContent( $test, $expected ) {
 
-		$title      = $this->newTitle();
-		$reflector  = $this->newReflector();
-		$parserData = $this->newParserData( $title, $this->newParserOutput() );
-		$instance   = $this->newInstance( $parserData );
+		$title = Title::newFromText( __METHOD__ );
 
-		$mockSubject = $this->newMockBuilder()->newObject( 'DIWikiPage', array(
-			'getTitle' => $title
-		) );
+		$parserData = new ParserData(
+			$title,
+			new ParserOutput()
+		);
 
-		$mockDIProperty = $this->newMockBuilder()->newObject( 'DIProperty', array(
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new Factbox( $store, $parserData, $messageBuilder );
+
+		$reflector = new ReflectionClass( '\SMW\Factbox' );
+
+		$mockDIProperty = $this->mockbuilder->newObject( 'DIProperty', array(
 			'isUserDefined' => $test['isUserDefined'],
 			'isShown'       => $test['isShown'],
 			'getLabel'      => 'Quuey'
 		) );
 
-		$mockSemanticData = $this->newMockBuilder()->newObject( 'SemanticData', array(
-			'getPropertyValues' => array( $mockSubject ),
+		$mockSemanticData = $this->mockbuilder->newObject( 'SemanticData', array(
+			'getPropertyValues' => array( DIWikiPage::newFromTitle( $title ) ),
 			'getProperties'     => array( $mockDIProperty )
 		) );
 
@@ -461,43 +521,58 @@ class FactboxTest extends ParserTestCase {
 	 */
 	public function fetchContentDataProvider() {
 
+		$title = Title::newFromText( __METHOD__ );
+
 		$provider = array();
 
-		$mockSemanticData = $this->newMockBuilder()->newObject( 'SemanticData', array(
-			'isEmpty' => false,
-			'getPropertyValues' => array()
-		) );
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$mockParserData = $this->newMockBuilder()->newObject( 'ParserData', array(
-			'getTitle'   => $this->newTitle(),
-			'getSubject' => $this->newMockBuilder()->newObject( 'DIWikiPage' ),
-			'getData'    => $mockSemanticData,
-		) );
+		$semanticData->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( array() ) );
 
-		$provider[] = array( $mockParserData );
+		$semanticData->expects( $this->any() )
+			->method( 'isEmpty' )
+			->will( $this->returnValue( false ) );
 
-		$mockSemanticData = $this->newMockBuilder()->newObject( 'SemanticData', array(
-			'isEmpty' => false,
-			'getPropertyValues' => array( new DIProperty( '_SKEY') ),
-		) );
+		$parserData = new ParserData(
+			$title,
+			new ParserOutput()
+		);
 
-		$mockParserData = $this->newMockBuilder()->newObject( 'ParserData', array(
-			'getTitle'   => $this->newTitle(),
-			'getSubject' => $this->newMockBuilder()->newObject( 'DIWikiPage' ),
-			'getData'    => $mockSemanticData,
-		) );
+		$parserData->setSemanticData( $semanticData );
 
-		$provider[] = array( $mockParserData );
+		$provider[] = array( $parserData );
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$semanticData->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( array( new DIProperty( '_SKEY') ) ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'isEmpty' )
+			->will( $this->returnValue( false ) );
+
+		$parserData = new ParserData(
+			$title,
+			new ParserOutput()
+		);
+
+		$parserData->setSemanticData( $semanticData );
+
+		$provider[] = array( $parserData );
 
 		return $provider;
 	}
 
-	/**
-	 * @return ParserOutput
-	 */
 	protected function setupParserOutput( $semanticData ) {
 
-		$parserOutput = $this->newParserOutput();
+		$parserOutput = new ParserOutput();
 
 		if ( method_exists( $parserOutput, 'setExtensionData' ) ) {
 			$parserOutput->setExtensionData( 'smwdata', $semanticData );
@@ -506,6 +581,6 @@ class FactboxTest extends ParserTestCase {
 		}
 
 		return $parserOutput;
-
 	}
+
 }

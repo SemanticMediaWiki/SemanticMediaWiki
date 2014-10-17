@@ -38,11 +38,16 @@ class FactboxBuilder {
 	 * @return Factbox
 	 */
 	public function newFactbox( ParserData $parserData, IContextSource $context ) {
+
+		$applicationFactory = Application::getInstance();
+
+		$messageBuilder = $applicationFactory->newMessageBuilder();
+		$messageBuilder->setLanguageFromContext( $context );
+
 		return new Factbox(
-			Application::getInstance()->getStore(),
+			$applicationFactory->getStore(),
 			$parserData,
-			Application::getInstance()->getSettings(),
-			$context
+			$messageBuilder
 		);
 	}
 
