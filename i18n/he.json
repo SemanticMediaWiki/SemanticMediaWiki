@@ -293,5 +293,9 @@
 	"smw-sp-admin-idlookup-title": "חיפוש לפי מזהה עצם:",
 	"smw-sp-admin-idlookup-docu": "הצגת פרטים על מזהה עצם פנימי שמייצג ישויות פרטניות (דף ויקי, עצם־משנה, וכו') במדיה־ויקי סמנטית.",
 	"smw-sp-admin-idlookup-objectid": "מזהה עצם:",
-	"smw-livepreview-loading": "בטעינה…"
+	"smw-livepreview-loading": "בטעינה…",
+	"smw-sp-searchbyproperty-description": "הדף הזה מספק [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces ממשק עיון] פשוט למציאת ישויות שמתוארות על־ידי מאפיין וערך בעל־שם. ממשקי חיפוש זמינים אחרים הם [[Special:PageProperty|חיפוש מאפיין דף]] ו[[Special:Ask|בונה שאילתות]].",
+	"smw-sp-searchbyproperty-resultlist-header": "רשימת תוצאות",
+	"smw-sp-searchbyproperty-nonvaluequery": "רשימה של תוצאות שהוקצה להן המאפיין \"$1\".",
+	"smw-sp-searchbyproperty-valuequery": "רשימת דפים שיש להן המאפיין \"$1\" עם הערך \"$2\"."
 }
