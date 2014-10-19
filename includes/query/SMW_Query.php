@@ -236,7 +236,7 @@ class SMWQuery {
 	public function toArray(){
 		$serialized = array();
 
-		$serialized['conditions'] = $this->m_querystring;
+		$serialized['conditions'] = $this->getQueryString();
 
 		// This can be extended but for the current use cases that is
 		// sufficient since most printer related parameters have to be sourced
@@ -249,7 +249,7 @@ class SMWQuery {
 				'querymode' => $this->querymode
 		);
 
-		foreach ( $this->m_extraprintouts as $printout ) {
+		foreach ( $this->getExtraPrintouts() as $printout ) {
 			$serialization = $printout->getSerialisation();
 			if ( $serialization !== '?#' ) {
 				$serialized['printouts'][] = $serialization;

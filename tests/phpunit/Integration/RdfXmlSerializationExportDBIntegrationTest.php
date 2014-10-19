@@ -3,8 +3,7 @@
 namespace SMW\Tests\Integration;
 
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Util\PageCreator;
-use SMW\Tests\Util\PageDeleter;
+use SMW\Tests\Util\UtilityFactory;
 
 use SMWExportController as ExportController;
 use SMWRDFXMLSerializer as RDFXMLSerializer;
@@ -12,7 +11,6 @@ use SMWRDFXMLSerializer as RDFXMLSerializer;
 use Title;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  * @group semantic-mediawiki-integration
@@ -27,6 +25,20 @@ class RdfXmlSerializationExportDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	protected $databaseToBeExcluded = array( 'sqlite' );
 
+	private $pageCreator;
+	private $stringValidator;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->pageCreator = UtilityFactory::getInstance()->newpageCreator();
+		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
+	}
+
+	protected function tearDown() {
+		parent::tearDown();
+	}
+
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
@@ -35,18 +47,16 @@ class RdfXmlSerializationExportDBIntegrationTest extends MwDBaseUnitTestCase {
 		);
 	}
 
-	public function testPrintRdfXmlForPageWithPropertyAnnotation() {
+	public function testRdfXmlSerializationPrintoutForPagePropertyAnnotation() {
 
-		$pageCreator = new PageCreator();
-
-		$pageCreator
-			->createPage( Title::newFromText( 'TestPrintRdfXmlForPageWithPropertyAnnotation', SMW_NS_PROPERTY ) )
+		$this->pageCreator
+			->createPage( Title::newFromText( 'RdfXmlSerializationForPageProperty', SMW_NS_PROPERTY ) )
 			->doEdit( '[[Has type::Page]]' );
 
-		$pageCreator
+		$this->pageCreator
 			->createPage( Title::newFromText( __METHOD__ ) )
 			->doEdit(
-				'{{#set:|TestPrintRdfXmlForPageWithPropertyAnnotation=I--99--O|SomeOtherProperty=11PP33}}' );
+				'{{#set:|RdfXmlSerializationForPageProperty=I--99--O|SomeOtherProperty=11PP33}}' );
 
 		$instance = new ExportController( new RDFXMLSerializer() );
 
@@ -56,28 +66,26 @@ class RdfXmlSerializationExportDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$expectedOutputContent = array(
 			'<swivt:wikiNamespace rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</swivt:wikiNamespace>',
-			'<property:TestPrintRdfXmlForPageWithPropertyAnnotation rdf:resource="&wiki;I-2D-2D99-2D-2DO"/>',
+			'<property:RdfXmlSerializationForPageProperty rdf:resource="&wiki;I-2D-2D99-2D-2DO"/>',
 			'<property:SomeOtherProperty rdf:resource="&wiki;11PP33"/>'
 		);
 
-		$this->assertThatOutputContains(
+		$this->stringValidator->assertThatStringContains(
 			$expectedOutputContent,
 			$output
 		);
 	}
 
-	public function testPrintRdfXmlForPageWithSubobjectPropertyAnnotation() {
+	public function testRdfXmlSerializationPrintoutForSubobjectPropertyAnnotation() {
 
-		$pageCreator = new PageCreator();
-
-		$pageCreator
-			->createPage( Title::newFromText( 'TestPrintRdfXmlForPageWithSubobjectPropertyAnnotation', SMW_NS_PROPERTY ) )
+		$this->pageCreator
+			->createPage( Title::newFromText( 'RdfXmlSerializationForSubobjectProperty', SMW_NS_PROPERTY ) )
 			->doEdit( '[[Has type::Page]]' );
 
-		$pageCreator
+		$this->pageCreator
 			->createPage( Title::newFromText( __METHOD__ ) )
 			->doEdit(
-				'{{#subobject:|TestPrintRdfXmlForPageWithSubobjectPropertyAnnotation=I--11--O|@sortkey=X99Y}}' );
+				'{{#subobject:|RdfXmlSerializationForSubobjectProperty=I--11--O|@sortkey=X99Y}}' );
 
 		$instance = new ExportController( new RDFXMLSerializer() );
 
@@ -86,20 +94,56 @@ class RdfXmlSerializationExportDBIntegrationTest extends MwDBaseUnitTestCase {
 		$output = ob_get_clean();
 
 		$expectedOutputContent = array(
-			'<property:TestPrintRdfXmlForPageWithSubobjectPropertyAnnotation rdf:resource="&wiki;I-2D-2D11-2D-2DO"/>',
+			'<property:RdfXmlSerializationForSubobjectProperty rdf:resource="&wiki;I-2D-2D11-2D-2DO"/>',
 			'<swivt:wikiPageSortKey rdf:datatype="http://www.w3.org/2001/XMLSchema#string">X99Y</swivt:wikiPageSortKey>'
 		);
 
-		$this->assertThatOutputContains(
+		$this->stringValidator->assertThatStringContains(
 			$expectedOutputContent,
 			$output
 		);
 	}
 
-	private function assertThatOutputContains( array $content, $output ) {
-		foreach ( $content as $item ) {
-			$this->assertContains( $item, $output );
-		}
+	public function testRdfXmlSerializationPrintoutForDatePropertyAnnotation() {
+
+		$this->pageCreator
+			->createPage( Title::newFromText( 'RdfXmlSerializationForDateProperty', SMW_NS_PROPERTY ) )
+			->doEdit( '[[Has type::Date]]' );
+
+		$this->pageCreator
+			->createPage( Title::newFromText( __METHOD__ ) )
+			->doEdit(
+				'{{#subobject:|RdfXmlSerializationForDateProperty=1/1/1970}}' .
+				'[[RdfXmlSerializationForDateProperty::31/12/2014]]' );
+
+		$instance = new ExportController( new RDFXMLSerializer() );
+
+		ob_start();
+		$instance->printPages( array( __METHOD__ ) );
+		$output = ob_get_clean();
+
+		// Could write a XPath validator to make the assert of elements, attributes
+		// a bit more sane but currently there is no need and the string validation
+		// works as well
+		$expectedOutputContent = array(
+			'<property:RdfXmlSerializationForDateProperty rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2014-12-31Z</property:RdfXmlSerializationForDateProperty>',
+			'<property:RdfXmlSerializationForDateProperty-23aux rdf:datatype="http://www.w3.org/2001/XMLSchema#double">2457022.5</property:RdfXmlSerializationForDateProperty-23aux>',
+
+			// Subobject
+			'<swivt:wikiPageSortKey>SMW\Tests\Integration\RdfXmlSerializationExportDBIntegrationTest::testRdfXmlSerializationPrintoutForDatePropertyAnnotation# edab041aad45f1b607fc26802f7c7cd2</swivt:wikiPageSortKey>',
+			'<swivt:wikiPageSortKey rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SMW\Tests\Integration\RdfXmlSerializationExportDBIntegrationTest::testRdfXmlSerializationPrintoutForDatePropertyAnnotation</swivt:wikiPageSortKey>',
+			'<swivt:wikiNamespace rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</swivt:wikiNamespace>',
+			'<property:RdfXmlSerializationForDateProperty rdf:datatype="http://www.w3.org/2001/XMLSchema#date">1970-01-01Z</property:RdfXmlSerializationForDateProperty>',
+			'<property:RdfXmlSerializationForDateProperty-23aux rdf:datatype="http://www.w3.org/2001/XMLSchema#double">2440587.5</property:RdfXmlSerializationForDateProperty-23aux>',
+
+			'<owl:DatatypeProperty rdf:about="http://example.org/id/Property-3ARdfXmlSerializationForDateProperty" />',
+			'<owl:DatatypeProperty rdf:about="http://example.org/id/Property-3ARdfXmlSerializationForDateProperty-23aux" />',
+		);
+
+		$this->stringValidator->assertThatStringContains(
+			$expectedOutputContent,
+			$output
+		);
 	}
 
 }

@@ -5,6 +5,10 @@ namespace SMW\Tests;
 use SMW\Tests\Util\MwDatabaseTableBuilder;
 use SMW\StoreFactory;
 use SMW\Application;
+use SMW\NamespaceExaminer;
+use SMW\Settings;
+
+use SMWExporter as Exporter;
 
 use RuntimeException;
 
@@ -64,6 +68,9 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 
 	protected function tearDown() {
 		Application::clear();
+		NamespaceExaminer::clear();
+		Settings::clear();
+		Exporter::clear();
 
 		parent::tearDown();
 	}

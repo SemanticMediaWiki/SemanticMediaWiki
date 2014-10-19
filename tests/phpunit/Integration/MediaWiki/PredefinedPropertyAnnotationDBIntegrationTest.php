@@ -2,10 +2,8 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use SMW\Tests\Util\UtilityFactory;
-use SMW\Tests\Util\PageCreator;
-
 use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\Util\UtilityFactory;
 
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
@@ -27,12 +25,13 @@ use Title;
  *
  * @author mwjames
  */
-class PageAnnotationDBIntegrationTest extends MwDBaseUnitTestCase {
+class PredefinedPropertyAnnotationDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	private $semanticDataValidator;
 	private $application;
 	private $dataValueFactory;
 	private $mwHooksHandler;
+	private $pageCreator;
 
 	protected function setUp() {
 		parent::setUp();
@@ -44,6 +43,7 @@ class PageAnnotationDBIntegrationTest extends MwDBaseUnitTestCase {
 			->invokeHooksFromRegistry();
 
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+		$this->pageCreator = UtilityFactory::getInstance()->newPageCreator();
 
 		$this->application = Application::getInstance();
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -56,21 +56,18 @@ class PageAnnotationDBIntegrationTest extends MwDBaseUnitTestCase {
 		parent::tearDown();
 	}
 
-	public function testCreatePageWithDefaultSortAndModificationDate() {
+	public function testPredefinedModificationDatePropertyAndChangedDefaultsortForNewPage() {
 
 		$this->application->getSettings()->set( 'smwgPageSpecialProperties', array( '_MDAT' ) );
 
 		$title   = Title::newFromText( __METHOD__ );
 		$subject = DIWikiPage::newFromTitle( $title );
 
-		$pageCreator = new PageCreator();
-
-		$pageCreator
-			->createPage( $title )
-			->doEdit( '{{DEFAULTSORT:SortForFoo}}' );
+		$this->pageCreator
+			->createPage( $title, '{{DEFAULTSORT:SortForFoo}}' );
 
 		$dvPageModificationTime = $this->dataValueFactory->newDataItemValue(
-			DITime::newFromTimestamp( $pageCreator->getPage()->getTimestamp() )
+			DITime::newFromTimestamp( $this->pageCreator->getPage()->getTimestamp() )
 		);
 
 		$expected = array(
@@ -85,16 +82,14 @@ class PageAnnotationDBIntegrationTest extends MwDBaseUnitTestCase {
 		);
 	}
 
-	public function testCreatePageWithCategoryAndDefaultSort() {
+	public function testAddedCategoryAndChangedDefaultsortWithoutPredefinedPropertiesForNewPage() {
 
 		$this->application->getSettings()->set( 'smwgPageSpecialProperties', array() );
 
 		$title   = Title::newFromText( __METHOD__ );
 		$subject = DIWikiPage::newFromTitle( $title );
 
-		$pageCreator = new PageCreator();
-
-		$pageCreator
+		$this->pageCreator
 			->createPage( $title )
 			->doEdit( '{{DEFAULTSORT:SortForFoo}} [[Category:SingleCategory]]' );
 

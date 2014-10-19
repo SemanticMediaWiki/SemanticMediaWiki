@@ -76,7 +76,7 @@ final class NamespaceExaminer {
 	 *
 	 * @since 1.9
 	 */
-	public static function reset() {
+	public static function clear() {
 		self::$instance = null;
 	}
 

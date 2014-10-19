@@ -6,126 +6,98 @@ use SMW\NamespaceExaminer;
 use SMW\Settings;
 
 /**
- * Tests for the NamespaceExaminer class
+ * @covers \SMW\NamespaceExaminer
  *
- * @file
+ * @group SMW
+ * @group SMWExtension
  *
  * @license GNU GPL v2+
  * @since   1.9
  *
  * @author mwjames
  */
+class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 
-/**
- * @covers \SMW\NamespaceExaminer
- *
- *
- * @group SMW
- * @group SMWExtension
- */
-class NamespaceExaminerTest extends SemanticMediaWikiTestCase {
+	public function testCanConstruct() {
 
-	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string
-	 */
-	public function getClass() {
-		return '\SMW\NamespaceExaminer';
+		$this->assertInstanceOf(
+			'\SMW\NamespaceExaminer',
+			new NamespaceExaminer( array() )
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\NamespaceExaminer',
+			NamespaceExaminer::newFromArray( array() )
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\NamespaceExaminer',
+			NamespaceExaminer::getInstance()
+		);
 	}
 
-	/**
-	 * Helper method that returns a NamespaceExaminer object
-	 *
-	 * @param array $namespaces
-	 *
-	 * @return NamespaceExaminer
-	 */
-	private function getInstance( array $namespaces = array() ) {
-		return new NamespaceExaminer( $namespaces );
-	}
-
-	/**
-	 * @test NamespaceExaminer::__construct
-	 *
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$instance = $this->getInstance( array( NS_MAIN => true ) );
-		$this->assertInstanceOf( $this->getClass(), $instance );
-	}
-
-	/**
-	 * @test NamespaceExaminer::isSemanticEnabled
-	 *
-	 * @since 1.9
-	 */
 	public function testIsSemanticEnabled() {
 
-		$instance = $this->getInstance( array( NS_MAIN => true ) );
-		$this->assertTrue( $instance->isSemanticEnabled( NS_MAIN ) );
+		$instance = new NamespaceExaminer( array( NS_MAIN => true ) );
 
-		$instance = $this->getInstance( array( NS_MAIN => false ) );
-		$this->assertFalse( $instance->isSemanticEnabled( NS_MAIN ) );
+		$this->assertTrue(
+			$instance->isSemanticEnabled( NS_MAIN )
+		);
 
-		$instance = $this->getInstance();
-		$this->assertFalse( $instance->isSemanticEnabled( NS_MAIN ) );
+		$instance = new NamespaceExaminer( array( NS_MAIN => false ) );
 
+		$this->assertFalse(
+			$instance->isSemanticEnabled( NS_MAIN )
+		);
 	}
 
-	/**
-	 * @test NamespaceExaminer::isSemanticEnabled
-	 *
-	 * @since 1.9
-	 */
 	public function testNoNumberException() {
+
+		$instance = new NamespaceExaminer( array( NS_MAIN => true ) );
+
 		$this->setExpectedException( '\SMW\InvalidNamespaceException' );
 
-		$instance = $this->getInstance( array( NS_MAIN => true ) );
-		$this->assertTrue( $instance->isSemanticEnabled( 'lula' ) );
+		$this->assertTrue(
+			$instance->isSemanticEnabled( 'ichi' )
+		);
 	}
 
 	/**
-	 * @test NamespaceExaminer::isSemanticEnabled
-	 *
 	 * Bug 51435; return false instead of an Exception
-	 *
-	 * @since 1.9
 	 */
 	public function testNoValidNamespaceException() {
-		$instance = $this->getInstance( array( NS_MAIN => true ) );
-		$this->assertFalse( $instance->isSemanticEnabled( 99991001 ) );
+
+		$instance = new NamespaceExaminer( array( NS_MAIN => true ) );
+
+		$this->assertFalse(
+			$instance->isSemanticEnabled( 99991001 )
+		);
 	}
 
-	/**
-	 * @test NamespaceExaminer::getInstance
-	 *
-	 * @since 1.9
-	 */
 	public function testGetInstance() {
 
 		$instance = NamespaceExaminer::getInstance();
-		$this->assertInstanceOf( $this->getClass(), $instance );
 
-		// Static instance
-		$this->assertTrue( $instance === NamespaceExaminer::getInstance() );
+		$this->assertSame(
+			$instance,
+			NamespaceExaminer::getInstance()
+		);
 
-		// Reset static instance
-		NamespaceExaminer::reset();
-		$this->assertFalse( $instance === NamespaceExaminer::getInstance() );
+		NamespaceExaminer::clear();
 
+		$this->assertNotSame(
+			$instance,
+			NamespaceExaminer::getInstance()
+		);
 	}
 
-	/**
-	 * @test NamespaceExaminer::newFromArray
-	 *
-	 * @since 1.9
-	 */
 	public function testNewFromArray() {
+
 		$instance = NamespaceExaminer::newFromArray( array( NS_MAIN => true ) );
 
-		$this->assertInstanceOf( $this->getClass(), $instance );
-		$this->assertTrue( $instance->isSemanticEnabled( NS_MAIN ) );
+		$this->assertTrue(
+			$instance->isSemanticEnabled( NS_MAIN )
+		);
 	}
 
 	/**
@@ -141,4 +113,5 @@ class NamespaceExaminerTest extends SemanticMediaWikiTestCase {
 		$this->assertInternalType( 'boolean', $result );
 		$this->assertTrue( $result );
 	}
+
 }

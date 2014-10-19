@@ -3,25 +3,26 @@
 namespace SMW\Tests\Integration\Query;
 
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Util\SemanticDataFactory;
-use SMW\Tests\Util\Validators\QueryResultValidator;
+use SMW\Tests\Util\UtilityFactory;
 
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\DataValueFactory;
+
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\ValueDescription;
 
 use SMWDIBlob as DIBlob;
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
 use SMWDataValue as DataValue;
 use SMWDataItem as DataItem;
-use SMW\Query\Language\SomeProperty as SomeProperty;
 use SMWPrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
-use SMW\Query\Language\ThingDescription as ThingDescription;
+use SMWExporter as Exporter;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  * @group semantic-mediawiki-integration
@@ -47,15 +48,21 @@ class DatePropertyValueQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		parent::setUp();
 
 		$this->dataValueFactory = DataValueFactory::getInstance();
-		$this->semanticDataFactory = new SemanticDataFactory();
-		$this->queryResultValidator = new QueryResultValidator();
+
+		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
+		$this->queryResultValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator();
+
+		$this->fixturesProvider = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesProvider();
+		$this->fixturesProvider->setupDependencies( $this->getStore() );
 	}
 
 	protected function tearDown() {
 
-		foreach ( $this->subjectsToBeCleared as $subject ) {
-			$this->getStore()->deleteSubject( $subject->getTitle() );
-		}
+		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
+
+		$fixturesCleaner
+			->purgeAllKnownFacts()
+			->purgeSubjects( $this->subjectsToBeCleared );
 
 		parent::tearDown();
 	}
@@ -75,6 +82,8 @@ class DatePropertyValueQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$semanticData->addDataValue( $dataValue );
 
 		$this->getStore()->updateData( $semanticData );
+
+		Exporter::clear();
 
 		$this->assertArrayHasKey(
 			$property->getKey(),
@@ -107,6 +116,8 @@ class DatePropertyValueQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 			$dataValue,
 			$queryResult
 		);
+
+		$this->subjectsToBeCleared[] = $semanticData->getSubject();
 	}
 
 }

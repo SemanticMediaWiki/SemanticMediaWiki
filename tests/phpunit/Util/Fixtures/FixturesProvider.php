@@ -2,11 +2,13 @@
 
 namespace SMW\Tests\Util\Fixtures;
 
+use SMW\Tests\Util\UtilityFactory;
 use SMW\Tests\Util\Fixtures\Properties\AreaProperty;
 use SMW\Tests\Util\Fixtures\Properties\PopulationDensityProperty;
 use SMW\Tests\Util\Fixtures\Properties\CapitalOfProperty;
 use SMW\Tests\Util\Fixtures\Properties\StatusProperty;
 use SMW\Tests\Util\Fixtures\Properties\PopulationProperty;
+use SMW\Tests\Util\Fixtures\Properties\FoundedProperty;
 
 use SMW\Tests\Util\Fixtures\Facts\BerlinFactsheet;
 use SMW\Tests\Util\Fixtures\Facts\ParisFactsheet;
@@ -33,7 +35,10 @@ class FixturesProvider {
 
 		// This needs to happen before access to a property object is granted
 
+		// $pageCreator = UtilityFactory::getInstance()->newPageCreator();
+
 		foreach ( $this->getListOfPropertyInstances() as $propertyInstance ) {
+			// $pageCreator->createPage( $propertyInstance->getProperty()->getDiWikiPage()->getTitle() );
 			$store->updateData( $propertyInstance->getDependencies() );
 		}
 	}
@@ -61,7 +66,8 @@ class FixturesProvider {
 			'populationdensity' => new PopulationDensityProperty(),
 			'capitalof' => new CapitalOfProperty(),
 			'status' => new StatusProperty(),
-			'population' => new PopulationProperty()
+			'population' => new PopulationProperty(),
+			'founded' => new FoundedProperty()
 		);
 	}
 
