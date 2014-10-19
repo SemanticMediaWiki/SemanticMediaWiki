@@ -18,7 +18,8 @@
 			"WikiPhoenix",
 			"아라",
 			"Lokal Profil",
-			"Freked"
+			"Freked",
+			"Ainali"
 		]
 	},
 	"smw-desc": "Gör din wiki mer tillgänglig – för både maskiner och människor ([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentation online])",
@@ -304,5 +305,6 @@
 	"smw-sp-admin-idlookup-title": "Kolla upp objekt-ID",
 	"smw-sp-admin-idlookup-docu": "Visar detaljer om ett internt objekt-Id som representerar enskilda enheter (wikisida, underobjekt etc.) i Semantisk MediaWiki.",
 	"smw-sp-admin-idlookup-objectid": "Objekt-ID:",
-	"smw-livepreview-loading": "Laddar…"
+	"smw-livepreview-loading": "Laddar…",
+	"smw-sp-searchbyproperty-resultlist-header": "Lista med resultat"
 }
