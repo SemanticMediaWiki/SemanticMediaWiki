@@ -105,24 +105,27 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 		$expectedToCount  = count( $expectedSubjects );
 		$actualComparedToCount = 0;
 
-		$assertThatQueryResultHasSubjects = false;
-
 		$this->assertEmpty( $queryResult->getErrors() );
 
+		if ( $expectedToCount == 0 ) {
+			return;
+		}
+
 		foreach ( $queryResult->getResults() as $resultSubject ) {
-			foreach ( $expectedSubjects as $expectedSubject ) {
+			foreach ( $expectedSubjects as $key => $expectedSubject ) {
 
 				if ( $expectedSubject instanceOf DIWikiPage && $expectedSubject->equals( $resultSubject ) ) {
 					$actualComparedToCount++;
-					$assertThatQueryResultHasSubjects = true;
+					unset( $expectedSubjects[ $key ] );
 				}
 			}
 		}
 
-		if ( $expectedToCount > 0 ) {
-			$this->assertTrue( $assertThatQueryResultHasSubjects, 'Asserts that a subject is set' );
-			$this->assertEquals( $expectedToCount, $actualComparedToCount, 'Asserts that all listed subjects are set' );
-		}
+		$this->assertEquals(
+			$expectedToCount,
+			$actualComparedToCount,
+			'Failed asserting that ' . implode( ', ', $expectedSubjects ) . ' is set'
+		);
 	}
 
 	/**

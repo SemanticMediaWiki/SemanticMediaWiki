@@ -10,6 +10,7 @@ use SMW\Tests\Util\Fixtures\Properties\YearProperty;
 use SMW\Tests\Util\Fixtures\Properties\PopulationDensityProperty;
 use SMW\Tests\Util\Fixtures\Properties\CityCategory;
 use SMW\Tests\Util\Fixtures\Properties\LocatedInProperty;
+use SMW\Tests\Util\Fixtures\Properties\FoundedProperty;
 
 use SMW\DIWikiPage;
 use SMW\DIProperty;
@@ -83,6 +84,7 @@ class BerlinFactsheet {
 		$semanticData->addDataValue( $this->getPopulationValue() );
 		$semanticData->addDataValue( $this->getPopulationDensityValue() );
 		$semanticData->addDataValue( $this->getLocatedInValue() );
+		$semanticData->addDataValue( $this->getFoundedValue() );
 
 		$demographics = $this->getDemographics();
 
@@ -127,6 +129,23 @@ class BerlinFactsheet {
 		return $this->dataValueFactory->newPropertyObjectValue(
 			$areaProperty->getProperty(),
 			'891.85 km²'
+		);
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @see https://en.wikipedia.org/wiki/Berlin
+	 *
+	 * @return DataValue
+	 */
+	public function getFoundedValue() {
+
+		$foundedProperty = new FoundedProperty();
+
+		return $this->dataValueFactory->newPropertyObjectValue(
+			$foundedProperty->getProperty(),
+			'1237'
 		);
 	}
 
@@ -228,6 +247,7 @@ class BerlinFactsheet {
 
 		$subjects[] = $this->asSubject();
 		$subjects[] = $this->targetSubject;
+		$subjects[] = $this->getFoundedValue()->getProperty()->getDiWikiPage();
 		$subjects[] = $this->getAreaValue()->getProperty()->getDiWikiPage();
 		$subjects[] = $this->getAverageHighTemperatureValue()->getProperty()->getDiWikiPage();
 		$subjects[] = $this->getPopulationValue()->getProperty()->getDiWikiPage();
