@@ -21,7 +21,7 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 
 * #350 Passes all unit tests on `HHVM` 3.3+
 * #486 Added support for `Jena Fuseki` 1.1.0
-* #487 Added an internal cache to improve `SPARQLStore` redirect lookup performance
+* #487, #576 Added an internal cache to improve `SPARQLStore` redirect and export lookup performance
 * #512, #521 Added benchmark tests for different components such as job-queue, maintenance script, queries etc.
 * #523 Disabled the Factbox display for a `delete action` and re-enable the Factbox for an undeleted page
 * #532 Added `UrlEncoder` to recognize all special characters when creating a manual link to `Special:Browse`
