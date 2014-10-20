@@ -2,6 +2,7 @@
 
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
+use SMW\Cache\FixedInMemoryCache;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 
@@ -18,6 +19,11 @@ class SMWExporter {
 	 * @var SMWExporter
 	 */
 	private static $instance = null;
+
+	/**
+	 * @var array|null
+	 */
+	private static $resourceElementCache = null;
 
 	static protected $m_exporturl = false;
 	static protected $m_ent_wiki = false;
@@ -45,6 +51,7 @@ class SMWExporter {
 	 */
 	public static function clear() {
 		self::$instance = null;
+		self::$resourceElementCache = null;
 	}
 
 	/**
@@ -331,6 +338,12 @@ class SMWExporter {
 			} // else: Medialink to non-existing file :-/ fall through
 		}
 
+		$hash = $diWikiPage->getHash() . $modifier;
+
+		if ( self::getResourceElementCache()->contains( $hash ) ) {
+			return self::getResourceElementCache()->fetch( $hash );
+		}
+
 		if ( $diWikiPage->getSubobjectName() !== '' ) {
 			$modifier = $diWikiPage->getSubobjectName();
 		}
@@ -369,7 +382,10 @@ class SMWExporter {
 			}
 		}
 
-		return new SMWExpNsResource( $localName, $namespace, $namespaceId, $diWikiPage );
+		$resource = new SMWExpNsResource( $localName, $namespace, $namespaceId, $diWikiPage );
+		self::getResourceElementCache()->save( $hash, $resource );
+
+		return $resource;
 	}
 
 	/**
@@ -752,6 +768,15 @@ class SMWExporter {
 		}
 
 		return self::encodeURI( wfUrlencode( $localName ) );
+	}
+
+	static protected function getResourceElementCache() {
+
+		if ( self::$resourceElementCache === null ) {
+			self::$resourceElementCache = new FixedInMemoryCache( 1000 );
+		}
+
+		return self::$resourceElementCache;
 	}
 
 }

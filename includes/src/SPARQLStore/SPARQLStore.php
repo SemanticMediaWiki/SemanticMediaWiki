@@ -209,7 +209,9 @@ class SPARQLStore extends Store {
 			return;
 		}
 
-		$this->doSparqlDataDelete( $semanticData->getSubject() );
+		if ( $semanticData->getSubject()->getSubobjectName() === '' ) {
+			$this->doSparqlDataDelete( $semanticData->getSubject() );
+		}
 
 		$this->getSparqlDatabase()->insertData(
 			$turtleTriplesBuilder->getTriples(),

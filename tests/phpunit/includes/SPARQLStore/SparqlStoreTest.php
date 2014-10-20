@@ -2,10 +2,13 @@
 
 namespace SMW\Tests\SPARQLStore;
 
+use SMW\Tests\Util\UtilityFactory;
+
 use SMW\SPARQLStore\SPARQLStore;
 
 use SMW\DIWikiPage;
 use SMW\SemanticData;
+use SMW\Subobject;
 
 use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
@@ -24,6 +27,14 @@ use Title;
  * @author mwjames
  */
 class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
+
+	private $semanticDataFactory;
+
+	protected function setUp() {
+		parent::setup();
+
+		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
+	}
 
 	public function testCanConstruct() {
 
@@ -157,6 +168,34 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 			->with(	$this->equalTo( DIWikiPage::newFromTitle( $oldTitle ) ) );
 
 		$instance->changeTitle( $oldTitle, $newTitle, 42, 0 );
+	}
+
+	public function testNoDeleteTaskForSubobjectsDuringUpdate() {
+
+		$expectedSubjectForDeleteTask = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+
+		$subobject = new Subobject( $expectedSubjectForDeleteTask->getTitle() );
+		$subobject->setEmptyContainerForId( 'Foo' );
+
+		$semanticData = $this->semanticDataFactory
+			->setSubject( $expectedSubjectForDeleteTask )
+			->newEmptySemanticData();
+
+		$semanticData->addPropertyObjectValue(
+			$subobject->getProperty(),
+			$subobject->getContainer()
+		);
+
+		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'doSparqlDataDelete' ) )
+			->getMock();
+
+		$instance->expects( $this->once() )
+			->method( 'doSparqlDataDelete' )
+			->with(	$this->equalTo( $expectedSubjectForDeleteTask ) );
+
+		$instance->doSparqlDataUpdate( $semanticData );
 	}
 
 }

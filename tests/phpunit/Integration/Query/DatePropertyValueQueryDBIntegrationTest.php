@@ -120,4 +120,62 @@ class DatePropertyValueQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->subjectsToBeCleared[] = $semanticData->getSubject();
 	}
 
+	/**
+	 * #576
+	 */
+	public function testSortableDateQuery() {
+
+		$this->getStore()->updateData(
+			$this->fixturesProvider->getFactsheet( 'Berlin' )->asEntity()
+		);
+
+		// #576 introduced resource caching, therefore make sure that the
+		// instance is cleared after data have been created before further
+		// tests are carried out
+		Exporter::clear();
+
+		/**
+		 * @query {{#ask: [[Founded::SomeDistinctValue]] }}
+		 */
+		$foundedValue = $this->fixturesProvider->getFactsheet( 'Berlin' )->getFoundedValue();
+
+		$description = new SomeProperty(
+			$foundedValue->getProperty(),
+			new ValueDescription( $foundedValue->getDataItem(), null, SMW_CMP_EQ )
+		);
+
+		$propertyValue = new PropertyValue( '__pro' );
+		$propertyValue->setDataItem( $foundedValue->getProperty() );
+
+		$query = new Query(
+			$description,
+			false,
+			false
+		);
+
+		$query->querymode = Query::MODE_INSTANCES;
+
+		$query->sortkeys = array(
+			$foundedValue->getProperty()->getLabel() => 'ASC'
+		);
+
+		// Be aware of
+		// Virtuoso 22023 Error SR353: Sorted TOP clause specifies more then
+		// 10001 rows to sort. Only 10000 are allowed. Either decrease the
+		// offset and/or row count or use a scrollable cursor
+		$query->setLimit( 100 );
+
+		$query->setExtraPrintouts( array(
+			new PrintRequest( PrintRequest::PRINT_THIS, '' ),
+			new PrintRequest( PrintRequest::PRINT_PROP, null, $propertyValue )
+		) );
+
+		$queryResult = $this->getStore()->getQueryResult( $query );
+
+		$this->queryResultValidator->assertThatQueryResultHasSubjects(
+			$this->fixturesProvider->getFactsheet( 'Berlin' )->asSubject(),
+			$queryResult
+		);
+	}
+
 }
