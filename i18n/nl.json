@@ -294,5 +294,6 @@
 	"smw-sp-admin-settings-title": "Configuratie-instellingen",
 	"smw-sp-admin-settings-docu": "Geeft een lijst van alle default en localized settings die relevant zijn voor de Semantic MediaWiki omgeving. Raadpleeg de help-pagina [https://semantic-mediawiki.org/wiki/Help:Configuration configuratie] voor meer informatie over afzonderlijke instellingen.",
 	"smw-sp-admin-settings-button": "Genereren van de lijst met instellingen",
-	"smw-livepreview-loading": "Bezig met laden…"
+	"smw-livepreview-loading": "Bezig met laden…",
+	"smw-sp-searchbyproperty-resultlist-header": "Lijst van resultaten"
 }
