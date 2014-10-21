@@ -65,17 +65,17 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 			$parameters->setParameters( $this->events->getParameters() );
 
 			// Add the date string as individual property / value parameter
-			$parameters->addParameter( $this->events->getProperty(), $date_str );
+			$parameters->addParameter(
+				$this->events->getProperty(),
+				$date_str
+			);
 
-			// @see SubobjectParserFunction::addSubobjectValues
+			// @see SubobjectParserFunction::addDataValuesToSubobject
+			// Each new $parameters set will add an additional subobject
+			// to the instance
 			$this->addDataValuesToSubobject( $parameters );
 
-			//  Each new $parameters set will add an additional subobject
-			//  to the instance
-			$this->parserData->getSemanticData()->addPropertyObjectValue(
-				$this->subobject->getProperty(),
-				$this->subobject->getContainer()
-			);
+			$this->parserData->getSemanticData()->addSubobject( $this->subobject );
 
 			// Collect errors that occurred during processing
 			$this->messageFormatter->addFromArray( $this->subobject->getErrors() );

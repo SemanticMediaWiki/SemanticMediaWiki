@@ -9,7 +9,6 @@ use SMW\Application;
 
 use SMWOutputs;
 
-use MagicWord;
 use Title;
 use Html;
 
@@ -48,6 +47,11 @@ class InTextAnnotationParser {
 	protected $redirectTargetFinder;
 
 	/**
+	 * @var DataValueFactory
+	 */
+	private $dataValueFactory = null;
+
+	/**
 	 * @var Settings
 	 */
 	protected $settings = null;
@@ -75,6 +79,7 @@ class InTextAnnotationParser {
 		$this->parserData = $parserData;
 		$this->magicWordFinder = $magicWordFinder;
 		$this->redirectTargetFinder = $redirectTargetFinder;
+		$this->dataValueFactory = DataValueFactory::getInstance();
 	}
 
 	/**
@@ -268,11 +273,11 @@ class InTextAnnotationParser {
 	 */
 	protected function addPropertyValue( array $properties, $value, $valueCaption ) {
 
-		$subject = $this->parserData->getData()->getSubject();
+		$subject = $this->parserData->getSemanticData()->getSubject();
 
 		// Add properties to the semantic container
 		foreach ( $properties as $property ) {
-			$dataValue = DataValueFactory::getInstance()->newPropertyValue(
+			$dataValue = $this->dataValueFactory->newPropertyValue(
 				$property,
 				$value,
 				$valueCaption,

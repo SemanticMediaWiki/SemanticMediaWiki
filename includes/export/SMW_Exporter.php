@@ -51,6 +51,7 @@ class SMWExporter {
 	 */
 	public static function clear() {
 		self::$instance = null;
+		self::$m_exporturl = false;
 		self::$resourceElementCache = null;
 	}
 
@@ -62,6 +63,7 @@ class SMWExporter {
 		global $wgContLang, $wgServer, $wgArticlePath;
 
 		global $smwgNamespace; // complete namespace for URIs (with protocol, usually http://)
+
 		if ( '' == $smwgNamespace ) {
 			$resolver = SpecialPage::getTitleFor( 'URIResolver' );
 			$smwgNamespace = $resolver->getFullURL() . '/';

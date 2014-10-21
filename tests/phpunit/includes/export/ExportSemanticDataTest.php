@@ -326,7 +326,7 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$exportData = Exporter::makeExportData(
-			$semanticData->findSubSemanticData( $demographicsSubobject->getId() )
+			$semanticData->findSubSemanticData( $demographicsSubobject->getSubobjectId() )
 		);
 
 		$this->assertCount(

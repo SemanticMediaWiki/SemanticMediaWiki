@@ -30,7 +30,7 @@ use Title;
  *
  * @author mwjames
  */
-class IndirectFunctionHookValidationDBIntegrationTest extends MwDBaseUnitTestCase {
+class MediaWikiIntegrationForRegisteredHookTest extends MwDBaseUnitTestCase {
 
 	private $title;
 	private $semanticDataValidator;
@@ -53,7 +53,7 @@ class IndirectFunctionHookValidationDBIntegrationTest extends MwDBaseUnitTestCas
 
 		$settings = array(
 			'smwgPageSpecialProperties' => array( '_MDAT' ),
-			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true, SMW_NS_PROPERTY => true ),
+			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 			'smwgCacheType' => 'hash',
 			'smwgAutoRefreshOnPurge' => true,
 			'smwgDeleteSubjectAsDeferredJob' => false,
