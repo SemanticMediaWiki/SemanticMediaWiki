@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Jobs;
 
 use Job;
+use JobQueueGroup;
 use Title;
 
 /**
@@ -46,7 +47,7 @@ abstract class JobBase extends Job {
 	 * @since 1.9
 	 */
 	public function pushToJobQueue() {
-		$this->enabledJobQueue ? Job::batchInsert( $this->jobs ) : null;
+		$this->enabledJobQueue ? self::batchInsert( $this->jobs ) : null;
 	}
 
 	/**
@@ -102,6 +103,19 @@ abstract class JobBase extends Job {
 	 */
 	public function getParameter( $key ) {
 		return $this->params[ $key ];
+	}
+
+	/**
+	 * @see https://gerrit.wikimedia.org/r/#/c/162009
+	 */
+	public static function batchInsert( $jobs ) {
+
+		if ( class_exists( 'JobQueueGroup' ) ) {
+			JobQueueGroup::singleton()->push( $jobs );
+			return true;
+		}
+
+		return parent::batchInsert( $jobs );
 	}
 
 }

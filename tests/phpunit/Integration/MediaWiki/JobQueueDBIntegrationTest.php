@@ -19,8 +19,10 @@ use Job;
 /**
  * @group SMW
  * @group SMWExtension
+ *
  * @group semantic-mediawiki-integration
  * @group mediawiki-database
+ *
  * @group medium
  *
  * @license GNU GPL v2+
@@ -28,7 +30,7 @@ use Job;
  *
  * @author mwjames
  */
-class JobQueueSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
+class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	private $job = null;
 	private $application;
@@ -36,7 +38,9 @@ class JobQueueSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 	private $runnerFactory;
 	private $mwHooksHandler;
 	private $semanticDataValidator;
+
 	private $pageDeleter;
+	private $jobQueueRunner;
 
 	protected function setUp() {
 		parent::setUp();
@@ -66,8 +70,8 @@ class JobQueueSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 
-		$jobQueueRunner = UtilityFactory::getInstance()->newRunnerFactory()->newJobQueueRunner();
-		$jobQueueRunner
+		$this->jobQueueRunner = UtilityFactory::getInstance()->newRunnerFactory()->newJobQueueRunner();
+		$this->jobQueueRunner
 			->setDBConnectionProvider( $this->getDBConnectionProvider() )
 			->deleteAllJobs();
 	}
@@ -212,7 +216,7 @@ class JobQueueSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 	protected function assertJob( $type, Job &$job = null ) {
 
 		if ( $job === null ) {
-			$job = Job::pop_type( $type );
+			$job = $this->jobQueueRunner->pop_type( $type );
 		}
 
 		if ( !$job ) {

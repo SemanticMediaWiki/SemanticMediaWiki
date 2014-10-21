@@ -6,6 +6,7 @@ use SMW\DBConnectionProvider;
 use SMW\Tests\Util\MwDBConnectionProvider;
 
 use Job;
+use JobQueueGroup;
 
 /**
  * Partly copied from the MW 1.19 RunJobs maintenance script
@@ -61,9 +62,8 @@ class JobQueueRunner {
 		}
 
 		while ( $this->dbConnectionProvider->getConnection()->selectField( 'job', 'job_id', $conds, __METHOD__ ) ) {
-			$offset = 0;
 
-			$job = $this->type === null ? Job::pop( $offset ) : Job::pop_type( $this->type );
+			$job = $this->type === null ? $this->pop() : $this->pop_type( $this->type );
 
 			if ( !$job ) {
 				break;
@@ -103,6 +103,31 @@ class JobQueueRunner {
 	 */
 	public function getStatus() {
 		return $this->status;
+	}
+
+	/**
+	 * @see https://gerrit.wikimedia.org/r/#/c/162009/
+	 */
+	private function pop() {
+ 		$offset = 0;
+
+		if ( class_exists( 'JobQueueGroup' ) ) {
+			return JobQueueGroup::singleton()->pop();
+		}
+
+		return Job::pop( $offset );
+	}
+
+	/**
+	 * @see https://gerrit.wikimedia.org/r/#/c/162009/
+	 */
+	public function pop_type( $type ) {
+
+		if ( class_exists( 'JobQueueGroup' ) ) {
+			return JobQueueGroup::singleton()->get( $type )->pop();
+		}
+
+		return Job::pop_type( $type );
 	}
 
 }

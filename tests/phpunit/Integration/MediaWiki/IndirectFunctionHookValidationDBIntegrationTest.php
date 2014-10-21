@@ -53,7 +53,7 @@ class IndirectFunctionHookValidationDBIntegrationTest extends MwDBaseUnitTestCas
 
 		$settings = array(
 			'smwgPageSpecialProperties' => array( '_MDAT' ),
-			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true, SMW_NS_PROPERTY => true ),
 			'smwgCacheType' => 'hash',
 			'smwgAutoRefreshOnPurge' => true,
 			'smwgDeleteSubjectAsDeferredJob' => false,
