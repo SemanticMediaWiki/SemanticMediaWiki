@@ -5,6 +5,8 @@ namespace SMW\Tests\Integration;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Util\UtilityFactory;
 
+use SMW\Application;
+
 use SMWExportController as ExportController;
 use SMWRDFXMLSerializer as RDFXMLSerializer;
 
@@ -13,8 +15,10 @@ use Title;
 /**
  * @group SMW
  * @group SMWExtension
+ *
  * @group semantic-mediawiki-integration
- * @group semantic-mediawiki-rdf
+ * @group semantic-mediawiki-export
+ * @group semantic-mediawiki-database
  *
  * @license GNU GPL v2+
  * @since 2.0
@@ -28,14 +32,22 @@ class RdfXmlSerializationExportDBIntegrationTest extends MwDBaseUnitTestCase {
 	private $pageCreator;
 	private $stringValidator;
 
+	private $smwgNamespace;
+
 	protected function setUp() {
 		parent::setUp();
 
 		$this->pageCreator = UtilityFactory::getInstance()->newpageCreator();
 		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
+
+		// FIXME
+		// Application::getInstance()->getSettings()->set( 'smwgNamespace', "http://example.org/id/" );
+		$this->smwgNamespace = $GLOBALS['smwgNamespace'];
+		$GLOBALS['smwgNamespace'] = "http://example.org/id/";
 	}
 
 	protected function tearDown() {
+		$GLOBALS['smwgNamespace'] = $this->smwgNamespace;
 		parent::tearDown();
 	}
 

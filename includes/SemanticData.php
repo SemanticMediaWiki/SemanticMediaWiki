@@ -359,39 +359,43 @@ class SemanticData {
 	}
 
 	/**
-	 * Adds a DataValue object to the semantic data container
-	 *
-	 * @par Example:
-	 * @code
-	 *  $dataValue = DataValueFactory::getInstance()->newPropertyValue( $userProperty, $userValue )
-	 *  $semanticData->addDataValue( $dataValue )
-	 * @endcode
-	 *
 	 * @since 1.9
 	 *
 	 * @param SMWDataValue $dataValue
 	 */
 	public function addDataValue( SMWDataValue $dataValue ) {
-		Profiler::In(  __METHOD__, true );
 
-		if ( $dataValue->getProperty() instanceof DIProperty ) {
-			if ( !$dataValue->isValid() ) {
-				$this->addPropertyObjectValue(
-					new DIProperty( DIProperty::TYPE_ERROR ),
-					$dataValue->getProperty()->getDiWikiPage()
-				);
-				$this->addError( $dataValue->getErrors() );
-			} else {
-				$this->addPropertyObjectValue(
-					$dataValue->getProperty(),
-					$dataValue->getDataItem()
-				);
-			}
-		} else {
+		if ( !$dataValue->getProperty() instanceof DIProperty ) {
 			$this->addError( $dataValue->getErrors() );
+			return null;
 		}
 
-		Profiler::Out( __METHOD__, true );
+		if ( !$dataValue->isValid() ) {
+
+			$this->addPropertyObjectValue(
+				new DIProperty( DIProperty::TYPE_ERROR ),
+				$dataValue->getProperty()->getDiWikiPage()
+			);
+
+			$this->addError( $dataValue->getErrors() );
+		} else {
+			$this->addPropertyObjectValue(
+				$dataValue->getProperty(),
+				$dataValue->getDataItem()
+			);
+		}
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param Subobject $subobject
+	 */
+	public function addSubobject( Subobject $subobject ) {
+		$this->addPropertyObjectValue(
+			$subobject->getProperty(),
+			$subobject->getContainer()
+		);
 	}
 
 	/**

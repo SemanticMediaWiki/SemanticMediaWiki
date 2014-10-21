@@ -16,6 +16,8 @@ use Parser;
  */
 class SubobjectParserFunction {
 
+	// Fixed identifier that describes the sortkey annotation
+	// parameter
 	const PARAM_SORTKEY = '@sortkey';
 
 	/**
@@ -34,6 +36,11 @@ class SubobjectParserFunction {
 	protected $messageFormatter;
 
 	/**
+	 * @var DataValueFactory
+	 */
+	private $dataValueFactory = null;
+
+	/**
 	 * @var boolean
 	 */
 	private $useFirstElementForPropertyLabel = false;
@@ -49,6 +56,7 @@ class SubobjectParserFunction {
 		$this->parserData = $parserData;
 		$this->subobject = $subobject;
 		$this->messageFormatter = $messageFormatter;
+		$this->dataValueFactory = DataValueFactory::getInstance();
 	}
 
 	/**
@@ -74,11 +82,7 @@ class SubobjectParserFunction {
 
 		$this->addDataValuesToSubobject( $parameters );
 
-		$this->parserData->getSemanticData()->addPropertyObjectValue(
-			$this->subobject->getProperty(),
-			$this->subobject->getContainer()
-		);
-
+		$this->parserData->getSemanticData()->addSubobject( $this->subobject );
 		$this->parserData->updateOutput();
 
 		return $this->messageFormatter
@@ -102,7 +106,7 @@ class SubobjectParserFunction {
 
 			foreach ( $values as $value ) {
 
-				$dataValue = DataValueFactory::getInstance()->newPropertyValue(
+				$dataValue = $this->dataValueFactory->newPropertyValue(
 						$property,
 						$value,
 						false,

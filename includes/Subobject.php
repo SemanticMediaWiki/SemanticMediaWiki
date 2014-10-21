@@ -12,8 +12,6 @@ use InvalidArgumentException;
 /**
  * @see http://www.semantic-mediawiki.org/wiki/Help:Subobject
  *
- * @ingroup SMW
- *
  * @license GNU GPL v2+
  * @since 1.9
  *
@@ -21,13 +19,19 @@ use InvalidArgumentException;
  */
 class Subobject {
 
-	/** @var Title */
+	/**
+	 * @var Title
+	 */
 	 protected $title;
 
-	/** @var SMWContainerSemanticData */
+	/**
+	 * @var SMWContainerSemanticData
+	 */
 	 protected $semanticData;
 
-	/** @var array */
+	/**
+	 * @var array
+	 */
 	protected $errors = array();
 
 	/**
@@ -51,32 +55,24 @@ class Subobject {
 	}
 
 	/**
-	 * Returns the subobject Id
+	 * @since 2.1
 	 *
-	 * @since 1.9
+	 * @return DIWikiPage
+	 */
+	public function getSubject() {
+		return $this->getSemanticData()->getSubject();
+	}
+
+	/**
+	 * @since 2.1
 	 *
 	 * @return string
 	 */
-	public function getId() {
+	public function getSubobjectId() {
 		return $this->getSemanticData()->getSubject()->getSubobjectName();
 	}
 
 	/**
-	 * Returns an generated identifier
-	 *
-	 * @since 1.9
-	 *
-	 * @param IdGenerator $id
-	 *
-	 * @return string
-	 */
-	public function generateId( IdGenerator $id ) {
-		return $id->generateId();
-	}
-
-	/**
-	 * Returns an array of collected errors
-	 *
 	 * @since 1.9
 	 *
 	 * @return array
@@ -86,8 +82,6 @@ class Subobject {
 	}
 
 	/**
-	 * Add errors that appeared during internal processing
-	 *
 	 * @since 1.9
 	 *
 	 * @param array $error

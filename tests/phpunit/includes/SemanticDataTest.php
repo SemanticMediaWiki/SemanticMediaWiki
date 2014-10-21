@@ -2,11 +2,11 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
+use SMW\Tests\Util\UtilityFactory;
 use SMW\Tests\MwDBaseUnitTestCase;
 
 use SMW\StoreFactory;
-use SMW\Configuration\Configuration;
+use SMW\Localizer;
 use SMW\DataValueFactory;
 use SMW\SemanticData;
 use SMW\DIProperty;
@@ -20,7 +20,6 @@ use Title;
 /**
  * @covers \SMW\SemanticData
  *
- *
  * @group SMW
  * @group SMWExtension
  *
@@ -31,6 +30,8 @@ use Title;
  */
 class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 
+	private $semanticDataValidator;
+
 	protected function setUp() {
 		parent::setUp();
 
@@ -40,6 +41,8 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		$store = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 
 		StoreFactory::setDefaultStoreForUnitTest( $store );
 	}
@@ -90,7 +93,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::doUnserialize( 'Foo#0#' )
 		);
 
-		$key = Configuration::getInstance()->get( 'wgContLang' )->getNsText( SMW_NS_PROPERTY ) . ':' . 'addPropertyValue';
+		$key = Localizer::getInstance()->getNamespaceTextById( SMW_NS_PROPERTY ) . ':' . 'addPropertyValue';
 
 		$expected = array(
 			'propertyCount'  => 1,
@@ -98,9 +101,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 			'propertyValues' => array( 'Foo' )
 		);
 
-		$semanticDataValidator = new SemanticDataValidator();
-
-		$semanticDataValidator->assertThatPropertiesAreSet(
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
 			$instance
 		);
@@ -169,17 +170,12 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		// Adds only a subobject reference to the container
 		$subobject = $this->newSubobject( $title );
 
-		$instance->addPropertyObjectValue(
-			$subobject->getProperty(),
-			$subobject->getSemanticData()->getSubject()
-		);
+		$instance->addSubobject( $subobject );
 
-		$this->assertNotInstanceOf(
-			'SMWContainerSemanticData',
+		$this->assertInternalType(
+			'array',
 			$instance->getSubSemanticData()
 		);
-
-		$instance->addSubSemanticData( $subobject->getSemanticData() );
 
 		foreach ( $instance->getSubSemanticData() as $subSemanticData ) {
 
@@ -213,18 +209,15 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testAddSubSemanticDataWithDifferentSubSemanticDataIdThrowsException() {
+	public function testDifferentSubSemanticDataSubjectThrowsException() {
 
 		$instance = new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) );
 
 		$this->setExpectedException( 'MWException' );
-
-		$instance->addSubSemanticData(
-			$this->newSubobject( Title::newFromText( 'addSubSemanticData' ) )->getSemanticData()
-		);
+		$instance->addSubobject( $this->newSubobject( Title::newFromText( 'addSubSemanticData' ) ) );
 	}
 
-	public function testImportDataFromWithDifferentSubjectThrowsException() {
+	public function testImportDataFromForDifferentSubjectThrowsException() {
 
 		$instance = new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) );
 
@@ -285,11 +278,8 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue( $instance->hasVisibleProperties() );
 
-		$subobject = $this->newSubobject( $title );
-
-		$instance->addPropertyObjectValue(
-			$subobject->getProperty(),
-			$subobject->getContainer()
+		$instance->addSubobject(
+			$this->newSubobject( $title )
 		);
 
 		$this->assertTrue( $instance->hasVisibleSpecialProperties() );
@@ -341,9 +331,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 			return $this->assertCount( $expected['error'], $instance->getErrors() );
 		}
 
-		$semanticDataValidator = new SemanticDataValidator();
-
-		$semanticDataValidator->assertThatPropertiesAreSet(
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
 			$instance
 		);

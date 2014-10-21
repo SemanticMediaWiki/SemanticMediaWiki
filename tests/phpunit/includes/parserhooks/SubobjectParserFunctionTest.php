@@ -86,7 +86,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			$expected['identifier'],
-			$subobject->getId()
+			$subobject->getSubobjectId()
 		);
 	}
 
@@ -106,7 +106,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		// If it is enabled only check for the first character {0} that should
 		// contain '_' as the rest is going to be an unknown hash value
-		$id = $subobject->getId();
+		$id = $subobject->getSubobjectId();
 		$this->assertEquals( $expected['identifier'], $isEnabled ? $id{0} : $id );
 
 		$parserData = new ParserData( $title, $parserOutput );
@@ -157,7 +157,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// Expected to be stable for PHP and HHVM as well
 		$this->assertEquals(
 			'_be96d37a4d7c35be8673cb4229b8fdec',
-			$subobject->getId()
+			$subobject->getSubobjectId()
 		);
 	}
 

@@ -2,7 +2,7 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
+use SMW\Tests\Util\UtilityFactory;
 
 use SMW\DataValueFactory;
 use SMW\HashIdGenerator;
@@ -16,7 +16,6 @@ use Title;
 /**
  * @covers \SMW\Subobject
  *
- *
  * @group SMW
  * @group SMWExtension
  *
@@ -26,6 +25,14 @@ use Title;
  * @author mwjames
  */
 class SubobjectTest extends \PHPUnit_Framework_TestCase {
+
+	private $semanticDataValidator;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+	}
 
 	public function testCanConstruct() {
 
@@ -63,15 +70,15 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			$instance->getId(),
-			$instance->getSemanticData()->getSubject()->getSubobjectname()
+			$instance->getSubobjectId(),
+			$instance->getSemanticData()->getSubject()->getSubobjectName()
 		);
 	}
 
 	/**
 	 * @dataProvider getDataProvider
 	 */
-	public function testGetId( array $parameters, array $expected ) {
+	public function testgetSubobjectId( array $parameters, array $expected ) {
 
 		$instance = $this->acquireInstanceForId(
 			Title::newFromText( __METHOD__ ),
@@ -79,12 +86,12 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		if ( $expected['identifier'] !== '_'  ) {
-			return $this->assertEquals( $expected['identifier'], $instance->getId() );
+			return $this->assertEquals( $expected['identifier'], $instance->getSubobjectId() );
 		}
 
 		$this->assertEquals(
 			$expected['identifier'],
-			substr( $instance->getId(), 0, 1 )
+			substr( $instance->getSubobjectId(), 0, 1 )
 		);
 	}
 
@@ -129,9 +136,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 			$instance->getErrors()
 		);
 
-		$semanticDataValidator = new SemanticDataValidator();
-
-		$semanticDataValidator->assertThatPropertiesAreSet(
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
 			$instance->getSemanticData()
 		);
@@ -172,9 +177,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertCount( $expected['errors'], $instance->getErrors() );
 
-		$semanticDataValidator = new SemanticDataValidator();
-
-		$semanticDataValidator->assertThatPropertiesAreSet(
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
 			$instance->getSemanticData()
 		);
@@ -182,13 +185,14 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 
 	public function testAddDataValueWithInvalidSemanticDataThrowsException() {
 
+		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
 		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
 
 		$this->setExpectedException( '\SMW\InvalidSemanticDataException' );
-
-		$instance->addDataValue(
-			DataValueFactory::getInstance()->newPropertyValue( 'Foo', 'Bar' )
-		);
+		$instance->addDataValue( $dataValue);
 	}
 
 	public function testGetSemanticDataInvalidSemanticDataThrowsException() {
@@ -196,20 +200,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
 
 		$this->setExpectedException( '\SMW\InvalidSemanticDataException' );
-
 		$instance->getSemanticData();
-	}
-
-	/**
-	 * @dataProvider getDataProvider
-	 */
-	public function testGenerateId( array $test, array $expected ) {
-
-		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
-
-		$actual = substr( $instance->generateId( new HashIdGenerator( $test['identifier'], '_' ) ), 0, 1 );
-
-		$this->assertEquals( '_', $actual );
 	}
 
 	/**
@@ -383,7 +374,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Subobject( $title );
 
 		if ( $id === '' && $id !== null ) {
-			$id = $instance->generateId( new HashIdGenerator( rand( 10, 10000 ), '_' ) );
+			$id = '_abcdef';
 		}
 
 		$instance->setEmptyContainerForId( $id );

@@ -60,7 +60,7 @@ class NullProfileTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'_QUERYadcb944aa33b2c972470b73964c547c0',
-			$subobject->getId()
+			$subobject->getSubobjectId()
 		);
 	}
 
