@@ -1,6 +1,8 @@
 <?php
 
 use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\MediaWiki\Jobs\JobBase;
+
 use SMW\Reporter\MessageReporter;
 
 /**
@@ -395,7 +397,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 		wfRunHooks('smwRefreshDataJobs', array(&$updatejobs));
 
 		if ( $usejobs ) {
-			Job::batchInsert( $updatejobs );
+			JobBase::batchInsert( $updatejobs );
 		} else {
 			foreach ( $updatejobs as $job ) {
 				$job->run();

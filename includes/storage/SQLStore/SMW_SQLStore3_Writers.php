@@ -1,6 +1,8 @@
 <?php
 
 use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\MediaWiki\Jobs\JobBase;
+
 use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\SemanticData;
 use SMW\DIWikiPage;
@@ -1038,7 +1040,7 @@ class SMWSQLStore3Writers {
 
 		/// NOTE: this only happens if $smwgEnableUpdateJobs is true
 		if ( $smwgEnableUpdateJobs ) {
-			Job::batchInsert( $jobs );
+			JobBase::batchInsert( $jobs );
 		}
 
 		// *** Finally, write the new redirect data ***//
