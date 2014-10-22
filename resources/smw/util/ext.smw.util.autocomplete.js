@@ -59,22 +59,42 @@
 			}
 		}
 
-		// Extending jQuery functions for custom highligting
-		$.ui.autocomplete.prototype._renderItem = function( ul, item ) {
-			var term_without_q = escapeQuestion(extractLast( this.term ));
-			var re = new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + term_without_q.replace("/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi", "\\$1") + ")(?![^<>]*>)(?![^&;]+;)", "gi");
-			var loc = item.label.search(re),
-				t = '';
-			if (loc >= 0) {
-				t = item.label.substr(0, loc) + '<strong>' + item.label.substr(loc, term_without_q.length) + '</strong>' + item.label.substr(loc + term_without_q.length);
-			} else {
-				t = item.label;
-			}
-			$( "<li></li>" )
-				.data( "item.autocomplete", item )
-				.append( " <a>" + t + "</a>" )
-				.appendTo( ul );
-		};
+		// MW 1.24 changed ui versions
+		var version = $.ui ? parseFloat( $.ui.version.substring( 2 ) ) : 1;
+
+		if ( version >= 9 ) {
+			// Extending jQuery functions for custom highligting
+			$.ui.autocomplete( 'instance' )._renderItem = function( ul, item ) {
+				var term_without_q = escapeQuestion(extractLast( this.term ));
+				var re = new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + term_without_q.replace("/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi", "\\$1") + ")(?![^<>]*>)(?![^&;]+;)", "gi");
+				var loc = item.label.search(re),
+					t = '';
+				if (loc >= 0) {
+					t = item.label.substr(0, loc) + '<strong>' + item.label.substr(loc, term_without_q.length) + '</strong>' + item.label.substr(loc + term_without_q.length);
+				} else {
+					t = item.label;
+				}
+				return $( "<li>" ).append( "<a>" + t + "</a>" ).appendTo( ul );
+			};
+
+		} else{
+			// Extending jQuery functions for custom highligting
+			$.ui.autocomplete.prototype._renderItem = function( ul, item ) {
+				var term_without_q = escapeQuestion(extractLast( this.term ));
+				var re = new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + term_without_q.replace("/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi", "\\$1") + ")(?![^<>]*>)(?![^&;]+;)", "gi");
+				var loc = item.label.search(re),
+					t = '';
+				if (loc >= 0) {
+					t = item.label.substr(0, loc) + '<strong>' + item.label.substr(loc, term_without_q.length) + '</strong>' + item.label.substr(loc + term_without_q.length);
+				} else {
+					t = item.label;
+				}
+				$( "<li></li>" )
+					.data( "item.autocomplete", item )
+					.append( " <a>" + t + "</a>" )
+					.appendTo( ul );
+			};
+		}
 
 		// Extending jquery functions for custom autocomplete matching
 		$.extend( $.ui.autocomplete, {
