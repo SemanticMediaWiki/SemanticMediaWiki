@@ -5,6 +5,7 @@ namespace SMW\Tests\Util;
 use SMW\Tests\Util\Validators\ValidatorFactory;
 use SMW\Tests\Util\Fixtures\FixturesFactory;
 use SMW\Tests\Util\Runners\RunnerFactory;
+use SMW\Tests\Util\Page\PageEditor;
 
 /**
  * @license GNU GPL v2+
@@ -121,6 +122,15 @@ class UtilityFactory {
 	 */
 	public function newPageCreator() {
 		return new PageCreator();
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return PageEditor
+	 */
+	public function newPageEditor() {
+		return new PageEditor();
 	}
 
 }

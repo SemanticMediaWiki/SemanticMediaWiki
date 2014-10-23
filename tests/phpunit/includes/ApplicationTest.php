@@ -185,4 +185,12 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructNamespaceExaminer() {
+
+		$this->assertInstanceOf(
+			'\SMW\NamespaceExaminer',
+			$this->application->getNamespaceExaminer()
+		);
+	}
+
 }

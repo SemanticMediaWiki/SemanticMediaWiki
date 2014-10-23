@@ -29,6 +29,7 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 	private $mwHooksHandler;
 	private $fixturesFileProvider;
 	private $semanticDataValidator;
+	private $pageEditor;
 
 	/**
 	 * MW GLOBALS to be restored after the test
@@ -44,6 +45,7 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->fixturesFileProvider = $utilityFactory->newFixturesFactory()->newFixturesFileProvider();
 		$this->semanticDataValidator = $utilityFactory->newValidatorFactory()->newSemanticDataValidator();
+		$this->pageEditor = $utilityFactory->newPageEditor();
 
 		$this->mwHooksHandler = $utilityFactory->newMwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
@@ -78,6 +80,10 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 			'LinksUpdateConstructed',
 			$this->mwHooksHandler->getHookRegistry()->getDefinition( 'LinksUpdateConstructed' )
 		);
+
+		$GLOBALS['wgEnableUploads'] = true;
+		$GLOBALS['wgFileExtensions'] = array( 'txt' );
+		$GLOBALS['wgVerifyMimeType'] = true;
 	}
 
 	protected function tearDown() {
@@ -92,10 +98,6 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testFileUploadForDummyTextFile() {
 
-		$GLOBALS['wgEnableUploads'] = true;
-		$GLOBALS['wgFileExtensions'] = array( 'txt' );
-		$GLOBALS['wgVerifyMimeType'] = true;
-
 		$subject = new DIWikiPage( 'Foo.txt', NS_FILE );
 
 		$dummyTextFile = $this->fixturesFileProvider->newUploadForDummyTextFile( 'Foo.txt' );
@@ -108,6 +110,59 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 			'propertyCount'  => 4,
 			'propertyKeys'   => array( 'HasFile', '_MEDIA', '_MIME', '_SKEY' ),
 			'propertyValues' => array( 'File:Foo.txt', 'TEXT', 'text/plain', 'Foo.txt' )
+		);
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$this->getStore()->getSemanticData( $subject )
+		);
+	}
+
+	/**
+	 * @depends testFileUploadForDummyTextFile
+	 */
+	public function testReUploadDummyTextFileToEditFilePage() {
+
+		$subject = new DIWikiPage( 'Foo.txt', NS_FILE );
+
+		$dummyTextFile = $this->fixturesFileProvider->newUploadForDummyTextFile( 'Foo.txt' );
+		$dummyTextFile->doUpload();
+
+		$this->pageEditor
+			->editPage( $subject->getTitle() )
+			->doEdit( '[[Ichi::Maru|Kyū]]' );
+
+		// File page content is kept from the initial upload
+		$expected = array(
+			'propertyCount'  => 4,
+			'propertyKeys'   => array( 'HasFile', '_MEDIA', '_MIME', '_SKEY', 'Ichi' ),
+			'propertyValues' => array( 'File:Foo.txt', 'TEXT', 'text/plain', 'Foo.txt', 'Maru' )
+		);
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$this->getStore()->getSemanticData( $subject )
+		);
+	}
+
+	public function testDummyTextFileUploadForDisabledNamespace() {
+
+		$this->application->getSettings()->set(
+			'smwgNamespacesWithSemanticLinks', array( NS_FILE => false )
+		);
+
+		$subject = new DIWikiPage( 'Bar.txt', NS_FILE );
+
+		$dummyTextFile = $this->fixturesFileProvider->newUploadForDummyTextFile( 'Bar.txt' );
+
+		$this->assertTrue(
+			$dummyTextFile->doUpload( '[[HasFile::File:Bar.txt]]' )
+		);
+
+		$expected = array(
+			'propertyCount'  => 1,
+			'propertyKeys'   => array( '_SKEY' ),
+			'propertyValues' => array( 'Bar.txt' )
 		);
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(

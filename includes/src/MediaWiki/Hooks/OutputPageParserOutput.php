@@ -68,7 +68,7 @@ class OutputPageParserOutput {
 
 		if ( $title->isSpecialPage() ||
 			$title->isRedirect() ||
-			!$this->isEnabledNamespace( $title ) ) {
+			!$this->isSemanticEnabledNamespace( $title ) ) {
 			return false;
 		}
 
@@ -107,10 +107,8 @@ class OutputPageParserOutput {
 		return $this->parserOutput;
 	}
 
-	private function isEnabledNamespace( Title $title ) {
-		return NamespaceExaminer::newFromArray(
-			Application::getInstance()->getSettings()->get( 'smwgNamespacesWithSemanticLinks' ) )->isSemanticEnabled( $title->getNamespace()
-		);
+	private function isSemanticEnabledNamespace( Title $title ) {
+		return Application::getInstance()->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
 	}
 
 }

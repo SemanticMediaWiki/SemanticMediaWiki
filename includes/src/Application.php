@@ -61,6 +61,11 @@ class Application {
 	 * @since 2.0
 	 */
 	public static function clear() {
+
+		if ( self::$instance !== null ) {
+			self::$instance->getSettings()->clear();
+		}
+
 		self::$instance = null;
 	}
 
@@ -242,6 +247,15 @@ class Application {
 		$messageBuilder = $this->newMessageBuilder( $language );
 
 		return new HtmlFormBuilder( $title, $messageBuilder );
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return NamespaceExaminer
+	 */
+	public function getNamespaceExaminer() {
+		return NamespaceExaminer::newFromArray( $this->getSettings()->get( 'smwgNamespacesWithSemanticLinks' ) );
 	}
 
 	private static function registerBuilder( DependencyBuilder $builder = null ) {
