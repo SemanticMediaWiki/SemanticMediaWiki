@@ -6,21 +6,19 @@ use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\FederateResultSet;
+use SMW\Query\Language\ThingDescription;
 
 use SMW\QueryOutputFormatter;
 
 use SMWSparqlDatabase as SparqlDatabase;
 use SMWQueryResult as QueryResult;
 use SMWQuery as Query;
-use SMW\Query\Language\ThingDescription as ThingDescription;
 
 use RuntimeException;
 
 /**
  * Class mapping SMWQuery objects to SPARQL, and for controlling the execution
  * of these queries to obtain suitable QueryResult objects.
- *
- * @ingroup Store
  *
  * @license GNU GPL v2+
  * @since 2.0
@@ -49,6 +47,11 @@ class QueryEngine {
 	private $queryResultFactory;
 
 	/**
+	 * @var EngineOptions
+	 */
+	private $engineOptions;
+
+	/**
 	 * Copy of the SMWQuery sortkeys array to be used while building the
 	 * SPARQL query conditions.
 	 * @var array
@@ -56,63 +59,24 @@ class QueryEngine {
 	private $sortkeys;
 
 	/**
-	 * @var boolean
-	 */
-	private $ignoreQueryErrors = false;
-
-	/**
-	 * @var boolean
-	 */
-	private $sortingSupport = true;
-
-	/**
-	 * @var boolean
-	 */
-	private $randomSortingSupport = true;
-
-	/**
 	 * @since  2.0
 	 *
 	 * @param SparqlDatabase $connection
 	 * @param QueryConditionBuilder $queryConditionBuilder
 	 * @param QueryResultFactory $queryResultFactory
+	 * @param EngineOptions|null $engineOptions
 	 */
-	public function __construct( SparqlDatabase $connection, QueryConditionBuilder $queryConditionBuilder, QueryResultFactory $queryResultFactory ) {
+	public function __construct( SparqlDatabase $connection, QueryConditionBuilder $queryConditionBuilder, QueryResultFactory $queryResultFactory, EngineOptions $engineOptions = null ) {
 		$this->connection = $connection;
 		$this->queryConditionBuilder = $queryConditionBuilder;
 		$this->queryResultFactory = $queryResultFactory;
+		$this->engineOptions = $engineOptions;
+
+		if ( $this->engineOptions === null ) {
+			$this->engineOptions = new EngineOptions();
+		}
 
 		$this->queryConditionBuilder->setResultVariable( self::RESULT_VARIABLE );
-	}
-
-	/**
-	 * @since  2.0
-	 *
-	 * @param boolean $ignoreQueryErrors
-	 */
-	public function setIgnoreQueryErrors( $ignoreQueryErrors ) {
-		$this->ignoreQueryErrors = $ignoreQueryErrors;
-		return $this;
-	}
-
-	/**
-	 * @since  2.0
-	 *
-	 * @param boolean $sortingSupport
-	 */
-	public function setSortingSupport( $sortingSupport ) {
-		$this->sortingSupport = $sortingSupport;
-		return $this;
-	}
-
-	/**
-	 * @since  2.0
-	 *
-	 * @param boolean $randomSortingSupport
-	 */
-	public function setRandomSortingSupport( $randomSortingSupport ) {
-		$this->randomSortingSupport = $randomSortingSupport;
-		return $this;
 	}
 
 	/**
@@ -123,7 +87,7 @@ class QueryEngine {
 	 */
 	public function getQueryResult( Query $query ) {
 
-		if ( ( !$this->ignoreQueryErrors || $query->getDescription() instanceof ThingDescription ) &&
+		if ( ( !$this->engineOptions->ignoreQueryErrors || $query->getDescription() instanceof ThingDescription ) &&
 		     $query->querymode != Query::MODE_DEBUG &&
 		     count( $query->getErrors() ) > 0 ) {
 			return $this->queryResultFactory->newEmptyQueryResult( $query, false );
@@ -303,7 +267,7 @@ class QueryEngine {
 		$result = array( 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() );
 
 		// Build ORDER BY options using discovered sorting fields.
-		if ( $this->sortingSupport ) {
+		if ( $this->engineOptions->sortingSupport ) {
 
 			$orderByString = '';
 
@@ -315,7 +279,7 @@ class QueryEngine {
 
 				if ( ( $order != 'RANDOM' ) && array_key_exists( $propkey, $sparqlCondition->orderVariables ) ) {
 					$orderByString .= "$order(?" . $sparqlCondition->orderVariables[$propkey] . ") ";
-				} elseif ( ( $order == 'RANDOM' ) && $this->randomSortingSupport ) {
+				} elseif ( ( $order == 'RANDOM' ) && $this->engineOptions->randomSortingSupport ) {
 					// not supported in SPARQL; might be possible via function calls in some stores
 				}
 			}

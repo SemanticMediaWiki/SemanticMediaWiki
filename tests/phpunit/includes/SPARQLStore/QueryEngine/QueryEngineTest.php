@@ -3,6 +3,7 @@
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
 use SMW\SPARQLStore\QueryEngine\QueryEngine;
+use SMW\SPARQLStore\QueryEngine\EngineOptions;
 use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
 
 use SMW\DIProperty;
@@ -11,7 +12,6 @@ use SMWQuery as Query;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\QueryEngine
- *
  *
  * @group SMW
  * @group SMWExtension
@@ -59,8 +59,10 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$description = $this->getMockForAbstractClass( '\SMWDescription' );
 
-		$instance = new QueryEngine( $connection, $queryConditionBuilder, new QueryResultFactory( $store ) );
-		$instance->setIgnoreQueryErrors( false );
+		$engineOptions = new EngineOptions();
+		$engineOptions->ignoreQueryErrors = false;
+
+		$instance = new QueryEngine( $connection, $queryConditionBuilder, new QueryResultFactory( $store ), $engineOptions );
 
 		$query = new Query( $description );
 		$query->addErrors( array( 'Foo' ) );

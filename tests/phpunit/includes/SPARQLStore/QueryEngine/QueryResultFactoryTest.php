@@ -36,6 +36,27 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetQueryResultObjectForNullSet() {
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$query = new Query( $description );
+		$query->querymode = Query::MODE_COUNT;
+
+		$instance = new QueryResultFactory( $store );
+
+		$this->assertInstanceOf(
+			'\SMWQueryResult',
+			$instance->newQueryResult( null, $query )
+		);
+	}
+
 	/**
 	 * @dataProvider errorCodeProvider
 	 */
