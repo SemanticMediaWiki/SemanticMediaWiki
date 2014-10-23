@@ -4,14 +4,12 @@ namespace SMW\Tests\MediaWiki\Hooks;
 
 use SMW\MediaWiki\Hooks\FileUpload;
 use SMW\Application;
-use SMW\Settings;
 
 use ParserOutput;
 use Title;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\FileUpload
- *
  *
  * @group SMW
  * @group SMWExtension
@@ -30,13 +28,16 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 
 		$this->application = Application::getInstance();
 
-		$settings = Settings::newFromArray( array(
+		$settings = array(
 			'smwgPageSpecialProperties' => array( '_MEDIA', '_MIME' ),
+			'smwgNamespacesWithSemanticLinks' => array( NS_FILE => true ),
 			'smwgCacheType'  => 'hash',
 			'smwgEnableUpdateJobs' => false
-		) );
+		);
 
-		$this->application->registerObject( 'Settings', $settings );
+		foreach ( $settings as $key => $value ) {
+			$this->application->getSettings()->set( $key, $value );
+		}
 	}
 
 	protected function tearDown() {
@@ -57,7 +58,62 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testPerformUpdate() {
+	public function testPerformUpdateForEnabledNamespace() {
+
+		$title = Title::newFromText( __METHOD__, NS_FILE );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->application->registerObject( 'Store', $store );
+
+		$file = $this->getMockBuilder( '\File' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$file->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$wikiFilePage = $this->getMockBuilder( '\WikiFilePage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiFilePage->expects( $this->once() )
+			->method( 'getParserOutput' )
+			->will( $this->returnValue( new ParserOutput() ) );
+
+		$wikiFilePage->expects( $this->atLeastOnce() )
+			->method( 'getFile' )
+			->will( $this->returnValue( $file ) );
+
+		$pageCreator = $this->getMockBuilder( 'SMW\MediaWiki\PageCreator' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'createFilePage' ) )
+			->getMock();
+
+		$pageCreator->expects( $this->once() )
+			->method( 'createFilePage' )
+			->with( $this->equalTo( $title ) )
+			->will( $this->returnValue( $wikiFilePage ) );
+
+		$this->application->registerObject( 'PageCreator', $pageCreator );
+
+		$instance = new FileUpload( $file, true );
+
+		$this->assertTrue(
+			$instance->process()
+		);
+
+		$this->assertTrue(
+			$wikiFilePage->smwFileReUploadStatus
+		);
+	}
+
+	public function testTryToPerformUpdateForDisabledNamespace() {
+
+		$title = Title::newFromText( __METHOD__, NS_MAIN );
 
 		$store = $this->getMockBuilder( 'SMW\Store' )
 			->disableOriginalConstructor()
@@ -71,20 +127,22 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 
 		$file->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( Title::newFromText( __METHOD__ ) ) );
+			->will( $this->returnValue( $title ) );
 
-		$contentParser = $this->getMockBuilder( '\SMW\ContentParser' )
+		$pageCreator = $this->getMockBuilder( 'SMW\MediaWiki\PageCreator' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$contentParser->expects( $this->atLeastOnce() )
-			->method( 'getOutput' )
-			->will( $this->returnValue( new ParserOutput() ) );
+		$pageCreator->expects( $this->never() ) // <-- never
+			->method( 'createFilePage' );
 
-		$this->application->registerObject( 'ContentParser', $contentParser );
+		$this->application->registerObject( 'PageCreator', $pageCreator );
 
 		$instance = new FileUpload( $file, false );
-		$this->assertTrue( $instance->process() );
+
+		$this->assertTrue(
+			$instance->process()
+		);
 	}
 
 }
