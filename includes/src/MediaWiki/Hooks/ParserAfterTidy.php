@@ -13,8 +13,6 @@ use Title;
  *
  * @see http://www.mediawiki.org/wiki/Manual:Hooks/ParserAfterTidy
  *
- * @ingroup FunctionHook
- *
  * @license GNU GPL v2+
  * @since 1.9
  *
@@ -76,19 +74,23 @@ class ParserAfterTidy {
 
 		$propertyAnnotator = $this->application
 			->newPropertyAnnotatorFactory()
-			->newSortkeyPropertyAnnotator( $parserData->getSemanticData(), $this->parser->getDefaultSort() );
+			->newSortkeyPropertyAnnotator(
+				$parserData->getSemanticData(),
+				$this->parser->getDefaultSort() );
 
 		$propertyAnnotator->addAnnotation();
 
 		$propertyAnnotator = $this->application
 			->newPropertyAnnotatorFactory()
-			->newCategoryPropertyAnnotator( $parserData->getSemanticData(), $this->parser->getOutput()->getCategoryLinks() );
+			->newCategoryPropertyAnnotator(
+				$parserData->getSemanticData(),
+				$this->parser->getOutput()->getCategoryLinks() );
 
 		$propertyAnnotator->addAnnotation();
 
 		$parserData->updateOutput();
 
- 		$this->forceManualUpdateDueToPagePurge( $parserData );
+		$this->checkForRequestedUpdateByPagePurge( $parserData );
 
 		return true;
 	}
@@ -98,7 +100,7 @@ class ParserAfterTidy {
 	 * the store is updated as well; for all other cases LinksUpdateConstructed
 	 * will handle the store update
 	 */
-	protected function forceManualUpdateDueToPagePurge( $parserData ) {
+	private function checkForRequestedUpdateByPagePurge( $parserData ) {
 
 		$cache = $this->application->getCache();
 

@@ -30,6 +30,8 @@ class LocalFileUpload extends UploadBase {
 	 */
 	private $desiredDestName;
 
+	private $error = '';
+
 	/**
 	 * @since 2.1
 	 *
@@ -39,6 +41,15 @@ class LocalFileUpload extends UploadBase {
 	public function __construct( $localUploadPath, $desiredDestName ) {
 		$this->localUploadPath = $localUploadPath;
 		$this->desiredDestName = $desiredDestName;
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return string
+	 */
+	public function getUploadError() {
+		return $this->error;
 	}
 
 	/**
@@ -68,6 +79,7 @@ class LocalFileUpload extends UploadBase {
 		);
 
 		if ( !$status->isGood() ) {
+			$this->error = $status->getWikiText();
 			return false;
 		}
 

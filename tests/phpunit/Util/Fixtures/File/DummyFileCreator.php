@@ -55,7 +55,7 @@ class DummyFileCreator {
 
 	private function createFile( $content = '' ) {
 
-		$filename = $this->makeTemporaryFile();
+		$filename = $this->getLocationForTemporaryFile();
 
 		$fh = fopen( $filename, 'w' );
 
@@ -70,8 +70,8 @@ class DummyFileCreator {
 		return $this->canReadFile( $filename );
 	}
 
-	private function makeTemporaryFile() {
-		return tempnam( sys_get_temp_dir(), $this->desiredDestName );
+	private function getLocationForTemporaryFile() {
+		return sys_get_temp_dir() . '/' . $this->desiredDestName;
 	}
 
 	private function canReadFile( $path ) {
