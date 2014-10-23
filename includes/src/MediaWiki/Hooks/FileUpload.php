@@ -3,15 +3,17 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\Application;
+use SMW\Localizer;
 
 use File;
+use Title;
+use User;
+use ParserOptions;
 
 /**
  * Fires when a local file upload occurs
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/FileUpload
- *
- * @ingroup FunctionHook
  *
  * @license GNU GPL v2+
  * @since 1.9.1
@@ -49,19 +51,32 @@ class FileUpload {
 	 * @return true
 	 */
 	public function process() {
-		return $this->file->getTitle() ? $this->performUpdate() : true;
+		return $this->canPerformUpdate() ? $this->performUpdate() : true;
 	}
 
-	protected function performUpdate() {
+	private function canPerformUpdate() {
+
+		if ( $this->file->getTitle() !== null && $this->isSemanticEnabledNamespace( $this->file->getTitle() ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private function performUpdate() {
 
 		$this->application = Application::getInstance();
 
+		$filePage = $this->makeFilePage();
+
 		$parserData = $this->application
-			->newParserData( $this->file->getTitle(), $this->makeParserOutput() );
+			->newParserData(
+				$this->file->getTitle(),
+				$filePage->getParserOutput( $this->makeCanonicalParserOptions() ) );
 
 		$pageInfoProvider = $this->application
 			->newPropertyAnnotatorFactory()
-			->newPageInfoProvider( $this->makeFilePage() );
+			->newPageInfoProvider( $filePage );
 
 		$propertyAnnotator = $this->application
 			->newPropertyAnnotatorFactory()
@@ -75,14 +90,6 @@ class FileUpload {
 		return true;
 	}
 
-	private function makeParserOutput() {
-
-		$contentParser = $this->application->newContentParser( $this->file->getTitle() );
-		$contentParser->parse();
-
-		return $contentParser->getOutput();
-	}
-
 	private function makeFilePage() {
 
 		$filePage = $this->application->newPageCreator()->createFilePage( $this->file->getTitle() );
@@ -91,6 +98,20 @@ class FileUpload {
 		$filePage->smwFileReUploadStatus = $this->fileReUploadStatus;
 
 		return $filePage;
+	}
+
+	/**
+	 * Anonymous user with default preferences and content language
+	 */
+	private function makeCanonicalParserOptions() {
+		return ParserOptions::newFromUserAndLang(
+			new User(),
+			Localizer::getInstance()->getContentLanguage()
+		);
+	}
+
+	private function isSemanticEnabledNamespace( Title $title ) {
+		return Application::getInstance()->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
 	}
 
 }

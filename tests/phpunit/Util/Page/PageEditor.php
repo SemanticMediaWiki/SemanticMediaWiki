@@ -3,7 +3,8 @@
 namespace SMW\Tests\Util\Page;
 
 use Title;
-use UnexpectedValueException;
+use WikiPage;
+use RuntimeException;
 
 /**
  * @group SMW
@@ -15,7 +16,7 @@ use UnexpectedValueException;
 class PageEditor {
 
 	/**
-	 * @var WikiPage
+	 * @var WikiPage|null
 	 */
 	private $page = null;
 
@@ -23,29 +24,34 @@ class PageEditor {
 	 * @since 2.1
 	 *
 	 * @return WikiPage
-	 * @throws UnexpectedValueException
+	 * @throws RuntimeException
 	 */
 	public function getPage() {
 
-		if ( $this->page instanceof \WikiPage ) {
+		if ( $this->page instanceof WikiPage ) {
 			return $this->page;
 		}
 
-		throw new UnexpectedValueException( 'Expected a WikiPage instance, use createPage first' );
+		throw new RuntimeException( 'Expected a valid WikiPage instance.' );
 	}
 
 	/**
 	 * @since 2.1
 	 *
+	 * @param Title $title
+	 *
 	 * @return PageEditor
 	 */
 	public function editPage( Title $title ) {
-		$this->page = new \WikiPage( $title );
+		$this->page = new WikiPage( $title );
 		return $this;
 	}
 
 	/**
 	 * @since 2.1
+	 *
+	 * @param string $pageContent
+	 * @param string $editMessage
 	 *
 	 * @return PageEditor
 	 */
