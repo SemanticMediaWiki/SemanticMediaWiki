@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Util\Fixtures;
 
+use SMW\Tests\Util\Fixtures\File\FixturesFileProvider;
+
 /**
  * @license GNU GPL v2+
  * @since 2.1
@@ -26,6 +28,15 @@ class FixturesFactory {
 	 */
 	public function newFixturesCleaner() {
 		return new FixturesCleaner();
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return FixturesFileProvider
+	 */
+	public function newFixturesFileProvider() {
+		return new FixturesFileProvider();
 	}
 
 }
