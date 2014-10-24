@@ -29,8 +29,14 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 */
 	protected function getHtml() {
 
+		$result = $this->getPredefinedPropertyIntro();
+
+		if ( !wfRunHooks( 'SMW::PropertyPage::canView', array( $this->mTitle ) ) ) {
+			return $result . Html::element( 'div', array( 'id' => 'smw-propertypage-improper-canview-permission' ), wfMessage( 'smw-propertypage-improper-canview-permission' )->inContentLanguage()->text() );
+		}
+
 		$list = $this->getSubpropertyList() . $this->getPropertyValueList();
-		$result = $this->getPredefinedPropertyIntro() . ( $list !== '' ? Html::element( 'br', array( 'id' => 'smwfootbr' ) ) . $list : '' );
+		$result = $list !== '' ? Html::element( 'br', array( 'id' => 'smwfootbr' ) ) . $list : '';
 
 		return $result;
 	}
