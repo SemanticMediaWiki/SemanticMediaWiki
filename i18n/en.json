@@ -275,7 +275,7 @@
 	"smw-ui-tooltip-title-note": "Note",
 	"smw-ui-tooltip-title-legend": "Legend",
 	"smw_unknowntype": "The type of this property is invalid",
-	"smw-concept-cache-text": "The concept has a total of $1 {{PLURAL:$1|page|pages}}, and was last updated $2.",
+	"smw-concept-cache-text": "The concept has a total of $1 {{PLURAL:$1|page|pages}}, and was last updated $3, $2.",
 	"smw_concept_header": "Pages of concept \"$1\"",
 	"smw_conceptarticlecount": "Showing below $1 {{PLURAL:$1|page|pages}}.",
 	"smw-qp-empty-data": "Requested data could not be displayed due to some insufficient selection criteria.",
