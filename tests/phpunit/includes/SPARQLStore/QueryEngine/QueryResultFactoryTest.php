@@ -12,7 +12,6 @@ use SMWQueryResult as QueryResult;
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\QueryResultFactory
  *
- *
  * @group SMW
  * @group SMWExtension
  * @group semantic-mediawiki-sparql
@@ -33,6 +32,26 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\QueryResultFactory',
 			new QueryResultFactory( $store )
+		);
+	}
+
+	public function testGetQueryResultObjectForNullSet() {
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$query = new Query( $description );
+
+		$instance = new QueryResultFactory( $store );
+
+		$this->assertInstanceOf(
+			'\SMWQueryResult',
+			$instance->newQueryResult( null, $query )
 		);
 	}
 

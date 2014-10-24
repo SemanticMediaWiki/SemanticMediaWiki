@@ -11,7 +11,7 @@ The following client database connectors are currently available:
 
 The `SPARQLStore` uses two components a base store (by default using the existing `SQLStore`) and a client database connector. The base store accumulates information about properties and value annotations as well as statistics while the database connector is responsible for transforming a `#ask` query into a `SPARQL` query and requesting data from the [TDB][tdb].
 
-- `#ask` query is transformed into an equivalent SPARQL condition using the `QueryConditionBuilder`
+- `#ask` query is transformed into an equivalent SPARQL condition using the `ConditionBuilder`
 - The client database connector resolves the condition into a `SPARQL` statement and makes a query request to the database
 - The client database (Fuseki etc. ) is expected to execute the query and return a list of results which are parsed using the `RawResultParser` and made available as `FederateResultSet`
 - The `QueryResultFactory` is to convert a `FederateResultSet` into a `QueryResult` object

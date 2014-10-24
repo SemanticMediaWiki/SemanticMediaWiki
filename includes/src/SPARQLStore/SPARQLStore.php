@@ -3,7 +3,8 @@
 namespace SMW\SPARQLStore;
 
 use SMW\SPARQLStore\QueryEngine\QueryEngine;
-use SMW\SPARQLStore\QueryEngine\QueryConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\EngineOptions;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
 
 use SMW\SemanticData;
@@ -282,16 +283,18 @@ class SPARQLStore extends Store {
 
 	protected function fetchQueryResult( Query $query ) {
 
+		$engineOptions = new EngineOptions();
+
+		$engineOptions->ignoreQueryErrors = $GLOBALS['smwgIgnoreQueryErrors'];
+		$engineOptions->sortingSupport = $GLOBALS['smwgQSortingSupport'];
+		$engineOptions->randomSortingSupport = $GLOBALS['smwgQRandSortingSupport'];
+
 		$queryEngine = new QueryEngine(
 			$this->getSparqlDatabase(),
-			new QueryConditionBuilder(),
-			new QueryResultFactory( $this )
+			new ConditionBuilder(),
+			new QueryResultFactory( $this ),
+			$engineOptions
 		);
-
-		$queryEngine
-			->setIgnoreQueryErrors( $GLOBALS['smwgIgnoreQueryErrors'] )
-			->setSortingSupport( $GLOBALS['smwgQSortingSupport'] )
-			->setRandomSortingSupport( $GLOBALS['smwgQRandSortingSupport'] );
 
 		return $queryEngine->getQueryResult( $query );
 	}

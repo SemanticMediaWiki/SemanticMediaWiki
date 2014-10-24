@@ -41,7 +41,7 @@ class QueryResultFactory {
 	 *
 	 * @return QueryResult
 	 */
-	public function newEmptyQueryResult( Query $query , $hasFurtherResults = false ) {
+	public function newEmptyQueryResult( Query $query, $hasFurtherResults = false ) {
 		return new QueryResult(
 			$query->getDescription()->getPrintrequests(),
 			$query,
@@ -56,12 +56,16 @@ class QueryResultFactory {
 	 * result wrapper must have an according format (one result column that
 	 * contains URIs of wiki pages).
 	 *
-	 * @param FederateResultSet $federateResultSet
+	 * @param FederateResultSet|null $federateResultSet
 	 * @param Query $query QueryResults hold a reference to original query
 	 *
 	 * @return QueryResult
 	 */
-	public function newQueryResult( FederateResultSet $federateResultSet, Query $query ) {
+	public function newQueryResult( FederateResultSet $federateResultSet = null , Query $query ) {
+
+		if ( $federateResultSet === null ) {
+			return $this->newEmptyQueryResult( $query );
+		}
 
 		if ( $query->querymode === Query::MODE_COUNT ) {
 			return $this->makeQueryResultForCount( $federateResultSet, $query );

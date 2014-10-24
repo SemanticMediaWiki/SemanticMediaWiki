@@ -198,4 +198,36 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 		$instance->doSparqlDataUpdate( $semanticData );
 	}
 
+	public function testGetQueryResult() {
+
+		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\GenericHttpDatabaseConnector' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$description->expects( $this->atLeastOnce() )
+			->method( 'getPrintrequests' )
+			->will( $this->returnValue( array() ) );
+
+		$query = $this->getMockBuilder( '\SMWQuery' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query->expects( $this->atLeastOnce() )
+			->method( 'getDescription' )
+			->will( $this->returnValue( $description ) );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$instance = new SPARQLStore( $store );
+		$instance->setSparqlDatabase( $connection );
+
+		$instance->getQueryResult( $query );
+	}
+
 }

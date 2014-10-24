@@ -6,21 +6,19 @@ use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\FederateResultSet;
+use SMW\Query\Language\ThingDescription;
 
 use SMW\QueryOutputFormatter;
 
 use SMWSparqlDatabase as SparqlDatabase;
 use SMWQueryResult as QueryResult;
 use SMWQuery as Query;
-use SMW\Query\Language\ThingDescription as ThingDescription;
 
 use RuntimeException;
 
 /**
  * Class mapping SMWQuery objects to SPARQL, and for controlling the execution
  * of these queries to obtain suitable QueryResult objects.
- *
- * @ingroup Store
  *
  * @license GNU GPL v2+
  * @since 2.0
@@ -39,14 +37,19 @@ class QueryEngine {
 	private $connection;
 
 	/**
-	 * @var QueryConditionBuilder
+	 * @var ConditionBuilder
 	 */
-	private $queryConditionBuilder;
+	private $conditionBuilder;
 
 	/**
 	 * @var QueryResultFactory
 	 */
 	private $queryResultFactory;
+
+	/**
+	 * @var EngineOptions
+	 */
+	private $engineOptions;
 
 	/**
 	 * Copy of the SMWQuery sortkeys array to be used while building the
@@ -56,63 +59,24 @@ class QueryEngine {
 	private $sortkeys;
 
 	/**
-	 * @var boolean
-	 */
-	private $ignoreQueryErrors = false;
-
-	/**
-	 * @var boolean
-	 */
-	private $sortingSupport = true;
-
-	/**
-	 * @var boolean
-	 */
-	private $randomSortingSupport = true;
-
-	/**
 	 * @since  2.0
 	 *
 	 * @param SparqlDatabase $connection
-	 * @param QueryConditionBuilder $queryConditionBuilder
+	 * @param ConditionBuilder $conditionBuilder
 	 * @param QueryResultFactory $queryResultFactory
+	 * @param EngineOptions|null $engineOptions
 	 */
-	public function __construct( SparqlDatabase $connection, QueryConditionBuilder $queryConditionBuilder, QueryResultFactory $queryResultFactory ) {
+	public function __construct( SparqlDatabase $connection, ConditionBuilder $conditionBuilder, QueryResultFactory $queryResultFactory, EngineOptions $engineOptions = null ) {
 		$this->connection = $connection;
-		$this->queryConditionBuilder = $queryConditionBuilder;
+		$this->conditionBuilder = $conditionBuilder;
 		$this->queryResultFactory = $queryResultFactory;
+		$this->engineOptions = $engineOptions;
 
-		$this->queryConditionBuilder->setResultVariable( self::RESULT_VARIABLE );
-	}
+		if ( $this->engineOptions === null ) {
+			$this->engineOptions = new EngineOptions();
+		}
 
-	/**
-	 * @since  2.0
-	 *
-	 * @param boolean $ignoreQueryErrors
-	 */
-	public function setIgnoreQueryErrors( $ignoreQueryErrors ) {
-		$this->ignoreQueryErrors = $ignoreQueryErrors;
-		return $this;
-	}
-
-	/**
-	 * @since  2.0
-	 *
-	 * @param boolean $sortingSupport
-	 */
-	public function setSortingSupport( $sortingSupport ) {
-		$this->sortingSupport = $sortingSupport;
-		return $this;
-	}
-
-	/**
-	 * @since  2.0
-	 *
-	 * @param boolean $randomSortingSupport
-	 */
-	public function setRandomSortingSupport( $randomSortingSupport ) {
-		$this->randomSortingSupport = $randomSortingSupport;
-		return $this;
+		$this->conditionBuilder->setResultVariable( self::RESULT_VARIABLE );
 	}
 
 	/**
@@ -123,7 +87,7 @@ class QueryEngine {
 	 */
 	public function getQueryResult( Query $query ) {
 
-		if ( ( !$this->ignoreQueryErrors || $query->getDescription() instanceof ThingDescription ) &&
+		if ( ( !$this->engineOptions->ignoreQueryErrors || $query->getDescription() instanceof ThingDescription ) &&
 		     $query->querymode != Query::MODE_DEBUG &&
 		     count( $query->getErrors() ) > 0 ) {
 			return $this->queryResultFactory->newEmptyQueryResult( $query, false );
@@ -154,12 +118,12 @@ class QueryEngine {
 	 */
 	public function getCountQueryResult( Query $query ) {
 
-		// $countResultLookup = new CountResultLookup( $this->connection, $this->queryConditionBuilder );
+		// $countResultLookup = new CountResultLookup( $this->connection, $this->conditionBuilder );
 		// $countResultLookup->getQueryResult( $query );
 
 		$this->sortkeys = array();
 
-		$sparqlCondition = $this->queryConditionBuilder
+		$sparqlCondition = $this->conditionBuilder
 			->setSortKeys( $this->sortkeys )
 			->buildCondition( $query->getDescription() );
 
@@ -167,7 +131,7 @@ class QueryEngine {
 			if ( $sparqlCondition->condition === '' ) { // all URIs exist, no querying
 				return 1;
 			} else {
-				$condition = $this->queryConditionBuilder->convertConditionToString( $sparqlCondition );
+				$condition = $this->conditionBuilder->convertConditionToString( $sparqlCondition );
 				$namespaces = $sparqlCondition->namespaces;
 				$askQueryResult = $this->connection->ask( $condition, $namespaces );
 
@@ -177,7 +141,7 @@ class QueryEngine {
 			return 0;
 		}
 
-		$condition = $this->queryConditionBuilder->convertConditionToString( $sparqlCondition );
+		$condition = $this->conditionBuilder->convertConditionToString( $sparqlCondition );
 		$namespaces = $sparqlCondition->namespaces;
 
 		$options = $this->getOptions( $query, $sparqlCondition );
@@ -204,7 +168,7 @@ class QueryEngine {
 
 		$this->sortkeys = $query->sortkeys;
 
-		$sparqlCondition = $this->queryConditionBuilder
+		$sparqlCondition = $this->conditionBuilder
 			->setSortKeys( $this->sortkeys )
 			->buildCondition( $query->getDescription() );
 
@@ -214,7 +178,7 @@ class QueryEngine {
 			if ( $sparqlCondition->condition === '' ) { // all URIs exist, no querying
 				$results = array( array ( $matchElement ) );
 			} else {
-				$condition = $this->queryConditionBuilder->convertConditionToString( $sparqlCondition );
+				$condition = $this->conditionBuilder->convertConditionToString( $sparqlCondition );
 				$namespaces = $sparqlCondition->namespaces;
 				$askQueryResult = $this->connection->ask( $condition, $namespaces );
 				$results = $askQueryResult->isBooleanTrue() ? array( array ( $matchElement ) ) : array();
@@ -225,7 +189,7 @@ class QueryEngine {
 		} elseif ( $sparqlCondition instanceof FalseCondition ) {
 			$federateResultSet = new FederateResultSet( array( self::RESULT_VARIABLE => 0 ), array() );
 		} else {
-			$condition = $this->queryConditionBuilder->convertConditionToString( $sparqlCondition );
+			$condition = $this->conditionBuilder->convertConditionToString( $sparqlCondition );
 			$namespaces = $sparqlCondition->namespaces;
 
 			$options = $this->getOptions( $query, $sparqlCondition );
@@ -253,7 +217,7 @@ class QueryEngine {
 
 		$this->sortkeys = $query->sortkeys;
 
-		$sparqlCondition = $this->queryConditionBuilder
+		$sparqlCondition = $this->conditionBuilder
 			->setSortKeys( $this->sortkeys )
 			->buildCondition( $query->getDescription() );
 
@@ -263,14 +227,14 @@ class QueryEngine {
 			if ( $sparqlCondition->condition === '' ) { // all URIs exist, no querying
 				$sparql = 'None (no conditions).';
 			} else {
-				$condition = $this->queryConditionBuilder->convertConditionToString( $sparqlCondition );
+				$condition = $this->conditionBuilder->convertConditionToString( $sparqlCondition );
 				$namespaces = $sparqlCondition->namespaces;
 				$sparql = $this->connection->getSparqlForAsk( $condition, $namespaces );
 			}
 		} elseif ( $sparqlCondition instanceof FalseCondition ) {
 			$sparql = 'None (conditions can not be satisfied by anything).';
 		} else {
-			$condition = $this->queryConditionBuilder->convertConditionToString( $sparqlCondition );
+			$condition = $this->conditionBuilder->convertConditionToString( $sparqlCondition );
 			$namespaces = $sparqlCondition->namespaces;
 
 			$options = $this->getOptions( $query, $sparqlCondition );
@@ -303,7 +267,7 @@ class QueryEngine {
 		$result = array( 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() );
 
 		// Build ORDER BY options using discovered sorting fields.
-		if ( $this->sortingSupport ) {
+		if ( $this->engineOptions->sortingSupport ) {
 
 			$orderByString = '';
 
@@ -315,7 +279,7 @@ class QueryEngine {
 
 				if ( ( $order != 'RANDOM' ) && array_key_exists( $propkey, $sparqlCondition->orderVariables ) ) {
 					$orderByString .= "$order(?" . $sparqlCondition->orderVariables[$propkey] . ") ";
-				} elseif ( ( $order == 'RANDOM' ) && $this->randomSortingSupport ) {
+				} elseif ( ( $order == 'RANDOM' ) && $this->engineOptions->randomSortingSupport ) {
 					// not supported in SPARQL; might be possible via function calls in some stores
 				}
 			}
