@@ -80,7 +80,8 @@ class ConceptPage extends \SMWOrderedListPage {
 				' ' . $this->getContext()->msg(
 						'smw-concept-cache-text',
 						$this->getContext()->getLanguage()->formatNum( $concept->getCacheCount() ),
-						$this->getContext()->getLanguage()->date( $concept->getCacheDate() )
+						$this->getContext()->getLanguage()->date( $concept->getCacheDate() ),
+						$this->getContext()->getLanguage()->time( $concept->getCacheDate() )
 					)->text()
 				);
 		} else {
