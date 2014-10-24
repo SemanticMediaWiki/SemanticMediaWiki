@@ -291,7 +291,7 @@
 	"smw-ui-tooltip-title-note": "A label that is displayed on the info tooltip.\n{{Identical|Note}}",
 	"smw-ui-tooltip-title-legend": "This is the name of a label.\n{{Identical|Legend}}",
 	"smw_unknowntype": "Error message shown for properties that have a type unknown to the system",
-	"smw-concept-cache-text": "This is the message displays information about the cache status.\n\nParameters:\n* $1 - number of pages\n* $2 - date (localized, without time)",
+	"smw-concept-cache-text": "This is the message displays information about the cache status.\n\nParameters:\n* $1 - number of pages\n* $2 - date\n* $3 - time",
 	"smw_concept_header": "This is the header on a page in namespace \"Concept\". Parameters:\n* $1 holds the name of the respective concept.",
 	"smw_conceptarticlecount": "This is the introductory message below the header on pages in namespace \"Concept\". Parameters:\n* $1 holds the number of pages displayed in the current view.",
 	"smw-qp-empty-data": "An error message shown for insufficient data.",
