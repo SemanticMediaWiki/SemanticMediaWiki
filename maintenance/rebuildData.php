@@ -80,6 +80,7 @@ class RebuildData extends \Maintenance {
 		$this->addOption( 'c', 'Will refresh only category pages (and other explicitly named namespaces)', false );
 		$this->addOption( 'p', 'Will refresh only property pages (and other explicitly named namespaces)', false );
 		$this->addOption( 't', 'Will refresh only type pages (and other explicitly named namespaces)', false );
+		$this->addOption( 'runtime', 'Will display the runtime environment of the script', false );
 		$this->addOption( 'page', '<pagelist> Will refresh only the pages of the given names, with | used as a separator. Example: --page "Page 1|Page 2" refreshes Page 1 and Page 2 Options -s, -e, -n, --startidfile, -c, -p, -t are ignored if --page is given.', false, true );
 		$this->addOption( 'server', '<server> The protocol and server name to as base URLs, e.g. http://en.wikipedia.org. This is sometimes necessary because server name detection may fail in command line scripts.', false, true );
 		$this->addOption( 'query', "<query> Will refresh only pages returned by a given query. Example: --query='[[Category:SomeCategory]]'", false, true );
@@ -91,6 +92,9 @@ class RebuildData extends \Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
+
+		$start = microtime( true );
+		$memoryBefore = memory_get_peak_usage( false );
 
 		if ( !defined( 'SMW_VERSION' ) ) {
 			$this->reportMessage( "You need to have SMW enabled in order to run the maintenance script!\n\n" );
@@ -113,6 +117,13 @@ class RebuildData extends \Maintenance {
 		$dataRebuilder->setParameters( $this->mOptions );
 
 		if ( $dataRebuilder->rebuild() ) {
+
+			$this->doReportRuntimeEnvironment(
+				$memoryBefore,
+				memory_get_peak_usage( false ),
+				microtime( true ) - $start
+			);
+
 			return true;
 		}
 
@@ -127,6 +138,19 @@ class RebuildData extends \Maintenance {
 	 */
 	public function reportMessage( $message ) {
 		$this->output( $message );
+	}
+
+	private function doReportRuntimeEnvironment( $memoryBefore, $memoryAfter, $time ) {
+
+		if ( !$this->hasOption( 'runtime' ) ) {
+			return;
+		}
+
+		$this->reportMessage(
+			"\n" . "Memory used: " . ( $memoryAfter - $memoryBefore ) .
+			" (b: {$memoryBefore}, a: {$memoryAfter}) with a runtime of " .
+			round( $time, 5 ) . ' sec '. "\n"
+		);
 	}
 
 }
