@@ -8,13 +8,14 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 ## New features
 
 * #546 Enabled nested concepts (bug 44467) 
-* #537 Modernized `Special:SearchByProperty` interface 
+* #537 Modernized `Special:SearchByProperty` interface
 
 ## Bug fixes
 
 * #520 Fixed the `SPAPRQLStore` query selection for subobjects for namespace condition
 * #543 Removes invalid category value links to `SearchByProperty` on `Special:Browse` (bug 33449)
 * #537 Fixed parameter encoding in `Special:SearchByProperty` for hyphens and spaces (bug 16150)
+* #554 Enhance concept pages by also providing the time of the last update and not just the date
 * #566 Fixed the `SPARQLStore` query result display for moved pages (a.k.a. "gost" pages)
 
 ## Internal changes
