@@ -9,6 +9,15 @@ use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
 
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\NamespaceDescription;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Disjunction;
+use SMW\Query\Language\ClassDescription;
+use SMW\Query\Language\ValueDescription;
+use SMW\Query\Language\ConceptDescription;
+use SMW\Query\Language\ThingDescription;
+
 use SMW\DataTypeRegistry;
 use SMW\Store;
 use SMW\DIProperty;
@@ -21,14 +30,7 @@ use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 use SMWExpNsResource as ExpNsResource;
 use SMWExpLiteral as ExpLiteral;
-use SMW\Query\Language\SomeProperty as SomeProperty;
-use SMW\Query\Language\NamespaceDescription as NamespaceDescription;
-use SMW\Query\Language\Conjunction as Conjunction;
-use SMW\Query\Language\Disjunction as Disjunction;
-use SMW\Query\Language\ClassDescription as ClassDescription;
-use SMW\Query\Language\ValueDescription as ValueDescription;
-use SMW\Query\Language\ConceptDescription as ConceptDescription;
-use SMW\Query\Language\ThingDescription as ThingDescription;
+use SMWExpElement as ExpElement;
 
 use RuntimeException;
 
@@ -42,7 +44,7 @@ use RuntimeException;
  *
  * @author Markus Krötzsch
  */
-class QueryConditionBuilder {
+class ConditionBuilder {
 
 	/**
 	 * Counter used to generate globally fresh variables.
@@ -99,7 +101,7 @@ class QueryConditionBuilder {
 	 */
 	public function buildCondition( Description $description ) {
 		$this->variableCounter = 0;
-		$condition = $this->mapConditionBuilderToDescription( $description, $this->resultVariable, null );
+		$condition = $this->mapDescriptionToCondition( $description, $this->resultVariable, null );
 		$this->addMissingOrderByConditions( $condition );
 		return $condition;
 	}
@@ -151,7 +153,7 @@ class QueryConditionBuilder {
 	 * to, and the condition should also enable ordering by this value
 	 * @return Condition
 	 */
-	protected function mapConditionBuilderToDescription( Description $description, $joinVariable, $orderByProperty ) {
+	protected function mapDescriptionToCondition( Description $description, $joinVariable, $orderByProperty ) {
 
 		if ( $description instanceof SomeProperty ) {
 			return $this->buildPropertyCondition( $description, $joinVariable, $orderByProperty );
@@ -177,8 +179,8 @@ class QueryConditionBuilder {
 	 * Recursively create an Condition from an Conjunction.
 	 *
 	 * @param $description Conjunction
-	 * @param $joinVariable string name, see mapConditionBuilderToDescription()
-	 * @param $orderByProperty mixed DIProperty or null, see mapConditionBuilderToDescription()
+	 * @param $joinVariable string name, see mapDescriptionToCondition()
+	 * @param $orderByProperty mixed DIProperty or null, see mapDescriptionToCondition()
 	 *
 	 * @return Condition
 	 */
@@ -189,7 +191,7 @@ class QueryConditionBuilder {
 		if ( count( $subDescriptions ) == 0 ) { // empty conjunction: true
 			return $this->buildTrueCondition( $joinVariable, $orderByProperty );
 		} elseif ( count( $subDescriptions ) == 1 ) { // conjunction with one element
-			return $this->mapConditionBuilderToDescription( reset( $subDescriptions ), $joinVariable, $orderByProperty );
+			return $this->mapDescriptionToCondition( reset( $subDescriptions ), $joinVariable, $orderByProperty );
 		}
 
 		$condition = '';
@@ -201,7 +203,7 @@ class QueryConditionBuilder {
 
 		foreach ( $subDescriptions as $subDescription ) {
 
-			$subCondition = $this->mapConditionBuilderToDescription( $subDescription, $joinVariable, null );
+			$subCondition = $this->mapDescriptionToCondition( $subDescription, $joinVariable, null );
 
 			if ( $subCondition instanceof FalseCondition ) {
 				return new FalseCondition();
@@ -213,7 +215,12 @@ class QueryConditionBuilder {
 				$filter .= ( $filter ? ' && ' : '' ) . $subCondition->filter;
 			} elseif ( $subCondition instanceof SingletonCondition ) {
 				$matchElement = $subCondition->matchElement;
-				$matchElementName = TurtleSerializer::getTurtleNameForExpElement( $matchElement );
+
+				if ( $matchElement instanceOf ExpElement ) {
+					$matchElementName = TurtleSerializer::getTurtleNameForExpElement( $matchElement );
+				} else {
+					$matchElementName = $matchElement;
+				}
 
 				if ( $matchElement instanceof ExpNsResource ) {
 					$namespaces[$matchElement->getNamespaceId()] = $matchElement->getNamespace();
@@ -269,8 +276,8 @@ class QueryConditionBuilder {
 	 * Recursively create an Condition from an Disjunction.
 	 *
 	 * @param $description Disjunction
-	 * @param $joinVariable string name, see mapConditionBuilderToDescription()
-	 * @param $orderByProperty mixed DIProperty or null, see mapConditionBuilderToDescription()
+	 * @param $joinVariable string name, see mapDescriptionToCondition()
+	 * @param $orderByProperty mixed DIProperty or null, see mapDescriptionToCondition()
 	 *
 	 * @return Condition
 	 */
@@ -279,7 +286,7 @@ class QueryConditionBuilder {
 		if ( count( $subDescriptions ) == 0 ) { // empty disjunction: false
 			return new FalseCondition();
 		} elseif ( count( $subDescriptions ) == 1 ) { // disjunction with one element
-			return $this->mapConditionBuilderToDescription( reset( $subDescriptions ), $joinVariable, $orderByProperty );
+			return $this->mapDescriptionToCondition( reset( $subDescriptions ), $joinVariable, $orderByProperty );
 		} // else: proper disjunction; note that orderVariables found in subconditions cannot be used for the whole disjunction
 
 		$unionCondition = '';
@@ -287,7 +294,7 @@ class QueryConditionBuilder {
 		$namespaces = $weakConditions = array();
 		$hasSafeSubconditions = false;
 		foreach ( $subDescriptions as $subDescription ) {
-			$subCondition = $this->mapConditionBuilderToDescription( $subDescription, $joinVariable, null );
+			$subCondition = $this->mapDescriptionToCondition( $subDescription, $joinVariable, null );
 			if ( $subCondition instanceof FalseCondition ) {
 				// empty parts in a disjunction can be ignored
 			} elseif ( $subCondition instanceof TrueCondition ) {
@@ -301,10 +308,17 @@ class QueryConditionBuilder {
 			} elseif ( $subCondition instanceof SingletonCondition ) {
 				$hasSafeSubconditions = $hasSafeSubconditions || $subCondition->isSafe();
 				$matchElement = $subCondition->matchElement;
-				$matchElementName = TurtleSerializer::getTurtleNameForExpElement( $matchElement );
+
+				if ( $matchElement instanceOf ExpElement ) {
+					$matchElementName = TurtleSerializer::getTurtleNameForExpElement( $matchElement );
+				} else {
+					$matchElementName = $matchElement;
+				}
+
 				if ( $matchElement instanceof ExpNsResource ) {
 					$namespaces[$matchElement->getNamespaceId()] = $matchElement->getNamespace();
 				}
+
 				if ( $subCondition->condition === '' ) {
 					$filter .= ( $filter ? ' || ' : '' ) . "?$joinVariable = $matchElementName";
 				} else {
@@ -340,8 +354,8 @@ class QueryConditionBuilder {
 	 * Recursively create an Condition from an SomeProperty.
 	 *
 	 * @param $description SomeProperty
-	 * @param $joinVariable string name, see mapConditionBuilderToDescription()
-	 * @param $orderByProperty mixed DIProperty or null, see mapConditionBuilderToDescription()
+	 * @param $joinVariable string name, see mapDescriptionToCondition()
+	 * @param $orderByProperty mixed DIProperty or null, see mapDescriptionToCondition()
 	 *
 	 * @return Condition
 	 */
@@ -357,14 +371,20 @@ class QueryConditionBuilder {
 
 		//*** Prepare inner condition ***//
 		$innerJoinVariable = $this->getNextVariable();
-		$innerCondition = $this->mapConditionBuilderToDescription( $description->getDescription(), $innerJoinVariable, $innerOrderByProperty );
+		$innerCondition = $this->mapDescriptionToCondition( $description->getDescription(), $innerJoinVariable, $innerOrderByProperty );
 		$namespaces = $innerCondition->namespaces;
 
 		if ( $innerCondition instanceof FalseCondition ) {
 			return new FalseCondition();
 		} elseif ( $innerCondition instanceof SingletonCondition ) {
 			$matchElement = $innerCondition->matchElement;
-			$objectName = TurtleSerializer::getTurtleNameForExpElement( $matchElement );
+
+			if ( $matchElement instanceOf ExpElement ) {
+				$objectName = TurtleSerializer::getTurtleNameForExpElement( $matchElement );
+			} else {
+				$objectName = $matchElement;
+			}
+
 			if ( $matchElement instanceof ExpNsResource ) {
 				$namespaces[$matchElement->getNamespaceId()] = $matchElement->getNamespace();
 			}
@@ -424,8 +444,8 @@ class QueryConditionBuilder {
 	 * Create an Condition from an ClassDescription.
 	 *
 	 * @param $description ClassDescription
-	 * @param $joinVariable string name, see mapConditionBuilderToDescription()
-	 * @param $orderByProperty mixed DIProperty or null, see mapConditionBuilderToDescription()
+	 * @param $joinVariable string name, see mapDescriptionToCondition()
+	 * @param $orderByProperty mixed DIProperty or null, see mapDescriptionToCondition()
 	 *
 	 * @return Condition
 	 */
@@ -462,8 +482,8 @@ class QueryConditionBuilder {
 	 * Create an Condition from an NamespaceDescription.
 	 *
 	 * @param $description NamespaceDescription
-	 * @param $joinVariable string name, see mapConditionBuilderToDescription()
-	 * @param $orderByProperty mixed DIProperty or null, see mapConditionBuilderToDescription()
+	 * @param $joinVariable string name, see mapDescriptionToCondition()
+	 * @param $orderByProperty mixed DIProperty or null, see mapDescriptionToCondition()
 	 *
 	 * @return Condition
 	 */
@@ -489,8 +509,8 @@ class QueryConditionBuilder {
 	 * Create an Condition from an ValueDescription.
 	 *
 	 * @param $description ValueDescription
-	 * @param $joinVariable string name, see mapConditionBuilderToDescription()
-	 * @param $orderByProperty mixed DIProperty or null, see mapConditionBuilderToDescription()
+	 * @param $joinVariable string name, see mapDescriptionToCondition()
+	 * @param $orderByProperty mixed DIProperty or null, see mapDescriptionToCondition()
 	 *
 	 * @return Condition
 	 */
@@ -516,6 +536,7 @@ class QueryConditionBuilder {
 			if ( is_null( $expElement ) ) {
 				$expElement = Exporter::getDataItemExpElement( $dataItem );
 			}
+
 			$result = new SingletonCondition( $expElement );
 			$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, $dataItem->getDIType() );
 		} elseif ( $comparator == 'regex' || $comparator == '!regex' ) {
@@ -558,8 +579,8 @@ class QueryConditionBuilder {
 	 * Create an Condition from an empty (true) description.
 	 * May still require helper conditions for ordering.
 	 *
-	 * @param $joinVariable string name, see mapConditionBuilderToDescription()
-	 * @param $orderByProperty mixed DIProperty or null, see mapConditionBuilderToDescription()
+	 * @param $joinVariable string name, see mapDescriptionToCondition()
+	 * @param $orderByProperty mixed DIProperty or null, see mapDescriptionToCondition()
 	 *
 	 * @return Condition
 	 */
@@ -641,7 +662,7 @@ class QueryConditionBuilder {
 				} else { // extend query to order by other property values
 					$diProperty = new DIProperty( $propkey );
 					$auxDescription = new SomeProperty( $diProperty, new ThingDescription() );
-					$auxSparqlCondition = $this->mapConditionBuilderToDescription( $auxDescription, $this->resultVariable, null );
+					$auxSparqlCondition = $this->mapDescriptionToCondition( $auxDescription, $this->resultVariable, null );
 					// orderVariables MUST be set for $propkey -- or there is a bug; let it show!
 					$sparqlCondition->orderVariables[$propkey] = $auxSparqlCondition->orderVariables[$propkey];
 					$sparqlCondition->weakConditions[$sparqlCondition->orderVariables[$propkey]] = $auxSparqlCondition->getWeakConditionString() . $auxSparqlCondition->getCondition();

@@ -12,7 +12,6 @@ use SMWQueryResult as QueryResult;
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\QueryResultFactory
  *
- *
  * @group SMW
  * @group SMWExtension
  * @group semantic-mediawiki-sparql
@@ -47,7 +46,6 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 
 		$query = new Query( $description );
-		$query->querymode = Query::MODE_COUNT;
 
 		$instance = new QueryResultFactory( $store );
 

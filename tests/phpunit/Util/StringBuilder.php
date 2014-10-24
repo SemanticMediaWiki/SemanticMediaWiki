@@ -34,7 +34,9 @@ class StringBuilder {
 	 * @since  2.0
 	 */
 	public function getString() {
-		return $this->string;
+		$string = $this->string;
+		$this->string = '';
+		return $string;
 	}
 
 }

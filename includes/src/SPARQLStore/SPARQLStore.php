@@ -4,7 +4,7 @@ namespace SMW\SPARQLStore;
 
 use SMW\SPARQLStore\QueryEngine\QueryEngine;
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
-use SMW\SPARQLStore\QueryEngine\QueryConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
 
 use SMW\SemanticData;
@@ -287,11 +287,11 @@ class SPARQLStore extends Store {
 
 		$engineOptions->ignoreQueryErrors = $GLOBALS['smwgIgnoreQueryErrors'];
 		$engineOptions->sortingSupport = $GLOBALS['smwgQSortingSupport'];
-		$engineOptions->randSortingSupport = $GLOBALS['smwgQRandSortingSupport'];
+		$engineOptions->randomSortingSupport = $GLOBALS['smwgQRandSortingSupport'];
 
 		$queryEngine = new QueryEngine(
 			$this->getSparqlDatabase(),
-			new QueryConditionBuilder(),
+			new ConditionBuilder(),
 			new QueryResultFactory( $this ),
 			$engineOptions
 		);

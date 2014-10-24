@@ -2,31 +2,33 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
-use SMW\Tests\Util\StringBuilder;
+use SMW\Tests\Util\UtilityFactory;
 
-use SMW\SPARQLStore\QueryEngine\QueryConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
+
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Disjunction;
+use SMW\Query\Language\ClassDescription;
+use SMW\Query\Language\NamespaceDescription;
+use SMW\Query\Language\ValueDescription;
+use SMW\Query\Language\SomeProperty;
+
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 
 use SMWDINumber as DINumber;
 use SMWDIBlob as DIBlob;
 use SMWDITime as DITime;
-use SMW\Query\Language\ValueDescription as ValueDescription;
-use SMW\Query\Language\SomeProperty as SomeProperty;
 use SMWPrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
-use SMW\Query\Language\ThingDescription as ThingDescription;
-use SMW\Query\Language\Conjunction as Conjunction;
-use SMW\Query\Language\Disjunction as Disjunction;
-use SMW\Query\Language\ClassDescription as ClassDescription;
-use SMW\Query\Language\NamespaceDescription as NamespaceDescription;
 
 /**
- * @covers \SMW\SPARQLStore\QueryEngine\QueryConditionBuilder
- *
+ * @covers \SMW\SPARQLStore\QueryEngine\ConditionBuilder
  *
  * @group SMW
  * @group SMWExtension
+ *
  * @group semantic-mediawiki-sparql
  * @group semantic-mediawiki-query
  *
@@ -35,21 +37,21 @@ use SMW\Query\Language\NamespaceDescription as NamespaceDescription;
  *
  * @author mwjames
  */
-class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
+class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $stringBuilder;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->stringBuilder = new StringBuilder();
+		$this->stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\QueryConditionBuilder',
-			new QueryConditionBuilder()
+			'\SMW\SPARQLStore\QueryEngine\ConditionBuilder',
+			new ConditionBuilder()
 		);
 	}
 
@@ -62,7 +64,7 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$instance = new QueryConditionBuilder();
+		$instance = new ConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -90,7 +92,7 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$instance = new QueryConditionBuilder();
+		$instance = new ConditionBuilder();
 
 		$condition = $instance->setSortKeys( array( 'Foo' => 'DESC' ) )->buildCondition( $description );
 
@@ -120,7 +122,7 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$instance = new QueryConditionBuilder();
+		$instance = new ConditionBuilder();
 		$instance->setSortKeys( array( 'Foo', 'ASC' ) );
 
 		$this->setExpectedException( 'RuntimeException' );
@@ -134,7 +136,7 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new DIProperty( 'Foo' )
 		);
 
-		$instance = new QueryConditionBuilder();
+		$instance = new ConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -162,7 +164,7 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ValueDescription( new DIBlob( 'SomePropertyBlobValue' ) )
 		);
 
-		$instance = new QueryConditionBuilder();
+		$instance = new ConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -191,7 +193,7 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ValueDescription( new DIWikiPage( 'SomePropertyPageValue', NS_MAIN ), null, SMW_CMP_LEQ )
 		);
 
-		$instance = new QueryConditionBuilder();
+		$instance = new ConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -222,7 +224,7 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ValueDescription( new DIBlob( 'SomePropertyBlobValue' ), null, SMW_CMP_NLKE )
 		);
 
-		$instance = new QueryConditionBuilder();
+		$instance = new ConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -248,7 +250,7 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new DIWikiPage( 'Foo', NS_CATEGORY, '' )
 		);
 
-		$instance = new QueryConditionBuilder();
+		$instance = new ConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -271,7 +273,7 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$description = new NamespaceDescription( NS_HELP );
 
-		$instance = new QueryConditionBuilder();
+		$instance = new ConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -301,7 +303,7 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 				new DIProperty( 'Bar' ), new ThingDescription() ),
 		) );
 
-		$instance = new QueryConditionBuilder();
+		$instance = new ConditionBuilder();
 
 		$condition = $instance->buildCondition( $conjunction );
 
@@ -332,7 +334,7 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 				new ValueDescription( new DINumber( 9 ), null, SMW_CMP_LEQ ) ),
 		) );
 
-		$instance = new QueryConditionBuilder();
+		$instance = new ConditionBuilder();
 
 		$condition = $instance->buildCondition( $conjunction );
 
@@ -361,7 +363,7 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new SomeProperty( new DIProperty( 'Bar' ), new ThingDescription() )
 		) );
 
-		$instance = new QueryConditionBuilder();
+		$instance = new ConditionBuilder();
 
 		$condition = $instance->buildCondition( $conjunction );
 
@@ -395,7 +397,7 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 				new ValueDescription( new DIBlob( "BB?" ), null, SMW_CMP_NLKE )  )
 		) );
 
-		$instance = new QueryConditionBuilder();
+		$instance = new ConditionBuilder();
 
 		$condition = $instance->buildCondition( $conjunction );
 
@@ -430,7 +432,7 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ValueDescription( new DITime( 1, 1970, 01, 01, 1, 1 ), null, SMW_CMP_GEQ )
 		);
 
-		$instance = new QueryConditionBuilder();
+		$instance = new ConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -459,7 +461,7 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$instance = new QueryConditionBuilder();
+		$instance = new ConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -496,7 +498,7 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			$disjunction
 		);
 
-		$instance = new QueryConditionBuilder();
+		$instance = new ConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -540,7 +542,7 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			$conjunction
 		);
 
-		$instance = new QueryConditionBuilder();
+		$instance = new ConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -579,7 +581,7 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$instance = new QueryConditionBuilder();
+		$instance = new ConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 

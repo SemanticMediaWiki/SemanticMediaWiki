@@ -37,9 +37,9 @@ class QueryEngine {
 	private $connection;
 
 	/**
-	 * @var QueryConditionBuilder
+	 * @var ConditionBuilder
 	 */
-	private $queryConditionBuilder;
+	private $conditionBuilder;
 
 	/**
 	 * @var QueryResultFactory
@@ -62,13 +62,13 @@ class QueryEngine {
 	 * @since  2.0
 	 *
 	 * @param SparqlDatabase $connection
-	 * @param QueryConditionBuilder $queryConditionBuilder
+	 * @param ConditionBuilder $conditionBuilder
 	 * @param QueryResultFactory $queryResultFactory
 	 * @param EngineOptions|null $engineOptions
 	 */
-	public function __construct( SparqlDatabase $connection, QueryConditionBuilder $queryConditionBuilder, QueryResultFactory $queryResultFactory, EngineOptions $engineOptions = null ) {
+	public function __construct( SparqlDatabase $connection, ConditionBuilder $conditionBuilder, QueryResultFactory $queryResultFactory, EngineOptions $engineOptions = null ) {
 		$this->connection = $connection;
-		$this->queryConditionBuilder = $queryConditionBuilder;
+		$this->conditionBuilder = $conditionBuilder;
 		$this->queryResultFactory = $queryResultFactory;
 		$this->engineOptions = $engineOptions;
 
@@ -76,7 +76,7 @@ class QueryEngine {
 			$this->engineOptions = new EngineOptions();
 		}
 
-		$this->queryConditionBuilder->setResultVariable( self::RESULT_VARIABLE );
+		$this->conditionBuilder->setResultVariable( self::RESULT_VARIABLE );
 	}
 
 	/**
@@ -118,12 +118,12 @@ class QueryEngine {
 	 */
 	public function getCountQueryResult( Query $query ) {
 
-		// $countResultLookup = new CountResultLookup( $this->connection, $this->queryConditionBuilder );
+		// $countResultLookup = new CountResultLookup( $this->connection, $this->conditionBuilder );
 		// $countResultLookup->getQueryResult( $query );
 
 		$this->sortkeys = array();
 
-		$sparqlCondition = $this->queryConditionBuilder
+		$sparqlCondition = $this->conditionBuilder
 			->setSortKeys( $this->sortkeys )
 			->buildCondition( $query->getDescription() );
 
@@ -131,7 +131,7 @@ class QueryEngine {
 			if ( $sparqlCondition->condition === '' ) { // all URIs exist, no querying
 				return 1;
 			} else {
-				$condition = $this->queryConditionBuilder->convertConditionToString( $sparqlCondition );
+				$condition = $this->conditionBuilder->convertConditionToString( $sparqlCondition );
 				$namespaces = $sparqlCondition->namespaces;
 				$askQueryResult = $this->connection->ask( $condition, $namespaces );
 
@@ -141,7 +141,7 @@ class QueryEngine {
 			return 0;
 		}
 
-		$condition = $this->queryConditionBuilder->convertConditionToString( $sparqlCondition );
+		$condition = $this->conditionBuilder->convertConditionToString( $sparqlCondition );
 		$namespaces = $sparqlCondition->namespaces;
 
 		$options = $this->getOptions( $query, $sparqlCondition );
@@ -168,7 +168,7 @@ class QueryEngine {
 
 		$this->sortkeys = $query->sortkeys;
 
-		$sparqlCondition = $this->queryConditionBuilder
+		$sparqlCondition = $this->conditionBuilder
 			->setSortKeys( $this->sortkeys )
 			->buildCondition( $query->getDescription() );
 
@@ -178,7 +178,7 @@ class QueryEngine {
 			if ( $sparqlCondition->condition === '' ) { // all URIs exist, no querying
 				$results = array( array ( $matchElement ) );
 			} else {
-				$condition = $this->queryConditionBuilder->convertConditionToString( $sparqlCondition );
+				$condition = $this->conditionBuilder->convertConditionToString( $sparqlCondition );
 				$namespaces = $sparqlCondition->namespaces;
 				$askQueryResult = $this->connection->ask( $condition, $namespaces );
 				$results = $askQueryResult->isBooleanTrue() ? array( array ( $matchElement ) ) : array();
@@ -189,7 +189,7 @@ class QueryEngine {
 		} elseif ( $sparqlCondition instanceof FalseCondition ) {
 			$federateResultSet = new FederateResultSet( array( self::RESULT_VARIABLE => 0 ), array() );
 		} else {
-			$condition = $this->queryConditionBuilder->convertConditionToString( $sparqlCondition );
+			$condition = $this->conditionBuilder->convertConditionToString( $sparqlCondition );
 			$namespaces = $sparqlCondition->namespaces;
 
 			$options = $this->getOptions( $query, $sparqlCondition );
@@ -217,7 +217,7 @@ class QueryEngine {
 
 		$this->sortkeys = $query->sortkeys;
 
-		$sparqlCondition = $this->queryConditionBuilder
+		$sparqlCondition = $this->conditionBuilder
 			->setSortKeys( $this->sortkeys )
 			->buildCondition( $query->getDescription() );
 
@@ -227,14 +227,14 @@ class QueryEngine {
 			if ( $sparqlCondition->condition === '' ) { // all URIs exist, no querying
 				$sparql = 'None (no conditions).';
 			} else {
-				$condition = $this->queryConditionBuilder->convertConditionToString( $sparqlCondition );
+				$condition = $this->conditionBuilder->convertConditionToString( $sparqlCondition );
 				$namespaces = $sparqlCondition->namespaces;
 				$sparql = $this->connection->getSparqlForAsk( $condition, $namespaces );
 			}
 		} elseif ( $sparqlCondition instanceof FalseCondition ) {
 			$sparql = 'None (conditions can not be satisfied by anything).';
 		} else {
-			$condition = $this->queryConditionBuilder->convertConditionToString( $sparqlCondition );
+			$condition = $this->conditionBuilder->convertConditionToString( $sparqlCondition );
 			$namespaces = $sparqlCondition->namespaces;
 
 			$options = $this->getOptions( $query, $sparqlCondition );
