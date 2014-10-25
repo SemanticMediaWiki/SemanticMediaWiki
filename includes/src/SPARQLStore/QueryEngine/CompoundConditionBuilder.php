@@ -9,6 +9,7 @@ use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
 
+use SMW\Query\Language\Description;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\Conjunction;
@@ -25,7 +26,6 @@ use SMW\DIWikiPage;
 
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
-use SMW\Query\Language\Description as Description;
 use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 use SMWExpNsResource as ExpNsResource;
@@ -45,6 +45,11 @@ use RuntimeException;
  * @author Markus Krötzsch
  */
 class CompoundConditionBuilder {
+
+	/**
+	 * @var ConditionBuilderStrategyFinder
+	 */
+	private $conditionBuilderStrategyFinder = null;
 
 	/**
 	 * Counter used to generate globally fresh variables.
@@ -584,7 +589,7 @@ class CompoundConditionBuilder {
 	 *
 	 * @return Condition
 	 */
-	protected function buildTrueCondition( $joinVariable, $orderByProperty ) {
+	public function buildTrueCondition( $joinVariable, $orderByProperty ) {
 		$result = new TrueCondition();
 		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty );
 		return $result;
@@ -595,7 +600,7 @@ class CompoundConditionBuilder {
 	 *
 	 * @return string
 	 */
-	protected function getNextVariable() {
+	public function getNextVariable() {
 		return 'v' . ( ++$this->variableCounter );
 	}
 
@@ -608,7 +613,7 @@ class CompoundConditionBuilder {
 	 * @param mixed $orderByProperty DIProperty or null
 	 * @param integer $diType DataItem type id if known, or DataItem::TYPE_NOTYPE to determine it from the property
 	 */
-	protected function addOrderByDataForProperty( Condition &$sparqlCondition, $mainVariable, $orderByProperty, $diType = DataItem::TYPE_NOTYPE ) {
+	public function addOrderByDataForProperty( Condition &$sparqlCondition, $mainVariable, $orderByProperty, $diType = DataItem::TYPE_NOTYPE ) {
 		if ( is_null( $orderByProperty ) ) {
 			return;
 		}
@@ -628,7 +633,7 @@ class CompoundConditionBuilder {
 	 * @param string $mainVariable the variable that represents the value to be ordered
 	 * @param integer $diType DataItem type id
 	 */
-	protected function addOrderByData( Condition &$sparqlCondition, $mainVariable, $diType ) {
+	public function addOrderByData( Condition &$sparqlCondition, $mainVariable, $diType ) {
 		if ( $diType == DataItem::TYPE_WIKIPAGE ) {
 			$sparqlCondition->orderByVariable = $mainVariable . 'sk';
 			$skeyExpElement = Exporter::getSpecialPropertyResource( '_SKEY' );
@@ -670,6 +675,15 @@ class CompoundConditionBuilder {
 				}
 			}
 		}
+	}
+
+	private function findStrategyForDescription( Description $description ) {
+
+		if ( $this->conditionBuilderStrategyFinder === null ) {
+			 $this->conditionBuilderStrategyFinder = new ConditionBuilderStrategyFinder( $this );
+		}
+
+		return $this->conditionBuilderStrategyFinder->findStrategyForDescription( $description );
 	}
 
 }
