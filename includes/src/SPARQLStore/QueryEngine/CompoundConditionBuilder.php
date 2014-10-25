@@ -171,7 +171,7 @@ class CompoundConditionBuilder {
 		} elseif ( $description instanceof ClassDescription ) {
 			return $this->buildClassCondition( $description, $joinVariable, $orderByProperty );
 		} elseif ( $description instanceof ValueDescription ) {
-			return $this->buildValueCondition( $description, $joinVariable, $orderByProperty );
+			return $this->findStrategyForDescription( $description )->buildCondition( $description, $joinVariable, $orderByProperty );
 		} elseif ( $description instanceof ConceptDescription ) {
 			return new TrueCondition(); ///TODO Implement concept queries
 		}
@@ -506,76 +506,6 @@ class CompoundConditionBuilder {
 			$orderByProperty,
 			DataItem::TYPE_WIKIPAGE
 		);
-
-		return $result;
-	}
-
-	/**
-	 * Create an Condition from an ValueDescription.
-	 *
-	 * @param $description ValueDescription
-	 * @param $joinVariable string name, see mapDescriptionToCondition()
-	 * @param $orderByProperty mixed DIProperty or null, see mapDescriptionToCondition()
-	 *
-	 * @return Condition
-	 */
-	protected function buildValueCondition( ValueDescription $description, $joinVariable, $orderByProperty ) {
-		$dataItem = $description->getDataItem();
-
-		switch ( $description->getComparator() ) {
-			case SMW_CMP_EQ:   $comparator = '='; break;
-			case SMW_CMP_LESS: $comparator = '<'; break;
-			case SMW_CMP_GRTR: $comparator = '>'; break;
-			case SMW_CMP_LEQ:  $comparator = '<='; break;
-			case SMW_CMP_GEQ:  $comparator = '>='; break;
-			case SMW_CMP_NEQ:  $comparator = '!='; break;
-			case SMW_CMP_LIKE: $comparator = 'regex'; break;
-			case SMW_CMP_NLKE: $comparator = '!regex'; break;
-			default:           $comparator = ''; // unkown, unsupported
-		}
-
-		if ( $comparator === '' ) {
-			$result = $this->buildTrueCondition( $joinVariable, $orderByProperty );
-		} elseif ( $comparator == '=' ) {
-			$expElement = Exporter::getDataItemHelperExpElement( $dataItem );
-			if ( is_null( $expElement ) ) {
-				$expElement = Exporter::getDataItemExpElement( $dataItem );
-			}
-
-			$result = new SingletonCondition( $expElement );
-			$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, $dataItem->getDIType() );
-		} elseif ( $comparator == 'regex' || $comparator == '!regex' ) {
-			if ( $dataItem instanceof DIBlob ) {
-				$pattern = '^' . str_replace( array( '^', '.', '\\', '+', '{', '}', '(', ')', '|', '^', '$', '[', ']', '*', '?' ),
-				                              array( '\^', '\.', '\\\\', '\+', '\{', '\}', '\(', '\)', '\|', '\^', '\$', '\[', '\]', '.*', '.' ),
-				                              $dataItem->getString() ) . '$';
-				$result = new FilterCondition( "$comparator( ?$joinVariable, \"$pattern\", \"s\")", array() );
-				$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, $dataItem->getDIType() );
-			} else {
-				$result = $this->buildTrueCondition( $joinVariable, $orderByProperty );
-			}
-		} else {
-			$result = new FilterCondition( '', array() );
-			$this->addOrderByData( $result, $joinVariable, $dataItem->getDIType() );
-			$orderByVariable = $result->orderByVariable;
-
-			if ( $dataItem instanceof DIWikiPage ) {
-				$expElement = Exporter::getDataItemExpElement( $dataItem->getSortKeyDataItem() );
-			} else {
-				$expElement = Exporter::getDataItemHelperExpElement( $dataItem );
-				if ( is_null( $expElement ) ) {
-					$expElement = Exporter::getDataItemExpElement( $dataItem );
-				}
-			}
-
-			$valueName = TurtleSerializer::getTurtleNameForExpElement( $expElement );
-
-			if ( $expElement instanceof ExpNsResource ) {
-				$result->namespaces[$expElement->getNamespaceId()] = $expElement->getNamespace();
-			}
-
-			$result->filter = "?$orderByVariable $comparator $valueName";
-		}
 
 		return $result;
 	}

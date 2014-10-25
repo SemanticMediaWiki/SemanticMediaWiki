@@ -39,7 +39,7 @@ class QueryEngine {
 	/**
 	 * @var CompoundConditionBuilder
 	 */
-	private $CompoundConditionBuilder;
+	private $compoundConditionBuilder;
 
 	/**
 	 * @var QueryResultFactory
@@ -66,9 +66,9 @@ class QueryEngine {
 	 * @param QueryResultFactory $queryResultFactory
 	 * @param EngineOptions|null $engineOptions
 	 */
-	public function __construct( SparqlDatabase $connection, CompoundConditionBuilder $CompoundConditionBuilder, QueryResultFactory $queryResultFactory, EngineOptions $engineOptions = null ) {
+	public function __construct( SparqlDatabase $connection, CompoundConditionBuilder $compoundConditionBuilder, QueryResultFactory $queryResultFactory, EngineOptions $engineOptions = null ) {
 		$this->connection = $connection;
-		$this->compoundConditionBuilder = $CompoundConditionBuilder;
+		$this->compoundConditionBuilder = $compoundConditionBuilder;
 		$this->queryResultFactory = $queryResultFactory;
 		$this->engineOptions = $engineOptions;
 
