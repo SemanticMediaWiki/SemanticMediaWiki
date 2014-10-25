@@ -44,7 +44,7 @@ use RuntimeException;
  *
  * @author Markus Krötzsch
  */
-class ConditionBuilder {
+class CompoundConditionBuilder {
 
 	/**
 	 * Counter used to generate globally fresh variables.
