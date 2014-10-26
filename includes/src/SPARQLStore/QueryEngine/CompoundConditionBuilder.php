@@ -90,6 +90,15 @@ class CompoundConditionBuilder {
 	}
 
 	/**
+	 * @since 2.1
+	 *
+	 * @return array
+	 */
+	public function getSortKeys() {
+		return $this->sortkeys;
+	}
+
+	/**
 	 * Get a Condition object for an Description.
 	 *
 	 * This conversion is implemented by a number of recursive functions,
@@ -158,17 +167,15 @@ class CompoundConditionBuilder {
 	 * to, and the condition should also enable ordering by this value
 	 * @return Condition
 	 */
-	protected function mapDescriptionToCondition( Description $description, $joinVariable, $orderByProperty ) {
+	public function mapDescriptionToCondition( Description $description, $joinVariable, $orderByProperty ) {
 
 		if ( $description instanceof SomeProperty ) {
 			return $this->buildPropertyCondition( $description, $joinVariable, $orderByProperty );
-		} elseif ( $description instanceof NamespaceDescription ) {
-			return $this->buildNamespaceCondition( $description, $joinVariable, $orderByProperty );
 		} elseif ( $description instanceof Conjunction ) {
 			return $this->buildConjunctionCondition( $description, $joinVariable, $orderByProperty );
 		} elseif ( $description instanceof Disjunction ) {
 			return $this->buildDisjunctionCondition( $description, $joinVariable, $orderByProperty );
-		} elseif ( $description instanceof ClassDescription || $description instanceof ValueDescription ) {
+		} elseif ( $description instanceof NamespaceDescription || $description instanceof ClassDescription || $description instanceof ValueDescription ) {
 			return $this->findStrategyForDescription( $description )->buildCondition( $description, $joinVariable, $orderByProperty );
 		} elseif ( $description instanceof ConceptDescription ) {
 			return new TrueCondition(); ///TODO Implement concept queries
@@ -439,33 +446,6 @@ class CompoundConditionBuilder {
 		}
 
 		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, DataItem::TYPE_WIKIPAGE );
-
-		return $result;
-	}
-
-	/**
-	 * Create an Condition from an NamespaceDescription.
-	 *
-	 * @param $description NamespaceDescription
-	 * @param $joinVariable string name, see mapDescriptionToCondition()
-	 * @param $orderByProperty mixed DIProperty or null, see mapDescriptionToCondition()
-	 *
-	 * @return Condition
-	 */
-	protected function buildNamespaceCondition( NamespaceDescription $description, $joinVariable, $orderByProperty ) {
-		$nspropExpElement = Exporter::getSpecialNsResource( 'swivt', 'wikiNamespace' );
-		$nsExpElement = new ExpLiteral( strval( $description->getNamespace() ), 'http://www.w3.org/2001/XMLSchema#integer' );
-		$nsName = TurtleSerializer::getTurtleNameForExpElement( $nsExpElement );
-		$condition = "{ ?$joinVariable " . $nspropExpElement->getQName() . " $nsName . }\n";
-
-		$result = new WhereCondition( $condition, true, array() );
-
-		$this->addOrderByDataForProperty(
-			$result,
-			$joinVariable,
-			$orderByProperty,
-			DataItem::TYPE_WIKIPAGE
-		);
 
 		return $result;
 	}

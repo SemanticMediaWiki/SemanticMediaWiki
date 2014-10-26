@@ -5,6 +5,7 @@ namespace SMW\SPARQLStore\QueryEngine;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ValueConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ClassConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder\NamespaceConditionBuilder;
 
 use SMW\Query\Language\Description;
 
@@ -81,6 +82,7 @@ class ConditionBuilderStrategyFinder {
 	private function registerDefaultConditionBuilders() {
 		$this->registerConditionBuilder( new ValueConditionBuilder( $this->compoundConditionBuilder ) );
 		$this->registerConditionBuilder( new ClassConditionBuilder( $this->compoundConditionBuilder ) );
+		$this->registerConditionBuilder( new NamespaceConditionBuilder( $this->compoundConditionBuilder ) );
 	}
 
 }
