@@ -1,8 +1,8 @@
 
-Tests are developed and used to verify that an expected behaviour does occur for the described boundaries with parameters specifying the requirements in which results can be accepted or need to be rejected.
+Tests are developed and used to verify that an expected behaviour does occur for the described boundaries (using parameters to specify the requirements) where results can be accepted or need to be rejected.
 
-- Unit test in most cases refers to a test that confirms that an expected technical specification for a unit, module, or class is supported
-- Integration test combines multiple components and verifies its interplay between those modules
+- Unit test in most cases refers to a test that confirms an expected result for a unit, module, or class
+- Integration test normally combines multiple components into a single process to verify that the integration produces an expected result
 - System test (and its individual modules) is treated as "black-box" in order to observe behaviour as a whole rather than its units
 
 # PHPUnit
