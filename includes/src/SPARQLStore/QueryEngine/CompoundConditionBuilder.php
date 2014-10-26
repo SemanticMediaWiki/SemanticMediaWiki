@@ -168,9 +168,7 @@ class CompoundConditionBuilder {
 			return $this->buildConjunctionCondition( $description, $joinVariable, $orderByProperty );
 		} elseif ( $description instanceof Disjunction ) {
 			return $this->buildDisjunctionCondition( $description, $joinVariable, $orderByProperty );
-		} elseif ( $description instanceof ClassDescription ) {
-			return $this->buildClassCondition( $description, $joinVariable, $orderByProperty );
-		} elseif ( $description instanceof ValueDescription ) {
+		} elseif ( $description instanceof ClassDescription || $description instanceof ValueDescription ) {
 			return $this->findStrategyForDescription( $description )->buildCondition( $description, $joinVariable, $orderByProperty );
 		} elseif ( $description instanceof ConceptDescription ) {
 			return new TrueCondition(); ///TODO Implement concept queries
@@ -439,44 +437,6 @@ class CompoundConditionBuilder {
 		if ( !is_null( $innerOrderByProperty ) && ( $innerCondition->orderByVariable !== '' ) ) {
 			$result->orderVariables[$diProperty->getKey()] = $innerCondition->orderByVariable;
 		}
-
-		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, DataItem::TYPE_WIKIPAGE );
-
-		return $result;
-	}
-
-	/**
-	 * Create an Condition from an ClassDescription.
-	 *
-	 * @param $description ClassDescription
-	 * @param $joinVariable string name, see mapDescriptionToCondition()
-	 * @param $orderByProperty mixed DIProperty or null, see mapDescriptionToCondition()
-	 *
-	 * @return Condition
-	 */
-	protected function buildClassCondition( ClassDescription $description, $joinVariable, $orderByProperty ) {
-
-		$condition = '';
-		$namespaces = array();
-		$instExpElement = Exporter::getSpecialPropertyResource( '_INST' );
-
-		foreach( $description->getCategories() as $diWikiPage ) {
-			$categoryExpElement = Exporter::getResourceElementForWikiPage( $diWikiPage );
-			$categoryName = TurtleSerializer::getTurtleNameForExpElement( $categoryExpElement );
-			$namespaces[$categoryExpElement->getNamespaceId()] = $categoryExpElement->getNamespace();
-			$newcondition = "{ ?$joinVariable " . $instExpElement->getQName() . " $categoryName . }\n";
-			if ( $condition === '' ) {
-				$condition = $newcondition;
-			} else {
-				$condition .= "UNION\n$newcondition";
-			}
-		}
-
-		if ( $condition === '' ) { // empty disjunction: always false, no results to order
-			return new FalseCondition();
-		}
-
-		$result = new WhereCondition( $condition, true, $namespaces );
 
 		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, DataItem::TYPE_WIKIPAGE );
 

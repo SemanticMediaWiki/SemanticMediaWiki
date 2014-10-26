@@ -60,13 +60,13 @@ class ValueConditionBuilder implements ConditionBuilder {
 	/**
 	 * Create an Condition from an ValueDescription.
 	 *
-	 * @param $description ValueDescription
-	 * @param $joinVariable string name, see mapConditionBuilderToDescription()
-	 * @param $orderByProperty mixed DIProperty or null, see mapConditionBuilderToDescription()
+	 * @param ValueDescription $description
+	 * @param string $joinVariable
+	 * @param DIProperty|null $orderByProperty
 	 *
 	 * @return Condition
 	 */
-	public function buildCondition( Description $description, $joinVariable, $orderByProperty ) {
+	public function buildCondition( Description $description, $joinVariable, $orderByProperty = null ) {
 
 		$dataItem = $description->getDataItem();
 

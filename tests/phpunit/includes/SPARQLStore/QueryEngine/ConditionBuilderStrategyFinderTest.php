@@ -101,13 +101,23 @@ class ConditionBuilderStrategyFinderTest extends \PHPUnit_Framework_TestCase {
 	public function descriptionProvider() {
 
 		# 0
-		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$provider[] = array(
-			$valueDescription,
+			$description,
 			'\SMW\SPARQLStore\QueryEngine\ConditionBuilder\ValueConditionBuilder'
+		);
+
+		# 1
+		$description = $this->getMockBuilder( '\SMW\Query\Language\ClassDescription' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$provider[] = array(
+			$description,
+			'\SMW\SPARQLStore\QueryEngine\ConditionBuilder\ClassConditionBuilder'
 		);
 
 		return $provider;

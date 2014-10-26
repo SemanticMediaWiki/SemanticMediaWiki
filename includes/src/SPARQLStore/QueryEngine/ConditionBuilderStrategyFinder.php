@@ -4,6 +4,7 @@ namespace SMW\SPARQLStore\QueryEngine;
 
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ValueConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ClassConditionBuilder;
 
 use SMW\Query\Language\Description;
 
@@ -60,7 +61,7 @@ class ConditionBuilderStrategyFinder {
 	 *
 	 * @param Description $description
 	 *
-	 * @return DescriptionTransliterator
+	 * @return ConditionBuilder
 	 */
 	public function findStrategyForDescription( Description $description ) {
 
@@ -79,6 +80,7 @@ class ConditionBuilderStrategyFinder {
 
 	private function registerDefaultConditionBuilders() {
 		$this->registerConditionBuilder( new ValueConditionBuilder( $this->compoundConditionBuilder ) );
+		$this->registerConditionBuilder( new ClassConditionBuilder( $this->compoundConditionBuilder ) );
 	}
 
 }

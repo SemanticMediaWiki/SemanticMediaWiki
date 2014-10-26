@@ -25,12 +25,12 @@ interface ConditionBuilder {
 	/**
 	 * @since 2.1
 	 *
-	 * @param Description $description
-	 * @param $joinVariable
-	 * @param $orderByProperty
+	 * @param ClassDescription $description
+	 * @param string $joinVariable
+	 * @param DIProperty|null $orderByProperty
 	 *
 	 * @return Condition
 	 */
-	public function buildCondition( Description $description, $joinVariable, $orderByProperty );
+	public function buildCondition( Description $description, $joinVariable, $orderByProperty = null );
 
 }
