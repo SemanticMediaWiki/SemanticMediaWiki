@@ -4,7 +4,7 @@ namespace SMW\SPARQLStore;
 
 use SMW\SPARQLStore\QueryEngine\QueryEngine;
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
-use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
 
 use SMW\SemanticData;
@@ -291,7 +291,7 @@ class SPARQLStore extends Store {
 
 		$queryEngine = new QueryEngine(
 			$this->getSparqlDatabase(),
-			new ConditionBuilder(),
+			new CompoundConditionBuilder(),
 			new QueryResultFactory( $this ),
 			$engineOptions
 		);

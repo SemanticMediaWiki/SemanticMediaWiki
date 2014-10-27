@@ -29,7 +29,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -39,7 +39,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\QueryEngine',
-			new QueryEngine( $connection, $conditionBuilder, $queryResultFactory )
+			new QueryEngine( $connection, $compoundConditionBuilder, $queryResultFactory )
 		);
 	}
 
@@ -53,7 +53,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -62,7 +62,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 		$engineOptions = new EngineOptions();
 		$engineOptions->ignoreQueryErrors = false;
 
-		$instance = new QueryEngine( $connection, $conditionBuilder, new QueryResultFactory( $store ), $engineOptions );
+		$instance = new QueryEngine( $connection, $compoundConditionBuilder, new QueryResultFactory( $store ), $engineOptions );
 
 		$query = new Query( $description );
 		$query->addErrors( array( 'Foo' ) );
@@ -87,13 +87,13 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$description = $this->getMockForAbstractClass( '\SMWDescription' );
 
-		$instance = new QueryEngine( $connection, $conditionBuilder, new QueryResultFactory( $store ) );
+		$instance = new QueryEngine( $connection, $compoundConditionBuilder, new QueryResultFactory( $store ) );
 
 		$query = new Query( $description );
 		$query->querymode = Query::MODE_NONE;
@@ -120,21 +120,21 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$condition = $this->getMockForAbstractClass( '\SMW\SPARQLStore\QueryEngine\Condition\Condition' );
 
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$conditionBuilder->expects( $this->atLeastOnce() )
+		$compoundConditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'setSortKeys' )
-			->will( $this->returnValue( $conditionBuilder ) );
+			->will( $this->returnValue( $compoundConditionBuilder ) );
 
-		$conditionBuilder->expects( $this->atLeastOnce() )
+		$compoundConditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'buildCondition' )
 			->will( $this->returnValue( $condition ) );
 
 		$description = $this->getMockForAbstractClass( '\SMWDescription' );
 
-		$instance = new QueryEngine( $connection, $conditionBuilder, new QueryResultFactory( $store ) );
+		$instance = new QueryEngine( $connection, $compoundConditionBuilder, new QueryResultFactory( $store ) );
 
 		$query = new Query( $description );
 		$query->sortkeys = array( 'Foo', 'Bar' );
@@ -151,15 +151,15 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$condition = $this->getMockForAbstractClass( '\SMW\SPARQLStore\QueryEngine\Condition\Condition' );
 
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$conditionBuilder->expects( $this->atLeastOnce() )
+		$compoundConditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'setSortKeys' )
-			->will( $this->returnValue( $conditionBuilder ) );
+			->will( $this->returnValue( $compoundConditionBuilder ) );
 
-		$conditionBuilder->expects( $this->atLeastOnce() )
+		$compoundConditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'buildCondition' )
 			->will( $this->returnValue( $condition ) );
 
@@ -169,7 +169,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$description = $this->getMockForAbstractClass( '\SMWDescription' );
 
-		$instance = new QueryEngine( $connection, $conditionBuilder, $queryResultFactory );
+		$instance = new QueryEngine( $connection, $compoundConditionBuilder, $queryResultFactory );
 
 		$query = new Query( $description );
 		$query->querymode = Query::MODE_DEBUG;
@@ -205,21 +205,21 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$conditionBuilder->expects( $this->atLeastOnce() )
+		$compoundConditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'setSortKeys' )
-			->will( $this->returnValue( $conditionBuilder ) );
+			->will( $this->returnValue( $compoundConditionBuilder ) );
 
-		$conditionBuilder->expects( $this->once() )
+		$compoundConditionBuilder->expects( $this->once() )
 			->method( 'buildCondition' )
 			->will( $this->returnValue( $condition ) );
 
 		$description = $this->getMockForAbstractClass( '\SMWDescription' );
 
-		$instance = new QueryEngine( $connection, $conditionBuilder, new QueryResultFactory( $store ) );
+		$instance = new QueryEngine( $connection, $compoundConditionBuilder, new QueryResultFactory( $store ) );
 
 		$this->assertInstanceOf(
 			'\SMWQueryResult',

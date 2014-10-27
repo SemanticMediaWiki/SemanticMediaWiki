@@ -4,7 +4,7 @@ namespace SMW\Tests\SPARQLStore\QueryEngine;
 
 use SMW\Tests\Util\UtilityFactory;
 
-use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
 
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\Conjunction;
@@ -24,7 +24,7 @@ use SMWPrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
 
 /**
- * @covers \SMW\SPARQLStore\QueryEngine\ConditionBuilder
+ * @covers \SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder
  *
  * @group SMW
  * @group SMWExtension
@@ -37,7 +37,7 @@ use SMWPropertyValue as PropertyValue;
  *
  * @author mwjames
  */
-class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
+class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $stringBuilder;
 
@@ -50,8 +50,8 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\ConditionBuilder',
-			new ConditionBuilder()
+			'\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder',
+			new CompoundConditionBuilder()
 		);
 	}
 
@@ -64,7 +64,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$instance = new ConditionBuilder();
+		$instance = new CompoundConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -92,7 +92,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$instance = new ConditionBuilder();
+		$instance = new CompoundConditionBuilder();
 
 		$condition = $instance->setSortKeys( array( 'Foo' => 'DESC' ) )->buildCondition( $description );
 
@@ -122,7 +122,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$instance = new ConditionBuilder();
+		$instance = new CompoundConditionBuilder();
 		$instance->setSortKeys( array( 'Foo', 'ASC' ) );
 
 		$this->setExpectedException( 'RuntimeException' );
@@ -136,7 +136,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new DIProperty( 'Foo' )
 		);
 
-		$instance = new ConditionBuilder();
+		$instance = new CompoundConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -164,7 +164,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ValueDescription( new DIBlob( 'SomePropertyBlobValue' ) )
 		);
 
-		$instance = new ConditionBuilder();
+		$instance = new CompoundConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -193,7 +193,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ValueDescription( new DIWikiPage( 'SomePropertyPageValue', NS_MAIN ), null, SMW_CMP_LEQ )
 		);
 
-		$instance = new ConditionBuilder();
+		$instance = new CompoundConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -224,7 +224,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ValueDescription( new DIBlob( 'SomePropertyBlobValue' ), null, SMW_CMP_NLKE )
 		);
 
-		$instance = new ConditionBuilder();
+		$instance = new CompoundConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -250,7 +250,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new DIWikiPage( 'Foo', NS_CATEGORY, '' )
 		);
 
-		$instance = new ConditionBuilder();
+		$instance = new CompoundConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -273,7 +273,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$description = new NamespaceDescription( NS_HELP );
 
-		$instance = new ConditionBuilder();
+		$instance = new CompoundConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -303,7 +303,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 				new DIProperty( 'Bar' ), new ThingDescription() ),
 		) );
 
-		$instance = new ConditionBuilder();
+		$instance = new CompoundConditionBuilder();
 
 		$condition = $instance->buildCondition( $conjunction );
 
@@ -334,7 +334,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 				new ValueDescription( new DINumber( 9 ), null, SMW_CMP_LEQ ) ),
 		) );
 
-		$instance = new ConditionBuilder();
+		$instance = new CompoundConditionBuilder();
 
 		$condition = $instance->buildCondition( $conjunction );
 
@@ -363,7 +363,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new SomeProperty( new DIProperty( 'Bar' ), new ThingDescription() )
 		) );
 
-		$instance = new ConditionBuilder();
+		$instance = new CompoundConditionBuilder();
 
 		$condition = $instance->buildCondition( $conjunction );
 
@@ -397,7 +397,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 				new ValueDescription( new DIBlob( "BB?" ), null, SMW_CMP_NLKE )  )
 		) );
 
-		$instance = new ConditionBuilder();
+		$instance = new CompoundConditionBuilder();
 
 		$condition = $instance->buildCondition( $conjunction );
 
@@ -432,7 +432,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ValueDescription( new DITime( 1, 1970, 01, 01, 1, 1 ), null, SMW_CMP_GEQ )
 		);
 
-		$instance = new ConditionBuilder();
+		$instance = new CompoundConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -461,7 +461,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$instance = new ConditionBuilder();
+		$instance = new CompoundConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -498,7 +498,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			$disjunction
 		);
 
-		$instance = new ConditionBuilder();
+		$instance = new CompoundConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -542,7 +542,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			$conjunction
 		);
 
-		$instance = new ConditionBuilder();
+		$instance = new CompoundConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -581,7 +581,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$instance = new ConditionBuilder();
+		$instance = new CompoundConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 

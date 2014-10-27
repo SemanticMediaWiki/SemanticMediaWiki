@@ -9,6 +9,7 @@ use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
 
+use SMW\Query\Language\Description;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\Conjunction;
@@ -25,7 +26,6 @@ use SMW\DIWikiPage;
 
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
-use SMW\Query\Language\Description as Description;
 use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 use SMWExpNsResource as ExpNsResource;
@@ -44,7 +44,12 @@ use RuntimeException;
  *
  * @author Markus Krötzsch
  */
-class ConditionBuilder {
+class CompoundConditionBuilder {
+
+	/**
+	 * @var ConditionBuilderStrategyFinder
+	 */
+	private $conditionBuilderStrategyFinder = null;
 
 	/**
 	 * Counter used to generate globally fresh variables.
@@ -82,6 +87,15 @@ class ConditionBuilder {
 	public function setSortKeys( $sortkeys ) {
 		$this->sortkeys = $sortkeys;
 		return $this;
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return array
+	 */
+	public function getSortKeys() {
+		return $this->sortkeys;
 	}
 
 	/**
@@ -153,20 +167,14 @@ class ConditionBuilder {
 	 * to, and the condition should also enable ordering by this value
 	 * @return Condition
 	 */
-	protected function mapDescriptionToCondition( Description $description, $joinVariable, $orderByProperty ) {
+	public function mapDescriptionToCondition( Description $description, $joinVariable, $orderByProperty ) {
 
-		if ( $description instanceof SomeProperty ) {
-			return $this->buildPropertyCondition( $description, $joinVariable, $orderByProperty );
-		} elseif ( $description instanceof NamespaceDescription ) {
-			return $this->buildNamespaceCondition( $description, $joinVariable, $orderByProperty );
-		} elseif ( $description instanceof Conjunction ) {
+		if ( $description instanceof Conjunction ) {
 			return $this->buildConjunctionCondition( $description, $joinVariable, $orderByProperty );
 		} elseif ( $description instanceof Disjunction ) {
 			return $this->buildDisjunctionCondition( $description, $joinVariable, $orderByProperty );
-		} elseif ( $description instanceof ClassDescription ) {
-			return $this->buildClassCondition( $description, $joinVariable, $orderByProperty );
-		} elseif ( $description instanceof ValueDescription ) {
-			return $this->buildValueCondition( $description, $joinVariable, $orderByProperty );
+		} elseif ( $description instanceof SomeProperty || $description instanceof NamespaceDescription || $description instanceof ClassDescription || $description instanceof ValueDescription ) {
+			return $this->findStrategyForDescription( $description )->buildCondition( $description, $joinVariable, $orderByProperty );
 		} elseif ( $description instanceof ConceptDescription ) {
 			return new TrueCondition(); ///TODO Implement concept queries
 		}
@@ -351,231 +359,6 @@ class ConditionBuilder {
 	}
 
 	/**
-	 * Recursively create an Condition from an SomeProperty.
-	 *
-	 * @param $description SomeProperty
-	 * @param $joinVariable string name, see mapDescriptionToCondition()
-	 * @param $orderByProperty mixed DIProperty or null, see mapDescriptionToCondition()
-	 *
-	 * @return Condition
-	 */
-	protected function buildPropertyCondition( SomeProperty $description, $joinVariable, $orderByProperty ) {
-		$diProperty = $description->getProperty();
-
-		//*** Find out if we should order by the values of this property ***//
-		if ( array_key_exists( $diProperty->getKey(), $this->sortkeys ) ) {
-			$innerOrderByProperty = $diProperty;
-		} else {
-			$innerOrderByProperty = null;
-		}
-
-		//*** Prepare inner condition ***//
-		$innerJoinVariable = $this->getNextVariable();
-		$innerCondition = $this->mapDescriptionToCondition( $description->getDescription(), $innerJoinVariable, $innerOrderByProperty );
-		$namespaces = $innerCondition->namespaces;
-
-		if ( $innerCondition instanceof FalseCondition ) {
-			return new FalseCondition();
-		} elseif ( $innerCondition instanceof SingletonCondition ) {
-			$matchElement = $innerCondition->matchElement;
-
-			if ( $matchElement instanceOf ExpElement ) {
-				$objectName = TurtleSerializer::getTurtleNameForExpElement( $matchElement );
-			} else {
-				$objectName = $matchElement;
-			}
-
-			if ( $matchElement instanceof ExpNsResource ) {
-				$namespaces[$matchElement->getNamespaceId()] = $matchElement->getNamespace();
-			}
-		} else {
-			$objectName = '?' . $innerJoinVariable;
-		}
-
-		//*** Exchange arguments when property is inverse ***//
-		if ( $diProperty->isInverse() ) { // don't check if this really makes sense
-			$subjectName = $objectName;
-			$objectName = '?' . $joinVariable;
-			$diNonInverseProperty = new DIProperty( $diProperty->getKey(), false );
-		} else {
-			$subjectName = '?' . $joinVariable;
-			$diNonInverseProperty = $diProperty;
-		}
-
-		//*** Build the condition ***//
-		// Use helper properties in encoding values, refer to this helper property:
-		if ( Exporter::hasHelperExpElement( $diProperty ) ) {
-			$propertyExpElement = Exporter::getResourceElementForProperty( $diNonInverseProperty, true );
-		} else {
-			$propertyExpElement = Exporter::getResourceElementForProperty( $diNonInverseProperty );
-		}
-
-		$propertyName = TurtleSerializer::getTurtleNameForExpElement( $propertyExpElement );
-
-		if ( $propertyExpElement instanceof ExpNsResource ) {
-			$namespaces[$propertyExpElement->getNamespaceId()] = $propertyExpElement->getNamespace();
-		}
-
-		$condition = "$subjectName $propertyName $objectName .\n";
-		$innerConditionString = $innerCondition->getCondition() . $innerCondition->getWeakConditionString();
-
-		if ( $innerConditionString !== '' ) {
-			if ( $innerCondition instanceof FilterCondition ) {
-				$condition .= $innerConditionString;
-			} else {
-				$condition .= "{ $innerConditionString}\n";
-			}
-		}
-
-		$result = new WhereCondition( $condition, true, $namespaces );
-
-		//*** Record inner ordering variable if found ***//
-		$result->orderVariables = $innerCondition->orderVariables;
-		if ( !is_null( $innerOrderByProperty ) && ( $innerCondition->orderByVariable !== '' ) ) {
-			$result->orderVariables[$diProperty->getKey()] = $innerCondition->orderByVariable;
-		}
-
-		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, DataItem::TYPE_WIKIPAGE );
-
-		return $result;
-	}
-
-	/**
-	 * Create an Condition from an ClassDescription.
-	 *
-	 * @param $description ClassDescription
-	 * @param $joinVariable string name, see mapDescriptionToCondition()
-	 * @param $orderByProperty mixed DIProperty or null, see mapDescriptionToCondition()
-	 *
-	 * @return Condition
-	 */
-	protected function buildClassCondition( ClassDescription $description, $joinVariable, $orderByProperty ) {
-
-		$condition = '';
-		$namespaces = array();
-		$instExpElement = Exporter::getSpecialPropertyResource( '_INST' );
-
-		foreach( $description->getCategories() as $diWikiPage ) {
-			$categoryExpElement = Exporter::getResourceElementForWikiPage( $diWikiPage );
-			$categoryName = TurtleSerializer::getTurtleNameForExpElement( $categoryExpElement );
-			$namespaces[$categoryExpElement->getNamespaceId()] = $categoryExpElement->getNamespace();
-			$newcondition = "{ ?$joinVariable " . $instExpElement->getQName() . " $categoryName . }\n";
-			if ( $condition === '' ) {
-				$condition = $newcondition;
-			} else {
-				$condition .= "UNION\n$newcondition";
-			}
-		}
-
-		if ( $condition === '' ) { // empty disjunction: always false, no results to order
-			return new FalseCondition();
-		}
-
-		$result = new WhereCondition( $condition, true, $namespaces );
-
-		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, DataItem::TYPE_WIKIPAGE );
-
-		return $result;
-	}
-
-	/**
-	 * Create an Condition from an NamespaceDescription.
-	 *
-	 * @param $description NamespaceDescription
-	 * @param $joinVariable string name, see mapDescriptionToCondition()
-	 * @param $orderByProperty mixed DIProperty or null, see mapDescriptionToCondition()
-	 *
-	 * @return Condition
-	 */
-	protected function buildNamespaceCondition( NamespaceDescription $description, $joinVariable, $orderByProperty ) {
-		$nspropExpElement = Exporter::getSpecialNsResource( 'swivt', 'wikiNamespace' );
-		$nsExpElement = new ExpLiteral( strval( $description->getNamespace() ), 'http://www.w3.org/2001/XMLSchema#integer' );
-		$nsName = TurtleSerializer::getTurtleNameForExpElement( $nsExpElement );
-		$condition = "{ ?$joinVariable " . $nspropExpElement->getQName() . " $nsName . }\n";
-
-		$result = new WhereCondition( $condition, true, array() );
-
-		$this->addOrderByDataForProperty(
-			$result,
-			$joinVariable,
-			$orderByProperty,
-			DataItem::TYPE_WIKIPAGE
-		);
-
-		return $result;
-	}
-
-	/**
-	 * Create an Condition from an ValueDescription.
-	 *
-	 * @param $description ValueDescription
-	 * @param $joinVariable string name, see mapDescriptionToCondition()
-	 * @param $orderByProperty mixed DIProperty or null, see mapDescriptionToCondition()
-	 *
-	 * @return Condition
-	 */
-	protected function buildValueCondition( ValueDescription $description, $joinVariable, $orderByProperty ) {
-		$dataItem = $description->getDataItem();
-
-		switch ( $description->getComparator() ) {
-			case SMW_CMP_EQ:   $comparator = '='; break;
-			case SMW_CMP_LESS: $comparator = '<'; break;
-			case SMW_CMP_GRTR: $comparator = '>'; break;
-			case SMW_CMP_LEQ:  $comparator = '<='; break;
-			case SMW_CMP_GEQ:  $comparator = '>='; break;
-			case SMW_CMP_NEQ:  $comparator = '!='; break;
-			case SMW_CMP_LIKE: $comparator = 'regex'; break;
-			case SMW_CMP_NLKE: $comparator = '!regex'; break;
-			default:           $comparator = ''; // unkown, unsupported
-		}
-
-		if ( $comparator === '' ) {
-			$result = $this->buildTrueCondition( $joinVariable, $orderByProperty );
-		} elseif ( $comparator == '=' ) {
-			$expElement = Exporter::getDataItemHelperExpElement( $dataItem );
-			if ( is_null( $expElement ) ) {
-				$expElement = Exporter::getDataItemExpElement( $dataItem );
-			}
-
-			$result = new SingletonCondition( $expElement );
-			$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, $dataItem->getDIType() );
-		} elseif ( $comparator == 'regex' || $comparator == '!regex' ) {
-			if ( $dataItem instanceof DIBlob ) {
-				$pattern = '^' . str_replace( array( '^', '.', '\\', '+', '{', '}', '(', ')', '|', '^', '$', '[', ']', '*', '?' ),
-				                              array( '\^', '\.', '\\\\', '\+', '\{', '\}', '\(', '\)', '\|', '\^', '\$', '\[', '\]', '.*', '.' ),
-				                              $dataItem->getString() ) . '$';
-				$result = new FilterCondition( "$comparator( ?$joinVariable, \"$pattern\", \"s\")", array() );
-				$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, $dataItem->getDIType() );
-			} else {
-				$result = $this->buildTrueCondition( $joinVariable, $orderByProperty );
-			}
-		} else {
-			$result = new FilterCondition( '', array() );
-			$this->addOrderByData( $result, $joinVariable, $dataItem->getDIType() );
-			$orderByVariable = $result->orderByVariable;
-
-			if ( $dataItem instanceof DIWikiPage ) {
-				$expElement = Exporter::getDataItemExpElement( $dataItem->getSortKeyDataItem() );
-			} else {
-				$expElement = Exporter::getDataItemHelperExpElement( $dataItem );
-				if ( is_null( $expElement ) ) {
-					$expElement = Exporter::getDataItemExpElement( $dataItem );
-				}
-			}
-
-			$valueName = TurtleSerializer::getTurtleNameForExpElement( $expElement );
-
-			if ( $expElement instanceof ExpNsResource ) {
-				$result->namespaces[$expElement->getNamespaceId()] = $expElement->getNamespace();
-			}
-
-			$result->filter = "?$orderByVariable $comparator $valueName";
-		}
-
-		return $result;
-	}
-
-	/**
 	 * Create an Condition from an empty (true) description.
 	 * May still require helper conditions for ordering.
 	 *
@@ -584,7 +367,7 @@ class ConditionBuilder {
 	 *
 	 * @return Condition
 	 */
-	protected function buildTrueCondition( $joinVariable, $orderByProperty ) {
+	public function buildTrueCondition( $joinVariable, $orderByProperty ) {
 		$result = new TrueCondition();
 		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty );
 		return $result;
@@ -595,7 +378,7 @@ class ConditionBuilder {
 	 *
 	 * @return string
 	 */
-	protected function getNextVariable() {
+	public function getNextVariable() {
 		return 'v' . ( ++$this->variableCounter );
 	}
 
@@ -608,7 +391,7 @@ class ConditionBuilder {
 	 * @param mixed $orderByProperty DIProperty or null
 	 * @param integer $diType DataItem type id if known, or DataItem::TYPE_NOTYPE to determine it from the property
 	 */
-	protected function addOrderByDataForProperty( Condition &$sparqlCondition, $mainVariable, $orderByProperty, $diType = DataItem::TYPE_NOTYPE ) {
+	public function addOrderByDataForProperty( Condition &$sparqlCondition, $mainVariable, $orderByProperty, $diType = DataItem::TYPE_NOTYPE ) {
 		if ( is_null( $orderByProperty ) ) {
 			return;
 		}
@@ -628,7 +411,7 @@ class ConditionBuilder {
 	 * @param string $mainVariable the variable that represents the value to be ordered
 	 * @param integer $diType DataItem type id
 	 */
-	protected function addOrderByData( Condition &$sparqlCondition, $mainVariable, $diType ) {
+	public function addOrderByData( Condition &$sparqlCondition, $mainVariable, $diType ) {
 		if ( $diType == DataItem::TYPE_WIKIPAGE ) {
 			$sparqlCondition->orderByVariable = $mainVariable . 'sk';
 			$skeyExpElement = Exporter::getSpecialPropertyResource( '_SKEY' );
@@ -670,6 +453,15 @@ class ConditionBuilder {
 				}
 			}
 		}
+	}
+
+	private function findStrategyForDescription( Description $description ) {
+
+		if ( $this->conditionBuilderStrategyFinder === null ) {
+			 $this->conditionBuilderStrategyFinder = new ConditionBuilderStrategyFinder( $this );
+		}
+
+		return $this->conditionBuilderStrategyFinder->findStrategyForDescription( $description );
 	}
 
 }
