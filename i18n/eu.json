@@ -33,5 +33,6 @@
 	"smw_result_results": "Emaitzak",
 	"smw_result_noresults": "Ez dago emaitzarik.",
 	"smw_smwadmin_return": "$1-(e)ra itzuli",
-	"smw_smwadmin_datarefreshstopconfirm": "Bai, ziur nago."
+	"smw_smwadmin_datarefreshstopconfirm": "Bai, ziur nago.",
+	"smw-livepreview-loading": "Kargatzen…"
 }

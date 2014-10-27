@@ -221,5 +221,6 @@
 	"smw-ui-tooltip-title-event": "Tapahtuma",
 	"smw_unknowntype": "Tämän ominaisuuden tyyppi on virheellinen",
 	"smw_concept_header": "Konseptin \"$1\" sivut",
-	"smw_conceptarticlecount": "Näytetään $1 {{PLURAL:$1|sivu, joka|sivua, jotka}} kuuluvat tähän konseptiin."
+	"smw_conceptarticlecount": "Näytetään $1 {{PLURAL:$1|sivu, joka|sivua, jotka}} kuuluvat tähän konseptiin.",
+	"smw-livepreview-loading": "Ladataan…"
 }

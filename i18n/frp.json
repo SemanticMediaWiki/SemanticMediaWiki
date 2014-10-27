@@ -109,5 +109,6 @@
 	"smw-createproperty-isproperty": "Ceta propriètât est de tipo « $1 ».",
 	"smw-info-par-message": "Mèssâjo a fâre vêre.",
 	"smw_concept_header": "Pâges du concèpte « $1 »",
-	"smw_conceptarticlecount": "Fâre vêre l{{PLURAL:$1|a pâge que repôse|es $1 pâges que repôsont}} sur cél concèpte."
+	"smw_conceptarticlecount": "Fâre vêre l{{PLURAL:$1|a pâge que repôse|es $1 pâges que repôsont}} sur cél concèpte.",
+	"smw-livepreview-loading": "Chargement..."
 }

@@ -25,5 +25,6 @@
 	"smw_result_next": "Järgmine",
 	"smw_smwadmin_datarefreshstopconfirm": "Jah, ma olen kindel.",
 	"smw-ui-tooltip-title-warning": "Viga",
-	"smw-ui-tooltip-title-event": "Sündmus"
+	"smw-ui-tooltip-title-event": "Sündmus",
+	"smw-livepreview-loading": "Laadimine..."
 }

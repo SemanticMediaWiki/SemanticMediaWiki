@@ -22,5 +22,6 @@
 	"smw_pp_type": "Ἰδιότης",
 	"smw_result_prev": "Προηγουμέναι",
 	"smw_result_next": "Ἑπόμεναι",
-	"smw_result_noresults": "Οὐδὲν ἀποτέλεσμα."
+	"smw_result_noresults": "Οὐδὲν ἀποτέλεσμα.",
+	"smw-livepreview-loading": "Φορτίζειν…"
 }

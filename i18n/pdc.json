@@ -15,5 +15,6 @@
 	"smw_pp_from": "Blatt",
 	"smw_result_prev": "zerick",
 	"smw_result_next": "vaerschich",
-	"smw_smwadmin_return": "Zerick zu $1"
+	"smw_smwadmin_return": "Zerick zu $1",
+	"smw-livepreview-loading": "Laade…"
 }

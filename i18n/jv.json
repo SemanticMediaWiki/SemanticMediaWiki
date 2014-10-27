@@ -93,5 +93,6 @@
 	"smw_result_next": "Sabanjuré",
 	"smw_result_results": "Pituwas (kasil)",
 	"smw_result_noresults": "Nuwun sèwu, ora ana pituwasé (kasilé).",
-	"smw_unknowntype": "Jenis “$1” sing ora disengkuyung, didéfinisi kanggo sifat."
+	"smw_unknowntype": "Jenis “$1” sing ora disengkuyung, didéfinisi kanggo sifat.",
+	"smw-livepreview-loading": "Ngunggahaké…"
 }

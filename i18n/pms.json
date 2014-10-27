@@ -243,5 +243,6 @@
 	"smw-ui-tooltip-title-legend": "Legenda",
 	"smw_unknowntype": "La sòrt ëd costa propietà a l'é pa bon-a.",
 	"smw_concept_header": "Pàgine dël concet \"$1\"",
-	"smw_conceptarticlecount": "Smon-e $1 {{PLURAL:$1|pàgina|pàgine}} che a aparten-o a col concet."
+	"smw_conceptarticlecount": "Smon-e $1 {{PLURAL:$1|pàgina|pàgine}} che a aparten-o a col concet.",
+	"smw-livepreview-loading": "Antramentr ch'as caria…"
 }

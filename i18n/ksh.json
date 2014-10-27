@@ -200,5 +200,6 @@
 	"smw_unknowntype": "De Zoot „$1“ för de Eijeschaff dom_mer nit ongershtöze.",
 	"smw_concept_header": "Sigge vun däm Kumzäp „$1“",
 	"smw_conceptarticlecount": "{{PLURAL:$1|Ein Sigg jehööt|$1 Sigge jehüüre|Et jehüüere kein Sigge}} zoh dämm Kumzäp{{PLURAL:$1|:|:|.}}",
-	"smw-sp-admin-settings-title": "Enschtällonge"
+	"smw-sp-admin-settings-title": "Enschtällonge",
+	"smw-livepreview-loading": "Ben aam Laade{{int:ellipsis}}"
 }

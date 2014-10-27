@@ -45,5 +45,6 @@
 	"smw_result_next": "Volgende",
 	"smw_result_results": "Resultate",
 	"smw_result_noresults": "Geen resultate.",
-	"smw_unknowntype": "Onondersteunde tipe \"$1\" gedefinieer vir eienskap."
+	"smw_unknowntype": "Onondersteunde tipe \"$1\" gedefinieer vir eienskap.",
+	"smw-livepreview-loading": "Laai tans…"
 }

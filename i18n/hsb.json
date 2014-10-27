@@ -267,7 +267,6 @@
 	"smw-concept-cache-text": "Koncept ma dohromady $1 {{PLURAL:$1|stronu|stronje|strony|stronow}} a je so $2 posledni raz zaktualizował.",
 	"smw_concept_header": "Strony koncepta \"$1\"",
 	"smw_conceptarticlecount": "Deleka {{PLURAL:$1|so $1 strona pokazuje|so $1 stronje pokazujetej|so $1 strony pokazuja|so $1 stronow pokazuje}}.",
-	"smw-qp-aggregatable-empty-data": "Požadane nahromadźujomne daty njedachu so njedosahacych wuběranskich kriterijow dla zwobraznić.",
 	"right-smw-admin": "Administraciske nadawki (Semantic MediaWiki)",
 	"group-smwadministrator": "SMW-Administratorojo",
 	"group-smwadministrator-member": "{{GENDER:$1|SMW-administrator|SMW-administratorka}}",
@@ -277,5 +276,6 @@
 	"smw-sp-properties-header-label": "Lisćina kajkosćow",
 	"smw-sp-admin-settings-title": "Konfiguraciske nastajenja",
 	"smw-sp-admin-settings-button": "Lisćinu nastajenjow wutworić",
-	"smw-sp-admin-idlookup-objectid": "ID objekta:"
+	"smw-sp-admin-idlookup-objectid": "ID objekta:",
+	"smw-livepreview-loading": "Čita so…"
 }

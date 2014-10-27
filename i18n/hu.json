@@ -212,5 +212,6 @@
 	"smw-info-par-icon": "Megjelenítendő jel, \"info\" vagy \"warning.\"",
 	"smw_unknowntype": "A megadott „$1” típus nem támogatott a tulajdonságnál.",
 	"smw_concept_header": "A(z) „$1” koncepcióhoz tartozó lapok",
-	"smw_conceptarticlecount": "A koncepcióhoz tartozó $1 lap megjelenítése."
+	"smw_conceptarticlecount": "A koncepcióhoz tartozó $1 lap megjelenítése.",
+	"smw-livepreview-loading": "Betöltés…"
 }

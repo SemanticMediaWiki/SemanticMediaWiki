@@ -82,5 +82,6 @@
 	"smw_smwadmin_datarefreshstop": "បញ្ឈប់​ការ​បន្ទាន់សម័យ​នេះ",
 	"smw_smwadmin_datarefreshstopconfirm": "បាទ/ចាស, ខ្ញុំ​ប្រាកដ​ហើយ​។",
 	"smw-createproperty-isproperty": "នេះ​គឺជា​លក្ខណៈសម្បត្តិមួយ​នៃ​គំរូ $1 ។",
-	"smw-createproperty-allowedvals": "តម្លៃ​ចំនួន$1 ​សម្រាប់​លក្ខណៈសម្បត្តិ​នេះគឺ​៖"
+	"smw-createproperty-allowedvals": "តម្លៃ​ចំនួន$1 ​សម្រាប់​លក្ខណៈសម្បត្តិ​នេះគឺ​៖",
+	"smw-livepreview-loading": "កំពុងផ្ទុក…"
 }
