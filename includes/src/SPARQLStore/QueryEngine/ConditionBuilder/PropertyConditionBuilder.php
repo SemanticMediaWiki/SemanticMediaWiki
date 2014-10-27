@@ -85,16 +85,16 @@ class PropertyConditionBuilder implements ConditionBuilder {
 
 		$property = $description->getProperty();
 
-		list( $innerOrderByProperty, $innerCondition, $innerJoinVariable ) = $this->prepareInnerCondition(
+		list( $innerOrderByProperty, $innerCondition, $innerJoinVariable ) = $this->doResolveInnerConditionRecursively(
 			$property,
 			$description->getDescription()
 		);
 
-		$namespaces = $innerCondition->namespaces;
-
 		if ( $innerCondition instanceof FalseCondition ) {
 			return new FalseCondition();
 		}
+
+		$namespaces = $innerCondition->namespaces;
 
 		$objectName = $this->findObjectNameFromInnerCondition(
 			$innerCondition,
@@ -114,16 +114,12 @@ class PropertyConditionBuilder implements ConditionBuilder {
 			$namespaces
 		);
 
-		$condition = "$subjectName $propertyName $objectName .\n";
-		$innerConditionString = $innerCondition->getCondition() . $innerCondition->getWeakConditionString();
-
-		if ( $innerConditionString !== '' ) {
-			if ( $innerCondition instanceof FilterCondition ) {
-				$condition .= $innerConditionString;
-			} else {
-				$condition .= "{ $innerConditionString}\n";
-			}
-		}
+		$condition = $this->concatenateToConditionString(
+			$subjectName,
+			$propertyName,
+			$objectName,
+			$innerCondition
+		);
 
 		$result = new WhereCondition( $condition, true, $namespaces );
 
@@ -144,7 +140,7 @@ class PropertyConditionBuilder implements ConditionBuilder {
 		return $result;
 	}
 
-	private function prepareInnerCondition( DIProperty $property, Description $description ) {
+	private function doResolveInnerConditionRecursively( DIProperty $property, Description $description ) {
 
 		$innerOrderByProperty = null;
 
@@ -216,6 +212,23 @@ class PropertyConditionBuilder implements ConditionBuilder {
 		}
 
 		return array( $subjectName, $objectName, $nonInverseProperty );
+	}
+
+	private function concatenateToConditionString( $subjectName, $propertyName, $objectName, $innerCondition ) {
+
+		$condition = "$subjectName $propertyName $objectName .\n";
+
+		$innerConditionString = $innerCondition->getCondition() . $innerCondition->getWeakConditionString();
+
+		if ( $innerConditionString === '' ) {
+			return $condition;
+		}
+
+		if ( $innerCondition instanceof FilterCondition ) {
+			return $condition . $innerConditionString;
+		}
+
+		return $condition . "{ $innerConditionString}\n";
 	}
 
 }

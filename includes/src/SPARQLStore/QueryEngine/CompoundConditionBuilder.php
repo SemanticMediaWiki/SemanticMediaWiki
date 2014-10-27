@@ -169,11 +169,9 @@ class CompoundConditionBuilder {
 	 */
 	public function mapDescriptionToCondition( Description $description, $joinVariable, $orderByProperty ) {
 
-		if ( $description instanceof Conjunction ) {
-			return $this->buildConjunctionCondition( $description, $joinVariable, $orderByProperty );
-		} elseif ( $description instanceof Disjunction ) {
+		if ( $description instanceof Disjunction ) {
 			return $this->buildDisjunctionCondition( $description, $joinVariable, $orderByProperty );
-		} elseif ( $description instanceof SomeProperty || $description instanceof NamespaceDescription || $description instanceof ClassDescription || $description instanceof ValueDescription ) {
+		} elseif ( $description instanceof Conjunction || $description instanceof SomeProperty || $description instanceof NamespaceDescription || $description instanceof ClassDescription || $description instanceof ValueDescription ) {
 			return $this->findStrategyForDescription( $description )->buildCondition( $description, $joinVariable, $orderByProperty );
 		} elseif ( $description instanceof ConceptDescription ) {
 			return new TrueCondition(); ///TODO Implement concept queries
@@ -181,103 +179,6 @@ class CompoundConditionBuilder {
 
 		 // (e.g. ThingDescription)
 		return $this->buildTrueCondition( $joinVariable, $orderByProperty );
-	}
-
-	/**
-	 * Recursively create an Condition from an Conjunction.
-	 *
-	 * @param $description Conjunction
-	 * @param $joinVariable string name, see mapDescriptionToCondition()
-	 * @param $orderByProperty mixed DIProperty or null, see mapDescriptionToCondition()
-	 *
-	 * @return Condition
-	 */
-	protected function buildConjunctionCondition( Conjunction $description, $joinVariable, $orderByProperty ) {
-
-		$subDescriptions = $description->getDescriptions();
-
-		if ( count( $subDescriptions ) == 0 ) { // empty conjunction: true
-			return $this->buildTrueCondition( $joinVariable, $orderByProperty );
-		} elseif ( count( $subDescriptions ) == 1 ) { // conjunction with one element
-			return $this->mapDescriptionToCondition( reset( $subDescriptions ), $joinVariable, $orderByProperty );
-		}
-
-		$condition = '';
-		$filter = '';
-		$namespaces = $weakConditions = $orderVariables = array();
-		$singletonMatchElement = null;
-		$singletonMatchElementName = '';
-		$hasSafeSubconditions = false;
-
-		foreach ( $subDescriptions as $subDescription ) {
-
-			$subCondition = $this->mapDescriptionToCondition( $subDescription, $joinVariable, null );
-
-			if ( $subCondition instanceof FalseCondition ) {
-				return new FalseCondition();
-			} elseif ( $subCondition instanceof TrueCondition ) {
-				// ignore true conditions in a conjunction
-			} elseif ( $subCondition instanceof WhereCondition ) {
-				$condition .= $subCondition->condition;
-			} elseif ( $subCondition instanceof FilterCondition ) {
-				$filter .= ( $filter ? ' && ' : '' ) . $subCondition->filter;
-			} elseif ( $subCondition instanceof SingletonCondition ) {
-				$matchElement = $subCondition->matchElement;
-
-				if ( $matchElement instanceOf ExpElement ) {
-					$matchElementName = TurtleSerializer::getTurtleNameForExpElement( $matchElement );
-				} else {
-					$matchElementName = $matchElement;
-				}
-
-				if ( $matchElement instanceof ExpNsResource ) {
-					$namespaces[$matchElement->getNamespaceId()] = $matchElement->getNamespace();
-				}
-
-				if ( ( !is_null( $singletonMatchElement ) ) &&
-				     ( $singletonMatchElementName !== $matchElementName ) ) {
-					return new FalseCondition();
-				}
-
-				$condition .= $subCondition->condition;
-				$singletonMatchElement = $subCondition->matchElement;
-				$singletonMatchElementName = $matchElementName;
-			}
-
-			$hasSafeSubconditions = $hasSafeSubconditions || $subCondition->isSafe();
-			$namespaces = array_merge( $namespaces, $subCondition->namespaces );
-			$weakConditions = array_merge( $weakConditions, $subCondition->weakConditions );
-			$orderVariables = array_merge( $orderVariables, $subCondition->orderVariables );
-		}
-
-		if ( !is_null( $singletonMatchElement ) ) {
-			if ( $filter !== '' ) {
-				$condition .= "FILTER( $filter )";
-			}
-
-			$result = new SingletonCondition(
-				$singletonMatchElement,
-				$condition,
-				$hasSafeSubconditions,
-				$namespaces
-			);
-
-		} elseif ( $condition === '' ) {
-			$result = new FilterCondition( $filter, $namespaces );
-		} else {
-			if ( $filter !== '' ) {
-				$condition .= "FILTER( $filter )";
-			}
-
-			$result = new WhereCondition( $condition, $hasSafeSubconditions, $namespaces );
-		}
-
-		$result->weakConditions = $weakConditions;
-		$result->orderVariables = $orderVariables;
-
-		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty );
-
-		return $result;
 	}
 
 	/**
