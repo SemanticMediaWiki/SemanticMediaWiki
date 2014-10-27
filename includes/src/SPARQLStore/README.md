@@ -1,10 +1,10 @@
 # SPARQLStore
 
-The `SPARQLStore` uses two components a base store (by default using the existing `SQLStore`) and a client database connector. The base store accumulates information about properties, value annotations, and statistics.
+The `SPARQLStore` consists of two components, a base store (by default using the existing `SQLStore`) and a client database connector. Currently, the base store is responsible for accumulating information about properties, value annotations, and statistics.
 
 ## Database connector 
 
-The database connector is responsible for updating triples to the store and to answer query requests made by the `QueryEngine` from the [TDB][tdb].
+The database connector is responsible for updating triples to the store and return results from the [TDB][tdb] for query requests made by the `QueryEngine`.
 
 The following client database connectors are currently available:
 
