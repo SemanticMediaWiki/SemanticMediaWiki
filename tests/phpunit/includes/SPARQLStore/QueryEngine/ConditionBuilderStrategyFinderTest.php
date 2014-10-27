@@ -43,6 +43,10 @@ class ConditionBuilderStrategyFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'canBuildConditionFor' )
 			->will( $this->returnValue( true ) );
 
+		$conditionBuilder->expects( $this->once() )
+			->method( 'setCompoundConditionBuilder' )
+			->will( $this->returnself() );
+
 		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -118,6 +122,26 @@ class ConditionBuilderStrategyFinderTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			$description,
 			'\SMW\SPARQLStore\QueryEngine\ConditionBuilder\ClassConditionBuilder'
+		);
+
+		# 2
+		$description = $this->getMockBuilder( '\SMW\Query\Language\NamespaceDescription' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$provider[] = array(
+			$description,
+			'\SMW\SPARQLStore\QueryEngine\ConditionBuilder\NamespaceConditionBuilder'
+		);
+
+		# 3
+		$description = $this->getMockBuilder( '\SMW\Query\Language\SomeProperty' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$provider[] = array(
+			$description,
+			'\SMW\SPARQLStore\QueryEngine\ConditionBuilder\PropertyConditionBuilder'
 		);
 
 		return $provider;

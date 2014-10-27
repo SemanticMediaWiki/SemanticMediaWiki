@@ -39,9 +39,9 @@ class ValueConditionBuilder implements ConditionBuilder {
 	/**
 	 * @since 2.1
 	 *
-	 * @param CompoundConditionBuilder $compoundConditionBuilder
+	 * @param CompoundConditionBuilder|null $compoundConditionBuilder
 	 */
-	public function __construct( CompoundConditionBuilder $compoundConditionBuilder ) {
+	public function __construct( CompoundConditionBuilder $compoundConditionBuilder = null ) {
 		$this->compoundConditionBuilder = $compoundConditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}
@@ -55,6 +55,18 @@ class ValueConditionBuilder implements ConditionBuilder {
 	 */
 	public function canBuildConditionFor( Description $description ) {
 		return $description instanceOf ValueDescription;
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param CompoundConditionBuilder $compoundConditionBuilder
+	 *
+	 * @return self
+	 */
+	public function setCompoundConditionBuilder( CompoundConditionBuilder $compoundConditionBuilder ) {
+		$this->compoundConditionBuilder = $compoundConditionBuilder;
+		return $this;
 	}
 
 	/**

@@ -64,7 +64,8 @@ class NamespaceConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$compoundConditionBuilder = new CompoundConditionBuilder();
 		$compoundConditionBuilder->setResultVariable( $resultVariable );
 
-		$instance = new NamespaceConditionBuilder( $compoundConditionBuilder );
+		$instance = new NamespaceConditionBuilder();
+		$instance->setCompoundConditionBuilder( $compoundConditionBuilder );
 
 		$condition = $instance->buildCondition( $description, $resultVariable, $orderByProperty );
 
@@ -99,7 +100,6 @@ class NamespaceConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			$conditionType,
 			$expected
 		);
-
 
 		return $provider;
 	}

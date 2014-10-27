@@ -35,9 +35,9 @@ class ClassConditionBuilder implements ConditionBuilder {
 	/**
 	 * @since 2.1
 	 *
-	 * @param CompoundConditionBuilder $compoundConditionBuilder
+	 * @param CompoundConditionBuilder|null $compoundConditionBuilder
 	 */
-	public function __construct( CompoundConditionBuilder $compoundConditionBuilder ) {
+	public function __construct( CompoundConditionBuilder $compoundConditionBuilder = null ) {
 		$this->compoundConditionBuilder = $compoundConditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}
@@ -51,6 +51,18 @@ class ClassConditionBuilder implements ConditionBuilder {
 	 */
 	public function canBuildConditionFor( Description $description ) {
 		return $description instanceOf ClassDescription;
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param CompoundConditionBuilder $compoundConditionBuilder
+	 *
+	 * @return self
+	 */
+	public function setCompoundConditionBuilder( CompoundConditionBuilder $compoundConditionBuilder ) {
+		$this->compoundConditionBuilder = $compoundConditionBuilder;
+		return $this;
 	}
 
 	/**

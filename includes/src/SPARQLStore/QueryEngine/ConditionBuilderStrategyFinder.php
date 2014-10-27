@@ -6,6 +6,7 @@ use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ValueConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ClassConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder\NamespaceConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder\PropertyConditionBuilder;
 
 use SMW\Query\Language\Description;
 
@@ -72,7 +73,7 @@ class ConditionBuilderStrategyFinder {
 
 		foreach ( self::$conditionBuilders as $conditionBuilder ) {
 			if ( $conditionBuilder->canBuildConditionFor( $description ) ) {
-				return $conditionBuilder;
+				return $conditionBuilder->setCompoundConditionBuilder( $this->compoundConditionBuilder );
 			}
 		}
 
@@ -80,9 +81,10 @@ class ConditionBuilderStrategyFinder {
 	}
 
 	private function registerDefaultConditionBuilders() {
-		$this->registerConditionBuilder( new ValueConditionBuilder( $this->compoundConditionBuilder ) );
-		$this->registerConditionBuilder( new ClassConditionBuilder( $this->compoundConditionBuilder ) );
-		$this->registerConditionBuilder( new NamespaceConditionBuilder( $this->compoundConditionBuilder ) );
+		$this->registerConditionBuilder( new ValueConditionBuilder() );
+		$this->registerConditionBuilder( new ClassConditionBuilder() );
+		$this->registerConditionBuilder( new NamespaceConditionBuilder() );
+		$this->registerConditionBuilder( new PropertyConditionBuilder() );
 	}
 
 }

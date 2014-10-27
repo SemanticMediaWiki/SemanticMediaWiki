@@ -67,7 +67,8 @@ class ValueConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$compoundConditionBuilder = new CompoundConditionBuilder();
 		$compoundConditionBuilder->setResultVariable( $resultVariable );
 
-		$instance = new ValueConditionBuilder( $compoundConditionBuilder );
+		$instance = new ValueConditionBuilder();
+		$instance->setCompoundConditionBuilder( $compoundConditionBuilder );
 
 		$condition = $instance->buildCondition( $description, $resultVariable, null );
 

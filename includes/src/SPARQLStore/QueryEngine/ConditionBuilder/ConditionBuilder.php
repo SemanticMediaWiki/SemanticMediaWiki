@@ -4,6 +4,7 @@ namespace SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 
 use SMW\Query\Language\Description;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
+use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
 
 /**
  * @license GNU GPL v2+
@@ -21,6 +22,13 @@ interface ConditionBuilder {
 	 * @return boolean
 	 */
 	public function canBuildConditionFor( Description $description );
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param CompoundConditionBuilder $compoundConditionBuilder
+	 */
+	public function setCompoundConditionBuilder( CompoundConditionBuilder $compoundConditionBuilder );
 
 	/**
 	 * @since 2.1
