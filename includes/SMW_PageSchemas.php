@@ -290,7 +290,10 @@ class SMWPageSchemas extends PSExtensionHandler {
 			if ( !in_array( $propTitle, $selectedPages ) ) {
 				continue;
 			}
-			$jobParams['page_text'] = self::createPropertyText( $propertyData['Type'], $propertyData['allowed_values'], $propertyData['LinkedForm'] );
+			$propertyType = array_key_exists( 'Type', $propertyData ) ? $propertyData['Type'] : null;
+			$propertyAllowedValues = array_key_exists( 'allowed_values', $propertyData ) ? $propertyData['allowed_values'] : null;
+			$propertyLinkedForm = array_key_exists( 'LinkedForm', $propertyData ) ? $propertyData['LinkedForm'] : null;
+			$jobParams['page_text'] = self::createPropertyText( $propertyType, $propertyAllowedValues, $propertyLinkedForm );
 			$jobs[] = new PSCreatePageJob( $propTitle, $jobParams );
 		}
 		Job::batchInsert( $jobs );
