@@ -1,11 +1,10 @@
 # SPARQLStore
 
-The `SPARQLStore` uses two components a base store (by default using the existing `SQLStore`) and a client database connector. The base store accumulates information about properties and value annotations as well as statistics while the database connector is responsible for transforming a `#ask` into a `SPARQL` query and requesting data from the [TDB][tdb].
+The `SPARQLStore` uses two components a base store (by default using the existing `SQLStore`) and a client database connector. The base store accumulates information about properties, value annotations, and statistics.
 
-- The `CompoundConditionBuilder` builds a SPARQL condition from a `#ask` query artefact (`Description` object)
-- The condition is being transformed into a qualified `SPARQL` query with the client connector making a request to the database to return a list of raw results
-- The list with raw results is being parsed by the `RawResultParser` to provide a unified `FederateResultSet`
-- For the final step, the `QueryResultFactory` converts the `FederateResultSet` into a SMW specific `QueryResult` object which will fetch remaining data (those selected as printrequests) from the base store to make them available to a `QueryResultPrinter`
+## Database connector 
+
+The database connector is responsible for updating triples to the store and to answer query requests made by the `QueryEngine` from the [TDB][tdb].
 
 The following client database connectors are currently available:
 
@@ -13,6 +12,15 @@ The following client database connectors are currently available:
 - [Virtuoso][virtuoso] is supported by `VirtuosoHttpDatabaseConnector`
 - [4Store][4store] is supported by `FourstoreHttpDatabaseConnector`
 - `GenericHttpDatabaseConnector` is used as default connector
+
+## QueryEngine
+
+The `QueryEngine` is responsible for transforming a `#ask` object into a qualified query using the [`SPARQL` query language][sparql-query].
+
+- The `CompoundConditionBuilder` builds a SPARQL condition from a `#ask` query artefact (`Description` object)
+- The condition is being transformed into a qualified `SPARQL` query with the client connector making a request to the database to return a list of raw results
+- The list with raw results is being parsed by the `RawResultParser` to provide a unified `FederateResultSet`
+- For the final step, the `QueryResultFactory` converts the `FederateResultSet` into a SMW specific `QueryResult` object which will fetch remaining data (those selected as printrequests) from the base store to make them available to a `QueryResultPrinter`
 
 ## Integration testing
 
@@ -83,6 +91,7 @@ $smwgSparqlDefaultGraph = 'http://example.org/myFourstoreGraph';
 
 [fuseki]: https://jena.apache.org/
 [fuseki-dataset]: https://jena.apache.org/documentation/tdb/dynamic_datasets.html
+[sparql-query]:http://www.w3.org/TR/sparql11-query/
 [sparql-dataset]: https://www.w3.org/TR/sparql11-query/#specifyingDataset
 [virtuoso]: https://github.com/openlink/virtuoso-opensource
 [4store]: https://github.com/garlik/4store
