@@ -173,6 +173,7 @@
 	"smw-ui-tooltip-title-event": "Evenement",
 	"smw-ui-tooltip-title-note": "Notiz",
 	"smw-ui-tooltip-title-legend": "Erklärung",
+	"smw-concept-cache-text": "D'Konzept huet am Ganzen {{PLURAL:$1|eng Säit|$1 Säiten}} a gouf fir d'lescht den $2 ëm $3 aktualiséiert.",
 	"smw_concept_header": "Säite vum Konzept \"$1\"",
 	"smw_conceptarticlecount": "Déi $1 {{PLURAL:$1|Säit|Säite}} ginn hei drënner gewisen.",
 	"smw-sp-admin-settings-title": "Astellunge vun der Konfiguratioun",

@@ -283,7 +283,7 @@
 	"smw-ui-tooltip-title-note": "注释",
 	"smw-ui-tooltip-title-legend": "图例",
 	"smw_unknowntype": "该属性的类型无效",
-	"smw-concept-cache-text": "概念共计拥有页面$1个，并于$2更新。",
+	"smw-concept-cache-text": "概念共计拥有{{PLURAL:$1|页面}}$1个，并于$2 $3更新。",
 	"smw_concept_header": "概念\"$1\"的页面",
 	"smw_conceptarticlecount": "显示属于此概念的$1个页面。",
 	"smw-qp-empty-data": "选择标准不充分，请求数据无法显示。",
