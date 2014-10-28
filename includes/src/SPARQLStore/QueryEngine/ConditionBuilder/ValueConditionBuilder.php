@@ -5,6 +5,7 @@ namespace SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;
@@ -95,16 +96,19 @@ class ValueConditionBuilder implements ConditionBuilder {
 		}
 
 		if ( $comparator === '' ) {
-			$result = $this->createConditionForEmptyComparator( $joinVariable, $orderByProperty );
+			return $this->createConditionForEmptyComparator( $joinVariable, $orderByProperty );
 		} elseif ( $comparator == '=' ) {
-			$result = $this->createConditionForEqualityComparator( $dataItem, $joinVariable, $orderByProperty );
+			return $this->createConditionForEqualityComparator( $dataItem, $joinVariable, $orderByProperty );
 		} elseif ( $comparator == 'regex' || $comparator == '!regex' ) {
-			$result = $this->createConditionForRegexComparator( $dataItem, $joinVariable, $orderByProperty, $comparator );
-		} else {
-			$result = $this->createConditionForOtherComparator( $dataItem, $joinVariable, $orderByProperty, $comparator );
+			return $this->createConditionForRegexComparator( $dataItem, $joinVariable, $orderByProperty, $comparator );
 		}
 
-		return $result;
+		return $this->createConditionForAnyOtherComparator(
+			$dataItem,
+			$joinVariable,
+			$orderByProperty,
+			$comparator
+		);
 	}
 
 	private function createConditionForEmptyComparator( $joinVariable, $orderByProperty ) {
@@ -115,8 +119,12 @@ class ValueConditionBuilder implements ConditionBuilder {
 
 		$expElement = $this->exporter->getDataItemHelperExpElement( $dataItem );
 
-		if ( is_null( $expElement ) ) {
+		if ( $expElement === null ) {
 			$expElement = $this->exporter->getDataItemExpElement( $dataItem );
+		}
+
+		if ( $expElement === null ) {
+			return new FalseCondition();
 		}
 
 		$result = new SingletonCondition( $expElement );
@@ -153,7 +161,7 @@ class ValueConditionBuilder implements ConditionBuilder {
 		return $result;
 	}
 
-	private function createConditionForOtherComparator( $dataItem, $joinVariable, $orderByProperty, $comparator ) {
+	private function createConditionForAnyOtherComparator( $dataItem, $joinVariable, $orderByProperty, $comparator ) {
 
 		$result = new FilterCondition( '', array() );
 

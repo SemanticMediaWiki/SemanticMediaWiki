@@ -83,7 +83,13 @@ class SearchInPageDBIntegrationTest extends MwDBaseUnitTestCase {
 			$results
 		);
 
-		$this->assertEquals( 1, $results->getTotalHits() );
+		// Geo is currently not supported by the SPARQLStore
+		$expectedHits = is_a( $this->getStore(), '\SMWSQLStore3' ) ? 1 : 0;
+
+		$this->assertEquals(
+			$expectedHits,
+			$results->getTotalHits()
+		);
 
 		$pageDeleter = new PageDeleter();
 		$pageDeleter->deletePage( $targetPage );
