@@ -14,7 +14,6 @@ use SMWDINumber as DINumber;
 /**
  * @covers \SMW\Query\Language\ValueDescription
  *
- *
  * @group SMW
  * @group SMWExtension
  *
@@ -53,6 +52,8 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( $expected['comparator'], $instance->getComparator() );
 		$this->assertEquals( $expected['dataItem'], $instance->getDataItem() );
 
+		$this->assertEquals( $expected['property'], $instance->getProperty() );
+
 		$this->assertEquals( $expected['queryString'], $instance->getQueryString() );
 		$this->assertEquals( $expected['queryStringAsValue'], $instance->getQueryString( true ) );
 
@@ -75,6 +76,7 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'comparator'  => SMW_CMP_EQ,
 				'dataItem'    => $dataItem,
+				'property'    => null,
 				'queryString' => '[[:Foo]]',
 				'queryStringAsValue' => 'Foo',
 				'isSingleton' => true
@@ -88,6 +90,7 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'comparator'  => SMW_CMP_LEQ,
 				'dataItem'    => $dataItem,
+				'property'    => null,
 				'queryString' => '[[≤Foo]]',
 				'queryStringAsValue' => '≤Foo',
 				'isSingleton' => false
@@ -104,6 +107,7 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'comparator'  => SMW_CMP_LEQ,
 				'dataItem'    => $dataItem,
+				'property'    => $property,
 				'queryString' => '[[≤9,001]]',
 				'queryStringAsValue' => '≤9,001',
 				'isSingleton' => false
