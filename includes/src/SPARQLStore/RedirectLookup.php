@@ -2,6 +2,9 @@
 
 namespace SMW\SPARQLStore;
 
+use SMW\Cache\Cache;
+use SMW\Cache\FixedInMemoryCache;
+
 use SMW\DIWikiPage;
 
 use SMWSparqlDatabase as SparqlDatabase;
@@ -13,8 +16,6 @@ use SMWTurtleSerializer as TurtleSerializer;
 use RuntimeException;
 
 /**
- * @ingroup Sparql
- *
  * @license GNU GPL v2+
  * @since 2.0
  *
@@ -26,27 +27,29 @@ class RedirectLookup {
 	/**
 	 * @var SMWSparqlDatabase
 	 */
-	private $sparqlDatabase = null;
+	private $connection = null;
 
 	/**
-	 * @var array
+	 * @var Cache|null
 	 */
-	private static $resourceUriTargetCache = array();
+	private static $resourceUriTargetCache = null;
 
 	/**
 	 * @since 2.0
 	 *
-	 * @param SparqlDatabase $sparqlDatabase
+	 * @param SparqlDatabase $connection
+	 * @param Cache|null $cache
 	 */
-	public function __construct( SparqlDatabase $sparqlDatabase ) {
-		$this->sparqlDatabase = $sparqlDatabase;
+	public function __construct( SparqlDatabase $connection, Cache $cache = null ) {
+		$this->connection = $connection;
+		self::$resourceUriTargetCache = $cache;
 	}
 
 	/**
 	 * @since 2.1
 	 */
 	public function clear() {
-		self::$resourceUriTargetCache = array();
+		self::$resourceUriTargetCache = null;
 	}
 
 	/**
@@ -79,11 +82,11 @@ class RedirectLookup {
 			return $expNsResource;
 		}
 
-		if ( !isset( self::$resourceUriTargetCache[ $expNsResource->getUri() ] ) ) {
-			self::$resourceUriTargetCache[ $expNsResource->getUri() ] = $this->lookupResourceUriTargetFromDatabase( $expNsResource );
+		if ( !$this->getCache()->contains( $expNsResource->getUri() ) ) {
+			$this->getCache()->save( $expNsResource->getUri(), $this->lookupResourceUriTargetFromDatabase( $expNsResource ) );
 		}
 
-		$firstRow = self::$resourceUriTargetCache[ $expNsResource->getUri() ];
+		$firstRow = $this->getCache()->fetch( $expNsResource->getUri() );
 
 		if ( $firstRow === false ) {
 			$exists = false;
@@ -103,7 +106,7 @@ class RedirectLookup {
 		$rediUri = TurtleSerializer::getTurtleNameForExpElement( Exporter::getSpecialPropertyResource( '_REDI' ) );
 		$skeyUri = TurtleSerializer::getTurtleNameForExpElement( Exporter::getSpecialPropertyResource( '_SKEY' ) );
 
-		$federateResultSet = $this->sparqlDatabase->select(
+		$federateResultSet = $this->connection->select(
 			'*',
 			"$resourceUri $skeyUri ?s  OPTIONAL { $resourceUri $rediUri ?r }",
 			array( 'LIMIT' => 1 ),
@@ -127,6 +130,15 @@ class RedirectLookup {
 		}
 
 		return $expNsResource;
+	}
+
+	private function getCache() {
+
+		if ( self::$resourceUriTargetCache === null ) {
+			self::$resourceUriTargetCache = new FixedInMemoryCache( 500 );
+		}
+
+		return self::$resourceUriTargetCache;
 	}
 
 }
