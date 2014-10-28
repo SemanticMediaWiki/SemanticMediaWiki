@@ -58,6 +58,30 @@ class ValueConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * @dataProvider notSupportedDataItemTypeProvider
+	 */
+	public function testCreateFalseConditionForNotSupportedDataItemType( $dataItem ) {
+
+		$resultVariable = 'result';
+
+		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new ValueConditionBuilder( $compoundConditionBuilder );
+
+		$description = new ValueDescription(
+			$dataItem,
+			null
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\QueryEngine\Condition\FalseCondition',
+			$instance->buildCondition( $description, $resultVariable, null )
+		);
+	}
+
+	/**
 	 * @dataProvider comparatorProvider
 	 */
 	public function testValueConditionForDifferentComparators( $description, $expectedConditionType, $expectedConditionString ) {
@@ -320,6 +344,27 @@ class ValueConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			$description,
 			$conditionType,
 			$expected
+		);
+
+		return $provider;
+	}
+
+	public function notSupportedDataItemTypeProvider() {
+
+		$dataItem = $this->getMockBuilder( '\SMWDIGeoCoord' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$provider[] = array(
+			$dataItem
+		);
+
+		$dataItem = $this->getMockBuilder( '\SMW\DIConcept' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$provider[] = array(
+			$dataItem
 		);
 
 		return $provider;
