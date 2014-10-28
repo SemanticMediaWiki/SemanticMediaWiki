@@ -12,7 +12,8 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 
 ## Bug fixes
 
-* #520 Fixed the `SPAPRQLStore` query selection for subobjects for namespace condition
+* #500 Fixed the `SPAPRQLStore` to return a `FalseCondition` instead of an exception for not supported data types (e.g `Geo`)
+* #520 Fixed the `SPAPRQLStore` query selection for subobjects used with a namespace condition
 * #543 Removes invalid category value links to `SearchByProperty` on `Special:Browse` (bug 33449)
 * #537 Fixed parameter encoding in `Special:SearchByProperty` for hyphens and spaces (bug 16150)
 * #554 Enhance concept pages by also providing the time of the last update and not just the date
