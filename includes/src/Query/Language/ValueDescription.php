@@ -67,6 +67,15 @@ class ValueDescription extends Description {
 	}
 
 	/**
+	 * @since  2.1
+	 *
+	 * @return DIProperty|null
+	 */
+	public function getProperty() {
+		return $this->property;
+	}
+
+	/**
 	 * @return integer
 	 */
 	public function getComparator() {
