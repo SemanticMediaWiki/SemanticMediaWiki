@@ -166,10 +166,8 @@ class CompoundConditionBuilder {
 	 */
 	public function mapDescriptionToCondition( Description $description, $joinVariable, $orderByProperty ) {
 
-		if ( $description instanceof Disjunction || $description instanceof Conjunction || $description instanceof SomeProperty || $description instanceof NamespaceDescription || $description instanceof ClassDescription || $description instanceof ValueDescription ) {
+		if ( $description instanceof ConceptDescription || $description instanceof Disjunction || $description instanceof Conjunction || $description instanceof SomeProperty || $description instanceof NamespaceDescription || $description instanceof ClassDescription || $description instanceof ValueDescription ) {
 			return $this->findStrategyForDescription( $description )->buildCondition( $description, $joinVariable, $orderByProperty );
-		} elseif ( $description instanceof ConceptDescription ) {
-			return new TrueCondition(); ///TODO Implement concept queries
 		}
 
 		 // (e.g. ThingDescription)

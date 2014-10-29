@@ -3,15 +3,12 @@
 namespace SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
-use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
 
 use SMW\Query\Language\Description;
-use SMW\Query\Language\NamespaceDescription;
+use SMW\Query\Language\ConceptDescription;
 
-use SMWDataItem as DataItem;
-use SMWExpLiteral as ExpLiteral;
 use SMWExporter as Exporter;
-use SMWTurtleSerializer as TurtleSerializer;
 
 /**
  * @license GNU GPL v2+
@@ -20,7 +17,7 @@ use SMWTurtleSerializer as TurtleSerializer;
  * @author Markus Krötzsch
  * @author mwjames
  */
-class NamespaceConditionBuilder implements ConditionBuilder {
+class ConceptConditionBuilder implements ConditionBuilder {
 
 	/**
 	 * @var CompoundConditionBuilder
@@ -50,7 +47,7 @@ class NamespaceConditionBuilder implements ConditionBuilder {
 	 * @return boolean
 	 */
 	public function canBuildConditionFor( Description $description ) {
-		return $description instanceOf NamespaceDescription;
+		return $description instanceOf ConceptDescription;
 	}
 
 	/**
@@ -66,9 +63,9 @@ class NamespaceConditionBuilder implements ConditionBuilder {
 	}
 
 	/**
-	 * Create an Condition from a NamespaceDescription
+	 * Create an Condition from a ConceptDescription
 	 *
-	 * @param NamespaceDescription $description
+	 * @param ConceptDescription $description
 	 * @param string $joinVariable
 	 * @param DIProperty|null $orderByProperty
 	 *
@@ -76,22 +73,8 @@ class NamespaceConditionBuilder implements ConditionBuilder {
 	 */
 	public function buildCondition( Description $description, $joinVariable, $orderByProperty = null ) {
 
-		$nspropExpElement = $this->exporter->getSpecialNsResource( 'swivt', 'wikiNamespace' );
-		$nsExpElement = new ExpLiteral( strval( $description->getNamespace() ), 'http://www.w3.org/2001/XMLSchema#integer' );
-
-		$nsName = TurtleSerializer::getTurtleNameForExpElement( $nsExpElement );
-		$condition = "{ ?$joinVariable " . $nspropExpElement->getQName() . " $nsName . }\n";
-
-		$result = new WhereCondition( $condition, true, array() );
-
-		$this->compoundConditionBuilder->addOrderByDataForProperty(
-			$result,
-			$joinVariable,
-			$orderByProperty,
-			DataItem::TYPE_WIKIPAGE
-		);
-
-		return $result;
+		// TODO Implement concept queries
+		return new TrueCondition();
 	}
 
 }

@@ -154,6 +154,26 @@ class ConditionBuilderStrategyFinderTest extends \PHPUnit_Framework_TestCase {
 			'\SMW\SPARQLStore\QueryEngine\ConditionBuilder\ConjunctionConditionBuilder'
 		);
 
+		# 5
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Disjunction' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$provider[] = array(
+			$description,
+			'\SMW\SPARQLStore\QueryEngine\ConditionBuilder\DisjunctionConditionBuilder'
+		);
+
+		# 6
+		$description = $this->getMockBuilder( '\SMW\Query\Language\ConceptDescription' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$provider[] = array(
+			$description,
+			'\SMW\SPARQLStore\QueryEngine\ConditionBuilder\ConceptConditionBuilder'
+		);
+
 		return $provider;
 	}
 

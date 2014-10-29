@@ -9,6 +9,7 @@ use SMW\SPARQLStore\QueryEngine\ConditionBuilder\NamespaceConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder\PropertyConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ConjunctionConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder\DisjunctionConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ConceptConditionBuilder;
 
 use SMW\Query\Language\Description;
 
@@ -89,6 +90,7 @@ class ConditionBuilderStrategyFinder {
 		$this->registerConditionBuilder( new ValueConditionBuilder() );
 		$this->registerConditionBuilder( new ClassConditionBuilder() );
 		$this->registerConditionBuilder( new NamespaceConditionBuilder() );
+		$this->registerConditionBuilder( new ConceptConditionBuilder() );
 	}
 
 }

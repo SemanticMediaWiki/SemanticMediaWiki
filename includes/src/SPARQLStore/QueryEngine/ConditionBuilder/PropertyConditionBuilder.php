@@ -73,7 +73,7 @@ class PropertyConditionBuilder implements ConditionBuilder {
 	}
 
 	/**
-	 * Recursively create an Condition from an SomeProperty
+	 * Recursively create an Condition from SomeProperty
 	 *
 	 * @param SomeProperty $description
 	 * @param string $joinVariable
