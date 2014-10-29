@@ -324,14 +324,8 @@ class SMWPageSchemas extends PSExtensionHandler {
 			$text .= "\n\n" . wfMessage( 'smw-createproperty-allowedvals', $wgContLang->formatNum( count( $allowedValues ) ) )->inContentLanguage()->text();
 
 			foreach ( $allowedValues as $value ) {
-				if ( method_exists( $smwgContLang, 'getPropertyLabels' ) ) {
-					$prop_labels = $smwgContLang->getPropertyLabels();
-					$text .= "\n* [[" . $prop_labels['_PVAL'] . "::$value]]";
-				} else {
-					$spec_props = $smwgContLang->getSpecialPropertiesArray();
-					// FIXME: SMW_SP_POSSIBLE_VALUE is undefined!
-					$text .= "\n* [[" . $spec_props[SMW_SP_POSSIBLE_VALUE] . "::$value]]";
-				}
+				$prop_labels = $smwgContLang->getPropertyLabels();
+				$text .= "\n* [[" . $prop_labels['_PVAL'] . "::$value]]";
 			}
 		}
 
