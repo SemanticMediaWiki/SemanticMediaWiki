@@ -247,6 +247,12 @@ class ConjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$queryResult = $this->getStore()->getQueryResult( $query );
 
+		// Occasionally seen it to return two instead of one, need to find out what's
+		// in the result set
+		if ( $queryResult->getCount() > 1 ) {
+			print_r( $queryResult->toArray() );
+		}
+
 		$this->assertEquals(
 			1,
 			$queryResult->getCount()
