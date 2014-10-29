@@ -64,5 +64,6 @@
 	"smw_emptysubquery": "Kai kurios užklausos dalys turi blogas sąlygas.",
 	"smw-createproperty-isproperty": "Tai yra „$1“ tipo savybė.",
 	"smw-createproperty-allowedvals": "Šios savybės leidžiamos reikšmės yra:",
-	"smw_unknowntype": "Savybei nustatytas nepalaikomas tipas \"$1\"."
+	"smw_unknowntype": "Savybei nustatytas nepalaikomas tipas \"$1\".",
+	"smw-livepreview-loading": "Įkeliama…"
 }

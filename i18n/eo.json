@@ -100,5 +100,6 @@
 	"smw-createproperty-isproperty": "Ĉi tiu estas atributo de speco $1.",
 	"smw-createproperty-allowedvals": "La {{PLURAL:$1|permesita valoro por ĉi tiu atributo|permesitaj valoroj por ĉi tiuj atributoj}} estas:",
 	"smw_unknowntype": "Nesubtenita datumtipo \"$1\" difinita por atributo.",
-	"smw_concept_header": "Paĝoj de koncepto \"$1\""
+	"smw_concept_header": "Paĝoj de koncepto \"$1\"",
+	"smw-livepreview-loading": "Ŝarĝante..."
 }

@@ -57,5 +57,6 @@
 	"smw_smwadmin_db": "డాటాబేసు స్థాపన మరియు నవీకరణ",
 	"smw_smwadmin_announce": "మీ వికీని ప్రకటించండి",
 	"smw_smwadmin_datarefreshbutton": "భోగట్టాను తాజాకరించడం మొదలుపెట్టు",
-	"smw_smwadmin_support": "తోడ్పాటుని పొందడం"
+	"smw_smwadmin_support": "తోడ్పాటుని పొందడం",
+	"smw-livepreview-loading": "లోడవుతోంది..."
 }

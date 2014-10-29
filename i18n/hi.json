@@ -19,5 +19,6 @@
 	"wantedproperties": "चाहिये होनेवाले गुणधर्म",
 	"smw-createproperty-isproperty": "यह $1 प्रकार का गुणधर्म हैं।",
 	"smw-sp-admin-idlookup-title": "ऑबजेक्टआईडी लुकअप",
-	"smw-sp-admin-idlookup-objectid": "ऑब्जेक्ट आईडी:"
+	"smw-sp-admin-idlookup-objectid": "ऑब्जेक्ट आईडी:",
+	"smw-livepreview-loading": "लोड हो रहा है..."
 }

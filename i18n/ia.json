@@ -222,5 +222,6 @@
 	"smw-info-par-icon": "Le icone a monstrar, o \"info\" o \"attention!\".",
 	"smw_unknowntype": "Typo non supportate \"$1\" definite pro proprietate.",
 	"smw_concept_header": "Paginas del concepto \"$1\"",
-	"smw_conceptarticlecount": "Presentation de $1 {{PLURAL:$1|pagina|paginas}} que appertine a ille concepto."
+	"smw_conceptarticlecount": "Presentation de $1 {{PLURAL:$1|pagina|paginas}} que appertine a ille concepto.",
+	"smw-livepreview-loading": "Cargamento in curso…"
 }

@@ -7,5 +7,6 @@
 	"smw_printername_template": "Vörlaag",
 	"smw_printername_category": "Kategorie",
 	"smw_ask_defaultformat": "default",
-	"smw_pp_type": "Egenschop"
+	"smw_pp_type": "Egenschop",
+	"smw-livepreview-loading": "Läädt…"
 }

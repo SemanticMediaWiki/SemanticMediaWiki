@@ -209,5 +209,6 @@
 	"smw-ui-tooltip-title-note": "Catatan",
 	"smw_unknowntype": "Tipe \"$1\" yang tidak didukung ditetapkan untuk properti.",
 	"smw_concept_header": "Halaman berkonsep \"$1\"",
-	"smw_conceptarticlecount": "Menampilkan $1 {{PLURAL:$1|halaman|halaman}} yang termasuk konsep ini."
+	"smw_conceptarticlecount": "Menampilkan $1 {{PLURAL:$1|halaman|halaman}} yang termasuk konsep ini.",
+	"smw-livepreview-loading": "Mengunggah..."
 }

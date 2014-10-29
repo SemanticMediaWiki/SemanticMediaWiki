@@ -98,5 +98,6 @@
 	"smw_adminlinks_datastructure": "Veri yapısı",
 	"smw_adminlinks_displayingdata": "Veriler görüntüleniyor",
 	"smw_adminlinks_inlinequerieshelp": "Satıriçi sorgu yardımı",
-	"smw_unknowntype": "Özellik için desteklenmeyen \"$1\" türü tanımlanmış."
+	"smw_unknowntype": "Özellik için desteklenmeyen \"$1\" türü tanımlanmış.",
+	"smw-livepreview-loading": "Yükleniyor..."
 }

@@ -11,5 +11,6 @@
 	"smw_printername_table": "Cədvəl",
 	"smw_printername_template": "Şablon",
 	"smw_result_results": "Nəticələr",
-	"smw_smwadmin_mediazilla": "Səhvlər haqda bildirişi  <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a> saytında yerləşdirmək olar."
+	"smw_smwadmin_mediazilla": "Səhvlər haqda bildirişi  <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a> saytında yerləşdirmək olar.",
+	"smw-livepreview-loading": "Yüklənir…"
 }

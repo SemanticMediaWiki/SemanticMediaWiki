@@ -179,5 +179,6 @@
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|Povolená hodnota|Povolené hodnoty}} tejto vlastnosti {{PLURAL:$1|je|sú}}:",
 	"smw_unknowntype": "Pre atribút je definovaný nepodporovaný typ \"$1\".",
 	"smw_concept_header": "Návrh „$1”",
-	"smw_conceptarticlecount": "Zobrazuje sa $1 {{PLURAL:$1|stránka patriaca|stránky patriace|stránok patriacich}} tomuto návrhu."
+	"smw_conceptarticlecount": "Zobrazuje sa $1 {{PLURAL:$1|stránka patriaca|stránky patriace|stránok patriacich}} tomuto návrhu.",
+	"smw-livepreview-loading": "Načítava sa…"
 }

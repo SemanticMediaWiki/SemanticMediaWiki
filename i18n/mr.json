@@ -97,5 +97,6 @@
 	"smw_result_noresults": "माफ करा, निकाल नाहीत.",
 	"smw-createproperty-isproperty": "हा $1 प्रकारचा गुणधर्म आहे.",
 	"smw-createproperty-allowedvals": "या गुणधर्माच्या योग्य किंमती पुढीलप्रमाणे आहेत:",
-	"smw_unknowntype": "गुणधर्माचा प्रकार “$1” वापरता येत नाही."
+	"smw_unknowntype": "गुणधर्माचा प्रकार “$1” वापरता येत नाही.",
+	"smw-livepreview-loading": "चढवत आहे…"
 }

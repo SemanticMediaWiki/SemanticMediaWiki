@@ -264,7 +264,6 @@
 	"smw-concept-cache-text": "Koncept ma dogromady $1 {{PLURAL:$1|bok|boka|boki|bokow}} a jo se $2 slědny raz zaktualizěrował.",
 	"smw_concept_header": "Boki koncepta \"$1\"",
 	"smw_conceptarticlecount": "$1 {{PLURAL:$|bok se pokazujo|boka se pokazujotej|boki se pokazuju|bokow se pokazujo}}, {{PLURAL:$1|kótaryž słuša|kótarejž słušatej|kótarež słušaju|kótarež słuša}} k tomu konceptoju.",
-	"smw-qp-aggregatable-empty-data": "Pominane kopjobne daty njejsu dali se zwobrazniś dla njedosegajucych wuběrańskich kriterijow.",
 	"right-smw-admin": "Administraciske nadawki (Semantic MediaWiki)",
 	"group-smwadministrator": "Administratory Semantic MediaWiki",
 	"group-smwadministrator-member": "{{GENDER:$1|SMW-administrator|SMW-administratorka}}",
@@ -272,5 +271,6 @@
 	"action-smw-admin": "administraciske nadawki Semantic MediaWiki",
 	"smw-sp-properties-header-label": "Lisćina kakosćow",
 	"smw-sp-admin-settings-title": "Konfiguraciske nastajenja",
-	"smw-sp-admin-settings-button": "Lisćinu nastajenjow napóraś"
+	"smw-sp-admin-settings-button": "Lisćinu nastajenjow napóraś",
+	"smw-livepreview-loading": "Lodowanje …"
 }

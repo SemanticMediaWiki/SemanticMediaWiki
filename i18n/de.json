@@ -287,7 +287,7 @@
 	"smw-ui-tooltip-title-note": "Hinweis",
 	"smw-ui-tooltip-title-legend": "Legende",
 	"smw_unknowntype": "Der Datentyp dieses Attributs ist ungültig.",
-	"smw-concept-cache-text": "Das Konzept enthält {{PLURAL:$1|eine Seite|$1 Seiten}} und wurde letztmalig am $2 aktualisiert.",
+	"smw-concept-cache-text": "Das Konzept enthält {{PLURAL:$1|eine Seite|$1 Seiten}} und wurde letztmalig am $2 um $3 Uhr aktualisiert.",
 	"smw_concept_header": "Seiten mit dem Konzept „$1“",
 	"smw_conceptarticlecount": "Unterhalb {{PLURAL:$1|wird eine Seite|werden $1 Seiten}} angezeigt.",
 	"smw-qp-empty-data": "Die angeforderten Daten konnten aufgrund unzureichender Auswahlkriterien nicht angezeigt werden.",
@@ -309,8 +309,8 @@
 	"smw-sp-admin-idlookup-docu": "Gibt Informationen zu internen Objektkennungen aus, die jeweils ein semantisches Informationsobjekt (Wikiseite, Subobjekt, usw.) repräsentieren.",
 	"smw-sp-admin-idlookup-objectid": "Objektkennung:",
 	"smw-livepreview-loading": "Lade …",
-	"smw-sp-searchbyproperty-description": "Diese Seite stellt eine einfache [https://www.semantic-mediawiki.org/wiki/Help:Semantisches_Browsen Browsing-Oberfläche] zum Finden von Objekten, beschrieben durch ein Attribut und einen benannten Wert, zur Verfügung. Andere verfügbare Suchoberflächen schließen die [[Special:PageProperty|Seitenattributsuche]] und den [[Special:Ask|Abfragengenerator]] ein.",
-	"smw-sp-searchbyproperty-resultlist-header": "Ergebnisliste",
-	"smw-sp-searchbyproperty-nonvaluequery": "Eine Liste mit Werten, die das zugeordnete Attribut „$1“ haben.",
-	"smw-sp-searchbyproperty-valuequery": "Eine Liste mit Seiten, die das Attribut „$1“ mit dem kommentierten Wert „$2“ haben."
+	"smw-sp-searchbyproperty-description": "Diese Seite stellt eine einfache [https://www.semantic-mediawiki.org/wiki/Help:Semantisches_Browsen Suchoberfläche] zum Finden von Objekten bereit, die ein Attribut mit einem bestimmten Datenwert enthalten. Andere verfügbare Suchoberflächen sind die [[Special:PageProperty|Attributsuche]] sowie der [[Special:Ask|Abfragengenerator]].",
+	"smw-sp-searchbyproperty-resultlist-header": "Liste der Ergebnisse",
+	"smw-sp-searchbyproperty-nonvaluequery": "Eine Liste der Datenwerte des Attributs „$1“.",
+	"smw-sp-searchbyproperty-valuequery": "Eine Liste der Seiten, die das Attribut „$1“ mit dem Datenwert „$2“ enthalten."
 }
