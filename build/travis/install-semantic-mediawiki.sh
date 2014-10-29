@@ -9,9 +9,9 @@ MW_INSTALL_PATH=$BASE_PATH/../mw
 function installPHPUnitWithComposer {
 	if [ "$PHPUNIT" != "" ]
 	then
-		composer require 'phpunit/phpunit='$PHPUNIT --prefer-source
+		composer require 'phpunit/phpunit='$PHPUNIT --prefer-source --update-with-dependencies
 	else
-		composer require 'phpunit/phpunit=3.7.*' --prefer-source
+		composer require 'phpunit/phpunit=3.7.*' --prefer-source --update-with-dependencies
 	fi
 }
 
