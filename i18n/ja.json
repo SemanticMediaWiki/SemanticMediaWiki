@@ -11,7 +11,8 @@
 			"Whym",
 			"青子守歌",
 			"아라",
-			"Rxy"
+			"Rxy",
+			"SkyDaisy9"
 		]
 	},
 	"smw-desc": "ウィキを機械や人間にとってよりアクセスしやすいものにする ([https://semantic-mediawiki.org/wiki/Help:User_manual オンラインドキュメント])",
@@ -263,7 +264,7 @@
 	"smw-ui-tooltip-title-note": "注記",
 	"smw-ui-tooltip-title-legend": "凡例",
 	"smw_unknowntype": "このプロパティの型は無効です",
-	"smw-concept-cache-text": "概念には $1 {{PLURAL:$1|件のページ}}があり、最終更新は $2 です。",
+	"smw-concept-cache-text": "このコンセプトについては合計 $1 {{PLURAL:$1|件のページ}}があり、最終更新は $2 $3です。",
 	"smw_concept_header": "概念「$1」のページ",
 	"smw_conceptarticlecount": "以下に $1 {{PLURAL:$1|件のページ}}を表示しています。",
 	"right-smw-admin": "アクセス管理作業 (Semantic MediaWiki)",
