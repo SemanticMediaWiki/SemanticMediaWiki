@@ -146,10 +146,11 @@ class RebuildData extends \Maintenance {
 			return;
 		}
 
+		$time = round( $time, 2 ) . ' sec ' . ( $time > 60 ? '(' . round( $time / 60, 2 ) . ' min)' : '' );
+
 		$this->reportMessage(
 			"\n" . "Memory used: " . ( $memoryAfter - $memoryBefore ) .
-			" (b: {$memoryBefore}, a: {$memoryAfter}) with a runtime of " .
-			round( $time, 5 ) . ' sec '. "\n"
+			" (b: {$memoryBefore}, a: {$memoryAfter}) with a runtime of " . $time . "\n"
 		);
 	}
 
