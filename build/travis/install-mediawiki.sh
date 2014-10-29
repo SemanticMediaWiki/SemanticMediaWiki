@@ -9,6 +9,12 @@ mv mediawiki-$MW mw
 
 cd mw
 
+## MW 1.25 requires Psr\Logger
+if [ "$MW" == "master" ]
+then
+  composer install
+fi
+
 if [ "$DB" == "postgres" ]
 then
   # See #458
