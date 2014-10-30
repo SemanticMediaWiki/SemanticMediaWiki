@@ -956,14 +956,6 @@ class SMWSQLStore3Writers {
 				false,
 				true
 			);
-
-			$jobs = $this->makeUpdateJobsForNewRedirect(
-				$subject_t,
-				$subject_ns,
-				$curtarget_t,
-				$curtarget_ns
-			);
-
 		} elseif ( $old_tid != 0 ) { // existing redirect is changed or deleted
 			$db->delete(
 				'smw_fpt_redi',
@@ -1156,21 +1148,6 @@ class SMWSQLStore3Writers {
 		);
 
 		return ( $new_tid == 0 ) ? $sid : $new_tid;
-	}
-
-	private function makeUpdateJobsForNewRedirect( $subjectDBKey, $subjectNS, $targetDBKey, $targetNS ) {
-
-		$jobs = array();
-
-		$title = Title::makeTitleSafe( $subjectNS, $subjectDBKey );
-		$jobs[] = new UpdateJob( $title );
-
-		if ( $targetDBKey !== '' && $targetNS !== -1 ) {
-			$title = Title::makeTitleSafe( $targetNS, $targetDBKey );
-			$jobs[] = new UpdateJob( $title );
-		}
-
-		return $jobs;
 	}
 
 }
