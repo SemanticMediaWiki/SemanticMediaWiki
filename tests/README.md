@@ -1,5 +1,11 @@
 
-Tests are developed and used to verify that an expected behaviour does occur for the described boundaries (using parameters to specify the requirements) where results can be accepted or need to be rejected.
+# Different types of testing
+
+In general there are two different types of testing a manual (without using any tool or script) and/or an automated approach.
+
+If you choose to do manual testing you just download a related branch using `composer require "mediawiki/semantic-media-wiki:dev-foo` where `foo` refers to the branch name and after the download run `composer dump-autoload` to ensure that all classes are correctly initialized before starting a test.
+
+For the automated approach, Semantic MediaWiki uses [PHPUnit][phpunit] as script based testing methodology. Scripted tests are developed to verify an expected behaviour for specified requirements that allows to decide whether a result should be rejected or can be accepted and ultimately is used to decribe a behaviour.
 
 - Unit test in most cases refers to a test that confirms an expected result for a unit, module, or class
 - Integration test normally combines multiple components into a single process to verify that the integration produces an expected result
@@ -7,7 +13,7 @@ Tests are developed and used to verify that an expected behaviour does occur for
 
 # PHPUnit
 
-Most tests for SMW are written for and executable by [PHPUnit][phpunit]. PHPUnit provides the necessary environment to execute unit tests within PHP. Information about how to work with PHPunit can be found at [smw.org][smw] and [mediawiki.org][mw-phpunit-testing].
+Most scripted tests for SMW are written for and executed by PHPUnit. PHPUnit provides the necessary environment to execute unit tests within PHP. Information about how to work with PHPunit can be found at [smw.org][smw] and [mediawiki.org][mw-phpunit-testing].
 
 In case PHUnit is not already installed, use `composer require phpunit/phpunit:~4.1` to install the package and execute the tests by simply running the `mw-phpunit-runner.php` script from the test directory or use [`phpunit`][mw-phpunit-testing] together with the PHPUnit configuration file and MediaWiki's `phpunit.php` loader.
 
