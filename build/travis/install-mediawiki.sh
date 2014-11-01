@@ -3,9 +3,22 @@ set -ex
 
 cd ..
 
-wget https://github.com/wikimedia/mediawiki/archive/$MW.tar.gz
+## Use sha (master@5cc1f1d) to download a particular commit to avoid breakages
+## introduced by MediaWiki core
+if [[ "$MW" == *@* ]]
+then
+  arrMw=(${MW//@/ })
+  MW=${arrMw[0]}
+  SOURCE=${arrMw[1]}
+else
+ MW=$MW
+ SOURCE=$MW
+fi
+
+wget https://github.com/wikimedia/mediawiki/archive/$SOURCE.tar.gz -O $MW.tar.gz
+
 tar -zxf $MW.tar.gz
-mv mediawiki-$MW mw
+mv mediawiki-* mw
 
 cd mw
 
