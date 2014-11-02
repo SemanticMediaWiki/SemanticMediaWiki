@@ -10,6 +10,7 @@ use SMW\SPARQLStore\QueryEngine\ConditionBuilder\PropertyConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ConjunctionConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder\DisjunctionConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ConceptConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ThingConditionBuilder;
 
 use SMW\Query\Language\Description;
 
@@ -35,6 +36,11 @@ class ConditionBuilderStrategyFinder {
 	 * @var ConditionBuilder[]
 	 */
 	private static $conditionBuilders = array();
+
+	/**
+	 * @var ConditionBuilder
+	 */
+	private static $defaultConditionBuilder = null;
 
 	/**
 	 * @since 2.1
@@ -80,7 +86,7 @@ class ConditionBuilderStrategyFinder {
 			}
 		}
 
-		return null;
+		return self::$defaultConditionBuilder->setCompoundConditionBuilder( $this->compoundConditionBuilder );
 	}
 
 	private function registerDefaultConditionBuilders() {
@@ -91,6 +97,8 @@ class ConditionBuilderStrategyFinder {
 		$this->registerConditionBuilder( new ClassConditionBuilder() );
 		$this->registerConditionBuilder( new NamespaceConditionBuilder() );
 		$this->registerConditionBuilder( new ConceptConditionBuilder() );
+
+		self::$defaultConditionBuilder = new ThingConditionBuilder();
 	}
 
 }

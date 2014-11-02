@@ -8,33 +8,22 @@ use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 
 use SMW\Query\Language\Description;
 use SMW\Query\Language\SomeProperty;
-use SMW\Query\Language\NamespaceDescription;
-use SMW\Query\Language\Conjunction;
-use SMW\Query\Language\Disjunction;
-use SMW\Query\Language\ClassDescription;
-use SMW\Query\Language\ValueDescription;
-use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\ThingDescription;
 
 use SMW\DataTypeRegistry;
-use SMW\Store;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 
 use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
 use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 use SMWExpNsResource as ExpNsResource;
-use SMWExpLiteral as ExpLiteral;
-use SMWExpElement as ExpElement;
 
 use RuntimeException;
 
 /**
- * Condition mapping from Query objects to SPARQL
- *
- * @ingroup SMWStore
+ * Build an internal representation for a SPARQL condition from individual query
+ * descriptions
  *
  * @license GNU GPL v2+
  * @since 2.0
@@ -165,13 +154,11 @@ class CompoundConditionBuilder {
 	 * @return Condition
 	 */
 	public function mapDescriptionToCondition( Description $description, $joinVariable, $orderByProperty ) {
-
-		if ( $description instanceof ConceptDescription || $description instanceof Disjunction || $description instanceof Conjunction || $description instanceof SomeProperty || $description instanceof NamespaceDescription || $description instanceof ClassDescription || $description instanceof ValueDescription ) {
-			return $this->findStrategyForDescription( $description )->buildCondition( $description, $joinVariable, $orderByProperty );
-		}
-
-		 // (e.g. ThingDescription)
-		return $this->buildTrueCondition( $joinVariable, $orderByProperty );
+		return $this->findBuildStrategyForDescription( $description )->buildCondition(
+			$description,
+			$joinVariable,
+			$orderByProperty
+		);
 	}
 
 	/**
@@ -271,7 +258,7 @@ class CompoundConditionBuilder {
 		}
 	}
 
-	private function findStrategyForDescription( Description $description ) {
+	private function findBuildStrategyForDescription( Description $description ) {
 
 		if ( $this->conditionBuilderStrategyFinder === null ) {
 			 $this->conditionBuilderStrategyFinder = new ConditionBuilderStrategyFinder( $this );

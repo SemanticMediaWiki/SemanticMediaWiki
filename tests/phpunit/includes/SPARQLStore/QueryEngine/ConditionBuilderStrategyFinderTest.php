@@ -64,7 +64,7 @@ class ConditionBuilderStrategyFinderTest extends \PHPUnit_Framework_TestCase {
 		$instance->clear();
 	}
 
-	public function testUnknownStrategyIsToReturnNull() {
+	public function testForAnyUnknownStrategyToReturnThingConditionBuilder() {
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
@@ -76,7 +76,8 @@ class ConditionBuilderStrategyFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ConditionBuilderStrategyFinder( $compoundConditionBuilder );
 
-		$this->assertNull(
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\QueryEngine\ConditionBuilder\ThingConditionBuilder',
 			$instance->findStrategyForDescription( $description )
 		);
 

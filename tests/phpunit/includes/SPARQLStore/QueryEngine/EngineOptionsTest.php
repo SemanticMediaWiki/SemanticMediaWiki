@@ -29,9 +29,20 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new EngineOptions();
 
-		$this->assertFalse( $instance->ignoreQueryErrors );
-		$this->assertTrue( $instance->sortingSupport );
-		$this->assertTrue( $instance->randomSortingSupport );
+		$this->assertEquals(
+			$instance->ignoreQueryErrors,
+			$GLOBALS['smwgIgnoreQueryErrors']
+		);
+
+		$this->assertEquals(
+			$instance->sortingSupport,
+			$GLOBALS['smwgQSortingSupport']
+		);
+
+		$this->assertEquals(
+			$instance->randomSortingSupport,
+			$GLOBALS['smwgQRandSortingSupport']
+		);
 	}
 
 }
