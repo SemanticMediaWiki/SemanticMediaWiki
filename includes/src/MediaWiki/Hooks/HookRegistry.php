@@ -474,6 +474,14 @@ class HookRegistry {
 			return $articleFromTitle->process();
 		};
 
+		/**
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleIsMovable
+		 */
+		$functionHookDefinition['TitleIsMovable'] = function ( $title, &$isMovable ) {
+			$titleIsMovable = new TitleIsMovable( $title, $isMovable );
+			return $titleIsMovable->process();
+		};
+
 		return $functionHookDefinition;
 	}
 
