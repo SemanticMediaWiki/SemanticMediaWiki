@@ -42,7 +42,10 @@ class RedirectLookup {
 	 */
 	public function __construct( SparqlDatabase $connection, Cache $cache = null ) {
 		$this->connection = $connection;
-		self::$resourceUriTargetCache = $cache;
+
+		if ( $cache !== null ) {
+			self::$resourceUriTargetCache = $cache;
+		}
 	}
 
 	/**
@@ -72,7 +75,7 @@ class RedirectLookup {
 
 		$exists = true;
 
-		if ( $expNsResource->isBlankNode() ) {
+		if ( $expNsResource->isBlankNode() || $this->isNonRedirectableResource( $expNsResource ) ) {
 			$exists = false;
 			return $expNsResource;
 		}
@@ -98,6 +101,13 @@ class RedirectLookup {
 		}
 
 		return $expNsResource;
+	}
+
+	private function isNonRedirectableResource( ExpNsResource $expNsResource ) {
+		return $expNsResource->getNamespaceId() === 'swivt' ||
+			$expNsResource->getNamespaceId() === 'rdf' ||
+			$expNsResource->getNamespaceId() === 'rdfs' ||
+			( $expNsResource->getNamespaceId() === 'property' && strrpos( $expNsResource->getLocalName(), 'aux' ) );
 	}
 
 	private function lookupResourceUriTargetFromDatabase( ExpNsResource $expNsResource ) {
