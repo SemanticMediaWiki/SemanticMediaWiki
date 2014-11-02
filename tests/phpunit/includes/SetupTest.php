@@ -2,6 +2,10 @@
 
 namespace SMW\Tests;
 
+use SMW\Tests\Util\Mock\MockObjectBuilder;
+use SMW\Tests\Util\Mock\CoreMockObjectRepository;
+use SMW\Tests\Util\Mock\MediaWikiMockObjectRepository;
+
 use SMW\Setup;
 use SMW\Application;
 
@@ -22,6 +26,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 	private $application;
 	private $defaultConfig;
+	private $mockbuilder;
 
 	protected function setUp() {
 		parent::setUp();
@@ -29,6 +34,14 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'getProperties' )
+			->will( $this->returnValue( array() ) );
+
+		$store->expects( $this->any() )
+			->method( 'getInProperties' )
+			->will( $this->returnValue( array() ) );
 
 		$language = $this->getMockBuilder( '\Language' )
 			->disableOriginalConstructor()
@@ -55,6 +68,11 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		foreach ( $this->defaultConfig as $key => $value ) {
 			$this->application->getSettings()->set( $key, $value );
 		}
+
+		// This needs to be fixed but not now
+		$this->mockbuilder = new MockObjectBuilder();
+		$this->mockbuilder->registerRepository( new CoreMockObjectRepository() );
+		$this->mockbuilder->registerRepository( new MediaWikiMockObjectRepository() );
 	}
 
 	protected function tearDown() {
@@ -137,8 +155,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 	private function tryToExecuteHook( $hook, $object ) {
 
-		return null;
-
 		$empty = '';
 		$emptyArray = array();
 
@@ -147,7 +163,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 		// Evade execution by setting the title object as isSpecialPage
 		// the hook class should always ensure that isSpecialPage is checked
-		$title =  $this->newMockBuilder()->newObject( 'Title', array(
+		$title =  $this->mockbuilder->newObject( 'Title', array(
 			'isSpecialPage' => true
 		) );
 
@@ -171,17 +187,17 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isAllowed' )
 			->will( $this->returnValue( false ) );
 
-		$parserOutput = $this->newMockBuilder()->newObject( 'ParserOutput' );
+		$parserOutput = $this->mockbuilder->newObject( 'ParserOutput' );
 
-		$outputPage = $this->newMockBuilder()->newObject( 'OutputPage', array(
+		$outputPage = $this->mockbuilder->newObject( 'OutputPage', array(
 			'getTitle' => $title
 		) );
 
-		$parser = $this->newMockBuilder()->newObject( 'Parser', array(
+		$parser = $this->mockbuilder->newObject( 'Parser', array(
 			'getTitle' => $title
 		) );
 
-		$linksUpdate = $this->newMockBuilder()->newObject( 'LinksUpdate', array(
+		$linksUpdate = $this->mockbuilder->newObject( 'LinksUpdate', array(
 			'getTitle'        => $title,
 			'getParserOutput' => $parserOutput
 		) );
@@ -214,19 +230,19 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getUser' )
 			->will( $this->returnValue( $user ) );
 
-		$parserOptions = $this->newMockBuilder()->newObject( 'ParserOptions' );
+		$parserOptions = $this->mockbuilder->newObject( 'ParserOptions' );
 
-		$file = $this->newMockBuilder()->newObject( 'File', array(
+		$file = $this->mockbuilder->newObject( 'File', array(
 			'getTitle' => null
 		) );
 
-		$wikiPage = $this->newMockBuilder()->newObject( 'WikiPage', array(
+		$wikiPage = $this->mockbuilder->newObject( 'WikiPage', array(
 			'prepareContentForEdit' => $editInfo,
 			'prepareTextForEdit'    => $editInfo,
 			'getTitle' => $title,
 		) );
 
-		$revision = $this->newMockBuilder()->newObject( 'Revision', array(
+		$revision = $this->mockbuilder->newObject( 'Revision', array(
 			'getTitle'   => $title,
 			'getRawText' => 'Foo',
 			'getContent' => $this->newMockContent()
@@ -541,9 +557,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		return $this->buildDataProvider( 'wgHooks', $hooks, array() );
 	}
 
-	/**
-	 * @return array
-	 */
 	public function parserHooksForInitializationProvider() {
 
 		$hooks = array(
@@ -553,9 +566,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		return $this->buildDataProvider( 'wgHooks', $hooks, array() );
 	}
 
-	/**
-	 * @since  1.9
-	 */
 	private function assertArrayHookEntry( $hook, &$config, $expectedCount ) {
 
 		$config = $config + $this->defaultConfig;
@@ -574,12 +584,8 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$config['wgHooks'][$hook],
 			"Asserts that after run() the entry counts {$expectedCount}"
 		);
-
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	private function assertArrayEntryExists( $target, $entry, $config, $type = 'class' ) {
 
 		$config = $config + $this->defaultConfig;
@@ -630,11 +636,11 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 		if ( class_exists( 'ContentHandler' ) ) {
 
-			$contentHandler = $this->newMockBuilder()->newObject( 'ContentHandler', array(
+			$contentHandler = $this->mockbuilder->newObject( 'ContentHandler', array(
 				'getDefaultFormat' => 'Foo'
 			) );
 
-			$content = $this->newMockBuilder()->newObject( 'Content', array(
+			$content = $this->mockbuilder->newObject( 'Content', array(
 				'getContentHandler' => $contentHandler,
 			) );
 		}

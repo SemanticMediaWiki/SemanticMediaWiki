@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Integration\MediaWiki;
+namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
 use SMW\Tests\Util\UtilityFactory;
 
@@ -23,7 +23,7 @@ use Title;
  *
  * @author mwjames
  */
-class ParserFunctionInTextParseTest extends \PHPUnit_Framework_TestCase {
+class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	private $mwHooksHandler;
 	private $application;
@@ -32,18 +32,16 @@ class ParserFunctionInTextParseTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
+		$utilityFactory = UtilityFactory::getInstance();
+
+		$this->mwHooksHandler = $utilityFactory->newMwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
 
-		$this->parserFactory = UtilityFactory::getInstance()->newParserFactory();
+		$this->parserFactory = $utilityFactory->newParserFactory();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getSemanticData' ) )
 			->getMockForAbstractClass();
-
-	//	$store->expects( $this->atLeastOnce() )
-	//		->method( 'getSemanticData' );
 
 		$this->application = Application::getInstance();
 		$this->application->registerObject( 'Store', $store );
@@ -68,6 +66,11 @@ class ParserFunctionInTextParseTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParseWithParserFunctionEnabled( $parserName, $text ) {
 
+		$expectedNullOutputFor = array(
+			'concept',
+			'declare'
+		);
+
 		$title = Title::newFromText( __METHOD__ );
 		$parser = $this->parserFactory->newFromTitle( $title );
 
@@ -76,14 +79,15 @@ class ParserFunctionInTextParseTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ContentParser( $title, $parser );
 		$instance->parse( $text );
 
-		$this->assertInstanceOf(
-			'ParserOutput',
-			$instance->getOutput()
-		);
+		if ( in_array( $parserName, $expectedNullOutputFor ) ) {
+			return $this->assertNull(
+				$this->findSemanticataFromOutput( $instance->getOutput() )
+			);
+		}
 
-		$this->assertInternalType(
-			'string',
-			$instance->getOutput()->getText()
+		$this->assertInstanceOf(
+			'\SMW\SemanticData',
+			$this->findSemanticataFromOutput( $instance->getOutput() )
 		);
 	}
 
@@ -91,6 +95,13 @@ class ParserFunctionInTextParseTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textToParseProvider
 	 */
 	public function testParseWithParserFunctionDisabled( $parserName, $text ) {
+
+		$expectedNullOutputFor = array(
+			'concept',
+			'declare',
+			'ask',
+			'show'
+		);
 
 		$title = Title::newFromText( __METHOD__ );
 		$parser = $this->parserFactory->newFromTitle( $title );
@@ -100,14 +111,15 @@ class ParserFunctionInTextParseTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ContentParser( $title, $parser );
 		$instance->parse( $text );
 
-		$this->assertInstanceOf(
-			'ParserOutput',
-			$instance->getOutput()
-		);
+		if ( in_array( $parserName, $expectedNullOutputFor ) ) {
+			return $this->assertNull(
+				$this->findSemanticataFromOutput( $instance->getOutput() )
+			);
+		}
 
-		$this->assertInternalType(
-			'string',
-			$instance->getOutput()->getText()
+		$this->assertInstanceOf(
+			'\SMW\SemanticData',
+			$this->findSemanticataFromOutput( $instance->getOutput() )
 		);
 	}
 
@@ -161,6 +173,15 @@ class ParserFunctionInTextParseTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		return $provider;
+	}
+
+	private function findSemanticataFromOutput( $parserOutput ) {
+
+		if ( method_exists( $parserOutput, 'getExtensionData' ) ) {
+			return $parserOutput->getExtensionData( 'smwdata' );
+		}
+
+		return isset( $parserOutput->mSMWData ) ? $parserOutput->mSMWData : null;
 	}
 
 }

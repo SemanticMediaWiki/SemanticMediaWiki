@@ -158,19 +158,7 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			 */
 			'MessageFormatter' => function ( DependencyBuilder $builder ) {
 				return new MessageFormatter( $builder->getArgument( 'Language' ) );
-			},
-
-			/**
-			 * ExtensionContext object definition
-			 *
-			 * @since  1.9
-			 *
-			 * @return ExtensionContext
-			 */
-			'ExtensionContext' => function ( DependencyBuilder $builder ) {
-				return new ExtensionContext( $builder );
 			}
-
 		);
 	}
 

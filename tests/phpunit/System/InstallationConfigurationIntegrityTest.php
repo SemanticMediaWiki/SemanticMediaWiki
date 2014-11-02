@@ -39,11 +39,10 @@ class InstallationGlobalsProviderIntegrityTest extends \PHPUnit_Framework_TestCa
 	public function testSemanticMediaWikiScriptPath() {
 
 		$wgScriptPath   = $this->globalsProvider->get( 'wgScriptPath' );
-		$smwgScriptPath = $this->applicationFactory->getSettings()->get( 'smwgScriptPath' );
 		$expectedPath   = $wgScriptPath . '/extensions/SemanticMediaWiki';
 
 		$this->assertSame(
-			$this->globalsProvider->get( 'smwgScriptPath' ),
+			$expectedPath,
 			$this->applicationFactory->getSettings()->get( 'smwgScriptPath' )
 		);
 
