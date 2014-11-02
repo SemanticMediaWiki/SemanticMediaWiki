@@ -272,7 +272,7 @@
 	"smw-ui-tooltip-title-note": "הערה",
 	"smw-ui-tooltip-title-legend": "מקרא",
 	"smw_unknowntype": "הסוג של מאפיין זה אינו תקין",
-	"smw-concept-cache-text": "לרעיון הזה יש {{PLURAL:$1|דף אחד|$1 דפים}} והוא עודכן $2.",
+	"smw-concept-cache-text": "לרעיון הזה יש {{PLURAL:$1|דף אחד|$1 דפים}} והוא עודכן ב־$2 ב־$3.",
 	"smw_concept_header": "דפים מהרעיון \"$1\"",
 	"smw_conceptarticlecount": "{{PLURAL:$1|מוצג להלן דף אחד|מוצגים להלן $1 דפים}}.",
 	"smw-qp-empty-data": "לא ניתן להציג את הנתונים המבוקשים בגלל אמות מידה בלתי־מספיקות לבחירה.",

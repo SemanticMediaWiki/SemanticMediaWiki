@@ -284,7 +284,7 @@
 	"smw-ui-tooltip-title-note": "Anteckning",
 	"smw-ui-tooltip-title-legend": "Förklaring",
 	"smw_unknowntype": "Felaktig egenskapstyp",
-	"smw-concept-cache-text": "Det här konceptet beskriver {{PLURAL:$1|en sida|$1 sidor}}, och uppdaterades senast $2.",
+	"smw-concept-cache-text": "Det här konceptet har totalt {{PLURAL:$1|en sida|$1 sidor}}, och uppdaterades senast $3, $2.",
 	"smw_concept_header": "Sidor som hör till konceptet \"$1\"",
 	"smw_conceptarticlecount": "Visar {{PLURAL:$1|en sida|$1 sidor}}",
 	"smw-qp-empty-data": "Önskad data kunde inte visas på grund av att vissa urvalskriterier är otillräckliga.",
