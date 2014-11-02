@@ -1,29 +1,31 @@
 <?php
 
-namespace SMW\Configuration;
+namespace SMW\Tests\Util;
 
 use InvalidArgumentException;
 
 /**
- * @ingroup SMW
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9.1
  *
  * @author mwjames
  */
-class Configuration {
+class GlobalsProvider {
 
-	/** @var Configuration */
-	protected static $instance = null;
+	/**
+	 * @var GlobalsProvider
+	 */
+	private static $instance = null;
 
-	/** @var array */
-	protected $container = null;
+	/**
+	 * @var array
+	 */
+	private $container = null;
 
 	/**
 	 * @since 1.9.1
 	 *
-	 * @return Configuration
+	 * @return GlobalsProvider
 	 */
 	public static function getInstance() {
 

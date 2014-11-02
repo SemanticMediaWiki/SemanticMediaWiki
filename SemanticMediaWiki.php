@@ -1,9 +1,7 @@
 <?php
 
-use SMW\SimpleDependencyBuilder;
-use SMW\SharedDependencyContainer;
-use SMW\ExtensionContext;
 use SMW\NamespaceManager;
+use SMW\Application;
 use SMW\Setup;
 
 /**
@@ -127,7 +125,7 @@ $GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $GLOBALS['smwgI
  *
  * @note $wgExtensionFunctions variable is an array that stores
  * functions to be called after most of MediaWiki initialization
- * is complete
+ * has finalized
  *
  * @see https://www.mediawiki.org/wiki/Manual:$wgExtensionFunctions
  *
@@ -135,13 +133,11 @@ $GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $GLOBALS['smwgI
  */
 $GLOBALS['wgExtensionFunctions'][] = function() {
 
-	$builder = new SimpleDependencyBuilder( new SharedDependencyContainer() );
-	$context = new ExtensionContext( $builder );
+	$applicationFactory = Application::getInstance();
 
 	$namespace = new NamespaceManager( $GLOBALS, __DIR__ );
 	$namespace->run();
 
-	$setup = new Setup( $GLOBALS, __DIR__, $context );
+	$setup = new Setup( $applicationFactory, $GLOBALS, __DIR__ );
 	$setup->run();
-
 };

@@ -28,7 +28,7 @@ class HookRegistry {
 	private $directory;
 
 	/**
-	 * @since 1.9
+	 * @since 2.1
 	 *
 	 * @param array &$globalVars
 	 * @param string $directory
@@ -79,32 +79,11 @@ class HookRegistry {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param array $globalVars
 	 */
 	public function register() {
-
 		foreach ( $this->getListOfFunctionHookDefinitions() as $hook => $definition ) {
 			$this->globalVars['wgHooks'][ $hook ][] = $definition;
 		}
-
-		$listOfParserFunctions = $this->getListOfParserFunctionDefinitions();
-
-		$this->globalVars['wgHooks']['ParserFirstCallInit'][] = function ( Parser &$parser ) use ( $listOfParserFunctions ) {
-
-			foreach ( $listOfParserFunctions as $parserFunctionName => $parserFunction ) {
-
-				// Need to find a better way to define the different interface
-				if ( $parserFunctionName === 'declare' ) {
-					$parser->setFunctionHook( $parserFunctionName, $parserFunction, SFH_OBJECT_ARGS );
-					continue;
-				}
-
-				$parser->setFunctionHook( $parserFunctionName, $parserFunction );
-			}
-
-			return true;
-		};
 	}
 
 	private function getListOfParserFunctionDefinitions() {
@@ -221,11 +200,30 @@ class HookRegistry {
 		$basePath   = $this->directory;
 
 		/**
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserFirstCallInit
+		 */
+		$listOfParserFunctions = $this->getListOfParserFunctionDefinitions();
+
+		$functionHookDefinition['ParserFirstCallInit'] = function ( Parser &$parser ) use ( $listOfParserFunctions ) {
+
+			foreach ( $listOfParserFunctions as $parserFunctionName => $parserDefinition ) {
+
+				$parserflag = $parserFunctionName === 'declare' ? SFH_OBJECT_ARGS : 0;
+
+				$parser->setFunctionHook(
+					$parserFunctionName,
+					$parserDefinition,
+					$parserflag
+				);
+			}
+
+			return true;
+		};
+
+		/**
 		 * Hook: ParserAfterTidy to add some final processing to the fully-rendered page output
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserAfterTidy
-		 *
-		 * @since 1.9
 		 */
 		$functionHookDefinition['ParserAfterTidy'] = function ( &$parser, &$text ) {
 			$parserAfterTidy = new ParserAfterTidy( $parser, $text );
@@ -237,8 +235,6 @@ class HookRegistry {
 		 * returning it for the skin to output.
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BaseTemplateToolbox
-		 *
-		 * @since  1.9
 		 */
 		$functionHookDefinition['BaseTemplateToolbox'] = function ( $skinTemplate, &$toolbox ) {
 			$baseTemplateToolbox = new BaseTemplateToolbox( $skinTemplate, $toolbox );
@@ -250,8 +246,6 @@ class HookRegistry {
 		 * metadata.
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinAfterContent
-		 *
-		 * @since  1.9
 		 */
 		$functionHookDefinition['SkinAfterContent'] = function ( &$data, $skin = null ) {
 			$skinAfterContent = new SkinAfterContent( $data, $skin );
@@ -262,8 +256,6 @@ class HookRegistry {
 		 * Hook: Called after parse, before the HTML is added to the output
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/OutputPageParserOutput
-		 *
-		 * @since  1.9
 		 */
 		$functionHookDefinition['OutputPageParserOutput'] = function ( &$outputPage, $parserOutput ) {
 			$outputPageParserOutput = new OutputPageParserOutput( $outputPage, $parserOutput );
@@ -274,8 +266,6 @@ class HookRegistry {
 		 * Hook: Add changes to the output page, e.g. adding of CSS or JavaScript
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
-		 *
-		 * @since 1.9
 		 */
 		$functionHookDefinition['BeforePageDisplay'] = function ( &$outputPage, &$skin ) {
 			$beforePageDisplay = new BeforePageDisplay( $outputPage, $skin );
@@ -287,8 +277,6 @@ class HookRegistry {
 		 * code after <nowiki>, HTML-comments, and templates have been treated.
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/InternalParseBeforeLinks
-		 *
-		 * @since 1.9
 		 */
 		$functionHookDefinition['InternalParseBeforeLinks'] = function ( &$parser, &$text ) {
 			$internalParseBeforeLinks = new InternalParseBeforeLinks( $parser, $text );
@@ -300,8 +288,6 @@ class HookRegistry {
 		 * due to an edit
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/NewRevisionFromEditComplete
-		 *
-		 * @since 1.9
 		 */
 		$functionHookDefinition['NewRevisionFromEditComplete'] = function ( $wikiPage, $revision, $baseId, $user ) {
 			$newRevisionFromEditComplete = new NewRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user );
@@ -313,8 +299,6 @@ class HookRegistry {
 		 * is completed
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleMoveComplete
-		 *
-		 * @since 1.9
 		 */
 		$functionHookDefinition['TitleMoveComplete'] = function ( &$oldTitle, &$newTitle, &$user, $oldId, $newId ) {
 			$titleMoveComplete = new TitleMoveComplete( $oldTitle, $newTitle, $user, $oldId, $newId );
@@ -325,8 +309,6 @@ class HookRegistry {
 		 * Hook: ArticlePurge executes before running "&action=purge"
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticlePurge
-		 *
-		 * @since 1.9
 		 */
 		$functionHookDefinition['ArticlePurge']= function ( &$wikiPage ) {
 			$articlePurge = new ArticlePurge( $wikiPage );
@@ -338,8 +320,6 @@ class HookRegistry {
 		 * to delete an article
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleDelete
-		 *
-		 * @since 1.9
 		 */
 		$functionHookDefinition['ArticleDelete'] = function ( &$wikiPage, &$user, &$reason, &$error ) {
 			$articleDelete = new ArticleDelete( $wikiPage, $user, $reason, $error );
@@ -350,8 +330,6 @@ class HookRegistry {
 		 * Hook: LinksUpdateConstructed called at the end of LinksUpdate() construction
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/LinksUpdateConstructed
-		 *
-		 * @since 1.9
 		 */
 		$functionHookDefinition['LinksUpdateConstructed'] = function ( $linksUpdate ) {
 			$linksUpdateConstructed = new LinksUpdateConstructed( $linksUpdate );
@@ -362,8 +340,6 @@ class HookRegistry {
 		 * Hook: Add extra statistic at the end of Special:Statistics
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialStatsAddExtra
-		 *
-		 * @since 1.9
 		 */
 		$functionHookDefinition['SpecialStatsAddExtra'] = function ( &$extraStats ) use ( $globalVars ) {
 			$specialStatsAddExtra = new SpecialStatsAddExtra( $extraStats, $globalVars['wgVersion'], $globalVars['wgLang'] );
@@ -375,8 +351,6 @@ class HookRegistry {
 		 *
 		 * @Bug 34383
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/CanonicalNamespaces
-		 *
-		 * @since 1.9
 		 */
 		$functionHookDefinition['CanonicalNamespaces'] = function ( &$list ) {
 			$list = $list + NamespaceManager::getCanonicalNames();
