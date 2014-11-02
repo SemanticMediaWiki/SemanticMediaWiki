@@ -2,13 +2,13 @@ This document contains details about event handlers (also known as [Hooks][hooks
 
 Implementing a hook should be made in consideration of the expected performance impact for the front-end (additional DB read/write transactions etc.) and/or the back-end (prolonged job backlog etc.) process.
 
-### SMW::Factbox::showContent
-`SMW::Factbox::showContent` enables to replace or amend text elements shown in the Factbox. Information can be added or redacted but only existing data for an entity (page) is provided which means this hook can not be used to alter the SemanticData container itself.
+### SMW::Factbox::BeforeContentGeneration
+`SMW::Factbox::BeforeContentGeneration` enables to replace or amend text elements shown in the Factbox. Information can be added or redacted but only existing data for an entity (page) is provided which means this hook can not be used to alter the SemanticData container itself.
 
 If `$smwgFactboxUseCache` is set `TRUE`, content is retrieved from cache without executing the hook and only after a new revision is available, the Factbox is being re-build and re-cached. If you want to allow that custom code to being executed on each request it is suggested to set the `$smwgFactboxUseCache` to `FALSE`.
 
 ```php
-$GLOBALS['wgHooks']['SMW::Factbox::showContent'][] = function ( &$text, SemanticData $semanticData ) {
+$GLOBALS['wgHooks']['SMW::Factbox::BeforeContentGeneration'][] = function ( &$text, SemanticData $semanticData ) {
 
 	// Access to the Page language can be achieved by using
 	$language = $semanticData->getSubject()->getTitle()->getPageLanguage()
@@ -53,22 +53,22 @@ Available since SMW 1.9 and before 1.9 it was called smwInitDatatypes.
 
 ## Store
 
-### SMW::Store::selectQueryResultBefore
+### SMW::Store::BeforeQueryResultLookupCompleted
 
 Enables to return a `QueryResult` object before the standard selection process is executed and to suppress the standard selection process completely return `FALSE`.
 
 ```php
-$GLOBALS['wgHooks']['SMW::Store::selectQueryResultBefore'][] = function ( Store $store, Query $query, QueryResult &$result ) {
+$GLOBALS['wgHooks']['SMW::Store::BeforeQueryResultLookupCompleted'][] = function ( Store $store, Query $query, QueryResult &$result ) {
 
 	return true or false;
 };
 ```
 Available since SMW 2.1.
 
-### SMW::Store::selectQueryResultAfter
+### SMW::Store::AfterQueryResultLookupCompleted
 
 ```php
-$GLOBALS['wgHooks']['SMW::Store::selectQueryResultAfter'][] = function ( Store $store, QueryResult &$result ) {
+$GLOBALS['wgHooks']['SMW::Store::AfterQueryResultLookupCompleted'][] = function ( Store $store, QueryResult &$result ) {
 
 	// A return value has no explicit meaning for the following processing
 };

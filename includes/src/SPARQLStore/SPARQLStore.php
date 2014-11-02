@@ -272,11 +272,11 @@ class SPARQLStore extends Store {
 
 		$result = null;
 
-		if ( wfRunHooks( 'SMW::Store::selectQueryResultBefore', array( $this, $query, &$result ) ) ) {
+		if ( wfRunHooks( 'SMW::Store::BeforeQueryResultLookupCompleted', array( $this, $query, &$result ) ) ) {
 			$result = $this->fetchQueryResult( $query );
 		}
 
-		wfRunHooks( 'SMW::Store::selectQueryResultAfter', array( $this, &$result ) );
+		wfRunHooks( 'SMW::Store::AfterQueryResultLookupCompleted', array( $this, &$result ) );
 
 		return $result;
 	}

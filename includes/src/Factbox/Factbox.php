@@ -267,7 +267,7 @@ class Factbox {
 		wfRunHooks( 'smwShowFactbox', array( &$text, $semanticData ) );
 
 		// Hook since 1.9
-		if ( wfRunHooks( 'SMW::Factbox::showContent', array( &$text, $semanticData ) ) ) {
+		if ( wfRunHooks( 'SMW::Factbox::BeforeContentGeneration', array( &$text, $semanticData ) ) ) {
 
 			$this->getTableHeader( $semanticData->getSubject() );
 			$this->getTableContent( $semanticData );

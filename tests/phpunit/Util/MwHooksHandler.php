@@ -26,9 +26,10 @@ class MwHooksHandler {
 	private $listOfSmwHooks = array(
 		'SMWStore::updateDataBefore',
 		'smwInitProperties',
+		'SMW::Factbox::BeforeContentGeneration',
 		'SMW::SQLStore::updatePropertyTableDefinitions',
-		'SMW::Store::selectQueryResultBefore',
-		'SMW::Store::selectQueryResultAfter'
+		'SMW::Store::BeforeQueryResultLookupCompleted',
+		'SMW::Store::AfterQueryResultLookupCompleted'
 	);
 
 	/**

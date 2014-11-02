@@ -3,12 +3,15 @@
 namespace SMW\Tests\Integration;
 
 use SMW\Tests\Util\UtilityFactory;
+use SMW\Application;
+use SMW\DIWikiPage;
 
 use RuntimeException;
 
 /**
  * @group SMW
  * @group SMWExtension
+ *
  * @group semantic-mediawiki-integration
  *
  * @license GNU GPL v2+
@@ -19,16 +22,20 @@ use RuntimeException;
 class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	private $mwHooksHandler;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
+
+		$this->applicationFactory = Application::getInstance();
 	}
 
 	protected function tearDown() {
 		$this->mwHooksHandler->restoreListedHooks();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -56,7 +63,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 	/**
 	 * @dataProvider storeClassProvider
 	 */
-	public function testRegisteredSMWStoreSelectQueryResultBeforeHookThatIncludesFetchingOfQueryResult( $storeClass ) {
+	public function testRegisteredStoreBeforeQueryResultLookupCompletedHookToPreFetchQueryResult( $storeClass ) {
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -70,7 +77,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 		$store->expects( $this->once() )
 			->method( 'fetchQueryResult' );
 
-		$this->mwHooksHandler->register( 'SMW::Store::selectQueryResultBefore', function( $store, $query, &$queryResult ) {
+		$this->mwHooksHandler->register( 'SMW::Store::BeforeQueryResultLookupCompleted', function( $store, $query, &$queryResult ) {
 			$queryResult = 'Foo';
 			return true;
 		} );
@@ -84,7 +91,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 	/**
 	 * @dataProvider storeClassProvider
 	 */
-	public function testRegisteredSMWStoreSelectQueryResultBeforeHookToSuppressDefaultQueryResultFetch( $storeClass ) {
+	public function testRegisteredStoreBeforeQueryResultLookupCompletedHookToSuppressDefaultQueryResultFetch( $storeClass ) {
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -98,7 +105,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 		$store->expects( $this->never() )
 			->method( 'fetchQueryResult' );
 
-		$this->mwHooksHandler->register( 'SMW::Store::selectQueryResultBefore', function( $store, $query, &$queryResult ) {
+		$this->mwHooksHandler->register( 'SMW::Store::BeforeQueryResultLookupCompleted', function( $store, $query, &$queryResult ) {
 
 			$queryResult = 'Foo';
 
@@ -115,7 +122,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 	/**
 	 * @dataProvider storeClassProvider
 	 */
-	public function testRegisteredSMWStoreSelectQueryResultAfterHook( $storeClass ) {
+	public function testRegisteredStoreAfterQueryResultLookupCompleted( $storeClass ) {
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -134,7 +141,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->method( 'fetchQueryResult' )
 			->will( $this->returnValue( $queryResult ) );
 
-		$this->mwHooksHandler->register( 'SMW::Store::selectQueryResultAfter', function( $store, &$queryResult ) {
+		$this->mwHooksHandler->register( 'SMW::Store::AfterQueryResultLookupCompleted', function( $store, &$queryResult ) {
 
 			if ( !$queryResult instanceOf \SMWQueryResult ) {
 				throw new RuntimeException( 'Expected a SMWQueryResult instance' );
@@ -144,6 +151,63 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 		} );
 
 		$store->getQueryResult( $query );
+	}
+
+	/**
+	 * @dataProvider storeClassProvider
+	 */
+	public function testRegisteredFactboxBeforeContentGenerationToSupressDefaultTableCreation( $storeClass ) {
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$semanticData->expects( $this->once() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( new DIWikiPage( 'Bar', NS_MAIN ) ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'hasVisibleProperties' )
+			->will( $this->returnValue( true ) );
+
+		$store = $this->getMockBuilder( $storeClass )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->once() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $semanticData ) );
+
+		$this->applicationFactory->registerObject( 'Store', $store );
+
+		$this->mwHooksHandler->register( 'SMW::Factbox::BeforeContentGeneration', function( &$text, $semanticData ) {
+			$text = $semanticData->getSubject()->getTitle()->getText();
+			return false;
+		} );
+
+		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parserData->expects( $this->any() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( new \ParserOutput() ) );
+
+		$parserData->expects( $this->once() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN ) ) );
+
+		$contextSource = $this->getMockBuilder( '\IContextSource' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = $this->applicationFactory->newFactboxBuilder()->newFactbox( $parserData, $contextSource );
+		$instance->doBuild();
+
+		$this->assertEquals(
+			'Bar',
+			$instance->getContent()
+		);
 	}
 
 	public function storeClassProvider() {
