@@ -5,7 +5,7 @@ In general there are two different types of testing a manual (without using any 
 
 If you choose to do manual testing you just download a related branch using `composer require "mediawiki/semantic-media-wiki:dev-foo` where `foo` refers to the branch name and after the download run `composer dump-autoload` to ensure that all classes are correctly initialized before starting a test.
 
-For the automated approach, Semantic MediaWiki uses [PHPUnit][phpunit] as script based testing methodology. Scripted tests are developed to verify an expected behaviour for specified requirements that allows to decide whether a result should be rejected or can be accepted and ultimately is used to decribe a behaviour.
+For the automated approach, Semantic MediaWiki uses [PHPUnit][phpunit] as scripted testing methodology. Scripted tests are used to verify that an expected behaviour occurs for specified requirements and enables to decide whether a result can be accepted or has to be rejected.
 
 - Unit test in most cases refers to a test that confirms an expected result for a unit, module, or class
 - Integration test normally combines multiple components into a single process to verify that the integration produces an expected result

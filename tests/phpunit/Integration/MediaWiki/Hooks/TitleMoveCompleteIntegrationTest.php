@@ -70,30 +70,32 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 	public function testPageMoveWithCreationOfRedirectTarget() {
 
 		$oldTitle = Title::newFromText( __METHOD__ . '-old' );
-		$newTitle = Title::newFromText( __METHOD__ . '-new' );
+		$expectedNewTitle = Title::newFromText( __METHOD__ . '-new' );
 
 		$this->assertNull(
-			WikiPage::factory( $newTitle )->getRevision()
+			WikiPage::factory( $expectedNewTitle )->getRevision()
 		);
 
 		$this->pageCreator
-			->createPage( $oldTitle )
-			->doEdit( '[[Has function hook test::PageRedirectMove]]' );
+			->createPage( $oldTitle );
 
 		$this->pageCreator
 			->getPage()
 			->getTitle()
-			->moveTo( $newTitle, false, 'test', true );
+			->moveTo( $expectedNewTitle, false, 'test', true );
 
 		$this->assertNotNull(
 			WikiPage::factory( $oldTitle )->getRevision()
 		);
 
 		$this->assertNotNull(
-			WikiPage::factory( $newTitle )->getRevision()
+			WikiPage::factory( $expectedNewTitle )->getRevision()
 		);
 
-		$this->toBeDeleted = array( $oldTitle, $newTitle );
+		$this->toBeDeleted = array(
+			$oldTitle,
+			$expectedNewTitle
+		);
 	}
 
 	public function testPageMoveWithRemovalOfOldPage() {
@@ -115,28 +117,28 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 			$this->mwHooksHandler->getHookRegistry()->getDefinition( 'LinksUpdateConstructed' )
 		);
 
-		$oldTitle = Title::newFromText( __METHOD__ . '-old' );
-		$newTitle = Title::newFromText( __METHOD__ . '-new' );
+		$title = Title::newFromText( __METHOD__ . '-old' );
+		$expectedNewTitle = Title::newFromText( __METHOD__ . '-new' );
 
 		$this->assertNull(
-			WikiPage::factory( $newTitle )->getRevision()
+			WikiPage::factory( $expectedNewTitle )->getRevision()
 		);
 
 		$this->pageCreator
-			->createPage( $oldTitle )
+			->createPage( $title )
 			->doEdit( '[[Has function hook test::PageCompleteMove]]' );
 
 		$this->pageCreator
 			->getPage()
 			->getTitle()
-			->moveTo( $newTitle, false, 'test', false );
+			->moveTo( $expectedNewTitle, false, 'test', false );
 
 		$this->assertNull(
-			WikiPage::factory( $oldTitle )->getRevision()
+			WikiPage::factory( $title )->getRevision()
 		);
 
 		$this->assertNotNull(
-			WikiPage::factory( $newTitle )->getRevision()
+			WikiPage::factory( $expectedNewTitle )->getRevision()
 		);
 
 		/**
@@ -164,11 +166,46 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 		);
 
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
-			DIWikiPage::newFromTitle( $newTitle ),
+			DIWikiPage::newFromTitle( $expectedNewTitle ),
 			$queryResult
 		);
 
-		$this->toBeDeleted = array( $oldTitle, $newTitle );
+		$this->toBeDeleted = array(
+			$title,
+			$expectedNewTitle
+		);
+	}
+
+	public function testPredefinedPropertyPageIsNotMovable() {
+
+		$this->mwHooksHandler->register(
+			'TitleIsMovable',
+			$this->mwHooksHandler->getHookRegistry()->getDefinition( 'TitleIsMovable' )
+		);
+
+		$title = Title::newFromText( 'Modification date', SMW_NS_PROPERTY );
+		$expectedNewTitle = Title::newFromText( __METHOD__, SMW_NS_PROPERTY );
+
+		$this->pageCreator
+			->createPage( $title );
+
+		$this->pageCreator
+			->getPage()
+			->getTitle()
+			->moveTo( $expectedNewTitle, false, 'test', true );
+
+		$this->assertNotNull(
+			WikiPage::factory( $title )->getRevision()
+		);
+
+		$this->assertNull(
+			WikiPage::factory( $expectedNewTitle )->getRevision()
+		);
+
+		$this->toBeDeleted = array(
+			$title,
+			$expectedNewTitle
+		);
 	}
 
 }
