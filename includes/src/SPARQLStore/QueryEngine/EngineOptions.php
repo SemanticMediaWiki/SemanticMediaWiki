@@ -25,4 +25,13 @@ class EngineOptions {
 	 */
 	public $randomSortingSupport = true;
 
+	/**
+	 * @since  2.1
+	 */
+	public function __construct() {
+		$this->ignoreQueryErrors = $GLOBALS['smwgIgnoreQueryErrors'];
+		$this->sortingSupport = $GLOBALS['smwgQSortingSupport'];
+		$this->randomSortingSupport = $GLOBALS['smwgQRandSortingSupport'];
+	}
+
 }

@@ -3,15 +3,11 @@
 namespace SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
-use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 
 use SMW\Query\Language\Description;
-use SMW\Query\Language\NamespaceDescription;
+use SMW\Query\Language\ThingDescription;
 
-use SMWDataItem as DataItem;
-use SMWExpLiteral as ExpLiteral;
 use SMWExporter as Exporter;
-use SMWTurtleSerializer as TurtleSerializer;
 
 /**
  * @license GNU GPL v2+
@@ -20,7 +16,7 @@ use SMWTurtleSerializer as TurtleSerializer;
  * @author Markus Krötzsch
  * @author mwjames
  */
-class NamespaceConditionBuilder implements ConditionBuilder {
+class ThingConditionBuilder implements ConditionBuilder {
 
 	/**
 	 * @var CompoundConditionBuilder
@@ -50,7 +46,7 @@ class NamespaceConditionBuilder implements ConditionBuilder {
 	 * @return boolean
 	 */
 	public function canBuildConditionFor( Description $description ) {
-		return $description instanceOf NamespaceDescription;
+		return $description instanceOf ThingDescription;
 	}
 
 	/**
@@ -66,32 +62,16 @@ class NamespaceConditionBuilder implements ConditionBuilder {
 	}
 
 	/**
-	 * Create an Condition from a NamespaceDescription
+	 * Create an Condition from a ThingDescription
 	 *
-	 * @param NamespaceDescription $description
+	 * @param ThingDescription $description
 	 * @param string $joinVariable
 	 * @param DIProperty|null $orderByProperty
 	 *
 	 * @return Condition
 	 */
 	public function buildCondition( Description $description, $joinVariable, $orderByProperty = null ) {
-
-		$nspropExpElement = $this->exporter->getSpecialNsResource( 'swivt', 'wikiNamespace' );
-		$nsExpElement = new ExpLiteral( strval( $description->getNamespace() ), 'http://www.w3.org/2001/XMLSchema#integer' );
-
-		$nsName = TurtleSerializer::getTurtleNameForExpElement( $nsExpElement );
-		$condition = "{ ?$joinVariable " . $nspropExpElement->getQName() . " $nsName . }\n";
-
-		$result = new WhereCondition( $condition, true, array() );
-
-		$this->compoundConditionBuilder->addOrderByDataForProperty(
-			$result,
-			$joinVariable,
-			$orderByProperty,
-			DataItem::TYPE_WIKIPAGE
-		);
-
-		return $result;
+		return $this->compoundConditionBuilder->buildTrueCondition( $joinVariable, $orderByProperty );
 	}
 
 }

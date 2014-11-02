@@ -283,17 +283,11 @@ class SPARQLStore extends Store {
 
 	protected function fetchQueryResult( Query $query ) {
 
-		$engineOptions = new EngineOptions();
-
-		$engineOptions->ignoreQueryErrors = $GLOBALS['smwgIgnoreQueryErrors'];
-		$engineOptions->sortingSupport = $GLOBALS['smwgQSortingSupport'];
-		$engineOptions->randomSortingSupport = $GLOBALS['smwgQRandSortingSupport'];
-
 		$queryEngine = new QueryEngine(
 			$this->getSparqlDatabase(),
 			new CompoundConditionBuilder(),
 			new QueryResultFactory( $this ),
-			$engineOptions
+			new EngineOptions()
 		);
 
 		return $queryEngine->getQueryResult( $query );

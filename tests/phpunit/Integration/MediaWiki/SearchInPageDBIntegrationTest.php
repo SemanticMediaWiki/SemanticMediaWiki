@@ -83,11 +83,12 @@ class SearchInPageDBIntegrationTest extends MwDBaseUnitTestCase {
 			$results
 		);
 
-		// Geo is currently not supported by the SPARQLStore
-		$expectedHits = is_a( $this->getStore(), '\SMWSQLStore3' ) ? 1 : 0;
+		if ( is_a( $this->getStore(), '\SMW\SPARQLStore\SPARQLStore' ) ) {
+			$this->markTestIncomplete( "Test was marked as incomplete because the SPARQLStore doesn't support the Geo data type" );
+		}
 
 		$this->assertEquals(
-			$expectedHits,
+			1,
 			$results->getTotalHits()
 		);
 

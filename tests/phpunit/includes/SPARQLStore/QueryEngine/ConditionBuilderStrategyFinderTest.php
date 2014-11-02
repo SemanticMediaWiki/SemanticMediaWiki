@@ -64,7 +64,7 @@ class ConditionBuilderStrategyFinderTest extends \PHPUnit_Framework_TestCase {
 		$instance->clear();
 	}
 
-	public function testUnknownStrategyIsToReturnNull() {
+	public function testForAnyUnknownStrategyToReturnThingConditionBuilder() {
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
@@ -76,7 +76,8 @@ class ConditionBuilderStrategyFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ConditionBuilderStrategyFinder( $compoundConditionBuilder );
 
-		$this->assertNull(
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\QueryEngine\ConditionBuilder\ThingConditionBuilder',
 			$instance->findStrategyForDescription( $description )
 		);
 
@@ -142,6 +143,36 @@ class ConditionBuilderStrategyFinderTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			$description,
 			'\SMW\SPARQLStore\QueryEngine\ConditionBuilder\PropertyConditionBuilder'
+		);
+
+		# 4
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Conjunction' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$provider[] = array(
+			$description,
+			'\SMW\SPARQLStore\QueryEngine\ConditionBuilder\ConjunctionConditionBuilder'
+		);
+
+		# 5
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Disjunction' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$provider[] = array(
+			$description,
+			'\SMW\SPARQLStore\QueryEngine\ConditionBuilder\DisjunctionConditionBuilder'
+		);
+
+		# 6
+		$description = $this->getMockBuilder( '\SMW\Query\Language\ConceptDescription' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$provider[] = array(
+			$description,
+			'\SMW\SPARQLStore\QueryEngine\ConditionBuilder\ConceptConditionBuilder'
 		);
 
 		return $provider;
