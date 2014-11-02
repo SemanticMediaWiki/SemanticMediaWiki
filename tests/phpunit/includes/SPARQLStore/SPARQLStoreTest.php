@@ -7,6 +7,7 @@ use SMW\Tests\Util\UtilityFactory;
 use SMW\SPARQLStore\SPARQLStore;
 
 use SMW\DIWikiPage;
+use SMW\DIProperty;
 use SMW\SemanticData;
 use SMW\Subobject;
 
@@ -119,7 +120,12 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 
 	public function testDoSparqlDataUpdateOnMockBaseStore() {
 
-		$semanticData = new SemanticData( new DIWikiPage( 'Foo', NS_MAIN, '' ) );
+		$semanticData = new SemanticData( new DIWikiPage( __METHOD__, NS_MAIN ) );
+
+		$semanticData->addPropertyObjectValue(
+			new DIProperty( 'Foo' ),
+			$semanticData->getSubject()
+		);
 
 		$listReturnValue = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\FederateResultSet' )
 			->disableOriginalConstructor()

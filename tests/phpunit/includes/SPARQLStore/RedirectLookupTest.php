@@ -3,6 +3,7 @@
 namespace SMW\Tests\SPARQLStore;
 
 use SMW\SPARQLStore\RedirectLookup;
+
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 
@@ -13,7 +14,6 @@ use SMWExporter as Exporter;
 
 /**
  * @covers \SMW\SPARQLStore\RedirectLookup
- *
  *
  * @group SMW
  * @group SMWExtension
@@ -198,25 +198,62 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		$instance->findRedirectTargetResource( $expNsResource, $exists );
 	}
 
-	public function testRedirectTargetWithCachedLookup() {
-
-		$sparqlDatabase = $this->createMockSparqlDatabaseFor( false );
-
-		$instance = new RedirectLookup( $sparqlDatabase );
-		$instance->clear();
+	public function testRedirectTargetForCachedLookup() {
 
 		$dataItem = new DIWikiPage( 'Foo', NS_MAIN );
-
 		$expNsResource = new ExpNsResource( 'Foo', 'Bar', '', $dataItem );
+
+		$cache = $this->getMockBuilder( '\SMW\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$cache->expects( $this->once() )
+			->method( 'contains' )
+			->will( $this->returnValue( true ) );
+
+		$cache->expects( $this->once() )
+			->method( 'fetch' )
+			->with( $this->equalTo( $expNsResource->getUri() ) )
+			->will( $this->returnValue( $expNsResource ) );
+
+		$connection = $this->getMockBuilder( '\SMWSparqlDatabase' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new RedirectLookup( $connection, $cache );
+
 		$exists = null;
 
 		$instance->findRedirectTargetResource( $expNsResource, $exists );
 
-		// The second call to the same resource would if not cached raise an
-		// exception with the mock instance
+		$this->assertTrue( $exists );
+		$instance->clear();
+	}
+
+	/**
+	 * @dataProvider nonRedirectableResourceProvider
+	 */
+	public function testRedirectTargetForNonRedirectableResource( $expNsResource ) {
+
+		$cache = $this->getMockBuilder( '\SMW\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$cache->expects( $this->never() )
+			->method( 'contains' );
+
+		$connection = $this->getMockBuilder( '\SMWSparqlDatabase' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new RedirectLookup( $connection, $cache );
+
+		$exists = null;
+
 		$instance->findRedirectTargetResource( $expNsResource, $exists );
 
 		$this->assertFalse( $exists );
+		$instance->clear();
 	}
 
 	private function createMockSparqlDatabaseFor( $listReturnValue ) {
@@ -238,6 +275,31 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $federateResultSet ) );
 
 		return $sparqlDatabase;
+	}
+
+	public function nonRedirectableResourceProvider() {
+
+		$provider[] = array(
+			Exporter::getInstance()->getSpecialPropertyResource( '_INST' )
+		);
+
+		$provider[] = array(
+			Exporter::getInstance()->getSpecialPropertyResource( '_SUBC' )
+		);
+
+		$provider[] = array(
+			Exporter::getInstance()->getSpecialPropertyResource( '_REDI' )
+		);
+
+		$provider[] = array(
+			Exporter::getInstance()->getSpecialPropertyResource( '_MDAT' )
+		);
+
+		$provider[] = array(
+			Exporter::getInstance()->getResourceElementForProperty( new DIProperty( 'Foo' ), true )
+		);
+
+		return $provider;
 	}
 
 }
