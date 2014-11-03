@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use Skin;
 
@@ -60,7 +60,7 @@ class SkinAfterContent {
 
 	private function performUpdate() {
 
-		$factboxCache = Application::getInstance()->newFactboxBuilder()->newFactboxCache( $this->skin->getOutput() );
+		$factboxCache = ApplicationFactory::getInstance()->newFactboxBuilder()->newFactboxCache( $this->skin->getOutput() );
 		$this->data .= $factboxCache->retrieveContent();
 
 		return true;

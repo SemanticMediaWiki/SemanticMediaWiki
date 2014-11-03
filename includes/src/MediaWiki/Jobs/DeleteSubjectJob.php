@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Jobs;
 
 use SMW\DIWikiPage;
 use SMW\SerializerFactory;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use Title;
 use Job;
@@ -45,7 +45,7 @@ class DeleteSubjectJob extends JobBase {
 	 */
 	public function execute() {
 
-		if ( Application::getInstance()->getSettings()->get( 'smwgEnableUpdateJobs' ) &&
+		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgEnableUpdateJobs' ) &&
 			$this->hasParameter( 'asDeferredJob' ) &&
 			$this->getParameter( 'asDeferredJob' ) ) {
 			$this->insertAsDeferredJobWithSemanticData()->pushToJobQueue();
@@ -70,14 +70,14 @@ class DeleteSubjectJob extends JobBase {
 	}
 
 	protected function initUpdateDispatcherJob() {
-		Application::getInstance()
+		ApplicationFactory::getInstance()
 			->newJobFactory()
 			->newUpdateDispatcherJob( $this->getTitle(), $this->params )
 			->run();
 	}
 
 	protected function deleteSubject() {
-		Application::getInstance()->getStore()->deleteSubject( $this->getTitle() );
+		ApplicationFactory::getInstance()->getStore()->deleteSubject( $this->getTitle() );
 		return true;
 	}
 
@@ -90,8 +90,8 @@ class DeleteSubjectJob extends JobBase {
 	}
 
 	protected function fetchSerializedSemanticData() {
-		return Application::getInstance()->newSerializerFactory()->serialize(
-			Application::getInstance()->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->getTitle() ) )
+		return ApplicationFactory::getInstance()->newSerializerFactory()->serialize(
+			ApplicationFactory::getInstance()->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->getTitle() ) )
 		);
 	}
 

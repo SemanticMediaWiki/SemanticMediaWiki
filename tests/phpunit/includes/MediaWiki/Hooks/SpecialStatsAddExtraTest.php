@@ -3,7 +3,7 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\StoreFactory;
 
 /**
@@ -21,7 +21,7 @@ use SMW\StoreFactory;
 class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 
 	protected function tearDown() {
-		Application::clear();
+		ApplicationFactory::clear();
 
 		parent::tearDown();
 	}
@@ -64,7 +64,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getStatistics' )
 			->will( $this->returnValue( $setup['statistics'] ) );
 
-		Application::getInstance()->registerObject( 'Store', $store );
+		ApplicationFactory::getInstance()->registerObject( 'Store', $store );
 
 		$extraStats = $setup['extraStats'];
 		$version = $setup['version'];
@@ -84,7 +84,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		Application::getInstance()->registerObject( 'Store', StoreFactory::getStore() );
+		ApplicationFactory::getInstance()->registerObject( 'Store', StoreFactory::getStore() );
 
 		$extraStats = array();
 		$version = '1.21';

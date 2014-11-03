@@ -7,7 +7,7 @@ use SMW\Tests\Util\UtilityFactory;
 
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use SMWDITime as DITime;
 
@@ -28,7 +28,7 @@ use Title;
 class PredefinedPropertyAnnotationDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	private $semanticDataValidator;
-	private $application;
+	private $applicationFactory;
 	private $dataValueFactory;
 	private $mwHooksHandler;
 	private $pageCreator;
@@ -45,12 +45,12 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends MwDBaseUnitTestCase 
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 		$this->pageCreator = UtilityFactory::getInstance()->newPageCreator();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->dataValueFactory = DataValueFactory::getInstance();
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 		$this->mwHooksHandler->restoreListedHooks();
 
 		parent::tearDown();
@@ -58,7 +58,7 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends MwDBaseUnitTestCase 
 
 	public function testPredefinedModificationDatePropertyAndChangedDefaultsortForNewPage() {
 
-		$this->application->getSettings()->set( 'smwgPageSpecialProperties', array( '_MDAT' ) );
+		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', array( '_MDAT' ) );
 
 		$title   = Title::newFromText( __METHOD__ );
 		$subject = DIWikiPage::newFromTitle( $title );
@@ -84,7 +84,7 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends MwDBaseUnitTestCase 
 
 	public function testAddedCategoryAndChangedDefaultsortWithoutPredefinedPropertiesForNewPage() {
 
-		$this->application->getSettings()->set( 'smwgPageSpecialProperties', array() );
+		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', array() );
 
 		$title   = Title::newFromText( __METHOD__ );
 		$subject = DIWikiPage::newFromTitle( $title );

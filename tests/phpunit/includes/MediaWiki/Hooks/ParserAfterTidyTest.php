@@ -9,7 +9,7 @@ use SMW\Tests\Util\Mock\MockTitle;
 use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\MediaWiki\Hooks\ParserAfterTidy;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\Settings;
 
 use Title;
@@ -29,19 +29,19 @@ use Title;
 class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
-	private $application;
+	private $applicationFactory;
 	private $parserFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->semanticDataValidator = new SemanticDataValidator();
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->parserFactory = new ParserFactory();
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -87,10 +87,10 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			'smwgEnableUpdateJobs' => false
 		) );
 
-		$this->application->registerObject( 'Settings', $settings );
-		$this->application->registerObject( 'Store', $parameters['store'] );
+		$this->applicationFactory->registerObject( 'Settings', $settings );
+		$this->applicationFactory->registerObject( 'Store', $parameters['store'] );
 
-		$this->application->registerObject(
+		$this->applicationFactory->registerObject(
 			'CacheHandler',
 			$this->newMockCacheHandler( $parameters['title']->getArticleID(), $parameters['cache'] )
 		);
@@ -119,7 +119,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			'smwgShowHiddenCategories'  => true
 		) );
 
-		$this->application->registerObject( 'Settings', $settings );
+		$this->applicationFactory->registerObject( 'Settings', $settings );
 
 		$text   = '';
 		$title  = Title::newFromText( __METHOD__ );
@@ -139,7 +139,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			'propertyValues' => array( 'Foo', 'Bar', $title->getText() ),
 		);
 
-		$parserData = $this->application->newParserData(
+		$parserData = $this->applicationFactory->newParserData(
 			$title,
 			$parser->getOutput()
 		);

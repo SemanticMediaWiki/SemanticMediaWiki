@@ -4,7 +4,7 @@ namespace SMW\Tests\MediaWiki\Jobs;
 
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\Settings;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use Title;
 
@@ -22,12 +22,12 @@ use Title;
  */
 class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 
 		$settings = Settings::newFromArray( array(
 			'smwgCacheType'        => 'hash',
@@ -38,12 +38,12 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->application->registerObject( 'Store', $store );
-		$this->application->registerObject( 'Settings', $settings );
+		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->applicationFactory->registerObject( 'Settings', $settings );
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -93,7 +93,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'exists' )
 			->will( $this->returnValue( false ) );
 
-		$this->application->registerObject( 'ContentParser', null );
+		$this->applicationFactory->registerObject( 'ContentParser', null );
 
 		$instance = new UpdateJob( $title );
 		$instance->setJobQueueEnabledState( false );
@@ -119,7 +119,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOutput' )
 			->will( $this->returnValue( null ) );
 
-		$this->application->registerObject( 'ContentParser', $contentParser );
+		$this->applicationFactory->registerObject( 'ContentParser', $contentParser );
 
 		$instance = new UpdateJob( $title );
 		$instance->setJobQueueEnabledState( false );
@@ -153,7 +153,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOutput' )
 			->will( $this->returnValue( new \ParserOutput ) );
 
-		$this->application->registerObject( 'ContentParser', $contentParser );
+		$this->applicationFactory->registerObject( 'ContentParser', $contentParser );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -163,7 +163,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->once() )
 			->method( 'updateData' );
 
-		$this->application->registerObject( 'Store', $store );
+		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$instance = new UpdateJob( $title );
 		$instance->setJobQueueEnabledState( false );

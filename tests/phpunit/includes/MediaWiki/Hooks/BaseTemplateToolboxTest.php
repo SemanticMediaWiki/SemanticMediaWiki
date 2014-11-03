@@ -5,7 +5,7 @@ namespace SMW\Tests\MediaWiki\Hooks;
 use SMW\Tests\Util\Mock\MockTitle;
 
 use SMW\MediaWiki\Hooks\BaseTemplateToolbox;
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\Settings;
 
 use Title;
@@ -25,7 +25,7 @@ use Title;
 class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 
 	protected function tearDown() {
-		Application::clear();
+		ApplicationFactory::clear();
 
 		parent::tearDown();
 	}
@@ -51,7 +51,7 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 
 		$toolbox  = '';
 
-		Application::getInstance()->registerObject(
+		ApplicationFactory::getInstance()->registerObject(
 			'Settings',
 			Settings::newFromArray( $setup['settings'] )
 		);

@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Api;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 
@@ -39,20 +39,20 @@ class BrowseBySubject extends ApiBase {
 
 		$params = $this->extractRequestParams();
 
-		$application = Application::getInstance();
+		$applicationFactory = ApplicationFactory::getInstance();
 
 		try {
-			$this->title = $application->newTitleCreator()->createFromText( $params['subject'] )->findRedirect()->getTitle();
+			$this->title = $applicationFactory->newTitleCreator()->createFromText( $params['subject'] )->findRedirect()->getTitle();
 		} catch ( \Exception $e ) {
 			$this->dieUsageMsg( array( 'invalidtitle', $this->title ) );
 		}
 
-		$semanticData = $application->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) );
+		$semanticData = $applicationFactory->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) );
 
 		$this->getResult()->addValue(
 			null,
 			'query',
-			$this->doFormat( $application->newSerializerFactory()->serialize( $semanticData ) )
+			$this->doFormat( $applicationFactory->newSerializerFactory()->serialize( $semanticData ) )
 		);
 	}
 

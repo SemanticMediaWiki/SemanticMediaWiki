@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
 use SMW\Tests\Util\UtilityFactory;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use Title;
 
@@ -24,12 +24,12 @@ class InternalParseBeforeLinksIntegrationTest extends \PHPUnit_Framework_TestCas
 
 	private $mwHooksHandler;
 	private $parserAfterTidyHook;
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 
 		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
@@ -42,7 +42,7 @@ class InternalParseBeforeLinksIntegrationTest extends \PHPUnit_Framework_TestCas
 
 	protected function tearDown() {
 		$this->mwHooksHandler->restoreListedHooks();
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -56,7 +56,7 @@ class InternalParseBeforeLinksIntegrationTest extends \PHPUnit_Framework_TestCas
 		$parserData->expects( $this->never() )
 			->method( 'getSemanticData' );
 
-		$this->application->registerObject( 'ParserData', $parserData );
+		$this->applicationFactory->registerObject( 'ParserData', $parserData );
 
 		wfMessage( 'properties' )->parse();
 	}

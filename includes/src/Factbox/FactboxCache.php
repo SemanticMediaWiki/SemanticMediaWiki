@@ -154,7 +154,7 @@ class FactboxCache {
 	 */
 	public function newResultMapper( $pageId ) {
 
-		$settings = Application::getInstance()->getSettings();
+		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		return new CacheableResultMapper( new SimpleDictionary( array(
 			'id'      => $pageId,
@@ -196,10 +196,10 @@ class FactboxCache {
 	protected function rebuild( Title $title, ParserOutput $parserOutput, $requestContext ) {
 
 		$text = null;
-		$application = Application::getInstance();
+		$applicationFactory = ApplicationFactory::getInstance();
 
-		$factbox = $application->newFactboxBuilder()->newFactbox(
-			$application->newParserData( $title, $parserOutput ),
+		$factbox = $applicationFactory->newFactboxBuilder()->newFactbox(
+			$applicationFactory->newParserData( $title, $parserOutput ),
 			$requestContext
 		);
 
@@ -207,7 +207,7 @@ class FactboxCache {
 
 		if ( $factbox->doBuild()->isVisible() ) {
 
-			$contentParser = $application->newContentParser( $title );
+			$contentParser = $applicationFactory->newContentParser( $title );
 			$contentParser->parse( $factbox->getContent() );
 
 			$text = $contentParser->getOutput()->getText();
@@ -218,7 +218,7 @@ class FactboxCache {
 
 	protected function cacheIsAvailableFor( $revId, $content ) {
 
-		if ( Application::getInstance()->getSettings()->get( 'smwgShowFactbox' ) === SMW_FACTBOX_HIDDEN ) {
+		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgShowFactbox' ) === SMW_FACTBOX_HIDDEN ) {
 			return false;
 		}
 

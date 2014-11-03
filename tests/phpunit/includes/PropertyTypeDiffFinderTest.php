@@ -6,7 +6,7 @@ use SMW\PropertyTypeDiffFinder;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Settings;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use Title;
 
@@ -27,12 +27,12 @@ class PropertyTypeDiffFinderTest extends \PHPUnit_Framework_TestCase {
 	/** @var DIWikiPage[] */
 	protected $storeValues;
 
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 
 		$settings = Settings::newFromArray( array(
 			'smwgDeclarationProperties' => array( '_PVAL' ),
@@ -40,11 +40,11 @@ class PropertyTypeDiffFinderTest extends \PHPUnit_Framework_TestCase {
 			'smwgEnableUpdateJobs' => false
 		) );
 
-		$this->application->registerObject( 'Settings', $settings );
+		$this->applicationFactory->registerObject( 'Settings', $settings );
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -78,7 +78,7 @@ class PropertyTypeDiffFinderTest extends \PHPUnit_Framework_TestCase {
 			'smwgDeclarationProperties' => $settings
 		) );
 
-		$this->application->registerObject( 'Settings', $settings );
+		$this->applicationFactory->registerObject( 'Settings', $settings );
 
 		$updateDispatcherJob = $this->getMockBuilder( 'SMW\MediaWiki\Jobs\UpdateDispatcherJob' )
 			->disableOriginalConstructor()
@@ -98,7 +98,7 @@ class PropertyTypeDiffFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'newUpdateDispatcherJob' )
 			->will( $this->returnValue( $updateDispatcherJob ) );
 
-		$this->application->registerObject( 'JobFactory', $jobFactory );
+		$this->applicationFactory->registerObject( 'JobFactory', $jobFactory );
 
 		$store = $this->getMockBuilder( 'SMW\Store' )
 			->disableOriginalConstructor()

@@ -8,7 +8,7 @@ use SMW\Query\Language\NamespaceDescription;
 
 use Content;
 use DatabaseBase;
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMWQuery;
 use SMWQueryResult as QueryResult;
 
@@ -53,7 +53,7 @@ class Search extends SearchEngine {
 
 		if ( $this->fallbackSearch === null ) {
 
-			$class = Application::getInstance()->getSettings()->get( 'smwgFallbackSearchType' );
+			$class = ApplicationFactory::getInstance()->getSettings()->get( 'smwgFallbackSearchType' );
 
 			$dbr = $this->getDB();
 
@@ -161,7 +161,7 @@ class Search extends SearchEngine {
 			$query->setOffset( $this->offset );
 			$query->setLimit( $this->limit, false );
 
-			$store = Application::getInstance()->getStore();
+			$store = ApplicationFactory::getInstance()->getStore();
 
 			$result = $store->getQueryResult( $query );
 

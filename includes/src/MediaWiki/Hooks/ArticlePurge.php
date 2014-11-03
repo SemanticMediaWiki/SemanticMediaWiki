@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\FactboxCache;
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\CacheIdGenerator;
 
 use WikiPage;
@@ -62,12 +62,12 @@ class ArticlePurge {
 		/**
 		 * @var Settings $settings
 		 */
-		$settings = Application::getInstance()->getSettings();
+		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		/**
 		 * @var CacheHandler $cache
 		 */
-		$cache = Application::getInstance()->getCache();
+		$cache = ApplicationFactory::getInstance()->getCache();
 
 		$cache->setCacheEnabled( $pageId > 0 )
 			->setKey( $this->newCacheId( $pageId ) )

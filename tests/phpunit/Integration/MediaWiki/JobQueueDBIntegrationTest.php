@@ -7,7 +7,7 @@ use SMW\Tests\Util\PageCreator;
 
 use SMW\Tests\MwDBaseUnitTestCase;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\SemanticData;
 use SMW\StoreFactory;
 use SMW\DIWikiPage;
@@ -33,7 +33,7 @@ use Job;
 class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	private $job = null;
-	private $application;
+	private $applicationFactory;
 
 	private $runnerFactory;
 	private $mwHooksHandler;
@@ -53,7 +53,7 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 
 		// FIXME Because of SQLStore::Writer::changeTitle
 		$GLOBALS['smwgEnableUpdateJobs'] = true;
@@ -65,7 +65,7 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 		);
 
 		foreach ( $settings as $key => $value ) {
-			$this->application->getSettings()->set( $key, $value );
+			$this->applicationFactory->getSettings()->set( $key, $value );
 		}
 
 		$this->pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
@@ -77,7 +77,7 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 		$this->mwHooksHandler->restoreListedHooks();
 
 		parent::tearDown();

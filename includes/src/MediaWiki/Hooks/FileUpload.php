@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\Localizer;
 
 use File;
@@ -28,9 +28,9 @@ class FileUpload {
 	private $file = null;
 
 	/**
-	 * @var Application
+	 * @var ApplicationFactory
 	 */
-	private $application = null;
+	private $applicationFactory = null;
 
 	private $fileReUploadStatus = false;
 
@@ -65,20 +65,20 @@ class FileUpload {
 
 	private function performUpdate() {
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 
 		$filePage = $this->makeFilePage();
 
-		$parserData = $this->application
+		$parserData = $this->applicationFactory
 			->newParserData(
 				$this->file->getTitle(),
 				$filePage->getParserOutput( $this->makeCanonicalParserOptions() ) );
 
-		$pageInfoProvider = $this->application
+		$pageInfoProvider = $this->applicationFactory
 			->newPropertyAnnotatorFactory()
 			->newPageInfoProvider( $filePage );
 
-		$propertyAnnotator = $this->application
+		$propertyAnnotator = $this->applicationFactory
 			->newPropertyAnnotatorFactory()
 			->newPredefinedPropertyAnnotator( $parserData->getSemanticData(), $pageInfoProvider );
 
@@ -92,7 +92,7 @@ class FileUpload {
 
 	private function makeFilePage() {
 
-		$filePage = $this->application->newPageCreator()->createFilePage( $this->file->getTitle() );
+		$filePage = $this->applicationFactory->newPageCreator()->createFilePage( $this->file->getTitle() );
 		$filePage->setFile( $this->file );
 
 		$filePage->smwFileReUploadStatus = $this->fileReUploadStatus;
@@ -111,7 +111,7 @@ class FileUpload {
 	}
 
 	private function isSemanticEnabledNamespace( Title $title ) {
-		return Application::getInstance()->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
+		return ApplicationFactory::getInstance()->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
 	}
 
 }

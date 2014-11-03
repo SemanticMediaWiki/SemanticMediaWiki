@@ -5,7 +5,7 @@ namespace SMW\Tests;
 use SMW\Tests\Util\UtilityFactory;
 
 use SMW\DeclareParserFunction;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use Title;
 use ParserOutput;
@@ -23,7 +23,7 @@ use ParserOutput;
  */
 class DeclareParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
-	private $application;
+	private $applicationFactory;
 	private $semanticDataValidator;
 
 	protected function setUp() {
@@ -31,11 +31,11 @@ class DeclareParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -57,7 +57,7 @@ class DeclareParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParse( $args, $expected ) {
 
-		$parserData = $this->application->newParserData(
+		$parserData = $this->applicationFactory->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
 		);

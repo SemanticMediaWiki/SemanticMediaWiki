@@ -5,7 +5,7 @@ namespace SMW\Tests\MediaWiki\Hooks;
 use SMW\Tests\Util\Mock\MockTitle;
 
 use SMW\MediaWiki\Hooks\SkinAfterContent;
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\Settings;
 
 /**
@@ -22,23 +22,23 @@ use SMW\Settings;
  */
 class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 
 		$settings = Settings::newFromArray( array(
 			'smwgFactboxUseCache' => true,
 			'smwgCacheType'       => 'hash'
 		) );
 
-		$this->application->registerObject( 'Settings', $settings );
+		$this->applicationFactory->registerObject( 'Settings', $settings );
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -69,7 +69,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 		// Inject fake content into the FactboxPresenter
 		if ( isset( $parameters['title'] ) ) {
 
-			$factboxCache = $this->application
+			$factboxCache = $this->applicationFactory
 				->newFactboxBuilder()
 				->newFactboxCache( $parameters['skin']->getOutput() );
 

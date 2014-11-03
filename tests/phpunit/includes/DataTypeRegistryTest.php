@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use SMW\DataTypeRegistry;
 use SMWDataItem as DataItem;
@@ -8,97 +8,104 @@ use SMWDataItem as DataItem;
 /**
  * @covers \SMW\DataTypeRegistry
  *
- *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 
+	private $dataTypeRegistry;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->dataTypeRegistry = DataTypeRegistry::getInstance();
+	}
+
+	protected function tearDown() {
+		$this->dataTypeRegistry->clear();
+
+		parent::tearDown();
+	}
+
 	public function testGetInstance() {
-		$instance = DataTypeRegistry::getInstance();
 
 		$this->assertInstanceOf(
 			'\SMW\DataTypeRegistry',
-			$instance
+			$this->dataTypeRegistry
 		);
 
-		$this->assertTrue(
-			DataTypeRegistry::getInstance() === $instance,
-			'Asserts that getInstance() returns a static instance'
+		$this->assertSame(
+			$this->dataTypeRegistry,
+			DataTypeRegistry::getInstance()
 		);
 
 		DataTypeRegistry::clear();
 
-		$this->assertTrue(
-			DataTypeRegistry::getInstance() !== $instance,
-			'Asserts that instance has been reset'
+		$this->assertNotSame(
+			$this->dataTypeRegistry,
+			DataTypeRegistry::getInstance()
 		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testRegisterDatatype() {
+
 		$this->assertNull(
-			DataTypeRegistry::getInstance()->getDataTypeClassById( '_foo' ),
+			$this->dataTypeRegistry->getDataTypeClassById( '_foo' ),
 			'Asserts that prior registration getDataTypeClassById() returns null'
 		);
 
-		DataTypeRegistry::getInstance()->registerDataType( '_foo', '\SMW\FooValue', DataItem::TYPE_NOTYPE, 'FooValue' );
+		$this->dataTypeRegistry
+			->registerDataType( '_foo', '\SMW\FooValue', DataItem::TYPE_NOTYPE, 'FooValue' );
 
 		$this->assertEquals(
 			'\SMW\FooValue',
-			DataTypeRegistry::getInstance()->getDataTypeClassById( '_foo' ),
+			$this->dataTypeRegistry->getDataTypeClassById( '_foo' ),
 			'Asserts that getDataTypeClassById() returns the registered class'
 		);
 
 		$this->assertEquals(
 			DataItem::TYPE_NOTYPE,
-			DataTypeRegistry::getInstance()->getDataItemId( '_foo' ),
-			'Asserts that getDataItemId() returns the registered DataItem type'
+			$this->dataTypeRegistry->getDataItemId( '_foo' )
 		);
 
 		$this->assertEquals(
 			'FooValue',
-			DataTypeRegistry::getInstance()->findTypeLabel( '_foo' ),
-			'Asserts that findTypeLabel() returns the registered label'
+			$this->dataTypeRegistry->findTypeLabel( '_foo' )
 		);
 
 		$this->assertEmpty(
-			DataTypeRegistry::getInstance()->findTypeLabel( 'FooNoLabel' ),
-			'Asserts that findTypeLabel() returns an empty label'
+			$this->dataTypeRegistry->findTypeLabel( 'FooNoLabel' )
 		);
 
 		$this->assertEquals(
 			DataItem::TYPE_NOTYPE,
-			DataTypeRegistry::getInstance()->getDataItemId( 'FooBar' ),
-			'Asserts TYPE_NOTYPE is returned for non-registered type'
+			$this->dataTypeRegistry->getDataItemId( 'FooBar' )
 		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testRegisterDatatypeIdAndAlias() {
+
+		$this->dataTypeRegistry
+			->registerDataType( '_foo', '\SMW\FooValue', DataItem::TYPE_NOTYPE, 'FooValue' );
+
 		$this->assertEmpty(
-			DataTypeRegistry::getInstance()->findTypeId( 'FooBar' ),
-			'Asserts that findTypeID returns empty label'
+			$this->dataTypeRegistry->findTypeId( 'FooBar' )
 		);
 
-		DataTypeRegistry::getInstance()->registerDataTypeAlias( '_foo', 'FooBar' );
+		$this->dataTypeRegistry->registerDataTypeAlias( '_foo', 'FooBar' );
 
 		$this->assertTrue(
-			DataTypeRegistry::getInstance()->isKnownTypeId( '_foo' )
+			$this->dataTypeRegistry->isKnownTypeId( '_foo' )
 		);
 
 		$this->assertEquals(
 			'_foo',
-			DataTypeRegistry::getInstance()->findTypeId( 'FooBar' ),
+			$this->dataTypeRegistry->findTypeId( 'FooBar' ),
 			'Asserts that findTypeID returns the registered alias label'
 		);
 	}
@@ -106,13 +113,13 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	public function testGetDefaultDataItemTypeIdForValidDataItemType() {
 		$this->assertInternalType(
 			'string',
-			DataTypeRegistry::getInstance()->getDefaultDataItemTypeId( 1 )
+			$this->dataTypeRegistry->getDefaultDataItemTypeId( 1 )
 		);
 	}
 
 	public function testGetDefaultDataItemTypeIdForInvalidDataItemType() {
 		$this->assertNull(
-			DataTypeRegistry::getInstance()->getDefaultDataItemTypeId( 9999 )
+			$this->dataTypeRegistry->getDefaultDataItemTypeId( 9999 )
 		);
 	}
 
@@ -132,6 +139,20 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 			array( '_wpg' => 'Page' ),
 			$instance->getKnownTypeLabels(),
 			'Asserts that getKnownTypeLabels returns an array'
+		);
+	}
+
+	public function testKnownAliasAsLanguageIndependantInvocation() {
+
+		$instance = new DataTypeRegistry(
+			array(),
+			array( 'URI'  => '_uri' )
+		);
+
+		$this->assertEquals(
+			array( 'URI'  => '_uri' ),
+			$instance->getKnownTypeAliases(),
+			'Asserts that getKnownTypeAliases returns an array'
 		);
 	}
 

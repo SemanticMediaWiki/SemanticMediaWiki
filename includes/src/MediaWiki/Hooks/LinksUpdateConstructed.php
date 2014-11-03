@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\ContentParser;
 use SMW\SemanticData;
 
@@ -26,9 +26,9 @@ class LinksUpdateConstructed {
 	protected $linksUpdate = null;
 
 	/**
-	 * @var Application
+	 * @var ApplicationFactory
 	 */
-	private $application = null;
+	private $applicationFactory = null;
 
 	/**
 	 * @since  1.9
@@ -46,12 +46,12 @@ class LinksUpdateConstructed {
 	 */
 	public function process() {
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 
 		/**
 		 * @var ParserData $parserData
 		 */
-		$parserData = $this->application
+		$parserData = $this->applicationFactory
 			->newParserData( $this->linksUpdate->getTitle(), $this->linksUpdate->getParserOutput() );
 
 		if ( $parserData->getSemanticData()->isEmpty() &&
@@ -79,7 +79,7 @@ class LinksUpdateConstructed {
 	private function refetchSemanticData() {
 		wfDebug( __METHOD__ . ' Empty SemanticData / re-parsing: ' . $this->linksUpdate->getTitle()->getPrefixedDBkey() . "\n" );
 
-		$contentParser = $this->application->newContentParser( $this->linksUpdate->getTitle() );
+		$contentParser = $this->applicationFactory->newContentParser( $this->linksUpdate->getTitle() );
 		$parserOutput = $contentParser->parse()->getOutput();
 
 		if ( $parserOutput === null ) {

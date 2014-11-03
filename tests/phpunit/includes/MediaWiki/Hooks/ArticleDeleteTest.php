@@ -6,7 +6,7 @@ use SMW\Tests\Util\Mock\MockTitle;
 use SMW\Tests\Util\Mock\MockSuperUser;
 
 use SMW\MediaWiki\Hooks\ArticleDelete;
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\Settings;
 
 use Title;
@@ -25,18 +25,18 @@ use Title;
  */
 class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->application = Application::getInstance();
-		$this->application->getSettings()->set( 'smwgEnableUpdateJobs', false );
-		$this->application->getSettings()->set( 'smwgDeleteSubjectWithAssociatesRefresh', false );
+		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->applicationFactory->getSettings()->set( 'smwgEnableUpdateJobs', false );
+		$this->applicationFactory->getSettings()->set( 'smwgDeleteSubjectWithAssociatesRefresh', false );
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -91,7 +91,7 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 		$reason = '';
 		$error = '';
 
-		$this->application->registerObject( 'Store', $store );
+		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$instance = new ArticleDelete(
 			$wikiPage,

@@ -5,7 +5,7 @@ namespace SMW\Tests;
 use SMW\ParserData;
 use SMW\Settings;
 use SMW\Factbox;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use ReflectionClass;
 use ParserOutput;
@@ -24,16 +24,16 @@ use Title;
  */
 class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -53,11 +53,11 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$this->application->registerObject( 'Settings', $settings );
+		$this->applicationFactory->registerObject( 'Settings', $settings );
 
 		$parserData = new ParserData( $title, $parserOutput );
 
-		$inTextAnnotationParser = Application::getInstance()->newInTextAnnotationParser( $parserData );
+		$inTextAnnotationParser = ApplicationFactory::getInstance()->newInTextAnnotationParser( $parserData );
 		$inTextAnnotationParser->parse( $text );
 
 		$this->assertEquals(
@@ -79,7 +79,7 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$this->application->registerObject( 'Settings', $settings );
+		$this->applicationFactory->registerObject( 'Settings', $settings );
 
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()

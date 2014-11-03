@@ -5,7 +5,7 @@ namespace SMW;
 use SMW\MediaWiki\MagicWordFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use SMWOutputs;
 
@@ -93,7 +93,7 @@ class InTextAnnotationParser {
 	public function parse( &$text ) {
 
 		$title = $this->parserData->getTitle();
-		$this->settings = Application::getInstance()->getSettings();
+		$this->settings = ApplicationFactory::getInstance()->getSettings();
 
 		$this->magicWordFinder->setOutput( $this->parserData->getOutput() );
 		$this->stripMagicWords( $text );
@@ -118,7 +118,7 @@ class InTextAnnotationParser {
 
 		if ( $this->isEnabledNamespace ) {
 
-			$propertyAnnotator = Application::getInstance()->newPropertyAnnotatorFactory()->newRedirectPropertyAnnotator(
+			$propertyAnnotator = ApplicationFactory::getInstance()->newPropertyAnnotatorFactory()->newRedirectPropertyAnnotator(
 				$this->parserData->getSemanticData(),
 				$this->redirectTargetFinder->findTarget( $text )
 			);

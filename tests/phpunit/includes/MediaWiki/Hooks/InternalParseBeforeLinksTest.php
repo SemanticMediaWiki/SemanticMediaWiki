@@ -7,7 +7,7 @@ use SMW\Tests\Util\Mock\MockTitle;
 
 use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\Settings;
 
 use Title;
@@ -27,18 +27,18 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
 	private $parserFactory;
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 		$this->parserFactory = UtilityFactory::getInstance()->newParserFactory();
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -136,7 +136,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 			$text
 		);
 
-		$this->application->registerObject(
+		$this->applicationFactory->registerObject(
 			'Settings',
 			Settings::newFromArray( $parameters['settings'] )
 		);
@@ -144,7 +144,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue( $instance->process() );
 		$this->assertEquals( $expected['resultText'], $text );
 
-		$parserData = $this->application->newParserData(
+		$parserData = $this->applicationFactory->newParserData(
 			$parser->getTitle(),
 			$parser->getOutput()
 		);

@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\MediaWiki\EditInfoProvider;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use ParserOutput;
 use Title;
@@ -83,16 +83,16 @@ class NewRevisionFromEditComplete {
 
 	protected function performUpdate() {
 
-		$application = Application::getInstance();
+		$applicationFactory = ApplicationFactory::getInstance();
 
-		$parserData = $application
+		$parserData = $applicationFactory
 			->newParserData( $this->wikiPage->getTitle(), $this->parserOutput );
 
-		$pageInfoProvider = $application
+		$pageInfoProvider = $applicationFactory
 			->newPropertyAnnotatorFactory()
 			->newPageInfoProvider( $this->wikiPage, $this->revision, $this->user );
 
-		$propertyAnnotator = $application
+		$propertyAnnotator = $applicationFactory
 			->newPropertyAnnotatorFactory()
 			->newPredefinedPropertyAnnotator( $parserData->getSemanticData(), $pageInfoProvider );
 

@@ -3,7 +3,7 @@
 namespace SMW\Tests\SPARQLStore;
 
 use SMW\DIWikiPage;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use SMWQuery as Query;
 use SMW\Query\Language\ValueDescription as ValueDescription;
@@ -54,7 +54,7 @@ class NullQueryResultTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMWQueryResult',
-			Application::getInstance()->getStore()->getQueryResult( $query )
+			ApplicationFactory::getInstance()->getStore()->getQueryResult( $query )
 		);
 	}
 

@@ -11,7 +11,7 @@ use SMW\Annotator\SortkeyPropertyAnnotator;
 use SMW\Annotator\NullPropertyAnnotator;
 use SMW\DIProperty;
 use SMW\Settings;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 /**
  * @covers \SMW\Annotator\PredefinedPropertyAnnotator
@@ -31,18 +31,18 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->semanticDataFactory = new SemanticDataFactory();
 		$this->semanticDataValidator = new SemanticDataValidator();
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -62,7 +62,7 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
-		$this->application->registerObject(
+		$this->applicationFactory->registerObject(
 			'Settings',
 			Settings::newFromArray( $parameters['settings'] )
 		);

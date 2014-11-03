@@ -6,7 +6,7 @@ use SMW\Tests\Util\UtilityFactory;
 
 use SMW\ConceptParserFunction;
 use SMW\MessageFormatter;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use Title;
 use ParserOutput;
@@ -25,16 +25,16 @@ use ParserOutput;
  */
 class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -60,7 +60,7 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testErrorForNonConceptNamespace( $namespace ) {
 
-		$parserData = $this->application->newParserData(
+		$parserData = $this->applicationFactory->newParserData(
 			Title::newFromText( __METHOD__, $namespace ),
 			new ParserOutput()
 		);
@@ -83,7 +83,7 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testErrorForOnDoubleParse( array $params ) {
 
-		$parserData = $this->application->newParserData(
+		$parserData = $this->applicationFactory->newParserData(
 			Title::newFromText( __METHOD__, SMW_NS_CONCEPT ),
 			new ParserOutput()
 		);
@@ -109,7 +109,7 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testExistForFoundMessageFormatterEntry() {
 
-		$parserData = $this->application->newParserData(
+		$parserData = $this->applicationFactory->newParserData(
 			Title::newFromText( __METHOD__, SMW_NS_CONCEPT ),
 			new ParserOutput()
 		);
@@ -143,7 +143,7 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParse( array $params, array $expected ) {
 
-		$parserData = $this->application->newParserData(
+		$parserData = $this->applicationFactory->newParserData(
 			Title::newFromText( __METHOD__, SMW_NS_CONCEPT ),
 			new ParserOutput()
 		);

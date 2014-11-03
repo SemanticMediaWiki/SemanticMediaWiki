@@ -6,7 +6,7 @@ use SMW\Tests\Util\UtilityFactory;
 use SMW\Tests\MwDBaseUnitTestCase;
 
 use SMW\DIWikiPage;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use Title;
 
@@ -50,7 +50,7 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 		$this->mwHooksHandler = $utilityFactory->newMwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 
 		$settings = array(
 			'smwgPageSpecialProperties' => array( '_MEDIA', '_MIME' ),
@@ -59,7 +59,7 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 		);
 
 		foreach ( $settings as $key => $value ) {
-			$this->application->getSettings()->set( $key, $value );
+			$this->applicationFactory->getSettings()->set( $key, $value );
 		}
 
 		$this->wgEnableUploads  = $GLOBALS['wgEnableUploads'];
@@ -147,7 +147,7 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testDummyTextFileUploadForDisabledNamespace() {
 
-		$this->application->getSettings()->set(
+		$this->applicationFactory->getSettings()->set(
 			'smwgNamespacesWithSemanticLinks', array( NS_FILE => false )
 		);
 

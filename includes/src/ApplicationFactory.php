@@ -24,10 +24,10 @@ use Title;
  *
  * @author mwjames
  */
-class Application {
+class ApplicationFactory {
 
 	/**
-	 * @var Application
+	 * @var ApplicationFactory
 	 */
 	private static $instance = null;
 
@@ -228,6 +228,17 @@ class Application {
 	 */
 	public function newMessageBuilder( Language $language = null ) {
 		return new MessageBuilder( $language );
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param SemanticData $semanticData
+	 *
+	 * @return StoreUpdater
+	 */
+	public function newStoreUpdater( SemanticData $semanticData ) {
+		return new StoreUpdater( $this->getStore(), $semanticData );
 	}
 
 	/**

@@ -4,7 +4,7 @@ namespace SMW\Tests\MediaWiki\Api;
 
 use SMW\Tests\Util\MwApiFactory;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\MediaWiki\Api\Info;
 
 /**
@@ -23,17 +23,17 @@ use SMW\MediaWiki\Api\Info;
 class InfoTest extends \PHPUnit_Framework_TestCase {
 
 	private $apiFactory;
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->apiFactory = new MwApiFactory();
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	protected function tearDown() {
-		Application::clear();
+		ApplicationFactory::clear();
 
 		parent::tearDown();
 	}
@@ -84,7 +84,7 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getStatistics' )
 			->will( $this->returnValue( $statistics ) );
 
-		$this->application->registerObject( 'Store', $store );
+		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$instance = new Info(
 			$this->apiFactory->newApiMain( array( 'info' => $type ) ),

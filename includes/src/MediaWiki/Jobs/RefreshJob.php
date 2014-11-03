@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Jobs;
 
 use SMW\Profiler;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 /**
  * RefreshJob iterates over all page ids of the wiki, to perform an update
@@ -82,7 +82,7 @@ class RefreshJob extends JobBase {
 		Profiler::In();
 
 		$run  = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ) : 1;
-		$prog = Application::getInstance()->getStore()->refreshData( $spos, 20, $this->getNamespace( $run ) );
+		$prog = ApplicationFactory::getInstance()->getStore()->refreshData( $spos, 20, $this->getNamespace( $run ) );
 
 		if ( $spos > 0 ) {
 

@@ -2,7 +2,7 @@
 
 namespace SMW\Annotator;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\PropertyAnnotator;
 use SMW\PageInfo;
 use SMW\DIProperty;
@@ -43,7 +43,7 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	protected function addPropertyValues() {
 
-		$predefinedProperties = Application::getInstance()->getSettings()->get( 'smwgPageSpecialProperties' );
+		$predefinedProperties = ApplicationFactory::getInstance()->getSettings()->get( 'smwgPageSpecialProperties' );
 		$cachedProperties = array();
 
 		foreach ( $predefinedProperties as $propertyId ) {

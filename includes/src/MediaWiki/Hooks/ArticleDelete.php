@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\MediaWiki\Jobs\DeleteSubjectJob;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleDelete
@@ -41,7 +41,7 @@ class ArticleDelete {
 	 */
 	public function process() {
 
-		$settings = Application::getInstance()->getSettings();
+		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$deleteSubjectJob = new DeleteSubjectJob( $this->wikiPage->getTitle(), array(
 			'asDeferredJob'  => $settings->get( 'smwgDeleteSubjectAsDeferredJob' ),

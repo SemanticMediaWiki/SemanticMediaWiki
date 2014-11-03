@@ -7,7 +7,7 @@ use SMW\Tests\Util\Mock\MockObjectBuilder;
 use SMW\Tests\Util\Mock\CoreMockObjectRepository;
 use SMW\Tests\Util\Mock\MediaWikiMockObjectRepository;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\TableFormatter;
 use SMW\ParserData;
 use SMW\Factbox;
@@ -32,13 +32,13 @@ use Title;
 class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 	private $stringValidator;
-	private $application;
+	private $applicationFactory;
 	private $mockbuilder;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
 
 		// This needs to be fixed but not now
@@ -48,7 +48,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -130,7 +130,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
 
-		$this->application->getSettings()->set('smwgShowFactbox', SMW_FACTBOX_NONEMPTY );
+		$this->applicationFactory->getSettings()->set('smwgShowFactbox', SMW_FACTBOX_NONEMPTY );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()

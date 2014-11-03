@@ -5,7 +5,7 @@ namespace SMW\Factbox;
 use SMW\FactboxCache;
 use SMW\Factbox;
 use SMW\ParserData;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use OutputPage;
 use IContextSource;
@@ -39,7 +39,7 @@ class FactboxBuilder {
 	 */
 	public function newFactbox( ParserData $parserData, IContextSource $context ) {
 
-		$applicationFactory = Application::getInstance();
+		$applicationFactory = ApplicationFactory::getInstance();
 
 		$messageBuilder = $applicationFactory->newMessageBuilder();
 		$messageBuilder->setLanguageFromContext( $context );

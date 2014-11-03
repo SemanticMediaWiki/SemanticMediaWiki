@@ -8,7 +8,7 @@ use SMW\Tests\Util\PageDeleter;
 
 use SMW\Tests\MwDBaseUnitTestCase;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\ParserData;
 use SMW\DIWikiPage;
 use SMW\ContentParser;
@@ -40,7 +40,7 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 	protected $destroyDatabaseTablesBeforeRun = true;
 
 	private $title = null;
-	private $application;
+	private $applicationFactory;
 	private $mwHooksHandler;
 	private $semanticDataValidator;
 	private $pageDeleter;
@@ -57,8 +57,8 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 		$this->pageDeleter = new PageDeleter();
 
-		$this->application = Application::getInstance();
-		$this->application->getSettings()->set( 'smwgPageSpecialProperties', array( '_MDAT' ) );
+		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', array( '_MDAT' ) );
 	}
 
 	public function tearDown() {

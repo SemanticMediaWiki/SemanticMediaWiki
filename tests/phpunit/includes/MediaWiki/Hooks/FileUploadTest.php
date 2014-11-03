@@ -3,7 +3,7 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use SMW\MediaWiki\Hooks\FileUpload;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use ParserOutput;
 use Title;
@@ -21,12 +21,12 @@ use Title;
  */
 class FileUploadTest extends \PHPUnit_Framework_TestCase {
 
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 
 		$settings = array(
 			'smwgPageSpecialProperties' => array( '_MEDIA', '_MIME' ),
@@ -36,12 +36,12 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		foreach ( $settings as $key => $value ) {
-			$this->application->getSettings()->set( $key, $value );
+			$this->applicationFactory->getSettings()->set( $key, $value );
 		}
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -66,7 +66,7 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->application->registerObject( 'Store', $store );
+		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$file = $this->getMockBuilder( '\File' )
 			->disableOriginalConstructor()
@@ -98,7 +98,7 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( $title ) )
 			->will( $this->returnValue( $wikiFilePage ) );
 
-		$this->application->registerObject( 'PageCreator', $pageCreator );
+		$this->applicationFactory->registerObject( 'PageCreator', $pageCreator );
 
 		$instance = new FileUpload( $file, true );
 
@@ -119,7 +119,7 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->application->registerObject( 'Store', $store );
+		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$file = $this->getMockBuilder( 'File' )
 			->disableOriginalConstructor()
@@ -136,7 +136,7 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 		$pageCreator->expects( $this->never() ) // <-- never
 			->method( 'createFilePage' );
 
-		$this->application->registerObject( 'PageCreator', $pageCreator );
+		$this->applicationFactory->registerObject( 'PageCreator', $pageCreator );
 
 		$instance = new FileUpload( $file, false );
 

@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\NamespaceExaminer;
 
 use SMWInfolink as Infolink;
@@ -62,7 +62,7 @@ class BaseTemplateToolbox {
 
 	protected function canPerformUpdate( Title $title ) {
 		return !$title->isSpecialPage() &&
-			Application::getInstance()->getSettings()->get( 'smwgToolboxBrowseLink' ) &&
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgToolboxBrowseLink' ) &&
 			$this->isEnabledNamespace( $title ) &&
 			$this->skinTemplate->data['isarticle'];
 	}
@@ -85,7 +85,7 @@ class BaseTemplateToolbox {
 
 	private function isEnabledNamespace( Title $title ) {
 		return NamespaceExaminer::newFromArray(
-			Application::getInstance()->getSettings()->get( 'smwgNamespacesWithSemanticLinks' ) )->isSemanticEnabled( $title->getNamespace() );
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgNamespacesWithSemanticLinks' ) )->isSemanticEnabled( $title->getNamespace() );
 	}
 
 }

@@ -9,14 +9,17 @@ use User;
 /**
  * Initiates an update of the Store
  *
- * @ingroup SMW
- *
  * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 class StoreUpdater {
+
+	/**
+	 * @var Store
+	 */
+	private $store;
 
 	/**
 	 * @var SemanticData
@@ -34,11 +37,18 @@ class StoreUpdater {
 	private $processSemantics = null;
 
 	/**
+	 * @var ApplicationFactory
+	 */
+	private $applicationFactory = null;
+
+	/**
 	 * @since  1.9
 	 *
+	 * @param Store $store
 	 * @param SemanticData $semanticData
 	 */
-	public function __construct( SemanticData $semanticData ) {
+	public function __construct( Store $store, SemanticData $semanticData ) {
+		$this->store = $store;
 		$this->semanticData = $semanticData;
 	}
 
@@ -102,14 +112,14 @@ class StoreUpdater {
 	private function performUpdate() {
 		Profiler::In();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $this->updateJobsEnabledState === null ) {
-			$this->setUpdateJobsEnabledState( $this->application->getSettings()->get( 'smwgEnableUpdateJobs' ) );
+			$this->setUpdateJobsEnabledState( $this->applicationFactory->getSettings()->get( 'smwgEnableUpdateJobs' ) );
 		}
 
 		$title = $this->getSubject()->getTitle();
-		$wikiPage = $this->application->newPageCreator()->createPage( $title );
+		$wikiPage = $this->applicationFactory->newPageCreator()->createPage( $title );
 		$revision = $wikiPage->getRevision();
 
 		$this->updateSemanticData( $title, $wikiPage, $revision );
@@ -126,11 +136,11 @@ class StoreUpdater {
 			return $this->semanticData = new SemanticData( $this->getSubject() );
 		}
 
-		$pageInfoProvider = $this->application
+		$pageInfoProvider = $this->applicationFactory
 			->newPropertyAnnotatorFactory()
 			->newPageInfoProvider( $wikiPage, $revision, User::newFromId( $revision->getUser() ) );
 
-		$propertyAnnotator = $this->application
+		$propertyAnnotator = $this->applicationFactory
 			->newPropertyAnnotatorFactory()
 			->newPredefinedPropertyAnnotator( $this->semanticData, $pageInfoProvider );
 
@@ -144,7 +154,7 @@ class StoreUpdater {
 	private function inspectPropertyType() {
 
 		if ( $this->updateJobsEnabledState ) {
-			$propertyTypeDiffFinder = new PropertyTypeDiffFinder( $this->application->getStore(), $this->semanticData );
+			$propertyTypeDiffFinder = new PropertyTypeDiffFinder( $this->store, $this->semanticData );
 			$propertyTypeDiffFinder->findDiff();
 		}
 	}
@@ -154,9 +164,9 @@ class StoreUpdater {
 		Profiler::In();
 
 		if ( $this->processSemantics ) {
-			$this->application->getStore()->updateData( $this->semanticData );
+			$this->store->updateData( $this->semanticData );
 		} else {
-			$this->application->getStore()->clearData( $this->semanticData->getSubject() );
+			$this->store->clearData( $this->semanticData->getSubject() );
 		}
 
 		Profiler::Out();
@@ -164,7 +174,7 @@ class StoreUpdater {
 	}
 
 	private function isEnabledNamespace( $title ) {
-		return NamespaceExaminer::newFromArray( $this->application->getSettings()->get( 'smwgNamespacesWithSemanticLinks' ) )->isSemanticEnabled( $title->getNamespace() );
+		return $this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
 	}
 
 }

@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\NamespaceExaminer;
 
 use ParserOutput;
@@ -81,7 +81,7 @@ class OutputPageParserOutput {
 
 	protected function performUpdate() {
 
-		$factboxCache = Application::getInstance()->newFactboxBuilder()->newFactboxCache( $this->outputPage );
+		$factboxCache = ApplicationFactory::getInstance()->newFactboxBuilder()->newFactboxCache( $this->outputPage );
 		$factboxCache->process( $this->getParserOutput() );
 
 		return true;
@@ -93,12 +93,12 @@ class OutputPageParserOutput {
 
 			$text = $this->parserOutput->getText();
 
-			$parserData = Application::getInstance()->newParserData(
+			$parserData = ApplicationFactory::getInstance()->newParserData(
 				$this->outputPage->getTitle(),
 				$this->parserOutput
 			);
 
-			$inTextAnnotationParser = Application::getInstance()->newInTextAnnotationParser( $parserData );
+			$inTextAnnotationParser = ApplicationFactory::getInstance()->newInTextAnnotationParser( $parserData );
 			$inTextAnnotationParser->parse( $text );
 
 			return $parserData->getOutput();
@@ -108,7 +108,7 @@ class OutputPageParserOutput {
 	}
 
 	private function isSemanticEnabledNamespace( Title $title ) {
-		return Application::getInstance()->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
+		return ApplicationFactory::getInstance()->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
 	}
 
 }

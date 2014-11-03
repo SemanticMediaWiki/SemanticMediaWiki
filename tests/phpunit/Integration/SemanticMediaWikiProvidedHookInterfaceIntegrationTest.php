@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration;
 
 use SMW\Tests\Util\UtilityFactory;
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 
 use RuntimeException;
@@ -30,7 +30,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
 
-		$this->applicationFactory = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	protected function tearDown() {

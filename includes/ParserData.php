@@ -206,8 +206,11 @@ class ParserData {
 	 */
 	public function updateStore() {
 
-		$updater = new StoreUpdater( $this->semanticData );
-		$updater->setUpdateJobsEnabledState( $this->getUpdateStatus() )->doUpdate();
+		$storeUpdater = ApplicationFactory::getInstance()->newStoreUpdater( $this->semanticData );
+
+		$storeUpdater
+			->setUpdateJobsEnabledState( $this->getUpdateStatus() )
+			->doUpdate();
 
 		return true;
 	}

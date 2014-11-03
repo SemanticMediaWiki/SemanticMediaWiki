@@ -2,7 +2,7 @@
 
 use SMW\MediaWiki\Jobs\RefreshJob;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\Settings;
 use SMW\StoreFactory;
 use SMW\Store;
@@ -63,7 +63,7 @@ class SMWAdmin extends SpecialPage {
 		/**
 		 * @var HtmlFormBuilder
 		 */
-		$this->htmlFormBuilder = Application::getInstance()->newHtmlFormBuilder(
+		$this->htmlFormBuilder = ApplicationFactory::getInstance()->newHtmlFormBuilder(
 			$this->getContext()->getTitle(),
 			$this->getLanguage()
 		);

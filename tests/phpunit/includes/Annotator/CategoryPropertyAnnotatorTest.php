@@ -2,14 +2,13 @@
 
 namespace SMW\Tests\Annotator;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
-use SMW\Tests\Util\SemanticDataFactory;
+use SMW\Tests\Util\UtilityFactory;
 use SMW\Tests\Util\Mock\MockTitle;
 
 use SMW\Annotator\CategoryPropertyAnnotator;
 use SMW\Annotator\NullPropertyAnnotator;
 use SMW\DIWikiPage;
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\Settings;
 use SMW\ParserData;
 
@@ -17,7 +16,6 @@ use ParserOutput;
 
 /**
  * @covers \SMW\Annotator\CategoryPropertyAnnotator
- *
  *
  * @group SMW
  * @group SMWExtension
@@ -31,18 +29,18 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->semanticDataFactory = new SemanticDataFactory();
-		$this->semanticDataValidator = new SemanticDataValidator();
-		$this->application = Application::getInstance();
+		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -73,7 +71,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			->setSubject( new DIWikiPage( __METHOD__, $parameters['namespace'], '' ) )
 			->newEmptySemanticData();
 
-		$this->application->registerObject(
+		$this->applicationFactory->registerObject(
 			'Settings',
 			Settings::newFromArray( $parameters['settings'] )
 		);
@@ -104,7 +102,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		$parserOutput = new ParserOutput();
 		$parserData   = new ParserData( $title, $parserOutput );
 
-		$this->application->registerObject(
+		$this->applicationFactory->registerObject(
 			'Settings',
 			Settings::newFromArray( $parameters['settings'] )
 		);
@@ -152,12 +150,12 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			->setSubject( new DIWikiPage( __METHOD__, $parameters['namespace'], '' ) )
 			->newEmptySemanticData();
 
-		$this->application->registerObject(
+		$this->applicationFactory->registerObject(
 			'Settings',
 			Settings::newFromArray( $parameters['settings'] )
 		);
 
-		$this->application->registerObject(
+		$this->applicationFactory->registerObject(
 			'PageCreator',
 			$pageCreator
 		);

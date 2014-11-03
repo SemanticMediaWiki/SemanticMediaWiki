@@ -110,7 +110,7 @@ class PropertyTypeDiffFinder {
 
 			// Compare values (in case of _PVAL (allowed values) for a
 			// property change must be processed again)
-			$smwgDeclarationProperties = Application::getInstance()->getSettings()->get( 'smwgDeclarationProperties' );
+			$smwgDeclarationProperties = ApplicationFactory::getInstance()->getSettings()->get( 'smwgDeclarationProperties' );
 
 			foreach ( $smwgDeclarationProperties as $prop ) {
 				$dataItem = new DIProperty( $prop );
@@ -158,7 +158,7 @@ class PropertyTypeDiffFinder {
 	protected function notifyUpdateDispatcher( $addJob = true ) {
 		if ( $addJob && !$this->hasDiff ) {
 
-			Application::getInstance()
+			ApplicationFactory::getInstance()
 				->newJobFactory()
 				->newUpdateDispatcherJob( $this->semanticData->getSubject()->getTitle() )
 				->run();
