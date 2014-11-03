@@ -2,55 +2,68 @@
 
 namespace SMW\Tests\System;
 
-use SMW\Configuration\Configuration;
-use SMW\Settings;
+use SMW\Tests\Util\GlobalsProvider;
+use SMW\Application;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
+ *
  * @group semantic-mediawiki-system
  * @group mediawiki-databaseless
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class InstallationConfigurationIntegrityTest extends \PHPUnit_Framework_TestCase {
+class InstallationGlobalsProviderIntegrityTest extends \PHPUnit_Framework_TestCase {
+
+	private $globalsProvider;
+	private $applicationFactory;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->globalsProvider = GlobalsProvider::getInstance();
+		$this->applicationFactory = Application::getInstance();
+	}
+
+	protected function tearDown() {
+		$this->globalsProvider->clear();
+		$this->applicationFactory->clear();
+
+		parent::tearDown();
+	}
 
 	public function testSemanticMediaWikiScriptPath() {
 
-		$wgScriptPath   = Configuration::getInstance()->get( 'wgScriptPath' );
-		$smwgScriptPath = Settings::newFromGlobals()->get( 'smwgScriptPath' );
+		$wgScriptPath   = $this->globalsProvider->get( 'wgScriptPath' );
 		$expectedPath   = $wgScriptPath . '/extensions/SemanticMediaWiki';
 
-		$this->assertTrue(
-			Configuration::getInstance()->get( 'smwgScriptPath' ) === Settings::newFromGlobals()->get( 'smwgScriptPath' ),
-			"Asserts that smwgScriptPath contains the expected patch"
+		$this->assertSame(
+			$expectedPath,
+			$this->applicationFactory->getSettings()->get( 'smwgScriptPath' )
 		);
 
 		$this->assertContains(
 			'SemanticMediaWiki',
-			Settings::newFromGlobals()->get( 'smwgScriptPath' ),
-			"Asserts that smwgScriptPath contains SemanticMediaWiki"
+			$this->applicationFactory->getSettings()->get( 'smwgScriptPath' )
 		);
-
 	}
 
 	public function testNamespaceSettingOnExampleIfSet() {
 
 		$expected = 'http://example.org/id/';
 
-		if ( Configuration::getInstance()->get( 'smwgNamespace' ) !== $expected ) {
+		if ( $this->globalsProvider->get( 'smwgNamespace' ) !== $expected ) {
 			$this->markTestSkipped( "Skip test due to missing {$expected} setting" );
 		}
 
-		$this->assertTrue(
-			Configuration::getInstance()->get( 'smwgNamespace' ) === Settings::newFromGlobals()->get( 'smwgNamespace' ),
-			"Asserts that smwgNamespace contains the expected {$expected}"
+		$this->assertSame(
+			$this->globalsProvider->get( 'smwgNamespace' ),
+			$this->applicationFactory->getSettings()->get( 'smwgNamespace' )
 		);
-
 	}
 
 	/**
@@ -63,11 +76,10 @@ class InstallationConfigurationIntegrityTest extends \PHPUnit_Framework_TestCase
 		}
 
 		$namespace = NS_TRAVIS;
-		$extraNamespaces = Configuration::getInstance()->get( 'wgExtraNamespaces' );
+		$extraNamespaces = $this->globalsProvider->get( 'wgExtraNamespaces' );
 
 		$this->assertTrue(
-			isset( $extraNamespaces[$namespace] ),
-			"Asserts that wgExtraNamespaces contains the expected {$namespace} NS"
+			isset( $extraNamespaces[$namespace] )
 		);
 
 		$foundNamespaceEntry = false;
@@ -83,7 +95,6 @@ class InstallationConfigurationIntegrityTest extends \PHPUnit_Framework_TestCase
 			$foundNamespaceEntry,
 			"Asserts that smwgNamespacesWithSemanticLinks retrieved from {$type} contains the expected {$namespace} NS"
 		);
-
 	}
 
 	/**
@@ -95,12 +106,12 @@ class InstallationConfigurationIntegrityTest extends \PHPUnit_Framework_TestCase
 
 		$provider[] = array(
 			'GLOBALS',
-			Configuration::getInstance()->get( 'smwgNamespacesWithSemanticLinks' )
+			GlobalsProvider::getInstance()->get( 'smwgNamespacesWithSemanticLinks' )
 		);
 
 		$provider[] = array(
 			'Settings',
-			Settings::newFromGlobals()->get( 'smwgNamespacesWithSemanticLinks' )
+			Application::getInstance()->getSettings()->get( 'smwgNamespacesWithSemanticLinks' )
 		);
 
 		return $provider;

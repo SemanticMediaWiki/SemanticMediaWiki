@@ -7,49 +7,47 @@ use SMW\MediaWiki\Hooks\HookRegistry;
 /**
  * Extension setup and registration
  *
- * Register all hooks, set up extension credits etc.
- * @ingroup SMW
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-final class Setup implements ContextAware {
+final class Setup {
 
-	/** @var array */
-	protected $globals;
+	/**
+	 * @var Application
+	 */
+	private $applicationFactory;
 
-	/** @var string */
-	protected $directory;
+	/**
+	 * @var array
+	 */
+	private $globalVars;
 
-	/** @var Settings */
-	protected $settings;
-
-	/** @var ContextResource */
-	protected $context = null;
+	/**
+	 * @var string
+	 */
+	private $directory;
 
 	/**
 	 * @since 1.9
 	 *
+	 * @param Application $applicationFactory
 	 * @param array &$globals
 	 * @param string $directory
-	 * @param ContextResource|null $context
 	 */
-	public function __construct( &$globals, $directory, ContextResource $context = null ) {
-		$this->globals =& $globals;
+	public function __construct( Application $applicationFactory, &$globals, $directory ) {
+		$this->applicationFactory = $applicationFactory;
+		$this->globalVars =& $globals;
 		$this->directory = $directory;
-		$this->context = $context;
 	}
 
 	/**
 	 * @since 1.9
 	 */
 	public function run() {
-		Profiler::In();
-
-		$this->init();
-		$this->loadSettings();
+		$this->initSomeConfigurationSettingsIfNotSet();
+		$this->registerSettings();
 
 		$this->registerI18n();
 		$this->registerWebApi();
@@ -60,135 +58,89 @@ final class Setup implements ContextAware {
 		$this->registerParamDefinitions();
 		$this->registerFooterIcon();
 		$this->registerHooks();
-
-		Profiler::Out();
 	}
 
-	/**
-	 * Init some globals that are not part of the configuration settings
-	 *
-	 * @since 1.9
-	 */
-	protected function init() {
+	private function initSomeConfigurationSettingsIfNotSet() {
 
-		$this->globals['smwgMasterStore'] = null;
-		$this->globals['smwgIQRunningNumber'] = 0;
+		$this->globalVars['smwgMasterStore'] = null;
+		$this->globalVars['smwgIQRunningNumber'] = 0;
 
-		if ( !isset( $this->globals['smwgNamespace'] ) ) {
-			$this->globals['smwgNamespace'] = parse_url( $this->globals['wgServer'], PHP_URL_HOST );
+		if ( !isset( $this->globalVars['smwgNamespace'] ) ) {
+			$this->globalVars['smwgNamespace'] = parse_url( $this->globalVars['wgServer'], PHP_URL_HOST );
 		}
 
-		if ( !isset( $this->globals['smwgScriptPath'] ) ) {
-			$this->globals['smwgScriptPath'] = ( $this->globals['wgExtensionAssetsPath'] === false ? $this->globals['wgScriptPath'] . '/extensions' : $this->globals['wgExtensionAssetsPath'] ) . '/SemanticMediaWiki';
+		if ( !isset( $this->globalVars['smwgScriptPath'] ) ) {
+			$this->globalVars['smwgScriptPath'] = ( $this->globalVars['wgExtensionAssetsPath'] === false ? $this->globalVars['wgScriptPath'] . '/extensions' : $this->globalVars['wgExtensionAssetsPath'] ) . '/SemanticMediaWiki';
 		}
 
 		if ( is_file( $this->directory . "/resources/Resources.php" ) ) {
-			$this->globals['wgResourceModules'] = array_merge( $this->globals['wgResourceModules'], include( $this->directory . "/resources/Resources.php" ) );
+			$this->globalVars['wgResourceModules'] = array_merge( $this->globalVars['wgResourceModules'], include( $this->directory . "/resources/Resources.php" ) );
 		}
-
 	}
 
-	/**
-	 * @see ContextAware::withContext
-	 *
-	 * @since 1.9
-	 *
-	 * @return ContextResource
-	 */
-	public function withContext() {
-		return $this->context;
-	}
-
-	/**
-	 * Load Semantic MediaWiki specific settings
-	 *
-	 * @since 1.9
-	 */
-	protected function loadSettings() {
-		$this->settings = $this->registerSettings( Settings::newFromGlobals( $this->globals ) );
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	protected function registerSettings( Settings $settings ) {
-		$this->withContext()->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $settings );
-		Application::getInstance()->registerObject( 'Settings', $settings );
-		return $settings;
+	private function registerSettings() {
+		$this->applicationFactory->registerObject(
+			'Settings',
+			Settings::newFromGlobals( $this->globalVars )
+		);
 	}
 
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgExtensionMessagesFiles
-	 *
-	 * @since 1.9
 	 */
-	protected function registerI18n() {
+	private function registerI18n() {
 
-		$smwgIP = $this->settings->get( 'smwgIP' );
+		$smwgIP = $this->applicationFactory->getSettings()->get( 'smwgIP' );
 
-		$this->globals['wgMessagesDirs']['SemanticMediaWiki'] = $smwgIP . 'i18n';
-		$this->globals['wgExtensionMessagesFiles']['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Messages.php';
-		$this->globals['wgExtensionMessagesFiles']['SemanticMediaWikiAlias'] = $smwgIP . 'languages/SMW_Aliases.php';
-		$this->globals['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $smwgIP . 'languages/SMW_Magic.php';
-		$this->globals['wgExtensionMessagesFiles']['SemanticMediaWikiNamespaces'] = $smwgIP . 'languages/SemanticMediaWiki.namespaces.php';
-
+		$this->globalVars['wgMessagesDirs']['SemanticMediaWiki'] = $smwgIP . 'i18n';
+		$this->globalVars['wgExtensionMessagesFiles']['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Messages.php';
+		$this->globalVars['wgExtensionMessagesFiles']['SemanticMediaWikiAlias'] = $smwgIP . 'languages/SMW_Aliases.php';
+		$this->globalVars['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $smwgIP . 'languages/SMW_Magic.php';
+		$this->globalVars['wgExtensionMessagesFiles']['SemanticMediaWikiNamespaces'] = $smwgIP . 'languages/SemanticMediaWiki.namespaces.php';
 	}
 
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgAPIModules
-	 *
-	 * @since 1.9
 	 */
-	protected function registerWebApi() {
-
-		$this->globals['wgAPIModules']['smwinfo'] = '\SMW\MediaWiki\Api\Info';
-		$this->globals['wgAPIModules']['ask']     = '\SMW\MediaWiki\Api\Ask';
-		$this->globals['wgAPIModules']['askargs'] = '\SMW\MediaWiki\Api\AskArgs';
-		$this->globals['wgAPIModules']['browsebysubject']  = '\SMW\MediaWiki\Api\BrowseBySubject';
-
+	private function registerWebApi() {
+		$this->globalVars['wgAPIModules']['smwinfo'] = '\SMW\MediaWiki\Api\Info';
+		$this->globalVars['wgAPIModules']['ask']     = '\SMW\MediaWiki\Api\Ask';
+		$this->globalVars['wgAPIModules']['askargs'] = '\SMW\MediaWiki\Api\AskArgs';
+		$this->globalVars['wgAPIModules']['browsebysubject']  = '\SMW\MediaWiki\Api\BrowseBySubject';
 	}
 
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgJobClasses
-	 *
-	 * @since 1.9
 	 */
-	protected function registerJobClasses() {
-
-		$this->globals['wgJobClasses']['SMW\UpdateJob']  = 'SMW\MediaWiki\Jobs\UpdateJob';
-		$this->globals['wgJobClasses']['SMW\RefreshJob'] = 'SMW\MediaWiki\Jobs\RefreshJob';
-		$this->globals['wgJobClasses']['SMW\UpdateDispatcherJob'] = 'SMW\MediaWiki\Jobs\UpdateDispatcherJob';
-		$this->globals['wgJobClasses']['SMW\DeleteSubjectJob'] = 'SMW\MediaWiki\Jobs\DeleteSubjectJob';
+	private function registerJobClasses() {
+		$this->globalVars['wgJobClasses']['SMW\UpdateJob']  = 'SMW\MediaWiki\Jobs\UpdateJob';
+		$this->globalVars['wgJobClasses']['SMW\RefreshJob'] = 'SMW\MediaWiki\Jobs\RefreshJob';
+		$this->globalVars['wgJobClasses']['SMW\UpdateDispatcherJob'] = 'SMW\MediaWiki\Jobs\UpdateDispatcherJob';
+		$this->globalVars['wgJobClasses']['SMW\DeleteSubjectJob'] = 'SMW\MediaWiki\Jobs\DeleteSubjectJob';
 
 		// Legacy definition to be removed with 1.10
-		$this->globals['wgJobClasses']['SMWUpdateJob']  = 'SMW\MediaWiki\Jobs\UpdateJob';
-		$this->globals['wgJobClasses']['SMWRefreshJob'] = 'SMW\MediaWiki\Jobs\RefreshJob';
-
+		$this->globalVars['wgJobClasses']['SMWUpdateJob']  = 'SMW\MediaWiki\Jobs\UpdateJob';
+		$this->globalVars['wgJobClasses']['SMWRefreshJob'] = 'SMW\MediaWiki\Jobs\RefreshJob';
 	}
 
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgAvailableRights
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgGroupPermissions
-	 *
-	 * @since 1.9
 	 */
-	protected function registerPermissions() {
+	private function registerPermissions() {
 
 		// Rights
-		$this->globals['wgAvailableRights'][] = 'smw-admin';
+		$this->globalVars['wgAvailableRights'][] = 'smw-admin';
 
 		// User group rights
-		$this->globals['wgGroupPermissions']['sysop']['smw-admin'] = true;
-		$this->globals['wgGroupPermissions']['smwadministrator']['smw-admin'] = true;
-
+		$this->globalVars['wgGroupPermissions']['sysop']['smw-admin'] = true;
+		$this->globalVars['wgGroupPermissions']['smwadministrator']['smw-admin'] = true;
 	}
 
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgSpecialPages
-	 *
-	 * @since 1.9
 	 */
-	protected function registerSpecialPages() {
+	private function registerSpecialPages() {
 
 		$specials = array(
 			'Ask' => array(
@@ -246,32 +198,26 @@ final class Setup implements ContextAware {
 
 		// Register data
 		foreach ( $specials as $special => $page ) {
-			$this->globals['wgSpecialPages'][$special] = $page['page'];
+			$this->globalVars['wgSpecialPages'][$special] = $page['page'];
 
 			if ( isset( $page['group'] ) ) {
-				$this->globals['wgSpecialPageGroups'][$special] = $page['group'];
+				$this->globalVars['wgSpecialPageGroups'][$special] = $page['group'];
 			}
 		}
-
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	protected function registerParamDefinitions() {
-		$this->globals['wgParamDefinitions']['smwformat'] = array(
+	private function registerParamDefinitions() {
+		$this->globalVars['wgParamDefinitions']['smwformat'] = array(
 			'definition'=> 'SMWParamFormat',
 		);
 	}
 
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgFooterIcons
-	 *
-	 * @since 1.9
 	 */
-	protected function registerFooterIcon() {
-		$this->globals['wgFooterIcons']['poweredby']['semanticmediawiki'] = array(
-			'src' => $this->globals['wgScriptPath'] . '/extensions/'
+	private function registerFooterIcon() {
+		$this->globalVars['wgFooterIcons']['poweredby']['semanticmediawiki'] = array(
+			'src' => $this->globalVars['wgScriptPath'] . '/extensions/'
 				. end( ( explode( '/extensions/', str_replace( DIRECTORY_SEPARATOR, '/', __DIR__), 2 ) ) )
 				. '/../resources/images/smw_button.png',
 			'url' => 'https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki',
@@ -280,24 +226,22 @@ final class Setup implements ContextAware {
 	}
 
 	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:$this->globals['wgHooks']
+	 * @see https://www.mediawiki.org/wiki/Manual:$this->globalVars['wgHooks']
 	 *
-	 * @note $this->globals['wgHooks'] contains a list of hooks which specifies for every event an
+	 * @note $this->globalVars['wgHooks'] contains a list of hooks which specifies for every event an
 	 * array of functions to be called.
-	 *
-	 * @since 1.9
 	 */
-	protected function registerHooks() {
+	private function registerHooks() {
 
-		$hookRegistry = new HookRegistry( $this->globals, $this->directory );
+		$hookRegistry = new HookRegistry( $this->globalVars, $this->directory );
 		$hookRegistry->register();
 
 		// Old-style registration
-		$this->globals['wgHooks']['AdminLinks'][] = 'SMWHooks::addToAdminLinks';
-		$this->globals['wgHooks']['PageSchemasRegisterHandlers'][] = 'SMWHooks::onPageSchemasRegistration';
+		$this->globalVars['wgHooks']['AdminLinks'][] = 'SMWHooks::addToAdminLinks';
+		$this->globalVars['wgHooks']['PageSchemasRegisterHandlers'][] = 'SMWHooks::onPageSchemasRegistration';
 
-		$this->globals['wgHooks']['ParserFirstCallInit'][] = 'SMW\DocumentationParserFunction::staticInit';
-		$this->globals['wgHooks']['ParserFirstCallInit'][] = 'SMW\InfoParserFunction::staticInit';
+		$this->globalVars['wgHooks']['ParserFirstCallInit'][] = 'SMW\DocumentationParserFunction::staticInit';
+		$this->globalVars['wgHooks']['ParserFirstCallInit'][] = 'SMW\InfoParserFunction::staticInit';
 	}
 
 }

@@ -2,24 +2,32 @@
 
 namespace SMW\Tests\System;
 
-use SMW\Configuration\Configuration;
+use SMW\Tests\Util\GlobalsProvider;
 use RuntimeException;
 
 /**
  * @covers \SMWLanguage
  *
- *
  * @group SMW
  * @group SMWExtension
+ *
  * @group semantic-mediawiki-system
  * @group mediawiki-databaseless
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9.1
  *
  * @author mwjames
  */
 class LanguagesAccessibilityAndIntegrityTest extends \PHPUnit_Framework_TestCase {
+
+	private $globalsProvider;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->globalsProvider = GlobalsProvider::getInstance();
+	}
 
 	/**
 	 * @dataProvider languageCodeProvider
@@ -49,7 +57,6 @@ class LanguagesAccessibilityAndIntegrityTest extends \PHPUnit_Framework_TestCase
 		foreach ( $methods as $method => $type ) {
 			$this->assertInternalType( $type, call_user_func( array( new $class, $method ) ) );
 		}
-
 	}
 
 	/**
@@ -72,7 +79,6 @@ class LanguagesAccessibilityAndIntegrityTest extends \PHPUnit_Framework_TestCase
 			$result === array(),
 			"Asserts predfined property keys for the language pair EN - {$langcode} with {$this->formatAsString($result)}"
 		);
-
 	}
 
 	/**
@@ -90,7 +96,6 @@ class LanguagesAccessibilityAndIntegrityTest extends \PHPUnit_Framework_TestCase
 			$this->assertInternalType( 'string', $label );
 			$this->assertEquals( $i, $month );
 		}
-
 	}
 
 	public function languageCodeProvider() {
@@ -116,7 +121,7 @@ class LanguagesAccessibilityAndIntegrityTest extends \PHPUnit_Framework_TestCase
 	private function loadLanguageFileAndConstructClass( $langcode ) {
 
 		$lang = 'SMW_Language' . str_replace( '-', '_', ucfirst( $langcode ) );
-		$file = Configuration::getInstance()->get( 'smwgIP' ) . '/' . 'languages' . '/' . $lang . '.php';
+		$file = $this->globalsProvider->get( 'smwgIP' ) . '/' . 'languages' . '/' . $lang . '.php';
 
 		if ( file_exists( $file ) ) {
 			include_once( $file );

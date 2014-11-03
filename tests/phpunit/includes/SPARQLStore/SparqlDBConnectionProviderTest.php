@@ -3,15 +3,13 @@
 namespace SMW\Tests\SPARQLStore;
 
 use SMW\SPARQLStore\SparqlDBConnectionProvider;
-use SMW\Configuration\Configuration;
+use SMW\Tests\Util\GlobalsProvider;
 
 /**
  * @covers \SMW\SPARQLStore\SparqlDBConnectionProvider
  *
- *
  * @group SMW
  * @group SMWExtension
- * @group semantic-mediawiki-sparql
  *
  * @license GNU GPL v2+
  * @since 2.0
@@ -20,30 +18,32 @@ use SMW\Configuration\Configuration;
  */
 class SparqlDBConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
-	private $configuration;
+	private $globalsProvider;
 	private $smwgSparqlDatabase;
 	private $smwgSparqlDatabaseConnector;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->configuration = Configuration::getInstance();
+		$this->globalsProvider = GlobalsProvider::getInstance();
 
-		$this->smwgSparqlDatabaseConnector = $this->configuration->get( 'smwgSparqlDatabaseConnector' );
-		$this->smwgSparqlDatabase = $this->configuration->get( 'smwgSparqlDatabase' );
+		$this->smwgSparqlDatabaseConnector = $this->globalsProvider->get( 'smwgSparqlDatabaseConnector' );
+		$this->smwgSparqlDatabase = $this->globalsProvider->get( 'smwgSparqlDatabase' );
 	}
 
 	protected function tearDown() {
 
-		$this->configuration->set(
+		$this->globalsProvider->set(
 			'smwgSparqlDatabaseConnector',
 			$this->smwgSparqlDatabaseConnector
 		);
 
-		$this->configuration->set(
+		$this->globalsProvider->set(
 			'smwgSparqlDatabase',
 			$this->smwgSparqlDatabase
 		);
+
+		$this->globalsProvider->clear();
 	}
 
 	public function testCanConstruct() {
@@ -129,7 +129,7 @@ class SparqlDBConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetDefaultConnectorForUnknownConnectorId() {
 
-		$this->configuration->set(
+		$this->globalsProvider->set(
 			'smwgSparqlDatabaseConnector',
 			'default'
 		);
@@ -144,7 +144,7 @@ class SparqlDBConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetDefaultConnectorForEmptyConnectorId() {
 
-		$this->configuration->set(
+		$this->globalsProvider->set(
 			'smwgSparqlDatabaseConnector',
 			'default'
 		);
@@ -159,7 +159,7 @@ class SparqlDBConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetDefaultConnectorForUnMappedId() {
 
-		$this->configuration->set(
+		$this->globalsProvider->set(
 			'smwgSparqlDatabaseConnector',
 			'idThatCanNotBeMapped'
 		);
@@ -174,7 +174,7 @@ class SparqlDBConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testInvalidCustomClassConnectorThrowsException() {
 
-		$this->configuration->set(
+		$this->globalsProvider->set(
 			'smwgSparqlDatabase',
 			'InvalidCustomClassConnector'
 		);
@@ -187,7 +187,7 @@ class SparqlDBConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testInvalidCustomSparqlClassConnectorThrowsException() {
 
-		$this->configuration->set(
+		$this->globalsProvider->set(
 			'smwgSparqlDatabase',
 			'\SMW\Tests\SPARQLStore\InvalidCustomSparqlClassConnector'
 		);
