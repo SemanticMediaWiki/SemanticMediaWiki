@@ -4,7 +4,7 @@ namespace SMW\Tests;
 
 use SMW\Tests\Util\MwDatabaseTableBuilder;
 use SMW\StoreFactory;
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\NamespaceExaminer;
 use SMW\Settings;
 
@@ -13,9 +13,9 @@ use SMWExporter as Exporter;
 use RuntimeException;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
+ *
  * @group semantic-mediawiki
  * @group mediawiki-database
  * @group medium
@@ -63,11 +63,11 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 		$this->checkIfDatabaseCanBeUsedOtherwiseSkipTest();
 		$this->checkIfStoreCanBeUsedOtherwiseSkipTest();
 
-		Application::getInstance()->registerObject( 'Store', $this->getStore() );
+		ApplicationFactory::getInstance()->registerObject( 'Store', $this->getStore() );
 	}
 
 	protected function tearDown() {
-		Application::clear();
+		ApplicationFactory::clear();
 		NamespaceExaminer::clear();
 		Settings::clear();
 		Exporter::clear();

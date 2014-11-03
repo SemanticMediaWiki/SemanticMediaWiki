@@ -5,7 +5,7 @@ namespace SMW\Tests\MediaWiki\Api;
 use SMW\Tests\Util\MwApiFactory;
 
 use SMW\MediaWiki\Api\AskArgs;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 /**
  * @covers \SMW\MediaWiki\Api\AskArgs
@@ -23,17 +23,17 @@ use SMW\Application;
 class AskArgsTest extends \PHPUnit_Framework_TestCase  {
 
 	private $apiFactory;
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->apiFactory = new MwApiFactory();
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	protected function tearDown() {
-		Application::clear();
+		ApplicationFactory::clear();
 
 		parent::tearDown();
 	}
@@ -104,7 +104,7 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase  {
 			->method( 'getQueryResult' )
 			->will( $this->returnCallback( array( $this, 'mockStoreQueryResultCallback' ) ) );
 
-		$this->application->registerObject( 'Store', $store );
+		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$instance = new AskArgs(
 			$this->apiFactory->newApiMain( $requestParameters ),

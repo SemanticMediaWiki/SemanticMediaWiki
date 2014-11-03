@@ -7,7 +7,7 @@ use SMW\Tests\Util\Mock\MockTitle;
 use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\Settings;
 use SMW\FactboxCache;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use WikiPage;
 
@@ -45,14 +45,14 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 		$wikiPage = new WikiPage( $setup['title'] );
 		$pageId   = $wikiPage->getTitle()->getArticleID();
 
-		Application::getInstance()->registerObject( 'Settings', Settings::newFromArray( array(
+		ApplicationFactory::getInstance()->registerObject( 'Settings', Settings::newFromArray( array(
 			'smwgCacheType'                  => 'hash',
 			'smwgAutoRefreshOnPurge'         => $setup['smwgAutoRefreshOnPurge'],
 			'smwgFactboxCacheRefreshOnPurge' => $setup['smwgFactboxCacheRefreshOnPurge']
 		) ) );
 
 		$instance = new ArticlePurge( $wikiPage );
-		$cache = Application::getInstance()->getCache();
+		$cache = ApplicationFactory::getInstance()->getCache();
 
 		$id = FactboxCache::newCacheId( $pageId );
 	//	$cache->setKey( $id )->set( true );

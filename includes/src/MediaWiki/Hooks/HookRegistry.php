@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\NamespaceManager;
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\ParameterFormatterFactory;
 
 use Parser;
@@ -97,10 +97,10 @@ class HookRegistry {
 		 */
 		$parserFunctionDefinition['ask'] = function( $parser ) {
 
-			$parserFunctionFactory = Application::getInstance()->newParserFunctionFactory( $parser );
+			$parserFunctionFactory = ApplicationFactory::getInstance()->newParserFunctionFactory( $parser );
 			$instance = $parserFunctionFactory->newAskParserFunction();
 
-			if ( Application::getInstance()->getSettings()->get( 'smwgQEnabled' ) ) {
+			if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgQEnabled' ) ) {
 				return $instance->parse( func_get_args() );
 			}
 
@@ -114,10 +114,10 @@ class HookRegistry {
 		 */
 		$parserFunctionDefinition['show'] = function( $parser ) {
 
-			$parserFunctionFactory = Application::getInstance()->newParserFunctionFactory( $parser );
+			$parserFunctionFactory = ApplicationFactory::getInstance()->newParserFunctionFactory( $parser );
 			$instance = $parserFunctionFactory->newShowParserFunction();
 
-			if ( Application::getInstance()->getSettings()->get( 'smwgQEnabled' ) ) {
+			if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgQEnabled' ) ) {
 				return $instance->parse( func_get_args() );
 			}
 
@@ -131,7 +131,7 @@ class HookRegistry {
 		 */
 		$parserFunctionDefinition['subobject'] = function( $parser ) {
 
-			$parserFunctionFactory = Application::getInstance()->newParserFunctionFactory( $parser );
+			$parserFunctionFactory = ApplicationFactory::getInstance()->newParserFunctionFactory( $parser );
 			$instance = $parserFunctionFactory->newSubobjectParserFunction();
 
 			return $instance->parse( ParameterFormatterFactory::newFromArray( func_get_args() ) );
@@ -144,7 +144,7 @@ class HookRegistry {
 		 */
 		$parserFunctionDefinition['set_recurring_event'] = function( $parser ) {
 
-			$parserFunctionFactory = Application::getInstance()->newParserFunctionFactory( $parser );
+			$parserFunctionFactory = ApplicationFactory::getInstance()->newParserFunctionFactory( $parser );
 			$instance = $parserFunctionFactory->newRecurringEventsParserFunction();
 
 			return $instance->parse( ParameterFormatterFactory::newFromArray( func_get_args() ) );
@@ -157,7 +157,7 @@ class HookRegistry {
 		 */
 		$parserFunctionDefinition['set'] = function( $parser ) {
 
-			$parserFunctionFactory = Application::getInstance()->newParserFunctionFactory( $parser );
+			$parserFunctionFactory = ApplicationFactory::getInstance()->newParserFunctionFactory( $parser );
 			$instance = $parserFunctionFactory->newSetParserFunction();
 
 			return $instance->parse( ParameterFormatterFactory::newFromArray( func_get_args() ) );
@@ -170,7 +170,7 @@ class HookRegistry {
 		 */
 		$parserFunctionDefinition['concept'] = function( $parser ) {
 
-			$parserFunctionFactory = Application::getInstance()->newParserFunctionFactory( $parser );
+			$parserFunctionFactory = ApplicationFactory::getInstance()->newParserFunctionFactory( $parser );
 			$instance = $parserFunctionFactory->newConceptParserFunction();
 
 			return $instance->parse( func_get_args() );
@@ -183,7 +183,7 @@ class HookRegistry {
 		 */
 		$parserFunctionDefinition['declare'] = function( $parser, $frame, $args ) {
 
-			$parserFunctionFactory = Application::getInstance()->newParserFunctionFactory( $parser );
+			$parserFunctionFactory = ApplicationFactory::getInstance()->newParserFunctionFactory( $parser );
 			$instance = $parserFunctionFactory->newDeclareParserFunction();
 
 			return $instance->parse( $frame, $args );

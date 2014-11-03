@@ -9,7 +9,7 @@ use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
 use SMW\Query\Language\ThingDescription;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 
@@ -33,7 +33,7 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 
 	private $mwHooksHandler;
 	private $queryResultValidator;
-	private $application;
+	private $applicationFactory;
 	private $toBeDeleted = array();
 	private $pageCreator;
 
@@ -42,7 +42,7 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 
 		$utilityFactory = UtilityFactory::getInstance();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->queryResultValidator = $utilityFactory->newValidatorFactory()->newQueryResultValidator();
 
 		$this->mwHooksHandler = $utilityFactory->newMwHooksHandler();
@@ -59,7 +59,7 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 	protected function tearDown() {
 
 		$this->mwHooksHandler->restoreListedHooks();
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->toBeDeleted );

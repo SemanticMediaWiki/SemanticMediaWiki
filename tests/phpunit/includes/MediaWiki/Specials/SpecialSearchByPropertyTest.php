@@ -5,7 +5,7 @@ namespace SMW\Tests\MediaWiki\Specials;
 use SMW\Tests\Util\UtilityFactory;
 use SMW\MediaWiki\Specials\SpecialSearchByProperty;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 use Title;
 
 /**
@@ -22,13 +22,13 @@ use Title;
  */
 class SpecialSearchByPropertyTest extends \PHPUnit_Framework_TestCase {
 
-	private $application;
+	private $applicationFactory;
 	private $stringValidator;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -38,13 +38,13 @@ class SpecialSearchByPropertyTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertySubjects' )
 			->will( $this->returnValue( array() ) );
 
-		$this->application->registerObject( 'Store', $store );
+		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}

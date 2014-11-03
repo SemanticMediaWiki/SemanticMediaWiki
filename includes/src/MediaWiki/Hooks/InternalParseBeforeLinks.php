@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use Parser;
 use Title;
@@ -68,7 +68,7 @@ class InternalParseBeforeLinks {
 			return true;
 		}
 
-		$isEnabledSpecialPage = Application::getInstance()->getSettings()->get( 'smwgEnabledSpecialPage' );
+		$isEnabledSpecialPage = ApplicationFactory::getInstance()->getSettings()->get( 'smwgEnabledSpecialPage' );
 
 		foreach ( $isEnabledSpecialPage as $specialPage ) {
 			if ( $this->parser->getTitle()->isSpecial( $specialPage ) ) {
@@ -84,7 +84,7 @@ class InternalParseBeforeLinks {
 		/**
 		 * @var ParserData $parserData
 		 */
-		$parserData = Application::getInstance()->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			$this->parser->getTitle(),
 			$this->parser->getOutput()
 		);
@@ -95,7 +95,7 @@ class InternalParseBeforeLinks {
 		 *
 		 * @var InTextAnnotationParser
 		 */
-		$inTextAnnotationParser = Application::getInstance()->newInTextAnnotationParser( $parserData );
+		$inTextAnnotationParser = ApplicationFactory::getInstance()->newInTextAnnotationParser( $parserData );
 		$inTextAnnotationParser->parse( $this->text );
 
 		$this->parser->getOutput()->setProperty(

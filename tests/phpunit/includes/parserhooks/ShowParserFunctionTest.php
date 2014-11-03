@@ -4,7 +4,7 @@ namespace SMW\Test;
 
 use SMW\Tests\Util\UtilityFactory;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\ShowParserFunction;
 
 use Title;
@@ -23,7 +23,7 @@ use ParserOutput;
  */
 class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
-	private $application;
+	private $applicationFactory;
 	private $semanticDataValidator;
 
 	protected function setUp() {
@@ -31,12 +31,12 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 
-		$this->application = Application::getInstance();
-		$this->application->getSettings()->set( 'smwgQueryDurationEnabled', false );
+		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->applicationFactory->getSettings()->set( 'smwgQueryDurationEnabled', false );
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -62,7 +62,7 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParse( array $params, array $expected ) {
 
-		$parserData = $this->application->newParserData(
+		$parserData = $this->applicationFactory->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
@@ -115,7 +115,7 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testInstantiatedQueryData( array $params, array $expected ) {
 
-		$parserData = $this->application->newParserData(
+		$parserData = $this->applicationFactory->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
 		);

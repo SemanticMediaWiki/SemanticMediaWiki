@@ -5,7 +5,7 @@ namespace SMW\Tests\Integration;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Util\UtilityFactory;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use SMWExportController as ExportController;
 use SMWRDFXMLSerializer as RDFXMLSerializer;
@@ -41,7 +41,7 @@ class RdfXmlSerializationExportDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
 
 		// FIXME
-		// Application::getInstance()->getSettings()->set( 'smwgNamespace', "http://example.org/id/" );
+		// ApplicationFactory::getInstance()->getSettings()->set( 'smwgNamespace', "http://example.org/id/" );
 		$this->smwgNamespace = $GLOBALS['smwgNamespace'];
 		$GLOBALS['smwgNamespace'] = "http://example.org/id/";
 	}

@@ -7,7 +7,7 @@ use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
 use SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup;
 
 use SMW\MediaWiki\MessageBuilder;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use SpecialPage;
 
@@ -46,17 +46,17 @@ class SpecialSearchByProperty extends SpecialPage {
 
 		list( $limit, $offset ) = $this->getLimitOffset();
 
-		$application = Application::getInstance();
+		$applicationFactory = ApplicationFactory::getInstance();
 
 		$requestOptions = array(
 			'limit'    => $limit,
 			'offset'   => $offset,
 			'property' => $this->getRequest()->getVal( 'property' ),
 			'value'    => $this->getRequest()->getVal( 'value' ),
-			'nearbySearchForType' => $application->getSettings()->get( 'smwgSearchByPropertyFuzzy' )
+			'nearbySearchForType' => $applicationFactory->getSettings()->get( 'smwgSearchByPropertyFuzzy' )
 		);
 
-		$htmlFormBuilder = $application->newHtmlFormBuilder(
+		$htmlFormBuilder = $applicationFactory->newHtmlFormBuilder(
 			$this->getContext()->getTitle(),
 			$this->getLanguage()
 		);
@@ -64,7 +64,7 @@ class SpecialSearchByProperty extends SpecialPage {
 		$pageBuilder = new PageBuilder(
 			$htmlFormBuilder,
 			new PageRequestOptions( $query, $requestOptions ),
-			new QueryResultLookup( $application->getStore() )
+			new QueryResultLookup( $applicationFactory->getStore() )
 		);
 
 		$output->addHTML( $pageBuilder->getHtml() );

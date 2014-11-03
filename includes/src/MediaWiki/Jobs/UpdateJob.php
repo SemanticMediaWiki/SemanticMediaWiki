@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Jobs;
 
 use SMW\FactboxCache;
 use SMW\Profiler;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use ParserOutput;
 use LinkCache;
@@ -72,7 +72,7 @@ class UpdateJob extends JobBase {
 	 * @codeCoverageIgnore
 	 */
 	public function insert() {
-		if ( Application::getInstance()->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
+		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
 			parent::insert();
 		}
 	}
@@ -82,13 +82,13 @@ class UpdateJob extends JobBase {
 	}
 
 	private function clearData() {
-		Application::getInstance()->getStore()->deleteSubject( $this->getTitle() );
+		ApplicationFactory::getInstance()->getStore()->deleteSubject( $this->getTitle() );
 		return true;
 	}
 
 	private function doParseContentForData() {
 
-		$contentParser = Application::getInstance()->newContentParser( $this->getTitle() );
+		$contentParser = ApplicationFactory::getInstance()->newContentParser( $this->getTitle() );
 		$contentParser->forceToUseParser();
 		$contentParser->parse();
 
@@ -103,13 +103,13 @@ class UpdateJob extends JobBase {
 	private function updateStore( ParserOutput $parserOutput ) {
 		Profiler::In( __METHOD__ . '-update' );
 
-		$cache = Application::getInstance()->getCache();
+		$cache = ApplicationFactory::getInstance()->getCache();
 		$cache->setKey( FactboxCache::newCacheId( $this->getTitle()->getArticleID() ) )->delete();
 
 		// TODO
 		// Rebuild the factbox
 
-		$parserData = Application::getInstance()->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			$this->getTitle(),
 			$parserOutput
 		);

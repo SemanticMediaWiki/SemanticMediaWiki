@@ -3,7 +3,7 @@
 namespace SMW\Tests\MediaWiki\Jobs;
 
 use SMW\MediaWiki\Jobs\RefreshJob;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use Title;
 
@@ -24,22 +24,22 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 	/** @var integer */
 	protected $controlRefreshDataIndex;
 
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->application->registerObject( 'Store', $store );
+		$this->applicationFactory->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -81,7 +81,7 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'refreshData' )
 			->will( $this->returnCallback( array( $this, 'refreshDataCallback' ) ) );
 
-		$this->application->registerObject( 'Store', $store );
+		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$instance = new RefreshJob( $title, $parameters );
 		$instance->setJobQueueEnabledState( false );

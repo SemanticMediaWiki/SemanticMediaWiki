@@ -10,9 +10,7 @@ use SMWDataItem as DataItem;
  * Registry class that manages datatypes, and provides various methods to access
  * the information
  *
- * @ingroup SMWDataValues
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author Markus Krötzsch
@@ -21,7 +19,9 @@ use SMWDataItem as DataItem;
  */
 class DataTypeRegistry {
 
-	/** @var DataTypeRegistry */
+	/**
+	 * @var DataTypeRegistry
+	 */
 	protected static $instance = null;
 
 	/**
@@ -213,6 +213,7 @@ class DataTypeRegistry {
 	 * @return string
 	 */
 	public function findTypeId( $label ) {
+
 		$label = strtolower( $label );
 
 		if ( isset( $this->typeByLabelOrAliasLookup[$label] ) ) {
@@ -234,6 +235,7 @@ class DataTypeRegistry {
 	 * @return string
 	 */
 	public function findTypeLabel( $id ) {
+
 		if ( isset( $this->typeLabels[ $id ] ) ) {
 			return $this->typeLabels[ $id ];
 		}
@@ -254,6 +256,15 @@ class DataTypeRegistry {
 	 */
 	public function getKnownTypeLabels() {
 		return $this->typeLabels;
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return array
+	 */
+	public function getKnownTypeAliases() {
+		return $this->typeAliases;
 	}
 
 	/**
@@ -284,6 +295,7 @@ class DataTypeRegistry {
 	 * @return string|null
 	 */
 	public function getDataTypeClassById( $typeId ) {
+
 		if ( $this->hasDataTypeClassById( $typeId ) ) {
 			return $this->typeClasses[ $typeId ];
 		}

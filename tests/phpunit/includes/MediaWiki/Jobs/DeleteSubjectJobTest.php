@@ -6,7 +6,7 @@ use SMW\MediaWiki\Jobs\DeleteSubjectJob;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\Settings;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use Title;
 use ReflectionClass;
@@ -203,8 +203,8 @@ class DeleteSubjectJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getInProperties' )
 			->will( $this->returnValue( array() ) );
 
-		Application::getInstance()->registerObject( 'Store', $mockStore );
-		Application::getInstance()->registerObject( 'Settings', $settings );
+		ApplicationFactory::getInstance()->registerObject( 'Store', $mockStore );
+		ApplicationFactory::getInstance()->registerObject( 'Settings', $settings );
 
 		$parameters = array(
 			'asDeferredJob'  => $settings->get( 'smwgDeleteSubjectAsDeferredJob' ),

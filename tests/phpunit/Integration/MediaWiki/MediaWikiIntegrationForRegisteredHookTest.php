@@ -12,7 +12,7 @@ use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\SemanticData;
 use SMW\ParserData;
 use SMW\DIWikiPage;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use RequestContext;
 use WikiPage;
@@ -34,7 +34,7 @@ class MediaWikiIntegrationForRegisteredHookTest extends MwDBaseUnitTestCase {
 
 	private $title;
 	private $semanticDataValidator;
-	private $application;
+	private $applicationFactory;
 	private $mwHooksHandler;
 	private $pageDeleter;
 
@@ -49,7 +49,7 @@ class MediaWikiIntegrationForRegisteredHookTest extends MwDBaseUnitTestCase {
 
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 
 		$settings = array(
 			'smwgPageSpecialProperties' => array( '_MDAT' ),
@@ -61,14 +61,14 @@ class MediaWikiIntegrationForRegisteredHookTest extends MwDBaseUnitTestCase {
 		);
 
 		foreach ( $settings as $key => $value ) {
-			$this->application->getSettings()->set( $key, $value );
+			$this->applicationFactory->getSettings()->set( $key, $value );
 		}
 
 		$this->pageDeleter = new PageDeleter();
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 		$this->mwHooksHandler->restoreListedHooks();
 
 		$this->pageDeleter->deletePage( $this->title );
@@ -78,7 +78,7 @@ class MediaWikiIntegrationForRegisteredHookTest extends MwDBaseUnitTestCase {
 
 	public function testPagePurge() {
 
-		$this->application->registerObject( 'CacheHandler', new \SMW\CacheHandler( new \HashBagOStuff() ) );
+		$this->applicationFactory->registerObject( 'CacheHandler', new \SMW\CacheHandler( new \HashBagOStuff() ) );
 
 		$this->title = Title::newFromText( __METHOD__ );
 
@@ -94,7 +94,7 @@ class MediaWikiIntegrationForRegisteredHookTest extends MwDBaseUnitTestCase {
 			->getPage()
 			->doPurge();
 
-		$result = Application::getInstance()
+		$result = ApplicationFactory::getInstance()
 			->getcache()
 			->setKey( $id )
 			->get();

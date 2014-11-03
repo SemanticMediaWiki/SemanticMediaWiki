@@ -62,7 +62,7 @@ class ParserFunctionFactory {
 	 */
 	public function newAskParserFunction() {
 
-		$parserData = Application::getInstance()->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			$this->parser->getTitle(),
 			$this->parser->getOutput()
 		);
@@ -84,7 +84,7 @@ class ParserFunctionFactory {
 	 */
 	public function newShowParserFunction() {
 
-		$parserData = Application::getInstance()->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			$this->parser->getTitle(),
 			$this->parser->getOutput()
 		);
@@ -106,7 +106,7 @@ class ParserFunctionFactory {
 	 */
 	public function newSetParserFunction() {
 
-		$parserData = Application::getInstance()->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			$this->parser->getTitle(),
 			$this->parser->getOutput()
 		);
@@ -128,7 +128,7 @@ class ParserFunctionFactory {
 	 */
 	public function newConceptParserFunction() {
 
-		$parserData = Application::getInstance()->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			$this->parser->getTitle(),
 			$this->parser->getOutput()
 		);
@@ -150,7 +150,7 @@ class ParserFunctionFactory {
 	 */
 	public function newSubobjectParserFunction() {
 
-		$parserData = Application::getInstance()->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			$this->parser->getTitle(),
 			$this->parser->getOutput()
 		);
@@ -174,7 +174,7 @@ class ParserFunctionFactory {
 	 */
 	public function newRecurringEventsParserFunction() {
 
-		$parserData = Application::getInstance()->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			$this->parser->getTitle(),
 			$this->parser->getOutput()
 		);
@@ -186,7 +186,7 @@ class ParserFunctionFactory {
 			$parserData,
 			$subobject,
 			$messageFormatter,
-			Application::getInstance()->getSettings()
+			ApplicationFactory::getInstance()->getSettings()
 		);
 
 		return $instance;
@@ -199,7 +199,7 @@ class ParserFunctionFactory {
 	 */
 	public function newDeclareParserFunction() {
 
-		$parserData = Application::getInstance()->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			$this->parser->getTitle(),
 			$this->parser->getOutput()
 		);

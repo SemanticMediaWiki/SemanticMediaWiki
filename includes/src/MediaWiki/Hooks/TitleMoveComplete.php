@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 /**
  * TitleMoveComplete occurs whenever a request to move an article
@@ -74,12 +74,12 @@ class TitleMoveComplete {
 		/**
 		 * @var Settings $settings
 		 */
-		$settings = Application::getInstance()->getSettings();
+		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		/**
 		 * @var CacheHandler $cache
 		 */
-		$cache = Application::getInstance()->getCache();
+		$cache = ApplicationFactory::getInstance()->getCache();
 
 		$cache->setCacheEnabled( $this->newId > 0 )
 			->setKey( ArticlePurge::newCacheId( $this->newId ) )
@@ -89,7 +89,7 @@ class TitleMoveComplete {
 			->setKey( ArticlePurge::newCacheId( $this->oldId ) )
 			->set( $settings->get( 'smwgAutoRefreshOnPageMove' ) );
 
-		Application::getInstance()->getStore()->changeTitle(
+		ApplicationFactory::getInstance()->getStore()->changeTitle(
 			$this->oldTitle,
 			$this->newTitle,
 			$this->oldId,

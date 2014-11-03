@@ -7,7 +7,7 @@ use SMW\Tests\Util\Mock\MockTitle;
 use SMW\MediaWiki\Hooks\OutputPageParserOutput;
 
 use SMW\Settings;
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 
@@ -29,12 +29,12 @@ use Language;
  */
 class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 
 		$settings = Settings::newFromArray( array(
 			'smwgShowFactbox'                 => SMW_FACTBOX_NONEMPTY,
@@ -44,11 +44,11 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			'smwgInlineErrors'                => true,
 		) );
 
-		$this->application->registerObject( 'Settings', $settings );
+		$this->applicationFactory->registerObject( 'Settings', $settings );
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -78,9 +78,9 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->application->registerObject( 'Store', $store );
+		$this->applicationFactory->registerObject( 'Store', $store );
 
-		$this->application->getSettings()->set(
+		$this->applicationFactory->getSettings()->set(
 			'smwgNamespacesWithSemanticLinks',
 			$parameters['smwgNamespacesWithSemanticLinks']
 		);
@@ -90,7 +90,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new OutputPageParserOutput( $outputPage, $parserOutput );
 
-		$factboxCache = $this->application->newFactboxBuilder()->newFactboxCache( $outputPage );
+		$factboxCache = $this->applicationFactory->newFactboxBuilder()->newFactboxCache( $outputPage );
 		$this->assertEmpty(	$factboxCache->retrieveContent() );
 
 		$instance->process();

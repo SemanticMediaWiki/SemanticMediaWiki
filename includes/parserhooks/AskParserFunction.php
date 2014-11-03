@@ -125,7 +125,7 @@ class AskParserFunction {
 			SMWQueryProcessor::INLINE_QUERY
 		);
 
-		if ( Application::getInstance()->getSettings()->get( 'smwgQueryDurationEnabled' ) ) {
+		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgQueryDurationEnabled' ) ) {
 			$queryDuration = microtime( true ) - $start;
 		}
 
@@ -138,7 +138,7 @@ class AskParserFunction {
 
 	private function createQueryProfile( $query, $format, $duration ) {
 
-		$queryProfilerFactory = Application::getInstance()->newQueryProfilerFactory();
+		$queryProfilerFactory = ApplicationFactory::getInstance()->newQueryProfilerFactory();
 
 		$profiler = $queryProfilerFactory->newQueryProfiler(
 			$this->parserData->getTitle(),

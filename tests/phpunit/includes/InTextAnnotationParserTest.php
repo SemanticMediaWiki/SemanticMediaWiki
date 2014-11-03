@@ -8,7 +8,7 @@ use SMW\MediaWiki\MagicWordFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 
 use SMW\InTextAnnotationParser;
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\Settings;
 use SMW\ParserData;
 use SMW\DIProperty;
@@ -31,17 +31,17 @@ use ReflectionClass;
 class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->semanticDataValidator = new SemanticDataValidator();
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -115,7 +115,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			new RedirectTargetFinder()
 		);
 
-		$this->application->registerObject(
+		$this->applicationFactory->registerObject(
 			'Settings',
 			Settings::newFromArray( $settings )
 		);
@@ -151,7 +151,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 		);
 
 
-		$this->application->registerObject(
+		$this->applicationFactory->registerObject(
 			'Settings',
 			Settings::newFromArray( $settings )
 		);

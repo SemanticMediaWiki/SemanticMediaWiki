@@ -1,7 +1,7 @@
 <?php
 
 use SMW\NamespaceManager;
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\Setup;
 
 /**
@@ -133,7 +133,7 @@ $GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $GLOBALS['smwgI
  */
 $GLOBALS['wgExtensionFunctions'][] = function() {
 
-	$applicationFactory = Application::getInstance();
+	$applicationFactory = ApplicationFactory::getInstance();
 
 	$namespace = new NamespaceManager( $GLOBALS, __DIR__ );
 	$namespace->run();

@@ -7,7 +7,7 @@ use SMW\Tests\Util\SemanticDataFactory;
 use SMW\Tests\Util\Mock\MockTitle;
 
 use SMW\MediaWiki\Api\BrowseBySubject;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use Title;
 
@@ -28,18 +28,18 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 
 	private $apiFactory;
 	private $semanticDataFactory;
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->apiFactory = new MwApiFactory();
 		$this->semanticDataFactory = new SemanticDataFactory();
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	protected function tearDown() {
-		Application::clear();
+		ApplicationFactory::clear();
 
 		parent::tearDown();
 	}
@@ -106,8 +106,8 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'findRedirect' )
 			->will( $this->returnValue( $titleCreator ) );
 
-		$this->application->registerObject( 'Store', $store );
-		$this->application->registerObject( 'TitleCreator', $titleCreator );
+		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->applicationFactory->registerObject( 'TitleCreator', $titleCreator );
 
 		$expectedResultToContainArrayKeys = array( 'subject'  => true, 'result' => true );
 

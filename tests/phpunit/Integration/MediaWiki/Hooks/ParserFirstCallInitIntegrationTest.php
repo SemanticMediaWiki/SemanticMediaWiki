@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
 use SMW\Tests\Util\UtilityFactory;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\ContentParser;
 
 use Title;
@@ -26,7 +26,7 @@ use Title;
 class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	private $mwHooksHandler;
-	private $application;
+	private $applicationFactory;
 	private $parserFactory;
 
 	protected function setUp() {
@@ -43,10 +43,10 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->application = Application::getInstance();
-		$this->application->registerObject( 'Store', $store );
+		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->applicationFactory->registerObject( 'Store', $store );
 
-		$this->application->getSettings()->set( 'smwgCacheType', CACHE_NONE );
+		$this->applicationFactory->getSettings()->set( 'smwgCacheType', CACHE_NONE );
 
 		$this->mwHooksHandler->register(
 			'ParserFirstCallInit',
@@ -56,7 +56,7 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	protected function tearDown() {
 		$this->mwHooksHandler->restoreListedHooks();
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -74,7 +74,7 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 		$title = Title::newFromText( __METHOD__ );
 		$parser = $this->parserFactory->newFromTitle( $title );
 
-		$this->application->getSettings()->set( 'smwgQEnabled', true );
+		$this->applicationFactory->getSettings()->set( 'smwgQEnabled', true );
 
 		$instance = new ContentParser( $title, $parser );
 		$instance->parse( $text );
@@ -106,7 +106,7 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 		$title = Title::newFromText( __METHOD__ );
 		$parser = $this->parserFactory->newFromTitle( $title );
 
-		$this->application->getSettings()->set( 'smwgQEnabled', false );
+		$this->applicationFactory->getSettings()->set( 'smwgQEnabled', false );
 
 		$instance = new ContentParser( $title, $parser );
 		$instance->parse( $text );

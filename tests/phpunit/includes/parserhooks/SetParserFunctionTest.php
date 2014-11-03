@@ -6,7 +6,7 @@ use SMW\Tests\Util\UtilityFactory;
 
 use SMW\SetParserFunction;
 use SMW\ParameterFormatterFactory;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use Title;
 use ParserOutput;
@@ -24,7 +24,7 @@ use ParserOutput;
  */
 class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
-	private $application;
+	private $applicationFactory;
 	private $semanticDataValidator;
 
 	protected function setUp() {
@@ -32,11 +32,11 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -62,7 +62,7 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParse( array $params, array $expected ) {
 
-		$parserData = $this->application->newParserData(
+		$parserData = $this->applicationFactory->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
@@ -95,7 +95,7 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testInstantiatedPropertyValues( array $params, array $expected ) {
 
-		$parserData = $this->application->newParserData(
+		$parserData = $this->applicationFactory->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
 		);

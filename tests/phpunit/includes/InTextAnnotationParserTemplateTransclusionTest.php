@@ -10,7 +10,7 @@ use SMW\MediaWiki\RedirectTargetFinder;
 
 use SMW\Settings;
 use SMW\ParserData;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use Title;
 use ParserOutput;
@@ -29,17 +29,17 @@ use ParserOutput;
 class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->semanticDataValidator = new SemanticDataValidator();
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -83,7 +83,7 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 
 		$outputText   = $this->runTemplateTransclusion( $title, $text, $tmplValue );
 
-		$this->application->registerObject(
+		$this->applicationFactory->registerObject(
 			'Settings',
 			Settings::newFromArray( $settings )
 		);

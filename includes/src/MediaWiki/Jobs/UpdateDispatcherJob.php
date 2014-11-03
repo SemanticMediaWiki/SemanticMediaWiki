@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Jobs;
 
 use SMW\SerializerFactory;
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Profiler;
@@ -52,9 +52,9 @@ class UpdateDispatcherJob extends JobBase {
 		Profiler::In( __METHOD__, true );
 
 		/**
-		 * @var Store $store
+		 * @var Store
 		 */
-		$this->store = Application::getInstance()->getStore();
+		$this->store = ApplicationFactory::getInstance()->getStore();
 
 		if ( $this->getTitle()->getNamespace() === SMW_NS_PROPERTY ) {
 			$this->dispatchUpdateForProperty( DIProperty::newFromUserLabel( $this->getTitle()->getText() ) )->pushToJobQueue();
@@ -73,7 +73,7 @@ class UpdateDispatcherJob extends JobBase {
 	 * @codeCoverageIgnore
 	 */
 	public function insert() {
-		if ( Application::getInstance()->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
+		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
 			parent::insert();
 		}
 	}
@@ -142,7 +142,7 @@ class UpdateDispatcherJob extends JobBase {
 	protected function addUpdateJobsFromSerializedData() {
 		if ( $this->hasParameter( 'semanticData' ) ) {
 			$this->addUpdateJobsForProperties(
-				Application::getInstance()->newSerializerFactory()->deserialize( $this->getParameter( 'semanticData' ) )->getProperties()
+				ApplicationFactory::getInstance()->newSerializerFactory()->deserialize( $this->getParameter( 'semanticData' ) )->getProperties()
 			);
 		}
 	}

@@ -2,20 +2,19 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
+use SMW\Tests\Util\UtilityFactory;
 
 use SMW\DataValueFactory;
 use SMW\SemanticData;
 use SMW\ParserData;
 use SMW\DIWikiPage;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use ParserOutput;
 use Title;
 
 /**
  * @covers \SMW\ParserData
- *
  *
  * @group SMW
  * @group SMWExtension
@@ -26,6 +25,14 @@ use Title;
  * @author mwjames
  */
 class ParserDataTest extends \PHPUnit_Framework_TestCase {
+
+	private $semanticDataValidator;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+	}
 
 	public function testCanConstruct() {
 
@@ -183,9 +190,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 			'propertyValues' => $value
 		);
 
-		$semanticDataValidator = new SemanticDataValidator();
-
-		$semanticDataValidator->assertThatPropertiesAreSet(
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
 			$instance->getSemanticData()
 		);
@@ -223,7 +228,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->once() )
 			->method( 'updateData' );
 
-		Application::getInstance()->registerObject( 'Store', $store );
+		ApplicationFactory::getInstance()->registerObject( 'Store', $store );
 
 		$instance = new ParserData(
 			Title::newFromText( __METHOD__ ),
@@ -232,7 +237,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue( $instance->updateStore() );
 
-		Application::clear();
+		ApplicationFactory::clear();
 	}
 
 }

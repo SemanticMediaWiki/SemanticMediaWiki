@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\DataTypeRegistry;
 
 use Language;
@@ -91,7 +91,7 @@ class SpecialStatsAddExtra {
 	 */
 	protected function copyStatistics() {
 
-		$statistics = Application::getInstance()->getStore()->getStatistics();
+		$statistics = ApplicationFactory::getInstance()->getStore()->getStatistics();
 
 		$this->extraStats['smw-statistics'] = array();
 
@@ -118,7 +118,7 @@ class SpecialStatsAddExtra {
 	 */
 	protected function copyLegacyStatistics() {
 
-		$statistics = Application::getInstance()->getStore()->getStatistics();
+		$statistics = ApplicationFactory::getInstance()->getStore()->getStatistics();
 
 		foreach ( $this->legacyMessageMapper as $key => $message ) {
 

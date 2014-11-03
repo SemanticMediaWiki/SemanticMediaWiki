@@ -147,7 +147,7 @@ class Factbox {
 	 */
 	protected function getMagicWords() {
 
-		$settings = Application::getInstance()->getSettings();
+		$settings = ApplicationFactory::getInstance()->getSettings();
 		$parserOutput = $this->parserData->getOutput();
 
 		// Prior MW 1.21 mSMWMagicWords is used (see SMW\ParserTextProcessor)

@@ -6,7 +6,7 @@ use SMW\Tests\Util\Mock\MockTitle;
 use SMW\Tests\Util\Mock\MockSuperUser;
 
 use SMW\MediaWiki\Hooks\TitleMoveComplete;
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\Settings;
 
 /**
@@ -23,16 +23,16 @@ use SMW\Settings;
  */
 class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -73,12 +73,12 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 				$this->anything(),
 				$this->anything() );
 
-		$this->application->registerObject( 'Settings', Settings::newFromArray( array(
+		$this->applicationFactory->registerObject( 'Settings', Settings::newFromArray( array(
 			'smwgCacheType'             => 'hash',
 			'smwgAutoRefreshOnPageMove' => true,
 		) ) );
 
-		$this->application->registerObject( 'Store', $store );
+		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$instance = new TitleMoveComplete(
 			$oldTitle,

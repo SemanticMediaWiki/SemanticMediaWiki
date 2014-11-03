@@ -3,8 +3,7 @@
 namespace SMW\Tests\Integration;
 
 use SMW\MediaWiki\Hooks\BaseTemplateToolbox;
-use SMW\Application;
-use SMW\Settings;
+use SMW\ApplicationFactory;
 
 use Title;
 
@@ -12,9 +11,9 @@ use Title;
  * @covers \SMW\MediaWiki\Hooks\BaseTemplateToolbox
  * @covers \SMWInfolink
  *
- *
  * @group SMW
  * @group SMWExtension
+ *
  * @group semantic-mediawiki-integration
  * @group mediawiki-databaseless
  *
@@ -32,10 +31,9 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 		$toolbox  = '';
 
-		Application::getInstance()->registerObject(
-			'Settings',
-			Settings::newFromArray( $setup['settings'] )
-		);
+		foreach ( $setup['settings'] as $key => $value) {
+			ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
+		}
 
 		$instance = new BaseTemplateToolbox( $setup['skinTemplate'], $toolbox );
 
@@ -46,7 +44,7 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 			$toolbox['smw-browse']['href']
 		);
 
-		Application::clear();
+		ApplicationFactory::clear();
 	}
 
 	public function baseTemplateToolboxDataProvider() {

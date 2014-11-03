@@ -6,7 +6,7 @@ use SMW\Tests\Util\Validators\SemanticDataValidator;
 
 use SMW\MediaWiki\Hooks\NewRevisionFromEditComplete;
 use SMW\DIProperty;
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\Settings;
 
 use ParserOutput;
@@ -28,18 +28,18 @@ use Title;
  */
 class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 
-	private $application;
+	private $applicationFactory;
 	private $semanticDataValidator;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->semanticDataValidator = new SemanticDataValidator();
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -69,7 +69,7 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testProcess( $parameters, $expected ) {
 
-		$this->application->registerObject(
+		$this->applicationFactory->registerObject(
 			'Settings',
 			Settings::newFromArray( $parameters['settings'] )
 		);
@@ -86,7 +86,7 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		if ( $editInfo && $editInfo->output instanceof ParserOutput ) {
 
-			$parserData = $this->application->newParserData(
+			$parserData = $this->applicationFactory->newParserData(
 				$parameters['wikiPage']->getTitle(),
 				$editInfo->output
 			);

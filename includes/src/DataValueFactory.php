@@ -17,9 +17,7 @@ use SMWDIError;
  * property names. To create suitable datavalues for a given property, the
  * method newPropertyObjectValue() can be used.
  *
- * @ingroup SMWDataValues
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author Markus Krötzsch
@@ -28,8 +26,10 @@ use SMWDIError;
  */
 class DataValueFactory {
 
-	/** @var DataTypeRegistry */
-	protected $dataTypeRegistry = null;
+	/**
+	 * @var DataTypeRegistry
+	 */
+	private $dataTypeRegistry = null;
 
 	/**
 	 * FIXME In order to remove wfMessage dependency, a message formatter
@@ -145,7 +145,7 @@ class DataValueFactory {
 	/**
 	 * This factory method returns a data value object from a given property,
 	 * value string. It is intended to be used on user input to allow to
-	 * turn a property and value strings into a data value object.
+	 * turn a property and value string into a data value object.
 	 *
 	 * @since 1.9
 	 *

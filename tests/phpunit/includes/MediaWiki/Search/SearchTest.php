@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Search;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\MediaWiki\Search\Search;
 use SMWQuery;
 
@@ -20,7 +20,7 @@ use SMWQuery;
 class SearchTest extends \PHPUnit_Framework_TestCase {
 
 	protected function tearDown() {
-		Application::clear();
+		ApplicationFactory::clear();
 
 		parent::tearDown();
 	}
@@ -66,7 +66,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSearchEngine' )
 			->will( $this->returnValue( 'SearchEngine' ) );
 
-		Application::getInstance()->getSettings()->set( 'smwgFallbackSearchType', null );
+		ApplicationFactory::getInstance()->getSettings()->set( 'smwgFallbackSearchType', null );
 
 		$search = new Search();
 		$search->setDB( $dbMock );
@@ -79,7 +79,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 	public function testInvalidFallbackSearchEngineThrowsException() {
 
-		Application::getInstance()->getSettings()->set( 'smwgFallbackSearchType', 'InvalidFallbackSearchEngine' );
+		ApplicationFactory::getInstance()->getSettings()->set( 'smwgFallbackSearchType', 'InvalidFallbackSearchEngine' );
 
 		$search = new Search();
 
@@ -186,7 +186,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 				return $query->querymode === SMWQuery::MODE_COUNT ? 9001 : $queryResult;
 			} ) );
 
-		Application::getInstance()->registerObject( 'Store', $store );
+		ApplicationFactory::getInstance()->registerObject( 'Store', $store );
 
 		$search = new Search();
 		$result = $search->searchTitle( $term );

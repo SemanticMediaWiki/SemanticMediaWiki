@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use Parser;
 use Title;
@@ -29,6 +29,11 @@ class ParserAfterTidy {
 	 * @var string
 	 */
 	private $text;
+
+	/**
+	 * @var ApplicationFactory
+	 */
+	private $applicationFactory = null;
 
 	/**
 	 * @since  1.9
@@ -67,12 +72,12 @@ class ParserAfterTidy {
 
 	protected function performUpdate() {
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		$parserData = $this->application
+		$parserData = $this->applicationFactory
 			->newParserData( $this->parser->getTitle(), $this->parser->getOutput() );
 
-		$propertyAnnotator = $this->application
+		$propertyAnnotator = $this->applicationFactory
 			->newPropertyAnnotatorFactory()
 			->newSortkeyPropertyAnnotator(
 				$parserData->getSemanticData(),
@@ -80,7 +85,7 @@ class ParserAfterTidy {
 
 		$propertyAnnotator->addAnnotation();
 
-		$propertyAnnotator = $this->application
+		$propertyAnnotator = $this->applicationFactory
 			->newPropertyAnnotatorFactory()
 			->newCategoryPropertyAnnotator(
 				$parserData->getSemanticData(),
@@ -102,7 +107,7 @@ class ParserAfterTidy {
 	 */
 	private function checkForRequestedUpdateByPagePurge( $parserData ) {
 
-		$cache = $this->application->getCache();
+		$cache = $this->applicationFactory->getCache();
 
 		$cache->setKey( ArticlePurge::newCacheId( $this->parser->getTitle()->getArticleID() ) );
 

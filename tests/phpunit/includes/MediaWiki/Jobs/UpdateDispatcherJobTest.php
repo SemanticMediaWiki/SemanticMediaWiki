@@ -3,7 +3,7 @@
 namespace SMW\Tests\MediaWiki\Jobs;
 
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
@@ -28,12 +28,12 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 	protected $expectedProperty;
 	protected $expectedSubjects;
 
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 
 		$settings = Settings::newFromArray( array(
 			'smwgCacheType'        => 'hash',
@@ -44,12 +44,12 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->application->registerObject( 'Store', $store );
-		$this->application->registerObject( 'Settings', $settings );
+		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->applicationFactory->registerObject( 'Settings', $settings );
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -97,7 +97,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getInProperties' )
 			->will( $this->returnValue( array() ) );
 
-		$this->application->registerObject( 'Store', $store );
+		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$instance = new UpdateDispatcherJob( $title, array() );
 		$instance->setJobQueueEnabledState( false );
@@ -134,7 +134,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertySubjects' )
 			->will( $this->returnValue( array() ) );
 
-		$this->application->registerObject( 'Store', $store );
+		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$instance = new UpdateDispatcherJob( $title, array() );
 		$instance->setJobQueueEnabledState( false );
@@ -175,7 +175,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertySubjects' )
 			->will( $this->returnValue( array() ) );
 
-		$this->application->registerObject( 'Store', $store );
+		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$instance = new UpdateDispatcherJob( $setup['title'], array() );
 		$instance->setJobQueueEnabledState( false );
@@ -192,7 +192,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testRunJobOnMockWithParameters( $setup, $expected ) {
 
-		$semanticData = $this->application->newSerializerFactory()->serialize(
+		$semanticData = $this->applicationFactory->newSerializerFactory()->serialize(
 			new SemanticData( DIWikiPage::newFromTitle( $setup['title'] )
 		) );
 
@@ -228,7 +228,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertySubjects' )
 			->will( $this->returnValue( array() ) );
 
-		$this->application->registerObject( 'Store', $store );
+		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$instance = new UpdateDispatcherJob( $setup['title'], $additionalJobQueueParameters );
 		$instance->setJobQueueEnabledState( false );

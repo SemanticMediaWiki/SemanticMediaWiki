@@ -15,7 +15,7 @@ use SMW\MediaWiki\Hooks\HookRegistry;
 final class Setup {
 
 	/**
-	 * @var Application
+	 * @var ApplicationFactory
 	 */
 	private $applicationFactory;
 
@@ -32,11 +32,11 @@ final class Setup {
 	/**
 	 * @since 1.9
 	 *
-	 * @param Application $applicationFactory
+	 * @param ApplicationFactory $applicationFactory
 	 * @param array &$globals
 	 * @param string $directory
 	 */
-	public function __construct( Application $applicationFactory, &$globals, $directory ) {
+	public function __construct( ApplicationFactory $applicationFactory, &$globals, $directory ) {
 		$this->applicationFactory = $applicationFactory;
 		$this->globalVars =& $globals;
 		$this->directory = $directory;

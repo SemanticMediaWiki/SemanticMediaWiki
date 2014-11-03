@@ -4,7 +4,7 @@ namespace SMW\Test;
 
 use SMW\Tests\Util\UtilityFactory;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\AskParserFunction;
 
 use Title;
@@ -24,7 +24,7 @@ use ReflectionClass;
  */
 class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
-	private $application;
+	private $applicationFactory;
 	private $semanticDataValidator;
 	private $smwgQMaxLimit;
 
@@ -33,8 +33,8 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 
-		$this->application = Application::getInstance();
-		$this->application->getSettings()->set( 'smwgQueryDurationEnabled', false );
+		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->applicationFactory->getSettings()->set( 'smwgQueryDurationEnabled', false );
 
 		// FIXME in the Query do not use global scope
 		$this->smwgQMaxLimit = $GLOBALS['smwgQMaxLimit'];
@@ -42,7 +42,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 		$GLOBALS['smwgQMaxLimit'] = $this->smwgQMaxLimit;
 
 		parent::tearDown();
@@ -69,7 +69,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParse( array $params, array $expected ) {
 
-		$parserData = $this->application->newParserData(
+		$parserData = $this->applicationFactory->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
@@ -138,7 +138,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testQueryIdStabilityForFixedSetOfParameters() {
 
-		$parserData = $this->application->newParserData(
+		$parserData = $this->applicationFactory->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
@@ -187,10 +187,10 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	public function testInstantiatedQueryData( array $params, array $expected, array $settings ) {
 
 		foreach ( $settings as $key => $value ) {
-			$this->application->getSettings()->set( $key, $value );
+			$this->applicationFactory->getSettings()->set( $key, $value );
 		}
 
-		$parserData = $this->application->newParserData(
+		$parserData = $this->applicationFactory->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
 		);

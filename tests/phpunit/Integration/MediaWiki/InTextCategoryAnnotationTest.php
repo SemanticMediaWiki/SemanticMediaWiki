@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration;
 
 use SMW\Tests\Util\Validators\SemanticDataValidator;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\ParserData;
 
@@ -41,7 +41,7 @@ class InTextCategoryAnnotationTest extends \PHPUnit_Framework_TestCase {
 			new ParserOutput()
 		);
 
-		$instance = Application::getInstance()->newInTextAnnotationParser( $parserData );
+		$instance = ApplicationFactory::getInstance()->newInTextAnnotationParser( $parserData );
 		$instance->parse( $text );
 
 		$semanticDataValidator = new SemanticDataValidator();

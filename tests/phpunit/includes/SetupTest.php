@@ -7,7 +7,7 @@ use SMW\Tests\Util\Mock\CoreMockObjectRepository;
 use SMW\Tests\Util\Mock\MediaWikiMockObjectRepository;
 
 use SMW\Setup;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 /**
  * @covers \SMW\Setup
@@ -24,7 +24,7 @@ use SMW\Application;
  */
 class SetupTest extends \PHPUnit_Framework_TestCase {
 
-	private $application;
+	private $applicationFactory;
 	private $defaultConfig;
 	private $mockbuilder;
 
@@ -47,8 +47,8 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->application = Application::getInstance();
-		$this->application->registerObject( 'Store', $store );
+		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$this->defaultConfig = array(
 			'smwgCacheType' => CACHE_NONE,
@@ -66,7 +66,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		foreach ( $this->defaultConfig as $key => $value ) {
-			$this->application->getSettings()->set( $key, $value );
+			$this->applicationFactory->getSettings()->set( $key, $value );
 		}
 
 		// This needs to be fixed but not now
@@ -76,14 +76,14 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
 
-		$application = $this->getMockBuilder( '\SMW\Application' )
+		$applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -92,16 +92,16 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\Setup',
-			new Setup( $application, $config, $basepath )
+			new Setup( $applicationFactory, $config, $basepath )
 		);
 	}
 
 	public function testResourceModules() {
 
 		$config   = $this->defaultConfig;
-		$basepath = $this->application->getSettings()->get( 'smwgIP' );
+		$basepath = $this->applicationFactory->getSettings()->get( 'smwgIP' );
 
-		$instance = new Setup( $this->application, $config, $basepath );
+		$instance = new Setup( $this->applicationFactory, $config, $basepath );
 		$instance->run();
 
 		$this->assertNotEmpty(
@@ -388,7 +388,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 		$config = $this->defaultConfig;
 
-		$instance = new Setup( $this->application, $config, 'Foo' );
+		$instance = new Setup( $this->applicationFactory, $config, 'Foo' );
 		$instance->run();
 
 		$this->assertNotEmpty(
@@ -414,7 +414,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$config['wgParamDefinitions']['smwformat']
 		);
 
-		$instance = new Setup( $this->application, $config, 'Foo' );
+		$instance = new Setup( $this->applicationFactory, $config, 'Foo' );
 		$instance->run();
 
 		$this->assertNotEmpty(
@@ -428,7 +428,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 		$config['wgFooterIcons']['poweredby']['semanticmediawiki'] = '';
 
-		$instance = new Setup( $this->application, $config, 'Foo' );
+		$instance = new Setup( $this->applicationFactory, $config, 'Foo' );
 		$instance->run();
 
 		$this->assertNotEmpty(
@@ -576,7 +576,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'Asserts that before run() the entry counts 0'
 		);
 
-		$instance = new Setup( $this->application, $config, 'Foo' );
+		$instance = new Setup( $this->applicationFactory, $config, 'Foo' );
 		$instance->run();
 
 		$this->assertCount(
@@ -595,7 +595,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			"Asserts that {$entry} is empty"
 		);
 
-		$instance = new Setup( $this->application, $config, 'Foo' );
+		$instance = new Setup( $this->applicationFactory, $config, 'Foo' );
 		$instance->run();
 
 		$this->assertNotEmpty( $config[$target][$entry] );

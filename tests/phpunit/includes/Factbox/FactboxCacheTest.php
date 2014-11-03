@@ -5,7 +5,7 @@ namespace SMW\Test;
 use SMW\Tests\Util\Mock\MockTitle;
 
 use SMW\FactboxCache;
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\Settings;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
@@ -28,12 +28,12 @@ use ParserOutput;
  */
 class FactboxCacheTest extends \PHPUnit_Framework_TestCase {
 
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 
 		$settings = Settings::newFromArray( array(
 			'smwgFactboxUseCache' => true,
@@ -42,12 +42,12 @@ class FactboxCacheTest extends \PHPUnit_Framework_TestCase {
 			'smwgInlineErrors'    => true
 		) );
 
-		$this->application->registerObject( 'Settings', $settings );
+		$this->applicationFactory->registerObject( 'Settings', $settings );
 
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -77,17 +77,17 @@ class FactboxCacheTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testProcessAndRetrieveContent( $parameters, $expected ) {
 
-		$this->application->getSettings()->set(
+		$this->applicationFactory->getSettings()->set(
 			'smwgNamespacesWithSemanticLinks',
 			$parameters['smwgNamespacesWithSemanticLinks']
 		);
 
-		$this->application->getSettings()->set(
+		$this->applicationFactory->getSettings()->set(
 			'smwgShowFactbox',
 			$parameters['smwgShowFactbox']
 		);
 
-		$this->application->registerObject( 'Store', $parameters['store'] );
+		$this->applicationFactory->registerObject( 'Store', $parameters['store'] );
 
 		$outputPage = $parameters['outputPage'];
 

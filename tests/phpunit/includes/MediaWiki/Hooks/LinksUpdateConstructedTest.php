@@ -3,7 +3,7 @@
 namespace SMW\Test\MediaWiki\Hooks;
 
 use SMW\MediaWiki\Hooks\LinksUpdateConstructed;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use ParserOutput;
 use LinksUpdate;
@@ -23,22 +23,22 @@ use Title;
  */
 class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->application->registerObject( 'Store', $store );
+		$this->applicationFactory->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -71,7 +71,7 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->atLeastOnce() )
 			->method( 'updateData' );
 
-		$this->application->registerObject( 'Store', $store );
+		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$instance = new LinksUpdateConstructed( new LinksUpdate( $title, $parserOutput ) );
 

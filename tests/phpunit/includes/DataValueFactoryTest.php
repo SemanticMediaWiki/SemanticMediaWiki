@@ -1,72 +1,73 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use SMW\DataValueFactory;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+
 use SMWDataItem;
 use SMWPropertyValue;
 
 /**
  * @covers \SMW\DataValueFactory
  *
- *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class DataValueFactoryTest extends SemanticMediaWikiTestCase {
+class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\DataValueFactory';
-	}
+	public function testCanConstruct() {
 
-	/**
-	 * @since 1.9
-	 */
-	public function testGetInstance() {
-		$this->assertInstanceOf( $this->getClass(), DataValueFactory::getInstance() );
+		$this->assertInstanceOf(
+			'\SMW\DataValueFactory',
+			DataValueFactory::getInstance()
+		);
 	}
 
 	/**
 	 * @dataProvider dataItemIdDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testGetDataItemId( $typeId, $expectedId ) {
-		$this->assertEquals( $expectedId, DataValueFactory::getDataItemId( $typeId ) );
+
+		$this->assertEquals(
+			$expectedId,
+			DataValueFactory::getDataItemId( $typeId )
+		);
 	}
 
 	/**
 	 * @dataProvider typeIdValueDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testNewTypeIdValue( $typeId, $value, $expectedValue, $expectedInstance ) {
 
 		$dataValue = DataValueFactory::getInstance()->newTypeIdValue( $typeId, $value );
-		$this->assertInstanceOf( $expectedInstance , $dataValue );
+
+		$this->assertInstanceOf(
+			$expectedInstance,
+			$dataValue
+		);
 
 		if ( $dataValue->getErrors() === array() ){
-			$this->assertEquals( $expectedValue, $dataValue->getWikiValue() );
-		} else {
-			$this->assertInternalType( 'array', $dataValue->getErrors() );
+			return $this->assertEquals(
+				$expectedValue,
+				$dataValue->getWikiValue()
+			);
 		}
 
+		$this->assertInternalType(
+			'array',
+			$dataValue->getErrors()
+		);
 	}
 
 	/**
 	 * @dataProvider propertyObjectValueDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testNewPropertyObjectValue( $propertyName, $value, $expectedValue, $expectedInstance ) {
 
@@ -92,17 +93,18 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 		$dataValue = DataValueFactory::getInstance()->newPropertyObjectValue(
 			$propertyDI,
 			$value,
-			$this->newRandomString(),
-			$this->newSubject()
+			'FooCaption',
+			new DIWikiPage( 'Foo', NS_MAIN )
 		);
 
-		$this->assertInstanceOf( $expectedInstance , $dataValue );
+		$this->assertInstanceOf(
+			$expectedInstance,
+			$dataValue
+		);
 	}
 
 	/**
 	 * @dataProvider propertyValueDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testAddPropertyValue( $propertyName, $value, $expectedValue, $expectedInstance ) {
 
@@ -125,26 +127,29 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 		$dataValue = DataValueFactory::getInstance()->newPropertyValue(
 			$propertyName,
 			$value,
-			$this->newRandomString(),
-			$this->newSubject()
+			'FooCaption',
+			new DIWikiPage( 'Foo', NS_MAIN )
 		);
 
-		$this->assertInstanceOf( $expectedInstance , $dataValue );
+		$this->assertInstanceOf(
+			$expectedInstance,
+			$dataValue
+		);
 	}
 
 	/**
 	 * @dataProvider findTypeIdDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testFindTypeID( $typeId, $expectedId ) {
-		$this->assertEquals( $expectedId, DataValueFactory::findTypeID( $typeId ) );
+
+		$this->assertEquals(
+			$expectedId,
+			DataValueFactory::findTypeID( $typeId )
+		);
 	}
 
 	/**
 	 * @dataProvider findTypeIdDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testFindTypeLabel( $textId, $id ) {
 
@@ -158,90 +163,72 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testGetKnownTypeLabels() {
 
 		$this->assertInternalType(
 			'array',
-			DataValueFactory::getKnownTypeLabels(),
-			'Asserts that getKnownTypeLabels() returns an array'
+			DataValueFactory::getKnownTypeLabels()
 		);
-
 	}
 
-	/**
-	 * @since 1.9
-	 */
+
 	public function testRegisterDatatype() {
 
 		DataValueFactory::registerDatatype( '_foo', '\SMW\FooValue', SMWDataItem::TYPE_NOTYPE, 'FooValue' );
 
 		$this->assertEquals(
 			'FooValue',
-			DataValueFactory::findTypeLabel( '_foo' ),
-			'Asserts that findTypeLabel() returns the registered label'
+			DataValueFactory::findTypeLabel( '_foo' )
 		);
 
 		DataValueFactory::getInstance()->registerDatatype( '_foo', '\SMW\FooValue', SMWDataItem::TYPE_NOTYPE, 'FooValue' );
 
 		$this->assertEquals(
 			'FooValue',
-			DataValueFactory::getInstance()->findTypeLabel( '_foo' ),
-			'Asserts that findTypeLabel() returns the registered label'
+			DataValueFactory::getInstance()->findTypeLabel( '_foo' )
 		);
-
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testRegisterDatatypeAlias() {
 
 		DataValueFactory::registerDatatypeAlias( '_foo', 'Bar' );
 
 		$this->assertEquals(
 			'_foo',
-			DataValueFactory::findTypeID( 'Bar' ),
-			'Asserts that registerDatatypeAlias() registered an alias'
+			DataValueFactory::findTypeID( 'Bar' )
 		);
 
 		DataValueFactory::getInstance()->registerDatatypeAlias( '_foo', 'Bar' );
 
 		$this->assertEquals(
 			'_foo',
-			DataValueFactory::getInstance()->findTypeID( 'Bar' ),
-			'Asserts that registerDatatypeAlias() registered an alias'
+			DataValueFactory::getInstance()->findTypeID( 'Bar' )
 		);
 	}
 
 	/**
 	 * @dataProvider newDataItemValueDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testNewDataItemValue( $setup ) {
 
-		$dataValue = DataValueFactory::getInstance()->newDataItemValue( $setup['dataItem'], $setup['property'], $setup['caption'] );
+		$dataValue = DataValueFactory::getInstance()->newDataItemValue(
+			$setup['dataItem'],
+			$setup['property'],
+			$setup['caption']
+		);
 
 		$this->assertInstanceOf(
 			'SMWDataValue',
-			$dataValue,
-			'Asserts that newDataItemValue() yields a SMWDatavalue'
+			$dataValue
 		);
-
 	}
 
-	/**
-	 * @return array
-	 */
 	public function newDataItemValueDataProvider() {
 
 		$provider = array();
 
-		$dataItem = $this->newMockBuilder()->newObject( 'DIWikiPage' );
-		$property = $this->newMockBuilder()->newObject( 'DIProperty' );
+		$dataItem = new DIWikiPage( 'Foo', NS_MAIN );
+		$property = new DIProperty( 'Bar' );
 
 		// #0
 		$provider[] = array(
@@ -282,9 +269,6 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 		return $provider;
 	}
 
-	/**
-	 * @return array
-	 */
 	public function findTypeIdDataProvider() {
 		return array(
 			array( 'URL'      , '_uri' ), // #0
@@ -299,9 +283,6 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 		);
 	}
 
-	/**
-	 * @return array
-	 */
 	public function dataItemIdDataProvider() {
 		return array(
 			array( '_txt' , SMWDataItem::TYPE_BLOB ), // #0
@@ -313,9 +294,6 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 		);
 	}
 
-	/**
-	 * @return array
-	 */
 	public function typeIdValueDataProvider() {
 		return array(
 			array( '_txt'  , 'Bar'          , 'Bar'          , 'SMWStringValue' ), // #0
@@ -343,9 +321,6 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 		);
 	}
 
-	/**
-	 * @return array
-	 */
 	public function propertyValueDataProvider() {
 		return array(
 			array( 'Foo'  , 'Bar'          , 'Bar'          , 'SMWDataValue' ), // #0

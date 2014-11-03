@@ -10,7 +10,7 @@ use SMW\Annotator\PredefinedPropertyAnnotator;
 use SMW\Annotator\NullPropertyAnnotator;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Application;
+use SMW\ApplicationFactory;
 use SMW\Settings;
 
 use Title;
@@ -31,18 +31,18 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
-	private $application;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->semanticDataFactory = new SemanticDataFactory();
 		$this->semanticDataValidator = new SemanticDataValidator();
-		$this->application = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	protected function tearDown() {
-		$this->application->clear();
+		$this->applicationFactory->clear();
 
 		parent::tearDown();
 	}
@@ -87,7 +87,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				->will( $this->returnValue( $returnValue ) );
 		}
 
-		$this->application->registerObject(
+		$this->applicationFactory->registerObject(
 			'Settings',
 			Settings::newFromArray( $parameters['settings'] )
 		);

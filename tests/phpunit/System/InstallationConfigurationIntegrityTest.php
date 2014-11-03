@@ -3,7 +3,7 @@
 namespace SMW\Tests\System;
 
 use SMW\Tests\Util\GlobalsProvider;
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 /**
  * @group SMW
@@ -26,7 +26,7 @@ class InstallationGlobalsProviderIntegrityTest extends \PHPUnit_Framework_TestCa
 		parent::setUp();
 
 		$this->globalsProvider = GlobalsProvider::getInstance();
-		$this->applicationFactory = Application::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	protected function tearDown() {
@@ -111,7 +111,7 @@ class InstallationGlobalsProviderIntegrityTest extends \PHPUnit_Framework_TestCa
 
 		$provider[] = array(
 			'Settings',
-			Application::getInstance()->getSettings()->get( 'smwgNamespacesWithSemanticLinks' )
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgNamespacesWithSemanticLinks' )
 		);
 
 		return $provider;

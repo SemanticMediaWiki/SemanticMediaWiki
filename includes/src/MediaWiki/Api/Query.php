@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Api;
 
-use SMW\Application;
+use SMW\ApplicationFactory;
 
 use SMWQueryProcessor;
 use SMWQueryResult;
@@ -57,7 +57,7 @@ abstract class Query extends ApiBase {
 	 * @return SMWQueryResult
 	 */
 	protected function getQueryResult( SMWQuery $query ) {
-		 return Application::getInstance()->getStore()->getQueryResult( $query );
+		 return ApplicationFactory::getInstance()->getStore()->getQueryResult( $query );
 	}
 
 	/**
