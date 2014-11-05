@@ -1,3 +1,9 @@
 {
+	"@metadata": {
+		"authors": [
+			"Robin0van0der0vliet"
+		]
+	},
+	"smw-ui-tooltip-title-warning": "Flater",
 	"smw-livepreview-loading": "Ynlade..."
 }
