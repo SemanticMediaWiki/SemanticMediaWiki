@@ -158,7 +158,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 	 */
 	public function testRegisteredFactboxBeforeContentGenerationToSupressDefaultTableCreation( $storeClass ) {
 
-		$this->markTestSkipped( "Skipping because I have no idea why it isn't correctly executed on Travis" );
+		$this->applicationFactory->getSettings()->set( 'smwgShowFactbox', SMW_FACTBOX_NONEMPTY );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
