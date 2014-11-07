@@ -37,6 +37,15 @@ class UtilityFactory {
 	/**
 	 * @since 2.1
 	 *
+	 * @return MwApiFactory
+	 */
+	public function newMwApiFactory() {
+		return new MwApiFactory();
+	}
+
+	/**
+	 * @since 2.1
+	 *
 	 * @return ValidatorFactory
 	 */
 	public function newValidatorFactory() {

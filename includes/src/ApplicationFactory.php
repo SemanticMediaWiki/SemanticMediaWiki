@@ -5,7 +5,6 @@ namespace SMW;
 use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\Annotator\PropertyAnnotatorFactory;
 use SMW\MediaWiki\MwCollaboratorFactory;
-
 use SMW\Factbox\FactboxBuilder;
 use SMW\Query\Profiler\QueryProfilerFactory;
 

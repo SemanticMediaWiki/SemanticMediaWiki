@@ -81,6 +81,28 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructDeepRedirectTargetResolver() {
+
+		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$applicationFactory->expects( $this->atLeastOnce() )
+			->method( 'newPageCreator' )
+			->will( $this->returnValue( $pageCreator ) );
+
+		$instance = new MwCollaboratorFactory( $applicationFactory );
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\DeepRedirectTargetResolver',
+			$instance->newDeepRedirectTargetResolver()
+		);
+	}
+
 	public function testCanConstructHtmlFormBuilder() {
 
 		$instance = new MwCollaboratorFactory( new ApplicationFactory() );

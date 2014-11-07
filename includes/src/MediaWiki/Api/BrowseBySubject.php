@@ -12,11 +12,11 @@ use ApiBase;
 /**
  * Browse a subject api module
  *
- * @note Browsing of a subobject subject is limited to its "parent" subject,
- * meaning that a request for a "Foo#_ed5a9979db6609b32733eda3fb747d21" subject
- * will produce information for "Foo" as a whole including its subobjects
- * because MW's WebRequest (responsible for handling request data sent by a
- * browser) will eliminate any fragments (indicated by "#") to an Api consumer
+ * @note To browse a particular subobject use the 'subobject' parameter because
+ * MW's WebRequest (responsible for handling request data sent by a browser) will
+ * eliminate any fragments (marked by "#") therefore using something like
+ * '"Lorem_ipsum#Foo' is not going to work but '&subject=Lorem_ipsum&subobject=Foo'
+ * will return results for the selected subobject
  *
  * @ingroup Api
  *
@@ -28,11 +28,6 @@ use ApiBase;
 class BrowseBySubject extends ApiBase {
 
 	/**
-	 * @var Title
-	 */
-	private $title;
-
-	/**
 	 * @see ApiBase::execute
 	 */
 	public function execute() {
@@ -41,13 +36,30 @@ class BrowseBySubject extends ApiBase {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
+		$title = $applicationFactory
+			->newTitleCreator()
+			->createFromText( $params['subject'] );
+
+		$deepRedirectTargetResolver = $applicationFactory
+			->newMwCollaboratorFactory()
+			->newDeepRedirectTargetResolver();
+
 		try {
-			$this->title = $applicationFactory->newTitleCreator()->createFromText( $params['subject'] )->findRedirect()->getTitle();
+			$title = $deepRedirectTargetResolver->findRedirectTargetFor( $title );
 		} catch ( \Exception $e ) {
-			$this->dieUsageMsg( array( 'invalidtitle', $this->title ) );
+			$this->dieUsage( $e->getMessage(), 'redirect-target-unresolvable'  );
 		}
 
-		$semanticData = $applicationFactory->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) );
+		$dataItem = new DIWikiPage(
+			$title->getDBkey(),
+			$title->getNamespace(),
+			$title->getInterwiki(),
+			$params['subobject']
+		);
+
+		$semanticData = $applicationFactory
+			->getStore()
+			->getSemanticData( $dataItem );
 
 		$this->getResult()->addValue(
 			null,
@@ -98,6 +110,12 @@ class BrowseBySubject extends ApiBase {
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_ISMULTI => false,
 				ApiBase::PARAM_REQUIRED => true,
+			),
+			'subobject' => array(
+				ApiBase::PARAM_TYPE => 'string',
+				ApiBase::PARAM_ISMULTI => false,
+				ApiBase::PARAM_DFLT => '',
+				ApiBase::PARAM_REQUIRED => false,
 			)
 		);
 	}
@@ -111,6 +129,7 @@ class BrowseBySubject extends ApiBase {
 	public function getParamDescription() {
 		return array(
 			'subject' => 'The subject to be queried',
+			'subobject' => 'A particular subobject id for the related subject'
 		);
 	}
 

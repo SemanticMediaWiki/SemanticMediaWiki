@@ -57,11 +57,13 @@ class SemanticDataFactory {
 	 */
 	public function newEmptySemanticData( $title = null ) {
 
-		if ( $title !== null ) {
+		if ( $title instanceOf DIWikiPage ) {
+			$this->setSubject( $title );
+		} elseif ( $title !== null ) {
 			$this->setTitle( $title );
 		}
 
-		if ( $this->subject instanceOf DIWikiPage ) {
+		if ( $this->subject !== null ) {
 			return new SemanticData( $this->subject );
 		}
 
