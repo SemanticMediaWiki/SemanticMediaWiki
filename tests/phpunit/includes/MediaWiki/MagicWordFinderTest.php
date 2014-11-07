@@ -9,7 +9,6 @@ use ParserOutput;
 /**
  * @covers \SMW\MediaWiki\MagicWordFinder
  *
- *
  * @group SMW
  * @group SMWExtension
  *
@@ -77,7 +76,7 @@ class MagicWordFinderTest extends \PHPUnit_Framework_TestCase {
 
 	protected function assertMagicWord( $instance, $magicWord ) {
 
-		$this->assertNull( $instance->getMagicWords() );
+		$this->assertEmpty( $instance->getMagicWords() );
 
 		$instance->setMagicWords( $magicWord );
 

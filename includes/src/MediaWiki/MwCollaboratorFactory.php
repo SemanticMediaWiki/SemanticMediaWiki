@@ -1,0 +1,98 @@
+<?php
+
+namespace SMW\MediaWiki;
+
+use SMW\ApplicationFactory;
+
+use Title;
+use Language;
+
+/**
+ * @license GNU GPL v2+
+ * @since 2.1
+ *
+ * @author mwjames
+ */
+class MwCollaboratorFactory {
+
+	/**
+	 * @var ApplicationFactory
+	 */
+	private $applicationFactory;
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param ApplicationFactory $applicationFactory
+	 */
+	public function __construct( ApplicationFactory $applicationFactory ) {
+		$this->applicationFactory = $applicationFactory;
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param Language|null $language
+	 *
+	 * @return MessageBuilder
+	 */
+	public function newMessageBuilder( Language $language = null ) {
+		return new MessageBuilder( $language );
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return MagicWordFinder
+	 */
+	public function newMagicWordFinder() {
+		return new MagicWordFinder();
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return RedirectTargetFinder
+	 */
+	public function newRedirectTargetFinder() {
+		return new RedirectTargetFinder();
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param Title $title
+	 * @param Language|null $language
+	 *
+	 * @return HtmlFormBuilder
+	 */
+	public function newHtmlFormBuilder( Title $title, Language $language = null ) {
+
+		if ( $language === null ) {
+			$language = $title->getPageLanguage();
+		}
+
+		$messageBuilder = $this->newMessageBuilder( $language );
+
+		return new HtmlFormBuilder( $title, $messageBuilder );
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return HtmlTableBuilder
+	 */
+	public function newHtmlTableBuilder() {
+		return new HtmlTableBuilder();
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return HtmlColumnListFormatter
+	 */
+	public function newHtmlColumnListFormatter() {
+		return new HtmlColumnListFormatter();
+	}
+
+}

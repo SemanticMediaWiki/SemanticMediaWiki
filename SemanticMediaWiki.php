@@ -67,6 +67,7 @@ class_alias( 'SMW\DataValueFactory', 'SMWDataValueFactory' );
 class_alias( 'SMW\DataItemException', 'SMWDataItemException' );
 class_alias( 'SMW\SQLStore\TableDefinition', 'SMWSQLStore3Table' );
 class_alias( 'SMW\DIConcept', 'SMWDIConcept' );
+class_alias( 'SMW\TableResultPrinter', 'SMWTableResultPrinter' );
 
 // 2.0
 class_alias( 'SMW\FileExportPrinter', 'SMWExportPrinter' );

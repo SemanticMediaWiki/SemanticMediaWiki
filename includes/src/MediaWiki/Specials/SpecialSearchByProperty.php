@@ -56,13 +56,13 @@ class SpecialSearchByProperty extends SpecialPage {
 			'nearbySearchForType' => $applicationFactory->getSettings()->get( 'smwgSearchByPropertyFuzzy' )
 		);
 
-		$htmlFormBuilder = $applicationFactory->newHtmlFormBuilder(
+		$formBuilder = $applicationFactory->newMwCollaboratorFactory()->newHtmlFormBuilder(
 			$this->getContext()->getTitle(),
 			$this->getLanguage()
 		);
 
 		$pageBuilder = new PageBuilder(
-			$htmlFormBuilder,
+			$formBuilder,
 			new PageRequestOptions( $query, $requestOptions ),
 			new QueryResultLookup( $applicationFactory->getStore() )
 		);

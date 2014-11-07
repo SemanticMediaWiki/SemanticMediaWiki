@@ -5,7 +5,6 @@ namespace SMW\Tests\Util\Fixtures\Properties;
 use SMW\DIProperty;
 use SMW\DIWiKiPage;
 use SMW\DataValueFactory;
-use SMW\SemanticData;
 
 /**
  * @license GNU GPL v2+
@@ -13,7 +12,12 @@ use SMW\SemanticData;
  *
  * @author mwjames
  */
-class CityCategory extends FixtureProperty {
+class CountryCategory {
+
+	/**
+	 * @var DIProperty
+	 */
+	private $property = null;
 
 	/**
 	 * @since 2.1
@@ -25,10 +29,19 @@ class CityCategory extends FixtureProperty {
 	/**
 	 * @since 2.1
 	 *
+	 * @return DIProperty
+	 */
+	public function getProperty() {
+		return $this->property;
+	}
+
+	/**
+	 * @since 2.1
+	 *
 	 * @return DIWiKiPage
 	 */
 	public function asSubject() {
-		return new DIWiKiPage( 'City', NS_CATEGORY );
+		return new DIWiKiPage( 'Country', NS_CATEGORY );
 	}
 
 	/**

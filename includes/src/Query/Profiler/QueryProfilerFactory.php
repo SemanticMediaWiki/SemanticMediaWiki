@@ -27,7 +27,7 @@ class QueryProfilerFactory {
 	 *
 	 * @return ProfileAnnotator
 	 */
-	public function newQueryProfiler( Title $title, Query $query, $format, $duration = null ) {
+	public function newJointProfileAnnotator( Title $title, Query $query, $format, $duration = null ) {
 
 		$profiler = new NullProfile(
 			new Subobject( $title ),

@@ -33,7 +33,7 @@ class SMWAdmin extends SpecialPage {
 	private $messageBuilder;
 
 	/**
-	 * @var HtmlFormBuilder
+	 * @var FormBuilder
 	 */
 	private $htmlFormBuilder;
 
@@ -61,9 +61,9 @@ class SMWAdmin extends SpecialPage {
 		$this->setHeaders();
 
 		/**
-		 * @var HtmlFormBuilder
+		 * @var FormBuilder
 		 */
-		$this->htmlFormBuilder = ApplicationFactory::getInstance()->newHtmlFormBuilder(
+		$this->htmlFormBuilder = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newHtmlFormBuilder(
 			$this->getContext()->getTitle(),
 			$this->getLanguage()
 		);

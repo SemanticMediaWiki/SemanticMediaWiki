@@ -26,11 +26,13 @@ use SMW\Localizer;
 class PageBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $stringValidator;
+	private $localizer;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
+		$this->localizer = Localizer::getInstance();
 	}
 
 	public function testCanConstruct() {
@@ -95,7 +97,7 @@ class PageBuilderTest extends \PHPUnit_Framework_TestCase {
 			'value="Foo"',
 			'value="Bar"',
 			'title="ResultOne',
-			'title="' . Localizer::getInstance()->getNamespaceTextById( NS_HELP ) . ':ResultTwo'
+			'title="' . $this->localizer->getNamespaceTextById( NS_HELP ) . ':ResultTwo'
 		);
 
 		$this->stringValidator->assertThatStringContains(
@@ -168,7 +170,7 @@ class PageBuilderTest extends \PHPUnit_Framework_TestCase {
 			'value="Foo"',
 			'value="Bar"',
 			'title="ResultOne',
-			'title="' . Localizer::getInstance()->getNamespaceTextById( NS_HELP ) . ':ResultTwo'
+			'title="' . $this->localizer->getNamespaceTextById( NS_HELP ) . ':ResultTwo'
 		);
 
 		$this->stringValidator->assertThatStringContains(

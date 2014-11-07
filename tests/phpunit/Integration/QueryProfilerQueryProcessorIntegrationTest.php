@@ -15,6 +15,7 @@ use Title;
  *
  * @group SMW
  * @group SMWExtension
+ *
  * @group semantic-mediawiki-integration
  * @group mediawiki-databaseless
  *
@@ -47,22 +48,22 @@ class ProfileAnnotatorQueryProcessorIntegrationTest extends \PHPUnit_Framework_T
 
 		$queryProfilerFactory = new QueryProfilerFactory();
 
-		$profileAnnotator = $queryProfilerFactory->newQueryProfiler(
+		$jointProfileAnnotator = $queryProfilerFactory->newJointProfileAnnotator(
 			Title::newFromText( __METHOD__ ),
 			$query,
 			$formattedParams['format']->getValue()
 		);
 
-		$profileAnnotator->addAnnotation();
+		$jointProfileAnnotator->addAnnotation();
 
 		$this->assertInstanceOf(
 			'\SMW\SemanticData',
-			$profileAnnotator->getContainer()->getSemanticData()
+			$jointProfileAnnotator->getContainer()->getSemanticData()
 		);
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
-			$profileAnnotator->getContainer()->getSemanticData()
+			$jointProfileAnnotator->getContainer()->getSemanticData()
 		);
 	}
 

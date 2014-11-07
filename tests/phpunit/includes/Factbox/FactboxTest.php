@@ -13,6 +13,7 @@ use SMW\ParserData;
 use SMW\Factbox;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\SemanticData;
 
 use ReflectionClass;
 use ParserOutput;
@@ -45,6 +46,8 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 		$this->mockbuilder = new MockObjectBuilder();
 		$this->mockbuilder->registerRepository( new CoreMockObjectRepository() );
 		$this->mockbuilder->registerRepository( new MediaWikiMockObjectRepository() );
+
+		$this->applicationFactory->getSettings()->set( 'smwgShowFactbox', SMW_FACTBOX_NONEMPTY );
 	}
 
 	protected function tearDown() {
@@ -266,7 +269,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$mockParserData = $this->mockbuilder->newObject( 'ParserData', array(
 			'getSubject'  => $this->mockbuilder->newObject( 'DIWikiPage' ),
-			'getData'     => null
+			'getSemanticData'     => null
 		) );
 
 		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
@@ -381,6 +384,12 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 			new ParserOutput()
 		);
 
+		$parserData->setSemanticData( new SemanticData( DIWikiPage::newFromTitle( $title ) ) );
+		$parserData->getSemanticData()->addPropertyObjectValue(
+			new DIProperty( 'Foo' ),
+			DIWikiPage::newFromTitle( $title )
+		);
+
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -403,25 +412,11 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Factbox( $store, $parserData, $messageBuilder );
 
-		$reflector = new ReflectionClass( '\SMW\Factbox' );
-
-		$tableFormatter = $reflector->getProperty( 'tableFormatter' );
-		$tableFormatter->setAccessible( true );
-		$tableFormatter->setValue( $instance, new TableFormatter() );
-
-		$getTableHeader = $reflector->getMethod( 'getTableHeader' );
-		$getTableHeader->setAccessible( true );
-		$getTableHeader->invoke( $instance, DIWikiPage::newFromTitle( $title ) );
-
-		// "smwfactboxhead"/"smwrdflink" is used for doing a lazy check on
-		// behalf of the invoked content
-		$header = $tableFormatter->getValue( $instance )->getHeaderItems();
-
 		$this->stringValidator->assertThatStringContains(
 			array(
 				'span class="smwrdflink"'
 			),
-			$header
+			$instance->doBuild()->getContent()
 		);
 	}
 
@@ -441,13 +436,21 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
+		$message = $this->getMockBuilder( '\Message' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$message->expects( $this->any() )
+			->method( 'inContentLanguage' )
+			->will( $this->returnSelf() );
+
 		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new Factbox( $store, $parserData, $messageBuilder );
-
-		$reflector = new ReflectionClass( '\SMW\Factbox' );
+		$messageBuilder->expects( $this->any() )
+			->method( 'getMessage' )
+			->will( $this->returnValue( $message ) );
 
 		$mockDIProperty = $this->mockbuilder->newObject( 'DIProperty', array(
 			'isUserDefined' => $test['isUserDefined'],
@@ -455,28 +458,20 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 			'getLabel'      => 'Quuey'
 		) );
 
-		$mockSemanticData = $this->mockbuilder->newObject( 'SemanticData', array(
-			'getPropertyValues' => array( DIWikiPage::newFromTitle( $title ) ),
-			'getProperties'     => array( $mockDIProperty )
-		) );
+		$parserData->setSemanticData( new SemanticData( DIWikiPage::newFromTitle( $title ) ) );
+		$parserData->getSemanticData()->addPropertyObjectValue(
+			$mockDIProperty,
+			DIWikiPage::newFromTitle( $title )
+		);
 
-		$tableFormatter = $reflector->getProperty( 'tableFormatter' );
-		$tableFormatter->setAccessible( true );
-		$tableFormatter->setValue( $instance, new TableFormatter() );
-
-		$getTableContent = $reflector->getMethod( 'getTableContent' );
-		$getTableContent->setAccessible( true );
-		$getTableContent->invoke( $instance, $mockSemanticData );
+		$instance = new Factbox( $store, $parserData, $messageBuilder );
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
-			$tableFormatter->getValue( $instance )->getTable()
+			$instance->doBuild()->getContent()
 		);
 	}
 
-	/**
-	 * @return array
-	 */
 	public function tableContentDataProvider() {
 
 		$provider = array();
