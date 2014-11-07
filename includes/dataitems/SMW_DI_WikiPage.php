@@ -159,6 +159,21 @@ class DIWikiPage extends SMWDataItem {
 		);
 	}
 
+	/**
+	 * @since 2.1
+	 *
+	 * @param string $text
+	 * @param integer namespace
+	 *
+	 * @return DIWikiPage
+	 */
+	public static function newFromText( $text, $namespace = NS_MAIN ) {
+		return new self(
+			str_replace( ' ', '_', $text ),
+			$namespace
+		);
+	}
+
 	public function equals( SMWDataItem $di ) {
 		if ( $di->getDIType() !== SMWDataItem::TYPE_WIKIPAGE ) {
 			return false;

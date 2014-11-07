@@ -77,7 +77,7 @@ class MagicWordFinder {
 	/**
 	 * @since 2.0
 	 *
-	 * @return array|null
+	 * @return array
 	 */
 	public function getMagicWords() {
 
@@ -89,7 +89,7 @@ class MagicWordFinder {
 			return $this->parserOutput->mSMWMagicWords;
 		}
 
-		return null;
+		return array();
 	}
 
 	/**

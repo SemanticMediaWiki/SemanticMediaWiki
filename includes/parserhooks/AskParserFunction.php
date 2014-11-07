@@ -35,6 +35,11 @@ class AskParserFunction {
 	private $showMode = false;
 
 	/**
+	 * @var ApplicationFactory
+	 */
+	private $applicationFactory;
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
@@ -96,6 +101,8 @@ class AskParserFunction {
 			array_shift( $rawParams );
 		}
 
+		$this->applicationFactory = ApplicationFactory::getInstance();
+
 		$this->doFetchResultsForRawParameters( $rawParams );
 		$this->parserData->updateOutput();
 
@@ -125,7 +132,7 @@ class AskParserFunction {
 			SMWQueryProcessor::INLINE_QUERY
 		);
 
-		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgQueryDurationEnabled' ) ) {
+		if ( $this->applicationFactory->getSettings()->get( 'smwgQueryDurationEnabled' ) ) {
 			$queryDuration = microtime( true ) - $start;
 		}
 
@@ -138,20 +145,20 @@ class AskParserFunction {
 
 	private function createQueryProfile( $query, $format, $duration ) {
 
-		$queryProfilerFactory = ApplicationFactory::getInstance()->newQueryProfilerFactory();
+		$queryProfilerFactory = $this->applicationFactory->newQueryProfilerFactory();
 
-		$profiler = $queryProfilerFactory->newQueryProfiler(
+		$jointProfileAnnotator = $queryProfilerFactory->newJointProfileAnnotator(
 			$this->parserData->getTitle(),
 			$query,
 			$format,
 			$duration
 		);
 
-		$profiler->addAnnotation();
+		$jointProfileAnnotator->addAnnotation();
 
 		$this->parserData->getSemanticData()->addPropertyObjectValue(
-			$profiler->getProperty(),
-			$profiler->getContainer()
+			$jointProfileAnnotator->getProperty(),
+			$jointProfileAnnotator->getContainer()
 		);
 	}
 

@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Util\Fixtures\Facts;
 
-use SMW\Tests\Util\PageDeleter;
+use SMW\Tests\Util\UtilityFactory;
 use SMW\Tests\Util\Fixtures\Properties\AreaProperty;
 use SMW\Tests\Util\Fixtures\Properties\TemperatureProperty;
 use SMW\Tests\Util\Fixtures\Properties\PopulationProperty;
@@ -83,13 +83,7 @@ class ParisFactsheet {
 		$semanticData->addDataValue( $this->getPopulationValue() );
 		$semanticData->addDataValue( $this->getPopulationDensityValue() );
 		$semanticData->addDataValue( $this->getLocatedInValue() );
-
-		$demographics = $this->getDemographics();
-
-		$semanticData->addPropertyObjectValue(
-			$demographics->getProperty(),
-			$demographics->getContainer()
-		);
+		$semanticData->addSubobject( $this->getDemographics() );
 
 		$cityCategory = new CityCategory();
 
@@ -251,7 +245,7 @@ class ParisFactsheet {
 			$subjects[] = $property->getDiWikiPage();
 		}
 
-		$pageDeleter = new PageDeleter();
+		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 
 		foreach ( $subjects as $subject ) {
 			if ( $subject instanceOf DIWikiPage ) {

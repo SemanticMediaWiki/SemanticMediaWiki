@@ -16,9 +16,7 @@ use Html;
 /**
  * Class handling the "Factbox" content rendering
  *
- * @ingroup SMW
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
@@ -28,22 +26,32 @@ class Factbox {
 	/**
 	 * @var Store
 	 */
-	protected $store;
+	private $store;
 
 	/**
 	 * @var ParserData
 	 */
-	protected $parserData;
+	private $parserData;
 
 	/**
-	 * @var TableFormatter
+	 * @var HtmlTableBuilder
 	 */
-	protected $tableFormatter;
+	private $tableBuilder;
 
 	/**
 	 * @var MessageBuilder
 	 */
-	protected $messageBuilder;
+	private $messageBuilder;
+
+	/**
+	 * @var ApplicationFactory
+	 */
+	private $applicationFactory;
+
+	/**
+	 * @var DataValueFactory
+	 */
+	private $dataValueFactory;
 
 	/**
 	 * @var boolean
@@ -64,13 +72,15 @@ class Factbox {
 	 * @since 1.9
 	 *
 	 * @param Store $store
-	 * @param IParserData $parserData
+	 * @param ParserData $parserData
 	 * @param MessageBuilder $messageBuilder
 	 */
 	public function __construct( Store $store, ParserData $parserData, MessageBuilder $messageBuilder ) {
 		$this->store = $store;
 		$this->parserData = $parserData;
 		$this->messageBuilder = $messageBuilder;
+		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->dataValueFactory = DataValueFactory::getInstance();
 	}
 
 	/**
@@ -147,7 +157,7 @@ class Factbox {
 	 */
 	protected function getMagicWords() {
 
-		$settings = ApplicationFactory::getInstance()->getSettings();
+		$settings = $this->applicationFactory->getSettings();
 		$parserOutput = $this->parserData->getOutput();
 
 		// Prior MW 1.21 mSMWMagicWords is used (see SMW\ParserTextProcessor)
@@ -206,7 +216,7 @@ class Factbox {
 			return '';
 		}
 
-		$semanticData = $this->parserData->getData();
+		$semanticData = $this->parserData->getSemanticData();
 
 		if ( $semanticData === null || $semanticData->stubObject || $this->isEmpty( $semanticData ) ) {
 			$semanticData = $this->store->getSemanticData( $this->parserData->getSubject() );
@@ -260,7 +270,8 @@ class Factbox {
 	protected function createTable( SemanticData $semanticData ) {
 		Profiler::In( __METHOD__ );
 
-		$this->tableFormatter = new TableFormatter();
+		$this->tableBuilder = $this->applicationFactory->newMwCollaboratorFactory()->newHtmlTableBuilder();
+
 		$text = '';
 
 		// Hook deprecated with SMW 1.9 and will vanish with SMW 1.11
@@ -274,8 +285,8 @@ class Factbox {
 
 			$text .= Html::rawElement( 'div',
 				array( 'class' => 'smwfact' ),
-				$this->tableFormatter->getHeaderItems() .
-				$this->tableFormatter->getTable( array( 'class' => 'smwfacttable' ) )
+				$this->tableBuilder->getHeaderItems() .
+				$this->tableBuilder->getHtml( array( 'class' => 'smwfacttable' ) )
 			);
 		}
 
@@ -292,7 +303,7 @@ class Factbox {
 	 */
 	protected function getTableHeader( DIWikiPage $subject ) {
 
-		$dataValue = DataValueFactory::getInstance()->newDataItemValue( $subject, null );
+		$dataValue = $this->dataValueFactory->newDataItemValue( $subject, null );
 
 		$browselink = SMWInfolink::newBrowsingLink(
 			$dataValue->getText(),
@@ -300,7 +311,7 @@ class Factbox {
 			'swmfactboxheadbrowse'
 		);
 
-		$this->tableFormatter->addHeaderItem( 'span',
+		$this->tableBuilder->addHeaderItem( 'span',
 			$this->messageBuilder->getMessage( 'smw_factbox_head', $browselink->getWikiText() )->inContentLanguage()->text(),
 			array( 'class' => 'smwfactboxhead' )
 		);
@@ -311,7 +322,7 @@ class Factbox {
 			'rdflink'
 		);
 
-		$this->tableFormatter->addHeaderItem( 'span',
+		$this->tableBuilder->addHeaderItem( 'span',
 			$rdflink->getWikiText(),
 			array( 'class' => 'smwrdflink' )
 		);
@@ -333,7 +344,7 @@ class Factbox {
 		$attributes = array();
 
 		foreach ( $semanticData->getProperties() as $propertyDi ) {
-			$propertyDv = DataValueFactory::getInstance()->newDataItemValue( $propertyDi, null );
+			$propertyDv = $this->dataValueFactory->newDataItemValue( $propertyDi, null );
 
 			if ( !$propertyDi->isShown() ) {
 				// showing this is not desired, hide
@@ -358,7 +369,7 @@ class Factbox {
 			$valuesHtml = array();
 			foreach ( $semanticData->getPropertyValues( $propertyDi ) as $dataItem ) {
 
-				$dataValue = DataValueFactory::getInstance()->newDataItemValue( $dataItem, $propertyDi );
+				$dataValue = $this->dataValueFactory->newDataItemValue( $dataItem, $propertyDi );
 
 				if ( $dataValue->isValid() ) {
 					$valuesHtml[] = Sanitizer::removeHTMLtags(
@@ -368,19 +379,20 @@ class Factbox {
 			}
 
 			// Invoke table content
-			$this->tableFormatter->addTableCell(
+			$this->tableBuilder->addCell(
 				$propertyDv->getShortWikiText( true ),
 				$attributes['property']
 			);
 
-			$this->tableFormatter->addTableCell(
+			$this->tableBuilder->addCell(
 				$this->messageBuilder->listToCommaSeparatedText( $valuesHtml ),
 				$attributes['values']
 			);
 
-			$this->tableFormatter->addTableRow();
+			$this->tableBuilder->addRow();
 		}
 
 		Profiler::Out( __METHOD__ );
 	}
+
 }

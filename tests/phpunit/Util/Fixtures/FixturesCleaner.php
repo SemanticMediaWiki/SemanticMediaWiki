@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Util\Fixtures;
 
-use SMW\Tests\Util\PageDeleter;
+use SMW\Tests\Util\UtilityFactory;
 
 use SMW\DIWikiPage;
 use Title;
@@ -24,7 +24,7 @@ class FixturesCleaner {
 	 */
 	public function purgeSubjects( array $subjects ) {
 
-		$pageDeleter = new PageDeleter();
+		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $subjects );
 
 		return $this;

@@ -12,17 +12,10 @@ use SMWPrintRequest;
  *
  * @since 1.5.3
  *
- *
  * @license GNU GPL v2 or later
  * @author Markus Krötzsch
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author mwjames
- */
-
-/**
- * Print query results in tables
- *
- * @ingroup QueryPrinter
  */
 class TableResultPrinter extends ResultPrinter {
 
@@ -48,10 +41,11 @@ class TableResultPrinter extends ResultPrinter {
 		$result = '';
 
 		$this->isHTML = ( $outputmode === SMW_OUTPUT_HTML );
-		$this->tableFormatter = new TableFormatter( $this->isHTML );
+
+		$this->tableBuilder = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newHtmlTableBuilder();
+		$this->tableBuilder->setHtmlContext( $this->isHTML );
 
 		$columnClasses = array();
-
 
 		if ( $this->mShowHeaders != SMW_HEADERS_HIDE ) { // building headers
 			$headers = array();
@@ -65,24 +59,24 @@ class TableResultPrinter extends ResultPrinter {
 				$columnClasses[] = $columnClass;
 				$text = $pr->getText( $outputmode, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null : $this->mLinker ) );
 
-				$this->tableFormatter->addTableHeader( ( $text === '' ? '&nbsp;' : $text ), $attribs );
+				$this->tableBuilder->addHeader( ( $text === '' ? '&nbsp;' : $text ), $attribs );
 			}
 		}
 
 		while ( $subject = $res->getNext() ) {
 			$this->getRowForSubject( $subject, $outputmode, $columnClasses );
-			$this->tableFormatter->addTableRow();
+			$this->tableBuilder->addRow();
 		}
 
 		// print further results footer
 		if ( $this->linkFurtherResults( $res ) ) {
 			$link = $this->getFurtherResultsLink( $res, $outputmode );
 
-			$this->tableFormatter->addTableCell(
+			$this->tableBuilder->addCell(
 					$link->getText( $outputmode, $this->mLinker ),
 					array( 'class' => 'sortbottom', 'colspan' => $res->getColumnCount() )
 			);
-			$this->tableFormatter->addTableRow( array( 'class' => 'smwfooter' ) );
+			$this->tableBuilder->addRow( array( 'class' => 'smwfooter' ) );
 		}
 
 		$tableAttrs = array( 'class' => $this->params['class'] );
@@ -91,7 +85,9 @@ class TableResultPrinter extends ResultPrinter {
 			$tableAttrs['width'] = '100%';
 		}
 
-		return $this->tableFormatter->transpose(  $this->mShowHeaders !== SMW_HEADERS_HIDE && $this->params['transpose'] )->getTable( $tableAttrs );
+		$this->tableBuilder->transpose( $this->mShowHeaders !== SMW_HEADERS_HIDE && $this->params['transpose'] );
+
+		return $this->tableBuilder->getHtml( $tableAttrs );
 	}
 
 	/**
@@ -161,7 +157,7 @@ class TableResultPrinter extends ResultPrinter {
 			);
 		}
 
-		$this->tableFormatter->addTableCell( $content, $attribs );
+		$this->tableBuilder->addCell( $content, $attribs );
 	}
 
 	/**
@@ -214,11 +210,3 @@ class TableResultPrinter extends ResultPrinter {
 		return $params;
 	}
 }
-
-/**
- * SMWTableResultPrinter
- * @codeCoverageIgnore
- *
- * @deprecated since SMW 1.9
- */
-class_alias( 'SMW\TableResultPrinter', 'SMWTableResultPrinter' );

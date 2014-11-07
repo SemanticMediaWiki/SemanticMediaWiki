@@ -4,10 +4,8 @@ namespace SMW;
 
 use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\Annotator\PropertyAnnotatorFactory;
-use SMW\MediaWiki\MagicWordFinder;
-use SMW\MediaWiki\HtmlFormBuilder;
-use SMW\MediaWiki\MessageBuilder;
-use SMW\MediaWiki\RedirectTargetFinder;
+use SMW\MediaWiki\MwCollaboratorFactory;
+
 use SMW\Factbox\FactboxBuilder;
 use SMW\Query\Profiler\QueryProfilerFactory;
 
@@ -39,7 +37,7 @@ class ApplicationFactory {
 	/**
 	 * @since 2.0
 	 */
-	protected function __construct( DependencyBuilder $builder = null ) {
+	public function __construct( DependencyBuilder $builder = null ) {
 		$this->builder = $builder;
 	}
 
@@ -189,10 +187,13 @@ class ApplicationFactory {
 	 * @return InTextAnnotationParser
 	 */
 	public function newInTextAnnotationParser( ParserData $parserData ) {
+
+		$mwCollaboratorFactory = $this->newMwCollaboratorFactory();
+
 		return new InTextAnnotationParser(
 			$parserData,
-			new MagicWordFinder(),
-			new RedirectTargetFinder()
+			$mwCollaboratorFactory->newMagicWordFinder(),
+			$mwCollaboratorFactory->newRedirectTargetFinder()
 		);
 	}
 
@@ -222,17 +223,6 @@ class ApplicationFactory {
 	/**
 	 * @since 2.1
 	 *
-	 * @param Language|null $language
-	 *
-	 * @return MessageBuilder
-	 */
-	public function newMessageBuilder( Language $language = null ) {
-		return new MessageBuilder( $language );
-	}
-
-	/**
-	 * @since 2.1
-	 *
 	 * @param SemanticData $semanticData
 	 *
 	 * @return StoreUpdater
@@ -244,20 +234,10 @@ class ApplicationFactory {
 	/**
 	 * @since 2.1
 	 *
-	 * @param Title $title
-	 * @param Language|null $language
-	 *
-	 * @return HtmlFormBuilder
+	 * @return MwCollaboratorFactory
 	 */
-	public function newHtmlFormBuilder( Title $title, Language $language = null ) {
-
-		if ( $language === null ) {
-			$language = $title->getPageLanguage();
-		}
-
-		$messageBuilder = $this->newMessageBuilder( $language );
-
-		return new HtmlFormBuilder( $title, $messageBuilder );
+	public function newMwCollaboratorFactory() {
+		return new MwCollaboratorFactory( $this );
 	}
 
 	/**

@@ -63,6 +63,10 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 		$this->checkIfDatabaseCanBeUsedOtherwiseSkipTest();
 		$this->checkIfStoreCanBeUsedOtherwiseSkipTest();
 
+	//	if ( is_a( $this->getStore(), '\SMW\SPARQLStore\SPARQLStore' ) ) {
+	//		 $this->getStore()->getSparqlDatabase()->deleteAll();
+	//	}
+
 		ApplicationFactory::getInstance()->registerObject( 'Store', $this->getStore() );
 	}
 

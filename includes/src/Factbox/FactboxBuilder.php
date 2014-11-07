@@ -41,7 +41,7 @@ class FactboxBuilder {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$messageBuilder = $applicationFactory->newMessageBuilder();
+		$messageBuilder = $applicationFactory->newMwCollaboratorFactory()->newMessageBuilder();
 		$messageBuilder->setLanguageFromContext( $context );
 
 		return new Factbox(

@@ -2,9 +2,6 @@
 
 namespace SMW;
 
-use SMW\Annotator\CategoryPropertyAnnotator;
-use SMW\Annotator\NullPropertyAnnotator;
-use SMW\Annotator\SortkeyPropertyAnnotator;
 use SMW\MediaWiki\TitleCreator;
 use SMW\MediaWiki\PageCreator;
 
@@ -79,9 +76,6 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 		return array(
 			'ParserData'        => $this->getParserData(),
 			'NamespaceExaminer' => $this->getNamespaceExaminer(),
-			'NullPropertyAnnotator'   => $this->NullPropertyAnnotator(),
-			'CommonPropertyAnnotator' => $this->CommonPropertyAnnotator(),
-			'PredefinedPropertyAnnotator' => $this->PredefinedPropertyAnnotator(),
 
 			'JobFactory' => function ( DependencyBuilder $builder ) {
 				return new \SMW\MediaWiki\Jobs\JobFactory();
@@ -191,71 +185,6 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 	protected function getNamespaceExaminer() {
 		return function ( DependencyBuilder $builder ) {
 			return NamespaceExaminer::newFromArray( $builder->newObject( 'Settings' )->get( 'smwgNamespacesWithSemanticLinks' ) );
-		};
-	}
-
-	/**
-	 * NullPropertyAnnotator object definition
-	 *
-	 * @since  1.9
-	 *
-	 * @return NullPropertyAnnotator
-	 */
-	protected function NullPropertyAnnotator() {
-		return function ( DependencyBuilder $builder ) {
-			return new NullPropertyAnnotator(
-				$builder->getArgument( 'SemanticData' )
-			);
-		};
-	}
-
-	/**
-	 * PropertyAnnotator object definition
-	 *
-	 * @since  1.9
-	 *
-	 * @return PropertyAnnotator
-	 */
-	protected function CommonPropertyAnnotator() {
-		return function ( DependencyBuilder $builder ) {
-
-			$annotator = $builder->newObject( 'NullPropertyAnnotator' );
-
-			if ( $builder->hasArgument( 'DefaultSort' ) ) {
-				$annotator = new SortkeyPropertyAnnotator(
-					$annotator,
-					$builder->getArgument( 'DefaultSort' )
-				);
-			}
-
-			if ( $builder->hasArgument( 'CategoryLinks' ) ) {
-				$annotator = new CategoryPropertyAnnotator(
-					$annotator,
-					$builder->getArgument( 'CategoryLinks' )
-				);
-			}
-
-			return $annotator;
-		};
-	}
-
-	/**
-	 * @since  1.9
-	 *
-	 * @return PredefinedPropertyAnnotator
-	 */
-	protected function PredefinedPropertyAnnotator() {
-		return function ( DependencyBuilder $builder ) {
-
-			$annotator = $builder->newObject( 'NullPropertyAnnotator' );
-
-			$valueProvider = new \SMW\MediaWiki\PageInfoProvider(
-				$builder->getArgument( 'WikiPage' ),
-				$builder->hasArgument( 'Revision' ) ? $builder->getArgument( 'Revision' ) : null,
-				$builder->hasArgument( 'User' ) ? $builder->getArgument( 'User' ) : null
-			);
-
-			return new \SMW\Annotator\PredefinedPropertyAnnotator( $annotator, $valueProvider );
 		};
 	}
 

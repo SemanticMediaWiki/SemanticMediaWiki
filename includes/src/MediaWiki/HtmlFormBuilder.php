@@ -11,8 +11,8 @@ use Title;
  *
  * @par Example:
  * @code
- * $htmlFormBuilder = new HtmlFormBuilder( $this->title, new MessageBuilder() );
- * $htmlFormBuilder
+ * $FormBuilder = new FormBuilder( $this->title, new MessageBuilder() );
+ * $FormBuilder
  * 	->setName( 'Foo' )
  * 	->setParameter( 'foo', 'someValue' )
  * 	->addPaging( 10, 0, 5 )
@@ -88,7 +88,7 @@ class HtmlFormBuilder {
 	/**
 	 * @since 2.1
 	 *
-	 * @return HtmlFormBuilder
+	 * @return FormBuilder
 	 */
 	public function clear() {
 		$this->queryParameters = array();
@@ -115,7 +115,7 @@ class HtmlFormBuilder {
 	 *
 	 * @param string $name
 	 *
-	 * @return HtmlFormBuilder
+	 * @return FormBuilder
 	 */
 	public function setName( $name ) {
 		$this->name = $name;
@@ -127,7 +127,7 @@ class HtmlFormBuilder {
 	 *
 	 * @param string $actionUrl
 	 *
-	 * @return HtmlFormBuilder
+	 * @return FormBuilder
 	 */
 	public function setActionUrl( $actionUrl ) {
 		$this->actionUrl = $actionUrl;
@@ -137,7 +137,7 @@ class HtmlFormBuilder {
 	/**
 	 * @since 2.1
 	 *
-	 * @return HtmlFormBuilder
+	 * @return FormBuilder
 	 */
 	public function withFieldset() {
 		$this->useFieldset = true;
@@ -149,7 +149,7 @@ class HtmlFormBuilder {
 	 *
 	 * @param string $method
 	 *
-	 * @return HtmlFormBuilder
+	 * @return FormBuilder
 	 */
 	public function setMethod( $method ) {
 		$this->method = strtolower( $method );
@@ -162,7 +162,7 @@ class HtmlFormBuilder {
 	 * @param string $key
 	 * @param string $value
 	 *
-	 * @return HtmlFormBuilder
+	 * @return FormBuilder
 	 */
 	public function addQueryParameter( $key, $value ) {
 		$this->queryParameters[ $key ] = $value;
@@ -184,7 +184,7 @@ class HtmlFormBuilder {
 	 * @param string $description
 	 * @param array $attributes
 	 *
-	 * @return HtmlFormBuilder
+	 * @return FormBuilder
 	 */
 	public function addParagraph( $text, $attributes = array() ) {
 
@@ -201,7 +201,7 @@ class HtmlFormBuilder {
 	 *
 	 * @param array $attributes
 	 *
-	 * @return HtmlFormBuilder
+	 * @return FormBuilder
 	 */
 	public function addHorizontalRule( $attributes = array() ) {
 
@@ -219,7 +219,7 @@ class HtmlFormBuilder {
 	 * @param $level
 	 * @param $text
 	 *
-	 * @return HtmlFormBuilder
+	 * @return FormBuilder
 	 */
 	public function addHeader( $level, $text ) {
 
@@ -233,7 +233,7 @@ class HtmlFormBuilder {
 	/**
 	 * @since 2.1
 	 *
-	 * @return HtmlFormBuilder
+	 * @return FormBuilder
 	 */
 	public function addLineBreak() {
 		$this->content[] = Html::element( 'br', array(), '' );
@@ -243,7 +243,7 @@ class HtmlFormBuilder {
 	/**
 	 * @since 2.1
 	 *
-	 * @return HtmlFormBuilder
+	 * @return FormBuilder
 	 */
 	public function addNonBreakingSpace() {
 		$this->content[] = '&nbsp;';
@@ -255,7 +255,7 @@ class HtmlFormBuilder {
 	 *
 	 * @param string|null $text
 	 *
-	 * @return HtmlFormBuilder
+	 * @return FormBuilder
 	 */
 	public function addSubmitButton( $text ) {
 		$this->content[] = Xml::submitButton( $text );
@@ -272,7 +272,7 @@ class HtmlFormBuilder {
 	 * @param integer $length
 	 * @param string $placeholder
 	 *
-	 * @return HtmlFormBuilder
+	 * @return FormBuilder
 	 */
 	public function addInputField( $label, $inputName, $inputValue, $id = null, $length = 20, $placeholder = '' ) {
 
@@ -300,7 +300,7 @@ class HtmlFormBuilder {
 	 * @param string $inputName
 	 * @param string $inputValue
 	 *
-	 * @return HtmlFormBuilder
+	 * @return FormBuilder
 	 */
 	public function addHiddenField( $inputName, $inputValue ) {
 
@@ -319,7 +319,7 @@ class HtmlFormBuilder {
 	 * @param array $options
 	 * @param string|null $id
 	 *
-	 * @return HtmlFormBuilder
+	 * @return FormBuilder
 	 */
 	public function addOptionSelectList( $label, $inputName, $inputValue, $options, $id = null ) {
 
@@ -368,7 +368,7 @@ class HtmlFormBuilder {
 	 * @param boolean $isChecked
 	 * @param string|null $id
 	 *
-	 * @return HtmlFormBuilder
+	 * @return FormBuilder
 	 */
 	public function addCheckbox( $label, $inputName, $inputValue, $isChecked = false, $id = null ) {
 
@@ -403,7 +403,7 @@ class HtmlFormBuilder {
 	 * @param integer $offset,
 	 * @param integer $count,
 	 *
-	 * @return HtmlFormBuilder
+	 * @return FormBuilder
 	 */
 	public function addPaging( $limit, $offset, $count ) {
 

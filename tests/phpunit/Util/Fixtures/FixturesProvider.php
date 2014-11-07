@@ -9,9 +9,12 @@ use SMW\Tests\Util\Fixtures\Properties\CapitalOfProperty;
 use SMW\Tests\Util\Fixtures\Properties\StatusProperty;
 use SMW\Tests\Util\Fixtures\Properties\PopulationProperty;
 use SMW\Tests\Util\Fixtures\Properties\FoundedProperty;
+use SMW\Tests\Util\Fixtures\Properties\LocatedInProperty;
+use SMW\Tests\Util\Fixtures\Properties\CityCategory;
 
 use SMW\Tests\Util\Fixtures\Facts\BerlinFactsheet;
 use SMW\Tests\Util\Fixtures\Facts\ParisFactsheet;
+use SMW\Tests\Util\Fixtures\Facts\FranceFactsheet;
 
 use SMW\Store;
 
@@ -27,6 +30,7 @@ class FixturesProvider {
 
 	private $factsheets = null;
 	private $properties = null;
+	private $categories = null;
 
 	/**
 	 * @since 2.1
@@ -38,7 +42,6 @@ class FixturesProvider {
 		// $pageCreator = UtilityFactory::getInstance()->newPageCreator();
 
 		foreach ( $this->getListOfPropertyInstances() as $propertyInstance ) {
-			// $pageCreator->createPage( $propertyInstance->getProperty()->getDiWikiPage()->getTitle() );
 			$store->updateData( $propertyInstance->getDependencies() );
 		}
 	}
@@ -51,7 +54,8 @@ class FixturesProvider {
 	public function getListOfFactsheetInstances() {
 		return array(
 			'berlin' => new BerlinFactsheet(),
-			'paris'  => new ParisFactsheet()
+			'paris'  => new ParisFactsheet(),
+			'france'  => new FranceFactsheet()
 		);
 	}
 
@@ -67,7 +71,19 @@ class FixturesProvider {
 			'capitalof' => new CapitalOfProperty(),
 			'status' => new StatusProperty(),
 			'population' => new PopulationProperty(),
-			'founded' => new FoundedProperty()
+			'founded' => new FoundedProperty(),
+			'locatedin' => new LocatedInProperty()
+		);
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return array
+	 */
+	public function getListOfCategoryInstances() {
+		return array(
+			'city' => new CityCategory()
 		);
 	}
 
@@ -87,6 +103,27 @@ class FixturesProvider {
 
 		if ( isset( $this->properties[ $id ] ) ) {
 			return $this->properties[ $id ]->getProperty();
+		}
+
+		throw new RuntimeException( "$id is an unknown requested property" );
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return DIProperty
+	 * @throws RuntimeException
+	 */
+	public function getCategory( $id ) {
+
+		$id = strtolower( $id );
+
+		if ( $this->categories === null ) {
+			$this->categories = $this->getListOfCategoryInstances();;
+		};
+
+		if ( isset( $this->categories[ $id ] ) ) {
+			return $this->categories[ $id ];
 		}
 
 		throw new RuntimeException( "$id is an unknown requested property" );

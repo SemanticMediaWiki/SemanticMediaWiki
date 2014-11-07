@@ -147,41 +147,11 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructMessageBuilder() {
+	public function testCanConstructMwCollaboratorFactory() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\MessageBuilder',
-			$this->applicationFactory->newMessageBuilder()
-		);
-
-		$language = $this->getMockBuilder( '\Language' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->assertInstanceOf(
-			'\SMW\MediaWiki\MessageBuilder',
-			$this->applicationFactory->newMessageBuilder( $language )
-		);
-	}
-
-	public function testCanConstructHtmlFormBuilder() {
-
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->assertInstanceOf(
-			'\SMW\MediaWiki\HtmlFormBuilder',
-			$this->applicationFactory->newHtmlFormBuilder( $title )
-		);
-
-		$language = $this->getMockBuilder( '\Language' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->assertInstanceOf(
-			'\SMW\MediaWiki\HtmlFormBuilder',
-			$this->applicationFactory->newHtmlFormBuilder( $title, $language )
+			'\SMW\MediaWiki\MwCollaboratorFactory',
+			$this->applicationFactory->newMwCollaboratorFactory()
 		);
 	}
 
