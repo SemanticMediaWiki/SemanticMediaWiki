@@ -29,6 +29,10 @@ class MockTitle extends \PHPUnit_Framework_TestCase {
 			->will( $instance->returnValue( str_replace( ' ', '_', $text ) ) );
 
 		$title->expects( $instance->any() )
+			->method( 'getPrefixedDBkey' )
+			->will( $instance->returnValue( str_replace( ' ', '_', $text ) ) );
+
+		$title->expects( $instance->any() )
 			->method( 'getContentModel' )
 			->will( $instance->returnValue( $contentModel ) );
 

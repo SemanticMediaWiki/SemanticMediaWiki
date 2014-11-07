@@ -61,6 +61,15 @@ class MwCollaboratorFactory {
 	/**
 	 * @since 2.1
 	 *
+	 * @return DeepRedirectTargetResolver
+	 */
+	public function newDeepRedirectTargetResolver() {
+		return new DeepRedirectTargetResolver( $this->applicationFactory->newPageCreator() );
+	}
+
+	/**
+	 * @since 2.1
+	 *
 	 * @param Title $title
 	 * @param Language|null $language
 	 *
