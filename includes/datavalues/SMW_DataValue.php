@@ -691,6 +691,23 @@ abstract class SMWDataValue {
 	}
 
 	/**
+	 * @since  2.1
+	 *
+	 * @return boolean
+	 */
+	public function canUse() {
+
+		if ( wfRunHooks( 'SMW::DataValue::canUse', array( $this ) ) ) {
+			return true;
+		}
+
+		$this->addError( wfMessage( 'smw-datavalue-improper-canuse-permission' )->inContentLanguage()->text() );
+		$this->m_dataitem = new SMWDIProperty( 'ERROR', false );
+
+		return false;
+	}
+
+	/**
 	 * Return a string that displays all error messages as a tooltip, or
 	 * an empty string if no errors happened.
 	 *

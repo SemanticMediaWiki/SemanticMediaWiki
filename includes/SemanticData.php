@@ -352,6 +352,16 @@ class SemanticData {
 				return;
 			}
 
+			if ( !$propertyDV->canUse() ) {
+				$this->addPropertyObjectValue(
+					new DIProperty( DIProperty::TYPE_ERROR ),
+					$propertyDV->getProperty()->getDiWikiPage()
+				);
+
+				$this->addError( $propertyDV->getErrors() );
+				return;
+			}
+
 			$property = $propertyDV->getDataItem();
 		}
 
@@ -371,6 +381,14 @@ class SemanticData {
 		}
 
 		if ( !$dataValue->isValid() ) {
+
+			$this->addPropertyObjectValue(
+				new DIProperty( DIProperty::TYPE_ERROR ),
+				$dataValue->getProperty()->getDiWikiPage()
+			);
+
+			$this->addError( $dataValue->getErrors() );
+		} elseif ( !$dataValue->canUse() ) {
 
 			$this->addPropertyObjectValue(
 				new DIProperty( DIProperty::TYPE_ERROR ),

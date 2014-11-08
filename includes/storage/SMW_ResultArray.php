@@ -164,7 +164,12 @@ class SMWResultArray {
 		if ( $this->mPrintRequest->getOutputFormat() ) {
 			$dv->setOutputFormat( $this->mPrintRequest->getOutputFormat() );
 		}
-		return $dv;
+
+		if ( $dv->canUse() ) {
+			return $dv;
+		}
+
+		return false;
 	}
 
 	/**
@@ -212,7 +217,7 @@ class SMWResultArray {
 			break;
 			case SMWPrintRequest::PRINT_PROP:
 				$propertyValue = $this->mPrintRequest->getData();
-				if ( $propertyValue->isValid() ) {
+				if ( $propertyValue->isValid() && $propertyValue->canUse() ) {
 					$this->mContent = $this->mStore->getPropertyValues( $this->mResult,
 						$propertyValue->getDataItem(), $this->getRequestOptions() );
 				} else {

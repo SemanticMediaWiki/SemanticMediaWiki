@@ -300,5 +300,8 @@
 	"smw-sp-searchbyproperty-description": "This page provides a simple [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces browsing interface] for finding entities described by a property and a named value. Other available search interfaces include the [[Special:PageProperty|page property search]], and the [[Special:Ask|ask query builder]].",
 	"smw-sp-searchbyproperty-resultlist-header": "List of results",
 	"smw-sp-searchbyproperty-nonvaluequery": "A list of values that have the property \"$1\" assigned.",
-	"smw-sp-searchbyproperty-valuequery": "A list of pages that have property \"$1\" with value \"$2\" annotated."
+	"smw-sp-searchbyproperty-valuequery": "A list of pages that have property \"$1\" with value \"$2\" annotated.",
+	"smw-datavalue-improper-canuse-permission": "The current element can not be displayed due to an improper permission.",
+	"smw-propertypage-improper-canview-permission": "The content of the current property page can not be displayed due to an improper permission."
+
 }

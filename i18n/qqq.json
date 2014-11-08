@@ -316,5 +316,7 @@
 	"smw-sp-searchbyproperty-description": "Extended description text for the [[Special:SearchByProperty]] page.",
 	"smw-sp-searchbyproperty-resultlist-header": "A header label",
 	"smw-sp-searchbyproperty-nonvaluequery": "A description for a query result without values.\n\nParameters:\n* $1 - Name of the property",
-	"smw-sp-searchbyproperty-valuequery": "A description for a query result with values.\n\nParameters:\n* $1 - Name of the property\n* $2 - Name of the value"
+	"smw-sp-searchbyproperty-valuequery": "A description for a query result with values.\n\nParameters:\n* $1 - Name of the property\n* $2 - Name of the value",
+	"smw-datavalue-improper-canuse-permission": "A description text",
+	"smw-propertypage-improper-canview-permission": "A description text"
 }
