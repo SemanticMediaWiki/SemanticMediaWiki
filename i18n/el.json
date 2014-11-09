@@ -8,7 +8,8 @@
 			"Lou",
 			"Omnipaedista",
 			"Protnet",
-			"ZaDiak"
+			"ZaDiak",
+			"FocalPoint"
 		]
 	},
 	"smw-desc": "Κάνοντας το wiki σας πιο προσιτό - σε μηχανές ''και'' ανθρώπους ([https://semantic-mediawiki.org/wiki/Help:User_manual ηλεκτρονική τεκμηρίωση])",
@@ -295,5 +296,5 @@
 	"smw-sp-searchbyproperty-description": "Αυτή η σελίδα παρέχει μια απλή [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces διεπαφή περιήγησης] για την εύρεση οντοτήτων που περιγράφονται από κάποια ιδιότητα και κάποια ονομαστική τιμή. Άλλες διαθέσιμες διεπαφές αναζήτησης περιλαμβάνουν την [[Special:PageProperty|αναζήτηση ιδιοτήτων σελίδας]] και το [[Special:Ask|εργαλείο κατασκευής ερωτημάτων]].",
 	"smw-sp-searchbyproperty-resultlist-header": "Λίστα αποτελεσμάτων",
 	"smw-sp-searchbyproperty-nonvaluequery": "Μια λίστα τιμών που έχουν ανατεθειμένη την ιδιότητα «$1».",
-	"smw-sp-searchbyproperty-valuequery": "Μια λίστα σελίδων που έχουν την ιδιότητα «$1» με σημειωμένη τιμή «$2»."
+	"smw-sp-searchbyproperty-valuequery": "Κατάλογος σελίδων που έχουν την ιδιότητα «$1» με σημειωμένη τιμή «$2»."
 }
