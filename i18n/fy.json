@@ -1,3 +1,12 @@
 {
+	"@metadata": {
+		"authors": [
+			"Robin0van0der0vliet"
+		]
+	},
+	"smw_printername_category": "Kategory",
+	"smw_result_prev": "Foarige",
+	"smw_result_next": "Folgjende",
+	"smw-ui-tooltip-title-warning": "Flater",
 	"smw-livepreview-loading": "Ynlade..."
 }
