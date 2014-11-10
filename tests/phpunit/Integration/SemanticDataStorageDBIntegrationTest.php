@@ -3,8 +3,9 @@
 namespace SMW\Tests\Integration;
 
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Util\Validators\SemanticDataValidator;
+use SMW\Tests\Util\UtilityFactory;
 
+use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\SemanticData;
@@ -18,8 +19,10 @@ use Title;
 /**
  * @group SMW
  * @group SMWExtension
+ *
  * @group semantic-mediawiki-integration
  * @group mediawiki-database
+ *
  * @group medium
  *
  * @license GNU GPL v2+
@@ -28,6 +31,43 @@ use Title;
  * @author mwjames
  */
 class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
+
+	private $applicationFactory;
+	private $mwHooksHandler;
+
+	private $semanticDataValidator;
+	private $deletePoolOfPages = array();
+
+	private $pageDeleter;
+	private $pageCreator;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$utilityFactory = UtilityFactory::getInstance();
+
+		$this->mwHooksHandler = $utilityFactory->newMwHooksHandler();
+
+		$this->mwHooksHandler
+			->deregisterListedHooks()
+			->invokeHooksFromRegistry();
+
+		$this->semanticDataValidator = $utilityFactory->newValidatorFactory()->newSemanticDataValidator();
+		$this->pageDeleter = $utilityFactory->newPageDeleter();
+		$this->pageCreator = $utilityFactory->newPageCreator();
+
+		$this->applicationFactory = ApplicationFactory::getInstance();
+	}
+
+	protected function tearDown() {
+		$this->pageDeleter
+			->doDeletePoolOfPages( $this->deletePoolOfPages );
+
+		$this->applicationFactory->clear();
+		$this->mwHooksHandler->restoreListedHooks();
+
+		parent::tearDown();
+	}
 
 	public function testAddUserDefinedPagePropertyAsObjectToSemanticDataForStorage() {
 
@@ -122,11 +162,78 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 			'propertyValues' => array( 'Bar', __METHOD__ )
 		);
 
-		$semanticDataValidator = new SemanticDataValidator();
-
-		$semanticDataValidator->assertThatPropertiesAreSet(
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
 			$this->getStore()->getSemanticData( $subject )->findSubSemanticData( 'SomeSubobject' )
+		);
+	}
+
+	public function testFetchSemanticDataForPreExistingSimpleRedirect() {
+
+		$this->applicationFactory->clear();
+
+		$this->pageCreator
+			->createPage( Title::newFromText( 'Foo-B' ) )
+			->doEdit( '#REDIRECT [[Foo-A]]' );
+
+		$subject = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-A' ) );
+
+		$this->pageCreator
+			->createPage( $subject->getTitle() )
+			->doEdit( '[[HasNoDisplayRedirectInconsitencyFor::Foo-B]]' );
+
+		$expected = array(
+			'propertyCount' => 3,
+			'propertyKeys'  => array( '_SKEY', '_MDAT', 'HasNoDisplayRedirectInconsitencyFor' )
+		);
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$this->getStore()->getSemanticData( $subject )
+		);
+
+		$this->deletePoolOfPages = array(
+			$subject,
+			Title::newFromText( 'Foo-B' )
+		);
+	}
+
+	public function testFetchSemanticDataForPreExistingDoubleRedirect() {
+
+		$this->applicationFactory->clear();
+
+		$this->pageCreator
+			->createPage( Title::newFromText( 'Foo-B' ) )
+			->doEdit( '#REDIRECT [[Foo-A]]' );
+
+		$this->pageCreator
+			->createPage( Title::newFromText( 'Foo-C' ) )
+			->doEdit( '#REDIRECT [[Foo-A]]' );
+
+		$subject = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-A' ) );
+
+		$this->pageCreator
+			->createPage( $subject->getTitle() )
+			->doEdit( '[[HasNoDisplayRedirectInconsitencyFor::Foo-B]]' );
+
+		$this->pageCreator
+			->createPage( Title::newFromText( 'Foo-C' ) )
+			->doEdit( '[[Has page::{{PAGENAME}}' );
+
+		$expected = array(
+			'propertyCount' => 3,
+			'propertyKeys'  => array( '_SKEY', '_MDAT', 'HasNoDisplayRedirectInconsitencyFor' )
+		);
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$this->getStore()->getSemanticData( $subject )
+		);
+
+		$this->deletePoolOfPages = array(
+			$subject,
+			Title::newFromText( 'Foo-B' ),
+			Title::newFromText( 'Foo-C' )
 		);
 	}
 
