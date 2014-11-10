@@ -155,7 +155,7 @@ class DataRebuilder {
 
 	protected function rebuildSelectedPages() {
 
-		$this->reportMessage( "Refreshing specified pages!\n\n" );
+		$this->reportMessage( "Refreshing specified pages!\n" . ( $this->verbose ? "\n" : '' ) );
 
 		$pages = $this->query ? $this->getPagesFromQuery() : array();
 		$pages = $this->pages ? array_merge( (array)$this->pages, $pages ) : $pages;
@@ -178,11 +178,12 @@ class DataRebuilder {
 				$updatejob = new UpdateJob( $title );
 				$updatejob->run();
 
+				$this->doPrintDotProgressIndicator( $this->verbose );
 				$titleCache[ $title->getPrefixedDBkey() ] = true;
 			}
 		}
 
-		$this->reportMessage( "$this->rebuildCount pages refreshed.\n" );
+		$this->reportMessage( "\n$this->rebuildCount pages refreshed.\n" );
 
 		return true;
 	}
@@ -192,11 +193,12 @@ class DataRebuilder {
 		$linkCache = LinkCache::singleton();
 
 		$this->reportMessage( "Refreshing all semantic data in the database!\n---\n" .
-			" Some versions of PHP suffer from memory leaks in long-running scripts.\n" .
-			" If your machine gets very slow after many pages (typically more than\n" .
-			" 1000) were refreshed, please abort with CTRL-C and resume this script\n" .
-			" at the last processed page id using the parameter -s (use -v to display\n" .
-			" page ids during refresh). Continue this until all pages were refreshed.\n---\n"
+			" Some versions of PHP suffer from memory leaks in long-running \n" .
+			" scripts. If your machine gets very slow after many pages \n" .
+			" (typically more than 1000) were refreshed, please abort with\n" .
+			" CTRL-C and resume this script at the last processed page id\n" .
+			" using the parameter -s (use -v to display page ids during \n" .
+			" refresh). Continue this until all pages were refreshed.\n---\n"
 		);
 
 		$this->reportMessage( "Processing all IDs from $this->start to " . ( $this->end ? "$this->end" : 'last ID' ) . " ...\n" );
@@ -218,10 +220,12 @@ class DataRebuilder {
 			if ( $this->rebuildCount % 100 === 0 ) { // every 100 pages only
 				$linkCache->clear(); // avoid memory leaks
 			}
+
+			$this->doPrintDotProgressIndicator( $this->verbose );
 		}
 
 		$this->writeIdToFile( $id );
-		$this->reportMessage( "$this->rebuildCount IDs refreshed.\n" );
+		$this->reportMessage( "\n$this->rebuildCount IDs refreshed.\n" );
 
 		return true;
 	}
@@ -348,6 +352,15 @@ class DataRebuilder {
 		if ( $output ) {
 			$this->reporter->reportMessage( $message );
 		}
+	}
+
+	private function doPrintDotProgressIndicator( $verbose ) {
+
+		if ( ( $this->rebuildCount - 1 ) % 60 === 0 ) {
+			$this->reportMessage( "\n", !$verbose );
+		}
+
+		$this->reportMessage( '.', !$verbose );
 	}
 
 }
