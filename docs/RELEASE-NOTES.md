@@ -2,10 +2,12 @@
 
 This is not a release yet.
 
-## Support for semantic queries in Special:Search
+## New features
+
+### Support for semantic queries in Special:Search
 This release adds support for semantic queries (#450, #496, #505) to be used directly from MediaWiki's standard search. By setting `$wgSearchType` to ["SMWSearch"](https://semantic-mediawiki.org/wiki/Help:SMWSearch), the search is activated and together with a related configuration parameter [``$smwgFallbackSearchType``](https://semantic-mediawiki.org/wiki/Help:$smwgFallbackSearchType) it is assured that a default search engine is being used in case "SMWSearch" returns no results.
 
-## New features
+### Other new features
 
 * #546 Enabled nested concepts (bug 44467) 
 * #537 Modernized `Special:SearchByProperty` interface
