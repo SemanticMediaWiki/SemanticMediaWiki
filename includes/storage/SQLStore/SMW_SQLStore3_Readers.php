@@ -338,6 +338,12 @@ class SMWSQLStore3Readers {
 				$valuekeys = $row->v0;
 			}
 
+			// #Issue 615
+			// If the iw field contains a redirect marker then remove it
+			if ( isset( $valuekeys[2] ) && $valuekeys[2] === SMW_SQL3_SMWREDIIW ) {
+				$valuekeys[2] = '';
+			}
+
 			// The valueHash prevents from inserting duplicate entries of the same content
 			$valueHash = $valuecount > 1 ? md5( $valueHash . implode( '#', $valuekeys ) ) : md5( $valueHash . $valuekeys );
 
