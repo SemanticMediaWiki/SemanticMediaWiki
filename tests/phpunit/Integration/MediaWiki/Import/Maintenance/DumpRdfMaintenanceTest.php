@@ -71,6 +71,17 @@ class DumpRdfMaintenanceTest extends MwDBaseUnitTestCase {
 			'Property:Has text'
 		);
 
+		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
+
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\DumpRdf' );
+		$maintenanceRunner->setQuiet();
+
+		$this->doExportForDefaultOptions( $maintenanceRunner );
+		$this->doExportForPageOption( $maintenanceRunner );
+	}
+
+	private function doExportForDefaultOptions( $maintenanceRunner ) {
+
 		$expectedOutputContent = array(
 		//	'<rdf:type rdf:resource="&wiki;Category-3ALorem_ipsum"/>',
 			'<rdfs:label>Lorem ipsum</rdfs:label>',
@@ -86,10 +97,26 @@ class DumpRdfMaintenanceTest extends MwDBaseUnitTestCase {
 			'<rdfs:label>Has Url</rdfs:label>',
 		);
 
-		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
+		$maintenanceRunner->run();
 
-		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\DumpRdf' );
-		$maintenanceRunner->setQuiet()->run();
+		$this->stringValidator->assertThatStringContains(
+			$expectedOutputContent,
+			$maintenanceRunner->getOutput()
+		);
+	}
+
+	private function doExportForPageOption( $maintenanceRunner ) {
+
+		$expectedOutputContent = array(
+			'<rdfs:label>Lorem ipsum</rdfs:label>',
+			'<swivt:masterPage rdf:resource="&wiki;Lorem_ipsum"/>',
+			'<property:Has_subobject-23aux rdf:resource="&wiki;Lorem_ipsum-23_017ced50ca5208f4cc77f90c43a0d4a9"/>',
+			'<swivt:wikiPageSortKey>Lorem ipsum# 017ced50ca5208f4cc77f90c43a0d4a9</swivt:wikiPageSortKey>'
+		);
+
+		$maintenanceRunner
+			->setOptions( array( 'page' => 'Lorem ipsum' ) )
+			->run();
 
 		$this->stringValidator->assertThatStringContains(
 			$expectedOutputContent,
