@@ -32,5 +32,5 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #523 Disabled the Factbox display for a `delete action` and re-enable the Factbox for an undeleted page
 * #532 Added `UrlEncoder` to recognize all special characters when creating a manual link to `Special:Browse`
 * #534 Added a value hash to `SQLStore::fetchSemanticData` to ensure that only distinct values are displayed
-* #557 Added `SMW::Store::BeforeQueryResultLookupCompleted` and `SMW::Store::AfterQueryResultLookupCompleted` hook
+* #557 Added `SMW::Store::BeforeQueryResultLookupComplete` and `SMW::Store::AfterQueryResultLookupComplete` hook
 * #590, #596 Added `CompoundConditionBuilder` and `ConditionBuilderStrategyFinder` to the `SPARQLStore`

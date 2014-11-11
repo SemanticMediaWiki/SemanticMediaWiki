@@ -28,8 +28,8 @@ class MwHooksHandler {
 		'smwInitProperties',
 		'SMW::Factbox::BeforeContentGeneration',
 		'SMW::SQLStore::updatePropertyTableDefinitions',
-		'SMW::Store::BeforeQueryResultLookupCompleted',
-		'SMW::Store::AfterQueryResultLookupCompleted'
+		'SMW::Store::BeforeQueryResultLookupComplete',
+		'SMW::Store::AfterQueryResultLookupComplete'
 	);
 
 	/**
