@@ -23,6 +23,7 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #554 Enhance concept pages by also providing the time of the last update and not just the date
 * #566 Fixed the `SPARQLStore` query result display for moved pages (a.k.a. "gost" pages)
 * #601 Fixed movability for predefined property pages
+* #615 Fixed data display inconsistency for pre-existing redirects 
 
 ## Internal changes
 
