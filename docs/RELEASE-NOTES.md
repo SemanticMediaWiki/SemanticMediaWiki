@@ -12,6 +12,7 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #546 Enabled nested concepts (bug 44467) 
 * #537 Modernized `Special:SearchByProperty` interface
 * #613 Added the `subobject` parameter to the `BrowseBySubject` API module and prevent to resolve circular redirects during an API request using `DeepRedirectTargetResolver`
+* #620 Added `--page` as export option to `dumpRDF.php` 
 
 ## Bug fixes
 
