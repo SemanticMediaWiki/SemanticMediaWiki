@@ -24,6 +24,7 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #566 Fixed the `SPARQLStore` query result display for moved pages (a.k.a. "gost" pages)
 * #601 Fixed movability for predefined property pages
 * #615 Fixed data display inconsistency for pre-existing redirects 
+* #617 Fixed circular `UpdateJob` caused by redirects
 
 ## Internal changes
 
