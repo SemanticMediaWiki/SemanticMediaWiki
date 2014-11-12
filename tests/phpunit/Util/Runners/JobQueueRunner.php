@@ -41,6 +41,18 @@ class JobQueueRunner {
 	/**
 	 * @since 2.1
 	 *
+	 * @param string $type
+	 *
+	 * @return JobQueueRunner
+	 */
+	public function setType( $type ) {
+		$this->type = $type;
+		return $this;
+	}
+
+	/**
+	 * @since 2.1
+	 *
 	 * @param DBConnectionProvider $dbConnectionProvider
 	 *
 	 * @return JobQueueRunner

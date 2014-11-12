@@ -163,6 +163,8 @@ class StoreUpdater {
 
 		Profiler::In();
 
+		$this->store->setUpdateJobsEnabledState( $this->updateJobsEnabledState );
+
 		if ( $this->processSemantics ) {
 			$this->store->updateData( $this->semanticData );
 		} else {

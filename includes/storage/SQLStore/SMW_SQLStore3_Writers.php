@@ -974,7 +974,7 @@ class SMWSQLStore3Writers {
 
 			$count--;
 
-			if ( $smwgEnableUpdateJobs && ( $smwgQEqualitySupport != SMW_EQ_NONE ) ) {
+			if ( $this->store->getUpdateJobsEnabledState() && ( $smwgQEqualitySupport != SMW_EQ_NONE ) ) {
 				// entries that refer to old target may in fact refer to subject,
 				// but we don't know which: schedule affected pages for update
 				$propertyTables = $this->store->getPropertyTables();
@@ -1039,8 +1039,7 @@ class SMWSQLStore3Writers {
 			}
 		}
 
-		/// NOTE: this only happens if $smwgEnableUpdateJobs is true
-		if ( $smwgEnableUpdateJobs ) {
+		if ( $this->store->getUpdateJobsEnabledState() ) {
 			JobBase::batchInsert( $jobs );
 		}
 

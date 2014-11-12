@@ -41,6 +41,11 @@ abstract class Store {
 	 */
 	protected static $configuration = null;
 
+	/**
+	 * @var boolean
+	 */
+	private $updateJobsEnabledState = true;
+
 ///// Reading methods /////
 
 	/**
@@ -427,6 +432,24 @@ abstract class Store {
 	 */
 	public function setConfiguration( Settings $configuration ) {
 		self::$configuration = $configuration;
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param boolean $status
+	 */
+	public function setUpdateJobsEnabledState( $status ) {
+		$this->updateJobsEnabledState = $status;
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return boolean
+	 */
+	public function getUpdateJobsEnabledState() {
+		return $this->updateJobsEnabledState && $GLOBALS['smwgEnableUpdateJobs'];
 	}
 
 }
