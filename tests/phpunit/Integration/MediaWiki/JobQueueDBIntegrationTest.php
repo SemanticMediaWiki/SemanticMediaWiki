@@ -7,6 +7,7 @@ use SMW\Tests\Util\PageCreator;
 
 use SMW\Tests\MwDBaseUnitTestCase;
 
+use SMW\MediaWiki\JobQueueLookup;
 use SMW\ApplicationFactory;
 use SMW\SemanticData;
 use SMW\StoreFactory;
@@ -40,7 +41,10 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 	private $semanticDataValidator;
 
 	private $pageDeleter;
+	private $pageCreator;
+
 	private $jobQueueRunner;
+	private $jobQueueLookup;
 
 	protected function setUp() {
 		parent::setUp();
@@ -69,8 +73,14 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 		}
 
 		$this->pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
+		$this->pageCreator = UtilityFactory::getInstance()->newPageCreator();
+
+		$this->jobQueueLookup = new JobQueueLookup(
+			$this->getStore()->getDatabase()
+		);
 
 		$this->jobQueueRunner = UtilityFactory::getInstance()->newRunnerFactory()->newJobQueueRunner();
+
 		$this->jobQueueRunner
 			->setDBConnectionProvider( $this->getDBConnectionProvider() )
 			->deleteAllJobs();
@@ -227,6 +237,30 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->assertInstanceOf( 'Job', $job );
 		$this->assertTrue( $job->run() );
+	}
+
+	public function testNoInfiniteUpdateJobsForCircularRedirect() {
+
+		$this->pageCreator
+			->createPage( Title::newFromText( 'Foo-A' ) )
+			->doEdit( '[[Foo-A::{{PAGENAME}}]] {{#ask: [[Foo-A::{{PAGENAME}}]] }}' )
+			->doEdit( '#REDIRECT [[Foo-B]]' );
+
+		$this->pageCreator
+			->createPage( Title::newFromText( 'Foo-B' ) )
+			->doEdit( '#REDIRECT [[Foo-C]]' );
+
+		$this->pageCreator
+			->createPage( Title::newFromText( 'Foo-C' ) )
+			->doEdit( '#REDIRECT [[Foo-A]]' );
+
+		$this->jobQueueRunner
+			->setType( 'SMW\UpdateJob' )
+			->run();
+
+		foreach ( $this->jobQueueRunner->getStatus() as $status ) {
+			$this->assertTrue( $status['status'] );
+		}
 	}
 
 }

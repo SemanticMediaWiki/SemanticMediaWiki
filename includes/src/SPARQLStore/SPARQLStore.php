@@ -392,6 +392,15 @@ class SPARQLStore extends Store {
 	}
 
 	/**
+	 * @since 2.1
+	 *
+	 * @param boolean $status
+	 */
+	public function setUpdateJobsEnabledState( $status ) {
+		$this->baseStore->setUpdateJobsEnabledState( $status );
+	}
+
+	/**
 	 * @since  1.9.2
 	 *
 	 * @return GenericHttpDatabaseConnector
