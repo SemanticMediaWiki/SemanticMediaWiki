@@ -15,6 +15,8 @@ For the automated approach, Semantic MediaWiki uses [PHPUnit][phpunit] as script
 
 Most scripted tests for SMW are written for and executed by PHPUnit. PHPUnit provides the necessary environment to execute unit tests within PHP. Information about how to work with PHPunit can be found at [smw.org][smw] and [mediawiki.org][mw-phpunit-testing].
 
+## Running tests
+
 In case PHUnit is not already installed, use `composer require phpunit/phpunit:~4.1` to install the package and execute the tests by simply running the `mw-phpunit-runner.php` script from the test directory or use [`phpunit`][mw-phpunit-testing] together with the PHPUnit configuration file and MediaWiki's `phpunit.php` loader.
 
 ```sh

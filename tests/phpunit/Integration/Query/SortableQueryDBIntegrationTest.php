@@ -3,8 +3,7 @@
 namespace SMW\Tests\Integration\Query;
 
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Util\SemanticDataFactory;
-use SMW\Tests\Util\Validators\QueryResultValidator;
+use SMW\Tests\Util\UtilityFactory;
 
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
@@ -19,8 +18,10 @@ use SMWPropertyValue as PropertyValue;
 /**
  * @group SMW
  * @group SMWExtension
+ *
  * @group semantic-mediawiki-integration
  * @group semantic-mediawiki-query
+ *
  * @group mediawiki-database
  * @group medium
  *
@@ -31,8 +32,6 @@ use SMWPropertyValue as PropertyValue;
  */
 class SortableQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
-	protected $databaseToBeExcluded = array( 'sqlite' );
-
 	private $subjectsToBeCleared = array();
 	private $semanticDataFactory;
 	private $queryResultValidator;
@@ -40,8 +39,8 @@ class SortableQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->semanticDataFactory = new SemanticDataFactory();
-		$this->queryResultValidator = new QueryResultValidator();
+		$this->queryResultValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator();
+		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 	}
 
 	protected function tearDown() {

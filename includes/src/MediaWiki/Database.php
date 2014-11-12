@@ -78,8 +78,8 @@ class Database {
 	 */
 	public function tableName( $tableName ) {
 
-		if ( $this->getType() == 'sqlite' ) {
-			return $tableName;
+		if ( $this->getType() === 'sqlite' ) {
+			return $GLOBALS['wgDBprefix'] . $tableName;
 		}
 
 		return $this->acquireReadConnection()->tableName( $tableName );
@@ -150,6 +150,15 @@ class Database {
 	 */
 	public function select( $tableName, $fields, $conditions = '', $fname, array $options = array() ) {
 
+		$tablePrefix = null;
+
+		// MW's SQLite implementation adds an auto prefix to the tableName but
+		// not to the conditions and since ::tableName will handle prefixing
+		// consistently ensure that the select doesn't add an extra prefix
+		if ( $this->getType() === 'sqlite' ) {
+			$tablePrefix = $this->acquireReadConnection()->tablePrefix( '' );
+		}
+
 		try {
 			$results = $this->acquireReadConnection()->select(
 				$tableName,
@@ -163,6 +172,10 @@ class Database {
 				$e->getMessage() . "\n" .
 				$e->getTraceAsString()
 			);
+		}
+
+		if ( $tablePrefix !== null ) {
+			$this->acquireReadConnection()->tablePrefix( $tablePrefix );
 		}
 
 		if ( $results instanceof ResultWrapper ) {

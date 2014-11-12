@@ -3,22 +3,23 @@
 namespace SMW\Tests\Integration\Query;
 
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Util\SemanticDataFactory;
-use SMW\Tests\Util\Validators\QueryResultValidator;
+use SMW\Tests\Util\UtilityFactory;
+
+use SMW\Query\Language\ClassDescription;
 
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\DataValueFactory;
 
 use SMWQuery as Query;
-use SMW\Query\Language\ClassDescription as ClassDescription;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
+ *
  * @group semantic-mediawiki-integration
  * @group semantic-mediawiki-query
+ *
  * @group mediawiki-database
  * @group medium
  *
@@ -29,10 +30,9 @@ use SMW\Query\Language\ClassDescription as ClassDescription;
  */
 class SubcategoryQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
-	protected $databaseToBeExcluded = array( 'sqlite' );
-
 	private $subjectsToBeCleared = array();
 	private $semanticDataFactory;
+
 	private $dataValueFactory;
 	private $queryResultValidator;
 
@@ -40,8 +40,8 @@ class SubcategoryQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		parent::setUp();
 
 		$this->dataValueFactory = DataValueFactory::getInstance();
-		$this->semanticDataFactory = new SemanticDataFactory();
-		$this->queryResultValidator = new QueryResultValidator();
+		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
+		$this->queryResultValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator();
 	}
 
 	protected function tearDown() {

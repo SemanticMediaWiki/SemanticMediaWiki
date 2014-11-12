@@ -13,8 +13,10 @@ use Title;
 /**
  * @group SMW
  * @group SMWExtension
+ *
  * @group semantic-mediawiki-integration
  * @group mediawiki-database
+ *
  * @group medium
  *
  * @license GNU GPL v2+
@@ -23,8 +25,6 @@ use Title;
  * @author mwjames
  */
 class SearchInPageDBIntegrationTest extends MwDBaseUnitTestCase {
-
-	protected $databaseToBeExcluded = array( 'sqlite' );
 
 	public function testSearchForPageValueAsTerm() {
 

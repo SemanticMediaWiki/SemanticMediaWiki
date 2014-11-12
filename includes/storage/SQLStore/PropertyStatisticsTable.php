@@ -181,7 +181,7 @@ class PropertyStatisticsTable implements PropertyStatisticsStore {
 		}
 
 		$propertyStatistics = $this->dbConnection->select(
-			$this->table,
+			$this->dbConnection->tablename( $this->table ),
 			array(
 				'usage_count',
 				'p_id',

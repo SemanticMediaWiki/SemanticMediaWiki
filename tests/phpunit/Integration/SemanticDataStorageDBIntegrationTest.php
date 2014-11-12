@@ -200,12 +200,6 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testFetchSemanticDataForPreExistingDoubleRedirect() {
 
-		// Only the 1.22.2 sqlite instance wasn't working, don't know why
-		// therefore skipping sqlite for now
-		$this->skipTestForDatabase( array( 'sqlite' ) );
-
-		$this->applicationFactory->clear();
-
 		$this->pageCreator
 			->createPage( Title::newFromText( 'Foo-B' ) )
 			->doEdit( '#REDIRECT [[Foo-C]]' );

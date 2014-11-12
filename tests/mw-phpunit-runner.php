@@ -12,32 +12,18 @@ if ( php_sapi_name() !== 'cli' ) {
 
 print( "\nMediaWiki phpunit runnner ... \n" );
 
-function isReadablePath( $path ) {
+function isAccessiblePath( $path ) {
 
 	if ( is_readable( $path ) ) {
 		return $path;
 	}
 
-	throw new RuntimeException( "Expected an accessible {$path} path" );
+	die( "Expected an accessible {$path}" );
 }
 
-function addArguments( $args ) {
+$mw = isAccessiblePath( __DIR__ . "/../../../tests/phpunit/phpunit.php" );
+$config = isAccessiblePath( __DIR__ . "/../phpunit.xml.dist" );
 
-	$arguments = array();
+array_shift( $GLOBALS['argv'] );
 
-	for ( $arg = reset( $args ); $arg !== false; $arg = next( $args ) ) {
-
-		if ( $arg === basename( __FILE__ ) ) {
-			continue;
-		}
-
-		$arguments[] = $arg;
-	}
-
-	return $arguments;
-}
-
-$mw = isReadablePath( __DIR__ . "/../../../tests/phpunit/phpunit.php" );
-$config = isReadablePath( __DIR__ . "/../phpunit.xml.dist" );
-
-return passthru( "php {$mw} -c {$config} " . implode( ' ', addArguments( $GLOBALS['argv'] ) ) );
+return passthru( "php {$mw} -c {$config} ". implode( ' ', $GLOBALS['argv'] ) );
