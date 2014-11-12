@@ -5,6 +5,13 @@ namespace SMW\Tests\Integration\Query;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Util\UtilityFactory;
 
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\ValueDescription;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Disjunction;
+use SMW\Query\Language\ClassDescription;
+
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\SemanticData;
@@ -13,12 +20,6 @@ use SMWQueryParser as QueryParser;
 use SMWDIBlob as DIBlob;
 use SMWDINumber as DINumber;
 use SMWQuery as Query;
-use SMW\Query\Language\SomeProperty as SomeProperty;
-use SMW\Query\Language\ThingDescription as ThingDescription;
-use SMW\Query\Language\ValueDescription as ValueDescription;
-use SMW\Query\Language\Conjunction as Conjunction;
-use SMW\Query\Language\Disjunction as Disjunction;
-use SMW\Query\Language\ClassDescription as ClassDescription;
 
 /**
  * @group SMW
@@ -36,8 +37,6 @@ use SMW\Query\Language\ClassDescription as ClassDescription;
  * @author mwjames
  */
 class ConjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
-
-	protected $databaseToBeExcluded = array( 'sqlite' );
 
 	private $subjectsToBeCleared = array();
 	private $semanticDataFactory;

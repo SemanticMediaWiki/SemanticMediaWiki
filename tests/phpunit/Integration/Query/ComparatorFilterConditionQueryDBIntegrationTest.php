@@ -3,11 +3,14 @@
 namespace SMW\Tests\Integration\Query;
 
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Util\SemanticDataFactory;
-use SMW\Tests\Util\Validators\QueryResultValidator;
+use SMW\Tests\Util\UtilityFactory;
 
 use SMW\SPARQLStore\SPARQLStore;
 use SMW\SPARQLStore\VirtuosoHttpDatabaseConnector;
+
+use SMW\Query\Language\ValueDescription;
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ThingDescription;
 
 use SMW\DIWikiPage;
 use SMW\DIProperty;
@@ -17,17 +20,15 @@ use SMWDIBlob as DIBlob;
 use SMWDITime as DITime;
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
-use SMW\Query\Language\SomeProperty as SomeProperty;
-use SMW\Query\Language\ThingDescription as ThingDescription;
 use SMwConjunction as Conjunction;
-use SMW\Query\Language\ValueDescription as ValueDescription;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
+ *
  * @group semantic-mediawiki-integration
  * @group semantic-mediawiki-query
+ *
  * @group mediawiki-database
  * @group medium
  *
@@ -38,8 +39,6 @@ use SMW\Query\Language\ValueDescription as ValueDescription;
  */
 class ComparatorFilterConditionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
-	protected $databaseToBeExcluded = array( 'sqlite' );
-
 	private $subjectsToBeCleared = array();
 	private $semanticDataFactory;
 	private $queryResultValidator;
@@ -47,8 +46,8 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends MwDBaseUnitTestCas
 	protected function setUp() {
 		parent::setUp();
 
-		$this->semanticDataFactory = new SemanticDataFactory();
-		$this->queryResultValidator = new QueryResultValidator();
+		$this->queryResultValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator();
+		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 	}
 
 	protected function tearDown() {

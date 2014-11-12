@@ -3,8 +3,14 @@
 namespace SMW\Tests\Integration\Query;
 
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Util\SemanticDataFactory;
-use SMW\Tests\Util\Validators\QueryResultValidator;
+use SMW\Tests\Util\UtilityFactory;
+
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\ValueDescription;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Disjunction;
+use SMW\Query\Language\ClassDescription;
+use SMW\Query\Language\SomeProperty;
 
 use SMW\DIWikiPage;
 use SMW\DIProperty;
@@ -14,13 +20,7 @@ use SMWQueryParser as QueryParser;
 use SMWDIBlob as DIBlob;
 use SMWDINumber as DINumber;
 use SMWQuery as Query;
-use SMW\Query\Language\SomeProperty as SomeProperty;
 use SMWPropertyValue as PropertyValue;
-use SMW\Query\Language\ThingDescription as ThingDescription;
-use SMW\Query\Language\ValueDescription as ValueDescription;
-use SMW\Query\Language\Conjunction as Conjunction;
-use SMW\Query\Language\Disjunction as Disjunction;
-use SMW\Query\Language\ClassDescription as ClassDescription;
 
 /**
  *
@@ -41,7 +41,7 @@ class DisjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	/**
 	 * Issues with postgres + disjunction, for details see #454
 	 */
-	protected $databaseToBeExcluded = array( 'sqlite', 'postgres' );
+	protected $databaseToBeExcluded = array( 'postgres' );
 
 	private $subjectsToBeCleared = array();
 	private $semanticDataFactory;
@@ -51,8 +51,8 @@ class DisjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->semanticDataFactory = new SemanticDataFactory();
-		$this->queryResultValidator = new QueryResultValidator();
+		$this->queryResultValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator();
+		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 		$this->queryParser = new QueryParser();
 
 	//	$this->getStore()->getSparqlDatabase()->deleteAll();

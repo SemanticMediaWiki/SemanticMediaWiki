@@ -18,7 +18,9 @@ use Title;
  *
  * @group semantic-mediawiki-integration
  * @group semantic-mediawiki-export
+ *
  * @group semantic-mediawiki-database
+ * @group medium
  *
  * @license GNU GPL v2+
  * @since 2.0
@@ -26,8 +28,6 @@ use Title;
  * @author mwjames
  */
 class RdfXmlSerializationExportDBIntegrationTest extends MwDBaseUnitTestCase {
-
-	protected $databaseToBeExcluded = array( 'sqlite' );
 
 	private $pageCreator;
 	private $stringValidator;

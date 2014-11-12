@@ -15,8 +15,10 @@ use SMWQuery as Query;
 /**
  * @group SMW
  * @group SMWExtension
+ *
  * @group semantic-mediawiki-integration
  * @group semantic-mediawiki-query
+ *
  * @group mediawiki-database
  * @group medium
  *
@@ -26,8 +28,6 @@ use SMWQuery as Query;
  * @author mwjames
  */
 class NamespaceQueryDBIntegrationTest extends MwDBaseUnitTestCase {
-
-	protected $databaseToBeExcluded = array( 'sqlite' );
 
 	private $fixturesProvider;
 	private $semanticDataFactory;

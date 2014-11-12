@@ -79,14 +79,8 @@ have a look at the contribution guideline.
 
 ### Tests
 
-This extension provides unit and integration tests that are normally run by a
-[continues integration platform][travis] but tests can also manually be executed using the
-`mw-phpunit-runner.php` script or [`phpunit`][mw-testing] together with the PHPUnit configuration
-file found in the root directory.
-
-```sh
-php mw-phpunit-runner.php [options]
-```
+This extension provides unit and integration tests that are normally run by a [continues integration platform][travis]
+but can also be executed manually. A more comprehensive introduction can be found in the [test section](/tests/README.md#running-tests).
 
 ## License
 

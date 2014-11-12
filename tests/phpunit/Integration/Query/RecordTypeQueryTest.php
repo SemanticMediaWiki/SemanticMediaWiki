@@ -18,8 +18,8 @@ use SMWExporter as Exporter;
  *
  * @group semantic-mediawiki-integration
  * @group semantic-mediawiki-query
- * @group semantic-mediawiki-database
  *
+ * @group semantic-mediawiki-database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -28,8 +28,6 @@ use SMWExporter as Exporter;
  * @author mwjames
  */
 class RecordTypeQueryTest extends MwDBaseUnitTestCase {
-
-	protected $databaseToBeExcluded = array( 'sqlite' );
 
 	private $queryResultValidator;
 	private $fixturesProvider;

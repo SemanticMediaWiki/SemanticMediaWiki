@@ -25,8 +25,10 @@ use SMWExporter as Exporter;
 /**
  * @group SMW
  * @group SMWExtension
+ *
  * @group semantic-mediawiki-integration
  * @group semantic-mediawiki-query
+ *
  * @group mediawiki-database
  * @group medium
  *
@@ -36,8 +38,6 @@ use SMWExporter as Exporter;
  * @author mwjames
  */
 class DatePropertyValueQueryDBIntegrationTest extends MwDBaseUnitTestCase {
-
-	protected $databaseToBeExcluded = array( 'sqlite' );
 
 	private $subjectsToBeCleared = array();
 	private $semanticDataFactory;

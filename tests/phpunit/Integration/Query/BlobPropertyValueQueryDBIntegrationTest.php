@@ -6,6 +6,9 @@ use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Util\SemanticDataFactory;
 use SMW\Tests\Util\Validators\QueryResultValidator;
 
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\SomeProperty;
+
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\DataValueFactory;
@@ -15,17 +18,16 @@ use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
 use SMWDataValue as DataValue;
 use SMWDataItem as DataItem;
-use SMW\Query\Language\SomeProperty as SomeProperty;
 use SMWPrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
-use SMW\Query\Language\ThingDescription as ThingDescription;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
+ *
  * @group semantic-mediawiki-integration
  * @group semantic-mediawiki-query
+ *
  * @group mediawiki-database
  * @group medium
  *
@@ -35,8 +37,6 @@ use SMW\Query\Language\ThingDescription as ThingDescription;
  * @author mwjames
  */
 class BlobPropertyValueQueryDBIntegrationTest extends MwDBaseUnitTestCase {
-
-	protected $databaseToBeExcluded = array( 'sqlite' );
 
 	private $subjectsToBeCleared = array();
 	private $semanticDataFactory;

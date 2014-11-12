@@ -1,18 +1,17 @@
 <?php
 
-namespace SMW\Tests\SPARQLStore;
+namespace SMW\Tests\Integration\Query;
 
 use SMW\DIWikiPage;
 use SMW\ApplicationFactory;
 
 use SMWQuery as Query;
-use SMW\Query\Language\ValueDescription as ValueDescription;
-use SMW\Query\Language\Conjunction as Conjunction;
-use SMW\Query\Language\Disjunction as Disjunction;
-use SMW\Query\Language\NamespaceDescription as NamespaceDescription;
+use SMW\Query\Language\ValueDescription;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Disjunction;
+use SMW\Query\Language\NamespaceDescription;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  *

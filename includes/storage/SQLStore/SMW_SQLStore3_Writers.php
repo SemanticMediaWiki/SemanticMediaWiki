@@ -208,7 +208,8 @@ class SMWSQLStore3Writers {
 
 		$db = $this->store->getDatabase();
 
-		$res = $db->select( SMWSql3SmwIds::tableName,
+		$res = $db->select(
+			$db->tablename( SMWSql3SmwIds::tableName ),
 			'smw_id,smw_subobject',
 			'smw_title = ' . $db->addQuotes( $subject->getDBkey() ) . ' AND ' .
 			'smw_namespace = ' . $db->addQuotes( $subject->getNamespace() ) . ' AND ' .
@@ -486,7 +487,7 @@ class SMWSQLStore3Writers {
 		$db = $this->store->getDatabase();
 
 		$result = $db->select(
-			$propertyTable->getName(),
+			$db->tablename( $propertyTable->getName() ),
 			'*',
 			array( 's_id' => $sid ),
 			__METHOD__

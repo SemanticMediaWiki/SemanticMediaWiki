@@ -35,13 +35,6 @@ use Title;
  */
 class ParserFunctionInPageEmbeddedForQueryResultLookupDBIntegrationTest extends MwDBaseUnitTestCase {
 
-	/**
-	 * FIXME SQLStore QueryEngine is in shambles when it comes to unit testability
-	 * on sqlite. It would require considerable effort to get the QueryEngine
-	 * testable therefore we exclude sqlite from running.
-	 */
-	protected $databaseToBeExcluded = array( 'sqlite' );
-
 	protected $titles = array();
 
 	private $queryResultValidator;

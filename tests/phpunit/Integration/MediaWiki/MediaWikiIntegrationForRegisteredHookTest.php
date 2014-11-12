@@ -131,7 +131,7 @@ class MediaWikiIntegrationForRegisteredHookTest extends MwDBaseUnitTestCase {
 
 		$pageCreator
 			->createPage( $this->title )
-			->doEdit( '[[Has function hook test::new revision]]' );
+			->doEdit( '[[EditPageToGetNewRevisionHookTest::Foo]]' );
 
 		$parserOutput = $pageCreator->getEditInfo()->output;
 
@@ -146,7 +146,7 @@ class MediaWikiIntegrationForRegisteredHookTest extends MwDBaseUnitTestCase {
 		);
 
 		$expected = array(
-			'propertyKeys' => array( '_SKEY', '_MDAT', 'Has_function_hook_test' )
+			'propertyKeys' => array( '_SKEY', '_MDAT', 'EditPageToGetNewRevisionHookTest' )
 		);
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
