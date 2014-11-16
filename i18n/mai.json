@@ -1,3 +1,8 @@
 {
-	"smw-livepreview-loading": "उपारोपण भऽ रहल अछि..."
+	"@metadata": {
+		"authors": [
+			"बिप्लब आनन्द"
+		]
+	},
+	"smw-livepreview-loading": "लोड भऽ रहल अछि..."
 }
