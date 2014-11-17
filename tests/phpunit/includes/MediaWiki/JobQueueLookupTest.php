@@ -10,8 +10,6 @@ use SMW\MediaWiki\JobQueueLookup;
  * @group SMW
  * @group SMWExtension
  *
- * @group mediawiki-databaseless
- *
  * @license GNU GPL v2+
  * @since 2.1
  *
@@ -50,6 +48,27 @@ class JobQueueLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInternalType(
 			'integer',
 			$instance->estimateJobCountFor( 'Foo' )
+		);
+	}
+
+	public function testSelectJobRow() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'selectRow' )
+			->with( $this->equalTo( 'job' ),
+					$this->anything(),
+					$this->anything(),
+					$this->anything() )
+			->will( $this->returnValue( false ) );
+
+		$instance = new JobQueueLookup( $connection );
+
+		$this->assertFalse(
+			$instance->selectJobRowFor( 'Foo' )
 		);
 	}
 
