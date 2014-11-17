@@ -20,12 +20,12 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #520 Fixed the `SPAPRQLStore` query selection for subobjects used with a namespace condition
 * #543 Removes invalid category value links to `SearchByProperty` on `Special:Browse` (bug 33449)
 * #537 Fixed parameter encoding in `Special:SearchByProperty` for hyphens and spaces (bug 16150)
-* #554 Enhance concept pages by also providing the time of the last update and not just the date
+* #554 Enhanced concept pages to provide time and date of the last update
 * #566 Fixed the `SPARQLStore` query result display for moved pages (a.k.a. "gost" pages)
 * #601 Fixed movability for predefined property pages
 * #615 Fixed data display inconsistency for pre-existing redirects 
 * #617 Fixed circular `UpdateJob` caused by redirects
-* #627 Enhance `SPARQLStore` XML result parser to support `Virtuoso` singelton response
+* #627 Enhanced `SPARQLStore` XML result parser to support `Virtuoso` singelton response
 * #618 Fixed subobject disjunctive/conjunctive subquery handling
 
 ## Internal changes
