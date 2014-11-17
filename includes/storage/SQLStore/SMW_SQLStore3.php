@@ -8,11 +8,10 @@ use SMW\SQLStore\StatisticsCollector;
 use SMW\DataTypeRegistry;
 use SMW\Settings;
 use SMW\SQLStore\TableDefinition;
-use SMW\MediaWiki\Database;
-use SMW\MediaWiki\LazyDBConnectionProvider as DBConnectionProvider;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\SemanticData;
+use SMW\ConnectionManager;
 
 /**
  * SQL-based implementation of SMW's storage abstraction layer.
@@ -72,12 +71,6 @@ class SMWSQLStore3 extends SMWStore {
 	 * @var SMWSql3SmwIds
 	 */
 	public $smwIds;
-
-	/**
-	 * @var Database
-	 * @since  1.9.0.2
-	 */
-	protected $database = null;
 
 	/**
 	 * The reader object used by this store. Initialized by getReader()
@@ -473,7 +466,7 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	public function getConceptCacheStatus( $concept ) {
 
-		$db = $this->getDatabase();
+		$db = $this->getConnection();
 
 		$cid = $this->smwIds->getSMWPageID(
 			$concept->getDBkey(),
@@ -888,38 +881,21 @@ class SMWSQLStore3 extends SMWStore {
 	 * @since 1.9.1.1
 	 */
 	public function clear() {
+		parent::clear();
+
 		self::$prop_tables = null;
 		$this->getObjectIds()->clearCaches();
 	}
 
 	/**
-	 * @since  1.9.0.2
+	 * @since 2.1
 	 *
-	 * @param Database $database
+	 * @param string $connectionTypeId
+	 *
+	 * @return mixed
 	 */
-	public function setDatabase( Database $database ) {
-		$this->database = $database;
-		return $this;
-	}
-
-	/**
-	 * @note DB_SLAVE (for read queries) or DB_MASTER (for write queries and read
-	 * queries that need the newest information)
-	 *
-	 * @since  1.9.0.2
-	 *
-	 * @return Database
-	 */
-	public function getDatabase() {
-
-		if ( $this->database === null ) {
-			$this->database = new Database(
-				new DBConnectionProvider( DB_SLAVE ),
-				new DBConnectionProvider( DB_MASTER )
-			);
-		}
-
-		return $this->database;
+	public function getConnection( $connectionTypeId = 'mw.db' ) {
+		return parent::getConnection( $connectionTypeId );
 	}
 
 }

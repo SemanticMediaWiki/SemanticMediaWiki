@@ -76,7 +76,7 @@ class SqlStoreWriterDeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $objectIdGenerator ) );
 
 		$parentStore->expects( $this->any() )
-			->method( 'getDatabase' )
+			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
 		$parentStore->expects( $this->exactly( 4 ) )
@@ -126,7 +126,7 @@ class SqlStoreWriterDeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$parentStore->expects( $this->any() )
-			->method( 'getDatabase' )
+			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
 		$parentStore->expects( $this->exactly( 4 ) )
@@ -136,8 +136,6 @@ class SqlStoreWriterDeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 		$parentStore->expects( $this->exactly( 4 ) )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
-
-		$parentStore->setDatabase( $database );
 
 		$instance = new SMWSQLStore3Writers( $parentStore );
 		$instance->deleteSubject( $title );

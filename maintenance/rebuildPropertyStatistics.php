@@ -44,7 +44,7 @@ class RebuildPropertyStatistics extends \Maintenance {
 		$store = StoreFactory::getStore();
 
 		$statsTable = new PropertyStatisticsTable(
-			$store->getDatabase(),
+			$store->getConnection( 'mw.db' ),
 			\SMWSQLStore3::PROPERTY_STATISTICS_TABLE
 		);
 

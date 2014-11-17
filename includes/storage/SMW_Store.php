@@ -46,6 +46,11 @@ abstract class Store {
 	 */
 	private $updateJobsEnabledState = true;
 
+	/**
+	 * @var ConnectionManager
+	 */
+	protected $connectionManager = null;
+
 ///// Reading methods /////
 
 	/**
@@ -435,6 +440,13 @@ abstract class Store {
 	}
 
 	/**
+	 * @since 2.0
+	 */
+	public function clear() {
+		$this->connectionManager->releaseConnections();
+	}
+
+	/**
 	 * @since 2.1
 	 *
 	 * @param boolean $status
@@ -450,6 +462,34 @@ abstract class Store {
 	 */
 	public function getUpdateJobsEnabledState() {
 		return $this->updateJobsEnabledState && $GLOBALS['smwgEnableUpdateJobs'];
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param ConnectionManager $connectionManager
+	 *
+	 * @return Store
+	 */
+	public function setConnectionManager( ConnectionManager $connectionManager ) {
+		$this->connectionManager = $connectionManager;
+		return $this;
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param string $connectionTypeId
+	 *
+	 * @return mixed
+	 */
+	public function getConnection( $connectionTypeId ) {
+
+		if ( $this->connectionManager === null ) {
+			$this->setConnectionManager( new ConnectionManager() );
+		}
+
+		return $this->connectionManager->getConnection( $connectionTypeId );
 	}
 
 }

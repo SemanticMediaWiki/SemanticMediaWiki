@@ -7,6 +7,7 @@ use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\StoreFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\ConnectionManager;
 
 use Title;
 use SMWQueryProcessor;
@@ -231,19 +232,15 @@ class StoreTest extends MwDBaseUnitTestCase {
 		$this->assertArrayHasKey( 'DECLPROPS', $result );
 	}
 
-	public function testSetGetDatabase() {
+	public function testConnection() {
 
 		$store = StoreFactory::getStore();
+		$store->setConnectionManager( new ConnectionManager() );
 
-		if ( !( $store instanceof \SMWSQLStore3 ) ) {
-			$this->markTestSkipped( 'Test is only available for SMWSQLStore3' );
-		}
-
-		$database = $store->getDatabase();
-
-		$this->assertInstanceOf( '\SMW\MediaWiki\Database', $database );
-		$this->assertTrue( $database === $store->setDatabase( $database )->getDatabase() );
-
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\Database',
+			$store->getConnection( 'mw.db' )
+		);
 	}
 
 }

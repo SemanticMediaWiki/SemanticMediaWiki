@@ -82,9 +82,10 @@ class_alias( 'SMW\QueryResultPrinter', 'SMWIResultPrinter' );
 class_alias( 'SMW\RawResultPrinter', 'SMW\ApiResultPrinter' );
 
 // 2.0
+class_alias( 'SMWSQLStore3', 'SMW\SQLStore\SQLStore' );
+class_alias( 'SMW\SPARQLStore\SPARQLStore', 'SMWSparqlStore' );
 class_alias( 'SMW\SPARQLStore\FourstoreHttpDatabaseConnector', 'SMWSparqlDatabase4Store' );
 class_alias( 'SMW\SPARQLStore\VirtuosoHttpDatabaseConnector', 'SMWSparqlDatabaseVirtuoso' );
-class_alias( 'SMW\SPARQLStore\SPARQLStore', 'SMWSparqlStore' );
 class_alias( 'SMW\SPARQLStore\GenericHttpDatabaseConnector', 'SMWSparqlDatabase' );
 
 // 2.1

@@ -74,7 +74,7 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->jobQueueLookup = $this->applicationFactory
 			->newMwCollaboratorFactory()
-			->newJobQueueLookup( $this->getStore()->getDatabase() );
+			->newJobQueueLookup( $this->getStore()->getConnection( 'mw.db' ) );
 
 		$this->jobQueueRunner = $utilityFactory->newRunnerFactory()->newJobQueueRunner();
 

@@ -8,12 +8,12 @@ use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\StoreFactory;
 
 /**
- * @uses \SMW\SQLStore\PropertyStatisticsTable
- *
+ * @covers \SMW\SQLStore\PropertyStatisticsTable
  *
  * @group SMW
  * @group SMWExtension
- * @group Database
+ *
+ * @group medium
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -38,7 +38,7 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 	public function testDeleteAll() {
 
 		$statsTable = new PropertyStatisticsTable(
-			$this->getStore()->getDatabase(),
+			$this->getStore()->getConnection( 'mw.db' ),
 			\SMWSQLStore3::PROPERTY_STATISTICS_TABLE
 		);
 
@@ -74,7 +74,7 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 		if ( $this->statsTable === null ) {
 
 			$this->statsTable = new PropertyStatisticsTable(
-				$this->getStore()->getDatabase(),
+				$this->getStore()->getConnection( 'mw.db' ),
 				\SMWSQLStore3::PROPERTY_STATISTICS_TABLE
 			);
 
@@ -114,7 +114,7 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 	public function testAddToUsageCounts() {
 
 		$statsTable = new PropertyStatisticsTable(
-			$this->getStore()->getDatabase(),
+			$this->getStore()->getConnection( 'mw.db' ),
 			\SMWSQLStore3::PROPERTY_STATISTICS_TABLE
 		);
 
@@ -138,13 +138,18 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 			9003 => 0,
 		);
 
-		$this->assertTrue( $statsTable->addToUsageCounts( $additions ) !== false );
+		$this->assertTrue(
+			$statsTable->addToUsageCounts( $additions ) !== false
+		);
 
 		foreach ( $additions as $propId => $addition ) {
 			$counts[$propId] += $addition;
 		}
 
-		$this->assertEquals( $counts, $statsTable->getUsageCounts( array_keys( $counts ) ) );
+		$this->assertEquals(
+			$counts,
+			$statsTable->getUsageCounts( array_keys( $counts ) )
+		);
 	}
 
 }

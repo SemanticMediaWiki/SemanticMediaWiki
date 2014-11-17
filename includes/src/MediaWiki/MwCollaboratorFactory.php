@@ -115,4 +115,22 @@ class MwCollaboratorFactory {
 		return new HtmlColumnListFormatter();
 	}
 
+	/**
+	 * @since 2.1
+	 *
+	 * @return LazyDBConnectionProvider
+	 */
+	public function newLazyDBConnectionProvider( $connectionType ) {
+		return new LazyDBConnectionProvider( $connectionType );
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return DatabaseConnectionProvider
+	 */
+	public function newMediaWikiDatabaseConnectionProvider() {
+		return new DatabaseConnectionProvider();
+	}
+
 }

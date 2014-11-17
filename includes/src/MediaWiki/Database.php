@@ -14,46 +14,31 @@ use RuntimeException;
  * interface are likely therefore this class should not be used other than by
  * SMW itself.
  *
- * @ingroup SMW
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 class Database {
 
-	/** @var DatabaseBase */
-	protected $readDBConnection = null;
-	protected $writeDBConnection = null;
+	/**
+	 * @var DBConnectionProvider
+	 */
+	private $readDBConnection = null;
+
+	/**
+	 * @var DBConnectionProvider
+	 */
+	private $writeDBConnection = null;
+
+	/**
+	 * @var boolean
+	 */
+	private $useWriteConnection = false;
 
 	public function __construct( DBConnectionProvider $readDBConnection, DBConnectionProvider $writeDBConnection = null ) {
 		$this->readDBConnection = $readDBConnection;
 		$this->writeDBConnection = $writeDBConnection;
-	}
-
-	/**
-	 * @since 1.9.1
-	 *
-	 * @return DatabaseBase
-	 */
-	public function acquireReadConnection() {
-		return $this->readDBConnection->getConnection();
-	}
-
-	/**
-	 * @since 1.9.1
-	 *
-	 * @return DatabaseBase
-	 * @throws RuntimeException
-	 */
-	public function acquireWriteConnection() {
-
-		if ( $this->writeDBConnection instanceof DBConnectionProvider ) {
-			return $this->writeDBConnection->getConnection();
-		}
-
-		throw new RuntimeException( 'Expected a DBConnectionProvider instance' );
 	}
 
 	/**
@@ -64,7 +49,7 @@ class Database {
 	 * @return string
 	 */
 	public function getType() {
-		return $this->acquireReadConnection()->getType();
+		return $this->readConnection()->getType();
 	}
 
 	/**
@@ -82,7 +67,7 @@ class Database {
 			return $GLOBALS['wgDBprefix'] . $tableName;
 		}
 
-		return $this->acquireReadConnection()->tableName( $tableName );
+		return $this->readConnection()->tableName( $tableName );
 	}
 
 	/**
@@ -95,7 +80,7 @@ class Database {
 	 * @return string
 	 */
 	public function addQuotes( $value ) {
-		return $this->acquireReadConnection()->addQuotes( $value );
+		return $this->readConnection()->addQuotes( $value );
 	}
 
 	/**
@@ -108,7 +93,7 @@ class Database {
 	 * @return string
 	 */
 	public function fetchObject( $res ) {
-		return $this->acquireReadConnection()->fetchObject( $res );
+		return $this->readConnection()->fetchObject( $res );
 	}
 
 	/**
@@ -121,7 +106,7 @@ class Database {
 	 * @return integer
 	 */
 	public function numRows( $results ) {
-		return $this->acquireReadConnection()->numRows( $results );
+		return $this->readConnection()->numRows( $results );
 	}
 
 	/**
@@ -132,7 +117,7 @@ class Database {
 	 * @param ResultWrapper $res
 	 */
 	public function freeResult( $res ) {
-		$this->acquireReadConnection()->freeResult( $res );
+		$this->readConnection()->freeResult( $res );
 	}
 
 	/**
@@ -156,11 +141,11 @@ class Database {
 		// not to the conditions and since ::tableName will handle prefixing
 		// consistently ensure that the select doesn't add an extra prefix
 		if ( $this->getType() === 'sqlite' ) {
-			$tablePrefix = $this->acquireReadConnection()->tablePrefix( '' );
+			$tablePrefix = $this->readConnection()->tablePrefix( '' );
 		}
 
 		try {
-			$results = $this->acquireReadConnection()->select(
+			$results = $this->readConnection()->select(
 				$tableName,
 				$fields,
 				$conditions,
@@ -175,7 +160,7 @@ class Database {
 		}
 
 		if ( $tablePrefix !== null ) {
-			$this->acquireReadConnection()->tablePrefix( $tablePrefix );
+			$this->readConnection()->tablePrefix( $tablePrefix );
 		}
 
 		if ( $results instanceof ResultWrapper ) {
@@ -218,7 +203,7 @@ class Database {
 		}
 
 		try {
-			$results = $this->acquireWriteConnection()->query(
+			$results = $this->writeConnection()->query(
 				$sql,
 				$fname,
 				$ignoreException
@@ -241,7 +226,7 @@ class Database {
 	public function selectRow( $table, $vars, $conds, $fname = __METHOD__,
 		$options = array(), $joinConditions = array() ) {
 
-		return $this->acquireReadConnection()->selectRow(
+		return $this->readConnection()->selectRow(
 			$table,
 			$vars,
 			$conds,
@@ -259,7 +244,7 @@ class Database {
 	 * @return int
 	 */
 	function affectedRows() {
-		return $this->acquireReadConnection()->affectedRows();
+		return $this->readConnection()->affectedRows();
 	}
 
 	/**
@@ -272,7 +257,7 @@ class Database {
 	 * @return array
 	 */
 	public function makeSelectOptions( $options ) {
-		return $this->acquireReadConnection()->makeSelectOptions( $options );
+		return $this->readConnection()->makeSelectOptions( $options );
 	}
 
 	/**
@@ -285,7 +270,7 @@ class Database {
 	 * @return int|null
 	 */
 	public function nextSequenceValue( $seqName ) {
-		return $this->acquireWriteConnection()->nextSequenceValue( $seqName );
+		return $this->writeConnection()->nextSequenceValue( $seqName );
 	}
 
 	/**
@@ -296,7 +281,7 @@ class Database {
 	 * @return int
 	 */
 	function insertId() {
-		return (int)$this->acquireWriteConnection()->insertId();
+		return (int)$this->writeConnection()->insertId();
 	}
 
 	/**
@@ -305,7 +290,7 @@ class Database {
 	 * @since 1.9.1
 	 */
 	public function insert( $table, $rows, $fname = __METHOD__, $options = array() ) {
-		return $this->acquireWriteConnection()->insert( $table, $rows, $fname, $options );
+		return $this->writeConnection()->insert( $table, $rows, $fname, $options );
 	}
 
 	/**
@@ -314,7 +299,7 @@ class Database {
 	 * @since 1.9.1
 	 */
 	function update( $table, $values, $conds, $fname = __METHOD__, $options = array() ) {
-		return $this->acquireWriteConnection()->update( $table, $values, $conds, $fname, $options );
+		return $this->writeConnection()->update( $table, $values, $conds, $fname, $options );
 	}
 
 	/**
@@ -323,7 +308,7 @@ class Database {
 	 * @since 1.9.1
 	 */
 	public function delete( $table, $conds, $fname = __METHOD__ ) {
-		return $this->acquireWriteConnection()->delete( $table, $conds, $fname );
+		return $this->writeConnection()->delete( $table, $conds, $fname );
 	}
 
 	/**
@@ -332,7 +317,7 @@ class Database {
 	 * @since 1.9.1
 	 */
 	public function makeList( $data, $mode ) {
-		return $this->acquireWriteConnection()->makeList( $data, $mode );
+		return $this->writeConnection()->makeList( $data, $mode );
 	}
 
 	/**
@@ -346,7 +331,7 @@ class Database {
 	 * @return bool
 	 */
 	public function tableExists( $table, $fname = __METHOD__ ) {
-		return $this->acquireWriteConnection()->tableExists( $table, $fname );
+		return $this->writeConnection()->tableExists( $table, $fname );
 	}
 
 	/**
@@ -355,7 +340,7 @@ class Database {
 	 * @since 1.9.2
 	 */
 	public function selectField( $table, $fieldName, $conditions = '', $fname = __METHOD__, $options = array() ) {
-		return $this->acquireReadConnection()->selectField( $table, $fieldName, $conditions, $fname, $options );
+		return $this->readConnection()->selectField( $table, $fieldName, $conditions, $fname, $options );
 	}
 
 	/**
@@ -364,7 +349,26 @@ class Database {
 	 * @since 2.1
 	 */
 	public function estimateRowCount( $table, $vars = '*', $conditions = '', $fname = __METHOD__, $options = array() ) {
-		return $this->acquireReadConnection()->estimateRowCount( $table, $vars, $conditions, $fname, $options );
+		return $this->readConnection()->estimateRowCount(
+			$table,
+			$vars,
+			$conditions,
+			$fname,
+			$options
+		);
+	}
+
+	private function readConnection() {
+		return $this->readDBConnection->getConnection();
+	}
+
+	private function writeConnection() {
+
+		if ( $this->writeDBConnection instanceof DBConnectionProvider ) {
+			return $this->writeDBConnection->getConnection();
+		}
+
+		throw new RuntimeException( 'Expected a DBConnectionProvider instance' );
 	}
 
 }

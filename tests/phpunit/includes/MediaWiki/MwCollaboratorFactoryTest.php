@@ -164,4 +164,24 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructLazyDBConnectionProvider() {
+
+		$instance = new MwCollaboratorFactory( new ApplicationFactory() );
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\LazyDBConnectionProvider',
+			$instance->newLazyDBConnectionProvider( DB_SLAVE )
+		);
+	}
+
+	public function testCanConstructDatabaseConnectionProvider() {
+
+		$instance = new MwCollaboratorFactory( new ApplicationFactory() );
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\DatabaseConnectionProvider',
+			$instance->newMediaWikiDatabaseConnectionProvider()
+		);
+	}
+
 }

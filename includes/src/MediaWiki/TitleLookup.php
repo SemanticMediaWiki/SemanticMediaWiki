@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki;
 
 use Title;
-use UnexpectedValueException;
+use RuntimeException;
 
 /**
  * A convenience class to encapsulate MW related database interaction
@@ -19,18 +19,23 @@ use UnexpectedValueException;
  */
 class TitleLookup {
 
-	/** @var Database */
-	protected $database = null;
+	/**
+	 * @var Database
+	 */
+	private $connection = null;
 
-	protected $namespace = null;
+	/**
+	 * @var integer
+	 */
+	private $namespace = null;
 
 	/**
 	 * @since 1.9.2
 	 *
-	 * @param Database $database
+	 * @param Database $connection
 	 */
-	public function __construct( Database $database ) {
-		$this->database = $database;
+	public function __construct( Database $connection ) {
+		$this->connection = $connection;
 	}
 
 	/**
@@ -40,7 +45,7 @@ class TitleLookup {
 	 *
 	 * @return TitleLookup
 	 */
-	public function byNamespace( $namespace ) {
+	public function setNamespace( $namespace ) {
 		$this->namespace = $namespace;
 		return $this;
 	}
@@ -49,12 +54,12 @@ class TitleLookup {
 	 * @since 1.9.2
 	 *
 	 * @return Title[]
-	 * @throws UnexpectedValueException
+	 * @throws RuntimeException
 	 */
 	public function selectAll() {
 
 		if ( $this->namespace === null ) {
-			throw new UnexpectedValueException( 'Unrestricted selection without a namespace is not supported' );
+			throw new RuntimeException( 'Unrestricted selection without a namespace is not supported' );
 		}
 
 		if ( $this->namespace === NS_CATEGORY ) {
@@ -69,7 +74,7 @@ class TitleLookup {
 			$options = array( 'USE INDEX' => 'PRIMARY' );
 		}
 
-		$res = $this->database->select(
+		$res = $this->connection->select(
 			$tableName,
 			$fields,
 			$conditions,
@@ -87,12 +92,12 @@ class TitleLookup {
 	 * @param int $endId
 	 *
 	 * @return Title[]
-	 * @throws UnexpectedValueException
+	 * @throws RuntimeException
 	 */
 	public function selectByIdRange( $startId = 0, $endId = 0 ) {
 
 		if ( $this->namespace === null ) {
-			throw new UnexpectedValueException( 'Unrestricted selection without a namespace is not supported' );
+			throw new RuntimeException( 'Unrestricted selection without a namespace is not supported' );
 		}
 
 		if ( $this->namespace === NS_CATEGORY ) {
@@ -107,7 +112,7 @@ class TitleLookup {
 			$options = array( 'ORDER BY' => 'page_id ASC', 'USE INDEX' => 'PRIMARY' );
 		}
 
-		$res = $this->database->select(
+		$res = $this->connection->select(
 			$tableName,
 			$fields,
 			$conditions,
@@ -123,7 +128,7 @@ class TitleLookup {
 	 *
 	 * @return int
 	 */
-	public function selectMaxId() {
+	public function getMaxId() {
 
 		if ( $this->namespace === NS_CATEGORY ) {
 			$tableName = 'category';
@@ -133,7 +138,7 @@ class TitleLookup {
 			$var = 'MAX(page_id)';
 		}
 
-		return (int)$this->database->selectField(
+		return (int)$this->connection->selectField(
 			$tableName,
 			$var,
 			false,

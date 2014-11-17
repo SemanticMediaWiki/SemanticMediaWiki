@@ -38,7 +38,7 @@ class RedirectLookupIntegrationTest extends \PHPUnit_Framework_TestCase {
 			$this->markTestSkipped( "Requires a SPARQLStore instance" );
 		}
 
-		$this->sparqlDatabase = $this->store->getSparqlDatabase();
+		$this->sparqlDatabase = $this->store->getConnection();
 
 		if ( !$this->sparqlDatabase->setConnectionTimeoutInSeconds( 5 )->ping() ) {
 			$this->markTestSkipped( "Can't connect to the SparlDatabase" );

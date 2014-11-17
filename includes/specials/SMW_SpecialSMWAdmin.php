@@ -33,7 +33,7 @@ class SMWAdmin extends SpecialPage {
 	private $messageBuilder;
 
 	/**
-	 * @var FormBuilder
+	 * @var HtmlFormBuilder
 	 */
 	private $htmlFormBuilder;
 
@@ -60,26 +60,18 @@ class SMWAdmin extends SpecialPage {
 
 		$this->setHeaders();
 
-		/**
-		 * @var FormBuilder
-		 */
-		$this->htmlFormBuilder = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newHtmlFormBuilder(
+		$mwCollaboratorFactory = ApplicationFactory::getInstance()->newMwCollaboratorFactory();
+
+		$this->htmlFormBuilder = $mwCollaboratorFactory->newHtmlFormBuilder(
 			$this->getContext()->getTitle(),
 			$this->getLanguage()
 		);
 
 		$this->messageBuilder = $this->htmlFormBuilder->getMessageBuilder();
 
-		// FIXME Searching the job table needs to be fixed
-		//
-		// SMW shouldn't expose itself to an internal MW DB table at
-		// this level. If an official Api doesn't provide needed
-		// functionality, the DB call should be encapsulate within its
-		// own class
+		$jobQueueLookup = $mwCollaboratorFactory->newJobQueueLookup( $this->getStore()->getConnection( 'mw.db' ) );
+		$row = $jobQueueLookup->selectJobRowFor( 'SMW\RefreshJob' );
 
-		/**** Get status of refresh job, if any ****/
-		$dbr = wfGetDB( DB_SLAVE );
-		$row = $dbr->selectRow( 'job', '*', array( 'job_cmd' => 'SMW\RefreshJob' ), __METHOD__ );
 		if ( $row !== false ) { // similar to Job::pop_type, but without deleting the job
 			$title = Title::makeTitleSafe( $row->job_namespace, $row->job_title );
 			$blob = (string)$row->job_params !== '' ? unserialize( $row->job_params ) : false;
@@ -91,13 +83,13 @@ class SMWAdmin extends SpecialPage {
 		/**** Execute actions if any ****/
 		switch ( $this->getRequest()->getText( 'action' ) ) {
 			case 'listsettings':
-				return $this->actionListSettings();
+				return $this->doListConfigurationSettings();
 			case 'idlookup':
-				return $this->actionIdLookup( $this->getRequest()->getVal( 'objectId' ) );
+				return $this->doIdLookup( $this->getRequest()->getVal( 'objectId' ) );
 			case 'updatetables':
-				return $this->actionUpdateTables();
+				return $this->doUpdateTables();
 			case 'refreshstore':
-				return $this->actionRefreshStore( $refreshjob );
+				return $this->doRefreshStore( $refreshjob );
 		}
 
 		/**** Normal output ****/
@@ -219,7 +211,7 @@ class SMWAdmin extends SpecialPage {
 			->getForm();
 	}
 
-	protected function actionUpdateTables() {
+	protected function doUpdateTables() {
 		if ( $GLOBALS['wgRequest']->getText( 'udsure' ) == 'yes' ) {
 
 			$this->printRawOutput( function() {
@@ -232,7 +224,7 @@ class SMWAdmin extends SpecialPage {
 		}
 	}
 
-	protected function actionRefreshStore( $refreshjob ) {
+	protected function doRefreshStore( $refreshjob ) {
 
 		if ( $GLOBALS['smwgAdminRefreshStore'] ) {
 
@@ -264,20 +256,20 @@ class SMWAdmin extends SpecialPage {
 
 	}
 
-	protected function actionListSettings() {
+	protected function doListConfigurationSettings() {
 		$this->printRawOutput( function( $instance ) {
 			print '<pre>' . $instance->encodeJson( Settings::newFromGlobals()->toArray() ) . '</pre>';
 		} );
 	}
 
-	protected function actionIdLookup( $objectId ) {
+	protected function doIdLookup( $objectId ) {
 		$objectId = (int)$objectId;
 
 		$this->printRawOutput( function( $instance ) use ( $objectId ) {
 
 			$tableName = $instance->getStore()->getObjectIds()->getIdTable();
 
-			$row = $instance->getStore()->getDatabase()->selectRow(
+			$row = $instance->getStore()->getConnection( 'mw.db' )->selectRow(
 					$tableName,
 					array(
 						'smw_title',

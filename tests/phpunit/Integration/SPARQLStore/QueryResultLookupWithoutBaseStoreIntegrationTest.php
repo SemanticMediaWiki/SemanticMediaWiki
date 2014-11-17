@@ -51,7 +51,7 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 			$this->markTestSkipped( "Requires a SPARQLStore instance" );
 		}
 
-		$sparqlDatabase = $this->store->getSparqlDatabase();
+		$sparqlDatabase = $this->store->getConnection();
 
 		if ( !$sparqlDatabase->setConnectionTimeoutInSeconds( 5 )->ping() ) {
 			$this->markTestSkipped( "Can't connect to the SPARQL database" );

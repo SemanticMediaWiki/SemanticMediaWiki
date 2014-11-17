@@ -7,8 +7,7 @@ use SMW\Store\Maintenance\DataRebuilder;
 use Title;
 
 /**
- * @uses \SMW\Store\Maintenance\DataRebuilder
- *
+ * @covers \SMW\Store\Maintenance\DataRebuilder
  *
  * @group SMW
  * @group SMWExtension
@@ -193,11 +192,10 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getDatabase' ) )
 			->getMock();
 
 		$store->expects( $this->once() )
-			->method( 'getDatabase' )
+			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
 		$instance = new DataRebuilder( $store, null );
@@ -230,11 +228,10 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getDatabase' ) )
 			->getMock();
 
 		$store->expects( $this->once() )
-			->method( 'getDatabase' )
+			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
 		$instance = new DataRebuilder( $store, null );

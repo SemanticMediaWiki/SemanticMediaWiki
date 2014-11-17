@@ -53,7 +53,7 @@ class ImportPageCopyBenchmarkTest extends MwDBaseUnitTestCase {
 		}
 
 		$this->benchmarkRunner = new BenchmarkRunner( $this->showMemoryUsage );
-		//$this->getStore()->getSparqlDatabase()->deleteAll();
+		//$this->getStore()->getConnection( 'sparql' )->deleteAll();
 	}
 
 	/**

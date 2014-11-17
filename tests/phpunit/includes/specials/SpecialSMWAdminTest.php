@@ -11,13 +11,13 @@ use User;
 /**
  * @covers \SMWAdmin
  *
- *
  * @group SMW
  * @group SMWExtension
+ *
  * @group SpecialPage
  * @group medium
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9.0.2
  *
  * @author mwjames
@@ -78,7 +78,11 @@ class SpecialSMWAdminTest extends SpecialPageTestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database->expects( $this->once() )
+		$database->expects( $this->at( 0 ) )
+			->method( 'selectRow' )
+			->will( $this->returnValue( false ) );
+
+		$database->expects( $this->at( 1 ) )
 			->method( 'selectRow' )
 			->with( $this->equalTo( 'fake_foo_table' ) )
 			->will( $this->returnValue( $selectRow ) );
@@ -87,23 +91,26 @@ class SpecialSMWAdminTest extends SpecialPageTestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store->expects( $this->once() )
-			->method( 'getDatabase' )
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
 		$store->expects( $this->once() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $fakeIdTableClass ) );
 
-		$this->setStore( $store );
-		$this->execute( '', new FauxRequest(
-			array(
-				'action' => 'idlookup',
-				'objectId' => '9999'
-			) ), new MockSuperUser
-		);
+		$request = new FauxRequest( array(
+			'action' => 'idlookup',
+			'objectId' => '9999'
+		) );
 
-		$this->assertInternalType( 'string', $this->getText() );
+		$this->setStore( $store );
+		$this->execute( '', $request , new MockSuperUser() );
+
+		$this->assertInternalType(
+			'string',
+			$this->getText()
+		);
 	}
 
 }

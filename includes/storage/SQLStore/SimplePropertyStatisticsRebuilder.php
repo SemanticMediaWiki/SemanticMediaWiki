@@ -60,7 +60,7 @@ class SimplePropertyStatisticsRebuilder implements \SMW\Store\PropertyStatistics
 
 		$propStatsStore->deleteAll();
 
-		$res = $this->store->getDatabase()->select(
+		$res = $this->store->getConnection( 'mw.db' )->select(
 			\SMWSql3SmwIds::tableName,
 			array( 'smw_id', 'smw_title' ),
 			array( 'smw_namespace' => SMW_NS_PROPERTY  ),
@@ -85,7 +85,7 @@ class SimplePropertyStatisticsRebuilder implements \SMW\Store\PropertyStatistics
 		}
 
 		$propCount = $res->numRows();
-		$this->store->getDatabase()->freeResult( $res );
+		$this->store->getConnection( 'mw.db' )->freeResult( $res );
 		$this->reportMessage( "\nUpdated statistics for $propCount Properties.\n" );
 	}
 
@@ -93,7 +93,7 @@ class SimplePropertyStatisticsRebuilder implements \SMW\Store\PropertyStatistics
 
 		$condition = $propertyTable->isFixedPropertyTable() ? array() : array( 'p_id' => $id );
 
-		$row = $this->store->getDatabase()->selectRow(
+		$row = $this->store->getConnection( 'mw.db' )->selectRow(
 			$propertyTable->getName(),
 			'Count(*) as count',
 			$condition,
