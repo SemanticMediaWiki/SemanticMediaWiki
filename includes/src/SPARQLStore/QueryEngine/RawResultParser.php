@@ -102,8 +102,13 @@ class RawResultParser {
 		$this->data = array();
 		$this->comments = array();
 
+		// #626 Virtuoso
+		if ( $rawResult == 'true' ) {
+			$this->data = array( array( new ExpLiteral( 'true', 'http://www.w3.org/2001/XMLSchema#boolean' ) ) );
+		}
+
 		// #474 Virtuoso allows `false` to be a valid raw result
-		if ( $rawResult == 'false' || is_bool( $rawResult ) || $this->parseXml( $rawResult ) ) {
+		if ( $rawResult == 'false' || $rawResult == 'true' || is_bool( $rawResult ) || $this->parseXml( $rawResult ) ) {
 			return new FederateResultSet(
 				$this->header,
 				$this->data,
