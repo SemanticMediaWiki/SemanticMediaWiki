@@ -338,6 +338,56 @@ class SubqueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		);
 	}
 
+	public function testSingletonPropertyChain() {
+
+		// pg_query(): Query failed: ERROR:  syntax error at or near ""sunittest_t4""
+		$this->skipTestForDatabase( array( 'postgres' ) );
+
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData( 'SingletonPropertyChain' );
+
+		$semanticData->addDataValue(
+			$this->newDataValueForPagePropertyValue( 'HasSomeProperty', 'Ichi' )
+		);
+
+		$semanticData->addDataValue(
+			$this->newDataValueForPagePropertyValue( 'HasSomeProperty', 'Ni' )
+		);
+
+		$this->getStore()->updateData( $semanticData );
+
+		$expectedSubjects = array(
+			$semanticData->getSubject()
+		);
+
+		/**
+		 * @query [[SingletonPropertyChain]] [[HasSomeProperty::Ichi||Ni]]
+		 */
+		$description = $this->queryParser
+			->getQueryDescription( '[[SingletonPropertyChain]] [[HasSomeProperty::Ichi||Ni]]' );
+
+		$query = new Query(
+			$description,
+			false,
+			false
+		);
+
+		$query->querymode = Query::MODE_INSTANCES;
+
+		$queryResult = $this->getStore()->getQueryResult( $query );
+
+		$this->assertEquals(
+			1,
+			$queryResult->getCount()
+		);
+
+		$this->queryResultValidator->assertThatQueryResultHasSubjects(
+			$expectedSubjects,
+			$queryResult
+		);
+
+		$this->subjectsToBeCleared = $expectedSubjects;
+	}
+
 	private function newDataValueForPagePropertyValue( $property, $value ) {
 
 		$property = new DIProperty( $property );
