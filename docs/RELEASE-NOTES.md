@@ -25,6 +25,7 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #601 Fixed movability for predefined property pages
 * #615 Fixed data display inconsistency for pre-existing redirects 
 * #617 Fixed circular `UpdateJob` caused by redirects
+* #627 Enhance `SPARQLStore` XML result parser to support `Virtuoso` singelton response
 
 ## Internal changes
 
