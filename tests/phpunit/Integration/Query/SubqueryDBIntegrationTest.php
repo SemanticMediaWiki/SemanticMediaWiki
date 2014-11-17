@@ -59,14 +59,16 @@ class SubqueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->queryResultValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator();
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 
-	//	$this->getStore()->getSparqlDatabase()->deleteAll();
+		$this->fixturesProvider = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesProvider();
+		$this->fixturesProvider->setupDependencies( $this->getStore() );
 	}
 
 	protected function tearDown() {
 
-		foreach ( $this->subjectsToBeCleared as $subject ) {
-			$this->getStore()->deleteSubject( $subject->getTitle() );
-		}
+		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
+		$fixturesCleaner
+			->purgeSubjects( $this->subjectsToBeCleared )
+			->purgeAllKnownFacts();
 
 		parent::tearDown();
 	}
@@ -388,6 +390,82 @@ class SubqueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->subjectsToBeCleared = $expectedSubjects;
 	}
 
+	public function testConjunctiveSubobjectSubquery() {
+
+		$paris = $this->fixturesProvider->getFactsheet( 'Paris' );
+		$berlin = $this->fixturesProvider->getFactsheet( 'Berlin' );
+
+		$this->getStore()->updateData( $paris->asEntity() );
+		$this->getStore()->updateData( $berlin->asEntity() );
+
+		/**
+		 * @query [[Berlin]] [[Has subobject::<q>[[Area::891.85 km²]] [[Population::3517424]]</q>]]
+		 */
+		$description = $this->queryParser
+			->getQueryDescription( '[[Berlin]] [[Has subobject::<q>[[Area::891.85 km²]] [[Population::3517424]]</q>]]' );
+
+		$this->assertEmpty(
+			$this->queryParser->getErrors()
+		);
+
+		$query = new Query(
+			$description,
+			false,
+			false
+		);
+
+		$query->querymode = Query::MODE_INSTANCES;
+
+		$expected = array(
+			$berlin->asSubject()
+		);
+
+		$this->queryResultValidator->assertThatQueryResultHasSubjects(
+			$expected,
+			$this->getStore()->getQueryResult( $query )
+		);
+	}
+
+	public function testDisjunctiveSubobjectSubquery() {
+
+		// pg_query(): Query failed: ERROR:  syntax error at or near ""sunittest_t1""
+		$this->skipTestForDatabase( array( 'postgres' ) );
+
+		$paris = $this->fixturesProvider->getFactsheet( 'Paris' );
+		$berlin = $this->fixturesProvider->getFactsheet( 'Berlin' );
+
+		$this->getStore()->updateData( $paris->asEntity() );
+		$this->getStore()->updateData( $berlin->asEntity() );
+
+		/**
+		 * @query [[Has subobject::<q>[[Area::891.85 km²]] OR [[Population::2234105||3517424]]</q>]]
+		 */
+		$description = $this->queryParser
+			->getQueryDescription( '[[Has subobject::<q>[[Area::891.85 km²||105.40 km²]] OR [[Population::2234105||3517424]]</q> ]]' );
+
+		$this->assertEmpty(
+			$this->queryParser->getErrors()
+		);
+
+		$query = new Query(
+			$description,
+			false,
+			false
+		);
+
+		$query->querymode = Query::MODE_INSTANCES;
+
+		$expected = array(
+			$berlin->asSubject(),
+			$paris->asSubject()
+		);
+
+		$this->queryResultValidator->assertThatQueryResultHasSubjects(
+			$expected,
+			$this->getStore()->getQueryResult( $query )
+		);
+	}
+
 	private function newDataValueForPagePropertyValue( $property, $value ) {
 
 		$property = new DIProperty( $property );
@@ -400,5 +478,6 @@ class SubqueryDBIntegrationTest extends MwDBaseUnitTestCase {
 			$property
 		);
 	}
+
 
 }

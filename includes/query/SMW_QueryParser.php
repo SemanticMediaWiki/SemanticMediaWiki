@@ -311,7 +311,7 @@ class SMWQueryParser {
 		$inverse = false;
 
 		foreach ( $propertynames as $name ) {
-			if ( $typeid !== '_wpg' && $typeid !== '__sob' ) { // non-final property in chain was no wikipage: not allowed
+			if ( !$this->isPagePropertyType( $typeid ) ) { // non-final property in chain was no wikipage: not allowed
 				$this->m_errors[] = wfMessage(
 					'smw_valuesubquery',
 					$name
@@ -339,7 +339,7 @@ class SMWQueryParser {
 
 			switch ( $chunk ) {
 				case '+': // wildcard, add namespaces for page-type properties
-					if ( !is_null( $this->m_defaultns ) && ( ( $typeid == '_wpg' ) || $inverse ) ) {
+					if ( !is_null( $this->m_defaultns ) && ( $this->isPagePropertyType( $typeid ) || $inverse ) ) {
 						$innerdesc = $this->addDescription( $innerdesc, $this->m_defaultns, false );
 					} else {
 						$innerdesc = $this->addDescription( $innerdesc, new SMWThingDescription(), false );
@@ -347,7 +347,7 @@ class SMWQueryParser {
 					$chunk = $this->readChunk();
 				break;
 				case '<q>': // subquery, set default namespaces
-					if ( ( $typeid == '_wpg' ) || $inverse ) {
+					if ( $this->isPagePropertyType( $typeid ) || $inverse ) {
 						$this->pushDelimiter( '</q>' );
 						$setsubNS = true;
 						$innerdesc = $this->addDescription( $innerdesc, $this->getSubqueryDescription( $setsubNS ), false );
@@ -399,7 +399,7 @@ class SMWQueryParser {
 		}
 
 		if ( is_null( $innerdesc ) ) { // make a wildcard search
-			$innerdesc = ( !is_null( $this->m_defaultns ) && ( $typeid == '_wpg' ) ) ?
+			$innerdesc = ( !is_null( $this->m_defaultns ) && $this->isPagePropertyType( $typeid ) ) ?
 							$this->addDescription( $innerdesc, $this->m_defaultns, false ) :
 							$this->addDescription( $innerdesc, new SMWThingDescription(), false );
 			$this->m_errors[] = wfMessage(
@@ -656,4 +656,9 @@ class SMWQueryParser {
 			}
 		}
 	}
+
+	private function isPagePropertyType( $typeid ) {
+		return $typeid == '_wpg' || $typeid == '__sob';
+	}
+
 }

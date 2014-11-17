@@ -32,10 +32,11 @@ class Database {
 	private $writeDBConnection = null;
 
 	/**
-	 * @var boolean
+	 * @since 1.9
+	 *
+	 * @param DBConnectionProvider $readDBConnection
+	 * @param DBConnectionProvider|null $writeDBConnection
 	 */
-	private $useWriteConnection = false;
-
 	public function __construct( DBConnectionProvider $readDBConnection, DBConnectionProvider $writeDBConnection = null ) {
 		$this->readDBConnection = $readDBConnection;
 		$this->writeDBConnection = $writeDBConnection;
