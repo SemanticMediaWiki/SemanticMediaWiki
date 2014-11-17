@@ -2,6 +2,14 @@
 
 namespace SMW\Tests\Query;
 
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\ValueDescription;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Disjunction;
+use SMW\Query\Language\ClassDescription;
+use SMW\Query\Language\NamespaceDescription;
+
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 
@@ -9,17 +17,9 @@ use SMWQueryParser as QueryParser;
 use SMWDIBlob as DIBlob;
 use SMWDINumber as DINumber;
 use SMWQuery as Query;
-use SMW\Query\Language\SomeProperty as SomeProperty;
-use SMW\Query\Language\ThingDescription as ThingDescription;
-use SMW\Query\Language\ValueDescription as ValueDescription;
-use SMW\Query\Language\Conjunction as Conjunction;
-use SMW\Query\Language\Disjunction as Disjunction;
-use SMW\Query\Language\ClassDescription as ClassDescription;
-use SMW\Query\Language\NamespaceDescription as NamespaceDescription;
 
 /**
  * @covers \SMWQueryParser
- *
  *
  * @group SMW
  * @group SMWExtension
@@ -301,6 +301,33 @@ class QueryParserTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			$description,
 			$this->queryParser->getQueryDescription( '[[born in::<q>[[Category:City]] [[located in::Outback]]</q>]]' )
+		);
+	}
+
+	public function testRestrictedDefaultNamespace() {
+
+		$property = DIProperty::newFromUserLabel( 'Foo' );
+		$property->setPropertyTypeId( '_wpg' );
+
+		$description = new SomeProperty(
+			$property,
+			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ), $property )
+		);
+
+		$description = new Conjunction( array(
+			$description,
+			new NamespaceDescription( NS_MAIN )
+		) );
+
+		$this->queryParser->setDefaultNamespaces( array( NS_MAIN ) );
+
+		$this->assertEquals(
+			$description,
+			$this->queryParser->getQueryDescription( '<q>[[Foo::Bar]]</q>[[:+]]' )
+		);
+
+		$this->assertEmpty(
+			$this->queryParser->getErrors()
 		);
 	}
 

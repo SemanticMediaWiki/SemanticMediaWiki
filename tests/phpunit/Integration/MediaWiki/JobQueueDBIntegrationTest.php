@@ -255,11 +255,6 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 			->createPage( Title::newFromText( 'Foo-C' ) )
 			->doEdit( '#REDIRECT [[Foo-A]]' );
 
-//		$this->assertEquals(
-//			3,
-//			$this->jobQueueLookup->estimateJobCountFor( 'SMW\UpdateJob' )
-//		);
-
 		$this->jobQueueRunner
 			->setType( 'SMW\UpdateJob' )
 			->run();
