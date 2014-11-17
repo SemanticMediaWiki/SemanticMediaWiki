@@ -96,11 +96,11 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 
 		$store = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getDatabase', 'getObjectIds' ) )
+			->setMethods( array( 'getConnection', 'getObjectIds' ) )
 			->getMock();
 
 		$store->expects( $this->any() )
-			->method( 'getDatabase' )
+			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
 		$store->expects( $this->any() )

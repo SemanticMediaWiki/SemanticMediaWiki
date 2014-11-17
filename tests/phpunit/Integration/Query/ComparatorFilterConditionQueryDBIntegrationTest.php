@@ -78,7 +78,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends MwDBaseUnitTestCas
 	 */
 	public function testDateConjunctionConstraints( $range, $parameters, $expected ) {
 
-		if ( $this->getStore() instanceOf SPARQLStore && $this->getStore()->getSparqlDatabase() instanceof VirtuosoHttpDatabaseConnector ) {
+		if ( $this->getStore() instanceOf SPARQLStore && $this->getStore()->getConnection() instanceof VirtuosoHttpDatabaseConnector ) {
 			$this->markTestSkipped( "Date filter constraints do not work properly in Virtuoso" );
 		}
 

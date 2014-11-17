@@ -11,6 +11,7 @@ use SMW\SemanticData;
 use SMW\DIWikiPage;
 use SMW\Store;
 use SMW\DIProperty;
+use SMW\ConnectionManager;
 
 use SMWDataItem as DataItem;
 use SMWQuery as Query;
@@ -52,12 +53,6 @@ class SPARQLStore extends Store {
 	 * @var Store
 	 */
 	protected $baseStore;
-
-	/**
-	 * @since 1.9.2
-	 * @var GenericHttpDatabaseConnector
-	 */
-	protected $sparqlDatabase = null;
 
 	/**
 	 * @since 1.8
@@ -152,7 +147,7 @@ class SPARQLStore extends Store {
 			$redirid
 		);
 
-		$sparqlDatabase = $this->getSparqlDatabase();
+		$sparqlDatabase = $this->getConnection();
 		$sparqlDatabase->insertDelete( "?s ?p $newUri", "?s ?p $oldUri", "?s ?p $oldUri", $namespaces );
 
 		if ( $oldtitle->getNamespace() === SMW_NS_PROPERTY ) {
@@ -203,7 +198,7 @@ class SPARQLStore extends Store {
 
 		$turtleTriplesBuilder = new TurtleTriplesBuilder(
 			$semanticData,
-			new RedirectLookup( $this->getSparqlDatabase() )
+			new RedirectLookup( $this->getConnection() )
 		);
 
 		if ( !$turtleTriplesBuilder->hasTriplesForUpdate() ) {
@@ -214,7 +209,7 @@ class SPARQLStore extends Store {
 			$this->doSparqlDataDelete( $semanticData->getSubject() );
 		}
 
-		$this->getSparqlDatabase()->insertData(
+		$this->getConnection()->insertData(
 			$turtleTriplesBuilder->getTriples(),
 			$turtleTriplesBuilder->getPrefixes()
 		);
@@ -253,10 +248,10 @@ class SPARQLStore extends Store {
 		$masterPageProperty = Exporter::getSpecialNsResource( 'swivt', 'masterPage' );
 		$masterPagePropertyUri = TurtleSerializer::getTurtleNameForExpElement( $masterPageProperty );
 
-		$success = $this->getSparqlDatabase()->deleteContentByValue( $masterPagePropertyUri, $resourceUri, $extraNamespaces );
+		$success = $this->getConnection()->deleteContentByValue( $masterPagePropertyUri, $resourceUri, $extraNamespaces );
 
 		if ( $success ) {
-			return $this->getSparqlDatabase()->delete( "$resourceUri ?p ?o", "$resourceUri ?p ?o", $extraNamespaces );
+			return $this->getConnection()->delete( "$resourceUri ?p ?o", "$resourceUri ?p ?o", $extraNamespaces );
 		}
 
 		return false;
@@ -284,7 +279,7 @@ class SPARQLStore extends Store {
 	protected function fetchQueryResult( Query $query ) {
 
 		$queryEngine = new QueryEngine(
-			$this->getSparqlDatabase(),
+			$this->getConnection(),
 			new CompoundConditionBuilder(),
 			new QueryResultFactory( $this ),
 			new EngineOptions()
@@ -363,7 +358,7 @@ class SPARQLStore extends Store {
 	 */
 	public function drop( $verbose = true ) {
 		$this->baseStore->drop( $verbose );
-		$this->getSparqlDatabase()->deleteAll();
+		$this->getConnection()->deleteAll();
 	}
 
 	/**
@@ -375,20 +370,17 @@ class SPARQLStore extends Store {
 	}
 
 	/**
-	 * @since  1.9.2
-	 *
-	 * @param GenericHttpDatabaseConnector $sparqlDatabase
-	 */
-	public function setSparqlDatabase( GenericHttpDatabaseConnector $sparqlDatabase ) {
-		$this->sparqlDatabase = $sparqlDatabase;
-		return $this;
-	}
-
-	/**
 	 * @since 2.0
 	 */
 	public function getPropertyTables() {
 		return $this->baseStore->getPropertyTables();
+	}
+
+	/**
+	 * @since  1.9.2
+	 */
+	public function clear() {
+		$this->baseStore->clear();
 	}
 
 	/**
@@ -401,33 +393,23 @@ class SPARQLStore extends Store {
 	}
 
 	/**
-	 * @since  1.9.2
+	 * @since 2.1
 	 *
-	 * @return GenericHttpDatabaseConnector
+	 * @param string $connectionTypeId
+	 *
+	 * @return mixed
 	 */
-	public function getSparqlDatabase() {
+	public function getConnection( $connectionTypeId = 'sparql' ) {
 
-		if ( $this->sparqlDatabase === null ) {
-			$this->sparqlDatabase = smwfGetSparqlDatabase();
+		if ( $this->connectionManager === null ) {
+
+			$connectionManager = new ConnectionManager();
+			$connectionManager->registerConnectionProvider( 'sparql', new SparqlDBConnectionProvider() );
+
+			$this->setConnectionManager( $connectionManager );
 		}
 
-		return $this->sparqlDatabase;
-	}
-
-	/**
-	 * @since  2.0
-	 *
-	 * @return Database
-	 */
-	public function getDatabase() {
-		return $this->baseStore->getDatabase();
-	}
-
-	/**
-	 * @since 2.0
-	 */
-	public function clear() {
-		$this->baseStore->clear();
+		return parent::getConnection( $connectionTypeId );
 	}
 
 }

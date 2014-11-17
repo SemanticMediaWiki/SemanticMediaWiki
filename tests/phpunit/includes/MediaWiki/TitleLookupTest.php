@@ -9,11 +9,8 @@ use Title;
 /**
  * @covers \SMW\MediaWiki\TitleLookup
  *
- *
  * @group SMW
  * @group SMWExtension
- * @group semantic-mediawiki-unit
- * @group mediawiki-databaseless
  *
  * @license GNU GPL v2+
  * @since 1.9.2
@@ -54,7 +51,9 @@ class TitleLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new TitleLookup( $database );
 
-		$this->assertArrayOfTitles( $instance->byNamespace( NS_CATEGORY )->selectAll() );
+		$this->assertArrayOfTitles(
+			$instance->setNamespace( NS_CATEGORY )->selectAll()
+		);
 	}
 
 	public function testSelectAllOnMainNamespace() {
@@ -78,7 +77,9 @@ class TitleLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new TitleLookup( $database );
 
-		$this->assertArrayOfTitles( $instance->byNamespace( NS_MAIN )->selectAll() );
+		$this->assertArrayOfTitles(
+			$instance->setNamespace( NS_MAIN )->selectAll()
+		);
 	}
 
 	public function testSelectByRangeOnCategoryNamespace() {
@@ -101,7 +102,9 @@ class TitleLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new TitleLookup( $database );
 
-		$this->assertArrayOfTitles( $instance->byNamespace( NS_CATEGORY )->selectByIdRange( 1, 5 ) );
+		$this->assertArrayOfTitles(
+			$instance->setNamespace( NS_CATEGORY )->selectByIdRange( 1, 5 )
+		);
 	}
 
 	public function testSelectByRangeOnMainNamespace() {
@@ -125,7 +128,9 @@ class TitleLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new TitleLookup( $database );
 
-		$this->assertArrayOfTitles( $instance->byNamespace( NS_MAIN )->selectByIdRange( 6, 10 ) );
+		$this->assertArrayOfTitles(
+			$instance->setNamespace( NS_MAIN )->selectByIdRange( 6, 10 )
+		);
 	}
 
 	public function testSelectAllOnMainNamespaceWithEmptyResult() {
@@ -145,10 +150,12 @@ class TitleLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new TitleLookup( $database );
 
-		$this->assertArrayOfTitles( $instance->byNamespace( NS_MAIN )->selectAll() );
+		$this->assertArrayOfTitles(
+			$instance->setNamespace( NS_MAIN )->selectAll()
+		);
 	}
 
-	public function testSelectMaxIdForMainNamespace() {
+	public function testMaxIdForMainNamespace() {
 
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -164,10 +171,13 @@ class TitleLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new TitleLookup( $database );
 
-		$this->assertEquals( 9999, $instance->byNamespace( NS_MAIN )->selectMaxId() );
+		$this->assertEquals(
+			9999,
+			$instance->setNamespace( NS_MAIN )->getMaxId()
+		);
 	}
 
-	public function testSelectMaxIdForCategoryNamespace() {
+	public function testgetMaxIdForCategoryNamespace() {
 
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -183,12 +193,15 @@ class TitleLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new TitleLookup( $database );
 
-		$this->assertEquals( 1111, $instance->byNamespace( NS_CATEGORY )->selectMaxId() );
+		$this->assertEquals(
+			1111,
+			$instance->setNamespace( NS_CATEGORY )->getMaxId()
+		);
 	}
 
 	public function testSelectAllOnMissingNamespaceThrowsException() {
 
-		$this->setExpectedException( 'UnexpectedValueException' );
+		$this->setExpectedException( 'RuntimeException' );
 
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -200,7 +213,7 @@ class TitleLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSelectByRangeOnMissingNamespaceThrowsException() {
 
-		$this->setExpectedException( 'UnexpectedValueException' );
+		$this->setExpectedException( 'RuntimeException' );
 
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()

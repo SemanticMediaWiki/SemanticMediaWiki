@@ -218,26 +218,26 @@ class ConceptCacheRebuilder {
 	protected function getConcepts() {
 
 		if ( $this->concept !== null ) {
-			return array( $this->acquireSingleConcept() );
+			return array( $this->createConcept() );
 		}
 
-		return $this->acquireMultipleConcepts();
+		return $this->createMultipleConcepts();
 	}
 
-	protected function acquireSingleConcept() {
+	protected function createConcept() {
 		return Title::newFromText( $this->concept, SMW_NS_CONCEPT );
 	}
 
-	protected function acquireMultipleConcepts() {
+	protected function createMultipleConcepts() {
 
-		$titleLookup = new TitleLookup( $this->store->getDatabase() );
-		$titleLookup->byNamespace( SMW_NS_CONCEPT );
+		$titleLookup = new TitleLookup( $this->store->getConnection( 'mw.db' ) );
+		$titleLookup->setNamespace( SMW_NS_CONCEPT );
 
 		if ( $this->endId == 0 && $this->startId == 0 ) {
 			return $titleLookup->selectAll();
 		}
 
-		$endId = $titleLookup->selectMaxId();
+		$endId = $titleLookup->getMaxId();
 
 		if ( $this->endId > 0 ) {
 			$endId = min( $this->endId, $endId );

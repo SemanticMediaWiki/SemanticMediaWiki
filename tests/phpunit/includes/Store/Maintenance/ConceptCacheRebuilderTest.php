@@ -6,8 +6,7 @@ use SMW\Store\Maintenance\ConceptCacheRebuilder;
 use SMW\DIConcept;
 
 /**
- * @uses \SMW\Store\Maintenance\ConceptCacheRebuilder
- *
+ * @covers \SMW\Store\Maintenance\ConceptCacheRebuilder
  *
  * @group SMW
  * @group SMWExtension
@@ -199,7 +198,7 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( array( $refreshConceptCacheReturn ) ) );
 
 		$store->expects( $expectedToRun )
-			->method( 'getDatabase' )
+			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
 		$settings = $this->getMockBuilder( '\SMW\Settings' )

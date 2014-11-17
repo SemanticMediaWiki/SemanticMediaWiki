@@ -204,7 +204,10 @@ class SMWSql3SmwIds {
 		self::$singleton_debug = $this;
 
 		// Either inject the class directly or an IdGeneratorFactory class instead
-		$this->itemByIdFinder = new ItemByIdFinder( $this->store->getDatabase(), self::tableName );
+		$this->itemByIdFinder = new ItemByIdFinder(
+			$this->store->getConnection( 'mw.db' ),
+			self::tableName
+		);
 	}
 
 	/**
@@ -262,7 +265,7 @@ class SMWSql3SmwIds {
 	protected function getDatabaseIdAndSort( $title, $namespace, $iw, $subobjectName, &$sortkey, $canonical, $fetchHashes ) {
 		global $smwgQEqualitySupport;
 
-		$db = $this->store->getDatabase();
+		$db = $this->store->getConnection();
 
 		$id = $this->getCachedId(
 			$title,
@@ -391,7 +394,7 @@ class SMWSql3SmwIds {
 	 * @return integer
 	 */
 	protected function getRedirectId( $title, $namespace ) {
-		$row = $this->store->getDatabase()->selectRow(
+		$row = $this->store->getConnection()->selectRow(
 			'smw_fpt_redi',
 			'o_id',
 			array(
@@ -459,7 +462,7 @@ class SMWSql3SmwIds {
 
 		$oldsort = '';
 		$id = $this->getDatabaseIdAndSort( $title, $namespace, $iw, $subobjectName, $oldsort, $canonical, $fetchHashes );
-		$db = $this->store->getDatabase();
+		$db = $this->store->getConnection();
 
 		if ( $id == 0 ) {
 			$sortkey = $sortkey ? $sortkey : ( str_replace( '_', ' ', $title ) );
@@ -641,7 +644,7 @@ class SMWSql3SmwIds {
 	 * @param integer $targetid
 	 */
 	public function moveSMWPageID( $curid, $targetid = 0 ) {
-		$db = $this->store->getDatabase();
+		$db = $this->store->getConnection();
 
 		$row = $db->selectRow(
 			self::tableName,
@@ -926,7 +929,7 @@ class SMWSql3SmwIds {
 	 */
 	public function getPropertyTableHashes( $subjectId ) {
 		$hash = null;
-		$db = $this->store->getDatabase();
+		$db = $this->store->getConnection();
 
 		if ( $this->hashCacheId == $subjectId ) {
 			$hash = $this->hashCacheContents;
@@ -959,7 +962,7 @@ class SMWSql3SmwIds {
 	 * @param string[] of hash values with table names as keys
 	 */
 	public function setPropertyTableHashes( $sid, array $newTableHashes ) {
-		$db = $this->store->getDatabase();
+		$db = $this->store->getConnection();
 		$propertyTableHash = serialize( $newTableHashes );
 
 		$db->update(

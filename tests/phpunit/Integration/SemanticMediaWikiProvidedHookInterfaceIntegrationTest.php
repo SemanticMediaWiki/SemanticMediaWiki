@@ -4,6 +4,7 @@ namespace SMW\Tests\Integration;
 
 use SMW\Tests\Util\UtilityFactory;
 use SMW\ApplicationFactory;
+use SMW\ConnectionManager;
 use SMW\DIWikiPage;
 
 use RuntimeException;

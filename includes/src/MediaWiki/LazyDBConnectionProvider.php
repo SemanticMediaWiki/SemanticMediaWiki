@@ -8,25 +8,31 @@ use DatabaseBase;
 use RuntimeException;
 
 /**
- * @ingroup SMW
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class LazyDBConnectionProvider implements DBConnectionProvider {
 
-	/** @var DatabaseBase|null */
+	/**
+	 * @var DatabaseBase|null
+	 */
 	protected $connection = null;
 
-	/** @var int|null */
+	/**
+	 * @var int|null
+	 */
 	protected $connectionId = null;
 
-	/** @var string|array */
+	/**
+	 * @var string|array
+	 */
 	protected $groups;
 
-	/** @var string|boolean $wiki */
+	/**
+	 * @var string|boolean $wiki
+	 */
 	protected $wiki;
 
 	/**

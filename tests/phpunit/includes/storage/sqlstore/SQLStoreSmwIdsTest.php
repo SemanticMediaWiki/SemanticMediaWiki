@@ -2,20 +2,15 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\Tests\Util\Mock\MockDBConnectionProvider;
-use SMW\MediaWiki\Database;
-
 use SMW\DIProperty;
 use SMWSql3SmwIds;
 
 /**
  * @covers \SMWSql3SmwIds
  *
- *
  * @group SMW
  * @group SMWExtension
- * @group SQLStore
- * @group MockTest
+ * @group semantic-mediawiki-sqlstore
  *
  * @license GNU GPL v2+
  * @since 1.9.1
@@ -23,10 +18,6 @@ use SMWSql3SmwIds;
  * @author mwjames
  */
 class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
-
-	public function getClass() {
-		return '\SMWSql3SmwIds';
-	}
 
 	public function testCanConstruct() {
 
@@ -39,10 +30,13 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$store->expects( $this->any() )
-			->method( 'getDatabase' )
+			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$this->assertInstanceOf( $this->getClass(), new SMWSql3SmwIds( $store ) );
+		$this->assertInstanceOf(
+			'\SMWSql3SmwIds',
+			new SMWSql3SmwIds( $store )
+		);
 	}
 
 	/**
@@ -54,22 +48,21 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$selectRow->smw_id = 9999;
 		$selectRow->smw_sortkey = 'Foo';
 
-		$readConnection = new MockDBConnectionProvider();
-		$mockDatabase = $readConnection->getMockDatabase();
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$mockDatabase->expects( $this->once() )
+		$connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->will( $this->returnValue( $selectRow ) );
-
-		$database = new Database( $readConnection, new MockDBConnectionProvider );
 
 		$store = $this->getMockBuilder( 'SMWSQLStore3' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store->expects( $this->any() )
-			->method( 'getDatabase' )
-			->will( $this->returnValue( $database ) );
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
 
 		$instance = new SMWSql3SmwIds( $store );
 
@@ -88,22 +81,21 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$selectRow->smw_sortkey = 'Foo';
 		$selectRow->smw_proptable_hash = serialize( 'Foo' );
 
-		$readConnection = new MockDBConnectionProvider();
-		$mockDatabase = $readConnection->getMockDatabase();
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$mockDatabase->expects( $this->once() )
+		$connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->will( $this->returnValue( $selectRow ) );
-
-		$database = new Database( $readConnection, new MockDBConnectionProvider );
 
 		$store = $this->getMockBuilder( 'SMWSQLStore3' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store->expects( $this->any() )
-			->method( 'getDatabase' )
-			->will( $this->returnValue( $database ) );
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
 
 		$instance = new SMWSql3SmwIds( $store );
 
@@ -133,29 +125,25 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$selectRow->smw_sortkey = 'Foo';
 		$selectRow->smw_proptable_hash = serialize( 'Foo' );
 
-		$readConnection = new MockDBConnectionProvider();
-		$mockReadDatabase = $readConnection->getMockDatabase();
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$mockReadDatabase->expects( $this->any() )
+		$connection->expects( $this->any() )
 			->method( 'selectRow' )
 			->will( $this->returnValue( $selectRow ) );
 
-		$writeConnection = new MockDBConnectionProvider();
-		$mockWriteDatabase = $writeConnection->getMockDatabase();
-
-		$mockWriteDatabase->expects( $this->once() )
+		$connection->expects( $this->once() )
 			->method( 'insertId' )
 			->will( $this->returnValue( 9999 ) );
-
-		$database = new Database( $readConnection, $writeConnection );
 
 		$store = $this->getMockBuilder( 'SMWSQLStore3' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store->expects( $this->any() )
-			->method( 'getDatabase' )
-			->will( $this->returnValue( $database ) );
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
 
 		$instance = new SMWSql3SmwIds( $store );
 
@@ -198,8 +186,8 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store->expects( $this->any() )
-			->method( 'getDatabase' )
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
 		$instance = new SMWSql3SmwIds( $store );

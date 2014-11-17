@@ -249,7 +249,7 @@ class SMWSQLStore3Readers {
 			return array();
 
 		$result = array();
-		$db = $this->store->getDatabase();
+		$db = $this->store->getConnection();
 
 		$diHandler = $this->store->getDataItemHandlerForDIType( $proptable->getDiType() );
 
@@ -391,7 +391,7 @@ class SMWSQLStore3Readers {
 
 		$proptables =  $this->store->getPropertyTables();
 		$proptable = $proptables[$tableid];
-		$db = $this->store->getDatabase();
+		$db = $this->store->getConnection();
 
 		if ( $proptable->usesIdSubject() ) { // join with ID table to get title data
 			$from = $db->tableName( SMWSql3SmwIds::tableName ) . " INNER JOIN " . $db->tableName( $proptable->getName() ) . " AS t1 ON t1.s_id=smw_id";
@@ -452,7 +452,7 @@ class SMWSQLStore3Readers {
 	 * @param integer $tableindex
 	 */
 	protected function prepareValueQuery( &$from, &$where, $proptable, $value, $tableindex = 1 ) {
-		$db = $this->store->getDatabase();
+		$db = $this->store->getConnection();
 
 		if ( $value instanceof SMWDIContainer ) { // recursive handling of containers
 			$keys = array_keys( $proptable->getFields( $this->store ) );
@@ -524,7 +524,7 @@ class SMWSQLStore3Readers {
 			return array();
 		}
 
-		$db = $this->store->getDatabase();
+		$db = $this->store->getConnection();
 		$result = array();
 
 		// potentially need to get more results, since options apply to union
@@ -598,7 +598,7 @@ class SMWSQLStore3Readers {
 	 */
 	public function getInProperties( SMWDataItem $value, $requestoptions = null ) {
 
-		$db = $this->store->getDatabase();
+		$db = $this->store->getConnection();
 		$result = array();
 
 		// Potentially need to get more results, since options apply to union.

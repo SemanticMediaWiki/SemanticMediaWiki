@@ -116,7 +116,7 @@ class SMWSQLStore3QueryEngine {
 
 		$fname = 'SMW::refreshConceptCache';
 
-		$db = $this->m_store->getDatabase();
+		$db = $this->m_store->getConnection();
 
 		$cid = $this->m_store->smwIds->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '' );
 		$cid_c = $this->m_store->smwIds->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '', false );
@@ -222,7 +222,7 @@ class SMWSQLStore3QueryEngine {
 	 */
 	public function deleteConceptCache( $concept ) {
 
-		$db = $this->m_store->getDatabase();
+		$db = $this->m_store->getConnection();
 
 		$cid = $this->m_store->smwIds->getSMWPageID(
 			$concept->getDBkey(),
@@ -369,7 +369,7 @@ class SMWSQLStore3QueryEngine {
 	protected function getDebugQueryResult( SMWQuery $query, $rootid ) {
 		$qobj = $this->m_queries[$rootid];
 
-		$db = $this->m_store->getDatabase();
+		$db = $this->m_store->getConnection();
 
 		$entries = array();
 
@@ -452,7 +452,7 @@ class SMWSQLStore3QueryEngine {
 	protected function getInstanceQueryResult( SMWQuery $query, $rootid ) {
 		global $wgDBtype;
 
-		$db = $this->m_store->getDatabase();
+		$db = $this->m_store->getConnection();
 
 		$qobj = $this->m_queries[$rootid];
 
@@ -702,7 +702,7 @@ class SMWSQLStore3QueryEngine {
 	 */
 	protected function compileSomePropertyDescription( SMWSQLStore3Query $query, SMWSomeProperty $description ) {
 
-		$db = $this->m_store->getDatabase();
+		$db = $this->m_store->getConnection();
 
 		$property = $description->getProperty();
 
@@ -894,7 +894,7 @@ throw new MWException("Debug -- this code might be dead.");
 	protected function executeQueries( SMWSQLStore3Query &$query ) {
 		global $wgDBtype;
 
-		$db = $this->m_store->getDatabase();
+		$db = $this->m_store->getConnection();
 
 		switch ( $query->type ) {
 			case SMWSQLStore3Query::Q_TABLE: // Normal query with conjunctive subcondition.
@@ -1034,7 +1034,7 @@ throw new MWException("Debug -- this code might be dead.");
 
 		$fname = "SMWSQLStore3Queries::executeQueries-hierarchy-{$query->type} (SMW)";
 
-		$db = $this->m_store->getDatabase();
+		$db = $this->m_store->getConnection();
 
 		$depth = ( $query->type == SMWSQLStore3Query::Q_PROP_HIERARCHY ) ? $smwgQSubpropertyDepth : $smwgQSubcategoryDepth;
 
@@ -1205,7 +1205,7 @@ throw new MWException("Debug -- this code might be dead.");
 	protected function cleanUp() {
 		global $wgDBtype;
 
-		$db = $this->m_store->getDatabase();
+		$db = $this->m_store->getConnection();
 
 		if ( $this->m_qmode !== SMWQuery::MODE_DEBUG ) {
 			foreach ( $this->m_querylog as $table => $log ) {

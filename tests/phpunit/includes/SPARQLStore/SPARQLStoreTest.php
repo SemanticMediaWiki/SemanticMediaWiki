@@ -112,8 +112,16 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( $extraNamespaces ) )
 			->will( $this->returnValue( true ) );
 
+		$connectionManager = $this->getMockBuilder( '\SMW\ConnectionManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connectionManager->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $sparqlDatabase ) );
+
 		$instance = new SPARQLStore( $baseStore );
-		$instance->setSparqlDatabase( $sparqlDatabase );
+		$instance->setConnectionManager( $connectionManager );
 
 		$instance->deleteSubject( $title );
 	}
@@ -146,8 +154,16 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 		$sparqlDatabase->expects( $this->once() )
 			->method( 'insertData' );
 
+		$connectionManager = $this->getMockBuilder( '\SMW\ConnectionManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connectionManager->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $sparqlDatabase ) );
+
 		$instance = new SPARQLStore( $baseStore );
-		$instance->setSparqlDatabase( $sparqlDatabase );
+		$instance->setConnectionManager( $connectionManager );
 
 		$instance->doSparqlDataUpdate( $semanticData );
 	}
@@ -206,10 +222,6 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetQueryResult() {
 
-		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\GenericHttpDatabaseConnector' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -230,8 +242,20 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
+		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\GenericHttpDatabaseConnector' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connectionManager = $this->getMockBuilder( '\SMW\ConnectionManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connectionManager->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
 		$instance = new SPARQLStore( $store );
-		$instance->setSparqlDatabase( $connection );
+		$instance->setConnectionManager( $connectionManager );
 
 		$instance->getQueryResult( $query );
 	}

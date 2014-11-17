@@ -46,8 +46,10 @@ final class Setup {
 	 * @since 1.9
 	 */
 	public function run() {
-		$this->initSomeConfigurationSettingsIfNotSet();
+		$this->addSomeDefaultConfigurations();
 		$this->registerSettings();
+
+		$this->registerConnectionProviders();
 
 		$this->registerI18n();
 		$this->registerWebApi();
@@ -60,7 +62,7 @@ final class Setup {
 		$this->registerHooks();
 	}
 
-	private function initSomeConfigurationSettingsIfNotSet() {
+	private function addSomeDefaultConfigurations() {
 
 		$this->globalVars['smwgMasterStore'] = null;
 		$this->globalVars['smwgIQRunningNumber'] = 0;
@@ -82,6 +84,28 @@ final class Setup {
 		$this->applicationFactory->registerObject(
 			'Settings',
 			Settings::newFromGlobals( $this->globalVars )
+		);
+	}
+
+	private function registerConnectionProviders() {
+
+		$mwCollaboratorFactory = $this->applicationFactory->newMwCollaboratorFactory();
+
+		$connectionManager = new ConnectionManager();
+
+		$connectionManager->registerConnectionProvider(
+			DB_MASTER,
+			$mwCollaboratorFactory->newLazyDBConnectionProvider( DB_MASTER )
+		);
+
+		$connectionManager->registerConnectionProvider(
+			DB_SLAVE,
+			$mwCollaboratorFactory->newLazyDBConnectionProvider( DB_SLAVE )
+		);
+
+		$connectionManager->registerConnectionProvider(
+			'mw.db',
+			$mwCollaboratorFactory->newMediaWikiDatabaseConnectionProvider()
 		);
 	}
 

@@ -7,8 +7,7 @@ use SMW\SQLStore\SimplePropertyStatisticsRebuilder;
 use FakeResultWrapper;
 
 /**
- * @uses \SMW\SQLStore\SimplePropertyStatisticsRebuilder
- *
+ * @covers \SMW\SQLStore\SimplePropertyStatisticsRebuilder
  *
  * @group SMW
  * @group SMWExtension
@@ -64,13 +63,10 @@ class SimplePropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase 
 
 		$store = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
-			->setMethods( array(
-				'getDatabase',
-				'getPropertyTables' ) )
 			->getMock();
 
 		$store->expects( $this->atLeastOnce() )
-			->method( 'getDatabase' )
+			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
 		$store->expects( $this->atLeastOnce() )

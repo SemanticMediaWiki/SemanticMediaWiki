@@ -55,7 +55,7 @@ class SMWSQLStore3Writers {
 		$this->doDataUpdate( $emptySemanticData );
 
 		if ( $title->getNamespace() === SMW_NS_CONCEPT ) { // make sure to clear caches
-			$db = $this->store->getDatabase();
+			$db = $this->store->getConnection();
 
 			$id = $this->store->getObjectIds()->getSMWPageID(
 				$title->getDBkey(),
@@ -206,7 +206,7 @@ class SMWSQLStore3Writers {
 	 */
 	protected function getSubobjects( SMWDIWikiPage $subject ) {
 
-		$db = $this->store->getDatabase();
+		$db = $this->store->getConnection();
 
 		$res = $db->select(
 			$db->tablename( SMWSql3SmwIds::tableName ),
@@ -315,7 +315,7 @@ class SMWSQLStore3Writers {
 	 */
 	private function prepareConceptTableInserts( $sid, &$insertData ) {
 
-		$db = $this->store->getDatabase();
+		$db = $this->store->getConnection();
 
 		// Make sure that there is exactly one row to be written:
 		if ( array_key_exists( 'smw_fpt_conc', $insertData ) && !empty( $insertData['smw_fpt_conc'] ) ) {
@@ -484,7 +484,7 @@ class SMWSQLStore3Writers {
 		}
 
 		$contents = array();
-		$db = $this->store->getDatabase();
+		$db = $this->store->getConnection();
 
 		$result = $db->select(
 			$db->tablename( $propertyTable->getName() ),
@@ -538,7 +538,7 @@ class SMWSQLStore3Writers {
 		}
 
 		$statsTable = new PropertyStatisticsTable(
-			$this->store->getDatabase(),
+			$this->store->getConnection(),
 			SMWSQLStore3::PROPERTY_STATISTICS_TABLE
 		);
 
@@ -570,7 +570,7 @@ class SMWSQLStore3Writers {
 			throw new InvalidArgumentException('Operation not supported for tables without subject IDs.');
 		}
 
-		$db = $this->store->getDatabase();
+		$db = $this->store->getConnection();
 
 		if ( $insert ) {
 			$db->insert(
@@ -607,7 +607,7 @@ class SMWSQLStore3Writers {
 	protected function deleteRows( array $rows, SMWSQLStore3Table $propertyTable ) {
 
 		$condition = '';
-		$db = $this->store->getDatabase();
+		$db = $this->store->getConnection();
 
 		// We build a condition that mentions s_id only once,
 		// since it must be the same for all rows. This should
@@ -691,7 +691,7 @@ class SMWSQLStore3Writers {
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
 		global $smwgQEqualitySupport;
 
-		$db = $this->store->getDatabase();
+		$db = $this->store->getConnection();
 
 		// get IDs but do not resolve redirects:
 		$sid = $this->store->getObjectIds()->getSMWPageID(
@@ -910,7 +910,7 @@ class SMWSQLStore3Writers {
 		global $smwgQEqualitySupport, $smwgEnableUpdateJobs;
 
 		$count = 0; //track count changes for redi property
-		$db = $this->store->getDatabase();
+		$db = $this->store->getConnection();
 
 		// *** First get id of subject, old redirect target, and current (new) redirect target ***//
 

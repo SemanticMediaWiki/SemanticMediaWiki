@@ -11,7 +11,6 @@ use Title;
 /**
  * @covers \SMWSQLStore3Writers
  *
- *
  * @group SMW
  * @group SMWExtension
  * @group semantic-mediawiki-unit
@@ -83,7 +82,7 @@ class SqlStoreWriterDataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $objectIdGenerator ) );
 
 		$parentStore->expects( $this->atLeastOnce() )
-			->method( 'getDatabase' )
+			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
 		$parentStore->expects( $this->atLeastOnce() )
@@ -140,7 +139,7 @@ class SqlStoreWriterDataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $objectIdGenerator ) );
 
 		$parentStore->expects( $this->atLeastOnce() )
-			->method( 'getDatabase' )
+			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
 		$parentStore->expects( $this->atLeastOnce() )
@@ -197,7 +196,7 @@ class SqlStoreWriterDataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $objectIdGenerator ) );
 
 		$parentStore->expects( $this->atLeastOnce() )
-			->method( 'getDatabase' )
+			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
 		$instance = new SMWSQLStore3Writers( $parentStore );
