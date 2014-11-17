@@ -30,6 +30,24 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructJobQueueLookup() {
+
+		$applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new MwCollaboratorFactory( $applicationFactory );
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\JobQueueLookup',
+			$instance->newJobQueueLookup( $connection )
+		);
+	}
+
 	public function testCanConstructMessageBuilder() {
 
 		$applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )

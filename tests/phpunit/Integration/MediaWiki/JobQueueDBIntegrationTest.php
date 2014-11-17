@@ -3,17 +3,11 @@
 namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\Tests\Util\UtilityFactory;
-use SMW\Tests\Util\PageCreator;
-
 use SMW\Tests\MwDBaseUnitTestCase;
 
-use SMW\MediaWiki\JobQueueLookup;
 use SMW\ApplicationFactory;
-use SMW\SemanticData;
-use SMW\StoreFactory;
 use SMW\DIWikiPage;
 
-use WikiPage;
 use Title;
 use Job;
 
@@ -36,7 +30,9 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 	private $job = null;
 	private $applicationFactory;
 
+	private $deletePoolOfPages = array();
 	private $runnerFactory;
+
 	private $mwHooksHandler;
 	private $semanticDataValidator;
 
@@ -49,13 +45,17 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
+		$utilityFactory = UtilityFactory::getInstance();
+
+		$this->mwHooksHandler = $utilityFactory->newMwHooksHandler();
 
 		$this->mwHooksHandler
 			->deregisterListedHooks()
 			->invokeHooksFromRegistry();
 
-		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+		$this->semanticDataValidator = $utilityFactory->newValidatorFactory()->newSemanticDataValidator();
+		$this->pageDeleter = $utilityFactory->newPageDeleter();
+		$this->pageCreator = $utilityFactory->newPageCreator();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
@@ -72,14 +72,11 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 			$this->applicationFactory->getSettings()->set( $key, $value );
 		}
 
-		$this->pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
-		$this->pageCreator = UtilityFactory::getInstance()->newPageCreator();
+		$this->jobQueueLookup = $this->applicationFactory
+			->newMwCollaboratorFactory()
+			->newJobQueueLookup( $this->getStore()->getDatabase() );
 
-		$this->jobQueueLookup = new JobQueueLookup(
-			$this->getStore()->getDatabase()
-		);
-
-		$this->jobQueueRunner = UtilityFactory::getInstance()->newRunnerFactory()->newJobQueueRunner();
+		$this->jobQueueRunner = $utilityFactory->newRunnerFactory()->newJobQueueRunner();
 
 		$this->jobQueueRunner
 			->setDBConnectionProvider( $this->getDBConnectionProvider() )
@@ -87,6 +84,11 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 	}
 
 	protected function tearDown() {
+
+		$this->pageDeleter->doDeletePoolOfPages(
+			$this->deletePoolOfPages
+		);
+
 		$this->applicationFactory->clear();
 		$this->mwHooksHandler->restoreListedHooks();
 
@@ -104,13 +106,11 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 			$this->getStore()->getSemanticData( $subject )
 		);
 
-		$pageCreator = new PageCreator();
-
-		$pageCreator
+		$this->pageCreator
 			->createPage( $source['title'] )
 			->doEdit( $source['edit'] );
 
-		$pageCreator
+		$this->pageCreator
 			->createPage( $associate['title'] )
 			->doEdit( $associate['edit'] );
 
@@ -138,13 +138,11 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 		$oldTitle = Title::newFromText( __METHOD__ . '-old' );
 		$newTitle = Title::newFromText( __METHOD__ . '-new' );
 
-		$pageCreator = new PageCreator();
-
-		$pageCreator
+		$this->pageCreator
 			->createPage( $oldTitle )
 			->doEdit( '[[Has jobqueue test::UpdateJob]]' );
 
-		$pageCreator
+		$this->pageCreator
 			->getPage()
 			->getTitle()
 			->moveTo( $newTitle, false, 'test', true );
@@ -239,6 +237,9 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->assertTrue( $job->run() );
 	}
 
+	/**
+	 * Issue 617
+	 */
 	public function testNoInfiniteUpdateJobsForCircularRedirect() {
 
 		$this->pageCreator
@@ -261,6 +262,47 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 		foreach ( $this->jobQueueRunner->getStatus() as $status ) {
 			$this->assertTrue( $status['status'] );
 		}
+
+		$this->deletePoolOfPages = array(
+			Title::newFromText( 'Foo-A' ),
+			Title::newFromText( 'Foo-B' ),
+			Title::newFromText( 'Foo-C' )
+		);
+	}
+
+	public function testPropertyTypeChangeToCreateUpdateJob() {
+
+		$propertyPage = Title::newFromText( 'FooProperty', SMW_NS_PROPERTY );
+
+		$this->pageCreator
+			->createPage( $propertyPage )
+			->doEdit( '[[Has type::Page]]' );
+
+		$this->pageCreator
+			->createPage( Title::newFromText( 'Foo' ), NS_MAIN )
+			->doEdit( '[[FooProperty::SomePage]]' );
+
+		$this->pageCreator
+			->createPage( $propertyPage )
+			->doEdit( '[[Has type::Number]]' );
+
+		$this->assertGreaterThan(
+			0,
+			$this->jobQueueLookup->estimateJobCountFor( 'SMW\UpdateJob' )
+		);
+
+		$this->jobQueueRunner
+			->setType( 'SMW\UpdateJob' )
+			->run();
+
+		foreach ( $this->jobQueueRunner->getStatus() as $status ) {
+			$this->assertTrue( $status['status'] );
+		}
+
+		$this->deletePoolOfPages = array(
+			$propertyPage,
+			Title::newFromText( 'Foo' )
+		);
 	}
 
 }
