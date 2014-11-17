@@ -3,7 +3,9 @@
 
 In general there are two different types of testing a manual (without using any tool or script) and/or an automated approach.
 
-If you choose to do manual testing you just download a related branch using `composer require "mediawiki/semantic-media-wiki:dev-foo` where `foo` refers to the branch name and after the download run `composer dump-autoload` to ensure that all classes are correctly initialized before starting a test.
+If you choose to do manual testing then you just have to download a related branch using `composer require "mediawiki/semantic-media-wiki:dev-foo` (where `foo` refers to the branch name) or in case you want to test the current master, use `@dev` or `dev-master` as version together with `minimum-stability: dev` flag to ensure that the branch/master can be fetched without any stability limitation.
+
+If you do a manual download (e.g. `git`), please make sure to run `composer dump-autoload` in order for all classes to be registered and correctly initialized before starting any test.
 
 For the automated approach, Semantic MediaWiki uses [PHPUnit][phpunit] as scripted testing methodology. Scripted tests are used to verify that an expected behaviour occurs for specified requirements and enables to decide whether a result can be accepted or has to be rejected.
 
