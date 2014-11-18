@@ -27,6 +27,8 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #617 Fixed circular `UpdateJob` caused by redirects
 * #627 Enhanced `SPARQLStore` XML result parser to support `Virtuoso` singelton response
 * #618 Fixed subobject disjunctive/conjunctive subquery handling
+* #628 Fixed named subobject encoding in the `Exporter` to support accented characters
+* #630 Fixed browse link generation for wikipages in `Special:Browse`
 
 ## Internal changes
 
