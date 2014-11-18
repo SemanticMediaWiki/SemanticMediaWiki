@@ -68,9 +68,9 @@ class SpecialCharactersQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	}
 
 	/**
-	 * @dataProvider specialCharaterNameProvider
+	 * @dataProvider specialCharactersNameProvider
 	 */
-	public function testSpecialCharatersInQuery( $subject, $subobjectId, $property, $dataItem ) {
+	public function testSpecialCharactersInQuery( $subject, $subobjectId, $property, $dataItem ) {
 
 		$dataValue = $this->dataValueFactory->newDataItemValue(
 			$dataItem,
@@ -127,7 +127,7 @@ class SpecialCharactersQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		);
 	}
 
-	public function specialCharaterNameProvider() {
+	public function specialCharactersNameProvider() {
 
 		$provider[] = array(
 			'特殊文字',
