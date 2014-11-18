@@ -380,7 +380,7 @@ class SMWExporter {
 			}
 
 			if ( $modifier !== '' ) {
-				$localName .=  '-23' . $modifier;
+				$localName .=  '-23' . self::encodeURI( rawurlencode(  $modifier ) );
 			}
 		}
 

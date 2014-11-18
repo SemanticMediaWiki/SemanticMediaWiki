@@ -97,7 +97,8 @@ class RdfXmlSerializationExportDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->pageCreator
 			->createPage( Title::newFromText( __METHOD__ ) )
 			->doEdit(
-				'{{#subobject:|RdfXmlSerializationForSubobjectProperty=I--11--O|@sortkey=X99Y}}' );
+				'{{#subobject:|RdfXmlSerializationForSubobjectProperty=I--11--O|@sortkey=X99Y}}'.
+				'{{#subobject:Caractères spéciaux|RdfXmlSerializationForSubobjectProperty={({[[&,,;-]]})} }}' );
 
 		$instance = new ExportController( new RDFXMLSerializer() );
 
@@ -106,6 +107,9 @@ class RdfXmlSerializationExportDBIntegrationTest extends MwDBaseUnitTestCase {
 		$output = ob_get_clean();
 
 		$expectedOutputContent = array(
+			'<property:Has_subobject-23aux rdf:resource="&wiki;SMW-5CTests-5CIntegration-5CRdfXmlSerializationExportDBIntegrationTest-3A-3AtestRdfXmlSerializationPrintoutForSubobjectPropertyAnnotation-23_f5f4c4cfaded72e14bf120d9da479b6c"/>',
+			'<property:Has_subobject-23aux rdf:resource="&wiki;SMW-5CTests-5CIntegration-5CRdfXmlSerializationExportDBIntegrationTest-3A-3AtestRdfXmlSerializationPrintoutForSubobjectPropertyAnnotation-23Caract-C3-A8res_sp-C3-A9ciaux"/>',
+
 			'<property:RdfXmlSerializationForSubobjectProperty rdf:resource="&wiki;I-2D-2D11-2D-2DO"/>',
 			'<swivt:wikiPageSortKey rdf:datatype="http://www.w3.org/2001/XMLSchema#string">X99Y</swivt:wikiPageSortKey>'
 		);
