@@ -56,6 +56,12 @@ class SMWSpecialBrowse extends SpecialPage {
 		$this->setHeaders();
 		// get the GET parameters
 		$this->articletext = $wgRequest->getVal( 'article' );
+
+		// @see SMWInfolink::encodeParameters
+		if ( $query === null && $this->getRequest()->getCheck( 'x' ) ) {
+			$query = $this->getRequest()->getVal( 'x' );
+		}
+
 		// no GET parameters? Then try the URL
 		if ( is_null( $this->articletext ) ) {
 			$this->articletext = UrlEncoder::decode( $query );

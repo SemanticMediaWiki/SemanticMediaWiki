@@ -26,6 +26,11 @@ class PageRequestOptions {
 	private $requestOptions;
 
 	/**
+	 * @var UrlEncoder
+	 */
+	private $urlEncoder;
+
+	/**
 	 * @var PropertyValue
 	 */
 	public $property;
@@ -62,10 +67,14 @@ class PageRequestOptions {
 
 	/**
 	 * @since 2.1
+	 *
+	 * @param string $queryString
+	 * @param array $requestOptions
 	 */
 	public function __construct( $queryString, array $requestOptions ) {
 		$this->queryString = $queryString;
 		$this->requestOptions = $requestOptions;
+		$this->urlEncoder = new UrlEncoder();
 	}
 
 	/**
@@ -82,8 +91,8 @@ class PageRequestOptions {
 		$property = isset( $this->requestOptions['property'] ) ? $this->requestOptions['property'] : current( $params );
 		$value = isset( $this->requestOptions['value'] ) ? $this->requestOptions['value'] : next( $params );
 
-		$property = UrlEncoder::decode( $property );
-		$value = UrlEncoder::decode( $value );
+		$property = $this->urlEncoder->decode( $property );
+		$value = $this->urlEncoder->decode( $value );
 
 		$this->property = PropertyValue::makeUserProperty( $property );
 
@@ -96,7 +105,7 @@ class PageRequestOptions {
 
 			$this->value = DataValueFactory::getInstance()->newPropertyObjectValue(
 				$this->property->getDataItem(),
-				$value
+				$this->urlEncoder->decode( $value )
 			);
 
 			$this->valueString = $this->value->isValid() ? $this->value->getWikiValue() : $value;

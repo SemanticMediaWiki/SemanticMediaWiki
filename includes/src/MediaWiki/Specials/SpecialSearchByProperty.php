@@ -46,6 +46,11 @@ class SpecialSearchByProperty extends SpecialPage {
 
 		list( $limit, $offset ) = $this->getLimitOffset();
 
+		// @see SMWInfolink::encodeParameters
+		if ( $query === null && $this->getRequest()->getCheck( 'x' ) ) {
+			$query = $this->getRequest()->getVal( 'x' );
+		}
+
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$requestOptions = array(
