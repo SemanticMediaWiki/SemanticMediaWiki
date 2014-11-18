@@ -243,7 +243,7 @@ class SMWSpecialBrowse extends SpecialPage {
 
 		$html = $dataValue->getLongHTMLText( $linker );
 
-		if ( $dataValue->getDataItem() === '_wpg' || $dataValue->getTypeID() === '__sob' ) {
+		if ( $dataValue->getTypeID() === '_wpg' || $dataValue->getTypeID() === '__sob' ) {
 			$html .= "&#160;" . SMWInfolink::newBrowsingLink( '+', $dataValue->getLongWikiText() )->getHTML( $linker );
 		} elseif ( $incoming && $property->isVisible() ) {
 			$html .= "&#160;" . SMWInfolink::newInversePropertySearchLink( '+', $dataValue->getTitle(), $property->getDataItem()->getLabel(), 'smwsearch' )->getHTML( $linker );
