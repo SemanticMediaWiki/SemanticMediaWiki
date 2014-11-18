@@ -13,6 +13,7 @@ use Title;
  *
  * @group SMW
  * @group SMWExtension
+ *
  * @group semantic-mediawiki-specials
  *
  * @license GNU GPL v2+
@@ -60,12 +61,34 @@ class SpecialSearchByPropertyTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider queryParameterProvider
 	 */
-	public function testExecute( $query, $expected ) {
+	public function testQueryParameter( $query, $expected ) {
 
 		$instance = new SpecialSearchByProperty();
 		$instance->getContext()->setTitle( Title::newFromText( 'SearchByProperty' ) );
 
 		$instance->execute( $query );
+
+		$this->stringValidator->assertThatStringContains(
+			$expected,
+			$instance->getOutput()->getHtml()
+		);
+	}
+
+	public function testXRequestParameter() {
+
+		$request = array(
+			'x' => 'Has-20subobject/Foo-23%7B%7D'
+		);
+
+		$expected = array(
+			'property=Has+subobject', 'value=Foo%23%7B%7D'
+		);
+
+		$instance = new SpecialSearchByProperty();
+		$instance->getContext()->setTitle( Title::newFromText( 'SearchByProperty' ) );
+		$instance->getContext()->setRequest( new \FauxRequest( $request, true ) );
+
+		$instance->execute( null );
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
@@ -85,6 +108,12 @@ class SpecialSearchByPropertyTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'Foo/Bar',
 			array( 'property=Foo', 'value=Bar' )
+		);
+
+		#2
+		$provider[] = array(
+			'Has-20foo/http:-2F-2Fexample.org-2Fid-2FCurly-2520Brackets-257B-257D',
+			array( 'property=Has+foo', 'value=http%3A%2F%2Fexample.org%2Fid%2FCurly-20Brackets-7B-7D' )
 		);
 
 		return $provider;
