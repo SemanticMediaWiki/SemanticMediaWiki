@@ -94,7 +94,7 @@ The parameter "formatcount" will output an array of used formats together with i
 An interface to browse facts (the equivalent of `Special:Browse`) of a subject (wikipage) including special properties and subobjects.
 
 > api.php?action=browsebysubject&subject=Main%20Page
-> api.php?action=browsebysubject&subject=Main%20Page&suboject=_QUERYa0856d9fbd9e495af0963ecc75fcef14
+> api.php?action=browsebysubject&subject=Main%20Page&subobject=_QUERYa0856d9fbd9e495af0963ecc75fcef14
 
 #### Output serialization
 ```php
