@@ -19,7 +19,6 @@ use SMW\Tests\MwDBaseUnitTestCase;
  */
 class SetupStoreMaintenanceTest extends MwDBaseUnitTestCase {
 
-	protected $databaseToBeExcluded = array( 'postgres' );
 	protected $destroyDatabaseTablesAfterRun = true;
 
 	private $importedTitles = array();

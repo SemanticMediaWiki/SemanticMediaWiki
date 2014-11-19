@@ -25,7 +25,6 @@ use Title;
  */
 class TimeDataTypeTest extends MwDBaseUnitTestCase {
 
-	protected $databaseToBeExcluded = array( 'postgres' );
 	protected $destroyDatabaseTablesAfterRun = true;
 
 	private $importedTitles = array();

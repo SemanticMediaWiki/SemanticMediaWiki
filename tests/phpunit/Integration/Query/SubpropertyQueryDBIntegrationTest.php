@@ -58,10 +58,6 @@ class SubpropertyQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testSubpropertyToQueryFromTopHierarchy() {
 
-		if ( $this->getDBConnection()->getType() == 'postgres' ) {
-			$this->markTestSkipped( "Issue with postgres, for details see #462" );
-		}
-
 		if ( !$this->getStore() instanceOf \SMWSQLStore3 ) {
 			$this->markTestSkipped( "Subproperty/property hierarchies are currently only supported by the SQLStore" );
 		}

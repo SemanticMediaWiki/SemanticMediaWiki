@@ -21,7 +21,6 @@ use Title;
  */
 class RebuildConceptCacheMaintenanceTest extends MwDBaseUnitTestCase {
 
-	protected $databaseToBeExcluded = array( 'postgres' );
 	protected $destroyDatabaseTablesAfterRun = true;
 
 	private $importedTitles = array();

@@ -19,7 +19,6 @@ use SMW\Tests\MwDBaseUnitTestCase;
  */
 class DumpRdfMaintenanceTest extends MwDBaseUnitTestCase {
 
-	protected $databaseToBeExcluded = array( 'postgres' );
 	protected $destroyDatabaseTablesAfterRun = true;
 
 	private $importedTitles = array();

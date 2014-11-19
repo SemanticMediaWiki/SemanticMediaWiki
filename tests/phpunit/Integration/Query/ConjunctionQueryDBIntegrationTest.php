@@ -181,10 +181,6 @@ class ConjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testNestedPropertyConjunction() {
 
-		// pg_query(): Query failed: ERROR:  syntax error at or near ""sunittest_t6""
-		// LINE 1: ...rchyQuery 127.0.0.1 */ OR REPLACE FUNCTION create_"sunittest...
-		$this->skipTestForDatabase( array( 'postgres' ) );
-
 		/**
 		 * Page annotated with [[Born in::Paris]]
 		 */
