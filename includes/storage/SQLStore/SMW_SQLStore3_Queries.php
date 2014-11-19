@@ -1227,20 +1227,24 @@ throw new MWException("Debug -- this code might be dead.");
 		global $wgDBtype;
 
 		if ( $wgDBtype == 'postgres' ) { // PostgreSQL: no memory tables, use RULE to emulate INSERT IGNORE
-			return "CREATE OR REPLACE FUNCTION create_" . $tablename . "() RETURNS void AS "
+
+			// Remove any double quotes from the name
+			$tablename = str_replace( '"', '', $tablename );
+
+			return "CREATE OR REPLACE FUNCTION create_{$tablename}() RETURNS void AS "
 			. "$$ "
 			. "BEGIN "
-			. " IF EXISTS(SELECT NULL FROM pg_tables WHERE tablename='" . $tablename . "' AND schemaname = ANY (current_schemas(true))) "
-			. " THEN DELETE FROM " . $tablename . "; "
+			. " IF EXISTS(SELECT NULL FROM pg_tables WHERE tablename='{$tablename}' AND schemaname = ANY (current_schemas(true))) "
+			. " THEN DELETE FROM {$tablename}; "
 			. " ELSE "
-			. "  CREATE TEMPORARY TABLE " . $tablename . " (id INTEGER PRIMARY KEY); "
-			. "    CREATE RULE " . $tablename . "_ignore AS ON INSERT TO " . $tablename . " WHERE  (EXISTS (SELECT NULL FROM " . $tablename
-			. "	 WHERE (" . $tablename . ".id = new.id))) DO INSTEAD NOTHING; "
+			. "  CREATE TEMPORARY TABLE {$tablename} (id INTEGER PRIMARY KEY); "
+			. "    CREATE RULE {$tablename}_ignore AS ON INSERT TO {$tablename} WHERE (EXISTS (SELECT NULL FROM {$tablename} "
+			. "	 WHERE ({$tablename}.id = new.id))) DO INSTEAD NOTHING; "
 			. " END IF; "
 			. "END; "
 			. "$$ "
 			. "LANGUAGE 'plpgsql'; "
-			. "SELECT create_" . $tablename . "(); ";
+			. "SELECT create_{$tablename}(); ";
 		} else { // MySQL_ just a temporary table, use INSERT IGNORE later
 			return "CREATE TEMPORARY TABLE " . $tablename . "( id INT UNSIGNED KEY ) ENGINE=MEMORY";
 		}

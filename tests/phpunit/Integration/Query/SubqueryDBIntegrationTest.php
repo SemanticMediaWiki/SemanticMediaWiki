@@ -342,9 +342,6 @@ class SubqueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testSingletonPropertyChain() {
 
-		// pg_query(): Query failed: ERROR:  syntax error at or near ""sunittest_t4""
-		$this->skipTestForDatabase( array( 'postgres' ) );
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( 'SingletonPropertyChain' );
 
 		$semanticData->addDataValue(
@@ -427,9 +424,6 @@ class SubqueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	}
 
 	public function testDisjunctiveSubobjectSubquery() {
-
-		// pg_query(): Query failed: ERROR:  syntax error at or near ""sunittest_t1""
-		$this->skipTestForDatabase( array( 'postgres' ) );
 
 		$paris = $this->fixturesProvider->getFactsheet( 'Paris' );
 		$berlin = $this->fixturesProvider->getFactsheet( 'Berlin' );

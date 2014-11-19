@@ -38,11 +38,6 @@ use SMWPropertyValue as PropertyValue;
  */
 class DisjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
-	/**
-	 * Issues with postgres + disjunction, for details see #454
-	 */
-	protected $databaseToBeExcluded = array( 'postgres' );
-
 	private $subjectsToBeCleared = array();
 	private $semanticDataFactory;
 	private $queryResultValidator;

@@ -35,6 +35,10 @@ use SMWQuery as Query;
  */
 class ConceptQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
+	/**
+	 * Fails on postgres on testToCombineDifferentConceptsIntoConjunctiveConceptQuery
+	 * Failed asserting that actual size 0 matches expected size 6.
+	 */
 	protected $databaseToBeExcluded = array( 'postgres' );
 	protected $storesToBeExcluded = array( 'SMW\SPARQLStore\SPARQLStore' );
 
