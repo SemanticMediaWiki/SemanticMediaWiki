@@ -604,7 +604,7 @@ class SMWQueryProcessor {
 			'type' => 'integer',
 			'default' => 0,
 			'negatives' => false,
-			'upperbound' => 5000 // TODO: make setting
+			'upperbound' => $GLOBALS['smwgQUpperbound'],
 		);
 
 		$params['link'] = array(
