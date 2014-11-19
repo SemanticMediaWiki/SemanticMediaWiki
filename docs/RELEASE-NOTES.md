@@ -29,6 +29,7 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #618 Fixed subobject disjunctive/conjunctive subquery handling
 * #628 Fixed named subobject encoding in the `Exporter` to support accented characters
 * #630 Fixed browse link generation for wikipages in `Special:Browse`
+* #638 Fixed `postgres` temporary table issue (bug 34855, #455, #462)
 
 ## Internal changes
 
