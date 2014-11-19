@@ -84,7 +84,7 @@ class Settings extends SimpleDictionary {
 			'smwgQMaxDepth' => $GLOBALS['smwgQMaxDepth'],
 			'smwgQFeatures' => $GLOBALS['smwgQFeatures'],
 			'smwgQDefaultLimit' => $GLOBALS['smwgQDefaultLimit'],
-			'smwgQUpperbound' => $GLOBALS['smwgQOUpperbound'],
+			'smwgQUpperbound' => $GLOBALS['smwgQUpperbound'],
 			'smwgQMaxInlineLimit' => $GLOBALS['smwgQMaxInlineLimit'],
 			'smwgQPrintoutLimit' => $GLOBALS['smwgQPrintoutLimit'],
 			'smwgQDefaultLinking' => $GLOBALS['smwgQDefaultLinking'],
