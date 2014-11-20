@@ -332,6 +332,7 @@ $GLOBALS['smwgQFeatures'] = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEP
 ### Settings about printout of (especially inline) queries:
 $GLOBALS['smwgQDefaultLimit'] = 50;      // Default number of rows returned in a query. Can be increased with limit=num in #ask
 $GLOBALS['smwgQMaxInlineLimit'] = 500;   // Max number of rows ever printed in a single inline query on a single page.
+$GLOBALS['smwgQUpperbound'] = 5000;      // Max number of rows ever printed in a single inline query on a single page.
 $GLOBALS['smwgQPrintoutLimit']  = 100;   // Max number of supported printouts (added columns in result table, ?-statements)
 $GLOBALS['smwgQDefaultLinking'] = 'all'; // Default linking behavior. Can be one of "none", "subject" (first column), "all".
 
