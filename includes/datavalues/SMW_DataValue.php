@@ -122,6 +122,11 @@ abstract class SMWDataValue {
 	private $mHasErrors = false;
 
 	/**
+	 * @var boolean
+	 */
+	private $serviceLinksRenderState = true;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param string $typeid
@@ -624,6 +629,14 @@ abstract class SMWDataValue {
 	}
 
 	/**
+	 * @since 2.1
+	 * @param boolean $renderState
+	 */
+	public function setServiceLinksRenderState( $renderState = true ) {
+		$this->serviceLinksRenderState = $renderState;
+	}
+
+	/**
 	 * Return an array of SMWLink objects that provide additional resources
 	 * for the given value. Captions can contain some HTML markup which is
 	 * admissible for wiki text, but no more. Result might have no entries
@@ -637,7 +650,7 @@ abstract class SMWDataValue {
 					$this->m_property->getLabel(), $this->getWikiValue() );
 			}
 
-			if ( !$this->mHasServiceLinks ) { // add further service links
+			if ( !$this->mHasServiceLinks && $this->serviceLinksRenderState ) { // add further service links
 				$this->addServiceLinks();
 			}
 		}
