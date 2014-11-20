@@ -30,6 +30,7 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #628 Fixed named subobject encoding in the `Exporter` to support accented characters
 * #630 Fixed browse link generation for wikipages in `Special:Browse`
 * #638 Fixed `postgres` temporary table issue (bug 34855, #455, #462)
+* #641 Removes service info links from the `Factbox`
 
 ## Internal changes
 
