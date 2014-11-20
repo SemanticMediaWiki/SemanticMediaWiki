@@ -2,8 +2,14 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\StoreFactory;
-use SMWQueryProcessor;
+use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\Util\UtilityFactory;
+
+use SMW\DataValueFactory;
+
+use SMWQueryProcessor  as QueryProcessor;
+use SMWQuery as Query;
+use SMWQueryParser as QueryParser;
 
 /**
  * @covers \SMWQueryResult
@@ -14,7 +20,75 @@ use SMWQueryProcessor;
  * @license GNU GPL v2+
  * @author mwjames
  */
-class QueryResultQueryProcessorIntegrationTest extends \PHPUnit_Framework_TestCase {
+class QueryResultQueryProcessorIntegrationTest extends MwDBaseUnitTestCase {
+
+	private $subjectsToBeCleared = array();
+	private $semanticDataFactory;
+
+	private $dataValueFactory;
+	private $queryResultValidator;
+
+	private $pageCreator;
+	private $queryParser;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$utilityFactory = UtilityFactory::getInstance();
+
+		$this->semanticDataFactory = $utilityFactory->newSemanticDataFactory();
+		$this->queryResultValidator = $utilityFactory->newValidatorFactory()->newQueryResultValidator();
+		$this->pageCreator = $utilityFactory->newPageCreator();
+
+		$this->dataValueFactory = DataValueFactory::getInstance();
+		$this->queryParser = new QueryParser();
+	}
+
+	public function testUriQueryFromRawParameters() {
+
+		$this->pageCreator
+			->createPage( \Title::newFromText( 'SomeUriValue', SMW_NS_PROPERTY ) )
+			->doEdit( '[[Has type::URL]]' );
+
+		$dataValue = $this->dataValueFactory->newPropertyValue(
+			'SomeUriValue',
+			'http://example.org/api.php?action=Foo'
+		);
+
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
+		$semanticData->addDataValue( $dataValue );
+
+		$this->getStore()->updateData( $semanticData );
+
+		/**
+		 * @query [[SomeUriValue::http://example.org/api.php?action=Foo]]
+		 */
+		$rawParams = array(
+			'[[SomeUriValue::http://example.org/api.php?action=Foo]]',
+			'?SomeUriValue',
+			'limit=1'
+		);
+
+		list( $queryString, $parameters, $printouts ) = QueryProcessor::getComponentsFromFunctionParams(
+			$rawParams,
+			false
+		);
+
+		$description = $this->queryParser->getQueryDescription( $queryString );
+
+		$query = new Query(
+			$description,
+			false,
+			false
+		);
+
+		$queryResult = $this->getStore()->getQueryResult( $query );
+
+		$this->queryResultValidator->assertThatQueryResultHasSubjects(
+			$semanticData->getSubject(),
+			$queryResult
+		);
+	}
 
 	/**
 	 * @dataProvider queryDataProvider
@@ -41,14 +115,14 @@ class QueryResultQueryProcessorIntegrationTest extends \PHPUnit_Framework_TestCa
 
 	private function getQueryResultFor( $queryString ) {
 
-		list( $query, $formattedParams ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
+		list( $query, $formattedParams ) = QueryProcessor::getQueryAndParamsFromFunctionParams(
 			$queryString,
 			SMW_OUTPUT_WIKI,
-			SMWQueryProcessor::INLINE_QUERY,
+			QueryProcessor::INLINE_QUERY,
 			false
 		);
 
-		return StoreFactory::getStore()->getQueryResult( $query );
+		return $this->getStore()->getQueryResult( $query );
 	}
 
 	public function queryDataProvider() {
