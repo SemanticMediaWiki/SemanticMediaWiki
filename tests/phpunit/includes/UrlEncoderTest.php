@@ -59,18 +59,18 @@ class UrlEncoderTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array( 'Foo(-3-)', 'Foo(-3-)' );
 		$provider[] = array( '"Fo"o', '"Fo"o' );
 
-		$provider[] = array( 'Foo_bar', 'Foo bar' );
+		$provider[] = array( 'Foo_bar', 'Foo_bar' );
 		$provider[] = array( 'Has-20url', 'Has url' );
 
 		$provider[] = array( 'F &oo=?', 'F &oo=?' );
 		$provider[] = array( 'F+%26oo%3D%3F', 'F+&oo=?' );
-		$provider[] = array( 'F_%26oo%3D%3F', 'F &oo=?' );
+		$provider[] = array( 'F_%26oo%3D%3F', 'F_&oo=?' );
 
 		$provider[] = array( 'search&foo=Bar&', 'search&foo=Bar&' );
 		$provider[] = array( 'âêîôûëïçé', 'âêîôûëïçé' );
 
 		$provider[] = array( 'Has+Foo%28-3-%29%26', 'Has+Foo(-3-)&' );
-		$provider[] = array( 'Has_Foo(-3-)%26', 'Has Foo(-3-)&' );
+		$provider[] = array( 'Has_Foo(-3-)%26', 'Has_Foo(-3-)&' );
 
 		return $provider;
 	}
