@@ -32,6 +32,7 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #630 Fixed browse link generation for wikipages in `Special:Browse`
 * #638 Fixed the hard-coded upper bound for the offset option of an inline query by replacing it with configuration parameter [```$smwgQUpperbound```](http://semantic-mediawiki.org/wiki/Help:$smwgQUpperbound)
 * #638 Fixed `postgres` temporary table issue (bug 34855, #455, #462)
+* #640 Fixed `QueryProcessor` to allow query conditions to contain `=` (bug 32955)
 * #641 Removes service info links from the `Factbox`
 
 ## Internal changes
