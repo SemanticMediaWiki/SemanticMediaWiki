@@ -1,4 +1,7 @@
 <?php
+
+use SMW\UrlEncoder;
+
 /**
  * @ingroup SMWDataValues
  */
@@ -31,6 +34,11 @@ class SMWURIValue extends SMWDataValue {
 	 */
 	private $m_mode;
 
+	/**
+	 * @var UrlEncoder
+	 */
+	private $urlEncoder;
+
 	public function __construct( $typeid ) {
 		parent::__construct( $typeid );
 		switch ( $typeid ) {
@@ -47,6 +55,8 @@ class SMWURIValue extends SMWDataValue {
 				$this->m_mode = SMW_URI_MODE_URI;
 			break;
 		}
+
+		$this->urlEncoder = new UrlEncoder();
 	}
 
 	protected function parseUserValue( $value ) {
@@ -181,56 +191,67 @@ class SMWURIValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText( $linked = null ) {
-		$url = $this->getURL();
+
+		$url = $this->urlEncoder->decode( $this->getURL() );
+		$caption = $this->urlEncoder->decode( $this->m_caption );
+
 		if ( is_null( $linked ) || ( $linked === false ) || ( $url === '' ) ||
 			( $this->m_outformat == '-' ) || ( $this->m_caption === '' ) ) {
-			return $this->m_caption;
+			return $caption;
 		} elseif ( $this->m_outformat == 'nowiki' ) {
-			return $this->makeNonlinkedWikiText( $this->m_caption );
+			return $this->makeNonlinkedWikiText( $caption );
 		} else {
-			return '[' . $url . ' ' . $this->m_caption . ']';
+			return '[' . $url . ' ' . $caption . ']';
 		}
 	}
 
 	public function getShortHTMLText( $linker = null ) {
-		$url = $this->getURL();
+
+		$url = $this->urlEncoder->decode( $this->getURL() );
+		$caption = $this->urlEncoder->decode( $this->m_caption );
+
 		if ( is_null( $linker ) || ( !$this->isValid() ) || ( $url === '' ) ||
 			( $this->m_outformat == '-' ) || ( $this->m_outformat == 'nowiki' ) ||
 			( $this->m_caption === '' ) ) {
-			return $this->m_caption;
+			return $caption;
 		} else {
-			return $linker->makeExternalLink( $url, $this->m_caption );
+			return $linker->makeExternalLink( $url, $caption );
 		}
 	}
 
 	public function getLongWikiText( $linked = null ) {
+
 		if ( !$this->isValid() ) {
 			return $this->getErrorText();
 		}
-		$url = $this->getURL();
+
+		$url = $this->urlEncoder->decode( $this->getURL() );
+		$wikitext = $this->urlEncoder->decode( $this->m_wikitext );
 
 		if ( is_null( $linked ) || ( $linked === false ) || ( $url === '' ) ||
 			( $this->m_outformat == '-' ) ) {
-			return $this->m_wikitext;
+			return $wikitext;
 		} elseif ( $this->m_outformat == 'nowiki' ) {
-			return $this->makeNonlinkedWikiText( $this->m_wikitext );
+			return $this->makeNonlinkedWikiText( $wikitext );
 		} else {
-			return '[' . $url . ' ' . $this->m_wikitext . ']';
+			return '[' . $url . ' ' . $wikitext . ']';
 		}
 	}
 
 	public function getLongHTMLText( $linker = null ) {
+
 		if ( !$this->isValid() ) {
 			return $this->getErrorText();
 		}
 
-		$url = $this->getURL();
+		$url = $this->urlEncoder->decode( $this->getURL() );
+		$wikitext = $this->urlEncoder->decode( $this->m_wikitext );
 
 		if ( is_null( $linker ) || ( !$this->isValid() ) || ( $url === '' ) ||
 			( $this->m_outformat == '-' ) || ( $this->m_outformat == 'nowiki' ) ) {
-			return htmlspecialchars( $this->m_wikitext );
+			return $wikitext;
 		} else {
-			return $linker->makeExternalLink( $url, $this->m_wikitext );
+			return $linker->makeExternalLink( $url, $wikitext );
 		}
 	}
 

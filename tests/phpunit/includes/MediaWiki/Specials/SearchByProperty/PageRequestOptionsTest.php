@@ -76,12 +76,12 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 
 		#2
 		$provider[] = array(
-			'Foo/Bar',
+			'Foo_nu/Bar',
 			array(),
 			array(
 				'limit'  => 20,
 				'offset' => 0,
-				'propertyString' => 'Foo',
+				'propertyString' => 'Foo nu',
 				'valueString'    => 'Bar',
 				'nearbySearch'   => false
 			)

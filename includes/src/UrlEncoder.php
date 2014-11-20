@@ -25,7 +25,6 @@ class UrlEncoder {
 		// Sanitize remaining string content
 		$string = trim( htmlspecialchars( $string, ENT_NOQUOTES ) );
 		$string = str_replace( '&nbsp;', ' ', str_replace( '&#160;', ' ', str_replace( '&amp;', '&', $string ) ) );
-		$string = str_replace( '_', ' ', $string );
 
 		return $string;
 	}
