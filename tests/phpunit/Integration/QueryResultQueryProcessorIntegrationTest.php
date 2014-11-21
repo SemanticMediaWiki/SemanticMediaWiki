@@ -50,21 +50,29 @@ class QueryResultQueryProcessorIntegrationTest extends MwDBaseUnitTestCase {
 			->createPage( \Title::newFromText( 'SomeUriValue', SMW_NS_PROPERTY ) )
 			->doEdit( '[[Has type::URL]]' );
 
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
+
 		$dataValue = $this->dataValueFactory->newPropertyValue(
 			'SomeUriValue',
 			'http://example.org/api.php?action=Foo'
 		);
 
-		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
+		$semanticData->addDataValue( $dataValue );
+
+		$dataValue = $this->dataValueFactory->newPropertyValue(
+			'SomeUriValue',
+			'http://example.org/Bar 42'
+		);
+
 		$semanticData->addDataValue( $dataValue );
 
 		$this->getStore()->updateData( $semanticData );
 
 		/**
-		 * @query [[SomeUriValue::http://example.org/api.php?action=Foo]]
+		 * @query [[SomeUriValue::http://example.org/api.php?action=Foo]][[SomeUriValue::http://example.org/Bar 42]]
 		 */
 		$rawParams = array(
-			'[[SomeUriValue::http://example.org/api.php?action=Foo]]',
+			'[[SomeUriValue::http://example.org/api.php?action=Foo]][[SomeUriValue::http://example.org/Bar 42]]',
 			'?SomeUriValue',
 			'limit=1'
 		);

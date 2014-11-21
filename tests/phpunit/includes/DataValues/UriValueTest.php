@@ -227,54 +227,54 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 
 		// ...
 		$provider[] = array(
-			'http://example.org/api?query=!_:;@*#Foo&=-3DBar',
+			'http://example.org/api?query=!_:;@* #Foo&=%20-3DBar',
 			false,
 			null,
 			array(
-				'wikiValue'     => 'http://example.org/api?query=!_:;@*#Foo&=-3DBar',
-				'longHTMLText'  => 'http://example.org/api?query=!_:;@*#Foo&==Bar',
-				'longWikiText'  => 'http://example.org/api?query=!_:;@*#Foo&==Bar',
-				'shortHTMLText' => 'http://example.org/api?query=!_:;@*#Foo&==Bar',
-				'shortWikiText' => 'http://example.org/api?query=!_:;@*#Foo&==Bar'
+				'wikiValue'     => 'http://example.org/api?query=!_:;@* #Foo&=%20-3DBar',
+				'longHTMLText'  => 'http://example.org/api?query=!_:;@* #Foo&= =Bar',
+				'longWikiText'  => 'http://example.org/api?query=!_:;@* #Foo&= =Bar',
+				'shortHTMLText' => 'http://example.org/api?query=!_:;@* #Foo&= =Bar',
+				'shortWikiText' => 'http://example.org/api?query=!_:;@* #Foo&= =Bar'
 			)
 		);
 
 		$provider[] = array(
-			'http://example.org/api?query=!_:;@*#Foo&=-3DBar',
+			'http://example.org/api?query=!_:;@* #Foo&=%20-3DBar',
 			'&!_:;@*#Foo',
 			null,
 			array(
-				'wikiValue'     => 'http://example.org/api?query=!_:;@*#Foo&=-3DBar',
-				'longHTMLText'  => 'http://example.org/api?query=!_:;@*#Foo&==Bar',
-				'longWikiText'  => 'http://example.org/api?query=!_:;@*#Foo&==Bar',
+				'wikiValue'     => 'http://example.org/api?query=!_:;@* #Foo&=%20-3DBar',
+				'longHTMLText'  => 'http://example.org/api?query=!_:;@* #Foo&= =Bar',
+				'longWikiText'  => 'http://example.org/api?query=!_:;@* #Foo&= =Bar',
 				'shortHTMLText' => '&!_:;@*#Foo',
 				'shortWikiText' => '&!_:;@*#Foo'
 			)
 		);
 
 		$provider[] = array(
-			'http://example.org/api?query=!_:;@*#Foo&=-3DBar',
+			'http://example.org/api?query=!_:;@* #Foo&=%20-3DBar',
 			false,
 			$linker,
 			array(
-				'wikiValue'     => 'http://example.org/api?query=!_:;@*#Foo&=-3DBar',
-				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@*#Foo&amp;==Bar">http://example.org/api?query=!_:;@*#Foo&amp;==Bar</a>',
-				'longWikiText'  => '[http://example.org/api?query=!_:;@*#Foo&==Bar http://example.org/api?query=!_:;@*#Foo&==Bar]',
-				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@*#Foo&amp;==Bar">http://example.org/api?query=!_:;@*#Foo&amp;==Bar</a>',
-				'shortWikiText' => '[http://example.org/api?query=!_:;@*#Foo&==Bar http://example.org/api?query=!_:;@*#Foo&==Bar]'
+				'wikiValue'     => 'http://example.org/api?query=!_:;@* #Foo&=%20-3DBar',
+				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@*_#Foo&amp;=_=Bar">http://example.org/api?query=!_:;@* #Foo&amp;= =Bar</a>',
+				'longWikiText'  => '[http://example.org/api?query=!_:;@*_#Foo&=_=Bar http://example.org/api?query=!_:;@* #Foo&= =Bar]',
+				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@*_#Foo&amp;=_=Bar">http://example.org/api?query=!_:;@* #Foo&amp;= =Bar</a>',
+				'shortWikiText' => '[http://example.org/api?query=!_:;@*_#Foo&=_=Bar http://example.org/api?query=!_:;@* #Foo&= =Bar]'
 			)
 		);
 
 		$provider[] = array(
-			'http://example.org/api?query=!_:;@*#Foo&=-3DBar',
-			'&!_:;@*#Foo',
+			'http://example.org/api?query=!_:;@* #Foo&=%20-3DBar',
+			'&!_:;@* #Foo',
 			$linker,
 			array(
-				'wikiValue'     => 'http://example.org/api?query=!_:;@*#Foo&=-3DBar',
-				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@*#Foo&amp;==Bar">http://example.org/api?query=!_:;@*#Foo&amp;==Bar</a>',
-				'longWikiText'  => '[http://example.org/api?query=!_:;@*#Foo&==Bar http://example.org/api?query=!_:;@*#Foo&==Bar]',
-				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@*#Foo&amp;==Bar">&amp;!_:;@*#Foo</a>',
-				'shortWikiText' => '[http://example.org/api?query=!_:;@*#Foo&==Bar &!_:;@*#Foo]'
+				'wikiValue'     => 'http://example.org/api?query=!_:;@* #Foo&=%20-3DBar',
+				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@*_#Foo&amp;=_=Bar">http://example.org/api?query=!_:;@* #Foo&amp;= =Bar</a>',
+				'longWikiText'  => '[http://example.org/api?query=!_:;@*_#Foo&=_=Bar http://example.org/api?query=!_:;@* #Foo&= =Bar]',
+				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@*_#Foo&amp;=_=Bar">&amp;!_:;@* #Foo</a>',
+				'shortWikiText' => '[http://example.org/api?query=!_:;@*_#Foo&=_=Bar &!_:;@* #Foo]'
 			)
 		);
 

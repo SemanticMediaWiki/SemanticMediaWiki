@@ -192,8 +192,7 @@ class SMWURIValue extends SMWDataValue {
 
 	public function getShortWikiText( $linked = null ) {
 
-		$url = $this->urlEncoder->decode( $this->getURL() );
-		$caption = $this->urlEncoder->decode( $this->m_caption );
+		list( $url, $caption ) = $this->decodeUriContext( $this->m_caption );
 
 		if ( is_null( $linked ) || ( $linked === false ) || ( $url === '' ) ||
 			( $this->m_outformat == '-' ) || ( $this->m_caption === '' ) ) {
@@ -207,8 +206,7 @@ class SMWURIValue extends SMWDataValue {
 
 	public function getShortHTMLText( $linker = null ) {
 
-		$url = $this->urlEncoder->decode( $this->getURL() );
-		$caption = $this->urlEncoder->decode( $this->m_caption );
+		list( $url, $caption ) = $this->decodeUriContext( $this->m_caption );
 
 		if ( is_null( $linker ) || ( !$this->isValid() ) || ( $url === '' ) ||
 			( $this->m_outformat == '-' ) || ( $this->m_outformat == 'nowiki' ) ||
@@ -225,8 +223,7 @@ class SMWURIValue extends SMWDataValue {
 			return $this->getErrorText();
 		}
 
-		$url = $this->urlEncoder->decode( $this->getURL() );
-		$wikitext = $this->urlEncoder->decode( $this->m_wikitext );
+		list( $url, $wikitext ) = $this->decodeUriContext( $this->m_wikitext );
 
 		if ( is_null( $linked ) || ( $linked === false ) || ( $url === '' ) ||
 			( $this->m_outformat == '-' ) ) {
@@ -244,8 +241,7 @@ class SMWURIValue extends SMWDataValue {
 			return $this->getErrorText();
 		}
 
-		$url = $this->urlEncoder->decode( $this->getURL() );
-		$wikitext = $this->urlEncoder->decode( $this->m_wikitext );
+		list( $url, $wikitext ) = $this->decodeUriContext( $this->m_wikitext );
 
 		if ( is_null( $linker ) || ( !$this->isValid() ) || ( $url === '' ) ||
 			( $this->m_outformat == '-' ) || ( $this->m_outformat == 'nowiki' ) ) {
@@ -313,6 +309,13 @@ class SMWURIValue extends SMWDataValue {
 	 */
 	protected function makeNonlinkedWikiText( $url ) {
 		return str_replace( ':', '&#58;', $url );
+	}
+
+	private function decodeUriContext( $context ) {
+		return array(
+			str_replace( ' ', '_', $this->urlEncoder->decode( $this->getURL() ) ),
+			$this->urlEncoder->decode( $context )
+		);
 	}
 
 }
