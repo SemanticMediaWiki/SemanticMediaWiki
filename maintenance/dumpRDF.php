@@ -13,20 +13,22 @@ require_once $basePath . '/maintenance/Maintenance.php';
  * Usage:
  * php dumpRDF.php [options...]
  *
- * -f <filename>  output file, stdout is used if omitted;
- *                file output is generally better and strongly recommended for large wikis
- * --categories   do only categories
- * --concepts     do only concepts
- * --classes      do only concepts and categories
- * --properties   do only properties
- * --types        do only types
- * --individuals  do only pages that are no categories, properties, or types
- * -d <delay>     slows down the export in order to stress the server less,
- *                sleeping for <delay> milliseconds every now and then
- * -e <each>      after how many exported entities should the process take a nap?
+ * -f <filename>     Export everything to given output file, stdout is used if omitted;
+ *                   file output is generally better and strongly recommended for large wikis
+ * --categories      Export only categories
+ * --concepts        Export only concepts
+ * --classes         Export only concepts and categories
+ * --properties      Export only properties
+ * --types           Export only types
+ * --individuals     Export only pages that are no categories, properties, or types
+ * --page <pagelist> Export only pages included in the <pagelist> with | being used as a separator.
+ *                   Example: --page "Page 1|Page 2", -e, -file, -d are ignored if --page is given.
+ * -d <delay>        Slows down the export in order to stress the server less,
+ *                   sleeping for <delay> milliseconds every now and then
+ * -e <each>         After how many exported entities should the process take a nap?
  * --server=<server> The protocol and server name to as base URLs, e.g.
- *                http://en.wikipedia.org. This is sometimes necessary because
- *                server name detection may fail in command line scripts.
+ *                   http://en.wikipedia.org. This is sometimes necessary because
+ *                   server name detection may fail in command line scripts.
  *
  * @ingroup SMWMaintenance
  *
