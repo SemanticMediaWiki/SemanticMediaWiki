@@ -108,3 +108,10 @@ define( 'SMW_MONTH', 4 );  // an entered digit can be a month
 define( 'SMW_DAY_MONTH_YEAR', 7 ); // an entered digit can be a day, month or year
 define( 'SMW_DAY_YEAR', 3 ); // an entered digit can be either a month or a year
 /**@}*/
+
+/**@{
+ * Constants for update strategies
+ */
+define( 'SMW_DIFF_UPDATE', 0 );
+define( 'SMW_REPLACEMENT_UPDATE', 1 );
+/**@}*/

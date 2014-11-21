@@ -130,7 +130,7 @@ class StoreUpdater {
 
 	private function updateSemanticData( Title $title, WikiPage $wikiPage, $revision ) {
 
-		$this->processSemantics = $revision !== null && $this->isEnabledNamespace( $title );
+		$this->processSemantics = $revision !== null && $this->isSemanticEnabledNamespace( $title );
 
 		if ( !$this->processSemantics ) {
 			return $this->semanticData = new SemanticData( $this->getSubject() );
@@ -161,21 +161,20 @@ class StoreUpdater {
 
 	private function doRealUpdate() {
 
-		Profiler::In();
-
 		$this->store->setUpdateJobsEnabledState( $this->updateJobsEnabledState );
 
-		if ( $this->processSemantics ) {
-			$this->store->updateData( $this->semanticData );
-		} else {
+		if ( !$this->processSemantics || $this->applicationFactory->getSettings()->get( 'smwgUpdateStrategy' ) === SMW_REPLACEMENT_UPDATE ) {
 			$this->store->clearData( $this->semanticData->getSubject() );
 		}
 
-		Profiler::Out();
+		if ( $this->processSemantics ) {
+			$this->store->updateData( $this->semanticData );
+		}
+
 		return true;
 	}
 
-	private function isEnabledNamespace( $title ) {
+	private function isSemanticEnabledNamespace( $title ) {
 		return $this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
 	}
 

@@ -765,3 +765,16 @@ $GLOBALS['smwgOnDeleteAction'] = array(
 ##
 $GLOBALS['smwgFallbackSearchType'] = null;
 ##
+
+###
+# SMW_DIFF_UPDATE (default) - This option will compute the `diff` of an existing
+# data set and only update the difference.
+#
+# SMW_REPLACEMENT_UPDATE - This option is meant to be used to force a complete
+# replacement of a data set during an update but comes with a cost of additional
+# DB writes during the update to safeguard data integrity.
+#
+# @since 2.1
+##
+$GLOBALS['smwgUpdateStrategy'] = SMW_DIFF_UPDATE;
+##

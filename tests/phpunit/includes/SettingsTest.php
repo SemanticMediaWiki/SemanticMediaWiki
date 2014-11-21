@@ -7,11 +7,10 @@ use SMW\Settings;
 /**
  * @covers \SMW\Settings
  *
- *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
