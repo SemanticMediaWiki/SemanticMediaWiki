@@ -11,7 +11,8 @@
 			"Siebrand",
 			"Tjcool007",
 			"Wiki13",
-			"Sjoerddebruin"
+			"Sjoerddebruin",
+			"Macofe"
 		]
 	},
 	"smw-desc": "Uw wiki toegankelijker maken - voor machines ''en'' mensen ([https://semantic-mediawiki.org/wiki/Help:User_manual online documentatie])",
@@ -277,7 +278,7 @@
 	"smw-ui-tooltip-title-note": "Opmerking",
 	"smw-ui-tooltip-title-legend": "Legenda",
 	"smw_unknowntype": "Het type van deze eigenschap is ongeldig",
-	"smw-concept-cache-text": "Het concept heeft in totaal $1 pagina{{PLURAL:$1||'s}} en is voor het laatst bijgewerkt op $2.",
+	"smw-concept-cache-text": "Het concept heeft in totaal $1 pagina{{PLURAL:$1||'s}} en is voor het laatst bijgewerkt op $3, $2.",
 	"smw_concept_header": "Pagina's met het concept \"$1\"",
 	"smw_conceptarticlecount": "Hieronder {{PLURAL:$1|wordt $1 pagina|worden $1 pagina's}} weergegeven.",
 	"right-smw-admin": "Semantic MediaWiki beheren",
