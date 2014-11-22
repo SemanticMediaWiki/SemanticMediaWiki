@@ -58,5 +58,8 @@
 			"includes/",
 			"languages/SMW_Language.php"
 		]
+	},
+	"scripts":{
+		"phpunit": "php ../../tests/phpunit/phpunit.php -c phpunit.xml.dist"
 	}
 }
