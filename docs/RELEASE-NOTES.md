@@ -47,3 +47,4 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #534 Added a value hash to `SQLStore::fetchSemanticData` to ensure that only distinct values are displayed
 * #557 Added `SMW::Store::BeforeQueryResultLookupComplete` and `SMW::Store::AfterQueryResultLookupComplete` hook
 * #590, #596 Added `CompoundConditionBuilder` and `ConditionBuilderStrategyFinder` to the `SPARQLStore`
+* #645 Added `RedirectInfoStore` to isolate access to redirect information and cache info requests
