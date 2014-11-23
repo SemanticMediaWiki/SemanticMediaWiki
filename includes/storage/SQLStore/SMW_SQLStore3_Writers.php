@@ -774,13 +774,10 @@ class SMWSQLStore3Writers {
 				''
 			);
 
-			$db->insert( 'smw_fpt_redi',
-				array(
-					's_title' => $oldtitle->getDBkey(),
-					's_namespace' => $oldtitle->getNamespace(),
-					'o_id' => $sid
-				),
-				 __METHOD__
+			$this->store->getObjectIds()->addRedirectForId(
+				$sid,
+				$oldtitle->getDBkey(),
+				$oldtitle->getNamespace()
 			);
 
 			$statsTable = new PropertyStatisticsTable(
@@ -929,14 +926,11 @@ class SMWSQLStore3Writers {
 		/// NOTE: $sid can be 0 here; this is useful to know since it means that fewer table updates are needed
 		$new_tid = $curtarget_t ? ( $this->store->getObjectIds()->makeSMWPageID( $curtarget_t, $curtarget_ns, '', '', false ) ) : 0; // real id of new target, if given
 
-		$row = $db->selectRow(
-			array( 'smw_fpt_redi' ),
-			'o_id',
-			array( 's_title' => $subject_t, 's_namespace' => $subject_ns ),
-			__METHOD__
+		$old_tid = $this->store->getObjectIds()->findRedirectIdFor(
+			$subject_t,
+			$subject_ns
 		);
 
-		$old_tid = ( $row !== false ) ? $row->o_id : 0; // real id of old target, if any
 		/// NOTE: $old_tid and $new_tid both (intentionally) ignore further redirects: no redirect chains
 
 		if ( $old_tid == $new_tid ) { // no change, all happy
@@ -966,10 +960,10 @@ class SMWSQLStore3Writers {
 			);
 
 		} elseif ( $old_tid != 0 ) { // existing redirect is changed or deleted
-			$db->delete(
-				'smw_fpt_redi',
-				array( 's_title' => $subject_t, 's_namespace' => $subject_ns ),
-				__METHOD__
+
+			$this->store->getObjectIds()->deleteRedirectEntry(
+				$subject_t,
+				$subject_ns
 			);
 
 			$count--;
@@ -1091,13 +1085,10 @@ class SMWSQLStore3Writers {
 				}
 			}
 
-			$db->insert(
-				'smw_fpt_redi',
-				array(
-					's_title' => $subject_t,
-					's_namespace' => $subject_ns,
-					'o_id' => $new_tid ),
-				__METHOD__
+			$this->store->getObjectIds()->addRedirectForId(
+				$new_tid,
+				$subject_t,
+				$subject_ns
 			);
 
 			$count++;
