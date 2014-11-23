@@ -39,9 +39,37 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	/**
-	 * @depends testCanConstruct
-	 */
+	public function testRedirectInfoRoundtripAccess() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store = $this->getMockBuilder( 'SMWSQLStore3' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new SMWSql3SmwIds( $store );
+
+		$instance->addRedirectForId( 42, 'Foo', 9001 );
+
+		$this->assertEquals(
+			42,
+			$instance->findRedirectIdFor( 'Foo', 9001 )
+		);
+
+		$instance->deleteRedirectEntry( 'Foo', 9001 );
+
+		$this->assertEquals(
+			0,
+			$instance->findRedirectIdFor( 'Foo', 9001 )
+		);
+	}
+
 	public function testGetPropertyId() {
 
 		$selectRow = new \stdClass;

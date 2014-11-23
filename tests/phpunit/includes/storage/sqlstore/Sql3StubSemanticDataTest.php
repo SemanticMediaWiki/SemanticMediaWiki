@@ -2,18 +2,16 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\StoreFactory;
 use SMW\SemanticData;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMWDITime as DITime;
-use SMWSql3StubSemanticData;
+use SMWSql3StubSemanticData as SQLStubSemanticData;
 
 use Title;
 
 /**
  * @covers \SMWSql3StubSemanticData
- *
  *
  * @group SMW
  * @group SMWExtension
@@ -25,18 +23,16 @@ use Title;
  */
 class Sql3StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
-	/** @var Store */
 	private $store;
 
 	protected function setUp() {
-		$this->store = StoreFactory::getStore();
+
+		$this->store = $this->getMockBuilder( '\SMWSQLStore3' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	public function testCanConstruct() {
-
-		$store = $this->getMockBuilder( '\SMWSQLStore3' )
-			->disableOriginalConstructor()
-			->getMock();
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -48,17 +44,32 @@ class Sql3StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMWSql3StubSemanticData',
-			SMWSql3StubSemanticData::newFromSemanticData( $semanticData, $store )
+			SQLStubSemanticData::newFromSemanticData( $semanticData, $this->store )
+		);
+	}
+
+	public function testCheckRedirectInfoForSubject() {
+
+		$subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+
+		$smwIds = $this->getMockBuilder( '\SMWSql3SmwIds' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->once() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $smwIds ) );
+
+		$stubSemanticData = new SQLStubSemanticData( $subject, $this->store );
+
+		$this->assertFalse(
+			$stubSemanticData->isRedirect()
 		);
 	}
 
 	public function testGetPropertyValues() {
 
-		if ( !$this->store instanceOf \SMWSQLStore3 ) {
-			$this->markTestSkipped( "Requires a SMWSQLStore3 instance" );
-		}
-
-		$instance = SMWSql3StubSemanticData::newFromSemanticData(
+		$instance = SQLStubSemanticData::newFromSemanticData(
 			new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) ),
 			$this->store
 		);
@@ -82,11 +93,7 @@ class Sql3StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testRemovePropertyObjectValue( $title, $property, $dataItem ) {
 
-		if ( !$this->store instanceOf \SMWSQLStore3 ) {
-			$this->markTestSkipped( "Requires a SMWSQLStore3 instance" );
-		}
-
-		$instance = SMWSql3StubSemanticData::newFromSemanticData(
+		$instance = SQLStubSemanticData::newFromSemanticData(
 			new SemanticData( DIWikiPage::newFromTitle( $title ) ),
 			$this->store
 		);

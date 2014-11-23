@@ -94,6 +94,21 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	}
 
 	/**
+	 * @since  2.1
+	 *
+	 * @return boolean
+	 */
+	public function isRedirect() {
+
+		$redirectId = $this->store->getObjectIds()->findRedirectIdFor(
+			$this->mSubject->getDBKey(),
+			$this->mSubject->getNamespace()
+		);
+
+		return $redirectId != 0;
+	}
+
+	/**
 	 * Get the array of all properties that have stored values.
 	 *
 	 * @since 1.8

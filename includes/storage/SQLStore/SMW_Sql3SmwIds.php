@@ -1,8 +1,10 @@
 <?php
 
 use SMW\SQLStore\PropertyStatisticsTable;
-use SMW\SQLStore\ItemByIdFinder;
+use SMW\SQLStore\DataItemByIdFinder;
+use SMW\SQLStore\RedirectInfoStore;
 use SMW\HashBuilder;
+use SMW\DIWikiPage;
 
 /**
  * @ingroup SMWStore
@@ -118,9 +120,14 @@ class SMWSql3SmwIds {
 	protected $prop_ids = array();
 
 	/**
-	 * @var ItemByIdFinder
+	 * @var DataItemByIdFinder
 	 */
-	private $itemByIdFinder;
+	private $dataItemByIdFinder;
+
+	/**
+	 * @var RedirectInfoStore
+	 */
+	private $redirectInfoStore;
 
 	/**
 	 * Cache for property sortkeys.
@@ -169,8 +176,8 @@ class SMWSql3SmwIds {
 		'_SUBP' => 17,
 		'_SUBC' => 18,
 		'_CONC' => 19,
-		'_SF_DF' => 20, // Semantic Form's default form property
-		'_SF_AF' => 21,  // Semantic Form's alternate form property
+//		'_SF_DF' => 20, // Semantic Form's default form property
+//		'_SF_AF' => 21,  // Semantic Form's alternate form property
 		'_ERRP' => 22,
 // 		'_1' => 23, // properties for encoding (short) lists
 // 		'_2' => 24,
@@ -204,10 +211,53 @@ class SMWSql3SmwIds {
 		self::$singleton_debug = $this;
 
 		// Either inject the class directly or an IdGeneratorFactory class instead
-		$this->itemByIdFinder = new ItemByIdFinder(
+		$this->dataItemByIdFinder = new DataItemByIdFinder(
 			$this->store->getConnection( 'mw.db' ),
 			self::tableName
 		);
+
+		$this->redirectInfoStore = new RedirectInfoStore(
+			$this->store->getConnection( 'mw.db' )
+		);
+	}
+
+	/**
+	 * @see RedirectInfoStore::findRedirectIdFor
+	 *
+	 * @since 2.1
+	 *
+	 * @param string $title DB key
+	 * @param integer $namespace
+	 *
+	 * @return integer
+	 */
+	public function findRedirectIdFor( $title, $namespace ) {
+		return $this->redirectInfoStore->findRedirectIdFor( $title, $namespace );
+	}
+
+	/**
+	 * @see RedirectInfoStore::addRedirectForId
+	 *
+	 * @since 2.1
+	 *
+	 * @param integer $id
+	 * @param string $title
+	 * @param integer $namespace
+	 */
+	public function addRedirectForId( $id, $title, $namespace ) {
+		return $this->redirectInfoStore->addRedirectForId( $id, $title, $namespace );
+	}
+
+	/**
+	 * @see RedirectInfoStore::deleteRedirectEntry
+	 *
+	 * @since 2.1
+	 *
+	 * @param string $title
+	 * @param integer $namespace
+	 */
+	public function deleteRedirectEntry( $title, $namespace ) {
+		return $this->redirectInfoStore->deleteRedirectEntry( $title, $namespace );
 	}
 
 	/**
@@ -278,7 +328,7 @@ class SMWSql3SmwIds {
 			$sortkey = $this->getCachedSortKey( $title, $namespace, $iw, $subobjectName );
 		} elseif ( $iw == SMW_SQL3_SMWREDIIW && $canonical &&
 			$smwgQEqualitySupport != SMW_EQ_NONE && $subobjectName === '' ) {
-			$id = $this->getRedirectId( $title, $namespace );
+			$id = $this->findRedirectIdFor( $title, $namespace );
 			if ( $id != 0 ) {
 
 				if ( $fetchHashes ) {
@@ -380,32 +430,6 @@ class SMWSql3SmwIds {
 	public function getSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true, $fetchHashes = false ) {
 		$sort = '';
 		return $this->getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, $sort, $canonical, $fetchHashes );
-	}
-
-	/**
-	 * Return the ID that a page redirects to. This is only used internally
-	 * and it is not cached since the results will affect the SMW IDs table
-	 * cache, which will prevent duplicate queries for the same redirect
-	 * anyway.
-	 *
-	 * @since 1.8
-	 * @param string $title DB key
-	 * @param integer $namespace
-	 * @return integer
-	 */
-	protected function getRedirectId( $title, $namespace ) {
-		$row = $this->store->getConnection()->selectRow(
-			'smw_fpt_redi',
-			'o_id',
-			array(
-				's_title' => $title,
-				's_namespace' => $namespace
-			),
-			__METHOD__
-		);
-
-		$this->selectrow_redi_debug++;
-		return ( $row === false ) ? 0 : $row->o_id;
 	}
 
 	/**
@@ -742,7 +766,7 @@ class SMWSql3SmwIds {
 			$this->regular_sortkeys[$hashKey] = $sortkey;
 		}
 
-		$this->itemByIdFinder->getIdCache()->save( $id, $hashKey );
+		$this->dataItemByIdFinder->getIdCache()->save( $id, $hashKey );
 
 		if ( $interwiki == SMW_SQL3_SMWREDIIW ) { // speed up detection of redirects when fetching IDs
 			$this->setCache(  $title, $namespace, '', $subobject, 0, '' );
@@ -757,7 +781,7 @@ class SMWSql3SmwIds {
 	 * @return DIWikiPage|null
 	 */
 	public function getDataItemForId( $id ) {
-		return $this->itemByIdFinder->getDataItemForId( $id );
+		return $this->dataItemByIdFinder->getDataItemForId( $id );
 	}
 
 	/**
@@ -842,7 +866,7 @@ class SMWSql3SmwIds {
 			unset( $this->regular_sortkeys[$hashKey] );
 		}
 
-		$this->itemByIdFinder->getIdCache()->delete( $id );
+		$this->dataItemByIdFinder->getIdCache()->delete( $id );
 	}
 
 	/**
@@ -880,7 +904,7 @@ class SMWSql3SmwIds {
 		$this->prop_sortkeys = array();
 		$this->regular_ids = array();
 		$this->regular_sortkeys = array();
-		$this->itemByIdFinder->getIdCache()->reset();
+		$this->dataItemByIdFinder->getIdCache()->reset();
 	}
 
 	/**

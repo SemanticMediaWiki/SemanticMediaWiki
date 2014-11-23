@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\SQLStore\ItemByIdFinder;
+use SMW\SQLStore\DataItemByIdFinder;
 use SMW\Cache\FixedInMemoryCache;
 
 /**
- * @covers \SMW\SQLStore\ItemByIdFinder
+ * @covers \SMW\SQLStore\DataItemByIdFinder
  *
  * @group SMW
  * @group SMWExtension
@@ -17,7 +17,7 @@ use SMW\Cache\FixedInMemoryCache;
  *
  * @author mwjames
  */
-class ItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
+class DataItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -26,8 +26,8 @@ class ItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\ItemByIdFinder',
-			new ItemByIdFinder( $connection, 'foo' )
+			'\SMW\SQLStore\DataItemByIdFinder',
+			new DataItemByIdFinder( $connection, 'foo' )
 		);
 	}
 
@@ -52,7 +52,7 @@ class ItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $row ) );
 
 		$cache = new FixedInMemoryCache();
-		$instance = new ItemByIdFinder( $connection, 'foo', $cache );
+		$instance = new DataItemByIdFinder( $connection, 'foo', $cache );
 
 		$this->assertInstanceOf(
 			'\SMW\DIWikiPage',
@@ -78,7 +78,7 @@ class ItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
 		$cache = new FixedInMemoryCache();
 		$cache->save( 42, 'Foo#0##' );
 
-		$instance = new ItemByIdFinder( $connection, 'foo', $cache );
+		$instance = new DataItemByIdFinder( $connection, 'foo', $cache );
 
 		$this->assertInstanceOf(
 			'\SMW\DIWikiPage',
@@ -106,7 +106,7 @@ class ItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->never() )
 			->method( 'selectRow' );
 
-		$instance = new ItemByIdFinder( $connection, 'foo' );
+		$instance = new DataItemByIdFinder( $connection, 'foo' );
 		$instance->getIdCache()->save( 42, '_MDAT#102##' );
 
 		$this->assertInstanceOf(
@@ -125,7 +125,7 @@ class ItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'selectRow' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new ItemByIdFinder( $connection, 'foo' );
+		$instance = new DataItemByIdFinder( $connection, 'foo' );
 
 		$this->assertNull(
 			$instance->getDataItemForId( 42 )

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\SQLStore\Writer;
 
 use \SMWSQLStore3Writers;
 use SMW\SemanticData;
@@ -13,7 +13,7 @@ use Title;
  *
  * @group SMW
  * @group SMWExtension
- * @group semantic-mediawiki-unit
+ *
  * @group semantic-mediawiki-sqlstore
  * @group mediawiki-databaseless
  *
@@ -22,7 +22,7 @@ use Title;
  *
  * @author mwjames
  */
-class SqlStoreWriterDataUpdateTest extends \PHPUnit_Framework_TestCase {
+class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -68,10 +68,6 @@ class SqlStoreWriterDataUpdateTest extends \PHPUnit_Framework_TestCase {
 		$database->expects( $this->once() )
 			->method( 'select' )
 			->will( $this->returnValue( array() ) );
-
-		$database->expects( $this->once() )
-			->method( 'selectRow' )
-			->will( $this->returnValue( false ) );
 
 		$parentStore = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
@@ -182,10 +178,6 @@ class SqlStoreWriterDataUpdateTest extends \PHPUnit_Framework_TestCase {
 		$database->expects( $this->once() )
 			->method( 'select' )
 			->will( $this->returnValue( array() ) );
-
-		$database->expects( $this->once() )
-			->method( 'selectRow' )
-			->will( $this->returnValue( false ) );
 
 		$parentStore = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()

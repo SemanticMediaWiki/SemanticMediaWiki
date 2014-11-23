@@ -16,12 +16,12 @@ use SMW\HashBuilder;
  *
  * @author mwjames
  */
-class ItemByIdFinder {
+class DataItemByIdFinder {
 
 	/**
 	 * @var Database
 	 */
-	private $dbConnection = null;
+	private $connection = null;
 
 	/**
 	 * @var string
@@ -36,12 +36,12 @@ class ItemByIdFinder {
 	/**
 	 * @since 2.1
 	 *
-	 * @param Database $dbConnection
+	 * @param Database $connection
 	 * @param string $tableName
 	 * @param Cache|null $idCache
 	 */
-	public function __construct( Database $dbConnection, $tableName, Cache $idCache = null ) {
-		$this->dbConnection = $dbConnection;
+	public function __construct( Database $connection, $tableName, Cache $idCache = null ) {
+		$this->connection = $connection;
 		$this->tableName = $tableName;
 		$this->idCache = $idCache;
 	}
@@ -71,7 +71,7 @@ class ItemByIdFinder {
 
 		if ( !$this->getIdCache()->contains( $id ) ) {
 
-			$row = $this->dbConnection->selectRow(
+			$row = $this->connection->selectRow(
 				$this->tableName,
 				array(
 					'smw_title',

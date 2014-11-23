@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\SQLStore\Writer;
 
 use \SMWSQLStore3Writers;
 use SMW\SemanticData;
@@ -13,7 +13,7 @@ use Title;
  *
  * @group SMW
  * @group SMWExtension
- * @group semantic-mediawiki-unit
+ *
  * @group semantic-mediawiki-sqlstore
  * @group mediawiki-databaseless
  *
@@ -22,7 +22,7 @@ use Title;
  *
  * @author mwjames
  */
-class SqlStoreWriterChangeTitleTest extends \PHPUnit_Framework_TestCase {
+class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -50,6 +50,13 @@ class SqlStoreWriterChangeTitleTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSMWPageID' )
 			->will( $this->returnValue( 5 ) );
 
+		$objectIdGenerator->expects( $this->at( 1 ) )
+			->method( 'findRedirectIdFor' )
+			->will( $this->returnValue( 0 ) );
+
+		$objectIdGenerator->expects( $this->never() )
+			->method( 'deleteRedirectEntry' );
+
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -61,10 +68,6 @@ class SqlStoreWriterChangeTitleTest extends \PHPUnit_Framework_TestCase {
 		$database->expects( $this->once() )
 			->method( 'query' )
 			->will( $this->returnValue( true ) );
-
-		$database->expects( $this->atLeastOnce() )
-			->method( 'selectRow' )
-			->will( $this->returnValue( false ) );
 
 		$parentStore = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
@@ -93,9 +96,6 @@ class SqlStoreWriterChangeTitleTest extends \PHPUnit_Framework_TestCase {
 
 	public function testChangeTitleForMainNamespaceWithRedirectId() {
 
-		$row = new \stdClass;
-		$row->o_id = 5555;
-
 		$objectIdGenerator = $this->getMockBuilder( '\SMWSql3SmwIds' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -108,10 +108,6 @@ class SqlStoreWriterChangeTitleTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSMWPageID' )
 			->will( $this->returnValue( 5 ) );
 
-		$objectIdGenerator->expects( $this->atLeastOnce() )
-			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 88 ) );
-
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -123,10 +119,6 @@ class SqlStoreWriterChangeTitleTest extends \PHPUnit_Framework_TestCase {
 		$database->expects( $this->once() )
 			->method( 'select' )
 			->will( $this->returnValue( array() ) );
-
-		$database->expects( $this->atLeastOnce() )
-			->method( 'selectRow' )
-			->will( $this->returnValue( $row ) );
 
 		$parentStore = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()

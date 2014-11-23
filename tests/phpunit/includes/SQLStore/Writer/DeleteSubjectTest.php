@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\SQLStore\Writer;
 
 use \SMWSQLStore3Writers;
 
@@ -9,10 +9,9 @@ use Title;
 /**
  * @covers \SMWSQLStore3Writers
  *
- *
  * @group SMW
  * @group SMWExtension
- * @group semantic-mediawiki-unit
+ *
  * @group semantic-mediawiki-sqlstore
  * @group mediawiki-databaseless
  *
@@ -21,7 +20,7 @@ use Title;
  *
  * @author mwjames
  */
-class SqlStoreWriterDeleteSubjectTest extends \PHPUnit_Framework_TestCase {
+class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -63,15 +62,11 @@ class SqlStoreWriterDeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'select' )
 			->will( $this->returnValue( array() ) );
 
-		$database->expects( $this->once() )
-			->method( 'selectRow' )
-			->will( $this->returnValue( false ) );
-
 		$parentStore = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parentStore->expects( $this->exactly( 3 ) )
+		$parentStore->expects( $this->exactly( 4 ) )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIdGenerator ) );
 
@@ -129,7 +124,7 @@ class SqlStoreWriterDeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
-		$parentStore->expects( $this->exactly( 4 ) )
+		$parentStore->expects( $this->exactly( 5 ) )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIdGenerator ) );
 
