@@ -10,7 +10,8 @@
 			"Toniher",
 			"아라",
 			"Hiperpobla",
-			"Fitoschido"
+			"Fitoschido",
+			"Macofe"
 		]
 	},
 	"smw-desc": "Fent el vostre wiki més accessible — per a les màquines «i també» per als humans ([https://semantic-mediawiki.org/wiki/Help:User_manual documentació en línia])",
@@ -274,7 +275,7 @@
 	"smw-ui-tooltip-title-note": "Nota",
 	"smw-ui-tooltip-title-legend": "Llegenda",
 	"smw_unknowntype": "El tipus d'aquesta propietat no és vàlid",
-	"smw-concept-cache-text": "El concepte té un total {{PLURAL:$1|d'$1 pàgina|de $1 pàgines}} i es va actualitzar per darrera vegada el $2.",
+	"smw-concept-cache-text": "El concepte té un total {{PLURAL:$1|d'$1 pàgina|de $1 pàgines}} i es va actualitzar per darrera vegada el $3, $2.",
 	"smw_concept_header": "Pàgines del concepte \"$1\"",
 	"smw_conceptarticlecount": "Es {{PLURAL:$1|mostra|mostren}} a continuació $1 {{PLURAL:$1|pàgina|pàgines}}.",
 	"smw-qp-empty-data": "No s'han pogut mostrar les dades sol·licitades per manca de criteris de selecció suficients.",

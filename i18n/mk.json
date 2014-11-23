@@ -37,7 +37,7 @@
 	"smw_printername_rdf": "RDF-извоз",
 	"smw_printername_category": "Категорија",
 	"validator-type-class-SMWParamSource": "текст",
-	"smw-paramdesc-limit": "Максималниот број на дадени резултати",
+	"smw-paramdesc-limit": "Максималниот број на резултати за прикажување",
 	"smw-paramdesc-offset": "Отстапувањето на првиот резултат.",
 	"smw-paramdesc-headers": "Прикажувај наслови/имиња на својства",
 	"smw-paramdesc-mainlabel": "Ознаката која се дава на името на главната страница",
