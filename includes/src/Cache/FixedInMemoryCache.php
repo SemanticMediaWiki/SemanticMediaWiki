@@ -22,7 +22,7 @@ class FixedInMemoryCache implements Cache {
 	/**
 	 * @var integer
 	 */
-	private $maxCacheIds;
+	private $maxCacheCount;
 
 	/**
 	 * @var integer
@@ -42,10 +42,10 @@ class FixedInMemoryCache implements Cache {
 	/**
 	 * @since 2.1
 	 *
-	 * @param integer $maxCacheIds
+	 * @param integer $maxCacheCount
 	 */
-	public function __construct( $maxCacheIds = 500 ) {
-		$this->maxCacheIds = (int)$maxCacheIds;
+	public function __construct( $maxCacheCount = 500 ) {
+		$this->maxCacheCount = (int)$maxCacheCount;
 	}
 
 	/**
@@ -84,7 +84,7 @@ class FixedInMemoryCache implements Cache {
 		if ( $this->contains( $id ) ) {
 			$this->count--;
 			$this->moveToMostRecentlyUsed( $id );
-		} elseif ( $this->count > $this->maxCacheIds ) {
+		} elseif ( $this->count > $this->maxCacheCount ) {
 			$this->count--;
 			reset( $this->cache );
 			unset( $this->cache[ key( $this->cache ) ] );
@@ -126,7 +126,7 @@ class FixedInMemoryCache implements Cache {
 	 */
 	public function getStats() {
 		return array(
-			'max'    => $this->maxCacheIds,
+			'max'    => $this->maxCacheCount,
 			'count'  => $this->count,
 			'hits'   => $this->cacheHits,
 			'misses' => $this->cacheMisses
