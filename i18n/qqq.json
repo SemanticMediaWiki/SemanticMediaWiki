@@ -114,6 +114,7 @@
 	"smw_nofloat": "This is an error/warning message. Parameters:\n* $1 holds the property value causing the error/warning.",
 	"smw_infinite": "This is an error/warning message. Parameters:\n* $1 holds the property value causing the error/warning.",
 	"smw_unitnotallowed": "This is an error/warning message. Parameters:\n* $1 holds the unit causing the error/warning.",
+	"smw-datavalue-number-textnotallowed": "This is an error/warning message. Parameters:\n* $1 holds the text causing the error/warning.\n* $2 holds the property value supposed to be used.",
 	"smw_nounitsdeclared": "This is an error/warning message.",
 	"smw_novalues": "This is an error/warning message.",
 	"smw_nodatetime": "This is an error/warning message. Parameters:\n* $1 holds the property value causing the error/warning.",

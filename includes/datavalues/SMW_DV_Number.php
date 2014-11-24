@@ -102,10 +102,13 @@ class SMWNumberValue extends SMWDataValue {
 		$this->m_unitvalues = false;
 		$number = $unit = '';
 		$error = self::parseNumberValue( $value, $number, $unit );
+
 		if ( $error == 1 ) { // no number found
 			$this->addError( wfMessage( 'smw_nofloat', $value )->inContentLanguage()->text() );
 		} elseif ( $error == 2 ) { // number is too large for this platform
 			$this->addError( wfMessage( 'smw_infinite', $value )->inContentLanguage()->text() );
+		} elseif ( $this->getTypeID() === '_num' && $unit !== '' ) {
+			$this->addError( wfMessage( 'smw-datavalue-number-textnotallowed', $unit, $number )->inContentLanguage()->text() );
 		} elseif ( $this->convertToMainUnit( $number, $unit ) === false ) { // so far so good: now convert unit and check if it is allowed
 			$this->addError( wfMessage( 'smw_unitnotallowed', $unit )->inContentLanguage()->text() );
 		} // note that convertToMainUnit() also sets m_dataitem if valid
