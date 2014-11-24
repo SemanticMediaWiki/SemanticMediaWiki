@@ -195,10 +195,12 @@ class TableResultPrinter extends ResultPrinter {
 	public function getParamDefinitions( array $definitions ) {
 		$params = parent::getParamDefinitions( $definitions );
 
+		$uiClass = UiAttributeFinder::getClassForId( 'resultprinter-table' );
+
 		$params['class'] = array(
 			'name' => 'class',
 			'message' => 'smw-paramdesc-table-class',
-			'default' => 'sortable wikitable smwtable',
+			'default' => $uiClass !== '' ? $uiClass : 'sortable wikitable smwtable',
 		);
 
 		$params['transpose'] = array(

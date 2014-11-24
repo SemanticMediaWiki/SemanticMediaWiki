@@ -765,3 +765,13 @@ $GLOBALS['smwgOnDeleteAction'] = array(
 ##
 $GLOBALS['smwgFallbackSearchType'] = null;
 ##
+
+###
+# Enables to set default class attributes to effortless improve ui integration
+# where existing attributes (deployed by a skin or extension) can be pre-set
+# without a requirement to modify SMW related .less or .css files
+#
+# @since 2.1
+##
+$GLOBALS['smwgUiClassAttributes'] = array();
+##
