@@ -48,3 +48,4 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #557 Added `SMW::Store::BeforeQueryResultLookupComplete` and `SMW::Store::AfterQueryResultLookupComplete` hook
 * #590, #596 Added `CompoundConditionBuilder` and `ConditionBuilderStrategyFinder` to the `SPARQLStore`
 * #645 Added `RedirectInfoStore` to isolate access to redirect information and cache info requests
+* #646 Improve error message for the `_num` data type
