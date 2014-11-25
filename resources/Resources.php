@@ -41,10 +41,11 @@ return array(
 	),
 
 	// MW 1.24+ Fix Uncaught Error: Unknown dependency: jquery.json 
+	// Introducing a mega-hack 
 	// jStorage was added in MW 1.20
 	'ext.jquery.jStorage' => $moduleTemplate + array(
 		'scripts' => 'jquery/jquery.jstorage.js',
-		'dependencies' => 'json',
+		'dependencies' => version_compare( $GLOBALS['wgVersion'], '1.24', '<' ) ? 'jquery.json' : 'json',
 	),
 
 	// md5 hash key generator
