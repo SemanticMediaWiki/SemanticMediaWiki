@@ -5,7 +5,7 @@ namespace SMW\Tests\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder\PropertyConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
 
-use SMW\Tests\Util\UtilityFactory;
+use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;

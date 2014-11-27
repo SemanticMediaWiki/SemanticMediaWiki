@@ -6,7 +6,7 @@ use SMW\SemanticData;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMWDITime as DITime;
-use SMWSql3StubSemanticData as SQLStubSemanticData;
+use SMWSql3StubSemanticData as StubSemanticData;
 
 use Title;
 
@@ -44,7 +44,7 @@ class Sql3StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMWSql3StubSemanticData',
-			SQLStubSemanticData::newFromSemanticData( $semanticData, $this->store )
+			StubSemanticData::newFromSemanticData( $semanticData, $this->store )
 		);
 	}
 
@@ -56,11 +56,15 @@ class Sql3StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$smwIds->expects( $this->once() )
+			->method( 'isSubjectRedirect' )
+			->will( $this->returnValue( false ) );
+
 		$this->store->expects( $this->once() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $smwIds ) );
 
-		$stubSemanticData = new SQLStubSemanticData( $subject, $this->store );
+		$stubSemanticData = new StubSemanticData( $subject, $this->store );
 
 		$this->assertFalse(
 			$stubSemanticData->isRedirect()
@@ -69,7 +73,7 @@ class Sql3StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetPropertyValues() {
 
-		$instance = SQLStubSemanticData::newFromSemanticData(
+		$instance = StubSemanticData::newFromSemanticData(
 			new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) ),
 			$this->store
 		);
@@ -93,7 +97,7 @@ class Sql3StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testRemovePropertyObjectValue( $title, $property, $dataItem ) {
 
-		$instance = SQLStubSemanticData::newFromSemanticData(
+		$instance = StubSemanticData::newFromSemanticData(
 			new SemanticData( DIWikiPage::newFromTitle( $title ) ),
 			$this->store
 		);

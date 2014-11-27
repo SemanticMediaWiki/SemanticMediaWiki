@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\SPARQLStore;
 
-use SMW\Tests\Util\UtilityFactory;
+use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\SPARQLStore\SPARQLStore;
 
@@ -208,14 +208,33 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 			$subobject->getContainer()
 		);
 
+		$federateResultSet = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\FederateResultSet' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\GenericHttpDatabaseConnector' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'select' )
+			->will( $this->returnValue( $federateResultSet ) );
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'insertData' );
+
 		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'doSparqlDataDelete' ) )
+			->setMethods( array( 'doSparqlDataDelete', 'getConnection' ) )
 			->getMock();
 
 		$instance->expects( $this->once() )
 			->method( 'doSparqlDataDelete' )
 			->with(	$this->equalTo( $expectedSubjectForDeleteTask ) );
+
+		$instance->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
 
 		$instance->doSparqlDataUpdate( $semanticData );
 	}

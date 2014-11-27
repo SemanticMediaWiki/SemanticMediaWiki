@@ -2,7 +2,7 @@
 
 namespace SMW\Test;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
+use SMW\Tests\Utils\Validators\SemanticDataValidator;
 
 use SMW\InTextAnnotationParser;
 use SMW\MediaWiki\MagicWordFinder;

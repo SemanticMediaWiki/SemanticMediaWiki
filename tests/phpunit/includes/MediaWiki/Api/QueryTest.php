@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
-use SMW\Tests\Util\MwApiFactory;
+use SMW\Tests\Utils\MwApiFactory;
 
 use SMW\StoreFactory;
 use SMW\ApplicationFactory;

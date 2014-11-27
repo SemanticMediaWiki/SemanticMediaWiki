@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use SMW\Tests\Util\Mock\MockTitle;
+use SMW\Tests\Utils\Mock\MockTitle;
 use SMW\MediaWiki\PageInfoProvider;
 
 /**

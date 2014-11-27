@@ -2,7 +2,7 @@
 
 namespace SMW\Test\MediaWiki;
 
-use SMW\Tests\Util\UtilityFactory;
+use SMW\Tests\Utils\UtilityFactory;
 use SMW\MediaWiki\HtmlTableBuilder;
 
 /**

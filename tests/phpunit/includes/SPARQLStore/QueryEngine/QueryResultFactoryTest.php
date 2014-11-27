@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
-use SMW\Tests\Util\Mock\IteratorMockBuilder;
+use SMW\Tests\Utils\Mock\IteratorMockBuilder;
 
 use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
 

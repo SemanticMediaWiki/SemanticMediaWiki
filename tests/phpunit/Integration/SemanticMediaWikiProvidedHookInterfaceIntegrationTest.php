@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\Tests\Util\UtilityFactory;
+use SMW\Tests\Utils\UtilityFactory;
 use SMW\ApplicationFactory;
 use SMW\ConnectionManager;
 use SMW\DIWikiPage;

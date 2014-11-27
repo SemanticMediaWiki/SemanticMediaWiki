@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Tests\Util\Mock\MockTitle;
+use SMW\Tests\Utils\Mock\MockTitle;
 
 use SMW\MediaWiki\Hooks\BaseTemplateToolbox;
 use SMW\ApplicationFactory;

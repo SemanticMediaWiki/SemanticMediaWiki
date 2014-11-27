@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Benchmark;
 
-use SMW\Tests\Util\PageReader;
-use SMW\Tests\Util\PageCreator;
+use SMW\Tests\Utils\PageReader;
+use SMW\Tests\Utils\PageCreator;
 
-use SMW\Tests\Util\UtilityFactory;
+use SMW\Tests\Utils\UtilityFactory;
 
 use Title;
 use RuntimeException;

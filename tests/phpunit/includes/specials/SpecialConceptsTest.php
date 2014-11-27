@@ -2,7 +2,7 @@
 
 namespace SMW\Test;
 
-use SMW\Tests\Util\UtilityFactory;
+use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\SpecialConcepts;
 use SMW\DIWikiPage;

@@ -19,7 +19,7 @@ Most scripted tests for SMW are written for and executed by PHPUnit. PHPUnit pro
 
 ## Running tests
 
-In case PHUnit is not already installed, use `composer require phpunit/phpunit:~4.1` to install the package and execute the tests by simply running the `mw-phpunit-runner.php` script from the test directory or use [`phpunit`][mw-phpunit-testing] together with the PHPUnit configuration file and MediaWiki's `phpunit.php` loader.
+In case PHUnit is not already installed, use `composer require phpunit/phpunit:~4.3` to install the package and execute the tests by simply running the `mw-phpunit-runner.php` script from the test directory or use [`phpunit`][mw-phpunit-testing] together with the PHPUnit configuration file and MediaWiki's `phpunit.php` loader.
 
 ```sh
 php mw-phpunit-runner.php [options]
@@ -27,7 +27,7 @@ php mw-phpunit-runner.php [options]
 
 ## Writing tests
 
-Writing meaningful tests isn't easy nor is it complicated but it requires some diligence on how to setup a test and its environment. One simple rule is to avoid to use of hidden expectations or inheritance as remedy for the "less code is good code" aesthetics. Allow the code to be readable and if possible follow the [arrange, act, assert][aaa] pattern and yet again __"Don't do magic"__.
+Writing meaningful tests isn't easy nor is it complicated but it requires some diligence on how to setup a test and its environment. One simple rule is to avoid to use of hidden expectations or inheritance as remedy for the "less code is good code" aesthetics. Allow the code to be readable and if possible follow the [arrange, act, assert][aaa] pattern and yet again __"Avoid doing magic"__.
 
 ### Test cases
 
@@ -38,7 +38,7 @@ The use of `MediaWikiTestCase` is discouraged as its binds tests and the test en
 
 ### Test fixtures
 
-When writing tests, it is suggested to use available [immutable fixtures][phpunit-fixtures] as baseline to create repeatable object instances during a test. Available fixtures can be found in `SMW\Tests\Fixtures\*`.
+When writing tests, it is suggested to use available [immutable fixtures][phpunit-fixtures] as baseline to create repeatable object instances during a test. Available fixtures can be found in `SMW\Tests\Utils\Fixtures\*`.
 
 Another possibility is to use MediaWiki's XML format to import fixtures (in form of content pages), for more details see `SMW\Tests\Integration\MediaWiki\Import\*`.
 

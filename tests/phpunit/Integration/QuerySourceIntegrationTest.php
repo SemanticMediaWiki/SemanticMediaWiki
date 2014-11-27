@@ -28,7 +28,7 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 		$this->smwgQuerySources = $GLOBALS['smwgQuerySources'];
 
 		$GLOBALS['smwgQuerySources'] = array(
-			'foo' => 'SMW\Tests\Util\Mock\FakeQueryStore',
+			'foo' => 'SMW\Tests\Utils\Mock\FakeQueryStore',
 			'bar' => 'SMW\Test\NonExistentQueryStore'
 		);
 	}

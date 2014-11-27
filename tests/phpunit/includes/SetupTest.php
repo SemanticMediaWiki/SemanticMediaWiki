@@ -2,9 +2,9 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Util\Mock\MockObjectBuilder;
-use SMW\Tests\Util\Mock\CoreMockObjectRepository;
-use SMW\Tests\Util\Mock\MediaWikiMockObjectRepository;
+use SMW\Tests\Utils\Mock\MockObjectBuilder;
+use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
+use SMW\Tests\Utils\Mock\MediaWikiMockObjectRepository;
 
 use SMW\Setup;
 use SMW\ApplicationFactory;

@@ -3,7 +3,7 @@
 namespace SMW\Tests\Benchmark;
 
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Util\UtilityFactory;
+use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\MediaWiki\Jobs\RefreshJob;
 

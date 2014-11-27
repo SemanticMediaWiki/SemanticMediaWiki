@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
-use SMW\Tests\Util\ParserFactory;
-use SMW\Tests\Util\Mock\MockTitle;
+use SMW\Tests\Utils\Validators\SemanticDataValidator;
+use SMW\Tests\Utils\ParserFactory;
+use SMW\Tests\Utils\Mock\MockTitle;
 
 use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\MediaWiki\Hooks\ParserAfterTidy;

@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
-use SMW\Tests\Util\UtilityFactory;
+use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
 

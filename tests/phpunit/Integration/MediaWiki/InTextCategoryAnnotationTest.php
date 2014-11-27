@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
+use SMW\Tests\Utils\Validators\SemanticDataValidator;
 
 use SMW\ApplicationFactory;
 use SMW\DIProperty;

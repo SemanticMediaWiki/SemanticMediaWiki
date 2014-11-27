@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Annotator;
 
-use SMW\Tests\Util\UtilityFactory;
-use SMW\Tests\Util\Mock\MockTitle;
+use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\Utils\Mock\MockTitle;
 
 use SMW\Annotator\CategoryPropertyAnnotator;
 use SMW\Annotator\NullPropertyAnnotator;

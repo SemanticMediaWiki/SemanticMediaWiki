@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import;
 
-use SMW\Tests\Util\UtilityFactory;
+use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\MwDBaseUnitTestCase;
 
-use SMW\Tests\Util\ByPageSemanticDataFinder;
+use SMW\Tests\Utils\ByPageSemanticDataFinder;
 
 use SMW\DIProperty;
 

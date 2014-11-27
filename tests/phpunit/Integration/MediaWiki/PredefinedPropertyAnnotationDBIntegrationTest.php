@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Util\UtilityFactory;
+use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;

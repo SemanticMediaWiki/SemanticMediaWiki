@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\Query;
 
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Util\UtilityFactory;
+use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\SPARQLStore\SPARQLStore;
 use SMW\SPARQLStore\VirtuosoHttpDatabaseConnector;

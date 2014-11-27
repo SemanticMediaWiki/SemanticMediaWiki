@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Specials;
 
-use SMW\Tests\Util\UtilityFactory;
+use SMW\Tests\Utils\UtilityFactory;
 use SMW\MediaWiki\Specials\SpecialSearchByProperty;
 
 use SMW\ApplicationFactory;
