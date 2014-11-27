@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Query\Profiler;
 
-use SMW\Tests\Util\UtilityFactory;
+use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\Query\Profiler\DescriptionProfile;
 use SMW\Query\Profiler\NullProfile;

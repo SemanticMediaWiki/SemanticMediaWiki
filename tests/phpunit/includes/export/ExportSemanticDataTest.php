@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Export;
 
-use SMW\Tests\Util\SemanticDataFactory;
-use SMW\Tests\Util\Validators\ExportDataValidator;
+use SMW\Tests\Utils\SemanticDataFactory;
+use SMW\Tests\Utils\Validators\ExportDataValidator;
 
-use SMW\Tests\Util\Fixtures\FixturesProvider;
+use SMW\Tests\Utils\Fixtures\FixturesProvider;
 
 use SMW\DIWikiPage;
 use SMW\DIProperty;

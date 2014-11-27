@@ -2,7 +2,7 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
+use SMW\Tests\Utils\Validators\SemanticDataValidator;
 
 use SMW\MediaWiki\MagicWordFinder;
 use SMW\MediaWiki\RedirectTargetFinder;

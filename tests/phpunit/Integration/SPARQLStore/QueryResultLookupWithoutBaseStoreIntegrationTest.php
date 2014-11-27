@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Integration\SPARQLStore;
 
-use SMW\Tests\Util\Validators\QueryResultValidator;
-use SMW\Tests\Util\SemanticDataFactory;
+use SMW\Tests\Utils\Validators\QueryResultValidator;
+use SMW\Tests\Utils\SemanticDataFactory;
 
 use SMW\SPARQLStore\SPARQLStore;
 use SMW\SemanticData;

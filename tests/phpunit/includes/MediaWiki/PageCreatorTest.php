@@ -3,7 +3,7 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\PageCreator;
-use SMW\Tests\Util\Mock\MockTitle;
+use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
  * @covers \SMW\MediaWiki\PageCreator

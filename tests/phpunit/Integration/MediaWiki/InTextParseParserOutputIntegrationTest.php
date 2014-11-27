@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
-use SMW\Tests\Util\ParserFactory;
+use SMW\Tests\Utils\Validators\SemanticDataValidator;
+use SMW\Tests\Utils\ParserFactory;
 
 use SMW\ContentParser;
 use SMW\ParserData;

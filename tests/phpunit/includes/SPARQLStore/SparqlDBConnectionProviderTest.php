@@ -3,7 +3,7 @@
 namespace SMW\Tests\SPARQLStore;
 
 use SMW\SPARQLStore\SparqlDBConnectionProvider;
-use SMW\Tests\Util\GlobalsProvider;
+use SMW\Tests\Utils\GlobalsProvider;
 
 /**
  * @covers \SMW\SPARQLStore\SparqlDBConnectionProvider

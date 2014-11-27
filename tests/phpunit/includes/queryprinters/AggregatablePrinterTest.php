@@ -2,8 +2,8 @@
 
 namespace SMW\Test;
 
-use SMW\Tests\Util\Mock\MockObjectBuilder;
-use SMW\Tests\Util\Mock\CoreMockObjectRepository;
+use SMW\Tests\Utils\Mock\MockObjectBuilder;
+use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
 
 use SMWDataItem;
 use SMWDINumber;

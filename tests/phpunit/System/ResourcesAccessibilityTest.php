@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\System;
 
-use SMW\Tests\Util\GlobalsProvider;
+use SMW\Tests\Utils\GlobalsProvider;
 
 use ResourceLoader;
 use ResourceLoaderModule;

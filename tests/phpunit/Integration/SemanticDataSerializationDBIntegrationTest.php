@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration;
 
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Util\Validators\SemanticDataValidator;
+use SMW\Tests\Utils\Validators\SemanticDataValidator;
 
 use SMW\DIWikiPage;
 use SMW\DIProperty;

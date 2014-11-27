@@ -2,7 +2,7 @@
 
 namespace SMW\Test;
 
-use SMW\Tests\Util\Mock\MockTitle;
+use SMW\Tests\Utils\Mock\MockTitle;
 
 use SMW\FactboxCache;
 use SMW\ApplicationFactory;

@@ -3,8 +3,8 @@
 namespace SMW\Tests\Integration\Query;
 
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Util\SemanticDataFactory;
-use SMW\Tests\Util\Validators\QueryResultValidator;
+use SMW\Tests\Utils\SemanticDataFactory;
+use SMW\Tests\Utils\Validators\QueryResultValidator;
 
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\SomeProperty;

@@ -222,6 +222,23 @@ class SMWSql3SmwIds {
 	}
 
 	/**
+	 * @since  2.1
+	 *
+	 * @param DIWikiPage $subject
+	 *
+	 * @return boolean
+	 */
+	public function isSubjectRedirect( DIWikiPage $subject ) {
+
+		$redirectId = $this->findRedirectIdFor(
+			$subject->getDBKey(),
+			$subject->getNamespace()
+		);
+
+		return $redirectId != 0;
+	}
+
+	/**
 	 * @see RedirectInfoStore::findRedirectIdFor
 	 *
 	 * @since 2.1

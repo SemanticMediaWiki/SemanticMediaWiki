@@ -4,7 +4,7 @@ namespace SMW\Tests\Serializers;
 
 use SMW\Serializers\SemanticDataSerializer;
 
-use SMW\Tests\Util\SemanticDataFactory;
+use SMW\Tests\Utils\SemanticDataFactory;
 
 use SMW\DataValueFactory;
 use SMw\SemanticData;

@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use SMW\Tests\Util\UtilityFactory;
+use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\MwDBaseUnitTestCase;
 
 use SMW\ApplicationFactory;

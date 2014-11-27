@@ -3,6 +3,8 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\DIProperty;
+use SMW\DIWikiPage;
+
 use SMWSql3SmwIds;
 
 /**
@@ -10,6 +12,7 @@ use SMWSql3SmwIds;
  *
  * @group SMW
  * @group SMWExtension
+ *
  * @group semantic-mediawiki-sqlstore
  *
  * @license GNU GPL v2+
@@ -41,6 +44,8 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRedirectInfoRoundtripAccess() {
 
+		$subject = new DIWikiPage( 'Foo', 9001 );
+
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -55,11 +60,19 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SMWSql3SmwIds( $store );
 
+		$this->assertFalse(
+			$instance->isSubjectRedirect( $subject )
+		);
+
 		$instance->addRedirectForId( 42, 'Foo', 9001 );
 
 		$this->assertEquals(
 			42,
 			$instance->findRedirectIdFor( 'Foo', 9001 )
+		);
+
+		$this->assertTrue(
+			$instance->isSubjectRedirect( $subject )
 		);
 
 		$instance->deleteRedirectEntry( 'Foo', 9001 );

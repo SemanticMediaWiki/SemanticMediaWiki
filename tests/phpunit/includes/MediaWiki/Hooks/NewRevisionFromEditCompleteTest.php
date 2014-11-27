@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
+use SMW\Tests\Utils\Validators\SemanticDataValidator;
 
 use SMW\MediaWiki\Hooks\NewRevisionFromEditComplete;
 use SMW\DIProperty;

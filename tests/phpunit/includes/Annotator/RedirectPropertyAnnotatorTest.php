@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Annotator;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
-use SMW\Tests\Util\SemanticDataFactory;
+use SMW\Tests\Utils\Validators\SemanticDataValidator;
+use SMW\Tests\Utils\SemanticDataFactory;
 
 use SMW\Annotator\RedirectPropertyAnnotator;
 use SMW\Annotator\NullPropertyAnnotator;

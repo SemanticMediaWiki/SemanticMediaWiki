@@ -3,9 +3,9 @@
 namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Util\PageCreator;
-use SMW\Tests\Util\PageDeleter;
-use SMW\Tests\Util\Validators\QueryResultValidator;
+use SMW\Tests\Utils\PageCreator;
+use SMW\Tests\Utils\PageDeleter;
+use SMW\Tests\Utils\Validators\QueryResultValidator;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;

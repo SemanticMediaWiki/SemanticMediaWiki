@@ -2,10 +2,10 @@
 
 namespace SMW\Test;
 
-use SMW\Tests\Util\UtilityFactory;
+use SMW\Tests\Utils\UtilityFactory;
 
-use SMW\Tests\Util\Mock\MockObjectBuilder;
-use SMW\Tests\Util\Mock\CoreMockObjectRepository;
+use SMW\Tests\Utils\Mock\MockObjectBuilder;
+use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
 
 use SMW\TableResultPrinter;
 use SMW\DIWikiPage;

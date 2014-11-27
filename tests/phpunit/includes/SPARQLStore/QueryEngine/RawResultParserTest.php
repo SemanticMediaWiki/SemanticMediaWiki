@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
-use SMW\Tests\Util\Fixtures\Results\FakeRawResultProvider;
+use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
 use SMW\SPARQLStore\QueryEngine\RawResultParser;
 
 use SMWExpResource as ExpResource;

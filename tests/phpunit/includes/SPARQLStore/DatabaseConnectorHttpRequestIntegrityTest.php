@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\SPARQLStore;
 
-use SMW\Tests\Util\Fixtures\Results\FakeRawResultProvider;
+use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
 
 /**
  * @covers \SMW\SPARQLStore\FusekiHttpDatabaseConnector

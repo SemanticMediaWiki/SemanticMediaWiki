@@ -2,7 +2,7 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Util\MwDatabaseTableBuilder;
+use SMW\Tests\Utils\MwDatabaseTableBuilder;
 use SMW\StoreFactory;
 use SMW\ApplicationFactory;
 use SMW\NamespaceExaminer;

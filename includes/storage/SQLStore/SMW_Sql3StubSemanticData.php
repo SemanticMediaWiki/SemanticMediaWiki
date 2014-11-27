@@ -99,13 +99,7 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	 * @return boolean
 	 */
 	public function isRedirect() {
-
-		$redirectId = $this->store->getObjectIds()->findRedirectIdFor(
-			$this->mSubject->getDBKey(),
-			$this->mSubject->getNamespace()
-		);
-
-		return $redirectId != 0;
+		return $this->store->getObjectIds()->isSubjectRedirect( $this->mSubject );
 	}
 
 	/**

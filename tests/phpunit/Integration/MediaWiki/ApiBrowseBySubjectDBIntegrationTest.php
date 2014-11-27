@@ -3,8 +3,8 @@
 namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Util\MwApiFactory;
-use SMW\Tests\Util\SemanticDataFactory;
+use SMW\Tests\Utils\MwApiFactory;
+use SMW\Tests\Utils\SemanticDataFactory;
 
 use SMW\MediaWiki\Api\BrowseBySubject;
 
