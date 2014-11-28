@@ -17,6 +17,7 @@ use SMW\Query\Language\SomeProperty;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 
+use SMWDataItem as DataItem;
 use SMWDINumber as DINumber;
 use SMWDIBlob as DIBlob;
 use SMWDITime as DITime;
@@ -599,6 +600,45 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			$expectedConditionString,
 			$instance->convertConditionToString( $condition )
+		);
+	}
+
+	public function testAddOrderByData_ForNonWikiPageType() {
+
+		$condition = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\Condition\Condition' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$instance = new CompoundConditionBuilder();
+		$instance->addOrderByData( $condition, 'foo', DataItem::TYPE_NUMBER );
+
+		$this->assertEquals(
+			'foo',
+			$condition->orderByVariable
+		);
+	}
+
+	public function testAddOrderByData_ForWikiPageType() {
+
+		$condition = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\Condition\Condition' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$instance = new CompoundConditionBuilder();
+		$instance->addOrderByData( $condition, 'foo', DataItem::TYPE_WIKIPAGE );
+
+		$this->assertEquals(
+			'foosk',
+			$condition->orderByVariable
+		);
+
+		$expectedConditionString = $this->stringBuilder
+			->addString( '?foo swivt:wikiPageSortKey ?foosk .' )->addNewLine()
+			->getString();
+
+		$this->assertEquals(
+			$expectedConditionString,
+			$condition->weakConditions['foosk']
 		);
 	}
 
