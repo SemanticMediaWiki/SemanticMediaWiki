@@ -214,15 +214,20 @@ class CompoundConditionBuilder {
 	 * @param string $mainVariable the variable that represents the value to be ordered
 	 * @param integer $diType DataItem type id
 	 */
-	public function addOrderByData( Condition &$sparqlCondition, $mainVariable, $diType ) {
-		if ( $diType == DataItem::TYPE_WIKIPAGE ) {
-			$sparqlCondition->orderByVariable = $mainVariable . 'sk';
-			$skeyExpElement = Exporter::getSpecialPropertyResource( '_SKEY' );
-			$sparqlCondition->weakConditions = array( $sparqlCondition->orderByVariable =>
-			      "?$mainVariable " . $skeyExpElement->getQName() . " ?{$sparqlCondition->orderByVariable} .\n" );
-		} else {
-			$sparqlCondition->orderByVariable = $mainVariable;
+	public function addOrderByData( Condition &$condition, $mainVariable, $diType ) {
+
+		if ( $diType !== DataItem::TYPE_WIKIPAGE ) {
+			return $condition->orderByVariable = $mainVariable;
 		}
+
+		$condition->orderByVariable = $mainVariable . 'sk';
+		$skeyExpElement = Exporter::getSpecialPropertyResource( '_SKEY' );
+
+		$weakConditions = array(
+			$condition->orderByVariable =>"?$mainVariable " . $skeyExpElement->getQName() . " ?{$condition->orderByVariable} .\n"
+		);
+
+		$condition->weakConditions += $weakConditions;
 	}
 
 	/**
