@@ -235,4 +235,52 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 		);
 	}
 
+	/**
+	 * Issue 622/619
+	 */
+	public function testPrepareToFetchCorrectSemanticDataFromInternalCache() {
+
+		$redirect = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-A' ) );
+
+		$this->pageCreator
+			->createPage( $redirect->getTitle() )
+			->doEdit( '#REDIRECT [[Foo-C]]' );
+
+		$target = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-C' ) );
+
+		$this->pageCreator
+			->createPage( $target->getTitle() )
+			->doEdit( '{{#subobject:test|HasSomePageProperty=Foo-A}}' );
+
+		$this->assertEmpty(
+			$this->getStore()->getSemanticData( $redirect )->findSubSemanticData( 'test' )
+		);
+
+		$this->assertNotEmpty(
+			$this->getStore()->getSemanticData( $target )->findSubSemanticData( 'test' )
+		);
+	}
+
+	/**
+	 * @depends testPrepareToFetchCorrectSemanticDataFromInternalCache
+	 */
+	public function testVerifyToFetchCorrectSemanticDataFromInternalCache() {
+
+		$redirect = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-A' ) );
+		$target = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-C' ) );
+
+		$this->assertEmpty(
+			$this->getStore()->getSemanticData( $redirect )->findSubSemanticData( 'test' )
+		);
+
+		$this->assertNotEmpty(
+			$this->getStore()->getSemanticData( $target )->findSubSemanticData( 'test' )
+		);
+
+		$this->deletePoolOfPages = array(
+			$redirect,
+			$target
+		);
+	}
+
 }

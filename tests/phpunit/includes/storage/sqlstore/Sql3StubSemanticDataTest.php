@@ -5,6 +5,7 @@ namespace SMW\Tests\SQLStore;
 use SMW\SemanticData;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
+
 use SMWDITime as DITime;
 use SMWSql3StubSemanticData as StubSemanticData;
 
@@ -34,13 +35,15 @@ class Sql3StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
+		$subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$semanticData->expects( $this->once() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) ) );
+			->will( $this->returnValue( $subject ) );
 
 		$this->assertInstanceOf(
 			'\SMWSql3StubSemanticData',
@@ -48,27 +51,28 @@ class Sql3StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCheckRedirectInfoForSubject() {
+	public function testNotToResolveSubobjectsForRedirect() {
 
-		$subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
-
-		$smwIds = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$instance = $this->getMockBuilder( '\SMWSql3StubSemanticData' )
 			->disableOriginalConstructor()
+			->setMethods( array(
+				'getProperties',
+				'isRedirect',
+				'getPropertyValues' ) )
 			->getMock();
 
-		$smwIds->expects( $this->once() )
-			->method( 'isSubjectRedirect' )
-			->will( $this->returnValue( false ) );
+		$instance->expects( $this->once() )
+			->method( 'getProperties' )
+			->will( $this->returnValue( array( new DIProperty( '_SOBJ' ) ) ) );
 
-		$this->store->expects( $this->once() )
-			->method( 'getObjectIds' )
-			->will( $this->returnValue( $smwIds ) );
+		$instance->expects( $this->once() )
+			->method( 'isRedirect' )
+			->will( $this->returnValue( true ) );
 
-		$stubSemanticData = new StubSemanticData( $subject, $this->store );
+		$instance->expects( $this->never() )
+			->method( 'getPropertyValues' );
 
-		$this->assertFalse(
-			$stubSemanticData->isRedirect()
-		);
+		$instance->getSubSemanticData();
 	}
 
 	public function testGetPropertyValues() {

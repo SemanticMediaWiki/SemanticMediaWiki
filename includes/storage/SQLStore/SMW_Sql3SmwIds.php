@@ -228,7 +228,7 @@ class SMWSql3SmwIds {
 	 *
 	 * @return boolean
 	 */
-	public function isSubjectRedirect( DIWikiPage $subject ) {
+	public function checkIsRedirect( DIWikiPage $subject ) {
 
 		$redirectId = $this->findRedirectIdFor(
 			$subject->getDBKey(),

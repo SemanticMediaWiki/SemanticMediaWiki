@@ -94,15 +94,6 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	}
 
 	/**
-	 * @since  2.1
-	 *
-	 * @return boolean
-	 */
-	public function isRedirect() {
-		return $this->store->getObjectIds()->isSubjectRedirect( $this->mSubject );
-	}
-
-	/**
 	 * Get the array of all properties that have stored values.
 	 *
 	 * @since 1.8
@@ -173,7 +164,8 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 
 		foreach ( $this->getProperties() as $property ) {
 
-			if ( $property->findPropertyTypeID() !== '__sob' ) {
+			// #619 Do not resolve subobjects for redirects
+			if ( $property->findPropertyTypeID() !== '__sob' || $this->isRedirect() ) {
 				continue;
 			}
 
@@ -320,6 +312,10 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 				$this->mHasVisibleProps = true;
 			}
 		}
+	}
+
+	protected function isRedirect() {
+		return $this->store->getObjectIds()->checkIsRedirect( $this->mSubject );
 	}
 
 	private function addSubSemanticDataToInternalCache( DIProperty $property ) {

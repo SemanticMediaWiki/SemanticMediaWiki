@@ -42,7 +42,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testRedirectInfoRoundtripAccess() {
+	public function testRedirectInfoRoundtrip() {
 
 		$subject = new DIWikiPage( 'Foo', 9001 );
 
@@ -61,7 +61,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SMWSql3SmwIds( $store );
 
 		$this->assertFalse(
-			$instance->isSubjectRedirect( $subject )
+			$instance->checkIsRedirect( $subject )
 		);
 
 		$instance->addRedirectForId( 42, 'Foo', 9001 );
@@ -72,7 +72,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertTrue(
-			$instance->isSubjectRedirect( $subject )
+			$instance->checkIsRedirect( $subject )
 		);
 
 		$instance->deleteRedirectEntry( 'Foo', 9001 );
@@ -80,6 +80,10 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			0,
 			$instance->findRedirectIdFor( 'Foo', 9001 )
+		);
+
+		$this->assertFalse(
+			$instance->checkIsRedirect( $subject )
 		);
 	}
 

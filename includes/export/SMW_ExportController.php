@@ -197,6 +197,11 @@ class SMWExportController {
 					foreach ( $inSubs as $inSub ) {
 						if ( !$this->isPageDone( $inSub, $subrecdepth ) ) {
 							$semdata = $this->getSemanticData( $inSub, true );
+
+							if ( !$semdata instanceof SMWSemanticData ) {
+								continue;
+							}
+
 							$semdata->addPropertyObjectValue( $inprop, $diWikiPage );
 							$expData = SMWExporter::makeExportData( $semdata );
 							$this->serializer->serializeExpData( $expData, $subrecdepth );
@@ -213,6 +218,11 @@ class SMWExportController {
 					foreach ( $instances as $instance ) {
 						if ( !array_key_exists( $instance->getHash(), $this->element_done ) ) {
 							$semdata = $this->getSemanticData( $instance, true );
+
+							if ( !$semdata instanceof SMWSemanticData ) {
+								continue;
+							}
+
 							$semdata->addPropertyObjectValue( $pinst, $diWikiPage );
 							$expData = SMWExporter::makeExportData( $semdata );
 							$this->serializer->serializeExpData( $expData, $subrecdepth );
