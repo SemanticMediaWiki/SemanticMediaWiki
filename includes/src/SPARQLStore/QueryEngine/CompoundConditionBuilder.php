@@ -236,31 +236,50 @@ class CompoundConditionBuilder {
 	 * this operation, every key in sortkeys is assigned to a query
 	 * variable by $sparqlCondition->orderVariables.
 	 *
-	 * @param Condition $sparqlCondition condition to modify
+	 * @param Condition $condition condition to modify
 	 */
-	protected function addMissingOrderByConditions( Condition &$sparqlCondition ) {
-		foreach ( $this->sortkeys as $propkey => $order ) {
+	protected function addMissingOrderByConditions( Condition &$condition ) {
+		foreach ( $this->sortkeys as $propertyKey => $order ) {
 
-			if ( !is_string( $propkey ) ) {
+			if ( !is_string( $propertyKey ) ) {
 				throw new RuntimeException( "Expected a string value as sortkey" );
 			}
 
-			if ( !array_key_exists( $propkey, $sparqlCondition->orderVariables ) ) { // Find missing property to sort by.
-
-				if ( $propkey === '' ) { // order by result page sortkey
-					$this->addOrderByData( $sparqlCondition, $this->resultVariable, DataItem::TYPE_WIKIPAGE );
-					$sparqlCondition->orderVariables[$propkey] = $sparqlCondition->orderByVariable;
-				} else { // extend query to order by other property values
-					$diProperty = new DIProperty( $propkey );
-					$auxDescription = new SomeProperty( $diProperty, new ThingDescription() );
-					$auxSparqlCondition = $this->mapDescriptionToCondition( $auxDescription, $this->resultVariable, null );
-					// orderVariables MUST be set for $propkey -- or there is a bug; let it show!
-					$sparqlCondition->orderVariables[$propkey] = $auxSparqlCondition->orderVariables[$propkey];
-					$sparqlCondition->weakConditions[$sparqlCondition->orderVariables[$propkey]] = $auxSparqlCondition->getWeakConditionString() . $auxSparqlCondition->getCondition();
-					$sparqlCondition->namespaces = array_merge( $sparqlCondition->namespaces, $auxSparqlCondition->namespaces );
-				}
+			if ( !array_key_exists( $propertyKey, $condition->orderVariables ) ) { // Find missing property to sort by.
+				$this->addOrderForUnknownPropertyKey( $condition, $propertyKey );
 			}
 		}
+	}
+
+	private function addOrderForUnknownPropertyKey( Condition &$condition, $propertyKey ) {
+
+		if ( $propertyKey === '' ) { // order by result page sortkey
+
+			$this->addOrderByData(
+				$condition,
+				$this->resultVariable,
+				DataItem::TYPE_WIKIPAGE
+			);
+
+			$condition->orderVariables[$propertyKey] = $condition->orderByVariable;
+			return;
+		}
+
+		$auxDescription = new SomeProperty(
+			new DIProperty( $propertyKey ),
+			new ThingDescription()
+		);
+
+		$auxCondition = $this->mapDescriptionToCondition(
+			$auxDescription,
+			$this->resultVariable,
+			null
+		);
+
+		// orderVariables MUST be set for $propertyKey -- or there is a bug; let it show!
+		$condition->orderVariables[$propertyKey] = $auxCondition->orderVariables[$propertyKey];
+		$condition->weakConditions[$condition->orderVariables[$propertyKey]] = $auxCondition->getWeakConditionString() . $auxCondition->getCondition();
+		$condition->namespaces = array_merge( $condition->namespaces, $auxCondition->namespaces );
 	}
 
 	private function findBuildStrategyForDescription( Description $description ) {
