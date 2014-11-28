@@ -84,7 +84,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testQueryForSinglePropertyWithSortkey() {
+	public function testQuerySomeProperty_ForKnownSortPropertyKey() {
 
 		$property = new DIProperty( 'Foo' );
 
@@ -95,7 +95,9 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new CompoundConditionBuilder();
 
-		$condition = $instance->setSortKeys( array( 'Foo' => 'DESC' ) )->buildCondition( $description );
+		$condition = $instance
+			->setSortKeys( array( 'Foo' => 'DESC' ) )
+			->buildCondition( $description );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
@@ -105,7 +107,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$expectedConditionString = $this->stringBuilder
 			->addString( '?result property:Foo ?v1 .'  )->addNewLine()
 			->addString( '{ ?v1 swivt:wikiPageSortKey ?v1sk .'  )->addNewLine()
-			->addString( '}'  )->addNewLine()
+			->addString( '}' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -114,7 +116,71 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testQueryForSinglePropertyWithInvalidSortkeyThrowsException() {
+	public function testQuerySomeProperty_ForUnknownSortPropertyKey() {
+
+		$property = new DIProperty( 'Foo' );
+
+		$description = new SomeProperty(
+			$property,
+			new ThingDescription()
+		);
+
+		$instance = new CompoundConditionBuilder();
+
+		$condition = $instance
+			->setSortKeys( array( 'Bar' => 'DESC' ) )
+			->buildCondition( $description );
+
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			$condition
+		);
+
+		$expectedConditionString = $this->stringBuilder
+			->addString( '?result property:Bar ?v2 .'  )->addNewLine()
+			->addString( '{ ?v2 swivt:wikiPageSortKey ?v2sk .'  )->addNewLine()
+			->addString( '}' )->addNewLine()
+			->addString( '?result property:Foo ?v1 .'  )->addNewLine()
+			->getString();
+
+		$this->assertEquals(
+			$expectedConditionString,
+			$instance->convertConditionToString( $condition )
+		);
+	}
+
+	public function testQuerySomeProperty_ForEmptySortPropertyKey() {
+
+		$property = new DIProperty( 'Foo' );
+
+		$description = new SomeProperty(
+			$property,
+			new ThingDescription()
+		);
+
+		$instance = new CompoundConditionBuilder();
+
+		$condition = $instance
+			->setSortKeys( array( '' => 'DESC' ) )
+			->buildCondition( $description );
+
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			$condition
+		);
+
+		$expectedConditionString = $this->stringBuilder
+			->addString( '?result swivt:wikiPageSortKey ?resultsk .'  )->addNewLine()
+			->addString( '?result property:Foo ?v1 .'  )->addNewLine()
+			->getString();
+
+		$this->assertEquals(
+			$expectedConditionString,
+			$instance->convertConditionToString( $condition )
+		);
+	}
+
+	public function testQuerySomeProperty_OnInvalidSortKeyThrowsException() {
 
 		$property = new DIProperty( 'Foo' );
 
