@@ -204,7 +204,7 @@
 	"smw-ask-delete": "[删除]",
 	"smw-ask-sorting": "排序",
 	"smw-ask-format-selection-help": "有关详细描述，请参见$1帮助页面。",
-	"searchbyproperty": "按属性查询",
+	"searchbyproperty": "按属性搜索",
 	"smw_sbv_docu": "搜索所有已设定属性和值的页面。",
 	"smw_sbv_novalue": "为此属性输入一个有效值，或者显示所有\"$1\"的属性值。",
 	"smw_sbv_displayresult": "有值为“$2”的属性“$1”的所有页面的列表",
