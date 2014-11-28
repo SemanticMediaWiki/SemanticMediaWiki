@@ -95,6 +95,15 @@ class SMWSQLStore3Readers {
 			$this->store->m_sdstate[$sid] = array();
 		}
 
+		// Issue #622
+		// If a redirect was cached preceding this request and points to the same
+		// subject id ensure that in all cases the requested subject matches with
+		// the selected DB id
+		if ( $this->store->m_semdata[$sid]->getSubject()->getHash() !== $subject->getHash() ) {
+			$this->store->m_semdata[$sid] = new SMWSql3StubSemanticData( $subject, $this->store, false );
+			$this->store->m_sdstate[$sid] = array();
+		}
+
 		if ( ( count( $this->store->m_semdata ) > 20 ) && ( self::$in_getSemanticData == 1 ) ) {
 			// prevent memory leak;
 			// It is not so easy to find the sweet spot between cache size and performance gains (both memory and time),

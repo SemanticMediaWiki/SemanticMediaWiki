@@ -12,7 +12,7 @@
  * @author Jeroen De Dauw
  */
 class SMWSpecialOWLExport extends SpecialPage {
-	
+
 	/// Export controller object to be used for serializing data
 	protected $export_controller;
 
@@ -52,7 +52,7 @@ class SMWSpecialOWLExport extends SpecialPage {
 			$offset = $wgRequest->getVal( 'offset' );
 
 			if ( isset( $offset ) ) {
-				$this->startRDFExport();				 
+				$this->startRDFExport();
 				$this->export_controller->printPageList( $offset );
 				return;
 			} else {
@@ -80,7 +80,7 @@ class SMWSpecialOWLExport extends SpecialPage {
                 '<p>' . wfMessage( 'smw_exportrdf_docu' )->text() . "</p>\n" .
                 '<input type="hidden" name="postform" value="1"/>' . "\n" .
                 '<textarea name="pages" cols="40" rows="10"></textarea><br />' . "\n";
-		
+
 		if ( $wgUser->isAllowed( 'delete' ) || $smwgAllowRecursiveExport ) {
 			$html .= '<input type="checkbox" name="recursive" value="1" id="rec">&#160;<label for="rec">' . wfMessage( 'smw_exportrdf_recursive' )->text() . '</label></input><br />' . "\n";
 		}
@@ -95,10 +95,10 @@ class SMWSpecialOWLExport extends SpecialPage {
 		}
 
 		$html .= '<br /><input type="submit"  value="' . wfMessage( 'smw_exportrdf_submit' )->text() . "\"/>\n</form>";
-		
+
 		$wgOut->addHTML( $html );
 	}
-	
+
 	/**
 	 * Prepare $wgOut for printing non-HTML data.
 	 */
@@ -131,7 +131,7 @@ class SMWSpecialOWLExport extends SpecialPage {
 
 		$this->export_controller = new SMWExportController( $serializer );
 	}
-	
+
 	/**
 	 * Export the given pages to RDF.
 	 * @param array $pages containing the string names of pages to be exported
@@ -176,6 +176,12 @@ class SMWSpecialOWLExport extends SpecialPage {
 			$timeint = strtotime( $date );
 			$stamp = date( "YmdHis", $timeint );
 			$date = $stamp;
+		}
+
+		// If it is a redirect then we don't want to generate triples other than
+		// the redirect target information
+		if ( isset( $pages[0] ) && Title::newFromText( $pages[0] )->isRedirect() ) {
+			$backlinks = false;
 		}
 
 		$this->startRDFExport();

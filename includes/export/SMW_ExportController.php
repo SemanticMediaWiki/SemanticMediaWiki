@@ -1,5 +1,10 @@
 <?php
 
+use SMW\ApplicationFactory;
+use SMW\SemanticData;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+
 /**
  * File holding the SMWExportController class that provides basic functions for
  * exporting pages to RDF and OWL.
@@ -60,6 +65,11 @@ class SMWExportController {
 	protected $outputfile;
 
 	/**
+	 * @var DeepRedirectTargetResolver
+	 */
+	private $deepRedirectTargetResolver = null;
+
+	/**
 	 * Constructor.
 	 * @param SMWSerializer $serializer defining the object used for syntactic
 	 * serialization.
@@ -118,9 +128,18 @@ class SMWExportController {
 	 * @param integer $recursiondepth specifying the depth of recursion
 	 */
 	protected function serializePage( SMWDIWikiPage $diWikiPage, $recursiondepth = 1 ) {
-		if ( $this->isPageDone( $diWikiPage, $recursiondepth ) ) return; // do not export twice
+
+		if ( $this->isPageDone( $diWikiPage, $recursiondepth ) ) {
+			return; // do not export twice
+		}
+
 		$this->markPageAsDone( $diWikiPage, $recursiondepth );
 		$semData = $this->getSemanticData( $diWikiPage, ( $recursiondepth == 0 ) );
+
+		if ( $semData === null ) {
+			return null;
+		}
+
 		$expData = SMWExporter::makeExportData( $semData );
 		$this->serializer->serializeExpData( $expData, $recursiondepth );
 
@@ -178,6 +197,11 @@ class SMWExportController {
 					foreach ( $inSubs as $inSub ) {
 						if ( !$this->isPageDone( $inSub, $subrecdepth ) ) {
 							$semdata = $this->getSemanticData( $inSub, true );
+
+							if ( !$semdata instanceof SMWSemanticData ) {
+								continue;
+							}
+
 							$semdata->addPropertyObjectValue( $inprop, $diWikiPage );
 							$expData = SMWExporter::makeExportData( $semdata );
 							$this->serializer->serializeExpData( $expData, $subrecdepth );
@@ -194,6 +218,11 @@ class SMWExportController {
 					foreach ( $instances as $instance ) {
 						if ( !array_key_exists( $instance->getHash(), $this->element_done ) ) {
 							$semdata = $this->getSemanticData( $instance, true );
+
+							if ( !$semdata instanceof SMWSemanticData ) {
+								continue;
+							}
+
 							$semdata->addPropertyObjectValue( $pinst, $diWikiPage );
 							$expData = SMWExporter::makeExportData( $semdata );
 							$this->serializer->serializeExpData( $expData, $subrecdepth );
@@ -289,6 +318,34 @@ class SMWExportController {
 	 * caching purposes elsewhere.
 	 */
 	protected function getSemanticData( SMWDIWikiPage $diWikiPage, $core_props_only ) {
+
+		// Issue 619
+		// Resolve the redirect target and return a container with information
+		// about the redirect
+		if ( $diWikiPage->getTitle() !== null && $diWikiPage->getTitle()->isRedirect() ) {
+
+			try {
+				$redirectTarget = $this->getDeepRedirectTargetResolver()->findRedirectTargetFor( $diWikiPage->getTitle() );
+			} catch ( \Exception $e ) {
+				$redirectTarget = null;
+			}
+
+			// Couldn't resolve the redirect which is most likely caused by a
+			// circular redirect therefore we give up
+			if ( $redirectTarget === null ) {
+				return null;
+			}
+
+			$semData = new SemanticData( $diWikiPage );
+
+			$semData->addPropertyObjectValue(
+				new DIProperty( '_REDI' ),
+				DIWikiPage::newFromTitle( $redirectTarget )
+			);
+
+			return $semData;
+		}
+
 		$semdata = \SMW\StoreFactory::getStore()->getSemanticData( $diWikiPage, $core_props_only ? array( '__spu', '__typ', '__imp' ) : false ); // advise store to retrieve only core things
 		if ( $core_props_only ) { // be sure to filter all non-relevant things that may still be present in the retrieved
 			$result = new SMWSemanticData( $diWikiPage );
@@ -302,6 +359,8 @@ class SMWExportController {
 		} else {
 			$result = clone $semdata;
 		}
+
+
 		return $result;
 	}
 
@@ -619,6 +678,15 @@ class SMWExportController {
 		if ( is_array( $res ) ) return in_array( $ns, $res );
 		if ( $res >= 0 ) return ( $res == $ns );
 		return ( ( $res != NS_CATEGORY ) && ( $res != SMW_NS_PROPERTY ) && ( $res != SMW_NS_TYPE ) );
+	}
+
+	private function getDeepRedirectTargetResolver() {
+
+		if ( $this->deepRedirectTargetResolver === null ) {
+			$this->deepRedirectTargetResolver = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newDeepRedirectTargetResolver();
+		}
+
+		return $this->deepRedirectTargetResolver;
 	}
 
 }
