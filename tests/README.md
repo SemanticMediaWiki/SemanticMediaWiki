@@ -1,29 +1,28 @@
+Running tests is commonly divided into a manual (without using any tool or automated script) and an automated approach.
 
-# Different types of testing
+# Manual testing
 
-In general there are two different types of testing a manual (without using any tool or script) and/or an automated approach.
+If you want to run some manual tests (either as scripted or exploratory test procedure) then you just have to:
 
-If you choose to do manual testing then you just have to download a related branch using `composer require "mediawiki/semantic-media-wiki:dev-foo` (where `foo` refers to the branch name) or in case you want to test the current master, use `@dev` or `dev-master` as version together with `minimum-stability: dev` flag to ensure that the branch/master can be fetched without any stability limitation.
+1. Download a related branch using `composer require "mediawiki/semantic-media-wiki:dev-foo` (where `foo` refers to the branch name) or in case you want to test the current master, use `@dev` or `dev-master` as version together with `minimum-stability: dev` flag to ensure that the branch/master can be fetched without any stability limitation.
+2. Run `composer dump-autoload` in order to generate an updated autoloader wherer all classes are registered and correctly initialized before starting any test procedure.
 
-If you do a manual download (e.g. `git`), please make sure to run `composer dump-autoload` in order for all classes to be registered and correctly initialized before starting any test.
+# Automated testing (PHPUnit)
 
-For the automated approach, Semantic MediaWiki uses [PHPUnit][phpunit] as scripted testing methodology. Scripted tests are used to verify that an expected behaviour occurs for specified requirements and enables to decide whether a result can be accepted or has to be rejected.
+For the automated approach, Semantic MediaWiki uses [PHPUnit][phpunit] as scripted testing methodology. Scripted tests are used to verify that an expected behaviour occurs for specified requirements and enables to decide whether a result can be accepted or has to be rejected for the scripted boundaries.
 
 - Unit test in most cases refers to a test that confirms an expected result for a unit, module, or class
 - Integration test normally combines multiple components into a single process to verify that the integration produces an expected result
 - System test (and its individual modules) is treated as "black-box" in order to observe behaviour as a whole rather than its units
 
-# PHPUnit
-
-Most scripted tests for SMW are written for and executed by PHPUnit. PHPUnit provides the necessary environment to execute unit tests within PHP. Information about how to work with PHPunit can be found at [smw.org][smw] and [mediawiki.org][mw-phpunit-testing].
-
 ## Running tests
 
-In case PHUnit is not already installed, use `composer require phpunit/phpunit:~4.3` to install the package and execute the tests by simply running the `mw-phpunit-runner.php` script from the test directory or use [`phpunit`][mw-phpunit-testing] together with the PHPUnit configuration file and MediaWiki's `phpunit.php` loader.
+Most scripted tests for SMW are written using [PHPUnit][phpunit]. PHPUnit provides the necessary environment to execute unit test and to run the tests, one has to simply:
 
-```sh
-php mw-phpunit-runner.php [options]
-```
+1. Verify that PHUnit is installed and in case it is not use `composer require phpunit/phpunit:~4.3` to add the package
+2. Execute the tests running the `php mw-phpunit-runner.php` script from the test directory, `composer phpunit` from the SMW root directory, or [`phpunit`][mw-phpunit-testing] directly in connection with the PHPUnit `XML` configuration file (together with MediaWiki's `phpunit.php` loader otherwise missing MediaWiki classes will cause tests to fail).
+
+Information about how to work with PHPUnit can be found at [smw.org][smw] and [mediawiki.org][mw-phpunit-testing].
 
 ## Writing tests
 
