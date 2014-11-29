@@ -58,6 +58,10 @@ class SMWRecordValue extends SMWDataValue {
 			$semanticData = new SMWContainerSemanticData( $subject );
 		}
 
+		// Bug 21926 / T23926
+		// Values can be html encoded which adds additional semicolons
+		$value = htmlspecialchars_decode( $value, ENT_QUOTES );
+
 		$values = preg_split( '/[\s]*;[\s]*/u', trim( $value ) );
 		$valueIndex = 0; // index in value array
 		$propertyIndex = 0; // index in property list
@@ -187,6 +191,19 @@ class SMWRecordValue extends SMWDataValue {
 	public function setProperty( SMWDIProperty $property ) {
 		parent::setProperty( $property );
 		$this->m_diProperties = null;
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param SMWDIProperty[] $properties
+	 */
+	public function setFieldProperties( array $properties ) {
+		foreach ( $properties as $property ) {
+			if ( $property instanceOf SMWDIProperty ) {
+				$this->m_diProperties[] = $property;
+			}
+		}
 	}
 
 ////// Additional API for value lists
