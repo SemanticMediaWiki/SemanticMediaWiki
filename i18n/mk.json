@@ -299,5 +299,6 @@
 	"smw-sp-searchbyproperty-description": "Страницава дава прост [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces прелистувачки посредник] за пронаоѓање на единици опишани со својство и именувана вредност. На располагање ви се и други пребарувачки посредници: [[Special:PageProperty|пребарување на својства на страници]] и [[Special:Ask|срочувачот на барања]].",
 	"smw-sp-searchbyproperty-resultlist-header": "Список на резултати",
 	"smw-sp-searchbyproperty-nonvaluequery": "Список на вредности со својство „$1“.",
-	"smw-sp-searchbyproperty-valuequery": "Список на вредности со својство „$1“ со вредноста „$2“."
+	"smw-sp-searchbyproperty-valuequery": "Список на вредности со својство „$1“ со вредноста „$2“.",
+	"smw-datavalue-number-textnotallowed": "„$1“ не може да се додели на изјавен бројчен тип со вредност $2."
 }

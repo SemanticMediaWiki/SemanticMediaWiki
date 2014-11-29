@@ -114,7 +114,6 @@
 	"smw_nofloat": "This is an error/warning message. Parameters:\n* $1 holds the property value causing the error/warning.",
 	"smw_infinite": "This is an error/warning message. Parameters:\n* $1 holds the property value causing the error/warning.",
 	"smw_unitnotallowed": "This is an error/warning message. Parameters:\n* $1 holds the unit causing the error/warning.",
-	"smw-datavalue-number-textnotallowed": "This is an error/warning message. Parameters:\n* $1 holds the text causing the error/warning.\n* $2 holds the property value supposed to be used.",
 	"smw_nounitsdeclared": "This is an error/warning message.",
 	"smw_novalues": "This is an error/warning message.",
 	"smw_nodatetime": "This is an error/warning message. Parameters:\n* $1 holds the property value causing the error/warning.",
@@ -317,5 +316,6 @@
 	"smw-sp-searchbyproperty-description": "Extended description text for the [[Special:SearchByProperty]] page.",
 	"smw-sp-searchbyproperty-resultlist-header": "A header label",
 	"smw-sp-searchbyproperty-nonvaluequery": "A description for a query result without values.\n\nParameters:\n* $1 - Name of the property",
-	"smw-sp-searchbyproperty-valuequery": "A description for a query result with values.\n\nParameters:\n* $1 - Name of the property\n* $2 - Name of the value"
+	"smw-sp-searchbyproperty-valuequery": "A description for a query result with values.\n\nParameters:\n* $1 - Name of the property\n* $2 - Name of the value",
+	"smw-datavalue-number-textnotallowed": "This is an error/warning message. Parameters:\n* $1 holds the text causing the error/warning.\n* $2 holds the property value supposed to be used."
 }
