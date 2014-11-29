@@ -6,7 +6,9 @@ use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\Query\Language\SomeProperty;
+use SMW\DataValueFactory;
 
+use SMWQueryParser as QueryParser;
 use SMWQuery as Query;
 use SMWPrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
@@ -32,19 +34,32 @@ class RecordTypeQueryTest extends MwDBaseUnitTestCase {
 	private $queryResultValidator;
 	private $fixturesProvider;
 
+	private $semanticDataFactory;
+	private $dataValueFactory;
+
+	private $queryParser;
+	private $purgeableSubjects =  array();
+
 	protected function setUp() {
 		parent::setUp();
+
+		$this->dataValueFactory = DataValueFactory::getInstance();
+		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 
 		$this->queryResultValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator();
 
 		$this->fixturesProvider = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesProvider();
 		$this->fixturesProvider->setupDependencies( $this->getStore() );
+
+		$this->queryParser = new QueryParser();
 	}
 
 	protected function tearDown() {
 
 		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
-		$fixturesCleaner->purgeAllKnownFacts();
+		$fixturesCleaner
+			->purgeSubjects( $this->purgeableSubjects )
+			->purgeAllKnownFacts();
 
 		parent::tearDown();
 	}
@@ -58,8 +73,6 @@ class RecordTypeQueryTest extends MwDBaseUnitTestCase {
 		$this->getStore()->updateData(
 			$this->fixturesProvider->getFactsheet( 'Paris' )->asEntity()
 		);
-
-	//	Exporter::clear();
 
 		$expected = array(
 			$this->fixturesProvider->getFactsheet( 'Berlin' )->asSubject(),
@@ -104,6 +117,51 @@ class RecordTypeQueryTest extends MwDBaseUnitTestCase {
 
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
 			$expected,
+			$queryResult
+		);
+	}
+
+	/**
+	 * T23926
+	 */
+	public function testRecordsToContainSpecialCharactersCausedByHtmlEncoding() {
+
+		$property = $this->fixturesProvider->getProperty( 'bookrecord' );
+
+		$semanticData = $this->semanticDataFactory
+			->newEmptySemanticData( __METHOD__ );
+
+		$this->purgeableSubjects[] = $semanticData->getSubject();
+
+		// MW parser runs htmlspecialchars on strings therefore
+		// simulating it as well
+		$dataValue = $this->dataValueFactory->newPropertyObjectValue(
+			$property,
+			htmlspecialchars( "Title with $&%'* special characters ; 2001" ),
+			'',
+			$semanticData->getSubject()
+		);
+
+		$semanticData->addDataValue( $dataValue	);
+
+		$this->getStore()->updateData( $semanticData );
+
+		/**
+		 * @query "[[Book record::Title with $&%'* special characters;2001]]"
+		 */
+		$description = $this->queryParser
+			->getQueryDescription( "[[Book record::Title with $&%'* special characters;2001]]" );
+
+		$query = new Query(
+			$description,
+			false,
+			true
+		);
+
+		$queryResult = $this->getStore()->getQueryResult( $query );
+
+		$this->queryResultValidator->assertThatQueryResultHasSubjects(
+			$semanticData->getSubject(),
 			$queryResult
 		);
 	}
