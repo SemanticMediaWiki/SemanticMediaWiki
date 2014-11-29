@@ -31,7 +31,7 @@ class RedirectTargetFinderTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider redirectTextProvider
 	 */
-	public function testFindTargetFromText( $text, $expectedHasTarget, $expectedGetTarget ) {
+	public function testFindRedirectTargetFromText( $text, $expectedHasTarget, $expectedGetTarget ) {
 
 		$instance = new RedirectTargetFinder();
 		$instance->findRedirectTargetFromText( $text );
@@ -43,6 +43,27 @@ class RedirectTargetFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expectedGetTarget,
+			$instance->getRedirectTarget()
+		);
+	}
+
+	/**
+	 * @dataProvider redirectTextProvider
+	 */
+	public function testInjectedRedirectTargetOverridesTextFinder( $text, $expectedHasTarget, $expectedGetTarget  ) {
+
+		$directRedirectTarget = Title::newFromText( 'Foo' );
+
+		$instance = new RedirectTargetFinder();
+		$instance->setRedirectTarget( $directRedirectTarget );
+		$instance->findRedirectTargetFromText( $text );
+
+		$this->assertTrue(
+			$instance->hasRedirectTarget()
+		);
+
+		$this->assertEquals(
+			$directRedirectTarget,
 			$instance->getRedirectTarget()
 		);
 	}

@@ -101,6 +101,31 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	/**
+	 * @since 2.1
+	 *
+	 * @param array $expected
+	 * @param array $properties
+	 */
+	public function assertHasProperties( array $expected, array $properties ) {
+
+		$expected = isset( $expected['properties'] ) ? $expected['properties'] : $expected;
+
+		foreach ( $properties as $property ) {
+
+			foreach ( $expected as $key => $expectedProperty ) {
+				if ( $property->equals( $expectedProperty ) ) {
+					unset( $expected[ $key ] );
+				}
+			}
+		}
+
+		$this->assertEmpty(
+			$expected,
+			'Failed asserting that properties array contains [ ' . $this->formatAsString( $expected ) .' ].'
+		);
+	}
+
+	/**
 	 * @since 1.9.1
 	 *
 	 * @param array $expected

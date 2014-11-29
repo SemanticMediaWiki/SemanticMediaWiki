@@ -31,12 +31,17 @@ class InternalParseBeforeLinks {
 	/**
 	 * @var Parser
 	 */
-	protected $parser = null;
+	private $parser = null;
 
 	/**
 	 * @var string
 	 */
-	protected $text;
+	private $text;
+
+	/**
+	 * @var ApplicationFactory
+	 */
+	private $applicationFactory;
 
 	/**
 	 * @since 1.9
@@ -47,6 +52,7 @@ class InternalParseBeforeLinks {
 	public function __construct( Parser &$parser, &$text ) {
 		$this->parser = $parser;
 		$this->text =& $text;
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	/**
@@ -58,7 +64,11 @@ class InternalParseBeforeLinks {
 		return $this->canPerformUpdate() ? $this->performUpdate() : true;
 	}
 
-	protected function canPerformUpdate() {
+	private function canPerformUpdate() {
+
+		if ( $this->getRedirectTarget() !== null ) {
+			return true;
+		}
 
 		if ( $this->text === '' || $this->parser->getOptions()->getInterfaceMessage() ) {
 			return false;
@@ -68,7 +78,7 @@ class InternalParseBeforeLinks {
 			return true;
 		}
 
-		$isEnabledSpecialPage = ApplicationFactory::getInstance()->getSettings()->get( 'smwgEnabledSpecialPage' );
+		$isEnabledSpecialPage = $this->applicationFactory->getSettings()->get( 'smwgEnabledSpecialPage' );
 
 		foreach ( $isEnabledSpecialPage as $specialPage ) {
 			if ( $this->parser->getTitle()->isSpecial( $specialPage ) ) {
@@ -79,12 +89,12 @@ class InternalParseBeforeLinks {
 		return false;
 	}
 
-	protected function performUpdate() {
+	private function performUpdate() {
 
 		/**
 		 * @var ParserData $parserData
 		 */
-		$parserData = ApplicationFactory::getInstance()->newParserData(
+		$parserData = $this->applicationFactory->newParserData(
 			$this->parser->getTitle(),
 			$this->parser->getOutput()
 		);
@@ -95,7 +105,8 @@ class InternalParseBeforeLinks {
 		 *
 		 * @var InTextAnnotationParser
 		 */
-		$inTextAnnotationParser = ApplicationFactory::getInstance()->newInTextAnnotationParser( $parserData );
+		$inTextAnnotationParser = $this->applicationFactory->newInTextAnnotationParser( $parserData );
+		$inTextAnnotationParser->setRedirectTarget( $this->getRedirectTarget() );
 		$inTextAnnotationParser->parse( $this->text );
 
 		$this->parser->getOutput()->setProperty(
@@ -104,6 +115,18 @@ class InternalParseBeforeLinks {
 		);
 
 		return true;
+	}
+
+	/**
+	 * #656 / MW 1.24+
+	 */
+	private function getRedirectTarget() {
+
+		if ( method_exists( $this->parser->getOptions(), 'getRedirectTarget' ) ) {
+			return $this->parser->getOptions()->getRedirectTarget();
+		}
+
+		return null;
 	}
 
 }

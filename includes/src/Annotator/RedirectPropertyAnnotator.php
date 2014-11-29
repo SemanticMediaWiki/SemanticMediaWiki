@@ -7,13 +7,8 @@ use SMW\PropertyAnnotator;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 
-use ContentHandler;
-use Title;
-
 /**
  * Handling redirect annotation
- *
- * @ingroup SMW
  *
  * @license GNU GPL v2+
  * @since 1.9

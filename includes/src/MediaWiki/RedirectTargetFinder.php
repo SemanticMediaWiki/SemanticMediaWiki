@@ -16,7 +16,7 @@ class RedirectTargetFinder {
 	/**
 	 * @var Title|null
 	 */
-	protected $target = null;
+	private $redirectTarget = null;
 
 	/**
 	 * @since 2.0
@@ -26,8 +26,21 @@ class RedirectTargetFinder {
 	 * @return Title|null
 	 */
 	public function findRedirectTargetFromText( $text ) {
-		$this->redirectTarget = $this->findFromText( $text );
+
+		if ( $this->redirectTarget === null ) {
+			$this->redirectTarget = $this->findFromText( $text );
+		}
+
 		return $this;
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param Title|null
+	 */
+	public function setRedirectTarget( Title $redirectTarget = null ) {
+		$this->redirectTarget = $redirectTarget;
 	}
 
 	/**

@@ -2,8 +2,7 @@
 
 namespace SMW\Tests\Annotator;
 
-use SMW\Tests\Utils\Validators\SemanticDataValidator;
-use SMW\Tests\Utils\SemanticDataFactory;
+use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\Annotator\RedirectPropertyAnnotator;
 use SMW\Annotator\NullPropertyAnnotator;
@@ -11,7 +10,6 @@ use SMW\MediaWiki\RedirectTargetFinder;
 
 /**
  * @covers \SMW\Annotator\RedirectPropertyAnnotator
- *
  *
  * @group SMW
  * @group SMWExtension
@@ -29,8 +27,8 @@ class RedirectPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->semanticDataFactory = new SemanticDataFactory();
-		$this->semanticDataValidator = new SemanticDataValidator();
+		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 	}
 
 	protected function tearDown() {
