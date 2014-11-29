@@ -43,13 +43,13 @@ class RedirectPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 */
 	protected function addPropertyValues() {
 
-		if ( !$this->redirectTargetFinder->hasTarget() ) {
+		if ( !$this->redirectTargetFinder->hasRedirectTarget() ) {
 			return;
 		}
 
 		$this->getSemanticData()->addPropertyObjectValue(
 			new DIProperty( '_REDI' ),
-			DIWikiPage::newFromTitle( $this->redirectTargetFinder->getTarget(), '__red' )
+			DIWikiPage::newFromTitle( $this->redirectTargetFinder->getRedirectTarget() )
 		);
 	}
 

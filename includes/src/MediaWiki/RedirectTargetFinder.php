@@ -25,8 +25,8 @@ class RedirectTargetFinder {
 	 *
 	 * @return Title|null
 	 */
-	public function findTarget( $text ) {
-		$this->target = $this->findFromText( $text );
+	public function findRedirectTargetFromText( $text ) {
+		$this->redirectTarget = $this->findFromText( $text );
 		return $this;
 	}
 
@@ -35,8 +35,8 @@ class RedirectTargetFinder {
 	 *
 	 * @return Title|null
 	 */
-	public function getTarget() {
-		return $this->target;
+	public function getRedirectTarget() {
+		return $this->redirectTarget;
 	}
 
 	/**
@@ -44,8 +44,8 @@ class RedirectTargetFinder {
 	 *
 	 * @return boolean
 	 */
-	public function hasTarget() {
-		return $this->target instanceOf Title;
+	public function hasRedirectTarget() {
+		return $this->redirectTarget instanceOf Title;
 	}
 
 	private function findFromText( $text ) {

@@ -69,7 +69,7 @@ class RedirectPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new RedirectPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
-			$redirectTargetFinder->findTarget( $parameter['text'] )
+			$redirectTargetFinder->findRedirectTargetFromText( $parameter['text'] )
 		);
 
 		$instance->addAnnotation();

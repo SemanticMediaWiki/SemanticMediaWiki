@@ -120,7 +120,7 @@ class InTextAnnotationParser {
 
 			$propertyAnnotator = ApplicationFactory::getInstance()->newPropertyAnnotatorFactory()->newRedirectPropertyAnnotator(
 				$this->parserData->getSemanticData(),
-				$this->redirectTargetFinder->findTarget( $text )
+				$this->redirectTargetFinder->findRedirectTargetFromText( $text )
 			);
 
 			$propertyAnnotator->addAnnotation();
