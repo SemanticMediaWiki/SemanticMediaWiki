@@ -2,6 +2,7 @@
 
 use SMW\UrlEncoder;
 use SMW\DIProperty;
+use SMW\UiAttributeFinder;
 
 /**
  * @ingroup SMWSpecialPage
@@ -155,8 +156,9 @@ class SMWSpecialBrowse extends SpecialPage {
 		// Some of the CSS classes are different for the left or the right side.
 		// In this case, there is an "i" after the "smwb-". This is set here.
 		$ccsPrefix = $left ? 'smwb-' : 'smwb-i';
+		$uiClass = UiAttributeFinder::getClassForId( 'browse-table' );
 
-		$html = "<table class=\"{$ccsPrefix}factbox\" cellpadding=\"0\" cellspacing=\"0\">\n";
+		$html = "<table class=\"{$ccsPrefix}factbox {$uiClass}\" cellpadding=\"0\" cellspacing=\"0\">\n";
 
 		$diProperties = $data->getProperties();
 		$noresult = true;
@@ -268,8 +270,10 @@ class SMWSpecialBrowse extends SpecialPage {
 	private function displayHead() {
 		global $wgOut;
 
+		$uiClass = UiAttributeFinder::getClassForId( 'browse-head' );
+
 		$wgOut->setHTMLTitle( $this->subject->getTitle() );
-		$html = "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n" .
+		$html = "<table class=\"smwb-factbox {$uiClass}\" cellpadding=\"0\" cellspacing=\"0\">\n" .
 			"<tr class=\"smwb-title\"><td colspan=\"2\">\n" .
 			$this->subject->getLongHTMLText( smwfGetLinker() ) . "\n" .
 			"</td></tr>\n</table>\n";

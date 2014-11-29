@@ -284,9 +284,11 @@ class Factbox {
 			$this->getTableContent( $semanticData );
 
 			$text .= Html::rawElement( 'div',
-				array( 'class' => 'smwfact' ),
+				array( 'class' => 'smwfact ' . UiAttributeFinder::getClassForId( 'factbox-head' ) ),
 				$this->tableBuilder->getHeaderItems() .
-				$this->tableBuilder->getHtml( array( 'class' => 'smwfacttable' ) )
+				$this->tableBuilder->getHtml( array(
+					'class' => 'smwfacttable ' . UiAttributeFinder::getClassForId( 'factbox-table' )
+				) )
 			);
 		}
 
