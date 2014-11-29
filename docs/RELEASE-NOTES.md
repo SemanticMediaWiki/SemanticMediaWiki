@@ -38,6 +38,7 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #638 Fixed `postgres` temporary table generation issue (bug 34855, #455, #462)
 * #640 Fixed `QueryProcessor` to allow query conditions to contain `=` (bug 32955)
 * #641 Removes service info links from the `Factbox`
+* #654 Fixed broken field detection in record-type caused by html encoded strings (bug T23926)
 
 ## Internal changes
 
