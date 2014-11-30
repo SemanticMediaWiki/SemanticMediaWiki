@@ -70,6 +70,8 @@ class InternalParseBeforeLinks {
 			return true;
 		}
 
+		// ParserOptions::getInterfaceMessage is being used to identify whether a
+		// parse was initiated by `Message::parse`
 		if ( $this->text === '' || $this->parser->getOptions()->getInterfaceMessage() ) {
 			return false;
 		}
