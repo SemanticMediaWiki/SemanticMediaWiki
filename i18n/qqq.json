@@ -317,5 +317,10 @@
 	"smw-sp-searchbyproperty-description": "Extended description text for the [[Special:SearchByProperty]] page.",
 	"smw-sp-searchbyproperty-resultlist-header": "A header label",
 	"smw-sp-searchbyproperty-nonvaluequery": "A description for a query result without values.\n\nParameters:\n* $1 - Name of the property",
-	"smw-sp-searchbyproperty-valuequery": "A description for a query result with values.\n\nParameters:\n* $1 - Name of the property\n* $2 - Name of the value"
+	"smw-sp-searchbyproperty-valuequery": "A description for a query result with values.\n\nParameters:\n* $1 - Name of the property\n* $2 - Name of the value",
+	"smw-editpage-annotation-enabled":"A description to be displayed on the edit page.",
+	"smw-editpage-annotation-disabled":"A description to be displayed on the edit page.",
+	"smw-editpage-property-annotation-enabled":"A description to be displayed on the edit page.",
+	"smw-editpage-property-annotation-disabled":"A description to be displayed on the edit page.",
+	"smw-editpage-concept-annotation-enabled":"A description to be displayed on the edit page."
 }
