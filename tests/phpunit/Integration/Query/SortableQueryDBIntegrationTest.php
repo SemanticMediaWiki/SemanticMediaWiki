@@ -96,7 +96,7 @@ class SortableQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$query->sortkeys = array( $property->getKey() => 'ASC' );
 		$query->setUnboundLimit( 50 );
 
-		$this->assertEquals(
+		$this->assertResultOrder(
 			$expectedSubjects,
 			$this->getStore()->getQueryResult( $query )->getResults()
 		);
@@ -119,7 +119,7 @@ class SortableQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$query->sortkeys = array( $property->getKey() => 'DESC' );
 		$query->setUnboundLimit( 50 );
 
-		$this->assertEquals(
+		$this->assertResultOrder(
 			array_reverse( $expectedSubjects ),
 			$this->getStore()->getQueryResult( $query )->getResults()
 		);
@@ -129,7 +129,7 @@ class SortableQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		foreach ( $expectedSubjects as $key => $expectedSubject ) {
 
-			$subjectTitle = $expectedSubject->getTitle()->getText() . __METHOD__;
+			$subjectTitle = $expectedSubject->getTitle()->getText() . '-' . __METHOD__;
 			$semanticData = $this->semanticDataFactory->newEmptySemanticData( $subjectTitle );
 
 			$semanticData->addPropertyObjectValue( $property, $expectedSubject );
@@ -160,6 +160,22 @@ class SortableQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$query->querymode = Query::MODE_INSTANCES;
 
 		return $query;
+	}
+
+	private function assertResultOrder( $expected, $results ) {
+
+		$hasSameOrder = true;
+
+		foreach ( $results as $key => $dataItem ) {
+			if ( $expected[ $key ]->getHash() !== $dataItem->getHash() ) {
+				$hasSameOrder = false;
+			}
+		}
+
+		$this->assertTrue(
+			$hasSameOrder,
+			'Failed asserting that results have expected order.'
+		);
 	}
 
 }

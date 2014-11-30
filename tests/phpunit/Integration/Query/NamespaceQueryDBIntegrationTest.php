@@ -31,7 +31,9 @@ class NamespaceQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	private $fixturesProvider;
 	private $semanticDataFactory;
+
 	private $queryResultValidator;
+	private $subjects = array();
 
 	protected function setUp() {
 		parent::setUp();
@@ -46,7 +48,9 @@ class NamespaceQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	protected function tearDown() {
 
 		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
-		$fixturesCleaner->purgeAllKnownFacts();
+		$fixturesCleaner
+			->purgeSubjects( $this->subjects )
+			->purgeAllKnownFacts();
 
 		parent::tearDown();
 	}
@@ -54,13 +58,13 @@ class NamespaceQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	public function testConjunctiveNamespaceQueryThatIncludesSubobject() {
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
-		$expectedSubjects[] = $semanticData->getSubject();
+		$this->subjects[] = $semanticData->getSubject();
 
 		$factsheet = $this->fixturesProvider->getFactsheet( 'Berlin' );
 		$factsheet->setTargetSubject( $semanticData->getSubject() );
 
 		$demographicsSubobject = $factsheet->getDemographics();
-		$expectedSubjects[] = $demographicsSubobject->getSemanticData()->getSubject();
+		$this->subjects[] = $demographicsSubobject->getSemanticData()->getSubject();
 
 		$semanticData->addPropertyObjectValue(
 			$demographicsSubobject->getProperty(),
@@ -100,7 +104,7 @@ class NamespaceQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		);
 
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
-			$expectedSubjects,
+			$this->subjects,
 			$queryResult
 		);
 	}

@@ -18,6 +18,7 @@ use RuntimeException;
  *
  * @group semantic-mediawiki
  * @group mediawiki-database
+ *
  * @group medium
  *
  * @license GNU GPL v2+
@@ -62,10 +63,6 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 
 		$this->checkIfDatabaseCanBeUsedOtherwiseSkipTest();
 		$this->checkIfStoreCanBeUsedOtherwiseSkipTest();
-
-	//	if ( is_a( $this->getStore(), '\SMW\SPARQLStore\SPARQLStore' ) ) {
-	//		 $this->getStore()->getSparqlDatabase()->deleteAll();
-	//	}
 
 		ApplicationFactory::getInstance()->registerObject( 'Store', $this->getStore() );
 	}
@@ -134,7 +131,18 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 	protected function skipTestForDatabase( array $excludedDatabase ) {
 		if ( in_array( $this->getDBConnection()->getType(), $excludedDatabase ) ) {
 			$this->markTestSkipped(
-				"Database was excluded and is expected not to support this test"
+				"Database was excluded and is not expected to support this test"
+			);
+		}
+	}
+
+	protected function skipTestForStore( $excludeStore ) {
+
+		$store = get_class( $this->getStore() );
+
+		if ( $store == $excludeStore ) {
+			$this->markTestSkipped(
+				"{$store} was excluded and is not expected to support the test"
 			);
 		}
 	}
@@ -155,7 +163,7 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 
 		if ( !$this->isUsableUnitTestDatabase ) {
 			$this->markTestSkipped(
-				"Database was excluded and is expected not to support the test"
+				"Database was excluded and is not expected to support the test"
 			);
 		}
 	}
@@ -166,7 +174,7 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 
 		if ( in_array( $store, (array)$this->storesToBeExcluded ) ) {
 			$this->markTestSkipped(
-				"{$store} was excluded and is expected not to support the test"
+				"{$store} was excluded and is not expected to support the test"
 			);
 		}
 	}
