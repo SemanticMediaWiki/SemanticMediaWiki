@@ -86,6 +86,8 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testDoUpdateForValidRevision( $updateJobStatus ) {
 
+		$this->applicationFactory->getSettings()->set( 'smwgUpdateStrategy', SMW_DIFF_UPDATE );
+
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
@@ -194,6 +196,54 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 		$instance = new StoreUpdater( $store, $semanticData );
 
 		$this->assertFalse( $instance->doUpdate() );
+	}
+
+	public function testReplacementUpdateStrategy() {
+
+		$this->applicationFactory->getSettings()->set( 'smwgUpdateStrategy', SMW_REPLACEMENT_UPDATE );
+
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
+
+		$revision = $this->getMockBuilder( '\Revision' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiPage->expects( $this->atLeastOnce() )
+			->method( 'getRevision' )
+			->will( $this->returnValue( $revision ) );
+
+		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$pageCreator->expects( $this->atLeastOnce() )
+			->method( 'createPage' )
+			->will( $this->returnValue( $wikiPage ) );
+
+		$this->applicationFactory->registerObject( 'PageCreator', $pageCreator );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'clearData', 'updateData' ) )
+			->getMockForAbstractClass();
+
+		$store->expects( $this->once() )
+			->method( 'clearData' )
+			->with( $this->equalTo( $semanticData->getSubject() ) );
+
+		$store->expects( $this->once() )
+			->method( 'updateData' )
+			->with( $this->equalTo( $semanticData ) );
+
+		$instance = new StoreUpdater( $store, $semanticData );
+
+		$this->assertTrue(
+			$instance->doUpdate()
+		);
 	}
 
 	public function updateJobStatusProvider() {
