@@ -12,6 +12,7 @@ use SMW\Tests\Utils\Fixtures\Properties\FoundedProperty;
 use SMW\Tests\Utils\Fixtures\Properties\LocatedInProperty;
 use SMW\Tests\Utils\Fixtures\Properties\CityCategory;
 use SMW\Tests\Utils\Fixtures\Properties\BookRecordProperty;
+use SMW\Tests\Utils\Fixtures\Properties\YearProperty;
 
 use SMW\Tests\Utils\Fixtures\Facts\BerlinFactsheet;
 use SMW\Tests\Utils\Fixtures\Facts\ParisFactsheet;
@@ -74,7 +75,8 @@ class FixturesProvider {
 			'population' => new PopulationProperty(),
 			'founded' => new FoundedProperty(),
 			'locatedin' => new LocatedInProperty(),
-			'bookrecord' => new BookRecordProperty()
+			'bookrecord' => new BookRecordProperty(),
+			'year' => new YearProperty()
 		);
 	}
 

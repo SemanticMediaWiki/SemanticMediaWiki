@@ -74,7 +74,7 @@ class SMWRecordValue extends SMWDataValue {
 
 			if ( $queryMode ) { // special handling for supporting query parsing
 				$comparator = SMW_CMP_EQ;
-				SMWDataValue::prepareValue( $values[$valueIndex], $comparator );
+				self::prepareValue( $values[$valueIndex], $comparator );
 			}
 
 			// generating the DVs:
