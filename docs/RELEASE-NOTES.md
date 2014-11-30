@@ -15,6 +15,7 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #620 Added `--page` as export option to `dumpRDF.php` 
 * #633 Added ouput decoding for uri's to be human readable (bug 35452)
 * #643 Added `--runtime` as reporting option for memory usage and runtime to `rebuildData.php`
+* #659 Added `$smwgEnabledEditPageHelp` to show a contextual help text on the edit page
 
 ## Bug fixes
 
