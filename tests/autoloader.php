@@ -37,7 +37,7 @@ $autoloader = require $path;
  *
  * @since  2.0
  */
-$autoloader->addPsr4( 'SMW\\Tests\\Utils\\', __DIR__ . '/phpunit/Util' );
+$autoloader->addPsr4( 'SMW\\Tests\\Utils\\', __DIR__ . '/phpunit/Utils' );
 
 $autoloader->addClassMap( array(
 	'SMW\Tests\MwDBaseUnitTestCase'         => __DIR__ . '/phpunit/MwDBaseUnitTestCase.php',

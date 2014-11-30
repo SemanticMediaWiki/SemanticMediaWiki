@@ -36,7 +36,7 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 	private $mwHooksHandler;
 
 	private $semanticDataValidator;
-	private $deletePoolOfPages = array();
+	private $subjects = array();
 
 	private $pageDeleter;
 	private $pageCreator;
@@ -60,8 +60,9 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 	}
 
 	protected function tearDown() {
+
 		$this->pageDeleter
-			->doDeletePoolOfPages( $this->deletePoolOfPages );
+			->doDeletePoolOfPages( $this->subjects );
 
 		$this->applicationFactory->clear();
 		$this->mwHooksHandler->restoreListedHooks();
@@ -73,7 +74,7 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$property = new DIProperty( 'SomePageProperty' );
 
-		$subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+		$this->subjects[] = $subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
 		$semanticData = new SemanticData( $subject );
 
 		$semanticData->addPropertyObjectValue(
@@ -94,7 +95,7 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 		$property = new DIProperty( 'SomeBlobProperty' );
 		$property->setPropertyTypeId( '_txt' );
 
-		$subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+		$this->subjects[] = $subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
 		$semanticData = new SemanticData( $subject );
 
 		$semanticData->addPropertyObjectValue(
@@ -114,7 +115,7 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$propertyAsString = 'SomePropertyAsString';
 
-		$subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+		$this->subjects[] = $subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
 		$semanticData = new SemanticData( $subject );
 
 		$dataValue = DataValueFactory::getInstance()->newPropertyValue(
@@ -136,7 +137,7 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testAddSubobjectToSemanticDataForStorage() {
 
-		$subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+		$this->subjects[] = $subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
 		$semanticData = new SemanticData( $subject );
 
 		$subobject = new Subobject( $subject->getTitle() );
@@ -192,7 +193,7 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 			$this->getStore()->getSemanticData( $subject )
 		);
 
-		$this->deletePoolOfPages = array(
+		$this->subjects = array(
 			$subject,
 			Title::newFromText( 'Foo-B' )
 		);
@@ -228,7 +229,7 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 			$this->getStore()->getSemanticData( $subject )
 		);
 
-		$this->deletePoolOfPages = array(
+		$this->subjects = array(
 			$subject,
 			Title::newFromText( 'Foo-B' ),
 			Title::newFromText( 'Foo-C' )
@@ -277,7 +278,7 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 			$this->getStore()->getSemanticData( $target )->findSubSemanticData( 'test' )
 		);
 
-		$this->deletePoolOfPages = array(
+		$this->subjects = array(
 			$redirect,
 			$target
 		);

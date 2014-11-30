@@ -111,12 +111,15 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 			return;
 		}
 
-		foreach ( $queryResult->getResults() as $resultSubject ) {
-			foreach ( $expectedSubjects as $key => $expectedSubject ) {
+		$resultSubjects = $queryResult->getResults();
+
+		foreach ( $resultSubjects as $rKey => $resultSubject ) {
+			foreach ( $expectedSubjects as $ekey => $expectedSubject ) {
 
 				if ( $expectedSubject instanceOf DIWikiPage && $expectedSubject->equals( $resultSubject ) ) {
 					$actualComparedToCount++;
-					unset( $expectedSubjects[ $key ] );
+					unset( $expectedSubjects[ $ekey ] );
+					unset( $resultSubjects[ $rKey ] );
 				}
 			}
 		}
@@ -124,7 +127,12 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 		$this->assertEquals(
 			$expectedToCount,
 			$actualComparedToCount,
-			'Failed asserting that ' . implode( ', ', $expectedSubjects ) . ' is set'
+			'Failed asserting that ' . implode( ', ', $expectedSubjects ) . ' is set.'
+		);
+
+		$this->assertEmpty(
+			$resultSubjects,
+			'Failed to match results [ ' . implode( ', ', $resultSubjects ) . ' ] against the expected subjects.'
 		);
 	}
 
