@@ -4,6 +4,8 @@ namespace SMW\Tests\MediaWiki\Hooks;
 
 use SMW\MediaWiki\Hooks\HookRegistry;
 
+use Title;
+
 /**
  * @covers \SMW\MediaWiki\Hooks\HookRegistry
  *
@@ -50,6 +52,30 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatDefinitionIsClosure(
 			$instance,
 			$instance->getListOfRegisteredParserFunctions()
+		);
+	}
+
+	public function testCanExecuteEditPageForm() {
+
+		$title = Title::newFromText( 'Foo' );
+
+		$editPage = $this->getMockBuilder( '\EditPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$editPage->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$outputPage = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new HookRegistry();
+
+		call_user_func_array(
+			$instance->getDefinition( 'EditPage::showEditForm:initial' ),
+			array( $editPage, $outputPage )
 		);
 	}
 

@@ -456,6 +456,22 @@ class HookRegistry {
 			return $titleIsMovable->process();
 		};
 
+		/**
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/EditPage::showEditForm:initial
+		 */
+		$functionHookDefinition['EditPage::showEditForm:initial'] = function ( $editPage, $output ) {
+
+			$mwCollaboratorFactory = ApplicationFactory::getInstance()->newMwCollaboratorFactory();
+
+			$htmlFormBuilder = $mwCollaboratorFactory->newHtmlFormBuilder(
+				$editPage->getTitle(),
+				$output->getLanguage()
+			);
+
+			$editPageForm = new EditPageForm( $editPage, $htmlFormBuilder );
+			return $editPageForm->process();
+		};
+
 		return $functionHookDefinition;
 	}
 

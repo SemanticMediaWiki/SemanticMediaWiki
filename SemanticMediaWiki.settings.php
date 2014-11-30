@@ -765,3 +765,12 @@ $GLOBALS['smwgOnDeleteAction'] = array(
 ##
 $GLOBALS['smwgFallbackSearchType'] = null;
 ##
+
+###
+# If enabled it will display help information on the edit page to support users
+# unfamiliar with SMW when extending page content.
+#
+# @since 2.1
+##
+$GLOBALS['smwgEnabledEditPageHelp'] = true;
+##
