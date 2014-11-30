@@ -38,17 +38,19 @@ class RecordTypeQueryTest extends MwDBaseUnitTestCase {
 	private $dataValueFactory;
 
 	private $queryParser;
-	private $purgeableSubjects =  array();
+	private $subjects = array();
 
 	protected function setUp() {
 		parent::setUp();
 
+		$utilityFactory = UtilityFactory::getInstance();
+
 		$this->dataValueFactory = DataValueFactory::getInstance();
-		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
+		$this->semanticDataFactory = $utilityFactory->newSemanticDataFactory();
 
-		$this->queryResultValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator();
+		$this->queryResultValidator = $utilityFactory->newValidatorFactory()->newQueryResultValidator();
 
-		$this->fixturesProvider = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesProvider();
+		$this->fixturesProvider = $utilityFactory->newFixturesFactory()->newFixturesProvider();
 		$this->fixturesProvider->setupDependencies( $this->getStore() );
 
 		$this->queryParser = new QueryParser();
@@ -58,7 +60,7 @@ class RecordTypeQueryTest extends MwDBaseUnitTestCase {
 
 		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
 		$fixturesCleaner
-			->purgeSubjects( $this->purgeableSubjects )
+			->purgeSubjects( $this->subjects )
 			->purgeAllKnownFacts();
 
 		parent::tearDown();
@@ -131,7 +133,7 @@ class RecordTypeQueryTest extends MwDBaseUnitTestCase {
 		$semanticData = $this->semanticDataFactory
 			->newEmptySemanticData( __METHOD__ );
 
-		$this->purgeableSubjects[] = $semanticData->getSubject();
+		$this->subjects[] = $semanticData->getSubject();
 
 		// MW parser runs htmlspecialchars on strings therefore
 		// simulating it as well
@@ -163,6 +165,162 @@ class RecordTypeQueryTest extends MwDBaseUnitTestCase {
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
 			$semanticData->getSubject(),
 			$queryResult
+		);
+	}
+
+	/**
+	 * T36019
+	 */
+	public function testRecordsToContainFieldComparator() {
+
+		$property = $this->fixturesProvider->getProperty( 'bookrecord' );
+
+		$semanticData = $this->semanticDataFactory
+			->newEmptySemanticData( __METHOD__ . '-sample-2000' );
+
+		$this->subjects['sample-2000'] = $semanticData->getSubject();
+
+		$dataValue = $this->dataValueFactory->newPropertyObjectValue(
+			$property,
+			"Sample 1;2000",
+			'',
+			$this->subjects['sample-2000']
+		);
+
+		$semanticData->addDataValue( $dataValue	);
+
+		$this->getStore()->updateData( $semanticData );
+
+		$semanticData = $this->semanticDataFactory
+			->newEmptySemanticData( __METHOD__ . '-sample-2001' );
+
+		$this->subjects['sample-2001'] = $semanticData->getSubject();
+
+		$dataValue = $this->dataValueFactory->newPropertyObjectValue(
+			$property,
+			"Sample 2;30 Dec 2001",
+			'',
+			$this->subjects['sample-2001']
+		);
+
+		$semanticData->addDataValue( $dataValue	);
+
+		$this->getStore()->updateData( $semanticData );
+
+		$semanticData = $this->semanticDataFactory
+			->newEmptySemanticData( __METHOD__ . '-sample-1900' );
+
+		$this->subjects['sample-1900'] = $semanticData->getSubject();
+
+		$dataValue = $this->dataValueFactory->newPropertyObjectValue(
+			$property,
+			"Sample 3;1900",
+			'',
+			$this->subjects['sample-1900']
+		);
+
+		$semanticData->addDataValue( $dataValue	);
+
+		$this->getStore()->updateData( $semanticData );
+
+		/**
+		 * @query "[[Book record::?;<1901]]"
+		 */
+		$description = $this->queryParser
+			->getQueryDescription( "[[Book record::?;<1901]]" );
+
+		$query = new Query(
+			$description,
+			false,
+			true
+		);
+
+		$this->queryResultValidator->assertThatQueryResultHasSubjects(
+			$this->subjects['sample-1900'],
+			$this->getStore()->getQueryResult( $query )
+		);
+
+		/**
+		 * @query "[[Book record::?;>1901]]"
+		 */
+		$description = $this->queryParser
+			->getQueryDescription( "[[Book record::?;>1901]]" );
+
+		$query = new Query(
+			$description,
+			false,
+			true
+		);
+
+		$expected = array(
+			$this->subjects['sample-2000'],
+			$this->subjects['sample-2001']
+		);
+
+		$this->queryResultValidator->assertThatQueryResultHasSubjects(
+			$expected,
+			$this->getStore()->getQueryResult( $query )
+		);
+
+		/**
+		 * @query "[[Book record::?;<30 Dec 2001]]"
+		 */
+		$description = $this->queryParser
+			->getQueryDescription( "[[Book record::?;<30 Dec 2001]]" );
+
+		$query = new Query(
+			$description,
+			false,
+			true
+		);
+
+		$expected = array(
+			$this->subjects['sample-1900'],
+			$this->subjects['sample-2000']
+		);
+
+		$this->queryResultValidator->assertThatQueryResultHasSubjects(
+			$expected,
+			$this->getStore()->getQueryResult( $query )
+		);
+
+		/**
+		 * @query "[[Book record::?;>30 Dec 2001]]"
+		 */
+		$description = $this->queryParser
+			->getQueryDescription( "[[Book record::?;>30 Dec 2001]]" );
+
+		$query = new Query(
+			$description,
+			false,
+			true
+		);
+
+		$this->queryResultValidator->assertThatQueryResultHasSubjects(
+			$this->subjects['sample-2001'],
+			$this->getStore()->getQueryResult( $query )
+		);
+
+		/**
+		 * @query "[[Book record::?;!2000]]"
+		 */
+		$description = $this->queryParser
+			->getQueryDescription( "[[Book record::?;!2000]]" );
+
+		$query = new Query(
+			$description,
+			false,
+			true
+		);
+
+		$expected = array(
+			$this->subjects['sample-1900'],
+			$this->subjects['sample-2001']
+		);
+
+		$this->queryResultValidator->assertThatQueryResultHasSubjects(
+			$expected,
+			$this->getStore()->getQueryResult( $query )
 		);
 	}
 
