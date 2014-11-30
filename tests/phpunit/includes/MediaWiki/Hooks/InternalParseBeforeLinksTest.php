@@ -65,7 +65,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parser->expects( $this->never() )
+		$parser->expects( $this->once() )
 			->method( 'getOptions' );
 
 		$instance = new InternalParseBeforeLinks(
@@ -92,7 +92,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parser->expects( $this->once() )
+		$parser->expects( $this->atLeastOnce() )
 			->method( 'getOptions' )
 			->will( $this->returnValue( $parserOptions ) );
 

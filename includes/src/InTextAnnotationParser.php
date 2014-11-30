@@ -114,13 +114,23 @@ class InTextAnnotationParser {
 		SMWOutputs::commitToParserOutput( $this->parserData->getOutput() );
 	}
 
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param Title|null $redirectTarget
+	 */
+	public function setRedirectTarget( Title $redirectTarget = null ) {
+		$this->redirectTargetFinder->setRedirectTarget( $redirectTarget );
+	}
+
 	protected function findRedirectTarget( $text ) {
 
 		if ( $this->isEnabledNamespace ) {
 
 			$propertyAnnotator = ApplicationFactory::getInstance()->newPropertyAnnotatorFactory()->newRedirectPropertyAnnotator(
 				$this->parserData->getSemanticData(),
-				$this->redirectTargetFinder->findTarget( $text )
+				$this->redirectTargetFinder->findRedirectTargetFromText( $text )
 			);
 
 			$propertyAnnotator->addAnnotation();

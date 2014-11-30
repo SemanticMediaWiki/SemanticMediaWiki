@@ -7,13 +7,8 @@ use SMW\PropertyAnnotator;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 
-use ContentHandler;
-use Title;
-
 /**
  * Handling redirect annotation
- *
- * @ingroup SMW
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -43,13 +38,13 @@ class RedirectPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 */
 	protected function addPropertyValues() {
 
-		if ( !$this->redirectTargetFinder->hasTarget() ) {
+		if ( !$this->redirectTargetFinder->hasRedirectTarget() ) {
 			return;
 		}
 
 		$this->getSemanticData()->addPropertyObjectValue(
 			new DIProperty( '_REDI' ),
-			DIWikiPage::newFromTitle( $this->redirectTargetFinder->getTarget(), '__red' )
+			DIWikiPage::newFromTitle( $this->redirectTargetFinder->getRedirectTarget() )
 		);
 	}
 

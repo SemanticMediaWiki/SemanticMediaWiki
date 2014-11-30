@@ -133,7 +133,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testRedirectAnnotation() {
+	public function testRedirectAnnotationFromText() {
 
 		$namespace = NS_MAIN;
 		$text      = '#REDIRECT [[:Lala]]';
@@ -141,7 +141,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 		$expected = array(
 			'propertyCount'  => 1,
 			'property'       => new DIProperty( '_REDI' ),
-			'propertyValues' => ':Lala'
+			'propertyValues' => array( 'Lala' )
 		);
 
 		$settings = array(
@@ -169,6 +169,51 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			$redirectTargetFinder
 		);
 
+		$instance->parse( $text );
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$parserData->getSemanticData()
+		);
+	}
+
+	public function testRedirectAnnotationFromInjectedRedirectTarget() {
+
+		$namespace = NS_MAIN;
+		$text      = '';
+		$redirectTarget = Title::newFromText( 'Foo' );
+
+		$expected = array(
+			'propertyCount'  => 1,
+			'property'       => new DIProperty( '_REDI' ),
+			'propertyValues' => array( 'Foo' )
+		);
+
+		$settings = array(
+			'smwgNamespacesWithSemanticLinks' => array( $namespace => true ),
+			'smwgLinksInValues' => false,
+			'smwgInlineErrors'  => true,
+		);
+
+		$this->applicationFactory->registerObject(
+			'Settings',
+			Settings::newFromArray( $settings )
+		);
+
+		$parserData = new ParserData(
+			Title::newFromText( __METHOD__, $namespace ),
+			new ParserOutput()
+		);
+
+		$redirectTargetFinder = new RedirectTargetFinder();
+
+		$instance = new InTextAnnotationParser(
+			$parserData,
+			new MagicWordFinder(),
+			$redirectTargetFinder
+		);
+
+		$instance->setRedirectTarget( $redirectTarget );
 		$instance->parse( $text );
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
