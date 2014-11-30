@@ -402,7 +402,7 @@ abstract class Store {
 	 *
 	 * @return float between 0 and 1 to indicate the overall progress of the refreshing
 	 */
-	public abstract function refreshData( &$index, $count, $namespaces = false, $usejobs = true );
+	public abstract function refreshData( &$index, $count, $namespaces = false, $usejobs = true, $verbose = false );
 
 	/**
 	 * Setup the store.

@@ -365,8 +365,8 @@ class SPARQLStore extends Store {
 	 * @see Store::refreshData()
 	 * @since 1.8
 	 */
-	public function refreshData( &$index, $count, $namespaces = false, $usejobs = true ) {
-		return $this->baseStore->refreshData( $index, $count, $namespaces, $usejobs );
+	public function refreshData( &$index, $count, $namespaces = false, $usejobs = true, $verbose = false ) {
+		return $this->baseStore->refreshData( $index, $count, $namespaces, $usejobs, $verbose );
 	}
 
 	/**
