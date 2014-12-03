@@ -54,6 +54,7 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array( $this->newBaseTemplateToolboxSetup( '2013/11/05' ), 'Special:Browse/2013-2F11-2F05' );
 		$provider[] = array( $this->newBaseTemplateToolboxSetup( '2013-06-30' ), 'Special:Browse/2013-2D06-2D30' );
 		$provider[] = array( $this->newBaseTemplateToolboxSetup( '2013$06&30' ), 'Special:Browse/2013-2406-2630' );
+		$provider[] = array( $this->newBaseTemplateToolboxSetup( '2013\Foo' ),   'Special:Browse/2013-5CFoo' );
 
 		return $provider;
 	}

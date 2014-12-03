@@ -58,8 +58,11 @@ class SMWRecordValue extends SMWDataValue {
 			$semanticData = new SMWContainerSemanticData( $subject );
 		}
 
+		// #664 / T17732
+		$value = str_replace( "\;", "-3B", $value );
+
 		// Bug 21926 / T23926
-		// Values can be html encoded which adds additional semicolons
+		// Values that use html entities are encoded with a semicolon
 		$value = htmlspecialchars_decode( $value, ENT_QUOTES );
 
 		$values = preg_split( '/[\s]*;[\s]*/u', trim( $value ) );
@@ -71,6 +74,8 @@ class SMWRecordValue extends SMWDataValue {
 			if ( !array_key_exists( $valueIndex, $values ) ) {
 				break; // stop if there are no values left
 			}
+
+			$values[$valueIndex] = str_replace( "-3B", ";", $values[$valueIndex] );
 
 			if ( $queryMode ) { // special handling for supporting query parsing
 				$comparator = SMW_CMP_EQ;
@@ -336,7 +341,7 @@ class SMWRecordValue extends SMWDataValue {
 			case 1: return $dataValue->getShortHTMLText( $linker );
 			case 2: return $dataValue->getShortWikiText( $linker );
 			case 3: return $dataValue->getShortHTMLText( $linker );
-			case 4: return $dataValue->getWikiValue();
+			case 4: return str_replace( ";", "\;", $dataValue->getWikiValue() );
 		}
 	}
 

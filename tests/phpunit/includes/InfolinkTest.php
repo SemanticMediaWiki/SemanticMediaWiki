@@ -65,6 +65,17 @@ class InfolinkTest extends SemanticMediaWikiTestCase {
 					'x=format%3Dtemplate%2Flink%3Dnone%2Fnamed-20args%3D1'
 				)
 			),
+
+			// #2 "\"
+			array(
+				array(
+					"format=foo\bar",
+				),
+				array(
+					'format=foo-5Cbar',
+					'x=format%3Dfoo-5Cbar'
+				)
+			),
 		);
 	}
 
