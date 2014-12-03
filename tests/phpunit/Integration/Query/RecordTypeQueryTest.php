@@ -138,7 +138,7 @@ class RecordTypeQueryTest extends MwDBaseUnitTestCase {
 		// simulating it as well
 		$dataValue = $this->dataValueFactory->newPropertyObjectValue(
 			$property,
-			htmlspecialchars( "Title with $&%'* special characters ; 2001" ),
+			htmlspecialchars( "Title with $&%'\;* special characters ; 2001" ),
 			'',
 			$semanticData->getSubject()
 		);
@@ -148,10 +148,15 @@ class RecordTypeQueryTest extends MwDBaseUnitTestCase {
 		$this->getStore()->updateData( $semanticData );
 
 		/**
-		 * @query "[[Book record::Title with $&%'* special characters;2001]]"
+		 * @query "[[Book record::Title with $&%'\;* special characters;2001]]"
 		 */
 		$description = $this->queryParser
-			->getQueryDescription( "[[Book record::Title with $&%'* special characters;2001]]" );
+			->getQueryDescription( "[[Book record::Title with $&%'\;* special characters;2001]]" );
+
+		$this->assertEquals(
+			"[[Book record:: <q>[[Title::Title with $&%';* special characters]] [[Year::2001]]</q> ]]",
+			$description->getQueryString()
+		);
 
 		$query = new Query(
 			$description,
@@ -222,116 +227,70 @@ class RecordTypeQueryTest extends MwDBaseUnitTestCase {
 
 		$this->getStore()->updateData( $semanticData );
 
-		$this->searchForLowerboundGreaterThanPattern();
-		$this->searchForUpperboundGreaterThanPattern();
-		$this->searchForLowerboundLessThanPattern();
-		$this->searchForLessThanPattern();
-		$this->searchForNotLikePattern();
+		/**
+		 * @query "[[Book record::?;<30 Dec 2001]]"
+		 */
+		$this->assertThatQueryReturns(
+			"[[Book record::?;<30 Dec 2001]]"  ,
+			array(
+				$this->subjects['sample-1900'],
+				$this->subjects['sample-2000'],
+				$this->subjects['sample-2001']
+			)
+		);
+
+		/**
+		 * @query "[[Book record::?;<1901]]"
+		 */
+		$this->assertThatQueryReturns(
+			"[[Book record::?;<1901]]" ,
+			array(
+				$this->subjects['sample-1900']
+			)
+		);
+
+		/**
+		 * @query "[[Book record::?;>30 Dec 2001]]"
+		 */
+		$this->assertThatQueryReturns(
+			"[[Book record::?;>30 Dec 2001]]",
+			array(
+				$this->subjects['sample-2001']
+			)
+		);
+
+		/**
+		 * @query "[[Book record::?;>1901]]"
+		 */
+		$this->assertThatQueryReturns(
+			"[[Book record::?;>1901]]",
+			array(
+				$this->subjects['sample-2000'],
+				$this->subjects['sample-2001']
+			)
+		);
+
+		/**
+		 * @query "[[Book record::?;!2000]]"
+		 */
+		$this->assertThatQueryReturns(
+			"[[Book record::?;!2000]]",
+			array(
+				$this->subjects['sample-1900'],
+				$this->subjects['sample-2001']
+			)
+		);
 	}
 
-	/**
-	 * @query "[[Book record::?;>1901]]"
-	 */
-	private function searchForLowerboundGreaterThanPattern() {
+	private function assertThatQueryReturns( $queryString, $expected ) {
+
 		$description = $this->queryParser
-			->getQueryDescription( "[[Book record::?;>1901]]" );
+			->getQueryDescription( $queryString );
 
 		$query = new Query(
 			$description,
 			false,
 			true
-		);
-
-		$expected = array(
-			$this->subjects['sample-2000'],
-			$this->subjects['sample-2001']
-		);
-
-		$this->queryResultValidator->assertThatQueryResultHasSubjects(
-			$expected,
-			$this->getStore()->getQueryResult( $query )
-		);
-	}
-
-	/**
-	 * @query "[[Book record::?;>30 Dec 2001]]"
-	 */
-	private function searchForUpperboundGreaterThanPattern() {
-		$description = $this->queryParser
-			->getQueryDescription( "[[Book record::?;>30 Dec 2001]]" );
-
-		$query = new Query(
-			$description,
-			false,
-			true
-		);
-
-		$this->queryResultValidator->assertThatQueryResultHasSubjects(
-			$this->subjects['sample-2001'],
-			$this->getStore()->getQueryResult( $query )
-		);
-	}
-
-	/**
-	 * @query "[[Book record::?;<1901]]"
-	 */
-	private function searchForLowerboundLessThanPattern() {
-		$description = $this->queryParser
-			->getQueryDescription( "[[Book record::?;<1901]]" );
-
-		$query = new Query(
-			$description,
-			false,
-			true
-		);
-
-		$this->queryResultValidator->assertThatQueryResultHasSubjects(
-			$this->subjects['sample-1900'],
-			$this->getStore()->getQueryResult( $query )
-		);
-	}
-
-	/**
-	 * @query "[[Book record::?;<30 Dec 2001]]"
-	 */
-	private function searchForLessThanPattern() {
-		$description = $this->queryParser
-			->getQueryDescription( "[[Book record::?;<30 Dec 2001]]" );
-
-		$query = new Query(
-			$description,
-			false,
-			true
-		);
-
-		$expected = array(
-			$this->subjects['sample-1900'],
-			$this->subjects['sample-2000'],
-			$this->subjects['sample-2001']
-		);
-
-		$this->queryResultValidator->assertThatQueryResultHasSubjects(
-			$expected,
-			$this->getStore()->getQueryResult( $query )
-		);
-	}
-
-	/**
-	 * @query "[[Book record::?;!2000]]"
-	 */
-	private function searchForNotLikePattern() {
-		$description = $this->queryParser
-			->getQueryDescription( "[[Book record::?;!2000]]" );
-
-		$query = new Query(
-			$description,
-			false,
-			true
-		);
-
-		$expected = array(
-			$this->subjects['sample-1900'],
-			$this->subjects['sample-2001']
 		);
 
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
