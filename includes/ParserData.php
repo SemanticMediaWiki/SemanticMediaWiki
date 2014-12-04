@@ -13,8 +13,6 @@ use ParserOutput;
  * Provides access to a semantic data container that is generated
  * either from the ParserOutput or is a newly created container
  *
- * @ingroup SMW
- *
  * @license GNU GPL v2+
  * @since 1.9
  *
@@ -58,7 +56,7 @@ class ParserData {
 		$this->title = $title;
 		$this->parserOutput = $parserOutput;
 
-		$this->initData();
+		$this->initSemanticData();
 	}
 
 	/**
@@ -100,11 +98,16 @@ class ParserData {
 	}
 
 	/**
-	 * Returns update status
-	 *
-	 * @since 1.9
+	 * @since 2.1
 	 *
 	 * @return boolean
+	 */
+	public function getUpdateJobState() {
+		return $this->updateJobs;
+	}
+
+	/**
+	 * @deprecated since 2.1, use getUpdateJobState
 	 */
 	public function getUpdateStatus() {
 		return $this->updateJobs;
@@ -139,6 +142,9 @@ class ParserData {
 		$this->semanticData = $semanticData;
 	}
 
+	/**
+	 * @deprecated since 2.0, use setSemanticData
+	 */
 	public function setData( SemanticData $semanticData ) {
 		$this->setSemanticData( $semanticData );
 	}
@@ -152,41 +158,58 @@ class ParserData {
 		return $this->semanticData;
 	}
 
+	/**
+	 * @deprecated since 2.0, use getSemanticData
+	 */
 	public function getData() {
 		return $this->getSemanticData();
 	}
 
 	/**
-	 * Clears all data for the given instance
-	 *
-	 * @since 1.9
+	 * @since 2.1
+	 */
+	public function setEmptySemanticData() {
+		$this->setSemanticData( new SemanticData( $this->getSubject() ) );
+	}
+
+	/**
+	 * @deprecated since 2.1, use setEmptySemanticData
 	 */
 	public function clearData() {
-		$this->setData( new SemanticData( $this->getSubject() ) );
+		$this->setEmptySemanticData();
 	}
 
 	/**
-	 * Update ParserOutput with processed semantic data
-	 *
-	 * @since 1.9
+	 * @deprecated since 2.1, use saveSemanticDataToOutput
 	 */
 	public function updateOutput(){
-
-		if ( $this->hasExtensionData() ) {
-			$this->parserOutput->setExtensionData( 'smwdata', $this->semanticData );
-		} else {
-			$this->parserOutput->mSMWData = $this->semanticData;
-		}
+		$this->saveSemanticDataToOutput();
 	}
 
 	/**
-	 * Adds a data value to the semantic data container
-	 *
-	 * @par Example:
-	 * @code
-	 *  $dataValue = DataValueFactory::getInstance()->newPropertyValue( $userProperty, $userValue )
-	 *  $parserData->addDataValue( $dataValue )
-	 * @endcode
+	 * @since 2.1
+	 */
+	public function saveSemanticDataToOutput() {
+
+		if ( $this->hasExtensionData() ) {
+			return $this->parserOutput->setExtensionData( 'smwdata', $this->semanticData );
+		}
+
+		$this->parserOutput->mSMWData = $this->semanticData;
+	}
+
+	/**
+	 * @since 2.1
+	 */
+	public function setSemanticDataStateToOutputProperty() {
+		$this->parserOutput->setProperty(
+			'smw-semanticdata-status',
+			$this->semanticData->getProperties() !== array()
+		);
+	}
+
+	/**
+	 * @see SemanticData::addDataValue
 	 *
 	 * @since 1.9
 	 *
@@ -198,8 +221,6 @@ class ParserData {
 	}
 
 	/**
-	 * Updates the Store with data attached to the ParserOutput object
-	 *
 	 * @since 1.9
 	 *
 	 * @return boolean
@@ -218,10 +239,8 @@ class ParserData {
 	/**
 	 * Setup the semantic data container either from the ParserOutput or
 	 * if not available create an empty container
-	 *
-	 * @since 1.9
 	 */
-	protected function initData() {
+	private function initSemanticData() {
 
 		if ( $this->hasExtensionData() ) {
 			$this->semanticData = $this->parserOutput->getExtensionData( 'smwdata' );
@@ -230,7 +249,7 @@ class ParserData {
 		}
 
 		if ( !( $this->semanticData instanceof SemanticData ) ) {
-			$this->clearData();
+			$this->setEmptySemanticData();
 		}
 	}
 

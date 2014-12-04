@@ -111,10 +111,7 @@ class InternalParseBeforeLinks {
 		$inTextAnnotationParser->setRedirectTarget( $this->getRedirectTarget() );
 		$inTextAnnotationParser->parse( $this->text );
 
-		$this->parser->getOutput()->setProperty(
-			'smw-semanticdata-status',
-			$parserData->getSemanticData()->getProperties() !== array()
-		);
+		$parserData->setSemanticDataStateToOutputProperty();
 
 		return true;
 	}
