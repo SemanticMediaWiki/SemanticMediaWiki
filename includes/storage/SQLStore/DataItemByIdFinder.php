@@ -19,7 +19,7 @@ use SMW\HashBuilder;
 class DataItemByIdFinder {
 
 	/**
-	 * @var Database
+	 * @var Database|null
 	 */
 	private $connection = null;
 
@@ -29,35 +29,47 @@ class DataItemByIdFinder {
 	private $tableName = '';
 
 	/**
-	 * @var Cache
+	 * @var Cache|null
 	 */
-	private $idCache = null;
+	private $cache = null;
 
 	/**
 	 * @since 2.1
 	 *
 	 * @param Database $connection
 	 * @param string $tableName
-	 * @param Cache|null $idCache
+	 * @param Cache|null $cache
 	 */
-	public function __construct( Database $connection, $tableName, Cache $idCache = null ) {
+	public function __construct( Database $connection, $tableName, Cache $cache = null ) {
 		$this->connection = $connection;
 		$this->tableName = $tableName;
-		$this->idCache = $idCache;
+		$this->cache = $cache;
 	}
 
 	/**
 	 * @since 2.1
 	 *
-	 * @return Cache
+	 * @param string $id
+	 * @param string $hash
 	 */
-	public function getIdCache() {
+	public function saveToCache( $id, $hash ) {
+		$this->getCache()->save( $id, $hash );
+	}
 
-		if ( $this->idCache === null ) {
-			$this->idCache = new FixedInMemoryCache( 500 );
-		}
+	/**
+	 * @since 2.1
+	 *
+	 * @param string $id
+	 */
+	public function deleteFromCache( $id ) {
+		$this->getCache()->delete( $id );
+	}
 
-		return $this->idCache;
+	/**
+	 * @since 2.1
+	 */
+	public function clear() {
+		$this->cache = null;
 	}
 
 	/**
@@ -69,7 +81,7 @@ class DataItemByIdFinder {
 	 */
 	public function getDataItemForId( $id ) {
 
-		if ( !$this->getIdCache()->contains( $id ) ) {
+		if ( !$this->getCache()->contains( $id ) ) {
 
 			$row = $this->connection->selectRow(
 				$this->tableName,
@@ -94,10 +106,19 @@ class DataItemByIdFinder {
 				$row->smw_subobject
 			);
 
-			$this->getIdCache()->save( $id, $hash );
+			$this->saveToCache( $id, $hash );
 		}
 
-		return HashBuilder::newDiWikiPageFromHash( $this->getIdCache()->fetch( $id ) );
+		return HashBuilder::newDiWikiPageFromHash( $this->getCache()->fetch( $id ) );
+	}
+
+	private function getCache() {
+
+		if ( $this->cache === null ) {
+			$this->cache = new FixedInMemoryCache( 500 );
+		}
+
+		return $this->cache;
 	}
 
 }

@@ -10,6 +10,7 @@ use SMW\Cache\FixedInMemoryCache;
  *
  * @group SMW
  * @group SMWExtension
+ *
  * @group semantic-mediawiki-sqlstore
  *
  * @license GNU GPL v2+
@@ -107,12 +108,50 @@ class DataItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'selectRow' );
 
 		$instance = new DataItemByIdFinder( $connection, 'foo' );
-		$instance->getIdCache()->save( 42, '_MDAT#102##' );
+		$instance->saveToCache( 42, '_MDAT#102##' );
 
 		$this->assertInstanceOf(
 			'\SMW\DIWikiPage',
 			$instance->getDataItemForId( 42 )
 		);
+	}
+
+	public function testSaveDeleteFromCaceh() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'selectRow' )
+			->will( $this->returnValue( false ) );
+
+		$instance = new DataItemByIdFinder( $connection, 'foo' );
+
+		$instance->saveToCache( 42, 'Foo#14##' );
+		$instance->getDataItemForId( 42 );
+
+		$instance->deleteFromCache( 42 );
+		$instance->getDataItemForId( 42 );
+	}
+
+	public function testClearCache() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'selectRow' )
+			->will( $this->returnValue( false ) );
+
+		$instance = new DataItemByIdFinder( $connection, 'foo' );
+
+		$instance->saveToCache( 42, 'Foo#0##' );
+		$instance->getDataItemForId( 42 );
+
+		$instance->clear();
+		$instance->getDataItemForId( 42 );
 	}
 
 	public function testNullForUnknownId() {

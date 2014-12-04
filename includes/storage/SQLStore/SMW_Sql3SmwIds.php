@@ -783,7 +783,7 @@ class SMWSql3SmwIds {
 			$this->regular_sortkeys[$hashKey] = $sortkey;
 		}
 
-		$this->dataItemByIdFinder->getIdCache()->save( $id, $hashKey );
+		$this->dataItemByIdFinder->saveToCache( $id, $hashKey );
 
 		if ( $interwiki == SMW_SQL3_SMWREDIIW ) { // speed up detection of redirects when fetching IDs
 			$this->setCache(  $title, $namespace, '', $subobject, 0, '' );
@@ -883,7 +883,7 @@ class SMWSql3SmwIds {
 			unset( $this->regular_sortkeys[$hashKey] );
 		}
 
-		$this->dataItemByIdFinder->getIdCache()->delete( $id );
+		$this->dataItemByIdFinder->deleteFromCache( $id );
 	}
 
 	/**
@@ -921,7 +921,7 @@ class SMWSql3SmwIds {
 		$this->prop_sortkeys = array();
 		$this->regular_ids = array();
 		$this->regular_sortkeys = array();
-		$this->dataItemByIdFinder->getIdCache()->reset();
+		$this->dataItemByIdFinder->clear();
 	}
 
 	/**
