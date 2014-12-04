@@ -75,7 +75,7 @@ class FileUpload {
 				$filePage->getParserOutput( $this->makeCanonicalParserOptions() ) );
 
 		$pageInfoProvider = $this->applicationFactory
-			->newPropertyAnnotatorFactory()
+			->newMwCollaboratorFactory()
 			->newPageInfoProvider( $filePage );
 
 		$propertyAnnotator = $this->applicationFactory

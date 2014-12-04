@@ -158,7 +158,7 @@ class PageBuilder {
 			$resultList = $this->makeResultList( $exactResults, $this->pageRequestOptions->limit, true );
 		}
 
-		return array( $resultMessage, $resultList, $exactCount );
+		return array( str_replace( '_', ' ', $resultMessage ), $resultList, $exactCount );
 	}
 
 	private function getNearbyResults( $exactResults, $exactCount ) {

@@ -6,6 +6,9 @@ use SMW\ApplicationFactory;
 
 use Title;
 use Language;
+use WikiPage;
+use Revision;
+use User;
 
 /**
  * @license GNU GPL v2+
@@ -131,6 +134,28 @@ class MwCollaboratorFactory {
 	 */
 	public function newMediaWikiDatabaseConnectionProvider() {
 		return new DatabaseConnectionProvider();
+	}
+
+	/**
+	 * @since 2.0
+	 *
+	 * @param WikiPage $wkiPage
+	 * @param Revision|null $revision
+	 * @param User|null $user
+	 *
+	 * @return PageInfoProvider
+	 */
+	public function newPageInfoProvider( WikiPage $wkiPage, Revision $revision = null, User $user = null ) {
+		return new PageInfoProvider( $wkiPage, $revision, $user );
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return PageUpdater
+	 */
+	public function newPageUpdater() {
+		return new PageUpdater();
 	}
 
 }

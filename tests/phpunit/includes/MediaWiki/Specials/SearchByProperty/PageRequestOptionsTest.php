@@ -9,6 +9,7 @@ use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
  *
  * @group SMW
  * @group SMWExtension
+ *
  * @group semantic-mediawiki-specials
  *
  * @license GNU GPL v2+
