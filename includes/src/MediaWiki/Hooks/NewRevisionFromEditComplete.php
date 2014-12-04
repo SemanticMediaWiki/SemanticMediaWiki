@@ -89,7 +89,7 @@ class NewRevisionFromEditComplete {
 			->newParserData( $this->wikiPage->getTitle(), $this->parserOutput );
 
 		$pageInfoProvider = $applicationFactory
-			->newPropertyAnnotatorFactory()
+			->newMwCollaboratorFactory()
 			->newPageInfoProvider( $this->wikiPage, $this->revision, $this->user );
 
 		$propertyAnnotator = $applicationFactory

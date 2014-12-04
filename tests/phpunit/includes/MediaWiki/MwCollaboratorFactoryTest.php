@@ -184,4 +184,28 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructPageInfoProvider() {
+
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new MwCollaboratorFactory( new ApplicationFactory() );
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\PageInfoProvider',
+			$instance->newPageInfoProvider( $wikiPage )
+		);
+	}
+
+	public function testCanConstructPageUpdater() {
+
+		$instance = new MwCollaboratorFactory( new ApplicationFactory() );
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\PageUpdater',
+			$instance->newPageUpdater()
+		);
+	}
+
 }

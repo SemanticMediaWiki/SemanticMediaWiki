@@ -9,7 +9,6 @@ use Title;
 /**
  * @covers \SMW\Annotator\PropertyAnnotatorFactory
  *
- *
  * @group SMW
  * @group SMWExtension
  *
@@ -25,20 +24,6 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SMW\Annotator\PropertyAnnotatorFactory',
 			new PropertyAnnotatorFactory()
-		);
-	}
-
-	public function testNewPageInfoProvider() {
-
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new PropertyAnnotatorFactory();
-
-		$this->assertInstanceOf(
-			'\SMW\MediaWiki\PageInfoProvider',
-			$instance->newPageInfoProvider( $wikiPage )
 		);
 	}
 

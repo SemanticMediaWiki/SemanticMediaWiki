@@ -196,36 +196,29 @@ abstract class Store {
 	 * given as a SemanticData object, which contains all semantic data
 	 * for one particular subject.
 	 *
-	 * @param $data SemanticData
+	 * @param SemanticData $semanticData
 	 */
-	public function updateData( SemanticData $data ) {
+	public function updateData( SemanticData $semanticData ) {
 		/**
 		 * @since 1.6
 		 */
-		wfRunHooks( 'SMWStore::updateDataBefore', array( $this, $data ) );
+		wfRunHooks( 'SMWStore::updateDataBefore', array( $this, $semanticData ) );
 
 		// Invalidate the page, so data stored on it gets displayed immediately in queries.
-		global $smwgAutoRefreshSubject;
-		if ( $smwgAutoRefreshSubject && !wfReadOnly() ) {
-			$title = Title::makeTitle( $data->getSubject()->getNamespace(), $data->getSubject()->getDBkey() );
-			$dbw = wfGetDB( DB_MASTER );
+		$pageUpdater = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newPageUpdater();
 
-			$dbw->update(
-				'page',
-				array( 'page_touched' => $dbw->timestamp( time() + 4 ) ),
-				$title->pageCond(),
-				__METHOD__
-			);
-
-			HTMLFileCache::clearFileCache( $title );
+		if ( $GLOBALS['smwgAutoRefreshSubject'] && $pageUpdater->canUpdate() ) {
+			$pageUpdater->addPage( $semanticData->getSubject()->getTitle() );
+			$pageUpdater->doPurgeParserCache();
+			$pageUpdater->doPurgeHtmlCache();
 	    }
 
-		$this->doDataUpdate( $data );
+		$this->doDataUpdate( $semanticData );
 
 		/**
 		 * @since 1.6
 		 */
-		wfRunHooks( 'SMWStore::updateDataAfter', array( $this, $data ) );
+		wfRunHooks( 'SMWStore::updateDataAfter', array( $this, $semanticData ) );
 	}
 
 	/**

@@ -130,14 +130,14 @@ class StoreUpdater {
 
 	private function updateSemanticData( Title $title, WikiPage $wikiPage, $revision ) {
 
-		$this->processSemantics = $revision !== null && $this->isEnabledNamespace( $title );
+		$this->processSemantics = $revision !== null && $this->isSemanticEnabledNamespace( $title );
 
 		if ( !$this->processSemantics ) {
 			return $this->semanticData = new SemanticData( $this->getSubject() );
 		}
 
 		$pageInfoProvider = $this->applicationFactory
-			->newPropertyAnnotatorFactory()
+			->newMwCollaboratorFactory()
 			->newPageInfoProvider( $wikiPage, $revision, User::newFromId( $revision->getUser() ) );
 
 		$propertyAnnotator = $this->applicationFactory
@@ -175,7 +175,7 @@ class StoreUpdater {
 		return true;
 	}
 
-	private function isEnabledNamespace( $title ) {
+	private function isSemanticEnabledNamespace( $title ) {
 		return $this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
 	}
 
