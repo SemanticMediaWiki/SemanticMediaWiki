@@ -42,20 +42,11 @@ class SemanticDataSerializationDBIntegrationTest extends MwDBaseUnitTestCase {
 			DataValueFactory::getInstance()->newPropertyValue( 'Foo', 'Bar' )
 		);
 
-		$semanticDataBeforeUpdate->addPropertyObjectValue(
-			$subobject->getProperty(),
-			$subobject->getContainer()
-		);
+		$semanticDataBeforeUpdate->addSubobject( $subobject );
 
 		$this->getStore()->updateData( $semanticDataBeforeUpdate );
 
 		$semanticDataAfterUpdate = $this->getStore()->getSemanticData( $subject );
-
-		$this->assertNotEquals(
-			$semanticDataBeforeUpdate->getHash(),
-			$semanticDataAfterUpdate->getHash(),
-			'Assert that the hash is not comparable due to the added _SKEY property during the update'
-		);
 
 		$serializerFactory = new SerializerFactory();
 

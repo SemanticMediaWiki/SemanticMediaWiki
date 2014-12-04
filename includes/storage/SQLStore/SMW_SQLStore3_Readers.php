@@ -37,11 +37,18 @@ class SMWSQLStore3Readers {
 
 		// *** Find out if this subject exists ***//
 		$sortkey = '';
-		$sid = $this->store->smwIds->getSMWPageIDandSort( $subject->getDBkey(),
-							$subject->getNamespace(),
-							$subject->getInterwiki(),
-							$subject->getSubobjectName(),
-							$sortkey, true, true );
+
+		$sid = $this->store->smwIds->getSMWPageIDandSort(
+			$subject->getDBkey(),
+			$subject->getNamespace(),
+			$subject->getInterwiki(),
+			$subject->getSubobjectName(),
+			$sortkey,
+			true,
+			true
+		);
+
+		$subject->setSortKey( $sortkey );
 
 		if ( $sid == 0 ) {
 			// We consider redirects for getting $sid,
@@ -76,7 +83,6 @@ class SMWSQLStore3Readers {
 		$this->store->m_semdata[$sid]->addPropertyStubValue( '_SKEY', array( '', $sortkey ) );
 		self::$in_getSemanticData--;
 
-
 		return $this->store->m_semdata[$sid];
 	}
 
@@ -89,6 +95,7 @@ class SMWSQLStore3Readers {
 	 * @since 1.8
 	 */
 	protected function initSemanticDataCache( $sid, SMWDIWikiPage $subject ) {
+
 		// *** Prepare the cache ***//
 		if ( !array_key_exists( $sid, $this->store->m_semdata ) ) { // new cache entry
 			$this->store->m_semdata[$sid] = new SMWSql3StubSemanticData( $subject, $this->store, false );

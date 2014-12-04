@@ -117,10 +117,25 @@ class SMWDIHandlerWikiPage extends SMWDataItemHandler {
 					return $wikipage;
 				}
 			} else {
-				return new SMWDIWikiPage( $dbkeys[0], $namespace, $dbkeys[2], $dbkeys[4] );
+				return $this->newDiWikiPage( $dbkeys );
 			}
 		}
 
 		throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
 	}
+
+	private function newDiWikiPage( $dbkeys ) {
+
+		$diWikiPage = new SMWDIWikiPage(
+			$dbkeys[0],
+			intval( $dbkeys[1] ),
+			$dbkeys[2],
+			$dbkeys[4]
+		);
+
+		$diWikiPage->setSortKey( $dbkeys[3] );
+
+		return $diWikiPage;
+	}
+
 }
