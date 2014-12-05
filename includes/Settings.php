@@ -128,7 +128,8 @@ class Settings extends SimpleDictionary {
 			'smwgEnabledSpecialPage' => $GLOBALS['smwgEnabledSpecialPage'],
 			'smwgOnDeleteAction' => $GLOBALS['smwgOnDeleteAction'],
 			'smwgFallbackSearchType' => $GLOBALS['smwgFallbackSearchType'],
-			'smwgEnabledEditPageHelp' => $GLOBALS['smwgEnabledEditPageHelp']
+			'smwgEnabledEditPageHelp' => $GLOBALS['smwgEnabledEditPageHelp'],
+			'smwgUFeatures' => $GLOBALS['smwgUFeatures']
 		);
 
 		$settings = $settings + array(

@@ -24,22 +24,27 @@ class Database {
 	/**
 	 * @var DBConnectionProvider
 	 */
-	private $readDBConnection = null;
+	private $readConnectionProvider = null;
 
 	/**
 	 * @var DBConnectionProvider
 	 */
-	private $writeDBConnection = null;
+	private $writeConnectionProvider = null;
+
+	/**
+	 * @var array
+	 */
+	private $transactionQueue = array();
 
 	/**
 	 * @since 1.9
 	 *
-	 * @param DBConnectionProvider $readDBConnection
-	 * @param DBConnectionProvider|null $writeDBConnection
+	 * @param DBConnectionProvider $readConnectionProvider
+	 * @param DBConnectionProvider|null $writeConnectionProvider
 	 */
-	public function __construct( DBConnectionProvider $readDBConnection, DBConnectionProvider $writeDBConnection = null ) {
-		$this->readDBConnection = $readDBConnection;
-		$this->writeDBConnection = $writeDBConnection;
+	public function __construct( DBConnectionProvider $readConnectionProvider, DBConnectionProvider $writeConnectionProvider = null ) {
+		$this->readConnectionProvider = $readConnectionProvider;
+		$this->writeConnectionProvider = $writeConnectionProvider;
 	}
 
 	/**
@@ -359,14 +364,59 @@ class Database {
 		);
 	}
 
+	/**
+	 * @since 2.1
+	 *
+	 * @param string $fname
+	 */
+	public function beginTransaction( $fname = __METHOD__  ) {
+
+		// If a transaction is being added for an uncommitted
+		// queue entry then a transaction for the same instance
+		// and name is being omitted
+		if ( isset( $this->transactionQueue[ $fname ] ) ) {
+			return;
+		}
+
+		$this->transactionQueue[ $fname ] = true;
+
+		try {
+			$this->writeConnection()->begin( $fname );
+		} catch ( \Exception $exception ) {
+			unset( $this->transactionQueue[ $fname ] );
+			wfDebug( __METHOD__ . ' exception caused by ' . $exception->getMessage() );
+		}
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param string $fname
+	 */
+	public function commitTransaction( $fname = __METHOD__  ) {
+
+		if ( !isset( $this->transactionQueue[ $fname ] ) ) {
+			return;
+		}
+
+		try {
+			$this->writeConnection()->commit( $fname );
+		} catch ( \Exception $exception ) {
+			$this->writeConnection()->rollback( $fname );
+			wfDebug( __METHOD__ . ' rollback because of ' . $exception->getMessage() );
+		}
+
+		unset( $this->transactionQueue[ $fname ] );
+	}
+
 	private function readConnection() {
-		return $this->readDBConnection->getConnection();
+		return $this->readConnectionProvider->getConnection();
 	}
 
 	private function writeConnection() {
 
-		if ( $this->writeDBConnection instanceof DBConnectionProvider ) {
-			return $this->writeDBConnection->getConnection();
+		if ( $this->writeConnectionProvider instanceof DBConnectionProvider ) {
+			return $this->writeConnectionProvider->getConnection();
 		}
 
 		throw new RuntimeException( 'Expected a DBConnectionProvider instance' );

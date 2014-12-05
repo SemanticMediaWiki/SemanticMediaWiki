@@ -287,6 +287,67 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testBeginTransaction() {
+
+		$database = $this->getMockBuilder( '\DatabaseBase' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$readConnectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$writeConnectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$writeConnectionProvider->expects( $this->once() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $database ) );
+
+		$instance = new Database(
+			$readConnectionProvider,
+			$writeConnectionProvider
+		);
+
+		// Can't reach the `DatabaseBase::begin` with a mock because
+		// it is declared as final
+		$instance->beginTransaction( __METHOD__ );
+	}
+
+	public function testCommitTransaction() {
+
+		$database = $this->getMockBuilder( '\DatabaseBase' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$database->expects( $this->any() )
+			->method( 'isOpen' )
+			->will( $this->returnValue( true ) );
+
+		$readConnectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$writeConnectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$writeConnectionProvider->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $database ) );
+
+		$instance = new Database(
+			$readConnectionProvider,
+			$writeConnectionProvider
+		);
+
+		// Can't reach the `DatabaseBase::begin`/`DatabaseBase::commit`
+		// with a mock because it is declared as final
+		$instance->beginTransaction( __METHOD__ );
+		$instance->commitTransaction( __METHOD__ );
+	}
+
 	public function testMissingWriteConnectionThrowsException() {
 
 		$connectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )

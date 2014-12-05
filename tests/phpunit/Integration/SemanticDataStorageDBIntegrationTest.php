@@ -284,4 +284,33 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 		);
 	}
 
+	public function testUseUpdateFeature() {
+
+		$smwgUFeatures = $GLOBALS['smwgUFeatures'];
+
+		$GLOBALS['smwgUFeatures'] = SMW_TRX_UPDATE | SMW_REPLACEMENT_UPDATE;
+
+		$this->pageCreator
+			->createPage( Title::newFromText( __METHOD__ . '-1' ) )
+			->doEdit( '{{#subobject:test|HasSomePageProperty=Foo-A}}' );
+
+		$this->pageCreator
+			->createPage( Title::newFromText( __METHOD__ . '-2' ) )
+			->doEdit( '{{#subobject:test|HasSomePageProperty=Foo-A}}' );
+
+		$this->pageCreator
+			->createPage( Title::newFromText( __METHOD__ . '-1' ) )
+			->doEdit( '#REDIRECT ' . '[[' . __METHOD__ . '-2' . ']]' );
+
+		$this->assertNotEmpty(
+			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ . '-1' ) ) )
+		);
+
+		$this->assertNotEmpty(
+			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ . '-2' ) ) )
+		);
+
+		$GLOBALS['smwgUFeatures'] = $smwgUFeatures;
+	}
+
 }
