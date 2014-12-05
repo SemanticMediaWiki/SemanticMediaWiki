@@ -2,7 +2,7 @@
 
 namespace SMW\Maintenance;
 
-use SMW\Store\Maintenance\DataRebuilder;
+use SMW\Maintenance\DataRebuilder;
 use SMW\Reporter\ObservableMessageReporter;
 use SMW\StoreFactory;
 use SMW\Settings;
@@ -107,7 +107,9 @@ class RebuildData extends \Maintenance {
 		$store = StoreFactory::getStore( $this->hasOption( 'b' ) ? $this->getOption( 'b' ) : null );
 		$store->setUpdateJobsEnabledState( false );
 
-		$dataRebuilder = new DataRebuilder( $store, $reporter );
+		$dataRebuilder = new DataRebuilder( $store );
+
+		$dataRebuilder->setMessageReporter( $reporter );
 		$dataRebuilder->setParameters( $this->mOptions );
 
 		if ( $dataRebuilder->rebuild() ) {

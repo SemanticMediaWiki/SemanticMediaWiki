@@ -135,7 +135,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testAddDataValueAndSaveSemanticDataToOutput() {
+	public function testAddDataValueAndPushSemanticDataToOutput() {
 
 		$title = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
@@ -147,7 +147,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertFalse( $instance->getSemanticData()->isEmpty() );
-		$instance->saveSemanticDataToOutput();
+		$instance->pushSemanticDataToOutput();
 
 		$title = Title::newFromText( __METHOD__ .'-1' );
 

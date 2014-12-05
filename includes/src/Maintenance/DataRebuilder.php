@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Store\Maintenance;
+namespace SMW\Maintenance;
 
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\TitleLookup;
@@ -22,9 +22,7 @@ use LinkCache;
  *
  * @note This is an internal class and should not be used outside of smw-core
  *
- * @ingroup SMW
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9.2
  *
  * @author mwjames
@@ -59,15 +57,19 @@ class DataRebuilder {
 	 * @since 1.9.2
 	 *
 	 * @param Store $store
-	 * @param MessageReporter|null $reporter
 	 */
-	public function __construct( Store $store, MessageReporter $reporter = null ) {
+	public function __construct( Store $store ) {
 		$this->store = $store;
-		$this->reporter = $reporter;
+		$this->reporter = new NullMessageReporter();
+	}
 
-		if ( $this->reporter === null ) {
-			$this->reporter = new NullMessageReporter();
-		}
+	/**
+	 * @since 2.1
+	 *
+	 * @param MessageReporter $reporter
+	 */
+	public function setMessageReporter( MessageReporter $reporter ) {
+		$this->reporter = $reporter;
 	}
 
 	/**
@@ -121,7 +123,6 @@ class DataRebuilder {
 		if ( array_key_exists( 'query', $options ) ) {
 			$this->query = $options['query'];
 		}
-
 	}
 
 	/**

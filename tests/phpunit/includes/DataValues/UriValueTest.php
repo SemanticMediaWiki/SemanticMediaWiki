@@ -28,10 +28,64 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider uriProvider
 	 */
-	public function testOutputFormatting( $uri, $caption = false, $linker = null, $expected ) {
+	public function testUriOutputFormatting( $uri, $caption = false, $linker = null, $expected ) {
 
 		$instance = new UriValue( '_uri' );
 		$instance->setUserValue( $uri, $caption );
+
+		$this->assertOutputFormatting(
+			$instance,
+			$linker,
+			$expected
+		);
+	}
+
+	/**
+	 * @dataProvider uriProvider
+	 */
+	public function testAnuOutputFormatting( $uri, $caption = false, $linker = null, $expected ) {
+
+		$instance = new UriValue( '_anu' );
+		$instance->setUserValue( $uri, $caption );
+
+		$this->assertOutputFormatting(
+			$instance,
+			$linker,
+			$expected
+		);
+	}
+
+	/**
+	 * @dataProvider telProvider
+	 */
+	public function testTelOutputFormatting( $uri, $caption = false, $linker = null, $expected ) {
+
+		$instance = new UriValue( '_tel' );
+		$instance->setUserValue( $uri, $caption );
+
+		$this->assertOutputFormatting(
+			$instance,
+			$linker,
+			$expected
+		);
+	}
+
+	/**
+	 * @dataProvider emaProvider
+	 */
+	public function testEmaOutputFormatting( $uri, $caption = false, $linker = null, $expected ) {
+
+		$instance = new UriValue( '_ema' );
+		$instance->setUserValue( $uri, $caption );
+
+		$this->assertOutputFormatting(
+			$instance,
+			$linker,
+			$expected
+		);
+	}
+
+	private function assertOutputFormatting( $instance, $linker, $expected ) {
 
 		$this->assertEquals(
 			$expected['wikiValue'],
@@ -275,6 +329,42 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 				'longWikiText'  => '[http://example.org/api?query=!_:;@*_#Foo&=_=Bar http://example.org/api?query=!_:;@* #Foo&= =Bar]',
 				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@*_#Foo&amp;=_=Bar">&amp;!_:;@* #Foo</a>',
 				'shortWikiText' => '[http://example.org/api?query=!_:;@*_#Foo&=_=Bar &!_:;@* #Foo]'
+			)
+		);
+
+		return $provider;
+	}
+
+	public function telProvider() {
+
+		$provider[] = array(
+			'+1-201-555-0123',
+			false,
+			null,
+			array(
+				'wikiValue'     => '+1-201-555-0123',
+				'longHTMLText'  => '+1-201-555-0123',
+				'longWikiText'  => '+1-201-555-0123',
+				'shortHTMLText' => '+1-201-555-0123',
+				'shortWikiText' => '+1-201-555-0123'
+			)
+		);
+
+		return $provider;
+	}
+
+	public function emaProvider() {
+
+		$provider[] = array(
+			'foo@example.org',
+			false,
+			null,
+			array(
+				'wikiValue'     => 'foo@example.org',
+				'longHTMLText'  => 'foo@example.org',
+				'longWikiText'  => 'foo@example.org',
+				'shortHTMLText' => 'foo@example.org',
+				'shortWikiText' => 'foo@example.org'
 			)
 		);
 

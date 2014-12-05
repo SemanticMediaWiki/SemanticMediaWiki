@@ -44,6 +44,10 @@ class DataItemByIdFinder {
 		$this->connection = $connection;
 		$this->tableName = $tableName;
 		$this->cache = $cache;
+
+		if ( $this->cache === null ) {
+			$this->cache = new FixedInMemoryCache( 500 );
+		}
 	}
 
 	/**
@@ -53,7 +57,7 @@ class DataItemByIdFinder {
 	 * @param string $hash
 	 */
 	public function saveToCache( $id, $hash ) {
-		$this->getCache()->save( $id, $hash );
+		$this->cache->save( $id, $hash );
 	}
 
 	/**
@@ -62,14 +66,14 @@ class DataItemByIdFinder {
 	 * @param string $id
 	 */
 	public function deleteFromCache( $id ) {
-		$this->getCache()->delete( $id );
+		$this->cache->delete( $id );
 	}
 
 	/**
 	 * @since 2.1
 	 */
 	public function clear() {
-		$this->cache = null;
+		$this->cache = new FixedInMemoryCache( 500 );
 	}
 
 	/**
@@ -81,7 +85,7 @@ class DataItemByIdFinder {
 	 */
 	public function getDataItemForId( $id ) {
 
-		if ( !$this->getCache()->contains( $id ) ) {
+		if ( !$this->cache->contains( $id ) ) {
 
 			$row = $this->connection->selectRow(
 				$this->tableName,
@@ -109,16 +113,7 @@ class DataItemByIdFinder {
 			$this->saveToCache( $id, $hash );
 		}
 
-		return HashBuilder::newDiWikiPageFromHash( $this->getCache()->fetch( $id ) );
-	}
-
-	private function getCache() {
-
-		if ( $this->cache === null ) {
-			$this->cache = new FixedInMemoryCache( 500 );
-		}
-
-		return $this->cache;
+		return HashBuilder::newDiWikiPageFromHash( $this->cache->fetch( $id ) );
 	}
 
 }

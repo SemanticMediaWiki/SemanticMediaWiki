@@ -180,16 +180,16 @@ class ParserData {
 	}
 
 	/**
-	 * @deprecated since 2.1, use saveSemanticDataToOutput
+	 * @deprecated since 2.1, use pushSemanticDataToOutput
 	 */
 	public function updateOutput(){
-		$this->saveSemanticDataToOutput();
+		$this->pushSemanticDataToOutput();
 	}
 
 	/**
 	 * @since 2.1
 	 */
-	public function saveSemanticDataToOutput() {
+	public function pushSemanticDataToOutput() {
 
 		if ( $this->hasExtensionData() ) {
 			return $this->parserOutput->setExtensionData( 'smwdata', $this->semanticData );

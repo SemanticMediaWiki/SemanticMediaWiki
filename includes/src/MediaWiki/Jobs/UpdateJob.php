@@ -23,8 +23,6 @@ use Title;
  * formatting in-page values based on a datatype thathas since been changed), whereas
  * the Factbox and query/browsing interfaces might already show the updated records.
  *
- * @ingroup SMW
- *
  * @license GNU GPL v2+
  * @since 1.9
  *
@@ -50,14 +48,8 @@ class UpdateJob extends JobBase {
 	 * @return boolean
 	 */
 	public function run() {
-		Profiler::In( __METHOD__ . '-run' );
-
 		LinkCache::singleton()->clear();
-
-		$result = $this->doUpdate();
-
-		Profiler::Out( __METHOD__ . '-run' );
-		return $result;
+		return $this->doUpdate();
 	}
 
 	/**
@@ -78,15 +70,15 @@ class UpdateJob extends JobBase {
 	}
 
 	private function doUpdate() {
-		return $this->getTitle()->exists() ? $this->doParseContentForData() : $this->clearData();
+		return $this->getTitle()->exists() ? $this->doPageContentParse() : $this->deleteSubject();
 	}
 
-	private function clearData() {
+	private function deleteSubject() {
 		ApplicationFactory::getInstance()->getStore()->deleteSubject( $this->getTitle() );
 		return true;
 	}
 
-	private function doParseContentForData() {
+	private function doPageContentParse() {
 
 		$contentParser = ApplicationFactory::getInstance()->newContentParser( $this->getTitle() );
 		$contentParser->forceToUseParser();
@@ -101,7 +93,6 @@ class UpdateJob extends JobBase {
 	}
 
 	private function updateStore( ParserOutput $parserOutput ) {
-		Profiler::In( __METHOD__ . '-update' );
 
 		$cache = ApplicationFactory::getInstance()->getCache();
 		$cache->setKey( FactboxCache::newCacheId( $this->getTitle()->getArticleID() ) )->delete();
@@ -116,7 +107,6 @@ class UpdateJob extends JobBase {
 
 		$parserData->disableBackgroundUpdateJobs()->updateStore();
 
-		Profiler::Out( __METHOD__ . '-update' );
 		return true;
 	}
 

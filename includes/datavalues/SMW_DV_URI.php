@@ -312,6 +312,11 @@ class SMWURIValue extends SMWDataValue {
 	}
 
 	private function decodeUriContext( $context ) {
+
+		if ( $this->m_mode !== SMW_URI_MODE_URI && $this->m_mode !== SMW_URI_MODE_ANNOURI ) {
+			return array( $this->getURL(), $context );
+		}
+
 		return array(
 			str_replace( ' ', '_', $this->urlEncoder->decode( $this->getURL() ) ),
 			$this->urlEncoder->decode( $context )

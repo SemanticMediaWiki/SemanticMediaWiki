@@ -26,20 +26,20 @@ class RedirectInfoStore {
 	/**
 	 * @var Cache
 	 */
-	private $redirectCache = null;
+	private $cache = null;
 
 	/**
 	 * @since 2.1
 	 *
 	 * @param Database $connection
-	 * @param Cache|null $redirectCache
+	 * @param Cache|null $cache
 	 */
-	public function __construct( Database $connection, Cache $redirectCache = null ) {
+	public function __construct( Database $connection, Cache $cache = null ) {
 		$this->connection = $connection;
-		$this->redirectCache = $redirectCache;
+		$this->cache = $cache;
 
-		if ( $this->redirectCache === null ) {
-			$this->redirectCache = new FixedInMemoryCache( 500 );
+		if ( $this->cache === null ) {
+			$this->cache = new FixedInMemoryCache( 500 );
 		}
 	}
 
@@ -60,13 +60,13 @@ class RedirectInfoStore {
 			$namespace
 		);
 
-		if ( $this->redirectCache->contains( $hash ) ) {
-			return $this->redirectCache->fetch( $hash );
+		if ( $this->cache->contains( $hash ) ) {
+			return $this->cache->fetch( $hash );
 		}
 
-		$id = (int)$this->find( $title, $namespace );
+		$id = $this->select( $title, $namespace );
 
-		$this->redirectCache->save( $hash, $id );
+		$this->cache->save( $hash, $id );
 
 		return $id;
 	}
@@ -87,7 +87,7 @@ class RedirectInfoStore {
 			$namespace
 		);
 
-		$this->redirectCache->save( $hash, $id );
+		$this->cache->save( $hash, $id );
 	}
 
 	/**
@@ -105,10 +105,10 @@ class RedirectInfoStore {
 			$namespace
 		);
 
-		$this->redirectCache->delete( $hash );
+		$this->cache->delete( $hash );
 	}
 
-	private function find( $title, $namespace ) {
+	private function select( $title, $namespace ) {
 
 		$row = $this->connection->selectRow(
 			self::TABLENAME,
@@ -120,7 +120,7 @@ class RedirectInfoStore {
 			__METHOD__
 		);
 
-		return $row !== false && isset( $row->o_id ) ? $row->o_id : 0;
+		return $row !== false && isset( $row->o_id ) ? (int)$row->o_id : 0;
 	}
 
 	private function insert( $id, $title, $namespace ) {
