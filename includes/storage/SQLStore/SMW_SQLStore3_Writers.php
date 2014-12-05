@@ -94,33 +94,39 @@ class SMWSQLStore3Writers {
 	 * @since 1.8
 	 * @param SMWSemanticData $data
 	 */
-	public function doDataUpdate( SMWSemanticData $data ) {
-		wfRunHooks( 'SMWSQLStore3::updateDataBefore', array( $this->store, $data ) );
+	public function doDataUpdate( SMWSemanticData $semanticData ) {
+		wfRunHooks( 'SMWSQLStore3::updateDataBefore', array( $this->store, $semanticData ) );
+
+		$subject = $semanticData->getSubject();
+
+		// Clearing all data associated with a subject before adding the new data set
+		if ( $this->store->canUseUpdateFeature( SMW_REPLACEMENT_UPDATE ) && !$this->store->getObjectIds()->checkIsRedirect( $subject ) ) {
+			$this->doFlatDataUpdate( new SMWSemanticData( $subject ) );
+		}
 
 		// Update data about our main subject
-		$this->doFlatDataUpdate( $data );
+		$this->doFlatDataUpdate( $semanticData );
 
 		// Update data about our subobjects
-		$subSemanticData = $data->getSubSemanticData();
+		$subSemanticData = $semanticData->getSubSemanticData();
 
 		foreach( $subSemanticData as $subobjectData ) {
 			$this->doFlatDataUpdate( $subobjectData );
 		}
 
 		// Delete data about other subobjects no longer used
-		$subobjects = $this->getSubobjects( $data->getSubject() );
+		$subobjects = $this->getSubobjects( $subject );
 
 		foreach( $subobjects as $smw_id => $subobject ) {
 			if( !array_key_exists( $subobject->getSubobjectName(), $subSemanticData ) ) {
-				$emptySemanticData = new SMWSemanticData( $subobject );
-				$this->doFlatDataUpdate( $emptySemanticData );
+				$this->doFlatDataUpdate( new SMWSemanticData( $subobject ) );
 				//TODO make delete job to find out if IDs can be deleted altogether
 			}
 		}
 
 		// TODO Make overall diff SMWSemanticData containers and run a hook
 
-		wfRunHooks( 'SMWSQLStore3::updateDataAfter', array( $this->store, $data ) );
+		wfRunHooks( 'SMWSQLStore3::updateDataAfter', array( $this->store, $semanticData ) );
 
 	}
 
@@ -133,6 +139,10 @@ class SMWSQLStore3Writers {
 	 */
 	protected function doFlatDataUpdate( SMWSemanticData $data ) {
 		$subject = $data->getSubject();
+
+		if ( $this->store->canUseUpdateFeature( SMW_TRX_UPDATE ) ) {
+			$this->store->getConnection()->beginTransaction( __METHOD__ );
+		}
 
 		// Take care of redirects
 		$redirects = $data->getPropertyValues( new SMWDIProperty( '_REDI' ) );
@@ -148,6 +158,9 @@ class SMWSQLStore3Writers {
 			// Stop here:
 			// * no support for annotations on redirect pages
 			// * updateRedirects takes care of deleting any previous data
+
+			$this->store->getConnection()->commitTransaction( __METHOD__ );
+
 			return;
 		} else {
 			$this->updateRedirects(
@@ -189,6 +202,8 @@ class SMWSQLStore3Writers {
 
 		// Update caches (may be important if jobs are directly following this call)
 		$this->setSemanticDataCache( $sid, $data );
+
+		$this->store->getConnection()->commitTransaction( __METHOD__ );
 
 		// TODO Make overall diff SMWSemanticData containers and return them.
 		// This can only be done here, since the $deleteRows/$insertRows

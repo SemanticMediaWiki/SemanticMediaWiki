@@ -898,4 +898,15 @@ class SMWSQLStore3 extends SMWStore {
 		return parent::getConnection( $connectionTypeId );
 	}
 
+	/**
+	 * @since 2.1
+	 *
+	 * @param integer $updateFeatureFlag
+	 *
+	 * @param boolean
+	 */
+	public function canUseUpdateFeature( $updateFeatureFlag ) {
+		return $GLOBALS['smwgUFeatures'] === ( $GLOBALS['smwgUFeatures'] | $updateFeatureFlag );
+	}
+
 }

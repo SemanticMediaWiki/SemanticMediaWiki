@@ -195,4 +195,63 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 		$instance->doDataUpdate( $semanticData );
 	}
 
+	public function testUseTransactionForUpdate() {
+
+		$title = Title::newFromText( __METHOD__, NS_MAIN );
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->setConstructorArgs( array( DIWikiPage::newFromTitle( $title ) ) )
+			->setMethods( array( 'getPropertyValues' ) )
+			->getMock();
+
+		$semanticData->expects( $this->once() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( array( DIWikiPage::newFromTitle( $title ) ) ) );
+
+		$objectIdGenerator = $this->getMockBuilder( '\SMWSql3SmwIds' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$objectIdGenerator->expects( $this->atLeastOnce() )
+			->method( 'getSMWPageIDandSort' )
+			->will( $this->returnValue( 0 ) );
+
+		$objectIdGenerator->expects( $this->atLeastOnce() )
+			->method( 'makeSMWPageID' )
+			->will( $this->returnValue( 0 ) );
+
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$database->expects( $this->atLeastOnce() )
+			->method( 'beginTransaction' );
+
+		$database->expects( $this->atLeastOnce() )
+			->method( 'commitTransaction' );
+
+		$database->expects( $this->once() )
+			->method( 'select' )
+			->will( $this->returnValue( array() ) );
+
+		$parentStore = $this->getMockBuilder( '\SMWSQLStore3' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parentStore->expects( $this->any() )
+			->method( 'canUseUpdateFeature' )
+			->will( $this->returnCallback( function( $flag ) { return $flag === SMW_TRX_UPDATE; } ) );
+
+		$parentStore->expects( $this->atLeastOnce() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $objectIdGenerator ) );
+
+		$parentStore->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $database ) );
+
+		$instance = new SMWSQLStore3Writers( $parentStore );
+		$instance->doDataUpdate( $semanticData );
+	}
+
 }

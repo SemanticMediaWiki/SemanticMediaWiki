@@ -774,3 +774,22 @@ $GLOBALS['smwgFallbackSearchType'] = null;
 ##
 $GLOBALS['smwgEnabledEditPageHelp'] = true;
 ##
+
+###
+# SMW_DIFF_UPDATE (default) - As the default option it will compute the `diff`
+# of an existing data set and only initiate an update on selected tables
+#
+# SMW_REPLACEMENT_UPDATE - This option is meant to be used to safeguard data
+# integrity and force a complete replacement of a data set during an update.
+# It comes with an additional cost of a DB write during the update process.
+#
+# SMW_TRX_UPDATE - This option will add each update process to its own transaction
+# and ensures that a transaction is being committed before a new transaction is
+# started
+#
+# e.g. SMW_DIFF_UPDATE | SMW_TRX_UPDATE
+#
+# @since 2.1
+##
+$GLOBALS['smwgUFeatures'] = SMW_DIFF_UPDATE;
+##
