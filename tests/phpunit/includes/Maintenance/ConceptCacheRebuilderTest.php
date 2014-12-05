@@ -1,16 +1,17 @@
 <?php
 
-namespace SMW\Tests\Store\Maintenance;
+namespace SMW\Tests\Maintenance;
 
-use SMW\Store\Maintenance\ConceptCacheRebuilder;
+use SMW\Maintenance\ConceptCacheRebuilder;
 use SMW\DIConcept;
 
 /**
- * @covers \SMW\Store\Maintenance\ConceptCacheRebuilder
+ * @covers \SMW\Maintenance\ConceptCacheRebuilder
  *
  * @group SMW
  * @group SMWExtension
- * @group semantic-mediawiki-unit
+ *
+ * @group semantic-mediawiki-maintenance
  * @group mediawiki-databaseless
  *
  * @license GNU GPL v2+
@@ -29,7 +30,7 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Store\Maintenance\ConceptCacheRebuilder',
+			'\SMW\Maintenance\ConceptCacheRebuilder',
 			new ConceptCacheRebuilder( $store, $settings )
 		);
 	}

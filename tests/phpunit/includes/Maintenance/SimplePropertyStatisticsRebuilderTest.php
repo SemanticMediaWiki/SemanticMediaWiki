@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Store\Maintenance;
+namespace SMW\Tests\Maintenance;
 
 use SMW\SQLStore\SimplePropertyStatisticsRebuilder;
 
@@ -11,6 +11,7 @@ use FakeResultWrapper;
  *
  * @group SMW
  * @group SMWExtension
+ *
  * @group semantic-mediawiki-unit
  * @group mediawiki-databaseless
  *

@@ -4,11 +4,11 @@ namespace SMW\Tests;
 
 use SMW\Tests\Utils\UtilityFactory;
 
+use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\SemanticData;
 use SMW\ParserData;
 use SMW\DIWikiPage;
-use SMW\ApplicationFactory;
 
 use ParserOutput;
 use Title;
@@ -27,11 +27,13 @@ use Title;
 class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
+	private $dataValueFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+		$this->dataValueFactory = DataValueFactory::getInstance();
 	}
 
 	public function testCanConstruct() {
@@ -61,19 +63,27 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ParserData( $title, $parserOutput );
 
-		$this->assertTrue( $instance->getSemanticData()->isEmpty() );
+		$this->assertTrue(
+			$instance->getSemanticData()->isEmpty()
+		);
 	}
 
-	public function testUpdateStatus() {
+	public function testUpdateJobState() {
 
 		$title = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
 		$instance = new ParserData( $title, $parserOutput );
-		$this->assertTrue( $instance->getUpdateStatus() );
+
+		$this->assertTrue(
+			$instance->getUpdateJobState()
+		);
 
 		$instance->disableBackgroundUpdateJobs();
-		$this->assertFalse( $instance->getUpdateStatus() );
+
+		$this->assertFalse(
+			$instance->getUpdateJobState()
+		);
 	}
 
 	public function testGetterInstances() {
@@ -83,9 +93,20 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ParserData( $title, $parserOutput );
 
-		$this->assertInstanceOf( 'Title', $instance->getTitle() );
-		$this->assertInstanceOf( 'ParserOutput', $instance->getOutput() );
-		$this->assertInstanceOf( '\SMW\DIWikiPage', $instance->getSubject() );
+		$this->assertInstanceOf(
+			'Title',
+			$instance->getTitle()
+		);
+
+		$this->assertInstanceOf(
+			'ParserOutput',
+			$instance->getOutput()
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\DIWikiPage',
+			$instance->getSubject()
+		);
 	}
 
 	public function testAddDataVlaueAndClear() {
@@ -95,19 +116,26 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ParserData( $title, $parserOutput );
 
-		$this->assertTrue( $instance->getSemanticData()->isEmpty() );
-
-		$instance->addDataValue(
-			DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' )
+		$this->assertTrue(
+			$instance->getSemanticData()->isEmpty()
 		);
 
-		$this->assertFalse( $instance->getSemanticData()->isEmpty() );
-		$instance->clearData();
+		$instance->addDataValue(
+			$this->dataValueFactory->newPropertyValue( 'Foo', 'Bar' )
+		);
 
-		$this->assertTrue( $instance->getSemanticData()->isEmpty() );
+		$this->assertFalse(
+			$instance->getSemanticData()->isEmpty()
+		);
+
+		$instance->setEmptySemanticData();
+
+		$this->assertTrue(
+			$instance->getSemanticData()->isEmpty()
+		);
 	}
 
-	public function testAddDataValueAndUpdateOutput() {
+	public function testAddDataValueAndPushSemanticDataToOutput() {
 
 		$title = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
@@ -115,19 +143,19 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ParserData( $title, $parserOutput );
 
 		$instance->addDataValue(
-			DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' )
+			$this->dataValueFactory->newPropertyValue( 'Foo', 'Bar' )
 		);
 
 		$this->assertFalse( $instance->getSemanticData()->isEmpty() );
-		$instance->updateOutput();
+		$instance->pushSemanticDataToOutput();
 
 		$title = Title::newFromText( __METHOD__ .'-1' );
 
 		$newInstance = new ParserData( $title, $instance->getOutput() );
 
-		$this->assertTrue(
-			$instance->getSemanticData()->getHash() === $newInstance->getSemanticData()->getHash(),
-			'Asserts that updateOutput() yielded an update, resulting with an identical hash in both containers'
+		$this->assertEquals(
+			$instance->getSemanticData()->getHash(),
+			$newInstance->getSemanticData()->getHash()
 		);
 	}
 
@@ -140,18 +168,21 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue( $instance->getSemanticData()->isEmpty() );
 
-		$semanticData = new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) );
+		$semanticData = new SemanticData(
+			DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) )
+		);
 
 		$semanticData->addDataValue(
-			DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' )
+			$this->dataValueFactory->newPropertyValue( 'Foo', 'Bar' )
 		);
 
 		$instance->setSemanticData( $semanticData );
 
 		$this->assertFalse( $instance->getSemanticData()->isEmpty() );
 
-		$this->assertTrue(
-			$semanticData->getHash() === $instance->getSemanticData()->getHash()
+		$this->assertEquals(
+			$semanticData->getHash(),
+			$instance->getSemanticData()->getHash()
 		);
 	}
 
@@ -174,7 +205,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ParserData( $title, $parserOutput );
 
 		$instance->addDataValue(
-			DataValueFactory::getInstance()->newPropertyValue(
+			$this->dataValueFactory->newPropertyValue(
 				$propertyName,
 				$value
 			)
@@ -238,6 +269,33 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue( $instance->updateStore() );
 
 		ApplicationFactory::clear();
+	}
+
+	public function testSemanticDataStateToOutputProperty() {
+
+		$parserOutput = new ParserOutput();
+
+		$instance = new ParserData(
+			Title::newFromText( __METHOD__ ),
+			$parserOutput
+		);
+
+		$this->assertEmpty(
+			$parserOutput->getProperty( 'smw-semanticdata-status' )
+		);
+
+		$instance->addDataValue(
+			$this->dataValueFactory->newPropertyValue(
+				'Foo',
+				'Bar'
+			)
+		);
+
+		$instance->setSemanticDataStateToOutputProperty();
+
+		$this->assertTrue(
+			$parserOutput->getProperty( 'smw-semanticdata-status' )
+		);
 	}
 
 }

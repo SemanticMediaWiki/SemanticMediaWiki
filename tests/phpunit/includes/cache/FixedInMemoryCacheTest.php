@@ -53,28 +53,6 @@ class FixedInMemoryCacheTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testReset() {
-
-		$instance = new FixedInMemoryCache( 5 );
-
-		$instance->save( 'foo', array( 'foo' ) );
-		$instance->save( 42, null );
-
-		$stats = $instance->getStats();
-		$this->assertEquals(
-			2,
-			$stats['count']
-		);
-
-		$instance->reset();
-
-		$stats = $instance->getStats();
-		$this->assertEquals(
-			0,
-			$stats['count']
-		);
-	}
-
 	public function testLeastRecentlyUsedShiftForLimitedCacheSize() {
 
 		$instance = new FixedInMemoryCache( 5 );

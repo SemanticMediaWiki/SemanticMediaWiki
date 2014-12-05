@@ -1,17 +1,18 @@
 <?php
 
-namespace SMW\Tests\Store\Maintenance;
+namespace SMW\Tests\Maintenance;
 
-use SMW\Store\Maintenance\DataRebuilder;
+use SMW\Maintenance\DataRebuilder;
 
 use Title;
 
 /**
- * @covers \SMW\Store\Maintenance\DataRebuilder
+ * @covers \SMW\Maintenance\DataRebuilder
  *
  * @group SMW
  * @group SMWExtension
- * @group semantic-mediawiki-unit
+ *
+ * @group semantic-mediawiki-maintenance
  * @group mediawiki-databaseless
  *
  * @license GNU GPL v2+
@@ -46,7 +47,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 		$store = $this->getMockForAbstractClass( '\SMW\Store' );
 
 		$this->assertInstanceOf(
-			'\SMW\Store\Maintenance\DataRebuilder',
+			'\SMW\Maintenance\DataRebuilder',
 			new DataRebuilder( $store, null )
 		);
 	}
@@ -249,7 +250,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = $this->getMockBuilder( '\SMW\Store\Maintenance\DataRebuilder' )
+		$instance = $this->getMockBuilder( '\SMW\Maintenance\DataRebuilder' )
 			->setConstructorArgs( array( $store, null ) )
 			->setMethods( array( 'makeTitleOf' ) )
 			->getMock();

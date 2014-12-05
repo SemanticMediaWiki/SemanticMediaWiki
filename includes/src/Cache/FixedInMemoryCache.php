@@ -111,16 +111,6 @@ class FixedInMemoryCache implements Cache {
 
 	/**
 	 * @since 2.1
-	 */
-	public function reset() {
-		$this->cache = array();
-		$this->count = 0;
-		$this->cacheMisses = 0;
-		$this->cacheHits = 0;
-	}
-
-	/**
-	 * @since 2.1
 	 *
 	 * {@inheritDoc}
 	 */

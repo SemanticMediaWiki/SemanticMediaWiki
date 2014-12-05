@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Store\Maintenance;
+namespace SMW\Maintenance;
 
 use SMW\MediaWiki\TitleLookup;
 use SMW\Reporter\MessageReporter;
@@ -18,8 +18,6 @@ use Title;
  *
  * @note This is an internal class and should not be used outside of smw-core
  *
- * @ingroup SMW
- *
  * @license GNU GPL v2+
  * @since 1.9.2
  *
@@ -27,14 +25,20 @@ use Title;
  */
 class ConceptCacheRebuilder {
 
-	/** @var MessageReporter */
-	protected $reporter;
+	/**
+	 * @var Store
+	 */
+	private $store;
 
-	/** @var Store */
-	protected $store;
+	/**
+	 * @var Settings
+	 */
+	private $settings;
 
-	/** @var Settings */
-	protected $settings;
+	/**
+	 * @var MessageReporter
+	 */
+	private $reporter;
 
 	protected $concept = null;
 	protected $action  = null;
@@ -49,16 +53,20 @@ class ConceptCacheRebuilder {
 	 *
 	 * @param Store $store
 	 * @param Settings $settings
-	 * @param MessageReporter|null $reporter
 	 */
-	public function __construct( Store $store, Settings $settings, MessageReporter $reporter = null ) {
+	public function __construct( Store $store, Settings $settings ) {
 		$this->store = $store;
 		$this->settings = $settings;
-		$this->reporter = $reporter;
+		$this->reporter = new NullMessageReporter();
+	}
 
-		if ( $this->reporter === null ) {
-			$this->reporter = new NullMessageReporter();
-		}
+	/**
+	 * @since 2.1
+	 *
+	 * @param MessageReporter $reporter
+	 */
+	public function setMessageReporter( MessageReporter $reporter ) {
+		$this->reporter = $reporter;
 	}
 
 	/**
