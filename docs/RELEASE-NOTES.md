@@ -57,3 +57,4 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #645 Added `RedirectInfoStore` to isolate access to redirect information and cache info requests
 * #646 Improved error message handling for the `_num` data type
 * #665 Replaced arbitrary DB access in `Store::updateData` with `PageUpdater::doPurgeParserCache`
+* #667 Added `Database::beginTransaction` and `Database::commitTransaction` 
