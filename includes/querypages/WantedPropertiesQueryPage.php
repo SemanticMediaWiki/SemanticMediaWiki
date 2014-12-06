@@ -76,22 +76,24 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * @return string
 	 */
 	function formatResult( $skin, $result ) {
-
-		$proplink = '';
-
 		// Only display user-defined properties because it can happen that
 		// custom predefined (fixed) properties are mixed within the result
 		// (did not use their own fixedProperty table and therefore were
 		// selected as well e.g _SF_PDF etc.)
-		if ( $result[0] instanceof DIProperty && $result[0]->isUserDefined() ) {
-			$proplink = $this->getLinker()->link(
-				$result[0]->getDiWikiPage()->getTitle(),
-				htmlspecialchars( $result[0]->getLabel() ),
-				array( 'action' => 'view' )
-			);
+		if ( !$result[0] instanceof DIProperty || !$result[0]->isUserDefined() ) {
+			return '';
 		}
 
-		return $proplink ? $this->msg( 'smw_wantedproperty_template', $proplink, $result[1] )->text() : '';
+		$proplink = $this->getLinker()->link(
+			$result[0]->getDiWikiPage()->getTitle(),
+			htmlspecialchars( $result[0]->getLabel() ),
+			array( 'action' => 'view' )
+		);
+
+		return $this->msg( 'smw_wantedproperty_template' )
+			->rawParams( $proplink )
+			->params( $result[1] )
+			->escaped();
 	}
 
 	/**
