@@ -213,6 +213,121 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 		);
 	}
 
+	public function testRegisteredSQLStoreBeforeChangeTitleComplete() {
+
+		// To make this work with SPARQLStore, need to inject the basestore
+		$storeClass = '\SMWSQLStore3';
+
+		$title = \Title::newFromText( __METHOD__ );
+
+		$idGenerator = $this->getMockBuilder( '\SMWSql3SmwIds' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$idGenerator->expects( $this->any() )
+			->method( 'getSMWPropertyID' )
+			->will( $this->returnValue( 42 ) );
+
+		$store = $this->getMockBuilder( $storeClass )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getObjectIds' ) )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idGenerator ) );
+
+		$null = 0;
+
+		$this->mwHooksHandler->register( 'SMW::SQLStore::BeforeChangeTitleComplete', function( $store, $title, $title, $null, $null ) {
+			return $store->reachedTheBeforeChangeTitleCompleteHook = true;
+		} );
+
+		$store->changeTitle( $title, $title, $null, $null );
+
+		$this->assertTrue(
+			$store->reachedTheBeforeChangeTitleCompleteHook
+		);
+	}
+
+	public function testRegisteredSQLStoreBeforeDeleteSubjectComplete() {
+
+		// To make this work with SPARQLStore, need to inject the basestore
+		$storeClass = '\SMWSQLStore3';
+
+		$title = \Title::newFromText( __METHOD__ );
+
+		$idGenerator = $this->getMockBuilder( '\SMWSql3SmwIds' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$idGenerator->expects( $this->any() )
+			->method( 'getSMWPageIDandSort' )
+			->will( $this->returnValue( 42 ) );
+
+		$store = $this->getMockBuilder( $storeClass )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getPropertyTables', 'getObjectIds' ) )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idGenerator ) );
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( array() ) );
+
+		$this->mwHooksHandler->register( 'SMW::SQLStore::BeforeDeleteSubjectComplete', function( $store, $title ) {
+			return $store->reachedTheBeforeDeleteSubjectCompleteHook = true;
+		} );
+
+		$store->deleteSubject( $title );
+
+		$this->assertTrue(
+			$store->reachedTheBeforeDeleteSubjectCompleteHook
+		);
+	}
+
+	public function testRegisteredSQLStoreAfterDeleteSubjectComplete() {
+
+		// To make this work with SPARQLStore, need to inject the basestore
+		$storeClass = '\SMWSQLStore3';
+
+		$title = \Title::newFromText( __METHOD__ );
+
+		$idGenerator = $this->getMockBuilder( '\SMWSql3SmwIds' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$idGenerator->expects( $this->any() )
+			->method( 'getSMWPageIDandSort' )
+			->will( $this->returnValue( 42 ) );
+
+		$store = $this->getMockBuilder( $storeClass )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getPropertyTables', 'getObjectIds' ) )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idGenerator ) );
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( array() ) );
+
+		$this->mwHooksHandler->register( 'SMW::SQLStore::AfterDeleteSubjectComplete', function( $store, $title ) {
+			return $store->reachedTheAfterDeleteSubjectCompleteHook = true;
+		} );
+
+		$store->deleteSubject( $title );
+
+		$this->assertTrue(
+			$store->reachedTheAfterDeleteSubjectCompleteHook
+		);
+	}
+
 	public function storeClassProvider() {
 
 		$provider[] = array( '\SMWSQLStore3' );

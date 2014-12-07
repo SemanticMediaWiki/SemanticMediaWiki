@@ -49,7 +49,11 @@ class SMWSQLStore3Writers {
 	 * @param Title $title
 	 */
 	public function deleteSubject( Title $title ) {
+
+		// @deprecated since 2.1, use 'SMW::SQLStore::BeforeDeleteSubjectComplete'
 		wfRunHooks( 'SMWSQLStore3::deleteSubjectBefore', array( $this->store, $title ) );
+
+		wfRunHooks( 'SMW::SQLStore::BeforeDeleteSubjectComplete', array( $this->store, $title ) );
 
 		$emptySemanticData = new SemanticData( DIWikiPage::newFromTitle( $title ) );
 		$this->doDataUpdate( $emptySemanticData );
@@ -84,8 +88,10 @@ class SMWSQLStore3Writers {
 
 		///TODO: Possibly delete ID here (at least for non-properties/categories, if not used in any place in rels2)
 
+		// @deprecated since 2.1, use 'SMW::SQLStore::AfterDeleteSubjectComplete'
 		wfRunHooks( 'SMWSQLStore3::deleteSubjectAfter', array( $this->store, $title ) );
 
+		wfRunHooks( 'SMW::SQLStore::AfterDeleteSubjectComplete', array( $this->store, $title ) );
 	}
 
 	/**
@@ -705,6 +711,8 @@ class SMWSQLStore3Writers {
 	 */
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
 		global $smwgQEqualitySupport;
+
+		wfRunHooks( 'SMW::SQLStore::BeforeChangeTitleComplete', array( $this->store, $oldtitle, $newtitle, $pageid, $redirid ) );
 
 		$db = $this->store->getConnection();
 
