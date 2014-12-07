@@ -38,6 +38,21 @@ Implementing a hook should be made in consideration of the expected performance 
 		<td>to add additional table definitions during initialization.</td>
 		<td>1.9</sup></td>
 	</tr>
+	<tr>
+		<td>`SMW::SQLStore::BeforeDeleteSubjectComplete`</td>
+		<td>called before deletion of a subject is completed</td>
+		<td>2.1</sup></td>
+	</tr>
+	<tr>
+		<td>`SMW::SQLStore::AfterDeleteSubjectComplete`</td>
+		<td>called after deletion of a subject is completed.</td>
+		<td>2.1</sup></td>
+	</tr>
+	<tr>
+		<td>`SMW::SQLStore::BeforeChangeTitleComplete`</td>
+		<td>called before change to a subject is completed.</td>
+		<td>2.1</sup></td>
+	</tr>
 </table>
 
 For implementation details, see examples provided by `SemanticMediaWikiProvidedHookInterfaceIntegrationTest`.
@@ -55,8 +70,6 @@ Subsequent hooks should be renamed to follow a common naming practice that help 
 * `\SMW\Store`, smwInitializeTables (SMW::Store::initTables)
 * `SMWSQLStore3SetupHandlers`, SMWCustomSQLStoreFieldType
 * `SMWSQLStore3SetupHandlers`, smwRefreshDataJobs (SMW::SQLStore::AfterRefreshDataJob)
-* `SMWSQLStore3Writers`, SMWSQLStore3::deleteSubjectBefore (SMW::SQLStore::BeforeDeleteSubjectComplete)
-* `SMWSQLStore3Writers`, SMWSQLStore3::deleteSubjectAfter (SMW::SQLStore::AfterDeleteSubjectComplete)
 * `SMWSQLStore3Writers`, SMWSQLStore3::updateDataBefore (SMW::SQLStore::BeforeDataUpdateComplete)
 * `SMWSQLStore3Writers`, SMWSQLStore3::updateDataAfter (SMW::SQLStore::AfterDataUpdateComplete)
 * `SMWSetupScript`, smwDropTables (SMW::Store::dropTables)

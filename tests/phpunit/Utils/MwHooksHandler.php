@@ -29,7 +29,10 @@ class MwHooksHandler {
 		'SMW::Factbox::BeforeContentGeneration',
 		'SMW::SQLStore::updatePropertyTableDefinitions',
 		'SMW::Store::BeforeQueryResultLookupComplete',
-		'SMW::Store::AfterQueryResultLookupComplete'
+		'SMW::Store::AfterQueryResultLookupComplete',
+		'SMW::SQLStore::BeforeChangeTitleComplete',
+		'SMW::SQLStore::BeforeDeleteSubjectComplete',
+		'SMW::SQLStore::AfterDeleteSubjectComplete'
 	);
 
 	/**
