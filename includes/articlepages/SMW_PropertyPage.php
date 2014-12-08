@@ -30,7 +30,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	protected function getHtml() {
 
 		$list = $this->getSubpropertyList() . $this->getPropertyValueList();
-		$result = $this->getPredefinedPropertyIntro() . ( $list !== '' ? Html::element( 'br', array( 'id' => 'smwfootbr' ) ) . $list : '' );
+		$result = $this->getPredefinedPropertyIntro() . ( $list !== '' ? Html::element( 'div', array( 'id' => 'smwfootbr' ) ) . $list : '' );
 
 		return $result;
 	}
