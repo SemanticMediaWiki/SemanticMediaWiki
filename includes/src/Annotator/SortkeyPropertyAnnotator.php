@@ -37,7 +37,7 @@ class SortkeyPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	protected function addPropertyValues() {
 
-		$sortkey = $this->defaultSort ? $this->defaultSort : str_replace( '_', ' ', $this->getSemanticData()->getSubject()->getDBkey() );
+		$sortkey = $this->defaultSort ? $this->defaultSort : $this->getSemanticData()->getSubject()->getSortKey();
 
 		$this->getSemanticData()->addPropertyObjectValue(
 			new DIProperty( DIProperty::TYPE_SORTKEY ),

@@ -22,22 +22,30 @@ class DIWikiPage extends SMWDataItem {
 	 * @var string
 	 */
 	protected $m_dbkey;
+
 	/**
 	 * MediaWiki namespace integer.
 	 * @var integer
 	 */
 	protected $m_namespace;
+
 	/**
 	 * MediaWiki interwiki prefix.
 	 * @var string
 	 */
 	protected $m_interwiki;
+
 	/**
 	 * Name for subobjects of pages, or empty string if the given object is
 	 * the page itself (not a subobject).
 	 * @var string
 	 */
 	protected $m_subobjectname;
+
+	/**
+	 * @var string
+	 */
+	private $sortkey = null;
 
 	/**
 	 * Contructor. We do not bother with too much detailed validation here,
@@ -86,13 +94,27 @@ class DIWikiPage extends SMWDataItem {
 	}
 
 	/**
+	 * @since  2.1
+	 *
+	 * @param string $sortkey
+	 */
+	public function setSortKey( $sortkey ) {
+		$this->sortkey = str_replace( '_', ' ', $sortkey );
+	}
+
+	/**
 	 * Get the sortkey of the wiki page data item. Note that this is not
 	 * the sortkey that might have been set for the corresponding wiki
 	 * page. To obtain the latter, query for the values of the property
 	 * "new SMWDIProperty( '_SKEY' )".
 	 */
 	public function getSortKey() {
-		return $this->m_dbkey;
+
+		if ( $this->sortkey === null || $this->sortkey === '' ) {
+			$this->sortkey = str_replace( '_', ' ', $this->m_dbkey );
+		}
+
+		return $this->sortkey;
 	}
 
 	/**

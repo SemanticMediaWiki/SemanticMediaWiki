@@ -110,7 +110,7 @@ class DumpRdfMaintenanceTest extends MwDBaseUnitTestCase {
 			'<rdfs:label>Lorem ipsum</rdfs:label>',
 			'<swivt:masterPage rdf:resource="&wiki;Lorem_ipsum"/>',
 			'<property:Has_subobject-23aux rdf:resource="&wiki;Lorem_ipsum-23_017ced50ca5208f4cc77f90c43a0d4a9"/>',
-			'<swivt:wikiPageSortKey>Lorem ipsum# 017ced50ca5208f4cc77f90c43a0d4a9</swivt:wikiPageSortKey>'
+			'<swivt:wikiPageSortKey rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lorem ipsum</swivt:wikiPageSortKey>'
 		);
 
 		$maintenanceRunner

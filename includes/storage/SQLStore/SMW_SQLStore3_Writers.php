@@ -182,8 +182,12 @@ class SMWSQLStore3Writers {
 		if ( $sortkeyDataItem instanceof SMWDIBlob ) {
 			$sortkey = $sortkeyDataItem->getString();
 		} else { // default sortkey
-			$sortkey = str_replace( '_', ' ', $subject->getDBkey() );
+			$sortkey = $subject->getSortKey();
 		}
+
+		// #649 Be consistent about how sortkeys are stored therefore always
+		// normalize even for usages like {{DEFAULTSORT: Foo_bar }}
+		$sortkey = str_replace( '_', ' ', $sortkey );
 
 		// Always make an ID; this also writes sortkey and namespace data
 		$sid = $this->store->getObjectIds()->makeSMWPageID(
@@ -231,7 +235,7 @@ class SMWSQLStore3Writers {
 
 		$res = $db->select(
 			$db->tablename( SMWSql3SmwIds::tableName ),
-			'smw_id,smw_subobject',
+			'smw_id,smw_subobject,smw_sortkey',
 			'smw_title = ' . $db->addQuotes( $subject->getDBkey() ) . ' AND ' .
 			'smw_namespace = ' . $db->addQuotes( $subject->getNamespace() ) . ' AND ' .
 			'smw_iw = ' . $db->addQuotes( $subject->getInterwiki() ) . ' AND ' .
@@ -247,7 +251,7 @@ class SMWSQLStore3Writers {
 				$subject->getDBkey(),
 				$subject->getNamespace(),
 				$subject->getInterwiki(),
-				'',
+				$row->smw_sortkey,
 				$row->smw_subobject
 			) );
 		}

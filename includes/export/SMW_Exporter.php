@@ -97,16 +97,28 @@ class SMWExporter {
 	 */
 	static public function makeExportData( SMWSemanticData $semdata ) {
 		self::initBaseURIs();
+
 		$subject = $semdata->getSubject();
-		if ( $subject->getNamespace() == SMW_NS_PROPERTY ) {
-			$types = $semdata->getPropertyValues( new SMWDIProperty( '_TYPE' ) );
-		} else {
-			$types = array();
+		$types = array();
+
+		if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
+			$types = $semdata->getPropertyValues( new DIProperty( '_TYPE' ) );
 		}
+
+		// #649 Alwways make sure to have a least one valid sortkey
+		if ( !$semdata->getPropertyValues( new DIProperty( '_SKEY' ) ) && $subject->getSortKey() !== '' ) {
+			$semdata->addPropertyObjectValue(
+				new DIProperty( '_SKEY' ),
+				new SMWDIBlob( $subject->getSortKey() )
+			);
+		}
+
 		$result = self::makeExportDataForSubject( $subject, end( $types ) );
+
 		foreach ( $semdata->getProperties() as $property ) {
 			self::addPropertyValues( $property, $semdata->getPropertyValues( $property ), $result, $subject );
 		}
+
 		return $result;
 	}
 
@@ -146,15 +158,11 @@ class SMWExporter {
 				self::getDataItemExpElement( $masterPage )
 			);
 
-			// Add a sortkey: subobjects do not get this during parsing (they are no pages),
-			// but it is needed to query for them (e.g., to get a defined order for result pages)
-			$subObjectLabel = $diWikiPage->getDBkey() . '#' . $diWikiPage->getSubobjectName();
-			$result->addPropertyObjectValue(
-				self::getSpecialPropertyResource( '_SKEY' ),
-				new SMWExpLiteral( str_replace( '_', ' ', $subObjectLabel ) )
-			);
+			// #649
+			// Subobjects contain there individual sortkey's therefore
+			// no need to add them twice
 
-			#520
+			// #520
 			$result->addPropertyObjectValue(
 				self::getSpecialNsResource( 'swivt', 'wikiNamespace' ),
 				new SMWExpLiteral( strval( $diWikiPage->getNamespace() ), 'http://www.w3.org/2001/XMLSchema#integer' )
@@ -200,7 +208,7 @@ class SMWExporter {
 				if ( $addStubData ) {
 					// Add a default sort key; for pages that exist in the wiki,
 					// this is set during parsing
-					$defaultSortkey = new SMWExpLiteral( str_replace( '_', ' ', $diWikiPage->getDBkey() ) );
+					$defaultSortkey = new SMWExpLiteral( $diWikiPage->getSortKey() );
 					$result->addPropertyObjectValue( self::getSpecialPropertyResource( '_SKEY' ), $defaultSortkey );
 				}
 			}
@@ -445,6 +453,7 @@ class SMWExporter {
 		} else {
 			// TODO (currently not needed, but will be useful for displaying external SPARQL results)
 		}
+
 		return $dataItem;
 	}
 

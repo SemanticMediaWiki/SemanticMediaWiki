@@ -882,7 +882,8 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	public function clear() {
 		parent::clear();
-
+		$this->m_semdata = array();
+		$this->m_sdstate = array();
 		self::$prop_tables = null;
 		$this->getObjectIds()->clearCaches();
 	}

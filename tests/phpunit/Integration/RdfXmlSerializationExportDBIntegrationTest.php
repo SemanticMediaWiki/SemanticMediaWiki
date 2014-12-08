@@ -146,7 +146,8 @@ class RdfXmlSerializationExportDBIntegrationTest extends MwDBaseUnitTestCase {
 			'<property:RdfXmlSerializationForDateProperty-23aux rdf:datatype="http://www.w3.org/2001/XMLSchema#double">2457022.5</property:RdfXmlSerializationForDateProperty-23aux>',
 
 			// Subobject
-			'<swivt:wikiPageSortKey>SMW\Tests\Integration\RdfXmlSerializationExportDBIntegrationTest::testRdfXmlSerializationPrintoutForDatePropertyAnnotation# edab041aad45f1b607fc26802f7c7cd2</swivt:wikiPageSortKey>',
+			'<swivt:wikiPageSortKey rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SMW\Tests\Integration\RdfXmlSerializationExportDBIntegrationTest::testRdfXmlSerializationPrintoutForDatePropertyAnnotation</swivt:wikiPageSortKey>',
+
 			'<swivt:wikiPageSortKey rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SMW\Tests\Integration\RdfXmlSerializationExportDBIntegrationTest::testRdfXmlSerializationPrintoutForDatePropertyAnnotation</swivt:wikiPageSortKey>',
 			'<swivt:wikiNamespace rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</swivt:wikiNamespace>',
 			'<property:RdfXmlSerializationForDateProperty rdf:datatype="http://www.w3.org/2001/XMLSchema#date">1970-01-01Z</property:RdfXmlSerializationForDateProperty>',

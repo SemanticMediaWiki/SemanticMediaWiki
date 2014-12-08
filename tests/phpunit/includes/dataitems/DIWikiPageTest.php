@@ -50,4 +50,48 @@ class DIWikiPageTest extends DataItemTest {
 		$this->assertTrue( $newDi->equals( $di ) );
 	}
 
+	/**
+	 * @dataProvider sortKeyProvider
+	 */
+	public function testSortKeyRoundtrip( $title, $sortkey, $expected ) {
+
+		$instance = new DIWikiPage( $title, NS_MAIN );
+
+		$instance->setSortKey( $sortkey );
+
+		$this->assertEquals(
+			$expected,
+			$instance->getSortKey()
+		);
+	}
+
+	public function sortKeyProvider() {
+
+		$provider[] = array(
+			'Some_title',
+			null,
+			'Some title'
+		);
+
+		$provider[] = array(
+			'Some_title',
+			'',
+			'Some title'
+		);
+
+		$provider[] = array(
+			'Some_title',
+			'abc',
+			'abc'
+		);
+
+		$provider[] = array(
+			'Some_title',
+			'abc_def',
+			'abc def'
+		);
+
+		return $provider;
+	}
+
 }
