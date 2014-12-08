@@ -1,4 +1,7 @@
 <?php
+
+use SMW\NumberFormatter;
+
 /**
  * @ingroup SMWDataValues
  */
@@ -65,8 +68,8 @@ class SMWNumberValue extends SMWDataValue {
 	 */
 	static protected function parseNumberValue( $value, &$number, &$unit ) {
 		// Parse to find $number and (possibly) $unit
-		$decseparator = wfMessage( 'smw_decseparator' )->inContentLanguage()->text();
-		$kiloseparator = wfMessage( 'smw_kiloseparator' )->inContentLanguage()->text();
+		$decseparator = NumberFormatter::getInstance()->getDecimalSeparatorForContentLanguage();
+		$kiloseparator = NumberFormatter::getInstance()->getThousandsSeparatorForContentLanguage();
 
 		$parts = preg_split( '/([-+]?\s*\d+(?:\\' . $kiloseparator . '\d\d\d)*' .
 		                      '(?:\\' . $decseparator . '\d+)?\s*(?:[eE][-+]?\d+)?)/u',
@@ -154,7 +157,7 @@ class SMWNumberValue extends SMWDataValue {
 			$sep = '';
 			foreach ( $this->m_unitvalues as $unit => $value ) {
 				if ( $unit != $this->m_unitin ) {
-					$tooltip .= $sep . smwfNumberFormat( $value );
+					$tooltip .= $sep . NumberFormatter::getInstance()->formatNumberToLocalizedText( $value );
 					if ( $unit !== '' ) {
 						$tooltip .= '&#160;' . $unit;
 					}
@@ -196,7 +199,7 @@ class SMWNumberValue extends SMWDataValue {
 				} elseif ( $i > 1 ) {
 					$result .= ', ';
 				}
-				$result .= ( $this->m_outformat != '-' ? smwfNumberFormat( $value ) : $value );
+				$result .= ( $this->m_outformat != '-' ? NumberFormatter::getInstance()->formatNumberToLocalizedText( $value ) : $value );
 				if ( $unit !== '' ) {
 					$result .= '&#160;' . $unit;
 				}
@@ -223,7 +226,7 @@ class SMWNumberValue extends SMWDataValue {
 	public function getWikiValue() {
 		if ( $this->isValid() ) {
 			$unit = $this->getUnit();
-			return smwfNumberFormat( $this->m_dataitem->getSerialization() ) . ( $unit !== '' ? ' ' . $unit : '' );
+			return NumberFormatter::getInstance()->formatNumberToLocalizedText( $this->m_dataitem->getSerialization() ) . ( $unit !== '' ? ' ' . $unit : '' );
 		} else {
 			return 'error';
 		}
@@ -315,7 +318,7 @@ class SMWNumberValue extends SMWDataValue {
 	protected function makeUserValue() {
 		$this->m_caption = '';
 		if ( $this->m_outformat != '-u' ) { // -u is the format for displaying the unit only
-			$this->m_caption .= ( ( $this->m_outformat != '-' ) && ( $this->m_outformat != '-n' ) ? smwfNumberFormat( $this->m_dataitem->getNumber() ) : $this->m_dataitem->getNumber() );
+			$this->m_caption .= ( ( $this->m_outformat != '-' ) && ( $this->m_outformat != '-n' ) ? NumberFormatter::getInstance()->formatNumberToLocalizedText( $this->m_dataitem->getNumber() ) : $this->m_dataitem->getNumber() );
 		}
 		// no unit ever, so nothing to do about this
 		$this->m_unitin = '';

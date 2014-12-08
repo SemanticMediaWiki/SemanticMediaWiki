@@ -1,4 +1,7 @@
 <?php
+
+use SMW\NumberFormatter;
+
 /**
  * @ingroup SMWDataValues
  */
@@ -81,7 +84,7 @@ class SMWTemperatureValue extends SMWNumberValue {
 
 		$this->m_caption = '';
 		if ( $this->m_outformat != '-u' ) { // -u is the format for displaying the unit only
-			$this->m_caption .= ( ( $this->m_outformat != '-' ) && ( $this->m_outformat != '-n' ) ? smwfNumberFormat( $value ) : $value );
+			$this->m_caption .= ( ( $this->m_outformat != '-' ) && ( $this->m_outformat != '-n' ) ? NumberFormatter::getInstance()->formatNumberToLocalizedText( $value ) : $value );
 		}
 		if ( ( $printunit !== '' ) && ( $this->m_outformat != '-n' ) ) { // -n is the format for displaying the number only
 			if ( $this->m_outformat != '-u' ) {
