@@ -42,6 +42,7 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #641 Removes service info links from the `Factbox`
 * #654 Fixed broken field detection in record-type caused by html encoded strings (bug T23926)
 * #656 Fixed `#REDIRECT` detection in MW 1.24+
+* #661 Fixed regex search `(~/!)` for page-type properties (bug T36665, T49073, T33151, T35854)
 
 ## Internal changes
 
