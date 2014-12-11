@@ -886,6 +886,11 @@ class SMWSQLStore3QueryEngine {
 						} else {
 							$comparator = ' NOT LIKE ';
 						}
+
+						if ( $diType === SMWDataItem::TYPE_URI ) {
+							$value = str_replace( array( 'http://', 'https://', '%2A' ), array( '', '', '*' ), $value );
+						}
+
 						// Escape to prepare string matching:
 						$value = str_replace( array( '%', '_', '*', '?' ), array( '\%', '\_', '%', '_' ), $value );
 						break;
