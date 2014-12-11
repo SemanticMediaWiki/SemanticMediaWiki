@@ -29,7 +29,7 @@ use SMWExporter as Exporter;
  *
  * @author mwjames
  */
-class PageTypeRegexQueryTest extends MwDBaseUnitTestCase {
+class UriTypeQueryTest extends MwDBaseUnitTestCase {
 
 	private $queryResultValidator;
 	private $fixturesProvider;
@@ -59,6 +59,7 @@ class PageTypeRegexQueryTest extends MwDBaseUnitTestCase {
 	protected function tearDown() {
 
 		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
+
 		$fixturesCleaner
 			->purgeSubjects( $this->subjects )
 			->purgeAllKnownFacts();
@@ -67,14 +68,14 @@ class PageTypeRegexQueryTest extends MwDBaseUnitTestCase {
 	}
 
 	/**
-	 * #649
+	 * T45264
 	 */
-	public function testPageLikeNotLikeWildcardSearch() {
+	public function testSearchPatternForUriType() {
 
 		// Doesn't support this feature currently
 		$this->skipTestForStore( 'SMW\SPARQLStore\SPARQLStore' );
 
-		$property = $this->fixturesProvider->getProperty( 'title' );
+		$property = $this->fixturesProvider->getProperty( 'url' );
 
 		$semanticData = $this->semanticDataFactory
 			->newEmptySemanticData( __METHOD__ . '-0' );
@@ -83,7 +84,7 @@ class PageTypeRegexQueryTest extends MwDBaseUnitTestCase {
 
 		$dataValue = $this->dataValueFactory->newPropertyObjectValue(
 			$property,
-			"Title never to be selected"
+			"http://example.org/aaa/bbb#ccc"
 		);
 
 		$semanticData->addDataValue( $dataValue	);
@@ -97,21 +98,7 @@ class PageTypeRegexQueryTest extends MwDBaseUnitTestCase {
 
 		$dataValue = $this->dataValueFactory->newPropertyObjectValue(
 			$property,
-			"Sample text with spaces"
-		);
-
-		$semanticData->addDataValue( $dataValue	);
-
-		$this->getStore()->updateData( $semanticData );
-
-		$semanticData = $this->semanticDataFactory
-			->newEmptySemanticData( __METHOD__ .'-2'  );
-
-		$this->subjects['sample-2'] = $semanticData->getSubject();
-
-		$dataValue = $this->dataValueFactory->newPropertyObjectValue(
-			$property,
-			"Sample test with spaces"
+			"http://example.org/api?query=!_:;@* #Foo&=%20-3DBar"
 		);
 
 		$semanticData->addDataValue( $dataValue	);
@@ -119,55 +106,64 @@ class PageTypeRegexQueryTest extends MwDBaseUnitTestCase {
 		$this->getStore()->updateData( $semanticData );
 
 		/**
-		 * @query "[[Title::~Sample te*]]"
+		 * @query "[[Url::http://example.org/aaa/bbb#ccc]]"
 		 */
 		$this->assertThatQueryReturns(
-			"[[Title::~Sample te*]]" ,
+			"[[Url::http://example.org/aaa/bbb#ccc]]" ,
 			array(
-				$this->subjects['sample-1'],
-				$this->subjects['sample-2']
+				$this->subjects['sample-0']
 			)
 		);
 
 		/**
-		 * @query "[[Title::~Sample tes*]]"
+		 * @query "[[Url::http://example.org/api?query=!_:;@* #Foo&=%20-3DBar]]"
 		 */
 		$this->assertThatQueryReturns(
-			"[[Title::~Sample tes*]]",
-			array(
-				$this->subjects['sample-2']
-			)
-		);
-
-		/**
-		 * @query "[[Title::~Sample te?t with spaces]]"
-		 */
-		$this->assertThatQueryReturns(
-			"[[Title::~Sample te?t with spaces]]",
-			array(
-				$this->subjects['sample-1'],
-				$this->subjects['sample-2']
-			)
-		);
-
-		/**
-		 * @query "[[Title::~Sample*]] [[Title::!~Sample tes*]]"
-		 */
-		$this->assertThatQueryReturns(
-			"[[Title::~Sample*]] [[Title::!~Sample tes*]]",
+			"[[Url::http://example.org/api?query=!_:;@* #Foo&=%20-3DBar]]" ,
 			array(
 				$this->subjects['sample-1']
 			)
 		);
 
 		/**
-		 * @query "[[Title::~Sample tes*]] OR [[Title::~Sample tex*]]"
+		 * @query "[[Url::~*http://example.org/*]]"
 		 */
 		$this->assertThatQueryReturns(
-			"[[Title::~Sample tes*]] OR [[Title::~Sample tex*]]",
+			"[[Url::~*http://example.org/*]]" ,
 			array(
-				$this->subjects['sample-1'],
-				$this->subjects['sample-2']
+				$this->subjects['sample-0'],
+				$this->subjects['sample-1']
+			)
+		);
+
+		/**
+		 * @query "[[Url::~*ccc*]]"
+		 */
+		$this->assertThatQueryReturns(
+			"[[Url::~*ccc*]]" ,
+			array(
+				$this->subjects['sample-0']
+			)
+		);
+
+		/**
+		 * @query "[[Url::~http://*query=*]]"
+		 */
+		$this->assertThatQueryReturns(
+			"[[Url::~http://*query=*]]" ,
+			array(
+				$this->subjects['sample-1']
+			)
+		);
+
+		/**
+		 * @query "[[Url::~http://*query=*]] OR [[Url::~*ccc*]]"
+		 */
+		$this->assertThatQueryReturns(
+			"[[Url::~http://*query=*]] OR [[Url::~*ccc*]]" ,
+			array(
+				$this->subjects['sample-0'],
+				$this->subjects['sample-1']
 			)
 		);
 	}
@@ -181,11 +177,6 @@ class PageTypeRegexQueryTest extends MwDBaseUnitTestCase {
 			$description,
 			false,
 			true
-		);
-
-		$query->sort = true;
-		$query->sortkeys = array(
-			'Title' => 'desc'
 		);
 
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(

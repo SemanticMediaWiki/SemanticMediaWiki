@@ -84,7 +84,7 @@ class SMWURIValue extends SMWDataValue {
 				$uri_blacklist = explode( "\n", wfMessage( 'smw_uri_blacklist' )->inContentLanguage()->text() );
 				foreach ( $uri_blacklist as $uri ) {
 					$uri = trim( $uri );
-					if ( $uri == mb_substr( $value, 0, mb_strlen( $uri ) ) ) { // disallowed URI!
+					if ( $uri !== '' && $uri == mb_substr( $value, 0, mb_strlen( $uri ) ) ) { // disallowed URI!
 						$this->addError( wfMessage( 'smw_baduri', $value )->inContentLanguage()->text() );
 						return;
 					}
