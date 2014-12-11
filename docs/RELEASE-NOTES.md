@@ -17,6 +17,7 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #643 Added `--runtime` as reporting option for memory usage and runtime to `rebuildData.php`
 * #659 Added [``$smwgEnabledEditPageHelp``](https://semantic-mediawiki.org/wiki/Help:$smwgEnabledEditPageHelp) to show a contextual help text on the edit page
 * #664 Enabled `\;` usage to support semicolon escaping for record-type values (bug T17732)
+* #672 Added `Special:Log` support for events enabled in `smwgLogEventTypes` 
 
 ## Bug fixes
 
