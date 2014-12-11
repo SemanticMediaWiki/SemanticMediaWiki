@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMW\MediaWiki\Logger as MediaWikiLogger;
+
 use RuntimeException;
 
 /**
@@ -91,6 +93,11 @@ class StoreFactory {
 		if ( !( $instance instanceof Store ) ) {
 			throw new InvalidStoreException( "{$store} can not be used as a store instance" );
 		}
+
+		$mediaWikiLogger = new MediaWikiLogger();
+		$mediaWikiLogger->registerLoggableEventTypes( $GLOBALS['smwgLogEventTypes'] );
+
+		$instance->setLogger( $mediaWikiLogger );
 
 		return $instance;
 	}

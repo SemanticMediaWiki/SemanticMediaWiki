@@ -472,7 +472,13 @@ class SMWSQLStore3QueryEngine {
 			$qobj->where, 'SMW::getQueryResult', $sql_options );
 
 		$qr = array();
+
 		$count = 0; // the number of fetched results ( != number of valid results in array $qr)
+		$missedCount = 0;
+		$dataItemCache = array();
+		$logToTable = array();
+		$hasFurtherResults = false;
+
 		$prs = $query->getDescription()->getPrintrequests();
 
 		$diHandler = $this->m_store->getDataItemHandlerForDIType( SMWDataItem::TYPE_WIKIPAGE );
@@ -491,15 +497,23 @@ class SMWSQLStore3QueryEngine {
 						$row->so
 					) );
 				} catch ( \SMW\InvalidPredefinedPropertyException $e ) {
-					wfDebugLog( __CLASS__, __METHOD__ . ': ' . $e->getMessage() );
+					$logToTable[$row->t] = "issue creating a {$row->t} dataitem from a database row";
+					$this->m_store->getLogger()->log( __METHOD__, $e->getMessages() );
 				}
 
-				if ( $dataItem instanceof SMWDIWikiPage ) {
+				if ( $dataItem instanceof SMWDIWikiPage && !isset( $dataItemCache[ $dataItem->getHash() ] ) ) {
 					$count++;
+					$dataItemCache[ $dataItem->getHash() ] = true;
 					$qr[] = $dataItem;
 					// These IDs are usually needed for displaying the page (esp. if more property values are displayed):
 					$this->m_store->smwIds->setCache( $row->t, $row->ns, $row->iw, $row->so, $row->id, $row->sortkey );
+				} else {
+					$missedCount++;
+					$logToTable[$row->t] = "skip result for {$row->t} existing cache entry / query " . $query->getHash();
 				}
+			} else {
+				$missedCount++;
+				$logToTable[$row->t] = "skip result for {$row->t} due to an internal `{$row->iw}` pointer / query " . $query->getHash();
 			}
 		}
 
@@ -507,9 +521,18 @@ class SMWSQLStore3QueryEngine {
 			$count++;
 		}
 
-		$db->freeResult( $res );
-		$result = new SMWQueryResult( $prs, $query, $qr, $this->m_store, ( $count > $query->getLimit() ) );
+		if ( $logToTable !== array() ) {
+			foreach ( $logToTable as $key => $entry ) {
+				$this->m_store->getLogger()->logToTable( 'sqlstore-query-execution', 'query performer', $key, $entry );
+			}
+		}
 
+		if ( $count > $query->getLimit() || ( $count + $missedCount ) > $query->getLimit() ) {
+			$hasFurtherResults = true;
+		};
+
+		$db->freeResult( $res );
+		$result = new SMWQueryResult( $prs, $query, $qr, $this->m_store, $hasFurtherResults );
 
 		return $result;
 	}
@@ -1175,7 +1198,7 @@ throw new MWException("Debug -- this code might be dead.");
 	protected function getSQLOptions( SMWQuery $query, $rootid ) {
 		global $smwgQSortingSupport, $smwgQRandSortingSupport;
 
-		$result = array( 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() );
+		$result = array( 'LIMIT' => $query->getLimit() + 5, 'OFFSET' => $query->getOffset() );
 
 		// Build ORDER BY options using discovered sorting fields.
 		if ( $smwgQSortingSupport ) {

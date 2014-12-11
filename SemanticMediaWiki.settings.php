@@ -793,3 +793,19 @@ $GLOBALS['smwgEnabledEditPageHelp'] = true;
 ##
 $GLOBALS['smwgUFeatures'] = SMW_DIFF_UPDATE;
 ##
+
+###
+#
+# Log settings
+#
+# - `smwgLogEventTypes` make event types loggable and viewable in Special:Log
+#
+# - `sqlstore-query-execution` (default = false) to log events during query execution
+# of the SQLStore
+#
+# @since 2.1
+##
+$GLOBALS['smwgLogEventTypes'] = array(
+	'sqlstore-query-execution' => false
+);
+##
