@@ -89,27 +89,32 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected['wikiValue'],
-			$instance->getWikiValue()
+			$instance->getWikiValue(),
+			'Failed asserting wikiValue'
 		);
 
 		$this->assertEquals(
 			$expected['longHTMLText'],
-			$instance->getLongHTMLText( $linker )
+			$instance->getLongHTMLText( $linker ),
+			'Failed asserting longHTMLText'
 		);
 
 		$this->assertEquals(
 			$expected['longWikiText'],
-			$instance->getLongWikiText( $linker )
+			$instance->getLongWikiText( $linker ),
+			'Failed asserting longWikiText'
 		);
 
 		$this->assertEquals(
 			$expected['shortHTMLText'],
-			$instance->getShortHTMLText( $linker )
+			$instance->getShortHTMLText( $linker ),
+			'Failed asserting shortHTMLText'
 		);
 
 		$this->assertEquals(
 			$expected['shortWikiText'],
-			$instance->getShortWikiText( $linker )
+			$instance->getShortWikiText( $linker ),
+			'Failed asserting shortWikiText'
 		);
 	}
 
@@ -233,10 +238,10 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 			null,
 			array(
 				'wikiValue'     => 'http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D',
-				'longHTMLText'  => 'http://example.org/ようこそ#{}',
-				'longWikiText'  => 'http://example.org/ようこそ#{}',
-				'shortHTMLText' => 'http://example.org/ようこそ#{}',
-				'shortWikiText' => 'http://example.org/ようこそ#{}'
+				'longHTMLText'  => 'http://example.org/ようこそ-23-7B-7D',
+				'longWikiText'  => 'http://example.org/ようこそ-23-7B-7D',
+				'shortHTMLText' => 'http://example.org/ようこそ-23-7B-7D',
+				'shortWikiText' => 'http://example.org/ようこそ-23-7B-7D'
 			)
 		);
 
@@ -246,8 +251,8 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 			null,
 			array(
 				'wikiValue'     => 'http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D',
-				'longHTMLText'  => 'http://example.org/ようこそ#{}',
-				'longWikiText'  => 'http://example.org/ようこそ#{}',
+				'longHTMLText'  => 'http://example.org/ようこそ-23-7B-7D',
+				'longWikiText'  => 'http://example.org/ようこそ-23-7B-7D',
 				'shortHTMLText' => '一二三',
 				'shortWikiText' => '一二三'
 			)
@@ -259,10 +264,10 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 			$linker,
 			array(
 				'wikiValue'     => 'http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D',
-				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/ようこそ#{}">http://example.org/ようこそ#{}</a>',
-				'longWikiText'  => '[http://example.org/ようこそ#{} http://example.org/ようこそ#{}]',
-				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/ようこそ#{}">http://example.org/ようこそ#{}</a>',
-				'shortWikiText' => '[http://example.org/ようこそ#{} http://example.org/ようこそ#{}]'
+				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/ようこそ-23-7B-7D">http://example.org/ようこそ-23-7B-7D</a>',
+				'longWikiText'  => '[http://example.org/ようこそ-23-7B-7D http://example.org/ようこそ-23-7B-7D]',
+				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/ようこそ-23-7B-7D">http://example.org/ようこそ-23-7B-7D</a>',
+				'shortWikiText' => '[http://example.org/ようこそ-23-7B-7D http://example.org/ようこそ-23-7B-7D]'
 			)
 		);
 
@@ -272,10 +277,10 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 			$linker,
 			array(
 				'wikiValue'     => 'http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D-23-7B-7D',
-				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/ようこそ#{}">http://example.org/ようこそ#{}</a>',
-				'longWikiText'  => '[http://example.org/ようこそ#{} http://example.org/ようこそ#{}]',
-				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/ようこそ#{}">一二三</a>',
-				'shortWikiText' => '[http://example.org/ようこそ#{} 一二三]',
+				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/ようこそ-23-7B-7D">http://example.org/ようこそ-23-7B-7D</a>',
+				'longWikiText'  => '[http://example.org/ようこそ-23-7B-7D http://example.org/ようこそ-23-7B-7D]',
+				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/ようこそ-23-7B-7D">一二三</a>',
+				'shortWikiText' => '[http://example.org/ようこそ-23-7B-7D 一二三]',
 			)
 		);
 
@@ -286,10 +291,10 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 			null,
 			array(
 				'wikiValue'     => 'http://example.org/api?query=!_:;@* #Foo&=%20-3DBar',
-				'longHTMLText'  => 'http://example.org/api?query=!_:;@* #Foo&= =Bar',
-				'longWikiText'  => 'http://example.org/api?query=!_:;@* #Foo&= =Bar',
-				'shortHTMLText' => 'http://example.org/api?query=!_:;@* #Foo&= =Bar',
-				'shortWikiText' => 'http://example.org/api?query=!_:;@* #Foo&= =Bar'
+				'longHTMLText'  => 'http://example.org/api?query=!_:;@* #Foo&= -3DBar',
+				'longWikiText'  => 'http://example.org/api?query=!_:;@* #Foo&= -3DBar',
+				'shortHTMLText' => 'http://example.org/api?query=!_:;@* #Foo&= -3DBar',
+				'shortWikiText' => 'http://example.org/api?query=!_:;@* #Foo&= -3DBar'
 			)
 		);
 
@@ -299,8 +304,8 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 			null,
 			array(
 				'wikiValue'     => 'http://example.org/api?query=!_:;@* #Foo&=%20-3DBar',
-				'longHTMLText'  => 'http://example.org/api?query=!_:;@* #Foo&= =Bar',
-				'longWikiText'  => 'http://example.org/api?query=!_:;@* #Foo&= =Bar',
+				'longHTMLText'  => 'http://example.org/api?query=!_:;@* #Foo&= -3DBar',
+				'longWikiText'  => 'http://example.org/api?query=!_:;@* #Foo&= -3DBar',
 				'shortHTMLText' => '&!_:;@*#Foo',
 				'shortWikiText' => '&!_:;@*#Foo'
 			)
@@ -312,10 +317,10 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 			$linker,
 			array(
 				'wikiValue'     => 'http://example.org/api?query=!_:;@* #Foo&=%20-3DBar',
-				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@*_#Foo&amp;=_=Bar">http://example.org/api?query=!_:;@* #Foo&amp;= =Bar</a>',
-				'longWikiText'  => '[http://example.org/api?query=!_:;@*_#Foo&=_=Bar http://example.org/api?query=!_:;@* #Foo&= =Bar]',
-				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@*_#Foo&amp;=_=Bar">http://example.org/api?query=!_:;@* #Foo&amp;= =Bar</a>',
-				'shortWikiText' => '[http://example.org/api?query=!_:;@*_#Foo&=_=Bar http://example.org/api?query=!_:;@* #Foo&= =Bar]'
+				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@*_#Foo&amp;=_-3DBar">http://example.org/api?query=!_:;@* #Foo&amp;= -3DBar</a>',
+				'longWikiText'  => '[http://example.org/api?query=!_:;@*_#Foo&=_-3DBar http://example.org/api?query=!_:;@* #Foo&= -3DBar]',
+				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@*_#Foo&amp;=_-3DBar">http://example.org/api?query=!_:;@* #Foo&amp;= -3DBar</a>',
+				'shortWikiText' => '[http://example.org/api?query=!_:;@*_#Foo&=_-3DBar http://example.org/api?query=!_:;@* #Foo&= -3DBar]'
 			)
 		);
 
@@ -325,10 +330,10 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 			$linker,
 			array(
 				'wikiValue'     => 'http://example.org/api?query=!_:;@* #Foo&=%20-3DBar',
-				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@*_#Foo&amp;=_=Bar">http://example.org/api?query=!_:;@* #Foo&amp;= =Bar</a>',
-				'longWikiText'  => '[http://example.org/api?query=!_:;@*_#Foo&=_=Bar http://example.org/api?query=!_:;@* #Foo&= =Bar]',
-				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@*_#Foo&amp;=_=Bar">&amp;!_:;@* #Foo</a>',
-				'shortWikiText' => '[http://example.org/api?query=!_:;@*_#Foo&=_=Bar &!_:;@* #Foo]'
+				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@*_#Foo&amp;=_-3DBar">http://example.org/api?query=!_:;@* #Foo&amp;= -3DBar</a>',
+				'longWikiText'  => '[http://example.org/api?query=!_:;@*_#Foo&=_-3DBar http://example.org/api?query=!_:;@* #Foo&= -3DBar]',
+				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=!_:;@*_#Foo&amp;=_-3DBar">&amp;!_:;@* #Foo</a>',
+				'shortWikiText' => '[http://example.org/api?query=!_:;@*_#Foo&=_-3DBar &!_:;@* #Foo]'
 			)
 		);
 
