@@ -407,6 +407,23 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
+		// #7 673
+		$provider[] = array(
+			SMW_NS_PROPERTY,
+			array(
+				'smwgNamespacesWithSemanticLinks' => array( SMW_NS_PROPERTY => true ),
+				'smwgLinksInValues' => false,
+				'smwgInlineErrors'  => true,
+			),
+			'[[has type::number]], [[has Type::page]] ',
+			array(
+				'resultText'     => '[[Special:Types/Number|number]], [[:Page|page]]',
+				'propertyCount'  => 2,
+				'propertyLabels' => array( 'Has type', 'Has Type' ),
+				'propertyValues' => array( 'Number', 'Page' )
+			)
+		);
+
 		return $provider;
 	}
 

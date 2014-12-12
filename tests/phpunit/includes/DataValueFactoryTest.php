@@ -207,6 +207,31 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * Issue 673
+	 */
+	public function testEnforceFirstUpperCaseForDisabledCapitalLinks() {
+
+		$wgCapitalLinks = $GLOBALS['wgCapitalLinks'];
+		$GLOBALS['wgCapitalLinks'] = false;
+
+		$instance = DataValueFactory::getInstance();
+
+		$dataValue = $instance->newPropertyValue(
+			'has type',
+			'number',
+			null,
+			new DIWikiPage( 'Foo', SMW_NS_PROPERTY )
+		);
+
+		$this->assertEquals(
+			'_TYPE',
+			$dataValue->getProperty()->getKey()
+		);
+
+		$GLOBALS['wgCapitalLinks'] = $wgCapitalLinks;
+	}
+
+	/**
 	 * @dataProvider newDataItemValueDataProvider
 	 */
 	public function testNewDataItemValue( $setup ) {
