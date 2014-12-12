@@ -159,7 +159,12 @@ class DataValueFactory {
 	public function newPropertyValue( $propertyName, $valueString,
 		$caption = false, DIWikiPage $contextPage = null ) {
 
-		Profiler::In( __METHOD__, true );
+		// Enforce upper case for the first character on annotations that are used
+		// within the property namespace in order to avoid confusion when
+		// $wgCapitalLinks setting is disabled
+		if ( $contextPage !== null && $contextPage->getNamespace() === SMW_NS_PROPERTY ) {
+			$propertyName = ucfirst( $propertyName );
+		}
 
 		$propertyDV = SMWPropertyValue::makeUserProperty( $propertyName );
 
@@ -194,7 +199,6 @@ class DataValueFactory {
 			);
 		}
 
-		Profiler::Out( __METHOD__, true );
 		return $dataValue;
 	}
 

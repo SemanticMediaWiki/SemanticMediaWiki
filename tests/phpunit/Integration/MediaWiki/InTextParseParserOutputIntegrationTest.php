@@ -46,6 +46,31 @@ class InTextParseParserOutputIntegrationTest extends \PHPUnit_Framework_TestCase
 		);
 	}
 
+	/**
+	 * @dataProvider textDataProvider
+	 */
+	public function testTextParseForDisabledCapitalLinks( $parameters, $expected ) {
+
+		$wgCapitalLinks = $GLOBALS['wgCapitalLinks'];
+		$GLOBALS['wgCapitalLinks'] = false;
+
+		$instance = new ContentParser(
+			$parameters['title'],
+			ParserFactory::newFromTitle( $parameters['title'] )
+		);
+
+		$instance->parse( $parameters['text'] );
+
+		$this->assertInstanceAfterParse( $instance );
+
+		$this->assertSemanticDataAfterParse(
+			$instance,
+			$expected
+		);
+
+		$GLOBALS['wgCapitalLinks'] = $wgCapitalLinks;
+	}
+
 	protected function assertInstanceAfterParse( $instance ) {
 		$this->assertInstanceOf( 'ParserOutput', $instance->getOutput() );
 		$this->assertInternalType( 'string', $instance->getOutput()->getText() );
@@ -118,6 +143,19 @@ class InTextParseParserOutputIntegrationTest extends \PHPUnit_Framework_TestCase
 				'propertyCount'  => 3,
 				'propertyKey'    => array( '_SKEY', '_INST', 'Fuyu' ),
 				'propertyValues' => array( 'Bar', 'Foo', 'Natsu' )
+			)
+		);
+
+		// #4 SMW_NS_PROPERTY
+		$provider[] = array(
+			array(
+				'text'  => '[[has type::number]], {{#set:|has type=boolean}}, [[has Type::Page]] {{DEFAULTSORTKEY:Foo_Bar}}',
+				'title' => Title::newFromText( __METHOD__, SMW_NS_PROPERTY )
+			),
+			array(
+				'propertyCount'  => 3,
+				'propertyKey'    => array( '_SKEY', 'Has type', 'has Type' ),
+				'propertyValues' => array( 'Foo_Bar', 'Number', 'Boolean', 'Page' )
 			)
 		);
 
