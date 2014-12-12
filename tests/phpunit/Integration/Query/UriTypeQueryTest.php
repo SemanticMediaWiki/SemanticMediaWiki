@@ -7,6 +7,7 @@ use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\Query\Language\SomeProperty;
 use SMW\DataValueFactory;
+use SMW\DIWikiPage;
 
 use SMWQueryParser as QueryParser;
 use SMWQuery as Query;
@@ -40,6 +41,9 @@ class UriTypeQueryTest extends MwDBaseUnitTestCase {
 	private $queryParser;
 	private $subjects = array();
 
+	private $pageCreator;
+	private $semanticDataValidator;
+
 	protected function setUp() {
 		parent::setUp();
 
@@ -47,6 +51,9 @@ class UriTypeQueryTest extends MwDBaseUnitTestCase {
 
 		$this->dataValueFactory = DataValueFactory::getInstance();
 		$this->semanticDataFactory = $utilityFactory->newSemanticDataFactory();
+
+		$this->pageCreator = $utilityFactory->newPageCreator();
+		$this->semanticDataValidator = $utilityFactory->newValidatorFactory()->newSemanticDataValidator();
 
 		$this->queryResultValidator = $utilityFactory->newValidatorFactory()->newQueryResultValidator();
 
@@ -70,7 +77,7 @@ class UriTypeQueryTest extends MwDBaseUnitTestCase {
 	/**
 	 * T45264
 	 */
-	public function testSearchPatternForUriType() {
+	public function testQuerySearchPatternForUriType() {
 
 		// Doesn't support this feature currently
 		$this->skipTestForStore( 'SMW\SPARQLStore\SPARQLStore' );
@@ -165,6 +172,127 @@ class UriTypeQueryTest extends MwDBaseUnitTestCase {
 				$this->subjects['sample-0'],
 				$this->subjects['sample-1']
 			)
+		);
+	}
+
+	public function testUsingInPageAnnotation() {
+
+		$property = $this->fixturesProvider->getProperty( 'url' );
+
+		$this->subjects['sample-0'] = DIWikiPage::newFromTitle( \Title::newFromText( __METHOD__ . '-0' ) );
+		$this->subjects['sample-1'] = DIWikiPage::newFromTitle( \Title::newFromText( __METHOD__ . '-1' ) );
+
+		/**
+		 * @query "[[Url::http://example.org/aaa/bbb#ccc]]"
+		 */
+		$this->pageCreator
+			->createPage( $this->subjects['sample-0']->getTitle() )
+			->doEdit( '[[Url::http://example.org/aaa/bbb#ccc]]' );
+
+		$this->assertThatQueryReturns(
+			"[[Url::http://example.org/aaa/bbb#ccc]]" ,
+			array(
+				$this->subjects['sample-0']
+			)
+		);
+
+		$this->assertThatSemanticDataContainsUri(
+			'http://example.org/aaa/bbb#ccc',
+			$this->subjects['sample-0'],
+			$property
+		);
+
+		/**
+		 * @query "[[Url::http://example.org/aaa/bbb#-2ccc]]"
+		 */
+		$this->pageCreator
+			->createPage( $this->subjects['sample-1']->getTitle() )
+			->doEdit( '[[Url::http://example.org/aaa/bbb#-2ccc]]' );
+
+		$this->assertThatQueryReturns(
+			"[[Url::http://example.org/aaa/bbb#-2ccc]]" ,
+			array(
+				$this->subjects['sample-1']
+			)
+		);
+
+		$this->assertThatSemanticDataContainsUri(
+			'http://example.org/aaa/bbb#-2ccc',
+			$this->subjects['sample-1'],
+			$property
+		);
+
+		/**
+		 * @query "[[Url::http://example.org/mw-123/index.php?&value=http%3A%2F%2Fexample.org]]"
+		 */
+		$this->pageCreator
+			->createPage( $this->subjects['sample-1']->getTitle() )
+			->doEdit( '[[Url::http://example.org/mw-123/index.php?&value=http%3A%2F%2Fexample.org]]' );
+
+		$this->assertThatQueryReturns(
+			"[[Url::http://example.org/mw-123/index.php?&value=http%3A%2F%2Fexample.org]]" ,
+			array(
+				$this->subjects['sample-1']
+			)
+		);
+
+		$this->assertThatSemanticDataContainsUri(
+			'http://example.org/mw-123/index.php?&value=http%3A%2F%2Fexample.org',
+			$this->subjects['sample-1'],
+			$property
+		);
+
+		/**
+		 * @query "[[Url::http://example.org/api?query=!_:;@* #Foo&=%20-3DBar]]"
+		 */
+		$this->pageCreator
+			->createPage( $this->subjects['sample-0']->getTitle() )
+			->doEdit( '[[Url::http://example.org/api?query=!_:;@* #Foo&=%20-3DBar]]' );
+
+		$this->assertThatQueryReturns(
+			"[[Url::http://example.org/api?query=!_:;@* #Foo&=%20-3DBar]]" ,
+			array(
+				$this->subjects['sample-0']
+			)
+		);
+
+		$this->assertThatSemanticDataContainsUri(
+			'http://example.org/api?query=%21_:%3B@%2A%20#Foo&=%20-3DBar',
+			$this->subjects['sample-0'],
+			$property
+		);
+
+		/**
+		 * @query "[[Url::http://example.org/ようこそ#-{}]]"
+		 */
+		$this->pageCreator
+			->createPage( $this->subjects['sample-0']->getTitle() )
+			->doEdit( '[[Url::http://example.org/ようこそ#-{}]]' );
+
+		$this->assertThatQueryReturns(
+			"[[Url::http://example.org/ようこそ#-{}]]" ,
+			array(
+				$this->subjects['sample-0']
+			)
+		);
+
+		$this->assertThatSemanticDataContainsUri(
+			'http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D#-%7B%7D',
+			$this->subjects['sample-0'],
+			$property
+		);
+	}
+
+	private function assertThatSemanticDataContainsUri( $uri, $subject, $property ) {
+
+		$expected = array(
+			'propertyValues' => array( $uri )
+		);
+
+		$this->semanticDataValidator->assertThatPropertyValuesAreSet(
+			$expected,
+			$property,
+			$this->getStore()->getSemanticData( $subject )->getPropertyValues( $property )
 		);
 	}
 
