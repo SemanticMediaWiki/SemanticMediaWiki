@@ -308,5 +308,6 @@
 	"smw-sp-searchbyproperty-description": "此页面提供一个简单的[https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces 浏览界面]用于发现一个属性和一个命名值定义的实体。其他可用搜索界面包括[[Special:PageProperty|页面属性搜索]]和[[Special:Ask|询问查询生成器]]。",
 	"smw-sp-searchbyproperty-resultlist-header": "结果列表",
 	"smw-sp-searchbyproperty-nonvaluequery": "分配属性“$1”的值列表。",
-	"smw-sp-searchbyproperty-valuequery": "注释有属性“$1”带值“$2”的页面列表。"
+	"smw-sp-searchbyproperty-valuequery": "注释有属性“$1”带值“$2”的页面列表。",
+	"smw-datavalue-number-textnotallowed": "“$1”不能分配给公开的带值$2的数字类型。"
 }
