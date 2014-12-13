@@ -498,7 +498,7 @@ class SMWSQLStore3QueryEngine {
 					) );
 				} catch ( \SMW\InvalidPredefinedPropertyException $e ) {
 					$logToTable[$row->t] = "issue creating a {$row->t} dataitem from a database row";
-					$this->m_store->getLogger()->log( __METHOD__, $e->getMessages() );
+					$this->m_store->getLogger()->log( __METHOD__, $e->getMessage() );
 				}
 
 				if ( $dataItem instanceof SMWDIWikiPage && !isset( $dataItemCache[ $dataItem->getHash() ] ) ) {
