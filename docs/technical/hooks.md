@@ -14,14 +14,19 @@ Implementing a hook should be made in consideration of the expected performance 
 		<td>1.9</td>
 	</tr>
 	<tr>
-		<td>`SMW::Dispatcher::updateJobs`</td>
+		<td>`SMW::Job::updatePropertyJobs`</td>
 		<td>to add additional update jobs for a property and related subjects.<sup>Use of `smwUpdatePropertySubjects` was deprecated with 1.9</sup></td>
 		<td>1.9</td>
 	</tr>
 	<tr>
 		<td>`SMW::DataType::initTypes`</td>
-		<td>to add additional DataTypes support.<sup>Use of `smwInitDatatypes` was deprecated with 1.9</sup></td>
+		<td>to add additional DataType support.<sup>Use of `smwInitDatatypes` was deprecated with 1.9</sup></td>
 		<td>1.9</td>
+	</tr>
+	<tr>
+		<td>`SMW::Property::initProperties`</td>
+		<td>to add additional predefined properties.<sup>Use of `smwInitProperties` was deprecated with 2.1</sup></td>
+		<td>2.1</td>
 	</tr>
 	<tr>
 		<td>`SMW::Store::BeforeQueryResultLookupComplete`</td>
@@ -61,7 +66,6 @@ For implementation details, see examples provided by `SemanticMediaWikiProvidedH
 
 Subsequent hooks should be renamed to follow a common naming practice that help distinguish them from other hook providers. In any case this list needs details and examples.
 
-* `\SMW\DIProperty`, smwInitProperties (SMW::DataItem::initProperties)
 * `\SMW\DataValueFactory`, smwInitDatatypes (SMW::DataValue::initDataTypes)
 * `SMWExportController`, smwAddToRDFExport (SMW::Exporter::AfterRdfExportComplete)
 * `SMWParamFormat`, SMWResultFormat

@@ -324,14 +324,14 @@ class DIProperty extends SMWDataItem {
 	}
 
 	/**
-	 * @deprecated since 2.1, PropertyRegistry::findPropertyIdByLabel
+	 * @deprecated since 2.1, use PropertyRegistry::findPropertyIdByLabel
 	 */
 	public static function findPropertyID( $label, $useAlias = true ) {
 		return PropertyRegistry::getInstance()->findPropertyIdByLabel( $label, $useAlias );
 	}
 
 	/**
-	 * @deprecated since 2.1, PropertyRegistry::getPredefinedPropertyTypeId
+	 * @deprecated since 2.1, use PropertyRegistry::getPredefinedPropertyTypeId
 	 */
 	public static function getPredefinedPropertyTypeId( $key ) {
 		return PropertyRegistry::getInstance()->getPredefinedPropertyTypeId( $key );
@@ -345,14 +345,14 @@ class DIProperty extends SMWDataItem {
 	}
 
 	/**
-	 * @deprecated since 2.1, PropertyRegistry::registerProperty
+	 * @deprecated since 2.1, use PropertyRegistry::registerProperty
 	 */
 	static public function registerProperty( $id, $typeid, $label = false, $show = false ) {
 		PropertyRegistry::getInstance()->registerProperty( $id, $typeid, $label, $show);
 	}
 
 	/**
-	 * @deprecated since 2.1, PropertyRegistry::registerPropertyAlias
+	 * @deprecated since 2.1, use PropertyRegistry::registerPropertyAlias
 	 */
 	static public function registerPropertyAlias( $id, $label ) {
 		PropertyRegistry::getInstance()->registerPropertyAlias( $id, $label );
