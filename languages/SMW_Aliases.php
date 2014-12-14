@@ -204,7 +204,11 @@ $specialPageAliases['eo'] = array(
 
 /** Spanish (español) */
 $specialPageAliases['es'] = array(
+	'Properties' => array( 'Propiedades' ),
+	'SearchByProperty' => array( 'BuscarPorPropiedad' ),
 	'Types' => array( 'Tipos' ),
+	'UnusedProperties' => array( 'PropiedadesNoUsadas' ),
+	'WantedProperties' => array( 'PropiedadesRequeridas' ),
 );
 
 /** Persian (فارسی) */
@@ -815,15 +819,15 @@ $specialPageAliases['zh-hans'] = array(
 $specialPageAliases['zh-hant'] = array(
 	'Ask' => array( '詢問' ),
 	'Browse' => array( '瀏覽' ),
-	'ExportRDF' => array( '匯出 RDF' ),
+	'ExportRDF' => array( '匯出_RDF' ),
 	'PageProperty' => array( '頁面屬性' ),
 	'Properties' => array( '屬性' ),
 	'Concepts' => array( '概念' ),
-	'SMWAdmin' => array( 'SMW 管理員' ),
+	'SMWAdmin' => array( 'SMW_管理員' ),
 	'SearchByProperty' => array( '依屬性搜尋' ),
 	'SemanticStatistics' => array( '語意統計' ),
 	'Types' => array( '型態' ),
-	'URIResolver' => array( 'URI 分解器' ),
+	'URIResolver' => array( 'URI_分解器' ),
 	'UnusedProperties' => array( '未使用屬性' ),
 	'WantedProperties' => array( '需要的屬性' ),
 );
