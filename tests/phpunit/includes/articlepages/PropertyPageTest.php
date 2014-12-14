@@ -2,53 +2,28 @@
 
 namespace SMW\Test;
 
-use SMWPropertyPage;
+use SMWPropertyPage as PropertyPage;
+
+use Title;
 
 /**
- * Tests for the SMWPropertyPage class
+ * @covers \SMWPropertyPage
  *
- * @file
+ * @group SMW
+ * @group SMWExtension
  *
  * @license GNU GPL v2+
  * @since   1.9
  *
  * @author mwjames
  */
+class PropertyPageTest extends \PHPUnit_Framework_TestCase {
 
-/**
- * @covers \SMWPropertyPage
- *
- *
- * @group SMW
- * @group SMWExtension
- */
-class PropertyPageTest extends SemanticMediaWikiTestCase {
-
-	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMWPropertyPage';
-	}
-
-	/**
-	 * Helper method that returns a SMWPropertyPage object
-	 *
-	 * @return SMWPropertyPage
-	 */
-	private function getInstance() {
-		return new SMWPropertyPage( $this->newTitle() );
-	}
-
-	/**
-	 * @test SMWPropertyPage::__construct
-	 *
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
+	public function testCanConstruct() {
+		$this->assertInstanceOf(
+			'\SMWPropertyPage',
+			new PropertyPage( Title::newFromText( 'Foo', SMW_NS_PROPERTY ) )
+		);
 	}
 
 }
