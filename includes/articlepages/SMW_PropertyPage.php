@@ -1,5 +1,8 @@
 <?php
 
+use SMW\ApplicationFactory;
+use SMW\DataValueFactory;
+
 /**
  * Implementation of MediaWiki's Article that shows additional information on
  * property pages. Very similar to CategoryPage, but with different printout
@@ -19,6 +22,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		global $smwgPropertyPagingLimit;
 		$this->limit = $smwgPropertyPagingLimit;
 		$this->mProperty = SMWDIProperty::newFromUserLabel( $this->mTitle->getText() );
+		$this->store = ApplicationFactory::getInstance()->getStore();
 		return true;
 	}
 
@@ -28,6 +32,10 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 * @return string
 	 */
 	protected function getHtml() {
+
+		if ( !$this->store->getRedirectTarget( $this->mProperty )->equals( $this->mProperty ) ) {
+			return '';
+		}
 
 		$list = $this->getSubpropertyList() . $this->getPropertyValueList();
 		$result = $this->getPredefinedPropertyIntro() . ( $list !== '' ? Html::element( 'div', array( 'id' => 'smwfootbr' ) ) . $list : '' );
@@ -72,11 +80,11 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 * @return string
 	 */
 	protected function getSubpropertyList() {
-		$store = \SMW\StoreFactory::getStore();
+
 		$options = new SMWRequestOptions();
 		$options->sort = true;
 		$options->ascending = true;
-		$subproperties = $store->getPropertySubjects( new SMWDIProperty( '_SUBP' ), $this->getDataItem(), $options );
+		$subproperties = $this->store->getPropertySubjects( new SMWDIProperty( '_SUBP' ), $this->getDataItem(), $options );
 
 		$result = '';
 
@@ -111,9 +119,8 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 */
 	protected function getPropertyValueList() {
 		if ( $this->limit > 0 ) { // limit==0: configuration setting to disable this completely
-			$store = \SMW\StoreFactory::getStore();
 			$options = SMWPageLister::getRequestOptions( $this->limit, $this->from, $this->until );
-			$diWikiPages = $store->getAllPropertySubjects( $this->mProperty, $options );
+			$diWikiPages = $this->store->getAllPropertySubjects( $this->mProperty, $options );
 
 			if ( !$options->ascending ) {
 				$diWikiPages = array_reverse( $diWikiPages );
@@ -153,7 +160,6 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 */
 	protected function subjectObjectList( array $diWikiPages ) {
 		global $wgContLang, $smwgMaxPropertyValues;
-		$store = \SMW\StoreFactory::getStore();
 
 		$ac = count( $diWikiPages );
 
@@ -173,8 +179,8 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 		for ( $index = $start; $index < $ac; $index++ ) {
 			$diWikiPage = $diWikiPages[$index];
-			$dvWikiPage = \SMW\DataValueFactory::getInstance()->newDataItemValue( $diWikiPage, null );
-			$sortkey = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $diWikiPage );
+			$dvWikiPage = DataValueFactory::getInstance()->newDataItemValue( $diWikiPage, null );
+			$sortkey = $this->store->getWikiPageSortKey( $diWikiPage );
 			$start_char = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
 
 			// Header for index letters
@@ -191,7 +197,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			// Property values
 			$ropts = new SMWRequestOptions();
 			$ropts->limit = $smwgMaxPropertyValues + 1;
-			$values = $store->getPropertyValues( $diWikiPage, $this->mProperty, $ropts );
+			$values = $this->store->getPropertyValues( $diWikiPage, $this->mProperty, $ropts );
 			$i = 0;
 
 			foreach ( $values as $di ) {
@@ -201,7 +207,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 				$i++;
 
 				if ( $i < $smwgMaxPropertyValues + 1 ) {
-					$dv = \SMW\DataValueFactory::getInstance()->newDataItemValue( $di, $this->mProperty );
+					$dv = DataValueFactory::getInstance()->newDataItemValue( $di, $this->mProperty );
 					$r .= $dv->getShortHTMLText( smwfGetLinker() ) . $dv->getInfolinkText( SMW_OUTPUT_HTML, smwfGetLinker() );
 				} else {
 					$searchlink = SMWInfolink::newInversePropertySearchLink( '…', $dvWikiPage->getWikiValue(), $this->mTitle->getText() );
