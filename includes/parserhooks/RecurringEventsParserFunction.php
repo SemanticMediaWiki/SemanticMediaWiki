@@ -82,7 +82,7 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 		}
 
 		// Update ParserOutput
-		$this->parserData->updateOutput();
+		$this->parserData->pushSemanticDataToParserOutput();
 
 		return $this->messageFormatter->getHtml();
 	}

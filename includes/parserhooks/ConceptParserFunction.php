@@ -94,7 +94,7 @@ class ConceptParserFunction {
 			->addFromArray( $query->getErrors() )
 			->addFromArray( $this->parserData->getErrors() );
 
-		$this->parserData->updateOutput();
+		$this->parserData->pushSemanticDataToParserOutput();
 
 		if ( $this->messageFormatter->exists() ) {
 			return $this->messageFormatter->getHtml();

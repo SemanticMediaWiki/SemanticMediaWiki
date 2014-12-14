@@ -111,7 +111,7 @@ class InternalParseBeforeLinks {
 		$inTextAnnotationParser->setRedirectTarget( $this->getRedirectTarget() );
 		$inTextAnnotationParser->parse( $this->text );
 
-		$parserData->setSemanticDataStateToOutputProperty();
+		$parserData->setSemanticDataStateToParserOutputProperty();
 
 		return true;
 	}

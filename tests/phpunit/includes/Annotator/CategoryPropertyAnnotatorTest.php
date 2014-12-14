@@ -113,7 +113,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->addAnnotation();
-		$parserData->updateOutput();
+		$parserData->pushSemanticDataToParserOutput();
 
 		$parserDataAfterAnnotation = new ParserData( $title, $parserOutput );
 

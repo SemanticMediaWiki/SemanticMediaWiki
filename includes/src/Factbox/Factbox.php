@@ -108,7 +108,7 @@ class Factbox {
 
 		if ( $this->content !== '' ) {
 			$this->parserData->getOutput()->addModules( $this->getModules() );
-			$this->parserData->updateOutput();
+			$this->parserData->pushSemanticDataToParserOutput();
 			$this->isVisible = true;
 		}
 

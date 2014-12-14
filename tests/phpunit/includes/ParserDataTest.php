@@ -135,7 +135,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testAddDataValueAndPushSemanticDataToOutput() {
+	public function testAddDataValueAndPushSemanticDataToParserOutput() {
 
 		$title = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
@@ -147,7 +147,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertFalse( $instance->getSemanticData()->isEmpty() );
-		$instance->pushSemanticDataToOutput();
+		$instance->pushSemanticDataToParserOutput();
 
 		$title = Title::newFromText( __METHOD__ .'-1' );
 
@@ -241,7 +241,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 			->method( 'hasExtensionData' )
 			->will( $this->returnValue( false ) );
 
-		$instance->updateOutput();
+		$instance->pushSemanticDataToParserOutput();
 
 		$this->assertInstanceOf(
 			'\SMW\SemanticData',
@@ -271,7 +271,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		ApplicationFactory::clear();
 	}
 
-	public function testSemanticDataStateToOutputProperty() {
+	public function testSemanticDataStateToParserOutput() {
 
 		$parserOutput = new ParserOutput();
 
@@ -291,7 +291,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$instance->setSemanticDataStateToOutputProperty();
+		$instance->setSemanticDataStateToParserOutputProperty();
 
 		$this->assertTrue(
 			$parserOutput->getProperty( 'smw-semanticdata-status' )

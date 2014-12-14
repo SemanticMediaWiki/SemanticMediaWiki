@@ -65,7 +65,7 @@ class SetParserFunction {
 			}
 		}
 
-		$this->parserData->updateOutput();
+		$this->parserData->pushSemanticDataToParserOutput();
 
 		return $this->messageFormatter
 			->addFromArray( $this->parserData->getErrors() )

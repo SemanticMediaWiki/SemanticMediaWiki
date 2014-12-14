@@ -109,7 +109,7 @@ class InTextAnnotationParser {
 		);
 
 		$this->parserData->getOutput()->addModules( $this->getModules()  );
-		$this->parserData->updateOutput();
+		$this->parserData->pushSemanticDataToParserOutput();
 
 		SMWOutputs::commitToParserOutput( $this->parserData->getOutput() );
 	}
