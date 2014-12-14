@@ -84,7 +84,7 @@ class FileUpload {
 
 		$propertyAnnotator->addAnnotation();
 
-		$parserData->updateOutput();
+		$parserData->pushSemanticDataToParserOutput();
 		$parserData->updateStore();
 
 		return true;

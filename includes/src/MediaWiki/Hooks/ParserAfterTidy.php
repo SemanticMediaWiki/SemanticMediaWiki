@@ -93,7 +93,7 @@ class ParserAfterTidy {
 
 		$propertyAnnotator->addAnnotation();
 
-		$parserData->updateOutput();
+		$parserData->pushSemanticDataToParserOutput();
 
 		$this->checkForRequestedUpdateByPagePurge( $parserData );
 

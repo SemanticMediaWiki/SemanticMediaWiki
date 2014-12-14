@@ -77,7 +77,7 @@ class DeclareParserFunction {
 			}
 		}
 
-		$this->parserData->updateOutput();
+		$this->parserData->pushSemanticDataToParserOutput();
 
 		return '';
 	}

@@ -97,7 +97,7 @@ class NewRevisionFromEditComplete {
 			->newPredefinedPropertyAnnotator( $parserData->getSemanticData(), $pageInfoProvider );
 
 		$propertyAnnotator->addAnnotation();
-		$parserData->updateOutput();
+		$parserData->pushSemanticDataToParserOutput();
 
 		return true;
 	}

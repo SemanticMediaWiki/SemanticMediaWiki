@@ -83,7 +83,7 @@ class SubobjectParserFunction {
 		$this->addDataValuesToSubobject( $parameters );
 
 		$this->parserData->getSemanticData()->addSubobject( $this->subobject );
-		$this->parserData->updateOutput();
+		$this->parserData->pushSemanticDataToParserOutput();
 
 		return $this->messageFormatter
 			->addFromArray( $this->subobject->getErrors() )

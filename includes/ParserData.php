@@ -180,16 +180,16 @@ class ParserData {
 	}
 
 	/**
-	 * @deprecated since 2.1, use pushSemanticDataToOutput
+	 * @deprecated since 2.1, use pushSemanticDataToParserOutput
 	 */
-	public function updateOutput(){
-		$this->pushSemanticDataToOutput();
+	public function updateOutput() {
+		$this->pushSemanticDataToParserOutput();
 	}
 
 	/**
 	 * @since 2.1
 	 */
-	public function pushSemanticDataToOutput() {
+	public function pushSemanticDataToParserOutput() {
 
 		if ( $this->hasExtensionData() ) {
 			return $this->parserOutput->setExtensionData( 'smwdata', $this->semanticData );
@@ -201,7 +201,7 @@ class ParserData {
 	/**
 	 * @since 2.1
 	 */
-	public function setSemanticDataStateToOutputProperty() {
+	public function setSemanticDataStateToParserOutputProperty() {
 		$this->parserOutput->setProperty(
 			'smw-semanticdata-status',
 			$this->semanticData->getProperties() !== array()
@@ -230,7 +230,7 @@ class ParserData {
 		$storeUpdater = ApplicationFactory::getInstance()->newStoreUpdater( $this->semanticData );
 
 		$storeUpdater
-			->setUpdateJobsEnabledState( $this->getUpdateStatus() )
+			->setUpdateJobsEnabledState( $this->getUpdateJobState() )
 			->doUpdate();
 
 		return true;

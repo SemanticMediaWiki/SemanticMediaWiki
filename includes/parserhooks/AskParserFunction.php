@@ -104,7 +104,7 @@ class AskParserFunction {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
 		$this->doFetchResultsForRawParameters( $rawParams );
-		$this->parserData->updateOutput();
+		$this->parserData->pushSemanticDataToParserOutput();
 
 		return $this->result;
 	}
