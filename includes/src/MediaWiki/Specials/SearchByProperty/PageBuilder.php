@@ -133,7 +133,7 @@ class PageBuilder {
 		}
 
 		if ( $this->pageRequestOptions->valueString !== '' && !$this->pageRequestOptions->value->isValid() ) {
-			return array( $this->messageBuilder->getMessage( 'smw_sbv_docu' )->text(), '', 0 );
+			return array( implode( ',', $this->pageRequestOptions->value->getErrors() ), '', 0 );
 		}
 
 		$exactResults = $this->queryResultLookup->doQuery( $this->pageRequestOptions );
