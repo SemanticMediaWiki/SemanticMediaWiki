@@ -45,6 +45,7 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #656 Fixed `#REDIRECT` detection in MW 1.24+
 * #661 Fixed regex search `(~/!)` for page-type property values (bug T36665, T49073, T33151, T35854)
 * #674 Fixed regex search support for uri-type property values
+* #683 Fixed invalid `:smw-redi` marker when `#REDIRECT` is removed manually 
 
 ## Internal changes
 
