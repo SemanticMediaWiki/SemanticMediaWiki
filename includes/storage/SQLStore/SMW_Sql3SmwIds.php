@@ -577,6 +577,31 @@ class SMWSql3SmwIds {
 	}
 
 	/**
+	 * @since  2.1
+	 *
+	 * @param integer $sid
+	 * @param DIWikiPage $subject
+	 */
+	public function updateInterwikiField( $sid, DIWikiPage $subject ) {
+
+		$this->store->getConnection()->update(
+			self::tableName,
+			array( 'smw_iw' => $subject->getInterWiki() ),
+			array( 'smw_id' => $sid ),
+			__METHOD__
+		);
+
+		$this->setCache(
+			$subject->getDBKey(),
+			$subject->getNamespace(),
+			$subject->getInterWiki(),
+			$subject->getSubobjectName(),
+			$sid,
+			$subject->getSortKey()
+		);
+	}
+
+	/**
 	 * Fetch the ID for an SMWDIProperty object. This method achieves the
 	 * same as getSMWPageID(), but avoids additional normalization steps
 	 * that have already been performed when creating an SMWDIProperty
