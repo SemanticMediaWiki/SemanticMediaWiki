@@ -120,8 +120,15 @@ class SemanticData {
 	 */
 	protected $subDataAllowed = true;
 
-	/** @var array */
+	/**
+	 * @var array
+	 */
 	protected $errors = array();
+
+	/**
+	 * @var integer|null
+	 */
+	private $updateIdentifier = null;
 
 	/**
 	 * Constructor.
@@ -545,7 +552,7 @@ class SemanticData {
 
 	/**
 	 * Whether the SemanticData has a SubSemanticData container and if
-	 * specified has a particluar subobject using its name as identifier
+	 * specified has a particular subobject using its name as identifier
 	 *
 	 * @since 1.9
 	 *
@@ -640,6 +647,33 @@ class SemanticData {
 				unset( $this->subSemanticData[$subobjectName] );
 			}
 		}
+	}
+
+	/**
+	 * Can be used as additive component for a hash to identify a edit from
+	 * other activities. The default identifier refers to the latests
+	 * revision id.
+	 *
+	 * @since  2.1
+	 *
+	 * @return string|integer
+	 */
+	public function getUpdateIdentifier() {
+
+		if ( $this->updateIdentifier === null ) {
+			$this->updateIdentifier = $this->getSubject()->getTitle()->getLatestRevID();
+		}
+
+		return $this->updateIdentifier;
+	}
+
+	/**
+	 * @since  2.1
+	 *
+	 * @param integer|string $updateIdentifier
+	 */
+	public function setUpdateIdentifier( $updateIdentifier ) {
+		$this->updateIdentifier = $updateIdentifier;
 	}
 
 }

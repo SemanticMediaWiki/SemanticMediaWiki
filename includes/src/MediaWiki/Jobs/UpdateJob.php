@@ -105,7 +105,15 @@ class UpdateJob extends JobBase {
 			$parserOutput
 		);
 
-		$parserData->disableBackgroundUpdateJobs()->updateStore();
+		// Set a different updateIndentifier to ensure that the updateJob
+		// will force a comparison of old/new data during the store update
+		$parserData
+			->getSemanticData()
+			->setUpdateIdentifier( 'update-job' );
+
+		$parserData
+			->disableBackgroundUpdateJobs()
+			->updateStore();
 
 		return true;
 	}
