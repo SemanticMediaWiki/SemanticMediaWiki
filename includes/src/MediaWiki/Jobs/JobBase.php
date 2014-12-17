@@ -2,6 +2,8 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use SMW\Store;
+
 use Job;
 use JobQueueGroup;
 use Title;
@@ -25,6 +27,20 @@ abstract class JobBase extends Job {
 	 * @var Job
 	 */
 	protected $jobs = array();
+
+	/**
+	 * @var Store
+	 */
+	protected $store = null;
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param Store $store
+	 */
+	public function setStore( Store $store ) {
+		$this->store = $store;
+	}
 
 	/**
 	 * Whether to insert jobs into the JobQueue is enabled or not

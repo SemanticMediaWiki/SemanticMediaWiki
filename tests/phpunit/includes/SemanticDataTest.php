@@ -259,12 +259,38 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testSubSemanticDataOnNonStringSubobjectName() {
+	public function testSubSemanticDataForNonStringSubobjectName() {
 
-		$instance = new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) );
+		$instance = new SemanticData(
+			DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) )
+		);
 
-		$this->assertFalse( $instance->hasSubSemanticData( new \stdClass ) );
-		$this->assertEmpty( $instance->findSubSemanticData( new \stdClass ) );
+		$this->assertFalse(
+			$instance->hasSubSemanticData( new \stdClass )
+		);
+
+		$this->assertEmpty(
+			$instance->findSubSemanticData( new \stdClass )
+		);
+	}
+
+	public function testUpdateIdentifier() {
+
+		$instance = new SemanticData(
+			DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) )
+		);
+
+		$this->assertEquals(
+			0,
+			$instance->getUpdateIdentifier()
+		);
+
+		$instance->setUpdateIdentifier( 'Foo' );
+
+		$this->assertEquals(
+			'Foo',
+			$instance->getUpdateIdentifier()
+		);
 	}
 
 	public function testVisibility() {
@@ -276,13 +302,17 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 			DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' )
 		);
 
-		$this->assertTrue( $instance->hasVisibleProperties() );
+		$this->assertTrue(
+			$instance->hasVisibleProperties()
+		);
 
 		$instance->addSubobject(
 			$this->newSubobject( $title )
 		);
 
-		$this->assertTrue( $instance->hasVisibleSpecialProperties() );
+		$this->assertTrue(
+			$instance->hasVisibleSpecialProperties()
+		);
 	}
 
 	/**
