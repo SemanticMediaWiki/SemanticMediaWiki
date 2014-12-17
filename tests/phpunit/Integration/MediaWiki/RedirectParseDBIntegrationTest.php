@@ -76,4 +76,44 @@ class RedirectParseDBIntegrationTest extends MwDBaseUnitTestCase {
 		);
 	}
 
+	public function testManualRemovalOfRedirectTarget() {
+
+		$subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+
+		$target  = DIWikiPage::newFromTitle( Title::newFromText( 'ManualRemovalOfRedirectTarget' ) );
+		$target->getSortKey();
+
+		$this->pageCreator
+			->createPage( $subject->getTitle() )
+			->doEdit( '#REDIRECT [[Property:ManualRemovalOfRedirectTarget-NotTheRealTarget]]' )
+			->doEdit( '#REDIRECT [[ManualRemovalOfRedirectTarget]]' );
+
+		$expected = array(
+			new DIProperty( '_REDI' )
+		);
+
+		$this->assertEquals(
+			$target,
+			$this->getStore()->getRedirectTarget( $subject )
+		);
+
+		$this->semanticDataValidator->assertHasProperties(
+			$expected,
+			$this->getStore()->getInProperties( $target )
+		);
+
+		$this->pageCreator
+			->createPage( $subject->getTitle() )
+			->doEdit( 'removed redirect target' );
+
+		$this->assertEquals(
+			$subject,
+			$this->getStore()->getRedirectTarget( $subject )
+		);
+
+		$this->assertEmpty(
+			$this->getStore()->getInProperties( $target )
+		);
+	}
+
 }

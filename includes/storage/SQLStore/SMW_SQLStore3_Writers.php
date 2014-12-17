@@ -210,6 +210,17 @@ class SMWSQLStore3Writers {
 			$newHashes
 		);
 
+		if ( $redirects === array() && $subject->getSubobjectName() === ''  ) {
+
+			$dataItemFromId = $this->store->getObjectIds()->getDataItemForId( $sid );
+
+			// If for some reason the internal redirect marker is still set but no
+			// redirect annotations are known then do update the interwiki field
+			if ( $dataItemFromId !== null && $dataItemFromId->getInterwiki() === SMW_SQL3_SMWREDIIW ) {
+				$this->store->getObjectIds()->updateInterwikiField( $sid, $subject );
+			}
+		}
+
 		// Update caches (may be important if jobs are directly following this call)
 		$this->setSemanticDataCache( $sid, $data );
 

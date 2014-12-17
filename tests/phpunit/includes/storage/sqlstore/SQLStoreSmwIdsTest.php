@@ -243,6 +243,35 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testUpdateInterwikiField() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'update' )
+			->with(
+				$this->anything(),
+				$this->equalTo( array( 'smw_iw' => 'Bar' ) ),
+				$this->equalTo( array( 'smw_id' => 42 ) ) );
+
+		$store = $this->getMockBuilder( 'SMWSQLStore3' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new SMWSql3SmwIds( $store );
+
+		$instance->updateInterwikiField(
+			42,
+			new DIWikiPage( 'Foo', NS_MAIN, 'Bar' )
+		);
+	}
+
 	public function pageIdandSortProvider() {
 
 		$provider[] = array( 'Foo', NS_MAIN, '' , '', 'FOO', false, false );
