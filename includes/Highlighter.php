@@ -187,7 +187,7 @@ class Highlighter extends ContextSource {
 						'class' => $this->options['captionclass']
 					), $this->options['caption']
 				) . Html::rawElement(
-					'span',
+					'div',
 					array(
 						'class' => 'smwttcontent'
 					), $this->options['content']

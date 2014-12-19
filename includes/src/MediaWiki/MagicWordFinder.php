@@ -13,7 +13,10 @@ use ParserOutput;
  */
 class MagicWordFinder {
 
-	protected $parserOutput = null;
+	/**
+	 * @var ParserOutput
+	 */
+	private $parserOutput = null;
 
 	/**
 	 * @since 2.0
@@ -65,7 +68,7 @@ class MagicWordFinder {
 	 *
 	 * @param array $words
 	 */
-	public function setMagicWords( array $words ) {
+	public function pushMagicWordsToParserOutput( array $words ) {
 
 		if ( $this->hasExtensionData() ) {
 			return $this->parserOutput->setExtensionData( 'smwmagicwords', $words );
