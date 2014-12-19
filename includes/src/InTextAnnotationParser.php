@@ -52,6 +52,11 @@ class InTextAnnotationParser {
 	private $dataValueFactory = null;
 
 	/**
+	 * @var ApplicationFactory
+	 */
+	private $applicationFactory = null;
+
+	/**
 	 * @var Settings
 	 */
 	protected $settings = null;
@@ -80,6 +85,7 @@ class InTextAnnotationParser {
 		$this->magicWordFinder = $magicWordFinder;
 		$this->redirectTargetFinder = $redirectTargetFinder;
 		$this->dataValueFactory = DataValueFactory::getInstance();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	/**
@@ -93,27 +99,26 @@ class InTextAnnotationParser {
 	public function parse( &$text ) {
 
 		$title = $this->parserData->getTitle();
-		$this->settings = ApplicationFactory::getInstance()->getSettings();
+		$this->settings = $this->applicationFactory->getSettings();
 
-		$this->magicWordFinder->setOutput( $this->parserData->getOutput() );
-		$this->stripMagicWords( $text );
+		$this->doStripMagicWordsFromText( $text );
 
-		$this->isEnabledNamespace = NamespaceExaminer::newFromArray( $this->settings->get( 'smwgNamespacesWithSemanticLinks' ) )->isSemanticEnabled( $title->getNamespace() );
-		$this->findRedirectTarget( $text );
+		$this->setSemanticEnabledNamespaceState( $title );
+		$this->addRedirectTargetAnnotation( $text );
 
 		$linksInValues = $this->settings->get( 'smwgLinksInValues' );
+
 		$text = preg_replace_callback(
 			$this->getRegexpPattern( $linksInValues ),
 			$linksInValues ? 'self::process' : 'self::preprocess',
 			$text
 		);
 
-		$this->parserData->getOutput()->addModules( $this->getModules()  );
+		$this->parserData->getOutput()->addModules( $this->getModules() );
 		$this->parserData->pushSemanticDataToParserOutput();
 
 		SMWOutputs::commitToParserOutput( $this->parserData->getOutput() );
 	}
-
 
 	/**
 	 * @since 2.1
@@ -124,16 +129,18 @@ class InTextAnnotationParser {
 		$this->redirectTargetFinder->setRedirectTarget( $redirectTarget );
 	}
 
-	protected function findRedirectTarget( $text ) {
+	protected function addRedirectTargetAnnotation( $text ) {
 
 		if ( $this->isEnabledNamespace ) {
 
-			$propertyAnnotator = ApplicationFactory::getInstance()->newPropertyAnnotatorFactory()->newRedirectPropertyAnnotator(
+			$this->redirectTargetFinder->findRedirectTargetFromText( $text );
+
+			$redirectPropertyAnnotator = $this->applicationFactory->newPropertyAnnotatorFactory()->newRedirectPropertyAnnotator(
 				$this->parserData->getSemanticData(),
-				$this->redirectTargetFinder->findRedirectTargetFromText( $text )
+				$this->redirectTargetFinder
 			);
 
-			$propertyAnnotator->addAnnotation();
+			$redirectPropertyAnnotator->addAnnotation();
 		}
 	}
 
@@ -215,9 +222,9 @@ class InTextAnnotationParser {
 
 		if ( $caption !== false ) {
 			return $this->process( array( $semanticLink[0], $semanticLink[1], $value, $caption ) );
-		} else {
-			return $this->process( array( $semanticLink[0], $semanticLink[1], $value ) );
 		}
+
+		return $this->process( array( $semanticLink[0], $semanticLink[1], $value ) );
 	}
 
 	/**
@@ -232,16 +239,16 @@ class InTextAnnotationParser {
 	 */
 	protected function process( array $semanticLink ) {
 
+		$valueCaption = false;
+		$property = '';
+		$value = '';
+
 		if ( array_key_exists( 1, $semanticLink ) ) {
 			$property = $semanticLink[1];
-		} else {
-			$property = '';
 		}
 
 		if ( array_key_exists( 2, $semanticLink ) ) {
 			$value = $semanticLink[2];
-		} else {
-			$value = '';
 		}
 
 		if ( $value === '' ) { // silently ignore empty values
@@ -262,8 +269,6 @@ class InTextAnnotationParser {
 
 		if ( array_key_exists( 3, $semanticLink ) ) {
 			$valueCaption = $semanticLink[3];
-		} else {
-			$valueCaption = false;
 		}
 
 		// Extract annotations and create tooltip.
@@ -312,17 +317,23 @@ class InTextAnnotationParser {
 		return $result;
 	}
 
-	protected function stripMagicWords( &$text ) {
+	protected function doStripMagicWordsFromText( &$text ) {
 
 		$words = array();
+
+		$this->magicWordFinder->setOutput( $this->parserData->getOutput() );
 
 		foreach ( array( 'SMW_NOFACTBOX', 'SMW_SHOWFACTBOX' ) as $magicWord ) {
 			$words = $words + $this->magicWordFinder->matchAndRemove( $magicWord, $text );
 		}
 
-		$this->magicWordFinder->setMagicWords( $words );
+		$this->magicWordFinder->pushMagicWordsToParserOutput( $words );
 
 		return $words;
+	}
+
+	private function setSemanticEnabledNamespaceState( Title $title ) {
+		$this->isEnabledNamespace = $this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
 	}
 
 }

@@ -366,6 +366,11 @@ class SMWSQLStore3Readers {
 			// Filter out any accidentally retrieved internal things (interwiki starts with ":"):
 			if ( $valuecount < 3 || implode( '', $fields ) != 'p' ||
 			     $valuekeys[2] === '' ||  $valuekeys[2]{0} != ':' ) {
+
+				if ( isset( $result[ $valueHash ] ) ) {
+					$this->store->getLogger()->log( __METHOD__, "found duplicate for {$propertykey} " . ( is_array( $valuekeys ) ? implode( ',', $valuekeys ) : $valuekeys ) );
+				}
+
 				$result[ $valueHash ] = $issubject ? array( $propertykey, $valuekeys ) : $valuekeys;
 			}
 		}
