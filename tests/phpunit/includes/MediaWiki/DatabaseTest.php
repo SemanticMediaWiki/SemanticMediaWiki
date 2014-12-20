@@ -113,9 +113,12 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $database ) );
 
 		$instance = new Database( $connectionProvider );
+		$instance->setDBPrefix( 'bar_' );
+
+		$expected = $type === 'sqlite' ? 'bar_Foo' : 'Foo';
 
 		$this->assertEquals(
-			'Foo',
+			$expected,
 			$instance->tableName( 'Foo' )
 		);
 	}

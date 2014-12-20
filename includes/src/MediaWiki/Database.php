@@ -37,6 +37,11 @@ class Database {
 	private $transactionQueue = array();
 
 	/**
+	 * @var string
+	 */
+	private $dbPrefix = '';
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param DBConnectionProvider $readConnectionProvider
@@ -59,6 +64,15 @@ class Database {
 	}
 
 	/**
+	 * @since 2.1
+	 *
+	 * @param string $dbPrefix
+	 */
+	public function setDBPrefix( $dbPrefix ) {
+		$this->dbPrefix = $dbPrefix;
+	}
+
+	/**
 	 * @see DatabaseBase::tableName
 	 *
 	 * @since 1.9.0.2
@@ -70,7 +84,7 @@ class Database {
 	public function tableName( $tableName ) {
 
 		if ( $this->getType() === 'sqlite' ) {
-			return $GLOBALS['wgDBprefix'] . $tableName;
+			return $this->dbPrefix . $tableName;
 		}
 
 		return $this->readConnection()->tableName( $tableName );
