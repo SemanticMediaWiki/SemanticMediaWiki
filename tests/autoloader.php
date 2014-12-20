@@ -22,21 +22,21 @@ if ( !defined( 'SMW_VERSION' ) ) {
 }
 
 if ( is_readable( $path = __DIR__ . '/../vendor/autoload.php' ) ) {
-	print( "\nUsing the local vendor autoloader ...\n\n" );
+	print( "\nUsing the extension vendor autoloader ...\n\n" );
 } elseif ( is_readable( $path = __DIR__ . '/../../../vendor/autoload.php' ) ) {
-	print( "\nUsing the MediaWiki vendor autoloader ...\n\n" );
+	print( "\nMediaWiki " . $GLOBALS['wgVersion'] . " root vendor autoloader ...\n\n" );
 } else {
 	die( 'To run tests it is required that packages are installed using Composer.' );
 }
 
-$autoloader = require $path;
-
 /**
- * Available to third-party extensions therefore any change should be made with
+ * Available to aid third-party extensions therefore any change should be made with
  * care
  *
  * @since  2.0
  */
+$autoloader = require $path;
+
 $autoloader->addPsr4( 'SMW\\Tests\\Utils\\', __DIR__ . '/phpunit/Utils' );
 
 $autoloader->addClassMap( array(

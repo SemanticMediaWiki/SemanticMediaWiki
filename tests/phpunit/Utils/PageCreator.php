@@ -96,3 +96,6 @@ class PageCreator {
 	}
 
 }
+
+// FIXME SemanticGlossary usage
+class_alias( 'SMW\Tests\Utils\PageCreator', 'SMW\Tests\Util\PageCreator' );

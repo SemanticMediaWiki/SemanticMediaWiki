@@ -45,10 +45,15 @@ class DatabaseConnectionProvider implements DBConnectionProvider {
 	}
 
 	private function createConnection() {
-		return new Database(
+
+		$connection = new Database(
 			new LazyDBConnectionProvider( DB_SLAVE ),
 			new LazyDBConnectionProvider( DB_MASTER )
 		);
+
+		$connection->setDBPrefix( $GLOBALS['wgDBprefix'] );
+
+		return $connection;
 	}
 
 }

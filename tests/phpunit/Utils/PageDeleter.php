@@ -50,3 +50,6 @@ class PageDeleter {
 	}
 
 }
+
+// FIXME SemanticGlossary usage
+class_alias( 'SMW\Tests\Utils\PageDeleter', 'SMW\Tests\Util\PageDeleter' );
