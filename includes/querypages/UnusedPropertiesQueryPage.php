@@ -115,8 +115,14 @@ class UnusedPropertiesQueryPage extends QueryPage {
 
 		if ( $property->isUserDefined() ) {
 
+			$title = $property->getDiWikiPage()->getTitle();
+
+			if ( !$title instanceof \Title ) {
+				return '';
+			}
+
 			$propertyLink = $this->getLinker()->link(
-				$property->getDiWikiPage()->getTitle(),
+				$title,
 				$property->getLabel()
 			);
 
