@@ -73,9 +73,11 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new HookRegistry();
 
-		call_user_func_array(
-			$instance->getDefinition( 'EditPage::showEditForm:initial' ),
-			array( $editPage, $outputPage )
+		$this->assertTrue(
+			call_user_func_array(
+				$instance->getDefinition( 'EditPage::showEditForm:initial' ),
+				array( $editPage, $outputPage )
+			)
 		);
 	}
 

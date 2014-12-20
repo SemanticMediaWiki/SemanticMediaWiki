@@ -33,7 +33,7 @@ abstract class QueryPage extends \QueryPage {
 	protected $msgFormatter;
 
 	/** @var Linker */
-	protected $linker;
+	protected $linker = null;
 
 	/** @var array */
 	protected $selectOptions = array();
@@ -106,7 +106,7 @@ abstract class QueryPage extends \QueryPage {
 	 */
 	public function getLinker() {
 
-		if ( !isset( $this->linker ) ) {
+		if ( $this->linker === null ) {
 			$this->linker = smwfGetLinker();
 		}
 

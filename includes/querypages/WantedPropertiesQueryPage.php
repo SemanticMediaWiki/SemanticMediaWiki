@@ -84,8 +84,14 @@ class WantedPropertiesQueryPage extends QueryPage {
 			return '';
 		}
 
+		$title = $result[0]->getDiWikiPage()->getTitle();
+
+		if ( !$title instanceof \Title ) {
+			return '';
+		}
+
 		$proplink = $this->getLinker()->link(
-			$result[0]->getDiWikiPage()->getTitle(),
+			$title,
 			htmlspecialchars( $result[0]->getLabel() ),
 			array( 'action' => 'view' )
 		);
