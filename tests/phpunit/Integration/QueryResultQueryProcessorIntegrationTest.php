@@ -17,18 +17,23 @@ use SMWQueryParser as QueryParser;
  * @group SMW
  * @group SMWExtension
  *
+ * @group mediawiki-database
+ * @group medium
+ *
  * @license GNU GPL v2+
+ * @since 2.0
+ *
  * @author mwjames
  */
 class QueryResultQueryProcessorIntegrationTest extends MwDBaseUnitTestCase {
 
-	private $subjectsToBeCleared = array();
+	private $subjects = array();
 	private $semanticDataFactory;
 
 	private $dataValueFactory;
 	private $queryResultValidator;
 
-	private $pageCreator;
+	private $fixturesProvider;
 	private $queryParser;
 
 	protected function setUp() {
@@ -38,29 +43,41 @@ class QueryResultQueryProcessorIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->semanticDataFactory = $utilityFactory->newSemanticDataFactory();
 		$this->queryResultValidator = $utilityFactory->newValidatorFactory()->newQueryResultValidator();
-		$this->pageCreator = $utilityFactory->newPageCreator();
+
+		$this->fixturesProvider = $utilityFactory->newFixturesFactory()->newFixturesProvider();
+		$this->fixturesProvider->setupDependencies( $this->getStore() );
 
 		$this->dataValueFactory = DataValueFactory::getInstance();
 		$this->queryParser = new QueryParser();
 	}
 
+	protected function tearDown() {
+
+		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
+
+		$fixturesCleaner
+			->purgeSubjects( $this->subjects )
+			->purgeAllKnownFacts();
+
+		parent::tearDown();
+	}
+
 	public function testUriQueryFromRawParameters() {
 
-		$this->pageCreator
-			->createPage( \Title::newFromText( 'SomeUriValue', SMW_NS_PROPERTY ) )
-			->doEdit( '[[Has type::URL]]' );
+		$property = $this->fixturesProvider->getProperty( 'url' );
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
+		$this->subjects[] = $semanticData->getSubject();
 
-		$dataValue = $this->dataValueFactory->newPropertyValue(
-			'SomeUriValue',
+		$dataValue = $this->dataValueFactory->newPropertyObjectValue(
+			$property,
 			'http://example.org/api.php?action=Foo'
 		);
 
 		$semanticData->addDataValue( $dataValue );
 
-		$dataValue = $this->dataValueFactory->newPropertyValue(
-			'SomeUriValue',
+		$dataValue = $this->dataValueFactory->newPropertyObjectValue(
+			$property,
 			'http://example.org/Bar 42'
 		);
 
@@ -69,11 +86,11 @@ class QueryResultQueryProcessorIntegrationTest extends MwDBaseUnitTestCase {
 		$this->getStore()->updateData( $semanticData );
 
 		/**
-		 * @query [[SomeUriValue::http://example.org/api.php?action=Foo]][[SomeUriValue::http://example.org/Bar 42]]
+		 * @query [[Url::http://example.org/api.php?action=Foo]][[Url::http://example.org/Bar 42]]
 		 */
 		$rawParams = array(
-			'[[SomeUriValue::http://example.org/api.php?action=Foo]][[SomeUriValue::http://example.org/Bar 42]]',
-			'?SomeUriValue',
+			'[[Url::http://example.org/api.php?action=Foo]][[Url::http://example.org/Bar 42]]',
+			'?Url',
 			'limit=1'
 		);
 
