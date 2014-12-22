@@ -4,25 +4,23 @@ Running tests is commonly divided into a manual (without using any tool or autom
 
 If you want to run some manual tests (either as scripted or exploratory test procedure) then you just have to:
 
-1. Download a related branch using `composer require "mediawiki/semantic-media-wiki:dev-foo` (where `foo` refers to the branch name) or in case you want to test the current master, use `@dev` or `dev-master` as version together with `minimum-stability: dev` flag to ensure that the branch/master can be fetched without any stability limitation.
-2. Run `composer dump-autoload` in order to generate an updated autoloader wherer all classes are registered and correctly initialized before starting any test procedure.
+1. Download a related branch using `composer require "mediawiki/semantic-media-wiki:dev-foo` (where `foo` refers to the branch name) or in case you want to test the current master, use `@dev` or `dev-master` as version together with `minimum-stability: dev` flag so that the branch/master can be fetched without any stability limitations.
+2. Run `composer dump-autoload` to ensure that all registered classes are correctly initialized before starting any test procedure.
 
 # Automated testing (PHPUnit)
 
-For the automated approach, Semantic MediaWiki uses [PHPUnit][phpunit] as scripted testing methodology. Scripted tests are used to verify that an expected behaviour occurs for specified requirements and enables to decide whether a result can be accepted or has to be rejected for the scripted boundaries.
+For the automated approach, Semantic MediaWiki relies on [PHPUnit][phpunit] as scripted testing methodology. Scripted tests are used to verify that an expected behaviour occurs for specified requirements whether a result can be accepted or has to be rejected for the codified boundaries.
 
-- Unit test in most cases refers to a test that confirms an expected result for a unit, module, or class
-- Integration test normally combines multiple components into a single process to verify that the integration produces an expected result
+- Unit test in most cases refers to a test that tests an expected result for a unit, module, or class
+- Integration test normally combines multiple components into a single process to verify that an expected result is produced
 - System test (and its individual modules) is treated as "black-box" in order to observe behaviour as a whole rather than its units
 
 ## Running tests
 
-Most scripted tests for Semantic MediaWiki are written using [PHPUnit][phpunit]. PHPUnit provides the necessary environment to execute tests by simply:
-
 1. Verify that PHUnit is installed and in case it is not use `composer require phpunit/phpunit:~4.3` to add the package
-2. Use `composer phpunit` from the Semantic MediaWiki root directory, or [`phpunit`][mw-phpunit-testing] directly in connection with the PHPUnit `XML` configuration file (together with MediaWiki's `phpunit.php` loader otherwise required MediaWiki classes are not loaded).
+2. Use `composer phpunit` from the extension base directory, or [`phpunit`][mw-phpunit-testing] directly in connection with the PHPUnit `XML` configuration file (together with MediaWiki's `phpunit.php` loader otherwise required MediaWiki classes are not loaded).
 
-Information about how to work with PHPUnit can be found at [smw.org][smw] and [mediawiki.org][mw-phpunit-testing].
+Information about PHPUnit in connection with MediaWiki can be found at [smw.org][smw] and [mediawiki.org][mw-phpunit-testing].
 
 ## Writing tests
 
@@ -45,11 +43,10 @@ Another possibility is to use MediaWiki's XML format to import fixtures (in form
 
 Integration tests are vital to confirm expected behaviour of a component from an integrative perspective that occurs through the interplay with its surroundings. `SMW\Tests\Integration\` contains most of the tests that target the validation of reciprocity with MediaWiki together with listed services such as:
 
-- `FUSEKI`: Jena Fuskei 1.0.2 is integrated
-- `VIRTUOSO`: Virtuoso-opensource-6.1 is integrated
-- `FOURSTORE`: 4Store is installable but not executable due to [issue #110](https://github.com/garlik/4store/issues/110)
+- `SPARQLStore` ( `fuseki`, `virtuoso`, or `4store` )
+- Other extensions that require SMW ( `SM`, `SESP`, `SBL` etc.)
 
-For details about the test environment see [SPARQLStore integration testing](../includes/src/SPARQLStore/README.md).
+For details about the test environment see [integration testing](../includes/build/travis/README.md).
 
 ## Benchmark tests
 

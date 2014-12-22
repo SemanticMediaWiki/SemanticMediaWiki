@@ -50,7 +50,7 @@ $smwgSparqlDefaultGraph = 'http://example.org/myVirtuosoGraph';
 
 ### 4Store integration
 
-Currently, Travis-CI doesn't support `4Store` (1.1.4-2) as service but the following configuration has been sucessfully tested with the available test suite.
+Currently, Travis-CI doesn't support `4Store` (1.1.4-2) as service but the following configuration has been sucessfully tested with the available test suite. ([issue #110](https://github.com/garlik/4store/issues/110) )
 
 ```sh
 apt-get install 4store
