@@ -23,7 +23,7 @@
 	"smw_browse_go": "Mine",
 	"smw_result_prev": "Eelmine",
 	"smw_result_next": "Järgmine",
-	"smw_smwadmin_datarefreshstopconfirm": "Jah, ma olen kindel.",
+	"smw_smwadmin_datarefreshstopconfirm": "Jah, olen {{GENDER:$1|kindel}}.",
 	"smw-ui-tooltip-title-warning": "Viga",
 	"smw-ui-tooltip-title-event": "Sündmus",
 	"smw-livepreview-loading": "Laadimine..."

@@ -208,7 +208,7 @@
 	"smw_ask_show_embed": "{{doc-actionlink}}\nThis is the text of the action link on [[Special:Ask]] to show the code of a query.",
 	"smw_ask_hide_embed": "{{doc-actionlink}}\nThis is the text of the action link on [[Special:Ask]] to hide the code of a query.",
 	"smw_ask_embed_instr": "This is an information message for the field on [[Special:Ask]] that contains the code of a query that may be copied and when pasted into a regular page on the wiki..",
-	"smw-ask-delete": "This is the text of the action link on [[Special:Ask]] to delete a printout statement from a query.",
+	"smw-ask-delete": "This is the text of the action link on [[Special:Ask]] to delete a printout statement from a query.\n{{Identical|Delete}}",
 	"smw-ask-sorting": "This is the text for the header of the section on [[Special:Ask]] that allows to specify sorting options for specific properties that are queried for.",
 	"smw-ask-format-selection-help": "This is a text displayed on [[Special:Ask]] to inform about a help page on [https://semantic-mediawiki.org/wiki/ Semantic MediaWiki].\n\nParameters:\n* $1 - a link which points to Help: page on semantic-mediawiki.org",
 	"searchbyproperty": "{{doc-special|SearchByProperty}}",
