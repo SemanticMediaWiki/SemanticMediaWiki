@@ -97,6 +97,10 @@ class PageBuilder {
 
 	private function getHtmlForm( $resultMessage, $resultCount ) {
 
+		// Precaution to avoid any inline breakage caused by a div element
+		// within a paragraph (e.g Highlighter content)
+		$resultMessage = str_replace( 'div', 'span', $resultMessage );
+
 		$html = $this->htmlFormBuilder
 			->setName( 'searchbyproperty' )
 			->withFieldset()
