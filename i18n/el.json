@@ -24,7 +24,7 @@
 	"smw_noinvannot": "Δεν μπορούν να δοθούν τιμές σε αντίστροφες ιδιότητες.",
 	"version-semantic": "Σημασιολογικές επεκτάσεις",
 	"smw_baduri": "Δεν επιτρέπονται URI της μορφής «$1».",
-	"smw_printername_count": "Αποτελέσματα μέτρησης",
+	"smw_printername_count": "Αποτελέσματα καταμέτρησης",
 	"smw_printername_csv": "Εξαγωγή σε CSV",
 	"smw_printername_dsv": "Εξαγωγή σε DSV",
 	"smw_printername_debug": "Αποσφαλμάτωση ερωτήματος (για ειδικούς)",
@@ -296,5 +296,6 @@
 	"smw-sp-searchbyproperty-description": "Αυτή η σελίδα παρέχει μια απλή [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces διεπαφή περιήγησης] για την εύρεση οντοτήτων που περιγράφονται από κάποια ιδιότητα και κάποια ονομαστική τιμή. Άλλες διαθέσιμες διεπαφές αναζήτησης περιλαμβάνουν την [[Special:PageProperty|αναζήτηση ιδιοτήτων σελίδας]] και το [[Special:Ask|εργαλείο κατασκευής ερωτημάτων]].",
 	"smw-sp-searchbyproperty-resultlist-header": "Λίστα αποτελεσμάτων",
 	"smw-sp-searchbyproperty-nonvaluequery": "Μια λίστα τιμών που έχουν ανατεθειμένη την ιδιότητα «$1».",
-	"smw-sp-searchbyproperty-valuequery": "Κατάλογος σελίδων που έχουν την ιδιότητα «$1» με σημειωμένη τιμή «$2»."
+	"smw-sp-searchbyproperty-valuequery": "Κατάλογος σελίδων που έχουν την ιδιότητα «$1» με σημειωμένη τιμή «$2».",
+	"smw-datavalue-number-textnotallowed": "Το «$1» δεν μπορεί να εκχωρηθεί σε τύπο που έχει δηλωθεί ως αριθμητικός με τιμή $2."
 }

@@ -312,5 +312,6 @@
 	"smw-sp-searchbyproperty-description": "Diese Seite stellt eine einfache [https://www.semantic-mediawiki.org/wiki/Help:Semantisches_Browsen Suchoberfläche] zum Finden von Objekten bereit, die ein Attribut mit einem bestimmten Datenwert enthalten. Andere verfügbare Suchoberflächen sind die [[Special:PageProperty|Attributsuche]] sowie der [[Special:Ask|Abfragengenerator]].",
 	"smw-sp-searchbyproperty-resultlist-header": "Liste der Ergebnisse",
 	"smw-sp-searchbyproperty-nonvaluequery": "Eine Liste der Datenwerte des Attributs „$1“.",
-	"smw-sp-searchbyproperty-valuequery": "Eine Liste der Seiten, die das Attribut „$1“ mit dem Datenwert „$2“ enthalten."
+	"smw-sp-searchbyproperty-valuequery": "Eine Liste der Seiten, die das Attribut „$1“ mit dem Datenwert „$2“ enthalten.",
+	"smw-datavalue-number-textnotallowed": "Der Datenwert „$1“ kann einem Attribut des Datentyps Zahl nicht zugeordnet werden sondern bspw. der Datenwert „$2“."
 }

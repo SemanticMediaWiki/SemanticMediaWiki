@@ -373,5 +373,6 @@ $magicWords['zh-hans'] = array(
 
 /** Traditional Chinese (中文（繁體）‎) */
 $magicWords['zh-hant'] = array(
+	'info' => array( 0, '資訊' ),
 	'set' => array( 0, '設定' ),
 );

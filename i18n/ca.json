@@ -296,5 +296,10 @@
 	"smw-sp-admin-idlookup-title": "Consulta d'ObjectId",
 	"smw-sp-admin-idlookup-docu": "Mostra els detalls d'un Id d'objecte intern que representa entitats individuals (pàgina wiki, subobjecte, etc.) a Semantic MediaWiki.",
 	"smw-sp-admin-idlookup-objectid": "Id d'objecte:",
-	"smw-livepreview-loading": "S'està carregant…"
+	"smw-livepreview-loading": "S'està carregant…",
+	"smw-sp-searchbyproperty-description": "Aquesta pàgina proporciona una simple [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces interfície de navegació] per trobar entitats descrites per una propietat i un valor anomenat. Altres interfícies de cerca disponibles inclouen la [[Special:PageProperty|cerca de propietats de pàgina]] i el [[Special:Ask|generador de consultes ask]].",
+	"smw-sp-searchbyproperty-resultlist-header": "Llista de resultats",
+	"smw-sp-searchbyproperty-nonvaluequery": "Una llista de valors que tenen la propietat «$1» assignada.",
+	"smw-sp-searchbyproperty-valuequery": "Una llista de pàgines que tenen la propietat «$1» amb el valor «$2» anotat.",
+	"smw-datavalue-number-textnotallowed": "«$1» no pot assignar-se a un tipus de nombre declarat amb el valor $2."
 }
