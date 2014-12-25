@@ -323,6 +323,6 @@
 	"smw-editpage-property-annotation-disabled":"A description to be displayed on the edit page.",
 	"smw-editpage-concept-annotation-enabled":"A description to be displayed on the edit page.",
 	"log-name-smw": "A name for the [[Special:Log]] Semantic MediaWiki entry.",
-	"log-description-smw": "A description for Semantic MediaWiki entries displayed in [[Special:Log]]."
+	"log-description-smw": "A description for Semantic MediaWiki entries displayed in [[Special:Log]].",
 	"smw-datavalue-number-textnotallowed": "This is an error/warning message. Parameters:\n* $1 holds the text causing the error/warning.\n* $2 holds the property value supposed to be used."
 }
