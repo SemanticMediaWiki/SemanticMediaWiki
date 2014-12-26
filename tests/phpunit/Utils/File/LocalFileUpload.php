@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Utils\Fixtures\File;
+namespace SMW\Tests\Utils\File;
 
 use SMW\Tests\Utils\Mock\MockSuperUser;
 

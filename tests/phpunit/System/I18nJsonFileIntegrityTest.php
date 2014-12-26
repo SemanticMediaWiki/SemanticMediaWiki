@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\System;
 
-use SMW\Tests\Utils\JsonFileReader;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @group SMW
@@ -22,7 +22,7 @@ class I18nJsonFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testI18NJsonDecodeEncode( $file ) {
 
-		$jsonFileReader = new JsonFileReader( $file );
+		$jsonFileReader = UtilityFactory::getInstance()->newJsonFileReader( $file );
 
 		$this->assertInternalType(
 			'integer',
@@ -37,15 +37,14 @@ class I18nJsonFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 
 	public function i18nFileProvider() {
 
-		$basepath = __DIR__ . '/../../../i18n/';
+		$provider = array();
 
-		$provider[] = array(
-			$basepath . 'qqq.json'
-		);
+		$bulkFileProvider = UtilityFactory::getInstance()->newBulkFileProvider( __DIR__ . '/../../../i18n' );
+		$bulkFileProvider->searchByFileExtension( 'json' );
 
-		$provider[] = array(
-			$basepath . 'en.json'
-		);
+		foreach ( $bulkFileProvider->getFiles() as $file ) {
+			$provider[] = array( $file );
+		}
 
 		return $provider;
 	}
