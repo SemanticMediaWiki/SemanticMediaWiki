@@ -2,8 +2,6 @@
 
 namespace SMW\Tests\Utils\Fixtures;
 
-use SMW\Tests\Utils\Fixtures\File\FixturesFileProvider;
-
 /**
  * @license GNU GPL v2+
  * @since 2.1

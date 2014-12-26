@@ -1,13 +1,10 @@
 <?php
 
-namespace SMW\Tests\Utils;
+namespace SMW\Tests\Utils\File;
 
 use RuntimeException;
-use UnexpectedValueException;
 
 /**
- * @ingroup SMW
- *
  * @license GNU GPL v2+
  * @since 2.1
  *
@@ -90,7 +87,7 @@ class JsonFileReader {
 
 		$contents = json_decode( file_get_contents( $file ), $this->convertedToAssociativeArray );
 
-		if ( $contents !== null && is_array( $contents ) && json_last_error() === JSON_ERROR_NONE ) {
+		if ( $contents !== null && json_last_error() === JSON_ERROR_NONE ) {
 			return $contents;
 		}
 

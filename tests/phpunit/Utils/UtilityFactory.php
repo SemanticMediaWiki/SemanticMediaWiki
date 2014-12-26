@@ -6,6 +6,8 @@ use SMW\Tests\Utils\Validators\ValidatorFactory;
 use SMW\Tests\Utils\Fixtures\FixturesFactory;
 use SMW\Tests\Utils\Runners\RunnerFactory;
 use SMW\Tests\Utils\Page\PageEditor;
+use SMW\Tests\Utils\File\JsonFileReader;
+use SMW\Tests\Utils\File\BulkFileProvider;
 
 /**
  * @license GNU GPL v2+
@@ -140,6 +142,28 @@ class UtilityFactory {
 	 */
 	public function newPageEditor() {
 		return new PageEditor();
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param string $file
+	 *
+	 * @return JsonFileReader
+	 */
+	public function newJsonFileReader( $file ) {
+		return new JsonFileReader( $file );
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param string $path
+	 *
+	 * @return BulkFileProvider
+	 */
+	public function newBulkFileProvider( $path ) {
+		return new BulkFileProvider( $path );
 	}
 
 }

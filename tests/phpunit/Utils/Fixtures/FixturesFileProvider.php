@@ -1,6 +1,9 @@
 <?php
 
-namespace SMW\Tests\Utils\Fixtures\File;
+namespace SMW\Tests\Utils\Fixtures;
+
+use SMW\Tests\Utils\File\LocalFileUpload;
+use SMW\Tests\Utils\Fixtures\File\DummyFileCreator;
 
 /**
  * @license GNU GPL v2+
@@ -22,7 +25,7 @@ class FixturesFileProvider {
 		$dummyFileCreator = new DummyFileCreator( $desiredDestName );
 
 		return new LocalFileUpload(
-			$dummyFileCreator->createFileByCopyContentOf( __DIR__ . '/' . 'LoremIpsum.txt' ),
+			$dummyFileCreator->createFileByCopyContentOf( __DIR__ . '/File/' . 'LoremIpsum.txt' ),
 			$desiredDestName
 		);
 	}
