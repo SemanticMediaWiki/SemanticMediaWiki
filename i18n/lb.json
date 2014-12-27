@@ -177,5 +177,6 @@
 	"smw_concept_header": "Säite vum Konzept \"$1\"",
 	"smw_conceptarticlecount": "Déi $1 {{PLURAL:$1|Säit|Säite}} ginn hei drënner gewisen.",
 	"smw-sp-admin-settings-title": "Astellunge vun der Konfiguratioun",
-	"smw-livepreview-loading": "Lueden..."
+	"smw-livepreview-loading": "Lueden...",
+	"log-name-smw": "Semantic-MediaWiki-Logbuch"
 }

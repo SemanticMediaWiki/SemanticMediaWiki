@@ -298,5 +298,6 @@
 	"smw-sp-searchbyproperty-resultlist-header": "רשימת תוצאות",
 	"smw-sp-searchbyproperty-nonvaluequery": "רשימה של תוצאות שהוקצה להן המאפיין \"$1\".",
 	"smw-sp-searchbyproperty-valuequery": "רשימת דפים שיש להן המאפיין \"$1\" עם הערך \"$2\".",
-	"smw-datavalue-number-textnotallowed": "לא ניתן להציב את \"$1\" לסוג מספר מוצהר עם הערך $2."
+	"smw-datavalue-number-textnotallowed": "לא ניתן להציב את \"$1\" לסוג מספר מוצהר עם הערך $2.",
+	"log-name-smw": "יומן מדיה־ויקי סמנטית"
 }
