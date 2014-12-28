@@ -1259,7 +1259,7 @@ throw new MWException("Debug -- this code might be dead.");
 			// Remove any double quotes from the name
 			$tablename = str_replace( '"', '', $tablename );
 
-			return "CREATE OR REPLACE FUNCTION create_{$tablename}() RETURNS void AS "
+			return "CREATE OR REPLACE FUNCTION pg_temp.create_{$tablename}() RETURNS void AS "
 			. "$$ "
 			. "BEGIN "
 			. " IF EXISTS(SELECT NULL FROM pg_tables WHERE tablename='{$tablename}' AND schemaname = ANY (current_schemas(true))) "
@@ -1272,7 +1272,7 @@ throw new MWException("Debug -- this code might be dead.");
 			. "END; "
 			. "$$ "
 			. "LANGUAGE 'plpgsql'; "
-			. "SELECT create_{$tablename}(); ";
+			. "SELECT pg_temp.create_{$tablename}(); ";
 		} else { // MySQL_ just a temporary table, use INSERT IGNORE later
 			return "CREATE TEMPORARY TABLE " . $tablename . "( id INT UNSIGNED KEY ) ENGINE=MEMORY";
 		}
