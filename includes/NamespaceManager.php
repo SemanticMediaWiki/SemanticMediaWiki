@@ -127,7 +127,8 @@ class NamespaceManager {
 		// Support subpages only for talk pages by default
 		$this->globalVars['wgNamespacesWithSubpages'] = $this->globalVars['wgNamespacesWithSubpages'] + array(
 			SMW_NS_PROPERTY_TALK => true,
-			SMW_NS_TYPE_TALK => true
+			SMW_NS_TYPE_TALK => true,
+			SMW_NS_CONCEPT_TALK => true,
 		);
 
 		// not modified for Semantic MediaWiki
