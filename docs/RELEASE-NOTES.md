@@ -65,3 +65,4 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #670 Added `SMW::SQLStore::BeforeChangeTitleComplete` hook 
 * #673 Extended `DataValueFactory` to ignore `$wgCapitalLinks` settings for the property namespace 
 * #678 Added `PropertyRegistry` to remove global state from `DIProperty`
+* #668 Changed `SQLStore` `iw` table field specification from `VARCHAR(32) binary` to `VARBINARY(32)` 
