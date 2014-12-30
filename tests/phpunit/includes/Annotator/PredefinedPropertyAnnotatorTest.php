@@ -18,7 +18,6 @@ use Title;
 /**
  * @covers \SMW\Annotator\PredefinedPropertyAnnotator
  *
- *
  * @group SMW
  * @group SMWExtension
  *
@@ -231,7 +230,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		#7 TYPE_MEDIA
 		$provider[] = array(
 			array(
-				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'withMediaAsFilePage' ) ),
+				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'MimePropertyForFilePage' ) ),
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MEDIA )
 				),
@@ -250,7 +249,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		#8
 		$provider[] = array(
 			array(
-				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'withMediaNotAsFilePage' ) ),
+				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'MediaPropertyForNonFilePage' ) ),
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MEDIA )
 				),
@@ -267,7 +266,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		#9 TYPE_MIME
 		$provider[] = array(
 			array(
-				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'withMimeAsFilePage' ) ),
+				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'MimePropertyForFilePage' ) ),
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MIME )
 				),
@@ -286,13 +285,81 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		#10
 		$provider[] = array(
 			array(
-				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'withMimeNotAsFilePage' ) ),
+				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'MimePropertyForNonFilePage' ) ),
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MIME )
 				),
 				'pageInfo' => array(
-					'isFilePage'   => false,
+					'isFilePage'  => false,
 					'getMimeType' => 'FooMime'
+				)
+			),
+			array(
+				'propertyCount'  => 0
+			)
+		);
+
+		#11 Empty TYPE_MIME
+		$provider[] = array(
+			array(
+				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'EmptyMimePropertyFilePage' ) ),
+				'settings' => array(
+					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MIME )
+				),
+				'pageInfo' => array(
+					'isFilePage'  => true,
+					'getMimeType' => ''
+				)
+			),
+			array(
+				'propertyCount'  => 0
+			)
+		);
+
+		#12 Empty TYPE_MEDIA
+		$provider[] = array(
+			array(
+				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'EmptyMediaPropertyFilePage' ) ),
+				'settings' => array(
+					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MEDIA )
+				),
+				'pageInfo' => array(
+					'isFilePage'   => true,
+					'getMediaType' => ''
+				)
+			),
+			array(
+				'propertyCount'  => 0
+			)
+		);
+
+		#13 Null TYPE_MIME
+		$provider[] = array(
+			array(
+				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'NullMimePropertyFilePage' ) ),
+				'settings' => array(
+					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MIME )
+				),
+				'pageInfo' => array(
+					'isFilePage'  => true,
+					'getMimeType' => null
+				)
+			),
+			array(
+				'propertyCount'  => 0
+			)
+		);
+
+		#14 Null TYPE_MEDIA
+		$provider[] = array(
+			array(
+				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'NullMediaPropertyFilePage' ) ),
+				'settings' => array(
+					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MEDIA )
+				),
+				'pageInfo' => array(
+					'isFilePage'  => true,
+					'getMimeType' => null
 				)
 			),
 			array(
