@@ -10,7 +10,9 @@ use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
 use SMW\Query\Language\ConceptDescription;
 
 use SMW\DIWikiPage;
+use SMW\DIConcept;
 use SMW\DIProperty;
+use SMW\ApplicationFactory;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\ConditionBuilder\ConceptConditionBuilder
@@ -24,6 +26,33 @@ use SMW\DIProperty;
  * @author mwjames
  */
 class ConceptConditionBuilderTest extends \PHPUnit_Framework_TestCase {
+
+	private $applicationFactory;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $semanticData ) );
+
+		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->applicationFactory->registerObject( 'Store', $store );
+	}
+
+	protected function tearDown() {
+		$this->applicationFactory->clear();
+
+		parent::tearDown();
+	}
 
 	public function testCanConstruct() {
 
@@ -80,18 +109,69 @@ class ConceptConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testConceptConditionBuilderForAnyValueConceptUsingMockedStore() {
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$semanticData->expects( $this->once() )
+			->method( 'getPropertyValues' )
+			->with( $this->equalTo( new DIProperty( '_CONC' ) ) )
+			->will( $this->returnValue( array(
+				new DIConcept( '[[Foo::+]]' , 'Bar', 1, 0, 0 ) ) ) );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->with( $this->equalTo( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) ) )
+			->will( $this->returnValue( $semanticData ) );
+
+		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->applicationFactory->registerObject( 'Store', $store );
+
+		$description = new ConceptDescription( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) );
+		$orderByProperty = null;
+		$resultVariable = 'result';
+
+		$compoundConditionBuilder = new CompoundConditionBuilder();
+		$compoundConditionBuilder->setResultVariable( $resultVariable );
+
+		$instance = new ConceptConditionBuilder();
+		$instance->setCompoundConditionBuilder( $compoundConditionBuilder );
+
+		$condition = $instance->buildCondition( $description, $resultVariable, $orderByProperty );
+
+		$expectedConditionString = UtilityFactory::getInstance()->newStringBuilder()
+			->addString( '?result property:Foo ?v1 .' )->addNewLine()
+			->getString();
+
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			$condition
+		);
+
+		$this->assertEquals(
+			$expectedConditionString,
+			$compoundConditionBuilder->convertConditionToString( $condition )
+		);
+	}
+
 	public function descriptionProvider() {
 
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
 
 		# 0
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\TrueCondition';
+		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FalseCondition';
 
-		$description =  new ConceptDescription( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) );
+		$description = new ConceptDescription( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) );
 		$orderByProperty = null;
 
 		$expected = $stringBuilder
-			->addString( '?result swivt:page ?url .' )->addNewLine()
+			->addString( '<http://www.example.org> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#nothing> .' )->addNewLine()
 			->getString();
 
 		$provider[] = array(
