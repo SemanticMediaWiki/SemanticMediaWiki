@@ -187,7 +187,7 @@ class DisjunctionConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		# 4
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\TrueCondition';
+		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition';
 
 		$description = new ValueDescription(
 			new DIWikiPage( 'SomePropertyPageValue', NS_MAIN ), null, SMW_CMP_LIKE
@@ -201,7 +201,8 @@ class DisjunctionConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$sortkeys = array();
 
 		$expected = $stringBuilder
-			->addString( '?result swivt:page ?url .' )->addNewLine()
+			->addString( 'FILTER( regex( ?v1, "^SomePropertyPageValue$", "s") )' )->addNewLine()
+			->addString( '?result swivt:wikiPageSortKey ?v1 .' )->addNewLine()
 			->getString();
 
 		$provider[] = array(

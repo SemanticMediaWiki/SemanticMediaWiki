@@ -79,9 +79,6 @@ class UriTypeQueryTest extends MwDBaseUnitTestCase {
 	 */
 	public function testQuerySearchPatternForUriType() {
 
-		// Doesn't support this feature currently
-		$this->skipTestForStore( 'SMW\SPARQLStore\SPARQLStore' );
-
 		$property = $this->fixturesProvider->getProperty( 'url' );
 
 		$semanticData = $this->semanticDataFactory
