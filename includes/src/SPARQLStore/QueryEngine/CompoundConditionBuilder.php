@@ -18,6 +18,7 @@ use SMWDataItem as DataItem;
 use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 use SMWExpNsResource as ExpNsResource;
+use SMWExpElement as ExpElement;
 
 use RuntimeException;
 
@@ -130,7 +131,12 @@ class CompoundConditionBuilder {
 		if ( $condition instanceof SingletonCondition ) { // prepare for ASK, maybe rather use BIND?
 
 			$matchElement = $condition->matchElement;
-			$matchElementName = TurtleSerializer::getTurtleNameForExpElement( $matchElement );
+
+			if ( $matchElement instanceof ExpElement ) {
+				$matchElementName = TurtleSerializer::getTurtleNameForExpElement( $matchElement );
+			} else {
+				$matchElementName = $matchElement;
+			}
 
 			if ( $matchElement instanceof ExpNsResource ) {
 				$condition->namespaces[$matchElement->getNamespaceId()] = $matchElement->getNamespace();

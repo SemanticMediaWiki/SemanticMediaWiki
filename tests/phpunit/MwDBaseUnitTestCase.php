@@ -6,6 +6,7 @@ use SMW\Tests\Utils\MwDatabaseTableBuilder;
 use SMW\StoreFactory;
 use SMW\ApplicationFactory;
 use SMW\NamespaceExaminer;
+use SMW\PropertyRegistry;
 use SMW\Settings;
 
 use SMWExporter as Exporter;
@@ -70,6 +71,7 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 	protected function tearDown() {
 		ApplicationFactory::clear();
 		NamespaceExaminer::clear();
+		PropertyRegistry::clear();
 		Settings::clear();
 		Exporter::clear();
 

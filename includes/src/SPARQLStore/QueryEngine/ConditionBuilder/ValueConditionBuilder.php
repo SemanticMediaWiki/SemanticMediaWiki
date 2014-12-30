@@ -17,6 +17,7 @@ use SMWExporter as Exporter;
 use SMWExpNsResource as ExpNsResource;
 use SMWTurtleSerializer as TurtleSerializer;
 use SMWDIBlob as DIBlob;
+use SMWDIUri as DIUri;
 
 /**
  * @license GNU GPL v2+
@@ -141,24 +142,35 @@ class ValueConditionBuilder implements ConditionBuilder {
 
 	private function createConditionForRegexComparator( $dataItem, $joinVariable, $orderByProperty, $comparator ) {
 
-		if ( !$dataItem instanceof DIBlob ) {
+		if ( !$dataItem instanceof DIBlob && !$dataItem instanceof DIWikiPage && !$dataItem instanceof DIUri ) {
 			return $this->compoundConditionBuilder->buildTrueCondition( $joinVariable, $orderByProperty );
 		}
 
-		$pattern = '^' . str_replace( array( '^', '.', '\\', '+', '{', '}', '(', ')', '|', '^', '$', '[', ']', '*', '?' ),
-		                              array( '\^', '\.', '\\\\', '\+', '\{', '\}', '\(', '\)', '\|', '\^', '\$', '\[', '\]', '.*', '.' ),
-		                              $dataItem->getString() ) . '$';
+		if ( $dataItem instanceof DIBlob ) {
+			$search = $dataItem->getString();
+		} else {
+			$search = $dataItem->getSortKey();
+		}
 
-		$result = new FilterCondition( "$comparator( ?$joinVariable, \"$pattern\", \"s\")", array() );
+		$pattern = '^' . str_replace( array( 'https://', 'http://', '%2A', '^', '.', '\\', '+', '{', '}', '(', ')', '|', '^', '$', '[', ']', '*', '?', '"' ),
+		                              array( '', '', '*','\^', '\.', '\\\\', '\+', '\{', '\}', '\(', '\)', '\|', '\^', '\$', '\[', '\]', '.*', '.', '\"' ),
+		                              $search ) . '$';
+
+		$condition = $this->createFilterConditionToMatchRegexPattern(
+			$dataItem,
+			$joinVariable,
+			$comparator,
+			$pattern
+		);
 
 		$this->compoundConditionBuilder->addOrderByDataForProperty(
-			$result,
+			$condition,
 			$joinVariable,
 			$orderByProperty,
 			$dataItem->getDIType()
 		);
 
-		return $result;
+		return $condition;
 	}
 
 	private function createConditionForAnyOtherComparator( $dataItem, $joinVariable, $orderByProperty, $comparator ) {
@@ -191,6 +203,35 @@ class ValueConditionBuilder implements ConditionBuilder {
 		$result->filter = "?$orderByVariable $comparator $valueName";
 
 		return $result;
+	}
+
+	private function createFilterConditionToMatchRegexPattern( $dataItem, &$joinVariable, $comparator, $pattern ) {
+
+		if ( $dataItem instanceof DIBlob ) {
+			return new FilterCondition( "$comparator( ?$joinVariable, \"$pattern\", \"s\")", array() );
+		}
+
+		if ( $dataItem instanceof DIUri ) {
+			return new FilterCondition( "$comparator( str( ?$joinVariable ), \"$pattern\", \"i\")", array() );
+		}
+
+		// Pattern search for a wikipage object can only be done on the sortkey
+		// literal and not on it's resource
+		$skeyExpElement = Exporter::getSpecialPropertyResource( '_SKEY' );
+
+		$expElement = $this->exporter->getDataItemExpElement( $dataItem->getSortKeyDataItem() );
+		$condition = new SingletonCondition( $expElement );
+
+		$filterVariable = $this->compoundConditionBuilder->getNextVariable();
+
+		$condition->condition = "?$joinVariable " . $skeyExpElement->getQName(). " ?$filterVariable .\n";
+		$condition->matchElement = "?$joinVariable";
+
+		$filterCondition = new FilterCondition( "$comparator( ?$filterVariable, \"$pattern\", \"s\")", array() );
+
+		$condition->weakConditions = array( $filterVariable => $filterCondition->getCondition() );
+
+		return $condition;
 	}
 
 }

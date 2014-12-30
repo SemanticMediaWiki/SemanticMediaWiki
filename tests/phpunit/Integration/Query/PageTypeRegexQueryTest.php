@@ -71,9 +71,6 @@ class PageTypeRegexQueryTest extends MwDBaseUnitTestCase {
 	 */
 	public function testPageLikeNotLikeWildcardSearch() {
 
-		// Doesn't support this feature currently
-		$this->skipTestForStore( 'SMW\SPARQLStore\SPARQLStore' );
-
 		$property = $this->fixturesProvider->getProperty( 'title' );
 
 		$semanticData = $this->semanticDataFactory
@@ -187,6 +184,8 @@ class PageTypeRegexQueryTest extends MwDBaseUnitTestCase {
 		$query->sortkeys = array(
 			'Title' => 'desc'
 		);
+
+		$query->setUnboundLimit( 1000 );
 
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
 			$expected,
