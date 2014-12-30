@@ -3,10 +3,14 @@
 namespace SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
-use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ConceptDescription;
+
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\ApplicationFactory;
 
 use SMWExporter as Exporter;
 
@@ -55,7 +59,7 @@ class ConceptConditionBuilder implements ConditionBuilder {
 	 *
 	 * @param CompoundConditionBuilder $compoundConditionBuilder
 	 *
-	 * @return self
+	 * @return ConditionBuilder
 	 */
 	public function setCompoundConditionBuilder( CompoundConditionBuilder $compoundConditionBuilder ) {
 		$this->compoundConditionBuilder = $compoundConditionBuilder;
@@ -63,7 +67,7 @@ class ConceptConditionBuilder implements ConditionBuilder {
 	}
 
 	/**
-	 * Create an Condition from a ConceptDescription
+	 * Create a Condition from a ConceptDescription
 	 *
 	 * @param ConceptDescription $description
 	 * @param string $joinVariable
@@ -73,8 +77,32 @@ class ConceptConditionBuilder implements ConditionBuilder {
 	 */
 	public function buildCondition( Description $description, $joinVariable, $orderByProperty = null ) {
 
-		// TODO Implement concept queries
-		return new TrueCondition();
+		$conceptDescription = $this->getConceptDescription( $description->getConcept() );
+
+		if ( $conceptDescription === '' ) {
+			return new FalseCondition();
+		}
+
+		return $this->compoundConditionBuilder->mapDescriptionToCondition(
+			$conceptDescription,
+			$joinVariable,
+			$orderByProperty
+		);
+	}
+
+	private function getConceptDescription( DIWikiPage $concept ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$value = $applicationFactory->getStore()->getSemanticData( $concept )->getPropertyValues( new DIProperty( '_CONC' ) );
+
+		if ( $value === null || $value === array() ) {
+			return '';
+		}
+
+		$value = end( $value );
+
+		return $applicationFactory->newQueryParser()->getQueryDescription( $value->getConceptQuery() );
 	}
 
 }

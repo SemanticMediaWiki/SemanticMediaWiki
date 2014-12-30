@@ -36,14 +36,12 @@ use SMWQuery as Query;
 class ConceptQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	/**
-	 * Fails on postgres on testToCombineDifferentConceptsIntoConjunctiveConceptQuery
 	 * Failed asserting that actual size 0 matches expected size 6.
 	 */
 	protected $databaseToBeExcluded = array( 'postgres' );
-	protected $storesToBeExcluded = array( 'SMW\SPARQLStore\SPARQLStore' );
 
 	private $fixturesProvider;
-	private $subjectsToBePurged = array();
+	private $subjects = array();
 
 	private $semanticDataFactory;
 
@@ -54,19 +52,6 @@ class ConceptQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->fixturesProvider = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesProvider();
 		$this->fixturesProvider->setupDependencies( $this->getStore() );
-	}
-
-	protected function tearDown() {
-
-		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
-		$fixturesCleaner
-			->purgeAllKnownFacts()
-			->purgeSubjects( $this->subjectsToBePurged );
-
-		parent::tearDown();
-	}
-
-	public function testToCombineDifferentConceptsIntoConjunctiveConceptQuery() {
 
 		$this->getStore()->updateData(
 			$this->fixturesProvider->getFactsheet( 'Berlin' )->asEntity()
@@ -75,11 +60,25 @@ class ConceptQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->getStore()->updateData(
 			$this->fixturesProvider->getFactsheet( 'Paris' )->asEntity()
 		);
+	}
 
-		/**
-		 * @query {{#concept: [[Population::+]] }}
-		 */
-		$containsAllPopulationPropertyConcept = new DIWikiPage( 'ContainsAllPopulationProperty', SMW_NS_CONCEPT );
+	protected function tearDown() {
+
+		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
+
+		$fixturesCleaner
+			->purgeAllKnownFacts()
+			->purgeSubjects( $this->subjects );
+
+		parent::tearDown();
+	}
+
+	/**
+	 * @query {{#concept: [[Population::+]] }}
+	 */
+	public function testConceptQueryForAnyValueCondition() {
+
+		$concept = new DIWikiPage( 'ConceptQueryForAnyValueCondition', SMW_NS_CONCEPT );
 
 		$populationProperty = $this->fixturesProvider->getProperty( 'Population' );
 
@@ -89,17 +88,32 @@ class ConceptQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		);
 
 		$this->createConceptFor(
-			$containsAllPopulationPropertyConcept,
+			$concept,
 			$description,
 			'Query for all subjects that contain a population property'
 		);
 
-		/**
-		 * @query {{#concept: [[Area::SomeDistinctValue]] }}
-		 */
+		$this->assertConceptQueryCount(
+			6,
+			$concept
+		);
+
+		$this->getStore()->refreshConceptCache( $concept->getTitle() );
+
+		$this->assertEquals(
+			6,
+			$this->getStore()->getConceptCacheStatus( $concept )->getCacheCount()
+		);
+	}
+
+	/**
+	 * @query {{#concept: [[Area::SomeDistinctValue]] }}
+	 */
+	public function testConceptQueryForDistinctValueCondition() {
+
 		$areaValue = $this->fixturesProvider->getFactsheet( 'Berlin' )->getAreaValue();
 
-		$containsOnlySpecificAreaValueConcept = new DIWikiPage( 'ContainsOnlySpecificAreaValue', SMW_NS_CONCEPT );
+		$concept = new DIWikiPage( 'ConceptQueryForDistinctValueCondition', SMW_NS_CONCEPT );
 
 		$description = new SomeProperty(
 			$areaValue->getProperty(),
@@ -107,64 +121,62 @@ class ConceptQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		);
 
 		$this->createConceptFor(
-			$containsOnlySpecificAreaValueConcept,
+			$concept,
 			$description,
 			'Query for a specific area value'
 		);
 
-		/**
-		 * @query {{#concept: [[Concept::ContainsAllPopulationProperty]][[Concept::ContainsOnlySpecificAreaValue]] }}
-		 */
-		$combinedConceptQueryConcept = new DIWikiPage( 'CombinedConceptQuery', SMW_NS_CONCEPT );
+		$this->assertConceptQueryCount(
+			2,
+			$concept
+		);
 
-		$description = new Conjunction();
-		$description->addDescription( new ConceptDescription( $containsAllPopulationPropertyConcept ) );
-		$description->addDescription( new ConceptDescription( $containsOnlySpecificAreaValueConcept ) );
+		$this->getStore()->refreshConceptCache( $concept->getTitle() );
+
+		$this->assertEquals(
+			2,
+			$this->getStore()->getConceptCacheStatus( $concept )->getCacheCount()
+		);
+	}
+
+	/**
+	 * @query {{#concept: [[Concept::ConceptQueryForAnyValueCondition]][[Concept::ConceptQueryForDistinctValueCondition]] }}
+	 */
+	public function testConceptQueryForConjunctiveCondition() {
+
+		$concept = new DIWikiPage( 'ConceptQueryForConjunctiveCondition', SMW_NS_CONCEPT );
+
+		$description = new Conjunction( array(
+			new ConceptDescription( new DIWikiPage( 'ConceptQueryForAnyValueCondition', SMW_NS_CONCEPT ) ),
+			new ConceptDescription( new DIWikiPage( 'ConceptQueryForDistinctValueCondition', SMW_NS_CONCEPT ) )
+		) );
 
 		$this->createConceptFor(
-			$combinedConceptQueryConcept,
+			$concept,
 			$description,
 			'Combined concept query'
 		);
 
 		$this->assertConceptQueryCount(
-			6,
-			$containsAllPopulationPropertyConcept
-		);
-
-		$this->assertConceptQueryCount(
 			2,
-			$containsOnlySpecificAreaValueConcept
+			$concept
 		);
 
-		$this->assertConceptQueryCount(
-			2,
-			$combinedConceptQueryConcept
-		);
-
-		$this->getStore()->refreshConceptCache( $containsAllPopulationPropertyConcept->getTitle() );
-		$this->getStore()->refreshConceptCache( $containsOnlySpecificAreaValueConcept->getTitle() );
-		$this->getStore()->refreshConceptCache( $combinedConceptQueryConcept->getTitle() );
-
-		$this->assertEquals(
-			6,
-			$this->getStore()->getConceptCacheStatus( $containsAllPopulationPropertyConcept )->getCacheCount()
-		);
+		$this->getStore()->refreshConceptCache( $concept->getTitle() );
 
 		$this->assertEquals(
 			2,
-			$this->getStore()->getConceptCacheStatus( $containsOnlySpecificAreaValueConcept )->getCacheCount()
+			$this->getStore()->getConceptCacheStatus( $concept )->getCacheCount()
 		);
 
-		$this->assertEquals(
-			2,
-			$this->getStore()->getConceptCacheStatus( $combinedConceptQueryConcept )->getCacheCount()
+		$this->subjects = array(
+			$concept,
+			new DIWikiPage( 'ConceptQueryForAnyValueCondition', SMW_NS_CONCEPT ),
+			new DIWikiPage( 'ConceptQueryForDistinctValueCondition', SMW_NS_CONCEPT )
 		);
 	}
 
 	private function createConceptFor( DIWikiPage $concept, Description $description, $documentation = '' ) {
-
-		$this->subjectsToBePurged[] = $concept;
 
 		$semanticData = $this->semanticDataFactory->setSubject( $concept )->newEmptySemanticData();
 

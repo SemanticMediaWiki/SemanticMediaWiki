@@ -175,4 +175,12 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructQueryParser() {
+
+		$this->assertInstanceOf(
+			'\SMWQueryParser',
+			$this->applicationFactory->newQueryParser()
+		);
+	}
+
 }

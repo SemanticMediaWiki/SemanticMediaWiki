@@ -8,6 +8,8 @@ use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\Factbox\FactboxBuilder;
 use SMW\Query\Profiler\QueryProfilerFactory;
 
+use SMWQueryParser as QueryParser;
+
 use ParserOutput;
 use Parser;
 use Language;
@@ -246,6 +248,15 @@ class ApplicationFactory {
 	 */
 	public function getNamespaceExaminer() {
 		return NamespaceExaminer::newFromArray( $this->getSettings()->get( 'smwgNamespacesWithSemanticLinks' ) );
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return QueryParser
+	 */
+	public function newQueryParser() {
+		return new QueryParser();
 	}
 
 	private static function registerBuilder( DependencyBuilder $builder = null ) {
