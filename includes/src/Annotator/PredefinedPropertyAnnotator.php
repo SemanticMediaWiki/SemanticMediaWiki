@@ -91,10 +91,10 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 				$dataItem = $this->pageInfo->getLastEditor() ? DIWikiPage::newFromTitle( $this->pageInfo->getLastEditor() ) : null;
 				break;
 			case DIProperty::TYPE_MEDIA :
-				$dataItem = $this->pageInfo->isFilePage() ? new DIBlob( $this->pageInfo->getMediaType() ) : null;
+				$dataItem = $this->pageInfo->isFilePage() && $this->pageInfo->getMediaType() !== '' && $this->pageInfo->getMediaType() !== null ? new DIBlob( $this->pageInfo->getMediaType() ) : null;
 				break;
 			case DIProperty::TYPE_MIME :
-				$dataItem = $this->pageInfo->isFilePage() ? new DIBlob( $this->pageInfo->getMimeType() ) : null;
+				$dataItem = $this->pageInfo->isFilePage() && $this->pageInfo->getMimeType() !== '' && $this->pageInfo->getMimeType() !== null  ? new DIBlob( $this->pageInfo->getMimeType() ) : null;
 				break;
 		}
 
