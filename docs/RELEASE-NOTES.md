@@ -19,6 +19,7 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #664 Enabled `\;` usage to support semicolon escaping for record-type values (bug T17732)
 * #672 Added `Special:Log` support for events enabled in `smwgLogEventTypes` 
 * #696 Enabled condition support for concepts in the `SPARQLStore`
+* #679 Added page-type, url-type regex query search support for the `SPARQLStore`
 
 ## Bug fixes
 
