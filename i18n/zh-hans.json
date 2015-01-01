@@ -309,5 +309,7 @@
 	"smw-sp-searchbyproperty-resultlist-header": "结果列表",
 	"smw-sp-searchbyproperty-nonvaluequery": "分配属性“$1”的值列表。",
 	"smw-sp-searchbyproperty-valuequery": "注释有属性“$1”带值“$2”的页面列表。",
-	"smw-datavalue-number-textnotallowed": "“$1”不能分配给公开的带值$2的数字类型。"
+	"smw-datavalue-number-textnotallowed": "“$1”不能分配给公开的带值$2的数字类型。",
+	"smw-editpage-annotation-disabled": "由于名字空间限制，此页面在语义文内注释中不会启用。有关如何启用名字空间的详细信息在[https://semantic-mediawiki.org/wiki/Help:配置 配置]帮助页面中阐述。",
+	"log-name-smw": "Semantic MediaWiki日志"
 }

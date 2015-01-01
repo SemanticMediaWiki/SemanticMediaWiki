@@ -1,23 +1,13 @@
 {
 	"@metadata": {
 		"authors": [
-			"EugeneZelenko",
-			"Fryed-peach",
-			"Helix84",
-			"Jon Harald Søby",
 			"Kghbln",
-			"Markus Krötzsch",
-			"McDutchie",
-			"Meno25",
-			"Metalhead64",
-			"Pietrodn",
+			"Liuxinyu970226",
 			"Purodha",
 			"Raymond",
 			"Shirayuki",
 			"Siebrand",
-			"Umherirrender",
-			"Тест",
-			"Liuxinyu970226"
+			"Umherirrender"
 		]
 	},
 	"smw-desc": "{{desc|name=Semantic MediaWiki|url=http://www.mediawiki.org/wiki/Extension:Semantic_MediaWiki}}",
@@ -317,12 +307,12 @@
 	"smw-sp-searchbyproperty-resultlist-header": "A header label",
 	"smw-sp-searchbyproperty-nonvaluequery": "A description for a query result without values.\n\nParameters:\n* $1 - Name of the property",
 	"smw-sp-searchbyproperty-valuequery": "A description for a query result with values.\n\nParameters:\n* $1 - Name of the property\n* $2 - Name of the value",
-	"smw-editpage-annotation-enabled":"A description to be displayed on the edit page.",
-	"smw-editpage-annotation-disabled":"A description to be displayed on the edit page.",
-	"smw-editpage-property-annotation-enabled":"A description to be displayed on the edit page.",
-	"smw-editpage-property-annotation-disabled":"A description to be displayed on the edit page.",
-	"smw-editpage-concept-annotation-enabled":"A description to be displayed on the edit page.",
+	"smw-datavalue-number-textnotallowed": "This is an error/warning message. Parameters:\n* $1 holds the text causing the error/warning.\n* $2 holds the property value supposed to be used.",
+	"smw-editpage-annotation-enabled": "A description to be displayed on the edit page.",
+	"smw-editpage-annotation-disabled": "A description to be displayed on the edit page.",
+	"smw-editpage-property-annotation-enabled": "A description to be displayed on the edit page.",
+	"smw-editpage-property-annotation-disabled": "A description to be displayed on the edit page.",
+	"smw-editpage-concept-annotation-enabled": "A description to be displayed on the edit page.",
 	"log-name-smw": "A name for the [[Special:Log]] Semantic MediaWiki entry.",
-	"log-description-smw": "A description for Semantic MediaWiki entries displayed in [[Special:Log]].",
-	"smw-datavalue-number-textnotallowed": "This is an error/warning message. Parameters:\n* $1 holds the text causing the error/warning.\n* $2 holds the property value supposed to be used."
+	"log-description-smw": "A description for Semantic MediaWiki entries displayed in [[Special:Log]]."
 }
