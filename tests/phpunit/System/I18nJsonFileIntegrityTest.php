@@ -39,7 +39,7 @@ class I18nJsonFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 
 		$provider = array();
 
-		$bulkFileProvider = UtilityFactory::getInstance()->newBulkFileProvider( __DIR__ . '/../../../i18n' );
+		$bulkFileProvider = UtilityFactory::getInstance()->newBulkFileProvider( $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] );
 		$bulkFileProvider->searchByFileExtension( 'json' );
 
 		foreach ( $bulkFileProvider->getFiles() as $file ) {
