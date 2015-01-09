@@ -20,6 +20,11 @@ class DummyFileCreator {
 	private $desiredDestName;
 
 	/**
+	 * @var string
+	 */
+	private $file = '';
+
+	/**
 	 * @var integer
 	 */
 	private $size = 100;
@@ -39,7 +44,7 @@ class DummyFileCreator {
 	 * @return string
 	 */
 	public function createEmptyFile() {
-		return $this->createFile();
+		$this->file = $this->createFile();
 	}
 
 	/**
@@ -50,7 +55,23 @@ class DummyFileCreator {
 	 * @return string
 	 */
 	public function createFileByCopyContentOf( $contentCopyPath ) {
-		return $this->createFile( file_get_contents( $this->canReadFile( $contentCopyPath ) ) );
+		$this->file = $this->createFile( file_get_contents( $this->canReadFile( $contentCopyPath ) ) );
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return string
+	 */
+	public function getPath() {
+		return $this->file;
+	}
+
+	/**
+	 * @since 2.1
+	 */
+	public function delete() {
+		unlink( $this->file );
 	}
 
 	private function createFile( $content = '' ) {

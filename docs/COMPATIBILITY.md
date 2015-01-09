@@ -65,7 +65,14 @@ on how to install the latest version of SMW, see the [installation instructions]
 		<th>Validator</th>
 	</tr>
 	<tr>
-		<th>SMW 2.x</th>
+		<th>SMW 2.1.x</th>
+		<td>5.3.2 - 5.6.x & HHVM 3.3.x</td>
+		<td>1.19 - 1.24</td>
+		<td>Required</td>
+		<td>2.x (handled by Composer)</td>
+	</tr>
+	<tr>
+		<th>SMW 2.0.x</th>
 		<td>5.3.2 - 5.6.x</td>
 		<td>1.19 - 1.23</td>
 		<td>Required</td>
@@ -110,7 +117,13 @@ SQL databases:
 		<th>PostgreSQL</th>
 	</tr>
 	<tr>
-		<th>SMW 2.x</th>
+		<th>SMW 2.1.x</th>
+		<td>Full support</td>
+		<td>Full support</td>
+		<td>Full support</td>
+	</tr>
+	<tr>
+		<th>SMW 2.0.x</th>
 		<td>Full support</td>
 		<td>Full support</td>
 		<td>Beta support</td>

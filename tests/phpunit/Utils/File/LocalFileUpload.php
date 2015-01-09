@@ -54,6 +54,13 @@ class LocalFileUpload extends UploadBase {
 
 	/**
 	 * @since 2.1
+	 */
+	public function delete() {
+		unlink( $this->localUploadPath );
+	}
+
+	/**
+	 * @since 2.1
 	 *
 	 * @param string $pageText
 	 * @param string $comment
@@ -62,7 +69,7 @@ class LocalFileUpload extends UploadBase {
 	 */
 	public function doUpload( $pageText = '', $comment = '' ) {
 
-		$localUploadPath = $this->canReadUploadPath( $this->localUploadPath );
+		$localUploadPath = $this->canRead( $this->localUploadPath );
 
 		$this->initializePathInfo(
 			$this->desiredDestName,
@@ -98,7 +105,7 @@ class LocalFileUpload extends UploadBase {
 		return 'file';
 	}
 
-	private function canReadUploadPath( $path ) {
+	private function canRead( $path ) {
 
 		$path = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $path );
 

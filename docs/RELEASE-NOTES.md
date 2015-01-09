@@ -8,6 +8,14 @@ This is not a release yet.
 
 This release adds support for semantic queries run directly from MediaWiki's standard search. You can turn on this capability by setting `$wgSearchType` to ["SMWSearch"](https://semantic-mediawiki.org/wiki/Help:SMWSearch). The related configuration parameter [``$smwgFallbackSearchType``](https://semantic-mediawiki.org/wiki/Help:$smwgFallbackSearchType) allows specifying which search engine to fall back to in case "SMWSearch" returns no results. (#450, #496, #505)
 
+### SPARQLStore improvements
+
+The SPARQLStore now supports concepts. (#696) 
+
+Regex support for Page and URL values has also been added. It is now thus possible to run queries like `[[Url::~http://*query=*]] OR [[Url::~*ccc*]]`. (#679)
+
+Notable performance improvements as well as many other fixes have been made to the SPARQLStore support, which can be found in the bug fix list.
+
 ### Other new features
 
 * #546 Concepts can now be nested (bug 15316) 
@@ -19,8 +27,6 @@ This release adds support for semantic queries run directly from MediaWiki's sta
 * #659 Added [``$smwgEnabledEditPageHelp``](https://semantic-mediawiki.org/wiki/Help:$smwgEnabledEditPageHelp) option that enables showing a contextual help text on the edit page
 * #664 Enabled semicolon escaping for record-type values (`\;`) (bug T17732)
 * #672 Added `Special:Log` support for events enabled in `smwgLogEventTypes` 
-* #696 Enabled condition support for concepts in the `SPARQLStore`
-* #679 Added page-type, url-type regex query search support for the `SPARQLStore`
 
 ## Bug fixes
 
