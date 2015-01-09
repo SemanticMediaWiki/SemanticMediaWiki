@@ -31,7 +31,7 @@ class I18nJsonFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'array',
-			$jsonFileReader->getContents()
+			$jsonFileReader->read()
 		);
 	}
 
