@@ -23,7 +23,7 @@ For details and further links, see [the SMW wiki](https://semantic-mediawiki.org
 
 - PHP 5.3.2 or later
 - MediaWiki 1.19 or later
-- MySQL 5+ or SQLite 3+
+- MySQL 5+, SQLite 3+ or PostgreSQL
 
 A list of supported PHP versions, MediaWiki versions and databases per SMW release can be found
 in the [compatibility matrix](docs/COMPATIBILITY.md).
