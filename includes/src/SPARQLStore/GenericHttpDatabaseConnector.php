@@ -425,14 +425,18 @@ class GenericHttpDatabaseConnector {
 		}
 
 		$this->httpRequest->setOption( CURLOPT_URL, $this->m_queryEndpoint );
-		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, array('Accept: application/sparql-results+xml,application/xml;q=0.8' ) );
+
+		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, array(
+			'Accept: application/sparql-results+xml,application/xml;q=0.8',
+			'Content-Type: application/x-www-form-urlencoded;charset=UTF-8'
+		) );
+
 		$this->httpRequest->setOption( CURLOPT_POST, true );
 
 		$parameterString = "query=" . urlencode( $sparql ) .
 			( ( $this->m_defaultGraph !== '' )? '&default-graph-uri=' . urlencode( $this->m_defaultGraph ) : '' );
 
 		$this->httpRequest->setOption( CURLOPT_POSTFIELDS, $parameterString );
-		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded;charset=UTF-8') );
 
 		$xmlResult = $this->httpRequest->execute();
 
@@ -605,4 +609,3 @@ class GenericHttpDatabaseConnector {
 	}
 
 }
-
