@@ -301,5 +301,6 @@
 	"smw-sp-searchbyproperty-resultlist-header": "Llista de resultats",
 	"smw-sp-searchbyproperty-nonvaluequery": "Una llista de valors que tenen la propietat «$1» assignada.",
 	"smw-sp-searchbyproperty-valuequery": "Una llista de pàgines que tenen la propietat «$1» amb el valor «$2» anotat.",
-	"smw-datavalue-number-textnotallowed": "«$1» no pot assignar-se a un tipus de nombre declarat amb el valor $2."
+	"smw-datavalue-number-textnotallowed": "«$1» no pot assignar-se a un tipus de nombre declarat amb el valor $2.",
+	"log-name-smw": "Registre de Semantic MediaWiki"
 }
