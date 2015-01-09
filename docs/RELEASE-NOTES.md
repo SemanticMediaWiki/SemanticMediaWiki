@@ -10,11 +10,9 @@ This release adds support for semantic queries run directly from MediaWiki's sta
 
 ### SPARQLStore improvements
 
-The SPARQLStore now supports concepts. (#696) 
+The SPARQLStore now supports concepts queries (#696) and regex support for Page and URL values has been added (#679) as well to run queries like `[[Url::~http://*query=*]] OR [[Url::~*ccc*]]`.
 
-Regex support for Page and URL values has also been added. It is now thus possible to run queries like `[[Url::~http://*query=*]] OR [[Url::~*ccc*]]`. (#679)
-
-Notable performance improvements as well as many other fixes have been made to the SPARQLStore support, which can be found in the bug fix list.
+Notable performance improvements and many other fixes (can be found in the bug fix list) have been made to broaden the SPARQLStore support.
 
 ### Other new features
 
@@ -56,6 +54,7 @@ Notable performance improvements as well as many other fixes have been made to t
 * #674 Fixed regex search support for uri-type property values
 * #683 Fixed invalid `:smw-redi` marker when `#REDIRECT` is removed manually 
 * #694 Fixed probable race condition for `SQLStore`(`postgres`) when creating temporary tables
+* #702 Fixed http header in `SPARQLStore` to be Sesame complaint
 
 ## Internal changes
 
