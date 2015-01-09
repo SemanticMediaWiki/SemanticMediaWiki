@@ -14,7 +14,7 @@ The SPARQLStore now supports concepts. (#696)
 
 Regex support for Page and URL values has also been added. It is now thus possible to run queries like `[[Url::~http://*query=*]] OR [[Url::~*ccc*]]`. (#679)
 
-Many fixes where also made to the SPARQLStore support, which can be found in the bug fix list.
+Notable performance improvements as well as many other fixes have been made to the SPARQLStore support, which can be found in the bug fix list.
 
 ### Other new features
 
