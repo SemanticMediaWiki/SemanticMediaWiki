@@ -18,14 +18,44 @@ class FixturesFileProvider {
 	 *
 	 * @param string $desiredDestName
 	 *
+	 * @return DummyFileCreator
+	 */
+	public function newDummyJsonFile( $desiredDestName ) {
+
+		$dummyFileCreator = new DummyFileCreator( $desiredDestName );
+		$dummyFileCreator->createFileByCopyContentOf( __DIR__ . '/File/' . 'LoremIpsum.json' );
+
+		return $dummyFileCreator;
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param string $desiredDestName
+	 *
+	 * @return DummyFileCreator
+	 */
+	public function newDummyTextFile( $desiredDestName ) {
+
+		$dummyFileCreator = new DummyFileCreator( $desiredDestName );
+		$dummyFileCreator->createFileByCopyContentOf( __DIR__ . '/File/' . 'LoremIpsum.txt' );
+
+		return $dummyFileCreator;
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param string $desiredDestName
+	 *
 	 * @return LocalFileUpload
 	 */
 	public function newUploadForDummyTextFile( $desiredDestName ) {
 
-		$dummyFileCreator = new DummyFileCreator( $desiredDestName );
+		$dummyTextFile = $this->newDummyTextFile( $desiredDestName );
 
 		return new LocalFileUpload(
-			$dummyFileCreator->createFileByCopyContentOf( __DIR__ . '/File/' . 'LoremIpsum.txt' ),
+			$dummyTextFile->getPath(),
 			$desiredDestName
 		);
 	}

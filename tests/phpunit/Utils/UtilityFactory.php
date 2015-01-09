@@ -6,7 +6,7 @@ use SMW\Tests\Utils\Validators\ValidatorFactory;
 use SMW\Tests\Utils\Fixtures\FixturesFactory;
 use SMW\Tests\Utils\Runners\RunnerFactory;
 use SMW\Tests\Utils\Page\PageEditor;
-use SMW\Tests\Utils\File\JsonFileReader;
+use SMW\JsonFileReader;
 use SMW\Tests\Utils\File\BulkFileProvider;
 
 /**
@@ -147,11 +147,11 @@ class UtilityFactory {
 	/**
 	 * @since 2.1
 	 *
-	 * @param string $file
+	 * @param string $file|null
 	 *
 	 * @return JsonFileReader
 	 */
-	public function newJsonFileReader( $file ) {
+	public function newJsonFileReader( $file = null ) {
 		return new JsonFileReader( $file );
 	}
 
