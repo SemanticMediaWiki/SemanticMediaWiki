@@ -24,19 +24,19 @@ on how to install the latest version of SMW, see the [installation instructions]
 	</tr>
 	<tr>
 		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.2">SMW 1.9.2</a></th>
-		<td>Legacy release</td>
+		<td>Obsolete release</td>
 		<td>2014-04-18</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.9.2">1.9.2</a></td>
 	</tr>
 	<tr>
 		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.1">SMW 1.9.1</a></th>
-		<td>Legacy release</td>
+		<td>Obsolete release</td>
 		<td>2014-02-09</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.9.1">1.9.1</a></td>
 	</tr>
 	<tr>
 		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.0">SMW 1.9.0</a></th>
-		<td>Legacy release</td>
+		<td>Obsolete release</td>
 		<td>2014-01-03</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.9">1.9</a></td>
 	</tr>
