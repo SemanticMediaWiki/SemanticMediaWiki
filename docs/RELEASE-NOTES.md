@@ -10,14 +10,14 @@ This release adds support for semantic queries run directly from MediaWiki's sta
 
 ### Other new features
 
-* #546 Enabled nested concepts (bug 44467) 
+* #546 Concepts can now be nested (bug 15316) 
 * #537 Modernized `Special:SearchByProperty` interface
-* #613 Added the `subobject` parameter to the `BrowseBySubject` API module and prevent to resolve circular redirects during an API request using `DeepRedirectTargetResolver`
-* #620 Added `--page` as export option to `dumpRDF.php` 
-* #633 Added ouput decoding for uri's to be human readable (bug 35452)
-* #643 Added `--runtime` as reporting option for memory usage and runtime to `rebuildData.php`
-* #659 Added [``$smwgEnabledEditPageHelp``](https://semantic-mediawiki.org/wiki/Help:$smwgEnabledEditPageHelp) to show a contextual help text on the edit page
-* #664 Enabled `\;` usage to support semicolon escaping for record-type values (bug T17732)
+* #613 Added `subobject` parameter to the `BrowseBySubject` API module and imporved resolving of circular redirects
+* #620 Added `--page` as export option to the `dumpRDF.php` maintenance script
+* #633 Made ouput decoding for uri's human readable (bug 35452)
+* #643 Added `--runtime` option to `rebuildData.php`. It allows you to see how much time was spend and how much memory was used.
+* #659 Added [``$smwgEnabledEditPageHelp``](https://semantic-mediawiki.org/wiki/Help:$smwgEnabledEditPageHelp) option that enables showing a contextual help text on the edit page
+* #664 Enabled semicolon escaping for record-type values (`\;`) (bug T17732)
 * #672 Added `Special:Log` support for events enabled in `smwgLogEventTypes` 
 * #696 Enabled condition support for concepts in the `SPARQLStore`
 * #679 Added page-type, url-type regex query search support for the `SPARQLStore`
