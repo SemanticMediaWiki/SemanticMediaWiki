@@ -117,7 +117,13 @@ SQL databases:
 		<th>PostgreSQL</th>
 	</tr>
 	<tr>
-		<th>SMW 2.x</th>
+		<th>SMW 2.1.x</th>
+		<td>Full support</td>
+		<td>Full support</td>
+		<td>Full support</td>
+	</tr>
+	<tr>
+		<th>SMW 2.0.x</th>
 		<td>Full support</td>
 		<td>Full support</td>
 		<td>Beta support</td>
