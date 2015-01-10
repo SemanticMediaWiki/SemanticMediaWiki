@@ -118,9 +118,9 @@ SQL databases:
 	</tr>
 	<tr>
 		<th>SMW 2.1.x</th>
-		<td>Full support</td>
-		<td>Full support</td>
-		<td>Full support</td>
+		<td>Full support (5.x)</td>
+		<td>Full support (3.x)</td>
+		<td>Full support (9.x)</td>
 	</tr>
 	<tr>
 		<th>SMW 2.0.x</th>
