@@ -7,21 +7,20 @@ This is not a release yet.
 ### Support for semantic queries in Special:Search
 
 This release adds support for semantic queries run directly from MediaWiki's standard search. You
-can turn on this capability by setting `$wgSearchType` to ["SMWSearch"](https://semantic-mediawiki.org/wiki/Help:SMWSearch).
+can turn on this capability on by setting `$wgSearchType` to ["SMWSearch"](https://semantic-mediawiki.org/wiki/Help:SMWSearch).
 The related configuration parameter [``$smwgFallbackSearchType``](https://semantic-mediawiki.org/wiki/Help:$smwgFallbackSearchType)
 allows specifying which search engine to fall back to in case "SMWSearch" returns no results. (#450, #496, #505)
 
 ### SPARQLStore improvements
 
-The SPARQLStore now supports concepts queries (#696) and regex support for Page and URL values has
-been added (#679) as well to run queries like `[[Url::~http://*query=*]] OR [[Url::~*ccc*]]`.
+The SPARQLStore now supports concept queries (#696) and regex like queries (`[[Url::~http://*query=*]] OR [[Url::~*ccc*]]`) for Page and URL values (#679).
 
 Notable performance improvements and many other fixes (can be found in the bug fix list) have been
 made to broaden the SPARQLStore support.
 
 ### Enhanced platform support
 
-SMW has partially supported PostgreSQL for a long time. This new release brings SMWs PostgreSQL
+SMW has partially supported PostgreSQL for a long time. This new release brings SMW's PostgreSQL
 support to the same level as MySQL and SQLite, making it the third fully supported relational database.
 
 HHVM (HipHop Virtual Machine) 3.3 or above is now supported along with all previously supported PHP
