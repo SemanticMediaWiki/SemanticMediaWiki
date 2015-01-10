@@ -24,31 +24,31 @@ on how to install the latest version of SMW, see the [installation instructions]
 	</tr>
 	<tr>
 		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.2">SMW 1.9.2</a></th>
-		<td>Legacy release</td>
+		<td>Obsolete release</td>
 		<td>2014-04-18</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.9.2">1.9.2</a></td>
 	</tr>
 	<tr>
 		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.1">SMW 1.9.1</a></th>
-		<td>Legacy release</td>
+		<td>Obsolete release</td>
 		<td>2014-02-09</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.9.1">1.9.1</a></td>
 	</tr>
 	<tr>
 		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.0">SMW 1.9.0</a></th>
-		<td>Legacy release</td>
+		<td>Obsolete release</td>
 		<td>2014-01-03</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.9">1.9</a></td>
 	</tr>
 	<tr>
 		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.8.0">SMW 1.8.x</a></th>
-		<td>Legacy release</td>
+		<td>Obsolete release</td>
 		<td>2012-12-02</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.8.x">1.8.x</a></td>
 	</tr>
 	<tr>
 		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.7.1">SMW 1.7.1</a></th>
-		<td>Legacy release</td>
+		<td>Obsolete release</td>
 		<td>2012-03-05</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.7.1">1.7.1</a></td>
 	</tr>
@@ -138,13 +138,13 @@ SQL databases:
 		<th>SMW 1.8.x</th>
 		<td>Full support</td>
 		<td>Full support</td>
-		<td>Experimental</td>
+		<td>Experimental support</td>
 	</tr>
 	<tr>
 		<th>SMW 1.7.1</th>
 		<td>Full support</td>
-		<td>Experimental</td>
-		<td>None</td>
+		<td>Experimental support</td>
+		<td>No support</td>
 	</tr>
 </table>
 
@@ -165,18 +165,18 @@ Triple store databases:
 	</tr>
 	<tr>
 		<th>SMW 1.9.x</th>
-		<td>None</td>
+		<td>No support</td>
 		<td>Beta support</td>
 		<td>Beta support</td>
 	</tr>
 	<tr>
 		<th>SMW &lt; 1.9</th>
-		<td>None</td>
-		<td>Experimental</td>
-		<td>Experimental</td>
+		<td>No support</td>
+		<td>Experimental support</td>
+		<td>Experimental support</td>
 	</tr>
 </table>
 
 - `Full support` means that all functionality has been verified to work and that it can be used in production
 - `Beta support` means that most functionality has been verified to work, though stability is still low, and things might be buggy
-- `Experimental` means there is some preliminary support which is still much too immature for use in production
+- `Experimental support` means there is some preliminary support which is still much too immature for use in production
