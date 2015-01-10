@@ -2,19 +2,35 @@
 
 This is not a release yet.
 
-## New features
+## Highlights
 
 ### Support for semantic queries in Special:Search
 
-This release adds support for semantic queries run directly from MediaWiki's standard search. You can turn on this capability by setting `$wgSearchType` to ["SMWSearch"](https://semantic-mediawiki.org/wiki/Help:SMWSearch). The related configuration parameter [``$smwgFallbackSearchType``](https://semantic-mediawiki.org/wiki/Help:$smwgFallbackSearchType) allows specifying which search engine to fall back to in case "SMWSearch" returns no results. (#450, #496, #505)
+This release adds support for semantic queries run directly from MediaWiki's standard search. You
+can turn on this capability by setting `$wgSearchType` to ["SMWSearch"](https://semantic-mediawiki.org/wiki/Help:SMWSearch).
+The related configuration parameter [``$smwgFallbackSearchType``](https://semantic-mediawiki.org/wiki/Help:$smwgFallbackSearchType)
+allows specifying which search engine to fall back to in case "SMWSearch" returns no results. (#450, #496, #505)
 
 ### SPARQLStore improvements
 
-The SPARQLStore now supports concepts queries (#696) and regex support for Page and URL values has been added (#679) as well to run queries like `[[Url::~http://*query=*]] OR [[Url::~*ccc*]]`.
+The SPARQLStore now supports concepts queries (#696) and regex support for Page and URL values has
+been added (#679) as well to run queries like `[[Url::~http://*query=*]] OR [[Url::~*ccc*]]`.
 
-Notable performance improvements and many other fixes (can be found in the bug fix list) have been made to broaden the SPARQLStore support.
+Notable performance improvements and many other fixes (can be found in the bug fix list) have been
+made to broaden the SPARQLStore support.
 
-### Other new features
+### Enhanced platform support
+
+SMW has partially supported PostgreSQL for a long time. This new release brings SMWs PostgreSQL
+support to the same level as MySQL and SQLite, making it the third fully supported relational database.
+
+HHVM (HipHop Virtual Machine) 3.3 or above is now supported along with all previously supported PHP
+versions.
+
+Although earlier versions of SMW probably work with MediaWiki 1.24, this new release officially
+supports it.
+
+## New features
 
 * #546 Concepts can now be nested (bug 15316) 
 * #537 Modernized `Special:SearchByProperty` interface
@@ -58,7 +74,6 @@ Notable performance improvements and many other fixes (can be found in the bug f
 
 ## Internal changes
 
-* #350 Passes all unit tests on `HHVM` 3.3+
 * #486 Added support for `Jena Fuseki` 1.1.1
 * #487, #576, #600 Added an internal cache to improve `SPARQLStore` redirect and export lookup performance
 * #512, #521 Added benchmark tests for different components such as job-queue, maintenance script, queries etc.
