@@ -7,7 +7,7 @@ This is not a release yet.
 ### Support for semantic queries in Special:Search
 
 This release adds support for semantic queries run directly from MediaWiki's standard search. You
-can turn on this capability on by setting `$wgSearchType` to ["SMWSearch"](https://semantic-mediawiki.org/wiki/Help:SMWSearch).
+can enable this feature by setting `$wgSearchType` to ["SMWSearch"](https://semantic-mediawiki.org/wiki/Help:SMWSearch).
 The related configuration parameter [``$smwgFallbackSearchType``](https://semantic-mediawiki.org/wiki/Help:$smwgFallbackSearchType)
 allows specifying which search engine to fall back to in case "SMWSearch" returns no results. (#450, #496, #505)
 
