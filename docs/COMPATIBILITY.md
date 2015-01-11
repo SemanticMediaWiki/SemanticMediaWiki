@@ -81,7 +81,7 @@ on how to install the latest version of SMW, see the [installation instructions]
 	<tr>
 		<th>SMW 1.9.x</th>
 		<td>5.3.2 - 5.6.x</td>
-		<td>1.19 - 1.23</td>
+		<td>1.19 - 1.22</td>
 		<td>Required</td>
 		<td>1.0.x (handled by Composer)</td>
 	</tr>
