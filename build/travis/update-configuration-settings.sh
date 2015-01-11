@@ -33,6 +33,13 @@ then
 	echo '$smwgSparqlQueryEndpoint = "http://localhost:3030/db/query";' >> LocalSettings.php
 	echo '$smwgSparqlUpdateEndpoint = "http://localhost:3030/db/update";' >> LocalSettings.php
 	echo '$smwgSparqlDataEndpoint = "";' >> LocalSettings.php
+elif [ "$SESAME" != "" ]
+then
+	echo '$smwgDefaultStore = "SMWSparqlStore";' >> LocalSettings.php
+	echo '$smwgSparqlDatabaseConnector = "custom";' >> LocalSettings.php
+	echo '$smwgSparqlQueryEndpoint = "http://localhost:8080/openrdf-sesame/repositories/SYSTEM";' >> LocalSettings.php
+	echo '$smwgSparqlUpdateEndpoint = "http://localhost:8080/openrdf-sesame/repositories/SYSTEM/statements";' >> LocalSettings.php
+	echo '$smwgSparqlDataEndpoint = "";' >> LocalSettings.php
 elif [ "$VIRTUOSO" != "" ]
 then
 	echo '$smwgDefaultStore = "SMWSparqlStore";' >> LocalSettings.php

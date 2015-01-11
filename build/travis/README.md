@@ -2,67 +2,71 @@
 - `install-semantic-mediawiki.sh` to handle the install of Semantic MediaWiki
 - `install-services.sh` to handle the install of additional services
 
-## Additional services
+## SPARQL services
 
+<table>
+	<tr>
+		<th>Service</th>
+		<th>Connector</th>
+		<th>QueryEndPoint</th>
+		<th>UpdateEndPoint</th>
+		<th>DataEndpoint</th>
+		<th>DefaultGraph</th>
+		<th>Comments</th>
+	</tr>
+	<tr>
+		<th>Fuseki (mem)<sup>1</sup></th>
+		<td>Fuseki</td>
+		<td>http://localhost:3030/db/query</td>
+		<td>http://localhost:3030/db/update</td>
+		<td>''</td>
+		<td>''</td>
+		<td>fuseki-server --update --port=3030 --mem /db</td>
+	</tr>
+	<tr>
+		<th>Fuseki (memTDB)</th>
+		<td>Fuseki</td>
+		<td>http://localhost:3030/db/query</td>
+		<td>http://localhost:3030/db/update</td>
+		<td>''</td>
+		<td>http://example.org/myFusekiGraph</td>
+		<td>fuseki-server --update --port=3030 --memTDB --set tdb:unionDefaultGraph=true /db</td>
+	</tr>
+	<tr>
+		<th>Virtuoso opensource</th>
+		<td>Virtuoso</td>
+		<td>http://localhost:8890/sparql</td>
+		<td>http://localhost:8890/sparql</td>
+		<td>''</td>
+		<td>http://example.org/myVirtuosoGraph</td>
+		<td>sudo apt-get install virtuoso-opensource</td>
+	</tr>
+	<tr>
+		<th>4store<sup>2</sup></th>
+		<td>4store</td>
+		<td>http://localhost:8088/sparql/</td>
+		<td>http://localhost:8088/update/</td>
+		<td>''</td>
+		<td>http://example.org/myFourGraph</td>
+		<td>apt-get install 4store</td>
+	</tr>
+	<tr>
+		<th>Sesame<sup>3</sup></th>
+		<td>Custom</td>
+		<td>http://localhost:8080/openrdf-sesame/repositories/SYSTEM</td>
+		<td>http://localhost:8080/openrdf-sesame/repositories/SYSTEM/statements</td>
+		<td>''</td>
+		<td>''</td>
+		<td></td>
+	</tr>
 
-### Jena Fuseki integration
+</table>
 
-When running integration tests with [Jena Fuseki][fuseki] it is suggested that the `in-memory` option is used to avoid potential loss of production data during test execution.
+<sup>1</sup> When running integration tests with [Jena Fuseki][fuseki] it is suggested that the `in-memory` option is used to avoid potential loss of production data during test execution.
 
-```sh
-fuseki-server --update --port=3030 --mem /db
-```
+<sup>2</sup> Currently, Travis-CI doesn't support `4Store` (1.1.4-2) as service but the following configuration has been sucessfully tested with the available test suite. ([issue #110](https://github.com/garlik/4store/issues/110) )
 
-```php
-$smwgSparqlDatabaseConnector = 'Fuseki';
-$smwgSparqlQueryEndpoint = 'http://localhost:3030/db/query';
-$smwgSparqlUpdateEndpoint = 'http://localhost:3030/db/update';
-$smwgSparqlDataEndpoint = '';
-```
-
-With a default graph:
-
-```sh
-fuseki-server --update --port=3030 --memTDB --set tdb:unionDefaultGraph=true /db
-```
-```php
-$smwgSparqlDatabaseConnector = 'Fuseki';
-$smwgSparqlQueryEndpoint = 'http://localhost:3030/db/query';
-$smwgSparqlUpdateEndpoint = 'http://localhost:3030/db/update';
-$smwgSparqlDataEndpoint = '';
-$smwgSparqlDefaultGraph = 'http://example.org/myFusekiGraph';
-```
-### Virtuoso integration
-
-Virtuoso-opensource 6.1
-
-```sh
-sudo apt-get install virtuoso-opensource
-```
-
-```php
-$smwgSparqlDatabaseConnector = 'Virtuoso';
-$smwgSparqlQueryEndpoint = 'http://localhost:8890/sparql';
-$smwgSparqlUpdateEndpoint = 'http://localhost:8890/sparql';
-$smwgSparqlDataEndpoint = '';
-$smwgSparqlDefaultGraph = 'http://example.org/myVirtuosoGraph';
-```
-
-### 4Store integration
-
-Currently, Travis-CI doesn't support `4Store` (1.1.4-2) as service but the following configuration has been sucessfully tested with the available test suite. ([issue #110](https://github.com/garlik/4store/issues/110) )
-
-```sh
-apt-get install 4store
-```
-
-```php
-$smwgSparqlDatabaseConnector = '4store';
-$smwgSparqlQueryEndpoint = 'http://localhost:8088/sparql/';
-$smwgSparqlUpdateEndpoint = 'http://localhost:8088/update/';
-$smwgSparqlDataEndpoint = 'http://localhost:8088/data/';
-$smwgSparqlDefaultGraph = 'http://example.org/myFourstoreGraph';
-```
+<sup>3</sup> The default SYSTEM repository is used during the test.
 
 [fuseki]: https://jena.apache.org/
 [virtuoso]: https://github.com/openlink/virtuoso-opensource

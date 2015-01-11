@@ -2,7 +2,7 @@
 set -ex
 BASE_PATH=$(pwd)
 
-if [ "$FOURSTORE" != "" ] || [ "$VIRTUOSO" != "" ]
+if [ "$FOURSTORE" != "" ] || [ "$VIRTUOSO" != "" ] || [ "$SESAME" != "" ]
 then
 	sudo apt-get update -qq
 fi
@@ -21,6 +21,34 @@ then
 
 	## Start fuseki in-memory as background
 	bash fuseki-server --update --mem /db &>/dev/null &
+fi
+
+if [ "$SESAME" != "" ]
+then
+	sudo apt-get install tomcat6
+
+	sudo chown $USER -R /var/lib/tomcat6/
+	sudo chmod g+rw -R /var/lib/tomcat6/
+
+	sudo mkdir -p /usr/share/tomcat6/.aduna
+	sudo chown -R tomcat6:tomcat6 /usr/share/tomcat6
+
+	# http://sourceforge.net/projects/sesame/
+	wget http://downloads.sourceforge.net/project/sesame/Sesame%202/$SESAME/openrdf-sesame-$SESAME-sdk.zip
+
+	# tar caused a lone zero block, using zip instead
+	unzip -q openrdf-sesame-$SESAME-sdk.zip
+	cp openrdf-sesame-$SESAME/war/*.war /var/lib/tomcat6/webapps/
+
+	sudo service tomcat6 restart
+
+	if curl --output /dev/null --silent --head --fail "http://localhost:8080/openrdf-sesame"
+	then
+		echo "openrdf-sesame service url is reachable"
+	else
+		echo "openrdf-sesame service url is not reachable"
+		exit
+	fi
 fi
 
 # Version 1.1.4-1 is available but has a problem
