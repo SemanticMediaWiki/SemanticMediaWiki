@@ -33,6 +33,11 @@ then
 	sudo mkdir -p /usr/share/tomcat6/.aduna
 	sudo chown -R tomcat6:tomcat6 /usr/share/tomcat6
 
+	# One method to get the war files
+	# wget http://search.maven.org/remotecontent?filepath=org/openrdf/sesame/sesame-http-server/$SESAME/sesame-http-server-$SESAME.war -O openrdf-sesame.war
+	# wget http://search.maven.org/remotecontent?filepath=org/openrdf/sesame/sesame-http-workbench/$SESAME/sesame-http-workbench-$SESAME.war -O openrdf-workbench.war
+	# cp *.war /var/lib/tomcat6/webapps/
+
 	# http://sourceforge.net/projects/sesame/
 	wget http://downloads.sourceforge.net/project/sesame/Sesame%202/$SESAME/openrdf-sesame-$SESAME-sdk.zip
 
