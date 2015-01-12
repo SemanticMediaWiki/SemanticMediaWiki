@@ -156,16 +156,19 @@ Triple store databases:
 		<th><a href="https://jena.apache.org/">Jena Fuseki</a></th>
 		<th><a href="https://github.com/openlink/virtuoso-opensource">Virtuoso Opensource</a></th>
 		<th><a href="https://github.com/garlik/4store">4store</a></th>
+		<th><a href="http://rdf4j.org/">Sesame</a></th>
 	</tr>
 	<tr>
 		<th>SMW 2.x</th>
 		<td>Full support (for 1.x >= 1.1)</td>
-		<td>Full support (for 6.x >= 6.1)</td>
+		<td>Full support (for 6.x >= 6.1)<sup>1</sup></td>
 		<td>Beta support (for 1.x >= 1.1)</td>
+		<td>Full support (for 2.7.x)</td>
 	</tr>
 	<tr>
 		<th>SMW 1.9.x</th>
 		<td>No support</td>
+		<td>Beta support</td>
 		<td>Beta support</td>
 		<td>Beta support</td>
 	</tr>
@@ -174,9 +177,13 @@ Triple store databases:
 		<td>No support</td>
 		<td>Experimental support</td>
 		<td>Experimental support</td>
+		<td>No support</td>
 	</tr>
 </table>
 
 - `Full support` means that all functionality has been verified to work and that it can be used in production
 - `Beta support` means that most functionality has been verified to work, though stability is still low, and things might be buggy
 - `Experimental support` means there is some preliminary support which is still much too immature for use in production
+
+<sup>1</sup> Tested for 6.x but reported to work with Virtuoso 7
+
