@@ -73,7 +73,7 @@ supports it.
 
 ## Internal changes
 
-* #486 Added support for `Jena Fuseki` 1.1.1
+* #486 Added continuous integration support for for `Jena Fuseki` 1.1.1
 * #487, #576, #600 Added an internal cache to improve `SPARQLStore` redirect and export lookup performance
 * #512, #521 Added benchmark tests for different components such as job-queue, maintenance script, queries etc.
 * #523 Disabled the Factbox display for a `delete action` and re-enable the Factbox for an undeleted page
@@ -89,3 +89,4 @@ supports it.
 * #673 Extended `DataValueFactory` to ignore `$wgCapitalLinks` settings for the property namespace 
 * #678 Added `PropertyRegistry` to remove global state from `DIProperty`
 * #668 Changed `SQLStore` `iw` table field specification from `VARCHAR(32) binary` to `VARBINARY(32)` 
+* #707 Added continuous integration support for `openrdf-sesame` 2.7.14
