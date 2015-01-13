@@ -36,7 +36,7 @@ then
 elif [ "$SESAME" != "" ]
 then
 	echo '$smwgDefaultStore = "SMWSparqlStore";' >> LocalSettings.php
-	echo '$smwgSparqlDatabaseConnector = "custom";' >> LocalSettings.php
+	echo '$smwgSparqlDatabaseConnector = "Sesame";' >> LocalSettings.php
 	echo '$smwgSparqlQueryEndpoint = "http://localhost:8080/openrdf-sesame/repositories/SYSTEM";' >> LocalSettings.php
 	echo '$smwgSparqlUpdateEndpoint = "http://localhost:8080/openrdf-sesame/repositories/SYSTEM/statements";' >> LocalSettings.php
 	echo '$smwgSparqlDataEndpoint = "";' >> LocalSettings.php

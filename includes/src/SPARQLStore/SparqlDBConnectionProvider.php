@@ -24,6 +24,8 @@ class SparqlDBConnectionProvider implements DBConnectionProvider {
 	 */
 	private $connectorIdToClass = array(
 		'default'   => 'SMW\SPARQLStore\GenericHttpDatabaseConnector',
+		'generic'   => 'SMW\SPARQLStore\GenericHttpDatabaseConnector',
+		'sesame'    => 'SMW\SPARQLStore\GenericHttpDatabaseConnector',
 		'fuseki'    => 'SMW\SPARQLStore\FusekiHttpDatabaseConnector',
 		'virtuoso'  => 'SMW\SPARQLStore\VirtuosoHttpDatabaseConnector',
 		'4store'    => 'SMW\SPARQLStore\FourstoreHttpDatabaseConnector',
@@ -134,7 +136,7 @@ class SparqlDBConnectionProvider implements DBConnectionProvider {
 			$this->dataEndpoint
 		);
 
-		if ( $this->isSparqlDatabase( $connection ) ) {
+		if ( $this->isSparqlDatabaseConnector( $connection ) ) {
 			return $connection;
 		}
 
@@ -160,7 +162,7 @@ class SparqlDBConnectionProvider implements DBConnectionProvider {
 		return $databaseConnector;
 	}
 
-	private function isSparqlDatabase( $connection ) {
+	private function isSparqlDatabaseConnector( $connection ) {
 		return $connection instanceof GenericHttpDatabaseConnector;
 	}
 

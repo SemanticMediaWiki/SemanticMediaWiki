@@ -127,6 +127,26 @@ class SparqlDBConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetSesameConnection() {
+
+		$instance = new SparqlDBConnectionProvider( 'sesame' );
+
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\GenericHttpDatabaseConnector',
+			$instance->getConnection()
+		);
+	}
+
+	public function testGetGenericConnection() {
+
+		$instance = new SparqlDBConnectionProvider( 'generic' );
+
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\GenericHttpDatabaseConnector',
+			$instance->getConnection()
+		);
+	}
+
 	public function testGetDefaultConnectorForUnknownConnectorId() {
 
 		$this->globalsProvider->set(
