@@ -176,9 +176,9 @@ Triple store databases:
 	</tr>
 	<tr>
 		<th>SMW 2.x</th>
-		<td>Full support (1.x >= 1.1)</td>
-		<td>Full support (6.x >= 6.1)<sup>1</sup></td>
-		<td>Beta support (1.x >= 1.1)</td>
+		<td>Full support (1.x >=1.1)</td>
+		<td>Full support (6.x >=6.1)<sup>1</sup></td>
+		<td>Beta support (1.x >=1.1)</td>
 		<td>Full support (2.7.x)</td>
 	</tr>
 	<tr>
