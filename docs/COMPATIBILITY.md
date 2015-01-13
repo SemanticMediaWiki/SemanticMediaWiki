@@ -56,54 +56,63 @@ on how to install the latest version of SMW, see the [installation instructions]
 
 ### Platform compatibility
 
+Releases after Composer support:
+
 <table>
 	<tr>
 		<th></th>
 		<th>PHP</th>
+		<th>HHVM</th>
 		<th>MediaWiki</th>
-		<th>Composer</th>
-		<th>Validator</th>
 	</tr>
 	<tr>
 		<th>SMW 3.x</th>
-		<td>(5.4.x maybe) & 5.5.x - 5.6.x & HHVM</td>
+		<td>5.5.x - latest (possibly 5.4.x)</td>
+		<td>3.3.x - latest</td>
 		<td>1.22 - latest</td>
-		<td>Required</td>
-		<td>Handled by Composer</td>
 	</tr>
 	<tr>
 		<th>SMW 2.1.x</th>
-		<td>5.3.2 - 5.6.x & HHVM 3.3.x - 3.5.x</td>
+		<td>5.3.2 - 5.6.x</td>
+		<td>3.3.x - 3.5.x</td>
 		<td>1.19 - 1.24</td>
-		<td>Required</td>
-		<td>Handled by Composer (2.x)</td>
 	</tr>
 	<tr>
 		<th>SMW 2.0.x</th>
 		<td>5.3.2 - 5.6.x</td>
+		<td>-</td>
 		<td>1.19 - 1.23</td>
-		<td>Required</td>
-		<td>Handled by Composer (2.x)</td>
 	</tr>
 	<tr>
 		<th>SMW 1.9.x</th>
 		<td>5.3.2 - 5.6.x</td>
+		<td>-</td>
 		<td>1.19 - 1.22</td>
-		<td>Required</td>
-		<td>Handled by Composer (1.x)</td>
+	</tr>
+</table>
+
+Releases before Composer support:
+
+<table>
+	<tr>
+		<th></th>
+		<th>PHP</th>
+		<th>HHVM</th>
+		<th>MediaWiki</th>
+		<th>Validator</th>
 	</tr>
 	<tr>
 		<th>SMW 1.8.x</th>
 		<td>5.2.0 - 5.5.x</td>
+		<td>-</td>
 		<td>1.17 - 1.22</td>
-		<td>Not supported</td>
 		<td>0.5.1</td>
 	</tr>
 	<tr>
 		<th>SMW 1.7.1</th>
 		<td>5.2.0 - 5.4.x</td>
+		<td>-</td>
 		<td>1.16 - 1.19</td>
-		<td>Not supported</td>
 		<td>0.4.13 or 0.4.14</td>
 	</tr>
 </table>
