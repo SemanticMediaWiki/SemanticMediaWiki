@@ -67,7 +67,7 @@ on how to install the latest version of SMW, see the [installation instructions]
 	<tr>
 		<th>SMW 3.x</th>
 		<td>(5.4.x maybe) & 5.5.x - 5.6.x & HHVM</td>
-		<td>1.22 - [latest]</td>
+		<td>1.22 - latest</td>
 		<td>Required</td>
 		<td>Handled by Composer</td>
 	</tr>
