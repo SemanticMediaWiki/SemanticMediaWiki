@@ -176,10 +176,10 @@ Triple store databases:
 	</tr>
 	<tr>
 		<th>SMW 2.x</th>
-		<td>Full support (for 1.x >= 1.1)</td>
-		<td>Full support (for 6.x >= 6.1)<sup>1</sup></td>
-		<td>Beta support (for 1.x >= 1.1)</td>
-		<td>Full support (for 2.7.x)</td>
+		<td>Full support (1.x >= 1.1)</td>
+		<td>Full support (6.x >= 6.1)<sup>1</sup></td>
+		<td>Beta support (1.x >= 1.1)</td>
+		<td>Full support (2.7.x)</td>
 	</tr>
 	<tr>
 		<th>SMW 1.9.x</th>
@@ -200,6 +200,9 @@ Triple store databases:
 - `Full support` means that all functionality has been verified to work and that it can be used in production
 - `Beta support` means that most functionality has been verified to work, though stability is still low, and things might be buggy
 - `Experimental support` means there is some preliminary support which is still much too immature for use in production
+
+The information in brackets denotes the versions with which SMW is known to work. SMW might also
+work with different versions, especially more recent ones, though this is not guaranteed.
 
 <sup>1</sup> Tested for 6.x but reported to work with Virtuoso 7
 
