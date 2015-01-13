@@ -1,7 +1,7 @@
 For a full list of changes in each release, see the [release notes](releasenotes/). For instructions
 on how to install the latest version of SMW, see the [installation instructions](INSTALL.md).
 
-### Recent releases
+### SMW versions
 
 <table>
 	<tr>
@@ -65,25 +65,32 @@ on how to install the latest version of SMW, see the [installation instructions]
 		<th>Validator</th>
 	</tr>
 	<tr>
+		<th>SMW 3.x</th>
+		<td>(5.4.x maybe) & 5.5.x - 5.6.x & HHVM</td>
+		<td>1.22 - [latest]</td>
+		<td>Required</td>
+		<td>Handled by Composer</td>
+	</tr>
+	<tr>
 		<th>SMW 2.1.x</th>
 		<td>5.3.2 - 5.6.x & HHVM 3.3.x - 3.5.x</td>
 		<td>1.19 - 1.24</td>
 		<td>Required</td>
-		<td>2.x (handled by Composer)</td>
+		<td>Handled by Composer (2.x)</td>
 	</tr>
 	<tr>
 		<th>SMW 2.0.x</th>
 		<td>5.3.2 - 5.6.x</td>
 		<td>1.19 - 1.23</td>
 		<td>Required</td>
-		<td>2.x (handled by Composer)</td>
+		<td>Handled by Composer (2.x)</td>
 	</tr>
 	<tr>
 		<th>SMW 1.9.x</th>
 		<td>5.3.2 - 5.6.x</td>
 		<td>1.19 - 1.22</td>
 		<td>Required</td>
-		<td>1.0.x (handled by Composer)</td>
+		<td>Handled by Composer (1.x)</td>
 	</tr>
 	<tr>
 		<th>SMW 1.8.x</th>
