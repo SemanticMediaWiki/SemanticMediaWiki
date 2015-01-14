@@ -284,11 +284,15 @@ class SMWQueryProcessor {
 				$rawParam = implode( ',', array_keys( $rawParam ) );
 			}
 
-			// Bug 32955
-			// Only modify the condition string which is assumed to be enclosed by [[ ... ]]
-			if ( strpos( $rawParam, '[[') !== false && strpos( $rawParam, ']]' ) !== false ) {
-				$rawParam = str_replace( array( '=' ), array( '-3D' ), $rawParam );
-			}
+			// Bug 32955 / #640
+			// Modify (e.g. replace `=`) a condition string only if enclosed by [[ ... ]]
+			$rawParam = preg_replace_callback(
+				'/\[\[(?:([^:][^]]*):[=:])+([^\[\]]*)\]\]/xu',
+				function( array $matches ) {
+					return str_replace( array( '=' ), array( '-3D' ), $matches[0] );
+				},
+				$rawParam
+			);
 
 			// accept 'name' => 'value' just as '' => 'name=value':
 			if ( is_string( $name ) && ( $name !== '' ) ) {

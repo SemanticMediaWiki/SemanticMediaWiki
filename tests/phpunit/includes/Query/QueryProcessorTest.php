@@ -106,6 +106,17 @@ class SMWQueryProcessorTest extends MwDBaseUnitTestCase {
 			'[[Has url::http://example.org/api.php?action=Foo]]'
 		);
 
+		// Produced by smw.org, Template:Invert-property
+		$provider[] = array(
+			array( '[[Located in::Foo]]', 'link=none', 'sep=| ]][[Location of::' ),
+			'[[Located in::Foo]]'
+		);
+
+		$provider[] = array(
+			array( '[[Located in::Foo]]', 'link=none', 'sep=| ]][[Location of::', '[[Has url::http://example.org/api.php?action=Foo]]' ),
+			'[[Located in::Foo]][[Has url::http://example.org/api.php?action=Foo]]'
+		);
+
 		return $provider;
 	}
 
