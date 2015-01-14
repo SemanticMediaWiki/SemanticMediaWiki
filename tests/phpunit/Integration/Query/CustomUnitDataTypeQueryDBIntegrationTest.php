@@ -39,6 +39,8 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	private $dataValueFactory;
 	private $printRequestFactory;
 
+	private $subjects = array();
+
 	protected function setUp() {
 		parent::setUp();
 
@@ -55,7 +57,9 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	protected function tearDown() {
 
 		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
-		$fixturesCleaner->purgeAllKnownFacts();
+		$fixturesCleaner
+			->purgeSubjects( $this->subjects )
+			->purgeAllKnownFacts();
 
 		parent::tearDown();
 	}
@@ -63,6 +67,7 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	public function testUserDefinedQuantityProperty() {
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
+		$this->subjects[] = $semanticData->getSubject();
 
 		$factsheet = $this->fixturesProvider->getFactsheet( 'Berlin' );
 		$factsheet->setTargetSubject( $semanticData->getSubject() );
@@ -109,6 +114,7 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	public function testUserDefinedTemperatureProperty() {
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
+		$this->subjects[] = $semanticData->getSubject();
 
 		$factsheet = $this->fixturesProvider->getFactsheet( 'Berlin' );
 		$factsheet->setTargetSubject( $semanticData->getSubject() );
