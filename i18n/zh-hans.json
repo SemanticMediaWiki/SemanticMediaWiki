@@ -114,7 +114,7 @@
 	"smw_nodatetime": "无法理解日期\"$1\"",
 	"smw_toomanyclosing": "查询中\"$1\"过多。",
 	"smw_noclosingbrackets": "你的查询中有未匹配\"]]\"的\"<nowiki>[[</nowiki>\"。",
-	"smw_misplacedsymbol": "符号\"$1\"的位置无效。",
+	"smw_misplacedsymbol": "符号“$1”的位置无效。",
 	"smw_unexpectedpart": "查询的\"$1\"部分无法理解。\n结果可能与预料的不同。",
 	"smw_emptysubquery": "一些子查询状态无效。",
 	"smw_misplacedsubquery": "一些子查询被用于禁止位置。",
