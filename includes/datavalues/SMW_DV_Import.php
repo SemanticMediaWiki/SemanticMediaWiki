@@ -31,7 +31,7 @@ class SMWImportValue extends SMWDataValue {
 		$msglines = preg_split( "([\n][\s]?)", wfMessage( "smw_import_$onto_ns" )->inContentLanguage()->text() ); // get the definition for "$namespace:$section"
 
 		if ( count( $msglines ) < 2 ) { // error: no elements for this namespace
-			$this->addError( wfMessage( 'smw_unknown_importns', $onto_ns )->inContentLanguage()->text() );
+			$this->addError( wfMessage( 'smw-datavalue-import-unknownns', $onto_ns )->inContentLanguage()->text() );
 			$this->m_dataitem = new SMWDIBlob( 'ERROR' );
 			return;
 		}
@@ -74,7 +74,7 @@ class SMWImportValue extends SMWDataValue {
 
 		// check whether caption is set, otherwise assign link statement to caption
 		if ( $this->m_caption === false ) {
-			$this->m_caption = "[" . $this->m_uri . " " . $this->m_qname . "] (" . $this->m_name . ")";
+			$this->m_caption = "[" . $this->m_uri . " " . $this->m_qname . "] " . $this->modifyToIncludeParentheses( $this->m_name );
 		}
 	}
 
@@ -94,7 +94,7 @@ class SMWImportValue extends SMWDataValue {
 				$this->m_section = $parts[1];
 				$this->m_uri = $parts[2];
 				$this->m_qname = $this->m_namespace . ':' . $this->m_section;
-				$this->m_caption = "[" . $this->m_uri . " " . $this->m_qname . "] (" . $this->m_name . ")";
+				$this->m_caption = "[" . $this->m_uri . " " . $this->m_qname . "] " . $this->modifyToIncludeParentheses( $this->m_name );
 			}
 			return true;
 		} else {
@@ -113,9 +113,9 @@ class SMWImportValue extends SMWDataValue {
 	public function getLongWikiText( $linked = null ) {
 		if ( !$this->isValid() ) {
 			return $this->getErrorText();
-		} else {
-			return "[" . $this->m_uri . " " . $this->m_qname . "] (" . $this->m_name . ")";
 		}
+
+		return "[" . $this->m_uri . " " . $this->m_qname . "] " . $this->modifyToIncludeParentheses( $this->m_name );
 	}
 
 	public function getLongHTMLText( $linker = null ) {
@@ -141,4 +141,9 @@ class SMWImportValue extends SMWDataValue {
 	public function getLocalName() {
 		return $this->m_section;
 	}
+
+	private function modifyToIncludeParentheses( $name ) {
+		return $name !== '' ? wfMessage( 'parentheses', $name )->parse() : '';
+	}
+
 }

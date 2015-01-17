@@ -314,5 +314,8 @@
 	"smw-editpage-property-annotation-disabled": "A description to be displayed on the edit page.",
 	"smw-editpage-concept-annotation-enabled": "A description to be displayed on the edit page.",
 	"log-name-smw": "A name for the [[Special:Log]] Semantic MediaWiki entry.",
-	"log-description-smw": "A description for Semantic MediaWiki entries displayed in [[Special:Log]]."
+	"log-description-smw": "A description for Semantic MediaWiki entries displayed in [[Special:Log]].",
+	"smw-datavalue-import-unknownns": "Error message shown for an unknown owl import namespace",
+	"smw-pa-property-predefined_impo": "Default introductory text for predefined properties\".\n\nParameters:\n* $1 - Name of the invoked predefined property"
+
 }
