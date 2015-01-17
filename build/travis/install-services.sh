@@ -54,6 +54,8 @@ then
 		echo "openrdf-sesame service url is not reachable"
 		exit
 	fi
+
+	./openrdf-sesame-$SESAME/bin/console.sh < $BASE_PATH/build/travis/openrdf-sesame-memory-repository.txt
 fi
 
 # Version 1.1.4-1 is available but has a problem

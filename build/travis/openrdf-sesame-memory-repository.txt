@@ -1,0 +1,7 @@
+connect http://localhost:8080/openrdf-sesame .
+create memory .
+test-smw
+test store for Semantic MediaWiki
+true
+120
+quit .

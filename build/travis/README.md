@@ -51,12 +51,12 @@
 		<td>apt-get install 4store</td>
 	</tr>
 	<tr>
-		<th>Sesame<sup>3</sup></th>
+		<th>Sesame</th>
 		<td>Custom</td>
-		<td>http://localhost:8080/openrdf-sesame/repositories/SYSTEM</td>
-		<td>http://localhost:8080/openrdf-sesame/repositories/SYSTEM/statements</td>
+		<td>http://localhost:8080/openrdf-sesame/repositories/test-smw</td>
+		<td>http://localhost:8080/openrdf-sesame/repositories/test-smw/statements</td>
 		<td>''</td>
-		<td>''</td>
+		<td>`test-smw` is specifed as native in-memory store</td>
 		<td></td>
 	</tr>
 
@@ -65,8 +65,6 @@
 <sup>1</sup> When running integration tests with [Jena Fuseki][fuseki] it is suggested that the `in-memory` option is used to avoid potential loss of production data during test execution.
 
 <sup>2</sup> Currently, Travis-CI doesn't support `4Store` (1.1.4-2) as service but the following configuration has been sucessfully tested with the available test suite. ([issue #110](https://github.com/garlik/4store/issues/110) )
-
-<sup>3</sup> The default SYSTEM repository is used during the test.
 
 [fuseki]: https://jena.apache.org/
 [virtuoso]: https://github.com/openlink/virtuoso-opensource
