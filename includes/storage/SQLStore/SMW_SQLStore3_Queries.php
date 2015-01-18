@@ -729,7 +729,7 @@ class SMWSQLStore3QueryEngine {
 		}
 
 		$this->registerQuery( $query );
-		if ( $query->type != SMWSQLStore3Query::Q_NOQUERY  ) {
+		if ( $query->type != SMWSQLStore3Query::Q_NOQUERY ) {
 			return $query->queryNumber;
 		} else {
 			return -1;
