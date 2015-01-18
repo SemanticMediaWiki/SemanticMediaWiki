@@ -1,6 +1,15 @@
 <?php
 
 use SMW\DataTypeRegistry;
+use SMW\Query\Language\ClassDescription;
+use SMW\Query\Language\ConceptDescription;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Description;
+use SMW\Query\Language\Disjunction;
+use SMW\Query\Language\NamespaceDescription;
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\ValueDescription;
 use SMW\QueryOutputFormatter;
 
 /**
@@ -579,28 +588,28 @@ class SMWSQLStore3QueryEngine {
 	 * for the given description. The result is stored in $this->m_queries
 	 * using a numeric key that is returned as a result of the function.
 	 * Returns -1 if no query was created.
-	 * @todo The case of nominal classes (top-level SMWValueDescription) still
+	 * @todo The case of nominal classes (top-level ValueDescription) still
 	 * makes some assumptions about the table structure, especially about the
 	 * name of the joinfield (o_id). Better extend
 	 * compilePropertyValueDescription to deal with this case.
 	 *
-	 * @param SMWDescription $description
+	 * @param Description $description
 	 *
 	 * @return integer
 	 */
-	protected function compileQueries( SMWDescription $description ) {
+	protected function compileQueries( Description $description ) {
 		$query = new SMWSQLStore3Query();
 
-		if ( $description instanceof SMWSomeProperty ) {
+		if ( $description instanceof SomeProperty ) {
 			$this->compileSomePropertyDescription( $query, $description );
-		} elseif ( $description instanceof SMWNamespaceDescription ) {
+		} elseif ( $description instanceof NamespaceDescription ) {
 			// TODO: One instance of the SMW IDs table on s_id always suffices (swm_id is KEY)! Doable in execution ... (PERFORMANCE)
 			$query->jointable = SMWSql3SmwIds::tableName;
 			$query->joinfield = "$query->alias.smw_id";
 			$query->where = "$query->alias.smw_namespace=" . $this->m_dbs->addQuotes( $description->getNamespace() );
-		} elseif ( ( $description instanceof SMWConjunction ) ||
-				( $description instanceof SMWDisjunction ) ) {
-			$query->type = ( $description instanceof SMWConjunction ) ? SMWSQLStore3Query::Q_CONJUNCTION : SMWSQLStore3Query::Q_DISJUNCTION;
+		} elseif ( ( $description instanceof Conjunction ) ||
+				( $description instanceof Disjunction ) ) {
+			$query->type = ( $description instanceof Conjunction ) ? SMWSQLStore3Query::Q_CONJUNCTION : SMWSQLStore3Query::Q_DISJUNCTION;
 
 			foreach ( $description->getDescriptions() as $subdesc ) {
 				$sub = $this->compileQueries( $subdesc );
@@ -613,7 +622,7 @@ class SMWSQLStore3QueryEngine {
 			if ( count( $query->components ) == 0 ) {
 				$query->type = SMWSQLStore3Query::Q_NOQUERY;
 			}
-		} elseif ( $description instanceof SMWClassDescription ) {
+		} elseif ( $description instanceof ClassDescription ) {
 			$cqid = SMWSQLStore3Query::$qnum;
 			$cquery = new SMWSQLStore3Query();
 			$cquery->type = SMWSQLStore3Query::Q_CLASS_HIERARCHY;
@@ -637,7 +646,7 @@ class SMWSQLStore3QueryEngine {
 				$query->components[$cqid] = "$query->alias.o_id";
 				$this->m_queries[$cqid] = $cquery;
 			}
-		} elseif ( $description instanceof SMWValueDescription ) { // Only type '_wpg' objects can appear on query level (essentially as nominal classes).
+		} elseif ( $description instanceof ValueDescription ) { // Only type '_wpg' objects can appear on query level (essentially as nominal classes).
 			if ( $description->getDataItem() instanceof SMWDIWikiPage ) {
 				if ( $description->getComparator() == SMW_CMP_EQ ) {
 					$query->type = SMWSQLStore3Query::Q_VALUE;
@@ -667,7 +676,7 @@ class SMWSQLStore3QueryEngine {
 					$query->where = "{$query->alias}.smw_sortkey$comp" . $this->m_dbs->addQuotes( $value );
 				}
 			}
-		} elseif ( $description instanceof SMWConceptDescription ) { // fetch concept definition and insert it here
+		} elseif ( $description instanceof ConceptDescription ) { // fetch concept definition and insert it here
 			$cid = $this->m_store->smwIds->getSMWPageID( $description->getConcept()->getDBkey(), SMW_NS_CONCEPT, '', '' );
 			// We bypass the storage interface here (which is legal as we control it, and safe if we are careful with changes ...)
 			// This should be faster, but we must implement the unescaping that concepts do on getWikiValue()
@@ -760,7 +769,7 @@ class SMWSQLStore3QueryEngine {
 	 *
 	 * @since 1.8
 	 */
-	protected function compileSomePropertyDescription( SMWSQLStore3Query $query, SMWSomeProperty $description ) {
+	protected function compileSomePropertyDescription( SMWSQLStore3Query $query, SomeProperty $description ) {
 
 		$db = $this->m_store->getConnection();
 
@@ -844,23 +853,23 @@ class SMWSQLStore3QueryEngine {
 	}
 
 	/**
-	 * Given an SMWDescription that is just a conjunction or disjunction of
-	 * SMWValueDescription objects, create and return a plain WHERE condition
+	 * Given an Description that is just a conjunction or disjunction of
+	 * ValueDescription objects, create and return a plain WHERE condition
 	 * string for it.
 	 *
 	 * @param $query
-	 * @param SMWDescription $description
+	 * @param Description $description
 	 * @param SMWSQLStore3Table $proptable
 	 * @param SMWDataItemHandler $diHandler for that table
 	 * @param string $operator SQL operator "AND" or "OR"
 	 */
 	protected function compilePropertyValueDescription(
-			$query, SMWDescription $description, SMWSQLStore3Table $proptable, SMWDataItemHandler $diHandler, $operator ) {
-		if ( $description instanceof SMWValueDescription ) {
+			$query, Description $description, SMWSQLStore3Table $proptable, SMWDataItemHandler $diHandler, $operator ) {
+		if ( $description instanceof ValueDescription ) {
 			$this->compileValueDescription( $query, $description, $proptable, $diHandler, $operator );
-		} elseif ( ( $description instanceof SMWConjunction ) ||
-				( $description instanceof SMWDisjunction ) ) {
-			$op = ( $description instanceof SMWConjunction ) ? 'AND' : 'OR';
+		} elseif ( ( $description instanceof Conjunction ) ||
+				( $description instanceof Disjunction ) ) {
+			$op = ( $description instanceof Conjunction ) ? 'AND' : 'OR';
 
 			foreach ( $description->getDescriptions() as $subdesc ) {
 				$this->compilePropertyValueDescription( $query, $subdesc, $proptable, $diHandler, $op );
@@ -868,23 +877,23 @@ class SMWSQLStore3QueryEngine {
 		} elseif ( $description instanceof SMWThingDescription ) {
 			// nothing to do
 		} else {
-			throw new MWException( "Cannot process this type of SMWDescription." );
+			throw new MWException( "Cannot process this type of Description." );
 		}
 	}
 
 	/**
-	 * Given an SMWDescription that is just a conjunction or disjunction of
-	 * SMWValueDescription objects, create and return a plain WHERE condition
+	 * Given an Description that is just a conjunction or disjunction of
+	 * ValueDescription objects, create and return a plain WHERE condition
 	 * string for it.
 	 *
 	 * @param $query
-	 * @param SMWDescription $description
+	 * @param Description $description
 	 * @param SMWSQLStore3Table $proptable
 	 * @param SMWDataItemHandler $diHandler for that table
 	 * @param string $operator SQL operator "AND" or "OR"
 	 */
 	protected function compileValueDescription(
-			$query, SMWValueDescription $description, SMWSQLStore3Table $proptable, SMWDataItemHandler $diHandler, $operator ) {
+			$query, ValueDescription $description, SMWSQLStore3Table $proptable, SMWDataItemHandler $diHandler, $operator ) {
 		$where = '';
 		$dataItem = $description->getDataItem();
 		// TODO Better get the handle from the property type
@@ -1210,7 +1219,7 @@ throw new MWException("Debug -- this code might be dead.");
 					$sortprop = SMWPropertyValue::makeUserProperty( $propkey );
 
 					if ( $sortprop->isValid() ) {
-						$extraproperties[] = new SMWSomeProperty( $sortprop->getDataItem(), new SMWThingDescription() );
+						$extraproperties[] = new SomeProperty( $sortprop->getDataItem(), new ThingDescription() );
 					}
 				}
 			}
@@ -1218,7 +1227,7 @@ throw new MWException("Debug -- this code might be dead.");
 
 		// (2) compile according conditions and hack them into $qobj:
 		if ( count( $extraproperties ) > 0 ) {
-			$desc = new SMWConjunction( $extraproperties );
+			$desc = new Conjunction( $extraproperties );
 			$newqid = $this->compileQueries( $desc );
 			$newqobj = $this->m_queries[$newqid]; // This is always an SMWSQLStore3Query::Q_CONJUNCTION ...
 
