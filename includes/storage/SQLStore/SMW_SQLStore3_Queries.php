@@ -78,25 +78,62 @@ class SMWSQLStore3Query {
  */
 class SMWSQLStore3QueryEngine {
 
-	/** Database slave to be used */
-	protected $m_dbs; // TODO: should temporary tables be created on the master DB?
-	/** Parent SMWSQLStore3. */
+	/**
+	 * // TODO: should temporary tables be created on the master DB?
+	 *
+	 * @var DatabaseBase
+	 */
+	protected $m_dbs;
+
+	/**
+	 * Parent SMWSQLStore3.
+	 *
+	 * @var SMWSQLStore3
+	 */
 	protected $m_store;
-	/** Query mode copied from given query. Some submethods act differently when in SMWQuery::MODE_DEBUG. */
+
+	/**
+	 * Query mode copied from given query. Some submethods act differently when in SMWQuery::MODE_DEBUG.
+	 *
+	 * @var int
+	 */
 	protected $m_qmode;
-	/** Array of generated SMWSQLStore3Query query descriptions (index => object). */
+
+	/**
+	 * Array of generated SMWSQLStore3Query query descriptions (index => object)
+	 *
+	 * @var SMWSQLStore3Query[]
+	 */
 	protected $m_queries = array();
-	/** Array of arrays of executed queries, indexed by the temporary table names results were fed into. */
+
+	/**
+	 * Array of arrays of executed queries, indexed by the temporary table names results were fed into.
+	 *
+	 * @var array
+	 */
 	protected $m_querylog = array();
+
 	/**
 	 * Array of sorting requests ("Property_name" => "ASC"/"DESC"). Used during query
 	 * processing (where these property names are searched while compiling the query
 	 * conditions).
+	 *
+	 * @var string[]
 	 */
 	protected $m_sortkeys;
-	/** Cache of computed hierarchy queries for reuse ("catetgory/property value string" => "tablename"). */
+
+	/**
+	 * Cache of computed hierarchy queries for reuse ("catetgory/property value string" => "tablename").
+	 *
+	 * @var string[]
+	 */
 	protected $m_hierarchies = array();
-	/** Local collection of error strings, passed on to callers if possible. */
+
+	/**
+	 * Local collection of error strings, passed on to callers if possible.
+	 *
+	 * @var string[]
+	 */
 	protected $m_errors = array();
 
 	public function __construct( SMWSQLStore3 $parentstore, $dbslave ) {
