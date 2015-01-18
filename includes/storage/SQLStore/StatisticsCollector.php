@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore;
 
+use SMW\ObjectDictionary;
 use SMW\Store\CacheableResultCollector;
 
 use SMW\SimpleDictionary;
@@ -10,6 +11,7 @@ use SMW\Settings;
 use SMW\Store;
 
 use DatabaseBase;
+use SMWSQLStore3;
 
 /**
  * Collects statistical information provided by the store
@@ -36,11 +38,11 @@ class StatisticsCollector extends CacheableResultCollector {
 	/**
 	 * @since 1.9
 	 *
-	 * @param Store $store
+	 * @param SMWSQLStore3 $store
 	 * @param DatabaseBase $dbw
 	 * @param Settings $settings
 	 */
-	public function __construct( Store $store, DatabaseBase $dbw, Settings $settings ) {
+	public function __construct( SMWSQLStore3 $store, DatabaseBase $dbw, Settings $settings ) {
 		$this->store = $store;
 		$this->dbConnection = $dbw;
 		$this->settings = $settings;
@@ -127,11 +129,11 @@ class StatisticsCollector extends CacheableResultCollector {
 	/**
 	 * @since 1.9
 	 *
-	 * @return array
+	 * @return int[]
 	 */
 	public function getQueryFormatsCount() {
-
 		$count = array();
+
 		$res = $this->dbConnection->select(
 			$this->findPropertyTableByType( '_ASKFO' )->getName(),
 			'o_hash, COUNT(s_id) AS count',
@@ -177,8 +179,8 @@ class StatisticsCollector extends CacheableResultCollector {
 	 * @return number
 	 */
 	public function getPropertyUsageCount() {
-
 		$count = 0;
+
 		$row = $this->dbConnection->selectRow(
 			array( $this->store->getStatisticsTable() ),
 			'SUM( usage_count ) AS count',
@@ -197,8 +199,8 @@ class StatisticsCollector extends CacheableResultCollector {
 	 * @return number
 	 */
 	public function getUsedPropertiesCount() {
-
 		$count = 0;
+
 		$row = $this->dbConnection->selectRow(
 			array( $this->store->getStatisticsTable() ),
 			'Count( * ) AS count',
@@ -221,9 +223,6 @@ class StatisticsCollector extends CacheableResultCollector {
 	 * @return number
 	 */
 	protected function count( $type ) {
-		$caller = wfGetCaller();
-
-		$count = 0;
 		$res = $this->dbConnection->select(
 			$this->findPropertyTableByType( $type )->getName(),
 			'COUNT(s_id) AS count',

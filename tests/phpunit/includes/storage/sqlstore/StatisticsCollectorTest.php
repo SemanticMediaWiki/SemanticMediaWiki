@@ -41,7 +41,7 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 			'isFixedPropertyTable' => true
 		) );
 
-		$store = $this->newMockBuilder()->newObject( 'Store', array(
+		$store = $this->newMockBuilder()->newObject( 'SMWSQLStore3', array(
 			'getPropertyTables'   => array( 'Foo' => $tableDefinition ),
 			'findTypeTableId'     => 'Foo',
 			'findPropertyTableID' => 'Foo'
