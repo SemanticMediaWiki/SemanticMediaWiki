@@ -11,7 +11,6 @@ use SMW\SQLStore\TableDefinition;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\SemanticData;
-use SMW\ConnectionManager;
 
 /**
  * SQL-based implementation of SMW's storage abstraction layer.
@@ -308,15 +307,15 @@ class SMWSQLStore3 extends SMWStore {
 	}
 
 	public function deleteSubject( Title $subject ) {
-		return $this->getWriter()->deleteSubject( $subject );
+		$this->getWriter()->deleteSubject( $subject );
 	}
 
 	protected function doDataUpdate( SemanticData $data ) {
-		return $this->getWriter()->doDataUpdate( $data );
+		$this->getWriter()->doDataUpdate( $data );
 	}
 
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
-		return $this->getWriter()->changeTitle( $oldtitle, $newtitle, $pageid, $redirid );
+		$this->getWriter()->changeTitle( $oldtitle, $newtitle, $pageid, $redirid );
 	}
 
 
@@ -428,12 +427,8 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return array of error strings (empty if no errors occurred)
 	 */
 	public function refreshConceptCache( Title $concept ) {
-
 		$qe = new SMWSQLStore3QueryEngine( $this, wfGetDB( DB_MASTER ) );
-		$result = $qe->refreshConceptCache( $concept );
-
-
-		return $result;
+		return $qe->refreshConceptCache( $concept );
 	}
 
 	/**
@@ -443,12 +438,8 @@ class SMWSQLStore3 extends SMWStore {
 	 * @param Title $concept
 	 */
 	public function deleteConceptCache( $concept ) {
-
 		$qe = new SMWSQLStore3QueryEngine( $this, wfGetDB( DB_MASTER ) );
-		$result = $qe->deleteConceptCache( $concept );
-
-
-		return $result;
+		$qe->deleteConceptCache( $concept );
 	}
 
 	/**
@@ -548,29 +539,31 @@ class SMWSQLStore3 extends SMWStore {
 	 * column to which value restrictions etc. are to be applied.
 	 *
 	 * @since 1.8
-	 * @param SMWRequestOptions|null $requestoptions
-	 * @param string $valuecol name of SQL column to which conditions apply
-	 * @param string $labelcol name of SQL column to which string conditions apply, if any
-	 * @param boolean $addand indicate whether the string should begin with " AND " if non-empty
+	 *
+	 * @param SMWRequestOptions|null $requestOptions
+	 * @param string $valueCol name of SQL column to which conditions apply
+	 * @param string $labelCol name of SQL column to which string conditions apply, if any
+	 * @param boolean $addAnd indicate whether the string should begin with " AND " if non-empty
+	 *
 	 * @return string
 	 */
-	public function getSQLConditions( SMWRequestOptions $requestoptions = null, $valuecol = '', $labelcol = '', $addand = true ) {
-		$sql_conds = '';
+	public function getSQLConditions( SMWRequestOptions $requestOptions = null, $valueCol = '', $labelCol = '', $addAnd = true ) {
+		$sqlConds = '';
 
-		if ( $requestoptions !== null ) {
+		if ( $requestOptions !== null ) {
 			$db = wfGetDB( DB_SLAVE ); /// TODO avoid doing this here again, all callers should have one
 
-			if ( ( $valuecol !== '' ) && ( $requestoptions->boundary !== null ) ) { // Apply value boundary.
-				if ( $requestoptions->ascending ) {
-					$op = $requestoptions->include_boundary ? ' >= ' : ' > ';
+			if ( ( $valueCol !== '' ) && ( $requestOptions->boundary !== null ) ) { // Apply value boundary.
+				if ( $requestOptions->ascending ) {
+					$op = $requestOptions->include_boundary ? ' >= ' : ' > ';
 				} else {
-					$op = $requestoptions->include_boundary ? ' <= ' : ' < ';
+					$op = $requestOptions->include_boundary ? ' <= ' : ' < ';
 				}
-				$sql_conds .= ( $addand ? ' AND ' : '' ) . $valuecol . $op . $db->addQuotes( $requestoptions->boundary );
+				$sqlConds .= ( $addAnd ? ' AND ' : '' ) . $valueCol . $op . $db->addQuotes( $requestOptions->boundary );
 			}
 
-			if ( $labelcol !== '' ) { // Apply string conditions.
-				foreach ( $requestoptions->getStringConditions() as $strcond ) {
+			if ( $labelCol !== '' ) { // Apply string conditions.
+				foreach ( $requestOptions->getStringConditions() as $strcond ) {
 					$string = str_replace( '_', '\_', $strcond->string );
 
 					switch ( $strcond->condition ) {
@@ -579,12 +572,12 @@ class SMWSQLStore3 extends SMWStore {
 						case SMWStringCondition::STRCOND_MID:  $string = '%' . $string . '%'; break;
 					}
 
-					$sql_conds .= ( ( $addand || ( $sql_conds !== '' ) ) ? ' AND ' : '' ) . $labelcol . ' LIKE ' . $db->addQuotes( $string );
+					$sqlConds .= ( ( $addAnd || ( $sqlConds !== '' ) ) ? ' AND ' : '' ) . $labelCol . ' LIKE ' . $db->addQuotes( $string );
 				}
 			}
 		}
 
-		return $sql_conds;
+		return $sqlConds;
 	}
 
 	/**
@@ -904,7 +897,7 @@ class SMWSQLStore3 extends SMWStore {
 	 *
 	 * @param integer $updateFeatureFlag
 	 *
-	 * @param boolean
+	 * @return boolean
 	 */
 	public function canUseUpdateFeature( $updateFeatureFlag ) {
 		return $GLOBALS['smwgUFeatures'] === ( $GLOBALS['smwgUFeatures'] | $updateFeatureFlag );
