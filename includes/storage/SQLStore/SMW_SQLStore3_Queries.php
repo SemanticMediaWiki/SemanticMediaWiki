@@ -905,53 +905,45 @@ class SMWSQLStore3QueryEngine {
 
 		// Try comparison based on value field and comparator,
 		// but only if no join with SMW IDs table is needed.
-		if ( $diType != SMWDataItem::TYPE_WIKIPAGE ) {
-			// Do not support smw_id joined data for now.
 
-			// See if the getSQLCondition method exists and call it if this is the case.
-			if ( method_exists( $description, 'getSQLCondition' ) ) {
-				$fields = $diHandler->getTableFields();
-				$where = $description->getSQLCondition( $query->alias, array_keys( $fields ), $this->m_dbs );
+		// See if the getSQLCondition method exists and call it if this is the case.
+		if ( method_exists( $description, 'getSQLCondition' ) ) {
+			$fields = $diHandler->getTableFields();
+			$where = $description->getSQLCondition( $query->alias, array_keys( $fields ), $this->m_dbs );
+		}
+
+		if ( $where == '' ) {
+			$indexField = $diHandler->getIndexField();
+			//Hack to get to the field used as index
+			$keys = $diHandler->getWhereConds( $dataItem );
+			$value = $keys[$indexField];
+
+			switch ( $description->getComparator() ) {
+				case SMW_CMP_EQ: $comparator = '='; break;
+				case SMW_CMP_LESS: $comparator = '<'; break;
+				case SMW_CMP_GRTR: $comparator = '>'; break;
+				case SMW_CMP_LEQ: $comparator = '<='; break;
+				case SMW_CMP_GEQ: $comparator = '>='; break;
+				case SMW_CMP_NEQ: $comparator = '!='; break;
+				case SMW_CMP_LIKE: case SMW_CMP_NLKE:
+					if ( $description->getComparator() == SMW_CMP_LIKE ) {
+						$comparator = ' LIKE ';
+					} else {
+						$comparator = ' NOT LIKE ';
+					}
+
+					if ( $diType === SMWDataItem::TYPE_URI ) {
+						$value = str_replace( array( 'http://', 'https://', '%2A' ), array( '', '', '*' ), $value );
+					}
+
+					// Escape to prepare string matching:
+					$value = str_replace( array( '%', '_', '*', '?' ), array( '\%', '\_', '%', '_' ), $value );
+					break;
+				default:
+					throw new MWException( "Unsupported comparator '" . $description->getComparator() . "' in query condition." );
 			}
 
-			if ( $where == '' ) {
-				$indexField = $diHandler->getIndexField();
-				//Hack to get to the field used as index
-				$keys = $diHandler->getWhereConds( $dataItem );
-				$value = $keys[$indexField];
-
-				switch ( $description->getComparator() ) {
-					case SMW_CMP_EQ: $comparator = '='; break;
-					case SMW_CMP_LESS: $comparator = '<'; break;
-					case SMW_CMP_GRTR: $comparator = '>'; break;
-					case SMW_CMP_LEQ: $comparator = '<='; break;
-					case SMW_CMP_GEQ: $comparator = '>='; break;
-					case SMW_CMP_NEQ: $comparator = '!='; break;
-					case SMW_CMP_LIKE: case SMW_CMP_NLKE:
-						if ( $description->getComparator() == SMW_CMP_LIKE ) {
-							$comparator = ' LIKE ';
-						} else {
-							$comparator = ' NOT LIKE ';
-						}
-
-						if ( $diType === SMWDataItem::TYPE_URI ) {
-							$value = str_replace( array( 'http://', 'https://', '%2A' ), array( '', '', '*' ), $value );
-						}
-
-						// Escape to prepare string matching:
-						$value = str_replace( array( '%', '_', '*', '?' ), array( '\%', '\_', '%', '_' ), $value );
-						break;
-					default:
-						throw new MWException( "Unsupported comparator '" . $description->getComparator() . "' in query condition." );
-				}
-
-				$where = "$query->alias.{$indexField}{$comparator}" . $this->m_dbs->addQuotes( $value );
-			}
-		} else { // exact match (like comparator = above, but not using $valueField
-throw new MWException("Debug -- this code might be dead.");
-			foreach ( $diHandler->getWhereConds( $dataItem ) as $fieldname => $value ) {
-				$where .= ( $where ? ' AND ' : '' ) . "{$query->alias}.$fieldname=" . $this->m_dbs->addQuotes( $value );
-			}
+			$where = "$query->alias.{$indexField}{$comparator}" . $this->m_dbs->addQuotes( $value );
 		}
 
 		if ( $where !== '' ) {
