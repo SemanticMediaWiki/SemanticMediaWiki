@@ -1198,16 +1198,18 @@ throw new MWException("Debug -- this code might be dead.");
 	 * Get a SQL option array for the given query and preprocessed query object at given id.
 	 *
 	 * @param SMWQuery $query
-	 * @param integer $rootid
+	 * @param integer $rootId
+	 *
+	 * @return array
 	 */
-	protected function getSQLOptions( SMWQuery $query, $rootid ) {
+	protected function getSQLOptions( SMWQuery $query, $rootId ) {
 		global $smwgQSortingSupport, $smwgQRandSortingSupport;
 
 		$result = array( 'LIMIT' => $query->getLimit() + 5, 'OFFSET' => $query->getOffset() );
 
 		// Build ORDER BY options using discovered sorting fields.
 		if ( $smwgQSortingSupport ) {
-			$qobj = $this->m_queries[$rootid];
+			$qobj = $this->m_queries[$rootId];
 
 			foreach ( $this->m_sortkeys as $propkey => $order ) {
 
@@ -1249,32 +1251,34 @@ throw new MWException("Debug -- this code might be dead.");
 	 * keep them after query answering. Also, PostgreSQL tables will use a RULE to achieve built-in
 	 * duplicate elimination. The latter is done using INSERT IGNORE in MySQL.
 	 *
-	 * @param string $tablename
+	 * @param string $tableName
+	 *
+	 * @return string
 	 */
-	protected function getCreateTempIDTableSQL( $tablename ) {
+	protected function getCreateTempIDTableSQL( $tableName ) {
 		global $wgDBtype;
 
 		if ( $wgDBtype == 'postgres' ) { // PostgreSQL: no memory tables, use RULE to emulate INSERT IGNORE
 
 			// Remove any double quotes from the name
-			$tablename = str_replace( '"', '', $tablename );
+			$tableName = str_replace( '"', '', $tableName );
 
-			return "CREATE OR REPLACE FUNCTION pg_temp.create_{$tablename}() RETURNS void AS "
+			return "CREATE OR REPLACE FUNCTION pg_temp.create_{$tableName}() RETURNS void AS "
 			. "$$ "
 			. "BEGIN "
-			. " IF EXISTS(SELECT NULL FROM pg_tables WHERE tablename='{$tablename}' AND schemaname = ANY (current_schemas(true))) "
-			. " THEN DELETE FROM {$tablename}; "
+			. " IF EXISTS(SELECT NULL FROM pg_tables WHERE tablename='{$tableName}' AND schemaname = ANY (current_schemas(true))) "
+			. " THEN DELETE FROM {$tableName}; "
 			. " ELSE "
-			. "  CREATE TEMPORARY TABLE {$tablename} (id INTEGER PRIMARY KEY); "
-			. "    CREATE RULE {$tablename}_ignore AS ON INSERT TO {$tablename} WHERE (EXISTS (SELECT NULL FROM {$tablename} "
-			. "	 WHERE ({$tablename}.id = new.id))) DO INSTEAD NOTHING; "
+			. "  CREATE TEMPORARY TABLE {$tableName} (id INTEGER PRIMARY KEY); "
+			. "    CREATE RULE {$tableName}_ignore AS ON INSERT TO {$tableName} WHERE (EXISTS (SELECT NULL FROM {$tableName} "
+			. "	 WHERE ({$tableName}.id = new.id))) DO INSTEAD NOTHING; "
 			. " END IF; "
 			. "END; "
 			. "$$ "
 			. "LANGUAGE 'plpgsql'; "
-			. "SELECT pg_temp.create_{$tablename}(); ";
+			. "SELECT pg_temp.create_{$tableName}(); ";
 		} else { // MySQL_ just a temporary table, use INSERT IGNORE later
-			return "CREATE TEMPORARY TABLE " . $tablename . "( id INT UNSIGNED KEY ) ENGINE=MEMORY";
+			return "CREATE TEMPORARY TABLE " . $tableName . "( id INT UNSIGNED KEY ) ENGINE=MEMORY";
 		}
 	}
 
