@@ -11,6 +11,7 @@ use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
 use SMW\QueryOutputFormatter;
+use SMW\SQLStore\TableDefinition;
 
 /**
  * Class for representing a single (sub)query description. Simple data
@@ -325,7 +326,7 @@ class SMWSQLStore3QueryEngine {
 	public function getQueryResult( SMWQuery $query ) {
 		global $smwgIgnoreQueryErrors, $smwgQSortingSupport;
 
-		if ( ( !$smwgIgnoreQueryErrors || $query->getDescription() instanceof SMWThingDescription ) &&
+		if ( ( !$smwgIgnoreQueryErrors || $query->getDescription() instanceof ThingDescription ) &&
 		     $query->querymode != SMWQuery::MODE_DEBUG &&
 		     count( $query->getErrors() ) > 0 ) {
 			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->m_store, false );
@@ -723,7 +724,7 @@ class SMWSQLStore3QueryEngine {
 					}
 				} // else: no cache, no description (this may happen); treat like empty concept
 			}
-		} else { // (e.g. SMWThingDescription)
+		} else { // (e.g. ThingDescription)
 			$query->type = SMWSQLStore3Query::Q_NOQUERY; // no condition
 		}
 
@@ -859,12 +860,12 @@ class SMWSQLStore3QueryEngine {
 	 *
 	 * @param $query
 	 * @param Description $description
-	 * @param SMWSQLStore3Table $proptable
+	 * @param TableDefinition $proptable
 	 * @param SMWDataItemHandler $diHandler for that table
 	 * @param string $operator SQL operator "AND" or "OR"
 	 */
 	protected function compilePropertyValueDescription(
-			$query, Description $description, SMWSQLStore3Table $proptable, SMWDataItemHandler $diHandler, $operator ) {
+			$query, Description $description, TableDefinition $proptable, SMWDataItemHandler $diHandler, $operator ) {
 		if ( $description instanceof ValueDescription ) {
 			$this->compileValueDescription( $query, $description, $proptable, $diHandler, $operator );
 		} elseif ( ( $description instanceof Conjunction ) ||
@@ -874,7 +875,7 @@ class SMWSQLStore3QueryEngine {
 			foreach ( $description->getDescriptions() as $subdesc ) {
 				$this->compilePropertyValueDescription( $query, $subdesc, $proptable, $diHandler, $op );
 			}
-		} elseif ( $description instanceof SMWThingDescription ) {
+		} elseif ( $description instanceof ThingDescription ) {
 			// nothing to do
 		} else {
 			throw new MWException( "Cannot process this type of Description." );
@@ -888,12 +889,12 @@ class SMWSQLStore3QueryEngine {
 	 *
 	 * @param $query
 	 * @param Description $description
-	 * @param SMWSQLStore3Table $proptable
+	 * @param TableDefinition $proptable
 	 * @param SMWDataItemHandler $diHandler for that table
 	 * @param string $operator SQL operator "AND" or "OR"
 	 */
 	protected function compileValueDescription(
-			$query, ValueDescription $description, SMWSQLStore3Table $proptable, SMWDataItemHandler $diHandler, $operator ) {
+			$query, ValueDescription $description, TableDefinition $proptable, SMWDataItemHandler $diHandler, $operator ) {
 		$where = '';
 		$dataItem = $description->getDataItem();
 		// TODO Better get the handle from the property type
