@@ -1107,8 +1107,6 @@ throw new MWException("Debug -- this code might be dead.");
 	protected function executeHierarchyQuery( SMWSQLStore3Query &$query ) {
 		global $wgDBtype, $smwgQSubpropertyDepth, $smwgQSubcategoryDepth;
 
-		$fname = "SMWSQLStore3Queries::executeQueries-hierarchy-{$query->type} (SMW)";
-
 		$db = $this->m_store->getConnection();
 
 		$depth = ( $query->type == SMWSQLStore3Query::Q_PROP_HIERARCHY ) ? $smwgQSubpropertyDepth : $smwgQSubcategoryDepth;
