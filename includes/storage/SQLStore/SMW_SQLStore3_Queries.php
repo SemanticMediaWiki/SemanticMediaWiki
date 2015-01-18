@@ -409,18 +409,18 @@ class SMWSQLStore3QueryEngine {
 	 * the proper debug output for the given query.
 	 *
 	 * @param SMWQuery $query
-	 * @param integer $rootid
+	 * @param integer $rootId
 	 *
 	 * @return string
 	 */
-	protected function getDebugQueryResult( SMWQuery $query, $rootid ) {
-		$qobj = $this->m_queries[$rootid];
+	protected function getDebugQueryResult( SMWQuery $query, $rootId ) {
+		$qobj = $this->m_queries[$rootId];
 
 		$db = $this->m_store->getConnection();
 
 		$entries = array();
 
-		$sql_options = $this->getSQLOptions( $query, $rootid );
+		$sql_options = $this->getSQLOptions( $query, $rootId );
 		list( $startOpts, $useIndex, $tailOpts ) = $db->makeSelectOptions( $sql_options );
 
 		if ( $qobj->joinfield !== '' ) {
@@ -455,13 +455,13 @@ class SMWSQLStore3QueryEngine {
 	 * the proper counting output for the given query.
 	 *
 	 * @param SMWQuery $query
-	 * @param integer $rootid
+	 * @param integer $rootId
 	 *
 	 * @return integer
 	 */
-	protected function getCountQueryResult( SMWQuery $query, $rootid ) {
+	protected function getCountQueryResult( SMWQuery $query, $rootId ) {
 
-		$qobj = $this->m_queries[$rootid];
+		$qobj = $this->m_queries[$rootId];
 
 		if ( $qobj->joinfield === '' ) { // empty result, no query needed
 			return 0;
@@ -481,6 +481,7 @@ class SMWSQLStore3QueryEngine {
 	/**
 	 * Using a preprocessed internal query description referenced by $rootid,
 	 * compute the proper result instance output for the given query.
+	 *
 	 * @todo The SQL standard requires us to select all fields by which we sort, leading
 	 * to wrong results regarding the given limit: the user expects limit to be applied to
 	 * the number of distinct pages, but we can use DISTINCT only to whole rows. Thus, if
@@ -492,23 +493,23 @@ class SMWSQLStore3QueryEngine {
 	 * we want here. It would be nice if we could eliminate the bug in POSTGRES as well.
 	 *
 	 * @param SMWQuery $query
-	 * @param integer $rootid
+	 * @param integer $rootId
 	 *
 	 * @return SMWQueryResult
 	 */
-	protected function getInstanceQueryResult( SMWQuery $query, $rootid ) {
+	protected function getInstanceQueryResult( SMWQuery $query, $rootId ) {
 		global $wgDBtype;
 
 		$db = $this->m_store->getConnection();
 
-		$qobj = $this->m_queries[$rootid];
+		$qobj = $this->m_queries[$rootId];
 
 		if ( $qobj->joinfield === '' ) { // empty result, no query needed
 			$result = new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->m_store, false );
 			return $result;
 		}
 
-		$sql_options = $this->getSQLOptions( $query, $rootid );
+		$sql_options = $this->getSQLOptions( $query, $rootId );
 
 		// Selecting those is required in standard SQL (but MySQL does not require it).
 		$sortfields = implode( $qobj->sortfields, ',' );
@@ -740,6 +741,8 @@ class SMWSQLStore3QueryEngine {
 	 * Register a query object to the internal query list, if the query is
 	 * valid. Also make sure that sortkey information is propagated down
 	 * from subqueries of this query.
+	 *
+	 * @param SMWSQLStore3Query $query
 	 */
 	protected function registerQuery( SMWSQLStore3Query $query ) {
 		if ( $query->type != SMWSQLStore3Query::Q_NOQUERY  ) {
@@ -769,6 +772,9 @@ class SMWSQLStore3QueryEngine {
 	 * query with _SKEY ad users cannot do so either (no user label).
 	 *
 	 * @since 1.8
+	 *
+	 * @param SMWSQLStore3Query $query
+	 * @param SomeProperty $description
 	 */
 	protected function compileSomePropertyDescription( SMWSQLStore3Query $query, SomeProperty $description ) {
 
@@ -858,22 +864,25 @@ class SMWSQLStore3QueryEngine {
 	 * ValueDescription objects, create and return a plain WHERE condition
 	 * string for it.
 	 *
-	 * @param $query
+	 * @param SMWSQLStore3Query $query
 	 * @param Description $description
-	 * @param TableDefinition $proptable
+	 * @param TableDefinition $propTable
 	 * @param SMWDataItemHandler $diHandler for that table
 	 * @param string $operator SQL operator "AND" or "OR"
+	 *
+	 * @throws MWException
 	 */
-	protected function compilePropertyValueDescription(
-			$query, Description $description, TableDefinition $proptable, SMWDataItemHandler $diHandler, $operator ) {
+	protected function compilePropertyValueDescription( SMWSQLStore3Query $query, Description $description,
+		TableDefinition $propTable, SMWDataItemHandler $diHandler, $operator ) {
+
 		if ( $description instanceof ValueDescription ) {
-			$this->compileValueDescription( $query, $description, $proptable, $diHandler, $operator );
+			$this->compileValueDescription( $query, $description, $diHandler, $operator );
 		} elseif ( ( $description instanceof Conjunction ) ||
 				( $description instanceof Disjunction ) ) {
 			$op = ( $description instanceof Conjunction ) ? 'AND' : 'OR';
 
 			foreach ( $description->getDescriptions() as $subdesc ) {
-				$this->compilePropertyValueDescription( $query, $subdesc, $proptable, $diHandler, $op );
+				$this->compilePropertyValueDescription( $query, $subdesc, $propTable, $diHandler, $op );
 			}
 		} elseif ( $description instanceof ThingDescription ) {
 			// nothing to do
@@ -887,14 +896,16 @@ class SMWSQLStore3QueryEngine {
 	 * ValueDescription objects, create and return a plain WHERE condition
 	 * string for it.
 	 *
-	 * @param $query
-	 * @param Description $description
-	 * @param TableDefinition $proptable
+	 * @param SMWSQLStore3Query $query
+	 * @param ValueDescription $description
 	 * @param SMWDataItemHandler $diHandler for that table
 	 * @param string $operator SQL operator "AND" or "OR"
+	 *
+	 * @throws MWException
 	 */
-	protected function compileValueDescription(
-			$query, ValueDescription $description, TableDefinition $proptable, SMWDataItemHandler $diHandler, $operator ) {
+	protected function compileValueDescription( SMWSQLStore3Query $query, ValueDescription $description,
+		SMWDataItemHandler $diHandler, $operator ) {
+
 		$where = '';
 		$dataItem = $description->getDataItem();
 		// TODO Better get the handle from the property type
