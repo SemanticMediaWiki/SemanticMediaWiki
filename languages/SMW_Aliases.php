@@ -774,6 +774,12 @@ $specialPageAliases['uk'] = array(
 	'Types' => array( 'Типи' ),
 );
 
+/** Urdu (اردو) */
+$specialPageAliases['ur'] = array(
+	'Ask' => array( 'پوچھیں' ),
+	'Types' => array( 'اقسام' ),
+);
+
 /** Venetian (vèneto) */
 $specialPageAliases['vec'] = array(
 	'Browse' => array( 'Sfója' ),
