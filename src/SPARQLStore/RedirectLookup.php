@@ -2,18 +2,15 @@
 
 namespace SMW\SPARQLStore;
 
+use RuntimeException;
 use SMW\Cache\Cache;
 use SMW\Cache\FixedInMemoryCache;
-
 use SMW\DIWikiPage;
-
-use SMWSparqlDatabase as SparqlDatabase;
 use SMWExpNsResource as ExpNsResource;
-use SMWExpResource as ExpResource;
 use SMWExporter as Exporter;
+use SMWExpResource as ExpResource;
+use SMWSparqlDatabase as SparqlDatabase;
 use SMWTurtleSerializer as TurtleSerializer;
-
-use RuntimeException;
 
 /**
  * @license GNU GPL v2+

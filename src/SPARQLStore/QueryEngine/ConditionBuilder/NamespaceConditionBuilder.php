@@ -2,12 +2,10 @@
 
 namespace SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
-use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
-
 use SMW\Query\Language\Description;
 use SMW\Query\Language\NamespaceDescription;
-
+use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMWDataItem as DataItem;
 use SMWExpLiteral as ExpLiteral;
 use SMWExporter as Exporter;

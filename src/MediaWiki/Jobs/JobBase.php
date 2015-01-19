@@ -2,10 +2,9 @@
 
 namespace SMW\MediaWiki\Jobs;
 
-use SMW\Store;
-
 use Job;
 use JobQueueGroup;
+use SMW\Store;
 use Title;
 
 /**

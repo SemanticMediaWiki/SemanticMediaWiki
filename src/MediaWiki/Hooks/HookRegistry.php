@@ -2,12 +2,11 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\NamespaceManager;
-use SMW\ApplicationFactory;
-use SMW\ParameterFormatterFactory;
-
 use Parser;
 use RuntimeException;
+use SMW\ApplicationFactory;
+use SMW\NamespaceManager;
+use SMW\ParameterFormatterFactory;
 
 /**
  * @license GNU GPL v2+

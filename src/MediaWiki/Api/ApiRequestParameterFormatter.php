@@ -3,9 +3,8 @@
 namespace SMW\MediaWiki\Api;
 
 use SMW\SimpleDictionary;
-
-use SMWPropertyValue;
 use SMWPrintRequest;
+use SMWPropertyValue;
 
 /**
  * This class handles Api related request parameter formatting

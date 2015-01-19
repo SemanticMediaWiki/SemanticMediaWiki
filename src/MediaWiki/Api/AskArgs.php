@@ -2,9 +2,6 @@
 
 namespace SMW\MediaWiki\Api;
 
-use SMWPropertyValue;
-use SMWPrintRequest;
-
 use ApiBase;
 
 /**

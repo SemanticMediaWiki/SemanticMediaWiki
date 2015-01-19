@@ -3,8 +3,8 @@
 namespace SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 
 use SMW\Query\Language\Description;
-use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 
 /**
  * @license GNU GPL v2+

@@ -2,10 +2,9 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use Language;
 use SMW\ApplicationFactory;
 use SMW\DataTypeRegistry;
-
-use Language;
 
 /**
  * Add extra statistic at the end of Special:Statistics

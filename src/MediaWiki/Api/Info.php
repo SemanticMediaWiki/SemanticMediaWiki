@@ -2,9 +2,8 @@
 
 namespace SMW\MediaWiki\Api;
 
-use SMW\ApplicationFactory;
-
 use ApiBase;
+use SMW\ApplicationFactory;
 
 /**
  * API module to obtain info about the SMW install, primarily targeted at

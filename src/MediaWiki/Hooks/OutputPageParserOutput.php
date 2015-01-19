@@ -2,14 +2,10 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\ApplicationFactory;
-use SMW\NamespaceExaminer;
-
-use ParserOutput;
 use OutputPage;
+use ParserOutput;
+use SMW\ApplicationFactory;
 use Title;
-
-use SMWOutputs;
 
 /**
  * OutputPageParserOutput hook is called after parse, before the HTML is

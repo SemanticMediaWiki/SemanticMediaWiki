@@ -2,14 +2,11 @@
 
 namespace SMW\MediaWiki\Jobs;
 
-use SMW\SerializerFactory;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Profiler;
-
 use Title;
-use Job;
 
 /**
  * Dispatcher class to invoke UpdateJob's

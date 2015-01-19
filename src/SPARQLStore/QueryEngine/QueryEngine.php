@@ -2,19 +2,15 @@
 
 namespace SMW\SPARQLStore\QueryEngine;
 
+use RuntimeException;
+use SMW\Query\Language\ThingDescription;
+use SMW\QueryOutputFormatter;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
-use SMW\SPARQLStore\QueryEngine\FederateResultSet;
-use SMW\Query\Language\ThingDescription;
-
-use SMW\QueryOutputFormatter;
-
-use SMWSparqlDatabase as SparqlDatabase;
-use SMWQueryResult as QueryResult;
 use SMWQuery as Query;
-
-use RuntimeException;
+use SMWQueryResult as QueryResult;
+use SMWSparqlDatabase as SparqlDatabase;
 
 /**
  * Class mapping SMWQuery objects to SPARQL, and for controlling the execution

@@ -2,20 +2,16 @@
 
 namespace SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Description;
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
-use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
-use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
-
-use SMW\Query\Language\Description;
-use SMW\Query\Language\Conjunction;
-
-use SMWDataItem as DataItem;
 use SMWExpElement as ExpElement;
-use SMWExpLiteral as ExpLiteral;
 use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;

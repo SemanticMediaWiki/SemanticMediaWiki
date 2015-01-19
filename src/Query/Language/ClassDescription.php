@@ -2,10 +2,9 @@
 
 namespace SMW\Query\Language;
 
-use SMW\DIWikiPage;
-use SMW\DataValueFactory;
-
 use Exception;
+use SMW\DataValueFactory;
+use SMW\DIWikiPage;
 
 /**
  * Description of a single class as given by a wiki category, or of a

@@ -2,27 +2,21 @@
 
 namespace SMW\SQLStore\QueryEngine\Compiler;
 
-use SMW\SQLStore\QueryEngine\QueryCompiler;
-use SMW\SQLStore\QueryEngine\QueryBuilder;
-use SMW\SQLStore\QueryEngine\QueryContainer;
-
-use SMW\Query\Language\Description;
-use SMW\Query\Language\SomeProperty;
-use SMW\Query\Language\Conjunction;
-use SMW\Query\Language\Disjunction;
-use SMW\Query\Language\ValueDescription;
-use SMW\Query\Language\ThingDescription;
-
-use SMW\DIWikiPage;
-use SMW\DataTypeRegistry;
-
-use SMWDataItem as DataItem;
-use SMWSql3SmwIds;
-use SMWSQLStore3;
-use SMWSQLStore3Table;
-use SMWDataItemHandler as DataItemHandler;
-
 use RuntimeException;
+use SMW\DataTypeRegistry;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Description;
+use SMW\Query\Language\Disjunction;
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\ValueDescription;
+use SMW\SQLStore\QueryEngine\QueryBuilder;
+use SMW\SQLStore\QueryEngine\QueryCompiler;
+use SMW\SQLStore\QueryEngine\QueryContainer;
+use SMWDataItem as DataItem;
+use SMWDataItemHandler as DataItemHandler;
+use SMWSql3SmwIds;
+use SMWSQLStore3Table;
 
 /**
  * @license GNU GPL v2+

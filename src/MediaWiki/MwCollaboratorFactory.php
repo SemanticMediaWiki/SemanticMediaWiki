@@ -2,13 +2,12 @@
 
 namespace SMW\MediaWiki;
 
-use SMW\ApplicationFactory;
-
-use Title;
 use Language;
-use WikiPage;
 use Revision;
+use SMW\ApplicationFactory;
+use Title;
 use User;
+use WikiPage;
 
 /**
  * @license GNU GPL v2+

@@ -2,14 +2,12 @@
 
 namespace SMW\Maintenance;
 
+use SMW\DIConcept;
 use SMW\MediaWiki\TitleLookup;
 use SMW\Reporter\MessageReporter;
 use SMW\Reporter\NullMessageReporter;
-
 use SMW\Settings;
 use SMW\Store;
-use SMW\DIConcept;
-
 use Title;
 
 /**

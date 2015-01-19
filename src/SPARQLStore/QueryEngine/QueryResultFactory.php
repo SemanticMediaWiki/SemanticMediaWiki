@@ -3,10 +3,9 @@
 namespace SMW\SPARQLStore\QueryEngine;
 
 use SMW\Store;
-
 use SMWExporter as Exporter;
-use SMWQueryResult as QueryResult;
 use SMWQuery as Query;
+use SMWQueryResult as QueryResult;
 
 /**
  * @ingroup Store

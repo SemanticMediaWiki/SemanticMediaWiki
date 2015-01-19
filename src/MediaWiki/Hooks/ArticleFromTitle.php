@@ -2,11 +2,10 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use Page;
 use SMW\ConceptPage as ConceptPage;
 use SMWPropertyPage as PropertyPage;
-
 use Title;
-use Page;
 
 /**
  * Register special classes for displaying semantic content on Property and

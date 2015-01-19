@@ -4,8 +4,6 @@ namespace SMW\MediaWiki\Hooks;
 
 use SMW\DIProperty;
 
-use Title;
-
 /**
  * Before displaying noarticletext or noarticletext-nopermission messages
  *

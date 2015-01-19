@@ -4,13 +4,8 @@ namespace SMW;
 
 use SMW\MediaWiki\MagicWordFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
-
-use SMW\ApplicationFactory;
-
 use SMWOutputs;
-
 use Title;
-use Html;
 
 /**
  * Class collects all functions for wiki text parsing / processing that are

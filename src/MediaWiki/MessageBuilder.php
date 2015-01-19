@@ -2,12 +2,11 @@
 
 namespace SMW\MediaWiki;
 
-use Message;
-use Language;
-use Title;
 use IContextSource;
-
+use Language;
+use Message;
 use RuntimeException;
+use Title;
 
 /**
  * Convenience class to build language dependant messages and special text

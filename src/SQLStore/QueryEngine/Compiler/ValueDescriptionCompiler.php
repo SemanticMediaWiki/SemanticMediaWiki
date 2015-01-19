@@ -2,15 +2,12 @@
 
 namespace SMW\SQLStore\QueryEngine\Compiler;
 
-use SMW\SQLStore\QueryEngine\QueryCompiler;
-use SMW\SQLStore\QueryEngine\QueryBuilder;
-use SMW\SQLStore\QueryEngine\QueryContainer;
-
-use SMW\Query\Language\ValueDescription;
-use SMW\Query\Language\Description;
-
 use SMW\DIWikiPage;
-
+use SMW\Query\Language\Description;
+use SMW\Query\Language\ValueDescription;
+use SMW\SQLStore\QueryEngine\QueryBuilder;
+use SMW\SQLStore\QueryEngine\QueryCompiler;
+use SMW\SQLStore\QueryEngine\QueryContainer;
 use SMWSql3SmwIds;
 
 /**

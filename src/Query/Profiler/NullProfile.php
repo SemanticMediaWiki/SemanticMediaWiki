@@ -2,8 +2,8 @@
 
 namespace SMW\Query\Profiler;
 
-use SMW\Subobject;
 use SMW\DIProperty;
+use SMW\Subobject;
 
 /**
  * @license GNU GPL v2+

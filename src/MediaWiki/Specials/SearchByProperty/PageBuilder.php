@@ -2,17 +2,13 @@
 
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
+use Html;
+use SMW\DataTypeRegistry;
 use SMW\MediaWiki\HtmlFormBuilder;
 use SMW\MediaWiki\MessageBuilder;
-use SMW\DataValueFactory;
-use SMW\DataTypeRegistry;
-
-use SMWStringValue as StringValue;
-use SMWInfolink as Infolink;
 use SMWDataValue as DataValue;
-use SMWDataItem as DataItem;
-
-use Html;
+use SMWInfolink as Infolink;
+use SMWStringValue as StringValue;
 
 /**
  * @license GNU GPL v2+

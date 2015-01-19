@@ -2,11 +2,8 @@
 
 namespace SMW\Query\Profiler;
 
-use SMW\Query\Language\Description;
-
 use SMW\Subobject;
 use SMWQuery as Query;
-
 use Title;
 
 /**

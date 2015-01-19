@@ -2,10 +2,9 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Factbox\FactboxCache;
 use SMW\ApplicationFactory;
 use SMW\CacheIdGenerator;
-
+use SMW\Factbox\FactboxCache;
 use WikiPage;
 
 /**

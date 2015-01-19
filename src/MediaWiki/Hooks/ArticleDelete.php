@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\MediaWiki\Jobs\DeleteSubjectJob;
 use SMW\ApplicationFactory;
+use SMW\MediaWiki\Jobs\DeleteSubjectJob;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleDelete

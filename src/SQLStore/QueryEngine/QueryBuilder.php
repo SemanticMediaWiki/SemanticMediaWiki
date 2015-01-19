@@ -2,16 +2,14 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
-use SMW\SQLStore\QueryEngine\Compiler\NamespaceCompiler;
-use SMW\SQLStore\QueryEngine\Compiler\DisjunctionConjunctionCompiler;
+use SMW\Query\Language\Description;
 use SMW\SQLStore\QueryEngine\Compiler\ClassDescriptionCompiler;
-use SMW\SQLStore\QueryEngine\Compiler\ValueDescriptionCompiler;
 use SMW\SQLStore\QueryEngine\Compiler\ConceptDescriptionCompiler;
+use SMW\SQLStore\QueryEngine\Compiler\DisjunctionConjunctionCompiler;
+use SMW\SQLStore\QueryEngine\Compiler\NamespaceCompiler;
 use SMW\SQLStore\QueryEngine\Compiler\SomePropertyCompiler;
 use SMW\SQLStore\QueryEngine\Compiler\ThingDescriptionCompiler;
-
-use SMW\Query\Language\Description;
-
+use SMW\SQLStore\QueryEngine\Compiler\ValueDescriptionCompiler;
 use SMW\Store;
 
 /**

@@ -2,22 +2,19 @@
 
 namespace SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
-use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
-use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
-use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
-
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;
-
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-
-use SMWExporter as Exporter;
-use SMWExpNsResource as ExpNsResource;
-use SMWTurtleSerializer as TurtleSerializer;
+use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMWDIBlob as DIBlob;
 use SMWDIUri as DIUri;
+use SMWExpNsResource as ExpNsResource;
+use SMWExporter as Exporter;
+use SMWTurtleSerializer as TurtleSerializer;
 
 /**
  * @license GNU GPL v2+
