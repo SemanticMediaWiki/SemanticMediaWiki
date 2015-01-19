@@ -1,6 +1,6 @@
 # Semantic MediaWiki 2.1
 
-This is not a release yet.
+Released on January 19th, 2015.
 
 ## Highlights
 
