@@ -1,9 +1,11 @@
 <?php
 
-namespace SMW;
+namespace SMW\Cache;
 
 use ObjectCache;
 use BagOStuff;
+use SMW\IdGenerator;
+use SMW\Settings;
 
 /**
  * Encapsulate access to MW's BagOStuff class

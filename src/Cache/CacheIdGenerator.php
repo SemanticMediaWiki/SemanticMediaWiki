@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW;
+namespace SMW\Cache;
 
 /**
  * This class is responsible for generating a cache key
@@ -11,6 +11,7 @@ namespace SMW;
  *
  * @author mwjames
  */
+use SMW\HashIdGenerator;
 
 /**
  * This class is responsible for generating a cache key

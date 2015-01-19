@@ -1,9 +1,12 @@
 <?php
 
-namespace SMW;
+namespace SMW\Cache;
 
 use InvalidArgumentException;
 use MWTimestamp;
+use SMW\Cache\CacheHandler;
+use SMW\Cache\CacheIdGenerator;
+use SMW\ObjectDictionary;
 
 /**
  * Handling of cached results

@@ -78,7 +78,7 @@ class MediaWikiIntegrationForRegisteredHookTest extends MwDBaseUnitTestCase {
 
 	public function testPagePurge() {
 
-		$this->applicationFactory->registerObject( 'CacheHandler', new \SMW\CacheHandler( new \HashBagOStuff() ) );
+		$this->applicationFactory->registerObject( 'CacheHandler', new \SMW\Cache\CacheHandler( new \HashBagOStuff() ) );
 
 		$this->title = Title::newFromText( __METHOD__ );
 

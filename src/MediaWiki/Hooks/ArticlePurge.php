@@ -2,9 +2,10 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\ApplicationFactory;
-use SMW\CacheIdGenerator;
 use SMW\Factbox\FactboxCache;
+use SMW\ApplicationFactory;
+use SMW\Cache\CacheIdGenerator;
+
 use WikiPage;
 
 /**
@@ -41,7 +42,7 @@ class ArticlePurge {
 	/**
 	 * @since 1.9
 	 *
-	 * @return CacheIdGenerator
+	 * @return \SMW\Cache\CacheIdGenerator
 	 */
 	public static function newCacheId( $pageId ) {
 		return new CacheIdGenerator( $pageId, 'autorefresh' );

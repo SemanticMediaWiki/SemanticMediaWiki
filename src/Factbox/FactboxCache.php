@@ -2,11 +2,11 @@
 
 namespace SMW\Factbox;
 
-use OutputPage;
 use ParserOutput;
+use OutputPage;
 use SMW\ApplicationFactory;
-use SMW\CacheableResultMapper;
-use SMW\CacheIdGenerator;
+use SMW\Cache\CacheableResultMapper;
+use SMW\Cache\CacheIdGenerator;
 use SMW\Profiler;
 use SMW\SimpleDictionary;
 use Title;
@@ -141,7 +141,7 @@ class FactboxCache {
 	 *
 	 * @since 1.9
 	 *
-	 * @return CacheIdGenerator
+	 * @return \SMW\Cache\CacheIdGenerator
 	 */
 	public static function newCacheId( $pageId ) {
 		return new CacheIdGenerator( $pageId, 'factbox' );

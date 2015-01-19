@@ -2,10 +2,10 @@
 
 namespace SMW\Store;
 
-use SMW\CacheableResultMapper;
+use SMW\Cache\CacheableResultMapper;
+use SMW\ResultCollector;
 use SMW\DIProperty;
 use SMW\ObjectDictionary;
-use SMW\ResultCollector;
 use SMW\SQLStore\TableDefinition;
 use SMWRequestOptions;
 
@@ -70,7 +70,7 @@ abstract class CacheableResultCollector implements ResultCollector {
 	 *
 	 * @param SMWRequestOptions $requestOptions
 	 *
-	 * @return CacheableResultCollector
+	 * @return $this
 	 */
 	public function setRequestOptions( SMWRequestOptions $requestOptions ) {
 		$this->requestOptions = $requestOptions;
