@@ -317,5 +317,4 @@
 	"log-description-smw": "A description for Semantic MediaWiki entries displayed in [[Special:Log]].",
 	"smw-datavalue-import-unknownns": "Error message shown for an unknown owl import namespace",
 	"smw-pa-property-predefined_impo": "Default introductory text for predefined properties\".\n\nParameters:\n* $1 - Name of the invoked predefined property"
-
 }
