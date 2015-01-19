@@ -156,8 +156,6 @@ class StatisticsCollector extends CacheableResultCollector {
 	 * @return number
 	 */
 	public function getPropertyPageCount() {
-
-		$count = 0;
 		$count = $this->dbConnection->estimateRowCount(
 			'page',
 			'*',

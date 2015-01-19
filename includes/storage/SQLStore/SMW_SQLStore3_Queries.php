@@ -1,7 +1,17 @@
 <?php
 
 use SMW\DataTypeRegistry;
+use SMW\Query\Language\ClassDescription;
+use SMW\Query\Language\ConceptDescription;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Description;
+use SMW\Query\Language\Disjunction;
+use SMW\Query\Language\NamespaceDescription;
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\ValueDescription;
 use SMW\QueryOutputFormatter;
+use SMW\SQLStore\TableDefinition;
 
 use SMW\SQLStore\QueryEngine\QueryContainer as SMWSQLStore3Query;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
@@ -12,25 +22,62 @@ use SMW\SQLStore\QueryEngine\QueryBuilder;
  */
 class SMWSQLStore3QueryEngine {
 
-	/** Database slave to be used */
-	protected $m_dbs; // TODO: should temporary tables be created on the master DB?
-	/** Parent SMWSQLStore3. */
+	/**
+	 * // TODO: should temporary tables be created on the master DB?
+	 *
+	 * @var DatabaseBase
+	 */
+	protected $m_dbs;
+
+	/**
+	 * Parent SMWSQLStore3.
+	 *
+	 * @var SMWSQLStore3
+	 */
 	protected $m_store;
-	/** Query mode copied from given query. Some submethods act differently when in SMWQuery::MODE_DEBUG. */
+
+	/**
+	 * Query mode copied from given query. Some submethods act differently when in SMWQuery::MODE_DEBUG.
+	 *
+	 * @var int
+	 */
 	protected $m_qmode;
-	/** Array of generated SMWSQLStore3Query query descriptions (index => object). */
+
+	/**
+	 * Array of generated SMWSQLStore3Query query descriptions (index => object)
+	 *
+	 * @var SMWSQLStore3Query[]
+	 */
 	protected $m_queries = array();
-	/** Array of arrays of executed queries, indexed by the temporary table names results were fed into. */
+
+	/**
+	 * Array of arrays of executed queries, indexed by the temporary table names results were fed into.
+	 *
+	 * @var array
+	 */
 	protected $m_querylog = array();
+
 	/**
 	 * Array of sorting requests ("Property_name" => "ASC"/"DESC"). Used during query
 	 * processing (where these property names are searched while compiling the query
 	 * conditions).
+	 *
+	 * @var string[]
 	 */
 	protected $m_sortkeys;
-	/** Cache of computed hierarchy queries for reuse ("catetgory/property value string" => "tablename"). */
+
+	/**
+	 * Cache of computed hierarchy queries for reuse ("catetgory/property value string" => "tablename").
+	 *
+	 * @var string[]
+	 */
 	protected $m_hierarchies = array();
-	/** Local collection of error strings, passed on to callers if possible. */
+
+	/**
+	 * Local collection of error strings, passed on to callers if possible.
+	 *
+	 * @var string[]
+	 */
 	protected $m_errors = array();
 
 	/**
@@ -227,7 +274,7 @@ class SMWSQLStore3QueryEngine {
 	public function getQueryResult( SMWQuery $query ) {
 		global $smwgIgnoreQueryErrors, $smwgQSortingSupport;
 
-		if ( ( !$smwgIgnoreQueryErrors || $query->getDescription() instanceof SMWThingDescription ) &&
+		if ( ( !$smwgIgnoreQueryErrors || $query->getDescription() instanceof ThingDescription ) &&
 		     $query->querymode != SMWQuery::MODE_DEBUG &&
 		     count( $query->getErrors() ) > 0 ) {
 			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->m_store, false );
@@ -638,8 +685,6 @@ class SMWSQLStore3QueryEngine {
 	protected function executeHierarchyQuery( SMWSQLStore3Query &$query ) {
 		global $wgDBtype, $smwgQSubpropertyDepth, $smwgQSubcategoryDepth;
 
-		$fname = "SMWSQLStore3Queries::executeQueries-hierarchy-{$query->type} (SMW)";
-
 		$db = $this->m_store->getConnection();
 
 		$depth = ( $query->type == SMWSQLStore3Query::Q_PROP_HIERARCHY ) ? $smwgQSubpropertyDepth : $smwgQSubcategoryDepth;
@@ -751,7 +796,7 @@ class SMWSQLStore3QueryEngine {
 					$sortprop = SMWPropertyValue::makeUserProperty( $propkey );
 
 					if ( $sortprop->isValid() ) {
-						$extraproperties[] = new SMWSomeProperty( $sortprop->getDataItem(), new SMWThingDescription() );
+						$extraproperties[] = new SomeProperty( $sortprop->getDataItem(), new ThingDescription() );
 					}
 				}
 			}
@@ -759,8 +804,9 @@ class SMWSQLStore3QueryEngine {
 
 		// (2) compile according conditions and hack them into $qobj:
 		if ( count( $extraproperties ) > 0 ) {
+
 			$this->queryBuilder->setSortKeys( $this->m_sortkeys );
-			$this->queryBuilder->buildQueryContainer( new SMWConjunction( $extraproperties ) );
+			$this->queryBuilder->buildQueryContainer( new Conjunction( $extraproperties ) );
 
 			$newqid = $this->queryBuilder->getLastContainerId();
 			$this->m_queries = $this->queryBuilder->getQueryContainer();
@@ -781,16 +827,18 @@ class SMWSQLStore3QueryEngine {
 	 * Get a SQL option array for the given query and preprocessed query object at given id.
 	 *
 	 * @param SMWQuery $query
-	 * @param integer $rootid
+	 * @param integer $rootId
+	 *
+	 * @return array
 	 */
-	protected function getSQLOptions( SMWQuery $query, $rootid ) {
+	protected function getSQLOptions( SMWQuery $query, $rootId ) {
 		global $smwgQSortingSupport, $smwgQRandSortingSupport;
 
 		$result = array( 'LIMIT' => $query->getLimit() + 5, 'OFFSET' => $query->getOffset() );
 
 		// Build ORDER BY options using discovered sorting fields.
 		if ( $smwgQSortingSupport ) {
-			$qobj = $this->m_queries[$rootid];
+			$qobj = $this->m_queries[$rootId];
 
 			foreach ( $this->m_sortkeys as $propkey => $order ) {
 
@@ -832,32 +880,34 @@ class SMWSQLStore3QueryEngine {
 	 * keep them after query answering. Also, PostgreSQL tables will use a RULE to achieve built-in
 	 * duplicate elimination. The latter is done using INSERT IGNORE in MySQL.
 	 *
-	 * @param string $tablename
+	 * @param string $tableName
+	 *
+	 * @return string
 	 */
-	protected function getCreateTempIDTableSQL( $tablename ) {
+	protected function getCreateTempIDTableSQL( $tableName ) {
 		global $wgDBtype;
 
 		if ( $wgDBtype == 'postgres' ) { // PostgreSQL: no memory tables, use RULE to emulate INSERT IGNORE
 
 			// Remove any double quotes from the name
-			$tablename = str_replace( '"', '', $tablename );
+			$tableName = str_replace( '"', '', $tableName );
 
-			return "CREATE OR REPLACE FUNCTION pg_temp.create_{$tablename}() RETURNS void AS "
+			return "CREATE OR REPLACE FUNCTION pg_temp.create_{$tableName}() RETURNS void AS "
 			. "$$ "
 			. "BEGIN "
-			. " IF EXISTS(SELECT NULL FROM pg_tables WHERE tablename='{$tablename}' AND schemaname = ANY (current_schemas(true))) "
-			. " THEN DELETE FROM {$tablename}; "
+			. " IF EXISTS(SELECT NULL FROM pg_tables WHERE tablename='{$tableName}' AND schemaname = ANY (current_schemas(true))) "
+			. " THEN DELETE FROM {$tableName}; "
 			. " ELSE "
-			. "  CREATE TEMPORARY TABLE {$tablename} (id INTEGER PRIMARY KEY); "
-			. "    CREATE RULE {$tablename}_ignore AS ON INSERT TO {$tablename} WHERE (EXISTS (SELECT NULL FROM {$tablename} "
-			. "	 WHERE ({$tablename}.id = new.id))) DO INSTEAD NOTHING; "
+			. "  CREATE TEMPORARY TABLE {$tableName} (id INTEGER PRIMARY KEY); "
+			. "    CREATE RULE {$tableName}_ignore AS ON INSERT TO {$tableName} WHERE (EXISTS (SELECT NULL FROM {$tableName} "
+			. "	 WHERE ({$tableName}.id = new.id))) DO INSTEAD NOTHING; "
 			. " END IF; "
 			. "END; "
 			. "$$ "
 			. "LANGUAGE 'plpgsql'; "
-			. "SELECT pg_temp.create_{$tablename}(); ";
+			. "SELECT pg_temp.create_{$tableName}(); ";
 		} else { // MySQL_ just a temporary table, use INSERT IGNORE later
-			return "CREATE TEMPORARY TABLE " . $tablename . "( id INT UNSIGNED KEY ) ENGINE=MEMORY";
+			return "CREATE TEMPORARY TABLE " . $tableName . "( id INT UNSIGNED KEY ) ENGINE=MEMORY";
 		}
 	}
 
