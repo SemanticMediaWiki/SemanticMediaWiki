@@ -8,11 +8,12 @@ technical documentation. The later can be found in [docs/technical](technical/RE
 ## Site admin documentation
 
 * [Installation instructions](INSTALL.md)
-* [SMW 1.9 release notes](releasenotes/RELEASE-NOTES-1.9.md)
-* [SMW 1.9.1 release notes](releasenotes/RELEASE-NOTES-1.9.1.md)
-* [SMW 1.9.2 release notes](releasenotes/RELEASE-NOTES-1.9.2.md)
-* [SMW 2.0 release notes](releasenotes/RELEASE-NOTES-2.0.md)
 * [Latest release notes](RELEASE-NOTES.md)
+* [SMW 2.1 release notes](releasenotes/RELEASE-NOTES-2.1.md)
+* [SMW 2.0 release notes](releasenotes/RELEASE-NOTES-2.0.md)
+* [SMW 1.9.2 release notes](releasenotes/RELEASE-NOTES-1.9.2.md)
+* [SMW 1.9.1 release notes](releasenotes/RELEASE-NOTES-1.9.1.md)
+* [SMW 1.9 release notes](releasenotes/RELEASE-NOTES-1.9.md)
 * [All release notes](releasenotes)
 
 ## Developer documentation
