@@ -90,7 +90,7 @@ class SMWSQLStore3QueryEngine {
 			$desc = $qp->getQueryDescription( $desctxt );
 
 			$this->queryBuilder->setToInitialBuildState()
-				->setSortkeys( $this->m_sortkeys )
+				->setSortKeys( $this->m_sortkeys )
 				->buildQueryContainer( $desc );
 
 			$qid = $this->queryBuilder->getLastContainerId();
@@ -249,7 +249,7 @@ class SMWSQLStore3QueryEngine {
 
 		// *** First compute abstract representation of the query (compilation) ***//
 		$this->queryBuilder->setToInitialBuildState()
-			->setSortkeys( $this->m_sortkeys )
+			->setSortKeys( $this->m_sortkeys )
 			->buildQueryContainer( $query->getDescription() ); // compile query, build query "plan"
 
 		$qid = $this->queryBuilder->getLastContainerId();
@@ -762,7 +762,7 @@ class SMWSQLStore3QueryEngine {
 		// (2) compile according conditions and hack them into $qobj:
 		if ( count( $extraproperties ) > 0 ) {
 			$this->queryBuilder->setToInitialBuildState()
-				->setSortkeys( $this->m_sortkeys )
+				->setSortKeys( $this->m_sortkeys )
 				->buildQueryContainer( new SMWConjunction( $extraproperties ) );
 
 			$newqid = $this->queryBuilder->getLastContainerId();

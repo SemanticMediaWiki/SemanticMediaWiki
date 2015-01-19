@@ -12,6 +12,7 @@ use SMW\Query\Language\Description;
 use SMW\DIProperty;
 
 /**
+ * @license GNU GPL v2+
  * @since 2.1
  *
  * @author Markus Krötzsch
@@ -88,7 +89,7 @@ class ClassDescriptionCompiler implements QueryCompiler {
 	}
 
 	private function getTableNameForProperty( DIProperty $property ) {
-		return $this->queryBuilder->getStore()->getDatabase()->tableName(
+		return $this->queryBuilder->getStore()->getConnection( 'mw.db' )->tableName(
 			$this->queryBuilder->getStore()->findPropertyTableID( $property )
 		);
 	}

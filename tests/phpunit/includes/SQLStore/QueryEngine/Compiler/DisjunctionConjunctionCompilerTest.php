@@ -59,7 +59,7 @@ class DisjunctionConjunctionCompilerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$store->expects( $this->any() )
-			->method( 'getDatabase' )
+			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
 		$instance = new DisjunctionConjunctionCompiler( new QueryBuilder( $store ) );

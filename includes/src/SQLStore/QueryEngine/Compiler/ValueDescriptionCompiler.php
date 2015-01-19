@@ -14,6 +14,7 @@ use SMW\DIWikiPage;
 use SMWSql3SmwIds;
 
 /**
+ * @license GNU GPL v2+
  * @since 2.1
  *
  * @author Markus Krötzsch
@@ -28,12 +29,18 @@ class ValueDescriptionCompiler implements QueryCompiler {
 	private $queryBuilder;
 
 	/**
+	 * @var CompilerHelper
+	 */
+	private $compilerHelper;
+
+	/**
 	 * @since 2.1
 	 *
 	 * @param QueryBuilder $queryBuilder
 	 */
 	public function __construct( QueryBuilder $queryBuilder ) {
 		$this->queryBuilder = $queryBuilder;
+		$this->compilerHelper = new CompilerHelper();
 	}
 
 	/**
@@ -75,20 +82,8 @@ class ValueDescriptionCompiler implements QueryCompiler {
 			$query->joinfield = "{$query->alias}.smw_id";
 			$value = $description->getDataItem()->getSortKey();
 
-			switch ( $description->getComparator() ) {
-				case SMW_CMP_LEQ: $comp = '<='; break;
-				case SMW_CMP_GEQ: $comp = '>='; break;
-				case SMW_CMP_LESS: $comp = '<'; break;
-				case SMW_CMP_GRTR: $comp = '>'; break;
-				case SMW_CMP_NEQ: $comp = '!='; break;
-				case SMW_CMP_LIKE: case SMW_CMP_NLKE:
-					$comp = ' LIKE ';
-					if ( $description->getComparator() == SMW_CMP_NLKE ) $comp = " NOT{$comp}";
-					$value =  str_replace( array( '%', '_', '*', '?' ), array( '\%', '\_', '%', '_' ), $value );
-				break;
-			}
-
-			$query->where = "{$query->alias}.smw_sortkey$comp" . $this->queryBuilder->getStore()->getDatabase()->addQuotes( $value );
+			$comparator = $this->compilerHelper->getSQLComparatorToValue( $description, $value );
+			$query->where = "{$query->alias}.smw_sortkey$comparator" . $this->queryBuilder->getStore()->getConnection( 'mw.db' )->addQuotes( $value );
 		}
 
 		return $query;

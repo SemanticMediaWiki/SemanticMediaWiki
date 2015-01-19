@@ -11,6 +11,7 @@ use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
 
 /**
+ * @license GNU GPL v2+
  * @since 2.1
  *
  * @author Markus Krötzsch

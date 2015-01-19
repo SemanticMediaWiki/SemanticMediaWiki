@@ -6,6 +6,7 @@ namespace SMW\SQLStore\QueryEngine;
  * Class for representing a single (sub)query description. Simple data
  * container.
  *
+ * @license GNU GPL v2+
  * @since 2.1
  *
  * @author Markus Krötzsch

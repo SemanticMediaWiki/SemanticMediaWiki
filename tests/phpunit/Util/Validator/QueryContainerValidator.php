@@ -46,10 +46,13 @@ class QueryContainerValidator extends \PHPUnit_Framework_Assert {
 	 */
 	public function assertThatContainerHasProperties( $expected, QueryContainer $queryContainer ) {
 		$this->assertPublicProperty( $expected, $queryContainer, 'type' );
-		$this->assertPublicProperty( $expected, $queryContainer, 'where' );
-		$this->assertPublicProperty( $expected, $queryContainer, 'components' );
 		$this->assertPublicProperty( $expected, $queryContainer, 'joinfield' );
+		$this->assertPublicProperty( $expected, $queryContainer, 'jointable' );
+		$this->assertPublicProperty( $expected, $queryContainer, 'sortfields' );
+		$this->assertPublicProperty( $expected, $queryContainer, 'components' );
 		$this->assertPublicProperty( $expected, $queryContainer, 'alias' );
+		$this->assertPublicProperty( $expected, $queryContainer, 'where' );
+		$this->assertPublicProperty( $expected, $queryContainer, 'from' );
 		$this->assertPublicProperty( $expected, $queryContainer, 'queryNumber' );
 	}
 

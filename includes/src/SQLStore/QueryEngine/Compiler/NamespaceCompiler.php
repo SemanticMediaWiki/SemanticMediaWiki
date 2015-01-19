@@ -12,6 +12,7 @@ use SMW\Query\Language\Description;
 use SMWSql3SmwIds;
 
 /**
+ * @license GNU GPL v2+
  * @since 2.1
  *
  * @author Markus Krötzsch
@@ -57,7 +58,7 @@ class NamespaceCompiler implements QueryCompiler {
 		$query = new QueryContainer();
 		$query->jointable = SMWSql3SmwIds::tableName;
 		$query->joinfield = "$query->alias.smw_id";
-		$query->where = "$query->alias.smw_namespace=" . $this->queryBuilder->getStore()->getDatabase()->addQuotes( $description->getNamespace() );
+		$query->where = "$query->alias.smw_namespace=" . $this->queryBuilder->getStore()->getConnection( 'mw.db' )->addQuotes( $description->getNamespace() );
 
 		return $query;
 	}

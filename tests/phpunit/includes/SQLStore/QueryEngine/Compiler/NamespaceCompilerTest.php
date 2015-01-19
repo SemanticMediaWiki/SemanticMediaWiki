@@ -54,7 +54,7 @@ class NamespaceCompilerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$store->expects( $this->any() )
-			->method( 'getDatabase' )
+			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
 		$queryBuilder = new QueryBuilder( $store );

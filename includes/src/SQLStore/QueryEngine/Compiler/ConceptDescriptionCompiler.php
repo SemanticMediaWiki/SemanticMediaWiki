@@ -15,6 +15,7 @@ use SMWQueryParser as QueryParser;
 use SMWSQLStore3;
 
 /**
+ * @license GNU GPL v2+
  * @since 2.1
  *
  * @author Markus Krötzsch
@@ -85,7 +86,7 @@ class ConceptDescriptionCompiler implements QueryCompiler {
 
 			$query->jointable = SMWSQLStore3::CONCEPT_CACHE_TABLE;
 			$query->joinfield = "$query->alias.s_id";
-			$query->where = "$query->alias.o_id=" . $this->queryBuilder->getStore()->getDatabase()->addQuotes( $conceptId );
+			$query->where = "$query->alias.o_id=" . $this->queryBuilder->getStore()->getConnection( 'mw.db' )->addQuotes( $conceptId );
 		} elseif ( $row->concept_txt ) { // Parse description and process it recursively.
 			if ( $may_be_computed ) {
 				$qid = $this->queryBuilder->compileQueries( $this->getConceptQueryDescription( $row->concept_txt ) );
@@ -111,7 +112,7 @@ class ConceptDescriptionCompiler implements QueryCompiler {
 	 * do on getWikiValue
 	 */
 	private function getConceptForId( $id ) {
-		return $this->queryBuilder->getStore()->getDatabase()->selectRow(
+		return $this->queryBuilder->getStore()->getConnection( 'mw.db' )->selectRow(
 			'smw_fpt_conc',
 			array( 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date' ),
 			array( 's_id' => $id ),

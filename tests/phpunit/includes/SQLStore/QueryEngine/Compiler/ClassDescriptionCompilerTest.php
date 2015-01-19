@@ -66,7 +66,7 @@ class ClassDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$store->expects( $this->any() )
-			->method( 'getDatabase' )
+			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
 		$store->expects( $this->any() )

@@ -57,7 +57,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$store->expects( $this->any() )
-			->method( 'getDatabase' )
+			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
 		$description = new NamespaceDescription( NS_HELP );
@@ -89,7 +89,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$store->expects( $this->any() )
-			->method( 'getDatabase' )
+			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
 		$description = new Disjunction();
@@ -138,7 +138,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$store->expects( $this->any() )
-			->method( 'getDatabase' )
+			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
 		$store->expects( $this->once() )
