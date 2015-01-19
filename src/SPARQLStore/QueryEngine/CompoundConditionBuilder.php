@@ -2,25 +2,20 @@
 
 namespace SMW\SPARQLStore\QueryEngine;
 
-use SMW\SPARQLStore\QueryEngine\Condition\Condition;
-use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
-use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
-
+use RuntimeException;
+use SMW\DataTypeRegistry;
+use SMW\DIProperty;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
-
-use SMW\DataTypeRegistry;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-
+use SMW\SPARQLStore\QueryEngine\Condition\Condition;
+use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
 use SMWDataItem as DataItem;
+use SMWExpElement as ExpElement;
+use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
-use SMWExpNsResource as ExpNsResource;
-use SMWExpElement as ExpElement;
-
-use RuntimeException;
 
 /**
  * Build an internal representation for a SPARQL condition from individual query

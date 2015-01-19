@@ -2,16 +2,13 @@
 
 namespace SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
-use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
-
-use SMW\Query\Language\Description;
-use SMW\Query\Language\ConceptDescription;
-
+use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\ApplicationFactory;
-
+use SMW\Query\Language\ConceptDescription;
+use SMW\Query\Language\Description;
+use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMWExporter as Exporter;
 
 /**

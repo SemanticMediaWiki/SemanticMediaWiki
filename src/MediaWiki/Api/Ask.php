@@ -2,9 +2,8 @@
 
 namespace SMW\MediaWiki\Api;
 
-use SMWQueryProcessor;
-
 use ApiBase;
+use SMWQueryProcessor;
 
 /**
  * API module to query SMW by providing a query in the ask language.

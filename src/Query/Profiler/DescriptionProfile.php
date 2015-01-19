@@ -3,10 +3,9 @@
 namespace SMW\Query\Profiler;
 
 use SMW\DIProperty;
-
 use SMW\Query\Language\Description;
-use SMWDINumber as DINumber;
 use SMWDIBlob as DIBlob;
+use SMWDINumber as DINumber;
 
 /**
  * @license GNU GPL v2+

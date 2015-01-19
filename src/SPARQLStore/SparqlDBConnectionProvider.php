@@ -2,10 +2,8 @@
 
 namespace SMW\SPARQLStore;
 
-use SMW\DBConnectionProvider;
-use SMW\SPARQLStore\GenericHttpDatabaseConnector;
-
 use RuntimeException;
+use SMW\DBConnectionProvider;
 
 /**
  * @ingroup SMW

@@ -2,11 +2,9 @@
 
 namespace SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
-
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ThingDescription;
-
+use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
 use SMWExporter as Exporter;
 
 /**

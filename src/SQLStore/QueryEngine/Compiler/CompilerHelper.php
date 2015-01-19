@@ -2,10 +2,9 @@
 
 namespace SMW\SQLStore\QueryEngine\Compiler;
 
+use RuntimeException;
 use SMW\Query\Language\ValueDescription;
 use SMWDIUri as DIUri;
-
-use RuntimeException;
 
 /**
  * @license GNU GPL v2+

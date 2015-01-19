@@ -4,7 +4,6 @@ namespace SMW\MediaWiki\Specials\SearchByProperty;
 
 use SMW\DataValueFactory;
 use SMW\UrlEncoder;
-
 use SMWPropertyValue as PropertyValue;
 
 /**

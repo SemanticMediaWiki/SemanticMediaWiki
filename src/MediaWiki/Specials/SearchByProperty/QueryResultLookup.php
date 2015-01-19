@@ -2,17 +2,14 @@
 
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
-use SMW\Query\Language\ValueDescription;
-use SMW\Query\Language\ThingDescription;
-use SMW\Query\Language\SomeProperty;
-
 use SMW\DataValueFactory;
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\ValueDescription;
 use SMW\Store;
-
-use SMWRequestOptions as RequestOptions;
-use SMWStringCondition as StringCondition;
-use SMWQuery as Query;
 use SMWPrintRequest as PrintRequest;
+use SMWQuery as Query;
+use SMWRequestOptions as RequestOptions;
 
 /**
  * @license GNU GPL v2+

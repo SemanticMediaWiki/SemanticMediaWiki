@@ -2,13 +2,11 @@
 
 namespace SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 
+use SMW\Query\Language\ClassDescription;
+use SMW\Query\Language\Description;
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
-
-use SMW\Query\Language\Description;
-use SMW\Query\Language\ClassDescription;
-
 use SMWDataItem as DataItem;
 use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;

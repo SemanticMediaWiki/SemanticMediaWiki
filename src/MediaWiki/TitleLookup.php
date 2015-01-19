@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki;
 
-use Title;
 use RuntimeException;
+use Title;
 
 /**
  * A convenience class to encapsulate MW related database interaction

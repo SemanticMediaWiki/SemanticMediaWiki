@@ -2,12 +2,11 @@
 
 namespace SMW\MediaWiki;
 
-use SMW\DBConnectionProvider;
-
 use DBError;
 use ResultWrapper;
-use UnexpectedValueException;
 use RuntimeException;
+use SMW\DBConnectionProvider;
+use UnexpectedValueException;
 
 /**
  * This adapter class covers MW DB specific operations. Changes to the

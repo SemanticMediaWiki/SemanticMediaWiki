@@ -2,10 +2,8 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\ApplicationFactory;
-
 use Parser;
-use Title;
+use SMW\ApplicationFactory;
 
 /**
  * Hook: ParserAfterTidy to add some final processing to the

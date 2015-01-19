@@ -2,13 +2,12 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use File;
+use ParserOptions;
 use SMW\ApplicationFactory;
 use SMW\Localizer;
-
-use File;
 use Title;
 use User;
-use ParserOptions;
 
 /**
  * Fires when a local file upload occurs

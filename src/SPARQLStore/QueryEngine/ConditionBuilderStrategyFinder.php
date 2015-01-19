@@ -2,19 +2,16 @@
 
 namespace SMW\SPARQLStore\QueryEngine;
 
-use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ConditionBuilder;
-use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ValueConditionBuilder;
+use SMW\Query\Language\Description;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ClassConditionBuilder;
-use SMW\SPARQLStore\QueryEngine\ConditionBuilder\NamespaceConditionBuilder;
-use SMW\SPARQLStore\QueryEngine\ConditionBuilder\PropertyConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ConceptConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ConjunctionConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder\DisjunctionConditionBuilder;
-use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ConceptConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder\NamespaceConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder\PropertyConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ThingConditionBuilder;
-
-use SMW\Query\Language\Description;
-
-use RuntimeException;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder\ValueConditionBuilder;
 
 /**
  * @license GNU GPL v2+

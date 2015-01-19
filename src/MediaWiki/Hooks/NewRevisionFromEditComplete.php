@@ -2,11 +2,9 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\MediaWiki\EditInfoProvider;
-use SMW\ApplicationFactory;
-
 use ParserOutput;
-use Title;
+use SMW\ApplicationFactory;
+use SMW\MediaWiki\EditInfoProvider;
 
 /**
  * Hook: NewRevisionFromEditComplete called when a revision was inserted

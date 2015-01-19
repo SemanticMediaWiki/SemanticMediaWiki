@@ -4,7 +4,6 @@ namespace SMW\Annotator;
 
 use SMW\DIProperty;
 use SMW\PropertyAnnotator;
-
 use SMWDIBlob as DIBlob;
 
 /**

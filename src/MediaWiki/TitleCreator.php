@@ -3,7 +3,6 @@
 namespace SMW\MediaWiki;
 
 use Title;
-use RuntimeException;
 
 /**
  * @license GNU GPL v2+

@@ -2,10 +2,9 @@
 
 namespace SMW\MediaWiki;
 
-use SMW\DBConnectionProvider;
-
 use DatabaseBase;
 use RuntimeException;
+use SMW\DBConnectionProvider;
 
 /**
  * @license GNU GPL v2+

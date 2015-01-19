@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki;
 
-use WikiPage;
 use Revision;
 use User;
+use WikiPage;
 
 /**
  * @license GNU GPL v2+

@@ -2,8 +2,8 @@
 
 namespace SMW\Factbox;
 
-use ParserOutput;
 use OutputPage;
+use ParserOutput;
 use SMW\ApplicationFactory;
 use SMW\CacheableResultMapper;
 use SMW\CacheIdGenerator;

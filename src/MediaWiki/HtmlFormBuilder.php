@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki;
 
-use Xml;
 use Html;
 use Title;
+use Xml;
 
 /**
  * Convenience class to build a html form by using a fluid interface

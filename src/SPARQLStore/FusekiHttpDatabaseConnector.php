@@ -3,8 +3,8 @@
 namespace SMW\SPARQLStore;
 
 use SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException;
-use SMW\SPARQLStore\QueryEngine\RawResultParser;
 use SMW\SPARQLStore\QueryEngine\FederateResultSet;
+use SMW\SPARQLStore\QueryEngine\RawResultParser;
 
 /**
  * @see https://jena.apache.org/documentation/serving_data/index.html

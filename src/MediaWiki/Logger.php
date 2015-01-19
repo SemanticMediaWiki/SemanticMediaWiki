@@ -2,9 +2,8 @@
 
 namespace SMW\MediaWiki;
 
-use SMW\Logger as LoggerInterface;
-
 use ManualLogEntry;
+use SMW\Logger as LoggerInterface;
 use Title;
 use User;
 

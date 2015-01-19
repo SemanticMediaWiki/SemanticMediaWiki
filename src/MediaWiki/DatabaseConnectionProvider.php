@@ -3,8 +3,6 @@
 namespace SMW\MediaWiki;
 
 use SMW\DBConnectionProvider;
-use SMW\MediaWiki\LazyDBConnectionProvider;
-use SMW\MediaWiki\Database;
 
 /**
  * @license GNU GPL v2+

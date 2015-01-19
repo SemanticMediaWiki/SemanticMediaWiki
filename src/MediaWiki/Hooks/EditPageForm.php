@@ -2,11 +2,10 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\MediaWiki\HtmlFormBuilder;
-use SMW\ApplicationFactory;
-
-use SMW\DIProperty;
 use EditPage;
+use SMW\ApplicationFactory;
+use SMW\DIProperty;
+use SMW\MediaWiki\HtmlFormBuilder;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/EditPage::showEditForm:initial

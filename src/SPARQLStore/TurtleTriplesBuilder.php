@@ -2,15 +2,14 @@
 
 namespace SMW\SPARQLStore;
 
-use SMW\SemanticData;
 use SMW\DIWikiPage;
-
-use SMWTurtleSerializer as TurtleSerializer;
-use SMWExporter;
-use SMWExpElement;
+use SMW\SemanticData;
 use SMWExpData;
-use SMWExpResource;
+use SMWExpElement;
 use SMWExpNsResource;
+use SMWExporter;
+use SMWExpResource;
+use SMWTurtleSerializer as TurtleSerializer;
 
 /**
  * @ingroup Sparql

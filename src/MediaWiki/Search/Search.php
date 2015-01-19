@@ -2,19 +2,17 @@
 
 namespace SMW\MediaWiki\Search;
 
+use Content;
+use DatabaseBase;
+use RuntimeException;
+use SearchEngine;
+use SMW\ApplicationFactory;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
-
-use Content;
-use DatabaseBase;
-use SMW\ApplicationFactory;
 use SMWQuery;
 use SMWQueryResult as QueryResult;
-
 use Title;
-use SearchEngine;
-use RuntimeException;
 
 /**
  * Search engine that will try to find wiki pages by interpreting the search

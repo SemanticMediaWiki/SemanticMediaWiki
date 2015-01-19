@@ -2,11 +2,9 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\ApplicationFactory;
-use SMW\ContentParser;
-use SMW\SemanticData;
-
 use LinksUpdate;
+use SMW\ApplicationFactory;
+use SMW\SemanticData;
 
 /**
  * LinksUpdateConstructed hook is called at the end of LinksUpdate()

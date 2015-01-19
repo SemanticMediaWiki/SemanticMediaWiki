@@ -2,14 +2,12 @@
 
 namespace SMW\SQLStore\QueryEngine\Compiler;
 
-use SMW\SQLStore\QueryEngine\QueryCompiler;
-use SMW\SQLStore\QueryEngine\QueryBuilder;
-use SMW\SQLStore\QueryEngine\QueryContainer;
-
+use SMW\DIProperty;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Description;
-
-use SMW\DIProperty;
+use SMW\SQLStore\QueryEngine\QueryBuilder;
+use SMW\SQLStore\QueryEngine\QueryCompiler;
+use SMW\SQLStore\QueryEngine\QueryContainer;
 
 /**
  * @license GNU GPL v2+

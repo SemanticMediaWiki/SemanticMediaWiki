@@ -4,7 +4,6 @@ namespace SMW\Query\Language;
 
 use SMW\DataValueFactory;
 use SMw\DIProperty;
-
 use SMWDataItem as DataItem;
 use SMWQueryLanguage as QueryLanguage;
 

@@ -2,19 +2,15 @@
 
 namespace SMW\Maintenance;
 
+use LinkCache;
+use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\TitleLookup;
-
 use SMW\Reporter\MessageReporter;
 use SMW\Reporter\NullMessageReporter;
-
-use SMW\Settings;
 use SMW\Store;
-use SMW\DIWikiPage;
-
 use SMWQueryProcessor;
 use Title;
-use LinkCache;
 
 /**
  * Is part of the `rebuildData.php` maintenance script to rebuild existing data

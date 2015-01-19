@@ -2,10 +2,9 @@
 
 namespace SMW\Annotator;
 
-use SMW\MediaWiki\PageInfoProvider;
 use SMw\MediaWiki\RedirectTargetFinder;
-use SMW\SemanticData;
 use SMW\PageInfo;
+use SMW\SemanticData;
 
 /**
  * @license GNU GPL v2+

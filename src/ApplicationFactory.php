@@ -2,17 +2,14 @@
 
 namespace SMW;
 
-use SMW\MediaWiki\Jobs\JobFactory;
-use SMW\Annotator\PropertyAnnotatorFactory;
-use SMW\MediaWiki\MwCollaboratorFactory;
-use SMW\Factbox\FactboxBuilder;
-use SMW\Query\Profiler\QueryProfilerFactory;
-
-use SMWQueryParser as QueryParser;
-
-use ParserOutput;
 use Parser;
-use Language;
+use ParserOutput;
+use SMW\Annotator\PropertyAnnotatorFactory;
+use SMW\Factbox\FactboxBuilder;
+use SMW\MediaWiki\Jobs\JobFactory;
+use SMW\MediaWiki\MwCollaboratorFactory;
+use SMW\Query\Profiler\QueryProfilerFactory;
+use SMWQueryParser as QueryParser;
 use Title;
 
 /**
