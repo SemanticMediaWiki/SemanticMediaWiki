@@ -24,7 +24,7 @@ if ( defined( 'SMW_VERSION' ) ) {
 	return 1;
 }
 
-define( 'SMW_VERSION', '2.2 alpha' );
+define( 'SMW_VERSION', '2.1' );
 
 if ( version_compare( $GLOBALS['wgVersion'], '1.19c', '<' ) ) {
 	die( '<b>Error:</b> This version of Semantic MediaWiki requires MediaWiki 1.19 or above; use SMW 1.8.x for MediaWiki 1.18.x or 1.17.x.' );
@@ -82,13 +82,13 @@ class_alias( 'SMW\QueryResultPrinter', 'SMWIResultPrinter' );
 class_alias( 'SMW\RawResultPrinter', 'SMW\ApiResultPrinter' );
 
 // 2.0
-class_alias( 'SMWSQLStore3', 'SMW\SQLStore\SQLStore' );
 class_alias( 'SMW\SPARQLStore\SPARQLStore', 'SMWSparqlStore' );
 class_alias( 'SMW\SPARQLStore\FourstoreHttpDatabaseConnector', 'SMWSparqlDatabase4Store' );
 class_alias( 'SMW\SPARQLStore\VirtuosoHttpDatabaseConnector', 'SMWSparqlDatabaseVirtuoso' );
 class_alias( 'SMW\SPARQLStore\GenericHttpDatabaseConnector', 'SMWSparqlDatabase' );
 
 // 2.1
+class_alias( 'SMWSQLStore3', 'SMW\SQLStore\SQLStore' );
 class_alias( 'SMW\Query\Language\Description', 'SMWDescription' );
 class_alias( 'SMW\Query\Language\ThingDescription', 'SMWThingDescription' );
 class_alias( 'SMW\Query\Language\ClassDescription', 'SMWClassDescription' );

@@ -74,4 +74,13 @@ class ValidatorFactory {
 		return new TitleValidator();
 	}
 
+	/**
+	 * @since 2.2
+	 *
+	 * @return QueryContainerValidator
+	 */
+	public function newQueryContainerValidator() {
+		return new QueryContainerValidator();
+	}
+
 }
