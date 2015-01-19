@@ -195,9 +195,9 @@ Triple store databases:
 	</tr>
 	<tr>
 		<th>SMW 2.0.x</th>
-		<td>Full support (1.x >=1.1)</td>
-		<td>Full support (6.x >=6.1)<sup>1</sup></td>
-		<td>Beta support (1.x >=1.1)</td>
+		<td>Full support</td>
+		<td>Full support</td>
+		<td>Beta support</td>
 		<td>Beta support</td>
 	</tr>
 	<tr>
