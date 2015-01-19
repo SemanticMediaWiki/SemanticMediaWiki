@@ -11,10 +11,16 @@ on how to install the latest version of SMW, see the [installation instructions]
 		<th>Git branch</th>
 	</tr>
 	<tr>
-		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/RELEASE-NOTES.md">SMW 2.1.x</a></th>
+		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/RELEASE-NOTES.md">SMW 2.2.x</a></th>
 		<td>Development version</td>
 		<td>-</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
+	</tr>
+	<tr>
+		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/RELEASE-NOTES.md">SMW 2.1.x</a></th>
+		<td>Stable release</td>
+		<td>-</td>
+		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.1.x">2.1.x</a></td>
 	</tr>
 	<tr>
 		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.0">SMW 2.0</a></th>
@@ -70,6 +76,12 @@ Releases after Composer support:
 		<td>5.5.x - latest (possibly 5.4.x)</td>
 		<td>3.3.x - latest</td>
 		<td>1.22 - latest</td>
+	</tr>
+	<tr>
+		<th>SMW 2.2.x</th>
+		<td>5.3.2 - 5.6.x</td>
+		<td>3.3.x - 3.5.x</td>
+		<td>1.19 - 1.24</td>
 	</tr>
 	<tr>
 		<th>SMW 2.1.x</th>
@@ -133,7 +145,7 @@ SQL databases:
 		<th>PostgreSQL</th>
 	</tr>
 	<tr>
-		<th>SMW 2.1.x</th>
+		<th>SMW 2.1.x & 2.2.x</th>
 		<td>Full support (5.x)</td>
 		<td>Full support (3.x)</td>
 		<td>Full support (9.x)</td>
