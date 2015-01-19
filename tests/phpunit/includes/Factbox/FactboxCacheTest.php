@@ -4,7 +4,7 @@ namespace SMW\Test;
 
 use SMW\Tests\Utils\Mock\MockTitle;
 
-use SMW\FactboxCache;
+use SMW\Factbox\FactboxCache;
 use SMW\ApplicationFactory;
 use SMW\Settings;
 use SMW\DIWikiPage;
@@ -14,7 +14,7 @@ use Language;
 use ParserOutput;
 
 /**
- * @covers \SMW\FactboxCache
+ * @covers \SMW\Factbox\FactboxCache
  *
  *
  * @group SMW
@@ -59,7 +59,7 @@ class FactboxCacheTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\FactboxCache',
+			'\SMW\Factbox\FactboxCache',
 			new FactboxCache( $outputPage )
 		);
 	}

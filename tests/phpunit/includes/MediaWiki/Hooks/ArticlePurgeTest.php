@@ -6,7 +6,7 @@ use SMW\Tests\Utils\Mock\MockTitle;
 
 use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\Settings;
-use SMW\FactboxCache;
+use SMW\Factbox\FactboxCache;
 use SMW\ApplicationFactory;
 
 use WikiPage;

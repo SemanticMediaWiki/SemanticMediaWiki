@@ -2,8 +2,27 @@
 
 namespace SMW\Tests\Utils\Mock;
 
+use DataValues\DataValue;
+use OutOfBoundsException;
+use SMW\ContentParser;
+use SMW\DependencyContainer;
+use SMW\DependencyObject;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\Factbox\Factbox;
+use SMW\MediaWiki\PageInfoProvider;
+use SMW\ParserData;
+use SMW\Query\Language\Description;
+use SMW\SemanticData;
+use SMW\SQLStore\TableDefinition;
+use SMW\Store;
+use SMW\Store\CacheableResultCollector;
 use SMWDataItem;
+use SMWDIError;
 use SMWPrintRequest;
+use SMWQuery;
+use SMWQueryResult;
+use SMWResultArray;
 
 /**
  * @codeCoverageIgnore
@@ -169,7 +188,7 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 */
 	public function Factbox() {
 
-		$factbox = $this->getMockBuilder( '\SMW\Factbox' )
+		$factbox = $this->getMockBuilder( '\SMW\Factbox\Factbox' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -586,7 +605,7 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	/**
 	 * @since 1.9
 	 *
-	 * @return SMWDescription
+	 * @return Description
 	 */
 	public function QueryDescription() {
 

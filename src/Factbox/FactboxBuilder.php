@@ -2,8 +2,7 @@
 
 namespace SMW\Factbox;
 
-use SMW\FactboxCache;
-use SMW\Factbox;
+use SMW\Factbox\Factbox;
 use SMW\ParserData;
 use SMW\ApplicationFactory;
 
