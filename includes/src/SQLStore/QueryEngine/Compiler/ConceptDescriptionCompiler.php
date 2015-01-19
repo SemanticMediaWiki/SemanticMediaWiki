@@ -16,7 +16,7 @@ use SMWSQLStore3;
 
 /**
  * @license GNU GPL v2+
- * @since 2.1
+ * @since 2.2
  *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw

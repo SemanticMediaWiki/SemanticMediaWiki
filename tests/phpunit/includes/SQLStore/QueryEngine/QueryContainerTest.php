@@ -11,7 +11,7 @@ use SMW\SQLStore\QueryEngine\QueryContainer;
  * @group SMWExtension
  *
  * @license GNU GPL v2+
- * @since 2.1
+ * @since 2.2
  *
  * @author mwjames
  */
@@ -25,24 +25,60 @@ class QueryContainerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testDefaultState() {
+	public function testResetState() {
 
-		$instance = new QueryContainer( true );
+		$instance = new QueryContainer();
+		$instance->reset();
 
-		$this->assertEquals( 0, $instance->queryNumber );
-		$this->assertEquals( 't0', $instance->alias );
+		$this->assertEquals(
+			0,
+			$instance->queryNumber
+		);
 
-		$this->assertEquals( 1, $instance::$qnum );
-		$this->assertEquals( $instance::Q_TABLE, $instance->type );
+		$this->assertEquals(
+			't0',
+			$instance->alias
+		);
 
-		$this->assertEquals( array(), $instance->components );
-		$this->assertEquals( array(), $instance->sortfields );
+		$this->assertEquals(
+			1,
+			$instance::$qnum
+		);
 
-		$this->assertEquals( '', $instance->joinfield );
-		$this->assertEquals( '', $instance->jointable );
+		$this->assertEquals(
+			$instance::Q_TABLE,
+			$instance->type
+		);
 
-		$this->assertEquals( '', $instance->from );
-		$this->assertEquals( '', $instance->where );
+		$this->assertEquals(
+			array(),
+			$instance->components
+		);
+
+		$this->assertEquals(
+			array(),
+			$instance->sortfields
+		);
+
+		$this->assertEquals(
+			'',
+			$instance->joinfield
+		);
+
+		$this->assertEquals(
+			'',
+			$instance->jointable
+		);
+
+		$this->assertEquals(
+			'',
+			$instance->from
+		);
+
+		$this->assertEquals(
+			'',
+			$instance->where
+		);
 	}
 
 }

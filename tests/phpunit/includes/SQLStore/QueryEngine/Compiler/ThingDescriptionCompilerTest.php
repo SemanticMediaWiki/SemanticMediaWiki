@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Compiler;
 
-use SMW\Tests\Util\Validator\QueryContainerValidator;
+use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\SQLStore\QueryEngine\Compiler\ThingDescriptionCompiler;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
@@ -16,7 +16,7 @@ use SMW\Query\Language\ThingDescription;
  * @group SMWExtension
  *
  * @license GNU GPL v2+
- * @since 2.1
+ * @since 2.2
  *
  * @author mwjames
  */
@@ -27,7 +27,7 @@ class ThingDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->queryContainerValidator = new QueryContainerValidator();
+		$this->queryContainerValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryContainerValidator();
 	}
 
 	public function testCanConstruct() {

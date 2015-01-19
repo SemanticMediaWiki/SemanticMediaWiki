@@ -16,7 +16,7 @@ use SMW\Store;
 
 /**
  * @license GNU GPL v2+
- * @since 2.1
+ * @since 2.2
  *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
@@ -57,14 +57,18 @@ class QueryBuilder {
 	private $lastContainerId = -1;
 
 	/**
-	 * @since  2.1
+	 * @since  2.2
 	 *
 	 * @param Store $store
 	 */
 	public function __construct( Store $store ) {
 		$this->store = $store;
 
-		$this->setToInitialBuildState();
+		QueryContainer::$qnum = 0;
+		$this->lastContainerId = -1;
+		$this->sortkeys = array();
+		$this->queries = array();
+		$this->errors = array();
 
 		$this->registerQueryCompiler( new SomePropertyCompiler( $this ) );
 		$this->registerQueryCompiler( new DisjunctionConjunctionCompiler( $this ) );
@@ -75,7 +79,7 @@ class QueryBuilder {
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 2.2
 	 *
 	 * @return Store
 	 */
@@ -84,7 +88,7 @@ class QueryBuilder {
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 2.2
 	 *
 	 * @param array $sortkeys
 	 *
@@ -96,7 +100,7 @@ class QueryBuilder {
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 2.2
 	 *
 	 * @param array $sortkeys
 	 */
@@ -105,7 +109,7 @@ class QueryBuilder {
 	}
 
 	/**
-	 * @since  2.1
+	 * @since  2.2
 	 *
 	 * @return array
 	 */
@@ -119,7 +123,7 @@ class QueryBuilder {
 	}
 
 	/**
-	 * @since  2.1
+	 * @since  2.2
 	 *
 	 * @param $id
 	 * @param QueryContainer $query
@@ -132,7 +136,7 @@ class QueryBuilder {
 	}
 
 	/**
-	 * @since  2.1
+	 * @since  2.2
 	 *
 	 * @return integer
 	 */
@@ -141,7 +145,7 @@ class QueryBuilder {
 	}
 
 	/**
-	 * @since  2.1
+	 * @since  2.2
 	 *
 	 * @return array
 	 */
@@ -150,7 +154,7 @@ class QueryBuilder {
 	}
 
 	/**
-	 * @since  2.1
+	 * @since  2.2
 	 *
 	 * @return string $error
 	 */
@@ -159,22 +163,7 @@ class QueryBuilder {
 	}
 
 	/**
-	 * @since 2.1
-	 *
-	 * @return QueryBuilder
-	 */
-	public function setToInitialBuildState() {
-		QueryContainer::$qnum = 0;
-		$this->lastContainerId = -1;
-		$this->sortkeys = array();
-		$this->queries = array();
-		$this->errors = array();
-
-		return $this;
-	}
-
-	/**
-	 * @since 2.1
+	 * @since 2.2
 	 *
 	 * @param  Description $description
 	 *
@@ -204,7 +193,7 @@ class QueryBuilder {
 	}
 
 	/**
-	 * @since  2.1
+	 * @since  2.2
 	 *
 	 * @param QueryCompiler $queryCompiler
 	 */

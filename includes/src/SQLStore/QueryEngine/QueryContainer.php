@@ -3,11 +3,10 @@
 namespace SMW\SQLStore\QueryEngine;
 
 /**
- * Class for representing a single (sub)query description. Simple data
- * container.
+ * Class for representing a single (sub)query description.
  *
  * @license GNU GPL v2+
- * @since 2.1
+ * @since 2.2
  *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
@@ -115,15 +114,19 @@ class QueryContainer {
 	public static $qnum = 0;
 
 	/**
-	 * @since 2.1
-	 *
-	 * @param boolean $setZeroCounterState
+	 * @since 2.2
 	 */
-	public function __construct( $setZeroCounterState = false ) {
+	public function __construct() {
+		$this->queryNumber = self::$qnum;
+		$this->alias = 't' . self::$qnum;
+		self::$qnum++;
+	}
 
-		if ( $setZeroCounterState ) {
-			self::$qnum = 0;
-		}
+	/**
+	 * @since 2.2
+	 */
+	public function reset() {
+		self::$qnum = 0;
 
 		$this->queryNumber = self::$qnum;
 		$this->alias = 't' . self::$qnum;

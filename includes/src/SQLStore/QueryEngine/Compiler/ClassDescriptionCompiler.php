@@ -13,7 +13,7 @@ use SMW\DIProperty;
 
 /**
  * @license GNU GPL v2+
- * @since 2.1
+ * @since 2.2
  *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
@@ -79,19 +79,13 @@ class ClassDescriptionCompiler implements QueryCompiler {
 			$query->jointable = '';
 			$query->joinfield = '';
 		} else { // Instance query with disjunction of classes (categories)
-			$query->jointable = $this->getTableNameForProperty( new DIProperty( '_INST' ) );
+			$query->jointable = $this->queryBuilder->getStore()->findPropertyTableID( new DIProperty( '_INST' ) );
 			$query->joinfield = "$query->alias.s_id";
 			$query->components[$cqid] = "$query->alias.o_id";
 			$this->queryBuilder->addQueryContainerForId( $cqid, $cquery );
 		}
 
 		return $query;
-	}
-
-	private function getTableNameForProperty( DIProperty $property ) {
-		return $this->queryBuilder->getStore()->getConnection( 'mw.db' )->tableName(
-			$this->queryBuilder->getStore()->findPropertyTableID( $property )
-		);
 	}
 
 }

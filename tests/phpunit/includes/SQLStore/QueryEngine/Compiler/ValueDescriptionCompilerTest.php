@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Compiler;
 
-use SMW\Tests\Util\Validator\QueryContainerValidator;
+use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\SQLStore\QueryEngine\Compiler\ValueDescriptionCompiler;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
@@ -19,7 +19,7 @@ use SMWDIBlob as DIBlob;
  * @group SMWExtension
  *
  * @license GNU GPL v2+
- * @since 2.1
+ * @since 2.2
  *
  * @author mwjames
  */
@@ -30,7 +30,7 @@ class ValueDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->queryContainerValidator = new QueryContainerValidator();
+		$this->queryContainerValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryContainerValidator();
 	}
 
 	public function testCanConstruct() {

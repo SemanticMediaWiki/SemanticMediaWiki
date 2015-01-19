@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine;
 
-use SMW\Tests\Util\Validator\QueryContainerValidator;
+use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\SQLStore\QueryEngine\QueryContainer;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
@@ -20,7 +20,7 @@ use SMW\DIWikiPage;
  * @group SMWExtension
  *
  * @license GNU GPL v2+
- * @since 2.1
+ * @since 2.2
  *
  * @author mwjames
  */
@@ -31,7 +31,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->queryContainerValidator = new QueryContainerValidator();
+		$this->queryContainerValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryContainerValidator();
 	}
 
 	public function testCanConstruct() {
@@ -110,11 +110,23 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 		$expectedMainNs->type = 1;
 		$expectedMainNs->where = "t2.smw_namespace=";
 
-		$this->assertEquals( 0, $instance->getLastContainerId() );
-		$this->assertEmpty( $instance->getErrors() );
+		$this->assertEquals(
+			0,
+			$instance->getLastContainerId()
+		);
+
+		$this->assertEmpty(
+			$instance->getErrors()
+		);
+
+		$expected = array(
+			$expectedDisjunction,
+			$expectedHelpNs,
+			$expectedMainNs
+		);
 
 		$this->queryContainerValidator->assertThatContainerContains(
-			array( $expectedDisjunction, $expectedHelpNs, $expectedMainNs ),
+			$expected,
 			$instance->getQueryContainer()
 		);
 	}
@@ -161,11 +173,22 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 		$expectedHierarchy->alias = "t1";
 		$expectedHierarchy->queryNumber = 1;
 
-		$this->assertEquals( 0, $instance->getLastContainerId() );
-		$this->assertEmpty( $instance->getErrors() );
+		$this->assertEquals(
+			0,
+			$instance->getLastContainerId()
+		);
+
+		$this->assertEmpty(
+			$instance->getErrors()
+		);
+
+		$expected = array(
+			$expectedClass,
+			$expectedHierarchy
+		);
 
 		$this->queryContainerValidator->assertThatContainerContains(
-			array( $expectedClass, $expectedHierarchy ),
+			$expected,
 			$instance->getQueryContainer()
 		);
 	}

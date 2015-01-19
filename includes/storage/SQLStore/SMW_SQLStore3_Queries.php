@@ -89,9 +89,8 @@ class SMWSQLStore3QueryEngine {
 			$qp = new SMWQueryParser( $smwgQConceptFeatures );
 			$desc = $qp->getQueryDescription( $desctxt );
 
-			$this->queryBuilder->setToInitialBuildState()
-				->setSortKeys( $this->m_sortkeys )
-				->buildQueryContainer( $desc );
+			$this->queryBuilder->setSortKeys( $this->m_sortkeys );
+			$this->queryBuilder->buildQueryContainer( $desc );
 
 			$qid = $this->queryBuilder->getLastContainerId();
 			$this->m_queries = $this->queryBuilder->getQueryContainer();
@@ -248,9 +247,8 @@ class SMWSQLStore3QueryEngine {
 		$this->m_sortkeys = $query->sortkeys;
 
 		// *** First compute abstract representation of the query (compilation) ***//
-		$this->queryBuilder->setToInitialBuildState()
-			->setSortKeys( $this->m_sortkeys )
-			->buildQueryContainer( $query->getDescription() ); // compile query, build query "plan"
+		$this->queryBuilder->setSortKeys( $this->m_sortkeys );
+		$this->queryBuilder->buildQueryContainer( $query->getDescription() ); // compile query, build query "plan"
 
 		$qid = $this->queryBuilder->getLastContainerId();
 		$this->m_queries = $this->queryBuilder->getQueryContainer();
@@ -761,9 +759,8 @@ class SMWSQLStore3QueryEngine {
 
 		// (2) compile according conditions and hack them into $qobj:
 		if ( count( $extraproperties ) > 0 ) {
-			$this->queryBuilder->setToInitialBuildState()
-				->setSortKeys( $this->m_sortkeys )
-				->buildQueryContainer( new SMWConjunction( $extraproperties ) );
+			$this->queryBuilder->setSortKeys( $this->m_sortkeys );
+			$this->queryBuilder->buildQueryContainer( new SMWConjunction( $extraproperties ) );
 
 			$newqid = $this->queryBuilder->getLastContainerId();
 			$this->m_queries = $this->queryBuilder->getQueryContainer();

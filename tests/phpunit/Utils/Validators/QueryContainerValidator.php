@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Util\Validator;
+namespace SMW\Tests\Utils\Validators;
 
 use SMW\SQLStore\QueryEngine\QueryContainer;
 
