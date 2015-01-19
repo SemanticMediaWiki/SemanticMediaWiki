@@ -187,11 +187,18 @@ Triple store databases:
 		<th><a href="http://rdf4j.org/">Sesame</a></th>
 	</tr>
 	<tr>
-		<th>SMW 2.x</th>
+		<th>SMW 2.1.x</th>
 		<td>Full support (1.x >=1.1)</td>
 		<td>Full support (6.x >=6.1)<sup>1</sup></td>
 		<td>Beta support (1.x >=1.1)</td>
-		<td>Full support (2.7.x)</td>
+		<td>Full support (2.x >=2.7)</td>
+	</tr>
+	<tr>
+		<th>SMW 2.0.x</th>
+		<td>Full support (1.x >=1.1)</td>
+		<td>Full support (6.x >=6.1)<sup>1</sup></td>
+		<td>Beta support (1.x >=1.1)</td>
+		<td>Beta support</td>
 	</tr>
 	<tr>
 		<th>SMW 1.9.x</th>
