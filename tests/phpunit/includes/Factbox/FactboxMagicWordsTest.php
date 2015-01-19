@@ -4,7 +4,7 @@ namespace SMW\Tests;
 
 use SMW\ParserData;
 use SMW\Settings;
-use SMW\Factbox;
+use SMW\Factbox\Factbox;
 use SMW\ApplicationFactory;
 
 use ReflectionClass;
@@ -12,7 +12,7 @@ use ParserOutput;
 use Title;
 
 /**
- * @covers \SMW\Factbox
+ * @covers \SMW\Factbox\Factbox
  *
  * @group SMW
  * @group SMWExtension
@@ -110,7 +110,7 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 			$instance->useInPreview( true );
 		}
 
-		$reflector = new ReflectionClass( '\SMW\Factbox' );
+		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
 
 		$magic = $reflector->getMethod( 'getMagicWords' );
 		$magic->setAccessible( true );

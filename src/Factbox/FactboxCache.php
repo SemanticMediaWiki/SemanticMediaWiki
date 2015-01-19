@@ -1,11 +1,15 @@
 <?php
 
-namespace SMW;
+namespace SMW\Factbox;
 
 use ParserOutput;
 use OutputPage;
+use SMW\ApplicationFactory;
+use SMW\CacheableResultMapper;
+use SMW\CacheIdGenerator;
+use SMW\Profiler;
+use SMW\SimpleDictionary;
 use Title;
-use Html;
 
 /**
  * Factbox output caching

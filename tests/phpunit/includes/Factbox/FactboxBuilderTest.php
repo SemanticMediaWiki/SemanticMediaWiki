@@ -36,7 +36,7 @@ class FactboxBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new FactboxBuilder();
 
 		$this->assertInstanceOf(
-			'\SMW\FactboxCache',
+			'\SMW\Factbox\FactboxCache',
 			$instance->newFactboxCache( $outputPage )
 		);
 	}
@@ -54,7 +54,7 @@ class FactboxBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new FactboxBuilder();
 
 		$this->assertInstanceOf(
-			'\SMW\Factbox',
+			'\SMW\Factbox\Factbox',
 			$instance->newFactbox( $parserData, $contextSource )
 		);
 	}

@@ -10,7 +10,7 @@ use SMW\Tests\Utils\Mock\MediaWikiMockObjectRepository;
 use SMW\ApplicationFactory;
 use SMW\TableFormatter;
 use SMW\ParserData;
-use SMW\Factbox;
+use SMW\Factbox\Factbox;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
@@ -20,7 +20,7 @@ use ParserOutput;
 use Title;
 
 /**
- * @covers \SMW\Factbox
+ * @covers \SMW\Factbox\Factbox
  *
  * @group SMW
  * @group SMWExtension
@@ -71,7 +71,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Factbox',
+			'\SMW\Factbox\Factbox',
 			new Factbox( $store, $parserData, $messageBuilder )
 		);
 	}
@@ -95,7 +95,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		// Build Factbox stub object to encapsulate the method
 		// without the need for other dependencies to occur
-		$instance = $this->getMock( '\SMW\Factbox',
+		$instance = $this->getMock( '\SMW\Factbox\Factbox',
 			array( 'fetchContent', 'getMagicWords' ),
 			array(
 				$store,
@@ -212,7 +212,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Factbox( $store, $parserData, $messageBuilder );
 
-		$reflector = new ReflectionClass( '\SMW\Factbox' );
+		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
 		$createTable  = $reflector->getMethod( 'createTable' );
 		$createTable->setAccessible( true );
 
@@ -237,7 +237,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Factbox( $store, $parserData, $messageBuilder );
 
-		$reflector = new ReflectionClass( '\SMW\Factbox' );
+		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
 
 		$fetchContent = $reflector->getMethod( 'fetchContent' );
 		$fetchContent->setAccessible( true );
@@ -278,7 +278,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		// Build Factbox stub object to encapsulate the method
 		// without the need for other dependencies to occur
-		$factbox = $this->getMock( '\SMW\Factbox',
+		$factbox = $this->getMock( '\SMW\Factbox\Factbox',
 			array( 'createTable' ),
 			array(
 				$mockStore,
@@ -291,7 +291,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 			->method( 'createTable' )
 			->will( $this->returnValue( $setup['invokedContent'] ) );
 
-		$reflector = new ReflectionClass( '\SMW\Factbox' );
+		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
 		$fetchContent = $reflector->getMethod( 'fetchContent' );
 		$fetchContent->setAccessible( true );
 

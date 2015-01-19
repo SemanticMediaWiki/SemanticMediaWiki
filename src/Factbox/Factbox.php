@@ -1,17 +1,21 @@
 <?php
 
-namespace SMW;
+namespace SMW\Factbox;
 
-use SMW\MediaWiki\MessageBuilder;
-
-use SMWInfolink;
-use SMWOutputs;
-
-use IContextSource;
-use ParserOutput;
-use Sanitizer;
-use Title;
 use Html;
+use Sanitizer;
+use SMW\ApplicationFactory;
+use SMW\DataValueFactory;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\MediaWiki\HtmlTableBuilder;
+use SMW\MediaWiki\MessageBuilder;
+use SMW\ParserData;
+use SMW\Profiler;
+use SMW\SemanticData;
+use SMW\Store;
+use SMWInfolink;
+use SMWSemanticData;
 
 /**
  * Class handling the "Factbox" content rendering

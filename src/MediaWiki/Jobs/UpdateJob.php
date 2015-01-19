@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Jobs;
 
-use SMW\FactboxCache;
+use SMW\Factbox\FactboxCache;
 use SMW\Profiler;
 use SMW\ApplicationFactory;
 

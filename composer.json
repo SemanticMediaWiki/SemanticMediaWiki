@@ -50,6 +50,9 @@
 		}
 	},
 	"autoload": {
+		"psr-4": {
+			"SMW\\": "src/"
+		},
 		"files" : [
 			"SemanticMediaWiki.php"
 		],
