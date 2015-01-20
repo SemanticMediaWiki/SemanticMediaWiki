@@ -387,7 +387,6 @@ class SMWSQLStore3 extends SMWStore {
 
 		$statisticsCollector = new StatisticsCollector(
 			$this,
-			wfGetDB( DB_SLAVE ),
 			Settings::newFromGlobals()
 		);
 

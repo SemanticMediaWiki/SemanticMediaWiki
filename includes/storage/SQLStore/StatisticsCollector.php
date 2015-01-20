@@ -4,21 +4,16 @@ namespace SMW\SQLStore;
 
 use SMW\ObjectDictionary;
 use SMW\Store\CacheableResultCollector;
+use SMW\SQLStore\SQLStore;
 
 use SMW\SimpleDictionary;
 use SMW\DIProperty;
 use SMW\Settings;
-use SMW\Store;
-
-use DatabaseBase;
-use SMWSQLStore3;
 
 /**
  * Collects statistical information provided by the store
  *
- * @ingroup SQLStore
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
@@ -26,25 +21,24 @@ use SMWSQLStore3;
  */
 class StatisticsCollector extends CacheableResultCollector {
 
-	/** @var Store */
+	/**
+	 * @var SQLStore
+	 */
 	protected $store;
 
-	/** @var Settings */
-	protected $settings;
-
-	/** @var DatabaseBase */
-	protected $dbConnection;
+	/**
+	 * @var Settings
+	 */
+	private $settings;
 
 	/**
 	 * @since 1.9
 	 *
-	 * @param SMWSQLStore3 $store
-	 * @param DatabaseBase $dbw
+	 * @param SQLStore $store
 	 * @param Settings $settings
 	 */
-	public function __construct( SMWSQLStore3 $store, DatabaseBase $dbw, Settings $settings ) {
+	public function __construct( SQLStore $store, Settings $settings ) {
 		$this->store = $store;
-		$this->dbConnection = $dbw;
 		$this->settings = $settings;
 	}
 
@@ -52,7 +46,7 @@ class StatisticsCollector extends CacheableResultCollector {
 	 * Collects statistical information as an associative array
 	 * with the following keys:
 	 *
-	 * - 'PROPUSES': Number of property instances (value assignments) in the dbConnection
+	 * - 'PROPUSES': Number of property instances (value assignments) in the connection
 	 * - 'USEDPROPS': Number of properties that are used with at least one value
 	 * - 'DECLPROPS': Number of properties that have been declared (i.e. assigned a type)
 	 * - 'OWNPAGE': Number of properties with their own page
@@ -134,7 +128,7 @@ class StatisticsCollector extends CacheableResultCollector {
 	public function getQueryFormatsCount() {
 		$count = array();
 
-		$res = $this->dbConnection->select(
+		$res = $this->store->getConnection()->select(
 			$this->findPropertyTableByType( '_ASKFO' )->getName(),
 			'o_hash, COUNT(s_id) AS count',
 			array(),
@@ -158,7 +152,8 @@ class StatisticsCollector extends CacheableResultCollector {
 	 * @return number
 	 */
 	public function getPropertyPageCount() {
-		$count = $this->dbConnection->estimateRowCount(
+
+		$count = $this->store->getConnection()->estimateRowCount(
 			'page',
 			'*',
 			array( 'page_namespace' => SMW_NS_PROPERTY )
@@ -181,7 +176,7 @@ class StatisticsCollector extends CacheableResultCollector {
 	public function getPropertyUsageCount() {
 		$count = 0;
 
-		$row = $this->dbConnection->selectRow(
+		$row = $this->store->getConnection()->selectRow(
 			array( $this->store->getStatisticsTable() ),
 			'SUM( usage_count ) AS count',
 			array(),
@@ -201,7 +196,7 @@ class StatisticsCollector extends CacheableResultCollector {
 	public function getUsedPropertiesCount() {
 		$count = 0;
 
-		$row = $this->dbConnection->selectRow(
+		$row = $this->store->getConnection()->selectRow(
 			array( $this->store->getStatisticsTable() ),
 			'Count( * ) AS count',
 			array( 'usage_count > 0' ),
@@ -223,13 +218,15 @@ class StatisticsCollector extends CacheableResultCollector {
 	 * @return number
 	 */
 	protected function count( $type ) {
-		$res = $this->dbConnection->select(
+
+		$res = $this->store->getConnection()->select(
 			$this->findPropertyTableByType( $type )->getName(),
 			'COUNT(s_id) AS count',
 			array(),
 			__METHOD__
 		);
-		$row = $this->dbConnection->fetchObject( $res );
+
+		$row = $this->store->getConnection()->fetchObject( $res );
 
 		return (int)$row->count;
 	}
