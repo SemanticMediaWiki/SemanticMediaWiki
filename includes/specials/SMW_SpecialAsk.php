@@ -1,4 +1,5 @@
 <?php
+use SMW\Query\PrintRequest;
 
 /**
  * This special page for MediaWiki implements a customisable form for
@@ -205,7 +206,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		$printoutstring = '';
 
 		/**
-		 * @var SMWPrintRequest $printout
+		 * @var PrintRequest $printout
 		 */
 		foreach ( $this->m_printouts as $printout ) {
 			$printoutstring .= $printout->getSerialisation() . "\n";

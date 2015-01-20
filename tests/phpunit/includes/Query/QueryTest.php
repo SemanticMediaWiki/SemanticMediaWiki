@@ -133,7 +133,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
-		$printRequest = $this->getMockBuilder( '\SMWPrintRequest' )
+		$printRequest = $this->getMockBuilder( 'SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 

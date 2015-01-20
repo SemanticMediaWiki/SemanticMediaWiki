@@ -7,7 +7,7 @@ use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
 use SMW\Store;
-use SMWPrintRequest as PrintRequest;
+use SMW\Query\PrintRequest as PrintRequest;
 use SMWQuery as Query;
 use SMWRequestOptions as RequestOptions;
 

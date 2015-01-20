@@ -15,7 +15,7 @@ use SMW\Subobject;
 
 use SMW\Query\Language\ValueDescription as ValueDescription;
 use SMW\Query\Language\SomeProperty as SomeProperty;
-use SMWPrintRequest as PrintRequest;
+use SMW\Query\PrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
 use SMW\Query\Language\ThingDescription as ThingDescription;
 use SMW\Query\Language\NamespaceDescription as NamespaceDescription;

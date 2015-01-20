@@ -2,7 +2,7 @@
 
 namespace SMW\Query\Language;
 
-use SMWPrintRequest as PrintRequest;
+use SMW\Query\PrintRequest as PrintRequest;
 
 /**
  * Abstract base class for all descriptions
@@ -15,7 +15,7 @@ use SMWPrintRequest as PrintRequest;
 abstract class Description {
 
 	/**
-	 * @var PrintRequest[]
+	 * @var \SMW\Query\PrintRequest[]
 	 */
 	protected $m_printreqs = array();
 
@@ -23,7 +23,7 @@ abstract class Description {
 	 * Get the (possibly empty) array of all print requests that
 	 * exist for the entities that fit this description.
 	 *
-	 * @return array of PrintRequest
+	 * @return array of SMW\Query\PrintRequest
 	 */
 	public function getPrintRequests() {
 		return $this->m_printreqs;
@@ -39,9 +39,9 @@ abstract class Description {
 	}
 
 	/**
-	 * Add a single PrintRequest.
+	 * Add a single SMW\Query\PrintRequest.
 	 *
-	 * @param PrintRequest $printRequest
+	 * @param \SMW\Query\PrintRequest $printRequest
 	 */
 	public function addPrintRequest( PrintRequest $printRequest ) {
 		$this->m_printreqs[] = $printRequest;

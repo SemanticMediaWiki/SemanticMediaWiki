@@ -1,20 +1,20 @@
 <?php
-/**
- * This file contains the class for defining "print requests", i.e. requests for output
- * informatoin to be included in query results.
- *
- * @ingroup SMWQuery
- *
- * @author Markus Krötzsch
- */
+
+namespace SMW\Query;
+
+use Title;
+use SMWPropertyValue;
+use InvalidArgumentException;
+use SMWDataValue;
 
 /**
  * Container class for request for printout, as used in queries to
  * obtain additional information for the retrieved results.
  *
  * @ingroup SMWQuery
+ * @author Markus Krötzsch
  */
-class SMWPrintRequest {
+class PrintRequest {
 
 	/// Query mode to print all direct categories of the current element.
 	const PRINT_CATS = 0;
@@ -26,15 +26,22 @@ class SMWPrintRequest {
 	const PRINT_CCAT = 3;
 
 	protected $m_mode; // type of print request
+
 	protected $m_label; // string for labelling results, contains no markup
+
 	protected $m_data; // data entries specifyin gwhat was requested (mixed type)
+
 	protected $m_typeid = false; // id of the datatype of the printed objects, if applicable
+
 	protected $m_outputformat; // output format string for formatting results, if applicable
+
 	protected $m_hash = false; // cache your hash (currently useful since SMWQueryResult accesses the hash many times, might be dropped at some point)
+
 	protected $m_params = array();
 
 	/**
 	 * Create a print request.
+	 *
 	 * @param integer $mode a constant defining what to printout
 	 * @param string $label the string label to describe this printout
 	 * @param mixed $data optional data for specifying some request, might be a property object, title, or something else; interpretation depends on $mode
@@ -43,11 +50,12 @@ class SMWPrintRequest {
 	 */
 	public function __construct( $mode, $label, $data = null, $outputformat = false, array $params = null ) {
 		if ( ( ( $mode == self::PRINT_CATS || $mode == self::PRINT_THIS ) &&
-		         !is_null( $data ) ) ||
-		     ( $mode == self::PRINT_PROP &&
-		         ( !( $data instanceof SMWPropertyValue ) || !$data->isValid() ) ) ||
-		     ( $mode == self::PRINT_CCAT &&
-		         !( $data instanceof Title ) ) ) {
+				!is_null( $data ) ) ||
+			( $mode == self::PRINT_PROP &&
+				( !( $data instanceof SMWPropertyValue ) || !$data->isValid() ) ) ||
+			( $mode == self::PRINT_CCAT &&
+				!( $data instanceof Title ) )
+		) {
 			throw new InvalidArgumentException( 'Data provided for print request does not fit the type of printout.' );
 		}
 
@@ -91,7 +99,9 @@ class SMWPrintRequest {
 				return $linker->makeLinkObj( $this->m_data, htmlspecialchars( $this->m_label ) );
 			case self::PRINT_PROP:
 				return $this->m_data->getShortHTMLText( $linker );
-			case self::PRINT_THIS: default: return htmlspecialchars( $this->m_label );
+			case self::PRINT_THIS:
+			default:
+				return htmlspecialchars( $this->m_label );
 		}
 	}
 
@@ -101,7 +111,8 @@ class SMWPrintRequest {
 	public function getWikiText( $linked = false ) {
 		if ( is_null( $linked ) || ( $linked === false ) || ( $this->m_label === '' ) ) {
 			return $this->m_label;
-		} else {
+		}
+		else {
 			switch ( $this->m_mode ) {
 				case self::PRINT_CATS:
 					return $this->m_label; // TODO: link to Special:Categories
@@ -109,7 +120,8 @@ class SMWPrintRequest {
 					return $this->m_data->getShortWikiText( $linked );
 				case self::PRINT_CCAT:
 					return '[[:' . $this->m_data->getPrefixedText() . '|' . $this->m_label . ']]';
-				case self::PRINT_THIS: default:
+				case self::PRINT_THIS:
+				default:
 					return $this->m_label;
 			}
 		}
@@ -120,8 +132,12 @@ class SMWPrintRequest {
 	 */
 	public function getText( $outputmode, $linker = null ) {
 		switch ( $outputmode ) {
-			case SMW_OUTPUT_WIKI: return $this->getWikiText( $linker );
-			case SMW_OUTPUT_HTML: case SMW_OUTPUT_FILE: default: return $this->getHTMLText( $linker );
+			case SMW_OUTPUT_WIKI:
+				return $this->getWikiText( $linker );
+			case SMW_OUTPUT_HTML:
+			case SMW_OUTPUT_FILE:
+			default:
+				return $this->getHTMLText( $linker );
 		}
 	}
 
@@ -148,7 +164,8 @@ class SMWPrintRequest {
 		if ( $this->m_typeid === false ) {
 			if ( $this->m_mode == self::PRINT_PROP ) {
 				$this->m_typeid = $this->m_data->getDataItem()->findPropertyTypeID();
-			} else {
+			}
+			else {
 				$this->m_typeid = '_wpg';
 			}
 		}
@@ -170,7 +187,8 @@ class SMWPrintRequest {
 
 			if ( $this->m_data instanceof Title ) {
 				$this->m_hash .= $this->m_data->getPrefixedText() . ':';
-			} elseif ( $this->m_data instanceof SMWDataValue ) {
+			}
+			elseif ( $this->m_data instanceof SMWDataValue ) {
 				$this->m_hash .= $this->m_data->getHash() . ':';
 			}
 
@@ -182,14 +200,17 @@ class SMWPrintRequest {
 
 	/**
 	 * Serialise this object like print requests given in \#ask.
+	 *
 	 * @param $params boolean that sets if the serialization should
 	 *                include the extra print request parameters
 	 */
 	public function getSerialisation( $showparams = false ) {
 		$parameters = '';
 
-		if ( $showparams ) foreach ( $this->m_params as $key => $value ) {
-			$parameters .= "|+" . $key . "=" . $value;
+		if ( $showparams ) {
+			foreach ( $this->m_params as $key => $value ) {
+				$parameters .= "|+" . $key . "=" . $value;
+			}
 		}
 
 		switch ( $this->m_mode ) {
@@ -200,8 +221,10 @@ class SMWPrintRequest {
 				if ( $this->m_label != $catlabel ) {
 					$result .= '=' . $this->m_label;
 				}
+
 				return $result . $parameters;
-			case self::PRINT_PROP: case self::PRINT_CCAT:
+			case self::PRINT_PROP:
+			case self::PRINT_CCAT:
 				if ( $this->m_mode == self::PRINT_CCAT ) {
 					$printname = $this->m_data->getPrefixedText();
 					$result = '?' . $printname;
@@ -209,7 +232,8 @@ class SMWPrintRequest {
 					if ( $this->m_outputformat != 'x' ) {
 						$result .= '#' . $this->m_outputformat;
 					}
-				} else {
+				}
+				else {
 					$printname = $this->m_data->getWikiValue();
 					$result = '?' . $printname;
 
@@ -220,6 +244,7 @@ class SMWPrintRequest {
 				if ( $printname != $this->m_label ) {
 					$result .= '=' . $this->m_label;
 				}
+
 				return $result . $parameters;
 			case self::PRINT_THIS:
 				$result = '?';
@@ -233,7 +258,8 @@ class SMWPrintRequest {
 				}
 
 				return $result . $parameters;
-			default: return ''; // no current serialisation
+			default:
+				return ''; // no current serialisation
 		}
 	}
 

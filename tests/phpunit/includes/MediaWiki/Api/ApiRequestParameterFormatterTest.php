@@ -83,8 +83,8 @@ class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function newPrintRequest( $printout ) {
-		return new \SMWPrintRequest(
-			\SMWPrintRequest::PRINT_PROP,
+		return new \SMW\Query\PrintRequest(
+			\SMW\Query\PrintRequest::PRINT_PROP,
 			$printout,
 			\SMWPropertyValue::makeUserProperty( $printout )
 		);

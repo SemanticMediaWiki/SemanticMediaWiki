@@ -1,5 +1,6 @@
 <?php
 
+use SMW\Query\PrintRequest;
 use SMW\SerializerFactory;
 use SMW\HashBuilder;
 
@@ -30,7 +31,8 @@ class SMWQueryResult {
 
 	/**
 	 * Array of SMWPrintRequest objects, indexed by their natural hash keys
-	 * @var SMWPrintRequest[]
+	 *
+*@var PrintRequest[]
 	 */
 	protected $mPrintRequests;
 
@@ -65,7 +67,7 @@ class SMWQueryResult {
 	 *
 	 * TODO: Update documentation
 	 *
-	 * @param SMWPrintRequest[] $printRequests
+	 * @param PrintRequest[] $printRequests
 	 * @param SMWQuery $query
 	 * @param SMWDIWikiPage[] $results
 	 * @param SMWStore $store
@@ -154,7 +156,7 @@ class SMWQueryResult {
 	 * Return array of print requests (needed for printout since they contain
 	 * property labels).
 	 *
-	 * @return SMWPrintRequest[]
+	 * @return PrintRequest[]
 	 */
 	public function getPrintRequests() {
 		return $this->mPrintRequests;
@@ -241,7 +243,7 @@ class SMWQueryResult {
 
 		$params = array( trim( $this->mQuery->getQueryString() ) );
 
-		foreach ( $this->mQuery->getExtraPrintouts() as /* SMWPrintRequest */ $printout ) {
+		foreach ( $this->mQuery->getExtraPrintouts() as /* PrintRequest */ $printout ) {
 			$serialization = $printout->getSerialisation();
 
 			// TODO: this is a hack to get rid of the mainlabel param in case it was automatically added

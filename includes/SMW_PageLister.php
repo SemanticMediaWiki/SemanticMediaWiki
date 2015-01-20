@@ -1,4 +1,5 @@
 <?php
+use SMW\Query\PrintRequest;
 
 /**
  * Helper class to generate HTML lists of wiki pages, with support for paged
@@ -159,7 +160,7 @@ class SMWPageLister {
 			$order = 'ASC';
 		}
 
-		$queryDescription->addPrintRequest( new SMWPrintRequest( SMWPrintRequest::PRINT_THIS, '' ) );
+		$queryDescription->addPrintRequest( new PrintRequest( PrintRequest::PRINT_THIS, '' ) );
 
 		$query = new SMWQuery( $queryDescription );
 		$query->sortkeys[''] = $order;

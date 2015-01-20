@@ -19,7 +19,7 @@ use SMW\Store;
 use SMW\Store\CacheableResultCollector;
 use SMWDataItem;
 use SMWDIError;
-use SMWPrintRequest;
+use SMW\Query\PrintRequest;
 use SMWQuery;
 use SMWQueryResult;
 use SMWResultArray;
@@ -533,11 +533,11 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	/**
 	 * @since 1.9
 	 *
-	 * @return SMWPrintRequest
+	 * @return PrintRequest
 	 */
 	public function PrintRequest() {
 
-		$printRequest = $this->getMockBuilder( 'SMWPrintRequest' )
+		$printRequest = $this->getMockBuilder( 'SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -551,7 +551,7 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 
 		$printRequest->expects( $this->any() )
 			->method( 'getMode' )
-			->will( $this->returnValue( $this->builder->setValue( 'getMode', SMWPrintRequest::PRINT_THIS ) ) );
+			->will( $this->returnValue( $this->builder->setValue( 'getMode', PrintRequest::PRINT_THIS ) ) );
 
 		$printRequest->expects( $this->any() )
 			->method( 'getTypeID' )

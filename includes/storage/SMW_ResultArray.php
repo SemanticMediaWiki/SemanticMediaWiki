@@ -1,4 +1,5 @@
 <?php
+use SMW\Query\PrintRequest;
 
 /**
  * Container for the contents of a single result field of a query result,
@@ -13,7 +14,7 @@
 class SMWResultArray {
 	
 	/**
-	 * @var SMWPrintRequest
+	 * @var PrintRequest
 	 */
 	protected $mPrintRequest;
 	
@@ -39,10 +40,10 @@ class SMWResultArray {
 	 * Constructor.
 	 * 
 	 * @param SMWDIWikiPage $resultPage
-	 * @param SMWPrintRequest $printRequest
+	 * @param PrintRequest $printRequest
 	 * @param SMWStore $store
 	 */
-	public function __construct( SMWDIWikiPage $resultPage, SMWPrintRequest $printRequest, SMWStore $store ) {
+	public function __construct( SMWDIWikiPage $resultPage, PrintRequest $printRequest, SMWStore $store ) {
 		$this->mResult = $resultPage;
 		$this->mPrintRequest = $printRequest;
 		$this->mStore = $store;
@@ -81,10 +82,10 @@ class SMWResultArray {
 	}
 
 	/**
-	 * Return an SMWPrintRequest object describing what is contained in this
+	 * Return a PrintRequest object describing what is contained in this
 	 * result set.
 	 * 
-	 * @return SMWPrintRequest
+	 * @return PrintRequest
 	 */
 	public function getPrintRequest() {
 		return $this->mPrintRequest;
@@ -139,7 +140,7 @@ class SMWResultArray {
 		if ( $di === false ) {
 			return false;
 		}
-		if ( $this->mPrintRequest->getMode() == SMWPrintRequest::PRINT_PROP &&
+		if ( $this->mPrintRequest->getMode() == PrintRequest::PRINT_PROP &&
 		     $this->mPrintRequest->getTypeID() == '_rec' &&
 		     $this->mPrintRequest->getParameter( 'index' ) !== false ) {
 			// Not efficient, but correct: we need to find the right property for
@@ -155,7 +156,7 @@ class SMWResultArray {
 			} else {
 				$diProperty = null;
 			}
-		} elseif ( $this->mPrintRequest->getMode() == SMWPrintRequest::PRINT_PROP ) {
+		} elseif ( $this->mPrintRequest->getMode() == PrintRequest::PRINT_PROP ) {
 			$diProperty = $this->mPrintRequest->getData()->getDataItem();
 		} else {
 			$diProperty = null;
@@ -197,10 +198,10 @@ class SMWResultArray {
 		
 
 		switch ( $this->mPrintRequest->getMode() ) {
-			case SMWPrintRequest::PRINT_THIS: // NOTE: The limit is ignored here.
+			case PrintRequest::PRINT_THIS: // NOTE: The limit is ignored here.
 				$this->mContent = array( $this->mResult );
 			break;
-			case SMWPrintRequest::PRINT_CATS:
+			case PrintRequest::PRINT_CATS:
 				// Always recompute cache here to ensure output format is respected.
 				self::$catCache = $this->mStore->getPropertyValues( $this->mResult,
 					new SMWDIProperty( '_INST' ), $this->getRequestOptions( false ) );
@@ -210,7 +211,7 @@ class SMWResultArray {
 				$this->mContent = ( $limit === false ) ? ( self::$catCache ) :
 					array_slice( self::$catCache, 0, $limit );
 			break;
-			case SMWPrintRequest::PRINT_PROP:
+			case PrintRequest::PRINT_PROP:
 				$propertyValue = $this->mPrintRequest->getData();
 				if ( $propertyValue->isValid() ) {
 					$this->mContent = $this->mStore->getPropertyValues( $this->mResult,
@@ -240,7 +241,7 @@ class SMWResultArray {
 					$this->mContent = $newcontent;
 				}
 			break;
-			case SMWPrintRequest::PRINT_CCAT: ///NOTE: The limit is ignored here.
+			case PrintRequest::PRINT_CCAT: ///NOTE: The limit is ignored here.
 				if ( self::$catCacheObj != $this->mResult->getHash() ) {
 					self::$catCache = $this->mStore->getPropertyValues( $this->mResult, new SMWDIProperty( '_INST' ) );
 					self::$catCacheObj = $this->mResult->getHash();

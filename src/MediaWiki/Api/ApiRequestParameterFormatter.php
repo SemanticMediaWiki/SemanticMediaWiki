@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Api;
 
 use SMW\SimpleDictionary;
-use SMWPrintRequest;
+use SMW\Query\PrintRequest;
 use SMWPropertyValue;
 
 /**
@@ -140,11 +140,11 @@ final class ApiRequestParameterFormatter {
 	 *
 	 * @param string $printout
 	 *
-	 * @return SMWPrintRequest
+	 * @return PrintRequest
 	 */
 	protected function formatPrintouts( $printout ) {
-		return new SMWPrintRequest(
-			SMWPrintRequest::PRINT_PROP,
+		return new PrintRequest(
+			PrintRequest::PRINT_PROP,
 			$printout,
 			SMWPropertyValue::makeUserProperty( $printout )
 		);

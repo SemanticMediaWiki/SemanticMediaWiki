@@ -2,6 +2,7 @@
 
 namespace SMW\Test;
 
+use SMW\AggregatablePrinter;
 use SMW\Tests\Utils\Mock\MockObjectBuilder;
 use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
 
@@ -9,6 +10,7 @@ use SMWDataItem;
 use SMWDINumber;
 
 use ReflectionClass;
+use SMWQueryResult;
 
 /**
  * Tests for the AggregatablePrinter class
@@ -232,7 +234,7 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 	}
 
 	/**
-	 * @return QueryResult
+	 * @return SMWQueryResult
 	 */
 	private function buildMockQueryResult( $setup ) {
 
