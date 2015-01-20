@@ -278,7 +278,7 @@ class SomePropertyCompilerTest extends \PHPUnit_Framework_TestCase {
 
 		$expected = new \stdClass;
 		$expected->type = 1;
-		$expected->jointable = 'FooPropTable';
+		$expected->joinTable = 'FooPropTable';
 		$expected->components = array( 1 => "t0.p_id" );
 		$expected->sortfields = array();
 
@@ -304,7 +304,7 @@ class SomePropertyCompilerTest extends \PHPUnit_Framework_TestCase {
 
 		$expected = new \stdClass;
 		$expected->type = 1;
-		$expected->jointable = 'FooPropTable';
+		$expected->joinTable = 'FooPropTable';
 		$expected->components = array( 1 => "t0.p_id", 2 => "t0.wikipageIndex" );
 		$expected->queryNumber = 0;
 		$expected->where = '';
@@ -332,7 +332,7 @@ class SomePropertyCompilerTest extends \PHPUnit_Framework_TestCase {
 
 		$expected = new \stdClass;
 		$expected->type = 1;
-		$expected->jointable = 'FooPropTable';
+		$expected->joinTable = 'FooPropTable';
 		$expected->components = array( 1 => "t0.p_id", 2 => "t0.wikipageIndex" );
 		$expected->queryNumber = 0;
 		$expected->where = '';
@@ -361,7 +361,7 @@ class SomePropertyCompilerTest extends \PHPUnit_Framework_TestCase {
 
 		$expected = new \stdClass;
 		$expected->type = 1;
-		$expected->jointable = 'FooPropTable';
+		$expected->joinTable = 'FooPropTable';
 		$expected->components = array( 1 => "t0.p_id" );
 		$expected->queryNumber = 0;
 		$expected->where = '(t0.blobIndex=fixedFooWhereCond)';
@@ -389,7 +389,7 @@ class SomePropertyCompilerTest extends \PHPUnit_Framework_TestCase {
 
 		$expected = new \stdClass;
 		$expected->type = 1;
-		$expected->jointable = 'FooPropTable';
+		$expected->joinTable = 'FooPropTable';
 		$expected->components = array( 1 => "t0.p_id" );
 		$expected->queryNumber = 0;
 		$expected->where = '(t0.blobIndex=fixedFooWhereCond)';

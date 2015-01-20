@@ -67,7 +67,7 @@ class QueryContainerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'',
-			$instance->jointable
+			$instance->joinTable
 		);
 
 		$this->assertEquals(

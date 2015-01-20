@@ -132,7 +132,7 @@ class SomePropertyCompiler implements QueryCompiler {
 		$sortkey = $property->getKey();
 
 		// *** Now construct the query ... ***//
-		$query->jointable = $proptable->getName();
+		$query->joinTable = $proptable->getName();
 
 		// *** Add conditions for selecting rows for this property ***//
 		if ( !$proptable->isFixedPropertyTable() ) {

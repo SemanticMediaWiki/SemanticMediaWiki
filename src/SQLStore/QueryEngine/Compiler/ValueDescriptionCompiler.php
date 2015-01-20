@@ -75,7 +75,7 @@ class ValueDescriptionCompiler implements QueryCompiler {
 				$description->getDataItem()->getSubobjectName() );
 			$query->joinfield = array( $oid );
 		} else { // Join with SMW IDs table needed for other comparators (apply to title string).
-			$query->jointable = SMWSql3SmwIds::tableName;
+			$query->joinTable = SMWSql3SmwIds::tableName;
 			$query->joinfield = "{$query->alias}.smw_id";
 			$value = $description->getDataItem()->getSortKey();
 

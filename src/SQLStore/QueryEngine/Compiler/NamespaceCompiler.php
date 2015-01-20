@@ -54,7 +54,7 @@ class NamespaceCompiler implements QueryCompiler {
 	public function compileDescription( Description $description ) {
 
 		$query = new QueryContainer();
-		$query->jointable = SMWSql3SmwIds::tableName;
+		$query->joinTable = SMWSql3SmwIds::tableName;
 		$query->joinfield = "$query->alias.smw_id";
 		$query->where = "$query->alias.smw_namespace=" . $this->queryBuilder->getStore()->getConnection( 'mw.db' )->addQuotes( $description->getNamespace() );
 

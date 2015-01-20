@@ -150,7 +150,7 @@ class SMWSQLStore3QueryEngine {
 			$this->executeQueries( $this->m_queries[$qid] ); // execute query tree, resolve all dependencies
 			$qobj = $this->m_queries[$qid];
 
-			if ( $qobj->joinfield === '' || $qobj->jointable === '' ) {
+			if ( $qobj->joinfield === '' || $qobj->joinTable === '' ) {
 				return;
 			}
 
@@ -175,7 +175,7 @@ class SMWSQLStore3QueryEngine {
 			$db->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) .
 				"INTO $smw_conccache" .
 				" SELECT DISTINCT {$qobj->joinfield} AS s_id, $cid AS o_id FROM " .
-				$db->tableName( $qobj->jointable ) . " AS {$qobj->alias}" .
+				$db->tableName( $qobj->joinTable ) . " AS {$qobj->alias}" .
 				$qobj->from .
 				( $where ? ' WHERE ' : '' ) . $where . " LIMIT $smwgQMaxLimit",
 				$fname );
@@ -304,17 +304,17 @@ class SMWSQLStore3QueryEngine {
 		if ( $qid < 0 ) { // no valid/supported condition; ensure that at least only proper pages are delivered
 			$qid = SMWSQLStore3Query::$qnum;
 			$q = new SMWSQLStore3Query();
-			$q->jointable = SMWSql3SmwIds::tableName;
+			$q->joinTable = SMWSql3SmwIds::tableName;
 			$q->joinfield = "$q->alias.smw_id";
 			$q->where = "$q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND $q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL3_SMWREDIIW ) . " AND $q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL3_SMWBORDERIW ) . " AND $q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL3_SMWINTDEFIW );
 			$this->m_queries[$qid] = $q;
 		}
 
-		if ( $this->m_queries[$qid]->jointable != SMWSql3SmwIds::tableName ) {
+		if ( $this->m_queries[$qid]->joinTable != SMWSql3SmwIds::tableName ) {
 			// manually make final root query (to retrieve namespace,title):
 			$rootid = SMWSQLStore3Query::$qnum;
 			$qobj = new SMWSQLStore3Query();
-			$qobj->jointable  = SMWSql3SmwIds::tableName;
+			$qobj->joinTable  = SMWSql3SmwIds::tableName;
 			$qobj->joinfield  = "$qobj->alias.smw_id";
 			$qobj->components = array( $qid => "$qobj->alias.smw_id" );
 			$qobj->sortfields = $this->m_queries[$qid]->sortfields;
@@ -379,7 +379,7 @@ class SMWSQLStore3QueryEngine {
 		if ( $qobj->joinfield !== '' ) {
 			$entries['SQL Query'] =
 			           "<tt>SELECT DISTINCT $qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns FROM " .
-			           $db->tableName( $qobj->jointable ) . " AS $qobj->alias" . $qobj->from .
+			           $db->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from .
 			           ( ( $qobj->where === '' ) ? '':' WHERE ' ) . $qobj->where . "$tailOpts LIMIT " .
 			           $sql_options['LIMIT'] . ' OFFSET ' . $sql_options['OFFSET'] . ';</tt>';
 		} else {
@@ -421,7 +421,7 @@ class SMWSQLStore3QueryEngine {
 		}
 
 		$sql_options = array( 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() );
-		$res = $this->m_dbs->select( $this->m_dbs->tableName( $qobj->jointable ) . " AS $qobj->alias" . $qobj->from, "COUNT(DISTINCT $qobj->alias.smw_id) AS count", $qobj->where, 'SMW::getQueryResult', $sql_options );
+		$res = $this->m_dbs->select( $this->m_dbs->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from, "COUNT(DISTINCT $qobj->alias.smw_id) AS count", $qobj->where, 'SMW::getQueryResult', $sql_options );
 		$row = $this->m_dbs->fetchObject( $res );
 
 		$count = $row->count;
@@ -466,7 +466,7 @@ class SMWSQLStore3QueryEngine {
 		// Selecting those is required in standard SQL (but MySQL does not require it).
 		$sortfields = implode( $qobj->sortfields, ',' );
 
-		$res = $db->select( $db->tableName( $qobj->jointable ) . " AS $qobj->alias" . $qobj->from,
+		$res = $db->select( $db->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from,
 			"DISTINCT $qobj->alias.smw_id AS id,$qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns,$qobj->alias.smw_iw AS iw,$qobj->alias.smw_subobject AS so,$qobj->alias.smw_sortkey AS sortkey" .
 			  ( $wgDBtype == 'postgres' ? ( ( $sortfields ? ',' : '' ) . $sortfields ) : '' ),
 			$qobj->where, 'SMW::getQueryResult', $sql_options );
@@ -555,8 +555,8 @@ class SMWSQLStore3QueryEngine {
 					$subquery = $this->m_queries[$qid];
 					$this->executeQueries( $subquery );
 
-					if ( $subquery->jointable !== '' ) { // Join with jointable.joinfield
-						$query->from .= ' INNER JOIN ' . $db->tableName( $subquery->jointable ) . " AS $subquery->alias ON $joinfield=" . $subquery->joinfield;
+					if ( $subquery->joinTable !== '' ) { // Join with jointable.joinfield
+						$query->from .= ' INNER JOIN ' . $db->tableName( $subquery->joinTable ) . " AS $subquery->alias ON $joinfield=" . $subquery->joinfield;
 					} elseif ( $subquery->joinfield !== '' ) { // Require joinfield as "value" via WHERE.
 						$condition = '';
 
@@ -571,7 +571,7 @@ class SMWSQLStore3QueryEngine {
 						$query->where .= ( ( $query->where === '' ) ? '':' AND ' ) . $condition;
 					} else { // interpret empty joinfields as impossible condition (empty result)
 						$query->joinfield = ''; // make whole query false
-						$query->jointable = '';
+						$query->joinTable = '';
 						$query->where = '';
 						$query->from = '';
 						break;
@@ -592,7 +592,7 @@ class SMWSQLStore3QueryEngine {
 				$key = false;
 
 				foreach ( $query->components as $qkey => $qid ) {
-					if ( $this->m_queries[$qkey]->jointable !== '' ) {
+					if ( $this->m_queries[$qkey]->joinTable !== '' ) {
 						$key = $qkey;
 						break;
 					}
@@ -638,10 +638,10 @@ class SMWSQLStore3QueryEngine {
 					$this->executeQueries( $subquery );
 					$sql = '';
 
-					if ( $subquery->jointable !== '' ) {
+					if ( $subquery->joinTable !== '' ) {
 						$sql = 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '':'IGNORE ' ) . 'INTO ' .
 						       $db->tableName( $query->alias ) .
-							   " SELECT $subquery->joinfield FROM " . $db->tableName( $subquery->jointable ) .
+							   " SELECT $subquery->joinfield FROM " . $db->tableName( $subquery->joinTable ) .
 							   " AS $subquery->alias $subquery->from" . ( $subquery->where ? " WHERE $subquery->where":'' );
 					} elseif ( $subquery->joinfield !== '' ) {
 						// NOTE: this works only for single "unconditional" values without further
@@ -663,7 +663,7 @@ class SMWSQLStore3QueryEngine {
 					}
 				}
 
-				$query->jointable = $query->alias;
+				$query->joinTable = $query->alias;
 				$query->joinfield = "$query->alias.id";
 				$query->sortfields = array(); // Make sure we got no sortfields.
 				// TODO: currently this eliminates sortkeys, possibly keep them (needs different temp table format though, maybe not such a good thing to do)
@@ -718,7 +718,7 @@ class SMWSQLStore3QueryEngine {
 		$db->freeResult( $res );
 		$tablename = $db->tableName( $query->alias );
 		$this->m_querylog[$query->alias] = array( "Recursively computed hierarchy for element(s) $values." );
-		$query->jointable = $query->alias;
+		$query->joinTable = $query->alias;
 		$query->joinfield = "$query->alias.id";
 
 		if ( $this->m_qmode == SMWQuery::MODE_DEBUG ) {
