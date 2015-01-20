@@ -31,7 +31,7 @@ class ValueDescriptionCompiler implements QueryCompiler {
 	private $compilerHelper;
 
 	/**
-	 * @since 2.1
+	 * @since 2.2
 	 *
 	 * @param QueryBuilder $queryBuilder
 	 */
@@ -41,7 +41,7 @@ class ValueDescriptionCompiler implements QueryCompiler {
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 2.2
 	 *
 	 * @return boolean
 	 */
@@ -52,7 +52,7 @@ class ValueDescriptionCompiler implements QueryCompiler {
 	/**
 	 * Only type '_wpg' objects can appear on query level (essentially as nominal classes)
 	 *
-	 * @since 2.1
+	 * @since 2.2
 	 *
 	 * @param Description $description
 	 *

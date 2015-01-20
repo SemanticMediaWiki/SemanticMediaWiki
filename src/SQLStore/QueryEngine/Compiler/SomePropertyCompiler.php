@@ -39,7 +39,7 @@ class SomePropertyCompiler implements QueryCompiler {
 	private $compilerHelper;
 
 	/**
-	 * @since 2.1
+	 * @since 2.2
 	 *
 	 * @param QueryBuilder $queryBuilder
 	 */
@@ -49,7 +49,7 @@ class SomePropertyCompiler implements QueryCompiler {
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 2.2
 	 *
 	 * @return boolean
 	 */
@@ -63,7 +63,7 @@ class SomePropertyCompiler implements QueryCompiler {
 	 * name of the joinfield (o_id). Better extend
 	 * compilePropertyValueDescription to deal with this case.
 	 *
-	 * @since 2.1
+	 * @since 2.2
 	 *
 	 * @param Description $description
 	 *

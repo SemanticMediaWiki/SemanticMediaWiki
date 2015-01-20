@@ -22,7 +22,7 @@ class ThingDescriptionCompiler implements QueryCompiler {
 	private $queryBuilder;
 
 	/**
-	 * @since 2.1
+	 * @since 2.2
 	 *
 	 * @param QueryBuilder $queryBuilder
 	 */
@@ -31,7 +31,7 @@ class ThingDescriptionCompiler implements QueryCompiler {
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 2.2
 	 *
 	 * @return boolean
 	 */
@@ -40,7 +40,7 @@ class ThingDescriptionCompiler implements QueryCompiler {
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 2.2
 	 *
 	 * @param Description $description
 	 *

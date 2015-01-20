@@ -15,7 +15,7 @@ use SMWDIUri as DIUri;
 class CompilerHelper {
 
 	/**
-	 * @since 2.1
+	 * @since 2.2
 	 *
 	 * @param ValueDescription $description
 	 * @param string &$value

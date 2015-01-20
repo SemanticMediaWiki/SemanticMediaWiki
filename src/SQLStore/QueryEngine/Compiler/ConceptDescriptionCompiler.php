@@ -26,7 +26,7 @@ class ConceptDescriptionCompiler implements QueryCompiler {
 	private $queryBuilder;
 
 	/**
-	 * @since 2.1
+	 * @since 2.2
 	 *
 	 * @param QueryBuilder $queryBuilder
 	 */
@@ -35,7 +35,7 @@ class ConceptDescriptionCompiler implements QueryCompiler {
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 2.2
 	 *
 	 * @return boolean
 	 */
@@ -44,7 +44,7 @@ class ConceptDescriptionCompiler implements QueryCompiler {
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 2.2
 	 *
 	 * @param Description $description
 	 *
