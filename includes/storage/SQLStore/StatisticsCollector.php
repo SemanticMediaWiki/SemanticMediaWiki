@@ -4,11 +4,11 @@ namespace SMW\SQLStore;
 
 use SMW\ObjectDictionary;
 use SMW\Store\CacheableResultCollector;
-use SMW\SQLStore\SQLStore;
 
 use SMW\SimpleDictionary;
 use SMW\DIProperty;
 use SMW\Settings;
+use SMWSQLStore3;
 
 /**
  * Collects statistical information provided by the store
@@ -22,7 +22,7 @@ use SMW\Settings;
 class StatisticsCollector extends CacheableResultCollector {
 
 	/**
-	 * @var SQLStore
+	 * @var SMWSQLStore3
 	 */
 	protected $store;
 
@@ -34,10 +34,10 @@ class StatisticsCollector extends CacheableResultCollector {
 	/**
 	 * @since 1.9
 	 *
-	 * @param SQLStore $store
+	 * @param SMWSQLStore3 $store
 	 * @param Settings $settings
 	 */
-	public function __construct( SQLStore $store, Settings $settings ) {
+	public function __construct( SMWSQLStore3 $store, Settings $settings ) {
 		$this->store = $store;
 		$this->settings = $settings;
 	}

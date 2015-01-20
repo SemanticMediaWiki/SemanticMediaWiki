@@ -23,7 +23,7 @@ class StatisticsCollectorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -222,7 +222,7 @@ class StatisticsCollectorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'estimateRowCount' )
 			->will( $this->returnValue( $count ) );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
 			->getMock();
 
