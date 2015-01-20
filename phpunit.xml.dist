@@ -51,7 +51,9 @@
     </groups>
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src</directory>
             <directory suffix=".php">includes</directory>
+            <directory suffix=".php">maintenance</directory>
         </whitelist>
     </filter>
     <php>
