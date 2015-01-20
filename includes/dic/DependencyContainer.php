@@ -23,7 +23,7 @@ interface DependencyObject {
 	/**
 	 * Defines an object
 	 *
-	 * @since  1.9
+	 * @since 1.9
 	 *
 	 * @param DependencyBuilder $builder
 	 */
@@ -41,14 +41,20 @@ interface DependencyContainer extends Accessible, Changeable, Combinable {
 	/**
 	 * Register a dependency object
 	 *
-	 * @since  1.9
+	 * @since 1.9
+	 *
+	 * @param string $objectName
+	 * @param callable|object $objectSignature
+	 * @param int $objectScope DependencyObject::SCOPE_ enum value
+	 *
+	 * @return
 	 */
-	public function registerObject( $objectName, $objectSignature, $objectScope );
+	public function registerObject( $objectName, $objectSignature, $objectScope = DependencyObject::SCOPE_PROTOTYPE );
 
 	/**
 	 * Retrieves object definitions
 	 *
-	 * @since  1.9
+	 * @since 1.9
 	 */
 	public function loadAllDefinitions();
 
