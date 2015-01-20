@@ -3,13 +3,11 @@
 namespace SMW\Store;
 
 use SMW\CacheableResultMapper;
-use SMW\ResultCollector;
 use SMW\DIProperty;
-use SMW\Settings;
-
+use SMW\ObjectDictionary;
+use SMW\ResultCollector;
+use SMW\SQLStore\TableDefinition;
 use SMWRequestOptions;
-use InvalidArgumentException;
-use MWTimestamp;
 
 /**
  * Base class thats represents a cacheable ResultCollector
