@@ -34,6 +34,8 @@ class QueryBuilder {
 
 	/**
 	 * Array of generated QueryContainer query descriptions (index => object).
+	 *
+	 * @var QueryContainer[]
 	 */
 	private $queries = array();
 
@@ -41,11 +43,13 @@ class QueryBuilder {
 	 * Array of sorting requests ("Property_name" => "ASC"/"DESC"). Used during query
 	 * processing (where these property names are searched while compiling the query
 	 * conditions).
+	 *
+	 * @var string[]
 	 */
-	private $sortkeys = array();
+	private $sortKeys = array();
 
 	/**
-	 * @var array
+	 * @var string[]
 	 */
 	private $errors = array();
 
@@ -55,7 +59,7 @@ class QueryBuilder {
 	private $lastContainerId = -1;
 
 	/**
-	 * @since  2.2
+	 * @since 2.2
 	 *
 	 * @param Store $store
 	 */
@@ -63,10 +67,6 @@ class QueryBuilder {
 		$this->store = $store;
 
 		QueryContainer::$qnum = 0;
-		$this->lastContainerId = -1;
-		$this->sortkeys = array();
-		$this->queries = array();
-		$this->errors = array();
 
 		$this->registerQueryCompiler( new SomePropertyCompiler( $this ) );
 		$this->registerQueryCompiler( new DisjunctionConjunctionCompiler( $this ) );
@@ -88,53 +88,54 @@ class QueryBuilder {
 	/**
 	 * @since 2.2
 	 *
-	 * @param array $sortkeys
+	 * @param array $sortKeys
 	 *
-	 * @return QueryBuilder
+	 * @return $this
 	 */
-	public function setSortKeys( $sortkeys ) {
-		$this->sortkeys = $sortkeys;
+	public function setSortKeys( $sortKeys ) {
+		$this->sortKeys = $sortKeys;
 		return $this;
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @param array $sortkeys
+	 * @return string[]
 	 */
 	public function getSortKeys() {
-		return $this->sortkeys;
+		return $this->sortKeys;
 	}
 
 	/**
-	 * @since  2.2
+	 * @since 2.2
+	 *
+	 * @param int|null $id
 	 *
 	 * @return array
 	 */
 	public function getQueryContainer( $id = null ) {
-
 		if ( $id === null ) {
 			return $this->queries;
 		}
 
-		return isset( $this->queries[ $id ] ) ? $this->queries[ $id ] : array();
+		return isset( $this->queries[$id] ) ? $this->queries[$id] : array();
 	}
 
 	/**
-	 * @since  2.2
+	 * @since 2.2
 	 *
-	 * @param $id
+	 * @param int $id
 	 * @param QueryContainer $query
 	 *
 	 * @return QueryBuilder
 	 */
 	public function addQueryContainerForId( $id, QueryContainer $query ) {
-		$this->queries[ $id ] = $query;
+		$this->queries[$id] = $query;
 		return $this;
 	}
 
 	/**
-	 * @since  2.2
+	 * @since 2.2
 	 *
 	 * @return integer
 	 */
@@ -143,7 +144,7 @@ class QueryBuilder {
 	}
 
 	/**
-	 * @since  2.2
+	 * @since 2.2
 	 *
 	 * @return array
 	 */
@@ -152,9 +153,9 @@ class QueryBuilder {
 	}
 
 	/**
-	 * @since  2.2
+	 * @since 2.2
 	 *
-	 * @return string $error
+	 * @param string $error
 	 */
 	public function addError( $error ) {
 		$this->errors[] = $error;
@@ -163,7 +164,7 @@ class QueryBuilder {
 	/**
 	 * @since 2.2
 	 *
-	 * @param  Description $description
+	 * @param Description $description
 	 *
 	 * @return integer
 	 */
@@ -191,7 +192,7 @@ class QueryBuilder {
 	}
 
 	/**
-	 * @since  2.2
+	 * @since 2.2
 	 *
 	 * @param QueryCompiler $queryCompiler
 	 */
