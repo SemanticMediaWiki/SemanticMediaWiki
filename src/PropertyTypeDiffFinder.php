@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMWDataItem;
+
 /**
  * Class that detects a change between a property and its store data
  *
@@ -69,7 +71,7 @@ class PropertyTypeDiffFinder {
 	 *
 	 * @since 1.9
 	 *
-	 * @return PropertyTypeComparator
+	 * @return $this
 	 */
 	public function findDiff() {
 		Profiler::In( __METHOD__, true );
@@ -174,10 +176,12 @@ class PropertyTypeDiffFinder {
 	 *
 	 * @since 1.9
 	 *
-	 * @param $oldDataValue
-	 * @param $newDataValue
+	 * @param SMWDataItem[] $oldDataValue
+	 * @param SMWDataItem[] $newDataValue
+	 *
+	 * @return boolean
 	 */
-	protected function isEqual( $oldDataValue, $newDataValue ) {
+	protected function isEqual( array $oldDataValue, array $newDataValue ) {
 
 		// The hashes of all values of both arrays are taken, then sorted
 		// and finally concatenated, thus creating one long hash out of each
@@ -198,7 +202,7 @@ class PropertyTypeDiffFinder {
 		sort( $values );
 		$newDataValueHash = implode( '___', $values );
 
-		return ( $oldDataValueHash == $newDataValueHash );
+		return $oldDataValueHash == $newDataValueHash;
 	}
 
 }
