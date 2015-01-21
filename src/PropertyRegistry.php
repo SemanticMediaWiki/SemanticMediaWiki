@@ -139,16 +139,16 @@ class PropertyRegistry {
 	 * IDs should start with three underscores "___" to avoid current and
 	 * future confusion with SMW built-ins.
 	 *
-	 * @param $id string id
-	 * @param $typeid SMW type id
-	 * @param $label mixed string user label or false (internal property)
-	 * @param $show boolean only used if label is given, see isShown()
+	 * @param string $id
+	 * @param string $typeId SMW type id
+	 * @param string|bool $label user label or false (internal property)
+	 * @param boolean $show only used if label is given, see isShown()
 	 *
 	 * @note See self::isShown() for information about $show.
 	 */
-	public function registerProperty( $id, $typeid, $label = false, $show = false ) {
+	public function registerProperty( $id, $typeId, $label = false, $show = false ) {
 
-		$this->propertyTypes[ $id ] = array( $typeid, $show );
+		$this->propertyTypes[ $id ] = array( $typeId, $show );
 
 		if ( $label !== false ) {
 			$this->registerPropertyLabel( $id, $label );
