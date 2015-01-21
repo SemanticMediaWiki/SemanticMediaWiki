@@ -1,6 +1,7 @@
 #!/bin/bash
 set -ex
 BASE_PATH=$(pwd)
+E_UNREACHABLE=86
 
 if [ "$FOURSTORE" != "" ] || [ "$VIRTUOSO" != "" ] || [ "$SESAME" != "" ]
 then
@@ -52,7 +53,7 @@ then
 		echo "openrdf-sesame service url is reachable"
 	else
 		echo "openrdf-sesame service url is not reachable"
-		exit
+		exit $E_UNREACHABLE
 	fi
 
 	./openrdf-sesame-$SESAME/bin/console.sh < $BASE_PATH/build/travis/openrdf-sesame-memory-repository.txt
