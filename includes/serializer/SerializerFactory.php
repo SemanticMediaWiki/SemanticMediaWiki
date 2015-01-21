@@ -2,8 +2,8 @@
 
 namespace SMW;
 
-use SMW\Serializers\Serializer;
-use SMW\Deserializers\Deserializer;
+use Deserializers\Deserializer;
+use Serializers\Serializer;
 use SMW\Serializers\SemanticDataSerializer;
 use SMW\Deserializers\SemanticDataDeserializer;
 use SMW\Serializers\QueryResultSerializer;

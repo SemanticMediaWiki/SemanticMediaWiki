@@ -2,8 +2,8 @@
 
 namespace SMW\Serializers;
 
+use Serializers\Serializer;
 use SMW\SemanticData;
-use SMWDataItem as DataItem;
 
 use OutOfBoundsException;
 
