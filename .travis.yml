@@ -30,7 +30,7 @@ matrix:
     - env: THENEEDFORTHIS=FAIL
   allow_failures:
     - env: DB=mysql; MW=1.19.20; TYPE=relbuild
-    - env: DB=postgres; MW=1.19.20;
+    - env: DB=sqlite; MW=master@5cc1f1d; TYPE=composer
     - php: hhvm-nightly
 
 install:
