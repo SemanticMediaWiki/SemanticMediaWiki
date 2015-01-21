@@ -587,43 +587,28 @@ class SMWSQLStore3QueryEngine {
 				$query->components = array();
 			break;
 			case SMWSQLStore3Query::Q_CONJUNCTION:
-				// pick one subquery with jointable as anchor point ...
+				// pick one subquery as anchor point ...
 				reset( $query->components );
 				$key = false;
 
 				foreach ( $query->components as $qkey => $qid ) {
-					if ( $this->m_queries[$qkey]->jointable !== '' ) {
-						$key = $qkey;
-						break;
-					}
-				}
-
-				if ( $key !== false ) {
-					$result = $this->m_queries[$key];
-					unset( $query->components[$key] );
-
-					// Execute it first (may change jointable and joinfield, e.g. when making temporary tables)
-					$this->executeQueries( $result );
-
-					// ... and append to this query the remaining queries.
-					foreach ( $query->components as $qid => $joinfield ) {
-						$result->components[$qid] = $result->joinfield;
-					}
-
-					// Second execute, now incorporating remaining conditions.
-					$this->executeQueries( $result );
-				} else { // Only fixed values in conjunction, make a new value without joining.
 					$key = $qkey;
-					$result = $this->m_queries[$key];
-					unset( $query->components[$key] );
-
-					foreach ( $query->components as $qid => $joinfield ) {
-						if ( $result->joinfield != $this->m_queries[$qid]->joinfield ) {
-							$result->joinfield = ''; // all other values should already be ''
-							break;
-						}
-					}
+					break;
 				}
+
+				$result = $this->m_queries[$key];
+				unset( $query->components[$key] );
+
+				// Execute it first (may change jointable and joinfield, e.g. when making temporary tables)
+				$this->executeQueries( $result );
+
+				// ... and append to this query the remaining queries.
+				foreach ( $query->components as $qid => $joinfield ) {
+					$result->components[$qid] = $result->joinfield;
+				}
+
+				// Second execute, now incorporating remaining conditions.
+				$this->executeQueries( $result );
 				$query = $result;
 			break;
 			case SMWSQLStore3Query::Q_DISJUNCTION:
@@ -662,6 +647,10 @@ class SMWSQLStore3QueryEngine {
 						}
 					}
 				}
+
+				$query->type = SMWSQLStore3Query::Q_TABLE;
+				$query->where = '';
+				$query->components = array();
 
 				$query->jointable = $query->alias;
 				$query->joinfield = "$query->alias.id";
