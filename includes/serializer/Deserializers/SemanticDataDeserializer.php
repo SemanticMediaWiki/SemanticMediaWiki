@@ -2,6 +2,7 @@
 
 namespace SMW\Deserializers;
 
+use Deserializers\Deserializer;
 use SMW\SemanticData;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
