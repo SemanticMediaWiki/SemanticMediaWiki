@@ -20,17 +20,17 @@ class PropertyTypeDiffFinder {
 	/**
 	 * @var Store
 	 */
-	protected $store;
+	private $store;
 
 	/**
 	 * @var SemanticData
 	 */
-	protected $semanticData;
+	private $semanticData;
 
 	/**
 	 * @var boolean
 	 */
-	protected $hasDiff = false;
+	private $hasDiff = false;
 
 	/**
 	 * @since 1.9
@@ -90,31 +90,31 @@ class PropertyTypeDiffFinder {
 	 *
 	 * @since 1.9
 	 */
-	protected function comparePropertyTypes() {
+	private function comparePropertyTypes() {
 		Profiler::In( __METHOD__, true );
 
 		$update = false;
-		$ptype  = new DIProperty( DIProperty::TYPE_HAS_TYPE );
+		$propertyType  = new DIProperty( DIProperty::TYPE_HAS_TYPE );
 
 		// Get values from the store
-		$oldtype = $this->store->getPropertyValues(
+		$oldType = $this->store->getPropertyValues(
 			$this->semanticData->getSubject(),
-			$ptype
+			$propertyType
 		);
 
 		// Get values currently hold by the semantic container
-		$newtype = $this->semanticData->getPropertyValues( $ptype );
+		$newType = $this->semanticData->getPropertyValues( $propertyType );
 
 		// Compare old and new type
-		if ( !$this->isEqual( $oldtype, $newtype ) ) {
+		if ( !$this->isEqual( $oldType, $newType ) ) {
 			$update = true;
 		} else {
 
 			// Compare values (in case of _PVAL (allowed values) for a
 			// property change must be processed again)
-			$smwgDeclarationProperties = ApplicationFactory::getInstance()->getSettings()->get( 'smwgDeclarationProperties' );
+			$declarationProperties = ApplicationFactory::getInstance()->getSettings()->get( 'smwgDeclarationProperties' );
 
-			foreach ( $smwgDeclarationProperties as $prop ) {
+			foreach ( $declarationProperties as $prop ) {
 				$dataItem = new DIProperty( $prop );
 				$oldValues = $this->store->getPropertyValues(
 					$this->semanticData->getSubject(),
@@ -136,7 +136,7 @@ class PropertyTypeDiffFinder {
 	 *
 	 * @since 1.9
 	 */
-	protected function compareConversionTypedFactors() {
+	private function compareConversionTypedFactors() {
 		Profiler::In( __METHOD__, true );
 
 		$pconversion  = new DIProperty( DIProperty::TYPE_CONVERSION );
@@ -157,7 +157,7 @@ class PropertyTypeDiffFinder {
 	 *
 	 * @param boolean $addJob
 	 */
-	protected function notifyUpdateDispatcher( $addJob = true ) {
+	private function notifyUpdateDispatcher( $addJob = true ) {
 		if ( $addJob && !$this->hasDiff ) {
 
 			ApplicationFactory::getInstance()
@@ -181,7 +181,7 @@ class PropertyTypeDiffFinder {
 	 *
 	 * @return boolean
 	 */
-	protected function isEqual( array $oldDataValue, array $newDataValue ) {
+	private function isEqual( array $oldDataValue, array $newDataValue ) {
 
 		// The hashes of all values of both arrays are taken, then sorted
 		// and finally concatenated, thus creating one long hash out of each
