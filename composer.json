@@ -66,6 +66,11 @@
 		"process-timeout": 0
 	},
 	"scripts": {
-		"phpunit": "php ../../tests/phpunit/phpunit.php -c phpunit.xml.dist"
+		"phpunit": "php ../../tests/phpunit/phpunit.php -c phpunit.xml.dist",
+		"unit": [
+			"composer dump-autoload",
+			"composer validate --no-interaction",
+			"php ../../tests/phpunit/phpunit.php -c phpunit.xml.dist --testsuite=semantic-mediawiki-unit"
+		]
 	}
 }
