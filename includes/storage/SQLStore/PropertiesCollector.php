@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore;
 
+use SMW\ObjectDictionary;
 use SMW\Store\CacheableResultCollector;
 
 use SMW\InvalidPropertyException;
@@ -15,6 +16,7 @@ use SMWDIError;
 
 use Message;
 use DatabaseBase;
+use SMWSQLStore3;
 
 /**
  * Collects properties from a store entity
@@ -30,22 +32,22 @@ use DatabaseBase;
 class PropertiesCollector extends CacheableResultCollector {
 
 	/** @var Store */
-	protected $store;
+	private $store;
 
 	/** @var Settings */
-	protected $settings;
+	private $settings;
 
 	/** @var DatabaseBase */
-	protected $dbConnection;
+	private $dbConnection;
 
 	/**
 	 * @since 1.9
 	 *
-	 * @param Store $store
+	 * @param SMWSQLStore3 $store
 	 * @param DatabaseBase $dbw
 	 * @param Settings $settings
 	 */
-	public function __construct( Store $store, DatabaseBase $dbw, Settings $settings ) {
+	public function __construct( SMWSQLStore3 $store, DatabaseBase $dbw, Settings $settings ) {
 		$this->store = $store;
 		$this->dbConnection = $dbw;
 		$this->settings = $settings;
@@ -81,7 +83,7 @@ class PropertiesCollector extends CacheableResultCollector {
 	 *
 	 * @return array
 	 */
-	protected function doQuery() {
+	private function doQuery() {
 		Profiler::In( __METHOD__ );
 
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong
@@ -128,7 +130,7 @@ class PropertiesCollector extends CacheableResultCollector {
 	 *
 	 * @return DIProperty[]
 	 */
-	protected function getProperties( $res ) {
+	private function getProperties( $res ) {
 		Profiler::In( __METHOD__ );
 
 		$result = array();

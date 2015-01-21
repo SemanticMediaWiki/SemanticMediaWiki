@@ -2,12 +2,12 @@
 
 namespace SMW\Test\SQLStore;
 
+use SMW\MediaWiki\Database;
 use SMW\SQLStore\PropertiesCollector;
 
 use SMW\Test\SemanticMediaWikiTestCase;
 
 use SMW\MessageFormatter;
-use SMW\StoreFactory;
 use SMW\DIProperty;
 use SMW\Settings;
 
@@ -19,7 +19,6 @@ use FakeResultWrapper;
 /**
  * @covers \SMW\SQLStore\PropertiesCollector
  *
- *
  * @group SMW
  * @group SMWExtension
  *
@@ -30,9 +29,6 @@ use FakeResultWrapper;
  */
 class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 
-	/**
-	 * @return string|false
-	 */
 	public function getClass() {
 		return '\SMW\SQLStore\PropertiesCollector';
 	}
