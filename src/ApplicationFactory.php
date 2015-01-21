@@ -8,6 +8,8 @@ use SMW\Annotator\PropertyAnnotatorFactory;
 use SMW\Factbox\FactboxBuilder;
 use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\MediaWiki\MwCollaboratorFactory;
+use SMW\MediaWiki\PageCreator;
+use SMW\MediaWiki\TitleCreator;
 use SMW\Query\Profiler\QueryProfilerFactory;
 use SMWQueryParser as QueryParser;
 use Title;
@@ -42,7 +44,7 @@ class ApplicationFactory {
 	/**
 	 * @since 2.0
 	 *
-	 * @return Application
+	 * @return self
 	 */
 	public static function getInstance() {
 
@@ -69,9 +71,9 @@ class ApplicationFactory {
 	 * @since 2.0
 	 *
 	 * @param string $objectName
-	 * @param Closure|array $objectSignature
+	 * @param callable|array $objectSignature
 	 *
-	 * @return Application
+	 * @return $this
 	 */
 	public function registerObject( $objectName, $objectSignature ) {
 		$this->builder->getContainer()->registerObject( $objectName, $objectSignature );
