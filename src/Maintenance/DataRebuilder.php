@@ -71,7 +71,7 @@ class DataRebuilder {
 	/**
 	 * @since 1.9.2
 	 *
-	 * @param array $parameters
+	 * @param array $options
 	 */
 	public function setParameters( array $options ) {
 
