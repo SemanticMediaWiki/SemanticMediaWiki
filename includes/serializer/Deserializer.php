@@ -20,7 +20,6 @@ interface Deserializer {
 	 * @param mixed $serialization
 	 *
 	 * @return object
-	 * @throws DeserializationException
 	 */
 	public function deserialize( $serialization );
 
