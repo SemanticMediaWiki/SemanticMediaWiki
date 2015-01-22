@@ -62,7 +62,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 
 	private function newMockCacheHandler( $id, $status ) {
 
-		$cacheHandler = $this->getMockBuilder( 'SMW\CacheHandler' )
+		$cacheHandler = $this->getMockBuilder( 'SMW\Cache\CacheHandler' )
 			->disableOriginalConstructor()
 			->getMock();
 

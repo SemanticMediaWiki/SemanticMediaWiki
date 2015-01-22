@@ -112,7 +112,7 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 
 		$provider[] = array( 'Settings',                   array( '\SMW\Settings'                    => array() ) );
 		$provider[] = array( 'Store',                      array( '\SMW\Store'                       => array() ) );
-		$provider[] = array( 'CacheHandler',               array( '\SMW\CacheHandler'                => array() ) );
+		$provider[] = array( 'CacheHandler',               array( '\SMW\Cache\CacheHandler'          => array() ) );
 		$provider[] = array( 'NamespaceExaminer',          array( '\SMW\NamespaceExaminer'           => array() ) );
 
 		$provider[] = array( 'RequestContext',             array( '\IContextSource'                  => array() ) );

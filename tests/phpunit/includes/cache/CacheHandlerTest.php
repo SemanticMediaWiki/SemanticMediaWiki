@@ -2,13 +2,13 @@
 
 namespace SMW\Test;
 
-use SMW\CacheIdGenerator;
-use SMW\CacheHandler;
+use SMW\Cache\CacheIdGenerator;
+use SMW\Cache\CacheHandler;
 
 use HashBagOStuff;
 
 /**
- * @covers \SMW\CacheHandler
+ * @covers \SMW\Cache\CacheHandler
  *
  *
  * @group SMW
@@ -25,14 +25,14 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 	 * @return string
 	 */
 	public function getClass() {
-		return '\SMW\CacheHandler';
+		return '\SMW\Cache\CacheHandler';
 	}
 
 	/**
 	 * @note HashBagOStuff is used as test interface because it stores
 	 * content in an associative array (which is not going to persist)
 	 *
-	 * @return CacheHandler
+	 * @return \SMW\Cache\CacheHandler
 	 */
 	private function newInstance() {
 		return new CacheHandler( new HashBagOStuff );

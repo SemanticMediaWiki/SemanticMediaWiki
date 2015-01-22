@@ -2,10 +2,10 @@
 
 namespace SMW\Test;
 
-use SMW\CacheIdGenerator;
+use SMW\Cache\CacheIdGenerator;
 
 /**
- * @covers \SMW\CacheIdGenerator
+ * @covers \SMW\Cache\CacheIdGenerator
  *
  *
  * @group SMW
@@ -44,7 +44,7 @@ class CacheIdGeneratorTest extends SemanticMediaWikiTestCase {
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\CacheIdGenerator';
+		return '\SMW\Cache\CacheIdGenerator';
 	}
 
 	/**

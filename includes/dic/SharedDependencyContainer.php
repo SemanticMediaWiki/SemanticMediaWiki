@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use SMW\Cache\CacheHandler;
 use SMW\MediaWiki\TitleCreator;
 use SMW\MediaWiki\PageCreator;
 

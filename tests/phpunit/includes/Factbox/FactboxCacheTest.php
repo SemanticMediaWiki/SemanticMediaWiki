@@ -67,7 +67,7 @@ class FactboxCacheTest extends \PHPUnit_Framework_TestCase {
 	public function testNewCacheId() {
 
 		$this->assertInstanceOf(
-			'\SMW\CacheIdGenerator',
+			'\SMW\Cache\CacheIdGenerator',
 			FactboxCache::newCacheId( 9001 )
 		);
 	}

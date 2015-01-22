@@ -2,11 +2,11 @@
 
 namespace SMW\Test;
 
-use SMW\CacheableResultMapper;
+use SMW\Cache\CacheableResultMapper;
 use SMW\SimpleDictionary;
 
 /**
- * @covers \SMW\CacheableResultMapper
+ * @covers \SMW\Cache\CacheableResultMapper
  *
  *
  * @group SMW
@@ -23,13 +23,13 @@ class CacheableResultMapperTest extends SemanticMediaWikiTestCase {
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\CacheableResultMapper';
+		return '\SMW\Cache\CacheableResultMapper';
 	}
 
 	/**
 	 * @since 1.9
 	 *
-	 * @return CacheableResultMapper
+	 * @return \SMW\Cache\CacheableResultMapper
 	 */
 	private function newInstance( $cacheId = 'Foo', $cacheEnabled = true, $cacheExpiry = 10 ) {
 

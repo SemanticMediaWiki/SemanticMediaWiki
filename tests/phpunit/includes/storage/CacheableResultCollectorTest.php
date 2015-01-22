@@ -4,6 +4,7 @@ namespace SMW\Test;
 
 use SMW\SimpleDictionary;
 
+use SMW\Store\CacheableResultCollector;
 use SMWRequestOptions;
 
 /**
