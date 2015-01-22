@@ -312,5 +312,7 @@
 	"smw-datavalue-number-textnotallowed": "“$1”不能分配给公开的带值$2的数字类型。",
 	"smw-editpage-annotation-disabled": "由于名字空间限制，此页面在语义文内注释中不会启用。有关如何启用名字空间的详细信息在[https://semantic-mediawiki.org/wiki/Help:配置 配置]帮助页面中阐述。",
 	"smw-editpage-property-annotation-disabled": "由于此属性已经被预先定义，它不能通过一个数据类型注释（例如<nowiki>\"[[Has type::Page]]\"</nowiki>）延伸（参见[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 特殊属性]帮助页面以获取更多信息）。",
-	"log-name-smw": "Semantic MediaWiki日志"
+	"log-name-smw": "Semantic MediaWiki日志",
+	"smw-datavalue-import-unknownns": "导入名字空间“$1”未知。请确信owl导入详细信息存在于[[MediaWiki:Smw import $1]]",
+	"smw-pa-property-predefined_impo": "“$1”是预定义属性（或称[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 特殊属性]），它描述一个与[https://semantic-mediawiki.org/wiki/Help:Import_vocabulary 导入的词汇]之间的关系。它是带额外管理特权的内置属性，但可像其他[https://www.semantic-mediawiki.org/wiki/Property 自定义属性]一样使用。"
 }
