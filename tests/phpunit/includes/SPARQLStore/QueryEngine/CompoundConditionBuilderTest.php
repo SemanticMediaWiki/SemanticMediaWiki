@@ -16,6 +16,7 @@ use SMW\Query\Language\SomeProperty;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Localizer;
 
 use SMWDataItem as DataItem;
 use SMWDINumber as DINumber;
@@ -313,8 +314,14 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testQueryForSingleCategory() {
 
+		$category = new DIWikiPage( 'Foo', NS_CATEGORY, '' );
+
+		$categoryName = \SMWTurtleSerializer::getTurtleNameForExpElement(
+			\SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
+		);
+
 		$description = new ClassDescription(
-			new DIWikiPage( 'Foo', NS_CATEGORY, '' )
+			$category
 		);
 
 		$instance = new CompoundConditionBuilder();
@@ -327,7 +334,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expectedConditionString = $this->stringBuilder
-			->addString( "{ ?result rdf:type wiki:Category-3AFoo . }" )->addNewLine()
+			->addString( "{ ?result rdf:type $categoryName . }" )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -593,8 +600,14 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$property = DIProperty::newFromUserLabel( 'Born in' );
 		$property->setPropertyTypeId( '_wpg' );
 
+		$category = new DIWikiPage( 'City', NS_CATEGORY );
+
+		$categoryName = \SMWTurtleSerializer::getTurtleNameForExpElement(
+			\SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
+		);
+
 		$conjunction = new Conjunction( array(
-			new ClassDescription( new DIWikiPage( 'City', NS_CATEGORY ) ),
+			new ClassDescription( $category ),
 			new SomeProperty(
 				DIProperty::newFromUserLabel( 'Located in' ),
 				new ValueDescription(
@@ -621,7 +634,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$expectedConditionString = $this->stringBuilder
 			->addString( '?result property:Born_in ?v1 .' )->addNewLine()
 			->addString( '{ ' )
-			->addString( '{ ?v1 rdf:type wiki:Category-3ACity . }' )->addNewLine()
+			->addString( "{ ?v1 rdf:type $categoryName . }" )->addNewLine()
 			->addString( '?v1 property:Located_in wiki:Outback .' )->addNewLine()
 			->addString( '}' )->addNewLine()
 			->getString();

@@ -2,7 +2,8 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use SMW\Tests\Utils\Validators\SemanticDataValidator;
+use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\ParserFactory;
 
 use SMW\ContentParser;
@@ -12,11 +13,11 @@ use Title;
 use Parser;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  * @group semantic-mediawiki-integration
- * @group mediawiki-databaseless
+ *
+ * @group mediawiki-database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -24,7 +25,7 @@ use Parser;
  *
  * @author mwjames
  */
-class InTextParseParserOutputIntegrationTest extends \PHPUnit_Framework_TestCase {
+class InTextParseParserOutputIntegrationTest extends MwDBaseUnitTestCase {
 
 	/**
 	 * @dataProvider textDataProvider
@@ -80,7 +81,7 @@ class InTextParseParserOutputIntegrationTest extends \PHPUnit_Framework_TestCase
 
 		$parserData = new ParserData( $instance->getTitle(), $instance->getOutput() );
 
-		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 		$semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
 			$parserData->getSemanticData()

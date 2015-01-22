@@ -7,6 +7,7 @@ use SMW\Tests\MwDBaseUnitTestCase;
 
 use SMW\DIWikiPage;
 use SMW\ApplicationFactory;
+use SMW\Localizer;
 
 use Title;
 
@@ -99,6 +100,7 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 	public function testFileUploadForDummyTextFile() {
 
 		$subject = new DIWikiPage( 'Foo.txt', NS_FILE );
+		$fileNS = Localizer::getInstance()->getNamespaceTextById( NS_FILE );
 
 		$dummyTextFile = $this->fixturesFileProvider->newUploadForDummyTextFile( 'Foo.txt' );
 
@@ -109,7 +111,7 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 		$expected = array(
 			'propertyCount'  => 4,
 			'propertyKeys'   => array( 'HasFile', '_MEDIA', '_MIME', '_SKEY' ),
-			'propertyValues' => array( 'File:Foo.txt', 'TEXT', 'text/plain', 'Foo.txt' )
+			'propertyValues' => array( "$fileNS:Foo.txt", 'TEXT', 'text/plain', 'Foo.txt' )
 		);
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
@@ -135,8 +137,8 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 		// File page content is kept from the initial upload
 		$expected = array(
 			'propertyCount'  => 4,
-			'propertyKeys'   => array( 'HasFile', '_MEDIA', '_MIME', '_SKEY', 'Ichi' ),
-			'propertyValues' => array( 'File:Foo.txt', 'TEXT', 'text/plain', 'Foo.txt', 'Maru' )
+			'propertyKeys'   => array( '_MEDIA', '_MIME', '_SKEY', 'Ichi' ),
+			'propertyValues' => array( 'TEXT', 'text/plain', 'Foo.txt', 'Maru' )
 		);
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(

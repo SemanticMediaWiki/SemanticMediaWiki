@@ -318,14 +318,26 @@ class ConjunctionConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		# 8
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
+		$propertyValue = new DIWikiPage( 'SomePropertyPageValue', NS_HELP );
+
+		$propertyValueName = \SMWTurtleSerializer::getTurtleNameForExpElement(
+			\SMWExporter::getInstance()->getResourceElementForWikiPage( $propertyValue )
+		);
+
 		$description = new SomeProperty(
 			new DIProperty( 'Foo' ),
-			new ValueDescription( new DIWikiPage( 'SomePropertyPageValue', NS_HELP ) )
+			new ValueDescription( $propertyValue )
+		);
+
+		$category = new DIWikiPage( 'Bar', NS_CATEGORY );
+
+		$categoryName = \SMWTurtleSerializer::getTurtleNameForExpElement(
+			\SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
 		$description = new Conjunction(array(
 			$description,
-			new ClassDescription( new DIWikiPage( 'Bar', NS_CATEGORY ) )
+			new ClassDescription( $category )
 		) );
 
 		$orderByProperty = new DIProperty( 'Foo' );
@@ -333,10 +345,10 @@ class ConjunctionConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$expected = $stringBuilder
 			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
-			->addString( '?result property:Foo wiki:Help-3ASomePropertyPageValue .' )->addNewLine()
+			->addString( "?result property:Foo $propertyValueName ." )->addNewLine()
 			->addString( '{ ?v1 swivt:wikiPageSortKey ?v1sk .' )->addNewLine()
 			->addString( '}' )->addNewLine()
-			->addString( '{ ?result rdf:type wiki:Category-3ABar . }' )->addNewLine()
+			->addString( "{ ?result rdf:type $categoryName . }" )->addNewLine()
 			->getString();
 
 		$provider[] = array(

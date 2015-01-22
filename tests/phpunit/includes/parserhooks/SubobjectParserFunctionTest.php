@@ -10,6 +10,7 @@ use SMW\ParserParameterFormatter;
 use SMW\MessageFormatter;
 use SMW\ParserData;
 use SMW\DIProperty;
+use SMW\Localizer;
 
 use SMWDataItem;
 use Title;
@@ -191,6 +192,8 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function parameterDataProvider() {
 
+		$helpNS = Localizer::getInstance()->getNamespaceTextById( NS_HELP );
+
 		$provider = array();
 
 		// Anonymous identifier
@@ -249,7 +252,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'identifier' => 'Foo_bar',
 				'propertyCount'  => 1,
 				'propertyLabels' => 'Foo',
-				'propertyValues' => 'Help:Bar'
+				'propertyValues' => "$helpNS:Bar"
 			)
 		);
 

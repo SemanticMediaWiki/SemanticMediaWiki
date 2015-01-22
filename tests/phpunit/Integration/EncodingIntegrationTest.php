@@ -49,12 +49,16 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	public function baseTemplateToolboxDataProvider() {
 
+		$specialName = str_replace( '%3A', ':',
+			\SMW\UrlEncoder::encode( \SpecialPage::getTitleFor( 'Browse' )->getPrefixedText() )
+		);
+
 		$provider = array();
 
-		$provider[] = array( $this->newBaseTemplateToolboxSetup( '2013/11/05' ), 'Special:Browse/2013-2F11-2F05' );
-		$provider[] = array( $this->newBaseTemplateToolboxSetup( '2013-06-30' ), 'Special:Browse/2013-2D06-2D30' );
-		$provider[] = array( $this->newBaseTemplateToolboxSetup( '2013$06&30' ), 'Special:Browse/2013-2406-2630' );
-		$provider[] = array( $this->newBaseTemplateToolboxSetup( '2013\Foo' ),   'Special:Browse/2013-5CFoo' );
+		$provider[] = array( $this->newBaseTemplateToolboxSetup( '2013/11/05' ), "$specialName/2013-2F11-2F05" );
+		$provider[] = array( $this->newBaseTemplateToolboxSetup( '2013-06-30' ), "$specialName/2013-2D06-2D30" );
+		$provider[] = array( $this->newBaseTemplateToolboxSetup( '2013$06&30' ), "$specialName/2013-2406-2630" );
+		$provider[] = array( $this->newBaseTemplateToolboxSetup( '2013\Foo' ),   "$specialName/2013-5CFoo" );
 
 		return $provider;
 	}
