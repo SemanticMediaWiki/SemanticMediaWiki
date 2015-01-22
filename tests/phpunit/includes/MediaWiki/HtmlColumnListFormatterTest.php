@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test\MediaWiki\Html;
+namespace SMW\Test\MediaWiki;
 
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\MediaWiki\HtmlColumnListFormatter;
@@ -62,6 +62,8 @@ class ColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setNumberOfColumns( 2 );
 
+		$listContinuesAbbrev = wfMessage( 'listingcontinuesabbrev' )->text();
+
 		$instance->addIndexedArrayOfResults( array(
 			'a' => array( 'Foo', 'Bar' ),
 			'B' => array( 'Ichi', 'Ni' )
@@ -72,7 +74,7 @@ class ColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 			'<div class="smw-column" style="float: left; width:50%; word-wrap: break-word;">',
 			'<h3>a</h3><ul><li>Foo</li><li>Bar</li></ul><h3>B</h3><ul><li>Ichi</li></ul></div>',
 			'<div class="smw-column" style="float: left; width:50%; word-wrap: break-word;">',
-			'<h3>B cont.</h3><ul start=4><li>Ni</li></ul></div>'
+			"<h3>B $listContinuesAbbrev</h3><ul start=4><li>Ni</li></ul></div>"
 		);
 
 		$this->stringValidator->assertThatStringContains(
@@ -114,6 +116,8 @@ class ColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 			->setNumberOfColumns( 2 )
 			->setListType( 'ol' );
 
+		$listContinuesAbbrev = wfMessage( 'listingcontinuesabbrev' )->text();
+
 		$instance->addIndexedArrayOfResults( array(
 			'a' => array( 'Foo', 'Bar' ),
 			'B' => array( 'Ichi', 'Ni' )
@@ -124,7 +128,7 @@ class ColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 			'<div class="smw-column" style="float: left; width:50%; word-wrap: break-word;">',
 			'<h3>a</h3><ol><li>Foo</li><li>Bar</li></ol><h3>B</h3><ol><li>Ichi</li></ol></div>',
 			'<div class="smw-column" style="float: left; width:50%; word-wrap: break-word;">',
-			'<h3>B cont.</h3><ol start=4><li>Ni</li></ol></div>'
+			"<h3>B $listContinuesAbbrev</h3><ol start=4><li>Ni</li></ol></div>"
 		);
 
 		$this->stringValidator->assertThatStringContains(

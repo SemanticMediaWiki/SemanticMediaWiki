@@ -5,6 +5,7 @@ namespace SMW\Tests\Integration;
 use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\Query\Profiler\QueryProfilerFactory;
+use SMW\Localizer;
 
 use SMWQueryProcessor;
 
@@ -24,7 +25,7 @@ use Title;
  *
  * @author mwjames
  */
-class ProfileAnnotatorQueryProcessorIntegrationTest extends \PHPUnit_Framework_TestCase {
+class QueryProfilerQueryProcessorIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
 
@@ -69,6 +70,8 @@ class ProfileAnnotatorQueryProcessorIntegrationTest extends \PHPUnit_Framework_T
 
 	public function queryDataProvider() {
 
+		$categoryNS = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
+
 		$provider = array();
 
 		// #0
@@ -107,7 +110,7 @@ class ProfileAnnotatorQueryProcessorIntegrationTest extends \PHPUnit_Framework_T
 			array(
 				'propertyCount'  => 4,
 				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValues' => array( 'list', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
+				'propertyValues' => array( 'list', 2, 1, "[[Modification date::+]] [[$categoryNS:Foo]]" )
 			)
 		);
 
@@ -128,10 +131,11 @@ class ProfileAnnotatorQueryProcessorIntegrationTest extends \PHPUnit_Framework_T
 			array(
 				'propertyCount'  => 4,
 				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValues' => array( 'table', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
+				'propertyValues' => array( 'table', 2, 1, "[[Modification date::+]] [[$categoryNS:Foo]]" )
 			)
 		);
 
 		return $provider;
 	}
+
 }

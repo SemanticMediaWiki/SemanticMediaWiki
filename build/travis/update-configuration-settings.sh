@@ -52,6 +52,12 @@ else
 	echo '$smwgDefaultStore = "SMWSQLStore3";' >> LocalSettings.php
 fi
 
+# Site language
+if [ "$SITELANG" != "" ]
+then
+	echo '$wgLanguageCode = "'$SITELANG'";' >> LocalSettings.php
+fi
+
 # Error reporting
 echo 'error_reporting(E_ALL| E_STRICT);' >> LocalSettings.php
 echo 'ini_set("display_errors", 1);' >> LocalSettings.php

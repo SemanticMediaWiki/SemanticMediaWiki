@@ -407,7 +407,11 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		// #7 673
+		#7 673
+
+		// Special:Types/Number
+		$specialTypeName = \SpecialPage::getTitleFor( 'Types', 'Number' )->getPrefixedText();
+
 		$provider[] = array(
 			SMW_NS_PROPERTY,
 			array(
@@ -417,7 +421,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			),
 			'[[has type::number]], [[has Type::page]] ',
 			array(
-				'resultText'     => '[[Special:Types/Number|number]], [[:Page|page]]',
+				'resultText'     => "[[$specialTypeName|number]], [[:Page|page]]",
 				'propertyCount'  => 2,
 				'propertyLabels' => array( 'Has type', 'Has Type' ),
 				'propertyValues' => array( 'Number', 'Page' )

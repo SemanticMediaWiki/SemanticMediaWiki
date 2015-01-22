@@ -2,8 +2,7 @@
 
 namespace SMW\Tests\Annotator;
 
-use SMW\Tests\Utils\Validators\SemanticDataValidator;
-use SMW\Tests\Utils\SemanticDataFactory;
+use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\Mock\MockTitle;
 
 use SMW\Annotator\PredefinedPropertyAnnotator;
@@ -12,6 +11,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\ApplicationFactory;
 use SMW\Settings;
+use SMW\Localizer;
 
 use Title;
 
@@ -35,8 +35,8 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->semanticDataFactory = new SemanticDataFactory();
-		$this->semanticDataValidator = new SemanticDataValidator();
+		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
@@ -188,6 +188,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		#5 TYPE_LAST_EDITOR
 		$userPage = MockTitle::buildMock( 'Lula' );
+		$userNS = Localizer::getInstance()->getNamespaceTextById( NS_USER );
 
 		$userPage->expects( $this->any() )
 			->method( 'getNamespace' )
@@ -204,7 +205,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_LEDT',
-				'propertyValues' => array( ':User:Lula' ),
+				'propertyValues' => array( ":$userNS:Lula" ),
 			)
 		);
 
@@ -223,7 +224,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'propertyCount'  => 2,
 				'propertyKeys'   => array( '_MDAT', '_LEDT' ),
-				'propertyValues' => array( '2010-04-29T02:41:43', ':User:Lula' ),
+				'propertyValues' => array( '2010-04-29T02:41:43', ":$userNS:Lula" ),
 			)
 		);
 

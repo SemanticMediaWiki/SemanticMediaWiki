@@ -6,6 +6,7 @@ use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\ApplicationFactory;
 use SMW\AskParserFunction;
+use SMW\Localizer;
 
 use Title;
 use ParserOutput;
@@ -218,6 +219,9 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function queryDataProvider() {
 
+		$categoryNS = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
+		$fileNS = Localizer::getInstance()->getNamespaceTextById( NS_FILE );
+
 		$provider = array();
 
 		// #0
@@ -257,7 +261,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'propertyCount'  => 4,
 				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValues' => array( 'list', 4, 1, '[[Modification date::+]] [[Category:Foo bar]] [[Has title::!Foo bar]]' )
+				'propertyValues' => array( 'list', 4, 1, "[[Modification date::+]] [[$categoryNS:Foo bar]] [[Has title::!Foo bar]]" )
 			),
 			array(
 				'smwgQueryDurationEnabled' => false
@@ -280,7 +284,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'propertyCount'  => 4,
 				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValues' => array( 'list', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
+				'propertyValues' => array( 'list', 2, 1, "[[Modification date::+]] [[$categoryNS:Foo]]" )
 			),
 			array(
 				'smwgQueryDurationEnabled' => false
@@ -303,7 +307,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'propertyCount'  => 4,
 				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValues' => array( 'feed', 1, 1, '[[:File:Fooo]]' )
+				'propertyValues' => array( 'feed', 1, 1, "[[:$fileNS:Fooo]]" )
 			),
 			array(
 				'smwgQueryDurationEnabled' => false
@@ -326,7 +330,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'propertyCount'  => 4,
 				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValues' => array( 'table', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
+				'propertyValues' => array( 'table', 2, 1, "[[Modification date::+]] [[$categoryNS:Foo]]" )
 			),
 			array(
 				'smwgQueryDurationEnabled' => false

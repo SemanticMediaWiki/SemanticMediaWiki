@@ -104,11 +104,17 @@ class ClassConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		# 1
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
-		$description = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );
+		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
+
+		$categoryName = \SMWTurtleSerializer::getTurtleNameForExpElement(
+			\SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
+		);
+
+		$description = new ClassDescription( $category );
 		$orderByProperty = null;
 
 		$expected = $stringBuilder
-			->addString( '{ ?result rdf:type wiki:Category-3AFoo . }' )->addNewLine()
+			->addString( "{ ?result rdf:type $categoryName . }" )->addNewLine()
 			->getString();
 
 		$provider[] = array(
@@ -121,17 +127,29 @@ class ClassConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		# 2
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
+		$categoryFoo = new DIWikiPage( 'Foo', NS_CATEGORY );
+
+		$categoryFooName = \SMWTurtleSerializer::getTurtleNameForExpElement(
+			\SMWExporter::getInstance()->getResourceElementForWikiPage( $categoryFoo )
+		);
+
+		$categoryBar = new DIWikiPage( 'Bar', NS_CATEGORY );
+
+		$categoryBarName = \SMWTurtleSerializer::getTurtleNameForExpElement(
+			\SMWExporter::getInstance()->getResourceElementForWikiPage( $categoryBar )
+		);
+
 		$description = new ClassDescription( array(
-			new DIWikiPage( 'Foo', NS_CATEGORY ),
-			new DIWikiPage( 'Bar', NS_CATEGORY )
+			$categoryFoo,
+			$categoryBar
 		) );
 
 		$orderByProperty = null;
 
 		$expected = $stringBuilder
-			->addString( '{ ?result rdf:type wiki:Category-3AFoo . }' )->addNewLine()
+			->addString( "{ ?result rdf:type $categoryFooName . }" )->addNewLine()
 			->addString( 'UNION' )->addNewLine()
-			->addString( '{ ?result rdf:type wiki:Category-3ABar . }' )->addNewLine()
+			->addString( "{ ?result rdf:type $categoryBarName . }" )->addNewLine()
 			->getString();
 
 		$provider[] = array(
@@ -145,17 +163,17 @@ class ClassConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
 		$description = new ClassDescription( array(
-			new DIWikiPage( 'Foo', NS_CATEGORY ),
-			new DIWikiPage( 'Bar', NS_CATEGORY )
+			$categoryFoo,
+			$categoryBar
 		) );
 
 		$orderByProperty = new DIProperty( 'Foo' );
 
 		$expected = $stringBuilder
 			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
-			->addString( '{ ?result rdf:type wiki:Category-3AFoo . }' )->addNewLine()
+			->addString( "{ ?result rdf:type $categoryFooName . }" )->addNewLine()
 			->addString( 'UNION' )->addNewLine()
-			->addString( '{ ?result rdf:type wiki:Category-3ABar . }' )->addNewLine()
+			->addString( "{ ?result rdf:type $categoryBarName . }" )->addNewLine()
 			->getString();
 
 		$provider[] = array(

@@ -26,17 +26,32 @@ class UrlEncoderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider urlDecodeProvider
+	 * @dataProvider stringProvider
 	 */
-	public function testUrlDecode( $string, $expected ) {
+	public function testDecode( $input, $output ) {
 
 		$this->assertEquals(
-			$expected,
-			UrlEncoder::decode( $string )
+			$output,
+			UrlEncoder::decode( $input )
 		);
 	}
 
-	public function urlDecodeProvider() {
+	/**
+	 * @dataProvider stringProvider
+	 */
+	public function testEncodeDecode( $input, $output ) {
+
+		if ( $output === ' ' ) {
+			$output = '';
+		}
+
+		$this->assertEquals(
+			$output,
+			UrlEncoder::decode( UrlEncoder::encode( UrlEncoder::replace( $output ) ) )
+		);
+	}
+
+	public function stringProvider() {
 
 		$provider = array();
 

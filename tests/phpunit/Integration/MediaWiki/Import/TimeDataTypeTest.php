@@ -47,6 +47,11 @@ class TimeDataTypeTest extends MwDBaseUnitTestCase {
 			__DIR__ . '/'. 'Fixtures/' . 'TimeDataTypeTest-Mw-1-19-7.xml'
 		);
 
+		// Shoudl be fixed
+		if ( $GLOBALS['wgLanguageCode'] !== 'en' ) {
+			$this->markTestIncomplete( 'Skipping test because time/date comparison expects a (en) formatted string' );
+		}
+
 		if ( !$importRunner->setVerbose( true )->run() ) {
 			$importRunner->reportFailedImport();
 			$this->markTestIncomplete( 'Test was marked as incomplete because the data import failed' );

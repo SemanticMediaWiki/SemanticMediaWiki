@@ -242,9 +242,15 @@ class PropertyConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$property = new DIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_wpg' );
 
+		$propertyValue = new DIWikiPage( 'SomePropertyPageValue', NS_HELP );
+
+		$propertyValueName = \SMWTurtleSerializer::getTurtleNameForExpElement(
+			\SMWExporter::getInstance()->getResourceElementForWikiPage( $propertyValue )
+		);
+
 		$description = new SomeProperty(
 			$property,
-			new ValueDescription( new DIWikiPage( 'SomePropertyPageValue', NS_HELP ) )
+			new ValueDescription( $propertyValue )
 		);
 
 		$orderByProperty = $property;
@@ -252,7 +258,7 @@ class PropertyConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$expected = $stringBuilder
 			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
-			->addString( '?result property:Foo wiki:Help-3ASomePropertyPageValue .' )->addNewLine()
+			->addString( "?result property:Foo $propertyValueName ." )->addNewLine()
 			->getString();
 
 		$provider[] = array(
