@@ -1,6 +1,7 @@
 <?php
 
 use SMW\HashBuilder;
+use SMW\Query\PrintRequest;
 
 /**
  * This file contains the class for representing queries in SMW, each
@@ -47,7 +48,7 @@ class SMWQuery {
 	protected $m_concept; // query used in concept? (required for finding right default parameters)
 
 	/**
-	 * @var SMWPrintRequest[]
+	 * @var PrintRequest[]
 	 */
 	protected $m_extraprintouts = array(); // SMWPrintoutRequest objects supplied outside querystring
 	protected $m_mainlabel = ''; // Since 1.6
@@ -114,7 +115,7 @@ class SMWQuery {
 	}
 
 	/**
-	 * @return SMWPrintRequest[]
+	 * @return PrintRequest[]
 	 */
 	public function getExtraPrintouts() {
 		return $this->m_extraprintouts;

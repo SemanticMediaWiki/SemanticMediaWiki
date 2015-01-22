@@ -5,7 +5,7 @@ namespace SMW;
 use SMWQueryResult;
 use SMWQuery;
 use SMWQueryProcessor;
-use SMWPrintRequest;
+use SMW\Query\PrintRequest;
 use SMWExporter;
 use SMWTurtleSerializer;
 use SMWRDFXMLSerializer;
@@ -87,16 +87,16 @@ class RdfResultPrinter extends FileExportPrinter {
 					$property = null;
 
 					switch ( $printreq->getMode() ) {
-						case SMWPrintRequest::PRINT_PROP:
+						case PrintRequest::PRINT_PROP:
 							$property = $printreq->getData()->getDataItem();
 						break;
-						case SMWPrintRequest::PRINT_CATS:
+						case PrintRequest::PRINT_CATS:
 							$property = new SMWDIProperty( '_TYPE' );
 						break;
-						case SMWPrintRequest::PRINT_CCAT:
+						case PrintRequest::PRINT_CCAT:
 							// not serialised right now
 						break;
-						case SMWPrintRequest::PRINT_THIS:
+						case PrintRequest::PRINT_THIS:
 							// ignored here (object is always included in export)
 						break;
 					}

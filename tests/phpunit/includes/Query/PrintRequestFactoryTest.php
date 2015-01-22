@@ -32,7 +32,7 @@ class PrintRequestFactoryTest extends \PHPUnit_Framework_TestCase {
 		$printRequest = $instance->newPropertyPrintRequest( new DIProperty( 'Foo' ) );
 
 		$this->assertInstanceOf(
-			'\SMWPrintRequest',
+			'\SMW\Query\PrintRequest',
 			$printRequest
 		);
 

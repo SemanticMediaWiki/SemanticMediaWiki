@@ -18,7 +18,7 @@ use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
 use SMWDataValue as DataValue;
 use SMWDataItem as DataItem;
-use SMWPrintRequest as PrintRequest;
+use SMW\Query\PrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
 use SMWExporter as Exporter;
 

@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Query;
 
-use SMWPrintRequest as PrintRequest;
+use SMW\Query\PrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
 use SMW\DIProperty;
 
 /**
- * @covers \SMWPrintRequest
+ * @covers SMW\Query\PrintRequest
  *
  * @group SMW
  * @group SMWExtension
@@ -30,7 +30,7 @@ class PrintRequestTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( true ) );
 
 		$this->assertInstanceOf(
-			'\SMWPrintRequest',
+			'SMW\Query\PrintRequest',
 			new PrintRequest( PrintRequest::PRINT_PROP, null, $propertyValue )
 		);
 	}

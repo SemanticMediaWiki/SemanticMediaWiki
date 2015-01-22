@@ -11,7 +11,7 @@ use SMW\DIWikiPage;
 
 use SMWQueryParser as QueryParser;
 use SMWQuery as Query;
-use SMWPrintRequest as PrintRequest;
+use SMW\Query\PrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
 use SMWExporter as Exporter;
 

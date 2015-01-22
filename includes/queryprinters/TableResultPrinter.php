@@ -5,7 +5,7 @@ namespace SMW;
 use SMWResultArray;
 use SMWQueryResult;
 use SMWQueryProcessor;
-use SMWPrintRequest;
+use SMW\Query\PrintRequest;
 
 /**
  * Print query results in tables
@@ -153,7 +153,7 @@ class TableResultPrinter extends ResultPrinter {
 			$content = $this->getCellContent(
 				$dataValues,
 				$outputmode,
-				$resultArray->getPrintRequest()->getMode() == SMWPrintRequest::PRINT_THIS
+				$resultArray->getPrintRequest()->getMode() == PrintRequest::PRINT_THIS
 			);
 		}
 

@@ -5,7 +5,7 @@ namespace SMW\Serializers;
 use Serializers\Serializer;
 use SMW\DataValueFactory;
 use SMWDataItem as DataItem;
-use SMWPrintRequest;
+use SMW\Query\PrintRequest;
 use SMWResultArray;
 use SMWQueryResult as QueryResult;
 
@@ -134,7 +134,7 @@ class QueryResultSerializer implements Serializer {
 
 		/**
 		 * @var DIWikiPage $diWikiPage
-		 * @var SMWPrintRequest $printRequest
+		 * @var PrintRequest $printRequest
 		 */
 		foreach ( $queryResult->getResults() as $diWikiPage ) {
 
@@ -147,7 +147,7 @@ class QueryResultSerializer implements Serializer {
 			foreach ( $queryResult->getPrintRequests() as $printRequest ) {
 				$resultArray = new SMWResultArray( $diWikiPage, $printRequest, $queryResult->getStore() );
 
-				if ( $printRequest->getMode() === SMWPrintRequest::PRINT_THIS ) {
+				if ( $printRequest->getMode() === PrintRequest::PRINT_THIS ) {
 					$dataItems = $resultArray->getContent();
 					$result += self::getSerialization( array_shift( $dataItems ), $printRequest );
 				} else if ( $resultArray->getContent() !== array() ) {

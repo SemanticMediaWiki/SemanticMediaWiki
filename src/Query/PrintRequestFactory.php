@@ -3,7 +3,7 @@
 namespace SMW\Query;
 
 use SMW\DIProperty;
-use SMWPrintRequest as PrintRequest;
+use SMW\Query\PrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
 
 /**

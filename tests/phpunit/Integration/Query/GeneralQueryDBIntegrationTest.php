@@ -14,7 +14,7 @@ use SMW\DataValueFactory;
 
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
-use SMWPrintRequest as PrintRequest;
+use SMW\Query\PrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
 
 /**

@@ -95,7 +95,7 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	public function testQueryRoutingWithDefaultSource() {
 
-		$printrequest = $this->getMockBuilder( 'SMWPrintRequest' )
+		$printrequest = $this->getMockBuilder( 'SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 

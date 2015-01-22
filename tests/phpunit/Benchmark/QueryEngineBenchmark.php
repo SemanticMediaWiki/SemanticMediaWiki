@@ -6,7 +6,7 @@ use SMW\Tests\MwDBaseUnitTestCase;
 
 use SMW\DIProperty;
 use SMWPropertyValue as PropertyValue;
-use SMWPrintRequest as PrintRequest;
+use SMW\Query\PrintRequest as PrintRequest;
 
 use SMWQueryParser as QueryParser;
 use SMWQuery as Query;

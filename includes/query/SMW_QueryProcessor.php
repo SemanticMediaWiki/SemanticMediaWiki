@@ -3,6 +3,7 @@
 use ParamProcessor\Processor;
 use ParamProcessor\Options;
 use ParamProcessor\ParamDefinition;
+use SMW\Query\PrintRequest;
 
 /**
  * This file contains a static class for accessing functions to generate and execute
@@ -229,8 +230,8 @@ class SMWQueryProcessor {
 			$hasMainlabel = array_key_exists( 'mainlabel', $rawParams );
 
 			if  ( !$hasMainlabel || trim( $rawParams['mainlabel'] ) !== '-' ) {
-				array_unshift( $printRequests, new SMWPrintRequest(
-					SMWPrintRequest::PRINT_THIS,
+				array_unshift( $printRequests, new PrintRequest(
+					PrintRequest::PRINT_THIS,
 					$hasMainlabel ? $rawParams['mainlabel'] : ''
 				) );
 			}
@@ -347,7 +348,8 @@ class SMWQueryProcessor {
 	 *
 	 * @param string $printRequestString
 	 * @param boolean $showMode
-	 * @return SMWPrintRequest||null
+	 *
+*@return PrintRequest||null
 	 * @since 1.8
 	 */
 	static protected function getSMWPrintRequestFromString( $printRequestString, $showMode ) {
@@ -359,10 +361,10 @@ class SMWQueryProcessor {
 		$data = null;
 
 		if ( trim( $propparts[0] ) === '' ) { // print "this"
-			$printmode = SMWPrintRequest::PRINT_THIS;
+			$printmode = PrintRequest::PRINT_THIS;
 			$label = ''; // default
 		} elseif ( $wgContLang->getNsText( NS_CATEGORY ) == ucfirst( trim( $propparts[0] ) ) ) { // print categories
-			$printmode = SMWPrintRequest::PRINT_CATS;
+			$printmode = PrintRequest::PRINT_CATS;
 			$label = $showMode ? '' : $wgContLang->getNSText( NS_CATEGORY ); // default
 		} else { // print property or check category
 			$title = Title::newFromText( trim( $propparts[0] ), SMW_NS_PROPERTY ); // trim needed for \n
@@ -371,11 +373,11 @@ class SMWQueryProcessor {
 			}
 
 			if ( $title->getNamespace() == NS_CATEGORY ) {
-				$printmode = SMWPrintRequest::PRINT_CCAT;
+				$printmode = PrintRequest::PRINT_CCAT;
 				$data = $title;
 				$label = $showMode ? '' : $title->getText();  // default
 			} else { // enforce interpretation as property (even if it starts with something that looks like another namespace)
-				$printmode = SMWPrintRequest::PRINT_PROP;
+				$printmode = PrintRequest::PRINT_PROP;
 				$data = SMWPropertyValue::makeUserProperty( trim( $propparts[0] ) );
 				if ( !$data->isValid() ) { // not a property; give up
 					return null;
@@ -395,7 +397,7 @@ class SMWQueryProcessor {
 		}
 
 		try {
-			return new SMWPrintRequest( $printmode, $label, $data, trim( $propparts[1] ) );
+			return new PrintRequest( $printmode, $label, $data, trim( $propparts[1] ) );
 		} catch ( InvalidArgumentException $e ) { // something still went wrong; give up
 			return null;
 		}

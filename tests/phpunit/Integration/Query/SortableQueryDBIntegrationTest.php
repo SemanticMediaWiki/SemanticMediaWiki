@@ -12,7 +12,7 @@ use SMW\DIWikiPage;
 use SMW\DIProperty;
 
 use SMWQuery as Query;
-use SMWPrintRequest as PrintRequest;
+use SMW\Query\PrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
 
 /**

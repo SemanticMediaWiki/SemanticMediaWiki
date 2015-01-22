@@ -21,7 +21,7 @@ use SMWDataItem as DataItem;
 use SMWDINumber as DINumber;
 use SMWDIBlob as DIBlob;
 use SMWDITime as DITime;
-use SMWPrintRequest as PrintRequest;
+use SMW\Query\PrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
 
 /**

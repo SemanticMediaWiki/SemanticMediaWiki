@@ -2,6 +2,7 @@
 
 use ParamProcessor\Definition\StringParam;
 use ParamProcessor\IParam;
+use SMW\Query\PrintRequest;
 
 /**
  * Definition for the format parameter.
@@ -24,7 +25,7 @@ class SMWParamFormat extends StringParam {
 	 * 
 	 * @since 1.6.2
 	 * 
-	 * @var SMWPrintRequest[]
+	 * @var PrintRequest[]
 	 */
 	protected $printRequests = array();
 
@@ -119,7 +120,7 @@ class SMWParamFormat extends StringParam {
 	 * 
 	 * @since 1.6.2
 	 * 
-	 * @param SMWPrintRequest[] $printRequests
+	 * @param PrintRequest[] $printRequests
 	 */
 	public function setPrintRequests( array $printRequests ) {
 		$this->printRequests = $printRequests;

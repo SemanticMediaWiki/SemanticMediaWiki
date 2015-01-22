@@ -98,6 +98,7 @@ class_alias( 'SMW\Query\Language\ValueDescription', 'SMWValueDescription' );
 class_alias( 'SMW\Query\Language\Conjunction', 'SMWConjunction' );
 class_alias( 'SMW\Query\Language\Disjunction', 'SMWDisjunction' );
 class_alias( 'SMW\Query\Language\SomeProperty', 'SMWSomeProperty' );
+class_alias( 'SMW\Query\PrintRequest', 'SMWPrintRequest' );
 class_alias( 'SMW\MediaWiki\Search\Search', 'SMWSearch' );
 
 // A flag used to indicate SMW defines a semantic extension type for extension credits.

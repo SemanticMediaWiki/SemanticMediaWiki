@@ -1,6 +1,7 @@
 <?php
 
 use SMW\ApplicationFactory;
+use SMW\Query\PrintRequest;
 use SMW\SemanticData;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -230,7 +231,7 @@ class SMWExportController {
 					}
 				} elseif ( SMW_NS_CONCEPT === $diWikiPage->getNamespace() ) { // print concept members (slightly different code)
 					$desc = new SMWConceptDescription( $diWikiPage );
-					$desc->addPrintRequest( new SMWPrintRequest( SMWPrintRequest::PRINT_THIS, '' ) );
+					$desc->addPrintRequest( new PrintRequest( PrintRequest::PRINT_THIS, '' ) );
 					$query = new SMWQuery( $desc );
 					$query->setLimit( 100 );
 
