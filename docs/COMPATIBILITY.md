@@ -23,7 +23,7 @@ on how to install the latest version of SMW, see the [installation instructions]
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.1.x">2.1.x</a></td>
 	</tr>
 	<tr>
-		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.0">SMW 2.0</a></th>
+		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.0">SMW 2.0.0</a></th>
 		<td>Obsolete release</td>
 		<td>2014-08-04</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.0">2.0</a></td>
