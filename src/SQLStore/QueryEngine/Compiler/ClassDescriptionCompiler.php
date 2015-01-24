@@ -74,10 +74,10 @@ class ClassDescriptionCompiler implements QueryCompiler {
 
 		if ( count( $cquery->joinfield ) == 0 ) { // Empty result.
 			$query->type = QueryContainer::Q_VALUE;
-			$query->jointable = '';
+			$query->joinTable = '';
 			$query->joinfield = '';
 		} else { // Instance query with disjunction of classes (categories)
-			$query->jointable = $this->queryBuilder->getStore()->findPropertyTableID( new DIProperty( '_INST' ) );
+			$query->joinTable = $this->queryBuilder->getStore()->findPropertyTableID( new DIProperty( '_INST' ) );
 			$query->joinfield = "$query->alias.s_id";
 			$query->components[$cqid] = "$query->alias.o_id";
 			$this->queryBuilder->addQueryContainerForId( $cqid, $cquery );

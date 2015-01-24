@@ -80,7 +80,7 @@ class ConceptDescriptionCompiler implements QueryCompiler {
 		     ( ( $row->cache_date > ( strtotime( "now" ) - $smwgQConceptCacheLifetime * 60 ) ) ||
 		       !$may_be_computed ) ) { // Cached concept, use cache unless it is dead and can be revived.
 
-			$query->jointable = SMWSQLStore3::CONCEPT_CACHE_TABLE;
+			$query->joinTable = SMWSQLStore3::CONCEPT_CACHE_TABLE;
 			$query->joinfield = "$query->alias.s_id";
 			$query->where = "$query->alias.o_id=" . $this->queryBuilder->getStore()->getConnection( 'mw.db' )->addQuotes( $conceptId );
 		} elseif ( $row->concept_txt ) { // Parse description and process it recursively.

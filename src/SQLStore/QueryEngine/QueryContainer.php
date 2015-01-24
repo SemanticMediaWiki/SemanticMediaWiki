@@ -67,9 +67,9 @@ class QueryContainer {
 	public $type = QueryContainer::Q_TABLE;
 
 	/**
-	 * @var string|array
+	 * @var string
 	 */
-	public $jointable = '';
+	public $joinTable = '';
 
 	/**
 	 * @var string|array
