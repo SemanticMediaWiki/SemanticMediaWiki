@@ -298,4 +298,40 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testImportFromParserOutput() {
+
+		$import = new ParserData(
+			Title::newFromText( __METHOD__ ),
+			new ParserOutput()
+		);
+
+		$import->addDataValue(
+			$this->dataValueFactory->newPropertyValue(
+				'Foo',
+				'Bar'
+			)
+		);
+
+		$import->pushSemanticDataToParserOutput();
+
+		$instance = new ParserData(
+			Title::newFromText( __METHOD__ ),
+			new ParserOutput()
+		);
+
+		$instance->importFromParserOutput( null );
+
+		$this->assertNotEquals(
+			$import->getSemanticData()->getHash(),
+			$instance->getSemanticData()->getHash()
+		);
+
+		$instance->importFromParserOutput( $import->getOutput() );
+
+		$this->assertEquals(
+			$import->getSemanticData()->getHash(),
+			$instance->getSemanticData()->getHash()
+		);
+	}
+
 }
