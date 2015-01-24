@@ -132,6 +132,12 @@ class AskParserFunction {
 			SMWQueryProcessor::INLINE_QUERY
 		);
 
+		// FIXME Should be injected
+		// A printer run its own isolated wgParser process therefore if the printer
+		// or a template inclusion is used by a printer, possible extra annotations
+		// need to be imported for further usage
+		$this->parserData->importFromParserOutput( $GLOBALS['wgParser']->getOutput() );
+
 		if ( $this->applicationFactory->getSettings()->get( 'smwgQueryDurationEnabled' ) ) {
 			$queryDuration = microtime( true ) - $start;
 		}

@@ -74,7 +74,7 @@ class ParserData {
 	 * @return DIWikiPage
 	 */
 	public function getSubject() {
-		return DIWikiPage::newFromTitle( $this->title );
+		return $this->getSemanticData()->getSubject();
 	}
 
 	/**
@@ -169,7 +169,7 @@ class ParserData {
 	 * @since 2.1
 	 */
 	public function setEmptySemanticData() {
-		$this->setSemanticData( new SemanticData( $this->getSubject() ) );
+		$this->setSemanticData( new SemanticData( DIWikiPage::newFromTitle( $this->title ) ) );
 	}
 
 	/**
@@ -184,6 +184,24 @@ class ParserData {
 	 */
 	public function updateOutput() {
 		$this->pushSemanticDataToParserOutput();
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param ParserOutput|null
+	 */
+	public function importFromParserOutput( ParserOutput $parserOutput = null ) {
+
+		if ( $parserOutput === null ) {
+			return;
+		}
+
+		$semanticData = $this->fetchDataFromParserOutput( $parserOutput );
+
+		if ( $semanticData !== null && $this->getSubject()->equals( $semanticData->getSubject() ) ) {
+			$this->getSemanticData()->importDataFrom( $semanticData );
+		}
 	}
 
 	/**
@@ -237,27 +255,34 @@ class ParserData {
 	}
 
 	/**
+	 * FIXME Remove when MW 1.21 becomes mandatory
+	 */
+	protected function hasExtensionData() {
+		return method_exists( $this->parserOutput, 'getExtensionData' );
+	}
+
+	/**
 	 * Setup the semantic data container either from the ParserOutput or
 	 * if not available create an empty container
 	 */
 	private function initSemanticData() {
 
-		if ( $this->hasExtensionData() ) {
-			$this->semanticData = $this->parserOutput->getExtensionData( 'smwdata' );
-		} else {
-			$this->semanticData = isset( $this->parserOutput->mSMWData ) ? $this->parserOutput->mSMWData : null;
-		}
+		$this->semanticData = $this->fetchDataFromParserOutput( $this->parserOutput );
 
 		if ( !( $this->semanticData instanceof SemanticData ) ) {
 			$this->setEmptySemanticData();
 		}
 	}
 
-	/**
-	 * FIXME Remove when MW 1.21 becomes mandatory
-	 */
-	protected function hasExtensionData() {
-		return method_exists( $this->parserOutput, 'getExtensionData' );
+	private function fetchDataFromParserOutput( ParserOutput $parserOutput ) {
+
+		if ( $this->hasExtensionData() ) {
+			$semanticData = $parserOutput->getExtensionData( 'smwdata' );
+		} else {
+			$semanticData = isset( $parserOutput->mSMWData ) ? $parserOutput->mSMWData : null;
+		}
+
+		return $semanticData;
 	}
 
 }
