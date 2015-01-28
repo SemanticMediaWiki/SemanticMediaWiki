@@ -32,11 +32,11 @@ supports it.
 ## New features
 
 * #546 Concepts can now be nested (bug 15316) 
-* #537 Modernized `Special:SearchByProperty` interface
+* #537 Modernized [`Special:SearchByProperty`](https://semantic-mediawiki.org/wiki/Help:Special:Search_by_property) interface
 * #613 Added `subobject` parameter to the `BrowseBySubject` API module and imporved resolving of circular redirects
-* #620 Added `--page` as export option to the `dumpRDF.php` maintenance script
+* #620 Added `--page` as export option to the [`dumpRDF.php`](https://semantic-mediawiki.org/wiki/Help:DumpRDF.php) maintenance script
 * #633 Made ouput decoding for uri's human readable (bug 35452)
-* #643 Added `--runtime` option to `rebuildData.php`. It allows you to see how much time was spend and how much memory was used.
+* #643 Added `--runtime` option to [`rebuildData.php`](https://semantic-mediawiki.org/wiki/Help:RebuildData.php). It allows you to see how much time was spend and how much memory was used.
 * #659 Added [``$smwgEnabledEditPageHelp``](https://semantic-mediawiki.org/wiki/Help:$smwgEnabledEditPageHelp) option that enables showing a contextual help text on the edit page
 * #664 Enabled semicolon escaping for record-type values (`\;`) (bug T17732)
 * #672 Added `Special:Log` support for events enabled in `smwgLogEventTypes` 
