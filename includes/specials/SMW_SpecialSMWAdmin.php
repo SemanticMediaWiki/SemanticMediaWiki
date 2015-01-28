@@ -170,7 +170,7 @@ class SMWAdmin extends SpecialPage {
 		return $this->htmlFormBuilder
 			->setName( 'announce' )
 			->setMethod( 'get' )
-			->setActionUrl( 'http://semantic-mediawiki.org/wiki/Special:SMWRegistry' )
+			->setActionUrl( 'https://semantic-mediawiki.org/wiki/Special:SMWRegistry' )
 			->addHiddenField( 'url', $GLOBALS['wgServer'] . str_replace( '$1', '', $GLOBALS['wgArticlePath'] ) )
 			->addHiddenField( 'return', 'Special:SMWAdmin' )
 			->addHeader( 'h2', $this->messageBuilder->getMessage('smw_smwadmin_announce' )->text() )
