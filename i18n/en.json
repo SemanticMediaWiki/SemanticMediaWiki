@@ -1,6 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
+			"James Hong Kong",
+			"Jeroen De Dauw",
 			"Markus Krötzsch"
 		]
 	},
@@ -233,7 +235,7 @@
 	"smw_smwadmin_docu": "This special page helps you during installation and upgrade of <a href=\"https://semantic-mediawiki.org\">Semantic MediaWiki</a>.\nRemember to back up valuable data before executing administrative functions.",
 	"smw_smwadmin_db": "Database installation and upgrade",
 	"smw_smwadmin_dbdocu": "Semantic MediaWiki requires some extensions to the MediaWiki database in order to store the semantic data.\nThe below function ensures that your database is set up properly.\nThe changes made in this step do not affect the rest of the MediaWiki database, and can easily be undone if desired.\nThis setup function can be executed multiple times without doing any harm, but it is needed only once on installation or upgrade.",
-	"smw_smwadmin_permissionswarn": "If the operation fails with SQL errors, the database user employed by your wiki (check your LocalSettings.php) probably does not have sufficient permissions.\nEither grant this user additional permissions to create and delete tables, temporarily enter the login of your database root in LocalSettings.php, or use the maintenance script <code>SMW_setup.php</code> which can use the credentials of an administrator.",
+	"smw_smwadmin_permissionswarn": "If the operation fails with SQL errors, the database user employed by your wiki (check your LocalSettings.php) probably does not have sufficient permissions.\nEither grant this user additional permissions to create and delete tables, temporarily enter the login of your database root in LocalSettings.php, or use the maintenance script <code>setupStore.php</code> which can use the credentials of an administrator.",
 	"smw_smwadmin_dbbutton": "Initialize or upgrade tables",
 	"smw_smwadmin_announce": "Announce your wiki",
 	"smw_smwadmin_announcedocu": "Semantic MediaWiki has a web service for announcing new semantic wiki sites.\nThis is used to maintain a list of public sites that use Semantic MediaWiki, mainly to help the <a href=\"https://semantic-mediawiki.org/wiki/SMW_Project\">Semantic MediaWiki project</a> to get an overview of typical uses of Semantic MediaWiki.\nSee the Semantic MediaWiki homepage for <a href=\"https://semantic-mediawiki.org/wiki/Registry\">further information about this service</a>.",
