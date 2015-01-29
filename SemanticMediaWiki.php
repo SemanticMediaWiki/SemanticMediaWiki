@@ -102,7 +102,7 @@ class_alias( 'SMW\Query\PrintRequest', 'SMWPrintRequest' );
 class_alias( 'SMW\MediaWiki\Search\Search', 'SMWSearch' );
 
 // A flag used to indicate SMW defines a semantic extension type for extension credits.
-// @deprecated, removal in SMW 1.11
+// @deprecated, removal in SMW 3.0
 define( 'SEMANTIC_EXTENSION_TYPE', true );
 
 // Load global constants
