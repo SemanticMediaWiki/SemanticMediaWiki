@@ -35,7 +35,7 @@ class QueryBuilder {
 	/**
 	 * Array of generated QueryContainer query descriptions (index => object).
 	 *
-	 * @var QueryContainer[]
+	 * @var SqlQueryPart[]
 	 */
 	private $queries = array();
 
@@ -66,7 +66,7 @@ class QueryBuilder {
 	public function __construct( Store $store ) {
 		$this->store = $store;
 
-		QueryContainer::$qnum = 0;
+		SqlQueryPart::$qnum = 0;
 
 		$this->registerQueryCompiler( new SomePropertyCompiler( $this ) );
 		$this->registerQueryCompiler( new DisjunctionConjunctionCompiler( $this ) );
@@ -125,11 +125,11 @@ class QueryBuilder {
 	 * @since 2.2
 	 *
 	 * @param int $id
-	 * @param QueryContainer $query
+	 * @param SqlQueryPart $query
 	 *
 	 * @return QueryBuilder
 	 */
-	public function addQueryContainerForId( $id, QueryContainer $query ) {
+	public function addQueryContainerForId( $id, SqlQueryPart $query ) {
 		$this->queries[$id] = $query;
 		return $this;
 	}
@@ -188,7 +188,7 @@ class QueryBuilder {
 
 		$this->registerQuery( $query );
 
-		return $this->lastContainerId = $query->type !== QueryContainer::Q_NOQUERY ? $query->queryNumber : -1;
+		return $this->lastContainerId = $query->type !== SqlQueryPart::Q_NOQUERY ? $query->queryNumber : -1;
 	}
 
 	/**
@@ -218,16 +218,16 @@ class QueryBuilder {
 	 * valid. Also make sure that sortkey information is propagated down
 	 * from subqueries of this query.
 	 */
-	private function registerQuery( QueryContainer $query ) {
+	private function registerQuery( SqlQueryPart $query ) {
 
-		if ( $query->type === QueryContainer::Q_NOQUERY ) {
+		if ( $query->type === SqlQueryPart::Q_NOQUERY ) {
 			return null;
 		}
 
 		$this->addQueryContainerForId( $query->queryNumber, $query );
 
 		// Propagate sortkeys from subqueries:
-		if ( $query->type !== QueryContainer::Q_DISJUNCTION ) {
+		if ( $query->type !== SqlQueryPart::Q_DISJUNCTION ) {
 			// Sortkeys are killed by disjunctions (not all parts may have them),
 			// NOTE: preprocessing might try to push disjunctions downwards to safe sortkey, but this seems to be minor
 			foreach ( $query->components as $cid => $field ) {

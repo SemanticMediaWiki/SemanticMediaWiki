@@ -6,7 +6,7 @@ use SMW\Query\Language\Description;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 use SMW\SQLStore\QueryEngine\QueryCompiler;
-use SMW\SQLStore\QueryEngine\QueryContainer;
+use SMW\SQLStore\QueryEngine\SqlQueryPart;
 use SMWSql3SmwIds;
 
 /**
@@ -49,11 +49,11 @@ class NamespaceCompiler implements QueryCompiler {
 	 *
 	 * @param Description $description
 	 *
-	 * @return QueryContainer
+	 * @return SqlQueryPart
 	 */
 	public function compileDescription( Description $description ) {
 
-		$query = new QueryContainer();
+		$query = new SqlQueryPart();
 		$query->joinTable = SMWSql3SmwIds::tableName;
 		$query->joinfield = "$query->alias.smw_id";
 		$query->where = "$query->alias.smw_namespace=" . $this->queryBuilder->getStore()->getConnection( 'mw.db' )->addQuotes( $description->getNamespace() );

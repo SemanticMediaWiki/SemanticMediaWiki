@@ -7,7 +7,7 @@ use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 use SMW\SQLStore\QueryEngine\QueryCompiler;
-use SMW\SQLStore\QueryEngine\QueryContainer;
+use SMW\SQLStore\QueryEngine\SqlQueryPart;
 use SMWSql3SmwIds;
 
 /**
@@ -56,18 +56,18 @@ class ValueDescriptionCompiler implements QueryCompiler {
 	 *
 	 * @param Description $description
 	 *
-	 * @return QueryContainer
+	 * @return SqlQueryPart
 	 */
 	public function compileDescription( Description $description ) {
 
-		$query = new QueryContainer();
+		$query = new SqlQueryPart();
 
 		if ( !$description->getDataItem() instanceof DIWikiPage ) {
 			return $query;
 		}
 
 		if ( $description->getComparator() === SMW_CMP_EQ ) {
-			$query->type = QueryContainer::Q_VALUE;
+			$query->type = SqlQueryPart::Q_VALUE;
 			$oid = $this->queryBuilder->getStore()->getObjectIds()->getSMWPageID(
 				$description->getDataItem()->getDBkey(),
 				$description->getDataItem()->getNamespace(),

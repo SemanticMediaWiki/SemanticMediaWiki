@@ -7,7 +7,7 @@ use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 use SMW\SQLStore\QueryEngine\QueryCompiler;
-use SMW\SQLStore\QueryEngine\QueryContainer;
+use SMW\SQLStore\QueryEngine\SqlQueryPart;
 
 /**
  * @license GNU GPL v2+
@@ -47,12 +47,12 @@ class DisjunctionConjunctionCompiler implements QueryCompiler {
 	 *
 	 * @param Description $description
 	 *
-	 * @return QueryContainer
+	 * @return SqlQueryPart
 	 */
 	public function compileDescription( Description $description ) {
 
-		$query = new QueryContainer();
-		$query->type = $description instanceof Conjunction ? QueryContainer::Q_CONJUNCTION : QueryContainer::Q_DISJUNCTION;
+		$query = new SqlQueryPart();
+		$query->type = $description instanceof Conjunction ? SqlQueryPart::Q_CONJUNCTION : SqlQueryPart::Q_DISJUNCTION;
 
 		foreach ( $description->getDescriptions() as $subDescription ) {
 
@@ -65,7 +65,7 @@ class DisjunctionConjunctionCompiler implements QueryCompiler {
 
 		// All subconditions failed, drop this as well.
 		if ( count( $query->components ) == 0 ) {
-			$query->type = QueryContainer::Q_NOQUERY;
+			$query->type = SqlQueryPart::Q_NOQUERY;
 		}
 
 		return $query;
