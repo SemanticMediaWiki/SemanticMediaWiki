@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Utils\Validators;
 
-use SMW\SQLStore\QueryEngine\QueryContainer;
+use SMW\SQLStore\QueryEngine\SqlQueryPart;
 
 /**
  * @license GNU GPL v2+
@@ -10,13 +10,13 @@ use SMW\SQLStore\QueryEngine\QueryContainer;
  *
  * @author mwjames
  */
-class QueryContainerValidator extends \PHPUnit_Framework_Assert {
+class SqlQueryPartValidator extends \PHPUnit_Framework_Assert {
 
 	/**
 	 * @since 2.1
 	 *
 	 * @param  mixed $expected
-	 * @param  QueryContainer[] $queryContainer
+	 * @param  SqlQueryPart[] $queryContainer
 	 */
 	public function assertThatContainerContains( $expected, array $queryContainer ) {
 
@@ -30,7 +30,7 @@ class QueryContainerValidator extends \PHPUnit_Framework_Assert {
 
 		foreach ( $queryContainer as $key => $container ) {
 			$this->assertInstanceOf(
-				'\SMW\SQLStore\QueryEngine\QueryContainer',
+				'\SMW\SQLStore\QueryEngine\SqlQueryPart',
 				$container
 			);
 
@@ -42,9 +42,9 @@ class QueryContainerValidator extends \PHPUnit_Framework_Assert {
 	 * @since 2.1
 	 *
 	 * @param  mixed $expected
-	 * @param  QueryContainer $queryContainer
+	 * @param  SqlQueryPart $queryContainer
 	 */
-	public function assertThatContainerHasProperties( $expected, QueryContainer $queryContainer ) {
+	public function assertThatContainerHasProperties( $expected, SqlQueryPart $queryContainer ) {
 		$this->assertPublicProperty( $expected, $queryContainer, 'type' );
 		$this->assertPublicProperty( $expected, $queryContainer, 'joinfield' );
 		$this->assertPublicProperty( $expected, $queryContainer, 'jointable' );
@@ -56,7 +56,7 @@ class QueryContainerValidator extends \PHPUnit_Framework_Assert {
 		$this->assertPublicProperty( $expected, $queryContainer, 'queryNumber' );
 	}
 
-	private function assertPublicProperty( $expected, QueryContainer $queryContainer, $property ) {
+	private function assertPublicProperty( $expected, SqlQueryPart $queryContainer, $property ) {
 
 		if ( !isset( $expected->{$property} ) ) {
 			return null;

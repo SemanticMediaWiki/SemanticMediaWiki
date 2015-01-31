@@ -12,7 +12,7 @@ use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 use SMW\SQLStore\QueryEngine\QueryCompiler;
-use SMW\SQLStore\QueryEngine\QueryContainer;
+use SMW\SQLStore\QueryEngine\SqlQueryPart;
 use SMWDataItem as DataItem;
 use SMWDataItemHandler as DataItemHandler;
 use SMWSql3SmwIds;
@@ -67,11 +67,11 @@ class SomePropertyCompiler implements QueryCompiler {
 	 *
 	 * @param Description $description
 	 *
-	 * @return QueryContainer
+	 * @return SqlQueryPart
 	 */
 	public function compileDescription( Description $description ) {
 
-		$query = new QueryContainer();
+		$query = new SqlQueryPart();
 
 		$this->compileSomePropertyDescription( $query, $description );
 
@@ -92,7 +92,7 @@ class SomePropertyCompiler implements QueryCompiler {
 	 *
 	 * @since 1.8
 	 */
-	protected function compileSomePropertyDescription( QueryContainer $query, SomeProperty $description ) {
+	protected function compileSomePropertyDescription( SqlQueryPart $query, SomeProperty $description ) {
 
 		$db = $this->queryBuilder->getStore()->getConnection( 'mw.db' );
 
@@ -101,7 +101,7 @@ class SomePropertyCompiler implements QueryCompiler {
 		$tableid = $this->queryBuilder->getStore()->findPropertyTableID( $property );
 
 		if ( $tableid === '' ) { // Give up
-			$query->type = QueryContainer::Q_NOQUERY;
+			$query->type = SqlQueryPart::Q_NOQUERY;
 			return;
 		}
 
@@ -111,7 +111,7 @@ class SomePropertyCompiler implements QueryCompiler {
 		if ( !$proptable->usesIdSubject() ) {
 			// no queries with such tables
 			// (only redirects are affected in practice)
-			$query->type = QueryContainer::Q_NOQUERY;
+			$query->type = SqlQueryPart::Q_NOQUERY;
 			return;
 		}
 
@@ -120,7 +120,7 @@ class SomePropertyCompiler implements QueryCompiler {
 
 		if ( $property->isInverse() && $diType !== DataItem::TYPE_WIKIPAGE ) {
 			// can only invert properties that point to pages
-			$query->type = QueryContainer::Q_NOQUERY;
+			$query->type = SqlQueryPart::Q_NOQUERY;
 			return;
 		}
 
@@ -139,9 +139,9 @@ class SomePropertyCompiler implements QueryCompiler {
 			$pid = $this->queryBuilder->getStore()->getObjectIds()->getSMWPropertyID( $property );
 
 			// Construct property hierarchy:
-			$pqid = QueryContainer::$qnum;
-			$pquery = new QueryContainer();
-			$pquery->type = QueryContainer::Q_PROP_HIERARCHY;
+			$pqid = SqlQueryPart::$qnum;
+			$pquery = new SqlQueryPart();
+			$pquery->type = SqlQueryPart::Q_PROP_HIERARCHY;
 			$pquery->joinfield = array( $pid );
 			$query->components[$pqid] = "{$query->alias}.p_id";
 			$this->queryBuilder->addQueryContainerForId( $pqid, $pquery );

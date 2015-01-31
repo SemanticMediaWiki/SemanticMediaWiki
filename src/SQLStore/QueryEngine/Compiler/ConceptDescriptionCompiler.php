@@ -6,7 +6,7 @@ use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Description;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 use SMW\SQLStore\QueryEngine\QueryCompiler;
-use SMW\SQLStore\QueryEngine\QueryContainer;
+use SMW\SQLStore\QueryEngine\SqlQueryPart;
 use SMWQueryParser as QueryParser;
 use SMWSQLStore3;
 
@@ -48,11 +48,11 @@ class ConceptDescriptionCompiler implements QueryCompiler {
 	 *
 	 * @param Description $description
 	 *
-	 * @return QueryContainer
+	 * @return SqlQueryPart
 	 */
 	public function compileDescription( Description $description ) {
 
-		$query = new QueryContainer();
+		$query = new SqlQueryPart();
 
 		$conceptId = $this->queryBuilder->getStore()->getObjectIds()->getSMWPageID(
 			$description->getConcept()->getDBkey(),

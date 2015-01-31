@@ -30,7 +30,7 @@ class ConceptDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->queryContainerValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryContainerValidator();
+		$this->queryContainerValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSqlQueryPartValidator();
 	}
 
 	public function testCanConstruct() {

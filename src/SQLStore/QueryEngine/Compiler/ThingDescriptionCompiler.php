@@ -6,7 +6,7 @@ use SMW\Query\Language\Description;
 use SMW\Query\Language\ThingDescription;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 use SMW\SQLStore\QueryEngine\QueryCompiler;
-use SMW\SQLStore\QueryEngine\QueryContainer;
+use SMW\SQLStore\QueryEngine\SqlQueryPart;
 
 /**
  * @license GNU GPL v2+
@@ -44,12 +44,12 @@ class ThingDescriptionCompiler implements QueryCompiler {
 	 *
 	 * @param Description $description
 	 *
-	 * @return QueryContainer
+	 * @return SqlQueryPart
 	 */
 	public function compileDescription( Description $description ) {
 
-		$query = new QueryContainer();
-		$query->type = QueryContainer::Q_NOQUERY;
+		$query = new SqlQueryPart();
+		$query->type = SqlQueryPart::Q_NOQUERY;
 
 		return $query;
 	}

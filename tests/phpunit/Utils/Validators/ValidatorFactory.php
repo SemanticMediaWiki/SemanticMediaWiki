@@ -77,10 +77,10 @@ class ValidatorFactory {
 	/**
 	 * @since 2.2
 	 *
-	 * @return QueryContainerValidator
+	 * @return SqlQueryPartValidator
 	 */
-	public function newQueryContainerValidator() {
-		return new QueryContainerValidator();
+	public function newSqlQueryPartValidator() {
+		return new SqlQueryPartValidator();
 	}
 
 }

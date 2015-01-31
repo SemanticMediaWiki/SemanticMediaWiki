@@ -11,7 +11,7 @@ namespace SMW\SQLStore\QueryEngine;
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  */
-class QueryContainer {
+class SqlQueryPart {
 
 	/**
 	 * Type of empty query without usable condition, dropped as soon as
@@ -64,7 +64,7 @@ class QueryContainer {
 	/**
 	 * @var integer
 	 */
-	public $type = QueryContainer::Q_TABLE;
+	public $type = SqlQueryPart::Q_TABLE;
 
 	/**
 	 * @var string

@@ -13,7 +13,7 @@ use SMW\Query\Language\ValueDescription;
 use SMW\QueryOutputFormatter;
 use SMW\SQLStore\TableDefinition;
 
-use SMW\SQLStore\QueryEngine\QueryContainer as SMWSQLStore3Query;
+use SMW\SQLStore\QueryEngine\SqlQueryPart as SMWSQLStore3Query;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 
 /**

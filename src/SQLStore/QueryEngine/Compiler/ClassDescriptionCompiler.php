@@ -7,7 +7,7 @@ use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Description;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 use SMW\SQLStore\QueryEngine\QueryCompiler;
-use SMW\SQLStore\QueryEngine\QueryContainer;
+use SMW\SQLStore\QueryEngine\SqlQueryPart;
 
 /**
  * @license GNU GPL v2+
@@ -47,15 +47,15 @@ class ClassDescriptionCompiler implements QueryCompiler {
 	 *
 	 * @param Description $description
 	 *
-	 * @return QueryContainer
+	 * @return SqlQueryPart
 	 */
 	public function compileDescription( Description $description ) {
 
-		$query = new QueryContainer();
+		$query = new SqlQueryPart();
 
-		$cqid = QueryContainer::$qnum;
-		$cquery = new QueryContainer();
-		$cquery->type = QueryContainer::Q_CLASS_HIERARCHY;
+		$cqid = SqlQueryPart::$qnum;
+		$cquery = new SqlQueryPart();
+		$cquery->type = SqlQueryPart::Q_CLASS_HIERARCHY;
 		$cquery->joinfield = array();
 
 		foreach ( $description->getCategories() as $category ) {
@@ -73,7 +73,7 @@ class ClassDescriptionCompiler implements QueryCompiler {
 		}
 
 		if ( count( $cquery->joinfield ) == 0 ) { // Empty result.
-			$query->type = QueryContainer::Q_VALUE;
+			$query->type = SqlQueryPart::Q_VALUE;
 			$query->joinTable = '';
 			$query->joinfield = '';
 		} else { // Instance query with disjunction of classes (categories)

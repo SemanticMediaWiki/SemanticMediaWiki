@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine;
 
-use SMW\SQLStore\QueryEngine\QueryContainer;
+use SMW\SQLStore\QueryEngine\SqlQueryPart;
 
 /**
- * @covers \SMW\SQLStore\QueryEngine\QueryContainer
+ * @covers \SMW\SQLStore\QueryEngine\SqlQueryPart
  *
  * @group SMW
  * @group SMWExtension
@@ -15,19 +15,19 @@ use SMW\SQLStore\QueryEngine\QueryContainer;
  *
  * @author mwjames
  */
-class QueryContainerTest extends \PHPUnit_Framework_TestCase {
+class SqlQueryPartTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\QueryContainer',
-			new QueryContainer()
+			'\SMW\SQLStore\QueryEngine\SqlQueryPart',
+			new SqlQueryPart()
 		);
 	}
 
 	public function testResetState() {
 
-		$instance = new QueryContainer();
+		$instance = new SqlQueryPart();
 		$instance->reset();
 
 		$this->assertEquals(
