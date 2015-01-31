@@ -59,7 +59,7 @@ class ResourceLoaderGetConfigVars {
 			// Special formats "count" and "debug" currently not supported.
 			if ( $format != 'broadtable' && $format != 'count' && $format != 'debug' ) {
 				$printer = SMWQueryProcessor::getResultPrinter( $format, SMWQueryProcessor::SPECIAL_PAGE );
-				$this->vars['smw-config']['formats'][$format] = $printer->getName();
+				$this->vars['smw-config']['formats'][$format] = htmlspecialchars( $printer->getName() );
 			}
 		}
 
