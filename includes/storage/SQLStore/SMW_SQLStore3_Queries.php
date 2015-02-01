@@ -4,6 +4,7 @@ use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\QueryOutputFormatter;
+use SMW\SQLStore\QueryEngine\ConceptCache;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 use SMW\SQLStore\QueryEngine\SqlQueryPart as SMWSQLStore3Query;
 use SMW\SQLStore\QueryEngine\SqlQueryPart;
@@ -77,14 +78,6 @@ class SMWSQLStore3QueryEngine {
 	 */
 	private $queryBuilder = null;
 
-	public function __construct( SMWSQLStore3 $parentstore, $dbslave ) {
-		$this->store = $parentstore;
-		$this->dbs = $dbslave;
-
-		// Should be injected but for now we use the hidden construction
-		$this->queryBuilder = new QueryBuilder( $this->store );
-	}
-
 	/**
 	 * Refresh the concept cache for the given concept.
 	 *
@@ -93,113 +86,46 @@ class SMWSQLStore3QueryEngine {
 	 * @return array of error strings (empty if no errors occurred)
 	 */
 	public function refreshConceptCache( Title $concept ) {
-		global $smwgQMaxLimit, $smwgQConceptFeatures, $wgDBtype;
+		$conceptCache = new ConceptCache( $this, $this->store );
 
-		$fname = 'SMW::refreshConceptCache';
-
-		$db = $this->store->getConnection();
-
-		$cid = $this->store->smwIds->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '' );
-		$cid_c = $this->store->smwIds->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '', false );
-
-		if ( $cid != $cid_c ) {
-			$this->errors[] = "Skipping redirect concept.";
-			return $this->errors;
-		}
-
-		$values = $this->store->getPropertyValues(
-			SMWDIWikiPage::newFromTitle( $concept ),
-			new SMWDIProperty( '_CONC' )
-		);
-
-		$di = end( $values );
-		$desctxt = ( $di !== false ) ? $di->getConceptQuery() : false;
-		$this->errors = array();
-
-		if ( $desctxt ) { // concept found
-			$this->queryMode = SMWQuery::MODE_INSTANCES;
-			$this->queryParts = array();
-			$this->hierarchyCache = array();
-			$this->executedQueries = array();
-			$this->sortKeys = array();
-			SMWSQLStore3Query::$qnum = 0;
-
-			// Pre-process query:
-			$qp = new SMWQueryParser( $smwgQConceptFeatures );
-			$desc = $qp->getQueryDescription( $desctxt );
-
-			$this->queryBuilder->setSortKeys( $this->sortKeys );
-			$this->queryBuilder->buildQueryContainer( $desc );
-
-			$qid = $this->queryBuilder->getLastContainerId();
-			$this->queryParts = $this->queryBuilder->getQueryContainer();
-			$this->errors = $this->queryBuilder->getErrors();
-
-			if ( $qid < 0 ) {
-				return;
-			}
-
-			$this->executeQueries( $this->queryParts[$qid] ); // execute query tree, resolve all dependencies
-			$qobj = $this->queryParts[$qid];
-
-			if ( $qobj->joinfield === '' || $qobj->joinTable === '' ) {
-				return;
-			}
-
-			// Update database:
-			$db->delete(
-				SMWSQLStore3::CONCEPT_CACHE_TABLE,
-				array( 'o_id' => $cid ),
-				__METHOD__
-			);
-
-			$smw_conccache = $db->tablename( SMWSQLStore3::CONCEPT_CACHE_TABLE );
-
-			if ( $wgDBtype == 'postgres' ) { // PostgresQL: no INSERT IGNORE, check for duplicates explicitly
-				$where = $qobj->where . ( $qobj->where ? ' AND ' : '' ) .
-					"NOT EXISTS (SELECT NULL FROM $smw_conccache" .
-					" WHERE {$smw_conccache}.s_id = {$qobj->alias}.s_id " .
-					" AND  {$smw_conccache}.o_id = {$qobj->alias}.o_id )";
-			} else { // MySQL just uses INSERT IGNORE, no extra conditions
-				$where = $qobj->where;
-			}
-
-			$db->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) .
-				"INTO $smw_conccache" .
-				" SELECT DISTINCT {$qobj->joinfield} AS s_id, $cid AS o_id FROM " .
-				$db->tableName( $qobj->joinTable ) . " AS {$qobj->alias}" .
-				$qobj->from .
-				( $where ? ' WHERE ' : '' ) . $where . " LIMIT $smwgQMaxLimit",
-				$fname );
-
-			$db->update(
-				'smw_fpt_conc',
-				array( 'cache_date' => strtotime( "now" ), 'cache_count' => $db->affectedRows() ),
-				array( 's_id' => $cid ),
-				__METHOD__
-			);
-
-		} else { // no concept found; just delete old data if there is any
-
-			$db->delete(
-				SMWSQLStore3::CONCEPT_CACHE_TABLE,
-				array( 'o_id' => $cid ),
-				__METHOD__
-			);
-
-			$db->update(
-				'smw_fpt_conc',
-				array( 'cache_date' => null, 'cache_count' => null ),
-				array( 's_id' => $cid ),
-				__METHOD__
-			);
-
-			$this->errors[] = "No concept description found.";
-		}
+		$errors = $conceptCache->refresh( $concept );
 
 		$this->cleanUp();
 
-		return $this->errors;
+		return array_merge( $this->queryBuilder->getErrors(), $errors );
+	}
+
+	/**
+	 * @param string $conceptDescriptionText
+	 *
+	 * @return SqlQueryPart|null
+	 */
+	public function resolveQueryTreeForQueryCondition( $conceptDescriptionText ) {
+		global $smwgQConceptFeatures;
+
+		$this->queryMode = SMWQuery::MODE_INSTANCES;
+		$this->queryParts = array();
+		$this->hierarchyCache = array();
+		$this->executedQueries = array();
+		$this->sortKeys = array();
+		SqlQueryPart::$qnum = 0;
+
+		$this->queryBuilder->setSortKeys( $this->sortKeys );
+
+		$qp = new SMWQueryParser( $smwgQConceptFeatures );
+		$this->queryBuilder->buildQueryContainer( $qp->getQueryDescription( $conceptDescriptionText ) );
+
+		$qid = $this->queryBuilder->getLastContainerId();
+		$this->queryParts = $this->queryBuilder->getQueryContainer();
+
+		if ( $qid < 0 ) {
+			return null;
+		}
+
+		// execute query tree, resolve all dependencies
+		$this->executeQueries( $this->queryParts[$qid] );
+
+		return $this->queryParts[$qid];
 	}
 
 	/**
@@ -208,29 +134,16 @@ class SMWSQLStore3QueryEngine {
 	 * @param $concept Title
 	 */
 	public function deleteConceptCache( $concept ) {
+		$conceptCache = new ConceptCache( $this, $this->store );
+		$conceptCache->delete( $concept );
+	}
 
-		$db = $this->store->getConnection();
+	public function __construct( SMWSQLStore3 $parentstore, $dbslave ) {
+		$this->store = $parentstore;
+		$this->dbs = $dbslave;
 
-		$cid = $this->store->smwIds->getSMWPageID(
-			$concept->getDBkey(),
-			SMW_NS_CONCEPT,
-			'',
-			'',
-			false
-		);
-
-		$db->delete(
-			SMWSQLStore3::CONCEPT_CACHE_TABLE,
-			array( 'o_id' => $cid ),
-			__METHOD__
-		);
-
-		$db->update(
-			'smw_fpt_conc',
-			array( 'cache_date' => null, 'cache_count' => null ),
-			array( 's_id' => $cid ),
-			__METHOD__
-		);
+		// Should be injected but for now we use the hidden construction
+		$this->queryBuilder = new QueryBuilder( $this->store );
 	}
 
 	/**
