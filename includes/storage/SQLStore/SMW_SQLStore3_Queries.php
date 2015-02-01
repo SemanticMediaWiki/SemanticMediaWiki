@@ -8,6 +8,7 @@ use SMW\SQLStore\QueryEngine\ConceptCache;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 use SMW\SQLStore\QueryEngine\SqlQueryPart as SMWSQLStore3Query;
 use SMW\SQLStore\QueryEngine\SqlQueryPart;
+use SMW\SQLStore\TemporaryIdTableCreator;
 
 /**
  * Class that implements query answering for SMWSQLStore3.
@@ -16,8 +17,6 @@ use SMW\SQLStore\QueryEngine\SqlQueryPart;
 class SMWSQLStore3QueryEngine {
 
 	/**
-	 * // TODO: should temporary tables be created on the master DB?
-	 *
 	 * @var DatabaseBase
 	 */
 	private $dbs;
@@ -79,6 +78,26 @@ class SMWSQLStore3QueryEngine {
 	private $queryBuilder = null;
 
 	/**
+	 * @var TemporaryIdTableCreator
+	 */
+	private $tempIdTableCreator;
+
+	/**
+	 * @param SMWSQLStore3 $parentStore
+	 * @param DatabaseBase $db
+	 * @param TemporaryIdTableCreator $temporaryIdTableCreator
+	 */
+	public function __construct( SMWSQLStore3 $parentStore, DatabaseBase $db, TemporaryIdTableCreator $temporaryIdTableCreator ) {
+		$this->store = $parentStore;
+		$this->dbs = $db;
+
+		// Should be injected but for now we use the hidden construction
+		$this->queryBuilder = new QueryBuilder( $this->store );
+
+		$this->tempIdTableCreator = $temporaryIdTableCreator;
+	}
+
+	/**
 	 * Refresh the concept cache for the given concept.
 	 *
 	 * @since 1.8
@@ -136,14 +155,6 @@ class SMWSQLStore3QueryEngine {
 	public function deleteConceptCache( $concept ) {
 		$conceptCache = new ConceptCache( $this, $this->store );
 		$conceptCache->delete( $concept );
-	}
-
-	public function __construct( SMWSQLStore3 $parentstore, $dbslave ) {
-		$this->store = $parentstore;
-		$this->dbs = $dbslave;
-
-		// Should be injected but for now we use the hidden construction
-		$this->queryBuilder = new QueryBuilder( $this->store );
 	}
 
 	/**
@@ -790,30 +801,7 @@ class SMWSQLStore3QueryEngine {
 	 * @return string
 	 */
 	private function getCreateTempIDTableSQL( $tableName ) {
-		global $wgDBtype;
-
-		if ( $wgDBtype == 'postgres' ) { // PostgreSQL: no memory tables, use RULE to emulate INSERT IGNORE
-
-			// Remove any double quotes from the name
-			$tableName = str_replace( '"', '', $tableName );
-
-			return "CREATE OR REPLACE FUNCTION pg_temp.create_{$tableName}() RETURNS void AS "
-			. "$$ "
-			. "BEGIN "
-			. " IF EXISTS(SELECT NULL FROM pg_tables WHERE tablename='{$tableName}' AND schemaname = ANY (current_schemas(true))) "
-			. " THEN DELETE FROM {$tableName}; "
-			. " ELSE "
-			. "  CREATE TEMPORARY TABLE {$tableName} (id INTEGER PRIMARY KEY); "
-			. "    CREATE RULE {$tableName}_ignore AS ON INSERT TO {$tableName} WHERE (EXISTS (SELECT NULL FROM {$tableName} "
-			. "	 WHERE ({$tableName}.id = new.id))) DO INSTEAD NOTHING; "
-			. " END IF; "
-			. "END; "
-			. "$$ "
-			. "LANGUAGE 'plpgsql'; "
-			. "SELECT pg_temp.create_{$tableName}(); ";
-		} else { // MySQL_ just a temporary table, use INSERT IGNORE later
-			return "CREATE TEMPORARY TABLE " . $tableName . "( id INT UNSIGNED KEY ) ENGINE=MEMORY";
-		}
+		return $this->tempIdTableCreator->getSqlToCreate( $tableName );
 	}
 
 }

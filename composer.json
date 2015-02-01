@@ -41,7 +41,8 @@
 		"composer/installers": "1.*,>=1.0.1",
 		"mediawiki/validator": "~2.0,>=2.0.4",
 		"serialization/serialization": "~3.2",
-		"onoi/message-reporter": "~1.0"
+		"onoi/message-reporter": "~1.0",
+		"doctrine/dbal": "~2.5"
 	},
 	"replace": {
 		"mediawiki/semantic-mediawiki": "*"
