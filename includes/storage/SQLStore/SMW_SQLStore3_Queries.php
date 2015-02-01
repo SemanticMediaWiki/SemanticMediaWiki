@@ -1,20 +1,12 @@
 <?php
 
-use SMW\DataTypeRegistry;
-use SMW\Query\Language\ClassDescription;
-use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Conjunction;
-use SMW\Query\Language\Description;
-use SMW\Query\Language\Disjunction;
-use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
-use SMW\Query\Language\ValueDescription;
 use SMW\QueryOutputFormatter;
-use SMW\SQLStore\TableDefinition;
-
-use SMW\SQLStore\QueryEngine\SqlQueryPart as SMWSQLStore3Query;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
+use SMW\SQLStore\QueryEngine\SqlQueryPart as SMWSQLStore3Query;
+use SMW\SQLStore\QueryEngine\SqlQueryPart;
 
 /**
  * Class that implements query answering for SMWSQLStore3.
@@ -27,35 +19,35 @@ class SMWSQLStore3QueryEngine {
 	 *
 	 * @var DatabaseBase
 	 */
-	private $m_dbs;
+	private $dbs;
 
 	/**
 	 * Parent SMWSQLStore3.
 	 *
 	 * @var SMWSQLStore3
 	 */
-	private $m_store;
+	private $store;
 
 	/**
 	 * Query mode copied from given query. Some submethods act differently when in SMWQuery::MODE_DEBUG.
 	 *
 	 * @var int
 	 */
-	private $m_qmode;
+	private $queryMode;
 
 	/**
-	 * Array of generated SMWSQLStore3Query query descriptions (index => object)
+	 * Array of generated SqlQueryPart query descriptions (index => object)
 	 *
-	 * @var SMWSQLStore3Query[]
+	 * @var SqlQueryPart[]
 	 */
-	private $m_queries = array();
+	private $queryParts = array();
 
 	/**
 	 * Array of arrays of executed queries, indexed by the temporary table names results were fed into.
 	 *
 	 * @var array
 	 */
-	private $m_querylog = array();
+	private $executedQueries = array();
 
 	/**
 	 * Array of sorting requests ("Property_name" => "ASC"/"DESC"). Used during query
@@ -64,21 +56,21 @@ class SMWSQLStore3QueryEngine {
 	 *
 	 * @var string[]
 	 */
-	private $m_sortkeys;
+	private $sortKeys;
 
 	/**
 	 * Cache of computed hierarchy queries for reuse ("catetgory/property value string" => "tablename").
 	 *
 	 * @var string[]
 	 */
-	private $m_hierarchies = array();
+	private $hierarchyCache = array();
 
 	/**
 	 * Local collection of error strings, passed on to callers if possible.
 	 *
 	 * @var string[]
 	 */
-	private $m_errors = array();
+	private $errors = array();
 
 	/**
 	 * @var QueryBuilder
@@ -86,11 +78,11 @@ class SMWSQLStore3QueryEngine {
 	private $queryBuilder = null;
 
 	public function __construct( SMWSQLStore3 $parentstore, $dbslave ) {
-		$this->m_store = $parentstore;
-		$this->m_dbs = $dbslave;
+		$this->store = $parentstore;
+		$this->dbs = $dbslave;
 
 		// Should be injected but for now we use the hidden construction
-		$this->queryBuilder = new QueryBuilder( $this->m_store );
+		$this->queryBuilder = new QueryBuilder( $this->store );
 	}
 
 	/**
@@ -105,50 +97,50 @@ class SMWSQLStore3QueryEngine {
 
 		$fname = 'SMW::refreshConceptCache';
 
-		$db = $this->m_store->getConnection();
+		$db = $this->store->getConnection();
 
-		$cid = $this->m_store->smwIds->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '' );
-		$cid_c = $this->m_store->smwIds->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '', false );
+		$cid = $this->store->smwIds->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '' );
+		$cid_c = $this->store->smwIds->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '', false );
 
 		if ( $cid != $cid_c ) {
-			$this->m_errors[] = "Skipping redirect concept.";
-			return $this->m_errors;
+			$this->errors[] = "Skipping redirect concept.";
+			return $this->errors;
 		}
 
-		$values = $this->m_store->getPropertyValues(
+		$values = $this->store->getPropertyValues(
 			SMWDIWikiPage::newFromTitle( $concept ),
 			new SMWDIProperty( '_CONC' )
 		);
 
 		$di = end( $values );
 		$desctxt = ( $di !== false ) ? $di->getConceptQuery() : false;
-		$this->m_errors = array();
+		$this->errors = array();
 
 		if ( $desctxt ) { // concept found
-			$this->m_qmode = SMWQuery::MODE_INSTANCES;
-			$this->m_queries = array();
-			$this->m_hierarchies = array();
-			$this->m_querylog = array();
-			$this->m_sortkeys = array();
+			$this->queryMode = SMWQuery::MODE_INSTANCES;
+			$this->queryParts = array();
+			$this->hierarchyCache = array();
+			$this->executedQueries = array();
+			$this->sortKeys = array();
 			SMWSQLStore3Query::$qnum = 0;
 
 			// Pre-process query:
 			$qp = new SMWQueryParser( $smwgQConceptFeatures );
 			$desc = $qp->getQueryDescription( $desctxt );
 
-			$this->queryBuilder->setSortKeys( $this->m_sortkeys );
+			$this->queryBuilder->setSortKeys( $this->sortKeys );
 			$this->queryBuilder->buildQueryContainer( $desc );
 
 			$qid = $this->queryBuilder->getLastContainerId();
-			$this->m_queries = $this->queryBuilder->getQueryContainer();
-			$this->m_errors = $this->queryBuilder->getErrors();
+			$this->queryParts = $this->queryBuilder->getQueryContainer();
+			$this->errors = $this->queryBuilder->getErrors();
 
 			if ( $qid < 0 ) {
 				return;
 			}
 
-			$this->executeQueries( $this->m_queries[$qid] ); // execute query tree, resolve all dependencies
-			$qobj = $this->m_queries[$qid];
+			$this->executeQueries( $this->queryParts[$qid] ); // execute query tree, resolve all dependencies
+			$qobj = $this->queryParts[$qid];
 
 			if ( $qobj->joinfield === '' || $qobj->joinTable === '' ) {
 				return;
@@ -202,12 +194,12 @@ class SMWSQLStore3QueryEngine {
 				__METHOD__
 			);
 
-			$this->m_errors[] = "No concept description found.";
+			$this->errors[] = "No concept description found.";
 		}
 
 		$this->cleanUp();
 
-		return $this->m_errors;
+		return $this->errors;
 	}
 
 	/**
@@ -217,9 +209,9 @@ class SMWSQLStore3QueryEngine {
 	 */
 	public function deleteConceptCache( $concept ) {
 
-		$db = $this->m_store->getConnection();
+		$db = $this->store->getConnection();
 
-		$cid = $this->m_store->smwIds->getSMWPageID(
+		$cid = $this->store->smwIds->getSMWPageID(
 			$concept->getDBkey(),
 			SMW_NS_CONCEPT,
 			'',
@@ -277,48 +269,48 @@ class SMWSQLStore3QueryEngine {
 		if ( ( !$smwgIgnoreQueryErrors || $query->getDescription() instanceof ThingDescription ) &&
 		     $query->querymode != SMWQuery::MODE_DEBUG &&
 		     count( $query->getErrors() ) > 0 ) {
-			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->m_store, false );
+			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->store, false );
 			// NOTE: we check this here to prevent unnecessary work, but we check
 			// it after query processing below again in case more errors occurred.
 		} elseif ( $query->querymode == SMWQuery::MODE_NONE ) {
 			// don't query, but return something to printer
-			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->m_store, true );
+			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->store, true );
 		}
 
-		$this->m_qmode = $query->querymode;
-		$this->m_queries = array();
-		$this->m_hierarchies = array();
-		$this->m_querylog = array();
-		$this->m_errors = array();
+		$this->queryMode = $query->querymode;
+		$this->queryParts = array();
+		$this->hierarchyCache = array();
+		$this->executedQueries = array();
+		$this->errors = array();
 		SMWSQLStore3Query::$qnum = 0;
-		$this->m_sortkeys = $query->sortkeys;
+		$this->sortKeys = $query->sortkeys;
 
 		// *** First compute abstract representation of the query (compilation) ***//
-		$this->queryBuilder->setSortKeys( $this->m_sortkeys );
+		$this->queryBuilder->setSortKeys( $this->sortKeys );
 		$this->queryBuilder->buildQueryContainer( $query->getDescription() ); // compile query, build query "plan"
 
 		$qid = $this->queryBuilder->getLastContainerId();
-		$this->m_queries = $this->queryBuilder->getQueryContainer();
-		$this->m_errors = $this->queryBuilder->getErrors();
+		$this->queryParts = $this->queryBuilder->getQueryContainer();
+		$this->errors = $this->queryBuilder->getErrors();
 
 		if ( $qid < 0 ) { // no valid/supported condition; ensure that at least only proper pages are delivered
 			$qid = SMWSQLStore3Query::$qnum;
 			$q = new SMWSQLStore3Query();
 			$q->joinTable = SMWSql3SmwIds::tableName;
 			$q->joinfield = "$q->alias.smw_id";
-			$q->where = "$q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND $q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL3_SMWREDIIW ) . " AND $q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL3_SMWBORDERIW ) . " AND $q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL3_SMWINTDEFIW );
-			$this->m_queries[$qid] = $q;
+			$q->where = "$q->alias.smw_iw!=" . $this->dbs->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND $q->alias.smw_iw!=" . $this->dbs->addQuotes( SMW_SQL3_SMWREDIIW ) . " AND $q->alias.smw_iw!=" . $this->dbs->addQuotes( SMW_SQL3_SMWBORDERIW ) . " AND $q->alias.smw_iw!=" . $this->dbs->addQuotes( SMW_SQL3_SMWINTDEFIW );
+			$this->queryParts[$qid] = $q;
 		}
 
-		if ( $this->m_queries[$qid]->joinTable != SMWSql3SmwIds::tableName ) {
+		if ( $this->queryParts[$qid]->joinTable != SMWSql3SmwIds::tableName ) {
 			// manually make final root query (to retrieve namespace,title):
 			$rootid = SMWSQLStore3Query::$qnum;
 			$qobj = new SMWSQLStore3Query();
 			$qobj->joinTable  = SMWSql3SmwIds::tableName;
 			$qobj->joinfield  = "$qobj->alias.smw_id";
 			$qobj->components = array( $qid => "$qobj->alias.smw_id" );
-			$qobj->sortfields = $this->m_queries[$qid]->sortfields;
-			$this->m_queries[$rootid] = $qobj;
+			$qobj->sortfields = $this->queryParts[$qid]->sortfields;
+			$this->queryParts[$rootid] = $qobj;
 		} else { // not such a common case, but worth avoiding the additional inner join:
 			$rootid = $qid;
 		}
@@ -331,13 +323,13 @@ class SMWSQLStore3QueryEngine {
 		// Possibly stop if new errors happened:
 		if ( !$smwgIgnoreQueryErrors &&
                      $query->querymode != SMWQuery::MODE_DEBUG &&
-                     count( $this->m_errors ) > 0 ) {
-			$query->addErrors( $this->m_errors );
-			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->m_store, false );
+                     count( $this->errors ) > 0 ) {
+			$query->addErrors( $this->errors );
+			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->store, false );
 		}
 
 		// *** Now execute the computed query ***//
-		$this->executeQueries( $this->m_queries[$rootid] ); // execute query tree, resolve all dependencies
+		$this->executeQueries( $this->queryParts[$rootid] ); // execute query tree, resolve all dependencies
 
 		switch ( $query->querymode ) {
 			case SMWQuery::MODE_DEBUG:
@@ -352,7 +344,7 @@ class SMWSQLStore3QueryEngine {
 		}
 
 		$this->cleanUp();
-		$query->addErrors( $this->m_errors );
+		$query->addErrors( $this->errors );
 
 		return $result;
 	}
@@ -367,9 +359,9 @@ class SMWSQLStore3QueryEngine {
 	 * @return string
 	 */
 	private function getDebugQueryResult( SMWQuery $query, $rootid ) {
-		$qobj = $this->m_queries[$rootid];
+		$qobj = $this->queryParts[$rootid];
 
-		$db = $this->m_store->getConnection();
+		$db = $this->store->getConnection();
 
 		$entries = array();
 
@@ -387,7 +379,7 @@ class SMWSQLStore3QueryEngine {
 		}
 
 		$auxtables = '';
-		foreach ( $this->m_querylog as $table => $log ) {
+		foreach ( $this->executedQueries as $table => $log ) {
 			$auxtables .= "<li>Temporary table $table";
 			foreach ( $log as $q ) {
 				$auxtables .= "<br />&#160;&#160;<tt>$q</tt>";
@@ -414,18 +406,18 @@ class SMWSQLStore3QueryEngine {
 	 */
 	private function getCountQueryResult( SMWQuery $query, $rootid ) {
 
-		$qobj = $this->m_queries[$rootid];
+		$qobj = $this->queryParts[$rootid];
 
 		if ( $qobj->joinfield === '' ) { // empty result, no query needed
 			return 0;
 		}
 
 		$sql_options = array( 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() );
-		$res = $this->m_dbs->select( $this->m_dbs->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from, "COUNT(DISTINCT $qobj->alias.smw_id) AS count", $qobj->where, 'SMW::getQueryResult', $sql_options );
-		$row = $this->m_dbs->fetchObject( $res );
+		$res = $this->dbs->select( $this->dbs->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from, "COUNT(DISTINCT $qobj->alias.smw_id) AS count", $qobj->where, 'SMW::getQueryResult', $sql_options );
+		$row = $this->dbs->fetchObject( $res );
 
 		$count = $row->count;
-		$this->m_dbs->freeResult( $res );
+		$this->dbs->freeResult( $res );
 
 
 		return $count;
@@ -452,12 +444,12 @@ class SMWSQLStore3QueryEngine {
 	private function getInstanceQueryResult( SMWQuery $query, $rootid ) {
 		global $wgDBtype;
 
-		$db = $this->m_store->getConnection();
+		$db = $this->store->getConnection();
 
-		$qobj = $this->m_queries[$rootid];
+		$qobj = $this->queryParts[$rootid];
 
 		if ( $qobj->joinfield === '' ) { // empty result, no query needed
-			$result = new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->m_store, false );
+			$result = new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->store, false );
 			return $result;
 		}
 
@@ -481,7 +473,7 @@ class SMWSQLStore3QueryEngine {
 
 		$prs = $query->getDescription()->getPrintrequests();
 
-		$diHandler = $this->m_store->getDataItemHandlerForDIType( SMWDataItem::TYPE_WIKIPAGE );
+		$diHandler = $this->store->getDataItemHandlerForDIType( SMWDataItem::TYPE_WIKIPAGE );
 
 		while ( ( $count < $query->getLimit() ) && ( $row = $db->fetchObject( $res ) ) ) {
 			if ( $row->iw === '' || $row->iw{0} != ':' )  {
@@ -498,7 +490,7 @@ class SMWSQLStore3QueryEngine {
 					) );
 				} catch ( \SMW\InvalidPredefinedPropertyException $e ) {
 					$logToTable[$row->t] = "issue creating a {$row->t} dataitem from a database row";
-					$this->m_store->getLogger()->log( __METHOD__, $e->getMessage() );
+					$this->store->getLogger()->log( __METHOD__, $e->getMessage() );
 				}
 
 				if ( $dataItem instanceof SMWDIWikiPage && !isset( $dataItemCache[ $dataItem->getHash() ] ) ) {
@@ -506,7 +498,7 @@ class SMWSQLStore3QueryEngine {
 					$dataItemCache[ $dataItem->getHash() ] = true;
 					$qr[] = $dataItem;
 					// These IDs are usually needed for displaying the page (esp. if more property values are displayed):
-					$this->m_store->smwIds->setCache( $row->t, $row->ns, $row->iw, $row->so, $row->id, $row->sortkey );
+					$this->store->smwIds->setCache( $row->t, $row->ns, $row->iw, $row->so, $row->id, $row->sortkey );
 				} else {
 					$missedCount++;
 					$logToTable[$row->t] = "skip result for {$row->t} existing cache entry / query " . $query->getHash();
@@ -523,7 +515,7 @@ class SMWSQLStore3QueryEngine {
 
 		if ( $logToTable !== array() ) {
 			foreach ( $logToTable as $key => $entry ) {
-				$this->m_store->getLogger()->logToTable( 'sqlstore-query-execution', 'query performer', $key, $entry );
+				$this->store->getLogger()->logToTable( 'sqlstore-query-execution', 'query performer', $key, $entry );
 			}
 		}
 
@@ -532,7 +524,7 @@ class SMWSQLStore3QueryEngine {
 		};
 
 		$db->freeResult( $res );
-		$result = new SMWQueryResult( $prs, $query, $qr, $this->m_store, $hasFurtherResults );
+		$result = new SMWQueryResult( $prs, $query, $qr, $this->store, $hasFurtherResults );
 
 		return $result;
 	}
@@ -547,12 +539,12 @@ class SMWSQLStore3QueryEngine {
 	private function executeQueries( SMWSQLStore3Query &$query ) {
 		global $wgDBtype;
 
-		$db = $this->m_store->getConnection();
+		$db = $this->store->getConnection();
 
 		switch ( $query->type ) {
 			case SMWSQLStore3Query::Q_TABLE: // Normal query with conjunctive subcondition.
 				foreach ( $query->components as $qid => $joinfield ) {
-					$subquery = $this->m_queries[$qid];
+					$subquery = $this->queryParts[$qid];
 					$this->executeQueries( $subquery );
 
 					if ( $subquery->joinTable !== '' ) { // Join with jointable.joinfield
@@ -592,14 +584,14 @@ class SMWSQLStore3QueryEngine {
 				$key = false;
 
 				foreach ( $query->components as $qkey => $qid ) {
-					if ( $this->m_queries[$qkey]->joinTable !== '' ) {
+					if ( $this->queryParts[$qkey]->joinTable !== '' ) {
 						$key = $qkey;
 						break;
 					}
 				}
 
 				if ( $key !== false ) {
-					$result = $this->m_queries[$key];
+					$result = $this->queryParts[$key];
 					unset( $query->components[$key] );
 
 					// Execute it first (may change jointable and joinfield, e.g. when making temporary tables)
@@ -614,11 +606,11 @@ class SMWSQLStore3QueryEngine {
 					$this->executeQueries( $result );
 				} else { // Only fixed values in conjunction, make a new value without joining.
 					$key = $qkey;
-					$result = $this->m_queries[$key];
+					$result = $this->queryParts[$key];
 					unset( $query->components[$key] );
 
 					foreach ( $query->components as $qid => $joinfield ) {
-						if ( $result->joinfield != $this->m_queries[$qid]->joinfield ) {
+						if ( $result->joinfield != $this->queryParts[$qid]->joinfield ) {
 							$result->joinfield = ''; // all other values should already be ''
 							break;
 						}
@@ -627,14 +619,14 @@ class SMWSQLStore3QueryEngine {
 				$query = $result;
 			break;
 			case SMWSQLStore3Query::Q_DISJUNCTION:
-				if ( $this->m_qmode !== SMWQuery::MODE_DEBUG ) {
+				if ( $this->queryMode !== SMWQuery::MODE_DEBUG ) {
 					$db->query( $this->getCreateTempIDTableSQL( $db->tableName( $query->alias ) ), 'SMW::executeQueries' );
 				}
 
-				$this->m_querylog[$query->alias] = array();
+				$this->executedQueries[$query->alias] = array();
 
 				foreach ( $query->components as $qid => $joinfield ) {
-					$subquery = $this->m_queries[$qid];
+					$subquery = $this->queryParts[$qid];
 					$this->executeQueries( $subquery );
 					$sql = '';
 
@@ -655,9 +647,9 @@ class SMWSQLStore3QueryEngine {
 						$sql = 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '':'IGNORE ' ) .  'INTO ' . $db->tableName( $query->alias ) . " (id) VALUES $values";
 					} // else: // interpret empty joinfields as impossible condition (empty result), ignore
 					if ( $sql ) {
-						$this->m_querylog[$query->alias][] = $sql;
+						$this->executedQueries[$query->alias][] = $sql;
 
-						if ( $this->m_qmode !== SMWQuery::MODE_DEBUG ) {
+						if ( $this->queryMode !== SMWQuery::MODE_DEBUG ) {
 							$db->query( $sql , 'SMW::executeQueries' );
 						}
 					}
@@ -685,7 +677,7 @@ class SMWSQLStore3QueryEngine {
 	private function executeHierarchyQuery( SMWSQLStore3Query &$query ) {
 		global $wgDBtype, $smwgQSubpropertyDepth, $smwgQSubcategoryDepth;
 
-		$db = $this->m_store->getConnection();
+		$db = $this->store->getConnection();
 
 		$depth = ( $query->type == SMWSQLStore3Query::Q_PROP_HIERARCHY ) ? $smwgQSubpropertyDepth : $smwgQSubcategoryDepth;
 
@@ -704,7 +696,7 @@ class SMWSQLStore3QueryEngine {
 
 		$propertyKey = ( $query->type == SMWSQLStore3Query::Q_PROP_HIERARCHY ) ? '_SUBP' : '_SUBC';
 		$smwtable = $db->tableName(
-				$this->m_store->findPropertyTableID( new SMWDIProperty( $propertyKey ) ) );
+				$this->store->findPropertyTableID( new SMWDIProperty( $propertyKey ) ) );
 
 		// Try to safe time (SELECT is cheaper than creating/dropping 3 temp tables):
 		$res = $db->select( $smwtable, 's_id', $valuecond, __METHOD__, array( 'LIMIT' => 1 ) );
@@ -717,19 +709,19 @@ class SMWSQLStore3QueryEngine {
 
 		$db->freeResult( $res );
 		$tablename = $db->tableName( $query->alias );
-		$this->m_querylog[$query->alias] = array( "Recursively computed hierarchy for element(s) $values." );
+		$this->executedQueries[$query->alias] = array( "Recursively computed hierarchy for element(s) $values." );
 		$query->joinTable = $query->alias;
 		$query->joinfield = "$query->alias.id";
 
-		if ( $this->m_qmode == SMWQuery::MODE_DEBUG ) {
+		if ( $this->queryMode == SMWQuery::MODE_DEBUG ) {
 			return; // No real queries in debug mode.
 		}
 
 		$db->query( $this->getCreateTempIDTableSQL( $tablename ), 'SMW::executeHierarchyQuery' );
 
-		if ( array_key_exists( $values, $this->m_hierarchies ) ) { // Just copy known result.
+		if ( array_key_exists( $values, $this->hierarchyCache ) ) { // Just copy known result.
 			$db->query( "INSERT INTO $tablename (id) SELECT id" .
-								' FROM ' . $this->m_hierarchies[$values],
+								' FROM ' . $this->hierarchyCache[$values],
 								'SMW::executeHierarchyQuery' );
 			return;
 		}
@@ -765,7 +757,7 @@ class SMWSQLStore3QueryEngine {
 			$tmpres = $tmpname;
 		}
 
-		$this->m_hierarchies[$values] = $tablename;
+		$this->hierarchyCache[$values] = $tablename;
 		$db->query( ( ( $wgDBtype == 'postgres' ) ? 'DROP TABLE IF EXISTS smw_new' : 'DROP TEMPORARY TABLE smw_new' ), 'SMW::executeHierarchyQuery' );
 		$db->query( ( ( $wgDBtype == 'postgres' ) ? 'DROP TABLE IF EXISTS smw_res' : 'DROP TEMPORARY TABLE smw_res' ), 'SMW::executeHierarchyQuery' );
 
@@ -779,11 +771,11 @@ class SMWSQLStore3QueryEngine {
 	 * @param integer $qid
 	 */
 	private function applyOrderConditions( $qid ) {
-		$qobj = $this->m_queries[$qid];
+		$qobj = $this->queryParts[$qid];
 		// (1) collect required extra property descriptions:
 		$extraproperties = array();
 
-		foreach ( $this->m_sortkeys as $propkey => $order ) {
+		foreach ( $this->sortKeys as $propkey => $order ) {
 
 			if ( !is_string( $propkey ) ) {
 				throw new RuntimeException( "Expected a string value as sortkey" );
@@ -805,21 +797,21 @@ class SMWSQLStore3QueryEngine {
 		// (2) compile according conditions and hack them into $qobj:
 		if ( count( $extraproperties ) > 0 ) {
 
-			$this->queryBuilder->setSortKeys( $this->m_sortkeys );
+			$this->queryBuilder->setSortKeys( $this->sortKeys );
 			$this->queryBuilder->buildQueryContainer( new Conjunction( $extraproperties ) );
 
 			$newqid = $this->queryBuilder->getLastContainerId();
-			$this->m_queries = $this->queryBuilder->getQueryContainer();
-			$this->m_errors = $this->queryBuilder->getErrors();
+			$this->queryParts = $this->queryBuilder->getQueryContainer();
+			$this->errors = $this->queryBuilder->getErrors();
 
-			$newqobj = $this->m_queries[$newqid]; // This is always an SMWSQLStore3Query::Q_CONJUNCTION ...
+			$newqobj = $this->queryParts[$newqid]; // This is always an SMWSQLStore3Query::Q_CONJUNCTION ...
 
 			foreach ( $newqobj->components as $cid => $field ) { // ... so just re-wire its dependencies
 				$qobj->components[$cid] = $qobj->joinfield;
-				$qobj->sortfields = array_merge( $qobj->sortfields, $this->m_queries[$cid]->sortfields );
+				$qobj->sortfields = array_merge( $qobj->sortfields, $this->queryParts[$cid]->sortfields );
 			}
 
-			$this->m_queries[$qid] = $qobj;
+			$this->queryParts[$qid] = $qobj;
 		}
 	}
 
@@ -838,9 +830,9 @@ class SMWSQLStore3QueryEngine {
 
 		// Build ORDER BY options using discovered sorting fields.
 		if ( $smwgQSortingSupport ) {
-			$qobj = $this->m_queries[$rootId];
+			$qobj = $this->queryParts[$rootId];
 
-			foreach ( $this->m_sortkeys as $propkey => $order ) {
+			foreach ( $this->sortKeys as $propkey => $order ) {
 
 				if ( !is_string( $propkey ) ) {
 					throw new RuntimeException( "Expected a string value as sortkey" );
@@ -864,10 +856,10 @@ class SMWSQLStore3QueryEngine {
 	private function cleanUp() {
 		global $wgDBtype;
 
-		$db = $this->m_store->getConnection();
+		$db = $this->store->getConnection();
 
-		if ( $this->m_qmode !== SMWQuery::MODE_DEBUG ) {
-			foreach ( $this->m_querylog as $table => $log ) {
+		if ( $this->queryMode !== SMWQuery::MODE_DEBUG ) {
+			foreach ( $this->executedQueries as $table => $log ) {
 				$db->query( ( ( $wgDBtype == 'postgres' ) ? "DROP TABLE IF EXISTS ":"DROP TEMPORARY TABLE " ) . $db->tableName( $table ), 'SMW::getQueryResult' );
 			}
 		}
