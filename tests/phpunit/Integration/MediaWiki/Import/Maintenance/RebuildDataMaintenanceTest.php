@@ -116,9 +116,17 @@ class RebuildDataMaintenanceTest extends MwDBaseUnitTestCase {
 	}
 
 	protected function assertRunWithFullDeleteOption( $expectedSomeProperties ) {
+
+		$options = array(
+			'f' => true,
+			'no-cache' => true,
+			'debug' => true,
+			'runtime' => true
+		);
+
 		$this->assertThatPropertiesAreSet(
 			$expectedSomeProperties,
-			$this->maintenanceRunner->setOptions( array( 'f' => true ) )->run()
+			$this->maintenanceRunner->setOptions( $options )->run()
 		);
 	}
 

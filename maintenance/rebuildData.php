@@ -3,6 +3,7 @@
 namespace SMW\Maintenance;
 
 use SMW\Maintenance\DataRebuilder;
+use SMW\Maintenance\MaintenanceHelper;
 use SMW\Reporter\ObservableMessageReporter;
 use SMW\StoreFactory;
 use SMW\Settings;
@@ -80,11 +81,13 @@ class RebuildData extends \Maintenance {
 		$this->addOption( 'c', 'Will refresh only category pages (and other explicitly named namespaces)', false );
 		$this->addOption( 'p', 'Will refresh only property pages (and other explicitly named namespaces)', false );
 		$this->addOption( 't', 'Will refresh only type pages (and other explicitly named namespaces)', false );
-		$this->addOption( 'runtime', 'Will display the runtime environment of the script', false );
 		$this->addOption( 'page', '<pagelist> Will refresh only the pages of the given names, with | used as a separator. Example: --page "Page 1|Page 2" refreshes Page 1 and Page 2 Options -s, -e, -n, --startidfile, -c, -p, -t are ignored if --page is given.', false, true );
 		$this->addOption( 'server', '<server> The protocol and server name to as base URLs, e.g. http://en.wikipedia.org. This is sometimes necessary because server name detection may fail in command line scripts.', false, true );
 		$this->addOption( 'query', "<query> Will refresh only pages returned by a given query. Example: --query='[[Category:SomeCategory]]'", false, true );
 
+		$this->addOption( 'runtime', 'Will display the runtime environment of the script', false );
+		$this->addOption( 'no-cache', 'Will set the `wgMainCacheType` to none while running the script', false );
+		$this->addOption( 'debug', 'Will set global variables to support debug ouput while running the script', false );
 		$this->addOption( 'quiet', 'Do not give any output', false );
 	}
 
@@ -93,12 +96,25 @@ class RebuildData extends \Maintenance {
 	 */
 	public function execute() {
 
-		$start = microtime( true );
-		$memoryBefore = memory_get_peak_usage( false );
-
 		if ( !defined( 'SMW_VERSION' ) ) {
 			$this->reportMessage( "You need to have SMW enabled in order to run the maintenance script!\n\n" );
 			return false;
+		}
+
+		$maintenanceHelper = new MaintenanceHelper();
+
+		if ( $this->hasOption( 'runtime' ) ) {
+			$maintenanceHelper->initRuntimeValues();
+		}
+
+		if ( $this->hasOption( 'no-cache' ) ) {
+			$maintenanceHelper->setGlobalToValue( 'wgMainCacheType', CACHE_NONE );
+		}
+
+		if ( $this->hasOption( 'debug' ) ) {
+			$maintenanceHelper->setGlobalToValue( 'wgShowExceptionDetails', true );
+			$maintenanceHelper->setGlobalToValue( 'wgShowSQLErrors', true );
+			$maintenanceHelper->setGlobalToValue( 'wgShowDBErrorBacktrace', true );
 		}
 
 		$reporter = new ObservableMessageReporter();
@@ -113,16 +129,12 @@ class RebuildData extends \Maintenance {
 		$dataRebuilder->setParameters( $this->mOptions );
 
 		if ( $dataRebuilder->rebuild() ) {
-
-			$this->doReportRuntimeEnvironment(
-				$memoryBefore,
-				memory_get_peak_usage( false ),
-				microtime( true ) - $start
-			);
-
+			$this->doReportRuntimeEnvironment( $maintenanceHelper->getRuntimeValues() );
+			$maintenanceHelper->reset();
 			return true;
 		}
 
+		$maintenanceHelper->reset();
 		$this->reportMessage( $this->mDescription . "\n\n" . 'Use option --help for usage details.' . "\n"  );
 		return false;
 	}
@@ -136,17 +148,20 @@ class RebuildData extends \Maintenance {
 		$this->output( $message );
 	}
 
-	private function doReportRuntimeEnvironment( $memoryBefore, $memoryAfter, $time ) {
+	private function doReportRuntimeEnvironment( array $runtimeValues ) {
 
 		if ( !$this->hasOption( 'runtime' ) ) {
 			return;
 		}
 
-		$time = round( $time, 2 ) . ' sec ' . ( $time > 60 ? '(' . round( $time / 60, 2 ) . ' min)' : '' );
+		$time = round( $runtimeValues['time'], 2 ) . ' sec ';
+		$time .= ( $runtimeValues['time'] > 60 ? '(' . round( $runtimeValues['time'] / 60, 2 ) . ' min)' : '' );
 
 		$this->reportMessage(
-			"\n" . "Memory used: " . ( $memoryAfter - $memoryBefore ) .
-			" (b: {$memoryBefore}, a: {$memoryAfter}) with a runtime of " . $time . "\n"
+			"\n" . "Memory used: " . $runtimeValues['memory-used'] . " (" .
+			"b: " . $runtimeValues['memory-before'] . ", ".
+			"a: " . $runtimeValues['memory-after'] . ") with a " .
+			"runtime of " . $time . "\n"
 		);
 	}
 
