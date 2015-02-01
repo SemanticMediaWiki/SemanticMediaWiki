@@ -11,7 +11,7 @@ This is not a release yet.
 * 
 
 ## Internal changes
-
+* #373 Update `jquery.jstorage.js` (0.3.2 => 0.4.11)
 * #494 Changes to the `SQLStore\QueryEngine` interface
 * #711 Fetching annotations made by an `#ask` transcluded template 
 * #725 Moved psr-4 complaint classes into the top level 'src' folder
