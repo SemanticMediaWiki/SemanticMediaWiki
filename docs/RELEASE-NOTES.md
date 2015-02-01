@@ -15,4 +15,5 @@ This is not a release yet.
 * #494 Changes to the `SQLStore\QueryEngine` interface
 * #711 Fetching annotations made by an `#ask` transcluded template 
 * #725 Moved psr-4 complaint classes into the top level 'src' folder
-* #740 Added `serialization/serialization": "~3.2"` component
+* #740 Added `serialization/serialization:~3.2` component dependency
+* #772 Added `onoi/message-reporter:~1.0` component dependency
