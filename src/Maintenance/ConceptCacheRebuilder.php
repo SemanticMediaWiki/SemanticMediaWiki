@@ -4,8 +4,8 @@ namespace SMW\Maintenance;
 
 use SMW\DIConcept;
 use SMW\MediaWiki\TitleLookup;
-use SMW\Reporter\MessageReporter;
-use SMW\Reporter\NullMessageReporter;
+use Onoi\MessageReporter\MessageReporter;
+use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\Settings;
 use SMW\Store;
 use Title;
@@ -55,7 +55,7 @@ class ConceptCacheRebuilder {
 	public function __construct( Store $store, Settings $settings ) {
 		$this->store = $store;
 		$this->settings = $settings;
-		$this->reporter = new NullMessageReporter();
+		$this->reporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 	}
 
 	/**

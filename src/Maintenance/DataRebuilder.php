@@ -6,8 +6,8 @@ use LinkCache;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\TitleLookup;
-use SMW\Reporter\MessageReporter;
-use SMW\Reporter\NullMessageReporter;
+use Onoi\MessageReporter\MessageReporter;
+use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\Store;
 use SMWQueryProcessor;
 use Title;
@@ -56,7 +56,7 @@ class DataRebuilder {
 	 */
 	public function __construct( Store $store ) {
 		$this->store = $store;
-		$this->reporter = new NullMessageReporter();
+		$this->reporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 	}
 
 	/**

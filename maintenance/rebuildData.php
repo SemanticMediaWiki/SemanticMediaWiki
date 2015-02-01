@@ -4,7 +4,7 @@ namespace SMW\Maintenance;
 
 use SMW\Maintenance\DataRebuilder;
 use SMW\Maintenance\MaintenanceHelper;
-use SMW\Reporter\ObservableMessageReporter;
+use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\StoreFactory;
 use SMW\Settings;
 
@@ -102,10 +102,7 @@ class RebuildData extends \Maintenance {
 		}
 
 		$maintenanceHelper = new MaintenanceHelper();
-
-		if ( $this->hasOption( 'runtime' ) ) {
-			$maintenanceHelper->initRuntimeValues();
-		}
+		$maintenanceHelper->initRuntimeValues();
 
 		if ( $this->hasOption( 'no-cache' ) ) {
 			$maintenanceHelper->setGlobalToValue( 'wgMainCacheType', CACHE_NONE );
@@ -117,7 +114,7 @@ class RebuildData extends \Maintenance {
 			$maintenanceHelper->setGlobalToValue( 'wgShowDBErrorBacktrace', true );
 		}
 
-		$reporter = new ObservableMessageReporter();
+		$reporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
 		$reporter->registerReporterCallback( array( $this, 'reportMessage' ) );
 
 		$store = StoreFactory::getStore( $this->hasOption( 'b' ) ? $this->getOption( 'b' ) : null );
