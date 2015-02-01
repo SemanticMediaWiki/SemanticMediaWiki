@@ -1,6 +1,8 @@
 <?php
 
+use SMW\DIConcept;
 use SMW\SQLStore\PropertyTableDefinitionBuilder;
+use SMW\SQLStore\QueryEngine\ConceptCache;
 use SMW\SQLStore\WantedPropertiesCollector;
 use SMW\SQLStore\UnusedPropertiesCollector;
 use SMW\SQLStore\PropertiesCollector;
@@ -459,51 +461,15 @@ class SMWSQLStore3 extends SMWStore {
 	 * @since 1.8
 	 * @param Title|SMWWikiPageValue $concept
 	 *
-	 * @return SMW\DIConcept|null
+	 * @return DIConcept|null
 	 */
 	public function getConceptCacheStatus( $concept ) {
-
-		$db = $this->getConnection();
-
-		$cid = $this->smwIds->getSMWPageID(
-			$concept->getDBkey(),
-			$concept->getNamespace(),
-			'',
-			'',
-			false
+		$conceptCache = new ConceptCache(
+			new SMWSQLStore3QueryEngine( $this, wfGetDB( DB_SLAVE ) ),
+			$this
 		);
 
-		$row = $db->selectRow(
-			'smw_fpt_conc',
-			array( 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date', 'cache_count' ),
-			array( 's_id' => $cid ),
-			__METHOD__
-		);
-
-		if ( $row !== false ) {
-
-			$dataItem = new SMW\DIConcept(
-				$concept,
-				null,
-				$row->concept_features,
-				$row->concept_size,
-				$row->concept_depth
-			);
-
-			if ( $row->cache_date ) {
-				$dataItem->setCacheStatus( 'full' );
-				$dataItem->setCacheDate( $row->cache_date );
-				$dataItem->setCacheCount( $row->cache_count );
-			} else {
-				$dataItem->setCacheStatus( 'empty' );
-			}
-			$result = $dataItem;
-		} else {
-			$result = null;
-		}
-
-
-		return $result;
+		return $conceptCache->getStatus( $concept );
 	}
 
 

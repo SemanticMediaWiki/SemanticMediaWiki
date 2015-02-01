@@ -11,6 +11,7 @@ use SMWQuery;
 use SMWQueryParser;
 use SMWSQLStore3;
 use SMWSQLStore3QueryEngine;
+use SMWWikiPageValue;
 use Title;
 
 /**
@@ -68,7 +69,7 @@ class ConceptCache {
 			return array();
 		}
 
-		// Update database:
+		// TODO: catch db exception
 		$db->delete(
 			SMWSQLStore3::CONCEPT_CACHE_TABLE,
 			array( 'o_id' => $cid ),
@@ -85,6 +86,8 @@ class ConceptCache {
 		} else { // MySQL just uses INSERT IGNORE, no extra conditions
 			$where = $queryPart->where;
 		}
+
+		// TODO: catch db exception
 
 		$db->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) .
 			"INTO $concCacheTableName" .
@@ -165,9 +168,52 @@ class ConceptCache {
 		);
 	}
 
-//
-//    public function getStatus( Title $concept ) {
-//
-//	}
+	/**
+	 * @param Title|SMWWikiPageValue|DIWikiPage $concept
+	 *
+	 * @return DIConcept|null
+	 */
+    public function getStatus( $concept ) {
+		$db = $this->store->getConnection();
+
+		$cid = $this->store->smwIds->getSMWPageID(
+			$concept->getDBkey(),
+			$concept->getNamespace(),
+			'',
+			'',
+			false
+		);
+
+		// TODO: catch db exception
+
+		$row = $db->selectRow(
+			'smw_fpt_conc',
+			array( 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date', 'cache_count' ),
+			array( 's_id' => $cid ),
+			__METHOD__
+		);
+
+		if ( $row === false ) {
+			return null;
+		}
+
+		$dataItem = new DIConcept(
+			$concept,
+			null,
+			$row->concept_features,
+			$row->concept_size,
+			$row->concept_depth
+		);
+
+		if ( $row->cache_date ) {
+			$dataItem->setCacheStatus( 'full' );
+			$dataItem->setCacheDate( $row->cache_date );
+			$dataItem->setCacheCount( $row->cache_count );
+		} else {
+			$dataItem->setCacheStatus( 'empty' );
+		}
+
+		return $dataItem;
+	}
 
 }
