@@ -70,7 +70,7 @@ class SMWSQLHelpers {
 
 		if ( $db->tableExists( $rawTableName ) === false ) { // create new table
 			self::reportProgress( "   Table not found, now creating...\n", $reportTo );
-			self::createTable( $tableName, $fields, $db, $reportTo );
+			self::createTable( $tableName, $fields, $db );
 			self::reportProgress( "   ... done.\n", $reportTo );
 		} else {
 			self::reportProgress( "   Table already exists, checking structure ...\n", $reportTo );
@@ -85,9 +85,8 @@ class SMWSQLHelpers {
 	 * @param string $tableName The table name.
 	 * @param array $columns The fields and their types the table should have.
 	 * @param DatabaseBase|Database $db
-	 * @param object $reportTo object to report back to.
 	 */
-	protected static function createTable( $tableName, array $fields, $db, $reportTo ) {
+	private static function createTable( $tableName, array $fields, $db ) {
 		global $wgDBtype, $wgDBname;
 
 		$sql = 'CREATE TABLE ' . ( ( $wgDBtype == 'postgres' || $wgDBtype == 'sqlite' ) ? '' : "`$wgDBname`." ) . $tableName . ' (';
@@ -116,7 +115,7 @@ class SMWSQLHelpers {
 	 * @param DatabaseBase|Database $db
 	 * @param object $reportTo Object to report back to.
 	 */
-	protected static function updateTable( $tableName, array $fields, $db, $reportTo ) {
+	private static function updateTable( $tableName, array $fields, $db, $reportTo ) {
 		global $wgDBtype;
 
 		$currentFields = self::getFields( $tableName, $db, $reportTo );
@@ -166,7 +165,7 @@ class SMWSQLHelpers {
 	 *
 	 * @return array
 	 */
-	protected static function getFields( $tableName, $db, $reportTo ) {
+	private static function getFields( $tableName, $db, $reportTo ) {
 		global $wgDBtype;
 
 		if ( $wgDBtype == 'postgres' ) {
@@ -256,7 +255,7 @@ EOT;
 	 * @param DatabaseBase|Database $db
 	 * @param object $reportTo Object to report back to.
 	 */
-	protected static function updatePostgresField( $tableName, $name, $type, array $currentFields, $db, $reportTo ) {
+	private static function updatePostgresField( $tableName, $name, $type, array $currentFields, $db, $reportTo ) {
 		$keypos = strpos( $type, ' PRIMARY KEY' );
 
 		if ( $keypos > 0 ) {
@@ -310,7 +309,7 @@ EOT;
 	 * @param object $reportTo Object to report back to.
 	 * @param string $position
 	 */
-	protected static function updateMySqlField( $tableName, $name, $type, array $currentFields, $db, $reportTo, $position ) {
+	private static function updateMySqlField( $tableName, $name, $type, array $currentFields, $db, $reportTo, $position ) {
 		if ( !array_key_exists( $name, $currentFields ) ) {
 			self::reportProgress( "   ... creating field $name ... ", $reportTo );
 
@@ -395,7 +394,7 @@ EOT;
 	 * @param string $tableName name of table
 	 * @return array indexname => columns
 	 */
-	protected static function getIndexInfo( $db, $tableName ) {
+	private static function getIndexInfo( $db, $tableName ) {
 		global $wgDBtype;
 
 		$indexes = array();
@@ -465,7 +464,7 @@ EOT;
 	 * separated; only for reporting
 	 * @param object $reportTo to report messages to
 	 */
-	protected static function dropIndex( $db, $indexName, $tableName, $columns, $reportTo = null ) {
+	private static function dropIndex( $db, $indexName, $tableName, $columns, $reportTo = null ) {
 		global $wgDBtype;
 
 		self::reportProgress( "   ... removing index $columns ...", $reportTo );
@@ -490,7 +489,7 @@ EOT;
 	 * @param array $columns list of column names to index, comma separated
 	 * @param object $reportTo object to report messages to
 	 */
-	protected static function createIndex( $db, $type, $indexName, $tableName, $columns, $reportTo = null ) {
+	private static function createIndex( $db, $type, $indexName, $tableName, $columns, $reportTo = null ) {
 		global $wgDBtype;
 
 		self::reportProgress( "   ... creating new index $columns ...", $reportTo );
@@ -513,7 +512,7 @@ EOT;
 	 * @param string $msg
 	 * @param object $receiver
 	 */
-	protected static function reportProgress( $msg, $receiver ) {
+	private static function reportProgress( $msg, $receiver ) {
 		if ( !is_null( $receiver ) ) $receiver->reportProgress( $msg );
 	}
 
