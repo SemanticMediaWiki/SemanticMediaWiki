@@ -3,7 +3,7 @@
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\Jobs\JobBase;
 
-use SMW\Reporter\MessageReporter;
+use Onoi\MessageReporter\MessageReporter;
 
 /**
  * @ingroup SMWStore

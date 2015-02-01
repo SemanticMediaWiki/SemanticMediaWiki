@@ -3,8 +3,8 @@
 namespace SMW\SQLStore;
 
 use SMW\Store\PropertyStatisticsStore;
-use SMW\Reporter\MessageReporter;
-use SMW\Reporter\NullMessageReporter;
+use Onoi\MessageReporter\MessageReporter;
+use Onoi\MessageReporter\MessageReporterFactory;
 
 use SMW\Store;
 
@@ -44,7 +44,7 @@ class SimplePropertyStatisticsRebuilder implements \SMW\Store\PropertyStatistics
 		$this->reporter = $reporter;
 
 		if ( $this->reporter === null ) {
-			$this->reporter = new NullMessageReporter();
+			$this->reporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 		}
 	}
 

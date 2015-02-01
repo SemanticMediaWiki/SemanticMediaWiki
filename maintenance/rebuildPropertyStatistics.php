@@ -4,7 +4,7 @@ namespace SMW\Maintenance;
 
 use SMW\SQLStore\SimplePropertyStatisticsRebuilder;
 use SMW\SQLStore\PropertyStatisticsTable;
-use SMW\Reporter\ObservableMessageReporter;
+use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\StoreFactory;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
@@ -50,7 +50,7 @@ class RebuildPropertyStatistics extends \Maintenance {
 
 		// Need to instantiate an extra object here since we cannot make this class itself
 		// into a MessageReporter since the maintenance script does not load the interface in time.
-		$reporter = new ObservableMessageReporter();
+		$reporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
 		$reporter->registerReporterCallback( array( $this, 'reportMessage' ) );
 
 		$statisticsRebuilder = new SimplePropertyStatisticsRebuilder( $store, $reporter );

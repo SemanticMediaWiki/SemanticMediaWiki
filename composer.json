@@ -40,7 +40,8 @@
 		"php": ">=5.3.0",
 		"composer/installers": "1.*,>=1.0.1",
 		"mediawiki/validator": "~2.0,>=2.0.4",
-		"serialization/serialization": "~3.2"
+		"serialization/serialization": "~3.2",
+		"onoi/message-reporter": "~1.0"
 	},
 	"replace": {
 		"mediawiki/semantic-mediawiki": "*"

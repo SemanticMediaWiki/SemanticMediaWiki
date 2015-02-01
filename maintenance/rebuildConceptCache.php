@@ -3,7 +3,7 @@
 namespace SMW\Maintenance;
 
 use SMW\Maintenance\ConceptCacheRebuilder;
-use SMW\Reporter\ObservableMessageReporter;
+use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\ApplicationFactory;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
@@ -114,7 +114,7 @@ class RebuildConceptCache extends \Maintenance {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$reporter = new ObservableMessageReporter();
+		$reporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
 		$reporter->registerReporterCallback( array( $this, 'reportMessage' ) );
 
 		$conceptCacheRebuilder = new ConceptCacheRebuilder(
