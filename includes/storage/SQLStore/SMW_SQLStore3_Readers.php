@@ -177,7 +177,7 @@ class SMWSQLStore3Readers {
 	 * @param $property SMWDIProperty
 	 * @param $requestOptions SMWRequestOptions
 	 *
-	 * @return array of SMWDataItem
+	 * @return SMWDataItem[]
 	 */
 	public function getPropertyValues( $subject, SMWDIProperty $property, $requestOptions = null ) {
 

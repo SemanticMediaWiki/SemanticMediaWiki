@@ -275,6 +275,13 @@ class SMWSQLStore3 extends SMWStore {
 		return $this->getReader()->getSemanticData( $subject, $filter );
 	}
 
+	/**
+	 * @param mixed $subject
+	 * @param DIProperty $property
+	 * @param null $requestoptions
+	 *
+	 * @return SMWDataItem[]
+	 */
 	public function getPropertyValues( $subject, DIProperty $property, $requestoptions = null ) {
 		return $this->getReader()->getPropertyValues( $subject, $property, $requestoptions );
 	}
