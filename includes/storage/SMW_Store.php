@@ -69,6 +69,9 @@ abstract class Store {
 	 * @note There is no guarantee that the store does not retrieve more
 	 * data than requested when a filter is used. Filtering just ensures
 	 * that only necessary requests are made, i.e. it improves performance.
+	 *
+	 * @param DIWikiPage $subject
+	 * @param string[]|bool $filter
 	 */
 	public abstract function getSemanticData( DIWikiPage $subject, $filter = false );
 

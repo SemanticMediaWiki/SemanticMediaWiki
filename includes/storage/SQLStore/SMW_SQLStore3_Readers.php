@@ -1,6 +1,8 @@
 <?php
 
 use SMW\DataTypeRegistry;
+use SMW\DIWikiPage;
+use SMW\SQLStore\TableDefinition;
 
 /**
  * Class to provide all basic read methods for SMWSQLStore3.
@@ -20,35 +22,43 @@ class SMWSQLStore3Readers {
 	 * @since 1.8
 	 * @var SMWSQLStore3
 	 */
-	protected $store;
+	private $store;
 
-	/// >0 while getSemanticData runs, used to prevent nested calls from clearing the cache while another call runs and is about to fill it with data
-	protected static $in_getSemanticData = 0;
+	/**
+	 *  >0 while getSemanticData runs, used to prevent nested calls from clearing the cache
+	 * while another call runs and is about to fill it with data
+	 *
+	 * @var int
+	 */
+	private static $in_getSemanticData = 0;
 
-	public function __construct( SMWSQLStore3 $parentstore ) {
-		$this->store = $parentstore;
+	public function __construct( SMWSQLStore3 $parentStore ) {
+		$this->store = $parentStore;
 	}
 
 	/**
 	 * @see SMWStore::getSemanticData()
 	 * @since 1.8
+	 * 
+	 * @param DIWikiPage $subject
+	 * @param string[]|bool $filter
 	 */
-	public function getSemanticData( SMWDIWikiPage $subject, $filter = false ) {
+	public function getSemanticData( DIWikiPage $subject, $filter = false ) {
 
 		// *** Find out if this subject exists ***//
-		$sortkey = '';
+		$sortKey = '';
 
 		$sid = $this->store->smwIds->getSMWPageIDandSort(
 			$subject->getDBkey(),
 			$subject->getNamespace(),
 			$subject->getInterwiki(),
 			$subject->getSubobjectName(),
-			$sortkey,
+			$sortKey,
 			true,
 			true
 		);
 
-		$subject->setSortKey( $sortkey );
+		$subject->setSortKey( $sortKey );
 
 		if ( $sid == 0 ) {
 			// We consider redirects for getting $sid,
@@ -80,7 +90,7 @@ class SMWSQLStore3Readers {
 		// hence no entry in $this->store->m_sdstate[$sid] is made.
 		self::$in_getSemanticData++;
 		$this->initSemanticDataCache( $sid, $subject );
-		$this->store->m_semdata[$sid]->addPropertyStubValue( '_SKEY', array( '', $sortkey ) );
+		$this->store->m_semdata[$sid]->addPropertyStubValue( '_SKEY', array( '', $sortKey ) );
 		self::$in_getSemanticData--;
 
 		return $this->store->m_semdata[$sid];
@@ -93,22 +103,25 @@ class SMWSQLStore3Readers {
 	 * @todo The management of this cache should be revisited.
 	 *
 	 * @since 1.8
+	 *
+	 * @param int $subjectId
+	 * @param DIWikiPage $subject
 	 */
-	protected function initSemanticDataCache( $sid, SMWDIWikiPage $subject ) {
+	private function initSemanticDataCache( $subjectId, DIWikiPage $subject ) {
 
 		// *** Prepare the cache ***//
-		if ( !array_key_exists( $sid, $this->store->m_semdata ) ) { // new cache entry
-			$this->store->m_semdata[$sid] = new SMWSql3StubSemanticData( $subject, $this->store, false );
-			$this->store->m_sdstate[$sid] = array();
+		if ( !array_key_exists( $subjectId, $this->store->m_semdata ) ) { // new cache entry
+			$this->store->m_semdata[$subjectId] = new SMWSql3StubSemanticData( $subject, $this->store, false );
+			$this->store->m_sdstate[$subjectId] = array();
 		}
 
 		// Issue #622
 		// If a redirect was cached preceding this request and points to the same
 		// subject id ensure that in all cases the requested subject matches with
 		// the selected DB id
-		if ( $this->store->m_semdata[$sid]->getSubject()->getHash() !== $subject->getHash() ) {
-			$this->store->m_semdata[$sid] = new SMWSql3StubSemanticData( $subject, $this->store, false );
-			$this->store->m_sdstate[$sid] = array();
+		if ( $this->store->m_semdata[$subjectId]->getSubject()->getHash() !== $subject->getHash() ) {
+			$this->store->m_semdata[$subjectId] = new SMWSql3StubSemanticData( $subject, $this->store, false );
+			$this->store->m_sdstate[$subjectId] = array();
 		}
 
 		if ( ( count( $this->store->m_semdata ) > 20 ) && ( self::$in_getSemanticData == 1 ) ) {
@@ -116,21 +129,21 @@ class SMWSQLStore3Readers {
 			// It is not so easy to find the sweet spot between cache size and performance gains (both memory and time),
 			// The value of 20 was chosen by profiling runtimes for large inline queries and heavily annotated pages.
 			// However, things might have changed in the meantime ...
-			$this->store->m_semdata = array( $sid => $this->store->m_semdata[$sid] );
-			$this->store->m_sdstate = array( $sid => $this->store->m_sdstate[$sid] );
+			$this->store->m_semdata = array( $subjectId => $this->store->m_semdata[$subjectId] );
+			$this->store->m_sdstate = array( $subjectId => $this->store->m_sdstate[$subjectId] );
 		}
 	}
 
 	/**
 	 * Fetch the data storder about one subject in one particular table.
 	 *
-	 * @param $sid integer
-	 * @param $subject SMWDIWikiPage
-	 * @param $proptable SMWSQLStore3Table
+	 * @param integer $sid
+	 * @param DIWikiPage $subject
+	 * @param TableDefinition $proptable
+	 *
 	 * @return SMWSemanticData
-	 * @since 1.8
 	 */
-	protected function getSemanticDataFromTable( $sid, SMWDIWikiPage $subject, SMWSQLStore3Table $proptable ) {
+	private function getSemanticDataFromTable( $sid, DIWikiPage $subject, TableDefinition $proptable ) {
 		// Do not clear the cache when called recursively.
 		self::$in_getSemanticData++;
 
@@ -159,16 +172,18 @@ class SMWSQLStore3Readers {
 	 * is not supported. An empty array will be given.
 	 *
 	 * @since 1.8
-	 * @param $subject mixed SMWDIWikiPage or null
+	 *
+	 * @param $subject mixed DIWikiPage or null
 	 * @param $property SMWDIProperty
-	 * @param $requestoptions SMWRequestOptions
+	 * @param $requestOptions SMWRequestOptions
+	 *
 	 * @return array of SMWDataItem
 	 */
-	public function getPropertyValues( $subject, SMWDIProperty $property, $requestoptions = null ) {
+	public function getPropertyValues( $subject, SMWDIProperty $property, $requestOptions = null ) {
 
 		if ( $property->isInverse() ) { // inverses are working differently
 			$noninverse = new SMWDIProperty( $property->getKey(), false );
-			$result = $this->getPropertySubjects( $noninverse, $subject, $requestoptions );
+			$result = $this->getPropertySubjects( $noninverse, $subject, $requestOptions );
 		} elseif ( !is_null( $subject ) ) { // subject given, use semantic data cache
 			$sid = $this->store->smwIds->getSMWPageID( $subject->getDBkey(),
 				$subject->getNamespace(), $subject->getInterwiki(),
@@ -180,12 +195,12 @@ class SMWSQLStore3Readers {
 				$subject->getNamespace(), $subject->getInterwiki(),
 				$subject->getSubobjectName(), $sortKey, true );
 				$sortKeyDi = new SMWDIBlob( $sortKey );
-				$result = $this->store->applyRequestOptions( array( $sortKeyDi ), $requestoptions );
+				$result = $this->store->applyRequestOptions( array( $sortKeyDi ), $requestOptions );
 			} else {
 				$propTableId = $this->store->findPropertyTableID( $property );
 				$proptables =  $this->store->getPropertyTables();
 				$sd = $this->getSemanticDataFromTable( $sid, $subject, $proptables[$propTableId] );
-				$result = $this->store->applyRequestOptions( $sd->getPropertyValues( $property ), $requestoptions );
+				$result = $this->store->applyRequestOptions( $sd->getPropertyValues( $property ), $requestOptions );
 			}
 		} else { // no subject given, get all values for the given property
 			$pid = $this->store->smwIds->getSMWPropertyID( $property );
@@ -196,7 +211,7 @@ class SMWSQLStore3Readers {
 			}
 
 			$proptables =  $this->store->getPropertyTables();
-			$data = $this->fetchSemanticData( $pid, $property, $proptables[$tableid], false, $requestoptions );
+			$data = $this->fetchSemanticData( $pid, $property, $proptables[$tableid], false, $requestOptions );
 			$result = array();
 			$propertyTypeId = $property->findPropertyTypeID();
 			$propertyDiId = DataTypeRegistry::getInstance()->getDataItemId( $propertyTypeId );
@@ -227,7 +242,7 @@ class SMWSQLStore3Readers {
 	 * subject; in case (2) they are taken to refer to a property. In any
 	 * case, the retrieval is limited to the specified $proptable. The
 	 * parameters are an internal $id (of a subject or property), and an
-	 * $object (being an SMWDIWikiPage or SMWDIProperty). Moreover, when
+	 * $object (being an DIWikiPage or SMWDIProperty). Moreover, when
 	 * filtering by property, it is assumed that the given $proptable
 	 * belongs to the property: if it is a table with fixed property, it
 	 * will not be checked that this is the same property as the one that
@@ -247,49 +262,48 @@ class SMWSQLStore3Readers {
 	 * @todo Maybe share DB handler; asking for it seems to take quite some
 	 * time and we do not want to change it in one call.
 	 *
-	 * @since 1.8
 	 * @param integer $id
 	 * @param SMWDataItem $object
-	 * @param SMWSQLStore3Table $proptable
-	 * @param boolean $issubject
-	 * @param SMWRequestOptions $requestoptions
+	 * @param TableDefinition $propTable
+	 * @param boolean $isSubject
+	 * @param SMWRequestOptions $requestOptions
 	 *
 	 * @return array
 	 */
-	protected function fetchSemanticData( $id, SMWDataItem $object = null, SMWSQLStore3Table $proptable, $issubject = true, SMWRequestOptions $requestoptions = null ) {
+	private function fetchSemanticData( $id, SMWDataItem $object = null, TableDefinition $propTable, $isSubject = true, SMWRequestOptions $requestOptions = null ) {
 		// stop if there is not enough data:
 		// properties always need to be given as object,
 		// subjects at least if !$proptable->idsubject
 		if ( ( $id == 0 ) ||
-			( is_null( $object ) && ( !$issubject || !$proptable->usesIdSubject() ) ) )
+			( is_null( $object ) && ( !$isSubject || !$propTable->usesIdSubject() ) ) )
 			return array();
 
 		$result = array();
 		$db = $this->store->getConnection();
 
-		$diHandler = $this->store->getDataItemHandlerForDIType( $proptable->getDiType() );
+		$diHandler = $this->store->getDataItemHandlerForDIType( $propTable->getDiType() );
 
 		// ***  First build $from, $select, and $where for the DB query  ***//
-		$from = $db->tableName( $proptable->getName() ); // always use actual table
+		$from = $db->tableName( $propTable->getName() ); // always use actual table
 
 		$select = '';
 		$where  = '';
 
-		if ( $issubject ) { // restrict subject, select property
-			$where .= ( $proptable->usesIdSubject() ) ? 's_id=' . $db->addQuotes( $id ) :
+		if ( $isSubject ) { // restrict subject, select property
+			$where .= ( $propTable->usesIdSubject() ) ? 's_id=' . $db->addQuotes( $id ) :
 					  's_title=' . $db->addQuotes( $object->getDBkey() ) .
 					  ' AND s_namespace=' . $db->addQuotes( $object->getNamespace() );
-			if ( !$proptable->isFixedPropertyTable() ) { // select property name
+			if ( !$propTable->isFixedPropertyTable() ) { // select property name
 				$from .= ' INNER JOIN ' . $db->tableName( SMWSql3SmwIds::tableName ) . ' AS p ON p_id=p.smw_id';
 				$select .= 'p.smw_title as prop';
 			} // else: fixed property, no select needed
-		} elseif ( !$proptable->isFixedPropertyTable() ) { // restrict property only
+		} elseif ( !$propTable->isFixedPropertyTable() ) { // restrict property only
 			$where .= 'p_id=' . $db->addQuotes( $id );
 		}
 
 		$valuecount = 0;
 		// Don't use DISTINCT for value of one subject:
-		$usedistinct = !$issubject;
+		$usedistinct = !$isSubject;
 
 		$valueField = $diHandler->getIndexField();
 		$labelField = $diHandler->getLabelField();
@@ -321,8 +335,8 @@ class SMWSQLStore3Readers {
 			$valuecount += 1;
 		}
 
-		if ( !$issubject ) { // Apply sorting/string matching; only with given property
-			$where .= $this->store->getSQLConditions( $requestoptions, $valueField, $labelField, $where !== '' );
+		if ( !$isSubject ) { // Apply sorting/string matching; only with given property
+			$where .= $this->store->getSQLConditions( $requestOptions, $valueField, $labelField, $where !== '' );
 		} else {
 			$valueField = '';
 		}
@@ -330,16 +344,16 @@ class SMWSQLStore3Readers {
 		// ***  Now execute the query and read the results  ***//
 		$res = $db->select( $from, $select, $where, __METHOD__,
 				( $usedistinct ?
-					$this->store->getSQLOptions( $requestoptions, $valueField ) + array( 'DISTINCT' ) :
-					$this->store->getSQLOptions( $requestoptions, $valueField )
+					$this->store->getSQLOptions( $requestOptions, $valueField ) + array( 'DISTINCT' ) :
+					$this->store->getSQLOptions( $requestOptions, $valueField )
 				) );
 
 		foreach ( $res as $row ) {
 
 			$valueHash = '';
 
-			if ( $issubject ) { // use joined or predefined property name
-				$propertykey = $proptable->isFixedPropertyTable() ? $proptable->getFixedProperty() : $row->prop;
+			if ( $isSubject ) { // use joined or predefined property name
+				$propertykey = $propTable->isFixedPropertyTable() ? $propTable->getFixedProperty() : $row->prop;
 				$valueHash = $propertykey;
 			}
 
@@ -371,7 +385,7 @@ class SMWSQLStore3Readers {
 					$this->store->getLogger()->log( __METHOD__, "found duplicate for {$propertykey} " . ( is_array( $valuekeys ) ? implode( ',', $valuekeys ) : $valuekeys ) );
 				}
 
-				$result[ $valueHash ] = $issubject ? array( $propertykey, $valuekeys ) : $valuekeys;
+				$result[ $valueHash ] = $isSubject ? array( $propertykey, $valuekeys ) : $valuekeys;
 			}
 		}
 
@@ -387,17 +401,17 @@ class SMWSQLStore3Readers {
 	 * property _SKEY. Only empty arrays will be returned there.
 	 *
 	 * @param SMWDIProperty $property
-	 * @param mixed $value SMWDataItem or null
-	 * @param SMWRequestOptions $requestoptions
+	 * @param SMWDataItem|null $value
+	 * @param SMWRequestOptions|null $requestOptions
 	 *
-	 * @return array of SMWDIWikiPage
+	 * @return array of DIWikiPage
 	 */
-	public function getPropertySubjects( SMWDIProperty $property, $value, $requestoptions = null ) {
+	public function getPropertySubjects( SMWDIProperty $property, SMWDataItem $value = null, SMWRequestOptions $requestOptions = null ) {
 		/// TODO: should we share code with #ask query computation here? Just use queries?
 
 		if ( $property->isInverse() ) { // inverses are working differently
 			$noninverse = new SMWDIProperty( $property->getKey(), false );
-			$result = $this->getPropertyValues( $value, $noninverse, $requestoptions );
+			$result = $this->getPropertyValues( $value, $noninverse, $requestOptions );
 			return $result;
 		}
 
@@ -431,8 +445,8 @@ class SMWSQLStore3Readers {
 		// ***  Now execute the query and read the results  ***//
 		$result = array();
 		$res = $db->select( $from, 'DISTINCT ' . $select,
-		                    $where . $this->store->getSQLConditions( $requestoptions, 'smw_sortkey', 'smw_sortkey', $where !== '' ),
-		                    __METHOD__, $this->store->getSQLOptions( $requestoptions, 'smw_sortkey' ) );
+		                    $where . $this->store->getSQLConditions( $requestOptions, 'smw_sortkey', 'smw_sortkey', $where !== '' ),
+		                    __METHOD__, $this->store->getSQLOptions( $requestOptions, 'smw_sortkey' ) );
 
 		$diHandler = $this->store->getDataItemHandlerForDIType( SMWDataItem::TYPE_WIKIPAGE );
 
@@ -468,16 +482,16 @@ class SMWSQLStore3Readers {
 	 *
 	 * @param string $from
 	 * @param string $where
-	 * @param SMWSQLStore3Table $proptable
+	 * @param TableDefinition $propTable
 	 * @param SMWDataItem $value
-	 * @param integer $tableindex
+	 * @param integer $tableIndex
 	 */
-	protected function prepareValueQuery( &$from, &$where, $proptable, $value, $tableindex = 1 ) {
+	private function prepareValueQuery( &$from, &$where, TableDefinition $propTable, $value, $tableIndex = 1 ) {
 		$db = $this->store->getConnection();
 
 		if ( $value instanceof SMWDIContainer ) { // recursive handling of containers
-			$keys = array_keys( $proptable->getFields( $this->store ) );
-			$joinfield = "t$tableindex." . reset( $keys ); // this must be a type 'p' object
+			$keys = array_keys( $propTable->getFields( $this->store ) );
+			$joinfield = "t$tableIndex." . reset( $keys ); // this must be a type 'p' object
 			$proptables =  $this->store->getPropertyTables();
 			$semanticData = $value->getSemanticData();
 
@@ -486,27 +500,27 @@ class SMWSQLStore3Readers {
 				$subproptable = $proptables[$tableid];
 
 				foreach ( $semanticData->getPropertyValues( $subproperty ) as $subvalue ) {
-					$tableindex++;
+					$tableIndex++;
 
 					if ( $subproptable->usesIdSubject() ) { // simply add property table to check values
-						$from .= " INNER JOIN " . $db->tableName( $subproptable->getName() ) . " AS t$tableindex ON t$tableindex.s_id=$joinfield";
+						$from .= " INNER JOIN " . $db->tableName( $subproptable->getName() ) . " AS t$tableIndex ON t$tableIndex.s_id=$joinfield";
 					} else { // exotic case with table that uses subject title+namespace in container object (should never happen in SMW core)
-						$from .= " INNER JOIN " . $db->tableName( SMWSql3SmwIds::tableName ) . " AS ids$tableindex ON ids$tableindex.smw_id=$joinfield" .
-						         " INNER JOIN " . $db->tableName( $subproptable->getName() ) . " AS t$tableindex ON " .
-						         "t$tableindex.s_title=ids$tableindex.smw_title AND t$tableindex.s_namespace=ids$tableindex.smw_namespace";
+						$from .= " INNER JOIN " . $db->tableName( SMWSql3SmwIds::tableName ) . " AS ids$tableIndex ON ids$tableIndex.smw_id=$joinfield" .
+						         " INNER JOIN " . $db->tableName( $subproptable->getName() ) . " AS t$tableIndex ON " .
+						         "t$tableIndex.s_title=ids$tableIndex.smw_title AND t$tableIndex.s_namespace=ids$tableIndex.smw_namespace";
 					}
 
 					if ( !$subproptable->isFixedPropertyTable() ) { // the ID we get should be !=0, so no point in filtering the converse
-						$where .= ( $where ? ' AND ' : '' ) . "t$tableindex.p_id=" . $db->addQuotes( $this->store->smwIds->getSMWPropertyID( $subproperty ) );
+						$where .= ( $where ? ' AND ' : '' ) . "t$tableIndex.p_id=" . $db->addQuotes( $this->store->smwIds->getSMWPropertyID( $subproperty ) );
 					}
 
-					$this->prepareValueQuery( $from, $where, $subproptable, $subvalue, $tableindex );
+					$this->prepareValueQuery( $from, $where, $subproptable, $subvalue, $tableIndex );
 				}
 			}
 		} elseif ( !is_null( $value ) ) { // add conditions for given value
 			$diHandler = $this->store->getDataItemHandlerForDIType( $value->getDIType() );
 			foreach ( $diHandler->getWhereConds( $value ) as $fieldname => $value ) {
-				$where .= ( $where ? ' AND ' : '' ) . "t$tableindex.$fieldname=" . $db->addQuotes( $value );
+				$where .= ( $where ? ' AND ' : '' ) . "t$tableIndex.$fieldname=" . $db->addQuotes( $value );
 			}
 		}
 	}
@@ -515,12 +529,12 @@ class SMWSQLStore3Readers {
 	 * @see SMWStore::getAllPropertySubjects
 	 *
 	 * @param SMWDIProperty $property
-	 * @param SMWRequestOptions $requestoptions
+	 * @param SMWRequestOptions $requestOptions
 	 *
-	 * @return array of SMWDIWikiPage
+	 * @return array of DIWikiPage
 	 */
-	public function getAllPropertySubjects( SMWDIProperty $property, $requestoptions = null ) {
-		$result = $this->getPropertySubjects( $property, null, $requestoptions );
+	public function getAllPropertySubjects( SMWDIProperty $property, SMWRequestOptions $requestOptions = null ) {
+		$result = $this->getPropertySubjects( $property, null, $requestOptions );
 
 		return $result;
 	}
@@ -528,12 +542,12 @@ class SMWSQLStore3Readers {
 	/**
 	 * @see Store::getProperties
 	 *
-	 * @param SMWDIWikiPage $subject
+	 * @param DIWikiPage $subject
 	 * @param SMWRequestOptions|null $requestOptions
 	 *
 	 * @return SMWDataItem[]
 	 */
-	public function getProperties( SMWDIWikiPage $subject, $requestOptions = null ) {
+	public function getProperties( DIWikiPage $subject, SMWRequestOptions $requestOptions = null ) {
 		$sid = $this->store->smwIds->getSMWPageID(
 			$subject->getDBkey(),
 			$subject->getNamespace(),
@@ -612,23 +626,24 @@ class SMWSQLStore3Readers {
 	 *
 	 * @since 1.8
 	 * @see SMWStore::getInProperties
+	 *
 	 * @param SMWDataItem $value
-	 * @param SMWRequestOptions $requestoptions
+	 * @param SMWRequestOptions|null $requestOptions
 	 *
 	 * @return array of SMWWikiPageValue
 	 */
-	public function getInProperties( SMWDataItem $value, $requestoptions = null ) {
+	public function getInProperties( SMWDataItem $value, SMWRequestOptions $requestOptions = null ) {
 
 		$db = $this->store->getConnection();
 		$result = array();
 
 		// Potentially need to get more results, since options apply to union.
-		if ( $requestoptions !== null ) {
-			$suboptions = clone $requestoptions;
-			$suboptions->limit = $requestoptions->limit + $requestoptions->offset;
-			$suboptions->offset = 0;
+		if ( $requestOptions !== null ) {
+			$subOptions = clone $requestOptions;
+			$subOptions->limit = $requestOptions->limit + $requestOptions->offset;
+			$subOptions->offset = 0;
 		} else {
-			$suboptions = null;
+			$subOptions = null;
 		}
 
 		$diType = $value->getDIType();
@@ -645,8 +660,8 @@ class SMWSQLStore3Readers {
 
 				$res = $db->select( $from, 'DISTINCT smw_title,smw_sortkey',
 						// select sortkey since it might be used in ordering (needed by Postgres)
-						$where . $this->store->getSQLConditions( $suboptions, 'smw_sortkey', 'smw_sortkey', $where !== '' ),
-						__METHOD__, $this->store->getSQLOptions( $suboptions, 'smw_sortkey' ) );
+						$where . $this->store->getSQLConditions( $subOptions, 'smw_sortkey', 'smw_sortkey', $where !== '' ),
+						__METHOD__, $this->store->getSQLOptions( $subOptions, 'smw_sortkey' ) );
 
 				foreach ( $res as $row ) {
 					try {
@@ -667,7 +682,7 @@ class SMWSQLStore3Readers {
 			$db->freeResult( $res );
 		}
 
-		$result = $this->store->applyRequestOptions( $result, $requestoptions ); // apply options to overall result
+		$result = $this->store->applyRequestOptions( $result, $requestOptions ); // apply options to overall result
 
 		return $result;
 	}
