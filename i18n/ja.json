@@ -222,7 +222,7 @@
 	"smw_smwadmin_docu": "この特別ページは <a href=\"https://semantic-mediawiki.org\">Semantic MediaWiki</a> のインストールとアップグレードを支援します。\n管理機能を実行する前に、重要なデータをバックアップするようにしてください。",
 	"smw_smwadmin_db": "データベースのインストールおよびアップグレード",
 	"smw_smwadmin_dbdocu": "Semantic MediaWiki は意味的データを格納するため、MediaWiki のデータベースに対していくつかの拡張を必要とします。\n以下の機能はあなたのデータベースが適切に構築されていることを確実にするものです。\nこの作業でなされた変更は MediaWiki のデータベースのその他の部分には影響を与えず、必要なら簡単に取り消しができます。\nこの機能は複数回実行しても何の害もありませんが、インストールもしくはアップグレード時に一度だけ実行すれば十分です。",
-	"smw_smwadmin_permissionswarn": "SQL エラーを出して処理が失敗する場合、おそらくあなたのウィキのデータベース ユーザー (LocalSettings.php を確認してください) に必要な権限がありません。\nLocalSettings.php に一時的にデータベースの root のログイン情報を記入してこのユーザーにテーブルを作成および削除するための追加権限を与えるか、<code>SMW_setup.php</code> の認証情報を使用できるメンテナンススクリプト <code>SMW_setup.php</code> を使用してください。",
+	"smw_smwadmin_permissionswarn": "SQL エラーを出して処理が失敗する場合、おそらくあなたのウィキのデータベース ユーザー (LocalSettings.php を確認してください) に必要な権限がありません。\nLocalSettings.php に一時的にデータベースの root のログイン情報を記入してこのユーザーにテーブルを作成および削除するための追加権限を与えるか、<code>setupStore.php</code> の認証情報を使用できるメンテナンススクリプト <code>setupStore.php</code> を使用してください。",
 	"smw_smwadmin_dbbutton": "テーブルを初期化またはアップグレード",
 	"smw_smwadmin_announce": "あなたのウィキの発表",
 	"smw_smwadmin_announcedocu": "Semantic MediaWiki には新しい意味的ウィキのサイトを発表するためのウェブサービスがあります。\nこのサービスは Semantic MediaWiki を使用するサイト一覧の保守に使用されており、主に <a href=\"https://semantic-mediawiki.org/wiki/SMW_Project\">Semantic MediaWiki プロジェクト</a>が Semantic MediaWiki の典型的な使用法を把握するために使用されています。\nSemantic MediaWiki のホームページで<a href=\"https://semantic-mediawiki.org/wiki/Registry\">このサービスの詳細情報</a>をご覧ください。",
