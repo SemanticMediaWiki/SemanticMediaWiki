@@ -19,13 +19,8 @@ use SMW\DIConcept;
 use SMWQuery as Query;
 
 /**
- * @group SMW
- * @group SMWExtension
- *
  * @group semantic-mediawiki-integration
- * @group semantic-mediawiki-query
- *
- * @group mediawiki-database
+ * @group semantic-mediawiki
  * @group medium
  *
  * @license GNU GPL v2+
@@ -34,11 +29,6 @@ use SMWQuery as Query;
  * @author mwjames
  */
 class ConceptQueryDBIntegrationTest extends MwDBaseUnitTestCase {
-
-	/**
-	 * Failed asserting that actual size 0 matches expected size 6.
-	 */
-	protected $databaseToBeExcluded = array( 'postgres' );
 
 	private $fixturesProvider;
 	private $subjects = array();
