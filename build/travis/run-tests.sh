@@ -4,12 +4,14 @@ set -ex
 BASE_PATH=$(pwd)
 MW_INSTALL_PATH=$BASE_PATH/../mw
 
+cd $MW_INSTALL_PATH/extensions/SemanticMediaWiki
+
 if [ "$TYPE" == "coverage" ]
 then
-	php $MW_INSTALL_PATH/tests/phpunit/phpunit.php --group SMWExtension -c $MW_INSTALL_PATH/extensions/SemanticMediaWiki/phpunit.xml.dist --coverage-clover $BASE_PATH/build/coverage.clover
+	composer phpunit -q -- --coverage-clover $BASE_PATH/build/coverage.clover
 elif [ "$TYPE" == "benchmark" ]
 then
-	php $MW_INSTALL_PATH/tests/phpunit/phpunit.php --group semantic-mediawiki-benchmark -c $MW_INSTALL_PATH/extensions/SemanticMediaWiki/phpunit.xml.dist
+	composer phpunit -q -- --group semantic-mediawiki-benchmark
 else
-	php $MW_INSTALL_PATH/tests/phpunit/phpunit.php --group SMWExtension -c $MW_INSTALL_PATH/extensions/SemanticMediaWiki/phpunit.xml.dist
+	composer phpunit -q
 fi
