@@ -1,0 +1,62 @@
+<?php
+
+namespace SMW\MediaWiki;
+
+/**
+ * @license GNU GPL v2+
+ * @since 2.2
+ *
+ * @author mwjames
+ */
+class WikitextTemplateRenderer {
+
+	/**
+	 * @var array
+	 */
+	private $fields = array();
+
+	/**
+	 * @var string
+	 */
+	private $template = '';
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param string $field
+	 * @param mixed $value
+	 */
+	public function addField( $field, $value ) {
+		$this->fields[$field] = $value;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param string $templateName
+	 */
+	public function packFieldsForTemplate( $templateName ) {
+
+		$this->template .= '{{'. $templateName;
+
+		foreach ( $this->fields as $key => $value ) {
+			$this->template .= "|$key=$value";
+		}
+
+		$this->template .= '}}';
+		$this->fields = array();
+	}
+
+	/**
+	 * @since since 2.2
+	 *
+	 * @return string
+	 */
+	public function render() {
+		$wikiText = $this->template;
+		$this->template = '';
+		$this->fields = array();
+		return $wikiText;
+	}
+
+}

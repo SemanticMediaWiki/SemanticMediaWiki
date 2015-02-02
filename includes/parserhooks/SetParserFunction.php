@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMW\MediaWiki\HtmlTemplateRenderer;
+
 use Parser;
 
 /**
@@ -20,7 +22,7 @@ use Parser;
 class SetParserFunction {
 
 	/**
-	 * @var ParserDate
+	 * @var ParserData
 	 */
 	private $parserData;
 
@@ -30,14 +32,21 @@ class SetParserFunction {
 	private $messageFormatter;
 
 	/**
+	 * @var HtmlTemplateRenderer
+	 */
+	private $templateRenderer;
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
 	 * @param MessageFormatter $messageFormatter
+	 * @param HtmlTemplateRenderer $templateRenderer
 	 */
-	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter ) {
+	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter, HtmlTemplateRenderer $templateRenderer ) {
 		$this->parserData = $parserData;
 		$this->messageFormatter = $messageFormatter;
+		$this->templateRenderer = $templateRenderer;
 	}
 
 	/**
@@ -49,9 +58,19 @@ class SetParserFunction {
 	 */
 	public function parse( ArrayFormatter $parameters ) {
 
+		$count = 0;
+		$template = '';
 		$subject = $this->parserData->getSemanticData()->getSubject();
 
-		foreach ( $parameters->toArray() as $property => $values ){
+		$parametersToArray = $parameters->toArray();
+
+		if ( isset( $parametersToArray['template'] ) ) {
+			$template = $parametersToArray['template'][0];
+			unset( $parametersToArray['template'] );
+		}
+
+		foreach ( $parametersToArray as $property => $values ) {
+
 			foreach ( $values as $value ) {
 
 				$dataValue = DataValueFactory::getInstance()->newPropertyValue(
@@ -61,16 +80,40 @@ class SetParserFunction {
 						$subject
 					);
 
-				$this->parserData->addDataValue( $dataValue );
+				$this->parserData->addDataValue(
+					$dataValue
+				);
+
+				$this->addFieldsToTemplate(
+					$template,
+					$dataValue,
+					$property,
+					$value,
+					$count
+				);
 			}
 		}
 
 		$this->parserData->pushSemanticDataToParserOutput();
 
-		return $this->messageFormatter
+		$html = $this->templateRenderer->render() . $this->messageFormatter
 			->addFromArray( $this->parserData->getErrors() )
 			->addFromArray( $parameters->getErrors() )
 			->getHtml();
+
+		return array( $html, 'noparse' => true, 'isHTML' => true );
+	}
+
+	private function addFieldsToTemplate( $template, $dataValue, $property, $value, &$count ) {
+
+		if ( $template === '' || !$dataValue->isValid() ) {
+			return '';
+		}
+
+		$this->templateRenderer->addField( 'property', $property );
+		$this->templateRenderer->addField( 'value', $value );
+		$this->templateRenderer->addField( '#', $count++ );
+		$this->templateRenderer->packFieldsForTemplate( $template );
 	}
 
 }

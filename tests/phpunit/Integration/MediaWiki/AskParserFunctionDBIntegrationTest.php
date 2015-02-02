@@ -15,7 +15,7 @@ use Title;
  * @group SMWExtension
  *
  * @group semantic-mediawiki-integration
- * @group mediawiki-databas
+ * @group mediawiki-database
  *
  * @group medium
  *

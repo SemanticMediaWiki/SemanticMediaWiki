@@ -199,7 +199,11 @@ class ParserData {
 
 		$semanticData = $this->fetchDataFromParserOutput( $parserOutput );
 
-		if ( $semanticData !== null && $this->getSubject()->equals( $semanticData->getSubject() ) ) {
+		// Only import data that is known to be different
+		if ( $semanticData !== null &&
+			$this->getSubject()->equals( $semanticData->getSubject() ) &&
+			$semanticData->getHash() !== $this->getSemanticData()->getHash() ) {
+
 			$this->getSemanticData()->importDataFrom( $semanticData );
 		}
 	}

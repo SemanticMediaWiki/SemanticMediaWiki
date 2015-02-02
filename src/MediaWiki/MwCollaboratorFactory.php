@@ -8,6 +8,7 @@ use SMW\ApplicationFactory;
 use Title;
 use User;
 use WikiPage;
+use Parser;
 
 /**
  * @license GNU GPL v2+
@@ -155,6 +156,20 @@ class MwCollaboratorFactory {
 	 */
 	public function newPageUpdater() {
 		return new PageUpdater();
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param Parser $parser
+	 *
+	 * @return HtmlTemplateRenderer
+	 */
+	public function newHtmlTemplateRenderer( Parser $parser ) {
+		return new HtmlTemplateRenderer(
+			new WikitextTemplateRenderer(),
+			$parser
+		);
 	}
 
 }
