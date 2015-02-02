@@ -3,6 +3,7 @@
 use SMW\DIConcept;
 use SMW\SQLStore\PropertyTableDefinitionBuilder;
 use SMW\SQLStore\QueryEngine\ConceptCache;
+use SMW\SQLStore\SQLStoreFactory;
 use SMW\SQLStore\WantedPropertiesCollector;
 use SMW\SQLStore\UnusedPropertiesCollector;
 use SMW\SQLStore\PropertiesCollector;
@@ -64,6 +65,11 @@ class SMWSQLStore3 extends SMWStore {
 	 * simply be rebuilt by running the setup.
 	 */
 	const PROPERTY_STATISTICS_TABLE = 'smw_prop_stats';
+
+	/**
+	 * @var SQLStoreFactory
+	 */
+	private $factory;
 
 	/**
 	 * Object to access the SMW IDs table.
@@ -195,12 +201,11 @@ class SMWSQLStore3 extends SMWStore {
 	);
 
 	/**
-	 * Constructor.
-	 *
 	 * @since 1.8
 	 */
 	public function __construct() {
 		$this->smwIds = new SMWSql3SmwIds( $this );
+		$this->factory = new SQLStoreFactory( $this );
 	}
 
 	/**
@@ -353,8 +358,7 @@ class SMWSQLStore3 extends SMWStore {
 	}
 
 	protected function fetchQueryResult( SMWQuery $query ) {
-		$qe = new SMWSQLStore3QueryEngine( $this, wfGetDB( DB_SLAVE ) );
-		return $qe->getQueryResult( $query );
+		return $this->factory->newSalveQueryEngine()->getQueryResult( $query );
 	}
 
 ///// Special page functions /////
@@ -435,8 +439,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return array of error strings (empty if no errors occurred)
 	 */
 	public function refreshConceptCache( Title $concept ) {
-		$qe = new SMWSQLStore3QueryEngine( $this, wfGetDB( DB_MASTER ) );
-		return $qe->refreshConceptCache( $concept );
+		return $this->factory->newMasterQueryEngine()->refreshConceptCache( $concept );
 	}
 
 	/**
@@ -446,8 +449,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @param Title $concept
 	 */
 	public function deleteConceptCache( $concept ) {
-		$qe = new SMWSQLStore3QueryEngine( $this, wfGetDB( DB_MASTER ) );
-		$qe->deleteConceptCache( $concept );
+		$this->factory->newMasterQueryEngine()->deleteConceptCache( $concept );
 	}
 
 	/**
@@ -464,12 +466,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return DIConcept|null
 	 */
 	public function getConceptCacheStatus( $concept ) {
-		$conceptCache = new ConceptCache(
-			new SMWSQLStore3QueryEngine( $this, wfGetDB( DB_SLAVE ) ),
-			$this
-		);
-
-		return $conceptCache->getStatus( $concept );
+		return $this->factory->newSlaveConceptCache()->getStatus( $concept );
 	}
 
 
