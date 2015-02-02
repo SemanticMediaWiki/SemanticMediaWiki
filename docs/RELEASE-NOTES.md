@@ -16,4 +16,6 @@ This is not a release yet.
 * #711 Fetching annotations made by an `#ask` transcluded template 
 * #725 Moved psr-4 complaint classes into the top level 'src' folder
 * #740 Added `serialization/serialization:~3.2` component dependency
+* #771 Added `doctrine/dbal:~2.5` component dependency
 * #772 Added `onoi/message-reporter:~1.0` component dependency
+* #777 Moved all concept related code into a separate `ConceptCache` class
