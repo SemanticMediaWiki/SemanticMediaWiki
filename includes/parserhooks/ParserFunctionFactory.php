@@ -106,16 +106,25 @@ class ParserFunctionFactory {
 	 */
 	public function newSetParserFunction() {
 
-		$parserData = ApplicationFactory::getInstance()->newParserData(
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$parserData = $applicationFactory->newParserData(
 			$this->parser->getTitle(),
 			$this->parser->getOutput()
 		);
 
-		$messageFormatter = new MessageFormatter( $this->parser->getTargetLanguage() );
+		$messageFormatter = new MessageFormatter(
+			$this->parser->getTargetLanguage()
+		);
+
+		$templateRenderer = $applicationFactory
+			->newMwCollaboratorFactory()
+			->newHtmlTemplateRenderer( $this->parser );
 
 		$instance = new SetParserFunction(
 			$parserData,
-			$messageFormatter
+			$messageFormatter,
+			$templateRenderer
 		);
 
 		return $instance;

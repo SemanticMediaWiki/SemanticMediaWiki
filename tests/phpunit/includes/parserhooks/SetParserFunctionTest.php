@@ -6,6 +6,8 @@ use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\SetParserFunction;
 use SMW\ParameterFormatterFactory;
+use SMW\MediaWiki\HtmlTemplateRenderer;
+use SMW\MediaWiki\WikitextTemplateRenderer;
 use SMW\ApplicationFactory;
 
 use Title;
@@ -14,8 +16,7 @@ use ParserOutput;
 /**
  * @covers \SMW\SetParserFunction
  *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -31,7 +32,6 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		parent::setUp();
 
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
-
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
@@ -51,9 +51,13 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\HtmlTemplateRenderer' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->assertInstanceOf(
 			'\SMW\SetParserFunction',
-			new SetParserFunction( $parserData, $messageFormatter )
+			new SetParserFunction( $parserData, $messageFormatter, $templateRenderer )
 		);
 	}
 
@@ -79,13 +83,18 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getHtml' )
 			->will( $this->returnValue( 'Foo' ) );
 
+		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\HtmlTemplateRenderer' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$instance = new SetParserFunction(
 			$parserData,
-			$messageFormatter
+			$messageFormatter,
+			$templateRenderer
 		);
 
 		$this->assertInternalType(
-			'string',
+			'array',
 			$instance->parse( ParameterFormatterFactory::newFromArray( $params ) )
 		);
 	}
@@ -108,12 +117,71 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->method( 'addFromArray' )
 			->will( $this->returnSelf() );
 
+		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\HtmlTemplateRenderer' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$instance = new SetParserFunction(
 			$parserData,
-			$messageFormatter
+			$messageFormatter,
+			$templateRenderer
 		);
 
 		$instance->parse( ParameterFormatterFactory::newFromArray( $params ) );
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$parserData->getSemanticData()
+		);
+	}
+
+	public function testTemplateSupport() {
+
+		$params = array( 'Foo=bar', 'BarFoo=9001', 'template=FooTemplate' );
+
+		$expected = array(
+			'errors' => 0,
+			'propertyCount'  => 2,
+			'propertyLabels' => array( 'Foo', 'BarFoo' ),
+			'propertyValues' => array( 'Bar', '9001' )
+		);
+
+		$parserData = $this->applicationFactory->newParserData(
+			Title::newFromText( __METHOD__ ),
+			new ParserOutput()
+		);
+
+		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageFormatter->expects( $this->any() )
+			->method( 'addFromArray' )
+			->will( $this->returnSelf() );
+
+		$parser = $this->getMockBuilder( '\Parser' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parser->expects( $this->once() )
+			->method( 'recursiveTagParse' )
+			->with(
+				$this->stringContains( '{{FooTemplate|property=Foo|value=bar|#=0}}{{FooTemplate|property=BarFoo|value=9001|#=1}}' ) );
+
+		$templateRenderer = new HtmlTemplateRenderer(
+			new WikitextTemplateRenderer(),
+			$parser
+		);
+
+		$instance = new SetParserFunction(
+			$parserData,
+			$messageFormatter,
+			$templateRenderer
+		);
+
+		$instance->parse(
+			ParameterFormatterFactory::newFromArray( $params )
+		);
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
