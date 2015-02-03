@@ -47,6 +47,7 @@ then
 	cp openrdf-sesame-$SESAME/war/*.war /var/lib/tomcat6/webapps/
 
 	sudo service tomcat6 restart
+	sleep 3
 
 	if curl --output /dev/null --silent --head --fail "http://localhost:8080/openrdf-sesame"
 	then
