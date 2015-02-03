@@ -5,6 +5,7 @@ This is not a release yet.
 ## New features
 
 * #770 Added `--no-cache`/`--debug` option to the `rebuildData.php` script (refs #749, #766)
+* #756 Added template support for the `#set` parser
 
 ## Bug fixes
 
