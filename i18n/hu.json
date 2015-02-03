@@ -4,7 +4,8 @@
 			"Dani",
 			"Glanthor Reviol",
 			"TK-999",
-			"아라"
+			"아라",
+			"Tacsipacsi"
 		]
 	},
 	"smw-desc": "A wiki elérhetőbbé tétele – gépek ''és'' emberek számára is ([https://semantic-mediawiki.org/wiki/Help:User_manual online dokumentáció])",
@@ -112,7 +113,7 @@
 	"uriresolver": "URI feloldó",
 	"properties": "Tulajdonságok",
 	"smw_properties_docu": "A wikiben az alábbi tulajdonságok használatosak.",
-	"smw_property_template": "$2 típusú $1 ($3)",
+	"smw_property_template": "$2 típusú $1 ($3 használat)",
 	"smw_propertylackspage": "Minden tulajdonságnak kell hogy legyen leírólapja!",
 	"smw_propertylackstype": "Nincs típus megadva ehhez a tulajdonsághoz ($1 típus feltételezése).",
 	"smw_propertyhardlyused": "Ez a tulajdonság aligha használatos a wikiben!",
@@ -194,12 +195,12 @@
 	"smw_smwadmin_datarefreshprogress": "<strong>Frissítés folyamatban.</strong>\nNormális, ha a frissítés lassan halad, hiszen az adatok csak egy kis részét frissíti minden alkalommal, ha egy felhasználó hozzáfér a wikihez.\nHa gyorsabban be szeretnéd fejezni a frissítést, hívd meg a <code>runJobs.php</code> karbantartó parancsfájlt (használd a <code>--maxjobs 1000</code> kapcsolót az egy menetben végrehajtott frissítések korlátozásához).\nA jelenlegi frissítés becsült előrehaladása:",
 	"smw_smwadmin_datarefreshbutton": "Adatok frissítésének megkezdése",
 	"smw_smwadmin_datarefreshstop": "Frissítés megszakítása",
-	"smw_smwadmin_datarefreshstopconfirm": "Igen, biztos vagyok benne.",
+	"smw_smwadmin_datarefreshstopconfirm": "Igen, {{GENDER:$1|biztos}} vagyok benne.",
 	"smw_smwadmin_support": "Segítséget kérek",
 	"smw_smwadmin_supportdocu": "Különböző források, amelyek segíthetnek problémák esetén:",
 	"smw_smwadmin_installfile": "Ha problémákat észlelsz a telepítéssel, ellenőrizd az útmutatót az <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">INSTALL fájlban</a>.",
 	"smw_smwadmin_smwhomepage": "A Szemantikus MediaWiki teljes felhasználói dokumentációja a <b><a href=\"http://semantic-mediawiki.org\">semantic-mediawiki.org</a></b> címen található.",
-	"smw_smwadmin_mediazilla": "A hibákat a <a href=\"https://bugzilla.wikimedia.org/\">Bugzillán</a> lehet jelenteni.",
+	"smw_smwadmin_mediazilla": "A hibákat a <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHubon</a> lehet jelenteni.",
 	"smw_smwadmin_questions": "Ha további kérdéseid vagy javaslataid vannak, csatlakozz a <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">Szemantikus MediaWiki felhasználói fórumán</a> folyó beszélgetéshez.",
 	"smw_adminlinks_datastructure": "Adatstruktúra",
 	"smw_adminlinks_displayingdata": "Adatok megjelenítése",
@@ -210,7 +211,7 @@
 	"smw-paramdesc-category-template": "Az elemeket formázandó sablon",
 	"smw-info-par-message": "Megjelenítendő üzenet.",
 	"smw-info-par-icon": "Megjelenítendő jel, \"info\" vagy \"warning.\"",
-	"smw_unknowntype": "A megadott „$1” típus nem támogatott a tulajdonságnál.",
+	"smw_unknowntype": "A tulajdonság típusa érvénytelen",
 	"smw_concept_header": "A(z) „$1” koncepcióhoz tartozó lapok",
 	"smw_conceptarticlecount": "A koncepcióhoz tartozó $1 lap megjelenítése.",
 	"smw-livepreview-loading": "Betöltés…"
