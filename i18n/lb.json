@@ -92,6 +92,7 @@
 	"smw-special-types-no-such-type": "Den Datentyp deen ugi gouf gëtt et net",
 	"semanticstatistics": "Semantesch Statistiken",
 	"smw-statistics": "Semantesch Statistiken",
+	"smw-statistics-query-size": "Gréisst vun der Ufro",
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Konzept|Konzepter}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Konzept|Konzepter}}]]",
 	"ask": "Semantesch sichen",
@@ -113,6 +114,7 @@
 	"smw_ask_show_embed": "Agebonnene Code weisen",
 	"smw_ask_hide_embed": "Agebonnene Code verstoppen",
 	"smw-ask-delete": "[Läschen]",
+	"smw-ask-sorting": "Zortéieren",
 	"smw-ask-format-selection-help": "Fir eng detailléiert Beschreiwung gitt w.e.g. op d'$1 Hëllefssäit.",
 	"searchbyproperty": "No Eegeschafte sichen",
 	"smw_sbv_docu": "Sichen no alle Säiten déi eng bestëmmten Eegeschaft mat engem bestëmmte Wäert hunn.",
@@ -176,7 +178,11 @@
 	"smw-concept-cache-text": "D'Konzept huet am Ganzen {{PLURAL:$1|eng Säit|$1 Säiten}} a gouf fir d'lescht den $2 ëm $3 aktualiséiert.",
 	"smw_concept_header": "Säite vum Konzept \"$1\"",
 	"smw_conceptarticlecount": "Déi $1 {{PLURAL:$1|Säit|Säite}} ginn hei drënner gewisen.",
+	"grouppage-smwadministrator": "{{ns:project}}:SMW-Administrateuren",
 	"smw-sp-admin-settings-title": "Astellunge vun der Konfiguratioun",
+	"smw-sp-admin-settings-button": "Lëscht vun den Astellunge generéieren",
 	"smw-livepreview-loading": "Lueden...",
+	"smw-sp-searchbyproperty-resultlist-header": "Lëscht vun de Resultater",
+	"smw-editpage-annotation-disabled": "Dës Säit ass net fir semantesch Notifaktiounen am Text konfiguréiert duerch d'Limitatiounen an dësem Nummraum. Detailer wéi dat fir den Nummraum ageschalt ka gi fannt Dir op der Hëllefsäit fir d'[https://semantic-mediawiki.org/wiki/Help:Configuration configuration Astellungen].",
 	"log-name-smw": "Semantic-MediaWiki-Logbuch"
 }

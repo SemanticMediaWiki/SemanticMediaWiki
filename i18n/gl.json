@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Toliño"
+			"Toliño",
+			"Elisardojm"
 		]
 	},
 	"smw-desc": "Fai o seu wiki máis accesible; para máquinas ''e'' humanos ([https://semantic-mediawiki.org/wiki/Help:User_manual documentación en liña])",
@@ -225,7 +226,7 @@
 	"smw_smwadmin_docu": "Esta páxina especial serve de axuda durante a instalación e actualización do <a href=\"https://semantic-mediawiki.org\">Semantic MediaWiki</a>.\nLembre facer unha copia de seguridade dos datos antes de executar calquera función administrativa.",
 	"smw_smwadmin_db": "Instalación e actualización da base de datos",
 	"smw_smwadmin_dbdocu": "Semantic MediaWiki require algunhas extensións da base de datos MediaWiki para almacenar os datos semánticos.\nA función de embaixo asegúrase de que a súa base de datos está configurada apropiadamente.\nOs cambios feitos neste paso non afectarán ao resto da base de datos MediaWiki, e poden ser desfeitos de xeito sinxelo se se desexa.\nEsta función de configuración pode ser executada múltiples veces sen facer ningún dano, pero só é necesaria unha vez na instalación ou actualización.",
-	"smw_smwadmin_permissionswarn": "Se a operación falla con erros SQL, probablemente a base de datos empregada polo seu wiki (comprobe o seu LocalSettings.php) non teña os permisos suficientes.\nFai falla conceder a este usuario os permisos para crear e eliminar táboas; temporalmente insira o rexistro da súa base de datos en LocalSettings.php ou use a escritura de mantemento <code>SMW_setup.php</code>, que pode usar as credenciais dun usuario SysOp.",
+	"smw_smwadmin_permissionswarn": "Se a operación falla con erros SQL, probablemente a base de datos empregada polo seu wiki (comprobe o seu LocalSettings.php) non teña os permisos suficientes.\nFai falla conceder a este usuario os permisos para crear e eliminar táboas; temporalmente insira o rexistro da súa base de datos en LocalSettings.php ou use a escritura de mantemento <code>setupStore.php</code>, que pode usar as credenciais dun administrador.",
 	"smw_smwadmin_dbbutton": "Inicialice ou actualice as táboas",
 	"smw_smwadmin_announce": "Anunciar o seu wiki",
 	"smw_smwadmin_announcedocu": "Semantic MediaWiki ten un servizo web para anunciar novos wikis semánticos.\nIsto úsase para manter unha lista de sitios públicos que usan Semantic MediaWiki, principalmente para axudar ao <a href=\"https://semantic-mediawiki.org/wiki/SMW_Project\">proxecto Semantic MediaWiki</a> para obter unha vista xeral dos usos típicos de Semantic MediaWiki.\nVaia á páxina principal de Semantic MediaWiki para <a href=\"https://semantic-mediawiki.org/wiki/Registry\">obter máis información acerca deste servizo</a>.",
@@ -267,7 +268,7 @@
 	"smw-ui-tooltip-title-note": "Nota",
 	"smw-ui-tooltip-title-legend": "Lenda",
 	"smw_unknowntype": "O tipo desta propiedade non é válido",
-	"smw-concept-cache-text": "O concepto ten {{PLURAL:$1|unha páxina|un total de $1 páxinas}}. A súa última actualización foi o $2.",
+	"smw-concept-cache-text": "O concepto ten {{PLURAL:$1|unha páxina|un total de $1 páxinas}}. A súa última actualización foi o $3, $2.",
 	"smw_concept_header": "Páxinas do concepto \"$1\"",
 	"smw_conceptarticlecount": "A continuación {{PLURAL:$1|móstrase $1 páxina|móstranse $1 páxinas}}.",
 	"right-smw-admin": "Acceder ás tarefas administrativas (Semantic MediaWiki)",

@@ -241,7 +241,7 @@
 	"smw_smwadmin_docu": "这个特殊页面为您安装和升级<a href=\"http://semantic-mediawiki.org\">Semantic MediaWiki</a>提供帮助。\n请在执行管理功能前备份好数据。",
 	"smw_smwadmin_db": "数据库安装和升级",
 	"smw_smwadmin_dbdocu": "Semantic MediaWiki将MediaWiki数据库做一些扩展，以存储语义数据。\n以下功能可帮助你正确设置数据库。\n这个步骤所做的修改不会影响MediaWiki数据库的其他部分，如果需要，可以方便地撤销所做的修改。\n这个设置功能可多次执行，不会造成任何危害。但是只需在安装或升级时执行一次即可。",
-	"smw_smwadmin_permissionswarn": "如果操作因SQL错误而失败，可能是维基的数据库用户（检查LocalSettings.php）没有相应权限。\n你可以向该用户赋予创建和删除表格的权限，或临时将数据库根用户的登录信息输入LocalSettings.php。你也可以使用维护脚本<code>SMW_setup.php</code>，这个脚本可以使用管理员的信息。",
+	"smw_smwadmin_permissionswarn": "如果操作因SQL错误而失败，可能是维基的数据库用户（检查LocalSettings.php）没有相应权限。\n你可以向该用户赋予创建和删除表格的权限，或临时将数据库根用户的登录信息输入LocalSettings.php。你也可以使用维护脚本<code>setupStore.php</code>，这个脚本可以使用管理员的信息。",
 	"smw_smwadmin_dbbutton": "初始化或升级表格",
 	"smw_smwadmin_announce": "发布维基",
 	"smw_smwadmin_announcedocu": "Semantic Mediawiki提供一个网络服务，用于公告新的语义维基网站。\n这个服务用于维护一个使用Semantic MediaWiki的公共网站列表，主要用于帮助<a href=\"http://semantic-mediawiki.org/wiki/SMW_Project\">Semantic MediaWiki 项目</a>了解Semantic MediaWiki的典型使用的概貌。\n<a href=\"http://semantic-mediawiki.org/wiki/SMW_Project\">关于此服务的更多信息</a>请查看Semantic MediaWiki主页。",

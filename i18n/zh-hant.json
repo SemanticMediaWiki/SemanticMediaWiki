@@ -219,7 +219,7 @@
 	"smw_smwadmin_docu": "這個特殊頁面為您安裝和升級<a href=\"http://semantic-mediawiki.org\">Semantic MediaWiki</a>提供說明。\n請在執行管理功能前備份好資料。",
 	"smw_smwadmin_db": "資料庫安裝和升級",
 	"smw_smwadmin_dbdocu": "Semantic MediaWiki 將 MediaWiki 資料庫做一些擴充套件，以儲存語意資料。\n以下功能可幫助你正確設定資料庫。\n這個步驟所做的修改不會影響 MediaWiki 資料庫的其他部分，如果需要，可以方便地還原所做的修改。\n這個定射功能可多次執行，不會造成任何危害。但是只需在安裝或升級時執行一次即可。",
-	"smw_smwadmin_permissionswarn": "如果操作因 SQL 錯誤而失敗，可能是維基的資歷庫使用者 (檢查您的 LocalSettings.php) 沒有相應權限。你可以向該使用者賦予建立和刪除表格的權限，或臨時將資料庫根使用者的登入資訊輸入 LocalSettings.php，或使用維護腳本<code>SMW_setup.php</code>，這個腳本可以使用 AdminSettings.php 中的資訊。",
+	"smw_smwadmin_permissionswarn": "如果操作因 SQL 錯誤而失敗，可能是維基的資歷庫使用者 (檢查您的 LocalSettings.php) 沒有相應權限。你可以向該使用者賦予建立和刪除表格的權限，或臨時將資料庫根使用者的登入資訊輸入 LocalSettings.php，或使用維護腳本<code>setupStore.php</code>，這個腳本可以使用 AdminSettings.php 中的資訊。",
 	"smw_smwadmin_dbbutton": "初始化或升級表格",
 	"smw_smwadmin_announce": "發布 wiki",
 	"smw_smwadmin_announcedocu": "Semantic Mediawiki 提供一個網路服務，用於公告新的語意維基網站。\n這個服務用於維護一個使用 Semantic MediaWiki 的公共網站清單，主要用於幫助<a href=\"http://semantic-mediawiki.org/wiki/SMW_Project\">Semantic MediaWiki 項目</a>了解 Semantic MediaWiki 的典型使用的概貌。\n<a href=\"http://semantic-mediawiki.org/wiki/SMW_Project\">關於此服務的更多資訊</a>請檢視 Semantic MediaWiki 首頁。",
