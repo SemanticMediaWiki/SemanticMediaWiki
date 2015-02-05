@@ -28,6 +28,6 @@ Thank you for contributing to Semantic MediaWiki!
 [smw-testers]: https://github.com/orgs/SemanticMediaWiki/teams/testers
 [twn]: https://translatewiki.net/
 [twn-smw]: https://translatewiki.net/w/i.php?title=Special%3AMessageGroupStats&x=D&group=ext-semanticmediawiki&suppressempty=1
-[smw-ddo]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/contribute/docs/technical/README.md
+[smw-ddo]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/README.md
 [mw-testing]: https://www.mediawiki.org/wiki/Manual:PHP_unit_testing
 [smw-npath]: https://semantic-mediawiki.org/wiki/Code_coverage#NPath_complexity
