@@ -130,11 +130,18 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
-	protected function skipTestForDatabase( array $excludedDatabase ) {
+	protected function skipTestForDatabase( $excludedDatabase, $message = '' ) {
+
+		if ( is_string( $excludedDatabase ) ) {
+			$excludedDatabase = array( $excludedDatabase );
+		}
+
+		if ( $message === '' ) {
+			$message = "Database was excluded and is not expected to support this test";
+		}
+
 		if ( in_array( $this->getDBConnection()->getType(), $excludedDatabase ) ) {
-			$this->markTestSkipped(
-				"Database was excluded and is not expected to support this test"
-			);
+			$this->markTestSkipped( $message );
 		}
 	}
 
