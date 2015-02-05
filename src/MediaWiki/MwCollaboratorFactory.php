@@ -161,13 +161,22 @@ class MwCollaboratorFactory {
 	/**
 	 * @since 2.2
 	 *
+	 * @return WikitextTemplateRenderer
+	 */
+	public function newWikitextTemplateRenderer() {
+		return new WikitextTemplateRenderer();
+	}
+
+	/**
+	 * @since 2.2
+	 *
 	 * @param Parser $parser
 	 *
 	 * @return HtmlTemplateRenderer
 	 */
 	public function newHtmlTemplateRenderer( Parser $parser ) {
 		return new HtmlTemplateRenderer(
-			new WikitextTemplateRenderer(),
+			$this->newWikitextTemplateRenderer(),
 			$parser
 		);
 	}

@@ -147,6 +147,8 @@ class ListResultPrinter extends ResultPrinter {
 			return '';
 		}
 
+		$this->templateRenderer = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newWikitextTemplateRenderer();
+
 		$this->initializePrintingParameters( $queryResult );
 
 		$result = '';
@@ -159,7 +161,9 @@ class ListResultPrinter extends ResultPrinter {
 		$result .= $this->header;
 
 		if ( $this->mIntroTemplate !== '' ) {
-			$result .= "{{" . $this->mIntroTemplate . $this->addCommonTemplateParameters( $queryResult ) . "}}";
+			$this->addCommonTemplateFields( $queryResult );
+			$this->templateRenderer->packFieldsForTemplate( $this->mIntroTemplate );
+			$result .= $this->templateRenderer->render();
 		}
 
 		while ( $row = $queryResult->getNext() ) {
@@ -167,7 +171,9 @@ class ListResultPrinter extends ResultPrinter {
 		}
 
 		if ( $this->mOutroTemplate !== '' ) {
-			$result .= "{{" . $this->mOutroTemplate . $this->addCommonTemplateParameters( $queryResult ) . "}}";
+			$this->addCommonTemplateFields( $queryResult );
+			$this->templateRenderer->packFieldsForTemplate( $this->mOutroTemplate );
+			$result .= $this->templateRenderer->render();
 		}
 
 		// Make label for finding further results
@@ -270,8 +276,12 @@ class ListResultPrinter extends ResultPrinter {
 
 		if ( $this->mTemplate !== '' ) { // Build template code
 			$this->hasTemplates = true;
-			$content = $this->mTemplate . $this->getTemplateContent( $row ) . $this->addCommonTemplateParameters( $res );
-			$result .= $this->getRowStart( $res ) . '{{' . $content . '}}';
+
+			$this->addTemplateContentFields( $row );
+			$this->addCommonTemplateFields( $res );
+			$this->templateRenderer->packFieldsForTemplate( $this->mTemplate );
+
+			$result .= $this->getRowStart( $res ) . $this->templateRenderer->render();
 		} else { // Build simple list
 			$content = $this->getRowListContent( $row );
 			$result .= $this->getRowStart( $res ) . $content;
@@ -385,32 +395,51 @@ class ListResultPrinter extends ResultPrinter {
 	 *
 	 * @return string
 	 */
-	protected function getTemplateContent( $row ){
-		$wikitext = '';
+	protected function addTemplateContentFields( $row ){
 
 		foreach ( $row as $i => $field ) {
-			$wikitext .= '|' . ( $this->mNamedArgs ? '?' . $field->getPrintRequest()->getLabel() : $i + 1 ) . '=';
-			$first_value = true;
+
+			$value = '';
+			$fieldName = '';
+
+			if ( $this->mNamedArgs ) {
+				$fieldName = '?' . $field->getPrintRequest()->getLabel();
+			}
+
+			if ( $fieldName === '' || $fieldName === '?' ) {
+				$fieldName = $fieldName . $i + 1;
+			}
 
 			while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $i == 0 ) ) ) !== false ) {
-				if ( $first_value ) {
-					$first_value = false;
-				} else {
-					$wikitext .= ', ';
-				}
-				$wikitext .= $text;
+				$value .= $value === '' ? $text : $this->params['sep'] . ' ' . $text;
 			}
+
+			$this->templateRenderer->addField( $fieldName, $value );
 		}
 
-		$wikitext .= "|#={$this->numRows}";
-		return $wikitext;
+		$this->templateRenderer->addField( '#', $this->numRows );
 	}
 
-	protected function addCommonTemplateParameters( $queryResult ) {
-		return ( $this->mUserParam ? "|userparam=$this->mUserParam" : '' ) .
-			"|smw-resultquerycondition=" . $queryResult->getQuery()->getQueryString() .
-			"|smw-resultquerylimit=" . $queryResult->getQuery()->getLimit() .
-			"|smw-resultqueryoffset=" . $queryResult->getQuery()->getOffset();
+	protected function addCommonTemplateFields( $queryResult ) {
+
+		if ( $this->mUserParam ) {
+			$this->templateRenderer->addField( 'userparam', $this->mUserParam );
+		}
+
+		$this->templateRenderer->addField(
+			'smw-resultquerycondition',
+			$queryResult->getQuery()->getQueryString()
+		);
+
+		$this->templateRenderer->addField(
+			'smw-resultquerylimit',
+			$queryResult->getQuery()->getLimit()
+		);
+
+		$this->templateRenderer->addField(
+			'smw-resultqueryoffset',
+			$queryResult->getQuery()->getOffset()
+		);
 	}
 
 	/**
