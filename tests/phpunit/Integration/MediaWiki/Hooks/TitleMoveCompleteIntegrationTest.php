@@ -79,10 +79,11 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 		$this->pageCreator
 			->createPage( $oldTitle );
 
-		$this->pageCreator
+		$result = $this->pageCreator
 			->getPage()
 			->getTitle()
 			->moveTo( $expectedNewTitle, false, 'test', true );
+		$this->assertTrue( $result );
 
 		$this->assertNotNull(
 			WikiPage::factory( $oldTitle )->getRevision()
