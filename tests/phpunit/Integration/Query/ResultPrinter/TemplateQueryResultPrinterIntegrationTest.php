@@ -72,10 +72,10 @@ class TemplateQueryResultPrinterIntegrationTest extends MwDBaseUnitTestCase {
 
 		foreach ( array( 'Foo', 'Bar', '123' ) as $title ) {
 
-		$this->stringBuilder
-			->addString( '[[Category:TemplateOutputUsingUnnamedArgumentsForNonUnicode]]' )
-			->addString( '[[Has page value::ABC]]' )
-			->addString( '[[Has page value::DEF]]' );
+			$this->stringBuilder
+				->addString( '[[Category:TemplateOutputUsingUnnamedArgumentsForNonUnicode]]' )
+				->addString( '[[Has page value::ABC]]' )
+				->addString( '[[Has page value::DEF]]' );
 
 			$this->pageCreator
 				->createPage( Title::newFromText( $title ) )
@@ -131,7 +131,7 @@ class TemplateQueryResultPrinterIntegrationTest extends MwDBaseUnitTestCase {
 		$this->stringBuilder
 			->addString( '<includeonly>' )
 			->addString( '[{{{#}}}]:' )
-		//	->addString( '{{{1}}}:' )
+			->addString( '{{{1}}}:' )
 			->addString( '{{{?Has page value}}}:' )
 			->addString( '{{{userparam}}}:' )
 			->addString( '</includeonly>' );
@@ -142,10 +142,10 @@ class TemplateQueryResultPrinterIntegrationTest extends MwDBaseUnitTestCase {
 
 		foreach ( array( 'Foo', 'Bar', 'テスト', '123' ) as $title ) {
 
-		$this->stringBuilder
-			->addString( '[[Category:TemplateOutputUsingNamedArgumentsForUnicodeIncludedSubject]]' )
-			->addString( '[[Has page value::123]]' )
-			->addString( '[[Has page value::456]]' );
+			$this->stringBuilder
+				->addString( '[[Category:TemplateOutputUsingNamedArgumentsForUnicodeIncludedSubject]]' )
+				->addString( '[[Has page value::123]]' )
+				->addString( '[[Has page value::456]]' );
 
 			$this->pageCreator
 				->createPage( Title::newFromText( $title ) )
@@ -176,10 +176,10 @@ class TemplateQueryResultPrinterIntegrationTest extends MwDBaseUnitTestCase {
 		$parserOutput = $this->pageCreator->getEditInfo()->output;
 
 		$this->stringBuilder
-			->addString( '[0]:123, 456:[$%&amp;*==42]:' )
-			->addString( '[1]:123, 456:[$%&amp;*==42]:' )
-			->addString( '[2]:123, 456:[$%&amp;*==42]:' )
-			->addString( '[3]:123, 456:[$%&amp;*==42]:' );
+			->addString( '[0]:123:123; 456:[$%&amp;*==42]:' )
+			->addString( '[1]:Bar:123; 456:[$%&amp;*==42]:' )
+			->addString( '[2]:Foo:123; 456:[$%&amp;*==42]:' )
+			->addString( '[3]:テスト:123; 456:[$%&amp;*==42]:' );
 
 		$this->stringValidator->assertThatStringContains(
 			$this->stringBuilder->getString(),

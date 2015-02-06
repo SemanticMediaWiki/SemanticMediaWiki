@@ -8,8 +8,7 @@ use SMW\ApplicationFactory;
 /**
  * @covers \SMW\MediaWiki\MwCollaboratorFactory
  *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 2.1
@@ -209,6 +208,20 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\PageUpdater',
 			$instance->newPageUpdater()
+		);
+	}
+
+	public function testCanConstructWikitextTemplateRenderer() {
+
+		$applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new MwCollaboratorFactory( $applicationFactory );
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\WikitextTemplateRenderer',
+			$instance->newWikitextTemplateRenderer()
 		);
 	}
 
