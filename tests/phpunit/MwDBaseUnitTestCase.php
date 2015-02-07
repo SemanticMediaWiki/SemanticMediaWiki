@@ -122,11 +122,14 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 		return $this->storesToBeExcluded = $storesToBeExcluded;
 	}
 
-	protected function skipTestForMediaWikiVersionLowerThan( $version ) {
+	protected function skipTestForMediaWikiVersionLowerThan( $version, $message = '' ) {
+
+		if ( $message === '' ) {
+			$message = "This test is skipped for MediaWiki version {$GLOBALS['wgVersion']}";
+		}
+
 		if ( version_compare( $GLOBALS['wgVersion'], $version, '<' ) ) {
-			$this->markTestSkipped(
-				"This test is skipped for MediaWiki version {$GLOBALS['wgVersion']}"
-			);
+			$this->markTestSkipped( $message );
 		}
 	}
 

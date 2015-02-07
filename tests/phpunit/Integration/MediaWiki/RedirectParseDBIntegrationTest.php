@@ -4,16 +4,12 @@ namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-
 use SMW\DIWikiPage;
 use SMW\DIProperty;
-
+use SMW\ApplicationFactory;
 use Title;
 
 /**
- * @group SMW
- * @group SMWExtension
- *
  * @group semantic-mediawiki-integration
  * @group mediawiki-databas
  *
@@ -26,6 +22,8 @@ use Title;
  */
 class RedirectParseDBIntegrationTest extends MwDBaseUnitTestCase {
 
+	private $deletePoolOfPages = array();
+
 	private $pageCreator;
 	private $semanticDataValidator;
 
@@ -34,6 +32,16 @@ class RedirectParseDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->pageCreator = UtilityFactory::getInstance()->newPageCreator();
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+	}
+
+	protected function tearDown() {
+
+		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
+
+		$pageDeleter
+			->doDeletePoolOfPages( $this->deletePoolOfPages );
+
+		parent::tearDown();
 	}
 
 	public function testRedirectParseUsingManualRedirect() {
@@ -51,6 +59,11 @@ class RedirectParseDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->semanticDataValidator->assertHasProperties(
 			$expected,
 			$this->getStore()->getInProperties( DIWikiPage::newFromTitle( $target ) )
+		);
+
+		$this->deletePoolOfPages = array(
+			__METHOD__,
+			'RedirectParseUsingManualRedirect'
 		);
 	}
 
@@ -74,17 +87,27 @@ class RedirectParseDBIntegrationTest extends MwDBaseUnitTestCase {
 			$expected,
 			$this->getStore()->getInProperties( DIWikiPage::newFromTitle( $target ) )
 		);
+
+		$this->deletePoolOfPages = array(
+			__METHOD__,
+			'RedirectParseUsingMoveToPage'
+		);
 	}
 
 	public function testManualRemovalOfRedirectTarget() {
 
-		$subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+		$source = DIWikiPage::newFromTitle(
+			Title::newFromText( __METHOD__ )
+		);
 
-		$target  = DIWikiPage::newFromTitle( Title::newFromText( 'ManualRemovalOfRedirectTarget' ) );
+		$target  = DIWikiPage::newFromTitle(
+			Title::newFromText( 'ManualRemovalOfRedirectTarget' )
+		);
+
 		$target->getSortKey();
 
 		$this->pageCreator
-			->createPage( $subject->getTitle() )
+			->createPage( $source->getTitle() )
 			->doEdit( '#REDIRECT [[Property:ManualRemovalOfRedirectTarget-NotTheRealTarget]]' )
 			->doEdit( '#REDIRECT [[ManualRemovalOfRedirectTarget]]' );
 
@@ -94,7 +117,7 @@ class RedirectParseDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->assertEquals(
 			$target,
-			$this->getStore()->getRedirectTarget( $subject )
+			$this->getStore()->getRedirectTarget( $source )
 		);
 
 		$this->semanticDataValidator->assertHasProperties(
@@ -103,16 +126,119 @@ class RedirectParseDBIntegrationTest extends MwDBaseUnitTestCase {
 		);
 
 		$this->pageCreator
-			->createPage( $subject->getTitle() )
+			->createPage( $source->getTitle() )
 			->doEdit( 'removed redirect target' );
 
 		$this->assertEquals(
-			$subject,
-			$this->getStore()->getRedirectTarget( $subject )
+			$source,
+			$this->getStore()->getRedirectTarget( $source )
 		);
 
 		$this->assertEmpty(
 			$this->getStore()->getInProperties( $target )
+		);
+
+		$this->deletePoolOfPages = array(
+			__METHOD__,
+			'ManualRemovalOfRedirectTarget'
+		);
+	}
+
+	public function testDeepRedirectTargetResolverToFindTarget() {
+
+		$this->skipTestForMediaWikiVersionLowerThan(
+			'1.20',
+			"Skipping test because expected target isn't resolved correctly on 1.19"
+		);
+
+		$source = Title::newFromText( 'DeepRedirectTargetResolverToFindTarget' );
+
+		$this->pageCreator
+			->createPage( $source )
+			->doEdit( '#REDIRECT [[DeepRedirectTargetResolverToFindTarget/1]]' );
+
+		$intermediateTarget = Title::newFromText( 'DeepRedirectTargetResolverToFindTarget/2' );
+
+		$this->pageCreator
+			->createPage( Title::newFromText( 'DeepRedirectTargetResolverToFindTarget/1' ) )
+			->getPage()
+			->getTitle()
+			->moveTo( $intermediateTarget, false, 'redirect test', true );
+
+		$this->pageCreator
+			->createPage( Title::newFromText( 'DeepRedirectTargetResolverToFindTarget/2' ) )
+			->doEdit( '#REDIRECT [[DeepRedirectTargetResolverToFindTarget/3]]' );
+
+		$target = Title::newFromText( 'DeepRedirectTargetResolverToFindTarget/3' );
+
+		$deepRedirectTargetResolver = ApplicationFactory::getInstance()
+			->newMwCollaboratorFactory()
+			->newDeepRedirectTargetResolver();
+
+		$this->assertEquals(
+			$target->getDBKey(),
+			$deepRedirectTargetResolver->findRedirectTargetFor( $source )->getDBKey()
+		);
+
+		$this->assertEquals(
+			$target->getDBKey(),
+			$this->getStore()->getRedirectTarget( DIWikiPage::newFromTitle( $source ) )->getDBKey()
+		);
+
+		$this->deletePoolOfPages = array(
+			'DeepRedirectTargetResolverToFindTarget',
+			'DeepRedirectTargetResolverToFindTarget/1',
+			'DeepRedirectTargetResolverToFindTarget/2',
+			'DeepRedirectTargetResolverToFindTarget/3'
+		);
+	}
+
+	public function testDeepRedirectTargetResolverToDetectCircularTarget() {
+
+		$this->skipTestForMediaWikiVersionLowerThan(
+			'1.20',
+			"Skipping test because circular target (RuntimeException) isn't found on 1.19"
+		);
+
+		$source = Title::newFromText( 'DeepRedirectTargetResolverToDetectCircularTarget' );
+
+		$this->pageCreator
+			->createPage( $source )
+			->doEdit( '#REDIRECT [[DeepRedirectTargetResolverToDetectCircularTarget/1]]' );
+
+		$this->pageCreator
+			->createPage( Title::newFromText( 'DeepRedirectTargetResolverToDetectCircularTarget/1' ) )
+			->doEdit( '#REDIRECT [[DeepRedirectTargetResolverToDetectCircularTarget/2]]' );
+
+		// Create circular redirect
+		$this->pageCreator
+			->createPage( Title::newFromText( 'DeepRedirectTargetResolverToDetectCircularTarget/2' ) )
+			->doEdit( '#REDIRECT [[DeepRedirectTargetResolverToDetectCircularTarget/1]]' );
+
+		$deepRedirectTargetResolver = ApplicationFactory::getInstance()
+			->newMwCollaboratorFactory()
+			->newDeepRedirectTargetResolver();
+
+		// Store will point towards the correct target
+		$expectedRedirect = DIWikiPage::newFromTitle(
+			Title::newFromText( 'DeepRedirectTargetResolverToDetectCircularTarget/1' )
+		);
+
+		$this->assertEquals(
+			$expectedRedirect->getDBKey(),
+			$this->getStore()->getRedirectTarget( DIWikiPage::newFromTitle( $source ) )->getDBKey()
+		);
+
+		// Resolver will raise an exception as actions can not act on
+		// a circular redirect oppose to a possible annotation created by the
+		// store
+		$this->setExpectedException( 'RuntimeException' );
+		$deepRedirectTargetResolver->findRedirectTargetFor( $source );
+
+		$this->deletePoolOfPages = array(
+			'DeepRedirectTargetResolverToDetectCircularTarget',
+			'DeepRedirectTargetResolverToDetectCircularTarget/1',
+			'DeepRedirectTargetResolverToDetectCircularTarget/2'
 		);
 	}
 

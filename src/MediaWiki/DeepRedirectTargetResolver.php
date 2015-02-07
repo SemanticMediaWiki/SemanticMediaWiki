@@ -24,7 +24,7 @@ class DeepRedirectTargetResolver {
 	 *
 	 * @var array
 	 */
-	private $knownRedirects = array();
+	private $recursiveResolverTracker = array();
 
 	/**
 	 * @since 2.1
@@ -57,7 +57,9 @@ class DeepRedirectTargetResolver {
 
 	private function doResolveRedirectTarget( Title $title ) {
 
-		if ( $this->isCircularByKnownRedirects( $title ) ) {
+		$this->addToResolverTracker( $title );
+
+		if ( $this->isCircularByKnownRedirectTarget( $title ) ) {
 			throw new RuntimeException( "Circular redirect for {$title->getPrefixedDBkey()} detected." );
 		}
 
@@ -65,7 +67,6 @@ class DeepRedirectTargetResolver {
 			$title = $this->pageCreator->createPage( $title )->getRedirectTarget();
 
 			if ( $title instanceOf Title ) {
-				$this->addToKnownRedirects( $title );
 				$title = $this->doResolveRedirectTarget( $title );
 			}
 		}
@@ -77,21 +78,17 @@ class DeepRedirectTargetResolver {
 		throw new RuntimeException( "Redirect target is unresolvable" );
 	}
 
-	private function addToKnownRedirects( $title ) {
+	private function addToResolverTracker( $title ) {
 
-		if ( !isset( $this->knownRedirects[ $title->getPrefixedDBkey() ] ) ) {
-			return $this->knownRedirects[ $title->getPrefixedDBkey() ] = false;
+		if ( !isset( $this->recursiveResolverTracker[ $title->getPrefixedDBkey() ] ) ) {
+			$this->recursiveResolverTracker[ $title->getPrefixedDBkey() ] = 0;
 		}
 
-		return $this->knownRedirects[ $title->getPrefixedDBkey() ] = true;
+		return $this->recursiveResolverTracker[ $title->getPrefixedDBkey() ]++;
 	}
 
-	/**
-	 * If a title is already tracked then it was inserted during a previous recurive
-	 * run which means that it reached the starting point of a circular reference
-	 */
-	private function isCircularByKnownRedirects( $title ) {
-		return isset( $this->knownRedirects[ $title->getPrefixedDBkey() ] ) && $this->knownRedirects[ $title->getPrefixedDBkey() ];
+	private function isCircularByKnownRedirectTarget( $title ) {
+		return isset( $this->recursiveResolverTracker[ $title->getPrefixedDBkey() ] ) && $this->recursiveResolverTracker[ $title->getPrefixedDBkey() ] > 1;
 	}
 
 }
