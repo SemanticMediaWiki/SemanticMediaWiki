@@ -20,7 +20,7 @@ use Title;
  *
  * @author mwjames
  */
-class RedirectParseDBIntegrationTest extends MwDBaseUnitTestCase {
+class RedirectTargetFinderIntegrationTest extends MwDBaseUnitTestCase {
 
 	private $deletePoolOfPages = array();
 

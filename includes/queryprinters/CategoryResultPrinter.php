@@ -74,11 +74,7 @@ class CategoryResultPrinter extends ResultPrinter {
 				continue;
 			}
 
-			$cur_first_char = $wgContLang->firstChar(
-				$content[0]->getDIType() == SMWDataItem::TYPE_WIKIPAGE ?
-					$res->getStore()->getWikiPageSortKey( $content[0] )
-					: $content[0]->getSortKey()
-			);
+			$cur_first_char = $this->getFirstLetterForCategory( $res, $content );
 
 			if ( $rowindex % $rows_per_column == 0 ) {
 				$result .= "\n			<div style=\"float: left; width: $column_width%;\">\n";
@@ -212,6 +208,17 @@ class CategoryResultPrinter extends ResultPrinter {
 				'default' => '',
 			),
 		) );
+	}
+
+	private function getFirstLetterForCategory( SMWQueryResult $res, $content ) {
+
+		$sortKey = $content[0]->getSortKey();
+
+		if ( $content[0]->getDIType() == SMWDataItem::TYPE_WIKIPAGE ) {
+			$sortKey = $res->getStore()->getWikiPageSortKey( $content[0] );
+		}
+
+		return ByLanguageCollationMapper::getInstance()->findFirstLetterForCategory( $sortKey );
 	}
 
 }
