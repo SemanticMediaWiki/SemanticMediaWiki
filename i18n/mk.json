@@ -75,7 +75,7 @@
 	"smw-paramdesc-prettyprint": "Дали исписот да се форматира со дополнителни вовлекувања и нови редови",
 	"smw-paramdesc-source": "Алтернативен извор за барање",
 	"smw-paramdesc-jsonsyntax": "JSON-синтакса што ќе се користи",
-	"smw-printername-feed": "RSS и Atom канал",
+	"smw-printername-feed": "RSS- и Атом-канал",
 	"smw-paramdesc-feedtype": "Вид на канал",
 	"smw-paramdesc-feedtitle": "Текст на насловот на каналот",
 	"smw-paramdesc-feeddescription": "Текст на описот на каналот",
