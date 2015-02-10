@@ -4,7 +4,7 @@ This is not a release yet.
 
 ## New features
 
-* #770 Added `--no-cache`/`--debug` option to the `rebuildData.php` script (refs #749, #766)
+* #770 Added the `--no-cache` option to `rebuildData.php` and the `--debug` option to `rebuildData.php` and `rebuildConceptCache.php` (refs #749, #766)
 * #756 Added template support for the `#set` parser
 * #783 Added support for `wgCategoryCollation` setting in `CategoryResultPrinter` (#699, T40853)
 
