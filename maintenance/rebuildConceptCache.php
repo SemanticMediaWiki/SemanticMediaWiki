@@ -3,6 +3,7 @@
 namespace SMW\Maintenance;
 
 use SMW\Maintenance\ConceptCacheRebuilder;
+use SMW\Maintenance\MaintenanceHelper;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\ApplicationFactory;
 
@@ -98,6 +99,8 @@ class RebuildConceptCache extends \Maintenance {
 		$this->addOption( 'old', '<min> Process only concepts with caches older than <min> minutes or with no caches at all.', false, true );
 		$this->addOption( 's', '<startid> Process only concepts with page id of at least <startid>', false, true );
 		$this->addOption( 'e', '<endid> Process only concepts with page id of at most <endid>', false, true );
+
+		$this->addOption( 'debug', 'Will set global variables to support debug ouput while running the script', false );
 		$this->addOption( 'quiet', 'Do not give any output', false );
 		$this->addOption( 'verbose', 'Give additional output. No effect if --quiet is given.', false );
 	}
@@ -110,6 +113,14 @@ class RebuildConceptCache extends \Maintenance {
 		if ( !defined( 'SMW_VERSION' ) ) {
 			$this->reportMessage( "You need to have SMW enabled in order to run the maintenance script!\n\n" );
 			return false;
+		}
+
+		$maintenanceHelper = new MaintenanceHelper();
+
+		if ( $this->hasOption( 'debug' ) ) {
+			$maintenanceHelper->setGlobalToValue( 'wgShowExceptionDetails', true );
+			$maintenanceHelper->setGlobalToValue( 'wgShowSQLErrors', true );
+			$maintenanceHelper->setGlobalToValue( 'wgShowDBErrorBacktrace', true );
 		}
 
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -126,10 +137,12 @@ class RebuildConceptCache extends \Maintenance {
 		$conceptCacheRebuilder->setParameters( $this->mOptions );
 
 		if ( $conceptCacheRebuilder->rebuild() ) {
+			$maintenanceHelper->reset();
 			return true;
 		}
 
 		$this->reportMessage( $this->mDescription . "\n\n" . 'Use option --help for usage details.' . "\n"  );
+		$maintenanceHelper->reset();
 		return false;
 	}
 
