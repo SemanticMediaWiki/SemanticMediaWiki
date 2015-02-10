@@ -50,7 +50,7 @@
 	"suggest": {
 		"mediawiki/semantic-result-formats": "Additional result formats for SMW queries",
 		"mediawiki/semantic-forms": "Easy creation of forms to add semantic data"
-	}
+	},
 	"extra": {
 		"branch-alias": {
 			"dev-master": "2.2.x-dev"
@@ -81,7 +81,7 @@
 		],
 		"cs": [
 			"composer validate --no-interaction"
-		]
+		],
 		"ci": [
 			"composer phpunit",
 			"composer cs"
