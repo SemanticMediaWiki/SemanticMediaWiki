@@ -64,9 +64,9 @@ Released December 2nd, 2012.
 
 * Added tests for the query processor, the store, data items and result printers, including base test classes for the later two that can be used by extensions.
 * Refactored large portions of the SQLStore implementation (SMWSQLStore3).
-** More, shorter files for various task groups (SQLStore3_Writers, SQLStore3_Readers, SQLStore3_SpecialPageHandlers, SQLStore_SetupHandler, and others)
-** Different types of data now handled modularly by DIHandler classes
-** Completely rewritten writing methods that compute a full diff on a database level to decide which write activities are needed (if any)
+    * More, shorter files for various task groups (SQLStore3_Writers, SQLStore3_Readers, SQLStore3_SpecialPageHandlers, SQLStore_SetupHandler, and others)
+    * Different types of data now handled modularly by DIHandler classes
+    * Completely rewritten writing methods that compute a full diff on a database level to decide which write activities are needed (if any)
 * No more inline CSS and JavaScript on special pages (now all resource loader modules).
 * Added SMWExportPrinter class to facilitate creating export printers and simplify handling code.
 * Added SMWIResultPrinter interface to type hint result printers against.
