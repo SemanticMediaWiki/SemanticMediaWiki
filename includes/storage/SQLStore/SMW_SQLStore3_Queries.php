@@ -132,10 +132,10 @@ class SMWSQLStore3QueryEngine {
 		$this->queryBuilder->setSortKeys( $this->sortKeys );
 
 		$qp = new SMWQueryParser( $smwgQConceptFeatures );
-		$this->queryBuilder->buildQueryContainer( $qp->getQueryDescription( $conceptDescriptionText ) );
+		$this->queryBuilder->buildSqlQueryPartFor( $qp->getQueryDescription( $conceptDescriptionText ) );
 
-		$qid = $this->queryBuilder->getLastContainerId();
-		$this->queryParts = $this->queryBuilder->getQueryContainer();
+		$qid = $this->queryBuilder->getLastSqlQueryPartId();
+		$this->queryParts = $this->queryBuilder->getSqlQueryPart();
 
 		if ( $qid < 0 ) {
 			return null;
@@ -211,10 +211,10 @@ class SMWSQLStore3QueryEngine {
 
 		// *** First compute abstract representation of the query (compilation) ***//
 		$this->queryBuilder->setSortKeys( $this->sortKeys );
-		$this->queryBuilder->buildQueryContainer( $query->getDescription() ); // compile query, build query "plan"
+		$this->queryBuilder->buildSqlQueryPartFor( $query->getDescription() ); // compile query, build query "plan"
 
-		$qid = $this->queryBuilder->getLastContainerId();
-		$this->queryParts = $this->queryBuilder->getQueryContainer();
+		$qid = $this->queryBuilder->getLastSqlQueryPartId();
+		$this->queryParts = $this->queryBuilder->getSqlQueryPart();
 		$this->errors = $this->queryBuilder->getErrors();
 
 		if ( $qid < 0 ) { // no valid/supported condition; ensure that at least only proper pages are delivered
@@ -722,10 +722,10 @@ class SMWSQLStore3QueryEngine {
 		if ( count( $extraproperties ) > 0 ) {
 
 			$this->queryBuilder->setSortKeys( $this->sortKeys );
-			$this->queryBuilder->buildQueryContainer( new Conjunction( $extraproperties ) );
+			$this->queryBuilder->buildSqlQueryPartFor( new Conjunction( $extraproperties ) );
 
-			$newqid = $this->queryBuilder->getLastContainerId();
-			$this->queryParts = $this->queryBuilder->getQueryContainer();
+			$newqid = $this->queryBuilder->getLastSqlQueryPartId();
+			$this->queryParts = $this->queryBuilder->getSqlQueryPart();
 			$this->errors = $this->queryBuilder->getErrors();
 
 			$newqobj = $this->queryParts[$newqid]; // This is always an SMWSQLStore3Query::Q_CONJUNCTION ...
