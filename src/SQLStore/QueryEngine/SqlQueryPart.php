@@ -87,7 +87,7 @@ class SqlQueryPart {
 	public $where = '';
 
 	/**
-	 * @var array
+	 * @var string[]
 	 */
 	public $components = array();
 
@@ -99,7 +99,7 @@ class SqlQueryPart {
 
 	/**
 	 * property dbkey => db field; passed down during query execution.
-	 * @var array
+	 * @var string[]
 	 */
 	public $sortfields = array();
 
