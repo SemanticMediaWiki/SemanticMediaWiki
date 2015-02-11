@@ -202,7 +202,6 @@ class QueryBuilder {
 	}
 
 	private function getQueryCompiler( Description $description ) {
-
 		foreach ( $this->queryCompilers as $queryCompiler ) {
 			if ( $queryCompiler->canCompileDescription( $description ) ) {
 				return $queryCompiler;
@@ -218,11 +217,12 @@ class QueryBuilder {
 	 * Register a query object to the internal query list, if the query is
 	 * valid. Also make sure that sortkey information is propagated down
 	 * from subqueries of this query.
+	 *
+	 * @param SqlQueryPart $query
 	 */
 	private function registerQuery( SqlQueryPart $query ) {
-
 		if ( $query->type === SqlQueryPart::Q_NOQUERY ) {
-			return null;
+			return;
 		}
 
 		$this->addQueryContainerForId( $query->queryNumber, $query );
