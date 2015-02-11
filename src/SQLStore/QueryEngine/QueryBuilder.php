@@ -2,6 +2,8 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
+use OutOfBoundsException;
+use InvalidArgumentException;
 use SMW\Query\Language\Description;
 use SMW\SQLStore\QueryEngine\Compiler\ClassDescriptionCompiler;
 use SMW\SQLStore\QueryEngine\Compiler\ConceptDescriptionCompiler;
@@ -109,16 +111,31 @@ class QueryBuilder {
 	/**
 	 * @since 2.2
 	 *
-	 * @param int|null $id
+	 * @param int $id
 	 *
-	 * @return array
+	 * @return SqlQueryPart
+	 * @throws InvalidArgumentException
+	 * @throws OutOfBoundsException
 	 */
-	public function getSqlQueryPart( $id = null ) {
-		if ( $id === null ) {
-			return $this->sqlQueryParts;
+	public function getSqlQueryPart( $id ) {
+		if ( !is_int( $id ) ) {
+			throw new InvalidArgumentException( '$id needs to be an integer' );
 		}
 
-		return isset( $this->sqlQueryParts[$id] ) ? $this->sqlQueryParts[$id] : array();
+		if ( !array_key_exists( $id, $this->sqlQueryParts ) ) {
+			throw new OutOfBoundsException( 'There is no query part with id ' . $id );
+		}
+
+		return $this->sqlQueryParts[$id];
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return SqlQueryPart[]
+	 */
+	public function getSqlQueryParts() {
+		return $this->sqlQueryParts;
 	}
 
 	/**

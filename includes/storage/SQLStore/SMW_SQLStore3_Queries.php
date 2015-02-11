@@ -135,7 +135,7 @@ class SMWSQLStore3QueryEngine {
 		$this->queryBuilder->buildSqlQueryPartFor( $qp->getQueryDescription( $conceptDescriptionText ) );
 
 		$qid = $this->queryBuilder->getLastSqlQueryPartId();
-		$this->queryParts = $this->queryBuilder->getSqlQueryPart();
+		$this->queryParts = $this->queryBuilder->getSqlQueryParts();
 
 		if ( $qid < 0 ) {
 			return null;
@@ -214,7 +214,7 @@ class SMWSQLStore3QueryEngine {
 		$this->queryBuilder->buildSqlQueryPartFor( $query->getDescription() ); // compile query, build query "plan"
 
 		$qid = $this->queryBuilder->getLastSqlQueryPartId();
-		$this->queryParts = $this->queryBuilder->getSqlQueryPart();
+		$this->queryParts = $this->queryBuilder->getSqlQueryParts();
 		$this->errors = $this->queryBuilder->getErrors();
 
 		if ( $qid < 0 ) { // no valid/supported condition; ensure that at least only proper pages are delivered
@@ -725,7 +725,7 @@ class SMWSQLStore3QueryEngine {
 			$this->queryBuilder->buildSqlQueryPartFor( new Conjunction( $extraproperties ) );
 
 			$newqid = $this->queryBuilder->getLastSqlQueryPartId();
-			$this->queryParts = $this->queryBuilder->getSqlQueryPart();
+			$this->queryParts = $this->queryBuilder->getSqlQueryParts();
 			$this->errors = $this->queryBuilder->getErrors();
 
 			$newqobj = $this->queryParts[$newqid]; // This is always an SMWSQLStore3Query::Q_CONJUNCTION ...
