@@ -49,14 +49,14 @@ class ConditionBuilderStrategyFinder {
 	}
 
 	/**
-	 * @since  2.1
+	 * @since 2.1
 	 */
 	public function clear() {
 		self::$conditionBuilders = array();
 	}
 
 	/**
-	 * @since  2.1
+	 * @since 2.1
 	 *
 	 * @param ConditionBuilder $conditionBuilder
 	 */
@@ -65,7 +65,7 @@ class ConditionBuilderStrategyFinder {
 	}
 
 	/**
-	 * @since  2.1
+	 * @since 2.1
 	 *
 	 * @param Description $description
 	 *

@@ -26,7 +26,7 @@ class EngineOptions {
 	public $randomSortingSupport = true;
 
 	/**
-	 * @since  2.1
+	 * @since 2.1
 	 */
 	public function __construct() {
 		$this->ignoreQueryErrors = $GLOBALS['smwgIgnoreQueryErrors'];
