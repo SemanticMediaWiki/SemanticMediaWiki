@@ -80,7 +80,7 @@ class ClassDescriptionCompiler implements QueryCompiler {
 			$query->joinTable = $this->queryBuilder->getStore()->findPropertyTableID( new DIProperty( '_INST' ) );
 			$query->joinfield = "$query->alias.s_id";
 			$query->components[$cqid] = "$query->alias.o_id";
-			$this->queryBuilder->addQueryContainerForId( $cqid, $cquery );
+			$this->queryBuilder->addSqlQueryPartForId( $cqid, $cquery );
 		}
 
 		return $query;

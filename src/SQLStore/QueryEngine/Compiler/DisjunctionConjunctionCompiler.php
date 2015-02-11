@@ -56,7 +56,7 @@ class DisjunctionConjunctionCompiler implements QueryCompiler {
 
 		foreach ( $description->getDescriptions() as $subDescription ) {
 
-			$subQueryId = $this->queryBuilder->compileQueries( $subDescription );
+			$subQueryId = $this->queryBuilder->buildSqlQueryPartFor( $subDescription );
 
 			if ( $subQueryId >= 0 ) {
 				$query->components[ $subQueryId ] = true;

@@ -85,10 +85,10 @@ class ConceptDescriptionCompiler implements QueryCompiler {
 			$query->where = "$query->alias.o_id=" . $this->queryBuilder->getStore()->getConnection( 'mw.db' )->addQuotes( $conceptId );
 		} elseif ( $row->concept_txt ) { // Parse description and process it recursively.
 			if ( $may_be_computed ) {
-				$qid = $this->queryBuilder->compileQueries( $this->getConceptQueryDescription( $row->concept_txt ) );
+				$qid = $this->queryBuilder->buildSqlQueryPartFor( $this->getConceptQueryDescription( $row->concept_txt ) );
 
 				if ($qid != -1) {
-					$query = $this->queryBuilder->getQueryContainer( $qid );
+					$query = $this->queryBuilder->getSqlQueryPart( $qid );
 				} else { // somehow the concept query is no longer valid; maybe some syntax changed (upgrade) or global settings were modified since storing it
 					$this->queryBuilder->addError( wfMessage( 'smw_emptysubquery' )->text() ); // not quite the right message, but this case is very rare; let us not make detailed messages for this
 				}

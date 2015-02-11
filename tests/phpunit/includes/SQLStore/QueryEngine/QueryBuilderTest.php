@@ -63,18 +63,18 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 		$description = new NamespaceDescription( NS_HELP );
 
 		$instance = new QueryBuilder( $store );
-		$instance->buildQueryContainer( $description );
+		$instance->buildSqlQueryPartFor( $description );
 
 		$expected = new \stdClass;
 		$expected->type = 1;
 		$expected->where = "t0.smw_namespace=";
 
-		$this->assertEquals( 0, $instance->getLastContainerId() );
+		$this->assertEquals( 0, $instance->getLastSqlQueryPartId() );
 		$this->assertEmpty( $instance->getErrors() );
 
 		$this->queryContainerValidator->assertThatContainerContains(
 			$expected,
-			$instance->getQueryContainer()
+			$instance->getSqlQueryPart()
 		);
 	}
 
@@ -97,7 +97,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 		$description->addDescription( new NamespaceDescription( NS_MAIN ) );
 
 		$instance = new QueryBuilder( $store );
-		$instance->buildQueryContainer( $description );
+		$instance->buildSqlQueryPartFor( $description );
 
 		$expectedDisjunction = new \stdClass;
 		$expectedDisjunction->type = 3;
@@ -112,7 +112,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			0,
-			$instance->getLastContainerId()
+			$instance->getLastSqlQueryPartId()
 		);
 
 		$this->assertEmpty(
@@ -127,7 +127,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->queryContainerValidator->assertThatContainerContains(
 			$expected,
-			$instance->getQueryContainer()
+			$instance->getSqlQueryPart()
 		);
 	}
 
@@ -160,7 +160,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 		$description = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );
 
 		$instance = new QueryBuilder( $store );
-		$instance->buildQueryContainer( $description );
+		$instance->buildSqlQueryPartFor( $description );
 
 		$expectedClass = new \stdClass;
 		$expectedClass->type = 1;
@@ -175,7 +175,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			0,
-			$instance->getLastContainerId()
+			$instance->getLastSqlQueryPartId()
 		);
 
 		$this->assertEmpty(
@@ -189,7 +189,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->queryContainerValidator->assertThatContainerContains(
 			$expected,
-			$instance->getQueryContainer()
+			$instance->getSqlQueryPart()
 		);
 	}
 

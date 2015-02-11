@@ -144,7 +144,7 @@ class SomePropertyCompiler implements QueryCompiler {
 			$pquery->type = SqlQueryPart::Q_PROP_HIERARCHY;
 			$pquery->joinfield = array( $pid );
 			$query->components[$pqid] = "{$query->alias}.p_id";
-			$this->queryBuilder->addQueryContainerForId( $pqid, $pquery );
+			$this->queryBuilder->addSqlQueryPartForId( $pqid, $pquery );
 
 			// Alternative code without property hierarchies:
 			// $query->where = "{$query->alias}.p_id=" . $this->m_dbs->addQuotes( $pid );
@@ -162,7 +162,7 @@ class SomePropertyCompiler implements QueryCompiler {
 			$query->joinfield = "{$query->alias}.{$s_id}";
 
 			// process page description like main query
-			$sub = $this->queryBuilder->compileQueries( $description->getDescription() );
+			$sub = $this->queryBuilder->buildSqlQueryPartFor( $description->getDescription() );
 
 			if ( $sub >= 0 ) {
 				$query->components[$sub] = "{$query->alias}.{$o_id}";

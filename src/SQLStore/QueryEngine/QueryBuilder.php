@@ -37,7 +37,7 @@ class QueryBuilder {
 	 *
 	 * @var SqlQueryPart[]
 	 */
-	private $queries = array();
+	private $sqlQueryParts = array();
 
 	/**
 	 * Array of sorting requests ("Property_name" => "ASC"/"DESC"). Used during query
@@ -56,7 +56,7 @@ class QueryBuilder {
 	/**
 	 * @var integer
 	 */
-	private $lastContainerId = -1;
+	private $lastQueryPartId = -1;
 
 	/**
 	 * @since 2.2
@@ -113,12 +113,12 @@ class QueryBuilder {
 	 *
 	 * @return array
 	 */
-	public function getQueryContainer( $id = null ) {
+	public function getSqlQueryPart( $id = null ) {
 		if ( $id === null ) {
-			return $this->queries;
+			return $this->sqlQueryParts;
 		}
 
-		return isset( $this->queries[$id] ) ? $this->queries[$id] : array();
+		return isset( $this->sqlQueryParts[$id] ) ? $this->sqlQueryParts[$id] : array();
 	}
 
 	/**
@@ -129,8 +129,8 @@ class QueryBuilder {
 	 *
 	 * @return QueryBuilder
 	 */
-	public function addQueryContainerForId( $id, SqlQueryPart $query ) {
-		$this->queries[$id] = $query;
+	public function addSqlQueryPartForId( $id, SqlQueryPart $query ) {
+		$this->sqlQueryParts[$id] = $query;
 		return $this;
 	}
 
@@ -139,8 +139,8 @@ class QueryBuilder {
 	 *
 	 * @return integer
 	 */
-	public function getLastContainerId() {
-		return $this->lastContainerId;
+	public function getLastSqlQueryPartId() {
+		return $this->lastQueryPartId;
 	}
 
 	/**
@@ -162,17 +162,6 @@ class QueryBuilder {
 	}
 
 	/**
-	 * @since 2.2
-	 *
-	 * @param Description $description
-	 *
-	 * @return integer
-	 */
-	public function buildQueryContainer( Description $description ) {
-		return $this->compileQueries( $description );
-	}
-
-	/**
 	 * Create a new QueryContainer object that can be used to obtain results
 	 * for the given description. The result is stored in $this->queries
 	 * using a numeric key that is returned as a result of the function.
@@ -182,14 +171,14 @@ class QueryBuilder {
 	 *
 	 * @return integer
 	 */
-	public function compileQueries( Description $description ) {
+	public function buildSqlQueryPartFor( Description $description ) {
 		$query = $this->getQueryCompiler( $description )->compileDescription( $description );
 
-		$this->registerQuery( $query );
+		$this->registerQueryPart( $query );
 
-		$this->lastContainerId = $query->type === SqlQueryPart::Q_NOQUERY ? -1 : $query->queryNumber;
+		$this->lastQueryPartId = $query->type === SqlQueryPart::Q_NOQUERY ? -1 : $query->queryNumber;
 
-		return $this->lastContainerId;
+		return $this->lastQueryPartId;
 	}
 
 	/**
@@ -202,7 +191,6 @@ class QueryBuilder {
 	}
 
 	private function getQueryCompiler( Description $description ) {
-
 		foreach ( $this->queryCompilers as $queryCompiler ) {
 			if ( $queryCompiler->canCompileDescription( $description ) ) {
 				return $queryCompiler;
@@ -218,21 +206,22 @@ class QueryBuilder {
 	 * Register a query object to the internal query list, if the query is
 	 * valid. Also make sure that sortkey information is propagated down
 	 * from subqueries of this query.
+	 *
+	 * @param SqlQueryPart $query
 	 */
-	private function registerQuery( SqlQueryPart $query ) {
-
+	private function registerQueryPart( SqlQueryPart $query ) {
 		if ( $query->type === SqlQueryPart::Q_NOQUERY ) {
-			return null;
+			return;
 		}
 
-		$this->addQueryContainerForId( $query->queryNumber, $query );
+		$this->addSqlQueryPartForId( $query->queryNumber, $query );
 
 		// Propagate sortkeys from subqueries:
 		if ( $query->type !== SqlQueryPart::Q_DISJUNCTION ) {
 			// Sortkeys are killed by disjunctions (not all parts may have them),
 			// NOTE: preprocessing might try to push disjunctions downwards to safe sortkey, but this seems to be minor
 			foreach ( $query->components as $cid => $field ) {
-				$query->sortfields = array_merge( $this->getQueryContainer( $cid )->sortfields, $query->sortfields );
+				$query->sortfields = array_merge( $this->getSqlQueryPart( $cid )->sortfields, $query->sortfields );
 			}
 		}
 	}
