@@ -183,12 +183,13 @@ class QueryBuilder {
 	 * @return integer
 	 */
 	public function compileQueries( Description $description ) {
-
 		$query = $this->getQueryCompiler( $description )->compileDescription( $description );
 
 		$this->registerQuery( $query );
 
-		return $this->lastContainerId = $query->type !== SqlQueryPart::Q_NOQUERY ? $query->queryNumber : -1;
+		$this->lastContainerId = $query->type === SqlQueryPart::Q_NOQUERY ? -1 : $query->queryNumber;
+
+		return $this->lastContainerId;
 	}
 
 	/**
