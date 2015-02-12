@@ -92,7 +92,7 @@ class SomePropertyCompiler implements QueryCompiler {
 	 *
 	 * @since 1.8
 	 */
-	protected function compileSomePropertyDescription( SqlQueryPart $query, SomeProperty $description ) {
+	private function compileSomePropertyDescription( SqlQueryPart $query, SomeProperty $description ) {
 
 		$db = $this->queryBuilder->getStore()->getConnection( 'mw.db' );
 
@@ -196,7 +196,7 @@ class SomePropertyCompiler implements QueryCompiler {
 	 * @param DataItemHandler $diHandler for that table
 	 * @param string $operator SQL operator "AND" or "OR"
 	 */
-	protected function compilePropertyValueDescription(
+	private function compilePropertyValueDescription(
 			$query, Description $description, SMWSQLStore3Table $proptable, DataItemHandler $diHandler, $operator ) {
 
 		if ( $description instanceof ValueDescription ) {
@@ -225,7 +225,7 @@ class SomePropertyCompiler implements QueryCompiler {
 	 * @param DataItemHandler $diHandler for that table
 	 * @param string $operator SQL operator "AND" or "OR"
 	 */
-	protected function compileValueDescription(
+	private function compileValueDescription(
 			$query, ValueDescription $description, DataItemHandler $diHandler, $operator ) {
 
 		$where = '';
