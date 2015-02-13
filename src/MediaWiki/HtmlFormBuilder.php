@@ -175,7 +175,7 @@ class HtmlFormBuilder {
 	 * @return array
 	 */
 	public function getQueryParameter() {
-		return $this->queryParameters;;
+		return $this->queryParameters;
 	}
 
 	/**
