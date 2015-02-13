@@ -38,13 +38,13 @@ class ConceptCacheRebuilder {
 	 */
 	private $reporter;
 
-	protected $concept = null;
-	protected $action  = null;
-	protected $options = array();
-	protected $startId = 0;
-	protected $endId   = 0;
-	protected $lines   = 0;
-	protected $verbose = false;
+	private $concept = null;
+	private $action  = null;
+	private $options = array();
+	private $startId = 0;
+	private $endId   = 0;
+	private $lines   = 0;
+	private $verbose = false;
 
 	/**
 	 * @since 1.9.2
@@ -153,7 +153,7 @@ class ConceptCacheRebuilder {
 		return true;
 	}
 
-	protected function workOnConcept( Title $title ) {
+	private function workOnConcept( Title $title ) {
 
 		$concept = $this->store->getConceptCacheStatus( $title );
 
@@ -170,7 +170,7 @@ class ConceptCacheRebuilder {
 		return $this->lines += 1;
 	}
 
-	protected function skipConcept( $title, $concept = null ) {
+	private function skipConcept( $title, $concept = null ) {
 
 		$skip = false;
 
@@ -195,8 +195,7 @@ class ConceptCacheRebuilder {
 		return $skip;
 	}
 
-	protected function performAction( Title $title, DIConcept $concept ) {
-
+	private function performAction( Title $title, DIConcept $concept ) {
 		$this->reportMessage( "($this->lines) " );
 
 		if ( $this->action ===  'create' ) {
@@ -212,16 +211,17 @@ class ConceptCacheRebuilder {
 		$this->reportMessage( 'Status for "' . $title->getPrefixedText() . '": ' );
 
 		if ( $concept->getCacheStatus() === 'full' ) {
-			return $this->reportMessage( 'Cache created at ' .
+			$this->reportMessage( 'Cache created at ' .
 				$this->getCacheDateInfo( $concept->getCacheDate() ) .
 				"{$concept->getCacheCount()} elements in cache\n"
 			);
 		}
-
-		$this->reportMessage( "Not cached.\n" );
+		else {
+			$this->reportMessage( "Not cached.\n" );
+		}
 	}
 
-	protected function getConcepts() {
+	private function getConcepts() {
 
 		if ( $this->concept !== null ) {
 			return array( $this->createConcept() );
@@ -230,11 +230,11 @@ class ConceptCacheRebuilder {
 		return $this->createMultipleConcepts();
 	}
 
-	protected function createConcept() {
+	private function createConcept() {
 		return Title::newFromText( $this->concept, SMW_NS_CONCEPT );
 	}
 
-	protected function createMultipleConcepts() {
+	private function createMultipleConcepts() {
 
 		$titleLookup = new TitleLookup( $this->store->getConnection( 'mw.db' ) );
 		$titleLookup->setNamespace( SMW_NS_CONCEPT );
@@ -252,11 +252,11 @@ class ConceptCacheRebuilder {
 		return $titleLookup->selectByIdRange( $this->startId, $endId );
 	}
 
-	protected function hasOption( $key ) {
+	private function hasOption( $key ) {
 		return isset( $this->options[$key] );
 	}
 
-	protected function reportMessage( $message, $output = true ) {
+	private function reportMessage( $message, $output = true ) {
 		if ( $output ) {
 			$this->reporter->reportMessage( $message );
 		}
