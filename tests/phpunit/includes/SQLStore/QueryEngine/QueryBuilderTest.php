@@ -35,15 +35,18 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\QueryEngine\QueryBuilder',
+			$this->newInstance()
+		);
+	}
 
+	private function newInstance() {
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\QueryBuilder',
-			new QueryBuilder( $store )
-		);
+		return new QueryBuilder( $store );
 	}
 
 	public function testNamespaceDescription() {
@@ -74,7 +77,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->queryContainerValidator->assertThatContainerContains(
 			$expected,
-			$instance->getSqlQueryPart()
+			$instance->getSqlQueryParts()
 		);
 	}
 
@@ -127,7 +130,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->queryContainerValidator->assertThatContainerContains(
 			$expected,
-			$instance->getSqlQueryPart()
+			$instance->getSqlQueryParts()
 		);
 	}
 
@@ -189,7 +192,43 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->queryContainerValidator->assertThatContainerContains(
 			$expected,
-			$instance->getSqlQueryPart()
+			$instance->getSqlQueryParts()
+		);
+	}
+
+	public function testGivenNonInteger_getSqlQueryPartThrowsException() {
+		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->newInstance()->getSqlQueryPart( null );
+	}
+
+	public function testGivenUnknownId_getSqlQueryPartThrowsException() {
+		$this->setExpectedException( 'OutOfBoundsException' );
+		$this->newInstance()->getSqlQueryPart( 1 );
+	}
+
+	public function testGivenKnownId_getSqlQueryPartReturnsCorrectPart() {
+		$queryBuilder = $this->newInstance();
+		$queryPart = new SqlQueryPart();
+
+		$queryBuilder->addSqlQueryPartForId( 1, $queryPart );
+		$this->assertSame( $queryPart, $queryBuilder->getSqlQueryPart( 1 ) );
+	}
+
+	public function testWhenNoQueryParts_getSqlQueryPartsReturnsEmptyArray() {
+		$this->assertSame( array(), $this->newInstance()->getSqlQueryParts() );
+	}
+
+	public function testWhenSomeQueryParts_getSqlQueryPartsReturnsThemAll() {
+		$queryBuilder = $this->newInstance();
+
+		$firstQueryPart = new SqlQueryPart();
+		$secondQueryPart = new SqlQueryPart();
+		$queryBuilder->addSqlQueryPartForId( 42, $firstQueryPart );
+		$queryBuilder->addSqlQueryPartForId( 23, $secondQueryPart );
+
+		$this->assertSame(
+			array( 42 => $firstQueryPart, 23 => $secondQueryPart ),
+			$queryBuilder->getSqlQueryParts()
 		);
 	}
 
