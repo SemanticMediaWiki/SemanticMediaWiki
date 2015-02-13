@@ -122,7 +122,11 @@ class ConceptCacheRebuilder {
 			case 'delete':
 				$delay = 5;
 				$this->reportMessage( "\nAbort with CTRL-C in the next $delay seconds ... " );
-				$this->hasOption( 'quiet' ) ? '' :  wfCountDown( $delay );
+
+				if ( !$this->hasOption( 'quiet' ) ) {
+					wfCountDown( $delay );
+				}
+				
 				$this->reportMessage( "\nDeleting concept caches.\n\n" );
 				break;
 			default:
