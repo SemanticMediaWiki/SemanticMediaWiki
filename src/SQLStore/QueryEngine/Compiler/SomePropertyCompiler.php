@@ -253,10 +253,7 @@ class SomePropertyCompiler implements QueryCompiler {
 				$where = "$query->alias.{$indexField}{$comparator}" . $db->addQuotes( $value );
 			}
 		} else { // exact match (like comparator = above, but not using $valueField
-				throw new RuntimeException("Debug -- this code might be dead.");
-			foreach ( $diHandler->getWhereConds( $dataItem ) as $fieldname => $value ) {
-				$where .= ( $where ? ' AND ' : '' ) . "{$query->alias}.$fieldname=" . $db->addQuotes( $value );
-			}
+			throw new RuntimeException("Debug -- this code might be dead.");
 		}
 
 		if ( $where !== '' ) {
