@@ -2,25 +2,23 @@
 
 namespace SMW;
 
-use Parser;
-
 /**
  * Class that provides the {{#set_recurring_event}} parser function
  *
  * @see http://semantic-mediawiki.org/wiki/Help:Recurring_events
  *
  * @license GNU GPL v2+
- * @since   1.9
+ * @since 1.9
  *
  * @author mwjames
  */
 class RecurringEventsParserFunction extends SubobjectParserFunction {
 
 	/** @var Settings */
-	protected $settings;
+	private $settings;
 
 	/** @var RecurringEvents */
-	protected $events;
+	private $events;
 
 	/**
 	 * @since 1.9
