@@ -45,8 +45,6 @@ class CategoryResultPrinter extends ResultPrinter {
 	}
 
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {
-		global $wgContLang;
-
 		$result = '';
 		$num = $res->getCount();
 
