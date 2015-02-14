@@ -3,12 +3,11 @@
 namespace SMW;
 
 use Message;
-
 use SMWDITime;
 use SMWTimeValue;
 
 /**
- * Class returns recurring events
+ * This class determines recurring events based on invoked parameters
  *
  * @see http://semantic-mediawiki.org/wiki/Help:Recurring_events
  *
@@ -20,47 +19,34 @@ use SMWTimeValue;
  * @author Jeroen De Dauw
  * @author mwjames
  */
-
-/**
- * This class determines recurring events based on invoked parameters
- *
- * @ingroup SMW
- */
 class RecurringEvents {
 
 	/**
 	 * Represents Settings object
-	 * @var Settings
 	 */
-	protected $settings;
+	private $settings;
 
 	/**
 	 * Defines the property used
-	 * var $property
 	 */
-	protected $property = null;
+	private $property = null;
 
 	/**
 	 * Defines the dates
-	 * var $dates
 	 */
-	protected $dates = array();
+	private $dates = array();
 
 	/**
 	 * Defines remaining / unused parameters
-	 * var $parameters
 	 */
-	protected $parameters = array();
+	private $parameters = array();
 
 	/**
 	 * Defines errors
-	 * var $errors
 	 */
-	protected $errors = array();
+	private $errors = array();
 
 	/**
-	 * Constructor
-	 *
 	 * @since 1.9
 	 *
 	 * @param array $parameters
@@ -122,7 +108,7 @@ class RecurringEvents {
 	 *
 	 * @return mixed
 	 */
-	protected function setError( $error ) {
+	private function setError( $error ) {
 		$this->errors = array_merge( $error, $this->errors );
 	}
 
@@ -147,13 +133,12 @@ class RecurringEvents {
 	 *
 	 * @since 1.9
 	 *
-	 * @param $params
+	 * @param array $parameters
 	 */
-	protected function parse( $parameters ) {
+	private function parse( array $parameters ) {
 		// Initialize variables.
 		$all_date_strings = array();
-		$unused_params = array();
-		$property_name = $start_date = $end_date = $unit = $period = $week_num = null;
+		$start_date = $end_date = $unit = $period = $week_num = null;
 		$included_dates = array();
 		$excluded_dates = array();
 		$excluded_dates_jd = array();
@@ -362,7 +347,7 @@ class RecurringEvents {
 	 * Helper function - creates an object of type SMWTimeValue based
 	 * on a "Julian day" integer
 	 */
-	protected function getJulianDayTimeValue( $jd ) {
+	private function getJulianDayTimeValue( $jd ) {
 		$timeDataItem = SMWDITime::newFromJD( $jd, SMWDITime::CM_GREGORIAN, SMWDITime::PREC_YMDT );
 		$timeValue = new SMWTimeValue( '_dat' );
 		$timeValue->setDataItem( $timeDataItem );
