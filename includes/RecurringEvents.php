@@ -147,13 +147,11 @@ class RecurringEvents {
 	 *
 	 * @since 1.9
 	 *
-	 * @param $params
+	 * @param array $parameters
 	 */
-	protected function parse( $parameters ) {
+	protected function parse( array $parameters ) {
 		// Initialize variables.
 		$all_date_strings = array();
-		$unused_params = array();
-		$property_name = $start_date = $end_date = $unit = $period = $week_num = null;
 		$included_dates = array();
 		$excluded_dates = array();
 		$excluded_dates_jd = array();
