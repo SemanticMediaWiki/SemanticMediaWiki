@@ -20,7 +20,7 @@ class SMWConceptValue extends SMWDataValue {
 
 	/**
 	 * @see SMWDataValue::loadDataItem()
-	 * @param $dataitem SMWDataItem
+	 * @param $dataItem SMWDataItem
 	 * @return boolean
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
@@ -64,30 +64,6 @@ class SMWConceptValue extends SMWDataValue {
 	public function getWikiValue() {
 		/// This should not be used for anything. This class does not support wiki values.
 		return str_replace( array( '&lt;', '&gt;', '&amp;' ), array( '<', '>', '&' ), $this->m_dataitem->getConceptQuery() );
-	}
-
-	/**
-	 * Function not called anywhere but code kept for reference before
-	 * migrating it to SMWExporter.
-	 */
-	private function getExportData() {
-		if ( $this->isValid() ) {
-			$qp = new SMWQueryParser();
-			$desc = $qp->getQueryDescription( str_replace( array( '&lt;', '&gt;', '&amp;' ), array( '<', '>', '&' ), $this->m_dataitem->getConceptQuery() ) );
-			$exact = true;
-			$owldesc = $this->descriptionToExpData( $desc, $exact );
-			if ( !$exact ) {
-				$result = new SMWExpData( new SMWExpResource( '' ) );
-				$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdf', 'type' ),
-				                                new SMWExpData( SMWExporter::getSpecialNsResource( 'owl', 'Class' ) ) );
-				$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdfs', 'subClassOf' ), $owldesc );
-				return $result;
-			} else {
-				return $owldesc;
-			}
-		} else {
-			return null;
-		}
 	}
 
 	public function descriptionToExpData( $desc, &$exact ) {
