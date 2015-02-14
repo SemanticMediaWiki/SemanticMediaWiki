@@ -92,13 +92,13 @@ Releases after Composer support:
 	<tr>
 		<th>SMW 2.0.x</th>
 		<td>5.3.2 - 5.6.x</td>
-		<td>-</td>
+		<td>No support</td>
 		<td>1.19 - 1.23</td>
 	</tr>
 	<tr>
 		<th>SMW 1.9.x</th>
 		<td>5.3.2 - 5.6.x</td>
-		<td>-</td>
+		<td>No support</td>
 		<td>1.19 - 1.22</td>
 	</tr>
 </table>
@@ -116,14 +116,14 @@ Releases before Composer support:
 	<tr>
 		<th>SMW 1.8.x</th>
 		<td>5.2.0 - 5.5.x</td>
-		<td>-</td>
+		<td>No support</td>
 		<td>1.17 - 1.22</td>
 		<td>0.5.1</td>
 	</tr>
 	<tr>
 		<th>SMW 1.7.1</th>
 		<td>5.2.0 - 5.4.x</td>
-		<td>-</td>
+		<td>No support</td>
 		<td>1.16 - 1.19</td>
 		<td>0.4.13 or 0.4.14</td>
 	</tr>
