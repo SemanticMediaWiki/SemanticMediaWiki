@@ -3,24 +3,26 @@
 namespace SMW\SQLStore;
 
 use SMW\DataTypeRegistry;
-use SMWDIProperty;
+use SMW\DIProperty;
 
 /**
  * Class that generates property table definitions
  *
- * @ingroup SQLStore
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 class PropertyTableDefinitionBuilder {
 
-	/** @var TableDefinition[] */
+	/**
+	 * @var TableDefinition[]
+	 */
 	protected $propertyTables = array();
 
-	/** @var array */
+	/**
+	 * @var array
+	 */
 	protected $fixedPropertyTableIds = array();
 
 	/**
@@ -30,31 +32,24 @@ class PropertyTableDefinitionBuilder {
 	 * @param array $specialProperties
 	 * @param array $fixedProperties
 	 */
-	public function __construct(
-		array $diTypes,
-		array $specialProperties,
-		array $fixedProperties
-	) {
+	public function __construct( array $diTypes, array $specialProperties, array $fixedProperties ) {
 		$this->diTypes = $diTypes;
 		$this->specialProperties = $specialProperties;
 		$this->fixedProperties = $fixedProperties;
 	}
 
 	/**
-	 * Build definitions
-	 *
 	 * @since 1.9
 	 */
-	public function runBuilder() {
+	public function doBuild() {
 
-		$this->getDITypes( $this->diTypes );
-		$this->getSpecialProperties( $this->specialProperties );
-		$this->getFixedProperties( $this->fixedProperties );
+		$this->buildPropertyTablesForDiTypes( $this->diTypes );
+		$this->buildPropertyTablesForSpecialProperties( $this->specialProperties );
+		$this->buildPropertyTablesForFixedProperties( $this->fixedProperties );
 
 		wfRunHooks( 'SMW::SQLStore::updatePropertyTableDefinitions', array( &$this->propertyTables ) );
 
-		$this->getFixedPropertyTableIds( $this->propertyTables );
-
+		$this->buildFixedPropertyTableIdIndex( $this->propertyTables );
 	}
 
 	/**
@@ -75,7 +70,7 @@ class PropertyTableDefinitionBuilder {
 	 *
 	 * @return array|null
 	 */
-	public function getTableIds() {
+	public function getFixedPropertyTableIds() {
 		return $this->fixedPropertyTableIds;
 	}
 
@@ -101,7 +96,7 @@ class PropertyTableDefinitionBuilder {
 	 *
 	 * @return TableDefinition
 	 */
-	public function getDefinition( $diType, $tableName, $fixedProperty = false ) {
+	public function newTableDefinition( $diType, $tableName, $fixedProperty = false ) {
 		return new TableDefinition( $diType, $tableName, $fixedProperty );
 	}
 
@@ -115,33 +110,25 @@ class PropertyTableDefinitionBuilder {
 	 * @param $fixedProperty
 	 */
 	protected function addPropertyTable( $diType, $tableName, $fixedProperty = false ) {
-		$this->propertyTables[$tableName] = $this->getDefinition( $diType, $tableName, $fixedProperty );
+		$this->propertyTables[$tableName] = $this->newTableDefinition( $diType, $tableName, $fixedProperty );
 	}
 
 	/**
-	 * Add DI type table definitions
-	 *
-	 * @since 1.9
-	 *
 	 * @param array $diTypes
 	 */
-	protected function getDITypes( array $diTypes ) {
+	private function buildPropertyTablesForDiTypes( array $diTypes ) {
 		foreach( $diTypes as $tableDIType => $tableName ) {
 			$this->addPropertyTable( $tableDIType, $tableName );
 		}
 	}
 
 	/**
-	 * Add special properties table definitions
-	 *
-	 * @since 1.9
-	 *
 	 * @param array $specialProperties
 	 */
-	protected function getSpecialProperties( array $specialProperties ) {
+	private function buildPropertyTablesForSpecialProperties( array $specialProperties ) {
 		foreach( $specialProperties as $propertyKey ) {
 			$this->addPropertyTable(
-				DataTypeRegistry::getInstance()->getDataItemId( SMWDIProperty::getPredefinedPropertyTypeId( $propertyKey ) ),
+				DataTypeRegistry::getInstance()->getDataItemId( DIProperty::getPredefinedPropertyTypeId( $propertyKey ) ),
 				$this->getTablePrefix() . strtolower( $propertyKey ),
 				$propertyKey
 			);
@@ -156,18 +143,12 @@ class PropertyTableDefinitionBuilder {
 	}
 
 	/**
-	 * Add fixed property table definitions
-	 *
 	 * Get all the tables for the properties that are declared as fixed
 	 * (overly used and thus having separate tables)
 	 *
-	 * @see $smwgFixedProperties
-	 *
-	 * @since 1.9
-	 *
 	 * @param array $fixedProperties
 	 */
-	protected function getFixedProperties( array $fixedProperties ) {
+	private function buildPropertyTablesForFixedProperties( array $fixedProperties ) {
 		foreach( $fixedProperties as $propertyKey => $tableDIType ) {
 			$this->addPropertyTable(
 				$tableDIType,
@@ -178,13 +159,9 @@ class PropertyTableDefinitionBuilder {
 	}
 
 	/**
-	 * Build index for fixed property tables Ids
-	 *
-	 * @since 1.9
-	 *
 	 * @param array $propertyTables
 	 */
-	protected function getFixedPropertyTableIds( array $propertyTables ) {
+	private function buildFixedPropertyTableIdIndex( array $propertyTables ) {
 
 		foreach ( $propertyTables as $tid => $propTable ) {
 			if ( $propTable->isFixedPropertyTable() ) {
