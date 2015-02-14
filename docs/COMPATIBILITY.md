@@ -79,9 +79,9 @@ Releases after Composer support:
 	</tr>
 	<tr>
 		<th>SMW 2.2.x</th>
-		<td>5.3.2 - 5.6.x</td>
-		<td>3.3.x - 3.5.x</td>
-		<td>1.19 - 1.24</td>
+		<td>5.3.2 - latest</td>
+		<td>3.3.x - latest</td>
+		<td>1.19 - latest</td>
 	</tr>
 	<tr>
 		<th>SMW 2.1.x</th>
