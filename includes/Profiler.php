@@ -3,20 +3,15 @@
 namespace SMW;
 
 /**
- * Encapsulates MediaWiki's profiling class
+ * This class encapsulates MediaWiki's profiling class, if enabled enabled
+ * track the process caller allowing it to generate a call tree
  *
+ * @ingroup Utility
  *
  * @license GNU GPL v2+
  * @since   1.9
  *
  * @author mwjames
- */
-
-/**
- * This class encapsulates MediaWiki's profiling class, if enabled enabled
- * track the process caller allowing it to generate a call tree
- *
- * @ingroup Utility
  */
 class Profiler {
 
@@ -34,7 +29,7 @@ class Profiler {
 	 *
 	 * @since 1.9
 	 *
-	 * @return \Profiler|null
+	 * @return self|null
 	 */
 	public static function getInstance() {
 
@@ -60,6 +55,8 @@ class Profiler {
 	 *
 	 * @param string $name name of the function we will profile
 	 * @param boolean $caller if the caller should be profiled as well
+	 *
+	 * @return $this
 	 */
 	public static function In( $name = false, $caller = false ) {
 
@@ -85,6 +82,8 @@ class Profiler {
 	 *
 	 * @param string $name name of the function we will profile
 	 * @param boolean $caller if the caller should be profiled as well
+	 *
+	 * @return $this
 	 */
 	public static function Out( $name = false, $caller = false ) {
 
