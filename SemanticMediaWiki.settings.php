@@ -557,6 +557,9 @@ $GLOBALS['smwgCacheType'] = CACHE_ANYTHING;
 # - smwgStatisticsCache Enable to serve statistics from cache
 # - smwgStatisticsCacheExpiry Number of seconds before the cache expires
 #
+# - smwgSemanticDataCache to improve internal read/write access to SemanticData during
+# an update process.
+#
 # @since 1.9
 ##
 $GLOBALS['smwgCacheUsage'] = array(
@@ -568,6 +571,7 @@ $GLOBALS['smwgCacheUsage'] = array(
 	'smwgPropertiesCacheExpiry' => 3600,
 	'smwgStatisticsCache' => true,
 	'smwgStatisticsCacheExpiry' => 3600,
+	'smwgSemanticDataCache' => true
 );
 
 ###

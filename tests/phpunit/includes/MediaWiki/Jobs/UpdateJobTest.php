@@ -11,9 +11,7 @@ use Title;
 /**
  * @covers \SMW\MediaWiki\Jobs\UpdateJob
  *
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -30,8 +28,9 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
 		$settings = Settings::newFromArray( array(
-			'smwgCacheType'        => 'hash',
-			'smwgEnableUpdateJobs' => false
+			'smwgCacheType'         => 'hash',
+			'smwgEnableUpdateJobs'  => false,
+			'smwgSemanticDataCache' => false
 		) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
@@ -77,6 +76,10 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'exists' )
 			->will( $this->returnValue( true ) );
 
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( 0 ) );
+
 		$instance = new UpdateJob( $title );
 		$instance->setJobQueueEnabledState( false );
 
@@ -93,6 +96,10 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'exists' )
 			->will( $this->returnValue( false ) );
 
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( 0 ) );
+
 		$this->applicationFactory->registerObject( 'ContentParser', null );
 
 		$instance = new UpdateJob( $title );
@@ -103,6 +110,8 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 	public function testJobWithNoRevisionAvailable() {
 
+		$this->applicationFactory->getSettings()->set( 'smwgSemanticDataCache', true );
+
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -110,6 +119,10 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 		$title->expects( $this->once() )
 			->method( 'exists' )
 			->will( $this->returnValue( true ) );
+
+		$title->expects( $this->once() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( 0 ) );
 
 		$contentParser = $this->getMockBuilder( '\SMW\ContentParser' )
 			->disableOriginalConstructor()
@@ -133,15 +146,15 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title->expects( $this->once() )
+		$title->expects( $this->atLeastOnce() )
 			->method( 'getDBkey' )
 			->will( $this->returnValue( __METHOD__ ) );
 
-		$title->expects( $this->once() )
+		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
 			->will( $this->returnValue( 0 ) );
 
-		$title->expects( $this->once() )
+		$title->expects( $this->atLeastOnce() )
 			->method( 'exists' )
 			->will( $this->returnValue( true ) );
 

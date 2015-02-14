@@ -5,8 +5,8 @@ namespace SMW\Maintenance;
 use SMW\Maintenance\DataRebuilder;
 use SMW\Maintenance\MaintenanceHelper;
 use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\ApplicationFactory;
 use SMW\StoreFactory;
-use SMW\Settings;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
@@ -106,6 +106,7 @@ class RebuildData extends \Maintenance {
 
 		if ( $this->hasOption( 'no-cache' ) ) {
 			$maintenanceHelper->setGlobalToValue( 'wgMainCacheType', CACHE_NONE );
+			ApplicationFactory::getInstance()->getSettings()->set( 'smwgSemanticDataCache', false );
 		}
 
 		if ( $this->hasOption( 'debug' ) ) {

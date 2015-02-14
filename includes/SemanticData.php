@@ -551,6 +551,24 @@ class SemanticData {
 	}
 
 	/**
+	 * @since 2.2
+	 *
+	 * @param DIProperty $property
+	 *
+	 * @return boolean
+	 */
+	public function hasProperty( DIProperty $property ) {
+
+		foreach ( $this->getProperties() as $semanticDataProperty ) {
+			if ( $semanticDataProperty->equals( $property ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Whether the SemanticData has a SubSemanticData container and if
 	 * specified has a particular subobject using its name as identifier
 	 *
