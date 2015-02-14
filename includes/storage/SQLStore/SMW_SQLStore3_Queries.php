@@ -696,8 +696,16 @@ class SMWSQLStore3QueryEngine {
 	 */
 	private function applyOrderConditions( $qid ) {
 		$qobj = $this->queryParts[$qid];
-		// (1) collect required extra property descriptions:
-		$extraproperties = array();
+
+		$extraProperties = $this->collectedRequiredExtraPropertyDescriptions( $qobj );
+
+		if ( count( $extraProperties ) > 0 ) {
+			$this->compileAccordingConditionsAndHackThemIntoQobj( $extraProperties, $qobj, $qid );
+		}
+	}
+
+	private function collectedRequiredExtraPropertyDescriptions( $qobj ) {
+		$extraProperties = array();
 
 		foreach ( $this->sortKeys as $propkey => $order ) {
 
@@ -712,31 +720,31 @@ class SMWSQLStore3QueryEngine {
 					$sortprop = SMWPropertyValue::makeUserProperty( $propkey );
 
 					if ( $sortprop->isValid() ) {
-						$extraproperties[] = new SomeProperty( $sortprop->getDataItem(), new ThingDescription() );
+						$extraProperties[] = new SomeProperty( $sortprop->getDataItem(), new ThingDescription() );
 					}
 				}
 			}
 		}
 
-		// (2) compile according conditions and hack them into $qobj:
-		if ( count( $extraproperties ) > 0 ) {
+		return $extraProperties;
+	}
 
-			$this->queryBuilder->setSortKeys( $this->sortKeys );
-			$this->queryBuilder->buildSqlQueryPartFor( new Conjunction( $extraproperties ) );
+	private function compileAccordingConditionsAndHackThemIntoQobj( array $extraProperties, $qobj, $qid ) {
+		$this->queryBuilder->setSortKeys( $this->sortKeys );
+		$this->queryBuilder->buildSqlQueryPartFor( new Conjunction( $extraProperties ) );
 
-			$newqid = $this->queryBuilder->getLastSqlQueryPartId();
-			$this->queryParts = $this->queryBuilder->getSqlQueryParts();
-			$this->errors = $this->queryBuilder->getErrors();
+		$newQueryPartId = $this->queryBuilder->getLastSqlQueryPartId();
+		$this->queryParts = $this->queryBuilder->getSqlQueryParts();
+		$this->errors = $this->queryBuilder->getErrors();
 
-			$newqobj = $this->queryParts[$newqid]; // This is always an SMWSQLStore3Query::Q_CONJUNCTION ...
+		$newQueryPart = $this->queryParts[$newQueryPartId]; // This is always an SMWSQLStore3Query::Q_CONJUNCTION ...
 
-			foreach ( $newqobj->components as $cid => $field ) { // ... so just re-wire its dependencies
-				$qobj->components[$cid] = $qobj->joinfield;
-				$qobj->sortfields = array_merge( $qobj->sortfields, $this->queryParts[$cid]->sortfields );
-			}
-
-			$this->queryParts[$qid] = $qobj;
+		foreach ( $newQueryPart->components as $cid => $field ) { // ... so just re-wire its dependencies
+			$qobj->components[$cid] = $qobj->joinfield;
+			$qobj->sortfields = array_merge( $qobj->sortfields, $this->queryParts[$cid]->sortfields );
 		}
+
+		$this->queryParts[$qid] = $qobj;
 	}
 
 	/**
