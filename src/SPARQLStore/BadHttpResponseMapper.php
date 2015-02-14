@@ -39,9 +39,8 @@ class BadHttpResponseMapper {
 	 * network issues or temporary overloading of the server. In this case, calling
 	 * methods rather return something that helps to make the best out of the situation.
 	 *
-	 * @since  2.0
+	 * @since 2.0
 	 *
-	 * @param HttpRequest $httpRequest
 	 * @param $endpoint string URL of endpoint that was used
 	 * @param $sparql string query that caused the problem
 	 *
@@ -49,20 +48,24 @@ class BadHttpResponseMapper {
 	 * @throws SparqlDatabaseException
 	 */
 	public function mapResponseToHttpRequest( $endpoint, $sparql ) {
-
 		$error = $this->httpRequest->getLastErrorCode();
 
 		switch ( $error ) {
 			case 22: //	equals CURLE_HTTP_RETURNED_ERROR but this constant is not defined in PHP
-				return $this->createResponseToHttpError( $this->httpRequest->getInfo( CURLINFO_HTTP_CODE ), $endpoint, $sparql );
+				$this->createResponseToHttpError( $this->httpRequest->getInfo( CURLINFO_HTTP_CODE ), $endpoint, $sparql );
+				break;
 			case 52:
 			case CURLE_GOT_NOTHING:
-				return; // happens when 4Store crashes, do not bother the wiki
+				break; // happens when 4Store crashes, do not bother the wiki
 			case CURLE_COULDNT_CONNECT:
-				return; // fail gracefully if backend is down
+				break; // fail gracefully if backend is down
+			default:
+				throw new HttpDatabaseConnectionException(
+					$endpoint,
+					$error,
+					$this->httpRequest->getLastError()
+				);
 		}
-
-		throw new HttpDatabaseConnectionException( $endpoint, $error, $this->httpRequest->getLastError() );
 	}
 
 	private function createResponseToHttpError( $httpCode, $endpoint, $sparql ) {
