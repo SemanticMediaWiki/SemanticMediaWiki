@@ -39,19 +39,19 @@ class SMWQuery {
 	public $sortkeys = array(); // format: "Property key" => "ASC" / "DESC" (note: order of entries also matters)
 	public $querymode = SMWQuery::MODE_INSTANCES;
 
-	protected $m_limit;
-	protected $m_offset = 0;
-	protected $m_description;
-	protected $m_errors = array(); // keep any errors that occurred so far
-	protected $m_querystring = false; // string (inline query) version (if fixed and known)
-	protected $m_inline; // query used inline? (required for finding right default parameters)
-	protected $m_concept; // query used in concept? (required for finding right default parameters)
+	private $m_limit;
+	private $m_offset = 0;
+	private $m_description;
+	private $m_errors = array(); // keep any errors that occurred so far
+	private $m_querystring = false; // string (inline query) version (if fixed and known)
+	private $m_inline; // query used inline? (required for finding right default parameters)
+	private $m_concept; // query used in concept? (required for finding right default parameters)
 
 	/**
 	 * @var PrintRequest[]
 	 */
-	protected $m_extraprintouts = array(); // SMWPrintoutRequest objects supplied outside querystring
-	protected $m_mainlabel = ''; // Since 1.6
+	private $m_extraprintouts = array(); // SMWPrintoutRequest objects supplied outside querystring
+	private $m_mainlabel = ''; // Since 1.6
 
 	/**
 	 * Constructor.
