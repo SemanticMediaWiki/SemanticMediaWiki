@@ -65,8 +65,6 @@ class QueryResultSerializer implements Serializer {
 	 * @return mixed
 	 */
 	public static function getSerialization( DataItem $dataItem, $printRequest = null ) {
-		$result = array();
-
 		switch ( $dataItem->getDIType() ) {
 			case DataItem::TYPE_WIKIPAGE:
 				$title = $dataItem->getTitle();
