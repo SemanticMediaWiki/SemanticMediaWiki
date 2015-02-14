@@ -39,13 +39,13 @@ class SMWQuery {
 	public $sortkeys = array(); // format: "Property key" => "ASC" / "DESC" (note: order of entries also matters)
 	public $querymode = SMWQuery::MODE_INSTANCES;
 
-	private $m_limit;
-	private $m_offset = 0;
-	private $m_description;
-	private $m_errors = array(); // keep any errors that occurred so far
-	private $m_querystring = false; // string (inline query) version (if fixed and known)
-	private $m_inline; // query used inline? (required for finding right default parameters)
-	private $m_concept; // query used in concept? (required for finding right default parameters)
+	private $limit;
+	private $offset = 0;
+	private $description;
+	private $errors = array(); // keep any errors that occurred so far
+	private $queryString = false; // string (inline query) version (if fixed and known)
+	private $isInline; // query used inline? (required for finding right default parameters)
+	private $isUsedInConcept; // query used in concept? (required for finding right default parameters)
 
 	/**
 	 * @var PrintRequest[]
@@ -63,10 +63,10 @@ class SMWQuery {
 	 */
 	public function __construct( $description = null, $inline = false, $concept = false ) {
 		global $smwgQMaxLimit, $smwgQMaxInlineLimit;
-		$this->m_limit = $inline ? $smwgQMaxInlineLimit : $smwgQMaxLimit;
-		$this->m_inline = $inline;
-		$this->m_concept = $concept;
-		$this->m_description = $description;
+		$this->limit = $inline ? $smwgQMaxInlineLimit : $smwgQMaxLimit;
+		$this->isInline = $inline;
+		$this->isUsedInConcept = $concept;
+		$this->description = $description;
 		$this->applyRestrictions();
 	}
 
@@ -93,23 +93,23 @@ class SMWQuery {
 	}
 
 	public function setDescription( SMWDescription $description ) {
-		$this->m_description = $description;
+		$this->description = $description;
 		foreach ( $this->m_extraprintouts as $printout ) {
-			$this->m_description->addPrintRequest( $printout );
+			$this->description->addPrintRequest( $printout );
 		}
 		$this->applyRestrictions();
 	}
 
 	public function getDescription() {
-		return $this->m_description;
+		return $this->description;
 	}
 
 	public function setExtraPrintouts( $extraprintouts ) {
 		$this->m_extraprintouts = $extraprintouts;
 
-		if ( !is_null( $this->m_description ) ) {
+		if ( !is_null( $this->description ) ) {
 			foreach ( $extraprintouts as $printout ) {
-				$this->m_description->addPrintRequest( $printout );
+				$this->description->addPrintRequest( $printout );
 			}
 		}
 	}
@@ -122,29 +122,29 @@ class SMWQuery {
 	}
 
 	public function getErrors() {
-		return $this->m_errors;
+		return $this->errors;
 	}
 
 	public function addErrors( $errors ) {
-		$this->m_errors = array_merge( $this->m_errors, $errors );
+		$this->errors = array_merge( $this->errors, $errors );
 	}
 
 	public function setQueryString( $querystring ) {
-		$this->m_querystring = $querystring;
+		$this->queryString = $querystring;
 	}
 
 	public function getQueryString() {
-		if ( $this->m_querystring !== false ) {
-			return $this->m_querystring;
-		} elseif ( !is_null( $this->m_description ) ) {
-			return $this->m_description->getQueryString();
+		if ( $this->queryString !== false ) {
+			return $this->queryString;
+		} elseif ( !is_null( $this->description ) ) {
+			return $this->description->getQueryString();
 		} else {
 			return '';
 		}
 	}
 
 	public function getOffset() {
-		return $this->m_offset;
+		return $this->offset;
 	}
 
 	/**
@@ -157,13 +157,13 @@ class SMWQuery {
 	 */
 	public function setOffset( $offset ) {
 		global $smwgQMaxLimit;
- 		$this->m_offset = min( $smwgQMaxLimit, $offset ); // select integer between 0 and maximal limit;
-		$this->m_limit = min( $smwgQMaxLimit - $this->m_offset, $this->m_limit ); // note that limit might become 0 here
-		return $this->m_offset;
+ 		$this->offset = min( $smwgQMaxLimit, $offset ); // select integer between 0 and maximal limit;
+		$this->limit = min( $smwgQMaxLimit - $this->offset, $this->limit ); // note that limit might become 0 here
+		return $this->offset;
 	}
 
 	public function getLimit() {
-		return $this->m_limit;
+		return $this->limit;
 	}
 
 	/**
@@ -175,9 +175,9 @@ class SMWQuery {
 	 */
 	public function setLimit( $limit, $restrictinline = true ) {
 		global $smwgQMaxLimit, $smwgQMaxInlineLimit;
-		$maxlimit = ( $this->m_inline && $restrictinline ) ? $smwgQMaxInlineLimit : $smwgQMaxLimit;
-		$this->m_limit = min( $smwgQMaxLimit - $this->m_offset, $limit, $maxlimit );
-		return $this->m_limit;
+		$maxlimit = ( $this->isInline && $restrictinline ) ? $smwgQMaxInlineLimit : $smwgQMaxLimit;
+		$this->limit = min( $smwgQMaxLimit - $this->offset, $limit, $maxlimit );
+		return $this->limit;
 	}
 
 	/**
@@ -190,7 +190,7 @@ class SMWQuery {
 	 * @return Query
 	 */
 	public function setUnboundLimit( $limit ) {
-		$this->m_limit = (int)$limit;
+		$this->limit = (int)$limit;
 		return $this;
 	}
 
@@ -200,8 +200,8 @@ class SMWQuery {
 	public function applyRestrictions() {
 		global $smwgQMaxSize, $smwgQMaxDepth, $smwgQConceptMaxSize, $smwgQConceptMaxDepth;
 
-		if ( !is_null( $this->m_description ) ) {
-			if ( $this->m_concept ) {
+		if ( !is_null( $this->description ) ) {
+			if ( $this->isUsedInConcept ) {
 				$maxsize = $smwgQConceptMaxSize;
 				$maxdepth = $smwgQConceptMaxDepth;
 			} else {
@@ -210,10 +210,10 @@ class SMWQuery {
 			}
 
 			$log = array();
-			$this->m_description = $this->m_description->prune( $maxsize, $maxdepth, $log );
+			$this->description = $this->description->prune( $maxsize, $maxdepth, $log );
 
 			if ( count( $log ) > 0 ) {
-				$this->m_errors[] = wfMessage(
+				$this->errors[] = wfMessage(
 					'smw_querytoolarge',
 					str_replace( '[', '&#x005B;', implode( ', ' , $log ) )
 				)->inContentLanguage()->text();
@@ -243,8 +243,8 @@ class SMWQuery {
 		// sufficient since most printer related parameters have to be sourced
 		// in the result printer class
 		$serialized['parameters'] = array(
-				'limit'     => $this->m_limit,
-				'offset'    => $this->m_offset,
+				'limit'     => $this->limit,
+				'offset'    => $this->offset,
 				'sortkeys'  => $this->sortkeys,
 				'mainlabel' => $this->m_mainlabel,
 				'querymode' => $this->querymode
