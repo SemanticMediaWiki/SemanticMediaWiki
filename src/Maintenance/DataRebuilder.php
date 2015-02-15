@@ -5,6 +5,7 @@ namespace SMW\Maintenance;
 use LinkCache;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\MediaWiki\TitleCreator;
 use SMW\MediaWiki\TitleLookup;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
@@ -31,6 +32,11 @@ class DataRebuilder {
 	private $store;
 
 	/**
+	 * @var TitleCreator
+	 */
+	private $titleCreator;
+
+	/**
 	 * @var MessageReporter
 	 */
 	private $reporter;
@@ -42,7 +48,12 @@ class DataRebuilder {
 	private $canWriteToIdFile = false;
 	private $start = 1;
 	private $end = false;
-	private $filters = false;
+
+	/**
+	 * @var int[]
+	 */
+	private $filters = array();
+
 	private $fullDelete = false;
 	private $verbose = false;
 	private $useIds = false;
@@ -53,9 +64,11 @@ class DataRebuilder {
 	 * @since 1.9.2
 	 *
 	 * @param Store $store
+	 * @param TitleCreator $titleCreator
 	 */
-	public function __construct( Store $store ) {
+	public function __construct( Store $store, TitleCreator $titleCreator ) {
 		$this->store = $store;
+		$this->titleCreator = $titleCreator;
 		$this->reporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 	}
 
@@ -110,7 +123,7 @@ class DataRebuilder {
 
 		$this->verbose = array_key_exists( 'v', $options );
 
-		$this->filters = $this->describeFiltersFromOptions( $options );
+		$this->filters = $this->getFiltersFromOptions( $options );
 
 		if ( array_key_exists( 'f', $options ) ) {
 			$this->fullDelete = true;
@@ -134,11 +147,15 @@ class DataRebuilder {
 			$this->performFullDelete();
 		}
 
-		if ( $this->pages || $this->query || $this->filters ) {
+		if ( $this->pages || $this->query || $this->hasFilters() ) {
 			return $this->rebuildSelectedPages();
 		}
 
 		return $this->rebuildAll();
+	}
+
+	private function hasFilters() {
+		return $this->filters !== array();
 	}
 
 	/**
@@ -150,13 +167,13 @@ class DataRebuilder {
 		return $this->rebuildCount;
 	}
 
-	protected function rebuildSelectedPages() {
+	private function rebuildSelectedPages() {
 
 		$this->reportMessage( "Refreshing specified pages!\n" . ( $this->verbose ? "\n" : '' ) );
 
 		$pages = $this->query ? $this->getPagesFromQuery() : array();
 		$pages = $this->pages ? array_merge( (array)$this->pages, $pages ) : $pages;
-		$pages = $this->filters ? array_merge( $pages, $this->getPagesFromFilters() ) : $pages;
+		$pages = $this->hasFilters() ? array_merge( $pages, $this->getPagesFromFilters() ) : $pages;
 		$numPages = count( $pages );
 
 		$titleCache = array();
@@ -185,7 +202,7 @@ class DataRebuilder {
 		return true;
 	}
 
-	protected function rebuildAll() {
+	private function rebuildAll() {
 
 		$linkCache = LinkCache::singleton();
 
@@ -227,7 +244,7 @@ class DataRebuilder {
 		return true;
 	}
 
-	protected function performFullDelete() {
+	private function performFullDelete() {
 
 		$this->reportMessage( "\n Deleting all stored data completely and rebuilding it again later!\n" .
 			" Semantic data in the wiki might be incomplete for some time while this operation runs.\n\n" .
@@ -264,7 +281,7 @@ class DataRebuilder {
 		return true;
 	}
 
-	protected function idFileIsWritable( $startIdFile ) {
+	private function idFileIsWritable( $startIdFile ) {
 
 		if ( !is_writable( file_exists( $startIdFile ) ? $startIdFile : dirname( $startIdFile ) ) ) {
 			die( "Cannot use a startidfile that we can't write to.\n" );
@@ -273,32 +290,36 @@ class DataRebuilder {
 		return true;
 	}
 
-	protected function writeIdToFile( $id ) {
+	private function writeIdToFile( $id ) {
 		if ( $this->canWriteToIdFile ) {
 			file_put_contents( $this->startIdFile, "$id" );
 		}
 	}
 
-	protected function describeFiltersFromOptions( $options ) {
-
-		$filtersarray = array();
+	/**
+	 * @param array $options
+	 *
+	 * @return int[]
+	 */
+	private function getFiltersFromOptions( array $options ) {
+		$filters = array();
 
 		if ( array_key_exists( 'c', $options ) ) {
-			$filtersarray[] = NS_CATEGORY;
+			$filters[] = NS_CATEGORY;
 		}
 
 		if ( array_key_exists( 'p', $options ) ) {
-			$filtersarray[] = SMW_NS_PROPERTY;
+			$filters[] = SMW_NS_PROPERTY;
 		}
 
 		if ( array_key_exists( 't', $options ) ) {
-			$filtersarray[] = SMW_NS_TYPE;
+			$filters[] = SMW_NS_TYPE;
 		}
 
-		return $filtersarray !== array() ? $filtersarray : false;
+		return $filters;
 	}
 
-	protected function getPagesFromQuery() {
+	private function getPagesFromQuery() {
 
 		// get number of pages and fix query limit
 		$query = SMWQueryProcessor::createQuery(
@@ -319,7 +340,7 @@ class DataRebuilder {
 		return $this->store->getQueryResult( $query )->getResults();
 	}
 
-	protected function getPagesFromFilters() {
+	private function getPagesFromFilters() {
 
 		$pages = array();
 
@@ -332,7 +353,7 @@ class DataRebuilder {
 		return $pages;
 	}
 
-	protected function makeTitleOf( $page ) {
+	private function makeTitleOf( $page ) {
 
 		if ( $page instanceof DIWikiPage ) {
 			return $page->getTitle();
@@ -342,10 +363,10 @@ class DataRebuilder {
 			return $page;
 		}
 
-		return Title::newFromText( $page );
+		return $this->titleCreator->createFromText( $page );
 	}
 
-	protected function reportMessage( $message, $output = true ) {
+	private function reportMessage( $message, $output = true ) {
 		if ( $output ) {
 			$this->reporter->reportMessage( $message );
 		}

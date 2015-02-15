@@ -2,11 +2,9 @@
 
 namespace SMW\Maintenance;
 
-use SMW\Maintenance\DataRebuilder;
-use SMW\Maintenance\MaintenanceHelper;
 use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\ApplicationFactory;
 use SMW\StoreFactory;
-use SMW\Settings;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
@@ -101,7 +99,9 @@ class RebuildData extends \Maintenance {
 			return false;
 		}
 
-		$maintenanceHelper = new MaintenanceHelper();
+		$maintenanceFactory = ApplicationFactory::getInstance()->newMaintenanceFactory();
+
+		$maintenanceHelper = $maintenanceFactory->newMaintenanceHelper();
 		$maintenanceHelper->initRuntimeValues();
 
 		if ( $this->hasOption( 'no-cache' ) ) {
@@ -120,8 +120,7 @@ class RebuildData extends \Maintenance {
 		$store = StoreFactory::getStore( $this->hasOption( 'b' ) ? $this->getOption( 'b' ) : null );
 		$store->setUpdateJobsEnabledState( false );
 
-		$dataRebuilder = new DataRebuilder( $store );
-
+		$dataRebuilder = $maintenanceFactory->newDataRebuilder( $store );
 		$dataRebuilder->setMessageReporter( $reporter );
 		$dataRebuilder->setParameters( $this->mOptions );
 
