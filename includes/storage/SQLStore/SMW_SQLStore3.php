@@ -72,9 +72,9 @@ class SMWSQLStore3 extends SMWStore {
 	private $factory;
 
 	/**
-	 * @var PropertyTableInfoFetcher
+	 * @var PropertyTableInfoFetcher|null
 	 */
-	private $propertyTableInfoFetcher;
+	private $propertyTableInfoFetcher = null;
 
 	/**
 	 * Object to access the SMW IDs table.
@@ -145,7 +145,6 @@ class SMWSQLStore3 extends SMWStore {
 	public function __construct() {
 		$this->smwIds = new SMWSql3SmwIds( $this );
 		$this->factory = new SQLStoreFactory( $this );
-		$this->propertyTableInfoFetcher = new PropertyTableInfoFetcher();
 	}
 
 	/**
@@ -601,7 +600,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return string
 	 */
 	public function findTypeTableId( $typeid ) {
-		return $this->propertyTableInfoFetcher->findTableIdForDataTypeTypeId( $typeid );
+		return $this->getPropertyTableInfoFetcher()->findTableIdForDataTypeTypeId( $typeid );
 	}
 
 	/**
@@ -612,7 +611,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return string
 	 */
 	public function findDiTypeTableId( $dataItemId ) {
-		return $this->propertyTableInfoFetcher->findTableIdForDataItemTypeId( $dataItemId );
+		return $this->getPropertyTableInfoFetcher()->findTableIdForDataItemTypeId( $dataItemId );
 	}
 
 	/**
@@ -623,7 +622,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return string
 	 */
 	public function findPropertyTableID( DIProperty $property ) {
-		return $this->propertyTableInfoFetcher->findTableIdForProperty( $property );
+		return $this->getPropertyTableInfoFetcher()->findTableIdForProperty( $property );
 	}
 
 	/**
@@ -698,7 +697,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return TableDefinition[]
 	 */
 	public function getPropertyTables() {
-		return $this->propertyTableInfoFetcher->getPropertyTableDefinitions();
+		return $this->getPropertyTableInfoFetcher()->getPropertyTableDefinitions();
 	}
 
 	/**
@@ -732,7 +731,7 @@ class SMWSQLStore3 extends SMWStore {
 		parent::clear();
 		$this->m_semdata = array();
 		$this->m_sdstate = array();
-		$this->propertyTableInfoFetcher->clear();
+		$this->getPropertyTableInfoFetcher()->clear();
 		$this->getObjectIds()->clearCaches();
 	}
 
@@ -756,6 +755,27 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	public function canUseUpdateFeature( $updateFeatureFlag ) {
 		return $GLOBALS['smwgUFeatures'] === ( $GLOBALS['smwgUFeatures'] | $updateFeatureFlag );
+	}
+
+	/**
+	 * @note It is performance critical to make sure that the instance is only
+	 * invoked once per request as PropertyTableInfoFetcher does not contain any
+	 * internal caching
+	 *
+	 * @since 2.2
+	 *
+	 * @return PpropertyTableInfoFetcher
+	 */
+	public function getPropertyTableInfoFetcher() {
+
+		if ( $this->propertyTableInfoFetcher === null ) {
+			$this->propertyTableInfoFetcher = new PropertyTableInfoFetcher();
+
+			//$this->propertyTableInfoFetcher->setCustomFixedPropertyList();
+			//$this->propertyTableInfoFetcher->setCustomSpecialPropertyList();
+		}
+
+		return $this->propertyTableInfoFetcher;
 	}
 
 }

@@ -19,9 +19,9 @@ class PropertyTableInfoFetcher {
 	 * Array for keeping property table table data, indexed by table id.
 	 * Access this only by calling getPropertyTables().
 	 *
-	 * @var TableDefinition[]
+	 * @var TableDefinition[]|null
 	 */
-	private static $propertyTableDefinitions = null;
+	private $propertyTableDefinitions = null;
 
 	/**
 	 * Array to cache "propkey => table id" associations for fixed property
@@ -30,7 +30,7 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @var array|null
 	 */
-	private static $fixedPropertyTableIds = null;
+	private $fixedPropertyTableIds = null;
 
 	/**
 	 * Keys of special properties that should have their own
@@ -38,14 +38,14 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @var array
 	 */
-	private static $customizableSpecialProperties = array(
+	private $customizableSpecialProperties = array(
 		'_MDAT', '_CDAT', '_NEWP', '_LEDT', '_MIME', '_MEDIA',
 	);
 
 	/**
 	 * @var array
 	 */
-	private static $fixedSpecialProperties = array(
+	private $fixedSpecialProperties = array(
 		// property declarations
 		'_TYPE', '_UNIT', '_CONV', '_PVAL', '_LIST', '_SERV',
 		// query statistics (very frequently used)
@@ -67,7 +67,7 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @var array
 	 */
-	private static $defaultDiTypeTableIdMap = array(
+	private $defaultDiTypeTableIdMap = array(
 		DataItem::TYPE_NUMBER     => 'smw_di_number',
 		DataItem::TYPE_BLOB       => 'smw_di_blob',
 		DataItem::TYPE_BOOLEAN    => 'smw_di_bool',
@@ -108,8 +108,8 @@ class PropertyTableInfoFetcher {
 	 */
 	public function findTableIdForDataItemTypeId( $dataItemId ) {
 
-		if ( array_key_exists( $dataItemId, self::$defaultDiTypeTableIdMap ) ) {
-			return self::$defaultDiTypeTableIdMap[$dataItemId];
+		if ( array_key_exists( $dataItemId, $this->defaultDiTypeTableIdMap ) ) {
+			return $this->defaultDiTypeTableIdMap[$dataItemId];
 		}
 
 		return '';
@@ -127,14 +127,14 @@ class PropertyTableInfoFetcher {
 	 */
 	public function findTableIdForProperty( DIProperty $property ) {
 
-		if ( self::$fixedPropertyTableIds === null ) {
+		if ( $this->fixedPropertyTableIds === null ) {
 			$this->getPropertyTableDefinitions();
 		}
 
 		$propertyKey = $property->getKey();
 
-		if ( array_key_exists( $propertyKey, self::$fixedPropertyTableIds ) ) {
-			return self::$fixedPropertyTableIds[$propertyKey];
+		if ( array_key_exists( $propertyKey, $this->fixedPropertyTableIds ) ) {
+			return $this->fixedPropertyTableIds[$propertyKey];
 		}
 
 		return $this->findTableIdForDataTypeTypeId( $property->findPropertyTypeID() );
@@ -154,14 +154,14 @@ class PropertyTableInfoFetcher {
 	 */
 	public function getPropertyTableDefinitions() {
 
-		if ( self::$propertyTableDefinitions !== null ) {
-			return self::$propertyTableDefinitions;
+		if ( $this->propertyTableDefinitions !== null ) {
+			return $this->propertyTableDefinitions;
 		}
 
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
-		$enabledSpecialProperties = self::$fixedSpecialProperties;
-		$customizableSpecialProperties = array_flip( self::$customizableSpecialProperties );
+		$enabledSpecialProperties = $this->fixedSpecialProperties;
+		$customizableSpecialProperties = array_flip( $this->customizableSpecialProperties );
 
 		$customFixedProperties = $settings->get( 'smwgFixedProperties' );
 		$customSpecialProperties = $settings->get( 'smwgPageSpecialProperties' );
@@ -173,25 +173,25 @@ class PropertyTableInfoFetcher {
 		}
 
 		$definitionBuilder = new PropertyTableDefinitionBuilder(
-			self::$defaultDiTypeTableIdMap,
+			$this->defaultDiTypeTableIdMap,
 			$enabledSpecialProperties,
 			$customFixedProperties
 		);
 
 		$definitionBuilder->doBuild();
 
-		self::$propertyTableDefinitions = $definitionBuilder->getTableDefinitions();
-		self::$fixedPropertyTableIds = $definitionBuilder->getFixedPropertyTableIds();
+		$this->propertyTableDefinitions = $definitionBuilder->getTableDefinitions();
+		$this->fixedPropertyTableIds = $definitionBuilder->getFixedPropertyTableIds();
 
-		return self::$propertyTableDefinitions;
+		return $this->propertyTableDefinitions;
 	}
 
 	/**
 	 * @since 2.2
 	 */
 	public function clear() {
-		self::$propertyTableDefinitions = null;
-		self::$fixedPropertyTableIds = null;
+		$this->propertyTableDefinitions = null;
+		$this->fixedPropertyTableIds = null;
 	}
 
 }
