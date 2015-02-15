@@ -3,12 +3,9 @@
 namespace SMW;
 
 use SMWOutputs;
-
 use IContextSource;
 use ContextSource;
 use Html;
-
-use MWException;
 
 /**
  * Highlighter utility function for Semantic MediaWiki
@@ -32,10 +29,6 @@ use MWException;
  * @since   1.9
  *
  * @author mwjames
- */
-
-/**
- * Highlighter utility function for Semantic MediaWiki
  *
  * @ingroup SMW
  */
@@ -63,12 +56,12 @@ class Highlighter extends ContextSource {
 	/**
 	 * @var array $options
 	 */
-	protected $options;
+	private $options;
 
 	/**
 	 * @var int $type
 	 */
-	protected $type;
+	private $type;
 
 	/**
 	 * Constructor
