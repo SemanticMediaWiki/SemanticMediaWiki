@@ -23,8 +23,6 @@ class SMWImportValue extends SMWDataValue {
 	protected $m_name = ''; // wiki name of the vocab (e.g. "Friend of a Friend")l might contain wiki markup
 
 	protected function parseUserValue( $value ) {
-		global $wgContLang;
-
 		$this->m_qname = $value;
 
 		list( $onto_ns, $onto_section ) = explode( ':', $this->m_qname, 2 );
@@ -44,31 +42,6 @@ class SMWImportValue extends SMWDataValue {
 		$this->m_namespace = $onto_ns;
 		$this->m_section = $onto_section;
 		$this->m_name = $onto_name;
-
-		foreach ( $msglines as $msgline ) {
-			list( $secname, $typestring ) = explode( '|', $msgline, 2 );
-			if ( $secname === $onto_section ) {
-				list( $namespace, ) = explode( ':', $typestring, 2 );
-				// check whether type matches
-				switch ( $namespace ) {
-					case $wgContLang->getNsText( SMW_NS_TYPE ):
-						$elemtype = SMW_NS_PROPERTY;
-						break;
-					case $wgContLang->getNsText( SMW_NS_PROPERTY ):
-						$elemtype = SMW_NS_PROPERTY;
-						break;
-					case $wgContLang->getNsText( NS_CATEGORY ):
-						$elemtype = NS_CATEGORY;
-						break;
-					case $wgContLang->getNsText( SMW_NS_CONCEPT ):
-						$elemtype = NS_CATEGORY;
-						break;
-					default: // match all other namespaces
-						$elemtype = NS_MAIN;
-				}
-				break;
-			}
-		}
 
 		$this->m_dataitem = new SMWDIBlob( $this->m_namespace . ' ' . $this->m_section . ' ' . $this->m_uri );
 
