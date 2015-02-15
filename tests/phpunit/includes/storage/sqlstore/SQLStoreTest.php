@@ -9,33 +9,29 @@ use SMW\ApplicationFactory;
 /**
  * @covers \SMWSQLStore3
  *
+ * @group semantic-mediawiki
  *
- * @group SMW
- * @group SMWExtension
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 class SQLStoreTest extends \PHPUnit_Framework_TestCase {
 
-	private $applicationFactory;
 	private $store;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->store = new SMWSQLStore3();
-		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		// Default
-		$this->applicationFactory->getSettings()->set( 'smwgFixedProperties', array() );
-		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', array() );
+		$this->store->setConfiguration( Settings::newFromArray( array(
+			'smwgFixedProperties' => array(),
+			'smwgPageSpecialProperties' => array()
+		) ) );
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
 		$this->store->clear();
 
 		parent::tearDown();
@@ -81,10 +77,10 @@ class SQLStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$defaultPropertyTableCount = count( $this->store->getPropertyTables() );
 
-		$this->applicationFactory->getSettings()->set(
-			'smwgPageSpecialProperties',
-			array( '_MDAT' )
-		);
+		$this->store->setConfiguration( Settings::newFromArray( array(
+			'smwgFixedProperties' => array(),
+			'smwgPageSpecialProperties' => array( '_MDAT' )
+		) ) );
 
 		$this->store->clear();
 
@@ -101,10 +97,10 @@ class SQLStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$defaultPropertyTableCount = count( $this->store->getPropertyTables() );
 
-		$this->applicationFactory->getSettings()->set(
-			'smwgPageSpecialProperties',
-			array( '_MDAT', 'Foo' )
-		);
+		$this->store->setConfiguration( Settings::newFromArray( array(
+			'smwgFixedProperties' => array(),
+			'smwgPageSpecialProperties' => array( '_MDAT', 'Foo'  )
+		) ) );
 
 		$this->store->clear();
 
@@ -121,10 +117,10 @@ class SQLStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$defaultPropertyTableCount = count( $this->store->getPropertyTables() );
 
-		$this->applicationFactory->getSettings()->set(
-			'smwgPageSpecialProperties',
-			array( '_MDAT', '_MEDIA' )
-		);
+		$this->store->setConfiguration( Settings::newFromArray( array(
+			'smwgFixedProperties' => array(),
+			'smwgPageSpecialProperties' => array( '_MDAT', '_MEDIA'  )
+		) ) );
 
 		$this->store->clear();
 

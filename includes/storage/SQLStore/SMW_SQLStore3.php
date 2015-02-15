@@ -731,7 +731,7 @@ class SMWSQLStore3 extends SMWStore {
 		parent::clear();
 		$this->m_semdata = array();
 		$this->m_sdstate = array();
-		$this->getPropertyTableInfoFetcher()->clear();
+		$this->propertyTableInfoFetcher = null;
 		$this->getObjectIds()->clearCaches();
 	}
 
@@ -759,8 +759,7 @@ class SMWSQLStore3 extends SMWStore {
 
 	/**
 	 * @note It is performance critical to make sure that the instance is only
-	 * invoked once per request as PropertyTableInfoFetcher does not contain any
-	 * internal caching
+	 * invoked once per request
 	 *
 	 * @since 2.2
 	 *
@@ -771,8 +770,13 @@ class SMWSQLStore3 extends SMWStore {
 		if ( $this->propertyTableInfoFetcher === null ) {
 			$this->propertyTableInfoFetcher = new PropertyTableInfoFetcher();
 
-			//$this->propertyTableInfoFetcher->setCustomFixedPropertyList();
-			//$this->propertyTableInfoFetcher->setCustomSpecialPropertyList();
+			$this->propertyTableInfoFetcher->setCustomFixedPropertyList(
+				self::$configuration->get( 'smwgFixedProperties' )
+			);
+
+			$this->propertyTableInfoFetcher->setCustomSpecialPropertyList(
+				self::$configuration->get( 'smwgPageSpecialProperties' )
+			);
 		}
 
 		return $this->propertyTableInfoFetcher;

@@ -3,7 +3,6 @@
 namespace SMW\SQLStore;
 
 use SMW\DataTypeRegistry;
-use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMWDataItem as DataItem;
 
@@ -45,6 +44,11 @@ class PropertyTableInfoFetcher {
 	/**
 	 * @var array
 	 */
+	private $customSpecialPropertyList = array();
+
+	/**
+	 * @var array
+	 */
 	private $fixedSpecialProperties = array(
 		// property declarations
 		'_TYPE', '_UNIT', '_CONV', '_PVAL', '_LIST', '_SERV',
@@ -63,6 +67,11 @@ class PropertyTableInfoFetcher {
 	);
 
 	/**
+	 * @var array
+	 */
+	private $customFixedPropertyList = array();
+
+	/**
 	 * Default tables to use for storing data of certain types.
 	 *
 	 * @var array
@@ -79,11 +88,29 @@ class PropertyTableInfoFetcher {
 	);
 
 	/**
+	 * @since 2.2
+	 *
+	 * @param array $customFixedProperties
+	 */
+	public function setCustomFixedPropertyList( array $customFixedProperties ) {
+		$this->customFixedPropertyList = $customFixedProperties;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param array $customSpecialProperties
+	 */
+	public function setCustomSpecialPropertyList( array $customSpecialProperties ) {
+		$this->customSpecialPropertyList = $customSpecialProperties;
+	}
+
+	/**
 	 * Find the id of a property table that is suitable for storing values of
 	 * the given type. The type is specified by an SMW type id such as '_wpg'.
 	 * An empty string is returned if no matching table could be found.
 	 *
-	 * @since 1.8
+	 * @since 2.2
 	 *
 	 * @param string $dataTypeTypeId
 	 *
@@ -100,7 +127,7 @@ class PropertyTableInfoFetcher {
 	 * data items of the given type. The empty string is returned if
 	 * no such table exists.
 	 *
-	 * @since 1.8
+	 * @since 2.2
 	 *
 	 * @param integer $dataItemId
 	 *
@@ -119,7 +146,7 @@ class PropertyTableInfoFetcher {
 	 * Retrieve the id of the property table that is to be used for storing
 	 * values for the given property object.
 	 *
-	 * @since 1.8
+	 * @since 2.2
 	 *
 	 * @param DIProperty $property
 	 *
@@ -128,7 +155,7 @@ class PropertyTableInfoFetcher {
 	public function findTableIdForProperty( DIProperty $property ) {
 
 		if ( $this->fixedPropertyTableIds === null ) {
-			$this->getPropertyTableDefinitions();
+			$this->buildDefinitionsForPropertyTables();
 		}
 
 		$propertyKey = $property->getKey();
@@ -154,19 +181,27 @@ class PropertyTableInfoFetcher {
 	 */
 	public function getPropertyTableDefinitions() {
 
-		if ( $this->propertyTableDefinitions !== null ) {
-			return $this->propertyTableDefinitions;
+		if ( $this->propertyTableDefinitions === null ) {
+			$this->buildDefinitionsForPropertyTables();
 		}
 
-		$settings = ApplicationFactory::getInstance()->getSettings();
+		return $this->propertyTableDefinitions;
+	}
+
+	/**
+	 * @since 2.2
+	 */
+	public function clearCache() {
+		$this->propertyTableDefinitions = null;
+		$this->fixedPropertyTableIds = null;
+	}
+
+	private function buildDefinitionsForPropertyTables() {
 
 		$enabledSpecialProperties = $this->fixedSpecialProperties;
 		$customizableSpecialProperties = array_flip( $this->customizableSpecialProperties );
 
-		$customFixedProperties = $settings->get( 'smwgFixedProperties' );
-		$customSpecialProperties = $settings->get( 'smwgPageSpecialProperties' );
-
-		foreach ( $customSpecialProperties as $property ) {
+		foreach ( $this->customSpecialPropertyList as $property ) {
 			if ( isset( $customizableSpecialProperties[$property] ) ) {
 				$enabledSpecialProperties[] = $property;
 			}
@@ -175,23 +210,13 @@ class PropertyTableInfoFetcher {
 		$definitionBuilder = new PropertyTableDefinitionBuilder(
 			$this->defaultDiTypeTableIdMap,
 			$enabledSpecialProperties,
-			$customFixedProperties
+			$this->customFixedPropertyList
 		);
 
 		$definitionBuilder->doBuild();
 
 		$this->propertyTableDefinitions = $definitionBuilder->getTableDefinitions();
 		$this->fixedPropertyTableIds = $definitionBuilder->getFixedPropertyTableIds();
-
-		return $this->propertyTableDefinitions;
-	}
-
-	/**
-	 * @since 2.2
-	 */
-	public function clear() {
-		$this->propertyTableDefinitions = null;
-		$this->fixedPropertyTableIds = null;
 	}
 
 }

@@ -3,7 +3,6 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\SQLStore\PropertyTableInfoFetcher;
-use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMWDataItem as DataItem;
 
@@ -18,15 +17,6 @@ use SMWDataItem as DataItem;
  * @author mwjames
  */
 class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
-
-	protected function setUp() {
-		parent::setUp();
-
-		ApplicationFactory::getInstance()->getSettings()->set(
-			'smwgPageSpecialProperties',
-			 array( '_MDAT', '_MEDIA', '_MIME' )
-		);
-	}
 
 	public function testCanConstruct() {
 
@@ -45,7 +35,7 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 			$instance->getPropertyTableDefinitions()
 		);
 
-		$instance->clear();
+		$instance->clearCache();
 	}
 
 	/**
@@ -56,6 +46,10 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 		$property = DIProperty::newFromUserLabel( $property );
 
 		$instance = new PropertyTableInfoFetcher();
+
+		$instance->setCustomSpecialPropertyList(
+			array( '_MDAT', '_MEDIA', '_MIME' )
+		);
 
 		$this->assertEquals(
 			$expected,
@@ -70,6 +64,10 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PropertyTableInfoFetcher();
 
+		$instance->setCustomSpecialPropertyList(
+			array( '_MDAT', '_MEDIA', '_MIME' )
+		);
+
 		$this->assertEquals(
 			$expected,
 			$instance->findTableIdForDataItemTypeId( $diType )
@@ -82,6 +80,10 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 	public function testFindTableIdForDataTypeTypeId( $dataType, $expected ) {
 
 		$instance = new PropertyTableInfoFetcher();
+
+		$instance->setCustomSpecialPropertyList(
+			array( '_MDAT', '_MEDIA', '_MIME' )
+		);
 
 		$this->assertEquals(
 			$expected,
