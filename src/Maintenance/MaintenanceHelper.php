@@ -53,6 +53,24 @@ class MaintenanceHelper {
 	/**
 	 * @since 2.2
 	 *
+	 * @return string
+	 */
+	public function transformRuntimeValuesForOutput() {
+
+		$runtimeValues = $this->getRuntimeValues();
+
+		$time = round( $runtimeValues['time'], 2 ) . ' sec ';
+		$time .= ( $runtimeValues['time'] > 60 ? '(' . round( $runtimeValues['time'] / 60, 2 ) . ' min)' : '' );
+
+		return "Memory used: " . $runtimeValues['memory-used'] . " (" .
+			"b: " . $runtimeValues['memory-before'] . ", ".
+			"a: " . $runtimeValues['memory-after'] . ") with a " .
+			"runtime of " . $time;
+	}
+
+	/**
+	 * @since 2.2
+	 *
 	 * @param string $key
 	 * @param string $value
 	 */

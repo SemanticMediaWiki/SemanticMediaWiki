@@ -48,4 +48,18 @@ class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructConceptCacheRebuilder() {
+
+		$instance = new MaintenanceFactory();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->assertInstanceOf(
+			'\SMW\Maintenance\ConceptCacheRebuilder',
+			$instance->newConceptCacheRebuilder( $store )
+		);
+	}
+
 }
