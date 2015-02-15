@@ -338,8 +338,6 @@ class SMWExporter {
 	 * @return SMWExpResource
 	 */
 	static public function getResourceElementForWikiPage( SMWDIWikiPage $diWikiPage, $modifier = '' ) {
-		global $wgContLang;
-
 		if ( $diWikiPage->getNamespace() == NS_MEDIA ) { // special handling for linking media files directly (object only)
 			$title = Title::makeTitle( $diWikiPage->getNamespace(), $diWikiPage->getDBkey() ) ;
 			$file = wfFindFile( $title );
