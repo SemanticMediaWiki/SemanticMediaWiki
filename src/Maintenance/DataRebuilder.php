@@ -5,6 +5,7 @@ namespace SMW\Maintenance;
 use LinkCache;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\MediaWiki\TitleCreator;
 use SMW\MediaWiki\TitleLookup;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
@@ -29,6 +30,11 @@ class DataRebuilder {
 	 * @var Store
 	 */
 	private $store;
+
+	/**
+	 * @var TitleCreator
+	 */
+	private $titleCreator;
 
 	/**
 	 * @var MessageReporter
@@ -58,9 +64,11 @@ class DataRebuilder {
 	 * @since 1.9.2
 	 *
 	 * @param Store $store
+	 * @param TitleCreator $titleCreator
 	 */
-	public function __construct( Store $store ) {
+	public function __construct( Store $store, TitleCreator $titleCreator ) {
 		$this->store = $store;
+		$this->titleCreator = $titleCreator;
 		$this->reporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 	}
 
@@ -355,7 +363,7 @@ class DataRebuilder {
 			return $page;
 		}
 
-		return Title::newFromText( $page );
+		return $this->titleCreator->createFromText( $page );
 	}
 
 	private function reportMessage( $message, $output = true ) {
