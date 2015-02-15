@@ -126,7 +126,7 @@ class ConceptParserFunction {
 
  		$rawParams = array( $conceptQueryString );
 
-		list( $query, $parameters ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
+		list( $query, ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
 			$rawParams,
 			SMW_OUTPUT_WIKI,
 			SMWQueryProcessor::CONCEPT_DESC,
