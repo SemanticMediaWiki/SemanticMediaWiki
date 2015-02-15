@@ -124,15 +124,15 @@ class RebuildData extends \Maintenance {
 		$dataRebuilder->setMessageReporter( $reporter );
 		$dataRebuilder->setParameters( $this->mOptions );
 
-		if ( $dataRebuilder->rebuild() ) {
-			$this->doReportRuntimeEnvironment( $maintenanceHelper->getRuntimeValues() );
-			$maintenanceHelper->reset();
-			return true;
+		$result = $this->checkForRebuildState( $dataRebuilder->rebuild() );
+
+		if ( $result && $this->hasOption( 'runtime' ) ) {
+			$this->reportMessage( "\n" . $maintenanceHelper->transformRuntimeValuesForOutput() . "\n" );
 		}
 
 		$maintenanceHelper->reset();
-		$this->reportMessage( $this->mDescription . "\n\n" . 'Use option --help for usage details.' . "\n"  );
-		return false;
+
+		return $result;
 	}
 
 	/**
@@ -144,21 +144,14 @@ class RebuildData extends \Maintenance {
 		$this->output( $message );
 	}
 
-	private function doReportRuntimeEnvironment( array $runtimeValues ) {
+	private function checkForRebuildState( $rebuildResult ) {
 
-		if ( !$this->hasOption( 'runtime' ) ) {
-			return;
+		if ( !$rebuildResult ) {
+			$this->reportMessage( $this->mDescription . "\n\n" . 'Use option --help for usage details.' . "\n"  );
+			return false;
 		}
 
-		$time = round( $runtimeValues['time'], 2 ) . ' sec ';
-		$time .= ( $runtimeValues['time'] > 60 ? '(' . round( $runtimeValues['time'] / 60, 2 ) . ' min)' : '' );
-
-		$this->reportMessage(
-			"\n" . "Memory used: " . $runtimeValues['memory-used'] . " (" .
-			"b: " . $runtimeValues['memory-before'] . ", ".
-			"a: " . $runtimeValues['memory-after'] . ") with a " .
-			"runtime of " . $time . "\n"
-		);
+		return true;
 	}
 
 }

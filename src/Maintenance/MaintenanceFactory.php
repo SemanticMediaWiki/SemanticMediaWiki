@@ -36,4 +36,18 @@ class MaintenanceFactory {
 		return new DataRebuilder( $store, $titleCreator );
 	}
 
+	/**
+	 * @since 2.2
+	 *
+	 * @param Store $store
+	 *
+	 * @return ConceptCacheRebuilder
+	 */
+	public function newConceptCacheRebuilder( Store $store ) {
+
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
+		return new ConceptCacheRebuilder( $store, $settings );
+	}
+
 }

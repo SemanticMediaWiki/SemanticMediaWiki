@@ -3,7 +3,6 @@
 namespace SMW\Maintenance;
 
 use SMW\Maintenance\ConceptCacheRebuilder;
-use SMW\Maintenance\MaintenanceHelper;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\ApplicationFactory;
 
@@ -100,6 +99,7 @@ class RebuildConceptCache extends \Maintenance {
 		$this->addOption( 's', '<startid> Process only concepts with page id of at least <startid>', false, true );
 		$this->addOption( 'e', '<endid> Process only concepts with page id of at most <endid>', false, true );
 
+		$this->addOption( 'runtime', 'Will display the runtime environment of the script', false );
 		$this->addOption( 'debug', 'Will set global variables to support debug ouput while running the script', false );
 		$this->addOption( 'quiet', 'Do not give any output', false );
 		$this->addOption( 'verbose', 'Give additional output. No effect if --quiet is given.', false );
@@ -115,7 +115,11 @@ class RebuildConceptCache extends \Maintenance {
 			return false;
 		}
 
-		$maintenanceHelper = new MaintenanceHelper();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();
+
+		$maintenanceHelper = $maintenanceFactory->newMaintenanceHelper();
+		$maintenanceHelper->initRuntimeValues();
 
 		if ( $this->hasOption( 'debug' ) ) {
 			$maintenanceHelper->setGlobalToValue( 'wgShowExceptionDetails', true );
@@ -123,27 +127,22 @@ class RebuildConceptCache extends \Maintenance {
 			$maintenanceHelper->setGlobalToValue( 'wgShowDBErrorBacktrace', true );
 		}
 
-		$applicationFactory = ApplicationFactory::getInstance();
-
 		$reporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
 		$reporter->registerReporterCallback( array( $this, 'reportMessage' ) );
 
-		$conceptCacheRebuilder = new ConceptCacheRebuilder(
-			$applicationFactory->getStore(),
-			$applicationFactory->getSettings()
-		);
-
+		$conceptCacheRebuilder = $maintenanceFactory->newConceptCacheRebuilder( $applicationFactory->getStore() );
 		$conceptCacheRebuilder->setMessageReporter( $reporter );
 		$conceptCacheRebuilder->setParameters( $this->mOptions );
 
-		if ( $conceptCacheRebuilder->rebuild() ) {
-			$maintenanceHelper->reset();
-			return true;
+		$result = $this->checkForRebuildState( $conceptCacheRebuilder->rebuild() );
+
+		if ( $result && $this->hasOption( 'runtime' ) ) {
+			$this->reportMessage( "\n" . $maintenanceHelper->transformRuntimeValuesForOutput() . "\n" );
 		}
 
-		$this->reportMessage( $this->mDescription . "\n\n" . 'Use option --help for usage details.' . "\n"  );
 		$maintenanceHelper->reset();
-		return false;
+
+		return $result;
 	}
 
 	/**
@@ -153,6 +152,16 @@ class RebuildConceptCache extends \Maintenance {
 	 */
 	public function reportMessage( $message ) {
 		$this->output( $message );
+	}
+
+	private function checkForRebuildState( $rebuildResult ) {
+
+		if ( !$rebuildResult ) {
+			$this->reportMessage( $this->mDescription . "\n\n" . 'Use option --help for usage details.' . "\n"  );
+			return false;
+		}
+
+		return true;
 	}
 
 }

@@ -78,6 +78,19 @@ class MaintenanceHelperTest extends \PHPUnit_Framework_TestCase {
 		$instance->reset();
 	}
 
+	public function testTransformRuntimeValuesForOutput() {
+
+		$instance = new MaintenanceHelper();
+		$instance->initRuntimeValues();
+
+		$this->assertContains(
+			'sec',
+			$instance->transformRuntimeValuesForOutput()
+		);
+
+		$instance->reset();
+	}
+
 	public function runtimeKeyValueProvider() {
 
 		$provider = array(
