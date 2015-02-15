@@ -769,9 +769,6 @@ class SMWExporter {
 	 * @return string
 	 */
 	static public function getEncodedPageName( DIWikiPage $diWikiPage ) {
-
-		$localName = '';
-
 		if ( $diWikiPage->getNamespace() !== 0 ) {
 			$localName = str_replace( ' ', '_', $GLOBALS['wgContLang']->getNSText( $diWikiPage->getNamespace() ) ) . ':' . $diWikiPage->getDBkey();
 		} else {
