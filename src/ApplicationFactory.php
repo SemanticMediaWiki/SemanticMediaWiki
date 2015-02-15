@@ -12,6 +12,7 @@ use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\TitleCreator;
 use SMW\Query\Profiler\QueryProfilerFactory;
+use SMW\Maintenance\MaintenanceFactory;
 use SMWQueryParser as QueryParser;
 use Title;
 
@@ -135,6 +136,15 @@ class ApplicationFactory {
 	 */
 	public function newQueryProfilerFactory() {
 		return new QueryProfilerFactory();
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return MaintenanceFactory
+	 */
+	public function newMaintenanceFactory() {
+		return new MaintenanceFactory();
 	}
 
 	/**

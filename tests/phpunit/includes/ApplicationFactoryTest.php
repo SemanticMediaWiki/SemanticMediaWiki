@@ -183,4 +183,12 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructMaintenanceFactory() {
+
+		$this->assertInstanceOf(
+			'\SMW\Maintenance\MaintenanceFactory',
+			$this->applicationFactory->newMaintenanceFactory()
+		);
+	}
+
 }
