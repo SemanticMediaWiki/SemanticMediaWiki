@@ -25,7 +25,7 @@ namespace SMW;
  *
  * @author mwjames
  */
-abstract class DependencyInjector implements DependencyRequestor {
+abstract class DependencyInjector {
 
 	/** @var DependencyBuilder */
 	protected $dependencyBuilder;
