@@ -135,11 +135,11 @@ class ListResultPrinter extends ResultPrinter {
 	 * @see SMW\ResultPrinter::getResultText
 	 *
 	 * @param SMWQueryResult $queryResult
-	 * @param $outputmode
+	 * @param $outputMode
 	 *
 	 * @return string
 	 */
-	protected function getResultText( SMWQueryResult $queryResult, $outputmode ) {
+	protected function getResultText( SMWQueryResult $queryResult, $outputMode ) {
 		if ( $this->mFormat == 'template' && !$this->mTemplate ) {
 			$queryResult->addErrors( array(
 				$this->getContext()->msg( 'smw_notemplategiven' )->inContentLanguage()->text()
@@ -179,7 +179,7 @@ class ListResultPrinter extends ResultPrinter {
 		// Make label for finding further results
 		if ( $this->linkFurtherResults( $queryResult ) &&
 			( $this->mFormat != 'ol' || $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) ) {
-			$result .= $this->getFurtherResultsText( $queryResult, $outputmode );
+			$result .= $this->getFurtherResultsText( $queryResult, $outputMode );
 		}
 
 		$result .= $this->footer;

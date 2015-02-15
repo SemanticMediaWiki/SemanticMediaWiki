@@ -45,7 +45,7 @@ class EmbeddedResultPrinter extends ResultPrinter {
 		return wfMessage( 'smw_printername_embedded' )->text();
 	}
 
-	protected function getResultText( SMWQueryResult $res, $outputmode ) {
+	protected function getResultText( SMWQueryResult $res, $outputMode ) {
 		global $wgParser;
 		// No page should embed itself, find out who we are:
 		if ( $wgParser->getTitle() instanceof Title ) {
@@ -105,7 +105,7 @@ class EmbeddedResultPrinter extends ResultPrinter {
 		// show link to more results
 		if ( $this->linkFurtherResults( $res ) ) {
 			$result .= $embstart
-				. $this->getFurtherResultsLink( $res, $outputmode )->getText( SMW_OUTPUT_WIKI, $this->mLinker )
+				. $this->getFurtherResultsLink( $res, $outputMode )->getText( SMW_OUTPUT_WIKI, $this->mLinker )
 				. $embend;
 		}
 

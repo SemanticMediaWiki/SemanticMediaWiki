@@ -44,7 +44,7 @@ class CategoryResultPrinter extends ResultPrinter {
 		return wfMessage( 'smw_printername_' . $this->mFormat )->text();
 	}
 
-	protected function getResultText( SMWQueryResult $res, $outputmode ) {
+	protected function getResultText( SMWQueryResult $res, $outputMode ) {
 		$result = '';
 		$num = $res->getCount();
 
@@ -168,7 +168,7 @@ class CategoryResultPrinter extends ResultPrinter {
 
 		// Make label for finding further results
 		if ( $this->linkFurtherResults( $res ) ) {
-			$result .= '<br /><li>' . $this->getLink( $res, $outputmode )->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . '</li>';
+			$result .= '<br /><li>' . $this->getLink( $res, $outputMode )->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . '</li>';
 		}
 
 		$result .= "</ul>\n</div> <!-- end column -->";

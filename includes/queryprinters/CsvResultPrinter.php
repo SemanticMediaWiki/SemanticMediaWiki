@@ -65,10 +65,10 @@ class CsvResultPrinter extends FileExportPrinter {
 		return ( $context == SMWQueryProcessor::SPECIAL_PAGE ) ? SMWQuery::MODE_INSTANCES : SMWQuery::MODE_NONE;
 	}
 
-	protected function getResultText( SMWQueryResult $res, $outputmode ) {
+	protected function getResultText( SMWQueryResult $res, $outputMode ) {
 		$result = '';
 
-		if ( $outputmode == SMW_OUTPUT_FILE ) { // make CSV file
+		if ( $outputMode == SMW_OUTPUT_FILE ) { // make CSV file
 			$csv = fopen( 'php://temp', 'r+' );
 			$sep = str_replace( '_', ' ', $this->params['sep'] );
 
@@ -105,8 +105,8 @@ class CsvResultPrinter extends FileExportPrinter {
 			rewind( $csv );
 			$result .= stream_get_contents( $csv );
 		} else { // just make link to feed
-			$result .= $this->getLink( $res, $outputmode )->getText( $outputmode, $this->mLinker );
-			$this->isHTML = ( $outputmode == SMW_OUTPUT_HTML ); // yes, our code can be viewed as HTML if requested, no more parsing needed
+			$result .= $this->getLink( $res, $outputMode )->getText( $outputMode, $this->mLinker );
+			$this->isHTML = ( $outputMode == SMW_OUTPUT_HTML ); // yes, our code can be viewed as HTML if requested, no more parsing needed
 		}
 		return $result;
 	}

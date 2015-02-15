@@ -151,7 +151,7 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 	 * Return serialised results in specified format.
 	 * Implemented by subclasses.
 	 */
-	abstract protected function getResultText( SMWQueryResult $res, $outputmode );
+	abstract protected function getResultText( SMWQueryResult $res, $outputMode );
 
 	/**
 	 * Constructor. The parameter $format is a format string

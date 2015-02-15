@@ -72,8 +72,8 @@ class RdfResultPrinter extends FileExportPrinter {
 		return wfMessage( 'smw_printername_rdf' )->text();
 	}
 
-	protected function getResultText( SMWQueryResult $res, $outputmode ) {
-		if ( $outputmode == SMW_OUTPUT_FILE ) { // make RDF file
+	protected function getResultText( SMWQueryResult $res, $outputMode ) {
+		if ( $outputMode == SMW_OUTPUT_FILE ) { // make RDF file
 			$serializer = $this->syntax == 'turtle' ? new SMWTurtleSerializer() : new SMWRDFXMLSerializer();
 			$serializer->startSerialization();
 			$serializer->serializeExpData( SMWExporter::getOntologyExpData( '' ) );
@@ -112,9 +112,9 @@ class RdfResultPrinter extends FileExportPrinter {
 
 			return $serializer->flushContent();
 		} else { // just make link to feed
-			$this->isHTML = ( $outputmode == SMW_OUTPUT_HTML ); // yes, our code can be viewed as HTML if requested, no more parsing needed
+			$this->isHTML = ( $outputMode == SMW_OUTPUT_HTML ); // yes, our code can be viewed as HTML if requested, no more parsing needed
 
-			return $this->getLink( $res, $outputmode )->getText( $outputmode, $this->mLinker );
+			return $this->getLink( $res, $outputMode )->getText( $outputMode, $this->mLinker );
 		}
 	}
 
