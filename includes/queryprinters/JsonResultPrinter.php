@@ -84,13 +84,13 @@ class JsonResultPrinter extends FileExportPrinter {
 	 * Returns a filename that is to be sent to the caller
 	 *
 	 * @param SMWQueryResult $res
-	 * @param $outputmode integer
+	 * @param $outputMode integer
 	 *
 	 * @return string
 	 */
-	protected function getResultText( SMWQueryResult $res, $outputmode ) {
+	protected function getResultText( SMWQueryResult $res, $outputMode ) {
 
-		if ( $outputmode == SMW_OUTPUT_FILE ) {
+		if ( $outputMode == SMW_OUTPUT_FILE ) {
 
 			// No results, just bailout
 			if ( $res->getCount() == 0 ){
@@ -108,10 +108,10 @@ class JsonResultPrinter extends FileExportPrinter {
 
 		} else {
 			// Create a link that points to the JSON file
-			$result = $this->getLink( $res, $outputmode )->getText( $outputmode, $this->mLinker );
+			$result = $this->getLink( $res, $outputMode )->getText( $outputMode, $this->mLinker );
 
 			// Code can be viewed as HTML if requested, no more parsing needed
-			$this->isHTML = $outputmode == SMW_OUTPUT_HTML;
+			$this->isHTML = $outputMode == SMW_OUTPUT_HTML;
 		}
 
 		return $result;

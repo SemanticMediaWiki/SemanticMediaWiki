@@ -2,9 +2,11 @@
 
 namespace SMW;
 
+use ParamProcessor\ParamDefinition;
+use SMW\MediaWiki\HtmlTableBuilder;
+use SMWDataValue;
 use SMWResultArray;
 use SMWQueryResult;
-use SMWQueryProcessor;
 use SMW\Query\PrintRequest;
 
 /**
@@ -20,6 +22,11 @@ use SMW\Query\PrintRequest;
 class TableResultPrinter extends ResultPrinter {
 
 	/**
+	 * @var HtmlTableBuilder
+	 */
+	private $tableBuilder;
+
+	/**
 	 * @note grep search smw_printername_table, smw_printername_broadtable
 	 * @codeCoverageIgnore
 	 *
@@ -33,14 +40,12 @@ class TableResultPrinter extends ResultPrinter {
 	 * Returns a table
 	 *
 	 * @param SMWQueryResult $res
-	 * @param $outputmode integer
+	 * @param integer $outputMode
 	 *
 	 * @return string
 	 */
-	protected function getResultText( SMWQueryResult $res, $outputmode ) {
-		$result = '';
-
-		$this->isHTML = ( $outputmode === SMW_OUTPUT_HTML );
+	protected function getResultText( SMWQueryResult $res, $outputMode ) {
+		$this->isHTML = ( $outputMode === SMW_OUTPUT_HTML );
 
 		$this->tableBuilder = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newHtmlTableBuilder();
 		$this->tableBuilder->setHtmlContext( $this->isHTML );
@@ -48,32 +53,30 @@ class TableResultPrinter extends ResultPrinter {
 		$columnClasses = array();
 
 		if ( $this->mShowHeaders != SMW_HEADERS_HIDE ) { // building headers
-			$headers = array();
-
 			foreach ( $res->getPrintRequests() as /* SMWPrintRequest */ $pr ) {
-				$attribs = array();
+				$attributes = array();
 				$columnClass = str_replace( array( ' ', '_' ), '-', strip_tags( $pr->getText( SMW_OUTPUT_WIKI ) ) );
-				$attribs['class'] = $columnClass;
+				$attributes['class'] = $columnClass;
 				// Also add this to the array of classes, for
 				// use in displaying each row.
 				$columnClasses[] = $columnClass;
-				$text = $pr->getText( $outputmode, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null : $this->mLinker ) );
+				$text = $pr->getText( $outputMode, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null : $this->mLinker ) );
 
-				$this->tableBuilder->addHeader( ( $text === '' ? '&nbsp;' : $text ), $attribs );
+				$this->tableBuilder->addHeader( ( $text === '' ? '&nbsp;' : $text ), $attributes );
 			}
 		}
 
 		while ( $subject = $res->getNext() ) {
-			$this->getRowForSubject( $subject, $outputmode, $columnClasses );
+			$this->getRowForSubject( $subject, $outputMode, $columnClasses );
 			$this->tableBuilder->addRow();
 		}
 
 		// print further results footer
 		if ( $this->linkFurtherResults( $res ) ) {
-			$link = $this->getFurtherResultsLink( $res, $outputmode );
+			$link = $this->getFurtherResultsLink( $res, $outputMode );
 
 			$this->tableBuilder->addCell(
-					$link->getText( $outputmode, $this->mLinker ),
+					$link->getText( $outputMode, $this->mLinker ),
 					array( 'class' => 'sortbottom', 'colspan' => $res->getColumnCount() )
 			);
 			$this->tableBuilder->addRow( array( 'class' => 'smwfooter' ) );
@@ -95,13 +98,13 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @since 1.6.1
 	 *
-	 * @param array $subject
-	 * @param $outputmode
+	 * @param SMWResultArray[] $subject
+	 * @param int $outputMode
+	 * @param string[] $columnClasses
 	 *
 	 * @return string
 	 */
-	protected function getRowForSubject( array /* of SMWResultArray */ $subject, $outputmode, $columnClasses ) {
-
+	private function getRowForSubject( array $subject, $outputMode, array $columnClasses ) {
 		foreach ( $subject as $i => $field ) {
 			// $columnClasses will be empty if "headers=hide"
 			// was set.
@@ -111,7 +114,7 @@ class TableResultPrinter extends ResultPrinter {
 				$columnClass = null;
 			}
 
-			$this->getCellForPropVals( $field, $outputmode, $columnClass );
+			$this->getCellForPropVals( $field, $outputMode, $columnClass );
 		}
 	}
 
@@ -121,43 +124,44 @@ class TableResultPrinter extends ResultPrinter {
 	 * @since 1.6.1
 	 *
 	 * @param SMWResultArray $resultArray
-	 * @param $outputmode
+	 * @param int $outputMode
+	 * @param string $columnClass
 	 *
 	 * @return string
 	 */
-	protected function getCellForPropVals( SMWResultArray $resultArray, $outputmode, $columnClass ) {
+	protected function getCellForPropVals( SMWResultArray $resultArray, $outputMode, $columnClass ) {
 		$dataValues = array();
 
 		while ( ( $dv = $resultArray->getNextDataValue() ) !== false ) {
 			$dataValues[] = $dv;
 		}
 
-		$attribs = array();
+		$attributes = array();
 		$content = null;
 
 		if ( count( $dataValues ) > 0 ) {
-			$sortkey = $dataValues[0]->getDataItem()->getSortKey();
+			$sortKey = $dataValues[0]->getDataItem()->getSortKey();
 			$dataValueType = $dataValues[0]->getTypeID();
 
-			if ( is_numeric( $sortkey ) ) {
-				$attribs['data-sort-value'] = $sortkey;
+			if ( is_numeric( $sortKey ) ) {
+				$attributes['data-sort-value'] = $sortKey;
 			}
 
 			$alignment = trim( $resultArray->getPrintRequest()->getParameter( 'align' ) );
 
 			if ( in_array( $alignment, array( 'right', 'left', 'center' ) ) ) {
-				$attribs['style'] = "text-align:' . $alignment . ';";
+				$attributes['style'] = "text-align:' . $alignment . ';";
 			}
-			$attribs['class'] = $columnClass . ( $dataValueType !== '' ? ' smwtype' . $dataValueType : '' );
+			$attributes['class'] = $columnClass . ( $dataValueType !== '' ? ' smwtype' . $dataValueType : '' );
 
 			$content = $this->getCellContent(
 				$dataValues,
-				$outputmode,
+				$outputMode,
 				$resultArray->getPrintRequest()->getMode() == PrintRequest::PRINT_THIS
 			);
 		}
 
-		$this->tableBuilder->addCell( $content, $attribs );
+		$this->tableBuilder->addCell( $content, $attributes );
 	}
 
 	/**
@@ -165,17 +169,17 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @since 1.6.1
 	 *
-	 * @param array $dataValues
-	 * @param $outputmode
+	 * @param SMWDataValue[] $dataValues
+	 * @param $outputMode
 	 * @param boolean $isSubject
 	 *
 	 * @return string
 	 */
-	protected function getCellContent( array /* of SMWDataValue */ $dataValues, $outputmode, $isSubject ) {
+	protected function getCellContent( array $dataValues, $outputMode, $isSubject ) {
 		$values = array();
 
 		foreach ( $dataValues as $dv ) {
-			$value = $dv->getShortText( $outputmode, $this->getLinker( $isSubject ) );
+			$value = $dv->getShortText( $outputMode, $this->getLinker( $isSubject ) );
 			$values[] = $value;
 		}
 
