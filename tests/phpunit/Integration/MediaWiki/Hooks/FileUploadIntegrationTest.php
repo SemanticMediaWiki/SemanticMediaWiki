@@ -63,6 +63,9 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 			$this->applicationFactory->getSettings()->set( $key, $value );
 		}
 
+	//	$this->getStore()->clear();
+	//	$this->getStore()->setupStore( false );
+
 		$this->wgEnableUploads  = $GLOBALS['wgEnableUploads'];
 		$this->wgFileExtensions = $GLOBALS['wgFileExtensions'];
 		$this->wgVerifyMimeType = $GLOBALS['wgVerifyMimeType'];
