@@ -190,7 +190,6 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		$wgOut->addModules( 'ext.smw.ask' );
 
 		$result = '';
-		$result_mime = false; // output in MW Special page as usual
 
 		// build parameter strings for URLs, based on current settings
 		$urlArgs['q'] = $this->m_querystring;
