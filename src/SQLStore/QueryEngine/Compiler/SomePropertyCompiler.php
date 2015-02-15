@@ -221,14 +221,13 @@ class SomePropertyCompiler implements QueryCompiler {
 	 * string for it.
 	 *
 	 * @param $query
-	 * @param Description $description
+	 * @param ValueDescription $description
 	 * @param DataItemHandler $diHandler for that table
 	 * @param string $operator SQL operator "AND" or "OR"
 	 */
 	private function compileValueDescription(
 			$query, ValueDescription $description, DataItemHandler $diHandler, $operator ) {
 
-		$where = '';
 		$dataItem = $description->getDataItem();
 		$db = $this->queryBuilder->getStore()->getConnection( 'mw.db' );
 
@@ -236,25 +235,16 @@ class SomePropertyCompiler implements QueryCompiler {
 		// Some comparators (e.g. LIKE) could use DI values of
 		// a different type; we care about the property table, not
 		// about the value
-		$diType = $dataItem->getDIType();
 
-		// Try comparison based on value field and comparator,
-		// but only if no join with SMW IDs table is needed.
-		if ( $diType !== DataItem::TYPE_WIKIPAGE ) {
-			// Do not support smw_id joined data for now.
+		// Do not support smw_id joined data for now.
 
-			if ( $where == '' ) {
-				$indexField = $diHandler->getIndexField();
-				//Hack to get to the field used as index
-				$keys = $diHandler->getWhereConds( $dataItem );
-				$value = $keys[$indexField];
+		$indexField = $diHandler->getIndexField();
+		//Hack to get to the field used as index
+		$keys = $diHandler->getWhereConds( $dataItem );
+		$value = $keys[$indexField];
 
-				$comparator = $this->compilerHelper->getSQLComparatorToValue( $description, $value );
-				$where = "$query->alias.{$indexField}{$comparator}" . $db->addQuotes( $value );
-			}
-		} else { // exact match (like comparator = above, but not using $valueField
-			throw new RuntimeException("Debug -- this code might be dead.");
-		}
+		$comparator = $this->compilerHelper->getSQLComparatorToValue( $description, $value );
+		$where = "$query->alias.{$indexField}{$comparator}" . $db->addQuotes( $value );
 
 		if ( $where !== '' ) {
 			$query->where .= ( $query->where ? " $operator " : '' ) . "($where)";
