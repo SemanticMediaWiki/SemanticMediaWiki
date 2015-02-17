@@ -83,9 +83,9 @@ class RebuildData extends \Maintenance {
 		$this->addOption( 'server', '<server> The protocol and server name to as base URLs, e.g. http://en.wikipedia.org. This is sometimes necessary because server name detection may fail in command line scripts.', false, true );
 		$this->addOption( 'query', "<query> Will refresh only pages returned by a given query. Example: --query='[[Category:SomeCategory]]'", false, true );
 
-		$this->addOption( 'runtime', 'Will display the runtime environment of the script', false );
-		$this->addOption( 'no-cache', 'Will set the `wgMainCacheType` to none while running the script', false );
-		$this->addOption( 'debug', 'Will set global variables to support debug ouput while running the script', false );
+		$this->addOption( 'runtime', 'Display the execution time and memory usage', false );
+		$this->addOption( 'no-cache', 'Sets the `wgMainCacheType` to none while running the script', false );
+		$this->addOption( 'debug', 'Sets global variables to support debug ouput while running the script', false );
 		$this->addOption( 'quiet', 'Do not give any output', false );
 	}
 
