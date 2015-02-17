@@ -99,8 +99,8 @@ class RebuildConceptCache extends \Maintenance {
 		$this->addOption( 's', '<startid> Process only concepts with page id of at least <startid>', false, true );
 		$this->addOption( 'e', '<endid> Process only concepts with page id of at most <endid>', false, true );
 
-		$this->addOption( 'runtime', 'Will display the runtime environment of the script', false );
-		$this->addOption( 'debug', 'Will set global variables to support debug ouput while running the script', false );
+		$this->addOption( 'runtime', 'Display the execution time and memory usage', false );
+		$this->addOption( 'debug', 'Sets global variables to support debug ouput while running the script', false );
 		$this->addOption( 'quiet', 'Do not give any output', false );
 		$this->addOption( 'verbose', 'Give additional output. No effect if --quiet is given.', false );
 	}
