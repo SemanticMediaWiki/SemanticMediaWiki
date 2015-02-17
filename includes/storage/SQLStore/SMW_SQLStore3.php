@@ -9,8 +9,10 @@ use SMW\SQLStore\UnusedPropertiesCollector;
 use SMW\SQLStore\PropertiesCollector;
 use SMW\SQLStore\StatisticsCollector;
 use SMW\DataTypeRegistry;
+use SMW\ApplicationFactory;
 use SMW\Settings;
 use SMW\SQLStore\TableDefinition;
+use SMW\SQLStore\ListLookupCache;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\SemanticData;
@@ -337,12 +339,22 @@ class SMWSQLStore3 extends SMWStore {
 
 	public function getStatistics() {
 
-		$statisticsCollector = new StatisticsCollector(
-			$this,
-			Settings::newFromGlobals()
+		$usageStatisticsListLookup = $this->factory->newUsageStatisticsListLookup();
+
+		$cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
+
+		$cacheOptions = $cacheFactory->newCacheOptions( array(
+			'useCache' => self::$configuration->get( 'smwgStatisticsCache' ),
+			'ttl'      => self::$configuration->get( 'smwgStatisticsCacheExpiry' )
+		) );
+
+		$listLookupCache = new ListLookupCache(
+			$usageStatisticsListLookup,
+			$cacheFactory->newMediaWikiCompositeCache( $cacheFactory->getMainCacheType() ),
+			$cacheOptions
 		);
 
-		return $statisticsCollector->getResults();
+		return $listLookupCache->fetchResultList();
 	}
 
 

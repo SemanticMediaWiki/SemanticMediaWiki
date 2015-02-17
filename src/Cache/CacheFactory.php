@@ -26,6 +26,17 @@ class CacheFactory {
 	/**
 	 * @since 2.2
 	 *
+	 * @param array $cacheOptions
+	 *
+	 * @return stdClass
+	 */
+	public function newCacheOptions( array $cacheOptions ) {
+		return (object)$cacheOptions;
+	}
+
+	/**
+	 * @since 2.2
+	 *
 	 * @param integer $cacheSize
 	 *
 	 * @return Cache

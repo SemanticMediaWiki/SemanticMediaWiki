@@ -44,6 +44,19 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructCacheOptions() {
+
+		$instance = new CacheFactory();
+
+		$cacheOptions = $instance->newCacheOptions( array(
+			'useCache' => true
+		) );
+
+		$this->assertTrue(
+			$cacheOptions->useCache
+		);
+	}
+
 	public function testCanConstructMediaWikiCompositeCache() {
 
 		$instance = new CacheFactory();

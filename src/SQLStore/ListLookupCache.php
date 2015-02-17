@@ -13,6 +13,21 @@ use Onoi\Cache\Cache;
 class ListLookupCache implements SimpleListLookup {
 
 	/**
+	 * @var SimpleListLookup
+	 */
+	private $listLookup;
+
+	/**
+	 * @var Cache
+	 */
+	private $cache;
+
+	/**
+	 * @var stdClass
+	 */
+	private $cacheOptions;
+
+	/**
 	 * @var boolean
 	 */
 	private $isCached = false;

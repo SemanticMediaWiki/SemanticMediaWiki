@@ -54,6 +54,15 @@ class SQLStoreFactory {
 		);
 	}
 
+	/**
+	 * @since 2.2
+	 *
+	 * @return UsageStatisticsListLookup
+	 */
+	public function newUsageStatisticsListLookup() {
+		return new UsageStatisticsListLookup( $this->store );
+	}
+
 	private function getConnection() {
 		if ( $this->dbalConnection === null ) {
 			$builder = new ConnectionBuilder( $GLOBALS );
