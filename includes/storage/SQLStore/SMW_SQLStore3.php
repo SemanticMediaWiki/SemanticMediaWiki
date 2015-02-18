@@ -304,15 +304,29 @@ class SMWSQLStore3 extends SMWStore {
 
 ///// Special page functions /////
 
-	public function getPropertiesSpecial( $requestoptions = null ) {
+	/**
+	 * @param RequestOptions|null $requestOptions
+	 *
+	 * @return SimpleListLookup
+	 */
+	public function getPropertiesSpecial( $requestOptions = null ) {
 
-		$propertiesCollector = new PropertiesCollector(
-			$this,
-			wfGetDB( DB_SLAVE ),
-			Settings::newFromGlobals()
+		$usageStatisticsListLookup = $this->factory->newPropertyUsageListLookup( $requestOptions );
+
+		$cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
+
+		$cacheOptions = $cacheFactory->newCacheOptions( array(
+			'useCache' => self::$configuration->get( 'smwgPropertiesCache' ),
+			'ttl'      => self::$configuration->get( 'smwgPropertiesCacheExpiry' )
+		) );
+
+		$listLookupCache = new ListLookupCache(
+			$usageStatisticsListLookup,
+			$cacheFactory->newMediaWikiCompositeCache( $cacheFactory->getMainCacheType() ),
+			$cacheOptions
 		);
 
-		return $propertiesCollector->setRequestOptions( $requestoptions );
+		return $listLookupCache;
 	}
 
 	public function getUnusedPropertiesSpecial( $requestoptions = null ) {

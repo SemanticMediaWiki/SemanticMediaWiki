@@ -6,6 +6,7 @@ use Doctrine\DBAL\Connection;
 use SMW\SQLStore\QueryEngine\ConceptCache;
 use SMWSQLStore3;
 use SMWSQLStore3QueryEngine;
+use SMWRequestOptions as RequestOptions;
 
 /**
  * @licence GNU GPL v2+
@@ -61,6 +62,27 @@ class SQLStoreFactory {
 	 */
 	public function newUsageStatisticsListLookup() {
 		return new UsageStatisticsListLookup( $this->store );
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param RequestOptions|null $requestOptions
+	 *
+	 * @return PropertyUsageListLookup
+	 */
+	public function newPropertyUsageListLookup( RequestOptions $requestOptions = null ) {
+
+		$propertyStatisticsStore = new PropertyStatisticsTable(
+			$this->store->getConnection( 'mw.db' ),
+			$this->store->getStatisticsTable()
+		);
+
+		return new PropertyUsageListLookup(
+			$this->store,
+			$propertyStatisticsStore,
+			$requestOptions
+		);
 	}
 
 	private function getConnection() {

@@ -61,13 +61,17 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	 */
 	private function newInstance( $result = null, $values = array(), $settings = array() ) {
 
-		$collector = $this->newMockBuilder()->newObject( 'CacheableResultCollector', array(
-			'getResults' => $result
-		) );
+		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\SimpleListLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$listLookup->expects( $this->any() )
+			->method( 'fetchResultList' )
+			->will( $this->returnValue( $result ) );
 
 		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
 			'getPropertyValues'    => $values,
-			'getPropertiesSpecial' => $collector
+			'getPropertiesSpecial' => $listLookup
 		) );
 
 		if ( $settings === array() ) {
