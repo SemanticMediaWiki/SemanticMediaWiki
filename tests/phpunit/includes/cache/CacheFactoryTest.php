@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\Cache\CacheFactory;
+use SMW\ApplicationFactory;
 
 /**
  * @covers \SMW\Cache\CacheFactory
@@ -20,23 +21,30 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\Cache\CacheFactory',
-			new CacheFactory()
+			new CacheFactory( 'hash' )
 		);
 	}
 
 	public function testGetMainCacheType() {
 
-		$instance = new CacheFactory();
+		$instance = new CacheFactory( 'hash' );
 
-		$this->assertInternalType(
-			'integer',
+		$this->assertEquals(
+			'hash',
+			$instance->getMainCacheType()
+		);
+
+		$instance = new CacheFactory( CACHE_NONE );
+
+		$this->assertEquals(
+			CACHE_NONE,
 			$instance->getMainCacheType()
 		);
 	}
 
 	public function testCanConstructFixedInMemoryCache() {
 
-		$instance = new CacheFactory();
+		$instance = new CacheFactory( 'hash' );
 
 		$this->assertInstanceOf(
 			'Onoi\Cache\Cache',
@@ -46,7 +54,7 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructCacheOptions() {
 
-		$instance = new CacheFactory();
+		$instance = new CacheFactory( 'hash' );
 
 		$cacheOptions = $instance->newCacheOptions( array(
 			'useCache' => true
@@ -59,11 +67,11 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructMediaWikiCompositeCache() {
 
-		$instance = new CacheFactory();
+		$instance = new CacheFactory( 'hash' );
 
 		$this->assertInstanceOf(
 			'Onoi\Cache\Cache',
-			$instance->newMediaWikiCompositeCache( 'hash' )
+			$instance->newMediaWikiCompositeCache( CACHE_NONE )
 		);
 
 		$this->assertInstanceOf(

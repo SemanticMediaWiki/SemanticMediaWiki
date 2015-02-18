@@ -15,12 +15,26 @@ use ObjectCache;
 class CacheFactory {
 
 	/**
+	 * @var string|integer
+	 */
+	private $mainCacheType;
+
+	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @param string|integer $mainCacheType
+	 */
+	public function __construct( $mainCacheType ) {
+		$this->mainCacheType = $mainCacheType;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return string|integer
 	 */
 	public function getMainCacheType() {
-		return ApplicationFactory::getInstance()->getSettings()->get( 'smwgCacheType' );
+		return $this->mainCacheType;
 	}
 
 	/**

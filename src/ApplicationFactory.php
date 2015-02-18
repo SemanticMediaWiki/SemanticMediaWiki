@@ -154,7 +154,7 @@ class ApplicationFactory {
 	 * @return CacheFactory
 	 */
 	public function newCacheFactory() {
-		return new CacheFactory();
+		return new CacheFactory( $this->getSettings()->get( 'smwgCacheType' ) );
 	}
 
 	/**
