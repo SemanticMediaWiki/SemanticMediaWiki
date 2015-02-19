@@ -81,10 +81,19 @@ final class Setup {
 	}
 
 	private function registerSettings() {
+
 		$this->applicationFactory->registerObject(
 			'Settings',
 			Settings::newFromGlobals( $this->globalVars )
 		);
+
+		$cacheFactory = $this->applicationFactory->newCacheFactory();
+
+		$compositeCache = $cacheFactory->newMediaWikiCompositeCache(
+			$GLOBALS['smwgCacheType']
+		);
+
+		$cacheFactory->getSemanticDataCache()->setCache( $compositeCache );
 	}
 
 	private function registerConnectionProviders() {

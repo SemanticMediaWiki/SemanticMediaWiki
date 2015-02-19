@@ -106,6 +106,7 @@ class RebuildData extends \Maintenance {
 
 		if ( $this->hasOption( 'no-cache' ) ) {
 			$maintenanceHelper->setGlobalToValue( 'wgMainCacheType', CACHE_NONE );
+			ApplicationFactory::getInstance()->getSettings()->set( 'smwgSemanticDataCache', false );
 		}
 
 		if ( $this->hasOption( 'debug' ) ) {

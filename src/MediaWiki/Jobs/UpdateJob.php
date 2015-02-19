@@ -6,6 +6,8 @@ use LinkCache;
 use ParserOutput;
 use SMW\ApplicationFactory;
 use SMW\Factbox\FactboxCache;
+use SMW\SemanticDataCache;
+use SMW\DIProperty;
 use Title;
 
 /**
@@ -31,6 +33,16 @@ use Title;
 class UpdateJob extends JobBase {
 
 	/**
+	 * @var ApplicationFactory
+	 */
+	private $applicationFactory = null;
+
+	/**
+	 * @var CacheFactory
+	 */
+	private $cacheFactory = null;
+
+	/**
 	 * @since  1.9
 	 *
 	 * @param Title $title
@@ -46,7 +58,6 @@ class UpdateJob extends JobBase {
 	 * @return boolean
 	 */
 	public function run() {
-		LinkCache::singleton()->clear();
 		return $this->doUpdate();
 	}
 
@@ -68,17 +79,48 @@ class UpdateJob extends JobBase {
 	}
 
 	private function doUpdate() {
-		return $this->getTitle()->exists() ? $this->doPageContentParse() : $this->deleteSubject();
-	}
 
-	private function deleteSubject() {
-		ApplicationFactory::getInstance()->getStore()->deleteSubject( $this->getTitle() );
+		LinkCache::singleton()->clear();
+
+		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->cacheFactory = $this->applicationFactory->newCacheFactory();
+
+		if ( $this->getTitle()->exists() ) {
+			return $this->doPrepareForUpdate();
+		}
+
+		$this->applicationFactory->getStore()->deleteSubject( $this->getTitle() );
+
 		return true;
 	}
 
-	private function doPageContentParse() {
+	private function doPrepareForUpdate() {
 
-		$contentParser = ApplicationFactory::getInstance()->newContentParser( $this->getTitle() );
+		if ( $this->applicationFactory->getSettings()->get( 'smwgSemanticDataCache' ) && $this->cacheFactory->getSemanticDataCache()->has( $this->getTitle() ) ) {
+
+			$parserData = $this->applicationFactory->newParserData(
+				$this->getTitle(),
+				new \ParserOutput()
+			);
+
+			$parserData->setSemanticData(
+				$this->cacheFactory->getSemanticDataCache()->get( $this->getTitle() )
+			);
+
+			// Check for possible errors which could have been caused by datatype
+			// change or similar alterations and only if no error has been
+			// detected use the cache
+			if ( $parserData->getSemanticData()->getErrors() === array() ) {
+				return $this->updateStore( $parserData );
+			}
+		}
+
+		return $this->needToParsePageContentBeforeUpdate();
+	}
+
+	private function needToParsePageContentBeforeUpdate() {
+
+		$contentParser = $this->applicationFactory->newContentParser( $this->getTitle() );
 		$contentParser->forceToUseParser();
 		$contentParser->parse();
 
@@ -87,21 +129,24 @@ class UpdateJob extends JobBase {
 			return false;
 		}
 
-		return $this->updateStore( $contentParser->getOutput() );
+		$parserData = $this->applicationFactory->newParserData(
+			$this->getTitle(),
+			$contentParser->getOutput()
+		);
+
+		$this->cacheFactory->getSemanticDataCache()->save( $parserData->getSemanticData() );
+
+		return $this->updateStore( $parserData );
 	}
 
-	private function updateStore( ParserOutput $parserOutput ) {
+	private function updateStore( $parserData ) {
 
-		$cache = ApplicationFactory::getInstance()->getCache();
+		$cache = $this->applicationFactory->getCache();
 		$cache->setKey( FactboxCache::newCacheId( $this->getTitle()->getArticleID() ) )->delete();
 
 		// TODO
 		// Rebuild the factbox
 
-		$parserData = ApplicationFactory::getInstance()->newParserData(
-			$this->getTitle(),
-			$parserOutput
-		);
 
 		// Set a different updateIndentifier to ensure that the updateJob
 		// will force a comparison of old/new data during the store update

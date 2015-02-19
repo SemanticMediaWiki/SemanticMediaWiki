@@ -11,6 +11,7 @@ use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\TitleCreator;
+use SMW\Cache\CacheFactory;
 use SMW\Query\Profiler\QueryProfilerFactory;
 use SMW\Maintenance\MaintenanceFactory;
 use SMWQueryParser as QueryParser;
@@ -249,6 +250,15 @@ class ApplicationFactory {
 	 */
 	public function newMwCollaboratorFactory() {
 		return new MwCollaboratorFactory( $this );
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return CacheFactory
+	 */
+	public function newCacheFactory() {
+		return new CacheFactory( $this );
 	}
 
 	/**

@@ -111,7 +111,16 @@ class ParserAfterTidy {
 
 		if( $cache->get() ) {
 			$cache->delete();
+
+			// FIXME
+			// I don't remember why we do an updateStore and not a simple
+			// pageUpdate which would only refresh the ParserCache instead
+			// of doing a full back-end update
 			$parserData->updateStore();
+
+			//$pageUpdater = $this->applicationFactory->newMwCollaboratorFactory()->newPageUpdater();
+			//$pageUpdater->addPage( $parserData->getTitle() );
+			//$pageUpdater->doPurgeParserCache();
 		}
 
 		return true;

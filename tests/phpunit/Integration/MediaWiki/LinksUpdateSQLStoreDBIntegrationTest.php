@@ -202,6 +202,9 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 		// Property _SKEY is always present even within an empty container
 		// po = ParserOutput, before means prior LinksUpdate
 
+		// MW 19 has an issue with revision update during the test
+		$storeAfterCount = version_compare( $GLOBALS['wgVersion'], '1.20', '<' ) ? 2 : 4;
+
 		$provider = array();
 
 		$provider[] = array( array(
@@ -237,7 +240,7 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 					'msg'    => 'Asserts property _MDAT exists after the update'
 				),
 				'storeAfter' => array(
-					'count'  => 2,
+					'count'  => $storeAfterCount,
 					'msg'    => 'Asserts property _SKEY, _MDAT exists after the update'
 				)
 			)
