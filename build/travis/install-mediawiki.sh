@@ -25,7 +25,7 @@ cd mw
 ## MW 1.25 requires Psr\Logger
 if [ "$MW" == "master" ]
 then
-  composer install
+  travis_retry composer install
 fi
 
 if [ "$DB" == "postgres" ]
