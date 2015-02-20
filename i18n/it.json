@@ -15,7 +15,8 @@
 			"Pietrodn",
 			"Ximo17",
 			"පසිඳු කාවින්ද",
-			"아라"
+			"아라",
+			"FRacco"
 		]
 	},
 	"smw-desc": "Rende la tua wiki più accessibile - per le macchine ''e'' per gli umani ([https://semantic-mediawiki.org/wiki/Help:User_manual documentazione in linea])",
@@ -168,7 +169,7 @@
 	"smw_sbv_property": "Proprietà:",
 	"smw_sbv_value": "Valore:",
 	"smw_sbv_submit": "Trova risultati",
-	"browse": "Esplora il wiki",
+	"browse": "Esplora il sito",
 	"smw_browselink": "Sfoglia le proprietà",
 	"smw_browse_article": "Inserire il nome della pagina da cui iniziare l'esplorazione",
 	"smw_browse_go": "Vai",
