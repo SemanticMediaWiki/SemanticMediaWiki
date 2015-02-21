@@ -44,6 +44,10 @@
 		"onoi/message-reporter": "~1.0",
 		"doctrine/dbal": "~2.5"
 	},
+	"require-dev": {
+		"squizlabs/php_codesniffer": "~2.1",
+		"phpmd/phpmd": "~2.1"
+	},
 	"replace": {
 		"mediawiki/semantic-mediawiki": "*"
 	},
@@ -75,12 +79,16 @@
 	"scripts": {
 		"phpunit": "php ../../tests/phpunit/phpunit.php -c phpunit.xml.dist",
 		"unit": [
-			"composer cs",
 			"composer dump-autoload",
 			"php ../../tests/phpunit/phpunit.php -c phpunit.xml.dist --testsuite=semantic-mediawiki-unit"
 		],
+		"cs-standalone": [
+			"composer validate --no-interaction",
+			"vendor/bin/phpcs src/* --standard=phpcs.xml --extensions=php -sp"
+		],
 		"cs": [
-			"composer validate --no-interaction"
+			"composer cs-standalone",
+			"vendor/bin/phpmd src/ text phpmd.xml"
 		],
 		"ci": [
 			"composer phpunit",

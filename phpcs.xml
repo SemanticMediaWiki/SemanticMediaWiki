@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!--
+	- https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml
+	- https://github.com/squizlabs/PHP_CodeSniffer/tree/master/CodeSniffer/Standards
+-->
+<ruleset name="MediaWiki">
+    <rule ref="Generic.Classes" />
+    <rule ref="Generic.CodeAnalysis" />
+    <rule ref="Generic.ControlStructures" />
+
+    <rule ref="Generic.Files.ByteOrderMark" />
+    <rule ref="Generic.Files.EndFileNewline" />
+    <rule ref="Generic.Files.LineEndings" />
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="140" />
+            <property name="absoluteLineLimit" value="140" />
+        </properties>
+    </rule>
+    <rule ref="Generic.Files.OneClassPerFile" />
+
+    <rule ref="Generic.Formatting.DisallowMultipleStatements" />
+
+    <rule ref="Generic.Functions.CallTimePassByReference" />
+    <rule ref="Generic.Functions.FunctionCallArgumentSpacing" />
+    <rule ref="Generic.Functions.OpeningFunctionBraceKernighanRitchie" />
+
+    <rule ref="Generic.Metrics.NestingLevel">
+        <properties>
+            <property name="nestingLevel" value="3" />
+            <property name="absoluteNestingLevel" value="3" />
+        </properties>
+    </rule>
+
+    <rule ref="Generic.Metrics.CyclomaticComplexity">
+        <properties>
+            <property name="complexity" value="10" />
+            <property name="absoluteComplexity" value="10" />
+        </properties>
+    </rule>
+
+    <rule ref="Generic.NamingConventions" />
+    <!-- TODO: create variation of this sniff that allows underscores in test methods -->
+    <rule ref="Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps">
+        <severity>0</severity>
+    </rule>
+
+    <rule ref="Generic.PHP.CharacterBeforePHPOpeningTag" />
+    <rule ref="Generic.PHP.DeprecatedFunctions" />
+    <rule ref="Generic.PHP.DisallowShortOpenTag" />
+    <rule ref="Generic.PHP.ForbiddenFunctions" />
+    <rule ref="Generic.PHP.LowerCaseConstant" />
+    <rule ref="Generic.PHP.LowerCaseKeyword" />
+    <rule ref="Generic.PHP.NoSilencedErrors" />
+    <rule ref="Generic.PHP.SAPIUsage" />
+
+    <rule ref="Generic.WhiteSpace.DisallowSpaceIndent" />
+
+    <rule ref="PSR1" />
+    <!-- TODO: create variation of this sniff that allows underscores in test methods -->
+    <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
+        <severity>0</severity>
+    </rule>
+
+    <rule ref="PSR2.Classes.PropertyDeclaration" />
+    <rule ref="PSR2.ControlStructures.ElseIfDeclaration" />
+    <rule ref="PSR2.Namespaces" />
+
+    <rule ref="Squiz.Arrays.ArrayBracketSpacing" />
+    <rule ref="Squiz.CSS.SemicolonSpacing" />
+    <rule ref="Squiz.Classes.DuplicateProperty" />
+    <rule ref="Squiz.Classes.SelfMemberReference" />
+    <rule ref="Squiz.Classes.ValidClassName" />
+    <rule ref="Squiz.Functions.FunctionDuplicateArgument" />
+    <rule ref="Squiz.Functions.GlobalFunction" />
+    <rule ref="Squiz.Scope" />
+    <rule ref="Squiz.WhiteSpace.CastSpacing" />
+    <rule ref="Squiz.WhiteSpace.LanguageConstructSpacing" />
+    <rule ref="Squiz.WhiteSpace.LogicalOperatorSpacing" />
+
+    <!-- https://github.com/squizlabs/PHP_CodeSniffer/issues/348 -->
+    <!--<rule ref="Squiz.WhiteSpace.OperatorSpacing" />-->
+
+    <rule ref="Squiz.WhiteSpace.ScopeClosingBrace" />
+    <rule ref="Squiz.WhiteSpace.ScopeKeywordSpacing" />
+    <rule ref="Squiz.WhiteSpace.SemicolonSpacing" />
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace" />
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines">
+        <severity>0</severity>
+    </rule>
+
+    <rule ref="Zend.Files.ClosingTag" />
+</ruleset>
