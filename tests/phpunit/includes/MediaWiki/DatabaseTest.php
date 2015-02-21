@@ -182,7 +182,10 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testQueryOnSQLite() {
+	/**
+	 * @dataProvider querySqliteProvider
+	 */
+	public function testQueryOnSQLite( $query, $expected ) {
 
 		$resultWrapper = $this->getMockBuilder( 'ResultWrapper' )
 			->disableOriginalConstructor()
@@ -212,7 +215,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 		$write->expects( $this->once() )
 			->method( 'query' )
-			->with( $this->equalTo( 'TEMP' ) )
+			->with( $this->equalTo( $expected ) )
 			->will( $this->returnValue( $resultWrapper ) );
 
 		$writeConnectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
@@ -227,8 +230,20 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'ResultWrapper',
-			$instance->query( 'TEMPORARY' )
+			$instance->query( $query )
 		);
+	}
+
+	public function querySqliteProvider() {
+
+		$provider = array(
+			array( 'TEMPORARY', 'TEMP' ),
+			array( 'RAND', 'RANDOM' ),
+			array( 'ENGINE=MEMORY', '' ),
+			array( 'DROP TEMP', 'DROP' )
+		);
+
+		return $provider;
 	}
 
 	public function testSelectThrowsException() {

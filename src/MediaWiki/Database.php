@@ -161,6 +161,10 @@ class Database {
 		// consistently ensure that the select doesn't add an extra prefix
 		if ( $this->getType() === 'sqlite' ) {
 			$tablePrefix = $this->readConnection()->tablePrefix( '' );
+
+			if ( isset( $options['ORDER BY'] ) ) {
+				$options['ORDER BY'] = str_replace( 'RAND', 'RANDOM', $options['ORDER BY'] );
+			}
 		}
 
 		try {
@@ -211,6 +215,7 @@ class Database {
 		if ( $this->getType() == 'postgres' ) {
 			$sql = str_replace( 'IGNORE', '', $sql );
 			$sql = str_replace( 'DROP TEMPORARY TABLE', 'DROP TABLE IF EXISTS', $sql );
+			$sql = str_replace( 'RAND()', ( strpos( $sql, 'DISTINCT' ) !== false ? '' : 'RANDOM()' ), $sql );
 		}
 
 		if ( $this->getType() == 'sqlite' ) {
@@ -219,6 +224,7 @@ class Database {
 			$sql = str_replace( 'ENGINE=MEMORY', '', $sql );
 			$sql = str_replace( 'DROP TEMP', 'DROP', $sql );
 			$sql = str_replace( 'TRUNCATE TABLE', 'DELETE FROM', $sql );
+			$sql = str_replace( 'RAND', 'RANDOM', $sql );
 		}
 
 		try {

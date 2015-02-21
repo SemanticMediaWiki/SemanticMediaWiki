@@ -770,6 +770,13 @@ class SMWSQLStore3QueryEngine {
 					throw new RuntimeException( "Expected a string value as sortkey" );
 				}
 
+				// #835
+				// SELECT DISTINCT and ORDER BY RANDOM causes an issue for postgres
+				// Disable RANDOM support for postgres
+				if ($this->store->getConnection()->getType() === 'postgres' ) {
+					$smwgQRandSortingSupport = false;
+				}
+
 				if ( ( $order != 'RANDOM' ) && array_key_exists( $propkey, $qobj->sortfields ) ) { // Field was successfully added.
 					$result['ORDER BY'] = ( array_key_exists( 'ORDER BY', $result ) ? $result['ORDER BY'] . ', ' : '' ) . $qobj->sortfields[$propkey] . " $order ";
 				} elseif ( ( $order == 'RANDOM' ) && $smwgQRandSortingSupport ) {
