@@ -167,12 +167,6 @@ class Database {
 			}
 		}
 
-		if ( $this->getType() === 'postgres' ) {
-			if ( isset( $options['ORDER BY'] ) ) {
-				$options['ORDER BY'] = str_replace( 'RAND', 'RANDOM', $options['ORDER BY'] );
-			}
-		}
-
 		try {
 			$results = $this->readConnection()->select(
 				$tableName,
@@ -221,7 +215,7 @@ class Database {
 		if ( $this->getType() == 'postgres' ) {
 			$sql = str_replace( 'IGNORE', '', $sql );
 			$sql = str_replace( 'DROP TEMPORARY TABLE', 'DROP TABLE IF EXISTS', $sql );
-			$sql = str_replace( 'RAND', 'RANDOM', $sql );
+			$sql = str_replace( 'RAND()', ( strpos( $sql, 'DISTINCT' ) !== false ? '' : 'RANDOM()' ), $sql );
 		}
 
 		if ( $this->getType() == 'sqlite' ) {
