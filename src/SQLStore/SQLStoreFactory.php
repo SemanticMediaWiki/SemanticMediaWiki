@@ -85,6 +85,27 @@ class SQLStoreFactory {
 		);
 	}
 
+	/**
+	 * @since 2.2
+	 *
+	 * @param RequestOptions|null $requestOptions
+	 *
+	 * @return UnusedPropertyListLookup
+	 */
+	public function newUnusedPropertyListLookup( RequestOptions $requestOptions = null ) {
+
+		$propertyStatisticsStore = new PropertyStatisticsTable(
+			$this->store->getConnection( 'mw.db' ),
+			$this->store->getStatisticsTable()
+		);
+
+		return new UnusedPropertyListLookup(
+			$this->store,
+			$propertyStatisticsStore,
+			$requestOptions
+		);
+	}
+
 	private function getConnection() {
 		if ( $this->dbalConnection === null ) {
 			$builder = new ConnectionBuilder( $GLOBALS );

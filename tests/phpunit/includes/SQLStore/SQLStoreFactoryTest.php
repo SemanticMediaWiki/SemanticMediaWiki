@@ -56,4 +56,11 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructUnusedPropertyListLookup() {
+		$this->assertInstanceOf(
+			'SMW\SQLStore\UnusedPropertyListLookup',
+			$this->newInstance()->newUnusedPropertyListLookup( null )
+		);
+	}
+
 }

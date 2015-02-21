@@ -104,6 +104,7 @@ class_alias( 'SMW\MediaWiki\Search\Search', 'SMWSearch' );
 // 2.2
 // Some weird SF dependency needs to be removed as quick as possible
 class_alias( 'SMW\SQLStore\PropertyUsageListLookup', 'SMW\SQLStore\PropertiesCollector' );
+class_alias( 'SMW\SQLStore\UnusedPropertyListLookup', 'SMW\SQLStore\UnusedPropertiesCollector' );
 
 // A flag used to indicate SMW defines a semantic extension type for extension credits.
 // @deprecated, removal in SMW 3.0

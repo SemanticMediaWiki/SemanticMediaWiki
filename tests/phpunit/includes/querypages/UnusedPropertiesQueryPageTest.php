@@ -59,13 +59,17 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	 */
 	private function newInstance( $result = null, $values = array() ) {
 
-		$collector = $this->newMockBuilder()->newObject( 'CacheableResultCollector', array(
-			'getResults' => $result
-		) );
+		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\SimpleListLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$listLookup->expects( $this->any() )
+			->method( 'fetchResultList' )
+			->will( $this->returnValue( $result ) );
 
 		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
 			'getPropertyValues'          => $values,
-			'getUnusedPropertiesSpecial' => $collector
+			'getUnusedPropertiesSpecial' => $listLookup
 		) );
 
 		$instance = new UnusedPropertiesQueryPage( $mockStore, $this->newSettings() );

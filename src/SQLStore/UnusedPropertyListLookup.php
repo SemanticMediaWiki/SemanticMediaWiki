@@ -117,7 +117,7 @@ class UnusedPropertyListLookup implements SimpleListLookup {
 		$idTable = $this->store->getObjectIds()->getIdTable();
 
 		$res = $this->store->getConnection( 'mw.db' )->select(
-			array( $idTable, $this->propertyStatisticsStore->getStatisticsTable() ),
+			array( $idTable ,$this->propertyStatisticsStore->getStatisticsTable() ),
 			array( 'smw_title', 'usage_count' ),
 			$conditions,
 			__METHOD__,
@@ -133,17 +133,21 @@ class UnusedPropertyListLookup implements SimpleListLookup {
 		$result = array();
 
 		foreach ( $res as $row ) {
-
-			try {
-				$property = new DIProperty( $row->smw_title );
-			} catch ( InvalidPropertyException $e ) {
-				$property = new DIError( new \Message( 'smw_noproperty', array( $row->smw_title ) ) );
-			}
-
-			$result[] = $property;
+			$result[] = $this->addPropertyFor( $row->smw_title );
 		}
 
 		return $result;
+	}
+
+	private function addPropertyFor( $title ) {
+
+		try {
+			$property = new DIProperty( $title );
+		} catch ( InvalidPropertyException $e ) {
+			$property = new DIError( new \Message( 'smw_noproperty', array( $title ) ) );
+		}
+
+		return $property;
 	}
 
 }

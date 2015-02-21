@@ -188,6 +188,13 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
+			->with(
+				$this->anything(),
+				$this->anything(),
+				$this->anything(),
+				$this->anything(),
+				$this->equalTo( array( 'ORDER BY' => 'smw_sortkey', 'LIMIT' => 1001, 'OFFSET' => 0 ) ),
+				$this->anything() )
 			->will( $this->returnValue( array( $row ) ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )

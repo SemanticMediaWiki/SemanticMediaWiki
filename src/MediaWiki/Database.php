@@ -148,11 +148,12 @@ class Database {
 	 * @param $fields
 	 * @param $conditions
 	 * @param array $options
+	 * @param array $joinConditions
 	 *
 	 * @return ResultWrapper
 	 * @throws UnexpectedValueException
 	 */
-	public function select( $tableName, $fields, $conditions = '', $fname, array $options = array() ) {
+	public function select( $tableName, $fields, $conditions = '', $fname, array $options = array(), $joinConditions = array() ) {
 
 		$tablePrefix = null;
 
@@ -173,7 +174,8 @@ class Database {
 				$fields,
 				$conditions,
 				$fname,
-				$options
+				$options,
+				$joinConditions
 			);
 		} catch  ( DBError $e ) {
 			throw new RuntimeException (
