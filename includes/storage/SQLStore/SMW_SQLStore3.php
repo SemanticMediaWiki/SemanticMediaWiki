@@ -311,7 +311,7 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	public function getPropertiesSpecial( $requestOptions = null ) {
 
-		$usageStatisticsListLookup = $this->factory->newPropertyUsageListLookup( $requestOptions );
+		$propertyUsageListLookup = $this->factory->newPropertyUsageListLookup( $requestOptions );
 
 		$cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
 
@@ -321,7 +321,7 @@ class SMWSQLStore3 extends SMWStore {
 		) );
 
 		$listLookupCache = new ListLookupCache(
-			$usageStatisticsListLookup,
+			$propertyUsageListLookup,
 			$cacheFactory->newMediaWikiCompositeCache( $cacheFactory->getMainCacheType() ),
 			$cacheOptions
 		);
