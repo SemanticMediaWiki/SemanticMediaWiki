@@ -354,15 +354,32 @@ class SMWSQLStore3 extends SMWStore {
 		return $listLookupCache;
 	}
 
-	public function getWantedPropertiesSpecial( $requestoptions = null ) {
+	/**
+	 * @param RequestOptions|null $requestOptions
+	 *
+	 * @return SimpleListLookup
+	 */
+	public function getWantedPropertiesSpecial( $requestOptions = null ) {
 
-		$wantedPropertiesCollector = new WantedPropertiesCollector(
-			$this,
-			wfGetDB( DB_SLAVE ),
-			Settings::newFromGlobals()
+		$undeclaredPropertyListLookup = $this->factory->newUndeclaredPropertyListLookup(
+			$requestOptions,
+			self::$configuration->get( 'smwgPDefaultType' )
 		);
 
-		return $wantedPropertiesCollector->setRequestOptions( $requestoptions );
+		$cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
+
+		$cacheOptions = $cacheFactory->newCacheOptions( array(
+			'useCache' => self::$configuration->get( 'smwgWantedPropertiesCache' ),
+			'ttl'      => self::$configuration->get( 'smwgWantedPropertiesCacheExpiry' )
+		) );
+
+		$listLookupCache = new ListLookupCache(
+			$undeclaredPropertyListLookup,
+			$cacheFactory->newMediaWikiCompositeCache( $cacheFactory->getMainCacheType() ),
+			$cacheOptions
+		);
+
+		return $listLookupCache;
 	}
 
 	public function getStatistics() {

@@ -23,8 +23,10 @@ class WantedPropertiesQueryPage extends QueryPage {
 	/** @var Settings */
 	protected $settings;
 
-	/** @var Collector */
-	protected $collector;
+	/**
+	 * @var SimpleListLookup
+	 */
+	private $listLookup;
 
 	/**
 	 * @since 1.9
@@ -109,7 +111,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * @return array of SMWDIProperty|SMWDIError
 	 */
 	function getResults( $requestoptions ) {
-		$this->collector = $this->store->getWantedPropertiesSpecial( $requestoptions );
-		return $this->collector->getResults();
+		$this->listLookup = $this->store->getWantedPropertiesSpecial( $requestoptions );
+		return $this->listLookup->fetchResultList();
 	}
 }

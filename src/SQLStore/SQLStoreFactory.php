@@ -106,6 +106,23 @@ class SQLStoreFactory {
 		);
 	}
 
+	/**
+	 * @since 2.2
+	 *
+	 * @param RequestOptions|null $requestOptions
+	 * @param string $defaultPropertyType
+	 *
+	 * @return UndeclaredPropertyListLookup
+	 */
+	public function newUndeclaredPropertyListLookup( RequestOptions $requestOptions = null, $defaultPropertyType ) {
+
+		return new UndeclaredPropertyListLookup(
+			$this->store,
+			$defaultPropertyType,
+			$requestOptions
+		);
+	}
+
 	private function getConnection() {
 		if ( $this->dbalConnection === null ) {
 			$builder = new ConnectionBuilder( $GLOBALS );
