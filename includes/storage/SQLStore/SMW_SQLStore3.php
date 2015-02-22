@@ -9,8 +9,10 @@ use SMW\SQLStore\UnusedPropertiesCollector;
 use SMW\SQLStore\PropertiesCollector;
 use SMW\SQLStore\StatisticsCollector;
 use SMW\DataTypeRegistry;
+use SMW\ApplicationFactory;
 use SMW\Settings;
 use SMW\SQLStore\TableDefinition;
+use SMW\SQLStore\ListLookupCache;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\SemanticData;
@@ -302,47 +304,102 @@ class SMWSQLStore3 extends SMWStore {
 
 ///// Special page functions /////
 
-	public function getPropertiesSpecial( $requestoptions = null ) {
+	/**
+	 * @param RequestOptions|null $requestOptions
+	 *
+	 * @return SimpleListLookup
+	 */
+	public function getPropertiesSpecial( $requestOptions = null ) {
 
-		$propertiesCollector = new PropertiesCollector(
-			$this,
-			wfGetDB( DB_SLAVE ),
-			Settings::newFromGlobals()
+		$propertyUsageListLookup = $this->factory->newPropertyUsageListLookup( $requestOptions );
+
+		$cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
+
+		$cacheOptions = $cacheFactory->newCacheOptions( array(
+			'useCache' => self::$configuration->get( 'smwgPropertiesCache' ),
+			'ttl'      => self::$configuration->get( 'smwgPropertiesCacheExpiry' )
+		) );
+
+		$listLookupCache = new ListLookupCache(
+			$propertyUsageListLookup,
+			$cacheFactory->newMediaWikiCompositeCache( $cacheFactory->getMainCacheType() ),
+			$cacheOptions
 		);
 
-		return $propertiesCollector->setRequestOptions( $requestoptions );
+		return $listLookupCache;
 	}
 
-	public function getUnusedPropertiesSpecial( $requestoptions = null ) {
+	/**
+	 * @param RequestOptions|null $requestOptions
+	 *
+	 * @return SimpleListLookup
+	 */
+	public function getUnusedPropertiesSpecial( $requestOptions = null ) {
 
-		$unusedPropertiesCollector = new UnusedPropertiesCollector(
-			$this,
-			wfGetDB( DB_SLAVE ),
-			Settings::newFromGlobals()
+		$unusedPropertyListLookup = $this->factory->newUnusedPropertyListLookup( $requestOptions );
+
+		$cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
+
+		$cacheOptions = $cacheFactory->newCacheOptions( array(
+			'useCache' => self::$configuration->get( 'smwgUnusedPropertiesCache' ),
+			'ttl'      => self::$configuration->get( 'smwgUnusedPropertiesCacheExpiry' )
+		) );
+
+		$listLookupCache = new ListLookupCache(
+			$unusedPropertyListLookup,
+			$cacheFactory->newMediaWikiCompositeCache( $cacheFactory->getMainCacheType() ),
+			$cacheOptions
 		);
 
-		return $unusedPropertiesCollector->setRequestOptions( $requestoptions );
+		return $listLookupCache;
 	}
 
-	public function getWantedPropertiesSpecial( $requestoptions = null ) {
+	/**
+	 * @param RequestOptions|null $requestOptions
+	 *
+	 * @return SimpleListLookup
+	 */
+	public function getWantedPropertiesSpecial( $requestOptions = null ) {
 
-		$wantedPropertiesCollector = new WantedPropertiesCollector(
-			$this,
-			wfGetDB( DB_SLAVE ),
-			Settings::newFromGlobals()
+		$undeclaredPropertyListLookup = $this->factory->newUndeclaredPropertyListLookup(
+			$requestOptions,
+			self::$configuration->get( 'smwgPDefaultType' )
 		);
 
-		return $wantedPropertiesCollector->setRequestOptions( $requestoptions );
+		$cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
+
+		$cacheOptions = $cacheFactory->newCacheOptions( array(
+			'useCache' => self::$configuration->get( 'smwgWantedPropertiesCache' ),
+			'ttl'      => self::$configuration->get( 'smwgWantedPropertiesCacheExpiry' )
+		) );
+
+		$listLookupCache = new ListLookupCache(
+			$undeclaredPropertyListLookup,
+			$cacheFactory->newMediaWikiCompositeCache( $cacheFactory->getMainCacheType() ),
+			$cacheOptions
+		);
+
+		return $listLookupCache;
 	}
 
 	public function getStatistics() {
 
-		$statisticsCollector = new StatisticsCollector(
-			$this,
-			Settings::newFromGlobals()
+		$usageStatisticsListLookup = $this->factory->newUsageStatisticsListLookup();
+
+		$cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
+
+		$cacheOptions = $cacheFactory->newCacheOptions( array(
+			'useCache' => self::$configuration->get( 'smwgStatisticsCache' ),
+			'ttl'      => self::$configuration->get( 'smwgStatisticsCacheExpiry' )
+		) );
+
+		$listLookupCache = new ListLookupCache(
+			$usageStatisticsListLookup,
+			$cacheFactory->newMediaWikiCompositeCache( $cacheFactory->getMainCacheType() ),
+			$cacheOptions
 		);
 
-		return $statisticsCollector->getResults();
+		return $listLookupCache->fetchResultList();
 	}
 
 

@@ -13,6 +13,7 @@ use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\TitleCreator;
 use SMW\Query\Profiler\QueryProfilerFactory;
 use SMW\Maintenance\MaintenanceFactory;
+use SMW\Cache\CacheFactory;
 use SMWQueryParser as QueryParser;
 use Title;
 
@@ -145,6 +146,15 @@ class ApplicationFactory {
 	 */
 	public function newMaintenanceFactory() {
 		return new MaintenanceFactory();
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return CacheFactory
+	 */
+	public function newCacheFactory() {
+		return new CacheFactory( $this->getSettings()->get( 'smwgCacheType' ) );
 	}
 
 	/**

@@ -2,48 +2,34 @@
 
 namespace SMW\SQLStore;
 
-use SMW\ObjectDictionary;
-use SMW\Store\CacheableResultCollector;
-
-use SMW\SimpleDictionary;
+use SMW\Store;
 use SMW\DIProperty;
-use SMW\Settings;
-use SMWSQLStore3;
+use RuntimeException;
 
 /**
- * Collects statistical information provided by the store
- *
  * @license GNU GPL v2+
- * @since 1.9
+ * @since 2.2
  *
  * @author mwjames
- * @author Nischay Nahata
  */
-class StatisticsCollector extends CacheableResultCollector {
+class UsageStatisticsListLookup implements SimpleListLookup {
 
 	/**
-	 * @var SMWSQLStore3
+	 * @var Store
 	 */
-	protected $store;
+	private $store;
 
 	/**
-	 * @var Settings
-	 */
-	private $settings;
-
-	/**
-	 * @since 1.9
+	 * @since 2.2
 	 *
-	 * @param SMWSQLStore3 $store
-	 * @param Settings $settings
+	 * @param Store $store
 	 */
-	public function __construct( SMWSQLStore3 $store, Settings $settings ) {
+	public function __construct( Store $store ) {
 		$this->store = $store;
-		$this->settings = $settings;
 	}
 
 	/**
-	 * Collects statistical information as an associative array
+	 * Returns alist of statistical information as an associative array
 	 * with the following keys:
 	 *
 	 * - 'PROPUSES': Number of property instances (value assignments) in the connection
@@ -56,12 +42,11 @@ class StatisticsCollector extends CacheableResultCollector {
 	 * - 'SUBOBJECTS': Number of declared subobjects
 	 * - 'QUERYFORMATS': Array of used formats and its usage count
 	 *
-	 * @since 1.9
+	 * @since 2.2
 	 *
-	 * @return DIProperty[]
+	 * @return array
 	 */
-	public function runCollector() {
-
+	public function fetchResultList() {
 		return array(
 			'OWNPAGE' => $this->getPropertyPageCount(),
 			'QUERY' => $this->getQueryCount(),
@@ -73,6 +58,33 @@ class StatisticsCollector extends CacheableResultCollector {
 			'PROPUSES' => $this->getPropertyUsageCount(),
 			'USEDPROPS' => $this->getUsedPropertiesCount()
 		);
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return boolean
+	 */
+	public function isCached() {
+		return false;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return integer
+	 */
+	public function getTimestamp() {
+		return wfTimestamp( TS_UNIX );
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return string
+	 */
+	public function getLookupIdentifier() {
+		return 'smwgStatisticsCache';
 	}
 
 	/**
@@ -208,16 +220,7 @@ class StatisticsCollector extends CacheableResultCollector {
 		return (int)$count;
 	}
 
-	/**
-	 * Convenience method to count on a single table for a given type
-	 *
-	 * @since 1.9
-	 *
-	 * @param string $type
-	 *
-	 * @return number
-	 */
-	protected function count( $type ) {
+	private function count( $type ) {
 
 		$res = $this->store->getConnection()->select(
 			$this->findPropertyTableByType( $type )->getName(),
@@ -228,23 +231,19 @@ class StatisticsCollector extends CacheableResultCollector {
 
 		$row = $this->store->getConnection()->fetchObject( $res );
 
-		return (int)$row->count;
+		return isset( $row->count ) ? (int)$row->count : 0;
 	}
 
-	/**
-	 * @see CacheableObjectCollector::cacheSetup
-	 *
-	 * @since 1.9
-	 *
-	 * @return ObjectDictionary
-	 */
-	protected function cacheSetup() {
-		return new SimpleDictionary( array(
-			'id'      => array( 'smwgStatisticsCache', $this->requestOptions ),
-			'type'    => $this->settings->get( 'smwgCacheType' ),
-			'enabled' => $this->settings->get( 'smwgStatisticsCache' ),
-			'expiry'  => $this->settings->get( 'smwgStatisticsCacheExpiry' )
-		) );
+	private function findPropertyTableByType( $type ) {
+		$propertyTables = $this->store->getPropertyTables();
+
+		$tableIdForType = $this->store->findPropertyTableID( new DIProperty( $type ) );
+
+		if ( isset( $propertyTables[ $tableIdForType ] ) ) {
+			return $propertyTables[ $tableIdForType ];
+		}
+
+		throw new RuntimeException( "Tried to access a table that doesn't exist for {$tableIdForType}." );
 	}
 
 }

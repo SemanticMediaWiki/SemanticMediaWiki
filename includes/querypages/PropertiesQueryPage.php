@@ -26,8 +26,10 @@ class PropertiesQueryPage extends QueryPage {
 	/** @var Settings */
 	protected $settings;
 
-	/** @var Collector */
-	protected $collector;
+	/**
+	 * @var SimpleListLookup
+	 */
+	private $listLookup;
 
 	/**
 	 * @since 1.9
@@ -49,7 +51,12 @@ class PropertiesQueryPage extends QueryPage {
 	 * @return string
 	 */
 	public function getCacheInfo() {
-		return $this->collector->isCached() ? $this->msg( 'smw-sp-properties-cache-info', $this->getLanguage()->userTimeAndDate( $this->collector->getCacheDate(), $this->getUser() ) )->parse() : '';
+
+		if ( $this->listLookup->isCached() ) {
+			return $this->msg( 'smw-sp-properties-cache-info', $this->getLanguage()->userTimeAndDate( $this->listLookup->getTimestamp(), $this->getUser() ) )->parse();
+		}
+
+		return '';
 	}
 
 	/**
@@ -228,8 +235,8 @@ class PropertiesQueryPage extends QueryPage {
 	 * @return array of array( SMWDIProperty|SMWDIError, integer )
 	 */
 	function getResults( $requestOptions ) {
-		$this->collector = $this->store->getPropertiesSpecial( $requestOptions );
-		return $this->collector->getResults();
+		$this->listLookup = $this->store->getPropertiesSpecial( $requestOptions );
+		return $this->listLookup->fetchResultList();
 	}
 
 }

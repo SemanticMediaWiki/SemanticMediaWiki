@@ -49,6 +49,15 @@ class PropertyStatisticsTable implements PropertyStatisticsStore {
 	}
 
 	/**
+	 * @since 2.2
+	 *
+	 * @return string
+	 */
+	public function getStatisticsTable() {
+		return $this->table;
+	}
+
+	/**
 	 * @see PropertyStatisticsStore::addToUsageCount
 	 *
 	 * @since 1.9

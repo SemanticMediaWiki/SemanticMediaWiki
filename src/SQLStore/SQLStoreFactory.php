@@ -6,6 +6,7 @@ use Doctrine\DBAL\Connection;
 use SMW\SQLStore\QueryEngine\ConceptCache;
 use SMWSQLStore3;
 use SMWSQLStore3QueryEngine;
+use SMWRequestOptions as RequestOptions;
 
 /**
  * @licence GNU GPL v2+
@@ -51,6 +52,74 @@ class SQLStoreFactory {
 		return new ConceptCache(
 			$this->newSalveQueryEngine(),
 			$this->store
+		);
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return UsageStatisticsListLookup
+	 */
+	public function newUsageStatisticsListLookup() {
+		return new UsageStatisticsListLookup( $this->store );
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param RequestOptions|null $requestOptions
+	 *
+	 * @return PropertyUsageListLookup
+	 */
+	public function newPropertyUsageListLookup( RequestOptions $requestOptions = null ) {
+
+		$propertyStatisticsStore = new PropertyStatisticsTable(
+			$this->store->getConnection( 'mw.db' ),
+			$this->store->getStatisticsTable()
+		);
+
+		return new PropertyUsageListLookup(
+			$this->store,
+			$propertyStatisticsStore,
+			$requestOptions
+		);
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param RequestOptions|null $requestOptions
+	 *
+	 * @return UnusedPropertyListLookup
+	 */
+	public function newUnusedPropertyListLookup( RequestOptions $requestOptions = null ) {
+
+		$propertyStatisticsStore = new PropertyStatisticsTable(
+			$this->store->getConnection( 'mw.db' ),
+			$this->store->getStatisticsTable()
+		);
+
+		return new UnusedPropertyListLookup(
+			$this->store,
+			$propertyStatisticsStore,
+			$requestOptions
+		);
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param RequestOptions|null $requestOptions
+	 * @param string $defaultPropertyType
+	 *
+	 * @return UndeclaredPropertyListLookup
+	 */
+	public function newUndeclaredPropertyListLookup( RequestOptions $requestOptions = null, $defaultPropertyType ) {
+
+		return new UndeclaredPropertyListLookup(
+			$this->store,
+			$defaultPropertyType,
+			$requestOptions
 		);
 	}
 

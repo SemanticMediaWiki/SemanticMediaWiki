@@ -42,4 +42,32 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructUsageStatisticsListLookup() {
+		$this->assertInstanceOf(
+			'SMW\SQLStore\UsageStatisticsListLookup',
+			$this->newInstance()->newUsageStatisticsListLookup()
+		);
+	}
+
+	public function testCanConstructPropertyUsageListLookup() {
+		$this->assertInstanceOf(
+			'SMW\SQLStore\PropertyUsageListLookup',
+			$this->newInstance()->newPropertyUsageListLookup( null )
+		);
+	}
+
+	public function testCanConstructUnusedPropertyListLookup() {
+		$this->assertInstanceOf(
+			'SMW\SQLStore\UnusedPropertyListLookup',
+			$this->newInstance()->newUnusedPropertyListLookup( null )
+		);
+	}
+
+	public function testCanConstructUndeclaredPropertyListLookup() {
+		$this->assertInstanceOf(
+			'SMW\SQLStore\UndeclaredPropertyListLookup',
+			$this->newInstance()->newUndeclaredPropertyListLookup( null, '_foo' )
+		);
+	}
+
 }

@@ -26,8 +26,10 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	/** @var Settings */
 	protected $settings;
 
-	/** @var Collector */
-	protected $collector;
+	/**
+	 * @var SimpleListLookup
+	 */
+	private $listLookup;
 
 	/**
 	 * @since 1.9
@@ -151,7 +153,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 * @return array of SMWDIProperty|SMWDIError
 	 */
 	function getResults( $requestOptions ) {
-		$this->collector = $this->store->getUnusedPropertiesSpecial( $requestOptions );
-		return $this->collector->getResults();
+		$this->listLookup = $this->store->getUnusedPropertiesSpecial( $requestOptions );
+		return $this->listLookup->fetchResultList();
 	}
 }

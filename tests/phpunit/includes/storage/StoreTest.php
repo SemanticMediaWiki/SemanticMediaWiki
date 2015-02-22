@@ -182,8 +182,8 @@ class StoreTest extends MwDBaseUnitTestCase {
 		$store = StoreFactory::getStore();
 		$result = $store->getPropertiesSpecial( new SMWRequestOptions() );
 
-		$this->assertInstanceOf( '\SMW\ResultCollector', $result );
-		foreach( $result->getResults() as $row ) {
+		$this->assertInstanceOf( '\SMW\SQLStore\SimpleListLookup', $result );
+		foreach( $result->fetchResultList() as $row ) {
 			$this->assertEquals( 2, sizeof( $row ) );
 
 			$this->assertInstanceOf(
@@ -198,8 +198,8 @@ class StoreTest extends MwDBaseUnitTestCase {
 		$store = StoreFactory::getStore();
 		$result = $store->getUnusedPropertiesSpecial( new SMWRequestOptions() );
 
-		$this->assertInstanceOf( '\SMW\ResultCollector', $result );
-		foreach( $result->getResults() as $row ) {
+		$this->assertInstanceOf( '\SMW\SQLStore\SimpleListLookup', $result );
+		foreach( $result->fetchResultList() as $row ) {
 			$this->assertInstanceOf(
 				'\SMW\DIProperty',
 				$row,
@@ -212,8 +212,8 @@ class StoreTest extends MwDBaseUnitTestCase {
 		$store = StoreFactory::getStore();
 		$result = $store->getWantedPropertiesSpecial( new SMWRequestOptions() );
 
-		$this->assertInstanceOf( '\SMW\ResultCollector', $result );
-		foreach( $result->getResults() as $row ) {
+		$this->assertInstanceOf( '\SMW\SQLStore\SimpleListLookup', $result );
+		foreach( $result->fetchResultList() as $row ) {
 			$this->assertInstanceOf(
 				'\SMW\DIProperty',
 				$row[0],
