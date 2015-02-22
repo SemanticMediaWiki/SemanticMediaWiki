@@ -62,14 +62,6 @@ class PropertyUsageListLookup implements SimpleListLookup {
 	}
 
 	/**
-	 * FIXME NEEDS TO BE REMOVED QUICK
-	 * https://github.com/wikimedia/mediawiki-extensions-SemanticForms/blob/master/specials/SF_CreateTemplate.php#L36
-	 */
-	public function runCollector() {
-		return $this->fetchResultList();
-	}
-
-	/**
 	 * @since 2.2
 	 *
 	 * @return boolean
