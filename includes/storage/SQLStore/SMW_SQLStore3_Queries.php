@@ -467,20 +467,20 @@ class SMWSQLStore3QueryEngine {
 
 		switch ( $query->type ) {
 			case SMWSQLStore3Query::Q_TABLE: // Normal query with conjunctive subcondition.
-				foreach ( $query->components as $qid => $joinfield ) {
-					$subquery = $this->queryParts[$qid];
-					$this->executeQueries( $subquery );
+				foreach ( $query->components as $qid => $joinField ) {
+					$subQuery = $this->queryParts[$qid];
+					$this->executeQueries( $subQuery );
 
-					if ( $subquery->joinTable !== '' ) { // Join with jointable.joinfield
-						$query->from .= ' INNER JOIN ' . $db->tableName( $subquery->joinTable ) . " AS $subquery->alias ON $joinfield=" . $subquery->joinfield;
-					} elseif ( $subquery->joinfield !== '' ) { // Require joinfield as "value" via WHERE.
+					if ( $subQuery->joinTable !== '' ) { // Join with jointable.joinfield
+						$query->from .= ' INNER JOIN ' . $db->tableName( $subQuery->joinTable ) . " AS $subQuery->alias ON $joinField=" . $subQuery->joinfield;
+					} elseif ( $subQuery->joinfield !== '' ) { // Require joinfield as "value" via WHERE.
 						$condition = '';
 
-						foreach ( $subquery->joinfield as $value ) {
-							$condition .= ( $condition ? ' OR ':'' ) . "$joinfield=" . $db->addQuotes( $value );
+						foreach ( $subQuery->joinfield as $value ) {
+							$condition .= ( $condition ? ' OR ':'' ) . "$joinField=" . $db->addQuotes( $value );
 						}
 
-						if ( count( $subquery->joinfield ) > 1 ) {
+						if ( count( $subQuery->joinfield ) > 1 ) {
 							$condition = "($condition)";
 						}
 
@@ -493,11 +493,11 @@ class SMWSQLStore3QueryEngine {
 						break;
 					}
 
-					if ( $subquery->where !== '' ) {
-						$query->where .= ( ( $query->where === '' ) ? '':' AND ' ) . '(' . $subquery->where . ')';
+					if ( $subQuery->where !== '' ) {
+						$query->where .= ( ( $query->where === '' ) ? '':' AND ' ) . '(' . $subQuery->where . ')';
 					}
 
-					$query->from .= $subquery->from;
+					$query->from .= $subQuery->from;
 				}
 
 				$query->components = array();
@@ -522,7 +522,7 @@ class SMWSQLStore3QueryEngine {
 					$this->executeQueries( $result );
 
 					// ... and append to this query the remaining queries.
-					foreach ( $query->components as $qid => $joinfield ) {
+					foreach ( $query->components as $qid => $joinField ) {
 						$result->components[$qid] = $result->joinfield;
 					}
 
@@ -533,7 +533,7 @@ class SMWSQLStore3QueryEngine {
 					$result = $this->queryParts[$key];
 					unset( $query->components[$key] );
 
-					foreach ( $query->components as $qid => $joinfield ) {
+					foreach ( $query->components as $qid => $joinField ) {
 						if ( $result->joinfield != $this->queryParts[$qid]->joinfield ) {
 							$result->joinfield = ''; // all other values should already be ''
 							break;
@@ -549,22 +549,22 @@ class SMWSQLStore3QueryEngine {
 
 				$this->executedQueries[$query->alias] = array();
 
-				foreach ( $query->components as $qid => $joinfield ) {
-					$subquery = $this->queryParts[$qid];
-					$this->executeQueries( $subquery );
+				foreach ( $query->components as $qid => $joinField ) {
+					$subQuery = $this->queryParts[$qid];
+					$this->executeQueries( $subQuery );
 					$sql = '';
 
-					if ( $subquery->joinTable !== '' ) {
+					if ( $subQuery->joinTable !== '' ) {
 						$sql = 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '':'IGNORE ' ) . 'INTO ' .
 						       $db->tableName( $query->alias ) .
-							   " SELECT $subquery->joinfield FROM " . $db->tableName( $subquery->joinTable ) .
-							   " AS $subquery->alias $subquery->from" . ( $subquery->where ? " WHERE $subquery->where":'' );
-					} elseif ( $subquery->joinfield !== '' ) {
+							   " SELECT $subQuery->joinfield FROM " . $db->tableName( $subQuery->joinTable ) .
+							   " AS $subQuery->alias $subQuery->from" . ( $subQuery->where ? " WHERE $subQuery->where":'' );
+					} elseif ( $subQuery->joinfield !== '' ) {
 						// NOTE: this works only for single "unconditional" values without further
 						// WHERE or FROM. The execution must take care of not creating any others.
 						$values = '';
 
-						foreach ( $subquery->joinfield as $value ) {
+						foreach ( $subQuery->joinfield as $value ) {
 							$values .= ( $values ? ',' : '' ) . '(' . $db->addQuotes( $value ) . ')';
 						}
 
