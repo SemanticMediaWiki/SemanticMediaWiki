@@ -20,6 +20,7 @@ $specialPageAliases['en'] = array(
 	'Concepts' => array( 'Concepts' ),
 	'SMWAdmin' => array( 'SMWAdmin' ),
 	'SearchByProperty' => array( 'SearchByProperty' ),
+	'DataContainer' => array( 'DataContainer' ),
 	'SemanticStatistics' => array( 'SemanticStatistics' ),
 	'Types' => array( 'Types' ),
 	'URIResolver' => array( 'URIResolver' ),

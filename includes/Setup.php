@@ -218,6 +218,10 @@ final class Setup {
 				'page' => 'SMW\SpecialWantedProperties',
 				'group' => 'maintenance'
 			),
+			'DataContainer' => array(
+				'page' => 'SMW\MediaWiki\Specials\DataContainer',
+				'group' => 'smw_group'
+			),
 		);
 
 		// Register data
