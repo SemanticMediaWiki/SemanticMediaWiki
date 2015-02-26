@@ -36,7 +36,7 @@
 	"smw_printername_count": "計算結果",
 	"smw_printername_csv": "匯出為 CSV",
 	"smw_printername_dsv": "匯出為 DSV",
-	"smw_printername_debug": "除錯查詢 (進階使用者適用)",
+	"smw_printername_debug": "偵錯查詢 (用於專業人士)",
 	"smw_printername_embedded": "嵌入頁面內容",
 	"smw_printername_json": "匯出為 JSON",
 	"smw_printername_list": "清單",
