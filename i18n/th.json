@@ -1,3 +1,9 @@
 {
+	"@metadata": {
+		"authors": [
+			"Horus"
+		]
+	},
+	"browse": "ค้นดูวิกิ",
 	"smw-livepreview-loading": "กำลังค้นหา…"
 }
