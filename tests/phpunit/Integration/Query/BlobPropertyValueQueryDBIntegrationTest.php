@@ -3,8 +3,7 @@
 namespace SMW\Tests\Integration\Query;
 
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Utils\SemanticDataFactory;
-use SMW\Tests\Utils\Validators\QueryResultValidator;
+use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\SomeProperty;
@@ -12,6 +11,7 @@ use SMW\Query\Language\SomeProperty;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\DataValueFactory;
+use SMW\ApplicationFactory;
 
 use SMWDIBlob as DIBlob;
 use SMWQuery as Query;
@@ -20,6 +20,7 @@ use SMWDataValue as DataValue;
 use SMWDataItem as DataItem;
 use SMW\Query\PrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
+use Title;
 
 /**
  * @group SMW
@@ -38,24 +39,35 @@ use SMWPropertyValue as PropertyValue;
  */
 class BlobPropertyValueQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
-	private $subjectsToBeCleared = array();
 	private $semanticDataFactory;
 	private $dataValueFactory;
 	private $queryResultValidator;
 
+	private $subjects = array();
+	private $pageCreator;
+
+	private $stringBuilder;
+	private $stringValidator;
+
 	protected function setUp() {
 		parent::setUp();
 
+		$utilityFactory = UtilityFactory::getInstance();
+
 		$this->dataValueFactory = DataValueFactory::getInstance();
-		$this->semanticDataFactory = new SemanticDataFactory();
-		$this->queryResultValidator = new QueryResultValidator();
+		$this->semanticDataFactory = $utilityFactory->newSemanticDataFactory();
+		$this->queryResultValidator = $utilityFactory->newValidatorFactory()->newQueryResultValidator();
+
+		$this->pageCreator = $utilityFactory->newPageCreator();
+		$this->stringBuilder = $utilityFactory->newStringBuilder();
+
+		$this->queryParser = ApplicationFactory::getInstance()->newQueryParser();
 	}
 
 	protected function tearDown() {
 
-		foreach ( $this->subjectsToBeCleared as $subject ) {
-			$this->getStore()->deleteSubject( $subject->getTitle() );
-		}
+		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
+		$pageDeleter->doDeletePoolOfPages( $this->subjects );
 
 		parent::tearDown();
 	}
@@ -106,6 +118,54 @@ class BlobPropertyValueQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 			$dataItem,
 			$queryResult
 		);
+
+		$this->subjects[] = $semanticData->getSubject();
+	}
+
+	public function testRegexSearchForCharactersThatRequireSpecialEscapePattern() {
+
+		$property = Title::newFromText( 'Has RegexBlobSearch', SMW_NS_PROPERTY );
+
+		$this->pageCreator
+			->createPage( $property )
+			->doEdit( '[[Has type::text]]' );
+
+		$this->pageCreator
+			->createPage( Title::newFromText( __METHOD__ ) )
+			->doEdit( '[[Has RegexBlobSearch::{(+*. \;)}]] {{#set:|Has RegexBlobSearch=[(+*. \;)]}}' );
+
+		$this->stringBuilder
+			->addString( '[[Has RegexBlobSearch::~*{*]]' )
+			->addString( '[[Has RegexBlobSearch::~*}*]]' )
+			->addString( '[[Has RegexBlobSearch::~*(*]]' )
+			->addString( '[[Has RegexBlobSearch::~*)*]]' )
+		//	->addString( '[[Has RegexBlobSearch::~*\*]]' )
+			->addString( '[[Has RegexBlobSearch::~*]*]]' )
+			->addString( '[[Has RegexBlobSearch::~*[*]]' )
+			->addString( '[[Has RegexBlobSearch::~*;?}]]' );
+
+		$description = $this->queryParser->getQueryDescription( $this->stringBuilder->getString() );
+
+		// Query::applyRestrictions
+		$GLOBALS['smwgQMaxSize'] = 20;
+
+		$query = new Query(
+			$description,
+			false,
+			false
+		);
+
+		$query->querymode = Query::MODE_INSTANCES;
+		$query->setLimit( 10 );
+
+		$this->subjects[] = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+
+		$this->queryResultValidator->assertThatQueryResultHasSubjects(
+			$this->subjects,
+			$this->getStore()->getQueryResult( $query )
+		);
+
+		$this->subjects[] = $property;
 	}
 
 }

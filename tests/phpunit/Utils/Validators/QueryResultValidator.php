@@ -105,7 +105,12 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 		$expectedToCount  = count( $expectedSubjects );
 		$actualComparedToCount = 0;
 
-		$this->assertEmpty( $queryResult->getErrors() );
+		$errors = $queryResult->getErrors();
+
+		$this->assertEmpty(
+			$errors,
+			"Failed with error(s): " . implode( ',', $errors )
+		);
 
 		if ( $expectedToCount == 0 ) {
 			return;

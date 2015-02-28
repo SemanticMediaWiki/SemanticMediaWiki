@@ -150,7 +150,7 @@ class ValueConditionBuilder implements ConditionBuilder {
 		}
 
 		$pattern = '^' . str_replace( array( 'https://', 'http://', '%2A', '^', '.', '\\', '+', '{', '}', '(', ')', '|', '^', '$', '[', ']', '*', '?', '"' ),
-		                              array( '', '', '*','\^', '\.', '\\\\', '\+', '\{', '\}', '\(', '\)', '\|', '\^', '\$', '\[', '\]', '.*', '.', '\"' ),
+		                              array( '', '', '*','\^', '\.', '\\\\', '\+', '\\\\{', '\\\\}', '\\\\(', '\\\\)', '\|', '\^', '\$', '\\\\[', '\\\\]', '.*', '.', '\"' ),
 		                              $search ) . '$';
 
 		$condition = $this->createFilterConditionToMatchRegexPattern(
