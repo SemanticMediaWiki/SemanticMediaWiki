@@ -149,6 +149,13 @@ class RawResultParserTest extends \PHPUnit_Framework_TestCase {
 			new ExpLiteral( 'true', 'http://www.w3.org/2001/XMLSchema#boolean' )
 		);
 
+
+		#10
+		$provider[] = array(
+			'',
+			new ExpLiteral( 'false', 'http://www.w3.org/2001/XMLSchema#boolean' )
+		);
+
 		return $provider;
 	}
 
