@@ -33,21 +33,28 @@ use Title;
 class SemanticDataSortKeyUpdateDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	private $semanticDataFactory;
+	private $subjects = array();
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
+
+		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
+		$this->mwHooksHandler->deregisterListedHooks();
 	}
 
 	protected function tearDown() {
+
+		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
+		$pageDeleter->doDeletePoolOfPages( $this->subjects );
+
 		parent::tearDown();
 	}
 
 	public function testSubjectSortKeySetter() {
 
-		$semanticData = $this->semanticDataFactory
-			->newEmptySemanticData( __METHOD__ );
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$subject = $semanticData->getSubject();
 		$subject->setSortKey( 'a_b_c' );
@@ -67,6 +74,8 @@ class SemanticDataSortKeyUpdateDBIntegrationTest extends MwDBaseUnitTestCase {
 				$value->getString()
 			);
 		}
+
+		$this->subjects[] = $semanticData->getSubject();
 	}
 
 	public function testDefinedSortKeyTakesPrecedenceOverSubjectSortKey() {
@@ -98,6 +107,8 @@ class SemanticDataSortKeyUpdateDBIntegrationTest extends MwDBaseUnitTestCase {
 				$value->getString()
 			);
 		}
+
+		$this->subjects[] = $semanticData->getSubject();
 	}
 
 }
