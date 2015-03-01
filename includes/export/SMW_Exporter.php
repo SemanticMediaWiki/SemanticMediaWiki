@@ -763,10 +763,14 @@ class SMWExporter {
 
 		$localName = '';
 
+		if ( $diWikiPage->getInterwiki() !== '' ) {
+			$localName = $diWikiPage->getInterwiki() . ':';
+		}
+
 		if ( $diWikiPage->getNamespace() !== 0 ) {
-			$localName = str_replace( ' ', '_', $GLOBALS['wgContLang']->getNSText( $diWikiPage->getNamespace() ) ) . ':' . $diWikiPage->getDBkey();
+			$localName .= str_replace( ' ', '_', $GLOBALS['wgContLang']->getNSText( $diWikiPage->getNamespace() ) ) . ':' . $diWikiPage->getDBkey();
 		} else {
-			$localName = $diWikiPage->getDBkey();
+			$localName .= $diWikiPage->getDBkey();
 		}
 
 		return self::encodeURI( wfUrlencode( $localName ) );
