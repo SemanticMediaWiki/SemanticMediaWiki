@@ -74,8 +74,8 @@ class CompilerHelperTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array( SMW_CMP_GEQ,  'Foo%_*?', array( 'comparator' => '>=', 'value' => 'Foo%_*?' ) );
 		$provider[] = array( SMW_CMP_NEQ,  'Foo%_*?', array( 'comparator' => '!=', 'value' => 'Foo%_*?' ) );
 
-		$provider[] = array( SMW_CMP_LIKE, 'Foo%_*?', array( 'comparator' => ' LIKE ',     'value' => 'Foo\%\_%_' ) );
-		$provider[] = array( SMW_CMP_NLKE, 'Foo%_*?', array( 'comparator' => ' NOT LIKE ', 'value' => 'Foo\%\_%_' ) );
+		$provider[] = array( SMW_CMP_LIKE, 'Foo%_*?\\', array( 'comparator' => ' LIKE ',     'value' => 'Foo\%\_%_\\\\' ) );
+		$provider[] = array( SMW_CMP_NLKE, 'Foo%_*?\\', array( 'comparator' => ' NOT LIKE ', 'value' => 'Foo\%\_%_\\\\' ) );
 
 		return $provider;
 	}
