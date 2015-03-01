@@ -33,6 +33,7 @@ class RdfXmlSerializationExportDBIntegrationTest extends MwDBaseUnitTestCase {
 	private $stringValidator;
 
 	private $smwgNamespace;
+	private $subjects = array();
 
 	protected function setUp() {
 		parent::setUp();
@@ -47,6 +48,9 @@ class RdfXmlSerializationExportDBIntegrationTest extends MwDBaseUnitTestCase {
 	}
 
 	protected function tearDown() {
+
+		UtilityFactory::getInstance()->newPageDeleter()->doDeletePoolOfPages( $this->subjects );
+
 		$GLOBALS['smwgNamespace'] = $this->smwgNamespace;
 		parent::tearDown();
 	}
@@ -161,6 +165,40 @@ class RdfXmlSerializationExportDBIntegrationTest extends MwDBaseUnitTestCase {
 			$expectedOutputContent,
 			$output
 		);
+	}
+
+	// #795
+	public function testRdfXmlSerializationForPageTypeProperty() {
+
+		$this->pageCreator
+			->createPage( Title::newFromText( 'RdfXmlSerializationForPageTypeProperty', SMW_NS_PROPERTY ) )
+			->doEdit( '[[Has type::Page]]' );
+
+		$output = $this->fetchSerializedRdfOutputFor(
+			array( 'Property:RdfXmlSerializationForPageTypeProperty' )
+		);
+
+		$expectedOutputContent = array(
+			'<owl:ObjectProperty rdf:about="http://example.org/id/Property-3ARdfXmlSerializationForPageTypeProperty">',
+			'<rdfs:label>RdfXmlSerializationForPageTypeProperty</rdfs:label>',
+			'<swivt:type rdf:resource="http://semantic-mediawiki.org/swivt/1.0#_wpg"/>'
+		);
+
+		$this->stringValidator->assertThatStringContains(
+			$expectedOutputContent,
+			$output
+		);
+	}
+
+	private function fetchSerializedRdfOutputFor( array $pages ) {
+
+		$this->subjects = $pages;
+
+		$instance = new ExportController( new RDFXMLSerializer() );
+
+		ob_start();
+		$instance->printPages( $pages );
+		return ob_get_clean();
 	}
 
 }
