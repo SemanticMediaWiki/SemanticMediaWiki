@@ -66,8 +66,7 @@ class BlobPropertyValueQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	protected function tearDown() {
 
-		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
-		$pageDeleter->doDeletePoolOfPages( $this->subjects );
+		UtilityFactory::getInstance()->newPageDeleter()->doDeletePoolOfPages( $this->subjects );
 
 		parent::tearDown();
 	}
@@ -124,25 +123,39 @@ class BlobPropertyValueQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testRegexSearchForCharactersThatRequireSpecialEscapePattern() {
 
+		$this->skipTestForDatabase(
+			array( 'postgres' ),
+			'Skipping the test for postgres because of "Query failed: ERROR: duplicate key value violates unique constraint"'
+		);
+
 		$property = Title::newFromText( 'Has RegexBlobSearch', SMW_NS_PROPERTY );
+		$title = Title::newFromText( __METHOD__ );
 
 		$this->pageCreator
 			->createPage( $property )
 			->doEdit( '[[Has type::text]]' );
 
+		$this->stringBuilder
+			->addString( '[[Has RegexBlobSearch::{(+*. \;)}]]' )
+			->addString( '{{#set:|Has RegexBlobSearch=[(*. \=^)]}}' )
+			->addString( '{{#subobject:FixedRegexBlobSearch|Has RegexBlobSearch=[(+. \:)]}}' );
+
 		$this->pageCreator
-			->createPage( Title::newFromText( __METHOD__ ) )
-			->doEdit( '[[Has RegexBlobSearch::{(+*. \;)}]] {{#set:|Has RegexBlobSearch=[(+*. \;)]}}' );
+			->createPage( $title )
+			->doEdit(  $this->stringBuilder->getString() );
 
 		$this->stringBuilder
 			->addString( '[[Has RegexBlobSearch::~*{*]]' )
 			->addString( '[[Has RegexBlobSearch::~*}*]]' )
 			->addString( '[[Has RegexBlobSearch::~*(*]]' )
 			->addString( '[[Has RegexBlobSearch::~*)*]]' )
-		//	->addString( '[[Has RegexBlobSearch::~*\*]]' )
 			->addString( '[[Has RegexBlobSearch::~*]*]]' )
 			->addString( '[[Has RegexBlobSearch::~*[*]]' )
-			->addString( '[[Has RegexBlobSearch::~*;?}]]' );
+			->addString( '[[Has RegexBlobSearch::~*;?}]]' )
+			->addString( ' OR ' )
+			->addString( '[[Has RegexBlobSearch::~*+.*]]' )
+			->addString( ' OR ' )
+			->addString( '[[Has RegexBlobSearch::~*=^*]]' );
 
 		$description = $this->queryParser->getQueryDescription( $this->stringBuilder->getString() );
 
@@ -158,7 +171,62 @@ class BlobPropertyValueQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$query->querymode = Query::MODE_INSTANCES;
 		$query->setLimit( 10 );
 
-		$this->subjects[] = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+		$this->subjects[] = DIWikiPage::newFromTitle( $title );
+		$this->subjects[] = new DIWikiPage( $title->getDBKey(), NS_MAIN, '', 'FixedRegexBlobSearch' );
+
+		$this->queryResultValidator->assertThatQueryResultHasSubjects(
+			$this->subjects,
+			$this->getStore()->getQueryResult( $query )
+		);
+
+		$this->subjects[] = $property;
+	}
+
+	public function testRegexSearchForEscapeCharacter() {
+
+		$this->skipTestForDatabase(
+			array( 'sqlite', 'postgres'),
+			'Skipping the test because "\" needs special attention on sqlite, postgres'
+		);
+
+		$property = Title::newFromText( 'Has RegexBlobSearch', SMW_NS_PROPERTY );
+		$title = Title::newFromText( __METHOD__ );
+
+		$this->pageCreator
+			->createPage( $property )
+			->doEdit( '[[Has type::text]]' );
+
+		$this->stringBuilder
+			->addString( '{{#set:|Has RegexBlobSearch=[(+*. \.)]}}' )
+			->addString( '{{#set:|Has RegexBlobSearch=[(+*. \;)]}}' )
+			->addString( '{{#subobject:FixedRegexBlobSearch|Has RegexBlobSearch=[(+*. \:)]}}' );
+
+		$this->pageCreator
+			->createPage( $title )
+			->doEdit(  $this->stringBuilder->getString() );
+
+		$this->stringBuilder
+			->addString( '[[Has RegexBlobSearch::~*\.*]]' )
+			->addString( '[[Has RegexBlobSearch::~*\;*]]' )
+			->addString( ' OR' )
+			->addString( '[[Has RegexBlobSearch::~*\:*]]' );
+
+		$description = $this->queryParser->getQueryDescription( $this->stringBuilder->getString() );
+
+		// Query::applyRestrictions
+		$GLOBALS['smwgQMaxSize'] = 20;
+
+		$query = new Query(
+			$description,
+			false,
+			false
+		);
+
+		$query->querymode = Query::MODE_INSTANCES;
+		$query->setLimit( 10 );
+
+		$this->subjects[] = DIWikiPage::newFromTitle( $title );
+		$this->subjects[] = new DIWikiPage( $title->getDBKey(), NS_MAIN, '', 'FixedRegexBlobSearch' );
 
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
 			$this->subjects,

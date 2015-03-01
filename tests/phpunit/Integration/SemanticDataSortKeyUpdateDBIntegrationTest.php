@@ -48,6 +48,7 @@ class SemanticDataSortKeyUpdateDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->subjects );
+		$this->mwHooksHandler->restoreListedHooks();
 
 		parent::tearDown();
 	}

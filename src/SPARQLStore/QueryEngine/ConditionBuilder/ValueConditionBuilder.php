@@ -149,8 +149,8 @@ class ValueConditionBuilder implements ConditionBuilder {
 			$search = $dataItem->getSortKey();
 		}
 
-		$pattern = '^' . str_replace( array( 'https://', 'http://', '%2A', '^', '.', '\\', '+', '{', '}', '(', ')', '|', '^', '$', '[', ']', '*', '?', '"' ),
-		                              array( '', '', '*','\^', '\.', '\\\\', '\+', '\\\\{', '\\\\}', '\\\\(', '\\\\)', '\|', '\^', '\$', '\\\\[', '\\\\]', '.*', '.', '\"' ),
+		$pattern = '^' . str_replace( array( 'https://', 'http://', '%2A', '\\', '^', '.', '+', '{', '}', '(', ')', '|', '^', '$', '[', ']', '*', '?', '"' ),
+		                              array( '', '', '*', '\\\\', '\^', '\\\\.', '\\\\+', '\\\\{', '\\\\}', '\\\\(', '\\\\)', '\|', '\^', '\$', '\\\\[', '\\\\]', '.*', '.', '\"' ),
 		                              $search ) . '$';
 
 		$condition = $this->createFilterConditionToMatchRegexPattern(

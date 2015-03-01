@@ -49,7 +49,7 @@ class CompilerHelper {
 			}
 
 			// Escape to prepare string matching:
-			$value = str_replace( array( '%', '_', '*', '?' ), array( '\%', '\_', '%', '_' ), $value );
+			$value = str_replace( array( '\\', '%', '_', '*', '?' ), array( '\\\\', '\%', '\_', '%', '_' ), $value );
 
 		}
 
