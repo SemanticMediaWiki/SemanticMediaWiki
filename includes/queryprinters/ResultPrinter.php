@@ -230,6 +230,11 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 				return $this->escapeText( $this->mDefault, $outputMode )
 					. $this->getErrorString( $results );
 			} elseif ( $this->mInline ) {
+
+				if ( !$this->linkFurtherResults( $results ) ) {
+					return '';
+				}
+
 				return $this->getFurtherResultsLink( $results, $outputMode )->getText( $outputMode, $this->mLinker )
 					. $this->getErrorString( $results );
 			}
