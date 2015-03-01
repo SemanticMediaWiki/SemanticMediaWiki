@@ -11,6 +11,8 @@ This is not a release yet.
 ## Bug fixes
 
 * #764 Fixed DB error when a `#ask` query contains `order=random` for a `sqlite` or `postgres` DB platform (disabled `smwgQRandSortingSupport` for `postgres`)
+* #860 Fixed escape character usage in `SPARQLStore`, `SQLStore` 
+* #860 Fixed handling of an empty result send by the `SPARQLStore` Sesame connector
 
 ## Internal changes
 * #373 Update `jquery.jstorage.js` (0.3.2 => 0.4.11)
