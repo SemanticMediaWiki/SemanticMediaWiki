@@ -187,9 +187,9 @@ class StoreTest extends MwDBaseUnitTestCase {
 			$this->assertEquals( 2, sizeof( $row ) );
 
 			$this->assertInstanceOf(
-				'\SMW\DIProperty',
+				'\SMWDataItem',
 				$row[0],
-				"Result should be instance of DIProperty."
+				"Result should be DataItem instance."
 			);
 		}
 	}
