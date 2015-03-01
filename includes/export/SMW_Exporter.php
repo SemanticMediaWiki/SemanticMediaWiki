@@ -99,11 +99,6 @@ class SMWExporter {
 		self::initBaseURIs();
 
 		$subject = $semdata->getSubject();
-		$types = array();
-
-		if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
-			$types = $semdata->getPropertyValues( new DIProperty( '_TYPE' ) );
-		}
 
 		// #649 Alwways make sure to have a least one valid sortkey
 		if ( !$semdata->getPropertyValues( new DIProperty( '_SKEY' ) ) && $subject->getSortKey() !== '' ) {
@@ -113,7 +108,7 @@ class SMWExporter {
 			);
 		}
 
-		$result = self::makeExportDataForSubject( $subject, end( $types ) );
+		$result = self::makeExportDataForSubject( $subject );
 
 		foreach ( $semdata->getProperties() as $property ) {
 			self::addPropertyValues( $property, $semdata->getPropertyValues( $property ), $result, $subject );
@@ -132,11 +127,10 @@ class SMWExporter {
 	 * @todo Take into account whether the wiki page belongs to a builtin property, and ensure URI alignment/type declaration in this case.
 	 *
 	 * @param $diWikiPage SMWDIWikiPage
-	 * @param $typesvalueforproperty mixed either an SMWTypesValue or null
 	 * @param $addStubData boolean to indicate if additional data should be added to make a stub entry for this page
 	 * @return SMWExpData
 	 */
-	static public function makeExportDataForSubject( SMWDIWikiPage $diWikiPage, $typesvalueforproperty = null, $addStubData = false ) {
+	static public function makeExportDataForSubject( SMWDIWikiPage $diWikiPage, $addStubData = false ) {
 		global $wgContLang;
 		$wikiPageExpElement = self::getDataItemExpElement( $diWikiPage );
 		$result = new SMWExpData( $wikiPageExpElement );
@@ -182,11 +176,8 @@ class SMWExporter {
 					$label = $pageTitle;
 				break;
 				case SMW_NS_PROPERTY:
-					if ( $typesvalueforproperty == null ) {
-						$types = \SMW\StoreFactory::getStore()->getPropertyValues( $diWikiPage, new SMWDIProperty( '_TYPE' ) );
-						$typesvalueforproperty = end( $types );
-					}
-					$maintype_pe = self::getSpecialNsResource( 'owl', self::getOWLPropertyType( $typesvalueforproperty ) );
+					$property = new DIProperty( $diWikiPage->getDBKey() );
+					$maintype_pe = self::getSpecialNsResource( 'owl', self::getOWLPropertyType( $property->findPropertyTypeID() ) );
 					$label = $pageTitle;
 				break;
 				default:

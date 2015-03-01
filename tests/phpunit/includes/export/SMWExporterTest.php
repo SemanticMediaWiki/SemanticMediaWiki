@@ -27,6 +27,24 @@ use SMWExpResource as ExpResource;
  */
 class SMWExporterTest extends \PHPUnit_Framework_TestCase {
 
+	// @see #795
+	public function testExportDataForPropertyPage() {
+
+		$propertyPage = new DIWikiPage( 'Foo', SMW_NS_PROPERTY );
+
+		$expData = Exporter::makeExportDataForSubject( $propertyPage );
+
+		$this->assertInstanceOf(
+			'\SMWExpData',
+			$expData
+		);
+
+		$this->assertInstanceOf(
+			'\SMWExpNsResource',
+			$expData->getSubject()
+		);
+	}
+
 	/**
 	 * @dataProvider dataItemExpElementProvider
 	 */
@@ -36,7 +54,10 @@ class SMWExporterTest extends \PHPUnit_Framework_TestCase {
 			return $this->assertNull( Exporter::getDataItemExpElement( $dataItem ) );
 		}
 
-		$this->assertInstanceOf( $instance, Exporter::getDataItemExpElement( $dataItem ) );
+		$this->assertInstanceOf(
+			$instance,
+			Exporter::getDataItemExpElement( $dataItem )
+		);
 	}
 
 	/**
