@@ -1,6 +1,6 @@
 # Semantic MediaWiki 2.1.1
 
-Released on March 1st, 2015.
+Released on March 2nd, 2015.
 
 ## Bug fixes
 
