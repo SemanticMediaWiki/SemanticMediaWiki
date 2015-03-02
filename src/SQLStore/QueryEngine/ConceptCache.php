@@ -15,7 +15,9 @@ use SMWWikiPageValue;
 use Title;
 
 /**
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
+ * @since 2.2
+ *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class ConceptCache {
@@ -77,6 +79,11 @@ class ConceptCache {
 		);
 
 		$concCacheTableName = $db->tablename( SMWSQLStore3::CONCEPT_CACHE_TABLE );
+
+		if ( $wgDBtype == 'postgres' ) {
+			// Remove any double quotes from the name
+			$concCacheTableName = str_replace( '"', '', $concCacheTableName );
+		}
 
 		if ( $wgDBtype == 'postgres' ) { // PostgresQL: no INSERT IGNORE, check for duplicates explicitly
 			$where = $queryPart->where . ( $queryPart->where ? ' AND ' : '' ) .
