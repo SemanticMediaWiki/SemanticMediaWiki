@@ -60,10 +60,10 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->dataTypeRegistry
-			->registerDataType( '_foo', '\SMW\FooValue', DataItem::TYPE_NOTYPE, 'FooValue' );
+			->registerDataType( '_foo', '\SMW\Tests\FooValue', DataItem::TYPE_NOTYPE, 'FooValue' );
 
 		$this->assertEquals(
-			'\SMW\FooValue',
+			'\SMW\Tests\FooValue',
 			$this->dataTypeRegistry->getDataTypeClassById( '_foo' ),
 			'Asserts that getDataTypeClassById() returns the registered class'
 		);
@@ -91,7 +91,7 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	public function testRegisterDatatypeIdAndAlias() {
 
 		$this->dataTypeRegistry
-			->registerDataType( '_foo', '\SMW\FooValue', DataItem::TYPE_NOTYPE, 'FooValue' );
+			->registerDataType( '_foo', '\SMW\Tests\FooValue', DataItem::TYPE_NOTYPE, 'FooValue' );
 
 		$this->assertEmpty(
 			$this->dataTypeRegistry->findTypeId( 'FooBar' )
@@ -197,3 +197,5 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 }
+
+class FooValue {}

@@ -48,26 +48,41 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	 * @param  DataValue $expectedDataValue
 	 * @param  QueryResult $queryResult
 	 */
-	public function assertThatDataValueIsSet( DataValue $expectedDataValue, QueryResult $queryResult ) {
+	public function assertThatDataValueIsSet( $expected, QueryResult $queryResult ) {
+
+		$expected = is_array( $expected ) ? $expected : array( $expected );
+
+		if ( $expected === array() ) {
+			return;
+		}
+
+		$errors = $queryResult->getErrors();
+
+		$this->assertEmpty(
+			$errors,
+			"Failed with error(s): " . implode( ',', $errors )
+		);
 
 		if ( $this->dataValueValidationMethod === null ) {
 			$this->useWikiValueForDataValueValidation();
 		}
 
-		$assertThatDataValueIsSet = false;
-		$this->assertEmpty( $queryResult->getErrors() );
-
 		while ( $resultArray = $queryResult->getNext() ) {
 			foreach ( $resultArray as $result ) {
 				while ( ( $dataValue = $result->getNextDataValue() ) !== false ) {
-					if ( call_user_func_array( $this->dataValueValidationMethod, array( $expectedDataValue, $dataValue ) ) ) {
-						$assertThatDataValueIsSet = true;
+					foreach ( $expected as $key => $exp ) {
+						if ( call_user_func_array( $this->dataValueValidationMethod, array( $exp, $dataValue ) ) ) {
+							unset( $expected[ $key ] );
+						}
 					}
 				}
 			}
 		}
 
-		$this->assertTrue( $assertThatDataValueIsSet, 'Asserts that the expected DataValue is set' );
+		$this->assertEmpty(
+			$expected,
+			'Failed to match datavalues [ ' . implode( ', ', $expected ) . ' ] against the expected results.'
+		);
 	}
 
 	/**
@@ -76,21 +91,37 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	 * @param  DataItem $expectedDataItem
 	 * @param  QueryResult $queryResult
 	 */
-	public function assertThatDataItemIsSet( DataItem $expectedDataItem, QueryResult $queryResult ) {
+	public function assertThatDataItemIsSet( $expected, QueryResult $queryResult ) {
 
-		$assertThatDataItemIsSet = false;
-		$this->assertEmpty( $queryResult->getErrors() );
+		$expected = is_array( $expected ) ? $expected : array( $expected );
+
+		if ( $expected === array() ) {
+			return;
+		}
+
+		$errors = $queryResult->getErrors();
+
+		$this->assertEmpty(
+			$errors,
+			"Failed with error(s): " . implode( ',', $errors )
+		);
 
 		while ( $resultArray = $queryResult->getNext() ) {
 			foreach ( $resultArray as $result ) {
 				while ( ( $dataItem = $result->getNextDataItem() ) !== false ) {
-					$this->assertEquals( $expectedDataItem, $dataItem );
-					$assertThatDataItemIsSet = true;
+					foreach ( $expected as $key => $exp ) {
+						if ( $exp->equals( $dataItem ) ) {
+							unset( $expected[ $key ] );
+						}
+					}
 				}
 			}
 		}
 
-		$this->assertTrue( $assertThatDataItemIsSet, 'Asserts that the expected DataItem is set'  );
+		$this->assertEmpty(
+			$expected,
+			'Failed to match dataItems [ ' . implode( ', ', $expected ) . ' ] against the expected results.'
+		);
 	}
 
 	/**

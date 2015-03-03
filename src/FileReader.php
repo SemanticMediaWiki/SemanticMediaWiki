@@ -15,7 +15,7 @@ interface FileReader {
 	 *
 	 * @param string
 	 */
-	public function setFileToRead( $file );
+	public function setFile( $file );
 
 	/**
 	 * @since 2.1

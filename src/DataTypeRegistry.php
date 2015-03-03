@@ -313,7 +313,7 @@ class DataTypeRegistry {
 	 * @return boolean
 	 */
 	public function hasDataTypeClassById( $typeId ) {
-		return isset( $this->typeClasses[ $typeId ] );
+		return isset( $this->typeClasses[ $typeId ] ) && class_exists( $this->typeClasses[ $typeId ] );
 	}
 
 	/**
