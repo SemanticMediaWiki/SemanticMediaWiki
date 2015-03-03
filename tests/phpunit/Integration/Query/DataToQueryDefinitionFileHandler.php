@@ -145,9 +145,11 @@ class DataToQueryDefinitionFileHandler {
 		// Default values
 		switch ( $key ) {
 			case 'smwgQMaxSize':
-				return 16;
+				return $GLOBALS['smwgQMaxSize'];
 			case 'smwStrictComparators':
-				return false;
+				return $GLOBALS['smwgQMaxSize'];
+			case 'smwgNamespacesWithSemanticLinks':
+				return $GLOBALS['smwgNamespacesWithSemanticLinks'];
 		}
 
 		throw new RuntimeException( "{$key} is unknown" );

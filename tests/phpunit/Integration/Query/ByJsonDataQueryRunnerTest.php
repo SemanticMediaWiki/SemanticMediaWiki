@@ -32,20 +32,29 @@ class ByJsonDataQueryRunnerTest extends MwDBaseUnitTestCase {
 	private $fileReader;
 
 	/**
+	 * @var PageCreator
+	 */
+	private $pageCreator;
+
+	/**
 	 * @var QueryDefinitionTestCaseProcessor
 	 */
 	private $queryDefinitionTestCaseProcessor;
 
 	/**
-	 * Settings enabled for local change
-	 *
 	 * @var array
 	 */
 	private $settings = array();
 
+	/**
+	 * @var array
+	 */
 	private $itemsForDeletion = array();
+
+	/**
+	 * @var boolean
+	 */
 	private $deleteAfterState = true;
-	private $pageCreator;
 
 	protected function setUp() {
 		parent::setUp();
@@ -76,13 +85,13 @@ class ByJsonDataQueryRunnerTest extends MwDBaseUnitTestCase {
 	 * @test
 	 * @dataProvider queryDefinitionFileProvider
 	 */
-	public function executeQueryDefinition( $file ) {
+	public function executeQueryTestCaseFor( $file ) {
 
 		$this->fileReader->setFile( $file );
 
 		$dataToQueryDefinitionFileHandler = new DataToQueryDefinitionFileHandler( $this->fileReader );
 
-		$this->verifyTestEnviroment( $dataToQueryDefinitionFileHandler );
+		$this->verifyTestEnvironment( $dataToQueryDefinitionFileHandler );
 
 		// smwgQMaxSize -> Query::applyRestrictions
 
@@ -90,8 +99,15 @@ class ByJsonDataQueryRunnerTest extends MwDBaseUnitTestCase {
 			$this->changeSettingTo( $key, $dataToQueryDefinitionFileHandler->getSettingsFor( $key ) );
 		}
 
-		$this->createPagesFor( $dataToQueryDefinitionFileHandler->getPropertyDefinitions(), SMW_NS_PROPERTY );
-		$this->createPagesFor( $dataToQueryDefinitionFileHandler->getSubjectDefinitions(), NS_MAIN );
+		$this->createPagesFor(
+			$dataToQueryDefinitionFileHandler->getPropertyDefinitions(),
+			SMW_NS_PROPERTY
+		);
+
+		$this->createPagesFor(
+			$dataToQueryDefinitionFileHandler->getSubjectDefinitions(),
+			NS_MAIN
+		);
 
 		$this->queryDefinitionTestCaseProcessor->setDebugMode(
 			$dataToQueryDefinitionFileHandler->getDebugMode()
@@ -138,7 +154,7 @@ class ByJsonDataQueryRunnerTest extends MwDBaseUnitTestCase {
 		return $provider;
 	}
 
-	private function verifyTestEnviroment( DataToQueryDefinitionFileHandler $dataToQueryDefinitionFileHandler ) {
+	private function verifyTestEnvironment( DataToQueryDefinitionFileHandler $dataToQueryDefinitionFileHandler ) {
 
 		if ( $dataToQueryDefinitionFileHandler->isIncomplete() ) {
 			$this->markTestIncomplete( $dataToQueryDefinitionFileHandler->getReasonForSkip() );
