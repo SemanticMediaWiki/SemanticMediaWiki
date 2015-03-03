@@ -70,10 +70,10 @@ class JsonFileReaderTest extends \PHPUnit_Framework_TestCase {
 			$dummyJsonFileTwo->getPath()
 		);
 
-		$instance->setFileToRead( $dummyJsonFileOne->getPath() );
+		$instance->setFile( $dummyJsonFileOne->getPath() );
 		$jsonFileOne = $instance->read();
 
-		$instance->setFileToRead( $dummyJsonFileTwo->getPath() );
+		$instance->setFile( $dummyJsonFileTwo->getPath() );
 		$jsonFileTwo = $instance->read();
 
 		$this->assertSame(
@@ -90,7 +90,7 @@ class JsonFileReaderTest extends \PHPUnit_Framework_TestCase {
 		$dummyJsonFile = $this->fixturesFileProvider->newDummyTextFile( 'Foo.json' );
 
 		$instance = new JsonFileReader();
-		$instance->setFileToRead( $dummyJsonFile->getPath()  );
+		$instance->setFile( $dummyJsonFile->getPath() );
 
 		$this->assertTrue(
 			$instance->canRead()

@@ -481,6 +481,15 @@ abstract class SMWDataValue {
 	}
 
 	/**
+	 * @since 2.2
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		return $this->m_dataitem->getSerialization();
+	}
+
+	/**
 	 * Returns a short textual representation for this data value. If the value
 	 * was initialised from a user supplied string, then this original string
 	 * should be reflected in this short version (i.e. no normalisation should
