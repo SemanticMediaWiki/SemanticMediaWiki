@@ -34,7 +34,6 @@ span.smwbuiltin, span.smwttactiveinline span.smwbuiltin {
 
 /* make divs look like <pre> */
 div.smwpre {
-	white-space: pre;
 	font-family: monospace;
 	padding: 1em;
 	border: 1px dashed #2f6fab;
@@ -43,6 +42,13 @@ div.smwpre {
 	line-height: 1.1em;
 	margin-bottom: 0.5em;
 	margin-top: 0.5em;
+	white-space: pre-wrap;
+	white-space: -moz-pre-wrap;
+	white-space: -pre-wrap;
+	white-space: -o-pre-wrap;
+	word-wrap: break-word;
+	word-break: break-word;
+	margin-right: 5px;
 }
 
 /* terminate page contents when inserting stuff below a page, typically used in <br> */
@@ -88,6 +94,7 @@ div.smwfact {
 	margin-top: 1em;
 	border: 1px solid #AAAAAA;
 	font-size: 95%;
+	min-height: 23px; /* required by SMW_FACTBOX_SHOWN */
 }
 
 div.smwfact td, div.smwfact tr, div.smwfact table {
