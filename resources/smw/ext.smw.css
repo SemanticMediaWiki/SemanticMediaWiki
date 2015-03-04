@@ -101,10 +101,11 @@ div.smwfact td, div.smwfact tr, div.smwfact table {
 	background-color: #F9F9F9;
 }
 
-span.smwfactboxhead {
+.smwfactboxhead {
 	font-size: 110%;
 	font-weight: bold;
 	float: left;
+	margin-bottom: 2px;
 }
 
 table.smwfacttable {
@@ -146,10 +147,11 @@ span.smwsearchicon {
 }
 
 #bodyContent span.smwsearch a {
-	padding-right: 16px;
+	padding-right: 14px;
 	margin-right: 2px;
 	color: #888888;
 	/* @embed */ background: url(../images/searchgray_iconsmall.png) center right no-repeat;
+	background-size: 10px 10px;
 }
 
 #bodyContent span.smwsearch a:hover {
@@ -158,6 +160,7 @@ span.smwsearchicon {
 	padding-right: 18px;
 	margin-right: 0px;
 	/* @embed */ background: url(../images/search_icon.png) center right no-repeat;
+	background-size: 13px 13px;
 }
 
 #bodyContent span.swmfactboxheadbrowse a {
@@ -165,6 +168,7 @@ span.smwsearchicon {
 	margin-right: 2px;
 	color: #000000;
 	/* @embed */ background: url(../images/browse_iconsmall.png) center right no-repeat;
+	background-size: 13px 13px;
 }
 
 #bodyContent span.swmfactboxheadbrowse a:hover {
@@ -173,13 +177,15 @@ span.smwsearchicon {
 	padding-right: 18px;
 	margin-right: 0px;
 	/* @embed */ background: url(../images/browse_icon.png) center right no-repeat;
+	background-size: 15px 15px;
 }
 
 #bodyContent span.smwbrowse a {
-	padding-right: 16px;
+	padding-right: 14px;
 	margin-right: 2px;
 	color: #888888;
 	/* @embed */ background: url(../images/browse_iconsmall.png) center right no-repeat;
+	background-size: 10px 10px;
 }
 
 #bodyContent span.smwbrowse a:hover {
@@ -188,6 +194,7 @@ span.smwsearchicon {
 	padding-right: 18px;
 	margin-right: 0px;
 	/* @embed */ background: url(../images/browse_icon.png) center right no-repeat;
+	background-size: 13px 13px;
 }
 
 #bodyContent span.smwmap a {
@@ -202,22 +209,34 @@ span.smwsearchicon {
 	/* @embed */ background: url(../images/world.png) center right no-repeat;
 }
 
+.smwrdflink {
+	float: right;
+	font-size: small;
+	padding: 1px 0 0 0;
+}
+
+.concept-documenation {
+	border-top: 1px dotted #AAAAAA;
+}
+
 #bodyContent span.rdflink {
 	float: right;
 }
 
 #bodyContent span.rdflink a {
-	padding-right: 20px;
+	padding-right: 15px;
 	color: #888888;
 	/* @embed */ background: url(../images/rdf_flyer.18.gif) center right no-repeat;
+	background-size: 10px 10px;
 }
 
 #bodyContent span.rdflink a:hover {
 	text-decoration: none;
 	color: #0000FF;
-	padding-right: 20px;
+	padding-right: 15px;
 	margin-right: 0px;
 	/* @embed */ background: url(../images/rdf_flyer.18.gif) center right no-repeat;
+	background-size: 10px 10px;
 }
 
 /* @TODO Browse and Factbox should be split into seperated CSS file, CSS style file for Semantic MediaWiki Special Browse. */

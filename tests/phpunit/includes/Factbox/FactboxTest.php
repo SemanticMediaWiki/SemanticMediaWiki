@@ -414,7 +414,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$this->stringValidator->assertThatStringContains(
 			array(
-				'span class="smwrdflink"'
+				'div class="smwrdflink"'
 			),
 			$instance->doBuild()->getContent()
 		);

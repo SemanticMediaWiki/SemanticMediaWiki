@@ -315,7 +315,7 @@ class Factbox {
 			'swmfactboxheadbrowse'
 		);
 
-		$this->tableBuilder->addHeaderItem( 'span',
+		$this->tableBuilder->addHeaderItem( 'div',
 			$this->messageBuilder->getMessage( 'smw_factbox_head', $browselink->getWikiText() )->inContentLanguage()->text(),
 			array( 'class' => 'smwfactboxhead' )
 		);
@@ -326,7 +326,7 @@ class Factbox {
 			'rdflink'
 		);
 
-		$this->tableBuilder->addHeaderItem( 'span',
+		$this->tableBuilder->addHeaderItem( 'div',
 			$rdflink->getWikiText(),
 			array( 'class' => 'smwrdflink' )
 		);
