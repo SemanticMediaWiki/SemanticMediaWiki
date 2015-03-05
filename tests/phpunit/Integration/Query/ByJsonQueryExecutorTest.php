@@ -17,7 +17,7 @@ use Title;
  *
  * @author mwjames
  */
-class ByJsonDataQueryRunnerTest extends MwDBaseUnitTestCase {
+class ByJsonQueryExecutorTest extends MwDBaseUnitTestCase {
 
 	/**
 	 * Version to match supported Json format
@@ -84,6 +84,8 @@ class ByJsonDataQueryRunnerTest extends MwDBaseUnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider queryDefinitionFileProvider
+	 *
+	 * smwgQMaxSize -> Query::applyRestrictions
 	 */
 	public function executeQueryTestCaseFor( $file ) {
 
@@ -92,8 +94,6 @@ class ByJsonDataQueryRunnerTest extends MwDBaseUnitTestCase {
 		$dataToQueryDefinitionFileHandler = new DataToQueryDefinitionFileHandler( $this->fileReader );
 
 		$this->verifyTestEnvironment( $dataToQueryDefinitionFileHandler );
-
-		// smwgQMaxSize -> Query::applyRestrictions
 
 		foreach ( array( 'smwgQMaxSize', 'smwStrictComparators', 'smwgNamespacesWithSemanticLinks' ) as $key ) {
 			$this->changeSettingTo( $key, $dataToQueryDefinitionFileHandler->getSettingsFor( $key ) );
@@ -144,7 +144,7 @@ class ByJsonDataQueryRunnerTest extends MwDBaseUnitTestCase {
 
 		$provider = array();
 
-		$bulkFileProvider = UtilityFactory::getInstance()->newBulkFileProvider( __DIR__ );
+		$bulkFileProvider = UtilityFactory::getInstance()->newBulkFileProvider( __DIR__ . '/Fixtures' );
 		$bulkFileProvider->searchByFileExtension( 'json' );
 
 		foreach ( $bulkFileProvider->getFiles() as $file ) {
