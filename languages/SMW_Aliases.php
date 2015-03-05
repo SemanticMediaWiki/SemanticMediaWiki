@@ -711,8 +711,8 @@ $specialPageAliases['sr-ec'] = array(
 	'Browse' => array( 'Потражи' ),
 	'Properties' => array( 'Својства' ),
 	'Types' => array( 'Врсте' ),
-	'UnusedProperties' => array( 'Некоришћена_својства' ),
-	'WantedProperties' => array( 'Тражена_својства' ),
+	'UnusedProperties' => array( 'НекоришћенаСвојства', 'Некоришћена_својства' ),
+	'WantedProperties' => array( 'ТраженаСвојства', 'Тражена_својства' ),
 );
 
 /** Swedish (svenska) */
