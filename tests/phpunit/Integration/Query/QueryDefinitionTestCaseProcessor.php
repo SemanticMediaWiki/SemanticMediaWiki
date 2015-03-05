@@ -102,17 +102,20 @@ class QueryDefinitionTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
 			$queryDefinitionInterpreter->getExpectedSubjects(),
-			$queryResult
+			$queryResult,
+			$queryDefinitionInterpreter->isAbout()
 		);
 
 		$this->queryResultValidator->assertThatDataItemIsSet(
 			$queryDefinitionInterpreter->getExpectedDataItems(),
-			$queryResult
+			$queryResult,
+			$queryDefinitionInterpreter->isAbout()
 		);
 
 		$this->queryResultValidator->assertThatDataValueIsSet(
 			$queryDefinitionInterpreter->getExpectedDataValues(),
-			$queryResult
+			$queryResult,
+			$queryDefinitionInterpreter->isAbout()
 		);
 	}
 

@@ -48,7 +48,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	 * @param  DataValue $expectedDataValue
 	 * @param  QueryResult $queryResult
 	 */
-	public function assertThatDataValueIsSet( $expected, QueryResult $queryResult ) {
+	public function assertThatDataValueIsSet( $expected, QueryResult $queryResult, $message = '' ) {
 
 		$expected = is_array( $expected ) ? $expected : array( $expected );
 
@@ -60,7 +60,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 
 		$this->assertEmpty(
 			$errors,
-			"Failed with error(s): " . implode( ',', $errors )
+			"Failed on {$message} with error(s): " . implode( ',', $errors )
 		);
 
 		if ( $this->dataValueValidationMethod === null ) {
@@ -81,7 +81,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 
 		$this->assertEmpty(
 			$expected,
-			'Failed to match datavalues [ ' . implode( ', ', $expected ) . ' ] against the expected results.'
+			"Failed on on {$message} to match datavalues [ " . implode( ', ', $expected ) . ' ] against the expected results.'
 		);
 	}
 
@@ -91,7 +91,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	 * @param  DataItem $expectedDataItem
 	 * @param  QueryResult $queryResult
 	 */
-	public function assertThatDataItemIsSet( $expected, QueryResult $queryResult ) {
+	public function assertThatDataItemIsSet( $expected, QueryResult $queryResult, $message = '' ) {
 
 		$expected = is_array( $expected ) ? $expected : array( $expected );
 
@@ -103,7 +103,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 
 		$this->assertEmpty(
 			$errors,
-			"Failed with error(s): " . implode( ',', $errors )
+			"Failed on {$message} with error(s): " . implode( ',', $errors )
 		);
 
 		while ( $resultArray = $queryResult->getNext() ) {
@@ -120,7 +120,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 
 		$this->assertEmpty(
 			$expected,
-			'Failed to match dataItems [ ' . implode( ', ', $expected ) . ' ] against the expected results.'
+			"Failed on {$message} to match dataItems [ " . implode( ', ', $expected ) . ' ] against the expected results.'
 		);
 	}
 
@@ -130,7 +130,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	 * @param  mixed $expected
 	 * @param  QueryResult $queryResult
 	 */
-	public function assertThatQueryResultHasSubjects( $expectedSubjects, QueryResult $queryResult ) {
+	public function assertThatQueryResultHasSubjects( $expectedSubjects, QueryResult $queryResult, $message = '' ) {
 
 		$expectedSubjects = is_array( $expectedSubjects ) ? $expectedSubjects : array( $expectedSubjects );
 		$expectedToCount  = count( $expectedSubjects );
@@ -140,7 +140,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 
 		$this->assertEmpty(
 			$errors,
-			"Failed with error(s): " . implode( ',', $errors )
+			"Failed on {$message} with error(s): " . implode( ',', $errors )
 		);
 
 		if ( $expectedToCount == 0 ) {
@@ -163,12 +163,12 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 		$this->assertEquals(
 			$expectedToCount,
 			$actualComparedToCount,
-			'Failed asserting that ' . implode( ', ', $expectedSubjects ) . ' is set.'
+			"Failed on {$message} asserting that " . implode( ', ', $expectedSubjects ) . ' is set.'
 		);
 
 		$this->assertEmpty(
 			$resultSubjects,
-			'Failed to match results [ ' . implode( ', ', $resultSubjects ) . ' ] against the expected subjects.'
+			"Failed on {$message} to match results [ " . implode( ', ', $resultSubjects ) . ' ] against the expected subjects.'
 		);
 	}
 
