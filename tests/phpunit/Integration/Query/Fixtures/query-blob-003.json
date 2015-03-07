@@ -9,11 +9,15 @@
 	"subjects": [
 		{
 			"name": "Escape character blob subject-a",
-			"contents": "{{#set:|Has regexblob property=[(+*. \\.)\\\\']}} {{#subobject:FixedSubobjectName|Has regexblob property=[(+* \\:)]\\\\\"}}"
+			"contents": "{{#set:|Has regexblob property=[(+*. \\.)']}} {{#subobject:FixedSubobjectName|Has regexblob property=[(+* \\:)]\\\\\"}}"
 		},
 		{
 			"name": "Escape character blob subject-b",
-			"contents": "{{#set:|Has regexblob property=[(+*. \\;)\\']\\\"}} {{#subobject:FixedSubobjectName|Has regexblob property=[(+* \\=)]\\\\\"\\\"}}"
+			"contents": "{{#set:|Has regexblob property=[(+*. \\;)\\\\']\\\"}} {{#subobject:FixedSubobjectName|Has regexblob property=[(+* \\=)]\\\\\"\\\"}}"
+		},
+		{
+			"name": "Escape character blob subject-c",
+			"contents": "[[Has regexblob property::Foo(\\\"'#^$&-/)]]"
 		}
 	],
 	"queries": [
@@ -34,20 +38,6 @@
 		},
 		{
 			"about": "#1",
-			"condition": "[[Has regexblob property::~*\\\\'*]]",
-			"printouts" : [],
-			"parameters" : {
-			  "limit" : "10"
-			},
-			"queryresult": {
-				"results": [
-					"Escape character blob subject-a#0##"
-				],
-				"count": "1"
-			}
-		},
-		{
-			"about": "#2",
 			"condition": "[[Has regexblob property::~*\\'*]]",
 			"printouts" : [],
 			"parameters" : {
@@ -55,14 +45,43 @@
 			},
 			"queryresult": {
 				"results": [
-					"Escape character blob subject-a#0##",
 					"Escape character blob subject-b#0##"
 				],
-				"count": "2"
+				"count": "1"
+			}
+		},
+		{
+			"about": "#2",
+			"condition": "[[Has regexblob property::~*'*]]",
+			"printouts" : [],
+			"parameters" : {
+			  "limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"Escape character blob subject-b#0##",
+					"Escape character blob subject-a#0##",
+					"Escape character blob subject-c#0##"
+				],
+				"count": "3"
 			}
 		},
 		{
 			"about": "#3",
+			"condition": "[[Has regexblob property::~*\\\\'*]]",
+			"printouts" : [],
+			"parameters" : {
+			  "limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"Escape character blob subject-b#0##"
+				],
+				"count": "1"
+			}
+		},
+		{
+			"about": "#4",
 			"condition": "[[Has regexblob property::~*\\\\\"*]]",
 			"printouts" : [ "Has regexblob property" ],
 			"parameters" : {
@@ -77,7 +96,7 @@
 			}
 		},
 		{
-			"about": "#4",
+			"about": "#5",
 			"condition": "[[Has regexblob property::~*\\\\\"\\\"*]]",
 			"printouts" : [ "Has regexblob property" ],
 			"parameters" : {
@@ -91,7 +110,7 @@
 			}
 		},
 		{
-			"about": "#5",
+			"about": "#6",
 			"condition": "[[Has regexblob property::~*\\\"*]]",
 			"printouts" : [ "Has regexblob property" ],
 			"parameters" : {
@@ -101,13 +120,14 @@
 				"results": [
 					"Escape character blob subject-a#0##FixedSubobjectName",
 					"Escape character blob subject-b#0##",
-					"Escape character blob subject-b#0##FixedSubobjectName"
+					"Escape character blob subject-b#0##FixedSubobjectName",
+					"Escape character blob subject-c#0##"
 				],
-				"count": "3"
+				"count": "4"
 			}
 		},
 		{
-			"about": "#6",
+			"about": "#7",
 			"condition": "[[Has regexblob property::~*\\.*]]",
 			"printouts" : [],
 			"parameters" : {
@@ -121,7 +141,7 @@
 			}
 		},
 		{
-			"about": "#7",
+			"about": "#8",
 			"condition": "[[Has regexblob property::~*\\:*]]",
 			"printouts" : [],
 			"parameters" : {
@@ -130,6 +150,20 @@
 			"queryresult": {
 				"results": [
 					"Escape character blob subject-a#0##FixedSubobjectName"
+				],
+				"count": "1"
+			}
+		},
+		{
+			"about": "#9",
+			"condition": "[[Has regexblob property::~*Foo(\\\"'#^$&-/)*]]",
+			"printouts" : [],
+			"parameters" : {
+			  "limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"Escape character blob subject-c#0##"
 				],
 				"count": "1"
 			}
