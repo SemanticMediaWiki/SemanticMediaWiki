@@ -161,7 +161,7 @@ class DIProperty extends SMWDataItem {
 			return $prefix . str_replace( '_', ' ', $this->m_key );
 		}
 
-		return PropertyRegistry::getInstance()->findPropertyLabel( $this->m_key );
+		return PropertyRegistry::getInstance()->findPropertyLabelById( $this->m_key );
 	}
 
 	/**

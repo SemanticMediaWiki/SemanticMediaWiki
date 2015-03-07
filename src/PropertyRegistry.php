@@ -17,6 +17,11 @@ class PropertyRegistry {
 	private static $instance = null;
 
 	/**
+	 * @var PropertyLabelFinder
+	 */
+	private $propertyLabelFinder = null;
+
+	/**
 	 * Array for assigning types to predefined properties. Each
 	 * property is associated with an array with the following
 	 * elements:
@@ -33,21 +38,15 @@ class PropertyRegistry {
 	private $propertyTypes = array();
 
 	/**
-	 * Array with entries "property id" => "property label"
 	 * @var string[]
 	 */
-	private $propertyLabels = array();
+	private $datatypeLabels = array();
 
 	/**
 	 * Array with entries "property alias" => "property id"
 	 * @var string[]
 	 */
 	private $propertyAliases = array();
-
-	/**
-	 * @var string[]
-	 */
-	private $datatypeLabels = array();
 
 	/**
 	 * @since 2.1
@@ -58,9 +57,14 @@ class PropertyRegistry {
 
 		if ( self::$instance === null ) {
 
+			$propertyLabelFinder = new PropertyLabelFinder(
+				ApplicationFactory::getInstance()->getStore(),
+				$GLOBALS['smwgContLang']->getPropertyLabels()
+			);
+
 			self::$instance = new self(
 				DataTypeRegistry::getInstance(),
-				$GLOBALS['smwgContLang']->getPropertyLabels(),
+				$propertyLabelFinder,
 				$GLOBALS['smwgContLang']->getPropertyAliases()
 			);
 
@@ -74,13 +78,14 @@ class PropertyRegistry {
 	 * @since 2.1
 	 *
 	 * @param DataTypeRegistry $datatypeRegistry
-	 * @param array $propertyLabels
+	 * @param PropertyLabelFinder $propertyLabelFinder
 	 * @param array $propertyAliases
 	 */
-	public function __construct( DataTypeRegistry $datatypeRegistry, array $propertyLabels, array $propertyAliases ) {
+	public function __construct( DataTypeRegistry $datatypeRegistry, PropertyLabelFinder $propertyLabelFinder, array $propertyAliases ) {
 
 		$this->datatypeLabels = $datatypeRegistry->getKnownTypeLabels();
 		$datatypeAliases = $datatypeRegistry->getKnownTypeAliases();
+		$this->propertyLabelFinder = $propertyLabelFinder;
 
 		foreach ( $this->datatypeLabels as $id => $label ) {
 			$this->registerPropertyLabel( $id, $label );
@@ -88,10 +93,6 @@ class PropertyRegistry {
 
 		foreach ( $datatypeAliases as $alias => $id ) {
 			$this->registerPropertyAlias( $id, $alias );
-		}
-
-		foreach ( $propertyLabels as $id => $label ) {
-			$this->registerPropertyLabel( $id, $label );
 		}
 
 		foreach ( $propertyAliases as $alias => $id ) {
@@ -113,15 +114,6 @@ class PropertyRegistry {
 	 */
 	public function getKnownPropertyTypes() {
 		return $this->propertyTypes;
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @return array
-	 */
-	public function getKnownPropertyLabels() {
-		return $this->propertyLabels;
 	}
 
 	/**
@@ -186,12 +178,7 @@ class PropertyRegistry {
 	 * @return string
 	 */
 	public function findPropertyLabelById( $id ) {
-
-		if ( array_key_exists( $id, $this->propertyLabels ) ) {
-			return $this->propertyLabels[ $id ];
-		}
-
-		return '';
+		return $this->propertyLabelFinder->findPropertyLabelById( $id );
 	}
 
 	/**
@@ -239,7 +226,7 @@ class PropertyRegistry {
 	 */
 	public function findPropertyIdByLabel( $label, $useAlias = true ) {
 
-		$id = array_search( $label, $this->propertyLabels );
+		$id = $this->propertyLabelFinder->searchPropertyIdByLabel( $label );
 
 		if ( $id !== false ) {
 			return $id;
@@ -331,7 +318,7 @@ class PropertyRegistry {
 	}
 
 	private function registerPropertyLabel( $id, $label ) {
-		$this->propertyLabels[ $id ] = $label;
+		$this->propertyLabelFinder->registerPropertyLabel( $id, $label );
 	}
 
 }
