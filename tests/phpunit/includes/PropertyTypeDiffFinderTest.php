@@ -41,6 +41,12 @@ class PropertyTypeDiffFinderTest extends \PHPUnit_Framework_TestCase {
 		) );
 
 		$this->applicationFactory->registerObject( 'Settings', $settings );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->applicationFactory->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {

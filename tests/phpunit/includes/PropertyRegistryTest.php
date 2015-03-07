@@ -5,6 +5,7 @@ namespace SMW\Tests;
 use SMW\DIProperty;
 
 use SMW\PropertyRegistry;
+use SMW\PropertyLabelFinder;
 use SMW\DataTypeRegistry;
 
 /**
@@ -41,12 +42,15 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getKnownTypeAliases' )
 			->will( $this->returnValue( array() ) );
 
-		$propertyLabels = array();
+		$propertyLabelFinder = $this->getMockBuilder( '\SMW\PropertyLabelFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$propertyAliases = array();
 
 		$this->assertInstanceOf(
 			'\SMW\PropertyRegistry',
-			new PropertyRegistry( $datatypeRegistry, $propertyLabels, $propertyAliases )
+			new PropertyRegistry( $datatypeRegistry, $propertyLabelFinder, $propertyAliases )
 		);
 	}
 
@@ -81,16 +85,16 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getKnownTypeAliases' )
 			->will( $this->returnValue( array( 'URI' => '_uri' ) ) );
 
-		$propertyLabels = array( '_TYPE' => 'Has type' );
+		$propertyLabelFinder = $this->getMockBuilder( '\SMW\PropertyLabelFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$propertyAliases = array( 'Has type' => '_TYPE' );
 
-		$instance = new PropertyRegistry( $datatypeRegistry, $propertyLabels, $propertyAliases );
-
-		$this->assertEquals(
-			array(
-				'_TYPE' => 'Has type',
-				'_uri' => 'URL' ),
-			$instance->getKnownPropertyLabels()
+		$instance = new PropertyRegistry(
+			$datatypeRegistry,
+			$propertyLabelFinder,
+			$propertyAliases
 		);
 
 		$this->assertEquals(
@@ -115,21 +119,23 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getKnownTypeAliases' )
 			->will( $this->returnValue( array() ) );
 
-		$propertyLabels = array( );
+		$propertyLabelFinder = $this->getMockBuilder( '\SMW\PropertyLabelFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$propertyAliases = array();
 
-		$instance = new PropertyRegistry( $datatypeRegistry, $propertyLabels, $propertyAliases );
+		$instance = new PropertyRegistry(
+			$datatypeRegistry,
+			$propertyLabelFinder,
+			$propertyAliases
+		);
 
 		$instance->registerProperty(
 			DIProperty::TYPE_HAS_TYPE,
 			'__typ',
 			'Has type',
 			true
-		);
-
-		$this->assertEquals(
-			array( '_TYPE' => 'Has type' ),
-			$instance->getKnownPropertyLabels()
 		);
 
 		$this->assertEquals(
@@ -168,10 +174,19 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getKnownTypeAliases' )
 			->will( $this->returnValue( array() ) );
 
-		$propertyLabels = array( );
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$propertyLabelFinder = new PropertyLabelFinder( $store, array() );
+
 		$propertyAliases = array();
 
-		$instance = new PropertyRegistry( $datatypeRegistry, $propertyLabels, $propertyAliases );
+		$instance = new PropertyRegistry(
+			$datatypeRegistry,
+			$propertyLabelFinder,
+			$propertyAliases
+		);
 
 		$instance->registerProperty(
 			DIProperty::TYPE_HAS_TYPE,
@@ -192,14 +207,6 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 			$instance->findPropertyIdByLabel( 'foo', true )
 		);
 
-		$this->assertFalse(
-			$instance->findPropertyIdByLabel( 'unknownLabel' )
-		);
-
-		$this->assertFalse(
-			$instance->findPropertyIdByLabel( 'unknownLabel', true )
-		);
-
 		// findPropertyId legacy test
 		$this->assertEquals(
 			'_TYPE',
@@ -207,7 +214,7 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testFindPropertyLabel() {
+	public function testFindPropertyLabelForRegisteredId() {
 
 		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
 			->disableOriginalConstructor()
@@ -221,10 +228,19 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getKnownTypeAliases' )
 			->will( $this->returnValue( array() ) );
 
-		$propertyLabels = array( );
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$propertyLabelFinder = new PropertyLabelFinder( $store, array() );
+
 		$propertyAliases = array();
 
-		$instance = new PropertyRegistry( $datatypeRegistry, $propertyLabels, $propertyAliases );
+		$instance = new PropertyRegistry(
+			$datatypeRegistry,
+			$propertyLabelFinder,
+			$propertyAliases
+		);
 
 		$instance->registerProperty(
 			DIProperty::TYPE_HAS_TYPE,
@@ -236,11 +252,6 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			'Has type' ,
 			$instance->findPropertyLabelById( '_TYPE' )
-		);
-
-		$this->assertEquals(
-			'' ,
-			$instance->findPropertyLabelById( '_UnknownId' )
 		);
 
 		// findPropertyLabel legacy test
@@ -256,15 +267,57 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 			$instance->getPropertyTypeId( '_TYPE' )
 		);
 
+		// getPredefinedPropertyTypeId legacy test
+		$this->assertEquals(
+			'__typ',
+			$instance->getPredefinedPropertyTypeId( '_TYPE' )
+		);
+	}
+
+	public function testFindPropertyInfoForUnregisteredId() {
+
+		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$datatypeRegistry->expects( $this->once() )
+			->method( 'getKnownTypeLabels' )
+			->will( $this->returnValue( array() ) );
+
+		$datatypeRegistry->expects( $this->once() )
+			->method( 'getKnownTypeAliases' )
+			->will( $this->returnValue( array() ) );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$propertyLabelFinder = new PropertyLabelFinder( $store, array() );
+
+		$propertyAliases = array();
+
+		$instance = new PropertyRegistry(
+			$datatypeRegistry,
+			$propertyLabelFinder,
+			$propertyAliases
+		);
+
+		$this->assertEquals(
+			'' ,
+			$instance->findPropertyLabelById( '_UnknownId' )
+		);
+
 		$this->assertEquals(
 			'' ,
 			$instance->getPropertyTypeId( '_UnknownId' )
 		);
 
-		// getPredefinedPropertyTypeId legacy test
-		$this->assertEquals(
-			'__typ',
-			$instance->getPredefinedPropertyTypeId( '_TYPE' )
+		$this->assertFalse(
+			$instance->findPropertyIdByLabel( 'unknownLabel' )
+		);
+
+		$this->assertFalse(
+			$instance->findPropertyIdByLabel( 'unknownLabel', true )
 		);
 	}
 
