@@ -1,0 +1,114 @@
+{
+	"description": "Simple hierarchy of properties",
+	"properties": [
+		{
+			"name": "Family (http://www.cs.man.ac.uk/~stevensr/ontology/family.rdf.owl)",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"name": "Spouse",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"name": "Has wife",
+			"contents": "[[Has type::Page]] [[Subproperty of::Spouse]] [[Subproperty of::Family]]"
+		},
+		{
+			"name": "Has husband",
+			"contents": "[[Has type::Page]] [[Subproperty of::Spouse]] [[Subproperty of::Family]]"
+		},
+		{
+			"name": "Has child",
+			"contents": "[[Has type::Page]] [[Subproperty of::Family]]"
+		},
+		{
+			"name": "Has brother",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"name": "Has sister",
+			"contents": "[[Has type::Page]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "John Doe",
+			"contents": "[[Has wife::Jane Doe]] [[Has child::Jonnie Doe]] [[Has child::Janie Doe]]"
+		},
+		{
+			"name": "Jane Doe",
+			"contents": "[[Has husband::John Doe]]"
+		},
+		{
+			"name": "Jonnie Doe",
+			"contents": "[[Has sister::Janie Doe]]"
+		},
+		{
+			"name": "Janie Doe",
+			"contents": "[[Has brother::Jonnie Doe]]"
+		}
+	],
+	"queries": [
+		{
+			"about": "#0 Spouse to search any value",
+			"condition": "[[Spouse::+]]",
+			"printouts" : [ "Has wife", "Has husband" ],
+			"parameters" : {
+			  "limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"John Doe#0##",
+					"Jane Doe#0##"
+				],
+				"count": "2",
+				"datavalues": [
+					{
+						"property": "Has wife",
+						"value": "Jane Doe"
+					},
+					{
+						"property": "Has husband",
+						"value": "John Doe"
+					}
+				]
+			}
+		},
+		{
+			"about": "#1 Disjunctive query for distinct spouse value",
+			"condition": "[[Spouse::John Doe]] OR [[Spouse::Jane Doe]]",
+			"printouts" : [ "Has wife", "Has husband" ],
+			"parameters" : {
+			  "limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"John Doe#0##",
+					"Jane Doe#0##"
+				],
+				"count": "2",
+				"datavalues": [
+					{
+						"property": "Has wife",
+						"value": "Jane Doe"
+					},
+					{
+						"property": "Has husband",
+						"value": "John Doe"
+					}
+				]
+			}
+		}
+	],
+	"settings": {},
+	"meta": {
+		"skip-on": {
+			"fuseki": "Subproperty/property hierarchies are currently not implemented",
+			"sesame": "Subproperty/property hierarchies are currently not implemented",
+			"virtuoso": "Subproperty/property hierarchies are currently not implemented"
+		},
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

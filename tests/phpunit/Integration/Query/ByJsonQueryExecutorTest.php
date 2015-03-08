@@ -168,7 +168,7 @@ class ByJsonQueryExecutorTest extends MwDBaseUnitTestCase {
 			$this->markTestSkipped( $dataToQueryDefinitionFileHandler->getReasonForSkip() );
 		}
 
-		if ( $dataToQueryDefinitionFileHandler->requiredToSkipForConnector( $GLOBALS['smwgSparqlDatabaseConnector'] ) ) {
+		if ( $this->getStore() instanceOf \SMWSparqlStore && $dataToQueryDefinitionFileHandler->requiredToSkipForConnector( $GLOBALS['smwgSparqlDatabaseConnector'] ) ) {
 			$this->markTestSkipped( $dataToQueryDefinitionFileHandler->getReasonForSkip() );
 		}
 	}
