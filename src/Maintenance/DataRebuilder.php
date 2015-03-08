@@ -120,14 +120,10 @@ class DataRebuilder {
 		}
 
 		$this->useIds = array_key_exists( 's', $options ) || array_key_exists( 'e', $options );
-
 		$this->verbose = array_key_exists( 'v', $options );
 
-		$this->filters = $this->getFiltersFromOptions( $options );
-
-		if ( array_key_exists( 'f', $options ) ) {
-			$this->fullDelete = true;
-		}
+		$this->setFiltersFromOptions( $options );
+		$this->fullDelete = array_key_exists( 'f', $options );
 
 		if ( array_key_exists( 'query', $options ) ) {
 			$this->query = $options['query'];
@@ -141,13 +137,14 @@ class DataRebuilder {
 	 */
 	public function rebuild() {
 
-		$this->reportMessage( "\nSelected storage " . get_class( $this->store ) . " for update!\n\n" );
+		$this->reportMessage( "\nRunning for storage: " . get_class( $this->store ) . "\n\n" );
 
 		if ( $this->fullDelete ) {
 			$this->performFullDelete();
 		}
 
 		if ( $this->pages || $this->query || $this->hasFilters() ) {
+			$this->reportMessage( "Refreshing selected pages!\n" );
 			return $this->rebuildSelectedPages();
 		}
 
@@ -168,8 +165,6 @@ class DataRebuilder {
 	}
 
 	private function rebuildSelectedPages() {
-
-		$this->reportMessage( "Refreshing specified pages!\n" . ( $this->verbose ? "\n" : '' ) );
 
 		$pages = $this->query ? $this->getPagesFromQuery() : array();
 		$pages = $this->pages ? array_merge( (array)$this->pages, $pages ) : $pages;
@@ -197,7 +192,7 @@ class DataRebuilder {
 			}
 		}
 
-		$this->reportMessage( "\n$this->rebuildCount pages refreshed.\n" );
+		$this->reportMessage( "\n\n$this->rebuildCount pages refreshed.\n" );
 
 		return true;
 	}
@@ -206,7 +201,13 @@ class DataRebuilder {
 
 		$linkCache = LinkCache::singleton();
 
-		$this->reportMessage( "Refreshing all semantic data in the database!\n---\n" .
+		$this->reportMessage( "Rebuilding property pages first.\n" );
+
+		$this->setFiltersFromOptions( array( 'p' => true ) );
+		$this->rebuildSelectedPages();
+		$this->rebuildCount = 0;
+
+		$this->reportMessage( "\nRefreshing all semantic data in the database!\n---\n" .
 			" Some versions of PHP suffer from memory leaks in long-running \n" .
 			" scripts. If your machine gets very slow after many pages \n" .
 			" (typically more than 1000) were refreshed, please abort with\n" .
@@ -239,18 +240,17 @@ class DataRebuilder {
 		}
 
 		$this->writeIdToFile( $id );
-		$this->reportMessage( "\n$this->rebuildCount IDs refreshed.\n" );
+		$this->reportMessage( "\n\n$this->rebuildCount IDs refreshed.\n" );
 
 		return true;
 	}
 
 	private function performFullDelete() {
 
-		$this->reportMessage( "\n Deleting all stored data completely and rebuilding it again later!\n" .
+		$this->reportMessage( "Deleting all stored data completely and rebuilding it again later!\n---\n" .
 			" Semantic data in the wiki might be incomplete for some time while this operation runs.\n\n" .
 			" NOTE: It is usually necessary to run this script ONE MORE TIME after this operation,\n" .
-			" since some properties' types are not stored yet in the first run.\n" .
-			" The first run can normally use the parameter -p to refresh only properties.\n\n"
+			" since some properties' types are not stored yet in the first run.\n---\n"
 		);
 
 		if ( $this->useIds ) {
@@ -298,25 +298,21 @@ class DataRebuilder {
 
 	/**
 	 * @param array $options
-	 *
-	 * @return int[]
 	 */
-	private function getFiltersFromOptions( array $options ) {
-		$filters = array();
+	private function setFiltersFromOptions( array $options ) {
+		$this->filters = array();
 
 		if ( array_key_exists( 'c', $options ) ) {
-			$filters[] = NS_CATEGORY;
+			$this->filters[] = NS_CATEGORY;
 		}
 
 		if ( array_key_exists( 'p', $options ) ) {
-			$filters[] = SMW_NS_PROPERTY;
+			$this->filters[] = SMW_NS_PROPERTY;
 		}
 
 		if ( array_key_exists( 't', $options ) ) {
-			$filters[] = SMW_NS_TYPE;
+			$this->filters[] = SMW_NS_TYPE;
 		}
-
-		return $filters;
 	}
 
 	private function getPagesFromQuery() {
