@@ -66,7 +66,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			return Html::rawElement(
 				'div',
 				array( 'class' => 'smw-pa-property-predefined-intro' ),
-				wfMessage( $messageKey, $propertyName )->parse()
+				wfMessage( $messageKey, $propertyName )->parse() . ' ' . wfMessage( 'smw-pa-property-predefined-common' )->parse()
 			);
 		}
 

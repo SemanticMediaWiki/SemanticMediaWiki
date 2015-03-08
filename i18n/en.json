@@ -286,9 +286,11 @@
 	"group-smwadministrator-member": "{{GENDER:$1|administrator (SMW)}}",
 	"grouppage-smwadministrator": "{{ns:project}}:SMW_administrators",
 	"action-smw-admin": "access Semantic MediaWiki administration tasks",
-	"smw-pa-property-predefined-default": "\"$1\" is a predefined property (also known as [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property]). It is a built-in property that comes with additional administrative privileges but can be used just like any other [https://www.semantic-mediawiki.org/wiki/Property user-defined property].",
-	"smw-pa-property-predefined_ask": "\"$1\" is a predefined property (also known as [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property]) which links to the meta data [https://www.semantic-mediawiki.org/wiki/Subobject subobject] of a query. It is a built-in property that comes with additional administrative privileges but can be used just like any other [https://www.semantic-mediawiki.org/wiki/Property user-defined property].",
-	"smw-pa-property-predefined_asksi": "\"$1\" is a predefined property (also known as [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property]) which collects the number of conditions used in a query. It is a built-in property that comes with additional administrative privileges but can be used just like any other [https://www.semantic-mediawiki.org/wiki/Property user-defined property].",
+	"smw-pa-property-predefined-default": "\"$1\" is a predefined property.",
+	"smw-pa-property-predefined-common": "This property is pre-deployed (also known as [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property]) and comes with additional administrative privileges but can be used just like any other [https://www.semantic-mediawiki.org/wiki/Property user-defined property].",
+	"smw-pa-property-predefined_ask": "\"$1\" is a predefined property that represents meta information (in form of a [https://www.semantic-mediawiki.org/wiki/Subobject subobject]) about individual queries.",
+	"smw-pa-property-predefined_asksi": "\"$1\" is a predefined property that collects the number of conditions used in a query.",
+	"smw-pa-property-predefined_askde": "\"$1\" is a predefined property that informs about the depth (numerical value computed on the basis of subquery nesting and resolved property chains) of a query while query execution is being restricted by the [https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth $smwgQMaxDepth] setting.",
 	"smw-sp-properties-docu": "This page shows [https://www.semantic-mediawiki.org/wiki/Property properties] that are available and when filtered, only user-defined properties that match the condition are displayed. For a differentiated view, see the special page [[Special:UnusedProperties|unused properties]] or [[Special:WantedProperties|wanted properties]].",
 	"smw-sp-properties-cache-info": "The listed data have been retrieved from [https://www.semantic-mediawiki.org/wiki/Caching cache], and were last updated $1.",
 	"smw-sp-properties-header-label": "List of properties",
@@ -312,5 +314,7 @@
 	"log-name-smw": "Semantic MediaWiki log",
 	"log-description-smw": "Activities for [https://www.semantic-mediawiki.org/wiki/Help:Logging enabled event types] that have been reported by Semantic MediaWiki and its components.",
 	"smw-datavalue-import-unknownns":"The import namespace \"$1\" is unknown. Please ensure that owl import details are available via [[MediaWiki:Smw import $1]]",
-	"smw-pa-property-predefined_impo": "\"$1\" is a predefined property (also known as [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property]) that describes a relation to an [https://semantic-mediawiki.org/wiki/Help:Import_vocabulary imported vocabulary]. It is a built-in property that comes with additional administrative privileges but can be used just like any other [https://www.semantic-mediawiki.org/wiki/Property user-defined property]."
+	"smw-pa-property-predefined_impo": "\"$1\" is a predefined property that describes a relation to an [https://semantic-mediawiki.org/wiki/Help:Import_vocabulary imported vocabulary].",
+	"smw-pa-property-predefined_type": "\"$1\" is a predefined property that describes the [[Special:Types|datatype]] of a property.",
+	"smw-pa-property-predefined_sobj": "\"$1\" is a predefined property representing a container construct that allows to accumulate property-value assignments similar to that of a normal wiki page."
 }
