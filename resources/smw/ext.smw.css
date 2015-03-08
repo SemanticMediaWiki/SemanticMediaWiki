@@ -157,7 +157,7 @@ span.smwsearchicon {
 #bodyContent span.smwsearch a:hover {
 	text-decoration: none;
 	color: #0000FF;
-	padding-right: 18px;
+	padding-right: 16px;
 	margin-right: 0px;
 	/* @embed */ background: url(../images/search_icon.png) center right no-repeat;
 	background-size: 13px 13px;
@@ -191,7 +191,7 @@ span.smwsearchicon {
 #bodyContent span.smwbrowse a:hover {
 	text-decoration: none;
 	color: #0000FF;
-	padding-right: 18px;
+	padding-right: 16px;
 	margin-right: 0px;
 	/* @embed */ background: url(../images/browse_icon.png) center right no-repeat;
 	background-size: 13px 13px;
