@@ -185,39 +185,43 @@ class SMWPropertyValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText( $linked = null ) {
+
 		if ( $this->isVisible() ) {
 			$wikiPageValue = $this->getWikiPageValue();
 			return is_null( $wikiPageValue ) ? '' : $this->highlightText( $wikiPageValue->getShortWikiText( $linked ) );
-		} else {
-			return '';
 		}
+
+		return '';
 	}
 
 	public function getShortHTMLText( $linked = null ) {
+
 		if ( $this->isVisible() ) {
 			$wikiPageValue = $this->getWikiPageValue();
-			return is_null( $wikiPageValue ) ? '' : $this->highlightText( $wikiPageValue->getShortHTMLText( $linked ) );
-		} else {
-			return '';
+			return is_null( $wikiPageValue ) ? '' : $this->highlightText( $wikiPageValue->getShortHTMLText( $linked ), $linked );
 		}
+
+		return '';
 	}
 
 	public function getLongWikiText( $linked = null ) {
+
 		if ( $this->isVisible() ) {
 			$wikiPageValue = $this->getWikiPageValue();
 			return is_null( $wikiPageValue ) ? '' : $this->highlightText( $wikiPageValue->getLongWikiText( $linked ) );
-		} else {
-			return '';
 		}
+
+		return '';
 	}
 
 	public function getLongHTMLText( $linked = null ) {
+
 		if ( $this->isVisible() ) {
 			$wikiPageValue = $this->getWikiPageValue();
-			return is_null( $wikiPageValue ) ? '' : $this->highlightText( $wikiPageValue->getLongHTMLText( $linked ) );
-		} else {
-			return '';
+			return is_null( $wikiPageValue ) ? '' : $this->highlightText( $wikiPageValue->getLongHTMLText( $linked ), $linked );
 		}
+
+		return '';
 	}
 
 	public function getWikiValue() {
@@ -264,18 +268,27 @@ class SMWPropertyValue extends SMWDataValue {
 	/**
 	 * Create special highlighting for hinting at special properties.
 	 */
-	protected function highlightText( $text ) {
-		if ( $this->m_dataitem->isUserDefined() ) {
-			return $text;
-		} else {
+	protected function highlightText( $text, $linker = null ) {
+
+		if ( !$this->m_dataitem->isUserDefined() ) {
+
+			$msgKey = 'smw-pa-property-predefined' . strtolower( $this->m_dataitem->getKey() );
+			$content = '';
+
+			if ( wfMessage( $msgKey )->exists() ) {
+				$content = $linker === null ? wfMessage( $msgKey, $this->getText() )->escaped() : wfMessage( $msgKey, $this->getText() )->parse();
+			}
+
 			$highlighter = SMW\Highlighter::factory( SMW\Highlighter::TYPE_PROPERTY );
 			$highlighter->setContent( array (
 				'caption' => $text,
-				'content' => wfMessage( 'smw_isspecprop' )->text()
+				'content' => $content !== '' ? $content : wfMessage( 'smw_isspecprop' )->text()
 			) );
 
 			return $highlighter->getHtml();
 		}
+
+		return $text;
 	}
 
 	/**
