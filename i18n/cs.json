@@ -212,6 +212,7 @@
 	"smw_smwadmin_smwhomepage": "Kompletní uživatelská dokumentace Semantic MediaWiki je dostupná na <b><a href=\"https://semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw_smwadmin_mediazilla": "Chyby lze hlásit na <a href=\"https://bugzilla.wikimedia.org/\">Bugzille</a>.",
 	"smw_smwadmin_questions": "Další otázky či návrhy můžete pokládat v diskuzi v <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">uživatelském fóru Semantic MediaWiki</a>.",
+	"smw_adminlinks_inlinequerieshelp": "Nápověda k inline dotazům",
 	"smw-createproperty-isproperty": "Toto je vlastnost typu $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|Povolená hodnota této vlastnosti je|Povolené hodnoty této vlastnosti jsou}}:",
 	"smw-paramdesc-category-delim": "Oddělovač",
@@ -232,5 +233,6 @@
 	"group-smwadministrator-member": "{{GENDER:$1|správce|správkyně|správce}} (SMW)",
 	"smw-sp-properties-cache-info": "Uvedená data pocházejí z [https://www.semantic-mediawiki.org/wiki/Caching cache] a byla naposledy aktualizována $1.",
 	"smw-sp-properties-header-label": "Seznam vlastností",
-	"smw-livepreview-loading": "Nahrávám…"
+	"smw-livepreview-loading": "Nahrávám…",
+	"smw-editpage-annotation-enabled": "Tato stránka podporuje sémantické in-text anotace (např. <nowiki>\"[[Je stanoveno jako::Světové dědictví UNESCO]]\"</nowiki>), které slouží k budování strukturovaného a prohledávatelného obsahu, a jsou poskytnuty Semantic MediaWiki. Pro návodný popis jak používat anotace a funkci parseru #ask se prosím podívejte na stránky nápovědy [https://www.semantic-mediawiki.org/wiki/Help:Getting_started začínáme], [https://www.semantic-mediawiki.org/wiki/Help:In-text_annotation in-text anotace] či [https://www.semantic-mediawiki.org/wiki/Help:Inline_queries inline inline dotazy]."
 }
