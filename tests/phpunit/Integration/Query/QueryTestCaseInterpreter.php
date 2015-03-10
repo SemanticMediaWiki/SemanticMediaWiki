@@ -17,7 +17,7 @@ use SMWPropertyValue as PropertyValue;
  *
  * @author mwjames
  */
-class QueryDefinitionInterpreter {
+class QueryTestCaseInterpreter {
 
 	/**
 	 * @var array

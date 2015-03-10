@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Integration\Query;
+namespace SMW\Tests;
 
 use SMW\FileReader;
 
@@ -12,7 +12,7 @@ use RuntimeException;
  *
  * @author mwjames
  */
-class DataToQueryDefinitionFileHandler {
+class JsonTestCaseFileHandler {
 
 	/**
 	 * @var FileReader
@@ -160,7 +160,7 @@ class DataToQueryDefinitionFileHandler {
 	 *
 	 * @return array
 	 */
-	public function getPropertyDefinitions() {
+	public function getListOfProperties() {
 		return $this->getFileContentsFor( 'properties' );
 	}
 
@@ -169,7 +169,7 @@ class DataToQueryDefinitionFileHandler {
 	 *
 	 * @return array
 	 */
-	public function getSubjectDefinitions() {
+	public function getListOfSubjects() {
 		return $this->getFileContentsFor( 'subjects' );
 	}
 
@@ -178,7 +178,23 @@ class DataToQueryDefinitionFileHandler {
 	 *
 	 * @return array
 	 */
-	public function getQueryDefinitions() {
+	public function findRdfTestCases() {
+
+		try{
+			$queries = $this->getFileContentsFor( 'rdf' );
+		} catch( \Exception $e ) {
+			$queries = array();
+		}
+
+		return $queries;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return array
+	 */
+	public function findQueryTestCases() {
 
 		try{
 			$queries = $this->getFileContentsFor( 'queries' );
@@ -194,7 +210,7 @@ class DataToQueryDefinitionFileHandler {
 	 *
 	 * @return array
 	 */
-	public function getConceptDefinitions() {
+	public function findConceptTestCases() {
 
 		try{
 			$queries = $this->getFileContentsFor( 'concepts' );
