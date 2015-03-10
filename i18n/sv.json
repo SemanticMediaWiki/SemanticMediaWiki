@@ -19,7 +19,8 @@
 			"아라",
 			"Lokal Profil",
 			"Freked",
-			"Ainali"
+			"Ainali",
+			"Dan Koehl"
 		]
 	},
 	"smw-desc": "Gör din wiki mer tillgänglig – för både maskiner och människor ([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentation online])",
@@ -309,5 +310,6 @@
 	"smw-sp-searchbyproperty-description": "Denna sida erbjuder ett enkelt [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces navigeringsgränssnitt] för att hitta entiteter som beskrivs av en egenskap och ett namngivet värde. Andra tillgängliga sökgränssnitt inkluderar [[Special:PageProperty|sidegenskapssök]] och [[Special:Ask|ask-förfrågningsbyggare]].",
 	"smw-sp-searchbyproperty-resultlist-header": "Lista med resultat",
 	"smw-sp-searchbyproperty-nonvaluequery": "En lista över värden som har tilldelats egenskapen \"$1\".",
-	"smw-sp-searchbyproperty-valuequery": "En lista över sidor som har egenskapen \"$1\" med värdet \"$2\" annoterat."
+	"smw-sp-searchbyproperty-valuequery": "En lista över sidor som har egenskapen \"$1\" med värdet \"$2\" annoterat.",
+	"smw-pa-property-predefined_type": "\"$1\" är en fördefinierad egenskap som beskrivs i [[Special:Typer|datatyp]] av en fastighet."
 }
