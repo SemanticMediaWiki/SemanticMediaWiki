@@ -46,7 +46,7 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 		self::assertEquals(
 			$expectedToCount,
 			$actualCounted,
-			"Failed asserting that $actual contains " . $this->toString( $expected )
+			"Failed on `{$message}` asserting that $actual contains " . $this->toString( $expected )
 		);
 	}
 

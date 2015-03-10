@@ -16,7 +16,7 @@ use Title;
  *
  * @author mwjames
  */
-class QueryDefinitionTestCaseProcessor extends \PHPUnit_Framework_TestCase {
+class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @var Store
@@ -62,20 +62,20 @@ class QueryDefinitionTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @since  2.2
 	 *
-	 * @param QueryDefinitionInterpreter $queryDefinitionInterpreter
+	 * @param QueryTestCaseInterpreter $queryTestCaseInterpreter
 	 */
-	public function processQueryDefinition( QueryDefinitionInterpreter $queryDefinitionInterpreter ) {
+	public function processQueryDefinition( QueryTestCaseInterpreter $queryTestCaseInterpreter ) {
 
-		if ( !$queryDefinitionInterpreter->hasCondition() ) {
-			$this->markTestSkipped( 'Found no condition for ' . $queryDefinitionInterpreter->isAbout() );
+		if ( !$queryTestCaseInterpreter->hasCondition() ) {
+			$this->markTestSkipped( 'Found no condition for ' . $queryTestCaseInterpreter->isAbout() );
 		}
 
 		$description = $this->queryParser->getQueryDescription(
-			$queryDefinitionInterpreter->getCondition()
+			$queryTestCaseInterpreter->getCondition()
 		);
 
 		$this->printDescriptionToOutput(
-			$queryDefinitionInterpreter->isAbout(),
+			$queryTestCaseInterpreter->isAbout(),
 			$description
 		);
 
@@ -85,56 +85,56 @@ class QueryDefinitionTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			false
 		);
 
-		$query->querymode = $queryDefinitionInterpreter->getQueryMode();
-		$query->setLimit( $queryDefinitionInterpreter->getLimit() );
-		$query->setOffset( $queryDefinitionInterpreter->getOffset() );
-		$query->setExtraPrintouts( $queryDefinitionInterpreter->getExtraPrintouts() );
+		$query->querymode = $queryTestCaseInterpreter->getQueryMode();
+		$query->setLimit( $queryTestCaseInterpreter->getLimit() );
+		$query->setOffset( $queryTestCaseInterpreter->getOffset() );
+		$query->setExtraPrintouts( $queryTestCaseInterpreter->getExtraPrintouts() );
 
 		$queryResult = $this->getStore()->getQueryResult( $query );
 
 		$this->printQueryResultToOutput( $queryResult );
 
 		$this->assertEquals(
-			$queryDefinitionInterpreter->getExpectedCount(),
+			$queryTestCaseInterpreter->getExpectedCount(),
 			$queryResult->getCount(),
-			'Failed asserting query result count on ' . $queryDefinitionInterpreter->isAbout()
+			'Failed asserting query result count on ' . $queryTestCaseInterpreter->isAbout()
 		);
 
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
-			$queryDefinitionInterpreter->getExpectedSubjects(),
+			$queryTestCaseInterpreter->getExpectedSubjects(),
 			$queryResult,
-			$queryDefinitionInterpreter->isAbout()
+			$queryTestCaseInterpreter->isAbout()
 		);
 
 		$this->queryResultValidator->assertThatDataItemIsSet(
-			$queryDefinitionInterpreter->getExpectedDataItems(),
+			$queryTestCaseInterpreter->getExpectedDataItems(),
 			$queryResult,
-			$queryDefinitionInterpreter->isAbout()
+			$queryTestCaseInterpreter->isAbout()
 		);
 
 		$this->queryResultValidator->assertThatDataValueIsSet(
-			$queryDefinitionInterpreter->getExpectedDataValues(),
+			$queryTestCaseInterpreter->getExpectedDataValues(),
 			$queryResult,
-			$queryDefinitionInterpreter->isAbout()
+			$queryTestCaseInterpreter->isAbout()
 		);
 	}
 
 	/**
 	 * @since  2.2
 	 *
-	 * @param QueryDefinitionInterpreter $queryDefinitionInterpreter
+	 * @param QueryTestCaseInterpreter $queryTestCaseInterpreter
 	 */
-	public function processConceptDefinition( QueryDefinitionInterpreter $queryDefinitionInterpreter ) {
+	public function processConceptDefinition( QueryTestCaseInterpreter $queryTestCaseInterpreter ) {
 
-		if ( !$queryDefinitionInterpreter->hasCondition() ) {
-			$this->markTestSkipped( 'Found no condition for ' . $queryDefinitionInterpreter->isAbout() );
+		if ( !$queryTestCaseInterpreter->hasCondition() ) {
+			$this->markTestSkipped( 'Found no condition for ' . $queryTestCaseInterpreter->isAbout() );
 		}
 
 		$description = $this->queryParser->getQueryDescription(
-			$queryDefinitionInterpreter->getCondition()
+			$queryTestCaseInterpreter->getCondition()
 		);
 
-		$this->printDescriptionToOutput( $queryDefinitionInterpreter->isAbout(), $description );
+		$this->printDescriptionToOutput( $queryTestCaseInterpreter->isAbout(), $description );
 
 		$query = new Query(
 			$description,
@@ -142,21 +142,21 @@ class QueryDefinitionTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			true
 		);
 
-		$query->querymode = $queryDefinitionInterpreter->getQueryMode();
-		$query->setLimit( $queryDefinitionInterpreter->getLimit() );
-		$query->setOffset( $queryDefinitionInterpreter->getOffset() );
+		$query->querymode = $queryTestCaseInterpreter->getQueryMode();
+		$query->setLimit( $queryTestCaseInterpreter->getLimit() );
+		$query->setOffset( $queryTestCaseInterpreter->getOffset() );
 
 		$queryResult = $this->getStore()->getQueryResult( $query );
 
 		$this->printQueryResultToOutput( $queryResult );
 
 		$this->assertEquals(
-			$queryDefinitionInterpreter->getExpectedCount(),
+			$queryTestCaseInterpreter->getExpectedCount(),
 			$queryResult->getCount(),
-			'Failed asserting query result count on ' . $queryDefinitionInterpreter->isAbout()
+			'Failed asserting query result count on ' . $queryTestCaseInterpreter->isAbout()
 		);
 
-		foreach ( $queryDefinitionInterpreter->getExpectedConceptCache() as $expectedConceptCache ) {
+		foreach ( $queryTestCaseInterpreter->getExpectedConceptCache() as $expectedConceptCache ) {
 
 			$concept = Title::newFromText( $expectedConceptCache['concept'], SMW_NS_CONCEPT );
 
@@ -165,7 +165,7 @@ class QueryDefinitionTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			$this->assertEquals(
 				$expectedConceptCache['count'],
 				$this->getStore()->getConceptCacheStatus( $concept )->getCacheCount(),
-				'Failed asserting conceptcache count on ' . $queryDefinitionInterpreter->isAbout()
+				'Failed asserting conceptcache count on ' . $queryTestCaseInterpreter->isAbout()
 			);
 		}
 	}
