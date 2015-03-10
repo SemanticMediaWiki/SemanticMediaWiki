@@ -137,7 +137,9 @@ class SMWExportController {
 		$this->markPageAsDone( $diWikiPage, $recursiondepth );
 		$semData = $this->getSemanticData( $diWikiPage, ( $recursiondepth == 0 ) );
 
-		if ( $semData === null ) {
+		// Don't try to serialize an empty page that cause an incomplete exp-data set
+		// (e.g. _REDI as no property page hence DBKey is empty)
+		if ( $semData === null || $diWikiPage->getDBKey() === '' ) {
 			return null;
 		}
 

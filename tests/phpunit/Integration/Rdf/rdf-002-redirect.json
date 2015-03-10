@@ -68,6 +68,6 @@
 	"meta": {
 		"version": "0.1",
 		"is-incomplete": false,
-		"debug": true
+		"debug": false
 	}
 }
