@@ -86,7 +86,7 @@ class ByJsonRdfTestCaseRunnerTest extends ByJsonTestCaseProvider {
 
 		$exportController->printPages(
 			$case['exportcontroller-print-pages'],
-			$case['parameters']['recursion'],
+			(int)$case['parameters']['recursion'],
 			$case['parameters']['revisiondate']
 		);
 
