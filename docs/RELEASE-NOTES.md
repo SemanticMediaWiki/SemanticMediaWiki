@@ -16,6 +16,7 @@ This is not a release yet.
 * #861 Fixed owl property export declaration
 * #863 Fixed missing interwiki encoding for the RDF export
 * #864 Fixed empty searchlabel raw wikitext display for a `QueryResultPrinter` with `limit=0`
+* #882 Fixed exception in `SMWExportController` caused by an empty property reference
 
 ## Internal changes
 * #373 Update `jquery.jstorage.js` (0.3.2 => 0.4.11)
