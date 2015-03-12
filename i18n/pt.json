@@ -259,10 +259,12 @@
 	"smw_unknowntype": "O tipo desta propriedade é inválida",
 	"smw_concept_header": "Páginas do conceito \"$1\"",
 	"smw_conceptarticlecount": "Apresentando $1 {{PLURAL:$1|página|páginas}} abaixo.",
+	"smw-pa-property-predefined-default": "\"$1\" é uma propriedade predefinida.",
 	"smw-sp-properties-header-label": "Lista de propriedades",
 	"smw-sp-admin-settings-title": "Definições de configuração",
 	"smw-sp-admin-settings-docu": "Mostra uma lista de todas as configurações, por padrão e localizadas, que são relevantes para o ambiente semântico da MediaWiki. Para mais detalhes sobre as configurações individuais, consulte a página de ajuda de [https://semantic-mediawiki.org/wiki/Help:Configuration configuração].",
 	"smw-sp-admin-idlookup-objectid": "ID de objeto:",
 	"smw-livepreview-loading": "A carregar…",
-	"smw-sp-searchbyproperty-resultlist-header": "Lista de resultados"
+	"smw-sp-searchbyproperty-resultlist-header": "Lista de resultados",
+	"smw-pa-property-predefined_type": "\"$1\" é uma propriedade predefinida que descreve o [[Special:Types|tipo de dados]] de uma propriedade."
 }

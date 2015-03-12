@@ -292,9 +292,11 @@
 	"group-smwadministrator-member": "{{GENDER:$1|管理员（SMW）}}",
 	"grouppage-smwadministrator": "{{ns:project}}:SMW管理员",
 	"action-smw-admin": "连接Semantic MediaWiki管理员工作组",
-	"smw-pa-property-predefined-default": "“$1”是预定义属性（或称[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 特殊属性]）。它是带额外管理特权的内置属性，但可像其他[https://www.semantic-mediawiki.org/wiki/Property 自定义属性]一样使用。",
-	"smw-pa-property-predefined_ask": "“$1”是预定义属性（或称[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 特殊属性]），它连接查询中的元数据[https://www.semantic-mediawiki.org/wiki/Subobject 子对象]。它是带额外管理特权的内置属性，但可像其他[https://www.semantic-mediawiki.org/wiki/Property 自定义属性]一样使用。",
-	"smw-pa-property-predefined_asksi": "“$1”是预定义属性（或称[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 特殊属性]），它在查询中收集条件的数值。它是带额外管理特权的内置属性，但可像其他[https://www.semantic-mediawiki.org/wiki/Property 自定义属性]一样使用。",
+	"smw-pa-property-predefined-default": "“$1”是预定义属性。",
+	"smw-pa-property-predefined-common": "此属性预先部署（或称[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 特殊属性]），并带有额外的管理权限，但可像其他[https://www.semantic-mediawiki.org/wiki/Property 自定义属性]一样使用。",
+	"smw-pa-property-predefined_ask": "“$1”是表现有关个别查询中媒体信息（[https://www.semantic-mediawiki.org/wiki/Subobject 子对象]形式）的预定义属性。",
+	"smw-pa-property-predefined_asksi": "“$1”是收集一次查询中使用到的条件数的预定义属性。",
+	"smw-pa-property-predefined_askde": "“$1”是当查询执行受到[https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth $smwgQMaxDepth]设置的限制时，报告有关查询深度（在子查询嵌套和已解决属性链的基础上计算的数值）的预定义属性。",
 	"smw-sp-properties-docu": "此页面显示那些可用的[https://www.semantic-mediawiki.org/wiki/Property 属性]，且当使用筛选时，仅仅显示那些与条件匹配的用户定义属性。差异化的视图，请参阅特殊页面[[Special:UnusedProperties|未使用的属性]]或[[Special:WantedProperties|缺乏属性]]。",
 	"smw-sp-properties-cache-info": "列出数据已检索自[https://www.semantic-mediawiki.org/wiki/Caching cache]，并已更新于$1。",
 	"smw-sp-properties-header-label": "属性列表",
@@ -318,5 +320,7 @@
 	"log-name-smw": "Semantic MediaWiki日志",
 	"log-description-smw": "为[https://www.semantic-mediawiki.org/wiki/Help:Logging 已启用的活动类型]激活，它们已经被Semantic MediaWiki及其组件汇报。",
 	"smw-datavalue-import-unknownns": "导入名字空间“$1”未知。请确信owl导入详细信息存在于[[MediaWiki:Smw import $1]]",
-	"smw-pa-property-predefined_impo": "“$1”是预定义属性（或称[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 特殊属性]），它描述一个与[https://semantic-mediawiki.org/wiki/Help:Import_vocabulary 导入的词汇]之间的关系。它是带额外管理特权的内置属性，但可像其他[https://www.semantic-mediawiki.org/wiki/Property 自定义属性]一样使用。"
+	"smw-pa-property-predefined_impo": "“$1”是描述与[https://semantic-mediawiki.org/wiki/Help:Import_vocabulary 导入词汇]间关系的预定义属性。",
+	"smw-pa-property-predefined_type": "“$1”是用来描述属性[[Special:Types|数据类型]]的预定义属性。",
+	"smw-pa-property-predefined_sobj": "“$1”是代表允许累计类似一个正常wiki页面的数据类型作业的容器结构的预定义属性。"
 }
