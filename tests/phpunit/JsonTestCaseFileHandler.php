@@ -142,14 +142,9 @@ class JsonTestCaseFileHandler {
 			return $settings[$key];
 		}
 
-		// Default values
-		switch ( $key ) {
-			case 'smwgQMaxSize':
-				return $GLOBALS['smwgQMaxSize'];
-			case 'smwStrictComparators':
-				return $GLOBALS['smwgQMaxSize'];
-			case 'smwgNamespacesWithSemanticLinks':
-				return $GLOBALS['smwgNamespacesWithSemanticLinks'];
+		// Set default values
+		if ( isset( $GLOBALS[$key] ) ) {
+			return $GLOBALS[$key];
 		}
 
 		throw new RuntimeException( "{$key} is unknown" );
