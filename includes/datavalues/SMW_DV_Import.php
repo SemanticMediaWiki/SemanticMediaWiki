@@ -4,6 +4,7 @@
  */
 
 use SMW\ControlledVocabularyImportFetcher;
+use SMW\ControlledVocabularyContentMapper;
 
 /**
  * This datavalue implements datavalues used by special property '_IMPO' used
@@ -23,6 +24,16 @@ class SMWImportValue extends SMWDataValue {
 	 */
 	private $controlledVocabularyImportFetcher = null;
 
+	/**
+	 * @var ControlledVocabularyContentMapper|null
+	 */
+	private $controlledVocabularyContentMapper = null;
+
+	/**
+	 * @var string
+	 */
+	private $termType = '';
+
 	protected $m_qname = ''; // string provided by user which is used to look up data on Mediawiki:*-Page
 	protected $m_uri = ''; // URI of namespace (without local name)
 	protected $m_namespace = ''; // namespace id (e.g. "foaf")
@@ -35,6 +46,7 @@ class SMWImportValue extends SMWDataValue {
 	public function __construct( $typeid  ) {
 		parent::__construct( $typeid );
 		$this->controlledVocabularyImportFetcher = new ControlledVocabularyImportFetcher();
+		$this->controlledVocabularyContentMapper = new ControlledVocabularyContentMapper();
 	}
 
 	protected function parseUserValue( $value ) {
@@ -48,16 +60,28 @@ class SMWImportValue extends SMWDataValue {
 			return;
 		}
 
-		$msglines = $this->controlledVocabularyImportFetcher->fetch( $onto_ns );
+		$this->controlledVocabularyContentMapper->parse( $this->controlledVocabularyImportFetcher->fetch( $onto_ns ) );
 
-		// browse list in smw_import_* for section
-		list( $onto_uri, $onto_name ) = explode( '|', array_shift( $msglines ), 2 );
-		if ( $onto_uri[0] == ' ' ) $onto_uri = mb_substr( $onto_uri, 1 ); // tolerate initial space
+		$this->m_uri = $this->controlledVocabularyContentMapper->getUri();
 
-		$this->m_uri = $onto_uri;
+		if ( $this->m_uri === '' ) {
+			$this->addError( wfMessage( 'smw-datavalue-import-missing-nsuri', $onto_ns )->inContentLanguage()->text() );
+			$this->m_dataitem = new SMWDIBlob( 'ERROR' );
+			return;
+		}
+
+		$this->termType = $this->controlledVocabularyContentMapper->getTypeForTerm( $onto_section );
+
+		if ( $this->termType === '' ) {
+			$this->addError( wfMessage( 'smw-datavalue-import-missing-type', $onto_section, $onto_ns )->inContentLanguage()->text() );
+			$this->m_dataitem = new SMWDIBlob( 'ERROR' );
+			return;
+		}
+
+		$this->m_name = $this->controlledVocabularyContentMapper->getName();
+
 		$this->m_namespace = $onto_ns;
 		$this->m_section = $onto_section;
-		$this->m_name = $onto_name;
 
 		$this->m_dataitem = new SMWDIBlob( $this->m_namespace . ' ' . $this->m_section . ' ' . $this->m_uri );
 
