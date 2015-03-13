@@ -314,6 +314,8 @@
 	"log-name-smw": "Semantic MediaWiki log",
 	"log-description-smw": "Activities for [https://www.semantic-mediawiki.org/wiki/Help:Logging enabled event types] that have been reported by Semantic MediaWiki and its components.",
 	"smw-datavalue-import-unknownns":"The import namespace \"$1\" is unknown. Please ensure that owl import details are available via [[MediaWiki:Smw import $1]]",
+	"smw-datavalue-import-missing-nsuri":"Uable to find a \"$1\" namespace URI in the [[MediaWiki:Smw import $1]] import.",
+	"smw-datavalue-import-missing-type":"No type definition was found for \"$1\" in the [[MediaWiki:Smw import $2]] import.",
 	"smw-pa-property-predefined_impo": "\"$1\" is a predefined property that describes a relation to an [https://semantic-mediawiki.org/wiki/Help:Import_vocabulary imported vocabulary].",
 	"smw-pa-property-predefined_type": "\"$1\" is a predefined property that describes the [[Special:Types|datatype]] of a property.",
 	"smw-pa-property-predefined_sobj": "\"$1\" is a predefined property representing a container construct that allows to accumulate property-value assignments similar to that of a normal wiki page."
