@@ -17,6 +17,7 @@ This is not a release yet.
 * #863 Fixed missing interwiki encoding for the RDF export
 * #864 Fixed empty searchlabel raw wikitext display for a `QueryResultPrinter` with `limit=0`
 * #882 Fixed exception in `SMWExportController` caused by an empty property reference
+* #884 Fixed fetching of import vocabularies to be language independent
 
 ## Internal changes
 * #373 Update `jquery.jstorage.js` (0.3.2 => 0.4.11)
@@ -27,3 +28,4 @@ This is not a release yet.
 * #771 Added `doctrine/dbal:~2.5` component dependency
 * #772 Added `onoi/message-reporter:~1.0` component dependency
 * #777 Moved all concept related code into a separate `ConceptCache` class
+* #884 Added `ControlledVocabularyImportFetcher` to isolate import vocabulary fetching from the `DVImport` object
