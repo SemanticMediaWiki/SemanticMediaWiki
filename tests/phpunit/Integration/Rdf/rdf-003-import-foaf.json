@@ -1,0 +1,112 @@
+{
+	"description": "Rdf output for imported foaf annotated vocabulary (requires import before property declaration)",
+	"properties": [],
+	"subjects": [
+		{
+			"name": "Smw import foaf",
+			"namespace": "NS_MEDIAWIKI",
+			"contents": "http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n name|Type:Text\n homepage|Type:URL\n mbox|Type:Email\n mbox_sha1sum|Type:Text\n depiction|Type:URL\n phone|Type:Text\n Person|Category\n Organization|Category\n knows|Type:Page\n member|Type:Page\n"
+		},
+		{
+			"name": "Foaf:homepage",
+			"namespace": "SMW_NS_PROPERTY",
+			"contents": "[[Has type::URL]] [[Imported from::foaf:homepage]]"
+		},
+		{
+			"name": "Foaf:name",
+			"namespace": "SMW_NS_PROPERTY",
+			"contents": "[[Has type::Text]] [[Imported from::foaf:name]]"
+		},
+		{
+			"name": "Foaf:knows",
+			"namespace": "SMW_NS_PROPERTY",
+			"contents": "[[Has type::Page]] [[Imported from::foaf:knows]]"
+		},
+		{
+			"name": "John Doe",
+			"contents": "[[Foaf:name::John Doe]], [[Foaf:homepage::http://example.org/JohnDoe]] [[Foaf:knows::Jane Doe]]"
+		},
+		{
+			"name": "Jane Doe",
+			"contents": "[[Foaf:name::Jane Doe]], [[Foaf:homepage::http://example.org/JaneDoe]] [[Foaf:knows::John Doe]]"
+		}
+	],
+	"rdf": [
+		{
+			"about": "#0",
+			"exportcontroller-print-pages" : [ "John Doe" ],
+			"parameters" : {
+				"backlinks" : false,
+				"recursion" : "1",
+				"revisiondate" : false
+			},
+			"output": {
+				"as-string": [
+					"<swivt:Subject rdf:about=\"http://example.org/id/John_Doe\">",
+					"xmlns:foaf=\"http://xmlns.com/foaf/0.1/",
+					"<foaf:homepage rdf:resource=\"http://example.org/JohnDoe\"/>",
+					"<foaf:knows rdf:resource=\"&wiki;Jane_Doe\"/>",
+					"<foaf:name rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">John Doe</foaf:name>",
+					"<owl:ObjectProperty rdf:about=\"http://xmlns.com/foaf/0.1/homepage\" />",
+					"<owl:ObjectProperty rdf:about=\"http://xmlns.com/foaf/0.1/knows\" />",
+					"<owl:DatatypeProperty rdf:about=\"http://xmlns.com/foaf/0.1/name\" />"
+				]
+			}
+		},
+		{
+			"about": "#1 export with backlinks",
+			"exportcontroller-print-pages" : [ "John Doe", "Jane Doe" ],
+			"parameters" : {
+				"backlinks" : true,
+				"recursion" : "2",
+				"revisiondate" : false
+			},
+			"output": {
+				"as-string": [
+					"<swivt:Subject rdf:about=\"http://example.org/id/John_Doe\">",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Jane_Doe\">",
+					"<foaf:homepage rdf:resource=\"http://example.org/JaneDoe\"/>",
+					"<foaf:knows rdf:resource=\"&wiki;John_Doe\"/>",
+					"<foaf:name rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Jane Doe</foaf:name>",
+					"<owl:ObjectProperty rdf:about=\"http://xmlns.com/foaf/0.1/knows\">",
+					"<rdfs:label>Foaf:knows</rdfs:label>",
+					"<swivt:specialImportedFrom rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">foaf knows http://xmlns.com/foaf/0.1/</swivt:specialImportedFrom>",
+					"<swivt:type rdf:resource=\"http://semantic-mediawiki.org/swivt/1.0#_wpg\"/>",
+					"<owl:ObjectProperty rdf:about=\"http://xmlns.com/foaf/0.1/homepage\" />",
+					"<owl:DatatypeProperty rdf:about=\"http://xmlns.com/foaf/0.1/name\" />",
+					"<owl:DatatypeProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#specialImportedFrom\" />"
+				]
+			}
+		},
+		{
+			"about": "#2",
+			"exportcontroller-print-pages" : [ "Property:Foaf:knows" ],
+			"parameters" : {
+				"backlinks" : false,
+				"recursion" : "1",
+				"revisiondate" : false
+			},
+			"output": {
+				"as-string": [
+					"<owl:ObjectProperty rdf:about=\"http://xmlns.com/foaf/0.1/knows\">",
+					"<rdfs:label>Foaf:knows</rdfs:label>",
+					"<swivt:specialImportedFrom rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">foaf knows http://xmlns.com/foaf/0.1/</swivt:specialImportedFrom>",
+					"<swivt:type rdf:resource=\"http://semantic-mediawiki.org/swivt/1.0#_wpg\"/>",
+					"<owl:ObjectProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#type\" />"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespace": "http://example.org/id/",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

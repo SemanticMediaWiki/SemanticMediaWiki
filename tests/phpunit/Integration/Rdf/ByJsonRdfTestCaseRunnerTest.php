@@ -55,7 +55,12 @@ class ByJsonRdfTestCaseRunnerTest extends ByJsonTestCaseProvider {
 
 		$this->checkEnvironmentToSkipCurrentTest( $jsonTestCaseFileHandler );
 
-		foreach ( array( 'smwgNamespace', 'smwStrictComparators', 'smwgNamespacesWithSemanticLinks' ) as $key ) {
+		$permittedSettings = array(
+			'smwgNamespace',
+			'smwgNamespacesWithSemanticLinks'
+		);
+
+		foreach ( $permittedSettings as $key ) {
 			$this->changeGlobalSettingTo(
 				$key,
 				$jsonTestCaseFileHandler->getSettingsFor( $key )
@@ -71,6 +76,8 @@ class ByJsonRdfTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			$jsonTestCaseFileHandler->getListOfSubjects(),
 			NS_MAIN
 		);
+
+		\SMWExporter::clear();
 
 		foreach ( $jsonTestCaseFileHandler->findRdfTestCases() as $case ) {
 			$this->assertRdfOutputForCase( $case, $jsonTestCaseFileHandler->getDebugMode() );

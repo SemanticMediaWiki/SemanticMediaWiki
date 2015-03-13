@@ -3,6 +3,8 @@
  * @ingroup SMWDataValues
  */
 
+use SMW\ControlledVocabularyImportFetcher;
+
 /**
  * This datavalue implements datavalues used by special property '_IMPO' used
  * for assigning imported vocabulary to some page of the wiki. It looks up a
@@ -16,11 +18,24 @@
  */
 class SMWImportValue extends SMWDataValue {
 
+	/**
+	 * @var ControlledVocabularyImportFetcher|null
+	 */
+	private $controlledVocabularyImportFetcher = null;
+
 	protected $m_qname = ''; // string provided by user which is used to look up data on Mediawiki:*-Page
 	protected $m_uri = ''; // URI of namespace (without local name)
 	protected $m_namespace = ''; // namespace id (e.g. "foaf")
 	protected $m_section = ''; // local name (e.g. "knows")
 	protected $m_name = ''; // wiki name of the vocab (e.g. "Friend of a Friend")l might contain wiki markup
+
+	/**
+	 * @param string $typeid
+	 */
+	public function __construct( $typeid  ) {
+		parent::__construct( $typeid );
+		$this->controlledVocabularyImportFetcher = new ControlledVocabularyImportFetcher();
+	}
 
 	protected function parseUserValue( $value ) {
 		global $wgContLang;
@@ -28,13 +43,14 @@ class SMWImportValue extends SMWDataValue {
 		$this->m_qname = $value;
 
 		list( $onto_ns, $onto_section ) = explode( ':', $this->m_qname, 2 );
-		$msglines = preg_split( "([\n][\s]?)", wfMessage( "smw_import_$onto_ns" )->inContentLanguage()->text() ); // get the definition for "$namespace:$section"
 
-		if ( count( $msglines ) < 2 ) { // error: no elements for this namespace
+		if ( !$this->controlledVocabularyImportFetcher->contains( $onto_ns ) ) { // error: no elements for this namespace
 			$this->addError( wfMessage( 'smw-datavalue-import-unknownns', $onto_ns )->inContentLanguage()->text() );
 			$this->m_dataitem = new SMWDIBlob( 'ERROR' );
 			return;
 		}
+
+		$msglines = $this->controlledVocabularyImportFetcher->fetch( $onto_ns );
 
 		// browse list in smw_import_* for section
 		list( $onto_uri, $onto_name ) = explode( '|', array_shift( $msglines ), 2 );
