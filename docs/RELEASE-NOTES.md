@@ -7,6 +7,7 @@ This is not a release yet.
 * #770 Added the `--no-cache` option to `rebuildData.php` and the `--debug` option to `rebuildData.php` and `rebuildConceptCache.php` (refs #749, #766)
 * #756 Added template support for the `#set` parser
 * #783 Added support for `wgCategoryCollation` setting in `CategoryResultPrinter` (#699, T40853)
+* #886 Extended rules on how an `ImportValue` need to contain a valid type definition
 
 ## Bug fixes
 
@@ -18,6 +19,7 @@ This is not a release yet.
 * #864 Fixed empty searchlabel raw wikitext display for a `QueryResultPrinter` with `limit=0`
 * #882 Fixed exception in `SMWExportController` caused by an empty property reference
 * #884 Fixed fetching of import vocabularies to be language independent
+* #887 Fixed `pre` element rendering for the template "furtherresult" output link
 
 ## Internal changes
 * #373 Update `jquery.jstorage.js` (0.3.2 => 0.4.11)
