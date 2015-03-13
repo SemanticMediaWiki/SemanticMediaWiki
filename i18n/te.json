@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Veeven"
+			"Veeven",
+			"రహ్మానుద్దీన్"
 		]
 	},
 	"smw_finallistconjunct": ", మరియు",
@@ -45,6 +46,7 @@
 	"smw_ask_otheroptions": "ఇతర ఎంపికలు",
 	"smw_sbv_property": "లక్షణం:",
 	"smw_sbv_value": "విలువ:",
+	"browse": "వికీను దర్శించండి",
 	"smw_browse_go": "వెళ్ళు",
 	"smw_browse_no_outgoing": "ఈ పేజీలో లక్షణాలేమీ లేవు.",
 	"smw_browse_no_incoming": "ఈ పేజీకి లంకె వేస్తున్న లక్షణాలేమీ లేవు.",

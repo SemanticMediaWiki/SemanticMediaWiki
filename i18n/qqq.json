@@ -291,8 +291,10 @@
 	"grouppage-smwadministrator": "{{doc-group|smwadministrator|page}}",
 	"action-smw-admin": "{{doc-action|smw-admin}}",
 	"smw-pa-property-predefined-default": "Default introductory text for predefined properties\".\n\nParameters:\n* $1 - Name of the invoked predefined property",
-	"smw-pa-property-predefined_ask": "Unused at this time.\n\nDescribes a predefined property.\n\nParameters:\n* $1 - predefined property\nSee also:\n* {{msg-mw|Smw-pa-property-predefined asksi}}",
-	"smw-pa-property-predefined_asksi": "Unused at this time.\n\nDescribes a predefined property.\n\nParameters:\n* $1 - predefined property\nSee also:\n* {{msg-mw|Smw-pa-property-predefined ask}}",
+	"smw-pa-property-predefined-common": "This informatory message explains what [https://semantic-mediawiki.org/wiki/Help:Special_properties special property] is.",
+	"smw-pa-property-predefined_ask": "This informatory message describes a [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\nParameter:\n* $1 - name of predefined property",
+	"smw-pa-property-predefined_asksi": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property] holding the [https://semantic-mediawiki.org/wiki/Help:Special_property_Query_size size] of a query.\n\nParameters:\n* $1 - name of predefined property",
+	"smw-pa-property-predefined_askde": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property] holding the [https://semantic-mediawiki.org/wiki/Help:Special_property_Query_depth depth] of a query.\n\nParameter:\n* $1 - name of predefined property",
 	"smw-sp-properties-docu": "Extended introductory text for the [[Special:Properties]] page.",
 	"smw-sp-properties-cache-info": "Information about the current cache status on a special page\n\nParameters:\n* $1 - Accommodates a user formatted date",
 	"smw-sp-properties-header-label": "A header label",
@@ -316,5 +318,7 @@
 	"log-name-smw": "A name for the [[Special:Log]] Semantic MediaWiki entry.",
 	"log-description-smw": "A description for Semantic MediaWiki entries displayed in [[Special:Log]].",
 	"smw-datavalue-import-unknownns": "Error message shown for an unknown owl import namespace",
-	"smw-pa-property-predefined_impo": "Default introductory text for predefined properties\".\n\nParameters:\n* $1 - Name of the invoked predefined property"
+	"smw-pa-property-predefined_impo": "Default introductory text for predefined properties\".\n\nParameters:\n* $1 - Name of the invoked predefined property",
+	"smw-pa-property-predefined_type": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property] holding the [https://semantic-mediawiki.org/wiki/Help:Special_property_Has_type datatype] of a property.",
+	"smw-pa-property-predefined_sobj": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property] holding [https://semantic-mediawiki.org/wiki/Help:Special_property_Has_subobject subobjects]. Think of a subobject being an invisible wiki page which can only hold semantic annotations, i.e. assignments of values to properties."
 }
