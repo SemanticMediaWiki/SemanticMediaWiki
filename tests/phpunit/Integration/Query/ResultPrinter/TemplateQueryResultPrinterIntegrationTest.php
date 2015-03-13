@@ -70,7 +70,7 @@ class TemplateQueryResultPrinterIntegrationTest extends MwDBaseUnitTestCase {
 			->createPage( Title::newFromText( 'TemplateOutputUsingUnnamedArgumentsForNonUnicodeExtra', NS_TEMPLATE ) )
 			->doEdit( $this->stringBuilder->getString() );
 
-		foreach ( array( 'Foo', 'Bar', '123' ) as $title ) {
+		foreach ( array( 'Foo', 'Bar', '123', 'yxz' ) as $title ) {
 
 			$this->stringBuilder
 				->addString( '[[Category:TemplateOutputUsingUnnamedArgumentsForNonUnicode]]' )
@@ -91,6 +91,8 @@ class TemplateQueryResultPrinterIntegrationTest extends MwDBaseUnitTestCase {
 			->addString( '|format=template' )
 			->addString( '|order=asc' )
 			->addString( '|link=none' )
+			->addString( '|limit=3' )
+			->addString( '|searchlabel=furtherresults' )
 			->addString( '|userparam=[$%&*==42]' )
 			->addString( '|template=TemplateOutputUsingUnnamedArgumentsForNonUnicode' )
 			->addString( '|introtemplate=TemplateOutputUsingUnnamedArgumentsForNonUnicodeExtra' )
@@ -110,7 +112,9 @@ class TemplateQueryResultPrinterIntegrationTest extends MwDBaseUnitTestCase {
 			->addString( '[0]:123:ABC, DEF:[$%&amp;*==42]:' )
 			->addString( '[1]:Bar:ABC, DEF:[$%&amp;*==42]:' )
 			->addString( '[2]:Foo:ABC, DEF:[$%&amp;*==42]:' )
-			->addString( '<div>[$%&amp;*==42]</div>' );
+
+			// #885
+			->addString( '<div>[$%&amp;*==42]</div><span class="smw-template-furtherresults">' );
 
 		$this->stringValidator->assertThatStringContains(
 			$this->stringBuilder->getString(),
