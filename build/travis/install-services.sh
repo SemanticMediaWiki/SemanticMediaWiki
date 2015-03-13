@@ -11,10 +11,11 @@ fi
 # Version 1.1.0 is available and testable on Travis/SMW
 if [ "$FUSEKI" != "" ]
 then
-	# 1.0.2
-	# http://archive.apache.org/dist/jena/binaries/jena-fuseki-1.0.2-distribution.tar.gz
+	# Archive
+	# http://archive.apache.org/dist/jena/binaries/jena-fuseki-$FUSEKI-distribution.tar.gz
+	# http://www.eu.apache.org/dist/jena/binaries/jena-fuseki-$FUSEKI-distribution.tar.gz
 
-	wget http://www.eu.apache.org/dist/jena/binaries/jena-fuseki-$FUSEKI-distribution.tar.gz
+	wget http://archive.apache.org/dist/jena/binaries/jena-fuseki-$FUSEKI-distribution.tar.gz
 	tar -zxf jena-fuseki-$FUSEKI-distribution.tar.gz
 	mv jena-fuseki-$FUSEKI fuseki
 
