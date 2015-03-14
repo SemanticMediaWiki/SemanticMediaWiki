@@ -1,5 +1,7 @@
 <?php
 
+use SMW\Exporter\UriEscaper;
+
 /**
  * This special page solves the URI crisis
  * without the need of changing code deep in
@@ -23,7 +25,7 @@ class SMWURIResolver extends SpecialPage {
 
 	function execute( $query ) {
 		global $wgOut;
-		
+
 
 		if ( is_null( $query ) || trim( $query ) === '' ) {
 			if ( stristr( $_SERVER['HTTP_ACCEPT'], 'RDF' ) ) {
@@ -37,7 +39,7 @@ class SMWURIResolver extends SpecialPage {
 				);
 			}
 		} else {
-			$query = SMWExporter::decodeURI( $query );
+			$query = UriEscaper::decode( $query );
 			$query = str_replace( '_', '%20', $query );
 			$query = urldecode( $query );
 			$title = Title::newFromText( $query );
@@ -51,6 +53,6 @@ class SMWURIResolver extends SpecialPage {
 					: $title->getFullURL(), '303' );
 			}
 		}
-		
+
 	}
 }
