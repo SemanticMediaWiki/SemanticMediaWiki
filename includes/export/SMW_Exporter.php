@@ -5,6 +5,7 @@ use SMW\DataValueFactory;
 use SMW\Cache\FixedInMemoryCache;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exporter\UriEscaper;
 
 /**
  * SMWExporter is a class for converting internal page-based data (SMWSemanticData) into
@@ -75,7 +76,7 @@ class SMWExporter {
 		// The article name must be the last part of wiki URLs for proper OWL/RDF export:
 		self::$m_ent_wikiurl  = $wgServer . str_replace( '$1', '', $wgArticlePath );
 		self::$m_ent_wiki     = $smwgNamespace;
-		self::$m_ent_property = self::$m_ent_wiki . self::encodeURI( urlencode( str_replace( ' ', '_', $wgContLang->getNsText( SMW_NS_PROPERTY ) . ':' ) ) );
+		self::$m_ent_property = self::$m_ent_wiki . UriEscaper::encode( urlencode( str_replace( ' ', '_', $wgContLang->getNsText( SMW_NS_PROPERTY ) . ':' ) ) );
 		$title = SpecialPage::getTitleFor( 'ExportRDF' );
 		self::$m_exporturl    = self::$m_ent_wikiurl . $title->getPrefixedURL();
 	}
@@ -86,7 +87,7 @@ class SMWExporter {
 	 * @return string
 	 */
 	public function getEncodedPropertyNamespace() {
-		return $this->encodeURI( urlencode( str_replace( ' ', '_', $GLOBALS['wgContLang']->getNsText( SMW_NS_PROPERTY ) . ':' ) ) );
+		return UriEscaper::encode( urlencode( str_replace( ' ', '_', $GLOBALS['wgContLang']->getNsText( SMW_NS_PROPERTY ) . ':' ) ) );
 	}
 
 	/**
@@ -366,7 +367,7 @@ class SMWExporter {
 			if ( $diWikiPage->getNamespace() == SMW_NS_PROPERTY ) {
 				$namespace = self::getNamespaceUri( 'property' );
 				$namespaceId = 'property';
-				$localName = self::encodeURI( rawurlencode( $diWikiPage->getDBkey() ) );
+				$localName = UriEscaper::encode( rawurlencode( $diWikiPage->getDBkey() ) );
 			}
 
 			if ( ( $localName === '' ) ||
@@ -377,7 +378,7 @@ class SMWExporter {
 			}
 
 			if ( $modifier !== '' ) {
-				$localName .=  '-23' . self::encodeURI( rawurlencode(  $modifier ) );
+				$localName .=  '-23' . UriEscaper::encode( rawurlencode(  $modifier ) );
 			}
 		}
 
@@ -404,7 +405,7 @@ class SMWExporter {
 
 			if ( strpos( $uri, $wikiNamespace ) === 0 ) {
 				$localName = substr( $uri, strlen( $wikiNamespace ) );
-				$dbKey = rawurldecode( self::decodeURI( $localName ) );
+				$dbKey = rawurldecode( UriEscaper::decode( $localName ) );
 
 				$parts = explode( '#', $dbKey, 2 );
 				if ( count( $parts ) == 2 ) {
@@ -538,31 +539,6 @@ class SMWExporter {
 		} else {
 			throw new InvalidArgumentException( "The vocabulary '$namespaceId' is not a known special vocabulary." );
 		}
-	}
-
-	/**
-	 * This function escapes symbols that might be problematic in XML in a uniform
-	 * and injective way. It is used to encode URIs.
-	 */
-	static public function encodeURI( $uri ) {
-		$uri = str_replace( '-', '-2D', $uri );
-		// $uri = str_replace( '_', '-5F', $uri); //not necessary
-		$uri = str_replace( array( ':', '"', '#', '&', "'", '+', '!', '%' ),
-		                    array( '-3A', '-22', '-23', '-26', '-27', '-2B', '-21', '-' ),
-		                    $uri );
-		return $uri;
-	}
-
-	/**
-	 * This function unescapes URIs generated with SMWExporter::encodeURI. This
-	 * allows services that receive a URI to extract e.g. the according wiki page.
-	 */
-	static public function decodeURI( $uri ) {
-		$uri = str_replace( array( '-3A', '-22', '-23', '-26', '-27', '-2B', '-21', '-' ),
-		                    array( ':', '"', '#', '&', "'", '+', '!', '%' ),
-		                   $uri );
-		$uri = str_replace( '%2D', '-', $uri );
-		return $uri;
 	}
 
 	/**
@@ -771,7 +747,7 @@ class SMWExporter {
 			$localName .= $diWikiPage->getDBkey();
 		}
 
-		return self::encodeURI( wfUrlencode( $localName ) );
+		return UriEscaper::encode( wfUrlencode( $localName ) );
 	}
 
 	static protected function getResourceElementCache() {
