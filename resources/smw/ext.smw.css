@@ -106,6 +106,7 @@ div.smwfact td, div.smwfact tr, div.smwfact table {
 	font-weight: bold;
 	float: left;
 	margin-bottom: 2px;
+	max-width: 90%;
 }
 
 table.smwfacttable {
@@ -212,7 +213,7 @@ span.smwsearchicon {
 .smwrdflink {
 	float: right;
 	font-size: small;
-	padding: 1px 0 0 0;
+	padding: 2px 0 0 0;
 }
 
 .concept-documenation {
