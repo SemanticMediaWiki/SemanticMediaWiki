@@ -245,7 +245,7 @@ class PropertyConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$propertyValue = new DIWikiPage( 'SomePropertyPageValue', NS_HELP );
 
 		$propertyValueName = \SMWTurtleSerializer::getTurtleNameForExpElement(
-			\SMWExporter::getInstance()->getInstance()->getResourceElementForWikiPage( $propertyValue )
+			\SMWExporter::getInstance()->getResourceElementForWikiPage( $propertyValue )
 		);
 
 		$description = new SomeProperty(

@@ -317,7 +317,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$category = new DIWikiPage( 'Foo', NS_CATEGORY, '' );
 
 		$categoryName = \SMWTurtleSerializer::getTurtleNameForExpElement(
-			\SMWExporter::getInstance()->getInstance()->getResourceElementForWikiPage( $category )
+			\SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
 		$description = new ClassDescription(
@@ -603,7 +603,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$category = new DIWikiPage( 'City', NS_CATEGORY );
 
 		$categoryName = \SMWTurtleSerializer::getTurtleNameForExpElement(
-			\SMWExporter::getInstance()->getInstance()->getResourceElementForWikiPage( $category )
+			\SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
 		$conjunction = new Conjunction( array(

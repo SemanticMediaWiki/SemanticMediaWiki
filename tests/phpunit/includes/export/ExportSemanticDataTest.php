@@ -97,7 +97,7 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 		$exportData = Exporter::getInstance()->makeExportData( $semanticData );
 
 		$expectedProperty = new ExpNsResource(
-			Exporter::getInstance()->getInstance()->getEncodedPropertyNamespace() . '123',
+			Exporter::getInstance()->getEncodedPropertyNamespace() . '123',
 			Exporter::getInstance()->getNamespaceUri( 'wiki' ),
 			'wiki',
 			new DIWikiPage( '123', SMW_NS_PROPERTY )

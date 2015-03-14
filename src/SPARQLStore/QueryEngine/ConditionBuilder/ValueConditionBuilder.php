@@ -42,7 +42,7 @@ class ValueConditionBuilder implements ConditionBuilder {
 	 */
 	public function __construct( CompoundConditionBuilder $compoundConditionBuilder = null ) {
 		$this->compoundConditionBuilder = $compoundConditionBuilder;
-		$this->exporter = Exporter::getInstance()->getInstance();
+		$this->exporter = Exporter::getInstance();
 	}
 
 	/**

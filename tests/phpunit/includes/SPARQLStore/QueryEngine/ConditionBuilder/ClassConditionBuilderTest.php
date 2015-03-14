@@ -107,7 +107,7 @@ class ClassConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
 
 		$categoryName = \SMWTurtleSerializer::getTurtleNameForExpElement(
-			\SMWExporter::getInstance()->getInstance()->getResourceElementForWikiPage( $category )
+			\SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
 		$description = new ClassDescription( $category );
@@ -130,13 +130,13 @@ class ClassConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$categoryFoo = new DIWikiPage( 'Foo', NS_CATEGORY );
 
 		$categoryFooName = \SMWTurtleSerializer::getTurtleNameForExpElement(
-			\SMWExporter::getInstance()->getInstance()->getResourceElementForWikiPage( $categoryFoo )
+			\SMWExporter::getInstance()->getResourceElementForWikiPage( $categoryFoo )
 		);
 
 		$categoryBar = new DIWikiPage( 'Bar', NS_CATEGORY );
 
 		$categoryBarName = \SMWTurtleSerializer::getTurtleNameForExpElement(
-			\SMWExporter::getInstance()->getInstance()->getResourceElementForWikiPage( $categoryBar )
+			\SMWExporter::getInstance()->getResourceElementForWikiPage( $categoryBar )
 		);
 
 		$description = new ClassDescription( array(
