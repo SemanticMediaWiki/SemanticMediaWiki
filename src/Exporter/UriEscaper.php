@@ -31,7 +31,7 @@ class UriEscaper {
 	}
 
 	/**
-	 * This function unescapes URIs generated with SMWExporter::getInstance()->encodeURI. This
+	 * This function unescapes URIs generated with SMWExporter::getInstance()->getInstance()->encodeURI. This
 	 * allows services that receive a URI to extract e.g. the according wiki page.
 	 *
 	 * @param string

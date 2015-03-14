@@ -110,8 +110,8 @@ class RedirectLookup {
 	private function lookupResourceUriTargetFromDatabase( ExpNsResource $expNsResource ) {
 
 		$resourceUri = TurtleSerializer::getTurtleNameForExpElement( $expNsResource );
-		$rediUri = TurtleSerializer::getTurtleNameForExpElement( Exporter::getSpecialPropertyResource( '_REDI' ) );
-		$skeyUri = TurtleSerializer::getTurtleNameForExpElement( Exporter::getSpecialPropertyResource( '_SKEY' ) );
+		$rediUri = TurtleSerializer::getTurtleNameForExpElement( Exporter::getInstance()->getSpecialPropertyResource( '_REDI' ) );
+		$skeyUri = TurtleSerializer::getTurtleNameForExpElement( Exporter::getInstance()->getSpecialPropertyResource( '_SKEY' ) );
 
 		$federateResultSet = $this->connection->select(
 			'*',
@@ -130,7 +130,7 @@ class RedirectLookup {
 		}
 
 		$rediTargetUri = $rediTargetElement->getUri();
-		$wikiNamespace = Exporter::getNamespaceUri( 'wiki' );
+		$wikiNamespace = Exporter::getInstance()->getNamespaceUri( 'wiki' );
 
 		if ( strpos( $rediTargetUri, $wikiNamespace ) === 0 ) {
 			return new ExpNsResource( substr( $rediTargetUri, strlen( $wikiNamespace ) ), $wikiNamespace, 'wiki' );

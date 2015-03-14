@@ -117,7 +117,7 @@ class CompoundConditionBuilder {
 		$conditionAsString = $condition->getWeakConditionString();
 
 		if ( ( $conditionAsString === '' ) && !$condition->isSafe() ) {
-			$swivtPageResource = Exporter::getSpecialNsResource( 'swivt', 'page' );
+			$swivtPageResource = Exporter::getInstance()->getSpecialNsResource( 'swivt', 'page' );
 			$conditionAsString = '?' . $this->resultVariable . ' ' . $swivtPageResource->getQName() . " ?url .\n";
 		}
 
@@ -222,7 +222,7 @@ class CompoundConditionBuilder {
 		}
 
 		$condition->orderByVariable = $mainVariable . 'sk';
-		$skeyExpElement = Exporter::getSpecialPropertyResource( '_SKEY' );
+		$skeyExpElement = Exporter::getInstance()->getSpecialPropertyResource( '_SKEY' );
 
 		$weakConditions = array(
 			$condition->orderByVariable =>"?$mainVariable " . $skeyExpElement->getQName() . " ?{$condition->orderByVariable} .\n"

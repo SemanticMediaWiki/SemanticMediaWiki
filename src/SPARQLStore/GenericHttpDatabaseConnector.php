@@ -558,7 +558,7 @@ class GenericHttpDatabaseConnector {
 		$prefixOutro = $forSparql ? "\n" : " .\n";
 
 		foreach ( array( 'wiki', 'rdf', 'rdfs', 'owl', 'swivt', 'property', 'xsd' ) as $shortname ) {
-			$prefixString .= "{$prefixIntro}{$shortname}: <" . Exporter::getNamespaceUri( $shortname ) . ">$prefixOutro";
+			$prefixString .= "{$prefixIntro}{$shortname}: <" . Exporter::getInstance()->getNamespaceUri( $shortname ) . ">$prefixOutro";
 			unset( $extraNamespaces[$shortname] ); // avoid double declaration
 		}
 

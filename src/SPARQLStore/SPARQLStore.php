@@ -129,8 +129,8 @@ class SPARQLStore extends Store {
 
 		$oldWikiPage = DIWikiPage::newFromTitle( $oldtitle );
 		$newWikiPage = DIWikiPage::newFromTitle( $newtitle );
-		$oldExpResource = Exporter::getDataItemExpElement( $oldWikiPage );
-		$newExpResource = Exporter::getDataItemExpElement( $newWikiPage );
+		$oldExpResource = Exporter::getInstance()->getDataItemExpElement( $oldWikiPage );
+		$newExpResource = Exporter::getInstance()->getDataItemExpElement( $newWikiPage );
 		$namespaces = array( $oldExpResource->getNamespaceId() => $oldExpResource->getNamespace() );
 		$namespaces[$newExpResource->getNamespaceId()] = $newExpResource->getNamespace();
 		$oldUri = TurtleSerializer::getTurtleNameForExpElement( $oldExpResource );
@@ -235,14 +235,14 @@ class SPARQLStore extends Store {
 
 		$extraNamespaces = array();
 
-		$expResource = Exporter::getDataItemExpElement( $dataItem );
+		$expResource = Exporter::getInstance()->getDataItemExpElement( $dataItem );
 		$resourceUri = TurtleSerializer::getTurtleNameForExpElement( $expResource );
 
 		if ( $expResource instanceof ExpNsResource ) {
 			$extraNamespaces = array( $expResource->getNamespaceId() => $expResource->getNamespace() );
 		}
 
-		$masterPageProperty = Exporter::getSpecialNsResource( 'swivt', 'masterPage' );
+		$masterPageProperty = Exporter::getInstance()->getSpecialNsResource( 'swivt', 'masterPage' );
 		$masterPagePropertyUri = TurtleSerializer::getTurtleNameForExpElement( $masterPageProperty );
 
 		$success = $this->getConnection()->deleteContentByValue( $masterPagePropertyUri, $resourceUri, $extraNamespaces );

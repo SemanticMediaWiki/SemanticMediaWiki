@@ -42,7 +42,7 @@ class ValueConditionBuilder implements ConditionBuilder {
 	 */
 	public function __construct( CompoundConditionBuilder $compoundConditionBuilder = null ) {
 		$this->compoundConditionBuilder = $compoundConditionBuilder;
-		$this->exporter = Exporter::getInstance();
+		$this->exporter = Exporter::getInstance()->getInstance();
 	}
 
 	/**
@@ -214,7 +214,7 @@ class ValueConditionBuilder implements ConditionBuilder {
 
 		// Pattern search for a wikipage object can only be done on the sortkey
 		// literal and not on it's resource
-		$skeyExpElement = Exporter::getSpecialPropertyResource( '_SKEY' );
+		$skeyExpElement = Exporter::getInstance()->getSpecialPropertyResource( '_SKEY' );
 
 		$expElement = $this->exporter->getDataItemExpElement( $dataItem->getSortKeyDataItem() );
 		$condition = new SingletonCondition( $expElement );

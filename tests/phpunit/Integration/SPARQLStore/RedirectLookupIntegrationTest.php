@@ -74,7 +74,7 @@ class RedirectLookupIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 		$expNsResource = new ExpNsResource(
 			'RedirectLookupForExistingEntry',
-			Exporter::getNamespaceUri( 'property' ),
+			Exporter::getInstance()->getNamespaceUri( 'property' ),
 			'property'
 		);
 
@@ -94,13 +94,13 @@ class RedirectLookupIntegrationTest extends \PHPUnit_Framework_TestCase {
 	public function resourceProvider() {
 
 		$provider[] = array(
-			Exporter::getSpecialNsResource( 'rdf', 'type' )
+			Exporter::getInstance()->getSpecialNsResource( 'rdf', 'type' )
 		);
 
 		$provider[] = array(
 			new ExpNsResource(
 				'FooRedirectLookup',
-				Exporter::getNamespaceUri( 'property' ),
+				Exporter::getInstance()->getNamespaceUri( 'property' ),
 				'property',
 				new DIWikiPage( 'FooRedirectLookup', SMW_NS_PROPERTY, '' )
 			)

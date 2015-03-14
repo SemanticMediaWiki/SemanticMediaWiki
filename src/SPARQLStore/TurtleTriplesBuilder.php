@@ -163,7 +163,7 @@ class TurtleTriplesBuilder {
 
 		$result = array();
 
-		$expData = SMWExporter::makeExportData( $semanticData );
+		$expData = SMWExporter::getInstance()->makeExportData( $semanticData );
 		$newExpData = $this->expandUpdateExpData( $expData, $result, false );
 		array_unshift( $result, $newExpData );
 
@@ -231,7 +231,7 @@ class TurtleTriplesBuilder {
 			$hash = $diWikiPage->getHash();
 
 			if ( !isset( self::$dataItemExportCache[ $hash ] ) ) {
-				self::$dataItemExportCache[ $hash ] = SMWExporter::getInstance()->makeExportDataForSubject( $diWikiPage, true );
+				self::$dataItemExportCache[ $hash ] = SMWExporter::getInstance()->getInstance()->makeExportDataForSubject( $diWikiPage, true );
 			}
 
 			$auxiliaryExpData[ $hash ] = self::$dataItemExportCache[ $hash ];

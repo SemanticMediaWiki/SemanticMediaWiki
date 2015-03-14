@@ -83,7 +83,7 @@ class DatePropertyValueQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->getStore()->updateData( $semanticData );
 
-		Exporter::clear();
+		Exporter::getInstance()->clear();
 
 		$this->assertArrayHasKey(
 			$property->getKey(),
@@ -132,7 +132,7 @@ class DatePropertyValueQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		// #576 introduced resource caching, therefore make sure that the
 		// instance is cleared after data have been created before further
 		// tests are carried out
-		Exporter::clear();
+		Exporter::getInstance()->clear();
 
 		/**
 		 * @query {{#ask: [[Founded::SomeDistinctValue]] }}

@@ -321,7 +321,7 @@ class ConjunctionConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$propertyValue = new DIWikiPage( 'SomePropertyPageValue', NS_HELP );
 
 		$propertyValueName = \SMWTurtleSerializer::getTurtleNameForExpElement(
-			\SMWExporter::getInstance()->getResourceElementForWikiPage( $propertyValue )
+			\SMWExporter::getInstance()->getInstance()->getResourceElementForWikiPage( $propertyValue )
 		);
 
 		$description = new SomeProperty(
@@ -332,7 +332,7 @@ class ConjunctionConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$category = new DIWikiPage( 'Bar', NS_CATEGORY );
 
 		$categoryName = \SMWTurtleSerializer::getTurtleNameForExpElement(
-			\SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
+			\SMWExporter::getInstance()->getInstance()->getResourceElementForWikiPage( $category )
 		);
 
 		$description = new Conjunction(array(

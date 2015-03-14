@@ -57,28 +57,28 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::newFromTitle( $redirectTarget->getTitle(), '__red' )
 		);
 
-		$exportData = Exporter::makeExportData( $semanticData );
+		$exportData = Exporter::getInstance()->makeExportData( $semanticData );
 
 		$this->assertCount(
 			1,
-			$exportData->getValues( Exporter::getSpecialNsResource( 'swivt', 'redirectsTo' ) )
+			$exportData->getValues( Exporter::getInstance()->getSpecialNsResource( 'swivt', 'redirectsTo' ) )
 		);
 
 		$this->assertCount(
 			1,
-			$exportData->getValues( Exporter::getSpecialNsResource(  'owl', 'sameAs' ) )
+			$exportData->getValues( Exporter::getInstance()->getSpecialNsResource(  'owl', 'sameAs' ) )
 		);
 
 		$expectedResourceElement = new ExpNsResource(
 			'FooRedirectTarget',
-			Exporter::getNamespaceUri( 'wiki' ),
+			Exporter::getInstance()->getNamespaceUri( 'wiki' ),
 			'wiki',
 			$redirectTarget
 		);
 
 		$this->exportDataValidator->assertThatExportDataContainsResource(
 			$expectedResourceElement,
-			Exporter::getSpecialNsResource( 'owl', 'sameAs' ),
+			Exporter::getInstance()->getSpecialNsResource( 'owl', 'sameAs' ),
 			$exportData
 		);
 	}
@@ -94,11 +94,11 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 			new DIWikiPage( '345', NS_MAIN )
 		);
 
-		$exportData = Exporter::makeExportData( $semanticData );
+		$exportData = Exporter::getInstance()->makeExportData( $semanticData );
 
 		$expectedProperty = new ExpNsResource(
-			Exporter::getInstance()->getEncodedPropertyNamespace() . '123',
-			Exporter::getNamespaceUri( 'wiki' ),
+			Exporter::getInstance()->getInstance()->getEncodedPropertyNamespace() . '123',
+			Exporter::getInstance()->getNamespaceUri( 'wiki' ),
 			'wiki',
 			new DIWikiPage( '123', SMW_NS_PROPERTY )
 		);
@@ -115,7 +115,7 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 		$expectedResourceElement = new ExpNsResource(
 			'345',
-			Exporter::getNamespaceUri( 'wiki' ),
+			Exporter::getInstance()->getNamespaceUri( 'wiki' ),
 			'wiki',
 			new DIWikiPage( '345', NS_MAIN )
 		);
@@ -138,11 +138,11 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 			new DIWikiPage( '345', NS_MAIN )
 		);
 
-		$exportData = Exporter::makeExportData( $semanticData );
+		$exportData = Exporter::getInstance()->makeExportData( $semanticData );
 
 		$expectedProperty = new ExpNsResource(
 			'A123',
-			Exporter::getNamespaceUri( 'property' ),
+			Exporter::getInstance()->getNamespaceUri( 'property' ),
 			'property',
 			new DIWikiPage( 'A123', SMW_NS_PROPERTY )
 		);
@@ -159,7 +159,7 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 		$expectedResource = new ExpNsResource(
 			'345',
-			Exporter::getNamespaceUri( 'wiki' ),
+			Exporter::getInstance()->getNamespaceUri( 'wiki' ),
 			'wiki',
 			new DIWikiPage( '345', NS_MAIN )
 		);
@@ -181,23 +181,23 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 			$this->dataValueFactory->newPropertyObjectValue( new DIProperty( '_SUBP' ), 'SomeTopProperty' )
 		);
 
-		$exportData = Exporter::makeExportData( $semanticData );
+		$exportData = Exporter::getInstance()->makeExportData( $semanticData );
 
 		$this->assertCount(
 			1,
-			$exportData->getValues( Exporter::getSpecialNsResource( 'rdfs', 'subPropertyOf' ) )
+			$exportData->getValues( Exporter::getInstance()->getSpecialNsResource( 'rdfs', 'subPropertyOf' ) )
 		);
 
 		$expectedResourceElement = new ExpNsResource(
 			'SomeTopProperty',
-			Exporter::getNamespaceUri( 'property' ),
+			Exporter::getInstance()->getNamespaceUri( 'property' ),
 			'property',
 			new DIWikiPage( 'SomeTopProperty', SMW_NS_PROPERTY )
 		);
 
 		$this->exportDataValidator->assertThatExportDataContainsResource(
 			$expectedResourceElement,
-			Exporter::getSpecialNsResource( 'rdfs', 'subPropertyOf' ),
+			Exporter::getInstance()->getSpecialNsResource( 'rdfs', 'subPropertyOf' ),
 			$exportData
 		);
 	}
@@ -210,23 +210,23 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 			$this->dataValueFactory->newPropertyObjectValue( new DIProperty( '_INST' ), 'SomeCategory' )
 		);
 
-		$exportData = Exporter::makeExportData( $semanticData );
+		$exportData = Exporter::getInstance()->makeExportData( $semanticData );
 
 		$this->assertCount(
 			2,
-			$exportData->getValues( Exporter::getSpecialNsResource( 'rdf', 'type' ) )
+			$exportData->getValues( Exporter::getInstance()->getSpecialNsResource( 'rdf', 'type' ) )
 		);
 
 		$expectedResourceElement = new ExpNsResource(
-			Exporter::getEncodedPageName( new DIWikiPage( 'SomeCategory', NS_CATEGORY ) ),
-			Exporter::getNamespaceUri( 'wiki' ),
+			Exporter::getInstance()->getEncodedPageName( new DIWikiPage( 'SomeCategory', NS_CATEGORY ) ),
+			Exporter::getInstance()->getNamespaceUri( 'wiki' ),
 			'wiki',
 			new DIWikiPage( 'SomeCategory', NS_CATEGORY )
 		);
 
 		$this->exportDataValidator->assertThatExportDataContainsResource(
 			$expectedResourceElement,
-			Exporter::getSpecialNsResource( 'rdf', 'type' ),
+			Exporter::getInstance()->getSpecialNsResource( 'rdf', 'type' ),
 			$exportData
 		);
 	}
@@ -241,23 +241,23 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 			$this->dataValueFactory->newPropertyObjectValue( new DIProperty( '_SUBC' ), 'SomeTopCategory' )
 		);
 
-		$exportData = Exporter::makeExportData( $semanticData );
+		$exportData = Exporter::getInstance()->makeExportData( $semanticData );
 
 		$this->assertCount(
 			1,
-			$exportData->getValues( Exporter::getSpecialNsResource( 'rdfs', 'subClassOf' ) )
+			$exportData->getValues( Exporter::getInstance()->getSpecialNsResource( 'rdfs', 'subClassOf' ) )
 		);
 
 		$expectedResourceElement = new ExpNsResource(
-			Exporter::getEncodedPageName( new DIWikiPage( 'SomeTopCategory', NS_CATEGORY ) ),
-			Exporter::getNamespaceUri( 'wiki' ),
+			Exporter::getInstance()->getEncodedPageName( new DIWikiPage( 'SomeTopCategory', NS_CATEGORY ) ),
+			Exporter::getInstance()->getNamespaceUri( 'wiki' ),
 			'wiki',
 			new DIWikiPage( 'SomeTopCategory', NS_CATEGORY )
 		);
 
 		$this->exportDataValidator->assertThatExportDataContainsResource(
 			$expectedResourceElement,
-			Exporter::getSpecialNsResource( 'rdfs', 'subClassOf' ),
+			Exporter::getInstance()->getSpecialNsResource( 'rdfs', 'subClassOf' ),
 			$exportData
 		);
 	}
@@ -274,17 +274,17 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 			$subobject->getContainer()
 		);
 
-		$exportData = Exporter::makeExportData( $semanticData );
+		$exportData = Exporter::getInstance()->makeExportData( $semanticData );
 
 		$expectedProperty = new ExpNsResource(
 			$this->transformPropertyLabelToAuxiliary( $subobject->getProperty() ),
-			Exporter::getNamespaceUri( 'property' ),
+			Exporter::getInstance()->getNamespaceUri( 'property' ),
 			'property',
 			new DIWikiPage( 'Has_subobject', SMW_NS_PROPERTY )
 		);
 
 		$this->assertTrue(
-			Exporter::hasHelperExpElement( $subobject->getProperty() )
+			Exporter::getInstance()->hasHelperExpElement( $subobject->getProperty() )
 		);
 
 		$this->assertCount(
@@ -298,8 +298,8 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expectedResource = new ExpNsResource(
-			Exporter::getEncodedPageName( $subobject->getSemanticData()->getSubject() ) . '-23' . 'Foo',
-			Exporter::getNamespaceUri( 'wiki' ),
+			Exporter::getInstance()->getEncodedPageName( $subobject->getSemanticData()->getSubject() ) . '-23' . 'Foo',
+			Exporter::getInstance()->getNamespaceUri( 'wiki' ),
 			'wiki',
 			$subobject->getSemanticData()->getSubject()
 		);
@@ -325,18 +325,18 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 			$demographicsSubobject->getContainer()
 		);
 
-		$exportData = Exporter::makeExportData(
+		$exportData = Exporter::getInstance()->makeExportData(
 			$semanticData->findSubSemanticData( $demographicsSubobject->getSubobjectId() )
 		);
 
 		$this->assertCount(
 			1,
-			$exportData->getValues( Exporter::getSpecialPropertyResource( '_SKEY' ) )
+			$exportData->getValues( Exporter::getInstance()->getSpecialPropertyResource( '_SKEY' ) )
 		);
 
 		$this->assertCount(
 			1,
-			$exportData->getValues( Exporter::getSpecialNsResource( 'swivt', 'wikiNamespace' ) )
+			$exportData->getValues( Exporter::getInstance()->getSpecialNsResource( 'swivt', 'wikiNamespace' ) )
 		);
 	}
 

@@ -32,7 +32,7 @@ class SMWExporterTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyPage = new DIWikiPage( 'Foo', SMW_NS_PROPERTY );
 
-		$expData = Exporter::makeExportDataForSubject( $propertyPage );
+		$expData = Exporter::getInstance()->makeExportDataForSubject( $propertyPage );
 
 		$this->assertInstanceOf(
 			'\SMWExpData',
@@ -53,7 +53,7 @@ class SMWExporterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertSame(
 			$expected,
-			Exporter::getEncodedPageName( $page )
+			Exporter::getInstance()->getEncodedPageName( $page )
 		);
 	}
 
@@ -63,12 +63,12 @@ class SMWExporterTest extends \PHPUnit_Framework_TestCase {
 	public function testGetDataItemExpElement( DataItem $dataItem, $instance ) {
 
 		if ( $instance === null ) {
-			return $this->assertNull( Exporter::getDataItemExpElement( $dataItem ) );
+			return $this->assertNull( Exporter::getInstance()->getDataItemExpElement( $dataItem ) );
 		}
 
 		$this->assertInstanceOf(
 			$instance,
-			Exporter::getDataItemExpElement( $dataItem )
+			Exporter::getInstance()->getDataItemExpElement( $dataItem )
 		);
 	}
 
@@ -78,11 +78,11 @@ class SMWExporterTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testFindDataItemForExpElement( $uri, $expectedDataItem ) {
 
-		$uri = Exporter::getNamespaceUri( 'wiki' ) . $uri;
+		$uri = Exporter::getInstance()->getNamespaceUri( 'wiki' ) . $uri;
 
 		$this->assertEquals(
 			$expectedDataItem,
-			Exporter::findDataItemForExpElement( new ExpResource( $uri ) )
+			Exporter::getInstance()->findDataItemForExpElement( new ExpResource( $uri ) )
 		);
 	}
 
