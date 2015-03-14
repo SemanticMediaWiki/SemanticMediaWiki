@@ -25,6 +25,7 @@
 	"smw_iq_moreresults": "... rohkem tulemusi",
 	"smw_parseerror": "Sisestatud väärtusest ei saadud aru.",
 	"smw_notitle": "\"$1\" ei saa siin wikis lehekülje nimena kasutada.",
+	"smw_emptystring": "Tühjad väljad ei sobi.",
 	"smw_true_words": "tõene,t,jah,j",
 	"smw_false_words": "väär,v,ei,e",
 	"smw_nofloat": "\"$1\" pole number.",
