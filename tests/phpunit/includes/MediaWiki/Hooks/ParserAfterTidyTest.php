@@ -38,6 +38,12 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 		$this->semanticDataValidator = new SemanticDataValidator();
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->parserFactory = new ParserFactory();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->applicationFactory->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {

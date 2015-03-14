@@ -105,4 +105,18 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNewTypeByImportPropertyAnnotator() {
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new PropertyAnnotatorFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Annotator\TypeByImportPropertyAnnotator',
+			$instance->newTypeByImportPropertyAnnotator( $semanticData )
+		);
+	}
+
 }
