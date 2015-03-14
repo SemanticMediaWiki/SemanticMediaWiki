@@ -76,11 +76,11 @@ class RdfResultPrinter extends FileExportPrinter {
 		if ( $outputMode == SMW_OUTPUT_FILE ) { // make RDF file
 			$serializer = $this->syntax == 'turtle' ? new SMWTurtleSerializer() : new SMWRDFXMLSerializer();
 			$serializer->startSerialization();
-			$serializer->serializeExpData( SMWExporter::getOntologyExpData( '' ) );
+			$serializer->serializeExpData( SMWExporter::getInstance()->getOntologyExpData( '' ) );
 
 			while ( $row = $res->getNext() ) {
 				$subjectDi = reset( $row )->getResultSubject();
-				$data = SMWExporter::makeExportDataForSubject( $subjectDi );
+				$data = SMWExporter::getInstance()->makeExportDataForSubject( $subjectDi );
 
 				foreach ( $row as $resultarray ) {
 					$printreq = $resultarray->getPrintRequest();
@@ -102,7 +102,7 @@ class RdfResultPrinter extends FileExportPrinter {
 					}
 
 					if ( !is_null( $property ) ) {
-						SMWExporter::addPropertyValues( $property, $resultarray->getContent() , $data, $subjectDi );
+						SMWExporter::getInstance()->addPropertyValues( $property, $resultarray->getContent() , $data, $subjectDi );
 					}
 				}
 				$serializer->serializeExpData( $data );

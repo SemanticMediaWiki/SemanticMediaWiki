@@ -303,7 +303,7 @@ class SMWInfolink {
 			}
 		} else {
 			if ( count( $this->mParams ) > 0 ) {
-				if ( strpos( SMWExporter::expandURI( '&wikiurl;' ), '?' ) === false ) {
+				if ( strpos( SMWExporter::getInstance()->expandURI( '&wikiurl;' ), '?' ) === false ) {
 					$target = $this->mTarget . '?' . SMWInfolink::encodeParameters( $this->mParams, false );
 				} else {
 					$target = $this->mTarget . '&' . SMWInfolink::encodeParameters( $this->mParams, false );

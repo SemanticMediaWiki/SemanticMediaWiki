@@ -298,17 +298,17 @@ class SMWExporter {
 	 * SMWDIProperty object.
 	 * This code is only applied to user-defined properties, since the
 	 * code for special properties in
-	 * SMWExporter::getSpecialPropertyResource() may require information
+	 * SMWExporter::getInstance()->getSpecialPropertyResource() may require information
 	 * about the namespace in which some special property is used.
 	 *
 	 * @param $diProperty SMWDIProperty
-	 * @param $helperProperty boolean determines if an auxiliary property resource to store a helper value (see SMWExporter::getDataItemHelperExpElement()) should be generated
+	 * @param $helperProperty boolean determines if an auxiliary property resource to store a helper value (see SMWExporter::getInstance()->getDataItemHelperExpElement()) should be generated
 	 * @return SMWExpResource
 	 */
 	static public function getResourceElementForProperty( SMWDIProperty $diProperty, $helperProperty = false ) {
 		$diWikiPage = $diProperty->getDiWikiPage();
 		if ( is_null( $diWikiPage ) ) {
-			throw new Exception( 'SMWExporter::getResourceElementForProperty() can only be used for non-inverse, user-defined properties.' );
+			throw new Exception( 'SMWExporter::getInstance()->getResourceElementForProperty() can only be used for non-inverse, user-defined properties.' );
 		} elseif ( $helperProperty ) {
 			return self::getResourceElementForWikiPage( $diWikiPage, 'aux' );
 		} else {
@@ -546,7 +546,7 @@ class SMWExporter {
 	 * URIs. Given a string with such entities, it returns a string with
 	 * all entities properly replaced.
 	 *
-	 * @note The function SMWExporter::getNamespaceUri() is often more
+	 * @note The function SMWExporter::getInstance()->getNamespaceUri() is often more
 	 * suitable. This XML-specific method might become obsolete.
 	 *
 	 * @param $uri string of the URI to be expanded
@@ -606,8 +606,8 @@ class SMWExporter {
 	 * Create an SWMExpElement that encodes the data of the given
 	 * dataitem object. This method is meant to be used when exporting a
 	 * dataitem as a subject or object. To get the URI of a property, use
-	 * SMWExporter::getResourceElementForProperty() or
-	 * SMWExporter::getSpecialPropertyResource().
+	 * SMWExporter::getInstance()->getResourceElementForProperty() or
+	 * SMWExporter::getInstance()->getSpecialPropertyResource().
 	 *
 	 * @param $dataItem SMWDataItem
 	 * @return SMWExpElement
@@ -706,7 +706,7 @@ class SMWExporter {
 
 	/**
 	 * Check whether the values of a given type of dataitem have helper
-	 * values in the sense of SMWExporter::getDataItemHelperExpElement().
+	 * values in the sense of SMWExporter::getInstance()->getDataItemHelperExpElement().
 	 *
 	 * @param DIProperty $property
 	 *

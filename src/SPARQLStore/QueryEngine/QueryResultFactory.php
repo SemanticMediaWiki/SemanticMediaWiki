@@ -98,7 +98,7 @@ class QueryResultFactory {
 
 		foreach ( $federateResultSet as $resultRow ) {
 			if ( count( $resultRow ) > 0 ) {
-				$dataItem = Exporter::findDataItemForExpElement( $resultRow[0] );
+				$dataItem = Exporter::getInstance()->findDataItemForExpElement( $resultRow[0] );
 
 				if ( !is_null( $dataItem ) ) {
 					$resultDataItems[] = $dataItem;

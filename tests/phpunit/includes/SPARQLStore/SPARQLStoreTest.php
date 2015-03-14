@@ -80,7 +80,7 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$title = Title::newFromText( 'DeleteSubjectOnMockBaseStore' );
 
-		$expResource = Exporter::getDataItemExpElement( DIWikiPage::newFromTitle( $title ) );
+		$expResource = Exporter::getInstance()->getDataItemExpElement( DIWikiPage::newFromTitle( $title ) );
 		$resourceUri = TurtleSerializer::getTurtleNameForExpElement( $expResource );
 
 		$extraNamespaces = array(

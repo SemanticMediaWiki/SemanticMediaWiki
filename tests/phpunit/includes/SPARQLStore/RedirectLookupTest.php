@@ -144,7 +144,7 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$resource = new ExpNsResource(
 			'Foo',
-			Exporter::getNamespaceUri( 'property' ),
+			Exporter::getInstance()->getNamespaceUri( 'property' ),
 			'property',
 			$propertyPage
 		);
@@ -167,8 +167,8 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expectedResource = new ExpNsResource(
-			Exporter::getInstance()->getEncodedPageName( $propertyPage ),
-			Exporter::getNamespaceUri( 'wiki' ),
+			Exporter::getInstance()->getInstance()->getEncodedPageName( $propertyPage ),
+			Exporter::getInstance()->getNamespaceUri( 'wiki' ),
 			'wiki'
 		);
 
@@ -280,23 +280,23 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 	public function nonRedirectableResourceProvider() {
 
 		$provider[] = array(
-			Exporter::getInstance()->getSpecialPropertyResource( '_INST' )
+			Exporter::getInstance()->getInstance()->getSpecialPropertyResource( '_INST' )
 		);
 
 		$provider[] = array(
-			Exporter::getInstance()->getSpecialPropertyResource( '_SUBC' )
+			Exporter::getInstance()->getInstance()->getSpecialPropertyResource( '_SUBC' )
 		);
 
 		$provider[] = array(
-			Exporter::getInstance()->getSpecialPropertyResource( '_REDI' )
+			Exporter::getInstance()->getInstance()->getSpecialPropertyResource( '_REDI' )
 		);
 
 		$provider[] = array(
-			Exporter::getInstance()->getSpecialPropertyResource( '_MDAT' )
+			Exporter::getInstance()->getInstance()->getSpecialPropertyResource( '_MDAT' )
 		);
 
 		$provider[] = array(
-			Exporter::getInstance()->getResourceElementForProperty( new DIProperty( 'Foo' ), true )
+			Exporter::getInstance()->getInstance()->getResourceElementForProperty( new DIProperty( 'Foo' ), true )
 		);
 
 		return $provider;

@@ -68,27 +68,27 @@ class SMWTurtleSerializer extends SMWSerializer{
 		if ( $this->sparqlmode ) {
 			$this->pre_ns_buffer = '';
 			$this->sparql_namespaces = array(
-				"rdf" => SMWExporter::expandURI( '&rdf;' ),
-				"rdfs" => SMWExporter::expandURI( '&rdfs;' ),
-				"owl" => SMWExporter::expandURI( '&owl;' ),
-				"swivt" => SMWExporter::expandURI( '&swivt;' ),
-				"wiki" => SMWExporter::expandURI( '&wiki;' ),
-				"property" => SMWExporter::expandURI( '&property;' ),
+				"rdf" => SMWExporter::getInstance()->expandURI( '&rdf;' ),
+				"rdfs" => SMWExporter::getInstance()->expandURI( '&rdfs;' ),
+				"owl" => SMWExporter::getInstance()->expandURI( '&owl;' ),
+				"swivt" => SMWExporter::getInstance()->expandURI( '&swivt;' ),
+				"wiki" => SMWExporter::getInstance()->expandURI( '&wiki;' ),
+				"property" => SMWExporter::getInstance()->expandURI( '&property;' ),
 				"xsd" => "http://www.w3.org/2001/XMLSchema#" ,
-				"wikiurl" => SMWExporter::expandURI( '&wikiurl;' )
+				"wikiurl" => SMWExporter::getInstance()->expandURI( '&wikiurl;' )
 			);
 		} else {
 			$this->pre_ns_buffer =
-			"@prefix rdf: <" . SMWExporter::expandURI( '&rdf;' ) . "> .\n" .
-			"@prefix rdfs: <" . SMWExporter::expandURI( '&rdfs;' ) . "> .\n" .
-			"@prefix owl: <" . SMWExporter::expandURI( '&owl;' ) . "> .\n" .
-			"@prefix swivt: <" . SMWExporter::expandURI( '&swivt;' ) . "> .\n" .
+			"@prefix rdf: <" . SMWExporter::getInstance()->expandURI( '&rdf;' ) . "> .\n" .
+			"@prefix rdfs: <" . SMWExporter::getInstance()->expandURI( '&rdfs;' ) . "> .\n" .
+			"@prefix owl: <" . SMWExporter::getInstance()->expandURI( '&owl;' ) . "> .\n" .
+			"@prefix swivt: <" . SMWExporter::getInstance()->expandURI( '&swivt;' ) . "> .\n" .
 			// A note on "wiki": this namespace is crucial as a fallback when it would be illegal to start e.g. with a number.
 			// In this case, one can always use wiki:... followed by "_" and possibly some namespace, since _ is legal as a first character.
-			"@prefix wiki: <" . SMWExporter::expandURI( '&wiki;' ) . "> .\n" .
-			"@prefix property: <" . SMWExporter::expandURI( '&property;' ) . "> .\n" .
+			"@prefix wiki: <" . SMWExporter::getInstance()->expandURI( '&wiki;' ) . "> .\n" .
+			"@prefix property: <" . SMWExporter::getInstance()->expandURI( '&property;' ) . "> .\n" .
 			"@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n" . // note that this XSD URI is hardcoded below (its unlikely to change, of course)
-			"@prefix wikiurl: <" . SMWExporter::expandURI( '&wikiurl;' ) . "> .\n";
+			"@prefix wikiurl: <" . SMWExporter::getInstance()->expandURI( '&wikiurl;' ) . "> .\n";
 		}
 		$this->global_namespaces = array( 'rdf' => true, 'rdfs' => true, 'owl' => true, 'swivt' => true, 'wiki' => true, 'property' => true );
 		$this->post_ns_buffer = "\n";
@@ -101,7 +101,7 @@ class SMWTurtleSerializer extends SMWSerializer{
 	}
 
 	public function serializeDeclaration( $uri, $typename ) {
-		$this->post_ns_buffer .= "<" . SMWExporter::expandURI( $uri ) . "> rdf:type $typename .\n";
+		$this->post_ns_buffer .= "<" . SMWExporter::getInstance()->expandURI( $uri ) . "> rdf:type $typename .\n";
 	}
 
 	public function serializeExpData( SMWExpData $data ) {
@@ -227,7 +227,7 @@ class SMWTurtleSerializer extends SMWSerializer{
 			} elseif ( ( $expElement instanceof SMWExpNsResource ) && ( $expElement->hasAllowedLocalName() ) ) {
 				return $expElement->getQName();
 			} else {
-				return '<' . str_replace( '>', '\>', SMWExporter::expandURI( $expElement->getUri() ) ) . '>';
+				return '<' . str_replace( '>', '\>', SMWExporter::getInstance()->expandURI( $expElement->getUri() ) ) . '>';
 			}
 		} elseif ( $expElement instanceof SMWExpLiteral ) {
 			$lexicalForm = '"' . str_replace( array( '\\', "\n", '"' ), array( '\\\\', "\\n", '\"' ), $expElement->getLexicalForm() ) . '"';

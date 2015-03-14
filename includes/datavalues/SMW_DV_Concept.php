@@ -69,61 +69,61 @@ class SMWConceptValue extends SMWDataValue {
 	public function descriptionToExpData( $desc, &$exact ) {
 		if ( ( $desc instanceof SMWConjunction ) || ( $desc instanceof SMWDisjunction ) ) {
 			$result = new SMWExpData( new SMWExpResource( '' ) );
-			$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdf', 'type' ),
-			                                new SMWExpData( SMWExporter::getSpecialNsResource( 'owl', 'Class' ) ) );
+			$result->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' ),
+			                                new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'owl', 'Class' ) ) );
 			$elements = array();
 			foreach ( $desc->getDescriptions() as $subdesc ) {
 				$element = $this->descriptionToExpData( $subdesc, $exact );
 				if ( $element === false ) {
-					$element = new SMWExpData( SMWExporter::getSpecialNsResource( 'owl', 'Thing' ) );
+					$element = new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'owl', 'Thing' ) );
 				}
 				$elements[] = $element;
 			}
 			$prop = ( $desc instanceof SMWConjunction ) ? 'intersectionOf':'unionOf';
-			$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'owl', $prop ),
+			$result->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'owl', $prop ),
 			                                SMWExpData::makeCollection( $elements ) );
 		} elseif ( $desc instanceof SMWClassDescription ) {
 			if ( count( $desc->getCategories() ) == 1 ) { // single category
-				$result = new SMWExpData( SMWExporter::getResourceElement( end( $desc->getCategories() ) ) );
+				$result = new SMWExpData( SMWExporter::getInstance()->getResourceElement( end( $desc->getCategories() ) ) );
 			} else { // disjunction of categories
 				$result = new SMWExpData( new SMWExpResource( '' ) );
 				$elements = array();
 				foreach ( $desc->getCategories() as $cat ) {
-					$elements[] = new SMWExpData( SMWExporter::getResourceElement( $cat ) ); ;
+					$elements[] = new SMWExpData( SMWExporter::getInstance()->getResourceElement( $cat ) ); ;
 				}
-				$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'owl', 'unionOf' ),
+				$result->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'owl', 'unionOf' ),
 				                                SMWExpData::makeCollection( $elements ) );
 			}
-			$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdf', 'type' ),
-			                                new SMWExpData( SMWExporter::getSpecialNsResource( 'owl', 'Class' ) ) );
+			$result->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' ),
+			                                new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'owl', 'Class' ) ) );
 		} elseif ( $desc instanceof SMWConceptDescription ) {
-			$result = new SMWExpData( SMWExporter::getResourceElement( $desc->getConcept() ) );
+			$result = new SMWExpData( SMWExporter::getInstance()->getResourceElement( $desc->getConcept() ) );
 		} elseif ( $desc instanceof SMWSomeProperty ) {
 			$result = new SMWExpData( new SMWExpResource( '' ) );
-			$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdf', 'type' ),
-			                                new SMWExpData( SMWExporter::getSpecialNsResource( 'owl', 'Restriction' ) ) );
-			$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'owl', 'onProperty' ),
-			                                new SMWExpData( SMWExporter::getResourceElement( $desc->getProperty() ) ) );
+			$result->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' ),
+			                                new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'owl', 'Restriction' ) ) );
+			$result->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'owl', 'onProperty' ),
+			                                new SMWExpData( SMWExporter::getInstance()->getResourceElement( $desc->getProperty() ) ) );
 			$subdata = $this->descriptionToExpData( $desc->getDescription(), $exact );
 			if ( ( $desc->getDescription() instanceof SMWValueDescription ) &&
 			     ( $desc->getDescription()->getComparator() == SMW_CMP_EQ ) ) {
-				$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'owl', 'hasValue' ), $subdata );
+				$result->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'owl', 'hasValue' ), $subdata );
 			} else {
 				if ( $subdata === false ) {
-					$owltype = SMWExporter::getOWLPropertyType( $desc->getProperty()->getPropertyTypeID() );
+					$owltype = SMWExporter::getInstance()->getOWLPropertyType( $desc->getProperty()->getPropertyTypeID() );
 					if ( $owltype == 'ObjectProperty' ) {
-						$subdata = new SMWExpData( SMWExporter::getSpecialNsResource( 'owl', 'Thing' ) );
+						$subdata = new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'owl', 'Thing' ) );
 					} elseif ( $owltype == 'DatatypeProperty' ) {
-						$subdata = new SMWExpData( SMWExporter::getSpecialNsResource( 'rdfs', 'Literal' ) );
+						$subdata = new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'rdfs', 'Literal' ) );
 					} else { // no restrictions at all with annotation properties ...
-						return new SMWExpData( SMWExporter::getSpecialNsResource( 'owl', 'Thing' ) );
+						return new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'owl', 'Thing' ) );
 					}
 				}
-				$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'owl', 'someValuesFrom' ), $subdata );
+				$result->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'owl', 'someValuesFrom' ), $subdata );
 			}
 		} elseif ( $desc instanceof SMWValueDescription ) {
 			if ( $desc->getComparator() == SMW_CMP_EQ ) {
-				$result = SMWExporter::getDataItemExpElement( $desc->getDataItem() );
+				$result = SMWExporter::getInstance()->getDataItemExpElement( $desc->getDataItem() );
 			} else { // alas, OWL cannot represent <= and >= ...
 				$exact = false;
 				$result = false;

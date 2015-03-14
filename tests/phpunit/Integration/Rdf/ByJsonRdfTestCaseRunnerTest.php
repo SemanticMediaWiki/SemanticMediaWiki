@@ -77,7 +77,7 @@ class ByJsonRdfTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			NS_MAIN
 		);
 
-		\SMWExporter::clear();
+		\SMWExporter::getInstance()->clear();
 
 		foreach ( $jsonTestCaseFileHandler->findRdfTestCases() as $case ) {
 			$this->assertRdfOutputForCase( $case, $jsonTestCaseFileHandler->getDebugMode() );

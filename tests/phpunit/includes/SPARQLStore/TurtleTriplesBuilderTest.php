@@ -43,7 +43,7 @@ class TurtleTriplesBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$expNsResource = new ExpNsResource(
 			'Redirect',
-			Exporter::getNamespaceUri( 'wiki' ),
+			Exporter::getInstance()->getNamespaceUri( 'wiki' ),
 			'Redirect'
 		);
 
