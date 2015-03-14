@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Cekli829",
-			"Wertuose"
+			"Wertuose",
+			"Dağlı95"
 		]
 	},
 	"smw_finallistconjunct": ", və",
@@ -10,6 +11,7 @@
 	"smw_printername_list": "Siyahı",
 	"smw_printername_table": "Cədvəl",
 	"smw_printername_template": "Şablon",
+	"browse": "Vikiyə baxış",
 	"smw_result_results": "Nəticələr",
 	"smw_smwadmin_mediazilla": "Səhvlər haqda bildirişi  <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a> saytında yerləşdirmək olar.",
 	"smw-livepreview-loading": "Yüklənir…"

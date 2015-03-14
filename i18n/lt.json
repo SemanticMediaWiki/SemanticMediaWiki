@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Vpovilaitis"
+			"Vpovilaitis",
+			"Hugo.arg"
 		]
 	},
 	"smw-desc": "Padaryti Jūsų wiki labiau prieinamą - mašinoms ''ir'' žmonėms ([https://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
@@ -62,6 +63,7 @@
 	"smw_misplacedsymbol": "Simbolis \"$1\" buvo panaudotas toje vietoje, kurioje jis nėra naudojamas.",
 	"smw_unexpectedpart": "Užklausos dalis \"$1\" nebuvo suprasta.\nRezultatas gali būti ne tas, kurio tikėtasi.",
 	"smw_emptysubquery": "Kai kurios užklausos dalys turi blogas sąlygas.",
+	"browse": "Naršyti wiki",
 	"smw-createproperty-isproperty": "Tai yra „$1“ tipo savybė.",
 	"smw-createproperty-allowedvals": "Šios savybės leidžiamos reikšmės yra:",
 	"smw_unknowntype": "Savybei nustatytas nepalaikomas tipas \"$1\".",
