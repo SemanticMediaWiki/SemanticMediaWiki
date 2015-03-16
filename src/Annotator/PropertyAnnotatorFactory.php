@@ -5,6 +5,7 @@ namespace SMW\Annotator;
 use SMw\MediaWiki\RedirectTargetFinder;
 use SMW\PageInfo;
 use SMW\SemanticData;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+
@@ -82,6 +83,19 @@ class PropertyAnnotatorFactory {
 		return new CategoryPropertyAnnotator(
 			$this->newNullPropertyAnnotator( $semanticData ),
 			$categories
+		);
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param SemanticData $semanticData
+	 *
+	 * @return TypeByImportPropertyAnnotator
+	 */
+	public function newTypeByImportPropertyAnnotator( SemanticData $semanticData ) {
+		return new TypeByImportPropertyAnnotator(
+			$this->newNullPropertyAnnotator( $semanticData )
 		);
 	}
 

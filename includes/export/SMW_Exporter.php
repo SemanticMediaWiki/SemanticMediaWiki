@@ -271,6 +271,22 @@ class SMWExporter {
 								}
 							}
 						}
+					} elseif ( $property->getKey() == '_IMPO' ) {
+
+						$dataValue = DataValueFactory::getInstance()->newDataItemValue(
+							$dataItem,
+							$property
+						);
+
+						if ( !$dataValue instanceof \SMWImportValue ) {
+							continue;
+						}
+
+						$expData->addPropertyObjectValue(
+							$pe,
+							self::getDataItemExpElement( new SMWDIBlob( $dataValue->getImportedFromReference() ) )
+						);
+
 					} elseif ( $property->getKey() == '_REDI' ) {
 						$expData->addPropertyObjectValue( $pe, $ed );
 						$peUri = self::getSpecialPropertyResource( '_URI' );

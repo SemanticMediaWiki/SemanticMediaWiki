@@ -72,30 +72,44 @@ class ParserAfterTidy {
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		$parserData = $this->applicationFactory
-			->newParserData( $this->parser->getTitle(), $this->parser->getOutput() );
+		$parserData = $this->applicationFactory->newParserData(
+			$this->parser->getTitle(),
+			$this->parser->getOutput()
+		);
 
-		$propertyAnnotator = $this->applicationFactory
-			->newPropertyAnnotatorFactory()
-			->newSortkeyPropertyAnnotator(
-				$parserData->getSemanticData(),
-				$this->parser->getDefaultSort() );
-
-		$propertyAnnotator->addAnnotation();
-
-		$propertyAnnotator = $this->applicationFactory
-			->newPropertyAnnotatorFactory()
-			->newCategoryPropertyAnnotator(
-				$parserData->getSemanticData(),
-				$this->parser->getOutput()->getCategoryLinks() );
-
-		$propertyAnnotator->addAnnotation();
+		$this->updateAnnotionsForAfterParse(
+			$this->applicationFactory->newPropertyAnnotatorFactory(),
+			$parserData->getSemanticData()
+		);
 
 		$parserData->pushSemanticDataToParserOutput();
 
 		$this->checkForRequestedUpdateByPagePurge( $parserData );
 
 		return true;
+	}
+
+	private function updateAnnotionsForAfterParse( $propertyAnnotatorFactory, $semanticData ) {
+
+		$propertyAnnotator = $propertyAnnotatorFactory->newSortkeyPropertyAnnotator(
+			$semanticData,
+			$this->parser->getDefaultSort()
+		);
+
+		$propertyAnnotator->addAnnotation();
+
+		$propertyAnnotator = $propertyAnnotatorFactory->newCategoryPropertyAnnotator(
+			$semanticData,
+			$this->parser->getOutput()->getCategoryLinks()
+		);
+
+		$propertyAnnotator->addAnnotation();
+
+		$propertyAnnotator = $propertyAnnotatorFactory->newTypeByImportPropertyAnnotator(
+			$semanticData
+		);
+
+		$propertyAnnotator->addAnnotation();
 	}
 
 	/**
