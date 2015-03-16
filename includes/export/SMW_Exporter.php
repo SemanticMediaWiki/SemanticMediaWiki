@@ -197,11 +197,25 @@ class SMWExporter {
 				$result->addPropertyObjectValue( self::getSpecialNsResource( 'rdfs', 'isDefinedBy' ), $ed );
 				$ed = new SMWExpLiteral( strval( $diWikiPage->getNamespace() ), 'http://www.w3.org/2001/XMLSchema#integer' );
 				$result->addPropertyObjectValue( self::getSpecialNsResource( 'swivt', 'wikiNamespace' ), $ed );
+
 				if ( $addStubData ) {
 					// Add a default sort key; for pages that exist in the wiki,
 					// this is set during parsing
 					$defaultSortkey = new SMWExpLiteral( $diWikiPage->getSortKey() );
 					$result->addPropertyObjectValue( self::getSpecialPropertyResource( '_SKEY' ), $defaultSortkey );
+				}
+
+				if ( $diWikiPage->getNamespace() === NS_FILE ) {
+
+					$title = Title::makeTitle( $diWikiPage->getNamespace(), $diWikiPage->getDBkey() ) ;
+					$file = wfFindFile( $title );
+
+					if ( $file !== false ) {
+						$result->addPropertyObjectValue(
+							self::getSpecialNsResource( 'swivt', 'file' ),
+							new SMWExpResource( $file->getFullURL() )
+						);
+					}
 				}
 			}
 		}
@@ -346,13 +360,6 @@ class SMWExporter {
 	 * @return SMWExpResource
 	 */
 	static public function getResourceElementForWikiPage( SMWDIWikiPage $diWikiPage, $modifier = '' ) {
-		if ( $diWikiPage->getNamespace() == NS_MEDIA ) { // special handling for linking media files directly (object only)
-			$title = Title::makeTitle( $diWikiPage->getNamespace(), $diWikiPage->getDBkey() ) ;
-			$file = wfFindFile( $title );
-			if ( $file !== false ) {
-				return new SMWExpResource( $file->getFullURL() );
-			} // else: Medialink to non-existing file :-/ fall through
-		}
 
 		$hash = $diWikiPage->getHash() . $modifier;
 
