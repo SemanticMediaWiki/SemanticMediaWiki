@@ -8,6 +8,7 @@ This is not a release yet.
 * #756 Added template support for the `#set` parser
 * #783 Added support for `wgCategoryCollation` setting in `CategoryResultPrinter` (#699, T40853)
 * #886 Extended rules on how an `ImportValue` need to contain a valid type definition
+* #891 Enforces strict type declaration for properties with import references (type of the imported reference takes precedence over any user-defined type declaration)
 
 ## Bug fixes
 
