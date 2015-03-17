@@ -28,6 +28,7 @@ class Info extends ApiBase {
 		$resultInfo = array();
 
 		if ( in_array( 'propcount', $requestedInfo )
+			|| in_array( 'errorcount', $requestedInfo )
 			|| in_array( 'usedpropcount', $requestedInfo )
 			|| in_array( 'proppagecount', $requestedInfo )
 			|| in_array( 'querycount', $requestedInfo )
@@ -41,6 +42,7 @@ class Info extends ApiBase {
 
 			$map = array(
 				'propcount' => 'PROPUSES',
+				'errorcount' => 'ERRORUSES',
 				'usedpropcount' => 'USEDPROPS',
 				'declaredpropcount' => 'DECLPROPS',
 				'proppagecount' => 'OWNPAGE',
@@ -80,6 +82,7 @@ class Info extends ApiBase {
 				ApiBase::PARAM_ISMULTI => true,
 				ApiBase::PARAM_TYPE => array(
 					'propcount',
+					'errorcount',
 					'usedpropcount',
 					'declaredpropcount',
 					'proppagecount',

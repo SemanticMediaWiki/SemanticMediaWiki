@@ -67,6 +67,17 @@ interface PropertyStatisticsStore {
 	public function insertUsageCount( $propertyId, $value );
 
 	/**
+	 * Returns the usage count for a provided property id.
+	 *
+	 * @since 2.2
+	 *
+	 * @param integer $propertyId
+	 *
+	 * @return integer
+	 */
+	public function getUsageCount( $propertyId );
+
+	/**
 	 * Returns the usage counts of the provided properties.
 	 *
 	 * The returned array contains integer keys which are property ids,

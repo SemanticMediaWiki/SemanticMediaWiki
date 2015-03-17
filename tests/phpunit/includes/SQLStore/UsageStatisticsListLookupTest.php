@@ -8,6 +8,7 @@ use SMW\SQLStore\UsageStatisticsListLookup;
  * @covers \SMW\SQLStore\UsageStatisticsListLookup
  *
  * @group semantic-mediawiki
+ * @group medium
  *
  * @license GNU GPL v2+
  * @since   2.2
@@ -22,9 +23,13 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\UsageStatisticsListLookup',
-			new UsageStatisticsListLookup( $store )
+			new UsageStatisticsListLookup( $store, $propertyStatisticsStore )
 		);
 	}
 
@@ -34,7 +39,11 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new UsageStatisticsListLookup( $store );
+		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new UsageStatisticsListLookup( $store, $propertyStatisticsStore );
 
 		$this->assertInternalType(
 			'string',
@@ -46,7 +55,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			'smwgStatisticsCache',
+			'statistics-lookup',
 			$instance->getLookupIdentifier()
 		);
 	}
@@ -73,7 +82,11 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new UsageStatisticsListLookup( $store );
+		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new UsageStatisticsListLookup( $store, $propertyStatisticsStore );
 
 		$this->setExpectedException( 'RuntimeException' );
 		$instance->fetchResultList();
@@ -100,9 +113,18 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$objectIdFetcher = $this->getMockBuilder( '\stdClass' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getSMWPropertyID' ) )
+			->getMock();
+
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $objectIdFetcher ) );
 
 		$store->expects( $this->any() )
 			->method( 'findPropertyTableID' )
@@ -116,7 +138,15 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new UsageStatisticsListLookup( $store );
+		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyStatisticsStore->expects( $this->any() )
+			->method( 'getUsageCount' )
+			->will( $this->returnValue( 54 ) );
+
+		$instance = new UsageStatisticsListLookup( $store, $propertyStatisticsStore );
 		$result = $instance->fetchResultList();
 
 		$this->assertInternalType(
@@ -145,7 +175,8 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 			array( 'SUBOBJECTS',   'integer' ),
 			array( 'DECLPROPS',    'integer' ),
 			array( 'USEDPROPS',    'integer' ),
-			array( 'PROPUSES',     'integer' )
+			array( 'PROPUSES',     'integer' ),
+			array( 'ERRORUSES',    'integer' )
 		);
 	}
 

@@ -86,6 +86,21 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 
 	/**
 	 * @dataProvider usageCountProvider
+	 */
+	public function testGetUsageCount( $propId, $usageCount ) {
+
+		$table = $this->getTable();
+
+		$table->insertUsageCount( $propId, $usageCount );
+
+		$this->assertEquals(
+			$usageCount,
+			$table->getUsageCount( $propId )
+		);
+	}
+
+	/**
+	 * @dataProvider usageCountProvider
 	 *
 	 * @param int $propId
 	 * @param int $usageCount

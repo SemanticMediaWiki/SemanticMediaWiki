@@ -126,6 +126,7 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 		return array(
 			array( array( 'QUERYFORMATS' => array( 'table' => 3 ) ), 'formatcount', array( 'table' => 3 ) ),
 			array( array( 'PROPUSES'     => 34 ), 'propcount',         34 ),
+			array( array( 'ERRORUSES'    => 42 ), 'errorcount',        42 ),
 			array( array( 'USEDPROPS'    => 51 ), 'usedpropcount',     51 ),
 			array( array( 'DECLPROPS'    => 67 ), 'declaredpropcount', 67 ),
 			array( array( 'OWNPAGE'      => 99 ), 'proppagecount',     99 ),
@@ -140,6 +141,7 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 		return array(
 			array( 'proppagecount',     'integer' ),
 			array( 'propcount',         'integer' ),
+			array( 'errorcount',        'integer' ),
 			array( 'querycount',        'integer' ),
 			array( 'usedpropcount',     'integer' ),
 			array( 'declaredpropcount', 'integer' ),
@@ -149,4 +151,5 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 			array( 'formatcount',       'array'   )
 		);
 	}
+
 }
