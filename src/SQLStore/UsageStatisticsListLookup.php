@@ -3,6 +3,7 @@
 namespace SMW\SQLStore;
 
 use SMW\Store;
+use SMW\Store\PropertyStatisticsStore;
 use SMW\DIProperty;
 use RuntimeException;
 
@@ -20,12 +21,19 @@ class UsageStatisticsListLookup implements SimpleListLookup {
 	private $store;
 
 	/**
+	 * @var PropertyStatisticsStore
+	 */
+	private $propertyStatisticsStore;
+
+	/**
 	 * @since 2.2
 	 *
 	 * @param Store $store
+	 * @param PropertyStatisticsStore $propertyStatisticsStore
 	 */
-	public function __construct( Store $store ) {
+	public function __construct( Store $store, PropertyStatisticsStore $propertyStatisticsStore ) {
 		$this->store = $store;
+		$this->propertyStatisticsStore = $propertyStatisticsStore;
 	}
 
 	/**
@@ -56,7 +64,8 @@ class UsageStatisticsListLookup implements SimpleListLookup {
 			'SUBOBJECTS' => $this->getSubobjectCount(),
 			'DECLPROPS' => $this->getDeclaredPropertiesCount(),
 			'PROPUSES' => $this->getPropertyUsageCount(),
-			'USEDPROPS' => $this->getUsedPropertiesCount()
+			'USEDPROPS' => $this->getUsedPropertiesCount(),
+			'ERRORUSES' => $this->getImproperValueForCount()
 		);
 	}
 
@@ -84,7 +93,18 @@ class UsageStatisticsListLookup implements SimpleListLookup {
 	 * @return string
 	 */
 	public function getLookupIdentifier() {
-		return 'smwgStatisticsCache';
+		return 'statistics-lookup';
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return number
+	 */
+	public function getImproperValueForCount() {
+		return $this->propertyStatisticsStore->getUsageCount(
+			$this->store->getObjectIds()->getSMWPropertyID( new DIProperty( '_ERRP' ) )
+		);
 	}
 
 	/**

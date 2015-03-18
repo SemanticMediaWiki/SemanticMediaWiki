@@ -61,7 +61,13 @@ class SQLStoreFactory {
 	 * @return UsageStatisticsListLookup
 	 */
 	public function newUsageStatisticsListLookup() {
-		return new UsageStatisticsListLookup( $this->store );
+
+		$propertyStatisticsStore = new PropertyStatisticsTable(
+			$this->store->getConnection( 'mw.db' ),
+			$this->store->getStatisticsTable()
+		);
+
+		return new UsageStatisticsListLookup( $this->store, $propertyStatisticsStore );
 	}
 
 	/**

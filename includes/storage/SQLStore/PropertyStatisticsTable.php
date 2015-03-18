@@ -176,6 +176,33 @@ class PropertyStatisticsTable implements PropertyStatisticsStore {
 	}
 
 	/**
+	 * @since 2.2
+	 *
+	 * @param integer $propertyId
+	 *
+	 * @return integer
+	 */
+	public function getUsageCount( $propertyId ) {
+
+		if ( !is_int( $propertyId ) ) {
+			return 0;
+		}
+
+		$row = $this->dbConnection->selectRow(
+			$this->table,
+			array(
+				'usage_count'
+			),
+			array(
+				'p_id' => $propertyId,
+			),
+			__METHOD__
+		);
+
+		return $row !== false ? (int)$row->usage_count : 0;
+	}
+
+	/**
 	 * @see PropertyStatisticsStore::getUsageCounts
 	 *
 	 * @since 1.9

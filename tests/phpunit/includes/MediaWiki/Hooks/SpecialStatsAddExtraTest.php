@@ -9,9 +9,7 @@ use SMW\StoreFactory;
 /**
  * @covers \SMW\MediaWiki\Hooks\SpecialStatsAddExtra
  *
- *
- * @group SMW
- * @group SMWExtension
+ * @group smenatic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9

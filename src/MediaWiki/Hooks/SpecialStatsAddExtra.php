@@ -44,7 +44,7 @@ class SpecialStatsAddExtra {
 		'OWNPAGE'    => 'smw-statistics-property-page',
 		'DECLPROPS'  => 'smw-statistics-property-type',
 		'SUBOBJECTS' => 'smw-statistics-subobject-count',
-		'QUERY'      => 'smw-statistics-query-inline',
+		'QUERY'      => 'smw-statistics-query-inline-legacy',
 		'CONCEPTS'   => 'smw-statistics-concept-count-legacy'
 	);
 
@@ -53,12 +53,13 @@ class SpecialStatsAddExtra {
 	 */
 	protected $messageMapper = array(
 		'PROPUSES'   => 'smw-statistics-property-instance',
+		'ERRORUSES'  => 'smw-statistics-error-count',
 		'USEDPROPS'  => 'smw-statistics-property-total',
 		'OWNPAGE'    => 'smw-statistics-property-page',
 		'DECLPROPS'  => 'smw-statistics-property-type',
 		'SUBOBJECTS' => 'smw-statistics-subobject-count',
 		'QUERY'      => 'smw-statistics-query-inline',
-		'CONCEPTS'   => 'smw-statistics-concept-count'
+		'CONCEPTS'   => 'smw-statistics-concept-count',
 	);
 
 	/**
