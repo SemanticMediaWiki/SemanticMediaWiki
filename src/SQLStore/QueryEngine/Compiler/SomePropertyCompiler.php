@@ -54,7 +54,7 @@ class SomePropertyCompiler implements QueryCompiler {
 	 * @return boolean
 	 */
 	public function canCompileDescription( Description $description ) {
-		return $description instanceOf SomeProperty;
+		return $description instanceof SomeProperty;
 	}
 
 	/**

@@ -55,7 +55,7 @@ class SubcategoryQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testSubcategoryHierarchyToQueryAllMembersOfTopCategory() {
 
-		if ( !$this->getStore() instanceOf \SMWSQLStore3 ) {
+		if ( !$this->getStore() instanceof \SMWSQLStore3 ) {
 			$this->markTestSkipped( "Subcategory/category hierarchies are currently only supported by the SQLStore" );
 		}
 

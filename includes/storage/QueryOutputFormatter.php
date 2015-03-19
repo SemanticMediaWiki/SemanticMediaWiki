@@ -29,7 +29,7 @@ class QueryOutputFormatter {
 	 */
 	public static function formatDebugOutput( $storeName, array $entries, Query $query = null ) {
 
-		if ( $query instanceOf Query ) {
+		if ( $query instanceof Query ) {
 			$preEntries = array();
 			$preEntries['Generated Wiki-Query'] = '<pre>' . str_replace( '[', '&#x005B;', $query->getDescription()->getQueryString() ) . '</pre>';
 			$preEntries['Query Metrics'] = 'Query-Size:' . $query->getDescription()->getSize() . '<br />' .

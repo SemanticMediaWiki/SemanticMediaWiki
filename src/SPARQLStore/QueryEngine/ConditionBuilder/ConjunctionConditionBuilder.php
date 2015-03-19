@@ -53,7 +53,7 @@ class ConjunctionConditionBuilder implements ConditionBuilder {
 	 * @return boolean
 	 */
 	public function canBuildConditionFor( Description $description ) {
-		return $description instanceOf Conjunction;
+		return $description instanceof Conjunction;
 	}
 
 	/**
@@ -96,7 +96,7 @@ class ConjunctionConditionBuilder implements ConditionBuilder {
 			$joinVariable
 		);
 
-		if ( $subConditionElements instanceOf FalseCondition ) {
+		if ( $subConditionElements instanceof FalseCondition ) {
 			return $subConditionElements;
 		}
 
@@ -168,7 +168,7 @@ class ConjunctionConditionBuilder implements ConditionBuilder {
 			} elseif ( $subCondition instanceof SingletonCondition ) {
 				$matchElement = $subCondition->matchElement;
 
-				if ( $matchElement instanceOf ExpElement ) {
+				if ( $matchElement instanceof ExpElement ) {
 					$matchElementName = TurtleSerializer::getTurtleNameForExpElement( $matchElement );
 				} else {
 					$matchElementName = $matchElement;

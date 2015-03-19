@@ -31,11 +31,11 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	 */
 	public function assertThatQueryResultContains( $expected, QueryResult $queryResult ) {
 
-		if ( $expected instanceOf DataValue ) {
+		if ( $expected instanceof DataValue ) {
 			return $this->assertThatDataValueIsSet( $expected, $queryResult );
 		}
 
-		if ( $expected instanceOf DataItem ) {
+		if ( $expected instanceof DataItem ) {
 			return $this->assertThatDataItemIsSet( $expected, $queryResult );
 		}
 
@@ -152,7 +152,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 		foreach ( $resultSubjects as $rKey => $resultSubject ) {
 			foreach ( $expectedSubjects as $ekey => $expectedSubject ) {
 
-				if ( $expectedSubject instanceOf DIWikiPage && $expectedSubject->equals( $resultSubject ) ) {
+				if ( $expectedSubject instanceof DIWikiPage && $expectedSubject->equals( $resultSubject ) ) {
 					$actualComparedToCount++;
 					unset( $expectedSubjects[ $ekey ] );
 					unset( $resultSubjects[ $rKey ] );

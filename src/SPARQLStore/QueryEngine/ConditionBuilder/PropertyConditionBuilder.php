@@ -53,7 +53,7 @@ class PropertyConditionBuilder implements ConditionBuilder {
 	 * @return boolean
 	 */
 	public function canBuildConditionFor( Description $description ) {
-		return $description instanceOf SomeProperty;
+		return $description instanceof SomeProperty;
 	}
 
 	/**
@@ -165,7 +165,7 @@ class PropertyConditionBuilder implements ConditionBuilder {
 
 		$matchElement = $innerCondition->matchElement;
 
-		if ( $matchElement instanceOf ExpElement ) {
+		if ( $matchElement instanceof ExpElement ) {
 			$objectName = TurtleSerializer::getTurtleNameForExpElement( $matchElement );
 		} else {
 			$objectName = $matchElement;

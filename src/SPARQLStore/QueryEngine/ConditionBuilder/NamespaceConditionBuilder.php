@@ -48,7 +48,7 @@ class NamespaceConditionBuilder implements ConditionBuilder {
 	 * @return boolean
 	 */
 	public function canBuildConditionFor( Description $description ) {
-		return $description instanceOf NamespaceDescription;
+		return $description instanceof NamespaceDescription;
 	}
 
 	/**

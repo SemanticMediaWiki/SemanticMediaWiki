@@ -48,7 +48,7 @@ class ClassConditionBuilder implements ConditionBuilder {
 	 * @return boolean
 	 */
 	public function canBuildConditionFor( Description $description ) {
-		return $description instanceOf ClassDescription;
+		return $description instanceof ClassDescription;
 	}
 
 	/**

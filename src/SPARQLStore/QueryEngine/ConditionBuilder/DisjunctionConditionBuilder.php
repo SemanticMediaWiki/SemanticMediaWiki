@@ -53,7 +53,7 @@ class DisjunctionConditionBuilder implements ConditionBuilder {
 	 * @return boolean
 	 */
 	public function canBuildConditionFor( Description $description ) {
-		return $description instanceOf Disjunction;
+		return $description instanceof Disjunction;
 	}
 
 	/**
@@ -97,7 +97,7 @@ class DisjunctionConditionBuilder implements ConditionBuilder {
 			$orderByProperty
 		);
 
-		if ( $subConditionElements instanceOf TrueCondition ) {
+		if ( $subConditionElements instanceof TrueCondition ) {
 			return $subConditionElements;
 		}
 
@@ -175,7 +175,7 @@ class DisjunctionConditionBuilder implements ConditionBuilder {
 				$hasSafeSubconditions = $hasSafeSubconditions || $subCondition->isSafe();
 				$matchElement = $subCondition->matchElement;
 
-				if ( $matchElement instanceOf ExpElement ) {
+				if ( $matchElement instanceof ExpElement ) {
 					$matchElementName = TurtleSerializer::getTurtleNameForExpElement( $matchElement );
 				} else {
 					$matchElementName = $matchElement;

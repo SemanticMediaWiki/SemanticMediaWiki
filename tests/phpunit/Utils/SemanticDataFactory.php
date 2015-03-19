@@ -30,7 +30,7 @@ class SemanticDataFactory {
 			$title = Title::newFromText( $title );
 		}
 
-		if ( $title instanceOf Title ) {
+		if ( $title instanceof Title ) {
 			return $this->setSubject( DIWikiPage::newFromTitle( $title ) );
 		}
 
@@ -57,7 +57,7 @@ class SemanticDataFactory {
 	 */
 	public function newEmptySemanticData( $title = null ) {
 
-		if ( $title instanceOf DIWikiPage ) {
+		if ( $title instanceof DIWikiPage ) {
 			$this->setSubject( $title );
 		} elseif ( $title !== null ) {
 			$this->setTitle( $title );

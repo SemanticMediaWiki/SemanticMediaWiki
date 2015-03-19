@@ -210,7 +210,7 @@ class ContentParser {
 
 	protected function getRevision() {
 
-		if ( $this->revision instanceOf Revision ) {
+		if ( $this->revision instanceof Revision ) {
 			return $this->revision;
 		}
 
