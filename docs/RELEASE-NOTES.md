@@ -23,6 +23,7 @@ This is not a release yet.
 * #882 Fixed exception in `SMWExportController` caused by an empty property reference
 * #884 Fixed fetching of import vocabularies to be language independent
 * #887 Fixed `pre` element rendering for the template "furtherresult" output link
+* #896 Fixed empty caption for `false` when using the`#x` format option
 
 ## Internal changes
 * #373 Update `jquery.jstorage.js` (0.3.2 => 0.4.11)
