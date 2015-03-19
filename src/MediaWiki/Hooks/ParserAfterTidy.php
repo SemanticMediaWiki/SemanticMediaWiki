@@ -55,10 +55,13 @@ class ParserAfterTidy {
 
 	protected function canPerformUpdate() {
 
-		if ( $this->parser->getTitle()->isSpecialPage() ) {
+		// ParserOptions::getInterfaceMessage is being used to identify whether a
+		// parse was initiated by `Message::parse`
+		if ( $this->parser->getTitle()->isSpecialPage() || $this->parser->getOptions()->getInterfaceMessage() ) {
 			return false;
 		}
 
+		// @see ParserData::setSemanticDataStateToParserOutputProperty
 		if ( $this->parser->getOutput()->getProperty( 'smw-semanticdata-status' ) ||
 			$this->parser->getOutput()->getCategoryLinks() ||
 			$this->parser->getDefaultSort() ) {
@@ -116,6 +119,10 @@ class ParserAfterTidy {
 	 * @note Article purge: In case an article was manually purged/moved
 	 * the store is updated as well; for all other cases LinksUpdateConstructed
 	 * will handle the store update
+	 *
+	 * @note The purge action is isolated from any other request therefore using
+	 * a static variable or any other messaging that is not persistent will not
+	 * work hence the reliance on the cache as temporary persistence marker
 	 */
 	private function checkForRequestedUpdateByPagePurge( $parserData ) {
 

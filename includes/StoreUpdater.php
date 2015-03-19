@@ -110,7 +110,6 @@ class StoreUpdater {
 	 * the given namespace
 	 */
 	private function performUpdate() {
-		Profiler::In();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
@@ -123,9 +122,9 @@ class StoreUpdater {
 		$revision = $wikiPage->getRevision();
 
 		$this->updateSemanticData( $title, $wikiPage, $revision );
+		$this->doRealUpdate( $this->inspectPropertyType() );
 
-		Profiler::Out();
-		return $this->doRealUpdate( $this->inspectPropertyType() );
+		return true;
 	}
 
 	private function updateSemanticData( Title $title, WikiPage $wikiPage, $revision ) {
@@ -136,13 +135,16 @@ class StoreUpdater {
 			return $this->semanticData = new SemanticData( $this->getSubject() );
 		}
 
-		$pageInfoProvider = $this->applicationFactory
-			->newMwCollaboratorFactory()
-			->newPageInfoProvider( $wikiPage, $revision, User::newFromId( $revision->getUser() ) );
+		$pageInfoProvider = $this->applicationFactory->newMwCollaboratorFactory()->newPageInfoProvider(
+			$wikiPage,
+			$revision,
+			User::newFromId( $revision->getUser() )
+		);
 
-		$propertyAnnotator = $this->applicationFactory
-			->newPropertyAnnotatorFactory()
-			->newPredefinedPropertyAnnotator( $this->semanticData, $pageInfoProvider );
+		$propertyAnnotator = $this->applicationFactory->newPropertyAnnotatorFactory()->newPredefinedPropertyAnnotator(
+			$this->semanticData,
+			$pageInfoProvider
+		);
 
 		$propertyAnnotator->addAnnotation();
 	}
@@ -153,15 +155,20 @@ class StoreUpdater {
 	 */
 	private function inspectPropertyType() {
 
-		if ( $this->updateJobsEnabledState ) {
-			$propertyTypeDiffFinder = new PropertyTypeDiffFinder( $this->store, $this->semanticData );
-			$propertyTypeDiffFinder->findDiff();
+		if ( !$this->updateJobsEnabledState ) {
+			return;
 		}
+
+		$propertyTypeDiffFinder = new PropertyTypeDiffFinder( $this->store, $this->semanticData );
+
+		$propertyTypeDiffFinder->setPropertiesToCompare(
+			$this->applicationFactory->getSettings()->get( 'smwgDeclarationProperties' )
+		);
+
+		$propertyTypeDiffFinder->findDiff();
 	}
 
 	private function doRealUpdate() {
-
-		Profiler::In();
 
 		$this->store->setUpdateJobsEnabledState( $this->updateJobsEnabledState );
 
@@ -171,7 +178,6 @@ class StoreUpdater {
 			$this->store->clearData( $this->semanticData->getSubject() );
 		}
 
-		Profiler::Out();
 		return true;
 	}
 

@@ -33,6 +33,11 @@ class PropertyTypeDiffFinder {
 	private $hasDiff = false;
 
 	/**
+	 * @var array
+	 */
+	private $propertiesToCompare =  array();
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param Store $store
@@ -44,14 +49,12 @@ class PropertyTypeDiffFinder {
 	}
 
 	/**
-	 * Returns a Title object
+	 * @since 2.2
 	 *
-	 * @since 1.9
-	 *
-	 * @return Title
+	 * @param array $declarationProperties
 	 */
-	public function getTitle() {
-		return $this->semanticData->getSubject()->getTitle();
+	public function setPropertiesToCompare( array $propertiesToCompare ) {
+		$this->propertiesToCompare = $propertiesToCompare;
 	}
 
 	/**
@@ -74,14 +77,12 @@ class PropertyTypeDiffFinder {
 	 * @return $this
 	 */
 	public function findDiff() {
-		Profiler::In( __METHOD__, true );
 
 		if ( $this->semanticData->getSubject()->getNamespace() === SMW_NS_PROPERTY ) {
 			$this->comparePropertyTypes();
 			$this->compareConversionTypedFactors();
 		}
 
-		Profiler::Out( __METHOD__, true );
 		return $this;
 	}
 
@@ -91,7 +92,6 @@ class PropertyTypeDiffFinder {
 	 * @since 1.9
 	 */
 	private function comparePropertyTypes() {
-		Profiler::In( __METHOD__, true );
 
 		$update = false;
 		$propertyType  = new DIProperty( DIProperty::TYPE_HAS_TYPE );
@@ -109,35 +109,23 @@ class PropertyTypeDiffFinder {
 		if ( !$this->isEqual( $oldType, $newType ) ) {
 			$update = true;
 		} else {
+			foreach ( $this->propertiesToCompare as $property ) {
 
-			// Compare values (in case of _PVAL (allowed values) for a
-			// property change must be processed again)
-			$declarationProperties = ApplicationFactory::getInstance()->getSettings()->get( 'smwgDeclarationProperties' );
+				if ( $update ) {
+					break;
+				}
 
-			foreach ( $declarationProperties as $prop ) {
-				$dataItem = new DIProperty( $prop );
-				$oldValues = $this->store->getPropertyValues(
-					$this->semanticData->getSubject(),
-					$dataItem
-				);
-
-				$newValues = $this->semanticData->getPropertyValues( $dataItem );
-				$update = $update || !$this->isEqual( $oldValues, $newValues );
+				$update = $update || !$this->isEqualForProperty( new DIProperty( $property ) );
 			}
 		}
 
-		$this->notifyUpdateDispatcher( $update );
-
-		Profiler::Out( __METHOD__, true );
+		$this->notifyDispatcher( $update );
 	}
 
 	/**
 	 * Compare and find changes related to conversion factor
-	 *
-	 * @since 1.9
 	 */
 	private function compareConversionTypedFactors() {
-		Profiler::In( __METHOD__, true );
 
 		$pconversion  = new DIProperty( DIProperty::TYPE_CONVERSION );
 
@@ -147,17 +135,10 @@ class PropertyTypeDiffFinder {
 			$pconversion
 		);
 
-		$this->notifyUpdateDispatcher( !$this->isEqual( $oldfactors, $newfactors ) );
-
-		Profiler::Out( __METHOD__, true );
+		$this->notifyDispatcher( !$this->isEqual( $oldfactors, $newfactors ) );
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @param boolean $addJob
-	 */
-	private function notifyUpdateDispatcher( $addJob = true ) {
+	private function notifyDispatcher( $addJob = true ) {
 		if ( $addJob && !$this->hasDiff ) {
 
 			ApplicationFactory::getInstance()
@@ -169,12 +150,23 @@ class PropertyTypeDiffFinder {
 		}
 	}
 
+	private function isEqualForProperty( DIProperty $property ) {
+
+		$currentStoreValues = $this->store->getPropertyValues(
+			$this->semanticData->getSubject(),
+			$property
+		);
+
+		return $this->isEqual(
+			$currentStoreValues,
+			$this->semanticData->getPropertyValues( $property )
+		);
+	}
+
 	/**
 	 * Helper function that compares two arrays of data values to check whether
 	 * they contain the same content. Returns true if the two arrays contain the
 	 * same data values (irrespective of their order), false otherwise.
-	 *
-	 * @since 1.9
 	 *
 	 * @param SMWDataItem[] $oldDataValue
 	 * @param SMWDataItem[] $newDataValue
