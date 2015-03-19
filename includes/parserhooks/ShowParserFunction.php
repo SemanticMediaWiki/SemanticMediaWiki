@@ -23,14 +23,21 @@ class ShowParserFunction {
 	private $messageFormatter;
 
 	/**
+	 * @var CircularReferenceGuard
+	 */
+	private $circularReferenceGuard;
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
 	 * @param MessageFormatter $messageFormatter
+	 * @param CircularReferenceGuard $circularReferenceGuard
 	 */
-	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter ) {
+	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter, CircularReferenceGuard $circularReferenceGuard ) {
 		$this->parserData = $parserData;
 		$this->messageFormatter = $messageFormatter;
+		$this->circularReferenceGuard = $circularReferenceGuard;
 	}
 
 	/**
@@ -48,8 +55,16 @@ class ShowParserFunction {
 	 * @return string|null
 	 */
 	public function parse( array $rawParams ) {
-		$ask = new AskParserFunction( $this->parserData, $this->messageFormatter );
-		return $ask->setShowMode( true )->parse( $rawParams );
+
+		$instance = new AskParserFunction(
+			$this->parserData,
+			$this->messageFormatter,
+			$this->circularReferenceGuard
+		);
+
+		$instance->setShowMode( true );
+
+		return $instance->parse( $rawParams );
 	}
 
 	/**

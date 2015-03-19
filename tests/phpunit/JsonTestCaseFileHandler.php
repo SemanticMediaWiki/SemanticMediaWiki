@@ -97,12 +97,39 @@ class JsonTestCaseFileHandler {
 	 *
 	 * @return boolean
 	 */
-	public function requiredToSkipForVersion( $version ) {
+	public function requiredToSkipForJsonVersion( $version ) {
 
 		$meta = $this->getFileContentsFor( 'meta' );
 
 		if ( version_compare( $version, $meta['version'], 'lt' ) ) {
 			$this->reasonToSkip = $meta['version'] . ' as file version is not supported';
+		}
+
+		return $this->reasonToSkip !== '';
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return boolean
+	 */
+	public function requiredToSkipForMwVersion( $mwVersion ) {
+
+		$meta = $this->getFileContentsFor( 'meta' );
+		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : array();
+
+		foreach ( $skipOn as $id => $reason ) {
+
+			if ( strpos( $id, 'mw-' ) === false ) {
+				continue;
+			}
+
+			list( $mw, $versionToSkip ) = explode( "mw-", $id, 2 );
+
+			if ( version_compare( $mwVersion, $versionToSkip, '=' ) ) {
+				$this->reasonToSkip = "MediaWiki " . $mwVersion . " version is not supported ({$reason})";
+				break;
+			}
 		}
 
 		return $this->reasonToSkip !== '';

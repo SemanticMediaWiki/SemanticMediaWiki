@@ -51,9 +51,13 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->assertInstanceOf(
 			'\SMW\ShowParserFunction',
-			new ShowParserFunction( $parserData, $messageFormatter )
+			new ShowParserFunction( $parserData, $messageFormatter, $circularReferenceGuard )
 		);
 	}
 
@@ -71,14 +75,19 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$instance = new ShowParserFunction(
 			$parserData,
-			$messageFormatter
+			$messageFormatter,
+			$circularReferenceGuard
 		);
 
 		$result = $instance->parse( $params );
 
-		if (  $expected['output'] === '' ) {
+		if ( $expected['output'] === '' ) {
 			$this->assertEmpty( $result );
 		} else {
 			$this->assertContains( $expected['output'], $result );
@@ -102,9 +111,14 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$messageFormatter->expects( $this->once() )
 			->method( 'getHtml' );
 
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$instance = new ShowParserFunction(
 			$parserData,
-			$messageFormatter
+			$messageFormatter,
+			$circularReferenceGuard
 		);
 
 		$instance->isQueryDisabled();
@@ -124,9 +138,14 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$instance = new ShowParserFunction(
 			$parserData,
-			$messageFormatter
+			$messageFormatter,
+			$circularReferenceGuard
 		);
 
 		$instance->parse( $params );
@@ -146,12 +165,12 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$provider = array();
 
 		// #0
-		// {{#show: Foo
+		// {{#show: Foo-show
 		// |?Modification date
 		// }}
 		$provider[] = array(
 			array(
-				'Foo',
+				'Foo-show',
 				'?Modification date',
 			),
 			array(
