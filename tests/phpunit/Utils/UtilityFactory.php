@@ -145,6 +145,15 @@ class UtilityFactory {
 	}
 
 	/**
+	 * @since 2.2
+	 *
+	 * @return PageReader
+	 */
+	public function newPageReader() {
+		return new PageReader();
+	}
+
+	/**
 	 * @since 2.1
 	 *
 	 * @param string $file|null

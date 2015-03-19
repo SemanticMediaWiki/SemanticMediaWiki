@@ -59,4 +59,31 @@ class PageReader {
 		return $this->page->getText();
 	}
 
+	/**
+	 * @since 2.2
+	 */
+	public function getEditInfo( Title $title ) {
+
+		$this->page = new \WikiPage( $title );
+
+		if ( class_exists( 'WikitextContent' ) ) {
+
+			$content = $this->page->getRevision()->getContent();
+			$format  = $content->getContentHandler()->getDefaultFormat();
+
+			return $this->page->prepareContentForEdit(
+				$content,
+				null,
+				null,
+				$format
+			);
+		}
+
+		return $this->page->prepareTextForEdit(
+			$this->page->getRevision()->getRawText(),
+			null,
+			null
+		);
+	}
+
 }
