@@ -159,7 +159,7 @@
 	"smw-statistics-property-total-legacy": "{{PLURAL:$1|Propiedade|Propiedades}} (total)",
 	"smw-statistics-property-page": "{{PLURAL:$1|Propiedade|Propiedades}} ({{PLURAL:$1|rexistrada|rexistradas}} cunha páxina)",
 	"smw-statistics-property-type": "{{PLURAL:$1|Propiedade|Propiedades}} ({{PLURAL:$1|asociada|asociadas}} a un tipo de datos)",
-	"smw-statistics-query-inline": "{{PLURAL:$1|Pescuda|Pescudas}}",
+	"smw-statistics-query-inline": "[[Property:Has query|{{PLURAL:$1|Pescuda|Pescudas}}]]",
 	"smw-statistics-query-size": "Tamaño da pescuda",
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Concepto|Conceptos}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Concepto|Conceptos}}]]",
