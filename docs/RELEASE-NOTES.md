@@ -35,3 +35,4 @@ This is not a release yet.
 * #772 Added `onoi/message-reporter:~1.0` component dependency
 * #777 Moved all concept related code into a separate `ConceptCache` class
 * #884 Added `ControlledVocabularyImportFetcher` to isolate import vocabulary fetching from the `DVImport` object
+* #883 Added `CircularReferenceGuard` to monitor possible self/circular references in ask templates
