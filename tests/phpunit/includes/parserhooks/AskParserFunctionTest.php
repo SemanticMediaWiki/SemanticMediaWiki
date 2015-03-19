@@ -59,9 +59,13 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->assertInstanceOf(
 			'\SMW\AskParserFunction',
-			new AskParserFunction( $parserData, $messageFormatter )
+			new AskParserFunction( $parserData, $messageFormatter, $circularReferenceGuard )
 		);
 	}
 
@@ -79,9 +83,14 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$instance = new AskParserFunction(
 			$parserData,
-			$messageFormatter
+			$messageFormatter,
+			$circularReferenceGuard
 		);
 
 		$this->assertInternalType(
@@ -107,9 +116,14 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$messageFormatter->expects( $this->once() )
 			->method( 'getHtml' );
 
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$instance = new AskParserFunction(
 			$parserData,
-			$messageFormatter
+			$messageFormatter,
+			$circularReferenceGuard
 		);
 
 		$instance->isQueryDisabled();
@@ -125,7 +139,15 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new AskParserFunction( $parserData, $messageFormatter );
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new AskParserFunction(
+			$parserData,
+			$messageFormatter,
+			$circularReferenceGuard
+		);
 
 		$reflector = new ReflectionClass( '\SMW\AskParserFunction' );
 		$showMode = $reflector->getProperty( 'showMode' );
@@ -135,6 +157,44 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$instance->setShowMode( true );
 
 		$this->assertTrue( $showMode->getValue( $instance ) );
+	}
+
+	public function testCircularGuard() {
+
+		$parserData = $this->applicationFactory->newParserData(
+			Title::newFromText( __METHOD__ ),
+			new ParserOutput()
+		);
+
+		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$circularReferenceGuard->expects( $this->once() )
+			->method( 'mark' );
+
+		$circularReferenceGuard->expects( $this->never() )
+			->method( 'unmark' );
+
+		$circularReferenceGuard->expects( $this->once() )
+			->method( 'isCircularByRecursion' )
+			->will( $this->returnValue( true ) );
+
+		$instance = new AskParserFunction(
+			$parserData,
+			$messageFormatter,
+			$circularReferenceGuard
+		);
+
+		$params = array();
+
+		$this->assertEmpty(
+			$instance->parse( $params )
+		);
 	}
 
 	public function testQueryIdStabilityForFixedSetOfParameters() {
@@ -148,9 +208,14 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$instance = new AskParserFunction(
 			$parserData,
-			$messageFormatter
+			$messageFormatter,
+			$circularReferenceGuard
 		);
 
 		$params = array(
@@ -200,9 +265,14 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$instance = new AskParserFunction(
 			$parserData,
-			$messageFormatter
+			$messageFormatter,
+			$circularReferenceGuard
 		);
 
 		$instance->parse( $params );

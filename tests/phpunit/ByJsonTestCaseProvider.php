@@ -136,7 +136,11 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 			$this->markTestIncomplete( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 
-		if ( $jsonTestCaseFileHandler->requiredToSkipForVersion( $this->getJsonTestCaseVersion() ) ) {
+		if ( $jsonTestCaseFileHandler->requiredToSkipForJsonVersion( $this->getJsonTestCaseVersion() ) ) {
+			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
+		}
+
+		if ( $jsonTestCaseFileHandler->requiredToSkipForMwVersion( $GLOBALS['wgVersion'] ) ) {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 

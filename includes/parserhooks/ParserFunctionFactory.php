@@ -62,6 +62,8 @@ class ParserFunctionFactory {
 	 */
 	public function newAskParserFunction() {
 
+		$circularReferenceGuard = new CircularReferenceGuard( 'ask-parser' );
+
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			$this->parser->getTitle(),
 			$this->parser->getOutput()
@@ -71,7 +73,8 @@ class ParserFunctionFactory {
 
 		$instance = new AskParserFunction(
 			$parserData,
-			$messageFormatter
+			$messageFormatter,
+			$circularReferenceGuard
 		);
 
 		return $instance;
@@ -84,6 +87,8 @@ class ParserFunctionFactory {
 	 */
 	public function newShowParserFunction() {
 
+		$circularReferenceGuard = new CircularReferenceGuard( 'show-parser' );
+
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			$this->parser->getTitle(),
 			$this->parser->getOutput()
@@ -93,7 +98,8 @@ class ParserFunctionFactory {
 
 		$instance = new ShowParserFunction(
 			$parserData,
-			$messageFormatter
+			$messageFormatter,
+			$circularReferenceGuard
 		);
 
 		return $instance;

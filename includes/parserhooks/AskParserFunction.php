@@ -30,6 +30,11 @@ class AskParserFunction {
 	private $messageFormatter;
 
 	/**
+	 * @var CircularReferenceGuard
+	 */
+	private $circularReferenceGuard;
+
+	/**
 	 * @var boolean
 	 */
 	private $showMode = false;
@@ -44,10 +49,12 @@ class AskParserFunction {
 	 *
 	 * @param ParserData $parserData
 	 * @param MessageFormatter $messageFormatter
+	 * @param CircularReferenceGuard $circularReferenceGuard
 	 */
-	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter ) {
+	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter, CircularReferenceGuard $circularReferenceGuard ) {
 		$this->parserData = $parserData;
 		$this->messageFormatter = $messageFormatter;
+		$this->circularReferenceGuard = $circularReferenceGuard;
 	}
 
 	/**
@@ -103,10 +110,13 @@ class AskParserFunction {
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		$this->doFetchResultsForRawParameters( $rawParams );
+		$result = $this->doFetchResultsForRawParameters(
+			$rawParams
+		);
+
 		$this->parserData->pushSemanticDataToParserOutput();
 
-		return $this->result;
+		return $result;
 	}
 
 	private function doFetchResultsForRawParameters( array $rawParams ) {
@@ -125,7 +135,19 @@ class AskParserFunction {
 			$this->showMode
 		);
 
-		$this->result = SMWQueryProcessor::getResultFromQuery(
+		$queryHash = $this->query->getHash();
+
+		$this->circularReferenceGuard->mark( $queryHash );
+		$this->circularReferenceGuard->setMaxRecursionDepth( 2 );
+
+		// If we caught in a circular loop (due to a template referencing to itself)
+		// then we stop here before the next query execution to avoid an infinite
+		// self-reference
+		if ( $this->circularReferenceGuard->isCircularByRecursion( $queryHash ) ) {
+			return '';
+		}
+
+		$result = SMWQueryProcessor::getResultFromQuery(
 			$this->query,
 			$this->params,
 			SMW_OUTPUT_WIKI,
@@ -142,11 +164,15 @@ class AskParserFunction {
 			$queryDuration = microtime( true ) - $start;
 		}
 
+		$this->circularReferenceGuard->unmark( $queryHash );
+
 		$this->createQueryProfile(
 			$this->query,
 			$this->params['format']->getValue(),
 			$queryDuration
 		);
+
+		return $result;
 	}
 
 	private function createQueryProfile( $query, $format, $duration ) {
