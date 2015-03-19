@@ -302,7 +302,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 	/**
 	 * Creates the text for a property page.
 	 */
-	public function createPropertyText( $propertyType, $allowedValues, $linkedForm = null ) {
+	static public function createPropertyText( $propertyType, $allowedValues, $linkedForm = null ) {
 		/**
 		 * @var SMWLanguage $smwgContLang
 		 */
