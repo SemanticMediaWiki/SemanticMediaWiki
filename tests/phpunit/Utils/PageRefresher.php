@@ -33,11 +33,11 @@ class PageRefresher {
 	 */
 	public function doRefresh( $title ) {
 
-		if ( $title instanceOf WikiPage || $title instanceOf DIWikiPage ) {
+		if ( $title instanceof WikiPage || $title instanceof DIWikiPage ) {
 			$title = $title->getTitle();
 		}
 
-		if ( !$title instanceOf Title ) {
+		if ( !$title instanceof Title ) {
 			throw new RuntimeException( 'Expected a title instance' );
 		}
 
@@ -76,7 +76,7 @@ class PageRefresher {
 	 */
 	public function doRefreshByUpdateJob( $title ) {
 
-		if ( $title instanceOf WikiPage || $title instanceOf DIWikiPage ) {
+		if ( $title instanceof WikiPage || $title instanceof DIWikiPage ) {
 			$title = $title->getTitle();
 		}
 
@@ -84,7 +84,7 @@ class PageRefresher {
 			$title = Title::newFromText( $title );
 		}
 
-		if ( !$title instanceOf Title ) {
+		if ( !$title instanceof Title ) {
 			throw new RuntimeException( 'Expected a title instance' );
 		}
 

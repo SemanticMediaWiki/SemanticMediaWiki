@@ -40,7 +40,7 @@ class ConceptDescriptionCompiler implements QueryCompiler {
 	 * @return boolean
 	 */
 	public function canCompileDescription( Description $description ) {
-		return $description instanceOf ConceptDescription;
+		return $description instanceof ConceptDescription;
 	}
 
 	/**

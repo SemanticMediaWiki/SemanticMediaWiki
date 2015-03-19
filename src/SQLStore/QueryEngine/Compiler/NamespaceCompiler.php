@@ -39,7 +39,7 @@ class NamespaceCompiler implements QueryCompiler {
 	 * @return boolean
 	 */
 	public function canCompileDescription( Description $description ) {
-		return $description instanceOf NamespaceDescription;
+		return $description instanceof NamespaceDescription;
 	}
 
 	/**

@@ -58,7 +58,7 @@ class RedirectTargetFinder {
 	 * @return boolean
 	 */
 	public function hasRedirectTarget() {
-		return $this->redirectTarget instanceOf Title;
+		return $this->redirectTarget instanceof Title;
 	}
 
 	private function findFromText( $text ) {

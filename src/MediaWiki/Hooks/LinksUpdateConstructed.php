@@ -53,7 +53,7 @@ class LinksUpdateConstructed {
 			->newParserData( $this->linksUpdate->getTitle(), $this->linksUpdate->getParserOutput() );
 
 		if ( $parserData->getSemanticData()->isEmpty() &&
-			( $semanticData = $this->refetchSemanticData() ) instanceOf SemanticData ) {
+			( $semanticData = $this->refetchSemanticData() ) instanceof SemanticData ) {
 			$parserData->setSemanticData( $semanticData );
 		}
 

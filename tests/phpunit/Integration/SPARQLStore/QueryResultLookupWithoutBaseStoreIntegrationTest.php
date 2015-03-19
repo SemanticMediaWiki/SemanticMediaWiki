@@ -47,7 +47,7 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 
 		$this->store = StoreFactory::getStore();
 
-		if ( !$this->store instanceOf SPARQLStore ) {
+		if ( !$this->store instanceof SPARQLStore ) {
 			$this->markTestSkipped( "Requires a SPARQLStore instance" );
 		}
 

@@ -52,7 +52,7 @@ class DeepRedirectTargetResolver {
 	}
 
 	protected function isRedirect( $title ) {
-		return $title instanceOf Title && $title->isRedirect();
+		return $title instanceof Title && $title->isRedirect();
 	}
 
 	private function doResolveRedirectTarget( Title $title ) {
@@ -66,7 +66,7 @@ class DeepRedirectTargetResolver {
 		if ( $this->isRedirect( $title ) ) {
 			$title = $this->pageCreator->createPage( $title )->getRedirectTarget();
 
-			if ( $title instanceOf Title ) {
+			if ( $title instanceof Title ) {
 				$title = $this->doResolveRedirectTarget( $title );
 			}
 		}

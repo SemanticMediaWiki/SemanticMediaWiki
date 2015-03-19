@@ -144,7 +144,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 
 		$this->mwHooksHandler->register( 'SMW::Store::AfterQueryResultLookupComplete', function( $store, &$queryResult ) {
 
-			if ( !$queryResult instanceOf \SMWQueryResult ) {
+			if ( !$queryResult instanceof \SMWQueryResult ) {
 				throw new RuntimeException( 'Expected a SMWQueryResult instance' );
 			}
 

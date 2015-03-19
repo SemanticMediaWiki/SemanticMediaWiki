@@ -58,7 +58,7 @@ class IteratorMockBuilder extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		if ( !$instance instanceOf \Iterator ) {
+		if ( !$instance instanceof \Iterator ) {
 			throw new RuntimeException( "Instance is not an Iterator" );
 		}
 

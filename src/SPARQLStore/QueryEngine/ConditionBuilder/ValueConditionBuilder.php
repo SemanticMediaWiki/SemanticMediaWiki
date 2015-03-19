@@ -53,7 +53,7 @@ class ValueConditionBuilder implements ConditionBuilder {
 	 * @return boolean
 	 */
 	public function canBuildConditionFor( Description $description ) {
-		return $description instanceOf ValueDescription;
+		return $description instanceof ValueDescription;
 	}
 
 	/**

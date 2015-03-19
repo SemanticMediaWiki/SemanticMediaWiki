@@ -34,7 +34,7 @@ class TitleValidator extends \PHPUnit_Framework_Assert {
 
 		foreach ( $titles as $title ) {
 
-			if ( !$title instanceOf Title && is_string( $title ) ) {
+			if ( !$title instanceof Title && is_string( $title ) ) {
 				$title = Title::newFromText( $title );
 			}
 

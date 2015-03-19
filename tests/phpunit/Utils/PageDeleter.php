@@ -33,7 +33,7 @@ class PageDeleter {
 
 		foreach ( $poolOfPages as $page ) {
 
-			if ( $page instanceOf WikiPage || $page instanceOf DIWikiPage ) {
+			if ( $page instanceof WikiPage || $page instanceof DIWikiPage ) {
 				$page = $page->getTitle();
 			}
 
@@ -41,7 +41,7 @@ class PageDeleter {
 				$page = Title::newFromText( $page );
 			}
 
-			if ( !$page instanceOf Title ) {
+			if ( !$page instanceof Title ) {
 				continue;
 			}
 

@@ -72,7 +72,7 @@ class SemanticDataDeserializer implements Deserializer {
 	 * @return boolean
 	 */
 	public function isDeserializerFor( $semanticData ) {
-		return $semanticData instanceOf SemanticData;
+		return $semanticData instanceof SemanticData;
 	}
 
 	/**
@@ -150,7 +150,7 @@ class SemanticDataDeserializer implements Deserializer {
 
 		// Ensure that errors are collected from a subobject level as well and
 		// made available at the top
-		if ( $dataItem instanceOf DIContainer ) {
+		if ( $dataItem instanceof DIContainer ) {
 			$semanticData->addError( $dataItem->getSemanticData()->getErrors() );
 		}
 

@@ -102,7 +102,7 @@ class ParserFunctionInPageEmbeddedForQueryResultLookupDBIntegrationTest extends 
 
 		$this->assertEquals(
 			2,
-			$result instanceOf \SMWQueryResult ? $result->getCountValue() : $result
+			$result instanceof \SMWQueryResult ? $result->getCountValue() : $result
 		);
 
 		$query->querymode = Query::MODE_INSTANCES;
@@ -157,7 +157,7 @@ class ParserFunctionInPageEmbeddedForQueryResultLookupDBIntegrationTest extends 
 
 		$this->assertEquals(
 			3,
-			$result instanceOf \SMWQueryResult ? $result->getCountValue() : $result
+			$result instanceof \SMWQueryResult ? $result->getCountValue() : $result
 		);
 
 		$query->querymode = Query::MODE_INSTANCES;
@@ -200,7 +200,7 @@ class ParserFunctionInPageEmbeddedForQueryResultLookupDBIntegrationTest extends 
 
 		$this->assertEquals(
 			1,
-			$result instanceOf \SMWQueryResult ? $result->getCountValue() : $result
+			$result instanceof \SMWQueryResult ? $result->getCountValue() : $result
 		);
 
 		$query->querymode = Query::MODE_INSTANCES;
@@ -243,7 +243,7 @@ class ParserFunctionInPageEmbeddedForQueryResultLookupDBIntegrationTest extends 
 
 		$this->assertEquals(
 			1,
-			$result instanceOf \SMWQueryResult ? $result->getCountValue() : $result
+			$result instanceof \SMWQueryResult ? $result->getCountValue() : $result
 		);
 
 		$query->querymode = Query::MODE_INSTANCES;

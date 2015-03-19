@@ -48,7 +48,7 @@ class ConceptConditionBuilder implements ConditionBuilder {
 	 * @return boolean
 	 */
 	public function canBuildConditionFor( Description $description ) {
-		return $description instanceOf ConceptDescription;
+		return $description instanceof ConceptDescription;
 	}
 
 	/**

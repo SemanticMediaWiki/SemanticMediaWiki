@@ -253,7 +253,7 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 			$objectSignature = new $objectSignature;
 		}
 
-		if ( $objectSignature instanceOf DependencyObject ) {
+		if ( $objectSignature instanceof DependencyObject ) {
 			$objectSignature = $objectSignature->retrieveDefinition( $this );
 		}
 

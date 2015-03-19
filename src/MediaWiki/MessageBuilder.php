@@ -119,7 +119,7 @@ class MessageBuilder {
 
 	private function getLanguage() {
 
-		if ( $this->language instanceOf Language ) {
+		if ( $this->language instanceof Language ) {
 			return $this->language;
 		}
 

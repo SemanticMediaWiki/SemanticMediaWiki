@@ -205,7 +205,7 @@ class SMWRecordValue extends SMWDataValue {
 	 */
 	public function setFieldProperties( array $properties ) {
 		foreach ( $properties as $property ) {
-			if ( $property instanceOf SMWDIProperty ) {
+			if ( $property instanceof SMWDIProperty ) {
 				$this->m_diProperties[] = $property;
 			}
 		}

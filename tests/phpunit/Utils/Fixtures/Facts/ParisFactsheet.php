@@ -248,7 +248,7 @@ class ParisFactsheet {
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 
 		foreach ( $subjects as $subject ) {
-			if ( $subject instanceOf DIWikiPage ) {
+			if ( $subject instanceof DIWikiPage ) {
 				$pageDeleter->deletePage( $subject->getTitle() );
 			}
 		}

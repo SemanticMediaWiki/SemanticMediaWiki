@@ -118,7 +118,7 @@ class ByPageSemanticDataFinder {
 			$revision->getId()
 		);
 
-		if ( $parserOutput instanceOf ParserOutput ) {
+		if ( $parserOutput instanceof ParserOutput ) {
 			return $parserOutput;
 		}
 
@@ -127,7 +127,7 @@ class ByPageSemanticDataFinder {
 
 	protected function getTitle() {
 
-		if ( $this->title instanceOf Title ) {
+		if ( $this->title instanceof Title ) {
 			return $this->title;
 		}
 
@@ -136,7 +136,7 @@ class ByPageSemanticDataFinder {
 
 	protected function getStore() {
 
-		if ( $this->store instanceOf Store ) {
+		if ( $this->store instanceof Store ) {
 			return $this->store;
 		}
 
