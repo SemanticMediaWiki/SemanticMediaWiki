@@ -71,7 +71,7 @@ class SMWBoolValue extends SMWDataValue {
 			$this->m_falsecaption = 'false';
 		} elseif ( strtolower( $formatstring ) == 'x' ) { // X format
 			$this->m_truecaption = '<span style="font-family: sans-serif; ">X</span>';
-			$this->m_falsecaption = '';
+			$this->m_falsecaption = '&nbsp;';
 		} else { // format "truelabel, falselabel" (hopefully)
 			$captions = explode( ',', $formatstring, 2 );
 			if ( count( $captions ) == 2 ) { // note: escaping needed to be safe; MW-sanitising would be an alternative

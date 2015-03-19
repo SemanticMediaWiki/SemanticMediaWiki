@@ -189,6 +189,22 @@ class JsonTestCaseFileHandler {
 	 *
 	 * @return array
 	 */
+	public function findFormatTestCases() {
+
+		try{
+			$formats = $this->getFileContentsFor( 'format' );
+		} catch( \Exception $e ) {
+			$formats = array();
+		}
+
+		return $formats;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return array
+	 */
 	public function findQueryTestCases() {
 
 		try{

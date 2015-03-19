@@ -39,10 +39,11 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 * @param Store $store
 	 * @param QueryParser $queryParser
 	 */
-	public function __construct( Store $store, QueryParser $queryParser,  $queryResultValidator ) {
+	public function __construct( Store $store, QueryParser $queryParser, $queryResultValidator, $stringValidator ) {
 		$this->store = $store;
 		$this->queryParser = $queryParser;
 		$this->queryResultValidator = $queryResultValidator;
+		$this->stringValidator = $stringValidator;
 	}
 
 	/**
@@ -64,7 +65,7 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @param QueryTestCaseInterpreter $queryTestCaseInterpreter
 	 */
-	public function processQueryDefinition( QueryTestCaseInterpreter $queryTestCaseInterpreter ) {
+	public function processQueryCase( QueryTestCaseInterpreter $queryTestCaseInterpreter ) {
 
 		if ( !$queryTestCaseInterpreter->hasCondition() ) {
 			$this->markTestSkipped( 'Found no condition for ' . $queryTestCaseInterpreter->isAbout() );
@@ -124,7 +125,7 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @param QueryTestCaseInterpreter $queryTestCaseInterpreter
 	 */
-	public function processConceptDefinition( QueryTestCaseInterpreter $queryTestCaseInterpreter ) {
+	public function processConceptCase( QueryTestCaseInterpreter $queryTestCaseInterpreter ) {
 
 		if ( !$queryTestCaseInterpreter->hasCondition() ) {
 			$this->markTestSkipped( 'Found no condition for ' . $queryTestCaseInterpreter->isAbout() );
@@ -168,6 +169,26 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 				'Failed asserting conceptcache count on ' . $queryTestCaseInterpreter->isAbout()
 			);
 		}
+	}
+
+	/**
+	 * @since  2.2
+	 *
+	 * @param QueryTestCaseInterpreter $queryTestCaseInterpreter
+	 */
+	public function processFormatCase( QueryTestCaseInterpreter $queryTestCaseInterpreter ) {
+
+		if ( $queryTestCaseInterpreter->fetchTextOutputForFormatPage() === '' ) {
+			$this->markTestSkipped( 'No content found for ' . $queryTestCaseInterpreter->isAbout() );
+		}
+
+		$textOutput = $queryTestCaseInterpreter->fetchTextOutputForFormatPage();
+
+		$this->stringValidator->assertThatStringContains(
+			$queryTestCaseInterpreter->getExpectedFormatOuputFor( 'to-contain' ),
+			$textOutput,
+			$queryTestCaseInterpreter->isAbout()
+		);
 	}
 
 	private function printDescriptionToOutput( $about, $description ) {

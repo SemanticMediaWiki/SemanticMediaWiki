@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Integration\Query;
 
+use SMW\Tests\Utils\UtilityFactory;
+
 use SMW\FileReader;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
@@ -184,6 +186,40 @@ class QueryTestCaseInterpreter {
 		}
 
 		return $dataValues;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return string
+	 */
+	public function fetchTextOutputForFormatPage() {
+
+		if ( !isset( $this->contents['outputpage'] ) ) {
+			return '';
+		}
+
+		$title = \Title::newFromText( $this->contents['outputpage'] );
+		$parserOutput = UtilityFactory::getInstance()->newPageReader()->getEditInfo( $title )->output;
+
+		return $parserOutput->getText();
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return array
+	 */
+	public function getExpectedFormatOuputFor( $id ) {
+
+		$output = array();
+
+		if ( !isset( $this->contents['output'] ) || !isset( $this->contents['output'][$id] )  ) {
+			return $output;
+		}
+
+
+		return $this->contents['output'][$id];
 	}
 
 	/**

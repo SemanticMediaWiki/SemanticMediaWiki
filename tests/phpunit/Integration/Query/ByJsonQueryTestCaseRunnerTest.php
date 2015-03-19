@@ -32,7 +32,8 @@ class ByJsonQueryTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		$this->queryTestCaseProcessor = new QueryTestCaseProcessor(
 			$this->getStore(),
 			ApplicationFactory::getInstance()->newQueryParser(),
-			UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator()
+			UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator(),
+			UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator()
 		);
 	}
 
@@ -83,11 +84,15 @@ class ByJsonQueryTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		);
 
 		foreach ( $jsonTestCaseFileHandler->findQueryTestCases() as $queryCase ) {
-			$this->queryTestCaseProcessor->processQueryDefinition( new QueryTestCaseInterpreter( $queryCase ) );
+			$this->queryTestCaseProcessor->processQueryCase( new QueryTestCaseInterpreter( $queryCase ) );
 		}
 
 		foreach ( $jsonTestCaseFileHandler->findConceptTestCases() as $conceptCase ) {
-			$this->queryTestCaseProcessor->processConceptDefinition( new QueryTestCaseInterpreter( $conceptCase ) );
+			$this->queryTestCaseProcessor->processConceptCase( new QueryTestCaseInterpreter( $conceptCase ) );
+		}
+
+		foreach ( $jsonTestCaseFileHandler->findFormatTestCases() as $formatCase ) {
+			$this->queryTestCaseProcessor->processFormatCase( new QueryTestCaseInterpreter( $formatCase ) );
 		}
 	}
 
