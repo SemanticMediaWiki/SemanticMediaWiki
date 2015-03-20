@@ -16,6 +16,7 @@ use SMW\SemanticData;
 use SMW\Store;
 use SMWInfolink;
 use SMWSemanticData;
+use SMW\Localizer
 
 /**
  * Class handling the "Factbox" content rendering
@@ -316,13 +317,13 @@ class Factbox {
 		);
 
 		$this->tableBuilder->addHeaderItem( 'div',
-			$this->messageBuilder->getMessage( 'smw_factbox_head', $browselink->getWikiText() )->inContentLanguage()->text(),
+			$this->messageBuilder->getMessage( 'smw_factbox_head', $browselink->getWikiText() )->text(),
 			array( 'class' => 'smwfactboxhead' )
 		);
 
 		$rdflink = SMWInfolink::newInternalLink(
-			$this->messageBuilder->getMessage( 'smw_viewasrdf' )->inContentLanguage()->text(),
-			$subject->getTitle()->getPageLanguage()->getNsText( NS_SPECIAL ) . ':ExportRDF/' . $dataValue->getWikiValue(),
+			$this->messageBuilder->getMessage( 'smw_viewasrdf' )->text(),
+			Localizer::getInstance()->getNamespaceTextById( NS_SPECIAL ) . ':ExportRDF/' . $dataValue->getWikiValue(),
 			'rdflink'
 		);
 
