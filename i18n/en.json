@@ -319,6 +319,7 @@
 	"smw-datavalue-import-missing-nsuri":"Uable to find a \"$1\" namespace URI in the [[MediaWiki:Smw import $1|$1 import]].",
 	"smw-datavalue-import-missing-type":"No type definition was found for \"$1\" in the [[MediaWiki:Smw import $2|$2 import]].",
 	"smw-datavalue-import-link":"[[MediaWiki:Smw import $1|$1 import]]",
+	"smw-datavalue-import-invalidvalue":"\"$1\" is not valid value format. The expected format consists of \"namespace\":\"identifier\" (e.g. \"foaf:name\").",
 	"smw-pa-property-predefined_impo": "\"$1\" is a predefined property that describes a relation to an [https://semantic-mediawiki.org/wiki/Help:Import_vocabulary imported vocabulary].",
 	"smw-pa-property-predefined_type": "\"$1\" is a predefined property that describes the [[Special:Types|datatype]] of a property.",
 	"smw-pa-property-predefined_sobj": "\"$1\" is a predefined property representing a container construct that allows to accumulate property-value assignments similar to that of a normal wiki page.",
