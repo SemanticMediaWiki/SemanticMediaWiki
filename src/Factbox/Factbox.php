@@ -16,7 +16,7 @@ use SMW\SemanticData;
 use SMW\Store;
 use SMWInfolink;
 use SMWSemanticData;
-use SMW\Localizer
+use SMW\Localizer;
 
 /**
  * Class handling the "Factbox" content rendering
