@@ -12,9 +12,7 @@ use Title;
 /**
  * @covers \SMW\MediaWiki\Hooks\LinksUpdateConstructed
  *
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -76,6 +74,47 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 		$instance = new LinksUpdateConstructed( new LinksUpdate( $title, $parserOutput ) );
 
 		$this->assertTrue( $instance->process() );
+	}
+
+	public function testNoExtraParsingForNotEnabledNamespace() {
+
+		$this->applicationFactory->getSettings()->set(
+			'smwgNamespacesWithSemanticLinks',
+			array( NS_HELP => false )
+		);
+
+		$title = Title::newFromText( __METHOD__, NS_HELP );
+		$parserOutput = new ParserOutput();
+
+		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parserData->expects( $this->never() )
+			->method( 'getSemanticData' );
+
+		$parserData->expects( $this->once() )
+			->method( 'updateStore' );
+
+		$this->applicationFactory->registerObject( 'ParserData', $parserData );
+
+		$linksUpdate = $this->getMockBuilder( '\LinksUpdate' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$linksUpdate->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$linksUpdate->expects( $this->once() )
+			->method( 'getParserOutput' )
+			->will( $this->returnValue( $parserOutput ) );
+
+		$instance = new LinksUpdateConstructed( $linksUpdate );
+
+		$this->assertTrue(
+			$instance->process()
+		);
 	}
 
 }

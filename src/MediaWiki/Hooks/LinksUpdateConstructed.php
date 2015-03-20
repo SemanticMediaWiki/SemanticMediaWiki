@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki\Hooks;
 
 use LinksUpdate;
+use Title;
 use SMW\ApplicationFactory;
 use SMW\SemanticData;
-use SMW\SemanticDataCache;
 
 /**
  * LinksUpdateConstructed hook is called at the end of LinksUpdate()
@@ -46,16 +46,17 @@ class LinksUpdateConstructed {
 	public function process() {
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
+		$title = $this->linksUpdate->getTitle();
 
 		/**
 		 * @var ParserData $parserData
 		 */
 		$parserData = $this->applicationFactory->newParserData(
-			$this->linksUpdate->getTitle(),
+			$title,
 			$this->linksUpdate->getParserOutput() );
 
-		if ( $parserData->getSemanticData()->isEmpty() ) {
-			$this->updateEmptySemanticData( $parserData, $this->linksUpdate->getTitle() );
+		if ( $this->isSemanticEnabledNamespace( $title ) && $parserData->getSemanticData()->isEmpty() ) {
+			$this->updateEmptySemanticData( $parserData, $title );
 		}
 
 		$parserData->updateStore();
@@ -100,6 +101,10 @@ class LinksUpdateConstructed {
 		}
 
 		return $parserOutput->mSMWData;
+	}
+
+	private function isSemanticEnabledNamespace( Title $title ) {
+		return $this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
 	}
 
 }
