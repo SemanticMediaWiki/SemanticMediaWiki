@@ -52,6 +52,12 @@ class SMWImportValue extends SMWDataValue {
 	protected function parseUserValue( $value ) {
 		$this->m_qname = $value;
 
+		if ( strpos( $value, ':' ) === false ) {
+			$this->addError( wfMessage( 'smw-datavalue-import-invalidvalue', $value )->inContentLanguage()->text() );
+			$this->m_dataitem = new SMWDIBlob( 'ERROR' );
+			return;
+		}
+
 		list( $onto_ns, $onto_section ) = explode( ':', $this->m_qname, 2 );
 
 		if ( !$this->controlledVocabularyImportFetcher->contains( $onto_ns ) ) { // error: no elements for this namespace
