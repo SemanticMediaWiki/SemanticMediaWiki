@@ -13,9 +13,7 @@ use Title;
 /**
  * @covers \SMW\PropertyTypeDiffFinder
  *
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -74,17 +72,11 @@ class PropertyTypeDiffFinderTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider dataItemDataProvider
 	 */
-	public function testDetectChanges( $storeValues, $dataValues, $settings, $expected ) {
+	public function testDetectChanges( $storeValues, $dataValues, $propertiesToCompare, $expected ) {
 
 		$this->storeValues = $storeValues;
 
-		$subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__, SMW_NS_PROPERTY ) );
-
-		$settings = Settings::newFromArray( array(
-			'smwgDeclarationProperties' => $settings
-		) );
-
-		$this->applicationFactory->registerObject( 'Settings', $settings );
+		$subject = new DIWikiPage( __METHOD__, SMW_NS_PROPERTY );
 
 		$updateDispatcherJob = $this->getMockBuilder( 'SMW\MediaWiki\Jobs\UpdateDispatcherJob' )
 			->disableOriginalConstructor()
@@ -129,12 +121,8 @@ class PropertyTypeDiffFinderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $dataValues ) );
 
 		$instance = new PropertyTypeDiffFinder( $store, $semanticData );
+		$instance->setPropertiesToCompare( $propertiesToCompare );
 		$instance->findDiff();
-
-		$this->assertEquals(
-			$subject->getTitle(),
-			$instance->getTitle()
-		);
 
 		$this->assertEquals(
 			$expected['diff'],

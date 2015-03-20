@@ -2,8 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Tests\Utils\Validators\SemanticDataValidator;
-use SMW\Tests\Utils\ParserFactory;
+use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\Mock\MockTitle;
 
 use SMW\MediaWiki\Hooks\ArticlePurge;
@@ -35,9 +34,10 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->semanticDataValidator = new SemanticDataValidator();
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+		$this->parserFactory =  UtilityFactory::getInstance()->newParserFactory();
+
 		$this->applicationFactory = ApplicationFactory::getInstance();
-		$this->parserFactory = new ParserFactory();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -89,6 +89,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 	public function testProcess( $parameters ) {
 
 		$settings = Settings::newFromArray( array(
+			'smwgDeclarationProperties' => array(),
 			'smwgCacheType'        => 'hash',
 			'smwgEnableUpdateJobs' => false
 		) );
