@@ -182,6 +182,10 @@ class SomePropertyCompilerTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $indexField ) );
 
 		$dataItemHandler->expects( $this->any() )
+			->method( 'getTableFields' )
+			->will( $this->returnValue( array( 'one', 'two' ) ) );
+
+		$dataItemHandler->expects( $this->any() )
 			->method( 'getWhereConds' )
 			->will( $this->returnValue( array( $indexField => 'fixedFooWhereCond' ) ) );
 
@@ -394,6 +398,52 @@ class SomePropertyCompilerTest extends \PHPUnit_Framework_TestCase {
 		$expected->queryNumber = 0;
 		$expected->where = '(t0.blobIndex=fixedFooWhereCond)';
 		$expected->sortfields = array( 'Foo' => 't0.blobIndex' );
+		$expected->from = '';
+
+		$provider[] = array(
+			$description,
+			$isFixedPropertyTable,
+			$indexField,
+			$sortKeys,
+			$expected
+		);
+
+		#5 Check SemanticMaps compatibility mode (invokes `getSQLCondition`)
+		$isFixedPropertyTable = false;
+		$indexField = 'blobIndex';
+		$sortKeys = array();
+		$property = new DIProperty( 'Foo' );
+		$property->setPropertyTypeId( '_txt' );
+
+		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getSQLCondition', 'getDataItem' ) )
+			->getMock();
+
+		$valueDescription->expects( $this->any() )
+			->method( 'getProperty' )
+			->will( $this->returnValue( $property ) );
+
+		$valueDescription->expects( $this->any() )
+			->method( 'getDataItem' )
+			->will( $this->returnValue( new DIBlob( '13,56' ) ) );
+
+		$valueDescription->expects( $this->once() )
+			->method( 'getSQLCondition' )
+			->will( $this->returnValue( 'foo AND bar' ) );
+
+		$description = new SomeProperty(
+			$property,
+			$valueDescription
+		);
+
+		$expected = new \stdClass;
+		$expected->type = 1;
+		$expected->joinTable = 'FooPropTable';
+		$expected->components = array( 1 => "t0.p_id" );
+		$expected->queryNumber = 0;
+		$expected->where = '(foo AND bar)';
+		$expected->sortfields = array();
 		$expected->from = '';
 
 		$provider[] = array(
