@@ -23,7 +23,7 @@ class PageUpdater {
 	* @param Title $title
 	*/
 	public function addPage( Title $title ) {
-		$this->titles[ $title->getPrefixedDBKey() ] = $title;
+		$this->titles[$title->getPrefixedDBKey()] = $title;
 	}
 
 	/**

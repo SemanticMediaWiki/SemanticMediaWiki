@@ -173,7 +173,7 @@ class ConceptCache {
 	 *
 	 * @return DIConcept|null
 	 */
-    public function getStatus( $concept ) {
+	public function getStatus( $concept ) {
 		$db = $this->store->getConnection();
 
 		$cid = $this->store->smwIds->getSMWPageID(

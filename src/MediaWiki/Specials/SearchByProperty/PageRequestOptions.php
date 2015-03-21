@@ -81,7 +81,7 @@ class PageRequestOptions {
 	 */
 	public function initialize() {
 
-		$params = explode( '/',  $this->queryString );;
+		$params = explode( '/', $this->queryString );
 		reset( $params );
 
 		// Remove empty elements

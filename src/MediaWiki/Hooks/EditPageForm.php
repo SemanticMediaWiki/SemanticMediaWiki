@@ -62,7 +62,7 @@ class EditPageForm {
 
 		$html = $this->htmlFormBuilder
 			->setName( 'editpage-help' )
-			->addParagraph( $message , array( 'class' => 'smw-editpage-help' ) )
+			->addParagraph( $message, array( 'class' => 'smw-editpage-help' ) )
 			->getForm();
 
 		$this->editPage->editFormPageTop .= $html;

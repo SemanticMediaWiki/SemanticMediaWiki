@@ -111,10 +111,10 @@ class Search extends SearchEngine {
 				$query = null;
 			}
 
-			$this->queryCache[ $term ] = $query;
+			$this->queryCache[$term] = $query;
 		}
 
-		return $this->queryCache[ $term ];
+		return $this->queryCache[$term];
 	}
 
 	private function searchFallbackSearchEngine( $term, $fulltext ) {
@@ -269,7 +269,7 @@ class Search extends SearchEngine {
 	public function getFeatureData( $feature ) {
 
 		if ( array_key_exists( $feature, $this->features ) ) {
-			return $this->features[ $feature ];
+			return $this->features[$feature];
 		}
 
 		return null;

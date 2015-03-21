@@ -38,7 +38,7 @@ class CompilerHelper {
 
 		$comparator = $description->getComparator();
 
-		if ( !isset( $comparatorMap[ $comparator ] ) ) {
+		if ( !isset( $comparatorMap[$comparator] ) ) {
 			throw new RuntimeException( "Unsupported comparator '" . $comparator . "' in value description." );
 		}
 
@@ -53,7 +53,7 @@ class CompilerHelper {
 
 		}
 
-		return $comparatorMap[ $comparator ];
+		return $comparatorMap[$comparator];
 	}
 
 }

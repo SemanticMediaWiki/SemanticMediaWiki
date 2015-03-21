@@ -259,8 +259,8 @@ class UsageStatisticsListLookup implements SimpleListLookup {
 
 		$tableIdForType = $this->store->findPropertyTableID( new DIProperty( $type ) );
 
-		if ( isset( $propertyTables[ $tableIdForType ] ) ) {
-			return $propertyTables[ $tableIdForType ];
+		if ( isset( $propertyTables[$tableIdForType] ) ) {
+			return $propertyTables[$tableIdForType];
 		}
 
 		throw new RuntimeException( "Tried to access a table that doesn't exist for {$tableIdForType}." );

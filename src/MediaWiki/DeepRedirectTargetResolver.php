@@ -80,15 +80,15 @@ class DeepRedirectTargetResolver {
 
 	private function addToResolverTracker( $title ) {
 
-		if ( !isset( $this->recursiveResolverTracker[ $title->getPrefixedDBkey() ] ) ) {
-			$this->recursiveResolverTracker[ $title->getPrefixedDBkey() ] = 0;
+		if ( !isset( $this->recursiveResolverTracker[$title->getPrefixedDBkey()] ) ) {
+			$this->recursiveResolverTracker[$title->getPrefixedDBkey()] = 0;
 		}
 
-		return $this->recursiveResolverTracker[ $title->getPrefixedDBkey() ]++;
+		return $this->recursiveResolverTracker[$title->getPrefixedDBkey()]++;
 	}
 
 	private function isCircularByKnownRedirectTarget( $title ) {
-		return isset( $this->recursiveResolverTracker[ $title->getPrefixedDBkey() ] ) && $this->recursiveResolverTracker[ $title->getPrefixedDBkey() ] > 1;
+		return isset( $this->recursiveResolverTracker[$title->getPrefixedDBkey()] ) && $this->recursiveResolverTracker[$title->getPrefixedDBkey()] > 1;
 	}
 
 }
