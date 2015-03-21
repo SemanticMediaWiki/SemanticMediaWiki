@@ -118,6 +118,9 @@
 	"smw_types_docu": "Hee kütt en Leß met alle Datte-Tüpe, die en Eijeschaff hann künnt.\nJede Tüp hät en eije Sigg, woh mer zosäzlesch Enfommazjuhne enndraare kann.",
 	"semanticstatistics": "Schtatistik övver de semantesche Daate",
 	"smw_semstats_text": "Dat Wiki hät {{PLURAL:$1|'''eine''' Wäät|'''$1''' Wääte|'''nit eine''' Wäät}} för ensjesamp '''{{PLURAL:$2|ein|$2|keine}}''' ongerscheedlijje [[Special:Properties|{{PLURAL:$2|Eijeschaff|Eijeschaffte|Eijeschaff}}]].\n{{PLURAL:$3|'''Ein''' Eijeschaff hät|'''$3''' Eijeschaffte han|'''Kein''' Eijeschaff hät}} en eije Sigg, un en Zoot (dä Datetyp) es för '''{{PLURAL:$4|eine|$4|keine}}'''  dovun aanjejovve. Et künne och [[Special:UnusedProperties|{{lcfirst:{{#special:UnusedProperties}}}}]] dronger sinn. Eijeschaffte ohne eije Sigg sin op dä Sigg met de [[Special:WantedProperties|{{lcfirst:{{#special:WantedProperties}}}}]] opjeleß.",
+	"smw-statistics-query-inline-legacy": "{{PLURAL:$1|Affrohch|Affrohre|Kein Affrohch}}",
+	"smw-statistics-query-inline": "[[Property:Has query|{{PLURAL:$1|Affrohch|Affrohre|Kein Affrohch}}]]",
+	"smw-statistics-error-count": "{{PLURAL:$1|Dä Wäät|De Wääte|Kein Wääte}} vun dä Eijeschaff med {{PLURAL:$1|en||kein}} kappodde ([[Property:Has improper value for|{{PLURAL:$1|Aanmärkong|Aanmärkonge|Aanmärkong}}]])",
 	"smw_uri_doc": "Dä <i lang=\"en\">URI resolver</i> hät dä Vörschlaach <i lang=\"en\">[$1 W3C TAG finding on httpRange-14]</i> opjenumme\n(-: un sorresch esu doför, dat uß Minsche kei Websigge wääde :-)",
 	"ask": "Semantesch Söke",
 	"smw_ask_sortby": "Noh de Spallde zotteere (moß ävver nit)",
@@ -200,6 +203,14 @@
 	"smw_unknowntype": "De Zoot „$1“ för de Eijeschaff dom_mer nit ongershtöze.",
 	"smw_concept_header": "Sigge vun däm Kumzäp „$1“",
 	"smw_conceptarticlecount": "{{PLURAL:$1|Ein Sigg jehööt|$1 Sigge jehüüre|Et jehüüere kein Sigge}} zoh dämm Kumzäp{{PLURAL:$1|:|:|.}}",
+	"smw-pa-property-predefined-default": "„$1“ es en Eijeschaff, di vum Wikkiprojramm ald faßjelahd es.",
+	"smw-pa-property-predefined_asksi": "„$1“ es en Eijeschaff, di vum Wikkiprojramm ald faßjelahd es, woh de Nommer vun dä Bedengonge en ene Affrohch faßjehallde es.",
 	"smw-sp-admin-settings-title": "Enschtällonge",
-	"smw-livepreview-loading": "Ben aam Lahde&nbsp;…"
+	"smw-livepreview-loading": "Ben aam Lahde&nbsp;…",
+	"smw-editpage-property-annotation-disabled": "Heh di Eijeschaff löht sesch nit med ene Zoot vun de Dahte verbenge, weil di ald vum Wikki uß faßjelaat es. Alsu „<code lang=\"en\" xml:lang=\"en\" dir=\"ltr\"><nowiki>[[Has type::Page]]</nowiki></code>“ jeiht heh nit. Op dä Sigg met [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Hölp övver besönder  Eijeschaffte] fengk mer mih Enfommazjuhne.",
+	"smw-datavalue-import-missing-nsuri": "Ene <i lang=\"en\" xml:lang=\"en\" dir=\"ltr\" title=\"Uniform Ressource Identifier\">URI</i> för et Appachemang „$1“kunnt en dä [[MediaWiki:Smw import $1|$1-Emmpoht_Dattei]] nit jefonge wähde.",
+	"smw-datavalue-import-missing-type": "Mer han de Zoot Dahte vun dä Eijeschaff „$1“ nidd em [[MediaWiki:Smw import $2|Empoot vum $2]] jefonge.",
+	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|Empoot vum $1]]",
+	"smw-pa-property-predefined_errp": "„$1“ es en Eijeschaff, di vum Wikkiprojramm ald faßjelaad es un jebruch weed, öm kappode Wääte för Eijeschaffte faßzehallde, di wahscheinlesch vun Beschängkonge vun de Zoot udder Beschängkonge vun [[Property:Allows value|de zohjelohße Wääte]] kumme.",
+	"smw-pa-property-predefined_pval": "[https://semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"] es en Eijeschaff, di vum Wikkiprojramm ald faßjelaad es un di en Leß met zohjelohße Wääte, fäßlähje kann, öm de Zohdeijlong vun Wääte för en Einjeschaff ze beschrängke."
 }
