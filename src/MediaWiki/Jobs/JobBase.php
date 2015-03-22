@@ -104,7 +104,7 @@ abstract class JobBase extends Job {
 	 * @return boolean
 	 */
 	public function hasParameter( $key ) {
-		return isset( $this->params[ $key ] ) || array_key_exists( $key, $this->params );
+		return isset( $this->params[$key] ) || array_key_exists( $key, $this->params );
 	}
 
 	/**
@@ -117,7 +117,7 @@ abstract class JobBase extends Job {
 	 * @return boolean
 	 */
 	public function getParameter( $key ) {
-		return $this->params[ $key ];
+		return $this->params[$key];
 	}
 
 	/**

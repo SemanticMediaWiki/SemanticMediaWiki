@@ -88,8 +88,8 @@ class BrowseBySubject extends ApiBase {
 			$this->getResult()->setIndexedTagName( $serialized['data'], 'property' );
 
 			foreach ( $serialized['data'] as $key => $value ) {
-				if ( isset( $serialized['data'][ $key ]['dataitem'] ) && is_array( $serialized['data'][ $key ]['dataitem'] ) ) {
-					$this->getResult()->setIndexedTagName( $serialized['data'][ $key ]['dataitem'], 'value' );
+				if ( isset( $serialized['data'][$key]['dataitem'] ) && is_array( $serialized['data'][$key]['dataitem'] ) ) {
+					$this->getResult()->setIndexedTagName( $serialized['data'][$key]['dataitem'], 'value' );
 				}
 			}
 		}

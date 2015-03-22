@@ -107,7 +107,7 @@ class JsonFileReader implements FileReader {
 
 		return sprintf(
 			"Expected a JSON compatible format but failed with '%s'",
-			$errorMessages[ $errorCode ]
+			$errorMessages[$errorCode]
 		);
 	}
 

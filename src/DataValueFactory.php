@@ -186,7 +186,7 @@ class DataValueFactory {
 				$caption,
 				$contextPage
 			);
-		} else if ( $propertyDI instanceof DIProperty && $propertyDI->isInverse() ) {
+		} elseif ( $propertyDI instanceof DIProperty && $propertyDI->isInverse() ) {
 			$dataValue = new SMWErrorValue( $propertyDV->getPropertyTypeID(),
 				wfMessage( 'smw_noinvannot' )->inContentLanguage()->text(),
 				$valueString, $caption
@@ -218,7 +218,7 @@ class DataValueFactory {
 	/**
 	 * @deprecated since 1.9, use DataTypeRegistry::findTypeId
 	 */
-	public static  function findTypeID( $label ) {
+	public static function findTypeID( $label ) {
 		return DataTypeRegistry::getInstance()->findTypeId( $label );
 	}
 

@@ -80,7 +80,7 @@ final class ApiRequestParameterFormatter {
 
 		// Set defaults
 		$result->set( 'conditions', array() );
-		$result->set( 'printouts' , array() );
+		$result->set( 'printouts', array() );
 		$result->set( 'parameters', array() );
 
 		if ( isset( $this->requestParameters['parameters'] ) && is_array( $this->requestParameters['parameters'] ) ) {

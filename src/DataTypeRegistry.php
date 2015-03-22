@@ -143,8 +143,8 @@ class DataTypeRegistry {
 	 * @return integer data item ID
 	 */
 	public function getDataItemId( $typeId ) {
-		if ( isset( $this->typeDataItemIds[ $typeId ] ) ) {
-			return $this->typeDataItemIds[ $typeId ];
+		if ( isset( $this->typeDataItemIds[$typeId] ) ) {
+			return $this->typeDataItemIds[$typeId];
 		}
 
 		return DataItem::TYPE_NOTYPE;
@@ -157,7 +157,7 @@ class DataTypeRegistry {
 	 * @return boolean
 	 */
 	public function isKnownTypeId( $typeId ) {
-		return isset( $this->typeDataItemIds[ $typeId ] );
+		return isset( $this->typeDataItemIds[$typeId] );
 	}
 
 	/**
@@ -236,8 +236,8 @@ class DataTypeRegistry {
 	 */
 	public function findTypeLabel( $id ) {
 
-		if ( isset( $this->typeLabels[ $id ] ) ) {
-			return $this->typeLabels[ $id ];
+		if ( isset( $this->typeLabels[$id] ) ) {
+			return $this->typeLabels[$id];
 		}
 
 		// internal type without translation to user space;
@@ -278,8 +278,8 @@ class DataTypeRegistry {
 	 */
 	public function getDefaultDataItemTypeId( $diType ) {
 
-		if ( isset( $this->defaultDataItemTypeIds[ $diType ] ) ) {
-			return $this->defaultDataItemTypeIds[ $diType ];
+		if ( isset( $this->defaultDataItemTypeIds[$diType] ) ) {
+			return $this->defaultDataItemTypeIds[$diType];
 		}
 
 		return null;
@@ -297,7 +297,7 @@ class DataTypeRegistry {
 	public function getDataTypeClassById( $typeId ) {
 
 		if ( $this->hasDataTypeClassById( $typeId ) ) {
-			return $this->typeClasses[ $typeId ];
+			return $this->typeClasses[$typeId];
 		}
 
 		return null;
@@ -313,7 +313,7 @@ class DataTypeRegistry {
 	 * @return boolean
 	 */
 	public function hasDataTypeClassById( $typeId ) {
-		return isset( $this->typeClasses[ $typeId ] ) && class_exists( $this->typeClasses[ $typeId ] );
+		return isset( $this->typeClasses[$typeId] ) && class_exists( $this->typeClasses[$typeId] );
 	}
 
 	/**

@@ -80,7 +80,7 @@ class MaintenanceHelper {
 			return;
 		}
 
-		$this->globals[ $key ] = $GLOBALS[$key];
+		$this->globals[$key] = $GLOBALS[$key];
 		$GLOBALS[$key] = $value;
 	}
 
