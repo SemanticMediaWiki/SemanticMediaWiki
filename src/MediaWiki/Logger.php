@@ -49,7 +49,7 @@ class Logger implements LoggerInterface {
 	 */
 	public function logToTable( $type, $performer, $target, $comment ) {
 
-		if ( !isset( $this->logEventTypes[ $type ] ) || !$this->logEventTypes[ $type ] ) {
+		if ( !isset( $this->logEventTypes[$type] ) || !$this->logEventTypes[$type] ) {
 			return null;
 		}
 

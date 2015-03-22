@@ -98,7 +98,7 @@ class SpecialStatsAddExtra {
 		foreach ( $this->messageMapper as $key => $message ) {
 
 			if ( isset( $statistics[$key] ) ) {
-				$this->extraStats['smw-statistics'][ $message ] = $statistics[$key];
+				$this->extraStats['smw-statistics'][$message] = $statistics[$key];
 			}
 		}
 

@@ -90,7 +90,7 @@ class ConceptDescriptionCompiler implements QueryCompiler {
 				if ($qid != -1) {
 					$query = $this->queryBuilder->getSqlQueryPart( $qid );
 				} else { // somehow the concept query is no longer valid; maybe some syntax changed (upgrade) or global settings were modified since storing it
-					$this->queryBuilder->addError( wfMessage( 'smw_emptysubquery' )->text() ); // not quite the right message, but this case is very rare; let us not make detailed messages for this
+					$this->queryBuilder->addError( wfMessage( 'smw_emptysubquery' )->text() ); // not the right message, but this case is very rare; let us not make detailed messages for this
 				}
 			} else {
 				$this->queryBuilder->addError( wfMessage( 'smw_concept_cache_miss', $description->getConcept()->getText() )->text() );

@@ -124,7 +124,7 @@ class GenericHttpDatabaseConnector {
 	 *
 	 * @return boolean to indicate success
 	 */
-	public function ping( $endpointType = self::EP_TYPE_QUERY ){
+	public function ping( $endpointType = self::EP_TYPE_QUERY ) {
 		if ( $endpointType == self::EP_TYPE_QUERY ) {
 			$this->httpRequest->setOption( CURLOPT_URL, $this->m_queryEndpoint );
 			$this->httpRequest->setOption( CURLOPT_NOBODY, true );
@@ -377,7 +377,7 @@ class GenericHttpDatabaseConnector {
 			"INSERT DATA  " .
 			( ( $this->m_defaultGraph !== '' )? " { GRAPH <{$this->m_defaultGraph}> " : '' ) .
 			"{ $triples } " .
-			( ( $this->m_defaultGraph !== '' )? " } " : '' ) ;
+			( ( $this->m_defaultGraph !== '' )? " } " : '' );
 
 		return $this->doUpdate( $sparql );
 	}

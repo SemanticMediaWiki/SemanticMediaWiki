@@ -165,7 +165,7 @@ class HtmlFormBuilder {
 	 * @return FormBuilder
 	 */
 	public function addQueryParameter( $key, $value ) {
-		$this->queryParameters[ $key ] = $value;
+		$this->queryParameters[$key] = $value;
 		return $this;
 	}
 

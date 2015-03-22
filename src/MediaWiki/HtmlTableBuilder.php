@@ -206,7 +206,7 @@ class HtmlTableBuilder {
 			$attributes['class'] = $alternate;
 		}
 
-		return Html::rawElement( 'tr', $attributes , $content );
+		return Html::rawElement( 'tr', $attributes, $content );
 	}
 
 	private function createCell( $content = '', $attributes = array() ) {
