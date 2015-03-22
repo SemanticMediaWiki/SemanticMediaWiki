@@ -69,8 +69,8 @@ class HookRegistry {
 			$this->getListOfParserFunctionDefinitions()
 		);
 
-		if ( isset( $listOfDefinitions[ $name ] ) ) {
-			return $listOfDefinitions[ $name ];
+		if ( isset( $listOfDefinitions[$name] ) ) {
+			return $listOfDefinitions[$name];
 		}
 
 		throw new RuntimeException( "$name is unknown or not registered" );
@@ -81,7 +81,7 @@ class HookRegistry {
 	 */
 	public function register() {
 		foreach ( $this->getListOfFunctionHookDefinitions() as $hook => $definition ) {
-			$this->globalVars['wgHooks'][ $hook ][] = $definition;
+			$this->globalVars['wgHooks'][$hook][] = $definition;
 		}
 	}
 

@@ -60,7 +60,7 @@ class PropertyLabelFinder {
 	public function findPropertyLabelById( $id ) {
 
 		if ( array_key_exists( $id, $this->languageIndependentPropertyLabels ) ) {
-			return $this->languageIndependentPropertyLabels[ $id ];
+			return $this->languageIndependentPropertyLabels[$id];
 		}
 
 		return '';

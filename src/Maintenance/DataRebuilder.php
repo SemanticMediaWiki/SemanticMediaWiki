@@ -177,7 +177,7 @@ class DataRebuilder {
 
 			$title = $this->makeTitleOf( $page );
 
-			if ( $title !== null && !isset( $titleCache[ $title->getPrefixedDBkey() ] ) ) {
+			if ( $title !== null && !isset( $titleCache[$title->getPrefixedDBkey()] ) ) {
 
 				$this->rebuildCount++;
 				$percentage = round( $this->rebuildCount / $numPages * 100 );
@@ -188,7 +188,7 @@ class DataRebuilder {
 				$updatejob->run();
 
 				$this->doPrintDotProgressIndicator( $this->verbose );
-				$titleCache[ $title->getPrefixedDBkey() ] = true;
+				$titleCache[$title->getPrefixedDBkey()] = true;
 			}
 		}
 

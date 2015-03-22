@@ -230,7 +230,7 @@ class Factbox {
 		if ( $showFactbox === SMW_FACTBOX_SPECIAL && !$semanticData->hasVisibleSpecialProperties() ) {
 			// show only if there are special properties
 			return '';
-		} else if ( $showFactbox === SMW_FACTBOX_NONEMPTY && !$semanticData->hasVisibleProperties() ) {
+		} elseif ( $showFactbox === SMW_FACTBOX_NONEMPTY && !$semanticData->hasVisibleProperties() ) {
 			// show only if non-empty
 			return '';
 		}
@@ -379,7 +379,7 @@ class Factbox {
 
 				if ( $dataValue->isValid() ) {
 					$valuesHtml[] = Sanitizer::removeHTMLtags(
-						$dataValue->getLongWikiText( true ) , null, array(), array(), $excluded
+						$dataValue->getLongWikiText( true ), null, array(), array(), $excluded
 						) . $dataValue->getInfolinkText( SMW_OUTPUT_WIKI );
 				}
 			}

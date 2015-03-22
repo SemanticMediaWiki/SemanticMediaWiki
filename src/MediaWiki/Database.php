@@ -395,16 +395,16 @@ class Database {
 		// If a transaction is being added for an uncommitted
 		// queue entry then a transaction for the same instance
 		// and name is being omitted
-		if ( isset( $this->transactionQueue[ $fname ] ) ) {
+		if ( isset( $this->transactionQueue[$fname] ) ) {
 			return;
 		}
 
-		$this->transactionQueue[ $fname ] = true;
+		$this->transactionQueue[$fname] = true;
 
 		try {
 			$this->writeConnection()->begin( $fname );
 		} catch ( \Exception $exception ) {
-			unset( $this->transactionQueue[ $fname ] );
+			unset( $this->transactionQueue[$fname] );
 			wfDebug( __METHOD__ . ' exception caused by ' . $exception->getMessage() );
 		}
 	}
@@ -416,7 +416,7 @@ class Database {
 	 */
 	public function commitTransaction( $fname = __METHOD__  ) {
 
-		if ( !isset( $this->transactionQueue[ $fname ] ) ) {
+		if ( !isset( $this->transactionQueue[$fname] ) ) {
 			return;
 		}
 
@@ -427,7 +427,7 @@ class Database {
 			wfDebug( __METHOD__ . ' rollback because of ' . $exception->getMessage() );
 		}
 
-		unset( $this->transactionQueue[ $fname ] );
+		unset( $this->transactionQueue[$fname] );
 	}
 
 	private function readConnection() {

@@ -126,7 +126,7 @@ class ConceptCacheRebuilder {
 				if ( !$this->hasOption( 'quiet' ) ) {
 					wfCountDown( $delay );
 				}
-				
+
 				$this->reportMessage( "\nDeleting concept caches.\n\n" );
 				break;
 			default:

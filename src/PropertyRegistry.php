@@ -140,7 +140,7 @@ class PropertyRegistry {
 	 */
 	public function registerProperty( $id, $typeId, $label = false, $show = false ) {
 
-		$this->propertyTypes[ $id ] = array( $typeId, $show );
+		$this->propertyTypes[$id] = array( $typeId, $show );
 
 		if ( $label !== false ) {
 			$this->registerPropertyLabel( $id, $label );
@@ -160,7 +160,7 @@ class PropertyRegistry {
 	 * alias.
 	 */
 	public function registerPropertyAlias( $id, $label ) {
-		$this->propertyAliases[ $label ] = $id;
+		$this->propertyAliases[$label] = $id;
 	}
 
 	/**
@@ -231,7 +231,7 @@ class PropertyRegistry {
 		if ( $id !== false ) {
 			return $id;
 		} elseif ( $useAlias && array_key_exists( $label, $this->propertyAliases ) ) {
-			return $this->propertyAliases[ $label ];
+			return $this->propertyAliases[$label];
 		}
 
 		return false;
@@ -252,7 +252,7 @@ class PropertyRegistry {
 	 * @return boolean
 	 */
 	public function isKnownPropertyId( $id ) {
-		return isset( $this->propertyTypes[ $id ] ) || array_key_exists( $id, $this->propertyTypes );
+		return isset( $this->propertyTypes[$id] ) || array_key_exists( $id, $this->propertyTypes );
 	}
 
 	/**
@@ -263,7 +263,7 @@ class PropertyRegistry {
 	 * @return boolean
 	 */
 	public function getPropertyVisibility( $id ) {
-		return $this->isKnownPropertyId( $id ) ? $this->propertyTypes[ $id ][1] : false;
+		return $this->isKnownPropertyId( $id ) ? $this->propertyTypes[$id][1] : false;
 	}
 
 	/**
@@ -308,7 +308,7 @@ class PropertyRegistry {
 		);
 
 		foreach ( $this->datatypeLabels as $id => $label ) {
-			$this->propertyTypes[ $id ] = array( $id, true );
+			$this->propertyTypes[$id] = array( $id, true );
 		}
 
 		// @deprecated since 2.1

@@ -143,10 +143,10 @@ class SparqlDBConnectionProvider implements DBConnectionProvider {
 
 	private function mapConnectorIdToClass( $connectorId ) {
 
-		$databaseConnector = $this->connectorIdToClass[ 'default' ];
+		$databaseConnector = $this->connectorIdToClass['default'];
 
-		if ( isset( $this->connectorIdToClass[ $connectorId ] ) ) {
-			$databaseConnector = $this->connectorIdToClass[ $connectorId ];
+		if ( isset( $this->connectorIdToClass[$connectorId] ) ) {
+			$databaseConnector = $this->connectorIdToClass[$connectorId];
 		}
 
 		if ( $connectorId === 'custom' ) {

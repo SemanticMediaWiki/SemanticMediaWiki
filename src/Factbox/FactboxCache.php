@@ -117,7 +117,7 @@ class FactboxCache {
 
 		if ( isset( $this->outputPage->mSMWFactboxText ) ) {
 			$text = $this->outputPage->mSMWFactboxText;
-		} else if ( $title instanceof Title ) {
+		} elseif ( $title instanceof Title ) {
 			$content = $this->newResultMapper( $title->getArticleID() )->fetchFromCache();
 			$text = isset( $content['text'] ) ? $content['text'] : '';
 		}

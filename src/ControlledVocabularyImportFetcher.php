@@ -45,11 +45,11 @@ class ControlledVocabularyImportFetcher {
 	 */
 	public function contains( $namespace ) {
 
-		if ( !isset( $this->importedVocabularies[ $namespace ] ) || $this->importedVocabularies[ $namespace ] === '' ) {
+		if ( !isset( $this->importedVocabularies[$namespace] ) || $this->importedVocabularies[$namespace] === '' ) {
 			$this->fetchForNamespace( $namespace );
 		}
 
-		return $this->importedVocabularies[ $namespace ] !== '';
+		return $this->importedVocabularies[$namespace] !== '';
 	}
 
 	/**
@@ -62,10 +62,10 @@ class ControlledVocabularyImportFetcher {
 	public function fetch( $namespace ) {
 
 		if ( !$this->contains( $namespace ) ) {
-			$this->importedVocabularies[ $namespace ] = '';
+			$this->importedVocabularies[$namespace] = '';
 		}
 
-		return $this->importedVocabularies[ $namespace ];
+		return $this->importedVocabularies[$namespace];
 	}
 
 	private function fetchForNamespace( $namespace ) {
@@ -80,7 +80,7 @@ class ControlledVocabularyImportFetcher {
 			$content = $this->tryLoadingFromDatabase( $namespace );
 		}
 
-		$this->importedVocabularies[ $namespace ] = $content;
+		$this->importedVocabularies[$namespace] = $content;
 	}
 
 	private function tryLoadingFromDatabase( $namespace ) {

@@ -82,7 +82,7 @@ class LinksUpdateConstructed {
 
 		$semanticData = $this->reparseToFetchSemanticData( $title );
 
-		if ( $semanticData instanceOf SemanticData ) {
+		if ( $semanticData instanceof SemanticData ) {
 			$parserData->setSemanticData( $semanticData );
 		}
 	}

@@ -93,7 +93,7 @@ class MessageBuilder {
 	 * @return string
 	 */
 	public function prevNextToText( Title $title, $limit, $offset, array $query, $isAtTheEnd ) {
-		return $this->getLanguage()->viewPrevNext( $title, $offset,$limit, $query, $isAtTheEnd );
+		return $this->getLanguage()->viewPrevNext( $title, $offset, $limit, $query, $isAtTheEnd );
 	}
 
 	/**
