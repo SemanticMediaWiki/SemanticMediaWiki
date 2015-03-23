@@ -271,6 +271,10 @@
 	"smw_concept_header": "Páginas de concepto \"$1\"",
 	"smw_conceptarticlecount": "Mostrando abajo $1 {{PLURAL:$1|página|páginas}}.",
 	"smw-qp-empty-data": "Los datos solicitados podrían no mostrarse, debido a algunos criterios de selección insuficientes.",
+	"smw-pa-property-predefined-default": "\"$1\" es una propiedad predefinida.",
 	"smw-sp-properties-header-label": "Lista de propiedades",
-	"smw-livepreview-loading": "Cargando…"
+	"smw-livepreview-loading": "Cargando…",
+	"smw-pa-property-predefined_type": "\"$1\" es una propiedad predefinida que describe el [[Special:Types|tipo de datos]] de una propiedad.",
+	"smw-pa-property-predefined_errp": "\"$1\" es una propiedad predefinida para rastrear en, los errores de entrada, anotaciones de valores irregulares seguramente causados por restricciones de tipo o de [[Property:Allows value|valores permitidos]].",
+	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"] es una propiedad predefinida que puede definir una lista de valores posibles para restringir la asignación de valores de una propiedad."
 }
