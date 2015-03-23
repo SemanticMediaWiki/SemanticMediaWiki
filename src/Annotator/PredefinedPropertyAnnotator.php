@@ -54,14 +54,14 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 			$propertyDI = new DIProperty( $propertyId );
 
 			if ( $this->getSemanticData()->getPropertyValues( $propertyDI ) !== array() ) {
-				$cachedProperties[ $propertyId ] = true;
+				$cachedProperties[$propertyId] = true;
 				continue;
 			}
 
 			$dataItem = $this->createDataItemByPropertyId( $propertyId );
 
 			if ( $dataItem instanceof DataItem ) {
-				$cachedProperties[ $propertyId ] = true;
+				$cachedProperties[$propertyId] = true;
 				$this->getSemanticData()->addPropertyObjectValue( $propertyDI, $dataItem );
 			}
 		}

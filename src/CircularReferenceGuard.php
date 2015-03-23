@@ -50,11 +50,11 @@ class CircularReferenceGuard {
 	 */
 	public function mark( $hash ) {
 
-		if ( !isset( self::$circularRefGuard[ $this->namespace ][ $hash ] ) ) {
-			self::$circularRefGuard[ $this->namespace ][ $hash ] = 0;
+		if ( !isset( self::$circularRefGuard[$this->namespace][$hash] ) ) {
+			self::$circularRefGuard[$this->namespace][$hash] = 0;
 		}
 
-		self::$circularRefGuard[ $this->namespace ][ $hash ]++;
+		self::$circularRefGuard[$this->namespace][$hash]++;
 	}
 
 	/**
@@ -64,11 +64,11 @@ class CircularReferenceGuard {
 	 */
 	public function unmark( $hash ) {
 
-		if ( isset( self::$circularRefGuard[ $this->namespace ][ $hash ] ) && self::$circularRefGuard[ $this->namespace ][ $hash ] > 0 ) {
-			return self::$circularRefGuard[ $this->namespace ][ $hash ]--;
+		if ( isset( self::$circularRefGuard[$this->namespace][$hash] ) && self::$circularRefGuard[$this->namespace][$hash] > 0 ) {
+			return self::$circularRefGuard[$this->namespace][$hash]--;
 		}
 
-		unset( self::$circularRefGuard[ $this->namespace ][ $hash ] );
+		unset( self::$circularRefGuard[$this->namespace][$hash] );
 	}
 
 	/**
@@ -91,8 +91,8 @@ class CircularReferenceGuard {
 	 */
 	public function get( $hash ) {
 
-		if ( isset( self::$circularRefGuard[ $this->namespace ][ $hash ] ) ) {
-			return self::$circularRefGuard[ $this->namespace ][ $hash ];
+		if ( isset( self::$circularRefGuard[$this->namespace][$hash] ) ) {
+			return self::$circularRefGuard[$this->namespace][$hash];
 		}
 
 		return 0;
@@ -104,7 +104,7 @@ class CircularReferenceGuard {
 	 * @param string $namespace
 	 */
 	public function reset( $namespace ) {
-		self::$circularRefGuard[ $namespace ] =  array();
+		self::$circularRefGuard[$namespace] =  array();
 	}
 
 }
