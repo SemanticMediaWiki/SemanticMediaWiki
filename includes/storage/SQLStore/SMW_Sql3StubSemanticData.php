@@ -321,7 +321,7 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	private function addSubSemanticDataToInternalCache( DIProperty $property ) {
 
 		foreach ( $this->getPropertyValues( $property ) as $value ) {
-			if ( $value instanceof DIWikiPage && !$this->hasSubSemanticData( $value->getSubobjectName() ) ) {
+			if ( $value instanceof DIWikiPage && $value->getSubobjectName() !== '' && !$this->hasSubSemanticData( $value->getSubobjectName() ) ) {
 				$this->addSubSemanticData( $this->store->getSemanticData( $value ) );
 			}
 		}
