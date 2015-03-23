@@ -123,7 +123,7 @@ class PropertyConditionBuilder implements ConditionBuilder {
 		$result->orderVariables = $innerCondition->orderVariables;
 
 		if ( $innerOrderByProperty !== null && $innerCondition->orderByVariable !== '' ) {
-			$result->orderVariables[ $property->getKey() ] = $innerCondition->orderByVariable;
+			$result->orderVariables[$property->getKey()] = $innerCondition->orderByVariable;
 		}
 
 		$this->compoundConditionBuilder->addOrderByDataForProperty(
@@ -172,7 +172,7 @@ class PropertyConditionBuilder implements ConditionBuilder {
 		}
 
 		if ( $matchElement instanceof ExpNsResource ) {
-			$namespaces[ $matchElement->getNamespaceId() ] = $matchElement->getNamespace();
+			$namespaces[$matchElement->getNamespaceId()] = $matchElement->getNamespace();
 		}
 
 		return $objectName;
@@ -188,7 +188,7 @@ class PropertyConditionBuilder implements ConditionBuilder {
 		}
 
 		if ( $propertyExpElement instanceof ExpNsResource ) {
-			$namespaces[ $propertyExpElement->getNamespaceId() ] = $propertyExpElement->getNamespace();
+			$namespaces[$propertyExpElement->getNamespaceId()] = $propertyExpElement->getNamespace();
 		}
 
 		return TurtleSerializer::getTurtleNameForExpElement( $propertyExpElement );

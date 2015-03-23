@@ -178,12 +178,14 @@
 	"smw-statistics-property-total-legacy": "{{PLURAL:$1|Attribut|Attribute}} (gesamt)",
 	"smw-statistics-property-page": "{{PLURAL:$1|Attribut|Attribute}} (auf einer Seite beschrieben)",
 	"smw-statistics-property-type": "{{PLURAL:$1|Attribut|Attribute}} (einem Datentyp zugewiesen)",
+	"smw-statistics-query-inline-legacy": "{{PLURAL:$1|Abfrage|Abfragen}}",
 	"smw-statistics-query-inline": "[[Attribut:Hat_Abfrage|{{PLURAL:$1|Abfrage|Abfragen}}]]",
 	"smw-statistics-query-size": "Abfragegröße",
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Konzept|Konzepte}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Konzept|Konzepte}}]]",
 	"smw-statistics-subobject-count": "{{PLURAL:$1|Unterobjekt|Unterobjekte}}",
 	"smw-statistics-datatype-count": "[[Special:Types|{{PLURAL:$1|Datentyp|Datentypen}}]]",
+	"smw-statistics-error-count": "{{PLURAL:$1|Attributwert|Attributwerte}} ([[Attribut:Hat_unpassenden_Wert_für|{{PLURAL:$1|mit fehlerhafter Annotation|mit fehlerhaften Annotationen}}]])",
 	"smw_uri_doc": "Der URI-Auflöser setzt die Empfehlungen „[$1 W3C TAG finding on httpRange-14]“ um. Er sorgt dafür, dass Menschen nicht zu Webseiten werden.",
 	"ask": "Semantische Suche",
 	"smw_ask_sortby": "Sortiere nach Spalte (optional)",
@@ -324,7 +326,12 @@
 	"log-name-smw": "Semantic-MediaWiki-Logbuch",
 	"log-description-smw": "Dies ist das Logbuch, mit dem die Aktivitäten von Semantic MediaWiki bezüglich der hierfür [https://www.semantic-mediawiki.org/wiki/Help:Logging aktivierten Ereignisarten] protokolliert werden.",
 	"smw-datavalue-import-unknownns": "Die Definition „$1“ des Imports ist unbekannt. Die Einzelheiten zum OWL-Import müssen auf der Seite [[MediaWiki:Smw import $1]] angegeben sein.",
+	"smw-datavalue-import-missing-nsuri": "Es wurde keine URI des Namensraums für „$1“ im [[MediaWiki:Smw import $1|$1-Import]] gefunden.",
+	"smw-datavalue-import-missing-type": "Es wurde keine Definition des Datentyps für „$1“ im [[MediaWiki:Smw import $2|$2-Import]] gefunden.",
+	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|$1-Import]]",
 	"smw-pa-property-predefined_impo": "„$1“ ist ein softwareseitig fest definiertes Attribut, das eine Relation zu einem [https://semantic-mediawiki.org/wiki/Help:Import_vocabulary importierten Vokabular] beschreibt.",
 	"smw-pa-property-predefined_type": "„$1“ ist ein softwareseitig fest definiertes Attribut, das den [[Special:Types|Datentyp]] eines Attributs beschreibt.",
-	"smw-pa-property-predefined_sobj": "„$1“ ist ein softwareseitig fest definiertes Attribut, das ausschließlich semantische Annotationen (Zuweisungen von Attributwerten zu Attributen) speichert und sich somit ähnlich einer Wikiseite verhält, dessen Inhalt für den Benutzer nicht direkt einsehbar ist."
+	"smw-pa-property-predefined_sobj": "„$1“ ist ein softwareseitig fest definiertes Attribut, das ausschließlich semantische Annotationen (Zuweisungen von Attributwerten zu Attributen) speichert und sich somit ähnlich einer Wikiseite verhält, dessen Inhalt für den Benutzer nicht direkt einsehbar ist.",
+	"smw-pa-property-predefined_errp": "„$1“ ist ein softwareseitig fest definiertes Attribut, das fehlerhafte Attributwerte speichert. Fehlerhafte Attributwerte entsprechen entweder nicht dem [https://semantic-mediawiki.org/wiki/Help:Datentyp Datentyp] des Attributs oder sind nicht als [https://semantic-mediawiki.org/wiki/Help:Spezialattribut_Erlaubt_Wert zulässiger Wert] für das Attribut definiert worden.",
+	"smw-pa-property-predefined_pval": "[https://semantic-mediawiki.org/wiki/Help:Spezialattribut_Erlaubt_Wert „$1“] ist ein softwareseitig fest definiertes Attribut, mit dem für ein Attribut zulässige Attributwerte definiert werden können."
 }

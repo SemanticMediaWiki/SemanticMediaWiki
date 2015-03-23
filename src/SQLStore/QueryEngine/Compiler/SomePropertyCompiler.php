@@ -228,6 +228,7 @@ class SomePropertyCompiler implements QueryCompiler {
 	private function compileValueDescription(
 			$query, ValueDescription $description, DataItemHandler $diHandler, $operator ) {
 
+		$where = '';
 		$dataItem = $description->getDataItem();
 		$db = $this->queryBuilder->getStore()->getConnection( 'mw.db' );
 
@@ -243,8 +244,22 @@ class SomePropertyCompiler implements QueryCompiler {
 		$keys = $diHandler->getWhereConds( $dataItem );
 		$value = $keys[$indexField];
 
-		$comparator = $this->compilerHelper->getSQLComparatorToValue( $description, $value );
-		$where = "$query->alias.{$indexField}{$comparator}" . $db->addQuotes( $value );
+		// See if the getSQLCondition method exists and call it if this is the case.
+		// Invoked by SMAreaValueDescription, SMGeoCoordsValueDescription
+		if ( method_exists( $description, 'getSQLCondition' ) ) {
+			$fields = $diHandler->getTableFields();
+
+			$where = $description->getSQLCondition(
+				$query->alias,
+				array_keys( $fields ),
+				$this->queryBuilder->getStore()->getConnection( DB_SLAVE )
+			);
+		}
+
+		if ( $where == '' ) {
+			$comparator = $this->compilerHelper->getSQLComparatorToValue( $description, $value );
+			$where = "$query->alias.{$indexField}{$comparator}" . $db->addQuotes( $value );
+		}
 
 		if ( $where !== '' ) {
 			$query->where .= ( $query->where ? " $operator " : '' ) . "($where)";

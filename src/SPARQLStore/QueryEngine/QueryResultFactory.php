@@ -70,7 +70,7 @@ class QueryResultFactory {
 			return $this->makeQueryResultForCount( $federateResultSet, $query );
 		}
 
-		return $this->makeQueryResultForInstance( $federateResultSet,$query );
+		return $this->makeQueryResultForInstance( $federateResultSet, $query );
 	}
 
 	private function makeQueryResultForCount( FederateResultSet $federateResultSet, Query $query ) {

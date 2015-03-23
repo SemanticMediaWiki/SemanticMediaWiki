@@ -69,17 +69,17 @@ class SparqlDBConnectionProvider implements DBConnectionProvider {
 	 * @param string|null $dataEndpoint
 	 */
 	public function __construct( $connectorId = null, $defaultGraph = null, $queryEndpoint = null, $updateEndpoint = null, $dataEndpoint = null ) {
-		$this->connectorId = $connectorId;
+			$this->connectorId = $connectorId;
 
-		if ( $this->connectorId === null ) {
-			$this->connectorId = $GLOBALS['smwgSparqlDatabaseConnector'];
+			if ( $this->connectorId === null ) {
+				$this->connectorId = $GLOBALS['smwgSparqlDatabaseConnector'];
+			}
+
+			$this->defaultGraph = $defaultGraph;
+			$this->queryEndpoint = $queryEndpoint;
+			$this->updateEndpoint = $updateEndpoint;
+			$this->dataEndpoint = $dataEndpoint;
 		}
-
-		$this->defaultGraph = $defaultGraph;
-		$this->queryEndpoint = $queryEndpoint;
-		$this->updateEndpoint = $updateEndpoint;
-		$this->dataEndpoint = $dataEndpoint;
-	}
 
 	/**
 	 * @see DBConnectionProvider::getConnection

@@ -54,7 +54,7 @@ class FixedInMemoryCache implements Cache {
 	 * {@inheritDoc}
 	 */
 	public function contains( $id ) {
-		return isset( $this->cache[ $id ] ) || array_key_exists( $id, $this->cache );
+		return isset( $this->cache[$id] ) || array_key_exists( $id, $this->cache );
 	}
 
 	/**
@@ -90,7 +90,7 @@ class FixedInMemoryCache implements Cache {
 			unset( $this->cache[ key( $this->cache ) ] );
 		}
 
-		$this->cache[ $id ] = $value;
+		$this->cache[$id] = $value;
 	}
 
 	/**
@@ -102,7 +102,7 @@ class FixedInMemoryCache implements Cache {
 
 		if ( $this->contains( $id ) ) {
 			$this->count--;
-			unset( $this->cache[ $id ] );
+			unset( $this->cache[$id] );
 			return true;
 		}
 
@@ -124,9 +124,9 @@ class FixedInMemoryCache implements Cache {
 	}
 
 	private function moveToMostRecentlyUsed( $id ) {
-		$value = $this->cache[ $id ];
-		unset( $this->cache[ $id ] );
-		$this->cache[ $id ] = $value;
+		$value = $this->cache[$id];
+		unset( $this->cache[$id] );
+		$this->cache[$id] = $value;
 
 		return $value;
 	}
