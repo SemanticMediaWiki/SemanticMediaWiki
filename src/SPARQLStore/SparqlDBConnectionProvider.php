@@ -68,12 +68,7 @@ class SparqlDBConnectionProvider implements DBConnectionProvider {
 	 * @param string|null $updateEndpoint
 	 * @param string|null $dataEndpoint
 	 */
-	public function __construct( 
-		$connectorId = null,
-		$defaultGraph = null,
-		$queryEndpoint = null,
-		$updateEndpoint = null,
-		$dataEndpoint = null ) {
+	public function __construct( $connectorId = null, $defaultGraph = null, $queryEndpoint = null, $updateEndpoint = null, $dataEndpoint = null ) {
 			$this->connectorId = $connectorId;
 
 			if ( $this->connectorId === null ) {
