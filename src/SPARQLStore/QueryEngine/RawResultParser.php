@@ -128,7 +128,7 @@ class RawResultParser {
 	}
 
 	private function parseXml( $xmlResultData ) {
-		return xml_parse( $this->parser, $xmlResultData , true );
+		return xml_parse( $this->parser, $xmlResultData, true );
 	}
 
 	private function getLastError() {

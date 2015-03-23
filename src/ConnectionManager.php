@@ -58,8 +58,8 @@ class ConnectionManager {
 
 	private function getConnectionProviderForId( $connectionTypeId ) {
 
-		if ( isset( self::$connectionProviderTypeIdMap[ $connectionTypeId ] ) ) {
-			return self::$connectionProviderTypeIdMap[ $connectionTypeId ];
+		if ( isset( self::$connectionProviderTypeIdMap[$connectionTypeId] ) ) {
+			return self::$connectionProviderTypeIdMap[$connectionTypeId];
 		}
 
 		throw new RuntimeException( "{$connectionTypeId} is missing a registered connection provider" );
