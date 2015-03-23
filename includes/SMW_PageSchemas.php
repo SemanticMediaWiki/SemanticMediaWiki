@@ -296,7 +296,12 @@ class SMWPageSchemas extends PSExtensionHandler {
 			$jobParams['page_text'] = self::createPropertyText( $propertyType, $propertyAllowedValues, $propertyLinkedForm );
 			$jobs[] = new PSCreatePageJob( $propTitle, $jobParams );
 		}
-		Job::batchInsert( $jobs );
+		if ( class_exists( 'JobQueueGroup' ) ) {
+			JobQueueGroup::singleton()->push( $jobs );
+		} else {
+			// MW <= 1.20
+			Job::batchInsert( $jobs );
+		}
 	}
 
 	/**
