@@ -82,21 +82,21 @@ class ValueConditionBuilder implements ConditionBuilder {
 		$dataItem = $description->getDataItem();
 
 		switch ( $description->getComparator() ) {
-			case SMW_CMP_EQ:   $comparator = '='; 
+			case SMW_CMP_EQ:   $comparator = '=';
 			break;
-			case SMW_CMP_LESS: $comparator = '<'; 
+			case SMW_CMP_LESS: $comparator = '<';
 			break;
-			case SMW_CMP_GRTR: $comparator = '>'; 
+			case SMW_CMP_GRTR: $comparator = '>';
 			break;
-			case SMW_CMP_LEQ:  $comparator = '<='; 
+			case SMW_CMP_LEQ:  $comparator = '<=';
 			break;
-			case SMW_CMP_GEQ:  $comparator = '>='; 
+			case SMW_CMP_GEQ:  $comparator = '>=';
 			break;
-			case SMW_CMP_NEQ:  $comparator = '!='; 
+			case SMW_CMP_NEQ:  $comparator = '!=';
 			break;
-			case SMW_CMP_LIKE: $comparator = 'regex'; 
+			case SMW_CMP_LIKE: $comparator = 'regex';
 			break;
-			case SMW_CMP_NLKE: $comparator = '!regex'; 
+			case SMW_CMP_NLKE: $comparator = '!regex';
 			break;
 			default:           $comparator = ''; // unkown, unsupported
 		}
