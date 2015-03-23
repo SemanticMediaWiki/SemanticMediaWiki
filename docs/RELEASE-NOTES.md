@@ -11,6 +11,7 @@ This is not a release yet.
 * #891 Enforces strict type declaration for properties with import references (type of the imported reference takes precedence over any user-defined type declaration)
 * #892 Added support for `<swivt:file>` in order for a RDF export to point to a "real" file resource
 * #893 Added information about "improper value for" to the statistics overview and as `API` parameter (`&errorcount`)
+* #913 Fixed exception for usage of `Has subobject` as free annotation
 
 ## Bug fixes
 
