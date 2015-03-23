@@ -163,7 +163,7 @@ class DisjunctionConditionBuilder implements ConditionBuilder {
 			if ( $subCondition instanceof FalseCondition ) {
 				// empty parts in a disjunction can be ignored
 			} elseif ( $subCondition instanceof TrueCondition ) {
-				return  $this->compoundConditionBuilder->buildTrueCondition( $joinVariable, $orderByProperty );
+				return $this->compoundConditionBuilder->buildTrueCondition( $joinVariable, $orderByProperty );
 			} elseif ( $subCondition instanceof WhereCondition ) {
 				$hasSafeSubconditions = $hasSafeSubconditions || $subCondition->isSafe();
 				$subConditionElements->unionCondition .= ( $subConditionElements->unionCondition ? ' UNION ' : '' ) .
