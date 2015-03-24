@@ -139,20 +139,55 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( '_TYPE' => array( '__typ', true ) ),
+			array( '_TYPE' => array( '__typ', true, true ) ),
 			$instance->getKnownPropertyTypes()
 		);
 
 		$this->assertTrue(
-			$instance->getPropertyVisibility( '_TYPE' )
+			$instance->isVisibleToUser( '_TYPE' )
+		);
+
+		$this->assertTrue(
+			$instance->isUnrestrictedForAnnotationUse( '_TYPE' )
 		);
 
 		$this->assertTrue(
 			$instance->isKnownPropertyId( '_TYPE' )
 		);
+	}
+
+	public function testUnregisterProperty() {
+
+		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$datatypeRegistry->expects( $this->once() )
+			->method( 'getKnownTypeLabels' )
+			->will( $this->returnValue( array() ) );
+
+		$datatypeRegistry->expects( $this->once() )
+			->method( 'getKnownTypeAliases' )
+			->will( $this->returnValue( array() ) );
+
+		$propertyLabelFinder = $this->getMockBuilder( '\SMW\PropertyLabelFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyAliases = array();
+
+		$instance = new PropertyRegistry(
+			$datatypeRegistry,
+			$propertyLabelFinder,
+			$propertyAliases
+		);
 
 		$this->assertFalse(
-			$instance->getPropertyVisibility( '_UnregisteredType' )
+			$instance->isVisibleToUser( '_UnregisteredType' )
+		);
+
+		$this->assertFalse(
+			$instance->isUnrestrictedForAnnotationUse( '_UnregisteredType' )
 		);
 
 		$this->assertFalse(

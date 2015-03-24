@@ -4,8 +4,9 @@ namespace SMW;
 
 use SMWDataItem;
 use SMWDIError;
-use SMWErrorValue;
+use SMWErrorValue as ErrorValue;
 use SMWPropertyValue;
+use SMWDataValue as DataValue;
 
 /**
  * Factory class for creating SMWDataValue objects for supplied types or
@@ -64,10 +65,10 @@ class DataValueFactory {
 	 * @param $property SMWDIProperty property object for which this value is made, or null
 	 * @param $contextPage SMWDIWikiPage that provides a context for parsing the value string, or null
 	 *
-	 * @return SMWDataValue
+	 * @return DataValue
 	 */
 	public static function newTypeIdValue( $typeId, $valueString = false, $caption = false,
-			$property = null, $contextPage = null ) {
+			DIProperty $property = null, $contextPage = null ) {
 
 		$dataTypeRegistry = DataTypeRegistry::getInstance();
 
@@ -75,12 +76,12 @@ class DataValueFactory {
 			$class  = $dataTypeRegistry->getDataTypeClassById( $typeId );
 			$result = new $class( $typeId );
 		} else {
-			return new SMWErrorValue( $typeId,
+			return new ErrorValue( $typeId,
 				wfMessage( 'smw_unknowntype', $typeId )->inContentLanguage()->text(),
 				$valueString, $caption );
 		}
 
-		if ( !is_null( $property ) ) {
+		if ( $property !== null ) {
 			$result->setProperty( $property );
 		}
 
@@ -102,7 +103,7 @@ class DataValueFactory {
 	 * @param $property mixed null or SMWDIProperty property object for which this value is made
 	 * @param $caption mixed user-defined caption, or false if none given
 	 *
-	 * @return SMWDataValue
+	 * @return DataValue
 	 */
 	public static function newDataItemValue( SMWDataItem $dataItem, DIProperty $property = null, $caption = false ) {
 
@@ -132,7 +133,7 @@ class DataValueFactory {
 	 * @param $caption mixed user-defined caption, or false if none given
 	 * @param $contextPage SMWDIWikiPage that provides a context for parsing the value string, or null
 	 *
-	 * @return SMWDataValue
+	 * @return DataValue
 	 */
 	public static function newPropertyObjectValue( DIProperty $property, $valueString = false,
 			$caption = false, $contextPage = null ) {
@@ -153,7 +154,7 @@ class DataValueFactory {
 	 * @param mixed $caption user-defined caption
 	 * @param SMWDIWikiPage|null $contextPage context for parsing the value string
 	 *
-	 * @return SMWDataValue
+	 * @return DataValue
 	 */
 	public function newPropertyValue( $propertyName, $valueString,
 		$caption = false, DIWikiPage $contextPage = null ) {
@@ -168,8 +169,16 @@ class DataValueFactory {
 		$propertyDV = SMWPropertyValue::makeUserProperty( $propertyName );
 
 		if ( !$propertyDV->isValid() ) {
-			Profiler::Out( __METHOD__, true );
 			return $propertyDV;
+		}
+
+		if ( !$propertyDV->canUse() ) {
+			return new ErrorValue(
+				$propertyDV->getPropertyTypeID(),
+				wfMessage( 'smw-datavalue-property-restricted-use', $propertyName )->inContentLanguage()->text(),
+				$valueString,
+				$caption
+			);
 		}
 
 		$propertyDI = $propertyDV->getDataItem();
@@ -180,21 +189,33 @@ class DataValueFactory {
 		}
 
 		if ( $propertyDI instanceof DIProperty && !$propertyDI->isInverse() ) {
-			$dataValue = self::newPropertyObjectValue(
+			$dataValue = $this->newPropertyObjectValue(
 				$propertyDI,
 				$valueString,
 				$caption,
 				$contextPage
 			);
 		} elseif ( $propertyDI instanceof DIProperty && $propertyDI->isInverse() ) {
-			$dataValue = new SMWErrorValue( $propertyDV->getPropertyTypeID(),
+			$dataValue = new ErrorValue( $propertyDV->getPropertyTypeID(),
 				wfMessage( 'smw_noinvannot' )->inContentLanguage()->text(),
-				$valueString, $caption
+				$valueString,
+				$caption
 			);
 		} else {
-			$dataValue = new SMWErrorValue( $propertyDV->getPropertyTypeID(),
+			$dataValue = new ErrorValue(
+				$propertyDV->getPropertyTypeID(),
 				wfMessage( 'smw-property-name-invalid', $propertyName )->inContentLanguage()->text(),
-				$valueString, $caption
+				$valueString,
+				$caption
+			);
+		}
+
+		if ( $dataValue->isValid() && !$dataValue->canUse() ) {
+			$dataValue = new ErrorValue(
+				$propertyDV->getPropertyTypeID(),
+				wfMessage( 'smw-datavalue-restricted-use', implode( ',', $datavalue->getErrors() ) )->inContentLanguage()->text(),
+				$valueString,
+				$caption
 			);
 		}
 

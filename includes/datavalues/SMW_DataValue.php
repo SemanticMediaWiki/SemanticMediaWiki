@@ -713,6 +713,22 @@ abstract class SMWDataValue {
 	}
 
 	/**
+	 * Whether a datavalue can be used or not (can be made more restrictive then
+	 * isValid).
+	 *
+	 * @note Validity defines a processable state without any technical restrictions
+	 * while usability is determined by its accessibility to a context
+	 * (permission, convention etc.)
+	 *
+	 * @since  2.2
+	 *
+	 * @return boolean
+	 */
+	public function canUse() {
+		return true;
+	}
+
+	/**
 	 * Return a string that displays all error messages as a tooltip, or
 	 * an empty string if no errors happened.
 	 *

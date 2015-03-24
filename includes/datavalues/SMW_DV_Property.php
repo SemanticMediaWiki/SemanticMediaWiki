@@ -184,6 +184,15 @@ class SMWPropertyValue extends SMWDataValue {
 		return $this->isValid() && ( $this->m_dataitem->isUserDefined() || $this->m_dataitem->getLabel() !== '' );
 	}
 
+	/**
+	 * @since 2.2
+	 *
+	 * @return boolean
+	 */
+	public function canUse() {
+		return $this->isValid() && $this->m_dataitem->isUnrestrictedForUse();
+	}
+
 	public function getShortWikiText( $linked = null ) {
 
 		if ( $this->isVisible() ) {
