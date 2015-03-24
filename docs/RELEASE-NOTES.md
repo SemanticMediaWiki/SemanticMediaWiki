@@ -12,6 +12,7 @@ This is not a release yet.
 * #892 Added support for `<swivt:file>` in order for a RDF export to point to a "real" file resource
 * #893 Added information about "improper value for" to the statistics overview and as `API` parameter (`&errorcount`)
 * #913 Fixed exception for usage of `Has subobject` as free annotation
+* #914 Added restriction for "manual" annotation use to some pre-defined properties (e.g. `Has subobject`, `Has query`)
 
 ## Bug fixes
 
@@ -37,3 +38,4 @@ This is not a release yet.
 * #777 Moved all concept related code into a separate `ConceptCache` class
 * #884 Added `ControlledVocabularyImportFetcher` to isolate import vocabulary fetching from the `DVImport` object
 * #883 Added `CircularReferenceGuard` to monitor possible self/circular references in ask templates
+* #914 Added `DIProperty::isUnrestrictedForUse`
