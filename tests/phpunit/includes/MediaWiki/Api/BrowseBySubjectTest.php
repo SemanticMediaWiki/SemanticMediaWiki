@@ -14,10 +14,7 @@ use Title;
 /**
  * @covers \SMW\MediaWiki\Api\BrowseBySubject
  *
- * @group SMW
- * @group SMWExtension
- *
- * @group semantic-mediawiki-api
+ * @group semantic-mediawiki
  * @group mediawiki-api
  *
  * @license GNU GPL v2+
@@ -64,13 +61,30 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testExecuteOnValidSubject() {
+	public function testExecuteForValidSubject() {
 
-		$expectedResultToContainArrayKeys = array( 'error'  => false, 'result' => true );
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
+			new DIWikiPage( 'Foo', NS_MAIN )
+		);
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $semanticData ) );
+
+		$this->applicationFactory->registerObject( 'Store', $store );
+
+		$expectedResultToContainArrayKeys = array(
+			'error'  => false,
+			'result' => true
+		);
 
 		$result = $this->apiFactory->doApiRequest( array(
 			'action'  => 'browsebysubject',
-			'subject' => 'Main_Page'
+			'subject' => 'Foo'
 		) );
 
 		$this->assertToContainArrayKeys(
@@ -79,7 +93,7 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testExecuteOnInvalidSubjectThrowsException() {
+	public function testExecuteForInvalidSubjectThrowsException() {
 
 		$this->setExpectedException( 'Exception' );
 
