@@ -24,6 +24,18 @@ use RuntimeException;
 class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 
 	/**
+	 * @var boolean
+	 */
+	private $strictModeForValueMatch = true;
+
+	/**
+	 * @param boolean $strictMode
+	 */
+	public function setStrictModeForValueMatch( $strictMode ) {
+		$this->strictModeForValueMatch = (bool)$strictMode;
+	}
+
+	/**
 	 * @since 1.9.1
 	 *
 	 * @param SemanticData $semanticData
@@ -190,6 +202,10 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		$runPropertiesAreSetAssert = false;
 		$properties = $semanticData->getProperties();
 
+		if ( isset( $expected['strict-mode-valuematch'] ) ) {
+			$this->setStrictModeForValueMatch( $expected['strict-mode-valuematch'] );
+		}
+
 		if ( isset( $expected['propertyCount'] ) ) {
 			$this->assertThatSemanticDataHasPropertyCountOf( $expected['propertyCount'], $semanticData );
 		}
@@ -225,6 +241,13 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 					$semanticData->getPropertyValues( $property )
 				);
 
+				if ( !$this->strictModeForValueMatch ) {
+					$this->assertEmpty(
+						$expected['propertyValues'],
+						'Unmatched values remained for ' . $this->formatAsString( $expected['propertyValues'] )
+					);
+				}
+
 				$runPropertiesAreSetAssert = true;
 			}
 
@@ -243,7 +266,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	 * @param DIProperty $property,
 	 * @param array $dataItems
 	 */
-	public function assertThatPropertyValuesAreSet( array $expected, DIProperty $property, array $dataItems ) {
+	public function assertThatPropertyValuesAreSet( array &$expected, DIProperty $property, array $dataItems ) {
 
 		$runPropertyValueAssert = false;
 
@@ -324,7 +347,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		);
 	}
 
-	private function assertContainsPropertyValues( $expected, $dataValue, $defaultFormatter, $formatterParameters = array() ) {
+	private function assertContainsPropertyValues( &$expected, $dataValue, $defaultFormatter, $formatterParameters = array() ) {
 
 		if ( !isset( $expected['propertyValues'] ) ) {
 			throw new RuntimeException( "Expected a 'propertyValues' array index" );
@@ -339,14 +362,26 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 
 		$value = call_user_func_array( $formatter, $formatterParameters );
 
-		$this->assertContains(
-			$value,
-			$expected['propertyValues'],
-			__METHOD__ .
-			" for '{$dataValue->getProperty()->getKey()}'" .
-			" as '{$dataValue->getTypeID()}'" .
-			" with ({$this->formatAsString( $expected['propertyValues'] )})"
-		);
+		if ( $this->strictModeForValueMatch ) {
+
+			$this->assertContains(
+				$value,
+				$expected['propertyValues'],
+				__METHOD__ .
+				" for '{$dataValue->getProperty()->getKey()}'" .
+				" as '{$dataValue->getTypeID()}'" .
+				" with ({$this->formatAsString( $expected['propertyValues'] )})"
+			);
+
+			return true;
+		}
+
+		// Be more lenient towards value comparison by just eliminating a matched pair
+		foreach ( $expected['propertyValues'] as $key => $propertyValue ) {
+			if ( strpos( $propertyValue, $value ) !== false ) {
+				unset( $expected['propertyValues'][$key] );
+			}
+		}
 
 		return true;
 	}

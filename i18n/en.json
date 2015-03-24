@@ -324,5 +324,7 @@
 	"smw-pa-property-predefined_type": "\"$1\" is a predefined property that describes the [[Special:Types|datatype]] of a property.",
 	"smw-pa-property-predefined_sobj": "\"$1\" is a predefined property representing a container construct that allows to accumulate property-value assignments similar to that of a normal wiki page.",
 	"smw-pa-property-predefined_errp": "\"$1\" is a predefined property to track input errors for irregular value annotations that was likely caused by type or [[Property:Allows value|allowed value]] restrictions.",
-	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"] is a predefined property that can define a list of permissible values to restrict value assignments for a property."
+	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"] is a predefined property that can define a list of permissible values to restrict value assignments for a property.",
+	"smw-datavalue-property-restricted-use": "Property \"$1\" was marked for restricted use.",
+	"smw-datavalue-restricted-use": "This datavalue was marked for restricted use. $1"
 }

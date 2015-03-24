@@ -154,6 +154,10 @@ class JsonTestCaseFileHandler {
 
 		$settings = $this->getFileContentsFor( 'settings' );
 
+		if ( $key === 'wgContLang' && isset( $settings[$key] ) ) {
+			return \Language::factory( 'wgContLang' );
+		}
+
 		// Needs special attention due to NS constant usage
 		if ( $key === 'smwgNamespacesWithSemanticLinks' && isset( $settings[$key] ) ) {
 			$smwgNamespacesWithSemanticLinks = array();
@@ -204,6 +208,22 @@ class JsonTestCaseFileHandler {
 
 		try{
 			$queries = $this->getFileContentsFor( 'rdf' );
+		} catch( \Exception $e ) {
+			$queries = array();
+		}
+
+		return $queries;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return array
+	 */
+	public function findParserTestCases() {
+
+		try{
+			$queries = $this->getFileContentsFor( 'parser' );
 		} catch( \Exception $e ) {
 			$queries = array();
 		}

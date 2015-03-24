@@ -133,8 +133,12 @@ class DIProperty extends SMWDataItem {
 	 * @return boolean
 	 */
 	public function isShown() {
-		return ( ( $this->isUserDefined() ) ||
-			PropertyRegistry::getInstance()->getPropertyVisibility( $this->m_key ) );
+
+		if ( $this->isUserDefined() ) {
+			return true;
+		}
+
+		return PropertyRegistry::getInstance()->isVisibleToUser( $this->m_key );
 	}
 
 	/**
@@ -145,6 +149,26 @@ class DIProperty extends SMWDataItem {
 	 */
 	public function isUserDefined() {
 		return $this->m_key{0} != '_';
+	}
+
+	/**
+	 * Whether a user can freely use this property for value declarations or
+	 * not.
+	 *
+	 * @note A user defined property is generally assumed to be unrestricted
+	 * for usage
+	 *
+	 * @since 2.2
+	 *
+	 * @return boolean
+	 */
+	public function isUnrestrictedForUse() {
+
+		if ( $this->isUserDefined() ) {
+			return true;
+		}
+
+		return PropertyRegistry::getInstance()->isUnrestrictedForAnnotationUse( $this->m_key );
 	}
 
 	/**

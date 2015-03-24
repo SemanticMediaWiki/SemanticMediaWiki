@@ -182,6 +182,12 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$subSemanticData = $parserData->getSemanticData()->getSubSemanticData();
 
+		if ( $expected['propertyCount'] == 0 ) {
+			$this->assertEmpty(
+				$subSemanticData
+			);
+		}
+
 		foreach ( $subSemanticData as $actualSemanticDataToAssert ){
 			$this->semanticDataValidator->assertThatPropertiesAreSet(
 				$expected,
@@ -196,7 +202,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$provider = array();
 
-		// Anonymous identifier
+		#0 Anonymous identifier
 		// {{#subobject:
 		// |Foo=bar
 		// }}
@@ -211,7 +217,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		// Anonymous identifier
+		#1 Anonymous identifier
 		// {{#subobject:-
 		// |Foo=1001 9009
 		// }}
@@ -226,7 +232,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		// Named identifier
+		#2 Named identifier
 		// {{#subobject:FooBar
 		// |FooBar=Bar foo
 		// }}
@@ -241,7 +247,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		// Named identifier
+		#3 Named identifier
 		// {{#subobject:Foo bar
 		// |Foo=Help:Bar
 		// }}
@@ -256,7 +262,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		// Named identifier
+		#4 Named identifier
 		// {{#subobject: Foo bar foo
 		// |Bar=foo Bar
 		// }}
@@ -271,7 +277,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		// Named identifier
+		#5 Named identifier
 		// {{#subobject: Foo bar foo
 		// |状況=超やばい
 		// |Bar=http://www.semantic-mediawiki.org/w/index.php?title=Subobject
@@ -290,11 +296,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		// Returns an error due to wrong declaration (see Modification date)
-		// Get the right language for an error object
-		$diPropertyError = new DIProperty( DIProperty::TYPE_ERROR );
-
-		// {{#subobject: Foo bar foo
+		#6 {{#subobject: Foo bar foo
 		// |Bar=foo Bar
 		// |Modification date=foo Bar
 		// }}
@@ -303,9 +305,56 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'hasErrors' => true,
 				'identifier' => 'Foo_bar_foo',
-				'propertyCount'  => 2,
-				'propertyLabels' => array( 'Bar', $diPropertyError->getLabel() ),
-				'propertyValues' => array( 'Foo Bar', 'Modification date' )
+				'propertyCount'  => 1,
+				'propertyLabels' => array( 'Bar' ),
+				'propertyValues' => array( 'Foo Bar' )
+			)
+		);
+
+		#7 {{#subobject: Foo bar foo
+		// |Bar=foo Bar
+		// |-Foo=foo Bar
+		// }}
+		$provider[] = array(
+			array( ' Foo bar foo ', 'Bar=foo Bar', '-Foo=foo Bar' ),
+			array(
+				'hasErrors' => true,
+				'identifier' => 'Foo_bar_foo',
+				'propertyCount'  => 1,
+				'propertyLabels' => array( 'Bar' ),
+				'propertyValues' => array( 'Foo Bar' )
+			)
+		);
+
+		// An empty subobject is not being classified as valid (to create an object)
+		#8 {{#subobject: Foo bar foo
+		// |Bar=foo Bar
+		// |Modification date=1 Jan 1970
+		// }}
+		$provider[] = array(
+			array( ' Foo bar foo ', 'Modification date=1 Jan 1970' ),
+			array(
+				'hasErrors' => true,
+				'identifier' => 'Foo_bar_foo',
+				'propertyCount'  => 0
+			)
+		);
+
+		// Get the right language for an error object
+		$diPropertyError = new DIProperty( DIProperty::TYPE_ERROR );
+
+		#9 {{#subobject: Foo bar foo
+		// |Bar=foo Bar
+		// |Date=Foo
+		// }}
+		$provider[] = array(
+			array( ' Foo bar foo ', 'Date=Foo' ),
+			array(
+				'hasErrors' => true,
+				'identifier' => 'Foo_bar_foo',
+				'propertyCount'  => 1,
+				'propertyLabels' => array( $diPropertyError->getLabel() ),
+				'propertyValues' => array( 'Date' )
 			)
 		);
 

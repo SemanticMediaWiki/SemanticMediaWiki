@@ -149,8 +149,7 @@
 				"as-string": [
 					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D5\">",
 					"<rdfs:label>Rdf-5</rdfs:label>",
-					"<swivt:wikiPageSortKey rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">AA-BB-CC</swivt:wikiPageSortKey>",
-					"<property:Has_subobject-23aux rdf:resource=\"&wiki;Foo\"/>\n"
+					"<swivt:wikiPageSortKey rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">AA-BB-CC</swivt:wikiPageSortKey>"
 				]
 			}
 		}
