@@ -92,6 +92,7 @@
 	"smw-special-types-no-such-type": "Den Datentyp deen ugi gouf gëtt et net",
 	"semanticstatistics": "Semantesch Statistiken",
 	"smw-statistics": "Semantesch Statistiken",
+	"smw-statistics-query-inline-legacy": "{{PLURAL:$1|Ufro|Ufroen}}",
 	"smw-statistics-query-size": "Gréisst vun der Ufro",
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Konzept|Konzepter}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Konzept|Konzepter}}]]",
@@ -184,5 +185,6 @@
 	"smw-livepreview-loading": "Lueden...",
 	"smw-sp-searchbyproperty-resultlist-header": "Lëscht vun de Resultater",
 	"smw-editpage-annotation-disabled": "Dës Säit ass net fir semantesch Notifaktiounen am Text konfiguréiert duerch d'Limitatiounen an dësem Nummraum. Detailer wéi dat fir den Nummraum ageschalt ka gi fannt Dir op der Hëllefsäit fir d'[https://semantic-mediawiki.org/wiki/Help:Configuration configuration Astellungen].",
-	"log-name-smw": "Semantic-MediaWiki-Logbuch"
+	"log-name-smw": "Semantic-MediaWiki-Logbuch",
+	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|$1-Import]]"
 }

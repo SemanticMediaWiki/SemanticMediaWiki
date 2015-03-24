@@ -325,6 +325,7 @@
 	"smw-datavalue-import-missing-nsuri": "无法在[[MediaWiki:Smw import $1|$1的导入]]中找到“$1”名字空间的URI。",
 	"smw-datavalue-import-missing-type": "在[[MediaWiki:Smw import $2|$2导出]]中找不到用于“$1”类型定义。",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|$1次导入]]",
+	"smw-datavalue-import-invalidvalue": "“$1”不是一个有效格式，并预计包含“名字空间”：“标识符”（例如：“foaf:name”）。",
 	"smw-pa-property-predefined_impo": "“$1”是描述与[https://semantic-mediawiki.org/wiki/Help:Import_vocabulary 导入词汇]间关系的预定义属性。",
 	"smw-pa-property-predefined_type": "“$1”是用来描述属性[[Special:Types|数据类型]]的预定义属性。",
 	"smw-pa-property-predefined_sobj": "“$1”是代表允许累计类似一个正常wiki页面的数据类型作业的容器结构的预定义属性。",
