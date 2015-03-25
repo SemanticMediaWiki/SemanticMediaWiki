@@ -275,7 +275,7 @@ class PropertyRegistry {
 	 * @return boolean
 	 */
 	public function isUnrestrictedForAnnotationUse( $id ) {
-		return $this->isKnownPropertyId( $id ) ? $this->propertyTypes[ $id ][2] : false;
+		return $this->isKnownPropertyId( $id ) ? $this->propertyTypes[$id][2] : false;
 	}
 
 	/**

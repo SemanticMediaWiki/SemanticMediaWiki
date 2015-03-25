@@ -87,7 +87,7 @@ class FixedInMemoryCache implements Cache {
 		} elseif ( $this->count > $this->maxCacheCount ) {
 			$this->count--;
 			reset( $this->cache );
-			unset( $this->cache[ key( $this->cache ) ] );
+			unset( $this->cache[key( $this->cache )] );
 		}
 
 		$this->cache[$id] = $value;
