@@ -136,7 +136,7 @@ class SMWExportController {
 		$this->markPageAsDone( $diWikiPage, $recursiondepth );
 		$semData = $this->getSemanticData( $diWikiPage, ( $recursiondepth == 0 ) );
 
-		if ( $semData === null ) {
+		if ( $semData === null || $diWikiPage->getDBKey() === '' ) {
 			return null;
 		}
 
