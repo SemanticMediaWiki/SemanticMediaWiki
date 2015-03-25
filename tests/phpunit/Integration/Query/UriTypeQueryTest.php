@@ -113,7 +113,7 @@ class UriTypeQueryTest extends MwDBaseUnitTestCase {
 		 * @query "[[Url::http://example.org/aaa/bbb#ccc]]"
 		 */
 		$this->assertThatQueryReturns(
-			"[[Url::http://example.org/aaa/bbb#ccc]]" ,
+			"[[Url::http://example.org/aaa/bbb#ccc]]",
 			array(
 				$this->subjects['sample-0']
 			)
@@ -123,7 +123,7 @@ class UriTypeQueryTest extends MwDBaseUnitTestCase {
 		 * @query "[[Url::http://example.org/api?query=!_:;@* #Foo&=%20-3DBar]]"
 		 */
 		$this->assertThatQueryReturns(
-			"[[Url::http://example.org/api?query=!_:;@* #Foo&=%20-3DBar]]" ,
+			"[[Url::http://example.org/api?query=!_:;@* #Foo&=%20-3DBar]]",
 			array(
 				$this->subjects['sample-1']
 			)
@@ -133,7 +133,7 @@ class UriTypeQueryTest extends MwDBaseUnitTestCase {
 		 * @query "[[Url::~*http://example.org/*]]"
 		 */
 		$this->assertThatQueryReturns(
-			"[[Url::~*http://example.org/*]]" ,
+			"[[Url::~*http://example.org/*]]",
 			array(
 				$this->subjects['sample-0'],
 				$this->subjects['sample-1']
@@ -144,7 +144,7 @@ class UriTypeQueryTest extends MwDBaseUnitTestCase {
 		 * @query "[[Url::~*ccc*]]"
 		 */
 		$this->assertThatQueryReturns(
-			"[[Url::~*ccc*]]" ,
+			"[[Url::~*ccc*]]",
 			array(
 				$this->subjects['sample-0']
 			)
@@ -154,7 +154,7 @@ class UriTypeQueryTest extends MwDBaseUnitTestCase {
 		 * @query "[[Url::~http://*query=*]]"
 		 */
 		$this->assertThatQueryReturns(
-			"[[Url::~http://*query=*]]" ,
+			"[[Url::~http://*query=*]]",
 			array(
 				$this->subjects['sample-1']
 			)
@@ -164,7 +164,7 @@ class UriTypeQueryTest extends MwDBaseUnitTestCase {
 		 * @query "[[Url::~http://*query=*]] OR [[Url::~*ccc*]]"
 		 */
 		$this->assertThatQueryReturns(
-			"[[Url::~http://*query=*]] OR [[Url::~*ccc*]]" ,
+			"[[Url::~http://*query=*]] OR [[Url::~*ccc*]]",
 			array(
 				$this->subjects['sample-0'],
 				$this->subjects['sample-1']
@@ -187,7 +187,7 @@ class UriTypeQueryTest extends MwDBaseUnitTestCase {
 			->doEdit( '[[Url::http://example.org/aaa/bbb#ccc]]' );
 
 		$this->assertThatQueryReturns(
-			"[[Url::http://example.org/aaa/bbb#ccc]]" ,
+			"[[Url::http://example.org/aaa/bbb#ccc]]",
 			array(
 				$this->subjects['sample-0']
 			)
@@ -207,7 +207,7 @@ class UriTypeQueryTest extends MwDBaseUnitTestCase {
 			->doEdit( '[[Url::http://example.org/aaa/bbb#-2ccc]]' );
 
 		$this->assertThatQueryReturns(
-			"[[Url::http://example.org/aaa/bbb#-2ccc]]" ,
+			"[[Url::http://example.org/aaa/bbb#-2ccc]]",
 			array(
 				$this->subjects['sample-1']
 			)
@@ -227,7 +227,7 @@ class UriTypeQueryTest extends MwDBaseUnitTestCase {
 			->doEdit( '[[Url::http://example.org/mw-123/index.php?&value=http%3A%2F%2Fexample.org]]' );
 
 		$this->assertThatQueryReturns(
-			"[[Url::http://example.org/mw-123/index.php?&value=http%3A%2F%2Fexample.org]]" ,
+			"[[Url::http://example.org/mw-123/index.php?&value=http%3A%2F%2Fexample.org]]",
 			array(
 				$this->subjects['sample-1']
 			)
@@ -247,7 +247,7 @@ class UriTypeQueryTest extends MwDBaseUnitTestCase {
 			->doEdit( '[[Url::http://example.org/api?query=!_:;@* #Foo&=%20-3DBar]]' );
 
 		$this->assertThatQueryReturns(
-			"[[Url::http://example.org/api?query=!_:;@* #Foo&=%20-3DBar]]" ,
+			"[[Url::http://example.org/api?query=!_:;@* #Foo&=%20-3DBar]]",
 			array(
 				$this->subjects['sample-0']
 			)
@@ -267,7 +267,7 @@ class UriTypeQueryTest extends MwDBaseUnitTestCase {
 			->doEdit( '[[Url::http://example.org/ようこそ#-{}]]' );
 
 		$this->assertThatQueryReturns(
-			"[[Url::http://example.org/ようこそ#-{}]]" ,
+			"[[Url::http://example.org/ようこそ#-{}]]",
 			array(
 				$this->subjects['sample-0']
 			)

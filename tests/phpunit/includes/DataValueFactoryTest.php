@@ -77,7 +77,7 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 		$dataValue = DataValueFactory::getInstance()->newPropertyObjectValue( $propertyDI, $value );
 
 		// Check the returned instance
-		$this->assertInstanceOf( $expectedInstance , $dataValue );
+		$this->assertInstanceOf( $expectedInstance, $dataValue );
 
 		if ( $dataValue->getErrors() === array() ){
 			$this->assertInstanceOf( 'SMWDIProperty', $dataValue->getProperty() );
@@ -111,7 +111,7 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 		$dataValue = DataValueFactory::getInstance()->newPropertyValue( $propertyName, $value );
 
 		// Check the returned instance
-		$this->assertInstanceOf( $expectedInstance , $dataValue );
+		$this->assertInstanceOf( $expectedInstance, $dataValue );
 
 		if ( $dataValue->getErrors() === array() ){
 			$this->assertInstanceOf( 'SMWDIProperty', $dataValue->getProperty() );

@@ -164,7 +164,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getMessage' )
 			->will( $this->returnValue( $message ) );
 
-		$instance = new Factbox( $store, new ParserData( $subject->getTitle() , $parserOutput ), $messageBuilder );
+		$instance = new Factbox( $store, new ParserData( $subject->getTitle(), $parserOutput ), $messageBuilder );
 		$result   = $instance->doBuild()->getContent();
 
 		$this->assertInternalType(

@@ -321,7 +321,7 @@ class SMWURIValue extends SMWDataValue {
 		// potential breakage
 		return array(
 			str_replace( ' ', '_', $this->urlEncoder->decode( str_replace( '-', '-2D', $this->getURL() ) ) ),
-			$this->urlEncoder->decode( str_replace( '-' , '-2D', $context ) )
+			$this->urlEncoder->decode( str_replace( '-', '-2D', $context ) )
 		);
 	}
 

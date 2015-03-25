@@ -67,7 +67,7 @@ class QueryResultSerializerTest extends SemanticMediaWikiTestCase {
 
 		$results = $this->newSerializerInstance()->serialize( $setup['queryResult'] );
 
-		$this->assertInternalType( 'array' , $results );
+		$this->assertInternalType( 'array', $results );
 		$this->assertEquals( $expected['printrequests'], $results['printrequests'] );
 
 	}
@@ -89,7 +89,7 @@ class QueryResultSerializerTest extends SemanticMediaWikiTestCase {
 
 		$results = $this->newSerializerInstance()->serialize( $queryResult );
 
-		$this->assertInternalType( 'array' , $results );
+		$this->assertInternalType( 'array', $results );
 		$this->assertEmpty( $results['printrequests'] );
 		$this->assertEmpty( $results['results'] );
 
@@ -170,7 +170,7 @@ class QueryResultSerializerTest extends SemanticMediaWikiTestCase {
 			'getNext'           => $resultArray,
 			'getResults'        => $getResults,
 			'getStore'          => $this->newMockBuilder()->newObject( 'Store' ),
-			'getLink'           => new \SMWInfolink( true, 'Lala' , 'Lula' ),
+			'getLink'           => new \SMWInfolink( true, 'Lala', 'Lula' ),
 			'hasFurtherResults' => true
 		) );
 

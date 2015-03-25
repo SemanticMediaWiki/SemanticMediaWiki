@@ -121,7 +121,7 @@ class SimpleDictionaryTest extends SemanticMediaWikiTestCase {
 	public function testMerge() {
 
 		$SimpleDictionary = $this->newInstance( array( 'lila' => 'lila' ) );
-		$this->assertEquals( 'lila' , $SimpleDictionary->get( 'lila' ) );
+		$this->assertEquals( 'lila', $SimpleDictionary->get( 'lila' ) );
 
 		$mergeable = $this->newInstance( array( 'lila' => array( 'lula', 9001 ) ) );
 		$this->assertEquals( array( 'lula', 9001 ), $mergeable->get( 'lila' ) );

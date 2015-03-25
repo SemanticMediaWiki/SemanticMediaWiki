@@ -290,7 +290,7 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 		// a false at the end
 		$queryResult->expects( $this->any() )
 			->method( 'getNext' )
-			->will( $this->onConsecutiveCalls( $this->builder->setValue( 'getNext' ) , false ) );
+			->will( $this->onConsecutiveCalls( $this->builder->setValue( 'getNext' ), false ) );
 
 		foreach ( $this->builder->getInvokedMethods() as $method ) {
 

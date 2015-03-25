@@ -70,7 +70,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$result   = $instance->parse( new ParserParameterFormatter( $parameters ) );
 
 		$this->assertEquals(
-			$result !== '' ,
+			$result !== '',
 			$expected['hasErrors']
 		);
 	}

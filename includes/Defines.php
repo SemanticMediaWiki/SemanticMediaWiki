@@ -34,8 +34,8 @@ define( 'SMW_OUTPUT_FILE', 3 );
  */
 define( 'SMW_FACTBOX_HIDDEN', 1 );
 define( 'SMW_FACTBOX_SPECIAL', 2 );
-define( 'SMW_FACTBOX_NONEMPTY',  3 );
-define( 'SMW_FACTBOX_SHOWN',  5 );
+define( 'SMW_FACTBOX_NONEMPTY', 3 );
+define( 'SMW_FACTBOX_SHOWN', 5 );
 /**@}*/
 
 /**@{

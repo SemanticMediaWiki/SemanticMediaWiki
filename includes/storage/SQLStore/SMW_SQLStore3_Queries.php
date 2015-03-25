@@ -574,7 +574,7 @@ class SMWSQLStore3QueryEngine {
 						$this->executedQueries[$query->alias][] = $sql;
 
 						if ( $this->queryMode !== SMWQuery::MODE_DEBUG ) {
-							$db->query( $sql , 'SMW::executeQueries' );
+							$db->query( $sql, 'SMW::executeQueries' );
 						}
 					}
 				}

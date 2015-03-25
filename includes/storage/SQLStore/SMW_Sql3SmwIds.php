@@ -1004,7 +1004,7 @@ class SMWSql3SmwIds {
 			$row = $db->selectRow(
 				self::tableName,
 				array( 'smw_proptable_hash' ),
-				'smw_id=' . $subjectId ,
+				'smw_id=' . $subjectId,
 				__METHOD__
 			);
 

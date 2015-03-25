@@ -198,7 +198,7 @@ class CsvResultPrinterTest extends QueryPrinterTestCase {
 		$queryResult = $mockBuilder->newObject( 'QueryResult', array(
 			'getPrintRequests'  => $printRequests,
 			'getNext'           => $resultArray,
-			'getLink'           => new \SMWInfolink( true, 'Lala' , 'Lula' ),
+			'getLink'           => new \SMWInfolink( true, 'Lala', 'Lula' ),
 			'hasFurtherResults' => true
 		) );
 

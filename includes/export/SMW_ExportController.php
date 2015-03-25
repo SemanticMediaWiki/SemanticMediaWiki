@@ -560,8 +560,8 @@ class SMWExportController {
 			}
 		}
 		$res = $db->select( $db->tableName( 'page' ),
-		                    'page_id,page_title,page_namespace', $query
-		                    , 'SMW::RDF::PrintPageList', array( 'ORDER BY' => 'page_id ASC', 'OFFSET' => $offset, 'LIMIT' => $limit ) );
+		                    'page_id,page_title,page_namespace', $query,
+		                    'SMW::RDF::PrintPageList', array( 'ORDER BY' => 'page_id ASC', 'OFFSET' => $offset, 'LIMIT' => $limit ) );
 		$foundpages = false;
 
 		foreach ( $res as $row ) {

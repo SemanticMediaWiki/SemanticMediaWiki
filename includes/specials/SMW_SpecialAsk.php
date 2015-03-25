@@ -234,7 +234,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			$queryobj = SMWQueryProcessor::createQuery(
 				$this->m_querystring,
 				$params,
-				SMWQueryProcessor::SPECIAL_PAGE ,
+				SMWQueryProcessor::SPECIAL_PAGE,
 				$this->m_params['format'],
 				$this->m_printouts
 			);

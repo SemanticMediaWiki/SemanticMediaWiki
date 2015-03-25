@@ -119,7 +119,7 @@ class ConceptConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyValues' )
 			->with( $this->equalTo( new DIProperty( '_CONC' ) ) )
 			->will( $this->returnValue( array(
-				new DIConcept( '[[Foo::+]]' , 'Bar', 1, 0, 0 ) ) ) );
+				new DIConcept( '[[Foo::+]]', 'Bar', 1, 0, 0 ) ) ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()

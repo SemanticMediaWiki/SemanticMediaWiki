@@ -132,7 +132,7 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 
 		// Set key
 		$instance->setCacheEnabled( true )->setKey( new CacheIdGenerator( $key, 'test-prefix' ) );
-		$this->assertContains( 'test-prefix' , $instance->getKey() );
+		$this->assertContains( 'test-prefix', $instance->getKey() );
 
 	}
 

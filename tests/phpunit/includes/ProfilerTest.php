@@ -91,9 +91,9 @@ class ProfilerTest extends SemanticMediaWikiTestCase {
 
 		Profiler::reset();
 
-		$this->assertInstanceOf( '\ProfilerStub',  Profiler::In( 'Lala' ) );
-		$this->assertInstanceOf( '\ProfilerStub',  Profiler::Out( 'Lala' ) );
-		$this->assertInstanceOf( '\ProfilerStub',  Profiler::In( 'Lila', true ) );
-		$this->assertInstanceOf( '\ProfilerStub',  Profiler::Out( 'Lila', true ) );
+		$this->assertInstanceOf( '\ProfilerStub', Profiler::In( 'Lala' ) );
+		$this->assertInstanceOf( '\ProfilerStub', Profiler::Out( 'Lala' ) );
+		$this->assertInstanceOf( '\ProfilerStub', Profiler::In( 'Lila', true ) );
+		$this->assertInstanceOf( '\ProfilerStub', Profiler::Out( 'Lila', true ) );
 	}
 }

@@ -153,7 +153,7 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 							$this->serializeNestedExpData( $valueElement, "\t\t$indent" );
 							$this->post_ns_buffer .= "\t\t$indent</" . $property->getQName() . ">\n";
 						} else { // resource without data
-							$this->serializeExpResource( $property,  $valueElement->getSubject(), "\t\t$indent", $isClassTypeProp );
+							$this->serializeExpResource( $property, $valueElement->getSubject(), "\t\t$indent", $isClassTypeProp );
 						}
 					} // else: no other types of export elements
 
@@ -250,7 +250,7 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 	 * @return string
 	 */
 	protected function makeValueEntityString( $string ) {
-		return "'" . str_replace( '%','&#37;',$string ) . "'";
+		return "'" . str_replace( '%', '&#37;', $string ) . "'";
 	}
 
 	/**

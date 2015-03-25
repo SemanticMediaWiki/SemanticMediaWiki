@@ -126,7 +126,7 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 
 		$instance = $this->newInstance( $test );
 
-		$this->assertInternalType( $expected['type'],  $instance->get( $key ) );
+		$this->assertInternalType( $expected['type'], $instance->get( $key ) );
 		$this->assertEquals( $expected['value'], $instance->get( $key ) );
 
 	}

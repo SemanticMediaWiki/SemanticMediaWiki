@@ -215,7 +215,7 @@ class SMWQuery {
 			if ( count( $log ) > 0 ) {
 				$this->errors[] = wfMessage(
 					'smw_querytoolarge',
-					str_replace( '[', '&#x005B;', implode( ', ' , $log ) )
+					str_replace( '[', '&#x005B;', implode( ', ', $log ) )
 				)->inContentLanguage()->text();
 			}
 		}

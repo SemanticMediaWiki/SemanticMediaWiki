@@ -257,7 +257,7 @@ final class FeedResultPrinter extends FileExportPrinter {
 					$text = $wikiPage->getText();
 				}
 			}
-			return $GLOBALS['wgParser']->parse( $text , $wikiPage->getTitle(), $parserOptions )->getText();
+			return $GLOBALS['wgParser']->parse( $text, $wikiPage->getTitle(), $parserOptions )->getText();
 		} else {
 			return '';
 		}

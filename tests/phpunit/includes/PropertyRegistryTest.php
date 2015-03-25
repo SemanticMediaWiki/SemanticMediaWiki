@@ -285,7 +285,7 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			'Has type' ,
+			'Has type',
 			$instance->findPropertyLabelById( '_TYPE' )
 		);
 
@@ -298,7 +298,7 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 		// This was part of an extra test but the extra test caused an segfault on postgres travis-ci
 
 		$this->assertEquals(
-			'__typ' ,
+			'__typ',
 			$instance->getPropertyTypeId( '_TYPE' )
 		);
 
@@ -338,12 +338,12 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			'' ,
+			'',
 			$instance->findPropertyLabelById( '_UnknownId' )
 		);
 
 		$this->assertEquals(
-			'' ,
+			'',
 			$instance->getPropertyTypeId( '_UnknownId' )
 		);
 

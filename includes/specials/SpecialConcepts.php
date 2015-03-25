@@ -105,14 +105,14 @@ class SpecialConcepts extends SpecialPage {
 
 		$this->getOutput()->setPageTitle( $this->msg( 'concepts' )->text() );
 
-		$from  = $this->getRequest()->getVal( 'from' , '' );
+		$from  = $this->getRequest()->getVal( 'from', '' );
 		$until = $this->getRequest()->getVal( 'until', '' );
 		$limit = $this->getRequest()->getVal( 'limit', 50 );
 
 		$diWikiPages = $this->getResults( $limit, $from, $until );
 		$diWikiPages = $until !== '' ? array_reverse( $diWikiPages ) : $diWikiPages;
 
-		$this->getOutput()->addHTML( $this->getHtml( $diWikiPages, $limit, $from , $until ) );
+		$this->getOutput()->addHTML( $this->getHtml( $diWikiPages, $limit, $from, $until ) );
 
 		Profiler::Out( __METHOD__ );
 	}

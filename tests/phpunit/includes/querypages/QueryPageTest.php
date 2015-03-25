@@ -78,7 +78,7 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 		$result = $this->newInstance( $test )->linkParameters();
 
 		$this->assertInternalType( 'array', $result );
-		$this->assertEquals( $expected , $result );
+		$this->assertEquals( $expected, $result );
 
 	}
 

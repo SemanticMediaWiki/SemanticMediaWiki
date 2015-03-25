@@ -425,7 +425,7 @@ EOT;
 				$indexes[$row->indexname] = $row->indexcolumns;
 			}
 		} elseif ( $wgDBtype == 'sqlite' ) { // SQLite
-			$res = $db->query( 'PRAGMA index_list(' . $tableName . ')' , __METHOD__ );
+			$res = $db->query( 'PRAGMA index_list(' . $tableName . ')', __METHOD__ );
 
 			if ( !$res ) {
 				return false;
@@ -440,7 +440,7 @@ EOT;
 				}
 			}
 		} else { // MySQL and default
-			$res = $db->query( 'SHOW INDEX FROM ' . $tableName , __METHOD__ );
+			$res = $db->query( 'SHOW INDEX FROM ' . $tableName, __METHOD__ );
 
 			if ( !$res ) {
 				return false;

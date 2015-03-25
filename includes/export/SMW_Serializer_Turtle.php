@@ -234,7 +234,7 @@ class SMWTurtleSerializer extends SMWSerializer{
 			$dt = $expElement->getDatatype();
 			if ( ( $dt !== '' ) && ( $dt != 'http://www.w3.org/2001/XMLSchema#string' ) ) {
 				$count = 0;
-				$newdt = str_replace( 'http://www.w3.org/2001/XMLSchema#', 'xsd:',  $dt, $count );
+				$newdt = str_replace( 'http://www.w3.org/2001/XMLSchema#', 'xsd:', $dt, $count );
 				return ( $count == 1 ) ? "$lexicalForm^^$newdt" : "$lexicalForm^^<$dt>";
 			} else {
 				return $lexicalForm;
