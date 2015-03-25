@@ -234,13 +234,13 @@ class SMWTimeValue extends SMWDataValue {
 			} elseif ( $hours !== false && $timezoneoffset === false &&
 			           array_key_exists( $match, self::$m_tz ) ) {
 				// only accept timezone if time has already been set
-				$timezoneoffset = self::$m_tz[ $match ];
+				$timezoneoffset = self::$m_tz[$match];
 			} elseif ( $prevmatchwasnumber && $hours === false && $timezoneoffset === false &&
 			           array_key_exists( $match, self::$m_miltz ) &&
 				   self::parseMilTimeString( end( $datecomponents ), $hours, $minutes, $seconds ) ) {
 					// military timezone notation is found after a number -> re-interpret the number as military time
 					array_pop( $datecomponents );
-					$timezoneoffset = self::$m_miltz[ $match ];
+					$timezoneoffset = self::$m_miltz[$match];
 			} elseif ( ( $prevmatchwasdate || count( $datecomponents ) == 0 ) &&
 				   $this->parseMonthString( $match, $monthname ) ) {
 				$datecomponents[] = $monthname;
@@ -377,7 +377,7 @@ class SMWTimeValue extends SMWDataValue {
 		}
 
 		if ( $monthnum !== false ) {
-			$monthname = self::$m_monthsshort[ $monthnum ];
+			$monthname = self::$m_monthsshort[$monthnum];
 			return true;
 		} elseif ( array_search( $string, self::$m_monthsshort ) !== false ) {
 			$monthname = $string;
