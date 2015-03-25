@@ -20,4 +20,5 @@ use MWException;
  * @ingroup Exception
  * @codeCoverageIgnore
  */
-class InvalidSettingsArgumentException extends MWException {}
+class InvalidSettingsArgumentException extends MWException {
+}

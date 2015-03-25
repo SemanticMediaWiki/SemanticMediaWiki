@@ -588,7 +588,8 @@ class SMWSQLStore3QueryEngine {
 			case SMWSQLStore3Query::Q_CLASS_HIERARCHY: // make a saturated hierarchy
 				$this->executeHierarchyQuery( $query );
 			break;
-			case SMWSQLStore3Query::Q_VALUE: break; // nothing to do
+			case SMWSQLStore3Query::Q_VALUE:
+			break; // nothing to do
 		}
 	}
 

@@ -123,9 +123,12 @@ class SMWRecordValue extends SMWDataValue {
 
 		if ( $queryMode ) {
 			switch ( count( $subdescriptions ) ) {
-				case 0: return new SMWThingDescription();
-				case 1: return reset( $subdescriptions );
-				default: return new SMWConjunction( $subdescriptions );
+				case 0:
+				return new SMWThingDescription();
+				case 1:
+				return reset( $subdescriptions );
+				default:
+				return new SMWConjunction( $subdescriptions );
 			}
 		} else {
 			$this->m_dataitem = new SMWDIContainer( $semanticData );
@@ -186,7 +189,8 @@ class SMWRecordValue extends SMWDataValue {
 	}
 
 	/// @todo Allowed values for multi-valued properties are not supported yet.
-	protected function checkAllowedValues() { }
+	protected function checkAllowedValues() {
+	}
 
 	/**
 	 * Make sure that the content is reset in this case.
@@ -337,11 +341,16 @@ class SMWRecordValue extends SMWDataValue {
 
 	protected function makeValueOutputText( $type, $dataValue, $linker ) {
 		switch ( $type ) {
-			case 0: return $dataValue->getShortWikiText( $linker );
-			case 1: return $dataValue->getShortHTMLText( $linker );
-			case 2: return $dataValue->getShortWikiText( $linker );
-			case 3: return $dataValue->getShortHTMLText( $linker );
-			case 4: return str_replace( ";", "\;", $dataValue->getWikiValue() );
+			case 0:
+			return $dataValue->getShortWikiText( $linker );
+			case 1:
+			return $dataValue->getShortHTMLText( $linker );
+			case 2:
+			return $dataValue->getShortWikiText( $linker );
+			case 3:
+			return $dataValue->getShortHTMLText( $linker );
+			case 4:
+			return str_replace( ";", "\;", $dataValue->getWikiValue() );
 		}
 	}
 

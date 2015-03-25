@@ -22,7 +22,8 @@ class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 	/**
 	 * @see PHPUnit_Framework_TestListener::startTest
 	 */
-	public function startTest( PHPUnit_Framework_Test $test ) {}
+	public function startTest( PHPUnit_Framework_Test $test ) {
+	}
 
 	/**
 	 * @see PHPUnit_Framework_TestListener::endTest
@@ -36,33 +37,39 @@ class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 	/**
 	 * @see PHPUnit_Framework_TestListener::addError
 	 */
-	public function addError( PHPUnit_Framework_Test $test, Exception $e, $time ) {}
+	public function addError( PHPUnit_Framework_Test $test, Exception $e, $time ) {
+	}
 
 	/**
 	 * @see PHPUnit_Framework_TestListener::addFailure
 	 */
-	public function addFailure( PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time ) {}
+	public function addFailure( PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time ) {
+	}
 
 	/**
 	 * @see PHPUnit_Framework_TestListener::addError
 	 */
-	public function addIncompleteTest( PHPUnit_Framework_Test $test, Exception $e, $time ) {}
+	public function addIncompleteTest( PHPUnit_Framework_Test $test, Exception $e, $time ) {
+	}
 
 	/**
 	 * @see PHPUnit_Framework_TestListener::addRiskyTest
 	 * @since 4.0.0
 	 */
-	public function addRiskyTest( PHPUnit_Framework_Test $test, Exception $e, $time ) {}
+	public function addRiskyTest( PHPUnit_Framework_Test $test, Exception $e, $time ) {
+	}
 
 	/**
 	 * @see PHPUnit_Framework_TestListener::addSkippedTest
 	 */
-	public function addSkippedTest( PHPUnit_Framework_Test $test, Exception $e, $time ) {}
+	public function addSkippedTest( PHPUnit_Framework_Test $test, Exception $e, $time ) {
+	}
 
 	/**
 	 * @see PHPUnit_Framework_TestListener::startTestSuite
 	 */
-	public function startTestSuite( PHPUnit_Framework_TestSuite $suite ) {}
+	public function startTestSuite( PHPUnit_Framework_TestSuite $suite ) {
+	}
 
 	/**
 	 * @see PHPUnit_Framework_TestListener::endTestSuite

@@ -20,4 +20,5 @@ use MWException;
  * @ingroup Exception
  * @codeCoverageIgnore
  */
-class UnknownIdException extends MWException {}
+class UnknownIdException extends MWException {
+}

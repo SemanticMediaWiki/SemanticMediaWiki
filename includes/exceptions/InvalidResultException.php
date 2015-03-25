@@ -20,4 +20,5 @@ use MWException;
  * @ingroup Exception
  * @codeCoverageIgnore
  */
-class InvalidResultException extends MWException {}
+class InvalidResultException extends MWException {
+}

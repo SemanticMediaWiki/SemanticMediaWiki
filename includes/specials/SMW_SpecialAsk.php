@@ -253,7 +253,8 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			} elseif ( $this->m_params['format'] == 'icalendar' ) {
 				$desckey = 'icalendardescription';
 				$titlekey = 'icalendartitle';
-			} else { $desckey = false; }
+			} else { $desckey = false;
+			}
 
 			if ( ( $desckey ) && ( $queryobj->getDescription() instanceof SMWConceptDescription ) &&
 			     ( !isset( $this->m_params[$desckey] ) || !isset( $this->m_params[$titlekey] ) ) ) {

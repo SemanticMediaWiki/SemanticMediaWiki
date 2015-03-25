@@ -150,11 +150,16 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function assertToContainArrayKeys( $setup, $result ) {
-		$this->assertInternalArrayStructure( $setup, $result, 'error',   'array',  function( $r ) { return $r['error']; } );
-		$this->assertInternalArrayStructure( $setup, $result, 'result',  'array',  function( $r ) { return $r['query']; } );
-		$this->assertInternalArrayStructure( $setup, $result, 'subject', 'string', function( $r ) { return $r['query']['subject']; } );
-		$this->assertInternalArrayStructure( $setup, $result, 'data',    'array',  function( $r ) { return $r['query']['data']; } );
-		$this->assertInternalArrayStructure( $setup, $result, 'sobj',    'array',  function( $r ) { return $r['query']['sobj']; } );
+		$this->assertInternalArrayStructure( $setup, $result, 'error',   'array',  function( $r ) { return $r['error']; 
+		} );
+		$this->assertInternalArrayStructure( $setup, $result, 'result',  'array',  function( $r ) { return $r['query']; 
+		} );
+		$this->assertInternalArrayStructure( $setup, $result, 'subject', 'string', function( $r ) { return $r['query']['subject']; 
+		} );
+		$this->assertInternalArrayStructure( $setup, $result, 'data',    'array',  function( $r ) { return $r['query']['data']; 
+		} );
+		$this->assertInternalArrayStructure( $setup, $result, 'sobj',    'array',  function( $r ) { return $r['query']['sobj']; 
+		} );
 	}
 
 	protected function assertInternalArrayStructure( $setup, $result, $field, $internalType, $definition ) {

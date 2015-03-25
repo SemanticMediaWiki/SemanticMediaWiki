@@ -35,7 +35,8 @@ class SMWTemperatureValue extends SMWNumberValue {
 			case '°R':
 				$value = ( $number ) / 1.8;
 			break;
-			default: return false; // unsupported unit
+			default:
+			return false; // unsupported unit
 		}
 		$this->m_dataitem = new SMWDINumber( $value, $this->m_typeid );
 		return true;
@@ -100,13 +101,27 @@ class SMWTemperatureValue extends SMWNumberValue {
 	protected function getUnitID( $unit ) {
 		/// TODO possibly localise some of those strings
 		switch ( $unit ) {
-			case '': case 'K': case 'Kelvin': case 'kelvin': case 'kelvins': return 'K';
+			case '':
+			case 'K':
+			case 'Kelvin':
+			case 'kelvin':
+			case 'kelvins':
+			return 'K';
 			// There's a dedicated Unicode character (℃, U+2103) for degrees C.
 			// Your font may or may not display it; do not be alarmed.
-			case '°C': case '℃': case 'Celsius': case 'centigrade': return '°C';
-			case '°F': case 'Fahrenheit': return '°F';
-			case '°R': case 'Rankine': return '°R';
-			default: return false;
+			case '°C':
+			case '℃':
+			case 'Celsius':
+			case 'centigrade':
+			return '°C';
+			case '°F':
+			case 'Fahrenheit':
+			return '°F';
+			case '°R':
+			case 'Rankine':
+			return '°R';
+			default:
+			return false;
 		}
 	}
 
