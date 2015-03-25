@@ -173,7 +173,7 @@ class ListResultPrinter extends ResultPrinter {
 		// Make label for finding further results
 		if ( $this->linkFurtherResults( $queryResult ) &&
 			( $this->mFormat != 'ol' || $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) ) {
-			$result .= $this->getFurtherResultsText( $queryResult, $outputmode );
+			$result .= trim( $this->getFurtherResultsText( $queryResult, $outputMode ) );
 		}
 
 		$result .= $this->footer;
