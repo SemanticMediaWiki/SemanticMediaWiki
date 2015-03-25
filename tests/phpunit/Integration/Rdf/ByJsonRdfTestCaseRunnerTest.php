@@ -57,7 +57,9 @@ class ByJsonRdfTestCaseRunnerTest extends ByJsonTestCaseProvider {
 
 		$permittedSettings = array(
 			'smwgNamespace',
-			'smwgNamespacesWithSemanticLinks'
+			'smwgNamespacesWithSemanticLinks',
+			'wgLanguageCode',
+			'wgContLang'
 		);
 
 		foreach ( $permittedSettings as $key ) {
@@ -104,7 +106,7 @@ class ByJsonRdfTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		}
 
 		$this->stringValidator->assertThatStringContains(
-			$case['output']['as-string'],
+			$case['output']['to-contain'],
 			$output,
 			$case['about']
 		);
