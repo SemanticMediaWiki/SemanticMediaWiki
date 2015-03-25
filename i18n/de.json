@@ -329,7 +329,7 @@
 	"smw-datavalue-import-missing-nsuri": "Es wurde keine URI des Namensraums für „$1“ im [[MediaWiki:Smw import $1|$1-Import]] gefunden.",
 	"smw-datavalue-import-missing-type": "Es wurde keine Definition des Datentyps für „$1“ im [[MediaWiki:Smw import $2|$2-Import]] gefunden.",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|$1-Import]]",
-	"smw-datavalue-import-invalidvalue": "„$1“ ist kein gültiges Format und es wird erwartet, dass es mit „Namensraum“:„Kennung“ (z.&nbsp;B. „foaf:name“) übereinstimmt.",
+	"smw-datavalue-import-invalidvalue": "„$1“ ist kein gültiges Format. Es muss dem Schema „Namensraum“:„Kennung“ (z.&nbsp;B. „foaf:name“) entsprechen.",
 	"smw-pa-property-predefined_impo": "„$1“ ist ein softwareseitig fest definiertes Attribut, das eine Relation zu einem [https://semantic-mediawiki.org/wiki/Help:Import_vocabulary importierten Vokabular] beschreibt.",
 	"smw-pa-property-predefined_type": "„$1“ ist ein softwareseitig fest definiertes Attribut, das den [[Special:Types|Datentyp]] eines Attributs beschreibt.",
 	"smw-pa-property-predefined_sobj": "„$1“ ist ein softwareseitig fest definiertes Attribut, das ausschließlich semantische Annotationen (Zuweisungen von Attributwerten zu Attributen) speichert und sich somit ähnlich einer Wikiseite verhält, dessen Inhalt für den Benutzer nicht direkt einsehbar ist.",
