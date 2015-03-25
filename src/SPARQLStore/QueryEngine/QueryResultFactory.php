@@ -122,7 +122,7 @@ class QueryResultFactory {
 		);
 
 		switch ( $federateResultSet->getErrorCode() ) {
-			case FederateResultSet::ERROR_NOERROR: 
+			case FederateResultSet::ERROR_NOERROR:
 			break;
 			case FederateResultSet::ERROR_INCOMPLETE:
 				$result->addErrors( array( wfMessage( 'smw_db_sparqlqueryincomplete' )->inContentLanguage()->text() ) );
