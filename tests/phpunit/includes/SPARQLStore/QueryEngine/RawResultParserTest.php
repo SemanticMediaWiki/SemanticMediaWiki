@@ -65,7 +65,7 @@ class RawResultParserTest extends \PHPUnit_Framework_TestCase {
 		}
 
 		foreach ( $results as $key => $row ) {
-			$this->assertResultRow( $expectedResultRowItemInstance[ $key ], $row );
+			$this->assertResultRow( $expectedResultRowItemInstance[$key], $row );
 		}
 	}
 

@@ -167,7 +167,7 @@ class SortableQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$hasSameOrder = true;
 
 		foreach ( $results as $key => $dataItem ) {
-			if ( $expected[ $key ]->getHash() !== $dataItem->getHash() ) {
+			if ( $expected[$key]->getHash() !== $dataItem->getHash() ) {
 				$hasSameOrder = false;
 			}
 		}

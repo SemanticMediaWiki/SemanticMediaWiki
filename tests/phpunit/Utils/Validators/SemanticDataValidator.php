@@ -126,7 +126,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 
 			foreach ( $expected as $key => $expectedProperty ) {
 				if ( $property->equals( $expectedProperty ) ) {
-					unset( $expected[ $key ] );
+					unset( $expected[$key] );
 				}
 			}
 		}

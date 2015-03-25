@@ -49,12 +49,12 @@ class MwHooksHandler {
 
 		foreach ( $listOfHooks as $hook ) {
 
-			if ( !isset( $GLOBALS['wgHooks'][ $hook ] ) ) {
+			if ( !isset( $GLOBALS['wgHooks'][$hook] ) ) {
 				continue;
 			}
 
-			$this->wgHooks[ $hook ] = $GLOBALS['wgHooks'][ $hook ];
-			$GLOBALS['wgHooks'][ $hook ] = array();
+			$this->wgHooks[$hook] = $GLOBALS['wgHooks'][$hook];
+			$GLOBALS['wgHooks'][$hook] = array();
 		}
 
 		return $this;
@@ -68,12 +68,12 @@ class MwHooksHandler {
 	public function restoreListedHooks() {
 
 		foreach ( $this->inTestRegisteredHooks as $hook ) {
-			unset( $GLOBALS['wgHooks'][ $hook ] );
+			unset( $GLOBALS['wgHooks'][$hook] );
 		}
 
 		foreach ( $this->wgHooks as $hook => $definition ) {
-			$GLOBALS['wgHooks'][ $hook ] = $definition;
-			unset( $this->wgHooks[ $hook ] );
+			$GLOBALS['wgHooks'][$hook] = $definition;
+			unset( $this->wgHooks[$hook] );
 		}
 
 		return $this;
@@ -96,7 +96,7 @@ class MwHooksHandler {
 		}
 
 		$this->inTestRegisteredHooks[] = $name;
-		$GLOBALS['wgHooks'][ $name ][] = $callback;
+		$GLOBALS['wgHooks'][$name][] = $callback;
 
 		return $this;
 	}

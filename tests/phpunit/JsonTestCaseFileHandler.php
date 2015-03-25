@@ -86,7 +86,7 @@ class JsonTestCaseFileHandler {
 		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : array();
 
 		if ( in_array( $connectorId, array_keys( $skipOn ) ) ) {
-			$this->reasonToSkip = $skipOn[ $connectorId ];
+			$this->reasonToSkip = $skipOn[$connectorId];
 		}
 
 		return $this->reasonToSkip !== '';
@@ -283,8 +283,8 @@ class JsonTestCaseFileHandler {
 
 		$contents = $this->fileReader->read();
 
-		if ( isset( $contents[ $index ] ) ) {
-			return $contents[ $index ];
+		if ( isset( $contents[$index] ) ) {
+			return $contents[$index];
 		}
 
 		throw new RuntimeException( "{$index} is unknown" );

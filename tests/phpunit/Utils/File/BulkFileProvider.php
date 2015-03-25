@@ -74,7 +74,7 @@ class BulkFileProvider {
 
 		foreach ( new \RecursiveIteratorIterator( $directoryIterator ) as $fileInfo ) {
 			if ( strtolower( substr( $fileInfo->getFilename(), -( strlen( $extension ) + 1 ) ) ) === ( '.' . $extension ) ) {
-				$files[ $fileInfo->getFilename() ] = $fileInfo->getPathname();
+				$files[$fileInfo->getFilename()] = $fileInfo->getPathname();
 			}
 		}
 

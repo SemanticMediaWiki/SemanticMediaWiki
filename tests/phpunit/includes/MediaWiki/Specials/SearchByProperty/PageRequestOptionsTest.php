@@ -39,7 +39,7 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 		$instance->initialize();
 
 		foreach ( $expected as $key => $value ) {
-			$this->assertEquals( $expected[ $key ], $instance->$key, "$key" );
+			$this->assertEquals( $expected[$key], $instance->$key, "$key" );
 		}
 
 		$this->assertInstanceOf(

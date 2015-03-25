@@ -109,8 +109,8 @@ class FixturesProvider {
 			$this->properties = $this->getListOfPropertyInstances();;
 		};
 
-		if ( isset( $this->properties[ $id ] ) ) {
-			return $this->properties[ $id ]->getProperty();
+		if ( isset( $this->properties[$id] ) ) {
+			return $this->properties[$id]->getProperty();
 		}
 
 		throw new RuntimeException( "$id is an unknown requested property" );
@@ -130,8 +130,8 @@ class FixturesProvider {
 			$this->categories = $this->getListOfCategoryInstances();;
 		};
 
-		if ( isset( $this->categories[ $id ] ) ) {
-			return $this->categories[ $id ];
+		if ( isset( $this->categories[$id] ) ) {
+			return $this->categories[$id];
 		}
 
 		throw new RuntimeException( "$id is an unknown requested property" );
@@ -151,8 +151,8 @@ class FixturesProvider {
 			$this->factsheets = $this->getListOfFactsheetInstances();;
 		};
 
-		if ( isset( $this->factsheets[ $id ] ) ) {
-			return $this->factsheets[ $id ];
+		if ( isset( $this->factsheets[$id] ) ) {
+			return $this->factsheets[$id];
 		}
 
 		throw new RuntimeException( "$id is an unknown requested fact" );

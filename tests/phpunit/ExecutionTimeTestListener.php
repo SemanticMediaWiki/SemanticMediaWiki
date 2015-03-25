@@ -29,7 +29,7 @@ class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 	 */
 	public function endTest( PHPUnit_Framework_Test $test, $length ) {
 		if ( $this->isEnabledToListen && ( $length > $this->executionTimeThresholdInSeconds ) ) {
-			$this->testCollector[ $test->getName() ] = round( $length, 3 );
+			$this->testCollector[$test->getName()] = round( $length, 3 );
 		}
 	}
 
@@ -70,7 +70,7 @@ class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 	public function endTestSuite( PHPUnit_Framework_TestSuite $suite ) {
 		foreach ( $this->testCollector as $name => $length ) {
 			print( "\n" . $suite->getName() . " {$name} ran for {$length} seconds" . "\n" );
-			unset( $this->testCollector[ $name ] );
+			unset( $this->testCollector[$name] );
 		}
 	}
 

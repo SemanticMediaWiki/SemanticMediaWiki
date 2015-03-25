@@ -97,7 +97,7 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$result['info'][ $type ]
+			$result['info'][$type]
 		);
 	}
 

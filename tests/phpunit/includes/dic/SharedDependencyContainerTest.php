@@ -80,7 +80,7 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 		$instance = new SharedDependencyContainer();
 
 		foreach ( $this->objectDataProvider() as $object ) {
-			$registeredObjects[ $object[0] ] = array() ;
+			$registeredObjects[$object[0]] = array() ;
 		}
 
 		foreach ( $instance->toArray() as $objectName => $objectSiganture ) {

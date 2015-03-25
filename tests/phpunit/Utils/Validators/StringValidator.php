@@ -39,7 +39,7 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 		foreach ( $expected as $key => $string ) {
 			if ( strpos( $actual, $string ) !== false ) {
 				$actualCounted++;
-				unset( $expected[ $key ] );
+				unset( $expected[$key] );
 			}
 		}
 
