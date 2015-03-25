@@ -208,7 +208,7 @@
 	"smw-sp-admin-settings-title": "Enschtällonge",
 	"smw-livepreview-loading": "Ben aam Lahde&nbsp;…",
 	"smw-editpage-property-annotation-disabled": "Heh di Eijeschaff löht sesch nit med ene Zoot vun de Dahte verbenge, weil di ald vum Wikki uß faßjelaat es. Alsu „<code lang=\"en\" xml:lang=\"en\" dir=\"ltr\"><nowiki>[[Has type::Page]]</nowiki></code>“ jeiht heh nit. Op dä Sigg met [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Hölp övver besönder  Eijeschaffte] fengk mer mih Enfommazjuhne.",
-	"smw-datavalue-import-missing-nsuri": "Ene <i lang=\"en\" xml:lang=\"en\" dir=\"ltr\" title=\"Uniform Ressource Identifier\">URI</i> för et Appachemang „$1“kunnt en dä [[MediaWiki:Smw import $1|$1-Emmpoht_Dattei]] nit jefonge wähde.",
+	"smw-datavalue-import-missing-nsuri": "Ene <i lang=\"en\" xml:lang=\"en\" dir=\"ltr\" title=\"Uniform Ressource Identifier\">URI</i> för et Appachemang „$1“ kunnt en dä [[MediaWiki:Smw import $1|$1-Emmpoht_Dattei]] nit jefonge wähde.",
 	"smw-datavalue-import-missing-type": "Mer han de Zoot Dahte vun dä Eijeschaff „$1“ nidd em [[MediaWiki:Smw import $2|Empoot vum $2]] jefonge.",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|Empoot vum $1]]",
 	"smw-datavalue-import-invalidvalue": "Et Fommaht vun „$1“ es verkihrd. Ed möhd esu jät wi „Appachtemang“:„Kännong“ sin, för e Beijschpell: „foaf:nahme“.",
