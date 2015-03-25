@@ -34,7 +34,7 @@
 				"revisiondate" : false
 			},
 			"output": {
-				"as-string": [
+				"to-contain": [
 					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D1-2Dredirect\">",
 					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D2-2Dredirect\">",
 					"<swivt:redirectsTo rdf:resource=\"&wiki;Rdf-2D1-2Dredirect\"/>\n",
@@ -52,7 +52,7 @@
 				"revisiondate" : false
 			},
 			"output": {
-				"as-string": [
+				"to-contain": [
 					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D1-2Dredirect\">",
 					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D2-2Dredirect\">",
 					"<swivt:redirectsTo rdf:resource=\"&wiki;Rdf-2D1-2Dredirect\"/>\n",
@@ -63,7 +63,7 @@
 		}
 	],
 	"settings": {
-		"smwgNamespace": "http:\/\/example.org\/id\/"
+		"smwgNamespace": "http://example.org/id/"
 	},
 	"meta": {
 		"version": "0.1",
