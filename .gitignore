@@ -8,6 +8,7 @@ build/release/build-*
 
 composer.phar
 composer.lock
+composer.json
 
 !.*
 .idea/
