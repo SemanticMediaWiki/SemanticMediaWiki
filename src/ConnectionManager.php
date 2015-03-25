@@ -53,7 +53,7 @@ class ConnectionManager {
 	 * @param DBConnectionProvider $connectionProvider
 	 */
 	public function registerConnectionProvider( $connectionTypeId, DBConnectionProvider $connectionProvider ) {
-		self::$connectionProviderTypeIdMap[ strtolower( $connectionTypeId ) ] = $connectionProvider;
+		self::$connectionProviderTypeIdMap[strtolower( $connectionTypeId )] = $connectionProvider;
 	}
 
 	private function getConnectionProviderForId( $connectionTypeId ) {

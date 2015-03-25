@@ -15,13 +15,15 @@ class NullLogger implements Logger {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function logToTable( $type, $performer, $target, $comment ) {}
+	public function logToTable( $type, $performer, $target, $comment ) {
+	}
 
 	/**
 	 * @since 2.1
 	 *
 	 * {@inheritDoc}
 	 */
-	public function log( $fname, $comment ) {}
+	public function log( $fname, $comment ) {
+	}
 
 }

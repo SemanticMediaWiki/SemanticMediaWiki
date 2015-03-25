@@ -79,7 +79,7 @@ class SparqlDBConnectionProvider implements DBConnectionProvider {
 			$this->queryEndpoint = $queryEndpoint;
 			$this->updateEndpoint = $updateEndpoint;
 			$this->dataEndpoint = $dataEndpoint;
-		}
+	}
 
 	/**
 	 * @see DBConnectionProvider::getConnection
