@@ -137,6 +137,20 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testTryToCreateDataValueUsingRestrictedPropertyValue() {
+
+		$dataValue = DataValueFactory::getInstance()->newPropertyValue( 'Has subobject', 'Foo' );
+
+		$this->assertInstanceOf(
+			'\SMWErrorValue',
+			$dataValue
+		);
+
+		$this->assertNotEmpty(
+			$dataValue->getErrors()
+		);
+	}
+
 	/**
 	 * @dataProvider findTypeIdDataProvider
 	 */

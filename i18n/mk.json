@@ -316,6 +316,7 @@
 	"smw-datavalue-import-missing-nsuri": "Не можам да најдам URI „$1“ на именскиот простор во [[MediaWiki:Smw import $1|увозот на $1]].",
 	"smw-datavalue-import-missing-type": "Не пронајдов типска определба за „$1“ во [[MediaWiki:Smw import $2|увозот на $2]].",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|Увоз на $1]]",
+	"smw-datavalue-import-invalidvalue": "„$1“ не претставува важечки формат и се очекува да содржи „именски простор“:„назнака“ (на пр. „фоаф:име“).",
 	"smw-pa-property-predefined_impo": "„$1“ е предодредено својство што ја опишува поврзаноста со [https://semantic-mediawiki.org/wiki/Help:Import_vocabulary увезен лексикон].",
 	"smw-pa-property-predefined_type": "„$1“ е предодредено својство што го опишува [[Special:Types|податочниот тип]] на едно својство.",
 	"smw-pa-property-predefined_sobj": "„$1“ е предодредено својство што претставува пополнувачки конструкт кој му овозможува да насобира задавања „својство-вредност“ слично како на нормална викистраница.",

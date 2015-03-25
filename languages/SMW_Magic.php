@@ -373,6 +373,10 @@ $magicWords['zh-hans'] = array(
 
 /** Traditional Chinese (中文（繁體）‎) */
 $magicWords['zh-hant'] = array(
+	'ask' => array( 0, '訪問' ),
+	'show' => array( 0, '顯示' ),
 	'info' => array( 0, '資訊' ),
+	'smwdoc' => array( 0, 'SMW檔案' ),
 	'set' => array( 0, '設定' ),
+	'set_recurring_event' => array( 0, '設定循環活動', '設置定期活動' ),
 );

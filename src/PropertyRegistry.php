@@ -134,13 +134,14 @@ class PropertyRegistry {
 	 * @param string $id
 	 * @param string $typeId SMW type id
 	 * @param string|bool $label user label or false (internal property)
-	 * @param boolean $show only used if label is given, see isShown()
+	 * @param boolean $isVisibleToUser only used if label is given, see isShown()
+	 * @param boolean $isAnnotableByUser
 	 *
-	 * @note See self::isShown() for information about $show.
+	 * @note See self::isShown() for information it
 	 */
-	public function registerProperty( $id, $typeId, $label = false, $show = false ) {
+	public function registerProperty( $id, $typeId, $label = false, $isVisibleToUser = false, $isAnnotableByUser = true ) {
 
-		$this->propertyTypes[$id] = array( $typeId, $show );
+		$this->propertyTypes[$id] = array( $typeId, $isVisibleToUser, $isAnnotableByUser );
 
 		if ( $label !== false ) {
 			$this->registerPropertyLabel( $id, $label );
@@ -262,8 +263,19 @@ class PropertyRegistry {
 	 *
 	 * @return boolean
 	 */
-	public function getPropertyVisibility( $id ) {
+	public function isVisibleToUser( $id ) {
 		return $this->isKnownPropertyId( $id ) ? $this->propertyTypes[$id][1] : false;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param  string $id
+	 *
+	 * @return boolean
+	 */
+	public function isUnrestrictedForAnnotationUse( $id ) {
+		return $this->isKnownPropertyId( $id ) ? $this->propertyTypes[ $id ][2] : false;
 	}
 
 	/**
@@ -274,41 +286,46 @@ class PropertyRegistry {
 	 */
 	protected function registerPredefinedProperties( $useCategoryHierarchy ) {
 
+		// array( Id, isVisibleToUser, isAnnotableByUser )
+
 		$this->propertyTypes = array(
-			'_TYPE'  => array( '__typ', true ), // "has type"
-			'_URI'   => array( '__spu', true ), // "equivalent URI"
-			'_INST'  => array( '__sin', false ), // instance of a category
-			'_UNIT'  => array( '__sps', true ), // "displays unit"
-			'_IMPO'  => array( '__imp', true ), // "imported from"
-			'_CONV'  => array( '__sps', true ), // "corresponds to"
-			'_SERV'  => array( '__sps', true ), // "provides service"
-			'_PVAL'  => array( '__sps', true ), // "allows value"
-			'_REDI'  => array( '__red', true ), // redirects to some page
-			'_SUBP'  => array( '__sup', true ), // "subproperty of"
-			'_SUBC'  => array( '__suc', !$useCategoryHierarchy ), // "subcategory of"
-			'_CONC'  => array( '__con', false ), // associated concept
-			'_MDAT'  => array( '_dat', false ), // "modification date"
-			'_CDAT'  => array( '_dat', false ), // "creation date"
-			'_NEWP'  => array( '_boo', false ), // "is a new page"
-			'_LEDT'  => array( '_wpg', false ), // "last editor is"
-			'_ERRP'  => array( '_wpp', false ), // "has improper value for"
-			'_LIST'  => array( '__pls', true ), // "has fields"
-			'_SKEY'  => array( '__key', false ), // sort key of a page
-			'_SF_DF' => array( '__spf', true ), // Semantic Form's default form property
-			'_SF_AF' => array( '__spf', true ),  // Semantic Form's alternate form property
-			'_SOBJ'  => array( '__sob', true ), // "has subobject"
-			'_ASK'   => array( '__sob', false ), // "has query"
-			'_ASKST' => array( '_cod', true ), // "has query string"
-			'_ASKFO' => array( '_txt', true ), // "has query format"
-			'_ASKSI' => array( '_num', true ), // "has query size"
-			'_ASKDE' => array( '_num', true ), // "has query depth"
-			'_ASKDU' => array( '_num', true ), // "has query duration"
-			'_MEDIA' => array( '_txt', true ), // "has media type"
-			'_MIME'  => array( '_txt', true ), // "has mime type"
+			'_TYPE'  => array( '__typ', true, true ), // "has type"
+			'_URI'   => array( '__spu', true, true ), // "equivalent URI"
+			'_INST'  => array( '__sin', false, true ), // instance of a category
+			'_UNIT'  => array( '__sps', true, true ), // "displays unit"
+			'_IMPO'  => array( '__imp', true, true ), // "imported from"
+			'_CONV'  => array( '__sps', true, true ), // "corresponds to"
+			'_SERV'  => array( '__sps', true, true ), // "provides service"
+			'_PVAL'  => array( '__sps', true, true ), // "allows value"
+			'_REDI'  => array( '__red', true, true ), // redirects to some page
+			'_SUBP'  => array( '__sup', true, true ), // "subproperty of"
+			'_SUBC'  => array( '__suc', !$useCategoryHierarchy, true ), // "subcategory of"
+			'_CONC'  => array( '__con', false, true ), // associated concept
+			'_MDAT'  => array( '_dat', false, false ), // "modification date"
+			'_CDAT'  => array( '_dat', false, false ), // "creation date"
+			'_NEWP'  => array( '_boo', false, false ), // "is a new page"
+			'_LEDT'  => array( '_wpg', false, false ), // "last editor is"
+			'_ERRP'  => array( '_wpp', false, false ), // "has improper value for"
+			'_LIST'  => array( '__pls', true, true ), // "has fields"
+			'_SKEY'  => array( '__key', false, true ), // sort key of a page
+
+			// FIXME SF related properties to be removed with 3.0
+			'_SF_DF' => array( '__spf', true, true ), // Semantic Form's default form property
+			'_SF_AF' => array( '__spf', true, true ),  // Semantic Form's alternate form property
+
+			'_SOBJ'  => array( '__sob', true, false ), // "has subobject"
+			'_ASK'   => array( '__sob', false, false ), // "has query"
+			'_ASKST' => array( '_cod', true, true ), // "has query string"
+			'_ASKFO' => array( '_txt', true, true ), // "has query format"
+			'_ASKSI' => array( '_num', true, true ), // "has query size"
+			'_ASKDE' => array( '_num', true, true ), // "has query depth"
+			'_ASKDU' => array( '_num', true, true ), // "has query duration"
+			'_MEDIA' => array( '_txt', true, false ), // "has media type"
+			'_MIME'  => array( '_txt', true, false ), // "has mime type"
 		);
 
 		foreach ( $this->datatypeLabels as $id => $label ) {
-			$this->propertyTypes[$id] = array( $id, true );
+			$this->propertyTypes[$id] = array( $id, true, true );
 		}
 
 		// @deprecated since 2.1

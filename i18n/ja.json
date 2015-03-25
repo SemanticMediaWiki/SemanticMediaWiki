@@ -275,5 +275,6 @@
 	"smw-sp-properties-header-label": "プロパティ一覧",
 	"smw-sp-admin-settings-button": "設定の一覧を生成",
 	"smw-sp-admin-idlookup-objectid": "オブジェクト ID:",
-	"smw-livepreview-loading": "読み込み中..."
+	"smw-livepreview-loading": "読み込み中...",
+	"smw-datavalue-property-restricted-use": "「$1」は限定のプロパティを使用されています。"
 }

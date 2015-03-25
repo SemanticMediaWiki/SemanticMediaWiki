@@ -30,6 +30,10 @@
 		{
 			"name": "Rdf-4",
 			"contents": "[[Has date property for rdf::31/12/2014]] {{#subobject:|Has date property for rdf=1/1/1970}}"
+		},
+		{
+			"name": "Rdf-5",
+			"contents": "Not permitted to use [[Has subobject::foo]] {{DEFAULTSORT:AA-BB-CC}}"
 		}
 	],
 	"rdf": [
@@ -130,6 +134,22 @@
 					"<rdfs:label>Has date property for rdf</rdfs:label>",
 					"<swivt:type rdf:resource=\"http://semantic-mediawiki.org/swivt/1.0#_dat\"/>",
 					"<owl:ObjectProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#type\" />"
+				]
+			}
+		},
+		{
+			"about": "#5 Check for proper output despite the use of [[Has subobject:: ... ]] as annotation",
+			"exportcontroller-print-pages" : [ "Rdf-5" ],
+			"parameters" : {
+				"backlinks" : false,
+				"recursion" : "1",
+				"revisiondate" : false
+			},
+			"output": {
+				"as-string": [
+					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D5\">",
+					"<rdfs:label>Rdf-5</rdfs:label>",
+					"<swivt:wikiPageSortKey rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">AA-BB-CC</swivt:wikiPageSortKey>"
 				]
 			}
 		}
