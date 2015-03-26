@@ -76,7 +76,7 @@ class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 	 */
 	public function endTestSuite( PHPUnit_Framework_TestSuite $suite ) {
 		foreach ( $this->testCollector as $name => $length ) {
-			print( "\n" . $suite->getName() . " {$name} ran for {$length} seconds" . "\n" );
+			print ( "\n" . $suite->getName() . " {$name} ran for {$length} seconds" . "\n" );
 			unset( $this->testCollector[$name] );
 		}
 	}

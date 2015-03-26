@@ -6,7 +6,7 @@ if ( php_sapi_name() !== 'cli' ) {
 
 $autoloader = require __DIR__ . '/autoloader.php';
 
-print( "SemanticMediaWiki " . SMW_VERSION . " ({$GLOBALS['smwgDefaultStore']} / {$GLOBALS['wgDBtype']}" . ( strpos( $GLOBALS['smwgDefaultStore'], 'SQL' ) ? '' : ' / ' . $GLOBALS['smwgSparqlDatabaseConnector'] ) . ") ...\n\n" );
+print ( "SemanticMediaWiki " . SMW_VERSION . " ({$GLOBALS['smwgDefaultStore']} / {$GLOBALS['wgDBtype']}" . ( strpos( $GLOBALS['smwgDefaultStore'], 'SQL' ) ? '' : ' / ' . $GLOBALS['smwgSparqlDatabaseConnector'] ) . ") ...\n\n" );
 
 $autoloader->addPsr4( 'SMW\\Test\\', __DIR__ . '/phpunit' );
 $autoloader->addPsr4( 'SMW\\Tests\\', __DIR__ . '/phpunit' );
