@@ -184,7 +184,7 @@ class StoreTest extends MwDBaseUnitTestCase {
 
 		$this->assertInstanceOf( '\SMW\SQLStore\SimpleListLookup', $result );
 		foreach( $result->fetchResultList() as $row ) {
-			$this->assertEquals( 2, sizeof( $row ) );
+			$this->assertEquals( 2, count( $row ) );
 
 			$this->assertInstanceOf(
 				'\SMWDataItem',
