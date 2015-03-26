@@ -7,7 +7,6 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Settings;
 use SMW\ApplicationFactory;
-
 use Title;
 
 /**
@@ -100,8 +99,7 @@ class PropertyTypeDiffFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( 'SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array(
-				'getPropertyValues' ) )
+			->setMethods( array( 'getPropertyValues' ) )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->atLeastOnce() )

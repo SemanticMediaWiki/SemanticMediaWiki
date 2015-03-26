@@ -79,7 +79,6 @@ class UpdateJob extends JobBase {
 		LinkCache::singleton()->clear();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
-		$this->cacheFactory = $this->applicationFactory->newCacheFactory();
 
 		if ( $this->getTitle()->exists() ) {
 			return $this->doPrepareForUpdate();

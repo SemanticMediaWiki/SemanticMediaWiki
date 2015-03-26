@@ -16,6 +16,7 @@ use SMW\Maintenance\MaintenanceFactory;
 use SMW\Cache\CacheFactory;
 use SMWQueryParser as QueryParser;
 use Title;
+use Onoi\EventDispatcher\EventDispatcherFactory;
 
 /**
  * Application instances access for internal and external use
@@ -268,6 +269,30 @@ class ApplicationFactory {
 	 */
 	public function getNamespaceExaminer() {
 		return NamespaceExaminer::newFromArray( $this->getSettings()->get( 'smwgNamespacesWithSemanticLinks' ) );
+	}
+
+	/**
+	 * @note Returns a cached instance to avoid expensive re-registration
+	 *
+	 * @since 2.2
+	 *
+	 * @return EventHandler
+	 */
+	public function getEventHandler() {
+
+		if ( !isset( $this->eventHandler ) ) {
+
+			$eventListenerRegistry = new EventListenerRegistry(
+				EventDispatcherFactory::getInstance()->newGenericEventListenerCollection()
+			);
+
+			$eventDispatcher = EventDispatcherFactory::getInstance()->newGenericEventDispatcher();
+			$eventDispatcher->addListenerCollection( $eventListenerRegistry );
+
+			$this->eventHandler = new EventHandler( $eventDispatcher );
+		}
+
+		return $this->eventHandler;
 	}
 
 	/**

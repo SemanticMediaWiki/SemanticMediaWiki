@@ -62,7 +62,14 @@ class ByJsonQueryTestCaseRunnerTest extends ByJsonTestCaseProvider {
 
 		$this->checkEnvironmentToSkipCurrentTest( $jsonTestCaseFileHandler );
 
-		foreach ( array( 'smwgQMaxSize', 'smwStrictComparators', 'smwgNamespacesWithSemanticLinks' ) as $key ) {
+		$permittedSettings = array(
+			'smwgNamespace',
+			'smwgQMaxSize',
+			'smwStrictComparators',
+			'smwgNamespacesWithSemanticLinks'
+		);
+
+		foreach ( $permittedSettings  as $key ) {
 			$this->changeGlobalSettingTo(
 				$key,
 				$jsonTestCaseFileHandler->getSettingsFor( $key )
