@@ -45,12 +45,12 @@ class StoreFactory {
 			$store = self::$defaultStore;
 		}
 
-		if ( !isset( self::$instance[ $store ] ) ) {
-			self::$instance[ $store ] = self::newInstance( $store );
-			self::$instance[ $store ]->setConfiguration( self::getConfiguration() );
+		if ( !isset( self::$instance[$store] ) ) {
+			self::$instance[$store] = self::newInstance( $store );
+			self::$instance[$store]->setConfiguration( self::getConfiguration() );
 		}
 
-		return self::$instance[ $store ];
+		return self::$instance[$store];
 	}
 
 	/**
@@ -67,7 +67,7 @@ class StoreFactory {
 			self::$defaultStore = self::getConfiguration()->get( 'smwgDefaultStore' );
 		}
 
-		self::$instance[ self::$defaultStore ] = $instance;
+		self::$instance[self::$defaultStore] = $instance;
 	}
 
 	/**

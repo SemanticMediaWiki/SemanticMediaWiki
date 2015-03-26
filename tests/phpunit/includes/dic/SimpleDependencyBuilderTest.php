@@ -428,7 +428,8 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 
 		$instance  = $this->newInstance();
 
-		$instance->getContainer()->registerObject( 'Scope', function() { return new Title(); },
+		$instance->getContainer()->registerObject( 'Scope', function() { return new Title();
+		},
 			DependencyObject::SCOPE_SINGLETON );
 
 		$this->assertTrue(
@@ -436,7 +437,8 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 			'asserts object instances are of type singleton'
 		);
 
-		$instance->getContainer()->registerObject( 'Scope', function() { return new Title(); },
+		$instance->getContainer()->registerObject( 'Scope', function() { return new Title();
+		},
 			DependencyObject::SCOPE_PROTOTYPE );
 
 		$this->assertFalse(
@@ -822,7 +824,8 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 		$provider = array();
 
 		$stdClass = new \stdClass;
-		$closure  = function() use( $stdClass ) { return $stdClass; };
+		$closure  = function() use( $stdClass ) { return $stdClass;
+		};
 
 		// #0
 		$dependencyObject = $this->newMockBuilder()->newObject( 'DependencyObject', array(

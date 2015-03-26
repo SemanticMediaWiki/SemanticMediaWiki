@@ -100,7 +100,7 @@ abstract class SMWLanguage {
 		// `$this->m_SpecialProperties' is set in descendants.
 		// Let us initialize reverse mapping.
 		foreach ( $this->m_SpecialProperties as $propId => $propName ) {
-			$this->m_SpecialPropertyIds[ $propName ] = $propId;
+			$this->m_SpecialPropertyIds[$propName] = $propId;
 		}
 	}
 

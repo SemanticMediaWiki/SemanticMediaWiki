@@ -72,7 +72,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 				while ( ( $dataValue = $result->getNextDataValue() ) !== false ) {
 					foreach ( $expected as $key => $exp ) {
 						if ( call_user_func_array( $this->dataValueValidationMethod, array( $exp, $dataValue ) ) ) {
-							unset( $expected[ $key ] );
+							unset( $expected[$key] );
 						}
 					}
 				}
@@ -111,7 +111,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 				while ( ( $dataItem = $result->getNextDataItem() ) !== false ) {
 					foreach ( $expected as $key => $exp ) {
 						if ( $exp->equals( $dataItem ) ) {
-							unset( $expected[ $key ] );
+							unset( $expected[$key] );
 						}
 					}
 				}
@@ -154,8 +154,8 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 
 				if ( $expectedSubject instanceof DIWikiPage && $expectedSubject->equals( $resultSubject ) ) {
 					$actualComparedToCount++;
-					unset( $expectedSubjects[ $ekey ] );
-					unset( $resultSubjects[ $rKey ] );
+					unset( $expectedSubjects[$ekey] );
+					unset( $resultSubjects[$rKey] );
 				}
 			}
 		}

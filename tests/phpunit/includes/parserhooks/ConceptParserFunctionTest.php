@@ -166,7 +166,7 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		foreach ( $parserData->getSemanticData()->getProperties() as $property ){
 
-			$this->assertEquals( '_CONC' , $property->getKey() );
+			$this->assertEquals( '_CONC', $property->getKey() );
 
 			foreach ( $parserData->getSemanticData()->getPropertyValues( $property ) as $dataItem ) {
 				$this->assertEquals( $expected['conceptQuery'], $dataItem->getConceptQuery() );

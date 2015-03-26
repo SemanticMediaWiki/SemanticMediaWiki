@@ -482,12 +482,14 @@ class SMWExporter {
 			$type = '';
 		} // else keep $type
 		switch ( $type ) {
-			case '_anu': return 'AnnotationProperty';
+			case '_anu':
+			return 'AnnotationProperty';
 			case '': case '_wpg': case '_wpp': case '_wpc': case '_wpf':
 			case '_uri': case '_ema': case '_tel': case '_rec': case '__typ':
 			case '__red': case '__spf': case '__spu':
-				return 'ObjectProperty';
-			default: return 'DatatypeProperty';
+			return 'ObjectProperty';
+			default:
+			return 'DatatypeProperty';
 		}
 	}
 
@@ -594,16 +596,26 @@ class SMWExporter {
 	static public function getNamespaceUri( $shortName ) {
 		self::initBaseURIs();
 		switch ( $shortName ) {
-			case 'wiki':     return self::$m_ent_wiki;
-			case 'wikiurl':  return self::$m_ent_wikiurl;
-			case 'property': return self::$m_ent_property;
-			case 'export':   return self::$m_exporturl;
-			case 'owl':      return 'http://www.w3.org/2002/07/owl#';
-			case 'rdf':      return 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
-			case 'rdfs':     return 'http://www.w3.org/2000/01/rdf-schema#';
-			case 'swivt':    return 'http://semantic-mediawiki.org/swivt/1.0#';
-			case 'xsd':      return 'http://www.w3.org/2001/XMLSchema#';
-			default: return '';
+			case 'wiki':
+			return self::$m_ent_wiki;
+			case 'wikiurl':
+			return self::$m_ent_wikiurl;
+			case 'property':
+			return self::$m_ent_property;
+			case 'export':
+			return self::$m_exporturl;
+			case 'owl':
+			return 'http://www.w3.org/2002/07/owl#';
+			case 'rdf':
+			return 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
+			case 'rdfs':
+			return 'http://www.w3.org/2000/01/rdf-schema#';
+			case 'swivt':
+			return 'http://semantic-mediawiki.org/swivt/1.0#';
+			case 'xsd':
+			return 'http://www.w3.org/2001/XMLSchema#';
+			default:
+			return '';
 		}
 	}
 

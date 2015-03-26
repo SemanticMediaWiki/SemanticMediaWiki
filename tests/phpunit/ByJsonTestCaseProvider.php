@@ -124,7 +124,7 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 		$bulkFileProvider->searchByFileExtension( 'json' );
 
 		foreach ( $bulkFileProvider->getFiles() as $file ) {
-			$provider[ basename( $file ) ] = array( $file );
+			$provider[basename( $file )] = array( $file );
 		}
 
 		return $provider;

@@ -20,4 +20,5 @@ use MWException;
  * @ingroup Exception
  * @codeCoverageIgnore
  */
-class InvalidNamespaceException extends MWException {}
+class InvalidNamespaceException extends MWException {
+}

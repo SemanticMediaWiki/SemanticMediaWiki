@@ -68,7 +68,7 @@ class GlobalsProvider {
 	public function set( $key, $value ) {
 
 		if ( is_string( $key ) ) {
-			$this->container[ $key ] = $value;
+			$this->container[$key] = $value;
 		}
 
 		return $this;

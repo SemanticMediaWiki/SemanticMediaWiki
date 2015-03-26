@@ -119,7 +119,7 @@ class PageTypeRegexQueryTest extends MwDBaseUnitTestCase {
 		 * @query "[[Title::~Sample te*]]"
 		 */
 		$this->assertThatQueryReturns(
-			"[[Title::~Sample te*]]" ,
+			"[[Title::~Sample te*]]",
 			array(
 				$this->subjects['sample-1'],
 				$this->subjects['sample-2']

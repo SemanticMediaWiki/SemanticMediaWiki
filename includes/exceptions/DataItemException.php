@@ -15,4 +15,5 @@ use MWException;
  *
  * @author Markus Krötzsch
  */
-class DataItemException extends MWException {}
+class DataItemException extends MWException {
+}

@@ -62,7 +62,7 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 		$concept = new DIConcept( 'Foo', '', '', '', '' );
 
 		$concept->setCacheStatus( 'full' );
-		$concept->setCacheDate( '1358515326' ) ;
+		$concept->setCacheDate( '1358515326' );
 		$concept->setCacheCount( '1000' );
 
 		$instance = $this->acquireInstanceFor( $concept );
@@ -99,7 +99,7 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 		$concept = new DIConcept( 'Foo', '', '', '', '' );
 
 		$concept->setCacheStatus( 'full' );
-		$concept->setCacheDate( '1358515326' ) ;
+		$concept->setCacheDate( '1358515326' );
 		$concept->setCacheCount( '1000' );
 
 		$instance = $this->acquireInstanceFor( $concept );
@@ -140,7 +140,7 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 		$concept = new DIConcept( 'Foo', '', '', '', '' );
 
 		$concept->setCacheStatus( 'full' );
-		$concept->setCacheDate( '1358515326' ) ;
+		$concept->setCacheDate( '1358515326' );
 		$concept->setCacheCount( '1000' );
 
 		$instance = $this->acquireInstanceFor( $concept );

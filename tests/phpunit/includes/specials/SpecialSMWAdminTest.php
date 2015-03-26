@@ -105,7 +105,7 @@ class SpecialSMWAdminTest extends SpecialPageTestCase {
 		) );
 
 		$this->setStore( $store );
-		$this->execute( '', $request , new MockSuperUser() );
+		$this->execute( '', $request, new MockSuperUser() );
 
 		$this->assertInternalType(
 			'string',

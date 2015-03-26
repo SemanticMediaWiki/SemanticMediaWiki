@@ -62,7 +62,7 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 			$usageCounts[] = array( $propId, mt_rand( 0, 100000 ) );
 		}
 
-		$usageCounts[] = array( 9001, $this->isWinOS() ? pow( 2 , 30 ) : pow( 2 , 31 ) );
+		$usageCounts[] = array( 9001, $this->isWinOS() ? pow( 2, 30 ) : pow( 2, 31 ) );
 
 		return $usageCounts;
 	}
@@ -139,7 +139,7 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 			1 => 42,
 			2 => 0,
 			9001 => 9001,
-			9002 => $this->isWinOS() ? pow( 2 , 30 ) : pow( 2 , 31 ),
+			9002 => $this->isWinOS() ? pow( 2, 30 ) : pow( 2, 31 ),
 			9003 => 1,
 		);
 

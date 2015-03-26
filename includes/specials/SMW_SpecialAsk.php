@@ -234,7 +234,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			$queryobj = SMWQueryProcessor::createQuery(
 				$this->m_querystring,
 				$params,
-				SMWQueryProcessor::SPECIAL_PAGE ,
+				SMWQueryProcessor::SPECIAL_PAGE,
 				$this->m_params['format'],
 				$this->m_printouts
 			);
@@ -253,7 +253,8 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			} elseif ( $this->m_params['format'] == 'icalendar' ) {
 				$desckey = 'icalendardescription';
 				$titlekey = 'icalendartitle';
-			} else { $desckey = false; }
+			} else { $desckey = false;
+			}
 
 			if ( ( $desckey ) && ( $queryobj->getDescription() instanceof SMWConceptDescription ) &&
 			     ( !isset( $this->m_params[$desckey] ) || !isset( $this->m_params[$titlekey] ) ) ) {

@@ -240,7 +240,8 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 
 		$parentStore->expects( $this->any() )
 			->method( 'canUseUpdateFeature' )
-			->will( $this->returnCallback( function( $flag ) { return $flag === SMW_TRX_UPDATE; } ) );
+			->will( $this->returnCallback( function( $flag ) { return $flag === SMW_TRX_UPDATE; 
+			} ) );
 
 		$parentStore->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )

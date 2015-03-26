@@ -163,7 +163,7 @@ class ParserParameterFormatter extends ArrayFormatter {
 			// Remap properties and values to output a simple array
 			foreach ( $values as $value ) {
 				if ( $value !== '' ){
-					$results[ $currentElement[0] ][] = $value;
+					$results[$currentElement[0]][] = $value;
 				}
 			}
 		}

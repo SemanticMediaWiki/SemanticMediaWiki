@@ -98,4 +98,5 @@ interface Combinable {
  *
  * @ingroup Utility
  */
-interface ObjectDictionary extends Accessible, Changeable, Combinable {}
+interface ObjectDictionary extends Accessible, Changeable, Combinable {
+}

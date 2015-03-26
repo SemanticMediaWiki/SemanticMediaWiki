@@ -144,15 +144,24 @@ class Highlighter extends ContextSource {
 	public static function getTypeId( $type ) {
 		// TODO: why do we have a htmlspecialchars here?!
 		switch ( strtolower ( htmlspecialchars ( $type ) ) ) {
-			case 'property': return self::TYPE_PROPERTY;
-			case 'text'    : return self::TYPE_TEXT;
-			case 'quantity': return self::TYPE_QUANTITY;
-			case 'warning' : return self::TYPE_WARNING;
-			case 'info'    : return self::TYPE_INFO;
-			case 'help'    : return self::TYPE_HELP;
-			case 'note'    : return self::TYPE_NOTE;
-			case 'service' : return self::TYPE_SERVICE;
-			default        : return self::TYPE_NOTYPE;
+			case 'property':
+			return self::TYPE_PROPERTY;
+			case 'text':
+			return self::TYPE_TEXT;
+			case 'quantity':
+			return self::TYPE_QUANTITY;
+			case 'warning':
+			return self::TYPE_WARNING;
+			case 'info':
+			return self::TYPE_INFO;
+			case 'help':
+			return self::TYPE_HELP;
+			case 'note':
+			return self::TYPE_NOTE;
+			case 'service':
+			return self::TYPE_SERVICE;
+			default:
+			return self::TYPE_NOTYPE;
 		}
 	}
 

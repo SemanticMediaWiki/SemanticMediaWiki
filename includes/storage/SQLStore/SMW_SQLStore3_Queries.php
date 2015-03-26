@@ -417,9 +417,9 @@ class SMWSQLStore3QueryEngine {
 					$this->store->getLogger()->log( __METHOD__, $e->getMessage() );
 				}
 
-				if ( $dataItem instanceof SMWDIWikiPage && !isset( $dataItemCache[ $dataItem->getHash() ] ) ) {
+				if ( $dataItem instanceof SMWDIWikiPage && !isset( $dataItemCache[$dataItem->getHash()] ) ) {
 					$count++;
-					$dataItemCache[ $dataItem->getHash() ] = true;
+					$dataItemCache[$dataItem->getHash()] = true;
 					$qr[] = $dataItem;
 					// These IDs are usually needed for displaying the page (esp. if more property values are displayed):
 					$this->store->smwIds->setCache( $row->t, $row->ns, $row->iw, $row->so, $row->id, $row->sortkey );
@@ -574,7 +574,7 @@ class SMWSQLStore3QueryEngine {
 						$this->executedQueries[$query->alias][] = $sql;
 
 						if ( $this->queryMode !== SMWQuery::MODE_DEBUG ) {
-							$db->query( $sql , 'SMW::executeQueries' );
+							$db->query( $sql, 'SMW::executeQueries' );
 						}
 					}
 				}
@@ -588,7 +588,8 @@ class SMWSQLStore3QueryEngine {
 			case SMWSQLStore3Query::Q_CLASS_HIERARCHY: // make a saturated hierarchy
 				$this->executeHierarchyQuery( $query );
 			break;
-			case SMWSQLStore3Query::Q_VALUE: break; // nothing to do
+			case SMWSQLStore3Query::Q_VALUE:
+			break; // nothing to do
 		}
 	}
 

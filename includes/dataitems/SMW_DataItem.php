@@ -175,17 +175,28 @@ abstract class SMWDataItem {
 	 */
 	public static function getDataItemClassNameForId( $diType ) {
 		switch ( $diType ) {
-			case self::TYPE_NUMBER:    return 'SMWDINumber';
-			case self::TYPE_BLOB:      return 'SMWDIBlob';
-			case self::TYPE_BOOLEAN:   return 'SMWDIBoolean';
-			case self::TYPE_URI:       return 'SMWDIUri';
-			case self::TYPE_TIME:      return 'SMWDITime';
-			case self::TYPE_GEO:       return 'SMWDIGeoCoord';
-			case self::TYPE_CONTAINER: return 'SMWDIContainer';
-			case self::TYPE_WIKIPAGE:  return 'SMWDIWikiPage';
-			case self::TYPE_CONCEPT:   return 'SMWDIConcept';
-			case self::TYPE_PROPERTY:  return 'SMWDIProperty';
-			case self::TYPE_ERROR:     return 'SMWDIError';
+			case self::TYPE_NUMBER:
+			return 'SMWDINumber';
+			case self::TYPE_BLOB:
+			return 'SMWDIBlob';
+			case self::TYPE_BOOLEAN:
+			return 'SMWDIBoolean';
+			case self::TYPE_URI:
+			return 'SMWDIUri';
+			case self::TYPE_TIME:
+			return 'SMWDITime';
+			case self::TYPE_GEO:
+			return 'SMWDIGeoCoord';
+			case self::TYPE_CONTAINER:
+			return 'SMWDIContainer';
+			case self::TYPE_WIKIPAGE:
+			return 'SMWDIWikiPage';
+			case self::TYPE_CONCEPT:
+			return 'SMWDIConcept';
+			case self::TYPE_PROPERTY:
+			return 'SMWDIProperty';
+			case self::TYPE_ERROR:
+			return 'SMWDIError';
 			case self::TYPE_NOTYPE: default:
 				throw new InvalidArgumentException( "The value \"$diType\" is not a valid dataitem ID." );
 		}

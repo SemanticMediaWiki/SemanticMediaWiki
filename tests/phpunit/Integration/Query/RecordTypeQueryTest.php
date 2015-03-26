@@ -231,7 +231,7 @@ class RecordTypeQueryTest extends MwDBaseUnitTestCase {
 		 * @query "[[Book record::?;<30 Dec 2001]]"
 		 */
 		$this->assertThatQueryReturns(
-			"[[Book record::?;<30 Dec 2001]]"  ,
+			"[[Book record::?;<30 Dec 2001]]",
 			array(
 				$this->subjects['sample-1900'],
 				$this->subjects['sample-2000'],
@@ -243,7 +243,7 @@ class RecordTypeQueryTest extends MwDBaseUnitTestCase {
 		 * @query "[[Book record::?;<1901]]"
 		 */
 		$this->assertThatQueryReturns(
-			"[[Book record::?;<1901]]" ,
+			"[[Book record::?;<1901]]",
 			array(
 				$this->subjects['sample-1900']
 			)

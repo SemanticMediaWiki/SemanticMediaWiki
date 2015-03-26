@@ -240,7 +240,8 @@ class TimeDataTypeTest extends MwDBaseUnitTestCase {
 	}
 
 	protected function setWikiValueDateValueFormatter() {
-		return function( $dataValue ) { return $dataValue->getWikiValue(); };
+		return function( $dataValue ) { return $dataValue->getWikiValue();
+		};
 	}
 
 	protected function setWikiValueDateWithGRCalendarModelValueFormatter() {
@@ -258,11 +259,13 @@ class TimeDataTypeTest extends MwDBaseUnitTestCase {
 	}
 
 	protected function setISO8601DateValueFormatter() {
-		return function( $dataValue ) { return $dataValue->getISO8601Date(); };
+		return function( $dataValue ) { return $dataValue->getISO8601Date();
+		};
 	}
 
 	protected function setMediaWikiDateValueFormatter() {
-		return function( $dataValue ) { return $dataValue->getMediaWikiDate(); };
+		return function( $dataValue ) { return $dataValue->getMediaWikiDate();
+		};
 	}
 
 }

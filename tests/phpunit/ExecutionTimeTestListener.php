@@ -22,47 +22,54 @@ class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 	/**
 	 * @see PHPUnit_Framework_TestListener::startTest
 	 */
-	public function startTest( PHPUnit_Framework_Test $test ) {}
+	public function startTest( PHPUnit_Framework_Test $test ) {
+	}
 
 	/**
 	 * @see PHPUnit_Framework_TestListener::endTest
 	 */
 	public function endTest( PHPUnit_Framework_Test $test, $length ) {
 		if ( $this->isEnabledToListen && ( $length > $this->executionTimeThresholdInSeconds ) ) {
-			$this->testCollector[ $test->getName() ] = round( $length, 3 );
+			$this->testCollector[$test->getName()] = round( $length, 3 );
 		}
 	}
 
 	/**
 	 * @see PHPUnit_Framework_TestListener::addError
 	 */
-	public function addError( PHPUnit_Framework_Test $test, Exception $e, $time ) {}
+	public function addError( PHPUnit_Framework_Test $test, Exception $e, $time ) {
+	}
 
 	/**
 	 * @see PHPUnit_Framework_TestListener::addFailure
 	 */
-	public function addFailure( PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time ) {}
+	public function addFailure( PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time ) {
+	}
 
 	/**
 	 * @see PHPUnit_Framework_TestListener::addError
 	 */
-	public function addIncompleteTest( PHPUnit_Framework_Test $test, Exception $e, $time ) {}
+	public function addIncompleteTest( PHPUnit_Framework_Test $test, Exception $e, $time ) {
+	}
 
 	/**
 	 * @see PHPUnit_Framework_TestListener::addRiskyTest
 	 * @since 4.0.0
 	 */
-	public function addRiskyTest( PHPUnit_Framework_Test $test, Exception $e, $time ) {}
+	public function addRiskyTest( PHPUnit_Framework_Test $test, Exception $e, $time ) {
+	}
 
 	/**
 	 * @see PHPUnit_Framework_TestListener::addSkippedTest
 	 */
-	public function addSkippedTest( PHPUnit_Framework_Test $test, Exception $e, $time ) {}
+	public function addSkippedTest( PHPUnit_Framework_Test $test, Exception $e, $time ) {
+	}
 
 	/**
 	 * @see PHPUnit_Framework_TestListener::startTestSuite
 	 */
-	public function startTestSuite( PHPUnit_Framework_TestSuite $suite ) {}
+	public function startTestSuite( PHPUnit_Framework_TestSuite $suite ) {
+	}
 
 	/**
 	 * @see PHPUnit_Framework_TestListener::endTestSuite
@@ -70,7 +77,7 @@ class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 	public function endTestSuite( PHPUnit_Framework_TestSuite $suite ) {
 		foreach ( $this->testCollector as $name => $length ) {
 			print( "\n" . $suite->getName() . " {$name} ran for {$length} seconds" . "\n" );
-			unset( $this->testCollector[ $name ] );
+			unset( $this->testCollector[$name] );
 		}
 	}
 

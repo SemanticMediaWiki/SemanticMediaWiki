@@ -161,7 +161,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			$type,
-			$result[ $segment ]
+			$result[$segment]
 		);
 	}
 

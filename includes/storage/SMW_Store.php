@@ -219,7 +219,7 @@ abstract class Store {
 			$pageUpdater->addPage( $semanticData->getSubject()->getTitle() );
 			$pageUpdater->doPurgeParserCache();
 			$pageUpdater->doPurgeHtmlCache();
-	    }
+		}
 
 		$this->doDataUpdate( $semanticData );
 
@@ -277,7 +277,8 @@ abstract class Store {
 	 *
 	 * @return SMWQueryResult
 	 */
-	protected function fetchQueryResult( SMWQuery $query ) {}
+	protected function fetchQueryResult( SMWQuery $query ) {
+	}
 
 ///// Special page functions /////
 

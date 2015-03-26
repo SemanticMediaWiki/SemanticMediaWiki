@@ -20,4 +20,5 @@ use MWException;
  * @ingroup Exception
  * @codeCoverageIgnore
  */
-class InvalidStoreException extends MWException {}
+class InvalidStoreException extends MWException {
+}

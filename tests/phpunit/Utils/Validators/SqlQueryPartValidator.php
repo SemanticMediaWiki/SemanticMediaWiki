@@ -34,7 +34,7 @@ class SqlQueryPartValidator extends \PHPUnit_Framework_Assert {
 				$container
 			);
 
-			$this->assertThatContainerHasProperties( $expected[ $key ], $container );
+			$this->assertThatContainerHasProperties( $expected[$key], $container );
 		}
 	}
 

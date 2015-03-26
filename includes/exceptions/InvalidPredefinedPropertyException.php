@@ -18,4 +18,5 @@ namespace SMW;
  * @ingroup Exception
  * @codeCoverageIgnore
  */
-class InvalidPredefinedPropertyException extends InvalidPropertyException {}
+class InvalidPredefinedPropertyException extends InvalidPropertyException {
+}

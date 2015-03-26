@@ -58,7 +58,7 @@ class HighlighterTest extends SemanticMediaWikiTestCase {
 	public function testGetTypeId( $type, $expected ) {
 		$results = Highlighter::getTypeId( $type );
 
-		$this->assertInternalType( 'integer',$results );
+		$this->assertInternalType( 'integer', $results );
 		$this->assertEquals( $expected, $results );
 	}
 

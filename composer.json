@@ -85,7 +85,7 @@
 		],
 		"cs-standalone": [
 			"composer validate --no-interaction",
-			"vendor/bin/phpcs src/* --standard=phpcs.xml --extensions=php -sp"
+			"vendor/bin/phpcs tests/* --standard=phpcs.xml --extensions=php -spn --sniffs=Squiz.Arrays.ArrayBracketSpacing"
 		],
 		"cs": [
 			"composer cs-standalone",

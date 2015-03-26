@@ -108,7 +108,7 @@ class FederateResultSetTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		foreach ( $instance as $key => $listItem ) {
-			$this->assertEquals( $rawList[ $key ], $listItem );
+			$this->assertEquals( $rawList[$key], $listItem );
 		}
 	}
 

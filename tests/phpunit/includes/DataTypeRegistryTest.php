@@ -198,4 +198,5 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 
 }
 
-class FooValue {}
+class FooValue {
+}

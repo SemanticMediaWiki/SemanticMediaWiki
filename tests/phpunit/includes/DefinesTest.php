@@ -48,7 +48,7 @@ class DefinesTest extends  SemanticMediaWikiTestCase {
 			array( SMW_FACTBOX_SPECIAL, 2 ),
 			array( SMW_FACTBOX_NONEMPTY, 3 ),
 			array( SMW_FACTBOX_SHOWN, 5 ),
-		) ;
+		);
 	}
 
 	/**

@@ -532,9 +532,12 @@ class SMWSQLStore3 extends SMWStore {
 					$string = str_replace( '_', '\_', $strcond->string );
 
 					switch ( $strcond->condition ) {
-						case SMWStringCondition::STRCOND_PRE:  $string .= '%'; break;
-						case SMWStringCondition::STRCOND_POST: $string = '%' . $string; break;
-						case SMWStringCondition::STRCOND_MID:  $string = '%' . $string . '%'; break;
+						case SMWStringCondition::STRCOND_PRE:  $string .= '%';
+						break;
+						case SMWStringCondition::STRCOND_POST: $string = '%' . $string;
+						break;
+						case SMWStringCondition::STRCOND_MID:  $string = '%' . $string . '%';
+						break;
 					}
 
 					$sqlConds .= ( ( $addAnd || ( $sqlConds !== '' ) ) ? ' AND ' : '' ) . $labelCol . ' LIKE ' . $db->addQuotes( $string );

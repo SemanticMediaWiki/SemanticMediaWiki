@@ -69,7 +69,7 @@ class RedirectTargetFinderIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testRedirectParseUsingMoveToPage() {
 
-		$target = Title::newFromText( 'RedirectParseUsingMoveToPage' ) ;
+		$target = Title::newFromText( 'RedirectParseUsingMoveToPage' );
 
 		$this->pageCreator
 			->createPage( Title::newFromText( __METHOD__ ) );

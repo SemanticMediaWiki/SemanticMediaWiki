@@ -50,7 +50,8 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @since 1.7
 	 */
-	protected function addResources() {}
+	protected function addResources() {
+	}
 
 	/**
 	 * (non-PHPdoc)

@@ -42,6 +42,7 @@ class MwDBConnectionProvider implements DBConnectionProvider {
 		return $this->dbConnection;
 	}
 
-	public function releaseConnection() {}
+	public function releaseConnection() {
+	}
 
 }

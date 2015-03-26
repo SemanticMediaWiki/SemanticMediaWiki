@@ -275,7 +275,7 @@ class SMWSpecialBrowse extends SpecialPage {
 			"</td></tr>\n</table>\n";
 
 		return $html;
-	 }
+	}
 
 	/**
 	 * Creates the HTML for the center bar including the links with further navigation options.

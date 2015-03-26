@@ -242,11 +242,11 @@ class MessageFormatter {
 			$messageString = $messages[0];
 		} else {
 			foreach ( $messages as &$message ) {
-				$message = $html ? Html::rawElement( 'li' , array(), $message ) : $message ;
+				$message = $html ? Html::rawElement( 'li', array(), $message ) : $message ;
 			}
 
 			$messageString = implode( $this->separator, $messages );
-			$messageString = $html ? Html::rawElement( 'ul' , array(), $messageString ) : $messageString;
+			$messageString = $html ? Html::rawElement( 'ul', array(), $messageString ) : $messageString;
 		}
 
 		return $messageString;

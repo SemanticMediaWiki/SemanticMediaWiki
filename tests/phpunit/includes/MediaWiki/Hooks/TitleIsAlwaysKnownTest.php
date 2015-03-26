@@ -54,7 +54,7 @@ class TitleIsAlwaysKnownTest extends \PHPUnit_Framework_TestCase {
 		$instance = new TitleIsAlwaysKnown( $title, $result );
 		$this->assertTrue( $instance->process() );
 
-		$this->assertEquals( $expected,  $result );
+		$this->assertEquals( $expected, $result );
 	}
 
 	public function titleProvider() {

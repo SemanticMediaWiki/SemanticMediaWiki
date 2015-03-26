@@ -102,7 +102,7 @@ class RdfResultPrinter extends FileExportPrinter {
 					}
 
 					if ( !is_null( $property ) ) {
-						SMWExporter::getInstance()->addPropertyValues( $property, $resultarray->getContent() , $data, $subjectDi );
+						SMWExporter::getInstance()->addPropertyValues( $property, $resultarray->getContent(), $data, $subjectDi );
 					}
 				}
 				$serializer->serializeExpData( $data );

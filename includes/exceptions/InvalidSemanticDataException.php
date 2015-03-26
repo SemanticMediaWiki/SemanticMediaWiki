@@ -20,4 +20,5 @@ use MWException;
  * @ingroup Exception
  * @codeCoverageIgnore
  */
-class InvalidSemanticDataException extends MWException {}
+class InvalidSemanticDataException extends MWException {
+}

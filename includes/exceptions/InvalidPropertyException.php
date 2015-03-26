@@ -18,4 +18,5 @@ namespace SMW;
  * @ingroup Exception
  * @codeCoverageIgnore
  */
-class InvalidPropertyException extends DataItemException {}
+class InvalidPropertyException extends DataItemException {
+}
