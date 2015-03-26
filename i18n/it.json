@@ -16,7 +16,8 @@
 			"Ximo17",
 			"පසිඳු කාවින්ද",
 			"아라",
-			"FRacco"
+			"FRacco",
+			"Giuseppe Forte"
 		]
 	},
 	"smw-desc": "Rende la tua wiki più accessibile - per le macchine ''e'' per gli umani ([https://semantic-mediawiki.org/wiki/Help:User_manual documentazione in linea])",
@@ -236,5 +237,6 @@
 	"group-smwadministrator-member": "{{GENDER:$1|amministratore|amministratrice|amministratore/trice}} Semantic MediaWiki",
 	"grouppage-smwadministrator": "{{ns:project}}:Amministratori Semantic MediaWiki",
 	"smw-sp-properties-header-label": "Elenco delle proprietà",
-	"smw-livepreview-loading": "Caricamento in corso..."
+	"smw-livepreview-loading": "Caricamento in corso...",
+	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"] è una proprietà predefinita che può definire una lista di valori ammissibili per limitare assegnazioni di valori per una proprietà."
 }
