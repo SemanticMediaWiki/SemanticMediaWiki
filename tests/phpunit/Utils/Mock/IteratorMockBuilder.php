@@ -29,7 +29,7 @@ class IteratorMockBuilder extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @return IteratorMockBuilder
 	 */
-	public function setClass( $iteratorClass ){
+	public function setClass( $iteratorClass ) {
 		$this->iteratorClass = $iteratorClass;
 		return $this;
 	}
@@ -41,7 +41,7 @@ class IteratorMockBuilder extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @return IteratorMockBuilder
 	 */
-	public function with( array $items ){
+	public function with( array $items ) {
 		$this->items = $items;
 		return $this;
 	}
@@ -52,7 +52,7 @@ class IteratorMockBuilder extends \PHPUnit_Framework_TestCase {
 	 * @return PHPUnit_Framework_MockObject_MockObject
 	 * @throws RuntimeException
 	 */
-	public function getMockForIterator(){
+	public function getMockForIterator() {
 
 		$instance = $this->getMockBuilder( $this->iteratorClass )
 			->disableOriginalConstructor()
