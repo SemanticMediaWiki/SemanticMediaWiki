@@ -69,7 +69,7 @@ class DIConceptTest extends DataItemTest {
 		$instance  = $reflector->newInstanceArgs( array ( 'Foo', '', '', '', '' ) );
 
 		$instance->setCacheStatus( $status );
-		$instance->setCacheDate( $date ) ;
+		$instance->setCacheDate( $date );
 		$instance->setCacheCount( $count );
 
 		$this->assertEquals( $status, $instance->getCacheStatus() );

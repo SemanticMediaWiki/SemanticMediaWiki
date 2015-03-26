@@ -43,7 +43,7 @@ class ByJsonRdfTestCaseRunnerTest extends ByJsonTestCaseProvider {
 	 * @see ByJsonTestCaseProvider::getTestCaseLocation
 	 */
 	protected function getTestCaseLocation() {
-		return __DIR__ ;
+		return __DIR__;
 	}
 
 	/**

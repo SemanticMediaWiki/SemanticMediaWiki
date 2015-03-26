@@ -126,7 +126,7 @@ class GlobalFunctionsTest extends SemanticMediaWikiTestCase {
 			array( 'smwfGetStore' ),
 			array( 'smwfGetSparqlDatabase' ),
 			array( 'smwfGetLinker' ),
-		) ;
+		);
 	}
 
 	/**
