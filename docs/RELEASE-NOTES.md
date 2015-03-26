@@ -7,6 +7,7 @@ This is not a release yet.
 * #770 Added the `--no-cache` option to `rebuildData.php` and the `--debug` option to `rebuildData.php` and `rebuildConceptCache.php` (refs #749, #766)
 * #756 Added template support for the `#set` parser
 * #783 Added support for `wgCategoryCollation` setting in `CategoryResultPrinter` (#699, T40853)
+* #829 Added the `--runtime` option to `rebuildConceptCache.php`
 * #886 Extended rules on how an `ImportValue` need to contain a valid type definition
 * #891 Enforces strict type declaration for properties with import references (type of the imported reference takes precedence over any user-defined type declaration)
 * #892 Added support for `<swivt:file>` in order for a RDF export to point to a "real" file resource
