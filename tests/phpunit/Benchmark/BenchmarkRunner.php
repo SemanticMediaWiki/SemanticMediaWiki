@@ -134,7 +134,7 @@ class BenchmarkRunner {
 	 */
 	public function printMessages() {
 		foreach ( $this->messages as $message ) {
-			print( $message . "\n" );
+			print ( $message . "\n" );
 		}
 	}
 

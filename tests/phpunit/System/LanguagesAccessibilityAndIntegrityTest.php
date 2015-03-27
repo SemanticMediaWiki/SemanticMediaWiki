@@ -124,7 +124,7 @@ class LanguagesAccessibilityAndIntegrityTest extends \PHPUnit_Framework_TestCase
 		$file = $this->globalsProvider->get( 'smwgIP' ) . '/' . 'languages' . '/' . $lang . '.php';
 
 		if ( file_exists( $file ) ) {
-			include_once( $file );
+			include_once ( $file );
 			return 'SMWLanguage' . str_replace( '-', '_', ucfirst( $langcode ) );
 		}
 

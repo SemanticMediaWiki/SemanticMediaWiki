@@ -26,7 +26,7 @@ class JsonResultPrinterTest extends QueryPrinterTestCase {
 
 	protected $mockBuilder;
 
-	protected function setUp(){
+	protected function setUp() {
 		parent::setUp();
 
 		$this->mockBuilder = new MockObjectBuilder();
