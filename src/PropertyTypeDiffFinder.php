@@ -110,11 +110,6 @@ class PropertyTypeDiffFinder {
 			$update = true;
 		} else {
 			foreach ( $this->propertiesToCompare as $property ) {
-
-				if ( $update ) {
-					break;
-				}
-
 				$update = $update || !$this->isEqualForProperty( new DIProperty( $property ) );
 			}
 		}
@@ -141,10 +136,15 @@ class PropertyTypeDiffFinder {
 	private function notifyDispatcher( $addJob = true ) {
 		if ( $addJob && !$this->hasDiff ) {
 
-			ApplicationFactory::getInstance()
-				->newJobFactory()
-				->newUpdateDispatcherJob( $this->semanticData->getSubject()->getTitle() )
-				->run();
+			$eventHandler = ApplicationFactory::getInstance()->getEventHandler();
+
+			$dispatchContext = $eventHandler->newDispatchContext();
+			$dispatchContext->set( 'subject', $this->semanticData->getSubject() );
+
+			$eventHandler->getEventDispatcher()->dispatch(
+				'property.type.change',
+				$dispatchContext
+			);
 
 			$this->hasDiff = true;
 		}

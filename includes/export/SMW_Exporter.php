@@ -57,6 +57,13 @@ class SMWExporter {
 	}
 
 	/**
+	 * @since 2.2
+	 */
+	public static function resetCache() {
+		self::$resourceElementCache = null;
+	}
+
+	/**
 	 * Make sure that necessary base URIs are initialised properly.
 	 */
 	static public function initBaseURIs() {
@@ -371,7 +378,7 @@ class SMWExporter {
 			$modifier = $diWikiPage->getSubobjectName();
 		}
 
-		if ( $modifier === '' ) {
+		if ( $modifier === '' && $diWikiPage->getNamespace() === SMW_NS_PROPERTY ) {
 			$importProperty = new SMWDIProperty( '_IMPO' );
 			$importDis = \SMW\StoreFactory::getStore()->getPropertyValues( $diWikiPage, $importProperty );
 			$importURI = ( count( $importDis ) > 0 );
