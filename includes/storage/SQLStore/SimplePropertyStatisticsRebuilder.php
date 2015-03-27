@@ -2,13 +2,12 @@
 
 namespace SMW\SQLStore;
 
+use SMW\Store\PropertyStatisticsRebuilder;
 use SMW\Store\PropertyStatisticsStore;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 
 use SMW\Store;
-
-use MWException;
 
 /**
  * Simple implementation of PropertyStatisticsRebuilder.
@@ -21,17 +20,17 @@ use MWException;
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author Nischay Nahata
  */
-class SimplePropertyStatisticsRebuilder implements \SMW\Store\PropertyStatisticsRebuilder {
-
-	/** @var Store */
-	protected $store = null;
+class SimplePropertyStatisticsRebuilder implements PropertyStatisticsRebuilder {
 
 	/**
-	 * @since 1.9
-	 *
+	 * @var Store
+	 */
+	private $store;
+
+	/**
 	 * @var MessageReporter
 	 */
-	protected $reporter;
+	private $reporter;
 
 	/**
 	 * @since 1.9
@@ -41,11 +40,7 @@ class SimplePropertyStatisticsRebuilder implements \SMW\Store\PropertyStatistics
 	 */
 	public function __construct( Store $store, MessageReporter $reporter = null ) {
 		$this->store = $store;
-		$this->reporter = $reporter;
-
-		if ( $this->reporter === null ) {
-			$this->reporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
-		}
+		$this->reporter = $reporter !== null ?: MessageReporterFactory::getInstance()->newNullMessageReporter();
 	}
 
 	/**
@@ -89,7 +84,7 @@ class SimplePropertyStatisticsRebuilder implements \SMW\Store\PropertyStatistics
 		$this->reportMessage( "\nUpdated statistics for $propCount Properties.\n" );
 	}
 
-	protected function getPropertyTableRowCount( $propertyTable, $id ) {
+	private function getPropertyTableRowCount( $propertyTable, $id ) {
 
 		$condition = $propertyTable->isFixedPropertyTable() ? array() : array( 'p_id' => $id );
 
@@ -103,7 +98,7 @@ class SimplePropertyStatisticsRebuilder implements \SMW\Store\PropertyStatistics
 		return $row->count;
 	}
 
-	protected function reportMessage( $message ) {
+	private function reportMessage( $message ) {
 		$this->reporter->reportMessage( $message );
 	}
 
