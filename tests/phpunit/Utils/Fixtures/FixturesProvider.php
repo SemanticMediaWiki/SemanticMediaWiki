@@ -106,7 +106,7 @@ class FixturesProvider {
 		$id = strtolower( $id );
 
 		if ( $this->properties === null ) {
-			$this->properties = $this->getListOfPropertyInstances();;
+			$this->properties = $this->getListOfPropertyInstances();
 		};
 
 		if ( isset( $this->properties[$id] ) ) {
@@ -127,7 +127,7 @@ class FixturesProvider {
 		$id = strtolower( $id );
 
 		if ( $this->categories === null ) {
-			$this->categories = $this->getListOfCategoryInstances();;
+			$this->categories = $this->getListOfCategoryInstances();
 		};
 
 		if ( isset( $this->categories[$id] ) ) {
@@ -148,7 +148,7 @@ class FixturesProvider {
 		$id = strtolower( $id );
 
 		if ( $this->factsheets === null ) {
-			$this->factsheets = $this->getListOfFactsheetInstances();;
+			$this->factsheets = $this->getListOfFactsheetInstances();
 		};
 
 		if ( isset( $this->factsheets[$id] ) ) {
