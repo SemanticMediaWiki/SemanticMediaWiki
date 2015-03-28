@@ -123,7 +123,7 @@ class ParameterInput {
 			$html = $this->param->isList() ? $this->getCheckboxListInput( $valueList ) : $this->getSelectInput( $valueList );
 		}
 
-			return $html;
+		return $html;
 	}
 
 	/**
