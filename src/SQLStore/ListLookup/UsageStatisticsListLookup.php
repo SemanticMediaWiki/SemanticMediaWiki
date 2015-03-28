@@ -1,9 +1,10 @@
 <?php
 
-namespace SMW\SQLStore;
+namespace SMW\SQLStore\ListLookup;
 
 use SMW\Store;
 use SMW\Store\PropertyStatisticsStore;
+use SMW\SQLStore\SimpleListLookup;
 use SMW\DIProperty;
 use RuntimeException;
 

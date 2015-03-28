@@ -5,6 +5,7 @@ namespace SMW\SQLStore;
 use SMW\Cache\FixedInMemoryCache;
 use SMW\MediaWiki\Database;
 use SMW\Cache\Cache;
+use SMW\ApplicationFactory;
 
 use SMW\HashBuilder;
 
@@ -39,7 +40,7 @@ class RedirectInfoStore {
 		$this->cache = $cache;
 
 		if ( $this->cache === null ) {
-			$this->cache = new FixedInMemoryCache( 500 );
+			$this->cache = ApplicationFactory::getInstance()->newCacheFactory()->newNullCache();
 		}
 	}
 

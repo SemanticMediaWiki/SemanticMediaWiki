@@ -5,6 +5,7 @@ use SMW\SQLStore\DataItemByIdFinder;
 use SMW\SQLStore\RedirectInfoStore;
 use SMW\HashBuilder;
 use SMW\DIWikiPage;
+use SMW\ApplicationFactory;
 
 /**
  * @ingroup SMWStore
@@ -217,7 +218,8 @@ class SMWSql3SmwIds {
 		);
 
 		$this->redirectInfoStore = new RedirectInfoStore(
-			$this->store->getConnection( 'mw.db' )
+			$this->store->getConnection( 'mw.db' ),
+			ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache()
 		);
 	}
 

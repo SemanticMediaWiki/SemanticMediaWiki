@@ -56,7 +56,16 @@ class CacheFactory {
 	 * @return Cache
 	 */
 	public function newFixedInMemoryCache( $cacheSize = 500 ) {
-		return OnoiCacheFactory::getInstance()->newFixedInMemoryCache( $cacheSize );
+		return OnoiCacheFactory::getInstance()->newFixedInMemoryLruCache( $cacheSize );
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return Cache
+	 */
+	public function newNullCache() {
+		return OnoiCacheFactory::getInstance()->newNullCache();
 	}
 
 	/**
@@ -66,9 +75,11 @@ class CacheFactory {
 	 *
 	 * @return Cache
 	 */
-	public function newMediaWikiCompositeCache( $mediaWikiCacheType ) {
+	public function newMediaWikiCompositeCache( $mediaWikiCacheType = null ) {
 
-		$mediaWikiCache = ObjectCache::getInstance( $mediaWikiCacheType );
+		$mediaWikiCache = ObjectCache::getInstance(
+			( $mediaWikiCacheType === null ? $this->getMainCacheType() : $mediaWikiCacheType )
+		);
 
 		$compositeCache = OnoiCacheFactory::getInstance()->newCompositeCache( array(
 			$this->newFixedInMemoryCache( 500 ),

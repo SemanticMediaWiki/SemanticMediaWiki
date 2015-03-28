@@ -173,4 +173,5 @@ class TableDefinition {
 	public function getDiType() {
 		return $this->diType;
 	}
+
 }

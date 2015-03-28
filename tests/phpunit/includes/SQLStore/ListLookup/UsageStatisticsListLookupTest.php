@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\SQLStore\ListLookup;
 
-use SMW\SQLStore\UsageStatisticsListLookup;
+use SMW\SQLStore\ListLookup\UsageStatisticsListLookup;
 
 /**
- * @covers \SMW\SQLStore\UsageStatisticsListLookup
+ * @covers \SMW\SQLStore\ListLookup\UsageStatisticsListLookup
  *
  * @group semantic-mediawiki
  * @group medium
@@ -28,7 +28,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\UsageStatisticsListLookup',
+			'\SMW\SQLStore\ListLookup\UsageStatisticsListLookup',
 			new UsageStatisticsListLookup( $store, $propertyStatisticsStore )
 		);
 	}

@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\SQLStore\ListLookup;
 
-use SMW\SQLStore\UndeclaredPropertyListLookup;
+use SMW\SQLStore\ListLookup\UndeclaredPropertyListLookup;
 use SMW\DIProperty;
 
 /**
- * @covers \SMW\SQLStore\UndeclaredPropertyListLookup
+ * @covers \SMW\SQLStore\ListLookup\UndeclaredPropertyListLookup
  *
  * @group semantic-mediawiki
  *
@@ -26,7 +26,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 		$defaultPropertyType = '_foo';
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\UndeclaredPropertyListLookup',
+			'\SMW\SQLStore\ListLookup\UndeclaredPropertyListLookup',
 			new UndeclaredPropertyListLookup( $store, $defaultPropertyType, null )
 		);
 	}
