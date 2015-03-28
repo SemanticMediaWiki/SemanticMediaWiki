@@ -157,7 +157,7 @@ class SMWQuery {
 	 */
 	public function setOffset( $offset ) {
 		global $smwgQMaxLimit;
- 		$this->offset = min( $smwgQMaxLimit, $offset ); // select integer between 0 and maximal limit;
+		$this->offset = min( $smwgQMaxLimit, $offset ); // select integer between 0 and maximal limit;
 		$this->limit = min( $smwgQMaxLimit - $this->offset, $this->limit ); // note that limit might become 0 here
 		return $this->offset;
 	}

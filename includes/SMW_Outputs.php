@@ -40,15 +40,15 @@ class SMWOutputs {
 	 * to the output.
 	 */
 	protected static $scripts = array();
-	
+
 	/// Protected member for temporarily storing resource modules.
 	protected static $resourceModules = array();
 
 	/**
 	 * Adds a resource module to the parser output.
-	 * 
+	 *
 	 * @since 1.5.3
-	 * 
+	 *
 	 * @param string $moduleName
 	 */
 	public static function requireResource( $moduleName ) {
@@ -60,17 +60,17 @@ class SMWOutputs {
 	 * enclosing script tags. Note that the same could be achieved with
 	 * requireHeadItems, but scripts use a special method "addScript" in
 	 * MediaWiki OutputPage, hence we distinguish them.
-	 * 
+	 *
 	 * The id is used to avoid that the requirement for one script is
 	 * recorded multiple times in SMWOutputs.
-	 * 
+	 *
 	 * @param string $id
 	 * @param string $item
 	 */
 	public static function requireScript( $id, $script ) {
 		self::$scripts[$id] = $script;
 	}
-	
+
 	/**
 	 * Adds head items that are not Resource Loader modules. Should only
 	 * be used for custom head items such as RSS fedd links.
@@ -80,7 +80,7 @@ class SMWOutputs {
 	 *
 	 * Support for calling this with the old constants SMW_HEADER_STYLE
 	 * and SMW_HEADER_TOOLTIP will vanish in SMW 1.7 at the latest.
-	 * 
+	 *
 	 * @param mixed $id
 	 * @param string $item
 	 */

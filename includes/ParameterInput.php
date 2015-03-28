@@ -9,54 +9,54 @@ use Xml;
 /**
  * Simple class to get a HTML input for the parameter.
  * Usable for when creating a GUI from a parameter list.
- * 
+ *
  * Based on 'addOptionInput' from Special:Ask in SMW 1.5.6.
- * 
+ *
  * TODO: nicify HTML
- * 
+ *
  * @since 1.9
- * 
+ *
  * @ingroup SMW
- * 
+ *
  * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class ParameterInput {
-	
+
 	/**
 	 * The parameter to print an input for.
-	 * 
+	 *
 	 * @since 1.9
-	 * 
+	 *
 	 * @var ParamDefinition
 	 */
 	protected $param;
-	
+
 	/**
 	 * The current value for the parameter. When provided,
 	 * it'll be used as value for the input, otherwise the
 	 * parameters default value will be used.
-	 * 
+	 *
 	 * @since 1.9
-	 * 
+	 *
 	 * @var mixed: string or false
 	 */
 	protected $currentValue;
-	
+
 	/**
 	 * Name for the input.
-	 * 
+	 *
 	 * @since 1.9
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $inputName;
-	
+
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @since 1.9
-	 * 
+	 *
 	 * @param ParamDefinition $param
 	 * @param mixed $currentValue
 	 */
@@ -65,34 +65,34 @@ class ParameterInput {
 		$this->inputName = $param->getName();
 		$this->param = $param;
 	}
-	
+
 	/**
 	 * Sets the current value.
-	 * 
+	 *
 	 * @since 1.9
-	 * 
+	 *
 	 * @param mixed $currentValue
-	 */	
+	 */
 	public function setCurrentValue( $currentValue ) {
 		$this->currentValue = $currentValue;
 	}
-	
+
 	/**
 	 * Sets the name for the input; defaults to the name of the parameter.
-	 * 
+	 *
 	 * @since 1.9
-	 * 
+	 *
 	 * @param string $name
 	 */
 	public function setInputName( $name ) {
 		$this->inputName = $name;
 	}
-	
+
 	/**
 	 * Returns the HTML for the parameter input.
-	 * 
+	 *
 	 * @since 1.9
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getHtml() {
@@ -102,7 +102,7 @@ class ParameterInput {
 			$valueList = $this->param->getAllowedValues();
 		}
 
-        if ( $valueList === array() ) {
+		if ( $valueList === array() ) {
 			switch ( $this->param->getType() ) {
 				case 'char':
 				case 'float':
@@ -118,38 +118,38 @@ class ParameterInput {
 					$html = $this->getStrInput();
 					break;
 			}
-        }
-        else {
+		}
+		else {
 			$html = $this->param->isList() ? $this->getCheckboxListInput( $valueList ) : $this->getSelectInput( $valueList );
-        }
-        
-        return $html;
+		}
+
+		return $html;
 	}
-	
+
 	/**
 	 * Returns the value to initially display with the input.
-	 * 
+	 *
 	 * @since 1.9
-	 * 
+	 *
 	 * @return string
 	 */
 	protected function getValueToUse() {
 		$value = $this->currentValue === false ? $this->param->getDefault() : $this->currentValue;
-		
+
 		if ( $this->param->isList() && is_array( $value ) ) {
 			$value = implode( $this->param->getDelimiter(), $value );
 		}
-		
+
 		return $value;
 	}
-	
+
 	/**
 	 * Gets a short text input suitable for numbers.
-	 * 
+	 *
 	 * @since 1.9
-	 * 
+	 *
 	 * @return string
-	 */		
+	 */
 	protected function getNumberInput() {
 		return Html::input(
 			$this->inputName,
@@ -161,14 +161,14 @@ class ParameterInput {
 			)
 		);
 	}
-	
+
 	/**
 	 * Gets a text input for a string.
-	 * 
+	 *
 	 * @since 1.9
-	 * 
+	 *
 	 * @return string
-	 */		
+	 */
 	protected function getStrInput() {
 		return Html::input(
 			$this->inputName,
@@ -180,39 +180,39 @@ class ParameterInput {
 			)
 		);
 	}
-	
+
 	/**
 	 * Gets a checkbox.
-	 * 
+	 *
 	 * @since 1.9
-	 * 
+	 *
 	 * @return string
-	 */	
+	 */
 	protected function getBooleanInput() {
 		return Xml::check(
 			$this->inputName,
 			$this->getValueToUse()
 		);
-	}	
-	
+	}
+
 	/**
 	 * Gets a select menu for the provided values.
-	 * 
+	 *
 	 * @since 1.9
-	 * 
+	 *
 	 * @param array $valueList
-	 * 
+	 *
 	 * @return string
-	 */	
+	 */
 	protected function getSelectInput( array $valueList ) {
 		$options = array();
 		$options[] = '<option value=""></option>';
-		
+
 		$currentValues = (array)$this->getValueToUse();
 		if ( is_null( $currentValues ) ) {
 			$currentValues = array();
 		}
-		
+
 		foreach ( $valueList as $value ) {
 			$options[] =
 				'<option value="' . htmlspecialchars( $value ) . '"' .
@@ -228,14 +228,14 @@ class ParameterInput {
 			implode( "\n", $options )
 		);
 	}
-	
+
 	/**
 	 * Gets a list of input boxes for the provided values.
-	 * 
+	 *
 	 * @since 1.9
-	 * 
+	 *
 	 * @param array $valueList
-	 * 
+	 *
 	 * @return string
 	 */
 	protected function getCheckboxListInput( array $valueList ) {
@@ -245,7 +245,7 @@ class ParameterInput {
 		if ( is_null( $currentValues ) ) {
 			$currentValues = array();
 		}
-		
+
 		foreach ( $valueList as $value ) {
 			$boxes[] = Html::rawElement(
 				'span',
@@ -259,8 +259,8 @@ class ParameterInput {
 				Html::element( 'tt', array(), $value )
 			);
 		}
-		
+
 		return implode( "\n", $boxes );
 	}
-	
+
 }

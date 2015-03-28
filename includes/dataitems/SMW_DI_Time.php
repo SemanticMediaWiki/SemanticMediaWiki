@@ -10,7 +10,7 @@ use SMW\DataItemException;
  * Even when not specified, the data item always assumes default values for the
  * missing parts, so the item really captures one point in time, no intervals.
  * Times are always assumed to be in UTC.
- * 
+ *
  * "Y0K issue": Neither the Gregorian nor the Julian calendar assume a year 0,
  * i.e. the year 1 BC(E) was followed by 1 AD/CE. See
  * http://en.wikipedia.org/wiki/Year_zero
@@ -88,7 +88,7 @@ class SMWDITime extends SMWDataItem {
 	 * be false to indicate that they are not specified. This will affect
 	 * the internal precision setting. The missing values are initialised
 	 * to minimal values (0 or 1) for internal calculations.
-	 * 
+	 *
 	 * @param $calendarmodel integer one of SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
 	 * @param $year integer number of the year (possibly negative)
 	 * @param $month mixed integer number or false
@@ -199,9 +199,9 @@ class SMWDITime extends SMWDataItem {
 
 	/**
 	 * Returns a MW timestamp representatation of the value.
-	 * 
+	 *
 	 * @since 1.6.2
-	 * 
+	 *
 	 * @param $outputtype
 	 *
 	 * @return mixed
@@ -283,7 +283,7 @@ class SMWDITime extends SMWDataItem {
 	public static function doUnserialize( $serialization ) {
 		$parts = explode( '/', $serialization, 7 );
 		$values = array();
-		
+
 		for ( $i = 0; $i < 7; $i += 1 ) {
 			if ( $i < count( $parts ) ) {
 				if ( is_numeric( $parts[$i] ) ) {
@@ -295,11 +295,11 @@ class SMWDITime extends SMWDataItem {
 				$values[$i] = false;
 			}
 		}
-		
+
 		if ( count( $parts ) <= 1 ) {
 			throw new DataItemException( "Unserialization failed: the string \"$serialization\" is no valid URI." );
 		}
-		
+
 		return new self( $values[0], $values[1], $values[2], $values[3], $values[4], $values[5], $values[6] );
 	}
 

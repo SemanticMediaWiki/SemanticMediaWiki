@@ -39,7 +39,7 @@ class SMWSQLStore3Readers {
 	/**
 	 * @see SMWStore::getSemanticData()
 	 * @since 1.8
-	 * 
+	 *
 	 * @param DIWikiPage $subject
 	 * @param string[]|bool $filter
 	 */

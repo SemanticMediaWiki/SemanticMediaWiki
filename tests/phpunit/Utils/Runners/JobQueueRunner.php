@@ -121,7 +121,7 @@ class JobQueueRunner {
 	 * @see https://gerrit.wikimedia.org/r/#/c/162009/
 	 */
 	private function pop() {
- 		$offset = 0;
+		$offset = 0;
 
 		if ( class_exists( 'JobQueueGroup' ) ) {
 			return JobQueueGroup::singleton()->pop();

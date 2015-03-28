@@ -77,9 +77,9 @@ class SMWSpecialOWLExport extends SpecialPage {
 		global $wgOut, $wgUser, $smwgAllowRecursiveExport, $smwgExportBacklinks, $smwgExportAll;
 
 		$html = '<form name="tripleSearch" action="" method="POST">' . "\n" .
-                '<p>' . wfMessage( 'smw_exportrdf_docu' )->text() . "</p>\n" .
-                '<input type="hidden" name="postform" value="1"/>' . "\n" .
-                '<textarea name="pages" cols="40" rows="10"></textarea><br />' . "\n";
+					'<p>' . wfMessage( 'smw_exportrdf_docu' )->text() . "</p>\n" .
+					'<input type="hidden" name="postform" value="1"/>' . "\n" .
+					'<textarea name="pages" cols="40" rows="10"></textarea><br />' . "\n";
 
 		if ( $wgUser->isAllowed( 'delete' ) || $smwgAllowRecursiveExport ) {
 			$html .= '<input type="checkbox" name="recursive" value="1" id="rec">&#160;<label for="rec">' . wfMessage( 'smw_exportrdf_recursive' )->text() . '</label></input><br />' . "\n";

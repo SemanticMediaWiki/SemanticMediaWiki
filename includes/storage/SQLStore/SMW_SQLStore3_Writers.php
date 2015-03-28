@@ -201,7 +201,7 @@ class SMWSQLStore3Writers {
 		);
 
 		// Take care of all remaining property table data
- 		list( $deleteRows, $insertRows, $newHashes ) = $this->preparePropertyTableUpdates( $sid, $data );
+		list( $deleteRows, $insertRows, $newHashes ) = $this->preparePropertyTableUpdates( $sid, $data );
 
 		$this->writePropertyTableUpdates(
 			$sid,

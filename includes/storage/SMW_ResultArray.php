@@ -5,31 +5,31 @@ use SMW\Query\PrintRequest;
  * Container for the contents of a single result field of a query result,
  * i.e. basically an array of SMWDataItems with some additional parameters.
  * The content of the array is fetched on demand only.
- * 
+ *
  * @ingroup SMWQuery
- * 
+ *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class SMWResultArray {
-	
+
 	/**
 	 * @var PrintRequest
 	 */
 	protected $mPrintRequest;
-	
+
 	/**
 	 * @var SMWDIWikiPage
 	 */
 	protected $mResult;
-	
+
 	/**
 	 * @var SMWStore
 	 */
 	protected $mStore;
-	
+
 	/**
-	 * @var array of SMWDataItem or false 
+	 * @var array of SMWDataItem or false
 	 */
 	protected $mContent;
 
@@ -38,7 +38,7 @@ class SMWResultArray {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param SMWDIWikiPage $resultPage
 	 * @param PrintRequest $printRequest
 	 * @param SMWStore $store
@@ -63,7 +63,7 @@ class SMWResultArray {
 	 * Returns the SMWDIWikiPage object to which this SMWResultArray refers.
 	 * If you only care for those objects, consider using SMWQueryResult::getResults()
 	 * directly.
-	 * 
+	 *
 	 * @return SMWDIWikiPage
 	 */
 	public function getResultSubject() {
@@ -73,7 +73,7 @@ class SMWResultArray {
 	/**
 	 * Returns an array of SMWDataItem objects that contain the results of
 	 * the given print request for the given result object.
-	 * 
+	 *
 	 * @return array of SMWDataItem or false
 	 */
 	public function getContent() {
@@ -84,7 +84,7 @@ class SMWResultArray {
 	/**
 	 * Return a PrintRequest object describing what is contained in this
 	 * result set.
-	 * 
+	 *
 	 * @return PrintRequest
 	 */
 	public function getPrintRequest() {
@@ -101,9 +101,9 @@ class SMWResultArray {
 
 	/**
 	 * Return the next SMWDataItem object or false if no further object exists.
-	 * 
+	 *
 	 * @since 1.6
-	 * 
+	 *
 	 * @return SMWDataItem or false
 	 */
 	public function getNextDataItem() {
@@ -117,9 +117,9 @@ class SMWResultArray {
 	 * Set the internal pointer of the array of SMWDataItem objects to its first
 	 * element. Return the first SMWDataItem object or false if the array is
 	 * empty.
-	 * 
+	 *
 	 * @since 1.7.1
-	 * 
+	 *
 	 * @return SMWDataItem or false
 	 */
 	public function reset() {
@@ -130,9 +130,9 @@ class SMWResultArray {
 	/**
 	 * Return an SMWDataValue object for the next SMWDataItem object or
 	 * false if no further object exists.
-	 * 
+	 *
 	 * @since 1.6
-	 * 
+	 *
 	 * @return SMWDataValue or false
 	 */
 	public function getNextDataValue() {
@@ -195,7 +195,7 @@ class SMWResultArray {
 	 */
 	protected function loadContent() {
 		if ( $this->mContent !== false ) return;
-		
+
 
 		switch ( $this->mPrintRequest->getMode() ) {
 			case PrintRequest::PRINT_THIS: // NOTE: The limit is ignored here.
@@ -206,7 +206,7 @@ class SMWResultArray {
 				self::$catCache = $this->mStore->getPropertyValues( $this->mResult,
 					new SMWDIProperty( '_INST' ), $this->getRequestOptions( false ) );
 				self::$catCacheObj = $this->mResult->getHash();
-				
+
 				$limit = $this->mPrintRequest->getParameter( 'limit' );
 				$this->mContent = ( $limit === false ) ? ( self::$catCache ) :
 					array_slice( self::$catCache, 0, $limit );
@@ -223,7 +223,7 @@ class SMWResultArray {
 				// Print one component of a multi-valued string.
 				// Known limitation: the printrequest still is of type _rec, so if printers check
 				// for this then they will not recognize that it returns some more concrete type.
-				if ( ( $this->mPrintRequest->getTypeID() == '_rec' ) && 
+				if ( ( $this->mPrintRequest->getTypeID() == '_rec' ) &&
 				     ( $this->mPrintRequest->getParameter( 'index' ) !== false ) ) {
 					$pos = $this->mPrintRequest->getParameter( 'index' ) - 1;
 					$newcontent = array();
@@ -231,7 +231,7 @@ class SMWResultArray {
 					foreach ( $this->mContent as $diContainer ) {
 						/* SMWRecordValue */ $recordValue = \SMW\DataValueFactory::getInstance()->newDataItemValue( $diContainer, $propertyValue->getDataItem() );
 						$dataItems = $recordValue->getDataItems();
-						
+
 						if ( array_key_exists( $pos, $dataItems ) &&
 							( !is_null( $dataItems[$pos] ) ) ) {
 							$newcontent[] = $dataItems[$pos];
@@ -260,9 +260,9 @@ class SMWResultArray {
 			break;
 			default: $this->mContent = array(); // Unknown print request.
 		}
-		
+
 		reset( $this->mContent );
-		
+
 	}
 
 	/**
@@ -270,21 +270,21 @@ class SMWResultArray {
 	 * return NULL if no such object is required. The parameter defines
 	 * if the limit should be taken into account, which is not always desired
 	 * (especially if results are to be cached for future use).
-	 * 
+	 *
 	 * @param boolean $useLimit
-	 * 
+	 *
 	 * @return SMWRequestOptions or null
 	 */
 	protected function getRequestOptions( $useLimit = true ) {
 		$limit = $useLimit ? $this->mPrintRequest->getParameter( 'limit' ) : false;
 		$order = trim( $this->mPrintRequest->getParameter( 'order' ) );
-		
+
 		// Important: use "!=" for order, since trim() above does never return "false", use "!==" for limit since "0" is meaningful here.
-		if ( ( $limit !== false ) || ( $order != false ) ) { 
+		if ( ( $limit !== false ) || ( $order != false ) ) {
 			$options = new SMWRequestOptions();
-			
+
 			if ( $limit !== false ) $options->limit = trim( $limit );
-			
+
 			if ( ( $order == 'descending' ) || ( $order == 'reverse' ) || ( $order == 'desc' ) ) {
 				$options->sort = true;
 				$options->ascending = false;
@@ -295,8 +295,8 @@ class SMWResultArray {
 		} else {
 			$options = null;
 		}
-		
+
 		return $options;
 	}
-	
+
 }

@@ -68,7 +68,7 @@ class SMWDIUri extends SMWDataItem {
 		$schemesWithDoubleslesh = array(
 			'http', 'https', 'ftp'
 		);
-		
+
 		$uri = $this->m_scheme . ':'
 			. ( in_array( $this->m_scheme, $schemesWithDoubleslesh ) ? '//' : '' )
 			. $this->m_hierpart
@@ -125,9 +125,9 @@ class SMWDIUri extends SMWDataItem {
 			$hierpart = $parts[0];
 			$fragment = ( count( $parts ) == 2 ) ? $parts[1] : '';
 		}
-		
+
 		$hierpart = ltrim( $hierpart, '/' );
-		
+
 		return new SMWDIUri( $scheme, $hierpart, $query, $fragment );
 	}
 
