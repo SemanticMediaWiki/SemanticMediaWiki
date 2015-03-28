@@ -207,7 +207,7 @@ class JsonTestCaseFileHandler {
 	public function findRdfTestCases() {
 
 		try{
-			$queries = $this->getFileContentsFor( 'rdf' );
+			$queries = $this->getFileContentsFor( 'rdf-testcases' );
 		} catch( \Exception $e ) {
 			$queries = array();
 		}

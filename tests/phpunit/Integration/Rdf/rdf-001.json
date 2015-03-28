@@ -36,14 +36,16 @@
 			"contents": "Not permitted to use [[Has subobject::foo]] {{DEFAULTSORT:AA-BB-CC}}"
 		}
 	],
-	"rdf": [
+	"rdf-testcases": [
 		{
 			"about": "#0 Single subject output",
-			"exportcontroller-print-pages" : [ "Rdf-1" ],
-			"parameters" : {
-				"backlinks" : false,
-				"recursion" : "1",
-				"revisiondate" : false
+			"exportcontroller" : {
+				"print-pages": [ "Rdf-1" ],
+				"parameters" : {
+					"backlinks" : false,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
 			},
 			"output": {
 				"to-contain": [
@@ -57,11 +59,13 @@
 		},
 		{
 			"about": "#1",
-			"exportcontroller-print-pages" : [ "Rdf-1", "Rdf-2" ],
-			"parameters" : {
-				"backlinks" : false,
-				"recursion" : "1",
-				"revisiondate" : false
+			"exportcontroller" : {
+				"print-pages": [ "Rdf-1", "Rdf-2" ],
+				"parameters" : {
+					"backlinks" : false,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
 			},
 			"output": {
 				"to-contain": [
@@ -74,11 +78,13 @@
 		},
 		{
 			"about": "#2 Output for anonymous and named subobject",
-			"exportcontroller-print-pages" : [ "Rdf-3" ],
-			"parameters" : {
-				"backlinks" : false,
-				"recursion" : "1",
-				"revisiondate" : false
+			"exportcontroller" : {
+				"print-pages": [ "Rdf-3" ],
+				"parameters" : {
+					"backlinks" : false,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
 			},
 			"output": {
 				"to-contain": [
@@ -95,11 +101,13 @@
 		},
 		{
 			"about": "#3 Date output",
-			"exportcontroller-print-pages" : [ "Rdf-4" ],
-			"parameters" : {
-				"backlinks" : false,
-				"recursion" : "1",
-				"revisiondate" : false
+			"exportcontroller" : {
+				"print-pages": [ "Rdf-4" ],
+				"parameters" : {
+					"backlinks" : false,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
 			},
 			"output": {
 				"to-contain": [
@@ -116,11 +124,13 @@
 		},
 		{
 			"about": "#4 Property output, see #795",
-			"exportcontroller-print-pages" : [ "Property:Has text property for rdf", "Property:Has page property for rdf", "Property:Has date property for rdf" ],
-			"parameters" : {
-				"backlinks" : false,
-				"recursion" : "1",
-				"revisiondate" : false
+			"exportcontroller" : {
+				"print-pages": [ "Property:Has text property for rdf", "Property:Has page property for rdf", "Property:Has date property for rdf" ],
+				"parameters" : {
+					"backlinks" : false,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
 			},
 			"output": {
 				"to-contain": [
@@ -139,11 +149,13 @@
 		},
 		{
 			"about": "#5 Check for proper output despite the use of [[Has subobject:: ... ]] as annotation",
-			"exportcontroller-print-pages" : [ "Rdf-5" ],
-			"parameters" : {
-				"backlinks" : false,
-				"recursion" : "1",
-				"revisiondate" : false
+			"exportcontroller" : {
+				"print-pages": [  "Rdf-5" ],
+				"parameters" : {
+					"backlinks" : false,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
 			},
 			"output": {
 				"to-contain": [
@@ -163,7 +175,7 @@
 		}
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "0.2",
 		"is-incomplete": false,
 		"debug": false
 	}

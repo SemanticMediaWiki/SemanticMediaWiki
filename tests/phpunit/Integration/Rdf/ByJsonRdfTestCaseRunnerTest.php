@@ -31,12 +31,10 @@ class ByJsonRdfTestCaseRunnerTest extends ByJsonTestCaseProvider {
 	}
 
 	/**
-	 * Version to match supported Json format
-	 *
 	 * @see ByJsonTestCaseProvider::getJsonTestCaseVersion
 	 */
 	protected function getJsonTestCaseVersion() {
-		return '0.1';
+		return '0.2';
 	}
 
 	/**
@@ -87,15 +85,21 @@ class ByJsonRdfTestCaseRunnerTest extends ByJsonTestCaseProvider {
 	private function assertRdfOutputForCase( $case, $debug ) {
 
 		$exportController = new ExportController( new RDFXMLSerializer() );
-		$exportController->enableBacklinks( $case['parameters']['backlinks'] );
+		$exportController->enableBacklinks( $case['exportcontroller']['parameters']['backlinks'] );
 
 		ob_start();
 
-		$exportController->printPages(
-			$case['exportcontroller-print-pages'],
-			(int)$case['parameters']['recursion'],
-			$case['parameters']['revisiondate']
-		);
+		if ( isset( $case['exportcontroller']['print-pages'] ) ) {
+			$exportController->printPages(
+				$case['exportcontroller']['print-pages'],
+				(int)$case['exportcontroller']['parameters']['recursion'],
+				$case['exportcontroller']['parameters']['revisiondate']
+			);
+		}
+
+		if ( isset( $case['exportcontroller']['wiki-info'] ) ) {
+			$exportController->printWikiInfo();
+		}
 
 		$output = ob_get_clean();
 
