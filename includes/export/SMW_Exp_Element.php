@@ -51,7 +51,7 @@ abstract class SMWExpElement {
  * objects of class SMWExpElement or any of its subclasses represent a blank
  * node if their name is empty or of the form "_id" where "id" is any
  * identifier string. IDs are local to the current context, such as a list of
- * triples or an SMWExpData container. 
+ * triples or an SMWExpData container.
  *
  * @ingroup SMW
  */
@@ -80,7 +80,7 @@ class SMWExpResource extends SMWExpElement {
 
 		$this->uri = $uri;
 	}
-	
+
 	/**
 	 * Return true if this resource represents a blank node.
 	 *
@@ -213,7 +213,7 @@ class SMWExpNsResource extends SMWExpResource {
 /**
  * A single datatype literal for export. Defined by a literal value and a
  * datatype URI.
- * 
+ *
  * @todo Currently no support for language tags.
  *
  * @ingroup SMW
@@ -225,7 +225,7 @@ class SMWExpLiteral extends SMWExpElement {
 	 * @var string
 	 */
 	protected $datatype;
-	
+
 	/**
 	 * Lexical form of the literal.
 	 * @var string

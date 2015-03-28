@@ -10,9 +10,9 @@ use SMW\Query\PrintRequest;
  * different places where similar lists are used.
  *
  * Some code adapted from CategoryPage.php
- * 
+ *
  * @ingroup SMW
- * 
+ *
  * @author Nikolas Iwan
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
@@ -96,7 +96,7 @@ class SMWPageLister {
 
 	/**
 	 * Format an HTML link with the given text and parameters.
-	 * 
+	 *
 	 * @return string
 	 */
 	protected function makeSelfLink( Title $title, $linkText, array $parameters ) {
@@ -199,17 +199,17 @@ class SMWPageLister {
 	/**
 	 * Format a list of SMWDIWikiPage objects chunked by letter in a three-column
 	 * list, ordered vertically.
-	 * 
+	 *
 	 * @param $start integer
 	 * @param $end integer
 	 * @param $diWikiPages array of SMWDIWikiPage
 	 * @param $diProperty SMWDIProperty that the wikipages are values of, or null
-	 * 
+	 *
 	 * @return string
 	 */
 	public static function getColumnList( $start, $end, array $diWikiPages, $diProperty ) {
 		global $wgContLang;
-		
+
 		// Divide list into three equal chunks.
 		$chunk = (int) ( ( $end - $start + 1 ) / 3 );
 
@@ -268,12 +268,12 @@ class SMWPageLister {
 
 	/**
 	 * Format a list of diWikiPages chunked by letter in a bullet list.
-	 * 
+	 *
 	 * @param $start integer
 	 * @param $end integer
 	 * @param $diWikiPages array of SMWDataItem
 	 * @param $diProperty SMWDIProperty that the wikipages are values of, or null
-	 * 
+	 *
 	 * @return string
 	 */
 	public static function getShortList( $start, $end, array $diWikiPages, $diProperty ) {
