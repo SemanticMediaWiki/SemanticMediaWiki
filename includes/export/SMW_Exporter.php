@@ -655,16 +655,19 @@ class SMWExporter {
 	 * @return SMWExpElement
 	 */
 	static public function getDataItemExpElement( SMWDataItem $dataItem ) {
+
+		$lang = '';
+
 		switch ( $dataItem->getDIType() ) {
 			case SMWDataItem::TYPE_NUMBER:
-				$lit = new SMWExpLiteral( strval( $dataItem->getNumber() ), 'http://www.w3.org/2001/XMLSchema#double', $dataItem );
+				$lit = new SMWExpLiteral( strval( $dataItem->getNumber() ), 'http://www.w3.org/2001/XMLSchema#double', $lang, $dataItem );
 				return $lit;
 			case SMWDataItem::TYPE_BLOB:
-				$lit = new SMWExpLiteral( smwfHTMLtoUTF8( $dataItem->getString() ), 'http://www.w3.org/2001/XMLSchema#string', $dataItem );
+				$lit = new SMWExpLiteral( smwfHTMLtoUTF8( $dataItem->getString() ), 'http://www.w3.org/2001/XMLSchema#string', $lang, $dataItem );
 				return $lit;
 			case SMWDataItem::TYPE_BOOLEAN:
 				$xsdvalue =  $dataItem->getBoolean() ? 'true' : 'false';
-				$lit = new SMWExpLiteral( $xsdvalue, 'http://www.w3.org/2001/XMLSchema#boolean', $dataItem );
+				$lit = new SMWExpLiteral( $xsdvalue, 'http://www.w3.org/2001/XMLSchema#boolean', $lang, $dataItem );
 				return $lit;
 			case SMWDataItem::TYPE_URI:
 				$res = new SMWExpResource( $dataItem->getURI(), $dataItem );
@@ -693,7 +696,7 @@ class SMWExporter {
 					}
 				}
 				$xsdvalue .= 'Z';
-				$lit = new SMWExpLiteral( $xsdvalue, $xsdtype, $gregorianTime );
+				$lit = new SMWExpLiteral( $xsdvalue, $xsdtype, $lang, $gregorianTime );
 				return $lit;
 			case SMWDataItem::TYPE_GEO:
 				/// TODO
@@ -739,7 +742,7 @@ class SMWExporter {
 	 */
 	static public function getDataItemHelperExpElement( SMWDataItem $dataItem ) {
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_TIME ) {
-			$lit = new SMWExpLiteral( (string)$dataItem->getSortKey(), 'http://www.w3.org/2001/XMLSchema#double', $dataItem );
+			$lit = new SMWExpLiteral( (string)$dataItem->getSortKey(), 'http://www.w3.org/2001/XMLSchema#double', '', $dataItem );
 			return $lit;
 		} else {
 			return null;

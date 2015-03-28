@@ -1,4 +1,7 @@
 <?php
+
+use SMW\Exporter\Element;
+
 /**
  * SMWExpData is a class representing semantic data that is ready for easy
  * serialisation in OWL or RDF.
@@ -6,6 +9,8 @@
  * @author Markus Krötzsch
  * @ingroup SMW
  */
+
+
 
 /**
  * SMWExpData is a data container for export-ready semantic content. It is
@@ -18,18 +23,26 @@
  *
  * @ingroup SMW
  */
-class SMWExpData extends SMWExpElement {
+class SMWExpData implements Element {
+
+	/**
+	 * @var DataItem|null
+	 */
+	private $dataItem;
+
 	/**
 	 * The subject of the data that we store.
 	 * @var SMWExpResource
 	 */
 	protected $m_subject;
+
 	/**
 	 * Array mapping property URIs to arrays their values, given as
 	 * SMWExpElement objects.
 	 * @var array of array of SMWElement
 	 */
 	protected $m_children = array();
+
 	/**
 	 * Array mapping property URIs to arrays their SMWExpResource
 	 * @var array of SMWExpResource
@@ -41,8 +54,17 @@ class SMWExpData extends SMWExpElement {
 	 * subject about which this SMWExpData is.
 	 */
 	public function __construct( SMWExpResource $subject ) {
-		parent::__construct( $subject->getDataItem() );
+		$this->dataItem = $subject->getDataItem();
 		$this->m_subject = $subject;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return DataItem|null
+	 */
+	public function getDataItem() {
+		return $this->dataItem;
 	}
 
 	/**
@@ -52,18 +74,29 @@ class SMWExpData extends SMWExpElement {
 	 * @return SMWExpData
 	 */
 	public static function makeCollection( array $elements ) {
+
 		if ( count( $elements ) == 0 ) {
 			return new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'nil' ) );
-		} else {
-			$rdftype  = SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' );
-			$rdffirst = SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'first' );
-			$rdfrest  = SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'rest' );
-			$result = new SMWExpData( new SMWExpResource( '' ) ); // bnode
-			$result->addPropertyObjectValue( $rdftype, new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'List' ) ) );
-			$result->addPropertyObjectValue( $rdffirst, array_shift( $elements ) );
-			$result->addPropertyObjectValue( $rdfrest, SMWExpData::makeCollection( $elements ) );
-			return $result;
 		}
+
+		$result = new SMWExpData( new SMWExpResource( '' ) ); // bnode
+
+		$result->addPropertyObjectValue(
+			SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' ),
+			new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'List' ) )
+		);
+
+		$result->addPropertyObjectValue(
+			SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'first' ),
+			array_shift( $elements )
+		);
+
+		$result->addPropertyObjectValue(
+			SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'rest' ),
+			SMWExpData::makeCollection( $elements )
+		);
+
+		return $result;
 	}
 
 	/**
@@ -81,9 +114,9 @@ class SMWExpData extends SMWExpElement {
 	 * already (which is typically used to generate this object).
 	 *
 	 * @param SMWExpNsResource $property
-	 * @param SMWExpData $child
+	 * @param Element $child
 	 */
-	public function addPropertyObjectValue( SMWExpNsResource $property, SMWExpElement $child ) {
+	public function addPropertyObjectValue( SMWExpNsResource $property, Element $child ) {
 		if ( !array_key_exists( $property->getUri(), $this->m_edges ) ) {
 			$this->m_children[$property->getUri()] = array();
 			$this->m_edges[$property->getUri()] = $property;
@@ -215,7 +248,7 @@ class SMWExpData extends SMWExpElement {
 	 *
 	 * @return array of array of SMWExpElement
 	 */
-	public function getTripleList( SMWExpElement $subject = null ) {
+	public function getTripleList( Element $subject = null ) {
 		global $smwgBnodeCount;
 		if ( !isset( $smwgBnodeCount ) ) {
 			$smwgBnodeCount = 0;
