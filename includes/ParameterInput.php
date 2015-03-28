@@ -101,8 +101,8 @@ class ParameterInput {
 		if ( is_array( $this->param->getAllowedValues() ) ) {
 			$valueList = $this->param->getAllowedValues();
 		}
-
-        if ( $valueList === array() ) {
+		
+		if ( $valueList === array() ) {
 			switch ( $this->param->getType() ) {
 				case 'char':
 				case 'float':
@@ -117,12 +117,12 @@ class ParameterInput {
 				default:
 					$html = $this->getStrInput();
 					break;
-			}
-        }
+					}
+					}
         else {
 			$html = $this->param->isList() ? $this->getCheckboxListInput( $valueList ) : $this->getSelectInput( $valueList );
-        }
-
+			}
+        
         return $html;
 	}
 

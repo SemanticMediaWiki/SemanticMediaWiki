@@ -246,8 +246,8 @@ class SMWSQLStore3QueryEngine {
 
 		// Possibly stop if new errors happened:
 		if ( !$smwgIgnoreQueryErrors &&
-                     $query->querymode != SMWQuery::MODE_DEBUG &&
-                     count( $this->errors ) > 0 ) {
+				$query->querymode != SMWQuery::MODE_DEBUG &&
+				count( $this->errors ) > 0 ) {
 			$query->addErrors( $this->errors );
 			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->store, false );
 		}

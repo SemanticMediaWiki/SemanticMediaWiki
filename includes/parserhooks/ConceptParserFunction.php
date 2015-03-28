@@ -123,8 +123,7 @@ class ConceptParserFunction {
 	}
 
 	private function buildQuery( $conceptQueryString ) {
-
- 		$rawParams = array( $conceptQueryString );
+		$rawParams = array( $conceptQueryString );
 
 		list( $query, ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
 			$rawParams,
