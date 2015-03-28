@@ -18,14 +18,16 @@
 			"contents": "[[Category:Rdf-2-subcategory]]"
 		}
 	],
-	"rdf": [
+	"rdf-testcases": [
 		{
 			"about": "#0 cat-subcat export without backlinks",
-			"exportcontroller-print-pages" : [ "Category:Rdf-1-category", "Category:Rdf-2-subcategory" ],
-			"parameters" : {
-				"backlinks" : false,
-				"recursion" : "1",
-				"revisiondate" : false
+			"exportcontroller" : {
+				"print-pages": [ "Category:Rdf-1-category", "Category:Rdf-2-subcategory" ],
+				"parameters" : {
+					"backlinks" : false,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
 			},
 			"output": {
 				"to-contain": [
@@ -39,11 +41,13 @@
 		},
 		{
 			"about": "#1 cat-subcat export with backlinks (catches subsub-cat)",
-			"exportcontroller-print-pages" : [ "Category:Rdf-1-category", "Category:Rdf-2-subcategory" ],
-			"parameters" : {
-				"backlinks" : true,
-				"recursion" : "1",
-				"revisiondate" : false
+			"exportcontroller" : {
+				"print-pages": [ "Category:Rdf-1-category", "Category:Rdf-2-subcategory" ],
+				"parameters" : {
+					"backlinks" : true,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
 			},
 			"output": {
 				"to-contain": [
@@ -71,7 +75,7 @@
 		"smwgNamespace": "http://example.org/id/"
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "0.2",
 		"is-incomplete": false,
 		"debug": false
 	}
