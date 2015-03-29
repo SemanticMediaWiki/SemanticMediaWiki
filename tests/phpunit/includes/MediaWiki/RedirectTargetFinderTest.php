@@ -50,7 +50,7 @@ class RedirectTargetFinderTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider redirectTextProvider
 	 */
-	public function testInjectedRedirectTargetOverridesTextFinder( $text, $expectedHasTarget, $expectedGetTarget  ) {
+	public function testInjectedRedirectTargetOverridesTextFinder( $text ) {
 
 		$directRedirectTarget = Title::newFromText( 'Foo' );
 
