@@ -72,7 +72,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider queryDataProvider
 	 */
-	public function testParse( array $params, array $expected ) {
+	public function testParse( array $params ) {
 
 		$parserData = $this->applicationFactory->newParserData(
 			Title::newFromText( __METHOD__ ),
