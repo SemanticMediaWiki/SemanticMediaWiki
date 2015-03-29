@@ -10,7 +10,6 @@ use DomainException;
  * this class allows to execute script related classes that are equivalent to:
  * `php rebuildData.php --< myOptions >`
  *
- *
  * @group SMW
  * @group SMWExtension
  *
@@ -29,7 +28,8 @@ class MaintenanceRunner {
 	/**
 	 * @since 1.9.2
 	 *
-	 * @return string $maintenanceClass
+	 * @param string $maintenanceClass
+	 * @param array $options
 	 */
 	public function __construct( $maintenanceClass, $options = array() ) {
 		$this->maintenanceClass = $maintenanceClass;
