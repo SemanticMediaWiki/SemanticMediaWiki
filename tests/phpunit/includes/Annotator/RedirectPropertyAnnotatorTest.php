@@ -31,10 +31,6 @@ class RedirectPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 	}
 
-	protected function tearDown() {
-		parent::tearDown();
-	}
-
 	public function testCanConstruct() {
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
