@@ -13,7 +13,7 @@ use RuntimeException;
 
 /**
  * @license GNU GPL v2+
- * @since   2.0
+ * @since 2.0
  *
  * @author mwjames
  */
@@ -24,8 +24,8 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	/**
 	 * @since 2.0
 	 *
-	 * @param  mixed $expected
-	 * @param  QueryResult $queryResult
+	 * @param mixed $expected
+	 * @param QueryResult $queryResult
 	 *
 	 * @throws RuntimeException
 	 */
@@ -45,8 +45,9 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	/**
 	 * @since 2.0
 	 *
-	 * @param  DataValue $expectedDataValue
-	 * @param  QueryResult $queryResult
+	 * @param $expected
+	 * @param QueryResult $queryResult
+	 * @param string $message
 	 */
 	public function assertThatDataValueIsSet( $expected, QueryResult $queryResult, $message = '' ) {
 
@@ -88,8 +89,9 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	/**
 	 * @since 2.0
 	 *
-	 * @param  DataItem $expectedDataItem
-	 * @param  QueryResult $queryResult
+	 * @param mixed $expected
+	 * @param QueryResult $queryResult
+	 * @param string $message
 	 */
 	public function assertThatDataItemIsSet( $expected, QueryResult $queryResult, $message = '' ) {
 
@@ -127,8 +129,9 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	/**
 	 * @since 2.0
 	 *
-	 * @param  mixed $expected
-	 * @param  QueryResult $queryResult
+	 * @param mixed $expectedSubjects
+	 * @param QueryResult $queryResult
+	 * @param string $message
 	 */
 	public function assertThatQueryResultHasSubjects( $expectedSubjects, QueryResult $queryResult, $message = '' ) {
 
@@ -175,7 +178,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	/**
 	 * @since 2.0
 	 *
-	 * @param  Closure $validationMethod
+	 * @param Closure $validationMethod
 	 *
 	 * @return QueryResultValidator
 	 */
