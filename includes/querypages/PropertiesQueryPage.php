@@ -27,7 +27,7 @@ class PropertiesQueryPage extends QueryPage {
 	protected $settings;
 
 	/**
-	 * @var SimpleListLookup
+	 * @var ListLookup
 	 */
 	private $listLookup;
 
@@ -236,7 +236,7 @@ class PropertiesQueryPage extends QueryPage {
 	 */
 	function getResults( $requestOptions ) {
 		$this->listLookup = $this->store->getPropertiesSpecial( $requestOptions );
-		return $this->listLookup->fetchResultList();
+		return $this->listLookup->fetchList();
 	}
 
 }

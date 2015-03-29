@@ -62,4 +62,22 @@ class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructPropertyStatisticsRebuilder() {
+
+		$instance = new MaintenanceFactory();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->assertInstanceOf(
+			'\SMW\Maintenance\PropertyStatisticsRebuilder',
+			$instance->newPropertyStatisticsRebuilder( $store, $propertyStatisticsStore )
+		);
+	}
+
 }

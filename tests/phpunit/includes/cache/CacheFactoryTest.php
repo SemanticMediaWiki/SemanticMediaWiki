@@ -57,12 +57,24 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new CacheFactory( 'hash' );
 
 		$cacheOptions = $instance->newCacheOptions( array(
-			'useCache' => true
+			'useCache' => true,
+			'ttl' => 0
 		) );
 
 		$this->assertTrue(
 			$cacheOptions->useCache
 		);
+	}
+
+	public function testIncompleteCacheOptionsThrowsException() {
+
+		$instance = new CacheFactory( 'hash' );
+
+		$this->setExpectedException( 'RuntimeException' );
+
+		$cacheOptions = $instance->newCacheOptions( array(
+			'useCache' => true
+		) );
 	}
 
 	public function testCanConstructMediaWikiCompositeCache() {

@@ -2,10 +2,9 @@
 
 namespace SMW\Maintenance;
 
-use SMW\SQLStore\SimplePropertyStatisticsRebuilder;
 use SMW\SQLStore\PropertyStatisticsTable;
 use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\StoreFactory;
+use SMW\ApplicationFactory;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
@@ -14,14 +13,9 @@ require_once $basePath . '/maintenance/Maintenance.php';
 /**
  * Maintenance script for rebuilding the property usage statistics.
  *
- * TODO: make this work with all stores (Right now it only works with SQLStore3)
- *
+ * @license GNU GPL v2+
  * @since 1.9
  *
- * @file
- * @ingroup SMW
- *
- * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class RebuildPropertyStatistics extends \Maintenance {
@@ -36,12 +30,16 @@ class RebuildPropertyStatistics extends \Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
+
 		if ( !defined( 'SMW_VERSION' ) ) {
 			$this->output( "You need to have SMW enabled in order to use this maintenance script!\n\n" );
 			exit;
 		}
 
-		$store = StoreFactory::getStore();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();
+
+		$store = $applicationFactory->getStore();
 
 		$statsTable = new PropertyStatisticsTable(
 			$store->getConnection( 'mw.db' ),
@@ -53,8 +51,13 @@ class RebuildPropertyStatistics extends \Maintenance {
 		$reporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
 		$reporter->registerReporterCallback( array( $this, 'reportMessage' ) );
 
-		$statisticsRebuilder = new SimplePropertyStatisticsRebuilder( $store, $reporter );
-		$statisticsRebuilder->rebuild( $statsTable );
+		$statisticsRebuilder = $maintenanceFactory->newPropertyStatisticsRebuilder(
+			$store,
+			$statsTable
+		);
+
+		$statisticsRebuilder->setMessageReporter( $reporter );
+		$statisticsRebuilder->rebuild();
 	}
 
 	/**

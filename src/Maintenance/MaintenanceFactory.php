@@ -4,6 +4,7 @@ namespace SMW\Maintenance;
 
 use SMW\Store;
 use SMW\ApplicationFactory;
+use SMW\Store\PropertyStatisticsStore;
 
 /**
  * @license GNU GPL v2+
@@ -30,10 +31,7 @@ class MaintenanceFactory {
 	 * @return DataRebuilder
 	 */
 	public function newDataRebuilder( Store $store ) {
-
-		$titleCreator = ApplicationFactory::getInstance()->newTitleCreator();
-
-		return new DataRebuilder( $store, $titleCreator );
+		return new DataRebuilder( $store, ApplicationFactory::getInstance()->newTitleCreator() );
 	}
 
 	/**
@@ -44,10 +42,19 @@ class MaintenanceFactory {
 	 * @return ConceptCacheRebuilder
 	 */
 	public function newConceptCacheRebuilder( Store $store ) {
+		return new ConceptCacheRebuilder( $store, ApplicationFactory::getInstance()->getSettings() );
+	}
 
-		$settings = ApplicationFactory::getInstance()->getSettings();
-
-		return new ConceptCacheRebuilder( $store, $settings );
+	/**
+	 * @since 2.2
+	 *
+	 * @param Store $store
+	 * @param PropertyStatisticsStore $propertyStatisticsStore
+	 *
+	 * @return PropertyStatisticsRebuilder
+	 */
+	public function newPropertyStatisticsRebuilder( Store $store, PropertyStatisticsStore $propertyStatisticsStore ) {
+		return new PropertyStatisticsRebuilder( $store, $propertyStatisticsStore );
 	}
 
 }

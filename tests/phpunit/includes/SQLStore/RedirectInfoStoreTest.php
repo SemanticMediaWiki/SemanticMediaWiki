@@ -3,7 +3,7 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\SQLStore\RedirectInfoStore;
-use SMW\Cache\FixedInMemoryCache;
+use SMW\ApplicationFactory;
 
 /**
  * @covers \SMW\SQLStore\RedirectInfoStore
@@ -19,6 +19,14 @@ use SMW\Cache\FixedInMemoryCache;
  * @author mwjames
  */
 class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
+
+	private $cache;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->cache = ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache();
+	}
 
 	public function testCanConstruct() {
 
@@ -51,15 +59,17 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 					's_namespace' => 0 ) ) )
 			->will( $this->returnValue( $row ) );
 
-		$cache = new FixedInMemoryCache();
-		$instance = new RedirectInfoStore( $connection, $cache );
+		$instance = new RedirectInfoStore(
+			$connection,
+			$this->cache
+		);
 
 		$this->assertEquals(
 			42,
 			$instance->findRedirectIdFor( 'Foo', 0 )
 		);
 
-		$stats = $cache->getStats();
+		$stats = $this->cache->getStats();
 
 		$this->assertEquals(
 			0,
@@ -68,7 +78,7 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->findRedirectIdFor( 'Foo', 0 );
 
-		$stats = $cache->getStats();
+		$stats = $this->cache->getStats();
 
 		$this->assertEquals(
 			1,
@@ -100,7 +110,7 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testAddRedirectInfoRecord() {
+	public function testAddRedirectInfoRecordToFetchFromCache() {
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -115,7 +125,11 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 					's_namespace' => 0,
 					'o_id' => 42 ) ) );
 
-		$instance = new RedirectInfoStore( $connection );
+		$instance = new RedirectInfoStore(
+			$connection,
+			$this->cache
+		);
+
 		$instance->addRedirectForId( 42, 'Foo', 0 );
 
 		$this->assertEquals(

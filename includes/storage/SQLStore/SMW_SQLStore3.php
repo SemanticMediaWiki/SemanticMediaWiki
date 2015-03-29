@@ -12,7 +12,7 @@ use SMW\DataTypeRegistry;
 use SMW\ApplicationFactory;
 use SMW\Settings;
 use SMW\SQLStore\TableDefinition;
-use SMW\SQLStore\ListLookupCache;
+use SMW\SQLStore\ListLookup\ListLookupCache;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\SemanticData;
@@ -307,7 +307,7 @@ class SMWSQLStore3 extends SMWStore {
 	/**
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return SimpleListLookup
+	 * @return ListLookup
 	 */
 	public function getPropertiesSpecial( $requestOptions = null ) {
 
@@ -332,7 +332,7 @@ class SMWSQLStore3 extends SMWStore {
 	/**
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return SimpleListLookup
+	 * @return ListLookup
 	 */
 	public function getUnusedPropertiesSpecial( $requestOptions = null ) {
 
@@ -357,7 +357,7 @@ class SMWSQLStore3 extends SMWStore {
 	/**
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return SimpleListLookup
+	 * @return ListLookup
 	 */
 	public function getWantedPropertiesSpecial( $requestOptions = null ) {
 
@@ -399,7 +399,7 @@ class SMWSQLStore3 extends SMWStore {
 			$cacheOptions
 		);
 
-		return $listLookupCache->fetchResultList();
+		return $listLookupCache->fetchList();
 	}
 
 

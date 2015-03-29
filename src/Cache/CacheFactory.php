@@ -5,6 +5,7 @@ namespace SMW\Cache;
 use Onoi\Cache\CacheFactory as OnoiCacheFactory;
 use SMW\ApplicationFactory;
 use ObjectCache;
+use RuntimeException;
 
 /**
  * @license GNU GPL v2+
@@ -43,8 +44,14 @@ class CacheFactory {
 	 * @param array $cacheOptions
 	 *
 	 * @return stdClass
+	 * @throws RuntimeException
 	 */
 	public function newCacheOptions( array $cacheOptions ) {
+
+		if ( !isset( $cacheOptions['useCache'] ) || !isset( $cacheOptions['ttl'] ) ) {
+			throw new RuntimeException( "Cache options is missing a useCache/ttl parameter" );
+		}
+
 		return (object)$cacheOptions;
 	}
 
@@ -56,7 +63,16 @@ class CacheFactory {
 	 * @return Cache
 	 */
 	public function newFixedInMemoryCache( $cacheSize = 500 ) {
-		return OnoiCacheFactory::getInstance()->newFixedInMemoryCache( $cacheSize );
+		return OnoiCacheFactory::getInstance()->newFixedInMemoryLruCache( $cacheSize );
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return Cache
+	 */
+	public function newNullCache() {
+		return OnoiCacheFactory::getInstance()->newNullCache();
 	}
 
 	/**
@@ -66,9 +82,11 @@ class CacheFactory {
 	 *
 	 * @return Cache
 	 */
-	public function newMediaWikiCompositeCache( $mediaWikiCacheType ) {
+	public function newMediaWikiCompositeCache( $mediaWikiCacheType = null ) {
 
-		$mediaWikiCache = ObjectCache::getInstance( $mediaWikiCacheType );
+		$mediaWikiCache = ObjectCache::getInstance(
+			( $mediaWikiCacheType === null ? $this->getMainCacheType() : $mediaWikiCacheType )
+		);
 
 		$compositeCache = OnoiCacheFactory::getInstance()->newCompositeCache( array(
 			$this->newFixedInMemoryCache( 500 ),

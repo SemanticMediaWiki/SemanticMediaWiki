@@ -5,6 +5,7 @@ use SMW\SQLStore\DataItemByIdFinder;
 use SMW\SQLStore\RedirectInfoStore;
 use SMW\HashBuilder;
 use SMW\DIWikiPage;
+use SMW\ApplicationFactory;
 
 /**
  * @ingroup SMWStore
@@ -210,14 +211,15 @@ class SMWSql3SmwIds {
 		// Yes, this is a hack, but we only use it for convenient debugging:
 		self::$singleton_debug = $this;
 
-		// Either inject the class directly or an IdGeneratorFactory class instead
 		$this->dataItemByIdFinder = new DataItemByIdFinder(
 			$this->store->getConnection( 'mw.db' ),
-			self::tableName
+			self::tableName,
+			ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache()
 		);
 
 		$this->redirectInfoStore = new RedirectInfoStore(
-			$this->store->getConnection( 'mw.db' )
+			$this->store->getConnection( 'mw.db' ),
+			ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache()
 		);
 	}
 
