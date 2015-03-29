@@ -10,14 +10,12 @@ use SMW\DIWikiPage;
 use SMW\ConnectionManager;
 
 use Title;
-use SMWQueryProcessor;
 use SMWRequestOptions;
 
 /**
  * Tests for the SMWStore class.
  *
  * @since 1.8
- *
  *
  * @group SMW
  * @group SMWStore
@@ -33,8 +31,6 @@ class StoreTest extends MwDBaseUnitTestCase {
 	public function getSemanticDataProvider() {
 		return array(
 			array( Title::newMainPage()->getFullText() ),
-			#add more pages here, make sure they exist
-			#array( Test ),
 		);
 	}
 
@@ -57,8 +53,6 @@ class StoreTest extends MwDBaseUnitTestCase {
 		return array(
 			array( Title::newMainPage()->getFullText(), new DIProperty('_MDAT') ),
 			array( Title::newMainPage()->getFullText(), DIProperty::newFromUserLabel('Age') ),
-			#add more pages and properties here, make sure they exist
-			#array( Test, Property ),
 		);
 	}
 
@@ -85,8 +79,6 @@ class StoreTest extends MwDBaseUnitTestCase {
 	public function getPropertySubjectsDataProvider() {
 		return array(
 			array( new DIProperty('_MDAT'), null ),
-			#add more properties and values (SMWDataItem) here, make sure they exist
-			#array( Property, value ),
 		);
 	}
 
@@ -111,8 +103,6 @@ class StoreTest extends MwDBaseUnitTestCase {
 	public function getPropertiesDataProvider() {
 		return array(
 			array( Title::newMainPage()->getFullText() ),
-			#add more pages here, make sure they exist
-			#array( Test ),
 		);
 	}
 
@@ -134,38 +124,6 @@ class StoreTest extends MwDBaseUnitTestCase {
 				"Result should be instance of DIProperty."
 			);
 		}
-	}
-
-///// Query answering /////
-
-	public function getQueryResultDataProvider() {
-		return array(
-			array( '[[Modification date::+]]|?Modification date|sort=Modification date|order=desc' ),
-		);
-	}
-
-	/**
-	* @dataProvider getQueryResultDataProvider
-	*/
-	public function testGetQueryResult( $query ) {
-		// TODO: this prevents doing [[Category:Foo||bar||baz]], must document.
-		// TODO: for some reason PHPUnit is failing here. Line in SQLStore2Queries with comment "This test printed output:"
-//		$rawParams = explode( '|', $query );
-//
-//		list( $queryString, $parameters, $printouts ) = SMWQueryProcessor::getComponentsFromFunctionParams( $rawParams, false );
-//		SMWQueryProcessor::addThisPrintout( $printouts, $parameters );
-//		$parameters = SMWQueryProcessor::getProcessedParams( $parameters, $printouts );
-//		$smwQuery = SMWQueryProcessor::createQuery( $queryString, $parameters, SMWQueryProcessor::SPECIAL_PAGE, '', $printouts );
-//		$store = \SMW\StoreFactory::getStore();
-//		$queryResult = $store->getQueryResult( $smwQuery );
-//
-//		$this->assertInstanceOf(
-//			'\SMWQueryResult',
-//			$queryResult,
-//			"Result should be instance of SMWQueryResult."
-//		);
-
-		$this->assertTrue( true );
 	}
 
 ///// Special page functions /////
