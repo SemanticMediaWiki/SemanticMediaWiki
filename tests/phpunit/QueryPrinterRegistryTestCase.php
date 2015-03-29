@@ -5,21 +5,13 @@ namespace SMW\Test;
 /**
  * Base class for SMW\ResultPrinter tests.
  *
- * @since 1.8
+ * @group SMW
+ * @group SMWExtension
  *
- * @file
+ * @codeCoverageIgnore
  *
  * @license GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- */
-
-/**
- * Base class for SMW\ResultPrinter tests
- *
- *
- * @group SMW
- * @group SMWExtension
- * @codeCoverageIgnore
  */
 abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 
@@ -67,7 +59,6 @@ abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 	/**
 	 * @since 1.8
 	 * @return array
-	 *
 	 */
 	public function instanceProvider() {
 		$phpFails = array( $this, 'newInstance' );
