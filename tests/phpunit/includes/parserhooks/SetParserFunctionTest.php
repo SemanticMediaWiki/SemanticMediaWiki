@@ -64,7 +64,7 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider setParserProvider
 	 */
-	public function testParse( array $params, array $expected ) {
+	public function testParse( array $params ) {
 
 		$parserData = $this->applicationFactory->newParserData(
 			Title::newFromText( __METHOD__ ),
