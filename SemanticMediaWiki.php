@@ -106,6 +106,11 @@ class_alias( 'SMW\MediaWiki\Search\Search', 'SMWSearch' );
 class_alias( 'SMW\SQLStore\SimpleListLookup', 'SMW\SQLStore\PropertiesCollector' );
 class_alias( 'SMW\SQLStore\SimpleListLookup', 'SMW\SQLStore\UnusedPropertiesCollector' );
 
+class_alias( 'SMW\Exporter\Element\ExpElement', 'SMWExpElement' );
+class_alias( 'SMW\Exporter\Element\ExpResource', 'SMWExpResource' );
+class_alias( 'SMW\Exporter\Element\ExpNsResource', 'SMWExpNsResource' );
+class_alias( 'SMW\Exporter\Element\ExpLiteral', 'SMWExpLiteral' );
+
 // A flag used to indicate SMW defines a semantic extension type for extension credits.
 // @deprecated, removal in SMW 3.0
 define( 'SEMANTIC_EXTENSION_TYPE', true );

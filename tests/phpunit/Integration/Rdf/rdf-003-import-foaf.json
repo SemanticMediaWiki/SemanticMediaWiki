@@ -36,14 +36,16 @@
 			"contents": "[[Foaf:name::Jane Doe]], [[Foaf:homepage::http://example.org/JaneDoe]] [[Foaf:knows::John Doe]]"
 		}
 	],
-	"rdf": [
+	"rdf-testcases": [
 		{
 			"about": "#0",
-			"exportcontroller-print-pages" : [ "John Doe" ],
-			"parameters" : {
-				"backlinks" : false,
-				"recursion" : "1",
-				"revisiondate" : false
+			"exportcontroller" : {
+				"print-pages": [ "John Doe" ],
+				"parameters" : {
+					"backlinks" : false,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
 			},
 			"output": {
 				"to-contain": [
@@ -60,11 +62,13 @@
 		},
 		{
 			"about": "#1 export with backlinks",
-			"exportcontroller-print-pages" : [ "John Doe", "Jane Doe" ],
-			"parameters" : {
-				"backlinks" : true,
-				"recursion" : "2",
-				"revisiondate" : false
+			"exportcontroller" : {
+				"print-pages": [ "John Doe", "Jane Doe" ],
+				"parameters" : {
+					"backlinks" : true,
+					"recursion" : "2",
+					"revisiondate" : false
+				}
 			},
 			"output": {
 				"to-contain": [
@@ -85,11 +89,13 @@
 		},
 		{
 			"about": "#2",
-			"exportcontroller-print-pages" : [ "Property:Foaf:knows" ],
-			"parameters" : {
-				"backlinks" : false,
-				"recursion" : "1",
-				"revisiondate" : false
+			"exportcontroller" : {
+				"print-pages": [ "Property:Foaf:knows" ],
+				"parameters" : {
+					"backlinks" : false,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
 			},
 			"output": {
 				"to-contain": [
@@ -103,11 +109,13 @@
 		},
 		{
 			"about": "#3 type definition fetched from import reference",
-			"exportcontroller-print-pages" : [ "Property:Foaf:homepage" ],
-			"parameters" : {
-				"backlinks" : false,
-				"recursion" : "1",
-				"revisiondate" : false
+			"exportcontroller" : {
+				"print-pages": [ "Property:Foaf:homepage" ],
+				"parameters" : {
+					"backlinks" : false,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
 			},
 			"output": {
 				"to-contain": [
@@ -120,11 +128,13 @@
 		},
 		{
 			"about": "#4 user declared type definition being replaced by import type reference",
-			"exportcontroller-print-pages" : [ "Property:Foaf:mbox" ],
-			"parameters" : {
-				"backlinks" : false,
-				"recursion" : "1",
-				"revisiondate" : false
+			"exportcontroller" : {
+				"print-pages": [ "Property:Foaf:mbox" ],
+				"parameters" : {
+					"backlinks" : false,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
 			},
 			"output": {
 				"to-contain": [
@@ -144,7 +154,7 @@
 		}
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "0.2",
 		"is-incomplete": false,
 		"debug": false
 	}

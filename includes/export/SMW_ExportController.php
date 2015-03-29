@@ -609,19 +609,38 @@ class SMWExportController {
 
 		// assemble export data:
 		$expData = new SMWExpData( new SMWExpResource( '&wiki;#wiki' ) );
-		$ed = new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'Wikisite' ) );
-		$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' ), $ed );
+
+		$expData->addPropertyObjectValue(
+			SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' ),
+			new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'Wikisite' ) )
+		);
+
 		// basic wiki information
-		$ed = new SMWExpData( new SMWExpLiteral( $wgSitename ) );
-		$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'rdfs', 'label' ), $ed );
-		$ed = new SMWExpData( new SMWExpLiteral( $wgSitename, null, 'http://www.w3.org/2001/XMLSchema#string' ) );
-		$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'siteName' ), $ed );
-		$ed = new SMWExpData( new SMWExpLiteral( SMWExporter::getInstance()->expandURI( '&wikiurl;' ), null, 'http://www.w3.org/2001/XMLSchema#string' ) );
-		$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'pagePrefix' ), $ed );
-		$ed = new SMWExpData( new SMWExpLiteral( SMW_VERSION, null, 'http://www.w3.org/2001/XMLSchema#string' ) );
-		$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'smwVersion' ), $ed );
-		$ed = new SMWExpData( new SMWExpLiteral( $wgLanguageCode, null, 'http://www.w3.org/2001/XMLSchema#string' ) );
-		$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'langCode' ), $ed );
+		$expData->addPropertyObjectValue(
+			SMWExporter::getInstance()->getSpecialNsResource( 'rdfs', 'label' ),
+			new SMWExpLiteral( $wgSitename )
+		);
+
+		$expData->addPropertyObjectValue(
+			SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'siteName' ),
+			new SMWExpLiteral( $wgSitename, 'http://www.w3.org/2001/XMLSchema#string' )
+		);
+
+		$expData->addPropertyObjectValue(
+			SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'pagePrefix' ),
+			new SMWExpLiteral( SMWExporter::getInstance()->expandURI( '&wikiurl;' ), 'http://www.w3.org/2001/XMLSchema#string' )
+		);
+
+		$expData->addPropertyObjectValue(
+			SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'smwVersion' ),
+			new SMWExpLiteral( SMW_VERSION, 'http://www.w3.org/2001/XMLSchema#string' )
+		);
+
+		$expData->addPropertyObjectValue(
+			SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'langCode' ),
+			new SMWExpLiteral( $wgLanguageCode, 'http://www.w3.org/2001/XMLSchema#string' )
+		);
+
 		$mainpage = Title::newMainPage();
 
 		if ( !is_null( $mainpage ) ) {
@@ -630,20 +649,42 @@ class SMWExportController {
 		}
 
 		// statistical information
-		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::pages(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
-		$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'pageCount' ), $ed );
-		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::articles(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
-		$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'contentPageCount' ), $ed );
-		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::images(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
-		$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'mediaCount' ), $ed );
-		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::edits(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
-		$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'editCount' ), $ed );
-		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::views(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
-		$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'viewCount' ), $ed );
-		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::users(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
-		$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'userCount' ), $ed );
-		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::numberingroup( 'sysop' ), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
-		$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'adminCount' ), $ed );
+		$expData->addPropertyObjectValue(
+			SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'pageCount' ),
+			new SMWExpLiteral( SiteStats::pages(), 'http://www.w3.org/2001/XMLSchema#int' )
+		);
+
+		$expData->addPropertyObjectValue(
+			SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'contentPageCount' ),
+			new SMWExpLiteral( SiteStats::articles(), 'http://www.w3.org/2001/XMLSchema#int' )
+		);
+
+		$expData->addPropertyObjectValue(
+			SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'mediaCount' ),
+			new SMWExpLiteral( SiteStats::images(), 'http://www.w3.org/2001/XMLSchema#int' )
+		);
+
+		$expData->addPropertyObjectValue(
+			SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'editCount' ),
+			new SMWExpLiteral( SiteStats::edits(), 'http://www.w3.org/2001/XMLSchema#int' )
+		);
+
+		// SiteStats::views was deprecated in MediaWiki 1.25
+		// "Stop calling this function, it will be removed some time in the future"
+		//$expData->addPropertyObjectValue(
+		//	SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'viewCount' ),
+		//	new SMWExpLiteral( SiteStats::views(), 'http://www.w3.org/2001/XMLSchema#int' )
+		//);
+
+		$expData->addPropertyObjectValue(
+			SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'userCount' ),
+			new SMWExpLiteral( SiteStats::users(), 'http://www.w3.org/2001/XMLSchema#int' )
+		);
+
+		$expData->addPropertyObjectValue(
+			SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'adminCount' ),
+			new SMWExpLiteral( SiteStats::numberingroup( 'sysop' ), 'http://www.w3.org/2001/XMLSchema#int' )
+		);
 
 		$this->serializer->startSerialization();
 		$this->serializer->serializeExpData( SMWExporter::getInstance()->getOntologyExpData( '' ) );

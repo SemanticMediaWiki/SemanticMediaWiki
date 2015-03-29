@@ -24,14 +24,16 @@
 			"contents": "#REDIRECT [[Rdf-1-redirect]]"
 		}
 	],
-	"rdf": [
+	"rdf-testcases": [
 		{
 			"about": "#0 without backlinks",
-			"exportcontroller-print-pages" : [ "Rdf-1-redirect", "Rdf-2-redirect" ],
-			"parameters" : {
-				"backlinks" : false,
-				"recursion" : "1",
-				"revisiondate" : false
+			"exportcontroller" : {
+				"print-pages": [  "Rdf-1-redirect", "Rdf-2-redirect" ],
+				"parameters" : {
+					"backlinks" : false,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
 			},
 			"output": {
 				"to-contain": [
@@ -45,11 +47,13 @@
 		},
 		{
 			"about": "#1 with enabled backlinks",
-			"exportcontroller-print-pages" : [ "Rdf-1-redirect", "Rdf-2-redirect" ],
-			"parameters" : {
-				"backlinks" : true,
-				"recursion" : "2",
-				"revisiondate" : false
+			"exportcontroller" : {
+				"print-pages": [  "Rdf-1-redirect", "Rdf-2-redirect" ],
+				"parameters" : {
+					"backlinks" : true,
+					"recursion" : "2",
+					"revisiondate" : false
+				}
 			},
 			"output": {
 				"to-contain": [
@@ -66,7 +70,7 @@
 		"smwgNamespace": "http://example.org/id/"
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "0.2",
 		"is-incomplete": false,
 		"debug": false
 	}
