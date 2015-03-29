@@ -5,9 +5,7 @@ namespace SMW\Tests;
 use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\DataValueFactory;
-use SMW\HashIdGenerator;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Subobject;
 
 use SMWDIBlob;
@@ -206,8 +204,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider getDataProvider
 	 */
-	public function testGetContainer( array $parameters, array $expected ) {
-
+	public function testGetContainer( array $parameters ) {
 		$instance = $this->acquireInstanceForId(
 			Title::newFromText( __METHOD__ ),
 			$parameters['identifier']
