@@ -84,12 +84,12 @@ class ByJsonParserTestCaseRunnerTest extends ByJsonTestCaseProvider {
 				break;
 			}
 
-			$this->assertSemanticDataForCase( $case, $jsonTestCaseFileHandler->getDebugMode() );
-			$this->assertParserOutputForCase( $case, $jsonTestCaseFileHandler->getDebugMode() );
+			$this->assertSemanticDataForCase( $case );
+			$this->assertParserOutputForCase( $case );
 		}
 	}
 
-	private function assertSemanticDataForCase( $case, $debug ) {
+	private function assertSemanticDataForCase( $case ) {
 
 		if ( !isset( $case['store'] ) || !isset( $case['store']['semantic-data'] ) ) {
 			return;
@@ -115,7 +115,7 @@ class ByJsonParserTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		);
 	}
 
-	private function assertParserOutputForCase( $case, $debug ) {
+	private function assertParserOutputForCase( $case ) {
 
 		if ( !isset( $case['output'] ) || !isset( $case['output']['to-contain'] ) ) {
 			return;
