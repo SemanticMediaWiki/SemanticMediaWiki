@@ -170,11 +170,8 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 	 * @since  1.9
 	 *
 	 * @param integer $index
-	 * @param integer $count
-	 * @param mixed $namespaces Array or false
-	 * @param boolean $usejobs
 	 */
-	public function refreshDataCallback( &$index, $count, $namespaces ) {
+	public function refreshDataCallback( &$index ) {
 		$this->controlRefreshDataIndex = $index;
 	}
 

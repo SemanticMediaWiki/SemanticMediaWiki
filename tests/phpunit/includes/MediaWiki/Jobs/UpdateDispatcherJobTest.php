@@ -296,7 +296,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @return DIWikiPage[]
 	 */
-	public function mockStoreAllPropertySubjectsCallback( DIProperty $property, $requestoptions = null ) {
+	public function mockStoreAllPropertySubjectsCallback( DIProperty $property ) {
 		return $this->expectedProperty == $property ? $this->expectedSubjects : array();
 	}
 
