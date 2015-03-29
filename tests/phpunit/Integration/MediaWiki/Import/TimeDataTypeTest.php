@@ -35,8 +35,12 @@ class TimeDataTypeTest extends MwDBaseUnitTestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		if ( is_a( $this->getStore(), '\SMW\SPARQLStore\SPARQLStore' ) && is_a( $this->getStore()->getConnection( 'sparql' ), '\SMW\SPARQLStore\VirtuosoHttpDatabaseConnector' ) ) {
-			$this->markTestIncomplete( "Virtuoso will fail for '1 January 300 BC' with 'Virtuoso 22007 Error DT006: Cannot convert -0302-12-28Z to datetime : Incorrect month field length'" );
+		if ( is_a( $this->getStore(), '\SMW\SPARQLStore\SPARQLStore' )
+			&& is_a( $this->getStore()->getConnection( 'sparql' ), '\SMW\SPARQLStore\VirtuosoHttpDatabaseConnector' ) ) {
+
+			$this->markTestIncomplete(
+				"Virtuoso will fail for '1 January 300 BC' with 'Virtuoso 22007 Error DT006: Cannot convert -0302-12-28Z to datetime : Incorrect month field length'"
+			);
 		}
 
 		$this->runnerFactory  = UtilityFactory::getInstance()->newRunnerFactory();
