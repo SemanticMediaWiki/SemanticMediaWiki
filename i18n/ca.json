@@ -167,7 +167,8 @@
 	"smw-statistics-property-total-legacy": "{{PLURAL:$1|Propietat|Propietats}} (total)",
 	"smw-statistics-property-page": "{{PLURAL:$1|Propietat|Propietats}} (registrat amb una pàgina)",
 	"smw-statistics-property-type": "{{PLURAL:$1|Propietat|Propietats}} (assignat a un tipus de dades)",
-	"smw-statistics-query-inline": "{{PLURAL:$1|Consulta|Consultes}}",
+	"smw-statistics-query-inline-legacy": "{{PLURAL:$1|Consulta|Consultes}}",
+	"smw-statistics-query-inline": "[[Property:Has query|{{PLURAL:$1|Consulta|Consulta}}]]",
 	"smw-statistics-query-size": "Mida de la consulta",
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Concepte|Conceptes}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Concepte|Conceptes}}]]",
@@ -285,7 +286,7 @@
 	"group-smwadministrator-member": "{{GENDER:$1|administrador (SMW)|administratora (SMW)}}",
 	"grouppage-smwadministrator": "{{ns:project}}:Administrators_SMW",
 	"action-smw-admin": "accedeix a les tasques d'administració de Semantic MediaWiki",
-	"smw-pa-property-predefined-default": "«$1» és una propietat predefinida (també coneguda com [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propietat especial]). És una propietat predeterminada que incorpora privilegis administratius addicionals, però que es pot fer servir com qualsevol altre [https://www.semantic-mediawiki.org/wiki/Property propietat definida per l'usuari].",
+	"smw-pa-property-predefined-default": "«$1» és una propietat predefinida.",
 	"smw-pa-property-predefined_ask": "«$1» és una propietat predefinida (també coneguda com a [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propietat especial]) que enllaça al [https://www.semantic-mediawiki.org/wiki/Subobject subobjecte] de metadades d'una consulta. És una propietat predeterminada que incorpora privilegis administratius addicionals, però que es pot fer servir com qualsevol altra [https://www.semantic-mediawiki.org/wiki/Property propietat definida per l'usuari].",
 	"smw-pa-property-predefined_asksi": "«$1» és una propietat predefinida (també coneguda com [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propietat especial]) que agrupa el nombre de condicions en una consulta. És una propietat predeterminada que incorpora privilegis administratius addicionals, però que es pot fer servir com qualsevol altra [https://www.semantic-mediawiki.org/wiki/Property propietat definida per l'usuari].",
 	"smw-sp-properties-docu": "Aquesta pàgina mostra les [https://www.semantic-mediawiki.org/wiki/Property propietats] que estan disponibles i, quan es mostren les propietats filtrades, només les definides per l'usuari que coincideixen amb la condició. Per a una visió diferenciada vegeu la pàgina especial [[Special:UnusedProperties|propietats no utilitzades]] o [[Special:WantedProperties|propietats per definir]].",
@@ -311,5 +312,9 @@
 	"log-name-smw": "Registre de Semantic MediaWiki",
 	"log-description-smw": "Activitats dels [https://www.semantic-mediawiki.org/wiki/Help:Logging tipus d'esdeveniments habilitats] que han estat informats per Semantic MediaWiki i els seus components.",
 	"smw-datavalue-import-unknownns": "L'espai de noms d'importació «$1» és desconegut. Assegureu-vos que els detalls d'importació owl són disponibles mitjançant [[MediaWiki:Smw import $1]]",
-	"smw-pa-property-predefined_impo": "«$1» és una propietat predefinida (també coneguda com [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propietat especial]) que descriu una relació amb un [https://semantic-mediawiki.org/wiki/Help:Import_vocabulary vocabulari importat]. És una propietat predeterminada que incorpora privilegis administratius addicionals, però que es pot fer servir com qualsevol altra [https://www.semantic-mediawiki.org/wiki/Property propietat definida per l'usuari]."
+	"smw-datavalue-import-missing-type": "No s'ha trobat definició de tipus per a «$1» a la [[MediaWiki:Smw import $2|importació de $2]].",
+	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|importació de $1]]",
+	"smw-pa-property-predefined_impo": "«$1» és una propietat predefinida (també coneguda com [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propietat especial]) que descriu una relació amb un [https://semantic-mediawiki.org/wiki/Help:Import_vocabulary vocabulari importat]. És una propietat predeterminada que incorpora privilegis administratius addicionals, però que es pot fer servir com qualsevol altra [https://www.semantic-mediawiki.org/wiki/Property propietat definida per l'usuari].",
+	"smw-datavalue-property-restricted-use": "La propietat «$1» s'ha marcat per a ús restringit.",
+	"smw-datavalue-restricted-use": "El valor de dades s'ha marcat per a ús restringit. $1"
 }

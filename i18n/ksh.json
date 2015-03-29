@@ -213,5 +213,7 @@
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|Empoot vum $1]]",
 	"smw-datavalue-import-invalidvalue": "Et Fommaht vun „$1“ es verkihrd. Ed möhd esu jät wi „Appachtemang“:„Kännong“ sin, för e Beijschpell: „foaf:nahme“.",
 	"smw-pa-property-predefined_errp": "„$1“ es en Eijeschaff, di vum Wikkiprojramm ald faßjelaad es un jebruch weed, öm kappode Wääte för Eijeschaffte faßzehallde, di wahscheinlesch vun Beschängkonge vun de Zoot udder Beschängkonge vun [[Property:Allows value|de zohjelohße Wääte]] kumme.",
-	"smw-pa-property-predefined_pval": "[https://semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"] es en Eijeschaff, di vum Wikkiprojramm ald faßjelaad es un di en Leß met zohjelohße Wääte, fäßlähje kann, öm de Zohdeijlong vun Wääte för en Einjeschaff ze beschrängke."
+	"smw-pa-property-predefined_pval": "[https://semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"] es en Eijeschaff, di vum Wikkiprojramm ald faßjelaad es un di en Leß met zohjelohße Wääte, fäßlähje kann, öm de Zohdeijlong vun Wääte för en Einjeschaff ze beschrängke.",
+	"smw-datavalue-property-restricted-use": "De Eijeschaff „$1“ wood för ene beschrängkte Jebruch makehrt.",
+	"smw-datavalue-restricted-use": "Dä Dahtewääd „$1“ wood för ene beschrängkte Jebruch makehrt."
 }
