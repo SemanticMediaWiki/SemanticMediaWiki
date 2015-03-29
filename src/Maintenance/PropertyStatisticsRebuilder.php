@@ -1,64 +1,66 @@
 <?php
 
-namespace SMW\SQLStore;
+namespace SMW\Maintenance;
 
 use SMW\Store\PropertyStatisticsStore;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
-
 use SMW\Store;
 
-use MWException;
-
 /**
- * Simple implementation of PropertyStatisticsRebuilder.
+ * Simple class for rebuilding property usage statistics.
  *
+ * @license GNU GPL v2+
  * @since 1.9
  *
- * @ingroup SMWStore
- *
- * @license GNU GPL v2 or later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author Nischay Nahata
  */
-class SimplePropertyStatisticsRebuilder implements \SMW\Store\PropertyStatisticsRebuilder {
-
-	/** @var Store */
-	protected $store = null;
+class PropertyStatisticsRebuilder {
 
 	/**
-	 * @since 1.9
-	 *
+	 * @var Store
+	 */
+	private $store = null;
+
+	/**
+	 * @var PropertyStatisticsStore
+	 */
+	private $propertyStatisticsStore;
+
+	/**
 	 * @var MessageReporter
 	 */
-	protected $reporter;
+	private $reporter;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param Store $store
-	 * @param MessageReporter|null $reporter
+	 * @param PropertyStatisticsStore $propertyStatisticsStore
 	 */
-	public function __construct( Store $store, MessageReporter $reporter = null ) {
+	public function __construct( Store $store, PropertyStatisticsStore $propertyStatisticsStore ) {
 		$this->store = $store;
-		$this->reporter = $reporter;
-
-		if ( $this->reporter === null ) {
-			$this->reporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
-		}
+		$this->propertyStatisticsStore = $propertyStatisticsStore;
+		$this->reporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 	}
 
 	/**
-	 * @see PropertyStatisticsRebuilder::rebuild
+	 * @since  2.2
 	 *
-	 * @since 1.9
-	 *
-	 * @param PropertyStatisticsStore $propStatsStore
+	 * @param MessageReporter $messageReporter
 	 */
-	public function rebuild( PropertyStatisticsStore $propStatsStore ) {
+	public function setMessageReporter( MessageReporter $messageReporter ) {
+		$this->reporter = $messageReporter;
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	public function rebuild() {
 		$this->reportMessage( "Updating property statistics. This may take a while.\n" );
 
-		$propStatsStore->deleteAll();
+		$this->propertyStatisticsStore->deleteAll();
 
 		$res = $this->store->getConnection( 'mw.db' )->select(
 			\SMWSql3SmwIds::tableName,
@@ -81,7 +83,7 @@ class SimplePropertyStatisticsRebuilder implements \SMW\Store\PropertyStatistics
 				$usageCount += $this->getPropertyTableRowCount( $propertyTable, $row->smw_id );
 			}
 
-			$propStatsStore->insertUsageCount( (int)$row->smw_id, $usageCount );
+			$this->propertyStatisticsStore->insertUsageCount( (int)$row->smw_id, $usageCount );
 		}
 
 		$propCount = $res->numRows();

@@ -27,7 +27,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	protected $settings;
 
 	/**
-	 * @var SimpleListLookup
+	 * @var ListLookup
 	 */
 	private $listLookup;
 
@@ -154,6 +154,6 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 */
 	function getResults( $requestOptions ) {
 		$this->listLookup = $this->store->getUnusedPropertiesSpecial( $requestOptions );
-		return $this->listLookup->fetchResultList();
+		return $this->listLookup->fetchList();
 	}
 }

@@ -59,12 +59,12 @@ class WantedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	 */
 	private function newInstance( $result = null ) {
 
-		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\SimpleListLookup' )
+		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\ListLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$listLookup->expects( $this->any() )
-			->method( 'fetchResultList' )
+			->method( 'fetchList' )
 			->will( $this->returnValue( $result ) );
 
 		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(

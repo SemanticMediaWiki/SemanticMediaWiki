@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\SQLStore\QueryEngine\Compiler;
+namespace SMW\SQLStore\QueryEngine\Interpreter;
 
 use SMW\DIWikiPage;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
-use SMW\SQLStore\QueryEngine\QueryCompiler;
+use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\SqlQueryPart;
 use SMWSql3SmwIds;
 
@@ -18,7 +18,7 @@ use SMWSql3SmwIds;
  * @author Jeroen De Dauw
  * @author mwjames
  */
-class ValueDescriptionCompiler implements QueryCompiler {
+class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
 	/**
 	 * @var QueryBuilder
@@ -26,9 +26,9 @@ class ValueDescriptionCompiler implements QueryCompiler {
 	private $queryBuilder;
 
 	/**
-	 * @var CompilerHelper
+	 * @var ComparatorMapper
 	 */
-	private $compilerHelper;
+	private $comparatorMapper;
 
 	/**
 	 * @since 2.2
@@ -37,7 +37,7 @@ class ValueDescriptionCompiler implements QueryCompiler {
 	 */
 	public function __construct( QueryBuilder $queryBuilder ) {
 		$this->queryBuilder = $queryBuilder;
-		$this->compilerHelper = new CompilerHelper();
+		$this->comparatorMapper = new ComparatorMapper();
 	}
 
 	/**
@@ -45,7 +45,7 @@ class ValueDescriptionCompiler implements QueryCompiler {
 	 *
 	 * @return boolean
 	 */
-	public function canCompileDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ) {
 		return $description instanceof ValueDescription;
 	}
 
@@ -58,7 +58,7 @@ class ValueDescriptionCompiler implements QueryCompiler {
 	 *
 	 * @return SqlQueryPart
 	 */
-	public function compileDescription( Description $description ) {
+	public function interpretDescription( Description $description ) {
 
 		$query = new SqlQueryPart();
 
@@ -68,18 +68,25 @@ class ValueDescriptionCompiler implements QueryCompiler {
 
 		if ( $description->getComparator() === SMW_CMP_EQ ) {
 			$query->type = SqlQueryPart::Q_VALUE;
+
 			$oid = $this->queryBuilder->getStore()->getObjectIds()->getSMWPageID(
 				$description->getDataItem()->getDBkey(),
 				$description->getDataItem()->getNamespace(),
 				$description->getDataItem()->getInterwiki(),
-				$description->getDataItem()->getSubobjectName() );
+				$description->getDataItem()->getSubobjectName()
+			);
+
 			$query->joinfield = array( $oid );
 		} else { // Join with SMW IDs table needed for other comparators (apply to title string).
 			$query->joinTable = SMWSql3SmwIds::tableName;
 			$query->joinfield = "{$query->alias}.smw_id";
 			$value = $description->getDataItem()->getSortKey();
 
-			$comparator = $this->compilerHelper->getSQLComparatorToValue( $description, $value );
+			$comparator = $this->comparatorMapper->mapComparator(
+				$description,
+				$value
+			);
+
 			$query->where = "{$query->alias}.smw_sortkey$comparator" . $this->queryBuilder->getStore()->getConnection( 'mw.db' )->addQuotes( $value );
 		}
 

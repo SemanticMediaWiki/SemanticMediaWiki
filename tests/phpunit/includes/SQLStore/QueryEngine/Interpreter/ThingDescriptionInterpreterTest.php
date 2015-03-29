@@ -1,16 +1,16 @@
 <?php
 
-namespace SMW\Tests\SQLStore\QueryEngine\Compiler;
+namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 
 use SMW\Tests\Utils\UtilityFactory;
 
-use SMW\SQLStore\QueryEngine\Compiler\ThingDescriptionCompiler;
+use SMW\SQLStore\QueryEngine\Interpreter\ThingDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 
 use SMW\Query\Language\ThingDescription;
 
 /**
- * @covers \SMW\SQLStore\QueryEngine\Compiler\ThingDescriptionCompiler
+ * @covers \SMW\SQLStore\QueryEngine\Interpreter\ThingDescriptionInterpreter
  *
  * @group SMW
  * @group SMWExtension
@@ -20,7 +20,7 @@ use SMW\Query\Language\ThingDescription;
  *
  * @author mwjames
  */
-class ThingDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
+class ThingDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	private $queryContainerValidator;
 
@@ -37,8 +37,8 @@ class ThingDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Compiler\ThingDescriptionCompiler',
-			new ThingDescriptionCompiler( $queryBuilder )
+			'\SMW\SQLStore\QueryEngine\Interpreter\ThingDescriptionInterpreter',
+			new ThingDescriptionInterpreter( $queryBuilder )
 		);
 	}
 
@@ -56,13 +56,15 @@ class ThingDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
 		$expected->type = 0;
 		$expected->queryNumber = 0;
 
-		$instance = new ThingDescriptionCompiler( new QueryBuilder( $store ) );
+		$instance = new ThingDescriptionInterpreter( new QueryBuilder( $store ) );
 
-		$this->assertTrue( $instance->canCompileDescription( $description ) );
+		$this->assertTrue(
+			$instance->canInterpretDescription( $description )
+		);
 
 		$this->queryContainerValidator->assertThatContainerHasProperties(
 			$expected,
-			$instance->compileDescription( $description )
+			$instance->interpretDescription( $description )
 		);
 	}
 

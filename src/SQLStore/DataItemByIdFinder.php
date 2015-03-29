@@ -2,10 +2,9 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Cache\FixedInMemoryCache;
 use SMW\MediaWiki\Database;
-use SMW\Cache\Cache;
-
+use SMW\ApplicationFactory;
+use Onoi\Cache\Cache;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\HashBuilder;
@@ -46,7 +45,7 @@ class DataItemByIdFinder {
 		$this->cache = $cache;
 
 		if ( $this->cache === null ) {
-			$this->cache = new FixedInMemoryCache( 500 );
+			$this->cache = ApplicationFactory::getInstance()->newCacheFactory()->newNullCache();
 		}
 	}
 
@@ -73,7 +72,7 @@ class DataItemByIdFinder {
 	 * @since 2.1
 	 */
 	public function clear() {
-		$this->cache = new FixedInMemoryCache( 500 );
+		$this->cache = ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache( 500 );
 	}
 
 	/**

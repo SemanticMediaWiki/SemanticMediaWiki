@@ -100,7 +100,7 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testTryTofetchResultListForMissingOptionsThrowsException() {
+	public function testTryTofetchListForMissingOptionsThrowsException() {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -113,13 +113,13 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 		$instance = new PropertyUsageListLookup( $store, $propertyStatisticsStore, null );
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->fetchResultList();
+		$instance->fetchList();
 	}
 
 	/**
 	 * @dataProvider usageCountProvider
 	 */
-	public function testFetchResultListForValidProperty( $usageCounts, $expectedCount ) {
+	public function testfetchListForValidProperty( $usageCounts, $expectedCount ) {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
@@ -163,7 +163,7 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new PropertyUsageListLookup( $store, $propertyStatisticsStore, $requestOptions );
-		$result = $instance->fetchResultList();
+		$result = $instance->fetchList();
 
 		$this->assertInternalType(
 			'array',
@@ -181,7 +181,7 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testFetchResultListForInvalidProperty() {
+	public function testfetchListForInvalidProperty() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
@@ -227,7 +227,7 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 		$requestOptions->limit = 1001;
 
 		$instance = new PropertyUsageListLookup( $store, $propertyStatisticsStore, $requestOptions );
-		$result = $instance->fetchResultList();
+		$result = $instance->fetchList();
 
 		$this->assertInternalType(
 			'array',

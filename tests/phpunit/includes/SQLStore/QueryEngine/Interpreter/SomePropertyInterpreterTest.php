@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\SQLStore\QueryEngine\Compiler;
+namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 
 use SMW\Tests\Utils\UtilityFactory;
 
-use SMW\SQLStore\QueryEngine\Compiler\SomePropertyCompiler;
+use SMW\SQLStore\QueryEngine\Interpreter\SomePropertyInterpreter;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 
 use SMW\Query\Language\ValueDescription;
@@ -16,17 +16,16 @@ use SMW\DIProperty;
 use SMWDIBlob as DIBlob;
 
 /**
- * @covers \SMW\SQLStore\QueryEngine\Compiler\SomePropertyCompiler
+ * @covers \SMW\SQLStore\QueryEngine\Interpreter\SomePropertyInterpreter
  *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 2.2
  *
  * @author mwjames
  */
-class SomePropertyCompilerTest extends \PHPUnit_Framework_TestCase {
+class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	private $queryContainerValidator;
 
@@ -43,12 +42,12 @@ class SomePropertyCompilerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Compiler\SomePropertyCompiler',
-			new SomePropertyCompiler( $queryBuilder )
+			'\SMW\SQLStore\QueryEngine\Interpreter\SomePropertyInterpreter',
+			new SomePropertyInterpreter( $queryBuilder )
 		);
 	}
 
-	public function testCompileDescriptionForUnknownTablePropertyId() {
+	public function testinterpretDescriptionForUnknownTablePropertyId() {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -66,17 +65,19 @@ class SomePropertyCompilerTest extends \PHPUnit_Framework_TestCase {
 		$expected = new \stdClass;
 		$expected->type = 0;
 
-		$instance = new SomePropertyCompiler( new QueryBuilder( $store ) );
+		$instance = new SomePropertyInterpreter( new QueryBuilder( $store ) );
 
-		$this->assertTrue( $instance->canCompileDescription( $description ) );
+		$this->assertTrue(
+			$instance->canInterpretDescription( $description )
+		);
 
 		$this->queryContainerValidator->assertThatContainerHasProperties(
 			$expected,
-			$instance->compileDescription( $description )
+			$instance->interpretDescription( $description )
 		);
 	}
 
-	public function testCompileDescriptionForNonIdSubject() {
+	public function testinterpretDescriptionForNonIdSubject() {
 
 		$proptable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( array( 'usesIdSubject' ) )
@@ -106,17 +107,19 @@ class SomePropertyCompilerTest extends \PHPUnit_Framework_TestCase {
 		$expected = new \stdClass;
 		$expected->type = 0;
 
-		$instance = new SomePropertyCompiler( new QueryBuilder( $store ) );
+		$instance = new SomePropertyInterpreter( new QueryBuilder( $store ) );
 
-		$this->assertTrue( $instance->canCompileDescription( $description ) );
+		$this->assertTrue(
+			$instance->canInterpretDescription( $description )
+		);
 
 		$this->queryContainerValidator->assertThatContainerHasProperties(
 			$expected,
-			$instance->compileDescription( $description )
+			$instance->interpretDescription( $description )
 		);
 	}
 
-	public function testCompileDescriptionForNonWikiPageTypeInverseProperty() {
+	public function testinterpretDescriptionForNonWikiPageTypeInverseProperty() {
 
 		$property = $this->getMockBuilder( '\SMW\DIProperty' )
 			->disableOriginalConstructor()
@@ -158,20 +161,22 @@ class SomePropertyCompilerTest extends \PHPUnit_Framework_TestCase {
 		$expected = new \stdClass;
 		$expected->type = 0;
 
-		$instance = new SomePropertyCompiler( new QueryBuilder( $store ) );
+		$instance = new SomePropertyInterpreter( new QueryBuilder( $store ) );
 
-		$this->assertTrue( $instance->canCompileDescription( $description ) );
+		$this->assertTrue(
+			$instance->canInterpretDescription( $description )
+		);
 
 		$this->queryContainerValidator->assertThatContainerHasProperties(
 			$expected,
-			$instance->compileDescription( $description )
+			$instance->interpretDescription( $description )
 		);
 	}
 
 	/**
 	 * @dataProvider descriptionProvider
 	 */
-	public function testCompileDescription( $description, $isFixedPropertyTable, $indexField, $sortKeys, $expected ) {
+	public function testinterpretDescription( $description, $isFixedPropertyTable, $indexField, $sortKeys, $expected ) {
 
 		$dataItemHandler = $this->getMockBuilder( '\SMWDataItemHandler' )
 			->disableOriginalConstructor()
@@ -256,13 +261,15 @@ class SomePropertyCompilerTest extends \PHPUnit_Framework_TestCase {
 		$queryBuilder = new QueryBuilder( $store );
 		$queryBuilder->setSortKeys( $sortKeys );
 
-		$instance = new SomePropertyCompiler( $queryBuilder );
+		$instance = new SomePropertyInterpreter( $queryBuilder );
 
-		$this->assertTrue( $instance->canCompileDescription( $description ) );
+		$this->assertTrue(
+			$instance->canInterpretDescription( $description )
+		);
 
 		$this->queryContainerValidator->assertThatContainerHasProperties(
 			$expected,
-			$instance->compileDescription( $description )
+			$instance->interpretDescription( $description )
 		);
 	}
 

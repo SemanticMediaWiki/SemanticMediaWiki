@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\SQLStore\QueryEngine\Compiler;
+namespace SMW\SQLStore\QueryEngine\Interpreter;
 
 use RuntimeException;
 use SMW\DataTypeRegistry;
@@ -11,7 +11,7 @@ use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
-use SMW\SQLStore\QueryEngine\QueryCompiler;
+use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\SqlQueryPart;
 use SMWDataItem as DataItem;
 use SMWDataItemHandler as DataItemHandler;
@@ -26,7 +26,7 @@ use SMWSQLStore3Table;
  * @author Jeroen De Dauw
  * @author mwjames
  */
-class SomePropertyCompiler implements QueryCompiler {
+class SomePropertyInterpreter implements DescriptionInterpreter {
 
 	/**
 	 * @var QueryBuilder
@@ -34,9 +34,9 @@ class SomePropertyCompiler implements QueryCompiler {
 	private $queryBuilder;
 
 	/**
-	 * @var CompilerHelper
+	 * @var ComparatorMapper
 	 */
-	private $compilerHelper;
+	private $comparatorMapper;
 
 	/**
 	 * @since 2.2
@@ -45,7 +45,7 @@ class SomePropertyCompiler implements QueryCompiler {
 	 */
 	public function __construct( QueryBuilder $queryBuilder ) {
 		$this->queryBuilder = $queryBuilder;
-		$this->compilerHelper = new CompilerHelper();
+		$this->comparatorMapper = new ComparatorMapper();
 	}
 
 	/**
@@ -53,7 +53,7 @@ class SomePropertyCompiler implements QueryCompiler {
 	 *
 	 * @return boolean
 	 */
-	public function canCompileDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ) {
 		return $description instanceof SomeProperty;
 	}
 
@@ -69,11 +69,14 @@ class SomePropertyCompiler implements QueryCompiler {
 	 *
 	 * @return SqlQueryPart
 	 */
-	public function compileDescription( Description $description ) {
+	public function interpretDescription( Description $description ) {
 
 		$query = new SqlQueryPart();
 
-		$this->compileSomePropertyDescription( $query, $description );
+		$this->interpretPropertyConditionForDescription(
+			$query,
+			$description
+		);
 
 		return $query;
 	}
@@ -92,7 +95,7 @@ class SomePropertyCompiler implements QueryCompiler {
 	 *
 	 * @since 1.8
 	 */
-	private function compileSomePropertyDescription( SqlQueryPart $query, SomeProperty $description ) {
+	private function interpretPropertyConditionForDescription( SqlQueryPart $query, SomeProperty $description ) {
 
 		$db = $this->queryBuilder->getStore()->getConnection( 'mw.db' );
 
@@ -162,7 +165,9 @@ class SomePropertyCompiler implements QueryCompiler {
 			$query->joinfield = "{$query->alias}.{$s_id}";
 
 			// process page description like main query
-			$sub = $this->queryBuilder->buildSqlQueryPartFor( $description->getDescription() );
+			$sub = $this->queryBuilder->buildSqlQueryPartFor(
+				$description->getDescription()
+			);
 
 			if ( $sub >= 0 ) {
 				$query->components[$sub] = "{$query->alias}.{$o_id}";
@@ -178,7 +183,7 @@ class SomePropertyCompiler implements QueryCompiler {
 			}
 		} else { // non-page value description
 			$query->joinfield = "{$query->alias}.s_id";
-			$this->compilePropertyValueDescription( $query, $description->getDescription(), $proptable, $diHandler, 'AND' );
+			$this->interpretInnerValueDescription( $query, $description->getDescription(), $proptable, $diHandler, 'AND' );
 			if ( array_key_exists( $sortkey, $this->queryBuilder->getSortKeys() ) ) {
 				$query->sortfields[$sortkey] = "{$query->alias}.{$indexField}";
 			}
@@ -196,17 +201,17 @@ class SomePropertyCompiler implements QueryCompiler {
 	 * @param DataItemHandler $diHandler for that table
 	 * @param string $operator SQL operator "AND" or "OR"
 	 */
-	private function compilePropertyValueDescription(
+	private function interpretInnerValueDescription(
 			$query, Description $description, SMWSQLStore3Table $proptable, DataItemHandler $diHandler, $operator ) {
 
 		if ( $description instanceof ValueDescription ) {
-			$this->compileValueDescription( $query, $description, $diHandler, $operator );
+			$this->mapValueDescription( $query, $description, $diHandler, $operator );
 		} elseif ( ( $description instanceof Conjunction ) ||
 				( $description instanceof Disjunction ) ) {
 			$op = ( $description instanceof Conjunction ) ? 'AND' : 'OR';
 
 			foreach ( $description->getDescriptions() as $subdesc ) {
-				$this->compilePropertyValueDescription( $query, $subdesc, $proptable, $diHandler, $op );
+				$this->interpretInnerValueDescription( $query, $subdesc, $proptable, $diHandler, $op );
 			}
 		} elseif ( $description instanceof ThingDescription ) {
 			// nothing to do
@@ -225,7 +230,7 @@ class SomePropertyCompiler implements QueryCompiler {
 	 * @param DataItemHandler $diHandler for that table
 	 * @param string $operator SQL operator "AND" or "OR"
 	 */
-	private function compileValueDescription(
+	private function mapValueDescription(
 			$query, ValueDescription $description, DataItemHandler $diHandler, $operator ) {
 
 		$where = '';
@@ -257,7 +262,12 @@ class SomePropertyCompiler implements QueryCompiler {
 		}
 
 		if ( $where == '' ) {
-			$comparator = $this->compilerHelper->getSQLComparatorToValue( $description, $value );
+
+			$comparator = $this->comparatorMapper->mapComparator(
+				$description,
+				$value
+			);
+
 			$where = "$query->alias.{$indexField}{$comparator}" . $db->addQuotes( $value );
 		}
 

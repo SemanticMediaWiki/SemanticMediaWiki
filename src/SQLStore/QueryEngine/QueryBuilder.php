@@ -5,13 +5,14 @@ namespace SMW\SQLStore\QueryEngine;
 use OutOfBoundsException;
 use InvalidArgumentException;
 use SMW\Query\Language\Description;
-use SMW\SQLStore\QueryEngine\Compiler\ClassDescriptionCompiler;
-use SMW\SQLStore\QueryEngine\Compiler\ConceptDescriptionCompiler;
-use SMW\SQLStore\QueryEngine\Compiler\DisjunctionConjunctionCompiler;
-use SMW\SQLStore\QueryEngine\Compiler\NamespaceCompiler;
-use SMW\SQLStore\QueryEngine\Compiler\SomePropertyCompiler;
-use SMW\SQLStore\QueryEngine\Compiler\ThingDescriptionCompiler;
-use SMW\SQLStore\QueryEngine\Compiler\ValueDescriptionCompiler;
+use SMW\SQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter;
+use SMW\SQLStore\QueryEngine\Interpreter\ConceptDescriptionInterpreter;
+use SMW\SQLStore\QueryEngine\Interpreter\DisjunctionConjunctionInterpreter;
+use SMW\SQLStore\QueryEngine\Interpreter\NamespaceDescriptionInterpreter;
+use SMW\SQLStore\QueryEngine\Interpreter\SomePropertyInterpreter;
+use SMW\SQLStore\QueryEngine\Interpreter\ThingDescriptionInterpreter;
+use SMW\SQLStore\QueryEngine\Interpreter\ValueDescriptionInterpreter;
+use SMW\SQLStore\QueryEngine\Interpreter\DispatchingInterpreter;
 use SMW\Store;
 
 /**
@@ -28,11 +29,6 @@ class QueryBuilder {
 	 * @var Store
 	 */
 	private $store;
-
-	/**
-	 * @var QueryCompiler[]
-	 */
-	private $queryCompilers = array();
 
 	/**
 	 * Array of generated QueryContainer query descriptions (index => object).
@@ -61,6 +57,11 @@ class QueryBuilder {
 	private $lastQueryPartId = -1;
 
 	/**
+	 * @var DispatchingInterpreter
+	 */
+	private $dispatchingInterpreter = null;
+
+	/**
 	 * @since 2.2
 	 *
 	 * @param Store $store
@@ -70,12 +71,15 @@ class QueryBuilder {
 
 		SqlQueryPart::$qnum = 0;
 
-		$this->registerQueryCompiler( new SomePropertyCompiler( $this ) );
-		$this->registerQueryCompiler( new DisjunctionConjunctionCompiler( $this ) );
-		$this->registerQueryCompiler( new NamespaceCompiler( $this ) );
-		$this->registerQueryCompiler( new ClassDescriptionCompiler( $this ) );
-		$this->registerQueryCompiler( new ValueDescriptionCompiler( $this ) );
-		$this->registerQueryCompiler( new ConceptDescriptionCompiler( $this ) );
+		$this->dispatchingInterpreter = new DispatchingInterpreter();
+		$this->dispatchingInterpreter->addDefaultInterpreter( new ThingDescriptionInterpreter( $this ) );
+
+		$this->dispatchingInterpreter->addInterpreter( new SomePropertyInterpreter( $this ) );
+		$this->dispatchingInterpreter->addInterpreter( new DisjunctionConjunctionInterpreter( $this ) );
+		$this->dispatchingInterpreter->addInterpreter( new NamespaceDescriptionInterpreter( $this ) );
+		$this->dispatchingInterpreter->addInterpreter( new ClassDescriptionInterpreter( $this ) );
+		$this->dispatchingInterpreter->addInterpreter( new ValueDescriptionInterpreter( $this ) );
+		$this->dispatchingInterpreter->addInterpreter( new ConceptDescriptionInterpreter( $this ) );
 	}
 
 	/**
@@ -189,34 +193,14 @@ class QueryBuilder {
 	 * @return integer
 	 */
 	public function buildSqlQueryPartFor( Description $description ) {
-		$query = $this->getQueryCompiler( $description )->compileDescription( $description );
+
+		$query = $this->dispatchingInterpreter->interpretDescription( $description );
 
 		$this->registerQueryPart( $query );
 
 		$this->lastQueryPartId = $query->type === SqlQueryPart::Q_NOQUERY ? -1 : $query->queryNumber;
 
 		return $this->lastQueryPartId;
-	}
-
-	/**
-	 * @since 2.2
-	 *
-	 * @param QueryCompiler $queryCompiler
-	 */
-	public function registerQueryCompiler( QueryCompiler $queryCompiler ) {
-		$this->queryCompilers[] = $queryCompiler;
-	}
-
-	private function getQueryCompiler( Description $description ) {
-		foreach ( $this->queryCompilers as $queryCompiler ) {
-			if ( $queryCompiler->canCompileDescription( $description ) ) {
-				return $queryCompiler;
-			}
-		}
-
-		// Instead of throwing an exception we return a ThingDescriptionCompiler
-		// for all unregistered/unknown descriptions
-		return new ThingDescriptionCompiler( $this );
 	}
 
 	/**

@@ -2,33 +2,34 @@
 
 namespace SMW\Tests\Maintenance;
 
-use SMW\SQLStore\SimplePropertyStatisticsRebuilder;
-
+use SMW\Maintenance\PropertyStatisticsRebuilder;
 use FakeResultWrapper;
 
 /**
- * @covers \SMW\SQLStore\SimplePropertyStatisticsRebuilder
+ * @covers \SMW\Maintenance\PropertyStatisticsRebuilder
  *
- * @group SMW
- * @group SMWExtension
- *
- * @group semantic-mediawiki-unit
- * @group mediawiki-databaseless
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9.2
  *
  * @author mwjames
  */
-class SimplePropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
+class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$store = $this->getMockForAbstractClass( '\SMW\Store' );
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\SimplePropertyStatisticsRebuilder',
-			new SimplePropertyStatisticsRebuilder( $store, null )
+			'\SMW\Maintenance\PropertyStatisticsRebuilder',
+			new PropertyStatisticsRebuilder( $store, $propertyStatisticsStore )
 		);
 	}
 
@@ -76,11 +77,6 @@ class SimplePropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase 
 				$this->getNonFixedPropertyTable( $arbitraryPropertyTableName ) )
 			) );
 
-		$instance = new SimplePropertyStatisticsRebuilder(
-			$store,
-			null
-		);
-
 		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -88,7 +84,12 @@ class SimplePropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase 
 		$propertyStatisticsStore->expects( $this->atLeastOnce() )
 			->method( 'insertUsageCount' );
 
-		$instance->rebuild( $propertyStatisticsStore );
+		$instance = new PropertyStatisticsRebuilder(
+			$store,
+			$propertyStatisticsStore
+		);
+
+		$instance->rebuild();
 	}
 
 	protected function getNonFixedPropertyTable( $propertyTableName ) {

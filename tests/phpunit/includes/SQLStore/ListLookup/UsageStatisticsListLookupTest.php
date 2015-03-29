@@ -60,7 +60,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testFetchResultListForInvalidTableThrowsException() {
+	public function testfetchListForInvalidTableThrowsException() {
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -89,13 +89,13 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 		$instance = new UsageStatisticsListLookup( $store, $propertyStatisticsStore );
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->fetchResultList();
+		$instance->fetchList();
 	}
 
 	/**
 	 * @dataProvider bySegmentDataProvider
 	 */
-	public function testFetchResultList( $segment, $type ) {
+	public function testfetchList( $segment, $type ) {
 
 		$row = new \stdClass;
 		$row->o_hash = 42;
@@ -147,7 +147,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 54 ) );
 
 		$instance = new UsageStatisticsListLookup( $store, $propertyStatisticsStore );
-		$result = $instance->fetchResultList();
+		$result = $instance->fetchList();
 
 		$this->assertInternalType(
 			'array',

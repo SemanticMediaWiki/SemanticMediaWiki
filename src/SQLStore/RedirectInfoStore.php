@@ -2,9 +2,8 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Cache\FixedInMemoryCache;
 use SMW\MediaWiki\Database;
-use SMW\Cache\Cache;
+use Onoi\Cache\Cache;
 use SMW\ApplicationFactory;
 
 use SMW\HashBuilder;

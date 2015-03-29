@@ -1,27 +1,26 @@
 <?php
 
-namespace SMW\Tests\SQLStore\QueryEngine\Compiler;
+namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 
-use SMW\SQLStore\QueryEngine\Compiler\CompilerHelper;
+use SMW\SQLStore\QueryEngine\Interpreter\ComparatorMapper;
 
 /**
- * @covers \SMW\SQLStore\QueryEngine\Compiler\CompilerHelper
+ * @covers \SMW\SQLStore\QueryEngine\Interpreter\ComparatorMapper
  *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 2.2
  *
  * @author mwjames
  */
-class CompilerHelperTest extends \PHPUnit_Framework_TestCase {
+class ComparatorMapperTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Compiler\CompilerHelper',
-			new CompilerHelper()
+			'\SMW\SQLStore\QueryEngine\Interpreter\ComparatorMapper',
+			new ComparatorMapper()
 		);
 	}
 
@@ -33,10 +32,10 @@ class CompilerHelperTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new CompilerHelper();
+		$instance = new ComparatorMapper();
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->getSQLComparatorToValue( $valueDescription, $value );
+		$instance->mapComparator( $valueDescription, $value );
 	}
 
 	/**
@@ -52,11 +51,11 @@ class CompilerHelperTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getComparator' )
 			->will( $this->returnValue( $comparator ) );
 
-		$instance = new CompilerHelper();
+		$instance = new ComparatorMapper();
 
 		$this->assertEquals(
 			$expected['comparator'],
-			$instance->getSQLComparatorToValue( $valueDescription, $value )
+			$instance->mapComparator( $valueDescription, $value )
 		);
 
 		$this->assertEquals(

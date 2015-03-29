@@ -1,28 +1,25 @@
 <?php
 
-namespace SMW\Tests\SQLStore\QueryEngine\Compiler;
+namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 
 use SMW\Tests\Utils\UtilityFactory;
 
-use SMW\SQLStore\QueryEngine\Compiler\ClassDescriptionCompiler;
+use SMW\SQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
-
 use SMW\Query\Language\ClassDescription;
-
 use SMW\DIWikiPage;
 
 /**
- * @covers \SMW\SQLStore\QueryEngine\Compiler\ClassDescriptionCompiler
+ * @covers \SMW\SQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter
  *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 2.2
  *
  * @author mwjames
  */
-class ClassDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
+class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	private $queryContainerValidator;
 
@@ -39,8 +36,8 @@ class ClassDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Compiler\ClassDescriptionCompiler',
-			new ClassDescriptionCompiler( $queryBuilder )
+			'\SMW\SQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter',
+			new ClassDescriptionInterpreter( $queryBuilder )
 		);
 	}
 
@@ -73,13 +70,17 @@ class ClassDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIds ) );
 
-		$instance = new ClassDescriptionCompiler( new QueryBuilder( $store ) );
+		$instance = new ClassDescriptionInterpreter(
+			new QueryBuilder( $store )
+		);
 
-		$this->assertTrue( $instance->canCompileDescription( $description ) );
+		$this->assertTrue(
+			$instance->canInterpretDescription( $description )
+		);
 
 		$this->queryContainerValidator->assertThatContainerHasProperties(
 			$expected,
-			$instance->compileDescription( $description )
+			$instance->interpretDescription( $description )
 		);
 	}
 

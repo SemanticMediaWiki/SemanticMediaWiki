@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\SQLStore\ListLookup;
 
-use SMW\SQLStore\ListLookupCache;
+use SMW\SQLStore\ListLookup\ListLookupCache;
 
 /**
- * @covers \SMW\SQLStore\ListLookupCache
+ * @covers \SMW\SQLStore\ListLookup\ListLookupCache
  *
  * @group semantic-mediawiki
  *
@@ -18,7 +18,7 @@ class ListLookupCacheTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$simpleListLookup = $this->getMockBuilder( '\SMW\SQLStore\SimpleListLookup' )
+		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\ListLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -27,23 +27,23 @@ class ListLookupCacheTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\ListLookupCache',
-			new ListLookupCache( $simpleListLookup, $cache, new \stdClass )
+			'\SMW\SQLStore\ListLookup\ListLookupCache',
+			new ListLookupCache( $listLookup, $cache, new \stdClass )
 		);
 	}
 
-	public function testFetchResultListFromCache() {
+	public function testfetchListFromCache() {
 
 		$expectedCachedItem = array(
 			'time' => 42,
 			'list' => serialize( array( 'Foo' ) )
 		);
 
-		$simpleListLookup = $this->getMockBuilder( '\SMW\SQLStore\SimpleListLookup' )
+		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\ListLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$simpleListLookup->expects( $this->atLeastOnce() )
+		$listLookup->expects( $this->atLeastOnce() )
 			->method( 'getLookupIdentifier' )
 			->will( $this->returnValue( 'Bar' ) );
 
@@ -63,12 +63,12 @@ class ListLookupCacheTest extends \PHPUnit_Framework_TestCase {
 		$cacheOptions = new \stdClass;
 		$cacheOptions->useCache = true;
 
-		$instance = new ListLookupCache( $simpleListLookup, $cache, $cacheOptions );
+		$instance = new ListLookupCache( $listLookup, $cache, $cacheOptions );
 		$instance->setCachePrefix( 'cacheprefix-foobar' );
 
 		$this->assertEquals(
 			array( 'Foo' ),
-			$instance->fetchResultList()
+			$instance->fetchList()
 		);
 
 		$this->assertEquals(
@@ -93,15 +93,15 @@ class ListLookupCacheTest extends \PHPUnit_Framework_TestCase {
 			'list' => serialize( array( 'Foo' ) )
 		);
 
-		$simpleListLookup = $this->getMockBuilder( '\SMW\SQLStore\SimpleListLookup' )
+		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\ListLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$simpleListLookup->expects( $this->once() )
-			->method( 'fetchResultList' )
+		$listLookup->expects( $this->once() )
+			->method( 'fetchList' )
 			->will( $this->returnValue( array( 'Foo' ) ) );
 
-		$simpleListLookup->expects( $this->once() )
+		$listLookup->expects( $this->once() )
 			->method( 'getTimestamp' )
 			->will( $this->returnValue( 42 ) );
 
@@ -120,11 +120,11 @@ class ListLookupCacheTest extends \PHPUnit_Framework_TestCase {
 		$cacheOptions->useCache = false;
 		$cacheOptions->ttl = 1001;
 
-		$instance = new ListLookupCache( $simpleListLookup, $cache, $cacheOptions );
+		$instance = new ListLookupCache( $listLookup, $cache, $cacheOptions );
 
 		$this->assertEquals(
 			array( 'Foo' ),
-			$instance->fetchResultList()
+			$instance->fetchList()
 		);
 
 		$this->assertEquals(

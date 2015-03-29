@@ -10,7 +10,7 @@ use SMW\Query\Language\Description;
  *
  * @author mwjames
  */
-interface QueryCompiler {
+interface DescriptionInterpreter {
 
 	/**
 	 * @since 2.2
@@ -19,7 +19,7 @@ interface QueryCompiler {
 	 *
 	 * @return boolean
 	 */
-	public function canCompileDescription( Description $description );
+	public function canInterpretDescription( Description $description );
 
 	/**
 	 * @since 2.2
@@ -28,6 +28,6 @@ interface QueryCompiler {
 	 *
 	 * @return SqlQueryPart
 	 */
-	public function compileDescription( Description $description );
+	public function interpretDescription( Description $description );
 
 }

@@ -211,10 +211,10 @@ class SMWSql3SmwIds {
 		// Yes, this is a hack, but we only use it for convenient debugging:
 		self::$singleton_debug = $this;
 
-		// Either inject the class directly or an IdGeneratorFactory class instead
 		$this->dataItemByIdFinder = new DataItemByIdFinder(
 			$this->store->getConnection( 'mw.db' ),
-			self::tableName
+			self::tableName,
+			ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache()
 		);
 
 		$this->redirectInfoStore = new RedirectInfoStore(

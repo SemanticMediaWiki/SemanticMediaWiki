@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\SQLStore\QueryEngine\Compiler;
+namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 
 use SMW\Tests\Utils\UtilityFactory;
 
-use SMW\SQLStore\QueryEngine\Compiler\ConceptDescriptionCompiler;
+use SMW\SQLStore\QueryEngine\Interpreter\ConceptDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 
 use SMW\Query\Language\ConceptDescription;
@@ -13,7 +13,7 @@ use SMW\DIWikiPage;
 use SMWDIBlob as DIBlob;
 
 /**
- * @covers \SMW\SQLStore\QueryEngine\Compiler\ConceptDescriptionCompiler
+ * @covers \SMW\SQLStore\QueryEngine\Interpreter\ConceptDescriptionInterpreter
  *
  * @group SMW
  * @group SMWExtension
@@ -23,7 +23,7 @@ use SMWDIBlob as DIBlob;
  *
  * @author mwjames
  */
-class ConceptDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
+class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	private $queryContainerValidator;
 
@@ -40,8 +40,8 @@ class ConceptDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Compiler\ConceptDescriptionCompiler',
-			new ConceptDescriptionCompiler( $queryBuilder )
+			'\SMW\SQLStore\QueryEngine\Interpreter\ConceptDescriptionInterpreter',
+			new ConceptDescriptionInterpreter( $queryBuilder )
 		);
 	}
 
@@ -82,13 +82,15 @@ class ConceptDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIds ) );
 
-		$instance = new ConceptDescriptionCompiler( new QueryBuilder( $store ) );
+		$instance = new ConceptDescriptionInterpreter( new QueryBuilder( $store ) );
 
-		$this->assertTrue( $instance->canCompileDescription( $description ) );
+		$this->assertTrue(
+			$instance->canInterpretDescription( $description )
+		);
 
 		$this->queryContainerValidator->assertThatContainerHasProperties(
 			$expected,
-			$instance->compileDescription( $description )
+			$instance->interpretDescription( $description )
 		);
 	}
 

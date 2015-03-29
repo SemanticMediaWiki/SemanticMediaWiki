@@ -4,7 +4,7 @@ namespace SMW\SQLStore\ListLookup;
 
 use SMW\Store;
 use SMW\Store\PropertyStatisticsStore;
-use SMW\SQLStore\SimpleListLookup;
+use SMW\SQLStore\ListLookup;
 use SMW\DIProperty;
 use RuntimeException;
 
@@ -14,7 +14,7 @@ use RuntimeException;
  *
  * @author mwjames
  */
-class UsageStatisticsListLookup implements SimpleListLookup {
+class UsageStatisticsListLookup implements ListLookup {
 
 	/**
 	 * @var Store
@@ -55,7 +55,7 @@ class UsageStatisticsListLookup implements SimpleListLookup {
 	 *
 	 * @return array
 	 */
-	public function fetchResultList() {
+	public function fetchList() {
 		return array(
 			'OWNPAGE' => $this->getPropertyPageCount(),
 			'QUERY' => $this->getQueryCount(),

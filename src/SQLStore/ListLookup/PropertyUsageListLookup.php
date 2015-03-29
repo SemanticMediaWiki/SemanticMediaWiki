@@ -4,7 +4,7 @@ namespace SMW\SQLStore\ListLookup;
 
 use SMW\Store;
 use SMW\Store\PropertyStatisticsStore;
-use SMW\SQLStore\SimpleListLookup;
+use SMW\SQLStore\ListLookup;
 use SMW\DIProperty;
 use SMWDIError as DIError;
 use SMWRequestOptions as RequestOptions;
@@ -17,7 +17,7 @@ use RuntimeException;
  *
  * @author mwjames
  */
-class PropertyUsageListLookup implements SimpleListLookup {
+class PropertyUsageListLookup implements ListLookup {
 
 	/**
 	 * @var Store
@@ -53,7 +53,7 @@ class PropertyUsageListLookup implements SimpleListLookup {
 	 * @return DIProperty[]
 	 * @throws RuntimeException
 	 */
-	public function fetchResultList() {
+	public function fetchList() {
 
 		if ( $this->requestOptions === null ) {
 			throw new RuntimeException( "Missing requestOptions" );

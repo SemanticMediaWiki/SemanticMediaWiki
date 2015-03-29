@@ -71,7 +71,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 		$instance = new UndeclaredPropertyListLookup( $store, $defaultPropertyType, null );
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->fetchResultList();
+		$instance->fetchList();
 	}
 
 	public function testInvalidTableIdThrowsException() {
@@ -89,7 +89,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 		$instance = new UndeclaredPropertyListLookup( $store, $defaultPropertyType, $requestOptions );
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->fetchResultList();
+		$instance->fetchList();
 	}
 
 	public function testLookupIdentifierChangedByRequestOptions() {
@@ -126,7 +126,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testFetchResultListForValidProperty() {
+	public function testfetchListForValidProperty() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
@@ -177,7 +177,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new UndeclaredPropertyListLookup( $store, $defaultPropertyType, $requestOptions );
-		$result = $instance->fetchResultList();
+		$result = $instance->fetchList();
 
 		$this->assertInternalType(
 			'array',
@@ -195,7 +195,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testFetchResultListForInvalidProperty() {
+	public function testfetchListForInvalidProperty() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
@@ -246,7 +246,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new UndeclaredPropertyListLookup( $store, $defaultPropertyType, $requestOptions );
-		$result = $instance->fetchResultList();
+		$result = $instance->fetchList();
 
 		$this->assertInternalType(
 			'array',
@@ -259,7 +259,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testFetchResultListForFixedPropertyTable() {
+	public function testfetchListForFixedPropertyTable() {
 
 		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
 			->disableOriginalConstructor()
@@ -296,7 +296,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new UndeclaredPropertyListLookup( $store, $defaultPropertyType, $requestOptions );
-		$result = $instance->fetchResultList();
+		$result = $instance->fetchList();
 
 		$this->assertInternalType(
 			'array',

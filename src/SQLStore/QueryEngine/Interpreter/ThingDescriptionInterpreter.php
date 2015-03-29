@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\SQLStore\QueryEngine\Compiler;
+namespace SMW\SQLStore\QueryEngine\Interpreter;
 
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ThingDescription;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
-use SMW\SQLStore\QueryEngine\QueryCompiler;
+use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\SqlQueryPart;
 
 /**
@@ -14,7 +14,7 @@ use SMW\SQLStore\QueryEngine\SqlQueryPart;
  *
  * @author mwjames
  */
-class ThingDescriptionCompiler implements QueryCompiler {
+class ThingDescriptionInterpreter implements DescriptionInterpreter {
 
 	/**
 	 * @var QueryBuilder
@@ -35,7 +35,7 @@ class ThingDescriptionCompiler implements QueryCompiler {
 	 *
 	 * @return boolean
 	 */
-	public function canCompileDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ) {
 		return $description instanceof ThingDescription;
 	}
 
@@ -46,7 +46,7 @@ class ThingDescriptionCompiler implements QueryCompiler {
 	 *
 	 * @return SqlQueryPart
 	 */
-	public function compileDescription( Description $description ) {
+	public function interpretDescription( Description $description ) {
 
 		$query = new SqlQueryPart();
 		$query->type = SqlQueryPart::Q_NOQUERY;

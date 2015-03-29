@@ -2,6 +2,10 @@
 
 namespace SMW\SQLStore;
 
+use SMW\SQLStore\ListLookup\UsageStatisticsListLookup;
+use SMW\SQLStore\ListLookup\PropertyUsageListLookup;
+use SMW\SQLStore\ListLookup\UnusedPropertyListLookup;
+use SMW\SQLStore\ListLookup\UndeclaredPropertyListLookup;
 use Doctrine\DBAL\Connection;
 use SMW\SQLStore\QueryEngine\ConceptCache;
 use SMWSQLStore3;

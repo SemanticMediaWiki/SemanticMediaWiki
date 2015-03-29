@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\SQLStore\QueryEngine\Compiler;
+namespace SMW\SQLStore\QueryEngine\Interpreter;
 
 use RuntimeException;
 use SMW\Query\Language\ValueDescription;
@@ -12,7 +12,7 @@ use SMWDIUri as DIUri;
  *
  * @author mwjames
  */
-class CompilerHelper {
+class ComparatorMapper {
 
 	/**
 	 * @since 2.2
@@ -23,7 +23,7 @@ class CompilerHelper {
 	 * @return string
 	 * @throws RuntimeException
 	 */
-	public function getSQLComparatorToValue( ValueDescription $description, &$value ) {
+	public function mapComparator( ValueDescription $description, &$value ) {
 
 		$comparatorMap = array(
 			SMW_CMP_EQ   => '=',
@@ -49,8 +49,11 @@ class CompilerHelper {
 			}
 
 			// Escape to prepare string matching:
-			$value = str_replace( array( '\\', '%', '_', '*', '?' ), array( '\\\\', '\%', '\_', '%', '_' ), $value );
-
+			$value = str_replace(
+				array( '\\', '%', '_', '*', '?' ),
+				array( '\\\\', '\%', '\_', '%', '_' ),
+				$value
+			);
 		}
 
 		return $comparatorMap[$comparator];

@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\SQLStore\QueryEngine\Compiler;
+namespace SMW\SQLStore\QueryEngine\Interpreter;
 
 use SMW\DIProperty;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Description;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
-use SMW\SQLStore\QueryEngine\QueryCompiler;
+use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\SqlQueryPart;
 
 /**
@@ -17,7 +17,7 @@ use SMW\SQLStore\QueryEngine\SqlQueryPart;
  * @author Jeroen De Dauw
  * @author mwjames
  */
-class ClassDescriptionCompiler implements QueryCompiler {
+class ClassDescriptionInterpreter implements DescriptionInterpreter {
 
 	/**
 	 * @var QueryBuilder
@@ -38,7 +38,7 @@ class ClassDescriptionCompiler implements QueryCompiler {
 	 *
 	 * @return boolean
 	 */
-	public function canCompileDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ) {
 		return $description instanceof ClassDescription;
 	}
 
@@ -49,7 +49,7 @@ class ClassDescriptionCompiler implements QueryCompiler {
 	 *
 	 * @return SqlQueryPart
 	 */
-	public function compileDescription( Description $description ) {
+	public function interpretDescription( Description $description ) {
 
 		$query = new SqlQueryPart();
 

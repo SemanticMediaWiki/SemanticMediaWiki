@@ -1,8 +1,9 @@
 <?php
 
-namespace SMW\SQLStore;
+namespace SMW\SQLStore\ListLookup;
 
 use Onoi\Cache\Cache;
+use SMW\SQLStore\ListLookup;
 
 /**
  * @license GNU GPL v2+
@@ -10,10 +11,10 @@ use Onoi\Cache\Cache;
  *
  * @author mwjames
  */
-class ListLookupCache implements SimpleListLookup {
+class ListLookupCache implements ListLookup {
 
 	/**
-	 * @var SimpleListLookup
+	 * @var ListLookup
 	 */
 	private $listLookup;
 
@@ -45,11 +46,11 @@ class ListLookupCache implements SimpleListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @param SimpleListLookup $listLookup
+	 * @param ListLookup $listLookup
 	 * @param Cache $cache
 	 * @param stdClass $cacheOptions
 	 */
-	public function __construct( SimpleListLookup $listLookup, Cache $cache, \stdClass $cacheOptions ) {
+	public function __construct( ListLookup $listLookup, Cache $cache, \stdClass $cacheOptions ) {
 		$this->listLookup = $listLookup;
 		$this->cache = $cache;
 		$this->cacheOptions = $cacheOptions;
@@ -69,7 +70,7 @@ class ListLookupCache implements SimpleListLookup {
 	 *
 	 * @return array
 	 */
-	public function fetchResultList() {
+	public function fetchList() {
 
 		$key = $this->getCacheKey( $this->listLookup->getLookupIdentifier() );
 
@@ -77,7 +78,7 @@ class ListLookupCache implements SimpleListLookup {
 			return $this->retrieveFromCache( $key );
 		}
 
-		$list = $this->listLookup->fetchResultList();
+		$list = $this->listLookup->fetchList();
 
 		$this->saveToCache(
 			$key,
@@ -94,7 +95,7 @@ class ListLookupCache implements SimpleListLookup {
 	 * https://github.com/wikimedia/mediawiki-extensions-SemanticForms/blob/master/specials/SF_CreateTemplate.php#L36
 	 */
 	public function runCollector() {
-		return $this->fetchResultList();
+		return $this->fetchList();
 	}
 
 	/**

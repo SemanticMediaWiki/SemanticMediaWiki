@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\SQLStore\QueryEngine\Compiler;
+namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 
 use SMW\Tests\Utils\UtilityFactory;
 
-use SMW\SQLStore\QueryEngine\Compiler\ValueDescriptionCompiler;
+use SMW\SQLStore\QueryEngine\Interpreter\ValueDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 
 use SMW\Query\Language\ValueDescription;
@@ -13,7 +13,7 @@ use SMW\DIWikiPage;
 use SMWDIBlob as DIBlob;
 
 /**
- * @covers \SMW\SQLStore\QueryEngine\Compiler\ValueDescriptionCompiler
+ * @covers \SMW\SQLStore\QueryEngine\Interpreter\ValueDescriptionInterpreter
  *
  * @group SMW
  * @group SMWExtension
@@ -23,7 +23,7 @@ use SMWDIBlob as DIBlob;
  *
  * @author mwjames
  */
-class ValueDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
+class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	private $queryContainerValidator;
 
@@ -40,8 +40,8 @@ class ValueDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Compiler\ValueDescriptionCompiler',
-			new ValueDescriptionCompiler( $queryBuilder )
+			'\SMW\SQLStore\QueryEngine\Interpreter\ValueDescriptionInterpreter',
+			new ValueDescriptionInterpreter( $queryBuilder )
 		);
 	}
 
@@ -78,13 +78,15 @@ class ValueDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIds ) );
 
-		$instance = new ValueDescriptionCompiler( new QueryBuilder( $store ) );
+		$instance = new ValueDescriptionInterpreter( new QueryBuilder( $store ) );
 
-		$this->assertTrue( $instance->canCompileDescription( $description ) );
+		$this->assertTrue(
+			$instance->canInterpretDescription( $description )
+		);
 
 		$this->queryContainerValidator->assertThatContainerHasProperties(
 			$expected,
-			$instance->compileDescription( $description )
+			$instance->interpretDescription( $description )
 		);
 	}
 

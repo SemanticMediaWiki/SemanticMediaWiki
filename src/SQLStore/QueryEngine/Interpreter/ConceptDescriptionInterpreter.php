@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\SQLStore\QueryEngine\Compiler;
+namespace SMW\SQLStore\QueryEngine\Interpreter;
 
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Description;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
-use SMW\SQLStore\QueryEngine\QueryCompiler;
+use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\SqlQueryPart;
 use SMWQueryParser as QueryParser;
 use SMWSQLStore3;
@@ -18,7 +18,7 @@ use SMWSQLStore3;
  * @author Jeroen De Dauw
  * @author mwjames
  */
-class ConceptDescriptionCompiler implements QueryCompiler {
+class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 
 	/**
 	 * @var QueryBuilder
@@ -39,7 +39,7 @@ class ConceptDescriptionCompiler implements QueryCompiler {
 	 *
 	 * @return boolean
 	 */
-	public function canCompileDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ) {
 		return $description instanceof ConceptDescription;
 	}
 
@@ -50,7 +50,7 @@ class ConceptDescriptionCompiler implements QueryCompiler {
 	 *
 	 * @return SqlQueryPart
 	 */
-	public function compileDescription( Description $description ) {
+	public function interpretDescription( Description $description ) {
 
 		$query = new SqlQueryPart();
 

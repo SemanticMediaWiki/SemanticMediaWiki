@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\SQLStore\QueryEngine\Compiler;
+namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 
 use SMW\Tests\Utils\UtilityFactory;
 
-use SMW\SQLStore\QueryEngine\Compiler\DisjunctionConjunctionCompiler;
+use SMW\SQLStore\QueryEngine\Interpreter\DisjunctionConjunctionInterpreter;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 
 use SMW\Query\Language\Disjunction;
@@ -13,7 +13,7 @@ use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\ThingDescription;
 
 /**
- * @covers \SMW\SQLStore\QueryEngine\Compiler\DisjunctionConjunctionCompiler
+ * @covers \SMW\SQLStore\QueryEngine\Interpreter\DisjunctionConjunctionInterpreter
  *
  * @group SMW
  * @group SMWExtension
@@ -23,7 +23,7 @@ use SMW\Query\Language\ThingDescription;
  *
  * @author mwjames
  */
-class DisjunctionConjunctionCompilerTest extends \PHPUnit_Framework_TestCase {
+class DisjunctionConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	private $queryContainerValidator;
 
@@ -40,8 +40,8 @@ class DisjunctionConjunctionCompilerTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Compiler\DisjunctionConjunctionCompiler',
-			new DisjunctionConjunctionCompiler( $queryBuilder )
+			'\SMW\SQLStore\QueryEngine\Interpreter\DisjunctionConjunctionInterpreter',
+			new DisjunctionConjunctionInterpreter( $queryBuilder )
 		);
 	}
 
@@ -62,13 +62,15 @@ class DisjunctionConjunctionCompilerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new DisjunctionConjunctionCompiler( new QueryBuilder( $store ) );
+		$instance = new DisjunctionConjunctionInterpreter( new QueryBuilder( $store ) );
 
-		$this->assertTrue( $instance->canCompileDescription( $description ) );
+		$this->assertTrue(
+			$instance->canInterpretDescription( $description )
+		);
 
 		$this->queryContainerValidator->assertThatContainerHasProperties(
 			$expected,
-			$instance->compileDescription( $description )
+			$instance->interpretDescription( $description )
 		);
 	}
 

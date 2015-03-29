@@ -1,17 +1,17 @@
 <?php
 
-namespace SMW\Tests\SQLStore\QueryEngine\Compiler;
+namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 
 use SMW\Tests\Utils\UtilityFactory;
 
-use SMW\SQLStore\QueryEngine\Compiler\NamespaceCompiler;
+use SMW\SQLStore\QueryEngine\Interpreter\NamespaceDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
 
 /**
- * @covers \SMW\SQLStore\QueryEngine\Compiler\NamespaceCompiler
+ * @covers \SMW\SQLStore\QueryEngine\Interpreter\NamespaceDescriptionInterpreter
  *
  * @group SMW
  * @group SMWExtension
@@ -21,7 +21,7 @@ use SMW\Query\Language\NamespaceDescription;
  *
  * @author mwjames
  */
-class NamespaceCompilerTest extends \PHPUnit_Framework_TestCase {
+class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	private $queryContainerValidator;
 
@@ -38,8 +38,8 @@ class NamespaceCompilerTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Compiler\NamespaceCompiler',
-			new NamespaceCompiler( $queryBuilder )
+			'\SMW\SQLStore\QueryEngine\Interpreter\NamespaceDescriptionInterpreter',
+			new NamespaceDescriptionInterpreter( $queryBuilder )
 		);
 	}
 
@@ -65,13 +65,13 @@ class NamespaceCompilerTest extends \PHPUnit_Framework_TestCase {
 		$expected->type = 1;
 		$expected->where = "t0.smw_namespace=";
 
-		$instance = new NamespaceCompiler( $queryBuilder );
+		$instance = new NamespaceDescriptionInterpreter( $queryBuilder );
 
-		$this->assertTrue( $instance->canCompileDescription( $description ) );
+		$this->assertTrue( $instance->canInterpretDescription( $description ) );
 
 		$this->queryContainerValidator->assertThatContainerHasProperties(
 			$expected,
-			$instance->compileDescription( $description )
+			$instance->interpretDescription( $description )
 		);
 	}
 

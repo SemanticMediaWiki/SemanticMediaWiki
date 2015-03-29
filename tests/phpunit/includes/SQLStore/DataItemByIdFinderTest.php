@@ -3,15 +3,12 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\SQLStore\DataItemByIdFinder;
-use SMW\Cache\FixedInMemoryCache;
+use SMW\ApplicationFactory;
 
 /**
  * @covers \SMW\SQLStore\DataItemByIdFinder
  *
- * @group SMW
- * @group SMWExtension
- *
- * @group semantic-mediawiki-sqlstore
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since   2.1
@@ -19,6 +16,14 @@ use SMW\Cache\FixedInMemoryCache;
  * @author mwjames
  */
 class DataItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
+
+	private $cache;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->cache = ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache();
+	}
 
 	public function testCanConstruct() {
 
@@ -52,15 +57,19 @@ class DataItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( array( 'smw_id' => 42 ) ) )
 			->will( $this->returnValue( $row ) );
 
-		$cache = new FixedInMemoryCache();
-		$instance = new DataItemByIdFinder( $connection, 'foo', $cache );
+		$instance = new DataItemByIdFinder(
+			$connection,
+			'foo',
+			$this->cache
+		);
 
 		$this->assertInstanceOf(
 			'\SMW\DIWikiPage',
 			$instance->getDataItemForId( 42 )
 		);
 
-		$stats = $cache->getStats();
+		$stats = $this->cache->getStats();
+
 		$this->assertEquals(
 			1,
 			$stats['count']
@@ -76,17 +85,21 @@ class DataItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->never() )
 			->method( 'selectRow' );
 
-		$cache = new FixedInMemoryCache();
-		$cache->save( 42, 'Foo#0##' );
+		$this->cache->save( 42, 'Foo#0##' );
 
-		$instance = new DataItemByIdFinder( $connection, 'foo', $cache );
+		$instance = new DataItemByIdFinder(
+			$connection,
+			'foo',
+			$this->cache
+		);
 
 		$this->assertInstanceOf(
 			'\SMW\DIWikiPage',
 			$instance->getDataItemForId( 42 )
 		);
 
-		$stats = $cache->getStats();
+		$stats = $this->cache->getStats();
+
 		$this->assertEquals(
 			0,
 			$stats['misses']
@@ -107,7 +120,12 @@ class DataItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->never() )
 			->method( 'selectRow' );
 
-		$instance = new DataItemByIdFinder( $connection, 'foo' );
+		$instance = new DataItemByIdFinder(
+			$connection,
+			'foo',
+			$this->cache
+		);
+
 		$instance->saveToCache( 42, '_MDAT#102##' );
 
 		$this->assertInstanceOf(
@@ -126,7 +144,11 @@ class DataItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'selectRow' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new DataItemByIdFinder( $connection, 'foo' );
+		$instance = new DataItemByIdFinder(
+			$connection,
+			'foo',
+			$this->cache
+		);
 
 		$instance->saveToCache( 42, 'Foo#14##' );
 		$instance->getDataItemForId( 42 );
@@ -145,7 +167,11 @@ class DataItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'selectRow' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new DataItemByIdFinder( $connection, 'foo' );
+		$instance = new DataItemByIdFinder(
+			$connection,
+			'foo',
+			$this->cache
+		);
 
 		$instance->saveToCache( 42, 'Foo#0##' );
 		$instance->getDataItemForId( 42 );
