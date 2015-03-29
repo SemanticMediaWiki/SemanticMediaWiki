@@ -9,7 +9,7 @@
  * require __DIR__ . '/../../SemanticMediaWiki/tests/autoloader.php'
  */
 
-if ( php_sapi_name() !== 'cli' ) {
+if ( PHP_SAPI !== 'cli' ) {
 	die( 'Not an entry point' );
 }
 
