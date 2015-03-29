@@ -330,5 +330,7 @@
 	"smw-pa-property-predefined_type": "“$1”是用来描述属性[[Special:Types|数据类型]]的预定义属性。",
 	"smw-pa-property-predefined_sobj": "“$1”是代表允许累计类似一个正常wiki页面的数据类型作业的容器结构的预定义属性。",
 	"smw-pa-property-predefined_errp": "“$1”是一个预定义的属性，它用于不规则的值注释中追踪输入错误，例如导致的类型或[[Property:Allows value|允许值]]的限制。",
-	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"]是一个预定义的属性，它可以订阅获得允许以为一个属性限制值注释的值的列表。"
+	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"]是一个预定义的属性，它可以订阅获得允许以为一个属性限制值注释的值的列表。",
+	"smw-datavalue-property-restricted-use": "属性“$1”被标记为限制使用。",
+	"smw-datavalue-restricted-use": "此数据值被标记限制使用。$1"
 }
