@@ -96,7 +96,7 @@ class LocalFileUpload extends UploadBase {
 	/**
 	 * @see UploadBase::initializeFromRequest
 	 */
-	function initializeFromRequest( &$request ) {
+	public function initializeFromRequest( &$request ) {
 	}
 
 	/**
