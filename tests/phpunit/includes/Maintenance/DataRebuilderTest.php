@@ -318,7 +318,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @see Store::refreshData
 	 */
-	public function refreshDataOnMockCallback( &$index, $count, $namespaces, $usejobs ) {
+	public function refreshDataOnMockCallback( &$index ) {
 		$index++;
 	}
 
