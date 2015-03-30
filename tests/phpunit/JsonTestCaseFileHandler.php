@@ -207,12 +207,12 @@ class JsonTestCaseFileHandler {
 	public function findRdfTestCases() {
 
 		try{
-			$queries = $this->getFileContentsFor( 'rdf-testcases' );
+			$testcases = $this->getFileContentsFor( 'rdf-testcases' );
 		} catch( \Exception $e ) {
-			$queries = array();
+			$testcases = array();
 		}
 
-		return $queries;
+		return $testcases;
 	}
 
 	/**
@@ -223,12 +223,12 @@ class JsonTestCaseFileHandler {
 	public function findParserTestCases() {
 
 		try{
-			$queries = $this->getFileContentsFor( 'parser' );
+			$testcases = $this->getFileContentsFor( 'parser' );
 		} catch( \Exception $e ) {
-			$queries = array();
+			$testcases = array();
 		}
 
-		return $queries;
+		return $testcases;
 	}
 
 	/**
@@ -239,12 +239,12 @@ class JsonTestCaseFileHandler {
 	public function findFormatTestCases() {
 
 		try{
-			$formats = $this->getFileContentsFor( 'format' );
+			$testcases = $this->getFileContentsFor( 'format' );
 		} catch( \Exception $e ) {
-			$formats = array();
+			$testcases = array();
 		}
 
-		return $formats;
+		return $testcases;
 	}
 
 	/**
@@ -255,12 +255,12 @@ class JsonTestCaseFileHandler {
 	public function findQueryTestCases() {
 
 		try{
-			$queries = $this->getFileContentsFor( 'queries' );
+			$testcases = $this->getFileContentsFor( 'queries' );
 		} catch( \Exception $e ) {
-			$queries = array();
+			$testcases = array();
 		}
 
-		return $queries;
+		return $testcases;
 	}
 
 	/**
@@ -271,12 +271,12 @@ class JsonTestCaseFileHandler {
 	public function findConceptTestCases() {
 
 		try{
-			$queries = $this->getFileContentsFor( 'concepts' );
+			$testcases = $this->getFileContentsFor( 'concept-testcases' );
 		} catch( \Exception $e ) {
-			$queries = array();
+			$testcases = array();
 		}
 
-		return $queries;
+		return $testcases;
 	}
 
 	private function getFileContentsFor( $index ) {

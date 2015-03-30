@@ -5,6 +5,7 @@ namespace SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\CircularReferenceGuard;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Description;
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
@@ -74,24 +75,45 @@ class ConceptConditionBuilder implements ConditionBuilder {
 	 */
 	public function buildCondition( Description $description, $joinVariable, $orderByProperty = null ) {
 
-		$conceptDescription = $this->getConceptDescription( $description->getConcept() );
+		$conceptDescription = $this->getConceptDescription(
+			$description->getConcept()
+		);
 
 		if ( $conceptDescription === '' ) {
 			return new FalseCondition();
 		}
 
-		return $this->compoundConditionBuilder->mapDescriptionToCondition(
+		$hash = 'concept-' . $conceptDescription->getQueryString();
+
+		$this->compoundConditionBuilder->getCircularReferenceGuard()->mark( $hash );
+
+		if ( $this->compoundConditionBuilder->getCircularReferenceGuard()->isCircularByRecursionFor( $hash ) ) {
+
+			$this->compoundConditionBuilder->addError(
+				wfMessage( 'smw-query-condition-circular', $conceptDescription->getQueryString() )->text()
+			);
+
+			return new FalseCondition();
+		}
+
+		$condition = $this->compoundConditionBuilder->mapDescriptionToCondition(
 			$conceptDescription,
 			$joinVariable,
 			$orderByProperty
 		);
+
+		$this->compoundConditionBuilder->getCircularReferenceGuard()->unmark( $hash );
+
+		return $condition;
 	}
 
 	private function getConceptDescription( DIWikiPage $concept ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$value = $applicationFactory->getStore()->getSemanticData( $concept )->getPropertyValues( new DIProperty( '_CONC' ) );
+		$value = $applicationFactory->getStore()->getSemanticData( $concept )->getPropertyValues(
+			new DIProperty( '_CONC' )
+		);
 
 		if ( $value === null || $value === array() ) {
 			return '';
@@ -99,7 +121,9 @@ class ConceptConditionBuilder implements ConditionBuilder {
 
 		$value = end( $value );
 
-		return $applicationFactory->newQueryParser()->getQueryDescription( $value->getConceptQuery() );
+		return $applicationFactory->newQueryParser()->getQueryDescription(
+			$value->getConceptQuery()
+		);
 	}
 
 }

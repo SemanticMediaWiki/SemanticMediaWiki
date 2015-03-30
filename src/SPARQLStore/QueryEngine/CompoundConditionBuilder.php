@@ -5,6 +5,7 @@ namespace SMW\SPARQLStore\QueryEngine;
 use RuntimeException;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
+use SMW\CircularReferenceGuard;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
@@ -29,9 +30,19 @@ use SMWTurtleSerializer as TurtleSerializer;
 class CompoundConditionBuilder {
 
 	/**
+	 * @var CircularReferenceGuard
+	 */
+	private $circularReferenceGuard = null;
+
+	/**
 	 * @var ConditionBuilderStrategyFinder
 	 */
 	private $conditionBuilderStrategyFinder = null;
+
+	/**
+	 * @var array
+	 */
+	private $errors = array();
 
 	/**
 	 * Counter used to generate globally fresh variables.
@@ -78,6 +89,42 @@ class CompoundConditionBuilder {
 	 */
 	public function getSortKeys() {
 		return $this->sortkeys;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return array
+	 */
+	public function getErrors() {
+		return $this->errors;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param string $error
+	 */
+	public function addError( $error ) {
+		$this->errors[] = $error;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param CircularReferenceGuard $circularReferenceGuard
+	 */
+	public function setCircularReferenceGuard( CircularReferenceGuard $circularReferenceGuard ) {
+		$this->circularReferenceGuard = $circularReferenceGuard;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return CircularReferenceGuard
+	 */
+	public function getCircularReferenceGuard() {
+		return $this->circularReferenceGuard;
 	}
 
 	/**

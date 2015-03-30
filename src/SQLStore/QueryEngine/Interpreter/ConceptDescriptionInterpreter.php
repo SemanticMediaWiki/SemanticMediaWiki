@@ -61,9 +61,24 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 			''
 		);
 
+		$hash = 'concept-' . $conceptId;
+
+		$this->queryBuilder->getCircularReferenceGuard()->mark( $hash );
+
+		if ( $this->queryBuilder->getCircularReferenceGuard()->isCircularByRecursionFor( $hash ) ) {
+
+			$this->queryBuilder->addError(
+				wfMessage( 'smw-query-condition-circular', $description->getQueryString() )->text()
+			);
+
+			return $query;
+		}
+
 		$row = $this->getConceptForId( $conceptId );
 
-		if ( $row === false ) { // No description found, concept does not exist.
+		// No description found, concept does not exist.
+		if ( $row === false ) {
+			$this->queryBuilder->getCircularReferenceGuard()->unmark( 'concept-' . $conceptId );
 			// keep the above query object, it yields an empty result
 			// TODO: announce an error here? (maybe not, since the query processor can check for
 			// non-existing concept pages which is probably the main reason for finding nothing here)
@@ -93,9 +108,13 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 					$this->queryBuilder->addError( wfMessage( 'smw_emptysubquery' )->text() ); // not the right message, but this case is very rare; let us not make detailed messages for this
 				}
 			} else {
-				$this->queryBuilder->addError( wfMessage( 'smw_concept_cache_miss', $description->getConcept()->getText() )->text() );
+				$this->queryBuilder->addError(
+					wfMessage( 'smw_concept_cache_miss', $description->getConcept()->getText() )->text()
+				);
 			}
 		} // else: no cache, no description (this may happen); treat like empty concept
+
+		$this->queryBuilder->getCircularReferenceGuard()->unmark( $hash );
 
 		return $query;
 	}
