@@ -122,7 +122,7 @@ class StoreUpdater {
 		$revision = $wikiPage->getRevision();
 
 		$this->updateSemanticData( $title, $wikiPage, $revision );
-		$this->doRealUpdate( $this->inspectPropertyType() );
+		$this->doRealUpdate( $this->inspectPropertySpecification() );
 
 		return true;
 	}
@@ -153,19 +153,19 @@ class StoreUpdater {
 	 * @note Comparison must happen *before* the storage update;
 	 * even finding uses of a property fails after its type changed.
 	 */
-	private function inspectPropertyType() {
+	private function inspectPropertySpecification() {
 
 		if ( !$this->updateJobsEnabledState ) {
 			return;
 		}
 
-		$propertyTypeDiffFinder = new PropertyTypeDiffFinder( $this->store, $this->semanticData );
+		$propertySpecDiffFinder = new PropertySpecDiffFinder( $this->store, $this->semanticData );
 
-		$propertyTypeDiffFinder->setPropertiesToCompare(
+		$propertySpecDiffFinder->setPropertiesToCompare(
 			$this->applicationFactory->getSettings()->get( 'smwgDeclarationProperties' )
 		);
 
-		$propertyTypeDiffFinder->findDiff();
+		$propertySpecDiffFinder->findDiff();
 	}
 
 	private function doRealUpdate() {
