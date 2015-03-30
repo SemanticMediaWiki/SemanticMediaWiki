@@ -39,7 +39,8 @@ class UrlEncoderTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider stringProvider
 	 */
-	public function testEncodeDecode( $input, $output ) {
+	// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.CodeAnalysis.UnusedFunctionParameter
+	public function testEncodeDecode( $input, $output ) { // @codingStandardsIgnoreEnd
 
 		if ( $output === ' ' ) {
 			$output = '';
