@@ -10,7 +10,7 @@ use Sanitizer;
 use Html;
 
 /**
- * Print query results in lists.
+ * Print query results in lists.$outputMode
  *
  * @author Markus Krötzsch
  * @ingroup SMWQuery
@@ -173,7 +173,7 @@ class ListResultPrinter extends ResultPrinter {
 		// Make label for finding further results
 		if ( $this->linkFurtherResults( $queryResult ) &&
 			( $this->mFormat != 'ol' || $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) ) {
-			$result .= trim( $this->getFurtherResultsText( $queryResult, $outputMode ) );
+			$result .= trim( $this->getFurtherResultsText( $queryResult, $outputmode ) );
 		}
 
 		$result .= $this->footer;
