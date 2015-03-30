@@ -48,6 +48,51 @@ Integration tests are vital to confirm expected behaviour of a component from an
 
 For details about the test environment see [integration testing](../includes/build/travis/README.md).
 
+### Write integration tests using `json` script
+
+Integration tests can be written in a pseudo `json` script in connection with a `TestCaseRunner` that handles the necessary object setup and tear down process for each test execution. The script was introduced to increase the understanding of what is being tested by using a script close to the wikitext notation (internally PHPUnit is used by the `ByJsonTestCaseProvider` to run/provide the actually test).
+
+A new test file (with different test cases) is automatically loaded and run by a `TestCaseRunner` as soon as it is placed in a location specified by the runner.
+
+Each `TestCaseRunner` contains a different interpretation of the `json` script to keep the format straightforward but still allows for individual test assertions. Currently the following `TestCaseRunner` are provided:
+
+- `ByJsonRdfTestCaseRunnerTest` for rdf output assertion
+- `ByJsonQueryTestCaseRunnerTest` to verify formats, queries, and concepts
+- `ByJsonParserTestCaseRunnerTest` to check for  parser and store specific data
+
+The section `properties` and `subjects` contain object entities that are planned to be used during the test which are specified by a name and a content (generally the page content in wikitext).
+```json
+"properties": [
+	{
+		"name": "Has description",
+		"contents": "[[Has type::Text]]"
+	}
+],
+"subjects": [
+	{
+		"name": "Page that contains text",
+		"contents": "[[Has description::Foo]]"
+	},
+	{
+		"name": "Another page that contains text",
+		"namespace": "NS_HELP",
+		"contents": "[[Has description::Bar]]"
+	}
+]
+```
+
+The test result assertion is done in a very simplified way but expressive enough for users to understand who have limited test experience. For example, verifying that a result printer does output a certain string of contents, one has to the define an expected output in terms of:
+
+```json
+"output": {
+	"to-contain": [
+		"<table class=\"sortable wikitable smwtable\">"
+		...
+	]
+}
+```
+For other assertion options it is best to look at the existing `json` test files (e.g [rdf-001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/Rdf/rdf-001.json) or [parser-001-restricted-property-use.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/Parser/parser-001-restricted-property-use.json)).
+
 ## Benchmark tests
 
 For details, please have a look at the [benchmark guide](phpunit/Benchmark/README.md) document.
