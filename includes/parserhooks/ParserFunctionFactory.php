@@ -63,6 +63,7 @@ class ParserFunctionFactory {
 	public function newAskParserFunction() {
 
 		$circularReferenceGuard = new CircularReferenceGuard( 'ask-parser' );
+		$circularReferenceGuard->setMaxRecursionDepth( 2 );
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			$this->parser->getTitle(),
@@ -88,6 +89,7 @@ class ParserFunctionFactory {
 	public function newShowParserFunction() {
 
 		$circularReferenceGuard = new CircularReferenceGuard( 'show-parser' );
+		$circularReferenceGuard->setMaxRecursionDepth( 2 );
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			$this->parser->getTitle(),

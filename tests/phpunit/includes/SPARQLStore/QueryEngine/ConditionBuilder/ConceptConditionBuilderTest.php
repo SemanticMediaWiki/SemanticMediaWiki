@@ -90,8 +90,13 @@ class ConceptConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$resultVariable = 'result';
 
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$compoundConditionBuilder = new CompoundConditionBuilder();
 		$compoundConditionBuilder->setResultVariable( $resultVariable );
+		$compoundConditionBuilder->setCircularReferenceGuard( $circularReferenceGuard );
 
 		$instance = new ConceptConditionBuilder();
 		$instance->setCompoundConditionBuilder( $compoundConditionBuilder );
@@ -110,6 +115,10 @@ class ConceptConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConceptConditionBuilderForAnyValueConceptUsingMockedStore() {
+
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -139,6 +148,7 @@ class ConceptConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$compoundConditionBuilder = new CompoundConditionBuilder();
 		$compoundConditionBuilder->setResultVariable( $resultVariable );
+		$compoundConditionBuilder->setCircularReferenceGuard( $circularReferenceGuard );
 
 		$instance = new ConceptConditionBuilder();
 		$instance->setCompoundConditionBuilder( $compoundConditionBuilder );

@@ -5,6 +5,7 @@ namespace SMW\SPARQLStore\QueryEngine;
 use RuntimeException;
 use SMW\Query\Language\ThingDescription;
 use SMW\QueryOutputFormatter;
+use SMW\CircularReferenceGuard;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
@@ -73,6 +74,11 @@ class QueryEngine {
 		}
 
 		$this->compoundConditionBuilder->setResultVariable( self::RESULT_VARIABLE );
+
+		$circularReferenceGuard = new CircularReferenceGuard( 'sparql-query' );
+		$circularReferenceGuard->setMaxRecursionDepth( 2 );
+
+		$this->compoundConditionBuilder->setCircularReferenceGuard( $circularReferenceGuard );
 	}
 
 	/**
@@ -114,14 +120,17 @@ class QueryEngine {
 	 */
 	public function getCountQueryResult( Query $query ) {
 
-		// $countResultLookup = new CountResultLookup( $this->connection, $this->compoundConditionBuilder );
-		// $countResultLookup->getQueryResult( $query );
-
 		$this->sortkeys = array();
 
-		$sparqlCondition = $this->compoundConditionBuilder
-			->setSortKeys( $this->sortkeys )
-			->buildCondition( $query->getDescription() );
+		$this->compoundConditionBuilder->setSortKeys( $this->sortkeys );
+
+		$sparqlCondition = $this->compoundConditionBuilder->buildCondition(
+			$query->getDescription()
+		);
+
+		$query->addErrors(
+			$this->compoundConditionBuilder->getErrors()
+		);
 
 		if ( $sparqlCondition instanceof SingletonCondition ) {
 			if ( $sparqlCondition->condition === '' ) { // all URIs exist, no querying
@@ -164,9 +173,15 @@ class QueryEngine {
 
 		$this->sortkeys = $query->sortkeys;
 
-		$sparqlCondition = $this->compoundConditionBuilder
-			->setSortKeys( $this->sortkeys )
-			->buildCondition( $query->getDescription() );
+		$this->compoundConditionBuilder->setSortKeys( $this->sortkeys );
+
+		$sparqlCondition = $this->compoundConditionBuilder->buildCondition(
+			$query->getDescription()
+		);
+
+		$query->addErrors(
+			$this->compoundConditionBuilder->getErrors()
+		);
 
 		if ( $sparqlCondition instanceof SingletonCondition ) {
 			$matchElement = $sparqlCondition->matchElement;
@@ -213,9 +228,15 @@ class QueryEngine {
 
 		$this->sortkeys = $query->sortkeys;
 
-		$sparqlCondition = $this->compoundConditionBuilder
-			->setSortKeys( $this->sortkeys )
-			->buildCondition( $query->getDescription() );
+		$this->compoundConditionBuilder->setSortKeys( $this->sortkeys );
+
+		$sparqlCondition = $this->compoundConditionBuilder->buildCondition(
+			$query->getDescription()
+		);
+
+		$query->addErrors(
+			$this->compoundConditionBuilder->getErrors()
+		);
 
 		$entries = array();
 

@@ -191,6 +191,20 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.2
 	 *
+	 * @return integer
+	 */
+	public function getExpectedErrorCount() {
+
+		if ( !isset( $this->contents['queryresult']['error'] )  ) {
+			return 0;
+		}
+
+		return (int)$this->contents['queryresult']['error'];
+	}
+
+	/**
+	 * @since 2.2
+	 *
 	 * @return string
 	 */
 	public function fetchTextOutputForFormatPage() {
@@ -228,7 +242,7 @@ class QueryTestCaseInterpreter {
 	 * @return []
 	 */
 	public function getExpectedConceptCache() {
-		return $this->contents['conceptcache'];
+		return isset( $this->contents['conceptcache'] ) ? $this->contents['conceptcache'] : array();
 	}
 
 }

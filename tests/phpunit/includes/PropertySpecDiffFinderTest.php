@@ -2,7 +2,7 @@
 
 namespace SMW\Tests;
 
-use SMW\PropertyTypeDiffFinder;
+use SMW\PropertySpecDiffFinder;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Settings;
@@ -10,7 +10,7 @@ use SMW\ApplicationFactory;
 use Title;
 
 /**
- * @covers \SMW\PropertyTypeDiffFinder
+ * @covers \SMW\PropertySpecDiffFinder
  *
  * @group semantic-mediawiki
  *
@@ -19,7 +19,7 @@ use Title;
  *
  * @author mwjames
  */
-class PropertyTypeDiffFinderTest extends \PHPUnit_Framework_TestCase {
+class PropertySpecDiffFinderTest extends \PHPUnit_Framework_TestCase {
 
 	/** @var DIWikiPage[] */
 	protected $storeValues;
@@ -63,8 +63,8 @@ class PropertyTypeDiffFinderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyTypeDiffFinder',
-			new PropertyTypeDiffFinder( $store, $semanticData )
+			'\SMW\PropertySpecDiffFinder',
+			new PropertySpecDiffFinder( $store, $semanticData )
 		);
 	}
 
@@ -118,7 +118,7 @@ class PropertyTypeDiffFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyValues' )
 			->will( $this->returnValue( $dataValues ) );
 
-		$instance = new PropertyTypeDiffFinder( $store, $semanticData );
+		$instance = new PropertySpecDiffFinder( $store, $semanticData );
 		$instance->setPropertiesToCompare( $propertiesToCompare );
 		$instance->findDiff();
 

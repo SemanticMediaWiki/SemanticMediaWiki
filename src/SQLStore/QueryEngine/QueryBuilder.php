@@ -14,6 +14,7 @@ use SMW\SQLStore\QueryEngine\Interpreter\ThingDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\Interpreter\ValueDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\Interpreter\DispatchingInterpreter;
 use SMW\Store;
+use SMW\CircularReferenceGuard;
 
 /**
  * @license GNU GPL v2+
@@ -80,6 +81,9 @@ class QueryBuilder {
 		$this->dispatchingInterpreter->addInterpreter( new ClassDescriptionInterpreter( $this ) );
 		$this->dispatchingInterpreter->addInterpreter( new ValueDescriptionInterpreter( $this ) );
 		$this->dispatchingInterpreter->addInterpreter( new ConceptDescriptionInterpreter( $this ) );
+
+		$this->circularReferenceGuard = new CircularReferenceGuard( 'sql-query' );
+		$this->circularReferenceGuard->setMaxRecursionDepth( 2 );
 	}
 
 	/**
@@ -110,6 +114,15 @@ class QueryBuilder {
 	 */
 	public function getSortKeys() {
 		return $this->sortKeys;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return CircularReferenceGuard
+	 */
+	public function getCircularReferenceGuard() {
+		return $this->circularReferenceGuard;
 	}
 
 	/**
