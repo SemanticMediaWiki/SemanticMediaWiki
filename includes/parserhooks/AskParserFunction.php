@@ -138,12 +138,11 @@ class AskParserFunction {
 		$queryHash = $this->query->getHash();
 
 		$this->circularReferenceGuard->mark( $queryHash );
-		$this->circularReferenceGuard->setMaxRecursionDepth( 2 );
 
 		// If we caught in a circular loop (due to a template referencing to itself)
 		// then we stop here before the next query execution to avoid an infinite
 		// self-reference
-		if ( $this->circularReferenceGuard->isCircularByRecursion( $queryHash ) ) {
+		if ( $this->circularReferenceGuard->isCircularByRecursionFor( $queryHash ) ) {
 			return '';
 		}
 

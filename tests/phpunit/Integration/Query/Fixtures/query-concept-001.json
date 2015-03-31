@@ -49,7 +49,7 @@
 			"contents": "{{#concept: [[Concept:Concept for any value selection]] OR [[Concept:Concept for distinct value selection]] }}"
 		}
 	],
-	"concepts": [
+	"concept-testcases": [
 		{
 			"about": "#0 Simple concept member list",
 			"condition": "[[Concept:Concept for any value selection]]",

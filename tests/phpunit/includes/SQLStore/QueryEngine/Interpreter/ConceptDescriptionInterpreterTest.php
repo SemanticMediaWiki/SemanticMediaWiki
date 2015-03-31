@@ -37,11 +37,66 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$queryBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QueryBuilder' )
 			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+			->getMock();
+
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Interpreter\ConceptDescriptionInterpreter',
-			new ConceptDescriptionInterpreter( $queryBuilder )
+			new ConceptDescriptionInterpreter( $queryBuilder, $circularReferenceGuard )
+		);
+	}
+
+	public function testCheckForCircularReference() {
+
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$circularReferenceGuard->expects( $this->once() )
+			->method( 'isCircularByRecursionFor' )
+			->with( $this->equalTo( 'concept-42' ) )
+			->will( $this->returnValue( true ) );
+
+		$objectIds = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'getSMWPageID' ) )
+			->getMock();
+
+		$objectIds->expects( $this->any() )
+			->method( 'getSMWPageID' )
+			->will( $this->returnValue( 42 ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $objectIds ) );
+
+		$queryBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QueryBuilder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryBuilder->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $store ) );
+
+		$queryBuilder->expects( $this->any() )
+			->method( 'getCircularReferenceGuard' )
+			->will( $this->returnValue( $circularReferenceGuard ) );
+
+		$instance = new ConceptDescriptionInterpreter(
+			$queryBuilder,
+			$circularReferenceGuard
+		);
+
+		$concept = new ConceptDescription( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) );
+
+		$instance->interpretDescription(
+			$concept
 		);
 	}
 
@@ -82,7 +137,14 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIds ) );
 
-		$instance = new ConceptDescriptionInterpreter( new QueryBuilder( $store ) );
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new ConceptDescriptionInterpreter(
+			new QueryBuilder( $store ),
+			$circularReferenceGuard
+		);
 
 		$this->assertTrue(
 			$instance->canInterpretDescription( $description )

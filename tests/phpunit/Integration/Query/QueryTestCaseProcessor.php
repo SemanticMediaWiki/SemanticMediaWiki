@@ -101,6 +101,12 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			'Failed asserting query result count on ' . $queryTestCaseInterpreter->isAbout()
 		);
 
+		$this->assertCount(
+			$queryTestCaseInterpreter->getExpectedErrorCount(),
+			$queryResult->getErrors(),
+			'Failed asserting error count ' . $queryTestCaseInterpreter->isAbout()
+		);
+
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
 			$queryTestCaseInterpreter->getExpectedSubjects(),
 			$queryResult,
@@ -155,6 +161,12 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			$queryTestCaseInterpreter->getExpectedCount(),
 			$queryResult->getCount(),
 			'Failed asserting query result count on ' . $queryTestCaseInterpreter->isAbout()
+		);
+
+		$this->assertCount(
+			$queryTestCaseInterpreter->getExpectedErrorCount(),
+			$queryResult->getErrors(),
+			'Failed asserting error count ' . $queryTestCaseInterpreter->isAbout()
 		);
 
 		foreach ( $queryTestCaseInterpreter->getExpectedConceptCache() as $expectedConceptCache ) {
