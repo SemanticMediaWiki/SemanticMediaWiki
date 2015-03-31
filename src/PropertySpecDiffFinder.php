@@ -5,9 +5,9 @@ namespace SMW;
 use SMWDataItem;
 
 /**
- * Class that detects a change between a property and its store data
- *
- * @ingroup SMW
+ * Before a new set of data (type, constraints etc.) is stored about a property
+ * the class tries to compare old and new specifications (values about that property)
+ * and notifies a dispatcher about a change.
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -15,7 +15,7 @@ use SMWDataItem;
  * @author mwjames
  * @author Markus Krötzsch
  */
-class PropertyTypeDiffFinder {
+class PropertySpecDiffFinder {
 
 	/**
 	 * @var Store
@@ -49,6 +49,9 @@ class PropertyTypeDiffFinder {
 	}
 
 	/**
+	 * Invoke properties (e.g '_PLIST', see $smwgDeclarationProperties ) to
+	 * compare and find a possible specification change
+	 *
 	 * @since 2.2
 	 *
 	 * @param array $declarationProperties
@@ -58,8 +61,6 @@ class PropertyTypeDiffFinder {
 	}
 
 	/**
-	 * Returns if a data disparity exists
-	 *
 	 * @since 1.9
 	 *
 	 * @return boolean
@@ -73,64 +74,37 @@ class PropertyTypeDiffFinder {
 	 * and the current store data
 	 *
 	 * @since 1.9
-	 *
-	 * @return $this
 	 */
 	public function findDiff() {
 
-		if ( $this->semanticData->getSubject()->getNamespace() === SMW_NS_PROPERTY ) {
-			$this->comparePropertyTypes();
-			$this->compareConversionTypedFactors();
+		if ( $this->semanticData->getSubject()->getNamespace() !== SMW_NS_PROPERTY ) {
+			return;
 		}
 
-		return $this;
+		$this->compareFor( DIProperty::TYPE_HAS_TYPE );
+		$this->compareFor( DIProperty::TYPE_CONVERSION );
+
+		foreach ( $this->propertiesToCompare as $propertyKey ) {
+			$this->compareFor( $propertyKey );
+		}
 	}
 
-	/**
-	 * Compare and find changes related to the property type
-	 *
-	 * @since 1.9
-	 */
-	private function comparePropertyTypes() {
+	private function compareFor( $propertyKey ) {
 
-		$update = false;
-		$propertyType  = new DIProperty( DIProperty::TYPE_HAS_TYPE );
-
-		// Get values from the store
-		$oldType = $this->store->getPropertyValues(
-			$this->semanticData->getSubject(),
-			$propertyType
-		);
-
-		// Get values currently hold by the semantic container
-		$newType = $this->semanticData->getPropertyValues( $propertyType );
-
-		// Compare old and new type
-		if ( !$this->isEqual( $oldType, $newType ) ) {
-			$update = true;
-		} else {
-			foreach ( $this->propertiesToCompare as $property ) {
-				$update = $update || !$this->isEqualForProperty( new DIProperty( $property ) );
-			}
+		if ( $this->hasDiff() ) {
+			return;
 		}
 
-		$this->notifyDispatcher( $update );
-	}
+		$property = new DIProperty( $propertyKey );
 
-	/**
-	 * Compare and find changes related to conversion factor
-	 */
-	private function compareConversionTypedFactors() {
+		$newValues = $this->semanticData->getPropertyValues( $property );
 
-		$pconversion  = new DIProperty( DIProperty::TYPE_CONVERSION );
-
-		$newfactors = $this->semanticData->getPropertyValues( $pconversion );
-		$oldfactors = $this->store->getPropertyValues(
+		$oldValues = $this->store->getPropertyValues(
 			$this->semanticData->getSubject(),
-			$pconversion
+			$property
 		);
 
-		$this->notifyDispatcher( !$this->isEqual( $oldfactors, $newfactors ) );
+		$this->notifyDispatcher( !$this->isEqual( $oldValues, $newValues ) );
 	}
 
 	private function notifyDispatcher( $addJob = true ) {
@@ -142,25 +116,12 @@ class PropertyTypeDiffFinder {
 			$dispatchContext->set( 'subject', $this->semanticData->getSubject() );
 
 			$eventHandler->getEventDispatcher()->dispatch(
-				'property.type.change',
+				'property.spec.change',
 				$dispatchContext
 			);
 
 			$this->hasDiff = true;
 		}
-	}
-
-	private function isEqualForProperty( DIProperty $property ) {
-
-		$currentStoreValues = $this->store->getPropertyValues(
-			$this->semanticData->getSubject(),
-			$property
-		);
-
-		return $this->isEqual(
-			$currentStoreValues,
-			$this->semanticData->getPropertyValues( $property )
-		);
 	}
 
 	/**

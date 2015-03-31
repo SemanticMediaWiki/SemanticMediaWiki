@@ -78,7 +78,7 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 		$dispatchContext = EventDispatcherFactory::getInstance()->newDispatchContext();
 		$dispatchContext->set( 'subject', new DIWikiPage( 'Foo', NS_MAIN ) );
 
-		$this->assertListenerExecuteFor( 'property.type.change', $instance, $dispatchContext );
+		$this->assertListenerExecuteFor( 'property.spec.change', $instance, $dispatchContext );
 	}
 
 	private function assertListenerExecuteFor( $eventName, $instance, $dispatchContext = null ) {
