@@ -5,22 +5,13 @@ namespace SMW\Test;
 use SMW\ParserParameterFormatter;
 
 /**
- * Tests for the ParserParameterFormatter class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\ParserParameterFormatter
- *
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @author mwjames
+ * @license GNU GPL v2+
  */
 class ParserParameterFormatterTest extends SemanticMediaWikiTestCase {
 
@@ -95,19 +86,6 @@ class ParserParameterFormatterTest extends SemanticMediaWikiTestCase {
 		$instance->addParameter( 'Foo', 'Bar' );
 
 		$this->assertEquals( array( 'Foo' =>array( 'Bar' ) ), $instance->toArray() );
-	}
-
-	/**
-	 * @test ParserParameterFormatter::__construct (Test instance exception)
-	 * @dataProvider getParametersDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 */
-	public function testConstructorException( array $params ) {
-		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$instance = $this->getInstance();
 	}
 
 	/**
