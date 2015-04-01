@@ -156,7 +156,7 @@
 	"smw-sp-property-searchform": "Attribute anzeigen, die Folgendes enthalten:",
 	"smw-sp-property-searchform-inputinfo": "Bei der Eingabe wird zwischen Groß- und Kleinschreibung unterschieden. Bei der Filterung werden nur Attribute angezeigt, die der Bedingung entsprechen.",
 	"concepts": "Konzepte",
-	"smw-sp-concept-docu": "Ein [https://www.semantic-mediawiki.org/wiki/Help:Konzept Konzept] kann als „dynamische Kategorie“ betrachtet werden, bspw. als Zusammenstellung von Seiten, die nicht manuell erstellt, sondern von Semantic MediaWiki aufgrund einer Abfrage ermittelt wurde.",
+	"smw-sp-concept-docu": "Ein [https://www.semantic-mediawiki.org/wiki/Help:Konzept Konzept] kann als „dynamische Kategorie“ verstanden werden. Es ist eine Zusammenstellung von Seiten die nicht manuell sondern aufgrund einer vorgegebenen Abfrage von Semantic MediaWiki maschinell erstellt wurde.",
 	"smw-sp-concept-header": "Liste der Konzepte",
 	"smw-sp-concept-count": "{{PLURAL:$1|Das folgende Konzept ist|Die folgenden Konzepte sind}} vorhanden.",
 	"smw-sp-concept-empty": "Es wurde kein Konzept gefunden.",
