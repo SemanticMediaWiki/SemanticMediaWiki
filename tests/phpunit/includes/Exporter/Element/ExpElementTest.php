@@ -87,7 +87,7 @@ class ExpElementTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array( new ExpLiteral( 'foo', '' ) );
 		$provider[] = array( new ExpLiteral( 'foo', 'bar' ) );
 		$provider[] = array( new ExpLiteral( 'foo', '', '', null ) );
-		$provider[] = array( new ExpLiteral( 'foo', '', '',new \SMWDIBlob( 'bar' ) ) );
+		$provider[] = array( new ExpLiteral( 'foo', '', '', new \SMWDIBlob( 'bar' ) ) );
 		$provider[] = array( new ExpLiteral( 'foo', 'baz', '', new \SMWDIBlob( 'bar' ) ) );
 
 		return $provider;

@@ -164,7 +164,8 @@ class PropertySpecDiffFinderTest extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @return SMWDataItem[]
 	 */
-	public function mockStorePropertyValuesCallback( $subject, DIProperty $property, $requestoptions = null ) {
+	// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.CodeAnalysis.UnusedFunctionParameter
+	public function mockStorePropertyValuesCallback( $subject, DIProperty $property, $requestoptions = null ) { // @codingStandardsIgnoreEnd
 		return $property->getKey() === '_LIST' ? array() : $this->storeValues;
 	}
 

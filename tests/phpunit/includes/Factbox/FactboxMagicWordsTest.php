@@ -69,7 +69,8 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider textDataProvider
 	 */
-	public function testGetMagicWords( $text, array $expected ) {
+	// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.CodeAnalysis.UnusedFunctionParameter
+	public function testGetMagicWords( $text, array $expected ) { // @codingStandardsIgnoreEnd
 
 		$title = Title::newFromText( __METHOD__ );
 

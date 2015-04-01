@@ -28,8 +28,8 @@ class FakeQueryStore extends SMWSQLStore3 {
 	public function setQueryResult( SMWQueryResult $queryResult ) {
 		$this->queryResult = $queryResult;
 	}
-
-	public function getQueryResult( SMWQuery $query ) {
+	// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.CodeAnalysis.UnusedFunctionParameter
+	public function getQueryResult( SMWQuery $query ) { // @codingStandardsIgnoreEnd
 		return $this->queryResult;
 	}
 }

@@ -158,8 +158,8 @@ class HtmlTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->addCell( 'lula' )->addCell( 'lila' )
 			->addRow();
 
-		$this->stringValidator->assertThatStringContains(
-			'<table><thead></thead><tbody><tr class="row-odd"><th>Foo</th><td class="foo">lala</td><td>lula</td></tr><tr class="row-even"><th>Bar</th><td></td><td>lila</td></tr></tbody></table>',
+		$this->stringValidator->assertThatStringContains( // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
+			'<table><thead></thead><tbody><tr class="row-odd"><th>Foo</th><td class="foo">lala</td><td>lula</td></tr><tr class="row-even"><th>Bar</th><td></td><td>lila</td></tr></tbody></table>', // @codingStandardsIgnoreEnd
 			$instance->getHtml()
 		);
 	}

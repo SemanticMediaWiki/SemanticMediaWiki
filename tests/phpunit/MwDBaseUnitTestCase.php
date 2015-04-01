@@ -196,9 +196,9 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 		if ( $this->isUsableUnitTestDatabase && $destroyDatabaseTables ) {
 			try {
 				$this->mwDatabaseTableBuilder->doDestroy();
-			} catch ( \Exception $e ) {
+			} catch ( \Exception $e ) { // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.CodeAnalysis.EmptyStatement
 				// Do nothing because an instance was not available
-			}
+			} // @codingStandardsIgnoreEnd
 		}
 	}
 
