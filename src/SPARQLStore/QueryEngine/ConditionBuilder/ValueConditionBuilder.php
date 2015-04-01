@@ -157,9 +157,10 @@ class ValueConditionBuilder implements ConditionBuilder {
 			$search = $dataItem->getSortKey();
 		}
 
+		// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
 		$pattern = '^' . str_replace( array( 'https://', 'http://', '%2A', '.', '+', '{', '}', '(', ')', '|', '^', '$', '[', ']', '*', '?', "'", '\\\.', '\\', '"', '\\\\\\\"' ),
 		                              array( '', '', '*', '\.', '\+', '\{', '\}', '\(', '\)', '\|', '\^', '\$', '\[', '\]', '.*', '.' , "\'", '\\\\\.', '\\\\', '\\\\\"', '\\\\\\\\\\\"' ),
-		                              $search ) . '$';
+		                              $search ) . '$'; // @codingStandardsIgnoreEnd
 
 		$condition = $this->createFilterConditionToMatchRegexPattern(
 			$dataItem,
