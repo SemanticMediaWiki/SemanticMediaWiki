@@ -278,5 +278,6 @@
 	"smw-pa-property-predefined_errp": "\"$1\" es una propiedad predefinida para rastrear en, los errores de entrada, anotaciones de valores irregulares seguramente causados por restricciones de tipo o de [[Property:Allows value|valores permitidos]].",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"] es una propiedad predefinida que puede definir una lista de valores posibles para restringir la asignación de valores de una propiedad.",
 	"smw-datavalue-property-restricted-use": "La propiedad \"$1\" se marcó para uso restringido.",
-	"smw-datavalue-restricted-use": "Este valor de datos se marcó para uso restringido. $1"
+	"smw-datavalue-restricted-use": "Este valor de datos se marcó para uso restringido. $1",
+	"smw-query-condition-circular": "Se detectó una posible condición circular en \"$1\"."
 }
