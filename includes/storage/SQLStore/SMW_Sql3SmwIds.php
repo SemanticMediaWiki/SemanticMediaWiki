@@ -1089,7 +1089,7 @@ class SMWSql3SmwIds {
 		if ( $that->regmiss_debug + $that->reghit_debug > 0 ) {
 			$debugString .= " rate: " . round( $that->reghit_debug/( $that->regmiss_debug + $that->reghit_debug ), 3 );
 		}
-		$debugString .= " cache size: " . count( $that->regular_ids ) . "\n" ;
+		$debugString .= " cache size: " . count( $that->regular_ids ) . "\n";
 		$debugString .= "- Property cache hits: {$that->prophit_debug} misses: {$that->propmiss_debug}";
 		if ( $that->propmiss_debug + $that->prophit_debug > 0 ) {
 			$debugString .= " rate: " . round( $that->prophit_debug/( $that->propmiss_debug + $that->prophit_debug ), 3 );

@@ -58,7 +58,7 @@ class CsvResultPrinter extends FileExportPrinter {
 	 * @return string|boolean
 	 */
 	public function getFileName( SMWQueryResult $queryResult ) {
-		return $this->params['filename'] ;
+		return $this->params['filename'];
 	}
 
 	public function getQueryMode( $context ) {
