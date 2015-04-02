@@ -50,7 +50,8 @@ class EventListenerRegistry implements EventListenerCollection {
 				Exporter::getInstance()->resetCache();
 
 				$dispatchContext->set( 'propagationstop', true );
-		} );
+			}
+		);
 
 		return $this->eventListenerCollection;
 	}

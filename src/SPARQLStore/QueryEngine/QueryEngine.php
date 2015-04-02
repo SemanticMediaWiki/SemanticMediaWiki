@@ -63,7 +63,8 @@ class QueryEngine {
 	 * @param QueryResultFactory $queryResultFactory
 	 * @param EngineOptions|null $engineOptions
 	 */
-	public function __construct( SparqlDatabase $connection, CompoundConditionBuilder $compoundConditionBuilder, QueryResultFactory $queryResultFactory, EngineOptions $engineOptions = null ) {
+	 // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
+	public function __construct( SparqlDatabase $connection, CompoundConditionBuilder $compoundConditionBuilder, QueryResultFactory $queryResultFactory, EngineOptions $engineOptions = null ) { // @codingStandardsIgnoreEnd
 		$this->connection = $connection;
 		$this->compoundConditionBuilder = $compoundConditionBuilder;
 		$this->queryResultFactory = $queryResultFactory;
