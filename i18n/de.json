@@ -336,5 +336,6 @@
 	"smw-pa-property-predefined_errp": "„$1“ ist ein softwareseitig fest definiertes Attribut, das fehlerhafte Attributwerte speichert. Fehlerhafte Attributwerte entsprechen entweder nicht dem [https://semantic-mediawiki.org/wiki/Help:Datentyp Datentyp] des Attributs oder sind nicht als [https://semantic-mediawiki.org/wiki/Help:Spezialattribut_Erlaubt_Wert zulässiger Wert] für das Attribut definiert worden.",
 	"smw-pa-property-predefined_pval": "[https://semantic-mediawiki.org/wiki/Help:Spezialattribut_Erlaubt_Wert „$1“] ist ein softwareseitig fest definiertes Attribut, mit dem für ein Attribut zulässige Attributwerte definiert werden können.",
 	"smw-datavalue-property-restricted-use": "Das Attribut „$1“ wurde für eine beschränkte Verwendung markiert.",
-	"smw-datavalue-restricted-use": "Dieser Datenwert wurde für eine beschränkte Verwendung markiert. $1"
+	"smw-datavalue-restricted-use": "Dieser Datenwert wurde für eine beschränkte Verwendung markiert. $1",
+	"smw-query-condition-circular": "Eine mögliche zirkuläre Bedingung wurde in „$1“ entdeckt."
 }
