@@ -214,7 +214,7 @@ class SMWExporter {
 
 				if ( $diWikiPage->getNamespace() === NS_FILE ) {
 
-					$title = Title::makeTitle( $diWikiPage->getNamespace(), $diWikiPage->getDBkey() ) ;
+					$title = Title::makeTitle( $diWikiPage->getNamespace(), $diWikiPage->getDBkey() );
 					$file = wfFindFile( $title );
 
 					if ( $file !== false ) {

@@ -226,7 +226,7 @@ class SMWPageLister {
 			$atColumnTop = true;
 
 			// output all diWikiPages
-			for ( $index = $startChunk ; $index < $endChunk && $index < $end; ++$index ) {
+			for ( $index = $startChunk; $index < $endChunk && $index < $end; ++$index ) {
 				$dataValue = \SMW\DataValueFactory::getInstance()->newDataItemValue( $diWikiPages[$index], $diProperty );
 				// check for change of starting letter or begining of chunk
 				$sortkey = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $diWikiPages[$index] );

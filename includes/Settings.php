@@ -138,7 +138,7 @@ class Settings extends SimpleDictionary {
 		);
 
 		if ( self::$instance === null ) {
-			self::$instance = self::newFromArray( $settings ) ;
+			self::$instance = self::newFromArray( $settings );
 		}
 
 		return self::$instance;

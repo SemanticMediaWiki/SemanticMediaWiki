@@ -242,7 +242,7 @@ class MessageFormatter {
 			$messageString = $messages[0];
 		} else {
 			foreach ( $messages as &$message ) {
-				$message = $html ? Html::rawElement( 'li', array(), $message ) : $message ;
+				$message = $html ? Html::rawElement( 'li', array(), $message ) : $message;
 			}
 
 			$messageString = implode( $this->separator, $messages );

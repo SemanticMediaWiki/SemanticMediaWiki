@@ -147,7 +147,7 @@ class SMWPageProperty extends SpecialPage {
 		// Display query form
 		$html .= '<p>&#160;</p>';
 		$html .= '<form name="pageproperty" action="' . htmlspecialchars( $spectitle->getLocalURL() ) . '" method="get">' . "\n" .
-		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
+		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>';
 		$html .= wfMessage( 'smw_pp_from' )->text() . ' <input type="text" name="from" value="' . htmlspecialchars( $pagename ) . '" />' . "&#160;&#160;&#160;\n";
 		$html .= wfMessage( 'smw_pp_type' )->text() . ' <input type="text" name="type" value="' . htmlspecialchars( $propname ) . '" />' . "\n";
 		$html .= '<input type="submit" value="' . wfMessage( 'smw_pp_submit' )->text() . "\"/>\n</form>\n";
