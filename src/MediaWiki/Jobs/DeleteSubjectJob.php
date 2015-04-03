@@ -87,7 +87,10 @@ class DeleteSubjectJob extends JobBase {
 	}
 
 	protected function fetchSerializedSemanticData() {
-		return ApplicationFactory::getInstance()->newSerializerFactory()->serialize(
+
+		$semanticDataSerializer = ApplicationFactory::getInstance()->newSerializerFactory()->newSemanticDataSerializer();
+
+		return $semanticDataSerializer->serialize(
 			ApplicationFactory::getInstance()->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->getTitle() ) )
 		);
 	}

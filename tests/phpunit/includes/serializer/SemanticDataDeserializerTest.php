@@ -7,90 +7,61 @@ use SMW\Deserializers\SemanticDataDeserializer;
 /**
  * @covers \SMW\Deserializers\SemanticDataDeserializer
  *
+ * @group semantic-mediawiki
  *
- * @group SMW
- * @group SMWExtension
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class SemanticDataDeserializerTest extends SemanticMediaWikiTestCase {
+class SemanticDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\Deserializers\SemanticDataDeserializer';
+	public function testCanConstructor() {
+
+		$this->assertInstanceOf(
+			'\SMW\Deserializers\SemanticDataDeserializer',
+			new SemanticDataDeserializer()
+		);
 	}
 
-	/**
-	 * Helper method that returns a SemanticDataDeserializer object
-	 *
-	 * @since 1.9
-	 */
-	private function newDeserializerInstance() {
-		return new SemanticDataDeserializer();
-	}
+	public function testDeserializerInvalidVersionThrowsException() {
 
-	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newDeserializerInstance() );
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testDeserializerInvalidVersionOutOfBoundsException() {
+		$instance = new SemanticDataDeserializer();
 
 		$this->setExpectedException( 'OutOfBoundsException' );
 
-		$instance = $this->newDeserializerInstance();
-		$instance->deserialize( array( 'version' => 'Foo' ) );
-
+		$instance->deserialize(
+			array( 'version' => 'Foo' )
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testDeserializerInvalidSubjectDataItemException() {
+	public function testDeserializerForInvalidSubjectThrowsException() {
+
+		$instance = new SemanticDataDeserializer();
 
 		$this->setExpectedException( '\SMW\DataItemException' );
 
-		$instance = $this->newDeserializerInstance();
-		$instance->deserialize( array( 'subject' => '--#Foo' ) );
-
+		$instance->deserialize(
+			array( 'subject' => '--#Foo' )
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testDeserializerMissingSubjectOutOfBoundsException() {
+	public function testDeserializerForMissingSubjectThrowsException() {
+
+		$instance = new SemanticDataDeserializer();
 
 		$this->setExpectedException( 'OutOfBoundsException' );
-
-		$instance = $this->newDeserializerInstance();
 		$instance->deserialize( array() );
-
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testDeserializerSubjectWithoutData() {
+	public function testDeserializerForEmptyData() {
 
-		$instance = $this->newDeserializerInstance();
+		$instance = new SemanticDataDeserializer();
 
 		$this->assertInstanceOf(
 			'SMW\SemanticData',
 			$instance->deserialize( array( 'subject' => 'Foo#0#' ) )
 		);
-
 	}
 
 }

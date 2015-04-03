@@ -58,10 +58,12 @@ class BrowseBySubject extends ApiBase {
 			->getStore()
 			->getSemanticData( $dataItem );
 
+		$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
+
 		$this->getResult()->addValue(
 			null,
 			'query',
-			$this->doFormat( $applicationFactory->newSerializerFactory()->serialize( $semanticData ) )
+			$this->doFormat( $semanticDataSerializer->serialize( $semanticData ) )
 		);
 	}
 

@@ -57,6 +57,14 @@ class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 			$expected,
 			$instance->deserialize( $seralization )
 		);
+	}
+
+	/**
+	 * @dataProvider expDataProvider
+	 */
+	public function testDeserializeToCompareHash( $seralization, $expected ) {
+
+		$instance = new ExpDataDeserializer();
 
 		$this->assertEquals(
 			$expected->getHash(),

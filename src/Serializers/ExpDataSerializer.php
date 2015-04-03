@@ -23,20 +23,11 @@ class ExpDataSerializer implements Serializer {
 	 */
 	public function serialize( $expData ) {
 
-		if ( !$this->isSerializerFor( $expData ) ) {
+		if ( !$expData instanceof ExpData ) {
 			throw new OutOfBoundsException( 'Object is not supported' );
 		}
 
 		return $this->doSerialize( $expData ) + array( 'serializer' => __CLASS__, 'version' => 0.1 );
-	}
-
-	/**
-	 * @see Serializer::isSerializerFor
-	 *
-	 * @since 2.2
-	 */
-	public function isSerializerFor( $expData ) {
-		return $expData instanceof ExpData;
 	}
 
 	private function doSerialize( $expData ) {

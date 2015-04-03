@@ -17,10 +17,7 @@ use SMWDIBlob as DIBlob;
 use Title;
 
 /**
- * @group SMW
- * @group SMWExtension
  * @group semantic-mediawiki-integration
- * @group mediawiki-database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -50,9 +47,11 @@ class SemanticDataSerializationDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$serializerFactory = new SerializerFactory();
 
+		$serialization = $serializerFactory->getSerializerFor( $semanticDataAfterUpdate )->serialize( $semanticDataAfterUpdate );
+
 		$this->assertEquals(
 			$semanticDataAfterUpdate->getHash(),
-			$serializerFactory->deserialize( $serializerFactory->serialize( $semanticDataAfterUpdate ) )->getHash()
+			$serializerFactory->getDeserializerFor( $serialization )->deserialize( $serialization )->getHash()
 		);
 	}
 

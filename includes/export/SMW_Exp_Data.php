@@ -75,7 +75,7 @@ class SMWExpData implements Element {
 	public function getHash() {
 
 		$hash = array();
-		$hash[] = $this->getSubject()->getHash();
+		$hash[] = $this->m_subject->getHash();
 
 		foreach ( $this->getProperties() as $property ) {
 

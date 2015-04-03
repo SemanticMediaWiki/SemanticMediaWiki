@@ -15,11 +15,8 @@ use SMW\Subobject;
 use SMW\SerializerFactory;
 
 /**
- *
- * @group SMW
- * @group SMWExtension
  * @group semantic-mediawiki-integration
- * @group mediawiki-database
+ * @group medium
  *
  * @license GNU GPL v2+
  * @since 2.0
@@ -59,7 +56,7 @@ class ApiBrowseBySubjectDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SemanticData',
-			$this->serializerFactory->deserialize( $resultData['query'] )
+			$this->serializerFactory->getDeserializerFor( $resultData['query'] )->deserialize( $resultData['query'] )
 		);
 
 		$this->assertInternalType(
@@ -87,7 +84,7 @@ class ApiBrowseBySubjectDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SemanticData',
-			$this->serializerFactory->deserialize( $resultData['query'] )
+			$this->serializerFactory->getDeserializerFor( $resultData['query'] )->deserialize( $resultData['query'] )
 		);
 
 		$this->assertInternalType(
@@ -127,7 +124,7 @@ class ApiBrowseBySubjectDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SemanticData',
-			$this->serializerFactory->deserialize( $resultData['query'] )
+			$this->serializerFactory->getDeserializerFor( $resultData['query'] )->deserialize( $resultData['query'] )
 		);
 
 		$this->assertInternalType(

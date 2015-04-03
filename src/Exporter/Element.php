@@ -11,7 +11,7 @@ namespace SMW\Exporter;
 interface Element {
 
 	/**
-	 * A dataItem an export element is associated with
+	 * The dataItem that is associated with an export element
 	 *
 	 * @since 2.2
 	 *
