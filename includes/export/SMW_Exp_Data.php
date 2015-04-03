@@ -68,6 +68,30 @@ class SMWExpData implements Element {
 	}
 
 	/**
+	 * @since 2.2
+	 *
+	 * @return string
+	 */
+	public function getHash() {
+
+		$hash = array();
+		$hash[] = $this->getSubject()->getHash();
+
+		foreach ( $this->getProperties() as $property ) {
+
+			$hash[] = $property->getHash();
+
+			foreach ( $this->getValues( $property ) as $child ) {
+				$hash[] = $child->getHash();
+			}
+		}
+
+		sort( $hash );
+
+		return md5( implode( '#', $hash ) );
+	}
+
+	/**
 	 * Turn an array of SMWExpElements into an RDF collection.
 	 *
 	 * @param $elements array of SMWExpElement
@@ -117,10 +141,12 @@ class SMWExpData implements Element {
 	 * @param Element $child
 	 */
 	public function addPropertyObjectValue( SMWExpNsResource $property, Element $child ) {
+
 		if ( !array_key_exists( $property->getUri(), $this->m_edges ) ) {
 			$this->m_children[$property->getUri()] = array();
 			$this->m_edges[$property->getUri()] = $property;
 		}
+
 		$this->m_children[$property->getUri()][] = $child;
 	}
 
@@ -141,11 +167,12 @@ class SMWExpData implements Element {
 	 * @return array of SMWExpElement
 	 */
 	public function getValues( SMWExpResource $property ) {
+
 		if ( array_key_exists( $property->getUri(), $this->m_children ) ) {
 			return $this->m_children[$property->getUri()];
-		} else {
-			return array();
 		}
+
+		return array();
 	}
 
 	/**
