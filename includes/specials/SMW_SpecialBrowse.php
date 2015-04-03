@@ -355,7 +355,9 @@ class SMWSpecialBrowse extends SpecialPage {
 		$options = new SMWRequestOptions();
 		$options->sort = true;
 		$options->limit = SMWSpecialBrowse::$incomingpropertiescount;
-		if ( $this->offset > 0 ) $options->offset = $this->offset;
+		if ( $this->offset > 0 ) {
+			$options->offset = $this->offset;
+		}
 
 		$inproperties = \SMW\StoreFactory::getStore()->getInProperties( $this->subject->getDataItem(), $options );
 

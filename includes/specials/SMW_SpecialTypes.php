@@ -59,7 +59,9 @@ class SMWSpecialTypes extends SpecialPage {
 	protected function getTypeProperties( $typeLabel ) {
 		global $wgRequest, $smwgTypePagingLimit;
 
-		if ( $smwgTypePagingLimit <= 0 ) return ''; // not too useful, but we comply to this request
+		if ( $smwgTypePagingLimit <= 0 ) {
+			return ''; // not too useful, but we comply to this request
+		}
 
 		$from = $wgRequest->getVal( 'from' );
 		$until = $wgRequest->getVal( 'until' );

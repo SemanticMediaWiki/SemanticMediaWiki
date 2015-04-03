@@ -441,8 +441,9 @@ class SemanticData {
 			unset( $this->mPropVals[$property->getKey()][$dataItem->getHash()] );
 		} else {
 			foreach( $this->mPropVals[$property->getKey()] as $index => $di ) {
-				if( $di->equals( $dataItem ) )
+				if( $di->equals( $dataItem ) ) {
 					unset( $this->mPropVals[$property->getKey()][$index] );
+				}
 			}
 			$this->mPropVals[$property->getKey()] = array_values( $this->mPropVals[$property->getKey()] );
 		}

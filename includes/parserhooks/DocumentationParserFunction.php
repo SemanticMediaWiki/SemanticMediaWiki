@@ -135,7 +135,9 @@ class DocumentationParserFunction extends \ParserHook {
 
 		foreach ( $paramDefinitions as $parameter ) {
 			$hasAliases = count( $parameter->getAliases() ) != 0;
-			if ( $hasAliases ) break;
+			if ( $hasAliases ) {
+				break;
+			}
 		}
 
 		foreach ( $paramDefinitions as $parameter ) {
@@ -194,7 +196,9 @@ class DocumentationParserFunction extends \ParserHook {
 			$default = $default ? 'yes' : 'no';
 		}
 
-		if ( $default === '' ) $default = "''" . $this->msg( 'validator-describe-empty' ) . "''";
+		if ( $default === '' ) {
+			$default = "''" . $this->msg( 'validator-describe-empty' ) . "''";
+		}
 
 		return "| {$parameter->getName()}\n"
 . ( $hasAliases ? '| ' . $aliases . "\n" : '' ) .

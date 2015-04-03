@@ -213,8 +213,9 @@ class SMWSQLStore3 extends SMWStore {
 ///// Reading methods /////
 
 	public function getReader() {
-		if( $this->reader == false )
+		if( $this->reader == false ) {
 			$this->reader = new SMWSQLStore3Readers( $this );//Initialize if not done already
+		}
 
 		return $this->reader;
 	}
@@ -255,8 +256,9 @@ class SMWSQLStore3 extends SMWStore {
 
 
 	public function getWriter() {
-		if( $this->writer == false )
+		if( $this->writer == false ) {
 			$this->writer = new SMWSQLStore3Writers( $this );//Initialize if not done already
+		}
 
 		return $this->writer;
 	}
@@ -406,8 +408,9 @@ class SMWSQLStore3 extends SMWStore {
 ///// Setup store /////
 
 	public function getSetupHandler() {
-		if( $this->setupHandler == false )
+		if( $this->setupHandler == false ) {
 			$this->setupHandler = new SMWSQLStore3SetupHandlers( $this );//Initialize if not done already
+		}
 
 		return $this->setupHandler;
 	}

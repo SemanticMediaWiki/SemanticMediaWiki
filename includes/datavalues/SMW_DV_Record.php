@@ -334,7 +334,9 @@ class SMWRecordValue extends SMWDataValue {
 				$result .= '?';
 			}
 		}
-		if ( ( $i > 1 ) && ( $type != 4 ) ) $result .= ')';
+		if ( ( $i > 1 ) && ( $type != 4 ) ) {
+			$result .= ')';
+		}
 
 		return $result;
 	}

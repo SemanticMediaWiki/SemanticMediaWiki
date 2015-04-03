@@ -101,7 +101,9 @@ class SMWQueryResult {
 		$page = current( $this->mResults );
 		next( $this->mResults );
 
-		if ( $page === false ) return false;
+		if ( $page === false ) {
+			return false;
+		}
 
 		$row = array();
 

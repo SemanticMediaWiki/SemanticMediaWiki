@@ -206,7 +206,9 @@ class SMWQuantityValue extends SMWNumberValue {
 	 * This method initializes $m_displayunits.
 	 */
 	protected function initDisplayData() {
-		if ( $this->m_displayunits !== false ) return; // do the below only once
+		if ( $this->m_displayunits !== false ) {
+			return; // do the below only once
+		}
 		$this->initConversionData(); // needed to normalise unit strings
 		$this->m_displayunits = array();
 

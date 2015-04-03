@@ -288,7 +288,9 @@ class RecurringEvents {
 				$prev_year = $cur_date->getYear();
 
 				$new_month = ( $prev_month + $period ) % 12;
-				if ( $new_month == 0 ) $new_month = 12;
+				if ( $new_month == 0 ) {
+					$new_month = 12;
+				}
 
 				$new_year = $prev_year + floor( ( $prev_month + $period - 1 ) / 12 );
 				$cur_date_jd += ( 28 * $period ) - 7;

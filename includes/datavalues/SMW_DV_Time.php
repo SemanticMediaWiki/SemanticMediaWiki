@@ -157,7 +157,9 @@ class SMWTimeValue extends SMWDataValue {
 				if ( ( $era === false ) && ( $hours === false ) && ( $timeoffset == 0 ) ) {
 					try {
 						$jd = floatval( reset( $datecomponents ) );
-						if ( $calendarmodel == 'MJD' ) $jd += self::MJD_EPOCH;
+						if ( $calendarmodel == 'MJD' ) {
+							$jd += self::MJD_EPOCH;
+						}
 						$this->m_dataitem = SMWDITime::newFromJD( $jd, SMWDITime::CM_GREGORIAN, SMWDITime::PREC_YMDT, $this->m_typeid );
 					} catch ( SMWDataItemException $e ) {
 						$this->addError( wfMessage( 'smw_nodatetime', $this->m_wikivalue )->inContentLanguage()->text() );
@@ -752,7 +754,9 @@ class SMWTimeValue extends SMWDataValue {
 		$precision = $dataitem->getPrecision();
 
 		$year = $this->getYear();
-		if ( $year < 0 || $year > 9999 ) $year = '0000';
+		if ( $year < 0 || $year > 9999 ) {
+			$year = '0000';
+		}
 		$year = str_pad( $year, 4, "0", STR_PAD_LEFT );
 
 		if ( $precision <= SMWDITime::PREC_Y ) {

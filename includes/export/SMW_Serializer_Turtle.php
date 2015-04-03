@@ -129,7 +129,9 @@ class SMWTurtleSerializer extends SMWSerializer{
 	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
 	 */
 	protected function serializeNestedExpData( SMWExpData $data, $indent ) {
-		if ( count( $data->getProperties() ) == 0 ) return; // nothing to export
+		if ( count( $data->getProperties() ) == 0 ) {
+			return; // nothing to export
+		}
 		$this->recordDeclarationTypes( $data );
 
 		$bnode = false;
