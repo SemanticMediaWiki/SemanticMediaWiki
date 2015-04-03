@@ -86,11 +86,11 @@
 		],
 		"cs-standalone": [
 			"composer validate --no-interaction",
-			"vendor/bin/phpcs src/* --standard=phpcs.xml --extensions=php -sp"
+			"vendor/bin/phpcs src/* includes/* tests/* --standard=phpcs.xml --extensions=php -sp"
 		],
 		"cs": [
 			"composer cs-standalone",
-			"vendor/bin/phpmd src/ text phpmd.xml"
+			"vendor/bin/phpmd src/,includes/,tests/ text phpmd.xml"
 		],
 		"ci": [
 			"composer phpunit",
