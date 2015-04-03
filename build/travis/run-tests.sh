@@ -12,6 +12,9 @@ then
 elif [ "$TYPE" == "benchmark" ]
 then
 	composer phpunit -q -- --group semantic-mediawiki-benchmark
+elif [ "$TYPE" == "debug" ]
+then
+	composer phpunit -q -- --debug
 else
 	composer phpunit -q
 fi
