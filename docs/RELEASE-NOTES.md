@@ -14,6 +14,10 @@ This is not a release yet.
 * #893 Added information about "improper value for" to the statistics overview and as `API` parameter (`&errorcount`)
 * #913 Fixed exception for usage of `Has subobject` as free annotation
 * #914 Added restriction for "manual" annotation use to some pre-defined properties (e.g. `Has subobject`, `Has query`)
+ 
+## Enhancements
+
+* #958 Replaced defunct SMWRegsitry wiki registration on Special:SMWAdmin with a link to WikiApiary
 
 ## Bug fixes
 
