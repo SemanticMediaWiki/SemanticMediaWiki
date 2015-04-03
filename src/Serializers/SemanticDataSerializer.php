@@ -8,11 +8,7 @@ use SMW\SemanticData;
 use OutOfBoundsException;
 
 /**
- * SemanticData serializer
- *
- * @ingroup Serializers
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
@@ -26,28 +22,14 @@ class SemanticDataSerializer implements Serializer {
 	 */
 	public function serialize( $semanticData ) {
 
-		if ( !$this->isSerializerFor( $semanticData ) ) {
+		if ( !$semanticData instanceof SemanticData ) {
 			throw new OutOfBoundsException( 'Object is not supported' );
 		}
 
-		return $this->serializeSemanticData( $semanticData ) + array( 'serializer' => __CLASS__, 'version' => 0.1 );
+		return $this->doSerialize( $semanticData ) + array( 'serializer' => __CLASS__, 'version' => 0.1 );
 	}
 
-	/**
-	 * @see Serializer::isSerializerFor
-	 *
-	 * @since  1.9
-	 */
-	public function isSerializerFor( $semanticData ) {
-		return $semanticData instanceof SemanticData;
-	}
-
-	/**
-	 * @since  1.9
-	 *
-	 * @return array
-	 */
-	protected function serializeSemanticData( SemanticData $semanticData ) {
+	private function doSerialize( SemanticData $semanticData ) {
 
 		$data = array(
 			'subject' => $semanticData->getSubject()->getSerialization(),
@@ -68,7 +50,7 @@ class SemanticDataSerializer implements Serializer {
 	 *
 	 * @return array
 	 */
-	protected function serializeProperty( $semanticData ) {
+	private function serializeProperty( $semanticData ) {
 
 		$properties = array();
 
@@ -92,7 +74,7 @@ class SemanticDataSerializer implements Serializer {
 	 *
 	 * @return array
 	 */
-	protected function serializeDataItem( $semanticData, $property ) {
+	private function serializeDataItem( $semanticData, $property ) {
 
 		$dataItems = array();
 
@@ -111,12 +93,12 @@ class SemanticDataSerializer implements Serializer {
 	 *
 	 * @return array
 	 */
-	protected function serializeSubobject( $subSemanticData ) {
+	private function serializeSubobject( $subSemanticData ) {
 
 		$subobjects = array();
 
 		foreach ( $subSemanticData as $semanticData ) {
-			$subobjects[] = $this->serializeSemanticData( $semanticData );
+			$subobjects[] = $this->doSerialize( $semanticData );
 		}
 
 		return $subobjects;

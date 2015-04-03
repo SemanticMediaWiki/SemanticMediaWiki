@@ -3,9 +3,7 @@
 namespace SMW\Tests\Serializers;
 
 use SMW\Serializers\SemanticDataSerializer;
-
-use SMW\Tests\Utils\SemanticDataFactory;
-
+use SMW\Tests\Utils\UtilityFactory;
 use SMW\DataValueFactory;
 use SMw\SemanticData;
 use SMW\DIWikiPage;
@@ -16,9 +14,7 @@ use Title;
 /**
  * @covers \SMW\Serializers\SemanticDataSerializer
  *
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -61,7 +57,8 @@ class SemanticDataSerializerTest extends \PHPUnit_Framework_TestCase {
 
 	public function semanticDataProvider() {
 
-		$this->semanticDataFactory = new SemanticDataFactory();
+		// Is a dataprovider therefore can't use the setUp
+		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 		$this->dataValueFactory = DataValueFactory::getInstance();
 
 		$title = Title::newFromText( 'Foo' );

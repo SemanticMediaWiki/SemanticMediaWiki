@@ -37,24 +37,13 @@ class ExpDataDeserializer implements Deserializer {
 			$expData = $this->newExpData( $serialization['subject'] );
 		}
 
-		if ( !( $this->isDeserializerFor( $expData ) ) ) {
+		if ( !$expData instanceof ExpData ) {
 			throw new OutOfBoundsException( 'ExpData could not be created probably due to an invalid subject' );
 		}
 
 		$this->doDeserialize( $serialization, $expData );
 
 		return $expData;
-	}
-
-	/**
-	 * @see Deserializers::isDeserializerFor
-	 *
-	 * @since 2.2
-	 *
-	 * @return boolean
-	 */
-	public function isDeserializerFor( $expData ) {
-		return $expData instanceof ExpData;
 	}
 
 	private function newExpData( $subject ) {

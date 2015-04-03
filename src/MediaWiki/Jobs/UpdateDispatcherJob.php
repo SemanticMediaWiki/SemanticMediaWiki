@@ -137,11 +137,16 @@ class UpdateDispatcherJob extends JobBase {
 	}
 
 	protected function addUpdateJobsFromSerializedData() {
-		if ( $this->hasParameter( 'semanticData' ) ) {
-			$this->addUpdateJobsForProperties(
-				ApplicationFactory::getInstance()->newSerializerFactory()->deserialize( $this->getParameter( 'semanticData' ) )->getProperties()
-			);
+
+		if ( !$this->hasParameter( 'semanticData' ) ) {
+			return;
 		}
+
+		$semanticDataDeserializer = ApplicationFactory::getInstance()->newSerializerFactory()->newSemanticDataDeserializer();
+
+		$this->addUpdateJobsForProperties(
+			$semanticDataDeserializer->deserialize( $this->getParameter( 'semanticData' ) )->getProperties()
+		);
 	}
 
 	protected function addUniqueUpdateJobs( array $subjects = array() ) {

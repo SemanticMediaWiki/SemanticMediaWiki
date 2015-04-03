@@ -316,7 +316,10 @@ class SMWQueryResult {
 	 * @return array
 	 */
 	public function serializeToArray() {
-		$serialized = SerializerFactory::serialize( $this );
+
+		$serializerFactory = new SerializerFactory();
+		$serialized = $serializerFactory->newQueryResultSerializer()->serialize( $this );
+
 		reset( $this->mResults );
 		return $serialized;
 	}

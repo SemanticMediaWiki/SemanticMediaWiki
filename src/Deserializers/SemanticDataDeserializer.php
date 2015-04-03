@@ -16,11 +16,7 @@ use SMWErrorValue as ErrorValue;
 use OutOfBoundsException;
 
 /**
- * SemanticData deserializer
- *
- * @ingroup Deserializers
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
@@ -28,12 +24,9 @@ use OutOfBoundsException;
 class SemanticDataDeserializer implements Deserializer {
 
 	/**
-	 * Cache for already processed Id's which is to minimize lock-up performance
-	 * during unserialization
-	 *
 	 * @var array
 	 */
-	protected $dataItemTypeIdCache = array();
+	private $dataItemTypeIdCache = array();
 
 	/**
 	 * @see Deserializers::deserialize
@@ -48,37 +41,26 @@ class SemanticDataDeserializer implements Deserializer {
 		$semanticData = null;
 
 		if ( isset( $data['version'] ) && $data['version'] !== 0.1 ) {
-			throw new OutOfBoundsException( 'Serializer/Unserializer version do not match, please update your data' );
+			throw new OutOfBoundsException( 'Serializer/Unserializer version does not match, please update your data' );
 		}
 
 		if ( isset( $data['subject'] ) ) {
 			$semanticData = new SemanticData( DIWikiPage::doUnserialize( $data['subject'] ) );
 		}
 
-		if ( !( $this->isDeserializerFor( $semanticData ) ) ) {
+		if ( !$semanticData instanceof SemanticData ) {
 			throw new OutOfBoundsException( 'SemanticData could not be created probably due to a missing subject' );
 		}
 
-		$this->unserializeSemanticData( $data, $semanticData );
+		$this->doDeserialize( $data, $semanticData );
 
 		return $semanticData;
 	}
 
 	/**
-	 * @see Deserializers::isDeserializerFor
-	 *
-	 * @since 1.9
-	 *
-	 * @return boolean
-	 */
-	public function isDeserializerFor( $semanticData ) {
-		return $semanticData instanceof SemanticData;
-	}
-
-	/**
 	 * @return null
 	 */
-	protected function unserializeSemanticData( $data, &$semanticData ) {
+	private function doDeserialize( $data, &$semanticData ) {
 
 		$property = null;
 
@@ -104,7 +86,7 @@ class SemanticDataDeserializer implements Deserializer {
 					 */
 					if ( $key === 'dataitem' ) {
 						foreach ( $value as $val ) {
-							$this->unserializeDataItem( $property, $data, $val, $semanticData );
+							$this->doDeserializeDataItem( $property, $data, $val, $semanticData );
 						}
 					}
 				}
@@ -115,7 +97,7 @@ class SemanticDataDeserializer implements Deserializer {
 	/**
 	 * @return DataItem
 	 */
-	protected function unserializeDataItem( $property, $data, $value, $semanticData ) {
+	private function doDeserializeDataItem( $property, $data, $value, $semanticData ) {
 
 		$dataItem = null;
 
@@ -169,7 +151,7 @@ class SemanticDataDeserializer implements Deserializer {
 	 *
 	 * @return DIContainer|null
 	 */
-	protected function unserializeSubobject( $data, $id, $semanticData ) {
+	private function unserializeSubobject( $data, $id, $semanticData ) {
 
 		if ( !isset( $data['sobj'] ) ) {
 			return null;
@@ -178,7 +160,7 @@ class SemanticDataDeserializer implements Deserializer {
 		foreach ( $data['sobj'] as $subobject ) {
 
 			if ( $subobject['subject'] === $id ) {
-				$this->unserializeSemanticData( $subobject, $semanticData );
+				$this->doDeserialize( $subobject, $semanticData );
 			}
 
 		}
@@ -201,7 +183,7 @@ class SemanticDataDeserializer implements Deserializer {
 	 *
 	 * @return integer
 	 */
-	protected function getDataItemId( DIProperty $property ) {
+	private function getDataItemId( DIProperty $property ) {
 
 		if ( !isset( $this->dataItemTypeIdCache[$property->getKey()] ) ) {
 			$this->dataItemTypeIdCache[$property->getKey()] = DataTypeRegistry::getInstance()->getDataItemId( $property->findPropertyTypeID() );

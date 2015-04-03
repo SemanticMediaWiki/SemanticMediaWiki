@@ -192,7 +192,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testRunJobOnMockWithParameters( $setup, $expected ) {
 
-		$semanticData = $this->applicationFactory->newSerializerFactory()->serialize(
+		$semanticData = $this->applicationFactory->newSerializerFactory()->newSemanticDataSerializer()->serialize(
 			new SemanticData( DIWikiPage::newFromTitle( $setup['title'] )
 		) );
 
