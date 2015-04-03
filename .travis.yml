@@ -8,10 +8,6 @@ matrix:
   include:
     - env: DB=mysql; MW=master@5cc1f1d; TYPE=coverage
       php: 5.3
-    - env: DB=sqlite; MW=master@5cc1f1d; TYPE=composer
-      php: 5.6
-    - env: DB=mysql; MW=1.19.20; TYPE=relbuild
-      php: 5.4
     - env: DB=mysql; MW=1.23.5; FUSEKI=1.1.1
       php: 5.4
     - env: DB=mysql; MW=1.23.5; VIRTUOSO=6.1
@@ -22,10 +18,15 @@ matrix:
       php: 5.5
     - env: DB=postgres; MW=1.19.20;
       php: 5.4
-    - env: DB=sqlite; MW=master@5cc1f1d; PHPUNIT=4.3.*
-      php: hhvm-nightly
     - env: DB=mysql; MW=master@5cc1f1d; PHPUNIT=4.3.*; TYPE=benchmark
       php: hhvm
+    - env: DB=sqlite; MW=master@5cc1f1d; PHPUNIT=4.3.*; TYPE=debug
+      php: hhvm-nightly
+    - env: DB=sqlite; MW=master@5cc1f1d; TYPE=composer
+      php: 5.6
+    - env: DB=mysql; MW=1.19.20; TYPE=relbuild
+      php: 5.4
+
   exclude:
     - env: THENEEDFORTHIS=FAIL
   allow_failures:
