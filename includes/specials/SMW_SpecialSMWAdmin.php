@@ -170,12 +170,9 @@ class SMWAdmin extends SpecialPage {
 		return $this->htmlFormBuilder
 			->setName( 'announce' )
 			->setMethod( 'get' )
-			->setActionUrl( 'https://semantic-mediawiki.org/wiki/Special:SMWRegistry' )
-			->addHiddenField( 'url', $GLOBALS['wgServer'] . str_replace( '$1', '', $GLOBALS['wgArticlePath'] ) )
-			->addHiddenField( 'return', 'Special:SMWAdmin' )
+			->setActionUrl( 'https://wikiapiary.com/wiki/WikiApiary:Semantic_MediaWiki_Registry' )
 			->addHeader( 'h2', $this->messageBuilder->getMessage('smw_smwadmin_announce' )->text() )
-			->addParagraph( $this->messageBuilder->getMessage( 'smw_smwadmin_announcedocu' )->text() )
-			->addParagraph( $this->messageBuilder->getMessage( 'smw_smwadmin_announcebutton' )->text() )
+			->addParagraph( $this->messageBuilder->getMessage( 'smw_smwadmin_announce_text' )->text() )
 			->addSubmitButton( $this->messageBuilder->getMessage( 'smw_smwadmin_announce' )->text() )
 			->getForm();
 	}
