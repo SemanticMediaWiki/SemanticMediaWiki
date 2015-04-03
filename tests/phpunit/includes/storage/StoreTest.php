@@ -65,15 +65,8 @@ class StoreTest extends MwDBaseUnitTestCase {
 		$store = StoreFactory::getStore();
 		$result = $store->getPropertyValues( $subject, $property, $requestOptions );
 
-		$this->assertTrue( is_array( $result ) );
-
-		foreach( $result as $di ) {
-			$this->assertInstanceOf(
-				'\SMWDataItem',
-				$di,
-				"Result should be instance of SMWDataItem."
-			);
-		}
+		$this->assertInternalType( 'array', $result );
+		$this->assertContainsOnlyInstancesOf( '\SMWDataItem', $result );
 	}
 
 	public function getPropertySubjectsDataProvider() {
@@ -142,7 +135,7 @@ class StoreTest extends MwDBaseUnitTestCase {
 
 		$this->assertInstanceOf( '\SMW\SQLStore\ListLookup', $result );
 		foreach( $result->fetchList() as $row ) {
-			$this->assertEquals( 2, count( $row ) );
+			$this->assertCount( 2, $row );
 
 			$this->assertInstanceOf(
 				'\SMWDataItem',
