@@ -412,10 +412,14 @@ class SMWExportController {
 		// transform pages into queued short titles
 		foreach ( $pages as $page ) {
 			$title = Title::newFromText( $page );
-			if ( null === $title ) continue; // invalid title name given
+			if ( null === $title ) {
+				continue; // invalid title name given
+			}
 			if ( $revisiondate !== '' ) { // filter page list by revision date
 				$rev = Revision::getTimeStampFromID( $title, $title->getLatestRevID() );
-				if ( $rev < $revisiondate ) continue;
+				if ( $rev < $revisiondate ) {
+					continue;
+				}
 			}
 
 			$diPage = SMWDIWikiPage::newFromTitle( $title );
@@ -497,8 +501,12 @@ class SMWExportController {
 
 		for ( $id = 1; $id <= $end; $id += 1 ) {
 			$title = Title::newFromID( $id );
-			if ( is_null( $title ) || !smwfIsSemanticsProcessed( $title->getNamespace() ) ) continue;
-			if ( !SMWExportController::fitsNsRestriction( $ns_restriction, $title->getNamespace() ) ) continue;
+			if ( is_null( $title ) || !smwfIsSemanticsProcessed( $title->getNamespace() ) ) {
+				continue;
+			}
+			if ( !SMWExportController::fitsNsRestriction( $ns_restriction, $title->getNamespace() ) ) {
+				continue;
+			}
 			$a_count += 1; // DEBUG
 
 			$diPage = SMWDIWikiPage::newFromTitle( $title );
@@ -555,7 +563,9 @@ class SMWExportController {
 		$query = '';
 		foreach ( $smwgNamespacesWithSemanticLinks as $ns => $enabled ) {
 			if ( $enabled ) {
-				if ( $query !== '' ) $query .= ' OR ';
+				if ( $query !== '' ) {
+					$query .= ' OR ';
+				}
 				$query .= 'page_namespace = ' . $db->addQuotes( $ns );
 			}
 		}
@@ -718,9 +728,15 @@ class SMWExportController {
 	 * @param $ns integer the namespace constant to be checked
 	 */
 	static public function fitsNsRestriction( $res, $ns ) {
-		if ( $res === false ) return true;
-		if ( is_array( $res ) ) return in_array( $ns, $res );
-		if ( $res >= 0 ) return ( $res == $ns );
+		if ( $res === false ) {
+			return true;
+		}
+		if ( is_array( $res ) ) {
+			return in_array( $ns, $res );
+		}
+		if ( $res >= 0 ) {
+			return ( $res == $ns );
+		}
 		return ( ( $res != NS_CATEGORY ) && ( $res != SMW_NS_PROPERTY ) && ( $res != SMW_NS_TYPE ) );
 	}
 

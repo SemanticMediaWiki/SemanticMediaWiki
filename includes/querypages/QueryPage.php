@@ -217,8 +217,9 @@ abstract class QueryPage extends \QueryPage {
 
 		if ( $num > 0 ) {
 			$s = array();
-			if ( ! $this->listoutput )
+			if ( ! $this->listoutput ) {
 				$s[] = $this->openList( $offset );
+			}
 
 			foreach ( $res as $r ) {
 				$format = $this->formatResult( $sk, $r );
@@ -227,8 +228,9 @@ abstract class QueryPage extends \QueryPage {
 				}
 			}
 
-			if ( ! $this->listoutput )
+			if ( ! $this->listoutput ) {
 				$s[] = $this->closeList();
+			}
 			$str = $this->listoutput ? $this->getLanguage()->listToText( $s ) : implode( '', $s );
 			$out->addHTML( $str );
 		}

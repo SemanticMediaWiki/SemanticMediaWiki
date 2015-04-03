@@ -76,15 +76,18 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		if ( $wgRequest->getCheck( 'q' ) ) { // called by own Special, ignore full param string in that case
 			$query_val = $wgRequest->getVal( 'p' );
 
-			if ( !empty( $query_val ) )
+			if ( !empty( $query_val ) ) {
 				// p is used for any additional parameters in certain links.
 				$rawparams = SMWInfolink::decodeParameters( $query_val, false );
+			}
 			else {
 				$query_values = $wgRequest->getArray( 'p' );
 
 				if ( is_array( $query_values ) ) {
 					foreach ( $query_values as $key => $val ) {
-						if ( empty( $val ) ) unset( $query_values[$key] );
+						if ( empty( $val ) ) {
+							unset( $query_values[$key] );
+						}
 					}
 				}
 
@@ -133,7 +136,9 @@ class SMWAskPage extends SMWQuerySpecialPage {
 				$this->m_params['order'] = '';
 
 				foreach ( $order_values as $order_value ) {
-					if ( $order_value === '' ) $order_value = 'ASC';
+					if ( $order_value === '' ) {
+						$order_value = 'ASC';
+					}
 					$this->m_params['order'] .= ( $this->m_params['order'] !== '' ? ',' : '' ) . $order_value;
 				}
 			}
@@ -151,7 +156,9 @@ class SMWAskPage extends SMWQuerySpecialPage {
 
 		if ( !array_key_exists( 'offset', $this->m_params ) ) {
 			$this->m_params['offset'] = $wgRequest->getVal( 'offset' );
-			if ( $this->m_params['offset'] === '' )  $this->m_params['offset'] = 0;
+			if ( $this->m_params['offset'] === '' )  {
+				$this->m_params['offset'] = 0;
+			}
 		}
 
 		if ( !array_key_exists( 'limit', $this->m_params ) ) {
@@ -510,9 +517,13 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			$result .=  "<div id=\"sort_div_$i\">" . wfMessage( 'smw_ask_sortby' )->escaped() . ' <input type="text" name="sort[' . $i . ']" value="' .
 				    htmlspecialchars( $sorts[$i] ) . "\" size=\"35\"/>\n" . '<select name="order[' . $i . ']"><option ';
 
-			if ( $order == 'ASC' ) $result .= 'selected="selected" ';
+			if ( $order == 'ASC' ) {
+				$result .= 'selected="selected" ';
+			}
 			$result .=  'value="ASC">' . wfMessage( 'smw_ask_ascorder' )->escaped() . '</option><option ';
-			if ( $order == 'DESC' ) $result .= 'selected="selected" ';
+			if ( $order == 'DESC' ) {
+				$result .= 'selected="selected" ';
+			}
 
 			$result .=  'value="DESC">' . wfMessage( 'smw_ask_descorder' )->escaped() . "</option></select>\n";
 			$result .= '[<a class="smw-ask-delete" data-target="sort_div_' . $i . '" href="#">' . wfMessage( 'delete' )->escaped() . '</a>]' . "\n";
@@ -609,7 +620,9 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		$first = true;
 
 		foreach ( array( 20, 50, 100, 250, 500 ) as $l ) {
-			if ( $l > $smwgQMaxInlineLimit ) break;
+			if ( $l > $smwgQMaxInlineLimit ) {
+				break;
+			}
 
 			if ( $first ) {
 				$navigation .= '&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(';

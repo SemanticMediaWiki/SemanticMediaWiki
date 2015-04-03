@@ -76,15 +76,17 @@ class CategoryResultPrinter extends ResultPrinter {
 
 			if ( $rowindex % $rows_per_column == 0 ) {
 				$result .= "\n			<div style=\"float: left; width: $column_width%;\">\n";
-				if ( $cur_first_char == $prev_first_char )
+				if ( $cur_first_char == $prev_first_char ) {
 					$result .= "				<h3>$cur_first_char " . wfMessage( 'listingcontinuesabbrev' )->text() . "</h3>\n				<ul>\n";
+				}
 			}
 
 			// if we're at a new first letter, end
 			// the last list and start a new one
 			if ( $cur_first_char != $prev_first_char ) {
-				if ( $rowindex % $rows_per_column > 0 )
+				if ( $rowindex % $rows_per_column > 0 ) {
 					$result .= "				</ul>\n";
+				}
 				$result .= "				<h3>$cur_first_char</h3>\n				<ul>\n";
 			}
 			$prev_first_char = $cur_first_char;
@@ -142,7 +144,9 @@ class CategoryResultPrinter extends ResultPrinter {
 					$first_col = false;
 				}
 
-				if ( $found_values ) $result .= ')';
+				if ( $found_values ) {
+					$result .= ')';
+				}
 			}
 
 			$result .= '</li>';

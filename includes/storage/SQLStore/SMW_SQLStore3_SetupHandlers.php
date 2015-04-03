@@ -354,7 +354,9 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 		foreach ( $res as $row ) {
 			$emptyrange = false; // note this even if no jobs were created
 
-			if ( $namespaces && !in_array( $row->smw_namespace, $namespaces ) ) continue;
+			if ( $namespaces && !in_array( $row->smw_namespace, $namespaces ) ) {
+				continue;
+			}
 
 			// Find page to refresh, even for special properties:
 			if ( $row->smw_title != '' && $row->smw_title{0} != '_' ) {

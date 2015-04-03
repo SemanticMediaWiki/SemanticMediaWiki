@@ -67,7 +67,9 @@ class SMWExporter {
 	 * Make sure that necessary base URIs are initialised properly.
 	 */
 	static public function initBaseURIs() {
-		if ( self::$m_exporturl !== false ) return;
+		if ( self::$m_exporturl !== false ) {
+			return;
+		}
 		global $wgContLang, $wgServer, $wgArticlePath;
 
 		global $smwgNamespace; // complete namespace for URIs (with protocol, usually http://)
@@ -264,7 +266,9 @@ class SMWExporter {
 			}
 
 			$pe = self::getSpecialPropertyResource( $property->getKey(), $diSubject->getNamespace() );
-			if ( is_null( $pe ) ) return; // unknown special property, not exported
+			if ( is_null( $pe ) ) {
+				return; // unknown special property, not exported
+			}
 			// have helper property ready before entering the for loop, even if not needed:
 			$peHelper = self::getResourceElementForProperty( $property, true );
 

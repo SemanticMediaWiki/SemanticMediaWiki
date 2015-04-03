@@ -122,7 +122,9 @@ class SMWPageProperty extends SpecialPage {
 
 				foreach ( $results as $di ) {
 					$count--;
-					if ( $count < 1 ) continue;
+					if ( $count < 1 ) {
+						continue;
+					}
 
 					$dv = \SMW\DataValueFactory::getInstance()->newDataItemValue( $di, $property->getDataItem() );
 					$html .= '<li>' . $dv->getLongHTMLText( $linker ); // do not show infolinks, the magnifier "+" is ambiguous with the browsing '+' for '_wpg' (see below)

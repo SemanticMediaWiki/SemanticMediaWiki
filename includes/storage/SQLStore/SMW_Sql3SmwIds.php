@@ -721,7 +721,9 @@ class SMWSql3SmwIds {
 			__METHOD__
 		);
 
-		if ( $row === false ) return; // no id at current position, ignore
+		if ( $row === false ) {
+			return; // no id at current position, ignore
+		}
 
 		if ( $targetid == 0 ) { // append new id
 			$sequenceValue = $db->nextSequenceValue( $this->getIdTable() . '_smw_id_seq' ); // Bug 42659
@@ -1054,7 +1056,9 @@ class SMWSql3SmwIds {
 	 * @param $propertyTableHash string
 	 */
 	protected function setPropertyTableHashesCache( $id, $propertyTableHash ) {
-		if ( $id == 0 ) return; // never cache 0
+		if ( $id == 0 ) {
+			return; // never cache 0
+		}
 		//print "Cache set for $id.\n";
 		$this->hashCacheId = $id;
 		$this->hashCacheContents = $propertyTableHash;
@@ -1079,7 +1083,9 @@ class SMWSql3SmwIds {
 	 */
 	public static function debugDumpCacheStats() {
 		$that = self::$singleton_debug;
-		if ( is_null( $that ) ) return;
+		if ( is_null( $that ) ) {
+			return;
+		}
 
 		$debugString =
 			"Statistics for SMWSql3SmwIds:\n" .

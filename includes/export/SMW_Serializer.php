@@ -140,9 +140,15 @@ abstract class SMWSerializer {
 	public function serializeDeclarations() {
 		foreach ( $this->decl_todo as $name => $flag ) {
 			$types = array();
-			if ( $flag & SMW_SERIALIZER_DECL_CLASS ) $types[] = 'owl:Class';
-			if ( $flag & SMW_SERIALIZER_DECL_OPROP ) $types[] = 'owl:ObjectProperty';
-			if ( $flag & SMW_SERIALIZER_DECL_APROP ) $types[] = 'owl:DatatypeProperty';
+			if ( $flag & SMW_SERIALIZER_DECL_CLASS ) {
+				$types[] = 'owl:Class';
+			}
+			if ( $flag & SMW_SERIALIZER_DECL_OPROP ) {
+				$types[] = 'owl:ObjectProperty';
+			}
+			if ( $flag & SMW_SERIALIZER_DECL_APROP ) {
+				$types[] = 'owl:DatatypeProperty';
+			}
 			foreach ( $types as $typename ) {
 				$this->serializeDeclaration( $name, $typename );
 			}
@@ -177,7 +183,9 @@ abstract class SMWSerializer {
 	 * (what is flushed is gone).
 	 */
 	public function flushContent() {
-		if ( ( $this->pre_ns_buffer === '' ) && ( $this->post_ns_buffer === '' ) ) return '';
+		if ( ( $this->pre_ns_buffer === '' ) && ( $this->post_ns_buffer === '' ) ) {
+			return '';
+		}
 		$this->serializeNamespaces();
 		$result = $this->pre_ns_buffer . $this->post_ns_buffer;
 		$this->pre_ns_buffer = '';
@@ -229,7 +237,9 @@ abstract class SMWSerializer {
 			}
 		}
 		// Do not declare blank nodes:
-		if ( $resource->isBlankNode() ) return;
+		if ( $resource->isBlankNode() ) {
+			return;
+		}
 
 		$name = $resource->getUri();
 		if ( array_key_exists( $name, $this->decl_done ) && ( $this->decl_done[$name] & $decltype ) ) {

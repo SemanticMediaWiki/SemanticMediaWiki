@@ -78,9 +78,13 @@ class SMWSQLStore3Readers {
 				foreach ( $filter as $typeId ) {
 					$diType = DataTypeRegistry::getInstance()->getDataItemId( $typeId );
 					$relevant = $relevant || ( $proptable->getDiType() == $diType );
-					if ( $relevant ) break;
+					if ( $relevant ) {
+						break;
+					}
 				}
-				if ( !$relevant ) continue;
+				if ( !$relevant ) {
+					continue;
+				}
 			}
 
 			$this->getSemanticDataFromTable( $sid, $subject, $proptable );
@@ -275,8 +279,9 @@ class SMWSQLStore3Readers {
 		// properties always need to be given as object,
 		// subjects at least if !$proptable->idsubject
 		if ( ( $id == 0 ) ||
-			( is_null( $object ) && ( !$isSubject || !$propTable->usesIdSubject() ) ) )
-			return array();
+			( is_null( $object ) && ( !$isSubject || !$propTable->usesIdSubject() ) ) ) {
+				return array();
+			}
 
 		$result = array();
 		$db = $this->store->getConnection();

@@ -61,7 +61,9 @@ class SMWBoolValue extends SMWDataValue {
 	}
 
 	public function setOutputFormat( $formatstring ) {
-		if ( $formatstring == $this->m_outformat ) return;
+		if ( $formatstring == $this->m_outformat ) {
+			return;
+		}
 		unset( $this->m_truecaption );
 		unset( $this->m_falsecaption );
 		if ( $formatstring === '' ) { // no format
@@ -114,7 +116,9 @@ class SMWBoolValue extends SMWDataValue {
 	 * @return string
 	 */
 	protected function getStandardCaption( $useformat ) {
-		if ( !$this->isValid() ) return false;
+		if ( !$this->isValid() ) {
+			return false;
+		}
 		if ( $useformat && ( isset( $this->m_truecaption ) ) ) {
 			return $this->m_dataitem->getBoolean() ? $this->m_truecaption : $this->m_falsecaption;
 		} else {

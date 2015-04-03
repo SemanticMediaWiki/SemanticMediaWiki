@@ -381,7 +381,9 @@ class ListResultPrinter extends ResultPrinter {
 
 			$firstField = false;
 		}
-		if ( $extraFields ) $result .= ')';
+		if ( $extraFields ) {
+			$result .= ')';
+		}
 
 		return $result;
 	}

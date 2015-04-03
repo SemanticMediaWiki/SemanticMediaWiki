@@ -44,7 +44,9 @@ class SMWTemperatureValue extends SMWNumberValue {
 
 	protected function makeConversionValues() {
 		/// NOTE This class currently ignores display units.
-		if ( $this->m_unitvalues !== false ) return; // do this only once
+		if ( $this->m_unitvalues !== false ) {
+			return; // do this only once
+		}
 		if ( !$this->isValid() ) {
 			$this->m_unitvalues = array();
 		} else {

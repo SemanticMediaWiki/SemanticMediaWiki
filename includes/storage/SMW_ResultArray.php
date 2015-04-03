@@ -194,8 +194,9 @@ class SMWResultArray {
 	 * done when needed.
 	 */
 	protected function loadContent() {
-		if ( $this->mContent !== false ) return;
-
+		if ( $this->mContent !== false ) {
+			return;
+		}
 
 		switch ( $this->mPrintRequest->getMode() ) {
 			case PrintRequest::PRINT_THIS: // NOTE: The limit is ignored here.
@@ -283,7 +284,9 @@ class SMWResultArray {
 		if ( ( $limit !== false ) || ( $order != false ) ) {
 			$options = new SMWRequestOptions();
 
-			if ( $limit !== false ) $options->limit = trim( $limit );
+			if ( $limit !== false ) {
+				$options->limit = trim( $limit );
+			}
 
 			if ( ( $order == 'descending' ) || ( $order == 'reverse' ) || ( $order == 'desc' ) ) {
 				$options->sort = true;

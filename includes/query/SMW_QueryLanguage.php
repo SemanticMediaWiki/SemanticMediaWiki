@@ -53,7 +53,9 @@ final class SMWQueryLanguage {
 	 */
 	public static function getComparatorFromString( $string, $defaultComparator = SMW_CMP_EQ ) {
 		self::initializeComparators();
-		if ( $string === '' ) return SMW_CMP_EQ;
+		if ( $string === '' ) {
+			return SMW_CMP_EQ;
+		}
 		return array_key_exists( $string, self::$comparators ) ? self::$comparators[$string] : $defaultComparator;
 	}
 

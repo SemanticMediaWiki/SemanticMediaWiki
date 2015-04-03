@@ -127,7 +127,9 @@ class SMWSQLHelpers {
 
 		$isPostgres = $wgDBtype == 'postgres';
 
-		if ( !$isPostgres ) $position = 'FIRST';
+		if ( !$isPostgres ) {
+			$position = 'FIRST';
+		}
 
 		// Loop through all the field definitions, and handle each definition for either postgres or MySQL.
 		foreach ( $fields as $fieldName => $fieldType ) {
@@ -518,7 +520,9 @@ EOT;
 	 * @param object $receiver
 	 */
 	private static function reportProgress( $msg, $receiver ) {
-		if ( !is_null( $receiver ) ) $receiver->reportProgress( $msg );
+		if ( !is_null( $receiver ) ) {
+			$receiver->reportProgress( $msg );
+		}
 	}
 
 }
