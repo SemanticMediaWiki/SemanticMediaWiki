@@ -19,4 +19,11 @@ interface Element {
 	 */
 	public function getDataItem();
 
+	/**
+	 * @since 2.2
+	 *
+	 * @return string
+	 */
+	public function getHash();
+
 }

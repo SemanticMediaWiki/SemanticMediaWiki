@@ -55,6 +55,15 @@ abstract class ExpElement implements Element {
 	}
 
 	/**
+	 * @since 2.2
+	 *
+	 * @return string
+	 */
+	public function getHash() {
+		return md5( json_encode( $this->getSerialization() ) );
+	}
+
+	/**
 	 * @since  2.2
 	 *
 	 * @return array
@@ -73,6 +82,28 @@ abstract class ExpElement implements Element {
 		return array(
 			'dataitem' => $dataItem
 		);
+	}
+
+	/**
+	 * @see ExpElement::newFromSerialization
+	 */
+	protected static function deserialize( $serialization ) {
+
+		$dataItem = null;
+
+		if ( !array_key_exists( 'dataitem', $serialization ) ) {
+			throw new RuntimeException( "The serialization format is missing a dataitem element" );
+		}
+
+		// If it is null, isset will ignore it
+		if ( isset( $serialization['dataitem'] ) ) {
+			$dataItem = DataItem::newFromSerialization(
+				$serialization['dataitem']['type'],
+				$serialization['dataitem']['item']
+			);
+		}
+
+		return $dataItem;
 	}
 
 	/**
@@ -102,28 +133,9 @@ abstract class ExpElement implements Element {
 				throw new RuntimeException( "Unknown type" );
 		}
 
-		$dataItem = null;
+		$serialization['dataitem'] = self::deserialize( $serialization );
 
-		if ( !array_key_exists( 'dataitem', $serialization ) ) {
-			throw new RuntimeException( "The serialization format is missing a dataitem element" );
-		}
-
-		// If it is null, isset will ignore it
-		if ( isset( $serialization['dataitem'] ) ) {
-			$dataItem = DataItem::newFromSerialization(
-				$serialization['dataitem']['type'],
-				$serialization['dataitem']['item']
-			);
-		}
-
-		// Replace the dataitem with an instance object|null in order
-		// to be used directly by the succeeding the deserializer
-		$serialization['dataitem'] = $dataItem;
-
-		return call_user_func(
-			array( $elementClass, 'deserialize' ),
-			$serialization
-		);
+		return $elementClass::deserialize( $serialization );
 	}
 
 }
