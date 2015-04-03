@@ -50,3 +50,4 @@ This is not a release yet.
 * #924 Added `onoi/event-dispatcher:~1.0` component dependency
 * #929 Added serialization to `ExpElement` objects
 * #950 Renamed `PropertyTypeDiffFinder` to `PropertySpecDiffFinder`
+* #959 Added `ExpDataSerializer` and `ExpDataDeserializer`
