@@ -2,13 +2,39 @@
 
 namespace SMW\Exporter;
 
+use SMW\DIWikiPage;
+
 /**
  * @license GNU GPL v2+
  * @since 2.2
  *
  * @author Markus Krötzsch
  */
-class UriEscaper {
+class Escaper {
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param DIWikiPage $diWikiPage
+	 *
+	 * @return string
+	 */
+	static public function encodePage( DIWikiPage $diWikiPage ) {
+
+		$localName = '';
+
+		if ( $diWikiPage->getInterwiki() !== '' ) {
+			$localName = $diWikiPage->getInterwiki() . ':';
+		}
+
+		if ( $diWikiPage->getNamespace() !== 0 ) {
+			$localName .= str_replace( ' ', '_', $GLOBALS['wgContLang']->getNSText( $diWikiPage->getNamespace() ) ) . ':' . $diWikiPage->getDBkey();
+		} else {
+			$localName .= $diWikiPage->getDBkey();
+		}
+
+		return self::encodeUri( wfUrlencode( $localName ) );
+	}
 
 	/**
 	 * This function escapes symbols that might be problematic in XML in a uniform
@@ -18,7 +44,7 @@ class UriEscaper {
 	 *
 	 * @return string
 	 */
-	static public function encode( $uri ) {
+	static public function encodeUri( $uri ) {
 
 		$uri = str_replace( '-', '-2D', $uri );
 
@@ -38,7 +64,7 @@ class UriEscaper {
 	 *
 	 * @return string
 	 */
-	static public function decode( $uri ) {
+	static public function decodeUri( $uri ) {
 
 		$uri = str_replace( array( '-3A', '-22', '-23', '-26', '-27', '-2B', '-21', '-' ),
 		                    array( ':', '"', '#', '&', "'", '+', '!', '%' ),

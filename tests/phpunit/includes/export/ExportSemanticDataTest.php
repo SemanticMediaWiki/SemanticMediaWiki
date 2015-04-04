@@ -11,6 +11,7 @@ use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\DataValueFactory;
 use SMW\Subobject;
+use SMW\Exporter\Escaper;
 
 use SMWExporter as Exporter;
 use SMWExpNsResource as ExpNsResource;
@@ -97,7 +98,7 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 		$exportData = Exporter::getInstance()->makeExportData( $semanticData );
 
 		$expectedProperty = new ExpNsResource(
-			Exporter::getInstance()->getEncodedPropertyNamespace() . '123',
+			Escaper::encodePage( $property->getDiWikiPage() ),
 			Exporter::getInstance()->getNamespaceUri( 'wiki' ),
 			'wiki',
 			new DIWikiPage( '123', SMW_NS_PROPERTY )
@@ -218,7 +219,7 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expectedResourceElement = new ExpNsResource(
-			Exporter::getInstance()->getEncodedPageName( new DIWikiPage( 'SomeCategory', NS_CATEGORY ) ),
+			Escaper::encodePage( new DIWikiPage( 'SomeCategory', NS_CATEGORY ) ),
 			Exporter::getInstance()->getNamespaceUri( 'wiki' ),
 			'wiki',
 			new DIWikiPage( 'SomeCategory', NS_CATEGORY )
@@ -249,7 +250,7 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expectedResourceElement = new ExpNsResource(
-			Exporter::getInstance()->getEncodedPageName( new DIWikiPage( 'SomeTopCategory', NS_CATEGORY ) ),
+			Escaper::encodePage( new DIWikiPage( 'SomeTopCategory', NS_CATEGORY ) ),
 			Exporter::getInstance()->getNamespaceUri( 'wiki' ),
 			'wiki',
 			new DIWikiPage( 'SomeTopCategory', NS_CATEGORY )
@@ -298,7 +299,7 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expectedResource = new ExpNsResource(
-			Exporter::getInstance()->getEncodedPageName( $subobject->getSemanticData()->getSubject() ) . '-23' . 'Foo',
+			Escaper::encodePage( $subobject->getSemanticData()->getSubject() ) . '-23' . 'Foo',
 			Exporter::getInstance()->getNamespaceUri( 'wiki' ),
 			'wiki',
 			$subobject->getSemanticData()->getSubject()

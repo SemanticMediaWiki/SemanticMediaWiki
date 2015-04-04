@@ -1,6 +1,6 @@
 <?php
 
-use SMW\Exporter\UriEscaper;
+use SMW\Exporter\Escaper;
 
 /**
  * This special page solves the URI crisis
@@ -39,7 +39,7 @@ class SMWURIResolver extends SpecialPage {
 				);
 			}
 		} else {
-			$query = UriEscaper::decode( $query );
+			$query = Escaper::decodeUri( $query );
 			$query = str_replace( '_', '%20', $query );
 			$query = urldecode( $query );
 			$title = Title::newFromText( $query );

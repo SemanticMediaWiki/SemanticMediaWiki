@@ -66,7 +66,7 @@ class SerializerFactory {
 				case 'SMW\Serializers\SemanticDataSerializer':
 					$deserializer = $this->newSemanticDataDeserializer();
 					break;
-				case 'SMW\Serializers\ExpDataDeserializer':
+				case 'SMW\Serializers\ExpDataSerializer':
 					$deserializer = $this->newExpDataDeserializer();
 					break;
 			}

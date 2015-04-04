@@ -6,6 +6,7 @@ use SMW\SPARQLStore\RedirectLookup;
 
 use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\Exporter\Escaper;
 
 use SMWExpNsResource as ExpNsResource;
 use SMWExpLiteral as ExpLiteral;
@@ -167,7 +168,7 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expectedResource = new ExpNsResource(
-			Exporter::getInstance()->getEncodedPageName( $propertyPage ),
+			Escaper::encodePage( $propertyPage ),
 			Exporter::getInstance()->getNamespaceUri( 'wiki' ),
 			'wiki'
 		);

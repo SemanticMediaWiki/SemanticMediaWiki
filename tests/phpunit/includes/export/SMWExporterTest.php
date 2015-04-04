@@ -46,18 +46,6 @@ class SMWExporterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider encodePageProvider
-	 * @see #759
-	 */
-	public function testEncodedPageName( $page, $expected ) {
-
-		$this->assertSame(
-			$expected,
-			Exporter::getInstance()->getEncodedPageName( $page )
-		);
-	}
-
-	/**
 	 * @dataProvider dataItemExpElementProvider
 	 */
 	public function testGetDataItemExpElement( DataItem $dataItem, $instance ) {
@@ -109,16 +97,6 @@ class SMWExporterTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array( 'Unknown:Foo',      new DIWikiPage( 'Unknown:Foo', NS_MAIN, '', '' ) );
 		$provider[] = array( 'Unknown:Foo#Bar',  new DIWikiPage( 'Unknown:Foo', NS_MAIN, '', 'Bar' ) );
 		$provider[] = array( 'Property:Foo#Bar', new DIWikiPage( 'Foo', SMW_NS_PROPERTY, '', 'Bar' ) );
-
-		return $provider;
-	}
-
-	public function encodePageProvider() {
-
-		$provider[] = array( new DIWikiPage( 'Foo', NS_MAIN, '', '' ), 'Foo' );
-		$provider[] = array( new DIWikiPage( 'Foo_bar', NS_MAIN, '', '' ), 'Foo_bar' );
-		$provider[] = array( new DIWikiPage( 'Foo%bar', NS_MAIN, '', '' ), 'Foo-25bar' );
-		$provider[] = array( new DIWikiPage( 'Foo', NS_MAIN, 'bar', '' ), 'bar-3AFoo' );
 
 		return $provider;
 	}

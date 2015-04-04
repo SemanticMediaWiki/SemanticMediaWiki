@@ -42,7 +42,7 @@
 		"mediawiki/validator": "~2.0,>=2.0.4",
 		"serialization/serialization": "~3.2",
 		"onoi/message-reporter": "~1.0",
-		"onoi/cache": "~1.0",
+		"onoi/cache": "~1.1",
 		"onoi/event-dispatcher": "~1.0",
 		"doctrine/dbal": "~2.5"
 	},

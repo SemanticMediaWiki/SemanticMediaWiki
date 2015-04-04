@@ -23,10 +23,6 @@ use RuntimeException;
  */
 abstract class ExpElement implements Element {
 
-	const TYPE_RESOURCE = 0;
-	const TYPE_NSRESOURCE = 1;
-	const TYPE_LITERAL = 2;
-
 	/**
 	 * The DataItem that this export element is associated with, if
 	 * any. Might be unset if not given yet.
@@ -120,13 +116,13 @@ abstract class ExpElement implements Element {
 		}
 
 		switch ( $serialization['type'] ) {
-			case self::TYPE_RESOURCE:
+			case Element::TYPE_RESOURCE:
 				$elementClass = '\SMW\Exporter\Element\ExpResource';
 				break;
-			case self::TYPE_NSRESOURCE:
+			case Element::TYPE_NSRESOURCE:
 				$elementClass = '\SMW\Exporter\Element\ExpNsResource';
 				break;
-			case self::TYPE_LITERAL:
+			case Element::TYPE_LITERAL:
 				$elementClass = '\SMW\Exporter\Element\ExpLiteral';
 				break;
 			default:
