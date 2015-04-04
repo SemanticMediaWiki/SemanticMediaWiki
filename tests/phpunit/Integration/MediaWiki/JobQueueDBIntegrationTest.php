@@ -286,6 +286,16 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 			->createPage( $propertyPage )
 			->doEdit( '[[Has type::Number]]' );
 
+		// Secondary dispatch process
+		$this->assertGreaterThan(
+			0,
+			$this->jobQueueLookup->estimateJobCountFor( 'SMW\UpdateDispatcherJob' )
+		);
+
+		$this->jobQueueRunner
+			->setType( 'SMW\UpdateDispatcherJob' )
+			->run();
+
 		$this->assertGreaterThan(
 			0,
 			$this->jobQueueLookup->estimateJobCountFor( 'SMW\UpdateJob' )

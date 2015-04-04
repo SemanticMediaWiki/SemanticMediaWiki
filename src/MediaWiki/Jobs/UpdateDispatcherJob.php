@@ -5,16 +5,11 @@ namespace SMW\MediaWiki\Jobs;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Profiler;
 use Title;
 
 /**
- * Dispatcher class to invoke UpdateJob's
- *
- * Can be run either in deferred or immediate mode to restore the data parity
- * between a property and its attached subjects
- *
- * @ingroup SMW
+ * Dispatcher to find and create individual UpdateJob instances for a specific
+ * subject and its linked entities.
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -23,8 +18,15 @@ use Title;
  */
 class UpdateDispatcherJob extends JobBase {
 
-	/** @var Store */
-	protected $store = null;
+	/**
+	 * Size of chunks used when invoking the secondary dispatch run
+	 */
+	const CHUNK_SIZE = 5000;
+
+	/**
+	 * @var ApplicationFactory
+	 */
+	private $applicationFactory = null;
 
 	/**
 	 * @since  1.9
@@ -36,6 +38,9 @@ class UpdateDispatcherJob extends JobBase {
 	public function __construct( Title $title, $params = array(), $id = 0 ) {
 		parent::__construct( 'SMW\UpdateDispatcherJob', $title, $params, $id );
 		$this->removeDuplicates = true;
+		$this->applicationFactory = ApplicationFactory::getInstance();
+
+		$this->setStore( $this->applicationFactory->getStore() );
 	}
 
 	/**
@@ -46,20 +51,37 @@ class UpdateDispatcherJob extends JobBase {
 	 * @return boolean
 	 */
 	public function run() {
-		Profiler::In( __METHOD__, true );
 
-		/**
-		 * @var Store
-		 */
-		$this->store = ApplicationFactory::getInstance()->getStore();
-
-		if ( $this->getTitle()->getNamespace() === SMW_NS_PROPERTY ) {
-			$this->dispatchUpdateForProperty( DIProperty::newFromUserLabel( $this->getTitle()->getText() ) )->pushToJobQueue();
+		if ( $this->hasParameter( 'job-list' ) ) {
+			return $this->createUpdateJobsFromListBySecondaryRun(
+				$this->getParameter( 'job-list' )
+			);
 		}
 
-		$this->dispatchUpdateForSubject( DIWikiPage::newFromTitle( $this->getTitle() ) )->pushToJobQueue();
+		if ( $this->getTitle()->getNamespace() === SMW_NS_PROPERTY ) {
+			$this->dispatchUpdateForProperty(
+				DIProperty::newFromUserLabel( $this->getTitle()->getText() )
+			);
+		} else {
+			$this->dispatchUpdateForSubject(
+				DIWikiPage::newFromTitle( $this->getTitle() )
+			);
+		}
 
-		Profiler::Out( __METHOD__, true );
+		// Push generated job list into a secondary dispatch run
+		if ( $this->jobs !== array() ) {
+
+			foreach ( array_chunk( $this->jobs, self::CHUNK_SIZE, true ) as $jobs ) {
+
+				$updateDispatcherJob = new self(
+					Title::newFromText( 'UpdateDispatcherJobForSecondaryRun' ),
+					array( 'job-list' => $jobs )
+				);
+
+				$updateDispatcherJob->insert();
+			}
+		}
+
 		return true;
 	}
 
@@ -70,37 +92,25 @@ class UpdateDispatcherJob extends JobBase {
 	 * @codeCoverageIgnore
 	 */
 	public function insert() {
-		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
+		if ( $this->applicationFactory->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
 			parent::insert();
 		}
 	}
 
-	/**
-	 * @since 1.9.0.1
-	 *
-	 * @param DIWikiPage $subject
-	 */
-	protected function dispatchUpdateForSubject( DIWikiPage $subject ) {
-		Profiler::In( __METHOD__, true );
+	private function dispatchUpdateForSubject( DIWikiPage $subject ) {
 
-		$this->addUpdateJobsForProperties( $this->store->getProperties( $subject ) );
-		$this->addUpdateJobsForProperties( $this->store->getInProperties( $subject ) );
+		$this->addUpdateJobsForProperties(
+			$this->store->getProperties( $subject )
+		);
 
-		$this->addUpdateJobsFromSerializedData();
+		$this->addUpdateJobsForProperties(
+			$this->store->getInProperties( $subject )
+		);
 
-		Profiler::Out( __METHOD__, true );
-		return $this;
+		$this->addUpdateJobsFromDeserializedSemanticData();
 	}
 
-	/**
-	 * Generates list of involved subjects
-	 *
-	 * @since 1.9
-	 *
-	 * @param DIProperty $property
-	 */
-	protected function dispatchUpdateForProperty( DIProperty $property ) {
-		Profiler::In( __METHOD__, true );
+	private function dispatchUpdateForProperty( DIProperty $property ) {
 
 		$this->addUpdateJobsForProperties( array( $property ) );
 
@@ -110,55 +120,89 @@ class UpdateDispatcherJob extends JobBase {
 		// Hook since 1.9
 		wfRunHooks( 'SMW::Job::updatePropertyJobs', array( &$this->jobs, $property ) );
 
-		$this->addUpdateJobsForPropertyWithTypeError();
-		$this->addUpdateJobsFromSerializedData();
-
-		Profiler::Out( __METHOD__, true );
-		return $this;
+		$this->addUpdateJobsForSubjectsThatContainTypeError();
+		$this->addUpdateJobsFromDeserializedSemanticData();
 	}
 
-	protected function addUpdateJobsForProperties( array $properties ) {
+	private function addUpdateJobsForProperties( array $properties ) {
 		foreach ( $properties as $property ) {
 
-			if ( $property->isUserDefined() ) {
-				$this->addUniqueUpdateJobs( $this->store->getAllPropertySubjects( $property ) );
+			if ( !$property->isUserDefined() ) {
+				continue;
 			}
 
+			$this->addUniqueSubjectsToUpdateJobList(
+				$this->store->getAllPropertySubjects( $property )
+			);
 		}
 	}
 
-	protected function addUpdateJobsForPropertyWithTypeError() {
+	private function addUpdateJobsForSubjectsThatContainTypeError() {
+
 		$subjects = $this->store->getPropertySubjects(
 			new DIProperty( DIProperty::TYPE_ERROR ),
 			DIWikiPage::newFromTitle( $this->getTitle() )
 		);
 
-		$this->addUniqueUpdateJobs( $subjects );
+		$this->addUniqueSubjectsToUpdateJobList(
+			$subjects
+		);
 	}
 
-	protected function addUpdateJobsFromSerializedData() {
+	private function addUpdateJobsFromDeserializedSemanticData() {
 
 		if ( !$this->hasParameter( 'semanticData' ) ) {
 			return;
 		}
 
-		$semanticDataDeserializer = ApplicationFactory::getInstance()->newSerializerFactory()->newSemanticDataDeserializer();
+		$semanticData = $this->applicationFactory->newSerializerFactory()->newSemanticDataDeserializer()->deserialize(
+			$this->getParameter( 'semanticData' )
+		);
 
 		$this->addUpdateJobsForProperties(
-			$semanticDataDeserializer->deserialize( $this->getParameter( 'semanticData' ) )->getProperties()
+			$semanticData->getProperties()
 		);
 	}
 
-	protected function addUniqueUpdateJobs( array $subjects = array() ) {
+	private function addUniqueSubjectsToUpdateJobList( array $subjects = array() ) {
 
 		foreach ( $subjects as $subject ) {
 
-			$title = $subject->getTitle();
+			// Not trying to get the title here as it is waste of resources
+			// as makeTitleSafe is expensive for large lists
+			// $title = $subject->getTitle();
 
-			if ( $title instanceof Title ) {
-				$this->jobs[$title->getPrefixedDBkey()] = new UpdateJob( $title );
+			if ( !$subject instanceof DIWikiPage ) {
+				continue;
+			}
+
+			// Do not use the full subject as hash as we don't care about subobjects
+			// since the root subject is enough to update all related subobjects
+			// The format is the same as expected by DIWikiPage::doUnserialize
+			$hash = $subject->getDBKey() . '#' . $subject->getNamespace() . '#' . $subject->getInterwiki() . '#';
+
+			if ( !isset( $this->jobs[$hash] ) ) {
+				$this->jobs[$hash] = true;
 			}
 		}
+	}
+
+	private function createUpdateJobsFromListBySecondaryRun( array $listOfSubjects ) {
+
+		$subjects = array_keys( $listOfSubjects );
+
+		// We are confident that as this point we only have valid, non-duplicate
+		// subjects in the list and therefore can be deserialized without any
+		// extra validation
+		foreach ( $subjects as $subject ) {
+			$this->jobs[] = new UpdateJob(
+				DIWikiPage::doUnserialize( $subject )->getTitle()
+			);
+		}
+
+		$this->pushToJobQueue();
+
+		return true;
 	}
 
 }
