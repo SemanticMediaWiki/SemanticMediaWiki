@@ -304,7 +304,7 @@ class ListResultPrinter extends ResultPrinter {
 	 *
 	 * @return string
 	 */
-	protected function getRowStart( SMWQueryResult $res ){
+	protected function getRowStart( SMWQueryResult $res ) {
 
 		if ( $this->numRows > 0 && $this->isPlainlist() )  {
 			// Use comma between "rows" other than the last one:
@@ -397,7 +397,7 @@ class ListResultPrinter extends ResultPrinter {
 	 *
 	 * @return string
 	 */
-	protected function addTemplateContentFields( $row ){
+	protected function addTemplateContentFields( $row ) {
 
 		foreach ( $row as $i => $field ) {
 

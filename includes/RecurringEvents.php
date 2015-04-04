@@ -199,7 +199,7 @@ class RecurringEvents {
 		if ( $start_date === null ) {
 			$this->errors[] = new Message( 'smw-events-start-date-missing' );
 			return;
-		} else if ( !( $start_date->getDataItem() instanceof SMWDITime ) ) {
+		} elseif ( !( $start_date->getDataItem() instanceof SMWDITime ) ) {
 			$this->setError( $start_date->getErrors() );
 			return;
 		}

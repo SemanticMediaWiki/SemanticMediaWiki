@@ -76,7 +76,7 @@ final class Setup {
 		}
 
 		if ( is_file( $this->directory . "/resources/Resources.php" ) ) {
-			$this->globalVars['wgResourceModules'] = array_merge( $this->globalVars['wgResourceModules'], include( $this->directory . "/resources/Resources.php" ) );
+			$this->globalVars['wgResourceModules'] = array_merge( $this->globalVars['wgResourceModules'], include ( $this->directory . "/resources/Resources.php" ) );
 		}
 	}
 

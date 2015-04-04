@@ -16,7 +16,7 @@ namespace SMW;
 
 $moduleTemplate = array(
 	'localBasePath' => __DIR__,
-	'remoteExtPath' => end( ( explode( DIRECTORY_SEPARATOR . 'extensions' . DIRECTORY_SEPARATOR , __DIR__, 2 ) ) ),
+	'remoteExtPath' => end( ( explode( DIRECTORY_SEPARATOR . 'extensions' . DIRECTORY_SEPARATOR, __DIR__, 2 ) ) ),
 	'group' => 'ext.smw'
 );
 
@@ -40,8 +40,8 @@ return array(
 		'position' => 'top'
 	),
 
-	// MW 1.24+ Fix Uncaught Error: Unknown dependency: jquery.json 
-	// Introducing a mega-hack 
+	// MW 1.24+ Fix Uncaught Error: Unknown dependency: jquery.json
+	// Introducing a mega-hack
 	// jStorage was added in MW 1.20
 	'ext.jquery.jStorage' => $moduleTemplate + array(
 		'scripts' => 'jquery/jquery.jstorage.js',

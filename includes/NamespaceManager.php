@@ -186,7 +186,7 @@ class NamespaceManager {
 		$file = $this->directory . '/' . 'languages' . '/' . $this->globalVars['smwContLangFile'] . '.php';
 
 		if ( file_exists( $file ) ) {
-			include_once( $file );
+			include_once ( $file );
 		}
 	}
 

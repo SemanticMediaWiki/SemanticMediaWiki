@@ -142,7 +142,7 @@ class DataItemToExpResourceMapper {
 
 		$importDataItem = $this->tryToFindImportDataItem( $diWikiPage, $modifier );
 
-		if ( $importDataItem instanceOf DataItem ) {
+		if ( $importDataItem instanceof DataItem ) {
 			list( $localName, $namespace, $namespaceId ) = $this->defineElementsForImportDataItem( $importDataItem );
 		} else {
 			list( $localName, $namespace, $namespaceId ) = $this->defineElementsForDiWikiPage( $diWikiPage, $modifier );

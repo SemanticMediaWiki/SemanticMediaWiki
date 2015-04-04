@@ -208,11 +208,11 @@ class MessageFormatter {
 
 			if ( $msg instanceof Message ) {
 				$newArray[] = $msg->inLanguage( $this->language )->text();
-			} else if ( (array)$msg === $msg ) {
+			} elseif ( (array)$msg === $msg ) {
 				foreach ( $this->doFormat( $msg ) as $m ) {
 					$newArray[] = $m;
 				}
-			} else if ( (string)$msg === $msg ) {
+			} elseif ( (string)$msg === $msg ) {
 				$newArray[] = $msg;
 			}
 		}
