@@ -3,7 +3,7 @@
 namespace SMW\Tests\SPARQLStore;
 
 use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
-use SMW\SPARQLStore\HttpClient;
+use SMW\SPARQLStore\RepositoryClient;
 
 /**
  * @covers \SMW\SPARQLStore\Connector\FusekiHttpRepositoryConnector
@@ -57,7 +57,7 @@ class RepositoryConnectionHttpRequestIntegrityTest extends \PHPUnit_Framework_Te
 			->will( $this->returnValue( $rawResultProvider->getEmptySparqlResultXml() ) );
 
 		$instance = new $httpDatabaseConnector(
-			new HttpClient( 'http://foo/myDefaultGraph', 'http://localhost:9999/query' ),
+			new RepositoryClient( 'http://foo/myDefaultGraph', 'http://localhost:9999/query' ),
 			$httpRequest
 		);
 
@@ -95,7 +95,7 @@ class RepositoryConnectionHttpRequestIntegrityTest extends \PHPUnit_Framework_Te
 			->will( $this->returnValue( 0 ) );
 
 		$instance = new $httpDatabaseConnector(
-			new HttpClient(
+			new RepositoryClient(
 				'http://foo/myDefaultGraph',
 				'http://localhost:9999/query',
 				'http://localhost:9999/update'
@@ -124,7 +124,7 @@ class RepositoryConnectionHttpRequestIntegrityTest extends \PHPUnit_Framework_Te
 			->will( $this->returnValue( 0 ) );
 
 		$instance = new $httpDatabaseConnector(
-			new HttpClient(
+			new RepositoryClient(
 				'http://foo/myDefaultGraph',
 				'http://localhost:9999/query',
 				'http://localhost:9999/update',

@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\SPARQLStore;
 
-use SMW\SPARQLStore\HttpClient;
+use SMW\SPARQLStore\RepositoryClient;
 
 /**
  * @covers \SMW\SPARQLStore\Connector\FusekiHttpRepositoryConnector
@@ -50,7 +50,7 @@ class RepositoryConnectionExceptionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\Connector\GenericHttpRepositoryConnector',
-			new $httpConnector( new HttpClient( $this->defaultGraph, '' ), $httpRequest )
+			new $httpConnector( new RepositoryClient( $this->defaultGraph, '' ), $httpRequest )
 		);
 	}
 
@@ -64,7 +64,7 @@ class RepositoryConnectionExceptionTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new $httpConnector(
-			new HttpClient( $this->defaultGraph, '' ),
+			new RepositoryClient( $this->defaultGraph, '' ),
 			$httpRequest
 		);
 
@@ -82,7 +82,7 @@ class RepositoryConnectionExceptionTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new $httpConnector(
-			new HttpClient( $this->defaultGraph, '', '' ),
+			new RepositoryClient( $this->defaultGraph, '', '' ),
 			$httpRequest
 		);
 
@@ -100,7 +100,7 @@ class RepositoryConnectionExceptionTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new $httpConnector(
-			new HttpClient( $this->defaultGraph, '', '', '' ),
+			new RepositoryClient( $this->defaultGraph, '', '', '' ),
 			$httpRequest
 		);
 
@@ -122,7 +122,7 @@ class RepositoryConnectionExceptionTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 22 ) );
 
 		$instance = new $httpConnector(
-			new HttpClient( $this->defaultGraph, '', '', 'unreachableDataEndpoint' ),
+			new RepositoryClient( $this->defaultGraph, '', '', 'unreachableDataEndpoint' ),
 			$httpRequest
 		);
 

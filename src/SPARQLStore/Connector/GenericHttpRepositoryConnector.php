@@ -5,7 +5,7 @@ namespace SMW\SPARQLStore\Connector;
 use SMW\HttpRequest;
 use SMW\SPARQLStore\RepositoryConnection;
 use SMW\SPARQLStore\BadHttpResponseMapper;
-use SMW\SPARQLStore\HttpClient;
+use SMW\SPARQLStore\RepositoryClient;
 use SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMW\SPARQLStore\QueryEngine\XmlResponseParser;
@@ -29,9 +29,9 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 	const EP_TYPE_DATA   = 4;
 
 	/**
-	 * @var HttpClient
+	 * @var RepositoryClient
 	 */
-	protected $httpClient;
+	protected $repositoryClient;
 
 	/**
 	 * @note Handles the curl handle and is reused throughout the instance to
@@ -52,11 +52,11 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @since 2.2
 	 *
-	 * @param HttpClient $httpClient
+	 * @param RepositoryClient $repositoryClient
 	 * @param HttpRequest $httpRequest
 	 */
-	public function __construct( HttpClient $httpClient, HttpRequest $httpRequest ) {
-		$this->httpClient = $httpClient;
+	public function __construct( RepositoryClient $repositoryClient, HttpRequest $httpRequest ) {
+		$this->repositoryClient = $repositoryClient;
 		$this->httpRequest = $httpRequest;
 
 		$this->httpRequest->setOption( CURLOPT_FORBID_REUSE, false );
@@ -75,7 +75,7 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 	 * @return string graph UIR or empty
 	 */
 	public function getDefaultGraph() {
-		return $this->httpClient->getDefaultGraph();
+		return $this->repositoryClient->getDefaultGraph();
 	}
 
 	/**
@@ -93,21 +93,21 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 	 */
 	public function ping( $endpointType = self::EP_TYPE_QUERY ) {
 		if ( $endpointType == self::EP_TYPE_QUERY ) {
-			$this->httpRequest->setOption( CURLOPT_URL, $this->httpClient->getQueryEndpoint() );
+			$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getQueryEndpoint() );
 			$this->httpRequest->setOption( CURLOPT_NOBODY, true );
 			$this->httpRequest->setOption( CURLOPT_POST, true );
 		} elseif ( $endpointType == self::EP_TYPE_UPDATE ) {
 
-			if ( $this->httpClient->getUpdateEndpoint() === '' ) {
+			if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {
 				return false;
 			}
 
-			$this->httpRequest->setOption( CURLOPT_URL, $this->httpClient->getUpdateEndpoint() );
+			$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getUpdateEndpoint() );
 			$this->httpRequest->setOption( CURLOPT_NOBODY, false ); // 4Store gives 404 instead of 500 with CURLOPT_NOBODY
 
 		} else { // ( $endpointType == self::EP_TYPE_DATA )
 
-			if ( $this->httpClient->getDataEndpoint() === '' ) {
+			if ( $this->repositoryClient->getDataEndpoint() === '' ) {
 				return false;
 			}
 
@@ -263,7 +263,7 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 	 */
 	public function delete( $deletePattern, $where, $extraNamespaces = array() ) {
 
-		$defaultGraph = $this->httpClient->getDefaultGraph();
+		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
 			( ( $defaultGraph !== '' )? "WITH <{$defaultGraph}> " : '' ) .
@@ -317,7 +317,7 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 	 */
 	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = array() ) {
 
-		$defaultGraph = $this->httpClient->getDefaultGraph();
+		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
 			( ( $defaultGraph !== '' )? "WITH <{$defaultGraph}> " : '' ) .
@@ -339,12 +339,12 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 	 */
 	public function insertData( $triples, $extraNamespaces = array() ) {
 
-		if ( $this->httpClient->getDataEndpoint() !== '' ) {
+		if ( $this->repositoryClient->getDataEndpoint() !== '' ) {
 			$turtle = self::getPrefixString( $extraNamespaces, false ) . $triples;
 			return $this->doHttpPost( $turtle );
 		}
 
-		$defaultGraph = $this->httpClient->getDefaultGraph();
+		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces, true ) .
 			"INSERT DATA  " .
@@ -368,7 +368,7 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 	 */
 	public function deleteData( $triples, $extraNamespaces = array() ) {
 
-		$defaultGraph = $this->httpClient->getDefaultGraph();
+		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
 			"DELETE DATA { " .
@@ -395,11 +395,11 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 	 */
 	public function doQuery( $sparql ) {
 
-		if ( $this->httpClient->getQueryEndpoint() === '' ) {
+		if ( $this->repositoryClient->getQueryEndpoint() === '' ) {
 			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 
-		$this->httpRequest->setOption( CURLOPT_URL, $this->httpClient->getQueryEndpoint() );
+		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getQueryEndpoint() );
 
 		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, array(
 			'Accept: application/sparql-results+xml,application/xml;q=0.8',
@@ -408,7 +408,7 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 
 		$this->httpRequest->setOption( CURLOPT_POST, true );
 
-		$defaultGraph = $this->httpClient->getDefaultGraph();
+		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$parameterString = "query=" . urlencode( $sparql ) .
 			( ( $defaultGraph !== '' )? '&default-graph-uri=' . urlencode( $defaultGraph ) : '' );
@@ -422,7 +422,7 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 			return $xmlResponseParser->parse( $httpResponse );
 		}
 
-		$this->mapHttpRequestError( $this->httpClient->getQueryEndpoint(), $sparql );
+		$this->mapHttpRequestError( $this->repositoryClient->getQueryEndpoint(), $sparql );
 
 		$repositoryResult = new RepositoryResult();
 		$repositoryResult->setErrorCode( RepositoryResult::ERROR_UNREACHABLE );
@@ -448,11 +448,11 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 	 */
 	public function doUpdate( $sparql ) {
 
-		if ( $this->httpClient->getUpdateEndpoint() === '' ) {
+		if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {
 			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 
-		$this->httpRequest->setOption( CURLOPT_URL, $this->httpClient->getUpdateEndpoint() );
+		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getUpdateEndpoint() );
 		$this->httpRequest->setOption( CURLOPT_POST, true );
 
 		$parameterString = "update=" . urlencode( $sparql );
@@ -466,7 +466,7 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 			return true;
 		}
 
-		$this->mapHttpRequestError( $this->httpClient->getUpdateEndpoint(), $sparql );
+		$this->mapHttpRequestError( $this->repositoryClient->getUpdateEndpoint(), $sparql );
 		return false;
 	}
 
@@ -492,13 +492,13 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 	 */
 	public function doHttpPost( $payload ) {
 
-		if ( $this->httpClient->getDataEndpoint() === '' ) {
+		if ( $this->repositoryClient->getDataEndpoint() === '' ) {
 			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified' );
 		}
 
-		$defaultGraph = $this->httpClient->getDefaultGraph();
+		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
-		$this->httpRequest->setOption( CURLOPT_URL, $this->httpClient->getDataEndpoint() .
+		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getDataEndpoint() .
 			( ( $defaultGraph !== '' )? '?graph=' . urlencode( $defaultGraph ) : '?default' ) );
 		$this->httpRequest->setOption( CURLOPT_POST, true );
 
@@ -518,7 +518,7 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 		}
 
 		// TODO The error reporting based on SPARQL (Update) is not adequate for the HTTP POST protocol
-		$this->mapHttpRequestError( $this->httpClient->getDataEndpoint(), $payload );
+		$this->mapHttpRequestError( $this->repositoryClient->getDataEndpoint(), $payload );
 		return false;
 	}
 

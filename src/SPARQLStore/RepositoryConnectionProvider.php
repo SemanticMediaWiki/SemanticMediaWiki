@@ -112,7 +112,7 @@ class RepositoryConnectionProvider implements DBConnectionProvider {
 
 	private function connectTo( $connectorId ) {
 
-		$httpRepositoryConnector = $this->mapConnectorIdToClass( $connectorId );
+		$repositoryConnector = $this->mapConnectorIdToClass( $connectorId );
 
 		if ( $this->defaultGraph === null ) {
 			$this->defaultGraph = $GLOBALS['smwgSparqlDefaultGraph'];
@@ -130,8 +130,8 @@ class RepositoryConnectionProvider implements DBConnectionProvider {
 			$this->dataEndpoint = $GLOBALS['smwgSparqlDataEndpoint'];
 		}
 
-		$connection = new $httpRepositoryConnector(
-			new HttpClient( $this->defaultGraph, $this->queryEndpoint, $this->updateEndpoint, $this->dataEndpoint ),
+		$connection = new $repositoryConnector(
+			new RepositoryClient( $this->defaultGraph, $this->queryEndpoint, $this->updateEndpoint, $this->dataEndpoint ),
 			new CurlRequest( curl_init() )
 		);
 

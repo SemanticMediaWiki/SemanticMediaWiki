@@ -21,11 +21,11 @@ class FusekiHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 	 */
 	public function doQuery( $sparql ) {
 
-		if ( $this->httpClient->getQueryEndpoint() === '' ) {
+		if ( $this->repositoryClient->getQueryEndpoint() === '' ) {
 			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 
-		$this->httpRequest->setOption( CURLOPT_URL, $this->httpClient->getQueryEndpoint() );
+		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getQueryEndpoint() );
 
 		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, array(
 			'Accept: application/sparql-results+xml,application/xml;q=0.8',
@@ -34,7 +34,7 @@ class FusekiHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 
 		$this->httpRequest->setOption( CURLOPT_POST, true );
 
-		$defaultGraph = $this->httpClient->getDefaultGraph();
+		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$parameterString = "query=" . urlencode( $sparql ) .
 			( ( $defaultGraph !== '' )? '&default-graph-uri=' . urlencode( $defaultGraph ) : '' ) . '&output=xml';
@@ -48,7 +48,7 @@ class FusekiHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 			return $xmlResponseParser->parse( $httpResponse );
 		}
 
-		$this->mapHttpRequestError( $this->httpClient->getQueryEndpoint(), $sparql );
+		$this->mapHttpRequestError( $this->repositoryClient->getQueryEndpoint(), $sparql );
 
 		$repositoryResult = new RepositoryResult();
 		$repositoryResult->setErrorCode( RepositoryResult::ERROR_UNREACHABLE );

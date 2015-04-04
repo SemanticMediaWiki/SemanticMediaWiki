@@ -35,15 +35,15 @@ class FourstoreHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 	 */
 	public function doQuery( $sparql ) {
 
-		if ( $this->httpClient->getQueryEndpoint() === '' ) {
+		if ( $this->repositoryClient->getQueryEndpoint() === '' ) {
 			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 
-		$this->httpRequest->setOption( CURLOPT_URL, $this->httpClient->getQueryEndpoint() );
+		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getQueryEndpoint() );
 		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, array('Accept: application/sparql-results+xml,application/xml;q=0.8' ));
 		$this->httpRequest->setOption( CURLOPT_POST, true );
 
-		$defaultGraph = $this->httpClient->getDefaultGraph();
+		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$parameterString = "query=" . urlencode( $sparql ) . "&restricted=1" .
 			( ( $defaultGraph !== '' )? '&default-graph-uri=' . urlencode( $defaultGraph ) : '' );
@@ -56,7 +56,7 @@ class FourstoreHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 			$xmlResponseParser = new XmlResponseParser();
 			$result = $xmlResponseParser->parse( $httpResponse );
 		} else {
-			$this->mapHttpRequestError( $this->httpClient->getQueryEndpoint(), $sparql );
+			$this->mapHttpRequestError( $this->repositoryClient->getQueryEndpoint(), $sparql );
 			$result = new RepositoryResult();
 			$result->setErrorCode( RepositoryResult::ERROR_UNREACHABLE );
 		}
@@ -112,14 +112,14 @@ class FourstoreHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 	 */
 	public function doHttpPost( $payload ) {
 
-		if ( $this->httpClient->getDataEndpoint() === '' ) {
+		if ( $this->repositoryClient->getDataEndpoint() === '' ) {
 			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified' );
 		}
 
-		$this->httpRequest->setOption( CURLOPT_URL, $this->httpClient->getDataEndpoint() );
+		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getDataEndpoint() );
 		$this->httpRequest->setOption( CURLOPT_POST, true );
 
-		$defaultGraph = $this->httpClient->getDefaultGraph();
+		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$parameterString = "data=" . urlencode( $payload ) . '&graph=' .
 			( ( $defaultGraph !== '' )? urlencode( $defaultGraph ) : 'default' ) .
@@ -132,7 +132,7 @@ class FourstoreHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 			return true;
 		}
 
-		$this->mapHttpRequestError( $this->httpClient->getDataEndpoint(), $payload );
+		$this->mapHttpRequestError( $this->repositoryClient->getDataEndpoint(), $payload );
 		return false;
 	}
 
@@ -145,11 +145,11 @@ class FourstoreHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 	 */
 	public function doUpdate( $sparql ) {
 
-		if ( $this->httpClient->getUpdateEndpoint() === '' ) {
+		if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {
 			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 
-		$this->httpRequest->setOption( CURLOPT_URL, $this->httpClient->getUpdateEndpoint() );
+		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getUpdateEndpoint() );
 		$this->httpRequest->setOption( CURLOPT_POST, true );
 
 		$parameterString = "update=" . urlencode( $sparql );
@@ -163,7 +163,7 @@ class FourstoreHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 			return true;
 		}
 
-		$this->mapHttpRequestError( $this->httpClient->getUpdateEndpoint(), $sparql );
+		$this->mapHttpRequestError( $this->repositoryClient->getUpdateEndpoint(), $sparql );
 		return false;
 	}
 

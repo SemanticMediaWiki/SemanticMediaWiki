@@ -57,7 +57,7 @@ class VirtuosoHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 	 */
 	public function delete( $deletePattern, $where, $extraNamespaces = array() ) {
 
-		$defaultGraph = $this->httpClient->getDefaultGraph();
+		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) . "DELETE" .
 			( ( $defaultGraph !== '' )? " FROM <{$defaultGraph}> " : '' ) .
@@ -80,7 +80,7 @@ class VirtuosoHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 	 */
 	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = array() ) {
 
-		$defaultGraph = $this->httpClient->getDefaultGraph();
+		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) . "MODIFY" .
 			( ( $defaultGraph !== '' )? " GRAPH <{$defaultGraph}> " : '' ) .
@@ -101,12 +101,12 @@ class VirtuosoHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 	 */
 	public function insertData( $triples, $extraNamespaces = array() ) {
 
-		if ( $this->httpClient->getDataEndpoint() !== '' ) {
+		if ( $this->repositoryClient->getDataEndpoint() !== '' ) {
 			$turtle = self::getPrefixString( $extraNamespaces, false ) . $triples;
 			return $this->doHttpPost( $turtle );
 		}
 
-		$defaultGraph = $this->httpClient->getDefaultGraph();
+		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces, true ) .
 			"INSERT DATA " .
@@ -128,7 +128,7 @@ class VirtuosoHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 	 */
 	public function deleteData( $triples, $extraNamespaces = array() ) {
 
-		$defaultGraph = $this->httpClient->getDefaultGraph();
+		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
 			"DELETE DATA " .
@@ -150,11 +150,11 @@ class VirtuosoHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 	 */
 	public function doUpdate( $sparql ) {
 
-		if ( $this->httpClient->getUpdateEndpoint() === '' ) {
+		if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {
 			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 
-		$this->httpRequest->setOption( CURLOPT_URL, $this->httpClient->getUpdateEndpoint() );
+		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getUpdateEndpoint() );
 		$this->httpRequest->setOption( CURLOPT_POST, true );
 
 		$parameterString = "query=" . urlencode( $sparql );
@@ -166,7 +166,7 @@ class VirtuosoHttpRepositoryConnector extends GenericHttpRepositoryConnector {
 			return true;
 		}
 
-		$this->mapHttpRequestError( $this->httpClient->getUpdateEndpoint(), $sparql );
+		$this->mapHttpRequestError( $this->repositoryClient->getUpdateEndpoint(), $sparql );
 		return false;
 	}
 

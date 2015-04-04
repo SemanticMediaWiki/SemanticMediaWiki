@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\SPARQLStore;
 
-use SMW\SPARQLStore\HttpClient;
+use SMW\SPARQLStore\RepositoryClient;
 
 /**
- * @covers \SMW\SPARQLStore\HttpClient
+ * @covers \SMW\SPARQLStore\RepositoryClient
  *
  * @group semantic-mediawiki
  *
@@ -14,19 +14,19 @@ use SMW\SPARQLStore\HttpClient;
  *
  * @author mwjames
  */
-class HttpClientTest extends \PHPUnit_Framework_TestCase {
+class RepositoryClientTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\HttpClient',
-			new HttpClient( '', '', '', '' )
+			'\SMW\SPARQLStore\RepositoryClient',
+			new RepositoryClient( '', '', '', '' )
 		);
 	}
 
 	public function testPublicAccess() {
 
-		$instance = new HttpClient( 'Foo', 'Bar', 'Nu', 'Vim' );
+		$instance = new RepositoryClient( 'Foo', 'Bar', 'Nu', 'Vim' );
 
 		$this->assertSame(
 			'Foo',

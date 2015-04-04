@@ -11,7 +11,7 @@ namespace SMW\SPARQLStore;
  *
  * @author mwjames
  */
-class HttpClient {
+class RepositoryClient {
 
 	/**
 	 * The URI of the default graph that is used to store data.
