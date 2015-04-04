@@ -16,15 +16,16 @@ use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
 use SMWQuery as Query;
 use SMWTurtleSerializer as TurtleSerializer;
-use SMWUpdateJob;
+use SMW\MediaWiki\Jobs\UpdateJob;
 use Title;
 
 /**
- * Storage access class for using SMW's SPARQL database for keeping semantic
- * data. The store keeps an underlying base store running for completeness.
- * This might become optional in the future.
+ * Storage and query access point for a SPARQL supported RepositoryConnector to
+ * enable SMW to communicate with a SPARQL endpoint.
  *
- * @ingroup Store
+ * The store uses a base store to update certain aspects of the data that is not
+ * yet modelled and supported by a RepositoryConnector, which may become optional
+ * in future.
  *
  * @license GNU GPL v2+
  * @since 1.6
@@ -152,11 +153,12 @@ class SPARQLStore extends Store {
 		}
 
 		// Note that we cannot change oldUri to newUri in triple subjects,
-		// since some triples change due to the move. Use SMWUpdateJob.
-		$newUpdate = new SMWUpdateJob( $newtitle );
+		// since some triples change due to the move.
+		$newUpdate = new UpdateJob( $newtitle );
 		$newUpdate->run();
+
 		if ( $redirid != 0 ) { // update/create redirect page data
-			$oldUpdate = new SMWUpdateJob( $oldtitle );
+			$oldUpdate = new UpdateJob( $oldtitle );
 			$oldUpdate->run();
 		}
 
@@ -401,7 +403,7 @@ class SPARQLStore extends Store {
 		if ( $this->connectionManager === null ) {
 
 			$connectionManager = new ConnectionManager();
-			$connectionManager->registerConnectionProvider( 'sparql', new SparqlDBConnectionProvider() );
+			$connectionManager->registerConnectionProvider( 'sparql', new RepositoryConnectionProvider() );
 
 			$this->setConnectionManager( $connectionManager );
 		}

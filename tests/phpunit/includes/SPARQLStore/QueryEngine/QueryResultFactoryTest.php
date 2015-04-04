@@ -12,9 +12,7 @@ use SMWQueryResult as QueryResult;
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\QueryResultFactory
  *
- * @group SMW
- * @group SMWExtension
- * @group semantic-mediawiki-sparql
+ * @group @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 2.0
@@ -64,11 +62,11 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$federateResultSet = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\FederateResultSet' )
+		$RepositoryResult = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\RepositoryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$federateResultSet->expects( $this->atLeastOnce() )
+		$RepositoryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrorCode' )
 			->will( $this->returnValue( $errorCode ) );
 
@@ -83,12 +81,12 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMWQueryResult',
-			$instance->newQueryResult( $federateResultSet, $query )
+			$instance->newQueryResult( $RepositoryResult, $query )
 		);
 
 		$this->assertQueryResultErrorCodeForCountValue(
 			$errorCode,
-			$instance->newQueryResult( $federateResultSet, $query )
+			$instance->newQueryResult( $RepositoryResult, $query )
 		);
 	}
 
@@ -101,11 +99,11 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$federateResultSet = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\FederateResultSet' )
+		$RepositoryResult = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\RepositoryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$federateResultSet->expects( $this->atLeastOnce() )
+		$RepositoryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrorCode' )
 			->will( $this->returnValue( $errorCode ) );
 
@@ -120,12 +118,12 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMWQueryResult',
-			$instance->newQueryResult( $federateResultSet, $query )
+			$instance->newQueryResult( $RepositoryResult, $query )
 		);
 
 		$this->assertQueryResultErrorCode(
 			$errorCode,
-			$instance->newQueryResult( $federateResultSet, $query )
+			$instance->newQueryResult( $RepositoryResult, $query )
 		);
 	}
 
@@ -144,11 +142,11 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$iteratorMockBuilder = new IteratorMockBuilder();
 
-		$federateResultSet = $iteratorMockBuilder->setClass( '\SMW\SPARQLStore\QueryEngine\FederateResultSet' )
+		$repositoryResult = $iteratorMockBuilder->setClass( '\SMW\SPARQLStore\QueryEngine\RepositoryResult' )
 			->with( array( array( $expElement ) ) )
 			->getMockForIterator();
 
-		$federateResultSet->expects( $this->atLeastOnce() )
+		$repositoryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrorCode' )
 			->will( $this->returnValue( $errorCode ) );
 
@@ -163,12 +161,12 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMWQueryResult',
-			$instance->newQueryResult( $federateResultSet, $query )
+			$instance->newQueryResult( $repositoryResult, $query )
 		);
 
 		$this->assertQueryResultErrorCode(
 			$errorCode,
-			$instance->newQueryResult( $federateResultSet, $query )
+			$instance->newQueryResult( $repositoryResult, $query )
 		);
 	}
 

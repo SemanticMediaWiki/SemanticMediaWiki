@@ -12,6 +12,17 @@ use SMW\Query\Language\ThingDescription;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
+
+use SMW\SPARQLStore\QueryEngine\Interpreter\DispatchingInterpreter;
+use SMW\SPARQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter;
+use SMW\SPARQLStore\QueryEngine\Interpreter\ThingDescriptionInterpreter;
+use SMW\SPARQLStore\QueryEngine\Interpreter\SomePropertyInterpreter;
+use SMW\SPARQLStore\QueryEngine\Interpreter\ConjunctionInterpreter;
+use SMW\SPARQLStore\QueryEngine\Interpreter\DisjunctionInterpreter;
+use SMW\SPARQLStore\QueryEngine\Interpreter\NamespaceDescriptionInterpreter;
+use SMW\SPARQLStore\QueryEngine\Interpreter\ValueDescriptionInterpreter;
+use SMW\SPARQLStore\QueryEngine\Interpreter\ConceptDescriptionInterpreter;
+
 use SMWDataItem as DataItem;
 use SMWExpElement as ExpElement;
 use SMWExpNsResource as ExpNsResource;
@@ -30,14 +41,14 @@ use SMWTurtleSerializer as TurtleSerializer;
 class CompoundConditionBuilder {
 
 	/**
+	 * @var DispatchingInterpreter
+	 */
+	private $dispatchingInterpreter = null;
+
+	/**
 	 * @var CircularReferenceGuard
 	 */
 	private $circularReferenceGuard = null;
-
-	/**
-	 * @var ConditionBuilderStrategyFinder
-	 */
-	private $conditionBuilderStrategyFinder = null;
 
 	/**
 	 * @var array
@@ -63,6 +74,36 @@ class CompoundConditionBuilder {
 	private $resultVariable = 'result';
 
 	/**
+	 * @var string
+	 */
+	private $joinVariable;
+
+	/**
+	 * @var DIProperty|null
+	 */
+	private $orderByProperty;
+
+	/**
+	 * @since 2.2
+	 */
+	public function __construct() {
+
+		$this->dispatchingInterpreter = new DispatchingInterpreter();
+		$this->dispatchingInterpreter->addDefaultInterpreter( new ThingDescriptionInterpreter( $this ) );
+
+		$this->dispatchingInterpreter->addInterpreter( new SomePropertyInterpreter( $this ) );
+		$this->dispatchingInterpreter->addInterpreter( new ConjunctionInterpreter( $this ) );
+		$this->dispatchingInterpreter->addInterpreter( new DisjunctionInterpreter( $this ) );
+		$this->dispatchingInterpreter->addInterpreter( new NamespaceDescriptionInterpreter( $this ) );
+		$this->dispatchingInterpreter->addInterpreter( new ClassDescriptionInterpreter( $this ) );
+		$this->dispatchingInterpreter->addInterpreter( new ValueDescriptionInterpreter( $this ) );
+		$this->dispatchingInterpreter->addInterpreter( new ConceptDescriptionInterpreter( $this ) );
+
+		$this->circularReferenceGuard = new CircularReferenceGuard( 'sql-query' );
+		$this->circularReferenceGuard->setMaxRecursionDepth( 2 );
+	}
+
+	/**
 	 * @since 2.0
 	 *
 	 * @param string $resultVariable
@@ -70,6 +111,15 @@ class CompoundConditionBuilder {
 	public function setResultVariable( $resultVariable ) {
 		$this->resultVariable = $resultVariable;
 		return $this;
+	}
+
+	/**
+	 * Get a fresh unused variable name for building SPARQL conditions.
+	 *
+	 * @return string
+	 */
+	public function getNextVariable() {
+		return 'v' . ( ++$this->variableCounter );
 	}
 
 	/**
@@ -128,7 +178,46 @@ class CompoundConditionBuilder {
 	}
 
 	/**
-	 * Get a Condition object for an Description.
+	 * @since 2.2
+	 *
+	 * @param string $joinVariable name of the variable that conditions
+	 * will refer to
+	 */
+	public function setJoinVariable( $joinVariable ) {
+		$this->joinVariable = $joinVariable;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return string
+	 */
+	public function getJoinVariable() {
+		return $this->joinVariable;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param DIProperty|null $orderByProperty if given then
+	 * this is the property the values of which this condition will refer
+	 * to, and the condition should also enable ordering by this value
+	 */
+	public function setOrderByProperty( $orderByProperty ) {
+		$this->orderByProperty = $orderByProperty;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return DIProperty|null
+	 */
+	public function getOrderByProperty() {
+		return $this->orderByProperty;
+	}
+
+	/**
+	 * Get a Condition object for a Description.
 	 *
 	 * This conversion is implemented by a number of recursive functions,
 	 * and this is the main entry point for this recursion. In particular,
@@ -144,9 +233,26 @@ class CompoundConditionBuilder {
 	 */
 	public function buildCondition( Description $description ) {
 		$this->variableCounter = 0;
-		$condition = $this->mapDescriptionToCondition( $description, $this->resultVariable, null );
+
+		$this->setJoinVariable( $this->resultVariable );
+		$this->setOrderByProperty( null );
+
+		$condition = $this->mapDescriptionToCondition( $description );
+
 		$this->addMissingOrderByConditions( $condition );
+
 		return $condition;
+	}
+
+	/**
+	 * Recursively create a Condition from a Description
+	 *
+	 * @param Description $description
+	 *
+	 * @return Condition
+	 */
+	public function mapDescriptionToCondition( Description $description ) {
+		return $this->dispatchingInterpreter->interpretDescription( $description );
 	}
 
 	/**
@@ -191,25 +297,6 @@ class CompoundConditionBuilder {
 	}
 
 	/**
-	 * Recursively create an Condition from an Description.
-	 *
-	 * @param $description Description
-	 * @param $joinVariable string name of the variable that conditions
-	 * will refer to
-	 * @param $orderByProperty mixed DIProperty or null, if given then
-	 * this is the property the values of which this condition will refer
-	 * to, and the condition should also enable ordering by this value
-	 * @return Condition
-	 */
-	public function mapDescriptionToCondition( Description $description, $joinVariable, $orderByProperty ) {
-		return $this->findBuildStrategyForDescription( $description )->buildCondition(
-			$description,
-			$joinVariable,
-			$orderByProperty
-		);
-	}
-
-	/**
 	 * Create an Condition from an empty (true) description.
 	 * May still require helper conditions for ordering.
 	 *
@@ -218,19 +305,10 @@ class CompoundConditionBuilder {
 	 *
 	 * @return Condition
 	 */
-	public function buildTrueCondition( $joinVariable, $orderByProperty ) {
+	public function newTrueCondition( $joinVariable, $orderByProperty ) {
 		$result = new TrueCondition();
 		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty );
 		return $result;
-	}
-
-	/**
-	 * Get a fresh unused variable name for building SPARQL conditions.
-	 *
-	 * @return string
-	 */
-	public function getNextVariable() {
-		return 'v' . ( ++$this->variableCounter );
 	}
 
 	/**
@@ -318,25 +396,17 @@ class CompoundConditionBuilder {
 			new ThingDescription()
 		);
 
+		$this->setJoinVariable( $this->resultVariable );
+		$this->setOrderByProperty( null );
+
 		$auxCondition = $this->mapDescriptionToCondition(
-			$auxDescription,
-			$this->resultVariable,
-			null
+			$auxDescription
 		);
 
 		// orderVariables MUST be set for $propertyKey -- or there is a bug; let it show!
 		$condition->orderVariables[$propertyKey] = $auxCondition->orderVariables[$propertyKey];
 		$condition->weakConditions[$condition->orderVariables[$propertyKey]] = $auxCondition->getWeakConditionString() . $auxCondition->getCondition();
 		$condition->namespaces = array_merge( $condition->namespaces, $auxCondition->namespaces );
-	}
-
-	private function findBuildStrategyForDescription( Description $description ) {
-
-		if ( $this->conditionBuilderStrategyFinder === null ) {
-			 $this->conditionBuilderStrategyFinder = new ConditionBuilderStrategyFinder( $this );
-		}
-
-		return $this->conditionBuilderStrategyFinder->findStrategyForDescription( $description );
 	}
 
 }

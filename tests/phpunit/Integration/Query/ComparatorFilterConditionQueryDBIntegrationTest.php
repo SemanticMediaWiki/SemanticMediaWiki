@@ -6,7 +6,6 @@ use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\SPARQLStore\SPARQLStore;
-use SMW\SPARQLStore\VirtuosoHttpDatabaseConnector;
 
 use SMW\Query\Language\ValueDescription;
 use SMW\Query\Language\SomeProperty;
@@ -78,7 +77,8 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends MwDBaseUnitTestCas
 	 */
 	public function testDateConjunctionConstraints( $range, $parameters, $expected ) {
 
-		if ( $this->getStore() instanceof SPARQLStore && $this->getStore()->getConnection() instanceof VirtuosoHttpDatabaseConnector ) {
+		if ( is_a( $this->getStore(), '\SMW\SPARQLStore\SPARQLStore' )
+			&& is_a( $this->getStore()->getConnection( 'sparql' ), '\SMW\SPARQLStore\Connector\VirtuosoHttpRepositoryConnector' ) ) {
 			$this->markTestSkipped( "Date filter constraints do not work properly in Virtuoso" );
 		}
 

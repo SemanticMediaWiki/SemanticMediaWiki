@@ -3,8 +3,8 @@
 namespace SMW\SPARQLStore;
 
 use RuntimeException;
-use SMW\Cache\Cache;
-use SMW\Cache\FixedInMemoryCache;
+use Onoi\Cache\Cache;
+use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
@@ -113,14 +113,14 @@ class RedirectLookup {
 		$rediUri = TurtleSerializer::getTurtleNameForExpElement( Exporter::getInstance()->getSpecialPropertyResource( '_REDI' ) );
 		$skeyUri = TurtleSerializer::getTurtleNameForExpElement( Exporter::getInstance()->getSpecialPropertyResource( '_SKEY' ) );
 
-		$federateResultSet = $this->connection->select(
+		$respositoryResult = $this->connection->select(
 			'*',
 			"$resourceUri $skeyUri ?s  OPTIONAL { $resourceUri $rediUri ?r }",
 			array( 'LIMIT' => 1 ),
 			array( $expNsResource->getNamespaceId() => $expNsResource->getNamespace() )
 		);
 
-		return $federateResultSet->current();
+		return $respositoryResult->current();
 	}
 
 	private function getResourceForTargetElement( ExpNsResource $expNsResource, $rediTargetElement ) {
@@ -142,7 +142,7 @@ class RedirectLookup {
 	private function getCache() {
 
 		if ( self::$resourceUriTargetCache === null ) {
-			self::$resourceUriTargetCache = new FixedInMemoryCache( 500 );
+			self::$resourceUriTargetCache = ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache( 500 );
 		}
 
 		return self::$resourceUriTargetCache;

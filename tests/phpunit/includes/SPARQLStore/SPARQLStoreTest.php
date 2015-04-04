@@ -135,7 +135,7 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 			$semanticData->getSubject()
 		);
 
-		$listReturnValue = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\FederateResultSet' )
+		$repositoryResult = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\RepositoryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -149,7 +149,7 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$sparqlDatabase->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( $listReturnValue ) );
+			->will( $this->returnValue( $repositoryResult ) );
 
 		$sparqlDatabase->expects( $this->once() )
 			->method( 'insertData' );
@@ -208,17 +208,17 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 			$subobject->getContainer()
 		);
 
-		$federateResultSet = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\FederateResultSet' )
+		$repositoryResult = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\RepositoryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\GenericHttpDatabaseConnector' )
+		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\Connector\GenericHttpRepositoryConnector' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( $federateResultSet ) );
+			->will( $this->returnValue( $repositoryResult ) );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'insertData' );
@@ -261,7 +261,7 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\GenericHttpDatabaseConnector' )
+		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
 			->getMock();
 
