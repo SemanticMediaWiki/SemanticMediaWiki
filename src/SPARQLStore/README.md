@@ -2,25 +2,26 @@
 
 The `SPARQLStore` consists of two components, a base store (by default using the existing `SQLStore`) and a client database connector. Currently, the base store is responsible for accumulating information about properties, value annotations, and statistics.
 
-## Database connector 
+## Database connector
 
-The database connector is responsible for updating triples to the store and return results from the [TDB][tdb] for query requests made by the `QueryEngine`.
+The repository connector is responsible for updating triples to the store and return results from the [TDB][tdb] for query requests made by the `QueryEngine`.
 
-The following client database connectors are currently available:
+The following client repository connectors are currently available:
 
-- [Jena Fuseki][fuseki] is supported by `FusekiHttpDatabaseConnector`
-- [Virtuoso][virtuoso] is supported by `VirtuosoHttpDatabaseConnector`
-- [4Store][4store] is supported by `FourstoreHttpDatabaseConnector`
-- `GenericHttpDatabaseConnector` is used as default connector
+- [Jena Fuseki][fuseki]
+- [Virtuoso][virtuoso]
+- [4Store][4store]
+- [Sesame][sesame]
 
 ## QueryEngine
 
-The `QueryEngine` is responsible for transforming a `#ask` object into a qualified query using the [`SPARQL` query language][sparql-query].
+The `QueryEngine` is responsible for transforming a `ask` description object into a qualified
+[`SPARQL` query language][sparql-query] string.
 
 - The `CompoundConditionBuilder` builds a SPARQL condition from a `#ask` query artefact (`Description` object)
 - The condition is being transformed into a qualified `SPARQL` query with the client connector making a request to the database to return a list of raw results
-- The list with raw results is being parsed by the `RawResultParser` to provide a unified `FederateResultSet`
-- For the final step, the `QueryResultFactory` converts the `FederateResultSet` into a SMW specific `QueryResult` object which will fetch remaining data (those selected as printrequests) from the base store to make them available to a `QueryResultPrinter`
+- The list with raw results is being parsed by a `HttpResponseParser` to provide a unified `RepositoryResult`
+- During the final step, the `QueryResultFactory` converts the `RepositoryResult` into a SMW specific `QueryResult` object which will fetch all remaining data (those selected as printrequests) from the base store to make them available to a `QueryResultPrinter`
 
 ## Integration testing
 
@@ -37,3 +38,4 @@ Information about integration testing and installation can be found in the [buil
 [virtuoso]: https://github.com/openlink/virtuoso-opensource
 [4store]: https://github.com/garlik/4store
 [tdb]: http://en.wikipedia.org/wiki/Triplestore
+[sesame]: http://rdf4j.org/

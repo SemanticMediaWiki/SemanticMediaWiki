@@ -77,6 +77,14 @@ class ByJsonRdfTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			NS_MAIN
 		);
 
+		// For some reason there are some random failures where
+		// the instance hasn't reset the cache in time to fetch the
+		// property definition which only happens for the SPARQLStore
+
+		// This should not be necessary because the resetcache event
+		// is triggered
+		\SMWExporter::clear();
+
 		foreach ( $jsonTestCaseFileHandler->findRdfTestCases() as $case ) {
 			$this->assertRdfOutputForCase( $case, $jsonTestCaseFileHandler->getDebugMode() );
 		}
