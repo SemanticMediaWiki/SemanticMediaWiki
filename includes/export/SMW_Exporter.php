@@ -2,10 +2,11 @@
 
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\Cache\FixedInMemoryCache;
+use SMW\Exporter\DataItemToExpResourceMapper;
+use SMW\Exporter\Escaper;
+use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Exporter\UriEscaper;
 
 /**
  * SMWExporter is a class for converting internal page-based data (SMWSemanticData) into
@@ -22,9 +23,9 @@ class SMWExporter {
 	private static $instance = null;
 
 	/**
-	 * @var array|null
+	 * @var DataItemToExpResourceMapper
 	 */
-	private static $resourceElementCache = null;
+	private static $dataItemToExpResourceMapper = null;
 
 	static protected $m_exporturl = false;
 	static protected $m_ent_wiki = false;
@@ -42,6 +43,15 @@ class SMWExporter {
 
 			self::$instance = new self();
 			self::$instance->initBaseURIs();
+
+			// There is no better way of getting around the static use without BC
+			self::$dataItemToExpResourceMapper = new DataItemToExpResourceMapper(
+				ApplicationFactory::getInstance()->getStore()
+			);
+
+			self::$dataItemToExpResourceMapper->setCache(
+				ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache( 500 )
+			);
 		}
 
 		return self::$instance;
@@ -53,14 +63,13 @@ class SMWExporter {
 	public static function clear() {
 		self::$instance = null;
 		self::$m_exporturl = false;
-		self::$resourceElementCache = null;
 	}
 
 	/**
 	 * @since 2.2
 	 */
-	public static function resetCache() {
-		self::$resourceElementCache = null;
+	public function resetCacheFor( SMWDIWikiPage $diWikiPage ) {
+		self::$dataItemToExpResourceMapper->resetCacheFor( $diWikiPage );
 	}
 
 	/**
@@ -85,18 +94,9 @@ class SMWExporter {
 		// The article name must be the last part of wiki URLs for proper OWL/RDF export:
 		self::$m_ent_wikiurl  = $wgServer . str_replace( '$1', '', $wgArticlePath );
 		self::$m_ent_wiki     = $smwgNamespace;
-		self::$m_ent_property = self::$m_ent_wiki . UriEscaper::encode( urlencode( str_replace( ' ', '_', $wgContLang->getNsText( SMW_NS_PROPERTY ) . ':' ) ) );
+		self::$m_ent_property = self::$m_ent_wiki . Escaper::encodeUri( urlencode( str_replace( ' ', '_', $wgContLang->getNsText( SMW_NS_PROPERTY ) . ':' ) ) );
 		$title = SpecialPage::getTitleFor( 'ExportRDF' );
 		self::$m_exporturl    = self::$m_ent_wikiurl . $title->getPrefixedURL();
-	}
-
-	/**
-	 * @since  2.0
-	 *
-	 * @return string
-	 */
-	public function getEncodedPropertyNamespace() {
-		return UriEscaper::encode( urlencode( str_replace( ' ', '_', $GLOBALS['wgContLang']->getNsText( SMW_NS_PROPERTY ) . ':' ) ) );
 	}
 
 	/**
@@ -171,6 +171,7 @@ class SMWExporter {
 				self::getSpecialNsResource( 'swivt', 'wikiNamespace' ),
 				new SMWExpLiteral( strval( $diWikiPage->getNamespace() ), 'http://www.w3.org/2001/XMLSchema#integer' )
 			);
+
 		} else {
 			$pageTitle = str_replace( '_', ' ', $diWikiPage->getDBkey() );
 			if ( $diWikiPage->getNamespace() !== 0 ) {
@@ -335,91 +336,17 @@ class SMWExporter {
 	}
 
 	/**
-	 * Create an SMWExpElement for some internal resource, given by an
-	 * SMWDIProperty object.
-	 * This code is only applied to user-defined properties, since the
-	 * code for special properties in
-	 * SMWExporter::getInstance()->getSpecialPropertyResource() may require information
-	 * about the namespace in which some special property is used.
-	 *
-	 * @param $diProperty SMWDIProperty
-	 * @param $helperProperty boolean determines if an auxiliary property resource to store a helper value (see SMWExporter::getInstance()->getDataItemHelperExpElement()) should be generated
-	 * @return SMWExpResource
+	 * @see DataItemToExpResourceMapper::mapPropertyToResourceElement
 	 */
 	static public function getResourceElementForProperty( SMWDIProperty $diProperty, $helperProperty = false ) {
-		$diWikiPage = $diProperty->getDiWikiPage();
-		if ( is_null( $diWikiPage ) ) {
-			throw new Exception( 'SMWExporter::getInstance()->getResourceElementForProperty() can only be used for non-inverse, user-defined properties.' );
-		} elseif ( $helperProperty ) {
-			return self::getResourceElementForWikiPage( $diWikiPage, 'aux' );
-		} else {
-			return self::getResourceElementForWikiPage( $diWikiPage );
-		}
+		return self::$dataItemToExpResourceMapper->mapPropertyToResourceElement( $diProperty, $helperProperty );
 	}
 
 	/**
-	 * Create an SMWExpElement for some internal resource, given by an
-	 * SMWDIWikiPage object. This is the one place in the code where URIs
-	 * of wiki pages and user-defined properties are determined. A modifier
-	 * can be given to make variants of a URI, typically done for
-	 * auxiliary properties. In this case, the URI is modiied by appending
-	 * "-23$modifier" where "-23" is the URI encoding of "#" (a symbol not
-	 * occuring in MW titles).
-	 *
-	 * @param $diWikiPage SMWDIWikiPage or SMWDIProperty
-	 * @param $modifier string, using only Latin letters and numbers
-	 * @return SMWExpResource
+	 * @see DataItemToExpResourceMapper::mapWikiPageToResourceElement
 	 */
-	static public function getResourceElementForWikiPage( SMWDIWikiPage $diWikiPage, $modifier = '' ) {
-
-		$hash = $diWikiPage->getHash() . $modifier;
-
-		if ( self::getResourceElementCache()->contains( $hash ) ) {
-			return self::getResourceElementCache()->fetch( $hash );
-		}
-
-		if ( $diWikiPage->getSubobjectName() !== '' ) {
-			$modifier = $diWikiPage->getSubobjectName();
-		}
-
-		if ( $modifier === '' && $diWikiPage->getNamespace() === SMW_NS_PROPERTY ) {
-			$importProperty = new SMWDIProperty( '_IMPO' );
-			$importDis = \SMW\StoreFactory::getStore()->getPropertyValues( $diWikiPage, $importProperty );
-			$importURI = ( count( $importDis ) > 0 );
-		} else {
-			$importURI = false;
-		}
-
-		if ( $importURI ) {
-			$importValue = DataValueFactory::getInstance()->newDataItemValue( current( $importDis ), $importProperty );
-			$namespace = $importValue->getNS();
-			$namespaceId = $importValue->getNSID();
-			$localName = $importValue->getLocalName();
-		} else {
-			$localName = '';
-
-			if ( $diWikiPage->getNamespace() == SMW_NS_PROPERTY ) {
-				$namespace = self::getNamespaceUri( 'property' );
-				$namespaceId = 'property';
-				$localName = UriEscaper::encode( rawurlencode( $diWikiPage->getDBkey() ) );
-			}
-
-			if ( ( $localName === '' ) ||
-			     ( in_array( $localName{0}, array( '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ) ) ) ) {
-				$namespace = self::getNamespaceUri( 'wiki' );
-				$namespaceId = 'wiki';
-				$localName = self::getEncodedPageName( $diWikiPage );
-			}
-
-			if ( $modifier !== '' ) {
-				$localName .=  '-23' . UriEscaper::encode( rawurlencode(  $modifier ) );
-			}
-		}
-
-		$resource = new SMWExpNsResource( $localName, $namespace, $namespaceId, $diWikiPage );
-		self::getResourceElementCache()->save( $hash, $resource );
-
-		return $resource;
+	static public function getResourceElementForWikiPage( SMWDIWikiPage $diWikiPage, $markForAuxiliaryUsage = false ) {
+		return self::$dataItemToExpResourceMapper->mapWikiPageToResourceElement( $diWikiPage, $markForAuxiliaryUsage );
 	}
 
 	/**
@@ -439,7 +366,7 @@ class SMWExporter {
 
 			if ( strpos( $uri, $wikiNamespace ) === 0 ) {
 				$localName = substr( $uri, strlen( $wikiNamespace ) );
-				$dbKey = rawurldecode( UriEscaper::decode( $localName ) );
+				$dbKey = rawurldecode( Escaper::decodeUri( $localName ) );
 
 				$parts = explode( '#', $dbKey, 2 );
 				if ( count( $parts ) == 2 ) {
@@ -774,38 +701,6 @@ class SMWExporter {
 			$property->getKey() === '_TYPE' ||
 			$property->getKey() === '_IMPO' ||
 			$property->getKey() === '_URI';
-	}
-
-	/**
-	 * @since 2.0
-	 *
-	 * @param  DIWikiPage $diWikiPage
-	 * @return string
-	 */
-	static public function getEncodedPageName( DIWikiPage $diWikiPage ) {
-
-		$localName = '';
-
-		if ( $diWikiPage->getInterwiki() !== '' ) {
-			$localName = $diWikiPage->getInterwiki() . ':';
-		}
-
-		if ( $diWikiPage->getNamespace() !== 0 ) {
-			$localName .= str_replace( ' ', '_', $GLOBALS['wgContLang']->getNSText( $diWikiPage->getNamespace() ) ) . ':' . $diWikiPage->getDBkey();
-		} else {
-			$localName .= $diWikiPage->getDBkey();
-		}
-
-		return UriEscaper::encode( wfUrlencode( $localName ) );
-	}
-
-	static protected function getResourceElementCache() {
-
-		if ( self::$resourceElementCache === null ) {
-			self::$resourceElementCache = new FixedInMemoryCache( 1000 );
-		}
-
-		return self::$resourceElementCache;
 	}
 
 }

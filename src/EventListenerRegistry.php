@@ -42,12 +42,15 @@ class EventListenerRegistry implements EventListenerCollection {
 		$this->eventListenerCollection->registerCallback(
 			'property.spec.change', function( $dispatchContext ) {
 
-				$title = $dispatchContext->get( 'subject' )->getTitle();
+				$subject = $dispatchContext->get( 'subject' );
 
-				$updateDispatcherJob = ApplicationFactory::getInstance()->newJobFactory()->newUpdateDispatcherJob( $title );
+				$updateDispatcherJob = ApplicationFactory::getInstance()->newJobFactory()->newUpdateDispatcherJob(
+					$subject->getTitle()
+				);
+
 				$updateDispatcherJob->run();
 
-				Exporter::getInstance()->resetCache();
+				Exporter::getInstance()->resetCacheFor( $subject );
 
 				$dispatchContext->set( 'propagationstop', true );
 			}

@@ -161,7 +161,7 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		#1
 		$provider[] = array(
-			array( 'serializer' => 'SMW\Serializers\ExpDataDeserializer' )
+			array( 'serializer' => 'SMW\Serializers\ExpDataSerializer' )
 		);
 
 		return $provider;
