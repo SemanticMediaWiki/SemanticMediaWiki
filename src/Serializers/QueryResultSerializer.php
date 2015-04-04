@@ -148,7 +148,7 @@ class QueryResultSerializer implements Serializer {
 				if ( $printRequest->getMode() === PrintRequest::PRINT_THIS ) {
 					$dataItems = $resultArray->getContent();
 					$result += self::getSerialization( array_shift( $dataItems ), $printRequest );
-				} else if ( $resultArray->getContent() !== array() ) {
+				} elseif ( $resultArray->getContent() !== array() ) {
 					$values = array();
 
 					foreach ( $resultArray->getContent() as $dataItem ) {
