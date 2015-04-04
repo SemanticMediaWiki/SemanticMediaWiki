@@ -280,8 +280,8 @@ class SMWSQLStore3Readers {
 		// subjects at least if !$proptable->idsubject
 		if ( ( $id == 0 ) ||
 			( is_null( $object ) && ( !$isSubject || !$propTable->usesIdSubject() ) ) ) {
-				return array();
-			}
+				return array(); 
+		}		
 
 		$result = array();
 		$db = $this->store->getConnection();
@@ -384,7 +384,7 @@ class SMWSQLStore3Readers {
 
 			// Filter out any accidentally retrieved internal things (interwiki starts with ":"):
 			if ( $valuecount < 3 || implode( '', $fields ) != 'p' ||
-			     $valuekeys[2] === '' ||  $valuekeys[2]{0} != ':' ) {
+			     $valuekeys[2] === '' || $valuekeys[2]{0} != ':' ) {
 
 				if ( isset( $result[$valueHash] ) ) {
 					$this->store->getLogger()->log( __METHOD__, "found duplicate for {$propertykey} " . ( is_array( $valuekeys ) ? implode( ',', $valuekeys ) : $valuekeys ) );

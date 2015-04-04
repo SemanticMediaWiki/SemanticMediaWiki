@@ -89,7 +89,7 @@ class ConceptPage extends \SMWOrderedListPage {
 		}
 
 
-		return  Html::element( 'br', array( 'id' => 'smwfootbr' ) ) .
+		return Html::element( 'br', array( 'id' => 'smwfootbr' ) ) .
 			Html::element( 'a', array( 'name' => 'SMWResults' ), null ) .
 			Html::rawElement( 'div', array( 'id' => 'mw-pages'),
 				Html::rawElement( 'h2', array(), $this->getContext()->msg( 'smw_concept_header', $titleText )->text() ) .

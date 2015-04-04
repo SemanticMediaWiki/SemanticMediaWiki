@@ -604,7 +604,7 @@ class SMWTimeValue extends SMWDataValue {
 		}
 	}
 
-	public function getShortWikiText( $linked = NULL ) {
+	public function getShortWikiText( $linked = null ) {
 		if ( $this->isValid() ) {
 			return ( $this->m_caption !== false ) ? $this->m_caption : $this->getPreferredCaption();
 		} else {
@@ -612,15 +612,15 @@ class SMWTimeValue extends SMWDataValue {
 		}
 	}
 
-	public function getShortHTMLText( $linker = NULL ) {
+	public function getShortHTMLText( $linker = null ) {
 		return $this->getShortWikiText( $linker ); // safe in HTML
 	}
 
-	public function getLongWikiText( $linked = NULL ) {
+	public function getLongWikiText( $linked = null ) {
 		return $this->isValid() ? $this->getPreferredCaption() : $this->getErrorText();
 	}
 
-	public function getLongHTMLText( $linker = NULL ) {
+	public function getLongHTMLText( $linker = null ) {
 		return $this->getLongWikiText( $linker ); // safe in HTML
 	}
 

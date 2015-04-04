@@ -1,6 +1,7 @@
 <?php
 
 namespace SMW;
+
 use SMWQueryResult, SMWQuery, SMWQueryProcessor, SMWDIWikipage;
 use Sanitizer, WikiPage, ParserOptions, FeedItem, TextContent, Title;
 

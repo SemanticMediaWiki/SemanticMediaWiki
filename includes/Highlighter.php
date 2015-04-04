@@ -89,7 +89,7 @@ class Highlighter extends ContextSource {
 	 *
 	 * @return Highlighter
 	 */
-	public static function factory( $type, IContextSource $context = null ){
+	public static function factory( $type, IContextSource $context = null ) {
 		if ( $type === '' || !is_int( $type ) ) {
 			$type = self::getTypeId( $type );
 		}

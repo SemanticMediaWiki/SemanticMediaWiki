@@ -234,7 +234,7 @@ class SMWQuery {
 	 *
 	 * @return array
 	 */
-	public function toArray(){
+	public function toArray() {
 		$serialized = array();
 
 		$serialized['conditions'] = $this->getQueryString();
