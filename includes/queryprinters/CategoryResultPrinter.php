@@ -104,7 +104,11 @@ class CategoryResultPrinter extends ResultPrinter {
 					$first_value = true;
 
 					while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
-						if ( $first_value ) $first_value = false; else $wikitext .= $this->mDelim . ' ';
+						if ( $first_value ) {
+							$first_value = false;
+						} else {
+							$wikitext .= $this->mDelim . ' ';
+						}
 						$wikitext .= $text;
 					}
 
