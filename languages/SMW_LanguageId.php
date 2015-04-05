@@ -15,7 +15,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 }
 
 global $smwgIP;
-include_once( $smwgIP . 'languages/SMW_Language.php' );
+include_once ( $smwgIP . 'languages/SMW_Language.php' );
 
 
 /**
