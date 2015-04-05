@@ -99,7 +99,7 @@ class SetupStore extends \Maintenance {
 			$smwgIP = dirname( __FILE__ ) . '/../';
 		}
 
-		require_once( $smwgIP . 'includes/GlobalFunctions.php' );
+		require_once ( $smwgIP . 'includes/GlobalFunctions.php' );
 	}
 
 	protected function getStore() {
@@ -158,10 +158,10 @@ class SetupStore extends \Maintenance {
 		$this->output( "To undo this operation later on, a complete refresh of the data will be needed.\n" );
 
 		if ( !$this->hasOption( 'nochecks' ) ) {
-			print( "If you are sure you want to proceed, type DELETE.\n" );
+			print ( "If you are sure you want to proceed, type DELETE.\n" );
 
 			if ( $this->readconsole() !== 'DELETE' ) {
-				print( "Aborting.\n\n" );
+				print ( "Aborting.\n\n" );
 				return false;
 			}
 		}
@@ -171,4 +171,4 @@ class SetupStore extends \Maintenance {
 }
 
 $maintClass = 'SMW\Maintenance\SetupStore';
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once ( RUN_MAINTENANCE_IF_MAIN );

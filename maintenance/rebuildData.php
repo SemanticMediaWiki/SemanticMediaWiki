@@ -71,16 +71,27 @@ class RebuildData extends \Maintenance {
 		$this->addOption( 's', '<startid> Start refreshing at given article ID, useful for partial refreshing.', false, true );
 		$this->addOption( 'e', '<endid> Stop refreshing at given article ID, useful for partial refreshing.', false, true );
 		$this->addOption( 'n', '<numids> Stop refreshing after processing a given number of IDs, useful for partial refreshing.', false, true );
-		$this->addOption( 'startidfile', '<startidfile> Read <startid> from a file instead of the arguments and write the next id to the file when finished. Useful for continual partial refreshing from cron.', false, true );
+		
+		$this->addOption( 'startidfile', '<startidfile> Read <startid> from a file instead of the arguments and write the next id to the file when finished. ' .
+								'Useful for continual partial refreshing from cron.', false, true );
+		
 		$this->addOption( 'b', '<backend> Execute the operation for the storage backend of the given name (default is to use the current backend).', false, true );
 
-		$this->addOption( 'f', 'Fully delete all content instead of just refreshing relevant entries. This will also rebuild the whole storage structure. May leave the wiki temporarily incomplete.', false );
+		$this->addOption( 'f', 'Fully delete all content instead of just refreshing relevant entries. This will also rebuild the whole storage structure. ' .
+								'May leave the wiki temporarily incomplete.', false );
+		
 		$this->addOption( 'v', 'Be verbose about the progress', false );
 		$this->addOption( 'c', 'Will refresh only category pages (and other explicitly named namespaces)', false );
 		$this->addOption( 'p', 'Will refresh only property pages (and other explicitly named namespaces)', false );
 		$this->addOption( 't', 'Will refresh only type pages (and other explicitly named namespaces)', false );
-		$this->addOption( 'page', '<pagelist> Will refresh only the pages of the given names, with | used as a separator. Example: --page "Page 1|Page 2" refreshes Page 1 and Page 2 Options -s, -e, -n, --startidfile, -c, -p, -t are ignored if --page is given.', false, true );
-		$this->addOption( 'server', '<server> The protocol and server name to as base URLs, e.g. http://en.wikipedia.org. This is sometimes necessary because server name detection may fail in command line scripts.', false, true );
+		
+		$this->addOption( 'page', '<pagelist> Will refresh only the pages of the given names, with | used as a separator. ' .
+								'Example: --page "Page 1|Page 2" refreshes Page 1 and Page 2 Options -s, -e, -n, ' .
+								'--startidfile, -c, -p, -t are ignored if --page is given.', false, true );
+								
+		$this->addOption( 'server', '<server> The protocol and server name to as base URLs, e.g. http://en.wikipedia.org. ' .
+								'This is sometimes necessary because server name detection may fail in command line scripts.', false, true );
+								
 		$this->addOption( 'query', "<query> Will refresh only pages returned by a given query. Example: --query='[[Category:SomeCategory]]'", false, true );
 
 		$this->addOption( 'runtime', 'Display the execution time and memory usage', false );
@@ -157,4 +168,4 @@ class RebuildData extends \Maintenance {
 }
 
 $maintClass = 'SMW\Maintenance\RebuildData';
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once ( RUN_MAINTENANCE_IF_MAIN );
