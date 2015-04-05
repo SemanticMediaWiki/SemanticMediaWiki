@@ -2,7 +2,7 @@
 
 /**
  * Magic words
- * 
+ *
  * @file
  * @ingroup Extensions
  * @ingroup SMWLanguage
