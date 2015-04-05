@@ -8,4 +8,5 @@ namespace SMW\Tests\Utils\Fixtures;
  *
  * @author mwjames
  */
-class InvalidCustomRespositoryConnector {}
+class InvalidCustomRespositoryConnector {
+}
