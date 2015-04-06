@@ -74,4 +74,4 @@ class RebuildPropertyStatistics extends \Maintenance {
 }
 
 $maintClass = 'SMW\Maintenance\RebuildPropertyStatistics';
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once ( RUN_MAINTENANCE_IF_MAIN );

@@ -89,7 +89,7 @@ class SMWConceptValue extends SMWDataValue {
 				$result = new SMWExpData( new SMWExpResource( '' ) );
 				$elements = array();
 				foreach ( $desc->getCategories() as $cat ) {
-					$elements[] = new SMWExpData( SMWExporter::getInstance()->getResourceElement( $cat ) ); ;
+					$elements[] = new SMWExpData( SMWExporter::getInstance()->getResourceElement( $cat ) );
 				}
 				$result->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'owl', 'unionOf' ),
 				                                SMWExpData::makeCollection( $elements ) );

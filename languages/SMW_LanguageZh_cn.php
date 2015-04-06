@@ -8,14 +8,16 @@
  * Protect against register_globals vulnerabilities.
  * This line must be present before any global variable is referenced.
  */
-if ( !defined( 'MEDIAWIKI' ) ) die();
+if ( !defined( 'MEDIAWIKI' ) ) {
+	die();
+}
 
 global $smwgIP;
-include_once( $smwgIP . 'languages/SMW_Language.php' );
+include_once ( $smwgIP . 'languages/SMW_Language.php' );
 
 /**
  * Simplified Chinese language labels for important SMW labels (namespaces, datatypes,...).
- * This file is originally translated from Tradition Chinese by using an electronic dictionary. 
+ * This file is originally translated from Tradition Chinese by using an electronic dictionary.
  * Then, it is manually reviewed and updated (August 18, 2014).
  * Please contribute any corrections to the SMW project.
  *

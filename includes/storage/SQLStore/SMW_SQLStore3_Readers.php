@@ -280,8 +280,8 @@ class SMWSQLStore3Readers {
 		// subjects at least if !$proptable->idsubject
 		if ( ( $id == 0 ) ||
 			( is_null( $object ) && ( !$isSubject || !$propTable->usesIdSubject() ) ) ) {
-				return array(); 
-		}		
+				return array();
+		}
 
 		$result = array();
 		$db = $this->store->getConnection();

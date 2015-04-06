@@ -94,7 +94,10 @@ class RebuildConceptCache extends \Maintenance {
 		// Options
 		$this->addOption( 'concept', '"Concept name" Process only this one concept.', false, true );
 		$this->addOption( 'hard', 'Process only concepts that are not allowed to be computed online according to the current wiki settings.' );
-		$this->addOption( 'update', 'Process only concepts that already have some cache, i.e. do not create any new caches. For the opposite (only concepts without caches), use --old with a very high number.' );
+
+		$this->addOption( 'update', 'Process only concepts that already have some cache, i.e. do not create any new caches. ' .
+								'For the opposite (only concepts without caches), use --old with a very high number.' );
+
 		$this->addOption( 'old', '<min> Process only concepts with caches older than <min> minutes or with no caches at all.', false, true );
 		$this->addOption( 's', '<startid> Process only concepts with page id of at least <startid>', false, true );
 		$this->addOption( 'e', '<endid> Process only concepts with page id of at most <endid>', false, true );
@@ -167,4 +170,4 @@ class RebuildConceptCache extends \Maintenance {
 }
 
 $maintClass = 'SMW\Maintenance\RebuildConceptCache';
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once ( RUN_MAINTENANCE_IF_MAIN );

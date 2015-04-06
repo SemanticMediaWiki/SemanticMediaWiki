@@ -80,9 +80,13 @@ class DumpRdf extends \Maintenance {
 		$this->addOption( 'properties', 'Export only properties', false );
 		$this->addOption( 'types', 'Export only types', false );
 		$this->addOption( 'individuals', 'Export only individuals', false );
-		$this->addOption( 'page', 'Export only pages included in the <pagelist> with | being used as a separator. Example: --page "Page 1|Page 2", -e, -file, -d are ignored if --page is given.', false, true );
 
-		$this->addOption( 'server', '<server> The protocol and server name to as base URLs, e.g. http://en.wikipedia.org. This is sometimes necessary because server name detection may fail in command line scripts.', false, true );
+		$this->addOption( 'page', 'Export only pages included in the <pagelist> with | being used as a separator. ' .
+								'Example: --page "Page 1|Page 2", -e, -file, -d are ignored if --page is given.', false, true );
+
+		$this->addOption( 'server', '<server> The protocol and server name to as base URLs, e.g. http://en.wikipedia.org. ' .
+								'This is sometimes necessary because server name detection may fail in command line scripts.', false, true );
+
 		$this->addOption( 'quiet', 'Do not give any output', false, false, 'q' );
 	}
 
@@ -181,4 +185,4 @@ class DumpRdf extends \Maintenance {
 }
 
 $maintClass = 'SMW\Maintenance\DumpRdf';
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once ( RUN_MAINTENANCE_IF_MAIN );
