@@ -14,7 +14,8 @@
 			"아라",
 			"Meshkov.a",
 			"NBS",
-			"Tourorist"
+			"Tourorist",
+			"Mariya"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -306,5 +307,6 @@
 	"smw-sp-searchbyproperty-resultlist-header": "Список результатов",
 	"smw-sp-searchbyproperty-nonvaluequery": "Список значений, которые имеют назначенное свойство «$1».",
 	"smw-sp-searchbyproperty-valuequery": "Список страниц, которые содержат свойство «$1» с объявленным значением «$2».",
-	"log-name-smw": "Журнал Семантической МедиаВики"
+	"log-name-smw": "Журнал Семантической МедиаВики",
+	"smw-query-condition-circular": "Возможное циклическое условие было обнаружено в"
 }
