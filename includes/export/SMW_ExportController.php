@@ -496,7 +496,8 @@ class SMWExportController {
 		$this->serializer->serializeExpData( SMWExporter::getInstance()->getOntologyExpData( '' ) );
 
 		$end = $db->selectField( 'page', 'max(page_id)', false, __METHOD__ );
-		$a_count = 0; $d_count = 0; // DEBUG
+		$a_count = 0; // DEBUG
+		$d_count = 0; // DEBUG
 		$delaycount = $delayeach;
 
 		for ( $id = 1; $id <= $end; $id += 1 ) {

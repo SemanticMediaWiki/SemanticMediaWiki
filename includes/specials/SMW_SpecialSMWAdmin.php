@@ -232,9 +232,13 @@ class SMWAdmin extends SpecialPage {
 				if ( is_null( $refreshjob ) ) { // careful, there might be race conditions here
 					$newjob = new RefreshJob( $title, array( 'spos' => 1, 'prog' => 0, 'rc' => 2 ) );
 					$newjob->insert();
+					// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength.MaxExceeded
 					$this->getOutput()->addHTML( '<p>' . wfMessage( 'smw_smwadmin_updatestarted', '<a href="' . htmlspecialchars( $title->getFullURL() ) . '">Special:SMWAdmin</a>' )->text() . '</p>' );
+					// @codingStandardsIgnoreEnd
 				} else {
+					// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength.MaxExceeded
 					$this->getOutput()->addHTML( '<p>' . wfMessage( 'smw_smwadmin_updatenotstarted', '<a href="' . htmlspecialchars( $title->getFullURL() ) . '">Special:SMWAdmin</a>' )->text() . '</p>' );
+					// @codingStandardsIgnoreEnd
 				}
 
 			} elseif ( $sure == 'stop' ) {
@@ -244,9 +248,13 @@ class SMWAdmin extends SpecialPage {
 				$dbw = wfGetDB( DB_MASTER );
 				// delete (all) existing iteration jobs
 				$dbw->delete( 'job', array( 'job_cmd' => 'SMW\RefreshJob' ), __METHOD__ );
+				// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength.MaxExceeded
 				$this->getOutput()->addHTML( '<p>' . wfMessage( 'smw_smwadmin_updatestopped', '<a href="' . htmlspecialchars( $title->getFullURL() ) . '">Special:SMWAdmin</a>' )->text() . '</p>' );
+				// @codingStandardsIgnoreEnd
 			} else {
+				// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength.MaxExceeded
 				$this->getOutput()->addHTML( '<p>' . wfMessage( 'smw_smwadmin_updatenotstopped', '<a href="' . htmlspecialchars( $title->getFullURL() ) . '">Special:SMWAdmin</a>' )->text() . '</p>' );
+				// @codingStandardsIgnoreEnd
 			}
 
 		}
@@ -286,11 +294,15 @@ class SMWAdmin extends SpecialPage {
 		$this->getOutput()->disable(); // raw output
 		ob_start();
 
+		// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength.MaxExceeded
 		print "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\" dir=\"ltr\">\n<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /><title>Semantic MediaWiki</title></head><body><p><pre>";
+		// @codingStandardsIgnoreEnd
 		// header( "Content-type: text/html; charset=UTF-8" );
 		is_callable( $text ) ? $text( $this ) : $text;
 		print '</pre></p>';
+		// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength.MaxExceeded
 		print '<b> ' . wfMessage( 'smw_smwadmin_return', '<a href="' . htmlspecialchars( SpecialPage::getTitleFor( 'SMWAdmin' )->getFullURL() ) . '">Special:SMWAdmin</a>' )->text() . "</b>\n";
+		// @codingStandardsIgnoreEnd
 		print '</body></html>';
 
 		ob_flush();
