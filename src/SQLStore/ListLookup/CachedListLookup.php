@@ -11,7 +11,7 @@ use SMW\SQLStore\ListLookup;
  *
  * @author mwjames
  */
-class ListLookupCache implements ListLookup {
+class CachedListLookup implements ListLookup {
 
 	/**
 	 * @var ListLookup
@@ -41,7 +41,7 @@ class ListLookupCache implements ListLookup {
 	/**
 	 * @var string
 	 */
-	private $cachePrefix = '';
+	private $cachePrefix = 'smw:listlookup-cache:';
 
 	/**
 	 * @since 2.2
@@ -62,7 +62,7 @@ class ListLookupCache implements ListLookup {
 	 * @param string $cachePrefix
 	 */
 	public function setCachePrefix( $cachePrefix ) {
-		$this->cachePrefix = $cachePrefix;
+		$this->cachePrefix = $cachePrefix . ':' . $this->cachePrefix;
 	}
 
 	/**
@@ -149,12 +149,7 @@ class ListLookupCache implements ListLookup {
 	}
 
 	private function getCacheKey( $id ) {
-
-		if ( $this->cachePrefix === '' ) {
-			$this->cachePrefix = $GLOBALS['wgCachePrefix'] === false ? wfWikiID() : $GLOBALS['wgCachePrefix'];
-		}
-
-		return $this->cachePrefix . ':' . 'smw:' . 'lookup-cache:' . md5( $id );
+		return $this->cachePrefix . md5( $id );
 	}
 
 }

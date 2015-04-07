@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\SQLStore\ListLookup;
 
-use SMW\SQLStore\ListLookup\ListLookupCache;
+use SMW\SQLStore\ListLookup\CachedListLookup;
 
 /**
- * @covers \SMW\SQLStore\ListLookup\ListLookupCache
+ * @covers \SMW\SQLStore\ListLookup\CachedListLookup
  *
  * @group semantic-mediawiki
  *
@@ -14,7 +14,7 @@ use SMW\SQLStore\ListLookup\ListLookupCache;
  *
  * @author mwjames
  */
-class ListLookupCacheTest extends \PHPUnit_Framework_TestCase {
+class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -27,8 +27,8 @@ class ListLookupCacheTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\ListLookup\ListLookupCache',
-			new ListLookupCache( $listLookup, $cache, new \stdClass )
+			'\SMW\SQLStore\ListLookup\CachedListLookup',
+			new CachedListLookup( $listLookup, $cache, new \stdClass )
 		);
 	}
 
@@ -53,7 +53,7 @@ class ListLookupCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$cache->expects( $this->once() )
 			->method( 'contains' )
-			->with(	$this->stringContains( 'cacheprefix-foobar:' ) )
+			->with(	$this->stringContains( 'cacheprefix-foobar:smw:listlookup-cache:' ) )
 			->will( $this->returnValue( true ) );
 
 		$cache->expects( $this->once() )
@@ -63,7 +63,7 @@ class ListLookupCacheTest extends \PHPUnit_Framework_TestCase {
 		$cacheOptions = new \stdClass;
 		$cacheOptions->useCache = true;
 
-		$instance = new ListLookupCache( $listLookup, $cache, $cacheOptions );
+		$instance = new CachedListLookup( $listLookup, $cache, $cacheOptions );
 		$instance->setCachePrefix( 'cacheprefix-foobar' );
 
 		$this->assertEquals(
@@ -120,7 +120,7 @@ class ListLookupCacheTest extends \PHPUnit_Framework_TestCase {
 		$cacheOptions->useCache = false;
 		$cacheOptions->ttl = 1001;
 
-		$instance = new ListLookupCache( $listLookup, $cache, $cacheOptions );
+		$instance = new CachedListLookup( $listLookup, $cache, $cacheOptions );
 
 		$this->assertEquals(
 			array( 'Foo' ),
