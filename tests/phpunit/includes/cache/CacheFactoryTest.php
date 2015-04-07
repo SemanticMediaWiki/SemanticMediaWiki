@@ -52,16 +52,6 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructFixedInMemoryCache() {
-
-		$instance = new CacheFactory( 'hash' );
-
-		$this->assertInstanceOf(
-			'Onoi\Cache\Cache',
-			$instance->newFixedInMemoryCache()
-		);
-	}
-
 	public function testCanConstructCacheOptions() {
 
 		$instance = new CacheFactory( 'hash' );
@@ -85,6 +75,26 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 		$cacheOptions = $instance->newCacheOptions( array(
 			'useCache' => true
 		) );
+	}
+
+	public function testCanConstructFixedInMemoryCache() {
+
+		$instance = new CacheFactory( 'hash' );
+
+		$this->assertInstanceOf(
+			'Onoi\Cache\Cache',
+			$instance->newFixedInMemoryCache()
+		);
+	}
+
+	public function testCanConstructNullCache() {
+
+		$instance = new CacheFactory( 'hash' );
+
+		$this->assertInstanceOf(
+			'Onoi\Cache\Cache',
+			$instance->newNullCache()
+		);
 	}
 
 	public function testCanConstructMediaWikiCompositeCache() {
