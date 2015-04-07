@@ -83,7 +83,7 @@ class ByJsonRdfTestCaseRunnerTest extends ByJsonTestCaseProvider {
 
 		// This should not be necessary because the resetcache event
 		// is triggered
-		\SMWExporter::clear();
+		//\SMWExporter::clear();
 
 		foreach ( $jsonTestCaseFileHandler->findRdfTestCases() as $case ) {
 			$this->assertRdfOutputForCase( $case, $jsonTestCaseFileHandler->getDebugMode() );

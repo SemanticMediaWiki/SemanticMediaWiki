@@ -42,6 +42,16 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetCachePrefix() {
+
+		$instance = new CacheFactory( 'hash' );
+
+		$this->assertInternalType(
+			'string',
+			$instance->getCachePrefix()
+		);
+	}
+
 	public function testCanConstructFixedInMemoryCache() {
 
 		$instance = new CacheFactory( 'hash' );

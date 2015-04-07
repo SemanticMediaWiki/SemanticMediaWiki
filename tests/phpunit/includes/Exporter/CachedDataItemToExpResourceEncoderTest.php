@@ -3,13 +3,14 @@
 namespace SMW\Tests\Exporter;
 
 use SMW\DIWikiPage;
-use SMW\Exporter\DataItemToExpResourceMapper;
+use SMW\DIProperty;
+use SMW\Exporter\CachedDataItemToExpResourceEncoder;
 use SMW\Exporter\Element;
 use SMW\Exporter\Escaper;
 use SMWExporter as Exporter;
 
 /**
- * @covers \SMW\Exporter\DataItemToExpResourceMapper
+ * @covers \SMW\Exporter\CachedDataItemToExpResourceEncoder
  *
  * @group semantic-mediawiki
  *
@@ -18,7 +19,69 @@ use SMWExporter as Exporter;
  *
  * @author mwjames
  */
-class DataItemToExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
+class CachedDataItemToExpResourceEncoderTest extends \PHPUnit_Framework_TestCase {
+
+	public function testResetCache() {
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$key = 'bar:smw:expresourceencoder-cache:' . 'Foo#0#';
+
+		$cache->expects( $this->at( 0 ) )
+			->method( 'delete' )
+			->with( $this->equalTo( $key ) );
+
+		$cache->expects( $this->at( 1 ) )
+			->method( 'delete' )
+			->with( $this->equalTo( $key. CachedDataItemToExpResourceEncoder::AUX_MARKER ) );
+
+		$instance = new CachedDataItemToExpResourceEncoder(
+			$store,
+			$cache
+		);
+
+		$instance->setCachePrefix( 'bar' );
+
+		$instance->resetCacheFor(
+			new DIWikiPage( 'Foo', NS_MAIN )
+		);
+	}
+
+	public function testTryMappingInversPropertyToResourceElementThrowsException() {
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$instance = new CachedDataItemToExpResourceEncoder(
+			$store
+		);
+
+		$this->setExpectedException( 'RuntimeException' );
+		$instance->mapPropertyToResourceElement( new DIProperty( 'Foo', true ) );
+	}
+
+	public function testMapPropertyToResourceElement() {
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$instance = new CachedDataItemToExpResourceEncoder(
+			$store
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\Exporter\Element\ExpNsResource',
+			$instance->mapPropertyToResourceElement( new DIProperty( 'Foo' ) )
+		);
+	}
 
 	/**
 	 * @dataProvider diWikiPageProvider
@@ -29,7 +92,7 @@ class DataItemToExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new DataItemToExpResourceMapper(
+		$instance = new CachedDataItemToExpResourceEncoder(
 			$store
 		);
 
@@ -54,7 +117,7 @@ class DataItemToExpResourceMapperTest extends \PHPUnit_Framework_TestCase {
 			->will(
 				$this->returnValue( array( new \SMWDIBlob( 'foo:bar:fom:fuz' ) ) ) );
 
-		$instance = new DataItemToExpResourceMapper(
+		$instance = new CachedDataItemToExpResourceEncoder(
 			$store
 		);
 

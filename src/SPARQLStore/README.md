@@ -2,11 +2,11 @@
 
 The `SPARQLStore` consists of two components, a base store (by default using the existing `SQLStore`) and a client database connector. Currently, the base store is responsible for accumulating information about properties, value annotations, and statistics.
 
-## Database connector
+## Repository connector
 
-The repository connector is responsible for updating triples to the store and return results from the [TDB][tdb] for query requests made by the `QueryEngine`.
+A repository connector is responsible for updating triples to external [TDB][tdb] and return results from it for query requests made by the `QueryEngine`.
 
-The following client repository connectors are currently available:
+The following client repositories are currently supported:
 
 - [Jena Fuseki][fuseki]
 - [Virtuoso][virtuoso]
