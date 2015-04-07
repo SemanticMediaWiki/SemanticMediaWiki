@@ -13,6 +13,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 
 use SMWDIBlob as DIBlob;
+use SMWDIUri as DIUri;
 use SMWDINumber as DINumber;
 
 /**
@@ -309,7 +310,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		);
 
-		# 10 Regex on a non blob value
+		# 10 Regex on a non-blob value
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\TrueCondition';
 
 		$description = new ValueDescription(
@@ -328,7 +329,47 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		);
 
-		# 11 Unknown comparator operator
+		# 11 Regex on a non-blob (DIWikiPage type) value
+		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition';
+
+		$description = new ValueDescription(
+			new DIWikiPage( 'SomePropertyValuePage', NS_MAIN ),
+			new DIProperty( 'Foo' ),
+			SMW_CMP_LIKE
+		);
+
+		$expected = $stringBuilder
+			->addString( 'FILTER( regex( ?v1, "^SomePropertyValuePage$", "s") )' )->addNewLine()
+			->addString( '?result swivt:wikiPageSortKey ?v1 .' )->addNewLine()
+			->getString();
+
+		$provider[] = array(
+			$description,
+			$conditionType,
+			$expected
+		);
+
+		# 12 Regex on a non-blob (DIUri type) value
+		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
+
+		$description = new ValueDescription(
+			new DIUri( 'http', '//example.org', '', '' ),
+			new DIProperty( 'Foo' ),
+			SMW_CMP_LIKE
+		);
+
+		$expected = $stringBuilder
+			->addString( '?result swivt:page ?url .' )->addNewLine()
+			->addString( 'FILTER( regex( str( ?result ), "^//example\\\.org$", "i") )' )->addNewLine()
+			->getString();
+
+		$provider[] = array(
+			$description,
+			$conditionType,
+			$expected
+		);
+
+		# 13 Unknown comparator operator
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\TrueCondition';
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
