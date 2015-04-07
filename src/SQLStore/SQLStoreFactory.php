@@ -6,8 +6,12 @@ use SMW\SQLStore\ListLookup\UsageStatisticsListLookup;
 use SMW\SQLStore\ListLookup\PropertyUsageListLookup;
 use SMW\SQLStore\ListLookup\UnusedPropertyListLookup;
 use SMW\SQLStore\ListLookup\UndeclaredPropertyListLookup;
+use SMW\SQLStore\ListLookup\CachedListLookup;
+use SMW\SQLStore\ListLookup;
+use Onoi\Cache\Cache;
 use Doctrine\DBAL\Connection;
 use SMW\SQLStore\QueryEngine\ConceptCache;
+use SMW\ApplicationFactory;
 use SMWSQLStore3;
 use SMWSQLStore3QueryEngine;
 use SMWRequestOptions as RequestOptions;
@@ -131,6 +135,35 @@ class SQLStoreFactory {
 			$defaultPropertyType,
 			$requestOptions
 		);
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param ListLookup $listLookup
+	 * @param boolean $useCache
+	 * @param integer $cacheExpiry
+	 *
+	 * @return ListLookup
+	 */
+	public function newCachedListLookup( ListLookup $listLookup, $useCache, $cacheExpiry ) {
+
+		$cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
+
+		$cacheOptions = $cacheFactory->newCacheOptions( array(
+			'useCache' => $useCache,
+			'ttl'      => $cacheExpiry
+		) );
+
+		$cachedListLookup = new CachedListLookup(
+			$listLookup,
+			$cacheFactory->newMediaWikiCompositeCache( $cacheFactory->getMainCacheType() ),
+			$cacheOptions
+		);
+
+		$cachedListLookup->setCachePrefix( $cacheFactory->getCachePrefix() );
+
+		return $cachedListLookup;
 	}
 
 	private function getConnection() {

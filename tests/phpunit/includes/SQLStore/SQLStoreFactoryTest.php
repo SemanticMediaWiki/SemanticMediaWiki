@@ -70,4 +70,16 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructCachedListLookup() {
+
+		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\ListLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'SMW\SQLStore\ListLookup\CachedListLookup',
+			$this->newInstance()->newCachedListLookup( $listLookup, true, 42 )
+		);
+	}
+
 }
