@@ -2,7 +2,8 @@
 
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\Exporter\DataItemToExpResourceMapper;
+use SMW\Exporter\CachedDataItemToExpResourceEncoder;
+use SMW\Exporter\DataItemToElementEncoder;
 use SMW\Exporter\Escaper;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
@@ -23,9 +24,14 @@ class SMWExporter {
 	private static $instance = null;
 
 	/**
-	 * @var DataItemToExpResourceMapper
+	 * @var CachedDataItemToExpResourceEncoder
 	 */
-	private static $dataItemToExpResourceMapper = null;
+	private static $cachedDataItemToExpResourceEncoder = null;
+
+	/**
+	 * @var DataItemToElementEncoder
+	 */
+	private static $dataItemToElementEncoder = null;
 
 	static protected $m_exporturl = false;
 	static protected $m_ent_wiki = false;
@@ -44,13 +50,18 @@ class SMWExporter {
 			self::$instance = new self();
 			self::$instance->initBaseURIs();
 
+			$cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
+
 			// There is no better way of getting around the static use without BC
-			self::$dataItemToExpResourceMapper = new DataItemToExpResourceMapper(
-				ApplicationFactory::getInstance()->getStore()
+			self::$dataItemToElementEncoder = new DataItemToElementEncoder();
+
+			self::$cachedDataItemToExpResourceEncoder = new CachedDataItemToExpResourceEncoder(
+				ApplicationFactory::getInstance()->getStore(),
+				$cacheFactory->newFixedInMemoryCache( 500 )
 			);
 
-			self::$dataItemToExpResourceMapper->setCache(
-				ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache( 500 )
+			self::$cachedDataItemToExpResourceEncoder->setCachePrefix(
+				$cacheFactory->getCachePrefix()
 			);
 		}
 
@@ -69,7 +80,7 @@ class SMWExporter {
 	 * @since 2.2
 	 */
 	public function resetCacheFor( SMWDIWikiPage $diWikiPage ) {
-		self::$dataItemToExpResourceMapper->resetCacheFor( $diWikiPage );
+		self::$cachedDataItemToExpResourceEncoder->resetCacheFor( $diWikiPage );
 	}
 
 	/**
@@ -336,17 +347,17 @@ class SMWExporter {
 	}
 
 	/**
-	 * @see DataItemToExpResourceMapper::mapPropertyToResourceElement
+	 * @see CachedDataItemToExpResourceEncoder::mapPropertyToResourceElement
 	 */
 	static public function getResourceElementForProperty( SMWDIProperty $diProperty, $helperProperty = false ) {
-		return self::$dataItemToExpResourceMapper->mapPropertyToResourceElement( $diProperty, $helperProperty );
+		return self::$cachedDataItemToExpResourceEncoder->mapPropertyToResourceElement( $diProperty, $helperProperty );
 	}
 
 	/**
-	 * @see DataItemToExpResourceMapper::mapWikiPageToResourceElement
+	 * @see CachedDataItemToExpResourceEncoder::mapWikiPageToResourceElement
 	 */
 	static public function getResourceElementForWikiPage( SMWDIWikiPage $diWikiPage, $markForAuxiliaryUsage = false ) {
-		return self::$dataItemToExpResourceMapper->mapWikiPageToResourceElement( $diWikiPage, $markForAuxiliaryUsage );
+		return self::$cachedDataItemToExpResourceEncoder->mapWikiPageToResourceElement( $diWikiPage, $markForAuxiliaryUsage );
 	}
 
 	/**
@@ -576,72 +587,10 @@ class SMWExporter {
 	}
 
 	/**
-	 * Create an SWMExpElement that encodes the data of the given
-	 * dataitem object. This method is meant to be used when exporting a
-	 * dataitem as a subject or object. To get the URI of a property, use
-	 * SMWExporter::getInstance()->getResourceElementForProperty() or
-	 * SMWExporter::getInstance()->getSpecialPropertyResource().
-	 *
-	 * @param $dataItem SMWDataItem
-	 * @return SMWExpElement
+	 * @see DataItemToElementEncoder::mapDataItemToElement
 	 */
 	static public function getDataItemExpElement( SMWDataItem $dataItem ) {
-
-		$lang = '';
-
-		switch ( $dataItem->getDIType() ) {
-			case SMWDataItem::TYPE_NUMBER:
-				$lit = new SMWExpLiteral( strval( $dataItem->getNumber() ), 'http://www.w3.org/2001/XMLSchema#double', $lang, $dataItem );
-				return $lit;
-			case SMWDataItem::TYPE_BLOB:
-				$lit = new SMWExpLiteral( smwfHTMLtoUTF8( $dataItem->getString() ), 'http://www.w3.org/2001/XMLSchema#string', $lang, $dataItem );
-				return $lit;
-			case SMWDataItem::TYPE_BOOLEAN:
-				$xsdvalue =  $dataItem->getBoolean() ? 'true' : 'false';
-				$lit = new SMWExpLiteral( $xsdvalue, 'http://www.w3.org/2001/XMLSchema#boolean', $lang, $dataItem );
-				return $lit;
-			case SMWDataItem::TYPE_URI:
-				$res = new SMWExpResource( $dataItem->getURI(), $dataItem );
-				return $res;
-			case SMWDataItem::TYPE_TIME:
-				$gregorianTime = $dataItem->getForCalendarModel( SMWDITime::CM_GREGORIAN );
-				if ( $gregorianTime->getYear() > 0 ) {
-					$xsdvalue = str_pad( $gregorianTime->getYear(), 4, "0", STR_PAD_LEFT );
-				} else {
-					$xsdvalue = '-' . str_pad( 1 - $gregorianTime->getYear(), 4, "0", STR_PAD_LEFT );
-				}
-				$xsdtype = 'http://www.w3.org/2001/XMLSchema#gYear';
-				if ( $gregorianTime->getPrecision() >= SMWDITime::PREC_YM ) {
-					$xsdtype = 'http://www.w3.org/2001/XMLSchema#gYearMonth';
-					$xsdvalue .= '-' . str_pad( $gregorianTime->getMonth(), 2, "0", STR_PAD_LEFT );
-					if ( $gregorianTime->getPrecision() >= SMWDITime::PREC_YMD ) {
-						$xsdtype = 'http://www.w3.org/2001/XMLSchema#date';
-						$xsdvalue .= '-' . str_pad( $gregorianTime->getDay(), 2, "0", STR_PAD_LEFT );
-						if ( $gregorianTime->getPrecision() == SMWDITime::PREC_YMDT ) {
-							$xsdtype = 'http://www.w3.org/2001/XMLSchema#dateTime';
-							$xsdvalue .= 'T' .
-							     sprintf( "%02d", $gregorianTime->getHour() ) . ':' .
-							     sprintf( "%02d", $gregorianTime->getMinute()) . ':' .
-							     sprintf( "%02d", $gregorianTime->getSecond() );
-						}
-					}
-				}
-				$xsdvalue .= 'Z';
-				$lit = new SMWExpLiteral( $xsdvalue, $xsdtype, $lang, $gregorianTime );
-				return $lit;
-			case SMWDataItem::TYPE_GEO:
-				/// TODO
-				return null;
-			case SMWDataItem::TYPE_CONTAINER:
-				return self::makeExportData( $dataItem->getSemanticData() );
-			case SMWDataItem::TYPE_WIKIPAGE:
-				return self::getResourceElementForWikiPage( $dataItem );
-			case SMWDataItem::TYPE_CONCEPT:
-				/// TODO
-				return null;
-			case SMWDataItem::TYPE_PROPERTY:
-				return self::getResourceElementForProperty( $dataItem );
-		}
+		return self::$dataItemToElementEncoder->mapDataItemToElement( $dataItem );
 	}
 
 	/**

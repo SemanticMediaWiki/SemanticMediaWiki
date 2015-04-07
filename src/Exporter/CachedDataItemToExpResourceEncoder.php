@@ -24,14 +24,12 @@ use Title;
  * @author mwjames
  * @author Markus Krötzsch
  */
-class DataItemToExpResourceMapper {
+class CachedDataItemToExpResourceEncoder {
 
 	/**
 	 * Identifies auxiliary data (helper values)
 	 */
 	const AUX_MARKER = 'aux';
-
-	const CACHE_ID_PREFIX = 'smw-dataitem-to-expresource-mapper-';
 
 	/**
 	 * @var Store
@@ -49,23 +47,34 @@ class DataItemToExpResourceMapper {
 	private $dataValueFactory;
 
 	/**
+	 * @var string
+	 */
+	private $cachePrefix = 'smw:expresourceencoder-cache:';
+
+	/**
 	 * @since 2.2
 	 *
 	 * @param Store $store
+	 * @param Cache|null $cache
 	 */
-	public function __construct( Store $store ) {
+	public function __construct( Store $store, Cache $cache = null ) {
 		$this->store = $store;
-		$this->cache = ApplicationFactory::getInstance()->newCacheFactory()->newNullCache();
+		$this->cache = $cache;
+
+		if ( $this->cache === null ) {
+			$this->cache = ApplicationFactory::getInstance()->newCacheFactory()->newNullCache();
+		}
+
 		$this->dataValueFactory = DataValueFactory::getInstance();
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @param Cache $cache
+	 * @param string $cachePrefix
 	 */
-	public function setCache( Cache $cache ) {
-		$this->cache = $cache;
+	public function setCachePrefix( $cachePrefix ) {
+		$this->cachePrefix = $cachePrefix . ':' . $this->cachePrefix;
 	}
 
 	/**
@@ -75,10 +84,10 @@ class DataItemToExpResourceMapper {
 	 */
 	public function resetCacheFor( DIWikiPage $subject ) {
 
-		$hash = self::CACHE_ID_PREFIX . $subject->getHash();
+		$hash = $this->cachePrefix . $subject->getHash();
 
 		foreach ( array( $hash, $hash . self::AUX_MARKER ) as $key ) {
-			$this->cache->delete( $hash );
+			$this->cache->delete( $key );
 		}
 	}
 
@@ -130,7 +139,7 @@ class DataItemToExpResourceMapper {
 
 		$modifier = $markForAuxiliaryUsage ? self::AUX_MARKER : '';
 
-		$hash = self::CACHE_ID_PREFIX . $diWikiPage->getHash() . $modifier;
+		$hash = $this->cachePrefix . $diWikiPage->getHash() . $modifier;
 
 		if ( $this->cache->contains( $hash ) ) {
 			return ExpElement::newFromSerialization( $this->cache->fetch( $hash ) );

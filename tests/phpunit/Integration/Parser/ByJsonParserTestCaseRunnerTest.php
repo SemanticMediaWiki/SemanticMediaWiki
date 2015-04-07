@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Integration\Rdf;
+namespace SMW\Tests\Integration\Parser;
 
 use SMW\Tests\ByJsonTestCaseProvider;
 use SMW\Tests\JsonTestCaseFileHandler;

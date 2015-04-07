@@ -41,6 +41,15 @@ class CacheFactory {
 	/**
 	 * @since 2.2
 	 *
+	 * @return string
+	 */
+	public function getCachePrefix() {
+		return $GLOBALS['wgCachePrefix'] === false ? wfWikiID() : $GLOBALS['wgCachePrefix'];
+	}
+
+	/**
+	 * @since 2.2
+	 *
 	 * @param array $cacheOptions
 	 *
 	 * @return stdClass
