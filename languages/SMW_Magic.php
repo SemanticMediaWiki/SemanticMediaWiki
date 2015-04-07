@@ -141,6 +141,11 @@ $magicWords['fr'] = array(
 	'SMW_SHOWFACTBOX' => array( 0, '__AFFICHERBOÎTEFAITS__', '__AFFICHERBOITEFAITS__' ),
 );
 
+/** Western Frisian (Frysk) */
+$magicWords['fy'] = array(
+	'info' => array( 0, 'ynfo' ),
+);
+
 /** Hebrew (עברית) */
 $magicWords['he'] = array(
 	'ask' => array( 0, 'שאל' ),
