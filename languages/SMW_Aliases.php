@@ -89,6 +89,23 @@ $specialPageAliases['as'] = array(
 	'Types' => array( 'প্ৰকাৰসমূহ' ),
 );
 
+/** Western Balochi (بلوچی رخشانی) */
+$specialPageAliases['bgn'] = array(
+	'Ask' => array( 'سوال_و_سوج_ئان' ),
+	'Browse' => array( 'بروز' ),
+	'ExportRDF' => array( 'آر_ڈی_اف_ئی_ڈن_کورتین' ),
+	'PageProperty' => array( 'تاکدیمی_مالومات' ),
+	'Properties' => array( 'مالومات' ),
+	'Concepts' => array( 'موّزو_ئان' ),
+	'SMWAdmin' => array( 'اس_ام_ڈبلیو_ئی_مدیر' ),
+	'SearchByProperty' => array( 'گشتین_به_مالوماتی_اساس_ئا' ),
+	'SemanticStatistics' => array( 'سیمانتیکین_سرجم' ),
+	'Types' => array( 'ڈوّل_ئان' ),
+	'URIResolver' => array( 'یو_آر_آی_هل_کنۆک' ),
+	'UnusedProperties' => array( 'ایستیپاده_نه_بوته_ئین_مالومات' ),
+	'WantedProperties' => array( 'لوٹی_ته_بوته_ئین_مالومات' ),
+);
+
 /** Banjar (Bahasa Banjar) */
 $specialPageAliases['bjn'] = array(
 	'Ask' => array( 'Takun' ),

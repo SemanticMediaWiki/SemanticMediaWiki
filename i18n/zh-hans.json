@@ -332,5 +332,6 @@
 	"smw-pa-property-predefined_errp": "“$1”是一个预定义的属性，它用于不规则的值注释中追踪输入错误，例如导致的类型或[[Property:Allows value|允许值]]的限制。",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"]是一个预定义的属性，它可以订阅获得允许以为一个属性限制值注释的值的列表。",
 	"smw-datavalue-property-restricted-use": "属性“$1”被标记为限制使用。",
-	"smw-datavalue-restricted-use": "此数据值被标记限制使用。$1"
+	"smw-datavalue-restricted-use": "此数据值被标记限制使用。$1",
+	"smw-query-condition-circular": "在“$1”中检测到可用的循环环境。"
 }
