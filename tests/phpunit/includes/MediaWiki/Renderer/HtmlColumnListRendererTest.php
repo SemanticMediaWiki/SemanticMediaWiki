@@ -45,8 +45,8 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 		$expected = array(
 			'<div class="smw-columnlist-container">',
 			'<div class="smw-column" style="float: left; width:100%; word-wrap: break-word;">',
-			'<h3>a</h3><ul><li>Foo</li><li>Bar</li></ul>',
-			'<h3>B</h3><ul><li>Ichi</li><li>Ni</li></ul></div>'
+			'<div class="smw-column-header">a</div><ul><li>Foo</li><li>Bar</li></ul>',
+			'<div class="smw-column-header">B</div><ul><li>Ichi</li><li>Ni</li></ul></div>'
 		);
 
 		$this->stringValidator->assertThatStringContains(
@@ -71,9 +71,9 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 		$expected = array(
 			'<div class="smw-columnlist-container">',
 			'<div class="smw-column" style="float: left; width:50%; word-wrap: break-word;">',
-			'<h3>a</h3><ul><li>Foo</li><li>Bar</li></ul><h3>B</h3><ul><li>Ichi</li></ul></div>',
+			'<div class="smw-column-header">a</div><ul><li>Foo</li><li>Bar</li></ul><div class="smw-column-header">B</div><ul><li>Ichi</li></ul></div>',
 			'<div class="smw-column" style="float: left; width:50%; word-wrap: break-word;">',
-			"<h3>B $listContinuesAbbrev</h3><ul start=4><li>Ni</li></ul></div>"
+			'<div class="smw-column-header">B ' . $listContinuesAbbrev .'</div><ul start=4><li>Ni</li></ul></div>'
 		);
 
 		$this->stringValidator->assertThatStringContains(
@@ -96,9 +96,9 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 		$expected = array(
 			'<div class="smw-columnlist-container">',
 			'<div class="smw-column" style="float: left; width:33%; word-wrap: break-word;">',
-			'<h3>a</h3><ul><li>Foo</li><li>Bar</li></ul></div>',
+			'<div class="smw-column-header">a</div><ul><li>Foo</li><li>Bar</li></ul></div>',
 			'<div class="smw-column" style="float: left; width:33%; word-wrap: break-word;">',
-			'<h3>B</h3><ul><li>Ichi</li><li>Ni</li></ul></div>'
+			'<div class="smw-column-header">B</div><ul><li>Ichi</li><li>Ni</li></ul></div>'
 		);
 
 		$this->stringValidator->assertThatStringContains(
@@ -125,9 +125,9 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 		$expected = array(
 			'<div class="smw-columnlist-container">',
 			'<div class="smw-column" style="float: left; width:50%; word-wrap: break-word;">',
-			'<h3>a</h3><ol><li>Foo</li><li>Bar</li></ol><h3>B</h3><ol><li>Ichi</li></ol></div>',
+			'<div class="smw-column-header">a</div><ol><li>Foo</li><li>Bar</li></ol><div class="smw-column-header">B</div><ol><li>Ichi</li></ol></div>',
 			'<div class="smw-column" style="float: left; width:50%; word-wrap: break-word;">',
-			"<h3>B $listContinuesAbbrev</h3><ol start=4><li>Ni</li></ol></div>"
+			'<div class="smw-column-header">B '. $listContinuesAbbrev . '</div><ol start=4><li>Ni</li></ol></div>'
 		);
 
 		$this->stringValidator->assertThatStringContains(
