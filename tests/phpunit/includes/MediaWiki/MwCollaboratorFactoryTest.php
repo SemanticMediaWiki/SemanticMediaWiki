@@ -120,7 +120,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructHtmlFormBuilder() {
+	public function testCanConstructHtmlFormRenderer() {
 
 		$instance = new MwCollaboratorFactory( new ApplicationFactory() );
 
@@ -129,8 +129,8 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\HtmlFormBuilder',
-			$instance->newHtmlFormBuilder( $title )
+			'\SMW\MediaWiki\Renderer\HtmlFormRenderer',
+			$instance->newHtmlFormRenderer( $title )
 		);
 
 		$language = $this->getMockBuilder( '\Language' )
@@ -138,28 +138,28 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\HtmlFormBuilder',
-			$instance->newHtmlFormBuilder( $title, $language )
+			'\SMW\MediaWiki\Renderer\HtmlFormRenderer',
+			$instance->newHtmlFormRenderer( $title, $language )
 		);
 	}
 
-	public function testCanConstructHtmlTableBuilder() {
+	public function testCanConstructHtmlTableRenderer() {
 
 		$instance = new MwCollaboratorFactory( new ApplicationFactory() );
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\HtmlTableBuilder',
-			$instance->newHtmlTableBuilder()
+			'\SMW\MediaWiki\Renderer\HtmlTableRenderer',
+			$instance->newHtmlTableRenderer()
 		);
 	}
 
-	public function testCanConstructHtmlColumnListFormatter() {
+	public function testCanConstructHtmlColumnListRenderer() {
 
 		$instance = new MwCollaboratorFactory( new ApplicationFactory() );
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\HtmlColumnListFormatter',
-			$instance->newHtmlColumnListFormatter()
+			'\SMW\MediaWiki\Renderer\HtmlColumnListRenderer',
+			$instance->newHtmlColumnListRenderer()
 		);
 	}
 
@@ -220,7 +220,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new MwCollaboratorFactory( $applicationFactory );
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\WikitextTemplateRenderer',
+			'\SMW\MediaWiki\Renderer\WikitextTemplateRenderer',
 			$instance->newWikitextTemplateRenderer()
 		);
 	}
@@ -238,7 +238,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new MwCollaboratorFactory( $applicationFactory );
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\HtmlTemplateRenderer',
+			'\SMW\MediaWiki\Renderer\HtmlTemplateRenderer',
 			$instance->newHtmlTemplateRenderer( $parser )
 		);
 	}

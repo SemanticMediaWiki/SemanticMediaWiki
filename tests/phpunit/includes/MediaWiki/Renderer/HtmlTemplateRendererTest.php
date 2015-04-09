@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\MediaWiki;
+namespace SMW\Tests\MediaWiki\Renderer;
 
-use SMW\MediaWiki\HtmlTemplateRenderer;
-use SMW\MediaWiki\WikitextTemplateRenderer;
+use SMW\MediaWiki\Renderer\HtmlTemplateRenderer;
+use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 
 /**
- * @covers \SMW\MediaWiki\HtmlTemplateRenderer
+ * @covers \SMW\MediaWiki\Renderer\HtmlTemplateRenderer
  *
  * @group semantic-mediawiki
  *
@@ -19,7 +19,7 @@ class HtmlTemplateRendererTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$wikitextTemplateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\WikitextTemplateRenderer' )
+		$wikitextTemplateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\WikitextTemplateRenderer' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -28,7 +28,7 @@ class HtmlTemplateRendererTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\HtmlTemplateRenderer',
+			'\SMW\MediaWiki\Renderer\HtmlTemplateRenderer',
 			 new HtmlTemplateRenderer( $wikitextTemplateRenderer, $parser )
 		);
 	}

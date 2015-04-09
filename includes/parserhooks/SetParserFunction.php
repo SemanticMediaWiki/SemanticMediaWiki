@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use SMW\MediaWiki\HtmlTemplateRenderer;
+use SMW\MediaWiki\Renderer\HtmlTemplateRenderer;
 
 use Parser;
 

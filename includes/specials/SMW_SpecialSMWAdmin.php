@@ -33,9 +33,9 @@ class SMWAdmin extends SpecialPage {
 	private $messageBuilder;
 
 	/**
-	 * @var HtmlFormBuilder
+	 * @var HtmlFormRenderer
 	 */
-	private $htmlFormBuilder;
+	private $htmlFormRenderer;
 
 	public function __construct() {
 		parent::__construct( 'SMWAdmin', 'smw-admin' );
@@ -62,12 +62,12 @@ class SMWAdmin extends SpecialPage {
 
 		$mwCollaboratorFactory = ApplicationFactory::getInstance()->newMwCollaboratorFactory();
 
-		$this->htmlFormBuilder = $mwCollaboratorFactory->newHtmlFormBuilder(
+		$this->htmlFormRenderer = $mwCollaboratorFactory->newHtmlFormRenderer(
 			$this->getContext()->getTitle(),
 			$this->getLanguage()
 		);
 
-		$this->messageBuilder = $this->htmlFormBuilder->getMessageBuilder();
+		$this->messageBuilder = $this->htmlFormRenderer->getMessageBuilder();
 
 		$jobQueueLookup = $mwCollaboratorFactory->newJobQueueLookup( $this->getStore()->getConnection( 'mw.db' ) );
 		$row = $jobQueueLookup->selectJobRowFor( 'SMW\RefreshJob' );
@@ -94,7 +94,7 @@ class SMWAdmin extends SpecialPage {
 
 		/**** Normal output ****/
 
-		$html = $this->htmlFormBuilder
+		$html = $this->htmlFormRenderer
 			->setName( 'buildtables' )
 			->setMethod( 'post' )
 			->addParagraph( $this->messageBuilder->getMessage( 'smw_smwadmin_docu' )->text() )
@@ -108,7 +108,7 @@ class SMWAdmin extends SpecialPage {
 
 		$html .= Html::element( 'br', array(), '' );
 
-		$this->htmlFormBuilder
+		$this->htmlFormRenderer
 			->setName( 'refreshwiki' )
 			->setMethod( 'post' )
 			->addHiddenField( 'action', 'refreshstore' )
@@ -124,14 +124,14 @@ class SMWAdmin extends SpecialPage {
 				Html::rawElement( 'div', array( 'style' => 'background: #AAF; width: ' . round( $prog * 300 ) . 'px; height: 20px; ' ), '' )
 			);
 
-			$this->htmlFormBuilder
+			$this->htmlFormRenderer
 				->addParagraph( $this->messageBuilder->getMessage( 'smw_smwadmin_datarefreshprogress' )->text() )
 				->addParagraph( $progressBar . '&#160;' . round( $prog * 100, 4 ) . '%' )
 				->addLineBreak();
 
 			if ( $GLOBALS['smwgAdminRefreshStore'] ) {
 
-				$this->htmlFormBuilder
+				$this->htmlFormRenderer
 					->addSubmitButton( $this->messageBuilder->getMessage( 'smw_smwadmin_datarefreshstop' )->text() )
 					->addCheckbox(
 						$this->messageBuilder->getMessage( 'smw_smwadmin_datarefreshstopconfirm' )->escaped(),
@@ -141,12 +141,12 @@ class SMWAdmin extends SpecialPage {
 
 		} elseif ( $GLOBALS['smwgAdminRefreshStore'] ) {
 
-			$this->htmlFormBuilder
+			$this->htmlFormRenderer
 				->addHiddenField( 'rfsure', 'yes' )
 				->addSubmitButton( $this->messageBuilder->getMessage( 'smw_smwadmin_datarefreshbutton' )->text() );
 		}
 
-		$html .= $this->htmlFormBuilder->getForm() . Html::element( 'br', array(), '' );
+		$html .= $this->htmlFormRenderer->getForm() . Html::element( 'br', array(), '' );
 		$html .= $this->getSettingsSectionForm() . Html::element( 'br', array(), '' );
 		$html .= $this->getIdLookupSectionForm() . Html::element( 'br', array(), '' );
 		$html .= $this->getAnnounceSectionForm() . Html::element( 'br', array(), '' );
@@ -156,7 +156,7 @@ class SMWAdmin extends SpecialPage {
 	}
 
 	protected function getSettingsSectionForm() {
-		return $this->htmlFormBuilder
+		return $this->htmlFormRenderer
 			->setName( 'listsettings' )
 			->setMethod( 'post' )
 			->addHiddenField( 'action', 'listsettings' )
@@ -167,7 +167,7 @@ class SMWAdmin extends SpecialPage {
 	}
 
 	protected function getAnnounceSectionForm() {
-		return $this->htmlFormBuilder
+		return $this->htmlFormRenderer
 			->setName( 'announce' )
 			->setMethod( 'get' )
 			->setActionUrl( 'https://wikiapiary.com/wiki/WikiApiary:Semantic_MediaWiki_Registry' )
@@ -178,7 +178,7 @@ class SMWAdmin extends SpecialPage {
 	}
 
 	protected function getSupportSectionForm() {
-		return $this->htmlFormBuilder
+		return $this->htmlFormRenderer
 			->setName( 'support' )
 			->addHeader( 'h2', $this->messageBuilder->getMessage('smw_smwadmin_support' )->text() )
 			->addParagraph( $this->messageBuilder->getMessage( 'smw_smwadmin_supportdocu' )->text() )
@@ -194,7 +194,7 @@ class SMWAdmin extends SpecialPage {
 
 	protected function getIdLookupSectionForm() {
 
-		return $this->htmlFormBuilder
+		return $this->htmlFormRenderer
 			->setName( 'idlookup' )
 			->setMethod( 'get' )
 			->addHiddenField( 'action', 'idlookup' )

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\MediaWiki;
+namespace SMW\MediaWiki\Renderer;
 
 use Parser;
 

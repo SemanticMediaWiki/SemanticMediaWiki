@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Hooks;
 use EditPage;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
-use SMW\MediaWiki\HtmlFormBuilder;
+use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/EditPage::showEditForm:initial
@@ -23,9 +23,9 @@ class EditPageForm {
 	private $editPage = null;
 
 	/**
-	 * @var HtmlFormBuilder
+	 * @var HtmlFormRenderer
 	 */
-	private $htmlFormBuilder = null;
+	private $htmlFormRenderer = null;
 
 	/**
 	 * @var ApplicationFactory
@@ -36,11 +36,11 @@ class EditPageForm {
 	 * @since  2.1
 	 *
 	 * @param EditPage $editPage
-	 * @param HtmlFormBuilder $htmlFormBuilder
+	 * @param HtmlFormRenderer $htmlFormRenderer
 	 */
-	public function __construct( EditPage $editPage, HtmlFormBuilder $htmlFormBuilder ) {
+	public function __construct( EditPage $editPage, HtmlFormRenderer $htmlFormRenderer ) {
 		$this->editPage = $editPage;
-		$this->htmlFormBuilder = $htmlFormBuilder;
+		$this->htmlFormRenderer = $htmlFormRenderer;
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
@@ -55,12 +55,12 @@ class EditPageForm {
 
 	private function addHelpForm() {
 
-		$message = $this->htmlFormBuilder
+		$message = $this->htmlFormRenderer
 			->getMessageBuilder()
 			->getMessage( $this->findMessageKeyFor( $this->editPage->getTitle()->getNamespace() ) )
 			->parse();
 
-		$html = $this->htmlFormBuilder
+		$html = $this->htmlFormRenderer
 			->setName( 'editpage-help' )
 			->addParagraph( $message, array( 'class' => 'smw-editpage-help' ) )
 			->getForm();

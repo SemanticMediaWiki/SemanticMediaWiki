@@ -3,7 +3,6 @@
 namespace SMW;
 
 use ParamProcessor\ParamDefinition;
-use SMW\MediaWiki\HtmlTableBuilder;
 use SMWDataValue;
 use SMWResultArray;
 use SMWQueryResult;
@@ -22,9 +21,9 @@ use SMW\Query\PrintRequest;
 class TableResultPrinter extends ResultPrinter {
 
 	/**
-	 * @var HtmlTableBuilder
+	 * @var HtmlTableRenderer
 	 */
-	private $tableBuilder;
+	private $htmlTableRenderer;
 
 	/**
 	 * @note grep search smw_printername_table, smw_printername_broadtable
@@ -47,8 +46,8 @@ class TableResultPrinter extends ResultPrinter {
 	protected function getResultText( SMWQueryResult $res, $outputMode ) {
 		$this->isHTML = ( $outputMode === SMW_OUTPUT_HTML );
 
-		$this->tableBuilder = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newHtmlTableBuilder();
-		$this->tableBuilder->setHtmlContext( $this->isHTML );
+		$this->htmlTableRenderer = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newHtmlTableRenderer();
+		$this->htmlTableRenderer->setHtmlContext( $this->isHTML );
 
 		$columnClasses = array();
 
@@ -62,24 +61,24 @@ class TableResultPrinter extends ResultPrinter {
 				$columnClasses[] = $columnClass;
 				$text = $pr->getText( $outputMode, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null : $this->mLinker ) );
 
-				$this->tableBuilder->addHeader( ( $text === '' ? '&nbsp;' : $text ), $attributes );
+				$this->htmlTableRenderer->addHeader( ( $text === '' ? '&nbsp;' : $text ), $attributes );
 			}
 		}
 
 		while ( $subject = $res->getNext() ) {
 			$this->getRowForSubject( $subject, $outputMode, $columnClasses );
-			$this->tableBuilder->addRow();
+			$this->htmlTableRenderer->addRow();
 		}
 
 		// print further results footer
 		if ( $this->linkFurtherResults( $res ) ) {
 			$link = $this->getFurtherResultsLink( $res, $outputMode );
 
-			$this->tableBuilder->addCell(
+			$this->htmlTableRenderer->addCell(
 					$link->getText( $outputMode, $this->mLinker ),
 					array( 'class' => 'sortbottom', 'colspan' => $res->getColumnCount() )
 			);
-			$this->tableBuilder->addRow( array( 'class' => 'smwfooter' ) );
+			$this->htmlTableRenderer->addRow( array( 'class' => 'smwfooter' ) );
 		}
 
 		$tableAttrs = array( 'class' => $this->params['class'] );
@@ -88,9 +87,9 @@ class TableResultPrinter extends ResultPrinter {
 			$tableAttrs['width'] = '100%';
 		}
 
-		$this->tableBuilder->transpose( $this->mShowHeaders !== SMW_HEADERS_HIDE && $this->params['transpose'] );
+		$this->htmlTableRenderer->transpose( $this->mShowHeaders !== SMW_HEADERS_HIDE && $this->params['transpose'] );
 
-		return $this->tableBuilder->getHtml( $tableAttrs );
+		return $this->htmlTableRenderer->getHtml( $tableAttrs );
 	}
 
 	/**
@@ -161,7 +160,7 @@ class TableResultPrinter extends ResultPrinter {
 			);
 		}
 
-		$this->tableBuilder->addCell( $content, $attributes );
+		$this->htmlTableRenderer->addCell( $content, $attributes );
 	}
 
 	/**

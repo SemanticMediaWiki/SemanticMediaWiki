@@ -1,22 +1,21 @@
 <?php
 
-namespace SMW\Test\MediaWiki;
+namespace SMW\Test\MediaWiki\Renderer;
 
 use SMW\Tests\Utils\UtilityFactory;
-use SMW\MediaWiki\HtmlTableBuilder;
+use SMW\MediaWiki\Renderer\HtmlTableRenderer;
 
 /**
- * @covers \SMW\MediaWiki\HtmlTableBuilder
+ * @covers \SMW\MediaWiki\Renderer\HtmlTableRenderer
  *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since   1.9
  *
  * @author mwjames
  */
-class HtmlTableBuilderTest extends \PHPUnit_Framework_TestCase {
+class HtmlTableRendererTest extends \PHPUnit_Framework_TestCase {
 
 	private $stringValidator;
 
@@ -29,14 +28,14 @@ class HtmlTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\HtmlTableBuilder',
-			new HtmlTableBuilder()
+			'\SMW\MediaWiki\Renderer\HtmlTableRenderer',
+			new HtmlTableRenderer()
 		);
 	}
 
 	public function testAddHeaderItem() {
 
-		$instance = new HtmlTableBuilder();
+		$instance = new HtmlTableRenderer();
 		$instance->addHeaderItem( 'span', 'lala' );
 
 		$this->stringValidator->assertThatStringContains(
@@ -47,7 +46,7 @@ class HtmlTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testAddTableHeader() {
 
-		$instance = new HtmlTableBuilder();
+		$instance = new HtmlTableRenderer();
 		$instance->addHeader( 'lala' );
 
 		$this->stringValidator->assertThatStringContains(
@@ -55,7 +54,7 @@ class HtmlTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			$instance->getHtml()
 		);
 
-		$instance = new HtmlTableBuilder( true );
+		$instance = new HtmlTableRenderer( true );
 		$instance->addHeader( 'lila' );
 
 		$this->stringValidator->assertThatStringContains(
@@ -66,7 +65,7 @@ class HtmlTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testAddTableRow() {
 
-		$instance = new HtmlTableBuilder();
+		$instance = new HtmlTableRenderer();
 
 		$instance
 			->addCell( 'lala', array( 'class' => 'foo' ) )
@@ -79,7 +78,7 @@ class HtmlTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			$instance->getHtml()
 		);
 
-		$instance = new HtmlTableBuilder();
+		$instance = new HtmlTableRenderer();
 
 		$instance
 			->setHtmlContext( true )
@@ -94,7 +93,7 @@ class HtmlTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testStandardTable() {
 
-		$instance = new HtmlTableBuilder();
+		$instance = new HtmlTableRenderer();
 
 		$instance
 			->addCell( 'lala', array( 'rel' => 'tuuu' ) )
@@ -105,7 +104,7 @@ class HtmlTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			$instance->getHtml()
 		);
 
-		$instance = new HtmlTableBuilder();
+		$instance = new HtmlTableRenderer();
 
 		$instance
 			->addHeader( 'lula' )
@@ -117,7 +116,7 @@ class HtmlTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			$instance->getHtml()
 		);
 
-		$instance = new HtmlTableBuilder( true );
+		$instance = new HtmlTableRenderer( true );
 
 		$instance
 			->addHeader( 'lula' )
@@ -132,7 +131,7 @@ class HtmlTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testTransposedTable() {
 
-		$instance = new HtmlTableBuilder();
+		$instance = new HtmlTableRenderer();
 
 		// We need a dedicated header definition to support a table transpose
 		$instance
@@ -148,7 +147,7 @@ class HtmlTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			$instance->getHtml()
 		);
 
-		$instance = new HtmlTableBuilder( true );
+		$instance = new HtmlTableRenderer( true );
 
 		$instance
 			->transpose( true )
@@ -166,7 +165,7 @@ class HtmlTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testEmptyTable() {
 
-		$instance = new HtmlTableBuilder();
+		$instance = new HtmlTableRenderer();
 
 		$instance
 			->addCell()

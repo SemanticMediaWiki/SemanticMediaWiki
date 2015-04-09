@@ -392,3 +392,15 @@ label.smw-form-checkbox {
 	padding: 1em 1em 1.5em 1em;
 	margin-bottom: 2em;
 }
+
+.smw-column-header {
+	font-weight: bold;
+	font-size: 1.17em;
+	line-height: 1.6;
+	margin-top: 0.3em;
+	margin-bottom: 0;
+	padding-bottom: 0;
+	color: black;
+	overflow: hidden;
+	padding-top: .5em;
+}

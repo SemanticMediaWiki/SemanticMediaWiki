@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\MediaWiki;
+namespace SMW\MediaWiki\Renderer;
 
 use Html;
 
@@ -10,7 +10,7 @@ use Html;
  *
  * @author mwjames
  */
-class HtmlTableBuilder {
+class HtmlTableRenderer {
 
 	/**
 	 * @var array

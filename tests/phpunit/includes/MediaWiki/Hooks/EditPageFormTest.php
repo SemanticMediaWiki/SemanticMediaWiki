@@ -3,7 +3,7 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use SMW\MediaWiki\Hooks\EditPageForm;
-use SMW\MediaWiki\HtmlFormBuilder;
+use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 
 use SMW\ApplicationFactory;
 
@@ -12,8 +12,7 @@ use Title;
 /**
  * @covers \SMW\MediaWiki\Hooks\EditPageForm
  *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 2.1
@@ -39,13 +38,13 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$htmlFormBuilder = $this->getMockBuilder( '\SMW\MediaWiki\HtmlFormBuilder' )
+		$htmlFormRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlFormRenderer' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Hooks\EditPageForm',
-			new EditPageForm( $editPage, $htmlFormBuilder )
+			new EditPageForm( $editPage, $htmlFormRenderer )
 		);
 	}
 
@@ -57,14 +56,14 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$htmlFormBuilder = $this->getMockBuilder( '\SMW\MediaWiki\HtmlFormBuilder' )
+		$htmlFormRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlFormRenderer' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$editPage->expects( $this->never() )
 			->method( 'getMessageBuilder' );
 
-		$instance = new EditPageForm( $editPage, $htmlFormBuilder );
+		$instance = new EditPageForm( $editPage, $htmlFormRenderer );
 
 		$this->assertTrue(
 			$instance->process()
@@ -91,7 +90,7 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( $expected ) )
 			->will( $this->returnValue( $message ) );
 
-		$htmlFormBuilder = new HtmlFormBuilder( $title, $messageBuilder );
+		$htmlFormRenderer = new HtmlFormRenderer( $title, $messageBuilder );
 
 		$editPage = $this->getMockBuilder( '\EditPage' )
 			->disableOriginalConstructor()
@@ -103,7 +102,7 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 
 		$editPage->editFormPageTop = '';
 
-		$instance = new EditPageForm( $editPage, $htmlFormBuilder );
+		$instance = new EditPageForm( $editPage, $htmlFormRenderer );
 
 		$this->assertTrue(
 			$instance->process()

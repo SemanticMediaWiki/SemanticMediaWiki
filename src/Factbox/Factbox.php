@@ -8,7 +8,7 @@ use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\MediaWiki\HtmlTableBuilder;
+use SMW\MediaWiki\HtmlTableRenderer;
 use SMW\MediaWiki\MessageBuilder;
 use SMW\ParserData;
 use SMW\Profiler;
@@ -39,9 +39,9 @@ class Factbox {
 	private $parserData;
 
 	/**
-	 * @var HtmlTableBuilder
+	 * @var HtmlTableRenderer
 	 */
-	private $tableBuilder;
+	private $htmlTableRenderer;
 
 	/**
 	 * @var MessageBuilder
@@ -275,7 +275,7 @@ class Factbox {
 	protected function createTable( SemanticData $semanticData ) {
 		Profiler::In( __METHOD__ );
 
-		$this->tableBuilder = $this->applicationFactory->newMwCollaboratorFactory()->newHtmlTableBuilder();
+		$this->htmlTableRenderer = $this->applicationFactory->newMwCollaboratorFactory()->newHtmlTableRenderer();
 
 		$text = '';
 
@@ -290,8 +290,8 @@ class Factbox {
 
 			$text .= Html::rawElement( 'div',
 				array( 'class' => 'smwfact' ),
-				$this->tableBuilder->getHeaderItems() .
-				$this->tableBuilder->getHtml( array( 'class' => 'smwfacttable' ) )
+				$this->htmlTableRenderer->getHeaderItems() .
+				$this->htmlTableRenderer->getHtml( array( 'class' => 'smwfacttable' ) )
 			);
 		}
 
@@ -316,7 +316,7 @@ class Factbox {
 			'swmfactboxheadbrowse'
 		);
 
-		$this->tableBuilder->addHeaderItem( 'div',
+		$this->htmlTableRenderer->addHeaderItem( 'div',
 			$this->messageBuilder->getMessage( 'smw_factbox_head', $browselink->getWikiText() )->text(),
 			array( 'class' => 'smwfactboxhead' )
 		);
@@ -327,7 +327,7 @@ class Factbox {
 			'rdflink'
 		);
 
-		$this->tableBuilder->addHeaderItem( 'div',
+		$this->htmlTableRenderer->addHeaderItem( 'div',
 			$rdflink->getWikiText(),
 			array( 'class' => 'smwrdflink' )
 		);
@@ -385,17 +385,17 @@ class Factbox {
 			}
 
 			// Invoke table content
-			$this->tableBuilder->addCell(
+			$this->htmlTableRenderer->addCell(
 				$propertyDv->getShortWikiText( true ),
 				$attributes['property']
 			);
 
-			$this->tableBuilder->addCell(
+			$this->htmlTableRenderer->addCell(
 				$this->messageBuilder->listToCommaSeparatedText( $valuesHtml ),
 				$attributes['values']
 			);
 
-			$this->tableBuilder->addRow();
+			$this->htmlTableRenderer->addRow();
 		}
 
 		Profiler::Out( __METHOD__ );

@@ -1,7 +1,8 @@
 <?php
 
-namespace SMW\MediaWiki;
+namespace SMW\MediaWiki\Renderer;
 
+use SMW\MediaWiki\MessageBuilder;
 use Html;
 use Title;
 use Xml;
@@ -11,8 +12,8 @@ use Xml;
  *
  * @par Example:
  * @code
- * $FormBuilder = new FormBuilder( $this->title, new MessageBuilder() );
- * $FormBuilder
+ * $htmlFormRenderer = new HtmlFormRenderer( $this->title, new MessageBuilder() );
+ * $htmlFormRenderer
  * 	->setName( 'Foo' )
  * 	->setParameter( 'foo', 'someValue' )
  * 	->addPaging( 10, 0, 5 )
@@ -27,7 +28,7 @@ use Xml;
  *
  * @author mwjames
  */
-class HtmlFormBuilder {
+class HtmlFormRenderer {
 
 	/**
 	 * @var Title
@@ -88,7 +89,7 @@ class HtmlFormBuilder {
 	/**
 	 * @since 2.1
 	 *
-	 * @return FormBuilder
+	 * @return HtmlFormRenderer
 	 */
 	public function clear() {
 		$this->queryParameters = array();
@@ -115,7 +116,7 @@ class HtmlFormBuilder {
 	 *
 	 * @param string $name
 	 *
-	 * @return FormBuilder
+	 * @return HtmlFormRenderer
 	 */
 	public function setName( $name ) {
 		$this->name = $name;
@@ -127,7 +128,7 @@ class HtmlFormBuilder {
 	 *
 	 * @param string $actionUrl
 	 *
-	 * @return FormBuilder
+	 * @return HtmlFormRenderer
 	 */
 	public function setActionUrl( $actionUrl ) {
 		$this->actionUrl = $actionUrl;
@@ -137,7 +138,7 @@ class HtmlFormBuilder {
 	/**
 	 * @since 2.1
 	 *
-	 * @return FormBuilder
+	 * @return HtmlFormRenderer
 	 */
 	public function withFieldset() {
 		$this->useFieldset = true;
@@ -149,7 +150,7 @@ class HtmlFormBuilder {
 	 *
 	 * @param string $method
 	 *
-	 * @return FormBuilder
+	 * @return HtmlFormRenderer
 	 */
 	public function setMethod( $method ) {
 		$this->method = strtolower( $method );
@@ -162,7 +163,7 @@ class HtmlFormBuilder {
 	 * @param string $key
 	 * @param string $value
 	 *
-	 * @return FormBuilder
+	 * @return HtmlFormRenderer
 	 */
 	public function addQueryParameter( $key, $value ) {
 		$this->queryParameters[$key] = $value;
@@ -184,7 +185,7 @@ class HtmlFormBuilder {
 	 * @param string $description
 	 * @param array $attributes
 	 *
-	 * @return FormBuilder
+	 * @return HtmlFormRenderer
 	 */
 	public function addParagraph( $text, $attributes = array() ) {
 
@@ -201,7 +202,7 @@ class HtmlFormBuilder {
 	 *
 	 * @param array $attributes
 	 *
-	 * @return FormBuilder
+	 * @return HtmlFormRenderer
 	 */
 	public function addHorizontalRule( $attributes = array() ) {
 
@@ -219,7 +220,7 @@ class HtmlFormBuilder {
 	 * @param $level
 	 * @param $text
 	 *
-	 * @return FormBuilder
+	 * @return HtmlFormRenderer
 	 */
 	public function addHeader( $level, $text ) {
 
@@ -233,7 +234,7 @@ class HtmlFormBuilder {
 	/**
 	 * @since 2.1
 	 *
-	 * @return FormBuilder
+	 * @return HtmlFormRenderer
 	 */
 	public function addLineBreak() {
 		$this->content[] = Html::element( 'br', array(), '' );
@@ -243,7 +244,7 @@ class HtmlFormBuilder {
 	/**
 	 * @since 2.1
 	 *
-	 * @return FormBuilder
+	 * @return HtmlFormRenderer
 	 */
 	public function addNonBreakingSpace() {
 		$this->content[] = '&nbsp;';
@@ -255,7 +256,7 @@ class HtmlFormBuilder {
 	 *
 	 * @param string|null $text
 	 *
-	 * @return FormBuilder
+	 * @return HtmlFormRenderer
 	 */
 	public function addSubmitButton( $text ) {
 		$this->content[] = Xml::submitButton( $text );
@@ -272,7 +273,7 @@ class HtmlFormBuilder {
 	 * @param integer $length
 	 * @param string $placeholder
 	 *
-	 * @return FormBuilder
+	 * @return HtmlFormRenderer
 	 */
 	public function addInputField( $label, $inputName, $inputValue, $id = null, $length = 20, $placeholder = '' ) {
 
@@ -300,7 +301,7 @@ class HtmlFormBuilder {
 	 * @param string $inputName
 	 * @param string $inputValue
 	 *
-	 * @return FormBuilder
+	 * @return HtmlFormRenderer
 	 */
 	public function addHiddenField( $inputName, $inputValue ) {
 
@@ -319,7 +320,7 @@ class HtmlFormBuilder {
 	 * @param array $options
 	 * @param string|null $id
 	 *
-	 * @return FormBuilder
+	 * @return HtmlFormRenderer
 	 */
 	public function addOptionSelectList( $label, $inputName, $inputValue, $options, $id = null ) {
 
@@ -368,7 +369,7 @@ class HtmlFormBuilder {
 	 * @param boolean $isChecked
 	 * @param string|null $id
 	 *
-	 * @return FormBuilder
+	 * @return HtmlFormRenderer
 	 */
 	public function addCheckbox( $label, $inputName, $inputValue, $isChecked = false, $id = null ) {
 
@@ -403,7 +404,7 @@ class HtmlFormBuilder {
 	 * @param integer $offset,
 	 * @param integer $count,
 	 *
-	 * @return FormBuilder
+	 * @return HtmlFormRenderer
 	 */
 	public function addPaging( $limit, $offset, $count ) {
 

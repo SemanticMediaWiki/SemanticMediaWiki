@@ -1,22 +1,21 @@
 <?php
 
-namespace SMW\Test\MediaWiki;
+namespace SMW\Test\MediaWiki\Renderer;
 
 use SMW\Tests\Utils\UtilityFactory;
-use SMW\MediaWiki\HtmlColumnListFormatter;
+use SMW\MediaWiki\Renderer\HtmlColumnListRenderer;
 
 /**
- * @covers \SMW\MediaWiki\HtmlColumnListFormatter
+ * @covers \SMW\MediaWiki\Renderer\HtmlColumnListRenderer
  *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since   2.1
  *
  * @author mwjames
  */
-class ColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
+class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	private $stringValidator;
 
@@ -29,14 +28,14 @@ class ColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\HtmlColumnListFormatter',
-			new HtmlColumnListFormatter()
+			'\SMW\MediaWiki\Renderer\HtmlColumnListRenderer',
+			new HtmlColumnListRenderer()
 		);
 	}
 
 	public function testDefaultColumnUnorderedList() {
 
-		$instance = new HtmlColumnListFormatter();
+		$instance = new HtmlColumnListRenderer();
 
 		$instance->addIndexedArrayOfResults( array(
 			'a' => array( 'Foo', 'Bar' ),
@@ -46,8 +45,8 @@ class ColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 		$expected = array(
 			'<div class="smw-columnlist-container">',
 			'<div class="smw-column" style="float: left; width:100%; word-wrap: break-word;">',
-			'<h3>a</h3><ul><li>Foo</li><li>Bar</li></ul>',
-			'<h3>B</h3><ul><li>Ichi</li><li>Ni</li></ul></div>'
+			'<div class="smw-column-header">a</div><ul><li>Foo</li><li>Bar</li></ul>',
+			'<div class="smw-column-header">B</div><ul><li>Ichi</li><li>Ni</li></ul></div>'
 		);
 
 		$this->stringValidator->assertThatStringContains(
@@ -58,7 +57,7 @@ class ColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testTwoColumnUnorderedList() {
 
-		$instance = new HtmlColumnListFormatter();
+		$instance = new HtmlColumnListRenderer();
 
 		$instance->setNumberOfColumns( 2 );
 
@@ -72,9 +71,9 @@ class ColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 		$expected = array(
 			'<div class="smw-columnlist-container">',
 			'<div class="smw-column" style="float: left; width:50%; word-wrap: break-word;">',
-			'<h3>a</h3><ul><li>Foo</li><li>Bar</li></ul><h3>B</h3><ul><li>Ichi</li></ul></div>',
+			'<div class="smw-column-header">a</div><ul><li>Foo</li><li>Bar</li></ul><div class="smw-column-header">B</div><ul><li>Ichi</li></ul></div>',
 			'<div class="smw-column" style="float: left; width:50%; word-wrap: break-word;">',
-			"<h3>B $listContinuesAbbrev</h3><ul start=4><li>Ni</li></ul></div>"
+			'<div class="smw-column-header">B ' . $listContinuesAbbrev .'</div><ul start=4><li>Ni</li></ul></div>'
 		);
 
 		$this->stringValidator->assertThatStringContains(
@@ -85,7 +84,7 @@ class ColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testThreeColumnUnorderedList() {
 
-		$instance = new HtmlColumnListFormatter();
+		$instance = new HtmlColumnListRenderer();
 
 		$instance->setNumberOfColumns( 3 );
 
@@ -97,9 +96,9 @@ class ColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 		$expected = array(
 			'<div class="smw-columnlist-container">',
 			'<div class="smw-column" style="float: left; width:33%; word-wrap: break-word;">',
-			'<h3>a</h3><ul><li>Foo</li><li>Bar</li></ul></div>',
+			'<div class="smw-column-header">a</div><ul><li>Foo</li><li>Bar</li></ul></div>',
 			'<div class="smw-column" style="float: left; width:33%; word-wrap: break-word;">',
-			'<h3>B</h3><ul><li>Ichi</li><li>Ni</li></ul></div>'
+			'<div class="smw-column-header">B</div><ul><li>Ichi</li><li>Ni</li></ul></div>'
 		);
 
 		$this->stringValidator->assertThatStringContains(
@@ -110,7 +109,7 @@ class ColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testTwoColumnOrderedList() {
 
-		$instance = new HtmlColumnListFormatter();
+		$instance = new HtmlColumnListRenderer();
 
 		$instance
 			->setNumberOfColumns( 2 )
@@ -126,9 +125,9 @@ class ColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 		$expected = array(
 			'<div class="smw-columnlist-container">',
 			'<div class="smw-column" style="float: left; width:50%; word-wrap: break-word;">',
-			'<h3>a</h3><ol><li>Foo</li><li>Bar</li></ol><h3>B</h3><ol><li>Ichi</li></ol></div>',
+			'<div class="smw-column-header">a</div><ol><li>Foo</li><li>Bar</li></ol><div class="smw-column-header">B</div><ol><li>Ichi</li></ol></div>',
 			'<div class="smw-column" style="float: left; width:50%; word-wrap: break-word;">',
-			"<h3>B $listContinuesAbbrev</h3><ol start=4><li>Ni</li></ol></div>"
+			'<div class="smw-column-header">B '. $listContinuesAbbrev . '</div><ol start=4><li>Ni</li></ol></div>'
 		);
 
 		$this->stringValidator->assertThatStringContains(

@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\MediaWiki;
 
-use SMW\ByLanguageCollationMapper;
+use SMW\MediaWiki\ByLanguageCollationMapper;
 
 /**
- * @covers \SMW\ByLanguageCollationMapper
+ * @covers \SMW\MediaWiki\ByLanguageCollationMapper
  *
  * @group semantic-mediawiki
  *
@@ -19,12 +19,12 @@ class ByLanguageCollationMapperTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\ByLanguageCollationMapper',
+			'\SMW\MediaWiki\ByLanguageCollationMapper',
 			new ByLanguageCollationMapper( 'Foo' )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\ByLanguageCollationMapper',
+			'\SMW\MediaWiki\ByLanguageCollationMapper',
 			ByLanguageCollationMapper::getInstance()
 		);
 

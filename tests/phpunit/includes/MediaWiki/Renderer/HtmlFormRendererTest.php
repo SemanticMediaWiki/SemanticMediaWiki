@@ -1,22 +1,21 @@
 <?php
 
-namespace SMW\Tests\MediaWiki;
+namespace SMW\Tests\MediaWiki\Renderer;
 
 use SMW\Tests\Utils\UtilityFactory;
-use SMW\MediaWiki\HtmlFormBuilder;
+use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 
 /**
- * @covers \SMW\MediaWiki\HtmlFormBuilder
+ * @covers \SMW\MediaWiki\Renderer\HtmlFormRenderer
  *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 2.1
  *
  * @author mwjames
  */
-class HtmlFormBuilderTest extends \PHPUnit_Framework_TestCase {
+class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 
 	private $stringValidator;
 
@@ -37,8 +36,8 @@ class HtmlFormBuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\HtmlFormBuilder',
-			new HtmlFormBuilder( $title, $messageBuilder )
+			'\SMW\MediaWiki\Renderer\HtmlFormRenderer',
+			new HtmlFormRenderer( $title, $messageBuilder )
 		);
 	}
 
@@ -52,7 +51,7 @@ class HtmlFormBuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new HtmlFormBuilder( $title, $messageBuilder );
+		$instance = new HtmlFormRenderer( $title, $messageBuilder );
 
 		$this->assertSame(
 			$messageBuilder,
@@ -94,7 +93,7 @@ class HtmlFormBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getMessage' )
 			->will( $this->returnValue( $message ) );
 
-		$instance = new HtmlFormBuilder( $title, $messageBuilder );
+		$instance = new HtmlFormRenderer( $title, $messageBuilder );
 
 		$instance
 			->setName( 'SomeForm' )
@@ -146,7 +145,7 @@ class HtmlFormBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getMessage' )
 			->will( $this->returnValue( $message ) );
 
-		$instance = new HtmlFormBuilder( $title, $messageBuilder );
+		$instance = new HtmlFormRenderer( $title, $messageBuilder );
 
 		$instance
 			->setName( 'optionsSelecListForm' )
@@ -196,7 +195,7 @@ class HtmlFormBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getMessage' )
 			->will( $this->returnValue( $message ) );
 
-		$instance = new HtmlFormBuilder( $title, $messageBuilder );
+		$instance = new HtmlFormRenderer( $title, $messageBuilder );
 
 		$instance
 			->setName( 'checkboxForm' )

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\MediaWiki;
+namespace SMW\MediaWiki\Renderer;
 
 use Html;
 
@@ -14,7 +14,7 @@ use Html;
  * @author mwjames
  * @author Markus Krötzsch
  */
-class HtmlColumnListFormatter {
+class HtmlColumnListRenderer {
 
 	/**
 	 * @var integer
@@ -144,7 +144,7 @@ class HtmlColumnListFormatter {
 				$numRowsInColumn = $this->numRows + 1;
 
 				if ( $key == $previousKey ) {
-					$result .= "<h3>$key " . $listContinuesAbbrev . "</h3><{$this->listType} start={$numRowsInColumn}>";
+					$result .= "<div class=\"smw-column-header\">$key " . $listContinuesAbbrev . "</div><{$this->listType} start={$numRowsInColumn}>";
 				}
 			}
 
@@ -152,7 +152,7 @@ class HtmlColumnListFormatter {
 			// the last list and start a new one
 			if ( $key != $previousKey ) {
 				$result .= $this->numRows % $this->rowsPerColumn > 0 ? "</{$this->listType}>" : '';
-				$result .= "<h3>$key</h3><{$this->listType}>";
+				$result .= "<div class=\"smw-column-header\">$key</div><{$this->listType}>";
 			}
 
 			$previousKey = $key;
