@@ -473,11 +473,12 @@ abstract class SMWDataValue {
 	 * @return SMWDataItem|SMWDIError
 	 */
 	public function getDataItem() {
+
 		if ( $this->isValid() ) {
 			return $this->m_dataitem;
-		} else {
-			return new SMWDIError( $this->mErrors );
 		}
+
+		return new SMWDIError( $this->mErrors );
 	}
 
 	/**
@@ -486,7 +487,7 @@ abstract class SMWDataValue {
 	 * @return string
 	 */
 	public function __toString() {
-		return $this->m_dataitem->getSerialization();
+		return $this->getDataItem()->getSerialization();
 	}
 
 	/**
