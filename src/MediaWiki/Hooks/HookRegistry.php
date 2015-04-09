@@ -462,12 +462,12 @@ class HookRegistry {
 
 			$mwCollaboratorFactory = ApplicationFactory::getInstance()->newMwCollaboratorFactory();
 
-			$htmlFormBuilder = $mwCollaboratorFactory->newHtmlFormBuilder(
+			$htmlFormRenderer = $mwCollaboratorFactory->newHtmlFormRenderer(
 				$editPage->getTitle(),
 				$output->getLanguage()
 			);
 
-			$editPageForm = new EditPageForm( $editPage, $htmlFormBuilder );
+			$editPageForm = new EditPageForm( $editPage, $htmlFormRenderer );
 			return $editPageForm->process();
 		};
 

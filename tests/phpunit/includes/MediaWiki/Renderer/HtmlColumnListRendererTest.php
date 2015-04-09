@@ -1,22 +1,21 @@
 <?php
 
-namespace SMW\Test\MediaWiki;
+namespace SMW\Test\MediaWiki\Renderer;
 
 use SMW\Tests\Utils\UtilityFactory;
-use SMW\MediaWiki\HtmlColumnListFormatter;
+use SMW\MediaWiki\Renderer\HtmlColumnListRenderer;
 
 /**
- * @covers \SMW\MediaWiki\HtmlColumnListFormatter
+ * @covers \SMW\MediaWiki\Renderer\HtmlColumnListRenderer
  *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since   2.1
  *
  * @author mwjames
  */
-class ColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
+class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	private $stringValidator;
 
@@ -29,14 +28,14 @@ class ColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\HtmlColumnListFormatter',
-			new HtmlColumnListFormatter()
+			'\SMW\MediaWiki\Renderer\HtmlColumnListRenderer',
+			new HtmlColumnListRenderer()
 		);
 	}
 
 	public function testDefaultColumnUnorderedList() {
 
-		$instance = new HtmlColumnListFormatter();
+		$instance = new HtmlColumnListRenderer();
 
 		$instance->addIndexedArrayOfResults( array(
 			'a' => array( 'Foo', 'Bar' ),
@@ -58,7 +57,7 @@ class ColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testTwoColumnUnorderedList() {
 
-		$instance = new HtmlColumnListFormatter();
+		$instance = new HtmlColumnListRenderer();
 
 		$instance->setNumberOfColumns( 2 );
 
@@ -85,7 +84,7 @@ class ColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testThreeColumnUnorderedList() {
 
-		$instance = new HtmlColumnListFormatter();
+		$instance = new HtmlColumnListRenderer();
 
 		$instance->setNumberOfColumns( 3 );
 
@@ -110,7 +109,7 @@ class ColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testTwoColumnOrderedList() {
 
-		$instance = new HtmlColumnListFormatter();
+		$instance = new HtmlColumnListRenderer();
 
 		$instance
 			->setNumberOfColumns( 2 )

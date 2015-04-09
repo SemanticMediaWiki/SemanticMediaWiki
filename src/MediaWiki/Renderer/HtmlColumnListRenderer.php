@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\MediaWiki;
+namespace SMW\MediaWiki\Renderer;
 
 use Html;
 
@@ -14,7 +14,7 @@ use Html;
  * @author mwjames
  * @author Markus Krötzsch
  */
-class HtmlColumnListFormatter {
+class HtmlColumnListRenderer {
 
 	/**
 	 * @var integer

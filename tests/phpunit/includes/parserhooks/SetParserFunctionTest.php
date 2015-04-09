@@ -6,8 +6,8 @@ use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\SetParserFunction;
 use SMW\ParameterFormatterFactory;
-use SMW\MediaWiki\HtmlTemplateRenderer;
-use SMW\MediaWiki\WikitextTemplateRenderer;
+use SMW\MediaWiki\Renderer\HtmlTemplateRenderer;
+use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use SMW\ApplicationFactory;
 
 use Title;
@@ -51,7 +51,7 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\HtmlTemplateRenderer' )
+		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlTemplateRenderer' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -83,7 +83,7 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getHtml' )
 			->will( $this->returnValue( 'Foo' ) );
 
-		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\HtmlTemplateRenderer' )
+		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlTemplateRenderer' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -117,7 +117,7 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->method( 'addFromArray' )
 			->will( $this->returnSelf() );
 
-		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\HtmlTemplateRenderer' )
+		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlTemplateRenderer' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use SMW\MediaWiki\ByLanguageCollationMapper;
 use SMWQueryResult;
 use SMWDataItem;
 

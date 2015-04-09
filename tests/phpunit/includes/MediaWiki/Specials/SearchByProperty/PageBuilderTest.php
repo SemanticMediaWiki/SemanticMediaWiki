@@ -7,16 +7,14 @@ use SMW\MediaWiki\Specials\SearchByProperty\PageBuilder;
 use SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup;
 use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
 
-use SMW\MediaWiki\HtmlFormBuilder;
+use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\DIWikiPage;
 use SMW\Localizer;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SearchByProperty\PageBuilder
  *
- * @group SMW
- * @group SMWExtension
- * @group semantic-mediawiki-specials
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 2.1
@@ -37,7 +35,7 @@ class PageBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$htmlFormBuilder = $this->getMockBuilder( '\SMW\MediaWiki\HtmlFormBuilder' )
+		$HtmlFormRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlFormRenderer' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -51,7 +49,7 @@ class PageBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Specials\SearchByProperty\PageBuilder',
-			new PageBuilder( $htmlFormBuilder, $PageRequestOptions, $QueryResultLookup )
+			new PageBuilder( $HtmlFormRenderer, $PageRequestOptions, $QueryResultLookup )
 		);
 	}
 
@@ -88,7 +86,7 @@ class PageBuilderTest extends \PHPUnit_Framework_TestCase {
 				new DIWikiPage( 'ResultTwo', NS_HELP ) ) ) );
 
 		$instance =	new PageBuilder(
-			new HtmlFormBuilder( $title, $messageBuilder ),
+			new HtmlFormRenderer( $title, $messageBuilder ),
 			new PageRequestOptions( 'Foo/Bar', array() ),
 			new QueryResultLookup( $store )
 		);
@@ -161,7 +159,7 @@ class PageBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance =	new PageBuilder(
-			new HtmlFormBuilder( $title, $messageBuilder ),
+			new HtmlFormRenderer( $title, $messageBuilder ),
 			new PageRequestOptions( 'Foo/Bar', $requestOptions ),
 			new QueryResultLookup( $store )
 		);

@@ -9,6 +9,11 @@ use Title;
 use User;
 use WikiPage;
 use Parser;
+use SMW\MediaWiki\Renderer\HtmlTemplateRenderer;
+use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
+use SMW\MediaWiki\Renderer\HtmlFormRenderer;
+use SMW\MediaWiki\Renderer\HtmlTableRenderer;
+use SMW\MediaWiki\Renderer\HtmlColumnListRenderer;
 
 /**
  * @license GNU GPL v2+
@@ -87,9 +92,9 @@ class MwCollaboratorFactory {
 	 * @param Title $title
 	 * @param Language|null $language
 	 *
-	 * @return HtmlFormBuilder
+	 * @return HtmlFormRenderer
 	 */
-	public function newHtmlFormBuilder( Title $title, Language $language = null ) {
+	public function newHtmlFormRenderer( Title $title, Language $language = null ) {
 
 		if ( $language === null ) {
 			$language = $title->getPageLanguage();
@@ -97,25 +102,25 @@ class MwCollaboratorFactory {
 
 		$messageBuilder = $this->newMessageBuilder( $language );
 
-		return new HtmlFormBuilder( $title, $messageBuilder );
+		return new HtmlFormRenderer( $title, $messageBuilder );
 	}
 
 	/**
 	 * @since 2.1
 	 *
-	 * @return HtmlTableBuilder
+	 * @return HtmlTableRenderer
 	 */
-	public function newHtmlTableBuilder() {
-		return new HtmlTableBuilder();
+	public function newHtmlTableRenderer() {
+		return new HtmlTableRenderer();
 	}
 
 	/**
 	 * @since 2.1
 	 *
-	 * @return HtmlColumnListFormatter
+	 * @return HtmlColumnListRenderer
 	 */
-	public function newHtmlColumnListFormatter() {
-		return new HtmlColumnListFormatter();
+	public function newHtmlColumnListRenderer() {
+		return new HtmlColumnListRenderer();
 	}
 
 	/**

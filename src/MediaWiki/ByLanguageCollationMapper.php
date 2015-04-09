@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki;
 
 use Language;
 

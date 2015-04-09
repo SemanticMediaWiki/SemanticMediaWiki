@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Specials\SearchByProperty;
 
 use Html;
 use SMW\DataTypeRegistry;
-use SMW\MediaWiki\HtmlFormBuilder;
+use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\MessageBuilder;
 use SMWDataValue as DataValue;
 use SMWInfolink as Infolink;
@@ -22,9 +22,9 @@ use SMWStringValue as StringValue;
 class PageBuilder {
 
 	/**
-	 * @var HtmlFormBuilder
+	 * @var HtmlFormRenderer
 	 */
-	private $htmlFormBuilder;
+	private $htmlFormRenderer;
 
 	/**
 	 * @var PageRequestOptions
@@ -49,12 +49,12 @@ class PageBuilder {
 	/**
 	 * @since 2.1
 	 *
-	 * @param HtmlFormBuilder $htmlFormBuilder
+	 * @param HtmlFormRenderer $htmlFormRenderer
 	 * @param PageRequestOptions $pageRequestOptions
 	 * @param QueryResultLookup $queryResultLookup
 	 */
-	public function __construct( HtmlFormBuilder $htmlFormBuilder, PageRequestOptions $pageRequestOptions, QueryResultLookup $queryResultLookup ) {
-		$this->htmlFormBuilder = $htmlFormBuilder;
+	public function __construct( HtmlFormRenderer $htmlFormRenderer, PageRequestOptions $pageRequestOptions, QueryResultLookup $queryResultLookup ) {
+		$this->htmlFormRenderer = $htmlFormRenderer;
 		$this->pageRequestOptions = $pageRequestOptions;
 		$this->queryResultLookup = $queryResultLookup;
 		$this->linker = smwfGetLinker();
@@ -68,7 +68,7 @@ class PageBuilder {
 	public function getHtml() {
 
 		$this->pageRequestOptions->initialize();
-		$this->messageBuilder = $this->htmlFormBuilder->getMessageBuilder();
+		$this->messageBuilder = $this->htmlFormRenderer->getMessageBuilder();
 
 		list( $resultMessage, $resultList, $resultCount ) = $this->getResultHtml();
 
@@ -97,7 +97,7 @@ class PageBuilder {
 		// within a paragraph (e.g Highlighter content)
 		$resultMessage = str_replace( 'div', 'span', $resultMessage );
 
-		$html = $this->htmlFormBuilder
+		$html = $this->htmlFormRenderer
 			->setName( 'searchbyproperty' )
 			->withFieldset()
 			->addParagraph( $resultMessage )
