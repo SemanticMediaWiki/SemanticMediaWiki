@@ -1,3 +1,9 @@
 {
+	"@metadata": {
+		"authors": [
+			"Yueman"
+		]
+	},
+	"browse": "瀏覽維基",
 	"smw-livepreview-loading": "載入緊…"
 }

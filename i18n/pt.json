@@ -156,7 +156,7 @@
 	"smw-statistics-property-page": "{{PLURAL:$1|Propriedade|Propriedades}} ({{PLURAL:$1|registada|registadas}} com uma página)",
 	"smw-statistics-property-type": "{{PLURAL:$1|Propriedade|Propriedades}} ({{PLURAL:$1|atribuída|atribuídas}} a um tipo de dados)",
 	"smw-statistics-query-inline-legacy": "{{PLURAL:$1|Consulta|Consultas}}",
-	"smw-statistics-query-inline": "{{PLURAL:$1|Consulta|Consultas}}",
+	"smw-statistics-query-inline": "[[Property:Has query|{{PLURAL:$1|Consulta|Consultas}}]]",
 	"smw-statistics-query-size": "Tamanho da consulta",
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Conceito|Conceitos}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Conceito|Conceitos}}]]",
