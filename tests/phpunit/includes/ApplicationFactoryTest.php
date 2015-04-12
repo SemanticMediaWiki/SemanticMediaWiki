@@ -91,19 +91,6 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetEventHandler() {
-
-		$this->assertInstanceOf(
-			'\SMW\EventHandler',
-			$this->applicationFactory->getEventHandler()
-		);
-
-		$this->assertSame(
-			$this->applicationFactory->getEventHandler(),
-			$this->applicationFactory->getEventHandler()
-		);
-	}
-
 	public function testCanConstructTitleCreator() {
 
 		$this->assertInstanceOf(

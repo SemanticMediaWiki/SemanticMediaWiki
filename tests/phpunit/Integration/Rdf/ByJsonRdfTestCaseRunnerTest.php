@@ -9,6 +9,7 @@ use SMW\Tests\Utils\UtilityFactory;
 use SMWExportController as ExportController;
 use SMWRDFXMLSerializer as RDFXMLSerializer;
 use SMW\ApplicationFactory;
+use SMW\EventHandler;
 use Title;
 
 /**
@@ -83,7 +84,7 @@ class ByJsonRdfTestCaseRunnerTest extends ByJsonTestCaseProvider {
 
 		// This should not be necessary because the resetcache event
 		// is triggered
-		\SMWExporter::clear();
+		EventHandler::getInstance()->getEventDispatcher()->dispatch( 'exporter.reset' );
 
 		foreach ( $jsonTestCaseFileHandler->findRdfTestCases() as $case ) {
 			$this->assertRdfOutputForCase( $case, $jsonTestCaseFileHandler->getDebugMode() );

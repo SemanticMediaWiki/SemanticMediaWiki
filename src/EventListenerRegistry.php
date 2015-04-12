@@ -40,6 +40,12 @@ class EventListenerRegistry implements EventListenerCollection {
 	private function addListenersToCollection() {
 
 		$this->eventListenerCollection->registerCallback(
+			'exporter.reset', function() {
+				Exporter::getInstance()->clear();
+			}
+		);
+
+		$this->eventListenerCollection->registerCallback(
 			'property.spec.change', function( $dispatchContext ) {
 
 				$subject = $dispatchContext->get( 'subject' );

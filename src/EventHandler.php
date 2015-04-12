@@ -14,6 +14,11 @@ use Onoi\EventDispatcher\EventDispatcherFactory;
 class EventHandler {
 
 	/**
+	 * @var EventHandler
+	 */
+	private static $instance = null;
+
+	/**
 	 * @var EventDispatcher
 	 */
 	private $eventDispatcher = null;
@@ -25,6 +30,27 @@ class EventHandler {
 	 */
 	public function __construct( EventDispatcher $eventDispatcher ) {
 		$this->eventDispatcher = $eventDispatcher;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return self
+	 */
+	public static function getInstance() {
+
+		if ( self::$instance === null ) {
+			self::$instance = new self( self::newEventDispatcher() );
+		}
+
+		return self::$instance;
+	}
+
+	/**
+	 * @since 2.2
+	 */
+	public static function clear() {
+		self::$instance = null;
 	}
 
 	/**
@@ -43,6 +69,18 @@ class EventHandler {
 	 */
 	public function newDispatchContext() {
 		return EventDispatcherFactory::getInstance()->newDispatchContext();
+	}
+
+	private static function newEventDispatcher() {
+
+		$eventListenerRegistry = new EventListenerRegistry(
+			EventDispatcherFactory::getInstance()->newGenericEventListenerCollection()
+		);
+
+		$eventDispatcher = EventDispatcherFactory::getInstance()->newGenericEventDispatcher();
+		$eventDispatcher->addListenerCollection( $eventListenerRegistry );
+
+		return $eventDispatcher;
 	}
 
 }

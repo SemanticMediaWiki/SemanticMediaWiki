@@ -57,6 +57,11 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->verifyPropertyTypeChangeEvent( $instance );
+		$this->verifyExporterResetEvent( $instance );
+	}
+
+	public function verifyExporterResetEvent( EventListenerCollection $instance ) {
+		$this->assertListenerExecuteFor( 'exporter.reset', $instance, null );
 	}
 
 	public function verifyPropertyTypeChangeEvent( EventListenerCollection $instance ) {
