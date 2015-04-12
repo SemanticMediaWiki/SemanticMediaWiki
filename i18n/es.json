@@ -17,7 +17,8 @@
 			"Translationista",
 			"아라",
 			"Wifidel",
-			"Macofe"
+			"Macofe",
+			"Felipe95a"
 		]
 	},
 	"smw-desc": "Haciendo tu wiki más accesible - para máquinas ''y'' humanos ([https://semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
@@ -145,7 +146,7 @@
 	"smw_property_template": "\"$1\" de tipo \"$2\" ($3 {{PLURAL:$3|uso|usos}})",
 	"smw_propertylackspage": "Todas las propiedades deberían ser descritas por una página!",
 	"smw_propertylackstype": "Ningún tipo fue especificada para esta propiedad (asumiendo tipo $1 por ahora).",
-	"smw_propertyhardlyused": "Esta propiedad es dificilmente usada dentro del wiki!",
+	"smw_propertyhardlyused": "¡Esta propiedad es escasamente usada dentro del wiki!",
 	"smw-sp-property-searchform": "Mostrar propiedades que contengan:",
 	"concepts": "Conceptos",
 	"smw-sp-concept-header": "Lista de conceptos",
@@ -229,8 +230,6 @@
 	"smw_smwadmin_permissionswarn": "Si la operación falla con errores SQL, la base de datos de usuarios empleada por su wiki (revise su archivo LocalSettings.php) probablemente no tiene permisos suficientes.\nUd puede conceder a este usuario permisos adicionales para crear y borrar tablas, ingresando temporalmente la clave de acceso de su base de datos raíz en LocalSettings.php, o bien usar el script de mantenimiento <code>setupStore.php</code>, que puede usar las credenciales de un administrador.",
 	"smw_smwadmin_dbbutton": "Inicializar o actualizar tablas",
 	"smw_smwadmin_announce": "Anunciar tu wiki",
-	"smw_smwadmin_announcedocu": "Semantic MediaWiki cuenta con un servicio Web para anunciar nuevos sitios wiki semánticos, que es usado para mantener un listado de sitios Web públicos que usan Semantic MediaWiki, principalmente para ayudar al <a href=\"https://semantic-mediawiki.org/wiki/SMW_Project\">proyecto Semantic MediaWiki</a>, para tener una visión general de los usos típicos de Semantic MediaWiki.\nSee the Semantic MediaWiki homepage for <a href=\"https://semantic-mediawiki.org/wiki/Registry\">further information about this service</a>.",
-	"smw_smwadmin_announcebutton": "Presione el botón siguiente para enviar la URL de su wiki al servicio.\nEl servicio no registrará wikis que no sean de acceso público, y solamente guardará información públicamente accesible.",
 	"smw_smwadmin_datarefresh": "Reparación de datos y actualización",
 	"smw_smwadmin_datarefreshdocu": "Es posible restaurar toda la información de MediaWiki Semántica basándose en los contenidos actuales de la wiki.\nEsto puede ser útil para reparar la información destruida o para volver a cargar la información si el formato interno ha cambiado a causa de alguna actualización de software.\nLa actualización se ejecuta página a página y no se completará de inmediato.\nLo siguiente muestra es hay una actualización en progreso y le permite iniciar o detener actualizaciones (a menos que esta característica haya sido inhabilitada por el administrador del sitio).",
 	"smw_smwadmin_datarefreshprogress": "<strong>Actualización en progreso.</strong>\nEs normal que el proceso de actualización se retrase ya que sólo actualiza datos en porciones pequeñas cada vez que un usuario ingresa a la wiki.\nPara finalizar esta actualización en forma mas rápida, Ud. puede invocar el script de matenimiento MediaWiki <code>runJobs.php</code> (use la opción <code>--maxjobs 1000</code>  para restringir el número de actualizaciones hechas en cada paquete).\nProgeso estimado de la actualización:",

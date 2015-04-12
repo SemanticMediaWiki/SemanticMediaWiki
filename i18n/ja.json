@@ -226,8 +226,6 @@
 	"smw_smwadmin_permissionswarn": "SQL エラーを出して処理が失敗する場合、おそらくあなたのウィキのデータベース ユーザー (LocalSettings.php を確認してください) に必要な権限がありません。\nLocalSettings.php に一時的にデータベースの root のログイン情報を記入してこのユーザーにテーブルを作成および削除するための追加権限を与えるか、<code>setupStore.php</code> の認証情報を使用できるメンテナンススクリプト <code>setupStore.php</code> を使用してください。",
 	"smw_smwadmin_dbbutton": "テーブルを初期化またはアップグレード",
 	"smw_smwadmin_announce": "あなたのウィキの発表",
-	"smw_smwadmin_announcedocu": "Semantic MediaWiki には新しい意味的ウィキのサイトを発表するためのウェブサービスがあります。\nこのサービスは Semantic MediaWiki を使用するサイト一覧の保守に使用されており、主に <a href=\"https://semantic-mediawiki.org/wiki/SMW_Project\">Semantic MediaWiki プロジェクト</a>が Semantic MediaWiki の典型的な使用法を把握するために使用されています。\nSemantic MediaWiki のホームページで<a href=\"https://semantic-mediawiki.org/wiki/Registry\">このサービスの詳細情報</a>をご覧ください。",
-	"smw_smwadmin_announcebutton": "以下のボタンを押して、あなたのウィキのURLをこのサービスに送信します。\nこのサービスでは、公開されていないウィキを登録せず、公開されている情報のみを保管します。",
 	"smw_smwadmin_datarefresh": "データの修復とアップグレード",
 	"smw_smwadmin_datarefreshdocu": "ウィキの現在の内容に基づいて、Semantic MediaWiki の全データを復旧できます。\nこの機能は破損したデータを修復する場合や、ソフトウェアのアップグレードで内部形式が変わった際にデータを移行する場合などに有用です。\nこの更新は1ページずつ実行され、直ちには完了しません。\n以下に更新が進行中かどうかを表示します。更新を開始または停止できます (サイト管理者が機能を無効にしていない場合のみ)。",
 	"smw_smwadmin_datarefreshprogress": "<strong>更新が既に進行中です。</strong>\n利用者がウィキにアクセスするたびに少量の塊のデータを更新するのみであるため、更新がゆっくりとしか進まないのは正常な動作です。\nこの更新をより早く終えるには、MediaWiki のメンテナンス スクリプト <code>runJobs.php</code> を実行してください (1つのバッチで行われる更新の数を制限するには <code>--maxjobs 1000</code> オプションを使用してください)。\n現在の更新の推定進捗:",
