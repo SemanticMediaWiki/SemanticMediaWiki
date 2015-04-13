@@ -39,7 +39,6 @@ class SQLStoreFactory {
 	public function newSalveQueryEngine() {
 		return new SMWSQLStore3QueryEngine(
 			$this->store,
-			wfGetDB( DB_SLAVE ),
 			$this->newTemporaryIdTableCreator()
 		);
 	}
@@ -47,7 +46,6 @@ class SQLStoreFactory {
 	public function newMasterQueryEngine() {
 		return new SMWSQLStore3QueryEngine(
 			$this->store,
-			wfGetDB( DB_SLAVE ),
 			$this->newTemporaryIdTableCreator()
 		);
 	}
