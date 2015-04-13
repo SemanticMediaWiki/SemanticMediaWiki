@@ -84,6 +84,8 @@ class SetParserFunction {
 					$dataValue
 				);
 
+				$this->messageFormatter->addFromArray( $dataValue->getErrors() );
+
 				$this->addFieldsToTemplate(
 					$template,
 					$dataValue,
@@ -97,7 +99,6 @@ class SetParserFunction {
 		$this->parserData->pushSemanticDataToParserOutput();
 
 		$html = $this->templateRenderer->render() . $this->messageFormatter
-			->addFromArray( $this->parserData->getErrors() )
 			->addFromArray( $parameters->getErrors() )
 			->getHtml();
 
