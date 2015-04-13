@@ -10,6 +10,7 @@ use SMW\SQLStore\QueryEngine\QueryBuilder;
 use SMW\Query\Language\ValueDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\Disjunction;
 
 use SMW\DIWikiPage;
 use SMW\DIProperty;
@@ -450,6 +451,38 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected->components = array( 1 => "t0.p_id" );
 		$expected->queryNumber = 0;
 		$expected->where = '(foo AND bar)';
+		$expected->sortfields = array();
+		$expected->from = '';
+
+		$provider[] = array(
+			$description,
+			$isFixedPropertyTable,
+			$indexField,
+			$sortKeys,
+			$expected
+		);
+
+		#6, see 556
+		$isFixedPropertyTable = false;
+		$indexField = '';
+		$sortKeys = array();
+		$property = new DIProperty( 'Foo' );
+		$property->setPropertyTypeId( '_txt' );
+
+		$description = new SomeProperty(
+			$property,
+			new Disjunction( array(
+				new ValueDescription( new DIBlob( 'Bar' ) ),
+				new ValueDescription( new DIBlob( 'Baz' ) )
+			) )
+		);
+
+		$expected = new \stdClass;
+		$expected->type = 1;
+		$expected->joinTable = 'FooPropTable';
+		$expected->components = array( 1 => "t0.p_id" );
+		$expected->queryNumber = 0;
+		$expected->where = '((t0.=fixedFooWhereCond) OR (t0.=fixedFooWhereCond))';
 		$expected->sortfields = array();
 		$expected->from = '';
 

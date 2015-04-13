@@ -210,9 +210,20 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 				( $description instanceof Disjunction ) ) {
 			$op = ( $description instanceof Conjunction ) ? 'AND' : 'OR';
 
+			// #556 ensure correct parentheses are applied for something
+			// like "(a OR b OR c) AND d AND e"
+			if ( $query->where && substr( $query->where, -1 ) != '(' ) {
+				$query->where .= " $operator ";
+			}
+
+			$query->where .= "(";
+
 			foreach ( $description->getDescriptions() as $subdesc ) {
 				$this->interpretInnerValueDescription( $query, $subdesc, $proptable, $diHandler, $op );
 			}
+
+			$query->where .= ")";
+
 		} elseif ( $description instanceof ThingDescription ) {
 			// nothing to do
 		} else {
@@ -272,7 +283,12 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		}
 
 		if ( $where !== '' ) {
-			$query->where .= ( $query->where ? " $operator " : '' ) . "($where)";
+
+			if ( $query->where && substr( $query->where, -1 ) != '(' ) {
+				$query->where .= " $operator ";
+			}
+
+			$query->where .= "($where)";
 		}
 	}
 
