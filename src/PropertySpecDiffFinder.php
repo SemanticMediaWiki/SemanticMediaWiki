@@ -110,12 +110,10 @@ class PropertySpecDiffFinder {
 	private function notifyDispatcher( $addJob = true ) {
 		if ( $addJob && !$this->hasDiff ) {
 
-			$eventHandler = ApplicationFactory::getInstance()->getEventHandler();
-
-			$dispatchContext = $eventHandler->newDispatchContext();
+			$dispatchContext = EventHandler::getInstance()->newDispatchContext();
 			$dispatchContext->set( 'subject', $this->semanticData->getSubject() );
 
-			$eventHandler->getEventDispatcher()->dispatch(
+			EventHandler::getInstance()->getEventDispatcher()->dispatch(
 				'property.spec.change',
 				$dispatchContext
 			);

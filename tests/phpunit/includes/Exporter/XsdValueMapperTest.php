@@ -107,7 +107,12 @@ class XsdValueMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItem = $this->getMockBuilder( '\SMWDataItem' )
 			->disableOriginalConstructor()
+			->setMethods( array( '__toString' ) )
 			->getMockForAbstractClass();
+
+		$dataItem->expects( $this->any() )
+			->method( '__toString' )
+			->will( $this->returnValue( 'Foo' ) );
 
 		#0
 		$provider[] = array(

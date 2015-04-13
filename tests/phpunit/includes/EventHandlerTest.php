@@ -16,6 +16,12 @@ use SMW\EventHandler;
  */
 class EventHandlerTest extends \PHPUnit_Framework_TestCase {
 
+	protected function tearDown() {
+		EventHandler::clear();
+
+		parent::tearDown();
+	}
+
 	public function testCanConstruct() {
 
 		$eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\EventDispatcher' )
@@ -25,6 +31,11 @@ class EventHandlerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SMW\EventHandler',
 			new EventHandler( $eventDispatcher )
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\EventHandler',
+			EventHandler::getInstance()
 		);
 	}
 
@@ -39,6 +50,11 @@ class EventHandlerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame(
 			$eventDispatcher,
 			$instance->getEventDispatcher()
+		);
+
+		$this->assertInstanceOf(
+			'\Onoi\EventDispatcher\EventDispatcher',
+			EventHandler::getInstance()->getEventDispatcher()
 		);
 	}
 

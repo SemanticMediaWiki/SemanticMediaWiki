@@ -207,6 +207,8 @@ class DataRebuilder {
 		$this->rebuildSelectedPages();
 		$this->rebuildCount = 0;
 
+		$this->store->clear();
+
 		$this->reportMessage( "\nRefreshing all semantic data in the database!\n---\n" .
 			" Some versions of PHP suffer from memory leaks in long-running \n" .
 			" scripts. If your machine gets very slow after many pages \n" .
