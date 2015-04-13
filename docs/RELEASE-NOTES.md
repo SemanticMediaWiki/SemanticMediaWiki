@@ -28,6 +28,7 @@ This is not a release yet.
 * #861 Fixed owl property export declaration
 * #863 Fixed missing interwiki encoding for the RDF export
 * #864 Fixed empty searchlabel raw wikitext display for a `QueryResultPrinter` with `limit=0`
+* #870 Fixed `#set` where an error from a previous parse call could have affected succeeding `#set` error messages
 * #882 Fixed exception in `SMWExportController` caused by an empty property reference
 * #884 Fixed fetching of import vocabularies to be language independent
 * #887 Fixed `pre` element rendering for the template "furtherresult" output link
@@ -51,5 +52,5 @@ This is not a release yet.
 * #924 Added `onoi/event-dispatcher:~1.0` component dependency
 * #929 Added serialization to `ExpElement` objects
 * #950 Renamed `PropertyTypeDiffFinder` to `PropertySpecDiffFinder`
-* #959 Added `ExpDataSerializer` and `ExpDataDeserializer`
 * #951 Extended `UpdateDispatcherJob` to create `UpdateJob` chunks to avoid memory exhaustion
+* #959 Added `ExpDataSerializer` and `ExpDataDeserializer`
