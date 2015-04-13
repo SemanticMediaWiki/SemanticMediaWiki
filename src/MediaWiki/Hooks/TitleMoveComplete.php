@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\ApplicationFactory;
+use SMW\Factbox\FactboxCache;
 
 /**
  * TitleMoveComplete occurs whenever a request to move an article
@@ -12,8 +13,6 @@ use SMW\ApplicationFactory;
  * semantic properties are moved accordingly.
  *
  * @see http://www.mediawiki.org/wiki/Manual:Hooks/TitleMoveComplete
- *
- * @ingroup FunctionHook
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -62,6 +61,7 @@ class TitleMoveComplete {
 		$this->user = $user;
 		$this->oldId = $oldId;
 		$this->newId = $newId;
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	/**
@@ -74,27 +74,40 @@ class TitleMoveComplete {
 		/**
 		 * @var Settings $settings
 		 */
-		$settings = ApplicationFactory::getInstance()->getSettings();
+		$settings = $this->applicationFactory->getSettings();
 
-		/**
-		 * @var CacheHandler $cache
-		 */
-		$cache = ApplicationFactory::getInstance()->getCache();
+		$cache = $this->applicationFactory->newCacheFactory()->newMediaWikiCompositeCache();
 
-		$cache->setCacheEnabled( $this->newId > 0 )
-			->setKey( ArticlePurge::newCacheId( $this->newId ) )
-			->set( $settings->get( 'smwgAutoRefreshOnPageMove' ) );
+		// Delete all data for a non-enabled target NS
+		if ( !$this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $this->newTitle->getNamespace() ) ) {
 
-		$cache->setCacheEnabled( $this->oldId > 0 )
-			->setKey( ArticlePurge::newCacheId( $this->oldId ) )
-			->set( $settings->get( 'smwgAutoRefreshOnPageMove' ) );
+			$cache->delete(
+				FactboxCache::newCacheId( $this->oldId )->generateId()
+			);
 
-		ApplicationFactory::getInstance()->getStore()->changeTitle(
-			$this->oldTitle,
-			$this->newTitle,
-			$this->oldId,
-			$this->newId
-		);
+			$this->applicationFactory->getStore()->deleteSubject(
+				$this->oldTitle
+			);
+
+		} else {
+
+			$cache->save(
+				ArticlePurge::newCacheId( $this->newId )->generateId(),
+				$settings->get( 'smwgAutoRefreshOnPageMove' )
+			);
+
+			$cache->save(
+				ArticlePurge::newCacheId( $this->oldId )->generateId(),
+				$settings->get( 'smwgAutoRefreshOnPageMove' )
+			);
+
+			$this->applicationFactory->getStore()->changeTitle(
+				$this->oldTitle,
+				$this->newTitle,
+				$this->oldId,
+				$this->newId
+			);
+		}
 
 		return true;
 	}
