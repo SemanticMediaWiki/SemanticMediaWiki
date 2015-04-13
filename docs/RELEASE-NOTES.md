@@ -28,6 +28,7 @@ This is not a release yet.
 * #861 Fixed owl property export declaration
 * #863 Fixed missing interwiki encoding for the RDF export
 * #864 Fixed empty searchlabel raw wikitext display for a `QueryResultPrinter` with `limit=0`
+* #869 Fixed data update when moving a page to a non-enabled semantic namespace
 * #870 Fixed `#set` where an error from a previous parse call could have affected succeeding `#set` error messages
 * #882 Fixed exception in `SMWExportController` caused by an empty property reference
 * #884 Fixed fetching of import vocabularies to be language independent
