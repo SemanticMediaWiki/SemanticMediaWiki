@@ -246,6 +246,7 @@
 	"smw_smwadmin_permissionswarn": "如果操作因SQL错误而失败，可能是维基的数据库用户（检查LocalSettings.php）没有相应权限。\n你可以向该用户赋予创建和删除表格的权限，或临时将数据库根用户的登录信息输入LocalSettings.php。你也可以使用维护脚本<code>setupStore.php</code>，这个脚本可以使用管理员的信息。",
 	"smw_smwadmin_dbbutton": "初始化或升级表格",
 	"smw_smwadmin_announce": "发布维基",
+	"smw_smwadmin_announce_text": "如果您的wiki是公开的，您可以在<a href=\"https://wikiapiary.com\">WikiApiary</a>注册它，这是一个追踪wiki网站的wiki。",
 	"smw_smwadmin_datarefresh": "数据修复和升级",
 	"smw_smwadmin_datarefreshdocu": "可以基于维基先有内容对所有Semantic MediaWki数据进行重置。\n这个功能对修复损坏的数据，或者在软件升级，内部格式改变时更新数据非常有用。\n更新时逐页面执行的，需要一段时间。\n下方将显示更新是否正在进行，并允许你开始或终止更新。（此功能可以被网站管理员禁用）",
 	"smw_smwadmin_datarefreshprogress": "<strong>有一个更新正在进行。</strong>\n更新进程可能会很慢，因为该进程仅在用户访问维基时小块地更新数据。\n可以使用MediaWiki维护脚本<code>runJobs.php</code>（使用选项 <code>--maxjobs 1000</code> 限制每批更新数目）来加快更新完成速度。\n目前更新的估计进度：",
