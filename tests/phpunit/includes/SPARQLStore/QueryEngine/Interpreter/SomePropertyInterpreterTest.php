@@ -393,6 +393,34 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		);
 
+		# 11, issue 556
+		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+
+		$property = new DIProperty( 'Foo' );
+		$property->setPropertyTypeId( '_txt' );
+
+		$description = new SomeProperty(
+			$property,
+			new Disjunction( array(
+				new ValueDescription( new DIBlob( 'Bar' ) ),
+				new ValueDescription( new DIBlob( 'Baz' ) )
+			) )
+		);
+
+		$expected = $stringBuilder
+			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
+			->addString( '?result property:Foo ?v1 .' )->addNewLine()
+			->addString( 'FILTER( ?v1 = "Bar" || ?v1 = "Baz" )' )->addNewLine()
+			->getString();
+
+		$provider[] = array(
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		);
+
 		return $provider;
 	}
 
