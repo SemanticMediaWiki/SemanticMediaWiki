@@ -56,10 +56,10 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testProcess() {
+	public function testChangeSubjectForSupportedSemanticNamespace() {
 
-		$oldTitle = MockTitle::buildMock( 'old' );
-		$newTitle =	MockTitle::buildMock( 'new' );
+		$oldTitle = \Title::newFromText( 'Old' );
+		$newTitle = \Title::newFromText( 'New' );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -76,6 +76,7 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 		$this->applicationFactory->registerObject( 'Settings', Settings::newFromArray( array(
 			'smwgCacheType'             => 'hash',
 			'smwgAutoRefreshOnPageMove' => true,
+			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true )
 		) ) );
 
 		$this->applicationFactory->registerObject( 'Store', $store );
@@ -88,7 +89,44 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 			0
 		);
 
-		$this->assertTrue( $instance->process() );
+		$this->assertTrue(
+			$instance->process()
+		);
+	}
+
+	public function testDeleteSubjectForNotSupportedSemanticNamespace() {
+
+		$oldTitle = \Title::newFromText( 'Old' );
+		$newTitle = \Title::newFromText( 'New', NS_HELP );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->once() )
+			->method( 'deleteSubject' )
+			->with(
+				$this->equalTo( $oldTitle ) );
+
+		$this->applicationFactory->registerObject( 'Settings', Settings::newFromArray( array(
+			'smwgCacheType'             => 'hash',
+			'smwgAutoRefreshOnPageMove' => true,
+			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true, NS_HELP => false )
+		) ) );
+
+		$this->applicationFactory->registerObject( 'Store', $store );
+
+		$instance = new TitleMoveComplete(
+			$oldTitle,
+			$newTitle,
+			new MockSuperUser(),
+			0,
+			0
+		);
+
+		$this->assertTrue(
+			$instance->process()
+		);
 	}
 
 }
