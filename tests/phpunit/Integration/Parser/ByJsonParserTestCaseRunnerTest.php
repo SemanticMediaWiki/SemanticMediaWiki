@@ -30,8 +30,6 @@ class ByJsonParserTestCaseRunnerTest extends ByJsonTestCaseProvider {
 	}
 
 	/**
-	 * Version to match supported Json format
-	 *
 	 * @see ByJsonTestCaseProvider::getJsonTestCaseVersion
 	 */
 	protected function getJsonTestCaseVersion() {
@@ -78,7 +76,7 @@ class ByJsonParserTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			NS_MAIN
 		);
 
-		foreach ( $jsonTestCaseFileHandler->findParserTestCases() as $case ) {
+		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'parser-testcases' ) as $case ) {
 
 			if ( !isset( $case['subject'] ) ) {
 				break;

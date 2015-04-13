@@ -24,7 +24,7 @@
 			"contents": "[[Has subobject::Invalid]] {{#set:|Has subobject=Invalid}} {{#subobject:|Has subobject=Invalid}}"
 		}
 	],
-	"parser": [
+	"parser-testcases": [
 		{
 			"about": "#0 verify that annotation/parser works",
 			"subject": "To-verify-annotation-works",

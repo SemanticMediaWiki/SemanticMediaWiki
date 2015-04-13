@@ -202,12 +202,14 @@ class JsonTestCaseFileHandler {
 	/**
 	 * @since 2.2
 	 *
+	 * @param string $key
+	 *
 	 * @return array
 	 */
-	public function findRdfTestCases() {
+	public function findTestCasesFor( $key ) {
 
 		try{
-			$testcases = $this->getFileContentsFor( 'rdf-testcases' );
+			$testcases = $this->getFileContentsFor( $key );
 		} catch( \Exception $e ) {
 			$testcases = array();
 		}
@@ -220,10 +222,10 @@ class JsonTestCaseFileHandler {
 	 *
 	 * @return array
 	 */
-	public function findParserTestCases() {
+	public function findRdfTestCases() {
 
 		try{
-			$testcases = $this->getFileContentsFor( 'parser' );
+			$testcases = $this->getFileContentsFor( 'rdf-testcases' );
 		} catch( \Exception $e ) {
 			$testcases = array();
 		}

@@ -21,7 +21,7 @@
 			"contents": "{{#set:Has date=NoTemplateForInvalidValue|+sep=;|template=SetParserTemplateToCreateAskLink}}"
 		}
 	],
-	"parser": [
+	"parser-testcases": [
 		{
 			"about": "#0 #set annotation/parser with template",
 			"subject": "Transclude-Template-Using-Set",
