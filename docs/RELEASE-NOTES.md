@@ -51,3 +51,4 @@ This is not a release yet.
 * #929 Added serialization to `ExpElement` objects
 * #950 Renamed `PropertyTypeDiffFinder` to `PropertySpecDiffFinder`
 * #959 Added `ExpDataSerializer` and `ExpDataDeserializer`
+* #951 Extended `UpdateDispatcherJob` to create `UpdateJob` chunks to avoid memory exhaustion
