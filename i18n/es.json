@@ -146,7 +146,7 @@
 	"smw_property_template": "\"$1\" de tipo \"$2\" ($3 {{PLURAL:$3|uso|usos}})",
 	"smw_propertylackspage": "Todas las propiedades deberían ser descritas por una página!",
 	"smw_propertylackstype": "Ningún tipo fue especificada para esta propiedad (asumiendo tipo $1 por ahora).",
-	"smw_propertyhardlyused": "¡Esta propiedad es escasamente usada dentro del wiki!",
+	"smw_propertyhardlyused": "¡Esta propiedad se usa escasamente dentro del wiki!",
 	"smw-sp-property-searchform": "Mostrar propiedades que contengan:",
 	"concepts": "Conceptos",
 	"smw-sp-concept-header": "Lista de conceptos",
