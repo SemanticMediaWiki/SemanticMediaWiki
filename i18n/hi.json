@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Kaustubh",
-			"Wikiuser13"
+			"Wikiuser13",
+			"రహ్మానుద్దీన్"
 		]
 	},
 	"smw_viewasrdf": "RDF फ़ीड",
@@ -17,6 +18,7 @@
 	"unusedproperties": "इस्तेमाल न किये हुए गुणधर्म",
 	"smw_unusedproperty_template": "$2 प्रकारके $1",
 	"wantedproperties": "चाहिये होनेवाले गुणधर्म",
+	"browse": "विकि देखे",
 	"smw-createproperty-isproperty": "यह $1 प्रकार का गुणधर्म हैं।",
 	"smw-sp-admin-idlookup-title": "ऑबजेक्टआईडी लुकअप",
 	"smw-sp-admin-idlookup-objectid": "ऑब्जेक्ट आईडी:",
