@@ -18,79 +18,107 @@ use SMWSQLStore3;
  */
 class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
-	public function testCanConstruct() {
+	private $store;
 
-		$store = $this->getMockBuilder( '\SMWSQLStore3' )
+	protected function setUp(){
+		parent::setUp();
+
+		$this->store = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
 			->getMock();
+	}
+
+	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\SQLStoreFactory',
-			new SQLStoreFactory( $store )
+			new SQLStoreFactory( $this->store )
 		);
 	}
 
-	private function newInstance() {
-		return new SQLStoreFactory( new SMWSQLStore3() );
-	}
-
 	public function testNewSlaveQueryEngineReturnType() {
+
+		$instance = new SQLStoreFactory( new SMWSQLStore3() );
+
 		$this->assertInstanceOf(
-			'SMWSQLStore3QueryEngine',
-			$this->newInstance()->newSlaveQueryEngine()
+			'\SMW\SQLStore\QueryEngine\QueryEngine',
+			$instance->newSlaveQueryEngine()
 		);
 	}
 
 	public function testNewMasterQueryEngineReturnType() {
+
+		$instance = new SQLStoreFactory( new SMWSQLStore3() );
+
 		$this->assertInstanceOf(
-			'SMWSQLStore3QueryEngine',
-			$this->newInstance()->newMasterQueryEngine()
+			'\SMW\SQLStore\QueryEngine\QueryEngine',
+			$instance->newMasterQueryEngine()
 		);
 	}
 
 	public function testNewMasterConceptCache() {
+
+		$instance = new SQLStoreFactory( new SMWSQLStore3() );
+
 		$this->assertInstanceOf(
 			'SMW\SQLStore\ConceptCache',
-			$this->newInstance()->newMasterConceptCache()
+			$instance->newMasterConceptCache()
 		);
 	}
 
 	public function testNewSlaveConceptCache() {
+
+		$instance = new SQLStoreFactory( new SMWSQLStore3() );
+
 		$this->assertInstanceOf(
 			'SMW\SQLStore\ConceptCache',
-			$this->newInstance()->newSlaveConceptCache()
+			$instance->newSlaveConceptCache()
 		);
 	}
 
 	public function testCanConstructUsageStatisticsListLookup() {
+
+		$instance = new SQLStoreFactory( new SMWSQLStore3() );
+
 		$this->assertInstanceOf(
 			'SMW\SQLStore\ListLookup\UsageStatisticsListLookup',
-			$this->newInstance()->newUsageStatisticsListLookup()
+			$instance->newUsageStatisticsListLookup()
 		);
 	}
 
 	public function testCanConstructPropertyUsageListLookup() {
+
+		$instance = new SQLStoreFactory( new SMWSQLStore3() );
+
 		$this->assertInstanceOf(
 			'SMW\SQLStore\ListLookup\PropertyUsageListLookup',
-			$this->newInstance()->newPropertyUsageListLookup( null )
+			$instance->newPropertyUsageListLookup( null )
 		);
 	}
 
 	public function testCanConstructUnusedPropertyListLookup() {
+
+		$instance = new SQLStoreFactory( new SMWSQLStore3() );
+
 		$this->assertInstanceOf(
 			'SMW\SQLStore\ListLookup\UnusedPropertyListLookup',
-			$this->newInstance()->newUnusedPropertyListLookup( null )
+			$instance->newUnusedPropertyListLookup( null )
 		);
 	}
 
 	public function testCanConstructUndeclaredPropertyListLookup() {
+
+		$instance = new SQLStoreFactory( new SMWSQLStore3() );
+
 		$this->assertInstanceOf(
 			'SMW\SQLStore\ListLookup\UndeclaredPropertyListLookup',
-			$this->newInstance()->newUndeclaredPropertyListLookup( null, '_foo' )
+			$instance->newUndeclaredPropertyListLookup( null, '_foo' )
 		);
 	}
 
 	public function testCanConstructCachedListLookup() {
+
+		$instance = new SQLStoreFactory( $this->store );
 
 		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\ListLookup' )
 			->disableOriginalConstructor()
@@ -98,7 +126,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'SMW\SQLStore\ListLookup\CachedListLookup',
-			$this->newInstance()->newCachedListLookup( $listLookup, true, 42 )
+			$instance->newCachedListLookup( $listLookup, true, 42 )
 		);
 	}
 

@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine;
 
-use SMW\SQLStore\QueryEngine\ResolverOptions;
+use SMW\SQLStore\QueryEngine\EngineOptions;
 
 /**
- * @covers \SMW\SQLStore\QueryEngine\ResolverOptions
+ * @covers \SMW\SQLStore\QueryEngine\EngineOptions
  *
  * @group semantic-mediawiki
  *
@@ -14,34 +14,39 @@ use SMW\SQLStore\QueryEngine\ResolverOptions;
  *
  * @author mwjames
  */
-class ResolverOptionsTest extends \PHPUnit_Framework_TestCase {
+class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\ResolverOptions',
-			new ResolverOptions()
+			'\SMW\SQLStore\QueryEngine\EngineOptions',
+			new EngineOptions()
 		);
 	}
 
 	public function testInitialState() {
 
-		$instance = new ResolverOptions();
+		$instance = new EngineOptions();
 
 		$this->assertInternalType(
-			'integer',
-			$instance->get( 'smwgQSubpropertyDepth' )
+			'boolean',
+			$instance->get( 'smwgIgnoreQueryErrors' )
 		);
 
 		$this->assertInternalType(
-			'integer',
-			$instance->get( 'smwgQSubcategoryDepth' )
+			'boolean',
+			$instance->get( 'smwgQSortingSupport' )
+		);
+
+		$this->assertInternalType(
+			'boolean',
+			$instance->get( 'smwgQRandSortingSupport' )
 		);
 	}
 
 	public function testAddOption() {
 
-		$instance = new ResolverOptions();
+		$instance = new EngineOptions();
 
 		$this->assertFalse(
 			$instance->has( 'Foo' )
@@ -57,7 +62,7 @@ class ResolverOptionsTest extends \PHPUnit_Framework_TestCase {
 
 	public function testUnregisteredKeyThrowsException() {
 
-		$instance = new ResolverOptions();
+		$instance = new EngineOptions();
 
 		$this->setExpectedException( 'InvalidArgumentException' );
 		$instance->get( 'Foo' );

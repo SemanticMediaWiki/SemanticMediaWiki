@@ -1,30 +1,42 @@
 <?php
 
+namespace SMW\SQLStore\QueryEngine;
+
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\QueryOutputFormatter;
-use SMW\SQLStore\QueryEngine\QueryBuilder;
-use SMW\SQLStore\QueryEngine\QuerySegment as SMWSQLStore3Query;
-use SMW\SQLStore\QueryEngine\QuerySegmentListResolver;
-use SMW\SQLStore\QueryEngine\ResolverOptions;
 use SMW\SQLStore\TemporaryIdTableCreator;
+use SMW\DIWikiPage;
+use SMWSQLStore3 as SQLStore;
+use SMWQuery as Query;
+use SMWSql3SmwIds;
+use SMWQueryResult as QueryResult;
+use SMWDataItem as DataItem;
+use SMWPropertyValue as PropertyValue;
+use SMW\InvalidPredefinedPropertyException;
+use RuntimeException;
 
 /**
- * Class that implements query answering for SMWSQLStore3.
- * @ingroup SMWStore
+ * Class that implements query answering for SQLStore.
+ *
+ * @license GNU GPL v2+
+ * @since 2.2
+ *
+ * @author Markus Krötzsch
+ * @author Jeroen De Dauw
+ * @author mwjames
  */
-class SMWSQLStore3QueryEngine {
+class QueryEngine {
 
 	/**
-	 * Parent SMWSQLStore3.
-	 *
-	 * @var SMWSQLStore3
+	 * @var SQLStore
 	 */
 	private $store;
 
 	/**
-	 * Query mode copied from given query. Some submethods act differently when in SMWQuery::MODE_DEBUG.
+	 * Query mode copied from given query. Some submethods act differently when
+	 * in Query::MODE_DEBUG.
 	 *
 	 * @var int
 	 */
@@ -38,9 +50,9 @@ class SMWSQLStore3QueryEngine {
 	private $querySegments = array();
 
 	/**
-	 * Array of sorting requests ("Property_name" => "ASC"/"DESC"). Used during query
-	 * processing (where these property names are searched while compiling the query
-	 * conditions).
+	 * Array of sorting requests ("Property_name" => "ASC"/"DESC"). Used during
+	 * query processing (where these property names are searched while compiling
+	 * the query conditions).
 	 *
 	 * @var string[]
 	 */
@@ -64,20 +76,29 @@ class SMWSQLStore3QueryEngine {
 	private $querySegmentListResolver = null;
 
 	/**
-	 * @param SMWSQLStore3 $parentStore
+	 * @var EngineOptions
+	 */
+	private $engineOptions = null;
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param SQLStore $parentStore
 	 * @param QueryBuilder $queryBuilder
 	 * @param QuerySegmentListResolver $querySegmentListResolver
+	 * @param EngineOptions $engineOptions
 	 */
-	public function __construct( SMWSQLStore3 $parentStore, QueryBuilder $queryBuilder, QuerySegmentListResolver $querySegmentListResolver ) {
+	public function __construct( SQLStore $parentStore, QueryBuilder $queryBuilder, QuerySegmentListResolver $querySegmentListResolver, EngineOptions $engineOptions ) {
 		$this->store = $parentStore;
 		$this->queryBuilder = $queryBuilder;
 		$this->querySegmentListResolver = $querySegmentListResolver;
+		$this->engineOptions = $engineOptions;
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @return queryBuilder
+	 * @return QueryBuilder
 	 */
 	public function getQueryBuilder() {
 		return $this->queryBuilder;
@@ -101,7 +122,7 @@ class SMWSQLStore3QueryEngine {
 	 * is essentially graph-like description of how property tables are joined.
 	 * Moreover, this graph is tree-shaped, since all query conditions are
 	 * tree-shaped. Each part of this abstract query structure is represented
-	 * by an SMWSQLStore3Query object in the array m_queries.
+	 * by an QuerySegment object in the array m_queries.
 	 *
 	 * As a second stage of processing, the thus prepared SQL query is actually
 	 * executed. Typically, this means that the joins are collapsed into one
@@ -118,22 +139,21 @@ class SMWSQLStore3QueryEngine {
 	 * it exploits the tree-structure of the joins, which is important for fast
 	 * processing -- not all DBMS might be able in seeing this by themselves.
 	 *
-	 * @param SMWQuery $query
+	 * @param Query $query
 	 *
-	 * @return mixed: depends on $query->querymode
+	 * @return mixed depends on $query->querymode
 	 */
-	public function getQueryResult( SMWQuery $query ) {
-		global $smwgIgnoreQueryErrors, $smwgQSortingSupport;
+	public function getQueryResult( Query $query ) {
 
-		if ( ( !$smwgIgnoreQueryErrors || $query->getDescription() instanceof ThingDescription ) &&
-		     $query->querymode != SMWQuery::MODE_DEBUG &&
+		if ( ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) || $query->getDescription() instanceof ThingDescription ) &&
+		     $query->querymode != Query::MODE_DEBUG &&
 		     count( $query->getErrors() ) > 0 ) {
-			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->store, false );
+			return new QueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->store, false );
 			// NOTE: we check this here to prevent unnecessary work, but we check
 			// it after query processing below again in case more errors occurred.
-		} elseif ( $query->querymode == SMWQuery::MODE_NONE ) {
+		} elseif ( $query->querymode == Query::MODE_NONE ) {
 			// don't query, but return something to printer
-			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->store, true );
+			return new QueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->store, true );
 		}
 
 		$db = $this->store->getConnection( 'mw.db' );
@@ -142,7 +162,7 @@ class SMWSQLStore3QueryEngine {
 		$this->querySegments = array();
 
 		$this->errors = array();
-		SMWSQLStore3Query::$qnum = 0;
+		QuerySegment::$qnum = 0;
 		$this->sortKeys = $query->sortkeys;
 
 		// *** First compute abstract representation of the query (compilation) ***//
@@ -154,8 +174,8 @@ class SMWSQLStore3QueryEngine {
 		$this->errors = $this->queryBuilder->getErrors();
 
 		if ( $qid < 0 ) { // no valid/supported condition; ensure that at least only proper pages are delivered
-			$qid = SMWSQLStore3Query::$qnum;
-			$q = new SMWSQLStore3Query();
+			$qid = QuerySegment::$qnum;
+			$q = new QuerySegment();
 			$q->joinTable = SMWSql3SmwIds::tableName;
 			$q->joinfield = "$q->alias.smw_id";
 			$q->where = "$q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND $q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWREDIIW ) . " AND $q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWBORDERIW ) . " AND $q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWINTDEFIW );
@@ -164,8 +184,8 @@ class SMWSQLStore3QueryEngine {
 
 		if ( $this->querySegments[$qid]->joinTable != SMWSql3SmwIds::tableName ) {
 			// manually make final root query (to retrieve namespace,title):
-			$rootid = SMWSQLStore3Query::$qnum;
-			$qobj = new SMWSQLStore3Query();
+			$rootid = QuerySegment::$qnum;
+			$qobj = new QuerySegment();
 			$qobj->joinTable  = SMWSql3SmwIds::tableName;
 			$qobj->joinfield  = "$qobj->alias.smw_id";
 			$qobj->components = array( $qid => "$qobj->alias.smw_id" );
@@ -176,16 +196,16 @@ class SMWSQLStore3QueryEngine {
 		}
 
 		// Include order conditions (may extend query if needed for sorting):
-		if ( $smwgQSortingSupport ) {
+		if ( $this->engineOptions->get( 'smwgQSortingSupport' ) ) {
 			$this->applyOrderConditions( $rootid );
 		}
 
 		// Possibly stop if new errors happened:
-		if ( !$smwgIgnoreQueryErrors &&
-				$query->querymode != SMWQuery::MODE_DEBUG &&
+		if ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) &&
+				$query->querymode != Query::MODE_DEBUG &&
 				count( $this->errors ) > 0 ) {
 			$query->addErrors( $this->errors );
-			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->store, false );
+			return new QueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->store, false );
 		}
 
 		// *** Now execute the computed query ***//
@@ -196,10 +216,10 @@ class SMWSQLStore3QueryEngine {
 		$this->querySegmentListResolver->resolveForSegmentId( $rootid );
 
 		switch ( $query->querymode ) {
-			case SMWQuery::MODE_DEBUG:
+			case Query::MODE_DEBUG:
 				$result = $this->getDebugQueryResult( $query, $rootid );
 			break;
-			case SMWQuery::MODE_COUNT:
+			case Query::MODE_COUNT:
 				$result = $this->getCountQueryResult( $query, $rootid );
 			break;
 			default:
@@ -217,12 +237,12 @@ class SMWSQLStore3QueryEngine {
 	 * Using a preprocessed internal query description referenced by $rootid, compute
 	 * the proper debug output for the given query.
 	 *
-	 * @param SMWQuery $query
+	 * @param Query $query
 	 * @param integer $rootid
 	 *
 	 * @return string
 	 */
-	private function getDebugQueryResult( SMWQuery $query, $rootid ) {
+	private function getDebugQueryResult( Query $query, $rootid ) {
 		$qobj = $this->querySegments[$rootid];
 
 		$db = $this->store->getConnection();
@@ -256,19 +276,19 @@ class SMWSQLStore3QueryEngine {
 			$entries['Auxilliary Tables Used'] = 'No auxilliary tables used.';
 		}
 
-		return QueryOutputFormatter::formatDebugOutput( 'SMWSQLStore3', $entries, $query );
+		return QueryOutputFormatter::formatDebugOutput( 'SQLStore', $entries, $query );
 	}
 
 	/**
 	 * Using a preprocessed internal query description referenced by $rootid, compute
 	 * the proper counting output for the given query.
 	 *
-	 * @param SMWQuery $query
+	 * @param Query $query
 	 * @param integer $rootid
 	 *
 	 * @return integer
 	 */
-	private function getCountQueryResult( SMWQuery $query, $rootid ) {
+	private function getCountQueryResult( Query $query, $rootid ) {
 
 		$qobj = $this->querySegments[$rootid];
 
@@ -309,12 +329,12 @@ class SMWSQLStore3QueryEngine {
 	 * this reason, we select sortfields only for POSTGRES. MySQL is able to perform what
 	 * we want here. It would be nice if we could eliminate the bug in POSTGRES as well.
 	 *
-	 * @param SMWQuery $query
+	 * @param Query $query
 	 * @param integer $rootid
 	 *
-	 * @return SMWQueryResult
+	 * @return QueryResult
 	 */
-	private function getInstanceQueryResult( SMWQuery $query, $rootid ) {
+	private function getInstanceQueryResult( Query $query, $rootid ) {
 		global $wgDBtype;
 
 		$db = $this->store->getConnection();
@@ -322,7 +342,7 @@ class SMWSQLStore3QueryEngine {
 		$qobj = $this->querySegments[$rootid];
 
 		if ( $qobj->joinfield === '' ) { // empty result, no query needed
-			$result = new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->store, false );
+			$result = new QueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->store, false );
 			return $result;
 		}
 
@@ -350,7 +370,7 @@ class SMWSQLStore3QueryEngine {
 
 		$prs = $query->getDescription()->getPrintrequests();
 
-		$diHandler = $this->store->getDataItemHandlerForDIType( SMWDataItem::TYPE_WIKIPAGE );
+		$diHandler = $this->store->getDataItemHandlerForDIType( DataItem::TYPE_WIKIPAGE );
 
 		while ( ( $count < $query->getLimit() ) && ( $row = $db->fetchObject( $res ) ) ) {
 			if ( $row->iw === '' || $row->iw{0} != ':' )  {
@@ -365,12 +385,12 @@ class SMWSQLStore3QueryEngine {
 						'',
 						$row->so
 					) );
-				} catch ( \SMW\InvalidPredefinedPropertyException $e ) {
+				} catch ( InvalidPredefinedPropertyException $e ) {
 					$logToTable[$row->t] = "issue creating a {$row->t} dataitem from a database row";
 					$this->store->getLogger()->log( __METHOD__, $e->getMessage() );
 				}
 
-				if ( $dataItem instanceof SMWDIWikiPage && !isset( $dataItemCache[$dataItem->getHash()] ) ) {
+				if ( $dataItem instanceof DIWikiPage && !isset( $dataItemCache[$dataItem->getHash()] ) ) {
 					$count++;
 					$dataItemCache[$dataItem->getHash()] = true;
 					$qr[] = $dataItem;
@@ -401,14 +421,14 @@ class SMWSQLStore3QueryEngine {
 		};
 
 		$db->freeResult( $res );
-		$result = new SMWQueryResult( $prs, $query, $qr, $this->store, $hasFurtherResults );
+		$result = new QueryResult( $prs, $query, $qr, $this->store, $hasFurtherResults );
 
 		return $result;
 	}
 
 	/**
 	 * This function modifies the given query object at $qid to account for all ordering conditions
-	 * in the SMWQuery $query. It is always required that $qid is the id of a query that joins with
+	 * in the Query $query. It is always required that $qid is the id of a query that joins with
 	 * SMW IDs table so that the field alias.smw_title is $available for default sorting.
 	 *
 	 * @param integer $qid
@@ -436,7 +456,7 @@ class SMWSQLStore3QueryEngine {
 				if ( $propkey === '' ) { // Sort by first result column (page titles).
 					$qobj->sortfields[$propkey] = "$qobj->alias.smw_sortkey";
 				} else { // Try to extend query.
-					$sortprop = SMWPropertyValue::makeUserProperty( $propkey );
+					$sortprop = PropertyValue::makeUserProperty( $propkey );
 
 					if ( $sortprop->isValid() ) {
 						$extraProperties[] = new SomeProperty( $sortprop->getDataItem(), new ThingDescription() );
@@ -456,7 +476,7 @@ class SMWSQLStore3QueryEngine {
 		$this->querySegments = $this->queryBuilder->getQuerySegments();
 		$this->errors = $this->queryBuilder->getErrors();
 
-		$newQuerySegment = $this->querySegments[$newQuerySegmentId]; // This is always an SMWSQLStore3Query::Q_CONJUNCTION ...
+		$newQuerySegment = $this->querySegments[$newQuerySegmentId]; // This is always an QuerySegment::Q_CONJUNCTION ...
 
 		foreach ( $newQuerySegment->components as $cid => $field ) { // ... so just re-wire its dependencies
 			$qobj->components[$cid] = $qobj->joinfield;
@@ -469,18 +489,17 @@ class SMWSQLStore3QueryEngine {
 	/**
 	 * Get a SQL option array for the given query and preprocessed query object at given id.
 	 *
-	 * @param SMWQuery $query
+	 * @param Query $query
 	 * @param integer $rootId
 	 *
 	 * @return array
 	 */
-	private function getSQLOptions( SMWQuery $query, $rootId ) {
-		global $smwgQSortingSupport, $smwgQRandSortingSupport;
+	private function getSQLOptions( Query $query, $rootId ) {
 
 		$result = array( 'LIMIT' => $query->getLimit() + 5, 'OFFSET' => $query->getOffset() );
 
 		// Build ORDER BY options using discovered sorting fields.
-		if ( $smwgQSortingSupport ) {
+		if ( $this->engineOptions->get( 'smwgQSortingSupport' ) ) {
 			$qobj = $this->querySegments[$rootId];
 
 			foreach ( $this->sortKeys as $propkey => $order ) {
@@ -492,13 +511,13 @@ class SMWSQLStore3QueryEngine {
 				// #835
 				// SELECT DISTINCT and ORDER BY RANDOM causes an issue for postgres
 				// Disable RANDOM support for postgres
-				if ($this->store->getConnection()->getType() === 'postgres' ) {
-					$smwgQRandSortingSupport = false;
+				if ( $this->store->getConnection()->getType() === 'postgres' ) {
+					$this->engineOptions->set( 'smwgQRandSortingSupport', false );
 				}
 
 				if ( ( $order != 'RANDOM' ) && array_key_exists( $propkey, $qobj->sortfields ) ) { // Field was successfully added.
 					$result['ORDER BY'] = ( array_key_exists( 'ORDER BY', $result ) ? $result['ORDER BY'] . ', ' : '' ) . $qobj->sortfields[$propkey] . " $order ";
-				} elseif ( ( $order == 'RANDOM' ) && $smwgQRandSortingSupport ) {
+				} elseif ( ( $order == 'RANDOM' ) && $this->engineOptions->get( 'smwgQRandSortingSupport' ) ) {
 					$result['ORDER BY'] = ( array_key_exists( 'ORDER BY', $result ) ? $result['ORDER BY'] . ', ' : '' ) . ' RAND() ';
 				}
 			}

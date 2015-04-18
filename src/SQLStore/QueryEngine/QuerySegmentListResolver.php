@@ -278,10 +278,10 @@ class QuerySegmentListResolver {
 		$hierarchytables = $this->resolverOptions->get( 'hierarchytables' );
 
 		if ( $query->type === QuerySegment::Q_PROP_HIERARCHY ) {
-			$depth = $this->resolverOptions->get( 'subpropertyDepth' );
+			$depth = $this->resolverOptions->get( 'smwgQSubpropertyDepth' );
 			$smwtable = $db->tableName( $hierarchytables['_SUBP'] );
 		} else {
-			$depth = $this->resolverOptions->get( 'subcategoryDepth' );
+			$depth = $this->resolverOptions->get( 'smwgQSubcategoryDepth' );
 			$smwtable = $db->tableName( $hierarchytables['_SUBC'] );
 		}
 

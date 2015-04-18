@@ -12,12 +12,13 @@ use SMW\SQLStore\QueryEngine\ResolverOptions;
 use SMW\SQLStore\QueryEngine\QuerySegmentListResolver;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 use SMW\SQLStore\QueryEngine\ConceptQueryResolver;
+use SMW\SQLStore\QueryEngine\QueryEngine;
+use SMW\SQLStore\QueryEngine\EngineOptions;
 use Onoi\Cache\Cache;
 use Doctrine\DBAL\Connection;
 use SMW\SQLStore\ConceptCache;
 use SMW\ApplicationFactory;
 use SMWSQLStore3;
-use SMWSQLStore3QueryEngine;
 use SMWRequestOptions as RequestOptions;
 use SMW\DIProperty;
 
@@ -49,7 +50,7 @@ class SQLStoreFactory {
 	/**
 	 * @since 2.2
 	 *
-	 * @return SMWSQLStore3QueryEngine
+	 * @return QueryEngine
 	 */
 	public function newMasterQueryEngine() {
 
@@ -69,17 +70,18 @@ class SQLStoreFactory {
 			$resolverOptions
 		);
 
-		return new SMWSQLStore3QueryEngine(
+		return new QueryEngine(
 			$this->store,
 			new QueryBuilder( $this->store ),
-			$querySegmentListResolver
+			$querySegmentListResolver,
+			new EngineOptions()
 		);
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @return SMWSQLStore3QueryEngine
+	 * @return QueryEngine
 	 */
 	public function newSlaveQueryEngine() {
 		return $this->newMasterQueryEngine();

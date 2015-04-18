@@ -2,7 +2,6 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
-use SMWSQLStore3QueryEngine;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMWQueryParser as QueryParser;
 use SMWQuery as Query;
@@ -16,7 +15,7 @@ use SMWQuery as Query;
 class ConceptQueryResolver {
 
 	/**
-	 * @var SMWSQLStore3QueryEngine
+	 * @var QueryEngine
 	 */
 	private $queryEngine;
 
@@ -28,9 +27,9 @@ class ConceptQueryResolver {
 	/**
 	 * @since 2.2
 	 *
-	 * @param SMWSQLStore3QueryEngine $queryEngine
+	 * @param QueryEngine $queryEngine
 	 */
-	public function __construct( SMWSQLStore3QueryEngine $queryEngine ) {
+	public function __construct( QueryEngine $queryEngine ) {
 		$this->queryEngine = $queryEngine;
 	}
 

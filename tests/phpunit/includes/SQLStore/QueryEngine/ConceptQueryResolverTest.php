@@ -19,7 +19,7 @@ class ConceptQueryResolverTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$queryEngine = $this->getMockBuilder( '\SMWSQLStore3QueryEngine' )
+		$queryEngine = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QueryEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -39,7 +39,7 @@ class ConceptQueryResolverTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$queryEngine = $this->getMockBuilder( '\SMWSQLStore3QueryEngine' )
+		$queryEngine = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QueryEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 

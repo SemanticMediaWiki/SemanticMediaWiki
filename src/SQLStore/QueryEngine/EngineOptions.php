@@ -10,7 +10,7 @@ use InvalidArgumentException;
  *
  * @author mwjames
  */
-class ResolverOptions {
+class EngineOptions {
 
 	/**
 	 * @var array
@@ -21,8 +21,9 @@ class ResolverOptions {
 	 * @since 2.2
 	 */
 	public function __construct() {
-		$this->set( 'smwgQSubpropertyDepth', $GLOBALS['smwgQSubpropertyDepth'] );
-		$this->set( 'smwgQSubcategoryDepth', $GLOBALS['smwgQSubcategoryDepth'] );
+		$this->set( 'smwgIgnoreQueryErrors', $GLOBALS['smwgIgnoreQueryErrors'] );
+		$this->set( 'smwgQSortingSupport', $GLOBALS['smwgQSortingSupport'] );
+		$this->set( 'smwgQRandSortingSupport', $GLOBALS['smwgQRandSortingSupport'] );
 	}
 
 	/**
