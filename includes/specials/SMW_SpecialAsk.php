@@ -40,6 +40,9 @@ class SMWAskPage extends SMWQuerySpecialPage {
 	public function execute( $p ) {
 		global $wgOut, $wgRequest, $smwgQEnabled;
 
+		$wgOut->addModules( 'ext.smw.style' );
+		$wgOut->addModules( 'ext.smw.ask' );
+
 		$this->setHeaders();
 
 		if ( !$smwgQEnabled ) {
@@ -193,8 +196,6 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		global $wgOut;
 
 		// TODO: hold into account $smwgAutocompleteInSpecialAsk
-
-		$wgOut->addModules( 'ext.smw.ask' );
 
 		$result = '';
 

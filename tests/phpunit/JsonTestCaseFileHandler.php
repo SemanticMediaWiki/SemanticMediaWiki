@@ -154,8 +154,8 @@ class JsonTestCaseFileHandler {
 
 		$settings = $this->getFileContentsFor( 'settings' );
 
-		if ( $key === 'wgContLang' && isset( $settings[$key] ) ) {
-			return \Language::factory( 'wgContLang' );
+		if ( ( $key === 'wgContLang' || $key === 'wgLang' ) && isset( $settings[$key] ) ) {
+			return \Language::factory( $settings[$key] );
 		}
 
 		// Needs special attention due to NS constant usage

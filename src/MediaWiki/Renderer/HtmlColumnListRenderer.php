@@ -24,7 +24,7 @@ class HtmlColumnListRenderer {
 	/**
 	 * @var array
 	 */
-	private $arrayOfResults = array();
+	private $contentsByIndex = array();
 
 	/**
 	 * @var integer
@@ -56,7 +56,7 @@ class HtmlColumnListRenderer {
 	 *
 	 * @param integer $numberOfColumns
 	 *
-	 * @return HtmlColumnListFormatter
+	 * @return HtmlColumnListRenderer
 	 */
 	public function setNumberOfColumns( $numberOfColumns ) {
 		$this->numberOfColumns = $numberOfColumns;
@@ -68,7 +68,7 @@ class HtmlColumnListRenderer {
 	 *
 	 * @param string $listType
 	 *
-	 * @return HtmlColumnListFormatter
+	 * @return HtmlColumnListRenderer
 	 */
 	public function setListType( $listType ) {
 
@@ -82,13 +82,13 @@ class HtmlColumnListRenderer {
 	/**
 	 * @since 2.1
 	 *
-	 * @param string[] $arrayOfResults
+	 * @param string[] $contentsByIndex
 	 *
-	 * @return HtmlColumnListFormatter
+	 * @return HtmlColumnListRenderer
 	 */
-	public function addIndexedArrayOfResults( array $arrayOfResults ) {
-		$this->arrayOfResults = $arrayOfResults;
-		$this->numberOfResults = count( $this->arrayOfResults, COUNT_RECURSIVE );
+	public function addContentsByIndex( array $contentsByIndex ) {
+		$this->contentsByIndex = $contentsByIndex;
+		$this->numberOfResults = count( $this->contentsByIndex, COUNT_RECURSIVE ) - count( $this->contentsByIndex );
 		return $this;
 	}
 
@@ -106,7 +106,7 @@ class HtmlColumnListRenderer {
 		$this->columnWidth = floor( 100 / $this->numberOfColumns );
 		$listContinuesAbbrev = wfMessage( 'listingcontinuesabbrev' )->text();
 
-		foreach ( $this->arrayOfResults as $key => $resultItems ) {
+		foreach ( $this->contentsByIndex as $key => $resultItems ) {
 
 			if ( $resultItems === array() ) {
 					continue;

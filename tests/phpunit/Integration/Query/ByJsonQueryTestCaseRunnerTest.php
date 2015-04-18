@@ -64,12 +64,14 @@ class ByJsonQueryTestCaseRunnerTest extends ByJsonTestCaseProvider {
 
 		$permittedSettings = array(
 			'smwgNamespace',
+			'wgContLang',
+			'wgLang',
 			'smwgQMaxSize',
 			'smwStrictComparators',
 			'smwgNamespacesWithSemanticLinks'
 		);
 
-		foreach ( $permittedSettings  as $key ) {
+		foreach ( $permittedSettings as $key ) {
 			$this->changeGlobalSettingTo(
 				$key,
 				$jsonTestCaseFileHandler->getSettingsFor( $key )

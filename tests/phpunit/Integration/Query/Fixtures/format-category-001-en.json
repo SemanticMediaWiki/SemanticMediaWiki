@@ -1,0 +1,163 @@
+{
+	"description": "Category output format and template usage",
+	"properties": [
+		{
+			"name": "Has page property",
+			"contents": "[[Has type::Page]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "UseNamedArgsTemplateForColumnOutput",
+			"namespace": "NS_TEMPLATE",
+			"contents": "<includeonly>{{{1}}}, {{{Has page property}}}</includeonly>"
+		},
+		{
+			"name": "UseUnnamedArgsTemplateForColumnOutput",
+			"namespace": "NS_TEMPLATE",
+			"contents": "<includeonly>{{{1}}}, {{{2}}}</includeonly>"
+		},
+		{
+			"name": "Foo",
+			"contents": "[[Has page property::Test]]"
+		},
+		{
+			"name": "Bar",
+			"contents": "[[Has page property::Test]]"
+		},
+		{
+			"name": "123",
+			"contents": "[[Has page property::Test]]"
+		},
+		{
+			"name": "テスト",
+			"contents": "[[Has page property::Test]]"
+		},
+		{
+			"name": "template-output-named-args-asc",
+			"contents": "{{#ask:[[Has page property::Test]]\n |?Has page property\n |format=category\n |order=asc\n |link=none\n |limit=10\n |template=UseNamedArgsTemplateForColumnOutput\n ||named args=yes\n}}"
+		},
+		{
+			"name": "template-output-named-args-desc",
+			"contents": "{{#ask:[[Has page property::Test]]\n |?Has page property\n |format=category\n |order=desc\n |link=none\n |limit=10\n |template=UseNamedArgsTemplateForColumnOutput\n ||named args=yes\n}}"
+		},
+		{
+			"name": "template-output-unnamed-args-asc",
+			"contents": "{{#ask:[[Has page property::Test]]\n |?Has page property\n |format=category\n |order=asc\n |link=none\n |limit=10\n |template=UseUnnamedArgsTemplateForColumnOutput\n ||named args=no\n}}"
+		},
+		{
+			"name": "template-output-unnamed-args-desc",
+			"contents": "{{#ask:[[Has page property::Test]]\n |?Has page property\n |format=category\n |order=desc\n |link=none\n |limit=10\n |template=UseUnnamedArgsTemplateForColumnOutput\n ||named args=no\n}}"
+		},
+		{
+			"name": "one-column-plainlist-output-asc",
+			"contents": "{{#ask:[[Has page property::Test]]\n |?Has page property\n |format=category\n |order=asc\n |link=none\n |headers=plain |limit=10\n |columns=1\n}}"
+		},
+		{
+			"name": "limited-two-column-plainlist-output-desc",
+			"contents": "{{#ask:[[Has page property::Test]]\n |?Has page property\n |format=category\n |order=desc\n |link=none\n |headers=plain\n |searchlabel=Test more\n |limit=2\n |columns=2\n}}"
+		}
+	],
+	"format": [
+		{
+			"about": "#0",
+			"outputpage": "template-output-named-args-asc",
+			"output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\">",
+					"<div class=\"smw-column-header\">1</div><ul><li>123, Test</li></ul>",
+					"<div class=\"smw-column-header\">B</div><ul><li>Bar, Test</li></ul></div>",
+					"<div class=\"smw-column-header\">F</div><ul><li>Foo, Test</li></ul>",
+					"<div class=\"smw-column-header\">テ</div><ul><li>テスト, Test</li></ul></div>",
+					"<br style=\"clear: both;\" />"
+				]
+			}
+		},
+		{
+			"about": "#1",
+			"outputpage": "template-output-named-args-desc",
+			"output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\">",
+					"<div class=\"smw-column-header\">テ</div><ul><li>テスト, Test</li></ul>",
+					"<div class=\"smw-column-header\">F</div><ul><li>Foo, Test</li></ul></div>",
+					"<div class=\"smw-column-header\">B</div><ul><li>Bar, Test</li></ul>",
+					"<div class=\"smw-column-header\">1</div><ul><li>123, Test</li></ul></div>",
+					"<br style=\"clear: both;\" />"
+				]
+			}
+		},
+		{
+			"about": "#2",
+			"outputpage": "template-output-unnamed-args-asc",
+			"output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\">",
+					"<div class=\"smw-column-header\">1</div><ul><li>123, Test</li></ul>",
+					"<div class=\"smw-column-header\">B</div><ul><li>Bar, Test</li></ul></div>",
+					"<div class=\"smw-column-header\">F</div><ul><li>Foo, Test</li></ul>",
+					"<div class=\"smw-column-header\">テ</div><ul><li>テスト, Test</li></ul></div>",
+					"<br style=\"clear: both;\" />"
+				]
+			}
+		},
+		{
+			"about": "#3",
+			"outputpage": "template-output-unnamed-args-desc",
+			"output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\">",
+					"<div class=\"smw-column-header\">テ</div><ul><li>テスト, Test</li></ul>",
+					"<div class=\"smw-column-header\">F</div><ul><li>Foo, Test</li></ul></div>",
+					"<div class=\"smw-column-header\">B</div><ul><li>Bar, Test</li></ul>",
+					"<div class=\"smw-column-header\">1</div><ul><li>123, Test</li></ul></div>",
+					"<br style=\"clear: both;\" />"
+				]
+			}
+		},
+		{
+			"about": "#4",
+			"outputpage": "one-column-plainlist-output-asc",
+			"output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\">",
+					"<div class=\"smw-column-header\">1</div><ul><li>123 (Has page property Test)</li></ul>",
+					"<div class=\"smw-column-header\">B</div><ul><li>Bar (Has page property Test)</li></ul>",
+					"<div class=\"smw-column-header\">F</div><ul><li>Foo (Has page property Test)</li></ul>",
+					"<div class=\"smw-column-header\">テ</div><ul><li>テスト (Has page property Test)</li></ul></div>",
+					"<br style=\"clear: both;\" />"
+				]
+			}
+		},
+		{
+			"about": "#5",
+			"outputpage": "limited-two-column-plainlist-output-desc",
+			"output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\">",
+					"<div class=\"smw-column-header\">テ</div><ul><li>テスト (Has page property Test)</li></ul>",
+					"<div class=\"smw-column-header\">F</div><ul><li>Foo (Has page property Test)</li></ul></div>",
+					"<div class=\"smw-column\" style=\"float: left; width:50%; word-wrap: break-word;\"><div class=\"smw-column-header\">F cont.</div><ul><li>",
+					"Special:Ask/-5B-5BHas-20page-20property::Test-5D-5D/-3FHas-20page-20property/format=category/limit=2/link=none/order=desc/headers=plain/searchlabel=Test-20more/columns=2\">Test more</a></li></ul></div>",
+					"<br style=\"clear: both;\" />"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"skip-on": {
+			"postgres": "Unicode needs special treatment in postgres"
+		},
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
