@@ -109,7 +109,10 @@ class InTextAnnotationParser {
 			$text
 		);
 
-		$this->parserData->getOutput()->addModules( $this->getModules() );
+		if ( $this->isEnabledNamespace ) {
+			$this->parserData->getOutput()->addModules( $this->getModules() );
+		}
+
 		$this->parserData->pushSemanticDataToParserOutput();
 
 		SMWOutputs::commitToParserOutput( $this->parserData->getOutput() );
