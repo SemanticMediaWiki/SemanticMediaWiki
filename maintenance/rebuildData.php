@@ -94,7 +94,7 @@ class RebuildData extends \Maintenance {
 
 		$this->addOption( 'query', "<query> Will refresh only pages returned by a given query. Example: --query='[[Category:SomeCategory]]'", false, true );
 
-		$this->addOption( 'runtime', 'Display the execution time and memory usage', false );
+		$this->addOption( 'report-runtime', 'Report execution time and memory usage', false );
 		$this->addOption( 'no-cache', 'Sets the `wgMainCacheType` to none while running the script', false );
 		$this->addOption( 'debug', 'Sets global variables to support debug ouput while running the script', false );
 		$this->addOption( 'quiet', 'Do not give any output', false );
@@ -137,7 +137,7 @@ class RebuildData extends \Maintenance {
 
 		$result = $this->checkForRebuildState( $dataRebuilder->rebuild() );
 
-		if ( $result && $this->hasOption( 'runtime' ) ) {
+		if ( $result && $this->hasOption( 'report-runtime' ) ) {
 			$this->reportMessage( "\n" . $maintenanceHelper->transformRuntimeValuesForOutput() . "\n" );
 		}
 

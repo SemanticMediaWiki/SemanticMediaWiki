@@ -121,7 +121,7 @@ class RebuildDataMaintenanceTest extends MwDBaseUnitTestCase {
 			'f' => true,
 			'no-cache' => true,
 			'debug' => true,
-			'runtime' => true
+			'report-runtime' => true
 		);
 
 		$this->assertThatPropertiesAreSet(
