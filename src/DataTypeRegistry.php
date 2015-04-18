@@ -357,7 +357,7 @@ class DataTypeRegistry {
 			'__sin' => 'SMWWikiPageValue', // Special instance of type
 			'__red' => 'SMWWikiPageValue', // Special redirect type
 			'__err' => 'SMWErrorValue', // Special error type
-			'__imp' => 'SMWImportValue', // Special import vocabulary type
+			'__imp' => 'SMW\DataValues\ImportValue', // Special import vocabulary type
 			'__pro' => 'SMWPropertyValue', // Property type (possibly predefined, no always based on a page)
 			'__key' => 'SMWStringValue', // Sort key of a page
 		);

@@ -1,10 +1,12 @@
 <?php
-/**
- * @ingroup SMWDataValues
- */
 
-use SMW\ControlledVocabularyImportFetcher;
-use SMW\ControlledVocabularyContentMapper;
+namespace SMW\DataValues;
+
+use SMW\DataValues\ValueParsers\ImportValueParser;
+use SMW\DataValues\ValueParsers\ValueParserFactory;
+use SMWDataValue as DataValue;
+use SMWDIBlob as DIBlob;
+use SMWDataItem as DataItem;
 
 /**
  * This datavalue implements datavalues used by special property '_IMPO' used
@@ -15,19 +17,13 @@ use SMW\ControlledVocabularyContentMapper;
  *
  * @author Fabian Howahl
  * @author Markus Krötzsch
- * @ingroup SMWDataValues
  */
-class SMWImportValue extends SMWDataValue {
+class ImportValue extends DataValue {
 
 	/**
-	 * @var ControlledVocabularyImportFetcher|null
+	 * @var ImportValueParser|null
 	 */
-	private $controlledVocabularyImportFetcher = null;
-
-	/**
-	 * @var ControlledVocabularyContentMapper|null
-	 */
-	private $controlledVocabularyContentMapper = null;
+	private $importValueParser = null;
 
 	/**
 	 * @var string
@@ -45,52 +41,24 @@ class SMWImportValue extends SMWDataValue {
 	 */
 	public function __construct( $typeid  ) {
 		parent::__construct( $typeid );
-		$this->controlledVocabularyImportFetcher = new ControlledVocabularyImportFetcher();
-		$this->controlledVocabularyContentMapper = new ControlledVocabularyContentMapper();
+		$this->importValueParser = ValueParserFactory::getInstance()->newImportValueParser();
 	}
 
 	protected function parseUserValue( $value ) {
 		$this->m_qname = $value;
 
-		if ( strpos( $value, ':' ) === false ) {
-			$this->addError( wfMessage( 'smw-datavalue-import-invalidvalue', $value )->inContentLanguage()->text() );
-			$this->m_dataitem = new SMWDIBlob( 'ERROR' );
+		list( $this->m_namespace, $this->m_section, $this->m_uri, $this->m_name, $this->termType ) = $this->importValueParser->parse(
+			$value
+		);
+
+		if ( $this->importValueParser->getErrors() !== array() ) {
+			$this->addError( call_user_func_array( 'wfMessage', $this->importValueParser->getErrors() )->inContentLanguage()->text() );
+			$this->m_dataitem = new DIBlob( 'ERROR' );
 			return;
 		}
 
-		list( $onto_ns, $onto_section ) = explode( ':', $this->m_qname, 2 );
-
-		if ( !$this->controlledVocabularyImportFetcher->contains( $onto_ns ) ) { // error: no elements for this namespace
-			$this->addError( wfMessage( 'smw-datavalue-import-unknownns', $onto_ns )->inContentLanguage()->text() );
-			$this->m_dataitem = new SMWDIBlob( 'ERROR' );
-			return;
-		}
-
-		$this->controlledVocabularyContentMapper->parse( $this->controlledVocabularyImportFetcher->fetch( $onto_ns ) );
-
-		$this->m_uri = $this->controlledVocabularyContentMapper->getUri();
-
-		if ( $this->m_uri === '' ) {
-			$this->addError( wfMessage( 'smw-datavalue-import-missing-nsuri', $onto_ns )->inContentLanguage()->text() );
-			$this->m_dataitem = new SMWDIBlob( 'ERROR' );
-			return;
-		}
-
-		$this->termType = $this->controlledVocabularyContentMapper->getTypeForTerm( $onto_section );
-
-		if ( $this->termType === '' ) {
-			$this->addError( wfMessage( 'smw-datavalue-import-missing-type', $onto_section, $onto_ns )->inContentLanguage()->text() );
-			$this->m_dataitem = new SMWDIBlob( 'ERROR' );
-			return;
-		}
-
-		$this->m_name = $this->controlledVocabularyContentMapper->getName();
-
-		$this->m_namespace = $onto_ns;
-		$this->m_section = $onto_section;
-
-		// Encoded string for the DB storage
-		$this->m_dataitem = new SMWDIBlob(
+		// Encoded string for DB storage
+		$this->m_dataitem = new DIBlob(
 			$this->m_namespace . ' ' .
 			$this->m_section . ' ' .
 			$this->m_uri . ' ' .
@@ -105,12 +73,12 @@ class SMWImportValue extends SMWDataValue {
 
 	/**
 	 * @see SMWDataValue::loadDataItem()
-	 * @param $dataitem SMWDataItem
+	 * @param $dataitem DataItem
 	 * @return boolean
 	 */
-	protected function loadDataItem( SMWDataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ) {
 
-		if ( !$dataItem instanceof SMWDIBlob ) {
+		if ( !$dataItem instanceof DIBlob ) {
 			return false;
 		}
 
@@ -185,7 +153,7 @@ class SMWImportValue extends SMWDataValue {
 	 *
 	 * @return string
 	 */
-	public function getImportedFromReference() {
+	public function getImportReference() {
 		return $this->m_namespace . ' ' . $this->m_section . ' ' . $this->m_uri;
 	}
 
