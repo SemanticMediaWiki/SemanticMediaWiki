@@ -7,7 +7,7 @@ This is not a release yet.
 * #770 Added the `--no-cache` option to `rebuildData.php` and the `--debug` option to `rebuildData.php` and `rebuildConceptCache.php` (refs #749, #766)
 * #756 Added template support for the `#set` parser
 * #783 Added support for `wgCategoryCollation` setting in `CategoryResultPrinter` (#699, T40853)
-* #829 Added the `--runtime` option to `rebuildConceptCache.php`
+* #829 Added the `--report-runtime` option to `rebuildConceptCache.php`
 * #886 Extended rules on how an `ImportValue` need to contain a valid type definition
 * #891 Enforces strict type declaration for properties with import references (type of the imported reference takes precedence over any user-defined type declaration)
 * #892 Added support for `<swivt:file>` in order for a RDF export to point to a "real" file resource
@@ -49,7 +49,7 @@ This is not a release yet.
 * #772 Added `onoi/message-reporter:~1.0` component dependency
 * #777 Moved all concept related code into a separate `ConceptCache` class
 * #831 Added `onoi/cache:~1.0` component dependency
-* #884 Added `ControlledVocabularyImportFetcher` to isolate import vocabulary fetching from the `DVImport` object
+* #884, #983 Added `ControlledVocabularyImportContentFetcher`, `ImportValueParser` to isolate import vocabulary parsing from the `ImportValue` object
 * #883 Added `CircularReferenceGuard` to monitor possible self/circular references in ask templates
 * #914 Added `DIProperty::isUnrestrictedForUse`
 * #924 Added `onoi/event-dispatcher:~1.0` component dependency
