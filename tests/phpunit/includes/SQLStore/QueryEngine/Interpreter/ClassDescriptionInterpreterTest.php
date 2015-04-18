@@ -21,12 +21,12 @@ use SMW\DIWikiPage;
  */
 class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
-	private $queryContainerValidator;
+	private $querySegmentValidator;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->queryContainerValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSqlQueryPartValidator();
+		$this->querySegmentValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQuerySegmentValidator();
 	}
 
 	public function testCanConstruct() {
@@ -78,7 +78,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$instance->canInterpretDescription( $description )
 		);
 
-		$this->queryContainerValidator->assertThatContainerHasProperties(
+		$this->querySegmentValidator->assertThatContainerHasProperties(
 			$expected,
 			$instance->interpretDescription( $description )
 		);

@@ -12,7 +12,7 @@ use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\SqlQueryPart;
+use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMWDataItem as DataItem;
 use SMWDataItemHandler as DataItemHandler;
 use SMWSql3SmwIds;
@@ -67,11 +67,11 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param Description $description
 	 *
-	 * @return SqlQueryPart
+	 * @return QuerySegment
 	 */
 	public function interpretDescription( Description $description ) {
 
-		$query = new SqlQueryPart();
+		$query = new QuerySegment();
 
 		$this->interpretPropertyConditionForDescription(
 			$query,
@@ -95,7 +95,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 *
 	 * @since 1.8
 	 */
-	private function interpretPropertyConditionForDescription( SqlQueryPart $query, SomeProperty $description ) {
+	private function interpretPropertyConditionForDescription( QuerySegment $query, SomeProperty $description ) {
 
 		$db = $this->queryBuilder->getStore()->getConnection( 'mw.db' );
 
@@ -104,7 +104,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		$tableid = $this->queryBuilder->getStore()->findPropertyTableID( $property );
 
 		if ( $tableid === '' ) { // Give up
-			$query->type = SqlQueryPart::Q_NOQUERY;
+			$query->type = QuerySegment::Q_NOQUERY;
 			return;
 		}
 
@@ -114,7 +114,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		if ( !$proptable->usesIdSubject() ) {
 			// no queries with such tables
 			// (only redirects are affected in practice)
-			$query->type = SqlQueryPart::Q_NOQUERY;
+			$query->type = QuerySegment::Q_NOQUERY;
 			return;
 		}
 
@@ -123,7 +123,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 
 		if ( $property->isInverse() && $diType !== DataItem::TYPE_WIKIPAGE ) {
 			// can only invert properties that point to pages
-			$query->type = SqlQueryPart::Q_NOQUERY;
+			$query->type = QuerySegment::Q_NOQUERY;
 			return;
 		}
 
@@ -142,12 +142,12 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$pid = $this->queryBuilder->getStore()->getObjectIds()->getSMWPropertyID( $property );
 
 			// Construct property hierarchy:
-			$pqid = SqlQueryPart::$qnum;
-			$pquery = new SqlQueryPart();
-			$pquery->type = SqlQueryPart::Q_PROP_HIERARCHY;
+			$pqid = QuerySegment::$qnum;
+			$pquery = new QuerySegment();
+			$pquery->type = QuerySegment::Q_PROP_HIERARCHY;
 			$pquery->joinfield = array( $pid );
 			$query->components[$pqid] = "{$query->alias}.p_id";
-			$this->queryBuilder->addSqlQueryPartForId( $pqid, $pquery );
+			$this->queryBuilder->addQuerySegmentForId( $pqid, $pquery );
 
 			// Alternative code without property hierarchies:
 			// $query->where = "{$query->alias}.p_id=" . $this->m_dbs->addQuotes( $pid );
@@ -165,7 +165,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$query->joinfield = "{$query->alias}.{$s_id}";
 
 			// process page description like main query
-			$sub = $this->queryBuilder->buildSqlQueryPartFor(
+			$sub = $this->queryBuilder->buildQuerySegmentFor(
 				$description->getDescription()
 			);
 

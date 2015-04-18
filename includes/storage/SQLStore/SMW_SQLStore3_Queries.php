@@ -5,7 +5,7 @@ use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\QueryOutputFormatter;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
-use SMW\SQLStore\QueryEngine\SqlQueryPart as SMWSQLStore3Query;
+use SMW\SQLStore\QueryEngine\QuerySegment as SMWSQLStore3Query;
 use SMW\SQLStore\QueryEngine\QuerySegmentListResolver;
 use SMW\SQLStore\QueryEngine\ResolverOptions;
 use SMW\SQLStore\TemporaryIdTableCreator;
@@ -31,11 +31,11 @@ class SMWSQLStore3QueryEngine {
 	private $queryMode;
 
 	/**
-	 * Array of generated SqlQueryPart query descriptions (index => object)
+	 * Array of generated QuerySegment query descriptions (index => object)
 	 *
-	 * @var SqlQueryPart[]
+	 * @var QuerySegment[]
 	 */
-	private $queryParts = array();
+	private $querySegments = array();
 
 	/**
 	 * Array of sorting requests ("Property_name" => "ASC"/"DESC"). Used during query
@@ -139,7 +139,7 @@ class SMWSQLStore3QueryEngine {
 		$db = $this->store->getConnection( 'mw.db' );
 
 		$this->queryMode = $query->querymode;
-		$this->queryParts = array();
+		$this->querySegments = array();
 
 		$this->errors = array();
 		SMWSQLStore3Query::$qnum = 0;
@@ -147,10 +147,10 @@ class SMWSQLStore3QueryEngine {
 
 		// *** First compute abstract representation of the query (compilation) ***//
 		$this->queryBuilder->setSortKeys( $this->sortKeys );
-		$this->queryBuilder->buildSqlQueryPartFor( $query->getDescription() ); // compile query, build query "plan"
+		$this->queryBuilder->buildQuerySegmentFor( $query->getDescription() ); // compile query, build query "plan"
 
-		$qid = $this->queryBuilder->getLastSqlQueryPartId();
-		$this->queryParts = $this->queryBuilder->getSqlQueryParts();
+		$qid = $this->queryBuilder->getLastQuerySegmentId();
+		$this->querySegments = $this->queryBuilder->getQuerySegments();
 		$this->errors = $this->queryBuilder->getErrors();
 
 		if ( $qid < 0 ) { // no valid/supported condition; ensure that at least only proper pages are delivered
@@ -159,18 +159,18 @@ class SMWSQLStore3QueryEngine {
 			$q->joinTable = SMWSql3SmwIds::tableName;
 			$q->joinfield = "$q->alias.smw_id";
 			$q->where = "$q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND $q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWREDIIW ) . " AND $q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWBORDERIW ) . " AND $q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWINTDEFIW );
-			$this->queryParts[$qid] = $q;
+			$this->querySegments[$qid] = $q;
 		}
 
-		if ( $this->queryParts[$qid]->joinTable != SMWSql3SmwIds::tableName ) {
+		if ( $this->querySegments[$qid]->joinTable != SMWSql3SmwIds::tableName ) {
 			// manually make final root query (to retrieve namespace,title):
 			$rootid = SMWSQLStore3Query::$qnum;
 			$qobj = new SMWSQLStore3Query();
 			$qobj->joinTable  = SMWSql3SmwIds::tableName;
 			$qobj->joinfield  = "$qobj->alias.smw_id";
 			$qobj->components = array( $qid => "$qobj->alias.smw_id" );
-			$qobj->sortfields = $this->queryParts[$qid]->sortfields;
-			$this->queryParts[$rootid] = $qobj;
+			$qobj->sortfields = $this->querySegments[$qid]->sortfields;
+			$this->querySegments[$rootid] = $qobj;
 		} else { // not such a common case, but worth avoiding the additional inner join:
 			$rootid = $qid;
 		}
@@ -190,7 +190,7 @@ class SMWSQLStore3QueryEngine {
 
 		// *** Now execute the computed query ***//
 		$this->querySegmentListResolver->setQueryMode( $this->queryMode );
-		$this->querySegmentListResolver->setQuerySegmentList( $this->queryParts );
+		$this->querySegmentListResolver->setQuerySegmentList( $this->querySegments );
 
 		// execute query tree, resolve all dependencies
 		$this->querySegmentListResolver->resolveForSegmentId( $rootid );
@@ -223,7 +223,7 @@ class SMWSQLStore3QueryEngine {
 	 * @return string
 	 */
 	private function getDebugQueryResult( SMWQuery $query, $rootid ) {
-		$qobj = $this->queryParts[$rootid];
+		$qobj = $this->querySegments[$rootid];
 
 		$db = $this->store->getConnection();
 
@@ -270,7 +270,7 @@ class SMWSQLStore3QueryEngine {
 	 */
 	private function getCountQueryResult( SMWQuery $query, $rootid ) {
 
-		$qobj = $this->queryParts[$rootid];
+		$qobj = $this->querySegments[$rootid];
 
 		if ( $qobj->joinfield === '' ) { // empty result, no query needed
 			return 0;
@@ -319,7 +319,7 @@ class SMWSQLStore3QueryEngine {
 
 		$db = $this->store->getConnection();
 
-		$qobj = $this->queryParts[$rootid];
+		$qobj = $this->querySegments[$rootid];
 
 		if ( $qobj->joinfield === '' ) { // empty result, no query needed
 			$result = new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->store, false );
@@ -414,7 +414,7 @@ class SMWSQLStore3QueryEngine {
 	 * @param integer $qid
 	 */
 	private function applyOrderConditions( $qid ) {
-		$qobj = $this->queryParts[$qid];
+		$qobj = $this->querySegments[$qid];
 
 		$extraProperties = $this->collectedRequiredExtraPropertyDescriptions( $qobj );
 
@@ -450,20 +450,20 @@ class SMWSQLStore3QueryEngine {
 
 	private function compileAccordingConditionsAndHackThemIntoQobj( array $extraProperties, $qobj, $qid ) {
 		$this->queryBuilder->setSortKeys( $this->sortKeys );
-		$this->queryBuilder->buildSqlQueryPartFor( new Conjunction( $extraProperties ) );
+		$this->queryBuilder->buildQuerySegmentFor( new Conjunction( $extraProperties ) );
 
-		$newQueryPartId = $this->queryBuilder->getLastSqlQueryPartId();
-		$this->queryParts = $this->queryBuilder->getSqlQueryParts();
+		$newQuerySegmentId = $this->queryBuilder->getLastQuerySegmentId();
+		$this->querySegments = $this->queryBuilder->getQuerySegments();
 		$this->errors = $this->queryBuilder->getErrors();
 
-		$newQueryPart = $this->queryParts[$newQueryPartId]; // This is always an SMWSQLStore3Query::Q_CONJUNCTION ...
+		$newQuerySegment = $this->querySegments[$newQuerySegmentId]; // This is always an SMWSQLStore3Query::Q_CONJUNCTION ...
 
-		foreach ( $newQueryPart->components as $cid => $field ) { // ... so just re-wire its dependencies
+		foreach ( $newQuerySegment->components as $cid => $field ) { // ... so just re-wire its dependencies
 			$qobj->components[$cid] = $qobj->joinfield;
-			$qobj->sortfields = array_merge( $qobj->sortfields, $this->queryParts[$cid]->sortfields );
+			$qobj->sortfields = array_merge( $qobj->sortfields, $this->querySegments[$cid]->sortfields );
 		}
 
-		$this->queryParts[$qid] = $qobj;
+		$this->querySegments[$qid] = $qobj;
 	}
 
 	/**
@@ -481,7 +481,7 @@ class SMWSQLStore3QueryEngine {
 
 		// Build ORDER BY options using discovered sorting fields.
 		if ( $smwgQSortingSupport ) {
-			$qobj = $this->queryParts[$rootId];
+			$qobj = $this->querySegments[$rootId];
 
 			foreach ( $this->sortKeys as $propkey => $order ) {
 

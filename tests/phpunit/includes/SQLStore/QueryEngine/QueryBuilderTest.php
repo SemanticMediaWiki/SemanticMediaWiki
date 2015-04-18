@@ -3,21 +3,17 @@
 namespace SMW\Tests\SQLStore\QueryEngine;
 
 use SMW\Tests\Utils\UtilityFactory;
-
-use SMW\SQLStore\QueryEngine\SqlQueryPart;
+use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
-
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\ClassDescription;
-
 use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\QueryBuilder
  *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 2.2
@@ -26,27 +22,25 @@ use SMW\DIWikiPage;
  */
 class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
-	private $queryContainerValidator;
+	private $querySegmentValidator;
+	private $store;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->queryContainerValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSqlQueryPartValidator();
-	}
-
-	public function testCanConstruct() {
-		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\QueryBuilder',
-			$this->newInstance()
-		);
-	}
-
-	private function newInstance() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		return new QueryBuilder( $store );
+		$this->querySegmentValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQuerySegmentValidator();
+	}
+
+	public function testCanConstruct() {
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\QueryEngine\QueryBuilder',
+			new QueryBuilder( $this->store )
+		);
 	}
 
 	public function testNamespaceDescription() {
@@ -66,18 +60,18 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 		$description = new NamespaceDescription( NS_HELP );
 
 		$instance = new QueryBuilder( $store );
-		$instance->buildSqlQueryPartFor( $description );
+		$instance->buildQuerySegmentFor( $description );
 
 		$expected = new \stdClass;
 		$expected->type = 1;
 		$expected->where = "t0.smw_namespace=";
 
-		$this->assertEquals( 0, $instance->getLastSqlQueryPartId() );
+		$this->assertEquals( 0, $instance->getLastQuerySegmentId() );
 		$this->assertEmpty( $instance->getErrors() );
 
-		$this->queryContainerValidator->assertThatContainerContains(
+		$this->querySegmentValidator->assertThatContainerContains(
 			$expected,
-			$instance->getSqlQueryParts()
+			$instance->getQuerySegments()
 		);
 	}
 
@@ -100,7 +94,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 		$description->addDescription( new NamespaceDescription( NS_MAIN ) );
 
 		$instance = new QueryBuilder( $store );
-		$instance->buildSqlQueryPartFor( $description );
+		$instance->buildQuerySegmentFor( $description );
 
 		$expectedDisjunction = new \stdClass;
 		$expectedDisjunction->type = 3;
@@ -115,7 +109,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			0,
-			$instance->getLastSqlQueryPartId()
+			$instance->getLastQuerySegmentId()
 		);
 
 		$this->assertEmpty(
@@ -128,9 +122,9 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 			$expectedMainNs
 		);
 
-		$this->queryContainerValidator->assertThatContainerContains(
+		$this->querySegmentValidator->assertThatContainerContains(
 			$expected,
-			$instance->getSqlQueryParts()
+			$instance->getQuerySegments()
 		);
 	}
 
@@ -163,7 +157,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 		$description = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );
 
 		$instance = new QueryBuilder( $store );
-		$instance->buildSqlQueryPartFor( $description );
+		$instance->buildQuerySegmentFor( $description );
 
 		$expectedClass = new \stdClass;
 		$expectedClass->type = 1;
@@ -178,7 +172,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			0,
-			$instance->getLastSqlQueryPartId()
+			$instance->getLastQuerySegmentId()
 		);
 
 		$this->assertEmpty(
@@ -190,45 +184,63 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 			$expectedHierarchy
 		);
 
-		$this->queryContainerValidator->assertThatContainerContains(
+		$this->querySegmentValidator->assertThatContainerContains(
 			$expected,
-			$instance->getSqlQueryParts()
+			$instance->getQuerySegments()
 		);
 	}
 
-	public function testGivenNonInteger_getSqlQueryPartThrowsException() {
+	public function testGivenNonInteger_getQuerySegmentThrowsException() {
+
+		$instance = new QueryBuilder( $this->store );
+
 		$this->setExpectedException( 'InvalidArgumentException' );
-		$this->newInstance()->getSqlQueryPart( null );
+		$instance->findQuerySegment( null );
 	}
 
-	public function testGivenUnknownId_getSqlQueryPartThrowsException() {
+	public function testGivenUnknownId_getQuerySegmentThrowsException() {
+
+		$instance = new QueryBuilder( $this->store );
+
 		$this->setExpectedException( 'OutOfBoundsException' );
-		$this->newInstance()->getSqlQueryPart( 1 );
+		$instance->findQuerySegment( 1 );
 	}
 
-	public function testGivenKnownId_getSqlQueryPartReturnsCorrectPart() {
-		$queryBuilder = $this->newInstance();
-		$queryPart = new SqlQueryPart();
+	public function testGivenKnownId_getQuerySegmentReturnsCorrectPart() {
 
-		$queryBuilder->addSqlQueryPartForId( 1, $queryPart );
-		$this->assertSame( $queryPart, $queryBuilder->getSqlQueryPart( 1 ) );
-	}
+		$instance = new QueryBuilder( $this->store );
+		$querySegment = new QuerySegment();
 
-	public function testWhenNoQueryParts_getSqlQueryPartsReturnsEmptyArray() {
-		$this->assertSame( array(), $this->newInstance()->getSqlQueryParts() );
-	}
-
-	public function testWhenSomeQueryParts_getSqlQueryPartsReturnsThemAll() {
-		$queryBuilder = $this->newInstance();
-
-		$firstQueryPart = new SqlQueryPart();
-		$secondQueryPart = new SqlQueryPart();
-		$queryBuilder->addSqlQueryPartForId( 42, $firstQueryPart );
-		$queryBuilder->addSqlQueryPartForId( 23, $secondQueryPart );
+		$instance->addQuerySegmentForId( 1, $querySegment );
 
 		$this->assertSame(
-			array( 42 => $firstQueryPart, 23 => $secondQueryPart ),
-			$queryBuilder->getSqlQueryParts()
+			$querySegment,
+			$instance->findQuerySegment( 1 )
+		);
+	}
+
+	public function testWhenNoQuerySegments_getQuerySegmentsReturnsEmptyArray() {
+
+		$instance = new QueryBuilder( $this->store );
+
+		$this->assertSame(
+			array(),
+			$instance->getQuerySegments()
+		);
+	}
+
+	public function testWhenSomeQuerySegments_getQuerySegmentsReturnsThemAll() {
+
+		$instance = new QueryBuilder( $this->store );
+
+		$firstQuerySegment = new QuerySegment();
+		$secondQuerySegment = new QuerySegment();
+		$instance->addQuerySegmentForId( 42, $firstQuerySegment );
+		$instance->addQuerySegmentForId( 23, $secondQuerySegment );
+
+		$this->assertSame(
+			array( 42 => $firstQuerySegment, 23 => $secondQuerySegment ),
+			$instance->getQuerySegments()
 		);
 	}
 

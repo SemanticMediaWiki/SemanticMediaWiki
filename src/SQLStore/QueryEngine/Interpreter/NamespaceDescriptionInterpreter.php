@@ -6,7 +6,7 @@ use SMW\Query\Language\Description;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\SqlQueryPart;
+use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMWSql3SmwIds;
 
 /**
@@ -49,11 +49,11 @@ class NamespaceDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param Description $description
 	 *
-	 * @return SqlQueryPart
+	 * @return QuerySegment
 	 */
 	public function interpretDescription( Description $description ) {
 
-		$query = new SqlQueryPart();
+		$query = new QuerySegment();
 		$query->joinTable = SMWSql3SmwIds::tableName;
 		$query->joinfield = "$query->alias.smw_id";
 		$query->where = "$query->alias.smw_namespace=" . $this->queryBuilder->getStore()->getConnection( 'mw.db' )->addQuotes( $description->getNamespace() );
