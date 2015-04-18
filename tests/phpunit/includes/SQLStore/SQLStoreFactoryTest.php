@@ -7,24 +7,37 @@ use SMW\Store;
 use SMWSQLStore3;
 
 /**
- * @covers SMW\SQLStore\SQLStoreFactory
+ * @covers \SMW\SQLStore\SQLStoreFactory
  *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
+ * @since 2.2
+ *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
+
+	public function testCanConstruct() {
+
+		$store = $this->getMockBuilder( '\SMWSQLStore3' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\SQLStoreFactory',
+			new SQLStoreFactory( $store )
+		);
+	}
 
 	private function newInstance() {
 		return new SQLStoreFactory( new SMWSQLStore3() );
 	}
 
-	public function testNewSalveQueryEngineReturnType() {
+	public function testNewSlaveQueryEngineReturnType() {
 		$this->assertInstanceOf(
 			'SMWSQLStore3QueryEngine',
-			$this->newInstance()->newSalveQueryEngine()
+			$this->newInstance()->newSlaveQueryEngine()
 		);
 	}
 
@@ -35,9 +48,16 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testNewSlaveConceptCacheReturnType() {
+	public function testNewMasterConceptCache() {
 		$this->assertInstanceOf(
-			'SMW\SQLStore\QueryEngine\ConceptCache',
+			'SMW\SQLStore\ConceptCache',
+			$this->newInstance()->newMasterConceptCache()
+		);
+	}
+
+	public function testNewSlaveConceptCache() {
+		$this->assertInstanceOf(
+			'SMW\SQLStore\ConceptCache',
 			$this->newInstance()->newSlaveConceptCache()
 		);
 	}

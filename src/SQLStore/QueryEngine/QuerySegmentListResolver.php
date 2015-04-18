@@ -275,11 +275,14 @@ class QuerySegmentListResolver {
 	private function resolveHierarchyForSegment( SMWSQLStore3Query &$query ) {
 
 		$db = $this->connection;
+		$hierarchytables = $this->resolverOptions->get( 'hierarchytables' );
 
 		if ( $query->type === SMWSQLStore3Query::Q_PROP_HIERARCHY ) {
 			$depth = $this->resolverOptions->get( 'subpropertyDepth' );
+			$smwtable = $db->tableName( $hierarchytables['_SUBP'] );
 		} else {
 			$depth = $this->resolverOptions->get( 'subcategoryDepth' );
+			$smwtable = $db->tableName( $hierarchytables['_SUBC'] );
 		}
 
 		if ( $depth <= 0 ) { // treat as value, no recursion
@@ -294,11 +297,6 @@ class QuerySegmentListResolver {
 			$values .= ( $values ? ',':'' ) . '(' . $db->addQuotes( $value ) . ')';
 			$valuecond .= ( $valuecond ? ' OR ':'' ) . 'o_id=' . $db->addQuotes( $value );
 		}
-
-		$propertyKey = ( $query->type == SMWSQLStore3Query::Q_PROP_HIERARCHY ) ? '_SUBP' : '_SUBC';
-
-		$hierarchytables = $this->resolverOptions->get( 'hierarchytables' );
-		$smwtable = $db->tableName( $hierarchytables[$propertyKey] );
 
 		// Try to safe time (SELECT is cheaper than creating/dropping 3 temp tables):
 		$res = $db->select( $smwtable, 's_id', $valuecond, __METHOD__, array( 'LIMIT' => 1 ) );
@@ -334,10 +332,19 @@ class QuerySegmentListResolver {
 			return;
 		}
 
-		// NOTE: we use two helper tables. One holds the results of each new iteration, one holds the
-		// results of the previous iteration. One could of course do with only the above result table,
-		// but then every iteration would use all elements of this table, while only the new ones
-		// obtained in the previous step are relevant. So this is a performance measure.
+		$this->fillHierarchyCacheForTableId( $tablename, $values, $smwtable, $depth );
+	}
+
+	/**
+	 * @note we use two helper tables. One holds the results of each new iteration, one holds the
+	 * results of the previous iteration. One could of course do with only the above result table,
+	 * but then every iteration would use all elements of this table, while only the new ones
+	 * obtained in the previous step are relevant. So this is a performance measure.
+	 */
+	private function fillHierarchyCacheForTableId( $tablename, $values, $smwtable, $depth ) {
+
+		$db = $this->connection;
+
 		$tmpnew = 'smw_new';
 		$tmpres = 'smw_res';
 

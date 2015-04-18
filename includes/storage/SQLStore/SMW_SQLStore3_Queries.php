@@ -4,7 +4,6 @@ use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\QueryOutputFormatter;
-use SMW\SQLStore\QueryEngine\ConceptCache;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 use SMW\SQLStore\QueryEngine\SqlQueryPart as SMWSQLStore3Query;
 use SMW\SQLStore\QueryEngine\QuerySegmentListResolver;
@@ -66,90 +65,31 @@ class SMWSQLStore3QueryEngine {
 
 	/**
 	 * @param SMWSQLStore3 $parentStore
-	 * @param TemporaryIdTableCreator $temporaryIdTableCreator
+	 * @param QueryBuilder $queryBuilder
+	 * @param QuerySegmentListResolver $querySegmentListResolver
 	 */
-	public function __construct( SMWSQLStore3 $parentStore, TemporaryIdTableCreator $temporaryIdTableCreator ) {
+	public function __construct( SMWSQLStore3 $parentStore, QueryBuilder $queryBuilder, QuerySegmentListResolver $querySegmentListResolver ) {
 		$this->store = $parentStore;
-
-		// Should be injected but for now we use the hidden construction
-		$this->queryBuilder = new QueryBuilder( $this->store );
-
-		$resolverOptions = new ResolverOptions();
-
-		$resolverOptions->set(
-			'hierarchytables',
-			array(
-				'_SUBP' => $this->store->findPropertyTableID( new SMWDIProperty( '_SUBP' ) ),
-				'_SUBC' => $this->store->findPropertyTableID( new SMWDIProperty( '_SUBC' ) )
-			)
-		);
-
-		$this->querySegmentListResolver = new QuerySegmentListResolver(
-			$this->store->getConnection( 'mw.db' ),
-			$temporaryIdTableCreator,
-			$resolverOptions
-		);
+		$this->queryBuilder = $queryBuilder;
+		$this->querySegmentListResolver = $querySegmentListResolver;
 	}
 
 	/**
-	 * Refresh the concept cache for the given concept.
+	 * @since 2.2
 	 *
-	 * @since 1.8
-	 * @param $concept Title
-	 * @return array of error strings (empty if no errors occurred)
+	 * @return queryBuilder
 	 */
-	public function refreshConceptCache( Title $concept ) {
-		$conceptCache = new ConceptCache( $this, $this->store );
-
-		$errors = $conceptCache->refresh( $concept );
-
-		$this->querySegmentListResolver->setQueryMode( $this->queryMode );
-		$this->querySegmentListResolver->cleanUp();
-
-		return array_merge( $this->queryBuilder->getErrors(), $errors );
+	public function getQueryBuilder() {
+		return $this->queryBuilder;
 	}
 
 	/**
-	 * @param string $conceptDescriptionText
+	 * @since 2.2
 	 *
-	 * @return SqlQueryPart|null
+	 * @return QuerySegmentListResolver
 	 */
-	public function resolveQueryTreeForQueryCondition( $conceptDescriptionText ) {
-		global $smwgQConceptFeatures;
-
-		$this->queryMode = SMWQuery::MODE_INSTANCES;
-		$this->queryParts = array();
-		$this->sortKeys = array();
-		SMWSQLStore3Query::$qnum = 0;
-
-		$this->queryBuilder->setSortKeys( $this->sortKeys );
-
-		$qp = new SMWQueryParser( $smwgQConceptFeatures );
-		$this->queryBuilder->buildSqlQueryPartFor( $qp->getQueryDescription( $conceptDescriptionText ) );
-
-		$qid = $this->queryBuilder->getLastSqlQueryPartId();
-		$this->queryParts = $this->queryBuilder->getSqlQueryParts();
-
-		if ( $qid < 0 ) {
-			return null;
-		}
-
-		// execute query tree, resolve all dependencies
-		$this->querySegmentListResolver->setQueryMode( $this->queryMode );
-		$this->querySegmentListResolver->setQuerySegmentList( $this->queryParts );
-		$this->querySegmentListResolver->resolveForSegmentId( $qid );
-
-		return $this->queryParts[$qid];
-	}
-
-	/**
-	 * Delete the concept cache for the given concept.
-	 *
-	 * @param $concept Title
-	 */
-	public function deleteConceptCache( $concept ) {
-		$conceptCache = new ConceptCache( $this, $this->store );
-		$conceptCache->delete( $concept );
+	public function getQuerySegmentListResolver() {
+		return $this->querySegmentListResolver;
 	}
 
 	/**

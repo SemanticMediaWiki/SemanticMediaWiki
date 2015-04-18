@@ -300,7 +300,7 @@ class SMWSQLStore3 extends SMWStore {
 	}
 
 	protected function fetchQueryResult( SMWQuery $query ) {
-		return $this->factory->newSalveQueryEngine()->getQueryResult( $query );
+		return $this->factory->newSlaveQueryEngine()->getQueryResult( $query );
 	}
 
 ///// Special page functions /////
@@ -411,7 +411,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return array of error strings (empty if no errors occurred)
 	 */
 	public function refreshConceptCache( Title $concept ) {
-		return $this->factory->newMasterQueryEngine()->refreshConceptCache( $concept );
+		return $this->factory->newMasterConceptCache()->refreshConceptCache( $concept );
 	}
 
 	/**
@@ -421,7 +421,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @param Title $concept
 	 */
 	public function deleteConceptCache( $concept ) {
-		$this->factory->newMasterQueryEngine()->deleteConceptCache( $concept );
+		$this->factory->newMasterConceptCache()->deleteConceptCache( $concept );
 	}
 
 	/**

@@ -8,16 +8,21 @@ use SMW\SQLStore\ListLookup\UnusedPropertyListLookup;
 use SMW\SQLStore\ListLookup\UndeclaredPropertyListLookup;
 use SMW\SQLStore\ListLookup\CachedListLookup;
 use SMW\SQLStore\ListLookup;
+use SMW\SQLStore\QueryEngine\ResolverOptions;
+use SMW\SQLStore\QueryEngine\QuerySegmentListResolver;
+use SMW\SQLStore\QueryEngine\QueryBuilder;
+use SMW\SQLStore\QueryEngine\ConceptQueryResolver;
 use Onoi\Cache\Cache;
 use Doctrine\DBAL\Connection;
-use SMW\SQLStore\QueryEngine\ConceptCache;
+use SMW\SQLStore\ConceptCache;
 use SMW\ApplicationFactory;
 use SMWSQLStore3;
 use SMWSQLStore3QueryEngine;
 use SMWRequestOptions as RequestOptions;
+use SMW\DIProperty;
 
 /**
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class SQLStoreFactory {
@@ -32,33 +37,88 @@ class SQLStoreFactory {
 	 */
 	private $dbalConnection = null;
 
+	/**
+	 * @since 2.2
+	 *
+	 * @param SMWSQLStore3 $store
+	 */
 	public function __construct( SMWSQLStore3 $store ) {
 		$this->store = $store;
 	}
 
-	public function newSalveQueryEngine() {
-		return new SMWSQLStore3QueryEngine(
-			$this->store,
-			$this->newTemporaryIdTableCreator()
-		);
-	}
-
+	/**
+	 * @since 2.2
+	 *
+	 * @return SMWSQLStore3QueryEngine
+	 */
 	public function newMasterQueryEngine() {
+
+		$resolverOptions = new ResolverOptions();
+
+		$resolverOptions->set(
+			'hierarchytables',
+			array(
+				'_SUBP' => $this->store->findPropertyTableID( new DIProperty( '_SUBP' ) ),
+				'_SUBC' => $this->store->findPropertyTableID( new DIProperty( '_SUBC' ) )
+			)
+		);
+
+		$querySegmentListResolver = new QuerySegmentListResolver(
+			$this->store->getConnection( 'mw.db' ),
+			$this->newTemporaryIdTableCreator(),
+			$resolverOptions
+		);
+
 		return new SMWSQLStore3QueryEngine(
 			$this->store,
-			$this->newTemporaryIdTableCreator()
+			new QueryBuilder( $this->store ),
+			$querySegmentListResolver
 		);
 	}
 
-	private function newTemporaryIdTableCreator() {
-		return new TemporaryIdTableCreator( $GLOBALS['wgDBtype'] );
+	/**
+	 * @since 2.2
+	 *
+	 * @return SMWSQLStore3QueryEngine
+	 */
+	public function newSlaveQueryEngine() {
+		return $this->newMasterQueryEngine();
 	}
 
+	/**
+	 * @since 2.2
+	 *
+	 * @return ConceptCache
+	 */
+	public function newMasterConceptCache() {
+
+		$conceptQueryResolver = new ConceptQueryResolver(
+			$this->newMasterQueryEngine()
+		);
+
+		$conceptQueryResolver->setConceptFeatures(
+			$GLOBALS['smwgQConceptFeatures']
+		);
+
+		$conceptCache = new ConceptCache(
+			$this->store,
+			$conceptQueryResolver
+		);
+
+		$conceptCache->setUpperLimit(
+			$GLOBALS['smwgQMaxLimit']
+		);
+
+		return $conceptCache;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return ConceptCache
+	 */
 	public function newSlaveConceptCache() {
-		return new ConceptCache(
-			$this->newSalveQueryEngine(),
-			$this->store
-		);
+		return $this->newMasterConceptCache();
 	}
 
 	/**
@@ -162,6 +222,10 @@ class SQLStoreFactory {
 		$cachedListLookup->setCachePrefix( $cacheFactory->getCachePrefix() );
 
 		return $cachedListLookup;
+	}
+
+	private function newTemporaryIdTableCreator() {
+		return new TemporaryIdTableCreator( $GLOBALS['wgDBtype'] );
 	}
 
 	private function getConnection() {

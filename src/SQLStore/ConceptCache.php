@@ -1,8 +1,7 @@
 <?php
 
-namespace SMW\SQLStore\QueryEngine;
+namespace SMW\SQLStore;
 
-use DatabaseBase;
 use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -13,26 +12,73 @@ use SMWSQLStore3;
 use SMWSQLStore3QueryEngine;
 use SMWWikiPageValue;
 use Title;
+use SMW\SQLStore\QueryEngine\ConceptQueryResolver;
 
 /**
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
+ * @since 2.2
+ *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class ConceptCache {
-
-	/**
-	 * @var SMWSQLStore3QueryEngine
-	 */
-	private $queryEngine;
 
 	/**
 	 * @var SMWSQLStore3
 	 */
 	private $store;
 
-	public function __construct( SMWSQLStore3QueryEngine $queryEngine, SMWSQLStore3 $store ) {
-		$this->queryEngine = $queryEngine;
+	/**
+	 * @var ConceptQueryResolver
+	 */
+	private $conceptQueryResolver;
+
+	/**
+	 * @var integer
+	 */
+	private $upperLimit = 50;
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param SMWSQLStore3 $store
+	 * @param ConceptQueryResolver $conceptQueryResolver
+	 */
+	public function __construct( SMWSQLStore3 $store, ConceptQueryResolver $conceptQueryResolver ) {
 		$this->store = $store;
+		$this->conceptQueryResolver = $conceptQueryResolver;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param integer $upperLimit
+	 */
+	public function setUpperLimit( $upperLimit ) {
+		$this->upperLimit = (int)$upperLimit;
+	}
+
+	/**
+	 * Refresh the concept cache for the given concept.
+	 *
+	 * @since 1.8
+	 * @param $concept Title
+	 * @return array of error strings (empty if no errors occurred)
+	 */
+	public function refreshConceptCache( Title $concept ) {
+		$errors = $this->refresh( $concept );
+
+		$this->conceptQueryResolver->cleanUp();
+
+		return array_merge( $this->conceptQueryResolver->getErrors(), $errors );
+	}
+
+	/**
+	 * Delete the concept cache for the given concept.
+	 *
+	 * @param $concept Title
+	 */
+	public function deleteConceptCache( $concept ) {
+		$this->delete( $concept );
 	}
 
 	/**
@@ -41,9 +87,7 @@ class ConceptCache {
 	 * @return string[] array with error messages
 	 */
 	public function refresh( Title $concept ) {
-		global $smwgQMaxLimit, $wgDBtype;
-
-		$fname = 'SMW::refreshConceptCache';
+		global $wgDBtype;
 
 		$db = $this->store->getConnection();
 
@@ -63,9 +107,11 @@ class ConceptCache {
 		}
 
 		// Pre-process query:
-		$queryPart = $this->queryEngine->resolveQueryTreeForQueryCondition( $conceptQueryText );
+		$querySegment = $this->conceptQueryResolver->prepareQuerySegmentFor(
+			$conceptQueryText
+		);
 
-		if ( $queryPart === null || $queryPart->joinfield === '' || $queryPart->joinTable === '' ) {
+		if ( $querySegment === null || $querySegment->joinfield === '' || $querySegment->joinTable === '' ) {
 			return array();
 		}
 
@@ -79,23 +125,24 @@ class ConceptCache {
 		$concCacheTableName = $db->tablename( SMWSQLStore3::CONCEPT_CACHE_TABLE );
 
 		if ( $wgDBtype == 'postgres' ) { // PostgresQL: no INSERT IGNORE, check for duplicates explicitly
-			$where = $queryPart->where . ( $queryPart->where ? ' AND ' : '' ) .
+			$where = $querySegment->where . ( $querySegment->where ? ' AND ' : '' ) .
 				"NOT EXISTS (SELECT NULL FROM $concCacheTableName" .
-				" WHERE {$concCacheTableName}.s_id = {$queryPart->alias}.s_id " .
-				" AND  {$concCacheTableName}.o_id = {$queryPart->alias}.o_id )";
+				" WHERE {$concCacheTableName}.s_id = {$querySegment->alias}.s_id " .
+				" AND  {$concCacheTableName}.o_id = {$querySegment->alias}.o_id )";
 		} else { // MySQL just uses INSERT IGNORE, no extra conditions
-			$where = $queryPart->where;
+			$where = $querySegment->where;
 		}
 
 		// TODO: catch db exception
 
 		$db->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) .
 			"INTO $concCacheTableName" .
-			" SELECT DISTINCT {$queryPart->joinfield} AS s_id, $cid AS o_id FROM " .
-			$db->tableName( $queryPart->joinTable ) . " AS {$queryPart->alias}" .
-			$queryPart->from .
-			( $where ? ' WHERE ' : '' ) . $where . " LIMIT $smwgQMaxLimit",
-			$fname );
+			" SELECT DISTINCT {$querySegment->joinfield} AS s_id, $cid AS o_id FROM " .
+			$db->tableName( $querySegment->joinTable ) . " AS {$querySegment->alias}" .
+			$querySegment->from .
+			( $where ? ' WHERE ' : '' ) . $where . " LIMIT ". $this->upperLimit,
+			__METHOD__
+		);
 
 		$db->update(
 			'smw_fpt_conc',
