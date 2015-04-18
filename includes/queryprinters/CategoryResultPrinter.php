@@ -46,17 +46,19 @@ class CategoryResultPrinter extends ResultPrinter {
 	}
 
 	protected function getResultText( SMWQueryResult $res, $outputMode ) {
-		$result = '';
-		$num = $res->getCount();
 
-		$prev_first_char = "";
-		$rows_per_column = ceil( $num / $this->mNumColumns );
-		// column width is a percentage
-		$column_width = floor( 100 / $this->mNumColumns );
+		$result = '';
+		$contentsByIndex = array();
+		$columnIndex = '';
 
 		// Print all result rows:
 		$rowindex = 0;
 		$row = $res->getNext();
+
+		$mwCollaboratorFactory = ApplicationFactory::getInstance()->newMwCollaboratorFactory();
+
+		$htmlColumnListRenderer = $mwCollaboratorFactory->newHtmlColumnListRenderer();
+		$templateRenderer = $mwCollaboratorFactory->newWikitextTemplateRenderer();
 
 		while ( $row !== false ) {
 			$nextrow = $res->getNext(); // look ahead
@@ -75,56 +77,43 @@ class CategoryResultPrinter extends ResultPrinter {
 
 			$cur_first_char = $this->getFirstLetterForCategory( $res, $content );
 
-			if ( $rowindex % $rows_per_column == 0 ) {
-				$result .= "\n			<div style=\"float: left; width: $column_width%;\">\n";
-				if ( $cur_first_char == $prev_first_char ) {
-					$result .= "				<h3>$cur_first_char " . wfMessage( 'listingcontinuesabbrev' )->text() . "</h3>\n				<ul>\n";
-				}
+			if ( !isset( $contentsByIndex[$cur_first_char] ) ) {
+				$contentsByIndex[$cur_first_char] = array();
 			}
-
-			// if we're at a new first letter, end
-			// the last list and start a new one
-			if ( $cur_first_char != $prev_first_char ) {
-				if ( $rowindex % $rows_per_column > 0 ) {
-					$result .= "				</ul>\n";
-				}
-				$result .= "				<h3>$cur_first_char</h3>\n				<ul>\n";
-			}
-			$prev_first_char = $cur_first_char;
-
-			$result .= '<li>';
-			$first_col = true;
 
 			if ( $this->mTemplate !== '' ) { // build template code
+
+				$first_col = true;
 				$this->hasTemplates = true;
-				$wikitext = ( $this->mUserParam ) ? "|userparam=$this->mUserParam":'';
-				$i = 1; // explicitly number parameters for more robust parsing (values may contain "=")
 
-				foreach ( $row as $field ) {
-					$wikitext .= '|' . $i++ . '=';
-					$first_value = true;
-
-					while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
-						if ( $first_value ) {
-							$first_value = false;
-						} else {
-							$wikitext .= $this->mDelim . ' ';
-						}
-						$wikitext .= $text;
-					}
-
-					$first_col = false;
+				if ( $this->mUserParam ) {
+					$templateRenderer->addField( 'userparam', $this->mUserParam );
 				}
 
-				$wikitext .= "|#=$rowindex";
-				$result .= '{{' . $this->mTemplate . $wikitext . '}}';
-				// str_replace('|', '&#x007C;', // encode '|' for use in templates (templates fail otherwise) -- this is not the place for doing this, since even DV-Wikitexts contain proper "|"!
+				$this->addRowFieldsToTemplate(
+					$row,
+					$first_col,
+					$columnIndex,
+					$templateRenderer
+				);
+
+				$templateRenderer->addField( '#', $rowindex );
+				$templateRenderer->packFieldsForTemplate( $this->mTemplate );
+
+				// str_replace('|', '&#x007C;', // encode '|' for use in templates (templates fail otherwise) --
+				// this is not the place for doing this, since even DV-Wikitexts contain proper "|"!
+				$contentsByIndex[$columnIndex][] = $templateRenderer->render();
 			} else {  // build simple list
 				$first_col = true;
 				$found_values = false; // has anything but the first column been printed?
+				$result = '';
 
 				foreach ( $row as $field ) {
 					$first_value = true;
+
+					$columnIndex = ByLanguageCollationMapper::getInstance()->findFirstLetterForCategory(
+						$field->getResultSubject()->getSortKey()
+					);
 
 					while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
 						if ( !$first_col && !$found_values ) { // first values after first column
@@ -139,7 +128,7 @@ class CategoryResultPrinter extends ResultPrinter {
 							$first_value = false;
 
 							if ( $this->mShowHeaders && ( $field->getPrintRequest()->getLabel() !== '' ) ) {
-								$result .= $field->getPrintRequest()->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . ' ';
+								$result .= $field->getPrintRequest()->getText( SMW_OUTPUT_WIKI, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null : $this->mLinker ) ) . ' ';
 							}
 						}
 
@@ -152,43 +141,32 @@ class CategoryResultPrinter extends ResultPrinter {
 				if ( $found_values ) {
 					$result .= ')';
 				}
+
+				$contentsByIndex[$columnIndex][] = $result;
 			}
 
-			$result .= '</li>';
 			$row = $nextrow;
-
-			// end list if we're at the end of the column
-			// or the page
-			if ( ( $rowindex + 1 ) % $rows_per_column == 0 && ( $rowindex + 1 ) < $num ) {
-				$result .= "				</ul>\n			</div> <!-- end column -->";
-			}
-
 			$rowindex++;
 		}
 
-		if ( $result === '' ) {
+		if ( $contentsByIndex === array() ) {
 
 			$res->addErrors( array(
 				$this->msg( 'smw-qp-empty-data' )->inContentLanguage()->text()
 			) );
 
-			return $result;
+			return '';
 		}
 
 		// Make label for finding further results
 		if ( $this->linkFurtherResults( $res ) ) {
-			$result .= '<br /><li>' . $this->getLink( $res, $outputMode )->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . '</li>';
+			$contentsByIndex[$columnIndex][] = $this->getLink( $res, $outputMode )->getText( SMW_OUTPUT_WIKI, $this->mLinker );
 		}
 
-		$result .= "</ul>\n</div> <!-- end column -->";
-		// clear all the CSS floats
-		$result .= "\n" . '<br style="clear: both;"/>';
+		$htmlColumnListRenderer->setNumberOfColumns( $this->mNumColumns );
+		$htmlColumnListRenderer->addContentsByIndex( $contentsByIndex );
 
-		// <H3> will generate TOC entries otherwise.  Probably need another way
-		// to accomplish this -- user might still want TOC for other page content.
-		$result .= '__NOTOC__';
-
-		return $result;
+		return $htmlColumnListRenderer->getHtml();
 	}
 
 	public function getParameters() {
@@ -214,6 +192,13 @@ class CategoryResultPrinter extends ResultPrinter {
 				'message' => 'smw-paramdesc-category-userparam',
 				'default' => '',
 			),
+
+			array(
+				'name' => 'named args',
+				'type' => 'boolean',
+				'message' => 'smw-paramdesc-named_args',
+				'default' => false,
+			)
 		) );
 	}
 
@@ -226,6 +211,47 @@ class CategoryResultPrinter extends ResultPrinter {
 		}
 
 		return ByLanguageCollationMapper::getInstance()->findFirstLetterForCategory( $sortKey );
+	}
+
+	private function addRowFieldsToTemplate( $row, &$first_col, &$columnIndex, $templateRenderer ) {
+
+		// explicitly number parameters for more robust parsing (values may contain "=")
+		$i = 0;
+
+		foreach ( $row as $field ) {
+			$i++;
+
+			$fieldName = '';
+
+			if ( $this->params['named args'] ) {
+				$fieldName = $field->getPrintRequest()->getLabel();
+			}
+
+			if ( $fieldName === '' || $fieldName === '?' ) {
+				$fieldName = $fieldName . $i;
+			}
+
+			$first_value = true;
+			$fieldValue = '';
+
+			$columnIndex = ByLanguageCollationMapper::getInstance()->findFirstLetterForCategory(
+				$field->getResultSubject()->getSortKey()
+			);
+
+			while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
+
+				if ( $first_value ) {
+					$first_value = false;
+				} else {
+					$fieldValue .= $this->mDelim . ' ';
+				}
+
+				$fieldValue .= $text;
+			}
+
+			$templateRenderer->addField( $fieldName, $fieldValue );
+			$first_col = false;
+		}
 	}
 
 }
