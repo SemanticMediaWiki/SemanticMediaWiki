@@ -14,6 +14,7 @@ This is not a release yet.
 * #893 Added information about "improper value for" to the statistics overview and as `API` parameter (`&errorcount`)
 * #913 Fixed exception for usage of `Has subobject` as free annotation
 * #914 Added restriction for "manual" annotation use to some pre-defined properties (e.g. `Has subobject`, `Has query`)
+* #974 Added `named args` as parameter to `CategoryResultPrinter`
  
 ## Enhancements
 
@@ -36,6 +37,7 @@ This is not a release yet.
 * #896 Fixed empty caption for `false` when using the`#x` format option
 * #928 Fixed exception in `SMWExportController` for use of `&stats` option
 * #945 Fixed nesting of self-referenced concepts in a concept query
+* #974 Fixed inconsistency when using `headers=plain` in `CategoryResultPrinter` also fixed the `__NOTOC__` hack
 
 ## Internal changes
 * #373 Update `jquery.jstorage.js` (0.3.2 => 0.4.11)
