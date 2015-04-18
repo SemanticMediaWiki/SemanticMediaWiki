@@ -321,7 +321,7 @@ class SMWExporter {
 
 						$expData->addPropertyObjectValue(
 							$pe,
-							self::getDataItemExpElement( new SMWDIBlob( $dataValue->getImportedFromReference() ) )
+							self::getDataItemExpElement( new SMWDIBlob( $dataValue->getImportReference() ) )
 						);
 
 					} elseif ( $property->getKey() == '_REDI' ) {
