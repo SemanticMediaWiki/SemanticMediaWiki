@@ -80,4 +80,25 @@ class ControlledVocabularyImportContentFetcherTest extends \PHPUnit_Framework_Te
 		);
 	}
 
+	public function testForNotImportedNamespace() {
+
+		$mediaWikiNsContentReader = $this->getMockBuilder( '\SMW\MediaWiki\MediaWikiNsContentReader' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$mediaWikiNsContentReader->expects( $this->atLeastOnce() )
+			->method( 'read' )
+			->will( $this->returnValue( '' ) );
+
+		$instance = new ControlledVocabularyImportContentFetcher( $mediaWikiNsContentReader );
+
+		$this->assertFalse(
+			$instance->contains( 'Foo' )
+		);
+
+		$this->assertEmpty(
+			$instance->fetchFor( 'Foo' )
+		);
+	}
+
 }

@@ -23,6 +23,8 @@ class ValueParserFactoryTest extends \PHPUnit_Framework_TestCase {
 			new ValueParserFactory()
 		);
 
+		ValueParserFactory::clear();
+
 		$this->assertInstanceOf(
 			'\SMW\DataValues\ValueParsers\ValueParserFactory',
 			ValueParserFactory::getInstance()

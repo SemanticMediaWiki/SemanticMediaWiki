@@ -159,6 +159,12 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function invalidTypeContent() {
 
+		// Url missing
+		$provider[] = array(
+			'|[http://www.foaf-project.org/ Friend Of A Friend]\n name',
+			array()
+		);
+
 		// Type missing
 		$provider[] = array(
 			'http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n name',

@@ -34,6 +34,15 @@ class MediaWikiNsContentReaderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testTryToReadForInvalidTitle() {
+
+		$instance = new MediaWikiNsContentReader();
+
+		$this->assertEmpty(
+			$instance->read( '{}' )
+		);
+	}
+
 	public function testNotUseDatabaseForFallback() {
 
 		$instance = new MediaWikiNsContentReader();

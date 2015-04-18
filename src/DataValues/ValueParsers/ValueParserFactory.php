@@ -19,7 +19,7 @@ class ValueParserFactory {
 	private static $instance = null;
 
 	/**
-	 * @since 2.0
+	 * @since 2.2
 	 *
 	 * @return self
 	 */
@@ -30,6 +30,13 @@ class ValueParserFactory {
 		}
 
 		return self::$instance;
+	}
+
+	/**
+	 * @since 2.2
+	 */
+	public static function clear() {
+		self::$instance = null;
 	}
 
 	/**

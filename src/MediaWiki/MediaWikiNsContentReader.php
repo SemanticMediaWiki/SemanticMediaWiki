@@ -51,7 +51,7 @@ class MediaWikiNsContentReader {
 
 	private function tryLoadingFromDatabase( $name ) {
 
-		$title = Title::makeTitle( NS_MEDIAWIKI, ucfirst( $name ) );
+		$title = Title::makeTitleSafe( NS_MEDIAWIKI, ucfirst( $name ) );
 
 		if ( $title === null ) {
 			return '';
