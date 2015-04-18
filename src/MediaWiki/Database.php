@@ -214,7 +214,12 @@ class Database {
 	 */
 	public function query( $sql, $fname = __METHOD__, $ignoreException = false ) {
 
+		if ( $this->getType() !== 'postgres' ) {
+			$sql = str_replace( '@INT', '', $sql );
+		}
+
 		if ( $this->getType() == 'postgres' ) {
+			$sql = str_replace( '@INT', '::integer', $sql );
 			$sql = str_replace( 'IGNORE', '', $sql );
 			$sql = str_replace( 'DROP TEMPORARY TABLE', 'DROP TABLE IF EXISTS', $sql );
 			$sql = str_replace( 'RAND()', ( strpos( $sql, 'DISTINCT' ) !== false ? '' : 'RANDOM()' ), $sql );
