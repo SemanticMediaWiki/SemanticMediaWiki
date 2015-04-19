@@ -19,6 +19,7 @@ This is not a release yet.
 ## Enhancements
 
 * #958 Replaced defunct SMWRegsitry wiki registration on Special:SMWAdmin with a link to WikiApiary
+* #976 Reduced the number of pages on which SMW JavaScript and CSS is loaded
 
 ## Bug fixes
 
