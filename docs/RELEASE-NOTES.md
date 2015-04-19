@@ -57,3 +57,4 @@ This is not a release yet.
 * #950 Renamed `PropertyTypeDiffFinder` to `PropertySpecDiffFinder`
 * #951 Extended `UpdateDispatcherJob` to create `UpdateJob` chunks to avoid memory exhaustion
 * #959 Added `ExpDataSerializer` and `ExpDataDeserializer`
+* #984 Moved remaining part of `SMWSQLStore3QueryEngine` to `SMW\SQLStore\QueryEngine\QueryEngine`
