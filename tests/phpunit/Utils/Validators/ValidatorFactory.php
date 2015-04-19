@@ -77,10 +77,10 @@ class ValidatorFactory {
 	/**
 	 * @since 2.2
 	 *
-	 * @return SqlQueryPartValidator
+	 * @return QuerySegmentValidator
 	 */
-	public function newSqlQueryPartValidator() {
-		return new SqlQueryPartValidator();
+	public function newQuerySegmentValidator() {
+		return new QuerySegmentValidator();
 	}
 
 }

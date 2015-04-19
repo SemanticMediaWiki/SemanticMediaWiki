@@ -7,7 +7,7 @@ use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\SqlQueryPart;
+use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMWSql3SmwIds;
 
 /**
@@ -56,18 +56,18 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param Description $description
 	 *
-	 * @return SqlQueryPart
+	 * @return QuerySegment
 	 */
 	public function interpretDescription( Description $description ) {
 
-		$query = new SqlQueryPart();
+		$query = new QuerySegment();
 
 		if ( !$description->getDataItem() instanceof DIWikiPage ) {
 			return $query;
 		}
 
 		if ( $description->getComparator() === SMW_CMP_EQ ) {
-			$query->type = SqlQueryPart::Q_VALUE;
+			$query->type = QuerySegment::Q_VALUE;
 
 			$oid = $this->queryBuilder->getStore()->getObjectIds()->getSMWPageID(
 				$description->getDataItem()->getDBkey(),

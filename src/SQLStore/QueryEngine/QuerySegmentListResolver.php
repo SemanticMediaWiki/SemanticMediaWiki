@@ -4,7 +4,7 @@ namespace SMW\SQLStore\QueryEngine;
 
 use SMW\MediaWiki\Database;
 use SMW\SQLStore\TemporaryIdTableCreator;
-use SMW\SQLStore\QueryEngine\SqlQueryPart as SMWSQLStore3Query;
+use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMWQuery as Query;
 use RuntimeException;
 
@@ -126,14 +126,14 @@ class QuerySegmentListResolver {
 	 * so that it contains non-recursive description of a select to execute for getting
 	 * the actual result.
 	 *
-	 * @param SMWSQLStore3Query $query
+	 * @param QuerySegment $query
 	 */
-	public function resolveForSegment( SMWSQLStore3Query &$query ) {
+	public function resolveForSegment( QuerySegment &$query ) {
 
 		$db = $this->connection;
 
 		switch ( $query->type ) {
-			case SMWSQLStore3Query::Q_TABLE: // Normal query with conjunctive subcondition.
+			case QuerySegment::Q_TABLE: // Normal query with conjunctive subcondition.
 				foreach ( $query->components as $qid => $joinField ) {
 					$subQuery = $this->querySegments[$qid];
 					$this->resolveForSegment( $subQuery );
@@ -169,7 +169,7 @@ class QuerySegmentListResolver {
 
 				$query->components = array();
 			break;
-			case SMWSQLStore3Query::Q_CONJUNCTION:
+			case QuerySegment::Q_CONJUNCTION:
 				// pick one subquery with jointable as anchor point ...
 				reset( $query->components );
 				$key = false;
@@ -209,7 +209,7 @@ class QuerySegmentListResolver {
 				}
 				$query = $result;
 			break;
-			case SMWSQLStore3Query::Q_DISJUNCTION:
+			case QuerySegment::Q_DISJUNCTION:
 				if ( $this->queryMode !== Query::MODE_DEBUG ) {
 					$db->query(
 						$this->getCreateTempIDTableSQL( $db->tableName( $query->alias ) ),
@@ -257,11 +257,11 @@ class QuerySegmentListResolver {
 				$query->sortfields = array(); // Make sure we got no sortfields.
 				// TODO: currently this eliminates sortkeys, possibly keep them (needs different temp table format though, maybe not such a good thing to do)
 			break;
-			case SMWSQLStore3Query::Q_PROP_HIERARCHY:
-			case SMWSQLStore3Query::Q_CLASS_HIERARCHY: // make a saturated hierarchy
+			case QuerySegment::Q_PROP_HIERARCHY:
+			case QuerySegment::Q_CLASS_HIERARCHY: // make a saturated hierarchy
 				$this->resolveHierarchyForSegment( $query );
 			break;
-			case SMWSQLStore3Query::Q_VALUE:
+			case QuerySegment::Q_VALUE:
 			break; // nothing to do
 		}
 	}
@@ -270,23 +270,23 @@ class QuerySegmentListResolver {
 	 * Find subproperties or subcategories. This may require iterative computation,
 	 * and temporary tables are used in many cases.
 	 *
-	 * @param SMWSQLStore3Query $query
+	 * @param QuerySegment $query
 	 */
-	private function resolveHierarchyForSegment( SMWSQLStore3Query &$query ) {
+	private function resolveHierarchyForSegment( QuerySegment &$query ) {
 
 		$db = $this->connection;
 		$hierarchytables = $this->resolverOptions->get( 'hierarchytables' );
 
-		if ( $query->type === SMWSQLStore3Query::Q_PROP_HIERARCHY ) {
-			$depth = $this->resolverOptions->get( 'subpropertyDepth' );
+		if ( $query->type === QuerySegment::Q_PROP_HIERARCHY ) {
+			$depth = $this->resolverOptions->get( 'smwgQSubpropertyDepth' );
 			$smwtable = $db->tableName( $hierarchytables['_SUBP'] );
 		} else {
-			$depth = $this->resolverOptions->get( 'subcategoryDepth' );
+			$depth = $this->resolverOptions->get( 'smwgQSubcategoryDepth' );
 			$smwtable = $db->tableName( $hierarchytables['_SUBC'] );
 		}
 
 		if ( $depth <= 0 ) { // treat as value, no recursion
-			$query->type = SMWSQLStore3Query::Q_VALUE;
+			$query->type = QuerySegment::Q_VALUE;
 			return;
 		}
 
@@ -303,7 +303,7 @@ class QuerySegmentListResolver {
 
 		if ( !$db->fetchObject( $res ) ) { // no subobjects, we are done!
 			$db->freeResult( $res );
-			$query->type = SMWSQLStore3Query::Q_VALUE;
+			$query->type = QuerySegment::Q_VALUE;
 			return;
 		}
 

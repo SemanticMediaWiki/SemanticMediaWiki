@@ -9,7 +9,6 @@ use SMWDataItem;
 use SMWQuery;
 use SMWQueryParser;
 use SMWSQLStore3;
-use SMWSQLStore3QueryEngine;
 use SMWWikiPageValue;
 use Title;
 use SMW\SQLStore\QueryEngine\ConceptQueryResolver;

@@ -2,8 +2,7 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
-use SMWSQLStore3QueryEngine;
-use SMW\SQLStore\QueryEngine\SqlQueryPart as SMWSQLStore3Query;
+use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMWQueryParser as QueryParser;
 use SMWQuery as Query;
 
@@ -16,7 +15,7 @@ use SMWQuery as Query;
 class ConceptQueryResolver {
 
 	/**
-	 * @var SMWSQLStore3QueryEngine
+	 * @var QueryEngine
 	 */
 	private $queryEngine;
 
@@ -28,9 +27,9 @@ class ConceptQueryResolver {
 	/**
 	 * @since 2.2
 	 *
-	 * @param SMWSQLStore3QueryEngine $queryEngine
+	 * @param QueryEngine $queryEngine
 	 */
-	public function __construct( SMWSQLStore3QueryEngine $queryEngine ) {
+	public function __construct( QueryEngine $queryEngine ) {
 		$this->queryEngine = $queryEngine;
 	}
 
@@ -46,24 +45,24 @@ class ConceptQueryResolver {
 	/**
 	 * @param string $conceptDescriptionText
 	 *
-	 * @return SqlQueryPart|null
+	 * @return QuerySegment|null
 	 */
 	public function prepareQuerySegmentFor( $conceptDescriptionText ) {
 
 		$querySegements = array();
-		SMWSQLStore3Query::$qnum = 0;
+		QuerySegment::$qnum = 0;
 
 		$queryBuilder = $this->queryEngine->getQueryBuilder();
 		$queryBuilder->setSortKeys( array() );
 
 		$qp = new QueryParser( $this->conceptFeatures );
 
-		$queryBuilder->buildSqlQueryPartFor(
+		$queryBuilder->buildQuerySegmentFor(
 			$qp->getQueryDescription( $conceptDescriptionText )
 		);
 
-		$qid = $queryBuilder->getLastSqlQueryPartId();
-		$querySegements = $queryBuilder->getSqlQueryParts();
+		$qid = $queryBuilder->getLastQuerySegmentId();
+		$querySegements = $queryBuilder->getQuerySegments();
 
 		if ( $qid < 0 ) {
 			return null;

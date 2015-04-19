@@ -3,12 +3,9 @@
 namespace SMW\Tests\SPARQLStore\QueryEngine\Interpreter;
 
 use SMW\Tests\Utils\UtilityFactory;
-
 use SMW\SPARQLStore\QueryEngine\Interpreter\ConceptDescriptionInterpreter;
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
-
 use SMW\Query\Language\ConceptDescription;
-
 use SMW\DIWikiPage;
 use SMW\DIConcept;
 use SMW\DIProperty;

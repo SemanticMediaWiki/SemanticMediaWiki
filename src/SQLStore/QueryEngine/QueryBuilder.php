@@ -34,9 +34,9 @@ class QueryBuilder {
 	/**
 	 * Array of generated QueryContainer query descriptions (index => object).
 	 *
-	 * @var SqlQueryPart[]
+	 * @var QuerySegment[]
 	 */
-	private $sqlQueryParts = array();
+	private $querySegments = array();
 
 	/**
 	 * Array of sorting requests ("Property_name" => "ASC"/"DESC"). Used during query
@@ -55,7 +55,7 @@ class QueryBuilder {
 	/**
 	 * @var integer
 	 */
-	private $lastQueryPartId = -1;
+	private $lastQuerySegmentId = -1;
 
 	/**
 	 * @var DispatchingInterpreter
@@ -70,7 +70,7 @@ class QueryBuilder {
 	public function __construct( Store $store ) {
 		$this->store = $store;
 
-		SqlQueryPart::$qnum = 0;
+		QuerySegment::$qnum = 0;
 
 		$this->dispatchingInterpreter = new DispatchingInterpreter();
 		$this->dispatchingInterpreter->addDefaultInterpreter( new ThingDescriptionInterpreter( $this ) );
@@ -130,41 +130,42 @@ class QueryBuilder {
 	 *
 	 * @param int $id
 	 *
-	 * @return SqlQueryPart
+	 * @return QuerySegment
 	 * @throws InvalidArgumentException
 	 * @throws OutOfBoundsException
 	 */
-	public function getSqlQueryPart( $id ) {
+	public function findQuerySegment( $id ) {
+
 		if ( !is_int( $id ) ) {
 			throw new InvalidArgumentException( '$id needs to be an integer' );
 		}
 
-		if ( !array_key_exists( $id, $this->sqlQueryParts ) ) {
-			throw new OutOfBoundsException( 'There is no query part with id ' . $id );
+		if ( !array_key_exists( $id, $this->querySegments ) ) {
+			throw new OutOfBoundsException( 'There is no query segment with id ' . $id );
 		}
 
-		return $this->sqlQueryParts[$id];
+		return $this->querySegments[$id];
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @return SqlQueryPart[]
+	 * @return QuerySegment[]
 	 */
-	public function getSqlQueryParts() {
-		return $this->sqlQueryParts;
+	public function getQuerySegments() {
+		return $this->querySegments;
 	}
 
 	/**
 	 * @since 2.2
 	 *
 	 * @param int $id
-	 * @param SqlQueryPart $query
+	 * @param QuerySegment $query
 	 *
 	 * @return QueryBuilder
 	 */
-	public function addSqlQueryPartForId( $id, SqlQueryPart $query ) {
-		$this->sqlQueryParts[$id] = $query;
+	public function addQuerySegmentForId( $id, QuerySegment $query ) {
+		$this->querySegments[$id] = $query;
 		return $this;
 	}
 
@@ -173,8 +174,8 @@ class QueryBuilder {
 	 *
 	 * @return integer
 	 */
-	public function getLastSqlQueryPartId() {
-		return $this->lastQueryPartId;
+	public function getLastQuerySegmentId() {
+		return $this->lastQuerySegmentId;
 	}
 
 	/**
@@ -205,15 +206,15 @@ class QueryBuilder {
 	 *
 	 * @return integer
 	 */
-	public function buildSqlQueryPartFor( Description $description ) {
+	public function buildQuerySegmentFor( Description $description ) {
 
 		$query = $this->dispatchingInterpreter->interpretDescription( $description );
 
-		$this->registerQueryPart( $query );
+		$this->registerQuerySegment( $query );
 
-		$this->lastQueryPartId = $query->type === SqlQueryPart::Q_NOQUERY ? -1 : $query->queryNumber;
+		$this->lastQuerySegmentId = $query->type === QuerySegment::Q_NOQUERY ? -1 : $query->queryNumber;
 
-		return $this->lastQueryPartId;
+		return $this->lastQuerySegmentId;
 	}
 
 	/**
@@ -221,21 +222,21 @@ class QueryBuilder {
 	 * valid. Also make sure that sortkey information is propagated down
 	 * from subqueries of this query.
 	 *
-	 * @param SqlQueryPart $query
+	 * @param QuerySegment $query
 	 */
-	private function registerQueryPart( SqlQueryPart $query ) {
-		if ( $query->type === SqlQueryPart::Q_NOQUERY ) {
+	private function registerQuerySegment( QuerySegment $query ) {
+		if ( $query->type === QuerySegment::Q_NOQUERY ) {
 			return;
 		}
 
-		$this->addSqlQueryPartForId( $query->queryNumber, $query );
+		$this->addQuerySegmentForId( $query->queryNumber, $query );
 
 		// Propagate sortkeys from subqueries:
-		if ( $query->type !== SqlQueryPart::Q_DISJUNCTION ) {
+		if ( $query->type !== QuerySegment::Q_DISJUNCTION ) {
 			// Sortkeys are killed by disjunctions (not all parts may have them),
 			// NOTE: preprocessing might try to push disjunctions downwards to safe sortkey, but this seems to be minor
 			foreach ( $query->components as $cid => $field ) {
-				$query->sortfields = array_merge( $this->getSqlQueryPart( $cid )->sortfields, $query->sortfields );
+				$query->sortfields = array_merge( $this->findQuerySegment( $cid )->sortfields, $query->sortfields );
 			}
 		}
 	}

@@ -6,7 +6,7 @@ use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Description;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\SqlQueryPart;
+use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMWQueryParser as QueryParser;
 use SMWSQLStore3;
 
@@ -48,11 +48,11 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param Description $description
 	 *
-	 * @return SqlQueryPart
+	 * @return QuerySegment
 	 */
 	public function interpretDescription( Description $description ) {
 
-		$query = new SqlQueryPart();
+		$query = new QuerySegment();
 
 		$conceptId = $this->queryBuilder->getStore()->getObjectIds()->getSMWPageID(
 			$description->getConcept()->getDBkey(),
@@ -100,10 +100,10 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 			$query->where = "$query->alias.o_id=" . $this->queryBuilder->getStore()->getConnection( 'mw.db' )->addQuotes( $conceptId );
 		} elseif ( $row->concept_txt ) { // Parse description and process it recursively.
 			if ( $may_be_computed ) {
-				$qid = $this->queryBuilder->buildSqlQueryPartFor( $this->getConceptQueryDescription( $row->concept_txt ) );
+				$qid = $this->queryBuilder->buildQuerySegmentFor( $this->getConceptQueryDescription( $row->concept_txt ) );
 
 				if ($qid != -1) {
-					$query = $this->queryBuilder->getSqlQueryPart( $qid );
+					$query = $this->queryBuilder->findQuerySegment( $qid );
 				} else { // somehow the concept query is no longer valid; maybe some syntax changed (upgrade) or global settings were modified since storing it
 					$this->queryBuilder->addError( wfMessage( 'smw_emptysubquery' )->text() ); // not the right message, but this case is very rare; let us not make detailed messages for this
 				}
@@ -142,7 +142,9 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	private function getConceptQueryDescription( $conceptQuery ) {
 		$queryParser = new QueryParser();
 
-		return $queryParser->getQueryDescription( str_replace( array( '&lt;', '&gt;', '&amp;' ), array( '<', '>', '&' ), $conceptQuery ) );
+		return $queryParser->getQueryDescription(
+			str_replace( array( '&lt;', '&gt;', '&amp;' ), array( '<', '>', '&' ), $conceptQuery )
+		);
 	}
 
 }

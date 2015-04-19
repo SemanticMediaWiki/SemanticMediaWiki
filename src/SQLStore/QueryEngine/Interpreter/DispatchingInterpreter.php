@@ -44,7 +44,7 @@ class DispatchingInterpreter implements DescriptionInterpreter {
 	/**
 	 * @param Description $description
 	 *
-	 * @return SqlQueryPart
+	 * @return QuerySegment
 	 * @throws InvalidArgumentException
 	 */
 	public function interpretDescription( Description $description ) {

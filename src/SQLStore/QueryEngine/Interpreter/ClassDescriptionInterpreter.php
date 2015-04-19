@@ -7,7 +7,7 @@ use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Description;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\SqlQueryPart;
+use SMW\SQLStore\QueryEngine\QuerySegment;
 
 /**
  * @license GNU GPL v2+
@@ -47,15 +47,15 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param Description $description
 	 *
-	 * @return SqlQueryPart
+	 * @return QuerySegment
 	 */
 	public function interpretDescription( Description $description ) {
 
-		$query = new SqlQueryPart();
+		$query = new QuerySegment();
 
-		$cqid = SqlQueryPart::$qnum;
-		$cquery = new SqlQueryPart();
-		$cquery->type = SqlQueryPart::Q_CLASS_HIERARCHY;
+		$cqid = QuerySegment::$qnum;
+		$cquery = new QuerySegment();
+		$cquery->type = QuerySegment::Q_CLASS_HIERARCHY;
 		$cquery->joinfield = array();
 
 		foreach ( $description->getCategories() as $category ) {
@@ -73,14 +73,14 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 		}
 
 		if ( count( $cquery->joinfield ) == 0 ) { // Empty result.
-			$query->type = SqlQueryPart::Q_VALUE;
+			$query->type = QuerySegment::Q_VALUE;
 			$query->joinTable = '';
 			$query->joinfield = '';
 		} else { // Instance query with disjunction of classes (categories)
 			$query->joinTable = $this->queryBuilder->getStore()->findPropertyTableID( new DIProperty( '_INST' ) );
 			$query->joinfield = "$query->alias.s_id";
 			$query->components[$cqid] = "$query->alias.o_id";
-			$this->queryBuilder->addSqlQueryPartForId( $cqid, $cquery );
+			$this->queryBuilder->addQuerySegmentForId( $cqid, $cquery );
 		}
 
 		return $query;

@@ -1,0 +1,16 @@
+# SQLStore
+
+The `SQLStore` contains of a storage and query engine to manage `s-p-o` related data structures using a `SQL` back-end.
+
+## QueryEngine
+
+The `QueryEngine` handles the transformation of the `ask` query language into a `SQL` construct and
+returns query results from the `SQL` back-end with the help of the following components:
+
+- The `QueryBuilder` transforms `ask` descriptions into individual `QuerySegment`'s (aka `QuerySegmentList`)
+- The `DescriptionInterpreter` interface describes classes that are responsible to interpret a specific
+  `Description` object and turn it into an abstract `SQL` construct (a `QuerySegment`)
+- The `QuerySegmentListResolver` flattens and transforms a list of `QuerySegment`'s into a non-recursive
+  tree of `SQL` statements (including resolving of property/category hierarchies)
+- The `ConceptQueryResolver` encapsulates query processing of a concept description in connection
+  with the `ConceptCache` class

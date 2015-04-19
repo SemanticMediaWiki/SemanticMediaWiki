@@ -4,11 +4,8 @@ namespace SMW\Tests\SPARQLStore\QueryEngine\Interpreter;
 
 use SMW\SPARQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter;
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
-
 use SMW\Tests\Utils\UtilityFactory;
-
 use SMW\Query\Language\ClassDescription;
-
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 

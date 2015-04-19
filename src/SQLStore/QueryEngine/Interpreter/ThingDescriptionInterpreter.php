@@ -6,7 +6,7 @@ use SMW\Query\Language\Description;
 use SMW\Query\Language\ThingDescription;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\SqlQueryPart;
+use SMW\SQLStore\QueryEngine\QuerySegment;
 
 /**
  * @license GNU GPL v2+
@@ -44,12 +44,12 @@ class ThingDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param Description $description
 	 *
-	 * @return SqlQueryPart
+	 * @return QuerySegment
 	 */
 	public function interpretDescription( Description $description ) {
 
-		$query = new SqlQueryPart();
-		$query->type = SqlQueryPart::Q_NOQUERY;
+		$query = new QuerySegment();
+		$query->type = QuerySegment::Q_NOQUERY;
 
 		return $query;
 	}

@@ -17,11 +17,17 @@ use Title;
  */
 class ConceptCacheTest extends \PHPUnit_Framework_TestCase {
 
-	public function testCanConstruct() {
+	private $store;
 
-		$store = $this->getMockBuilder( '\SMWSQLStore3' )
+	protected function setUp(){
+		parent::setUp();
+
+		$this->store = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
 			->getMock();
+	}
+
+	public function testCanConstruct() {
 
 		$conceptQueryResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConceptQueryResolver' )
 			->disableOriginalConstructor()
@@ -29,7 +35,7 @@ class ConceptCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\ConceptCache',
-			new ConceptCache( $store, $conceptQueryResolver )
+			new ConceptCache( $this->store, $conceptQueryResolver )
 		);
 	}
 

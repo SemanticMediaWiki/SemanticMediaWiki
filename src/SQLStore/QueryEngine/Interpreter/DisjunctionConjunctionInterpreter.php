@@ -7,7 +7,7 @@ use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\SqlQueryPart;
+use SMW\SQLStore\QueryEngine\QuerySegment;
 
 /**
  * @license GNU GPL v2+
@@ -47,16 +47,16 @@ class DisjunctionConjunctionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param Description $description
 	 *
-	 * @return SqlQueryPart
+	 * @return QuerySegment
 	 */
 	public function interpretDescription( Description $description ) {
 
-		$query = new SqlQueryPart();
-		$query->type = $description instanceof Conjunction ? SqlQueryPart::Q_CONJUNCTION : SqlQueryPart::Q_DISJUNCTION;
+		$query = new QuerySegment();
+		$query->type = $description instanceof Conjunction ? QuerySegment::Q_CONJUNCTION : QuerySegment::Q_DISJUNCTION;
 
 		foreach ( $description->getDescriptions() as $subDescription ) {
 
-			$subQueryId = $this->queryBuilder->buildSqlQueryPartFor( $subDescription );
+			$subQueryId = $this->queryBuilder->buildQuerySegmentFor( $subDescription );
 
 			if ( $subQueryId >= 0 ) {
 				$query->components[$subQueryId] = true;
@@ -65,7 +65,7 @@ class DisjunctionConjunctionInterpreter implements DescriptionInterpreter {
 
 		// All subconditions failed, drop this as well.
 		if ( count( $query->components ) == 0 ) {
-			$query->type = SqlQueryPart::Q_NOQUERY;
+			$query->type = QuerySegment::Q_NOQUERY;
 		}
 
 		return $query;

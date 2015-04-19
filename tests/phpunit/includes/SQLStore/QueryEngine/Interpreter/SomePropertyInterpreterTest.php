@@ -6,12 +6,10 @@ use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\SQLStore\QueryEngine\Interpreter\SomePropertyInterpreter;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
-
 use SMW\Query\Language\ValueDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\Disjunction;
-
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMWDIBlob as DIBlob;
@@ -28,12 +26,12 @@ use SMWDIBlob as DIBlob;
  */
 class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
-	private $queryContainerValidator;
+	private $querySegmentValidator;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->queryContainerValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSqlQueryPartValidator();
+		$this->querySegmentValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQuerySegmentValidator();
 	}
 
 	public function testCanConstruct() {
@@ -72,7 +70,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$instance->canInterpretDescription( $description )
 		);
 
-		$this->queryContainerValidator->assertThatContainerHasProperties(
+		$this->querySegmentValidator->assertThatContainerHasProperties(
 			$expected,
 			$instance->interpretDescription( $description )
 		);
@@ -114,7 +112,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$instance->canInterpretDescription( $description )
 		);
 
-		$this->queryContainerValidator->assertThatContainerHasProperties(
+		$this->querySegmentValidator->assertThatContainerHasProperties(
 			$expected,
 			$instance->interpretDescription( $description )
 		);
@@ -168,7 +166,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$instance->canInterpretDescription( $description )
 		);
 
-		$this->queryContainerValidator->assertThatContainerHasProperties(
+		$this->querySegmentValidator->assertThatContainerHasProperties(
 			$expected,
 			$instance->interpretDescription( $description )
 		);
@@ -268,7 +266,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$instance->canInterpretDescription( $description )
 		);
 
-		$this->queryContainerValidator->assertThatContainerHasProperties(
+		$this->querySegmentValidator->assertThatContainerHasProperties(
 			$expected,
 			$instance->interpretDescription( $description )
 		);
