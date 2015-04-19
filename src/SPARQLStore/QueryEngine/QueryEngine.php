@@ -61,7 +61,7 @@ class QueryEngine {
 	 * @param RepositoryConnection $connection
 	 * @param CompoundConditionBuilder $compoundConditionBuilder
 	 * @param QueryResultFactory $queryResultFactory
-	 * @param EngineOptions|null $engineOptions
+	 * @param EngineOptions|null $EngineOptions
 	 */
 	// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
 	public function __construct( RepositoryConnection $connection, CompoundConditionBuilder $compoundConditionBuilder, QueryResultFactory $queryResultFactory, EngineOptions $engineOptions = null ) {
@@ -76,11 +76,6 @@ class QueryEngine {
 		}
 
 		$this->compoundConditionBuilder->setResultVariable( self::RESULT_VARIABLE );
-
-		$circularReferenceGuard = new CircularReferenceGuard( 'sparql-query' );
-		$circularReferenceGuard->setMaxRecursionDepth( 2 );
-
-		$this->compoundConditionBuilder->setCircularReferenceGuard( $circularReferenceGuard );
 	}
 
 	/**
@@ -91,7 +86,7 @@ class QueryEngine {
 	 */
 	public function getQueryResult( Query $query ) {
 
-		if ( ( !$this->engineOptions->ignoreQueryErrors || $query->getDescription() instanceof ThingDescription ) &&
+		if ( ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) || $query->getDescription() instanceof ThingDescription ) &&
 		     $query->querymode != Query::MODE_DEBUG &&
 		     count( $query->getErrors() ) > 0 ) {
 			return $this->queryResultFactory->newEmptyQueryResult( $query, false );
@@ -286,7 +281,7 @@ class QueryEngine {
 		$result = array( 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() );
 
 		// Build ORDER BY options using discovered sorting fields.
-		if ( $this->engineOptions->sortingSupport ) {
+		if ( $this->engineOptions->get( 'smwgQSortingSupport' ) ) {
 
 			$orderByString = '';
 
@@ -298,7 +293,7 @@ class QueryEngine {
 
 				if ( ( $order != 'RANDOM' ) && array_key_exists( $propkey, $sparqlCondition->orderVariables ) ) {
 					$orderByString .= "$order(?" . $sparqlCondition->orderVariables[$propkey] . ") ";
-				} elseif ( ( $order == 'RANDOM' ) && $this->engineOptions->randomSortingSupport ) {
+				} elseif ( ( $order == 'RANDOM' ) && $this->engineOptions->get( 'smwgQRandSortingSupport' ) ) {
 					// not supported in SPARQL; might be possible via function calls in some stores
 				}
 			}

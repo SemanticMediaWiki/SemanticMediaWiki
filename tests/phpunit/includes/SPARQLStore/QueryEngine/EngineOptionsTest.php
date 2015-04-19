@@ -7,11 +7,10 @@ use SMW\SPARQLStore\QueryEngine\EngineOptions;
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\EngineOptions
  *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
- * @since 2.0
+ * @since 2.1
  *
  * @author mwjames
  */
@@ -25,24 +24,48 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testDefaultProperties() {
+	public function testInitialState() {
 
 		$instance = new EngineOptions();
 
-		$this->assertEquals(
-			$instance->ignoreQueryErrors,
-			$GLOBALS['smwgIgnoreQueryErrors']
+		$this->assertInternalType(
+			'boolean',
+			$instance->get( 'smwgIgnoreQueryErrors' )
 		);
 
-		$this->assertEquals(
-			$instance->sortingSupport,
-			$GLOBALS['smwgQSortingSupport']
+		$this->assertInternalType(
+			'boolean',
+			$instance->get( 'smwgQSortingSupport' )
 		);
 
-		$this->assertEquals(
-			$instance->randomSortingSupport,
-			$GLOBALS['smwgQRandSortingSupport']
+		$this->assertInternalType(
+			'boolean',
+			$instance->get( 'smwgQRandSortingSupport' )
 		);
+	}
+
+	public function testAddOption() {
+
+		$instance = new EngineOptions();
+
+		$this->assertFalse(
+			$instance->has( 'Foo' )
+		);
+
+		$instance->set( 'Foo', 42 );
+
+		$this->assertEquals(
+			42,
+			$instance->get( 'Foo' )
+		);
+	}
+
+	public function testUnregisteredKeyThrowsException() {
+
+		$instance = new EngineOptions();
+
+		$this->setExpectedException( 'InvalidArgumentException' );
+		$instance->get( 'Foo' );
 	}
 
 }
