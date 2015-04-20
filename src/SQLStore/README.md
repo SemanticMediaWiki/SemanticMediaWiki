@@ -17,26 +17,31 @@ responsible to return query results from the `SQL` back-end with the help of the
 
 ### Examples
 ```php
-// Equivalent to [[Category:Foo]]
+/**
+ * Equivalent to [[Category:Foo]]
+ */
 $classDescription = new ClassDescription(
 	new DIWikiPage( 'Foo', NS_CATEGORY )
 );
-```
-```php
-// Equivalent to [[:+]]
+
+/**
+ * Equivalent to [[:+]]
+ */
 $namespaceDescription = new NamespaceDescription(
 	NS_MAIN
 );
-```
-```php
-// Equivalent to [[Foo::+]]
+
+/**
+ * Equivalent to [[Foo::+]]
+ */
 $someProperty = new SomeProperty(
 	new DIProperty( 'Foo' ),
 	new ThingDescription()
 );
-```
-```php
-// Equivalent to [[:+]][[Category:Foo]][[Foo::+]]
+
+/**
+ * Equivalent to [[:+]][[Category:Foo]][[Foo::+]]
+ */
 $description = new Conjunction( array(
 	$$namespaceDescription,
 	$classDescription,
