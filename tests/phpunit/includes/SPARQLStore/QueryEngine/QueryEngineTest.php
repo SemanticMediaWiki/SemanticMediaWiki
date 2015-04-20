@@ -59,7 +59,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
 		$engineOptions = new EngineOptions();
-		$engineOptions->ignoreQueryErrors = false;
+		$engineOptions->set( 'smwgIgnoreQueryErrors', false );
 
 		$instance = new QueryEngine(
 			$connection,
@@ -108,7 +108,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
 		$engineOptions = new EngineOptions();
-		$engineOptions->ignoreQueryErrors = false;
+		$engineOptions->set( 'smwgIgnoreQueryErrors', false );
 
 		$instance = new QueryEngine(
 			$connection,

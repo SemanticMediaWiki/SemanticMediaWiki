@@ -13,6 +13,17 @@ The following client repositories are currently supported:
 - [4Store][4store]
 - [Sesame][sesame]
 
+```php
+$connectionManager = new ConnectionManager();
+
+$connectionManager->registerConnectionProvider(
+	'sparql',
+	new RepositoryConnectionProvider( 'fuseki' )
+);
+
+$connectionManager->getConnection( 'sparql' )
+```
+
 ## QueryEngine
 
 The `QueryEngine` is responsible for transforming a `ask` description object into a qualified
@@ -22,6 +33,17 @@ The `QueryEngine` is responsible for transforming a `ask` description object int
 - The condition is being transformed into a qualified `SPARQL` query with the client connector making a request to the database to return a list of raw results
 - The list with raw results is being parsed by a `HttpResponseParser` to provide a unified `RepositoryResult`
 - During the final step, the `QueryResultFactory` converts the `RepositoryResult` into a SMW specific `QueryResult` object which will fetch all remaining data (those selected as printrequests) from the base store to make them available to a `QueryResultPrinter`
+
+```php
+$query = new Query( ... );
+
+$sparqlStorefactory = new SPARQLStoreFactory(
+  new SPARQLStore()
+);
+
+$queryEngine = $sparqlStorefactory->newMasterQueryEngine();
+$queryResult = $queryEngine->getQueryResults( $query );
+```
 
 ## Integration testing
 

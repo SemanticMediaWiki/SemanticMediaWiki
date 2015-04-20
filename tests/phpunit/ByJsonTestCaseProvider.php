@@ -7,13 +7,13 @@ use SMW\ApplicationFactory;
 use Title;
 
 /**
- * The JsonTestCase provider is a convenience provider to write integration tests
- * in a `Json` format to allow for writing tests quicker without the need to setup
- * or tear down required data structures.
+ * The JsonTestCase provider is a convenience provider for `Json` formatted
+ * integration tests to allow writing tests quicker without the need to setup
+ * or tear down specific data structures.
  *
- * Furthermore, the json format should make it also possible for novice user to
- * understand what kind of tests are run as the content is based on wikitext
- * rather than native phpunit.
+ * The json format should make it also possible for novice user to understand
+ * what sort of tests are run as the content is based on wikitext rather than
+ * native PHP.
  *
  * Json files are read from a specified directory and invoked individually which
  * then will be executed by a TestCaseRunner.

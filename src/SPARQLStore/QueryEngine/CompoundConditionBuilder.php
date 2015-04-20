@@ -98,9 +98,6 @@ class CompoundConditionBuilder {
 		$this->dispatchingInterpreter->addInterpreter( new ClassDescriptionInterpreter( $this ) );
 		$this->dispatchingInterpreter->addInterpreter( new ValueDescriptionInterpreter( $this ) );
 		$this->dispatchingInterpreter->addInterpreter( new ConceptDescriptionInterpreter( $this ) );
-
-		$this->circularReferenceGuard = new CircularReferenceGuard( 'sql-query' );
-		$this->circularReferenceGuard->setMaxRecursionDepth( 2 );
 	}
 
 	/**

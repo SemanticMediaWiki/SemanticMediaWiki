@@ -4,16 +4,15 @@ namespace SMW\SPARQLStore;
 
 use SMW\DIWikiPage;
 use SMW\SemanticData;
-use SMWExpData;
-use SMWExpElement;
-use SMWExpNsResource;
-use SMWExporter;
-use SMWExpResource;
+use SMW\Exporter\Element;
+use SMW\Exporter\Element\ExpElement;
+use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\Element\ExpResource;
+use SMWExporter as Exporter;
+use SMWExpData as ExpData;
 use SMWTurtleSerializer as TurtleSerializer;
 
 /**
- * @ingroup Sparql
- *
  * @license GNU GPL v2+
  * @since 2.0
  *
@@ -163,7 +162,7 @@ class TurtleTriplesBuilder {
 
 		$result = array();
 
-		$expData = SMWExporter::getInstance()->makeExportData( $semanticData );
+		$expData = Exporter::getInstance()->makeExportData( $semanticData );
 		$newExpData = $this->expandUpdateExpData( $expData, $result, false );
 		array_unshift( $result, $newExpData );
 
@@ -181,18 +180,18 @@ class TurtleTriplesBuilder {
 	 *
 	 * @since 1.6
 	 *
-	 * @param $expElement SMWExpElement object containing the update data
+	 * @param Element $expElement object containing the update data
 	 * @param $auxiliaryExpData array of SMWExpData
 	 *
-	 * @return SMWExpElement
+	 * @return ExpElement
 	 */
-	private function expandUpdateExpElement( SMWExpElement $expElement, array &$auxiliaryExpData ) {
+	private function expandUpdateExpElement( Element $expElement, array &$auxiliaryExpData ) {
 
-		if ( $expElement instanceof SMWExpResource ) {
+		if ( $expElement instanceof ExpResource ) {
 			return $this->expandUpdateExpResource( $expElement, $auxiliaryExpData );
 		}
 
-		if ( $expElement instanceof SMWExpData ) {
+		if ( $expElement instanceof ExpData ) {
 			return $this->expandUpdateExpData( $expElement, $auxiliaryExpData, true );
 		}
 
@@ -210,16 +209,16 @@ class TurtleTriplesBuilder {
 	 *
 	 * @since 1.6
 	 *
-	 * @param $expResource SMWExpResource object containing the update data
+	 * @param ExpResource $expResource object containing the update data
 	 * @param $auxiliaryExpData array of SMWExpData
 	 *
-	 * @return SMWExpElement
+	 * @return ExpElement
 	 */
-	private function expandUpdateExpResource( SMWExpResource $expResource, array &$auxiliaryExpData ) {
+	private function expandUpdateExpResource( ExpResource $expResource, array &$auxiliaryExpData ) {
 
 		$exists = true;
 
-		if ( $expResource instanceof SMWExpNsResource ) {
+		if ( $expResource instanceof ExpNsResource ) {
 			$elementTarget = $this->redirectLookup->findRedirectTargetResource( $expResource, $exists );
 		} else {
 			$elementTarget = $expResource;
@@ -231,7 +230,7 @@ class TurtleTriplesBuilder {
 			$hash = $diWikiPage->getHash();
 
 			if ( !isset( self::$dataItemExportCache[$hash] ) ) {
-				self::$dataItemExportCache[$hash] = SMWExporter::getInstance()->makeExportDataForSubject( $diWikiPage, true );
+				self::$dataItemExportCache[$hash] = Exporter::getInstance()->makeExportDataForSubject( $diWikiPage, true );
 			}
 
 			$auxiliaryExpData[$hash] = self::$dataItemExportCache[$hash];
@@ -249,12 +248,13 @@ class TurtleTriplesBuilder {
 	 * This auxiliary data is collected in a call-by-ref array.
 	 *
 	 * @since 1.6
-	 * @param $expData SMWExpData object containing the update data
+	 * @param ExpData $expData object containing the update data
 	 * @param $auxiliaryExpData array of SMWExpData
 	 * @param $expandSubject boolean controls if redirects/auxiliary data should also be sought for subject
-	 * @return SMWExpData
+	 *
+	 * @return ExpData
 	 */
-	private function expandUpdateExpData( SMWExpData $expData, array &$auxiliaryExpData, $expandSubject ) {
+	private function expandUpdateExpData( ExpData $expData, array &$auxiliaryExpData, $expandSubject ) {
 
 		$subjectExpResource = $expData->getSubject();
 
@@ -262,22 +262,24 @@ class TurtleTriplesBuilder {
 
 			$expandedExpElement = $this->expandUpdateExpElement( $subjectExpResource, $auxiliaryExpData );
 
-			if ( $expandedExpElement instanceof SMWExpData ) {
+			if ( $expandedExpElement instanceof ExpData ) {
 				$newExpData = $expandedExpElement;
 			} else { // instanceof SMWExpResource
-				$newExpData = new SMWExpData( $subjectExpResource );
+				$newExpData = new ExpData( $subjectExpResource );
 			}
 		} else {
-			$newExpData = new SMWExpData( $subjectExpResource );
+			$newExpData = new ExpData( $subjectExpResource );
 		}
 
 		foreach ( $expData->getProperties() as $propertyResource ) {
 
 			$propertyTarget = $this->expandUpdateExpElement( $propertyResource, $auxiliaryExpData );
 
-			foreach ( $expData->getValues( $propertyResource ) as $expElement ) {
-				$elementTarget = $this->expandUpdateExpElement( $expElement, $auxiliaryExpData );
-				$newExpData->addPropertyObjectValue( $propertyTarget, $elementTarget );
+			foreach ( $expData->getValues( $propertyResource ) as $element ) {
+				$newExpData->addPropertyObjectValue(
+					$propertyTarget,
+					$this->expandUpdateExpElement( $element, $auxiliaryExpData )
+				);
 			}
 		}
 

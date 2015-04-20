@@ -197,7 +197,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	 * @param array $expected
 	 * @param SemanticData $semanticData
 	 */
-	public function assertThatPropertiesAreSet( array $expected, SemanticData $semanticData ) {
+	public function assertThatPropertiesAreSet( array $expected, SemanticData $semanticData, $message = '' ) {
 
 		$runPropertiesAreSetAssert = false;
 		$properties = $semanticData->getProperties();
@@ -241,16 +241,16 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 					$semanticData->getPropertyValues( $property )
 				);
 
-				if ( !$this->strictModeForValueMatch ) {
-					$this->assertEmpty(
-						$expected['propertyValues'],
-						'Unmatched values remained for ' . $this->formatAsString( $expected['propertyValues'] )
-					);
-				}
-
 				$runPropertiesAreSetAssert = true;
 			}
+		}
 
+		// Final ceck for values distributed over different properties
+		if ( isset( $expected['propertyValues'] ) && !$this->strictModeForValueMatch ) {
+			$this->assertEmpty(
+				$expected['propertyValues'],
+				"Unmatched values in {$message} for " . $this->formatAsString( $expected['propertyValues'] )
+			);
 		}
 
 		// Issue #124 needs to be resolved first

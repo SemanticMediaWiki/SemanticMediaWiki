@@ -2,14 +2,9 @@
 
 namespace SMW\SPARQLStore;
 
-use SMW\ConnectionManager;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
-use SMW\SPARQLStore\QueryEngine\EngineOptions;
-use SMW\SPARQLStore\QueryEngine\QueryEngine;
-use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWExpNsResource as ExpNsResource;
@@ -35,6 +30,11 @@ use Title;
 class SPARQLStore extends Store {
 
 	/**
+	 * @var SPARQLStoreFactory
+	 */
+	private $factory;
+
+	/**
 	 * Class to be used as an underlying base store. This can be changed in
 	 * LocalSettings.php (after enableSemantics()) to use another base
 	 * store.
@@ -50,7 +50,7 @@ class SPARQLStore extends Store {
 	 * @since 1.8
 	 * @var Store
 	 */
-	protected $baseStore;
+	private $baseStore;
 
 	/**
 	 * @since 1.8
@@ -58,10 +58,11 @@ class SPARQLStore extends Store {
 	 * @param  Store $baseStore
 	 */
 	public function __construct( Store $baseStore = null ) {
+		$this->factory = new SPARQLStoreFactory( $this );
 		$this->baseStore = $baseStore;
 
 		if ( $this->baseStore === null ) {
-			$this->baseStore = new self::$baseStoreClass();
+			$this->baseStore = $this->factory->newBaseStore( self::$baseStoreClass );
 		}
 	}
 
@@ -276,15 +277,7 @@ class SPARQLStore extends Store {
 	}
 
 	protected function fetchQueryResult( Query $query ) {
-
-		$queryEngine = new QueryEngine(
-			$this->getConnection(),
-			new CompoundConditionBuilder(),
-			new QueryResultFactory( $this ),
-			new EngineOptions()
-		);
-
-		return $queryEngine->getQueryResult( $query );
+		return $this->factory->newMasterQueryEngine()->getQueryResult( $query );
 	}
 
 	/**
@@ -401,11 +394,7 @@ class SPARQLStore extends Store {
 	public function getConnection( $connectionTypeId = 'sparql' ) {
 
 		if ( $this->connectionManager === null ) {
-
-			$connectionManager = new ConnectionManager();
-			$connectionManager->registerConnectionProvider( 'sparql', new RepositoryConnectionProvider() );
-
-			$this->setConnectionManager( $connectionManager );
+			$this->setConnectionManager( $this->factory->newConnectionManager() );
 		}
 
 		return parent::getConnection( $connectionTypeId );
