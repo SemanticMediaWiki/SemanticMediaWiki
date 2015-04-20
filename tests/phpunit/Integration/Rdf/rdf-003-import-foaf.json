@@ -47,7 +47,7 @@
 					"revisiondate" : false
 				}
 			},
-			"output": {
+			"expected-output": {
 				"to-contain": [
 					"<swivt:Subject rdf:about=\"http://example.org/id/John_Doe\">",
 					"xmlns:foaf=\"http://xmlns.com/foaf/0.1/",
@@ -70,7 +70,7 @@
 					"revisiondate" : false
 				}
 			},
-			"output": {
+			"expected-output": {
 				"to-contain": [
 					"<swivt:Subject rdf:about=\"http://example.org/id/John_Doe\">",
 					"<swivt:Subject rdf:about=\"http://example.org/id/Jane_Doe\">",
@@ -97,7 +97,7 @@
 					"revisiondate" : false
 				}
 			},
-			"output": {
+			"expected-output": {
 				"to-contain": [
 					"<owl:ObjectProperty rdf:about=\"http://xmlns.com/foaf/0.1/knows\">",
 					"<rdfs:label>Foaf:knows</rdfs:label>",
@@ -117,7 +117,7 @@
 					"revisiondate" : false
 				}
 			},
-			"output": {
+			"expected-output": {
 				"to-contain": [
 					"<owl:ObjectProperty rdf:about=\"http://xmlns.com/foaf/0.1/homepage\">",
 					"<swivt:specialImportedFrom rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">foaf homepage http://xmlns.com/foaf/0.1/</swivt:specialImportedFrom>",
@@ -136,7 +136,7 @@
 					"revisiondate" : false
 				}
 			},
-			"output": {
+			"expected-output": {
 				"to-contain": [
 					"<owl:ObjectProperty rdf:about=\"http://xmlns.com/foaf/0.1/mbox\">",
 					"<swivt:specialImportedFrom rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">foaf mbox http://xmlns.com/foaf/0.1/</swivt:specialImportedFrom>",

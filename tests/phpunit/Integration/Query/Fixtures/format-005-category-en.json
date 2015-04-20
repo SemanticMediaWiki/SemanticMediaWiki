@@ -58,11 +58,11 @@
 			"contents": "{{#ask:[[Has page property::Test]]\n |?Has page property\n |format=category\n |order=desc\n |link=none\n |headers=plain\n |searchlabel=Test more\n |limit=2\n |columns=2\n}}"
 		}
 	],
-	"format": [
+	"format-testcases": [
 		{
 			"about": "#0",
-			"outputpage": "template-output-named-args-asc",
-			"output": {
+			"subject": "template-output-named-args-asc",
+			"expected-output": {
 				"to-contain": [
 					"<div class=\"smw-columnlist-container\">",
 					"<div class=\"smw-column-header\">1</div><ul><li>123, Test</li></ul>",
@@ -75,8 +75,8 @@
 		},
 		{
 			"about": "#1",
-			"outputpage": "template-output-named-args-desc",
-			"output": {
+			"subject": "template-output-named-args-desc",
+			"expected-output": {
 				"to-contain": [
 					"<div class=\"smw-columnlist-container\">",
 					"<div class=\"smw-column-header\">テ</div><ul><li>テスト, Test</li></ul>",
@@ -89,8 +89,8 @@
 		},
 		{
 			"about": "#2",
-			"outputpage": "template-output-unnamed-args-asc",
-			"output": {
+			"subject": "template-output-unnamed-args-asc",
+			"expected-output": {
 				"to-contain": [
 					"<div class=\"smw-columnlist-container\">",
 					"<div class=\"smw-column-header\">1</div><ul><li>123, Test</li></ul>",
@@ -103,8 +103,8 @@
 		},
 		{
 			"about": "#3",
-			"outputpage": "template-output-unnamed-args-desc",
-			"output": {
+			"subject": "template-output-unnamed-args-desc",
+			"expected-output": {
 				"to-contain": [
 					"<div class=\"smw-columnlist-container\">",
 					"<div class=\"smw-column-header\">テ</div><ul><li>テスト, Test</li></ul>",
@@ -117,8 +117,8 @@
 		},
 		{
 			"about": "#4",
-			"outputpage": "one-column-plainlist-output-asc",
-			"output": {
+			"subject": "one-column-plainlist-output-asc",
+			"expected-output": {
 				"to-contain": [
 					"<div class=\"smw-columnlist-container\">",
 					"<div class=\"smw-column-header\">1</div><ul><li>123 (Has page property Test)</li></ul>",
@@ -131,8 +131,8 @@
 		},
 		{
 			"about": "#5",
-			"outputpage": "limited-two-column-plainlist-output-desc",
-			"output": {
+			"subject": "limited-two-column-plainlist-output-desc",
+			"expected-output": {
 				"to-contain": [
 					"<div class=\"smw-columnlist-container\">",
 					"<div class=\"smw-column-header\">テ</div><ul><li>テスト (Has page property Test)</li></ul>",

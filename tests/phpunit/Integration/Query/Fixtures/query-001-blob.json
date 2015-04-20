@@ -21,7 +21,7 @@
 			"contents": "[[Has blob property::Value Two]], [[Has another blob property::Value Two]]"
 		}
 	],
-	"queries": [
+	"query-testcases": [
 		{
 			"about": "Simple disjunctive blob query",
 			"condition": "[[Has blob property::Value One]] OR [[Has another blob property::Value Two]]",

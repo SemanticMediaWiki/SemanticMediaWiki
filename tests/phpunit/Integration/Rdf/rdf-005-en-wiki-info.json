@@ -13,7 +13,7 @@
 					"revisiondate" : false
 				}
 			},
-			"output": {
+			"expected-output": {
 				"to-contain": [
 					"<swivt:Wikisite rdf:about=\"&wiki;#wiki\">",
 					"<owl:DatatypeProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#siteName\" />",

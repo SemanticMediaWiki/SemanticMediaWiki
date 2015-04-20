@@ -29,7 +29,7 @@
 			"contents": "[[Has page property::Template three]] {{TemplateWithReferenceToItself}}"
 		}
 	],
-	"queries": [
+	"query-testcases": [
 		{
 			"about": "#0 query profile (use invert query)",
 			"condition": "[[-Has query::PageContainsAskWithTemplateUsage]]",

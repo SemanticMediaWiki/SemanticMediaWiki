@@ -38,8 +38,6 @@ class ByJsonQueryTestCaseRunnerTest extends ByJsonTestCaseProvider {
 	}
 
 	/**
-	 * Version to match supported Json format
-	 *
 	 * @see ByJsonTestCaseProvider::getJsonTestCaseVersion
 	 */
 	protected function getJsonTestCaseVersion() {
@@ -92,15 +90,15 @@ class ByJsonQueryTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			$jsonTestCaseFileHandler->getDebugMode()
 		);
 
-		foreach ( $jsonTestCaseFileHandler->findQueryTestCases() as $queryCase ) {
+		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'query-testcases' ) as $queryCase ) {
 			$this->queryTestCaseProcessor->processQueryCase( new QueryTestCaseInterpreter( $queryCase ) );
 		}
 
-		foreach ( $jsonTestCaseFileHandler->findConceptTestCases() as $conceptCase ) {
+		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'concept-testcases' ) as $conceptCase ) {
 			$this->queryTestCaseProcessor->processConceptCase( new QueryTestCaseInterpreter( $conceptCase ) );
 		}
 
-		foreach ( $jsonTestCaseFileHandler->findFormatTestCases() as $formatCase ) {
+		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'format-testcases' ) as $formatCase ) {
 			$this->queryTestCaseProcessor->processFormatCase( new QueryTestCaseInterpreter( $formatCase ) );
 		}
 	}

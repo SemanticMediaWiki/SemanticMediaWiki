@@ -31,7 +31,7 @@
 			"contents": "[[Foaf:name::Jane Doe]], [[Foaf:homepage::http://example.org/JaneDoe]] [[Foaf:knows::John Doe]]"
 		}
 	],
-	"queries": [
+	"query-testcases": [
 		{
 			"about": "#0",
 			"condition": "[[Foaf:name::John Doe]] OR [[Foaf:name::Jane Doe]]",

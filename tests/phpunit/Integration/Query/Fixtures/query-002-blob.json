@@ -27,7 +27,7 @@
 			"contents": "{{#set:|Has FirstRegexBlobSearchProperty=Foo(\"#^$&-/)-|}}"
 		}
 	],
-	"queries": [
+	"query-testcases": [
 		{
 			"about": "#0 Left curly brackets",
 			"condition": "[[Has FirstRegexBlobSearchProperty::~*{*]]",

@@ -24,7 +24,7 @@
 			"contents": "[[Area::845 sq mi]], [[Has average high temperature::26.0 °C]]"
 		}
 	],
-	"queries": [
+	"query-testcases": [
 		{
 			"about": "#0 Wildcard search for any value",
 			"condition": "[[Area::+]]",

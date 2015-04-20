@@ -36,7 +36,7 @@
 					"propertyValues": [ "1970-01-01" ]
 				}
 			},
-			"output": {
+			"expected-output": {
 				"to-contain": [
 					"1 Jan 1970"
 				]
@@ -52,7 +52,7 @@
 					"propertyKeys": [ "_MDAT", "_SKEY" ]
 				}
 			},
-			"output": {
+			"expected-output": {
 				"to-contain": [
 					"Property &quot;Modification date&quot; was marked for restricted use."
 				]
@@ -67,7 +67,7 @@
 					"propertyKeys": [ "_MDAT", "_SKEY" ]
 				}
 			},
-			"output": {
+			"expected-output": {
 				"to-contain": [
 					"Property &quot;Has query&quot; was marked for restricted use."
 				]
@@ -82,7 +82,7 @@
 					"propertyKeys": [ "_MDAT", "_SKEY" ]
 				}
 			},
-			"output": {
+			"expected-output": {
 				"to-contain": [
 					"Property &quot;Has subobject&quot; was marked for restricted use."
 				]

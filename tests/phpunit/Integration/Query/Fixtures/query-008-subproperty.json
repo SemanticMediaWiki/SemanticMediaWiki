@@ -48,7 +48,7 @@
 			"contents": "[[Has brother::Jonnie Doe]]"
 		}
 	],
-	"queries": [
+	"query-testcases": [
 		{
 			"about": "#0 Spouse to search any value",
 			"condition": "[[Spouse::+]]",
