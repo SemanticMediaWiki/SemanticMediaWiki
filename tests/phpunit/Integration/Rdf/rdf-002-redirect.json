@@ -35,7 +35,7 @@
 					"revisiondate" : false
 				}
 			},
-			"output": {
+			"expected-output": {
 				"to-contain": [
 					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D1-2Dredirect\">",
 					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D2-2Dredirect\">",
@@ -55,7 +55,7 @@
 					"revisiondate" : false
 				}
 			},
-			"output": {
+			"expected-output": {
 				"to-contain": [
 					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D1-2Dredirect\">",
 					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D2-2Dredirect\">",

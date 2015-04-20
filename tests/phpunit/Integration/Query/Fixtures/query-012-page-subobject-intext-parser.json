@@ -1,0 +1,42 @@
+{
+	"description": "Query #subobject annotated content",
+	"properties": [
+		{
+			"name": "Member of",
+			"contents": "[[Has type::Page]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Page-with-subobject",
+			"contents": "{{#subobject:|Member of=WXYZ|@sortkey=B}}\n {{#subobject:|Member of=ABCD|@sortkey=A}}\n {{#subobject:|Member of=ABCD|@sortkey=A}}\n {{#subobject:|Member of=ABCD|@sortkey=C}}"
+		}
+	],
+	"query-testcases": [
+		{
+			"about": "#0",
+			"condition": "[[Member of::+]]",
+			"printouts" : [ "Member of" ],
+			"parameters" : {
+				"limit" : "10",
+					"sort": { "Member of": "DESC" }
+			},
+			"queryresult": {
+				"count": "3",
+				"results": [
+					"Page-with-subobject#0##_5ca349b39ebfdc3ca49b0eda4c934a45",
+					"Page-with-subobject#0##_f4469f99af0cf02670841cd93634f947",
+					"Page-with-subobject#0##_2d984853884c90ed45d980772e1d2163"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [ "_MDAT" ]
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -20,7 +20,7 @@
 			"contents": "[[Has regexblob property::Foo(\\\"'#^$&-/)]]"
 		}
 	],
-	"queries": [
+	"query-testcases": [
 		{
 			"about": "#0",
 			"condition": "[[Has regexblob property::~*.*]]",

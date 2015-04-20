@@ -24,7 +24,7 @@
 					"propertyValues": [ 12, 66 ]
 				}
 			},
-			"output": {
+			"expected-output": {
 				"to-contain": [
 					"&quot;a&quot; can not be assigned to a declared number type with value 32.",
 					"&quot;b&quot; can not be assigned to a declared number type with value 88."

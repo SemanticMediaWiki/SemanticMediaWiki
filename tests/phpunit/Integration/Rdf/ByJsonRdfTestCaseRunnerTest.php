@@ -86,7 +86,7 @@ class ByJsonRdfTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		// is triggered
 		EventHandler::getInstance()->getEventDispatcher()->dispatch( 'exporter.reset' );
 
-		foreach ( $jsonTestCaseFileHandler->findRdfTestCases() as $case ) {
+		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'rdf-testcases' ) as $case ) {
 			$this->assertRdfOutputForCase( $case, $jsonTestCaseFileHandler->getDebugMode() );
 		}
 	}
@@ -117,7 +117,7 @@ class ByJsonRdfTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		}
 
 		$this->stringValidator->assertThatStringContains(
-			$case['output']['to-contain'],
+			$case['expected-output']['to-contain'],
 			$output,
 			$case['about']
 		);

@@ -149,6 +149,7 @@ class SMWQueryParser {
 						$conjunction = $this->addDescription( $conjunction, $ld );
 					}
 				break;
+				case 'AND':
 				case '<q>': // enter new subquery, currently irrelevant but possible
 					$this->pushDelimiter( '</q>' );
 					$conjunction = $this->addDescription( $conjunction, $this->getSubqueryDescription( $setsubNS ) );

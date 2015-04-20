@@ -195,6 +195,26 @@ class SMWQuery {
 	}
 
 	/**
+	 * @note format: "Property key" => "ASC" / "DESC" (note: order of entries also matters)
+	 *
+	 * @since 2.2
+	 *
+	 * @param array $sortKeys
+	 */
+	public function setSortKeys( array $sortKeys ) {
+		$this->sortKeys = $sortKeys;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return array
+	 */
+	public function getSortKeys() {
+		return $this->sortKeys;
+	}
+
+	/**
 	 * Apply structural restrictions to the current description.
 	 */
 	public function applyRestrictions() {

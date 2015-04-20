@@ -32,11 +32,11 @@
 			"contents": "{{#ask: [[Category:BoolProjects]]|?Has success state#success,failure=Status|limit=10|format=table}}"
 		}
 	],
-	"format": [
+	"format-testcases": [
 		{
 			"about": "#0 Check format#x output, see #896",
-			"outputpage": "BooleanTable-ToUseFormatX",
-			"output": {
+			"subject": "BooleanTable-ToUseFormatX",
+			"expected-output": {
 				"to-contain": [
 					"<table class=\"sortable wikitable smwtable\">",
 					"title=\"Property:Has project name\">Has project name</a></th><tr class=\"row-odd\"><td class=\"smwtype_wpg\">",
@@ -50,8 +50,8 @@
 		},
 		{
 			"about": "#1 Check bool label output value label",
-			"outputpage": "BooleanTable-ToLabelBoolValue",
-			"output": {
+			"subject": "BooleanTable-ToLabelBoolValue",
+			"expected-output": {
 				"to-contain": [
 					"<table class=\"sortable wikitable smwtable\">",
 					"title=\"Property:Has success state\">Has success state</a></th><tr class=\"row-odd\"><td class=\"smwtype_wpg\">",
@@ -63,8 +63,8 @@
 		},
 		{
 			"about": "#2 Check bool/column label output",
-			"outputpage": "BooleanTable-ToLabelBoolValueAndColumn",
-			"output": {
+			"subject": "BooleanTable-ToLabelBoolValueAndColumn",
+			"expected-output": {
 				"to-contain": [
 					"<table class=\"sortable wikitable smwtable\">",
 					"title=\"Property:Has success state\">Status</a></th><tr class=\"row-odd\"><td class=\"smwtype_wpg\">",

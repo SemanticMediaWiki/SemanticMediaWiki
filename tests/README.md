@@ -84,7 +84,7 @@ The section `properties` and `subjects` contain object entities that are planned
 The test result assertion is done in a very simplified way but expressive enough for users to understand who have limited test experience. For example, verifying that a result printer does output a certain string of contents, one has to the define an expected output in terms of:
 
 ```json
-"output": {
+"expected-output": {
 	"to-contain": [
 		"<table class=\"sortable wikitable smwtable\">"
 		...

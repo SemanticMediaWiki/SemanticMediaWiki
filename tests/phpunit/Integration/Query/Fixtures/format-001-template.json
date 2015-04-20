@@ -42,11 +42,11 @@
 			"contents": "{{#ask:[[Category:template-001]][[Has page property::ABC]]\n |?Has page property\n |format=template\n |order=desc\n |link=none\n |limit=3\n |searchlabel=furtherresults\n |userparam=[$%&*==42]\n |template=TemplateOutputUsingUnnamedArgumentsForNonUnicode\n |introtemplate=TemplateOutputUsingUnnamedArgumentsForNonUnicodeExtra\n |outrotemplate=TemplateOutputUsingUnnamedArgumentsForNonUnicodeExtra\n}}"
 		}
 	],
-	"format": [
+	"format-testcases": [
 		{
 			"about": "#0 asc template output using unnamed arguments, #885 further results link",
-			"outputpage": "template-001-asc-order-unnamed-args",
-			"output": {
+			"subject": "template-001-asc-order-unnamed-args",
+			"expected-output": {
 				"to-contain": [
 					"<div>[$%&amp;*==42]</div>",
 					"[0]:123:ABC, DEF:[$%&amp;*==42]:",
@@ -58,8 +58,8 @@
 		},
 		{
 			"about": "#1 desc template output using unnamed arguments",
-			"outputpage": "template-001-desc-order-unnamed-args",
-			"output": {
+			"subject": "template-001-desc-order-unnamed-args",
+			"expected-output": {
 				"to-contain": [
 					"<div>[$%&amp;*==42]</div>",
 					"[0]:Yxz:ABC, DEF:[$%&amp;*==42]:",

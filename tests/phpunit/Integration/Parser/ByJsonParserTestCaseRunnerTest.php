@@ -56,7 +56,8 @@ class ByJsonParserTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			'smwgNamespacesWithSemanticLinks',
 			'smwgPageSpecialProperties',
 			'wgLanguageCode',
-			'wgContLang'
+			'wgContLang',
+			'wgCapitalLinks'
 		);
 
 		foreach ( $permittedSettings as $key ) {
@@ -82,12 +83,12 @@ class ByJsonParserTestCaseRunnerTest extends ByJsonTestCaseProvider {
 				break;
 			}
 
-			$this->assertSemanticDataForCase( $case );
+			$this->assertSemanticDataForCase( $case, $jsonTestCaseFileHandler->getDebugMode() );
 			$this->assertParserOutputForCase( $case );
 		}
 	}
 
-	private function assertSemanticDataForCase( $case ) {
+	private function assertSemanticDataForCase( $case, $debug ) {
 
 		if ( !isset( $case['store'] ) || !isset( $case['store']['semantic-data'] ) ) {
 			return;
@@ -100,6 +101,10 @@ class ByJsonParserTestCaseRunnerTest extends ByJsonTestCaseProvider {
 
 		$semanticData = $this->getStore()->getSemanticData( $subject );
 
+		if ( $debug ) {
+			print_r( $semanticData );
+		}
+
 		if ( isset( $case['errors'] ) && $case['errors'] !== array() ) {
 			$this->assertNotEmpty(
 				$semanticData->getErrors()
@@ -109,13 +114,13 @@ class ByJsonParserTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$case['store']['semantic-data'],
 			$semanticData,
-			false
+			$case['about']
 		);
 	}
 
 	private function assertParserOutputForCase( $case ) {
 
-		if ( !isset( $case['output'] ) || !isset( $case['output']['to-contain'] ) ) {
+		if ( !isset( $case['expected-output'] ) || !isset( $case['expected-output']['to-contain'] ) ) {
 			return;
 		}
 
@@ -127,7 +132,7 @@ class ByJsonParserTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		$parserOutput = UtilityFactory::getInstance()->newPageReader()->getEditInfo( $subject->getTitle() )->output;
 
 		$this->stringValidator->assertThatStringContains(
-			$case['output']['to-contain'],
+			$case['expected-output']['to-contain'],
 			$parserOutput->getText(),
 			$case['about']
 		);

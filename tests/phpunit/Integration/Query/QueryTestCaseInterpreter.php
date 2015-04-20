@@ -118,6 +118,25 @@ class QueryTestCaseInterpreter {
 	 *
 	 * @return integer
 	 */
+	public function getSortKeys() {
+
+		if ( isset( $this->contents['parameters']['sort'] ) ) {
+
+			if ( is_array( $this->contents['parameters']['sort'] ) ) {
+				return $this->contents['parameters']['sort'];
+			}
+
+			return array( $this->contents['parameters']['sort'] => 'DESC' );
+		}
+
+		return array();
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return integer
+	 */
 	public function getExpectedCount() {
 		return isset( $this->contents['queryresult']['count'] ) ? (int)$this->contents['queryresult']['count'] : 0;
 	}
@@ -207,13 +226,13 @@ class QueryTestCaseInterpreter {
 	 *
 	 * @return string
 	 */
-	public function fetchTextOutputForFormatPage() {
+	public function fetchTextFromOutputSubject() {
 
-		if ( !isset( $this->contents['outputpage'] ) ) {
+		if ( !isset( $this->contents['subject'] ) ) {
 			return '';
 		}
 
-		$title = \Title::newFromText( $this->contents['outputpage'] );
+		$title = \Title::newFromText( $this->contents['subject'] );
 		$parserOutput = UtilityFactory::getInstance()->newPageReader()->getEditInfo( $title )->output;
 
 		return $parserOutput->getText();
@@ -228,12 +247,12 @@ class QueryTestCaseInterpreter {
 
 		$output = array();
 
-		if ( !isset( $this->contents['output'] ) || !isset( $this->contents['output'][$id] )  ) {
+		if ( !isset( $this->contents['expected-output'] ) || !isset( $this->contents['expected-output'][$id] )  ) {
 			return $output;
 		}
 
 
-		return $this->contents['output'][$id];
+		return $this->contents['expected-output'][$id];
 	}
 
 	/**

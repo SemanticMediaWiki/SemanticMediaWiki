@@ -90,6 +90,7 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 		$query->setLimit( $queryTestCaseInterpreter->getLimit() );
 		$query->setOffset( $queryTestCaseInterpreter->getOffset() );
 		$query->setExtraPrintouts( $queryTestCaseInterpreter->getExtraPrintouts() );
+		$query->setSortKeys( $queryTestCaseInterpreter->getSortKeys() );
 
 		$queryResult = $this->getStore()->getQueryResult( $query );
 
@@ -190,11 +191,11 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 */
 	public function processFormatCase( QueryTestCaseInterpreter $queryTestCaseInterpreter ) {
 
-		if ( $queryTestCaseInterpreter->fetchTextOutputForFormatPage() === '' ) {
+		if ( $queryTestCaseInterpreter->fetchTextFromOutputSubject() === '' ) {
 			$this->markTestSkipped( 'No content found for ' . $queryTestCaseInterpreter->isAbout() );
 		}
 
-		$textOutput = $queryTestCaseInterpreter->fetchTextOutputForFormatPage();
+		$textOutput = $queryTestCaseInterpreter->fetchTextFromOutputSubject();
 
 		$this->stringValidator->assertThatStringContains(
 			$queryTestCaseInterpreter->getExpectedFormatOuputFor( 'to-contain' ),

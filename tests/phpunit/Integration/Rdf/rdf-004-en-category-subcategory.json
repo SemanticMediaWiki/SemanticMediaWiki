@@ -29,7 +29,7 @@
 					"revisiondate" : false
 				}
 			},
-			"output": {
+			"expected-output": {
 				"to-contain": [
 					"<owl:Class rdf:about=\"http://example.org/id/Category-3ARdf-2D1-2Dcategory\">",
 					"<rdfs:label>Rdf-1-category</rdfs:label>",
@@ -49,7 +49,7 @@
 					"revisiondate" : false
 				}
 			},
-			"output": {
+			"expected-output": {
 				"to-contain": [
 					"<owl:Class rdf:about=\"http://example.org/id/Category-3ARdf-2D1-2Dcategory\">",
 					"<rdfs:label>Rdf-1-category</rdfs:label>",

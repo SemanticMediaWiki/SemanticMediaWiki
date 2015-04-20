@@ -16,7 +16,7 @@
 			"contents": "[[Has conference type::Tutorial]]"
 		}
 	],
-	"queries": [
+	"query-testcases": [
 		{
 			"about": "#0",
 			"condition": "[[Conference-1]] [[Has conference type::Presentation||Tutorial]]",

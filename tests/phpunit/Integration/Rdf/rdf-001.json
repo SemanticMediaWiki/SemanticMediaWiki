@@ -47,7 +47,7 @@
 					"revisiondate" : false
 				}
 			},
-			"output": {
+			"expected-output": {
 				"to-contain": [
 					"<property:Has_page_property_for_rdf rdf:resource=\"&wiki;Test_one\"/>",
 					"<property:Has_text_property_for_rdf rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Test one</property:Has_text_property_for_rdf>",
@@ -67,7 +67,7 @@
 					"revisiondate" : false
 				}
 			},
-			"output": {
+			"expected-output": {
 				"to-contain": [
 					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D1\">",
 					"<rdfs:label>Rdf-1</rdfs:label>",
@@ -86,7 +86,7 @@
 					"revisiondate" : false
 				}
 			},
-			"output": {
+			"expected-output": {
 				"to-contain": [
 					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D3\">",
 					"<property:Has_subobject-23aux rdf:resource=\"&wiki;Rdf-2D3-23_352994736fdd9b50f3506c054ce554ab\"/>",
@@ -109,7 +109,7 @@
 					"revisiondate" : false
 				}
 			},
-			"output": {
+			"expected-output": {
 				"to-contain": [
 					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D4\">",
 					"<property:Has_date_property_for_rdf rdf:datatype=\"http://www.w3.org/2001/XMLSchema#date\">2014-12-31Z</property:Has_date_property_for_rdf>",
@@ -132,7 +132,7 @@
 					"revisiondate" : false
 				}
 			},
-			"output": {
+			"expected-output": {
 				"to-contain": [
 					"<owl:DatatypeProperty rdf:about=\"http://example.org/id/Property-3AHas_text_property_for_rdf\">",
 					"<rdfs:label>Has text property for rdf</rdfs:label>",
@@ -157,7 +157,7 @@
 					"revisiondate" : false
 				}
 			},
-			"output": {
+			"expected-output": {
 				"to-contain": [
 					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D5\">",
 					"<rdfs:label>Rdf-5</rdfs:label>",
