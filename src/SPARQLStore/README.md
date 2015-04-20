@@ -34,15 +34,31 @@ The `QueryEngine` is responsible for transforming a `ask` description object int
 - The list with raw results is being parsed by a `HttpResponseParser` to provide a unified `RepositoryResult`
 - During the final step, the `QueryResultFactory` converts the `RepositoryResult` into a SMW specific `QueryResult` object which will fetch all remaining data (those selected as printrequests) from the base store to make them available to a `QueryResultPrinter`
 
+### Examples
 ```php
-$query = new Query( ... );
+/**
+ * Equivalent to [[Foo::+]]
+ *
+ * SELECT DISTINCT ?result WHERE {
+ * ?result swivt:wikiPageSortKey ?resultsk .
+ * ?result property:Foo ?v1 .
+ * }
+ * ORDER BY ASC(?resultsk)
+ */
+$description = new SomeProperty(
+    new DIProperty( 'Foo' ),
+    new ThingDescription()
+);
+```
+```php
+$query = new Query( $description );
 
 $sparqlStorefactory = new SPARQLStoreFactory(
   new SPARQLStore()
 );
 
 $queryEngine = $sparqlStorefactory->newMasterQueryEngine();
-$queryResult = $queryEngine->getQueryResults( $query );
+$queryResult = $queryEngine->getQueryResult( $query );
 ```
 
 ## Integration testing
