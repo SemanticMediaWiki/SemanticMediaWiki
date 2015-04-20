@@ -81,17 +81,28 @@ The section `properties` and `subjects` contain object entities that are planned
 ]
 ```
 
-The test result assertion is done in a very simplified way but expressive enough for users to understand who have limited test experience. For example, verifying that a result printer does output a certain string of contents, one has to the define an expected output in terms of:
+The test result assertion is done in a very simplified way but expressive enough for users to understand on what is being tested. For example, verifying that a result printer does output a certain string, one has to the define an expected output in terms of:
 
 ```json
 "expected-output": {
 	"to-contain": [
 		"<table class=\"sortable wikitable smwtable\">"
-		...
 	]
 }
 ```
-For other assertion options it is best to look at the existing `json` test files (e.g [rdf-001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/Rdf/rdf-001.json) or [parser-001-restricted-property-use.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/Parser/parser-001-restricted-property-use.json)).
+It can happen that an output is mixed with message dependent content (which when changing the site/content language will make the test script fail) and therefore it is recommended to fix the settings the test is intended for to pass with something like:
+```json
+"settings": {
+	"wgContLang": "en",
+	"wgLang": "en",
+	"smwgNamespacesWithSemanticLinks": {
+		"NS_MAIN": true,
+		"SMW_NS_PROPERTY": true
+	}
+}
+```
+
+For other assertion options it is best to look at existing `json` test files (e.g [rdf-001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/Rdf/rdf-001.json) or [parser-001-restricted-property-use.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/Parser/parser-001-restricted-property-use.json)).
 
 ## Benchmark tests
 
