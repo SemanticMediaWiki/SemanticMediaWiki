@@ -16,7 +16,14 @@ responsible to return query results from the `SQL` back-end with the help of the
   with the `ConceptCache` class
 
 ```php
-$query = new Query( ... );
+// Equivalent to condition [[Foo::+]]
+$description = new SomeProperty(
+	new DIProperty( 'Foo' ),
+	new ThingDescription()
+);
+
+$query = new Query( $description );
+$query->setLimit( 10 );
 
 $sqlStorefactory = new SQLStoreFactory(
   new SQLStore()
