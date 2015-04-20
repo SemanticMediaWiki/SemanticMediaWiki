@@ -51,6 +51,11 @@ class TableResultPrinter extends ResultPrinter {
 
 		$columnClasses = array();
 
+		// Default cell value separator
+		if ( !isset( $this->params['sep'] ) || $this->params['sep'] === '' ) {
+			$this->params['sep'] = '<br>';
+		}
+
 		if ( $this->mShowHeaders != SMW_HEADERS_HIDE ) { // building headers
 			foreach ( $res->getPrintRequests() as /* SMWPrintRequest */ $pr ) {
 				$attributes = array();
@@ -182,7 +187,7 @@ class TableResultPrinter extends ResultPrinter {
 			$values[] = $value;
 		}
 
-		return implode( '<br />', $values );
+		return implode( $this->params['sep'], $values );
 	}
 
 	/**
@@ -208,6 +213,11 @@ class TableResultPrinter extends ResultPrinter {
 			'type' => 'boolean',
 			'default' => false,
 			'message' => 'smw-paramdesc-table-transpose',
+		);
+
+		$params['sep'] = array(
+			'message' => 'smw-paramdesc-sep',
+			'default' => '',
 		);
 
 		return $params;

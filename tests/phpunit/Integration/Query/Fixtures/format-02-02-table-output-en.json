@@ -1,0 +1,94 @@
+{
+	"description": "Table with sep cell formatting, #495",
+	"properties": [
+		{
+			"name": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"name": "Has text",
+			"contents": "[[Has type::Text]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Table-page",
+			"contents": "[[Has page::Foo]] [[Has page::42]] [[Has text::bar]] [[Has text::1001]]"
+		},
+		{
+			"name": "Table-without-sep-parameter",
+			"contents": "{{#ask:[[Has page::Foo]] [[Has page::42]]\n |?Has page\n |?Has text\n |format=table\n |headers=plain\n |link=none\n }}"
+		},
+		{
+			"name": "Table-with-sep-parameter",
+			"contents": "{{#ask:[[Has page::Foo]] [[Has page::42]]\n |?Has page\n |?Has text\n |format=table\n |sep=;\n |headers=plain\n |link=none\n }}"
+		},
+		{
+			"name": "Broadtable-with-sep-parameter",
+			"contents": "{{#ask:[[Has page::Foo]] [[Has page::42]]\n |?Has page\n |?Has text\n |format=broadtable\n |sep=;\n |headers=plain\n |link=none\n }}"
+		}
+	],
+	"format-testcases": [
+		{
+			"about": "#0 table without sep",
+			"subject": "Table-without-sep-parameter",
+			"expected-output": {
+				"to-contain": [
+					"<table class=\"sortable wikitable smwtable\">",
+					"<th>&#160;</th><th class=\"Has-page\">Has page</th>",
+					"<th class=\"Has-text\">Has text</th>",
+					"<tr class=\"row-odd\"><td class=\"smwtype_wpg\">Table-page</td>",
+					"<td class=\"Has-page smwtype_wpg\">Foo<br />42</td>",
+					"<td class=\"Has-text smwtype_txt\">bar<br />1001</td></tr>",
+					"</table>"
+				]
+			}
+		},
+		{
+			"about": "#1 table with sep",
+			"subject": "Table-with-sep-parameter",
+			"expected-output": {
+				"to-contain": [
+					"<table class=\"sortable wikitable smwtable\">",
+					"<th>&#160;</th><th class=\"Has-page\">Has page</th>",
+					"<th class=\"Has-text\">Has text</th>",
+					"<tr class=\"row-odd\"><td class=\"smwtype_wpg\">Table-page</td>",
+					"<td class=\"Has-page smwtype_wpg\">Foo;42</td>",
+					"<td class=\"Has-text smwtype_txt\">bar;1001</td></tr>",
+					"</table>"
+				]
+			}
+		},
+		{
+			"about": "#2 broadtable with sep",
+			"subject": "Broadtable-with-sep-parameter",
+			"expected-output": {
+				"to-contain": [
+					"<table class=\"sortable wikitable smwtable\" width=\"100%\">",
+					"<th>&#160;</th><th class=\"Has-page\">Has page</th>",
+					"<th class=\"Has-text\">Has text</th>",
+					"<tr class=\"row-odd\"><td class=\"smwtype_wpg\">Table-page</td>",
+					"<td class=\"Has-page smwtype_wpg\">Foo;42</td>",
+					"<td class=\"Has-text smwtype_txt\">bar;1001</td></tr>",
+					"</table>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"skip-on": {
+			"mw-1.19.20": "Skipping because of style=\"width: 100%;\" vs width=\"100%\""
+		},
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
