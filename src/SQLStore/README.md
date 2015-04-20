@@ -15,13 +15,35 @@ responsible to return query results from the `SQL` back-end with the help of the
 - The `ConceptQueryResolver` encapsulates query processing of a concept description in connection
   with the `ConceptCache` class
 
+### Examples
 ```php
-// Equivalent to condition [[Foo::+]]
-$description = new SomeProperty(
+// Equivalent to [[Category:Foo]]
+$classDescription = new ClassDescription(
+	new DIWikiPage( 'Foo', NS_CATEGORY )
+);
+```
+```php
+// Equivalent to [[:+]]
+$namespaceDescription = new NamespaceDescription(
+	NS_MAIN
+);
+```
+```php
+// Equivalent to [[Foo::+]]
+$someProperty = new SomeProperty(
 	new DIProperty( 'Foo' ),
 	new ThingDescription()
 );
-
+```
+```php
+// Equivalent to [[:+]][[Category:Foo]][[Foo::+]]
+$description = new Conjunction( array(
+	$$namespaceDescription,
+	$classDescription,
+	$someProperty
+) );
+```
+```php
 $query = new Query( $description );
 $query->setLimit( 10 );
 
@@ -30,5 +52,5 @@ $sqlStorefactory = new SQLStoreFactory(
 );
 
 $queryEngine = $sqlStorefactory->newMasterQueryEngine();
-$queryResult = $queryEngine->getQueryResults( $query );
+$queryResult = $queryEngine->getQueryResult( $query );
 ```
