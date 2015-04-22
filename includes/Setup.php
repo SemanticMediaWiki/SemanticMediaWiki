@@ -240,9 +240,11 @@ final class Setup {
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgFooterIcons
 	 */
 	private function registerFooterIcon() {
+		$pathParts = ( explode( '/extensions/', str_replace( DIRECTORY_SEPARATOR, '/', __DIR__), 2 ) );
+
 		$this->globalVars['wgFooterIcons']['poweredby']['semanticmediawiki'] = array(
 			'src' => $this->globalVars['wgScriptPath'] . '/extensions/'
-				. end( ( explode( '/extensions/', str_replace( DIRECTORY_SEPARATOR, '/', __DIR__), 2 ) ) )
+				. end( $pathParts )
 				. '/../resources/images/smw_button.png',
 			'url' => 'https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki',
 			'alt' => 'Powered by Semantic MediaWiki',

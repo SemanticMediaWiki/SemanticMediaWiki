@@ -239,7 +239,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 
 		$null = 0;
 
-		$this->mwHooksHandler->register( 'SMW::SQLStore::BeforeChangeTitleComplete', function( $store, $title, $title, $null, $null ) {
+		$this->mwHooksHandler->register( 'SMW::SQLStore::BeforeChangeTitleComplete', function( $store, $oldTitle, $newTitle, $pageId, $redirectId ) {
 			return $store->reachedTheBeforeChangeTitleCompleteHook = true;
 		} );
 
