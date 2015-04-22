@@ -14,9 +14,6 @@ use SMW\SQLStore\QueryEngine\QueryBuilder;
 use SMW\SQLStore\QueryEngine\ConceptQueryResolver;
 use SMW\SQLStore\QueryEngine\QueryEngine;
 use SMW\SQLStore\QueryEngine\EngineOptions;
-use Onoi\Cache\Cache;
-use Doctrine\DBAL\Connection;
-use SMW\SQLStore\ConceptCache;
 use SMW\ApplicationFactory;
 use SMWSQLStore3;
 use SMWRequestOptions as RequestOptions;
@@ -32,11 +29,6 @@ class SQLStoreFactory {
 	 * @var SMWSQLStore3
 	 */
 	private $store;
-
-	/**
-	 * @var Connection|null
-	 */
-	private $dbalConnection = null;
 
 	/**
 	 * @since 2.2
@@ -228,15 +220,6 @@ class SQLStoreFactory {
 
 	private function newTemporaryIdTableCreator() {
 		return new TemporaryIdTableCreator( $GLOBALS['wgDBtype'] );
-	}
-
-	private function getConnection() {
-		if ( $this->dbalConnection === null ) {
-			$builder = new ConnectionBuilder( $GLOBALS );
-			$this->dbalConnection = $builder->newConnection();
-		}
-
-		return $this->dbalConnection;
 	}
 
 }
