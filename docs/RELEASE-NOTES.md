@@ -1,6 +1,6 @@
 # Semantic MediaWiki 2.2 RC1
 
-This is not a release yet.
+This is not a stable release yet.
 
 ## New features
 
