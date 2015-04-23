@@ -126,6 +126,15 @@ class SemanticData {
 	protected $errors = array();
 
 	/**
+	 * Cache the hash to ensure a minimal impact in case of repeated usage. Any
+	 * removal or insert action will reset the hash to null to ensure it is
+	 * recreated in corresponds to changed nature of the data.
+	 *
+	 * @var string|null
+	 */
+	private $hash = null;
+
+	/**
 	 * @var integer|null
 	 */
 	private $updateIdentifier = null;
@@ -235,6 +244,11 @@ class SemanticData {
 	 * @return string
 	 */
 	public function getHash() {
+
+		if ( $this->hash !== null ) {
+			return $this->hash;
+		}
+
 		$stringToHash = '';
 
 		// here and below, use "_#_" to separate values; really not much care needed here
@@ -253,7 +267,7 @@ class SemanticData {
 			$stringToHash .= '#' . $data->getHash();
 		}
 
-		return md5( $stringToHash );
+		return $this->hash = md5( $stringToHash );
 	}
 
 	/**
@@ -305,6 +319,9 @@ class SemanticData {
 	 * @param $dataItem SMWDataItem
 	 */
 	public function addPropertyObjectValue( DIProperty $property, SMWDataItem $dataItem ) {
+
+		$this->hash = null;
+
 		if( $dataItem instanceof SMWDIContainer ) {
 			$this->addSubSemanticData( $dataItem->getSemanticData() );
 			$dataItem = $dataItem->getSemanticData()->getSubject();
@@ -422,6 +439,9 @@ class SemanticData {
 	 * @since 1.8
 	 */
 	public function removePropertyObjectValue( DIProperty $property, SMWDataItem $dataItem ) {
+
+		$this->hash = null;
+
 		//delete associated subSemanticData
 		if( $dataItem instanceof SMWDIContainer ) {
 			$this->removeSubSemanticData( $dataItem->getSemanticData() );
@@ -464,6 +484,7 @@ class SemanticData {
 		$this->mHasVisibleSpecs = false;
 		$this->stubObject = false;
 		$this->subSemanticData = array();
+		$this->hash = null;
 	}
 
 	/**
@@ -602,6 +623,9 @@ class SemanticData {
 	 * @throws MWException if not adding data about a subobject of this data
 	 */
 	public function addSubSemanticData( SemanticData $semanticData ) {
+
+		$this->hash = null;
+
 		if ( !$this->subDataAllowed ) {
 			throw new MWException( "Cannot add subdata. Are you trying to add data to an SMWSemanticData object that is already used as a subdata object?" );
 		}
@@ -639,6 +663,7 @@ class SemanticData {
 			return;
 		}
 
+		$this->hash = null;
 		$subobjectName = $semanticData->getSubject()->getSubobjectName();
 
 		if( $this->hasSubSemanticData( $subobjectName ) ) {
