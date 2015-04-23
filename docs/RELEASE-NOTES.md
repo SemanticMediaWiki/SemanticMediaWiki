@@ -1,4 +1,4 @@
-# Semantic MediaWiki 2.2
+# Semantic MediaWiki 2.2 RC1
 
 This is not a release yet.
 
@@ -15,6 +15,7 @@ This is not a release yet.
 * #913 Fixed exception for usage of `Has subobject` as free annotation
 * #914 Added restriction for "manual" annotation use to some pre-defined properties (e.g. `Has subobject`, `Has query`)
 * #974 Added `named args` as parameter to `CategoryResultPrinter`
+* #988 Added `sep` as parameter to the `TableResultPrinter` to define a separator for cell values
  
 ## Enhancements
 
@@ -41,6 +42,7 @@ This is not a release yet.
 * #974 Fixed inconsistency when using `headers=plain` in `CategoryResultPrinter` also fixed the `__NOTOC__` hack
 
 ## Internal changes
+
 * #373 Update `jquery.jstorage.js` (0.3.2 => 0.4.11)
 * #494 Changes to the `SQLStore\QueryEngine` interface
 * #711 Fetching annotations made by an `#ask` transcluded template 
