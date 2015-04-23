@@ -1,4 +1,4 @@
-# Semantic MediaWiki 2.2
+# Semantic MediaWiki 2.2 RC1
 
 This is not a release yet.
 
@@ -42,6 +42,7 @@ This is not a release yet.
 * #974 Fixed inconsistency when using `headers=plain` in `CategoryResultPrinter` also fixed the `__NOTOC__` hack
 
 ## Internal changes
+
 * #373 Update `jquery.jstorage.js` (0.3.2 => 0.4.11)
 * #494 Changes to the `SQLStore\QueryEngine` interface
 * #711 Fetching annotations made by an `#ask` transcluded template 
