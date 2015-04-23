@@ -235,11 +235,8 @@ class SemanticData {
 	 * hash algorithms that PHP offers.
 	 *
 	 * @note This function may be used to obtain keys for SemanticData
-	 * objects or to do simple equalitiy tests. Equal hashes with very
-	 * high probability indicate equal data. However, the hash is
-	 * sensitive to the order of properties and values, so it does not
-	 * yield a reliable way to detect inequality: objects with different
-	 * hashes may still contain the same data, added in different order.
+	 * objects or to do simple equality tests. Equal hashes with very
+	 * high probability indicate equal data.
 	 *
 	 * @return string
 	 */
@@ -249,25 +246,28 @@ class SemanticData {
 			return $this->hash;
 		}
 
-		$stringToHash = '';
+		$hash = array();
 
-		// here and below, use "_#_" to separate values; really not much care needed here
-		$stringToHash .= '_#_' . $this->mSubject->getSerialization();
+		$hash[] = $this->mSubject->getSerialization();
 
 		foreach ( $this->getProperties() as $property ) {
-			$stringToHash .= '_#_' . $property->getKey() . '##';
+			$hash[] = $property->getKey();
 
 			foreach ( $this->getPropertyValues( $property ) as $di ) {
-				$stringToHash .= '_#_' . $di->getSerialization();
+				$hash[] = $di->getSerialization();
 			}
-			$stringToHash = md5( $stringToHash ); // intermediate hashing to safe memory
 		}
 
 		foreach ( $this->getSubSemanticData() as $data ) {
-			$stringToHash .= '#' . $data->getHash();
+			$hash[] = $data->getHash();
 		}
 
-		return $this->hash = md5( $stringToHash );
+		sort( $hash );
+
+		$this->hash = md5( implode( '#', $hash ) );
+		unset( $hash );
+
+		return $this->hash;
 	}
 
 	/**
@@ -515,6 +515,8 @@ class SemanticData {
 		if( !$this->mSubject->equals( $semanticData->getSubject() ) ) {
 			throw new MWException( "SMWSemanticData can only represent data about one subject. Importing data for another subject is not possible." );
 		}
+
+		$this->hash = null;
 
 		// Shortcut when copying into empty objects that don't ask for
 		// more duplicate elimination:
