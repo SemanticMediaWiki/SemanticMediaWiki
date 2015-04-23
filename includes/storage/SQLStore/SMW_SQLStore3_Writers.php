@@ -719,30 +719,34 @@ class SMWSQLStore3Writers {
 	 * update jobs right away?
 	 *
 	 * @since 1.8
-	 * @param Title $oldtitle
-	 * @param Title $newtitle
-	 * @param integer $pageid
-	 * @param integer $redirid
+	 *
+	 * @param Title $oldTitle
+	 * @param Title $newTitle
+	 * @param integer $pageId
+	 * @param integer $redirectId
 	 */
-	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
+	public function changeTitle( Title $oldTitle, Title $newTitle, $pageId, $redirectId = 0 ) {
 		global $smwgQEqualitySupport;
 
-		wfRunHooks( 'SMW::SQLStore::BeforeChangeTitleComplete', array( $this->store, $oldtitle, $newtitle, $pageid, $redirid ) );
+		wfRunHooks(
+			'SMW::SQLStore::BeforeChangeTitleComplete',
+			array( $this->store, $oldTitle, $newTitle, $pageId, $redirectId )
+		);
 
 		$db = $this->store->getConnection();
 
 		// get IDs but do not resolve redirects:
 		$sid = $this->store->getObjectIds()->getSMWPageID(
-			$oldtitle->getDBkey(),
-			$oldtitle->getNamespace(),
+			$oldTitle->getDBkey(),
+			$oldTitle->getNamespace(),
 			'',
 			'',
 			false
 		);
 
 		$tid = $this->store->getObjectIds()->getSMWPageID(
-			$newtitle->getDBkey(),
-			$newtitle->getNamespace(),
+			$newTitle->getDBkey(),
+			$newTitle->getNamespace(),
 			'',
 			'',
 			false
@@ -759,28 +763,28 @@ class SMWSQLStore3Writers {
 				$db->update(
 					SMWSql3SmwIds::tableName,
 					array(
-						'smw_title' => $newtitle->getDBkey(),
-						'smw_namespace' => $newtitle->getNamespace(),
+						'smw_title' => $newTitle->getDBkey(),
+						'smw_namespace' => $newTitle->getNamespace(),
 						'smw_iw' => ''
 					),
 					array(
-						'smw_title' => $oldtitle->getDBkey(),
-						'smw_namespace' => $oldtitle->getNamespace(),
+						'smw_title' => $oldTitle->getDBkey(),
+						'smw_namespace' => $oldTitle->getNamespace(),
 						'smw_iw' => ''
 					),
 					__METHOD__
 				);
 
 				$this->store->getObjectIds()->moveSubobjects(
-					$oldtitle->getDBkey(),
-					$oldtitle->getNamespace(),
-					$newtitle->getDBkey(),
-					$newtitle->getNamespace()
+					$oldTitle->getDBkey(),
+					$oldTitle->getNamespace(),
+					$newTitle->getDBkey(),
+					$newTitle->getNamespace()
 				);
 
 				$this->store->getObjectIds()->setCache(
-					$oldtitle->getDBkey(),
-					$oldtitle->getNamespace(),
+					$oldTitle->getDBkey(),
+					$oldTitle->getNamespace(),
 					'',
 					'',
 					0,
@@ -789,16 +793,16 @@ class SMWSQLStore3Writers {
 
 				// We do not know the new sortkey, so just clear the cache:
 				$this->store->getObjectIds()->deleteCache(
-					$newtitle->getDBkey(),
-					$newtitle->getNamespace(),
+					$newTitle->getDBkey(),
+					$newTitle->getNamespace(),
 					'',
 					''
 				);
 
 			} else { // make new (target) id for use in redirect table
 				$sid = $this->store->getObjectIds()->makeSMWPageID(
-					$newtitle->getDBkey(),
-					$newtitle->getNamespace(),
+					$newTitle->getDBkey(),
+					$newTitle->getNamespace(),
 					'',
 					''
 				);
@@ -806,16 +810,16 @@ class SMWSQLStore3Writers {
 
 			// make redirect id for oldtitle:
 			$this->store->getObjectIds()->makeSMWPageID(
-				$oldtitle->getDBkey(),
-				$oldtitle->getNamespace(),
+				$oldTitle->getDBkey(),
+				$oldTitle->getNamespace(),
 				SMW_SQL3_SMWREDIIW,
 				''
 			);
 
 			$this->store->getObjectIds()->addRedirectForId(
 				$sid,
-				$oldtitle->getDBkey(),
-				$oldtitle->getNamespace()
+				$oldTitle->getDBkey(),
+				$oldTitle->getNamespace()
 			);
 
 			$statsTable = new PropertyStatisticsTable(
@@ -839,7 +843,7 @@ class SMWSQLStore3Writers {
 
 			// Delete any existing data (including redirects) from new title
 			// ($newtitle should not have data, but let's be sure)
-			$emptyNewSemanticData = new SMWSemanticData( SMWDIWikiPage::newFromTitle( $newtitle ) );
+			$emptyNewSemanticData = new SMWSemanticData( SMWDIWikiPage::newFromTitle( $newTitle ) );
 			$this->doDataUpdate( $emptyNewSemanticData );
 
 			// Move all data of old title to new position:
@@ -847,8 +851,8 @@ class SMWSQLStore3Writers {
 				$this->store->changeSMWPageID(
 					$sid,
 					$tid,
-					$oldtitle->getNamespace(),
-					$newtitle->getNamespace(),
+					$oldTitle->getNamespace(),
+					$newTitle->getNamespace(),
 					true,
 					false
 				);
@@ -858,24 +862,24 @@ class SMWSQLStore3Writers {
 			$table = $db->tableName( SMWSql3SmwIds::tableName );
 
 			$values = array(
-				'smw_title' => $newtitle->getDBkey(),
-				'smw_namespace' => $newtitle->getNamespace(),
+				'smw_title' => $newTitle->getDBkey(),
+				'smw_namespace' => $newTitle->getNamespace(),
 				'smw_iw' => ''
 			);
 
 			$sql = "UPDATE $table SET " . $db->makeList( $values, LIST_SET ) .
-				' WHERE smw_title = ' . $db->addQuotes( $oldtitle->getDBkey() ) . ' AND ' .
-				'smw_namespace = ' . $db->addQuotes( $oldtitle->getNamespace() ) . ' AND ' .
+				' WHERE smw_title = ' . $db->addQuotes( $oldTitle->getDBkey() ) . ' AND ' .
+				'smw_namespace = ' . $db->addQuotes( $oldTitle->getNamespace() ) . ' AND ' .
 				'smw_iw = ' . $db->addQuotes( '' ) . ' AND ' .
 				'smw_subobject != ' . $db->addQuotes( '' ); // The "!=" is why we cannot use MW array syntax here
 
 			$db->query( $sql, __METHOD__ );
 
 			$this->store->getObjectIds()->moveSubobjects(
-				$oldtitle->getDBkey(),
-				$oldtitle->getNamespace(),
-				$newtitle->getDBkey(),
-				$newtitle->getNamespace()
+				$oldTitle->getDBkey(),
+				$oldTitle->getNamespace(),
+				$newTitle->getDBkey(),
+				$newTitle->getNamespace()
 			);
 
 			// $redirid == 0 means that the oldTitle was not supposed to be a redirect
@@ -884,12 +888,12 @@ class SMWSQLStore3Writers {
 			// and clear the semantic data container for the oldTitle instance
 			// to ensure that no ghost references exists for an deleted oldTitle
 			// @see Title::moveTo(), createRedirect
-			if ( $redirid == 0 ) {
+			if ( $redirectId == 0 ) {
 
 				// Delete any existing data (including redirects) from old title
 				$this->updateRedirects(
-					$oldtitle->getDBkey(),
-					$oldtitle->getNamespace()
+					$oldTitle->getDBkey(),
+					$oldTitle->getNamespace()
 				);
 
 			} else {
@@ -899,10 +903,10 @@ class SMWSQLStore3Writers {
 				// TODO: may not be optimal for the standard case that newtitle
 				// existed and redirected to oldtitle (PERFORMANCE)
 				$this->updateRedirects(
-					$oldtitle->getDBkey(),
-					$oldtitle->getNamespace(),
-					$newtitle->getDBkey(),
-					$newtitle->getNamespace()
+					$oldTitle->getDBkey(),
+					$oldTitle->getNamespace(),
+					$newTitle->getDBkey(),
+					$newTitle->getNamespace()
 				);
 
 			}

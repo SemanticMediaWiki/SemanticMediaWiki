@@ -126,6 +126,15 @@ class SemanticData {
 	protected $errors = array();
 
 	/**
+	 * Cache the hash to ensure a minimal impact in case of repeated usage. Any
+	 * removal or insert action will reset the hash to null to ensure it is
+	 * recreated in corresponds to changed nature of the data.
+	 *
+	 * @var string|null
+	 */
+	private $hash = null;
+
+	/**
 	 * @var integer|null
 	 */
 	private $updateIdentifier = null;
@@ -226,34 +235,39 @@ class SemanticData {
 	 * hash algorithms that PHP offers.
 	 *
 	 * @note This function may be used to obtain keys for SemanticData
-	 * objects or to do simple equalitiy tests. Equal hashes with very
-	 * high probability indicate equal data. However, the hash is
-	 * sensitive to the order of properties and values, so it does not
-	 * yield a reliable way to detect inequality: objects with different
-	 * hashes may still contain the same data, added in different order.
+	 * objects or to do simple equality tests. Equal hashes with very
+	 * high probability indicate equal data.
 	 *
 	 * @return string
 	 */
 	public function getHash() {
-		$stringToHash = '';
 
-		// here and below, use "_#_" to separate values; really not much care needed here
-		$stringToHash .= '_#_' . $this->mSubject->getSerialization();
+		if ( $this->hash !== null ) {
+			return $this->hash;
+		}
+
+		$hash = array();
+
+		$hash[] = $this->mSubject->getSerialization();
 
 		foreach ( $this->getProperties() as $property ) {
-			$stringToHash .= '_#_' . $property->getKey() . '##';
+			$hash[] = $property->getKey();
 
 			foreach ( $this->getPropertyValues( $property ) as $di ) {
-				$stringToHash .= '_#_' . $di->getSerialization();
+				$hash[] = $di->getSerialization();
 			}
-			$stringToHash = md5( $stringToHash ); // intermediate hashing to safe memory
 		}
 
 		foreach ( $this->getSubSemanticData() as $data ) {
-			$stringToHash .= '#' . $data->getHash();
+			$hash[] = $data->getHash();
 		}
 
-		return md5( $stringToHash );
+		sort( $hash );
+
+		$this->hash = md5( implode( '#', $hash ) );
+		unset( $hash );
+
+		return $this->hash;
 	}
 
 	/**
@@ -305,6 +319,9 @@ class SemanticData {
 	 * @param $dataItem SMWDataItem
 	 */
 	public function addPropertyObjectValue( DIProperty $property, SMWDataItem $dataItem ) {
+
+		$this->hash = null;
+
 		if( $dataItem instanceof SMWDIContainer ) {
 			$this->addSubSemanticData( $dataItem->getSemanticData() );
 			$dataItem = $dataItem->getSemanticData()->getSubject();
@@ -422,6 +439,9 @@ class SemanticData {
 	 * @since 1.8
 	 */
 	public function removePropertyObjectValue( DIProperty $property, SMWDataItem $dataItem ) {
+
+		$this->hash = null;
+
 		//delete associated subSemanticData
 		if( $dataItem instanceof SMWDIContainer ) {
 			$this->removeSubSemanticData( $dataItem->getSemanticData() );
@@ -464,6 +484,7 @@ class SemanticData {
 		$this->mHasVisibleSpecs = false;
 		$this->stubObject = false;
 		$this->subSemanticData = array();
+		$this->hash = null;
 	}
 
 	/**
@@ -494,6 +515,8 @@ class SemanticData {
 		if( !$this->mSubject->equals( $semanticData->getSubject() ) ) {
 			throw new MWException( "SMWSemanticData can only represent data about one subject. Importing data for another subject is not possible." );
 		}
+
+		$this->hash = null;
 
 		// Shortcut when copying into empty objects that don't ask for
 		// more duplicate elimination:
@@ -602,6 +625,9 @@ class SemanticData {
 	 * @throws MWException if not adding data about a subobject of this data
 	 */
 	public function addSubSemanticData( SemanticData $semanticData ) {
+
+		$this->hash = null;
+
 		if ( !$this->subDataAllowed ) {
 			throw new MWException( "Cannot add subdata. Are you trying to add data to an SMWSemanticData object that is already used as a subdata object?" );
 		}
@@ -639,6 +665,7 @@ class SemanticData {
 			return;
 		}
 
+		$this->hash = null;
 		$subobjectName = $semanticData->getSubject()->getSubobjectName();
 
 		if( $this->hasSubSemanticData( $subobjectName ) ) {

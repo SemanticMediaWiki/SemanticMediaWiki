@@ -31,6 +31,7 @@ use Title;
 class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
+	private $dataValueFactory;
 
 	protected function setUp() {
 		parent::setUp();
@@ -43,6 +44,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+		$this->dataValueFactory = DataValueFactory::getInstance();
 
 		StoreFactory::setDefaultStoreForUnitTest( $store );
 	}
@@ -125,6 +127,133 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
+			$instance->getHash()
+		);
+	}
+
+	public function testPropertyOrderDoesNotInfluenceHash() {
+
+		$instance = new SemanticData(
+			new DIWikiPage( 'Foo', NS_MAIN )
+		);
+
+		$instance->addDataValue(
+			$this->dataValueFactory->newPropertyValue( 'Foo', 'Bar' )
+		);
+
+		$instance->addDataValue(
+			$this->dataValueFactory->newPropertyValue( 'Bar', 'Foo' )
+		);
+
+		$instanceToCheck = new SemanticData(
+			new DIWikiPage( 'Foo', NS_MAIN )
+		);
+
+		$instanceToCheck->addDataValue(
+			$this->dataValueFactory->newPropertyValue( 'Bar', 'Foo' )
+		);
+
+		$instanceToCheck->addDataValue(
+			$this->dataValueFactory->newPropertyValue( 'Foo', 'Bar' )
+		);
+
+		$this->assertEquals(
+			$instance->getHash(),
+			$instanceToCheck->getHash()
+		);
+	}
+
+	public function testSubSemanticPropertyOrderDoesNotInfluenceHash() {
+
+		$subobject = new Subobject( Title::newFromText( 'Foo' ) );
+		$subobject->setEmptyContainerForId( 'Foo' );
+
+		$subobject->addDataValue(
+			$this->dataValueFactory->newPropertyValue( 'Foo', 'Bar' )
+		);
+
+		$subobject->addDataValue(
+			$this->dataValueFactory->newPropertyValue( 'Bar', 'Foo' )
+		);
+
+		$instance = new SemanticData(
+			new DIWikiPage( 'Foo', NS_MAIN )
+		);
+
+		$instance->addSubobject(
+			$subobject
+		);
+
+		$subobject = new Subobject( Title::newFromText( 'Foo' ) );
+		$subobject->setEmptyContainerForId( 'Foo' );
+
+		$subobject->addDataValue(
+			$this->dataValueFactory->newPropertyValue( 'Bar', 'Foo' )
+		);
+
+		$subobject->addDataValue(
+			$this->dataValueFactory->newPropertyValue( 'Foo', 'Bar' )
+		);
+
+		$instanceToCheck = new SemanticData(
+			new DIWikiPage( 'Foo', NS_MAIN )
+		);
+
+		$instanceToCheck->addSubobject(
+			$subobject
+		);
+
+		$this->assertEquals(
+			$instance->getHash(),
+			$instanceToCheck->getHash()
+		);
+	}
+
+	public function testThatChangingDataDoesEnforceDifferentHash() {
+
+		$instance = new SemanticData(
+			new DIWikiPage( 'Foo', NS_MAIN )
+		);
+
+		$firstHash = $instance->getHash();
+
+		$instance->addDataValue(
+			$this->dataValueFactory->newPropertyValue( 'Foo', 'Bar' )
+		);
+
+		$secondHash = $instance->getHash();
+
+		$this->assertNotEquals(
+			$firstHash,
+			$secondHash
+		);
+
+		$subobject = new Subobject( Title::newFromText( 'Foo' ) );
+		$subobject->setEmptyContainerForId( 'Foo' );
+
+		$subobject->addDataValue(
+			$this->dataValueFactory->newPropertyValue( 'Foo', 'Bar' )
+		);
+
+		$instance->addSubSemanticData(
+			$subobject->getSemanticData()
+		);
+
+		$thirdHash = $instance->getHash();
+
+		$this->assertNotEquals(
+			$secondHash,
+			$thirdHash
+		);
+
+		// Remove the data added in the third step and expect
+		// the hash from the second
+		$instance->removeSubSemanticData(
+			$subobject->getSemanticData()
+		);
+
+		$this->assertEquals(
+			$secondHash,
 			$instance->getHash()
 		);
 	}
