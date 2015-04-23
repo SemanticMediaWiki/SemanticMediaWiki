@@ -15,6 +15,7 @@ This is not a release yet.
 * #913 Fixed exception for usage of `Has subobject` as free annotation
 * #914 Added restriction for "manual" annotation use to some pre-defined properties (e.g. `Has subobject`, `Has query`)
 * #974 Added `named args` as parameter to `CategoryResultPrinter`
+* #988 Added `sep` as parameter to the `TableResultPrinter` to define a separator for cell values
  
 ## Enhancements
 
