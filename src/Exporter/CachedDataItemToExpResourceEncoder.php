@@ -141,8 +141,11 @@ class CachedDataItemToExpResourceEncoder {
 
 		$hash = $this->cachePrefix . $diWikiPage->getHash() . $modifier;
 
+		// If a persistent cache is injected use the ExpElement serializer because
+		// not all cache layers support object de/serialization
+		// ExpElement::newFromSerialization
 		if ( $this->cache->contains( $hash ) ) {
-			return ExpElement::newFromSerialization( $this->cache->fetch( $hash ) );
+			return $this->cache->fetch( $hash );
 		}
 
 		if ( $diWikiPage->getSubobjectName() !== '' ) {
@@ -166,7 +169,7 @@ class CachedDataItemToExpResourceEncoder {
 
 		$this->cache->save(
 			$hash,
-			$resource->getSerialization()
+			$resource
 		);
 
 		return $resource;
