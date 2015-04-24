@@ -50,6 +50,11 @@ class SMWExpData implements Element {
 	protected $m_edges = array();
 
 	/**
+	 * @var string|null
+	 */
+	private $hash = null;
+
+	/**
 	 * Constructor. $subject is the SMWExpResource for the
 	 * subject about which this SMWExpData is.
 	 */
@@ -74,21 +79,28 @@ class SMWExpData implements Element {
 	 */
 	public function getHash() {
 
-		$hash = array();
-		$hash[] = $this->m_subject->getHash();
+		if ( $this->hash !== null ) {
+			return $this->hash;
+		}
+
+		$hashes = array();
+		$hashes[] = $this->m_subject->getHash();
 
 		foreach ( $this->getProperties() as $property ) {
 
-			$hash[] = $property->getHash();
+			$hashes[] = $property->getHash();
 
 			foreach ( $this->getValues( $property ) as $child ) {
-				$hash[] = $child->getHash();
+				$hashes[] = $child->getHash();
 			}
 		}
 
-		sort( $hash );
+		sort( $hashes );
 
-		return md5( implode( '#', $hash ) );
+		$this->hash = md5( implode( '#', $hashes ) );
+		unset( $hashes );
+
+		return $this->hash;
 	}
 
 	/**
@@ -141,6 +153,8 @@ class SMWExpData implements Element {
 	 * @param Element $child
 	 */
 	public function addPropertyObjectValue( SMWExpNsResource $property, Element $child ) {
+
+		$this->hash = null;
 
 		if ( !array_key_exists( $property->getUri(), $this->m_edges ) ) {
 			$this->m_children[$property->getUri()] = array();
