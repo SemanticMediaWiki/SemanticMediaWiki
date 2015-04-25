@@ -20,7 +20,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 
-	protected function setUp(){
+	protected function setUp() {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMWSQLStore3' )

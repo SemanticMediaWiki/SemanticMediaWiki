@@ -387,7 +387,7 @@ class QuerySegmentListResolver {
 				break;
 			}
 
- 			// empty "new" table
+			// empty "new" table
 			$db->query(
 				'TRUNCATE TABLE ' . $tmpnew,
 				__METHOD__
