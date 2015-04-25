@@ -13,7 +13,7 @@ matrix:
     - env: DB=mysql; MW=master; TYPE=coverage
       php: 5.5
     - env: DB=mysql; MW=master; TYPE=coverage
-      php: 5
+      php: 5.6
     - env: DB=mysql; MW=1.23.9; FUSEKI=1.1.1
       php: 5.4
     - env: DB=mysql; MW=1.23.9; VIRTUOSO=6.1
