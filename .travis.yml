@@ -6,23 +6,29 @@ env:
 matrix:
   fast_finish: true
   include:
-    - env: DB=mysql; MW=master@5cc1f1d; TYPE=coverage
+    - env: DB=mysql; MW=master; TYPE=coverage
       php: 5.3
-    - env: DB=mysql; MW=1.23.5; FUSEKI=1.1.1
+    - env: DB=mysql; MW=master; TYPE=coverage
       php: 5.4
-    - env: DB=mysql; MW=1.23.5; VIRTUOSO=6.1
+    - env: DB=mysql; MW=master; TYPE=coverage
+      php: 5.5
+    - env: DB=mysql; MW=master; TYPE=coverage
+      php: 5.6
+    - env: DB=mysql; MW=1.23.9; FUSEKI=1.1.1
       php: 5.4
-    - env: DB=mysql; MW=1.24.1; SESAME=2.7.14
+    - env: DB=mysql; MW=1.23.9; VIRTUOSO=6.1
+      php: 5.4
+    - env: DB=mysql; MW=1.24.2; SESAME=2.7.14
       php: 5.4
     - env: DB=sqlite; MW=1.22.12; SITELANG=ja
       php: 5.5
     - env: DB=postgres; MW=1.19.20;
       php: 5.4
-    - env: DB=mysql; MW=master@5cc1f1d; PHPUNIT=4.3.*; TYPE=benchmark
+    - env: DB=mysql; MW=maste; PHPUNIT=4.3.*; TYPE=benchmark
       php: hhvm
-    - env: DB=sqlite; MW=master@5cc1f1d; PHPUNIT=4.3.*; TYPE=debug
+    - env: DB=sqlite; MW=master; PHPUNIT=4.3.*; TYPE=debug
       php: hhvm-nightly
-    - env: DB=sqlite; MW=master@5cc1f1d; TYPE=composer
+    - env: DB=sqlite; MW=master; TYPE=composer
       php: 5.6
     - env: DB=mysql; MW=1.19.20; TYPE=relbuild
       php: 5.4
@@ -31,7 +37,7 @@ matrix:
     - env: THENEEDFORTHIS=FAIL
   allow_failures:
     - env: DB=mysql; MW=1.19.20; TYPE=relbuild
-    - env: DB=sqlite; MW=master@5cc1f1d; TYPE=composer
+    - env: DB=sqlite; MW=master; TYPE=composer
     - php: hhvm-nightly
 
 install:
