@@ -191,7 +191,7 @@ return array(
 		'dependencies' => 'ext.smw.autocomplete'
 	),
 
-	'jquery.hoverIntent' => $moduleTemplate + array(
+	'ext.jquery.hoverIntent' => $moduleTemplate + array(
 		'scripts' => 'jquery/jquery.hoverIntent.js'
 	)
 );
