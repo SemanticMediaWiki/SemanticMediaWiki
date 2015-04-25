@@ -14,11 +14,11 @@ matrix:
       php: 5.5
     - env: DB=mysql; MW=master; TYPE=coverage
       php: 5
-    - env: DB=mysql; MW=1.23.5; FUSEKI=1.1.1
+    - env: DB=mysql; MW=1.23.9; FUSEKI=1.1.1
       php: 5.4
-    - env: DB=mysql; MW=1.23.5; VIRTUOSO=6.1
+    - env: DB=mysql; MW=1.23.9; VIRTUOSO=6.1
       php: 5.4
-    - env: DB=mysql; MW=1.24.1; SESAME=2.7.14
+    - env: DB=mysql; MW=1.24.2; SESAME=2.7.14
       php: 5.4
     - env: DB=sqlite; MW=1.22.12; SITELANG=ja
       php: 5.5
