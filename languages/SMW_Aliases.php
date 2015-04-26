@@ -487,6 +487,7 @@ $specialPageAliases['lb'] = array(
 	'PageProperty' => array( 'Säiten-Eegeschaften' ),
 	'Properties' => array( 'Eegeschaften' ),
 	'Concepts' => array( 'Konzepter' ),
+	'SMWAdmin' => array( 'SMW-Administratioun' ),
 	'SearchByProperty' => array( 'No_Eegeschaft_sichen' ),
 	'SemanticStatistics' => array( 'Semantesch_Statistiken' ),
 	'Types' => array( 'Datentypen' ),
