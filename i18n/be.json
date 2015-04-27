@@ -1,10 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"Тест"
+			"Тест",
+			"Чаховіч Уладзіслаў"
 		]
 	},
 	"smw_printername_template": "Шаблон",
 	"types": "Тыпы",
+	"browse": "Праглядзець {{GRAMMAR:родны|{{SITENAME}}}}",
 	"smw-livepreview-loading": "Счытваем…"
 }
