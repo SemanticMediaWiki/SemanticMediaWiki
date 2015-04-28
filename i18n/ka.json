@@ -63,7 +63,7 @@
 	"smw_smwadmin_datarefresh": "მონაცემების აღდგენა და განახლება",
 	"smw_smwadmin_datarefreshbutton": "მონაცემების განახლების დაწყება",
 	"smw_smwadmin_datarefreshstop": "ამ განახლების შეჩერება",
-	"smw_smwadmin_datarefreshstopconfirm": "დიახ, დარწმუნებული ვარ.",
+	"smw_smwadmin_datarefreshstopconfirm": "დიახ, დარწმუნებული {{GENDER:$1|ვარ}}.",
 	"smw_smwadmin_support": "დახმარების მიღება",
 	"smw_smwadmin_mediazilla": "შეცდომების შეტყობინება შესაძლებელია <a href=\"https://bugzilla.wikimedia.org/\">ბაგზილაში</a>.",
 	"smw_adminlinks_datastructure": "მონაცემების სტრუქტურა",
