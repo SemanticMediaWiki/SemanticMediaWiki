@@ -32,7 +32,8 @@ class MwHooksHandler {
 		'SMW::Store::AfterQueryResultLookupComplete',
 		'SMW::SQLStore::BeforeChangeTitleComplete',
 		'SMW::SQLStore::BeforeDeleteSubjectComplete',
-		'SMW::SQLStore::AfterDeleteSubjectComplete'
+		'SMW::SQLStore::AfterDeleteSubjectComplete',
+		'SMW::Parser::BeforeMagicWordsFinder'
 	);
 
 	/**
