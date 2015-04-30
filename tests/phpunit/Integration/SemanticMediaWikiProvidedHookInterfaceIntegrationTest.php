@@ -328,6 +328,63 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 		);
 	}
 
+	public function testRegisteredParserBeforeMagicWordsFinder() {
+
+		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title = \Title::newFromText( __METHOD__ );
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parserData->expects( $this->any() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( $parserOutput ) );
+
+		$parserData->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $semanticData ) );
+
+		$parserData->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$magicWordFinder = $this->getMockBuilder( '\SMW\MediaWiki\MagicWordFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$magicWordFinder->expects( $this->once() )
+			->method( 'matchAndRemove' )
+			->with(
+				$this->equalTo( 'Foo' ),
+				$this->anything() )
+			->will( $this->returnValue( array() ) );
+
+		$redirectTargetFinder = $this->getMockBuilder( '\SMW\MediaWiki\RedirectTargetFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$inTextAnnotationParser = $this->getMockBuilder( '\SMW\InTextAnnotationParser' )
+			->setConstructorArgs( array( $parserData, $magicWordFinder, $redirectTargetFinder ) )
+			->setMethods( null )
+			->getMock();
+
+		$this->mwHooksHandler->register( 'SMW::Parser::BeforeMagicWordsFinder', function( &$magicWords ) {
+			$magicWords = array( 'Foo' );
+		} );
+
+		$text = '';
+
+		$inTextAnnotationParser->parse( $text );
+	}
+
 	public function storeClassProvider() {
 
 		$provider[] = array( '\SMWSQLStore3' );

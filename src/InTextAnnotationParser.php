@@ -6,6 +6,7 @@ use SMW\MediaWiki\MagicWordFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMWOutputs;
 use Title;
+use Hooks;
 
 /**
  * Class collects all functions for wiki text parsing / processing that are
@@ -321,7 +322,14 @@ class InTextAnnotationParser {
 
 		$this->magicWordFinder->setOutput( $this->parserData->getOutput() );
 
-		foreach ( array( 'SMW_NOFACTBOX', 'SMW_SHOWFACTBOX' ) as $magicWord ) {
+		$magicWords = array(
+			'SMW_NOFACTBOX',
+			'SMW_SHOWFACTBOX'
+		);
+
+		Hooks::run( 'SMW::Parser::BeforeMagicWordsFinder', array( &$magicWords ) );
+
+		foreach ( $magicWords as $magicWord ) {
 			$words = $words + $this->magicWordFinder->matchAndRemove( $magicWord, $text );
 		}
 
