@@ -172,7 +172,7 @@
 	"smw-statistics-property-total-legacy": "{{PLURAL:$1|1=Свойство|Свойства}} (всего)",
 	"smw-statistics-property-page": "{{PLURAL:$1|Свойство|Свойства}} (зарегистрировано на странице)",
 	"smw-statistics-property-type": "{{PLURAL:$1|Свойство|Свойства}} (назначено для типа данных)",
-	"smw-statistics-query-inline": "[[Свойство:Имеет запросы|{{PLURAL:$1|Запрос|Запросы}}]]",
+	"smw-statistics-query-inline": "[[Property:Has query|{{PLURAL:$1|Запрос|Запросы}}]]",
 	"smw-statistics-query-size": "Размер запроса",
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|1=Концепт|Концепты}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|1=Концепт|Концепты}}]]",

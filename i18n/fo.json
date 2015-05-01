@@ -1,3 +1,9 @@
 {
+	"@metadata": {
+		"authors": [
+			"EileenSanda"
+		]
+	},
+	"browse": "Leita í wikiini",
 	"smw-livepreview-loading": "Innlesur..."
 }
