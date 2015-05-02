@@ -50,6 +50,28 @@ class CacheFactory {
 	/**
 	 * @since 2.2
 	 *
+	 * @param string $key
+	 *
+	 * @return string
+	 */
+	public function getFactboxCacheKey( $key ) {
+		return $this->getCachePrefix() . ':smw:factbox-cache:' . md5( $key );
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param string $key
+	 *
+	 * @return string
+	 */
+	public function getPurgeCacheKey( $key ) {
+		return $this->getCachePrefix() . ':smw:autorefresh-cache:' . md5( $key );
+	}
+
+	/**
+	 * @since 2.2
+	 *
 	 * @param array $cacheOptions
 	 *
 	 * @return stdClass

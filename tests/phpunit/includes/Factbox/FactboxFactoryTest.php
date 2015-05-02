@@ -2,42 +2,37 @@
 
 namespace SMW\Tests\Factbox;
 
-use SMW\Factbox\FactboxBuilder;
+use SMW\Factbox\FactboxFactory;
 
 use Title;
 
 /**
- * @covers \SMW\Factbox\FactboxBuilder
+ * @covers \SMW\Factbox\FactboxFactory
  *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 2.0
  *
  * @author mwjames
  */
-class FactboxBuilderTest extends \PHPUnit_Framework_TestCase {
+class FactboxFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\Factbox\FactboxBuilder',
-			new FactboxBuilder()
+			'\SMW\Factbox\FactboxFactory',
+			new FactboxFactory()
 		);
 	}
 
 	public function testCanConstructFactboxCache() {
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new FactboxBuilder();
+		$instance = new FactboxFactory();
 
 		$this->assertInstanceOf(
 			'\SMW\Factbox\FactboxCache',
-			$instance->newFactboxCache( $outputPage )
+			$instance->newFactboxCache()
 		);
 	}
 
@@ -51,7 +46,7 @@ class FactboxBuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new FactboxBuilder();
+		$instance = new FactboxFactory();
 
 		$this->assertInstanceOf(
 			'\SMW\Factbox\Factbox',

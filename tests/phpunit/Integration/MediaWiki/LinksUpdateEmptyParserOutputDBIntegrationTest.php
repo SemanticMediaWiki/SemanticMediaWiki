@@ -43,17 +43,10 @@ class LinksUpdateEmptyParserOutputDBIntegrationTest extends MwDBaseUnitTestCase 
 
 		$propertiesCountBeforeUpdate = count( $this->getStore()->getSemanticData( $subject )->getProperties() );
 
-		/**
-		 * See #347 and LinksUpdateConstructed
-		 */
 		$linksUpdate = new LinksUpdate( $title, new ParserOutput() );
 		$linksUpdate->doUpdate();
 
-		/**
-		 * Asserts that before and after the update, the SemanticData container
-		 * holds the same amount of properties despite the fact that the ParserOutput
-		 * was invoked empty
-		 */
+
 		$this->assertCount(
 			$propertiesCountBeforeUpdate,
 			$this->getStore()->getSemanticData( $subject )->getProperties()

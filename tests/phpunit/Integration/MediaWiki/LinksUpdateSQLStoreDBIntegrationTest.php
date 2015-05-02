@@ -62,7 +62,6 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 	}
 
 	public function tearDown() {
-
 		$this->mwHooksHandler->restoreListedHooks();
 
 		if ( $this->title !== null ) {

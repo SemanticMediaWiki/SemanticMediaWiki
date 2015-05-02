@@ -2,10 +2,8 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Factbox\FactboxCache;
 use SMW\ApplicationFactory;
-use SMW\Cache\CacheIdGenerator;
-
+use SMW\Cache\CacheFactory;
 use WikiPage;
 
 /**
@@ -16,8 +14,6 @@ use WikiPage;
  *
  * @see http://www.mediawiki.org/wiki/Manual:Hooks/ArticlePurge
  *
- * @ingroup FunctionHook
- *
  * @license GNU GPL v2+
  * @since 1.9
  *
@@ -26,56 +22,32 @@ use WikiPage;
 class ArticlePurge {
 
 	/**
-	 * @var WikiPage
-	 */
-	protected $wikiPage = null;
-
-	/**
-	 * @since  1.9
-	 *
-	 * @param WikiPage $wikiPage
-	 */
-	public function __construct( WikiPage &$wikiPage ) {
-		$this->wikiPage = $wikiPage;
-	}
-
-	/**
-	 * @since 1.9
-	 *
-	 * @return \SMW\Cache\CacheIdGenerator
-	 */
-	public static function newCacheId( $pageId ) {
-		return new CacheIdGenerator( $pageId, 'autorefresh' );
-	}
-
-	/**
-	 * @see FunctionHook::process
-	 *
 	 * @since 1.9
 	 *
 	 * @return true
 	 */
-	public function process() {
+	public function process( WikiPage &$wikiPage ) {
 
-		$pageId = $this->wikiPage->getTitle()->getArticleID();
+		$applicationFactory = ApplicationFactory::getInstance();
 
-		/**
-		 * @var Settings $settings
-		 */
-		$settings = ApplicationFactory::getInstance()->getSettings();
+		$pageId = $wikiPage->getTitle()->getArticleID();
+		$settings = $applicationFactory->getSettings();
 
-		/**
-		 * @var CacheHandler $cache
-		 */
-		$cache = ApplicationFactory::getInstance()->getCache();
+		$cache = $applicationFactory->getCache();
+		$cacheFactory = $applicationFactory->newCacheFactory();
 
-		$cache->setCacheEnabled( $pageId > 0 )
-			->setKey( $this->newCacheId( $pageId ) )
-			->set( $settings->get( 'smwgAutoRefreshOnPurge' ) );
+		if ( $pageId > 0 ) {
+			$cache->save(
+				$cacheFactory->getPurgeCacheKey( $pageId ),
+				$settings->get( 'smwgAutoRefreshOnPurge' )
+			);
+		}
 
-		$cache->setCacheEnabled( $settings->get( 'smwgFactboxCacheRefreshOnPurge' ) )
-			->setKey( FactboxCache::newCacheId( $pageId ) )
-			->delete();
+		if ( $settings->get( 'smwgFactboxCacheRefreshOnPurge' ) ) {
+			$cache->delete(
+				$cacheFactory->getFactboxCacheKey( $pageId )
+			);
+		}
 
 		return true;
 	}

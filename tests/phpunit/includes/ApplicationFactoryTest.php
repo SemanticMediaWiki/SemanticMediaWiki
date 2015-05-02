@@ -115,11 +115,11 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructFactboxBuilder() {
+	public function testCanConstructFactboxFactory() {
 
 		$this->assertInstanceOf(
-			'SMW\Factbox\FactboxBuilder',
-			$this->applicationFactory->newFactboxBuilder()
+			'SMW\Factbox\FactboxFactory',
+			$this->applicationFactory->newFactboxFactory()
 		);
 	}
 

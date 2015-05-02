@@ -10,10 +10,7 @@ use SMW\DIWikiPage;
 use RuntimeException;
 
 /**
- * @group SMW
- * @group SMWExtension
- *
- * @group semantic-mediawiki-integration
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 2.1
@@ -204,7 +201,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = $this->applicationFactory->newFactboxBuilder()->newFactbox( $parserData, $contextSource );
+		$instance = $this->applicationFactory->newFactboxFactory()->newFactbox( $parserData, $contextSource );
 		$instance->doBuild();
 
 		$this->assertEquals(

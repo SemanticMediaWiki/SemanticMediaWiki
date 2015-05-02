@@ -310,8 +310,10 @@ class HookRegistry {
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticlePurge
 		 */
 		$functionHookDefinition['ArticlePurge']= function ( &$wikiPage ) {
-			$articlePurge = new ArticlePurge( $wikiPage );
-			return $articlePurge->process();
+
+			$articlePurge = new ArticlePurge();
+
+			return $articlePurge->process( $wikiPage );
 		};
 
 		/**

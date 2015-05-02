@@ -14,9 +14,7 @@ use WikiPage;
 /**
  * @covers \SMW\MediaWiki\Hooks\ArticlePurge
  *
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -24,6 +22,33 @@ use WikiPage;
  * @author mwjames
  */
 class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
+
+	private $applicationFactory;
+	private $cache;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->applicationFactory = ApplicationFactory::getInstance();
+
+		$settings = Settings::newFromArray( array(
+			'smwgFactboxUseCache' => true,
+			'smwgCacheType'       => 'hash',
+			'smwgLinksInValues'   => false,
+			'smwgInlineErrors'    => true
+		) );
+
+		$this->applicationFactory->registerObject( 'Settings', $settings );
+
+		$this->cache = $this->applicationFactory->newCacheFactory()->newFixedInMemoryCache();
+		$this->applicationFactory->registerObject( 'Cache', $this->cache );
+	}
+
+	public function tearDown() {
+		$this->applicationFactory->clear();
+
+		parent::tearDown();
+	}
 
 	public function testCanConstruct() {
 
@@ -45,26 +70,30 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 		$wikiPage = new WikiPage( $setup['title'] );
 		$pageId   = $wikiPage->getTitle()->getArticleID();
 
-		ApplicationFactory::getInstance()->registerObject( 'Settings', Settings::newFromArray( array(
-			'smwgCacheType'                  => 'hash',
-			'smwgAutoRefreshOnPurge'         => $setup['smwgAutoRefreshOnPurge'],
-			'smwgFactboxCacheRefreshOnPurge' => $setup['smwgFactboxCacheRefreshOnPurge']
-		) ) );
+		$this->applicationFactory->getSettings()->set(
+			'smwgAutoRefreshOnPurge',
+			$setup['smwgAutoRefreshOnPurge']
+		);
 
-		$instance = new ArticlePurge( $wikiPage );
-		$cache = ApplicationFactory::getInstance()->getCache();
+		$this->applicationFactory->getSettings()->set(
+			'smwgFactboxCacheRefreshOnPurge',
+			$setup['smwgFactboxCacheRefreshOnPurge']
+		);
 
-		$id = FactboxCache::newCacheId( $pageId );
-	//	$cache->setKey( $id )->set( true );
+		$instance = new ArticlePurge();
+
+		$cacheFactory = $this->applicationFactory->newCacheFactory();
+		$factboxCacheKey = $cacheFactory->getFactboxCacheKey( $pageId );
+		$purgeCacheKey = $cacheFactory->getPurgeCacheKey( $pageId );
 
 		$this->assertEquals(
 			$expected['autorefreshPreProcess'],
-			$cache->setKey( $instance->newCacheId( $pageId ) )->get(),
+			$this->cache->fetch( $purgeCacheKey ),
 			'Asserts the autorefresh cache status before processing'
 		);
 
 		// Travis 210.5, 305.3
-		$travis = $cache->setKey( $id )->get();
+		$travis = $this->cache->fetch( $factboxCacheKey );
 		$travisText = json_encode( $travis );
 		$this->assertEquals(
 			$expected['factboxPreProcess'],
@@ -73,27 +102,26 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertFalse(
-			$cache->setKey( $instance->newCacheId( $pageId ) )->get(),
+			$this->cache->fetch( $purgeCacheKey ),
 			'Asserts that before processing ...'
 		);
 
-		$result = $instance->process();
+		$result = $instance->process( $wikiPage );
 
 		// Post-process check
 		$this->assertTrue(
-			$result,
-			'Asserts that process() always returns true'
+			$result
 		);
 
 		$this->assertEquals(
 			$expected['autorefreshPostProcess'],
-			$cache->setKey( $instance->newCacheId( $pageId ) )->get(),
+			$this->cache->fetch( $purgeCacheKey ),
 			'Asserts the autorefresh cache status after processing'
 		);
 
 		$this->assertEquals(
 			$expected['factboxPostProcess'],
-			$cache->setCacheEnabled( true )->setKey( $id )->get(),
+			$this->cache->fetch( $factboxCacheKey ),
 			'Asserts the factbox cache status after processing'
 		);
 	}

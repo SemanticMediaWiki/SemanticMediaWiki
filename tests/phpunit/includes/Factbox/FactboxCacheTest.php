@@ -16,9 +16,7 @@ use ParserOutput;
 /**
  * @covers \SMW\Factbox\FactboxCache
  *
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  * @group medium
  *
  * @license GNU GPL v2+
@@ -29,11 +27,19 @@ use ParserOutput;
 class FactboxCacheTest extends \PHPUnit_Framework_TestCase {
 
 	private $applicationFactory;
+	private $memoryCache;
+	private $cacheOptions;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->memoryCache = ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache();
+
+		$this->cacheOptions = ApplicationFactory::getInstance()->newCacheFactory()->newCacheOptions( array(
+			'useCache' => true,
+			'ttl' => 0
+		) );
 
 		$settings = Settings::newFromArray( array(
 			'smwgFactboxUseCache' => true,
@@ -43,7 +49,6 @@ class FactboxCacheTest extends \PHPUnit_Framework_TestCase {
 		) );
 
 		$this->applicationFactory->registerObject( 'Settings', $settings );
-
 	}
 
 	protected function tearDown() {
@@ -54,21 +59,13 @@ class FactboxCacheTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
 			'\SMW\Factbox\FactboxCache',
-			new FactboxCache( $outputPage )
-		);
-	}
-
-	public function testNewCacheId() {
-
-		$this->assertInstanceOf(
-			'\SMW\Cache\CacheIdGenerator',
-			FactboxCache::newCacheId( 9001 )
+			new FactboxCache( $cache, new \stdClass )
 		);
 	}
 
@@ -91,11 +88,17 @@ class FactboxCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$outputPage = $parameters['outputPage'];
 
-		$instance = new FactboxCache( $outputPage );
+		$instance = new FactboxCache( $this->memoryCache, $this->cacheOptions );
 
-		$this->assertEmpty( $instance->retrieveContent() );
+		$this->assertEmpty(
+			$instance->retrieveContent( $outputPage )
+		);
 
-		$instance->process( $parameters['parserOutput'] );
+		$instance->process(
+			$outputPage,
+			$parameters['parserOutput']
+		);
+
 		$result = $outputPage->mSMWFactboxText;
 
 		$this->assertPreProcess(
@@ -106,7 +109,10 @@ class FactboxCacheTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		// Re-run on the same instance
-		$instance->process( $parameters['parserOutput'] );
+		$instance->process(
+			$outputPage,
+			$parameters['parserOutput']
+		);
 
 		$this->assertPostProcess(
 			$expected,
@@ -131,7 +137,7 @@ class FactboxCacheTest extends \PHPUnit_Framework_TestCase {
 			unset( $outputPage->mSMWFactboxText );
 
 			$this->assertTrue(
-				$result === $instance->retrieveContent(),
+				$result === $instance->retrieveContent( $outputPage ),
 				'Asserts that cached content was retrievable'
 			);
 
@@ -148,7 +154,7 @@ class FactboxCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$result,
-			$instance->retrieveContent(),
+			$instance->retrieveContent( $outputPage ),
 			'Asserts that content is being fetched from cache'
 		);
 

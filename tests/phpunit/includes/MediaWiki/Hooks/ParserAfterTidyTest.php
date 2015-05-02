@@ -5,7 +5,6 @@ namespace SMW\Tests\MediaWiki\Hooks;
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\Mock\MockTitle;
 
-use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\MediaWiki\Hooks\ParserAfterTidy;
 
 use SMW\ApplicationFactory;
@@ -66,21 +65,20 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	private function newMockCacheHandler( $id, $status ) {
+	private function newMockCache( $id, $status ) {
 
-		$cacheHandler = $this->getMockBuilder( 'SMW\Cache\CacheHandler' )
+		$key = $this->applicationFactory->newCacheFactory()->getPurgeCacheKey( $id );
+
+		$cache = $this->getMockBuilder( 'Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$cacheHandler->expects( $this->any() )
-			->method( 'setKey' )
-			->with( $this->equalTo( ArticlePurge::newCacheId( $id ) ) );
-
-		$cacheHandler->expects( $this->any() )
-			->method( 'get' )
+		$cache->expects( $this->any() )
+			->method( 'contains' )
+			->with( $this->equalTo( $key ) )
 			->will( $this->returnValue( $status ) );
 
-		return $cacheHandler;
+		return $cache;
 	}
 
 	/**
@@ -97,10 +95,12 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 		$this->applicationFactory->registerObject( 'Settings', $settings );
 		$this->applicationFactory->registerObject( 'Store', $parameters['store'] );
 
-		$this->applicationFactory->registerObject(
-			'CacheHandler',
-			$this->newMockCacheHandler( $parameters['title']->getArticleID(), $parameters['cache'] )
+		$cache = $this->newMockCache(
+			$parameters['title']->getArticleID(),
+			$parameters['cache']
 		);
+
+		$this->applicationFactory->registerObject( 'Cache', $cache );
 
 		$parser = $this->parserFactory->newFromTitle( $parameters['title'] );
 

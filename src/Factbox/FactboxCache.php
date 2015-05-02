@@ -4,11 +4,8 @@ namespace SMW\Factbox;
 
 use ParserOutput;
 use OutputPage;
+use Onoi\Cache\Cache;
 use SMW\ApplicationFactory;
-use SMW\Cache\CacheableResultMapper;
-use SMW\Cache\CacheIdGenerator;
-use SMW\Profiler;
-use SMW\SimpleDictionary;
 use Title;
 
 /**
@@ -16,8 +13,6 @@ use Title;
  *
  * Enable ($smwgFactboxUseCache) to use a CacheStore to avoid unaltered
  * content being re-parsed every time the OutputPage hook is executed
- *
- * @ingroup SMW
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -27,24 +22,57 @@ use Title;
 class FactboxCache {
 
 	/**
-	 * @var OutputPage
+	 * @var Cache
 	 */
-	protected $outputPage = null;
+	private $cache = null;
+
+	/**
+	 * @var CacheFactory
+	 */
+	private $cacheFactory = null;
 
 	/**
 	 * @var boolean
 	 */
-	protected $isCached = false;
+	private $isCached = false;
+
+	/**
+	 * @var integer
+	 */
+	private $timestamp;
 
 	/**
 	 * @since 1.9
 	 *
-	 * @param OutputPage &$outputPage
-	 *
-	 * @return FactboxCache
+	 * @param Cache|null $cache
+	 * @param stdClass $cacheOptions
 	 */
-	public function __construct( OutputPage &$outputPage ) {
-		$this->outputPage = $outputPage;
+	public function __construct( Cache $cache = null, \stdClass $cacheOptions ) {
+		$this->cache = $cache;
+		$this->cacheOptions = $cacheOptions;
+		$this->cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
+
+		if ( $this->cache === null ) {
+			$this->cache = $this->cacheFactory->newNullCache();
+		}
+	}
+
+	/**
+	 * @since 1.9
+	 *
+	 * @return boolean
+	 */
+	public function isCached() {
+		return $this->isCached;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return integer
+	 */
+	public function getTimestamp() {
+		return $this->timestamp;
 	}
 
 	/**
@@ -56,69 +84,93 @@ class FactboxCache {
 	 * Altered content is tracked using the revision Id, getLatestRevID() only
 	 * changes after a content modification has occurred.
 	 *
-	 * Cached content is stored in an associative array following:
-	 * { 'revId' => $revisionId, 'text' => (...) }
-	 *
 	 * @since 1.9
 	 *
+	 * @param OutputPage &$outputPage
 	 * @param ParserOutput $parserOutput
 	 */
-	public function process( ParserOutput $parserOutput ) {
+	public function process( OutputPage &$outputPage, ParserOutput $parserOutput ) {
 
-		Profiler::In( __METHOD__ );
+		$content = '';
+		$title = $outputPage->getTitle();
+		$revisionId = $this->getRevisionId( $title, $outputPage->getContext() );
 
-		$title        = $this->outputPage->getTitle();
-		$revId        = $this->getRevisionId( $title );
-		$resultMapper = $this->newResultMapper( $title->getArticleID() );
-		$content      = $resultMapper->fetchFromCache();
+		$key = $this->cacheFactory->getFactboxCacheKey(
+			$title->getArticleID()
+		);
 
-		if ( $this->cacheIsAvailableFor( $revId, $content ) ) {
-
-			$this->isCached = true;
-			$this->outputPage->mSMWFactboxText = $content['text'];
-
-		} else {
-
-			$this->isCached = false;
-
-			$text = $this->rebuild(
-				$title,
-				$parserOutput,
-				$this->outputPage->getContext()
-			);
-
-			$resultMapper->recache( array(
-				'revId' => $revId,
-				'text'  => $text
-			) );
-
-			$this->outputPage->mSMWFactboxText = $text;
+		if ( $this->cache->contains( $key ) ) {
+			$content = $this->retrieveFromCache( $key );
 		}
 
-		Profiler::Out( __METHOD__ );
+		if ( $this->cacheIsAvailableFor( $revisionId, $content, $outputPage->getContext() ) ) {
+			$this->isCached = true;
+			$outputPage->mSMWFactboxText = $content['text'];
+			return;
+		}
+
+		$this->isCached = false;
+
+		$text = $this->rebuild(
+			$title,
+			$parserOutput,
+			$outputPage->getContext()
+		);
+
+		$this->addContentToCache(
+			$key,
+			$text,
+			$revisionId
+		);
+
+		$outputPage->mSMWFactboxText = $text;
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param string $key
+	 * @param string $text
+	 * @param integer|null $revisionId
+	 */
+	public function addContentToCache( $key, $text, $revisionId = null ) {
+		$this->saveToCache(
+			$key,
+			array(
+				'revId' => $revisionId,
+				'text'  => $text
+			)
+		);
 	}
 
 	/**
 	 * Returns parsed Factbox content from either the OutputPage property
-	 * or from the CacheStore
+	 * or from the Cache
 	 *
 	 * @since 1.9
 	 *
+	 * @param OutputPage $outputPage
+	 *
 	 * @return string
 	 */
-	public function retrieveContent() {
+	public function retrieveContent( OutputPage $outputPage ) {
 
 		$text = '';
-		$title = $this->outputPage->getTitle();
+		$title = $outputPage->getTitle();
 
 		if ( $title instanceof Title && ( $title->isSpecialPage() || !$title->exists() ) ) {
 			return $text;
 		}
 
-		if ( isset( $this->outputPage->mSMWFactboxText ) ) {
-			$text = $this->outputPage->mSMWFactboxText;
+		if ( isset( $outputPage->mSMWFactboxText ) ) {
+			$text = $outputPage->mSMWFactboxText;
 		} elseif ( $title instanceof Title ) {
-			$content = $this->newResultMapper( $title->getArticleID() )->fetchFromCache();
+
+			$key = $this->cacheFactory->getFactboxCacheKey(
+				$title->getArticleID()
+			);
+
+			$content = $this->retrieveFromCache( $key );
 			$text = isset( $content['text'] ) ? $content['text'] : '';
 		}
 
@@ -126,63 +178,13 @@ class FactboxCache {
 	}
 
 	/**
-	 * Returns whether or not results have been cached
-	 *
-	 * @since 1.9
-	 *
-	 * @return boolean
-	 */
-	public function isCached() {
-		return $this->isCached;
-	}
-
-	/**
-	 * Returns a CacheIdGenerator object
-	 *
-	 * @since 1.9
-	 *
-	 * @return \SMW\Cache\CacheIdGenerator
-	 */
-	public static function newCacheId( $pageId ) {
-		return new CacheIdGenerator( $pageId, 'factbox' );
-	}
-
-	/**
-	 * Returns a CacheableResultMapper object
-	 *
-	 * @since 1.9
-	 *
-	 * @param integer $pageId
-	 *
-	 * @return CacheableResultMapper
-	 */
-	public function newResultMapper( $pageId ) {
-
-		$settings = ApplicationFactory::getInstance()->getSettings();
-
-		return new CacheableResultMapper( new SimpleDictionary( array(
-			'id'      => $pageId,
-			'prefix'  => 'factbox',
-			'type'    => $settings->get( 'smwgCacheType' ),
-			'enabled' => $settings->get( 'smwgFactboxUseCache' ),
-			'expiry'  => 0
-		) ) );
-	}
-
-	/**
 	 * Return a revisionId either from the WebRequest object (display an old
 	 * revision or permalink etc.) or from the title object
-	 *
-	 * @since  1.9
-	 *
-	 * @param  Title $title
-	 *
-	 * @return integer
 	 */
-	protected function getRevisionId( Title $title ) {
+	private function getRevisionId( Title $title, $requestContext ) {
 
-		if ( $this->outputPage->getContext()->getRequest()->getCheck( 'oldid' ) ) {
-			return (int)$this->outputPage->getContext()->getRequest()->getVal( 'oldid' );
+		if ( $requestContext->getRequest()->getCheck( 'oldid' ) ) {
+			return (int)$requestContext->getRequest()->getVal( 'oldid' );
 		}
 
 		return $title->getLatestRevID();
@@ -190,19 +192,13 @@ class FactboxCache {
 
 	/**
 	 * Processing and reparsing of the Factbox content
-	 *
-	 * @since 1.9
-	 *
-	 * @param  Factbox $factbox
-	 *
-	 * @return string|null
 	 */
-	protected function rebuild( Title $title, ParserOutput $parserOutput, $requestContext ) {
+	private function rebuild( Title $title, ParserOutput $parserOutput, $requestContext ) {
 
 		$text = null;
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$factbox = $applicationFactory->newFactboxBuilder()->newFactbox(
+		$factbox = $applicationFactory->newFactboxFactory()->newFactbox(
 			$applicationFactory->newParserData( $title, $parserOutput ),
 			$requestContext
 		);
@@ -220,13 +216,13 @@ class FactboxCache {
 		return $text;
 	}
 
-	protected function cacheIsAvailableFor( $revId, $content ) {
+	private function cacheIsAvailableFor( $revId, $content, $requestContext ) {
 
 		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgShowFactbox' ) === SMW_FACTBOX_HIDDEN ) {
 			return false;
 		}
 
-		if ( $this->outputPage->getContext()->getRequest()->getVal( 'action' ) === 'edit' ) {
+		if ( $requestContext->getRequest()->getVal( 'action' ) === 'edit' ) {
 			return false;
 		}
 
@@ -235,6 +231,37 @@ class FactboxCache {
 		}
 
 		return false;
+	}
+
+	private function retrieveFromCache( $key ) {
+
+		if ( !$this->cache->contains( $key ) || !$this->cacheOptions->useCache ) {
+			return array();
+		}
+
+		$data = $this->cache->fetch( $key );
+
+		$this->isCached = true;
+		$this->timestamp = $data['time'];
+
+		return unserialize( $data['content'] );
+	}
+
+	/**
+	 * Cached content is serialized in an associative array following:
+	 * { 'revId' => $revisionId, 'text' => (...) }
+	 */
+	private function saveToCache( $key, array $content ) {
+
+		$this->timestamp = wfTimestamp( TS_UNIX );
+		$this->isCached = false;
+
+		$data = array(
+			'time' => $this->timestamp,
+			'content' => serialize( $content )
+		);
+
+		$this->cache->save( $key, $data, $this->cacheOptions->ttl );
 	}
 
 }

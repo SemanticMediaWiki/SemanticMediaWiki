@@ -6,7 +6,7 @@ use Parser;
 use ParserOutput;
 use SMW\Annotator\PropertyAnnotatorFactory;
 use SMW\Cache\CacheHandler;
-use SMW\Factbox\FactboxBuilder;
+use SMW\Factbox\FactboxFactory;
 use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
@@ -95,10 +95,10 @@ class ApplicationFactory {
 	/**
 	 * @since 2.0
 	 *
-	 * @return FactboxBuilder
+	 * @return FactboxFactory
 	 */
-	public function newFactboxBuilder() {
-		return new FactboxBuilder();
+	public function newFactboxFactory() {
+		return $this->builder->newObject( 'FactboxFactory' );
 	}
 
 	/**
@@ -196,10 +196,10 @@ class ApplicationFactory {
 	/**
 	 * @since 2.0
 	 *
-	 * @return CacheHandler
+	 * @return Cache
 	 */
 	public function getCache() {
-		return $this->builder->newObject( 'CacheHandler' );
+		return $this->builder->newObject( 'Cache' );
 	}
 
 	/**
