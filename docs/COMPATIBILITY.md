@@ -201,14 +201,14 @@ Triple store databases:
 	<tr>
 		<th>SMW 2.2.x</th>
 		<td>Full support (1.x >=1.1)</td>
-		<td>Full support (6.x >=6.1)<sup>[t.1]</sup></td>
-		<td>Beta support (1.x >=1.1)</td>
+		<td>Full support (6.x >=6.1) + 7.1<sup>[t.1]</sup></td>
+		<td>Beta support (1.x >=1.1)<sup>[t.2]</sup></td>
 		<td>Full support (2.7.x)</td>
 	</tr>
 	<tr>
 		<th>SMW 2.1.x</th>
 		<td>Full support (1.x >=1.1)</td>
-		<td>Full support (6.x >=6.1)<sup>[t.1]</sup></td>
+		<td>Full support (6.x >=6.1)</td>
 		<td>Beta support (1.x >=1.1)</td>
 		<td>Full support (2.7.x)</td>
 	</tr>
@@ -243,6 +243,6 @@ The information in brackets denotes the versions with which SMW is known to work
 work with different versions, especially more recent ones, though this is not guaranteed.
 
 - <sup>[m.1]</sup> Fully tested against MW 1.24
-- <sup>[m.2]</sup> Partially tested against MW 1.25 (deue to some unresolved MediaWiki issues)
-- <sup>[t.1]</sup> Tested with Virtuoso 6.x but reported to work with Virtuoso 7
-
+- <sup>[m.2]</sup> Partially tested against MW 1.25 (due to some unresolved MediaWiki issues)
+- <sup>[t.1]</sup> On an irregular test plan with [Virtuoso 7.1](https://travis-ci.org/mwjames/SemanticMediaWiki/builds/61203319)
+- <sup>[t.2]</sup> On an irregular test plan with [4store 1.1.4](https://travis-ci.org/mwjames/SemanticMediaWiki/builds/61200454)
