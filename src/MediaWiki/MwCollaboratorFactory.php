@@ -186,4 +186,13 @@ class MwCollaboratorFactory {
 		);
 	}
 
+	/**
+	 * @since 2.2
+	 *
+	 * @return MediaWikiNsContentReader
+	 */
+	public function newMediaWikiNsContentReader() {
+		return new MediaWikiNsContentReader();
+	}
+
 }

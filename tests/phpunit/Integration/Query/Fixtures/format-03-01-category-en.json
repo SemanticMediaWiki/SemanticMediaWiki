@@ -137,7 +137,7 @@
 					"<div class=\"smw-columnlist-container\">",
 					"<div class=\"smw-column-header\">テ</div><ul><li>テスト (Has page property Test)</li></ul>",
 					"<div class=\"smw-column-header\">F</div><ul><li>Foo (Has page property Test)</li></ul></div>",
-					"<div class=\"smw-column\" style=\"float: left; width:50%; word-wrap: break-word;\"><div class=\"smw-column-header\">F cont.</div><ul><li>",
+					"<div class=\"smw-column\" style=\"width:50%;\"><div class=\"smw-column-header\">F cont.</div><ul><li>",
 					"Special:Ask/-5B-5BHas-20page-20property::Test-5D-5D/-3FHas-20page-20property/format=category/limit=2/link=none/order=desc/headers=plain/searchlabel=Test-20more/columns=2\">Test more</a></li></ul></div>",
 					"<br style=\"clear: both;\" />"
 				]

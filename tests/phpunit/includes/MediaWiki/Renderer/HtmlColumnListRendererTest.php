@@ -44,7 +44,7 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$expected = array(
 			'<div class="smw-columnlist-container">',
-			'<div class="smw-column" style="float: left; width:100%; word-wrap: break-word;">',
+			'<div class="smw-column" style="width:100%;">',
 			'<div class="smw-column-header">a</div><ul><li>Foo</li><li>Bar</li></ul>',
 			'<div class="smw-column-header">B</div><ul><li>Ichi</li><li>Ni</li></ul></div>'
 		);
@@ -61,19 +61,23 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setNumberOfColumns( 2 );
 
-		$listContinuesAbbrev = wfMessage( 'listingcontinuesabbrev' )->text();
-
 		$instance->addContentsByIndex( array(
 			'a' => array( 'Foo', 'Bar' ),
-			'B' => array( 'Ichi', 'Ni' )
+			'B' => array( 'Baz', 'Fom', 'Fin', 'Fum' )
 		) );
+
+		$listContinuesAbbrev = wfMessage( 'listingcontinuesabbrev' )->text();
 
 		$expected = array(
 			'<div class="smw-columnlist-container">',
-			'<div class="smw-column" style="float: left; width:50%; word-wrap: break-word;">',
-			'<div class="smw-column-header">a</div><ul><li>Foo</li><li>Bar</li></ul></div> <!-- end column -->',
-			'<div class="smw-column" style="float: left; width:50%; word-wrap: break-word;">',
-			'<div class="smw-column-header">B</div><ul><li>Ichi</li><li>Ni</li></ul></div> <!-- end column -->'
+			'<div class="smw-column" style="width:50%;">',
+			'<div class="smw-column-header">a</div>',
+			'<ul><li>Foo</li><li>Bar</li></ul>',
+			'<div class="smw-column-header">B</div><ul><li>Baz</li></ul></div> <!-- end column -->',
+			'<div class="smw-column" style="width:50%;">',
+			'<div class="smw-column-header">B ' . $listContinuesAbbrev .'</div>',
+			'<ul start=4><li>Fom</li><li>Fin</li><li>Fum</li></ul></div> <!-- end column -->',
+			'<br style="clear: both;"/></div>'
 		);
 
 		$this->stringValidator->assertThatStringContains(
@@ -95,9 +99,9 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$expected = array(
 			'<div class="smw-columnlist-container">',
-			'<div class="smw-column" style="float: left; width:33%; word-wrap: break-word;">',
+			'<div class="smw-column" style="width:33%;">',
 			'<div class="smw-column-header">a</div><ul><li>Foo</li><li>Bar</li></ul></div>',
-			'<div class="smw-column" style="float: left; width:33%; word-wrap: break-word;">',
+			'<div class="smw-column" style="width:33%;">',
 			'<div class="smw-column-header">B</div><ul><li>Ichi</li><li>Ni</li></ul></div>'
 		);
 
@@ -115,8 +119,6 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 			->setNumberOfColumns( 2 )
 			->setListType( 'ol' );
 
-		$listContinuesAbbrev = wfMessage( 'listingcontinuesabbrev' )->text();
-
 		$instance->addContentsByIndex( array(
 			'a' => array( 'Foo', 'Bar' ),
 			'B' => array( 'Ichi', 'Ni' )
@@ -124,10 +126,37 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$expected = array(
 			'<div class="smw-columnlist-container">',
-			'<div class="smw-column" style="float: left; width:50%; word-wrap: break-word;">',
+			'<div class="smw-column" style="width:50%;">',
 			'<div class="smw-column-header">a</div><ol><li>Foo</li><li>Bar</li></ol></div> <!-- end column -->',
-			'<div class="smw-column" style="float: left; width:50%; word-wrap: break-word;">',
+			'<div class="smw-column" style="width:50%;">',
 			'<div class="smw-column-header">B</div><ol><li>Ichi</li><li>Ni</li></ol></div> <!-- end column -->'
+		);
+
+		$this->stringValidator->assertThatStringContains(
+			$expected,
+			$instance->getHtml()
+		);
+	}
+
+	public function testTwoColumnOrderedListNoHeader() {
+
+		$instance = new HtmlColumnListRenderer();
+
+		$instance
+			->setNumberOfColumns( 2 )
+			->setColumnListClass( 'foo-class' )
+			->setListType( 'ul' );
+
+		$instance->addContentsByNoIndex(
+			array( 'Foo', 'Baz', 'Bar' )
+		);
+
+		$expected = array(
+			'<div class="foo-class">',
+			'<div class="smw-column" style="width:50%;">',
+			'<ul start=1><li>Foo</li><li>Baz</li></ul></div> <!-- end column -->',
+			'<div class="smw-column" style="width:50%;">',
+			'<ul start=3><li>Bar</li></ul></div> <!-- end column -->'
 		);
 
 		$this->stringValidator->assertThatStringContains(

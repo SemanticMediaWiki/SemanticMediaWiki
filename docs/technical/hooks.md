@@ -21,6 +21,11 @@ Implementing a hook should be made in consideration of the expected performance 
 - `SMW::SQLStore::AfterDeleteSubjectComplete` called after deletion of a subject is completed.
 - `SMW::SQLStore::BeforeChangeTitleComplete` called before change to a subject is completed.
 
+### 2.2
+
+- `SMW::Parser::BeforeMagicWordsFinder` allows to extend the magic words list that the `InTextAnnotationParser` should
+  search for the wikitext.
+
 For implementation details and examples, see the [integration test](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/SemanticMediaWikiProvidedHookInterfaceIntegrationTest.php).
 
 ## Other available hooks
