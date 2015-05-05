@@ -52,6 +52,23 @@ class HtmlColumnListRenderer {
 	private $listType = 'ul';
 
 	/**
+	 * @var string
+	 */
+	private $columnListClass = 'smw-columnlist-container';
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param string $columnListClass
+	 *
+	 * @return HtmlColumnListRenderer
+	 */
+	public function setColumnListClass( $columnListClass ) {
+		$this->columnListClass = htmlspecialchars( $columnListClass );
+		return $this;
+	}
+
+	/**
 	 * @since 2.1
 	 *
 	 * @param integer $numberOfColumns
@@ -77,6 +94,24 @@ class HtmlColumnListRenderer {
 		}
 
 		return $this;
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param string[] $contentsByNoIndex
+	 *
+	 * @return HtmlColumnListRenderer
+	 */
+	public function addContentsByNoIndex( array $contentsByNoIndex ) {
+
+		$contentsByEmptyIndex[''] = array();
+
+		foreach ( $contentsByNoIndex as $value ) {
+			$contentsByEmptyIndex[''][] = $value;
+		}
+
+		return $this->addContentsByIndex( $contentsByEmptyIndex );
 	}
 
 	/**
@@ -126,7 +161,7 @@ class HtmlColumnListRenderer {
 
 		return Html::rawElement(
 			'div',
-			array( 'class' => 'smw-columnlist-container' ),
+			array( 'class' => $this->columnListClass ),
 			$result . "\n" . '<br style="clear: both;"/>'
 		);
 	}
@@ -139,12 +174,12 @@ class HtmlColumnListRenderer {
 		foreach ( $resultItems as $resultItem ) {
 
 			if ( $this->numRows % $this->rowsPerColumn == 0 ) {
-				$result .= "<div class=\"smw-column\" style=\"float: left; width:$this->columnWidth%; word-wrap: break-word;\">";
+				$result .= "<div class=\"smw-column\" style=\"width:$this->columnWidth%;\">";
 
 				$numRowsInColumn = $this->numRows + 1;
 
 				if ( $key == $previousKey ) {
-					$result .= "<div class=\"smw-column-header\">$key " . $listContinuesAbbrev . "</div><{$this->listType} start={$numRowsInColumn}>";
+					$result .= ( $key !== '' ? Html::element( 'div', array( 'class' => 'smw-column-header' ), "$key $listContinuesAbbrev" ) : '' ) . "<{$this->listType} start={$numRowsInColumn}>";
 				}
 			}
 
@@ -152,7 +187,7 @@ class HtmlColumnListRenderer {
 			// the last list and start a new one
 			if ( $key != $previousKey ) {
 				$result .= $this->numRows % $this->rowsPerColumn > 0 ? "</{$this->listType}>" : '';
-				$result .= "<div class=\"smw-column-header\">$key</div><{$this->listType}>";
+				$result .= ( $key !== '' ? Html::element( 'div', array( 'class' => 'smw-column-header' ), $key ) : '' ) . "<{$this->listType}>";
 			}
 
 			$previousKey = $key;
