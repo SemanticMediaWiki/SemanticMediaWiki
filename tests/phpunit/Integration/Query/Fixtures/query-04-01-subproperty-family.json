@@ -100,12 +100,12 @@
 			}
 		}
 	],
-	"settings": {},
+	"settings": {
+		"smwgQSubpropertyDepth": 10
+	},
 	"meta": {
 		"skip-on": {
-			"fuseki": "Subproperty/property hierarchies are currently not implemented",
-			"sesame": "Subproperty/property hierarchies are currently not implemented",
-			"virtuoso": "Subproperty/property hierarchies are currently not implemented"
+			"virtuoso": "Virtuoso 6.1 rdfs / subproperty/property hierarchies are currently not implemented"
 		},
 		"version": "0.1",
 		"is-incomplete": false,

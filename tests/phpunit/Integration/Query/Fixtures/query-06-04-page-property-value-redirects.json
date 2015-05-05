@@ -1,5 +1,5 @@
 {
-	"description": "Verfiy property/values redirects in queries, refs #467",
+	"description": "Resolve property/values redirects in queries, refs #467",
 	"properties": [
 		{
 			"name": "Has firstPage",

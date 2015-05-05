@@ -42,7 +42,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanBuildConditionFor() {
+	public function testCanInterpretDescription() {
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\SomeProperty' )
 			->disableOriginalConstructor()
@@ -62,17 +62,22 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider descriptionProvider
 	 */
-	public function testNamespaceCondition( $description, $orderByProperty, $sortkeys, $expectedConditionType, $expectedConditionString ) {
+	public function testSomeProperty( $description, $orderByProperty, $sortkeys, $expectedConditionType, $expectedConditionString ) {
+
+		$hierarchyFinder = $this->getMockBuilder( '\SMW\SPARQLStore\HierarchyFinder' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$resultVariable = 'result';
 
 		$compoundConditionBuilder = new CompoundConditionBuilder();
+		$compoundConditionBuilder->setHierarchyFinder( $hierarchyFinder );
 		$compoundConditionBuilder->setResultVariable( $resultVariable );
 		$compoundConditionBuilder->setSortKeys( $sortkeys );
 		$compoundConditionBuilder->setJoinVariable( $resultVariable );
 		$compoundConditionBuilder->setOrderByProperty( $orderByProperty );
 
-		$instance = new SomePropertyInterpreter( $compoundConditionBuilder);
+		$instance = new SomePropertyInterpreter( $compoundConditionBuilder );
 
 		$condition = $instance->interpretDescription( $description );
 
@@ -83,6 +88,48 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expectedConditionString,
+			$compoundConditionBuilder->convertConditionToString( $condition )
+		);
+	}
+
+	public function testHierarchyPattern() {
+
+		$property = new DIProperty( 'Foo' );
+
+		$hierarchyFinder = $this->getMockBuilder( '\SMW\SPARQLStore\HierarchyFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$hierarchyFinder->expects( $this->once() )
+			->method( 'hasSubpropertyFor' )
+			->with( $this->equalTo( $property ) )
+			->will( $this->returnValue( true ) );
+
+		$resultVariable = 'result';
+
+		$compoundConditionBuilder = new CompoundConditionBuilder();
+		$compoundConditionBuilder->setHierarchyFinder( $hierarchyFinder );
+		$compoundConditionBuilder->setResultVariable( $resultVariable );
+		$compoundConditionBuilder->setJoinVariable( $resultVariable );
+
+		$instance = new SomePropertyInterpreter( $compoundConditionBuilder );
+
+		$description = new SomeProperty(
+			$property,
+			new ThingDescription()
+		);
+
+		$condition = $instance->interpretDescription( $description );
+
+		$expected = UtilityFactory::getInstance()->newStringBuilder()
+			->addString( '?result ?sp2 ?v1 .' )->addNewLine()
+			->addString( '{ ' )->addNewLine()
+			->addString( '?sp2 rdfs:subPropertyOf* property:Foo .' )->addNewLine()
+			->addString( '}' )->addNewLine()
+			->getString();
+
+		$this->assertEquals(
+			$expected,
 			$compoundConditionBuilder->convertConditionToString( $condition )
 		);
 	}

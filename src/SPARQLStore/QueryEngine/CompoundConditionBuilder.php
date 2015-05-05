@@ -7,6 +7,7 @@ use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\CircularReferenceGuard;
+use SMW\SPARQLStore\HierarchyFinder;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
@@ -43,6 +44,11 @@ use SMWTurtleSerializer as TurtleSerializer;
 class CompoundConditionBuilder {
 
 	/**
+	 * @var EngineOptions
+	 */
+	private $engineOptions = null;
+
+	/**
 	 * @var DispatchingInterpreter
 	 */
 	private $dispatchingInterpreter = null;
@@ -51,6 +57,11 @@ class CompoundConditionBuilder {
 	 * @var CircularReferenceGuard
 	 */
 	private $circularReferenceGuard = null;
+
+	/**
+	 * @var HierarchyFinder
+	 */
+	private $hierarchyFinder = null;
 
 	/**
 	 * @var array
@@ -92,8 +103,15 @@ class CompoundConditionBuilder {
 
 	/**
 	 * @since 2.2
+	 *
+	 * @param EngineOptions|null $engineOptions
 	 */
-	public function __construct() {
+	public function __construct( EngineOptions $engineOptions = null ) {
+		$this->engineOptions = $engineOptions;
+
+		if ( $this->engineOptions === null ) {
+			$this->engineOptions = new EngineOptions();
+		}
 
 		$this->dispatchingInterpreter = new DispatchingInterpreter();
 		$this->dispatchingInterpreter->addDefaultInterpreter( new ThingDescriptionInterpreter( $this ) );
@@ -179,6 +197,24 @@ class CompoundConditionBuilder {
 	 */
 	public function getCircularReferenceGuard() {
 		return $this->circularReferenceGuard;
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @param HierarchyFinder $hierarchyFinder
+	 */
+	public function setHierarchyFinder( HierarchyFinder $hierarchyFinder ) {
+		$this->hierarchyFinder = $hierarchyFinder;
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @return HierarchyFinder
+	 */
+	public function getHierarchyFinder() {
+		return $this->hierarchyFinder;
 	}
 
 	/**
@@ -365,7 +401,15 @@ class CompoundConditionBuilder {
 	 * @return boolean
 	 */
 	public function canUseQFeature( $queryFeatureFlag ) {
-		return $GLOBALS['smwgSparqlQFeatures'] === ( $GLOBALS['smwgSparqlQFeatures'] | $queryFeatureFlag );
+
+		$canUse = true;
+
+		// Adhere additional condition
+		if ( $queryFeatureFlag === SMW_SPARQL_QF_SUBP ) {
+			$canUse = $this->engineOptions->get( 'smwgQSubpropertyDepth' ) > 0;
+		}
+
+		return $this->engineOptions->get( 'smwgSparqlQFeatures' ) === ( $this->engineOptions->get( 'smwgSparqlQFeatures' ) | $queryFeatureFlag ) && $canUse;
 	}
 
 	/**

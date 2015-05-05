@@ -96,6 +96,12 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$namespaces
 		);
 
+		$this->tryToAddPropertyPathForSaturatedHierarchy(
+			$innerCondition,
+			$nonInverseProperty,
+			$propertyName
+		);
+
 		$condition = $this->concatenateToConditionString(
 			$subjectName,
 			$propertyName,
@@ -223,6 +229,29 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		}
 
 		return $condition . "{ $innerConditionString}\n";
+	}
+
+	/**
+	 * @note rdfs:subPropertyOf* where * means a property path of arbitrary length
+	 * can be found using the "zero or more" will resolve the complete path
+	 *
+	 * @see http://www.w3.org/TR/sparql11-query/#propertypath-arbitrary-length
+	 */
+	private function tryToAddPropertyPathForSaturatedHierarchy( &$condition, DIProperty $property, &$propertyName ) {
+
+		if ( !$this->compoundConditionBuilder->canUseQFeature( SMW_SPARQL_QF_SUBP ) || !$property->isUserDefined() ) {
+			return null;
+		}
+
+		if ( $this->compoundConditionBuilder->getHierarchyFinder() == null || !$this->compoundConditionBuilder->getHierarchyFinder()->hasSubpropertyFor( $property ) ) {
+			return null;
+		}
+
+		$subPropExpElement = $this->exporter->getSpecialPropertyResource( '_SUBP', SMW_NS_PROPERTY );
+
+		$propertyByVariable = '?' . $this->compoundConditionBuilder->getNextVariable( 'sp' );
+		$condition->weakConditions[ $propertyName ] = "\n". "$propertyByVariable " . $subPropExpElement->getQName() . "*" . " $propertyName .\n"."";
+		$propertyName = $propertyByVariable;
 	}
 
 }

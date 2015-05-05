@@ -123,4 +123,5 @@ define( 'SMW_TRX_UPDATE', 4 );
  */
 define( 'SMW_SPARQL_QF_NONE', 0 ); // does not support any features
 define( 'SMW_SPARQL_QF_REDI', 2 ); // support for inverse property paths to find redirects
+define( 'SMW_SPARQL_QF_SUBP', 4 ); // support for rdfs:subPropertyOf*
 /**@}*/
