@@ -116,3 +116,11 @@ define( 'SMW_DIFF_UPDATE', 0 );
 define( 'SMW_REPLACEMENT_UPDATE', 2 );
 define( 'SMW_TRX_UPDATE', 4 );
 /**@}*/
+
+/**@{
+ * Constants for SPARQL supported features (mostly SPARQL 1.1) because we are unable
+ * to verify against the REST API whether a feature is supported or not
+ */
+define( 'SMW_SPARQL_QF_NONE', 0 ); // does not support any features
+define( 'SMW_SPARQL_QF_REDI', 2 ); // support for inverse property paths to find redirects
+/**@}*/

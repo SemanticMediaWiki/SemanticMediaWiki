@@ -130,7 +130,8 @@ class Settings extends SimpleDictionary {
 			'smwgFallbackSearchType' => $GLOBALS['smwgFallbackSearchType'],
 			'smwgEnabledEditPageHelp' => $GLOBALS['smwgEnabledEditPageHelp'],
 			'smwgUFeatures' => $GLOBALS['smwgUFeatures'],
-			'smwgLogEventTypes' => $GLOBALS['smwgLogEventTypes']
+			'smwgLogEventTypes' => $GLOBALS['smwgLogEventTypes'],
+			'smwgSparqlQFeatures' => $GLOBALS['smwgSparqlQFeatures']
 		);
 
 		$settings = $settings + array(

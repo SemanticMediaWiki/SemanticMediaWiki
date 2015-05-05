@@ -28,11 +28,7 @@ use SMWPropertyValue as PropertyValue;
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder
  *
- * @group SMW
- * @group SMWExtension
- *
- * @group semantic-mediawiki-sparql
- * @group semantic-mediawiki-query
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 2.0
@@ -718,6 +714,79 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			$expectedConditionString,
 			$condition->weakConditions['foosk']
+		);
+	}
+
+	public function testCanUseQFeature() {
+
+		$instance = new CompoundConditionBuilder();
+
+		$this->assertInternalType(
+			'boolean',
+			$instance->canUseQFeature( 'Foo' )
+		);
+	}
+
+	public function testTryToFindRedirectVariableForNonWpgDataItem() {
+
+		$instance = new CompoundConditionBuilder();
+
+		$this->assertNull(
+			$instance->tryToFindRedirectVariableForDataItem( new DINumber( 1 ) )
+		);
+	}
+
+	public function testExtendConditionUsingPropertyPathForWpgDataItemRedirect() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'isRedirect' )
+			->will( $this->returnValue( true ) );
+
+		$diWikiPage = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->setConstructorArgs( array( 'Bar', NS_MAIN ) )
+			->setMethods( array( 'getTitle' ) )
+			->getMock();
+
+		$diWikiPage->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$property = new DIProperty( 'Foo' );
+		$property->setPropertyTypeId( '_wpg' );
+
+		$description = new SomeProperty(
+			$property,
+			new ValueDescription( $diWikiPage, null )
+		);
+
+		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
+			->setMethods( array( 'canUseQFeature' ) )
+			->getMock();
+
+		$instance->expects( $this->atLeastOnce() )
+			->method( 'canUseQFeature' )
+			->with( $this->equalTo( SMW_SPARQL_QF_REDI ) )
+			->will( $this->returnValue( true ) );
+
+		$condition = $instance->buildCondition( $description );
+
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			$condition
+		);
+
+		$expectedConditionString = $this->stringBuilder
+			->addString( '?r2 ^swivt:redirectsTo wiki:Bar .' )->addNewLine()
+			->addString( '?result property:Foo ?r2 .' )->addNewLine()
+			->getString();
+
+		$this->assertEquals(
+			$expectedConditionString,
+			$instance->convertConditionToString( $condition )
 		);
 	}
 

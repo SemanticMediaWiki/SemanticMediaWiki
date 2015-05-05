@@ -121,6 +121,14 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
 		$result = new SingletonCondition( $expElement );
 
+		$redirectByVariable = $this->compoundConditionBuilder->tryToFindRedirectVariableForDataItem(
+			$dataItem
+		);
+
+		if ( $redirectByVariable !== null ) {
+			$result->matchElement = $redirectByVariable;
+		}
+
 		$this->compoundConditionBuilder->addOrderByDataForProperty(
 			$result,
 			$joinVariable,
@@ -155,6 +163,14 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 			$comparator,
 			$pattern
 		);
+
+		$redirectByVariable = $this->compoundConditionBuilder->tryToFindRedirectVariableForDataItem(
+			$dataItem
+		);
+
+		if ( $redirectByVariable !== null ) {
+			$condition->matchElement = $redirectByVariable;
+		}
 
 		$this->compoundConditionBuilder->addOrderByDataForProperty(
 			$condition,
