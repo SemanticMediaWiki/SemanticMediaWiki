@@ -5,6 +5,7 @@ namespace SMW\SPARQLStore\QueryEngine;
 use RuntimeException;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\CircularReferenceGuard;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\SomeProperty;
@@ -37,6 +38,7 @@ use SMWTurtleSerializer as TurtleSerializer;
  * @since 2.0
  *
  * @author Markus Krötzsch
+ * @author mwjames
  */
 class CompoundConditionBuilder {
 
@@ -84,6 +86,11 @@ class CompoundConditionBuilder {
 	private $orderByProperty;
 
 	/**
+	 * @var array
+	 */
+	private $redirectByVariableReplacementMap = array();
+
+	/**
 	 * @since 2.2
 	 */
 	public function __construct() {
@@ -115,8 +122,8 @@ class CompoundConditionBuilder {
 	 *
 	 * @return string
 	 */
-	public function getNextVariable() {
-		return 'v' . ( ++$this->variableCounter );
+	public function getNextVariable( $prefix = 'v' ) {
+		return $prefix . ( ++$this->variableCounter );
 	}
 
 	/**
@@ -237,6 +244,7 @@ class CompoundConditionBuilder {
 		$condition = $this->mapDescriptionToCondition( $description );
 
 		$this->addMissingOrderByConditions( $condition );
+		$this->addRedirectTriplePatternToFinalCondition( $condition );
 
 		return $condition;
 	}
@@ -306,6 +314,58 @@ class CompoundConditionBuilder {
 		$result = new TrueCondition();
 		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty );
 		return $result;
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @param DataItem|null $dataItem
+	 *
+	 * @return string|null
+	 */
+	public function tryToFindRedirectVariableForDataItem( DataItem $dataItem = null ) {
+
+		if ( !$dataItem instanceof DIWikiPage || !$this->canUseQFeature( SMW_SPARQL_QF_REDI ) ) {
+			return null;
+		}
+
+		// Maybe there is a better way to verify the "isRedirect" state other
+		// than by using the Title object
+		if ( $dataItem->getTitle() === null || !$dataItem->getTitle()->isRedirect() ) {
+			return null;
+		}
+
+		$redirectExpElement = Exporter::getInstance()->getResourceElementForWikiPage( $dataItem );
+		$valueName = TurtleSerializer::getTurtleNameForExpElement( $redirectExpElement );
+
+		// Add unknow redirect target/variable for value
+		if ( !isset( $this->redirectByVariableReplacementMap[$valueName] ) ) {
+
+			$namespaces[$redirectExpElement->getNamespaceId()] = $redirectExpElement->getNamespace();
+			$redirectByVariable = '?' . $this->getNextVariable( 'r' );
+
+			$this->redirectByVariableReplacementMap[$valueName] = array(
+				$redirectByVariable,
+				$namespaces
+			);
+		}
+
+		// Reuse an existing variable for the value to allow to be used more than
+		// once when referring to the same property/value redirect
+		list( $redirectByVariable, $namespaces ) = $this->redirectByVariableReplacementMap[$valueName];
+
+		return $redirectByVariable;
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @param integer $queryFeatureFlag
+	 *
+	 * @return boolean
+	 */
+	public function canUseQFeature( $queryFeatureFlag ) {
+		return $GLOBALS['smwgSparqlQFeatures'] === ( $GLOBALS['smwgSparqlQFeatures'] | $queryFeatureFlag );
 	}
 
 	/**
@@ -404,6 +464,58 @@ class CompoundConditionBuilder {
 		$condition->orderVariables[$propertyKey] = $auxCondition->orderVariables[$propertyKey];
 		$condition->weakConditions[$condition->orderVariables[$propertyKey]] = $auxCondition->getWeakConditionString() . $auxCondition->getCondition();
 		$condition->namespaces = array_merge( $condition->namespaces, $auxCondition->namespaces );
+	}
+
+	/**
+	 * @see http://www.w3.org/TR/sparql11-query/#propertypaths
+	 *
+	 * Query of:
+	 *
+	 * SELECT DISTINCT ?result WHERE {
+	 *	?result swivt:wikiPageSortKey ?resultsk .
+	 *	{
+	 *		?result property:FOO ?v1 .
+	 *		FILTER( ?v1sk >= "=BAR" )
+	 *		?v1 swivt:wikiPageSortKey ?v1sk .
+	 *	} UNION {
+	 *		?result property:FOO ?v2 .
+	 *	}
+	 * }
+	 *
+	 * results in:
+	 *
+	 * SELECT DISTINCT ?result WHERE {
+	 *	?result swivt:wikiPageSortKey ?resultsk .
+	 *	?r2 ^swivt:redirectsTo property:FOO .
+	 *	{
+	 *		?result ?r2 ?v1 .
+	 *		FILTER( ?v1sk >= "=BAR" )
+	 *		?v1 swivt:wikiPageSortKey ?v1sk .
+	 *	} UNION {
+	 *		?result ?r2 ?v3 .
+	 *	}
+	 * }
+	 */
+	private function addRedirectTriplePatternToFinalCondition( Condition &$condition ) {
+
+		if ( $this->redirectByVariableReplacementMap === array() ) {
+			return;
+		}
+
+		$weakConditions = array();
+		$namespaces = array();
+
+		$rediExpElement = Exporter::getInstance()->getSpecialPropertyResource( '_REDI' );
+		$namespaces[$rediExpElement->getNamespaceId()] = $rediExpElement->getNamespace();
+
+		foreach ( $this->redirectByVariableReplacementMap as $valueName => $content ) {
+			list( $redirectByVariable, $ns ) = $content;
+			$weakConditions[] = "$redirectByVariable " . "^" . $rediExpElement->getQName() . " $valueName .\n";
+			$namespaces = array_merge( $namespaces, $ns );
+		}
+
+		$condition->namespaces = array_merge( $condition->namespaces, $namespaces );
+		$condition->weakConditions += $weakConditions;
 	}
 
 }

@@ -90,7 +90,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$joinVariable
 		);
 
-		$propertyName = $this->getPropertyNameByUsingTurtleSerializer(
+		$propertyName = $this->findMostSuitablePropertyRepresentation(
 			$property,
 			$nonInverseProperty,
 			$namespaces
@@ -165,7 +165,16 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		return $objectName;
 	}
 
-	private function getPropertyNameByUsingTurtleSerializer( DIProperty $property, DIProperty $nonInverseProperty, &$namespaces ) {
+	private function findMostSuitablePropertyRepresentation( DIProperty $property, DIProperty $nonInverseProperty, &$namespaces ) {
+
+		$redirectByVariable = $this->compoundConditionBuilder->tryToFindRedirectVariableForDataItem(
+			$nonInverseProperty->getDiWikiPage()
+		);
+
+		// If the property is represented by a redirect then use the variable instead
+		if ( $redirectByVariable !== null ) {
+			return $redirectByVariable;
+		}
 
 		// Use helper properties in encoding values, refer to this helper property:
 		if ( $this->exporter->hasHelperExpElement( $property ) ) {

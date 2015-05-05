@@ -97,6 +97,21 @@ $GLOBALS['smwgSparqlDefaultGraph'] = '';
 ##
 $GLOBALS['smwgSparqlDatabaseConnector'] = 'custom';
 
+##
+# Sparql query features that are expected to be supported by the repository:
+#
+# - SMW_SPARQL_QF_NONE does not support any features (as required by SPARQL 1.1)
+# - SMW_SPARQL_QF_REDI to support finding redirects using inverse property paths,
+#   can only be used for repositories with full SPARQL 1.1 support (e.g. Fuseki,
+#   Sesame)
+#
+# Please check with your repository provider whether SPARQL 1.1 is fully
+# supported or not, and if not SMW_SPARQL_QF_NONE should be set.
+#
+# @since 2.3
+##
+$GLOBALS['smwgSparqlQFeatures'] = SMW_SPARQL_QF_REDI;
+
 ###
 # Setting this option to true before including this file to enable the old
 # Type: namespace that SMW used up to version 1.5.*. This should only be
