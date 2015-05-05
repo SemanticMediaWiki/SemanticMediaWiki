@@ -404,3 +404,8 @@ label.smw-form-checkbox {
 	overflow: hidden;
 	padding-top: .5em;
 }
+
+.smw-column {
+	float: left;
+	word-wrap: break-word;
+}

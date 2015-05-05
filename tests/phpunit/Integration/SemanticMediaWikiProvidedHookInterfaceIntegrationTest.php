@@ -378,6 +378,9 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 
 		$this->mwHooksHandler->register( 'SMW::Parser::BeforeMagicWordsFinder', function( &$magicWords ) {
 			$magicWords = array( 'Foo' );
+
+			// Just to make MW 1.19 happy, otherwise it is not really needed
+			return true;
 		} );
 
 		$text = '';
