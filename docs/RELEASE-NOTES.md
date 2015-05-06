@@ -4,7 +4,7 @@ This is not a release yet.
 
 ## New features
 
-*
+* #1001 Added `$GLOBALS['smwgSparqlQFeatures']` with option `SMW_SPARQL_QF_REDI` to support property/value redirects in queries (can only be used in connection with a SPARQL 1.1 supported repository)
 
 ## Enhancements
 
