@@ -41,12 +41,7 @@ class JsonTestCaseFileHandler {
 	public function isIncomplete() {
 
 		$meta = $this->getFileContentsFor( 'meta' );
-
-		try{
-			$isIncomplete = (bool)$meta['is-incomplete'];
-		} catch( \Exception $e ) {
-			$isIncomplete = false;
-		}
+		$isIncomplete = isset( $meta['is-incomplete'] ) ? (bool)$meta['is-incomplete'] : false;
 
 		if ( $isIncomplete ) {
 			$this->reasonToSkip = '"'. $this->getFileContentsFor( 'description' ) . '" has been marked as incomplete.';
@@ -64,13 +59,7 @@ class JsonTestCaseFileHandler {
 
 		$meta = $this->getFileContentsFor( 'meta' );
 
-		try{
-			$debug = (bool)$meta['debug'];
-		} catch( \Exception $e ) {
-			$debug = false;
-		}
-
-		return $debug;
+		return isset( $meta['debug'] ) ? (bool)$meta['debug'] : false;
 	}
 
 	/**

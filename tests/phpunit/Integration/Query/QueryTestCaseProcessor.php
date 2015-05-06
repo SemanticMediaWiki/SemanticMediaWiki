@@ -37,13 +37,20 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 * @since 2.2
 	 *
 	 * @param Store $store
-	 * @param QueryParser $queryParser
 	 */
-	public function __construct( Store $store, QueryParser $queryParser, $queryResultValidator, $stringValidator ) {
+	public function __construct( Store $store, $queryResultValidator, $stringValidator ) {
 		$this->store = $store;
-		$this->queryParser = $queryParser;
 		$this->queryResultValidator = $queryResultValidator;
 		$this->stringValidator = $stringValidator;
+	}
+
+	/**
+	 * @since  2.2
+	 *
+	 * @param QueryParser $queryParser
+	 */
+	public function setQueryParser( QueryParser $queryParser ) {
+		$this->queryParser = $queryParser;
 	}
 
 	/**

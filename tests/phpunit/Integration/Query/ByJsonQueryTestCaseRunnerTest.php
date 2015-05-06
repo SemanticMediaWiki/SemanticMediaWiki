@@ -31,7 +31,6 @@ class ByJsonQueryTestCaseRunnerTest extends ByJsonTestCaseProvider {
 
 		$this->queryTestCaseProcessor = new QueryTestCaseProcessor(
 			$this->getStore(),
-			ApplicationFactory::getInstance()->newQueryParser(),
 			UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator(),
 			UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator()
 		);
@@ -75,6 +74,12 @@ class ByJsonQueryTestCaseRunnerTest extends ByJsonTestCaseProvider {
 				$jsonTestCaseFileHandler->getSettingsFor( $key )
 			);
 		}
+
+		// Set query parser late to ensure that expected settings are adjusted
+		// (language etc.) because the __construct relies on the context language
+		$this->queryTestCaseProcessor->setQueryParser(
+			ApplicationFactory::getInstance()->newQueryParser()
+		);
 
 		$this->createPagesFor(
 			$jsonTestCaseFileHandler->getListOfProperties(),
