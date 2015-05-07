@@ -767,7 +767,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->setMethods( array( 'canUseQFeature' ) )
 			->getMock();
 
-		$instance->expects( $this->atLeastOnce() )
+		$instance->expects( $this->at( 0 ) )
 			->method( 'canUseQFeature' )
 			->with( $this->equalTo( SMW_SPARQL_QF_REDI ) )
 			->will( $this->returnValue( true ) );

@@ -24,6 +24,9 @@ class EngineOptions {
 		$this->set( 'smwgIgnoreQueryErrors', $GLOBALS['smwgIgnoreQueryErrors'] );
 		$this->set( 'smwgQSortingSupport', $GLOBALS['smwgQSortingSupport'] );
 		$this->set( 'smwgQRandSortingSupport', $GLOBALS['smwgQRandSortingSupport'] );
+		$this->set( 'smwgQSubpropertyDepth', $GLOBALS['smwgQSubpropertyDepth'] );
+		$this->set( 'smwgQSubcategoryDepth', $GLOBALS['smwgQSubcategoryDepth'] );
+		$this->set( 'smwgSparqlQFeatures', $GLOBALS['smwgSparqlQFeatures'] );
 	}
 
 	/**

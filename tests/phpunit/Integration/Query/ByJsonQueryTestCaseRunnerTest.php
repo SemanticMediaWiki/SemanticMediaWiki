@@ -65,7 +65,8 @@ class ByJsonQueryTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			'wgLang',
 			'smwgQMaxSize',
 			'smwStrictComparators',
-			'smwgNamespacesWithSemanticLinks'
+			'smwgNamespacesWithSemanticLinks',
+			'smwgQSubpropertyDepth'
 		);
 
 		foreach ( $permittedSettings as $key ) {

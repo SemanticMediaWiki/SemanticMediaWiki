@@ -24,23 +24,16 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testInitialState() {
+	/**
+	 * @dataProvider initialSettingsProvider
+	 */
+	public function testInitialState( $setting, $expected ) {
 
 		$instance = new EngineOptions();
 
 		$this->assertInternalType(
-			'boolean',
-			$instance->get( 'smwgIgnoreQueryErrors' )
-		);
-
-		$this->assertInternalType(
-			'boolean',
-			$instance->get( 'smwgQSortingSupport' )
-		);
-
-		$this->assertInternalType(
-			'boolean',
-			$instance->get( 'smwgQRandSortingSupport' )
+			$expected,
+			$instance->get( $setting )
 		);
 	}
 
@@ -66,6 +59,41 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 
 		$this->setExpectedException( 'InvalidArgumentException' );
 		$instance->get( 'Foo' );
+	}
+
+	public function initialSettingsProvider() {
+
+		$provider[] = array(
+			'smwgIgnoreQueryErrors',
+			'boolean'
+		);
+
+		$provider[] = array(
+			'smwgQSortingSupport',
+			'boolean'
+		);
+
+		$provider[] = array(
+			'smwgQRandSortingSupport',
+			'boolean'
+		);
+
+		$provider[] = array(
+			'smwgQSubpropertyDepth',
+			'integer'
+		);
+
+		$provider[] = array(
+			'smwgQSubcategoryDepth',
+			'integer'
+		);
+
+		$provider[] = array(
+			'smwgSparqlQFeatures',
+			'integer'
+		);
+
+		return $provider;
 	}
 
 }
