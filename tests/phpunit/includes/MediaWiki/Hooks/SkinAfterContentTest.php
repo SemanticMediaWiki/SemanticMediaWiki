@@ -11,9 +11,7 @@ use SMW\Settings;
 /**
  * @covers \SMW\MediaWiki\Hooks\SkinAfterContent
  *
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -66,21 +64,30 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SkinAfterContent( $data, $parameters['skin'] );
 
-		// Inject fake content into the FactboxPresenter
+		// Replace CachedFactbox instance
 		if ( isset( $parameters['title'] ) ) {
 
-			$factboxCache = $this->applicationFactory
-				->newFactboxBuilder()
-				->newFactboxCache( $parameters['skin']->getOutput() );
+			$cachedFactbox = $this->applicationFactory->newFactboxFactory()->newCachedFactbox();
 
-			$resultMapper = $factboxCache->newResultMapper( $parameters['title']->getArticleID() );
-			$resultMapper->recache( array(
-				'revId' => null,
-				'text'  => $parameters['text']
-			) );
+			$cachedFactbox->addContentToCache(
+				$this->applicationFactory->newCacheFactory()->getFactboxCacheKey( $parameters['title']->getArticleID() ),
+				$parameters['text']
+			);
+
+			$factboxFactory = $this->getMockBuilder( '\SMW\Factbox\FactboxFactory' )
+				->disableOriginalConstructor()
+				->getMock();
+
+			$factboxFactory->expects( $this->once() )
+				->method( 'newCachedFactbox' )
+				->will( $this->returnValue( $cachedFactbox ) );
+
+			$this->applicationFactory->registerObject( 'FactboxFactory', $factboxFactory );
 		}
 
-		$this->assertTrue( $instance->process() );
+		$this->assertTrue(
+			$instance->process()
+		);
 
 		$this->assertEquals(
 			$expected['text'],
@@ -175,7 +182,6 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			array( 'skin' => $skin, 'text' => $text, 'title' => $outputPage->getTitle() ),
 			array( 'text' => $text )
 		);
-
 
 		// #2 Special page
 		$text  = __METHOD__ . 'text-2';

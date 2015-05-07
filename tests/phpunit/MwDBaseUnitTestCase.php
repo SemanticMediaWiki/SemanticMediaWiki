@@ -66,6 +66,11 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 		$this->checkIfStoreCanBeUsedOtherwiseSkipTest();
 
 		ApplicationFactory::getInstance()->registerObject( 'Store', $this->getStore() );
+
+		ApplicationFactory::getInstance()->registerObject(
+			'Cache',
+			ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache()
+		);
 	}
 
 	protected function tearDown() {

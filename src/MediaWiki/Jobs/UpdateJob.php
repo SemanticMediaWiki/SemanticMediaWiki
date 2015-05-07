@@ -5,7 +5,6 @@ namespace SMW\MediaWiki\Jobs;
 use LinkCache;
 use ParserOutput;
 use SMW\ApplicationFactory;
-use SMW\Factbox\FactboxCache;
 use SMW\SemanticDataCache;
 use SMW\DIProperty;
 use Title;
@@ -115,7 +114,10 @@ class UpdateJob extends JobBase {
 	private function updateStore( $parserData ) {
 
 		$cache = $this->applicationFactory->getCache();
-		$cache->setKey( FactboxCache::newCacheId( $this->getTitle()->getArticleID() ) )->delete();
+
+		$cache->delete(
+			$this->applicationFactory->newCacheFactory()->getFactboxCacheKey( $this->getTitle()->getArticleID() )
+		);
 
 		// TODO
 		// Rebuild the factbox

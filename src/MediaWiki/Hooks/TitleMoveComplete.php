@@ -61,7 +61,6 @@ class TitleMoveComplete {
 		$this->user = $user;
 		$this->oldId = $oldId;
 		$this->newId = $newId;
-		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	/**
@@ -71,37 +70,41 @@ class TitleMoveComplete {
 	 */
 	public function process() {
 
-		/**
-		 * @var Settings $settings
-		 */
-		$settings = $this->applicationFactory->getSettings();
+		$applicationFactory = ApplicationFactory::getInstance();
 
-		$cache = $this->applicationFactory->newCacheFactory()->newMediaWikiCompositeCache();
+		$cache = $applicationFactory->getCache();
+		$cacheFactory = $applicationFactory->newCacheFactory();
 
 		// Delete all data for a non-enabled target NS
-		if ( !$this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $this->newTitle->getNamespace() ) ) {
+		if ( !$applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $this->newTitle->getNamespace() ) ) {
 
 			$cache->delete(
-				FactboxCache::newCacheId( $this->oldId )->generateId()
+				$cacheFactory->getFactboxCacheKey( $this->oldId )
 			);
 
-			$this->applicationFactory->getStore()->deleteSubject(
+			$applicationFactory->getStore()->deleteSubject(
 				$this->oldTitle
 			);
 
 		} else {
 
-			$cache->save(
-				ArticlePurge::newCacheId( $this->newId )->generateId(),
-				$settings->get( 'smwgAutoRefreshOnPageMove' )
-			);
+			$settings = $applicationFactory->getSettings();
 
-			$cache->save(
-				ArticlePurge::newCacheId( $this->oldId )->generateId(),
-				$settings->get( 'smwgAutoRefreshOnPageMove' )
-			);
+			if ( $this->newId > 0 ) {
+				$cache->save(
+					$cacheFactory->getPurgeCacheKey( $this->newId ),
+					$settings->get( 'smwgAutoRefreshOnPageMove' )
+				);
+			}
 
-			$this->applicationFactory->getStore()->changeTitle(
+			if ( $this->oldId > 0 ) {
+				$cache->save(
+					$cacheFactory->getPurgeCacheKey( $this->oldId ),
+					$settings->get( 'smwgAutoRefreshOnPageMove' )
+				);
+			}
+
+			$applicationFactory->getStore()->changeTitle(
 				$this->oldTitle,
 				$this->newTitle,
 				$this->oldId,

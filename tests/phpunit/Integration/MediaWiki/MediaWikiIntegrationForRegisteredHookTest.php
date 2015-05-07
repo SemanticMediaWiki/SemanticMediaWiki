@@ -19,10 +19,7 @@ use WikiPage;
 use Title;
 
 /**
- * @group SMW
- * @group SMWExtension
- * @group semantic-mediawiki-integration
- * @group mediawiki-database
+ * @group semantic-mediawiki
  * @group medium
  *
  * @license GNU GPL v2+
@@ -78,7 +75,10 @@ class MediaWikiIntegrationForRegisteredHookTest extends MwDBaseUnitTestCase {
 
 	public function testPagePurge() {
 
-		$this->applicationFactory->registerObject( 'CacheHandler', new \SMW\Cache\CacheHandler( new \HashBagOStuff() ) );
+		$cacheFactory = $this->applicationFactory->newCacheFactory();
+		$cache = $cacheFactory->newFixedInMemoryCache();
+
+		$this->applicationFactory->registerObject( 'Cache', $cache );
 
 		$this->title = Title::newFromText( __METHOD__ );
 
@@ -88,18 +88,15 @@ class MediaWikiIntegrationForRegisteredHookTest extends MwDBaseUnitTestCase {
 			->createPage( $this->title )
 			->doEdit( '[[Has function hook test::page purge]]' );
 
-		$id = ArticlePurge::newCacheId( $this->title->getArticleID() );
+		$key = $cacheFactory->getPurgeCacheKey( $this->title->getArticleID() );
 
 		$pageCreator
 			->getPage()
 			->doPurge();
 
-		$result = ApplicationFactory::getInstance()
-			->getcache()
-			->setKey( $id )
-			->get();
-
-		$this->assertTrue( $result );
+		$this->assertTrue(
+			$cache->fetch( $key )
+		);
 	}
 
 	public function testPageDelete() {

@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use SMW\Cache\CacheHandler;
+use SMW\ApplicationFactory;
 use SMW\MediaWiki\TitleCreator;
 use SMW\MediaWiki\PageCreator;
 
@@ -54,14 +54,12 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 		}, DependencyObject::SCOPE_SINGLETON );
 
 		/**
-		 * CacheHandler object definition
-		 *
 		 * @since  1.9
 		 *
-		 * @return CacheHandler
+		 * @return Cache
 		 */
-		$this->registerObject( 'CacheHandler', function ( DependencyBuilder $builder ) {
-			return CacheHandler::newFromId( $builder->newObject( 'Settings' )->get( 'smwgCacheType' ) );
+		$this->registerObject( 'Cache', function ( DependencyBuilder $builder ) {
+			return ApplicationFactory::getInstance()->newCacheFactory()->newMediaWikiCompositeCache();
 		}, DependencyObject::SCOPE_SINGLETON );
 
 	}
@@ -80,6 +78,10 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 
 			'JobFactory' => function ( DependencyBuilder $builder ) {
 				return new \SMW\MediaWiki\Jobs\JobFactory();
+			},
+
+			'FactboxFactory' => function ( DependencyBuilder $builder ) {
+				return new \SMW\Factbox\FactboxFactory();
 			},
 
 			/**

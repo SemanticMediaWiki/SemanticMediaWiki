@@ -112,13 +112,14 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 
 		$provider[] = array( 'Settings',                   array( '\SMW\Settings'                    => array() ) );
 		$provider[] = array( 'Store',                      array( '\SMW\Store'                       => array() ) );
-		$provider[] = array( 'CacheHandler',               array( '\SMW\Cache\CacheHandler'          => array() ) );
+		$provider[] = array( 'Cache',                      array( '\Onoi\Cache\Cache'                => array() ) );
 		$provider[] = array( 'NamespaceExaminer',          array( '\SMW\NamespaceExaminer'           => array() ) );
 
 		$provider[] = array( 'RequestContext',             array( '\IContextSource'                  => array() ) );
 		$provider[] = array( 'TitleCreator',               array( '\SMW\Mediawiki\TitleCreator'      => array() ) );
 		$provider[] = array( 'PageCreator',                array( '\SMW\Mediawiki\PageCreator'       => array() ) );
 		$provider[] = array( 'JobFactory',                 array( '\SMW\Mediawiki\Jobs\JobFactory'   => array() ) );
+		$provider[] = array( 'FactboxFactory',             array( '\SMW\Factbox\FactboxFactory'      => array() ) );
 
 		$provider[] = array( 'RequestContext', array( '\IContextSource' => array(
 				'Title'    => $this->newMockBuilder()->newObject( 'Title' ),

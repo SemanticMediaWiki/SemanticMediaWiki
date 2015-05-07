@@ -128,10 +128,12 @@ class ParserAfterTidy {
 
 		$cache = $this->applicationFactory->getCache();
 
-		$cache->setKey( ArticlePurge::newCacheId( $this->parser->getTitle()->getArticleID() ) );
+		$key = $this->applicationFactory->newCacheFactory()->getPurgeCacheKey(
+			$this->parser->getTitle()->getArticleID()
+		);
 
-		if( $cache->get() ) {
-			$cache->delete();
+		if( $cache->contains( $key ) ) {
+			$cache->delete( $key );
 			$parserData->updateStore();
 		}
 

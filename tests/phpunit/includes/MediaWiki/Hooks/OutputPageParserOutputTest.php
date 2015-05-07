@@ -90,8 +90,22 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new OutputPageParserOutput( $outputPage, $parserOutput );
 
-		$factboxCache = $this->applicationFactory->newFactboxBuilder()->newFactboxCache( $outputPage );
-		$this->assertEmpty(	$factboxCache->retrieveContent() );
+		$cachedFactbox = $this->applicationFactory->newFactboxFactory()->newCachedFactbox();
+
+		$factboxFactory = $this->getMockBuilder( '\SMW\Factbox\FactboxFactory' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'newCachedFactbox' ) )
+			->getMock();
+
+		$factboxFactory->expects( $this->any() )
+			->method( 'newCachedFactbox' )
+			->will( $this->returnValue( $cachedFactbox ) );
+
+		$this->applicationFactory->registerObject( 'FactboxFactory', $factboxFactory );
+
+		$this->assertEmpty(
+			$cachedFactbox->retrieveContent( $outputPage )
+		);
 
 		$instance->process();
 
@@ -107,7 +121,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$text,
-			$factboxCache->retrieveContent(),
+			$cachedFactbox->retrieveContent( $outputPage ),
 			'Asserts that retrieveContent() returns an expected text'
 		);
 
@@ -117,7 +131,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$text,
-			$factboxCache->retrieveContent(),
+			$cachedFactbox->retrieveContent( $outputPage ),
 			'Asserts that retrieveContent() is returning text from cache'
 		);
 	}

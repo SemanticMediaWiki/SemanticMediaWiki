@@ -13,17 +13,28 @@ use SMW\ParserData;
  *
  * @author mwjames
  */
-class FactboxBuilder {
+class FactboxFactory {
 
 	/**
 	 * @since 2.0
 	 *
-	 * @param OutputPage $outputPage
-	 *
-	 * @return FactboxCache
+	 * @return CachedFactbox
 	 */
-	public function newFactboxCache( OutputPage $outputPage ) {
-		return new FactboxCache( $outputPage );
+	public function newCachedFactbox() {
+
+		$cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
+
+		$cacheOptions = $cacheFactory->newCacheOptions( array(
+			'useCache' => ApplicationFactory::getInstance()->getSettings()->get( 'smwgFactboxUseCache' ),
+			'ttl'      => 0
+		) );
+
+		$cachedFactbox = new CachedFactbox(
+			$cacheFactory->newMediaWikiCompositeCache( $cacheFactory->getMainCacheType() ),
+			$cacheOptions
+		);
+
+		return $cachedFactbox;
 	}
 
 	/**
