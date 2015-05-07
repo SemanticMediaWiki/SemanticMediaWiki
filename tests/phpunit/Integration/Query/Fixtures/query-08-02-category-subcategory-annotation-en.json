@@ -109,6 +109,21 @@
 					"Foo#14##"
 				]
 			}
+		},
+		{
+			"about": "#5 disjuntive query for two categories",
+			"condition": "[[Category:Foo]] OR [[Category:Bam]]",
+			"printouts" : [ "_INST" ],
+			"parameters" : {
+				"limit" : "10"
+			},
+				"count": 3,
+				"results": [
+					"Page-annotated-with-subcategory#0##",
+					"Page-annotated-with-another-subcategory#0##",
+					"Page-annotated-with-supercategory-subcategory#0##"
+				]
+			}
 		}
 	],
 	"settings": {
