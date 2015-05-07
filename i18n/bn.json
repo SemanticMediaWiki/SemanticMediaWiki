@@ -2,21 +2,27 @@
 	"@metadata": {
 		"authors": [
 			"Wikitanvir",
-			"Aftab1995"
+			"Aftab1995",
+			"Aftabuzzaman"
 		]
 	},
 	"smw_viewasrdf": "আরডিএফ ফিড",
 	"smw_finallistconjunct": ", এবং",
+	"smw_factbox_head": "\"$1\" সম্পর্কে তথ্য",
 	"smw_dsv_link": "ডিএসভি",
-	"smw_printername_csv": "সিএসভি রপ্তাপি",
-	"smw_printername_dsv": "ডিএসভি রপ্তাপি",
+	"smw_printername_csv": "সিএসভি রপ্তানি",
+	"smw_printername_dsv": "ডিএসভি রপ্তানি",
 	"smw_printername_debug": "ডিবাগ কোয়েরি (বিশেষজ্ঞদের জন্য)",
 	"smw_printername_json": "জেএসঅন রপ্তানি",
 	"smw_printername_list": "তালিকা",
 	"smw_printername_table": "ছক",
 	"smw_printername_broadtable": "প্রশস্ত ছক",
-	"smw_printername_template": "টেম্পলেট",
+	"smw_printername_template": "টেমপ্লেট",
 	"smw_printername_rdf": "আরডিএফ রপ্তানি",
+	"smw_printername_category": "বিষয়শ্রেণী",
+	"validator-type-class-SMWParamSource": "লেখা",
+	"smw_exportrdf_submit": "রপ্তানি",
+	"smw_purge": "পুনঃসতেজ",
 	"smw_ask_queryhead": "কোয়েরি",
 	"smw_sbv_value": "মান:",
 	"smw_sbv_submit": "ফলাফল খুঁজুন",
