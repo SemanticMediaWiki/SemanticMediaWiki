@@ -98,6 +98,36 @@
 					}
 				]
 			}
+		},
+		{
+			"about": "#2 find members of a super property",
+			"condition": "[[Subproperty of::Property:Spouse]]",
+			"printouts" : [],
+			"parameters" : {
+			  "limit" : 10
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Has wife#102##",
+					"Has husband#102##"
+				]
+			}
+		},
+		{
+			"about": "#3 find the super properties (invert)",
+			"condition": "[[-Subproperty of::Property:Has wife]]",
+			"printouts" : [],
+			"parameters" : {
+			  "limit" : 10
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Spouse#102##",
+					"Family#102##"
+				]
+			}
 		}
 	],
 	"settings": {

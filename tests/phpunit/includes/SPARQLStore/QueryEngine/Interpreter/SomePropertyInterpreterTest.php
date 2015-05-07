@@ -492,7 +492,30 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		);
 
-		# 13 aux-property
+		# 13
+		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+
+		$property = new DIProperty( '_SUBP' );
+
+		$description = new SomeProperty(
+			$property,
+			new ValueDescription( new DIWikiPage( 'Bar', SMW_NS_PROPERTY ) )
+		);
+
+		$expected = $stringBuilder
+			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
+			->addString( '?result rdfs:subPropertyOf property:Bar .' )->addNewLine()
+			->getString();
+
+		$provider[] = array(
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		);
+
+		# 14 aux-property
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
 		$property = new DIProperty( '_MDAT' );

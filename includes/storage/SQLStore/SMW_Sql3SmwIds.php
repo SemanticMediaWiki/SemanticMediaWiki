@@ -335,13 +335,23 @@ class SMWSql3SmwIds {
 		global $smwgQEqualitySupport;
 
 		$db = $this->store->getConnection();
+		$id = false;
 
-		$id = $this->getCachedId(
-			$title,
-			$namespace,
-			$iw,
-			$subobjectName
-		);
+		// Integration test "query-04-02-subproperty-dc-import-marc21.json"
+		// showed a deterministic failure (due to a wrong cache id during querying
+		// for redirects) hence we force to read directly from the RedirectInfoStore
+		// for objects marked as redirect
+		if ( $iw === SMW_SQL3_SMWREDIIW && $canonical &&
+			$smwgQEqualitySupport !== SMW_EQ_NONE && $subobjectName === '' ) {
+			$id = $this->findRedirectIdFor( $title, $namespace );
+		} else {
+			$id = $this->getCachedId(
+				$title,
+				$namespace,
+				$iw,
+				$subobjectName
+			);
+		}
 
 		if ( $id !== false ) { // cache hit
 			$sortkey = $this->getCachedSortKey( $title, $namespace, $iw, $subobjectName );

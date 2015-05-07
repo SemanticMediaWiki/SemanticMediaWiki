@@ -186,7 +186,10 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		if ( $this->exporter->hasHelperExpElement( $property ) ) {
 			$propertyExpElement = $this->exporter->getResourceElementForProperty( $nonInverseProperty, true );
 		} elseif( !$property->isUserDefined() ) {
-			$propertyExpElement = $this->exporter->getSpecialPropertyResource( $nonInverseProperty->getKey() );
+			$propertyExpElement = $this->exporter->getSpecialPropertyResource(
+				$nonInverseProperty->getKey(),
+				SMW_NS_PROPERTY
+			);
 		} else {
 			$propertyExpElement = $this->exporter->getResourceElementForProperty( $nonInverseProperty );
 		}
