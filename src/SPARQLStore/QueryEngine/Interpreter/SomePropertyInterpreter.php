@@ -179,6 +179,8 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		// Use helper properties in encoding values, refer to this helper property:
 		if ( $this->exporter->hasHelperExpElement( $property ) ) {
 			$propertyExpElement = $this->exporter->getResourceElementForProperty( $nonInverseProperty, true );
+		} elseif( !$property->isUserDefined() ) {
+			$propertyExpElement = $this->exporter->getSpecialPropertyResource( $nonInverseProperty->getKey() );
 		} else {
 			$propertyExpElement = $this->exporter->getResourceElementForProperty( $nonInverseProperty );
 		}

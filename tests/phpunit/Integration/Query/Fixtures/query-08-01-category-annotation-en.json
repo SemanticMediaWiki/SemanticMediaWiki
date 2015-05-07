@@ -1,0 +1,45 @@
+{
+	"description": "Simple category annotation",
+	"properties": [],
+	"subjects": [
+		{
+			"name": "Foo",
+			"namespace": "NS_CATEGORY",
+			"contents": ""
+		},
+		{
+			"name": "Page-with-category",
+			"contents": "[[Category:Foo]]"
+		}
+	],
+	"query-testcases": [
+		{
+			"about": "#0 query pages with annotated category",
+			"condition": "[[Category:Foo]]",
+			"printouts" : [ "_INST" ],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Page-with-category#0##"
+				],
+				"datavalues": [
+					{
+						"property": "_INST",
+						"value": "Foo"
+					}
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en"
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
