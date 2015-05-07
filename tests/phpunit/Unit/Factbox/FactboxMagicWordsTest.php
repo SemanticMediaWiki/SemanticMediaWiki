@@ -109,6 +109,10 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 			$instance->useInPreview( true );
 		}
 
+		if ( isset( $expected['actionInfo'] ) && $expected['actionInfo'] ) {
+			$instance->useInActionInfo( true );
+		}
+
 		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
 
 		$magic = $reflector->getMethod( 'getMagicWords' );
@@ -175,6 +179,19 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 				'preview'    => true,
 				'constants'  => SMW_FACTBOX_HIDDEN,
 				'textOutput' => ''
+			)
+		);
+
+		// #4 actionInfo option, this test should generate a factbox output
+		$provider[] = array(
+			'Lorem ipsum dolor sit amet consectetuer auctor at quis' .
+			' [[Foo::dictumst cursus]]. Nisl sit condimentum Quisque facilisis' .
+			' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut',
+			array(
+				'magicWords' => array(),
+				'actionInfo' => true,
+				'constants'  => SMW_FACTBOX_NONEMPTY,
+				'textOutput' => 'smwfactboxhead'
 			)
 		);
 

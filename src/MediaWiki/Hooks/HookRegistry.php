@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use Parser;
 use Hooks;
+use ParserOptions; ###TODOMISDRE
 use RuntimeException;
 use SMW\ApplicationFactory;
 use SMW\EventHandler;
@@ -487,6 +488,19 @@ class HookRegistry {
 			);
 
 			return true;
+		};
+
+		/**
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/InfoAction
+		 */
+		$this->handlers['InfoAction'] = function ( $context, &$pageInfo ) {
+
+			$infoAction = new InfoAction(
+				$context->getOutput(),
+				$context->getWikiPage()->getParserOutput( new ParserOptions( $context->getUser() ) ),
+				$pageInfo
+			);
+			return $infoAction->process();
 		};
 
 		$this->handlers['SMW::SQLStore::AfterDataUpdateComplete'] = function ( $store, $semanticData, $compositePropertyTableDiffIterator ) use ( $applicationFactory ) {
