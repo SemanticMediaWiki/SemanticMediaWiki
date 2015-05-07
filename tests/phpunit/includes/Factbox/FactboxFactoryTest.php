@@ -26,13 +26,13 @@ class FactboxFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructFactboxCache() {
+	public function testCanConstructCachedFactbox() {
 
 		$instance = new FactboxFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Factbox\FactboxCache',
-			$instance->newFactboxCache()
+			'\SMW\Factbox\CachedFactbox',
+			$instance->newCachedFactbox()
 		);
 	}
 

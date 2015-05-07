@@ -19,7 +19,7 @@ use Title;
  *
  * @author mwjames
  */
-class FactboxCache {
+class CachedFactbox {
 
 	/**
 	 * @var Cache
@@ -89,7 +89,7 @@ class FactboxCache {
 	 * @param OutputPage &$outputPage
 	 * @param ParserOutput $parserOutput
 	 */
-	public function process( OutputPage &$outputPage, ParserOutput $parserOutput ) {
+	public function prepareFactboxContent( OutputPage &$outputPage, ParserOutput $parserOutput ) {
 
 		$content = '';
 		$title = $outputPage->getTitle();

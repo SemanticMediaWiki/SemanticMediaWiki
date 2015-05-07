@@ -64,12 +64,12 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SkinAfterContent( $data, $parameters['skin'] );
 
-		// Replace FactboxCache instance
+		// Replace CachedFactbox instance
 		if ( isset( $parameters['title'] ) ) {
 
-			$factboxCache = $this->applicationFactory->newFactboxFactory()->newFactboxCache();
+			$cachedFactbox = $this->applicationFactory->newFactboxFactory()->newCachedFactbox();
 
-			$factboxCache->addContentToCache(
+			$cachedFactbox->addContentToCache(
 				$this->applicationFactory->newCacheFactory()->getFactboxCacheKey( $parameters['title']->getArticleID() ),
 				$parameters['text']
 			);
@@ -79,8 +79,8 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 				->getMock();
 
 			$factboxFactory->expects( $this->once() )
-				->method( 'newFactboxCache' )
-				->will( $this->returnValue( $factboxCache ) );
+				->method( 'newCachedFactbox' )
+				->will( $this->returnValue( $cachedFactbox ) );
 
 			$this->applicationFactory->registerObject( 'FactboxFactory', $factboxFactory );
 		}

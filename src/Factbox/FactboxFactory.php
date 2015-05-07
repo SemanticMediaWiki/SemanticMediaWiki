@@ -18,9 +18,9 @@ class FactboxFactory {
 	/**
 	 * @since 2.0
 	 *
-	 * @return FactboxCache
+	 * @return CachedFactbox
 	 */
-	public function newFactboxCache() {
+	public function newCachedFactbox() {
 
 		$cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
 
@@ -29,12 +29,12 @@ class FactboxFactory {
 			'ttl'      => 0
 		) );
 
-		$factboxCache = new FactboxCache(
+		$cachedFactbox = new CachedFactbox(
 			$cacheFactory->newMediaWikiCompositeCache( $cacheFactory->getMainCacheType() ),
 			$cacheOptions
 		);
 
-		return $factboxCache;
+		return $cachedFactbox;
 	}
 
 	/**

@@ -4,7 +4,7 @@ namespace SMW\Test;
 
 use SMW\Tests\Utils\Mock\MockTitle;
 
-use SMW\Factbox\FactboxCache;
+use SMW\Factbox\CachedFactbox;
 use SMW\ApplicationFactory;
 use SMW\Settings;
 use SMW\DIWikiPage;
@@ -14,7 +14,7 @@ use Language;
 use ParserOutput;
 
 /**
- * @covers \SMW\Factbox\FactboxCache
+ * @covers \SMW\Factbox\CachedFactbox
  *
  * @group semantic-mediawiki
  * @group medium
@@ -24,7 +24,7 @@ use ParserOutput;
  *
  * @author mwjames
  */
-class FactboxCacheTest extends \PHPUnit_Framework_TestCase {
+class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 	private $applicationFactory;
 	private $memoryCache;
@@ -64,8 +64,8 @@ class FactboxCacheTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Factbox\FactboxCache',
-			new FactboxCache( $cache, new \stdClass )
+			'\SMW\Factbox\CachedFactbox',
+			new CachedFactbox( $cache, new \stdClass )
 		);
 	}
 
@@ -88,13 +88,13 @@ class FactboxCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$outputPage = $parameters['outputPage'];
 
-		$instance = new FactboxCache( $this->memoryCache, $this->cacheOptions );
+		$instance = new CachedFactbox( $this->memoryCache, $this->cacheOptions );
 
 		$this->assertEmpty(
 			$instance->retrieveContent( $outputPage )
 		);
 
-		$instance->process(
+		$instance->prepareFactboxContent(
 			$outputPage,
 			$parameters['parserOutput']
 		);
@@ -109,7 +109,7 @@ class FactboxCacheTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		// Re-run on the same instance
-		$instance->process(
+		$instance->prepareFactboxContent(
 			$outputPage,
 			$parameters['parserOutput']
 		);

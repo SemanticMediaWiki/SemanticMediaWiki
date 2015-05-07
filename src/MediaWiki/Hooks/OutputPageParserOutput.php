@@ -77,9 +77,9 @@ class OutputPageParserOutput {
 
 	protected function performUpdate() {
 
-		$factboxCache = ApplicationFactory::getInstance()->newFactboxFactory()->newFactboxCache();
+		$cachedFactbox = ApplicationFactory::getInstance()->newFactboxFactory()->newCachedFactbox();
 
-		$factboxCache->process(
+		$cachedFactbox->prepareFactboxContent(
 			$this->outputPage,
 			$this->getParserOutput()
 		);

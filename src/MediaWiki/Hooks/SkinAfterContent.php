@@ -59,9 +59,9 @@ class SkinAfterContent {
 
 	private function performUpdate() {
 
-		$factboxCache = ApplicationFactory::getInstance()->newFactboxFactory()->newFactboxCache();
+		$cachedFactbox = ApplicationFactory::getInstance()->newFactboxFactory()->newCachedFactbox();
 
-		$this->data .= $factboxCache->retrieveContent(
+		$this->data .= $cachedFactbox->retrieveContent(
 			$this->skin->getOutput()
 		);
 
