@@ -152,20 +152,6 @@
 					"Page-with-url-3#0##"
 				]
 			}
-		},
-		{
-			"about": "#8",
-			"condition": "[[Has url::~*ようこそ*]]",
-			"printouts" : [ "Has url" ],
-			"parameters" : {
-				"limit" : "10"
-			},
-			"queryresult": {
-				"count": "1",
-				"results": [
-					"Page-with-url-3#0##"
-				]
-			}
 		}
 	],
 	"settings": {},

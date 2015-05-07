@@ -16,6 +16,7 @@ use SMW\DIWikiPage;
 use SMW\DIProperty;
 
 use SMWDIBlob as DIBlob;
+use SMWDITime as DITime;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\Interpreter\SomePropertyInterpreter
@@ -411,6 +412,52 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
 			->addString( '?result property:Foo ?v1 .' )->addNewLine()
 			->addString( 'FILTER( ?v1 = "Bar" || ?v1 = "Baz" )' )->addNewLine()
+			->getString();
+
+		$provider[] = array(
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		);
+
+		# 12 use the rdf/owl equivalent for a predefined property
+		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+
+		$property = new DIProperty( '_SUBC' );
+
+		$description = new SomeProperty(
+			$property,
+			new ValueDescription( new DIBlob( 'Bar' ) )
+		);
+
+		$expected = $stringBuilder
+			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
+			->addString( '?result rdfs:subClassOf "Bar" .' )->addNewLine()
+			->getString();
+
+		$provider[] = array(
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		);
+
+		# 13 aux-property
+		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+
+		$property = new DIProperty( '_MDAT' );
+
+		$description = new SomeProperty(
+			$property,
+			new ValueDescription( new DITime( 1, 1970, 01, 01, 1, 1 ) )
+		);
+
+		$expected = $stringBuilder
+			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
+			->addString( '?result property:Modification_date-23aux "2440587.5423611"^^xsd:double .' )->addNewLine()
 			->getString();
 
 		$provider[] = array(

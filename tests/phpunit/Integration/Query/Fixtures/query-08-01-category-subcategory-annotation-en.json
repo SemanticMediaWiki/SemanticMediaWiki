@@ -1,0 +1,93 @@
+{
+	"description": "Category/subcategory annotation",
+	"properties": [],
+	"subjects": [
+		{
+			"name": "Foo",
+			"namespace": "NS_CATEGORY",
+			"contents": ""
+		},
+		{
+			"name": "Bar",
+			"namespace": "NS_CATEGORY",
+			"contents": "[[Category:Foo]]"
+		},
+		{
+			"name": "Bam",
+			"namespace": "NS_CATEGORY",
+			"contents": "[[Category:Foo]]"
+		},
+		{
+			"name": "Page-annotated-with-subcategory",
+			"contents": "[[Category:Bar]] [[Category:Bam]]"
+		},
+		{
+			"name": "Page-annotated-with-another-subcategory",
+			"contents": "[[Category:Bam]]"
+		},
+		{
+			"name": "Page-annotated-with-supercategory-subcategory",
+			"contents": "[[Category:Foo]] [[Category:Bam]]"
+		}
+	],
+	"query-testcases": [
+		{
+			"about": "#0 query pages with annotated category(subcategory)",
+			"condition": "[[Category:Bar]]",
+			"printouts" : [ "_INST" ],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Page-annotated-with-subcategory#0##"
+				],
+				"datavalues": [
+					{
+						"property": "_INST",
+						"value": "Bar"
+					}
+				]
+			}
+		},
+		{
+			"about": "#1 disjuntive query for two categories",
+			"condition": "[[Category:Bar]] OR [[Category:Bam]]",
+			"printouts" : [ "_INST" ],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 3,
+				"results": [
+					"Page-annotated-with-subcategory#0##",
+					"Page-annotated-with-another-subcategory#0##",
+					"Page-annotated-with-supercategory-subcategory#0##"
+				]
+			}
+		},
+		{
+			"about": "#2 conjuntive query for two categories",
+			"condition": "[[Category:Bar]][[Category:Bam]]",
+			"printouts" : [ "_INST" ],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Page-annotated-with-subcategory#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en"
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
