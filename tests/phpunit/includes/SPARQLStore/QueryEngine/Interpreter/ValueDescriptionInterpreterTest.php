@@ -107,6 +107,50 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testValueConditionForRediret() {
+
+		$resultVariable = 'result';
+
+		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
+			->setMethods( array( 'tryToFindRedirectVariableForDataItem' ) )
+			->getMock();
+
+		$compoundConditionBuilder->expects( $this->once() )
+			->method( 'tryToFindRedirectVariableForDataItem' )
+			->will( $this->returnValue( '?r1' ) );
+
+		$compoundConditionBuilder->setResultVariable( $resultVariable );
+		$compoundConditionBuilder->setJoinVariable( $resultVariable );
+
+		$instance = new ValueDescriptionInterpreter( $compoundConditionBuilder );
+
+		$description = new ValueDescription(
+			new DIWikiPage( 'Foo', NS_MAIN ),
+			null
+		);
+
+		$condition = $instance->interpretDescription( $description );
+
+		$expectedConditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
+
+		$this->assertInstanceOf(
+			$expectedConditionType,
+			$condition
+		);
+
+		// The redirect pattern add by compoundConditionBuilder at th end of
+		// the mapping
+		$expected = UtilityFactory::getInstance()->newStringBuilder()
+			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
+			->addString( 'FILTER( ?result = ?r1 )' )->addNewLine()
+			->getString();
+
+		$this->assertEquals(
+			$expected,
+			$compoundConditionBuilder->convertConditionToString( $condition )
+		);
+	}
+
 	public function comparatorProvider() {
 
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();

@@ -20,6 +20,10 @@
 			"contents": "#REDIRECT [[PageRedirectTarget]]"
 		},
 		{
+			"name": "AnotherPageValueToBeRedirected",
+			"contents": "#REDIRECT [[AnotherPageRedirectTarget]]"
+		},
+		{
 			"name": "Page-one",
 			"contents": "[[PropertyToBeRedirected::One]]"
 		},
@@ -124,6 +128,36 @@
 				"count": 1,
 				"results": [
 					"Page-five-combined#0##"
+				]
+			}
+		},
+		{
+			"about": "#4 single value search, refs #1007",
+			"condition": "[[:PageValueToBeRedirected]]",
+			"printouts" : [],
+			"parameters" : {
+			  "limit" : 10
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"PageRedirectTarget#0##"
+				]
+			}
+		},
+		{
+			"about": "#5 disjunctive single value search, refs #1007",
+			"condition": "[[:PageValueToBeRedirected]] OR [[:AnotherPageValueToBeRedirected]] OR [[:Page-one]]",
+			"printouts" : [],
+			"parameters" : {
+			  "limit" : 10
+			},
+			"queryresult": {
+				"count": 3,
+				"results": [
+					"PageRedirectTarget#0##",
+					"AnotherPageRedirectTarget#0##",
+					"Page-one#0##"
 				]
 			}
 		}
