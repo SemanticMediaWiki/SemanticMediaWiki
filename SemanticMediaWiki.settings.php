@@ -105,13 +105,14 @@ $GLOBALS['smwgSparqlDatabaseConnector'] = 'custom';
 #   can only be used for repositories with full SPARQL 1.1 support (e.g. Fuseki,
 #   Sesame)
 # - SMW_SPARQL_QF_SUBP to resolve subproperties
+# - SMW_SPARQL_QF_SUBC to resolve subcategories
 #
 # Please check with your repository provider whether SPARQL 1.1 is fully
 # supported or not, and if not SMW_SPARQL_QF_NONE should be set.
 #
 # @since 2.3
 ##
-$GLOBALS['smwgSparqlQFeatures'] = SMW_SPARQL_QF_REDI | SMW_SPARQL_QF_SUBP;
+$GLOBALS['smwgSparqlQFeatures'] = SMW_SPARQL_QF_REDI | SMW_SPARQL_QF_SUBP | SMW_SPARQL_QF_SUBC;
 
 ###
 # Setting this option to true before including this file to enable the old

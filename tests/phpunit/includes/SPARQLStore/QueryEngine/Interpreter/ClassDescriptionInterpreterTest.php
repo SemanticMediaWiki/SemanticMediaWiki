@@ -77,6 +77,48 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testHierarchyPattern() {
+
+		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
+
+		$categoryName = \SMWTurtleSerializer::getTurtleNameForExpElement(
+			\SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
+		);
+
+		$hierarchyFinder = $this->getMockBuilder( '\SMW\SPARQLStore\HierarchyFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$hierarchyFinder->expects( $this->once() )
+			->method( 'hasSubcategoryFor' )
+			->with( $this->equalTo( $category ) )
+			->will( $this->returnValue( true ) );
+
+		$resultVariable = 'result';
+
+		$compoundConditionBuilder = new CompoundConditionBuilder();
+		$compoundConditionBuilder->setHierarchyFinder( $hierarchyFinder );
+		$compoundConditionBuilder->setResultVariable( $resultVariable );
+		$compoundConditionBuilder->setJoinVariable( $resultVariable );
+
+		$instance = new ClassDescriptionInterpreter( $compoundConditionBuilder );
+
+		$condition = $instance->interpretDescription(
+			new ClassDescription( $category )
+		);
+
+		$expected = UtilityFactory::getInstance()->newStringBuilder()
+			->addString( '{' )->addNewLine()
+			->addString( "?sc1 rdfs:subClassOf* $categoryName ." )->addNewLine()
+			->addString( '?result rdf:type ?sc1 . }' )->addNewLine()
+			->getString();
+
+		$this->assertEquals(
+			$expected,
+			$compoundConditionBuilder->convertConditionToString( $condition )
+		);
+	}
+
 	public function categoryProvider() {
 
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
