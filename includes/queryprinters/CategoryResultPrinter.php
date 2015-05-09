@@ -111,16 +111,15 @@ class CategoryResultPrinter extends ResultPrinter {
 
 				foreach ( $row as $field ) {
 					$first_value = true;
+					$fieldValues = array();
 
 					$columnIndex = $this->getFirstLetterForCategory( $res, $field->getResultSubject() );
 
 					while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
+
 						if ( !$first_col && !$found_values ) { // first values after first column
-							$result .= ' (';
+							$result .= '(';
 							$found_values = true;
-						} elseif ( $found_values || !$first_value ) {
-							// any value after '(' or non-first values on first column
-							$result .= ', ';
 						}
 
 						if ( $first_value ) { // first value in any column, print header
@@ -131,14 +130,18 @@ class CategoryResultPrinter extends ResultPrinter {
 							}
 						}
 
-						$result .= $text; // actual output value
+						$fieldValues[] = $text;
 					}
 
 					$first_col = false;
+
+					// Always sort the column value list in the same order
+					natsort( $fieldValues );
+					$result .= implode( ( $this->mDelim ? $this->mDelim : ',' ) . ' ', $fieldValues ) . ' ';
 				}
 
 				if ( $found_values ) {
-					$result .= ')';
+					$result = trim( $result ) . ')';
 				}
 
 				$contentsByIndex[$columnIndex][] = $result;
@@ -230,23 +233,16 @@ class CategoryResultPrinter extends ResultPrinter {
 				$fieldName = $fieldName . $i;
 			}
 
-			$first_value = true;
-			$fieldValue = '';
-
+			$fieldValues = array();
 			$columnIndex = $this->getFirstLetterForCategory( $res, $field->getResultSubject() );
 
 			while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
-
-				if ( $first_value ) {
-					$first_value = false;
-				} else {
-					$fieldValue .= $this->mDelim . ' ';
-				}
-
-				$fieldValue .= $text;
+				$fieldValues[] = $text;
 			}
 
-			$templateRenderer->addField( $fieldName, $fieldValue );
+			natsort( $fieldValues );
+
+			$templateRenderer->addField( $fieldName, implode( $this->mDelim . ' ', $fieldValues ) );
 			$first_col = false;
 		}
 	}
