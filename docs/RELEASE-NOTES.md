@@ -1,6 +1,6 @@
-# Semantic MediaWiki 2.2 RC1
+# Semantic MediaWiki 2.2
 
-This is not a stable release yet.
+Released on May 9th, 2015.
 
 ## New features
 
@@ -21,7 +21,7 @@ This is not a stable release yet.
 
 * #958 Replaced defunct SMWRegsitry wiki registration on Special:SMWAdmin with a link to WikiApiary
 * #976 Reduced the number of pages on which SMW JavaScript and CSS is loaded
-* #994, 995 Made small performance improvements
+* #994, #995 Made small performance improvements
 
 ## Bug fixes
 
