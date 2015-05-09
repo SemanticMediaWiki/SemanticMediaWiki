@@ -91,10 +91,13 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 		foreach( $categories as $category ) {
 
 			$categoryExpElement = $this->exporter->getResourceElementForWikiPage( $category );
-			$categoryName = TurtleSerializer::getTurtleNameForExpElement( $categoryExpElement );
+			$categoryExpName = TurtleSerializer::getTurtleNameForExpElement( $categoryExpElement );
 
 			$namespaces[$categoryExpElement->getNamespaceId()] = $categoryExpElement->getNamespace();
-			$newcondition = "{ ?$joinVariable " . $instExpElement->getQName() . " $categoryName . }\n";
+
+			$classHierarchyPattern = $this->tryToAddClassHierarchyPattern( $category, $categoryExpName );
+			$newcondition   = $classHierarchyPattern === '' ? "{ " : "{\n" . $classHierarchyPattern;
+			$newcondition  .= "?$joinVariable " . $instExpElement->getQName() . " $categoryExpName . }\n";
 
 			if ( $condition === '' ) {
 				$condition = $newcondition;
@@ -104,6 +107,25 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 		}
 
 		return array( $condition, $namespaces );
+	}
+
+	private function tryToAddClassHierarchyPattern( $category, &$categoryExpName ) {
+
+		if ( !$this->compoundConditionBuilder->canUseQFeature( SMW_SPARQL_QF_SUBC ) ) {
+			return '';
+		}
+
+		if ( $this->compoundConditionBuilder->getHierarchyFinder() === null || !$this->compoundConditionBuilder->getHierarchyFinder()->hasSubcategoryFor( $category ) ) {
+			return '';
+		}
+
+		$subClassExpElement = $this->exporter->getSpecialPropertyResource( '_SUBC' );
+
+		$classHierarchyByVariable = "?" . $this->compoundConditionBuilder->getNextVariable( 'sc' );
+		$condition = "$classHierarchyByVariable " . $subClassExpElement->getQName() . "*" . " $categoryExpName .\n";
+		$categoryExpName = "$classHierarchyByVariable";
+
+		return $condition;
 	}
 
 }

@@ -54,7 +54,7 @@ class HierarchyFinderTest extends \PHPUnit_Framework_TestCase {
 		$cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
-				$this->equalTo( 'Foo' ),
+				$this->equalTo( '_SUBP#Foo' ),
 				$this->equalTo( false ) );
 
 		$instance = new HierarchyFinder( $store, $cache );

@@ -5,6 +5,7 @@ namespace SMW\SPARQLStore;
 use Onoi\Cache\Cache;
 use SMW\Store;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMWRequestOptions as RequestOptions;
 
 /**
@@ -49,22 +50,39 @@ class HierarchyFinder {
 	 * @return  boolean
 	 */
 	public function hasSubpropertyFor( DIProperty $property ) {
+		return $this->hasMatchFor( '_SUBP', $property->getKey(), $property->getDiWikiPage() );
+	}
 
-		if ( $this->cache->contains( $property->getKey() ) ) {
-			return $this->cache->fetch( $property->getKey() );
+	/**
+	 * @since 2.3
+	 *
+	 * @param DIWikiPage $category
+	 *
+	 * @return  boolean
+	 */
+	public function hasSubcategoryFor( DIWikiPage $category ) {
+		return $this->hasMatchFor( '_SUBC', $category->getDBKey(), $category );
+	}
+
+	private function hasMatchFor( $id, $key, DIWikiPage $subject ) {
+
+		$key = $id . '#' . $key;
+
+		if ( $this->cache->contains( $key ) ) {
+			return $this->cache->fetch( $key );
 		}
 
 		$requestOptions = new RequestOptions();
 		$requestOptions->limit = 1;
 
 		$result = $this->store->getPropertySubjects(
-			new DIProperty( '_SUBP' ),
-			$property->getDiWikiPage(),
+			new DIProperty( $id ),
+			$subject,
 			$requestOptions
 		);
 
 		$this->cache->save(
-			$property->getKey(),
+			$key,
 			$result !== array()
 		);
 
