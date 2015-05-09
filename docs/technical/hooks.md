@@ -2,71 +2,36 @@ This document contains details about event handlers (also known as [Hooks][hooks
 
 Implementing a hook should be made in consideration of the expected performance impact for the front-end (additional DB read/write transactions etc.) and/or the back-end (prolonged job backlog etc.) process.
 
-<table>
-	<tr>
-		<th>Name</th>
-		<th width="70%">Description</th>
-		<th>Since</th>
-	</tr>
-	<tr>
-		<td>`SMW::Factbox::BeforeContentGeneration`</td>
-		<td>to replace or amend text elements shown in a Factbox. See also `$smwgFactboxUseCache` settings.<sup>Use of `smwShowFactbox` was deprecated with 1.9</sup></td>
-		<td>1.9</td>
-	</tr>
-	<tr>
-		<td>`SMW::Job::updatePropertyJobs`</td>
-		<td>to add additional update jobs for a property and related subjects.<sup>Use of `smwUpdatePropertySubjects` was deprecated with 1.9</sup></td>
-		<td>1.9</td>
-	</tr>
-	<tr>
-		<td>`SMW::DataType::initTypes`</td>
-		<td>to add additional DataType support.<sup>Use of `smwInitDatatypes` was deprecated with 1.9</sup></td>
-		<td>1.9</td>
-	</tr>
-	<tr>
-		<td>`SMW::Property::initProperties`</td>
-		<td>to add additional predefined properties.<sup>Use of `smwInitProperties` was deprecated with 2.1</sup></td>
-		<td>2.1</td>
-	</tr>
-	<tr>
-		<td>`SMW::Store::BeforeQueryResultLookupComplete`</td>
-		<td>to return a `QueryResult` object before the standard selection process is executed with the power to suppress the standard selection process completely by returning `FALSE`.</td>
-		<td>2.1</sup></td>
-	</tr>
-	<tr>
-		<td>`SMW::Store::AfterQueryResultLookupComplete`</td>
-		<td>to manipulate a `QueryResult` after the selection process.</td>
-		<td>2.1</sup></td>
-	</tr>
-	<tr>
-		<td>`SMW::SQLStore::updatePropertyTableDefinitions`</td>
-		<td>to add additional table definitions during initialization.</td>
-		<td>1.9</sup></td>
-	</tr>
-	<tr>
-		<td>`SMW::SQLStore::BeforeDeleteSubjectComplete`</td>
-		<td>called before deletion of a subject is completed</td>
-		<td>2.1</sup></td>
-	</tr>
-	<tr>
-		<td>`SMW::SQLStore::AfterDeleteSubjectComplete`</td>
-		<td>called after deletion of a subject is completed.</td>
-		<td>2.1</sup></td>
-	</tr>
-	<tr>
-		<td>`SMW::SQLStore::BeforeChangeTitleComplete`</td>
-		<td>called before change to a subject is completed.</td>
-		<td>2.1</sup></td>
-	</tr>
-</table>
+## List of available hooks
 
-For implementation details, see examples provided by `SemanticMediaWikiProvidedHookInterfaceIntegrationTest`.
+### 1.9
+
+- `SMW::Factbox::BeforeContentGeneration` to replace or amend text elements shown in a Factbox. See also `$smwgFactboxUseCache` settings.<sup>Use of `smwShowFactbox` was deprecated with 1.9</sup>
+- `SMW::Job::updatePropertyJobs` to add additional update jobs for a property and related subjects.<sup>Use of `smwUpdatePropertySubjects` was deprecated with 1.9</sup>
+- `SMW::DataType::initTypes` to add additional DataType support.<sup>Use of `smwInitDatatypes` was deprecated with 1.9</sup>
+- `SMW::SQLStore::updatePropertyTableDefinitions` to add additional table definitions during initialization.
+
+### 2.1
+
+- `SMW::Store::BeforeQueryResultLookupComplete` to return a `QueryResult` object before the standard selection process is
+  started and allows to suppress the standard selection process completely by returning `false`.
+- `SMW::Store::AfterQueryResultLookupComplete`  to manipulate a `QueryResult` after the selection process.
+- `SMW::Property::initProperties` to add additional predefined properties.<sup>Use of `smwInitProperties` was deprecated with 2.1</sup>
+- `SMW::SQLStore::BeforeDeleteSubjectComplete` called before deletion of a subject is completed.
+- `SMW::SQLStore::AfterDeleteSubjectComplete` called after deletion of a subject is completed.
+- `SMW::SQLStore::BeforeChangeTitleComplete` called before change to a subject is completed.
+
+### 2.2
+
+- `SMW::Parser::BeforeMagicWordsFinder` allows to extend the magic words list that the `InTextAnnotationParser` should
+  search for the wikitext.
+
+For implementation details and examples, see the [integration test](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/SemanticMediaWikiProvidedHookInterfaceIntegrationTest.php).
 
 ## Other available hooks
 
 Subsequent hooks should be renamed to follow a common naming practice that help distinguish them from other hook providers. In any case this list needs details and examples.
 
-* `\SMW\DataValueFactory`, smwInitDatatypes (SMW::DataValue::initDataTypes)
 * `SMWExportController`, smwAddToRDFExport (SMW::Exporter::AfterRdfExportComplete)
 * `SMWParamFormat`, SMWResultFormat
 * `\SMW\Store`, SMWStore::updateDataBefore (SMW::Store::BeforeDataUpdateComplete)

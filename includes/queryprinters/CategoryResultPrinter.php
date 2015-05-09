@@ -75,7 +75,7 @@ class CategoryResultPrinter extends ResultPrinter {
 				continue;
 			}
 
-			$cur_first_char = $this->getFirstLetterForCategory( $res, $content );
+			$cur_first_char = $this->getFirstLetterForCategory( $res, $content[0] );
 
 			if ( !isset( $contentsByIndex[$cur_first_char] ) ) {
 				$contentsByIndex[$cur_first_char] = array();
@@ -91,6 +91,7 @@ class CategoryResultPrinter extends ResultPrinter {
 				}
 
 				$this->addRowFieldsToTemplate(
+					$res,
 					$row,
 					$first_col,
 					$columnIndex,
@@ -110,18 +111,15 @@ class CategoryResultPrinter extends ResultPrinter {
 
 				foreach ( $row as $field ) {
 					$first_value = true;
+					$fieldValues = array();
 
-					$columnIndex = ByLanguageCollationMapper::getInstance()->findFirstLetterForCategory(
-						$field->getResultSubject()->getSortKey()
-					);
+					$columnIndex = $this->getFirstLetterForCategory( $res, $field->getResultSubject() );
 
 					while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
+
 						if ( !$first_col && !$found_values ) { // first values after first column
-							$result .= ' (';
+							$result .= '(';
 							$found_values = true;
-						} elseif ( $found_values || !$first_value ) {
-							// any value after '(' or non-first values on first column
-							$result .= ', ';
 						}
 
 						if ( $first_value ) { // first value in any column, print header
@@ -132,14 +130,18 @@ class CategoryResultPrinter extends ResultPrinter {
 							}
 						}
 
-						$result .= $text; // actual output value
+						$fieldValues[] = $text;
 					}
 
 					$first_col = false;
+
+					// Always sort the column value list in the same order
+					natsort( $fieldValues );
+					$result .= implode( ( $this->mDelim ? $this->mDelim : ',' ) . ' ', $fieldValues ) . ' ';
 				}
 
 				if ( $found_values ) {
-					$result .= ')';
+					$result = trim( $result ) . ')';
 				}
 
 				$contentsByIndex[$columnIndex][] = $result;
@@ -202,18 +204,18 @@ class CategoryResultPrinter extends ResultPrinter {
 		) );
 	}
 
-	private function getFirstLetterForCategory( SMWQueryResult $res, $content ) {
+	private function getFirstLetterForCategory( SMWQueryResult $res, SMWDataItem $dataItem ) {
 
-		$sortKey = $content[0]->getSortKey();
+		$sortKey = $dataItem->getSortKey();
 
-		if ( $content[0]->getDIType() == SMWDataItem::TYPE_WIKIPAGE ) {
-			$sortKey = $res->getStore()->getWikiPageSortKey( $content[0] );
+		if ( $dataItem->getDIType() == SMWDataItem::TYPE_WIKIPAGE ) {
+			$sortKey = $res->getStore()->getWikiPageSortKey( $dataItem );
 		}
 
 		return ByLanguageCollationMapper::getInstance()->findFirstLetterForCategory( $sortKey );
 	}
 
-	private function addRowFieldsToTemplate( $row, &$first_col, &$columnIndex, $templateRenderer ) {
+	private function addRowFieldsToTemplate( $res, $row, &$first_col, &$columnIndex, $templateRenderer ) {
 
 		// explicitly number parameters for more robust parsing (values may contain "=")
 		$i = 0;
@@ -231,25 +233,16 @@ class CategoryResultPrinter extends ResultPrinter {
 				$fieldName = $fieldName . $i;
 			}
 
-			$first_value = true;
-			$fieldValue = '';
-
-			$columnIndex = ByLanguageCollationMapper::getInstance()->findFirstLetterForCategory(
-				$field->getResultSubject()->getSortKey()
-			);
+			$fieldValues = array();
+			$columnIndex = $this->getFirstLetterForCategory( $res, $field->getResultSubject() );
 
 			while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
-
-				if ( $first_value ) {
-					$first_value = false;
-				} else {
-					$fieldValue .= $this->mDelim . ' ';
-				}
-
-				$fieldValue .= $text;
+				$fieldValues[] = $text;
 			}
 
-			$templateRenderer->addField( $fieldName, $fieldValue );
+			natsort( $fieldValues );
+
+			$templateRenderer->addField( $fieldName, implode( $this->mDelim . ' ', $fieldValues ) );
 			$first_col = false;
 		}
 	}

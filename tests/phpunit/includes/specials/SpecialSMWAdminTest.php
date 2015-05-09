@@ -62,15 +62,6 @@ class SpecialSMWAdminTest extends SpecialPageTestCase {
 	 */
 	public function testExecuteOnIdLookup() {
 
-		$fakeIdTableClass = $this->getMockBuilder( '\stdClass' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'getIdTable' ) )
-			->getMock();
-
-		$fakeIdTableClass->expects( $this->atLeastOnce() )
-			->method( 'getIdTable' )
-			->will( $this->returnValue( 'fake_foo_table' ) );
-
 		$selectRow = new \stdClass;
 		$selectRow->smw_title = 'Queey';
 
@@ -84,7 +75,7 @@ class SpecialSMWAdminTest extends SpecialPageTestCase {
 
 		$database->expects( $this->at( 1 ) )
 			->method( 'selectRow' )
-			->with( $this->equalTo( 'fake_foo_table' ) )
+			->with( $this->equalTo( \SMWSql3SmwIds::tableName ) )
 			->will( $this->returnValue( $selectRow ) );
 
 		$store = $this->getMockBuilder( 'SMWSQLStore3' )
@@ -94,10 +85,6 @@ class SpecialSMWAdminTest extends SpecialPageTestCase {
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
-
-		$store->expects( $this->once() )
-			->method( 'getObjectIds' )
-			->will( $this->returnValue( $fakeIdTableClass ) );
 
 		$request = new FauxRequest( array(
 			'action' => 'idlookup',

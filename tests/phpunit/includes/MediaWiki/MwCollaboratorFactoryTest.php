@@ -243,4 +243,18 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructMediaWikiNsContentReader() {
+
+		$applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new MwCollaboratorFactory( $applicationFactory );
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\MediaWikiNsContentReader',
+			$instance->newMediaWikiNsContentReader()
+		);
+	}
+
 }

@@ -1,0 +1,93 @@
+{
+	"description": "Category output + defaultsort, refs #699 discussion",
+	"properties": [
+		{
+			"name": "Has text",
+			"contents": "[[Has type::Text]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Saaa",
+			"contents": "[[Has text::aaa]] [[Has text::aba]] [[Has text::abb]]"
+		},
+		{
+			"name": "Sbaa",
+			"contents": "[[Has text::baa]] {{DEFAULTSORT:Saba}}"
+		},
+		{
+			"name": "Scba",
+			"contents": "[[Has text::cba]] [[Has text::01]] [[Has text::10]]"
+		},
+		{
+			"name": "Seba",
+			"contents": "[[Has text::eba]]"
+		},
+		{
+			"name": "Seoa",
+			"contents": "[[Has text::eoa]] {{DEFAULTSORT:Saca}}"
+		},
+		{
+			"name": "Soaa",
+			"contents": "[[Has text::oaa]]"
+		},
+		{
+			"name": "one-column-plainlist-output-asc",
+			"contents": "{{#ask:[[Has text::+]]\n |?Has text\n |format=category\n |order=asc\n |link=none\n |headers=plain\n |delim=;\n |limit=10\n |columns=1\n}}"
+		},
+		{
+			"name": "one-column-plainlist-output-desc",
+			"contents": "{{#ask:[[Has text::+]]\n |?Has text\n |format=category\n |order=desc\n |link=none\n |headers=plain\n |limit=10\n |columns=1\n}}"
+		}
+	],
+	"format-testcases": [
+		{
+			"about": "#0",
+			"subject": "one-column-plainlist-output-asc",
+			"expected-output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\">",
+					"<div class=\"smw-column-header\">S</div><ul>",
+					"<li>Saaa (Has text aaa; aba; abb)</li>",
+					"<li>Sbaa (Has text baa)</li>",
+					"<li>Seoa (Has text eoa)</li>",
+					"<li>Scba (Has text 01; 10; cba)</li>",
+					"<li>Seba (Has text eba)</li>",
+					"<li>Soaa (Has text oaa)</li></ul></div>",
+					"<br style=\"clear: both;\" />"
+				]
+			}
+		},
+		{
+			"about": "#1",
+			"subject": "one-column-plainlist-output-desc",
+			"expected-output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\">",
+					"<div class=\"smw-column-header\">S</div><ul>",
+					"<li>Soaa (Has text oaa)</li>",
+					"<li>Seba (Has text eba)</li>",
+					"<li>Scba (Has text 01, 10, cba)</li>",
+					"<li>Seoa (Has text eoa)</li>",
+					"<li>Sbaa (Has text baa)</li>",
+					"<li>Saaa (Has text aaa, aba, abb)</li></ul></div>",
+					"<br style=\"clear: both;\" />"
+				]
+			}
+		}
+
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
