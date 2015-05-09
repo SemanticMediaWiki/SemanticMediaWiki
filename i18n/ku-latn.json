@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"George Animal"
+			"George Animal",
+			"Bikarhêner"
 		]
 	},
 	"smw_finallistconjunct": ", û",
@@ -10,5 +11,6 @@
 	"smw_true_words": "rast, r, erê, e",
 	"smw_false_words": "nerast, n, na, n",
 	"smw_purge": "Nû bike",
+	"browse": "Li wîkîye binêre",
 	"smw-livepreview-loading": "Tê…"
 }

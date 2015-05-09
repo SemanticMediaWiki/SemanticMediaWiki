@@ -87,6 +87,12 @@ $magicWords['cs'] = array(
 	'set' => array( 0, 'nastavit' ),
 );
 
+/** Chuvash (Чӑвашла) */
+$magicWords['cv'] = array(
+	'SMW_NOFACTBOX' => array( 0, '__NOFACTBOX__' ),
+	'SMW_SHOWFACTBOX' => array( 0, '__SHOWFACTBOX__' ),
+);
+
 /** German (Deutsch) */
 $magicWords['de'] = array(
 	'ask' => array( 0, 'frage' ),

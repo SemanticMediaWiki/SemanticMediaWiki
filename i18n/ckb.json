@@ -1,5 +1,10 @@
 {
-	"@metadata": [],
+	"@metadata": {
+		"authors": [
+			"Asoxor"
+		]
+	},
+	"browse": "بگەڕێ بە ویکیدا",
 	"smw_browse_go": "بڕۆ",
 	"smw-livepreview-loading": "باركردن‌..."
 }

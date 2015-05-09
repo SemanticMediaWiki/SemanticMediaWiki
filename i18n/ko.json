@@ -229,8 +229,6 @@
 	"smw_smwadmin_permissionswarn": "SQL 오류로 작업이 실패하면, 위키가 고용한 데이터베이스 사용자(LocalSettings.php를 확인하세요)는 아마도 충분한 권한이 없습니다.\n일시적으로 LocalSettings.php에서 데이터베이스 루트(root)의 로그인을 입력해서, 이 사용자가 테이블을 만들고 삭제할 수 있는 추가적인 권한을 부여하거나, 관리자의 자격 증명을 사용할 수 있는 <code>setupStore.php</code> 유지 관리 스크립트를 사용하세요.",
 	"smw_smwadmin_dbbutton": "표를 초기화하거나 업그레이드",
 	"smw_smwadmin_announce": "내 위키 발표",
-	"smw_smwadmin_announcedocu": "시맨틱 미디어위키는 새 시맨틱 위키 사이트를 발표하는 웹 서비스가 있습니다.\n이 서비스는 시맨틱 미디어위키를 사용하는 공개 사이트의 목록을 유지 관리하는 데 사용되며, 주로 <a href=\"http://semantic-mediawiki.org/wiki/SMW_Project\">시맨틱 미디어위키 프로젝트</a>가 시맨틱 미디어위키의 일반적인 사용법을 파악하는 데 에 도움이 됩니다.\n<a href=\"http://semantic-mediawiki.org/wiki/Registry\">이 서비스에 대한 추가적인 정보</a>에 대해서는 시맨틱 미디어위키 홈페이지를 참고하세요.",
-	"smw_smwadmin_announcebutton": "해당 서비스에 위키 URL을 제출할 다음 버튼을 누르세요.\n서비스는 공개적으로 접근할 수 없는 위키를 등록하지 않으며, 공개적으로 접근할 수 있는 정보만 저장합니다.",
 	"smw_smwadmin_datarefresh": "데이터 복구와 업그레이드",
 	"smw_smwadmin_datarefreshdocu": "위키의 현재 내용에 따라 모든 시맨틱 미디어위키 데이터를 복구할 수 있습니다.\n안쪽 형식이 어떤 소프트웨어 업그레이드로 인해 바뀌었으면 깨진 데이터를 복구하거나 데이터를 새로 고치는 데 유용할 수 있습니다.\n업데이트는 문서 단위로 실행되고 즉시 완료되지 않습니다.\n다음은 업데이트가 진행하고 있으면 보여주고 (이 기능이 사이트 관리자가 비활성화하지 않는 한) 업데이트를 시작하거나 멈출 수 있습니다.",
 	"smw_smwadmin_datarefreshprogress": "<strong>업데이트가 이미 진행 중입니다.</strong>\n사용자가 위키에 접근할 때마다 작은 덩어리의 새로 고침 데이터 진행만 있기 때문에 업데이트 진행이 느린 것은 정상입니다.\n더 빠르게 이 업데이트를 마치려면 <code>runJobs.php</code> 미디어위키 유지 보수 스크립트를 호출할 수 있습니다. (일괄 하나에서 수행하는 업데이트의 수를 제한하려면 <code>--maxjobs 1000</code> 옵션을 사용하세요)\n현재 업데이트의 예상된 진행:",
