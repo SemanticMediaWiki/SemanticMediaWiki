@@ -64,7 +64,7 @@ $specialPageAliases['arc'] = array(
 	'WantedProperties' => array( 'ܕܝܠܝܘ̈ܬܐ_ܣܢܝܩ̈ܬܐ' ),
 );
 
-/** Egyptian Spoken Arabic (مصرى) */
+/** Egyptian Arabic (مصرى) */
 $specialPageAliases['arz'] = array(
 	'Ask' => array( 'سؤال' ),
 	'Browse' => array( 'براوز' ),

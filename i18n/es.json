@@ -180,7 +180,7 @@
 	"smw_ask_printhead": "Datos adicionales que mostrar",
 	"smw_ask_printdesc": "(añade un nombre de propiedad por línea)",
 	"smw_ask_format_as": "Formatear como:",
-	"smw_ask_defaultformat": "por defecto",
+	"smw_ask_defaultformat": "predeterminado",
 	"smw_ask_otheroptions": "Otras opciones",
 	"smw-ask-otheroptions-info": "Esta sección contiene opciones que alteran los formatos de impresión. Las descripciones de dichas opciones pueden verse pasando el ratón sobre ellas.",
 	"smw-ask-otheroptions-collapsed-info": "Por favor, utiliza el icono en forma de signo más para ver todas las opciones disponibles",
