@@ -96,7 +96,7 @@ class SMWTurtleSerializer extends SMWSerializer{
 
 	protected function serializeFooter() {
 		if ( !$this->sparqlmode ) {
-			$this->post_ns_buffer .= "\n# Created by Semantic MediaWiki, http://semantic-mediawiki.org/\n";
+			$this->post_ns_buffer .= "\n# Created by Semantic MediaWiki, https://semantic-mediawiki.org/\n";
 		}
 	}
 
