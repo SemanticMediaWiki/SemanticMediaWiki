@@ -388,6 +388,7 @@ class QueryEngine {
 				} catch ( InvalidPredefinedPropertyException $e ) {
 					$logToTable[$row->t] = "issue creating a {$row->t} dataitem from a database row";
 					$this->store->getLogger()->log( __METHOD__, $e->getMessage() );
+					$dataItem = '';
 				}
 
 				if ( $dataItem instanceof DIWikiPage && !isset( $dataItemCache[$dataItem->getHash()] ) ) {
