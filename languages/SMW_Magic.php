@@ -49,7 +49,7 @@ $magicWords['ar'] = array(
 	'SMW_SHOWFACTBOX' => array( 0, '__عرض_صندوق_الحقيقة__' ),
 );
 
-/** Egyptian Spoken Arabic (مصرى) */
+/** Egyptian Arabic (مصرى) */
 $magicWords['arz'] = array(
 	'ask' => array( 0, 'سؤال' ),
 	'show' => array( 0, 'عرض' ),
