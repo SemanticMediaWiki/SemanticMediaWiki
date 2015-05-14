@@ -2,7 +2,10 @@
 
 namespace SMW;
 
+use ParamProcessor\ProcessingResult;
 use Parser;
+use ParserHooks\HookDefinition;
+use ParserHooks\HookHandler;
 use SMWOutputs;
 
 /**
@@ -13,94 +16,59 @@ use SMWOutputs;
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  */
-class InfoParserFunction extends \ParserHook {
+class InfoParserFunction implements HookHandler {
 
 	/**
-	 * Renders and returns the output.
-	 * @see ParserHook::render
+	 * @param Parser $parser
+	 * @param ProcessingResult $result
 	 *
-	 * @since 1.7
-	 *
-	 * @param array $parameters
-	 *
-	 * @return string
+	 * @return mixed
 	 */
-	public function render( array $parameters ) {
+	public function handle( Parser $parser, ProcessingResult $result ) {
+		$parameters = $result->getParameters();
+
 		/**
 		 * Non-escaping is safe bacause a user's message is passed through parser, which will
 		 * handle unsafe HTM elements.
 		 */
 		$result = smwfEncodeMessages(
-			array( $parameters['message'] ),
-			$parameters['icon'],
+			array( $parameters['message']->getValue() ),
+			$parameters['icon']->getValue(),
 			' <!--br-->',
 			false // No escaping.
 		);
 
-		if ( !is_null( $this->parser->getTitle() ) && $this->parser->getTitle()->isSpecialPage() ) {
+		if ( !is_null( $parser->getTitle() ) && $parser->getTitle()->isSpecialPage() ) {
 			global $wgOut;
 			SMWOutputs::commitToOutputPage( $wgOut );
 		}
 		else {
-			SMWOutputs::commitToParser( $this->parser );
+			SMWOutputs::commitToParser( $parser );
 		}
 
 		return $result;
 	}
 
-	/**
-	 * No LSB in pre-5.3 PHP *sigh*.
-	 * This is to be refactored as soon as php >=5.3 becomes acceptable.
-	 */
-	public static function staticInit( Parser &$parser ) {
-		$instance = new self;
-		return $instance->init( $parser );
-	}
-
-	/**
-	 * Gets the name of the parser hook.
-	 * @see ParserHook::getName
-	 *
-	 * @since 1.7
-	 *
-	 * @return string
-	 */
-	protected function getName() {
-		return 'info';
-	}
-
-	/**
-	 * Returns the list of default parameters.
-	 * @see ParserHook::getDefaultParameters
-	 *
-	 * @since 1.6
-	 *
-	 * @return array
-	 */
-	protected function getDefaultParameters( $type ) {
-		return array( 'message', 'icon' );
-	}
-
-	/**
-	 * Returns an array containing the parameter info.
-	 * @see ParserHook::getParameterInfo
-	 *
-	 * @since 1.7
-	 *
-	 * @return array
-	 */
-	protected function getParameterInfo( $type ) {
-		return array(
+	public static function getHookDefinition() {
+		return new HookDefinition(
+			'info',
 			array(
-				'name' => 'message',
-				'message' => 'smw-info-par-message',
+				array(
+					'name' => 'message',
+					'message' => 'smw-info-par-message',
+				),
+				array(
+					'name' => 'icon',
+					'message' => 'smw-info-par-icon',
+					'default' => 'info',
+					'values' => array( 'info', 'warning', 'note' ),
+				),
 			),
 			array(
-				'name' => 'icon',
-				'message' => 'smw-info-par-icon',
-				'default' => 'info',
-				'values' => array( 'info', 'warning', 'note' ),
-			),
+				'message',
+				'icon'
+			)
 		);
 	}
+
 }
