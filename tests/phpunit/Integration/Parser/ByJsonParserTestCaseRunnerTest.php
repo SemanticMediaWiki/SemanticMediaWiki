@@ -57,6 +57,7 @@ class ByJsonParserTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			'smwgPageSpecialProperties',
 			'wgLanguageCode',
 			'wgContLang',
+			'wgLang',
 			'wgCapitalLinks'
 		);
 

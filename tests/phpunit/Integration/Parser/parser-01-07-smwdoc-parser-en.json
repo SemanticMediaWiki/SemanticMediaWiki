@@ -1,0 +1,35 @@
+{
+	"description": "#smwdoc parser output checks",
+	"properties": [],
+	"subjects": [
+		{
+			"name": "smwdoc-table",
+			"contents": "{{#smwdoc: table|parameter=base }}"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0 (should contain more elements, I'm to lazy to check for the rest)",
+			"subject": "smwdoc-table",
+			"expected-output": {
+				"to-contain": [
+					"<table class=\"wikitable sortable\">",
+					"<tr>\n<th>Parameter\n</th>",
+					"<th>Type\n</th>",
+					"<th>Default\n</th>",
+					"<th>Description\n</th></tr>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLanguageCode": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

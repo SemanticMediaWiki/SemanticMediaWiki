@@ -144,6 +144,7 @@ class JsonTestCaseFileHandler {
 		$settings = $this->getFileContentsFor( 'settings' );
 
 		if ( ( $key === 'wgContLang' || $key === 'wgLang' ) && isset( $settings[$key] ) ) {
+			\RequestContext::getMain()->setLanguage( $settings[$key] );
 			return \Language::factory( $settings[$key] );
 		}
 
