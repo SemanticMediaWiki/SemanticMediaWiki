@@ -109,6 +109,22 @@
 					"Foo#14##"
 				]
 			}
+		},
+		{
+			"about": "#5 disjuntive query for two categories",
+			"condition": "[[Category:Foo]] OR [[Category:Bam]]",
+			"printouts" : [ "_INST" ],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 3,
+				"results": [
+					"Page-annotated-with-subcategory#0##",
+					"Page-annotated-with-another-subcategory#0##",
+					"Page-annotated-with-supercategory-subcategory#0##"
+				]
+			}
 		}
 	],
 	"settings": {
@@ -121,6 +137,9 @@
 		"smwgQSubcategoryDepth": 10
 	},
 	"meta": {
+		"skip-on": {
+			"virtuoso": "Virtuoso 6.1 rdfs / subproperty/subcategory hierarchies are not supported"
+		},
 		"version": "0.1",
 		"is-incomplete": false,
 		"debug": false

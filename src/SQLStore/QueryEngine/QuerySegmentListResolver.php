@@ -358,15 +358,19 @@ class QuerySegmentListResolver {
 			__METHOD__
 		);
 
-		$db->query(
-			"INSERT " . "IGNORE" . " INTO $tablename (id) VALUES $values",
-			__METHOD__
-		);
+		// Adding multiple values for the same column in sqlite is not supported
+		foreach ( explode( ',', $values ) as $value ) {
 
-		$db->query(
-			"INSERT " . "IGNORE" . " INTO $tmpnew (id) VALUES $values",
-			__METHOD__
-		);
+			$db->query(
+				"INSERT " . "IGNORE" . " INTO $tablename (id) VALUES $value",
+				__METHOD__
+			);
+
+			$db->query(
+				"INSERT " . "IGNORE" . " INTO $tmpnew (id) VALUES $value",
+				__METHOD__
+			);
+		}
 
 		for ( $i = 0; $i < $depth; $i++ ) {
 			$db->query(
