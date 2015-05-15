@@ -1,0 +1,46 @@
+{
+	"description": "#info parser output checks",
+	"properties": [],
+	"subjects": [
+		{
+			"name": "Info-warning",
+			"contents": "{{#info: an error text | warning }}"
+		},
+		{
+			"name": "Info-note",
+			"contents": "{{#info: an info note | note }}"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0",
+			"subject": "Info-warning",
+			"expected-output": {
+				"to-contain": [
+					"<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Error\">",
+					"<span class=\"smwtticon warning\">",
+					"<div class=\"smwttcontent\">an error text</div>"
+				]
+			}
+		},
+		{
+			"about": "#1",
+			"subject": "Info-note",
+			"expected-output": {
+				"to-contain": [
+					"<span class=\"smw-highlighter\" data-type=\"7\" data-state=\"inline\" data-title=\"Note\">",
+					"<span class=\"smwtticon note\">",
+					"<div class=\"smwttcontent\">an info note</div>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en"
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
