@@ -14,7 +14,7 @@ This is not a release yet.
 
 ## Bug fixes
 
-*
+* #1005 Fixed syntax error in `SQLStore`(`sqlite`) for temporary tables when a disjuntive category/subcategory query is executed
 
 ## Internal changes
 
