@@ -3,7 +3,10 @@
 namespace SMW;
 
 use ParamProcessor\ParamDefinition;
+use ParamProcessor\ProcessingResult;
 use Parser;
+use ParserHooks\HookDefinition;
+use ParserHooks\HookHandler;
 use SMWQueryProcessor;
 
 /**
@@ -14,7 +17,7 @@ use SMWQueryProcessor;
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class DocumentationParserFunction extends \ParserHook {
+class DocumentationParserFunction implements HookHandler {
 
 	/**
 	 * Field to store the value of the language parameter.
@@ -23,101 +26,33 @@ class DocumentationParserFunction extends \ParserHook {
 	 *
 	 * @var string
 	 */
-	protected $language;
+	private $language;
 
 	/**
-	 * No LSB in pre-5.3 PHP *sigh*.
-	 * This is to be refactored as soon as php >=5.3 becomes acceptable.
+	 * @param Parser $parser
+	 * @param ProcessingResult $result
+	 *
+	 * @return mixed
 	 */
-	public static function staticInit( Parser &$parser ) {
-		$instance = new self;
-		return $instance->init( $parser );
-	}
+	public function handle( Parser $parser, ProcessingResult $result ) {
+		$parameters = $result->getParameters();
 
-	/**
-	 * Gets the name of the parser hook.
-	 * @see ParserHook::getName
-	 *
-	 * @since 1.6
-	 *
-	 * @return string
-	 */
-	protected function getName() {
-		return 'smwdoc';
-	}
+		$this->language = $parameters['language']->getValue();
 
-	/**
-	 * Returns an array containing the parameter info.
-	 * @see ParserHook::getParameterInfo
-	 *
-	 * @since 1.6
-	 *
-	 * @param $type
-	 *
-	 * @return array
-	 */
-	protected function getParameterInfo( $type ) {
-		return array(
-			array(
-				'name' => 'format',
-				'message' => 'smw-smwdoc-par-format',
-				'values' => array_keys( $GLOBALS['smwgResultFormats'] ),
-			),
-			array(
-				'name' => 'language',
-				'message' => 'smw-smwdoc-par-language',
-				'default' => $GLOBALS['wgLanguageCode'],
-			),
-			array(
-				'name' => 'parameters',
-				'message' => 'smw-smwdoc-par-parameters',
-				'values' => array( 'all', 'specific', 'base' ),
-				'default' => 'specific',
-			),
-		);
-	}
+		$params = $this->getFormatParameters( $parameters['format']->getValue() );
 
-	/**
-	 * Returns the list of default parameters.
-	 * @see ParserHook::getDefaultParameters
-	 *
-	 * @since 1.6
-	 *
-	 * @param $type
-	 *
-	 * @return array
-	 */
-	protected function getDefaultParameters( $type ) {
-		return array( 'format', 'language', 'parameters' );
-	}
-
-	/**
-	 * Renders and returns the output.
-	 * @see ParserHook::render
-	 *
-	 * @since 1.0
-	 *
-	 * @param array $parameters
-	 *
-	 * @return string
-	 */
-	public function render( array $parameters ) {
-		$this->language = $parameters['language'];
-
-		$params = $this->getFormatParameters( $parameters['format'] );
-
-		if ( $parameters['parameters'] === 'specific' ) {
+		if ( $parameters['parameters']->getValue() === 'specific' ) {
 			foreach ( array_keys( SMWQueryProcessor::getParameters() ) as $name ) {
 				unset( $params[$name] );
 			}
 		}
-		elseif ( $parameters['parameters'] === 'base' ) {
+		elseif ( $parameters['parameters']->getValue() === 'base' ) {
 			foreach ( array_diff_key( $params, SMWQueryProcessor::getParameters() ) as $param ) {
 				unset( $params[$param->getName()] );
 			}
 		}
 
-		return $this->parseWikitext( $this->getParameterTable( $params ) );
+		return $this->getParameterTable( $params );
 	}
 
 	/**
@@ -125,11 +60,11 @@ class DocumentationParserFunction extends \ParserHook {
 	 *
 	 * @since 1.6
 	 *
-	 * @param $paramDefinitions array of IParamDefinition
+	 * @param ParamDefinition[] $paramDefinitions
 	 *
 	 * @return string
 	 */
-	protected function getParameterTable( array $paramDefinitions ) {
+	private function getParameterTable( array $paramDefinitions ) {
 		$tableRows = array();
 		$hasAliases = false;
 
@@ -150,19 +85,19 @@ class DocumentationParserFunction extends \ParserHook {
 
 		if ( count( $tableRows ) > 0 ) {
 			$tableRows = array_merge( array(
-			'!' . $this->msg( 'validator-describe-header-parameter' ) ."\n" .
-			( $hasAliases ? '!' . $this->msg( 'validator-describe-header-aliases' ) ."\n" : '' ) .
-			'!' . $this->msg( 'validator-describe-header-type' ) ."\n" .
-			'!' . $this->msg( 'validator-describe-header-default' ) ."\n" .
-			'!' . $this->msg( 'validator-describe-header-description' )
+				'!' . $this->msg( 'validator-describe-header-parameter' ) ."\n" .
+				( $hasAliases ? '!' . $this->msg( 'validator-describe-header-aliases' ) ."\n" : '' ) .
+				'!' . $this->msg( 'validator-describe-header-type' ) ."\n" .
+				'!' . $this->msg( 'validator-describe-header-default' ) ."\n" .
+				'!' . $this->msg( 'validator-describe-header-description' )
 			), $tableRows );
 
 			$table = implode( "\n|-\n", $tableRows );
 
 			$table =
-					'{| class="wikitable sortable"' . "\n" .
-					$table .
-					"\n|}";
+				'{| class="wikitable sortable"' . "\n" .
+				$table .
+				"\n|}";
 		}
 
 		return $table;
@@ -178,7 +113,7 @@ class DocumentationParserFunction extends \ParserHook {
 	 *
 	 * @return string
 	 */
-	protected function getDescriptionRow( ParamDefinition $parameter, $hasAliases ) {
+	private function getDescriptionRow( ParamDefinition $parameter, $hasAliases ) {
 		if ( $hasAliases ) {
 			$aliases = $parameter->getAliases();
 			$aliases = count( $aliases ) > 0 ? implode( ', ', $aliases ) : '-';
@@ -201,9 +136,9 @@ class DocumentationParserFunction extends \ParserHook {
 		}
 
 		return "| {$parameter->getName()}\n"
-. ( $hasAliases ? '| ' . $aliases . "\n" : '' ) .
-<<<EOT
-| {$type}
+		. ( $hasAliases ? '| ' . $aliases . "\n" : '' ) .
+		<<<EOT
+		| {$type}
 | {$default}
 | {$description}
 EOT;
@@ -214,24 +149,14 @@ EOT;
 	 *
 	 * @return array of IParamDefinition
 	 */
-	protected function getFormatParameters( $format ) {
-		if ( array_key_exists( $format, $GLOBALS['smwgResultFormats'] ) ) {
-			return ParamDefinition::getCleanDefinitions(
-				SMWQueryProcessor::getResultPrinter( $format )->getParamDefinitions( SMWQueryProcessor::getParameters() )
-			);
-		}
-		else {
+	private function getFormatParameters( $format ) {
+		if ( !array_key_exists( $format, $GLOBALS['smwgResultFormats'] ) ) {
 			return array();
 		}
-	}
 
-	/**
-	 * @see ParserHook::getMessage()
-	 *
-	 * @since 1.6.1
-	 */
-	public function getMessage() {
-		return 'smw-smwdoc-description';
+		return ParamDefinition::getCleanDefinitions(
+			SMWQueryProcessor::getResultPrinter( $format )->getParamDefinitions( SMWQueryProcessor::getParameters() )
+		);
 	}
 
 	/**
@@ -244,9 +169,35 @@ EOT;
 	 *
 	 * @return string
 	 */
-	protected function msg( $key ) {
+	private function msg( $key ) {
 		$args = func_get_args();
 		$key = array_shift( $args );
 		return wfMessage( $key )->params( $args )->useDatabase( true )->inLanguage( $this->language )->text();
 	}
+
+	public static function getHookDefinition() {
+		return new HookDefinition(
+			'smwdoc',
+			array(
+				array(
+					'name' => 'format',
+					'message' => 'smw-smwdoc-par-format',
+					'values' => array_keys( $GLOBALS['smwgResultFormats'] ),
+				),
+				array(
+					'name' => 'language',
+					'message' => 'smw-smwdoc-par-language',
+					'default' => $GLOBALS['wgLanguageCode'],
+				),
+				array(
+					'name' => 'parameters',
+					'message' => 'smw-smwdoc-par-parameters',
+					'values' => array( 'all', 'specific', 'base' ),
+					'default' => 'specific',
+				),
+			),
+			array( 'format', 'language', 'parameters' )
+		);
+	}
+
 }

@@ -138,10 +138,10 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParserHooksWithInitialization( $hook, $setup ) {
 
-		// 4 because of having hooks registered without using a callback, after
+		// 2 because of having hooks registered without using a callback, after
 		// all parser hooks being registered using a callback this can be
 		// reduced to 1
-		$this->assertArrayHookEntry( $hook, $setup, 3 );
+		$this->assertArrayHookEntry( $hook, $setup, 2 );
 
 		// Verify that registered closures are executable
 		$result = $this->tryToExecuteHook( $hook, $setup['wgHooks'][$hook][0] );
