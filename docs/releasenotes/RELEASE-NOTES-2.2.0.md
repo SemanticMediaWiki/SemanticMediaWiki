@@ -5,7 +5,7 @@ Released on May 9th, 2015.
 ## New features
 
 * #770 Added the `--no-cache` option to `rebuildData.php` and the `--debug` option to `rebuildData.php` and `rebuildConceptCache.php` (refs #749, #766)
-* #756 Added template support for the `#set` parser
+* #756 Added template support to the `#set` parser function
 * #783 Added support for `wgCategoryCollation` setting in `CategoryResultPrinter` (#699, T40853)
 * #829 Added the `--report-runtime` option to `rebuildConceptCache.php`
 * #886 Extended rules on how an `ImportValue` need to contain a valid type definition
