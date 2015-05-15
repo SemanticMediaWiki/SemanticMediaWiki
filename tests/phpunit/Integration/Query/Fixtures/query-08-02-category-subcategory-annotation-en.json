@@ -117,6 +117,7 @@
 			"parameters" : {
 				"limit" : "10"
 			},
+			"queryresult": {
 				"count": 3,
 				"results": [
 					"Page-annotated-with-subcategory#0##",
@@ -136,6 +137,9 @@
 		"smwgQSubcategoryDepth": 10
 	},
 	"meta": {
+		"skip-on": {
+			"virtuoso": "Virtuoso 6.1 rdfs / subproperty/subcategory hierarchies are not supported"
+		},
 		"version": "0.1",
 		"is-incomplete": false,
 		"debug": false
