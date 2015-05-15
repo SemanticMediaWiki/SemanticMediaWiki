@@ -278,6 +278,8 @@ final class Setup {
 			$docsFunctionHandler = new DocumentationParserFunction();
 			$hookRegistrant->registerFunctionHandler( $docsFunctionDefinition, $docsFunctionHandler );
 			$hookRegistrant->registerHookHandler( $docsFunctionDefinition, $docsFunctionHandler );
+			
+			return true;
 		};
 	}
 
