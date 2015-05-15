@@ -14,10 +14,7 @@
 			"expected-output": {
 				"to-contain": [
 					"<table class=\"wikitable sortable\">",
-					"<tr>\n<th>Parameter\n</th>",
-					"<th>Type\n</th>",
-					"<th>Default\n</th>",
-					"<th>Description\n</th></tr>"
+					"</td></tr></table>"
 				]
 			}
 		}
