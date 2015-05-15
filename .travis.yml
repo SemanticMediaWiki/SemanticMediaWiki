@@ -13,9 +13,9 @@ matrix:
     - env: DB=mysql; MW=1.23.5; VIRTUOSO=6.1
       php: 5.4
     - env: DB=mysql; MW=1.24.1; SESAME=2.7.14
-      php: 5.4
-    - env: DB=sqlite; MW=1.22.12; SITELANG=ja
       php: 5.5
+    - env: DB=sqlite; MW=master@5cc1f1d; SITELANG=ja
+      php: 7
     - env: DB=postgres; MW=1.19.20;
       php: 5.4
     - env: DB=mysql; MW=master@5cc1f1d; PHPUNIT=4.3.*; TYPE=benchmark
