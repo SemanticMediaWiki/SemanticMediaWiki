@@ -97,6 +97,8 @@ class SMWExportController {
 	 * optional output file is writable).
 	 * @param string $outfilename URL of the file that output should be written
 	 * to, or empty string for writting to the standard output.
+	 *
+	 * @return boolean
 	 */
 	protected function prepareSerialization( $outfilename = '' ) {
 		$this->serializer->clear();
@@ -297,6 +299,8 @@ class SMWExportController {
 	 * Check if the given object has already been serialised at sufficient
 	 * recursion depth.
 	 * @param SMWDIWikiPage $st specifying the object to check
+	 *
+	 * @return boolean
 	 */
 	protected function isPageDone( SMWDIWikiPage $di, $recdepth ) {
 		return $this->isHashDone( $di->getHash(), $recdepth );
@@ -725,8 +729,11 @@ class SMWExportController {
 	 * requires the namespace to be identical to the given number; "-1"
 	 * requires the namespace to be different from Category, Property, and
 	 * Type; "false" means "no restriction".
+	 *
 	 * @param $res mixed encoding the restriction as described above
 	 * @param $ns integer the namespace constant to be checked
+	 *
+	 * @return boolean
 	 */
 	static public function fitsNsRestriction( $res, $ns ) {
 		if ( $res === false ) {
