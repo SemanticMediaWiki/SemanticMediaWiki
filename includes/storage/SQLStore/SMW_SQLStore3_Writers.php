@@ -946,7 +946,7 @@ class SMWSQLStore3Writers {
 	 * @return integer the new canonical ID of the subject
 	 */
 	protected function updateRedirects( $subject_t, $subject_ns, $curtarget_t = '', $curtarget_ns = -1 ) {
-		global $smwgQEqualitySupport, $smwgEnableUpdateJobs;
+		global $smwgQEqualitySupport;
 
 		$count = 0; //track count changes for redi property
 		$db = $this->store->getConnection();
