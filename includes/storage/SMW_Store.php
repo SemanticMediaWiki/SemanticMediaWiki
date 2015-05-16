@@ -2,7 +2,6 @@
 
 namespace SMW;
 
-use HTMLFileCache;
 use SMWDataItem;
 use SMWQuery;
 use SMWQueryResult;
