@@ -2,15 +2,9 @@
 
 use SMW\DIConcept;
 use SMW\SQLStore\PropertyTableInfoFetcher;
-use SMW\SQLStore\QueryEngine\ConceptCache;
 use SMW\SQLStore\SQLStoreFactory;
-use SMW\SQLStore\WantedPropertiesCollector;
-use SMW\SQLStore\UnusedPropertiesCollector;
-use SMW\SQLStore\PropertiesCollector;
-use SMW\SQLStore\StatisticsCollector;
 use SMW\DataTypeRegistry;
 use SMW\SQLStore\TableDefinition;
-use SMW\SQLStore\ListLookup\ListLookupCache;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\SemanticData;
