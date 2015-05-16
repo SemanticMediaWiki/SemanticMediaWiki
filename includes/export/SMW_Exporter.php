@@ -7,7 +7,6 @@ use SMW\Exporter\DataItemToElementEncoder;
 use SMW\Exporter\Escaper;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 
 /**
  * SMWExporter is a class for converting internal page-based data (SMWSemanticData) into

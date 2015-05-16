@@ -9,7 +9,6 @@ use SMW\SQLStore\UnusedPropertiesCollector;
 use SMW\SQLStore\PropertiesCollector;
 use SMW\SQLStore\StatisticsCollector;
 use SMW\DataTypeRegistry;
-use SMW\Settings;
 use SMW\SQLStore\TableDefinition;
 use SMW\SQLStore\ListLookup\ListLookupCache;
 use SMW\DIWikiPage;

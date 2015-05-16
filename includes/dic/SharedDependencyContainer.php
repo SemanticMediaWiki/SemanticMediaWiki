@@ -2,7 +2,6 @@
 
 namespace SMW;
 
-use SMW\ApplicationFactory;
 use SMW\MediaWiki\TitleCreator;
 use SMW\MediaWiki\PageCreator;
 
