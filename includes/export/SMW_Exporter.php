@@ -574,6 +574,8 @@ class SMWExporter {
 	 *
 	 * @param string $ontologyuri specifying the URI of the ontology, possibly
 	 * empty
+	 *
+	 * @return SMWExpData
 	 */
 	static public function getOntologyExpData( $ontologyuri ) {
 		$data = new SMWExpData( new SMWExpResource( $ontologyuri ) );
