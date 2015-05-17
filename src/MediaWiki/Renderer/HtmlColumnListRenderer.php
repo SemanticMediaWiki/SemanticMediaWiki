@@ -179,7 +179,9 @@ class HtmlColumnListRenderer {
 				$numRowsInColumn = $this->numRows + 1;
 
 				if ( $key == $previousKey ) {
+					// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength.MaxExceeded
 					$result .= ( $key !== '' ? Html::element( 'div', array( 'class' => 'smw-column-header' ), "$key $listContinuesAbbrev" ) : '' ) . "<{$this->listType} start={$numRowsInColumn}>";
+					// @codingStandardsIgnoreEnd
 				}
 			}
 

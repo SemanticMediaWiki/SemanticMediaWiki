@@ -309,7 +309,7 @@ abstract class SMWSerializer {
 	 * used as such, hence it is enough to check the property. Moreover, we do
 	 * not use OWL Datatypes in SMW, so rdf:type, rdfs:domain, etc. always
 	 * refer to classes.
-	 * 
+	 *
 	 * @param SMWExpNsResource $property
 	 *
 	 * @return boolean
