@@ -335,7 +335,6 @@ class SMWSql3SmwIds {
 		global $smwgQEqualitySupport;
 
 		$db = $this->store->getConnection();
-		$id = false;
 
 		// Integration test "query-04-02-subproperty-dc-import-marc21.json"
 		// showed a deterministic failure (due to a wrong cache id during querying
