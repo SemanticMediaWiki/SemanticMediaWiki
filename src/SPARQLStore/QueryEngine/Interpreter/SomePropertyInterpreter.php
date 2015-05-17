@@ -253,7 +253,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		$subPropExpElement = $this->exporter->getSpecialPropertyResource( '_SUBP', SMW_NS_PROPERTY );
 
 		$propertyByVariable = '?' . $this->compoundConditionBuilder->getNextVariable( 'sp' );
-		$condition->weakConditions[ $propertyName ] = "\n". "$propertyByVariable " . $subPropExpElement->getQName() . "*" . " $propertyName .\n"."";
+		$condition->weakConditions[$propertyName] = "\n". "$propertyByVariable " . $subPropExpElement->getQName() . "*" . " $propertyName .\n"."";
 		$propertyName = $propertyByVariable;
 	}
 
