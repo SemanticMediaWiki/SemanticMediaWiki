@@ -18,7 +18,8 @@
 			"아라",
 			"Wifidel",
 			"Macofe",
-			"Felipe95a"
+			"Felipe95a",
+			"Ryo567"
 		]
 	},
 	"smw-desc": "Haciendo tu wiki más accesible - para máquinas ''y'' humanos ([https://semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
@@ -75,6 +76,7 @@
 	"smw-paramdesc-csv-sep": "El separador a usar",
 	"smw-paramdesc-dsv-separator": "El separador a usar",
 	"smw-paramdesc-dsv-filename": "El nombre para el archivo DSV",
+	"smw-paramdesc-filename": "Nombre del archivo de salida",
 	"smw-smwdoc-description": "Muestra una tabla de todos los parámetros que se pueden usar para un formato de resultados especificado junto a los valores por defecto y las descripciones.",
 	"smw-smwdoc-par-format": "El formato de resultados en el que mostrar la documentación de un parámetro.",
 	"smw-smwdoc-par-parameters": "Los parámetros que mostrar. \"specific\" para los añadidos por el formato, \"base\" para los disponibles en todos los formatos, y \"all\" para ambos.",

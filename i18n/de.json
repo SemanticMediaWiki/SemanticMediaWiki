@@ -179,7 +179,7 @@
 	"smw-statistics-property-page": "{{PLURAL:$1|Attribut|Attribute}} (auf einer Seite beschrieben)",
 	"smw-statistics-property-type": "{{PLURAL:$1|Attribut|Attribute}} (einem Datentyp zugewiesen)",
 	"smw-statistics-query-inline-legacy": "{{PLURAL:$1|Abfrage|Abfragen}}",
-	"smw-statistics-query-inline": "[[Property:Has query|{{PLURAL:$1|Abfrage|Abfragen}}]]",
+	"smw-statistics-query-inline": "[[Attribut:Hat Abfrage|{{PLURAL:$1|Abfrage|Abfragen}}]]",
 	"smw-statistics-query-size": "Abfragegröße",
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Konzept|Konzepte}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Konzept|Konzepte}}]]",
@@ -250,7 +250,7 @@
 	"smw_smwadmin_permissionswarn": "Sofern diese Aktion mit einem SQL-Fehler abbricht, könnte es sein, dass der Datenbankbenutzer, mit dem das Wiki auf die Datenbank zugreift (siehe die Datei „LocalSettings.php“), über keine ausreichenden Rechte verfügt.\nUm das Problem zu beheben, ist es notwendig, entweder dem Benutzer zusätzliche Rechte zur Erstellung und Löschung von Datenbanktabellen einzuräumen, den Datenbankadministrator zeitweilig in die Datei „LocalSettings.php“ einzutragen, oder aber das Wartungsskript „setupStore.php“ zu nutzen, das von einem Servernutzer mit Administrationsberechtigung ausgeführt werden kann.",
 	"smw_smwadmin_dbbutton": "Tabellen initialisieren oder aktualisieren",
 	"smw_smwadmin_announce": "Wiki bekannt geben",
-	"smw_smwadmin_announce_text": "Falls dein Wiki öffentlich ist, kannst du es auf <a href=\"https://wikiapiary.com\">WikiApiary</a>, dem Wiki-Tracking-Wiki, registrieren.",
+	"smw_smwadmin_announce_text": "Sofern dein Wiki ein öffentlich zugängliches ist, kannst du es auf <a href=\"https://wikiapiary.com\">WikiApiary</a>, dem Wiki zum Tracken von Wikis, registrieren.",
 	"smw_smwadmin_datarefresh": "Datenreparatur oder -aktualisierung",
 	"smw_smwadmin_datarefreshdocu": "Es ist möglich alle Datenbanken von Semantic MediaWiki auf Basis des aktuellen Inhalts des Wikis wiederherzustellen.\nDies kann hilfreich sein, um eine fehlerhafte Datenbank zu erneuern oder um Daten zu aktualisieren, sofern bspw. aufgrund einer Softwareaktualisierung die Datenbankstruktur geändert wurde.\nDie Datenaktualisierung wird für jede Seite ausgeführt und daher einige Zeit in Anspruch nehmen.\nNachfolgend wird angezeigt, ob eine momentan Aktualisierung läuft bzw. ermöglicht es eine Aktualisierung zu starten oder zu stoppen (sofern diese Funktion nicht vom Websiteadministrator deaktiviert wurde).",
 	"smw_smwadmin_datarefreshprogress": "<strong>Eine Aktualisierung wird bereits durchgeführt.</strong>\nEine Aktualisierung geht normalerweise nur langsam voran, da die Daten lediglich in kleinen Schritten erneuert werden, und zwar jedes Mal, wenn ein Benutzer auf das Wiki zugreift.\nUm diese Aktualisierung schneller zu Ende zu führen, kann man das MediaWiki-Wartungsskript <code>runJobs.php</code> einsetzen. Mit dem Parameter <code>--maxjobs 1000</code> beschränkt man dabei die Anzahl der Aktualisierungsschritte, die in einem Durchgang durchgeführt werden, um Probleme bei der Nutzung des hierfür erforderlichen Arbeitsspeichers zu vermeiden.\nGeschätzter Fortschritt der laufenden Aktualisierung:",
@@ -334,7 +334,7 @@
 	"smw-pa-property-predefined_sobj": "„$1“ ist ein softwareseitig fest definiertes Attribut, das ausschließlich semantische Annotationen (Zuweisungen von Attributwerten zu Attributen) speichert und sich somit ähnlich einer Wikiseite verhält, dessen Inhalt für den Benutzer nicht direkt einsehbar ist.",
 	"smw-pa-property-predefined_errp": "„$1“ ist ein softwareseitig fest definiertes Attribut, das fehlerhafte Attributwerte speichert. Fehlerhafte Attributwerte entsprechen entweder nicht dem [https://semantic-mediawiki.org/wiki/Help:Datentyp Datentyp] des Attributs oder sind nicht als [https://semantic-mediawiki.org/wiki/Help:Spezialattribut_Erlaubt_Wert zulässiger Wert] für das Attribut definiert worden.",
 	"smw-pa-property-predefined_pval": "[https://semantic-mediawiki.org/wiki/Help:Spezialattribut_Erlaubt_Wert „$1“] ist ein softwareseitig fest definiertes Attribut, mit dem für ein Attribut zulässige Attributwerte definiert werden können.",
-	"smw-datavalue-property-restricted-use": "Das Attribut „$1“ wurde für eine beschränkte Verwendung markiert.",
-	"smw-datavalue-restricted-use": "Dieser Datenwert wurde für eine beschränkte Verwendung markiert. $1",
-	"smw-query-condition-circular": "Eine mögliche zirkuläre Bedingung wurde in „$1“ entdeckt."
+	"smw-datavalue-property-restricted-use": "Das Attribut „$1“ kann nur eingeschränkt genutzt werden.",
+	"smw-datavalue-restricted-use": "Dieser Datenwert („$1“) kann nur eingeschränkt genutzt werden.",
+	"smw-query-condition-circular": "Eine möglicher Zirkelbezug wurde in Vorlage „$1“ entdeckt."
 }

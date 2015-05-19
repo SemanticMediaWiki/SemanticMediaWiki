@@ -1,3 +1,9 @@
 {
+	"@metadata": {
+		"authors": [
+			"Kwisha"
+		]
+	},
+	"smw-ui-tooltip-title-legend": "Simulizi",
 	"smw-livepreview-loading": "Inapakizwa..."
 }
