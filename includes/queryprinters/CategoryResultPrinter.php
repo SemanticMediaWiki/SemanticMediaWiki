@@ -79,6 +79,7 @@ class CategoryResultPrinter extends ResultPrinter {
 
 			if ( !isset( $contentsByIndex[$cur_first_char] ) ) {
 				$contentsByIndex[$cur_first_char] = array();
+				$lastColumnIndex = $cur_first_char;
 			}
 
 			if ( $this->mTemplate !== '' ) { // build template code
@@ -162,7 +163,7 @@ class CategoryResultPrinter extends ResultPrinter {
 
 		// Make label for finding further results
 		if ( $this->linkFurtherResults( $res ) ) {
-			$contentsByIndex[$columnIndex][] = $this->getLink( $res, $outputMode )->getText( SMW_OUTPUT_WIKI, $this->mLinker );
+			$contentsByIndex[$lastColumnIndex][] = $this->getFurtherResultsLink( $res, $outputMode )->getText( SMW_OUTPUT_WIKI, $this->mLinker );
 		}
 
 		$htmlColumnListRenderer->setNumberOfColumns( $this->mNumColumns );
