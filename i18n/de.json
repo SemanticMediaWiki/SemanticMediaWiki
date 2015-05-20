@@ -179,7 +179,7 @@
 	"smw-statistics-property-page": "{{PLURAL:$1|Attribut|Attribute}} (auf einer Seite beschrieben)",
 	"smw-statistics-property-type": "{{PLURAL:$1|Attribut|Attribute}} (einem Datentyp zugewiesen)",
 	"smw-statistics-query-inline-legacy": "{{PLURAL:$1|Abfrage|Abfragen}}",
-	"smw-statistics-query-inline": "[[Attribut:Hat Abfrage|{{PLURAL:$1|Abfrage|Abfragen}}]]",
+	"smw-statistics-query-inline": "[[Property:Has query|{{PLURAL:$1|Abfrage|Abfragen}}]]",
 	"smw-statistics-query-size": "Abfragegröße",
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Konzept|Konzepte}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Konzept|Konzepte}}]]",
@@ -336,5 +336,5 @@
 	"smw-pa-property-predefined_pval": "[https://semantic-mediawiki.org/wiki/Help:Spezialattribut_Erlaubt_Wert „$1“] ist ein softwareseitig fest definiertes Attribut, mit dem für ein Attribut zulässige Attributwerte definiert werden können.",
 	"smw-datavalue-property-restricted-use": "Das Attribut „$1“ kann nur eingeschränkt genutzt werden.",
 	"smw-datavalue-restricted-use": "Dieser Datenwert („$1“) kann nur eingeschränkt genutzt werden.",
-	"smw-query-condition-circular": "Eine möglicher Zirkelbezug wurde in Vorlage „$1“ entdeckt."
+	"smw-query-condition-circular": "Ein möglicher Zirkelbezug wurde in Vorlage „$1“ entdeckt."
 }
