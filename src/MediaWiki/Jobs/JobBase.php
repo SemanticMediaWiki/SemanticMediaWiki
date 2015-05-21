@@ -104,6 +104,11 @@ abstract class JobBase extends Job {
 	 * @return boolean
 	 */
 	public function hasParameter( $key ) {
+
+		if ( !is_array( $this->params ) ) {
+			return false;
+		}
+
 		return isset( $this->params[$key] ) || array_key_exists( $key, $this->params );
 	}
 
