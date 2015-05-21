@@ -104,14 +104,12 @@ abstract class JobBase extends Job {
 	 * @return boolean
 	 */
 	 
-	 /**
-	  * see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1033
-	  */
-	 if ( !is_array( $this->params ) ) {
-	 	return false;
-	 }
-	 	
 	public function hasParameter( $key ) {
+		
+		if ( !is_array( $this->params ) ) {
+			return false;
+		}
+		
 		return isset( $this->params[$key] ) || array_key_exists( $key, $this->params );
 	}
 
