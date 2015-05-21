@@ -307,9 +307,9 @@ class SMWSql3SmwIds {
 	public function getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, &$sortkey, $canonical, $fetchHashes = false ) {
 		$id = $this->getPredefinedData( $title, $namespace, $iw, $subobjectName, $sortkey );
 		if ( $id != 0 ) {
-			return $id;
+			return (int)$id;
 		} else {
-			return $this->getDatabaseIdAndSort( $title, $namespace, $iw, $subobjectName, $sortkey, $canonical, $fetchHashes );
+			return (int)$this->getDatabaseIdAndSort( $title, $namespace, $iw, $subobjectName, $sortkey, $canonical, $fetchHashes );
 		}
 	}
 
@@ -485,9 +485,9 @@ class SMWSql3SmwIds {
 	public function makeSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true, $sortkey = '', $fetchHashes = false ) {
 		$id = $this->getPredefinedData( $title, $namespace, $iw, $subobjectName, $sortkey );
 		if ( $id != 0 ) {
-			return $id;
+			return (int)$id;
 		} else {
-			return $this->makeDatabaseId( $title, $namespace, $iw, $subobjectName, $canonical, $sortkey, $fetchHashes );
+			return (int)$this->makeDatabaseId( $title, $namespace, $iw, $subobjectName, $canonical, $sortkey, $fetchHashes );
 		}
 	}
 
@@ -533,7 +533,7 @@ class SMWSql3SmwIds {
 				__METHOD__
 			);
 
-			$id = $db->insertId();
+			$id = (int)$db->insertId();
 
 			// Properties also need to be in the property statistics table
 			if( $namespace === SMW_NS_PROPERTY ) {
@@ -645,9 +645,9 @@ class SMWSql3SmwIds {
 	 */
 	public function makeSMWPropertyID( SMWDIProperty $property ) {
 		if ( array_key_exists( $property->getKey(), self::$special_ids ) ) {
-			return self::$special_ids[$property->getKey()];
+			return (int)self::$special_ids[$property->getKey()];
 		} else {
-			return $this->makeDatabaseId(
+			return (int)$this->makeDatabaseId(
 				$property->getKey(),
 				SMW_NS_PROPERTY,
 				$this->getPropertyInterwiki( $property ),
@@ -853,7 +853,7 @@ class SMWSql3SmwIds {
 		if ( $namespace == SMW_NS_PROPERTY && $interwiki === '' && $subobject === '' ) {
 			if ( array_key_exists( $title, $this->prop_ids ) ) {
 				$this->prophit_debug++;
-				return $this->prop_ids[$title];
+				return (int)$this->prop_ids[$title];
 			} else {
 				$this->propmiss_debug++;
 				return false;
@@ -862,7 +862,7 @@ class SMWSql3SmwIds {
 			$hashKey = HashBuilder::createHashIdFromSegments( $title, $namespace, $interwiki, $subobject );
 			if ( array_key_exists( $hashKey, $this->regular_ids ) ) {
 				$this->reghit_debug++;
-				return $this->regular_ids[$hashKey];
+				return (int)$this->regular_ids[$hashKey];
 			} else {
 				$this->regmiss_debug++;
 				return false;
