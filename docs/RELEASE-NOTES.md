@@ -15,6 +15,7 @@ This is not a release yet.
 ## Bug fixes
 
 * #1005 Fixed syntax error in `SQLStore`(`sqlite`) for temporary tables when a disjuntive category/subcategory query is executed
+* #1033 Fixed assumption that always an array is sent to `JobBase` for booleans
 
 ## Internal changes
 
