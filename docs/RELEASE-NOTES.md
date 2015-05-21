@@ -14,9 +14,10 @@ This is not a release yet.
 
 ## Bug fixes
 
+* #682 Fixed id mismatch in `SQLStore`
 * #1005 Fixed syntax error in `SQLStore`(`sqlite`) for temporary tables when a disjuntive category/subcategory query is executed
-* #1033 Fixed assumption that always an array is sent to `JobBase` for booleans
+* #1033 Fixed PHP notice in `JobBase` that was based on an assumption that parameters are always an array
 
 ## Internal changes
 
-*
+* #1018 Added `PropertyTableRowDiffer` to isolate code responsible for computing data diffs (relates to #682)
