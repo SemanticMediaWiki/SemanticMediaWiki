@@ -122,11 +122,6 @@ class UpdateJob extends JobBase {
 		// TODO
 		// Rebuild the factbox
 
-
-		// Set a different updateIndentifier to ensure that the updateJob
-		// will force a comparison of old/new data during the store update
-		$parserData->getSemanticData()->setUpdateIdentifier( 'update-job' );
-
 		$parserData->disableBackgroundUpdateJobs();
 		$parserData->updateStore();
 

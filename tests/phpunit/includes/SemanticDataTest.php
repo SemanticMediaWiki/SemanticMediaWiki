@@ -20,8 +20,7 @@ use Title;
 /**
  * @covers \SMW\SemanticData
  *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -403,22 +402,45 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testUpdateIdentifier() {
+	public function testSetLastModified() {
 
 		$instance = new SemanticData(
-			DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) )
+			new DIWikiPage( 'Foo', NS_MAIN )
+		);
+
+		$instance->setLastModified( 1001 );
+
+		$this->assertEquals(
+			1001,
+			$instance->getLastModified()
+		);
+	}
+
+	public function testGetLastModifiedForEmptyModificationDate() {
+
+		$instance = new SemanticData(
+			new DIWikiPage( 'Foo', NS_MAIN )
+		);
+
+		$this->assertNull(
+			$instance->getLastModified()
+		);
+	}
+
+	public function testGetLastModifiedFromModificationDate() {
+
+		$instance = new SemanticData(
+			new DIWikiPage( 'Foo', NS_MAIN )
+		);
+
+		$instance->addPropertyObjectValue(
+			new DIProperty( '_MDAT' ),
+			DITime::newFromTimestamp( 1272508903 )
 		);
 
 		$this->assertEquals(
-			0,
-			$instance->getUpdateIdentifier()
-		);
-
-		$instance->setUpdateIdentifier( 'Foo' );
-
-		$this->assertEquals(
-			'Foo',
-			$instance->getUpdateIdentifier()
+			1272508903,
+			$instance->getLastModified()
 		);
 	}
 
