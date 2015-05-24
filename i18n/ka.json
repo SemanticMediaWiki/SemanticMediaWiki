@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"David1010",
-			"Malafaya"
+			"Malafaya",
+			"Otogi"
 		]
 	},
 	"smw_finallistconjunct": ", და",
@@ -72,6 +73,9 @@
 	"smw-paramdesc-category-delim": "გამყოფი",
 	"prefs-smw": "სემანტიკური მედიავიკი",
 	"prefs-ask-options": "სემანტიკური ძიების პარამეტრები",
+	"smw-prefs-intro-text": "პარამეტრები ქვემოთ წარმოდგენილია [https://semantic-mediawiki.org/ სემანტიკურ მედიავიკისთან] (ან მასთან დაკავშირებულ გაფართოებასთან), იმისათვის, რომ ჩაირთოს ცალკეული პარამეტრები ამორჩეული ფუნქციებით. დამატებითი ინფორმაციის მისაღებად, გთხოვთ, შეიხედეთ [https://semantic-mediawiki.org/wiki/Help:User_preferences დახმარების სექციაში].",
+	"smw-prefs-ask-options-tooltip-display": "გამოაქვს პარამეტრი ტექსტი ეკრანის მინიშნების სახით",
+	"smw-prefs-ask-options-collapsed-default": "პარამეტრების პანელის ჩართვა ჩაკეცილად, ნაგულისხმევად",
 	"smw-ui-tooltip-title-property": "თვისება",
 	"smw-ui-tooltip-title-quantity": "რაოდენობა",
 	"smw-ui-tooltip-title-info": "ინფორმაცია",
