@@ -137,7 +137,7 @@ class SemanticData {
 	/**
 	 * @var integer|null
 	 */
-	private $updateIdentifier = null;
+	private $lastModified = null;
 
 	/**
 	 * Constructor.
@@ -165,7 +165,7 @@ class SemanticData {
 	 * @return array
 	 */
 	public function __sleep() {
-		return array( 'mSubject' );
+		return array( 'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mHasVisibleProps', 'mHasVisibleSpecs', 'lastModified' );
 	}
 
 	/**
@@ -492,11 +492,12 @@ class SemanticData {
 	 * This is the case when the subject has neither property values nor
 	 * data for subobjects.
 	 *
-	 * since 1.8
+	 * @since 1.8
+	 *
 	 * @return boolean
 	 */
 	public function isEmpty() {
-		return empty( $this->mProperties ) && empty( $this->subSemanticData );
+		return $this->getProperties() === array() && $this->getSubSemanticData() === array();
 	}
 
 	/**
@@ -678,30 +679,37 @@ class SemanticData {
 	}
 
 	/**
-	 * Can be used as additive component for a hash to identify a edit from
-	 * other activities. The default identifier refers to the latests
-	 * revision id.
+	 * Returns the last modified timestamp the data were stored to the Store or
+	 * have been fetched from cache.
 	 *
-	 * @since  2.1
+	 * @since  2.3
 	 *
-	 * @return string|integer
+	 * @return integer|null
 	 */
-	public function getUpdateIdentifier() {
+	public function getLastModified() {
 
-		if ( $this->updateIdentifier === null ) {
-			$this->updateIdentifier = $this->getSubject()->getTitle()->getLatestRevID();
+		if ( $this->lastModified !== null ) {
+			return $this->lastModified;
 		}
 
-		return $this->updateIdentifier;
+		$lastModified = $this->getPropertyValues( new DIProperty( '_MDAT' ) );
+
+		if ( $lastModified === array() ) {
+			return null;
+		}
+
+		$lastModified = end( $lastModified );
+
+		return $this->lastModified = $lastModified->getMwTimestamp();
 	}
 
 	/**
-	 * @since  2.1
+	 * @since  2.3
 	 *
-	 * @param integer|string $updateIdentifier
+	 * @param string|null $lastModified
 	 */
-	public function setUpdateIdentifier( $updateIdentifier ) {
-		$this->updateIdentifier = $updateIdentifier;
+	public function setLastModified( $lastModified ) {
+		$this->lastModified = $lastModified;
 	}
 
 }
