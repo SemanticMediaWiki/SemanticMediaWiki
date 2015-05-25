@@ -389,8 +389,15 @@ class SMWSQLStore3 extends SMWStore {
 		return $this->getSetupHandler()->drop( $verbose );
 	}
 
-	public function refreshData( &$index, $count, $namespaces = false, $usejobs = true ) {
-		return $this->getSetupHandler()->refreshData( $index, $count, $namespaces, $usejobs );
+	public function refreshData( &$id, $count, $namespaces = false, $usejobs = true ) {
+
+		$byIdDataRebuildDispatcher = $this->factory->newByIdDataRebuildDispatcher();
+
+		$byIdDataRebuildDispatcher->setIterationLimit( $count );
+		$byIdDataRebuildDispatcher->setNamespacesTo( $namespaces );
+		$byIdDataRebuildDispatcher->setUpdateJobToUseJobQueueScheduler( $usejobs );
+
+		return $byIdDataRebuildDispatcher->dispatchRebuildFor( $id );
 	}
 
 

@@ -226,6 +226,15 @@ class SQLStoreFactory {
 		return $cachedListLookup;
 	}
 
+	/**
+	 * @since 2.3
+	 *
+	 * @return ByIdDataRebuildDispatcher
+	 */
+	public function newByIdDataRebuildDispatcher() {
+		return new ByIdDataRebuildDispatcher( $this->store );
+	}
+
 	private function newTemporaryIdTableCreator() {
 		return new TemporaryIdTableCreator( $GLOBALS['wgDBtype'] );
 	}
