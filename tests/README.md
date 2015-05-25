@@ -80,13 +80,13 @@ The section `properties` and `subjects` contain object entities that are planned
 
 The test result assertion is done in a very simplified way but expressive enough for users to understand on what is being tested. For example, verifying that a result printer does output a certain string, one has to the define an expected output in terms of:
 
-<pre>
+```
 "expected-output": {
 	"to-contain": [
 		"<table class=\"sortable wikitable smwtable\">"
 	]
 }
-</pre>
+```
 
 It can happen that an output is mixed with message dependent content (which when changing the site/content language will make the test script fail) and therefore it is recommended to fix the settings the test is intended for to pass with something like:
 
