@@ -22,3 +22,4 @@ This is not a release yet.
 ## Internal changes
 
 * #1018 Added `PropertyTableRowDiffer` to isolate code responsible for computing data diffs (relates to #682)
+* #1039 Added `SemanticData::getLastModified`
