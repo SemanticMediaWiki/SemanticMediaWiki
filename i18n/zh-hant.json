@@ -100,7 +100,7 @@
 	"smw_manytypes": "此屬性定義了一種以上類型。",
 	"smw_emptystring": "不接受空字元串。",
 	"smw_notinenum": " \"$1\" 不在此屬性允許值清單 ($2) 中。",
-	"smw_noboolean": " \"$1\" 不是布林 (是非) 值",
+	"smw_noboolean": "\"$1\" 不是布林 (是非) 值",
 	"smw_true_words": "true,t,yes,y,是,真,對",
 	"smw_false_words": "false,f,no,n,否,假,錯",
 	"smw_nofloat": " \"$1\" 不是一個數字。",
@@ -270,5 +270,5 @@
 	"smw-sp-admin-settings-button": "產生設定清單",
 	"smw-livepreview-loading": "讀取中...",
 	"smw-sp-searchbyproperty-resultlist-header": "結果清單",
-	"smw-editpage-annotation-disabled": "由於命名空間限制，此頁面在語義文內註釋中不會啟用。有關如何啟用命名空間的詳細資訊在[https://semantic-mediawiki.org/wiki/Help:Configuration 組態]說明頁面中闡述。"
+	"smw-editpage-annotation-disabled": "由於命名空間限制，此頁面在語義文內註釋中不會啟用。有關如何啟用命名空間的詳細資料在[https://semantic-mediawiki.org/wiki/Help:Configuration 組態]說明頁面中闡述。"
 }

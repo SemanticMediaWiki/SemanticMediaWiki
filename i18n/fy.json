@@ -5,9 +5,15 @@
 		]
 	},
 	"smw_printername_category": "Kategory",
+	"properties": "Eigenskippen",
+	"smw-ask-delete": "[Fuortsmite]",
+	"smw_sbv_property": "Eigenskip:",
 	"smw_sbv_value": "Wearde:",
+	"browse": "Wiki blêdzje",
+	"smw_pp_type": "Eigenskip",
 	"smw_result_prev": "Foarige",
 	"smw_result_next": "Folgjende",
+	"smw-ui-tooltip-title-property": "Eigenskip",
 	"smw-ui-tooltip-title-warning": "Flater",
 	"smw-ui-tooltip-title-legend": "Leginda",
 	"smw-livepreview-loading": "Ynlade..."
