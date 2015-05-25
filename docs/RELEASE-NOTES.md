@@ -17,6 +17,7 @@ This is not a release yet.
 * #682 Fixed id mismatch in `SQLStore`
 * #1005 Fixed syntax error in `SQLStore`(`sqlite`) for temporary tables when a disjuntive category/subcategory query is executed
 * #1033 Fixed PHP notice in `JobBase` that was based on an assumption that parameters are always an array
+* #1038 Fixed Fatal error: Call to undefined method `SMWDIError::getString`
 
 ## Internal changes
 
