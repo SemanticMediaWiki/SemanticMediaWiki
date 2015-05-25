@@ -9,11 +9,11 @@ If you want to run some manual tests (either as scripted or exploratory test pro
 
 # Automated testing (PHPUnit)
 
-For the automated approach, Semantic MediaWiki relies on [PHPUnit][phpunit] as scripted testing methodology. Scripted tests are used to verify that an expected behaviour occurs for specified requirements whether a result can be accepted or has to be rejected for the codified boundaries.
+For the automated approach, Semantic MediaWiki relies on [PHPUnit][phpunit] as scripted testing methodology. Scripted tests are used to verify that an expected behaviour occurs for codified requirements on whether a result can be accepted or has to be rejected for the given conditions.
 
-- Unit test in most cases refers to a test that tests an expected result for a unit, module, or class
-- Integration test normally combines multiple components into a single process to verify that an expected result is produced
-- System test (and its individual modules) is treated as "black-box" in order to observe behaviour as a whole rather than its units
+- Unit test refers to a script that verifies results for a unit, module, or class against an expected outcome in an isolated environment
+- Integration test (functional test) normally combines multiple components into a single process to verify results in a production like environment (DB access, sample data etc.)
+- System test (and its individual modules) is treated as "black-box" to observe behaviour as a whole rather than its units
 
 ## Running tests
 
@@ -26,18 +26,14 @@ Information about PHPUnit in connection with MediaWiki can be found at [smw.org]
 
 Writing meaningful tests isn't easy nor is it complicated but it requires some diligence on how to setup a test and its environment. One simple rule is to avoid to use of hidden expectations or inheritance as remedy for the "less code is good code" aesthetics. Allow the code to be readable and if possible follow the [arrange, act, assert][aaa] pattern and yet again __"Avoid doing magic"__.
 
+For a short introduction on "How to write a test for Semantic MediaWiki", have a look at the [video](https://www.youtube.com/watch?v=v6JRfk5ZmsI).
+
 ### Test cases
 
 The use of `MediaWikiTestCase` is discouraged as its binds tests and the test environment to MediaWiki. Generally it is best to use `PHPUnit_Framework_TestCase` and in case where a MW database connection is required `MwDBaseUnitTestCase` should be used instead.
 
 * `QueryPrinterTestCase` base class for all query and result printers
 * `SpecialPageTestCase` derives from `SemanticMediaWikiTestCase`
-
-### Test fixtures
-
-When writing tests, it is suggested to use available [immutable fixtures][phpunit-fixtures] as baseline to create repeatable object instances during a test. Available fixtures can be found in `SMW\Tests\Utils\Fixtures\*`.
-
-Another possibility is to use MediaWiki's XML format to import fixtures (in form of content pages), for more details see `SMW\Tests\Integration\MediaWiki\Import\*`.
 
 ## Integration tests
 
@@ -61,7 +57,8 @@ Each `TestCaseRunner` contains a different interpretation of the `json` script t
 - `ByJsonParserTestCaseRunnerTest` to check for  parser and store specific data
 
 The section `properties` and `subjects` contain object entities that are planned to be used during the test which are specified by a name and a content (generally the page content in wikitext).
-```json
+
+<pre>
 "properties": [
 	{
 		"name": "Has description",
@@ -79,19 +76,21 @@ The section `properties` and `subjects` contain object entities that are planned
 		"contents": "[[Has description::Bar]]"
 	}
 ]
-```
+</pre>
 
 The test result assertion is done in a very simplified way but expressive enough for users to understand on what is being tested. For example, verifying that a result printer does output a certain string, one has to the define an expected output in terms of:
 
-```json
+<pre>
 "expected-output": {
 	"to-contain": [
 		"<table class=\"sortable wikitable smwtable\">"
 	]
 }
-```
+</pre>
+
 It can happen that an output is mixed with message dependent content (which when changing the site/content language will make the test script fail) and therefore it is recommended to fix the settings the test is intended for to pass with something like:
-```json
+
+<pre>
 "settings": {
 	"wgContLang": "en",
 	"wgLang": "en",
@@ -100,7 +99,7 @@ It can happen that an output is mixed with message dependent content (which when
 		"SMW_NS_PROPERTY": true
 	}
 }
-```
+</pre>
 
 For other assertion options it is best to look at existing `json` test files (e.g [rdf-001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/Rdf/rdf-001.json) or [parser-001-restricted-property-use.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/Parser/parser-001-restricted-property-use.json)).
 
