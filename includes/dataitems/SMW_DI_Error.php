@@ -37,6 +37,10 @@ class SMWDIError extends SMWDataItem {
 		return 'error';
 	}
 
+	public function getString() {
+		return $this->getSerialization();
+	}
+
 	public function getSerialization() {
 		return serialize( $this->m_errors );
 	}
