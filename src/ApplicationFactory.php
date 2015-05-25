@@ -45,6 +45,15 @@ class ApplicationFactory {
 	}
 
 	/**
+	 * This method returns the global instance of the application factory.
+	 *
+	 * Reliance on global state is needed at entry points into SMW such as
+	 * hook handlers, special pages and jobs, since there we tend to not
+	 * have control over the object lifecycle. Pragmatically we might also
+	 * want to use this when refactoring legacy code that already has the
+	 * global state dependency. For new code very special justification is
+	 * required to rely on global state.
+	 *
 	 * @since 2.0
 	 *
 	 * @return self
