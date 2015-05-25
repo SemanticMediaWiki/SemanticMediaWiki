@@ -165,7 +165,7 @@ class SemanticData {
 	 * @return array
 	 */
 	public function __sleep() {
-		return array( 'mSubject' );
+		return array( 'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mHasVisibleProps', 'mHasVisibleSpecs', 'lastModified' );
 	}
 
 	/**
@@ -492,11 +492,12 @@ class SemanticData {
 	 * This is the case when the subject has neither property values nor
 	 * data for subobjects.
 	 *
-	 * since 1.8
+	 * @since 1.8
+	 *
 	 * @return boolean
 	 */
 	public function isEmpty() {
-		return empty( $this->mProperties ) && empty( $this->subSemanticData );
+		return $this->getProperties() === array() && $this->getSubSemanticData() === array();
 	}
 
 	/**
