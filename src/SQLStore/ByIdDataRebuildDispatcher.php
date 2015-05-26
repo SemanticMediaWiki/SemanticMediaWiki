@@ -107,14 +107,14 @@ class ByIdDataRebuildDispatcher {
 
 		$db = $this->store->getConnection( 'mw.db' );
 
-		$maxByPageId = $db->selectField(
+		$maxByPageId = (int)$db->selectField(
 			'page',
 			'MAX(page_id)',
 			'',
 			__METHOD__
 		);
 
-		$maxBySmwId = $db->selectField(
+		$maxBySmwId = (int)$db->selectField(
 			\SMWSql3SmwIds::tableName,
 			'MAX(smw_id)',
 			'',
@@ -132,7 +132,7 @@ class ByIdDataRebuildDispatcher {
 	 *
 	 * @return integer
 	 */
-	public function getProgress() {
+	public function getEstimatedProgress() {
 		return $this->progress;
 	}
 
@@ -273,9 +273,9 @@ class ByIdDataRebuildDispatcher {
 		$db = $this->store->getConnection( 'mw.db' );
 
 		// nothing found, check if there will be more pages later on
-		if ( $emptyrange ) {
+		if ( $emptyrange && $nextpos > \SMWSql3SmwIds::PPBORDERID ) {
 
-			$nextByPageId = $db->selectField(
+			$nextByPageId = (int)$db->selectField(
 				'page',
 				'page_id',
 				"page_id >= $nextpos",
@@ -283,7 +283,7 @@ class ByIdDataRebuildDispatcher {
 				array( 'ORDER BY' => "page_id ASC" )
 			);
 
-			$nextBySmwId = $db->selectField(
+			$nextBySmwId = (int)$db->selectField(
 				\SMWSql3SmwIds::tableName,
 				'smw_id',
 				"smw_id >= $nextpos",
@@ -291,7 +291,8 @@ class ByIdDataRebuildDispatcher {
 				array( 'ORDER BY' => "smw_id ASC" )
 			);
 
-			$nextpos = $nextBySmwId != 0 && $nextBySmwId < $nextByPageId ? $nextBySmwId : $nextByPageId;
+			// Next position is determined by the pool with the maxId
+			$nextpos = $nextBySmwId != 0 && $nextBySmwId > $nextByPageId ? $nextBySmwId : $nextByPageId;
 		}
 
 		$id = $nextpos ? $nextpos : -1;

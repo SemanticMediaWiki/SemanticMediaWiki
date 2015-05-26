@@ -20,6 +20,8 @@ use SMW\SemanticData;
  */
 class ByIdDataRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 
+	private $applicationFactory;
+
 	protected function setUp() {
 		parent::setUp();
 
@@ -52,29 +54,61 @@ class ByIdDataRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testDispatchRebuildForSingleIterationToIndicateNoFurtherProgress() {
+	/**
+	 * @dataProvider idProvider
+	 */
+	public function testDispatchRebuildForSingleIteration( $id, $expected ) {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'select' )
+			->will( $this->returnValue( array() ) );
+
+		$connection->expects( $this->any() )
+			->method( 'selectField' )
+			->will( $this->returnValue( $expected ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( array( 'getPropertyTables' ) )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getConnection' ) )
 			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
 
 		$instance = new ByIdDataRebuildDispatcher( $store );
 		$instance->setIterationLimit( 1 );
 		$instance->setUpdateJobToUseJobQueueScheduler( false );
 
-		$id = 42;
-
 		$instance->dispatchRebuildFor( $id );
 
 		$this->assertSame(
-			-1,
+			$expected,
 			$id
 		);
 
-		$this->assertSame(
+		$this->assertLessThanOrEqual(
 			1,
-			$instance->getProgress()
+			$instance->getEstimatedProgress()
 		);
 	}
 
+	public function idProvider() {
+
+		$provider[] = array(
+			42, // Within the border Id
+			43
+		);
+
+		$provider[] = array(
+			51,
+			-1
+		);
+
+		return $provider;
+	}
 }

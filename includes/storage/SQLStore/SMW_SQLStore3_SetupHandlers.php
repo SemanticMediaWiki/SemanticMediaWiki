@@ -222,14 +222,14 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 		$this->reportProgress( "Setting up internal property indices ...\n", $verbose );
 
 		// Check if we already have this structure
-		$borderiw = $db->selectField( SMWSql3SmwIds::tableName, 'smw_iw', 'smw_id=' . $db->addQuotes( 50 ) );
+		$borderiw = $db->selectField( SMWSql3SmwIds::tableName, 'smw_iw', 'smw_id=' . $db->addQuotes( \SMWSql3SmwIds::PPBORDERID ) );
 
 		if ( $borderiw != SMW_SQL3_SMWBORDERIW ) {
 			$this->reportProgress( "   ... allocating space for internal properties ...\n", $verbose );
-			$this->store->smwIds->moveSMWPageID( 50 ); // make sure position 50 is empty
+			$this->store->smwIds->moveSMWPageID( \SMWSql3SmwIds::PPBORDERID ); // make sure position 50 is empty
 
 			$db->insert( SMWSql3SmwIds::tableName, array(
-					'smw_id' => 50,
+					'smw_id' => \SMWSql3SmwIds::PPBORDERID,
 					'smw_title' => '',
 					'smw_namespace' => 0,
 					'smw_iw' => SMW_SQL3_SMWBORDERIW,
@@ -240,7 +240,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 
 			$this->reportProgress( '   ', $verbose );
 
-			for ( $i = 0; $i < 50; $i++ ) { // make way for built-in ids
+			for ( $i = 0; $i < \SMWSql3SmwIds::PPBORDERID; $i++ ) { // make way for built-in ids
 				$this->store->smwIds->moveSMWPageID( $i );
 				$this->reportProgress( '.', $verbose );
 			}
