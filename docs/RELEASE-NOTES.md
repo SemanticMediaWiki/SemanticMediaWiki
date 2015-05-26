@@ -8,6 +8,7 @@ This is not a release yet.
 * #1003 Added option `SMW_SPARQL_QF_SUBP` to enable subproperty hierarchy support for the `SPARQLStore` (with the same requirement as in #1001)
 * #1012 Added option `SMW_SPARQL_QF_SUBC` to enable subcategory hierarchy support for the `SPARQLStore` (with the same requirement as in #1001)
 * 
+
 ## Enhancements
 
 *
@@ -23,3 +24,4 @@ This is not a release yet.
 
 * #1018 Added `PropertyTableRowDiffer` to isolate code responsible for computing data diffs (relates to #682)
 * #1039 Added `SemanticData::getLastModified`
+* #1041 Added `ByIdDataRebuildDispatcher` to isolate `SMWSQLStore3SetupHandlers::refreshData`
