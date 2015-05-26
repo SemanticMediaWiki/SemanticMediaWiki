@@ -52,6 +52,12 @@ use SMW\ApplicationFactory;
 class SMWSql3SmwIds {
 
 	/**
+	 * Specifies the border limit for pre-defined properties declared
+	 * in SMWSql3SmwIds::special_ids
+	 */
+	const PPBORDERID = 50;
+
+	/**
 	 * Name of the table to store IDs in.
 	 *
 	 * @note This should never change. Existing wikis will have to drop and

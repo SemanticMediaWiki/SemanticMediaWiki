@@ -62,7 +62,7 @@ class RefreshJob extends JobBase {
 		$run  = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ): 1;
 		$rc   = $this->hasParameter( 'rc' ) ? $this->getParameter( 'rc' ) : 1;
 
-		return ( $run - 1 + $prog ) / $rc;
+		return round( ( $run - 1 + $prog ) / $rc, 1 );
 	}
 
 	/**

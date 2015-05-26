@@ -26,6 +26,10 @@ Implementing a hook should be made in consideration of the expected performance 
 - `SMW::Parser::BeforeMagicWordsFinder` allows to extend the magic words list that the `InTextAnnotationParser` should
   search for the wikitext.
 
+### 2.3
+
+- `SMW::SQLStore::BeforeDataRebuildJobInsert` to add update jobs while running the rebuild process.<sup>Use of `smwRefreshDataJobs` was deprecated with 2.3</sup>
+
 For implementation details and examples, see the [integration test](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/SemanticMediaWikiProvidedHookInterfaceIntegrationTest.php).
 
 ## Other available hooks
