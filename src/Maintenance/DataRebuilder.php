@@ -187,7 +187,7 @@ class DataRebuilder {
 				$updatejob = new UpdateJob( $title );
 				$updatejob->run();
 
-				$this->doPrintDotProgressIndicator( $this->verbose );
+				$this->doPrintDotProgressIndicator( $this->verbose, $percentage );
 				$titleCache[$title->getPrefixedDBkey()] = true;
 			}
 		}
@@ -218,7 +218,16 @@ class DataRebuilder {
 			" refresh). Continue this until all pages were refreshed.\n---\n"
 		);
 
-		$this->reportMessage( "Processing all IDs from $this->start to " . ( $this->end ? "$this->end" : 'last ID' ) . " ...\n" );
+		$byIdDataRebuildDispatcher = $this->store->refreshData(
+			$this->start,
+			1
+		);
+
+		$byIdDataRebuildDispatcher->setIterationLimit( 1 );
+		$byIdDataRebuildDispatcher->setUpdateJobToUseJobQueueScheduler( false );
+
+		$total = $this->end && $this->end - $this->start > 0 ? $this->end - $this->start : $byIdDataRebuildDispatcher->getMaxId();
+		$this->reportMessage( "Processing all IDs from $this->start to " . ( $this->end ? "$this->end" : $byIdDataRebuildDispatcher->getMaxId() ) . " ...\n" );
 
 		$id = $this->start;
 
@@ -226,9 +235,10 @@ class DataRebuilder {
 
 			$this->rebuildCount++;
 
-			$this->reportMessage( "($this->rebuildCount) Processing ID " . $id . " ...\n", $this->verbose );
+			$byIdDataRebuildDispatcher->dispatchRebuildFor( $id );
+			$progress = round( ( ( $this->rebuildCount - 1 ) / $total ) * 100 );
 
-			$this->store->refreshData( $id, 1, false, false );
+			$this->reportMessage( "($this->rebuildCount/$total $progress%) Processing ID " . $id . " ...\n", $this->verbose );
 
 			if ( $this->delay !== false ) {
 				usleep( $this->delay );
@@ -238,7 +248,7 @@ class DataRebuilder {
 				$linkCache->clear(); // avoid memory leaks
 			}
 
-			$this->doPrintDotProgressIndicator( $this->verbose );
+			$this->doPrintDotProgressIndicator( $this->verbose, $progress );
 		}
 
 		$this->writeIdToFile( $id );
@@ -370,13 +380,17 @@ class DataRebuilder {
 		}
 	}
 
-	private function doPrintDotProgressIndicator( $verbose ) {
+	private function doPrintDotProgressIndicator( $verbose, $progress ) {
 
 		if ( ( $this->rebuildCount - 1 ) % 60 === 0 ) {
 			$this->reportMessage( "\n", !$verbose );
 		}
 
 		$this->reportMessage( '.', !$verbose );
+
+		if ( $this->rebuildCount % 60 === 0 ) {
+			$this->reportMessage( " $progress%", !$verbose );
+		}
 	}
 
 }

@@ -60,6 +60,18 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testRebuildAllWithoutOptions() {
 
+		$byIdDataRebuildDispatcher = $this->getMockBuilder( '\SMW\SQLStore\ByIdDataRebuildDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$byIdDataRebuildDispatcher->expects( $this->once() )
+			->method( 'dispatchRebuildFor' )
+			->will( $this->returnCallback( array( $this, 'refreshDataOnMockCallback' ) ) );
+
+		$byIdDataRebuildDispatcher->expects( $this->any() )
+			->method( 'getMaxId' )
+			->will( $this->returnValue( 1000 ) );
+
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->setMethods( array( 'refreshData' ) )
@@ -67,7 +79,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'refreshData' )
-			->will( $this->returnCallback( array( $this, 'refreshDataOnMockCallback' ) ) );
+			->will( $this->returnValue( $byIdDataRebuildDispatcher ) );
 
 		$titleCreator = $this->getMockBuilder( '\SMW\MediaWiki\TitleCreator' )
 			->disableOriginalConstructor()
@@ -88,6 +100,18 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testRebuildAllWithFullDelete() {
 
+		$byIdDataRebuildDispatcher = $this->getMockBuilder( '\SMW\SQLStore\ByIdDataRebuildDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$byIdDataRebuildDispatcher->expects( $this->atLeastOnce() )
+			->method( 'dispatchRebuildFor' )
+			->will( $this->returnCallback( array( $this, 'refreshDataOnMockCallback' ) ) );
+
+		$byIdDataRebuildDispatcher->expects( $this->any() )
+			->method( 'getMaxId' )
+			->will( $this->returnValue( 1000 ) );
+
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->setMethods( array(
@@ -97,7 +121,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'refreshData' )
-			->will( $this->returnCallback( array( $this, 'refreshDataOnMockCallback' ) ) );
+			->will( $this->returnValue( $byIdDataRebuildDispatcher ) );
 
 		$store->expects( $this->once() )
 			->method( 'drop' );
@@ -122,14 +146,26 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testRebuildAllWithStopRangeOption() {
 
+		$byIdDataRebuildDispatcher = $this->getMockBuilder( '\SMW\SQLStore\ByIdDataRebuildDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$byIdDataRebuildDispatcher->expects( $this->exactly( 6 ) )
+			->method( 'dispatchRebuildFor' )
+			->will( $this->returnCallback( array( $this, 'refreshDataOnMockCallback' ) ) );
+
+		$byIdDataRebuildDispatcher->expects( $this->any() )
+			->method( 'getMaxId' )
+			->will( $this->returnValue( 1000 ) );
+
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->setMethods( array( 'refreshData' ) )
 			->getMockForAbstractClass();
 
-		$store->expects( $this->exactly( 6 ) )
+		$store->expects( $this->once() )
 			->method( 'refreshData' )
-			->will( $this->returnCallback( array( $this, 'refreshDataOnMockCallback' ) ) );
+			->will( $this->returnValue( $byIdDataRebuildDispatcher ) );
 
 		$titleCreator = $this->getMockBuilder( '\SMW\MediaWiki\TitleCreator' )
 			->disableOriginalConstructor()

@@ -161,7 +161,7 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$index = 1; //pass-by-reference
 
-		$this->getStore()->refreshData( $index, 1, false, true );
+		$this->getStore()->refreshData( $index, 1, false, true )->dispatchRebuildFor( $index );
 		$this->assertJob( 'SMW\UpdateJob' );
 	}
 
