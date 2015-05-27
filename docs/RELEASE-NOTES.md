@@ -11,7 +11,7 @@ This is not a release yet.
 
 ## Enhancements
 
-*
+* #1042 Extended `rebuildData.php` to inform about the estimated % progress
 
 ## Bug fixes
 
