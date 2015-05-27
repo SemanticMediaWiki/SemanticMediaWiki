@@ -79,10 +79,17 @@ class RefreshJob extends JobBase {
 	 * @param $spos start index
 	 */
 	protected function refreshData( $spos ) {
-		Profiler::In();
 
 		$run  = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ) : 1;
-		$prog = ApplicationFactory::getInstance()->getStore()->refreshData( $spos, 20, $this->getNamespace( $run ) );
+
+		$byIdDataRebuildDispatcher = ApplicationFactory::getInstance()->getStore()->refreshData(
+			$spos,
+			20,
+			$this->getNamespace( $run )
+		);
+
+		$byIdDataRebuildDispatcher->dispatchRebuildFor( $spos );
+		$prog = $byIdDataRebuildDispatcher->getEstimatedProgress();
 
 		if ( $spos > 0 ) {
 
@@ -93,7 +100,7 @@ class RefreshJob extends JobBase {
 				'run'  => $run
 			) );
 
-		} elseif ( $this->getParameter( 'rc' ) > $run ) { // do another run from the beginning
+		} elseif ( $this->hasParameter( 'rc' ) && $this->getParameter( 'rc' ) > $run ) { // do another run from the beginning
 
 			$this->createNextJob( array(
 				'spos' => 1,
@@ -104,7 +111,6 @@ class RefreshJob extends JobBase {
 
 		}
 
-		Profiler::Out();
 		return true;
 	}
 
@@ -114,6 +120,11 @@ class RefreshJob extends JobBase {
 	}
 
 	protected function getNamespace( $run ) {
+
+		if ( !$this->hasParameter( 'rc' ) ) {
+			return false;
+		}
+
 		return ( ( $this->getParameter( 'rc' ) > 1 ) && ( $run == 1 ) ) ? array( SMW_NS_PROPERTY, SMW_NS_TYPE ) : false;
 	}
 

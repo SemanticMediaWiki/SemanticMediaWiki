@@ -70,16 +70,23 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 
 		$title = Title::newFromText( __METHOD__ );
 
-		$expectedToRun = $expected['spos'] === null ? $this->never() : $this->once();
+		$expectedToRun = $expected['spos'] === null ? $this->once() : $this->once();
+
+		$byIdDataRebuildDispatcher = $this->getMockBuilder( '\SMW\SQLStore\ByIdDataRebuildDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$byIdDataRebuildDispatcher->expects( $this->any() )
+			->method( 'dispatchRebuildFor' )
+			->will( $this->returnValue( $parameters['spos'] ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
 			->setMethods( array( 'refreshData' ) )
 			->getMockForAbstractClass();
 
 		$store->expects( $expectedToRun )
 			->method( 'refreshData' )
-			->will( $this->returnCallback( array( $this, 'refreshDataCallback' ) ) );
+			->will( $this->returnValue( $byIdDataRebuildDispatcher ) );
 
 		$this->applicationFactory->registerObject( 'Store', $store );
 
@@ -93,14 +100,6 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 			$instance->getProgress(),
 			"Asserts that the getProgress() returns {$expected['progress']}"
 		);
-
-		$this->assertEquals(
-			$expected['spos'],
-			$this->controlRefreshDataIndex,
-			"Asserts that the refreshData() received a spos {$expected['spos']}"
-		);
-
-		unset( $this->controlRefreshDataIndex );
 	}
 
 	/**
@@ -112,7 +111,9 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 
 		// #0 Empty
 		$provider[] = array(
-			array(),
+			array(
+				'spos' => null
+			),
 			array(
 				'progress' => 0,
 				'spos' => null

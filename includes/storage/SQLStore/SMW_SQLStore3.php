@@ -397,7 +397,7 @@ class SMWSQLStore3 extends SMWStore {
 		$byIdDataRebuildDispatcher->setNamespacesTo( $namespaces );
 		$byIdDataRebuildDispatcher->setUpdateJobToUseJobQueueScheduler( $usejobs );
 
-		return $byIdDataRebuildDispatcher->dispatchRebuildFor( $id );
+		return $byIdDataRebuildDispatcher;
 	}
 
 
