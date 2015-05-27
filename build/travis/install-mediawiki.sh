@@ -3,6 +3,24 @@ set -ex
 
 cd ..
 
+## WMF removed release tags from mediawiki github and there has been no
+## indication (https://phabricator.wikimedia.org/T100409) whether this is going
+## to be solved or a permanent state therefore we try to match tags ourselves
+case "$MW" in
+'1.23.5')
+  MW='master@c9bd517b21'
+  ;;
+'1.24.1')
+  MW='master@07680d5579'
+  ;;
+'1.22.12')
+  MW='master@ac80015657'
+  ;;
+'1.19.20')
+  MW='master@1c7800109b'
+  ;;
+esac
+
 ## Use sha (master@5cc1f1d) to download a particular commit to avoid breakages
 ## introduced by MediaWiki core
 if [[ "$MW" == *@* ]]
