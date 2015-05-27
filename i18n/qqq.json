@@ -332,5 +332,15 @@
 	"smw-pa-property-predefined_pval": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property] holding [https://semantic-mediawiki.org/wiki/Help:Special_property_Allows_value allowed values]. Only allowed values may be saved without generating an error.\n\nParameter:\n* $1 - name of predefined property",
 	"smw-datavalue-property-restricted-use": "This is an error/warning message.\n\nParameters:\n\n* $1 holds the property name causing the error/warning.",
 	"smw-datavalue-restricted-use": "This is an error/warning message.\n\nParameters:\n\n* $1 holds the datavalue causing the error/warning.",
-	"smw-query-condition-circular": "This is an error/warning message.\n\nParameters:\n\n* $1 holds the template causing the error/warning."
+	"smw-query-condition-circular": "This is an error/warning message.\n\nParameters:\n\n* $1 holds the template causing the error/warning.",
+	"smw-sp-types-list": "A header",
+	"smw-sp-types-default": "This is an informatory message shown to the user.",
+	"smw-sp-types-help": "This is an informatory message shown to the user.",
+	"smw-sp-types_anu": "This is an informatory message shown to the user.",
+	"smw-sp-types_boo": "This is an informatory message shown to the user.",
+	"smw-sp-types_cod": "This is an informatory message shown to the user.",
+	"smw-sp-types_geo": "This is an informatory message shown to the user.",
+	"smw-sp-types_tel": "This is an informatory message shown to the user.",
+	"smw-sp-types_txt": "This is an informatory message shown to the user.",
+	"smw-sp-types_dat": "This is an informatory message shown to the user."
 }

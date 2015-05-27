@@ -156,7 +156,7 @@
 	"smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|use|uses}})",
 	"smw_purge": "Refresh",
 	"types": "Types",
-	"smw_types_docu": "The following is a list of all data types that can be assigned to properties.",
+	"smw_types_docu": "The following is a [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes list] of all datatypes that can be assigned to properties.",
 	"smw-special-types-no-such-type": "The specified data type does not exist",
 	"semanticstatistics": "Semantic statistics",
 	"smw_semstats_text": "This wiki contains '''$1''' property {{PLURAL:$1|value|values}} for a total of '''$2''' [[Special:Properties|{{PLURAL:$2|property|different properties}}]].\n'''$3''' {{PLURAL:$3|property has|properties have}} an own page, and the intended data type is specified for '''$4''' of those.\nSome of the existing properties might be [[Special:UnusedProperties|unused properties]].\nProperties that still lack a page are found on the [[Special:WantedProperties|list of wanted properties]].",
@@ -326,5 +326,15 @@
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"] is a predefined property that can define a list of permissible values to restrict value assignments for a property.",
 	"smw-datavalue-property-restricted-use": "Property \"$1\" was marked for restricted use.",
 	"smw-datavalue-restricted-use": "This datavalue was marked for restricted use. $1",
-	"smw-query-condition-circular": "A possible circular condition has been detected in \"$1\"."
+	"smw-query-condition-circular": "A possible circular condition has been detected in \"$1\".",
+	"smw-sp-types-list": "List of datatypes",
+	"smw-sp-types-default": "\"$1\" is a built-in datatype.",
+	"smw-sp-types-help": "Further information and examples can be found on the [https://semantic-mediawiki.org/wiki/Help:Type_$1 help page].",
+	"smw-sp-types_anu": "\"$1\" is a variant of the [[Special:Types/URL|URL]] datatype and is mostly used for a ''owl:AnnotationProperty'' export declaration.",
+	"smw-sp-types_boo": "\"$1\" is a primitive datatype to describe a true/false value.",
+	"smw-sp-types_cod": "\"$1\" is a variant of the [[Special:Types/Text|Text]] datatype to be used for technical texts of arbitrary length, such as source code listings.",
+	"smw-sp-types_geo": "\"$1\" is a datatype that describes geographic locations and requires [https://semantic-mediawiki.org/wiki/Semantic_Maps Semantic Maps].",
+	"smw-sp-types_tel": "\"$1\" is a special datatype to describe international telephone numbers according to RFC 3966.",
+	"smw-sp-types_txt": "\"$1\" is a primitive datatype to describe strings of arbitrary length.",
+	"smw-sp-types_dat": "\"$1\" is a datatype to represent points in time in a unified format."
 }

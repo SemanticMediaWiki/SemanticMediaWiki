@@ -123,10 +123,18 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testFindCanonicalLabelById() {
+		$this->assertSame(
+			'Text',
+			$this->dataTypeRegistry->findCanonicalLabelById( '_txt' )
+		);
+	}
+
 	public function testTypeIdAndLabelAsLanguageIndependantInvocation() {
 		$instance = new DataTypeRegistry(
 			array( '_wpg' => 'Page' ),
-			array( 'URI'  => '_uri' )
+			array( 'URI'  => '_uri' ),
+			array()
 		);
 
 		$this->assertEquals(
@@ -146,7 +154,8 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataTypeRegistry(
 			array(),
-			array( 'URI'  => '_uri' )
+			array( 'URI'  => '_uri' ),
+			array()
 		);
 
 		$this->assertEquals(
@@ -175,7 +184,8 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$registry = new DataTypeRegistry(
 			array(),
-			array( $inputLabel => $id )
+			array( $inputLabel => $id ),
+			array()
 		);
 
 		foreach ( $equivalentLabels as $caseVariant ) {
@@ -188,6 +198,7 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$registry = new DataTypeRegistry(
 			array( $id => $inputLabel ),
+			array(),
 			array()
 		);
 

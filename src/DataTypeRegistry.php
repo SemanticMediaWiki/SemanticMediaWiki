@@ -39,6 +39,11 @@ class DataTypeRegistry {
 	private $typeAliases = array();
 
 	/**
+	 * @var string[]
+	 */
+	private $canonicalLabels = array();
+
+	/**
 	 * Array of class names for creating new SMWDataValue, indexed by type
 	 * id.
 	 *
@@ -96,7 +101,8 @@ class DataTypeRegistry {
 
 			self::$instance = new self(
 				$GLOBALS['smwgContLang']->getDatatypeLabels(),
-				$GLOBALS['smwgContLang']->getDatatypeAliases()
+				$GLOBALS['smwgContLang']->getDatatypeAliases(),
+				$GLOBALS['smwgContLang']->getCanonicalDatatypeLabels()
 			);
 
 			self::$instance->initDatatypes();
@@ -120,13 +126,17 @@ class DataTypeRegistry {
 	 * @param array $typeLabels
 	 * @param array $typeAliases
 	 */
-	public function __construct( array $typeLabels, array $typeAliases ) {
+	public function __construct( array $typeLabels, array $typeAliases, array $canonicalLabels ) {
 		foreach ( $typeLabels as $typeId => $typeLabel ) {
 			$this->registerTypeLabel( $typeId, $typeLabel );
 		}
 
 		foreach ( $typeAliases as $typeAlias => $typeId ) {
 			$this->registerDataTypeAlias( $typeId, $typeAlias );
+		}
+
+		foreach ( $canonicalLabels as $label => $id ) {
+			$this->canonicalLabels[$id] = $label;
 		}
 	}
 
@@ -243,6 +253,23 @@ class DataTypeRegistry {
 		// internal type without translation to user space;
 		// might also happen for historic types after an upgrade --
 		// alas, we have no idea what the former label would have been
+		return '';
+	}
+
+	/**
+	 * Returns a label for a typeId that is independent from the user/content
+	 * language
+	 *
+	 * @since 2.3
+	 *
+	 * @return string
+	 */
+	public function findCanonicalLabelById( $id ) {
+
+		if ( isset( $this->canonicalLabels[$id] ) ) {
+			return $this->canonicalLabels[$id];
+		}
+
 		return '';
 	}
 
