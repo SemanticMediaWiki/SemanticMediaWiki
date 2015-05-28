@@ -20,6 +20,7 @@ This is not a release yet.
 * #1005 Fixed syntax error in `SQLStore`(`sqlite`) for temporary tables when a disjuntive category/subcategory query is executed
 * #1033 Fixed PHP notice in `JobBase` that was based on an assumption that parameters are always an array
 * #1038 Fixed Fatal error: Call to undefined method `SMWDIError::getString`
+* #1046 Fixed RuntimeException in `UndeclaredPropertyListLookup` for when a DB prefix is used
 
 ## Internal changes
 
