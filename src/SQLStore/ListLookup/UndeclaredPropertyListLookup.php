@@ -99,20 +99,32 @@ class UndeclaredPropertyListLookup implements ListLookup {
 	private function selectPropertiesFromTable( $propertyTable ) {
 
 		$options = $this->store->getSQLOptions( $this->requestOptions, 'title' );
+		$idTable = $this->store->getObjectIds()->getIdTable();
+
 		$options['ORDER BY'] = 'count DESC';
+		$options['GROUP BY'] = 'smw_title';
+
+		$conditions = array(
+			'smw_id > 50', // FIXME Use \SMWSql3SmwIds::PPBORDERID
+			'page_id IS NULL',
+		);
 
 		$db = $this->store->getConnection( 'mw.db' );
 
-		// TODO: this is not how JOINS should be specified in the select function
 		$res = $db->select(
-			$propertyTable->getName() . ' INNER JOIN ' .
-			$db->tablename( $this->store->getObjectIds()->getIdTable() ) . ' ON p_id=smw_id LEFT JOIN ' .
-			'page' . ' ON (page_namespace=' .
-			$db->addQuotes( SMW_NS_PROPERTY ) . ' AND page_title=smw_title)',
-			'smw_title, COUNT(*) as count',
-			'smw_id > 50 AND page_id IS NULL GROUP BY smw_title',
+			array( $idTable, 'page', $propertyTable->getName() ),
+			array( 'smw_title', 'COUNT(*) as count' ),
+			$conditions,
 			__METHOD__,
-			$options
+			$options,
+			array(
+				$idTable => array(
+					'INNER JOIN', 'p_id=smw_id'
+				),
+				'page' => array(
+					'LEFT JOIN', array( 'page_namespace=' . $db->addQuotes( SMW_NS_PROPERTY ), 'page_title=smw_title'  )
+				)
+			)
 		);
 
 		return $res;
