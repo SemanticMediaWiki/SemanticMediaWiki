@@ -12,6 +12,7 @@ This is not a release yet.
 ## Enhancements
 
 * #1042 Extended `rebuildData.php` to inform about the estimated % progress
+* #1047 Extended context help displayed on `Special:Types` and subsequent type pages
 
 ## Bug fixes
 
