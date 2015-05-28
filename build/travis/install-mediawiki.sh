@@ -3,9 +3,12 @@ set -ex
 
 cd ..
 
-## WMF removed release tags from mediawiki github and there has been no
-## indication (https://phabricator.wikimedia.org/T100409) whether this is going
-## to be solved or a permanent state therefore we try to match tags ourselves
+## MW 1.25+ requires to have Composer run first otherwise the LoggerInterface
+## is missing while running install.php
+runComposerBeforeInstall='NO'
+
+## https://phabricator.wikimedia.org/T100409 was resolved but in case this
+## reappears in future
 case "$MW" in
 '1.23.5')
   MW='master@c9bd517b21'
@@ -18,6 +21,12 @@ case "$MW" in
   ;;
 '1.19.20')
   MW='master@1c7800109b'
+  ;;
+'1.25.1')
+  runComposerBeforeInstall='YES'
+  ;;
+'master')
+  runComposerBeforeInstall='YES'
   ;;
 esac
 
@@ -40,10 +49,9 @@ mv mediawiki-* mw
 
 cd mw
 
-## MW 1.25 requires Psr\Logger
-if [ "$MW" == "master" ]
+if [ "$runComposerBeforeInstall" == "YES" ]
 then
-  composer init && composer install
+  composer install
 fi
 
 if [ "$DB" == "postgres" ]
