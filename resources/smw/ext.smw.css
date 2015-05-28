@@ -409,3 +409,40 @@ label.smw-form-checkbox {
 	float: left;
 	word-wrap: break-word;
 }
+
+/* Thanks to the bootstrap css*/
+.smw-callout {
+	padding: 10px;
+	margin: 20px 0;
+	border: 1px solid #eee;
+	border-left-width: 5px;
+	border-radius: 3px;
+}
+
+.smw-callout-info {
+	border-left-color: #1b809e;
+}
+
+.smw-callout-info .title {
+	color: #1b809e;
+}
+
+.smw-callout-warning {
+	border-left-color: #aa6708;
+}
+
+.smw-callout-warning .title {
+	color: #aa6708;
+}
+
+.smw-callout-error {
+	border-left-color: #ce4844;
+}
+
+.smw-callout .title {
+	margin-top: 0;
+	margin-bottom: 5px;
+	font-size: 16px;
+	font-family: inherit;
+	font-weight: 500;
+}
