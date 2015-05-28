@@ -150,6 +150,10 @@ abstract class SMWLanguage {
 		return $this->m_DatatypeLabels;
 	}
 
+	function getCanonicalDatatypeLabels() {
+		return SMWLanguage::$enDatatypeAliases;
+	}
+
 	/**
 	 * Return an array that maps aliases to internal type ids. All ids used here
 	 * should also have a primary label defined in m_DatatypeLabels.

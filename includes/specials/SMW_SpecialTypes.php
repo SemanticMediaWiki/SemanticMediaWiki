@@ -2,6 +2,7 @@
 
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
+use SMW\ApplicationFactory;
 
 /**
  * This special page for MediaWiki provides information about types. Type information is
@@ -30,6 +31,7 @@ class SMWSpecialTypes extends SpecialPage {
 			$wgOut->setPageTitle( wfMessage( 'types' )->text() );
 			$html = $this->getTypesList();
 		} else {
+			$typeLabel = str_replace( '%', '-', $typeLabel );
 			$typeName = str_replace( '_', ' ', $typeLabel );
 			$wgOut->setPageTitle( $typeName ); // Maybe add a better message for this
 			$html = $this->getTypeProperties( $typeLabel );
@@ -41,19 +43,35 @@ class SMWSpecialTypes extends SpecialPage {
 	}
 
 	protected function getTypesList() {
-		$html = '<p>' . wfMessage( 'smw_types_docu' )->escaped() . "</p><br />\n";
 
 		$typeLabels = DataTypeRegistry::getInstance()->getKnownTypeLabels();
 		asort( $typeLabels, SORT_STRING );
 
-		$html .= "<ul>\n";
+		$mwCollaboratorFactory = ApplicationFactory::getInstance()->newMwCollaboratorFactory();
+		$htmlColumnListRenderer = $mwCollaboratorFactory->newHtmlColumnListRenderer();
+
 		foreach ( $typeLabels as $typeId => $label ) {
 			$typeValue = SMWTypesValue::newFromTypeId( $typeId );
-			$html .= '<li>' . $typeValue->getLongHTMLText( smwfGetLinker() ) . "</li>\n";
+			$startChar = $this->getLanguage()->convert( $this->getLanguage()->firstChar( $typeValue->getWikiValue() ) );
+			$contentsByIndex[] = $typeValue->getLongHTMLText( smwfGetLinker() );
 		}
-		$html .= "</ul>\n";
 
-		return $html;
+
+		$htmlColumnListRenderer->setNumberOfColumns( 2 );
+		$htmlColumnListRenderer->addContentsByNoIndex( $contentsByIndex );
+		$htmlColumnListRenderer->setColumnListClass( 'smw-sp-types-list' );
+
+		$html = \Html::rawElement(
+			'p',
+			array( 'class' => 'smw-sp-types-intro' ),
+			wfMessage( 'smw_types_docu' )->parse()
+		).  \Html::element(
+			'h2',
+			array(),
+			wfMessage( 'smw-sp-types-list' )->escaped()
+		);
+
+		return $html . $htmlColumnListRenderer->getHtml();
 	}
 
 	protected function getTypeProperties( $typeLabel ) {
@@ -79,7 +97,22 @@ class SMWSpecialTypes extends SpecialPage {
 			$diWikiPages = array_reverse( $diWikiPages );
 		}
 
-		$result = '';
+		$escapedTypeLabel = htmlspecialchars( $typeValue->getWikiValue() );
+
+		$canonicalLabel =  DataTypeRegistry::getInstance()->findCanonicalLabelById(
+			$typeValue->getDataItem()->getFragment()
+		);
+
+		$typeKey  = 'smw-sp-types' . strtolower( $typeValue->getDataItem()->getFragment() );
+
+		$messageKey = wfMessage( $typeKey )->exists() ? $typeKey : 'smw-sp-types-default';
+
+		$result = \Html::rawElement(
+			'div',
+			array( 'class' => 'smw-sp-types-intro'. $typeKey ),
+			wfMessage( $messageKey, str_replace( '_', ' ', $escapedTypeLabel ) )->parse() . ' ' .
+			wfMessage( 'smw-sp-types-help', str_replace( ' ', '_', $canonicalLabel ) )->parse()
+		);
 
 		if ( count( $diWikiPages ) > 0 ) {
 			$pageLister = new SMWPageLister( $diWikiPages, null, $smwgTypePagingLimit, $from, $until );
