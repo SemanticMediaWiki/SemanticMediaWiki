@@ -109,7 +109,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 				}
 			} else {
 				$this->queryBuilder->addError(
-					wfMessage( 'smw_concept_cache_miss', $description->getConcept()->getText() )->text()
+					wfMessage( 'smw_concept_cache_miss', $description->getConcept()->getTitle()->getText() )->text()
 				);
 			}
 		} // else: no cache, no description (this may happen); treat like empty concept
