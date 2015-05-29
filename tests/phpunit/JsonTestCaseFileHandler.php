@@ -159,6 +159,11 @@ class JsonTestCaseFileHandler {
 			return $smwgNamespacesWithSemanticLinks;
 		}
 
+		// Needs special attention due to constant usage
+		if ( $key === 'smwgQConceptCaching' && isset( $settings[$key] ) ) {
+			return constant( $settings[$key] );
+		}
+
 		if ( isset( $settings[$key] ) ) {
 			return $settings[$key];
 		}
