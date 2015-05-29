@@ -115,6 +115,10 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			'Failed asserting error count ' . $queryTestCaseInterpreter->isAbout()
 		);
 
+		if ( $queryTestCaseInterpreter->getExpectedErrorCount() > 0 ) {
+			return null;
+		}
+
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
 			$queryTestCaseInterpreter->getExpectedSubjects(),
 			$queryResult,
