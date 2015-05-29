@@ -13,6 +13,7 @@ This is not a release yet.
 
 * #1042 Extended `rebuildData.php` to inform about the estimated % progress
 * #1047 Extended context help displayed on `Special:Types` and subsequent type pages
+* #1049 Added resource targets to allow MobileFrontend to load SMW related modules 
 
 ## Bug fixes
 
