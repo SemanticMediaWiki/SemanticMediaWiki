@@ -227,6 +227,11 @@ class DataRebuilder {
 		$byIdDataRebuildDispatcher->setUpdateJobToUseJobQueueScheduler( false );
 
 		$total = $this->end && $this->end - $this->start > 0 ? $this->end - $this->start : $byIdDataRebuildDispatcher->getMaxId();
+
+		$this->reportMessage(
+			" The progress displayed is an estimation which can change \n" .
+			" during the run as more IDs are successively added (readjusted with *) .\n---\n" );
+
 		$this->reportMessage( "Processing all IDs from $this->start to " . ( $this->end ? "$this->end" : $byIdDataRebuildDispatcher->getMaxId() ) . " ...\n" );
 
 		$id = $this->start;
@@ -234,11 +239,18 @@ class DataRebuilder {
 		while ( ( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 ) ) {
 
 			$this->rebuildCount++;
+			$readjust = false;
+
+			// Try to readjust the total on every 600th iteration
+			if ( $this->rebuildCount % 600 === 0 && !$this->end ) {
+				$readjust = $byIdDataRebuildDispatcher->getMaxId() !== $total;
+				$total = $byIdDataRebuildDispatcher->getMaxId();
+			}
 
 			$byIdDataRebuildDispatcher->dispatchRebuildFor( $id );
-			$progress = round( ( ( $this->rebuildCount - 1 ) / $total ) * 100 );
+			$progress = round( ( ( $this->rebuildCount - 1 ) / $total ) * 100 ) . ( $readjust ? "% (*$total)": '%' );
 
-			$this->reportMessage( "($this->rebuildCount/$total $progress%) Processing ID " . $id . " ...\n", $this->verbose );
+			$this->reportMessage( "($this->rebuildCount/$total $progress) Processing ID " . $id . " ...\n", $this->verbose );
 
 			if ( $this->delay !== false ) {
 				usleep( $this->delay );
@@ -389,7 +401,7 @@ class DataRebuilder {
 		$this->reportMessage( '.', !$verbose );
 
 		if ( $this->rebuildCount % 60 === 0 ) {
-			$this->reportMessage( " $progress%", !$verbose );
+			$this->reportMessage( " $progress", !$verbose );
 		}
 	}
 
