@@ -24,7 +24,8 @@ return array(
 	// SMW core class
 	'ext.smw' => $moduleTemplate + array(
 		'scripts' => 'smw/ext.smw.js',
-		'dependencies' => 'jquery.async',
+		'dependencies' => 'ext.jquery.async',
+		'targets' => array( 'mobile', 'desktop' )
 	),
 
 	// Resource is loaded at the top otherwise the stylesheet will only
@@ -37,7 +38,15 @@ return array(
 		'dependencies' => array(
 			'ext.smw.tooltip.styles'
 		),
-		'position' => 'top'
+		'position' => 'top',
+		'targets' => array( 'mobile', 'desktop' )
+	),
+
+	// Load the module explicitly, otherwise mobile will complain with
+	// "Uncaught Error: Unknown dependency: jquery.async"
+	'ext.jquery.async' => $moduleTemplate + array(
+		'scripts' => 'jquery/jquery.async.js',
+		'targets' => array( 'mobile', 'desktop' )
 	),
 
 	// MW 1.24+ Fix Uncaught Error: Unknown dependency: jquery.json
@@ -110,7 +119,8 @@ return array(
 
 	// Tooltip qtip2 resources
 	'ext.jquery.qtip.styles' => $moduleTemplate + array(
-		'styles' => 'jquery/jquery.qtip.css'
+		'styles' => 'jquery/jquery.qtip.css',
+		'targets' => array( 'mobile', 'desktop' )
 	),
 
 	// Tooltip qtip2 resources
@@ -118,7 +128,8 @@ return array(
 		'scripts' => 'jquery/jquery.qtip.js',
 		'dependencies' => array(
 			'ext.jquery.qtip.styles'
-		)
+		),
+		'targets' => array( 'mobile', 'desktop' )
 	),
 
 	// Tooltip
@@ -126,7 +137,8 @@ return array(
 		'styles' => 'smw/util/ext.smw.util.tooltip.css',
 		'dependencies' => array(
 			'ext.jquery.qtip.styles'
-		)
+		),
+		'targets' => array( 'mobile', 'desktop' )
 	),
 
 	// Tooltip
@@ -145,14 +157,16 @@ return array(
 			'smw-ui-tooltip-title-warning',
 			'smw-ui-tooltip-title-parameter',
 			'smw-ui-tooltip-title-event',
-		)
+		),
+		'targets' => array( 'mobile', 'desktop' )
 	),
 
 	'ext.smw.tooltips' => $moduleTemplate + array(
 		'dependencies' => array(
 			'ext.smw.style',
 			'ext.smw.tooltip'
-		)
+		),
+		'targets' => array( 'mobile', 'desktop' )
 	),
 
 	// Autocomplete resources
