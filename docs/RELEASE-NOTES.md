@@ -22,6 +22,7 @@ This is not a release yet.
 * #1033 Fixed PHP notice in `JobBase` that was based on an assumption that parameters are always an array
 * #1038 Fixed Fatal error: Call to undefined method `SMWDIError::getString`
 * #1046 Fixed RuntimeException in `UndeclaredPropertyListLookup` for when a DB prefix is used
+* #1051 Fixed call to undefined method in `ConceptDescriptionInterpreter`
 
 ## Internal changes
 
