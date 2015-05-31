@@ -123,7 +123,7 @@ class PropertyTableRowDiffer {
 	 * a redirect to a normal page or for undeleted pages.
 	 */
 	private function createNewHashForTable( $tableName, $newData, $hashModifier = '' ) {
-		return md5( serialize( array_values( $newData[ $tableName ] ) ) . $hashModifier );
+		return md5( serialize( array_values( $newData[$tableName] ) ) . $hashModifier );
 	}
 
 	/**
