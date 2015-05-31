@@ -311,9 +311,12 @@
 	"log-name-smw": "Registre de Semantic MediaWiki",
 	"log-description-smw": "Activitats dels [https://www.semantic-mediawiki.org/wiki/Help:Logging tipus d'esdeveniments habilitats] que han estat informats per Semantic MediaWiki i els seus components.",
 	"smw-datavalue-import-unknownns": "L'espai de noms d'importació «$1» és desconegut. Assegureu-vos que els detalls d'importació owl són disponibles mitjançant [[MediaWiki:Smw import $1]]",
+	"smw-datavalue-import-missing-nsuri": "No s'ha pogut trobar un URI de l'espai de noms de «$1» en la [[MediaWiki:Smw import $1|importació de $1]].",
 	"smw-datavalue-import-missing-type": "No s'ha trobat definició de tipus per a «$1» a la [[MediaWiki:Smw import $2|importació de $2]].",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|importació de $1]]",
+	"smw-datavalue-import-invalidvalue": "«$1» no és un format vàlid i s'espera que consisteixi en «espai de noms»:«identificador» (p. ex., «foaf:name»).",
 	"smw-pa-property-predefined_impo": "«$1» és una propietat predefinida que descriu una relació amb un [https://semantic-mediawiki.org/wiki/Help:Import_vocabulary vocabulari importat].",
+	"smw-pa-property-predefined_type": "«$1» és una propietat predefinida que descriu el [[Special:Types|tipus de dades]] d'una propietat.",
 	"smw-datavalue-property-restricted-use": "La propietat «$1» s'ha marcat per a ús restringit.",
 	"smw-datavalue-restricted-use": "El valor de dades s'ha marcat per a ús restringit. $1",
 	"smw-query-condition-circular": "S'ha detectat una possible condició circular a «$1»."
