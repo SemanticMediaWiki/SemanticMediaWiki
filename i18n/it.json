@@ -17,7 +17,8 @@
 			"පසිඳු කාවින්ද",
 			"아라",
 			"FRacco",
-			"Giuseppe Forte"
+			"Giuseppe Forte",
+			"Alexmar983"
 		]
 	},
 	"smw-desc": "Rende la tua wiki più accessibile - per le macchine ''e'' per gli umani ([https://semantic-mediawiki.org/wiki/Help:User_manual documentazione in linea])",
@@ -236,5 +237,10 @@
 	"grouppage-smwadministrator": "{{ns:project}}:Amministratori Semantic MediaWiki",
 	"smw-sp-properties-header-label": "Elenco delle proprietà",
 	"smw-livepreview-loading": "Caricamento in corso...",
-	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"] è una proprietà predefinita che può definire una lista di valori ammissibili per limitare assegnazioni di valori per una proprietà."
+	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"] è una proprietà predefinita che può definire una lista di valori ammissibili per limitare assegnazioni di valori per una proprietà.",
+	"smw-sp-types-list": "Lista di archivi di dati",
+	"smw-sp-types-help": "Ulteriori informazioni ed esempi sono riportati sulla [https://semantic-mediawiki.org/wiki/Help:Type_$1 pagina di aiuto].",
+	"smw-sp-types_anu": "\"$1\" è una variante del tipo di dati [[Speciale:Tipi/URL|URL]] ed è in gran parte utilizzata per una dichiarazione di esportazione. \"owl:AnnotationProperty\".",
+	"smw-sp-types_tel": "\"$1\" è un particolare tipo di dati utilizzato per descrivere i numeri di telefono internazionali secondo la RFC 3966.",
+	"smw-sp-types_dat": "\"$1\" è un tipo di dati impiegato per rappresentare punti nel tempo in un formato unificato."
 }

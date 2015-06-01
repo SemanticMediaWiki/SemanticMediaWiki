@@ -150,7 +150,7 @@
 	"smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|uso|usos}})",
 	"smw_purge": "Refrescar",
 	"types": "Tipos",
-	"smw_types_docu": "O que segue é unha lista de todos os tipos de datos que poden ser asignados ás propiedades.",
+	"smw_types_docu": "O que segue é unha [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes lista]de todos os tipos de datos que poden ser asignados ás propiedades.",
 	"smw-special-types-no-such-type": "O tipo de datos especificado non existe",
 	"semanticstatistics": "Estatísticas semánticas",
 	"smw_semstats_text": "Este wiki contén '''$1''' {{PLURAL:$1|valor|valores}} de propiedade, dun total {{PLURAL:$2|'''dunha'''|de '''$2'''}} [[Special:Properties|{{PLURAL:$2|propiedade|propiedades diferentes}}]].\n'''$3''' {{PLURAL:$3|propiedade ten|propiedades teñen}} unha páxina propia e o tipo de datos desexado está especificado para '''$4''' de elas.\nAlgunhas das propiedades existentes poden [[Special:UnusedProperties|non ser usadas]].\nAs propiedades ás que aínda lles falta unha páxina atópanse na [[Special:WantedProperties|lista de propiedades desexadas]].",
@@ -311,5 +311,13 @@
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"] é unha propiedade predefinida que pode definir unha lista de valores posibles para restrinxir a asignación de valores dunha propiedade.",
 	"smw-datavalue-property-restricted-use": "A propiedade \"$1\" marcouse para uso restrinxido.",
 	"smw-datavalue-restricted-use": "Este valor de datos marcouse para uso restrinxido. $1",
-	"smw-query-condition-circular": "Detectouse unha posible condición circular en \"$1\"."
+	"smw-query-condition-circular": "Detectouse unha posible condición circular en \"$1\".",
+	"smw-sp-types-list": "Lista de tipos de datos",
+	"smw-sp-types-help": "Máis información e exemplos poden atoparse na [https://semantic-mediawiki.org/wiki/Help:Type_$1 páxina de axuda].",
+	"smw-sp-types_boo": "\"$1\" é un tipo de dato antigo para describir un valor certo/falso.",
+	"smw-sp-types_cod": "\"$1\" é unha variante do tipo de dato  [[Special:Types/Text|Texto]] que é usada para textos técnicos de lonxitude variable, como listados de código fonte.",
+	"smw-sp-types_geo": "\"$1\" é un tipo de dato que describe localizacións xeográficas e require [https://semantic-mediawiki.org/wiki/Semantic_Maps Mapas Semánticos].",
+	"smw-sp-types_tel": "\"$1\" é un tipo de datos especial para describir números de teléfono internacionais segundo o RFC 3966.",
+	"smw-sp-types_txt": "\"$1\" é un antigo tipo de datos para describir cadeas de texto de lonxitude variable.",
+	"smw-sp-types_dat": "\"$1\" é un tipo de dato para representar puntos no tempo nun formato unificado."
 }

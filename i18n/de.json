@@ -168,7 +168,7 @@
 	"smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|Vorkommen}})",
 	"smw_purge": "Neu laden",
 	"types": "Datentypen",
-	"smw_types_docu": "Das folgende ist eine [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes Liste] aller Datentypen, die Attributen zugewiesen werden können.",
+	"smw_types_docu": "Dies ist eine [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes Übersicht aller Datentypen], die Attributen zugewiesen werden können.",
 	"smw-special-types-no-such-type": "Der angegebene Datentyp ist nicht vorhanden.",
 	"semanticstatistics": "Statistik zu semantischen Daten",
 	"smw_semstats_text": "Dieses Wiki enthält {{PLURAL:$1|'''1''' Wert|'''$1''' Werte}} für insgesamt '''$2''' [[Special:Properties|{{PLURAL:$2|Attribut|verschiedene Attribute}}]]. '''$3''' {{PLURAL:$3|Attribut wurde|Attribute wurden}} auf einer eigene Seite beschrieben und der gewünschte Datentyp ist für '''$4''' von diesen angegeben worden.\n\nEinige der vorhandenen Attribute könnten [[Special:UnusedProperties|verwaiste Attribute]] sein. Attribute, für die noch eine Seite angelegt werden sollte, sind in der [[Special:WantedProperties|Liste gewünschter Attribute]] aufgeführt.",

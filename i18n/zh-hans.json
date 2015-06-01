@@ -164,7 +164,7 @@
 	"smw_wantedproperty_template": "$1（$2{{PLURAL:$2|次使用}}）",
 	"smw_purge": "刷新",
 	"types": "类型",
-	"smw_types_docu": "以下列出了可被赋予属性的所有数据类型。",
+	"smw_types_docu": "以下是所有可以分配给属性的数据类型[https://semantic-mediawiki.org/wiki/Help:List_of_datatypes 列表]。",
 	"smw-special-types-no-such-type": "指定的数据类型不存在",
 	"semanticstatistics": "语义统计",
 	"smw_semstats_text": "此维基包含 '''$1''' 个属性{{PLURAL:$1|值|值}}，源自 '''$2''' 个[[Special:Properties|{{PLURAL:$2|属性|不同属性}}]]。'''$3''' 个{{PLURAL:$3|属性有|属性有}}自己的页，并且预期的数据类型被指定为 '''$4'''。某些已经存在的属性也许是[[Special:UnusedProperties|无用属性]]。缺乏页的属性可以在[[Special:WantedProperties|需要的属性列表]]中找到。",
@@ -332,5 +332,15 @@
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"]是一个预定义的属性，它可以订阅获得允许以为一个属性限制值注释的值的列表。",
 	"smw-datavalue-property-restricted-use": "属性“$1”被标记为限制使用。",
 	"smw-datavalue-restricted-use": "此数据值被标记限制使用。$1",
-	"smw-query-condition-circular": "在“$1”中检测到可用的循环环境。"
+	"smw-query-condition-circular": "在“$1”中检测到可用的循环环境。",
+	"smw-sp-types-list": "数据类型列表",
+	"smw-sp-types-default": "“$1”是一个内置的数据类型。",
+	"smw-sp-types-help": "更进一步的信息和例子可在[https://semantic-mediawiki.org/wiki/Help:Type_$1 帮助页面]找到。",
+	"smw-sp-types_anu": "“$1”是一个[[Special:Types/URL|URL]]数据类型的变体，并且主要用于“owl:AnnotationProperty”导出申报。",
+	"smw-sp-types_boo": "“$1”是一个描述真/假值的原始数据类型。",
+	"smw-sp-types_cod": "“$1”是一个[[Special:Types/Text|Text]]数据类型的变体，用于任意长度的技术文本，例如源代码表。",
+	"smw-sp-types_geo": "“$1”是一个描述地理位置的数据类型，它需要[https://semantic-mediawiki.org/wiki/Semantic_Maps Semantic Maps]。",
+	"smw-sp-types_tel": "“$1”是一个根据RFC 3966描述国际电话号码的数据类型。",
+	"smw-sp-types_txt": "“$1”是一个描述任意长度字符串的原始数据类型。",
+	"smw-sp-types_dat": "“$1”是一个代表统一格式的时间点的数据类型。"
 }

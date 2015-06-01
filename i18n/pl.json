@@ -266,5 +266,6 @@
 	"smw-sp-searchbyproperty-resultlist-header": "Lista wyników",
 	"smw-sp-searchbyproperty-nonvaluequery": "Lista wartości, które mają przypisaną właściwość „$1”.",
 	"smw-sp-searchbyproperty-valuequery": "Lista stron, które mają właściwość „$1” z wartością „$2”.",
-	"log-name-smw": "Rejestr semantycznej MediaWiki"
+	"log-name-smw": "Rejestr semantycznej MediaWiki",
+	"smw-sp-types-list": "Lista typów danych"
 }
