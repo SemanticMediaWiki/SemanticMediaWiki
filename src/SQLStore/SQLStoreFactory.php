@@ -15,9 +15,12 @@ use SMW\SQLStore\QueryEngine\ConceptQueryResolver;
 use SMW\SQLStore\QueryEngine\QueryEngine;
 use SMW\SQLStore\QueryEngine\EngineOptions;
 use Onoi\Cache\Cache;
+use SMW\EventHandler;
+use Onoi\BlobStore\BlobStore;
 use Doctrine\DBAL\Connection;
 use SMW\SQLStore\ConceptCache;
 use SMW\ApplicationFactory;
+use SMW\CircularReferenceGuard;
 use SMWSQLStore3;
 use SMWRequestOptions as RequestOptions;
 use SMW\DIProperty;
@@ -233,6 +236,54 @@ class SQLStoreFactory {
 	 */
 	public function newByIdDataRebuildDispatcher() {
 		return new ByIdDataRebuildDispatcher( $this->store );
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @return ByBlobStoreIntermediaryValueLookup
+	 */
+	public function newByBlobStoreIntermediaryValueLookup() {
+
+		$circularReferenceGuard = new CircularReferenceGuard( 'vl:store' );
+		$circularReferenceGuard->setMaxRecursionDepth( 2 );
+
+		$cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
+
+		$blobStore = new BlobStore(
+			'smw:vl:store',
+			$cacheFactory->newMediaWikiCompositeCache( $cacheFactory->getBlobCacheType() )
+		);
+
+		// If CACHE_NONE is selected, disable the usage
+		$blobStore->setUsageState(
+			$cacheFactory->getBlobCacheType() !== CACHE_NONE
+		);
+
+		$blobStore->setExpiryInSeconds(
+			$GLOBALS['smwgValueLookupCacheLifetime']
+		);
+
+		$blobStore->setNamespacePrefix(
+			$cacheFactory->getCachePrefix()
+		);
+
+		$byBlobStoreIntermediaryValueLookup = new ByBlobStoreIntermediaryValueLookup(
+			$this->store,
+			$blobStore
+		);
+
+		$byBlobStoreIntermediaryValueLookup->setCircularReferenceGuard(
+			$circularReferenceGuard
+		);
+
+		// Register blob instance with the event handler because only at this point
+		// we create and know about 'smw:vl:store'
+		EventHandler::getInstance()->addCallbackListener( 'blobstore.drop', function() use( $blobStore ) {
+			$blobStore->drop();
+		} );
+
+		return $byBlobStoreIntermediaryValueLookup;
 	}
 
 	private function newTemporaryIdTableCreator() {

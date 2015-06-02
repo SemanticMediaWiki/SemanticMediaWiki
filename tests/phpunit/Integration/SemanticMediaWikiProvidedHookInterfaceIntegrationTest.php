@@ -226,7 +226,6 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->will( $this->returnValue( 42 ) );
 
 		$store = $this->getMockBuilder( $storeClass )
-			->disableOriginalConstructor()
 			->setMethods( array( 'getObjectIds' ) )
 			->getMock();
 
@@ -263,7 +262,6 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->will( $this->returnValue( 42 ) );
 
 		$store = $this->getMockBuilder( $storeClass )
-			->disableOriginalConstructor()
 			->setMethods( array( 'getPropertyTables', 'getObjectIds' ) )
 			->getMock();
 
@@ -302,7 +300,6 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->will( $this->returnValue( 42 ) );
 
 		$store = $this->getMockBuilder( $storeClass )
-			->disableOriginalConstructor()
 			->setMethods( array( 'getPropertyTables', 'getObjectIds' ) )
 			->getMock();
 

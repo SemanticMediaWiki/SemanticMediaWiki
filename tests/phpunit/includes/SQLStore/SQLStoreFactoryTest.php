@@ -130,4 +130,18 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructByBlobStoreIntermediaryValueLookup() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'SMW\SQLStore\ByBlobStoreIntermediaryValueLookup',
+			$instance->newByBlobStoreIntermediaryValueLookup()
+		);
+
+		$this->assertTrue(
+			\SMW\EventHandler::getInstance()->getEventDispatcher()->hasEvent( 'blobstore.drop' )
+		);
+	}
+
 }

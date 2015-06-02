@@ -72,4 +72,20 @@ class EventHandlerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testAddCallbackListenerForAdhocRegistration() {
+
+		$eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\EventDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$eventDispatcher->expects( $this->once() )
+			->method( 'addListener' )
+			->with(
+				$this->equalTo( 'foo' ),
+				$this->anything() );
+
+		$instance = new EventHandler( $eventDispatcher );
+		$instance->addCallbackListener( 'foo', function (){} );
+	}
+
 }

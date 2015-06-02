@@ -555,7 +555,31 @@ $GLOBALS['smwgAutoRefreshSubject'] = true;
 #
 # @since 1.9
 ##
-$GLOBALS['smwgCacheType'] = CACHE_ANYTHING;
+$GLOBALS['smwgCacheType'] = CACHE_ANYTHING;  // To be removed with 3.0 use $smwgMainCacheType
+$GLOBALS['smwgMainCacheType'] = CACHE_ANYTHING; // Isn't used yet
+##
+
+###
+# Separate cache type to allow for adding a more responsive cache layer
+# (redis, riak) to operations that require it. It is currently used by:
+#
+# - ByBlobStoreIntermediaryValueLookup
+#
+# @since 2.3
+##
+$GLOBALS['smwgBlobCacheType'] = CACHE_ANYTHING;
+##
+
+###
+# While not absolute necessary (because entities will self-invalidate when a change
+# occurs) it is nevertheless possible to set a limit (in seconds) for items handled
+# by `ByBlobStoreIntermediaryValueLookup`.
+#
+# If set to 0 an item is kept until it is replaced, flushed, or dropped.
+#
+# @since 2.3
+##
+$GLOBALS['smwgValueLookupCacheLifetime'] = 60 * 60 * 24 * 7; // a week
 ##
 
 ###
