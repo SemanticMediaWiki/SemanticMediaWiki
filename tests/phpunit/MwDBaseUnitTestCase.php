@@ -62,6 +62,10 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
+		// This ensures we catch properties from other SMW-related extensions
+		// as well during a combined test run
+		PropertyRegistry::clear();
+
 		$this->checkIfDatabaseCanBeUsedOtherwiseSkipTest();
 		$this->checkIfStoreCanBeUsedOtherwiseSkipTest();
 
