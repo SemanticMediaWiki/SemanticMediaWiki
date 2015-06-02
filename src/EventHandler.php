@@ -71,6 +71,23 @@ class EventHandler {
 		return EventDispatcherFactory::getInstance()->newDispatchContext();
 	}
 
+	/**
+	 * @since 2.3
+	 *
+	 * @param string $event
+	 * @param Closure $callback
+	 */
+	public function addCallbackListener( $event, \Closure $callback ) {
+
+		$listener = EventDispatcherFactory::getInstance()->newGenericCallbackEventListener();
+		$listener->registerCallback( $callback );
+
+		$this->getEventDispatcher()->addListener(
+			$event,
+			$listener
+		);
+	}
+
 	private static function newEventDispatcher() {
 
 		$eventListenerRegistry = new EventListenerRegistry(

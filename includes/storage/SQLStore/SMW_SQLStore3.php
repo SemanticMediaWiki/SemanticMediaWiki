@@ -134,11 +134,18 @@ class SMWSQLStore3 extends SMWStore {
 	public $m_sdstate = array();
 
 	/**
+	 * @var ByBlobStoreIntermediaryValueLookup
+	 */
+	private $byBlobStoreIntermediaryValueLookup = null;
+
+	/**
 	 * @since 1.8
 	 */
 	public function __construct() {
 		$this->smwIds = new SMWSql3SmwIds( $this );
 		$this->factory = new SQLStoreFactory( $this );
+
+		$this->byBlobStoreIntermediaryValueLookup = $this->factory->newByBlobStoreIntermediaryValueLookup();
 	}
 
 	/**
@@ -213,7 +220,13 @@ class SMWSQLStore3 extends SMWStore {
 	}
 
 	public function getSemanticData( DIWikiPage $subject, $filter = false ) {
-		return $this->getReader()->getSemanticData( $subject, $filter );
+
+		$result = $this->byBlobStoreIntermediaryValueLookup->getSemanticData(
+			$subject,
+			$filter
+		);
+
+		return $result;
 	}
 
 	/**
@@ -223,20 +236,33 @@ class SMWSQLStore3 extends SMWStore {
 	 *
 	 * @return SMWDataItem[]
 	 */
-	public function getPropertyValues( $subject, DIProperty $property, $requestoptions = null ) {
-		return $this->getReader()->getPropertyValues( $subject, $property, $requestoptions );
+	public function getPropertyValues( $subject, DIProperty $property, $requestOptions = null ) {
+
+		$result = $this->byBlobStoreIntermediaryValueLookup->getPropertyValues(
+			$subject,
+			$property,
+			$requestOptions
+		);
+
+		return $result;
 	}
 
-	public function getPropertySubjects( DIProperty $property, $value, $requestoptions = null ) {
-		return $this->getReader()->getPropertySubjects( $property, $value, $requestoptions );
+	public function getPropertySubjects( DIProperty $property, $dataItem, $requestOptions = null ) {
+		return $this->getReader()->getPropertySubjects( $property, $dataItem, $requestOptions );
 	}
 
 	public function getAllPropertySubjects( DIProperty $property, $requestoptions = null ) {
 		return $this->getReader()->getAllPropertySubjects( $property, $requestoptions );
 	}
 
-	public function getProperties( DIWikiPage $subject, $requestoptions = null ) {
-		return $this->getReader()->getProperties( $subject, $requestoptions );
+	public function getProperties( DIWikiPage $subject, $requestOptions = null ) {
+
+		$result = $this->byBlobStoreIntermediaryValueLookup->getProperties(
+			$subject,
+			$requestOptions
+		);
+
+		return $result;
 	}
 
 	public function getInProperties( SMWDataItem $value, $requestoptions = null ) {
@@ -256,14 +282,29 @@ class SMWSQLStore3 extends SMWStore {
 	}
 
 	public function deleteSubject( Title $subject ) {
+
+		$this->byBlobStoreIntermediaryValueLookup->deleteFor(
+			DIWikiPage::newfromTitle( $subject )
+		);
+
 		$this->getWriter()->deleteSubject( $subject );
 	}
 
-	protected function doDataUpdate( SemanticData $data ) {
-		$this->getWriter()->doDataUpdate( $data );
+	protected function doDataUpdate( SemanticData $semanticData ) {
+
+		$this->byBlobStoreIntermediaryValueLookup->deleteFor(
+			$semanticData->getSubject()
+		);
+
+		$this->getWriter()->doDataUpdate( $semanticData );
 	}
 
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
+
+		$this->byBlobStoreIntermediaryValueLookup->deleteFor(
+			DIWikiPage::newfromTitle( $oldtitle )
+		);
+
 		$this->getWriter()->changeTitle( $oldtitle, $newtitle, $pageid, $redirid );
 	}
 

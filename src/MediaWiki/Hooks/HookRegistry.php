@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Hooks;
 use Parser;
 use RuntimeException;
 use SMW\ApplicationFactory;
+use SMW\EventHandler;
 use SMW\NamespaceManager;
 use SMW\ParameterFormatterFactory;
 
@@ -197,6 +198,8 @@ class HookRegistry {
 
 		$globalVars = $this->globalVars;
 		$basePath   = $this->directory;
+
+		$eventHandler = EventHandler::getInstance();
 
 		/**
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserFirstCallInit
@@ -471,6 +474,15 @@ class HookRegistry {
 
 			$editPageForm = new EditPageForm( $editPage, $htmlFormRenderer );
 			return $editPageForm->process();
+		};
+
+		$functionHookDefinition['SMW::Store::dropTables'] = function ( $verbose ) use( $eventHandler ) {
+
+			$eventHandler->getEventDispatcher()->dispatch(
+				'blobstore.drop'
+			);
+
+			return true;
 		};
 
 		return $functionHookDefinition;

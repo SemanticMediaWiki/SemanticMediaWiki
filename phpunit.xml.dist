@@ -58,6 +58,7 @@
     </filter>
     <php>
        <var name="smwgSparqlDefaultGraph" value="http://example.org/phpunit-testrun"/>
+       <var name="smwgBlobCacheType" value="hash"/>
        <var name="benchmarkQueryRepetitionExecutionThreshold" value="5"/>
        <var name="benchmarkQueryLimit" value="500"/>
        <var name="benchmarkQueryOffset" value="0"/>
