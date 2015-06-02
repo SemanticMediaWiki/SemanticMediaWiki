@@ -313,6 +313,7 @@
 	"smw-datavalue-restricted-use": "Este valor de datos marcouse para uso restrinxido. $1",
 	"smw-query-condition-circular": "Detectouse unha posible condición circular en \"$1\".",
 	"smw-sp-types-list": "Lista de tipos de datos",
+	"smw-sp-types-default": "\"$1\" é un tipo de datos predefinido.",
 	"smw-sp-types-help": "Máis información e exemplos poden atoparse na [https://semantic-mediawiki.org/wiki/Help:Type_$1 páxina de axuda].",
 	"smw-sp-types_boo": "\"$1\" é un tipo de dato antigo para describir un valor certo/falso.",
 	"smw-sp-types_cod": "\"$1\" é unha variante do tipo de dato  [[Special:Types/Text|Texto]] que é usada para textos técnicos de lonxitude variable, como listados de código fonte.",
