@@ -230,7 +230,7 @@ class DataRebuilder {
 
 		$this->reportMessage(
 			" The progress displayed is an estimation which can change \n" .
-			" during the run as more IDs are successively added (readjusted with *) .\n---\n" );
+			" during the run as more IDs are successively added (* set to) .\n---\n" );
 
 		$this->reportMessage( "Processing all IDs from $this->start to " . ( $this->end ? "$this->end" : $byIdDataRebuildDispatcher->getMaxId() ) . " ...\n" );
 
@@ -241,8 +241,10 @@ class DataRebuilder {
 			$this->rebuildCount++;
 			$readjust = false;
 
-			// Try to readjust the total on every 600th iteration
-			if ( $this->rebuildCount % 600 === 0 && !$this->end ) {
+			// Find a readjust baseline within the range of the total
+			$readjustBaseline = $this->rebuildCount < 600 && $total < 600 ? round( $total / 2 ) : 600;
+
+			if ( $this->rebuildCount % $readjustBaseline === 0 && !$this->end ) {
 				$readjust = $byIdDataRebuildDispatcher->getMaxId() !== $total;
 				$total = $byIdDataRebuildDispatcher->getMaxId();
 			}
