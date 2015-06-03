@@ -563,11 +563,16 @@ $GLOBALS['smwgMainCacheType'] = CACHE_ANYTHING; // Isn't used yet
 # Separate cache type to allow for adding a more responsive cache layer
 # (redis, riak) to operations that require it. It is currently used by:
 #
-# - ByBlobStoreIntermediaryValueLookup
+# - ByBlobStoreIntermediaryValueLookup (#1035)
+#
+# CACHE_NONE = disabled for all features that require this cache layer
 #
 # @since 2.3
+#
+# @default: CACHE_NONE (legacy); users need to actively enable it in order
+# to make use of it
 ##
-$GLOBALS['smwgBlobCacheType'] = CACHE_ANYTHING;
+$GLOBALS['smwgBlobCacheType'] = CACHE_NONE;
 ##
 
 ###
