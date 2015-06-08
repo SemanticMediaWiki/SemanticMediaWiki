@@ -287,6 +287,7 @@
 	"smw-sp-admin-idlookup-objectid": "物件 Id：",
 	"smw-livepreview-loading": "讀取中...",
 	"smw-sp-searchbyproperty-resultlist-header": "結果清單",
+	"smw-editpage-annotation-enabled": "此頁面支援語義文內註釋 (例如 <nowiki>\"[[Is specified as::World Heritage Site]]\"</nowiki>) 來建立由 Semantic MediaWiki 提供的結構化、可查詢的內容。 如何使用標示法或 #ask 分析器功能的詳細說明，請查看 [https://www.semantic-mediawiki.org/wiki/Help:Getting_started 入門指引]、[https://www.semantic-mediawiki.org/wiki/Help:In-text_annotation 文內註釋]或[https://www.semantic-mediawiki.org/wiki/Help:Inline_queries 行內查詢]說明頁面。",
 	"smw-editpage-annotation-disabled": "由於命名空間限制，此頁面在語義文內註釋中不會啟用。有關如何啟用命名空間的詳細資料在[https://semantic-mediawiki.org/wiki/Help:Configuration 組態]說明頁面中闡述。",
 	"log-name-smw": "語意 MediaWiki 日誌",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|$1 匯入]]",

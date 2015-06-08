@@ -168,7 +168,7 @@
 	"smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|Vorkommen}})",
 	"smw_purge": "Neu laden",
 	"types": "Datentypen",
-	"smw_types_docu": "Die folgenden Datentypen können Attributen zugewiesen werden:",
+	"smw_types_docu": "Dies ist eine [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes Übersicht aller Datentypen], die Attributen zugewiesen werden können.",
 	"smw-special-types-no-such-type": "Der angegebene Datentyp ist nicht vorhanden.",
 	"semanticstatistics": "Statistik zu semantischen Daten",
 	"smw_semstats_text": "Dieses Wiki enthält {{PLURAL:$1|'''1''' Wert|'''$1''' Werte}} für insgesamt '''$2''' [[Special:Properties|{{PLURAL:$2|Attribut|verschiedene Attribute}}]]. '''$3''' {{PLURAL:$3|Attribut wurde|Attribute wurden}} auf einer eigene Seite beschrieben und der gewünschte Datentyp ist für '''$4''' von diesen angegeben worden.\n\nEinige der vorhandenen Attribute könnten [[Special:UnusedProperties|verwaiste Attribute]] sein. Attribute, für die noch eine Seite angelegt werden sollte, sind in der [[Special:WantedProperties|Liste gewünschter Attribute]] aufgeführt.",
@@ -336,5 +336,15 @@
 	"smw-pa-property-predefined_pval": "[https://semantic-mediawiki.org/wiki/Help:Spezialattribut_Erlaubt_Wert „$1“] ist ein softwareseitig fest definiertes Attribut, mit dem für ein Attribut zulässige Attributwerte definiert werden können.",
 	"smw-datavalue-property-restricted-use": "Das Attribut „$1“ kann nur eingeschränkt genutzt werden.",
 	"smw-datavalue-restricted-use": "Dieser Datenwert („$1“) kann nur eingeschränkt genutzt werden.",
-	"smw-query-condition-circular": "Ein möglicher Zirkelbezug wurde in Vorlage „$1“ entdeckt."
+	"smw-query-condition-circular": "Ein möglicher Zirkelbezug wurde in Vorlage „$1“ entdeckt.",
+	"smw-sp-types-list": "Liste der Datentypen",
+	"smw-sp-types-default": "„$1“ ist ein softwareseitig fest definierter Datentyp.",
+	"smw-sp-types-help": "Weitere Informationen sowie Beispiele sind auf der zugehörigen [https://semantic-mediawiki.org/wiki/Help:Type_$1 Hilfeseite] vorhanden.",
+	"smw-sp-types_anu": "„$1“ ist eine Variante des Datentyps [[Special:Types/URL|„URL“]] der zumeist für Exportdeklarationen zu ''owl:AnnotationProperty'' genutzt wird.",
+	"smw-sp-types_boo": "„$1“ ist ein Datentyp der für Wahrheitswerte („wahr“ oder „falsch“) genutzt wird.",
+	"smw-sp-types_cod": "„$1“ ist eine Variante des Datentyps [[Special:Types/Text|„Text“]] der für technische Texte beliebiger Länge wie bspw. Softwarecode genutzt wird.",
+	"smw-sp-types_geo": "„$1“ ist ein Datentyp der zum Speichern der Lage eines Punktes in einer Ebene oder in einem Raum genutzt wird. Er wird von der Softwareerweiterung [https://semantic-mediawiki.org/wiki/Semantic_Maps Semantic Maps] bereitgestellt.",
+	"smw-sp-types_tel": "„$1“ ist ein Datentyp der für die Ziffernfolge zur Anwahl eines Zielteilnehmers (Rufnummer) gemäß RFC 3966 genutzt wird.",
+	"smw-sp-types_txt": "„$1“ ist ein Datentyp der für Zeichenketten beliebiger Länge genutzt wird.",
+	"smw-sp-types_dat": "„$1“ ist ein Datentyp der für bestimmte Momente in einem zeitlichen Bezugssystem (Zeitskala) genutzt wird."
 }

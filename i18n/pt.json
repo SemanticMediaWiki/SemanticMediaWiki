@@ -145,7 +145,7 @@
 	"smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|uso|usos}})",
 	"smw_purge": "Atualizar",
 	"types": "Tipos",
-	"smw_types_docu": "A seguinte lista contém todos os tipos de dados que podem ser atribuídos às propriedades.",
+	"smw_types_docu": "A seguinte [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes lista] contém todos os tipos de dados que podem ser atribuídos às propriedades.",
 	"smw-special-types-no-such-type": "O tipo de dados especificado não existe",
 	"semanticstatistics": "Estatísticas de semântica",
 	"smw_semstats_text": "Esta wiki contém '''$1''' {{PLURAL:$1|valor de propriedade|valores de propriedades}}, num total de '''$2''' [[Special:Properties|{{PLURAL:$2|propriedade|propriedades diferentes}}]].\n'''$3''' {{PLURAL:$3|propriedade tem|propriedades têm}} uma página própria e o tipo de dados pretendido está especificado para '''$4''' delas.\nAlgumas das propriedades existentes podem ser [[Special:UnusedProperties|propriedades não usadas]].\nAs propriedades que não têm uma página própria podem ser encontradas na [[Special:WantedProperties|lista de propriedades em falta]].",
@@ -265,5 +265,7 @@
 	"smw-sp-admin-idlookup-objectid": "ID de objeto:",
 	"smw-livepreview-loading": "A carregar…",
 	"smw-sp-searchbyproperty-resultlist-header": "Lista de resultados",
-	"smw-pa-property-predefined_type": "\"$1\" é uma propriedade predefinida que descreve o [[Special:Types|tipo de dados]] de uma propriedade."
+	"smw-pa-property-predefined_type": "\"$1\" é uma propriedade predefinida que descreve o [[Special:Types|tipo de dados]] de uma propriedade.",
+	"smw-sp-types-list": "Lista de tipos de dados",
+	"smw-sp-types-help": "Mais informações e exemplos podem ser encontrados na [https://semantic-mediawiki.org/wiki/Help:Type_$1 página de ajuda]."
 }
