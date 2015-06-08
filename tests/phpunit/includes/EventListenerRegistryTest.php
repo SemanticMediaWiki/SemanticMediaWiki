@@ -58,6 +58,7 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->verifyPropertyTypeChangeEvent( $instance );
 		$this->verifyExporterResetEvent( $instance );
+		$this->verifyFactboxCacheDeleteEvent( $instance );
 	}
 
 	public function verifyExporterResetEvent( EventListenerCollection $instance ) {
@@ -84,6 +85,28 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 		$dispatchContext->set( 'subject', new DIWikiPage( 'Foo', NS_MAIN ) );
 
 		$this->assertListenerExecuteFor( 'property.spec.change', $instance, $dispatchContext );
+	}
+
+	public function verifyFactboxCacheDeleteEvent( EventListenerCollection $instance ) {
+
+		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getArticleID' )
+			->will( $this->returnValue( 42 ) );
+
+		ApplicationFactory::getInstance()->registerObject( 'Cache', $cache );
+
+		$dispatchContext = EventDispatcherFactory::getInstance()->newDispatchContext();
+		$dispatchContext->set( 'title', $title );
+
+		$this->assertListenerExecuteFor( 'factbox.cache.delete', $instance, $dispatchContext );
 	}
 
 	private function assertListenerExecuteFor( $eventName, $instance, $dispatchContext = null ) {

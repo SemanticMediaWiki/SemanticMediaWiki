@@ -172,17 +172,74 @@ class StoreUpdater {
 
 		$this->store->setUpdateJobsEnabledState( $this->updateJobsEnabledState );
 
+		$semanticData = $this->checkForRequiredRedirectUpdate(
+			$this->semanticData
+		);
+
 		if ( $this->processSemantics ) {
-			$this->store->updateData( $this->semanticData );
+			$this->store->updateData( $semanticData );
 		} else {
-			$this->store->clearData( $this->semanticData->getSubject() );
+			$this->store->clearData( $semanticData->getSubject() );
 		}
 
 		return true;
 	}
 
-	private function isSemanticEnabledNamespace( $title ) {
+	private function isSemanticEnabledNamespace( Title $title ) {
 		return $this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
+	}
+
+	private function checkForRequiredRedirectUpdate( SemanticData $semanticData ) {
+
+		// Check only during online-mode so that when a user operates Special:MovePage
+		// or #redirect the same process is applied
+		if ( !$this->updateJobsEnabledState ) {
+			return $semanticData;
+		}
+
+		$redirects = $semanticData->getPropertyValues(
+			new DIProperty( '_REDI' )
+		);
+
+		if ( $redirects !== array() && !$semanticData->getSubject()->equals( end( $redirects ) ) ) {
+			return $this->handleYetUnknownRedirectTarget( $semanticData, end( $redirects ) );
+		}
+
+		return $semanticData;
+	}
+
+	private function handleYetUnknownRedirectTarget( SemanticData $semanticData, DIWikiPage $target ) {
+
+		// Only keep the reference to safeguard that even in case of a text keeping
+		// its annotations there are removed from the Store. A redirect is not
+		// expected to contain any other annotation other than that of the redirect
+		// target
+		$subject = $semanticData->getSubject();
+		$semanticData = new SemanticData( $subject );
+
+		$semanticData->addPropertyObjectValue(
+			new DIProperty( '_REDI' ),
+			$target
+		);
+
+		// Force a manual changeTitle before the general update otherwise
+		// #redirect can cause an inconsistent data container as observed in #895
+		$this->store->changeTitle(
+			$subject->getTitle(),
+			$target->getTitle(),
+			$subject->getTitle()->getArticleID(),
+			$target->getTitle()->getArticleID()
+		);
+
+		$dispatchContext = EventHandler::getInstance()->newDispatchContext();
+		$dispatchContext->set( 'title', $subject->getTitle() );
+
+		EventHandler::getInstance()->getEventDispatcher()->dispatch(
+			'factbox.cache.delete',
+			$dispatchContext
+		);
+
+		return $semanticData;
 	}
 
 }

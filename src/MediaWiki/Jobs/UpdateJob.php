@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Jobs;
 use LinkCache;
 use ParserOutput;
 use SMW\ApplicationFactory;
-use SMW\SemanticDataCache;
+use SMW\EventHandler;
 use SMW\DIProperty;
 use Title;
 
@@ -92,9 +92,19 @@ class UpdateJob extends JobBase {
 		return $this->needToParsePageContentBeforeUpdate();
 	}
 
+	/**
+	 * pm = parser-mode; 2 = new to avoid "Parser state cleared" exception
+	 */
 	private function needToParsePageContentBeforeUpdate() {
 
 		$contentParser = $this->applicationFactory->newContentParser( $this->getTitle() );
+
+		if ( $this->getParameter( 'pm' ) === 2 ) {
+			$contentParser->setParser(
+				new \Parser( $GLOBALS['wgParserConf'] )
+			);
+		}
+
 		$contentParser->forceToUseParser();
 		$contentParser->parse();
 
@@ -113,10 +123,12 @@ class UpdateJob extends JobBase {
 
 	private function updateStore( $parserData ) {
 
-		$cache = $this->applicationFactory->getCache();
+		$dispatchContext = EventHandler::getInstance()->newDispatchContext();
+		$dispatchContext->set( 'title', $this->getTitle() );
 
-		$cache->delete(
-			$this->applicationFactory->newCacheFactory()->getFactboxCacheKey( $this->getTitle()->getArticleID() )
+		EventHandler::getInstance()->getEventDispatcher()->dispatch(
+			'factbox.cache.delete',
+			$dispatchContext
 		);
 
 		// TODO
