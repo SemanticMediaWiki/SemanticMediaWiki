@@ -24,6 +24,7 @@ This is not a release yet.
 * #1046 Fixed RuntimeException in `UndeclaredPropertyListLookup` for when a DB prefix is used
 * #1051 Fixed call to undefined method in `ConceptDescriptionInterpreter`
 * #1059 Fixed usage of `[[Has page::~*a*||~*A*]]` for `SPARQLStore` when `Has page` is declared as page type 
+* #1060 Fixed usage of `(a OR b) AND (c OR d)` as query pattern for the `SQLStore`
 
 ## Internal changes
 
