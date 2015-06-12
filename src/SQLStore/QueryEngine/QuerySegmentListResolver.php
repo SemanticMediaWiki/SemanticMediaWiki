@@ -234,6 +234,10 @@ class QuerySegmentListResolver {
 						// WHERE or FROM. The execution must take care of not creating any others.
 						$values = '';
 
+						// This produces an error on postgres with
+						// pg_query(): Query failed: ERROR:  duplicate key value violates
+						// unique constraint "sunittest_t3_pkey" DETAIL:  Key (id)=(274) already exists.
+
 						foreach ( $subQuery->joinfield as $value ) {
 							$values .= ( $values ? ',' : '' ) . '(' . $db->addQuotes( $value ) . ')';
 						}
