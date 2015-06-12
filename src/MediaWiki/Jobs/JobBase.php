@@ -123,7 +123,7 @@ abstract class JobBase extends Job {
 	 * @return boolean
 	 */
 	public function getParameter( $key ) {
-		return $this->params[$key];
+		return $this->hasParameter( $key ) ? $this->params[$key] : false;
 	}
 
 	/**

@@ -72,15 +72,8 @@ class TitleMoveComplete {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$cache = $applicationFactory->getCache();
-		$cacheFactory = $applicationFactory->newCacheFactory();
-
 		// Delete all data for a non-enabled target NS
 		if ( !$applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $this->newTitle->getNamespace() ) ) {
-
-			$cache->delete(
-				$cacheFactory->getFactboxCacheKey( $this->oldId )
-			);
 
 			$applicationFactory->getStore()->deleteSubject(
 				$this->oldTitle
@@ -88,28 +81,16 @@ class TitleMoveComplete {
 
 		} else {
 
-			$settings = $applicationFactory->getSettings();
+		// Using a different approach since the hook is not triggered
+		// by #REDIRECT which can cause inconsistencies
+		// @see 2.3 / StoreUpdater
 
-			if ( $this->newId > 0 ) {
-				$cache->save(
-					$cacheFactory->getPurgeCacheKey( $this->newId ),
-					$settings->get( 'smwgAutoRefreshOnPageMove' )
-				);
-			}
-
-			if ( $this->oldId > 0 ) {
-				$cache->save(
-					$cacheFactory->getPurgeCacheKey( $this->oldId ),
-					$settings->get( 'smwgAutoRefreshOnPageMove' )
-				);
-			}
-
-			$applicationFactory->getStore()->changeTitle(
-				$this->oldTitle,
-				$this->newTitle,
-				$this->oldId,
-				$this->newId
-			);
+		//	$applicationFactory->getStore()->changeTitle(
+		//		$this->oldTitle,
+		//		$this->newTitle,
+		//		$this->oldId,
+		//		$this->newId
+		//	);
 		}
 
 		return true;

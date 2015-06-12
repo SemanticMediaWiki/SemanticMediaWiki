@@ -917,12 +917,12 @@ class SMWSql3SmwIds {
 	public function deleteCache( $title, $namespace, $interwiki, $subobject ) {
 
 		if ( $namespace == SMW_NS_PROPERTY && $interwiki === '' && $subobject === '' ) {
-			$id = $this->regular_ids[$title];
-			unset( $this->regular_ids[$title] );
-			unset( $this->regular_sortkeys[$title] );
+			$id =  isset( $this->prop_ids[$title] ) ?  $this->prop_ids[$title] : 0;
+			unset( $this->prop_ids[$title] );
+			unset( $this->prop_sortkeys[$title] );
 		} else {
 			$hashKey = HashBuilder::createHashIdFromSegments( $title, $namespace, $interwiki, $subobject );
-			$id = $this->regular_ids[$hashKey];
+			$id = isset( $this->regular_ids[$hashKey] ) ? $this->regular_ids[$hashKey] : 0;
 			unset( $this->regular_ids[$hashKey] );
 			unset( $this->regular_sortkeys[$hashKey] );
 		}

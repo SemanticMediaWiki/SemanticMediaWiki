@@ -117,6 +117,12 @@ class ByJsonParserTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			$semanticData,
 			$case['about']
 		);
+
+		$this->assertInProperties(
+			$subject,
+			$case['store']['semantic-data'],
+			$case['about']
+		);
 	}
 
 	private function assertParserOutputForCase( $case ) {
@@ -137,6 +143,50 @@ class ByJsonParserTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			$parserOutput->getText(),
 			$case['about']
 		);
+	}
+
+	private function assertInProperties( DIWikiPage $subject, array $semanticdata, $about ) {
+
+		if ( !isset( $semanticdata['inproperty-keys'] ) ) {
+			return;
+		}
+
+		$inProperties = $this->getStore()->getInProperties( $subject );
+
+		$this->assertCount(
+			count( $semanticdata['inproperty-keys'] ),
+			$inProperties,
+			'Failed asserting count for "inproperty-keys" in ' . $about . ' ' . implode( ',', $inProperties )
+		);
+
+		$inpropertyValues = array();
+
+		foreach ( $inProperties as $property ) {
+
+			$this->assertContains(
+				$property->getKey(),
+				$semanticdata['inproperty-keys'],
+				'Failed asserting key for "inproperty-keys" in ' . $about
+			);
+
+			if ( !isset( $semanticdata['inproperty-values'] ) ) {
+				continue;
+			}
+
+			$values = $this->getStore()->getPropertySubjects( $property, $subject );
+
+			foreach ( $values as $value ) {
+				$inpropertyValues[] = $value->getSerialization();
+			}
+		}
+
+		foreach ( $inpropertyValues as $value ) {
+			$this->assertContains(
+				$value,
+				$semanticdata['inproperty-values'],
+				'Failed asserting values for "inproperty-values" in ' . $about
+			);
+		}
 	}
 
 }

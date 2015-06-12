@@ -63,13 +63,8 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$store->expects( $this->once() )
-			->method( 'changeTitle' )
-			->with(
-				$this->equalTo( $oldTitle ),
-				$this->equalTo( $newTitle ),
-				$this->anything(),
-				$this->anything() );
+		$store->expects( $this->never() )
+			->method( 'changeTitle' );
 
 		$this->applicationFactory->registerObject( 'Settings', Settings::newFromArray( array(
 			'smwgCacheType'             => 'hash',

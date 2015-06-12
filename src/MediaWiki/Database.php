@@ -435,6 +435,21 @@ class Database {
 		unset( $this->transactionQueue[$fname] );
 	}
 
+	/**
+	 * @since 2.3
+	 *
+	 * @param callable $callback
+	 */
+	public function onTransactionIdle( $callback ) {
+
+		// FIXME For 1.19 it is an unknown method hence execute without idle
+		if ( !method_exists( $this->readConnection(), 'onTransactionIdle' ) ) {
+			return call_user_func( $callback );
+		}
+
+		$this->readConnection()->onTransactionIdle( $callback );
+	}
+
 	private function readConnection() {
 		return $this->readConnectionProvider->getConnection();
 	}

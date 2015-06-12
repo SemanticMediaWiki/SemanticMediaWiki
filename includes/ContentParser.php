@@ -62,6 +62,15 @@ class ContentParser {
 	}
 
 	/**
+	 * @since 2.3
+	 *
+	 * @return Parser $parser
+	 */
+	public function setParser( Parser $parser ) {
+		$this->parser = $parser;
+	}
+
+	/**
 	 * @since 1.9.1
 	 *
 	 * @return ContentParser

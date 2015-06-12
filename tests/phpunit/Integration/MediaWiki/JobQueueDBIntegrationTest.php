@@ -147,14 +147,16 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 			->getTitle()
 			->moveTo( $newTitle, false, 'test', true );
 
-		$this->assertJob( 'SMW\UpdateJob' );
+		// Execute the job directly
+		// $this->assertJob( 'SMW\UpdateJob' );
 
-		$this->assertContains(
-			$this->job->getTitle()->getPrefixedText(),
-			array( $oldTitle->getPrefixedText(), $newTitle->getPrefixedText() )
+		$this->assertTrue(
+			$oldTitle->isRedirect()
 		);
 
-		$this->pageDeleter->deletePage( $oldTitle );
+		$this->pageDeleter->deletePage(
+			$oldTitle
+		);
 	}
 
 	public function testSQLStoreRefreshDataTriggersUpdateJob() {
@@ -242,6 +244,8 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 	 */
 	public function testNoInfiniteUpdateJobsForCircularRedirect() {
 
+		$this->skipTestForMediaWikiVersionLowerThan( '1.20' );
+
 		$this->pageCreator
 			->createPage( Title::newFromText( 'Foo-A' ) )
 			->doEdit( '[[Foo-A::{{PAGENAME}}]] {{#ask: [[Foo-A::{{PAGENAME}}]] }}' )
@@ -262,6 +266,10 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 		foreach ( $this->jobQueueRunner->getStatus() as $status ) {
 			$this->assertTrue( $status['status'] );
 		}
+
+		$this->assertTrue(
+			Title::newFromText( 'Foo-A' )->isRedirect()
+		);
 
 		$this->deletePoolOfPages = array(
 			Title::newFromText( 'Foo-A' ),

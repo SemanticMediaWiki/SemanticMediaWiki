@@ -207,7 +207,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		}
 
 		if ( isset( $expected['propertyCount'] ) ) {
-			$this->assertThatSemanticDataHasPropertyCountOf( $expected['propertyCount'], $semanticData );
+			$this->assertThatSemanticDataHasPropertyCountOf( $expected['propertyCount'], $semanticData, $message );
 		}
 
 		foreach ( $properties as $property ) {

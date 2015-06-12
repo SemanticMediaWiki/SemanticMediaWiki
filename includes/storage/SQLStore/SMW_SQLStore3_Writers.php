@@ -685,6 +685,30 @@ class SMWSQLStore3Writers {
 
 		}
 
+		// Update the page immediately to ensure that only a fresh set of data
+		// is displayed
+		$jobs = array();
+
+		// 1.24+ reported "Parser state cleared while parsing. Did you call
+		// Parser::parse recursively" when using the global Parser instance
+		// Set 'pm' (parser-mode) to 2 indicating to use a new Parser
+		// instance when running the job
+
+		$jobs[] = new UpdateJob( $newTitle, array(
+			'pm' => 2
+		) );
+
+		if ( $redirectId != 0 ) {
+			$jobs[] = new UpdateJob( $oldTitle, array(
+				'pm' => 2
+			) );
+		}
+
+		$db->onTransactionIdle( function() use ( $jobs ) {
+			foreach ( $jobs as $job ) {
+				$job->run();
+			}
+		} );
 	}
 
 	/**
@@ -764,13 +788,6 @@ class SMWSQLStore3Writers {
 				$curtarget_ns,
 				false,
 				true
-			);
-
-			$jobs = $this->makeUpdateJobsForNewRedirect(
-				$subject_t,
-				$subject_ns,
-				$curtarget_t,
-				$curtarget_ns
 			);
 
 		} elseif ( $old_tid != 0 ) { // existing redirect is changed or deleted
@@ -961,21 +978,6 @@ class SMWSQLStore3Writers {
 		);
 
 		return ( $new_tid == 0 ) ? $sid : $new_tid;
-	}
-
-	private function makeUpdateJobsForNewRedirect( $subjectDBKey, $subjectNS, $targetDBKey, $targetNS ) {
-
-		$jobs = array();
-
-		$title = Title::makeTitleSafe( $subjectNS, $subjectDBKey );
-		$jobs[] = new UpdateJob( $title );
-
-		if ( $targetDBKey !== '' && $targetNS !== -1 ) {
-			$title = Title::makeTitleSafe( $targetNS, $targetDBKey );
-			$jobs[] = new UpdateJob( $title );
-		}
-
-		return $jobs;
 	}
 
 }

@@ -6,13 +6,14 @@ use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\StoreUpdater;
 use SMW\ApplicationFactory;
+use SMW\SemanticData;
 use SMW\DIWikiPage;
+use SMW\DIProperty;
 
 /**
  * @covers \SMW\StoreUpdater
  *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -194,6 +195,64 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 		$instance = new StoreUpdater( $store, $semanticData );
 
 		$this->assertFalse( $instance->doUpdate() );
+	}
+
+	public function testForYetUnknownRedirectTarget() {
+
+		$revision = $this->getMockBuilder( '\Revision' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiPage->expects( $this->atLeastOnce() )
+			->method( 'getRevision' )
+			->will( $this->returnValue( $revision ) );
+
+		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$pageCreator->expects( $this->atLeastOnce() )
+			->method( 'createPage' )
+			->will( $this->returnValue( $wikiPage ) );
+
+		$this->applicationFactory->registerObject( 'PageCreator', $pageCreator );
+
+		$subject = new DIWikiPage(
+			'Foo',
+			NS_MAIN
+		);
+
+		$target = new DIWikiPage(
+			'Bar',
+			NS_MAIN
+		);
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->once() )
+			->method( 'changeTitle' )
+			->with(
+				$this->equalTo( $subject->getTitle() ),
+				$this->equalTo( $target->getTitle() ),
+				$this->anything(),
+				$this->anything() );
+
+		$semanticData = new SemanticData( $subject );
+
+		$semanticData->addPropertyObjectValue(
+			new DIProperty( '_REDI' ),
+			$target
+		);
+
+		$instance = new StoreUpdater( $store, $semanticData );
+		$instance->setUpdateJobsEnabledState( true );
+		$instance->doUpdate();
 	}
 
 	public function updateJobStatusProvider() {

@@ -40,6 +40,18 @@ class EventListenerRegistry implements EventListenerCollection {
 	private function addListenersToCollection() {
 
 		$this->eventListenerCollection->registerCallback(
+			'factbox.cache.delete', function( $dispatchContext ) {
+
+				$title = $dispatchContext->get( 'title' );
+				$cache = ApplicationFactory::getInstance()->getCache();
+
+				$cache->delete(
+					ApplicationFactory::getInstance()->newCacheFactory()->getFactboxCacheKey( $title->getArticleID() )
+				);
+			}
+		);
+
+		$this->eventListenerCollection->registerCallback(
 			'exporter.reset', function() {
 				Exporter::getInstance()->clear();
 			}
