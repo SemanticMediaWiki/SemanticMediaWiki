@@ -187,6 +187,19 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 					$subConditionElements->unionCondition .= ( $subConditionElements->unionCondition ? ' UNION ' : '' ) .
 				                   "{\n" . $subCondition->condition . " FILTER( ?$joinVariable = $matchElementName ) }";
 				}
+
+				// Relates to wikipage [[Foo::~*a*||~*A*]] in value regex disjunction
+				// where a singleton is required to search against the sortkey but
+				// replacing the filter with the condition temporary stored in
+				// weakconditions
+				if ( $subConditionElements->unionCondition && $subCondition->weakConditions !== array() ) {
+					$weakCondition = array_shift( $subCondition->weakConditions );
+					$subConditionElements->unionCondition = str_replace(
+						"FILTER( ?$joinVariable = $matchElementName )",
+						$weakCondition,
+						$subConditionElements->unionCondition
+					);
+				}
 			}
 
 			$namespaces = array_merge( $namespaces, $subCondition->namespaces );
