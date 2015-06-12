@@ -41,11 +41,11 @@
 		},
 		{
 			"name": "Sample/Title/4",
-			"contents": "[[Has text::oO]] [[Has page::aBc]]"
+			"contents": "[[Has text::FoO]] [[Has page::aBc]]"
 		},
 		{
 			"name": "Sample/Title/5",
-			"contents": "[[Has text::oO]] [[Has page::Sample/Title/2]]"
+			"contents": "[[Has text::FoO]] [[Has page::Sample/Title/2]]"
 		}
 	],
 	"query-testcases": [
@@ -200,6 +200,22 @@
 				"results": [
 					"Sample/Title/4#0##",
 					"Sample/Title/5#0##"
+				]
+			}
+		},
+		{
+			"about": "#10, see issue #19",
+			"condition": "[[Has page::~*b*||~*B*]] AND [[Has text::~*oO*||~*OO*||~*oo*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 3,
+				"results": [
+					"Sample/Title/2#0##",
+					"Sample/Title/3#0##",
+					"Sample/Title/4#0##"
 				]
 			}
 		}

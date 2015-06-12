@@ -170,43 +170,28 @@ class QuerySegmentListResolver {
 				$query->components = array();
 			break;
 			case QuerySegment::Q_CONJUNCTION:
-				// pick one subquery with jointable as anchor point ...
 				reset( $query->components );
 				$key = false;
 
+				// Pick one subquery as anchor point ...
 				foreach ( $query->components as $qkey => $qid ) {
-					if ( $this->querySegments[$qkey]->joinTable !== '' ) {
-						$key = $qkey;
-						break;
-					}
-				}
-
-				if ( $key !== false ) {
-					$result = $this->querySegments[$key];
-					unset( $query->components[$key] );
-
-					// Execute it first (may change jointable and joinfield, e.g. when making temporary tables)
-					$this->resolveForSegment( $result );
-
-					// ... and append to this query the remaining queries.
-					foreach ( $query->components as $qid => $joinField ) {
-						$result->components[$qid] = $result->joinfield;
-					}
-
-					// Second execute, now incorporating remaining conditions.
-					$this->resolveForSegment( $result );
-				} else { // Only fixed values in conjunction, make a new value without joining.
 					$key = $qkey;
-					$result = $this->querySegments[$key];
-					unset( $query->components[$key] );
-
-					foreach ( $query->components as $qid => $joinField ) {
-						if ( $result->joinfield != $this->querySegments[$qid]->joinfield ) {
-							$result->joinfield = ''; // all other values should already be ''
-							break;
-						}
-					}
+					break;
 				}
+
+				$result = $this->querySegments[$key];
+				unset( $query->components[$key] );
+
+				// Execute it first (may change jointable and joinfield, e.g. when making temporary tables)
+				$this->resolveForSegment( $result );
+
+				// ... and append to this query the remaining queries.
+				foreach ( $query->components as $qid => $joinfield ) {
+					$result->components[$qid] = $result->joinfield;
+				}
+
+				// Second execute, now incorporating remaining conditions.
+				$this->resolveForSegment( $result );
 				$query = $result;
 			break;
 			case QuerySegment::Q_DISJUNCTION:
@@ -255,6 +240,10 @@ class QuerySegmentListResolver {
 						}
 					}
 				}
+
+				$query->type = QuerySegment::Q_TABLE;
+				$query->where = '';
+				$query->components = array();
 
 				$query->joinTable = $query->alias;
 				$query->joinfield = "$query->alias.id";
