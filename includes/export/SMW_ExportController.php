@@ -509,7 +509,7 @@ class SMWExportController {
 			if ( is_null( $title ) || !smwfIsSemanticsProcessed( $title->getNamespace() ) ) {
 				continue;
 			}
-			if ( !SMWExportController::fitsNsRestriction( $ns_restriction, $title->getNamespace() ) ) {
+			if ( !self::fitsNsRestriction( $ns_restriction, $title->getNamespace() ) ) {
 				continue;
 			}
 			$a_count += 1; // DEBUG
@@ -523,7 +523,7 @@ class SMWExportController {
 				// resolve dependencies that will otherwise not be printed
 				foreach ( $this->element_queue as $key => $diaux ) {
 					if ( !smwfIsSemanticsProcessed( $diaux->getNamespace() ) ||
-					     !SMWExportController::fitsNsRestriction( $ns_restriction, $diaux->getNamespace() ) ) {
+					     !self::fitsNsRestriction( $ns_restriction, $diaux->getNamespace() ) ) {
 						// Note: we do not need to check the cache to guess if an element was already
 						// printed. If so, it would not be included in the queue in the first place.
 						$d_count += 1; // DEBUG

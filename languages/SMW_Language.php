@@ -126,7 +126,7 @@ abstract class SMWLanguage {
 
 		$namespaceAliases = $this->m_NamespaceAliases;
 		if ( $this->m_useEnDefaultAliases ) {
-			$namespaceAliases = $namespaceAliases + SMWLanguage::$enNamespaceAliases;
+			$namespaceAliases = $namespaceAliases + self::$enNamespaceAliases;
 		}
 
 		if ( !$smwgHistoricTypeNamespace ) {
@@ -151,7 +151,7 @@ abstract class SMWLanguage {
 	}
 
 	function getCanonicalDatatypeLabels() {
-		return SMWLanguage::$enDatatypeAliases;
+		return self::$enDatatypeAliases;
 	}
 
 	/**
@@ -160,7 +160,7 @@ abstract class SMWLanguage {
 	 */
 	function getDatatypeAliases() {
 		return $this->m_useEnDefaultAliases ?
-		       $this->m_DatatypeAliases + SMWLanguage::$enDatatypeAliases :
+		       $this->m_DatatypeAliases + self::$enDatatypeAliases :
 		       $this->m_DatatypeAliases;
 	}
 
@@ -176,7 +176,7 @@ abstract class SMWLanguage {
 	 */
 	function getPropertyAliases() {
 		return $this->m_useEnDefaultAliases ?
-		       $this->m_SpecialPropertyAliases + SMWLanguage::$enPropertyAliases :
+		       $this->m_SpecialPropertyAliases + self::$enPropertyAliases :
 		       $this->m_SpecialPropertyAliases;
 	}
 
@@ -192,8 +192,8 @@ abstract class SMWLanguage {
 		if ( isset( $this->m_SpecialPropertyAliases[$propName] ) ) {
 			return $this->m_SpecialPropertyAliases[$propName];
 		}
-		if ( $this->m_useEnDefaultAliases && isset( SMWLanguage::$enPropertyAliases[$propName] ) ) {
-			return SMWLanguage::$enPropertyAliases[$propName];
+		if ( $this->m_useEnDefaultAliases && isset( self::$enPropertyAliases[$propName] ) ) {
+			return self::$enPropertyAliases[$propName];
 		}
 		return null;
 	}

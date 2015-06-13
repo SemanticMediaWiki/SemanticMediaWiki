@@ -41,8 +41,8 @@ class SMWSpecialBrowse extends SpecialPage {
 		global $smwgBrowseShowAll;
 		parent::__construct( 'Browse', '', true, false, 'default', true );
 		if ( $smwgBrowseShowAll ) {
-			SMWSpecialBrowse::$incomingvaluescount = 21;
-			SMWSpecialBrowse::$incomingpropertiescount = - 1;
+			self::$incomingvaluescount = 21;
+			self::$incomingpropertiescount = - 1;
 		}
 	}
 
@@ -180,7 +180,7 @@ class SMWSpecialBrowse extends SpecialPage {
 
 			$values = $data->getPropertyValues( $diProperty );
 
-			if ( $incoming && ( count( $values ) >= SMWSpecialBrowse::$incomingvaluescount ) ) {
+			if ( $incoming && ( count( $values ) >= self::$incomingvaluescount ) ) {
 				$moreIncoming = true;
 				array_pop( $values );
 			} else {
@@ -304,10 +304,10 @@ class SMWSpecialBrowse extends SpecialPage {
 		global $smwgBrowseShowAll;
 		if ( !$smwgBrowseShowAll ) {
 			if ( ( $this->offset > 0 ) || $more ) {
-				$offset = max( $this->offset - SMWSpecialBrowse::$incomingpropertiescount + 1, 0 );
+				$offset = max( $this->offset - self::$incomingpropertiescount + 1, 0 );
 				$html .= ( $this->offset == 0 ) ? wfMessage( 'smw_result_prev' )->text():
 					     $this->linkHere( wfMessage( 'smw_result_prev' )->text(), $this->showoutgoing, true, $offset );
-				$offset = $this->offset + SMWSpecialBrowse::$incomingpropertiescount - 1;
+				$offset = $this->offset + self::$incomingpropertiescount - 1;
 				// @todo FIXME: i18n patchwork.
 				$html .= " &#160;&#160;&#160;  <strong>" . wfMessage( 'smw_result_results' )->text() . " " . ( $this->offset + 1 ) .
 						 " – " . ( $offset ) . "</strong>  &#160;&#160;&#160; ";
@@ -354,14 +354,14 @@ class SMWSpecialBrowse extends SpecialPage {
 		$indata = new SMWSemanticData( $this->subject->getDataItem() );
 		$options = new SMWRequestOptions();
 		$options->sort = true;
-		$options->limit = SMWSpecialBrowse::$incomingpropertiescount;
+		$options->limit = self::$incomingpropertiescount;
 		if ( $this->offset > 0 ) {
 			$options->offset = $this->offset;
 		}
 
 		$inproperties = \SMW\StoreFactory::getStore()->getInProperties( $this->subject->getDataItem(), $options );
 
-		if ( count( $inproperties ) == SMWSpecialBrowse::$incomingpropertiescount ) {
+		if ( count( $inproperties ) == self::$incomingpropertiescount ) {
 			$more = true;
 			array_pop( $inproperties ); // drop the last one
 		} else {
@@ -370,7 +370,7 @@ class SMWSpecialBrowse extends SpecialPage {
 
 		$valoptions = new SMWRequestOptions();
 		$valoptions->sort = true;
-		$valoptions->limit = SMWSpecialBrowse::$incomingvaluescount;
+		$valoptions->limit = self::$incomingvaluescount;
 
 		foreach ( $inproperties as $property ) {
 			$values = \SMW\StoreFactory::getStore()->getPropertySubjects( $property, $this->subject->getDataItem(), $valoptions );

@@ -37,7 +37,7 @@ class SMWQuery {
 
 	public $sort = false;
 	public $sortkeys = array(); // format: "Property key" => "ASC" / "DESC" (note: order of entries also matters)
-	public $querymode = SMWQuery::MODE_INSTANCES;
+	public $querymode = self::MODE_INSTANCES;
 
 	private $limit;
 	private $offset = 0;

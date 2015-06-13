@@ -187,7 +187,7 @@ class SMWDITime extends SMWDataItem {
 		}
 
 		return new self(
-			SMWDITime::CM_GREGORIAN,
+			self::CM_GREGORIAN,
 			substr( $timestamp, 0, 4 ),
 			substr( $timestamp, 4, 2 ),
 			substr( $timestamp, 6, 2 ),

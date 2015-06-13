@@ -698,7 +698,7 @@ class SMWQueryProcessor {
 
 		if ( array_key_exists( $format, $GLOBALS['smwgResultFormats'] ) ) {
 			return ParamDefinition::getCleanDefinitions(
-				SMWQueryProcessor::getResultPrinter( $format )->getParamDefinitions( SMWQueryProcessor::getParameters() )
+				self::getResultPrinter( $format )->getParamDefinitions( self::getParameters() )
 			);
 		} else {
 			return array();

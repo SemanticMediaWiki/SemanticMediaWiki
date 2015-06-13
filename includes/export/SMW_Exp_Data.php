@@ -129,7 +129,7 @@ class SMWExpData implements Element {
 
 		$result->addPropertyObjectValue(
 			SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'rest' ),
-			SMWExpData::makeCollection( $elements )
+			self::makeCollection( $elements )
 		);
 
 		return $result;

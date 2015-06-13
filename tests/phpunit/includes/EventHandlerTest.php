@@ -85,7 +85,8 @@ class EventHandlerTest extends \PHPUnit_Framework_TestCase {
 				$this->anything() );
 
 		$instance = new EventHandler( $eventDispatcher );
-		$instance->addCallbackListener( 'foo', function (){} );
+		$instance->addCallbackListener( 'foo', function (){
+		} );
 	}
 
 }
