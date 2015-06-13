@@ -404,7 +404,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 						),
 						wfMessage( 'smw_ask_hidequery' )->text()
 					) .
-					' | ' . SMWAskPage::getEmbedToggle() .
+					' | ' . self::getEmbedToggle() .
 					' | <a href="' . wfMessage( 'smw_ask_doculink' )->escaped() . '">' . wfMessage( 'smw_ask_help' )->escaped() . '</a>' .
 				"\n</form>";
 		} else { // if $this->m_editquery == false
@@ -418,7 +418,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 					),
 					wfMessage( 'smw_ask_editquery' )->text()
 				) .
-				'| ' . SMWAskPage::getEmbedToggle() .
+				'| ' . self::getEmbedToggle() .
 				'</p>';
 		}
 		//show|hide inline embed code

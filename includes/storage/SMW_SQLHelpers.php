@@ -147,18 +147,18 @@ class SMWSQLHelpers {
 		// that differs from false, it's an obsolete one that should be removed.
 		foreach ( $currentFields as $fieldName => $value ) {
 			if ( $value !== false ) {
-				SMWSQLHelpers::reportProgress( "   ... deleting obsolete field $fieldName ... ", $reportTo );
+				self::reportProgress( "   ... deleting obsolete field $fieldName ... ", $reportTo );
 
 				if ( $isPostgres ) {
 					$db->query( 'ALTER TABLE "' . $tableName . '" DROP COLUMN "' . $fieldName . '"', __METHOD__ );
 				} elseif ( $wgDBtype == 'sqlite' ) {
 					// DROP COLUMN not supported in Sqlite3
-					SMWSQLHelpers::reportProgress( "   ... deleting obsolete field $fieldName not possible in SQLLite ... you could delete and reinitialize the tables to remove obsolete data, or just keep it ... ", $reportTo );
+					self::reportProgress( "   ... deleting obsolete field $fieldName not possible in SQLLite ... you could delete and reinitialize the tables to remove obsolete data, or just keep it ... ", $reportTo );
 				} else {
 					$db->query( "ALTER TABLE $tableName DROP COLUMN `$fieldName`", __METHOD__ );
 				}
 
-				SMWSQLHelpers::reportProgress( "done.\n", $reportTo );
+				self::reportProgress( "done.\n", $reportTo );
 			}
 		}
 	}

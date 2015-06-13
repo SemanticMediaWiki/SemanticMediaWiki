@@ -64,7 +64,7 @@ class QuerySegment {
 	/**
 	 * @var integer
 	 */
-	public $type = QuerySegment::Q_TABLE;
+	public $type = self::Q_TABLE;
 
 	/**
 	 * @var string
