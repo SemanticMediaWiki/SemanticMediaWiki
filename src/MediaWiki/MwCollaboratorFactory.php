@@ -62,10 +62,10 @@ class MwCollaboratorFactory {
 	/**
 	 * @since 2.1
 	 *
-	 * @return MagicWordFinder
+	 * @return MagicWordsFinder
 	 */
-	public function newMagicWordFinder() {
-		return new MagicWordFinder();
+	public function newMagicWordsFinder() {
+		return new MagicWordsFinder();
 	}
 
 	/**

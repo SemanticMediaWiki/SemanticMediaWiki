@@ -222,7 +222,7 @@ class ApplicationFactory {
 
 		return new InTextAnnotationParser(
 			$parserData,
-			$mwCollaboratorFactory->newMagicWordFinder(),
+			$mwCollaboratorFactory->newMagicWordsFinder(),
 			$mwCollaboratorFactory->newRedirectTargetFinder()
 		);
 	}

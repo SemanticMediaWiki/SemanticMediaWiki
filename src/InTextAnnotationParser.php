@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use SMW\MediaWiki\MagicWordFinder;
+use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMWOutputs;
 use Title;
@@ -30,17 +30,17 @@ class InTextAnnotationParser {
 	/**
 	 * @var ParserData
 	 */
-	protected $parserData;
+	private $parserData;
 
 	/**
-	 * @var MagicWordFinder
+	 * @var MagicWordsFinder
 	 */
-	protected $magicWordFinder;
+	private $magicWordsFinder;
 
 	/**
 	 * @var RedirectTargetFinder
 	 */
-	protected $redirectTargetFinder;
+	private $redirectTargetFinder;
 
 	/**
 	 * @var DataValueFactory
@@ -73,12 +73,12 @@ class InTextAnnotationParser {
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
-	 * @param MagicWordFinder $magicWordFinder
+	 * @param MagicWordsFinder $magicWordsFinder
 	 * @param RedirectTargetFinder $redirectTargetFinder
 	 */
-	public function __construct( ParserData $parserData, MagicWordFinder $magicWordFinder, RedirectTargetFinder $redirectTargetFinder ) {
+	public function __construct( ParserData $parserData, MagicWordsFinder $magicWordsFinder, RedirectTargetFinder $redirectTargetFinder ) {
 		$this->parserData = $parserData;
-		$this->magicWordFinder = $magicWordFinder;
+		$this->magicWordsFinder = $magicWordsFinder;
 		$this->redirectTargetFinder = $redirectTargetFinder;
 		$this->dataValueFactory = DataValueFactory::getInstance();
 		$this->applicationFactory = ApplicationFactory::getInstance();
@@ -320,7 +320,7 @@ class InTextAnnotationParser {
 
 		$words = array();
 
-		$this->magicWordFinder->setOutput( $this->parserData->getOutput() );
+		$this->magicWordsFinder->setOutput( $this->parserData->getOutput() );
 
 		$magicWords = array(
 			'SMW_NOFACTBOX',
@@ -330,10 +330,10 @@ class InTextAnnotationParser {
 		Hooks::run( 'SMW::Parser::BeforeMagicWordsFinder', array( &$magicWords ) );
 
 		foreach ( $magicWords as $magicWord ) {
-			$words = $words + $this->magicWordFinder->matchAndRemove( $magicWord, $text );
+			$words[] = $this->magicWordsFinder->findMagicWordInText( $magicWord, $text );
 		}
 
-		$this->magicWordFinder->pushMagicWordsToParserOutput( $words );
+		$this->magicWordsFinder->pushMagicWordsToParserOutput( $words );
 
 		return $words;
 	}

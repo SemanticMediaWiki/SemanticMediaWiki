@@ -350,12 +350,12 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$magicWordFinder = $this->getMockBuilder( '\SMW\MediaWiki\MagicWordFinder' )
+		$magicWordsFinder = $this->getMockBuilder( '\SMW\MediaWiki\MagicWordsFinder' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$magicWordFinder->expects( $this->once() )
-			->method( 'matchAndRemove' )
+		$magicWordsFinder->expects( $this->once() )
+			->method( 'findMagicWordInText' )
 			->with(
 				$this->equalTo( 'Foo' ),
 				$this->anything() )
@@ -366,7 +366,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->getMock();
 
 		$inTextAnnotationParser = $this->getMockBuilder( '\SMW\InTextAnnotationParser' )
-			->setConstructorArgs( array( $parserData, $magicWordFinder, $redirectTargetFinder ) )
+			->setConstructorArgs( array( $parserData, $magicWordsFinder, $redirectTargetFinder ) )
 			->setMethods( null )
 			->getMock();
 

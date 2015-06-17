@@ -3,23 +3,19 @@
 namespace SMW\Test;
 
 use SMW\Tests\Utils\Validators\SemanticDataValidator;
-
 use SMW\InTextAnnotationParser;
-use SMW\MediaWiki\MagicWordFinder;
+use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
-
 use SMW\Settings;
 use SMW\ParserData;
 use SMW\ApplicationFactory;
-
 use Title;
 use ParserOutput;
 
 /**
  * @covers \SMW\InTextAnnotationParser
  *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -92,7 +88,7 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 
 		$instance = new InTextAnnotationParser(
 			$parserData,
-			new MagicWordFinder(),
+			new MagicWordsFinder(),
 			new RedirectTargetFinder()
 		);
 
