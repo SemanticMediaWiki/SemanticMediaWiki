@@ -413,7 +413,7 @@ label.smw-form-checkbox {
 /* Thanks to the bootstrap css*/
 .smw-callout {
 	padding: 10px;
-	margin: 20px 0;
+	margin: 0.5em 0;
 	border: 1px solid #eee;
 	border-left-width: 5px;
 	border-radius: 3px;
