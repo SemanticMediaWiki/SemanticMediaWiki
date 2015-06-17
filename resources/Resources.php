@@ -14,9 +14,11 @@ namespace SMW;
  * @author mwjames
  */
 
+$pathParts = ( explode( DIRECTORY_SEPARATOR . 'extensions' . DIRECTORY_SEPARATOR, __DIR__, 2 ) );
+
 $moduleTemplate = array(
 	'localBasePath' => __DIR__,
-	'remoteExtPath' => end( ( explode( DIRECTORY_SEPARATOR . 'extensions' . DIRECTORY_SEPARATOR, __DIR__, 2 ) ) ),
+	'remoteExtPath' => end( $pathParts ),
 	'group' => 'ext.smw'
 );
 
