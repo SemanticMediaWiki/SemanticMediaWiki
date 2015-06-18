@@ -2,28 +2,26 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use SMW\MediaWiki\MagicWordFinder;
-
+use SMW\MediaWiki\MagicWordsFinder;
 use ParserOutput;
 
 /**
- * @covers \SMW\MediaWiki\MagicWordFinder
+ * @covers \SMW\MediaWiki\MagicWordsFinder
  *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since   2.0
  *
  * @author mwjames
  */
-class MagicWordFinderTest extends \PHPUnit_Framework_TestCase {
+class MagicWordsFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\MagicWordFinder',
-			new MagicWordFinder()
+			'\SMW\MediaWiki\MagicWordsFinder',
+			new MagicWordsFinder()
 		);
 
 		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
@@ -31,35 +29,51 @@ class MagicWordFinderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\MagicWordFinder',
-			new MagicWordFinder( $parserOutput )
+			'\SMW\MediaWiki\MagicWordsFinder',
+			new MagicWordsFinder( $parserOutput )
 		);
 	}
 
 	/**
 	 * @dataProvider magicWordsProvider
 	 */
-	public function testMatchAndRemove( $magicWord, $text, $expectedText, $expectedWords ) {
+	public function testFindMagicWordInText( $magicWord, $text, $expectedText, $expectedWord ) {
 
-		$instance = new MagicWordFinder();
-		$words = $instance->matchAndRemove( $magicWord, $text );
+		$instance = new MagicWordsFinder();
+		$word = $instance->findMagicWordInText( $magicWord, $text );
 
-		$this->assertInternalType( 'array', $words );
-		$this->assertEquals( $expectedWords, $words );
-		$this->assertEquals( $expectedText, $text );
+		$this->assertInternalType(
+			'string',
+			$word
+		);
+
+		$this->assertEquals(
+			$expectedWord,
+			$word
+		);
+
+		$this->assertEquals(
+			$expectedText,
+			$text
+		);
 	}
 
 	public function testSetGetMagicWords() {
 
-		$this->assertMagicWord(
-			new MagicWordFinder( new ParserOutput() ),
-			array( 'Foo' )
+		$instance = new MagicWordsFinder(
+			new ParserOutput()
+		);
+
+		$this->assertMagicWordFromParserOutput(
+			$instance,
+			array( 'Foo', '', 'Bar' ),
+			array( 'Foo', 'Bar' )
 		);
 	}
 
 	public function testSetGetMagicWordsOnLegacyStorage() {
 
-		$instance = $this->getMockBuilder( '\SMW\MediaWiki\MagicWordFinder' )
+		$instance = $this->getMockBuilder( '\SMW\MediaWiki\MagicWordsFinder' )
 			->disableOriginalConstructor()
 			->setMethods( array( 'hasExtensionData' ) )
 			->getMock();
@@ -68,20 +82,25 @@ class MagicWordFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'hasExtensionData' )
 			->will( $this->returnValue( false ) );
 
-		$this->assertMagicWord(
-			$instance->setOutput( new ParserOutput() ),
-			array( 'Foo' )
+		$instance->setOutput( new ParserOutput() );
+
+		$this->assertMagicWordFromParserOutput(
+			$instance,
+			array( 'Foo', '', 'Bar' ),
+			array( 'Foo', 'Bar' )
 		);
 	}
 
-	protected function assertMagicWord( $instance, $magicWord ) {
+	protected function assertMagicWordFromParserOutput( $instance, $magicWord, $expectedMagicWords ) {
 
-		$this->assertEmpty( $instance->getMagicWords() );
+		$this->assertEmpty(
+			$instance->getMagicWords()
+		);
 
 		$instance->pushMagicWordsToParserOutput( $magicWord );
 
 		$this->assertEquals(
-			$magicWord,
+			$expectedMagicWords,
 			$instance->getMagicWords()
 		);
 	}
@@ -97,21 +116,21 @@ class MagicWordFinderTest extends \PHPUnit_Framework_TestCase {
 			'SMW_NOFACTBOX',
 			'Lorem ipsum dolor sit amet consectetuer auctor at quis',
 			'Lorem ipsum dolor sit amet consectetuer auctor at quis',
-			array()
+			''
 		);
 
 		$provider[] = array(
 			'SMW_NOFACTBOX',
 			'Lorem ipsum dolor sit __NOFACTBOX__ amet consectetuer auctor at quis',
 			'Lorem ipsum dolor sit  amet consectetuer auctor at quis',
-			array( 'SMW_NOFACTBOX' )
+			'SMW_NOFACTBOX'
 		);
 
 		$provider[] = array(
 			'SMW_SHOWFACTBOX',
 			'Lorem ipsum dolor __NOFACTBOX__ sit amet consectetuer auctor at quis __SHOWFACTBOX__',
 			'Lorem ipsum dolor __NOFACTBOX__ sit amet consectetuer auctor at quis ',
-			array( 'SMW_SHOWFACTBOX' )
+			'SMW_SHOWFACTBOX'
 		);
 
 		return $provider;

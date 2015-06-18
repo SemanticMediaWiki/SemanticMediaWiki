@@ -4,7 +4,7 @@ namespace SMW\Tests;
 
 use SMW\Tests\Utils\Validators\SemanticDataValidator;
 
-use SMW\MediaWiki\MagicWordFinder;
+use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 
 use SMW\InTextAnnotationParser;
@@ -63,7 +63,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$instance =	new InTextAnnotationParser(
 			new ParserData( $title, $parserOutput ),
-			new MagicWordFinder(),
+			new MagicWordsFinder(),
 			$redirectTargetFinder
 		);
 
@@ -83,11 +83,11 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			new ParserOutput()
 		);
 
-		$magicWordFinder = new MagicWordFinder( $parserData->getOutput() );
+		$magicWordsFinder = new MagicWordsFinder( $parserData->getOutput() );
 
 		$instance = new InTextAnnotationParser(
 			$parserData,
-			$magicWordFinder,
+			$magicWordsFinder,
 			new RedirectTargetFinder()
 		);
 
@@ -95,7 +95,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$magicWordFinder->getMagicWords()
+			$magicWordsFinder->getMagicWords()
 		);
 	}
 
@@ -111,7 +111,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new InTextAnnotationParser(
 			$parserData,
-			new MagicWordFinder(),
+			new MagicWordsFinder(),
 			new RedirectTargetFinder()
 		);
 
@@ -165,7 +165,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new InTextAnnotationParser(
 			$parserData,
-			new MagicWordFinder(),
+			new MagicWordsFinder(),
 			$redirectTargetFinder
 		);
 
@@ -209,7 +209,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new InTextAnnotationParser(
 			$parserData,
-			new MagicWordFinder(),
+			new MagicWordsFinder(),
 			$redirectTargetFinder
 		);
 
@@ -231,7 +231,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new InTextAnnotationParser(
 			$parserData,
-			new MagicWordFinder(),
+			new MagicWordsFinder(),
 			new RedirectTargetFinder()
 		);
 
@@ -456,14 +456,14 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			NS_HELP,
 			'Lorem ipsum dolor [[Foo::dictumst cursus]] facilisi __NOFACTBOX__ __SHOWFACTBOX__',
-			array( 'SMW_NOFACTBOX' )
+			array( 'SMW_NOFACTBOX', 'SMW_SHOWFACTBOX' )
 		);
 
 		// #3 __SHOWFACTBOX__, __NOFACTBOX__
 		$provider[] = array(
 			NS_HELP,
 			'Lorem ipsum dolor [[Foo::dictumst cursus]] facilisi __SHOWFACTBOX__ __NOFACTBOX__',
-			array( 'SMW_NOFACTBOX' )
+			array( 'SMW_NOFACTBOX', 'SMW_SHOWFACTBOX' )
 		);
 		return $provider;
 	}

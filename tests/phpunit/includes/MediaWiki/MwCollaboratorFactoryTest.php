@@ -70,7 +70,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructMagicWordFinder() {
+	public function testCanConstructMagicWordsFinder() {
 
 		$applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
 			->disableOriginalConstructor()
@@ -79,8 +79,8 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new MwCollaboratorFactory( $applicationFactory );
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\MagicWordFinder',
-			$instance->newMagicWordFinder()
+			'\SMW\MediaWiki\MagicWordsFinder',
+			$instance->newMagicWordsFinder()
 		);
 	}
 

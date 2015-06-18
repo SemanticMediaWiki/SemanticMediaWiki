@@ -11,7 +11,7 @@ use ParserOutput;
  *
  * @author mwjames
  */
-class MagicWordFinder {
+class MagicWordsFinder {
 
 	/**
 	 * @var ParserOutput
@@ -40,27 +40,24 @@ class MagicWordFinder {
 	}
 
 	/**
-	 * Remove relevant SMW magic words from the given text and return
-	 * an array of the names of all discovered magic words.
+	 * Find the magic word and have it removed from the text
 	 *
 	 * @since 2.0
 	 *
 	 * @param $magicWord
 	 * @param &$text
 	 *
-	 * @return array
+	 * @return string
 	 */
-	public function matchAndRemove( $magicWord, &$text ) {
-
-		$words = array();
+	public function findMagicWordInText( $magicWord, &$text ) {
 
 		$mw = MagicWord::get( $magicWord );
 
 		if ( $mw->matchAndRemove( $text ) ) {
-			$words[] = $magicWord;
+			return $magicWord;
 		}
 
-		return $words;
+		return '';
 	}
 
 	/**
@@ -69,6 +66,9 @@ class MagicWordFinder {
 	 * @param array $words
 	 */
 	public function pushMagicWordsToParserOutput( array $words ) {
+
+		// Filter empty lines
+		$words = array_values( array_filter( $words ) );
 
 		if ( $this->hasExtensionData() ) {
 			return $this->parserOutput->setExtensionData( 'smwmagicwords', $words );
