@@ -382,6 +382,25 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 		$inTextAnnotationParser->parse( $text );
 	}
 
+	public function testRegisteredAddCustomFixedPropertyTables() {
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( null )
+			->getMock();
+
+		$this->mwHooksHandler->register( 'SMW::SQLStore::AddCustomFixedPropertyTables', function( &$customFixedProperties ) {
+			$customFixedProperties['Foo'] = '_Bar';
+
+			return true;
+		} );
+
+		$this->assertEquals(
+			'smw_fpt_bar',
+			$store->findPropertyTableID( new \SMW\DIProperty( 'Foo' ) )
+		);
+	}
+
 	public function storeClassProvider() {
 
 		$provider[] = array( '\SMWSQLStore3' );
