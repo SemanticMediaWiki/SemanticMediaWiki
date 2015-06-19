@@ -67,6 +67,11 @@ class DIWikiPage extends SMWDataItem {
 			throw new DataItemException( "Given namespace '$namespace' is not an integer." );
 		}
 
+		// Check for a potential fragment such as Foo#Bar, Bar#_49c8ab
+		if ( strpos( $dbkey, '#' ) !== false ) {
+			list( $dbkey, $subobjectname ) = explode( '#', $dbkey );
+		}
+
 		$this->m_dbkey = $dbkey;
 		$this->m_namespace = (int)$namespace; // really make this an integer
 		$this->m_interwiki = $interwiki;
