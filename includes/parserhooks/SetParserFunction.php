@@ -102,7 +102,7 @@ class SetParserFunction {
 			->addFromArray( $parameters->getErrors() )
 			->getHtml();
 
-		return array( $html, 'noparse' => true, 'isHTML' => true );
+		return array( $html, 'noparse' => true, 'isHTML' => false );
 	}
 
 	private function addFieldsToTemplate( $template, $dataValue, $property, $value, &$count ) {
