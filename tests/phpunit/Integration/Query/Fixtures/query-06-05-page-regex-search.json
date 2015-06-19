@@ -2,28 +2,28 @@
 	"description": "Regex search pattern for page type values",
 	"properties": [
 		{
-			"name": "Has page",
+			"name": "Has regexpage",
 			"contents": "[[Has type::Page]]"
 		}
 	],
 	"subjects": [
 		{
 			"name": "Page-1-with-spaces",
-			"contents": "[[Has page::Annotation test with spaces]]"
+			"contents": "[[Has regexpage::Annotation test with spaces]]"
 		},
 		{
 			"name": "Page-2-with-spaces",
-			"contents": "[[Has page::Annotation text with spaces]]"
+			"contents": "[[Has regexpage::Annotation text with spaces]]"
 		},
 		{
 			"name": "Page-3-without-spaces",
-			"contents": "[[Has page::AnnotationTestWithoutSpaces]]"
+			"contents": "[[Has regexpage::AnnotationTestWithoutSpaces]]"
 		}
 	],
 	"query-testcases": [
 		{
 			"about": "#0",
-			"condition": "[[Has page::~Annotation te*]]",
+			"condition": "[[Has regexpage::~Annotation te*]]",
 			"printouts" : [],
 			"parameters" : {
 				"limit" : "10"
@@ -38,7 +38,7 @@
 		},
 		{
 			"about": "#1",
-			"condition": "[[Has page::~Annotation tes*]]",
+			"condition": "[[Has regexpage::~Annotation tes*]]",
 			"printouts" : [],
 			"parameters" : {
 				"limit" : "10"
@@ -52,7 +52,7 @@
 		},
 		{
 			"about": "#2",
-			"condition": "[[Has page::~An??tation*]]",
+			"condition": "[[Has regexpage::~An??tation*]]",
 			"printouts" : [],
 			"parameters" : {
 				"limit" : "10"
@@ -68,7 +68,7 @@
 		},
 		{
 			"about": "#3",
-			"condition": "[[Has page::~Annotation*]] [[Has page::!~Annotation tex*]]",
+			"condition": "[[Has regexpage::~Annotation*]] [[Has regexpage::!~Annotation tex*]]",
 			"printouts" : [],
 			"parameters" : {
 				"limit" : "10"
@@ -83,7 +83,7 @@
 		},
 		{
 			"about": "#4",
-			"condition": "[[Has page::~Annotation tes*]] OR [[Has page::~Annotation tex*]]",
+			"condition": "[[Has regexpage::~Annotation tes*]] OR [[Has regexpage::~Annotation tex*]]",
 			"printouts" : [],
 			"parameters" : {
 				"limit" : "10"
@@ -98,7 +98,7 @@
 		},
 		{
 			"about": "#5",
-			"condition": "[[Has page::~Annotation te?t with spaces]]",
+			"condition": "[[Has regexpage::~Annotation te?t with spaces]]",
 			"printouts" : [],
 			"parameters" : {
 				"limit" : "10"
@@ -113,7 +113,7 @@
 		},
 		{
 			"about": "#6",
-			"condition": "[[Has page::+]][[Has page::!~Annotation te?t with spaces]]",
+			"condition": "[[Has regexpage::+]][[Has regexpage::!~Annotation te?t with spaces]]",
 			"printouts" : [],
 			"parameters" : {
 				"limit" : "10"

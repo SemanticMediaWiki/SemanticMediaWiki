@@ -157,7 +157,15 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 		$addedCustomTypeSignatures = false;
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
-			$diHandler = $this->store->getDataItemHandlerForDIType( $proptable->getDiType() );
+
+			// Only extensions that aren't setup correctly can force an exception
+			// and to avoid a failure during setup, ensure that standard tables
+			// are correctly initialized otherwise SMW can't recover
+			try {
+				$diHandler = $this->store->getDataItemHandlerForDIType( $proptable->getDiType() );
+			} catch ( \Exception $e ) {
+				continue;
+			}
 
 			// Prepare indexes. By default, property-value tables
 			// have the following indexes:
