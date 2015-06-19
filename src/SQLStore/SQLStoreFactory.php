@@ -241,9 +241,9 @@ class SQLStoreFactory {
 	/**
 	 * @since 2.3
 	 *
-	 * @return ByBlobStoreIntermediaryValueLookup
+	 * @return CachedValueLookupStore
 	 */
-	public function newByBlobStoreIntermediaryValueLookup() {
+	public function newCachedValueLookupStore() {
 
 		$circularReferenceGuard = new CircularReferenceGuard( 'vl:store' );
 		$circularReferenceGuard->setMaxRecursionDepth( 2 );
@@ -252,12 +252,12 @@ class SQLStoreFactory {
 
 		$blobStore = new BlobStore(
 			'smw:vl:store',
-			$cacheFactory->newMediaWikiCompositeCache( $cacheFactory->getBlobCacheType() )
+			$cacheFactory->newMediaWikiCompositeCache( $GLOBALS['smwgValueLookupCacheType'] )
 		);
 
 		// If CACHE_NONE is selected, disable the usage
 		$blobStore->setUsageState(
-			$cacheFactory->getBlobCacheType() !== CACHE_NONE
+			$GLOBALS['smwgValueLookupCacheType'] !== CACHE_NONE
 		);
 
 		$blobStore->setExpiryInSeconds(
@@ -268,22 +268,16 @@ class SQLStoreFactory {
 			$cacheFactory->getCachePrefix()
 		);
 
-		$byBlobStoreIntermediaryValueLookup = new ByBlobStoreIntermediaryValueLookup(
+		$cachedValueLookupStore = new CachedValueLookupStore(
 			$this->store,
 			$blobStore
 		);
 
-		$byBlobStoreIntermediaryValueLookup->setCircularReferenceGuard(
+		$cachedValueLookupStore->setCircularReferenceGuard(
 			$circularReferenceGuard
 		);
 
-		// Register blob instance with the event handler because only at this point
-		// we create and know about 'smw:vl:store'
-		EventHandler::getInstance()->addCallbackListener( 'blobstore.drop', function() use( $blobStore ) {
-			$blobStore->drop();
-		} );
-
-		return $byBlobStoreIntermediaryValueLookup;
+		return $cachedValueLookupStore;
 	}
 
 	private function newTemporaryIdTableCreator() {

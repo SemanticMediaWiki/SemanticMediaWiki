@@ -58,6 +58,13 @@ class SMWSQLStore3Readers {
 			true
 		);
 
+		// Ensures that a cached item to contain an expected sortKey when
+		// for example the ID was just created and the sortKey from the DB
+		// is empty otherwise the DB wins over the invoked sortKey
+		if ( !$sortKey ) {
+			$sortKey = $subject->getSortKey();
+		}
+
 		$subject->setSortKey( $sortKey );
 
 		if ( $sid == 0 ) {
