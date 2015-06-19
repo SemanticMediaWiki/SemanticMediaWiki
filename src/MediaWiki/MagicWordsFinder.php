@@ -67,6 +67,8 @@ class MagicWordsFinder {
 	 */
 	public function pushMagicWordsToParserOutput( array $words ) {
 
+		$this->parserOutput->setTimestamp( wfTimestampNow() );
+
 		// Filter empty lines
 		$words = array_values( array_filter( $words ) );
 
