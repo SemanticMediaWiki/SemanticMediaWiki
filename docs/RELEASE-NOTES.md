@@ -26,6 +26,7 @@ This is not a release yet.
 * #1054 Fixed behaviour for `#REDIRECT` to create the same data reference as `Special:MovePage`
 * #1059 Fixed usage of `[[Has page::~*a*||~*A*]]` for `SPARQLStore` when `Has page` is declared as page type 
 * #1060 Fixed usage of `(a OR b) AND (c OR d)` as query pattern for the `SQLStore`
+* #1067 Fixed return value of the `#set` parser
 
 ## Internal changes
 
