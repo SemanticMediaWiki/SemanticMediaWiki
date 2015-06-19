@@ -213,6 +213,8 @@ class ParserData {
 	 */
 	public function pushSemanticDataToParserOutput() {
 
+		$this->parserOutput->setTimestamp( wfTimestampNow() );
+
 		if ( $this->hasExtensionData() ) {
 			return $this->parserOutput->setExtensionData( 'smwdata', $this->semanticData );
 		}
@@ -224,6 +226,9 @@ class ParserData {
 	 * @since 2.1
 	 */
 	public function setSemanticDataStateToParserOutputProperty() {
+
+		$this->parserOutput->setTimestamp( wfTimestampNow() );
+
 		$this->parserOutput->setProperty(
 			'smw-semanticdata-status',
 			$this->semanticData->getProperties() !== array()
