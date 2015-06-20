@@ -4,6 +4,7 @@ namespace SMW\SQLStore;
 
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
+use Hooks;
 
 /**
  * Class that generates property table definitions
@@ -26,16 +27,21 @@ class PropertyTableDefinitionBuilder {
 	protected $fixedPropertyTableIds = array();
 
 	/**
+	 * @var string
+	 */
+	private $fixedPropertyTablePrefix = 'smw_fpt';
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param array $diType
 	 * @param array $specialProperties
-	 * @param array $fixedProperties
+	 * @param array $userDefinedFixedProperties
 	 */
-	public function __construct( array $diTypes, array $specialProperties, array $fixedProperties ) {
+	public function __construct( array $diTypes, array $specialProperties, array $userDefinedFixedProperties ) {
 		$this->diTypes = $diTypes;
 		$this->specialProperties = $specialProperties;
-		$this->fixedProperties = $fixedProperties;
+		$this->userDefinedFixedProperties = $userDefinedFixedProperties;
 	}
 
 	/**
@@ -43,13 +49,29 @@ class PropertyTableDefinitionBuilder {
 	 */
 	public function doBuild() {
 
-		$this->buildPropertyTablesForDiTypes( $this->diTypes );
-		$this->buildPropertyTablesForSpecialProperties( $this->specialProperties );
-		$this->buildPropertyTablesForFixedProperties( $this->fixedProperties );
+		$this->addTableDefinitionForDiTypes( $this->diTypes );
 
-		wfRunHooks( 'SMW::SQLStore::updatePropertyTableDefinitions', array( &$this->propertyTables ) );
+		$this->addTableDefinitionForFixedProperties(
+			$this->specialProperties
+		);
 
-		$this->buildFixedPropertyTableIdIndex( $this->propertyTables );
+		$customFixedProperties = array();
+
+		Hooks::run( 'SMW::SQLStore::AddCustomFixedPropertyTables', array( &$customFixedProperties ) );
+
+		$this->addTableDefinitionForFixedProperties(
+			$customFixedProperties
+		);
+
+		$this->addRedirectTableDefinition();
+
+		$this->addTableDefinitionForUserDefinedFixedProperties(
+			$this->userDefinedFixedProperties
+		);
+
+		Hooks::run( 'SMW::SQLStore::updatePropertyTableDefinitions', array( &$this->propertyTables ) );
+
+		$this->createFixedPropertyTableIdIndex();
 	}
 
 	/**
@@ -60,7 +82,7 @@ class PropertyTableDefinitionBuilder {
 	 * @return string
 	 */
 	public function getTablePrefix() {
-		return 'smw_fpt';
+		return $this->fixedPropertyTablePrefix;
 	}
 
 	/**
@@ -116,27 +138,34 @@ class PropertyTableDefinitionBuilder {
 	/**
 	 * @param array $diTypes
 	 */
-	private function buildPropertyTablesForDiTypes( array $diTypes ) {
+	private function addTableDefinitionForDiTypes( array $diTypes ) {
 		foreach( $diTypes as $tableDIType => $tableName ) {
 			$this->addPropertyTable( $tableDIType, $tableName );
 		}
 	}
 
 	/**
-	 * @param array $specialProperties
+	 * @param array $properties
 	 */
-	private function buildPropertyTablesForSpecialProperties( array $specialProperties ) {
-		foreach( $specialProperties as $propertyKey ) {
+	private function addTableDefinitionForFixedProperties( array $properties ) {
+		foreach( $properties as $propertyKey => $propetyTableSuffix ) {
+
+			// Either as plain index array containing the property key or as associated
+			// array with property key => tableSuffix
+			$propertyKey = is_int( $propertyKey ) ? $propetyTableSuffix : $propertyKey;
+
 			$this->addPropertyTable(
 				DataTypeRegistry::getInstance()->getDataItemId( DIProperty::getPredefinedPropertyTypeId( $propertyKey ) ),
-				$this->getTablePrefix() . strtolower( $propertyKey ),
+				$this->fixedPropertyTablePrefix . strtolower( $propetyTableSuffix ),
 				$propertyKey
 			);
 		}
+	}
 
+	private function addRedirectTableDefinition() {
 		// Redirect table uses another subject scheme for historic reasons
 		// TODO This should be changed if possible
-		$redirectTableName = $this->getTablePrefix() . '_redi';
+		$redirectTableName = $this->fixedPropertyTablePrefix . '_redi';
 		if ( isset( $this->propertyTables[$redirectTableName]) ) {
 			$this->propertyTables[$redirectTableName]->setUsesIdSubject( false );
 		}
@@ -148,22 +177,19 @@ class PropertyTableDefinitionBuilder {
 	 *
 	 * @param array $fixedProperties
 	 */
-	private function buildPropertyTablesForFixedProperties( array $fixedProperties ) {
+	private function addTableDefinitionForUserDefinedFixedProperties( array $fixedProperties ) {
 		foreach( $fixedProperties as $propertyKey => $tableDIType ) {
 			$this->addPropertyTable(
 				$tableDIType,
-				$this->getTablePrefix() . '_' . md5( $propertyKey ),
+				$this->fixedPropertyTablePrefix . '_' . md5( $propertyKey ),
 				$propertyKey
 			);
 		}
 	}
 
-	/**
-	 * @param array $propertyTables
-	 */
-	private function buildFixedPropertyTableIdIndex( array $propertyTables ) {
+	private function createFixedPropertyTableIdIndex() {
 
-		foreach ( $propertyTables as $tid => $propTable ) {
+		foreach ( $this->propertyTables as $tid => $propTable ) {
 			if ( $propTable->isFixedPropertyTable() ) {
 				$this->fixedPropertyTableIds[$propTable->getFixedProperty()] = $tid;
 			}
