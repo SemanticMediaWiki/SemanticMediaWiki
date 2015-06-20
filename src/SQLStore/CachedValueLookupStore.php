@@ -35,13 +35,13 @@ use RuntimeException;
  *
  * @author mwjames
  */
-class ByBlobStoreIntermediaryValueLookup {
+class CachedValueLookupStore {
 
 	/**
 	 * Update this version number when the serialization format
 	 * changes.
 	 */
-	const VERSION = '1.0';
+	const VERSION = '1.1';
 
 	/**
 	 * @var Store
@@ -52,6 +52,11 @@ class ByBlobStoreIntermediaryValueLookup {
 	 * @var BlobStore
 	 */
 	private $blobStore;
+
+	/**
+	 * @var CircularReferenceGuard
+	 */
+	private $circularReferenceGuard;
 
 	/**
 	 * @since 2.3
@@ -89,13 +94,17 @@ class ByBlobStoreIntermediaryValueLookup {
 			return $this->store->getReader()->getSemanticData( $subject, $filter );
 		}
 
-		$container = $this->blobStore->read(
-			$this->getKeyForMainSubject( $subject )
+		// Use a separate container otherwise large serializations of subobjects
+		// will decrease performance when combined with other lists
+		$sid = $this->getKeyForMainSubject(
+			$subject,
+			$subject->getSubobjectName()
 		);
+
+		$container = $this->blobStore->read( $sid );
 
 		$sdid = HashBuilder::createHashIdForContent(
 			array(
-				$subject->getSubobjectName(),
 				(array)$filter,
 				self::VERSION
 			),
@@ -119,6 +128,8 @@ class ByBlobStoreIntermediaryValueLookup {
 			$container
 		);
 
+		$this->appendToList( $sid, $subject );
+
 		return $semanticData;
 	}
 
@@ -133,8 +144,6 @@ class ByBlobStoreIntermediaryValueLookup {
 	 * @return array
 	 */
 	public function getProperties( DIWikiPage $subject, $requestOptions = null ) {
-
-		$container = array();
 
 		if ( !$this->blobStore->canUse() ) {
 			return $this->store->getReader()->getProperties( $subject, $requestOptions );
@@ -192,14 +201,18 @@ class ByBlobStoreIntermediaryValueLookup {
 			return $this->store->getReader()->getPropertyValues( $subject, $property, $requestOptions );
 		}
 
-		$container = $this->blobStore->read(
-			$this->getKeyForMainSubject( $subject )
+		// Too many subobjects in one list can kill the performance therefore split
+		// the container by subobject
+		$sid = $this->getKeyForMainSubject(
+			$subject,
+			$subject->getSubobjectName()
 		);
+
+		$container = $this->blobStore->read( $sid );
 
 		$pvid = HashBuilder::createHashIdForContent(
 			array(
 				$property->getKey(),
-				$subject->getSubobjectName(),
 				(array)$requestOptions,
 				self::VERSION
 			),
@@ -222,21 +235,111 @@ class ByBlobStoreIntermediaryValueLookup {
 			$container
 		);
 
+		$this->appendToList( $sid, $subject );
+
+		return $result;
+	}
+
+	/**
+	 * @see Store::getPropertySubjects
+	 *
+	 * @since 2.3
+	 *
+	 * @param DIWikiPage|null $subject
+	 * @param DIProperty $property
+	 * @param RequestOptions $requestOptions = null
+	 *
+	 * @return array
+	 */
+	public function getPropertySubjects( DIProperty $property, DataItem $dataItem = null, $requestOptions = null ) {
+
+		// The cache is not used for $dataItem === null (means all values for
+		// the given property are returned)
+		if ( $dataItem === null || !$dataItem instanceof DIWikiPage || !$this->blobStore->canUse() ) {
+			return $this->store->getReader()->getPropertySubjects( $property, $dataItem, $requestOptions );
+		}
+
+		// Added as linked list as we keep the container ttl different from
+		// that of the main container
+		$sid = $this->getKeyForMainSubject(
+			$dataItem,
+			'ps'
+		);
+
+		$container = $this->blobStore->read( $sid );
+
+		$psid = HashBuilder::createHashIdForContent(
+			array(
+				$property->getKey(),
+				(array)$requestOptions,
+				self::VERSION
+			),
+			'ps:'
+		);
+
+		if ( $container->has( $psid ) ) {
+			return $container->get( $psid );
+		}
+
+		$result = $this->store->getReader()->getPropertySubjects(
+			$property,
+			$dataItem,
+			$requestOptions
+		);
+
+		$container->set( $psid, $result );
+
+		// We set a short lifetime (5 min) in order to cache repeated requests but
+		// avoiding a complex invalidation during a subject update otherwise all
+		// properties of a container would require scanning and removal
+		$container->setExpiryInSeconds( 60 * 5 );
+
+		$this->blobStore->save(
+			$container
+		);
+
+		$this->appendToList( $sid, $dataItem );
+
 		return $result;
 	}
 
 	/**
 	 * Remove a cache item that appears during an alteration action (update,
 	 * change, delete) to ensure that we always have the correct set of matches.
-	 * Trying to do any complex invalidation process seems unproductive therefore
-	 * the whole object is scrapped.
 	 *
 	 * @since 2.3
 	 *
 	 * @param DIWikiPage $subject
 	 */
 	public function deleteFor( DIWikiPage $subject ) {
-		$this->blobStore->delete( $this->getKeyForMainSubject( $subject ) );
+
+		if ( !$this->blobStore->canUse() ) {
+			return null;
+		}
+
+		// Remove a redirect target subject directly
+		$redirects = $this->getSemanticData( $subject )->getPropertyValues(
+			new DIProperty( '_REDI' )
+		);
+
+		foreach ( $redirects as $redirectTarget ) {
+			$this->blobStore->delete( $this->getKeyForMainSubject(
+				$redirectTarget
+			) );
+		}
+
+		$sid = $this->getKeyForMainSubject( $subject );
+
+		// Remove all linked objects
+		$container = $this->blobStore->read( $sid );
+
+		if ( $container->has( 'list' ) ) {
+			foreach ( array_keys( $container->get( 'list' ) ) as $id ) {
+				$this->blobStore->delete( $id );
+			}
+		}
+
+		$this->blobStore->delete( $sid );
 	}
 
 	/**
@@ -280,12 +383,31 @@ class ByBlobStoreIntermediaryValueLookup {
 	 * identifier to allow it to be invalidated at once with all other subobjects
 	 * that relate to a subject
 	 */
-	private function getKeyForMainSubject( DIWikiPage $subject ) {
+	private function getKeyForMainSubject( DIWikiPage $subject, $suffix = '' ) {
 		return md5( HashBuilder::createHashIdFromSegments(
 			$subject->getDBkey(),
 			$subject->getNamespace(),
 			$subject->getInterwiki()
-		) );
+		) . $suffix );
+	}
+
+	private function appendToList( $id, $subject ) {
+
+		// Store the id with the main subject
+		$container = $this->blobStore->read(
+			$this->getKeyForMainSubject( $subject )
+		);
+
+		// Use the id as key to avoid unnecessary duplicate entries when
+		// employing append
+		$container->append(
+			'list',
+			array( $id => true )
+		);
+
+		$this->blobStore->save(
+			$container
+		);
 	}
 
 }

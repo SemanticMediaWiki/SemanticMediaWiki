@@ -561,26 +561,22 @@ $GLOBALS['smwgMainCacheType'] = CACHE_ANYTHING; // Isn't used yet
 
 ###
 # Separate cache type to allow for adding a more responsive cache layer
-# (redis, riak) to operations that require it. It is currently used by:
+# (redis, riak) when requesting value lookups from the SQLStore.
 #
-# - ByBlobStoreIntermediaryValueLookup (#1035)
-#
-# CACHE_NONE = disabled for all features that require this cache layer
+# CACHE_NONE = disabled, uses the standard SQLStore DB access for all
+# lookups
 #
 # @since 2.3
 #
-# @default: CACHE_NONE (legacy); users need to actively enable it in order
+# @default: CACHE_NONE, users need to actively enable it in order
 # to make use of it
 ##
-$GLOBALS['smwgBlobCacheType'] = CACHE_NONE;
+$GLOBALS['smwgValueLookupCacheType'] = CACHE_NONE;
 ##
 
 ###
-# While not absolute necessary (because entities will self-invalidate when a change
-# occurs) it is nevertheless possible to set a limit (in seconds) for items handled
-# by `ByBlobStoreIntermediaryValueLookup`.
-#
-# If set to 0 an item is kept until it is replaced, flushed, or dropped.
+# Declares a lifetime of a cached item for `smwgValueLookupCacheType` until it
+# is removed if not invalidated before.
 #
 # @since 2.3
 ##

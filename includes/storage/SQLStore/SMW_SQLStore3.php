@@ -134,9 +134,9 @@ class SMWSQLStore3 extends SMWStore {
 	public $m_sdstate = array();
 
 	/**
-	 * @var ByBlobStoreIntermediaryValueLookup
+	 * @var CachedValueLookupStore
 	 */
-	private $byBlobStoreIntermediaryValueLookup = null;
+	private $cachedValueLookupStore = null;
 
 	/**
 	 * @since 1.8
@@ -145,7 +145,7 @@ class SMWSQLStore3 extends SMWStore {
 		$this->smwIds = new SMWSql3SmwIds( $this );
 		$this->factory = new SQLStoreFactory( $this );
 
-		$this->byBlobStoreIntermediaryValueLookup = $this->factory->newByBlobStoreIntermediaryValueLookup();
+		$this->cachedValueLookupStore = $this->factory->newCachedValueLookupStore();
 	}
 
 	/**
@@ -221,7 +221,7 @@ class SMWSQLStore3 extends SMWStore {
 
 	public function getSemanticData( DIWikiPage $subject, $filter = false ) {
 
-		$result = $this->byBlobStoreIntermediaryValueLookup->getSemanticData(
+		$result = $this->cachedValueLookupStore->getSemanticData(
 			$subject,
 			$filter
 		);
@@ -238,7 +238,7 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	public function getPropertyValues( $subject, DIProperty $property, $requestOptions = null ) {
 
-		$result = $this->byBlobStoreIntermediaryValueLookup->getPropertyValues(
+		$result = $this->cachedValueLookupStore->getPropertyValues(
 			$subject,
 			$property,
 			$requestOptions
@@ -248,7 +248,14 @@ class SMWSQLStore3 extends SMWStore {
 	}
 
 	public function getPropertySubjects( DIProperty $property, $dataItem, $requestOptions = null ) {
-		return $this->getReader()->getPropertySubjects( $property, $dataItem, $requestOptions );
+
+		$result = $this->cachedValueLookupStore->getPropertySubjects(
+			$property,
+			$dataItem,
+			$requestOptions
+		);
+
+		return $result;
 	}
 
 	public function getAllPropertySubjects( DIProperty $property, $requestoptions = null ) {
@@ -257,7 +264,7 @@ class SMWSQLStore3 extends SMWStore {
 
 	public function getProperties( DIWikiPage $subject, $requestOptions = null ) {
 
-		$result = $this->byBlobStoreIntermediaryValueLookup->getProperties(
+		$result = $this->cachedValueLookupStore->getProperties(
 			$subject,
 			$requestOptions
 		);
@@ -283,7 +290,7 @@ class SMWSQLStore3 extends SMWStore {
 
 	public function deleteSubject( Title $subject ) {
 
-		$this->byBlobStoreIntermediaryValueLookup->deleteFor(
+		$this->cachedValueLookupStore->deleteFor(
 			DIWikiPage::newfromTitle( $subject )
 		);
 
@@ -292,7 +299,7 @@ class SMWSQLStore3 extends SMWStore {
 
 	protected function doDataUpdate( SemanticData $semanticData ) {
 
-		$this->byBlobStoreIntermediaryValueLookup->deleteFor(
+		$this->cachedValueLookupStore->deleteFor(
 			$semanticData->getSubject()
 		);
 
@@ -301,8 +308,12 @@ class SMWSQLStore3 extends SMWStore {
 
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
 
-		$this->byBlobStoreIntermediaryValueLookup->deleteFor(
+		$this->cachedValueLookupStore->deleteFor(
 			DIWikiPage::newfromTitle( $oldtitle )
+		);
+
+		$this->cachedValueLookupStore->deleteFor(
+			DIWikiPage::newfromTitle( $newtitle )
 		);
 
 		$this->getWriter()->changeTitle( $oldtitle, $newtitle, $pageid, $redirid );

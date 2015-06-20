@@ -21,24 +21,12 @@ class CacheFactory {
 	private $mainCacheType;
 
 	/**
-	 * @var string|integer
-	 */
-	private $blobCacheType;
-
-	/**
 	 * @since 2.2
 	 *
 	 * @param string|integer $mainCacheType
-	 * @param string|integer|null $blobCacheType
 	 */
-	public function __construct( $mainCacheType, $blobCacheType = null ) {
+	public function __construct( $mainCacheType ) {
 		$this->mainCacheType = $mainCacheType;
-		$this->blobCacheType = $blobCacheType;
-
-		if ( $this->blobCacheType === null ) {
-			$this->blobCacheType = $GLOBALS['smwgBlobCacheType'];
-		}
-
 	}
 
 	/**
@@ -48,15 +36,6 @@ class CacheFactory {
 	 */
 	public function getMainCacheType() {
 		return $this->mainCacheType;
-	}
-
-	/**
-	 * @since 2.3
-	 *
-	 * @return string|integer
-	 */
-	public function getBlobCacheType() {
-		return $this->blobCacheType;
 	}
 
 	/**

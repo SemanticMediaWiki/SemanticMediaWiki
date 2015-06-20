@@ -44,7 +44,7 @@
 		"onoi/message-reporter": "~1.0",
 		"onoi/cache": "~1.2",
 		"onoi/event-dispatcher": "~1.0",
-		"onoi/blob-store": "~1.0",
+		"onoi/blob-store": "~1.1",
 		"doctrine/dbal": "~2.5"
 	},
 	"require-dev": {

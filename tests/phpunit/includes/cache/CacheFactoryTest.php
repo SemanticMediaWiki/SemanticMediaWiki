@@ -42,16 +42,6 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetBlobCacheType() {
-
-		$instance = new CacheFactory( 'hash' );
-
-		$this->assertEquals(
-			'hash',
-			$instance->getBlobCacheType()
-		);
-	}
-
 	public function testGetCachePrefix() {
 
 		$instance = new CacheFactory( 'hash' );

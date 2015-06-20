@@ -2,12 +2,13 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\SQLStore\ByBlobStoreIntermediaryValueLookup;
+use SMW\SQLStore\CachedValueLookupStore;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\SemanticData;
 
 /**
- * @covers \SMW\SQLStore\ByBlobStoreIntermediaryValueLookup
+ * @covers \SMW\SQLStore\CachedValueLookupStore
  *
  * @group semantic-mediawiki
  *
@@ -16,7 +17,7 @@ use SMW\DIProperty;
  *
  * @author mwjames
  */
-class ByBlobStoreIntermediaryValueLookupTest extends \PHPUnit_Framework_TestCase {
+class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -29,8 +30,8 @@ class ByBlobStoreIntermediaryValueLookupTest extends \PHPUnit_Framework_TestCase
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\ByBlobStoreIntermediaryValueLookup',
-			new ByBlobStoreIntermediaryValueLookup( $store, $blobStore )
+			'\SMW\SQLStore\CachedValueLookupStore',
+			new CachedValueLookupStore( $store, $blobStore )
 		);
 	}
 
@@ -65,7 +66,7 @@ class ByBlobStoreIntermediaryValueLookupTest extends \PHPUnit_Framework_TestCase
 			->method( 'canUse' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new ByBlobStoreIntermediaryValueLookup(
+		$instance = new CachedValueLookupStore(
 			$store,
 			$blobStore
 		);
@@ -120,14 +121,14 @@ class ByBlobStoreIntermediaryValueLookupTest extends \PHPUnit_Framework_TestCase
 			->method( 'canUse' )
 			->will( $this->returnValue( true ) );
 
-		$blobStore->expects( $this->once() )
+		$blobStore->expects( $this->exactly( 2 ) )
 			->method( 'read' )
 			->will( $this->returnValue( $container ) );
 
-		$blobStore->expects( $this->once() )
+		$blobStore->expects( $this->exactly( 2 ) )
 			->method( 'save' );
 
-		$instance = new ByBlobStoreIntermediaryValueLookup(
+		$instance = new CachedValueLookupStore(
 			$store,
 			$blobStore
 		);
@@ -169,7 +170,7 @@ class ByBlobStoreIntermediaryValueLookupTest extends \PHPUnit_Framework_TestCase
 			->method( 'read' )
 			->will( $this->returnValue( $container ) );
 
-		$instance = new ByBlobStoreIntermediaryValueLookup(
+		$instance = new CachedValueLookupStore(
 			$store,
 			$blobStore
 		);
@@ -229,7 +230,7 @@ class ByBlobStoreIntermediaryValueLookupTest extends \PHPUnit_Framework_TestCase
 			->method( 'read' )
 			->will( $this->returnValue( $container ) );
 
-		$instance = new ByBlobStoreIntermediaryValueLookup(
+		$instance = new CachedValueLookupStore(
 			$store,
 			$blobStore
 		);
@@ -291,7 +292,7 @@ class ByBlobStoreIntermediaryValueLookupTest extends \PHPUnit_Framework_TestCase
 			->method( 'read' )
 			->will( $this->returnValue( $container ) );
 
-		$instance = new ByBlobStoreIntermediaryValueLookup(
+		$instance = new CachedValueLookupStore(
 			$store,
 			$blobStore
 		);
@@ -302,6 +303,125 @@ class ByBlobStoreIntermediaryValueLookupTest extends \PHPUnit_Framework_TestCase
 			$expected,
 			$instance->getPropertyValues( $subject, new DIProperty( 'Foobar' ) )
 		);
+	}
+
+	public function testGetPropertySubjectsFromCacheForAvailableHash() {
+
+		$expected = array(
+			new DIWikiPage( 'Bar', NS_MAIN )
+		);
+
+		$dataItem = new DIWikiPage( 'Foo', NS_MAIN );
+
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->never() )
+			->method( 'getRedirectTarget' );
+
+		$container = $this->getMockBuilder( '\Onoi\BlobStore\Container' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$container->expects( $this->once() )
+			->method( 'has' )
+			->will( $this->returnValue( true ) );
+
+		$container->expects( $this->once() )
+			->method( 'get' )
+			->with($this->stringContains( 'ps:' ) )
+			->will( $this->returnValue( $expected ) );
+
+		$blobStore = $this->getMockBuilder( '\Onoi\BlobStore\BlobStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$blobStore->expects( $this->once() )
+			->method( 'canUse' )
+			->will( $this->returnValue( true ) );
+
+		$blobStore->expects( $this->once() )
+			->method( 'read' )
+			->will( $this->returnValue( $container ) );
+
+		$instance = new CachedValueLookupStore(
+			$store,
+			$blobStore
+		);
+
+		$instance->setCircularReferenceGuard( $circularReferenceGuard );
+
+		$this->assertEquals(
+			$expected,
+			$instance->getPropertySubjects( new DIProperty( 'Foobar' ), $dataItem )
+		);
+	}
+
+	public function testDeleteFor() {
+
+		$subject = new DIWikiPage( 'Foobar', NS_MAIN, '', 'abc' );
+
+		$semanticData = new SemanticData( $subject );
+
+		$semanticData->addPropertyObjectValue(
+			new DIProperty( '_REDI' ),
+			new DIWikiPage( 'Bar', NS_MAIN )
+		);
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$container = $this->getMockBuilder( '\Onoi\BlobStore\Container' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$container->expects( $this->at( 0 ) )
+			->method( 'has' )
+			->with( $this->stringContains( 'sd:' ) )
+			->will( $this->returnValue( true ) );
+
+		$container->expects( $this->at( 1 ) )
+			->method( 'get' )
+			->with( $this->stringContains( 'sd:' ) )
+			->will( $this->returnValue( $semanticData ) );
+
+		$container->expects( $this->at( 2 ) )
+			->method( 'has' )
+			->with( $this->stringContains( 'list' ) )
+			->will( $this->returnValue( true ) );
+
+		$container->expects( $this->at( 3 ) )
+			->method( 'get' )
+			->with( $this->stringContains( 'list' ) )
+			->will( $this->returnValue( array( 'abc', '123' ) ) );
+
+		$blobStore = $this->getMockBuilder( '\Onoi\BlobStore\BlobStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$blobStore->expects( $this->any() )
+			->method( 'canUse' )
+			->will( $this->returnValue( true ) );
+
+		$blobStore->expects( $this->atLeastOnce() )
+			->method( 'read' )
+			->will( $this->returnValue( $container ) );
+
+		$blobStore->expects( $this->exactly( 4 ) )
+			->method( 'delete' );
+
+		$instance = new CachedValueLookupStore(
+			$store,
+			$blobStore
+		);
+
+		$instance->deleteFor( $subject );
 	}
 
 }
