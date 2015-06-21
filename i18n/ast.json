@@ -146,7 +146,7 @@
 	"smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|usu|usos}})",
 	"smw_purge": "Refrescar",
 	"types": "Tipos",
-	"smw_types_docu": "Lo siguiente ye una llista de tolos tipos de datos que pueden atribuise a les propiedaes.",
+	"smw_types_docu": "Lo siguiente ye una [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes llista] de tolos tipos de datos que pueden atribuise a les propiedaes.",
 	"smw-special-types-no-such-type": "El tipu de datos especificáu nun esiste",
 	"semanticstatistics": "Estadístiques semántiques",
 	"smw_semstats_text": "Esta wiki contién '''$1''' {{PLURAL:$1|valor|valores}} de propiedá, d'un total {{PLURAL:$2|'''d'una'''|de '''$2'''}} [[Special:Properties|{{PLURAL:$2|propiedá|propiedaes diferentes}}]].\n'''$3''' {{PLURAL:$3|propiedá tien|propiedaes tienen}} una páxina propia ya'l tipu de datos previstu ta especificáu en '''$4''' d'elles.\nAlgunes de les propiedaes esistentes puen ser [[Special:UnusedProperties|propiedaes ensin usu]].\nLes propiedaes qu'índa nun tienen una páxina alcuentrense na [[Special:WantedProperties|llista de propiedaes deseaes]].",
@@ -156,12 +156,14 @@
 	"smw-statistics-property-total-legacy": "{{PLURAL:$1|Propiedá|Propiedaes}} (total)",
 	"smw-statistics-property-page": "{{PLURAL:$1|Propiedá|Propiedaes}} ({{PLURAL:$1|rexistrada|rexistraes}} con una páxina)",
 	"smw-statistics-property-type": "{{PLURAL:$1|Propiedá|Propiedaes}} ({{PLURAL:$1|asociada|asociaes}} a un tipu de datos)",
+	"smw-statistics-query-inline-legacy": "{{PLURAL:$1|Consulta|Consultes}}",
 	"smw-statistics-query-inline": "[[Property:Has query|{{PLURAL:$1|Consulta|Consultes}}]]",
 	"smw-statistics-query-size": "Tamañu de la consulta",
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Conceptu|Conceptos}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Conceptu|Conceptos}}]]",
 	"smw-statistics-subobject-count": "{{PLURAL:$1|Sub-oxetu|Sub-oxetos}}",
 	"smw-statistics-datatype-count": "[[Special:Types|{{PLURAL:$1|Tipu|Tipos}} de datos]]",
+	"smw-statistics-error-count": "{{PLURAL:$1|Valor de propiedá|Valores de propiedá}} ([[Property:Has improper value for|{{PLURAL:$1|anotación incorreuta|anotaciones incorreutes}}]])",
 	"smw_uri_doc": "El resolvedor d'URI encadarma [$1 W3C TAG finding on httpRange-14].\nS'encarga de metadatos que los humanos nun ven nos sitios web.",
 	"ask": "Gueta semántica",
 	"smw_ask_sortby": "Ordenar por columna (opcional)",
@@ -284,5 +286,6 @@
 	"smw-sp-admin-idlookup-title": "Gueta d'ObjectId",
 	"smw-sp-admin-idlookup-docu": "Ver detalles tocante a una Id interna d'oxetu que representa entidaes individuales (páxina wiki, suboxetu etc.) en Semantic MediaWiki.",
 	"smw-sp-admin-idlookup-objectid": "Id d'oxetu:",
-	"smw-livepreview-loading": "Cargando..."
+	"smw-livepreview-loading": "Cargando...",
+	"smw-sp-searchbyproperty-resultlist-header": "Llista de resultaos"
 }
