@@ -72,7 +72,7 @@
 	"smw_wantedproperty_template": "$1 ( $2 {{PLURAL:$2|uporaba|uporabi|uporabe|uporab}})",
 	"smw_purge": "Osveži",
 	"types": "Tipi",
-	"smw_types_docu": "V nadaljevanju je seznam vseh podatkovnih tipov, ki so lahko določeni za lastnosti.",
+	"smw_types_docu": "V nadaljevanju sledi [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes seznam] vseh podatkovnih tipov, ki so lahko določeni za lastnosti.",
 	"semanticstatistics": "Semantična statistika",
 	"smw_semstats_text": "Ta wiki vsebuje '''$1''' {{PLURAL:$1| vrednost | vrednosti}} lastnosti za skupno '''$2''' [[Special:Properties|{{PLURAL:$2|lastnost|različnih lastnosti}}]].\n'''$3''' {{PLURAL:$3|lastnost ima|lastnosti imata|lastnosti imajo|lastnosti ima}} lastno stran, in podatkovni tip je določen za '''$4''' od teh.\nNekatere od obstoječih lastnosti so lahko [[Special:UnusedProperties|neuporabljene lastnosti]].\nLastnosti, ki še vedno nimajo strani se nahajajo na [[Special:WantedProperties|seznamu želenih lastnosti]].",
 	"ask": "Semantično iskanje",
