@@ -428,6 +428,40 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
+		#8 1048, Double-double
+		$provider[] = array(
+			NS_MAIN,
+			array(
+				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+				'smwgLinksInValues' => false,
+				'smwgInlineErrors'  => true,
+			),
+			'[[Foo::Bar::Foobar]], [[IPv6::fc00:123:8000::/64]] [[DOI::10.1002/::AID-MRM16::]]',
+			array(
+				'resultText'     => '[[:Bar::Foobar|Bar::Foobar]], [[:Fc00:123:8000::/64|fc00:123:8000::/64]] [[:10.1002/::AID-MRM16::|10.1002/::AID-MRM16::]]',
+				'propertyCount'  => 3,
+				'propertyLabels' => array( 'Foo', 'IPv6', 'DOI' ),
+				'propertyValues' => array( 'Bar::Foobar', 'Fc00:123:8000::/64', '10.1002/::AID-MRM16::' )
+			)
+		);
+
+		#9 T32603
+		$provider[] = array(
+			NS_MAIN,
+			array(
+				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+				'smwgLinksInValues' => false,
+				'smwgInlineErrors'  => true,
+			),
+			'[[Foo:::Foobar]] [[Foo:::0049 30 12345678/::Foo]] ',
+			array(
+				'resultText'     => '[[:Foobar|:Foobar]] [[:0049 30 12345678/::Foo|:0049 30 12345678/::Foo]]',
+				'propertyCount'  => 1,
+				'propertyLabels' => array( 'Foo' ),
+				'propertyValues' => array( 'Foobar', '0049 30 12345678/::Foo' ) // _wpg type where a preceding `:` is suppressed
+			)
+		);
+
 		return $provider;
 	}
 

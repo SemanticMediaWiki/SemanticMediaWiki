@@ -70,6 +70,13 @@ class InTextAnnotationParser {
 	protected $isAnnotation = true;
 
 	/**
+	 * Identifies the current parser run (especially when called recursively)
+	 *
+	 * @var string
+	 */
+	private $uniqid;
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
@@ -97,6 +104,7 @@ class InTextAnnotationParser {
 		$title = $this->parserData->getTitle();
 		$this->settings = $this->applicationFactory->getSettings();
 
+		$this->uniqid = uniqid();
 		$this->doStripMagicWordsFromText( $text );
 
 		$this->setSemanticEnabledNamespaceState( $title );
@@ -243,6 +251,16 @@ class InTextAnnotationParser {
 		$value = '';
 
 		if ( array_key_exists( 1, $semanticLink ) ) {
+
+			// Check for colon(s) produced by something like [[Foo::Bar::Foobar]],
+			// [[Foo:::0049 30 12345678]]
+			// In case a colon appears (in what is expected to be a string without a colon)
+			// then concatenate the string again and split for the first :: occurrence
+			// only
+			if ( strpos( $semanticLink[1], ':' ) !== false && isset( $semanticLink[2] ) ) {
+				list( $semanticLink[1], $semanticLink[2] ) = explode( '::', $semanticLink[1] . '::' . $semanticLink[2], 2 );
+			}
+
 			$property = $semanticLink[1];
 		}
 
@@ -288,6 +306,9 @@ class InTextAnnotationParser {
 	protected function addPropertyValue( array $properties, $value, $valueCaption ) {
 
 		$subject = $this->parserData->getSemanticData()->getSubject();
+
+		// Set a context to a subject to idenitify the parser run
+		$subject->uniqid = $this->uniqid;
 
 		// Add properties to the semantic container
 		foreach ( $properties as $property ) {
