@@ -1,0 +1,61 @@
+{
+	"description": "Edge case tests for parsing values with ::::, :::",
+	"properties": [
+		{
+			"name": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"name": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"name": "Has url",
+			"contents": "[[Has type::URL]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Double-single-colon",
+			"contents": "[[Has page:::Page/::Foo:Bar]] [[Has text:::Text/::Foo:Bar]] [[Has url::http://example.org/::Foo:Bar]]"
+		},
+		{
+			"name": "Double-double-colon",
+			"contents": "//::Page/::Foo:Bar is not allowed as title; [[Has text::::Text/::Foo:Bar]] [[Has url::http://example.org/:::Foo:Bar]]"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0",
+			"subject": "Double-single-colon",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 5,
+					"propertyKeys": [ "_SKEY", "_MDAT", "Has_page", "Has_text", "Has_url" ],
+					"propertyValues": [ "Page/::Foo:Bar", ":Text/::Foo:Bar", "http://example.org/::Foo:Bar" ]
+				}
+			}
+		},
+		{
+			"about": "#0",
+			"subject": "Double-double-colon",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [ "_SKEY", "_MDAT", "Has_text", "Has_url" ],
+					"propertyValues": [ "::Text/::Foo:Bar", "http://example.org/:::Foo:Bar" ]
+				}
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [ "_MDAT" ]
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
