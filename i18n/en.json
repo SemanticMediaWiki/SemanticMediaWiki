@@ -326,6 +326,7 @@
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"] is a predefined property that can define a list of permissible values to restrict value assignments for a property.",
 	"smw-datavalue-property-restricted-use": "Property \"$1\" was marked for restricted use.",
 	"smw-datavalue-restricted-use": "This datavalue was marked for restricted use. $1",
+	"smw-datavalue-invalid-number": "\"$1\" can not be interpret as number.",
 	"smw-query-condition-circular": "A possible circular condition has been detected in \"$1\".",
 	"smw-sp-types-list": "List of datatypes",
 	"smw-sp-types-default": "\"$1\" is a built-in datatype.",

@@ -331,7 +331,9 @@ class InTextAnnotationParser {
 		if ( ( $this->settings->get( 'smwgInlineErrors' ) &&
 			$this->isEnabledNamespace && $this->isAnnotation ) &&
 			( !$dataValue->isValid() ) ) {
-			$result .= $dataValue->getErrorText();
+			// Encode `:` to avoid a comment block and instead of the nowiki tag
+			// use &#58; as placeholder
+			$result = str_replace( ':', '&#58;', $result ) . $dataValue->getErrorText();
 		}
 
 		return $result;

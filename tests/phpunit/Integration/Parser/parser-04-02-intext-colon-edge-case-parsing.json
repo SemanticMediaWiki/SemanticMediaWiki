@@ -12,6 +12,14 @@
 		{
 			"name": "Has url",
 			"contents": "[[Has type::URL]]"
+		},
+		{
+			"name": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"name": "Has number",
+			"contents": "[[Has type::Number]]"
 		}
 	],
 	"subjects": [
@@ -22,6 +30,22 @@
 		{
 			"name": "Double-double-colon",
 			"contents": "//::Page/::Foo:Bar is not allowed as title; [[Has text::::Text/::Foo:Bar]] [[Has url::http://example.org/:::Foo:Bar]]"
+		},
+		{
+			"name": "Date-error",
+			"contents": "[[Has date:::1 Jan 1970]]"
+		},
+		{
+			"name": "Number-error",
+			"contents": "[[Has number:::123]]"
+		},
+		{
+			"name": "Page-no-error",
+			"contents": "[[Has page:::123|abc]] [[Has page:::xyz]]"
+		},
+		{
+			"name": "Page-error",
+			"contents": "[[Has page::::123|abc]] [[Has page::::xyz]]"
 		}
 	],
 	"parser-testcases": [
@@ -35,10 +59,17 @@
 					"propertyKeys": [ "_SKEY", "_MDAT", "Has_page", "Has_text", "Has_url" ],
 					"propertyValues": [ "Page/::Foo:Bar", ":Text/::Foo:Bar", "http://example.org/::Foo:Bar" ]
 				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"Page/::Foo:Bar",
+					"Text/::Foo:Bar",
+					"http://example.org/::Foo:Bar"
+				]
 			}
 		},
 		{
-			"about": "#0",
+			"about": "#1",
 			"subject": "Double-double-colon",
 			"store": {
 				"semantic-data": {
@@ -47,10 +78,87 @@
 					"propertyKeys": [ "_SKEY", "_MDAT", "Has_text", "Has_url" ],
 					"propertyValues": [ "::Text/::Foo:Bar", "http://example.org/:::Foo:Bar" ]
 				}
+			},
+			"expected-output": {
+				"to-contain": [
+					":Text/::Foo:Bar",
+					"http://example.org/:::Foo:Bar"
+				]
+			}
+		},
+		{
+			"about": "#2",
+			"subject": "Page-no-error",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_SKEY", "_MDAT", "Has_page" ],
+					"propertyValues": [ "123", "Xyz" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"abc",
+					"xyz"
+				]
+			}
+		},
+		{
+			"about": "#3",
+			"subject": "Page-error",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_SKEY", "_MDAT", "_ERRP" ],
+					"propertyValues": [ "Has page" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"abc",
+					"&#58;&#58;xyz"
+				]
+			}
+		},
+		{
+			"about": "#4",
+			"subject": "Date-error",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_SKEY", "_MDAT", "_ERRP" ],
+					"propertyValues": [ "Has date" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"&#58;1 Jan 1970"
+				]
+			}
+		},
+		{
+			"about": "#5",
+			"subject": "Number-error",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_SKEY", "_MDAT", "_ERRP" ],
+					"propertyValues": [ "Has number" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"&#58;123"
+				]
 			}
 		}
 	],
 	"settings": {
+		"wgContLang": "en",
 		"smwgPageSpecialProperties": [ "_MDAT" ]
 	},
 	"meta": {

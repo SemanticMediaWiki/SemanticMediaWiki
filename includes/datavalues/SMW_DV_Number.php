@@ -101,6 +101,12 @@ class SMWNumberValue extends SMWDataValue {
 		if ( $this->m_caption === false ) {
 			$this->m_caption = $value;
 		}
+
+		if ( $value !== '' && $value{0} === ':' ) {
+			$this->addError( wfMessage( 'smw-datavalue-invalid-number', $value )->inContentLanguage()->text() );
+			return;
+		}
+
 		$this->m_unitin = false;
 		$this->m_unitvalues = false;
 		$number = $unit = '';

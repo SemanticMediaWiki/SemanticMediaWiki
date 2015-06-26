@@ -90,6 +90,12 @@ class SMWWikiPageValue extends SMWDataValue {
 		// note that this only works in pages if $smwgLinksInValues is set to true
 		$value = ltrim( rtrim( $value, ' ]' ), ' [' );
 
+		// #1066, Manipulate the output only for when the value has no caption
+		// assigned and only if a single :Foo is being present, ::Foo is not permitted
+		if ( $this->m_caption === false && isset( $value[2] ) && $value[0] === ':' && $value[1] !== ':' ) {
+			$value = substr( $value, 1 );
+		}
+
 		if ( $this->m_caption === false ) {
 			$this->m_caption = $value;
 		}
