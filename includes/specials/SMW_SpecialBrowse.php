@@ -434,4 +434,8 @@ class SMWSpecialBrowse extends SpecialPage {
 		$text = preg_replace( '/[\s]/u', $nonBreakingSpace, $text, - 1, $count );
 		return $count > 2 ? preg_replace( '/($nonBreakingSpace)/u', ' ', $text, max( 0, $count - 2 ) ):$text;
 	}
+
+	protected function getGroupName() {
+		return 'smw_group';
+	}
 }

@@ -50,4 +50,8 @@ class SpecialSemanticStatistics extends SpecialPage {
 
 		Profiler::Out( __METHOD__ );
 	}
+
+	protected function getGroupName() {
+		return 'wiki';
+	}
 }
