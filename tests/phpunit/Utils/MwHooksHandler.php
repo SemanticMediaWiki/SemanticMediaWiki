@@ -26,6 +26,8 @@ class MwHooksHandler {
 	private $listOfSmwHooks = array(
 		'SMWStore::updateDataBefore',
 		'smwInitProperties',
+		'SMW::Property::initProperties',
+		'SMW::DataType::initTypes',
 		'SMW::Factbox::BeforeContentGeneration',
 		'SMW::SQLStore::updatePropertyTableDefinitions',
 		'SMW::Store::BeforeQueryResultLookupComplete',
@@ -51,6 +53,11 @@ class MwHooksHandler {
 		);
 
 		foreach ( $listOfHooks as $hook ) {
+
+			// MW 1.19
+			if ( method_exists( 'Hooks', 'clear' ) ) {
+				\Hooks::clear( $hook );
+			}
 
 			if ( !isset( $GLOBALS['wgHooks'][$hook] ) ) {
 				continue;

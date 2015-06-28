@@ -81,6 +81,10 @@ class DataValueFactory {
 				$valueString, $caption );
 		}
 
+		$result->setExtraneousFunctions(
+			$dataTypeRegistry->getExtraneousFunctions()
+		);
+
 		if ( $property !== null ) {
 			$result->setProperty( $property );
 		}

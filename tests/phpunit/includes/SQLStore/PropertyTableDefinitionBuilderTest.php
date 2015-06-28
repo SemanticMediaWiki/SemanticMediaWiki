@@ -3,6 +3,7 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\SQLStore\PropertyTableDefinitionBuilder;
+use SMW\Tests\Utils\MwHooksHandler;
 use SMWDataItem as DataItem;
 
 /**
@@ -17,22 +18,18 @@ use SMWDataItem as DataItem;
  */
 class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 
-	protected $hooks = array();
+	protected $mwHooksHandler;
 
 	protected function setUp() {
 		parent::setUp();
 
-		if ( isset( $GLOBALS['wgHooks']['SMW::SQLStore::updatePropertyTableDefinitions'] ) ) {
-			$this->hooks = $GLOBALS['wgHooks']['SMW::SQLStore::updatePropertyTableDefinitions'];
-			$GLOBALS['wgHooks']['SMW::SQLStore::updatePropertyTableDefinitions'] = array();
-		}
+		$this->mwHooksHandler = new MwHooksHandler();
+		$this->mwHooksHandler->deregisterListedHooks();
 	}
 
 	protected function tearDown() {
 
-		if ( $this->hooks !== array() ) {
-			$GLOBALS['wgHooks']['SMW::SQLStore::updatePropertyTableDefinitions'] = $this->hooks;
-		}
+		$this->mwHooksHandler->restoreListedHooks();
 
 		parent::tearDown();
 	}

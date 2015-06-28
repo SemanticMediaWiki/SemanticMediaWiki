@@ -165,6 +165,24 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testExtraneousCallbackFunction() {
+
+		$instance = new DataTypeRegistry();
+		$arg = 'foo';
+
+		$instance->registerExtraneousFunction(
+			'foo',
+			function ( $arg ) {
+				return 'bar' . $arg ;
+			}
+		);
+
+		$this->assertInternalType(
+			'array',
+			$instance->getExtraneousFunctions()
+		);
+	}
+
 	public function testLookupByLabelIsCaseInsensitive() {
 		$caseVariants = array(
 			'page',

@@ -436,11 +436,11 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 				'smwgLinksInValues' => false,
 				'smwgInlineErrors'  => true,
 			),
-			'[[Foo::Bar::Foobar]], [[IPv6::fc00:123:8000::/64]] [[DOI::10.1002/::AID-MRM16::]]',
+			'[[Foo::Bar::Foobar]], [[IPv6::fc00:123:8000::/64]] [[ABC::10.1002/::AID-MRM16::]]',
 			array(
 				'resultText'     => '[[:Bar::Foobar|Bar::Foobar]], [[:Fc00:123:8000::/64|fc00:123:8000::/64]] [[:10.1002/::AID-MRM16::|10.1002/::AID-MRM16::]]',
 				'propertyCount'  => 3,
-				'propertyLabels' => array( 'Foo', 'IPv6', 'DOI' ),
+				'propertyLabels' => array( 'Foo', 'IPv6', 'ABC' ),
 				'propertyValues' => array( 'Bar::Foobar', 'Fc00:123:8000::/64', '10.1002/::AID-MRM16::' )
 			)
 		);

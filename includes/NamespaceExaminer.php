@@ -8,14 +8,12 @@ use MWNamespace;
  * Examines if a specific namespace is enabled for the usage of the
  * Semantic MediaWiki extension
  *
- * @ingroup SMW
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-final class NamespaceExaminer {
+class NamespaceExaminer {
 
 	/** @var array */
 	private static $instance = null;
