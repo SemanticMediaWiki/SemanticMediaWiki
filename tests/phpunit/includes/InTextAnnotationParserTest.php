@@ -453,12 +453,12 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 				'smwgLinksInValues' => false,
 				'smwgInlineErrors'  => true,
 			),
-			'[[Foo:::Foobar]] [[Foo:::0049 30 12345678/::Foo]] ',
+			'[[Foo:::Foobar]] [[Bar:::ABC|DEF]] [[Foo:::0049 30 12345678/::Foo]] ',
 			array(
-				'resultText'     => '[[:Foobar|:Foobar]] [[:0049 30 12345678/::Foo|:0049 30 12345678/::Foo]]',
-				'propertyCount'  => 1,
-				'propertyLabels' => array( 'Foo' ),
-				'propertyValues' => array( 'Foobar', '0049 30 12345678/::Foo' ) // _wpg type where a preceding `:` is suppressed
+				'resultText'     => '[[:Foobar|Foobar]] [[:ABC|DEF]] [[:0049 30 12345678/::Foo|0049 30 12345678/::Foo]]',
+				'propertyCount'  => 2,
+				'propertyLabels' => array( 'Foo', 'Bar' ),
+				'propertyValues' => array( 'Foobar', '0049 30 12345678/::Foo', 'ABC' )
 			)
 		);
 

@@ -607,9 +607,10 @@ class SMWTimeValue extends SMWDataValue {
 	public function getShortWikiText( $linked = null ) {
 		if ( $this->isValid() ) {
 			return ( $this->m_caption !== false ) ? $this->m_caption : $this->getPreferredCaption();
-		} else {
-			return $this->getErrorText();
 		}
+
+		// #1074
+		return $this->m_caption !== false ? $this->m_caption : '';
 	}
 
 	public function getShortHTMLText( $linker = null ) {
