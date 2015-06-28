@@ -184,7 +184,7 @@ class LinksUpdateTest extends MwDBaseUnitTestCase {
 	/**
 	 * @depends testDoUpdateUsingNoAnnotations
 	 */
-	public function testDoUpdateResetRevision( $firstRunRevision ) {
+	public function testReparseFirstRevision( $firstRunRevision ) {
 
 		$contentParser = $this->applicationFactory->newContentParser( $this->title );
 		$contentParser->forceToUseParser();
@@ -210,18 +210,6 @@ class LinksUpdateTest extends MwDBaseUnitTestCase {
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
 			$semanticData
-		);
-
-		if ( !$this->title->getArticleID() ) {
-			$this->markTestSkipped( "The Title object did not provide an article ID" );
-		}
-
-		$linksUpdate = new \LinksUpdate( $this->title, $contentParser->getOutput() );
-		$linksUpdate->doUpdate();
-
-		$this->assertCount(
-			2,
-			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) )->getProperties()
 		);
 	}
 

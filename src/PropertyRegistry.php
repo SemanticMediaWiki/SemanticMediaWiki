@@ -331,7 +331,7 @@ class PropertyRegistry {
 		// @deprecated since 2.1
 		wfRunHooks( 'smwInitProperties' );
 
-		wfRunHooks( 'SMW::Property::initProperties' );
+		\Hooks::run( 'SMW::Property::initProperties', array( $this ) );
 	}
 
 	private function registerPropertyLabel( $id, $label ) {

@@ -88,6 +88,12 @@ class DataTypeRegistry {
 		//DataItem::TYPE_ERROR => '',
 	);
 
+
+	/**
+	 * @var Closure[]
+	 */
+	private $extraneousFunctions = array();
+
 	/**
 	 * Returns a DataTypeRegistry instance
 	 *
@@ -126,7 +132,7 @@ class DataTypeRegistry {
 	 * @param array $typeLabels
 	 * @param array $typeAliases
 	 */
-	public function __construct( array $typeLabels, array $typeAliases, array $canonicalLabels ) {
+	public function __construct( array $typeLabels = array() , array $typeAliases = array(), array $canonicalLabels = array() ) {
 		foreach ( $typeLabels as $typeId => $typeLabel ) {
 			$this->registerTypeLabel( $typeId, $typeLabel );
 		}
@@ -431,7 +437,29 @@ class DataTypeRegistry {
 		wfRunHooks( 'smwInitDatatypes' );
 
 		// Since 1.9
-		wfRunHooks( 'SMW::DataType::initTypes' );
+		\Hooks::run( 'SMW::DataType::initTypes', array( $this ) );
+	}
+
+	/**
+	 * Inject services and objects that are planned to be used during the invocation of
+	 * a DataValue
+	 *
+	 * @since 2.3
+	 *
+	 * @param string  $name
+	 * @param \Closure $callback
+	 */
+	public function registerExtraneousFunction( $name, \Closure $callback ) {
+		$this->extraneousFunctions[$name] = $callback;
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @return Closure[]
+	 */
+	public function getExtraneousFunctions() {
+		return $this->extraneousFunctions;
 	}
 
 }

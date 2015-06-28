@@ -43,21 +43,10 @@ class MediaWikiNsContentReaderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testNotUseDatabaseForFallback() {
+	public function testSkipMessageCache() {
 
 		$instance = new MediaWikiNsContentReader();
-		$instance->useDatabaseForFallback( false );
-
-		$this->assertInternalType(
-			'string',
-			$instance->read( __METHOD__ )
-		);
-	}
-
-	public function testUseDatabaseForFallback() {
-
-		$instance = new MediaWikiNsContentReader();
-		$instance->useDatabaseForFallback( true );
+		$instance->skipMessageCache();
 
 		$this->assertInternalType(
 			'string',

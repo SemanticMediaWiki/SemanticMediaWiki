@@ -16,15 +16,13 @@ class MediaWikiNsContentReader {
 	/**
 	 * @var boolean
 	 */
-	private $useDatabaseForFallback = true;
+	private $skipMessageCache = false;
 
 	/**
-	 * @since 2.2
-	 *
-	 * @param boolean $useDatabaseForFallback
+	 * @since 2.3
 	 */
-	public function useDatabaseForFallback( $useDatabaseForFallback ) {
-		$this->useDatabaseForFallback = (bool)$useDatabaseForFallback;
+	public function skipMessageCache() {
+		$this->skipMessageCache = true;
 	}
 
 	/**
@@ -38,18 +36,18 @@ class MediaWikiNsContentReader {
 
 		$content = '';
 
-		if ( wfMessage( $name )->exists() ) {
+		if ( !$this->skipMessageCache && wfMessage( $name )->exists() ) {
 			$content = wfMessage( $name )->inContentLanguage()->text();
 		}
 
-		if ( $content === '' && $this->useDatabaseForFallback ) {
-			$content = $this->tryLoadingFromDatabase( $name );
+		if ( $content === '' ) {
+			$content = $this->tryReadFromDatabase( $name );
 		}
 
 		return $content;
 	}
 
-	private function tryLoadingFromDatabase( $name ) {
+	private function tryReadFromDatabase( $name ) {
 
 		$title = Title::makeTitleSafe( NS_MEDIAWIKI, ucfirst( $name ) );
 
