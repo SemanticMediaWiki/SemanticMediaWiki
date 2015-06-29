@@ -171,48 +171,64 @@ final class Setup {
 		$specials = array(
 			'Ask' => array(
 				'page' => 'SMWAskPage',
+				'group' => 'smw_group'
 			),
 			'Browse' => array(
 				'page' =>  'SMWSpecialBrowse',
+				'group' => 'smw_group'
 			),
 			'PageProperty' => array(
 				'page' =>  'SMWPageProperty',
+				'group' => 'smw_group'
 			),
 			'SearchByProperty' => array(
 				'page' => 'SMW\MediaWiki\Specials\SpecialSearchByProperty',
+				'group' => 'smw_group'
 			),
 			'SMWAdmin' => array(
 				'page' => 'SMWAdmin',
+				'group' => 'smw_group'
 			),
 			'SemanticStatistics' => array(
 				'page' => 'SMW\SpecialSemanticStatistics',
+				'group' => 'wiki'
 			),
 			'Concepts' => array(
 				'page' => 'SMW\SpecialConcepts',
+				'group' => 'pages'
 			),
 			'ExportRDF' => array(
 				'page' => 'SMWSpecialOWLExport',
+				'group' => 'smw_group'
 			),
 			'Types' => array(
 				'page' => 'SMWSpecialTypes',
+				'group' => 'pages'
 			),
 			'URIResolver' => array(
 				'page' => 'SMWURIResolver'
 			),
 			'Properties' => array(
 				'page' => 'SMW\SpecialProperties',
+				'group' => 'pages'
 			),
 			'UnusedProperties' => array(
 				'page' => 'SMW\SpecialUnusedProperties',
+				'group' => 'maintenance'
 			),
 			'WantedProperties' => array(
 				'page' => 'SMW\SpecialWantedProperties',
+				'group' => 'maintenance'
 			),
 		);
 
 		// Register data
 		foreach ( $specials as $special => $page ) {
 			$this->globalVars['wgSpecialPages'][$special] = $page['page'];
+
+			if ( isset( $page['group'] ) ) {
+				$this->globalVars['wgSpecialPageGroups'][$special] = $page['group'];
+			}
 		}
 	}
 

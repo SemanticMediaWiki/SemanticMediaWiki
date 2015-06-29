@@ -189,7 +189,4 @@ class SMWSpecialOWLExport extends SpecialPage {
 		$this->export_controller->printPages( $pages, $recursive, $date );
 	}
 
-	protected function getGroupName() {
-		return 'smw_group';
-	}
 }

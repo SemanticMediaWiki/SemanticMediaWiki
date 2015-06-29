@@ -67,7 +67,4 @@ class SpecialUnusedProperties extends SpecialPage {
 		return wfCheckLimits();
 	}
 
-	protected function getGroupName() {
-		return 'maintenance';
-	}
 }

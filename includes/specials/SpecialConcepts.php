@@ -116,8 +116,4 @@ class SpecialConcepts extends SpecialPage {
 
 		Profiler::Out( __METHOD__ );
 	}
-
-	protected function getGroupName() {
-		return 'pages';
-	}
 }
