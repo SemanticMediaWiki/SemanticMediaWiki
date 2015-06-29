@@ -149,7 +149,7 @@
 	"smw_wantedproperty_template": "$1 ($2{{PLURAL:$2|件}})",
 	"smw_purge": "更新",
 	"types": "型",
-	"smw_types_docu": "以下はプロパティに割り当てられているすべてのデータ型の一覧です。",
+	"smw_types_docu": "以下はプロパティに割り当てられているすべてのデータ型の一覧 [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes list] です。",
 	"semanticstatistics": "意味的統計",
 	"smw_semstats_text": "このウィキには、計 '''$2''' 種の[[Special:Properties|{{PLURAL:$2|プロパティ}}]]と '''$1''' 個のプロパティ{{PLURAL:$1|値}}があります。\n'''$3''' {{PLURAL:$3|個のプロパティ}}には専用のページがあり、うち '''$4''' 個にはデータ型が指定されています。\n既存のプロパティには[[Special:UnusedProperties|使われていないプロパティ]]があるかもしれません。\nまだ専用のページがないプロパティは[[Special:WantedProperties|望まれているプロパティ一覧]]に載っています。",
 	"smw-statistics": "意味的統計",
