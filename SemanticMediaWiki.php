@@ -108,6 +108,10 @@ class_alias( 'SMW\Exporter\Element\ExpLiteral', 'SMWExpLiteral' );
 class_alias( 'SMW\DataValues\ImportValue', 'SMWImportValue' );
 class_alias( 'SMW\SQLStore\QueryEngine\QueryEngine', 'SMWSQLStore3QueryEngine' );
 
+// 2.3
+class_alias( 'SMW\ParserParameterProcessor', 'SMW\ParserParameterFormatter' );
+class_alias( 'SMW\ParameterProcessorFactory', 'SMW\ParameterFormatterFactory' );
+
 // A flag used to indicate SMW defines a semantic extension type for extension credits.
 // @deprecated, removal in SMW 3.0
 define( 'SEMANTIC_EXTENSION_TYPE', true );

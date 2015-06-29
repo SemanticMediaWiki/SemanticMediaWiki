@@ -7,7 +7,7 @@ use RuntimeException;
 use SMW\ApplicationFactory;
 use SMW\EventHandler;
 use SMW\NamespaceManager;
-use SMW\ParameterFormatterFactory;
+use SMW\ParameterProcessorFactory;
 
 /**
  * @license GNU GPL v2+
@@ -134,7 +134,7 @@ class HookRegistry {
 			$parserFunctionFactory = ApplicationFactory::getInstance()->newParserFunctionFactory( $parser );
 			$instance = $parserFunctionFactory->newSubobjectParserFunction();
 
-			return $instance->parse( ParameterFormatterFactory::newFromArray( func_get_args() ) );
+			return $instance->parse( ParameterProcessorFactory::newFromArray( func_get_args() ) );
 		};
 
 		/**
@@ -147,7 +147,7 @@ class HookRegistry {
 			$parserFunctionFactory = ApplicationFactory::getInstance()->newParserFunctionFactory( $parser );
 			$instance = $parserFunctionFactory->newRecurringEventsParserFunction();
 
-			return $instance->parse( ParameterFormatterFactory::newFromArray( func_get_args() ) );
+			return $instance->parse( ParameterProcessorFactory::newFromArray( func_get_args() ) );
 		};
 
 		/**
@@ -160,7 +160,7 @@ class HookRegistry {
 			$parserFunctionFactory = ApplicationFactory::getInstance()->newParserFunctionFactory( $parser );
 			$instance = $parserFunctionFactory->newSetParserFunction();
 
-			return $instance->parse( ParameterFormatterFactory::newFromArray( func_get_args() ) );
+			return $instance->parse( ParameterProcessorFactory::newFromArray( func_get_args() ) );
 		};
 
 		/**

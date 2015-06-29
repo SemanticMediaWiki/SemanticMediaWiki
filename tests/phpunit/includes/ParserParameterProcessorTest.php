@@ -1,130 +1,101 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
-use SMW\ParserParameterFormatter;
+use SMW\ParserParameterProcessor;
 
 /**
- * @covers \SMW\ParserParameterFormatter
+ * @covers \SMW\ParserParameterProcessor
+ * @group semantic-mediawiki
  *
- * @group SMW
- * @group SMWExtension
+ * @license GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
- * @license GNU GPL v2+
  */
-class ParserParameterFormatterTest extends SemanticMediaWikiTestCase {
+class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string|false
+	 * @dataProvider parametersDataProvider
 	 */
-	public function getClass() {
-		return '\SMW\ParserParameterFormatter';
+	public function testCanConstruct( array $parameters ) {
+
+		$this->assertInstanceOf(
+			'SMW\ParserParameterProcessor',
+			new ParserParameterProcessor( $parameters )
+		);
 	}
 
 	/**
-	 * Helper method that returns a ParserParameterFormatter object
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 *
-	 * @return ParserParameterFormatter
+	 * @dataProvider parametersDataProvider
 	 */
-	private function getInstance( array $params ) {
-		return new ParserParameterFormatter( $params );
+	public function testGetRaw( array $parameters ) {
+
+		$instance = new ParserParameterProcessor( $parameters );
+
+		$this->assertEquals(
+			$parameters,
+			$instance->getRaw()
+		);
 	}
 
-	/**
-	 * @test ParserParameterFormatter::__construct
-	 * @dataProvider getParametersDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 */
-	public function testConstructor( array $params ) {
-		$instance = $this->getInstance( $params );
-		$this->assertInstanceOf( 'SMW\ParserParameterFormatter', $instance );
-	}
-
-	/**
-	 * @test ParserParameterFormatter::getRaw
-	 * @dataProvider getParametersDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 */
-	public function testGetRaw( array $params ) {
-		$instance = $this->getInstance( $params );
-		$this->assertEquals( $params, $instance->getRaw() );
-	}
-
-	/**
-	 * @test ParserParameterFormatter::setParameters
-	 *
-	 * @since 1.9
-	 */
 	public function testSetParameters() {
-		$instance = $this->getInstance( array() );
-		$parameters = array( 'Foo' => 'Bar' );
+
+		$instance = new ParserParameterProcessor();
+
+		$parameters = array(
+			'Foo' => 'Bar'
+		);
 
 		$instance->setParameters( $parameters );
-		$this->assertEquals( $parameters, $instance->toArray() );
+
+		$this->assertEquals(
+			$parameters,
+			$instance->toArray()
+		);
 	}
 
-	/**
-	 * @test ParserParameterFormatter::addParameter
-	 *
-	 * @since 1.9
-	 */
 	public function testAddParameter() {
-		$instance = $this->getInstance( array() );
-		$instance->addParameter( 'Foo', 'Bar' );
 
-		$this->assertEquals( array( 'Foo' =>array( 'Bar' ) ), $instance->toArray() );
+		$instance = new ParserParameterProcessor();
+
+		$instance->addParameter(
+			'Foo', 'Bar'
+		);
+
+		$this->assertEquals(
+			array( 'Foo' =>array( 'Bar' ) ),
+			$instance->toArray()
+		);
 	}
 
 	/**
-	 * @test ParserParameterFormatter::toArray
-	 * @dataProvider getParametersDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 * @param array $expected
+	 * @dataProvider parametersDataProvider
 	 */
-	public function testToArray( array $params, array $expected ) {
-		$instance = $this->getInstance( $params );
-		$results = $instance->toArray();
+	public function testToArray( array $parameters, array $expected ) {
 
-		$this->assertTrue( is_array( $results ) );
-		$this->assertEquals( $expected, $results);
+		$instance = new ParserParameterProcessor( $parameters );
+
+		$this->assertEquals(
+			$expected,
+			$instance->toArray()
+		);
 	}
 
 	/**
-	 * @test ParserParameterFormatter::getFirst
-	 * @dataProvider getFirstDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 * @param array $expected
+	 * @dataProvider firstParameterDataProvider
 	 */
-	public function testGetFirst( array $params, array $expected ) {
-		$results = $this->getInstance( $params );
-		$this->assertEquals( $expected['identifier'], $results->getFirst() );
+	public function testGetFirst( array $parameters, array $expected ) {
+
+		$instance = new ParserParameterProcessor( $parameters );
+
+		$this->assertEquals(
+			$expected['identifier'],
+			$instance->getFirst()
+		);
 	}
 
-	/**
-	 * Provides sample data of parameter combinations
-	 *
-	 * @return array
-	 */
-	public function getParametersDataProvider() {
+	public function parametersDataProvider() {
 		return array(
 			// {{#...:
 			// |Has test 1=One
@@ -275,12 +246,7 @@ class ParserParameterFormatterTest extends SemanticMediaWikiTestCase {
 		);
 	}
 
-	/**
-	 * Provides sample data of first parameter combinations
-	 *
-	 * @return array
-	 */
-	public function getFirstDataProvider() {
+	public function firstParameterDataProvider() {
 		return array(
 			// {{#subobject:
 			// |Has test 1=One
@@ -309,4 +275,5 @@ class ParserParameterFormatterTest extends SemanticMediaWikiTestCase {
 			),
 		);
 	}
+
 }

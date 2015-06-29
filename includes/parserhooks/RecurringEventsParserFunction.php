@@ -44,11 +44,11 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 	 *
 	 * @since 1.9
 	 *
-	 * @param ArrayFormatter $parameters
+	 * @param ParserParameterProcessor $parameters
 	 *
 	 * @return string|null
 	 */
-	public function parse( ArrayFormatter $parameters ) {
+	public function parse( ParserParameterProcessor $parameters ) {
 
 		$this->setFirstElementForPropertyLabel( true );
 

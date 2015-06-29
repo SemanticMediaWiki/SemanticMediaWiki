@@ -3,52 +3,83 @@
 namespace SMW;
 
 /**
- * Class handling parser parameter formatting
- *
- *
  * @license GNU GPL v2+
  * @since   1.9
  *
  * @author mwjames
  */
+class ParserParameterProcessor {
 
-/**
- * Handling raw parameters from the parser hook
- *
- * @ingroup Formatter
- */
-class ParserParameterFormatter extends ArrayFormatter {
+	/**
+	 * @var string
+	 */
+	private $defaultSeparator = ',';
 
-	/** @var string */
-	protected $defaultSeparator = ',';
+	/**
+	 * @var array
+	 */
+	private $rawParameters;
 
-	/** @var array */
-	protected $rawParameters;
+	/**
+	 * @var array
+	 */
+	private $parameters;
 
-	/** @var array */
-	protected $parameters;
+	/**
+	 * @var null
+	 */
+	private $first = null;
 
-	/** @var string */
-	protected $first = null;
+	/**
+	 * @var array
+	 */
+	private $errors = array();
 
 	/**
 	 * @since 1.9
 	 *
-	 * @param array $parameters
+	 * @param array $rawParameters
 	 */
-	public function __construct( array $parameters ) {
-		$this->rawParameters = $parameters;
-		$this->parameters = $this->format( $this->rawParameters );
+	public function __construct( array $rawParameters = array() ) {
+		$this->rawParameters = $rawParameters;
+		$this->parameters = $this->doMap( $rawParameters );
 	}
 
 	/**
-	 * Returns first available parameter
+	 * Returns collected errors
 	 *
 	 * @since 1.9
 	 *
-	 * @return string
+	 * @return array
+	 */
+	public function getErrors() {
+		return $this->errors;
+	}
+
+	/**
+	 * Adds an error
+	 *
+	 * @since 1.9
+	 *
+	 * @param mixed $error
+	 */
+	public function addError( $error ) {
+		$this->errors = array_merge( (array)$error === $error ? $error : array( $error ), $this->errors );
+	}
+
+	/**
+	 * @deprecated since 2.3, use ParserParameterProcessor::getFirstParameter
 	 */
 	public function getFirst() {
+		return $this->getFirstParameter();
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @return string
+	 */
+	public function getFirstParameter() {
 		return $this->first;
 	}
 
@@ -72,6 +103,29 @@ class ParserParameterFormatter extends ArrayFormatter {
 	 */
 	public function toArray() {
 		return $this->parameters;
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @return boolean
+	 */
+	public function hasParameter( $key ) {
+		return isset( $this->parameters[$key] ) || array_key_exists( $key, $this->parameters );
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @return array
+	 */
+	public function getParameterValuesFor( $key ) {
+
+		if ( $this->hasParameter( $key ) ) {
+			return $this->parameters[$key];
+		}
+
+		return array();
 	}
 
 	/**
@@ -100,16 +154,10 @@ class ParserParameterFormatter extends ArrayFormatter {
 	}
 
 	/**
-	 * Do mapping of raw parameters array into an 2n-array for simplified
+	 * Map raw parameters array into an 2n-array for simplified
 	 * via [key] => [value1, value2]
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 *
-	 * @return array
 	 */
-	protected function format( array $params ) {
+	private function doMap( array $params ) {
 		$results = array();
 		$previousProperty = null;
 
