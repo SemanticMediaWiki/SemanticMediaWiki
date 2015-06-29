@@ -74,11 +74,11 @@ class SubobjectParserFunction {
 	/**
 	 * @since 1.9
 	 *
-	 * @param ArrayFormatter $params
+	 * @param ParserParameterProcessor $params
 	 *
 	 * @return string|null
 	 */
-	public function parse( ArrayFormatter $parameters ) {
+	public function parse( ParserParameterProcessor $parameters ) {
 
 		$this->addDataValuesToSubobject( $parameters );
 
@@ -94,7 +94,7 @@ class SubobjectParserFunction {
 			->getHtml();
 	}
 
-	protected function addDataValuesToSubobject( ArrayFormatter $parameters ) {
+	protected function addDataValuesToSubobject( ParserParameterProcessor $parameters ) {
 
 		$subject = $this->parserData->getSemanticData()->getSubject();
 
@@ -120,7 +120,7 @@ class SubobjectParserFunction {
 		}
 	}
 
-	private function createSubobjectId( ArrayFormatter $parameters ) {
+	private function createSubobjectId( ParserParameterProcessor $parameters ) {
 
 		$isAnonymous = in_array( $parameters->getFirst(), array( null, '' ,'-' ) );
 
@@ -133,7 +133,7 @@ class SubobjectParserFunction {
 		return $parameters->getFirst();
 	}
 
-	private function transformParametersToArray( ArrayFormatter $parameters ) {
+	private function transformParametersToArray( ParserParameterProcessor $parameters ) {
 
 		if ( $this->useFirstElementForPropertyLabel ) {
 			$parameters->addParameter(
