@@ -68,4 +68,7 @@ class SpecialWantedProperties extends SpecialPage {
 		return wfCheckLimits();
 	}
 
+	protected function getGroupName() {
+		return 'maintenance';
+	}
 }
