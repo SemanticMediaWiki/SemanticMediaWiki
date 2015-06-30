@@ -323,6 +323,7 @@
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value „$1“] е предодредено својство што може да определи список на допуштени вредности за ограничување на вредносните доделувања за дадено својство.",
 	"smw-datavalue-property-restricted-use": "Својството „$1“ е означено за ограничена употреба.",
 	"smw-datavalue-restricted-use": "Оваа податочна вредност е означена за ограничена употреба. $1",
+	"smw-datavalue-invalid-number": "Не можам да го протолкувам „$1“ како број.",
 	"smw-query-condition-circular": "Во „$1“ е утврден можен кружен услов.",
 	"smw-sp-types-list": "Список на податочни типови",
 	"smw-sp-types-default": "„$1“ е вграден податочен тип.",
