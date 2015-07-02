@@ -8,6 +8,11 @@
 			"contents": "http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n name|Type:Text\n homepage|Type:URL\n mbox|Type:Email\n mbox_sha1sum|Type:Text\n depiction|Type:URL\n phone|Type:Text\n Person|Category\n Organization|Category\n knows|Type:Page\n member|Type:Page\n"
 		},
 		{
+			"name": "Organization",
+			"namespace": "NS_CATEGORY",
+			"contents": "[[Imported from::foaf:Organization]] [[Category:Social entity]]"
+		},
+		{
 			"name": "Foaf:homepage",
 			"namespace": "SMW_NS_PROPERTY",
 			"contents": "[[Imported from::foaf:homepage]]"
@@ -144,13 +149,36 @@
 					"<owl:DatatypeProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#specialImportedFrom\" />"
 				]
 			}
+		},
+		{
+			"about": "#5 owl:Class / Category encoding, see #1081",
+			"exportcontroller" : {
+				"print-pages": [ "Category:Organization" ],
+				"parameters" : {
+					"backlinks" : false,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"<owl:Class rdf:about=\"http://xmlns.com/foaf/0.1/Organization\">",
+					"<rdfs:label>Organization</rdfs:label>",
+					"<swivt:specialImportedFrom rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">foaf Organization http://xmlns.com/foaf/0.1/</swivt:specialImportedFrom>",
+					"<rdfs:subClassOf rdf:resource=\"&wiki;Category-3ASocial_entity\"/>",
+					"<owl:DatatypeProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#specialImportedFrom\" />",
+					"<owl:Class rdf:about=\"http://example.org/id/Category-3ASocial_entity\" />"
+				]
+			}
 		}
 	],
 	"settings": {
+		"wgContLang": "en",
 		"smwgNamespace": "http://example.org/id/",
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,
-			"SMW_NS_PROPERTY": true
+			"SMW_NS_PROPERTY": true,
+			"NS_CATEGORY": true
 		}
 	},
 	"meta": {

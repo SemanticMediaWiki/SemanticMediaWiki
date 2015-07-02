@@ -104,9 +104,10 @@ class CachedDataItemToExpResourceEncoderTest extends \PHPUnit_Framework_TestCase
 		);
 	}
 
-	public function testMapWikiPageToResourceElementForImportMatch() {
-
-		$dataItem = new DIWikiPage( 'Foo', SMW_NS_PROPERTY, '', '' );
+	/**
+	 * @dataProvider importDataProvider
+	 */
+	public function testMapWikiPageToResourceElementForImportMatch( $dataItem, $expected ) {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -123,15 +124,6 @@ class CachedDataItemToExpResourceEncoderTest extends \PHPUnit_Framework_TestCase
 
 		$resource = $instance->mapWikiPageToResourceElement(
 			$dataItem
-		);
-
-		// || is not the result we normally would expect but mocking the
-		// dataValueFactory at this point is not worth the hassle therefore
-		// we live with || output
-		$expected =	array(
-			'type' => Element::TYPE_NSRESOURCE,
-			'uri'  => "||",
-			'dataitem' => array( 'type' => 9, 'item' => 'Foo#102#' )
 		);
 
 		$this->assertSame(
@@ -225,6 +217,36 @@ class CachedDataItemToExpResourceEncoderTest extends \PHPUnit_Framework_TestCase
 				'uri'  => "$name-23aux|{$wiki}|wiki",
 				'dataitem' => array( 'type' => 9, 'item' => '-Foo#102#' )
 			)
+		);
+
+		return $provider;
+	}
+
+	public function importDataProvider() {
+
+		// || is not the result we normally would expect but mocking the
+		// dataValueFactory at this point is not worth the hassle therefore
+		// we live with || output
+		$expected =	array(
+			'type' => Element::TYPE_NSRESOURCE,
+			'uri'  => "||",
+			'dataitem' => array( 'type' => 9, 'item' => 'Foo#102#' )
+		);
+
+		$provider[] = array(
+			new DIWikiPage( 'Foo', SMW_NS_PROPERTY, '', '' ),
+			$expected
+		);
+
+		$expected =	array(
+			'type' => Element::TYPE_NSRESOURCE,
+			'uri'  => "||",
+			'dataitem' => array( 'type' => 9, 'item' => 'Foo#14#' )
+		);
+
+		$provider[] = array(
+			new DIWikiPage( 'Foo', NS_CATEGORY , '', '' ),
+			$expected
 		);
 
 		return $provider;
