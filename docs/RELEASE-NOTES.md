@@ -30,6 +30,7 @@ This is not a release yet.
 * #1060 Fixed usage of `(a OR b) AND (c OR d)` as query pattern for the `SQLStore`
 * #1067 Fixed return value of the `#set` parser
 * #1074 Fixed duplicated error message for a `_dat` DataValue
+* #1081 Fixed mismatch of `owl:Class` for categories when used in connection with a vocabulary import
 
 ## Internal changes
 
