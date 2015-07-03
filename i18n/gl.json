@@ -318,6 +318,7 @@
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"] é unha propiedade predefinida que pode definir unha lista de valores posibles para restrinxir a asignación de valores dunha propiedade.",
 	"smw-datavalue-property-restricted-use": "A propiedade \"$1\" marcouse para uso restrinxido.",
 	"smw-datavalue-restricted-use": "Este valor de datos marcouse para uso restrinxido. $1",
+	"smw-datavalue-invalid-number": "Non se pode interpretar \"$1\" coma un número.",
 	"smw-query-condition-circular": "Detectouse unha posible condición circular en \"$1\".",
 	"smw-sp-types-list": "Lista de tipos de datos",
 	"smw-sp-types-default": "\"$1\" é un tipo de datos predefinido.",
