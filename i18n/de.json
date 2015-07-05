@@ -336,6 +336,7 @@
 	"smw-pa-property-predefined_pval": "[https://semantic-mediawiki.org/wiki/Help:Spezialattribut_Erlaubt_Wert „$1“] ist ein softwareseitig fest definiertes Attribut, mit dem für ein Attribut zulässige Attributwerte definiert werden können.",
 	"smw-datavalue-property-restricted-use": "Das Attribut „$1“ kann nur eingeschränkt genutzt werden.",
 	"smw-datavalue-restricted-use": "Dieser Datenwert („$1“) kann nur eingeschränkt genutzt werden.",
+	"smw-datavalue-invalid-number": "„$1“ ist keine gültige Zahl.",
 	"smw-query-condition-circular": "Ein möglicher Zirkelbezug wurde in Vorlage „$1“ entdeckt.",
 	"smw-sp-types-list": "Liste der Datentypen",
 	"smw-sp-types-default": "„$1“ ist ein softwareseitig fest definierter Datentyp.",

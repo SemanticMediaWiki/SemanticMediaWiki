@@ -67,7 +67,7 @@
 	"group-smwadministrator": "Куьйгалхой Semantic MediaWiki",
 	"group-smwadministrator-member": "{{GENDER:$1|куьйгалхо (SMW)}}",
 	"grouppage-smwadministrator": "{{ns:project}}:Куьйгалхой_SMW",
-	"smw-sp-properties-cache-info": "ХӀара хаамаш схьаэцна [https://www.semantic-mediawiki.org/wiki/Caching кэша чура] уьш тӀехьара карлабаьхна $1.",
+	"smw-sp-properties-cache-info": "ХӀара хаамаш схьаэцна [https://www.semantic-mediawiki.org/wiki/Caching кэша чура] уьш тӀаьххьара карлабаьхна $1.",
 	"smw-sp-properties-header-label": "ХӀумнийн могӀам",
 	"smw-sp-admin-idlookup-title": "Лахар ObjectId",
 	"smw-sp-admin-idlookup-objectid": "Цуна Id:",

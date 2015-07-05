@@ -214,6 +214,7 @@
 	"smw-pa-property-predefined_pval": "[https://semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"] es en Eijeschaff, di vum Wikkiprojramm ald faßjelaad es un di en Leß met zohjelohße Wääte, fäßlähje kann, öm de Zohdeijlong vun Wääte för en Einjeschaff ze beschrängke.",
 	"smw-datavalue-property-restricted-use": "De Eijeschaff „$1“ wood för ene beschrängkte Jebruch makehrt.",
 	"smw-datavalue-restricted-use": "Dä Dahtewääd „$1“ wood för ene beschrängkte Jebruch makehrt.",
+	"smw-datavalue-invalid-number": "„$1“ km_mer nit als en Zahl verschtonn.",
 	"smw-query-condition-circular": "Müjelesch, dat en Bedengong en „$1“ em Kreis erm jeiht.",
 	"smw-sp-types-list": "Leß vun de Dahte_Zoote",
 	"smw-sp-types-default": "„$1“ es ene pä Projramm ald faßjelahte un ennjeboute Dahte_Zoot.",

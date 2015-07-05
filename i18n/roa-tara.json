@@ -53,5 +53,6 @@
 	"browse": "Sfogghie 'a uicchi",
 	"smw_browse_go": "Véje",
 	"smw-ui-tooltip-title-property": "Probbietà",
-	"smw-livepreview-loading": "Stoche a careche…"
+	"smw-livepreview-loading": "Stoche a careche…",
+	"smw-datavalue-invalid-number": "\"$1\" non ge pò essere 'nderpretate cumme 'nu numere."
 }
