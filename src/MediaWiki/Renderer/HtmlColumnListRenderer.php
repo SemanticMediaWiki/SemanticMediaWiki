@@ -136,6 +136,7 @@ class HtmlColumnListRenderer {
 
 		$result = '';
 		$usedColumnCloser = false;
+		$this->numRows = 0;
 
 		$this->rowsPerColumn = ceil( $this->numberOfResults / $this->numberOfColumns );
 		$this->columnWidth = floor( 100 / $this->numberOfColumns );
