@@ -337,7 +337,7 @@
 	"smw-datavalue-property-restricted-use": "Das Attribut „$1“ kann nur eingeschränkt genutzt werden.",
 	"smw-datavalue-restricted-use": "Dieser Datenwert („$1“) kann nur eingeschränkt genutzt werden.",
 	"smw-datavalue-invalid-number": "„$1“ ist keine gültige Zahl.",
-	"smw-query-condition-circular": "Ein möglicher Zirkelbezug wurde in Vorlage „$1“ entdeckt.",
+	"smw-query-condition-circular": "In Vorlage „$1“ wurde ein möglicher Zirkelbezug festgestellt.",
 	"smw-sp-types-list": "Liste der Datentypen",
 	"smw-sp-types-default": "„$1“ ist ein softwareseitig fest definierter Datentyp.",
 	"smw-sp-types-help": "Weitere Informationen sowie Beispiele sind auf der zugehörigen [https://semantic-mediawiki.org/wiki/Help:Type_$1 Hilfeseite] vorhanden.",
