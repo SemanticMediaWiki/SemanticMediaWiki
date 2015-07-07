@@ -421,6 +421,24 @@ $GLOBALS['smwgResultFormats'] = array(
 $GLOBALS['smwgResultAliases'] = array( 'feed' => array( 'rss' ) );
 ##
 
+###
+#
+# Enables specific formats to import its annotation data into the
+# subject that resolves the result query.
+#
+# E.g. using ask query to search/set an invert property value
+#
+# This setting can be used to mitigate template parsing in connection with the
+# VisualEditor (#1055).
+#
+# @since 2.3
+##
+$GLOBALS['smwgEnabledResultFormatsWithRecursiveAnnotationSupport'] = array(
+	'template',
+	'list'
+);
+##
+
 ### Predefined sources for queries
 # Array of available sources for answering queries. Can be redefined in
 # the settings to register new sources (usually an extension will do so

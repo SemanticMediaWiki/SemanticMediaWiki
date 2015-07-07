@@ -275,7 +275,7 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 		/**
 		 * @var \Parser $wgParser
 		 */
-		global $wgParser;
+		global $wgParser, $smwgEnabledResultFormatsWithRecursiveAnnotationSupport;
 
 		$result .= $this->getErrorString( $results ); // append errors
 
@@ -292,7 +292,6 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 		// Apply outro parameter
 		if ( ( $this->mOutro ) && ( $results->getCount() > 0 ) ) {
 			if ( $outputmode == SMW_OUTPUT_HTML && $wgParser->getTitle() instanceof Title ) {
-				global $wgParser;
 				$result = $result . $wgParser->recursiveTagParse( $this->mOutro );
 			} else {
 				$result = $result . $this->mOutro;
@@ -305,14 +304,14 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 				self::$mRecursionDepth++;
 
 				if ( self::$mRecursionDepth <= self::$maxRecursionDepth ) { // restrict recursion
-					$result = '[[SMW::off]]' . $wgParser->replaceVariables( $result ) . '[[SMW::on]]';
+					$result = in_array( $this->params['format'], $smwgEnabledResultFormatsWithRecursiveAnnotationSupport ) ? $wgParser->recursivePreprocess( $result ) :'[[SMW::off]]' . $wgParser->replaceVariables( $result ) . '[[SMW::on]]';
 				} else {
 					$result = ''; /// TODO: explain problem (too much recursive parses)
 				}
 
 				self::$mRecursionDepth--;
 			} else { // not during parsing, no preprocessing needed, still protect the result
-				$result = '[[SMW::off]]' . $result . '[[SMW::on]]';
+				$result = in_array( $this->params['format'], $smwgEnabledResultFormatsWithRecursiveAnnotationSupport ) ? $result : '[[SMW::off]]' . $result . '[[SMW::on]]';
 			}
 		}
 

@@ -134,7 +134,8 @@ class Settings extends SimpleDictionary {
 			'smwgEnabledEditPageHelp' => $GLOBALS['smwgEnabledEditPageHelp'],
 			'smwgUFeatures' => $GLOBALS['smwgUFeatures'],
 			'smwgLogEventTypes' => $GLOBALS['smwgLogEventTypes'],
-			'smwgSparqlQFeatures' => $GLOBALS['smwgSparqlQFeatures']
+			'smwgSparqlQFeatures' => $GLOBALS['smwgSparqlQFeatures'],
+			'smwgEnabledResultFormatsWithRecursiveAnnotationSupport' => $GLOBALS['smwgEnabledResultFormatsWithRecursiveAnnotationSupport']
 		);
 
 		$settings = $settings + array(

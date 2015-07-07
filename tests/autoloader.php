@@ -22,9 +22,9 @@ if ( !defined( 'SMW_VERSION' ) ) {
 }
 
 if ( is_readable( $path = __DIR__ . '/../vendor/autoload.php' ) ) {
-	print ( "\nMediaWiki " . $GLOBALS['wgVersion'] . " extension vendor autoloader ...\n\n" );
+	print ( "\nMediaWiki: " . $GLOBALS['wgVersion'] . " (Extension vendor autoloader)\n" );
 } elseif ( is_readable( $path = __DIR__ . '/../../../vendor/autoload.php' ) ) {
-	print ( "\nMediaWiki " . $GLOBALS['wgVersion'] . " root vendor autoloader ...\n\n" );
+	print ( "\nMediaWiki: " . $GLOBALS['wgVersion'] . " (MediaWiki vendor autoloader)\n" );
 } else {
 	die( 'To run tests it is required that packages are installed using Composer.' );
 }

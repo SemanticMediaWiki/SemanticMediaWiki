@@ -7,7 +7,7 @@ if ( PHP_SAPI !== 'cli' ) {
 $autoloader = require __DIR__ . '/autoloader.php';
 
 // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength.MaxExceeded
-print ( "SemanticMediaWiki " . SMW_VERSION . " ({$GLOBALS['smwgDefaultStore']} / {$GLOBALS['wgDBtype']}" . ( strpos( $GLOBALS['smwgDefaultStore'], 'SQL' ) ? '' : ' / ' . $GLOBALS['smwgSparqlDatabaseConnector'] ) . ") ...\n\n" );
+print ( "Semantic MediaWiki: " . SMW_VERSION . " ({$GLOBALS['smwgDefaultStore']}, {$GLOBALS['wgDBtype']}" . ( strpos( $GLOBALS['smwgDefaultStore'], 'SQL' ) ? '' : ', ' . $GLOBALS['smwgSparqlDatabaseConnector'] ) . ")\n\n" );
 // @codingStandardsIgnoreEnd
 
 $autoloader->addPsr4( 'SMW\\Test\\', __DIR__ . '/phpunit' );
