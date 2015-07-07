@@ -14,6 +14,7 @@ This is not a release yet.
 * #1042 Extended `rebuildData.php` to inform about the estimated % progress
 * #1047 Extended context help displayed on `Special:Types` and subsequent type pages
 * #1049 Added resource targets to allow MobileFrontend to load SMW related modules
+* #1053 Added a `CSS` class to visually distinguish a "normal" from a subobject link
 * #1063 Added `$GLOBALS['smwgValueLookupCacheType']` to improve DB lookup performance though the use of a responsive cache layer (such as `redis`) and buffer repeated requests either from the API or page view to the backend.
 * #1066 Extended `InTextAnnotationParser` to correctly handle `::` or `:::` and allow for proper processing of annotations such as `[[DOI::10.1002/123::abc]]` or `[[Foo:::123]]`
 
