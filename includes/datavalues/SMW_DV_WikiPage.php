@@ -188,24 +188,38 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getShortWikiText( $linked = null ) {
+
 		if ( is_null( $linked ) || $linked === false ||
 			$this->m_outformat == '-' || !$this->isValid() ||
 			$this->m_caption === '' ) {
 			return $this->m_caption !== false ? $this->m_caption : $this->getWikiValue();
-		} else {
-			if ( $this->m_dataitem->getNamespace() == NS_FILE ) {
-				$linkEscape = '';
-				$defaultCaption = '|' . $this->getShortCaptionText() . '|frameless|border|text-top';
-			} else {
-				$linkEscape = ':';
-				$defaultCaption = '|' . $this->getShortCaptionText();
-			}
-			if ( $this->m_caption === false ) {
-				return '[[' . $linkEscape . $this->getWikiLinkTarget() . $defaultCaption . ']]';
-			} else {
-				return '[[' . $linkEscape . $this->getWikiLinkTarget() . '|' . $this->m_caption . ']]';
-			}
 		}
+
+		if ( $this->m_dataitem->getNamespace() == NS_FILE ) {
+			$linkEscape = '';
+			$defaultCaption = '|' . $this->getShortCaptionText() . '|frameless|border|text-top';
+		} else {
+			$linkEscape = ':';
+			$defaultCaption = '|' . $this->getShortCaptionText();
+		}
+
+		if ( $this->m_caption === false ) {
+			$link = '[[' . $linkEscape . $this->getWikiLinkTarget() . $defaultCaption . ']]';
+		} else {
+			$link = '[[' . $linkEscape . $this->getWikiLinkTarget() . '|' . $this->m_caption . ']]';
+		}
+
+		if ( $this->m_fragment !== '' ) {
+			$link = \Html::rawElement(
+				'span',
+				array(
+					'class' => 'smw-subobject-entity'
+				),
+				$link
+			);
+		}
+
+		return $link;
 	}
 
 	/**
@@ -216,6 +230,11 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getShortHTMLText( $linker = null ) {
+
+		$attributes = array(
+			'class' => $this->m_fragment !== '' ? 'smw-subobject-entity' : ''
+		);
+
 		// init the Title object, may reveal hitherto unnoticed errors:
 		if ( !is_null( $linker ) && $linker !== false &&
 				$this->m_caption !== '' && $this->m_outformat != '-' ) {
@@ -227,16 +246,20 @@ class SMWWikiPageValue extends SMWDataValue {
 
 			$caption = $this->m_caption === false ? $this->getWikiValue() : $this->m_caption;
 			return htmlspecialchars( $caption );
-		} else {
-			$caption = $this->m_caption === false ? $this->getShortCaptionText() : $this->m_caption;
-			$caption = htmlspecialchars( $caption );
-
-			if ( $this->getNamespace() == NS_MEDIA ) { // this extra case *is* needed
-				return $linker->makeMediaLinkObj( $this->getTitle(), $caption );
-			} else {
-				return $linker->link( $this->getTitle(), $caption );
-			}
 		}
+
+		$caption = $this->m_caption === false ? $this->getShortCaptionText() : $this->m_caption;
+		$caption = htmlspecialchars( $caption );
+
+		if ( $this->getNamespace() == NS_MEDIA ) { // this extra case *is* needed
+			return $linker->makeMediaLinkObj( $this->getTitle(), $caption );
+		}
+
+		return $linker->link(
+			$this->getTitle(),
+			$caption,
+			$attributes
+		);
 	}
 
 	/**
@@ -261,9 +284,21 @@ class SMWWikiPageValue extends SMWDataValue {
 			// other values (whether formatted or not).
 			return '[[' . $this->getWikiLinkTarget() . '|' .
 				$this->getLongCaptionText() . '|frameless|border|text-top]]';
-		} else {
-			return '[[:' . $this->getWikiLinkTarget() . '|' . $this->getLongCaptionText() . ']]';
 		}
+
+		$link = '[[:' . $this->getWikiLinkTarget() . '|' . $this->getLongCaptionText() . ']]';
+
+		if ( $this->m_fragment !== '' ) {
+			$link = \Html::rawElement(
+				'span',
+				array(
+					'class' => 'smw-subobject-entity'
+				),
+				$link
+			);
+		}
+
+		return $link;
 	}
 
 	/**
@@ -274,10 +309,16 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getLongHTMLText( $linker = null ) {
+
+		$attributes = array(
+			'class' => $this->m_fragment !== '' ? 'smw-subobject-entity' : ''
+		);
+
 		// init the Title object, may reveal hitherto unnoticed errors:
 		if ( !is_null( $linker ) && ( $this->m_outformat != '-' ) ) {
 			$this->getTitle();
 		}
+
 		if ( !$this->isValid() ) {
 			return $this->getErrorText();
 		}
@@ -287,10 +328,13 @@ class SMWWikiPageValue extends SMWDataValue {
 		} elseif ( $this->getNamespace() == NS_MEDIA ) { // this extra case is really needed
 			return $linker->makeMediaLinkObj( $this->getTitle(),
 				htmlspecialchars( $this->getLongCaptionText() ) );
-		} else { // all others use default linking, no embedding of images here
-			return $linker->link( $this->getTitle(),
-				htmlspecialchars( $this->getLongCaptionText() ) );
 		}
+
+		// all others use default linking, no embedding of images here
+		return $linker->link( $this->getTitle(),
+			htmlspecialchars( $this->getLongCaptionText() ),
+			$attributes
+		);
 	}
 
 	/**

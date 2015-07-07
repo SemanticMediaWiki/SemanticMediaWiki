@@ -446,3 +446,9 @@ label.smw-form-checkbox {
 	font-family: inherit;
 	font-weight: 500;
 }
+
+/* Distinguish subobjects from other titles */
+
+.smw-subobject-entity {
+	font-style: italic;
+}
