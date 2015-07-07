@@ -40,6 +40,11 @@ class AskParserFunction {
 	private $showMode = false;
 
 	/**
+	 * @var array
+	 */
+	private $enabledFormatsThatSupportRecursiveParse = array();
+
+	/**
 	 * @var ApplicationFactory
 	 */
 	private $applicationFactory;
@@ -67,6 +72,19 @@ class AskParserFunction {
 	public function setShowMode( $mode ) {
 		$this->showMode = $mode;
 		return $this;
+	}
+
+	/**
+	 * A printer run its own isolated wgParser process therefore if the printer
+	 * or a template inclusion is used by a printer, possible extra annotations
+	 * need to be imported for further usage
+	 *
+	 * @since 2.3
+	 *
+	 * @param array $enabledFormatsThatSupportRecursiveParse
+	 */
+	public function setEnabledFormatsThatSupportRecursiveParse( array $enabledFormatsThatSupportRecursiveParse ) {
+		$this->enabledFormatsThatSupportRecursiveParse = $enabledFormatsThatSupportRecursiveParse;
 	}
 
 	/**
@@ -153,11 +171,12 @@ class AskParserFunction {
 			SMWQueryProcessor::INLINE_QUERY
 		);
 
-		// FIXME Should be injected
-		// A printer run its own isolated wgParser process therefore if the printer
-		// or a template inclusion is used by a printer, possible extra annotations
-		// need to be imported for further usage
-		$this->parserData->importFromParserOutput( $GLOBALS['wgParser']->getOutput() );
+		$format = $this->params['format']->getValue();
+
+		// FIXME Parser should be injected into the ResultPrinter
+		if ( in_array( $format, $this->enabledFormatsThatSupportRecursiveParse ) ) {
+			$this->parserData->importFromParserOutput( $GLOBALS['wgParser']->getOutput() );
+		}
 
 		if ( $this->applicationFactory->getSettings()->get( 'smwgQueryDurationEnabled' ) ) {
 			$queryDuration = microtime( true ) - $start;
@@ -167,7 +186,7 @@ class AskParserFunction {
 
 		$this->createQueryProfile(
 			$this->query,
-			$this->params['format']->getValue(),
+			$format,
 			$queryDuration
 		);
 

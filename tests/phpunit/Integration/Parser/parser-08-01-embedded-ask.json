@@ -1,0 +1,61 @@
+{
+	"description": "Embedded output",
+	"properties": [
+		{
+			"name": "HasSomePageProperty",
+			"contents": "[[Has type::Page]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Format/Embedded/1",
+			"contents": "[[HasSomePageProperty::ABC]] {{#subobject:HasSomePageProperty=123}} [[Category:Embedded format]]"
+		},
+		{
+			"name": "Format/Embedded/2",
+			"contents": "[[HasSomePageProperty::DEF]] {{#subobject:HasSomePageProperty=456}} [[Category:Embedded format]]"
+		},
+		{
+			"name": "Format/Embedded",
+			"contents": "{{#ask:[[Category:Embedded format]] |format=embedded |link=none |headers=show |embedformat=h1 }}"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0",
+			"subject": "Format/Embedded",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [ "_INST", "_MDAT", "_SKEY", "_ASK" ],
+					"propertyValues": [ "Embedded format" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"<h1><span class=\"mw-headline\" id=\"Format.2FEmbedded\"><strong class=\"selflink\">Format/Embedded</strong></span></h1>",
+					"<h1><span class=\"mw-headline\" id=\"Format.2FEmbedded.2F1\">",
+					"<h1><span class=\"mw-headline\" id=\"Format.2FEmbedded.2F2\">",
+					"ABC",
+					"DEF"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [ "_MDAT" ],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"skip-on": {
+			"mw-1.19.20": "<h1> contains an extra space"
+		},
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -58,7 +58,8 @@ class ByJsonParserTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			'wgLanguageCode',
 			'wgContLang',
 			'wgLang',
-			'wgCapitalLinks'
+			'wgCapitalLinks',
+			'smwgEnabledResultFormatsWithRecursiveAnnotationSupport'
 		);
 
 		foreach ( $permittedSettings as $key ) {
