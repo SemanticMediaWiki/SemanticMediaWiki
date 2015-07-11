@@ -245,7 +245,7 @@ class CachedDataItemToExpResourceEncoderTest extends \PHPUnit_Framework_TestCase
 		);
 
 		$provider[] = array(
-			new DIWikiPage( 'Foo', NS_CATEGORY , '', '' ),
+			new DIWikiPage( 'Foo', NS_CATEGORY, '', '' ),
 			$expected
 		);
 

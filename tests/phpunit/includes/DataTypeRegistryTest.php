@@ -173,7 +173,7 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 		$instance->registerExtraneousFunction(
 			'foo',
 			function ( $arg ) {
-				return 'bar' . $arg ;
+				return 'bar' . $arg;
 			}
 		);
 
