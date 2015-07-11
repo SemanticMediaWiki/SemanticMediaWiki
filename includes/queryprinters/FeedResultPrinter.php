@@ -2,8 +2,16 @@
 
 namespace SMW;
 
-use SMWQueryResult, SMWQuery, SMWQueryProcessor, SMWDIWikipage;
-use Sanitizer, WikiPage, ParserOptions, FeedItem, TextContent, Title;
+use SMWQueryResult;
+use SMWQuery;
+use SMWQueryProcessor;
+use SMWDIWikipage;
+use Sanitizer;
+use WikiPage;
+use ParserOptions;
+use FeedItem;
+use TextContent;
+use Title;
 
 /**
  * Result printer that exports query results as RSS/Atom feed
