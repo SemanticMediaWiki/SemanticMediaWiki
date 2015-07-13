@@ -71,6 +71,23 @@ class PageCreator {
 	}
 
 	/**
+	 * @since 2.3
+	 *
+	 * @return PageCreator
+	 */
+	public function doMoveTo( Title $target, $isRedirect = true ) {
+
+		$this->getPage()->getTitle()->moveTo(
+			$target,
+			false,
+			"integration test",
+			$isRedirect
+		);
+
+		return $this;
+	}
+
+	/**
 	 * @since 2.0
 	 */
 	public function getEditInfo() {

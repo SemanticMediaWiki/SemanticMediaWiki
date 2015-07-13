@@ -162,12 +162,12 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 
 		// #566
 		$this->assertCount(
-			2,
+			1,
 			$queryResult->getResults()
 		);
 
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
-			array( DIWikiPage::newFromTitle( $expectedNewTitle ), DIWikiPage::newFromTitle( $title ) ),
+			array( DIWikiPage::newFromTitle( $expectedNewTitle ) ),
 			$queryResult
 		);
 
