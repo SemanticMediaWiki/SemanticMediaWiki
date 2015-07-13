@@ -1,0 +1,98 @@
+{
+	"description": "Move/redirect output",
+	"properties": [
+		{
+			"name": "HasPropertyForMove",
+			"contents": "[[Has type::Page]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Page/09/01/1",
+			"contents": "[[HasPropertyForMove::ABC]]"
+		},
+		{
+			"name": "Page/09/01/2",
+			"contents": "[[HasPropertyForMove::ABC]]"
+		},
+		{
+			"name": "Page/09/01/3",
+			"contents": "[[HasPropertyForMove::ABC]]",
+			"move-to":{
+				"target":"Move/09/01/4",
+				"is-redirect": false
+			}
+		},
+		{
+			"name": "Move/09/01/Query",
+			"contents": "{{#ask:[[HasPropertyForMove::ABC]] |format=ul |link=none |headers=show }}"
+		},
+		{
+			"name": "Redirect/09/01/1",
+			"contents": "[[HasPropertyForMove::123]]",
+			"move-to":{
+				"target":"Redirect/09/01/2",
+				"is-redirect": true
+			}
+		},
+		{
+			"name": "Redirect/09/01/3",
+			"contents": "#REDIRECT [[Redirect/09/01/4]] [[HasPropertyForMove::123]]"
+		},
+		{
+			"name": "Redirect/09/01/Query",
+			"contents": "{{#ask:[[HasPropertyForMove::ABC]] OR [[HasPropertyForMove::123]] |format=ul |link=none |headers=show }}"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0 includes move",
+			"subject": "Move/09/01/Query",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_MDAT", "_SKEY", "_ASK" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"<li data-sortkey=\"P\">Page/09/01/1</li>",
+					"<li data-sortkey=\"P\">Page/09/01/2</li>",
+					"<li data-sortkey=\"M\">Move/09/01/4</li>"
+				]
+			}
+		},
+		{
+			"about": "#1 includes redirect",
+			"subject": "Redirect/09/01/Query",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_MDAT", "_SKEY", "_ASK" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"<li data-sortkey=\"P\">Page/09/01/1</li>",
+					"<li data-sortkey=\"P\">Page/09/01/2</li>",
+					"<li data-sortkey=\"M\">Move/09/01/4</li>",
+					"<li data-sortkey=\"R\">Redirect/09/01/2</li>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [ "_MDAT" ],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

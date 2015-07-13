@@ -113,6 +113,19 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 				->doEdit( $page['contents'] );
 
 			$this->itemsMarkedForDeletion[] = $this->pageCreator->getPage();
+
+			if ( !isset( $page['move-to'] ) || !isset( $page['move-to']['target'] ) ) {
+				continue;
+			}
+
+			$target = Title::newFromText( $page['move-to']['target'], $namespace );
+
+			$this->pageCreator->doMoveTo(
+				$target,
+				$page['move-to']['is-redirect']
+			);
+
+			$this->itemsMarkedForDeletion[] = $target;
 		}
 	}
 

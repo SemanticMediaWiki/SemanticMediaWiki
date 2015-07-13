@@ -73,7 +73,7 @@ class TitleMoveComplete {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		// Delete all data for a non-enabled target NS
-		if ( !$applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $this->newTitle->getNamespace() ) ) {
+		if ( !$applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $this->newTitle->getNamespace() ) || $this->newId == 0 ) {
 
 			$applicationFactory->getStore()->deleteSubject(
 				$this->oldTitle
