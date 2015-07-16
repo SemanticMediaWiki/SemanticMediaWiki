@@ -269,5 +269,6 @@
 	"smw-sp-searchbyproperty-nonvaluequery": "Lista wartości, które mają przypisaną właściwość „$1”.",
 	"smw-sp-searchbyproperty-valuequery": "Lista stron, które mają właściwość „$1” z wartością „$2”.",
 	"log-name-smw": "Rejestr semantycznej MediaWiki",
+	"smw-datavalue-invalid-number": "„$1” nie może być interpretowane jako liczba.",
 	"smw-sp-types-list": "Lista typów danych"
 }
