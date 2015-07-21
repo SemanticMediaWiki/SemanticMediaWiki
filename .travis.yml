@@ -35,6 +35,7 @@ matrix:
     - env: DB=sqlite; MW=master; PHPUNIT=4.6.*
 
 install:
+  - composer selfupdate
   - bash ./build/travis/install-services.sh
   - bash ./build/travis/install-mediawiki.sh
   - bash ./build/travis/install-semantic-mediawiki.sh
