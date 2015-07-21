@@ -29,7 +29,8 @@
 			"Wyz",
 			"Zetud",
 			"아라",
-			"Windes"
+			"Windes",
+			"Wladek92"
 		]
 	},
 	"smw-desc": "Rendre le wiki plus accessible - pour les machines ''et'' les humains ([https://semantic-mediawiki.org/wiki/Help:User_manual documentation en ligne])",
@@ -257,8 +258,6 @@
 	"smw_smwadmin_permissionswarn": "Si l’opération échoue avec des erreurs SQL, l’utilisateur de la base de données utilisée par votre wiki (regardez votre LocalSettings.php) n’a probablement pas les droits suffisants.\nIl faut soit permettre à cet utilisateur de créer et supprimer les tables, soit saisir temporairement les identifiants du compte root de votre base de données dans LocalSettings.php, soit utiliser le script de maintenance <code>setupStore.php</code> qui peut utiliser les informations de connexion d’un administrateur.",
 	"smw_smwadmin_dbbutton": "Initialiser ou mettre à niveau les tables",
 	"smw_smwadmin_announce": "Annoncer votre wiki",
-	"smw_smwadmin_announcedocu": "Semantic MediaWiki dispose d’un service Internet pour annoncer de nouveaux sites wiki sémantiques.\nCe service maintient une liste des sites publics utilisant Semantic MediaWiki, principalement pour aider <a href=\"https://semantic-mediawiki.org/wiki/SMW_Project\">le projet Semantic MediaWiki</a> à obtenir une vue d’ensemble de ses utilisations typiques.\nVoyez la page d’accueil de Semantic MediaWiki pour <a href=\"https://semantic-mediawiki.org/wiki/Registry\">de plus amples informations concernant ce service</a>.",
-	"smw_smwadmin_announcebutton": "Appuyez sur le bouton suivant pour soumettre l’adresse Internet de votre wiki à ce service.\nLe service n’enregistrera pas les wikis qui ne sont pas accessibles au public, et il ne stockera que les informations publiquement accessibles.",
 	"smw_smwadmin_datarefresh": "Réparation et mise à niveau des données",
 	"smw_smwadmin_datarefreshdocu": "Il est possible de restaurer toutes les données Semantic MediaWiki à partir du contenu courant de ce wiki.\nCeci peut être utile pour réparer des données corrompues ou pour rafraîchir les données si le format interne a changé lors des mises à niveau.\nLa mise à jour est exécutée page par page et se sera pas achevée immédiatement.\nLa page suivante spécifie si une mise à jour est en cours d’exécution et vous permet de commencer ou d’arrêter celle-ci (à moins que cette fonctionnalité n’ait été désactivée par l’administrateur du site).",
 	"smw_smwadmin_datarefreshprogress": "<strong>Une mise à jour est en cours d’exécution.</strong>\nIl est normal qu’une mise à jour progresse lentement parce qu’elle ne rafraîchit les données que par petits tronçons, au fur et à mesure qu’un utilisateur accède au wiki.\nPour terminer cette mise à jour plus rapidement, vous pouvez invoquer le script d’entretien Mediawiki <code>runJobs.php</code> (utilisez l’option <code>--maxjobs 1000</code> pour restreindre le nombre de mises à jour par script lancé).\nProgression estimée de la mise à jour actuelle :",
@@ -321,5 +320,6 @@
 	"smw-sp-searchbyproperty-description": "cette page fournit une simple [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces interface de navigation] pour trouver des entités décrites par une propriété et une valeur nommée. D’autres interfaces de recherche disponibles comprennent la [[Special:PageProperty|page recherche de propriété]], et le [[Special:Ask|constructeur de requêtes ask]].",
 	"smw-sp-searchbyproperty-resultlist-header": "Liste de résultats",
 	"smw-sp-searchbyproperty-nonvaluequery": "Une liste de valeurs qui ont la propriété « $1 » affectée.",
-	"smw-sp-searchbyproperty-valuequery": "Une liste de pages qui ont la propriété « $1 » avec la valeur « $2 » annotée."
+	"smw-sp-searchbyproperty-valuequery": "Une liste de pages qui ont la propriété « $1 » avec la valeur « $2 » annotée.",
+	"smw-datavalue-invalid-number": "\"$1\" ne peut pas être interprété comme un nombre."
 }

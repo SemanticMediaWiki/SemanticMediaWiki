@@ -333,7 +333,7 @@
 	"smw-datavalue-property-restricted-use": "This is an error/warning message.\n\nParameters:\n\n* $1 holds the property name causing the error/warning.",
 	"smw-datavalue-restricted-use": "This is an error/warning message.\n\nParameters:\n\n* $1 holds the datavalue causing the error/warning.",
 	"smw-datavalue-invalid-number": "This is an error message shown to the user in case the stored value is not a number.",
-	"smw-query-condition-circular": "This is an error/warning message.\n\nParameters:\n\n* $1 holds the template causing the error/warning.",
+	"smw-query-condition-circular": "This is an error/warning message.\n\nParameters:\n\n* $1 holds the name of the template causing the error/warning.",
 	"smw-sp-types-list": "A header",
 	"smw-sp-types-default": "This is an informatory message shown to the user.",
 	"smw-sp-types-help": "This is an informatory message shown to the user.",
