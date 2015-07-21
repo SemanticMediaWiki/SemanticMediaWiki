@@ -16,25 +16,25 @@ class SMWResultArray {
 	/**
 	 * @var PrintRequest
 	 */
-	protected $mPrintRequest;
+	private $mPrintRequest;
 
 	/**
 	 * @var SMWDIWikiPage
 	 */
-	protected $mResult;
+	private $mResult;
 
 	/**
 	 * @var SMWStore
 	 */
-	protected $mStore;
+	private $mStore;
 
 	/**
-	 * @var array of SMWDataItem or false
+	 * @var SMWDataItem[]|false
 	 */
-	protected $mContent;
+	private $mContent;
 
-	static protected $catCacheObj = false;
-	static protected $catCache = false;
+	static private $catCacheObj = false;
+	static private $catCache = false;
 
 	/**
 	 * Constructor.
@@ -74,7 +74,7 @@ class SMWResultArray {
 	 * Returns an array of SMWDataItem objects that contain the results of
 	 * the given print request for the given result object.
 	 *
-	 * @return array of SMWDataItem or false
+	 * @return SMWDataItem[]|false
 	 */
 	public function getContent() {
 		$this->loadContent();
@@ -104,7 +104,7 @@ class SMWResultArray {
 	 *
 	 * @since 1.6
 	 *
-	 * @return SMWDataItem or false
+	 * @return SMWDataItem|false
 	 */
 	public function getNextDataItem() {
 		$this->loadContent();
@@ -120,7 +120,7 @@ class SMWResultArray {
 	 *
 	 * @since 1.7.1
 	 *
-	 * @return SMWDataItem or false
+	 * @return SMWDataItem|false
 	 */
 	public function reset() {
 		$this->loadContent();
@@ -133,7 +133,7 @@ class SMWResultArray {
 	 *
 	 * @since 1.6
 	 *
-	 * @return SMWDataValue or false
+	 * @return SMWDataValue|false
 	 */
 	public function getNextDataValue() {
 		$di = $this->getNextDataItem();
@@ -178,7 +178,7 @@ class SMWResultArray {
 	 * @param integer $outputMode
 	 * @param mixed $linker
 	 *
-	 * @return string or false
+	 * @return string|false
 	 */
 	public function getNextText( $outputMode, $linker = null ) {
 		$dataValue = $this->getNextDataValue();
@@ -274,7 +274,7 @@ class SMWResultArray {
 	 *
 	 * @param boolean $useLimit
 	 *
-	 * @return SMWRequestOptions or null
+	 * @return SMWRequestOptions|null
 	 */
 	protected function getRequestOptions( $useLimit = true ) {
 		$limit = $useLimit ? $this->mPrintRequest->getParameter( 'limit' ) : false;
