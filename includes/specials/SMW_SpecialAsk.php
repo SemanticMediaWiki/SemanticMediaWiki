@@ -1,4 +1,6 @@
 <?php
+
+use ParamProcessor\Param;
 use SMW\Query\PrintRequest;
 
 /**
@@ -18,16 +20,16 @@ use SMW\Query\PrintRequest;
  */
 class SMWAskPage extends SMWQuerySpecialPage {
 
-	protected $m_querystring = '';
-	protected $m_params = array();
-	protected $m_printouts = array();
-	protected $m_editquery = false;
-
-	protected $params = array();
+	private $m_querystring = '';
+	private $m_params = array();
+	private $m_printouts = array();
+	private $m_editquery = false;
 
 	/**
-	 * Constructor.
+	 * @var Param[]
 	 */
+	private $params = array();
+
 	public function __construct() {
 		parent::__construct( 'Ask' );
 	}
@@ -430,7 +432,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		}
 
 		// Find parameters
-		foreach ( $this->params as /* IParam */ $param ) {
+		foreach ( $this->params as $param ) {
 			if ( !$param->wasSetToDefault() ) {
 					$result .= '|' . htmlspecialchars( $param->getName() ) . '=';
 					// e.g. sorting returns with an array

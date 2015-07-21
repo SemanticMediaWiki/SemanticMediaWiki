@@ -1,5 +1,6 @@
 <?php
 
+use ParamProcessor\Param;
 use ParamProcessor\Processor;
 use ParamProcessor\Options;
 use ParamProcessor\ParamDefinition;
@@ -36,13 +37,13 @@ class SMWQueryProcessor {
 	 *
 	 * @since 1.6.2
 	 * The return value changed in SMW 1.8 from an array with result values
-	 * to an array with IParam objects.
+	 * to an array with Param objects.
 	 *
 	 * @param array $params
 	 * @param array $printRequests
 	 * @param boolean $unknownInvalid
 	 *
-	 * @return IParam[]
+	 * @return Param[]
 	 */
 	public static function getProcessedParams( array $params, array $printRequests = array(), $unknownInvalid = true ) {
 		$validator = self::getValidatorForParams( $params, $printRequests, $unknownInvalid );
@@ -349,7 +350,7 @@ class SMWQueryProcessor {
 	 * @param string $printRequestString
 	 * @param boolean $showMode
 	 *
-*@return PrintRequest||null
+	 * @return PrintRequest||null
 	 * @since 1.8
 	 */
 	static protected function getSMWPrintRequestFromString( $printRequestString, $showMode ) {
@@ -691,7 +692,7 @@ class SMWQueryProcessor {
 	 *
 	 * @param string $format
 	 *
-	 * @return array of IParamDefinition
+	 * @return ParamDefinition[]
 	 */
 	public static function getFormatParameters( $format ) {
 		SMWParamFormat::resolveFormatAliases( $format );
