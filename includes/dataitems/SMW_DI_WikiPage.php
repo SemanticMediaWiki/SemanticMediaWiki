@@ -67,11 +67,6 @@ class DIWikiPage extends SMWDataItem {
 			throw new DataItemException( "Given namespace '$namespace' is not an integer." );
 		}
 
-		// Check for a potential fragment such as Foo#Bar, Bar#_49c8ab
-		if ( strpos( $dbkey, '#' ) !== false ) {
-			list( $dbkey, $subobjectname ) = explode( '#', $dbkey );
-		}
-
 		$this->m_dbkey = $dbkey;
 		$this->m_namespace = (int)$namespace; // really make this an integer
 		$this->m_interwiki = $interwiki;
@@ -195,9 +190,19 @@ class DIWikiPage extends SMWDataItem {
 	 * @return DIWikiPage
 	 */
 	public static function newFromText( $text, $namespace = NS_MAIN ) {
+
+		$subobjectname = '';
+
+		// Check for a potential fragment such as Foo#Bar, Bar#_49c8ab
+		if ( strpos( $text, '#' ) !== false ) {
+			list( $text, $subobjectname ) = explode( '#', $text );
+		}
+
 		return new self(
 			str_replace( ' ', '_', $text ),
-			$namespace
+			$namespace,
+			'',
+			$subobjectname
 		);
 	}
 

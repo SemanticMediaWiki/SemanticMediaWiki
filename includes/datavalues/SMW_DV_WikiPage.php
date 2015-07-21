@@ -101,6 +101,19 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 
 		if ( $value !== '' ) {
+
+			// If a value declaration (e.g Foo#bar) contains a # we expect that
+			// the value is not a subobject (such an entity would be created
+			// through the #subobject parser) therefore the value is perceived
+			// as an entire title of Foo#bar.
+			if ( strpos( $value, '#' ) !== false && $this->getProperty() !== null ) {
+				$this->m_fragment = '';
+				$this->m_prefixedtext = '';
+				$this->m_id = -1; // unset id
+				$this->m_dataitem = new SMWDIWikiPage( $value, $this->m_fixNamespace );
+				return;
+			}
+
 			if ( $value[0] == '#' ) {
 				if ( is_null( $this->m_contextPage ) ) {
 					$this->addError( wfMessage( 'smw_notitle', $value )->inContentLanguage()->text() );
