@@ -205,5 +205,9 @@ return array(
 	'ext.smw.property' => $moduleTemplate + array(
 		'scripts' => 'smw/special/ext.smw.special.property.js',
 		'dependencies' => 'ext.smw.autocomplete'
+	),
+
+	'ext.jquery.hoverIntent' => $moduleTemplate + array(
+		'scripts' => 'jquery/jquery.hoverIntent.js'
 	)
 );
