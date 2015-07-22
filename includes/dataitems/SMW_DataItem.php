@@ -1,11 +1,4 @@
 <?php
-/**
- * File holding abstract class SMWDataItem, the base for all dataitems in SMW.
- *
- * @author Markus Krötzsch
- *
- * @ingroup SMWDataItems
- */
 
 /**
  * This group contains all parts of SMW that relate to the processing of dataitems
@@ -89,7 +82,7 @@ abstract class SMWDataItem {
 	 * sortkey that is assigned to them as a property value. When pages are
 	 * sorted, this data should be used if possible.
 	 *
-	 * @return float or string
+	 * @return float|string
 	 */
 	abstract public function getSortKey();
 
@@ -113,12 +106,13 @@ abstract class SMWDataItem {
 	 * @return SMWDataItem
 	 */
 	public function getSortKeyDataItem() {
-		$sortkey = $this->getSortKey();
-		if ( is_numeric( $sortkey ) ) {
-			return new SMWDINumber( $sortkey );
-		} else {
-			return new SMWDIBlob( $sortkey );
+		$sortKey = $this->getSortKey();
+
+		if ( is_numeric( $sortKey ) ) {
+			return new SMWDINumber( $sortKey );
 		}
+
+		return new SMWDIBlob( $sortKey );
 	}
 
 	/**
@@ -155,7 +149,6 @@ abstract class SMWDataItem {
 	 *
 	 * @param $diType integer dataitem ID
 	 * @param $serialization string
-	 * @param $typeid string SMW type ID (optional)
 	 *
 	 * @return SMWDataItem
 	 */
@@ -176,27 +169,27 @@ abstract class SMWDataItem {
 	public static function getDataItemClassNameForId( $diType ) {
 		switch ( $diType ) {
 			case self::TYPE_NUMBER:
-			return 'SMWDINumber';
+				return 'SMWDINumber';
 			case self::TYPE_BLOB:
-			return 'SMWDIBlob';
+				return 'SMWDIBlob';
 			case self::TYPE_BOOLEAN:
-			return 'SMWDIBoolean';
+				return 'SMWDIBoolean';
 			case self::TYPE_URI:
-			return 'SMWDIUri';
+				return 'SMWDIUri';
 			case self::TYPE_TIME:
-			return 'SMWDITime';
+				return 'SMWDITime';
 			case self::TYPE_GEO:
-			return 'SMWDIGeoCoord';
+				return 'SMWDIGeoCoord';
 			case self::TYPE_CONTAINER:
-			return 'SMWDIContainer';
+				return 'SMWDIContainer';
 			case self::TYPE_WIKIPAGE:
-			return 'SMWDIWikiPage';
+				return 'SMWDIWikiPage';
 			case self::TYPE_CONCEPT:
-			return 'SMWDIConcept';
+				return 'SMWDIConcept';
 			case self::TYPE_PROPERTY:
-			return 'SMWDIProperty';
+				return 'SMWDIProperty';
 			case self::TYPE_ERROR:
-			return 'SMWDIError';
+				return 'SMWDIError';
 			case self::TYPE_NOTYPE: default:
 				throw new InvalidArgumentException( "The value \"$diType\" is not a valid dataitem ID." );
 		}
