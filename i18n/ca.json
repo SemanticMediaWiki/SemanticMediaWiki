@@ -157,7 +157,7 @@
 	"smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|ús|usos}})",
 	"smw_purge": "Refresca",
 	"types": "Tipus",
-	"smw_types_docu": "La següent és una llista de tots els tipus de dades que poden assignar-se a les propietats.",
+	"smw_types_docu": "La següent és una [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes llista] de tots els tipus de dades que poden assignar-se a les propietats.",
 	"smw-special-types-no-such-type": "El tipus de dades especificat no existeix",
 	"semanticstatistics": "Estadístiques semàntiques",
 	"smw_semstats_text": "Aquest wiki conté '''$1''' {{PLURAL:$1|valor|valors}} de propietat d'un total de '''$2''' [[Special:Properties|{{PLURAL:$2|propietat|diferents propietats}}]].\n'''$3''' {{PLURAL:$3|propietat té|propietats tenen}} una pàgina pròpia, i se n'especifica el tipus de dades amb sagnat per a '''$4'''.\nAlgunes de les propietats existents podrien ser [[Special:UnusedProperties|propietats no utilitzades]].\nLes propietats que encara no tenen cap pàgina es poden trobar a la [[Special:WantedProperties|llista de propietats per definir]].",
@@ -168,7 +168,7 @@
 	"smw-statistics-property-page": "{{PLURAL:$1|Propietat|Propietats}} (registrat amb una pàgina)",
 	"smw-statistics-property-type": "{{PLURAL:$1|Propietat|Propietats}} (assignat a un tipus de dades)",
 	"smw-statistics-query-inline-legacy": "{{PLURAL:$1|Consulta|Consultes}}",
-	"smw-statistics-query-inline": "[[Property:Has query|{{PLURAL:$1|Consulta|Consulta}}]]",
+	"smw-statistics-query-inline": "[[Property:Has query|{{PLURAL:$1|Consulta|Consultes}}]]",
 	"smw-statistics-query-size": "Mida de la consulta",
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Concepte|Conceptes}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Concepte|Conceptes}}]]",
@@ -319,5 +319,10 @@
 	"smw-pa-property-predefined_type": "«$1» és una propietat predefinida que descriu el [[Special:Types|tipus de dades]] d'una propietat.",
 	"smw-datavalue-property-restricted-use": "La propietat «$1» s'ha marcat per a ús restringit.",
 	"smw-datavalue-restricted-use": "El valor de dades s'ha marcat per a ús restringit. $1",
-	"smw-query-condition-circular": "S'ha detectat una possible condició circular a «$1»."
+	"smw-datavalue-invalid-number": "«$1» no es pot interpretar com un nombre.",
+	"smw-query-condition-circular": "S'ha detectat una possible condició circular a «$1».",
+	"smw-sp-types-list": "Llista de tipus de dades",
+	"smw-sp-types-default": "«$1» és un tipus de dades integrat.",
+	"smw-sp-types-help": "Es pot trobar més informació i exemples a la [https://semantic-mediawiki.org/wiki/Help:Type_$1 pàgina d'ajuda].",
+	"smw-sp-types_boo": "«$1» és un tipus de dades primitiu per a descriure un valor de veritable/fals."
 }
