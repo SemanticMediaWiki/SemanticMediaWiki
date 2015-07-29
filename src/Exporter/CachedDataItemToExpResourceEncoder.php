@@ -224,7 +224,7 @@ class CachedDataItemToExpResourceEncoder {
 		$importDataItems = null;
 
 		// Only try to find an import vocab for a matchable entity
-		if ( $modifier === '' && $this->canUseForVocabularySearch( $diWikiPage ) ) {
+		if ( $diWikiPage->getNamespace() === NS_CATEGORY || $diWikiPage->getNamespace() === SMW_NS_PROPERTY ) {
 			$importDataItems = $this->store->getPropertyValues(
 				$diWikiPage,
 				new DIProperty( '_IMPO' )
@@ -236,19 +236,6 @@ class CachedDataItemToExpResourceEncoder {
 		}
 
 		return $importDataItems;
-	}
-
-	private function canUseForVocabularySearch( $diWikiPage ) {
-
-		if ( $diWikiPage->getNamespace() === NS_CATEGORY ) {
-			return true;
-		}
-
-		if ( $diWikiPage->getNamespace() !== SMW_NS_PROPERTY || $diWikiPage->getDBKey() === '' ) {
-			return false;
-		}
-
-		return DIProperty::newFromUserLabel( $diWikiPage->getDBKey() )->isUserDefined();
 	}
 
 }
