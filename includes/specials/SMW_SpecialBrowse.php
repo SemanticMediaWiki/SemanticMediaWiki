@@ -359,7 +359,8 @@ class SMWSpecialBrowse extends SpecialPage {
 			$options->offset = $this->offset;
 		}
 
-		$inproperties = \SMW\StoreFactory::getStore()->getInProperties( $this->subject->getDataItem(), $options );
+		$store = \SMW\StoreFactory::getStore();
+		$inproperties = $store->getInProperties( $this->subject->getDataItem(), $options );
 
 		if ( count( $inproperties ) == self::$incomingpropertiescount ) {
 			$more = true;
@@ -373,11 +374,14 @@ class SMWSpecialBrowse extends SpecialPage {
 		$valoptions->limit = self::$incomingvaluescount;
 
 		foreach ( $inproperties as $property ) {
-			$values = \SMW\StoreFactory::getStore()->getPropertySubjects( $property, $this->subject->getDataItem(), $valoptions );
+			$values = $store->getPropertySubjects( $property, $this->subject->getDataItem(), $valoptions );
 			foreach ( $values as $value ) {
 				$indata->addPropertyObjectValue( $property, $value );
 			}
 		}
+
+		// Added in 2.3
+		wfRunHooks( 'SMW::Browse::AfterInPropertiesLookupComplete', array( $store, $indata, $options ) );
 
 		return array( $indata, $more );
 	}

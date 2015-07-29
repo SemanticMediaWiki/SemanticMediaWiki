@@ -30,6 +30,7 @@ Implementing a hook should be made in consideration of the expected performance 
 
 - `SMW::SQLStore::BeforeDataRebuildJobInsert` to add update jobs while running the rebuild process.<sup>Use of `smwRefreshDataJobs` was deprecated with 2.3</sup>
 - `SMW::SQLStore::AddCustomFixedPropertyTables` to add fixed property table definitions
+- `SMW::Browse::AfterInPropertiesLookupComplete` to extend the incoming properties display for `Special:Browse`
 
 For implementation details and examples, see the [integration test](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/SemanticMediaWikiProvidedHookInterfaceIntegrationTest.php).
 
