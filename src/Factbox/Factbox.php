@@ -98,7 +98,7 @@ class Factbox {
 	 *
 	 * @since 2.1
 	 *
-	 * @param boolean
+	 * @param boolean $preview
 	 */
 	public function useInPreview( $preview ) {
 		$this->useInPreview = $preview;
@@ -109,7 +109,7 @@ class Factbox {
 	 *
 	 * @since 2.3
 	 *
-	 * @param boolean
+	 * @param boolean $actionInfo
 	 */
 	public function useInActionInfo( $actionInfo ) {
 		$this->useInActionInfo = $actionInfo;

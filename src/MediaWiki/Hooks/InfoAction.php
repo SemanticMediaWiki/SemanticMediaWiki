@@ -50,7 +50,11 @@ class InfoAction {
 	 * @return true
 	 */
 	public function process() {
-		return $this->canPerformUpdate() ? $this->performUpdate() : true;
+		if ( $this->canPerformUpdate() ) {
+			$this->performUpdate();
+		}
+
+		return true;
 	}
 
 	private function canPerformUpdate() {
