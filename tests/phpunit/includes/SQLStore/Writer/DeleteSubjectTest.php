@@ -58,7 +58,7 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database->expects( $this->once() )
+		$database->expects( $this->atLeastOnce() )
 			->method( 'select' )
 			->will( $this->returnValue( array() ) );
 
@@ -66,7 +66,7 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parentStore->expects( $this->exactly( 5 ) )
+		$parentStore->expects( $this->exactly( 7 ) )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIdGenerator ) );
 
@@ -104,7 +104,7 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database->expects( $this->once() )
+		$database->expects( $this->atLeastOnce() )
 			->method( 'select' )
 			->will( $this->returnValue( array() ) );
 
@@ -124,7 +124,7 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
-		$parentStore->expects( $this->exactly( 6 ) )
+		$parentStore->expects( $this->exactly( 7 ) )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIdGenerator ) );
 
