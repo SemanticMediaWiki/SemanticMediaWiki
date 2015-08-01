@@ -269,6 +269,7 @@
 	"smw-sp-searchbyproperty-nonvaluequery": "Lista wartości, które mają przypisaną właściwość „$1”.",
 	"smw-sp-searchbyproperty-valuequery": "Lista stron, które mają właściwość „$1” z wartością „$2”.",
 	"log-name-smw": "Rejestr semantycznej MediaWiki",
+	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value „$1”] jest predefiniowaną właściwością, która może zdefiniować listę dopuszczalnych wartości ograniczających przyporządkowania wartości dla właściwości.",
 	"smw-datavalue-invalid-number": "„$1” nie może być interpretowane jako liczba.",
 	"smw-sp-types-list": "Lista typów danych"
 }
