@@ -3,7 +3,7 @@
 namespace SMW\SQLStore;
 
 use SMW\SemanticData;
-use SMM\DIWikiPage;
+use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\Store;
 use SMW\MediaWiki\Jobs\UpdateJob;
