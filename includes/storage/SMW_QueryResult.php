@@ -236,7 +236,7 @@ class SMWQueryResult {
 	public function getQueryLink( $caption = false ) {
 		$link = $this->getLink();
 
-		if ( $caption == false ) {
+		if ( $caption === false ) {
 			// The space is right here, not in the QPs!
 			$caption = ' ' . wfMessage( 'smw_iq_moreresults' )->inContentLanguage()->text();
 		}
