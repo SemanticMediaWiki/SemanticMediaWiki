@@ -173,7 +173,7 @@
 	"smw-statistics-property-page": "Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.\n\nParameters:\n* $1 - number of properties",
 	"smw-statistics-property-type": "Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.\n\nParameters:\n* $1 - number of properties",
 	"smw-statistics-query-inline-legacy": "Used as a label that is displayed on the [[Special:Statistics|Statistics]] page. See also message {{msg-mw|Smw-statistics-query-inline}}.\n\nParameters:\n* $1 - number of queries\n{{Identical|Query}}",
-	"smw-statistics-query-inline": "Used as a label linking to the respective property that is displayed on the [[Special:Statistics|Statistics]] page.\n\nParameters:\n* $1 - number of queries\n\n{{doc-important|\"Property:Has query\" must be localized}}\n\n{{Identical|Query}}",
+	"smw-statistics-query-inline": "Used as a label linking to the respective property that is displayed on the [[Special:Statistics|Statistics]] page.\n\nParameters:\n* $1 - number of queries\n{{Identical|Query}}",
 	"smw-statistics-query-size": "Is a label that is displayed on the [[Special:Statistics|Statistics]] page",
 	"smw-statistics-concept-count-legacy": "Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.\n\nParameters:\n* $1 - concepts",
 	"smw-statistics-concept-count": "Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.\n\nParameters:\n* $1 - number of concepts\n{{Identical|Concept}}",
