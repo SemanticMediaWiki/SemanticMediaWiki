@@ -3,7 +3,7 @@
 namespace SMW\SPARQLStore;
 
 use Exception;
-use SMW\HttpRequest;
+use Onoi\HttpRequest\HttpRequest;
 use SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException;
 use SMW\SPARQLStore\Exception\HttpDatabaseConnectionException;
 
@@ -52,7 +52,7 @@ class BadHttpResponseMapper {
 
 		switch ( $error ) {
 			case 22: //	equals CURLE_HTTP_RETURNED_ERROR but this constant is not defined in PHP
-				$this->createResponseToHttpError( $this->httpRequest->getInfo( CURLINFO_HTTP_CODE ), $endpoint, $sparql );
+				$this->createResponseToHttpError( $this->httpRequest->getLastTransferInfo( CURLINFO_HTTP_CODE ), $endpoint, $sparql );
 				break;
 			case 52:
 			case CURLE_GOT_NOTHING:
