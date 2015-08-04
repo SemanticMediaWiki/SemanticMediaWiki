@@ -236,7 +236,7 @@ class ByIdDataRebuildDispatcher {
 				$titleKey = '';
 			}
 
-			if ( $row->smw_subobject !== '' ) {
+			if ( $row->smw_subobject !== '' && $row->smw_iw !== SMW_SQL3_SMWDELETEIW ) {
 				// leave subobjects alone; they ought to be changed with their pages
 			} elseif ( ( $row->smw_iw === '' || $row->smw_iw == SMW_SQL3_SMWREDIIW ) &&
 				$titleKey != '' ) {
@@ -248,7 +248,7 @@ class ByIdDataRebuildDispatcher {
 				if ( $title !== null && !$title->exists() ) {
 					$updatejobs[] = $this->newUpdateJob( $title );
 				}
-			} elseif ( $row->smw_iw == SMW_SQL3_SMWIW_OUTDATED ) { // remove outdated internal object references
+			} elseif ( $row->smw_iw == SMW_SQL3_SMWIW_OUTDATED || $row->smw_iw == SMW_SQL3_SMWDELETEIW ) { // remove outdated internal object references
 
 				foreach ( $this->store->getPropertyTables() as $proptable ) {
 					if ( $proptable->usesIdSubject() ) {

@@ -598,12 +598,13 @@ class SMWSql3SmwIds {
 	 *
 	 * @param integer $sid
 	 * @param DIWikiPage $subject
+	 * @param integer|string|null $interWiki
 	 */
-	public function updateInterwikiField( $sid, DIWikiPage $subject ) {
+	public function updateInterwikiField( $sid, DIWikiPage $subject, $interWiki = null ) {
 
 		$this->store->getConnection()->update(
 			self::tableName,
-			array( 'smw_iw' => $subject->getInterWiki() ),
+			array( 'smw_iw' => $interWiki !== null ? $interWiki : $subject->getInterWiki() ),
 			array( 'smw_id' => $sid ),
 			__METHOD__
 		);

@@ -7,6 +7,7 @@ use ParserOutput;
 use SMW\ApplicationFactory;
 use SMW\EventHandler;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use Title;
 
 /**
@@ -83,7 +84,9 @@ class UpdateJob extends JobBase {
 			return $this->doPrepareForUpdate();
 		}
 
-		$this->applicationFactory->getStore()->deleteSubject( $this->getTitle() );
+		$this->applicationFactory->getStore()->clearData(
+			DIWikiPage::newFromTitle( $this->getTitle() )
+		);
 
 		return true;
 	}

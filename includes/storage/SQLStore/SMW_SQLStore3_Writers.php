@@ -62,19 +62,24 @@ class SMWSQLStore3Writers {
 
 		wfRunHooks( 'SMW::SQLStore::BeforeDeleteSubjectComplete', array( $this->store, $title ) );
 
+		$id = $this->store->getObjectIds()->getSMWPageID(
+			$title->getDBkey(),
+			$title->getNamespace(),
+			$title->getInterwiki(),
+			'',
+			false
+		);
+
 		$emptySemanticData = new SemanticData( DIWikiPage::newFromTitle( $title ) );
+
+		$subobjects = $this->getSubobjects(
+			$emptySemanticData->getSubject()
+		);
+
 		$this->doDataUpdate( $emptySemanticData );
 
 		if ( $title->getNamespace() === SMW_NS_CONCEPT ) { // make sure to clear caches
 			$db = $this->store->getConnection();
-
-			$id = $this->store->getObjectIds()->getSMWPageID(
-				$title->getDBkey(),
-				$title->getNamespace(),
-				$title->getInterwiki(),
-				'',
-				false
-			);
 
 			$db->delete(
 				'smw_fpt_conc',
@@ -89,11 +94,25 @@ class SMWSQLStore3Writers {
 			);
 		}
 
+		// Mark subject/subobjects with a special IW, the final removal is being
+		// triggered by the `ByIdDataRebuildDispatcher`
+		$this->store->getObjectIds()->updateInterwikiField(
+			$id,
+			$emptySemanticData->getSubject(),
+			SMW_SQL3_SMWDELETEIW
+		);
+
+		foreach( $subobjects as $smw_id => $subobject ) {
+			$this->store->getObjectIds()->updateInterwikiField(
+				$smw_id,
+				$subobject,
+				SMW_SQL3_SMWDELETEIW
+			);
+		}
+
 		// 1.9.0.1
 		// The update of possible associative entities is handled by DeleteSubjectJob which is invoked during
 		// the ArticleDelete hook
-
-		///TODO: Possibly delete ID here (at least for non-properties/categories, if not used in any place in rels2)
 
 		// @deprecated since 2.1, use 'SMW::SQLStore::AfterDeleteSubjectComplete'
 		wfRunHooks( 'SMWSQLStore3::deleteSubjectAfter', array( $this->store, $title ) );

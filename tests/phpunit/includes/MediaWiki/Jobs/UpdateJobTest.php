@@ -89,6 +89,14 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( 0 ) );
+
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
 		$title->expects( $this->once() )
 			->method( 'exists' )
 			->will( $this->returnValue( false ) );
