@@ -30,7 +30,8 @@
 			"Zetud",
 			"아라",
 			"Windes",
-			"Wladek92"
+			"Wladek92",
+			"VictorBrice"
 		]
 	},
 	"smw-desc": "Rendre le wiki plus accessible - pour les machines ''et'' les humains ([https://semantic-mediawiki.org/wiki/Help:User_manual documentation en ligne])",
@@ -321,5 +322,9 @@
 	"smw-sp-searchbyproperty-resultlist-header": "Liste de résultats",
 	"smw-sp-searchbyproperty-nonvaluequery": "Une liste de valeurs qui ont la propriété « $1 » affectée.",
 	"smw-sp-searchbyproperty-valuequery": "Une liste de pages qui ont la propriété « $1 » avec la valeur « $2 » annotée.",
+	"smw-editpage-annotation-enabled": " Cette page soutient des annotations sémantiques de dans-texte (par exemple <nowiki> » [[Is specified as::World Heritage Site]] « </nowiki>) pour établir le contenu structuré et queryable fourni par MediaWiki sémantique. Pour une description complète sur la façon dont employer des annotations ou la fonction d'analyseur de #ask, allez voir svp [https://www.semantic-mediawiki.org/wiki/Help:Getting_started obtenant commencé], [annotation de dans-texte de https://www.semantic-mediawiki.org/wiki/Help:In-text_annotation], ou [la page d'aide de questions intégrées de https://www.semantic-mediawiki.org/wiki/Help:Inline_queries].",
+	"smw-editpage-property-annotation-enabled": " Cette propriété peut être prolongée utilisant des annotations sémantiques pour spécifier un datatype (par exemple <nowiki> » [[Has type::Page]] « </nowiki>) ou d'autres déclarations de soutien (par exemple <nowiki> » [[Subproperty of::dc:date]] « </nowiki>). Pour une description sur la façon dont augmenter cette page, voyez la [déclaration de https://www.semantic-mediawiki.org/wiki/Help:Property_declaration d'une propriété] ou [liste de https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes de types de données disponibles] page d'aide.",
+	"smw-editpage-property-annotation-disabled": "Cette propriété ne peut pas être étendue avec une annotation de genre datatype (par exemple <nowiki> \"[[Has type::Page]]\"</nowiki>) parce qu'elle est déjà prédéfinie (voyez la page d'aide des [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propriétés spéciales] pour plus d'information).",
+	"smw-pa-property-predefined_pval": " [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value « $1\"] est une propriété prédéfinie qui peut définir une liste de valeurs permises pour limiter des tâches de valeur pour une propriété.",
 	"smw-datavalue-invalid-number": "\"$1\" ne peut pas être interprété comme un nombre."
 }
