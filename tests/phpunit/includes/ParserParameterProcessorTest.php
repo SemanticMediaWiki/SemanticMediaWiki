@@ -64,7 +64,29 @@ class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( 'Foo' =>array( 'Bar' ) ),
+			array( 'Foo' => array( 'Bar' ) ),
+			$instance->toArray()
+		);
+	}
+
+	public function testSetParameter() {
+
+		$instance = new ParserParameterProcessor();
+
+		$instance->setParameter(
+			'Foo', array()
+		);
+
+		$this->assertEmpty(
+			$instance->toArray()
+		);
+
+		$instance->setParameter(
+			'Foo', array( 'Bar' )
+		);
+
+		$this->assertEquals(
+			array( 'Foo' => array( 'Bar' ) ),
 			$instance->toArray()
 		);
 	}
