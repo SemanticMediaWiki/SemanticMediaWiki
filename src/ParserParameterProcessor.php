@@ -140,8 +140,6 @@ class ParserParameterProcessor {
 	}
 
 	/**
-	 * Add parameter key and value
-	 *
 	 * @since 1.9
 	 *
 	 * @param string $key
@@ -150,6 +148,18 @@ class ParserParameterProcessor {
 	public function addParameter( $key, $value ) {
 		if( $key !== '' && $value !== '' ) {
 			$this->parameters[$key][] = $value;
+		}
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @param string $key
+	 * @param array $values
+	 */
+	public function setParameter( $key, array $values ) {
+		if ( $key !== '' && $values !== array() ) {
+			$this->parameters[$key] = $values;
 		}
 	}
 
