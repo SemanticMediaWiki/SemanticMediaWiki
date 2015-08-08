@@ -221,6 +221,7 @@ class ByIdDataRebuildDispatcher {
 		);
 
 		foreach ( $res as $row ) {
+
 			$emptyrange = false; // note this even if no jobs were created
 
 			if ( $this->namespaces && !in_array( $row->smw_namespace, $this->namespaces ) ) {
@@ -238,9 +239,15 @@ class ByIdDataRebuildDispatcher {
 
 			if ( $row->smw_subobject !== '' && $row->smw_iw !== SMW_SQL3_SMWDELETEIW ) {
 				// leave subobjects alone; they ought to be changed with their pages
-			} elseif ( ( $row->smw_iw === '' || $row->smw_iw == SMW_SQL3_SMWREDIIW ) &&
-				$titleKey != '' ) {
+			} elseif ( $row->smw_iw === '' && $titleKey != '' ) {
 				// objects representing pages
+				$title = Title::makeTitleSafe( $row->smw_namespace, $titleKey );
+
+				if ( $title !== null ) {
+					$updatejobs[] = $this->newUpdateJob( $title );
+				}
+
+			} elseif ( $row->smw_iw == SMW_SQL3_SMWREDIIW  && $titleKey != '' ) {
 				// TODO: special treatment of redirects needed, since the store will
 				// not act on redirects that did not change according to its records
 				$title = Title::makeTitleSafe( $row->smw_namespace, $titleKey );
@@ -249,14 +256,7 @@ class ByIdDataRebuildDispatcher {
 					$updatejobs[] = $this->newUpdateJob( $title );
 				}
 			} elseif ( $row->smw_iw == SMW_SQL3_SMWIW_OUTDATED || $row->smw_iw == SMW_SQL3_SMWDELETEIW ) { // remove outdated internal object references
-
-				foreach ( $this->store->getPropertyTables() as $proptable ) {
-					if ( $proptable->usesIdSubject() ) {
-						$db->delete( $proptable->getName(), array( 's_id' => $row->smw_id ), __METHOD__ );
-					}
-				}
-
-				$db->delete( \SMWSql3SmwIds::tableName, array( 'smw_id' => $row->smw_id ), __METHOD__ );
+				$this->cleanUpPropertyTablesFor( $row->smw_id );
 			} elseif ( $titleKey != '' ) { // "normal" interwiki pages or outdated internal objects -- delete
 				$diWikiPage = new DIWikiPage( $titleKey, $row->smw_namespace, $row->smw_iw );
 				$emptySemanticData = new SemanticData( $diWikiPage );
@@ -265,6 +265,23 @@ class ByIdDataRebuildDispatcher {
 		}
 
 		$db->freeResult( $res );
+	}
+
+	private function cleanUpPropertyTablesFor( $id ) {
+		$db = $this->store->getConnection( 'mw.db' );
+
+		foreach ( $this->store->getPropertyTables() as $proptable ) {
+			if ( $proptable->usesIdSubject() ) {
+				$db->delete( $proptable->getName(), array( 's_id' => $id ), __METHOD__ );
+			}
+
+			// Need to clean-up possible references in the redirect table
+			if ( strpos( $proptable->getName(), 'fpt_redi' ) !== false  ) {
+				$db->delete( $proptable->getName(), array( 'o_id' => $id ), __METHOD__ );
+			}
+		}
+
+		$db->delete( \SMWSql3SmwIds::tableName, array( 'smw_id' => $id ), __METHOD__ );
 	}
 
 	private function findNextIdPosition( &$id, $emptyrange ) {
