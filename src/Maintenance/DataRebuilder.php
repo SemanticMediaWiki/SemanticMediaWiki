@@ -59,6 +59,7 @@ class DataRebuilder {
 	private $useIds = false;
 	private $startIdFile = false;
 	private $query = false;
+	private $skipBuildForProperties = false;
 
 	/**
 	 * @since 1.9.2
@@ -98,6 +99,10 @@ class DataRebuilder {
 
 		if ( isset( $options['page'] ) ) {
 			$this->pages = explode( '|', $options['page'] );
+		}
+
+		if ( isset( $options['skip-properties'] ) ) {
+			$this->skipBuildForProperties = $options['skip-properties'];
 		}
 
 		if ( array_key_exists( 's', $options ) ) {
@@ -201,23 +206,6 @@ class DataRebuilder {
 
 		$linkCache = LinkCache::singleton();
 
-		$this->reportMessage( "Rebuilding property pages first.\n" );
-
-		$this->setFiltersFromOptions( array( 'p' => true ) );
-		$this->rebuildSelectedPages();
-		$this->rebuildCount = 0;
-
-		$this->store->clear();
-
-		$this->reportMessage( "\nRefreshing all semantic data in the database!\n---\n" .
-			" Some versions of PHP suffer from memory leaks in long-running \n" .
-			" scripts. If your machine gets very slow after many pages \n" .
-			" (typically more than 1000) were refreshed, please abort with\n" .
-			" CTRL-C and resume this script at the last processed page id\n" .
-			" using the parameter -s (use -v to display page ids during \n" .
-			" refresh). Continue this until all pages were refreshed.\n---\n"
-		);
-
 		$byIdDataRebuildDispatcher = $this->store->refreshData(
 			$this->start,
 			1
@@ -226,11 +214,33 @@ class DataRebuilder {
 		$byIdDataRebuildDispatcher->setIterationLimit( 1 );
 		$byIdDataRebuildDispatcher->setUpdateJobToUseJobQueueScheduler( false );
 
+		$this->deleteMarkedSubjects( $byIdDataRebuildDispatcher );
+
+		if ( !$this->skipBuildForProperties ) {
+			$this->reportMessage( "Rebuilding property pages.\n" );
+			$this->setFiltersFromOptions( array( 'p' => true ) );
+			$this->rebuildSelectedPages();
+			$this->reportMessage( "\n" );
+		}
+
+		$this->rebuildCount = 0;
+		$this->store->clear();
+
+		$this->reportMessage( "Refreshing all semantic data in the database!\n---\n" .
+			" Some versions of PHP suffer from memory leaks in long-running \n" .
+			" scripts. If your machine gets very slow after many pages \n" .
+			" (typically more than 1000) were refreshed, please abort with\n" .
+			" CTRL-C and resume this script at the last processed page id\n" .
+			" using the parameter -s (use -v to display page ids during \n" .
+			" refresh). Continue this until all pages have been refreshed.\n---\n"
+		);
+
+
 		$total = $this->end && $this->end - $this->start > 0 ? $this->end - $this->start : $byIdDataRebuildDispatcher->getMaxId();
 
 		$this->reportMessage(
 			" The progress displayed is an estimation which can change \n" .
-			" during the run as more IDs are successively added (* set to) .\n---\n" );
+			" during the run with (*) indicating an adjustment.\n---\n" );
 
 		$this->reportMessage( "Processing all IDs from $this->start to " . ( $this->end ? "$this->end" : $byIdDataRebuildDispatcher->getMaxId() ) . " ...\n" );
 
@@ -305,6 +315,40 @@ class DataRebuilder {
 		$this->reportMessage( "\nAll storage structures have been deleted and recreated.\n\n" );
 
 		return true;
+	}
+
+	private function deleteMarkedSubjects( $byIdDataRebuildDispatcher ) {
+
+		$matches = array();
+
+		$res = $this->store->getConnection( 'mw.db' )->select(
+			\SMWSql3SmwIds::tableName,
+			array( 'smw_id' ),
+			array( 'smw_iw' => SMW_SQL3_SMWDELETEIW ),
+			__METHOD__,
+			array( 'USE INDEX' => 'PRIMARY' )
+		);
+
+		foreach ( $res as $row ) {
+			$matches[] = $row->smw_id;
+		}
+
+		if ( $matches === array() ) {
+			return null;
+		}
+
+		$this->reportMessage( "Removing marked for deletion entries.\n" );
+		$matchesCount = count( $matches );
+
+		foreach ( $matches as $id ) {
+			$this->rebuildCount++;
+			$this->doPrintDotProgressIndicator( $this->verbose,  round( $this->rebuildCount / $matchesCount * 100 ) . ' %' );
+			$byIdDataRebuildDispatcher->dispatchRebuildFor( $id );
+		}
+
+		$this->rebuildCount = 0;
+
+		$this->reportMessage( "\n\n{$matchesCount} IDs removed.\n\n" );
 	}
 
 	private function idFileIsWritable( $startIdFile ) {

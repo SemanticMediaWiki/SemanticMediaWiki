@@ -85,6 +85,8 @@ class RebuildData extends \Maintenance {
 		$this->addOption( 'p', 'Will refresh only property pages (and other explicitly named namespaces)', false );
 		$this->addOption( 't', 'Will refresh only type pages (and other explicitly named namespaces)', false );
 
+		$this->addOption( 'skip-properties', 'Skip the default properties rebuild (only recommended when successive build steps are used)', false );
+
 		$this->addOption( 'page', '<pagelist> Will refresh only the pages of the given names, with | used as a separator. ' .
 								'Example: --page "Page 1|Page 2" refreshes Page 1 and Page 2 Options -s, -e, -n, ' .
 								'--startidfile, -c, -p, -t are ignored if --page is given.', false, true );
