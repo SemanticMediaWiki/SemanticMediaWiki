@@ -71,7 +71,9 @@ class SetParserFunction {
 
 		foreach ( $parametersToArray as $property => $values ) {
 
-			foreach ( $values as $value ) {
+			$last = count( $values ) - 1; // -1 because the key starts with 0
+
+			foreach ( $values as $key => $value ) {
 
 				$dataValue = DataValueFactory::getInstance()->newPropertyValue(
 						$property,
@@ -91,6 +93,7 @@ class SetParserFunction {
 					$dataValue,
 					$property,
 					$value,
+					$last == $key,
 					$count
 				);
 			}
@@ -105,7 +108,7 @@ class SetParserFunction {
 		return array( $html, 'noparse' => true, 'isHTML' => false );
 	}
 
-	private function addFieldsToTemplate( $template, $dataValue, $property, $value, &$count ) {
+	private function addFieldsToTemplate( $template, $dataValue, $property, $value, $isLastElement, &$count ) {
 
 		if ( $template === '' || !$dataValue->isValid() ) {
 			return '';
@@ -113,6 +116,7 @@ class SetParserFunction {
 
 		$this->templateRenderer->addField( 'property', $property );
 		$this->templateRenderer->addField( 'value', $value );
+		$this->templateRenderer->addField( 'last-element', $isLastElement );
 		$this->templateRenderer->addField( '#', $count++ );
 		$this->templateRenderer->packFieldsForTemplate( $template );
 	}
