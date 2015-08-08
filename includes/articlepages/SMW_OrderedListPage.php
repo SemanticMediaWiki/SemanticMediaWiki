@@ -1,5 +1,8 @@
 <?php
 
+use SMW\PropertyRegistry;
+use SMW\DIProperty;
+
 /**
  * Abstract subclass of MediaWiki's Article that handles the common tasks of
  * article pages for Concept and Property pages. This is mainly parameter
@@ -57,6 +60,10 @@ abstract class SMWOrderedListPage extends Article {
 	public function view() {
 		global $wgRequest, $wgUser;
 
+		if ( $this->getTitle()->getNamespace() === SMW_NS_PROPERTY ) {
+			$this->findBasePropertyToRedirectFor( $this->getTitle()->getText() );
+		}
+
 		parent::view();
 
 		// Copied from CategoryPage
@@ -64,6 +71,18 @@ abstract class SMWOrderedListPage extends Article {
 		$diffOnly = $wgRequest->getBool( 'diffonly', $wgUser->getOption( 'diffonly' ) );
 		if ( !isset( $diff ) || !$diffOnly ) {
 			$this->showList();
+		}
+	}
+
+	private function findBasePropertyToRedirectFor( $label ) {
+
+		$property = new DIProperty(
+			PropertyRegistry::getInstance()->findPropertyIdByLabel( $label )
+		);
+
+		if ( $property->getLabel() !== '' && $label !== $property->getLabel() ) {
+			$outputPage = $this->getContext()->getOutput();
+			$outputPage->redirect( $property->getDiWikiPage()->getTitle()->getFullURL() );
 		}
 	}
 
