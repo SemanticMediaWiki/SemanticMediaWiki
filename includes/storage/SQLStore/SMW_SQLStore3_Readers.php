@@ -382,7 +382,7 @@ class SMWSQLStore3Readers {
 
 			// #Issue 615
 			// If the iw field contains a redirect marker then remove it
-			if ( isset( $valuekeys[2] ) && $valuekeys[2] === SMW_SQL3_SMWREDIIW ) {
+			if ( isset( $valuekeys[2] ) && ( $valuekeys[2] === SMW_SQL3_SMWREDIIW || $valuekeys[2] === SMW_SQL3_SMWDELETEIW ) ) {
 				$valuekeys[2] = '';
 			}
 
