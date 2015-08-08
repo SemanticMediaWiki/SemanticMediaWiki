@@ -20,7 +20,7 @@ class BadHttpResponseMapperTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$httpRequest = $this->getMockBuilder( '\SMW\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -35,7 +35,7 @@ class BadHttpResponseMapperTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testResponseToHttpRequestThatNotThrowsException( $curlErrorCode ) {
 
-		$httpRequest = $this->getMockBuilder( '\SMW\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -49,7 +49,7 @@ class BadHttpResponseMapperTest extends \PHPUnit_Framework_TestCase {
 
 	public function testResponseToHttpRequestForInvalidErrorCodeThrowsException() {
 
-		$httpRequest = $this->getMockBuilder( '\SMW\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -71,7 +71,7 @@ class BadHttpResponseMapperTest extends \PHPUnit_Framework_TestCase {
 		// PHP doesn't know CURLE_HTTP_RETURNED_ERROR therefore using 22
 		// http://curl.haxx.se/libcurl/c/libcurl-errors.html
 
-		$httpRequest = $this->getMockBuilder( '\SMW\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -80,7 +80,7 @@ class BadHttpResponseMapperTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 22 ) );
 
 		$httpRequest->expects( $this->once() )
-			->method( 'getInfo' )
+			->method( 'getLastTransferInfo' )
 			->with( $this->equalTo( CURLINFO_HTTP_CODE ) )
 			->will( $this->returnValue( $httpErrorCode ) );
 
@@ -92,7 +92,7 @@ class BadHttpResponseMapperTest extends \PHPUnit_Framework_TestCase {
 
 	public function testResponseToHttpRequesForHttpErrorThatNotThrowsException() {
 
-		$httpRequest = $this->getMockBuilder( '\SMW\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -101,7 +101,7 @@ class BadHttpResponseMapperTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 22 ) );
 
 		$httpRequest->expects( $this->once() )
-			->method( 'getInfo' )
+			->method( 'getLastTransferInfo' )
 			->with( $this->equalTo( CURLINFO_HTTP_CODE ) )
 			->will( $this->returnValue( 404 ) );
 

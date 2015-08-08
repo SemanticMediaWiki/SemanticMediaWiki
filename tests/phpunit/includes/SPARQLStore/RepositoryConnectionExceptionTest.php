@@ -44,7 +44,7 @@ class RepositoryConnectionExceptionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testCanConstruct( $httpConnector ) {
 
-		$httpRequest = $this->getMockBuilder( '\SMW\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -59,7 +59,7 @@ class RepositoryConnectionExceptionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testDoQueryForEmptyQueryEndpointThrowsException( $httpConnector ) {
 
-		$httpRequest = $this->getMockBuilder( '\SMW\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -77,7 +77,7 @@ class RepositoryConnectionExceptionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testDoUpdateForEmptyUpdateEndpointThrowsException( $httpConnector ) {
 
-		$httpRequest = $this->getMockBuilder( '\SMW\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -95,7 +95,7 @@ class RepositoryConnectionExceptionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testDoHttpPostForEmptyDataEndpointThrowsException( $httpConnector ) {
 
-		$httpRequest = $this->getMockBuilder( '\SMW\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -113,7 +113,7 @@ class RepositoryConnectionExceptionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testDoHttpPostForUnreachableDataEndpointThrowsException( $httpConnector ) {
 
-		$httpRequest = $this->getMockBuilder( '\SMW\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 

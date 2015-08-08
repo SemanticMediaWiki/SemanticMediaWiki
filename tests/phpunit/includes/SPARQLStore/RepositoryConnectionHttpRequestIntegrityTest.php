@@ -41,7 +41,7 @@ class RepositoryConnectionHttpRequestIntegrityTest extends \PHPUnit_Framework_Te
 
 		$rawResultProvider = new FakeRawResultProvider();
 
-		$httpRequest = $this->getMockBuilder( '\SMW\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -79,7 +79,7 @@ class RepositoryConnectionHttpRequestIntegrityTest extends \PHPUnit_Framework_Te
 	 */
 	public function testDeleteToUpdateEndpointOnMockedHttpRequest( $httpDatabaseConnector, $expectedPostField ) {
 
-		$httpRequest = $this->getMockBuilder( '\SMW\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -115,7 +115,7 @@ class RepositoryConnectionHttpRequestIntegrityTest extends \PHPUnit_Framework_Te
 	 */
 	public function testInsertViaHttpPostToDataPointOnMockedHttpRequest( $httpDatabaseConnector ) {
 
-		$httpRequest = $this->getMockBuilder( '\SMW\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 

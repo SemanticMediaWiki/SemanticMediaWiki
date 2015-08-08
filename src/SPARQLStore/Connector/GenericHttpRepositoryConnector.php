@@ -2,7 +2,7 @@
 
 namespace SMW\SPARQLStore\Connector;
 
-use SMW\HttpRequest;
+use Onoi\HttpRequest\HttpRequest;
 use SMW\SPARQLStore\RepositoryConnection;
 use SMW\SPARQLStore\BadHttpResponseMapper;
 use SMW\SPARQLStore\RepositoryClient;
@@ -122,7 +122,7 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 		}
 
 		// valid HTTP responses from a complaining SPARQL endpoint that is alive and kicking
-		$httpCode = $this->httpRequest->getInfo( CURLINFO_HTTP_CODE );
+		$httpCode = $this->httpRequest->getLastTransferInfo( CURLINFO_HTTP_CODE );
 		return ( ( $httpCode == 500 ) || ( $httpCode == 400 ) );
 	}
 

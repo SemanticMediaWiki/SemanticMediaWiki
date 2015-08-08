@@ -4,7 +4,7 @@ namespace SMW\SPARQLStore;
 
 use RuntimeException;
 use SMW\DBConnectionProvider;
-use SMW\CurlRequest;
+use Onoi\HttpRequest\CurlRequest;
 use SMW\SPARQLStore\RepositoryConnection;
 
 /**
