@@ -42,6 +42,11 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 	private $pageCreator;
 
 	/**
+	 * @var PageDeleter
+	 */
+	private $pageDeleter;
+
+	/**
 	 * @var JsonTestCaseFileHandler
 	 */
 	private $jsonTestCaseFileHandler;
@@ -68,6 +73,7 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 
 		$this->fileReader = $utilityFactory->newJsonFileReader( null );
 		$this->pageCreator = $utilityFactory->newPageCreator();
+		$this->pageDeleter = $utilityFactory->newPageDeleter();
 	}
 
 	protected function tearDown() {
@@ -108,24 +114,35 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 
 			$namespace = isset( $page['namespace'] ) ? constant( $page['namespace'] ) : $defaultNamespace;
 
+			$title = Title::newFromText(
+				$page['name'],
+				$namespace
+			);
+
 			$this->pageCreator
-				->createPage( Title::newFromText( $page['name'], $namespace ) )
+				->createPage( $title )
 				->doEdit( $page['contents'] );
 
 			$this->itemsMarkedForDeletion[] = $this->pageCreator->getPage();
 
-			if ( !isset( $page['move-to'] ) || !isset( $page['move-to']['target'] ) ) {
-				continue;
+			if ( isset( $page['move-to'] ) ) {
+
+				$target = Title::newFromText(
+					$page['move-to']['target'],
+					$namespace
+				);
+
+				$this->pageCreator->doMoveTo(
+					$target,
+					$page['move-to']['is-redirect']
+				);
+
+				$this->itemsMarkedForDeletion[] = $target;
 			}
 
-			$target = Title::newFromText( $page['move-to']['target'], $namespace );
-
-			$this->pageCreator->doMoveTo(
-				$target,
-				$page['move-to']['is-redirect']
-			);
-
-			$this->itemsMarkedForDeletion[] = $target;
+			if ( isset( $page['do-delete'] ) && $page['do-delete'] ) {
+				$this->pageDeleter->deletePage( $title );
+			}
 		}
 	}
 

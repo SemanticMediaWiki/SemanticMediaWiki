@@ -101,6 +101,12 @@ class ByJsonParserTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			isset( $case['namespace'] ) ? constant( $case['namespace'] ) : NS_MAIN
 		);
 
+		// Allows for data to be re-read from the DB instead of being fetched
+		// from the store-id-cache
+		if ( isset( $case['store']['clear-cache'] ) && $case['store']['clear-cache'] ) {
+			$this->getStore()->clear();
+		}
+
 		$semanticData = $this->getStore()->getSemanticData( $subject );
 
 		if ( $debug ) {

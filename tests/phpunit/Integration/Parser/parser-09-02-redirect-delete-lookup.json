@@ -1,0 +1,51 @@
+{
+	"description": "Redirect target delete lookup combination",
+	"properties": [
+		{
+			"name": "HasPropertyForUse",
+			"contents": "[[Has type::Page]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Page/09/02/1",
+			"contents": "#REDIRECT [[Page/09/02/2]]"
+		},
+		{
+			"name": "Page/09/02/2",
+			"contents": "[[HasPropertyForUse::ABC]]",
+			"do-delete": true
+		},
+		{
+			"name": "Page/09/02/3",
+			"contents": "[[HasPropertyForUse::Page/09/02/1]]"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0 check annotation for a deleted redirected target subject",
+			"subject": "Page/09/02/3",
+			"store": {
+				"clear-cache": true,
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_MDAT", "_SKEY", "HasPropertyForUse" ],
+					"propertyValues": [ "Page/09/02/2" ]
+				}
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [ "_MDAT" ],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
