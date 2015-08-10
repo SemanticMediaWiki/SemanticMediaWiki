@@ -247,7 +247,7 @@ class ByIdDataRebuildDispatcher {
 					$updatejobs[] = $this->newUpdateJob( $title );
 				}
 
-			} elseif ( $row->smw_iw == SMW_SQL3_SMWREDIIW  && $titleKey != '' ) {
+			} elseif ( $row->smw_iw == SMW_SQL3_SMWREDIIW && $titleKey != '' ) {
 				// TODO: special treatment of redirects needed, since the store will
 				// not act on redirects that did not change according to its records
 				$title = Title::makeTitleSafe( $row->smw_namespace, $titleKey );

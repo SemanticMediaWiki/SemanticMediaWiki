@@ -342,7 +342,7 @@ class DataRebuilder {
 
 		foreach ( $matches as $id ) {
 			$this->rebuildCount++;
-			$this->doPrintDotProgressIndicator( $this->verbose,  round( $this->rebuildCount / $matchesCount * 100 ) . ' %' );
+			$this->doPrintDotProgressIndicator( $this->verbose, round( $this->rebuildCount / $matchesCount * 100 ) . ' %' );
 			$byIdDataRebuildDispatcher->dispatchRebuildFor( $id );
 		}
 
