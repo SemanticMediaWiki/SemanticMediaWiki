@@ -21,7 +21,7 @@ class UpdateDispatcherJob extends JobBase {
 	/**
 	 * Size of chunks used when invoking the secondary dispatch run
 	 */
-	const CHUNK_SIZE = 5000;
+	const CHUNK_SIZE = 500;
 
 	/**
 	 * @var ApplicationFactory
