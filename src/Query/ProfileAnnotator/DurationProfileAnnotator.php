@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Query\Profiler;
+namespace SMW\Query\ProfileAnnotator;
 
 use SMW\DIProperty;
 use SMWDINumber as DINumber;
@@ -11,7 +11,7 @@ use SMWDINumber as DINumber;
  *
  * @author mwjames
  */
-class DurationProfile extends ProfileAnnotatorDecorator {
+class DurationProfileAnnotator extends ProfileAnnotatorDecorator {
 
 	/**
 	 * @var integer

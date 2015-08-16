@@ -1,24 +1,21 @@
 <?php
 
-namespace SMW\Tests\Query\Profiler;
+namespace SMW\Tests\Query\ProfileAnnotator;
 
-use SMW\Query\Profiler\NullProfile;
+use SMW\Query\ProfileAnnotator\NullProfileAnnotator;
 use SMW\Subobject;
-
-use Title;
+use SMW\DIWikiPage;
 
 /**
- * @covers \SMW\Query\Profiler\NullProfile
- *
- * @group SMW
- * @group SMWExtension
+ * @covers \SMW\Query\ProfileAnnotator\NullProfileAnnotator
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class NullProfileTest extends \PHPUnit_Framework_TestCase {
+class NullProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -27,15 +24,19 @@ class NullProfileTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\Profiler\NullProfile',
-			new NullProfile( $subobject, 'abc' )
+			'\SMW\Query\ProfileAnnotator\NullProfileAnnotator',
+			new NullProfileAnnotator( $subobject, 'abc' )
 		);
 	}
 
 	public function testMethodAccess() {
 
-		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
-		$instance = new NullProfile( $subobject, 'adcb944aa33b2c972470b73964c547c0' );
+		$subobject = new Subobject( DIWikiPage::newFromText( __METHOD__ )->getTitle() );
+
+		$instance = new NullProfileAnnotator(
+			$subobject,
+			'_QUERYadcb944aa33b2c972470b73964c547c0'
+		);
 
 		$instance->addAnnotation();
 

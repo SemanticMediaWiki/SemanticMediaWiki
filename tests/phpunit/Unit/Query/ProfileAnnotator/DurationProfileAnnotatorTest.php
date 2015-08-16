@@ -1,27 +1,24 @@
 <?php
 
-namespace SMW\Tests\Query\Profiler;
+namespace SMW\Tests\Query\ProfileAnnotator;
 
 use SMW\Tests\Utils\UtilityFactory;
 
-use SMW\Query\Profiler\DurationProfile;
-use SMW\Query\Profiler\NullProfile;
+use SMW\Query\ProfileAnnotator\DurationProfileAnnotator;
+use SMW\Query\ProfileAnnotator\NullProfileAnnotator;
 use SMW\Subobject;
-
-use Title;
+use SMW\DIWikiPage;
 
 /**
- * @covers \SMW\Query\Profiler\DurationProfile
- *
- * @group SMW
- * @group SMWExtension
+ * @covers \SMW\Query\ProfileAnnotator\DurationProfileAnnotator
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class DurationProfileTest extends \PHPUnit_Framework_TestCase {
+class DurationProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
 
@@ -33,13 +30,13 @@ class DurationProfileTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\Profiler\ProfileAnnotator' )
+		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\ProfileAnnotator\ProfileAnnotator' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\Profiler\DurationProfile',
-			new DurationProfile( $profileAnnotator, 0.42 )
+			'\SMW\Query\ProfileAnnotator\DurationProfileAnnotator',
+			new DurationProfileAnnotator( $profileAnnotator, 0.42 )
 		);
 	}
 
@@ -48,12 +45,12 @@ class DurationProfileTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testCreateProfile( $duration, $expected ) {
 
-		$profiler = new NullProfile(
-			new Subobject( Title::newFromText( __METHOD__ ) ),
+		$profiler = new NullProfileAnnotator(
+			new Subobject( DIWikiPage::newFromText( __METHOD__ )->getTitle() ),
 			'foo'
 		);
 
-		$instance = new DurationProfile( $profiler, $duration );
+		$instance = new DurationProfileAnnotator( $profiler, $duration );
 		$instance->addAnnotation();
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(

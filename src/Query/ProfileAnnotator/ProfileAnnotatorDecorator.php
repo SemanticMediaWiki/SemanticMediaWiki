@@ -1,20 +1,19 @@
 <?php
 
-namespace SMW\Query\Profiler;
+namespace SMW\Query\ProfileAnnotator;
 
 /**
  * Decorator implementing the ProfileAnnotator interface
  *
- * @ingroup SMW
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 abstract class ProfileAnnotatorDecorator implements ProfileAnnotator {
 
-	/** @var ProfileAnnotator */
+	/**
+	 */
 	protected $profileAnnotator;
 
 	/**

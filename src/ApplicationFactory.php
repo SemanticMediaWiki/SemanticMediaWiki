@@ -9,7 +9,7 @@ use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\TitleCreator;
-use SMW\Query\Profiler\QueryProfilerFactory;
+use SMW\Query\ProfileAnnotator\QueryProfileAnnotatorFactory;
 use SMW\Maintenance\MaintenanceFactory;
 use SMW\CacheFactory;
 use SMWQueryParser as QueryParser;
@@ -140,10 +140,10 @@ class ApplicationFactory {
 	/**
 	 * @since 2.1
 	 *
-	 * @return QueryProfilerFactory
+	 * @return QueryProfileAnnotatorFactory
 	 */
-	public function newQueryProfilerFactory() {
-		return new QueryProfilerFactory();
+	public function newQueryProfileAnnotatorFactory() {
+		return new QueryProfileAnnotatorFactory();
 	}
 
 	/**

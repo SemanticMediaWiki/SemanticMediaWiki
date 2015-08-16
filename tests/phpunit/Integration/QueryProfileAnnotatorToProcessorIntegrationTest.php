@@ -3,29 +3,21 @@
 namespace SMW\Tests\Integration;
 
 use SMW\Tests\Utils\UtilityFactory;
-
-use SMW\Query\Profiler\QueryProfilerFactory;
+use SMW\ApplicationFactory;
 use SMW\Localizer;
-
+use SMW\DIWikiPage;
 use SMWQueryProcessor;
-
-use Title;
 
 /**
  * @covers \SMWQueryProcessor
- *
- * @group SMW
- * @group SMWExtension
- *
- * @group semantic-mediawiki-integration
- * @group mediawiki-databaseless
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class QueryProfilerQueryProcessorIntegrationTest extends \PHPUnit_Framework_TestCase {
+class QueryProfileAnnotatorToProcessorIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
 
@@ -47,10 +39,11 @@ class QueryProfilerQueryProcessorIntegrationTest extends \PHPUnit_Framework_Test
 			false
 		);
 
-		$queryProfilerFactory = new QueryProfilerFactory();
+		$query->setSubject( DIWikiPage::newFromText( __METHOD__ ) );
 
-		$jointProfileAnnotator = $queryProfilerFactory->newJointProfileAnnotator(
-			Title::newFromText( __METHOD__ ),
+		$queryProfileAnnotatorFactory = ApplicationFactory::getInstance()->newQueryProfileAnnotatorFactory();
+
+		$jointProfileAnnotator = $queryProfileAnnotatorFactory->newJointProfileAnnotator(
 			$query,
 			$formattedParams['format']->getValue()
 		);

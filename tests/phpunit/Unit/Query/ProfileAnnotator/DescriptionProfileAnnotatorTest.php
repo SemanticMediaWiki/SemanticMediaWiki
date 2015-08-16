@@ -1,20 +1,17 @@
 <?php
 
-namespace SMW\Tests\Query\Profiler;
+namespace SMW\Tests\Query\ProfileAnnotator;
 
 use SMW\Tests\Utils\UtilityFactory;
 
-use SMW\Query\Profiler\DescriptionProfile;
-use SMW\Query\Profiler\NullProfile;
+use SMW\Query\ProfileAnnotator\DescriptionProfileAnnotator;
+use SMW\Query\ProfileAnnotator\NullProfileAnnotator;
 use SMW\Subobject;
-
-use Title;
+use SMW\DIWikiPage;
 
 /**
- * @covers \SMW\Query\Profiler\DescriptionProfile
- *
- * @group SMW
- * @group SMWExtension
+ * @covers \SMW\Query\ProfileAnnotator\DescriptionProfileAnnotator
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -33,7 +30,7 @@ class DescriptionProfileTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\Profiler\ProfileAnnotator' )
+		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\ProfileAnnotator\ProfileAnnotator' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -42,8 +39,8 @@ class DescriptionProfileTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\Profiler\DescriptionProfile',
-			new DescriptionProfile( $profileAnnotator, $description )
+			'\SMW\Query\ProfileAnnotator\DescriptionProfileAnnotator',
+			new DescriptionProfileAnnotator( $profileAnnotator, $description )
 		);
 	}
 
@@ -65,12 +62,12 @@ class DescriptionProfileTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDepth' )
 			->will( $this->returnValue( 42 ) );
 
-		$profiler = new NullProfile(
-			new Subobject( Title::newFromText( __METHOD__ ) ),
+		$profiler = new NullProfileAnnotator(
+			new Subobject( DIWikiPage::newFromText( __METHOD__ )->getTitle() ),
 			'ichimarukyuu'
 		);
 
-		$instance = new DescriptionProfile( $profiler, $description );
+		$instance = new DescriptionProfileAnnotator( $profiler, $description );
 		$instance->addAnnotation();
 
 		$expected = array(

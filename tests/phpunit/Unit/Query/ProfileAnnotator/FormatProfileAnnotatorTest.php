@@ -1,27 +1,24 @@
 <?php
 
-namespace SMW\Tests\Query\Profiler;
+namespace SMW\Tests\Query\ProfileAnnotator;
 
 use SMW\Tests\Utils\UtilityFactory;
 
-use SMW\Query\Profiler\FormatProfile;
-use SMW\Query\Profiler\NullProfile;
+use SMW\Query\ProfileAnnotator\FormatProfileAnnotator;
+use SMW\Query\ProfileAnnotator\NullProfileAnnotator;
 use SMW\Subobject;
-
-use Title;
+use SMW\DIWikiPage;
 
 /**
- * @covers \SMW\Query\Profiler\FormatProfile
- *
- * @group SMW
- * @group SMWExtension
+ * @covers \SMW\Query\ProfileAnnotator\FormatProfileAnnotator
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class FormatProfileTest extends \PHPUnit_Framework_TestCase {
+class FormatProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
 
@@ -33,24 +30,24 @@ class FormatProfileTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\Profiler\ProfileAnnotator' )
+		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\ProfileAnnotator\ProfileAnnotator' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\Profiler\FormatProfile',
-			new FormatProfile( $profileAnnotator, 'table' )
+			'\SMW\Query\ProfileAnnotator\FormatProfileAnnotator',
+			new FormatProfileAnnotator( $profileAnnotator, 'table' )
 		);
 	}
 
 	public function testCreateProfile() {
 
-		$profiler = new NullProfile(
-			new Subobject( Title::newFromText( __METHOD__ ) ),
+		$profiler = new NullProfileAnnotator(
+			new Subobject( DIWikiPage::newFromText( __METHOD__ )->getTitle() ),
 			'foo'
 		);
 
-		$instance = new FormatProfile( $profiler, 'table' );
+		$instance = new FormatProfileAnnotator( $profiler, 'table' );
 		$instance->addAnnotation();
 
 		$expected = array(

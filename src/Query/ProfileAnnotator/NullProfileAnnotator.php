@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Query\Profiler;
+namespace SMW\Query\ProfileAnnotator;
 
 use SMW\DIProperty;
 use SMW\Subobject;
@@ -11,7 +11,7 @@ use SMW\Subobject;
  *
  * @author mwjames
  */
-class NullProfile implements ProfileAnnotator {
+class NullProfileAnnotator implements ProfileAnnotator {
 
 	/**
 	 * @var Subobject
@@ -82,12 +82,7 @@ class NullProfile implements ProfileAnnotator {
 	 * @since 1.9
 	 */
 	public function addAnnotation() {
-		$this->subobject->setEmptyContainerForId( '_QUERY' . $this->queryId );
-
-	//	$this->getSemanticData()->addPropertyObjectValue(
-	//		new DIProperty( '_ASKID' ),
-	//		new DIBlob( $this->queryId )
-	//	);
+		$this->subobject->setEmptyContainerForId( $this->queryId );
 	}
 
 }
