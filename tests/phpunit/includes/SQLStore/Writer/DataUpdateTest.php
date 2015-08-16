@@ -195,7 +195,7 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 		$instance->doDataUpdate( $semanticData );
 	}
 
-	public function testUseTransactionForUpdate() {
+	public function testAtomicTransactionOnDataUpdate() {
 
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 
@@ -225,10 +225,10 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$database->expects( $this->atLeastOnce() )
-			->method( 'beginTransaction' );
+			->method( 'beginAtomicTransaction' );
 
 		$database->expects( $this->atLeastOnce() )
-			->method( 'commitTransaction' );
+			->method( 'commitAtomicTransaction' );
 
 		$database->expects( $this->once() )
 			->method( 'select' )
@@ -237,11 +237,6 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 		$parentStore = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$parentStore->expects( $this->any() )
-			->method( 'canUseUpdateFeature' )
-			->will( $this->returnCallback( function( $flag ) { return $flag === SMW_TRX_UPDATE;
-			} ) );
 
 		$parentStore->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )

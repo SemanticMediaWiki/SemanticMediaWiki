@@ -836,17 +836,6 @@ class SMWSQLStore3 extends SMWStore {
 	}
 
 	/**
-	 * @since 2.1
-	 *
-	 * @param integer $updateFeatureFlag
-	 *
-	 * @return boolean
-	 */
-	public function canUseUpdateFeature( $updateFeatureFlag ) {
-		return $GLOBALS['smwgUFeatures'] === ( $GLOBALS['smwgUFeatures'] | $updateFeatureFlag );
-	}
-
-	/**
 	 * @note It is performance critical to make sure that the instance is only
 	 * invoked once per request
 	 *
