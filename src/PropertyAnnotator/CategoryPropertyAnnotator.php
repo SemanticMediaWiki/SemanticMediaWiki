@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Annotator;
+namespace SMW\PropertyAnnotator;
 
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
@@ -30,9 +30,19 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	private $hiddenCategories = null;
 
 	/**
-	 * @var ApplicationFactory
+	 * @var boolean
 	 */
-	private $applicationFactory = null;
+	private $showHiddenCategoriesState = true;
+
+	/**
+	 * @var boolean
+	 */
+	private $categoryInstanceUsageState = true;
+
+	/**
+	 * @var boolean
+	 */
+	private $categoryHierarchyUsageState = true;
 
 	/**
 	 * @since 1.9
@@ -46,29 +56,53 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	/**
+	 * @since 2.3
+	 *
+	 * @param boolean $showHiddenCategoriesState
+	 */
+	public function setShowHiddenCategoriesState( $showHiddenCategoriesState ) {
+		$this->showHiddenCategoriesState = (bool)$showHiddenCategoriesState;
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @param boolean $categoryInstanceUsageState
+	 */
+	public function setCategoryInstanceUsageState( $categoryInstanceUsageState ) {
+		$this->categoryInstanceUsageState = (bool)$categoryInstanceUsageState;
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @param boolean $categoryHierarchyUsageState
+	 */
+	public function setCategoryHierarchyUsageState( $categoryHierarchyUsageState ) {
+		$this->categoryHierarchyUsageState = (bool)$categoryHierarchyUsageState;
+	}
+
+	/**
 	 * @see PropertyAnnotatorDecorator::addPropertyValues
 	 */
 	protected function addPropertyValues() {
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
-
-		$settings  = $this->applicationFactory->getSettings();
 		$namespace = $this->getSemanticData()->getSubject()->getNamespace();
 
 		foreach ( $this->categories as $catname ) {
 
-			if ( !$settings->get( 'smwgShowHiddenCategories' ) && $this->isHiddenCategory( $catname ) ) {
+			if ( !$this->showHiddenCategoriesState && $this->isHiddenCategory( $catname ) ) {
 				continue;
 			}
 
-			if ( $settings->get( 'smwgCategoriesAsInstances' ) && ( $namespace !== NS_CATEGORY ) ) {
+			if ( $this->categoryInstanceUsageState && ( $namespace !== NS_CATEGORY ) ) {
 				$this->getSemanticData()->addPropertyObjectValue(
 					new DIProperty( DIProperty::TYPE_CATEGORY ),
 					new DIWikiPage( $catname, NS_CATEGORY, '' )
 				);
 			}
 
-			if ( $settings->get( 'smwgUseCategoryHierarchy' ) && ( $namespace === NS_CATEGORY ) ) {
+			if ( $this->categoryHierarchyUsageState && ( $namespace === NS_CATEGORY ) ) {
 				$this->getSemanticData()->addPropertyObjectValue(
 					new DIProperty( DIProperty::TYPE_SUBCATEGORY ),
 					new DIWikiPage( $catname, NS_CATEGORY, '' )
@@ -81,9 +115,9 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 		if ( $this->hiddenCategories === null ) {
 
-			$wikipage = $this->applicationFactory
-				->newPageCreator()
-				->createPage( $this->getSemanticData()->getSubject()->getTitle() );
+			$wikipage = ApplicationFactory::getInstance()->newPageCreator()->createPage(
+				$this->getSemanticData()->getSubject()->getTitle()
+			);
 
 			$this->hiddenCategories = $wikipage->getHiddenCategories();
 		}

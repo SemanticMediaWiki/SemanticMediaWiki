@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Annotator;
+namespace SMW\PropertyAnnotator;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;

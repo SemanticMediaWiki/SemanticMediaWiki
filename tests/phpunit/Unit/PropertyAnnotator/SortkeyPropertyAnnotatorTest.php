@@ -1,27 +1,22 @@
 <?php
 
-namespace SMW\Tests\Annotator;
+namespace SMW\Tests\PropertyAnnotator;
 
-use SMW\Tests\Utils\Validators\SemanticDataValidator;
-use SMW\Tests\Utils\SemanticDataFactory;
-
-use SMW\Annotator\SortkeyPropertyAnnotator;
-use SMW\Annotator\NullPropertyAnnotator;
+use SMW\Tests\Utils\UtilityFactory;
+use SMW\PropertyAnnotator\SortKeyPropertyAnnotator;
+use SMW\PropertyAnnotator\NullPropertyAnnotator;
 use SMW\DIWikiPage;
 
 /**
- * @covers \SMW\Annotator\SortkeyPropertyAnnotator
- *
- *
- * @group SMW
- * @group SMWExtension
+ * @covers \SMW\PropertyAnnotator\SortKeyPropertyAnnotator
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class SortkeyPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class SortKeyPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
@@ -29,8 +24,8 @@ class SortkeyPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->semanticDataFactory = new SemanticDataFactory();
-		$this->semanticDataValidator = new SemanticDataValidator();
+		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 	}
 
 	public function testCanConstruct() {
@@ -39,13 +34,13 @@ class SortkeyPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new SortkeyPropertyAnnotator(
+		$instance = new SortKeyPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
 			'Foo'
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Annotator\SortkeyPropertyAnnotator',
+			'\SMW\PropertyAnnotator\SortKeyPropertyAnnotator',
 			$instance
 		);
 	}
@@ -59,7 +54,7 @@ class SortkeyPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData = $this->semanticDataFactory->setTitle( $parameters['title'] )->newEmptySemanticData();
 
-		$instance = new SortkeyPropertyAnnotator(
+		$instance = new SortKeyPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
 			$parameters['sort']
 		);

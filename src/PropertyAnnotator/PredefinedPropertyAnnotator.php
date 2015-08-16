@@ -1,8 +1,7 @@
 <?php
 
-namespace SMW\Annotator;
+namespace SMW\PropertyAnnotator;
 
-use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\PageInfo;
@@ -13,10 +12,6 @@ use SMWDIBoolean as DIBoolean;
 use SMWDITime as DITime;
 
 /**
- * Handling predefined property annotations
- *
- * @ingroup SMW
- *
  * @license GNU GPL v2+
  * @since 1.9
  *
@@ -30,6 +25,11 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	private $pageInfo;
 
 	/**
+	 * @var array
+	 */
+	private $predefinedPropertyList = array();
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param PropertyAnnotator $propertyAnnotator
@@ -40,12 +40,20 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 		$this->pageInfo = $pageInfo;
 	}
 
+	/**
+	 * @since 2.3
+	 *
+	 * @param array $predefinedPropertyList
+	 */
+	public function setPredefinedPropertyList( array $predefinedPropertyList ) {
+		$this->predefinedPropertyList = $predefinedPropertyList;
+	}
+
 	protected function addPropertyValues() {
 
-		$predefinedProperties = ApplicationFactory::getInstance()->getSettings()->get( 'smwgPageSpecialProperties' );
 		$cachedProperties = array();
 
-		foreach ( $predefinedProperties as $propertyId ) {
+		foreach ( $this->predefinedPropertyList as $propertyId ) {
 
 			if ( $this->isRegisteredPropertyId( $propertyId, $cachedProperties ) ) {
 				continue;

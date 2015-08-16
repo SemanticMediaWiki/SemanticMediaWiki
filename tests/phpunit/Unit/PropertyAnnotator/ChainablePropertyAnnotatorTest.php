@@ -1,26 +1,16 @@
 <?php
 
-namespace SMW\Tests\Annotator;
+namespace SMW\Tests\PropertyAnnotator;
 
-use SMW\Tests\Utils\Validators\SemanticDataValidator;
-use SMW\Tests\Utils\SemanticDataFactory;
-
-use SMW\Annotator\PredefinedPropertyAnnotator;
-use SMW\Annotator\CategoryPropertyAnnotator;
-use SMW\Annotator\SortkeyPropertyAnnotator;
-use SMW\Annotator\NullPropertyAnnotator;
+use SMW\Tests\Utils\UtilityFactory;
+use SMW\PropertyAnnotator\PredefinedPropertyAnnotator;
+use SMW\PropertyAnnotator\CategoryPropertyAnnotator;
+use SMW\PropertyAnnotator\SortkeyPropertyAnnotator;
+use SMW\PropertyAnnotator\NullPropertyAnnotator;
 use SMW\DIProperty;
-use SMW\Settings;
-use SMW\ApplicationFactory;
 
 /**
- * @covers \SMW\Annotator\PredefinedPropertyAnnotator
- * @covers \SMW\Annotator\CategoryPropertyAnnotator
- * @covers \SMW\Annotator\SortkeyPropertyAnnotator
- *
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -31,20 +21,12 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
-	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->semanticDataFactory = new SemanticDataFactory();
-		$this->semanticDataValidator = new SemanticDataValidator();
-		$this->applicationFactory = ApplicationFactory::getInstance();
-	}
-
-	protected function tearDown() {
-		$this->applicationFactory->clear();
-
-		parent::tearDown();
+		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 	}
 
 	/**
@@ -62,31 +44,42 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
-		$this->applicationFactory->registerObject(
-			'Settings',
-			Settings::newFromArray( $parameters['settings'] )
-		);
-
-		$instance = new CategoryPropertyAnnotator(
+		$categoryPropertyAnnotator = new CategoryPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
 			$parameters['categories']
 		);
 
-		$instance = new SortKeyPropertyAnnotator(
-			$instance,
+		$categoryPropertyAnnotator->setShowHiddenCategoriesState(
+			$parameters['settings']['smwgShowHiddenCategories']
+		);
+
+		$categoryPropertyAnnotator->setCategoryInstanceUsageState(
+			$parameters['settings']['smwgCategoriesAsInstances']
+		);
+
+		$categoryPropertyAnnotator->setCategoryHierarchyUsageState(
+			$parameters['settings']['smwgUseCategoryHierarchy']
+		);
+
+		$sortKeyPropertyAnnotator = new SortKeyPropertyAnnotator(
+			$categoryPropertyAnnotator,
 			$parameters['sortkey']
 		);
 
-		$instance = new PredefinedPropertyAnnotator(
-			$instance,
+		$predefinedPropertyAnnotator = new PredefinedPropertyAnnotator(
+			$sortKeyPropertyAnnotator,
 			$pageInfoProvider
 		);
 
-		$instance->addAnnotation();
+		$predefinedPropertyAnnotator->setPredefinedPropertyList(
+			$parameters['settings']['smwgPageSpecialProperties']
+		);
+
+		$predefinedPropertyAnnotator->addAnnotation();
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
-			$instance->getSemanticData()
+			$predefinedPropertyAnnotator->getSemanticData()
 		);
 	}
 

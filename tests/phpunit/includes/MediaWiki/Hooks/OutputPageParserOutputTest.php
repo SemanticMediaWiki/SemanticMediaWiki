@@ -16,10 +16,7 @@ use Language;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\OutputPageParserOutput
- *
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  * @group medium
  *
  * @license GNU GPL v2+
@@ -36,15 +33,17 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		$settings = Settings::newFromArray( array(
-			'smwgShowFactbox'                 => SMW_FACTBOX_NONEMPTY,
-			'smwgFactboxUseCache'             => true,
-			'smwgCacheType'                   => 'hash',
-			'smwgLinksInValues'               => false,
-			'smwgInlineErrors'                => true,
-		) );
+		$settings = array(
+			'smwgShowFactbox'      => SMW_FACTBOX_NONEMPTY,
+			'smwgFactboxUseCache'  => true,
+			'smwgCacheType'        => 'hash',
+			'smwgLinksInValues'    => false,
+			'smwgInlineErrors'     => true,
+		);
 
-		$this->applicationFactory->registerObject( 'Settings', $settings );
+		foreach ( $settings as $key => $value ) {
+			$this->applicationFactory->getSettings()->set( $key, $value );
+		}
 	}
 
 	protected function tearDown() {

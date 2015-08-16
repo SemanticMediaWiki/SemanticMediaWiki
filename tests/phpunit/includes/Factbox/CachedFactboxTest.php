@@ -6,7 +6,6 @@ use SMW\Tests\Utils\Mock\MockTitle;
 
 use SMW\Factbox\CachedFactbox;
 use SMW\ApplicationFactory;
-use SMW\Settings;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 
@@ -41,14 +40,16 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 			'ttl' => 0
 		) );
 
-		$settings = Settings::newFromArray( array(
+		$settings = array(
 			'smwgFactboxUseCache' => true,
 			'smwgCacheType'       => 'hash',
 			'smwgLinksInValues'   => false,
 			'smwgInlineErrors'    => true
-		) );
+		);
 
-		$this->applicationFactory->registerObject( 'Settings', $settings );
+		foreach ( $settings as $key => $value ) {
+			$this->applicationFactory->getSettings()->set( $key, $value );
+		}
 	}
 
 	protected function tearDown() {

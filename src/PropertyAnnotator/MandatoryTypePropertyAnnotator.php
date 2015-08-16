@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Annotator;
+namespace SMW\PropertyAnnotator;
 
 use SMW\DIProperty;
 use SMW\PropertyAnnotator;
@@ -10,14 +10,12 @@ use SMW\Store;
 use SMWErrorValue as ErrorValue;
 
 /**
- * Adding type from an import reference
- *
  * @license GNU GPL v2+
  * @since 2.2
  *
  * @author mwjames
  */
-class TypeByImportPropertyAnnotator extends PropertyAnnotatorDecorator {
+class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	/**
 	 * @since 2.2
@@ -37,28 +35,37 @@ class TypeByImportPropertyAnnotator extends PropertyAnnotatorDecorator {
 			return;
 		}
 
-		$property = DIProperty::newFromUserLabel( str_replace( '_', ' ', $subject->getDBKey() ) );
+		$property = DIProperty::newFromUserLabel(
+			str_replace( '_', ' ', $subject->getDBKey() )
+		);
 
 		if ( !$property->isUserDefined() ) {
 			return;
 		}
 
+		$this->findMandatoryTypeForImportVocabulary();
+	}
+
+	private function findMandatoryTypeForImportVocabulary() {
+
+		$property = new DIProperty( '_IMPO' );
+
 		$dataItems = $this->getSemanticData()->getPropertyValues(
-			new DIProperty( '_IMPO' )
+			$property
 		);
 
 		if ( $dataItems === null || $dataItems === array() ) {
 			return;
 		}
 
-		$this->addTypeFromImportVocabulary( current( $dataItems ) );
+		$this->addTypeFromImportVocabulary( $property, current( $dataItems ) );
 	}
 
-	private function addTypeFromImportVocabulary( $dataItem ) {
+	private function addTypeFromImportVocabulary( $property, $dataItem ) {
 
 		$importValue = DataValueFactory::getInstance()->newDataItemValue(
 			$dataItem,
-			new DIProperty( '_IMPO' )
+			$property
 		);
 
 		if ( strpos( $importValue->getTermType(), ':' ) === false ) {

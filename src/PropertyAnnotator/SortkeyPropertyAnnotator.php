@@ -1,22 +1,18 @@
 <?php
 
-namespace SMW\Annotator;
+namespace SMW\PropertyAnnotator;
 
 use SMW\DIProperty;
 use SMW\PropertyAnnotator;
 use SMWDIBlob as DIBlob;
 
 /**
- * Handling sort key annotation
- *
- * @ingroup SMW
- *
  * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class SortkeyPropertyAnnotator extends PropertyAnnotatorDecorator {
+class SortKeyPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	/**
 	 * @var string
