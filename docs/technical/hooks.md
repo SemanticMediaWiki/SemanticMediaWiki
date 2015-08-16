@@ -31,6 +31,8 @@ Implementing a hook should be made in consideration of the expected performance 
 - `SMW::SQLStore::BeforeDataRebuildJobInsert` to add update jobs while running the rebuild process.<sup>Use of `smwRefreshDataJobs` was deprecated with 2.3</sup>
 - `SMW::SQLStore::AddCustomFixedPropertyTables` to add fixed property table definitions
 - `SMW::Browse::AfterInPropertiesLookupComplete` to extend the incoming properties display for `Special:Browse`
+- `SMW::SQLStore::AfterDataUpdateComplete` to add processing after the update has been completed and provides `CompositePropertyTableDiffIterator` to identify entities
+   that have been added/removed during the update. <sup>Use of `SMWSQLStore3::updateDataAfter` was deprecated with 2.3</sup>
 
 For implementation details and examples, see the [integration test](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/SemanticMediaWikiProvidedHookInterfaceIntegrationTest.php).
 
@@ -46,7 +48,6 @@ Subsequent hooks should be renamed to follow a common naming practice that help 
 * `SMWSQLStore3SetupHandlers`, SMWCustomSQLStoreFieldType
 * `SMWSQLStore3SetupHandlers`, smwRefreshDataJobs (SMW::SQLStore::AfterRefreshDataJob)
 * `SMWSQLStore3Writers`, SMWSQLStore3::updateDataBefore (SMW::SQLStore::BeforeDataUpdateComplete)
-* `SMWSQLStore3Writers`, SMWSQLStore3::updateDataAfter (SMW::SQLStore::AfterDataUpdateComplete)
 * `SMWSetupScript`, smwDropTables (SMW::Store::dropTables)
 * `SMW_refreshData`, smwDropTables (SMW::Store::dropTables)
 
