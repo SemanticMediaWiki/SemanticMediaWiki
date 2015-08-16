@@ -5,6 +5,7 @@ namespace SMW\SQLStore;
 use SMW\MediaWiki\Database;
 use SMW\SemanticData;
 use SMW\Store;
+use SMW\DIProperty;
 use SMWDIError as DIError;
 use InvalidArgumentException;
 
@@ -22,6 +23,11 @@ class PropertyTableRowDiffer {
 	 * @var Store
 	 */
 	private $store = null;
+
+	/**
+	 * @var CompositePropertyTableDiffIterator
+	 */
+	private $compositePropertyTableDiffIterator = null;
 
 	/**
 	 * @since 2.3
@@ -78,6 +84,17 @@ class PropertyTableRowDiffer {
 			}
 
 			$tableName = $propertyTable->getName();
+			$fixedProperty = false;
+
+			// Fixed property tables have no p_id declared, the auxiliary
+			// information is provided to easily map fixed tables and
+			// its assigned property/id
+			if ( $propertyTable->isFixedPropertyTable() ) {
+				$fixedProperty['key'] = $propertyTable->getFixedProperty();
+				$fixedProperty['p_id'] = $this->store->getObjectIds()->getSMWPropertyID(
+					new DIProperty( $fixedProperty['key'] )
+				);
+			}
 
 			if ( array_key_exists( $tableName, $newData ) ) {
 				// Note: the order within arrays should remain the same while page is not updated.
@@ -95,6 +112,10 @@ class PropertyTableRowDiffer {
 						$this->fetchCurrentContentsForPropertyTable( $sid, $propertyTable ),
 						$newData[$tableName]
 					);
+
+					if ( $fixedProperty ) {
+						$this->getCompositePropertyTableDiff()->addFixedPropertyRecord( $tableName, $fixedProperty );
+					}
 				}
 			} elseif ( array_key_exists( $tableName, $oldHashes ) ) {
 				// Table contains data but should not contain any after update
@@ -103,10 +124,40 @@ class PropertyTableRowDiffer {
 					$sid,
 					$propertyTable
 				);
+
+				if ( $fixedProperty ) {
+					$this->getCompositePropertyTableDiff()->addFixedPropertyRecord( $tableName, $fixedProperty );
+				}
 			}
 		}
 
+		$this->getCompositePropertyTableDiff()->addTableRowsToCompositeDiff(
+			$tablesInsertRows,
+			$tablesDeleteRows
+		);
+
 		return array( $tablesInsertRows, $tablesDeleteRows, $newHashes );
+	}
+
+	/**
+	 * @since 2.3
+	 */
+	public function resetCompositePropertyTableDiff() {
+		$this->compositePropertyTableDiffIterator = null;
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @return CompositePropertyTableDiffIterator
+	 */
+	public function getCompositePropertyTableDiff() {
+
+		if ( $this->compositePropertyTableDiffIterator === null ) {
+			$this->compositePropertyTableDiffIterator = new CompositePropertyTableDiffIterator();
+		}
+
+		return $this->compositePropertyTableDiffIterator;
 	}
 
 	private function fetchPropertyTableHashesForId( $sid ) {

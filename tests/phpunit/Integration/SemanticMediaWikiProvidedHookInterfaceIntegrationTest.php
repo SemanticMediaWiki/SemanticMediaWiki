@@ -226,12 +226,16 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->will( $this->returnValue( 42 ) );
 
 		$store = $this->getMockBuilder( $storeClass )
-			->setMethods( array( 'getObjectIds' ) )
+			->setMethods( array( 'getObjectIds', 'getPropertyTables' ) )
 			->getMock();
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idGenerator ) );
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( array() ) );
 
 		$null = 0;
 
@@ -398,6 +402,35 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 		$this->assertEquals(
 			'smw_fpt_bar',
 			$store->findPropertyTableID( new \SMW\DIProperty( 'Foo' ) )
+		);
+	}
+
+	public function testRegisteredAfterDataUpdateComplete() {
+
+		$test = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'is' ) )
+			->getMock();
+
+		$test->expects( $this->once() )
+			->method( 'is' )
+			->with( $this->equalTo( array() ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->setMethods( null )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( array() ) );
+
+		$this->mwHooksHandler->register( 'SMW::SQLStore::AfterDataUpdateComplete', function( $store, $semanticData, $compositePropertyTableDiffIterator ) use ( $test ){
+			$test->is( $compositePropertyTableDiffIterator->getCombinedIdListForChangedEntities() );
+
+			return true;
+		} );
+
+		$store->updateData(
+			new \SMW\SemanticData( DIWikiPage::newFromText( 'Foo' ) )
 		);
 	}
 

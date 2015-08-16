@@ -60,4 +60,34 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCompositePropertyTableDiffIterator() {
+
+		$semanticData = new SemanticData(
+			new DIWikiPage( 'Foo', NS_MAIN )
+		);
+
+		$propertyTables = array();
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->setMethods( array( 'getPropertyTables' ) )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( $propertyTables ) );
+
+		$instance = new PropertyTableRowDiffer( $store );
+		$instance->resetCompositePropertyTableDiff();
+
+		$result = $instance->computeTableRowDiffFor(
+			42,
+			$semanticData
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\CompositePropertyTableDiffIterator',
+			$instance->getCompositePropertyTableDiff()
+		);
+	}
+
 }
