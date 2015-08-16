@@ -110,14 +110,6 @@ define( 'SMW_DAY_YEAR', 3 ); // an entered digit can be either a month or a year
 /**@}*/
 
 /**@{
- * Constants for update strategies
- */
-define( 'SMW_DIFF_UPDATE', 0 );
-define( 'SMW_REPLACEMENT_UPDATE', 2 );
-define( 'SMW_TRX_UPDATE', 4 );
-/**@}*/
-
-/**@{
  * Constants for SPARQL supported features (mostly SPARQL 1.1) because we are unable
  * to verify against the REST API whether a feature is supported or not
  */

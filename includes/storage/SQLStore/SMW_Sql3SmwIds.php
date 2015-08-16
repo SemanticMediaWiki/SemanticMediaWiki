@@ -520,7 +520,9 @@ class SMWSql3SmwIds {
 
 		$oldsort = '';
 		$id = $this->getDatabaseIdAndSort( $title, $namespace, $iw, $subobjectName, $oldsort, $canonical, $fetchHashes );
-		$db = $this->store->getConnection();
+		$db = $this->store->getConnection( 'mw.db' );
+
+		$db->beginAtomicTransaction( __METHOD__ );
 
 		if ( $id == 0 ) {
 			$sortkey = $sortkey ? $sortkey : ( str_replace( '_', ' ', $title ) );
@@ -568,6 +570,8 @@ class SMWSql3SmwIds {
 
 			$this->setCache( $title, $namespace, $iw, $subobjectName, $id, $sortkey );
 		}
+
+		$db->commitAtomicTransaction( __METHOD__ );
 
 		return $id;
 	}
@@ -741,6 +745,8 @@ class SMWSql3SmwIds {
 			return; // no id at current position, ignore
 		}
 
+		$db->beginAtomicTransaction( __METHOD__ );
+
 		if ( $targetid == 0 ) { // append new id
 			$sequenceValue = $db->nextSequenceValue( $this->getIdTable() . '_smw_id_seq' ); // Bug 42659
 
@@ -796,6 +802,7 @@ class SMWSql3SmwIds {
 			$row->smw_namespace
 		);
 
+		$db->commitAtomicTransaction( __METHOD__ );
 	}
 
 	/**

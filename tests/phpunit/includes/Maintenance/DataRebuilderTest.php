@@ -20,11 +20,29 @@ use Title;
 class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 	protected $obLevel;
+	private $connectionManager;
 
 	// The Store writes to the output buffer during drop/setupStore, to avoid
 	// inappropriate buffer settings which can cause interference during unit
 	// testing, we clean the output buffer
 	protected function setUp() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'select' )
+			->will( $this->returnValue( array() ) );
+
+		$this->connectionManager = $this->getMockBuilder( '\SMW\ConnectionManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->connectionManager->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
 		$this->obLevel = ob_get_level();
 		ob_start();
 
@@ -81,6 +99,8 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'refreshData' )
 			->will( $this->returnValue( $byIdDataRebuildDispatcher ) );
 
+		$store->setConnectionManager( $this->connectionManager );
+
 		$titleCreator = $this->getMockBuilder( '\SMW\MediaWiki\TitleCreator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -126,6 +146,8 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->once() )
 			->method( 'drop' );
 
+		$store->setConnectionManager( $this->connectionManager );
+
 		$titleCreator = $this->getMockBuilder( '\SMW\MediaWiki\TitleCreator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -166,6 +188,8 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->once() )
 			->method( 'refreshData' )
 			->will( $this->returnValue( $byIdDataRebuildDispatcher ) );
+
+		$store->setConnectionManager( $this->connectionManager );
 
 		$titleCreator = $this->getMockBuilder( '\SMW\MediaWiki\TitleCreator' )
 			->disableOriginalConstructor()
@@ -214,6 +238,8 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->at( 1 ) )
 			->method( 'getQueryResult' )
 			->will( $this->returnValue( $queryResult ) );
+
+		$store->setConnectionManager( $this->connectionManager );
 
 		$titleCreator = $this->getMockBuilder( '\SMW\MediaWiki\TitleCreator' )
 			->disableOriginalConstructor()

@@ -438,6 +438,36 @@ class Database {
 	/**
 	 * @since 2.3
 	 *
+	 * @param string $fname
+	 */
+	public function beginAtomicTransaction( $fname = __METHOD__ ) {
+
+		// MW 1.23
+		if ( !method_exists( $this->writeConnection(), 'startAtomic' ) ) {
+			return null;
+		}
+
+		$this->writeConnection()->startAtomic( $fname );
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @param string $fname
+	 */
+	public function commitAtomicTransaction( $fname = __METHOD__ ) {
+
+		// MW 1.23
+		if ( !method_exists( $this->writeConnection(), 'endAtomic' ) ) {
+			return null;
+		}
+
+		$this->writeConnection()->endAtomic( $fname );
+	}
+
+	/**
+	 * @since 2.3
+	 *
 	 * @param callable $callback
 	 */
 	public function onTransactionIdle( $callback ) {
