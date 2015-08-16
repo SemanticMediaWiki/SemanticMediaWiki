@@ -153,6 +153,10 @@ class AskParserFunction {
 			$this->showMode
 		);
 
+		$this->query->setSubject(
+			DIWIkiPage::newFromTitle( $this->parserData->getTitle() )
+		);
+
 		$queryHash = $this->query->getHash();
 
 		$this->circularReferenceGuard->mark( $queryHash );
@@ -195,10 +199,9 @@ class AskParserFunction {
 
 	private function createQueryProfile( $query, $format, $duration ) {
 
-		$queryProfilerFactory = $this->applicationFactory->newQueryProfilerFactory();
+		$queryProfileAnnotatorFactory = $this->applicationFactory->newQueryProfileAnnotatorFactory();
 
-		$jointProfileAnnotator = $queryProfilerFactory->newJointProfileAnnotator(
-			$this->parserData->getTitle(),
+		$jointProfileAnnotator = $queryProfileAnnotatorFactory->newJointProfileAnnotator(
 			$query,
 			$format,
 			$duration

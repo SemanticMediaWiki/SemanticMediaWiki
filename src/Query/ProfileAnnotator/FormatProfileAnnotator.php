@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Query\Profiler;
+namespace SMW\Query\ProfileAnnotator;
 
 use SMW\DIProperty;
 use SMWDIBlob as DIBlob;
@@ -11,7 +11,7 @@ use SMWDIBlob as DIBlob;
  *
  * @author mwjames
  */
-class FormatProfile extends ProfileAnnotatorDecorator {
+class FormatProfileAnnotator extends ProfileAnnotatorDecorator {
 
 	/**
 	 * @var string

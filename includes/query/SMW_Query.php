@@ -2,6 +2,7 @@
 
 use SMW\HashBuilder;
 use SMW\Query\PrintRequest;
+use SMW\DIWikiPage;
 
 /**
  * This file contains the class for representing queries in SMW, each
@@ -54,6 +55,11 @@ class SMWQuery {
 	private $m_mainlabel = ''; // Since 1.6
 
 	/**
+	 * @var DIWikiPage
+	 */
+	private $subject;
+
+	/**
 	 * Constructor.
 	 * @param $description SMWDescription object describing the query conditions
 	 * @param $inline bool stating whether this query runs in an inline context; used to determine
@@ -68,6 +74,24 @@ class SMWQuery {
 		$this->isUsedInConcept = $concept;
 		$this->description = $description;
 		$this->applyRestrictions();
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @param DIWikiPage $subject
+	 */
+	public function setSubject( DIWikiPage $subject ) {
+		$this->subject = $subject;
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @return DIWikiPage $subject
+	 */
+	public function getSubject() {
+		return $this->subject;
 	}
 
 	/**
@@ -287,6 +311,15 @@ class SMWQuery {
 	 */
 	public function getHash() {
 		return HashBuilder::createHashIdForContent( $this->toArray() );
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @return string
+	 */
+	public function getQueryId() {
+		return '_QUERY' . $this->getHash();
 	}
 
 }
