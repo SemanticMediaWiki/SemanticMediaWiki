@@ -149,9 +149,14 @@ class SMWSQLStore3Writers {
 		$subobjects = $this->getSubobjects( $subject );
 
 		foreach( $subobjects as $smw_id => $subobject ) {
-			if( !array_key_exists( $subobject->getSubobjectName(), $subSemanticData ) ) {
+			if( !$semanticData->hasSubSemanticData( $subobject->getSubobjectName() ) ) {
 				$this->doFlatDataUpdate( new SMWSemanticData( $subobject ) );
-				//TODO make delete job to find out if IDs can be deleted altogether
+
+				$this->store->getObjectIds()->updateInterwikiField(
+					$smw_id,
+					$subobject,
+					SMW_SQL3_SMWDELETEIW
+				);
 			}
 		}
 
