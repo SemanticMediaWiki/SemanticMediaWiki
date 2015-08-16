@@ -1,3 +1,9 @@
 {
+	"@metadata": {
+		"authors": [
+			"JinJian"
+		]
+	},
+	"browse": "Browse wiki",
 	"smw-livepreview-loading": "Ginkakarga. . ."
 }
