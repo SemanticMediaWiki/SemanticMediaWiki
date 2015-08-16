@@ -6,7 +6,6 @@ use SMW\SPARQLStore\RepositoryClient;
 
 /**
  * @covers \SMW\SPARQLStore\RepositoryClient
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

@@ -5,7 +5,6 @@ namespace SMW;
 use Parser;
 use ParserOutput;
 use SMW\Annotator\PropertyAnnotatorFactory;
-use SMW\Cache\CacheHandler;
 use SMW\Factbox\FactboxFactory;
 use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\MediaWiki\MwCollaboratorFactory;
@@ -13,7 +12,7 @@ use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\TitleCreator;
 use SMW\Query\Profiler\QueryProfilerFactory;
 use SMW\Maintenance\MaintenanceFactory;
-use SMW\Cache\CacheFactory;
+use SMW\CacheFactory;
 use SMWQueryParser as QueryParser;
 use Title;
 

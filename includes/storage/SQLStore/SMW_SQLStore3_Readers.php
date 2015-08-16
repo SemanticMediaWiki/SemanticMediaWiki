@@ -394,7 +394,7 @@ class SMWSQLStore3Readers {
 			     $valuekeys[2] === '' || $valuekeys[2]{0} != ':' ) {
 
 				if ( isset( $result[$valueHash] ) ) {
-					$this->store->getLogger()->log( __METHOD__, "found duplicate for {$propertykey} " . ( is_array( $valuekeys ) ? implode( ',', $valuekeys ) : $valuekeys ) );
+					wfDebugLog( 'smw', __METHOD__ . " Duplicate entry for {$propertykey} with " . ( is_array( $valuekeys ) ? implode( ',', $valuekeys ) : $valuekeys ) . "\n" );
 				}
 
 				$result[$valueHash] = $isSubject ? array( $propertykey, $valuekeys ) : $valuekeys;

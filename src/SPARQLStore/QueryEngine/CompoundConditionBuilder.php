@@ -7,6 +7,7 @@ use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\CircularReferenceGuard;
+use SMW\PropertyHierarchyExaminer;
 use SMW\SPARQLStore\HierarchyFinder;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\SomeProperty;
@@ -59,9 +60,9 @@ class CompoundConditionBuilder {
 	private $circularReferenceGuard = null;
 
 	/**
-	 * @var HierarchyFinder
+	 * @var PropertyHierarchyExaminer
 	 */
-	private $hierarchyFinder = null;
+	private $propertyHierarchyExaminer = null;
 
 	/**
 	 * @var array
@@ -202,19 +203,19 @@ class CompoundConditionBuilder {
 	/**
 	 * @since 2.3
 	 *
-	 * @param HierarchyFinder $hierarchyFinder
+	 * @param PropertyHierarchyExaminer $propertyHierarchyExaminer
 	 */
-	public function setHierarchyFinder( HierarchyFinder $hierarchyFinder ) {
-		$this->hierarchyFinder = $hierarchyFinder;
+	public function setPropertyHierarchyExaminer( PropertyHierarchyExaminer $propertyHierarchyExaminer ) {
+		$this->propertyHierarchyExaminer = $propertyHierarchyExaminer;
 	}
 
 	/**
 	 * @since 2.3
 	 *
-	 * @return HierarchyFinder
+	 * @return PropertyHierarchyExaminer
 	 */
-	public function getHierarchyFinder() {
-		return $this->hierarchyFinder;
+	public function getPropertyHierarchyExaminer() {
+		return $this->propertyHierarchyExaminer;
 	}
 
 	/**

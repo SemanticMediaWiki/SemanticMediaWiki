@@ -12,7 +12,6 @@ use SMWQuery as Query;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\QueryEngine
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -210,7 +209,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetQueryResultWhereQueryModeIsDebug() {
 
-		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\Connector\GenericHttpRepositoryConnector' )
+		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnector\GenericHttpRepositoryConnector' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -260,7 +259,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\Connector\GenericHttpRepositoryConnector' )
+		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnector\GenericHttpRepositoryConnector' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -7,7 +7,6 @@ use SMW\Tests\Utils\GlobalsProvider;
 
 /**
  * @covers \SMW\SPARQLStore\RepositoryConnectionProvider
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -89,7 +88,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new RepositoryConnectionProvider( 'fuSEKi' );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\Connector\FusekiHttpRepositoryConnector',
+			'\SMW\SPARQLStore\RepositoryConnector\FusekiHttpRepositoryConnector',
 			$instance->getConnection()
 		);
 	}
@@ -99,7 +98,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new RepositoryConnectionProvider( 'virtuoso' );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\Connector\VirtuosoHttpRepositoryConnector',
+			'\SMW\SPARQLStore\RepositoryConnector\VirtuosoHttpRepositoryConnector',
 			$instance->getConnection()
 		);
 
@@ -115,7 +114,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new RepositoryConnectionProvider( '4STORE' );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\Connector\FourstoreHttpRepositoryConnector',
+			'\SMW\SPARQLStore\RepositoryConnector\FourstoreHttpRepositoryConnector',
 			$instance->getConnection()
 		);
 
@@ -131,7 +130,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new RepositoryConnectionProvider( 'sesame' );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\Connector\GenericHttpRepositoryConnector',
+			'\SMW\SPARQLStore\RepositoryConnector\GenericHttpRepositoryConnector',
 			$instance->getConnection()
 		);
 	}
@@ -141,7 +140,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new RepositoryConnectionProvider( 'generic' );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\Connector\GenericHttpRepositoryConnector',
+			'\SMW\SPARQLStore\RepositoryConnector\GenericHttpRepositoryConnector',
 			$instance->getConnection()
 		);
 	}

@@ -2,44 +2,33 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use SMW\MediaWiki\Logger;
+use SMW\MediaWiki\ManualEntryLogger;
 
 /**
- * @covers \SMW\MediaWiki\Logger
- *
- * @group SMW
- * @group SMWExtension
+ * @covers \SMW\MediaWiki\ManualEntryLogger
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 2.1
  *
  * @author mwjames
  */
-class LoggerTest extends \PHPUnit_Framework_TestCase {
+class ManualEntryLoggerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Logger',
-			new Logger()
-		);
-	}
-
-	public function testLog() {
-
-		$instance = new Logger();
-
-		$this->assertNull(
-			$instance->log( 'Foo', 'Bar' )
+			'\SMW\MediaWiki\ManualEntryLogger',
+			new ManualEntryLogger()
 		);
 	}
 
 	public function testLogToTableForNonLoggableEvent() {
 
-		$instance = new Logger();
+		$instance = new ManualEntryLogger();
 
 		$this->assertNull(
-			$instance->logToTable( 'Foo', 'Bar', 'Baz', 'Yui' )
+			$instance->log( 'Foo', 'Bar', 'Baz', 'Yui' )
 		);
 	}
 
@@ -53,7 +42,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'insert' )
 			->will( $this->returnValue( 42 ) );
 
-		$instance = $this->getMockBuilder( '\SMW\MediaWiki\Logger' )
+		$instance = $this->getMockBuilder( '\SMW\MediaWiki\ManualEntryLogger' )
 			->setMethods( array( 'newManualLogEntryForType' ) )
 			->getMock();
 
@@ -66,7 +55,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'integer',
-			$instance->logToTable( 'Foo', 'Bar', 'Baz', 'Yui' )
+			$instance->log( 'Foo', 'Bar', 'Baz', 'Yui' )
 		);
 	}
 

@@ -1,13 +1,12 @@
 <?php
 
-namespace SMW\Tests\SPARQLStore;
+namespace SMW\Tests;
 
-use SMW\SPARQLStore\HierarchyFinder;
+use SMW\PropertyHierarchyExaminer;
 use SMW\DIProperty;
 
 /**
- * @covers \SMW\SPARQLStore\HierarchyFinder
- *
+ * @covers \SMW\PropertyHierarchyExaminer
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,29 +14,29 @@ use SMW\DIProperty;
  *
  * @author mwjames
  */
-class HierarchyFinderTest extends \PHPUnit_Framework_TestCase {
+class PropertyHierarchyExaminerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$store = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
+		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->getMock();
+			->getMockForAbstractClass();
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\HierarchyFinder',
-			new HierarchyFinder( $store, $cache )
+			'\SMW\PropertyHierarchyExaminer',
+			new PropertyHierarchyExaminer( $store, $cache )
 		);
 	}
 
-	public function testVerifyForSubpropertyOnNonCached() {
+	public function testVerifySubpropertyForOnNonCachedLookup() {
 
-		$store = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
+		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->getMock();
+			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )
 			->method( 'getPropertySubjects' )
@@ -57,7 +56,7 @@ class HierarchyFinderTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( '_SUBP#Foo' ),
 				$this->equalTo( false ) );
 
-		$instance = new HierarchyFinder( $store, $cache );
+		$instance = new PropertyHierarchyExaminer( $store, $cache );
 
 		$this->assertInternalType(
 			'boolean',

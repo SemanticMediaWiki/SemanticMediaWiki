@@ -387,7 +387,7 @@ class QueryEngine {
 					) );
 				} catch ( InvalidPredefinedPropertyException $e ) {
 					$logToTable[$row->t] = "issue creating a {$row->t} dataitem from a database row";
-					$this->store->getLogger()->log( __METHOD__, $e->getMessage() );
+					wfDebugLog( 'smw', __METHOD__ . ' ' . $e->getMessage() . "\n" );
 					$dataItem = '';
 				}
 
@@ -412,9 +412,7 @@ class QueryEngine {
 		}
 
 		if ( $logToTable !== array() ) {
-			foreach ( $logToTable as $key => $entry ) {
-				$this->store->getLogger()->logToTable( 'sqlstore-query-execution', 'query performer', $key, $entry );
-			}
+			wfDebugLog( 'smw', __METHOD__ . ' ' . implode( ',', $logToTable ) . "\n" );
 		}
 
 		if ( $count > $query->getLimit() || ( $count + $missedCount ) > $query->getLimit() ) {

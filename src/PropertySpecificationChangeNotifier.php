@@ -15,7 +15,7 @@ use SMWDataItem;
  * @author mwjames
  * @author Markus Krötzsch
  */
-class PropertySpecDiffFinder {
+class PropertySpecificationChangeNotifier {
 
 	/**
 	 * @var Store
@@ -75,7 +75,7 @@ class PropertySpecDiffFinder {
 	 *
 	 * @since 1.9
 	 */
-	public function findDiff() {
+	public function compareForListedSpecification() {
 
 		if ( $this->semanticData->getSubject()->getNamespace() !== SMW_NS_PROPERTY ) {
 			return;

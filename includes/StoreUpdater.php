@@ -159,13 +159,16 @@ class StoreUpdater {
 			return;
 		}
 
-		$propertySpecDiffFinder = new PropertySpecDiffFinder( $this->store, $this->semanticData );
+		$propertySpecificationChangeNotifier = new PropertySpecificationChangeNotifier(
+			$this->store,
+			$this->semanticData
+		);
 
-		$propertySpecDiffFinder->setPropertiesToCompare(
+		$propertySpecificationChangeNotifier->setPropertiesToCompare(
 			$this->applicationFactory->getSettings()->get( 'smwgDeclarationProperties' )
 		);
 
-		$propertySpecDiffFinder->findDiff();
+		$propertySpecificationChangeNotifier->compareForListedSpecification();
 	}
 
 	private function doRealUpdate() {

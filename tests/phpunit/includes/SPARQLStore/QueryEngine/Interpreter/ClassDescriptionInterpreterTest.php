@@ -85,11 +85,11 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			\SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
-		$hierarchyFinder = $this->getMockBuilder( '\SMW\SPARQLStore\HierarchyFinder' )
+		$propertyHierarchyExaminer = $this->getMockBuilder( '\SMW\PropertyHierarchyExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$hierarchyFinder->expects( $this->once() )
+		$propertyHierarchyExaminer->expects( $this->once() )
 			->method( 'hasSubcategoryFor' )
 			->with( $this->equalTo( $category ) )
 			->will( $this->returnValue( true ) );
@@ -97,7 +97,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$resultVariable = 'result';
 
 		$compoundConditionBuilder = new CompoundConditionBuilder();
-		$compoundConditionBuilder->setHierarchyFinder( $hierarchyFinder );
+		$compoundConditionBuilder->setPropertyHierarchyExaminer( $propertyHierarchyExaminer );
 		$compoundConditionBuilder->setResultVariable( $resultVariable );
 		$compoundConditionBuilder->setJoinVariable( $resultVariable );
 

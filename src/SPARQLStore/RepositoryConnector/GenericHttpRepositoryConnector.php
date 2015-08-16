@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\SPARQLStore\Connector;
+namespace SMW\SPARQLStore\RepositoryConnector;
 
 use Onoi\HttpRequest\HttpRequest;
 use SMW\SPARQLStore\RepositoryConnection;
