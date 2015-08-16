@@ -4,7 +4,6 @@ namespace SMW;
 
 use Parser;
 use ParserOutput;
-use SMW\Annotator\PropertyAnnotatorFactory;
 use SMW\Factbox\FactboxFactory;
 use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\MediaWiki\MwCollaboratorFactory;

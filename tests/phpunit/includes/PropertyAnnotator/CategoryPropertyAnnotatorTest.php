@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Annotator;
+namespace SMW\Tests\PropertyAnnotator;
 
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\Mock\MockTitle;
 
-use SMW\Annotator\CategoryPropertyAnnotator;
-use SMW\Annotator\NullPropertyAnnotator;
+use SMW\PropertyAnnotator\CategoryPropertyAnnotator;
+use SMW\PropertyAnnotator\NullPropertyAnnotator;
 use SMW\DIWikiPage;
 use SMW\ApplicationFactory;
 use SMW\Settings;
@@ -15,10 +15,8 @@ use SMW\ParserData;
 use ParserOutput;
 
 /**
- * @covers \SMW\Annotator\CategoryPropertyAnnotator
- *
- * @group SMW
- * @group SMWExtension
+ * @covers \SMW\PropertyAnnotator\CategoryPropertyAnnotator
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -57,7 +55,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Annotator\CategoryPropertyAnnotator',
+			'\SMW\PropertyAnnotator\CategoryPropertyAnnotator',
 			$instance
 		);
 	}
@@ -71,14 +69,21 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			->setSubject( new DIWikiPage( __METHOD__, $parameters['namespace'], '' ) )
 			->newEmptySemanticData();
 
-		$this->applicationFactory->registerObject(
-			'Settings',
-			Settings::newFromArray( $parameters['settings'] )
-		);
-
 		$instance = new CategoryPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
 			$parameters['categories']
+		);
+
+		$instance->setShowHiddenCategoriesState(
+			$parameters['settings']['smwgShowHiddenCategories']
+		);
+
+		$instance->setCategoryInstanceUsageState(
+			$parameters['settings']['smwgCategoriesAsInstances']
+		);
+
+		$instance->setCategoryHierarchyUsageState(
+			$parameters['settings']['smwgUseCategoryHierarchy']
 		);
 
 		$instance->addAnnotation();
@@ -102,14 +107,21 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		$parserOutput = new ParserOutput();
 		$parserData   = new ParserData( $title, $parserOutput );
 
-		$this->applicationFactory->registerObject(
-			'Settings',
-			Settings::newFromArray( $parameters['settings'] )
-		);
-
 		$instance = new CategoryPropertyAnnotator(
 			new NullPropertyAnnotator( $parserData->getSemanticData() ),
 			$parameters['categories']
+		);
+
+		$instance->setShowHiddenCategoriesState(
+			$parameters['settings']['smwgShowHiddenCategories']
+		);
+
+		$instance->setCategoryInstanceUsageState(
+			$parameters['settings']['smwgCategoriesAsInstances']
+		);
+
+		$instance->setCategoryHierarchyUsageState(
+			$parameters['settings']['smwgUseCategoryHierarchy']
 		);
 
 		$instance->addAnnotation();
@@ -151,11 +163,6 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			->newEmptySemanticData();
 
 		$this->applicationFactory->registerObject(
-			'Settings',
-			Settings::newFromArray( $parameters['settings'] )
-		);
-
-		$this->applicationFactory->registerObject(
 			'PageCreator',
 			$pageCreator
 		);
@@ -163,6 +170,18 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		$instance = new CategoryPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
 			$parameters['categories']
+		);
+
+		$instance->setShowHiddenCategoriesState(
+			$parameters['settings']['smwgShowHiddenCategories']
+		);
+
+		$instance->setCategoryInstanceUsageState(
+			$parameters['settings']['smwgCategoriesAsInstances']
+		);
+
+		$instance->setCategoryHierarchyUsageState(
+			$parameters['settings']['smwgUseCategoryHierarchy']
 		);
 
 		$instance->addAnnotation();

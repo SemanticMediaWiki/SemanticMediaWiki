@@ -43,6 +43,16 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 
 		$this->applicationFactory->registerObject( 'Store', $store );
+
+		$settings = array(
+			'smwgDeclarationProperties' => array(),
+			'smwgCacheType'        => 'hash',
+			'smwgEnableUpdateJobs' => false
+		);
+
+		foreach ( $settings as $key => $value ) {
+			$this->applicationFactory->getSettings()->set( $key, $value );
+		}
 	}
 
 	protected function tearDown() {
@@ -86,13 +96,6 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testProcess( $parameters ) {
 
-		$settings = Settings::newFromArray( array(
-			'smwgDeclarationProperties' => array(),
-			'smwgCacheType'        => 'hash',
-			'smwgEnableUpdateJobs' => false
-		) );
-
-		$this->applicationFactory->registerObject( 'Settings', $settings );
 		$this->applicationFactory->registerObject( 'Store', $parameters['store'] );
 
 		$cache = $this->newMockCache(
@@ -118,15 +121,17 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSemanticDataParserOuputUpdateIntegration() {
 
-		$settings = Settings::newFromArray( array(
+		$settings = array(
 			'smwgCacheType'             => 'hash',
 			'smwgEnableUpdateJobs'      => false,
 			'smwgUseCategoryHierarchy'  => false,
 			'smwgCategoriesAsInstances' => true,
 			'smwgShowHiddenCategories'  => true
-		) );
+		);
 
-		$this->applicationFactory->registerObject( 'Settings', $settings );
+		foreach ( $settings as $key => $value ) {
+			$this->applicationFactory->getSettings()->set( $key, $value );
+		}
 
 		$text   = '';
 		$title  = Title::newFromText( __METHOD__ );

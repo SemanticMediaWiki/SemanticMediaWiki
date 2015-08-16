@@ -1,7 +1,13 @@
 <?php
 
-namespace SMW\Annotator;
+namespace SMW;
 
+use SMW\PropertyAnnotator\NullPropertyAnnotator;
+use SMW\PropertyAnnotator\RedirectPropertyAnnotator;
+use SMW\PropertyAnnotator\PredefinedPropertyAnnotator;
+use SMW\PropertyAnnotator\SortkeyPropertyAnnotator;
+use SMW\PropertyAnnotator\CategoryPropertyAnnotator;
+use SMW\PropertyAnnotator\MandatoryTypePropertyAnnotator;
 use SMw\MediaWiki\RedirectTargetFinder;
 use SMW\PageInfo;
 use SMW\SemanticData;
@@ -50,10 +56,17 @@ class PropertyAnnotatorFactory {
 	 * @return PredefinedPropertyAnnotator
 	 */
 	public function newPredefinedPropertyAnnotator( SemanticData $semanticData, PageInfo $pageInfo ) {
-		return new PredefinedPropertyAnnotator(
+
+		$predefinedPropertyAnnotator = new PredefinedPropertyAnnotator(
 			$this->newNullPropertyAnnotator( $semanticData ),
 			$pageInfo
 		);
+
+		$predefinedPropertyAnnotator->setPredefinedPropertyList(
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgPageSpecialProperties' )
+		);
+
+		return $predefinedPropertyAnnotator;
 	}
 
 	/**
@@ -80,10 +93,25 @@ class PropertyAnnotatorFactory {
 	 * @return CategoryPropertyAnnotator
 	 */
 	public function newCategoryPropertyAnnotator( SemanticData $semanticData, array $categories ) {
-		return new CategoryPropertyAnnotator(
+
+		$categoryPropertyAnnotator = new CategoryPropertyAnnotator(
 			$this->newNullPropertyAnnotator( $semanticData ),
 			$categories
 		);
+
+		$categoryPropertyAnnotator->setShowHiddenCategoriesState(
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgShowHiddenCategories' )
+		);
+
+		$categoryPropertyAnnotator->setCategoryInstanceUsageState(
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgCategoriesAsInstances' )
+		);
+
+		$categoryPropertyAnnotator->setCategoryHierarchyUsageState(
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgUseCategoryHierarchy' )
+		);
+
+		return $categoryPropertyAnnotator;
 	}
 
 	/**
@@ -91,10 +119,10 @@ class PropertyAnnotatorFactory {
 	 *
 	 * @param SemanticData $semanticData
 	 *
-	 * @return TypeByImportPropertyAnnotator
+	 * @return MandatoryTypePropertyAnnotator
 	 */
-	public function newTypeByImportPropertyAnnotator( SemanticData $semanticData ) {
-		return new TypeByImportPropertyAnnotator(
+	public function newMandatoryTypePropertyAnnotator( SemanticData $semanticData ) {
+		return new MandatoryTypePropertyAnnotator(
 			$this->newNullPropertyAnnotator( $semanticData )
 		);
 	}

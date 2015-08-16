@@ -6,9 +6,7 @@ use SMW\ApplicationFactory;
 
 /**
  * @covers \SMW\ApplicationFactory
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -110,7 +108,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstructPropertyAnnotatorFactory() {
 
 		$this->assertInstanceOf(
-			'\SMW\Annotator\PropertyAnnotatorFactory',
+			'\SMW\PropertyAnnotatorFactory',
 			$this->applicationFactory->newPropertyAnnotatorFactory()
 		);
 	}

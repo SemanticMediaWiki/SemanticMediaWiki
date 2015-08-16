@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Annotator;
+namespace SMW\Tests\PropertyAnnotator;
 
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\Mock\MockTitle;
 
-use SMW\Annotator\PredefinedPropertyAnnotator;
-use SMW\Annotator\NullPropertyAnnotator;
+use SMW\PropertyAnnotator\PredefinedPropertyAnnotator;
+use SMW\PropertyAnnotator\NullPropertyAnnotator;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\ApplicationFactory;
@@ -16,10 +16,8 @@ use SMW\Localizer;
 use Title;
 
 /**
- * @covers \SMW\Annotator\PredefinedPropertyAnnotator
- *
- * @group SMW
- * @group SMWExtension
+ * @covers \SMW\PropertyAnnotator\PredefinedPropertyAnnotator
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -30,20 +28,12 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
-	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
-		$this->applicationFactory = ApplicationFactory::getInstance();
-	}
-
-	protected function tearDown() {
-		$this->applicationFactory->clear();
-
-		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
@@ -62,7 +52,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Annotator\PredefinedPropertyAnnotator',
+			'\SMW\PropertyAnnotator\PredefinedPropertyAnnotator',
 			$instance
 		);
 	}
@@ -86,14 +76,13 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				->will( $this->returnValue( $returnValue ) );
 		}
 
-		$this->applicationFactory->registerObject(
-			'Settings',
-			Settings::newFromArray( $parameters['settings'] )
-		);
-
 		$instance = new PredefinedPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
 			$pageInfo
+		);
+
+		$instance->setPredefinedPropertyList(
+			$parameters['settings']['smwgPageSpecialProperties']
 		);
 
 		$instance->addAnnotation();

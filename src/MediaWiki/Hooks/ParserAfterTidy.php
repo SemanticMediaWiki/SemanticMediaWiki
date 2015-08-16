@@ -108,7 +108,7 @@ class ParserAfterTidy {
 
 		$propertyAnnotator->addAnnotation();
 
-		$propertyAnnotator = $propertyAnnotatorFactory->newTypeByImportPropertyAnnotator(
+		$propertyAnnotator = $propertyAnnotatorFactory->newMandatoryTypePropertyAnnotator(
 			$semanticData
 		);
 

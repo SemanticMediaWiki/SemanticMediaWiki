@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Annotator;
+namespace SMW\Tests\PropertyAnnotator;
 
 use SMW\Tests\Utils\UtilityFactory;
 
-use SMW\Annotator\TypeByImportPropertyAnnotator;
-use SMW\Annotator\NullPropertyAnnotator;
+use SMW\PropertyAnnotator\MandatoryTypePropertyAnnotator;
+use SMW\PropertyAnnotator\NullPropertyAnnotator;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\DataValueFactory;
@@ -13,8 +13,7 @@ use SMWDIBlob as DIBlob;
 use SMWDIUri as DIUri;
 
 /**
- * @covers \SMW\Annotator\TypeByImportPropertyAnnotator
- *
+ * @covers \SMW\PropertyAnnotator\MandatoryTypePropertyAnnotator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -22,7 +21,7 @@ use SMWDIUri as DIUri;
  *
  * @author mwjames
  */
-class TypeByImportPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
@@ -40,12 +39,12 @@ class TypeByImportPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new TypeByImportPropertyAnnotator(
+		$instance = new MandatoryTypePropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Annotator\TypeByImportPropertyAnnotator',
+			'\SMW\PropertyAnnotator\MandatoryTypePropertyAnnotator',
 			$instance
 		);
 	}
@@ -65,7 +64,7 @@ class TypeByImportPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		$semanticData->expects( $this->never() )
 			->method( 'getPropertyValues' );
 
-		$instance = new TypeByImportPropertyAnnotator(
+		$instance = new MandatoryTypePropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData )
 		);
 
@@ -87,7 +86,7 @@ class TypeByImportPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		$semanticData->expects( $this->never() )
 			->method( 'getPropertyValues' );
 
-		$instance = new TypeByImportPropertyAnnotator(
+		$instance = new MandatoryTypePropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData )
 		);
 
@@ -107,7 +106,7 @@ class TypeByImportPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->addDataValue( $importValue );
 
-		$instance = new TypeByImportPropertyAnnotator(
+		$instance = new MandatoryTypePropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData )
 		);
 
@@ -144,7 +143,7 @@ class TypeByImportPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->addDataValue( $typeValue );
 
-		$instance = new TypeByImportPropertyAnnotator(
+		$instance = new MandatoryTypePropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData )
 		);
 
@@ -186,7 +185,7 @@ class TypeByImportPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->addDataValue( $importValue );
 
-		$instance = new TypeByImportPropertyAnnotator(
+		$instance = new MandatoryTypePropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData )
 		);
 
@@ -216,7 +215,7 @@ class TypeByImportPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->addDataValue( $importValue );
 
-		$instance = new TypeByImportPropertyAnnotator(
+		$instance = new MandatoryTypePropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData )
 		);
 

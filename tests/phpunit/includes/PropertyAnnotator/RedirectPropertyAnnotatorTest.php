@@ -1,15 +1,15 @@
 <?php
 
-namespace SMW\Tests\Annotator;
+namespace SMW\Tests\PropertyAnnotator;
 
 use SMW\Tests\Utils\UtilityFactory;
 
-use SMW\Annotator\RedirectPropertyAnnotator;
-use SMW\Annotator\NullPropertyAnnotator;
+use SMW\PropertyAnnotator\RedirectPropertyAnnotator;
+use SMW\PropertyAnnotator\NullPropertyAnnotator;
 use SMW\MediaWiki\RedirectTargetFinder;
 
 /**
- * @covers \SMW\Annotator\RedirectPropertyAnnotator
+ * @covers \SMW\PropertyAnnotator\RedirectPropertyAnnotator
  *
  * @group SMW
  * @group SMWExtension
@@ -47,7 +47,7 @@ class RedirectPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Annotator\RedirectPropertyAnnotator',
+			'\SMW\PropertyAnnotator\RedirectPropertyAnnotator',
 			$instance
 		);
 	}
