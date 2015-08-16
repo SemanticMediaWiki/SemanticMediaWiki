@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Cache;
+namespace SMW;
 
 use Onoi\Cache\CacheFactory as OnoiCacheFactory;
 use SMW\ApplicationFactory;
@@ -55,7 +55,7 @@ class CacheFactory {
 	 * @return string
 	 */
 	public function getFactboxCacheKey( $key ) {
-		return $this->getCachePrefix() . ':smw:factbox-cache:' . md5( $key );
+		return $this->getCachePrefix() . ':smw:fc:' . md5( $key );
 	}
 
 	/**
@@ -66,7 +66,7 @@ class CacheFactory {
 	 * @return string
 	 */
 	public function getPurgeCacheKey( $key ) {
-		return $this->getCachePrefix() . ':smw:autorefresh-cache:' . md5( $key );
+		return $this->getCachePrefix() . ':smw:arc:' . md5( $key );
 	}
 
 	/**

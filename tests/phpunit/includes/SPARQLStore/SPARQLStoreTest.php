@@ -3,24 +3,18 @@
 namespace SMW\Tests\SPARQLStore;
 
 use SMW\Tests\Utils\UtilityFactory;
-
 use SMW\SPARQLStore\SPARQLStore;
-
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\SemanticData;
 use SMW\Subobject;
-
 use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
-
 use Title;
 
 /**
  * @covers \SMW\SPARQLStore\SPARQLStore
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9.2
@@ -212,7 +206,7 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\Connector\GenericHttpRepositoryConnector' )
+		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnector\GenericHttpRepositoryConnector' )
 			->disableOriginalConstructor()
 			->getMock();
 

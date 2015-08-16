@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\SPARQLStore\Connector;
+namespace SMW\SPARQLStore\RepositoryConnector;
 
 use SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;

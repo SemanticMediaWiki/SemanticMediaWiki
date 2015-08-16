@@ -493,27 +493,4 @@ abstract class Store {
 		return $this->connectionManager->getConnection( $connectionTypeId );
 	}
 
-	/**
-	 * @since 2.1
-	 *
-	 * @return Logger
-	 */
-	public function getLogger() {
-
-		if ( $this->logger === null ) {
-			$this->setLogger( new NullLogger() );
-		}
-
-		return $this->logger;
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @param Logger $logger
-	 */
-	public function setLogger( Logger $logger ) {
-		$this->logger = $logger;
-	}
-
 }

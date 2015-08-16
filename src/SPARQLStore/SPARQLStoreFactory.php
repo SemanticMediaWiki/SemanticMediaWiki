@@ -6,6 +6,7 @@ use SMW\Store;
 use SMW\StoreFactory;
 use SMW\ConnectionManager;
 use SMW\ApplicationFactory;
+use SMW\PropertyHierarchyExaminer;
 use SMW\CircularReferenceGuard;
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
@@ -52,7 +53,7 @@ class SPARQLStoreFactory {
 
 		$engineOptions = new EngineOptions();
 
-		$hierarchyFinder = new HierarchyFinder(
+		$propertyHierarchyExaminer = new PropertyHierarchyExaminer(
 			$this->store,
 			ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache( 500 )
 		);
@@ -68,8 +69,8 @@ class SPARQLStoreFactory {
 			$circularReferenceGuard
 		);
 
-		$compoundConditionBuilder->setHierarchyFinder(
-			$hierarchyFinder
+		$compoundConditionBuilder->setPropertyHierarchyExaminer(
+			$propertyHierarchyExaminer
 		);
 
 		$queryEngine = new QueryEngine(

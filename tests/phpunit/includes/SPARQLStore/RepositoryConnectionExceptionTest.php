@@ -5,10 +5,10 @@ namespace SMW\Tests\SPARQLStore;
 use SMW\SPARQLStore\RepositoryClient;
 
 /**
- * @covers \SMW\SPARQLStore\Connector\FusekiHttpRepositoryConnector
- * @covers \SMW\SPARQLStore\Connector\FourstoreHttpRepositoryConnector
- * @covers \SMW\SPARQLStore\Connector\VirtuosoHttpRepositoryConnector
- * @covers \SMW\SPARQLStore\Connector\GenericHttpRepositoryConnector
+ * @covers \SMW\SPARQLStore\RepositoryConnector\FusekiHttpRepositoryConnector
+ * @covers \SMW\SPARQLStore\RepositoryConnector\FourstoreHttpRepositoryConnector
+ * @covers \SMW\SPARQLStore\RepositoryConnector\VirtuosoHttpRepositoryConnector
+ * @covers \SMW\SPARQLStore\RepositoryConnector\GenericHttpRepositoryConnector
  *
  * @group semantic-mediawiki
  *
@@ -22,10 +22,10 @@ class RepositoryConnectionExceptionTest extends \PHPUnit_Framework_TestCase {
 	private $defaultGraph;
 
 	private $databaseConnectors = array(
-		'\SMW\SPARQLStore\Connector\GenericHttpRepositoryConnector',
-		'\SMW\SPARQLStore\Connector\FusekiHttpRepositoryConnector',
-		'\SMW\SPARQLStore\Connector\FourstoreHttpRepositoryConnector',
-		'\SMW\SPARQLStore\Connector\VirtuosoHttpRepositoryConnector',
+		'\SMW\SPARQLStore\RepositoryConnector\GenericHttpRepositoryConnector',
+		'\SMW\SPARQLStore\RepositoryConnector\FusekiHttpRepositoryConnector',
+		'\SMW\SPARQLStore\RepositoryConnector\FourstoreHttpRepositoryConnector',
+		'\SMW\SPARQLStore\RepositoryConnector\VirtuosoHttpRepositoryConnector',
 
 		// Legacy and should be removed once obsolete
 		'SMWSparqlDatabase4Store',
@@ -49,7 +49,7 @@ class RepositoryConnectionExceptionTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\Connector\GenericHttpRepositoryConnector',
+			'\SMW\SPARQLStore\RepositoryConnector\GenericHttpRepositoryConnector',
 			new $httpConnector( new RepositoryClient( $this->defaultGraph, '' ), $httpRequest )
 		);
 	}

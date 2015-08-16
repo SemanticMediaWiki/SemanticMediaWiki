@@ -6,10 +6,10 @@ use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
 use SMW\SPARQLStore\RepositoryClient;
 
 /**
- * @covers \SMW\SPARQLStore\Connector\FusekiHttpRepositoryConnector
- * @covers \SMW\SPARQLStore\Connector\FourstoreHttpRepositoryConnector
- * @covers \SMW\SPARQLStore\Connector\VirtuosoHttpRepositoryConnector
- * @covers \SMW\SPARQLStore\Connector\GenericHttpRepositoryConnector
+ * @covers \SMW\SPARQLStore\RepositoryConnector\FusekiHttpRepositoryConnector
+ * @covers \SMW\SPARQLStore\RepositoryConnector\FourstoreHttpRepositoryConnector
+ * @covers \SMW\SPARQLStore\RepositoryConnector\VirtuosoHttpRepositoryConnector
+ * @covers \SMW\SPARQLStore\RepositoryConnector\GenericHttpRepositoryConnector
  *
  * @group semantic-mediawiki
  *
@@ -21,10 +21,10 @@ use SMW\SPARQLStore\RepositoryClient;
 class RepositoryConnectionHttpRequestIntegrityTest extends \PHPUnit_Framework_TestCase {
 
 	private $databaseConnectors = array(
-		'\SMW\SPARQLStore\Connector\GenericHttpRepositoryConnector',
-		'\SMW\SPARQLStore\Connector\FusekiHttpRepositoryConnector',
-		'\SMW\SPARQLStore\Connector\FourstoreHttpRepositoryConnector',
-		'\SMW\SPARQLStore\Connector\VirtuosoHttpRepositoryConnector',
+		'\SMW\SPARQLStore\RepositoryConnector\GenericHttpRepositoryConnector',
+		'\SMW\SPARQLStore\RepositoryConnector\FusekiHttpRepositoryConnector',
+		'\SMW\SPARQLStore\RepositoryConnector\FourstoreHttpRepositoryConnector',
+		'\SMW\SPARQLStore\RepositoryConnector\VirtuosoHttpRepositoryConnector',
 
 		// Legacy and should be removed once obsolete
 		'SMWSparqlDatabase4Store',
@@ -146,11 +146,11 @@ class RepositoryConnectionHttpRequestIntegrityTest extends \PHPUnit_Framework_Te
 		foreach ( $this->databaseConnectors as $databaseConnector ) {
 
 			switch ( $databaseConnector ) {
-				case '\SMW\SPARQLStore\Connector\FusekiHttpRepositoryConnector':
+				case '\SMW\SPARQLStore\RepositoryConnector\FusekiHttpRepositoryConnector':
 					$expectedPostField = '&default-graph-uri=' . $encodedDefaultGraph . '&output=xml';
 					break;
 				case 'SMWSparqlDatabase4Store':
-				case '\SMW\SPARQLStore\Connector\FourstoreHttpRepositoryConnector':
+				case '\SMW\SPARQLStore\RepositoryConnector\FourstoreHttpRepositoryConnector':
 					$expectedPostField = "&restricted=1" . '&default-graph-uri=' . $encodedDefaultGraph;
 					break;
 				default:
@@ -172,7 +172,7 @@ class RepositoryConnectionHttpRequestIntegrityTest extends \PHPUnit_Framework_Te
 
 			switch ( $databaseConnector ) {
 				case 'SMWSparqlDatabaseVirtuoso':
-				case '\SMW\SPARQLStore\Connector\VirtuosoHttpRepositoryConnector':
+				case '\SMW\SPARQLStore\RepositoryConnector\VirtuosoHttpRepositoryConnector':
 					$expectedPostField = 'query=';
 					break;
 				default:

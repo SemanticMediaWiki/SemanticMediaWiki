@@ -1,13 +1,12 @@
 <?php
 
-namespace SMW\Tests\MediaWiki;
+namespace SMW\Tests;
 
-use SMW\Cache\CacheFactory;
+use SMW\CacheFactory;
 use SMW\ApplicationFactory;
 
 /**
- * @covers \SMW\Cache\CacheFactory
- *
+ * @covers \SMW\CacheFactory
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -20,7 +19,7 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\Cache\CacheFactory',
+			'\SMW\CacheFactory',
 			new CacheFactory( 'hash' )
 		);
 	}

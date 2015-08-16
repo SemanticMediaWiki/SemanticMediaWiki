@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\SPARQLStore;
+namespace SMW;
 
 use Onoi\Cache\Cache;
 use SMW\Store;
@@ -14,7 +14,7 @@ use SMWRequestOptions as RequestOptions;
  *
  * @author mwjames
  */
-class HierarchyFinder {
+class PropertyHierarchyExaminer {
 
 	/**
 	 * @var Store

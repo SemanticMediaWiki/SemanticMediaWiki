@@ -3,7 +3,6 @@
 namespace SMW\MediaWiki;
 
 use ManualLogEntry;
-use SMW\Logger as LoggerInterface;
 use Title;
 use User;
 
@@ -13,7 +12,7 @@ use User;
  *
  * @author mwjames
  */
-class Logger implements LoggerInterface {
+class ManualEntryLogger {
 
 	/**
 	 * @var array
@@ -41,13 +40,11 @@ class Logger implements LoggerInterface {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 *
 	 * @since 2.1
 	 *
 	 * @return integer|null
 	 */
-	public function logToTable( $type, $performer, $target, $comment ) {
+	public function log( $type, $performer, $target, $comment ) {
 
 		if ( !isset( $this->logEventTypes[$type] ) || !$this->logEventTypes[$type] ) {
 			return null;
@@ -61,15 +58,6 @@ class Logger implements LoggerInterface {
 		$logEntry->setComment( $comment );
 
 		return $logEntry->insert();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @since 2.1
-	 */
-	public function log( $fname, $comment ) {
-		wfDebugLog( 'smw', $fname . ' ' . $comment . "\n" );
 	}
 
 	protected function newManualLogEntryForType( $type ) {
