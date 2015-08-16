@@ -24,16 +24,18 @@
     <testsuites>
         <testsuite name="semantic-mediawiki-unit">
             <directory>tests/phpunit/includes</directory>
+            <directory>tests/phpunit/Unit</directory>
         </testsuite>
         <testsuite name="semantic-mediawiki-integration">
             <directory>tests/phpunit/Integration</directory>
             <exclude>tests/phpunit/Integration/MediaWiki/Import</exclude>
+            <exclude>tests/phpunit/Integration/System</exclude>
         </testsuite>
         <testsuite name="semantic-mediawiki-import">
             <directory>tests/phpunit/Integration/MediaWiki/Import</directory>
         </testsuite>
         <testsuite name="semantic-mediawiki-system">
-            <directory>tests/phpunit/System</directory>
+            <directory>tests/phpunit/Integration/System</directory>
         </testsuite>
         <testsuite name="semantic-mediawiki-benchmark">
             <file>tests/phpunit/Benchmark/ImportPageCopyBenchmarkTest.php</file>
