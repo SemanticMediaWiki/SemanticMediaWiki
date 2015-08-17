@@ -118,3 +118,12 @@ define( 'SMW_SPARQL_QF_REDI', 2 ); // support for inverse property paths to find
 define( 'SMW_SPARQL_QF_SUBP', 4 ); // support for rdfs:subPropertyOf*
 define( 'SMW_SPARQL_QF_SUBC', 8 ); // support for rdfs:subClassOf*
 /**@}*/
+
+ /**@{
+  * Constants for VL store
+  */
+define( 'SMW_VL_SD', 1 );
+define( 'SMW_VL_PL', 2 );
+define( 'SMW_VL_PV', 4 );
+define( 'SMW_VL_PS', 8 );
+/**@}*/

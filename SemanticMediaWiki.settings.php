@@ -601,6 +601,27 @@ $GLOBALS['smwgValueLookupCacheType'] = CACHE_NONE;
 $GLOBALS['smwgValueLookupCacheLifetime'] = 60 * 60 * 24 * 7; // a week
 ##
 
+##
+# Features expected to be enabled in CachedValueLookupStore
+#
+# Flags that declare a enable/disable state of a supported functionality. If a
+# feature is disabled then a connection is always established to the standard
+# Repository/DB backend.
+#
+# The settings are only relevant for cases where `smwgValueLookupCacheType` is
+# set.
+#
+# - SMW_VL_SD: corresponds to Store::getSemanticData
+# - SMW_VL_PL: corresponds to Store::getProperties
+# - SMW_VL_PV: corresponds to Store::getPropertyValues
+# - SMW_VL_PS: corresponds to Store::getPropertySubjects
+#
+# @since 2.3
+#
+# @default: all features are enabled
+##
+$GLOBALS['smwgValueLookupFeatures'] = SMW_VL_SD | SMW_VL_PL | SMW_VL_PV | SMW_VL_PS;
+
 ###
 # An array containing cache related settings used within Semantic MediaWiki
 # and requires $smwgCacheType be set otherwise caching will have no effect.

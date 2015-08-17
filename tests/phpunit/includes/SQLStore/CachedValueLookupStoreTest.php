@@ -35,6 +35,47 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetSemanticDataFromFallbackForDisabledFeature() {
+
+		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+
+		$reader = $this->getMockBuilder( '\SMWSQLStore3Readers' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$reader->expects( $this->once() )
+			->method( 'getSemanticData' )
+			->with(
+				$this->equalTo( $subject ),
+				$this->anything() );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getReader' ) )
+			->getMock();
+
+		$store->expects( $this->once() )
+			->method( 'getReader' )
+			->will( $this->returnValue( $reader ) );
+
+		$blobStore = $this->getMockBuilder( '\Onoi\BlobStore\BlobStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$blobStore->expects( $this->once() )
+			->method( 'canUse' )
+			->will( $this->returnValue( true ) );
+
+		$instance = new CachedValueLookupStore(
+			$store,
+			$blobStore
+		);
+
+		$instance->setValueLookupFeatures( SMW_VL_PL );
+
+		$instance->getSemanticData( $subject );
+	}
+
 	public function testGetSemanticDataFromFallbackForDisabledBlobStore() {
 
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
@@ -133,6 +174,8 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 			$blobStore
 		);
 
+		$instance->setValueLookupFeatures( SMW_VL_SD );
+
 		$instance->getSemanticData( $subject );
 	}
 
@@ -174,6 +217,8 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 			$store,
 			$blobStore
 		);
+
+		$instance->setValueLookupFeatures( SMW_VL_SD );
 
 		$this->assertEquals(
 			'Foo',
@@ -236,6 +281,7 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setCircularReferenceGuard( $circularReferenceGuard );
+		$instance->setValueLookupFeatures( SMW_VL_PL );
 
 		$this->assertEquals(
 			$expected,
@@ -298,6 +344,7 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setCircularReferenceGuard( $circularReferenceGuard );
+		$instance->setValueLookupFeatures( SMW_VL_PV );
 
 		$this->assertEquals(
 			$expected,
@@ -355,6 +402,7 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setCircularReferenceGuard( $circularReferenceGuard );
+		$instance->setValueLookupFeatures( SMW_VL_PS );
 
 		$this->assertEquals(
 			$expected,
@@ -420,6 +468,8 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 			$store,
 			$blobStore
 		);
+
+		$instance->setValueLookupFeatures( SMW_VL_SD );
 
 		$instance->deleteFor( $subject );
 	}
