@@ -121,6 +121,7 @@ class Settings extends SimpleDictionary {
 			'smwgMainCacheType' => $GLOBALS['smwgMainCacheType'],
 			'smwgValueLookupCacheType' => $GLOBALS['smwgValueLookupCacheType'],
 			'smwgValueLookupCacheLifetime' => $GLOBALS['smwgValueLookupCacheLifetime'],
+			'smwgValueLookupFeatures' => $GLOBALS['smwgValueLookupFeatures'],
 			'smwgFixedProperties' => $GLOBALS['smwgFixedProperties'],
 			'smwgPropertyLowUsageThreshold' => $GLOBALS['smwgPropertyLowUsageThreshold'],
 			'smwgPropertyZeroCountDisplay' => $GLOBALS['smwgPropertyZeroCountDisplay'],

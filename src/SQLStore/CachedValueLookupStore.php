@@ -54,6 +54,11 @@ class CachedValueLookupStore {
 	private $blobStore;
 
 	/**
+	 * @var integer
+	 */
+	private $valueLookupFeatures = 0;
+
+	/**
 	 * @var CircularReferenceGuard
 	 */
 	private $circularReferenceGuard;
@@ -67,6 +72,26 @@ class CachedValueLookupStore {
 	public function __construct( Store $store, BlobStore $blobStore ) {
 		$this->store = $store;
 		$this->blobStore = $blobStore;
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @param integer $valueLookupFeatures
+	 */
+	public function setValueLookupFeatures( $valueLookupFeatures ) {
+		$this->valueLookupFeatures = $valueLookupFeatures;
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @param integer $valueLookupFeature
+	 *
+	 * @return boolean
+	 */
+	public function canUseValueLookupFeature( $valueLookupFeature ) {
+		return $this->valueLookupFeatures === ( $this->valueLookupFeatures | $valueLookupFeature );
 	}
 
 	/**
@@ -90,7 +115,7 @@ class CachedValueLookupStore {
 	 */
 	public function getSemanticData( DIWikiPage $subject, $filter = false ) {
 
-		if ( !$this->blobStore->canUse() ) {
+		if ( !$this->blobStore->canUse() || !$this->canUseValueLookupFeature( SMW_VL_SD ) ) {
 			return $this->store->getReader()->getSemanticData( $subject, $filter );
 		}
 
@@ -145,7 +170,7 @@ class CachedValueLookupStore {
 	 */
 	public function getProperties( DIWikiPage $subject, $requestOptions = null ) {
 
-		if ( !$this->blobStore->canUse() ) {
+		if ( !$this->blobStore->canUse() || !$this->canUseValueLookupFeature( SMW_VL_PL ) ) {
 			return $this->store->getReader()->getProperties( $subject, $requestOptions );
 		}
 
@@ -197,7 +222,7 @@ class CachedValueLookupStore {
 
 		// The cache is not used for $subject === null (means all values for
 		// the given property are returned)
-		if ( $subject === null || !$this->blobStore->canUse() ) {
+		if ( $subject === null || !$this->blobStore->canUse() || !$this->canUseValueLookupFeature( SMW_VL_PV ) ) {
 			return $this->store->getReader()->getPropertyValues( $subject, $property, $requestOptions );
 		}
 
@@ -255,7 +280,7 @@ class CachedValueLookupStore {
 
 		// The cache is not used for $dataItem === null (means all values for
 		// the given property are returned)
-		if ( $dataItem === null || !$dataItem instanceof DIWikiPage || !$this->blobStore->canUse() ) {
+		if ( $dataItem === null || !$dataItem instanceof DIWikiPage || !$this->blobStore->canUse() || !$this->canUseValueLookupFeature( SMW_VL_PS ) ) {
 			return $this->store->getReader()->getPropertySubjects( $property, $dataItem, $requestOptions );
 		}
 

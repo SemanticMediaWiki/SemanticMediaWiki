@@ -273,6 +273,10 @@ class SQLStoreFactory {
 			$blobStore
 		);
 
+		$cachedValueLookupStore->setValueLookupFeatures(
+			$GLOBALS['smwgValueLookupFeatures']
+		);
+
 		$cachedValueLookupStore->setCircularReferenceGuard(
 			$circularReferenceGuard
 		);
