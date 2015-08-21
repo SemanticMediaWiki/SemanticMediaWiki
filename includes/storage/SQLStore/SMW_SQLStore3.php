@@ -72,6 +72,11 @@ class SMWSQLStore3 extends SMWStore {
 	private $propertyTableInfoFetcher = null;
 
 	/**
+	 * @var RequestOptionsProcessor|null
+	 */
+	private $requestOptionsProcessor = null;
+
+	/**
 	 * Object to access the SMW IDs table.
 	 *
 	 * @since 1.8
@@ -498,39 +503,21 @@ class SMWSQLStore3 extends SMWStore {
 ///// Helper methods, mostly protected /////
 
 	/**
-	 * Transform input parameters into a suitable array of SQL options.
-	 * The parameter $valuecol defines the string name of the column to which
-	 * sorting requests etc. are to be applied.
+	 * @see RequestOptionsProcessor::transformToSQLOptions
 	 *
 	 * @since 1.8
-	 * @param SMWRequestOptions|null $requestoptions
+	 *
+	 * @param SMWRequestOptions|null $requestOptions
 	 * @param string $valuecol
+	 *
 	 * @return array
 	 */
-	public function getSQLOptions( SMWRequestOptions $requestoptions = null, $valuecol = '' ) {
-		$sql_options = array();
-
-		if ( $requestoptions !== null ) {
-			if ( $requestoptions->limit > 0 ) {
-				$sql_options['LIMIT'] = $requestoptions->limit;
-			}
-
-			if ( $requestoptions->offset > 0 ) {
-				$sql_options['OFFSET'] = $requestoptions->offset;
-			}
-
-			if ( ( $valuecol !== '' ) && ( $requestoptions->sort ) ) {
-				$sql_options['ORDER BY'] = $requestoptions->ascending ? $valuecol : $valuecol . ' DESC';
-			}
-		}
-
-		return $sql_options;
+	public function getSQLOptions( SMWRequestOptions $requestOptions = null, $valueCol = '' ) {
+		return $this->getRequestOptionsProcessor()->transformToSQLOptions( $requestOptions, $valueCol );
 	}
 
 	/**
-	 * Transform input parameters into a suitable string of additional SQL
-	 * conditions. The parameter $valuecol defines the string name of the
-	 * column to which value restrictions etc. are to be applied.
+	 * @see RequestOptionsProcessor::transformToSQLConditions
 	 *
 	 * @since 1.8
 	 *
@@ -542,143 +529,21 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return string
 	 */
 	public function getSQLConditions( SMWRequestOptions $requestOptions = null, $valueCol = '', $labelCol = '', $addAnd = true ) {
-		$sqlConds = '';
-
-		if ( $requestOptions !== null ) {
-			$db = wfGetDB( DB_SLAVE ); /// TODO avoid doing this here again, all callers should have one
-
-			if ( ( $valueCol !== '' ) && ( $requestOptions->boundary !== null ) ) { // Apply value boundary.
-				if ( $requestOptions->ascending ) {
-					$op = $requestOptions->include_boundary ? ' >= ' : ' > ';
-				} else {
-					$op = $requestOptions->include_boundary ? ' <= ' : ' < ';
-				}
-				$sqlConds .= ( $addAnd ? ' AND ' : '' ) . $valueCol . $op . $db->addQuotes( $requestOptions->boundary );
-			}
-
-			if ( $labelCol !== '' ) { // Apply string conditions.
-				foreach ( $requestOptions->getStringConditions() as $strcond ) {
-					$string = str_replace( '_', '\_', $strcond->string );
-
-					switch ( $strcond->condition ) {
-						case SMWStringCondition::STRCOND_PRE:  $string .= '%';
-						break;
-						case SMWStringCondition::STRCOND_POST: $string = '%' . $string;
-						break;
-						case SMWStringCondition::STRCOND_MID:  $string = '%' . $string . '%';
-						break;
-					}
-
-					$sqlConds .= ( ( $addAnd || ( $sqlConds !== '' ) ) ? ' AND ' : '' ) . $labelCol . ' LIKE ' . $db->addQuotes( $string );
-				}
-			}
-		}
-
-		return $sqlConds;
+		return $this->getRequestOptionsProcessor()->transformToSQLConditions( $requestOptions, $valueCol, $labelCol, $addAnd );
 	}
 
 	/**
-	 * Not in all cases can requestoptions be forwarded to the DB using
-	 * getSQLConditions() and getSQLOptions(): some data comes from caches
-	 * that do not respect the options yet. This method takes an array of
-	 * results (SMWDataItem objects) *of the same type* and applies the
-	 * given requestoptions as appropriate.
+	 * @see RequestOptionsProcessor::applyRequestOptionsTo
 	 *
 	 * @since 1.8
+	 *
 	 * @param array $data array of SMWDataItem objects
-	 * @param SMWRequestOptions|null $requestoptions
+	 * @param SMWRequestOptions|null $requestOptions
+	 *
 	 * @return SMWDataItem[]
 	 */
-	public function applyRequestOptions( array $data, SMWRequestOptions $requestoptions = null ) {
-
-		if ( ( count( $data ) == 0 ) || is_null( $requestoptions ) ) {
-			return $data;
-		}
-
-		$result = array();
-		$sortres = array();
-
-		$sampleDataItem = reset( $data );
-		$numeric = is_numeric( $sampleDataItem->getSortKey() );
-
-		$i = 0;
-
-		foreach ( $data as $item ) {
-			$ok = true; // keep datavalue only if this remains true
-
-			if ( $item instanceof DIWikiPage ) {
-				$label = $this->getWikiPageSortKey( $item );
-				$value = $label;
-			} else {
-				$label = ( $item instanceof SMWDIBlob ) ? $item->getString() : '';
-				$value = $item->getSortKey();
-			}
-
-			if ( $requestoptions->boundary !== null ) { // apply value boundary
-				$strc = $numeric ? 0 : strcmp( $value, $requestoptions->boundary );
-
-				if ( $requestoptions->ascending ) {
-					if ( $requestoptions->include_boundary ) {
-						$ok = $numeric ? ( $value >= $requestoptions->boundary ) : ( $strc >= 0 );
-					} else {
-						$ok = $numeric ? ( $value > $requestoptions->boundary ) : ( $strc > 0 );
-					}
-				} else {
-					if ( $requestoptions->include_boundary ) {
-						$ok = $numeric ? ( $value <= $requestoptions->boundary ) : ( $strc <= 0 );
-					} else {
-						$ok = $numeric ? ( $value < $requestoptions->boundary ) : ( $strc < 0 );
-					}
-				}
-			}
-
-			foreach ( $requestoptions->getStringConditions() as $strcond ) { // apply string conditions
-				switch ( $strcond->condition ) {
-					case SMWStringCondition::STRCOND_PRE:
-						$ok = $ok && ( strpos( $label, $strcond->string ) === 0 );
-						break;
-					case SMWStringCondition::STRCOND_POST:
-						$ok = $ok && ( strpos( strrev( $label ), strrev( $strcond->string ) ) === 0 );
-						break;
-					case SMWStringCondition::STRCOND_MID:
-						$ok = $ok && ( strpos( $label, $strcond->string ) !== false );
-						break;
-				}
-			}
-
-			if ( $ok ) {
-				$result[$i] = $item;
-				$sortres[$i] = $value;
-				$i++;
-			}
-		}
-
-		if ( $requestoptions->sort ) {
-			$flag = $numeric ? SORT_NUMERIC : SORT_LOCALE_STRING;
-
-			if ( $requestoptions->ascending ) {
-				asort( $sortres, $flag );
-			} else {
-				arsort( $sortres, $flag );
-			}
-
-			$newres = array();
-
-			foreach ( $sortres as $key => $value ) {
-				$newres[] = $result[$key];
-			}
-
-			$result = $newres;
-		}
-
-		if ( $requestoptions->limit > 0 ) {
-			$result = array_slice( $result, $requestoptions->offset, $requestoptions->limit );
-		} else {
-			$result = array_slice( $result, $requestoptions->offset );
-		}
-
-
-		return $result;
+	public function applyRequestOptions( array $data, SMWRequestOptions $requestOptions = null ) {
+		return $this->getRequestOptionsProcessor()->applyRequestOptionsTo( $data, $requestOptions );
 	}
 
 	/**
@@ -858,6 +723,19 @@ class SMWSQLStore3 extends SMWStore {
 		}
 
 		return $this->propertyTableInfoFetcher;
+	}
+
+	/**
+	 * @return RequestOptionsProcessor
+	 */
+	private function getRequestOptionsProcessor() {
+
+		// We want a cached instance here
+		if ( $this->requestOptionsProcessor === null ) {
+			$this->requestOptionsProcessor = $this->factory->newRequestOptionsProcessor();
+		}
+
+		return $this->requestOptionsProcessor;
 	}
 
 }

@@ -284,6 +284,15 @@ class SQLStoreFactory {
 		return $cachedValueLookupStore;
 	}
 
+	/**
+	 * @since 2.3
+	 *
+	 * @return RequestOptionsProcessor
+	 */
+	public function newRequestOptionsProcessor() {
+		return new RequestOptionsProcessor( $this->store );
+	}
+
 	private function newTemporaryIdTableCreator() {
 		return new TemporaryIdTableCreator( $GLOBALS['wgDBtype'] );
 	}

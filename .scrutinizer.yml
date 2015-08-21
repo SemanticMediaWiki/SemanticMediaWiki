@@ -19,6 +19,8 @@ tools:
 
 checks:
     php:
+        code_rating: true
+        duplication: true
         sql_injection_vulnerabilities: true
         security_vulnerabilities: true
         no_eval: true
