@@ -8,7 +8,7 @@ cd $MW_INSTALL_PATH/extensions/SemanticMediaWiki
 
 if [ "$TYPE" == "coverage" ]
 then
-	composer phpunit -q -- --coverage-clover $BASE_PATH/build/coverage.clover
+	composer phpunit -q -- --coverage-clover $BASE_PATH/tests/coverage.clover
 elif [ "$TYPE" == "benchmark" ]
 then
 	composer phpunit -q -- --group semantic-mediawiki-benchmark

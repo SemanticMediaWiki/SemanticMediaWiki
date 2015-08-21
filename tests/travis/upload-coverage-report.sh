@@ -10,5 +10,5 @@ then
 	# php vendor/bin/coveralls -v
 
 	wget https://scrutinizer-ci.com/ocular.phar
-	php ocular.phar code-coverage:upload --format=php-clover $BASE_PATH/build/coverage.clover
+	php ocular.phar code-coverage:upload --format=php-clover $BASE_PATH/tests/coverage.clover
 fi

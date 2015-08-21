@@ -58,7 +58,7 @@ then
 		exit $E_UNREACHABLE
 	fi
 
-	./openrdf-sesame-$SESAME/bin/console.sh < $BASE_PATH/build/travis/openrdf-sesame-memory-repository.txt
+	./openrdf-sesame-$SESAME/bin/console.sh < $BASE_PATH/tests/travis/openrdf-sesame-memory-repository.txt
 fi
 
 # Version 1.1.4-1 is available but has a problem
@@ -96,5 +96,5 @@ then
 	echo "RUN=yes" | sudo tee -a /etc/default/virtuoso-opensource-$VIRTUOSO
 	sudo service virtuoso-opensource-$VIRTUOSO start
 
-	isql-vt 1111 dba dba $BASE_PATH/build/travis/virtuoso-sparql-permission.sql
+	isql-vt 1111 dba dba $BASE_PATH/tests/travis/virtuoso-sparql-permission.sql
 fi

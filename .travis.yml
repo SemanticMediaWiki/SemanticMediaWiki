@@ -36,18 +36,18 @@ matrix:
 
 install:
   - travis_retry composer self-update
-  - bash ./build/travis/install-services.sh
-  - bash ./build/travis/install-mediawiki.sh
-  - bash ./build/travis/install-semantic-mediawiki.sh
+  - bash ./tests/travis/install-services.sh
+  - bash ./tests/travis/install-mediawiki.sh
+  - bash ./tests/travis/install-semantic-mediawiki.sh
 
 before_script:
-  - bash ./build/travis/update-configuration-settings.sh
+  - bash ./tests/travis/update-configuration-settings.sh
 
 script:
-  - bash ./build/travis/run-tests.sh
+  - bash ./tests/travis/run-tests.sh
 
 after_success:
-  - bash ./build/travis/upload-coverage-report.sh
+  - bash ./tests/travis/upload-coverage-report.sh
 
 notifications:
   irc:
