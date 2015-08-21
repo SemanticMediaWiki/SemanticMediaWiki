@@ -15,17 +15,12 @@ use SMW\HashBuilder;
  *
  * @author mwjames
  */
-class DataItemByIdFinder {
+class ByIdDataItemFinder {
 
 	/**
 	 * @var Database|null
 	 */
 	private $connection = null;
-
-	/**
-	 * @var string
-	 */
-	private $tableName = '';
 
 	/**
 	 * @var Cache|null
@@ -36,12 +31,10 @@ class DataItemByIdFinder {
 	 * @since 2.1
 	 *
 	 * @param Database $connection
-	 * @param string $tableName
 	 * @param Cache|null $cache
 	 */
-	public function __construct( Database $connection, $tableName, Cache $cache = null ) {
+	public function __construct( Database $connection, Cache $cache = null ) {
 		$this->connection = $connection;
-		$this->tableName = $tableName;
 		$this->cache = $cache;
 
 		if ( $this->cache === null ) {
@@ -87,7 +80,7 @@ class DataItemByIdFinder {
 		if ( !$this->cache->contains( $id ) ) {
 
 			$row = $this->connection->selectRow(
-				$this->tableName,
+				\SMWSQLStore3::ID_TABLE,
 				array(
 					'smw_title',
 					'smw_namespace',

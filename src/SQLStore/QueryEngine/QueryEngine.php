@@ -5,7 +5,7 @@ namespace SMW\SQLStore\QueryEngine;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
-use SMW\QueryOutputFormatter;
+use SMW\Query\DebugOutputFormatter;
 use SMW\SQLStore\TemporaryIdTableCreator;
 use SMW\DIWikiPage;
 use SMWSQLStore3 as SQLStore;
@@ -182,7 +182,7 @@ class QueryEngine {
 			$this->querySegments[$qid] = $q;
 		}
 
-		if ( $this->querySegments[$qid]->joinTable != SMWSql3SmwIds::tableName ) {
+		if ( isset( $this->querySegments[$qid]->joinTable ) && $this->querySegments[$qid]->joinTable != SMWSql3SmwIds::tableName ) {
 			// manually make final root query (to retrieve namespace,title):
 			$rootid = QuerySegment::$qnum;
 			$qobj = new QuerySegment();
@@ -252,7 +252,7 @@ class QueryEngine {
 		$sql_options = $this->getSQLOptions( $query, $rootid );
 		list( $startOpts, $useIndex, $tailOpts ) = $db->makeSelectOptions( $sql_options );
 
-		if ( $qobj->joinfield !== '' ) {
+		if ( isset( $qobj->joinfield ) && $qobj->joinfield !== '' ) {
 			$entries['SQL Query'] =
 			           "<tt>SELECT DISTINCT $qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns FROM " .
 			           $db->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from .
@@ -276,7 +276,7 @@ class QueryEngine {
 			$entries['Auxilliary Tables Used'] = 'No auxilliary tables used.';
 		}
 
-		return QueryOutputFormatter::formatDebugOutput( 'SQLStore', $entries, $query );
+		return DebugOutputFormatter::formatOutputFor( 'SQLStore', $entries, $query );
 	}
 
 	/**

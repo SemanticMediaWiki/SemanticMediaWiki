@@ -37,7 +37,6 @@ class SpecialUnusedProperties extends SpecialPage {
 	 * @see SpecialPage::execute
 	 */
 	public function execute( $param ) {
-		Profiler::In( __METHOD__ );
 
 		$out = $this->getOutput();
 
@@ -51,8 +50,6 @@ class SpecialUnusedProperties extends SpecialPage {
 
 		// Ensure locally collected output data is pushed to the output!
 		SMWOutputs::commitToOutputPage( $out );
-
-		Profiler::Out( __METHOD__ );
 	}
 
 	/**

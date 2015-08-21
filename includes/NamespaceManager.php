@@ -168,14 +168,11 @@ class NamespaceManager {
 	 * @since 1.9
 	 */
 	protected function initContentLanguage( $langcode ) {
-		Profiler::In();
 
 		$this->setLanguage( $langcode );
 		$this->isValidLanguageClassOrSetFallback( $this->globalVars['smwContLangClass'], 'en' );
 
 		$this->globalVars['smwgContLang'] = new $this->globalVars['smwContLangClass'];
-
-		Profiler::Out();
 	}
 
 	protected function setLanguage( $langcode ) {

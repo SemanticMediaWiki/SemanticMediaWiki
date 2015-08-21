@@ -8,7 +8,6 @@ use SMWSQLStore3;
 
 /**
  * @covers \SMW\SQLStore\SQLStoreFactory
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -81,7 +80,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SQLStoreFactory( new SMWSQLStore3() );
 
 		$this->assertInstanceOf(
-			'SMW\SQLStore\ListLookup\UsageStatisticsListLookup',
+			'SMW\SQLStore\Lookup\CachedListLookup',
 			$instance->newUsageStatisticsListLookup()
 		);
 	}
@@ -91,7 +90,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SQLStoreFactory( new SMWSQLStore3() );
 
 		$this->assertInstanceOf(
-			'SMW\SQLStore\ListLookup\PropertyUsageListLookup',
+			'SMW\SQLStore\Lookup\CachedListLookup',
 			$instance->newPropertyUsageListLookup( null )
 		);
 	}
@@ -101,7 +100,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SQLStoreFactory( new SMWSQLStore3() );
 
 		$this->assertInstanceOf(
-			'SMW\SQLStore\ListLookup\UnusedPropertyListLookup',
+			'SMW\SQLStore\Lookup\CachedListLookup',
 			$instance->newUnusedPropertyListLookup( null )
 		);
 	}
@@ -111,7 +110,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SQLStoreFactory( new SMWSQLStore3() );
 
 		$this->assertInstanceOf(
-			'SMW\SQLStore\ListLookup\UndeclaredPropertyListLookup',
+			'SMW\SQLStore\Lookup\CachedListLookup',
 			$instance->newUndeclaredPropertyListLookup( null, '_foo' )
 		);
 	}
@@ -120,12 +119,12 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SQLStoreFactory( $this->store );
 
-		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\ListLookup' )
+		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ListLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'SMW\SQLStore\ListLookup\CachedListLookup',
+			'SMW\SQLStore\Lookup\CachedListLookup',
 			$instance->newCachedListLookup( $listLookup, true, 42 )
 		);
 	}
@@ -145,7 +144,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'SMW\SQLStore\CachedValueLookupStore',
+			'SMW\SQLStore\Lookup\CachedValueLookupStore',
 			$instance->newCachedValueLookupStore()
 		);
 	}

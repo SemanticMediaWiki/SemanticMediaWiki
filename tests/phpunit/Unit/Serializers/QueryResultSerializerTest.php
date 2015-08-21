@@ -1,80 +1,61 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Serializers;
 
 use SMW\Serializers\QueryResultSerializer;
 use SMWQueryProcessor;
 use SMWQueryResult;
 use SMWDataItem as DataItem;
+use SMW\Tests\Utils\Mock\MockObjectBuilder;
+use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
+use SMW\Tests\Utils\Mock\MediaWikiMockObjectRepository;
 
 /**
  * @covers \SMW\Serializers\QueryResultSerializer
+ * @group semantic-mediawiki
  *
- *
- * @group SMW
- * @group SMWExtension
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class QueryResultSerializerTest extends SemanticMediaWikiTestCase {
+class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string
-	 */
-	public function getClass() {
-		return '\SMW\Serializers\QueryResultSerializer';
+	public function testCanConstructor() {
+
+		$this->assertInstanceOf(
+			'\SMW\Serializers\QueryResultSerializer',
+			new QueryResultSerializer()
+		);
 	}
 
-	/**
-	 * Helper method that returns a QueryResultSerializer object
-	 *
-	 * @since 1.9
-	 */
-	private function newSerializerInstance() {
-		return new QueryResultSerializer();
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newSerializerInstance() );
-	}
-
-	/**
-	 * @since 1.9
-	 */
 	public function testSerializeOutOfBoundsException() {
 
 		$this->setExpectedException( 'OutOfBoundsException' );
 
-		$instance = $this->newSerializerInstance();
+		$instance = new QueryResultSerializer();
 		$instance->serialize( 'Foo' );
-
 	}
 
 	/**
 	 * @dataProvider numberDataProvider
-	 *
-	 * @since  1.9
 	 */
 	public function testQueryResultSerializerOnMock( $setup, $expected ) {
 
-		$results = $this->newSerializerInstance()->serialize( $setup['queryResult'] );
+		$instance = new QueryResultSerializer();
+		$results = $instance->serialize( $setup['queryResult'] );
 
-		$this->assertInternalType( 'array', $results );
-		$this->assertEquals( $expected['printrequests'], $results['printrequests'] );
+		$this->assertInternalType(
+			'array',
+			$results
+		);
 
+		$this->assertEquals(
+			$expected['printrequests'],
+			$results['printrequests']
+		);
 	}
 
-	/**
-	 * @since  1.9
-	 */
 	public function testQueryResultSerializerOnMockOnDIWikiPageNonTitle() {
 
 		$dataItem = $this->newMockBuilder()->newObject( 'DataItem', array(
@@ -87,12 +68,12 @@ class QueryResultSerializerTest extends SemanticMediaWikiTestCase {
 			'getResults'        => array( $dataItem ),
 		) );
 
-		$results = $this->newSerializerInstance()->serialize( $queryResult );
+		$instance = new QueryResultSerializer();
+		$results = $instance->serialize( $queryResult );
 
 		$this->assertInternalType( 'array', $results );
 		$this->assertEmpty( $results['printrequests'] );
 		$this->assertEmpty( $results['results'] );
-
 	}
 
 	/**
@@ -141,7 +122,7 @@ class QueryResultSerializerTest extends SemanticMediaWikiTestCase {
 			) );
 
 			$printRequests[] = $printRequest;
-			$getResults[] = \SMW\DIWikipage::newFromTitle( $this->newTitle( NS_MAIN, $value['printRequest'] ) );
+			$getResults[] = \SMW\DIWikipage::newFromTitle( new \Title( NS_MAIN, $value['printRequest'] ) );
 
 			$dataItem = $this->newMockBuilder()->newObject( 'DataItem', array(
 				'getDIType' => DataItem::TYPE_NUMBER,
@@ -175,6 +156,15 @@ class QueryResultSerializerTest extends SemanticMediaWikiTestCase {
 		) );
 
 		return $queryResult;
+	}
+
+	private function newMockBuilder() {
+
+		$builder = new MockObjectBuilder();
+		$builder->registerRepository( new CoreMockObjectRepository() );
+		$builder->registerRepository( new MediaWikiMockObjectRepository() );
+
+		return $builder;
 	}
 
 }

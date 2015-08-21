@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\SQLStore\ListLookup;
+namespace SMW\SQLStore\Lookup;
 
 use Onoi\Cache\Cache;
-use SMW\SQLStore\ListLookup;
+use SMW\SQLStore\Lookup\ListLookup;
 
 /**
  * @license GNU GPL v2+
@@ -41,7 +41,7 @@ class CachedListLookup implements ListLookup {
 	/**
 	 * @var string
 	 */
-	private $cachePrefix = 'smw:listlookup-cache:';
+	private $cachePrefix = 'smw:llc:';
 
 	/**
 	 * @since 2.2

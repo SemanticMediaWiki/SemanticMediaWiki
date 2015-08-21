@@ -5,7 +5,7 @@ namespace SMW\SPARQLStore\QueryEngine;
 use RuntimeException;
 use SMW\Query\Language\ThingDescription;
 use SMW\SPARQLStore\RepositoryConnection;
-use SMW\QueryOutputFormatter;
+use SMW\Query\DebugOutputFormatter;
 use SMW\CircularReferenceGuard;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
@@ -265,7 +265,7 @@ class QueryEngine {
 		$sparql = str_replace( array( '[',':',' ' ), array( '&#x005B;', '&#x003A;', '&#x0020;' ), $sparql );
 		$entries['SPARQL Query'] = "<pre>$sparql</pre>";
 
-		return QueryOutputFormatter::formatDebugOutput( 'SPARQLStore', $entries, $query );
+		return DebugOutputFormatter::formatOutputFor( 'SPARQLStore', $entries, $query );
 	}
 
 	/**

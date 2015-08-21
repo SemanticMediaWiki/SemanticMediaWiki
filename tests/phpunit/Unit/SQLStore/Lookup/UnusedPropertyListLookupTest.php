@@ -1,13 +1,12 @@
 <?php
 
-namespace SMW\Tests\SQLStore\ListLookup;
+namespace SMW\Tests\SQLStore\Lookup;
 
-use SMW\SQLStore\ListLookup\UnusedPropertyListLookup;
+use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
 use SMW\DIProperty;
 
 /**
- * @covers \SMW\SQLStore\ListLookup\UnusedPropertyListLookup
- *
+ * @covers \SMW\SQLStore\Lookup\UnusedPropertyListLookup
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -17,37 +16,40 @@ use SMW\DIProperty;
  */
 class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
+	private $store;
+	private $propertyStatisticsTable;
+	private $requestOptions;
+
+	protected function setUp() {
+
+		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->propertyStatisticsTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsTable' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
 	public function testCanConstruct() {
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\ListLookup\UnusedPropertyListLookup',
-			new UnusedPropertyListLookup( $store, $propertyStatisticsStore, null )
+			'\SMW\SQLStore\Lookup\UnusedPropertyListLookup',
+			new UnusedPropertyListLookup( $this->store, $this->propertyStatisticsTable, null )
 		);
 	}
 
 	public function testListLookupInterfaceMethodAccess() {
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new UnusedPropertyListLookup( $store, $propertyStatisticsStore, $requestOptions );
+		$instance = new UnusedPropertyListLookup(
+			$this->store,
+			$this->propertyStatisticsTable,
+			$this->requestOptions
+		);
 
 		$this->assertInternalType(
 			'string',
@@ -66,19 +68,12 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testLookupIdentifierChangedByRequestOptions() {
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
+		$instance = new UnusedPropertyListLookup(
+			$this->store,
+			$this->propertyStatisticsTable,
+			$this->requestOptions
+		);
 
-		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new UnusedPropertyListLookup( $store, $propertyStatisticsStore, $requestOptions );
 		$lookupIdentifier = $instance->getLookupIdentifier();
 
 		$this->assertContains(
@@ -86,8 +81,13 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			$lookupIdentifier
 		);
 
-		$requestOptions->limit = 100;
-		$instance = new UnusedPropertyListLookup( $store, $propertyStatisticsStore, $requestOptions );
+		$this->requestOptions->limit = 100;
+
+		$instance = new UnusedPropertyListLookup(
+			$this->store,
+			$this->propertyStatisticsTable,
+			$this->requestOptions
+		);
 
 		$this->assertContains(
 			'UnusedPropertyListLookup',
@@ -102,15 +102,10 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testTryTofetchListForMissingOptionsThrowsException() {
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new UnusedPropertyListLookup( $store, $propertyStatisticsStore, null );
+		$instance = new UnusedPropertyListLookup(
+			$this->store,
+			$this->propertyStatisticsTable
+		);
 
 		$this->setExpectedException( 'RuntimeException' );
 		$instance->fetchList();
@@ -134,27 +129,20 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'select' )
 			->will( $this->returnValue( array( $row ) ) );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
 
-		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsTable' )
-			->disableOriginalConstructor()
-			->getMock();
+		$instance = new UnusedPropertyListLookup(
+			$this->store,
+			$this->propertyStatisticsTable,
+			$this->requestOptions
+		);
 
-		$requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new UnusedPropertyListLookup( $store, $propertyStatisticsStore, $requestOptions );
 		$result = $instance->fetchList();
 
 		$this->assertInternalType(
@@ -197,29 +185,26 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->anything() )
 			->will( $this->returnValue( array( $row ) ) );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
-
-		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsTable' )
-			->disableOriginalConstructor()
-			->getMock();
 
 		$requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$requestOptions->limit = 1001;
+		$this->requestOptions->limit = 1001;
 
-		$instance = new UnusedPropertyListLookup( $store, $propertyStatisticsStore, $requestOptions );
+		$instance = new UnusedPropertyListLookup(
+			$this->store,
+			$this->propertyStatisticsTable,
+			$this->requestOptions
+		);
+
 		$result = $instance->fetchList();
 
 		$this->assertInternalType(

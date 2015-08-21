@@ -2,12 +2,11 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\SQLStore\DataItemByIdFinder;
+use SMW\SQLStore\ByIdDataItemFinder;
 use SMW\ApplicationFactory;
 
 /**
- * @covers \SMW\SQLStore\DataItemByIdFinder
- *
+ * @covers \SMW\SQLStore\ByIdDataItemFinder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,7 +14,7 @@ use SMW\ApplicationFactory;
  *
  * @author mwjames
  */
-class DataItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
+class ByIdDataItemFinderTest extends \PHPUnit_Framework_TestCase {
 
 	private $cache;
 
@@ -32,8 +31,8 @@ class DataItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\DataItemByIdFinder',
-			new DataItemByIdFinder( $connection, 'foo' )
+			'\SMW\SQLStore\ByIdDataItemFinder',
+			new ByIdDataItemFinder( $connection )
 		);
 	}
 
@@ -57,9 +56,8 @@ class DataItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( array( 'smw_id' => 42 ) ) )
 			->will( $this->returnValue( $row ) );
 
-		$instance = new DataItemByIdFinder(
+		$instance = new ByIdDataItemFinder(
 			$connection,
-			'foo',
 			$this->cache
 		);
 
@@ -87,9 +85,8 @@ class DataItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->cache->save( 42, 'Foo#0##' );
 
-		$instance = new DataItemByIdFinder(
+		$instance = new ByIdDataItemFinder(
 			$connection,
-			'foo',
 			$this->cache
 		);
 
@@ -120,9 +117,8 @@ class DataItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->never() )
 			->method( 'selectRow' );
 
-		$instance = new DataItemByIdFinder(
+		$instance = new ByIdDataItemFinder(
 			$connection,
-			'foo',
 			$this->cache
 		);
 
@@ -144,9 +140,8 @@ class DataItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'selectRow' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new DataItemByIdFinder(
+		$instance = new ByIdDataItemFinder(
 			$connection,
-			'foo',
 			$this->cache
 		);
 
@@ -167,9 +162,8 @@ class DataItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'selectRow' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new DataItemByIdFinder(
+		$instance = new ByIdDataItemFinder(
 			$connection,
-			'foo',
 			$this->cache
 		);
 
@@ -190,7 +184,7 @@ class DataItemByIdFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'selectRow' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new DataItemByIdFinder( $connection, 'foo' );
+		$instance = new ByIdDataItemFinder( $connection );
 
 		$this->assertNull(
 			$instance->getDataItemForId( 42 )

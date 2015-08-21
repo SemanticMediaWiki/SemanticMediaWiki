@@ -1,12 +1,11 @@
 <?php
 
-namespace SMW\Tests\SQLStore\ListLookup;
+namespace SMW\Tests\SQLStore\Lookup;
 
-use SMW\SQLStore\ListLookup\UsageStatisticsListLookup;
+use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
 
 /**
- * @covers \SMW\SQLStore\ListLookup\UsageStatisticsListLookup
- *
+ * @covers \SMW\SQLStore\Lookup\UsageStatisticsListLookup
  * @group semantic-mediawiki
  * @group medium
  *
@@ -17,33 +16,35 @@ use SMW\SQLStore\ListLookup\UsageStatisticsListLookup;
  */
 class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 
+	private $store;
+	private $propertyStatisticsStore;
+	private $requestOptions;
+
+	protected function setUp() {
+
+		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
 	public function testCanConstruct() {
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\ListLookup\UsageStatisticsListLookup',
-			new UsageStatisticsListLookup( $store, $propertyStatisticsStore )
+			'\SMW\SQLStore\Lookup\UsageStatisticsListLookup',
+			new UsageStatisticsListLookup( $this->store, $this->propertyStatisticsStore )
 		);
 	}
 
 	public function testListLookupInterfaceMethodAccess() {
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new UsageStatisticsListLookup( $store, $propertyStatisticsStore );
+		$instance = new UsageStatisticsListLookup(
+			$this->store,
+			$this->propertyStatisticsStore
+		);
 
 		$this->assertInternalType(
 			'string',
@@ -66,27 +67,22 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'findPropertyTableID' )
 			->will( $this->returnValue( 'Bar' ) );
 
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array( 'Foo' => 'throwExceptionForMismatch' ) ) );
 
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new UsageStatisticsListLookup( $store, $propertyStatisticsStore );
+		$instance = new UsageStatisticsListLookup(
+			$this->store,
+			$this->propertyStatisticsStore
+		);
 
 		$this->setExpectedException( 'RuntimeException' );
 		$instance->fetchList();
@@ -118,35 +114,31 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 			->setMethods( array( 'getSMWPropertyID' ) )
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIdFetcher ) );
 
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'findPropertyTableID' )
 			->will( $this->returnValue( 'Foo' ) );
 
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array( 'Foo' => $tableDefinition ) ) );
 
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$propertyStatisticsStore->expects( $this->any() )
+		$this->propertyStatisticsStore->expects( $this->any() )
 			->method( 'getUsageCount' )
 			->will( $this->returnValue( 54 ) );
 
-		$instance = new UsageStatisticsListLookup( $store, $propertyStatisticsStore );
+		$instance = new UsageStatisticsListLookup(
+			$this->store,
+			$this->propertyStatisticsStore
+		);
+
 		$result = $instance->fetchList();
 
 		$this->assertInternalType(

@@ -1,12 +1,11 @@
 <?php
 
-namespace SMW\Tests\SQLStore\ListLookup;
+namespace SMW\Tests\SQLStore\Lookup;
 
-use SMW\SQLStore\ListLookup\CachedListLookup;
+use SMW\SQLStore\Lookup\CachedListLookup;
 
 /**
- * @covers \SMW\SQLStore\ListLookup\CachedListLookup
- *
+ * @covers \SMW\SQLStore\Lookup\CachedListLookup
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -18,7 +17,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\ListLookup' )
+		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ListLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -27,7 +26,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\ListLookup\CachedListLookup',
+			'\SMW\SQLStore\Lookup\CachedListLookup',
 			new CachedListLookup( $listLookup, $cache, new \stdClass )
 		);
 	}
@@ -39,7 +38,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 			'list' => serialize( array( 'Foo' ) )
 		);
 
-		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\ListLookup' )
+		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ListLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -53,7 +52,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$cache->expects( $this->once() )
 			->method( 'contains' )
-			->with(	$this->stringContains( 'cacheprefix-foobar:smw:listlookup-cache:' ) )
+			->with(	$this->stringContains( 'cacheprefix-foobar:smw:llc:' ) )
 			->will( $this->returnValue( true ) );
 
 		$cache->expects( $this->once() )
@@ -93,7 +92,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 			'list' => serialize( array( 'Foo' ) )
 		);
 
-		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\ListLookup' )
+		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ListLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -112,7 +111,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 		$cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
-				$this->stringContains( 'lookup-cache' ),
+				$this->stringContains( 'llc' ),
 				$this->anything( $expectedCacheItem ),
 				$this->equalTo( 1001 ) );
 

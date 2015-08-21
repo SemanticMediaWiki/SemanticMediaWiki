@@ -37,7 +37,6 @@ class SpecialWantedProperties extends SpecialPage {
 	 * @see SpecialPage::execute
 	 */
 	public function execute( $param ) {
-		Profiler::In( __METHOD__ );
 
 		$out = $this->getOutput();
 
@@ -52,8 +51,6 @@ class SpecialWantedProperties extends SpecialPage {
 		// Ensure locally collected output data is pushed to the output!
 		// ?? still needed !!
 		SMWOutputs::commitToOutputPage( $out );
-
-		Profiler::Out( __METHOD__ );
 	}
 
 	/**

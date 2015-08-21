@@ -13,7 +13,6 @@ use Title;
 
 /**
  * @covers \SMW\Serializers\SemanticDataSerializer
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

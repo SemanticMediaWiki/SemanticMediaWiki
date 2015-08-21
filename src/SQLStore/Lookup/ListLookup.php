@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\SQLStore;
+namespace SMW\SQLStore\Lookup;
 
 /**
  * A simple interface for fetching a list from either a DB or use a decorator

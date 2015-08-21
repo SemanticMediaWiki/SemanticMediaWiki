@@ -290,7 +290,7 @@ class ByIdDataRebuildDispatcher {
 		$db = $this->store->getConnection( 'mw.db' );
 
 		// nothing found, check if there will be more pages later on
-		if ( $emptyrange && $nextpos > \SMWSql3SmwIds::PPBORDERID ) {
+		if ( $emptyrange && $nextpos > \SMWSql3SmwIds::FXD_PROP_BORDER_ID ) {
 
 			$nextByPageId = (int)$db->selectField(
 				'page',

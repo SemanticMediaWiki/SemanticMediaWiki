@@ -62,6 +62,11 @@ class SMWSQLStore3 extends SMWStore {
 	const PROPERTY_STATISTICS_TABLE = 'smw_prop_stats';
 
 	/**
+	 * Name of the table that manages the Store IDs
+	 */
+	const ID_TABLE = 'smw_object_ids';
+
+	/**
 	 * @var SQLStoreFactory
 	 */
 	private $factory;
@@ -362,18 +367,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return ListLookup
 	 */
 	public function getPropertiesSpecial( $requestOptions = null ) {
-
-		$propertyUsageListLookup = $this->factory->newPropertyUsageListLookup(
-			$requestOptions
-		);
-
-		$cachedListLookup = $this->factory->newCachedListLookup(
-			$propertyUsageListLookup,
-			self::$configuration->get( 'smwgPropertiesCache' ),
-			self::$configuration->get( 'smwgPropertiesCacheExpiry' )
-		);
-
-		return $cachedListLookup;
+		return $this->factory->newPropertyUsageListLookup( $requestOptions );
 	}
 
 	/**
@@ -382,18 +376,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return ListLookup
 	 */
 	public function getUnusedPropertiesSpecial( $requestOptions = null ) {
-
-		$unusedPropertyListLookup = $this->factory->newUnusedPropertyListLookup(
-			$requestOptions
-		);
-
-		$cachedListLookup = $this->factory->newCachedListLookup(
-			$unusedPropertyListLookup,
-			self::$configuration->get( 'smwgUnusedPropertiesCache' ),
-			self::$configuration->get( 'smwgUnusedPropertiesCacheExpiry' )
-		);
-
-		return $cachedListLookup;
+		return $this->factory->newUnusedPropertyListLookup( $requestOptions );
 	}
 
 	/**
@@ -402,30 +385,11 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return ListLookup
 	 */
 	public function getWantedPropertiesSpecial( $requestOptions = null ) {
-
-		$undeclaredPropertyListLookup = $this->factory->newUndeclaredPropertyListLookup(
-			$requestOptions,
-			self::$configuration->get( 'smwgPDefaultType' )
-		);
-
-		$cachedListLookup = $this->factory->newCachedListLookup(
-			$undeclaredPropertyListLookup,
-			self::$configuration->get( 'smwgWantedPropertiesCache' ),
-			self::$configuration->get( 'smwgWantedPropertiesCacheExpiry' )
-		);
-
-		return $cachedListLookup;
+		return $this->factory->newUndeclaredPropertyListLookup( $requestOptions );
 	}
 
 	public function getStatistics() {
-
-		$cachedListLookup = $this->factory->newCachedListLookup(
-			$this->factory->newUsageStatisticsListLookup(),
-			self::$configuration->get( 'smwgStatisticsCache' ),
-			self::$configuration->get( 'smwgStatisticsCacheExpiry' )
-		);
-
-		return $cachedListLookup->fetchList();
+		return $this->factory->newUsageStatisticsListLookup()->fetchList();
 	}
 
 
@@ -604,7 +568,8 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	public function changeSMWPageID( $oldid, $newid, $oldnamespace = -1,
 				$newnamespace = -1, $sdata = true, $podata = true ) {
-		$db = wfGetDB( DB_MASTER );
+
+		$db = $this->getConnection( 'mw.db' );
 
 		// Change all id entries in property tables:
 		foreach ( $this->getPropertyTables() as $proptable ) {
@@ -701,25 +666,15 @@ class SMWSQLStore3 extends SMWStore {
 	}
 
 	/**
-	 * @note It is performance critical to make sure that the instance is only
-	 * invoked once per request
-	 *
 	 * @since 2.2
 	 *
-	 * @return PpropertyTableInfoFetcher
+	 * @return PropertyTableInfoFetcher
 	 */
 	public function getPropertyTableInfoFetcher() {
 
+		// We want a cached instance here
 		if ( $this->propertyTableInfoFetcher === null ) {
-			$this->propertyTableInfoFetcher = new PropertyTableInfoFetcher();
-
-			$this->propertyTableInfoFetcher->setCustomFixedPropertyList(
-				self::$configuration->get( 'smwgFixedProperties' )
-			);
-
-			$this->propertyTableInfoFetcher->setCustomSpecialPropertyList(
-				self::$configuration->get( 'smwgPageSpecialProperties' )
-			);
+			$this->propertyTableInfoFetcher = $this->factory->newPropertyTableInfoFetcher();
 		}
 
 		return $this->propertyTableInfoFetcher;

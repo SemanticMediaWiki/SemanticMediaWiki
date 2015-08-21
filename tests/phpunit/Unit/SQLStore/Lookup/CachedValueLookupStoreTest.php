@@ -2,14 +2,13 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\SQLStore\CachedValueLookupStore;
+use SMW\SQLStore\Lookup\CachedValueLookupStore;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\SemanticData;
 
 /**
- * @covers \SMW\SQLStore\CachedValueLookupStore
- *
+ * @covers \SMW\SQLStore\Lookup\CachedValueLookupStore
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -30,7 +29,7 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\CachedValueLookupStore',
+			'\SMW\SQLStore\Lookup\CachedValueLookupStore',
 			new CachedValueLookupStore( $store, $blobStore )
 		);
 	}
