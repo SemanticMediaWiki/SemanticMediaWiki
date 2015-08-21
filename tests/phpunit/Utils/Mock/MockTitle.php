@@ -18,7 +18,7 @@ class MockTitle extends \PHPUnit_Framework_TestCase {
 
 		$instance = new self();
 
-		$contentModel = class_exists( 'ContentHandler' ) ? CONTENT_MODEL_WIKITEXT : null;
+		$contentModel = defined( 'CONTENT_MODEL_WIKITEXT' ) ? CONTENT_MODEL_WIKITEXT : null;
 
 		$title = $instance->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()

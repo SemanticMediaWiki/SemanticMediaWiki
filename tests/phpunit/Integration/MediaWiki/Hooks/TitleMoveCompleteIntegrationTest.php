@@ -19,9 +19,7 @@ use Title;
 use WikiPage;
 
 /**
- * @group SMW
- * @group SMWExtension
- * @group semantic-mediawiki-integration
+ * @group semantic-mediawiki
  * @group medium
  *
  * @license GNU GPL v2+
@@ -50,7 +48,7 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->mwHooksHandler->register(
 			'TitleMoveComplete',
-			$this->mwHooksHandler->getHookRegistry()->getDefinition( 'TitleMoveComplete' )
+			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'TitleMoveComplete' )
 		);
 
 		$this->pageCreator = $utilityFactory->newPageCreator();
@@ -110,12 +108,12 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 		// Further hooks required to ensure in-text annotations can be used for queries
 		$this->mwHooksHandler->register(
 			'InternalParseBeforeLinks',
-			$this->mwHooksHandler->getHookRegistry()->getDefinition( 'InternalParseBeforeLinks' )
+			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'InternalParseBeforeLinks' )
 		);
 
 		$this->mwHooksHandler->register(
 			'LinksUpdateConstructed',
-			$this->mwHooksHandler->getHookRegistry()->getDefinition( 'LinksUpdateConstructed' )
+			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'LinksUpdateConstructed' )
 		);
 
 		$title = Title::newFromText( __METHOD__ . '-old' );
@@ -181,7 +179,7 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->mwHooksHandler->register(
 			'TitleIsMovable',
-			$this->mwHooksHandler->getHookRegistry()->getDefinition( 'TitleIsMovable' )
+			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'TitleIsMovable' )
 		);
 
 		$title = Title::newFromText( 'Modification date', SMW_NS_PROPERTY );

@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Parser;
+use Hooks;
 use RuntimeException;
 use SMW\ApplicationFactory;
 use SMW\EventHandler;
@@ -20,12 +21,12 @@ class HookRegistry {
 	/**
 	 * @var array
 	 */
-	private $globalVars;
+	private $handlers = array();
 
 	/**
-	 * @var string
+	 * @var array
 	 */
-	private $directory;
+	private $globalVars;
 
 	/**
 	 * @since 2.1
@@ -35,200 +36,78 @@ class HookRegistry {
 	 */
 	public function __construct( &$globalVars = array(), $directory = '' ) {
 		$this->globalVars =& $globalVars;
-		$this->directory = $directory;
+
+		$this->addCallbackHandlers( $directory, $globalVars['IP'], $globalVars['wgVersion'], $globalVars['wgLang'] );
 	}
 
 	/**
-	 * @since 2.1
-	 *
-	 * @return array
-	 */
-	public function getListOfRegisteredFunctionHooks() {
-		return array_keys( $this->getListOfFunctionHookDefinitions() );
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @return array
-	 */
-	public function getListOfRegisteredParserFunctions() {
-		return array_keys( $this->getListOfParserFunctionDefinitions() );
-	}
-
-	/**
-	 * @since 2.1
+	 * @since 2.3
 	 *
 	 * @param string $name
 	 *
-	 * @return Closure
+	 * @return boolean
 	 */
-	public function getDefinition( $name ) {
+	public function isRegistered( $name ) {
+	//	return Hooks::isRegistered( $name );
+		return isset( $this->handlers[$name] );
+	}
 
-		$listOfDefinitions = array_merge(
-			$this->getListOfFunctionHookDefinitions(),
-			$this->getListOfParserFunctionDefinitions()
-		);
-
-		if ( isset( $listOfDefinitions[$name] ) ) {
-			return $listOfDefinitions[$name];
+	/**
+	 * @since 2.3
+	 */
+	public function clear() {
+		foreach ( $this->getHandlerList() as $name ) {
+			Hooks::clear( $name );
 		}
+	}
 
-		throw new RuntimeException( "$name is unknown or not registered" );
+	/**
+	 * @since 2.3
+	 *
+	 * @param string $name
+	 *
+	 * @return Callable|false
+	 */
+	public function getHandlerFor( $name ) {
+		return isset( $this->handlers[$name] ) ? $this->handlers[$name] : false;
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @return array
+	 */
+	public function getHandlerList() {
+		return array_keys( $this->handlers );
 	}
 
 	/**
 	 * @since 2.1
 	 */
 	public function register() {
-		foreach ( $this->getListOfFunctionHookDefinitions() as $hook => $definition ) {
-			$this->globalVars['wgHooks'][$hook][] = $definition;
+		foreach ( $this->handlers as $name => $callback ) {
+			//Hooks::register( $name, $callback );
+			$this->globalVars['wgHooks'][$name][] = $callback;
 		}
 	}
 
-	private function getListOfParserFunctionDefinitions() {
-
-		$parserFunctionDefinition = array();
-
-		/**
-		 * {{#ask}}
-		 *
-		 * @since 2.1
-		 */
-		$parserFunctionDefinition['ask'] = function( $parser ) {
-
-			$parserFunctionFactory = ApplicationFactory::getInstance()->newParserFunctionFactory( $parser );
-			$instance = $parserFunctionFactory->newAskParserFunction();
-
-			if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgQEnabled' ) ) {
-				return $instance->parse( func_get_args() );
-			}
-
-			return $instance->isQueryDisabled();
-		};
-
-		/**
-		 * {{#show}}
-		 *
-		 * @since 2.1
-		 */
-		$parserFunctionDefinition['show'] = function( $parser ) {
-
-			$parserFunctionFactory = ApplicationFactory::getInstance()->newParserFunctionFactory( $parser );
-			$instance = $parserFunctionFactory->newShowParserFunction();
-
-			if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgQEnabled' ) ) {
-				return $instance->parse( func_get_args() );
-			}
-
-			return $instance->isQueryDisabled();
-		};
-
-		/**
-		 * {{#subobject}}
-		 *
-		 * @since 2.1
-		 */
-		$parserFunctionDefinition['subobject'] = function( $parser ) {
-
-			$parserFunctionFactory = ApplicationFactory::getInstance()->newParserFunctionFactory( $parser );
-			$instance = $parserFunctionFactory->newSubobjectParserFunction();
-
-			return $instance->parse( ParameterProcessorFactory::newFromArray( func_get_args() ) );
-		};
-
-		/**
-		 * {{#set_recurring_event}}
-		 *
-		 * @since 2.1
-		 */
-		$parserFunctionDefinition['set_recurring_event'] = function( $parser ) {
-
-			$parserFunctionFactory = ApplicationFactory::getInstance()->newParserFunctionFactory( $parser );
-			$instance = $parserFunctionFactory->newRecurringEventsParserFunction();
-
-			return $instance->parse( ParameterProcessorFactory::newFromArray( func_get_args() ) );
-		};
-
-		/**
-		 * {{#set}}
-		 *
-		 * @since 2.1
-		 */
-		$parserFunctionDefinition['set'] = function( $parser ) {
-
-			$parserFunctionFactory = ApplicationFactory::getInstance()->newParserFunctionFactory( $parser );
-			$instance = $parserFunctionFactory->newSetParserFunction();
-
-			return $instance->parse( ParameterProcessorFactory::newFromArray( func_get_args() ) );
-		};
-
-		/**
-		 * {{#concept}}
-		 *
-		 * @since 2.1
-		 */
-		$parserFunctionDefinition['concept'] = function( $parser ) {
-
-			$parserFunctionFactory = ApplicationFactory::getInstance()->newParserFunctionFactory( $parser );
-			$instance = $parserFunctionFactory->newConceptParserFunction();
-
-			return $instance->parse( func_get_args() );
-		};
-
-		/**
-		 * {{#declare}}
-		 *
-		 * @since 2.1
-		 */
-		$parserFunctionDefinition['declare'] = function( $parser, $frame, $args ) {
-
-			$parserFunctionFactory = ApplicationFactory::getInstance()->newParserFunctionFactory( $parser );
-			$instance = $parserFunctionFactory->newDeclareParserFunction();
-
-			return $instance->parse( $frame, $args );
-		};
-
-		return $parserFunctionDefinition;
-	}
-
-	private function getListOfFunctionHookDefinitions() {
-
-		$functionHookDefinition = array();
-
-		$globalVars = $this->globalVars;
-		$basePath   = $this->directory;
+	private function addCallbackHandlers( $basePath, $installPath, $version, $lang ) {
 
 		$eventHandler = EventHandler::getInstance();
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserFirstCallInit
-		 */
-		$listOfParserFunctions = $this->getListOfParserFunctionDefinitions();
-
-		$functionHookDefinition['ParserFirstCallInit'] = function ( Parser &$parser ) use ( $listOfParserFunctions ) {
-
-			foreach ( $listOfParserFunctions as $parserFunctionName => $parserDefinition ) {
-
-				$parserflag = $parserFunctionName === 'declare' ? SFH_OBJECT_ARGS : 0;
-
-				$parser->setFunctionHook(
-					$parserFunctionName,
-					$parserDefinition,
-					$parserflag
-				);
-			}
-
-			return true;
-		};
+		$applicationFactory = ApplicationFactory::getInstance();
 
 		/**
 		 * Hook: ParserAfterTidy to add some final processing to the fully-rendered page output
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserAfterTidy
 		 */
-		$functionHookDefinition['ParserAfterTidy'] = function ( &$parser, &$text ) {
-			$parserAfterTidy = new ParserAfterTidy( $parser, $text );
+		$this->handlers['ParserAfterTidy'] = function ( &$parser, &$text ) {
+
+			$parserAfterTidy = new ParserAfterTidy(
+				$parser,
+				$text
+			);
+
 			return $parserAfterTidy->process();
 		};
 
@@ -238,8 +117,13 @@ class HookRegistry {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BaseTemplateToolbox
 		 */
-		$functionHookDefinition['BaseTemplateToolbox'] = function ( $skinTemplate, &$toolbox ) {
-			$baseTemplateToolbox = new BaseTemplateToolbox( $skinTemplate, $toolbox );
+		$this->handlers['BaseTemplateToolbox'] = function ( $skinTemplate, &$toolbox ) {
+
+			$baseTemplateToolbox = new BaseTemplateToolbox(
+				$skinTemplate,
+				$toolbox
+			);
+
 			return $baseTemplateToolbox->process();
 		};
 
@@ -249,8 +133,13 @@ class HookRegistry {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinAfterContent
 		 */
-		$functionHookDefinition['SkinAfterContent'] = function ( &$data, $skin = null ) {
-			$skinAfterContent = new SkinAfterContent( $data, $skin );
+		$this->handlers['SkinAfterContent'] = function ( &$data, $skin = null ) {
+
+			$skinAfterContent = new SkinAfterContent(
+				$data,
+				$skin
+			);
+
 			return $skinAfterContent->process();
 		};
 
@@ -259,8 +148,13 @@ class HookRegistry {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/OutputPageParserOutput
 		 */
-		$functionHookDefinition['OutputPageParserOutput'] = function ( &$outputPage, $parserOutput ) {
-			$outputPageParserOutput = new OutputPageParserOutput( $outputPage, $parserOutput );
+		$this->handlers['OutputPageParserOutput'] = function ( &$outputPage, $parserOutput ) {
+
+			$outputPageParserOutput = new OutputPageParserOutput(
+				$outputPage,
+				$parserOutput
+			);
+
 			return $outputPageParserOutput->process();
 		};
 
@@ -269,8 +163,13 @@ class HookRegistry {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
 		 */
-		$functionHookDefinition['BeforePageDisplay'] = function ( &$outputPage, &$skin ) {
-			$beforePageDisplay = new BeforePageDisplay( $outputPage, $skin );
+		$this->handlers['BeforePageDisplay'] = function ( &$outputPage, &$skin ) {
+
+			$beforePageDisplay = new BeforePageDisplay(
+				$outputPage,
+				$skin
+			);
+
 			return $beforePageDisplay->process();
 		};
 
@@ -280,8 +179,13 @@ class HookRegistry {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/InternalParseBeforeLinks
 		 */
-		$functionHookDefinition['InternalParseBeforeLinks'] = function ( &$parser, &$text ) {
-			$internalParseBeforeLinks = new InternalParseBeforeLinks( $parser, $text );
+		$this->handlers['InternalParseBeforeLinks'] = function ( &$parser, &$text ) {
+
+			$internalParseBeforeLinks = new InternalParseBeforeLinks(
+				$parser,
+				$text
+			);
+
 			return $internalParseBeforeLinks->process();
 		};
 
@@ -291,8 +195,15 @@ class HookRegistry {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/NewRevisionFromEditComplete
 		 */
-		$functionHookDefinition['NewRevisionFromEditComplete'] = function ( $wikiPage, $revision, $baseId, $user ) {
-			$newRevisionFromEditComplete = new NewRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user );
+		$this->handlers['NewRevisionFromEditComplete'] = function ( $wikiPage, $revision, $baseId, $user ) {
+
+			$newRevisionFromEditComplete = new NewRevisionFromEditComplete(
+				$wikiPage,
+				$revision,
+				$baseId,
+				$user
+			);
+
 			return $newRevisionFromEditComplete->process();
 		};
 
@@ -302,8 +213,16 @@ class HookRegistry {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleMoveComplete
 		 */
-		$functionHookDefinition['TitleMoveComplete'] = function ( &$oldTitle, &$newTitle, &$user, $oldId, $newId ) {
-			$titleMoveComplete = new TitleMoveComplete( $oldTitle, $newTitle, $user, $oldId, $newId );
+		$this->handlers['TitleMoveComplete'] = function ( &$oldTitle, &$newTitle, &$user, $oldId, $newId ) {
+
+			$titleMoveComplete = new TitleMoveComplete(
+				$oldTitle,
+				$newTitle,
+				$user,
+				$oldId,
+				$newId
+			);
+
 			return $titleMoveComplete->process();
 		};
 
@@ -312,7 +231,7 @@ class HookRegistry {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticlePurge
 		 */
-		$functionHookDefinition['ArticlePurge']= function ( &$wikiPage ) {
+		$this->handlers['ArticlePurge']= function ( &$wikiPage ) {
 
 			$articlePurge = new ArticlePurge();
 
@@ -325,8 +244,15 @@ class HookRegistry {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleDelete
 		 */
-		$functionHookDefinition['ArticleDelete'] = function ( &$wikiPage, &$user, &$reason, &$error ) {
-			$articleDelete = new ArticleDelete( $wikiPage, $user, $reason, $error );
+		$this->handlers['ArticleDelete'] = function ( &$wikiPage, &$user, &$reason, &$error ) {
+
+			$articleDelete = new ArticleDelete(
+				$wikiPage,
+				$user,
+				$reason,
+				$error
+			);
+
 			return $articleDelete->process();
 		};
 
@@ -335,8 +261,12 @@ class HookRegistry {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/LinksUpdateConstructed
 		 */
-		$functionHookDefinition['LinksUpdateConstructed'] = function ( $linksUpdate ) {
-			$linksUpdateConstructed = new LinksUpdateConstructed( $linksUpdate );
+		$this->handlers['LinksUpdateConstructed'] = function ( $linksUpdate ) {
+
+			$linksUpdateConstructed = new LinksUpdateConstructed(
+				$linksUpdate
+			);
+
 			return $linksUpdateConstructed->process();
 		};
 
@@ -345,8 +275,14 @@ class HookRegistry {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialStatsAddExtra
 		 */
-		$functionHookDefinition['SpecialStatsAddExtra'] = function ( &$extraStats ) use ( $globalVars ) {
-			$specialStatsAddExtra = new SpecialStatsAddExtra( $extraStats, $globalVars['wgVersion'], $globalVars['wgLang'] );
+		$this->handlers['SpecialStatsAddExtra'] = function ( &$extraStats ) use( $version, $lang ) {
+
+			$specialStatsAddExtra = new SpecialStatsAddExtra(
+				$extraStats,
+				$version,
+				$lang
+			);
+
 			return $specialStatsAddExtra->process();
 		};
 
@@ -356,7 +292,7 @@ class HookRegistry {
 		 * @Bug 34383
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/CanonicalNamespaces
 		 */
-		$functionHookDefinition['CanonicalNamespaces'] = function ( &$list ) {
+		$this->handlers['CanonicalNamespaces'] = function ( &$list ) {
 			$list = $list + NamespaceManager::getCanonicalNames();
 			return true;
 		};
@@ -366,49 +302,70 @@ class HookRegistry {
 		 *
 		 * @since 1.9.1
 		 */
-		$functionHookDefinition['FileUpload'] = function ( $file, $reupload ) {
-			$fileUpload = new FileUpload( $file, $reupload );
+		$this->handlers['FileUpload'] = function ( $file, $reupload ) {
+
+			$fileUpload = new FileUpload(
+				$file,
+				$reupload
+			);
+
 			return $fileUpload->process();
 		};
 
 		/**
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderGetConfigVars
 		 */
-		$functionHookDefinition['ResourceLoaderGetConfigVars'] = function ( &$vars ) {
-			$resourceLoaderGetConfigVars = new ResourceLoaderGetConfigVars( $vars );
+		$this->handlers['ResourceLoaderGetConfigVars'] = function ( &$vars ) {
+
+			$resourceLoaderGetConfigVars = new ResourceLoaderGetConfigVars(
+				$vars
+			);
+
 			return $resourceLoaderGetConfigVars->process();
 		};
 
 		/**
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/GetPreferences
 		 */
-		$functionHookDefinition['GetPreferences'] = function ( $user, &$preferences ) {
-			$getPreferences = new GetPreferences( $user, $preferences );
+		$this->handlers['GetPreferences'] = function ( $user, &$preferences ) {
+
+			$getPreferences = new GetPreferences(
+				$user,
+				$preferences
+			);
+
 			return $getPreferences->process();
 		};
 
 		/**
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation
 		 */
-		$functionHookDefinition['SkinTemplateNavigation'] = function ( &$skinTemplate, &$links ) {
-			$skinTemplateNavigation = new SkinTemplateNavigation( $skinTemplate, $links );
+		$this->handlers['SkinTemplateNavigation'] = function ( &$skinTemplate, &$links ) {
+
+			$skinTemplateNavigation = new SkinTemplateNavigation(
+				$skinTemplate,
+				$links
+			);
+
 			return $skinTemplateNavigation->process();
 		};
 
 		/**
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/LoadExtensionSchemaUpdates
 		 */
-		$functionHookDefinition['LoadExtensionSchemaUpdates'] = function ( $databaseUpdater ) {
-			$extensionSchemaUpdates = new ExtensionSchemaUpdates( $databaseUpdater );
+		$this->handlers['LoadExtensionSchemaUpdates'] = function ( $databaseUpdater ) {
+
+			$extensionSchemaUpdates = new ExtensionSchemaUpdates(
+				$databaseUpdater
+			);
+
 			return $extensionSchemaUpdates->process();
 		};
 
 		/**
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderTestModules
 		 */
-		$functionHookDefinition['ResourceLoaderTestModules'] = function ( &$testModules, &$resourceLoader ) use ( $basePath, $globalVars ) {
-
-			$installPath = $globalVars['IP'];
+		$this->handlers['ResourceLoaderTestModules'] = function ( &$testModules, &$resourceLoader ) use ( $basePath, $installPath ) {
 
 			$resourceLoaderTestModules = new ResourceLoaderTestModules(
 				$resourceLoader,
@@ -423,60 +380,85 @@ class HookRegistry {
 		/**
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ExtensionTypes
 		 */
-		$functionHookDefinition['ExtensionTypes'] = function ( &$extTypes ) {
-			$extensionTypes = new ExtensionTypes( $extTypes );
+		$this->handlers['ExtensionTypes'] = function ( &$extTypes ) {
+
+			$extensionTypes = new ExtensionTypes(
+				$extTypes
+			);
+
 			return $extensionTypes->process();
 		};
 
 		/**
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleIsAlwaysKnown
 		 */
-		$functionHookDefinition['TitleIsAlwaysKnown'] = function ( $title, &$result ) {
-			$titleIsAlwaysKnown = new TitleIsAlwaysKnown( $title, $result );
+		$this->handlers['TitleIsAlwaysKnown'] = function ( $title, &$result ) {
+
+			$titleIsAlwaysKnown = new TitleIsAlwaysKnown(
+				$title,
+				$result
+			);
+
 			return $titleIsAlwaysKnown->process();
 		};
 
 		/**
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforeDisplayNoArticleText
 		 */
-		$functionHookDefinition['BeforeDisplayNoArticleText'] = function ( $article ) {
-			$beforeDisplayNoArticleText = new BeforeDisplayNoArticleText( $article );
+		$this->handlers['BeforeDisplayNoArticleText'] = function ( $article ) {
+
+			$beforeDisplayNoArticleText = new BeforeDisplayNoArticleText(
+				$article
+			);
+
 			return $beforeDisplayNoArticleText->process();
 		};
 
 		/**
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleFromTitle
 		 */
-		$functionHookDefinition['ArticleFromTitle'] = function ( &$title, &$article ) {
-			$articleFromTitle = new ArticleFromTitle( $title, $article );
+		$this->handlers['ArticleFromTitle'] = function ( &$title, &$article ) {
+
+			$articleFromTitle = new ArticleFromTitle(
+				$title,
+				$article
+			);
+
 			return $articleFromTitle->process();
 		};
 
 		/**
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleIsMovable
 		 */
-		$functionHookDefinition['TitleIsMovable'] = function ( $title, &$isMovable ) {
-			$titleIsMovable = new TitleIsMovable( $title, $isMovable );
+		$this->handlers['TitleIsMovable'] = function ( $title, &$isMovable ) {
+
+			$titleIsMovable = new TitleIsMovable(
+				$title,
+				$isMovable
+			);
+
 			return $titleIsMovable->process();
 		};
 
 		/**
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/EditPage::showEditForm:initial
 		 */
-		$functionHookDefinition['EditPage::showEditForm:initial'] = function ( $editPage, $output ) {
+		$this->handlers['EditPage::showEditForm:initial'] = function ( $editPage, $output ) use ( $applicationFactory ) {
 
-			$mwCollaboratorFactory = ApplicationFactory::getInstance()->newMwCollaboratorFactory();
-
-			$htmlFormRenderer = $mwCollaboratorFactory->newHtmlFormRenderer(
+			$htmlFormRenderer = $applicationFactory->newMwCollaboratorFactory()->newHtmlFormRenderer(
 				$editPage->getTitle(),
 				$output->getLanguage()
 			);
 
-			$editPageForm = new EditPageForm( $editPage, $htmlFormRenderer );
+			$editPageForm = new EditPageForm(
+				$editPage,
+				$htmlFormRenderer
+			);
+
 			return $editPageForm->process();
 		};
 
-		$functionHookDefinition['SMW::Store::dropTables'] = function ( $verbose ) use( $eventHandler ) {
+		$this->handlers['SMW::Store::dropTables'] = function ( $verbose ) use( $eventHandler ) {
 
 			$eventHandler->getEventDispatcher()->dispatch(
 				'blobstore.drop'
@@ -485,7 +467,48 @@ class HookRegistry {
 			return true;
 		};
 
-		return $functionHookDefinition;
+		$this->registerParserFunctionHooks( $applicationFactory );
+	}
+
+	private function registerParserFunctionHooks( ApplicationFactory $applicationFactory ) {
+
+		/**
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserFirstCallInit
+		 */
+		$this->handlers['ParserFirstCallInit'] = function ( &$parser ) use( $applicationFactory ) {
+
+			$parserFunctionFactory = $applicationFactory->newParserFunctionFactory( $parser );
+
+			list( $name, $definition, $flag ) = $parserFunctionFactory->newAskParserFunctionDefinition();
+
+			$parser->setFunctionHook( $name, $definition, $flag );
+
+			list( $name, $definition, $flag ) = $parserFunctionFactory->newShowParserFunctionDefinition();
+
+			$parser->setFunctionHook( $name, $definition, $flag );
+
+			list( $name, $definition, $flag ) = $parserFunctionFactory->newSubobjectParserFunctionDefinition();
+
+			$parser->setFunctionHook( $name, $definition, $flag );
+
+			list( $name, $definition, $flag ) = $parserFunctionFactory->newRecurringEventsParserFunctionDefinition();
+
+			$parser->setFunctionHook( $name, $definition, $flag );
+
+			list( $name, $definition, $flag ) = $parserFunctionFactory->newSetParserFunctionDefinition();
+
+			$parser->setFunctionHook( $name, $definition, $flag );
+
+			list( $name, $definition, $flag ) = $parserFunctionFactory->newConceptParserFunctionDefinition();
+
+			$parser->setFunctionHook( $name, $definition, $flag );
+
+			list( $name, $definition, $flag ) = $parserFunctionFactory->newDeclareParserFunctionDefinition();
+
+			$parser->setFunctionHook( $name, $definition, $flag );
+
+			return true;
+		};
 	}
 
 }
