@@ -112,7 +112,7 @@ class StoreTest extends MwDBaseUnitTestCase {
 
 		foreach( $result as $property ) {
 			$this->assertInstanceOf(
-				'\SMW\DIProperty',
+				'\SMWDataItem',
 				$property,
 				"Result should be instance of DIProperty."
 			);
@@ -133,7 +133,7 @@ class StoreTest extends MwDBaseUnitTestCase {
 		$store = StoreFactory::getStore();
 		$result = $store->getPropertiesSpecial( new SMWRequestOptions() );
 
-		$this->assertInstanceOf( '\SMW\SQLStore\ListLookup', $result );
+		$this->assertInstanceOf( '\SMW\SQLStore\Lookup\ListLookup', $result );
 		foreach( $result->fetchList() as $row ) {
 			$this->assertCount( 2, $row );
 
@@ -149,10 +149,10 @@ class StoreTest extends MwDBaseUnitTestCase {
 		$store = StoreFactory::getStore();
 		$result = $store->getUnusedPropertiesSpecial( new SMWRequestOptions() );
 
-		$this->assertInstanceOf( '\SMW\SQLStore\ListLookup', $result );
+		$this->assertInstanceOf( '\SMW\SQLStore\Lookup\ListLookup', $result );
 		foreach( $result->fetchList() as $row ) {
 			$this->assertInstanceOf(
-				'\SMW\DIProperty',
+				'\SMWDataItem',
 				$row,
 				"Result should be instance of DIProperty."
 			);
@@ -163,7 +163,7 @@ class StoreTest extends MwDBaseUnitTestCase {
 		$store = StoreFactory::getStore();
 		$result = $store->getWantedPropertiesSpecial( new SMWRequestOptions() );
 
-		$this->assertInstanceOf( '\SMW\SQLStore\ListLookup', $result );
+		$this->assertInstanceOf( '\SMW\SQLStore\Lookup\ListLookup', $result );
 		foreach( $result->fetchList() as $row ) {
 			$this->assertInstanceOf(
 				'\SMW\DIProperty',

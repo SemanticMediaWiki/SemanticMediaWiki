@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\SQLStore\ListLookup;
+namespace SMW\SQLStore\Lookup;
 
 use SMW\InvalidPropertyException;
-use SMW\SQLStore\ListLookup;
+use SMW\SQLStore\Lookup\ListLookup;
 use SMW\DIProperty;
 use SMW\Store;
 use SMWDIError as DIError;
@@ -99,13 +99,13 @@ class UndeclaredPropertyListLookup implements ListLookup {
 	private function selectPropertiesFromTable( $propertyTable ) {
 
 		$options = $this->store->getSQLOptions( $this->requestOptions, 'title' );
-		$idTable = $this->store->getObjectIds()->getIdTable();
+		$idTable = \SMWSQLStore3::ID_TABLE;
 
 		$options['ORDER BY'] = 'count DESC';
 		$options['GROUP BY'] = 'smw_title';
 
 		$conditions = array(
-			'smw_id > 50', // FIXME Use \SMWSql3SmwIds::PPBORDERID
+			'smw_id > ' . \SMWSql3SmwIds::FXD_PROP_BORDER_ID,
 			'page_id IS NULL',
 		);
 

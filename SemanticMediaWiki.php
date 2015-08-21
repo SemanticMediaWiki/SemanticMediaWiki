@@ -98,8 +98,8 @@ class_alias( 'SMW\MediaWiki\Search\Search', 'SMWSearch' );
 
 // 2.2
 // Some weird SF dependency needs to be removed as quick as possible
-class_alias( 'SMW\SQLStore\ListLookup', 'SMW\SQLStore\PropertiesCollector' );
-class_alias( 'SMW\SQLStore\ListLookup', 'SMW\SQLStore\UnusedPropertiesCollector' );
+class_alias( 'SMW\SQLStore\Lookup\ListLookup', 'SMW\SQLStore\PropertiesCollector' );
+class_alias( 'SMW\SQLStore\Lookup\ListLookup', 'SMW\SQLStore\UnusedPropertiesCollector' );
 
 class_alias( 'SMW\Exporter\Element\ExpElement', 'SMWExpElement' );
 class_alias( 'SMW\Exporter\Element\ExpResource', 'SMWExpResource' );

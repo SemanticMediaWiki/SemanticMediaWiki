@@ -1,12 +1,11 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Deserializers;
 
 use SMW\Deserializers\SemanticDataDeserializer;
 
 /**
  * @covers \SMW\Deserializers\SemanticDataDeserializer
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

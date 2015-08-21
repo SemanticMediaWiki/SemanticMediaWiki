@@ -2,12 +2,13 @@
 
 namespace SMW\SQLStore;
 
-use SMW\SQLStore\ListLookup\UsageStatisticsListLookup;
-use SMW\SQLStore\ListLookup\PropertyUsageListLookup;
-use SMW\SQLStore\ListLookup\UnusedPropertyListLookup;
-use SMW\SQLStore\ListLookup\UndeclaredPropertyListLookup;
-use SMW\SQLStore\ListLookup\CachedListLookup;
-use SMW\SQLStore\ListLookup;
+use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
+use SMW\SQLStore\Lookup\PropertyUsageListLookup;
+use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
+use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
+use SMW\SQLStore\Lookup\CachedListLookup;
+use SMW\SQLStore\Lookup\ListLookup;
+use SMW\SQLStore\Lookup\CachedValueLookupStore;
 use SMW\SQLStore\QueryEngine\ResolverOptions;
 use SMW\SQLStore\QueryEngine\QuerySegmentListResolver;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
@@ -37,6 +38,11 @@ class SQLStoreFactory {
 	private $store;
 
 	/**
+	 * @var Settings
+	 */
+	private $settings;
+
+	/**
 	 * @var Connection|null
 	 */
 	private $dbalConnection = null;
@@ -48,6 +54,7 @@ class SQLStoreFactory {
 	 */
 	public function __construct( SMWSQLStore3 $store ) {
 		$this->store = $store;
+		$this->settings = ApplicationFactory::getInstance()->getSettings();
 	}
 
 	/**
@@ -129,16 +136,20 @@ class SQLStoreFactory {
 	/**
 	 * @since 2.2
 	 *
-	 * @return UsageStatisticsListLookup
+	 * @return ListLookup
 	 */
 	public function newUsageStatisticsListLookup() {
 
-		$propertyStatisticsStore = new PropertyStatisticsTable(
-			$this->store->getConnection( 'mw.db' ),
-			$this->store->getStatisticsTable()
+		$usageStatisticsListLookup = new UsageStatisticsListLookup(
+			$this->store,
+			$this->newPropertyStatisticsStore()
 		);
 
-		return new UsageStatisticsListLookup( $this->store, $propertyStatisticsStore );
+		return $this->newCachedListLookup(
+			$usageStatisticsListLookup,
+			$this->settings->get( 'smwgStatisticsCache' ),
+			$this->settings->get( 'smwgStatisticsCacheExpiry' )
+		);
 	}
 
 	/**
@@ -146,19 +157,20 @@ class SQLStoreFactory {
 	 *
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return PropertyUsageListLookup
+	 * @return ListLookup
 	 */
 	public function newPropertyUsageListLookup( RequestOptions $requestOptions = null ) {
 
-		$propertyStatisticsStore = new PropertyStatisticsTable(
-			$this->store->getConnection( 'mw.db' ),
-			$this->store->getStatisticsTable()
+		$propertyUsageListLookup = new PropertyUsageListLookup(
+			$this->store,
+			$this->newPropertyStatisticsStore(),
+			$requestOptions
 		);
 
-		return new PropertyUsageListLookup(
-			$this->store,
-			$propertyStatisticsStore,
-			$requestOptions
+		return $this->newCachedListLookup(
+			$propertyUsageListLookup,
+			$this->settings->get( 'smwgPropertiesCache' ),
+			$this->settings->get( 'smwgPropertiesCacheExpiry' )
 		);
 	}
 
@@ -167,19 +179,20 @@ class SQLStoreFactory {
 	 *
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return UnusedPropertyListLookup
+	 * @return ListLookup
 	 */
 	public function newUnusedPropertyListLookup( RequestOptions $requestOptions = null ) {
 
-		$propertyStatisticsStore = new PropertyStatisticsTable(
-			$this->store->getConnection( 'mw.db' ),
-			$this->store->getStatisticsTable()
+		$unusedPropertyListLookup = new UnusedPropertyListLookup(
+			$this->store,
+			$this->newPropertyStatisticsStore(),
+			$requestOptions
 		);
 
-		return new UnusedPropertyListLookup(
-			$this->store,
-			$propertyStatisticsStore,
-			$requestOptions
+		return $this->newCachedListLookup(
+			$unusedPropertyListLookup,
+			$this->settings->get( 'smwgUnusedPropertiesCache' ),
+			$this->settings->get( 'smwgUnusedPropertiesCacheExpiry' )
 		);
 	}
 
@@ -187,16 +200,21 @@ class SQLStoreFactory {
 	 * @since 2.2
 	 *
 	 * @param RequestOptions|null $requestOptions
-	 * @param string $defaultPropertyType
 	 *
-	 * @return UndeclaredPropertyListLookup
+	 * @return ListLookup
 	 */
-	public function newUndeclaredPropertyListLookup( RequestOptions $requestOptions = null, $defaultPropertyType ) {
+	public function newUndeclaredPropertyListLookup( RequestOptions $requestOptions = null ) {
 
-		return new UndeclaredPropertyListLookup(
+		$undeclaredPropertyListLookup = new UndeclaredPropertyListLookup(
 			$this->store,
-			$defaultPropertyType,
+			$this->settings->get( 'smwgPDefaultType' ),
 			$requestOptions
+		);
+
+		return $this->newCachedListLookup(
+			$undeclaredPropertyListLookup,
+			$this->settings->get( 'smwgWantedPropertiesCache' ),
+			$this->settings->get( 'smwgWantedPropertiesCacheExpiry' )
 		);
 	}
 
@@ -291,6 +309,36 @@ class SQLStoreFactory {
 	 */
 	public function newRequestOptionsProcessor() {
 		return new RequestOptionsProcessor( $this->store );
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @return PropertyTableInfoFetcher
+	 */
+	public function newPropertyTableInfoFetcher() {
+
+		$propertyTableInfoFetcher = new PropertyTableInfoFetcher();
+
+		$propertyTableInfoFetcher->setCustomFixedPropertyList(
+			$this->settings->get( 'smwgFixedProperties' )
+		);
+
+		$propertyTableInfoFetcher->setCustomSpecialPropertyList(
+			$this->settings->get( 'smwgPageSpecialProperties' )
+		);
+
+		return $propertyTableInfoFetcher;
+	}
+
+	private function newPropertyStatisticsStore() {
+
+		$propertyStatisticsTable = new PropertyStatisticsTable(
+			$this->store->getConnection( 'mw.db' ),
+			SMWSQLStore3::PROPERTY_STATISTICS_TABLE
+		);
+
+		return $propertyStatisticsTable;
 	}
 
 	private function newTemporaryIdTableCreator() {

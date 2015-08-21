@@ -5,9 +5,7 @@ namespace SMW\Tests\SPARQLStore\QueryEngine;
 use SMW\SPARQLStore\QueryEngine\QueryEngine;
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
 use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
-
 use SMW\DIProperty;
-
 use SMWQuery as Query;
 
 /**
@@ -207,7 +205,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 		$instance->getQueryResult( $query );
 	}
 
-	public function testGetQueryResultWhereQueryModeIsDebug() {
+	public function testtestGetQueryResultForDebugQueryMode() {
 
 		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnector\GenericHttpRepositoryConnector' )
 			->disableOriginalConstructor()

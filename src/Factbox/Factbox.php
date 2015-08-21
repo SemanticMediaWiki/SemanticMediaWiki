@@ -273,7 +273,6 @@ class Factbox {
 	 * @return string|null
 	 */
 	protected function createTable( SemanticData $semanticData ) {
-		Profiler::In( __METHOD__ );
 
 		$this->htmlTableRenderer = $this->applicationFactory->newMwCollaboratorFactory()->newHtmlTableRenderer();
 
@@ -295,7 +294,6 @@ class Factbox {
 			);
 		}
 
-		Profiler::Out( __METHOD__ );
 		return $text;
 	}
 
@@ -341,7 +339,6 @@ class Factbox {
 	 * @param SMWSemanticData $semanticData
 	 */
 	protected function getTableContent( SemanticData $semanticData ) {
-		Profiler::In( __METHOD__ );
 
 		// Do exclude some tags from processing otherwise the display
 		// can become distorted due to unresolved/open tags (see Bug 23185)
@@ -397,8 +394,6 @@ class Factbox {
 
 			$this->htmlTableRenderer->addRow();
 		}
-
-		Profiler::Out( __METHOD__ );
 	}
 
 }

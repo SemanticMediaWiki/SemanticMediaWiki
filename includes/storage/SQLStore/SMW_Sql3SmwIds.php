@@ -1,7 +1,7 @@
 <?php
 
 use SMW\SQLStore\PropertyStatisticsTable;
-use SMW\SQLStore\DataItemByIdFinder;
+use SMW\SQLStore\ByIdDataItemFinder;
 use SMW\SQLStore\RedirectInfoStore;
 use SMW\HashBuilder;
 use SMW\DIWikiPage;
@@ -55,7 +55,7 @@ class SMWSql3SmwIds {
 	 * Specifies the border limit for pre-defined properties declared
 	 * in SMWSql3SmwIds::special_ids
 	 */
-	const PPBORDERID = 50;
+	const FXD_PROP_BORDER_ID = 50;
 
 	/**
 	 * Name of the table to store IDs in.
@@ -63,7 +63,7 @@ class SMWSql3SmwIds {
 	 * @note This should never change. Existing wikis will have to drop and
 	 * rebuild their SMW tables completely to recover from any change here.
 	 */
-	const tableName = 'smw_object_ids';
+	const tableName = SMWSQLStore3::ID_TABLE;
 
 	/**
 	 * Id for which property table hashes are cached, if any.
@@ -127,9 +127,9 @@ class SMWSql3SmwIds {
 	protected $prop_ids = array();
 
 	/**
-	 * @var DataItemByIdFinder
+	 * @var ByIdDataItemFinder
 	 */
-	private $dataItemByIdFinder;
+	private $byIdDataItemFinder;
 
 	/**
 	 * @var RedirectInfoStore
@@ -217,9 +217,8 @@ class SMWSql3SmwIds {
 		// Yes, this is a hack, but we only use it for convenient debugging:
 		self::$singleton_debug = $this;
 
-		$this->dataItemByIdFinder = new DataItemByIdFinder(
+		$this->byIdDataItemFinder = new ByIdDataItemFinder(
 			$this->store->getConnection( 'mw.db' ),
-			self::tableName,
 			ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache()
 		);
 
@@ -835,7 +834,7 @@ class SMWSql3SmwIds {
 			$this->regular_sortkeys[$hashKey] = $sortkey;
 		}
 
-		$this->dataItemByIdFinder->saveToCache( $id, $hashKey );
+		$this->byIdDataItemFinder->saveToCache( $id, $hashKey );
 
 		if ( $interwiki == SMW_SQL3_SMWREDIIW ) { // speed up detection of redirects when fetching IDs
 			$this->setCache(  $title, $namespace, '', $subobject, 0, '' );
@@ -850,7 +849,7 @@ class SMWSql3SmwIds {
 	 * @return DIWikiPage|null
 	 */
 	public function getDataItemForId( $id ) {
-		return $this->dataItemByIdFinder->getDataItemForId( $id );
+		return $this->byIdDataItemFinder->getDataItemForId( $id );
 	}
 
 	/**
@@ -935,7 +934,7 @@ class SMWSql3SmwIds {
 			unset( $this->regular_sortkeys[$hashKey] );
 		}
 
-		$this->dataItemByIdFinder->deleteFromCache( $id );
+		$this->byIdDataItemFinder->deleteFromCache( $id );
 	}
 
 	/**
@@ -973,7 +972,7 @@ class SMWSql3SmwIds {
 		$this->prop_sortkeys = array();
 		$this->regular_ids = array();
 		$this->regular_sortkeys = array();
-		$this->dataItemByIdFinder->clear();
+		$this->byIdDataItemFinder->clear();
 	}
 
 	/**

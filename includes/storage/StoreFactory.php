@@ -45,7 +45,6 @@ class StoreFactory {
 
 		if ( !isset( self::$instance[$store] ) ) {
 			self::$instance[$store] = self::newInstance( $store );
-			self::$instance[$store]->setConfiguration( self::getConfiguration() );
 		}
 
 		return self::$instance[$store];

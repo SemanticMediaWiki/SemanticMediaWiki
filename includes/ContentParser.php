@@ -139,7 +139,6 @@ class ContentParser {
 	}
 
 	protected function parseText( $text ) {
-		Profiler::In( __METHOD__ );
 
 		$this->parserOutput = $this->parser->parse(
 			$text,
@@ -147,7 +146,6 @@ class ContentParser {
 			$this->makeParserOptions()
 		);
 
-		Profiler::Out( __METHOD__ );
 		return $this;
 	}
 
@@ -158,7 +156,6 @@ class ContentParser {
 	 * @note If no content is available create an empty object
 	 */
 	protected function fetchFromContent() {
-		Profiler::In( __METHOD__ );
 
 		if ( $this->getRevision() === null ) {
 			return $this->msgForNullRevision();
@@ -177,12 +174,10 @@ class ContentParser {
 			true
 		);
 
-		Profiler::Out( __METHOD__ );
 		return $this;
 	}
 
 	protected function fetchFromParser() {
-		Profiler::In( __METHOD__ );
 
 		if ( $this->getRevision() === null ) {
 			return $this->msgForNullRevision();
@@ -197,7 +192,6 @@ class ContentParser {
 			$this->getRevision()->getID()
 		);
 
-		Profiler::Out( __METHOD__ );
 		return $this;
 	}
 

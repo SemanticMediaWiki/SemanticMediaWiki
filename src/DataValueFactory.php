@@ -188,7 +188,6 @@ class DataValueFactory {
 		$propertyDI = $propertyDV->getDataItem();
 
 		if ( $propertyDI instanceof SMWDIError ) {
-			Profiler::Out( __METHOD__, true );
 			return $propertyDV;
 		}
 

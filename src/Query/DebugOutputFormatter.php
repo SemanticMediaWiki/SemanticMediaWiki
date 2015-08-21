@@ -1,18 +1,16 @@
 <?php
 
-namespace SMW;
+namespace SMW\Query;
 
 use SMWQuery as Query;
 
 /**
- * @ingroup Store
- *
  * @license GNU GPL v2+
  * @since 2.0
  *
  * @author Markus Krötzsch
  */
-class QueryOutputFormatter {
+class DebugOutputFormatter {
 
 	/**
 	 * Generate textual debug output that shows an arbitrary list of informative
@@ -27,7 +25,7 @@ class QueryOutputFormatter {
 	 *
 	 * @return string
 	 */
-	public static function formatDebugOutput( $storeName, array $entries, Query $query = null ) {
+	public static function formatOutputFor( $storeName, array $entries, Query $query = null ) {
 
 		if ( $query instanceof Query ) {
 			$preEntries = array();
@@ -35,21 +33,25 @@ class QueryOutputFormatter {
 			$preEntries['Query Metrics'] = 'Query-Size:' . $query->getDescription()->getSize() . '<br />' .
 						'Query-Depth:' . $query->getDescription()->getDepth();
 			$entries = array_merge( $preEntries, $entries );
-
 			$errors = '';
+
 			foreach ( $query->getErrors() as $error ) {
 				$errors .= $error . '<br />';
 			}
+
 			if ( $errors === '' ) {
 				$errors = 'None';
 			}
+
 			$entries['Errors and Warnings'] = $errors;
 		}
 
 		$result = '<div style="border: 5px dotted #A1FB00; background: #FFF0BD; padding: 20px; ">' .
 		          "<h3>Debug Output by $storeName</h3>";
+
 		foreach ( $entries as $header => $information ) {
 			$result .= "<h4>$header</h4>";
+
 			if ( $information !== '' ) {
 				$result .= "$information";
 			}

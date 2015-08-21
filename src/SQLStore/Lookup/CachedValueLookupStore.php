@@ -1,9 +1,10 @@
 <?php
 
-namespace SMW\SQLStore;
+namespace SMW\SQLStore\Lookup;
 
 use Onoi\Cache\Cache;
 use Onoi\BlobStore\BlobStore;
+use SMW\SQLStore\ValueLookupStore;
 use SMW\Store;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -35,7 +36,7 @@ use RuntimeException;
  *
  * @author mwjames
  */
-class CachedValueLookupStore {
+class CachedValueLookupStore implements ValueLookupStore {
 
 	/**
 	 * Update this version number when the serialization format
@@ -216,7 +217,7 @@ class CachedValueLookupStore {
 	 *
 	 * @return array
 	 */
-	public function getPropertyValues( $subject = null, DIProperty $property, $requestOptions = null ) {
+	public function getPropertyValues( DIWikiPage $subject = null, DIProperty $property, $requestOptions = null ) {
 
 		$container = array();
 

@@ -1,13 +1,12 @@
 <?php
 
-namespace SMW\Tests\SQLStore\ListLookup;
+namespace SMW\Tests\SQLStore\Lookup;
 
-use SMW\SQLStore\ListLookup\UndeclaredPropertyListLookup;
+use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
 use SMW\DIProperty;
 
 /**
- * @covers \SMW\SQLStore\ListLookup\UndeclaredPropertyListLookup
- *
+ * @covers \SMW\SQLStore\Lookup\UndeclaredPropertyListLookup
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -17,33 +16,39 @@ use SMW\DIProperty;
  */
 class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
-	public function testCanConstruct() {
+	private $store;
+	private $requestOptions;
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+	protected function setUp() {
+
+		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
+	public function testCanConstruct() {
 
 		$defaultPropertyType = '_foo';
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\ListLookup\UndeclaredPropertyListLookup',
-			new UndeclaredPropertyListLookup( $store, $defaultPropertyType, null )
+			'\SMW\SQLStore\Lookup\UndeclaredPropertyListLookup',
+			new UndeclaredPropertyListLookup( $this->store, $defaultPropertyType, null )
 		);
 	}
 
 	public function testListLookupInterfaceMethodAccess() {
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$defaultPropertyType = '_foo';
 
-		$requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new UndeclaredPropertyListLookup( $store, $defaultPropertyType, $requestOptions );
+		$instance = new UndeclaredPropertyListLookup(
+			$this->store,
+			$defaultPropertyType,
+			$this->requestOptions
+		);
 
 		$this->assertInternalType(
 			'string',
@@ -62,13 +67,12 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNullRequestOptionsThrowsException() {
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$defaultPropertyType = '_foo';
 
-		$instance = new UndeclaredPropertyListLookup( $store, $defaultPropertyType, null );
+		$instance = new UndeclaredPropertyListLookup(
+			$this->store,
+			$defaultPropertyType
+		);
 
 		$this->setExpectedException( 'RuntimeException' );
 		$instance->fetchList();
@@ -76,17 +80,13 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testInvalidTableIdThrowsException() {
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$defaultPropertyType = '_foo';
 
-		$requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new UndeclaredPropertyListLookup( $store, $defaultPropertyType, $requestOptions );
+		$instance = new UndeclaredPropertyListLookup(
+			$this->store,
+			$defaultPropertyType,
+			$this->requestOptions
+		);
 
 		$this->setExpectedException( 'RuntimeException' );
 		$instance->fetchList();
@@ -94,17 +94,14 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testLookupIdentifierChangedByRequestOptions() {
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$defaultPropertyType = '_foo';
 
-		$requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
-			->disableOriginalConstructor()
-			->getMock();
+		$instance = new UndeclaredPropertyListLookup(
+			$this->store,
+			$defaultPropertyType,
+			$this->requestOptions
+		);
 
-		$instance = new UndeclaredPropertyListLookup( $store, $defaultPropertyType, $requestOptions );
 		$lookupIdentifier = $instance->getLookupIdentifier();
 
 		$this->assertContains(
@@ -112,8 +109,13 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			$lookupIdentifier
 		);
 
-		$requestOptions->limit = 100;
-		$instance = new UndeclaredPropertyListLookup( $store, $defaultPropertyType, $requestOptions );
+		$this->requestOptions->limit = 100;
+
+		$instance = new UndeclaredPropertyListLookup(
+			$this->store,
+			$defaultPropertyType,
+			$this->requestOptions
+		);
 
 		$this->assertContains(
 			'UndeclaredPropertyListLookup',
@@ -127,11 +129,6 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testfetchListForValidProperty() {
-
-		$idTable = $this->getMockBuilder( '\stdClass' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'getIdTable' ) )
-			->getMock();
 
 		$row = new \stdClass;
 		$row->smw_title = 'Foo';
@@ -149,34 +146,27 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'select' )
 			->will( $this->returnValue( array( $row ) ) );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$store->expects( $this->once() )
-			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
-
-		$store->expects( $this->once() )
+		$this->store->expects( $this->once() )
 			->method( 'findTypeTableId' )
 			->with( $this->equalTo( '_foo' ) )
 			->will( $this->returnValue( 'Foo' ) );
 
-		$store->expects( $this->once() )
+		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array( 'Foo' => $tableDefinition ) ) );
 
 		$defaultPropertyType = '_foo';
 
-		$requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
-			->disableOriginalConstructor()
-			->getMock();
+		$instance = new UndeclaredPropertyListLookup(
+			$this->store,
+			$defaultPropertyType,
+			$this->requestOptions
+		);
 
-		$instance = new UndeclaredPropertyListLookup( $store, $defaultPropertyType, $requestOptions );
 		$result = $instance->fetchList();
 
 		$this->assertInternalType(
@@ -197,11 +187,6 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testfetchListForInvalidProperty() {
 
-		$idTable = $this->getMockBuilder( '\stdClass' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'getIdTable' ) )
-			->getMock();
-
 		$row = new \stdClass;
 		$row->smw_title = '-Foo';
 		$row->count = 42;
@@ -218,34 +203,27 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'select' )
 			->will( $this->returnValue( array( $row ) ) );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$store->expects( $this->once() )
-			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
-
-		$store->expects( $this->once() )
+		$this->store->expects( $this->once() )
 			->method( 'findTypeTableId' )
 			->with( $this->equalTo( '_foo' ) )
 			->will( $this->returnValue( 'Foo' ) );
 
-		$store->expects( $this->once() )
+		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array( 'Foo' => $tableDefinition ) ) );
 
 		$defaultPropertyType = '_foo';
 
-		$requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
-			->disableOriginalConstructor()
-			->getMock();
+		$instance = new UndeclaredPropertyListLookup(
+			$this->store,
+			$defaultPropertyType,
+			$this->requestOptions
+		);
 
-		$instance = new UndeclaredPropertyListLookup( $store, $defaultPropertyType, $requestOptions );
 		$result = $instance->fetchList();
 
 		$this->assertInternalType(
@@ -276,26 +254,23 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->never() )
 			->method( 'select' );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->once() )
+		$this->store->expects( $this->once() )
 			->method( 'findTypeTableId' )
 			->with( $this->equalTo( '_foo' ) )
 			->will( $this->returnValue( 'Foo' ) );
 
-		$store->expects( $this->once() )
+		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array( 'Foo' => $tableDefinition ) ) );
 
 		$defaultPropertyType = '_foo';
 
-		$requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
-			->disableOriginalConstructor()
-			->getMock();
+		$instance = new UndeclaredPropertyListLookup(
+			$this->store,
+			$defaultPropertyType,
+			$this->requestOptions
+		);
 
-		$instance = new UndeclaredPropertyListLookup( $store, $defaultPropertyType, $requestOptions );
 		$result = $instance->fetchList();
 
 		$this->assertInternalType(

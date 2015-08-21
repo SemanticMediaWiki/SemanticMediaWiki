@@ -101,7 +101,6 @@ class SpecialConcepts extends SpecialPage {
 	 * @param array $param
 	 */
 	public function execute( $param ) {
-		Profiler::In( __METHOD__ );
 
 		$this->getOutput()->setPageTitle( $this->msg( 'concepts' )->text() );
 
@@ -113,7 +112,5 @@ class SpecialConcepts extends SpecialPage {
 		$diWikiPages = $until !== '' ? array_reverse( $diWikiPages ) : $diWikiPages;
 
 		$this->getOutput()->addHTML( $this->getHtml( $diWikiPages, $limit, $from, $until ) );
-
-		Profiler::Out( __METHOD__ );
 	}
 }

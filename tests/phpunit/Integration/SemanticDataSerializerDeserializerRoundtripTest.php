@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Integration;
 
 use SMW\Deserializers\SemanticDataDeserializer;
 use SMW\Serializers\SemanticDataSerializer;
@@ -9,61 +9,28 @@ use SMW\DataValueFactory;
 use SMw\SemanticData;
 use SMW\DIWikiPage;
 use SMW\Subobject;
+use ReflectionClass;
 
 /**
- * @covers \SMW\Deserializers\SemanticDataDeserializer
- * @covers \SMW\Serializers\SemanticDataSerializer
+ * @group semantic-mediawiki
  *
- *
- * @group SMW
- * @group SMWExtension
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class SemanticDataSerializerDeserializerRoundtripTest extends SemanticMediaWikiTestCase {
+class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string|false
-	 */
-	public function getClass() {
-		return false;
-	}
-
-	/**
-	 * Helper method that returns a SemanticDataSerializer object
-	 *
-	 * @since 1.9
-	 */
 	private function newSerializerInstance() {
 		return new SemanticDataSerializer();
 	}
 
-	/**
-	 * Helper method that returns a SemanticDataDeserializer object
-	 *
-	 * @since 1.9
-	 */
 	private function newDeserializerInstance() {
 		return new SemanticDataDeserializer();
 	}
 
 	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( '\SMW\Serializers\SemanticDataSerializer', $this->newSerializerInstance() );
-		$this->assertInstanceOf( '\SMW\Deserializers\SemanticDataDeserializer', $this->newDeserializerInstance() );
-	}
-
-	/**
 	 * @dataProvider semanticDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testSerializerDeserializerRountrip( $data ) {
 
@@ -71,22 +38,18 @@ class SemanticDataSerializerDeserializerRoundtripTest extends SemanticMediaWikiT
 
 		$this->assertEquals(
 			$serialized,
-			$this->newSerializerInstance()->serialize( $this->newDeserializerInstance()->deserialize( $serialized ) ),
-			'Asserts that the intial serialized container is equal to a container after a roundtrip'
+			$this->newSerializerInstance()->serialize( $this->newDeserializerInstance()->deserialize( $serialized ) )
 		);
 
 
 		$this->assertEquals(
 			$data->getHash(),
-			$this->newDeserializerInstance()->deserialize( $serialized )->getHash(),
-			'Asserts that the hash of the orginal SemanticData container equals that of the serialized-un-serialized container'
+			$this->newDeserializerInstance()->deserialize( $serialized )->getHash()
 		);
 	}
 
 	/**
 	 * @dataProvider incompleteSubobjectDataProvider
-	 *
-	 * @since 1.9.0.2
 	 */
 	public function testSerializerDeserializerWithIncompleteSubobjectData( $data ) {
 
@@ -94,16 +57,12 @@ class SemanticDataSerializerDeserializerRoundtripTest extends SemanticMediaWikiT
 
 		$this->assertInstanceOf(
 			'SMW\SemanticData',
-			$this->newDeserializerInstance()->deserialize( $serialized ),
-			'Asserts that SemanticData instance is returned for an incomplete data set'
+			$this->newDeserializerInstance()->deserialize( $serialized )
 		);
-
 	}
 
 	/**
 	 * @dataProvider typeChangeSemanticDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testForcedTypeErrorDuringRountrip( $data, $type ) {
 
@@ -113,7 +72,7 @@ class SemanticDataSerializerDeserializerRoundtripTest extends SemanticMediaWikiT
 		// Injects a different type to cause an error (this would normally
 		// happen when a property definition is changed such as page -> text
 		// etc.)
-		$reflector = $this->newReflector( '\SMW\Deserializers\SemanticDataDeserializer' );
+		$reflector = new ReflectionClass( '\SMW\Deserializers\SemanticDataDeserializer' );
 		$property  = $reflector->getProperty( 'dataItemTypeIdCache' );
 		$property->setAccessible( true );
 		$property->setValue( $deserializer, array( $type => 2 ) );
@@ -122,24 +81,18 @@ class SemanticDataSerializerDeserializerRoundtripTest extends SemanticMediaWikiT
 
 		$this->assertInstanceOf(
 			'SMW\SemanticData',
-			$deserialized,
-			'Asserts the instance'
+			$deserialized
 		);
 
 		$this->assertNotEmpty(
-			$deserialized->getErrors(),
-			'Asserts that getErrors() returns not empty'
+			$deserialized->getErrors()
 		);
-
 	}
 
-	/**
-	 * @return array
-	 */
 	public function semanticDataProvider() {
 
 		$provider = array();
-		$title = $this->newTitle( NS_MAIN, 'Foo' );
+		$title = \Title::newFromText( __METHOD__ );
 
 		// #0 Empty container
 		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
@@ -189,7 +142,7 @@ class SemanticDataSerializerDeserializerRoundtripTest extends SemanticMediaWikiT
 
 		$provider = array();
 
-		$title = $this->newTitle( NS_MAIN, 'Foo' );
+		$title = \Title::newFromText( __METHOD__ );
 
 		$subobject = new Subobject( $title );
 		$subobject->setSemanticData( 'Foo' );
@@ -209,7 +162,7 @@ class SemanticDataSerializerDeserializerRoundtripTest extends SemanticMediaWikiT
 	public function typeChangeSemanticDataProvider() {
 
 		$provider = array();
-		$title = $this->newTitle( NS_MAIN, 'Foo' );
+		$title = \Title::newFromText( __METHOD__ );
 
 		// #0 Single entry
 		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );

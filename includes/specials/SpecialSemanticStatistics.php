@@ -32,7 +32,6 @@ class SpecialSemanticStatistics extends SpecialPage {
 	 * @see SpecialPage::execute
 	 */
 	public function execute( $param ) {
-		Profiler::In( __METHOD__ );
 
 		$semanticStatistics = $this->getStore()->getStatistics();
 		$context = $this->getContext();
@@ -47,7 +46,5 @@ class SpecialSemanticStatistics extends SpecialPage {
 				$semanticStatistics['DECLPROPS']
 			)->parseAsBlock()
 		);
-
-		Profiler::Out( __METHOD__ );
 	}
 }
