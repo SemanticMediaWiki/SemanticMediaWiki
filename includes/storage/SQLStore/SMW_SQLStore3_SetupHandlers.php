@@ -127,6 +127,25 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 
 		SMWSQLHelpers::setupIndex( SMWSQLStore3::CONCEPT_CACHE_TABLE, array( 'o_id' ), $db );
 
+		SMWSQLHelpers::setupTable(
+			SMWSQLStore3::QUERY_LINKS_TABLE,
+			array(
+				's_id' => $dbtypes['p'] . ' NOT NULL',
+				'o_id' => $dbtypes['p'] . ' NOT NULL'
+			),
+			$db,
+			$reportTo
+		);
+
+		SMWSQLHelpers::setupIndex( SMWSQLStore3::QUERY_LINKS_TABLE,
+			array(
+				's_id',
+				'o_id',
+				's_id,o_id'
+			),
+			$db
+		);
+
 		// Set up table for stats on Properties (only counts for now)
 		SMWSQLHelpers::setupTable(
 			SMWSQLStore3::PROPERTY_STATISTICS_TABLE,
@@ -301,7 +320,8 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 		$tables = array(
 			SMWSQLStore3::ID_TABLE,
 			SMWSQLStore3::CONCEPT_CACHE_TABLE,
-			SMWSQLStore3::PROPERTY_STATISTICS_TABLE
+			SMWSQLStore3::PROPERTY_STATISTICS_TABLE,
+			SMWSQLStore3::QUERY_LINKS_TABLE
 		);
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {

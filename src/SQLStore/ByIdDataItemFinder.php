@@ -69,6 +69,41 @@ class ByIdDataItemFinder {
 	}
 
 	/**
+	 * @since 2.3
+	 *
+	 * @param array $idList
+	 *
+	 * @return DIWikiPage[]
+	 */
+	public function getDataItemPoolHashListFor( array $idList ) {
+
+		$rows = $this->connection->select(
+			\SMWSQLStore3::ID_TABLE,
+			array(
+				'smw_title',
+				'smw_namespace',
+				'smw_iw',
+				'smw_subobject'
+			),
+			array( 'smw_id' => $idList ),
+			__METHOD__
+		);
+
+		$dataItemPoolHashList = array();
+
+		foreach ( $rows as $row ) {
+			$dataItemPoolHashList[] = HashBuilder::createHashIdFromSegments(
+				$row->smw_title,
+				$row->smw_namespace,
+				$row->smw_iw,
+				$row->smw_subobject
+			);
+		}
+
+		return $dataItemPoolHashList;
+	}
+
+	/**
 	 * @since 2.1
 	 *
 	 * @param integer $id

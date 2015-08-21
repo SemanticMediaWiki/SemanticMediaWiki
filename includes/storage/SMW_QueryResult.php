@@ -134,6 +134,13 @@ class SMWQueryResult {
 	}
 
 	/**
+	 * @since 2.3
+	 */
+	public function reset() {
+		return reset( $this->mResults );
+	}
+
+	/**
 	 * Returns the query object of the current result set
 	 *
 	 * @since 1.8

@@ -48,7 +48,6 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->getMock();
 
 		$store = $this->getMockBuilder( $storeClass )
-			->disableOriginalConstructor()
 			->setMethods( array( 'fetchQueryResult' ) )
 			->getMock();
 
@@ -68,7 +67,6 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->getMock();
 
 		$store = $this->getMockBuilder( $storeClass )
-			->disableOriginalConstructor()
 			->setMethods( array( 'fetchQueryResult' ) )
 			->getMock();
 
@@ -96,7 +94,6 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->getMock();
 
 		$store = $this->getMockBuilder( $storeClass )
-			->disableOriginalConstructor()
 			->setMethods( array( 'fetchQueryResult' ) )
 			->getMock();
 
@@ -131,7 +128,6 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->getMock();
 
 		$store = $this->getMockBuilder( $storeClass )
-			->disableOriginalConstructor()
 			->setMethods( array( 'fetchQueryResult' ) )
 			->getMock();
 

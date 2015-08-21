@@ -367,6 +367,13 @@ class SPARQLStore extends Store {
 	}
 
 	/**
+	 * @since 2.3
+	 */
+	public function getObjectIds() {
+		return $this->baseStore->getObjectIds();
+	}
+
+	/**
 	 * @since  1.9.2
 	 */
 	public function clear() {

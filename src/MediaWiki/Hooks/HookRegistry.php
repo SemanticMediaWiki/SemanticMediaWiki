@@ -8,6 +8,7 @@ use RuntimeException;
 use SMW\ApplicationFactory;
 use SMW\EventHandler;
 use SMW\NamespaceManager;
+use SMW\SQLStore\EmbeddedQueryDependencyLinksStore;
 
 /**
  * @license GNU GPL v2+
@@ -467,6 +468,31 @@ class HookRegistry {
 			$eventHandler->getEventDispatcher()->dispatch(
 				'blobstore.drop'
 			);
+
+			return true;
+		};
+
+		$this->handlers['SMW::SQLStore::AfterDataUpdateComplete'] = function ( $store, $semanticData, $compositePropertyTableDiffIterator ) use ( $applicationFactory ) {
+
+			$embeddedQueryResultLinksUpdater = new EmbeddedQueryDependencyLinksStore( $store );
+			$embeddedQueryResultLinksUpdater->purgeOutdatedTargetLinks( $compositePropertyTableDiffIterator );
+
+			$purgeParserCacheJob = $applicationFactory->newJobFactory()->newParserCachePurgeJob(
+				$semanticData->getSubject()->getTitle(),
+				array(
+					'idlist' => $compositePropertyTableDiffIterator->getCombinedIdListForChangedEntities()
+				)
+			);
+
+			$purgeParserCacheJob->run();
+
+			return true;
+		};
+
+		$this->handlers['SMW::Store::AfterQueryResultLookupComplete'] = function ( $store, &$result ) {
+
+			$embeddedQueryResultLinksUpdater = new EmbeddedQueryDependencyLinksStore( $store );
+			$embeddedQueryResultLinksUpdater->addDependenciesFromQueryResult( $result );
 
 			return true;
 		};

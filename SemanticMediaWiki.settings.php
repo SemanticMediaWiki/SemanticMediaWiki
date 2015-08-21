@@ -866,3 +866,16 @@ $GLOBALS['smwgEnabledEditPageHelp'] = true;
 ##
 $GLOBALS['smwgEnabledAsyncJobDispatcher'] = true;
 ##
+
+###
+# If enabled it will store dependencies for queries allowing it to invalidate
+# the ParserCache on subjects with embedded queries that contain altered entities.
+#
+# The setting requires to run `update.php` (as it creates an extra table). Also
+# as noted in #1117, `SMW\ParserCachePurgeJob` should be scheduled accordingly.
+#
+# @since 2.4
+# @default false (for testing it is enabled)
+##
+$GLOBALS['smwgTrackQueryDependencyLinks'] = true;
+##

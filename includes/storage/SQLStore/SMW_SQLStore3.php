@@ -62,6 +62,11 @@ class SMWSQLStore3 extends SMWStore {
 	const PROPERTY_STATISTICS_TABLE = 'smw_prop_stats';
 
 	/**
+	 * Name of the table that manages the query dependency links
+	 */
+	const QUERY_LINKS_TABLE = 'smw_query_links';
+
+	/**
 	 * Name of the table that manages the Store IDs
 	 */
 	const ID_TABLE = 'smw_object_ids';
@@ -302,7 +307,7 @@ class SMWSQLStore3 extends SMWStore {
 	public function deleteSubject( Title $subject ) {
 
 		$this->cachedValueLookupStore->deleteFor(
-			DIWikiPage::newfromTitle( $subject )
+			DIWikiPage::newFromTitle( $subject )
 		);
 
 		$this->getWriter()->deleteSubject( $subject );
@@ -320,11 +325,11 @@ class SMWSQLStore3 extends SMWStore {
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
 
 		$this->cachedValueLookupStore->deleteFor(
-			DIWikiPage::newfromTitle( $oldtitle )
+			DIWikiPage::newFromTitle( $oldtitle )
 		);
 
 		$this->cachedValueLookupStore->deleteFor(
-			DIWikiPage::newfromTitle( $newtitle )
+			DIWikiPage::newFromTitle( $newtitle )
 		);
 
 		$this->getWriter()->changeTitle( $oldtitle, $newtitle, $pageid, $redirid );

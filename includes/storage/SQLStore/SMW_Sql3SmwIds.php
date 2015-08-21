@@ -853,6 +853,17 @@ class SMWSql3SmwIds {
 	}
 
 	/**
+	 * @since 2.3
+	 *
+	 * @param integer $id
+	 *
+	 * @return string[]
+	 */
+	public function getDataItemPoolHashListFor( array $idlist ) {
+		return $this->byIdDataItemFinder->getDataItemPoolHashListFor( $idlist );
+	}
+
+	/**
 	 * Get a cached SMW ID, or false if no cache entry is found.
 	 *
 	 * @since 1.8
