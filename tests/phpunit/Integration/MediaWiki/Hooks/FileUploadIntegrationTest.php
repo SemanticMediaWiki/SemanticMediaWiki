@@ -72,17 +72,17 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->mwHooksHandler->register(
 			'FileUpload',
-			$this->mwHooksHandler->getHookRegistry()->getDefinition( 'FileUpload' )
+			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'FileUpload' )
 		);
 
 		$this->mwHooksHandler->register(
 			'InternalParseBeforeLinks',
-			$this->mwHooksHandler->getHookRegistry()->getDefinition( 'InternalParseBeforeLinks' )
+			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'InternalParseBeforeLinks' )
 		);
 
 		$this->mwHooksHandler->register(
 			'LinksUpdateConstructed',
-			$this->mwHooksHandler->getHookRegistry()->getDefinition( 'LinksUpdateConstructed' )
+			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'LinksUpdateConstructed' )
 		);
 
 		$GLOBALS['wgEnableUploads'] = true;

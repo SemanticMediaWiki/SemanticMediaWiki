@@ -187,7 +187,7 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 		// in 1.21+ a content model to be present while in MW 1.19/1.20 such
 		// object is not required. In order to avoid operational obstruction a
 		// model is set as default and can if necessary individually be overridden
-		$contentModel = class_exists( 'ContentHandler') ? CONTENT_MODEL_WIKITEXT : null;
+		$contentModel = defined( 'CONTENT_MODEL_WIKITEXT' ) ? CONTENT_MODEL_WIKITEXT : null;
 
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()

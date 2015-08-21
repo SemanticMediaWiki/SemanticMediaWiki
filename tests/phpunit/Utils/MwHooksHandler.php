@@ -50,7 +50,7 @@ class MwHooksHandler {
 
 		$listOfHooks = array_merge(
 			$this->listOfSmwHooks,
-			$this->getHookRegistry()->getListOfRegisteredFunctionHooks()
+			$this->getHookRegistry()->getHandlerList()
 		);
 
 		foreach ( $listOfHooks as $hook ) {
@@ -99,7 +99,7 @@ class MwHooksHandler {
 
 		$listOfHooks = array_merge(
 			$this->listOfSmwHooks,
-			$this->getHookRegistry()->getListOfRegisteredFunctionHooks()
+			$this->getHookRegistry()->getHandlerList()
 		);
 
 		if ( !in_array( $name, $listOfHooks ) ) {
