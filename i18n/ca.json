@@ -324,5 +324,10 @@
 	"smw-sp-types-list": "Llista de tipus de dades",
 	"smw-sp-types-default": "«$1» és un tipus de dades integrat.",
 	"smw-sp-types-help": "Es pot trobar més informació i exemples a la [https://semantic-mediawiki.org/wiki/Help:Type_$1 pàgina d'ajuda].",
-	"smw-sp-types_boo": "«$1» és un tipus de dades primitiu per a descriure un valor de veritable/fals."
+	"smw-sp-types_boo": "«$1» és un tipus de dades primitiu per a descriure un valor de veritable/fals.",
+	"smw-sp-types_cod": "«$1» és una variant del tipus de dades [[Special:Types/Text|Text]] per utilitzar-lo amb texts tècnics de longitud arbitrària, com ara llistats de codi font.",
+	"smw-sp-types_geo": "«$1» és un tipus de dades que descriu ubicacions geogràfiques i requereix [https://semantic-mediawiki.org/wiki/Semantic_Maps Semantic Maps].",
+	"smw-sp-types_tel": "«$1» és un tipus de dades especial per a descriure números de telèfon internacionals d'acord amb el RFC 3966.",
+	"smw-sp-types_txt": "«$1» és un tipus de dades primitiu que descriu cadenes de longitud arbitrària.",
+	"smw-sp-types_dat": "«$1» és un tipus de dades per representar punts en el temps en un format unificat."
 }
