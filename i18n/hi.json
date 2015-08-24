@@ -3,7 +3,8 @@
 		"authors": [
 			"Kaustubh",
 			"Wikiuser13",
-			"రహ్మానుద్దీన్"
+			"రహ్మానుద్దీన్",
+			"Phoenix303"
 		]
 	},
 	"smw_viewasrdf": "RDF फ़ीड",
@@ -20,6 +21,7 @@
 	"wantedproperties": "चाहिये होनेवाले गुणधर्म",
 	"browse": "विकि देखे",
 	"smw-createproperty-isproperty": "यह $1 प्रकार का गुणधर्म हैं।",
+	"smw-ui-tooltip-title-info": "जानकारी",
 	"smw-sp-admin-idlookup-title": "ऑबजेक्टआईडी लुकअप",
 	"smw-sp-admin-idlookup-objectid": "ऑब्जेक्ट आईडी:",
 	"smw-livepreview-loading": "लोड हो रहा है..."
