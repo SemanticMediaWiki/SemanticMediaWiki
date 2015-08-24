@@ -8,7 +8,6 @@ use RuntimeException;
 use SMW\ApplicationFactory;
 use SMW\EventHandler;
 use SMW\NamespaceManager;
-use SMW\ParameterProcessorFactory;
 
 /**
  * @license GNU GPL v2+
@@ -37,7 +36,7 @@ class HookRegistry {
 	public function __construct( &$globalVars = array(), $directory = '' ) {
 		$this->globalVars =& $globalVars;
 
-		$this->addCallbackHandlers( $directory, $globalVars['IP'], $globalVars['wgVersion'], $globalVars['wgLang'] );
+		$this->addCallbackHandlers( $directory, $globalVars );
 	}
 
 	/**
@@ -91,7 +90,7 @@ class HookRegistry {
 		}
 	}
 
-	private function addCallbackHandlers( $basePath, $installPath, $version, $lang ) {
+	private function addCallbackHandlers( $basePath, $globalVars ) {
 
 		$eventHandler = EventHandler::getInstance();
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -275,12 +274,12 @@ class HookRegistry {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialStatsAddExtra
 		 */
-		$this->handlers['SpecialStatsAddExtra'] = function ( &$extraStats ) use( $version, $lang ) {
+		$this->handlers['SpecialStatsAddExtra'] = function ( &$extraStats ) use( $globalVars ) {
 
 			$specialStatsAddExtra = new SpecialStatsAddExtra(
 				$extraStats,
-				$version,
-				$lang
+				$globalVars['wgVersion'],
+				$globalVars['wgLang']
 			);
 
 			return $specialStatsAddExtra->process();
@@ -365,13 +364,13 @@ class HookRegistry {
 		/**
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderTestModules
 		 */
-		$this->handlers['ResourceLoaderTestModules'] = function ( &$testModules, &$resourceLoader ) use ( $basePath, $installPath ) {
+		$this->handlers['ResourceLoaderTestModules'] = function ( &$testModules, &$resourceLoader ) use ( $basePath, $globalVars ) {
 
 			$resourceLoaderTestModules = new ResourceLoaderTestModules(
 				$resourceLoader,
 				$testModules,
 				$basePath,
-				$installPath
+				$globalVars['IP']
 			);
 
 			return $resourceLoaderTestModules->process();
