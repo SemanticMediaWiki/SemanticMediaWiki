@@ -1,3 +1,9 @@
 {
+	"@metadata": {
+		"authors": [
+			"Candalua"
+		]
+	},
+	"browse": "Nàvega la wiki",
 	"smw-livepreview-loading": "Caricamento in corso…"
 }
