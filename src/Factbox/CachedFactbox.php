@@ -208,6 +208,7 @@ class CachedFactbox {
 		if ( $factbox->doBuild()->isVisible() ) {
 
 			$contentParser = $applicationFactory->newContentParser( $title );
+			$contentParser->skipInTextAnnotationParser();
 			$contentParser->parse( $factbox->getContent() );
 
 			$text = $contentParser->getOutput()->getText();

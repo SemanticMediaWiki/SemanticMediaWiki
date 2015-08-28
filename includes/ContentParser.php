@@ -43,6 +43,11 @@ class ContentParser {
 	private $enabledToUseContentHandler = true;
 
 	/**
+	 * @var boolean
+	 */
+	private $skipInTextAnnotationParser = false;
+
+	/**
 	 * @note Injecting new Parser() alone will not yield an expected result and
 	 * doing new Parser( $GLOBALS['wgParserConf'] brings no benefits therefore
 	 * we stick to the GLOBAL as fallback if no parser is injected.
@@ -114,6 +119,10 @@ class ContentParser {
 	 */
 	public function getErrors() {
 		return $this->errors;
+	}
+
+	public function skipInTextAnnotationParser() {
+		return $this->skipInTextAnnotationParser = true;
 	}
 
 	/**
@@ -208,7 +217,13 @@ class ContentParser {
 			$user = User::newFromId( $this->getRevision()->getUser() );
 		}
 
-		return new ParserOptions( $user );
+		$parserOptions = new ParserOptions( $user );
+
+		// Use the InterfaceMessage marker to skip InTextAnnotationParser
+		// processing
+		$parserOptions->setInterfaceMessage( $this->skipInTextAnnotationParser );
+
+		return $parserOptions;
 	}
 
 	protected function getRevision() {

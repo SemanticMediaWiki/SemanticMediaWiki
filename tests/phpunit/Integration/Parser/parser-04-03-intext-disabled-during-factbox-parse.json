@@ -1,0 +1,37 @@
+{
+	"description": "Test annotations are disabled for Factbox parse",
+	"properties": [
+		{
+			"name": "Has url",
+			"contents": "[[Has type::URL]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "ShowFactbox",
+			"contents": "[[Has url::http://example.org/api.php?action=ask&query=%5B%5BModification%20date::%2B%5D%5D%7C%3FModification%20date%7Csort%3DModification%20date%7Corder%3Ddesc|api.php?action=ask&query=]] __SHOWFACTBOX__"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0 don't expected to see a Modification date annotation due to %5B%5BModification%20date::%2B%5D%5D => [[Modification::+]]",
+			"subject": "ShowFactbox",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_SKEY", "_MDAT", "Has_url" ],
+					"propertyValues": [ "ShowFactbox", "http://example.org/api.php?action=ask&query=%5B%5BModification%20date::%2B%5D%5D%7C%3FModification%20date%7Csort%3DModification%20date%7Corder%3Ddesc" ]
+				}
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [ "_MDAT" ]
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
