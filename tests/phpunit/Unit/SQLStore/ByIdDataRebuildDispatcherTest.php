@@ -29,7 +29,12 @@ class ByIdDataRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
+			->setMethods( array( 'getWikiPageLastModifiedTimestamp' ) )
 			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'getWikiPageLastModifiedTimestamp' )
+			->will( $this->returnValue( 0 ) );
 
 		$this->applicationFactory->registerObject( 'Store', $store );
 		$this->applicationFactory->getSettings()->set( 'smwgCacheType', 'hash' );
@@ -81,9 +86,11 @@ class ByIdDataRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $connection ) );
 
 		$instance = new ByIdDataRebuildDispatcher( $store );
-		$instance->setIterationLimit( 1 );
-		$instance->setUpdateJobToUseJobQueueScheduler( false );
 
+		$instance->setIterationLimit( 1 );
+		$instance->setUpdateJobParseMode( SMW_UJ_PM_CLASTMDATE );
+
+		$instance->setUpdateJobToUseJobQueueScheduler( false );
 		$instance->dispatchRebuildFor( $id );
 
 		$this->assertSame(

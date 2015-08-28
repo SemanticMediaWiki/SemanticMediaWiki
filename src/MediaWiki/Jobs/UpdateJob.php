@@ -80,6 +80,10 @@ class UpdateJob extends JobBase {
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
+		if ( $this->matchWikiPageLastModifiedToRevisionLastModified( $this->getTitle() ) ) {
+			return true;
+		}
+
 		if ( $this->getTitle()->exists() ) {
 			return $this->doPrepareForUpdate();
 		}
@@ -91,18 +95,35 @@ class UpdateJob extends JobBase {
 		return true;
 	}
 
+	private function matchWikiPageLastModifiedToRevisionLastModified( $title ) {
+
+		if ( $this->getParameter( 'pm' ) !== SMW_UJ_PM_CLASTMDATE ) {
+			return false;
+		}
+
+		$lastModified = $this->applicationFactory->getStore()->getWikiPageLastModifiedTimestamp(
+			DIWikiPage::newFromTitle( $title )
+		);
+
+		if ( $lastModified === \WikiPage::factory( $title )->getTimestamp() ) {
+			return true;
+		}
+
+		return false;
+	}
+
 	private function doPrepareForUpdate() {
 		return $this->needToParsePageContentBeforeUpdate();
 	}
 
 	/**
-	 * pm = parser-mode; 2 = new to avoid "Parser state cleared" exception
+	 * SMW_UJ_PM_NP = new Parser to avoid "Parser state cleared" exception
 	 */
 	private function needToParsePageContentBeforeUpdate() {
 
 		$contentParser = $this->applicationFactory->newContentParser( $this->getTitle() );
 
-		if ( $this->getParameter( 'pm' ) === 2 ) {
+		if ( $this->getParameter( 'pm' ) === SMW_UJ_PM_NP ) {
 			$contentParser->setParser(
 				new \Parser( $GLOBALS['wgParserConf'] )
 			);

@@ -10,6 +10,7 @@ use SMW\MediaWiki\TitleLookup;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\Store;
+use SMW\Options;
 use SMWQueryProcessor;
 use Title;
 
@@ -37,6 +38,11 @@ class DataRebuilder {
 	private $titleCreator;
 
 	/**
+	 * @var Options
+	 */
+	private $options;
+
+	/**
 	 * @var MessageReporter
 	 */
 	private $reporter;
@@ -53,13 +59,8 @@ class DataRebuilder {
 	 * @var int[]
 	 */
 	private $filters = array();
-
-	private $fullDelete = false;
 	private $verbose = false;
-	private $useIds = false;
 	private $startIdFile = false;
-	private $query = false;
-	private $skipBuildForProperties = false;
 
 	/**
 	 * @since 1.9.2
@@ -85,54 +86,45 @@ class DataRebuilder {
 	/**
 	 * @since 1.9.2
 	 *
-	 * @param array $options
+	 * @param Options $options
 	 */
-	public function setParameters( array $options ) {
+	public function setOptions( Options $options ) {
+		$this->options = $options;
 
-		if ( isset( $options['server'] ) ) {
-			$GLOBALS['wgServer'] = $options['server'];
+		if ( $options->has( 'server' ) ) {
+			$GLOBALS['wgServer'] = $options->get( 'server' );
 		}
 
-		if ( array_key_exists( 'd', $options ) ) {
-			$this->delay = intval( $options['d'] ) * 1000; // convert milliseconds to microseconds
+		if ( $options->has( 'd' ) ) {
+			$this->delay = intval( $options->get( 'd' ) ) * 1000; // convert milliseconds to microseconds
 		}
 
-		if ( isset( $options['page'] ) ) {
-			$this->pages = explode( '|', $options['page'] );
+		if ( $options->has( 'page' ) ) {
+			$this->pages = explode( '|', $options->get( 'page' ) );
 		}
 
-		if ( isset( $options['skip-properties'] ) ) {
-			$this->skipBuildForProperties = $options['skip-properties'];
-		}
+		if ( $options->has( 's' ) ) {
+			$this->start = max( 1, intval( $options->get( 's' ) ) );
+		} elseif ( $options->has( 'startidfile' ) ) {
 
-		if ( array_key_exists( 's', $options ) ) {
-			$this->start = max( 1, intval( $options['s'] ) );
-		} elseif ( array_key_exists( 'startidfile', $options ) ) {
+			$this->canWriteToIdFile = $this->idFileIsWritable( $options->get( 'startidfile' )  );
+			$this->startIdFile = $options->get( 'startidfile' );
 
-			$this->canWriteToIdFile = $this->idFileIsWritable( $options['startidfile'] );
-			$this->startIdFile = $options['startidfile'];
-
-			if ( is_readable( $options['startidfile'] ) ) {
-				$this->start = max( 1, intval( file_get_contents( $options['startidfile'] ) ) );
+			if ( is_readable( $options->get( 'startidfile' ) ) ) {
+				$this->start = max( 1, intval( file_get_contents( $options->get( 'startidfile' ) ) ) );
 			}
 		}
 
 		// Note: this might reasonably be larger than the page count
-		if ( array_key_exists( 'e', $options ) ) {
-			$this->end = intval( $options['e'] );
-		} elseif ( array_key_exists( 'n', $options ) ) {
-			$this->end = $this->start + intval( $options['n'] );
+		if ( $options->has( 'e' ) ) {
+			$this->end = intval( $options->get( 'e' ) );
+		} elseif ( $options->has( 'n' ) ) {
+			$this->end = $this->start + intval( $options->get( 'n' ) );
 		}
 
-		$this->useIds = array_key_exists( 's', $options ) || array_key_exists( 'e', $options );
-		$this->verbose = array_key_exists( 'v', $options );
+		$this->verbose = $options->has( 'v' );
 
 		$this->setFiltersFromOptions( $options );
-		$this->fullDelete = array_key_exists( 'f', $options );
-
-		if ( array_key_exists( 'query', $options ) ) {
-			$this->query = $options['query'];
-		}
 	}
 
 	/**
@@ -144,16 +136,15 @@ class DataRebuilder {
 
 		$this->reportMessage( "\nRunning for storage: " . get_class( $this->store ) . "\n\n" );
 
-		if ( $this->fullDelete ) {
+		if ( $this->options->has( 'f' ) ) {
 			$this->performFullDelete();
 		}
 
-		if ( $this->pages || $this->query || $this->hasFilters() ) {
-			$this->reportMessage( "Refreshing selected pages!\n" );
-			return $this->rebuildSelectedPages();
+		if ( $this->pages || $this->options->has( 'query' ) || $this->hasFilters() ) {
+			return $this->doRebuildPagesFor( "Refreshing selected pages!" );
 		}
 
-		return $this->rebuildAll();
+		return $this->doRebuildAll();
 	}
 
 	private function hasFilters() {
@@ -169,32 +160,30 @@ class DataRebuilder {
 		return $this->rebuildCount;
 	}
 
-	private function rebuildSelectedPages() {
+	private function doRebuildPagesFor( $message ) {
 
-		$pages = $this->query ? $this->getPagesFromQuery() : array();
+		$this->reportMessage( $message  . "\n" );
+
+		$pages = $this->getPagesFromQuery();
 		$pages = $this->pages ? array_merge( (array)$this->pages, $pages ) : $pages;
 		$pages = $this->hasFilters() ? array_merge( $pages, $this->getPagesFromFilters() ) : $pages;
-		$numPages = count( $pages );
 
-		$titleCache = array();
+		$this->normalizeBulkOfPages( $pages );
+		$numPages = count( $pages );
 
 		foreach ( $pages as $page ) {
 
-			$title = $this->makeTitleOf( $page );
+			$this->rebuildCount++;
+			$percentage = round( ( $this->rebuildCount / $numPages ) * 100 ) ."%";
 
-			if ( $title !== null && !isset( $titleCache[$title->getPrefixedDBkey()] ) ) {
+			$this->reportMessage( "($this->rebuildCount/$numPages $percentage) Processing page " . $page->getPrefixedDBkey() . " ...\n", $this->verbose );
 
-				$this->rebuildCount++;
-				$percentage = round( $this->rebuildCount / $numPages * 100 );
+			$updatejob = new UpdateJob( $page, array(
+				'pm' => $this->options->has( 'shallow-update' ) ? SMW_UJ_PM_CLASTMDATE : false
+			) );
 
-				$this->reportMessage( "($this->rebuildCount/$numPages $percentage%) Processing page " . $title->getPrefixedDBkey() . " ...\n", $this->verbose );
-
-				$updatejob = new UpdateJob( $title );
-				$updatejob->run();
-
-				$this->doPrintDotProgressIndicator( $this->verbose, $percentage );
-				$titleCache[$title->getPrefixedDBkey()] = true;
-			}
+			$updatejob->run();
+			$this->doPrintDotProgressIndicator( $this->verbose, $percentage );
 		}
 
 		$this->reportMessage( "\n\n$this->rebuildCount pages refreshed.\n" );
@@ -202,7 +191,7 @@ class DataRebuilder {
 		return true;
 	}
 
-	private function rebuildAll() {
+	private function doRebuildAll() {
 
 		$linkCache = LinkCache::singleton();
 
@@ -212,14 +201,18 @@ class DataRebuilder {
 		);
 
 		$byIdDataRebuildDispatcher->setIterationLimit( 1 );
+
+		$byIdDataRebuildDispatcher->setUpdateJobParseMode(
+			$this->options->has( 'shallow-update' ) ? SMW_UJ_PM_CLASTMDATE : false
+		);
+
 		$byIdDataRebuildDispatcher->setUpdateJobToUseJobQueueScheduler( false );
 
 		$this->deleteMarkedSubjects( $byIdDataRebuildDispatcher );
 
-		if ( !$this->skipBuildForProperties ) {
-			$this->reportMessage( "Rebuilding property pages.\n" );
-			$this->setFiltersFromOptions( array( 'p' => true ) );
-			$this->rebuildSelectedPages();
+		if ( !$this->options->has( 'skip-properties' ) ) {
+			$this->filters[] = SMW_NS_PROPERTY;
+			$this->doRebuildPagesFor( "Rebuilding property pages." );
 			$this->reportMessage( "\n" );
 		}
 
@@ -289,7 +282,7 @@ class DataRebuilder {
 			" since some properties' types are not stored yet in the first run.\n---\n"
 		);
 
-		if ( $this->useIds ) {
+		if ( $this->options->has( 's' ) || $this->options->has( 'e' ) ) {
 			$this->reportMessage( " WARNING: -s or -e are used, so some pages will not be refreshed at all!\n" .
 				" Data for those pages will only be available again when they have been\n" .
 				" refreshed as well!\n\n"
@@ -325,8 +318,7 @@ class DataRebuilder {
 			\SMWSql3SmwIds::tableName,
 			array( 'smw_id' ),
 			array( 'smw_iw' => SMW_SQL3_SMWDELETEIW ),
-			__METHOD__,
-			array( 'USE INDEX' => 'PRIMARY' )
+			__METHOD__
 		);
 
 		foreach ( $res as $row ) {
@@ -369,27 +361,29 @@ class DataRebuilder {
 	/**
 	 * @param array $options
 	 */
-	private function setFiltersFromOptions( array $options ) {
+	private function setFiltersFromOptions( Options $options ) {
 		$this->filters = array();
 
-		if ( array_key_exists( 'c', $options ) ) {
+		if ( $options->has( 'c' ) ) {
 			$this->filters[] = NS_CATEGORY;
 		}
 
-		if ( array_key_exists( 'p', $options ) ) {
+		if ( $options->has( 'p' ) ) {
 			$this->filters[] = SMW_NS_PROPERTY;
-		}
-
-		if ( array_key_exists( 't', $options ) ) {
-			$this->filters[] = SMW_NS_TYPE;
 		}
 	}
 
 	private function getPagesFromQuery() {
 
+		if ( !$this->options->has( 'query' ) ) {
+			return array();
+		}
+
+		$queryString = $this->options->get( 'query' );
+
 		// get number of pages and fix query limit
 		$query = SMWQueryProcessor::createQuery(
-			$this->query,
+			$queryString,
 			SMWQueryProcessor::getProcessedParams( array( 'format' => 'count' ) )
 		);
 
@@ -397,7 +391,7 @@ class DataRebuilder {
 
 		// get pages and add them to the pages explicitly listed in the 'page' parameter
 		$query = SMWQueryProcessor::createQuery(
-			$this->query,
+			$queryString,
 			SMWQueryProcessor::getProcessedParams( array() )
 		);
 
@@ -419,17 +413,29 @@ class DataRebuilder {
 		return $pages;
 	}
 
-	private function makeTitleOf( $page ) {
+	private function normalizeBulkOfPages( &$pages ) {
 
-		if ( $page instanceof DIWikiPage ) {
-			return $page->getTitle();
+		$titleCache = array();
+
+		foreach ( $pages as $key => &$page ) {
+
+			if ( $page instanceof DIWikiPage ) {
+				$page = $page->getTitle();
+			}
+
+			if ( !$page instanceof Title ) {
+				$page = $this->titleCreator->createFromText( $page );
+			}
+
+			// Filter out pages with fragments (subobjects)
+			if ( isset( $titleCache[$page->getPrefixedDBkey()] ) ) {
+				unset( $pages[$key] );
+			} else{
+				$titleCache[$page->getPrefixedDBkey()] = true;
+			}
 		}
 
-		if ( $page instanceof Title ) {
-			return $page;
-		}
-
-		return $this->titleCreator->createFromText( $page );
+		unset( $titleCache );
 	}
 
 	private function reportMessage( $message, $output = true ) {

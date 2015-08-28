@@ -3,12 +3,11 @@
 namespace SMW\Tests\Maintenance;
 
 use SMW\Maintenance\DataRebuilder;
-
+use SMW\Options;
 use Title;
 
 /**
  * @covers \SMW\Maintenance\DataRebuilder
- *
  * @group semantic-mediawiki
  * @group medium
  *
@@ -108,9 +107,9 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new DataRebuilder( $store, $titleCreator );
 
 		// Needs an end otherwise phpunit is caught up in an infinite loop
-		$instance->setParameters( array(
+		$instance->setOptions( new Options( array(
 			'e' => 1
-		) );
+		) ) );
 
 		$this->assertTrue( $instance->rebuild() );
 	}
@@ -154,11 +153,11 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataRebuilder( $store, $titleCreator );
 
-		$instance->setParameters( array(
+		$instance->setOptions( new Options( array(
 			'e' => 1,
 			'f' => true,
 			'verbose' => false
-		) );
+		) ) );
 
 		$this->assertTrue( $instance->rebuild() );
 	}
@@ -197,11 +196,11 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataRebuilder( $store, $titleCreator );
 
-		$instance->setParameters( array(
+		$instance->setOptions( new Options( array(
 			's' => 2,
 			'n' => 5,
 			'verbose' => false
-		) );
+		) ) );
 
 		$this->assertTrue( $instance->rebuild() );
 	}
@@ -247,9 +246,9 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataRebuilder( $store, $titleCreator );
 
-		$instance->setParameters( array(
+		$instance->setOptions( new Options( array(
 			'query' => '[[Category:Foo]]'
-		) );
+		) ) );
 
 		$this->assertTrue( $instance->rebuild() );
 	}
@@ -286,9 +285,9 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataRebuilder( $store, $titleCreator );
 
-		$instance->setParameters( array(
+		$instance->setOptions( new Options( array(
 			'c' => true
-		) );
+		) ) );
 
 		$this->assertTrue( $instance->rebuild() );
 	}
@@ -326,9 +325,9 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataRebuilder( $store, $titleCreator );
 
-		$instance->setParameters( array(
+		$instance->setOptions( new Options( array(
 			'p' => true
-		) );
+		) ) );
 
 		$this->assertTrue( $instance->rebuild() );
 	}
@@ -365,9 +364,9 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataRebuilder( $store, $titleCreator );
 
-		$instance->setParameters( array(
+		$instance->setOptions( new Options( array(
 			'page'  => 'Main page|Some other page|Help:Main page|Main page'
-		) );
+		) ) );
 
 		$this->assertTrue( $instance->rebuild() );
 
