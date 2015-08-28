@@ -10,10 +10,7 @@ use Title;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\UpdateJob
- *
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -174,6 +171,55 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$instance = new UpdateJob( $title );
+		$instance->setJobQueueEnabledState( false );
+
+		$this->assertTrue( $instance->run() );
+	}
+
+	public function testJobToCompareLastModified() {
+
+		$title = $this->getMockBuilder( 'Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getDBkey' )
+			->will( $this->returnValue( __METHOD__ ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( 0 ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$contentParser = $this->getMockBuilder( '\SMW\ContentParser' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$contentParser->expects( $this->atLeastOnce() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( new \ParserOutput ) );
+
+		$this->applicationFactory->registerObject( 'ContentParser', $contentParser );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getPropertyValues', 'getWikiPageLastModifiedTimestamp' ) )
+			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( array() ) );
+
+		$store->expects( $this->once() )
+			->method( 'getWikiPageLastModifiedTimestamp' )
+			->will( $this->returnValue( 0 ) );
+
+		$this->applicationFactory->registerObject( 'Store', $store );
+
+		$instance = new UpdateJob( $title, array( 'pm' => SMW_UJ_PM_CLASTMDATE ) );
 		$instance->setJobQueueEnabledState( false );
 
 		$this->assertTrue( $instance->run() );

@@ -720,14 +720,10 @@ class SMWSQLStore3Writers {
 		// Set 'pm' (parser-mode) to 2 indicating to use a new Parser
 		// instance when running the job
 
-		$jobs[] = new UpdateJob( $newTitle, array(
-			'pm' => 2
-		) );
+		$jobs[] = new UpdateJob( $newTitle, array( 'pm' => SMW_UJ_PM_NP ) );
 
 		if ( $redirectId != 0 ) {
-			$jobs[] = new UpdateJob( $oldTitle, array(
-				'pm' => 2
-			) );
+			$jobs[] = new UpdateJob( $oldTitle, array( 'pm' => SMW_UJ_PM_NP ) );
 		}
 
 		$db->onTransactionIdle( function() use ( $jobs ) {

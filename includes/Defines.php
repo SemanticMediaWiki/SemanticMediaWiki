@@ -119,11 +119,18 @@ define( 'SMW_SPARQL_QF_SUBP', 4 ); // support for rdfs:subPropertyOf*
 define( 'SMW_SPARQL_QF_SUBC', 8 ); // support for rdfs:subClassOf*
 /**@}*/
 
- /**@{
-  * Constants for VL store
+/**@{
+  * Constants for ValueLookupStore
   */
-define( 'SMW_VL_SD', 1 );
-define( 'SMW_VL_PL', 2 );
-define( 'SMW_VL_PV', 4 );
-define( 'SMW_VL_PS', 8 );
+define( 'SMW_VL_SD', 1 ); // enables ValueLookupStore::getSemanticData
+define( 'SMW_VL_PL', 2 ); // enables ValueLookupStore::getProperties
+define( 'SMW_VL_PV', 4 ); // enables ValueLookupStore::getPropertyValues
+define( 'SMW_VL_PS', 8 ); // enables ValueLookupStore::getPropertySubject
+/**@}*/
+
+/**@{
+  * Constants for UpdateJob ParserMode
+  */
+define( 'SMW_UJ_PM_NP', 2 );    // use a new parser
+define( 'SMW_UJ_PM_CLASTMDATE', 4 ); // compare last modified
 /**@}*/

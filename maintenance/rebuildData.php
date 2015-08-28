@@ -5,6 +5,7 @@ namespace SMW\Maintenance;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\ApplicationFactory;
 use SMW\StoreFactory;
+use SMW\Options;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
@@ -33,7 +34,6 @@ require_once $basePath . '/maintenance/Maintenance.php';
  * -v           Be verbose about the progress.
  * -c           Will refresh only category pages (and other explicitly named namespaces)
  * -p           Will refresh only property pages (and other explicitly named namespaces)
- * -t           Will refresh only type pages (and other explicitly named namespaces)
  * --page=<pagelist> will refresh only the pages of the given names, with | used as a separator.
  *              Example: --page="Page 1|Page 2" refreshes Page 1 and Page 2
  *              Options -s, -e, -n, --startidfile, -c, -p, -t are ignored if --page is given.
@@ -83,9 +83,9 @@ class RebuildData extends \Maintenance {
 		$this->addOption( 'v', 'Be verbose about the progress', false );
 		$this->addOption( 'c', 'Will refresh only category pages (and other explicitly named namespaces)', false );
 		$this->addOption( 'p', 'Will refresh only property pages (and other explicitly named namespaces)', false );
-		$this->addOption( 't', 'Will refresh only type pages (and other explicitly named namespaces)', false );
 
 		$this->addOption( 'skip-properties', 'Skip the default properties rebuild (only recommended when successive build steps are used)', false );
+		$this->addOption( 'shallow-update', 'Skip processing of entitites that compare to the last known revision date', false );
 
 		$this->addOption( 'page', '<pagelist> Will refresh only the pages of the given names, with | used as a separator. ' .
 								'Example: --page "Page 1|Page 2" refreshes Page 1 and Page 2 Options -s, -e, -n, ' .
@@ -136,7 +136,7 @@ class RebuildData extends \Maintenance {
 
 		$dataRebuilder = $maintenanceFactory->newDataRebuilder( $store );
 		$dataRebuilder->setMessageReporter( $reporter );
-		$dataRebuilder->setParameters( $this->mOptions );
+		$dataRebuilder->setOptions( new Options( $this->mOptions ) );
 
 		$result = $this->checkForRebuildState( $dataRebuilder->rebuild() );
 

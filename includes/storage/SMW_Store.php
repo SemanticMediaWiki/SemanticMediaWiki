@@ -131,6 +131,27 @@ abstract class Store {
 	}
 
 	/**
+	 * Convenience method to find last modified MW timestamp for a subject that
+	 * has been added using the storage-engine.
+	 *
+	 * @since 2.3
+	 *
+	 * @param DIWikiPage $wikiPage
+	 *
+	 * @return integer
+	 */
+	public function getWikiPageLastModifiedTimestamp( DIWikiPage $wikiPage ) {
+
+		$dataItems = $this->getPropertyValues( $wikiPage, new DIProperty( '_MDAT' ) );
+
+		if ( $dataItems !== array() ) {
+			return end( $dataItems )->getMwTimestamp( TS_MW );
+		}
+
+		return 0;
+	}
+
+	/**
 	 * Convenience method to find the redirect target of a DIWikiPage
 	 * or DIProperty object. Returns a dataitem of the same type that
 	 * the input redirects to, or the input itself if there is no redirect.

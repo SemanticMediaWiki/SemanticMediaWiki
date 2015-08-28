@@ -29,9 +29,9 @@ class ByIdDataRebuildDispatcher {
 	private $store = null;
 
 	/**
-	 * @var boolean
+	 * @var integer
 	 */
-	private $useUpdateJobParseMode = true;
+	private $updateJobParseMode;
 
 	/**
 	 * @var boolean
@@ -65,10 +65,10 @@ class ByIdDataRebuildDispatcher {
 	/**
 	 * @since 2.3
 	 *
-	 * @param boolean $updateJobParseMode
+	 * @param integer $updateJobParseMode
 	 */
-	public function setUpdateJobToUseParseMode( $updateJobParseMode ) {
-		$this->useUpdateJobParseMode = (bool)$updateJobParseMode;
+	public function setUpdateJobParseMode( $updateJobParseMode ) {
+		$this->updateJobParseMode = $updateJobParseMode;
 	}
 
 	/**
@@ -316,7 +316,7 @@ class ByIdDataRebuildDispatcher {
 	}
 
 	private function newUpdateJob( $title ) {
-		return new UpdateJob( $title, array( 'pm' => $this->useUpdateJobParseMode ) );
+		return new UpdateJob( $title, array( 'pm' => $this->updateJobParseMode ) );
 	}
 
 }

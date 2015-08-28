@@ -107,6 +107,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			array(
 				'smw_id',
 				'smw_id,smw_sortkey',
+				'smw_iw', // iw match lookup
 				'smw_title,smw_namespace,smw_iw,smw_subobject', // id lookup
 				'smw_sortkey' // select by sortkey (range queries)
 			),
