@@ -101,7 +101,8 @@ class PropertyTableRowDiffer {
 				// Hence we do not sort before serializing. It is hoped that this assumption is valid.
 				$newHashes[$tableName] = $this->createNewHashForTable(
 					$tableName,
-					$newData
+					$newData,
+					$semanticData->getLastModified()
 				);
 
 				if ( array_key_exists( $tableName, $oldHashes ) && $newHashes[$tableName] == $oldHashes[$tableName] ) {

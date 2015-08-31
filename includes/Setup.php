@@ -220,6 +220,10 @@ final class Setup {
 				'page' => 'SMW\SpecialWantedProperties',
 				'group' => 'maintenance'
 			),
+			'AsyncJobDispatcher' => array(
+				'page' => 'SMW\MediaWiki\Specials\SpecialAsyncJobDispatcher',
+				'group' => 'maintenance'
+			),
 		);
 
 		// Register data

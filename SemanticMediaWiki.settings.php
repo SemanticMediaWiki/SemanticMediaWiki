@@ -859,16 +859,10 @@ $GLOBALS['smwgEnabledEditPageHelp'] = true;
 
 ###
 #
-# Log settings
+# Improves performance for selected operations that can be executed
+# in asynchronous processing mode.
 #
-# - `smwgLogEventTypes` make event types loggable and viewable in Special:Log
-#
-# - `sqlstore-query-execution` (default = false) to log events during query execution
-# of the SQLStore
-#
-# @since 2.1
+# @since 2.3
 ##
-$GLOBALS['smwgLogEventTypes'] = array(
-	'sqlstore-query-execution' => false
-);
+$GLOBALS['smwgEnabledAsyncJobDispatcher'] = true;
 ##

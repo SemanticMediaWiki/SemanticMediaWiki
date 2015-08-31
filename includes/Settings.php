@@ -133,9 +133,9 @@ class Settings extends SimpleDictionary {
 			'smwgOnDeleteAction' => $GLOBALS['smwgOnDeleteAction'],
 			'smwgFallbackSearchType' => $GLOBALS['smwgFallbackSearchType'],
 			'smwgEnabledEditPageHelp' => $GLOBALS['smwgEnabledEditPageHelp'],
-			'smwgLogEventTypes' => $GLOBALS['smwgLogEventTypes'],
 			'smwgSparqlQFeatures' => $GLOBALS['smwgSparqlQFeatures'],
-			'smwgEnabledResultFormatsWithRecursiveAnnotationSupport' => $GLOBALS['smwgEnabledResultFormatsWithRecursiveAnnotationSupport']
+			'smwgEnabledResultFormatsWithRecursiveAnnotationSupport' => $GLOBALS['smwgEnabledResultFormatsWithRecursiveAnnotationSupport'],
+			'smwgEnabledAsyncJobDispatcher' => $GLOBALS['smwgEnabledAsyncJobDispatcher']
 		);
 
 		$settings = $settings + array(

@@ -442,7 +442,12 @@ class HookRegistry {
 		/**
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/EditPage::showEditForm:initial
 		 */
-		$this->handlers['EditPage::showEditForm:initial'] = function ( $editPage, $output ) use ( $applicationFactory ) {
+		$this->handlers['EditPage::showEditForm:initial'] = function ( $editPage, $output = null ) use ( $applicationFactory ) {
+
+			// 1.19 hook interface is missing the output object
+			if ( !$output instanceOf \OutputPage ) {
+				$output = $GLOBALS['wgOut'];
+			}
 
 			$htmlFormRenderer = $applicationFactory->newMwCollaboratorFactory()->newHtmlFormRenderer(
 				$editPage->getTitle(),

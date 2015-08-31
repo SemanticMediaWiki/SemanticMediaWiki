@@ -5,6 +5,8 @@ use SMW\MediaWiki\Jobs\JobBase;
 
 use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\SQLStore\PropertyTableRowDiffer;
+use SMW\AsyncJobDispatchManager;
+use Onoi\HttpRequest\HttpRequestFactory;
 
 use SMW\SemanticData;
 use SMW\DIWikiPage;
@@ -711,26 +713,30 @@ class SMWSQLStore3Writers {
 
 		}
 
-		// Update the page immediately to ensure that only a fresh set of data
-		// is displayed
-		$jobs = array();
-
 		// 1.24+ reported "Parser state cleared while parsing. Did you call
 		// Parser::parse recursively" when using the global Parser instance
 		// Set 'pm' (parser-mode) to 2 indicating to use a new Parser
 		// instance when running the job
 
-		$jobs[] = new UpdateJob( $newTitle, array( 'pm' => SMW_UJ_PM_NP ) );
+		$asyncJobDispatchManager = $this->newAsyncJobDispatchManager();
+
+		$parameters = array(
+			'pm' => SMW_UJ_PM_NP
+		);
 
 		if ( $redirectId != 0 ) {
-			$jobs[] = new UpdateJob( $oldTitle, array( 'pm' => SMW_UJ_PM_NP ) );
+			$asyncJobDispatchManager->dispatchJobFor(
+				'SMW\UpdateJob',
+				$oldTitle,
+				$parameters
+			);
 		}
 
-		$db->onTransactionIdle( function() use ( $jobs ) {
-			foreach ( $jobs as $job ) {
-				$job->run();
-			}
-		} );
+		$asyncJobDispatchManager->dispatchJobFor(
+			'SMW\UpdateJob',
+			$newTitle,
+			$parameters
+		);
 	}
 
 	/**
@@ -1000,6 +1006,18 @@ class SMWSQLStore3Writers {
 		);
 
 		return ( $new_tid == 0 ) ? $sid : $new_tid;
+	}
+
+	private function newAsyncJobDispatchManager() {
+		$httpRequestFactory = new HttpRequestFactory();
+
+		$asyncJobDispatchManager = new AsyncJobDispatchManager(
+			$httpRequestFactory->newCurlRequest()
+		);
+
+		$asyncJobDispatchManager->setDispatchableAsyncUsageState( $GLOBALS['smwgEnabledAsyncJobDispatcher'] );
+
+		return $asyncJobDispatchManager;
 	}
 
 }

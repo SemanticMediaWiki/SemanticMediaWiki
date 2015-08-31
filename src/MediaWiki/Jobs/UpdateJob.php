@@ -97,7 +97,7 @@ class UpdateJob extends JobBase {
 
 	private function matchWikiPageLastModifiedToRevisionLastModified( $title ) {
 
-		if ( $this->getParameter( 'pm' ) !== SMW_UJ_PM_CLASTMDATE ) {
+		if ( $this->getParameter( 'pm' ) !== ( $this->getParameter( 'pm' ) | SMW_UJ_PM_CLASTMDATE ) ) {
 			return false;
 		}
 
@@ -123,7 +123,7 @@ class UpdateJob extends JobBase {
 
 		$contentParser = $this->applicationFactory->newContentParser( $this->getTitle() );
 
-		if ( $this->getParameter( 'pm' ) === SMW_UJ_PM_NP ) {
+		if ( $this->getParameter( 'pm' ) === ( $this->getParameter( 'pm' ) | SMW_UJ_PM_NP ) ) {
 			$contentParser->setParser(
 				new \Parser( $GLOBALS['wgParserConf'] )
 			);
