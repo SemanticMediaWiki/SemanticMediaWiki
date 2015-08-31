@@ -35,9 +35,9 @@ class SMWURIValue extends SMWDataValue {
 	private $m_mode;
 
 	/**
-	 * @var UrlEncoder
+	 * @var boolean
 	 */
-	private $urlEncoder;
+	private $showUrlContextInRawFormat = true;
 
 	public function __construct( $typeid ) {
 		parent::__construct( $typeid );
@@ -51,12 +51,13 @@ class SMWURIValue extends SMWDataValue {
 			case '_tel':
 				$this->m_mode = SMW_URI_MODE_TEL;
 			break;
-			case '_uri': case '_url': case '__spu': default:
+			case '__spu':
+			case '_uri':
+			case '_url':
+			default:
 				$this->m_mode = SMW_URI_MODE_URI;
 			break;
 		}
-
-		$this->urlEncoder = new UrlEncoder();
 	}
 
 	protected function parseUserValue( $value ) {
@@ -73,7 +74,17 @@ class SMWURIValue extends SMWDataValue {
 		}
 
 		switch ( $this->m_mode ) {
-			case SMW_URI_MODE_URI: case SMW_URI_MODE_ANNOURI:
+			case SMW_URI_MODE_URI:
+			case SMW_URI_MODE_ANNOURI:
+
+				// Whether the the url value was externally encoded or not
+				if ( strpos( $value, "%" ) === false ) {
+					$this->showUrlContextInRawFormat = false;
+				}
+
+				// If somehow the slash was encoded bring into one format
+				$value = str_replace( "%2F", "/", $value );
+
 				$parts = explode( ':', $value, 2 ); // try to split "schema:rest"
 				if ( count( $parts ) == 1 ) { // possibly add "http" as default
 					$value = 'http://' . $value;
@@ -115,21 +126,25 @@ class SMWURIValue extends SMWDataValue {
 				if ( substr( $hierpart, 0, 2 ) === '//' ) {
 					$hierpart = substr( $hierpart, 2 );
 				}
+
 				break;
 			case SMW_URI_MODE_TEL:
 				$scheme = 'tel';
+
 				if ( substr( $value, 0, 4 ) === 'tel:' ) { // accept optional "tel"
 					$value = substr( $value, 4 );
 					$this->m_wikitext = $value;
 				}
+
 				$hierpart = preg_replace( '/(?<=[0-9]) (?=[0-9])/', '\1-\2', $value );
 				$hierpart = str_replace( ' ', '', $hierpart );
 				if ( substr( $hierpart, 0, 2 ) == '00' ) {
 					$hierpart = '+' . substr( $hierpart, 2 );
 				}
-				if ( ( strlen( preg_replace( '/[^0-9]/', '', $hierpart ) ) < 6 ) ||
+
+				if ( !$this->isUsedByQueryCondition && ( ( strlen( preg_replace( '/[^0-9]/', '', $hierpart ) ) < 6 ) ||
 					( preg_match( '<[-+./][-./]>', $hierpart ) ) ||
-					( !self::isValidTelURI( 'tel:' . $hierpart ) ) ) { /// TODO: introduce error-message for "bad" phone number
+					( !self::isValidTelURI( 'tel:' . $hierpart ) ) ) ) { /// TODO: introduce error-message for "bad" phone number
 					$this->addError( wfMessage( 'smw_baduri', $this->m_wikitext )->inContentLanguage()->text() );
 					return;
 				}
@@ -141,8 +156,7 @@ class SMWURIValue extends SMWDataValue {
 					$this->m_wikitext = $value;
 				}
 
-				$check = Sanitizer::validateEmail( $value );
-				if ( !$check ) {
+				if ( !$this->isUsedByQueryCondition && !Sanitizer::validateEmail( $value ) ) {
 					/// TODO: introduce error-message for "bad" email
 					$this->addError( wfMessage( 'smw_baduri', $value )->inContentLanguage()->text() );
 					return;
@@ -174,20 +188,24 @@ class SMWURIValue extends SMWDataValue {
 	 * @return boolean
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
-		if ( $dataItem->getDIType() == SMWDataItem::TYPE_URI ) {
-			$this->m_dataitem = $dataItem;
-			if ( $this->m_mode == SMW_URI_MODE_EMAIL ) {
-				$this->m_wikitext = substr( $dataItem->getURI(), 7 );
-			} elseif ( $this->m_mode == SMW_URI_MODE_TEL ) {
-				$this->m_wikitext = substr( $dataItem->getURI(), 4 );
-			} else {
-				$this->m_wikitext = $dataItem->getURI();
-			}
-			$this->m_caption = $this->m_wikitext;
-			return true;
-		} else {
+
+		if ( $dataItem->getDIType() !== SMWDataItem::TYPE_URI ) {
 			return false;
 		}
+
+		$this->m_dataitem = $dataItem;
+		if ( $this->m_mode == SMW_URI_MODE_EMAIL ) {
+			$this->m_wikitext = substr( $dataItem->getURI(), 7 );
+		} elseif ( $this->m_mode == SMW_URI_MODE_TEL ) {
+			$this->m_wikitext = substr( $dataItem->getURI(), 4 );
+		} else {
+			$this->m_wikitext = $dataItem->getURI();
+		}
+
+		$this->m_caption = $this->m_wikitext;
+		$this->showUrlContextInRawFormat = false;
+
+		return true;
 	}
 
 	public function getShortWikiText( $linked = null ) {
@@ -313,16 +331,13 @@ class SMWURIValue extends SMWDataValue {
 
 	private function decodeUriContext( $context ) {
 
-		if ( $this->m_mode !== SMW_URI_MODE_URI && $this->m_mode !== SMW_URI_MODE_ANNOURI ) {
-			return array( $this->getURL(), $context );
-		}
-
 		// Prior to decoding turn any `-` into an internal representation to avoid
 		// potential breakage
-		return array(
-			str_replace( ' ', '_', $this->urlEncoder->decode( str_replace( '-', '-2D', $this->getURL() ) ) ),
-			$this->urlEncoder->decode( str_replace( '-', '-2D', $context ) )
-		);
+		if ( !$this->showUrlContextInRawFormat ) {
+			$context = UrlEncoder::decode( str_replace( '-', '-2D', $context ) );
+		}
+
+		return array( $this->getURL(), $context );
 	}
 
 }
