@@ -23,6 +23,11 @@
 					"propertyKeys": [ "_SKEY", "_MDAT", "Has_url" ],
 					"propertyValues": [ "ShowFactbox", "http://example.org/api.php?action=ask&query=%5B%5BModification%20date::%2B%5D%5D%7C%3FModification%20date%7Csort%3DModification%20date%7Corder%3Ddesc" ]
 				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"href=\"http://example.org/api.php?action=ask&amp;query=%5B%5BModification%20date::%2B%5D%5D%7C%3FModification%20date%7Csort%3DModification%20date%7Corder%3Ddesc\">api.php?action=ask&amp;query=</a>"
+				]
 			}
 		}
 	],
