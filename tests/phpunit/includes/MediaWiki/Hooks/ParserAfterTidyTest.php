@@ -75,7 +75,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	private function newMockCache( $id, $status ) {
+	private function newMockCache( $id, $containsStatus, $fetchStatus ) {
 
 		$key = $this->applicationFactory->newCacheFactory()->getPurgeCacheKey( $id );
 
@@ -86,7 +86,12 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 		$cache->expects( $this->any() )
 			->method( 'contains' )
 			->with( $this->equalTo( $key ) )
-			->will( $this->returnValue( $status ) );
+			->will( $this->returnValue( $containsStatus ) );
+
+		$cache->expects( $this->any() )
+			->method( 'fetch' )
+			->with( $this->equalTo( $key ) )
+			->will( $this->returnValue( $fetchStatus ) );
 
 		return $cache;
 	}
@@ -100,7 +105,8 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 
 		$cache = $this->newMockCache(
 			$parameters['title']->getArticleID(),
-			$parameters['cache']
+			$parameters['cache-contains'],
+			$parameters['cache-fetch']
 		);
 
 		$this->applicationFactory->registerObject( 'Cache', $cache );
@@ -190,7 +196,8 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'store'    => $store,
 				'title'    => $title,
-				'cache'    => true,
+				'cache-contains' => true,
+				'cache-fetch'    => true,
 				'data-status' => true
 			)
 		);
@@ -217,7 +224,8 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'store'    => $store,
 				'title'    => $title,
-				'cache'    => false,
+				'cache-contains' => false,
+				'cache-fetch'    => false,
 				'data-status' => true
 			)
 		);
@@ -240,7 +248,8 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'store'    => $store,
 				'title'    => $title,
-				'cache'    => false,
+				'cache-contains' => false,
+				'cache-fetch'    => false,
 				'data-status' => true
 			)
 		);
@@ -267,7 +276,40 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'store'    => $store,
 				'title'    => $title,
-				'cache'    => true,
+				'cache-contains' => true,
+				'cache-fetch'    => true,
+				'data-status' => true
+			)
+		);
+
+		#4, 1131, No store update when fetch return FALSE
+		$store = $this->getMockBuilder( 'SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->never() )
+			->method( 'updateData' );
+
+		$title = MockTitle::buildMock( __METHOD__ );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'inNamespace' )
+			->will( $this->returnValue( false ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getArticleID' )
+			->will( $this->returnValue( 5001 ) );
+
+		$provider[] = array(
+			array(
+				'store'    => $store,
+				'title'    => $title,
+				'cache-contains' => true,
+				'cache-fetch'    => false,
 				'data-status' => true
 			)
 		);
