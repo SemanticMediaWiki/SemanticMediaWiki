@@ -584,7 +584,7 @@ $GLOBALS['smwgMainCacheType'] = CACHE_ANYTHING; // Isn't used yet
 # CACHE_NONE = disabled, uses the standard SQLStore DB access for all
 # lookups
 #
-# @since 2.3
+# @since 2.3 (experimental)
 #
 # @default: CACHE_NONE, users need to actively enable it in order
 # to make use of it
@@ -868,14 +868,16 @@ $GLOBALS['smwgEnabledAsyncJobDispatcher'] = true;
 ##
 
 ###
-# If enabled it will store dependencies for queries allowing it to invalidate
+# If enabled it will store dependencies for queries allowing it to purge
 # the ParserCache on subjects with embedded queries that contain altered entities.
 #
-# The setting requires to run `update.php` (as it creates an extra table). Also
+# The setting requires to run `update.php` (it creates an extra table). Also
 # as noted in #1117, `SMW\ParserCachePurgeJob` should be scheduled accordingly.
 #
-# @since 2.4
-# @default false (for testing it is enabled)
+# Requires `smwgEnabledAsyncJobDispatcher` to be set true.
+#
+# @since 2.3 (experimental)
+# @default false
 ##
-$GLOBALS['smwgTrackQueryDependencyLinks'] = true;
+$GLOBALS['smwgEnabledQueryDependencyLinksStore'] = false;
 ##

@@ -136,7 +136,7 @@ class Settings extends SimpleDictionary {
 			'smwgSparqlQFeatures' => $GLOBALS['smwgSparqlQFeatures'],
 			'smwgEnabledResultFormatsWithRecursiveAnnotationSupport' => $GLOBALS['smwgEnabledResultFormatsWithRecursiveAnnotationSupport'],
 			'smwgEnabledAsyncJobDispatcher' => $GLOBALS['smwgEnabledAsyncJobDispatcher'],
-			'smwgTrackQueryDependencyLinks' => $GLOBALS['smwgTrackQueryDependencyLinks']
+			'smwgEnabledQueryDependencyLinksStore' => $GLOBALS['smwgEnabledQueryDependencyLinksStore']
 		);
 
 		$settings = $settings + array(

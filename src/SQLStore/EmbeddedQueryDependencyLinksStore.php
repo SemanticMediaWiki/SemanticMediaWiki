@@ -40,7 +40,7 @@ class EmbeddedQueryDependencyLinksStore {
 	/**
 	 * @var boolean
 	 */
-	private $dependencyLinksTrackingState = true;
+	private $isEnabled = true;
 
 	/**
 	 * @since 2.3
@@ -57,17 +57,17 @@ class EmbeddedQueryDependencyLinksStore {
 	 *
 	 * @return boolean
 	 */
-	public function canTrackDependencyLinks() {
-		return $this->dependencyLinksTrackingState;
+	public function isEnabled() {
+		return $this->isEnabled;
 	}
 
 	/**
 	 * @since 2.3
 	 *
-	 * @param boolean $dependencyLinksTrackingState
+	 * @param boolean $isEnabled
 	 */
-	public function setDependencyLinksTrackingState( $dependencyLinksTrackingState ) {
-		$this->dependencyLinksTrackingState = (bool)$dependencyLinksTrackingState;
+	public function setEnabledState( $isEnabled ) {
+		$this->isEnabled = (bool)$isEnabled;
 	}
 
 	/**
@@ -75,9 +75,9 @@ class EmbeddedQueryDependencyLinksStore {
 	 *
 	 * @param CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator
 	 */
-	public function purgeOutdatedTargetLinks( CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator ) {
+	public function pruneOutdatedTargetLinks( CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator ) {
 
-		if ( !$this->canTrackDependencyLinks() ) {
+		if ( !$this->isEnabled() ) {
 			return null;
 		}
 
@@ -94,6 +94,8 @@ class EmbeddedQueryDependencyLinksStore {
 
 			wfDebugLog( 'smw' , __METHOD__ . ' remove ' . implode( ',', $deleteIdList ) . "\n" );
 
+			$this->connection->beginAtomicTransaction( __METHOD__ );
+
 			$this->connection->delete(
 				SMWSQLStore3::QUERY_LINKS_TABLE,
 				array(
@@ -101,12 +103,36 @@ class EmbeddedQueryDependencyLinksStore {
 				),
 				__METHOD__
 			);
+
+			$this->connection->commitAtomicTransaction( __METHOD__ );
 		}
 
 		// Dispatch any event registered earlier during the QueryResult processing
 		// that didn't match a sid
 		EventHandler::getInstance()->getEventDispatcher()->dispatch(
 			'deferred.embedded.query.dep.update'
+		);
+
+		EventHandler::getInstance()->getEventDispatcher()->removeListener(
+			'deferred.embedded.query.dep.update'
+		);
+
+		return true;
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @param CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator
+	 */
+	public function buildParserCachePurgeJobParametersFrom( CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator ) {
+
+		if ( !$this->isEnabled() ) {
+			return array();
+		}
+
+		return array(
+			'idlist' => $compositePropertyTableDiffIterator->getCombinedIdListForChangedEntities()
 		);
 	}
 
@@ -136,7 +162,7 @@ class EmbeddedQueryDependencyLinksStore {
 	 */
 	public function findPartialEmbeddedQueryTargetLinksHashListFor( array $idlist, $limit, $offset ) {
 
-		if ( $idlist === array() || !$this->canTrackDependencyLinks() ) {
+		if ( $idlist === array() || !$this->isEnabled() ) {
 			return array();
 		}
 
@@ -179,7 +205,7 @@ class EmbeddedQueryDependencyLinksStore {
 	 */
 	public function addDependenciesFromQueryResult( $result ) {
 
-		if ( !$this->canTrackDependencyLinks() || !$result instanceof QueryResult ) {
+		if ( !$this->isEnabled() || !$result instanceof QueryResult ) {
 			return null;
 		}
 
@@ -218,9 +244,9 @@ class EmbeddedQueryDependencyLinksStore {
 			return $this->updateDependencyList( $sid, $dependencyList );
 		}
 
-		// SID is unknown because the storage update/process has not been finalized
-		// hence an event is registered and triggered once the update process
-		// is being completed
+		// SID is 0 because the storage update/process has not been finalized
+		// (new object hasn't been registered) hence an event is registered to
+		// update the list after the update process has been completed
 
 		// PHP 5.3 compatibility
 		$embeddedQueryResultLinksUpdater = $this;
@@ -244,8 +270,11 @@ class EmbeddedQueryDependencyLinksStore {
 	 */
 	public function updateDependencyList( $sid, array $dependencyList ) {
 
-		// Before an insert, delete all matches for the criteria which is cheaper
-		// then doing an individual upsert or selectRow
+		$this->connection->beginAtomicTransaction( __METHOD__ );
+
+		// Before an insert, delete all entries that for the criteria which is
+		// cheaper then doing an individual upsert or selectRow, this also ensures
+		// that entries are self-corrected for dependencies matched
 		$this->connection->delete(
 			SMWSQLStore3::QUERY_LINKS_TABLE,
 			array(
@@ -260,6 +289,10 @@ class EmbeddedQueryDependencyLinksStore {
 
 			$oid = $this->getIdForSubject( $dependency );
 
+			if ( $oid < 1 ) {
+				continue;
+			}
+
 			$inserts[ $sid . $oid ] = array(
 				's_id' => $sid,
 				'o_id' => $oid
@@ -267,20 +300,22 @@ class EmbeddedQueryDependencyLinksStore {
 		}
 
 		if ( $inserts === array() ) {
-			return null;
+			return $this->connection->commitAtomicTransaction( __METHOD__ );
 		}
 
 		// MW's multi-array insert needs a numeric dimensional array but the key
 		// was used with a hash to avoid duplicate entries hence the re-copy
 		$inserts = array_values( $inserts );
 
-		wfDebugLog( 'smw' , __METHOD__ . ' insert ' . count( $inserts ) . ' to ' . $sid . "\n" );
+		wfDebugLog( 'smw' , __METHOD__ . ' insert for ' . $sid . "\n" );
 
 		$this->connection->insert(
 			SMWSQLStore3::QUERY_LINKS_TABLE,
 			$inserts,
 			__METHOD__
 		);
+
+		$this->connection->commitAtomicTransaction( __METHOD__ );
 	}
 
 	private function doResolveDependenciesFromDescription( &$subjects, $description ) {

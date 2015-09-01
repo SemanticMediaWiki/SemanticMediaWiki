@@ -5,6 +5,7 @@ namespace SMW\Tests\MediaWiki\Hooks;
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\MediaWiki\Hooks\HookRegistry;
 use SMW\ApplicationFactory;
+use SMW\DIWikiPage;
 use Title;
 
 /**
@@ -23,6 +24,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 	private $outputPage;
 	private $requestContext;
 	private $skin;
+	private $store;
 
 	protected function setUp() {
 
@@ -58,11 +60,11 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOutput' )
 			->will( $this->returnValue( $this->outputPage ) );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		ApplicationFactory::getInstance()->registerObject( 'Store', $store );
+		ApplicationFactory::getInstance()->registerObject( 'Store', $this->store );
 	}
 
 	protected function tearDown() {
@@ -131,6 +133,8 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		// Usage of registered hooks in/by smw-core
 		$this->doTestExecutionForSMWStoreDropTables( $instance );
+		$this->doTestExecutionForSMWSQLStorAfterDataUpdateComplete( $instance );
+		$this->doTestExecutionForSMWStoreAfterQueryResultLookupComplete( $instance );
 	}
 
 	public function doTestExecutionForParserAfterTidy( $instance ) {
@@ -768,6 +772,52 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			array( $verbose )
+		);
+	}
+
+	public function doTestExecutionForSMWSQLStorAfterDataUpdateComplete( $instance ) {
+
+		$handler = 'SMW::SQLStore::AfterDataUpdateComplete';
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$semanticData->expects( $this->any() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+
+		$compositePropertyTableDiffIterator = $this->getMockBuilder( '\SMW\SQLStore\CompositePropertyTableDiffIterator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( $store, $semanticData, $compositePropertyTableDiffIterator )
+		);
+	}
+
+	public function doTestExecutionForSMWStoreAfterQueryResultLookupComplete( $instance ) {
+
+		$handler = 'SMW::Store::AfterQueryResultLookupComplete';
+
+		$result = '';
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( $this->store, &$result )
 		);
 	}
 

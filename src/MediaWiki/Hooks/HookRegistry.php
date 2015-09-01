@@ -9,6 +9,8 @@ use SMW\ApplicationFactory;
 use SMW\EventHandler;
 use SMW\NamespaceManager;
 use SMW\SQLStore\EmbeddedQueryDependencyLinksStore;
+use SMW\AsyncJobDispatchManager;
+use Onoi\HttpRequest\HttpRequestFactory;
 
 /**
  * @license GNU GPL v2+
@@ -474,25 +476,37 @@ class HookRegistry {
 
 		$this->handlers['SMW::SQLStore::AfterDataUpdateComplete'] = function ( $store, $semanticData, $compositePropertyTableDiffIterator ) use ( $applicationFactory ) {
 
-			$embeddedQueryResultLinksUpdater = new EmbeddedQueryDependencyLinksStore( $store );
-			$embeddedQueryResultLinksUpdater->purgeOutdatedTargetLinks( $compositePropertyTableDiffIterator );
+			$embeddedQueryDependencyLinksStore = new EmbeddedQueryDependencyLinksStore( $store );
 
-			$purgeParserCacheJob = $applicationFactory->newJobFactory()->newParserCachePurgeJob(
-				$semanticData->getSubject()->getTitle(),
-				array(
-					'idlist' => $compositePropertyTableDiffIterator->getCombinedIdListForChangedEntities()
-				)
+			$embeddedQueryDependencyLinksStore->setEnabledState(
+				$applicationFactory->getSettings()->get( 'smwgEnabledQueryDependencyLinksStore' )
 			);
 
-			$purgeParserCacheJob->run();
+			$embeddedQueryDependencyLinksStore->pruneOutdatedTargetLinks( $compositePropertyTableDiffIterator );
+
+			$httpRequestFactory = new HttpRequestFactory();
+			$curlRequest = $httpRequestFactory->newCurlRequest();
+
+			$asyncJobDispatchManager = new AsyncJobDispatchManager( $curlRequest );
+
+			$asyncJobDispatchManager->dispatchJobFor(
+				'SMW\ParserCachePurgeJob',
+				$semanticData->getSubject()->getTitle(),
+				$embeddedQueryDependencyLinksStore->buildParserCachePurgeJobParametersFrom( $compositePropertyTableDiffIterator )
+			);
 
 			return true;
 		};
 
-		$this->handlers['SMW::Store::AfterQueryResultLookupComplete'] = function ( $store, &$result ) {
+		$this->handlers['SMW::Store::AfterQueryResultLookupComplete'] = function ( $store, &$result ) use ( $applicationFactory ) {
 
-			$embeddedQueryResultLinksUpdater = new EmbeddedQueryDependencyLinksStore( $store );
-			$embeddedQueryResultLinksUpdater->addDependenciesFromQueryResult( $result );
+			$embeddedQueryDependencyLinksStore = new EmbeddedQueryDependencyLinksStore( $store );
+
+			$embeddedQueryDependencyLinksStore->setEnabledState(
+				$applicationFactory->getSettings()->get( 'smwgEnabledQueryDependencyLinksStore' )
+			);
+
+			$embeddedQueryDependencyLinksStore->addDependenciesFromQueryResult( $result );
 
 			return true;
 		};

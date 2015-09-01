@@ -104,6 +104,9 @@ class SpecialAsyncJobDispatcher extends SpecialPage {
 		}
 
 		switch ( $type ) {
+			case 'SMW\ParserCachePurgeJob':
+				$this->runParserCachePurgeJob( $title, $parameters );
+				break;
 			case 'SMW\UpdateJob':
 				$this->runUpdateJob( $title, $parameters );
 				break;
@@ -123,6 +126,22 @@ class SpecialAsyncJobDispatcher extends SpecialPage {
 		print $message;
 		ob_flush();
 		flush();
+	}
+
+	private function runParserCachePurgeJob( $title, $parameters ) {
+
+		$idlist = array();
+
+		if ( !isset( $parameters['idlist'] ) || ( $idlist = explode( '|', $parameters['idlist'] ) ) === array() ) {
+			return;
+		}
+
+		$purgeParserCacheJob = ApplicationFactory::getInstance()->newJobFactory()->newParserCachePurgeJob(
+			$title,
+			array( 'idlist' => $idlist )
+		);
+
+		$purgeParserCacheJob->run();
 	}
 
 	private function runUpdateJob( $title, $parameters ) {

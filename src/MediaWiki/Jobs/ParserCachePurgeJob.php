@@ -46,7 +46,6 @@ class ParserCachePurgeJob extends JobBase {
 	 */
 	public function __construct( Title $title, $params = array() ) {
 		parent::__construct( 'SMW\ParserCachePurgeJob', $title, $params );
-		//$this->removeDuplicates = true;
 	}
 
 	/**
@@ -71,10 +70,14 @@ class ParserCachePurgeJob extends JobBase {
 			$this->findEmbeddedQueryTargetLinksBatches( $this->getParameter( 'idlist' ) );
 		}
 
+		wfDebugLog( 'smw', __METHOD__  . ' with limit set to ' . $this->limit . "\n" );
+
 		$this->pageUpdater->addPage( $this->getTitle() );
 		$this->pageUpdater->doPurgeParserCache();
 
 		Hooks::run( 'SMW::Job::AfterParserCachePurgeComplete', array( $this ) );
+
+		return true;
 	}
 
 	/**
@@ -118,7 +121,7 @@ class ParserCachePurgeJob extends JobBase {
 				'offset' => $this->limit
 			) );
 
-			$job->insert();
+			$job->run();
 		}
 
 		$hashList = $this->doBuildUniqueTargetLinksHashList(
@@ -149,7 +152,7 @@ class ParserCachePurgeJob extends JobBase {
 	private function addPagesToUpdater( array $hashList ) {
 		foreach ( $hashList as $hash ) {
 			$this->pageUpdater->addPage(
-				HashBuilder::newDiWikiPageFromHash( $hash )->getTitle()
+				HashBuilder::newTitleFromHash( $hash )
 			);
 		}
 	}

@@ -44,8 +44,8 @@ class AsyncJobDispatchManager {
 	private static $canConnectToUrl = null;
 
 	/**
-	 * During the unit tests this setting is set false to ensure that execution
-	 * and test result match.
+	 * During unit tests, this parameter is set false to ensure that test execution
+	 * does match expected results.
 	 *
 	 * @var boolean
 	 */
@@ -66,6 +66,7 @@ class AsyncJobDispatchManager {
 	 */
 	public function reset() {
 		self::$canConnectToUrl = null;
+		$this->dispatchableAsyncState = true;
 	}
 
 	/**
@@ -84,12 +85,16 @@ class AsyncJobDispatchManager {
 	 */
 	public function dispatchJobFor( $type, Title $title, $parameters = array() ) {
 
+		if ( !$this->doPreliminaryCheckForType( $type, $parameters ) ) {
+			return null;
+		}
+
 		$dispatchableCallbackJob = $this->getDispatchableCallbackJobFor( $type );
 
 		$parameters['timestamp'] = time();
 		$parameters['sessionToken'] = SpecialAsyncJobDispatcher::getSessionToken( $parameters['timestamp'] );
 
-		if ( $this->canConnectToUrl() && $this->dispatchableAsyncState ) {
+		if ( $this->dispatchableAsyncState && $this->canConnectToUrl() ) {
 			return $this->doDispatchAsyncJobFor( $type, $title, $parameters, $dispatchableCallbackJob );
 		}
 
@@ -112,19 +117,43 @@ class AsyncJobDispatchManager {
 
 		$jobFactory = ApplicationFactory::getInstance()->newJobFactory();
 
-		switch ( $type ) {
-			case 'SMW\UpdateJob':
-				return function ( $title, $parameters ) use ( $jobFactory ) {
-					$updateJob = $jobFactory->newUpdateJob(
-						$title,
-						$parameters
-					);
+		if ( $type === 'SMW\ParserCachePurgeJob' ) {
+			$callback = function ( $title, $parameters ) use ( $jobFactory ) {
 
-					$updateJob->run();
-				};
-			default:
-				return function () {}; // avoids any error when the type cannot be matched
+				$purgeParserCacheJob = $jobFactory->newParserCachePurgeJob(
+					$title,
+					$parameters
+				);
+
+				$purgeParserCacheJob->insert();
+			};
 		}
+
+		if ( $type === 'SMW\UpdateJob' ) {
+			$callback = function ( $title, $parameters ) use ( $jobFactory ) {
+				$updateJob = $jobFactory->newUpdateJob(
+					$title,
+					$parameters
+				);
+
+				$updateJob->run();
+			};
+		}
+
+		return $callback;
+	}
+
+	private function doPreliminaryCheckForType( $type, array $parameters ) {
+
+		if ( $type !== 'SMW\ParserCachePurgeJob' && $type !== 'SMW\UpdateJob' ) {
+			return false;
+		}
+
+		if ( $type === 'SMW\ParserCachePurgeJob' && ( !isset( $parameters['idlist'] ) || $parameters['idlist'] === array() ) ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	private function canConnectToUrl() {
