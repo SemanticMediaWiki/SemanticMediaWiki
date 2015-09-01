@@ -132,7 +132,7 @@ class ParserAfterTidy {
 			$this->parser->getTitle()->getArticleID()
 		);
 
-		if( $cache->contains( $key ) ) {
+		if( $cache->contains( $key ) && $cache->fetch( $key ) ) {
 			$cache->delete( $key );
 			$parserData->updateStore();
 		}
