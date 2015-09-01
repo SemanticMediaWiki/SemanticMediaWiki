@@ -35,7 +35,17 @@ class MwApiFactory {
 	 * @return ApiResult
 	 */
 	public function newApiResult( array $params ) {
-		return new ApiResult( $this->newApiMain( $params ) );
+
+		if ( version_compare( $GLOBALS['wgVersion'], '1.25', '<' ) ) {
+			return new ApiResult( $this->newApiMain( $params ) );
+		}
+
+		$result = new ApiResult( 5 );
+
+		$errorFormatter = new \ApiErrorFormatter_BackCompat( $result );
+		$result->setErrorFormatter( $errorFormatter );
+
+		return $result;
 	}
 
 	/**
@@ -52,6 +62,10 @@ class MwApiFactory {
 
 		$api = $this->newApiMain( $params );
 		$api->execute();
+
+		if ( method_exists( $api->getResult(), 'getResultData' ) ) {
+			return $api->getResult()->getResultData();
+		}
 
 		return $api->getResultData();
 	}

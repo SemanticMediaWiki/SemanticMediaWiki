@@ -146,7 +146,8 @@ class ApiBrowseBySubjectDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$instance->execute();
 
-		return $instance;
+		// MW 1.25
+		return method_exists( $instance, 'getResult' ) ? $instance->getResult() : $instance;
 	}
 
 }
