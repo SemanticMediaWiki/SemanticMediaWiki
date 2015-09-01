@@ -93,7 +93,11 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->execute();
 
-		$result = $instance->getResultData();
+		// MW 1.25
+		$result = method_exists( $instance->getResult(), 'getResultData' ) ? $instance->getResult()->getResultData() : $instance->getResultData();
+
+		// This came with 1.25, no idea what this suppose to be
+		unset( $result['_type'] );
 
 		$this->assertEquals(
 			$expected,
