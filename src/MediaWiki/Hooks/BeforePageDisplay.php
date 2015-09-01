@@ -52,6 +52,12 @@ class BeforePageDisplay {
 
 		$title = $this->outputPage->getTitle();
 
+		// MW 1.26 / T107399 / Async RL causes style delay
+		$this->outputPage->addModuleStyles( array(
+			'ext.smw.style',
+			'ext.smw.tooltip.styles' )
+		);
+
 		// Add style resources to avoid unstyled content
 		$this->outputPage->addModules( array( 'ext.smw.style' ) );
 
