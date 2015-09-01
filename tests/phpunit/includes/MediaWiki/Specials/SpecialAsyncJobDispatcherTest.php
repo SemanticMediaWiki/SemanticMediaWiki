@@ -73,7 +73,7 @@ class SpecialAsyncJobDispatcherTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testValidPostAsyncJob() {
+	public function testValidPostAsyncUpdateJob() {
 
 		if ( version_compare( $GLOBALS['wgVersion'], '1.20', '<' ) ) {
 			$this->markTestSkipped( "Skipping test because of missing method" );
@@ -85,6 +85,42 @@ class SpecialAsyncJobDispatcherTest extends \PHPUnit_Framework_TestCase {
 			'timestamp' => $timestamp,
 			'sessionToken' => SpecialAsyncJobDispatcher::getSessionToken( $timestamp ),
 			'async-job' => 'SMW\UpdateJob|Foo'
+		);
+
+		$instance = new SpecialAsyncJobDispatcher();
+		$instance->disallowToModifyHttpHeader();
+
+		$instance->getContext()->setRequest(
+			new \FauxRequest( $request, true )
+		);
+
+		$this->assertTrue(
+			$instance->execute( '' )
+		);
+	}
+
+	public function testValidPostAsyncParserCachePurgeJob() {
+
+		if ( version_compare( $GLOBALS['wgVersion'], '1.20', '<' ) ) {
+			$this->markTestSkipped( "Skipping test because of missing method" );
+		}
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'getPropertySubjects' )
+			->will( $this->returnValue( array() ) );
+
+		$this->applicationFactory->registerObject( 'Store', $store );
+
+		$timestamp =  time();
+
+		$request = array(
+			'timestamp' => $timestamp,
+			'sessionToken' => SpecialAsyncJobDispatcher::getSessionToken( $timestamp ),
+			'async-job' => 'SMW\ParserCachePurgeJob|Foo',
+			'idlist' => '1|2'
 		);
 
 		$instance = new SpecialAsyncJobDispatcher();

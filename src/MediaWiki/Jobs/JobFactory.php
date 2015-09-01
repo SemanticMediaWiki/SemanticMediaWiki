@@ -36,4 +36,15 @@ class JobFactory {
 		return new UpdateDispatcherJob( $title, $parameters );
 	}
 
+	/**
+	 * @since 2.0
+	 *
+	 * @param Title $title
+	 *
+	 * @return ParserCachePurgeJob
+	 */
+	public function newParserCachePurgeJob( Title $title, array $parameters = array() ) {
+		return new ParserCachePurgeJob( $title, $parameters );
+	}
+
 }

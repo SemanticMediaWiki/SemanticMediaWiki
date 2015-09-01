@@ -31,7 +31,7 @@ class AsyncJobDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider dispatchableJobProvider
 	 */
-	public function testDispatchFor( $type, $dispatchableAsyncUsageState ) {
+	public function testDispatchFor( $type, $dispatchableAsyncUsageState, $parameters = array() ) {
 
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
@@ -42,10 +42,32 @@ class AsyncJobDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( true ) );
 
 		$instance = new AsyncJobDispatchManager( $httpRequest );
+		$instance->reset();
 		$instance->setDispatchableAsyncUsageState( $dispatchableAsyncUsageState );
 
 		$this->assertTrue(
-			$instance->dispatchJobFor( $type , DIWikiPage::newFromText( __METHOD__ )->getTitle() )
+			$instance->dispatchJobFor( $type , DIWikiPage::newFromText( __METHOD__ )->getTitle(), $parameters )
+		);
+	}
+
+	/**
+	 * @dataProvider preliminaryCheckProvider
+	 */
+	public function testPreliminaryCheckForType( $type, $parameters = array() ) {
+
+		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$httpRequest->expects( $this->any() )
+			->method( 'ping' )
+			->will( $this->returnValue( true ) );
+
+		$instance = new AsyncJobDispatchManager( $httpRequest );
+		$instance->reset();
+
+		$this->assertNull(
+			$instance->dispatchJobFor( $type , DIWikiPage::newFromText( __METHOD__ )->getTitle(), $parameters )
 		);
 	}
 
@@ -62,13 +84,30 @@ class AsyncJobDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$provider[] = array(
-			'UnknownJob',
-			false
+			'SMW\ParserCachePurgeJob',
+			false,
+			array( 'idlist' => '1|2' )
 		);
 
 		$provider[] = array(
-			'UnknownJob',
-			true
+			'SMW\ParserCachePurgeJob',
+			true,
+			array( 'idlist' => '1|2' )
+		);
+
+		return $provider;
+	}
+
+	public function preliminaryCheckProvider() {
+
+		$provider[] = array(
+			'SMW\ParserCachePurgeJob',
+			array()
+		);
+
+
+		$provider[] = array(
+			'UnknownJob'
 		);
 
 		return $provider;

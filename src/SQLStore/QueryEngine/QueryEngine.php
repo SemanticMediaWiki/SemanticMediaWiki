@@ -290,6 +290,16 @@ class QueryEngine {
 	 */
 	private function getCountQueryResult( Query $query, $rootid ) {
 
+		$queryResult = new QueryResult(
+			$query->getDescription()->getPrintrequests(),
+			$query,
+			array(),
+			$this->store,
+			false
+		);
+
+		$queryResult->setCountValue( 0 );
+
 		$qobj = $this->querySegments[$rootid];
 
 		if ( $qobj->joinfield === '' ) { // empty result, no query needed
@@ -313,7 +323,9 @@ class QueryEngine {
 		$count = $row->count;
 		$db->freeResult( $res );
 
-		return $count;
+		$queryResult->setCountValue( $count );
+
+		return $queryResult;
 	}
 
 	/**

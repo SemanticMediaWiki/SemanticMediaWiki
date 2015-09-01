@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore;
 
 use SMW\SQLStore\ByIdDataItemFinder;
 use SMW\ApplicationFactory;
+use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\SQLStore\ByIdDataItemFinder
@@ -188,6 +189,37 @@ class ByIdDataItemFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertNull(
 			$instance->getDataItemForId( 42 )
+		);
+	}
+
+	public function testGetDataItemPoolHashListFor() {
+
+		$row = new \stdClass;
+		$row->smw_title = 'Foo';
+		$row->smw_namespace = 0;
+		$row->smw_iw = '';
+		$row->smw_subobject ='';
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'select' )
+			->with(
+				$this->anything(),
+				$this->anything(),
+				$this->equalTo( array( 'smw_id' => array( 42 ) ) ) )
+			->will( $this->returnValue( array( $row ) ) );
+
+		$instance = new ByIdDataItemFinder(
+			$connection,
+			$this->cache
+		);
+
+		$this->assertEquals(
+			array( 'Foo#0##' ),
+			$instance->getDataItemPoolHashListFor( array( 42 ) )
 		);
 	}
 
