@@ -197,12 +197,10 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 		);
 	}
 
-	public function testAddDependenciesFromQueryResult() {
-
-		$description = new SomeProperty(
-			new DIProperty( 'Foo' ),
-			new ValueDescription( DIWikiPage::newFromText( 'Bar' ) )
-		);
+	/**
+	 * @dataProvider descriptionProvider
+	 */
+	public function testAddDependenciesFromQueryResult( $description ) {
 
 		$query = new Query(
 			$description
@@ -272,6 +270,30 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 
 		$instance = new EmbeddedQueryDependencyLinksStore( $store );
 		$instance->addDependenciesFromQueryResult( $queryResult );
+	}
+
+	public function descriptionProvider() {
+
+		$description = new SomeProperty(
+			new DIProperty( 'Foo' ),
+			new ValueDescription( DIWikiPage::newFromText( 'Bar' ) )
+		);
+
+		$provider[] = array(
+			$description
+		);
+
+		#1 uses inverse property declaration
+		$description = new SomeProperty(
+			new DIProperty( 'Foo', true ),
+			new ValueDescription( DIWikiPage::newFromText( 'Bar' ) )
+		);
+
+		$provider[] = array(
+			$description
+		);
+
+		return $provider;
 	}
 
 }

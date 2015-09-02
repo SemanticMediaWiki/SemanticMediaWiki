@@ -340,7 +340,14 @@ class EmbeddedQueryDependencyLinksStore {
 
 		if ( $description instanceof SomeProperty ) {
 			$this->doResolveDependenciesFromDescription( $subjects, $description->getDescription() );
-			$subjects[] = $description->getProperty()->getDiWikiPage();
+
+			$property = $description->getProperty();
+
+			if ( $property->isInverse() ) {
+				$property = new DIProperty( $property->getKey() );
+			}
+
+			$subjects[] = $property->getDiWikiPage();
 		}
 
 		if ( $description instanceof Conjunction || $description instanceof Disjunction ) {
