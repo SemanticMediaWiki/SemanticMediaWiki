@@ -3,33 +3,6 @@ set -ex
 
 cd ..
 
-## MW 1.25+ requires to have Composer run first otherwise the LoggerInterface
-## is missing while running install.php
-runComposerBeforeInstall='NO'
-
-## https://phabricator.wikimedia.org/T100409 was resolved but in case this
-## reappears in future
-case "$MW" in
-'1.23.5')
-  MW='master@c9bd517b21'
-  ;;
-'1.24.1')
-  MW='master@07680d5579'
-  ;;
-'1.22.12')
-  MW='master@ac80015657'
-  ;;
-'1.19.20')
-  MW='master@1c7800109b'
-  ;;
-'1.25.1')
-  runComposerBeforeInstall='YES'
-  ;;
-'master')
-  runComposerBeforeInstall='YES'
-  ;;
-esac
-
 ## Use sha (master@5cc1f1d) to download a particular commit to avoid breakages
 ## introduced by MediaWiki core
 if [[ "$MW" == *@* ]]
@@ -49,9 +22,10 @@ mv mediawiki-* mw
 
 cd mw
 
-if [ "$runComposerBeforeInstall" == "YES" ]
+## MW 1.25 requires Psr\Logger
+if [ -f composer.json ]
 then
-  composer install
+  composer install --prefer-source
 fi
 
 if [ "$DB" == "postgres" ]
