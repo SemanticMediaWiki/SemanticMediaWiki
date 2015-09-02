@@ -29,6 +29,10 @@ class DumpRdfMaintenanceTest extends MwDBaseUnitTestCase {
 	protected function setUp() {
 		parent::setUp();
 
+		if ( version_compare( $GLOBALS['wgVersion'], '1.20', '<' ) ) {
+			$this->markTestSkipped( "Skipping this test, MW 1.19 doesn't clean-up the title cache correctly." );
+		}
+
 		$this->runnerFactory  = UtilityFactory::getInstance()->newRunnerFactory();
 		$this->titleValidator = UtilityFactory::getInstance()->newValidatorFactory()->newTitleValidator();
 		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
