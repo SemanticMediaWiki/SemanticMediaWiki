@@ -279,6 +279,7 @@
 	"smw-pa-property-predefined-common": "Esta propiedá ta pre-encadarmada (tamién conocida como [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propiedá especial]) y vien con otros privilexos alministrativos más pero puede usase como cualquier otra [https://www.semantic-mediawiki.org/wiki/Property propiedá definida pol usuariu].",
 	"smw-pa-property-predefined_ask": "«$1» ye una propiedá predefinida que representa metainformación (en forma d'un [https://www.semantic-mediawiki.org/wiki/Subobject suboxetu]) sobro consultes individuales.",
 	"smw-pa-property-predefined_asksi": "«$1» ye una propiedá predefinida que recueye'l númberu de condiciones utilizaes nuna consulta.",
+	"smw-pa-property-predefined_askde": "\"$1\" ye una propiedá predefinida qu'informa sobre la fondura (valor numbéricu calculáu en base al añeramientu de subconsultes y cadenes de propiedaes resueltes) d'una consulta, mientres la execución de consultes tea siendo acutada pola opción [https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth $smwgQMaxDepth].",
 	"smw-sp-properties-docu": "Esta páxina amuesa les [https://www.semantic-mediawiki.org/wiki/Property propiedaes] disponibles y cuando se filtria, namái apaecen les propiedaes definíes pol usuariu que casen cola condición. Pa una vista diferenciada, vea la páxina especial [[Special:UnusedProperties|propiedaes ensin usu]] o [[Special:WantedProperties|propiedaes buscaes]].",
 	"smw-sp-properties-cache-info": "Los datos de la llista recuperaronse de la [https://www.semantic-mediawiki.org/wiki/Caching cache], y anovaronse por última vez el $1.",
 	"smw-sp-properties-header-label": "Llista de propiedaes",
@@ -289,5 +290,15 @@
 	"smw-sp-admin-idlookup-docu": "Ver detalles tocante a una Id interna d'oxetu que representa entidaes individuales (páxina wiki, suboxetu etc.) en Semantic MediaWiki.",
 	"smw-sp-admin-idlookup-objectid": "Id d'oxetu:",
 	"smw-livepreview-loading": "Cargando...",
-	"smw-sp-searchbyproperty-resultlist-header": "Llista de resultaos"
+	"smw-sp-searchbyproperty-description": "Esta páxina apurre una [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces interfaz de navegación] simple p'atopar entidaes descrites por una propiedá y un valor con nome. Otres interfaces de busca disponibles incluyen la [[Special:PageProperty|busca de propiedaes  de páxina]] y el [[Special:Ask|constructor de consultes]].",
+	"smw-sp-searchbyproperty-resultlist-header": "Llista de resultaos",
+	"smw-sp-searchbyproperty-nonvaluequery": "Una llista de valores que tienen atribuída la propiedá «$1».",
+	"smw-sp-searchbyproperty-valuequery": "Una llista de páxines que tienen la propiedá \"$1\" col valor \"$2\" anotáu.",
+	"smw-datavalue-number-textnotallowed": "\"$1\" nun puede atribuise a un tipu de númberu declaráu con valor $2.",
+	"smw-editpage-annotation-enabled": "Esta páxina almite anotaciones semántiques nel testu (p. ex. <nowiki>\"[[Is specified as::World Heritage Site]]\"</nowiki>) pa construir conteníu estructuráu y consultable facilitáu por Semantic MediaWiki. Pa una descripción completa sobre cómo usar anotaciones o la función analizadora #ask, consulta les páxines d'ayuda [https://www.semantic-mediawiki.org/wiki/Help:Getting_started primeros pasos], [https://www.semantic-mediawiki.org/wiki/Help:In-text_annotation anotaciones nel testu] o [https://www.semantic-mediawiki.org/wiki/Help:Inline_queries consultes en llinia].",
+	"smw-editpage-annotation-disabled": "Esta páxina nun ta activada pa les anotaciones semántiques nel testu por torgues nel espaciu de nomes. Los detalles de como activar l'espaciu de nomes descríbense na páxina d'ayuda de la [https://semantic-mediawiki.org/wiki/Help:Configuration configuración].",
+	"smw-editpage-property-annotation-enabled": "Esta propiedá puede estendese usando anotaciones semántiques pa especificar un tipu de datu (p. ex. <nowiki>\"[[Has type::Page]]\"</nowiki>) o otres declaraciones d'asistencia (p. ex. <nowiki>\"[[Subproperty of::dc:date]]\"</nowiki>). Pa saber cómo aumentar esta páxina, consulta les páxines d'ayuda [https://www.semantic-mediawiki.org/wiki/Help:Property_declaration declaración d'una propiedá] o la [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes llista de los tipos de datos disponibles].",
+	"smw-editpage-property-annotation-disabled": "Esta propiedá nun puede estendese con una anotación de tipu de datu (p. ex. <nowiki>\"[[Has type::Page]]\"</nowiki>) porque yá ta predefinida (pa más información, consulta la páxina d'ayuda [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propiedaes especiales]).",
+	"smw-editpage-concept-annotation-enabled": "Esti conceptu pué ampliase usando la función de analís #concept. Pa una descripción de como usar #concept, consulta la páxina d'ayuda [https://www.semantic-mediawiki.org/wiki/Help:Concepts conceptos].",
+	"log-name-smw": "Rexistru de MediaWiki Semántica"
 }
