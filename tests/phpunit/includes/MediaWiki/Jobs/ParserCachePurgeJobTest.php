@@ -48,13 +48,12 @@ class ParserCachePurgeJobTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testJobWithIdList() {
+	/**
+	 * @dataProvider parametersProvider
+	 */
+	public function testJobWithIdList( $parameters ) {
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
-
-		$parameters = array(
-			'idlist' => array( 1, 2 )
-		);
 
 		$instance = new ParserCachePurgeJob(
 			$subject->getTitle(),
@@ -64,6 +63,19 @@ class ParserCachePurgeJobTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue(
 			$instance->run()
 		);
+	}
+
+	public function parametersProvider() {
+
+		$provider[] = array(
+			'idlist' => array( 1, 2 )
+		);
+
+		$provider[] = array(
+			'idlist' => '1|2'
+		);
+
+		return $provider;
 	}
 
 }
