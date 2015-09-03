@@ -163,6 +163,7 @@ class AsyncJobDispatchManager {
 		}
 
 		$this->httpRequest->setOption( CURLOPT_URL, $this->url );
+		$this->httpRequest->setOption( CURLOPT_SSL_VERIFYPEER, false );
 
 		return self::$canConnectToUrl = $this->httpRequest->ping();
 	}

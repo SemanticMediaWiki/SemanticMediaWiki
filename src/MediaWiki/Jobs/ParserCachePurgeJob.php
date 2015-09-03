@@ -70,8 +70,6 @@ class ParserCachePurgeJob extends JobBase {
 			$this->findEmbeddedQueryTargetLinksBatches( $this->getParameter( 'idlist' ) );
 		}
 
-		wfDebugLog( 'smw', __METHOD__  . ' with limit set to ' . $this->limit . "\n" );
-
 		$this->pageUpdater->addPage( $this->getTitle() );
 		$this->pageUpdater->doPurgeParserCache();
 
@@ -111,9 +109,11 @@ class ParserCachePurgeJob extends JobBase {
 			return true;
 		}
 
+		$countedHashListEntries = count( $hashList );
+
 		// If more results are available then use an iterative increase to fetch
 		// the remaining updates by creating successive jobs
-		if ( count( $hashList ) > $this->limit ) {
+		if ( $countedHashListEntries > $this->limit ) {
 
 			$job = new self( $this->getTitle(), array(
 				'idlist' => $idList,
@@ -123,6 +123,8 @@ class ParserCachePurgeJob extends JobBase {
 
 			$job->run();
 		}
+
+		wfDebugLog( 'smw', __METHOD__  . ' limit set to ' . $this->limit . ' for counted entries of ' . $countedHashListEntries . "\n" );
 
 		$hashList = $this->doBuildUniqueTargetLinksHashList(
 			$hashList

@@ -506,6 +506,10 @@ class HookRegistry {
 				$applicationFactory->getSettings()->get( 'smwgEnabledQueryDependencyLinksStore' )
 			);
 
+			$embeddedQueryDependencyLinksStore->setPropertyDependencyDetectionBlacklist(
+				$applicationFactory->getSettings()->get( 'smwgPropertyDependencyDetectionBlacklist' )
+			);
+
 			$embeddedQueryDependencyLinksStore->addDependenciesFromQueryResult( $result );
 
 			return true;
