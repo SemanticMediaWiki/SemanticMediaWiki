@@ -43,6 +43,14 @@ class EmbeddedQueryDependencyLinksStore {
 	private $isEnabled = true;
 
 	/**
+	 * Specifies a list of property keys to be excluded from the detection
+	 * process.
+	 *
+	 * @var array
+	 */
+	private $propertyDependencyDetectionBlacklist = array();
+
+	/**
 	 * @since 2.3
 	 *
 	 * @param Store $store
@@ -68,6 +76,19 @@ class EmbeddedQueryDependencyLinksStore {
 	 */
 	public function setEnabledState( $isEnabled ) {
 		$this->isEnabled = (bool)$isEnabled;
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @param array $propertyDependencyDetectionBlacklist
+	 */
+	public function setPropertyDependencyDetectionBlacklist( array $propertyDependencyDetectionBlacklist ) {
+		// Make sure that user defined properties are correctly normalized and flip
+		// to build an index based map
+		$this->propertyDependencyDetectionBlacklist = array_flip(
+			str_replace( ' ', '_', $propertyDependencyDetectionBlacklist )
+		);
 	}
 
 	/**
@@ -307,7 +328,7 @@ class EmbeddedQueryDependencyLinksStore {
 		// was used with a hash to avoid duplicate entries hence the re-copy
 		$inserts = array_values( $inserts );
 
-		wfDebugLog( 'smw' , __METHOD__ . ' insert for ' . $sid . "\n" );
+		wfDebugLog( 'smw' , __METHOD__ . ' insert for SID ' . $sid . "\n" );
 
 		$this->connection->insert(
 			SMWSQLStore3::QUERY_LINKS_TABLE,
@@ -340,20 +361,26 @@ class EmbeddedQueryDependencyLinksStore {
 
 		if ( $description instanceof SomeProperty ) {
 			$this->doResolveDependenciesFromDescription( $subjects, $description->getDescription() );
-
-			$property = $description->getProperty();
-
-			if ( $property->isInverse() ) {
-				$property = new DIProperty( $property->getKey() );
-			}
-
-			$subjects[] = $property->getDiWikiPage();
+			$this->doMatchProperty( $subjects, $description->getProperty() );
 		}
 
 		if ( $description instanceof Conjunction || $description instanceof Disjunction ) {
 			foreach ( $description->getDescriptions() as $description ) {
 				$this->doResolveDependenciesFromDescription( $subjects, $description );
 			}
+		}
+	}
+
+	private function doMatchProperty( &$subjects, DIProperty $property ) {
+
+		if ( $property->isInverse() ) {
+			$property = new DIProperty( $property->getKey() );
+		}
+
+		$key = str_replace( ' ', '_', $property->getKey() );
+
+		if ( !isset( $this->propertyDependencyDetectionBlacklist[$key] ) ) {
+			$subjects[] = $property->getDiWikiPage();
 		}
 	}
 
@@ -385,7 +412,8 @@ class EmbeddedQueryDependencyLinksStore {
 
 	private function getConceptDescription( DIWikiPage $concept ) {
 
-		$value = $this->store->getSemanticData( $concept )->getPropertyValues(
+		$value = $this->store->getPropertyValues(
+			$concept,
 			new DIProperty( '_CONC' )
 		);
 

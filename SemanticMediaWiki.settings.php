@@ -881,3 +881,19 @@ $GLOBALS['smwgEnabledAsyncJobDispatcher'] = true;
 ##
 $GLOBALS['smwgEnabledQueryDependencyLinksStore'] = false;
 ##
+
+###
+# Relates to `smwgEnabledQueryDependencyLinksStore` and defines property keys
+# to be excluded from the dependency detection.
+#
+# For example, to avoid a purge process being triggered for each altered subobject
+# '_SOBJ' is excluded from the processing but it will not exclude any properties
+# defined by a subobject (given that it is not part of an extended exclusion list).
+#
+# `_MDAT` is excluded to avoid a purge on each page edit with a `Modification date`
+# change that would otherwise trigger a dependency update.
+#
+# @since 2.3 (experimental)
+##
+$GLOBALS['smwgPropertyDependencyDetectionBlacklist'] = array( '_MDAT', '_SOBJ' );
+##
