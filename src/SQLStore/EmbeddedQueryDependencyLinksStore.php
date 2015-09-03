@@ -51,6 +51,16 @@ class EmbeddedQueryDependencyLinksStore {
 	private $propertyDependencyDetectionBlacklist = array();
 
 	/**
+	 * Time factor to be used to determine whether an update should actually occur
+	 * or not. The comparison is made against the page_touched timestamp (updated
+	 * by the ParserCachePurgeJob) to a previous update to avoid unnecessary DB
+	 * transactions if it takes place within the computed time frame.
+	 *
+	 * @var integer
+	 */
+	private $skewFactorForDepedencyUpdateInSeconds = 10;
+
+	/**
 	 * @since 2.3
 	 *
 	 * @param Store $store
@@ -188,10 +198,11 @@ class EmbeddedQueryDependencyLinksStore {
 		}
 
 		$options = array(
-			'LIMIT'    => $limit,
-			'OFFSET'   => $offset,
-			'GROUP BY' => 's_id',
-			'ORDER BY' => 's_id'
+			'LIMIT'     => $limit,
+			'OFFSET'    => $offset,
+			'GROUP BY'  => 's_id',
+			'ORDER BY'  => 's_id',
+			'DISTINCT'  => true
 		);
 
 		$rows = $this->connection->select(
@@ -235,6 +246,12 @@ class EmbeddedQueryDependencyLinksStore {
 		}
 
 		$subject = $result->getQuery()->getSubject();
+		$hash = $result->getQuery()->getQueryId();
+		$sid = $this->getIdForSubject( $subject, $hash );
+
+		if ( $sid > 0 && ( $subject->getTitle()->getTouched() + $this->skewFactorForDepedencyUpdateInSeconds ) > wfTimestamp( TS_MW ) ) {
+			return wfDebugLog( 'smw', __METHOD__ . " suppressed (skewed timestamp) for SID " . $sid . "\n" );
+		}
 
 		$dependencyList = array(
 			$subject
@@ -257,9 +274,6 @@ class EmbeddedQueryDependencyLinksStore {
 		);
 
 		$result->reset();
-
-		$hash = $result->getQuery()->getQueryId();
-		$sid = $this->getIdForSubject( $subject, $hash );
 
 		if ( $sid > 0 ) {
 			return $this->updateDependencyList( $sid, $dependencyList );

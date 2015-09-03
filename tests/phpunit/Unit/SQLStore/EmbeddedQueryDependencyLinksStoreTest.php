@@ -355,6 +355,77 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 		$instance->addDependenciesFromQueryResult( $queryResult );
 	}
 
+	public function testTryToAddDependenciesWithinSkewLimit() {
+
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query = new Query(
+			$description
+		);
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'getTouched' )
+			->will( $this->returnValue( wfTimestamp( TS_MW ) + 10 ) );
+
+		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$subject->expects( $this->once() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$query->setSubject( $subject );
+
+		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->any() )
+			->method( 'getQuery' )
+			->will( $this->returnValue( $query ) );
+
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'getSMWPageID' ) )
+			->getMock();
+
+		$idTable->expects( $this->once() )
+			->method( 'getSMWPageID' )
+			->will( $this->returnValue( 42 ) );
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connectionManager = $this->getMockBuilder( '\SMW\ConnectionManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connectionManager->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getObjectIds' ) )
+			->getMockForAbstractClass();
+
+		$store->setConnectionManager( $connectionManager );
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
+		$instance = new EmbeddedQueryDependencyLinksStore( $store );
+		$instance->addDependenciesFromQueryResult( $queryResult );
+	}
+
 	public function descriptionProvider() {
 
 		$description = new SomeProperty(

@@ -21,7 +21,7 @@ class ParserCachePurgeJob extends JobBase {
 	 * A balanced size that should be carefully monitored in order to not have a
 	 * negative impact when running the initial update in online mode.
 	 */
-	const CHUNK_SIZE = 200;
+	const CHUNK_SIZE = 300;
 
 	/**
 	 * @var integer
@@ -86,9 +86,13 @@ class ParserCachePurgeJob extends JobBase {
 	 * for all at once is not feasible hence the iterative process of creating
 	 * batches that run through the job scheduler.
 	 *
-	 * @param array $idList
+	 * @param array|string $idList
 	 */
-	private function findEmbeddedQueryTargetLinksBatches( array $idList ) {
+	private function findEmbeddedQueryTargetLinksBatches( $idList ) {
+
+		if ( is_string( $idList ) && strpos( $idList, '|') !== false ) {
+			$idList = explode( '|', $idList );
+		}
 
 		if ( $idList === array() ) {
 			return true;
@@ -117,14 +121,14 @@ class ParserCachePurgeJob extends JobBase {
 
 			$job = new self( $this->getTitle(), array(
 				'idlist' => $idList,
-				'limit'  => $this->limit + self::CHUNK_SIZE,
-				'offset' => $this->limit
+				'limit'  => $this->limit,
+				'offset' => $this->offset + self::CHUNK_SIZE
 			) );
 
 			$job->run();
 		}
 
-		wfDebugLog( 'smw', __METHOD__  . ' limit set to ' . $this->limit . ' for counted entries of ' . $countedHashListEntries . "\n" );
+		wfDebugLog( 'smw', __METHOD__  . " counted: {$countedHashListEntries} | offset: {$this->offset}  for " . $this->getTitle()->getPrefixedDBKey() . "\n" );
 
 		$hashList = $this->doBuildUniqueTargetLinksHashList(
 			$hashList
