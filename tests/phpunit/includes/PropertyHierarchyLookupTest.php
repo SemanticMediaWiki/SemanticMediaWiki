@@ -2,12 +2,12 @@
 
 namespace SMW\Tests;
 
-use SMW\PropertyHierarchyExaminer;
+use SMW\PropertyHierarchyLookup;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 
 /**
- * @covers \SMW\PropertyHierarchyExaminer
+ * @covers \SMW\PropertyHierarchyLookup
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,7 +15,7 @@ use SMW\DIWikiPage;
  *
  * @author mwjames
  */
-class PropertyHierarchyExaminerTest extends \PHPUnit_Framework_TestCase {
+class PropertyHierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -28,8 +28,8 @@ class PropertyHierarchyExaminerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyHierarchyExaminer',
-			new PropertyHierarchyExaminer( $store, $cache )
+			'\SMW\PropertyHierarchyLookup',
+			new PropertyHierarchyLookup( $store, $cache )
 		);
 	}
 
@@ -57,7 +57,7 @@ class PropertyHierarchyExaminerTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( 'm#_SUBP#Foo' ),
 				$this->equalTo( false ) );
 
-		$instance = new PropertyHierarchyExaminer( $store, $cache );
+		$instance = new PropertyHierarchyLookup( $store, $cache );
 
 		$this->assertInternalType(
 			'boolean',
@@ -95,7 +95,7 @@ class PropertyHierarchyExaminerTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( 'f#_SUBP#Foo' ),
 				$this->anything() );
 
-		$instance = new PropertyHierarchyExaminer( $store, $cache );
+		$instance = new PropertyHierarchyLookup( $store, $cache );
 
 		$expected = array(
 			DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY )
@@ -137,7 +137,7 @@ class PropertyHierarchyExaminerTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( 'f#_SUBC#Foo' ),
 				$this->anything() );
 
-		$instance = new PropertyHierarchyExaminer( $store, $cache );
+		$instance = new PropertyHierarchyLookup( $store, $cache );
 
 		$expected = array(
 			DIWikiPage::newFromText( 'Bar', NS_CATEGORY )
@@ -163,7 +163,7 @@ class PropertyHierarchyExaminerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'contains' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new PropertyHierarchyExaminer( $store, $cache );
+		$instance = new PropertyHierarchyLookup( $store, $cache );
 		$instance->setSubpropertyDepth( 0 );
 
 		$this->assertFalse(
@@ -185,7 +185,7 @@ class PropertyHierarchyExaminerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'contains' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new PropertyHierarchyExaminer( $store, $cache );
+		$instance = new PropertyHierarchyLookup( $store, $cache );
 		$instance->setSubcategoryDepth( 0 );
 
 		$this->assertFalse(

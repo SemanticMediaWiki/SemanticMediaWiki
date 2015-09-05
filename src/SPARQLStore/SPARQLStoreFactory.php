@@ -6,7 +6,7 @@ use SMW\Store;
 use SMW\StoreFactory;
 use SMW\ConnectionManager;
 use SMW\ApplicationFactory;
-use SMW\PropertyHierarchyExaminer;
+use SMW\PropertyHierarchyLookup;
 use SMW\CircularReferenceGuard;
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
@@ -52,10 +52,19 @@ class SPARQLStoreFactory {
 	public function newMasterQueryEngine() {
 
 		$engineOptions = new EngineOptions();
+		$applicationFactory = ApplicationFactory::getInstance();
 
-		$propertyHierarchyExaminer = new PropertyHierarchyExaminer(
+		$propertyHierarchyLookup = new PropertyHierarchyLookup(
 			$this->store,
-			ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache( 500 )
+			$applicationFactory->newCacheFactory()->newFixedInMemoryCache( 500 )
+		);
+
+		$propertyHierarchyLookup->setSubcategoryDepth(
+			$applicationFactory->getSettings()->get( 'smwgQSubcategoryDepth' )
+		);
+
+		$propertyHierarchyLookup->setSubpropertyDepth(
+			$applicationFactory->getSettings()->get( 'smwgQSubpropertyDepth' )
 		);
 
 		$circularReferenceGuard = new CircularReferenceGuard( 'sparql-query' );
@@ -69,8 +78,8 @@ class SPARQLStoreFactory {
 			$circularReferenceGuard
 		);
 
-		$compoundConditionBuilder->setPropertyHierarchyExaminer(
-			$propertyHierarchyExaminer
+		$compoundConditionBuilder->setPropertyHierarchyLookup(
+			$propertyHierarchyLookup
 		);
 
 		$queryEngine = new QueryEngine(

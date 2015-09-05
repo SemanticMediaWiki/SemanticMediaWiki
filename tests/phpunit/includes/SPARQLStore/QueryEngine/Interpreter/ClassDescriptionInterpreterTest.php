@@ -11,7 +11,6 @@ use SMW\DIProperty;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -85,11 +84,11 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			\SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
-		$propertyHierarchyExaminer = $this->getMockBuilder( '\SMW\PropertyHierarchyExaminer' )
+		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyHierarchyExaminer->expects( $this->once() )
+		$propertyHierarchyLookup->expects( $this->once() )
 			->method( 'hasSubcategoryFor' )
 			->with( $this->equalTo( $category ) )
 			->will( $this->returnValue( true ) );
@@ -97,7 +96,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$resultVariable = 'result';
 
 		$compoundConditionBuilder = new CompoundConditionBuilder();
-		$compoundConditionBuilder->setPropertyHierarchyExaminer( $propertyHierarchyExaminer );
+		$compoundConditionBuilder->setPropertyHierarchyLookup( $propertyHierarchyLookup );
 		$compoundConditionBuilder->setResultVariable( $resultVariable );
 		$compoundConditionBuilder->setJoinVariable( $resultVariable );
 

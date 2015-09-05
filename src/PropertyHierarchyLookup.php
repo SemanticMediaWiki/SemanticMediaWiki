@@ -14,7 +14,7 @@ use SMWRequestOptions as RequestOptions;
  *
  * @author mwjames
  */
-class PropertyHierarchyExaminer {
+class PropertyHierarchyLookup {
 
 	/**
 	 * @var Store
@@ -106,7 +106,7 @@ class PropertyHierarchyExaminer {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return DIProperty[]
+	 * @return DIWikiPage[]|[]
 	 */
 	public function findSubpropertListFor( DIProperty $property ) {
 		return $this->findMatchesFor( '_SUBP', $property->getKey(), $property->getDiWikiPage() );
@@ -117,7 +117,7 @@ class PropertyHierarchyExaminer {
 	 *
 	 * @param DIWikiPage $category
 	 *
-	 * @return DIWikiPage[]
+	 * @return DIWikiPage[]|[]
 	 */
 	public function findSubcategoryListFor( DIWikiPage $category ) {
 		return $this->findMatchesFor( '_SUBC', $category->getDBKey(), $category );

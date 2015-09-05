@@ -8,7 +8,7 @@ use SMWQueryResult as QueryResult;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\ApplicationFactory;
-use SMW\PropertyHierarchyExaminer;
+use SMW\PropertyHierarchyLookup;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
@@ -39,9 +39,9 @@ class EmbeddedQueryDependencyListResolver {
 	private $propertyDependencyDetectionBlacklist = array();
 
 	/**
-	 * @var PropertyHierarchyExaminer
+	 * @var PropertyHierarchyLookup
 	 */
-	private $propertyHierarchyExaminer;
+	private $propertyHierarchyLookup;
 
 	/**
 	 * @var QueryResult
@@ -52,11 +52,11 @@ class EmbeddedQueryDependencyListResolver {
 	 * @since 2.3
 	 *
 	 * @param Store $store
-	 * @param PropertyHierarchyExaminer $propertyHierarchyExaminer
+	 * @param PropertyHierarchyLookup $propertyHierarchyLookup
 	 */
-	public function __construct( Store $store, PropertyHierarchyExaminer $propertyHierarchyExaminer ) {
+	public function __construct( Store $store, PropertyHierarchyLookup $propertyHierarchyLookup ) {
 		$this->store = $store;
-		$this->propertyHierarchyExaminer = $propertyHierarchyExaminer;
+		$this->propertyHierarchyLookup = $propertyHierarchyLookup;
 	}
 
 	/**
@@ -163,7 +163,7 @@ class EmbeddedQueryDependencyListResolver {
 		if ( $description instanceof ClassDescription ) {
 			foreach ( $description->getCategories() as $category ) {
 
-				if ( $this->propertyHierarchyExaminer->hasSubcategoryFor( $category ) ) {
+				if ( $this->propertyHierarchyLookup->hasSubcategoryFor( $category ) ) {
 					$this->doMatchSubcategory( $subjects, $category );
 				}
 
@@ -189,7 +189,7 @@ class EmbeddedQueryDependencyListResolver {
 			$property = new DIProperty( $property->getKey() );
 		}
 
-		if ( $this->propertyHierarchyExaminer->hasSubpropertyFor( $property ) ) {
+		if ( $this->propertyHierarchyLookup->hasSubpropertyFor( $property ) ) {
 			$this->doMatchSubproperty( $subjects, $property );
 		}
 
@@ -202,11 +202,11 @@ class EmbeddedQueryDependencyListResolver {
 
 	private function doMatchSubcategory( &$subjects, DIWikiPage $category ) {
 
-		$subcategories = $this->propertyHierarchyExaminer->findSubcategoryListFor( $category );
+		$subcategories = $this->propertyHierarchyLookup->findSubcategoryListFor( $category );
 
 		foreach ( $subcategories as $subcategory ) {
 
-			if ( $this->propertyHierarchyExaminer->hasSubcategoryFor( $subcategory ) ) {
+			if ( $this->propertyHierarchyLookup->hasSubcategoryFor( $subcategory ) ) {
 				$this->doMatchSubcategory( $subjects, $subcategory );
 			}
 
@@ -216,13 +216,13 @@ class EmbeddedQueryDependencyListResolver {
 
 	private function doMatchSubproperty( &$subjects, DIProperty $property ) {
 
-		$subproperties = $this->propertyHierarchyExaminer->findSubpropertListFor( $property );
+		$subproperties = $this->propertyHierarchyLookup->findSubpropertListFor( $property );
 
 		foreach ( $subproperties as $subproperty ) {
 
 			$subp = new DIProperty( $subproperty->getDBKey() );
 
-			if ( $this->propertyHierarchyExaminer->hasSubpropertyFor( $subp ) ) {
+			if ( $this->propertyHierarchyLookup->hasSubpropertyFor( $subp ) ) {
 				$this->doMatchSubproperty( $subjects, $subp );
 			}
 

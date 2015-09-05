@@ -11,7 +11,7 @@ use SMW\NamespaceManager;
 use SMW\SQLStore\EmbeddedQueryDependencyLinksStore;
 use SMW\SQLStore\EmbeddedQueryDependencyListResolver;
 use SMW\AsyncJobDispatchManager;
-use SMW\PropertyHierarchyExaminer;
+use SMW\PropertyHierarchyLookup;
 use Onoi\HttpRequest\HttpRequestFactory;
 
 /**
@@ -100,9 +100,17 @@ class HookRegistry {
 		$eventHandler = EventHandler::getInstance();
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$propertyHierarchyExaminer = new PropertyHierarchyExaminer(
+		$propertyHierarchyLookup = new PropertyHierarchyLookup(
 			$applicationFactory->getStore(),
 			$applicationFactory->newCacheFactory()->newFixedInMemoryCache( 500 )
+		);
+
+		$propertyHierarchyLookup->setSubcategoryDepth(
+			$applicationFactory->getSettings()->get( 'smwgQSubcategoryDepth' )
+		);
+
+		$propertyHierarchyLookup->setSubpropertyDepth(
+			$applicationFactory->getSettings()->get( 'smwgQSubpropertyDepth' )
 		);
 
 		/**
@@ -505,19 +513,11 @@ class HookRegistry {
 			return true;
 		};
 
-		$this->handlers['SMW::Store::AfterQueryResultLookupComplete'] = function ( $store, &$result ) use ( $applicationFactory, $propertyHierarchyExaminer ) {
-
-			$propertyHierarchyExaminer->setSubcategoryDepth(
-				$applicationFactory->getSettings()->get( 'smwgQSubcategoryDepth' )
-			);
-
-			$propertyHierarchyExaminer->setSubpropertyDepth(
-				$applicationFactory->getSettings()->get( 'smwgQSubpropertyDepth' )
-			);
+		$this->handlers['SMW::Store::AfterQueryResultLookupComplete'] = function ( $store, &$result ) use ( $applicationFactory, $propertyHierarchyLookup ) {
 
 			$embeddedQueryDependencyListResolver = new EmbeddedQueryDependencyListResolver(
 				$store,
-				$propertyHierarchyExaminer
+				$propertyHierarchyLookup
 			);
 
 			$embeddedQueryDependencyListResolver->setQueryResult(

@@ -63,14 +63,14 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testSomeProperty( $description, $orderByProperty, $sortkeys, $expectedConditionType, $expectedConditionString ) {
 
-		$propertyHierarchyExaminer = $this->getMockBuilder( '\SMW\PropertyHierarchyExaminer' )
+		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$resultVariable = 'result';
 
 		$compoundConditionBuilder = new CompoundConditionBuilder();
-		$compoundConditionBuilder->setPropertyHierarchyExaminer( $propertyHierarchyExaminer );
+		$compoundConditionBuilder->setPropertyHierarchyLookup( $propertyHierarchyLookup );
 		$compoundConditionBuilder->setResultVariable( $resultVariable );
 		$compoundConditionBuilder->setSortKeys( $sortkeys );
 		$compoundConditionBuilder->setJoinVariable( $resultVariable );
@@ -95,11 +95,11 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$property = new DIProperty( 'Foo' );
 
-		$propertyHierarchyExaminer = $this->getMockBuilder( '\SMW\PropertyHierarchyExaminer' )
+		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyHierarchyExaminer->expects( $this->once() )
+		$propertyHierarchyLookup->expects( $this->once() )
 			->method( 'hasSubpropertyFor' )
 			->with( $this->equalTo( $property ) )
 			->will( $this->returnValue( true ) );
@@ -107,7 +107,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$resultVariable = 'result';
 
 		$compoundConditionBuilder = new CompoundConditionBuilder();
-		$compoundConditionBuilder->setPropertyHierarchyExaminer( $propertyHierarchyExaminer );
+		$compoundConditionBuilder->setPropertyHierarchyLookup( $propertyHierarchyLookup );
 		$compoundConditionBuilder->setResultVariable( $resultVariable );
 		$compoundConditionBuilder->setJoinVariable( $resultVariable );
 

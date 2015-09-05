@@ -6,7 +6,6 @@ use SMW\SPARQLStore\SPARQLStoreFactory;
 
 /**
  * @covers \SMW\SPARQLStore\SPARQLStoreFactory
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

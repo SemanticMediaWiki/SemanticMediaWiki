@@ -246,7 +246,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			return null;
 		}
 
-		if ( $this->compoundConditionBuilder->getPropertyHierarchyExaminer() == null || !$this->compoundConditionBuilder->getPropertyHierarchyExaminer()->hasSubpropertyFor( $property ) ) {
+		if ( $this->compoundConditionBuilder->getPropertyHierarchyLookup() == null || !$this->compoundConditionBuilder->getPropertyHierarchyLookup()->hasSubpropertyFor( $property ) ) {
 			return null;
 		}
 
