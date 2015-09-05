@@ -448,7 +448,7 @@ class HookRegistry {
 		$this->handlers['EditPage::showEditForm:initial'] = function ( $editPage, $output = null ) use ( $applicationFactory ) {
 
 			// 1.19 hook interface is missing the output object
-			if ( !$output instanceOf \OutputPage ) {
+			if ( !$output instanceof \OutputPage ) {
 				$output = $GLOBALS['wgOut'];
 			}
 

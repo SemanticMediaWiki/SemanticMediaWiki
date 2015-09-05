@@ -164,7 +164,7 @@ class SemanticDataDeserializer implements Deserializer {
 
 		foreach ( $data['sobj'] as $subobject ) {
 
-			if ( isset( $subobject['subject'] ) &&  $subobject['subject'] === $id ) {
+			if ( isset( $subobject['subject'] ) && $subobject['subject'] === $id ) {
 				$this->doDeserialize( $subobject, $semanticData );
 			}
 

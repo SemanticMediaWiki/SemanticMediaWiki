@@ -46,7 +46,7 @@ class AsyncJobDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 		$instance->setDispatchableAsyncUsageState( $dispatchableAsyncUsageState );
 
 		$this->assertTrue(
-			$instance->dispatchJobFor( $type , DIWikiPage::newFromText( __METHOD__ )->getTitle(), $parameters )
+			$instance->dispatchJobFor( $type, DIWikiPage::newFromText( __METHOD__ )->getTitle(), $parameters )
 		);
 	}
 
@@ -67,7 +67,7 @@ class AsyncJobDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 		$instance->reset();
 
 		$this->assertNull(
-			$instance->dispatchJobFor( $type , DIWikiPage::newFromText( __METHOD__ )->getTitle(), $parameters )
+			$instance->dispatchJobFor( $type, DIWikiPage::newFromText( __METHOD__ )->getTitle(), $parameters )
 		);
 	}
 
