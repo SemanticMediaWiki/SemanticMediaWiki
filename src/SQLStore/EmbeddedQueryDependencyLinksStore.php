@@ -261,8 +261,8 @@ class EmbeddedQueryDependencyLinksStore {
 		$hash = $result->getQuery()->getQueryId();
 		$sid = $this->getIdForSubject( $subject, $hash );
 
-		if ( $sid > 0 && ( $subject->getTitle()->getTouched() + $this->skewFactorForDepedencyUpdateInSeconds ) > wfTimestamp( TS_MW ) ) {
-			return wfDebugLog( 'smw', __METHOD__ . " suppressed (skewed timestamp) for SID " . $sid . "\n" );
+		if ( $this->canSuppressUpdateOnSkewFactorFor( $sid, $subject ) ) {
+			return wfDebugLog( 'smw', __METHOD__ . " suppressed (skewed time) for SID " . $sid . "\n" );
 		}
 
 		$dependencyList = array(
@@ -291,7 +291,7 @@ class EmbeddedQueryDependencyLinksStore {
 			return $this->updateDependencyList( $sid, $dependencyList );
 		}
 
-		// SID is 0 because the storage update/process has not been finalized
+		// SID == 0 means the storage update/process has not been finalized
 		// (new object hasn't been registered) hence an event is registered to
 		// update the list after the update process has been completed
 
@@ -452,6 +452,28 @@ class EmbeddedQueryDependencyLinksStore {
 		return ApplicationFactory::getInstance()->newQueryParser()->getQueryDescription(
 			$value->getConceptQuery()
 		);
+	}
+
+	private function canSuppressUpdateOnSkewFactorFor( $sid, $subject ) {
+
+		if ( $sid < 1 ) {
+			return false;
+		}
+
+		$row = $this->connection->selectRow(
+			SMWSQLStore3::QUERY_LINKS_TABLE,
+			array(
+				's_id'
+			),
+			array( 's_id' => $sid ),
+			__METHOD__
+		);
+
+		$skewedTouchedTimesamp = $subject->getTitle()->getTouched() + $this->skewFactorForDepedencyUpdateInSeconds;
+
+		// Check whether the query has already been registered and only then
+		// check for a possible divergent time
+		return $row !== false && $skewedTouchedTimesamp > wfTimestamp( TS_MW );
 	}
 
 }
