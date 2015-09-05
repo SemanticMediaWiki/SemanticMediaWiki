@@ -123,7 +123,7 @@ class EmbeddedQueryDependencyLinksStore {
 				$deleteIdList[] = $delete['o_id'];
 			}
 
-			wfDebugLog( 'smw' , __METHOD__ . ' remove ' . implode( ',', $deleteIdList ) . "\n" );
+			wfDebugLog( 'smw', __METHOD__ . ' remove ' . implode( ',', $deleteIdList ) . "\n" );
 
 			$this->connection->beginAtomicTransaction( __METHOD__ );
 
@@ -328,7 +328,7 @@ class EmbeddedQueryDependencyLinksStore {
 				continue;
 			}
 
-			$inserts[ $sid . $oid ] = array(
+			$inserts[$sid . $oid] = array(
 				's_id' => $sid,
 				'o_id' => $oid
 			);
@@ -342,7 +342,7 @@ class EmbeddedQueryDependencyLinksStore {
 		// was used with a hash to avoid duplicate entries hence the re-copy
 		$inserts = array_values( $inserts );
 
-		wfDebugLog( 'smw' , __METHOD__ . ' insert for SID ' . $sid . "\n" );
+		wfDebugLog( 'smw', __METHOD__ . ' insert for SID ' . $sid . "\n" );
 
 		$this->connection->insert(
 			SMWSQLStore3::QUERY_LINKS_TABLE,

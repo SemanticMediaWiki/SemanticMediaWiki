@@ -217,7 +217,7 @@ abstract class SMWDataValue {
 	 *
 	 * @param boolean $usedByQueryCondition
 	 */
-	public function setQueryConditionUsage( $usedByQueryCondition ){
+	public function setQueryConditionUsage( $usedByQueryCondition ) {
 		$this->isUsedByQueryCondition = (bool)$usedByQueryCondition;
 	}
 

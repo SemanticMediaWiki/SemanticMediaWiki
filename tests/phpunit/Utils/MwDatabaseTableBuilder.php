@@ -261,7 +261,7 @@ class MwDatabaseTableBuilder {
 			while ( $this->getDBConnection()->trxLevel() > 0 ) {
 				$this->getDBConnection()->rollback();
 			}
-			
+
 			// 1.26 was mde protected
 			// $this->getDBConnection()->ignoreErrors( false );
 		}

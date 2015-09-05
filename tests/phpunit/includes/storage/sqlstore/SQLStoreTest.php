@@ -28,7 +28,7 @@ class SQLStoreTest extends \PHPUnit_Framework_TestCase {
 		$settings = array(
 			'smwgFixedProperties' => array(),
 			'smwgPageSpecialProperties' => array()
-		) ;
+		);
 
 		foreach ( $settings as $key => $value ) {
 			ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
