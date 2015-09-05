@@ -9,7 +9,9 @@ use SMW\ApplicationFactory;
 use SMW\EventHandler;
 use SMW\NamespaceManager;
 use SMW\SQLStore\EmbeddedQueryDependencyLinksStore;
+use SMW\SQLStore\EmbeddedQueryDependencyListResolver;
 use SMW\AsyncJobDispatchManager;
+use SMW\PropertyHierarchyExaminer;
 use Onoi\HttpRequest\HttpRequestFactory;
 
 /**
@@ -97,6 +99,11 @@ class HookRegistry {
 
 		$eventHandler = EventHandler::getInstance();
 		$applicationFactory = ApplicationFactory::getInstance();
+
+		$propertyHierarchyExaminer = new PropertyHierarchyExaminer(
+			$applicationFactory->getStore(),
+			$applicationFactory->newCacheFactory()->newFixedInMemoryCache( 500 )
+		);
 
 		/**
 		 * Hook: ParserAfterTidy to add some final processing to the fully-rendered page output
@@ -498,7 +505,28 @@ class HookRegistry {
 			return true;
 		};
 
-		$this->handlers['SMW::Store::AfterQueryResultLookupComplete'] = function ( $store, &$result ) use ( $applicationFactory ) {
+		$this->handlers['SMW::Store::AfterQueryResultLookupComplete'] = function ( $store, &$result ) use ( $applicationFactory, $propertyHierarchyExaminer ) {
+
+			$propertyHierarchyExaminer->setSubcategoryDepth(
+				$applicationFactory->getSettings()->get( 'smwgQSubcategoryDepth' )
+			);
+
+			$propertyHierarchyExaminer->setSubpropertyDepth(
+				$applicationFactory->getSettings()->get( 'smwgQSubpropertyDepth' )
+			);
+
+			$embeddedQueryDependencyListResolver = new EmbeddedQueryDependencyListResolver(
+				$store,
+				$propertyHierarchyExaminer
+			);
+
+			$embeddedQueryDependencyListResolver->setQueryResult(
+				$result
+			);
+
+			$embeddedQueryDependencyListResolver->setPropertyDependencyDetectionBlacklist(
+				$applicationFactory->getSettings()->get( 'smwgPropertyDependencyDetectionBlacklist' )
+			);
 
 			$embeddedQueryDependencyLinksStore = new EmbeddedQueryDependencyLinksStore( $store );
 
@@ -506,11 +534,9 @@ class HookRegistry {
 				$applicationFactory->getSettings()->get( 'smwgEnabledQueryDependencyLinksStore' )
 			);
 
-			$embeddedQueryDependencyLinksStore->setPropertyDependencyDetectionBlacklist(
-				$applicationFactory->getSettings()->get( 'smwgPropertyDependencyDetectionBlacklist' )
+			$embeddedQueryDependencyLinksStore->addDependencyList(
+				$embeddedQueryDependencyListResolver
 			);
-
-			$embeddedQueryDependencyLinksStore->addDependenciesFromQueryResult( $result );
 
 			return true;
 		};

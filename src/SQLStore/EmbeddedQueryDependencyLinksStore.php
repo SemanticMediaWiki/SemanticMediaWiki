@@ -11,13 +11,6 @@ use SMW\HashBuilder;
 use SMW\SemanticData;
 use SMW\ApplicationFactory;
 use SMW\EventHandler;
-use SMW\Query\Language\ConceptDescription;
-use SMW\Query\Language\SomeProperty;
-use SMW\Query\Language\ValueDescription;
-use SMW\Query\Language\Disjunction;
-use SMW\Query\Language\Conjunction;
-use SMW\Query\Language\ClassDescription;
-use SMW\Query\Language\ThingDescription;
 
 /**
  * @license GNU GPL v2+
@@ -41,14 +34,6 @@ class EmbeddedQueryDependencyLinksStore {
 	 * @var boolean
 	 */
 	private $isEnabled = true;
-
-	/**
-	 * Specifies a list of property keys to be excluded from the detection
-	 * process.
-	 *
-	 * @var array
-	 */
-	private $propertyDependencyDetectionBlacklist = array();
 
 	/**
 	 * Time factor to be used to determine whether an update should actually occur
@@ -86,19 +71,6 @@ class EmbeddedQueryDependencyLinksStore {
 	 */
 	public function setEnabledState( $isEnabled ) {
 		$this->isEnabled = (bool)$isEnabled;
-	}
-
-	/**
-	 * @since 2.3
-	 *
-	 * @param array $propertyDependencyDetectionBlacklist
-	 */
-	public function setPropertyDependencyDetectionBlacklist( array $propertyDependencyDetectionBlacklist ) {
-		// Make sure that user defined properties are correctly normalized and flip
-		// to build an index based map
-		$this->propertyDependencyDetectionBlacklist = array_flip(
-			str_replace( ' ', '_', $propertyDependencyDetectionBlacklist )
-		);
 	}
 
 	/**
@@ -245,47 +217,27 @@ class EmbeddedQueryDependencyLinksStore {
 	 *
 	 * @since 2.3
 	 *
-	 * @param QueryResult $result
+	 * @param EmbeddedQueryDependencyListResolver $embeddedQueryDependencyListResolver
 	 */
-	public function addDependenciesFromQueryResult( $result ) {
+	public function addDependencyList( EmbeddedQueryDependencyListResolver $embeddedQueryDependencyListResolver ) {
 
-		if ( !$this->isEnabled() || !$result instanceof QueryResult ) {
+		if ( !$this->isEnabled() || $embeddedQueryDependencyListResolver->getSubject() === null ) {
 			return null;
 		}
 
-		if ( $result->getQuery() === null || $result->getQuery()->getSubject() === null ) {
-			return null;
-		}
+		$subject = $embeddedQueryDependencyListResolver->getSubject();
+		$hash = $embeddedQueryDependencyListResolver->getQueryId();
 
-		$subject = $result->getQuery()->getSubject();
-		$hash = $result->getQuery()->getQueryId();
-		$sid = $this->getIdForSubject( $subject, $hash );
+		$sid = $this->getIdForSubject(
+			$subject,
+			$hash
+		);
 
 		if ( $this->canSuppressUpdateOnSkewFactorFor( $sid, $subject ) ) {
 			return wfDebugLog( 'smw', __METHOD__ . " suppressed (skewed time) for SID " . $sid . "\n" );
 		}
 
-		$dependencyList = array(
-			$subject
-		);
-
-		// Find entities described by the query
-		$this->doResolveDependenciesFromDescription(
-			$dependencyList,
-			$result->getQuery()->getDescription()
-		);
-
-		$this->doResolveDependenciesFromPrintRequest(
-			$dependencyList,
-			$result->getQuery()->getDescription()->getPrintRequests()
-		);
-
-		$dependencyList = array_merge(
-			$dependencyList,
-			$result->getResults()
-		);
-
-		$result->reset();
+		$dependencyList = $embeddedQueryDependencyListResolver->getQueryDependencySubjectList();
 
 		if ( $sid > 0 ) {
 			return $this->updateDependencyList( $sid, $dependencyList );
@@ -365,67 +317,6 @@ class EmbeddedQueryDependencyLinksStore {
 		$this->connection->commitAtomicTransaction( __METHOD__ );
 	}
 
-	private function doResolveDependenciesFromDescription( &$subjects, $description ) {
-
-		if ( $description instanceof ValueDescription && $description->getDataItem() instanceof DIWikiPage ) {
-			$subjects[] = $description->getDataItem();
-		}
-
-		if ( $description instanceof ConceptDescription ) {
-			$subjects[] = $description->getConcept();
-			$this->doResolveDependenciesFromDescription(
-				$subjects,
-				$this->getConceptDescription( $description->getConcept() )
-			);
-		}
-
-		if ( $description instanceof ClassDescription ) {
-			foreach ( $description->getCategories() as $category ) {
-				$subjects[] = $category;
-			}
-		}
-
-		if ( $description instanceof SomeProperty ) {
-			$this->doResolveDependenciesFromDescription( $subjects, $description->getDescription() );
-			$this->doMatchProperty( $subjects, $description->getProperty() );
-		}
-
-		if ( $description instanceof Conjunction || $description instanceof Disjunction ) {
-			foreach ( $description->getDescriptions() as $description ) {
-				$this->doResolveDependenciesFromDescription( $subjects, $description );
-			}
-		}
-	}
-
-	private function doMatchProperty( &$subjects, DIProperty $property ) {
-
-		if ( $property->isInverse() ) {
-			$property = new DIProperty( $property->getKey() );
-		}
-
-		$key = str_replace( ' ', '_', $property->getKey() );
-
-		if ( !isset( $this->propertyDependencyDetectionBlacklist[$key] ) ) {
-			$subjects[] = $property->getDiWikiPage();
-		}
-	}
-
-	private function doResolveDependenciesFromPrintRequest( &$subjects, array $printRequests ) {
-
-		foreach ( $printRequests as $printRequest ) {
-			$data = $printRequest->getData();
-
-			if ( $data instanceof \SMWPropertyValue ) {
-				$subjects[] = $data->getDataItem()->getDiWikiPage();
-			}
-
-			// Category
-			if ( $data instanceof \Title ) {
-				$subjects[] = DIWikiPage::newFromTitle( $data );
-			}
-		}
-	}
-
 	public function getIdForSubject( DIWikiPage $subject, $subobjectName = '' ) {
 		return $this->store->getObjectIds()->getSMWPageID(
 			$subject->getDBkey(),
@@ -433,24 +324,6 @@ class EmbeddedQueryDependencyLinksStore {
 			$subject->getInterwiki(),
 			$subobjectName,
 			false
-		);
-	}
-
-	private function getConceptDescription( DIWikiPage $concept ) {
-
-		$value = $this->store->getPropertyValues(
-			$concept,
-			new DIProperty( '_CONC' )
-		);
-
-		if ( $value === null || $value === array() ) {
-			return new ThingDescription();
-		}
-
-		$value = end( $value );
-
-		return ApplicationFactory::getInstance()->newQueryParser()->getQueryDescription(
-			$value->getConceptQuery()
 		);
 	}
 
