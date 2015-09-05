@@ -43,7 +43,7 @@ class AsyncJobDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new AsyncJobDispatchManager( $httpRequest );
 		$instance->reset();
-		$instance->setDispatchableAsyncUsageState( $dispatchableAsyncUsageState );
+		$instance->setEnabledAsyncUsageState( $dispatchableAsyncUsageState );
 
 		$this->assertTrue(
 			$instance->dispatchJobFor( $type, DIWikiPage::newFromText( __METHOD__ )->getTitle(), $parameters )

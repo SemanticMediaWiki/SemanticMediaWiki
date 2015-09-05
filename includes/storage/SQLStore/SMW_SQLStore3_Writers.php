@@ -1015,7 +1015,7 @@ class SMWSQLStore3Writers {
 			$httpRequestFactory->newCurlRequest()
 		);
 
-		$asyncJobDispatchManager->setDispatchableAsyncUsageState( $GLOBALS['smwgEnabledAsyncJobDispatcher'] );
+		$asyncJobDispatchManager->setEnabledAsyncUsageState( $GLOBALS['smwgEnabledAsyncJobDispatcher'] );
 
 		return $asyncJobDispatchManager;
 	}

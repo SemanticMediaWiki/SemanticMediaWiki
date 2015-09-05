@@ -102,6 +102,10 @@ class EmbeddedQueryDependencyLinksStore {
 	}
 
 	/**
+	 * This method is called from the `SMW::SQLStore::AfterDataUpdateComplete` hook and
+	 * removes outdated query ID's from the table if the diff contains a `delete`
+	 * entry for the _ask table.
+	 *
 	 * @since 2.3
 	 *
 	 * @param CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator
@@ -112,14 +116,18 @@ class EmbeddedQueryDependencyLinksStore {
 			return null;
 		}
 
-		$diff = $compositePropertyTableDiffIterator->getOrderedDiffByTable( 'smw_fpt_ask' );
+		$tableName = $this->store->getPropertyTableInfoFetcher()->findTableIdForProperty(
+			new DIProperty( '_ASK' )
+		);
+
+		$diff = $compositePropertyTableDiffIterator->getOrderedDiffByTable( $tableName );
 
 		// Remove any dependency for queries that are no longer used
-		if ( isset( $diff['smw_fpt_ask']['delete'] ) ) {
+		if ( isset( $diff[$tableName]['delete'] ) ) {
 
 			$deleteIdList = array();
 
-			foreach ( $diff['smw_fpt_ask']['delete'] as $delete ) {
+			foreach ( $diff[$tableName]['delete'] as $delete ) {
 				$deleteIdList[] = $delete['o_id'];
 			}
 
@@ -163,7 +171,7 @@ class EmbeddedQueryDependencyLinksStore {
 		}
 
 		return array(
-			'idlist' => $compositePropertyTableDiffIterator->getCombinedIdListForChangedEntities()
+			'idlist' => $compositePropertyTableDiffIterator->getCombinedIdListOfChangedEntities()
 		);
 	}
 
@@ -231,6 +239,10 @@ class EmbeddedQueryDependencyLinksStore {
 	}
 
 	/**
+	 * This method is called from the `SMW::Store::AfterQueryResultLookupComplete` hook
+	 * to resolve and update dependencies fetched fro an embedded query and its
+	 * QueryResult object.
+	 *
 	 * @since 2.3
 	 *
 	 * @param QueryResult $result

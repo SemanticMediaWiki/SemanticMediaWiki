@@ -428,7 +428,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->will( $this->returnValue( array() ) );
 
 		$this->mwHooksHandler->register( 'SMW::SQLStore::AfterDataUpdateComplete', function( $store, $semanticData, $compositePropertyTableDiffIterator ) use ( $test ){
-			$test->is( $compositePropertyTableDiffIterator->getCombinedIdListForChangedEntities() );
+			$test->is( $compositePropertyTableDiffIterator->getCombinedIdListOfChangedEntities() );
 
 			return true;
 		} );

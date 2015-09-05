@@ -69,9 +69,17 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 			->method( 'query' )
 			->will( $this->returnValue( true ) );
 
-		$parentStore = $this->getMockBuilder( '\SMWSQLStore3' )
+		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$parentStore = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parentStore->expects( $this->any() )
+			->method( 'getPropertyTableInfoFetcher' )
+			->will( $this->returnValue( $propertyTableInfoFetcher ) );
 
 		$parentStore->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
@@ -120,9 +128,17 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 			->method( 'select' )
 			->will( $this->returnValue( array() ) );
 
-		$parentStore = $this->getMockBuilder( '\SMWSQLStore3' )
+		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$parentStore = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parentStore->expects( $this->any() )
+			->method( 'getPropertyTableInfoFetcher' )
+			->will( $this->returnValue( $propertyTableInfoFetcher ) );
 
 		$parentStore->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )

@@ -110,7 +110,7 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 	 *
 	 * @return array
 	 */
-	public function getCombinedIdListForChangedEntities() {
+	public function getCombinedIdListOfChangedEntities() {
 
 		$list = array();
 

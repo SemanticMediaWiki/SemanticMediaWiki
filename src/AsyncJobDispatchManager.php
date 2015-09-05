@@ -49,7 +49,7 @@ class AsyncJobDispatchManager {
 	 *
 	 * @var boolean
 	 */
-	private $dispatchableAsyncState = true;
+	private $enabledAsyncUsageState = true;
 
 	/**
 	 * @since 2.3
@@ -66,14 +66,16 @@ class AsyncJobDispatchManager {
 	 */
 	public function reset() {
 		self::$canConnectToUrl = null;
-		$this->dispatchableAsyncState = true;
+		$this->enabledAsyncUsageState = true;
 	}
 
 	/**
 	 * @since 2.3
+	 *
+	 * @param boolean $enabledAsyncUsageState
 	 */
-	public function setDispatchableAsyncUsageState( $dispatchableAsyncState ) {
-		$this->dispatchableAsyncState = (bool)$dispatchableAsyncState;
+	public function setEnabledAsyncUsageState( $enabledAsyncUsageState ) {
+		$this->enabledAsyncUsageState = (bool)$enabledAsyncUsageState;
 	}
 
 	/**
@@ -91,10 +93,11 @@ class AsyncJobDispatchManager {
 
 		$dispatchableCallbackJob = $this->getDispatchableCallbackJobFor( $type );
 
+		// Build sessionToken as source verification during the POST request
 		$parameters['timestamp'] = time();
 		$parameters['sessionToken'] = SpecialAsyncJobDispatcher::getSessionToken( $parameters['timestamp'] );
 
-		if ( $this->dispatchableAsyncState && $this->canConnectToUrl() ) {
+		if ( $this->enabledAsyncUsageState && $this->canConnectToUrl() ) {
 			return $this->doDispatchAsyncJobFor( $type, $title, $parameters, $dispatchableCallbackJob );
 		}
 
@@ -106,14 +109,7 @@ class AsyncJobDispatchManager {
 		return true;
 	}
 
-	/**
-	 * @since 2.3
-	 *
-	 * @param string $type
-	 *
-	 * @return Closure
-	 */
-	public function getDispatchableCallbackJobFor( $type ) {
+	private function getDispatchableCallbackJobFor( $type ) {
 
 		$jobFactory = ApplicationFactory::getInstance()->newJobFactory();
 

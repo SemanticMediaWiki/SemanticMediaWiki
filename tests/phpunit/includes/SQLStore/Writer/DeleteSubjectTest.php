@@ -26,9 +26,17 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 
-		$this->store = $this->getMockBuilder( '\SMWSQLStore3' )
+		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyTableInfoFetcher' )
+			->will( $this->returnValue( $propertyTableInfoFetcher ) );
 	}
 
 	public function testCanConstruct() {

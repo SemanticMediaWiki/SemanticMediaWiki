@@ -44,7 +44,7 @@ class CompositePropertyTableDiffIteratorTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertEquals(
 			$expectedList,
-			$instance->getCombinedIdListForChangedEntities()
+			$instance->getCombinedIdListOfChangedEntities()
 		);
 	}
 
