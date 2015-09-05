@@ -226,7 +226,11 @@ class EmbeddedQueryDependencyListResolver {
 				$this->doMatchSubproperty( $subjects, $subp );
 			}
 
-			$subjects[] = $subproperty;
+			$key = str_replace( ' ', '_', $subp->getKey() );
+
+			if ( !isset( $this->propertyDependencyDetectionBlacklist[$key] ) ) {
+				$subjects[] = $subproperty;
+			}
 		}
 	}
 

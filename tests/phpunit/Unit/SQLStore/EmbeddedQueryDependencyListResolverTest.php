@@ -123,17 +123,33 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 			->disableOriginalConstructor()
 			->getMock();
 
+		$propertyHierarchyLookup->expects( $this->any() )
+			->method( 'hasSubpropertyFor' )
+			->will( $this->returnValue( true ) );
+
+		$propertyHierarchyLookup->expects( $this->at( 1 ) )
+			->method( 'findSubpropertListFor' )
+			->with( $this->equalTo( new DIProperty( 'Foobar' ) ) )
+			->will( $this->returnValue(
+				array( DIWikiPage::newFromText( 'Subprop', SMW_NS_PROPERTY ) ) ) );
+
+		$propertyHierarchyLookup->expects( $this->at( 3 ) )
+			->method( 'findSubpropertListFor' )
+			->with( $this->equalTo( new DIProperty( 'Subprop' ) ) )
+			->will( $this->returnValue( array() ) );
+
 		$instance = new EmbeddedQueryDependencyListResolver(
 			$store,
 			$propertyHierarchyLookup
 		);
 
 		$instance->setQueryResult( $queryResult );
-		$instance->setPropertyDependencyDetectionBlacklist( array( 'Foobar' ) );
+		$instance->setPropertyDependencyDetectionBlacklist( array( 'Foobar', 'Subprop' ) );
 
 		$expected = array(
 			DIWikiPage::newFromText( 'Foo' ),
 			DIWikiPage::newFromText( 'Bar' )
+		//	DIWikiPage::newFromText( 'Subprop', SMW_NS_PROPERTY ) removed
 		//	DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY ) removed
 		);
 
