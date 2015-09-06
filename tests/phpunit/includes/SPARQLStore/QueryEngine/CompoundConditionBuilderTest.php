@@ -27,7 +27,6 @@ use SMWPropertyValue as PropertyValue;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

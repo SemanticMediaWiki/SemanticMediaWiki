@@ -6,15 +6,6 @@ use SMW\SQLStore\EmbeddedQueryDependencyLinksStore;
 use SMW\ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\SemanticData;
-use SMW\Query\Language\SomeProperty;
-use SMW\Query\Language\ValueDescription;
-use SMW\Query\Language\ClassDescription;
-use SMW\Query\Language\ConceptDescription;
-use SMW\Query\Language\Conjunction;
-use SMWQuery as Query;
-use SMWDIBlob as DIBlob;
 
 /**
  * @covers \SMW\SQLStore\EmbeddedQueryDependencyLinksStore
@@ -36,12 +27,7 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getWikiPageLastModifiedTimestamp' ) )
 			->getMockForAbstractClass();
-
-		$store->expects( $this->any() )
-			->method( 'getWikiPageLastModifiedTimestamp' )
-			->will( $this->returnValue( 0 ) );
 
 		$this->applicationFactory->registerObject( 'Store', $store );
 	}
@@ -203,7 +189,7 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 		$instance->findPartialEmbeddedQueryTargetLinksHashListFor( array( 42 ), 1, 200 );
 	}
 
-	public function testAddDependenciesFromQueryResultBeingDisabled() {
+	public function testTryToaddDependencyListWhileBeingDisabled() {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -212,33 +198,16 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 		$instance = new EmbeddedQueryDependencyLinksStore( $store );
 		$instance->setEnabledState( false );
 
-		$this->assertNull(
-			$instance->addDependenciesFromQueryResult( '' )
-		);
-	}
-
-	/**
-	 * @dataProvider descriptionProvider
-	 */
-	public function testAddDependenciesFromQueryResult( $description ) {
-
-		$query = new Query(
-			$description
-		);
-
-		$query->setSubject( DIWikiPage::newFromText( __METHOD__ ) );
-
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$embeddedQueryDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\EmbeddedQueryDependencyListResolver' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$queryResult->expects( $this->once() )
-			->method( 'getResults' )
-			->will( $this->returnValue( array() ) );
+		$this->assertNull(
+			$instance->addDependencyList( $embeddedQueryDependencyListResolver )
+		);
+	}
 
-		$queryResult->expects( $this->any() )
-			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
+	public function testAddDependenciesFromQueryResult() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( array( 'getSMWPageID' ) )
@@ -292,94 +261,23 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 			->method( 'getPropertyValues' )
 			->will( $this->returnValue( array() ) );
 
-		$instance = new EmbeddedQueryDependencyLinksStore( $store );
-		$instance->addDependenciesFromQueryResult( $queryResult );
-	}
-
-	public function testExcludePropertyFromDependencyDetection() {
-
-		$description = new SomeProperty(
-			new DIProperty( 'Foo bar' ),
-			new ValueDescription( new DIBlob( 'Bar' ) )
-		);
-
-		$query = new Query(
-			$description
-		);
-
-		$query->setSubject( DIWikiPage::newFromText( __METHOD__ ) );
-
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$embeddedQueryDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\EmbeddedQueryDependencyListResolver' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$queryResult->expects( $this->once() )
-			->method( 'getResults' )
-			->will( $this->returnValue( array() ) );
+		$embeddedQueryDependencyListResolver->expects( $this->any() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ )  ) );
 
-		$queryResult->expects( $this->any() )
-			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
-
-		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getSMWPageID' ) )
-			->getMock();
-
-		// If it weren't excluded, we would expect 4
-		$idTable->expects( $this->exactly( 2 ) )
-			->method( 'getSMWPageID' )
-			->with(
-				$this->equalTo( __METHOD__ ),
-				$this->anything(),
-				$this->anything(),
-				$this->anything(),
-				$this->anything() )
-			->will( $this->onConsecutiveCalls( 42, 1001 ) );
-
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->once() )
-			->method( 'delete' );
-
-		$connection->expects( $this->once() )
-			->method( 'insert' );
-
-		$connectionManager = $this->getMockBuilder( '\SMW\ConnectionManager' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connectionManager->expects( $this->any() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
-
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'getObjectIds' ) )
-			->getMockForAbstractClass();
-
-		$store->setConnectionManager( $connectionManager );
-
-		$store->expects( $this->any() )
-			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+		$embeddedQueryDependencyListResolver->expects( $this->any() )
+			->method( 'getQueryDependencySubjectList' )
+			->will( $this->returnValue( array( DIWikiPage::newFromText( 'Foo' ) ) ) );
 
 		$instance = new EmbeddedQueryDependencyLinksStore( $store );
-		$instance->setPropertyDependencyDetectionBlacklist( array( 'Foo bar' ) );
-
-		$instance->addDependenciesFromQueryResult( $queryResult );
+		$instance->addDependencyList( $embeddedQueryDependencyListResolver );
 	}
 
-	public function testTryToAddDependenciesWithinSkewLimit() {
-
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$query = new Query(
-			$description
-		);
+	public function testTryToAddDependenciesWithinSkewedTime() {
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -396,16 +294,6 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 		$subject->expects( $this->once() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
-
-		$query->setSubject( $subject );
-
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$queryResult->expects( $this->any() )
-			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( array( 'getSMWPageID' ) )
@@ -434,64 +322,20 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 
 		$store->setConnectionManager( $connectionManager );
 
-		$store->expects( $this->any() )
+		$store->expects( $this->once() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
 
+		$embeddedQueryDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\EmbeddedQueryDependencyListResolver' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$embeddedQueryDependencyListResolver->expects( $this->any() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( $subject ) );
+
 		$instance = new EmbeddedQueryDependencyLinksStore( $store );
-		$instance->addDependenciesFromQueryResult( $queryResult );
-	}
-
-	public function descriptionProvider() {
-
-		$description = new SomeProperty(
-			new DIProperty( 'Foo' ),
-			new ValueDescription( DIWikiPage::newFromText( 'Bar' ) )
-		);
-
-		$provider[] = array(
-			$description
-		);
-
-		#1 uses inverse property declaration
-		$description = new SomeProperty(
-			new DIProperty( 'Foo', true ),
-			new ValueDescription( DIWikiPage::newFromText( 'Bar' ) )
-		);
-
-		$provider[] = array(
-			$description
-		);
-
-		#2
-		$description = new SomeProperty(
-			new DIProperty( 'Foo' ),
-			new ValueDescription( DIWikiPage::newFromText( 'Bar' ) )
-		);
-
-		$provider[] = array(
-			new Conjunction( array( $description ) )
-		);
-
-		#3
-		$description = new ClassDescription(
-			DIWikiPage::newFromText( 'Foo' )
-		);
-
-		$provider[] = array(
-			$description
-		);
-
-		#4
-		$description = new ConceptDescription(
-			DIWikiPage::newFromText( 'Foo' )
-		);
-
-		$provider[] = array(
-			$description
-		);
-
-		return $provider;
+		$instance->addDependencyList( $embeddedQueryDependencyListResolver );
 	}
 
 }
