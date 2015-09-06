@@ -6,7 +6,6 @@ use SMW\SQLStore\QueryEngine\QuerySegmentListResolver;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\QuerySegmentListResolver
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

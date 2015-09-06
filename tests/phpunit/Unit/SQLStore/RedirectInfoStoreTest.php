@@ -7,11 +7,7 @@ use SMW\ApplicationFactory;
 
 /**
  * @covers \SMW\SQLStore\RedirectInfoStore
- *
- * @group SMW
- * @group SMWExtension
- *
- * @group semantic-mediawiki-sqlstore
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since   2.1

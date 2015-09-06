@@ -6,7 +6,6 @@ use SMW\SQLStore\QueryEngine\EngineOptions;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\EngineOptions
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

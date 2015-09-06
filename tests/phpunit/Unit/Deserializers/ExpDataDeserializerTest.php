@@ -12,7 +12,6 @@ use SMWDIBlob as DIBlob;
 
 /**
  * @covers \SMW\Deserializers\ExpDataDeserializer
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

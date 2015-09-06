@@ -6,9 +6,7 @@ use SMW\SQLStore\QueryEngine\QuerySegment;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\QuerySegment
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 2.2

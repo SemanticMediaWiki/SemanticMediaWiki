@@ -9,7 +9,6 @@ use SMW\SemanticData;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableRowDiffer
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

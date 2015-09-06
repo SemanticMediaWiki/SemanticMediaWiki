@@ -7,7 +7,6 @@ use Title;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\ConceptQueryResolver
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

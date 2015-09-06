@@ -6,7 +6,6 @@ use SMW\SQLStore\QueryEngine\Interpreter\ComparatorMapper;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Interpreter\ComparatorMapper
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

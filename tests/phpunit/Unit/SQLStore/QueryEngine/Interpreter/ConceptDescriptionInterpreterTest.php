@@ -11,7 +11,6 @@ use SMWDIBlob as DIBlob;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Interpreter\ConceptDescriptionInterpreter
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

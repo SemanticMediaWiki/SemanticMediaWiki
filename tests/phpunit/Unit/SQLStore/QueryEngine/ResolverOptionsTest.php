@@ -6,7 +6,6 @@ use SMW\SQLStore\QueryEngine\ResolverOptions;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\ResolverOptions
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

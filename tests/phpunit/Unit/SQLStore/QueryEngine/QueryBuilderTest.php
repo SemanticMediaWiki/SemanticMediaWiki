@@ -12,7 +12,6 @@ use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\QueryBuilder
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

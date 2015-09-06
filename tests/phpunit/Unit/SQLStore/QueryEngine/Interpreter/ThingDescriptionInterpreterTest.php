@@ -9,7 +9,6 @@ use SMW\Query\Language\ThingDescription;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Interpreter\ThingDescriptionInterpreter
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

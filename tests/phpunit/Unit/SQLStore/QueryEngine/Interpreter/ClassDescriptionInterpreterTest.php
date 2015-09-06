@@ -11,7 +11,6 @@ use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

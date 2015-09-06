@@ -10,7 +10,6 @@ use SMW\SemanticData;
 
 /**
  * @covers \SMW\SQLStore\ByIdDataRebuildDispatcher
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

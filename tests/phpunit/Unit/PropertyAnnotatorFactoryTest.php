@@ -4,8 +4,6 @@ namespace SMW\Tests;
 
 use SMW\PropertyAnnotatorFactory;
 
-use Title;
-
 /**
  * @covers \SMW\PropertyAnnotatorFactory
  * @group semantic-mediawiki

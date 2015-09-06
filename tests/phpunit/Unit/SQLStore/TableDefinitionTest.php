@@ -4,12 +4,10 @@ namespace SMW\Tests\SQLStore;
 
 use SMW\SQLStore\TableDefinition;
 use SMW\StoreFactory;
-
 use SMWDataItem;
 
 /**
  * @covers \SMW\SQLStore\TableDefinition
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

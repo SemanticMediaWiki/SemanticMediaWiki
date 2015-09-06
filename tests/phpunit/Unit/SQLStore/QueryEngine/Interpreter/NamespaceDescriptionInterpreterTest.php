@@ -12,7 +12,6 @@ use SMW\Query\Language\NamespaceDescription;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Interpreter\NamespaceDescriptionInterpreter
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

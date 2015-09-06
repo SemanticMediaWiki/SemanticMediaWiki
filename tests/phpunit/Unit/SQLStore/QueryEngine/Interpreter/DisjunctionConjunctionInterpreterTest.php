@@ -14,7 +14,6 @@ use SMW\Query\Language\ThingDescription;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Interpreter\DisjunctionConjunctionInterpreter
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

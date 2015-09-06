@@ -4,7 +4,7 @@ namespace SMW\Tests;
 
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\ParserFunctionFactory;
-use Title;
+use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\ParserFunctionFactory
@@ -47,7 +47,10 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParserFunctionInstance( $instance, $method ) {
 
-		$parser = $this->parserFactory->newFromTitle( Title::newFromText( __METHOD__ ) );
+		$parser = $this->parserFactory->newFromTitle(
+			DIWikiPage::newFromText( __METHOD__ )->getTitle()
+		);
+
 		$parserFunctionFactory = new ParserFunctionFactory( $parser );
 
 		$this->assertInstanceOf(
@@ -62,7 +65,7 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function testParserFunctionDefinition( $method, $expected ) {
 
 		$parser = $this->parserFactory->newFromTitle(
-			Title::newFromText( __METHOD__ )
+			DIWikiPage::newFromText( __METHOD__ )->getTitle()
 		);
 
 		$parserFunctionFactory = new ParserFunctionFactory( $parser );

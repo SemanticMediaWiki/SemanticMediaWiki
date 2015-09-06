@@ -8,7 +8,6 @@ use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableDefinitionBuilder
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

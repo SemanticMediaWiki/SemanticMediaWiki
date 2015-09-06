@@ -6,10 +6,7 @@ use SMW\PropertyAnnotator\NullPropertyAnnotator;
 
 /**
  * @covers \SMW\PropertyAnnotator\NullPropertyAnnotator
- *
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
