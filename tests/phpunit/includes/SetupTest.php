@@ -128,18 +128,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		$this->assertArrayEntryExists( 'wgSpecialPages', $specialEntry, $setup );
 	}
 
-	public function testRegisterRights() {
-
-		$config['wgAvailableRights'][] = '';
-		$config['wgGroupPermissions']['sysop']['smw-admin'] = '';
-		$config['wgGroupPermissions']['smwadministrator']['smw-admin'] = '';
-
-		foreach ( $config['wgAvailableRights'] as $value ) {
-			$this->assertEmpty( $value );
-		}
-
-		$this->assertEmpty( $config['wgGroupPermissions']['sysop']['smw-admin'] );
-		$this->assertEmpty( $config['wgGroupPermissions']['smwadministrator']['smw-admin'] );
+	public function testRegisterDefaultRightsUserGroupPermissions() {
 
 		$config = $this->defaultConfig;
 
@@ -150,13 +139,37 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$config['wgAvailableRights']
 		);
 
-		$this->assertNotEmpty(
+		$this->assertTrue(
 			$config['wgGroupPermissions']['sysop']['smw-admin']
 		);
 
-		$this->assertNotEmpty(
+		$this->assertTrue(
 			$config['wgGroupPermissions']['smwadministrator']['smw-admin']
 		);
+	}
+
+	public function testNoResetOfAlreadyRegisteredGroupPermissions() {
+
+		// Avoid re-setting permissions, refs #1137
+		$localConfig['wgGroupPermissions']['sysop']['smw-admin'] = false;
+		$localConfig['wgGroupPermissions']['smwadministrator']['smw-admin'] = false;
+
+		$localConfig = array_merge(
+			$this->defaultConfig,
+			$localConfig
+		);
+
+		$instance = new Setup( $this->applicationFactory, $localConfig, 'Foo' );
+		$instance->run();
+
+		$this->assertFalse(
+			$localConfig['wgGroupPermissions']['sysop']['smw-admin']
+		);
+
+		$this->assertFalse(
+			$localConfig['wgGroupPermissions']['smwadministrator']['smw-admin']
+		);
+
 	}
 
 	public function testRegisterParamDefinitions() {

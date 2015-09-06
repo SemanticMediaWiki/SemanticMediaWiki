@@ -160,8 +160,13 @@ final class Setup {
 		$this->globalVars['wgAvailableRights'][] = 'smw-admin';
 
 		// User group rights
-		$this->globalVars['wgGroupPermissions']['sysop']['smw-admin'] = true;
-		$this->globalVars['wgGroupPermissions']['smwadministrator']['smw-admin'] = true;
+		if ( !isset( $this->globalVars['wgGroupPermissions']['sysop']['smw-admin'] ) ) {
+			$this->globalVars['wgGroupPermissions']['sysop']['smw-admin'] = true;
+		}
+
+		if ( !isset( $this->globalVars['wgGroupPermissions']['smwadministrator']['smw-admin'] ) ) {
+			$this->globalVars['wgGroupPermissions']['smwadministrator']['smw-admin'] = true;
+		}
 	}
 
 	/**
