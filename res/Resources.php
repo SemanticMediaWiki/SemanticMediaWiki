@@ -9,7 +9,7 @@
  * @author mwjames
  */
 
-$pathParts = ( explode( DIRECTORY_SEPARATOR . 'extensions' . DIRECTORY_SEPARATOR, __DIR__, 2 ) );
+$pathParts = ( explode( DIRECTORY_SEPARATOR . 'extensions' . DIRECTORY_SEPARATOR, str_replace( '\\', '/', __DIR__ ), 2 ) );
 
 $moduleTemplate = array(
 	'localBasePath' => __DIR__,
