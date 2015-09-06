@@ -247,6 +247,11 @@ final class Setup {
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgFooterIcons
 	 */
 	private function registerFooterIcon() {
+
+		if( isset( $this->globalVars['wgFooterIcons']['poweredby']['semanticmediawiki'] ) ) {
+			return;
+		}
+
 		$pathParts = ( explode( '/extensions/', str_replace( DIRECTORY_SEPARATOR, '/', __DIR__), 2 ) );
 
 		$this->globalVars['wgFooterIcons']['poweredby']['semanticmediawiki'] = array(

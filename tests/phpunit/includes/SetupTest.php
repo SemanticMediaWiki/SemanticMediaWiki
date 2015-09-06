@@ -181,7 +181,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 		$config = $this->defaultConfig;
 
-		$config['wgFooterIcons']['poweredby']['semanticmediawiki'] = '';
+		$config['wgFooterIcons']['poweredby'] = array();
 
 		$instance = new Setup( $this->applicationFactory, $config, 'Foo' );
 		$instance->run();
