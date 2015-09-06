@@ -5,7 +5,7 @@ namespace SMW\SQLStore\QueryEngine\Interpreter;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
-use SMW\SQLStore\QueryEngine\QueryBuilder;
+use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 
@@ -20,17 +20,17 @@ use SMW\SQLStore\QueryEngine\QuerySegment;
 class DisjunctionConjunctionInterpreter implements DescriptionInterpreter {
 
 	/**
-	 * @var QueryBuilder
+	 * @var QuerySegmentListBuilder
 	 */
-	private $queryBuilder;
+	private $querySegmentListBuilder;
 
 	/**
 	 * @since 2.2
 	 *
-	 * @param QueryBuilder $queryBuilder
+	 * @param QuerySegmentListBuilder $querySegmentListBuilder
 	 */
-	public function __construct( QueryBuilder $queryBuilder ) {
-		$this->queryBuilder = $queryBuilder;
+	public function __construct( QuerySegmentListBuilder $querySegmentListBuilder ) {
+		$this->querySegmentListBuilder = $querySegmentListBuilder;
 	}
 
 	/**
@@ -56,7 +56,7 @@ class DisjunctionConjunctionInterpreter implements DescriptionInterpreter {
 
 		foreach ( $description->getDescriptions() as $subDescription ) {
 
-			$subQueryId = $this->queryBuilder->buildQuerySegmentFor( $subDescription );
+			$subQueryId = $this->querySegmentListBuilder->buildQuerySegmentFor( $subDescription );
 
 			if ( $subQueryId >= 0 ) {
 				$query->components[$subQueryId] = true;

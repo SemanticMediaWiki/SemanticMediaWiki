@@ -5,7 +5,7 @@ namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\SQLStore\QueryEngine\Interpreter\SomePropertyInterpreter;
-use SMW\SQLStore\QueryEngine\QueryBuilder;
+use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMW\Query\Language\ValueDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
@@ -35,13 +35,13 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$queryBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QueryBuilder' )
+		$querySegmentListBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegmentListBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Interpreter\SomePropertyInterpreter',
-			new SomePropertyInterpreter( $queryBuilder )
+			new SomePropertyInterpreter( $querySegmentListBuilder )
 		);
 	}
 
@@ -63,7 +63,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected = new \stdClass;
 		$expected->type = 0;
 
-		$instance = new SomePropertyInterpreter( new QueryBuilder( $store ) );
+		$instance = new SomePropertyInterpreter( new QuerySegmentListBuilder( $store ) );
 
 		$this->assertTrue(
 			$instance->canInterpretDescription( $description )
@@ -105,7 +105,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected = new \stdClass;
 		$expected->type = 0;
 
-		$instance = new SomePropertyInterpreter( new QueryBuilder( $store ) );
+		$instance = new SomePropertyInterpreter( new QuerySegmentListBuilder( $store ) );
 
 		$this->assertTrue(
 			$instance->canInterpretDescription( $description )
@@ -159,7 +159,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected = new \stdClass;
 		$expected->type = 0;
 
-		$instance = new SomePropertyInterpreter( new QueryBuilder( $store ) );
+		$instance = new SomePropertyInterpreter( new QuerySegmentListBuilder( $store ) );
 
 		$this->assertTrue(
 			$instance->canInterpretDescription( $description )
@@ -256,10 +256,10 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDataItemHandlerForDIType' )
 			->will( $this->returnValue( $dataItemHandler ) );
 
-		$queryBuilder = new QueryBuilder( $store );
-		$queryBuilder->setSortKeys( $sortKeys );
+		$querySegmentListBuilder = new QuerySegmentListBuilder( $store );
+		$querySegmentListBuilder->setSortKeys( $sortKeys );
 
-		$instance = new SomePropertyInterpreter( $queryBuilder );
+		$instance = new SomePropertyInterpreter( $querySegmentListBuilder );
 
 		$this->assertTrue(
 			$instance->canInterpretDescription( $description )

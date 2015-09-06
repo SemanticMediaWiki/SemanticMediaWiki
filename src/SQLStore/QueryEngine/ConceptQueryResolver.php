@@ -52,28 +52,28 @@ class ConceptQueryResolver {
 		$querySegements = array();
 		QuerySegment::$qnum = 0;
 
-		$queryBuilder = $this->queryEngine->getQueryBuilder();
-		$queryBuilder->setSortKeys( array() );
+		$querySegmentListBuilder = $this->queryEngine->getQuerySegmentListBuilder();
+		$querySegmentListBuilder->setSortKeys( array() );
 
 		$qp = new QueryParser( $this->conceptFeatures );
 
-		$queryBuilder->buildQuerySegmentFor(
+		$querySegmentListBuilder->buildQuerySegmentFor(
 			$qp->getQueryDescription( $conceptDescriptionText )
 		);
 
-		$qid = $queryBuilder->getLastQuerySegmentId();
-		$querySegements = $queryBuilder->getQuerySegments();
+		$qid = $querySegmentListBuilder->getLastQuerySegmentId();
+		$querySegements = $querySegmentListBuilder->getQuerySegmentList();
 
 		if ( $qid < 0 ) {
 			return null;
 		}
 
 		// execute query tree, resolve all dependencies
-		$querySegmentListResolver = $this->queryEngine->getQuerySegmentListResolver();
+		$querySegmentListItemResolver = $this->queryEngine->getQuerySegmentListItemResolver();
 
-		$querySegmentListResolver->setQueryMode( Query::MODE_INSTANCES );
-		$querySegmentListResolver->setQuerySegmentList( $querySegements );
-		$querySegmentListResolver->resolveForSegmentId( $qid );
+		$querySegmentListItemResolver->setQueryMode( Query::MODE_INSTANCES );
+		$querySegmentListItemResolver->setQuerySegmentList( $querySegements );
+		$querySegmentListItemResolver->resolveForSegmentItem( $qid );
 
 		return $querySegements[$qid];
 	}
@@ -82,8 +82,8 @@ class ConceptQueryResolver {
 	 * @since 2.2
 	 */
 	public function cleanUp() {
-		$this->queryEngine->getQuerySegmentListResolver()->setQueryMode( Query::MODE_INSTANCES );
-		$this->queryEngine->getQuerySegmentListResolver()->cleanUp();
+		$this->queryEngine->getQuerySegmentListItemResolver()->setQueryMode( Query::MODE_INSTANCES );
+		$this->queryEngine->getQuerySegmentListItemResolver()->cleanUp();
 	}
 
 	/**
@@ -92,7 +92,7 @@ class ConceptQueryResolver {
 	 * @return array
 	 */
 	public function getErrors() {
-		return $this->queryEngine->getQueryBuilder()->getErrors();
+		return $this->queryEngine->getQuerySegmentListBuilder()->getErrors();
 	}
 
 }

@@ -12,7 +12,7 @@ use SMW\SQLStore\QueryEngine\Interpreter\NamespaceDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\Interpreter\SomePropertyInterpreter;
 use SMW\SQLStore\QueryEngine\Interpreter\ThingDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\Interpreter\ValueDescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\Interpreter\DispatchingInterpreter;
+use SMW\SQLStore\QueryEngine\Interpreter\DispatchingDescriptionInterpreter;
 use SMW\Store;
 use SMW\CircularReferenceGuard;
 
@@ -24,7 +24,7 @@ use SMW\CircularReferenceGuard;
  * @author Jeroen De Dauw
  * @author mwjames
  */
-class QueryBuilder {
+class QuerySegmentListBuilder {
 
 	/**
 	 * @var Store
@@ -58,9 +58,9 @@ class QueryBuilder {
 	private $lastQuerySegmentId = -1;
 
 	/**
-	 * @var DispatchingInterpreter
+	 * @var DispatchingDescriptionInterpreter
 	 */
-	private $dispatchingInterpreter = null;
+	private $dispatchingDescriptionInterpreter = null;
 
 	/**
 	 * @since 2.2
@@ -72,15 +72,15 @@ class QueryBuilder {
 
 		QuerySegment::$qnum = 0;
 
-		$this->dispatchingInterpreter = new DispatchingInterpreter();
-		$this->dispatchingInterpreter->addDefaultInterpreter( new ThingDescriptionInterpreter( $this ) );
+		$this->dispatchingDescriptionInterpreter = new DispatchingDescriptionInterpreter();
+		$this->dispatchingDescriptionInterpreter->addDefaultInterpreter( new ThingDescriptionInterpreter( $this ) );
 
-		$this->dispatchingInterpreter->addInterpreter( new SomePropertyInterpreter( $this ) );
-		$this->dispatchingInterpreter->addInterpreter( new DisjunctionConjunctionInterpreter( $this ) );
-		$this->dispatchingInterpreter->addInterpreter( new NamespaceDescriptionInterpreter( $this ) );
-		$this->dispatchingInterpreter->addInterpreter( new ClassDescriptionInterpreter( $this ) );
-		$this->dispatchingInterpreter->addInterpreter( new ValueDescriptionInterpreter( $this ) );
-		$this->dispatchingInterpreter->addInterpreter( new ConceptDescriptionInterpreter( $this ) );
+		$this->dispatchingDescriptionInterpreter->addInterpreter( new SomePropertyInterpreter( $this ) );
+		$this->dispatchingDescriptionInterpreter->addInterpreter( new DisjunctionConjunctionInterpreter( $this ) );
+		$this->dispatchingDescriptionInterpreter->addInterpreter( new NamespaceDescriptionInterpreter( $this ) );
+		$this->dispatchingDescriptionInterpreter->addInterpreter( new ClassDescriptionInterpreter( $this ) );
+		$this->dispatchingDescriptionInterpreter->addInterpreter( new ValueDescriptionInterpreter( $this ) );
+		$this->dispatchingDescriptionInterpreter->addInterpreter( new ConceptDescriptionInterpreter( $this ) );
 
 		$this->circularReferenceGuard = new CircularReferenceGuard( 'sql-query' );
 		$this->circularReferenceGuard->setMaxRecursionDepth( 2 );
@@ -152,21 +152,17 @@ class QueryBuilder {
 	 *
 	 * @return QuerySegment[]
 	 */
-	public function getQuerySegments() {
+	public function getQuerySegmentList() {
 		return $this->querySegments;
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @param int $id
 	 * @param QuerySegment $query
-	 *
-	 * @return QueryBuilder
 	 */
-	public function addQuerySegmentForId( $id, QuerySegment $query ) {
-		$this->querySegments[$id] = $query;
-		return $this;
+	public function addQuerySegment( QuerySegment $query ) {
+		$this->querySegments[$query->segmentNumber] = $query;
 	}
 
 	/**
@@ -208,7 +204,7 @@ class QueryBuilder {
 	 */
 	public function buildQuerySegmentFor( Description $description ) {
 
-		$query = $this->dispatchingInterpreter->interpretDescription( $description );
+		$query = $this->dispatchingDescriptionInterpreter->interpretDescription( $description );
 
 		$this->registerQuerySegment( $query );
 
@@ -229,7 +225,9 @@ class QueryBuilder {
 			return;
 		}
 
-		$this->addQuerySegmentForId( $query->queryNumber, $query );
+		$query->segmentNumber = $query->queryNumber;
+
+		$this->addQuerySegment( $query );
 
 		// Propagate sortkeys from subqueries:
 		if ( $query->type !== QuerySegment::Q_DISJUNCTION ) {

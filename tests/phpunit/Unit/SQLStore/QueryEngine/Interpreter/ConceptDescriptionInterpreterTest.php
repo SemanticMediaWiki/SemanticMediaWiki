@@ -4,7 +4,7 @@ namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\SQLStore\QueryEngine\Interpreter\ConceptDescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\QueryBuilder;
+use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMW\Query\Language\ConceptDescription;
 use SMW\DIWikiPage;
 use SMWDIBlob as DIBlob;
@@ -30,7 +30,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$queryBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QueryBuilder' )
+		$querySegmentListBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegmentListBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -40,7 +40,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Interpreter\ConceptDescriptionInterpreter',
-			new ConceptDescriptionInterpreter( $queryBuilder, $circularReferenceGuard )
+			new ConceptDescriptionInterpreter( $querySegmentListBuilder, $circularReferenceGuard )
 		);
 	}
 
@@ -71,20 +71,20 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIds ) );
 
-		$queryBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QueryBuilder' )
+		$querySegmentListBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegmentListBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$queryBuilder->expects( $this->any() )
+		$querySegmentListBuilder->expects( $this->any() )
 			->method( 'getStore' )
 			->will( $this->returnValue( $store ) );
 
-		$queryBuilder->expects( $this->any() )
+		$querySegmentListBuilder->expects( $this->any() )
 			->method( 'getCircularReferenceGuard' )
 			->will( $this->returnValue( $circularReferenceGuard ) );
 
 		$instance = new ConceptDescriptionInterpreter(
-			$queryBuilder,
+			$querySegmentListBuilder,
 			$circularReferenceGuard
 		);
 
@@ -137,7 +137,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new ConceptDescriptionInterpreter(
-			new QueryBuilder( $store ),
+			new QuerySegmentListBuilder( $store ),
 			$circularReferenceGuard
 		);
 

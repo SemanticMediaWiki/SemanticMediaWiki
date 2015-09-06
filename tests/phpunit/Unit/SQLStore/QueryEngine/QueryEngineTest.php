@@ -17,8 +17,8 @@ use SMWQuery as Query;
 class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
-	private $queryBuilder;
-	private $querySegmentListResolver;
+	private $querySegmentListBuilder;
+	private $querySegmentListItemResolver;
 	private $engineOptions;
 
 	protected function setUp() {
@@ -27,11 +27,11 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->queryBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QueryBuilder' )
+		$this->querySegmentListBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegmentListBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->querySegmentListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegmentListResolver' )
+		$this->querySegmentListItemResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegmentListItemResolver' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -44,7 +44,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\QueryEngine',
-			new QueryEngine( $this->store, $this->queryBuilder, $this->querySegmentListResolver, $this->engineOptions )
+			new QueryEngine( $this->store, $this->querySegmentListBuilder, $this->querySegmentListItemResolver, $this->engineOptions )
 		);
 	}
 
@@ -58,11 +58,11 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$this->queryBuilder->expects( $this->any() )
+		$this->querySegmentListBuilder->expects( $this->any() )
 			->method( 'getErrors' )
 			->will( $this->returnValue( array() ) );
 
-		$this->querySegmentListResolver->expects( $this->any() )
+		$this->querySegmentListItemResolver->expects( $this->any() )
 			->method( 'getListOfResolvedQueries' )
 			->will( $this->returnValue( array() ) );
 
@@ -70,8 +70,8 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new QueryEngine(
 			$this->store,
-			$this->queryBuilder,
-			$this->querySegmentListResolver,
+			$this->querySegmentListBuilder,
+			$this->querySegmentListItemResolver,
 			$this->engineOptions
 		);
 

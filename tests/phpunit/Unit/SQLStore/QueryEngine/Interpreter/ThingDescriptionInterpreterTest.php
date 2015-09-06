@@ -4,7 +4,7 @@ namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\SQLStore\QueryEngine\Interpreter\ThingDescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\QueryBuilder;
+use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMW\Query\Language\ThingDescription;
 
 /**
@@ -28,13 +28,13 @@ class ThingDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$queryBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QueryBuilder' )
+		$querySegmentListBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegmentListBuilder' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Interpreter\ThingDescriptionInterpreter',
-			new ThingDescriptionInterpreter( $queryBuilder )
+			new ThingDescriptionInterpreter( $querySegmentListBuilder )
 		);
 	}
 
@@ -52,7 +52,7 @@ class ThingDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected->type = 0;
 		$expected->queryNumber = 0;
 
-		$instance = new ThingDescriptionInterpreter( new QueryBuilder( $store ) );
+		$instance = new ThingDescriptionInterpreter( new QuerySegmentListBuilder( $store ) );
 
 		$this->assertTrue(
 			$instance->canInterpretDescription( $description )

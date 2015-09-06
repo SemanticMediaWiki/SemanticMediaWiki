@@ -4,7 +4,7 @@ namespace SMW\SQLStore\QueryEngine\Interpreter;
 
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ThingDescription;
-use SMW\SQLStore\QueryEngine\QueryBuilder;
+use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 
@@ -17,17 +17,17 @@ use SMW\SQLStore\QueryEngine\QuerySegment;
 class ThingDescriptionInterpreter implements DescriptionInterpreter {
 
 	/**
-	 * @var QueryBuilder
+	 * @var QuerySegmentListBuilder
 	 */
-	private $queryBuilder;
+	private $querySegmentListBuilder;
 
 	/**
 	 * @since 2.2
 	 *
-	 * @param QueryBuilder $queryBuilder
+	 * @param QuerySegmentListBuilder $querySegmentListBuilder
 	 */
-	public function __construct( QueryBuilder $queryBuilder ) {
-		$this->queryBuilder = $queryBuilder;
+	public function __construct( QuerySegmentListBuilder $querySegmentListBuilder ) {
+		$this->querySegmentListBuilder = $querySegmentListBuilder;
 	}
 
 	/**

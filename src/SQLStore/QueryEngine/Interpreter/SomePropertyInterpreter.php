@@ -10,7 +10,7 @@ use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
-use SMW\SQLStore\QueryEngine\QueryBuilder;
+use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMWDataItem as DataItem;
@@ -29,9 +29,9 @@ use SMWSQLStore3Table;
 class SomePropertyInterpreter implements DescriptionInterpreter {
 
 	/**
-	 * @var QueryBuilder
+	 * @var QuerySegmentListBuilder
 	 */
-	private $queryBuilder;
+	private $querySegmentListBuilder;
 
 	/**
 	 * @var ComparatorMapper
@@ -41,10 +41,10 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @param QueryBuilder $queryBuilder
+	 * @param QuerySegmentListBuilder $querySegmentListBuilder
 	 */
-	public function __construct( QueryBuilder $queryBuilder ) {
-		$this->queryBuilder = $queryBuilder;
+	public function __construct( QuerySegmentListBuilder $querySegmentListBuilder ) {
+		$this->querySegmentListBuilder = $querySegmentListBuilder;
 		$this->comparatorMapper = new ComparatorMapper();
 	}
 
@@ -97,18 +97,18 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 */
 	private function interpretPropertyConditionForDescription( QuerySegment $query, SomeProperty $description ) {
 
-		$db = $this->queryBuilder->getStore()->getConnection( 'mw.db' );
+		$db = $this->querySegmentListBuilder->getStore()->getConnection( 'mw.db' );
 
 		$property = $description->getProperty();
 
-		$tableid = $this->queryBuilder->getStore()->findPropertyTableID( $property );
+		$tableid = $this->querySegmentListBuilder->getStore()->findPropertyTableID( $property );
 
 		if ( $tableid === '' ) { // Give up
 			$query->type = QuerySegment::Q_NOQUERY;
 			return;
 		}
 
-		$proptables = $this->queryBuilder->getStore()->getPropertyTables();
+		$proptables = $this->querySegmentListBuilder->getStore()->getPropertyTables();
 		$proptable = $proptables[$tableid];
 
 		if ( !$proptable->usesIdSubject() ) {
@@ -127,7 +127,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			return;
 		}
 
-		$diHandler = $this->queryBuilder->getStore()->getDataItemHandlerForDIType( $diType );
+		$diHandler = $this->querySegmentListBuilder->getStore()->getDataItemHandlerForDIType( $diType );
 		$indexField = $diHandler->getIndexField();
 
 		// TODO: strictly speaking, the DB key is not what we want here,
@@ -139,7 +139,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 
 		// *** Add conditions for selecting rows for this property ***//
 		if ( !$proptable->isFixedPropertyTable() ) {
-			$pid = $this->queryBuilder->getStore()->getObjectIds()->getSMWPropertyID( $property );
+			$pid = $this->querySegmentListBuilder->getStore()->getObjectIds()->getSMWPropertyID( $property );
 
 			// Construct property hierarchy:
 			$pqid = QuerySegment::$qnum;
@@ -147,7 +147,9 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$pquery->type = QuerySegment::Q_PROP_HIERARCHY;
 			$pquery->joinfield = array( $pid );
 			$query->components[$pqid] = "{$query->alias}.p_id";
-			$this->queryBuilder->addQuerySegmentForId( $pqid, $pquery );
+			$pquery->segmentNumber = $pqid;
+
+			$this->querySegmentListBuilder->addQuerySegment( $pquery );
 
 			// Alternative code without property hierarchies:
 			// $query->where = "{$query->alias}.p_id=" . $this->m_dbs->addQuotes( $pid );
@@ -165,7 +167,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$query->joinfield = "{$query->alias}.{$s_id}";
 
 			// process page description like main query
-			$sub = $this->queryBuilder->buildQuerySegmentFor(
+			$sub = $this->querySegmentListBuilder->buildQuerySegmentFor(
 				$description->getDescription()
 			);
 
@@ -173,7 +175,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 				$query->components[$sub] = "{$query->alias}.{$o_id}";
 			}
 
-			if ( array_key_exists( $sortkey, $this->queryBuilder->getSortKeys() ) ) {
+			if ( array_key_exists( $sortkey, $this->querySegmentListBuilder->getSortKeys() ) ) {
 				// TODO: This SMW IDs table is possibly duplicated in the query.
 				// Example: [[has capital::!Berlin]] with sort=has capital
 				// Can we prevent that? (PERFORMANCE)
@@ -184,7 +186,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		} else { // non-page value description
 			$query->joinfield = "{$query->alias}.s_id";
 			$this->interpretInnerValueDescription( $query, $description->getDescription(), $proptable, $diHandler, 'AND' );
-			if ( array_key_exists( $sortkey, $this->queryBuilder->getSortKeys() ) ) {
+			if ( array_key_exists( $sortkey, $this->querySegmentListBuilder->getSortKeys() ) ) {
 				$query->sortfields[$sortkey] = "{$query->alias}.{$indexField}";
 			}
 		}
@@ -246,7 +248,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 
 		$where = '';
 		$dataItem = $description->getDataItem();
-		$db = $this->queryBuilder->getStore()->getConnection( 'mw.db' );
+		$db = $this->querySegmentListBuilder->getStore()->getConnection( 'mw.db' );
 
 		// TODO Better get the handle from the property type
 		// Some comparators (e.g. LIKE) could use DI values of
@@ -268,7 +270,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$where = $description->getSQLCondition(
 				$query->alias,
 				array_keys( $fields ),
-				$this->queryBuilder->getStore()->getConnection( DB_SLAVE )
+				$this->querySegmentListBuilder->getStore()->getConnection( DB_SLAVE )
 			);
 		}
 

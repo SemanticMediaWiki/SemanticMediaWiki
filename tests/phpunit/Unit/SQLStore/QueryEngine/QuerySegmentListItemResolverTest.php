@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine;
 
-use SMW\SQLStore\QueryEngine\QuerySegmentListResolver;
+use SMW\SQLStore\QueryEngine\QuerySegmentListItemResolver;
 
 /**
- * @covers \SMW\SQLStore\QueryEngine\QuerySegmentListResolver
+ * @covers \SMW\SQLStore\QueryEngine\QuerySegmentListItemResolver
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,7 +13,7 @@ use SMW\SQLStore\QueryEngine\QuerySegmentListResolver;
  *
  * @author mwjames
  */
-class QuerySegmentListResolverTest extends \PHPUnit_Framework_TestCase {
+class QuerySegmentListItemResolverTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -30,8 +30,8 @@ class QuerySegmentListResolverTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\QuerySegmentListResolver',
-			new QuerySegmentListResolver( $connection, $temporaryIdTableCreator, $resolverOptions )
+			'\SMW\SQLStore\QueryEngine\QuerySegmentListItemResolver',
+			new QuerySegmentListItemResolver( $connection, $temporaryIdTableCreator, $resolverOptions )
 		);
 	}
 
@@ -49,14 +49,14 @@ class QuerySegmentListResolverTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new QuerySegmentListResolver(
+		$instance = new QuerySegmentListItemResolver(
 			$connection,
 			$temporaryIdTableCreator,
 			$resolverOptions
 		);
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->resolveForSegmentId( 42 );
+		$instance->resolveForSegmentItem( 42 );
 	}
 
 }

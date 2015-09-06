@@ -5,7 +5,7 @@ namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\SQLStore\QueryEngine\Interpreter\NamespaceDescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\QueryBuilder;
+use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
@@ -31,13 +31,13 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$queryBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QueryBuilder' )
+		$querySegmentListBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegmentListBuilder' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Interpreter\NamespaceDescriptionInterpreter',
-			new NamespaceDescriptionInterpreter( $queryBuilder )
+			new NamespaceDescriptionInterpreter( $querySegmentListBuilder )
 		);
 	}
 
@@ -55,7 +55,7 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$queryBuilder = new QueryBuilder( $store );
+		$querySegmentListBuilder = new QuerySegmentListBuilder( $store );
 
 		$description = new NamespaceDescription( NS_HELP );
 
@@ -63,7 +63,7 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected->type = 1;
 		$expected->where = "t0.smw_namespace=";
 
-		$instance = new NamespaceDescriptionInterpreter( $queryBuilder );
+		$instance = new NamespaceDescriptionInterpreter( $querySegmentListBuilder );
 
 		$this->assertTrue( $instance->canInterpretDescription( $description ) );
 

@@ -5,7 +5,7 @@ namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\SQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\QueryBuilder;
+use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMW\Query\Language\ClassDescription;
 use SMW\DIWikiPage;
 
@@ -30,13 +30,13 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$queryBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QueryBuilder' )
+		$querySegmentListBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegmentListBuilder' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter',
-			new ClassDescriptionInterpreter( $queryBuilder )
+			new ClassDescriptionInterpreter( $querySegmentListBuilder )
 		);
 	}
 
@@ -70,7 +70,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $objectIds ) );
 
 		$instance = new ClassDescriptionInterpreter(
-			new QueryBuilder( $store )
+			new QuerySegmentListBuilder( $store )
 		);
 
 		$this->assertTrue(

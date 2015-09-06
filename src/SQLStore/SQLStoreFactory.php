@@ -10,8 +10,8 @@ use SMW\SQLStore\Lookup\CachedListLookup;
 use SMW\SQLStore\Lookup\ListLookup;
 use SMW\SQLStore\Lookup\CachedValueLookupStore;
 use SMW\SQLStore\QueryEngine\ResolverOptions;
-use SMW\SQLStore\QueryEngine\QuerySegmentListResolver;
-use SMW\SQLStore\QueryEngine\QueryBuilder;
+use SMW\SQLStore\QueryEngine\QuerySegmentListItemResolver;
+use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMW\SQLStore\QueryEngine\ConceptQueryResolver;
 use SMW\SQLStore\QueryEngine\QueryEngine;
 use SMW\SQLStore\QueryEngine\EngineOptions;
@@ -74,7 +74,7 @@ class SQLStoreFactory {
 			)
 		);
 
-		$querySegmentListResolver = new QuerySegmentListResolver(
+		$querySegmentListItemResolver = new QuerySegmentListItemResolver(
 			$this->store->getConnection( 'mw.db' ),
 			$this->newTemporaryIdTableCreator(),
 			$resolverOptions
@@ -82,8 +82,8 @@ class SQLStoreFactory {
 
 		return new QueryEngine(
 			$this->store,
-			new QueryBuilder( $this->store ),
-			$querySegmentListResolver,
+			new QuerySegmentListBuilder( $this->store ),
+			$querySegmentListItemResolver,
 			new EngineOptions()
 		);
 	}
@@ -347,8 +347,8 @@ class SQLStoreFactory {
 
 	private function getConnection() {
 		if ( $this->dbalConnection === null ) {
-			$builder = new ConnectionBuilder( $GLOBALS );
-			$this->dbalConnection = $builder->newConnection();
+			$SegmentListBuilder = new ConnectionSegmentListBuilder( $GLOBALS );
+			$this->dbalConnection = $SegmentListBuilder->newConnection();
 		}
 
 		return $this->dbalConnection;

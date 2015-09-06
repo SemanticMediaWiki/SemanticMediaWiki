@@ -4,7 +4,7 @@ namespace SMW\SQLStore\QueryEngine\Interpreter;
 
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Description;
-use SMW\SQLStore\QueryEngine\QueryBuilder;
+use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMWQueryParser as QueryParser;
@@ -21,17 +21,17 @@ use SMWSQLStore3;
 class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 
 	/**
-	 * @var QueryBuilder
+	 * @var QuerySegmentListBuilder
 	 */
-	private $queryBuilder;
+	private $querySegmentListBuilder;
 
 	/**
 	 * @since 2.2
 	 *
-	 * @param QueryBuilder $queryBuilder
+	 * @param QuerySegmentListBuilder $querySegmentListBuilder
 	 */
-	public function __construct( QueryBuilder $queryBuilder ) {
-		$this->queryBuilder = $queryBuilder;
+	public function __construct( QuerySegmentListBuilder $querySegmentListBuilder ) {
+		$this->querySegmentListBuilder = $querySegmentListBuilder;
 	}
 
 	/**
@@ -54,7 +54,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 
 		$query = new QuerySegment();
 
-		$conceptId = $this->queryBuilder->getStore()->getObjectIds()->getSMWPageID(
+		$conceptId = $this->querySegmentListBuilder->getStore()->getObjectIds()->getSMWPageID(
 			$description->getConcept()->getDBkey(),
 			SMW_NS_CONCEPT,
 			'',
@@ -63,11 +63,11 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 
 		$hash = 'concept-' . $conceptId;
 
-		$this->queryBuilder->getCircularReferenceGuard()->mark( $hash );
+		$this->querySegmentListBuilder->getCircularReferenceGuard()->mark( $hash );
 
-		if ( $this->queryBuilder->getCircularReferenceGuard()->isCircularByRecursionFor( $hash ) ) {
+		if ( $this->querySegmentListBuilder->getCircularReferenceGuard()->isCircularByRecursionFor( $hash ) ) {
 
-			$this->queryBuilder->addError(
+			$this->querySegmentListBuilder->addError(
 				wfMessage( 'smw-query-condition-circular', $description->getQueryString() )->text()
 			);
 
@@ -78,7 +78,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 
 		// No description found, concept does not exist.
 		if ( $row === false ) {
-			$this->queryBuilder->getCircularReferenceGuard()->unmark( 'concept-' . $conceptId );
+			$this->querySegmentListBuilder->getCircularReferenceGuard()->unmark( 'concept-' . $conceptId );
 			// keep the above query object, it yields an empty result
 			// TODO: announce an error here? (maybe not, since the query processor can check for
 			// non-existing concept pages which is probably the main reason for finding nothing here)
@@ -97,24 +97,24 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 
 			$query->joinTable = SMWSQLStore3::CONCEPT_CACHE_TABLE;
 			$query->joinfield = "$query->alias.s_id";
-			$query->where = "$query->alias.o_id=" . $this->queryBuilder->getStore()->getConnection( 'mw.db' )->addQuotes( $conceptId );
+			$query->where = "$query->alias.o_id=" . $this->querySegmentListBuilder->getStore()->getConnection( 'mw.db' )->addQuotes( $conceptId );
 		} elseif ( $row->concept_txt ) { // Parse description and process it recursively.
 			if ( $may_be_computed ) {
-				$qid = $this->queryBuilder->buildQuerySegmentFor( $this->getConceptQueryDescription( $row->concept_txt ) );
+				$qid = $this->querySegmentListBuilder->buildQuerySegmentFor( $this->getConceptQueryDescription( $row->concept_txt ) );
 
 				if ($qid != -1) {
-					$query = $this->queryBuilder->findQuerySegment( $qid );
+					$query = $this->querySegmentListBuilder->findQuerySegment( $qid );
 				} else { // somehow the concept query is no longer valid; maybe some syntax changed (upgrade) or global settings were modified since storing it
-					$this->queryBuilder->addError( wfMessage( 'smw_emptysubquery' )->text() ); // not the right message, but this case is very rare; let us not make detailed messages for this
+					$this->querySegmentListBuilder->addError( wfMessage( 'smw_emptysubquery' )->text() ); // not the right message, but this case is very rare; let us not make detailed messages for this
 				}
 			} else {
-				$this->queryBuilder->addError(
+				$this->querySegmentListBuilder->addError(
 					wfMessage( 'smw_concept_cache_miss', $description->getConcept()->getTitle()->getText() )->text()
 				);
 			}
 		} // else: no cache, no description (this may happen); treat like empty concept
 
-		$this->queryBuilder->getCircularReferenceGuard()->unmark( $hash );
+		$this->querySegmentListBuilder->getCircularReferenceGuard()->unmark( $hash );
 
 		return $query;
 	}
@@ -127,7 +127,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	 * do on getWikiValue
 	 */
 	private function getConceptForId( $id ) {
-		return $this->queryBuilder->getStore()->getConnection( 'mw.db' )->selectRow(
+		return $this->querySegmentListBuilder->getStore()->getConnection( 'mw.db' )->selectRow(
 			'smw_fpt_conc',
 			array( 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date' ),
 			array( 's_id' => $id ),

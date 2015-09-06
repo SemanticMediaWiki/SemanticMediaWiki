@@ -5,7 +5,7 @@ namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\SQLStore\QueryEngine\Interpreter\ValueDescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\QueryBuilder;
+use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 
 use SMW\Query\Language\ValueDescription;
 
@@ -33,13 +33,13 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$queryBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QueryBuilder' )
+		$querySegmentListBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegmentListBuilder' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Interpreter\ValueDescriptionInterpreter',
-			new ValueDescriptionInterpreter( $queryBuilder )
+			new ValueDescriptionInterpreter( $querySegmentListBuilder )
 		);
 	}
 
@@ -76,7 +76,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIds ) );
 
-		$instance = new ValueDescriptionInterpreter( new QueryBuilder( $store ) );
+		$instance = new ValueDescriptionInterpreter( new QuerySegmentListBuilder( $store ) );
 
 		$this->assertTrue(
 			$instance->canInterpretDescription( $description )

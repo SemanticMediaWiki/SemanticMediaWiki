@@ -5,7 +5,7 @@ namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\SQLStore\QueryEngine\Interpreter\DisjunctionConjunctionInterpreter;
-use SMW\SQLStore\QueryEngine\QueryBuilder;
+use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\Conjunction;
@@ -33,13 +33,13 @@ class DisjunctionConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase 
 
 	public function testCanConstruct() {
 
-		$queryBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QueryBuilder' )
+		$querySegmentListBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegmentListBuilder' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Interpreter\DisjunctionConjunctionInterpreter',
-			new DisjunctionConjunctionInterpreter( $queryBuilder )
+			new DisjunctionConjunctionInterpreter( $querySegmentListBuilder )
 		);
 	}
 
@@ -60,7 +60,7 @@ class DisjunctionConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase 
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new DisjunctionConjunctionInterpreter( new QueryBuilder( $store ) );
+		$instance = new DisjunctionConjunctionInterpreter( new QuerySegmentListBuilder( $store ) );
 
 		$this->assertTrue(
 			$instance->canInterpretDescription( $description )

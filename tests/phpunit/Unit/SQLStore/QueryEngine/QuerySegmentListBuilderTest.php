@@ -4,14 +4,14 @@ namespace SMW\Tests\SQLStore\QueryEngine;
 
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\SQLStore\QueryEngine\QuerySegment;
-use SMW\SQLStore\QueryEngine\QueryBuilder;
+use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\ClassDescription;
 use SMW\DIWikiPage;
 
 /**
- * @covers \SMW\SQLStore\QueryEngine\QueryBuilder
+ * @covers \SMW\SQLStore\QueryEngine\QuerySegmentListBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -19,7 +19,7 @@ use SMW\DIWikiPage;
  *
  * @author mwjames
  */
-class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
+class QuerySegmentListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $querySegmentValidator;
 	private $store;
@@ -37,8 +37,8 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\QueryBuilder',
-			new QueryBuilder( $this->store )
+			'\SMW\SQLStore\QueryEngine\QuerySegmentListBuilder',
+			new QuerySegmentListBuilder( $this->store )
 		);
 	}
 
@@ -58,7 +58,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$description = new NamespaceDescription( NS_HELP );
 
-		$instance = new QueryBuilder( $store );
+		$instance = new QuerySegmentListBuilder( $store );
 		$instance->buildQuerySegmentFor( $description );
 
 		$expected = new \stdClass;
@@ -70,7 +70,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->querySegmentValidator->assertThatContainerContains(
 			$expected,
-			$instance->getQuerySegments()
+			$instance->getQuerySegmentList()
 		);
 	}
 
@@ -92,7 +92,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 		$description->addDescription( new NamespaceDescription( NS_HELP ) );
 		$description->addDescription( new NamespaceDescription( NS_MAIN ) );
 
-		$instance = new QueryBuilder( $store );
+		$instance = new QuerySegmentListBuilder( $store );
 		$instance->buildQuerySegmentFor( $description );
 
 		$expectedDisjunction = new \stdClass;
@@ -123,7 +123,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->querySegmentValidator->assertThatContainerContains(
 			$expected,
-			$instance->getQuerySegments()
+			$instance->getQuerySegmentList()
 		);
 	}
 
@@ -155,7 +155,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$description = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );
 
-		$instance = new QueryBuilder( $store );
+		$instance = new QuerySegmentListBuilder( $store );
 		$instance->buildQuerySegmentFor( $description );
 
 		$expectedClass = new \stdClass;
@@ -185,13 +185,13 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->querySegmentValidator->assertThatContainerContains(
 			$expected,
-			$instance->getQuerySegments()
+			$instance->getQuerySegmentList()
 		);
 	}
 
 	public function testGivenNonInteger_getQuerySegmentThrowsException() {
 
-		$instance = new QueryBuilder( $this->store );
+		$instance = new QuerySegmentListBuilder( $this->store );
 
 		$this->setExpectedException( 'InvalidArgumentException' );
 		$instance->findQuerySegment( null );
@@ -199,7 +199,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGivenUnknownId_getQuerySegmentThrowsException() {
 
-		$instance = new QueryBuilder( $this->store );
+		$instance = new QuerySegmentListBuilder( $this->store );
 
 		$this->setExpectedException( 'OutOfBoundsException' );
 		$instance->findQuerySegment( 1 );
@@ -207,10 +207,11 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGivenKnownId_getQuerySegmentReturnsCorrectPart() {
 
-		$instance = new QueryBuilder( $this->store );
+		$instance = new QuerySegmentListBuilder( $this->store );
 		$querySegment = new QuerySegment();
 
-		$instance->addQuerySegmentForId( 1, $querySegment );
+		$querySegment->segmentNumber = 1;
+		$instance->addQuerySegment($querySegment );
 
 		$this->assertSame(
 			$querySegment,
@@ -218,28 +219,38 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testWhenNoQuerySegments_getQuerySegmentsReturnsEmptyArray() {
+	public function testWhenNoQuerySegments_getQuerySegmentListReturnsEmptyArray() {
 
-		$instance = new QueryBuilder( $this->store );
+		$instance = new QuerySegmentListBuilder( $this->store );
 
 		$this->assertSame(
 			array(),
-			$instance->getQuerySegments()
+			$instance->getQuerySegmentList()
 		);
 	}
 
-	public function testWhenSomeQuerySegments_getQuerySegmentsReturnsThemAll() {
+	public function testWhenSomeQuerySegments_getQuerySegmentListReturnsThemAll() {
 
-		$instance = new QueryBuilder( $this->store );
+		$instance = new QuerySegmentListBuilder( $this->store );
 
 		$firstQuerySegment = new QuerySegment();
+		$firstQuerySegment->segmentNumber = 42;
+
+		$instance->addQuerySegment( $firstQuerySegment );
+
 		$secondQuerySegment = new QuerySegment();
-		$instance->addQuerySegmentForId( 42, $firstQuerySegment );
-		$instance->addQuerySegmentForId( 23, $secondQuerySegment );
+		$secondQuerySegment->segmentNumber = 23;
+
+		$instance->addQuerySegment( $secondQuerySegment );
+
+		$expected = array(
+			42 => $firstQuerySegment,
+			23 => $secondQuerySegment
+		);
 
 		$this->assertSame(
-			array( 42 => $firstQuerySegment, 23 => $secondQuerySegment ),
-			$instance->getQuerySegments()
+			$expected,
+			$instance->getQuerySegmentList()
 		);
 	}
 

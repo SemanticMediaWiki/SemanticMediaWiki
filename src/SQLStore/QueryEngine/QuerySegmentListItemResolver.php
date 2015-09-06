@@ -16,7 +16,7 @@ use RuntimeException;
  * @author Jeroen De Dauw
  * @author mwjames
  */
-class QuerySegmentListResolver {
+class QuerySegmentListItemResolver {
 
 	/**
 	 * @var Database
@@ -108,7 +108,7 @@ class QuerySegmentListResolver {
 	 * @param integer $id
 	 * @throws RuntimeException
 	 */
-	public function resolveForSegmentId( $id ) {
+	public function resolveForSegmentItem( $id ) {
 
 		$this->hierarchyCache = array();
 		$this->executedQueries = array();
