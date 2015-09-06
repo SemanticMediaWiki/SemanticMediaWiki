@@ -77,8 +77,8 @@ final class Setup {
 			$this->globalVars['smwgScriptPath'] = ( $this->globalVars['wgExtensionAssetsPath'] === false ? $this->globalVars['wgScriptPath'] . '/extensions' : $this->globalVars['wgExtensionAssetsPath'] ) . '/SemanticMediaWiki';
 		}
 
-		if ( is_file( $this->directory . "/resources/Resources.php" ) ) {
-			$this->globalVars['wgResourceModules'] = array_merge( $this->globalVars['wgResourceModules'], include ( $this->directory . "/resources/Resources.php" ) );
+		if ( is_file( $this->directory . "/res/Resources.php" ) ) {
+			$this->globalVars['wgResourceModules'] = array_merge( $this->globalVars['wgResourceModules'], include ( $this->directory . "/res/Resources.php" ) );
 		}
 	}
 
@@ -252,7 +252,7 @@ final class Setup {
 		$this->globalVars['wgFooterIcons']['poweredby']['semanticmediawiki'] = array(
 			'src' => $this->globalVars['wgScriptPath'] . '/extensions/'
 				. end( $pathParts )
-				. '/../resources/images/smw_button.png',
+				. '/../res/images/smw_button.png',
 			'url' => 'https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki',
 			'alt' => 'Powered by Semantic MediaWiki',
 		);

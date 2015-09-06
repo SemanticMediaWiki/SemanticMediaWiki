@@ -1,16 +1,11 @@
 <?php
 
-namespace SMW;
-
 /**
  * Collection of resource module definitions
  *
+ * @license GNU GPL v2 or later
  * @since 1.8
  *
- * @file
- * @ingroup SMW
- *
- * @licence GNU GPL v2 or later
  * @author mwjames
  */
 

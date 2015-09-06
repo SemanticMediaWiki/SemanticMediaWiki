@@ -2,18 +2,14 @@
 
 namespace SMW\Tests\System;
 
-use SMW\Tests\Utils\GlobalsProvider;
+use SMW\ApplicationFactory;
 
 use ResourceLoader;
 use ResourceLoaderModule;
 use ResourceLoaderContext;
 
 /**
- * @group SMW
- * @group SMWExtension
- *
- * @group semantic-mediawiki-system
- * @group mediawiki-databaseless
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -64,7 +60,7 @@ class ResourcesAccessibilityTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function includeResourceDefinitionsFromFile() {
-		return include GlobalsProvider::getInstance()->get( 'smwgIP' ) . '/resources/Resources.php';
+		return include ApplicationFactory::getInstance()->getSettings()->get( 'smwgIP' ) . '/res/Resources.php';
 	}
 
 }
