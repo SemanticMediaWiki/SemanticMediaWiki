@@ -4,7 +4,7 @@ The `SQLStore` consists of a storage and query engine to manage semantic data st
 
 ## Overview
 
-![image](https://cloud.githubusercontent.com/assets/1245473/9704735/2e701b36-54b1-11e5-9029-0092c54ee247.png)
+![image](https://cloud.githubusercontent.com/assets/1245473/9708119/80ff497e-5517-11e5-936c-d56b22e7bfde.png)
 
 ## See also
 

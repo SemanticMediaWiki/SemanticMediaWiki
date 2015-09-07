@@ -115,7 +115,7 @@ class EmbeddedQueryDependencyLinksStore {
 				__METHOD__
 			);
 
-			$this->connection->commitAtomicTransaction( __METHOD__ );
+			$this->connection->endAtomicTransaction( __METHOD__ );
 		}
 
 		// Dispatch any event registered earlier during the QueryResult processing
@@ -299,7 +299,7 @@ class EmbeddedQueryDependencyLinksStore {
 		}
 
 		if ( $inserts === array() ) {
-			return $this->connection->commitAtomicTransaction( __METHOD__ );
+			return $this->connection->endAtomicTransaction( __METHOD__ );
 		}
 
 		// MW's multi-array insert needs a numeric dimensional array but the key
@@ -314,7 +314,7 @@ class EmbeddedQueryDependencyLinksStore {
 			__METHOD__
 		);
 
-		$this->connection->commitAtomicTransaction( __METHOD__ );
+		$this->connection->endAtomicTransaction( __METHOD__ );
 	}
 
 	public function getIdForSubject( DIWikiPage $subject, $subobjectName = '' ) {

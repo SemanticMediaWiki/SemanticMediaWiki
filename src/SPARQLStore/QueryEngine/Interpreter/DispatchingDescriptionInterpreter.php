@@ -13,7 +13,7 @@ use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class DispatchingInterpreter implements DescriptionInterpreter {
+class DispatchingDescriptionInterpreter implements DescriptionInterpreter {
 
 	/**
 	 * @var DescriptionInterpreter[]

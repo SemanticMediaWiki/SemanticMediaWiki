@@ -570,7 +570,7 @@ class SMWSql3SmwIds {
 			$this->setCache( $title, $namespace, $iw, $subobjectName, $id, $sortkey );
 		}
 
-		$db->commitAtomicTransaction( __METHOD__ );
+		$db->endAtomicTransaction( __METHOD__ );
 
 		return $id;
 	}
@@ -801,7 +801,7 @@ class SMWSql3SmwIds {
 			$row->smw_namespace
 		);
 
-		$db->commitAtomicTransaction( __METHOD__ );
+		$db->endAtomicTransaction( __METHOD__ );
 	}
 
 	/**

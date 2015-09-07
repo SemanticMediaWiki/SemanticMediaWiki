@@ -199,7 +199,7 @@ class SMWSQLStore3Writers {
 			// * no support for annotations on redirect pages
 			// * updateRedirects takes care of deleting any previous data
 
-			$this->store->getConnection()->commitAtomicTransaction( __METHOD__ );
+			$this->store->getConnection()->endAtomicTransaction( __METHOD__ );
 
 			return;
 		} else {
@@ -261,7 +261,7 @@ class SMWSQLStore3Writers {
 		// Update caches (may be important if jobs are directly following this call)
 		$this->setSemanticDataCache( $sid, $data );
 
-		$this->store->getConnection()->commitAtomicTransaction( __METHOD__ );
+		$this->store->getConnection()->endAtomicTransaction( __METHOD__ );
 
 		// TODO Make overall diff SMWSemanticData containers and return them.
 		// This can only be done here, since the $deleteRows/$insertRows

@@ -455,7 +455,7 @@ class Database {
 	 *
 	 * @param string $fname
 	 */
-	public function commitAtomicTransaction( $fname = __METHOD__ ) {
+	public function endAtomicTransaction( $fname = __METHOD__ ) {
 
 		// MW 1.23
 		if ( !method_exists( $this->writeConnection(), 'endAtomic' ) ) {

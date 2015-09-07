@@ -2,11 +2,15 @@
 
 The `SPARQLStore` is the name for the component that can establish a connection between a [RDF triple store][tdb] and Semantic MediaWiki (a more general introduction can be found [here](https://www.semantic-mediawiki.org/wiki/Help:Using SPARQL and RDF stores)).
 
-The `SPARQLStore` is composed of a base store (by default using the existing `SQLStore`), a `QueryEngine`, and a connector for the RDF back-end. Currently, the base store takes the position of accumulating information about properties, value annotations, and statistics.
+The `SPARQLStore` is composed of a base store (by default using the existing `SQLStore`), a `QueryEngine`, and a connector to the RDF back-end. Currently, the base store takes the position of accumulating information about properties, value annotations, and statistics.
+
+## Overview
+
+![image](https://cloud.githubusercontent.com/assets/1245473/9708428/e1e2bf1a-551b-11e5-920c-dd97d66d2ec7.png)
 
 ## Repository connector
 
-A repository connector is responsible to establish a communication (via REST) between Semantic MediaWiki and an external [TDB][tdb] with the main objective to transfer/update triples from SMW to the back-end and to return match results for a query request made by the `QueryEngine`.
+A repository connector is responsible to establish a communication (via REST) between Semantic MediaWiki and an external [TDB][tdb] with the main objective to transfer/update triples from SMW to the back-end and to return result matches for a query request.
 
 The following client repositories are currently supported:
 
@@ -55,11 +59,11 @@ $description = new SomeProperty(
 
 $query = new Query( $description );
 
-$sparqlStorefactory = new SPARQLStoreFactory(
+$sparqlStoreFactory = new SPARQLStoreFactory(
   new SPARQLStore()
 );
 
-$queryEngine = $sparqlStorefactory->newMasterQueryEngine();
+$queryEngine = $sparqlStoreFactory->newMasterQueryEngine();
 $queryResult = $queryEngine->getQueryResult( $query );
 </pre>
 

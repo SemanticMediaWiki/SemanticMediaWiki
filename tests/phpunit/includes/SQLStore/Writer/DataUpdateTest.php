@@ -252,7 +252,7 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->method( 'beginAtomicTransaction' );
 
 		$database->expects( $this->atLeastOnce() )
-			->method( 'commitAtomicTransaction' );
+			->method( 'endAtomicTransaction' );
 
 		$database->expects( $this->once() )
 			->method( 'select' )

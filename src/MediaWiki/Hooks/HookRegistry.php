@@ -504,6 +504,10 @@ class HookRegistry {
 
 			$asyncJobDispatchManager = new AsyncJobDispatchManager( $curlRequest );
 
+			$asyncJobDispatchManager->setEnabledAsyncUsageState(
+				$applicationFactory->getSettings()->get( 'smwgEnabledAsyncJobDispatcher' )
+			);
+
 			$asyncJobDispatchManager->dispatchJobFor(
 				'SMW\ParserCachePurgeJob',
 				$semanticData->getSubject()->getTitle(),
