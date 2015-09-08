@@ -14,5 +14,4 @@ If you are new to SMW development, have a look at the [Programmer's guide to SMW
 
 ## See also
 
-* [Using the Dependency Builder/Container](dic.md)
 * [Interacting with Serializers](serializers.md)
