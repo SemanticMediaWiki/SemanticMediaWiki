@@ -245,7 +245,7 @@ class ParserFunctionFactory {
 		$askParserFunctionDefinition = function( $parser ) use( $parserFunctionFactory ) {
 
 			$smwgQEnabled = ApplicationFactory::getInstance()->getSettings()->get( 'smwgQEnabled' );
-			$askParserFunction = $parserFunctionFactory->newAskParserFunction();
+			$askParserFunction = $parserFunctionFactory->newFromParser( $parser )->newAskParserFunction();
 
 			if ( !$smwgQEnabled ) {
 				return $askParserFunction->isQueryDisabled();
@@ -270,7 +270,7 @@ class ParserFunctionFactory {
 		$showParserFunctionDefinition = function( $parser ) use( $parserFunctionFactory ) {
 
 			$smwgQEnabled = ApplicationFactory::getInstance()->getSettings()->get( 'smwgQEnabled' );
-			$showParserFunction = $parserFunctionFactory->newShowParserFunction();
+			$showParserFunction = $parserFunctionFactory->newFromParser( $parser )->newShowParserFunction();
 
 			if ( !$smwgQEnabled ) {
 				return $showParserFunction->isQueryDisabled();
@@ -294,7 +294,7 @@ class ParserFunctionFactory {
 
 		$subobjectParserFunctionDefinition = function( $parser ) use( $parserFunctionFactory ) {
 
-			$subobjectParserFunction = $parserFunctionFactory->newSubobjectParserFunction();
+			$subobjectParserFunction = $parserFunctionFactory->newFromParser( $parser )->newSubobjectParserFunction();
 
 			return $subobjectParserFunction->parse(
 				ParameterProcessorFactory::newFromArray( func_get_args() )
@@ -316,7 +316,7 @@ class ParserFunctionFactory {
 
 		$recurringEventsParserFunctionDefinition = function( $parser ) use( $parserFunctionFactory ) {
 
-			$recurringEventsParserFunction = $parserFunctionFactory->newRecurringEventsParserFunction();
+			$recurringEventsParserFunction = $parserFunctionFactory->newFromParser( $parser )->newRecurringEventsParserFunction();
 
 			return $recurringEventsParserFunction->parse(
 				ParameterProcessorFactory::newFromArray( func_get_args() )
@@ -338,7 +338,7 @@ class ParserFunctionFactory {
 
 		$setParserFunctionDefinition = function( $parser ) use( $parserFunctionFactory ) {
 
-			$setParserFunction = $parserFunctionFactory->newSetParserFunction();
+			$setParserFunction = $parserFunctionFactory->newFromParser( $parser )->newSetParserFunction();
 
 			return $setParserFunction->parse(
 				ParameterProcessorFactory::newFromArray( func_get_args() )
@@ -360,7 +360,7 @@ class ParserFunctionFactory {
 
 		$conceptParserFunctionDefinition = function( $parser ) use( $parserFunctionFactory ) {
 
-			$conceptParserFunction = $parserFunctionFactory->newConceptParserFunction();
+			$conceptParserFunction = $parserFunctionFactory->newFromParser( $parser )->newConceptParserFunction();
 
 			return $conceptParserFunction->parse( func_get_args() );
 		};
@@ -379,7 +379,7 @@ class ParserFunctionFactory {
 		$parserFunctionFactory = $this;
 
 		$declareParserFunctionDefinition = function( $parser, $frame, $args ) use( $parserFunctionFactory ) {
-			return $parserFunctionFactory->newDeclareParserFunction()->parse( $frame, $args );
+			return $parserFunctionFactory->newFromParser( $parser )->newDeclareParserFunction()->parse( $frame, $args );
 		};
 
 		return array( 'declare', $declareParserFunctionDefinition, Parser::SFH_OBJECT_ARGS );
