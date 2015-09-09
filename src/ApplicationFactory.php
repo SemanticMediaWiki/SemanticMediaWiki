@@ -14,6 +14,8 @@ use SMW\Maintenance\MaintenanceFactory;
 use SMW\CacheFactory;
 use SMWQueryParser as QueryParser;
 use Title;
+use Onoi\CallbackContainer\CallbackLoader;
+use Onoi\CallbackContainer\DeferredCallbackLoader;
 
 /**
  * Application instances access for internal and external use
@@ -31,15 +33,15 @@ class ApplicationFactory {
 	private static $instance = null;
 
 	/**
-	 * @var DependencyBuilder
+	 * @var CallbackLoader
 	 */
-	private $builder = null;
+	private $callbackLoader = null;
 
 	/**
 	 * @since 2.0
 	 */
-	public function __construct( DependencyBuilder $builder = null ) {
-		$this->builder = $builder;
+	public function __construct( CallbackLoader $callbackLoader = null ) {
+		$this->callbackLoader = $callbackLoader;
 	}
 
 	/**
@@ -82,12 +84,9 @@ class ApplicationFactory {
 	 *
 	 * @param string $objectName
 	 * @param callable|array $objectSignature
-	 *
-	 * @return $this
 	 */
 	public function registerObject( $objectName, $objectSignature ) {
-		$this->builder->getContainer()->registerObject( $objectName, $objectSignature );
-		return $this;
+		$this->callbackLoader->registerObject( $objectName, $objectSignature );
 	}
 
 	/**
@@ -105,7 +104,7 @@ class ApplicationFactory {
 	 * @return FactboxFactory
 	 */
 	public function newFactboxFactory() {
-		return $this->builder->newObject( 'FactboxFactory' );
+		return $this->callbackLoader->load( 'FactboxFactory' );
 	}
 
 	/**
@@ -123,7 +122,7 @@ class ApplicationFactory {
 	 * @return JobFactory
 	 */
 	public function newJobFactory() {
-		return $this->builder->newObject( 'JobFactory' );
+		return $this->callbackLoader->load( 'JobFactory' );
 	}
 
 	/**
@@ -170,7 +169,7 @@ class ApplicationFactory {
 	 * @return Store
 	 */
 	public function getStore() {
-		return $this->builder->newObject( 'Store' );
+		return $this->callbackLoader->singleton( 'Store' );
 	}
 
 	/**
@@ -179,7 +178,7 @@ class ApplicationFactory {
 	 * @return Settings
 	 */
 	public function getSettings() {
-		return $this->builder->newObject( 'Settings' );
+		return $this->callbackLoader->singleton( 'Settings' );
 	}
 
 	/**
@@ -188,7 +187,7 @@ class ApplicationFactory {
 	 * @return TitleCreator
 	 */
 	public function newTitleCreator() {
-		return $this->builder->newObject( 'TitleCreator' );
+		return $this->callbackLoader->load( 'TitleCreator', $this->newPageCreator() );
 	}
 
 	/**
@@ -197,7 +196,7 @@ class ApplicationFactory {
 	 * @return PageCreator
 	 */
 	public function newPageCreator() {
-		return $this->builder->newObject( 'PageCreator' );
+		return $this->callbackLoader->load( 'PageCreator' );
 	}
 
 	/**
@@ -206,7 +205,7 @@ class ApplicationFactory {
 	 * @return Cache
 	 */
 	public function getCache() {
-		return $this->builder->newObject( 'Cache' );
+		return $this->callbackLoader->singleton( 'Cache' );
 	}
 
 	/**
@@ -231,10 +230,7 @@ class ApplicationFactory {
 	 * @return ParserData
 	 */
 	public function newParserData( Title $title, ParserOutput $parserOutput ) {
-		return $this->builder->newObject( 'ParserData', array(
-			'Title'        => $title,
-			'ParserOutput' => $parserOutput
-		) );
+		return $this->callbackLoader->load( 'ParserData', $title, $parserOutput );
 	}
 
 	/**
@@ -243,9 +239,7 @@ class ApplicationFactory {
 	 * @return ContentParser
 	 */
 	public function newContentParser( Title $title ) {
-		return $this->builder->newObject( 'ContentParser', array(
-			'Title' => $title
-		) );
+		return $this->callbackLoader->load( 'ContentParser', $title );
 	}
 
 	/**
@@ -286,13 +280,13 @@ class ApplicationFactory {
 		return new QueryParser();
 	}
 
-	private static function registerBuilder( DependencyBuilder $builder = null ) {
+	private static function registerBuilder( CallbackLoader $callbackLoader = null ) {
 
-		if ( $builder === null ) {
-			$builder = new SimpleDependencyBuilder( new SharedDependencyContainer() );
+		if ( $callbackLoader === null ) {
+			$callbackLoader = new DeferredCallbackLoader( new SharedCallbackContainer() );
 		}
 
-		return $builder;
+		return $callbackLoader;
 	}
 
 }
