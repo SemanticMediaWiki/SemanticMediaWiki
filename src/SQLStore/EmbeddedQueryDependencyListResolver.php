@@ -219,18 +219,7 @@ class EmbeddedQueryDependencyListResolver {
 		$subproperties = $this->propertyHierarchyLookup->findSubpropertListFor( $property );
 
 		foreach ( $subproperties as $subproperty ) {
-
-			$subp = new DIProperty( $subproperty->getDBKey() );
-
-			if ( $this->propertyHierarchyLookup->hasSubpropertyFor( $subp ) ) {
-				$this->doMatchSubproperty( $subjects, $subp );
-			}
-
-			$key = str_replace( ' ', '_', $subp->getKey() );
-
-			if ( !isset( $this->propertyDependencyDetectionBlacklist[$key] ) ) {
-				$subjects[] = $subproperty;
-			}
+			$this->doMatchProperty( $subjects, new DIProperty( $subproperty->getDBKey() ) );
 		}
 	}
 
