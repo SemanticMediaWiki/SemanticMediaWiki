@@ -213,7 +213,7 @@ class ParserData {
 	 */
 	public function pushSemanticDataToParserOutput() {
 
-		$this->parserOutput->setTimestamp( wfTimestampNow() );
+		$this->setSemanticDataStateToParserOutputProperty();
 
 		if ( $this->hasExtensionData() ) {
 			return $this->parserOutput->setExtensionData( 'smwdata', $this->semanticData );

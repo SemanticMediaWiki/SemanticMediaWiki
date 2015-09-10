@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use SMW\MediaWiki\Renderer\HtmlTemplateRenderer;
+use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 
 use Parser;
 
@@ -32,7 +32,7 @@ class SetParserFunction {
 	private $messageFormatter;
 
 	/**
-	 * @var HtmlTemplateRenderer
+	 * @var WikitextTemplateRenderer
 	 */
 	private $templateRenderer;
 
@@ -41,9 +41,9 @@ class SetParserFunction {
 	 *
 	 * @param ParserData $parserData
 	 * @param MessageFormatter $messageFormatter
-	 * @param HtmlTemplateRenderer $templateRenderer
+	 * @param WikitextTemplateRenderer $templateRenderer
 	 */
-	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter, HtmlTemplateRenderer $templateRenderer ) {
+	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter, WikitextTemplateRenderer $templateRenderer ) {
 		$this->parserData = $parserData;
 		$this->messageFormatter = $messageFormatter;
 		$this->templateRenderer = $templateRenderer;
@@ -105,7 +105,7 @@ class SetParserFunction {
 			->addFromArray( $parameters->getErrors() )
 			->getHtml();
 
-		return array( $html, 'noparse' => true, 'isHTML' => false );
+		return array( $html, 'noparse' => $template === '', 'isHTML' => false );
 	}
 
 	private function addFieldsToTemplate( $template, $dataValue, $property, $value, $isLastElement, &$count ) {
