@@ -129,9 +129,7 @@ class ParserFunctionFactory {
 			$this->parser->getTargetLanguage()
 		);
 
-		$templateRenderer = $applicationFactory
-			->newMwCollaboratorFactory()
-			->newHtmlTemplateRenderer( $this->parser );
+		$templateRenderer = $applicationFactory->newMwCollaboratorFactory()->newWikitextTemplateRenderer();
 
 		$instance = new SetParserFunction(
 			$parserData,

@@ -6,7 +6,6 @@ use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\SetParserFunction;
 use SMW\ParameterFormatterFactory;
-use SMW\MediaWiki\Renderer\HtmlTemplateRenderer;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use SMW\ApplicationFactory;
 
@@ -15,7 +14,6 @@ use ParserOutput;
 
 /**
  * @covers \SMW\SetParserFunction
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -51,7 +49,7 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlTemplateRenderer' )
+		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\WikitextTemplateRenderer' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -83,7 +81,7 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getHtml' )
 			->will( $this->returnValue( 'Foo' ) );
 
-		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlTemplateRenderer' )
+		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\WikitextTemplateRenderer' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -117,7 +115,7 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->method( 'addFromArray' )
 			->will( $this->returnSelf() );
 
-		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlTemplateRenderer' )
+		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\WikitextTemplateRenderer' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -159,22 +157,7 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->method( 'addFromArray' )
 			->will( $this->returnSelf() );
 
-		$parser = $this->getMockBuilder( '\Parser' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$parser->expects( $this->once() )
-			->method( 'recursiveTagParse' )
-			->with(
-				$this->stringContains(
-					'{{FooTemplate|property=Foo|value=bar|last-element=|#=0}}' .
-					'{{FooTemplate|property=Foo|value=foobar|last-element=1|#=1}}' .
-					'{{FooTemplate|property=BarFoo|value=9001|last-element=1|#=2}}' ) );
-
-		$templateRenderer = new HtmlTemplateRenderer(
-			new WikitextTemplateRenderer(),
-			$parser
-		);
+		$templateRenderer = new WikitextTemplateRenderer();
 
 		$instance = new SetParserFunction(
 			$parserData,

@@ -45,6 +45,16 @@
 					"propertyValues": [ "Has date" ]
 				}
 			}
+		},
+		{
+			"about": "#3 ",
+			"subject": "Transclude-Template-Using-Set",
+			"expected-output": {
+				"to-contain": [
+					"<span class=\"smw-list-furtherresults\">",
+					"searchlabel=SetParserTemplateValue/offset=0\">SetParserTemplateValue</a>"
+				]
+			}
 		}
 	],
 	"settings": {},
