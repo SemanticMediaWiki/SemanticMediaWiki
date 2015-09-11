@@ -281,7 +281,7 @@
 	"group-smwadministrator": "Διαχειριστές Σημασιολογικού MediaWiki",
 	"group-smwadministrator-member": "{{GENDER:$1|διαχειριστής|διαχειρίστρια}} (SMW)",
 	"grouppage-smwadministrator": "{{ns:project}}:Διαχειριστές Σημασιολογικού MediaWiki",
-	"action-smw-admin": "πρόσβαση σε διαχειριστικές εργασίες του Σημασιολογικού MediaWiki",
+	"action-smw-admin": "μεταβείτε στις διαχειριστικές εργασίες του Σημασιολογικού MediaWiki",
 	"smw-pa-property-predefined-default": "Η «$1» είναι μια εκ των προτέρων ορισμένη ιδιότητα.",
 	"smw-pa-property-predefined-common": "Αυτή η ιδιότητα είναι μια εκ των προτέρων ορισμένη ιδιότητα (γνωστή επίσης ως [https://www.semantic-mediawiki.org/wiki/Help:Special_properties ειδική ιδιότητα]) και συνοδεύεται από επιπλέον διαχειριστικά προνόμια αλλά μπορεί να χρησιμοποιηθεί ακριβώς όπως μια οποιαδήποτε άλλη [https://www.semantic-mediawiki.org/wiki/Property ιδιότητα που ορίζεται από χρήστη].",
 	"smw-pa-property-predefined_ask": "Η «$1» είναι μια εκ των προτέρων ορισμένη ιδιότητα που αναπαριστά μεταπληροφορία (με τη μορφή [https://www.semantic-mediawiki.org/wiki/Subobject υποαντικειμένου]) σχετικά με μεμονωμένα ερωτήματα.",
