@@ -170,6 +170,7 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 		$instance = new HtmlColumnListRenderer();
 
 		$instance->setColumnListClass( 'foo-class' )
+			->setNumberOfColumns( 2 ) // being set to 1 when it is responsive
 			->setColumnClass( 'bar-responsive' )
 			->setColumnRTLDirectionalityState( true )
 			->setListType( 'ul' );

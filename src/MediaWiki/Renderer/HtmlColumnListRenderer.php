@@ -170,15 +170,15 @@ class HtmlColumnListRenderer {
 		$usedColumnCloser = false;
 		$this->numRows = 0;
 
-		$this->rowsPerColumn = ceil( $this->numberOfResults / $this->numberOfColumns );
-
 		// Class to determine whether we want responsive columns width
 		if ( strpos( $this->columnClass, 'responsive' ) !== false ) {
 			$this->columnWidth = 100;
+			$this->numberOfColumns = 1;
 		} else {
 			$this->columnWidth = floor( 100 / $this->numberOfColumns );
 		}
 
+		$this->rowsPerColumn = ceil( $this->numberOfResults / $this->numberOfColumns );
 		$listContinuesAbbrev = wfMessage( 'listingcontinuesabbrev' )->text();
 
 		foreach ( $this->contentsByIndex as $key => $resultItems ) {
