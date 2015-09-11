@@ -4,6 +4,10 @@
 		{
 			"name": "Has regexblob property",
 			"contents": "[[Has type::Text]]"
+		},
+		{
+			"name": "Has simple text",
+			"contents": "[[Has type::Text]]"
 		}
 	],
 	"subjects": [
@@ -18,6 +22,10 @@
 		{
 			"name": "Escape character blob subject-c",
 			"contents": "[[Has regexblob property::Foo(\\\"'#^$&-/)]]"
+		},
+		{
+			"name": "BlobValue with whitespaces",
+			"contents": "[[Has simple text:: +/-nuclear atypia ]]"
 		}
 	],
 	"query-testcases": [
@@ -164,6 +172,20 @@
 			"queryresult": {
 				"results": [
 					"Escape character blob subject-c#0##"
+				],
+				"count": "1"
+			}
+		},
+		{
+			"about": "#10 find subject even when value annotation contained whitespaces",
+			"condition": "[[Has simple text::+/-nuclear atypia]]",
+			"printouts" : [],
+			"parameters" : {
+			  "limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"BlobValue with whitespaces#0##"
 				],
 				"count": "1"
 			}
