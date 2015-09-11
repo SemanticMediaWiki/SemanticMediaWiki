@@ -207,6 +207,45 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 		);
 	}
 
+	public function testTryToAddDependenciesForWhenDependencyListReturnsEmpty() {
+
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'getSMWPageID' ) )
+			->getMock();
+
+		$idTable->expects( $this->any() )
+			->method( 'getSMWPageID' )
+			->will( $this->onConsecutiveCalls( 42, 1001 ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getObjectIds' ) )
+			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
+		$instance = new EmbeddedQueryDependencyLinksStore( $store );
+		$instance->setEnabledState( true );
+
+		$embeddedQueryDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\EmbeddedQueryDependencyListResolver' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$embeddedQueryDependencyListResolver->expects( $this->once() )
+			->method( 'getQueryDependencySubjectList' )
+			->will( $this->returnValue( array() ) );
+
+		$embeddedQueryDependencyListResolver->expects( $this->any() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+
+		$this->assertNull(
+			$instance->addDependencyList( $embeddedQueryDependencyListResolver )
+		);
+	}
+
 	public function testAddDependenciesFromQueryResult() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )

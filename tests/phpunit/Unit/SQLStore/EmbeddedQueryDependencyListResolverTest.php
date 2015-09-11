@@ -63,7 +63,7 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 		);
 	}
 
-	public function testGetQueryDependencySubjectListForNonSetQueryResult() {
+	public function testTryToGetQueryDependencySubjectListForNonSetQueryResult() {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -85,6 +85,47 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 		$this->assertNull(
 			$instance->getSubject()
 		);
+
+		$this->assertEmpty(
+			$instance->getQueryDependencySubjectList()
+		);
+	}
+
+	public function testTryToGetQueryDependencySubjectListForLimitZeroQuery() {
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
+
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query = new Query( $description );
+		$query->setSubject( $subject );
+
+		$query->setUnboundLimit( 0 );
+
+		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->any() )
+			->method( 'getQuery' )
+			->will( $this->returnValue( $query ) );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new EmbeddedQueryDependencyListResolver(
+			$store,
+			$propertyHierarchyLookup
+		);
+
+		$instance->setQueryResult( $queryResult );
 
 		$this->assertEmpty(
 			$instance->getQueryDependencySubjectList()

@@ -239,6 +239,10 @@ class EmbeddedQueryDependencyLinksStore {
 
 		$dependencyList = $embeddedQueryDependencyListResolver->getQueryDependencySubjectList();
 
+		if ( $dependencyList === array() ) {
+			return null;
+		}
+
 		if ( $sid > 0 ) {
 			return $this->updateDependencyList( $sid, $dependencyList );
 		}

@@ -115,7 +115,9 @@ class EmbeddedQueryDependencyListResolver {
 	 */
 	public function getQueryDependencySubjectList() {
 
-		if ( $this->getSubject() === null ) {
+		// Resolving dependencies for non-embedded queries or limit=0 (which only
+		// links to Special:Ask via further results) is not required
+		if ( $this->getSubject() === null || $this->getQuery()->getLimit() == 0 ) {
 			return array();
 		}
 
