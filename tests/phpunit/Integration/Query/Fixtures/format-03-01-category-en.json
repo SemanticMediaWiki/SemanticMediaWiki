@@ -80,7 +80,7 @@
 			"subject": "template-output-named-args-asc",
 			"expected-output": {
 				"to-contain": [
-					"<div class=\"smw-columnlist-container\">",
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
 					"<div class=\"smw-column-header\">1</div><ul><li>123, Test Test2</li></ul>",
 					"<div class=\"smw-column-header\">B</div><ul><li>Bar, Test</li></ul></div>",
 					"<div class=\"smw-column-header\">F</div><ul><li>Foo, Test</li></ul>",
@@ -94,7 +94,7 @@
 			"subject": "template-output-named-args-desc",
 			"expected-output": {
 				"to-contain": [
-					"<div class=\"smw-columnlist-container\">",
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
 					"<div class=\"smw-column-header\">テ</div><ul><li>テスト, Test</li></ul>",
 					"<div class=\"smw-column-header\">F</div><ul><li>Foo, Test</li></ul></div>",
 					"<div class=\"smw-column-header\">B</div><ul><li>Bar, Test</li></ul>",
@@ -108,7 +108,7 @@
 			"subject": "template-output-unnamed-args-asc",
 			"expected-output": {
 				"to-contain": [
-					"<div class=\"smw-columnlist-container\">",
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
 					"<div class=\"smw-column-header\">1</div><ul><li>123, Test Test2</li></ul>",
 					"<div class=\"smw-column-header\">B</div><ul><li>Bar, Test</li></ul></div>",
 					"<div class=\"smw-column-header\">F</div><ul><li>Foo, Test</li></ul>",
@@ -122,7 +122,7 @@
 			"subject": "template-output-unnamed-args-desc",
 			"expected-output": {
 				"to-contain": [
-					"<div class=\"smw-columnlist-container\">",
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
 					"<div class=\"smw-column-header\">テ</div><ul><li>テスト, Test</li></ul>",
 					"<div class=\"smw-column-header\">F</div><ul><li>Foo, Test</li></ul></div>",
 					"<div class=\"smw-column-header\">B</div><ul><li>Bar, Test</li></ul>",
@@ -136,7 +136,7 @@
 			"subject": "one-column-plainlist-output-asc",
 			"expected-output": {
 				"to-contain": [
-					"<div class=\"smw-columnlist-container\">",
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
 					"<div class=\"smw-column-header\">1</div><ul><li>123 (Has page property Test, Test2)</li></ul>",
 					"<div class=\"smw-column-header\">B</div><ul><li>Bar (Has page property Test)</li></ul>",
 					"<div class=\"smw-column-header\">F</div><ul><li>Foo (Has page property Test)</li></ul>",
@@ -150,10 +150,10 @@
 			"subject": "limited-two-column-plainlist-output-desc",
 			"expected-output": {
 				"to-contain": [
-					"<div class=\"smw-columnlist-container\">",
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
 					"<div class=\"smw-column-header\">テ</div><ul><li>テスト (Has page property Test)</li></ul>",
 					"<div class=\"smw-column-header\">F</div><ul><li>Foo (Has page property Test)</li></ul></div>",
-					"<div class=\"smw-column\" style=\"width:50%;\"><div class=\"smw-column-header\">F cont.</div><ul><li>",
+					"<div class=\"smw-column\" style=\"width:50%;\" dir=\"ltr\"><div class=\"smw-column-header\">F cont.</div><ul><li>",
 					"Special:Ask/-5B-5BHas-20page-20property::Test-5D-5D/-3FHas-20page-20property/format=category/limit=2/link=none/order=desc/headers=plain/searchlabel=Test-20more/columns=2/offset=2\">Test more</a></span></li></ul></div>",
 					"<br style=\"clear: both;\" />"
 				]
@@ -164,8 +164,8 @@
 			"subject": "one-column-plainlist-output-with-default-sort-asc",
 			"expected-output": {
 				"to-contain": [
-					"<div class=\"smw-columnlist-container\">",
-					"<div class=\"smw-column\" style=\"width:100%;\"><div class=\"smw-column-header\">1</div><ul><li>123 (Has page property Test, Test2)</li></ul>",
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
+					"<div class=\"smw-column\" style=\"width:100%;\" dir=\"ltr\"><div class=\"smw-column-header\">1</div><ul><li>123 (Has page property Test, Test2)</li></ul>",
 					"<div class=\"smw-column-header\">A</div><ul><li>Είναι απλά (Has page property Test2)</li></ul>",
 					"<div class=\"smw-column-header\">B</div><ul><li>Је једноставно модел (Has page property Test2)</li></ul></div>",
 					"<br style=\"clear: both;\" />"
@@ -177,10 +177,10 @@
 			"subject": "template-output-unnamed-args-with-default-sort-asc",
 			"expected-output": {
 				"to-contain": [
-					"<div class=\"smw-columnlist-container\">",
-					"<div class=\"smw-column\" style=\"width:33%;\"><div class=\"smw-column-header\">1</div><ul><li>123, Test Test2</li></ul></div>",
-					"<div class=\"smw-column\" style=\"width:33%;\"><div class=\"smw-column-header\">A</div><ul><li>Είναι απλά, Test2</li></ul></div>",
-					"<div class=\"smw-column\" style=\"width:33%;\"><div class=\"smw-column-header\">B</div><ul><li>Је једноставно модел, Test2</li></ul></div>",
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
+					"<div class=\"smw-column\" style=\"width:33%;\" dir=\"ltr\"><div class=\"smw-column-header\">1</div><ul><li>123, Test Test2</li></ul></div>",
+					"<div class=\"smw-column\" style=\"width:33%;\" dir=\"ltr\"><div class=\"smw-column-header\">A</div><ul><li>Είναι απλά, Test2</li></ul></div>",
+					"<div class=\"smw-column\" style=\"width:33%;\" dir=\"ltr\"><div class=\"smw-column-header\">B</div><ul><li>Је једноставно модел, Test2</li></ul></div>",
 					"<br style=\"clear: both;\" />"
 				]
 			}

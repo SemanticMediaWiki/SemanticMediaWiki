@@ -410,6 +410,20 @@ label.smw-form-checkbox {
 	word-wrap: break-word;
 }
 
+.smw-column-responsive {
+	-webkit-column-width: 25em;
+	-moz-column-width: 25em;
+	column-width: 25em;
+}
+
+.smw-column[dir="rtl"] {
+	float: right;
+}
+
+.smw-column-responsive[dir="rtl"] {
+	float: right;
+}
+
 /* Thanks to the bootstrap css*/
 .smw-callout {
 	padding: 10px;
