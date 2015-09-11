@@ -169,6 +169,12 @@ class CategoryResultPrinter extends ResultPrinter {
 		$htmlColumnListRenderer->setNumberOfColumns( $this->mNumColumns );
 		$htmlColumnListRenderer->addContentsByIndex( $contentsByIndex );
 
+		// Per convention, an explicit 0 setting forces the columns to behave responsive
+		if ( $this->params['columns'] == 0 ) {
+			$htmlColumnListRenderer->setColumnClass( 'smw-column-responsive' );
+			$htmlColumnListRenderer->setNumberOfColumns( 1 );
+		}
+
 		return $htmlColumnListRenderer->getHtml();
 	}
 

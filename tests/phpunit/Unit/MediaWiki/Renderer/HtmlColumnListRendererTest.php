@@ -42,8 +42,8 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 		) );
 
 		$expected = array(
-			'<div class="smw-columnlist-container">',
-			'<div class="smw-column" style="width:100%;">',
+			'<div class="smw-columnlist-container" dir="ltr">',
+			'<div class="smw-column" style="width:100%;" dir="ltr">',
 			'<div class="smw-column-header">a</div><ul><li>Foo</li><li>Bar</li></ul>',
 			'<div class="smw-column-header">B</div><ul><li>Ichi</li><li>Ni</li></ul></div>'
 		);
@@ -68,12 +68,12 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 		$listContinuesAbbrev = wfMessage( 'listingcontinuesabbrev' )->text();
 
 		$expected = array(
-			'<div class="smw-columnlist-container">',
-			'<div class="smw-column" style="width:50%;">',
+			'<div class="smw-columnlist-container" dir="ltr">',
+			'<div class="smw-column" style="width:50%;" dir="ltr">',
 			'<div class="smw-column-header">a</div>',
 			'<ul><li>Foo</li><li>Bar</li></ul>',
 			'<div class="smw-column-header">B</div><ul><li>Baz</li></ul></div> <!-- end column -->',
-			'<div class="smw-column" style="width:50%;">',
+			'<div class="smw-column" style="width:50%;" dir="ltr">',
 			'<div class="smw-column-header">B ' . $listContinuesAbbrev .'</div>',
 			'<ul start=4><li>Fom</li><li>Fin</li><li>Fum</li></ul></div> <!-- end column -->',
 			'<br style="clear: both;"/></div>'
@@ -97,10 +97,10 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 		) );
 
 		$expected = array(
-			'<div class="smw-columnlist-container">',
-			'<div class="smw-column" style="width:33%;">',
+			'<div class="smw-columnlist-container" dir="ltr">',
+			'<div class="smw-column" style="width:33%;" dir="ltr">',
 			'<div class="smw-column-header">a</div><ul><li>Foo</li><li>Bar</li></ul></div>',
-			'<div class="smw-column" style="width:33%;">',
+			'<div class="smw-column" style="width:33%;" dir="ltr">',
 			'<div class="smw-column-header">B</div><ul><li>Ichi</li><li>Ni</li></ul></div>'
 		);
 
@@ -124,10 +124,10 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 		) );
 
 		$expected = array(
-			'<div class="smw-columnlist-container">',
-			'<div class="smw-column" style="width:50%;">',
+			'<div class="smw-columnlist-container" dir="ltr">',
+			'<div class="smw-column" style="width:50%;" dir="ltr">',
 			'<div class="smw-column-header">a</div><ol><li>Foo</li><li>Bar</li></ol></div> <!-- end column -->',
-			'<div class="smw-column" style="width:50%;">',
+			'<div class="smw-column" style="width:50%;" dir="ltr">',
 			'<div class="smw-column-header">B</div><ol><li>Ichi</li><li>Ni</li></ol></div> <!-- end column -->'
 		);
 
@@ -144,6 +144,7 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 		$instance
 			->setNumberOfColumns( 2 )
 			->setColumnListClass( 'foo-class' )
+			->setColumnClass( 'bar-class' )
 			->setListType( 'ul' );
 
 		$instance->addContentsByNoIndex(
@@ -151,11 +152,35 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expected = array(
-			'<div class="foo-class">',
-			'<div class="smw-column" style="width:50%;">',
+			'<div class="foo-class" dir="ltr">',
+			'<div class="bar-class" style="width:50%;" dir="ltr">',
 			'<ul start=1><li>Foo</li><li>Baz</li></ul></div> <!-- end column -->',
-			'<div class="smw-column" style="width:50%;">',
+			'<div class="bar-class" style="width:50%;" dir="ltr">',
 			'<ul start=3><li>Bar</li></ul></div> <!-- end column -->'
+		);
+
+		$this->stringValidator->assertThatStringContains(
+			$expected,
+			$instance->getHtml()
+		);
+	}
+
+	public function testResponsiveColumnsToBeDeterminedByBrowser() {
+
+		$instance = new HtmlColumnListRenderer();
+
+		$instance->setColumnListClass( 'foo-class' )
+			->setColumnClass( 'bar-responsive' )
+			->setColumnRTLDirectionalityState( true )
+			->setListType( 'ul' );
+
+		$instance->addContentsByNoIndex(
+			array( 'Foo', 'Baz', 'Bar' )
+		);
+
+		$expected = array(
+			'<div class="foo-class" dir="rtl"><div class="bar-responsive" style="width:100%;" dir="rtl">',
+			'<ul start=1><li>Foo</li><li>Baz</li><li>Bar</li></ul></div> <!-- end column -->'
 		);
 
 		$this->stringValidator->assertThatStringContains(

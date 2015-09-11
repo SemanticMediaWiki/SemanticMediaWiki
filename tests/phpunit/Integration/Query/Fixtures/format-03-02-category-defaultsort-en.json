@@ -46,7 +46,7 @@
 			"subject": "one-column-plainlist-output-asc",
 			"expected-output": {
 				"to-contain": [
-					"<div class=\"smw-columnlist-container\">",
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
 					"<div class=\"smw-column-header\">S</div><ul>",
 					"<li>Saaa (Has text aaa; aba; abb)</li>",
 					"<li>Sbaa (Has text baa)</li>",
@@ -63,7 +63,7 @@
 			"subject": "one-column-plainlist-output-desc",
 			"expected-output": {
 				"to-contain": [
-					"<div class=\"smw-columnlist-container\">",
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
 					"<div class=\"smw-column-header\">S</div><ul>",
 					"<li>Soaa (Has text oaa)</li>",
 					"<li>Seba (Has text eba)</li>",
