@@ -286,6 +286,10 @@ class EmbeddedQueryDependencyLinksStore {
 			__METHOD__
 		);
 
+		if ( $sid == 0 ) {
+			return $this->connection->endAtomicTransaction( __METHOD__ );
+		}
+
 		$inserts = array();
 
 		foreach ( $dependencyList as $dependency ) {

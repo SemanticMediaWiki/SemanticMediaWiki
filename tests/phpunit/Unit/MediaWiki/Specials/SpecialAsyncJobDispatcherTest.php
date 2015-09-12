@@ -81,17 +81,17 @@ class SpecialAsyncJobDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$timestamp =  time();
 
-		$request = array(
+		$parameters = json_encode( array(
+			'async-job' => array( 'type' => 'SMW\UpdateJob', 'title' => 'Foo' ),
 			'timestamp' => $timestamp,
 			'sessionToken' => SpecialAsyncJobDispatcher::getSessionToken( $timestamp ),
-			'async-job' => 'SMW\UpdateJob|Foo'
-		);
+		) );
 
 		$instance = new SpecialAsyncJobDispatcher();
 		$instance->disallowToModifyHttpHeader();
 
 		$instance->getContext()->setRequest(
-			new \FauxRequest( $request, true )
+			new \FauxRequest( array( 'parameters' => $parameters ) , true )
 		);
 
 		$this->assertTrue(
@@ -116,18 +116,18 @@ class SpecialAsyncJobDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$timestamp =  time();
 
-		$request = array(
+		$parameters = json_encode( array(
+			'async-job' => array( 'type' => 'SMW\ParserCachePurgeJob', 'title' => 'Foo' ),
 			'timestamp' => $timestamp,
 			'sessionToken' => SpecialAsyncJobDispatcher::getSessionToken( $timestamp ),
-			'async-job' => 'SMW\ParserCachePurgeJob|Foo',
-			'idlist' => '1|2'
-		);
+			'idlist' => array( 1, 2 )
+		) );
 
 		$instance = new SpecialAsyncJobDispatcher();
 		$instance->disallowToModifyHttpHeader();
 
 		$instance->getContext()->setRequest(
-			new \FauxRequest( $request, true )
+			new \FauxRequest( array( 'parameters' => $parameters ), true )
 		);
 
 		$this->assertTrue(
@@ -143,16 +143,16 @@ class SpecialAsyncJobDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$timestamp =  time();
 
-		$request = array(
+		$parameters = json_encode( array(
 			'timestamp' => $timestamp,
 			'sessionToken' => SpecialAsyncJobDispatcher::getSessionToken( 'Foo' )
-		);
+		) );
 
 		$instance = new SpecialAsyncJobDispatcher();
 		$instance->disallowToModifyHttpHeader();
 
 		$instance->getContext()->setRequest(
-			new \FauxRequest( $request, true )
+			new \FauxRequest( array( 'parameters' => $parameters ), true )
 		);
 
 		$this->assertNull(

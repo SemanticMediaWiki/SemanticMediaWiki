@@ -1012,10 +1012,12 @@ class SMWSQLStore3Writers {
 		$httpRequestFactory = new HttpRequestFactory();
 
 		$asyncJobDispatchManager = new AsyncJobDispatchManager(
-			$httpRequestFactory->newCurlRequest()
+			$httpRequestFactory->newSocketRequest()
 		);
 
-		$asyncJobDispatchManager->setEnabledAsyncUsageState( $GLOBALS['smwgEnabledAsyncJobDispatcher'] );
+		$asyncJobDispatchManager->setEnabledState(
+			$GLOBALS['smwgEnabledAsyncJobDispatcher']
+		);
 
 		return $asyncJobDispatchManager;
 	}

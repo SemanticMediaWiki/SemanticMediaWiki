@@ -49,16 +49,16 @@ class AsyncJobDispatchManager {
 	 *
 	 * @var boolean
 	 */
-	private $enabledAsyncUsageState = true;
+	private $enabledState = true;
 
 	/**
 	 * @since 2.3
 	 *
 	 * @param HttpRequest $httpRequest
 	 */
-	public function __construct( HttpRequest $httpRequest) {
+	public function __construct( HttpRequest $httpRequest ) {
 		$this->httpRequest = $httpRequest;
-		$this->url = SpecialAsyncJobDispatcher::getTargetURL();
+		$this->httpRequest->setOption( ONOI_HTTP_REQUEST_URL, SpecialAsyncJobDispatcher::getTargetURL() );
 	}
 
 	/**
@@ -66,16 +66,16 @@ class AsyncJobDispatchManager {
 	 */
 	public function reset() {
 		self::$canConnectToUrl = null;
-		$this->enabledAsyncUsageState = true;
+		$this->enabledState = true;
 	}
 
 	/**
 	 * @since 2.3
 	 *
-	 * @param boolean $enabledAsyncUsageState
+	 * @param boolean $enabledState
 	 */
-	public function setEnabledAsyncUsageState( $enabledAsyncUsageState ) {
-		$this->enabledAsyncUsageState = (bool)$enabledAsyncUsageState;
+	public function setEnabledState( $enabledState ) {
+		$this->enabledState = (bool)$enabledState;
 	}
 
 	/**
@@ -97,7 +97,7 @@ class AsyncJobDispatchManager {
 		$parameters['timestamp'] = time();
 		$parameters['sessionToken'] = SpecialAsyncJobDispatcher::getSessionToken( $parameters['timestamp'] );
 
-		if ( $this->enabledAsyncUsageState && $this->canConnectToUrl() ) {
+		if ( $this->enabledState && $this->canConnectToUrl() ) {
 			return $this->doDispatchAsyncJobFor( $type, $title, $parameters, $dispatchableCallbackJob );
 		}
 
@@ -158,8 +158,7 @@ class AsyncJobDispatchManager {
 			return self::$canConnectToUrl;
 		}
 
-		$this->httpRequest->setOption( CURLOPT_URL, $this->url );
-		$this->httpRequest->setOption( CURLOPT_SSL_VERIFYPEER, false );
+		$this->httpRequest->setOption( ONOI_HTTP_REQUEST_SSL_VERIFYPEER, false );
 
 		return self::$canConnectToUrl = $this->httpRequest->ping();
 	}
@@ -171,57 +170,21 @@ class AsyncJobDispatchManager {
 			'title' => $title->getPrefixedDBkey()
 		);
 
-		$async = function ( $url, $params = array() ) use( $title, $dispatchableCallbackJob ) {
-			$post_params = array();
-			$httpMessage = '';
+		$this->httpRequest->setOption( ONOI_HTTP_REQUEST_METHOD, 'POST' );
+		$this->httpRequest->setOption( ONOI_HTTP_REQUEST_CONTENT_TYPE, "application/x-www-form-urlencoded" );
+		$this->httpRequest->setOption( ONOI_HTTP_REQUEST_CONTENT, 'parameters=' . json_encode( $parameters ) );
+		$this->httpRequest->setOption( ONOI_HTTP_REQUEST_CONNECTION_FAILURE_REPEAT, 2 );
 
-			foreach ( $params as $key => $val ) {
+		$this->httpRequest->setOption( ONOI_HTTP_REQUEST_ON_COMPLETED_CALLBACK, function( $requestResponse ) {
+			wfDebugLog( 'smw', 'SMW\AsyncJobDispatchManager: ' . json_encode( $requestResponse->getList() ) . "\n" );
+		} );
 
-				if ( is_array( $val ) ) {
-					$val = implode( '|', $val );
-				}
+		$this->httpRequest->setOption( ONOI_HTTP_REQUEST_ON_FAILED_CALLBACK, function( $requestResponse ) use ( $dispatchableCallbackJob, $title, $type, $parameters ) {
+			wfDebugLog( 'smw', "SMW\AsyncJobDispatchManager: Connection to SpecialAsyncJobDispatcher failed therefore adding {$type} for " . $title->getPrefixedDBkey() . "\n" );
+			call_user_func_array( $dispatchableCallbackJob, array( $title, $parameters ) );
+		} );
 
-				$post_params[] = $key . '=' . urlencode( $val );
-			}
-
-			$post_string = implode( '&', $post_params );
-			$parts = parse_url( $url );
-
-			$remoteSocket = $parts['host'] . ':' .  ( isset( $parts['port'] ) ? $parts['port'] : 80 );
-
-			$res = @stream_socket_client(
-				$remoteSocket,
-				$errno,
-				$errstr,
-				30,
-				STREAM_CLIENT_ASYNC_CONNECT | STREAM_CLIENT_CONNECT
-			);
-
-			if ( !$res ) {
-				wfDebugLog( 'smw', __METHOD__  . " $errstr ($errno)". "\n" );
-				call_user_func_array( $dispatchableCallbackJob, array( $title, $params ) );
-			} else {
-
-				$httpMessage .= "POST " . $parts['path'] . " HTTP/1.1\r\n";
-				$httpMessage .= "Host: " . $parts['host'] . "\r\n";
-				$httpMessage .= "Content-Type: application/x-www-form-urlencoded\r\n";
-				$httpMessage .= "Content-Length: " . strlen( $post_string ) . "\r\n";
-				$httpMessage .= "Connection: Close\r\n\r\n";
-				$httpMessage .= $post_string;
-
-				if ( !@fwrite( $res, $httpMessage ) ) {
-					wfDebugLog( 'smw', __METHOD__  . " connection to {$remoteSocket} failed, try again " . "\n" );
-					if ( !@fwrite( $res, $httpMessage ) ) {
-						wfDebugLog( 'smw', __METHOD__  . " connection to {$remoteSocket} failed again, add job for " . $title->getPrefixedDBkey() . "\n" );
-						call_user_func_array( $dispatchableCallbackJob, array( $title, $params ) );
-					}
-				}
-
-				fclose( $res );
-			}
-		};
-
-		call_user_func_array( $async, array( $this->url, $parameters ) );
+		$this->httpRequest->execute();
 
 		return true;
 	}

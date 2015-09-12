@@ -500,11 +500,12 @@ class HookRegistry {
 			$embeddedQueryDependencyLinksStore->pruneOutdatedTargetLinks( $compositePropertyTableDiffIterator );
 
 			$httpRequestFactory = new HttpRequestFactory();
-			$curlRequest = $httpRequestFactory->newCurlRequest();
 
-			$asyncJobDispatchManager = new AsyncJobDispatchManager( $curlRequest );
+			$asyncJobDispatchManager = new AsyncJobDispatchManager(
+				$httpRequestFactory->newSocketRequest()
+			);
 
-			$asyncJobDispatchManager->setEnabledAsyncUsageState(
+			$asyncJobDispatchManager->setEnabledState(
 				$applicationFactory->getSettings()->get( 'smwgEnabledAsyncJobDispatcher' )
 			);
 

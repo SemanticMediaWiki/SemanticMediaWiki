@@ -18,7 +18,7 @@ class AsyncJobDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\SocketRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -33,7 +33,7 @@ class AsyncJobDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testDispatchFor( $type, $dispatchableAsyncUsageState, $parameters = array() ) {
 
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\SocketRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -43,7 +43,7 @@ class AsyncJobDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new AsyncJobDispatchManager( $httpRequest );
 		$instance->reset();
-		$instance->setEnabledAsyncUsageState( $dispatchableAsyncUsageState );
+		$instance->setEnabledState( $dispatchableAsyncUsageState );
 
 		$this->assertTrue(
 			$instance->dispatchJobFor( $type, DIWikiPage::newFromText( __METHOD__ )->getTitle(), $parameters )
@@ -55,7 +55,7 @@ class AsyncJobDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testPreliminaryCheckForType( $type, $parameters = array() ) {
 
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\SocketRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 

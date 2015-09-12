@@ -76,11 +76,14 @@ class SpecialAsyncJobDispatcher extends SpecialPage {
 
 		$this->getOutput()->disable();
 
-		if ( $this->isHttpRequestMethod( 'GET' ) ) {
+		if ( !$this->isHttpRequestMethod( 'HEAD' ) && !$this->isHttpRequestMethod( 'POST' ) ) {
 			return $this->modifyHttpHeader( "HTTP/1.0 400 Bad Request", 'The special page requires a POST/HEAD request.' );
 		}
 
-		$parameters = $this->getRequest()->getValues();
+		$parameters = json_decode(
+			$this->getRequest()->getVal( 'parameters' ),
+			true
+		);
 
 		if ( $this->isHttpRequestMethod( 'POST' ) && self::getSessionToken( $parameters['timestamp'] ) !== $parameters['sessionToken'] ) {
 			return $this->modifyHttpHeader( "HTTP/1.0 400 Bad Request", 'Invalid or staled sessionToken was provided for the request' );
@@ -92,11 +95,9 @@ class SpecialAsyncJobDispatcher extends SpecialPage {
 			return;
 		}
 
-		$type  = '';
-		$title = '';
 
-		list( $type, $title ) = explode( '|', $parameters['async-job'] );
-		$title = Title::newFromDBkey( $title );
+		$type = $parameters['async-job']['type'];
+		$title = Title::newFromDBkey( $parameters['async-job']['title'] );
 
 		if ( $title === null ) {
 			wfDebugLog( 'smw', __METHOD__  . " invalid title" . "\n" );
@@ -132,13 +133,13 @@ class SpecialAsyncJobDispatcher extends SpecialPage {
 
 		$idlist = array();
 
-		if ( !isset( $parameters['idlist'] ) || ( $idlist = explode( '|', $parameters['idlist'] ) ) === array() ) {
+		if ( !isset( $parameters['idlist'] ) || $parameters['idlist'] === array() ) {
 			return;
 		}
 
 		$purgeParserCacheJob = ApplicationFactory::getInstance()->newJobFactory()->newParserCachePurgeJob(
 			$title,
-			array( 'idlist' => $idlist )
+			$parameters
 		);
 
 		$purgeParserCacheJob->run();
