@@ -3,14 +3,14 @@
 namespace SMW;
 
 /**
- * SemanticMediaWiki default settings
- *
- */
+* SemanticMediaWiki default settings
+*
+*/
 
 /**
- * @file
- * @ingroup SMW
- */
+* @file
+* @ingroup SMW
+*/
 
 #################################################################
 #    CHANGING THE CONFIGURATION FOR SEMANTIC MEDIAWIKI          #
@@ -22,7 +22,7 @@ namespace SMW;
 #################################################################
 
 if ( !defined( 'MEDIAWIKI' ) ) {
-  die( "This file is part of the Semantic MediaWiki extension. It is not a valid entry point.\n" );
+z  die( "This file is part of the Semantic MediaWiki extension. It is not a valid entry point.\n" );
 }
 
 ###
@@ -289,37 +289,37 @@ $GLOBALS['smwgMaxPropertyValues'] = 3; // if large values are desired, consider 
 $GLOBALS['smwgQEnabled'] = true;   // (De)activates all query related features and interfaces
 $GLOBALS['smwgQMaxLimit'] = 10000; // Max number of results *ever* retrieved, even when using special query pages.
 $GLOBALS['smwgIgnoreQueryErrors'] = true; // Should queries be executed even if some errors were detected?
-                               // A hint that points out errors is shown in any case.
+										// A hint that points out errors is shown in any case.
 
 $GLOBALS['smwgQSubcategoryDepth'] = 10;  // Restrict level of sub-category inclusion (steps within category hierarchy)
 $GLOBALS['smwgQSubpropertyDepth'] = 10;  // Restrict level of sub-property inclusion (steps within property hierarchy)
-                              // (Use 0 to disable hierarchy-inferencing in queries)
+										// (Use 0 to disable hierarchy-inferencing in queries)
 $GLOBALS['smwgQEqualitySupport'] = SMW_EQ_SOME; // Evaluate #redirects as equality between page names, with possible
-                                     // performance-relevant restrictions depending on the storage engine
-  // $GLOBALS['smwgQEqualitySupport'] = SMW_EQ_FULL; // Evaluate #redirects as equality between page names in all cases
-  // $GLOBALS['smwgQEqualitySupport'] = SMW_EQ_NONE; // Never evaluate #redirects as equality between page names
+												// performance-relevant restrictions depending on the storage engine
+// $GLOBALS['smwgQEqualitySupport'] = SMW_EQ_FULL; // Evaluate #redirects as equality between page names in all cases
+// $GLOBALS['smwgQEqualitySupport'] = SMW_EQ_NONE; // Never evaluate #redirects as equality between page names
 $GLOBALS['smwgQSortingSupport']     = true; // (De)activate sorting of results.
 $GLOBALS['smwgQRandSortingSupport'] = true; // (De)activate random sorting of results.
 $GLOBALS['smwgQDefaultNamespaces'] = null; // Which namespaces should be searched by default?
-                                // (value NULL switches off default restrictions on searching -- this is faster)
-                                // Example with namespaces: $GLOBALS['smwgQDefaultNamespaces'] = array(NS_MAIN, NS_IMAGE);
+										// (value NULL switches off default restrictions on searching -- this is faster)
+										// Example with namespaces: $GLOBALS['smwgQDefaultNamespaces'] = array(NS_MAIN, NS_IMAGE);
 
 /**
- * List of comparator characters supported by queries, separated by '|', for use in a regex.
- *
- * Available entries:
- * 	< (smaller than) if $smwStrictComparators is false, it's actually smaller than or equal to
- * 	> (greater than) if $smwStrictComparators is false, it's actually bigger than or equal to
- * 	! (unequal to)
- * 	~ (pattern with '*' as wildcard, only for Type:String)
- * 	!~ (not a pattern with '*' as wildcard, only for Type:String, need to be placed before ! and ~ to work correctly)
- * 	≤ (smaller than or equal to)
- * 	≥ (greater than or equal to)
- *
- * If unsupported comparators are used, they are treated as part of the queried value
- *
- * @var string
- */
+* List of comparator characters supported by queries, separated by '|', for use in a regex.
+*
+* Available entries:
+* 	< (smaller than) if $smwStrictComparators is false, it's actually smaller than or equal to
+* 	> (greater than) if $smwStrictComparators is false, it's actually bigger than or equal to
+* 	! (unequal to)
+* 	~ (pattern with '*' as wildcard, only for Type:String)
+* 	!~ (not a pattern with '*' as wildcard, only for Type:String, need to be placed before ! and ~ to work correctly)
+* 	≤ (smaller than or equal to)
+* 	≥ (greater than or equal to)
+*
+* If unsupported comparators are used, they are treated as part of the queried value
+*
+* @var string
+*/
 $GLOBALS['smwgQComparators'] = '<|>|!~|!|~|≤|≥|<<|>>';
 
 ###
@@ -345,7 +345,7 @@ $GLOBALS['smwgQMaxDepth'] = 4; // Maximal property depth of queries, e.g. [[rel:
 // anything but disjunctions:  $GLOBALS['smwgQFeatures'] = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY;
 // The default is to support all basic features.
 $GLOBALS['smwgQFeatures'] = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEPT_QUERY |
-                 SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY;
+					SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY;
 
 ### Settings about printout of (especially inline) queries:
 $GLOBALS['smwgQDefaultLimit'] = 50;      // Default number of rows returned in a query. Can be increased with limit=num in #ask
@@ -368,16 +368,16 @@ $GLOBALS['smwgQDefaultLinking'] = 'all'; // Default linking behavior. Can be one
 # their queries.
 ##
 $GLOBALS['smwgQConceptCaching'] = CONCEPT_CACHE_HARD; // Which concepts should be displayed only if available from cache?
-       // CONCEPT_CACHE_ALL   -- show concept elements anywhere only if they are cached
-       // CONCEPT_CACHE_HARD  -- show without cache if concept is not harder than permitted inline queries
-       // CONCEPT_CACHE_NONE  -- show all concepts even without any cache
-       // In any cases, caches will always be used if available.
+		// CONCEPT_CACHE_ALL   -- show concept elements anywhere only if they are cached
+		// CONCEPT_CACHE_HARD  -- show without cache if concept is not harder than permitted inline queries
+		// CONCEPT_CACHE_NONE  -- show all concepts even without any cache
+		// In any cases, caches will always be used if available.
 $GLOBALS['smwgQConceptMaxSize'] = 20; // Same as $smwgQMaxSize, but for concepts
 $GLOBALS['smwgQConceptMaxDepth'] = 8; // Same as $smwgQMaxDepth, but for concepts
 
 // Same as $smwgQFeatures but for concepts
 $GLOBALS['smwgQConceptFeatures'] = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_NAMESPACE_QUERY |
-                        SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY | SMW_CONCEPT_QUERY;
+								SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY | SMW_CONCEPT_QUERY;
 
 // Cache life time in minutes. If a concept cache exists but is older than
 // this, SMW tries to recompute it, and will only use the cache if this is not
