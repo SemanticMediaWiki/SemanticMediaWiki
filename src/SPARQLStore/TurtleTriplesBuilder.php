@@ -113,6 +113,15 @@ class TurtleTriplesBuilder {
 		return $this->hasTriplesForUpdate;
 	}
 
+	/**
+	 * @since 2.0
+	 *
+	 * @return boolean
+	 */
+	public static function reset() {
+		TurtleSerializer::reset();
+	}
+
 	private function serializeToTurtleRepresentation() {
 
 		$this->hasTriplesForUpdate = false;

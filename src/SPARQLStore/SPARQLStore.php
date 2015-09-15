@@ -185,6 +185,11 @@ class SPARQLStore extends Store {
 		foreach( $semanticData->getSubSemanticData() as $subSemanticData ) {
 			 $this->doSparqlFlatDataUpdate( $subSemanticData );
 		}
+
+		//wfDebugLog( 'smw', ' InMemoryPoolCache: ' . json_encode( \SMW\InMemoryPoolCache::getInstance()->getStats() ) );
+
+		// Reset internal cache
+		TurtleTriplesBuilder::reset();
 	}
 
 	/**

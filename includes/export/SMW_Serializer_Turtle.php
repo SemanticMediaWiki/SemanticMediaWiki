@@ -1,5 +1,7 @@
 <?php
 
+use SMW\InMemoryPoolCache;
+
 /**
  * File holding the SMWTurtleSerializer class that provides basic functions for
  * serialising OWL data in Turtle syntax.
@@ -48,6 +50,13 @@ class SMWTurtleSerializer extends SMWSerializer{
 	public function clear() {
 		parent::clear();
 		$this->sparql_namespaces = array();
+	}
+
+	/**
+	 * @since 2.3
+	 */
+	public static function reset() {
+		InMemoryPoolCache::getInstance()->resetPoolCacheFor( 'turtle.serializer' );
 	}
 
 	/**
@@ -104,11 +113,14 @@ class SMWTurtleSerializer extends SMWSerializer{
 		$this->post_ns_buffer .= "<" . SMWExporter::getInstance()->expandURI( $uri ) . "> rdf:type $typename .\n";
 	}
 
-	public function serializeExpData( SMWExpData $data ) {
-		$this->subexpdata = array( $data );
-		while ( count( $this->subexpdata ) > 0 ) {
-			$this->serializeNestedExpData( array_pop( $this->subexpdata ), '' );
+	public function serializeExpData( SMWExpData $expData ) {
+
+		$this->subExpData = array( $expData );
+
+		while ( count( $this->subExpData ) > 0 ) {
+			$this->serializeNestedExpData( array_pop( $this->subExpData ), '' );
 		}
+
 		$this->serializeNamespaces();
 	}
 
@@ -132,6 +144,21 @@ class SMWTurtleSerializer extends SMWSerializer{
 		if ( count( $data->getProperties() ) == 0 ) {
 			return; // nothing to export
 		}
+
+		// Avoid posting turtle property declarations already known for the
+		// subject more than once
+		if ( $data->getSubject()->getDataItem()->getNamespace() === SMW_NS_PROPERTY ) {
+
+			$hash = $data->getHash();
+			$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheFor( 'turtle.serializer' );
+
+			if ( $poolCache->contains( $hash ) && $poolCache->fetch( $hash ) ) {
+				return;
+			}
+
+			$poolCache->save( $hash, true );
+		}
+
 		$this->recordDeclarationTypes( $data );
 
 		$bnode = false;

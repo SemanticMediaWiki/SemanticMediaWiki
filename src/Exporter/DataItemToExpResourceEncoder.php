@@ -5,6 +5,7 @@ namespace SMW\Exporter;
 use SMW\Exporter\Element\ExpResource;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpElement;
+use SMW\InMemoryPoolCache;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\Store;
@@ -24,7 +25,7 @@ use Title;
  * @author mwjames
  * @author Markus Krötzsch
  */
-class CachedDataItemToExpResourceEncoder {
+class DataItemToExpResourceEncoder {
 
 	/**
 	 * Identifies auxiliary data (helper values)
@@ -37,44 +38,33 @@ class CachedDataItemToExpResourceEncoder {
 	private $store;
 
 	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
 	 * @var DataValueFactory
 	 */
 	private $dataValueFactory;
 
 	/**
-	 * @var string
+	 * @var InMemoryPoolCache
 	 */
-	private $cachePrefix = 'smw:expresourceencoder-cache:';
+	private $inMemoryPoolCache;
+
+	private $cache;
 
 	/**
 	 * @since 2.2
 	 *
 	 * @param Store $store
-	 * @param Cache|null $cache
 	 */
-	public function __construct( Store $store, Cache $cache = null ) {
+	public function __construct( Store $store ) {
 		$this->store = $store;
-		$this->cache = $cache;
-
-		if ( $this->cache === null ) {
-			$this->cache = ApplicationFactory::getInstance()->newCacheFactory()->newNullCache();
-		}
-
 		$this->dataValueFactory = DataValueFactory::getInstance();
+		$this->inMemoryPoolCache = InMemoryPoolCache::getInstance();
 	}
 
 	/**
-	 * @since 2.2
-	 *
-	 * @param string $cachePrefix
+	 * @since 2.3
 	 */
-	public function setCachePrefix( $cachePrefix ) {
-		$this->cachePrefix = $cachePrefix . ':' . $this->cachePrefix;
+	public function reset() {
+			return $this->inMemoryPoolCache->resetPoolCacheFor( 'exporter.dataitem.resource.encoder' );
 	}
 
 	/**
@@ -84,10 +74,12 @@ class CachedDataItemToExpResourceEncoder {
 	 */
 	public function resetCacheFor( DIWikiPage $subject ) {
 
-		$hash = $this->cachePrefix . $subject->getHash();
+		$hash = $subject->getHash();
+
+ 		$poolCache = $this->inMemoryPoolCache->getPoolCacheFor( 'exporter.dataitem.resource.encoder' );
 
 		foreach ( array( $hash, $hash . self::AUX_MARKER ) as $key ) {
-			$this->cache->delete( $key );
+			$poolCache->delete( $key );
 		}
 	}
 
@@ -139,13 +131,12 @@ class CachedDataItemToExpResourceEncoder {
 
 		$modifier = $markForAuxiliaryUsage ? self::AUX_MARKER : '';
 
-		$hash = $this->cachePrefix . $diWikiPage->getHash() . $modifier;
+		$hash = $diWikiPage->getHash() . $modifier;
 
-		// If a persistent cache is injected use the ExpElement serializer because
-		// not all cache layers support object de/serialization
-		// ExpElement::newFromSerialization
-		if ( $this->cache->contains( $hash ) ) {
-			return $this->cache->fetch( $hash );
+ 		$poolCache = $this->inMemoryPoolCache->getPoolCacheFor( 'exporter.dataitem.resource.encoder' );
+
+		if ( $poolCache->contains( $hash ) ) {
+			return $poolCache->fetch( $hash );
 		}
 
 		if ( $diWikiPage->getSubobjectName() !== '' ) {
@@ -167,7 +158,7 @@ class CachedDataItemToExpResourceEncoder {
 			$diWikiPage
 		);
 
-		$this->cache->save(
+		$poolCache->save(
 			$hash,
 			$resource
 		);

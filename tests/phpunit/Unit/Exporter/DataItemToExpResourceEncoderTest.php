@@ -4,13 +4,14 @@ namespace SMW\Tests\Exporter;
 
 use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\Exporter\CachedDataItemToExpResourceEncoder;
+use SMW\InMemoryPoolCache;
+use SMW\Exporter\DataItemToExpResourceEncoder;
 use SMW\Exporter\Element;
 use SMW\Exporter\Escaper;
 use SMWExporter as Exporter;
 
 /**
- * @covers \SMW\Exporter\CachedDataItemToExpResourceEncoder
+ * @covers \SMW\Exporter\DataItemToExpResourceEncoder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -18,37 +19,48 @@ use SMWExporter as Exporter;
  *
  * @author mwjames
  */
-class CachedDataItemToExpResourceEncoderTest extends \PHPUnit_Framework_TestCase {
+class DataItemToExpResourceEncoderTest extends \PHPUnit_Framework_TestCase {
+
+	private $inMemoryPoolCache;
+
+	protected function setUp() {
+		$this->inMemoryPoolCache = InMemoryPoolCache::getInstance();
+	}
+
+	protected function tearDown() {
+		$this->inMemoryPoolCache->clear();
+	}
 
 	public function testResetCache() {
+
+		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+
+		$poolCache = $this->inMemoryPoolCache->getPoolCacheFor( 'exporter.dataitem.resource.encoder' );
+
+		$poolCache->save(
+			$subject->getHash(),
+			true
+		);
+
+		$poolCache->save(
+			$subject->getHash() . DataItemToExpResourceEncoder::AUX_MARKER,
+			true
+		);
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$key = 'bar:smw:expresourceencoder-cache:' . 'Foo#0#';
-
-		$cache->expects( $this->at( 0 ) )
-			->method( 'delete' )
-			->with( $this->equalTo( $key ) );
-
-		$cache->expects( $this->at( 1 ) )
-			->method( 'delete' )
-			->with( $this->equalTo( $key. CachedDataItemToExpResourceEncoder::AUX_MARKER ) );
-
-		$instance = new CachedDataItemToExpResourceEncoder(
-			$store,
-			$cache
+		$instance = new DataItemToExpResourceEncoder(
+			$store
 		);
 
-		$instance->setCachePrefix( 'bar' );
-
 		$instance->resetCacheFor(
-			new DIWikiPage( 'Foo', NS_MAIN )
+			$subject
+		);
+
+		$this->assertFalse(
+			$poolCache->contains( $subject->getHash() )
 		);
 	}
 
@@ -58,7 +70,7 @@ class CachedDataItemToExpResourceEncoderTest extends \PHPUnit_Framework_TestCase
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new CachedDataItemToExpResourceEncoder(
+		$instance = new DataItemToExpResourceEncoder(
 			$store
 		);
 
@@ -72,7 +84,7 @@ class CachedDataItemToExpResourceEncoderTest extends \PHPUnit_Framework_TestCase
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new CachedDataItemToExpResourceEncoder(
+		$instance = new DataItemToExpResourceEncoder(
 			$store
 		);
 
@@ -91,7 +103,7 @@ class CachedDataItemToExpResourceEncoderTest extends \PHPUnit_Framework_TestCase
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new CachedDataItemToExpResourceEncoder(
+		$instance = new DataItemToExpResourceEncoder(
 			$store
 		);
 
@@ -117,7 +129,7 @@ class CachedDataItemToExpResourceEncoderTest extends \PHPUnit_Framework_TestCase
 			->will(
 				$this->returnValue( array( new \SMWDIBlob( 'foo:bar:fom:fuz' ) ) ) );
 
-		$instance = new CachedDataItemToExpResourceEncoder(
+		$instance = new DataItemToExpResourceEncoder(
 			$store
 		);
 
