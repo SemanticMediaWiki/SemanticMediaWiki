@@ -3,14 +3,14 @@
 namespace SMW;
 
 /**
-* SemanticMediaWiki default settings
-*
-*/
+ * SemanticMediaWiki default settings
+ *
+ */
 
 /**
-* @file
-* @ingroup SMW
-*/
+ * @file
+ * @ingroup SMW
+ */
 
 #################################################################
 #    CHANGING THE CONFIGURATION FOR SEMANTIC MEDIAWIKI          #
