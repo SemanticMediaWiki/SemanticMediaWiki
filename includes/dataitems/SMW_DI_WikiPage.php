@@ -48,6 +48,11 @@ class DIWikiPage extends SMWDataItem {
 	private $sortkey = null;
 
 	/**
+	 * @var string
+	 */
+	private $contextReference = null;
+
+	/**
 	 * Contructor. We do not bother with too much detailed validation here,
 	 * regarding the known namespaces, canonicity of the dbkey (namespace
 	 * exrtacted?), validity of interwiki prefix (known?), and general use
@@ -120,6 +125,26 @@ class DIWikiPage extends SMWDataItem {
 		}
 
 		return $this->sortkey;
+	}
+
+	/**
+	 * @since  2.3
+	 *
+	 * @param string $contextReference
+	 */
+	public function setContextReference( $contextReference ) {
+		$this->contextReference = $contextReference;
+	}
+
+	/**
+	 * Returns a reference for the processing context (parser etc.).
+	 *
+	 * @since 2.3
+	 *
+	 * @return string
+	 */
+	public function getContextReference() {
+		return $this->contextReference;
 	}
 
 	/**

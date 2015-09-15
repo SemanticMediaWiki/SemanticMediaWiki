@@ -74,7 +74,7 @@ class InTextAnnotationParser {
 	 *
 	 * @var string
 	 */
-	private $uniqid;
+	private $contextReference;
 
 	/**
 	 * @since 1.9
@@ -104,7 +104,7 @@ class InTextAnnotationParser {
 		$title = $this->parserData->getTitle();
 		$this->settings = $this->applicationFactory->getSettings();
 
-		$this->uniqid = uniqid();
+		$this->contextReference = 'intp:' . uniqid();
 		$this->doStripMagicWordsFromText( $text );
 
 		$this->setSemanticEnabledNamespaceState( $title );
@@ -308,7 +308,7 @@ class InTextAnnotationParser {
 		$subject = $this->parserData->getSemanticData()->getSubject();
 
 		// Set a context to a subject to idenitify the parser run
-		$subject->uniqid = $this->uniqid;
+		$subject->setContextReference( $this->contextReference );
 
 		// Add properties to the semantic container
 		foreach ( $properties as $property ) {

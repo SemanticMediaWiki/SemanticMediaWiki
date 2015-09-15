@@ -51,7 +51,7 @@ class RedirectLookupIntegrationTest extends \PHPUnit_Framework_TestCase {
 	public function testRedirectTragetLookupForNonExistingEntry( $expNsResource ) {
 
 		$instance = new RedirectLookup( $this->sparqlDatabase );
-		$instance->clear();
+		$instance->reset();
 
 		$exists = null;
 
@@ -79,7 +79,7 @@ class RedirectLookupIntegrationTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance = new RedirectLookup( $this->sparqlDatabase );
-		$instance->clear();
+		$instance->reset();
 
 		$exists = null;
 

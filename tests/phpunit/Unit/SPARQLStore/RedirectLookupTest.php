@@ -3,7 +3,7 @@
 namespace SMW\Tests\SPARQLStore;
 
 use SMW\SPARQLStore\RedirectLookup;
-
+use SMW\InMemoryPoolCache;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\Exporter\Escaper;
@@ -100,7 +100,7 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		$sparqlDatabase = $this->createRepositoryConnectionMockToUse( array( $expLiteral ) );
 
 		$instance = new RedirectLookup( $sparqlDatabase );
-		$instance->clear();
+		$instance->reset();
 
 		$dataItem = new DIWikiPage( 'Foo', 1, '', '' );
 
@@ -122,7 +122,7 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		$sparqlDatabase = $this->createRepositoryConnectionMockToUse( array( $expLiteral, null ) );
 
 		$instance = new RedirectLookup( $sparqlDatabase );
-		$instance->clear();
+		$instance->reset();
 
 		$dataItem = new DIWikiPage( 'Foo', 1, '', '' );
 
@@ -151,7 +151,7 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		$sparqlDatabase = $this->createRepositoryConnectionMockToUse( array( $resource, $resource ) );
 
 		$instance = new RedirectLookup( $sparqlDatabase );
-		$instance->clear();
+		$instance->reset();
 
 		$dataItem = new DIWikiPage( 'Foo', 1, '', '' );
 
@@ -186,7 +186,7 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		$sparqlDatabase = $this->createRepositoryConnectionMockToUse( array( $expLiteral, $expLiteral ) );
 
 		$instance = new RedirectLookup( $sparqlDatabase );
-		$instance->clear();
+		$instance->reset();
 
 		$dataItem = new DIWikiPage( 'Foo', 1, '', '' );
 
@@ -202,31 +202,25 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		$dataItem = new DIWikiPage( 'Foo', NS_MAIN );
 		$expNsResource = new ExpNsResource( 'Foo', 'Bar', '', $dataItem );
 
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
-			->disableOriginalConstructor()
-			->getMock();
+		$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheFor( 'sparql.store.redirectlookup' );
 
-		$cache->expects( $this->once() )
-			->method( 'contains' )
-			->will( $this->returnValue( true ) );
-
-		$cache->expects( $this->once() )
-			->method( 'fetch' )
-			->with( $this->equalTo( $expNsResource->getUri() ) )
-			->will( $this->returnValue( $expNsResource ) );
+		$poolCache->save(
+			$expNsResource->getUri(),
+			$expNsResource
+		);
 
 		$connection = $this->getMockBuilder( '\SMWSparqlDatabase' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new RedirectLookup( $connection, $cache );
+		$instance = new RedirectLookup( $connection );
 
 		$exists = null;
 
 		$instance->findRedirectTargetResource( $expNsResource, $exists );
 
 		$this->assertTrue( $exists );
-		$instance->clear();
+		$instance->reset();
 	}
 
 	/**
@@ -246,13 +240,13 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new RedirectLookup( $connection, $cache );
+		$instance->reset();
 
 		$exists = null;
 
 		$instance->findRedirectTargetResource( $expNsResource, $exists );
 
 		$this->assertFalse( $exists );
-		$instance->clear();
 	}
 
 	private function createRepositoryConnectionMockToUse( $listReturnValue ) {

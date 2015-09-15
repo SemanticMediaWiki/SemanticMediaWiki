@@ -2,7 +2,7 @@
 
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\Exporter\CachedDataItemToExpResourceEncoder;
+use SMW\Exporter\DataItemToExpResourceEncoder;
 use SMW\Exporter\DataItemToElementEncoder;
 use SMW\Exporter\Escaper;
 use SMW\ApplicationFactory;
@@ -23,9 +23,9 @@ class SMWExporter {
 	private static $instance = null;
 
 	/**
-	 * @var CachedDataItemToExpResourceEncoder
+	 * @var DataItemToExpResourceEncoder
 	 */
-	private static $cachedDataItemToExpResourceEncoder = null;
+	private static $dataItemToExpResourceEncoder = null;
 
 	/**
 	 * @var DataItemToElementEncoder
@@ -54,14 +54,11 @@ class SMWExporter {
 			// There is no better way of getting around the static use without BC
 			self::$dataItemToElementEncoder = new DataItemToElementEncoder();
 
-			self::$cachedDataItemToExpResourceEncoder = new CachedDataItemToExpResourceEncoder(
-				ApplicationFactory::getInstance()->getStore(),
-				$cacheFactory->newFixedInMemoryCache( 500 )
+			self::$dataItemToExpResourceEncoder = new DataItemToExpResourceEncoder(
+				ApplicationFactory::getInstance()->getStore()
 			);
 
-			self::$cachedDataItemToExpResourceEncoder->setCachePrefix(
-				$cacheFactory->getCachePrefix()
-			);
+			self::$dataItemToExpResourceEncoder->reset();
 		}
 
 		return self::$instance;
@@ -79,7 +76,7 @@ class SMWExporter {
 	 * @since 2.2
 	 */
 	public function resetCacheFor( SMWDIWikiPage $diWikiPage ) {
-		self::$cachedDataItemToExpResourceEncoder->resetCacheFor( $diWikiPage );
+		self::$dataItemToExpResourceEncoder->resetCacheFor( $diWikiPage );
 	}
 
 	/**
@@ -346,17 +343,17 @@ class SMWExporter {
 	}
 
 	/**
-	 * @see CachedDataItemToExpResourceEncoder::mapPropertyToResourceElement
+	 * @see DataItemToExpResourceEncoder::mapPropertyToResourceElement
 	 */
 	static public function getResourceElementForProperty( SMWDIProperty $diProperty, $helperProperty = false ) {
-		return self::$cachedDataItemToExpResourceEncoder->mapPropertyToResourceElement( $diProperty, $helperProperty );
+		return self::$dataItemToExpResourceEncoder->mapPropertyToResourceElement( $diProperty, $helperProperty );
 	}
 
 	/**
-	 * @see CachedDataItemToExpResourceEncoder::mapWikiPageToResourceElement
+	 * @see DataItemToExpResourceEncoder::mapWikiPageToResourceElement
 	 */
 	static public function getResourceElementForWikiPage( SMWDIWikiPage $diWikiPage, $markForAuxiliaryUsage = false ) {
-		return self::$cachedDataItemToExpResourceEncoder->mapWikiPageToResourceElement( $diWikiPage, $markForAuxiliaryUsage );
+		return self::$dataItemToExpResourceEncoder->mapWikiPageToResourceElement( $diWikiPage, $markForAuxiliaryUsage );
 	}
 
 	/**
