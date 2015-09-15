@@ -91,7 +91,7 @@ class SpecialAsyncJobDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$instance->disallowToModifyHttpHeader();
 
 		$instance->getContext()->setRequest(
-			new \FauxRequest( array( 'parameters' => $parameters ) , true )
+			new \FauxRequest( array( 'parameters' => $parameters ), true )
 		);
 
 		$this->assertTrue(
