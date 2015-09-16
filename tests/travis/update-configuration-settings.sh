@@ -40,6 +40,14 @@ then
 	echo '$smwgSparqlQueryEndpoint = "http://localhost:8080/openrdf-sesame/repositories/test-smw";' >> LocalSettings.php
 	echo '$smwgSparqlUpdateEndpoint = "http://localhost:8080/openrdf-sesame/repositories/test-smw/statements";' >> LocalSettings.php
 	echo '$smwgSparqlDataEndpoint = "";' >> LocalSettings.php
+elif [ "$BLAZEGRAPH" != "" ]
+then
+	echo '$smwgDefaultStore = "SMWSparqlStore";' >> LocalSettings.php
+	echo '$smwgSparqlDatabaseConnector = "Blazegraph";' >> LocalSettings.php
+	echo '$smwgSparqlQueryEndpoint = "http://localhost:9999/bigdata/namespace/kb/sparql";' >> LocalSettings.php
+	echo '$smwgSparqlUpdateEndpoint = "http://localhost:9999/bigdata/namespace/kb/sparql";' >> LocalSettings.php
+	echo '$smwgSparqlDataEndpoint = "";' >> LocalSettings.php
+	echo '$smwgSparqlDefaultGraph = "";' >> LocalSettings.php
 elif [ "$VIRTUOSO" != "" ]
 then
 	echo '$smwgDefaultStore = "SMWSparqlStore";' >> LocalSettings.php

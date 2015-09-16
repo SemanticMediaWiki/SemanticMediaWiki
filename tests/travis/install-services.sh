@@ -98,3 +98,39 @@ then
 
 	isql-vt 1111 dba dba $BASE_PATH/tests/travis/virtuoso-sparql-permission.sql
 fi
+
+#@see  http://wiki.blazegraph.com/wiki/index.php/NanoSparqlServer
+if [ "$BLAZEGRAPH" != "" ]
+then
+	#sudo apt-get install tomcat6
+
+	#sudo chown $USER -R /var/lib/tomcat6/
+	#sudo chmod g+rw -R /var/lib/tomcat6/
+
+	#sudo mkdir -p /usr/share/tomcat6/.aduna
+	#sudo chown -R tomcat6:tomcat6 /usr/share/tomcat6
+
+	# http://sourceforge.net/projects/bigdata/
+	#wget http://downloads.sourceforge.net/project/bigdata/bigdata/$BLAZEGRAPH/bigdata.war
+
+	#cp bigdata.war /var/lib/tomcat6/webapps/
+	#export JAVA_OPTS="-server -Xmx2g -Dcom.bigdata.rdf.sail.webapp.ConfigParams.propertyFile="$BASE_PATH/tests/travis/blazegraph-store.properties
+
+	#sudo service tomcat6 restart
+	#sleep 3
+
+	#Using the jar
+	wget http://downloads.sourceforge.net/project/bigdata/bigdata/$BLAZEGRAPH/bigdata-bundled.jar
+
+	java -server -Xmx4g -Dbigdata.propertyFile=$BASE_PATH/tests/travis/blazegraph-store.properties -jar bigdata-bundled.jar &>/dev/null &
+	sleep 5
+
+	if curl --output /dev/null --silent --head --fail "http://localhost:9999/bigdata"
+	then
+		echo "blazegraph service url is reachable"
+	else
+		echo "blazegraph service url is not reachable"
+		exit $E_UNREACHABLE
+	fi
+
+fi
