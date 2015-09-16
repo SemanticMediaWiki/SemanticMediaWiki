@@ -5,7 +5,6 @@ namespace SMW\Tests\SPARQLStore;
 use SMW\SPARQLStore\TurtleTriplesBuilder;
 use SMW\SemanticData;
 use SMW\DIWikiPage;
-
 use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
 
@@ -60,6 +59,39 @@ class TurtleTriplesBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType( 'string', $instance->getTriples() );
 		$this->assertInternalType( 'array', $instance->getPrefixes() );
+	}
+
+	public function testChunkedTriples() {
+
+		$expNsResource = new ExpNsResource(
+			'Redirect',
+			Exporter::getInstance()->getNamespaceUri( 'wiki' ),
+			'Redirect'
+		);
+
+		$semanticData = new SemanticData(
+			new DIWikiPage( 'Foo', NS_MAIN )
+		);
+
+		$redirectLookup = $this->getMockBuilder( '\SMW\SPARQLStore\RedirectLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$redirectLookup->expects( $this->atLeastOnce() )
+			->method( 'findRedirectTargetResource' )
+			->will( $this->returnValue( $expNsResource ) );
+
+		$instance = new TurtleTriplesBuilder(
+			$semanticData,
+			$redirectLookup
+		);
+
+		$instance->setTriplesChunkSize( 1 );
+
+		$this->assertInternalType(
+			'array',
+			$instance->getChunkedTriples()
+		);
 	}
 
 }
