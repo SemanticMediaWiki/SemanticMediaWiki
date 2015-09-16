@@ -35,6 +35,7 @@ class SMWExporter {
 	static protected $m_exporturl = false;
 	static protected $m_ent_wiki = false;
 	static protected $m_ent_property = false;
+	static protected $m_ent_category = false;
 	static protected $m_ent_wikiurl = false;
 
 	/**
@@ -101,7 +102,13 @@ class SMWExporter {
 		// The article name must be the last part of wiki URLs for proper OWL/RDF export:
 		self::$m_ent_wikiurl  = $wgServer . str_replace( '$1', '', $wgArticlePath );
 		self::$m_ent_wiki     = $smwgNamespace;
-		self::$m_ent_property = self::$m_ent_wiki . Escaper::encodeUri( urlencode( str_replace( ' ', '_', $wgContLang->getNsText( SMW_NS_PROPERTY ) . ':' ) ) );
+
+		$property = $GLOBALS['smwgExportToUseCanonicalForm'] ? 'Property' : urlencode( str_replace( ' ', '_', $wgContLang->getNsText( SMW_NS_PROPERTY ) ) );
+		$category = $GLOBALS['smwgExportToUseCanonicalForm'] ? 'Category' : urlencode( str_replace( ' ', '_', $wgContLang->getNsText( NS_CATEGORY ) ) );
+
+		self::$m_ent_property = self::$m_ent_wiki . Escaper::encodeUri( $property . ':' );
+		self::$m_ent_category = self::$m_ent_wiki . Escaper::encodeUri( $category . ':' );
+
 		$title = SpecialPage::getTitleFor( 'ExportRDF' );
 		self::$m_exporturl    = self::$m_ent_wikiurl . $title->getPrefixedURL();
 	}
@@ -524,8 +531,8 @@ class SMWExporter {
 	 */
 	static public function expandURI( $uri ) {
 		self::initBaseURIs();
-		$uri = str_replace( array( '&wiki;', '&wikiurl;', '&property;', '&owl;', '&rdf;', '&rdfs;', '&swivt;', '&export;' ),
-		                    array( self::$m_ent_wiki, self::$m_ent_wikiurl, self::$m_ent_property, 'http://www.w3.org/2002/07/owl#', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'http://www.w3.org/2000/01/rdf-schema#', 'http://semantic-mediawiki.org/swivt/1.0#',
+		$uri = str_replace( array( '&wiki;', '&wikiurl;', '&property;', '&category;', '&owl;', '&rdf;', '&rdfs;', '&swivt;', '&export;' ),
+		                    array( self::$m_ent_wiki, self::$m_ent_wikiurl, self::$m_ent_property, self::$m_ent_category, 'http://www.w3.org/2002/07/owl#', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'http://www.w3.org/2000/01/rdf-schema#', 'http://semantic-mediawiki.org/swivt/1.0#',
 		                    self::$m_exporturl ),
 		                    $uri );
 		return $uri;
@@ -547,6 +554,8 @@ class SMWExporter {
 			return self::$m_ent_wikiurl;
 			case 'property':
 			return self::$m_ent_property;
+			case 'category':
+			return self::$m_ent_category;
 			case 'export':
 			return self::$m_exporturl;
 			case 'owl':

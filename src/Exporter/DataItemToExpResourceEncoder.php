@@ -184,6 +184,12 @@ class DataItemToExpResourceEncoder {
 
 		$localName = '';
 
+		if ( $diWikiPage->getNamespace() === NS_CATEGORY ) {
+			$namespace = Exporter::getInstance()->getNamespaceUri( 'category' );
+			$namespaceId = 'category';
+			$localName = Escaper::encodeUri( rawurlencode( $diWikiPage->getDBkey() ) );
+		}
+
 		if ( $diWikiPage->getNamespace() === SMW_NS_PROPERTY ) {
 			$namespace = Exporter::getInstance()->getNamespaceUri( 'property' );
 			$namespaceId = 'property';
