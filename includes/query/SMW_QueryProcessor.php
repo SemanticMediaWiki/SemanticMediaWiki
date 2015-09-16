@@ -358,17 +358,18 @@ class SMWQueryProcessor {
 
 		$parts = explode( '=', $printRequestString, 2 );
 		$propparts = explode( '#', $parts[0], 2 );
+		$printRequestLabel = trim( $propparts[0] );
 
 		$data = null;
 
-		if ( trim( $propparts[0] ) === '' ) { // print "this"
+		if ( $printRequestLabel === '' ) { // print "this"
 			$printmode = PrintRequest::PRINT_THIS;
 			$label = ''; // default
-		} elseif ( $wgContLang->getNsText( NS_CATEGORY ) == ucfirst( trim( $propparts[0] ) ) ) { // print categories
+		} elseif ( $wgContLang->getNsText( NS_CATEGORY ) == mb_convert_case( $printRequestLabel, MB_CASE_TITLE ) || $printRequestLabel == 'Category' ) { // print categories
 			$printmode = PrintRequest::PRINT_CATS;
 			$label = $showMode ? '' : $wgContLang->getNSText( NS_CATEGORY ); // default
 		} else { // print property or check category
-			$title = Title::newFromText( trim( $propparts[0] ), SMW_NS_PROPERTY ); // trim needed for \n
+			$title = Title::newFromText( $printRequestLabel, SMW_NS_PROPERTY ); // trim needed for \n
 			if ( is_null( $title ) ) { // not a legal property/category name; give up
 				return null;
 			}
@@ -379,7 +380,7 @@ class SMWQueryProcessor {
 				$label = $showMode ? '' : $title->getText();  // default
 			} else { // enforce interpretation as property (even if it starts with something that looks like another namespace)
 				$printmode = PrintRequest::PRINT_PROP;
-				$data = SMWPropertyValue::makeUserProperty( trim( $propparts[0] ) );
+				$data = SMWPropertyValue::makeUserProperty( $printRequestLabel );
 				if ( !$data->isValid() ) { // not a property; give up
 					return null;
 				}

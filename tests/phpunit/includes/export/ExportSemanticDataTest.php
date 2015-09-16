@@ -219,9 +219,9 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expectedResourceElement = new ExpNsResource(
-			Escaper::encodePage( new DIWikiPage( 'SomeCategory', NS_CATEGORY ) ),
-			Exporter::getInstance()->getNamespaceUri( 'wiki' ),
-			'wiki',
+			'SomeCategory',
+			Exporter::getInstance()->getNamespaceUri( 'category' ),
+			'category',
 			new DIWikiPage( 'SomeCategory', NS_CATEGORY )
 		);
 
@@ -250,9 +250,9 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expectedResourceElement = new ExpNsResource(
-			Escaper::encodePage( new DIWikiPage( 'SomeTopCategory', NS_CATEGORY ) ),
-			Exporter::getInstance()->getNamespaceUri( 'wiki' ),
-			'wiki',
+			'SomeTopCategory',
+			Exporter::getInstance()->getNamespaceUri( 'category' ),
+			'category',
 			new DIWikiPage( 'SomeTopCategory', NS_CATEGORY )
 		);
 

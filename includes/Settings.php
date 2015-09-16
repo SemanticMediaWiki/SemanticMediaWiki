@@ -137,7 +137,8 @@ class Settings extends SimpleDictionary {
 			'smwgEnabledResultFormatsWithRecursiveAnnotationSupport' => $GLOBALS['smwgEnabledResultFormatsWithRecursiveAnnotationSupport'],
 			'smwgEnabledAsyncJobDispatcher' => $GLOBALS['smwgEnabledAsyncJobDispatcher'],
 			'smwgEnabledQueryDependencyLinksStore' => $GLOBALS['smwgEnabledQueryDependencyLinksStore'],
-			'smwgPropertyDependencyDetectionBlacklist' => $GLOBALS['smwgPropertyDependencyDetectionBlacklist']
+			'smwgPropertyDependencyDetectionBlacklist' => $GLOBALS['smwgPropertyDependencyDetectionBlacklist'],
+			'smwgExportToUseCanonicalForm' => $GLOBALS['smwgExportToUseCanonicalForm']
 		);
 
 		$settings = $settings + array(

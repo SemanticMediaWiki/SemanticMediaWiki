@@ -51,6 +51,7 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 			// A note on "wiki": this namespace is crucial as a fallback when it would be illegal to start e.g. with a number.
 			// In this case, one can always use wiki:... followed by "_" and possibly some namespace, since _ is legal as a first character.
 			"\t<!ENTITY wiki "  . $this->makeValueEntityString( SMWExporter::getInstance()->expandURI( '&wiki;' ) ) . ">\n" .
+			"\t<!ENTITY category " . $this->makeValueEntityString( SMWExporter::getInstance()->expandURI( '&category;' ) ) . ">\n" .
 			"\t<!ENTITY property " . $this->makeValueEntityString( SMWExporter::getInstance()->expandURI( '&property;' ) ) . ">\n" .
 			"\t<!ENTITY wikiurl " . $this->makeValueEntityString( SMWExporter::getInstance()->expandURI( '&wikiurl;' ) ) . ">\n" .
 			"]>\n\n" .
@@ -60,8 +61,9 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 			"\txmlns:owl =\"&owl;\"\n" .
 			"\txmlns:swivt=\"&swivt;\"\n" .
 			"\txmlns:wiki=\"&wiki;\"\n" .
+			"\txmlns:category=\"&category;\"\n" .
 			"\txmlns:property=\"&property;\"";
-		$this->global_namespaces = array( 'rdf' => true, 'rdfs' => true, 'owl' => true, 'swivt' => true, 'wiki' => true, 'property' => true );
+		$this->global_namespaces = array( 'rdf' => true, 'rdfs' => true, 'owl' => true, 'swivt' => true, 'wiki' => true, 'property' => true, 'category' => true );
 		$this->post_ns_buffer .= ">\n\n";
 	}
 
