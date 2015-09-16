@@ -3,7 +3,6 @@
 namespace SMW;
 
 use SMW\ApplicationFactory;
-use Onoi\BlobStore\BlobStore;
 
 /**
  * A multipurpose non-persistent static pool cache to keep selected items for
@@ -17,9 +16,14 @@ use Onoi\BlobStore\BlobStore;
 class InMemoryPoolCache {
 
 	/**
-	 * @var FixedInMemoryCache
+	 * @var InMemoryPoolCache
 	 */
 	private static $instance = null;
+
+	/**
+	 * @var CacheFactory
+	 */
+	private $cacheFactory = null;
 
 	/**
 	 * @var array
@@ -29,12 +33,21 @@ class InMemoryPoolCache {
 	/**
 	 * @since 2.3
 	 *
-	 * @return FixedInMemoryCache
+	 * @param CacheFactory $cacheFactory
+	 */
+	public function __construct( CacheFactory $cacheFactory ) {
+		$this->cacheFactory = $cacheFactory;
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @return InMemoryPoolCache
 	 */
 	public static function getInstance() {
 
 		if ( self::$instance === null ) {
-			self::$instance = new self();
+			self::$instance = new self( ApplicationFactory::getInstance()->newCacheFactory() );
 		}
 
 		return self::$instance;
@@ -57,7 +70,7 @@ class InMemoryPoolCache {
 	}
 
 	/**
-	 * @since 2.2
+	 * @since 2.3
 	 *
 	 * @return array
 	 */
@@ -73,7 +86,7 @@ class InMemoryPoolCache {
 	}
 
 	/**
-	 * @since 2.2
+	 * @since 2.3
 	 *
 	 * @param string $poolCacheName
 	 *
@@ -82,7 +95,7 @@ class InMemoryPoolCache {
 	public function getPoolCacheFor( $poolCacheName ) {
 
 		if ( !isset( $this->poolCacheList[$poolCacheName] ) ) {
-			$this->poolCacheList[$poolCacheName] = ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache( 1500 );
+			$this->poolCacheList[$poolCacheName] = $this->cacheFactory->newFixedInMemoryCache( 500 );
 		}
 
 		return $this->poolCacheList[$poolCacheName];

@@ -218,13 +218,11 @@ class SMWSql3SmwIds {
 		self::$singleton_debug = $this;
 
 		$this->byIdDataItemFinder = new ByIdDataItemFinder(
-			$this->store->getConnection( 'mw.db' ),
-			ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache()
+			$this->store->getConnection( 'mw.db' )
 		);
 
 		$this->redirectInfoStore = new RedirectInfoStore(
-			$this->store->getConnection( 'mw.db' ),
-			ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache()
+			$this->store->getConnection( 'mw.db' )
 		);
 	}
 

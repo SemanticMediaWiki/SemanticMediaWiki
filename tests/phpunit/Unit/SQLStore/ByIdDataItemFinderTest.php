@@ -3,7 +3,7 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\SQLStore\ByIdDataItemFinder;
-use SMW\ApplicationFactory;
+use SMW\InMemoryPoolCache;
 use SMW\DIWikiPage;
 
 /**
@@ -17,12 +17,8 @@ use SMW\DIWikiPage;
  */
 class ByIdDataItemFinderTest extends \PHPUnit_Framework_TestCase {
 
-	private $cache;
-
-	protected function setUp() {
-		parent::setUp();
-
-		$this->cache = ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache();
+	protected function tearDown() {
+		InMemoryPoolCache::getInstance()->clear();
 	}
 
 	public function testCanConstruct() {
@@ -58,8 +54,7 @@ class ByIdDataItemFinderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $row ) );
 
 		$instance = new ByIdDataItemFinder(
-			$connection,
-			$this->cache
+			$connection
 		);
 
 		$this->assertInstanceOf(
@@ -67,11 +62,11 @@ class ByIdDataItemFinderTest extends \PHPUnit_Framework_TestCase {
 			$instance->getDataItemForId( 42 )
 		);
 
-		$stats = $this->cache->getStats();
+		$stats = InMemoryPoolCache::getInstance()->getStats();
 
 		$this->assertEquals(
 			1,
-			$stats['count']
+			$stats['sql.store.dataitem.finder']['count']
 		);
 	}
 
@@ -84,11 +79,10 @@ class ByIdDataItemFinderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->never() )
 			->method( 'selectRow' );
 
-		$this->cache->save( 42, 'Foo#0##' );
+		InMemoryPoolCache::getInstance()->getPoolCacheFor( 'sql.store.dataitem.finder' )->save( 42, 'Foo#0##' );
 
 		$instance = new ByIdDataItemFinder(
-			$connection,
-			$this->cache
+			$connection
 		);
 
 		$this->assertInstanceOf(
@@ -96,16 +90,16 @@ class ByIdDataItemFinderTest extends \PHPUnit_Framework_TestCase {
 			$instance->getDataItemForId( 42 )
 		);
 
-		$stats = $this->cache->getStats();
+		$stats = InMemoryPoolCache::getInstance()->getStats();
 
 		$this->assertEquals(
 			0,
-			$stats['misses']
+			$stats['sql.store.dataitem.finder']['misses']
 		);
 
 		$this->assertEquals(
 			1,
-			$stats['hits']
+			$stats['sql.store.dataitem.finder']['hits']
 		);
 	}
 
@@ -119,8 +113,7 @@ class ByIdDataItemFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'selectRow' );
 
 		$instance = new ByIdDataItemFinder(
-			$connection,
-			$this->cache
+			$connection
 		);
 
 		$instance->saveToCache( 42, '_MDAT#102##' );
@@ -142,8 +135,7 @@ class ByIdDataItemFinderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( false ) );
 
 		$instance = new ByIdDataItemFinder(
-			$connection,
-			$this->cache
+			$connection
 		);
 
 		$instance->saveToCache( 42, 'Foo#14##' );
@@ -164,8 +156,7 @@ class ByIdDataItemFinderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( false ) );
 
 		$instance = new ByIdDataItemFinder(
-			$connection,
-			$this->cache
+			$connection
 		);
 
 		$instance->saveToCache( 42, 'Foo#0##' );
@@ -213,8 +204,7 @@ class ByIdDataItemFinderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( array( $row ) ) );
 
 		$instance = new ByIdDataItemFinder(
-			$connection,
-			$this->cache
+			$connection
 		);
 
 		$this->assertEquals(
