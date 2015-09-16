@@ -26,10 +26,13 @@ matrix:
       php: 5.6
     - env: DB=mysql; MW=1.19.20; TYPE=relbuild
       php: 5.4
+    - env: DB=mysql; MW=1.24.1; BLAZEGRAPH=1.5.1
+      php: 5.4
 
   exclude:
     - env: THENEEDFORTHIS=FAIL
   allow_failures:
+    - env: DB=mysql; MW=1.24.1; BLAZEGRAPH=1.5.1
     - env: DB=mysql; MW=1.19.20; TYPE=relbuild
     - env: DB=sqlite; MW=1.25.2; TYPE=composer
     - env: DB=sqlite; MW=master; PHPUNIT=4.6.*
