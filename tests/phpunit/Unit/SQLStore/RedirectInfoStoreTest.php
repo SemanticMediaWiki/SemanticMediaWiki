@@ -3,7 +3,7 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\SQLStore\RedirectInfoStore;
-use SMW\ApplicationFactory;
+use SMW\InMemoryPoolCache;
 
 /**
  * @covers \SMW\SQLStore\RedirectInfoStore
@@ -16,12 +16,8 @@ use SMW\ApplicationFactory;
  */
 class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 
-	private $cache;
-
-	protected function setUp() {
-		parent::setUp();
-
-		$this->cache = ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache();
+	protected function tearDown() {
+		InMemoryPoolCache::getInstance()->clear();
 	}
 
 	public function testCanConstruct() {
@@ -56,8 +52,7 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $row ) );
 
 		$instance = new RedirectInfoStore(
-			$connection,
-			$this->cache
+			$connection
 		);
 
 		$this->assertEquals(
@@ -65,20 +60,20 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 			$instance->findRedirectIdFor( 'Foo', 0 )
 		);
 
-		$stats = $this->cache->getStats();
+		$stats = InMemoryPoolCache::getInstance()->getStats();
 
 		$this->assertEquals(
 			0,
-			$stats['hits']
+			$stats['sql.store.redirect.infostore']['hits']
 		);
 
 		$instance->findRedirectIdFor( 'Foo', 0 );
 
-		$stats = $this->cache->getStats();
+		$stats = InMemoryPoolCache::getInstance()->getStats();
 
 		$this->assertEquals(
 			1,
-			$stats['hits']
+			$stats['sql.store.redirect.infostore']['hits']
 		);
 	}
 
@@ -122,8 +117,7 @@ class RedirectInfoStoreTest extends \PHPUnit_Framework_TestCase {
 					'o_id' => 42 ) ) );
 
 		$instance = new RedirectInfoStore(
-			$connection,
-			$this->cache
+			$connection
 		);
 
 		$instance->addRedirectForId( 42, 'Foo', 0 );

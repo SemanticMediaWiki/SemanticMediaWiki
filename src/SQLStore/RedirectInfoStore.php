@@ -3,9 +3,7 @@
 namespace SMW\SQLStore;
 
 use SMW\MediaWiki\Database;
-use Onoi\Cache\Cache;
-use SMW\ApplicationFactory;
-
+use SMW\InMemoryPoolCache;
 use SMW\HashBuilder;
 
 /**
@@ -24,23 +22,18 @@ class RedirectInfoStore {
 	private $connection = null;
 
 	/**
-	 * @var Cache
+	 * @var InMemoryPoolCache
 	 */
-	private $cache = null;
+	private $inMemoryPoolCache;
 
 	/**
 	 * @since 2.1
 	 *
 	 * @param Database $connection
-	 * @param Cache|null $cache
 	 */
-	public function __construct( Database $connection, Cache $cache = null ) {
+	public function __construct( Database $connection ) {
 		$this->connection = $connection;
-		$this->cache = $cache;
-
-		if ( $this->cache === null ) {
-			$this->cache = ApplicationFactory::getInstance()->newCacheFactory()->newNullCache();
-		}
+		$this->inMemoryPoolCache = InMemoryPoolCache::getInstance();
 	}
 
 	/**
@@ -60,13 +53,15 @@ class RedirectInfoStore {
 			$namespace
 		);
 
-		if ( $this->cache->contains( $hash ) ) {
-			return $this->cache->fetch( $hash );
+		$poolCache = $this->inMemoryPoolCache->getPoolCacheFor( 'sql.store.redirect.infostore' );
+
+		if ( $poolCache->contains( $hash ) ) {
+			return $poolCache->fetch( $hash );
 		}
 
 		$id = $this->select( $title, $namespace );
 
-		$this->cache->save( $hash, $id );
+		$poolCache->save( $hash, $id );
 
 		return $id;
 	}
@@ -87,7 +82,7 @@ class RedirectInfoStore {
 			$namespace
 		);
 
-		$this->cache->save( $hash, $id );
+		$this->inMemoryPoolCache->getPoolCacheFor( 'sql.store.redirect.infostore' )->save( $hash, $id );
 	}
 
 	/**
@@ -105,7 +100,7 @@ class RedirectInfoStore {
 			$namespace
 		);
 
-		$this->cache->delete( $hash );
+		$this->inMemoryPoolCache->getPoolCacheFor( 'sql.store.redirect.infostore' )->delete( $hash );
 	}
 
 	private function select( $title, $namespace ) {

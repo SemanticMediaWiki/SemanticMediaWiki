@@ -3,8 +3,7 @@
 namespace SMW\SQLStore;
 
 use SMW\MediaWiki\Database;
-use SMW\ApplicationFactory;
-use Onoi\Cache\Cache;
+use SMW\InMemoryPoolCache;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\HashBuilder;
@@ -23,23 +22,18 @@ class ByIdDataItemFinder {
 	private $connection = null;
 
 	/**
-	 * @var Cache|null
+	 * @var InMemoryPoolCache
 	 */
-	private $cache = null;
+	private $inMemoryPoolCache;
 
 	/**
 	 * @since 2.1
 	 *
 	 * @param Database $connection
-	 * @param Cache|null $cache
 	 */
-	public function __construct( Database $connection, Cache $cache = null ) {
+	public function __construct( Database $connection ) {
 		$this->connection = $connection;
-		$this->cache = $cache;
-
-		if ( $this->cache === null ) {
-			$this->cache = ApplicationFactory::getInstance()->newCacheFactory()->newNullCache();
-		}
+		$this->inMemoryPoolCache = InMemoryPoolCache::getInstance();
 	}
 
 	/**
@@ -49,7 +43,7 @@ class ByIdDataItemFinder {
 	 * @param string $hash
 	 */
 	public function saveToCache( $id, $hash ) {
-		$this->cache->save( $id, $hash );
+		$this->inMemoryPoolCache->getPoolCacheFor( 'sql.store.dataitem.finder' )->save( $id, $hash );
 	}
 
 	/**
@@ -58,14 +52,14 @@ class ByIdDataItemFinder {
 	 * @param string $id
 	 */
 	public function deleteFromCache( $id ) {
-		$this->cache->delete( $id );
+		$this->inMemoryPoolCache->getPoolCacheFor( 'sql.store.dataitem.finder' )->delete( $id );
 	}
 
 	/**
 	 * @since 2.1
 	 */
 	public function clear() {
-		$this->cache = ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache( 500 );
+		$this->inMemoryPoolCache->resetPoolCacheFor( 'sql.store.dataitem.finder' );
 	}
 
 	/**
@@ -112,7 +106,9 @@ class ByIdDataItemFinder {
 	 */
 	public function getDataItemForId( $id ) {
 
-		if ( !$this->cache->contains( $id ) ) {
+		$poolCache = $this->inMemoryPoolCache->getPoolCacheFor( 'sql.store.dataitem.finder' );
+
+		if ( !$poolCache->contains( $id ) ) {
 
 			$row = $this->connection->selectRow(
 				\SMWSQLStore3::ID_TABLE,
@@ -140,7 +136,9 @@ class ByIdDataItemFinder {
 			$this->saveToCache( $id, $hash );
 		}
 
-		return HashBuilder::newDiWikiPageFromHash( $this->cache->fetch( $id ) );
+		return HashBuilder::newDiWikiPageFromHash(
+			$poolCache->fetch( $id )
+		);
 	}
 
 }

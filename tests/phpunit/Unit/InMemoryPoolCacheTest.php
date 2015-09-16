@@ -15,24 +15,31 @@ use SMW\InMemoryPoolCache;
  */
 class InMemoryPoolCacheTest extends \PHPUnit_Framework_TestCase {
 
+	protected function tearDown() {
+		InMemoryPoolCache::getInstance()->clear();
+		parent::tearDown();
+	}
+
 	public function testCanConstruct() {
+
+		$cacheFactory = $this->getMockBuilder( '\SMW\CacheFactory' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->assertInstanceOf(
 			'\SMW\InMemoryPoolCache',
-			new InMemoryPoolCache()
+			new InMemoryPoolCache( $cacheFactory )
 		);
 
 		$this->assertInstanceOf(
 			'\SMW\InMemoryPoolCache',
 			InMemoryPoolCache::getInstance()
 		);
-
-		InMemoryPoolCache::getInstance()->clear();
 	}
 
 	public function testPoolCache() {
 
-		$instance = new InMemoryPoolCache();
+		$instance = InMemoryPoolCache::getInstance();
 
 		$this->assertInstanceOf(
 			'\Onoi\Cache\Cache',
@@ -44,6 +51,10 @@ class InMemoryPoolCacheTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			42,
 			$instance->getPoolCacheFor( 'Foo' )->fetch( 'Bar' )
+		);
+
+		$this->assertNotEmpty(
+			$instance->getStats( 'Foo' )
 		);
 
 		$instance->resetPoolCacheFor( 'Foo' );
