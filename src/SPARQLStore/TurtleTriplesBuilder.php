@@ -47,6 +47,11 @@ class TurtleTriplesBuilder {
 	private $hasTriplesForUpdate = null;
 
 	/**
+	 * @var integer
+	 */
+	private $triplesChunkSize = 80;
+
+	/**
 	 * @var array
 	 */
 	private static $dataItemExportCache = array();
@@ -60,6 +65,15 @@ class TurtleTriplesBuilder {
 	public function __construct( SemanticData $semanticData, RedirectLookup $redirectLookup ) {
 		$this->semanticData = $semanticData;
 		$this->redirectLookup = $redirectLookup;
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @param integer $chunkSize
+	 */
+	public function setTriplesChunkSize( $triplesChunkSize ) {
+		$this->triplesChunkSize = (int)$triplesChunkSize;
 	}
 
 	/**
@@ -83,6 +97,38 @@ class TurtleTriplesBuilder {
 		}
 
 		return $this->triples;
+	}
+
+	/**
+	 * Split the triples into group of chunks as it can happen that some subjects
+	 * contain SPARQL strings that exceed 1800 lines which may reach the capacity
+	 * limit of a RespositoryConnector (#1110).
+	 *
+	 * @since 2.3
+	 *
+	 * @return array
+	 */
+	public function getChunkedTriples() {
+
+		$chunkedTriples = array();
+
+		if ( $this->triples === null ) {
+			$this->doBuild();
+		}
+
+		if ( strpos( $this->triples, " ." ) === false ) {
+			return $chunkedTriples;
+		}
+
+		$triplesArrayChunks = array_chunk(
+			explode( " .", $this->triples ), $this->triplesChunkSize
+		);
+
+		foreach( $triplesArrayChunks as $triplesChunk ) {
+			$chunkedTriples[] = implode( " .", $triplesChunk ) . "\n";
+		}
+
+		return $chunkedTriples;
 	}
 
 	/**
