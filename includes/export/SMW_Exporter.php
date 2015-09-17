@@ -107,8 +107,8 @@ class SMWExporter {
 		self::$m_ent_wikiurl  = $wgServer . str_replace( '$1', '', $wgArticlePath );
 		self::$m_ent_wiki     = $smwgNamespace;
 
-		$property = $GLOBALS['smwgExportToUseCanonicalForm'] ? 'Property' : urlencode( str_replace( ' ', '_', $wgContLang->getNsText( SMW_NS_PROPERTY ) ) );
-		$category = $GLOBALS['smwgExportToUseCanonicalForm'] ? 'Category' : urlencode( str_replace( ' ', '_', $wgContLang->getNsText( NS_CATEGORY ) ) );
+		$property = $GLOBALS['smwgExportBCNonCanonicalFormUse'] ? urlencode( str_replace( ' ', '_', $wgContLang->getNsText( SMW_NS_PROPERTY ) ) ) : 'Property';
+		$category = $GLOBALS['smwgExportBCNonCanonicalFormUse'] ? urlencode( str_replace( ' ', '_', $wgContLang->getNsText( NS_CATEGORY ) ) ) : 'Category';
 
 		self::$m_ent_property = self::$m_ent_wiki . Escaper::encodeUri( $property . ':' );
 		self::$m_ent_category = self::$m_ent_wiki . Escaper::encodeUri( $category . ':' );

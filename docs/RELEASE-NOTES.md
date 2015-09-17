@@ -10,11 +10,11 @@ This is not a release yet.
 Several improvements (including functional as well as performance related) have been made available to bring the `SPARQLStore` on par with the `SQLStore` supported feature set.
 
 Added the following options (It is assumed that the selected TDB back-end supports SPARQL 1.1 otherwise the `$GLOBALS['smwgSparqlQFeatures']` has to be set to `SMW_SPARQL_QF_NONE`) to:
-* #1001 `SMW_SPARQL_QF_REDI` to enable property/value redirects support in queries (), 
+* #1001 `SMW_SPARQL_QF_REDI` to enable property/value redirects support in queries (),
 * #1003 `SMW_SPARQL_QF_SUBP` to enable subproperty hierarchy support for the `SPARQLStore`
 * #1012 `SMW_SPARQL_QF_SUBC` to enable subcategory hierarchy support for the `SPARQLStore`
-* #1152 Added support for canonical identifiers (`$GLOBALS['smwgExportToUseCanonicalForm']`) in export to enable language agnostic category/property statements
 * #1110 Extended `TurtleTriplesBuilder` to split larger turtle sets into chunks
+* #1152 Added preference for use of canonical identifiers to support language agnostic category/property statements, (use `$GLOBALS['smwgExportBCNonCanonicalFormUse'] = true` to keep backwards compatibility until 3.x)
 * #1158 Added basic support for `_geo` queries to the `SPARQLStore`
 * #1159 Added limitation of the `aux` property usage in the Exporter (use `$GLOBALS['smwgExportBCAuxiliaryUse'] = true;` to keep backwards compatibility until 3.x)
 

@@ -59,7 +59,7 @@ class ByJsonRdfTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			'smwgNamespacesWithSemanticLinks',
 			'wgLanguageCode',
 			'wgContLang',
-			'smwgExportToUseCanonicalForm',
+			'smwgExportBCNonCanonicalFormUse',
 			'smwgExportBCAuxiliaryUse'
 		);
 

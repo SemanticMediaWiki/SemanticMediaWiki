@@ -474,15 +474,6 @@ $GLOBALS['smwgExportBacklinks'] = true; // should backlinks be included by defau
 // http://semanticweb.org/id/FOAF
 ##
 
-##
-# Use canonical identifiers (Category:, Property:) instead of localized names
-# to ensure that RDF/Query statements are language agnostic and do work even
-# after the site/content language changes.
-#
-# @since 2.3
-##
-$GLOBALS['smwgExportToUseCanonicalForm'] = true;
-
 ###
 # The maximal number that SMW will normally display without using scientific exp
 # notation. The deafult is rather large since some users have problems understanding
@@ -925,3 +916,14 @@ $GLOBALS['smwgPropertyDependencyDetectionBlacklist'] = array( '_MDAT', '_SOBJ' )
 ##
 $GLOBALS['smwgExportBCAuxiliaryUse'] = false;
 ##
+
+##
+# The preferred form is to use canonical identifiers (Category:, Property:)
+# instead of localized names to ensure that RDF/Query statements are language
+# agnostic and do work even after the site/content language changes.
+#
+# This BC setting is planned to vanish with 3.x.
+#
+# @since 2.3
+##
+$GLOBALS['smwgExportBCNonCanonicalFormUse'] = false;
