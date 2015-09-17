@@ -21,8 +21,9 @@ Added the following options (It is assumed that the selected TDB back-end suppor
 * #1100 introduce a deletion marker on entities that got deleted, making those entities no longer available to queries or special page display.
 * #1127 Added `--shallow-update` to `rebuildData`, to only parse those entities that have a different last modified timestamp compared to that of the last revision. This enables to run `rebuildData` updates on deleted, redirects, and other out of sync entities.
 * Solved #701 where an unconditional namespace query `[[Help:+]]` would display deleted subjects (in case those subjects were deleted)
-* #1105 Ato filter deleted redirect targets
-* #1112 Mark unused/oudated subobjects with `SMW_SQL3_SMWDELETEIW`
+* #1105 Added filter to mark deleted redirect targets with `SMW_SQL3_SMWDELETEIW`
+* #1112 Added filter to mark unused/oudated subobjects with `SMW_SQL3_SMWDELETEIW`
+* #1151 Added removal of unmatched "ghost" pages in the ID_TABLE
 
 ## Enhancements
 
