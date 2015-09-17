@@ -47,6 +47,7 @@ class RdfFileResourceTest extends MwDBaseUnitTestCase {
 			'smwgPageSpecialProperties' => array( '_MEDIA', '_MIME' ),
 			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true, NS_FILE => true ),
 			'smwgCacheType' => 'hash',
+			'smwgExportBCAuxiliaryUse' => true
 		);
 
 		foreach ( $settings as $key => $value ) {
@@ -60,6 +61,8 @@ class RdfFileResourceTest extends MwDBaseUnitTestCase {
 		$GLOBALS['wgEnableUploads'] = true;
 		$GLOBALS['wgFileExtensions'] = array( 'txt' );
 		$GLOBALS['wgVerifyMimeType'] = true;
+
+		\SMWExporter::clear();
 	}
 
 	protected function tearDown() {

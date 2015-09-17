@@ -60,6 +60,10 @@ class SMWExporter {
 			);
 
 			self::$dataItemToExpResourceEncoder->reset();
+
+			self::$dataItemToExpResourceEncoder->setBCAuxiliaryUse(
+				ApplicationFactory::getInstance()->getSettings()->get( 'smwgExportBCAuxiliaryUse' )
+			);
 		}
 
 		return self::$instance;
@@ -156,6 +160,7 @@ class SMWExporter {
 	 */
 	static public function makeExportDataForSubject( SMWDIWikiPage $diWikiPage, $addStubData = false ) {
 		global $wgContLang;
+
 		$wikiPageExpElement = self::getDataItemExpElement( $diWikiPage );
 		$result = new SMWExpData( $wikiPageExpElement );
 
@@ -187,6 +192,7 @@ class SMWExporter {
 			);
 
 		} else {
+
 			$pageTitle = str_replace( '_', ' ', $diWikiPage->getDBkey() );
 			if ( $diWikiPage->getNamespace() !== 0 ) {
 				$prefixedSubjectTitle = $wgContLang->getNsText( $diWikiPage->getNamespace()) . ":" . $pageTitle;
@@ -257,6 +263,7 @@ class SMWExporter {
 	 * @param $data SMWExpData to add the data to
 	 */
 	static public function addPropertyValues( SMWDIProperty $property, array $dataItems, SMWExpData &$expData ) {
+
 		if ( $property->isUserDefined() ) {
 			$pe = self::getResourceElementForProperty( $property );
 			$peHelper = self::getResourceElementForProperty( $property, true );
@@ -329,11 +336,14 @@ class SMWExporter {
 
 					} elseif ( $property->getKey() == '_REDI' ) {
 						$expData->addPropertyObjectValue( $pe, $ed );
-						$peUri = self::getSpecialPropertyResource( '_URI' );
-						$expData->addPropertyObjectValue( $peUri, $ed );
-					} elseif ( !$property->isUserDefined() && !self::hasSpecialPropertyResource( $property )  ) {
+
 						$expData->addPropertyObjectValue(
-							self::getResourceElementForWikiPage( $property->getDiWikiPage(), 'aux' ),
+							self::getSpecialPropertyResource( '_URI' ),
+							$ed
+						);
+					} elseif ( !$property->isUserDefined() && !self::hasSpecialPropertyResource( $property ) ) {
+						$expData->addPropertyObjectValue(
+							self::getResourceElementForProperty( $property, true ),
 							$ed
 						);
 					} else {
@@ -342,7 +352,8 @@ class SMWExporter {
 				}
 
 				$edHelper = self::getDataItemHelperExpElement( $dataItem );
-				if ( !is_null( $edHelper ) ) {
+
+				if ( $edHelper !== null ) {
 					$expData->addPropertyObjectValue( $peHelper, $edHelper );
 				}
 			}

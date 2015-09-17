@@ -138,7 +138,8 @@ class Settings extends SimpleDictionary {
 			'smwgEnabledAsyncJobDispatcher' => $GLOBALS['smwgEnabledAsyncJobDispatcher'],
 			'smwgEnabledQueryDependencyLinksStore' => $GLOBALS['smwgEnabledQueryDependencyLinksStore'],
 			'smwgPropertyDependencyDetectionBlacklist' => $GLOBALS['smwgPropertyDependencyDetectionBlacklist'],
-			'smwgExportToUseCanonicalForm' => $GLOBALS['smwgExportToUseCanonicalForm']
+			'smwgExportToUseCanonicalForm' => $GLOBALS['smwgExportToUseCanonicalForm'],
+			'smwgExportBCAuxiliaryUse' => $GLOBALS['smwgExportBCAuxiliaryUse']
 		);
 
 		$settings = $settings + array(

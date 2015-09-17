@@ -279,7 +279,7 @@ class TurtleTriplesBuilder {
 			$elementTarget = $expResource;
 		}
 
-		if ( !$exists && ( $elementTarget->getDataItem() instanceof DIWikiPage ) ) {
+		if ( !$exists && $elementTarget->getDataItem() instanceof DIWikiPage ) {
 
 			$diWikiPage = $elementTarget->getDataItem();
 			$hash = $diWikiPage->getHash();

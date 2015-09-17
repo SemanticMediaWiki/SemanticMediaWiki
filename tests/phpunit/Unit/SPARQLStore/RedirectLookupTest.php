@@ -26,23 +26,23 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$sparqlDatabase = $this->getMockBuilder( '\SMWSparqlDatabase' )
+		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\RedirectLookup',
-			new RedirectLookup( $sparqlDatabase )
+			new RedirectLookup( $repositoryConnection )
 		);
 	}
 
 	public function testRedirectTragetForBlankNode() {
 
-		$sparqlDatabase = $this->getMockBuilder( '\SMWSparqlDatabase' )
+		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new RedirectLookup( $sparqlDatabase );
+		$instance = new RedirectLookup( $repositoryConnection );
 
 		$expNsResource = new ExpNsResource( '', '', '', null );
 		$exists = null;
@@ -57,11 +57,11 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRedirectTragetForDataItemWithSubobject() {
 
-		$sparqlDatabase = $this->getMockBuilder( '\SMWSparqlDatabase' )
+		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new RedirectLookup( $sparqlDatabase );
+		$instance = new RedirectLookup( $repositoryConnection );
 		$dataItem = new DIWikiPage( 'Foo', 1, '', 'beingASubobject' );
 
 		$expNsResource = new ExpNsResource( 'Foo', 'Bar', '', $dataItem );
@@ -77,9 +77,9 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRedirectTragetForDBLookupWithNoEntry() {
 
-		$sparqlDatabase = $this->createRepositoryConnectionMockToUse( false );
+		$repositoryConnection = $this->createRepositoryConnectionMockToUse( false );
 
-		$instance = new RedirectLookup( $sparqlDatabase );
+		$instance = new RedirectLookup( $repositoryConnection );
 		$dataItem = new DIWikiPage( 'Foo', 1, '', '' );
 
 		$expNsResource = new ExpNsResource( 'Foo', 'Bar', '', $dataItem );
@@ -97,9 +97,9 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$expLiteral = new ExpLiteral( 'Redirect' );
 
-		$sparqlDatabase = $this->createRepositoryConnectionMockToUse( array( $expLiteral ) );
+		$repositoryConnection = $this->createRepositoryConnectionMockToUse( array( $expLiteral ) );
 
-		$instance = new RedirectLookup( $sparqlDatabase );
+		$instance = new RedirectLookup( $repositoryConnection );
 		$instance->reset();
 
 		$dataItem = new DIWikiPage( 'Foo', 1, '', '' );
@@ -119,9 +119,9 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$expLiteral = new ExpLiteral( 'Redirect' );
 
-		$sparqlDatabase = $this->createRepositoryConnectionMockToUse( array( $expLiteral, null ) );
+		$repositoryConnection = $this->createRepositoryConnectionMockToUse( array( $expLiteral, null ) );
 
-		$instance = new RedirectLookup( $sparqlDatabase );
+		$instance = new RedirectLookup( $repositoryConnection );
 		$instance->reset();
 
 		$dataItem = new DIWikiPage( 'Foo', 1, '', '' );
@@ -148,9 +148,9 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 			$propertyPage
 		);
 
-		$sparqlDatabase = $this->createRepositoryConnectionMockToUse( array( $resource, $resource ) );
+		$repositoryConnection = $this->createRepositoryConnectionMockToUse( array( $resource, $resource ) );
 
-		$instance = new RedirectLookup( $sparqlDatabase );
+		$instance = new RedirectLookup( $repositoryConnection );
 		$instance->reset();
 
 		$dataItem = new DIWikiPage( 'Foo', 1, '', '' );
@@ -183,9 +183,9 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$expLiteral = new ExpLiteral( 'Redirect' );
 
-		$sparqlDatabase = $this->createRepositoryConnectionMockToUse( array( $expLiteral, $expLiteral ) );
+		$repositoryConnection = $this->createRepositoryConnectionMockToUse( array( $expLiteral, $expLiteral ) );
 
-		$instance = new RedirectLookup( $sparqlDatabase );
+		$instance = new RedirectLookup( $repositoryConnection );
 		$instance->reset();
 
 		$dataItem = new DIWikiPage( 'Foo', 1, '', '' );
@@ -209,11 +209,11 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 			$expNsResource
 		);
 
-		$connection = $this->getMockBuilder( '\SMWSparqlDatabase' )
+		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new RedirectLookup( $connection );
+		$instance = new RedirectLookup( $repositoryConnection );
 
 		$exists = null;
 
@@ -228,23 +228,17 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testRedirectTargetForNonRedirectableResource( $expNsResource ) {
 
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$cache->expects( $this->never() )
-			->method( 'contains' );
-
-		$connection = $this->getMockBuilder( '\SMWSparqlDatabase' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new RedirectLookup( $connection, $cache );
+		$instance = new RedirectLookup( $repositoryConnection );
 		$instance->reset();
 
 		$exists = null;
 
 		$instance->findRedirectTargetResource( $expNsResource, $exists );
+		$instance->reset();
 
 		$this->assertFalse( $exists );
 	}
@@ -259,15 +253,15 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'current' )
 			->will( $this->returnValue( $listReturnValue ) );
 
-		$sparqlDatabase = $this->getMockBuilder( '\SMWSparqlDatabase' )
+		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$sparqlDatabase->expects( $this->once() )
+		$repositoryConnection->expects( $this->once() )
 			->method( 'select' )
 			->will( $this->returnValue( $repositoryResult ) );
 
-		return $sparqlDatabase;
+		return $repositoryConnection;
 	}
 
 	public function nonRedirectableResourceProvider() {
@@ -289,7 +283,7 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$provider[] = array(
-			Exporter::getInstance()->getResourceElementForProperty( new DIProperty( 'Foo' ), true )
+			Exporter::getInstance()->getSpecialPropertyResource( '_MDAT', true )
 		);
 
 		return $provider;
