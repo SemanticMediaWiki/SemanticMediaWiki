@@ -267,8 +267,8 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->getMock();
 
 		$idGenerator->expects( $this->any() )
-			->method( 'getSMWPageIDandSort' )
-			->will( $this->returnValue( 42 ) );
+			->method( 'getListOfIdMatchesFor' )
+			->will( $this->returnValue( array( 42 ) ) );
 
 		$store = $this->getMockBuilder( $storeClass )
 			->setMethods( array( 'getPropertyTables', 'getObjectIds' ) )
@@ -305,8 +305,8 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->getMock();
 
 		$idGenerator->expects( $this->any() )
-			->method( 'getSMWPageIDandSort' )
-			->will( $this->returnValue( 42 ) );
+			->method( 'getListOfIdMatchesFor' )
+			->will( $this->returnValue( array( 42 ) ) );
 
 		$store = $this->getMockBuilder( $storeClass )
 			->setMethods( array( 'getPropertyTables', 'getObjectIds' ) )

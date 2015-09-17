@@ -138,7 +138,7 @@ class SQLStoreFactory {
 	 *
 	 * @return ListLookup
 	 */
-	public function newUsageStatisticsListLookup() {
+	public function newUsageStatisticsCachedListLookup() {
 
 		$usageStatisticsListLookup = new UsageStatisticsListLookup(
 			$this->store,
@@ -157,9 +157,9 @@ class SQLStoreFactory {
 	 *
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return ListLookup
+	 * @return CachedListLookup
 	 */
-	public function newPropertyUsageListLookup( RequestOptions $requestOptions = null ) {
+	public function newPropertyUsageCachedListLookup( RequestOptions $requestOptions = null ) {
 
 		$propertyUsageListLookup = new PropertyUsageListLookup(
 			$this->store,
@@ -179,9 +179,9 @@ class SQLStoreFactory {
 	 *
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return ListLookup
+	 * @return CachedListLookup
 	 */
-	public function newUnusedPropertyListLookup( RequestOptions $requestOptions = null ) {
+	public function newUnusedPropertyCachedListLookup( RequestOptions $requestOptions = null ) {
 
 		$unusedPropertyListLookup = new UnusedPropertyListLookup(
 			$this->store,
@@ -201,9 +201,9 @@ class SQLStoreFactory {
 	 *
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return ListLookup
+	 * @return CachedListLookup
 	 */
-	public function newUndeclaredPropertyListLookup( RequestOptions $requestOptions = null ) {
+	public function newUndeclaredPropertyCachedListLookup( RequestOptions $requestOptions = null ) {
 
 		$undeclaredPropertyListLookup = new UndeclaredPropertyListLookup(
 			$this->store,

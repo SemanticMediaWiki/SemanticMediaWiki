@@ -64,15 +64,16 @@ class SMWSQLStore3Writers {
 
 		wfRunHooks( 'SMW::SQLStore::BeforeDeleteSubjectComplete', array( $this->store, $title ) );
 
-		$id = $this->store->getObjectIds()->getSMWPageID(
+		// Fetch all possible matches (including any duplicates created by
+		// incomplete rollback or DB deadlock)
+		$ids = $this->store->getObjectIds()->getListOfIdMatchesFor(
 			$title->getDBkey(),
 			$title->getNamespace(),
-			$title->getInterwiki(),
-			'',
-			false
+			$title->getInterwiki()
 		);
 
-		$emptySemanticData = new SemanticData( DIWikiPage::newFromTitle( $title ) );
+		$subject = DIWikiPage::newFromTitle( $title );
+		$emptySemanticData = new SemanticData( $subject );
 
 		$subobjects = $this->getSubobjects(
 			$emptySemanticData->getSubject()
@@ -80,11 +81,27 @@ class SMWSQLStore3Writers {
 
 		$this->doDataUpdate( $emptySemanticData );
 
-		if ( $title->getNamespace() === SMW_NS_CONCEPT ) { // make sure to clear caches
+		foreach ( $ids as $id ) {
+			$this->doDeleteReferencesFor( $id, $subject, $subobjects );
+		}
+
+		// 1.9.0.1
+		// The update of possible associative entities is handled by DeleteSubjectJob which is invoked during
+		// the ArticleDelete hook
+
+		// @deprecated since 2.1, use 'SMW::SQLStore::AfterDeleteSubjectComplete'
+		wfRunHooks( 'SMWSQLStore3::deleteSubjectAfter', array( $this->store, $title ) );
+
+		wfRunHooks( 'SMW::SQLStore::AfterDeleteSubjectComplete', array( $this->store, $title ) );
+	}
+
+	private function doDeleteReferencesFor( $id, $subject, $subobjects ) {
+
+		if ( $subject->getNamespace() === SMW_NS_CONCEPT ) { // make sure to clear caches
 			$db = $this->store->getConnection();
 
 			$db->delete(
-				'smw_fpt_conc',
+				SMWSQLStore3::CONCEPT_TABLE,
 				array( 's_id' => $id ),
 				'SMW::deleteSubject::Conc'
 			);
@@ -100,7 +117,7 @@ class SMWSQLStore3Writers {
 		// triggered by the `ByIdDataRebuildDispatcher`
 		$this->store->getObjectIds()->updateInterwikiField(
 			$id,
-			$emptySemanticData->getSubject(),
+			$subject,
 			SMW_SQL3_SMWDELETEIW
 		);
 
@@ -111,15 +128,6 @@ class SMWSQLStore3Writers {
 				SMW_SQL3_SMWDELETEIW
 			);
 		}
-
-		// 1.9.0.1
-		// The update of possible associative entities is handled by DeleteSubjectJob which is invoked during
-		// the ArticleDelete hook
-
-		// @deprecated since 2.1, use 'SMW::SQLStore::AfterDeleteSubjectComplete'
-		wfRunHooks( 'SMWSQLStore3::deleteSubjectAfter', array( $this->store, $title ) );
-
-		wfRunHooks( 'SMW::SQLStore::AfterDeleteSubjectComplete', array( $this->store, $title ) );
 	}
 
 	/**

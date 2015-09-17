@@ -75,43 +75,43 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructUsageStatisticsListLookup() {
+	public function testCanConstructUsageStatisticsCachedListLookup() {
 
 		$instance = new SQLStoreFactory( new SMWSQLStore3() );
 
 		$this->assertInstanceOf(
 			'SMW\SQLStore\Lookup\CachedListLookup',
-			$instance->newUsageStatisticsListLookup()
+			$instance->newUsageStatisticsCachedListLookup()
 		);
 	}
 
-	public function testCanConstructPropertyUsageListLookup() {
+	public function testCanConstructPropertyUsageCachedListLookup() {
 
 		$instance = new SQLStoreFactory( new SMWSQLStore3() );
 
 		$this->assertInstanceOf(
 			'SMW\SQLStore\Lookup\CachedListLookup',
-			$instance->newPropertyUsageListLookup( null )
+			$instance->newPropertyUsageCachedListLookup( null )
 		);
 	}
 
-	public function testCanConstructUnusedPropertyListLookup() {
+	public function testCanConstructUnusedPropertyCachedListLookup() {
 
 		$instance = new SQLStoreFactory( new SMWSQLStore3() );
 
 		$this->assertInstanceOf(
 			'SMW\SQLStore\Lookup\CachedListLookup',
-			$instance->newUnusedPropertyListLookup( null )
+			$instance->newUnusedPropertyCachedListLookup( null )
 		);
 	}
 
-	public function testCanConstructUndeclaredPropertyListLookup() {
+	public function testCanConstructUndeclaredPropertyCachedListLookup() {
 
 		$instance = new SQLStoreFactory( new SMWSQLStore3() );
 
 		$this->assertInstanceOf(
 			'SMW\SQLStore\Lookup\CachedListLookup',
-			$instance->newUndeclaredPropertyListLookup( null, '_foo' )
+			$instance->newUndeclaredPropertyCachedListLookup( null, '_foo' )
 		);
 	}
 

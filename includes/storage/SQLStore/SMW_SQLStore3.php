@@ -52,6 +52,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * will appear empty until they are recomputed.
 	 */
 	const CONCEPT_CACHE_TABLE = 'smw_concept_cache';
+	const CONCEPT_TABLE = 'smw_fpt_conc';
 
 	/**
 	 * Name of the table to store the concept cache in.
@@ -304,13 +305,28 @@ class SMWSQLStore3 extends SMWStore {
 		return $this->writer;
 	}
 
-	public function deleteSubject( Title $subject ) {
+	public function deleteSubject( Title $title ) {
+
+		$subject = DIWikiPage::newFromTitle( $title );
 
 		$this->cachedValueLookupStore->deleteFor(
-			DIWikiPage::newFromTitle( $subject )
+			$subject
 		);
 
-		$this->getWriter()->deleteSubject( $subject );
+		$this->getWriter()->deleteSubject( $title );
+		$this->doInvalidateCachedListLookupFor( $subject );
+	}
+
+	private function doInvalidateCachedListLookupFor( DIWikiPage $subject ) {
+
+		if ( $subject->getNamespace() !== SMW_NS_PROPERTY ) {
+			return null;
+		}
+
+		$this->factory->newPropertyUsageCachedListLookup()->deleteCache();
+		$this->factory->newUnusedPropertyCachedListLookup()->deleteCache();
+		$this->factory->newUndeclaredPropertyCachedListLookup()->deleteCache();
+		$this->factory->newUsageStatisticsCachedListLookup()->deleteCache();
 	}
 
 	protected function doDataUpdate( SemanticData $semanticData ) {
@@ -369,32 +385,32 @@ class SMWSQLStore3 extends SMWStore {
 	/**
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return ListLookup
+	 * @return CachedListLookup
 	 */
 	public function getPropertiesSpecial( $requestOptions = null ) {
-		return $this->factory->newPropertyUsageListLookup( $requestOptions );
+		return $this->factory->newPropertyUsageCachedListLookup( $requestOptions );
 	}
 
 	/**
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return ListLookup
+	 * @return CachedListLookup
 	 */
 	public function getUnusedPropertiesSpecial( $requestOptions = null ) {
-		return $this->factory->newUnusedPropertyListLookup( $requestOptions );
+		return $this->factory->newUnusedPropertyCachedListLookup( $requestOptions );
 	}
 
 	/**
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return ListLookup
+	 * @return CachedListLookup
 	 */
 	public function getWantedPropertiesSpecial( $requestOptions = null ) {
-		return $this->factory->newUndeclaredPropertyListLookup( $requestOptions );
+		return $this->factory->newUndeclaredPropertyCachedListLookup( $requestOptions );
 	}
 
 	public function getStatistics() {
-		return $this->factory->newUsageStatisticsListLookup()->fetchList();
+		return $this->factory->newUsageStatisticsCachedListLookup()->fetchList();
 	}
 
 
