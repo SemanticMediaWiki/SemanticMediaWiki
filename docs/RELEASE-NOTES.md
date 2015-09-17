@@ -15,6 +15,7 @@ Added the following options (It is assumed that the selected TDB back-end suppor
 * #1012 `SMW_SPARQL_QF_SUBC` to enable subcategory hierarchy support for the `SPARQLStore`
 * #1152 Added support for canonical identifiers (`$GLOBALS['smwgExportToUseCanonicalForm']`) in export to enable language agnostic category/property statements
 * #1110 Extended `TurtleTriplesBuilder` to split larger turtle sets into chunks
+* #1158 Added basic support for `_geo` queries to the `SPARQLStore`
 
 ### Property/Subject deletion
 
