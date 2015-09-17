@@ -1,7 +1,7 @@
 For a full list of changes in each release, see the [release notes](releasenotes/). For instructions
 on how to install the latest version of SMW, see the [installation instructions](INSTALL.md).
 
-### SMW versions
+## Release versions
 
 <table>
 	<tr>
@@ -66,7 +66,7 @@ on how to install the latest version of SMW, see the [installation instructions]
 	</tr>
 </table>
 
-### Platform compatibility
+## Platform compatibility
 
 Releases after Composer support:
 
@@ -84,16 +84,22 @@ Releases after Composer support:
 		<td>1.23 - latest</td>
 	</tr>
 	<tr>
-		<th>SMW 2.3.x</th>
+		<th>SMW 2.4.x</th>
 		<td>5.3.2 - latest</td>
 		<td>3.3.x - latest</td>
+		<td>1.19 - latest</td>
+	</tr>
+	<tr>
+		<th>SMW 2.3.x</th>
+		<td>5.3.2 - latest</td>
+		<td>3.5.x - latest</td>
 		<td>1.19 - latest</td>
 	</tr>
 	<tr>
 		<th>SMW 2.2.x</th>
 		<td>5.3.2 - latest</td>
 		<td>3.3.x - latest</td>
-		<td>1.19 - 1.24<sup>[m.1]</sup> + 1.25<sup>[m.2]</sup></td>
+		<td>1.19 - 1.25</sup></td>
 	</tr>
 	<tr>
 		<th>SMW 2.1.x</th>
@@ -145,9 +151,9 @@ Releases before Composer support:
 The PHP and MediaWiki version ranges listed are those in which SMW is known to work. It might also
 work with more recent versions of PHP and MediaWiki, though this is not guaranteed.
 
-### Database support
+## Database compatibility
 
-SQL databases:
+### SQL support
 
 <table>
 	<tr>
@@ -194,15 +200,24 @@ SQL databases:
 	</tr>
 </table>
 
-Triple store databases:
+### Triple store support
 
 <table>
 	<tr>
 		<th></th>
-		<th><a href="https://jena.apache.org/">Jena Fuseki</a></th>
-		<th><a href="https://github.com/openlink/virtuoso-opensource">Virtuoso Opensource</a></th>
+		<th><a href="https://jena.apache.org/">Fuseki</a></th>
+		<th><a href="https://github.com/openlink/virtuoso-opensource">Virtuoso</a></th>
 		<th><a href="https://github.com/garlik/4store">4store</a></th>
 		<th><a href="http://rdf4j.org/">Sesame</a></th>
+		<th><a href="https://wiki.blazegraph.com/">Blazegraph</a></th>
+	</tr>
+	<tr>
+		<th>SMW 2.3.x</th>
+		<td>Full support (1.x >=1.1)</td>
+		<td>Full support (6.x >=6.1) + 7.1<sup>[t.1]</sup></td>
+		<td>Beta support (1.x >=1.1)<sup>[t.2]</sup></td>
+		<td>Full support (2.7.x)</td>
+		<td>Full support (1.5.2)</td>
 	</tr>
 	<tr>
 		<th>SMW 2.2.x</th>
@@ -210,6 +225,7 @@ Triple store databases:
 		<td>Full support (6.x >=6.1) + 7.1<sup>[t.1]</sup></td>
 		<td>Beta support (1.x >=1.1)<sup>[t.2]</sup></td>
 		<td>Full support (2.7.x)</td>
+		<td>Beta support (1.5.2)</td>
 	</tr>
 	<tr>
 		<th>SMW 2.1.x</th>
@@ -217,6 +233,7 @@ Triple store databases:
 		<td>Full support (6.x >=6.1)</td>
 		<td>Beta support (1.x >=1.1)</td>
 		<td>Full support (2.7.x)</td>
+		<td>Not tested</td>
 	</tr>
 	<tr>
 		<th>SMW 2.0.x</th>
@@ -224,6 +241,7 @@ Triple store databases:
 		<td>Full support</td>
 		<td>Beta support</td>
 		<td>Beta support</td>
+		<td>Not tested</td>
 	</tr>
 	<tr>
 		<th>SMW 1.9.x</th>
@@ -231,6 +249,7 @@ Triple store databases:
 		<td>Beta support</td>
 		<td>Beta support</td>
 		<td>Beta support</td>
+		<td>Not tested</td>
 	</tr>
 	<tr>
 		<th>SMW &lt; 1.9</th>
@@ -238,6 +257,7 @@ Triple store databases:
 		<td>Experimental support</td>
 		<td>Experimental support</td>
 		<td>No support</td>
+		<td>Not tested</td>
 	</tr>
 </table>
 
@@ -248,7 +268,5 @@ Triple store databases:
 The information in brackets denotes the versions with which SMW is known to work. SMW might also
 work with different versions, especially more recent ones, though this is not guaranteed.
 
-- <sup>[m.1]</sup> Fully tested against MW 1.24
-- <sup>[m.2]</sup> Partially tested against MW 1.25 (due to some unresolved MediaWiki issues)
 - <sup>[t.1]</sup> On an irregular test plan with [Virtuoso 7.1](https://travis-ci.org/mwjames/SemanticMediaWiki/builds/61203319)
 - <sup>[t.2]</sup> On an irregular test plan with [4store 1.1.4](https://travis-ci.org/mwjames/SemanticMediaWiki/builds/61200454)
