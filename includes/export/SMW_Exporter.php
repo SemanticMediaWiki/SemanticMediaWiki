@@ -539,6 +539,13 @@ class SMWExporter {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function decodeURI( $uri ) {
+		return Escaper::decodeUri( $uri );
+	}
+
+	/**
 	 * Get the URI of a standard namespace prefix used in SMW, or the empty
 	 * string if the prefix is not known.
 	 *
@@ -628,12 +635,16 @@ class SMWExporter {
 	 * @return SMWExpElement or null
 	 */
 	static public function getDataItemHelperExpElement( SMWDataItem $dataItem ) {
+
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_TIME ) {
-			$lit = new SMWExpLiteral( (string)$dataItem->getSortKey(), 'http://www.w3.org/2001/XMLSchema#double', '', $dataItem );
-			return $lit;
-		} else {
-			return null;
+			return new SMWExpLiteral( (string)$dataItem->getSortKey(), 'http://www.w3.org/2001/XMLSchema#double', '', $dataItem );
 		}
+
+		if ( $dataItem->getDIType() == SMWDataItem::TYPE_GEO ) {
+			return new SMWExpLiteral( (string)$dataItem->getSortKey(), 'http://www.w3.org/2001/XMLSchema#string', '', $dataItem );
+		}
+
+		return null;
 	}
 
 	/**
@@ -645,7 +656,7 @@ class SMWExporter {
 	 * @return boolean
 	 */
 	static public function hasHelperExpElement( DIProperty $property ) {
-		return ( $property->findPropertyTypeID() === '_dat' ) || ( !$property->isUserDefined() && !self::hasSpecialPropertyResource( $property ) );
+		return ( $property->findPropertyTypeID() === '_dat' || $property->findPropertyTypeID() === '_geo' ) || ( !$property->isUserDefined() && !self::hasSpecialPropertyResource( $property ) );
 	}
 
 	static protected function hasSpecialPropertyResource( DIProperty $property ) {

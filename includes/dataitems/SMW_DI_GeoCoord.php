@@ -108,8 +108,7 @@ class SMWDIGeoCoord extends SMWDataItem {
 	 * @see SMWDataItem::getSortKey()
 	 */
 	public function getSortKey() {
-		// Maybe also add longitude here? Or is there a more meaningfull value we can return?
-		return $this->latitude;
+		return $this->latitude . ',' . $this->longitude . ( $this->altitude !== null ? ','. $this->altitude : '' );
 	}
 
 	/**
