@@ -906,3 +906,22 @@ $GLOBALS['smwgEnabledQueryDependencyLinksStore'] = false;
 ##
 $GLOBALS['smwgPropertyDependencyDetectionBlacklist'] = array( '_MDAT', '_SOBJ' );
 ##
+
+###
+# The setting is introduced the keep backwards compatibility with existing Rdf/Turtle
+# exports. The `aux` marker is epxected only used to be used for selected properties
+# to generate a helper value and not for any other predefined property.
+#
+# Any property that does not explicitly require an auxiliary value (such `_dat`/
+# `_geo` type values) now uses its native as condition descriptor (`Has_subobject`
+# instead of `Has_subobject-23aux`)
+#
+# For SPARQL repository users that don't want to run an a  `rebuildData.php`,
+# the setting has to be TRUE.
+#
+# This BC setting is planned to vanish with 3.x.
+#
+# @since 2.3
+##
+$GLOBALS['smwgExportBCAuxiliaryUse'] = false;
+##

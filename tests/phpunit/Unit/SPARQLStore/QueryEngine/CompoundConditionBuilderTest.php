@@ -540,7 +540,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expectedConditionString = $this->stringBuilder
-			->addString( '?result property:Has_subobject-23aux ?v1 .' )->addNewLine()
+			->addString( '?result property:Has_subobject ?v1 .' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(

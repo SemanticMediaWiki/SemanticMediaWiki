@@ -167,6 +167,7 @@
 		}
 	],
 	"settings": {
+		"smwgExportBCAuxiliaryUse": true,
 		"smwgNamespace": "http://example.org/id/",
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,

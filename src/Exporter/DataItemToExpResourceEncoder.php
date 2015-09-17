@@ -50,6 +50,13 @@ class DataItemToExpResourceEncoder {
 	private $cache;
 
 	/**
+	 * @note Legacy setting expected to vanish with 3.0
+	 *
+	 * @var boolean
+	 */
+	private $bcAuxiliaryUse = true;
+
+	/**
 	 * @since 2.2
 	 *
 	 * @param Store $store
@@ -65,6 +72,15 @@ class DataItemToExpResourceEncoder {
 	 */
 	public function reset() {
 			return $this->inMemoryPoolCache->resetPoolCacheFor( 'exporter.dataitem.resource.encoder' );
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param boolean $bcAuxiliaryUse
+	 */
+	public function setBCAuxiliaryUse( $bcAuxiliaryUse ) {
+		$this->bcAuxiliaryUse = (bool)$bcAuxiliaryUse;
 	}
 
 	/**
@@ -92,25 +108,30 @@ class DataItemToExpResourceEncoder {
 	 * Exporter::getSpecialPropertyResource may require information
 	 * about the namespace in which some special property is used.
 	 *
-	 * @note $markForAuxiliaryUsage is to determine whether an auxiliary
+	 * @note $useAuxiliaryModifier is to determine whether an auxiliary
 	 * property resource is to store a helper value
 	 * (see Exporter::getDataItemHelperExpElement) should be generated
 	 *
 	 * @param DIProperty $property
-	 * @param boolean $markForAuxiliaryUsage
+	 * @param boolean $useAuxiliaryModifier
 	 *
 	 * @return ExpResource
 	 * @throws RuntimeException
 	 */
-	public function mapPropertyToResourceElement( DIProperty $property, $markForAuxiliaryUsage = false ) {
+	public function mapPropertyToResourceElement( DIProperty $property, $useAuxiliaryModifier = false ) {
 
 		$diWikiPage = $property->getDiWikiPage();
 
-		if ( $diWikiPage !== null ) {
-			return $this->mapWikiPageToResourceElement( $diWikiPage, $markForAuxiliaryUsage );
+		if ( $diWikiPage === null ) {
+			throw new RuntimeException( 'Only non-inverse, user-defined properties are permitted.' );
 		}
 
-		throw new RuntimeException( 'Only non-inverse, user-defined properties are permitted.' );
+		// No need for any aux properties besides those listed here
+		if ( !$this->bcAuxiliaryUse && $property->findPropertyTypeID() !== '_dat' && $property->findPropertyTypeID() !== '_geo' ) {
+			$useAuxiliaryModifier = false;
+		}
+
+		return $this->mapWikiPageToResourceElement( $diWikiPage, $useAuxiliaryModifier );
 	}
 
 	/**
@@ -123,13 +144,13 @@ class DataItemToExpResourceEncoder {
 	 * occuring in MW titles).
 	 *
 	 * @param DIWikiPage $diWikiPage
-	 * @param boolean $markForAuxiliaryUsage
+	 * @param boolean $useAuxiliaryModifier
 	 *
 	 * @return ExpResource
 	 */
-	public function mapWikiPageToResourceElement( DIWikiPage $diWikiPage, $markForAuxiliaryUsage = false ) {
+	public function mapWikiPageToResourceElement( DIWikiPage $diWikiPage, $useAuxiliaryModifier = false ) {
 
-		$modifier = $markForAuxiliaryUsage ? self::AUX_MARKER : '';
+		$modifier = $useAuxiliaryModifier ? self::AUX_MARKER : '';
 
 		$hash = $diWikiPage->getHash() . $modifier;
 

@@ -342,7 +342,7 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function transformPropertyLabelToAuxiliary( DIProperty $property ) {
-		return str_replace( ' ', '_', $property->getLabel() ) . '-23' . 'aux';
+		return str_replace( ' ', '_', $property->getLabel() );
 	}
 
 }

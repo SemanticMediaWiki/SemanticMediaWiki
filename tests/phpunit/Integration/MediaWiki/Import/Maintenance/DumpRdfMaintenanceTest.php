@@ -4,6 +4,8 @@ namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\ApplicationFactory;
+use SMW\EventHandler;
 
 /**
  * @group SMW
@@ -37,6 +39,9 @@ class DumpRdfMaintenanceTest extends MwDBaseUnitTestCase {
 		$this->titleValidator = UtilityFactory::getInstance()->newValidatorFactory()->newTitleValidator();
 		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
 
+		ApplicationFactory::getInstance()->getSettings()->set( 'smwgExportBCAuxiliaryUse', true );
+		EventHandler::getInstance()->getEventDispatcher()->dispatch( 'exporter.reset' );
+
 		$importRunner = $this->runnerFactory->newXmlImportRunner(
 			__DIR__ . '/../Fixtures/' . 'GenericLoremIpsumTest-Mw-1-19-7.xml'
 		);
@@ -48,6 +53,7 @@ class DumpRdfMaintenanceTest extends MwDBaseUnitTestCase {
 	}
 
 	protected function tearDown() {
+		ApplicationFactory::getInstance()->clear();
 
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
