@@ -93,7 +93,7 @@ class UndeclaredPropertyListLookup implements ListLookup {
 	 * @return string
 	 */
 	public function getLookupIdentifier() {
-		return __METHOD__ . json_encode( (array)$this->requestOptions );
+		return __METHOD__. '#' . json_encode( (array)$this->requestOptions );
 	}
 
 	private function selectPropertiesFromTable( $propertyTable ) {

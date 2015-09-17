@@ -4,6 +4,7 @@ namespace SMW\SQLStore\Lookup;
 
 use Onoi\Cache\Cache;
 use SMW\SQLStore\Lookup\ListLookup;
+use SMW\DIWikiPage;
 
 /**
  * @license GNU GPL v2+
@@ -72,16 +73,17 @@ class CachedListLookup implements ListLookup {
 	 */
 	public function fetchList() {
 
-		$key = $this->getCacheKey( $this->listLookup->getLookupIdentifier() );
+		list( $key, $optionsKey ) = $this->getCacheKey( $this->listLookup->getLookupIdentifier() );
 
-		if ( $this->cache->contains( $key ) && $this->cacheOptions->useCache ) {
-			return $this->retrieveFromCache( $key );
+		if ( $this->cacheOptions->useCache && $this->cache->contains( $key ) && ( ( $result = $this->tryFetchFromCache( $key, $optionsKey ) ) !== null ) ) {
+			return $result;
 		}
 
 		$list = $this->listLookup->fetchList();
 
 		$this->saveToCache(
 			$key,
+			$optionsKey,
 			$list,
 			$this->listLookup->getTimestamp(),
 			$this->cacheOptions->ttl
@@ -125,31 +127,59 @@ class CachedListLookup implements ListLookup {
 		return $this->listLookup->getLookupIdentifier();
 	}
 
-	private function retrieveFromCache( $key ) {
+	/**
+	 * @since 2.3
+	 */
+	public function deleteCache() {
 
-		$data = $this->cache->fetch( $key );
+		list( $id, $optionsKey ) = $this->getCacheKey(
+			$this->listLookup->getLookupIdentifier()
+		);
 
-		$this->isCached = true;
-		$this->timestamp = $data['time'];
-
-		return unserialize( $data['list'] );
+		$this->cache->delete( $id );
 	}
 
-	private function saveToCache( $key, $list, $time, $ttl ) {
+	private function tryFetchFromCache( $key, $optionsKey ) {
+
+		$data = unserialize( $this->cache->fetch( $key ) );
+
+		if ( !isset( $data[$optionsKey] ) ) {
+			return null;
+		}
+
+		$this->isCached = true;
+		$this->timestamp = $data[$optionsKey]['time'];
+
+		return $data[$optionsKey]['list'];
+	}
+
+	private function saveToCache( $key, $optionsKey, $list, $time, $ttl ) {
 
 		$this->timestamp = $time;
 		$this->isCached = false;
 
-		$data = array(
+		$data = unserialize( $this->cache->fetch( $key ) );
+
+		$data[$optionsKey] = array(
 			'time' => $this->timestamp,
-			'list' => serialize( $list )
+			'list' => $list
 		);
 
-		$this->cache->save( $key, $data, $ttl );
+		$this->cache->save( $key, serialize( $data ), $ttl );
 	}
 
 	private function getCacheKey( $id ) {
-		return $this->cachePrefix . md5( $id );
+
+		$optionsKey = '';
+
+		if ( strpos( $id, '#' ) !== false ) {
+			list( $id, $optionsKey ) = explode( '#', $id, 2 );
+		}
+
+		return array(
+			$this->cachePrefix . md5( $id ),
+			md5( $optionsKey )
+		);
 	}
 
 }

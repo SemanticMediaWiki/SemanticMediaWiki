@@ -8,12 +8,7 @@ use Title;
 
 /**
  * @covers \SMWSQLStore3Writers
- *
- * @group SMW
- * @group SMWExtension
- *
- * @group semantic-mediawiki-sqlstore
- * @group mediawiki-databaseless
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9.2
@@ -56,12 +51,8 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$objectIdGenerator->expects( $this->once() )
-			->method( 'getSMWPageIDandSort' )
-			->will( $this->returnValue( 0 ) );
-
-		$objectIdGenerator->expects( $this->once() )
-			->method( 'makeSMWPageID' )
-			->will( $this->returnValue( 0 ) );
+			->method( 'getListOfIdMatchesFor' )
+			->will( $this->returnValue( array( 0 ) ) );
 
 		$objectIdGenerator->expects( $this->once() )
 			->method( 'getPropertyTableHashes' )
@@ -104,14 +95,13 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$objectIdGenerator->expects( $this->once() )
-			->method( 'getSMWPageID' )
+			->method( 'getListOfIdMatchesFor' )
 			->with(
 				$this->equalTo( $title->getDBkey() ),
 				$this->equalTo( $title->getNamespace() ),
 				$this->equalTo( $title->getInterwiki() ),
-				'',
-				false )
-			->will( $this->returnValue( 0 ) );
+				'' )
+			->will( $this->returnValue( array( 0 ) ) );
 
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()

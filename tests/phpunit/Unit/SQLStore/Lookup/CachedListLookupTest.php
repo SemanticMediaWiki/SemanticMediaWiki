@@ -33,9 +33,9 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testfetchListFromCache() {
 
-		$expectedCachedItem = array(
+		$expectedCachedItem[md5('123')] = array(
 			'time' => 42,
-			'list' => serialize( array( 'Foo' ) )
+			'list' => array( 'Foo' )
 		);
 
 		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ListLookup' )
@@ -44,7 +44,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$listLookup->expects( $this->atLeastOnce() )
 			->method( 'getLookupIdentifier' )
-			->will( $this->returnValue( 'Bar' ) );
+			->will( $this->returnValue( 'Bar#123' ) );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -57,7 +57,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( $expectedCachedItem ) );
+			->will( $this->returnValue( serialize( $expectedCachedItem ) ) );
 
 		$cacheOptions = new \stdClass;
 		$cacheOptions->useCache = true;
@@ -76,7 +76,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			'Bar',
+			'Bar#123',
 			$instance->getLookupIdentifier()
 		);
 
@@ -87,9 +87,9 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRetrieveResultListFromInjectedListLookup() {
 
-		$expectedCacheItem = array(
+		$expectedCacheItem[md5('123')] = array(
 			'time' => 42,
-			'list' => serialize( array( 'Foo' ) )
+			'list' => array( 'Foo' )
 		);
 
 		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ListLookup' )
@@ -112,7 +112,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'save' )
 			->with(
 				$this->stringContains( 'llc' ),
-				$this->anything( $expectedCacheItem ),
+				$this->anything( serialize( $expectedCacheItem ) ),
 				$this->equalTo( 1001 ) );
 
 		$cacheOptions = new \stdClass;
@@ -134,6 +134,31 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse(
 			$instance->isCached()
 		);
+	}
+
+	public function testDeleteCache() {
+
+		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ListLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$listLookup->expects( $this->once() )
+			->method( 'getLookupIdentifier' )
+			->will( $this->returnValue( 'Foo#123' ) );
+
+		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$cache->expects( $this->once() )
+			->method( 'delete' )
+			->with(
+				$this->stringContains( 'llc' ) );
+
+		$cacheOptions = new \stdClass;
+
+		$instance = new CachedListLookup( $listLookup, $cache, $cacheOptions );
+		$instance->deleteCache();
 	}
 
 }

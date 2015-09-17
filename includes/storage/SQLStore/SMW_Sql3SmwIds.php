@@ -191,6 +191,7 @@ class SMWSql3SmwIds {
 // 		'_3' => 25,
 // 		'_4' => 26,
 // 		'_5' => 27,
+// 		'_SOBJ' => 27
 		'_LIST' => 28,
 		'_MDAT' => 29,
 		'_CDAT' => 30,
@@ -443,6 +444,43 @@ class SMWSql3SmwIds {
 		}
 
 		return $id;
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @param string $title DB key
+	 * @param integer $namespace namespace
+	 * @param string $iw interwiki prefix
+	 * @param string $subobjectName name of subobject
+	 *
+	 * @param array
+	 */
+	public function getListOfIdMatchesFor( $title, $namespace, $iw, $subobjectName = '' ) {
+
+		$matches = array();
+
+		$rows = $this->store->getConnection( 'mw.db' )->select(
+			self::tableName,
+			$select = array( 'smw_id' ),
+			array(
+				'smw_title' => $title,
+				'smw_namespace' => $namespace,
+				'smw_iw' => $iw,
+				'smw_subobject' => $subobjectName
+			),
+			__METHOD__
+		);
+
+		if ( $rows === false ) {
+			return $matches;
+		}
+
+		foreach ( $rows as $row ) {
+			$matches[] = $row->smw_id;
+		}
+
+		return $matches;
 	}
 
 	/**
