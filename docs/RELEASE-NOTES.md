@@ -65,6 +65,7 @@ Added the following options (It is assumed that the selected TDB back-end suppor
 * #233 Fixed disabling of `$GLOBALS['wgFooterIcons']['poweredby']['semanticmediawiki']`
 * #1137 Fixed re-setting of `smw-admin` user group permission to its default
 * #1146 Fixed #set rendering of template supported output (refs #1067)
+* #1096 Fixed inverse prefix for predefined properties that caused misinterpret `Concept` queries
 
 ## Internal changes
 
