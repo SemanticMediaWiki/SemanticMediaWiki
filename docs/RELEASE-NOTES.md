@@ -16,6 +16,7 @@ Added the following options (It is assumed that the selected TDB back-end suppor
 * #1152 Added support for canonical identifiers (`$GLOBALS['smwgExportToUseCanonicalForm']`) in export to enable language agnostic category/property statements
 * #1110 Extended `TurtleTriplesBuilder` to split larger turtle sets into chunks
 * #1158 Added basic support for `_geo` queries to the `SPARQLStore`
+* #1159 Added limitation of the `aux` property usage in the Exporter (use `$GLOBALS['smwgExportBCAuxiliaryUse'] = true;` to keep backwards compatibility until 3.x)
 
 ### Property/Subject deletion
 
