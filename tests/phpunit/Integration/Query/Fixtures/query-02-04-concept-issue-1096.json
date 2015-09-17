@@ -1,0 +1,109 @@
+{
+	"description": "Predefined inverse query, refs #1096",
+	"properties": [
+		{
+			"name": "Has page",
+			"contents": "[[Has type::Page]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Page/02/04-1",
+			"contents": "{{#subobject:|Has page=Page/02/04-1}}"
+		},
+		{
+			"name": "Page/02/04-2",
+			"contents": "[[Has page::Page/02/04-2]]"
+		},
+		{
+			"name": "Concept-for-inverse-pre-defined-property",
+			"namespace": "SMW_NS_CONCEPT",
+			"contents": "{{#concept: [[-Has page.-Has subobject::Page/02/04-1]] }}"
+		},
+		{
+			"name": "Concept-for-inverse-user-defined-property",
+			"namespace": "SMW_NS_CONCEPT",
+			"contents": "{{#concept: [[-Has page.-Has page::Page/02/04-2]] }}"
+		}
+	],
+	"query-testcases": [
+		{
+			"about": "#0 inverse for pre-defined property",
+			"condition": "[[-Has page.-Has subobject::Page/02/04-1]]",
+			"printouts" : [],
+			"parameters" : {
+			  "limit" : "10"
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Page/02/04-1#0##"
+				]
+			}
+		},
+		{
+			"about": "#1 inverse for user-defined-property",
+			"condition": "[[-Has page.-Has page::Page/02/04-2]]",
+			"printouts" : [],
+			"parameters" : {
+			  "limit" : "10"
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Page/02/04-2#0##"
+				]
+			}
+		}
+	],
+	"concept-testcases": [
+		{
+			"about": "#2",
+			"condition": "[[Concept:Concept-for-inverse-pre-defined-property]]",
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Page/02/04-1#0##"
+				]
+			},
+			"conceptcache": [
+				{
+					"concept": "Concept-for-inverse-pre-defined-property",
+					"count": 1
+				}
+			]
+		},
+		{
+			"about": "#3",
+			"condition": "[[Concept:Concept-for-inverse-user-defined-property]]",
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Page/02/04-2#0##"
+				]
+			},
+			"conceptcache": [
+				{
+					"concept": "Concept-for-inverse-user-defined-property",
+					"count": 1
+				}
+			]
+		}
+	],
+	"settings": {
+	},
+	"meta": {
+		"skip-on": {
+			"postgres": "Unable to run concept tests on postgres, see #781"
+		},
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
