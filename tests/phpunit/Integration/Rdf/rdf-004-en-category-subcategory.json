@@ -68,7 +68,7 @@
 		}
 	],
 	"settings": {
-		"smwgExportToUseCanonicalForm": true,
+		"smwgExportBCNonCanonicalFormUse": false,
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,
 			"NS_CATEGORY": true,
