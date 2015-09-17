@@ -67,6 +67,7 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 
 	public function somePropertyProvider() {
 
+		#0
 		$property = new DIProperty( 'Foo' );
 
 		$description = new ValueDescription(
@@ -89,6 +90,7 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
+		#1
 		$property = new DIProperty( 'Foo' );
 
 		$description = new SomeProperty(
@@ -111,6 +113,7 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
+		#2
 		$property = new DIProperty( 'Foo' );
 
 		$description = new SomeProperty(
@@ -130,6 +133,58 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 				'queryFeatures' => 9,
 				'size'  => 3,
 				'depth' => 2
+			)
+		);
+
+		#3, 1096
+		$property = new DIProperty( 'Foo' );
+
+		$description = new SomeProperty(
+			new DIProperty( 'Yui' ),
+			new SomeProperty(
+				new DIProperty( 'Bar', true ),
+				new NamespaceDescription( NS_MAIN )
+			)
+		);
+
+		$provider[] = array(
+			$property,
+			$description,
+			array(
+				'property'    => $property,
+				'description' => $description,
+				'queryString' => "[[Foo.Yui.-Bar:: <q>[[:+]]</q> ]]",
+				'queryStringAsValue' => "<q>[[Foo.Yui.-Bar:: <q>[[:+]]</q> ]]</q>",
+				'isSingleton' => false,
+				'queryFeatures' => 9,
+				'size'  => 4,
+				'depth' => 3
+			)
+		);
+
+		#4, 1096
+		$property = new DIProperty( 'Foo' );
+
+		$description = new SomeProperty(
+			new DIProperty( 'Yui' ),
+			new SomeProperty(
+				new DIProperty( '_SOBJ', true ),
+				new NamespaceDescription( NS_MAIN )
+			)
+		);
+
+		$provider[] = array(
+			$property,
+			$description,
+			array(
+				'property'    => $property,
+				'description' => $description,
+				'queryString' => "[[Foo.Yui.-Has subobject:: <q>[[:+]]</q> ]]",
+				'queryStringAsValue' => "<q>[[Foo.Yui.-Has subobject:: <q>[[:+]]</q> ]]</q>",
+				'isSingleton' => false,
+				'queryFeatures' => 9,
+				'size'  => 4,
+				'depth' => 3
 			)
 		);
 

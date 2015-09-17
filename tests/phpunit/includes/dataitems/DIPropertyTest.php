@@ -89,4 +89,20 @@ class DIPropertyTest extends DataItemTest {
 		$property->setPropertyTypeId( '_txt' );
 	}
 
+	public function testCorrectInversePrefixForPredefinedProperty() {
+
+		$property = new DIProperty( '_SOBJ', true );
+
+		$this->assertTrue(
+			$property->isInverse()
+		);
+
+		$label = $property->getLabel();
+
+		$this->assertEquals(
+			'-',
+			$label{0}
+		);
+	}
+
 }
