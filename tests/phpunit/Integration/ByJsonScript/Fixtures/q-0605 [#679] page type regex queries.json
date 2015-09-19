@@ -1,5 +1,5 @@
 {
-	"description": "Regex search pattern for page type values",
+	"description": "Regex search pattern for page type values, #679",
 	"properties": [
 		{
 			"name": "Has regexpage",

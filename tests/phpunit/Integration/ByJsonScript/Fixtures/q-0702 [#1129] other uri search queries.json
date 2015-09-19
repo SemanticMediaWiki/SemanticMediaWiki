@@ -1,5 +1,5 @@
 {
-	"description": "Other uri format annotation/search pattern testing",
+	"description": "Other uri format annotation/search pattern testing, #1129",
 	"properties": [
 		{
 			"name": "Has telephone number",

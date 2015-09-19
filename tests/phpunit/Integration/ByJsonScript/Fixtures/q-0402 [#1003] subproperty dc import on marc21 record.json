@@ -1,5 +1,5 @@
 {
-	"description": "Mapping DC import with MARC 21 bibliographic terms, http://www.loc.gov/marc/bibliographic/bd20x24x.html",
+	"description": "Mapping DC import with MARC 21 bibliographic terms, http://www.loc.gov/marc/bibliographic/bd20x24x.html, #1003",
 	"properties": [
 		{
 			"name": "Smw import dc",

@@ -1,5 +1,5 @@
 {
-	"description": "Edge case tests for parsing values with ::::, :::",
+	"description": "Edge case tests for parsing values with ::::, :::, #1066 + #1075",
 	"properties": [
 		{
 			"name": "Has page",

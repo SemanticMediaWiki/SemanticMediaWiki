@@ -17,7 +17,7 @@ For the automated approach, Semantic MediaWiki relies on [PHPUnit][phpunit] as s
 
 ## Running tests
 
-1. Verify that PHUnit is installed and in case it is not use `composer require phpunit/phpunit:~4.3` to add the package
+1. Verify that PHUnit is installed and in case it is not use `composer require phpunit/phpunit:~4.6` to add the package
 2. Use `composer phpunit` from the extension base directory, or [`phpunit`][mw-phpunit-testing] directly in connection with the PHPUnit `XML` configuration file (together with MediaWiki's `phpunit.php` loader otherwise required MediaWiki classes are not loaded).
 
 Information about PHPUnit in connection with MediaWiki can be found at [smw.org][smw] and [mediawiki.org][mw-phpunit-testing].
@@ -52,9 +52,9 @@ A new test file (with different test cases) is automatically loaded and run by a
 
 Each `TestCaseRunner` contains a different interpretation of the `json` script to keep the format straightforward but still allows for individual test assertions. Currently the following `TestCaseRunner` are provided:
 
-- `ByJsonRdfTestCaseRunnerTest` for rdf output assertion
-- `ByJsonQueryTestCaseRunnerTest` to verify formats, queries, and concepts
-- `ByJsonParserTestCaseRunnerTest` to check for  parser and store specific data
+- `RdfTestCaseProcessor` for rdf output assertion
+- `QueryTestCaseProcessor` to verify formats, queries, and concepts
+- `ParserTestCaseProcessor` to check for parser and store specific data
 
 The section `properties` and `subjects` contain object entities that are planned to be used during the test which are specified by a name and a content (generally the page content in wikitext).
 

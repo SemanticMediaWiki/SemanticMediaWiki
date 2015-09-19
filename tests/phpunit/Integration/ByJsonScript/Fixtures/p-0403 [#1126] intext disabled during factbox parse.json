@@ -1,5 +1,5 @@
 {
-	"description": "Test annotations are disabled for Factbox parse",
+	"description": "Test annotations are disabled for Factbox parse where an extra [[ ... ]] is encoded, #1126",
 	"properties": [
 		{
 			"name": "Has url",

@@ -1,5 +1,5 @@
 {
-	"description": "Check guard against circular/self-reference, otherwise it would fail with 'Maximum function nesting level ... reached, aborting' ",
+	"description": "Check guard against circular/self-reference, otherwise it would fail with 'Maximum function nesting level ... reached, aborting', #945",
 	"properties": [
 		{
 			"name": "Has concept description",

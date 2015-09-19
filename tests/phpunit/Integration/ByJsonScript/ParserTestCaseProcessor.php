@@ -1,96 +1,72 @@
 <?php
 
-namespace SMW\Tests\Integration\Parser;
+namespace SMW\Tests\Integration\ByJsonScript;
 
 use SMW\Tests\ByJsonTestCaseProvider;
 use SMW\Tests\JsonTestCaseFileHandler;
-
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\DIWikiPage;
 
 /**
- * @group semantic-mediawiki-integration
+ * @group semantic-mediawiki
  * @group medium
  *
  * @license GNU GPL v2+
- * @since 2.2
+ * @since 2.3
  *
  * @author mwjames
  */
-class ByJsonParserTestCaseRunnerTest extends ByJsonTestCaseProvider {
+class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
+	/**
+	 * @var Store
+	 */
+	private $store;
+
+	/**
+	 * @var SemanticDataValidator
+	 */
 	private $semanticDataValidator;
+
+	/**
+	 * @var StringValidator
+	 */
 	private $stringValidator;
 
-	protected function setUp() {
-		parent::setUp();
+	/**
+	 * @var boolean
+	 */
+	private $debug = false;
 
-		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
-		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
+	/**
+	 * @param Store
+	 * @param SemanticDataValidator
+	 * @param StringValidator
+	 */
+	public function __construct( $store, $semanticDataValidator, $stringValidator ) {
+		$this->store = $store;
+		$this->semanticDataValidator = $semanticDataValidator;
+		$this->stringValidator = $stringValidator;
 	}
 
 	/**
-	 * @see ByJsonTestCaseProvider::getJsonTestCaseVersion
+	 * @since  2.2
 	 */
-	protected function getJsonTestCaseVersion() {
-		return '0.1';
+	public function setDebugMode( $debugMode ) {
+		$this->debug = $debugMode;
 	}
 
-	/**
-	 * @see ByJsonTestCaseProvider::getTestCaseLocation
-	 */
-	protected function getTestCaseLocation() {
-		return __DIR__;
-	}
+	public function process( array $case ) {
 
-	/**
-	 * @see ByJsonTestCaseProvider::runTestCaseFile
-	 *
-	 * @param JsonTestCaseFileHandler $jsonTestCaseFileHandler
-	 */
-	protected function runTestCaseFile( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
-
-		$this->checkEnvironmentToSkipCurrentTest( $jsonTestCaseFileHandler );
-
-		$permittedSettings = array(
-			'smwgNamespacesWithSemanticLinks',
-			'smwgPageSpecialProperties',
-			'wgLanguageCode',
-			'wgContLang',
-			'wgLang',
-			'wgCapitalLinks',
-			'smwgEnabledResultFormatsWithRecursiveAnnotationSupport'
-		);
-
-		foreach ( $permittedSettings as $key ) {
-			$this->changeGlobalSettingTo(
-				$key,
-				$jsonTestCaseFileHandler->getSettingsFor( $key )
-			);
+		if ( !isset( $case['subject'] ) ) {
+			break;
 		}
 
-		$this->createPagesFor(
-			$jsonTestCaseFileHandler->getListOfProperties(),
-			SMW_NS_PROPERTY
-		);
-
-		$this->createPagesFor(
-			$jsonTestCaseFileHandler->getListOfSubjects(),
-			NS_MAIN
-		);
-
-		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'parser-testcases' ) as $case ) {
-
-			if ( !isset( $case['subject'] ) ) {
-				break;
-			}
-
-			$this->assertSemanticDataForCase( $case, $jsonTestCaseFileHandler->getDebugMode() );
-			$this->assertParserOutputForCase( $case );
-		}
+		$this->assertSemanticDataForCase( $case );
+		$this->assertParserOutputForCase( $case );
 	}
 
-	private function assertSemanticDataForCase( $case, $debug ) {
+	private function assertSemanticDataForCase( $case ) {
 
 		if ( !isset( $case['store'] ) || !isset( $case['store']['semantic-data'] ) ) {
 			return;
@@ -104,12 +80,12 @@ class ByJsonParserTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		// Allows for data to be re-read from the DB instead of being fetched
 		// from the store-id-cache
 		if ( isset( $case['store']['clear-cache'] ) && $case['store']['clear-cache'] ) {
-			$this->getStore()->clear();
+			$this->store->clear();
 		}
 
-		$semanticData = $this->getStore()->getSemanticData( $subject );
+		$semanticData = $this->store->getSemanticData( $subject );
 
-		if ( $debug ) {
+		if ( $this->debug ) {
 			print_r( $semanticData );
 		}
 
@@ -158,7 +134,7 @@ class ByJsonParserTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			return;
 		}
 
-		$inProperties = $this->getStore()->getInProperties( $subject );
+		$inProperties = $this->store->getInProperties( $subject );
 
 		$this->assertCount(
 			count( $semanticdata['inproperty-keys'] ),
@@ -180,7 +156,7 @@ class ByJsonParserTestCaseRunnerTest extends ByJsonTestCaseProvider {
 				continue;
 			}
 
-			$values = $this->getStore()->getPropertySubjects( $property, $subject );
+			$values = $this->store->getPropertySubjects( $property, $subject );
 
 			foreach ( $values as $value ) {
 				$inpropertyValues[] = $value->getSerialization();
