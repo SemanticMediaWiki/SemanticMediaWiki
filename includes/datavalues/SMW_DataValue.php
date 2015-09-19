@@ -8,6 +8,7 @@
  * @ingroup SMW
  */
 use SMW\DataValueFactory;
+use SMW\Query\QueryComparator;
 
 /**
  * Objects of this type represent all that is known about a certain user-provided
@@ -473,9 +474,9 @@ abstract class SMWDataValue {
 	 */
 	static protected function prepareValue( &$value, &$comparator ) {
 		// Loop over the comparators to determine which one is used and what the actual value is.
-		foreach ( SMWQueryLanguage::getComparatorStrings() as $string ) {
+		foreach ( QueryComparator::getInstance()->getComparatorStrings() as $string ) {
 			if ( strpos( $value, $string ) === 0 ) {
-				$comparator = SMWQueryLanguage::getComparatorFromString( substr( $value, 0, strlen( $string ) ) );
+				$comparator = QueryComparator::getInstance()->getComparatorFromString( substr( $value, 0, strlen( $string ) ) );
 				$value = substr( $value, strlen( $string ) );
 				break;
 			}

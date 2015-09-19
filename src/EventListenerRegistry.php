@@ -5,6 +5,7 @@ namespace SMW;
 use Onoi\EventDispatcher\EventListenerCollection;
 use Onoi\EventDispatcher\EventDispatcherFactory;
 use SMWExporter as Exporter;
+use SMW\Query\QueryComparator;
 
 /**
  * @license GNU GPL v2+
@@ -54,6 +55,12 @@ class EventListenerRegistry implements EventListenerCollection {
 		$this->eventListenerCollection->registerCallback(
 			'exporter.reset', function() {
 				Exporter::getInstance()->clear();
+			}
+		);
+
+		$this->eventListenerCollection->registerCallback(
+			'query.comparator.reset', function() {
+				QueryComparator::getInstance()->clear();
 			}
 		);
 
