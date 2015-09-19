@@ -64,6 +64,10 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertListenerExecuteFor( 'exporter.reset', $instance, null );
 	}
 
+	public function verifyQueryComparatorResetEvent( EventListenerCollection $instance ) {
+		$this->assertListenerExecuteFor( 'query.comparator.reset', $instance, null );
+	}
+
 	public function verifyPropertyTypeChangeEvent( EventListenerCollection $instance ) {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )

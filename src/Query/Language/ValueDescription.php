@@ -5,7 +5,7 @@ namespace SMW\Query\Language;
 use SMW\DataValueFactory;
 use SMw\DIProperty;
 use SMWDataItem as DataItem;
-use SMWQueryLanguage as QueryLanguage;
+use SMW\Query\QueryComparator;
 
 /**
  * Description of one data value, or of a range of data values.
@@ -87,7 +87,7 @@ class ValueDescription extends Description {
 	 * @return string
 	 */
 	public function getQueryString( $asValue = false ) {
-		$comparator = QueryLanguage::getStringForComparator( $this->comparator );
+		$comparator = QueryComparator::getInstance()->getStringForComparator( $this->comparator );
 		$dataValue = DataValueFactory::getInstance()->newDataItemValue( $this->dataItem, $this->property );
 
 		if ( $asValue ) {
