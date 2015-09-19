@@ -7,6 +7,8 @@ use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\Query\Language\SomeProperty;
 use SMW\DataValueFactory;
+use SMW\ApplicationFactory;
+use SMW\EventHandler;
 
 use SMWQueryParser as QueryParser;
 use SMWQuery as Query;
@@ -52,6 +54,16 @@ class RecordTypeQueryTest extends MwDBaseUnitTestCase {
 
 		$this->fixturesProvider = $utilityFactory->newFixturesFactory()->newFixturesProvider();
 		$this->fixturesProvider->setupDependencies( $this->getStore() );
+
+		$settings = array(
+			'smwStrictComparators' => false
+		);
+
+		foreach ( $settings as $key => $value ) {
+			ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
+		}
+
+		EventHandler::getInstance()->getEventDispatcher()->dispatch( 'query.comparator.reset' );
 
 		$this->queryParser = new QueryParser();
 	}
