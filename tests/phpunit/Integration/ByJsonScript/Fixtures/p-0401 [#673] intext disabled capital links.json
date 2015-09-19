@@ -1,5 +1,5 @@
 {
-	"description": "Test annotations in connection with disabled wgCapitalLinks",
+	"description": "Test annotations in connection with disabled wgCapitalLinks, #673",
 	"properties": [
 		{
 			"name": "has number",

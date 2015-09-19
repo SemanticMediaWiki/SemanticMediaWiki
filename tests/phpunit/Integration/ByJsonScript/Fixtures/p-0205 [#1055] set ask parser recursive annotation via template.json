@@ -1,0 +1,56 @@
+{
+	"description": "Test recursive annotation support, #711 + #1055",
+	"properties": [],
+	"subjects": [
+		{
+			"name": "AskTemplateToAddPropertyAnnotation",
+			"namespace": "NS_TEMPLATE",
+			"contents": "<includeonly>{{#set:|ByAskTemplateToSetProperty=1234}}</includeonly>"
+		},
+		{
+			"name": "Example/0205",
+			"contents": "{{#set:|TestPropertyByAskTemplate=TestValueByAskTemplate}}"
+		},
+		{
+			"name": "Example/0205/Ask/List",
+			"contents": "{{#ask:[[TestPropertyByAskTemplate::TestValueByAskTemplate]]|link=none|sep=|format=list|template=AskTemplateToAddPropertyAnnotation}}"
+		},
+		{
+			"name": "Example/0205/Ask/Embedded",
+			"contents": "{{#ask:[[TestPropertyByAskTemplate::TestValueByAskTemplate]]|link=none|sep=|format=embedded}}"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0",
+			"subject": "Example/0205/Ask/List",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [ "_ASK", "_MDAT", "_SKEY", "ByAskTemplateToSetProperty" ]
+				}
+			}
+		},
+		{
+			"about": "#1 embbeded is exluded from recursive support",
+			"subject": "Example/0205/Ask/Embedded",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_ASK", "_MDAT", "_SKEY" ]
+				}
+			}
+		}
+	],
+	"settings": {
+		"smwgEnabledResultFormatsWithRecursiveAnnotationSupport": [ "list" ],
+		"smwgPageSpecialProperties": [ "_MDAT" ]
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

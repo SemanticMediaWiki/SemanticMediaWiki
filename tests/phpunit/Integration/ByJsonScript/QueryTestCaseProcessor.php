@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Integration\Query;
+namespace SMW\Tests\Integration\ByJsonScript;
 
 use SMW\Store;
 use SMWQueryParser as QueryParser;
@@ -8,7 +8,7 @@ use SMWQuery as Query;
 use Title;
 
 /**
- * @group semantic-mediawiki-integration
+ * @group semantic-mediawiki
  * @group medium
  *
  * @license GNU GPL v2+

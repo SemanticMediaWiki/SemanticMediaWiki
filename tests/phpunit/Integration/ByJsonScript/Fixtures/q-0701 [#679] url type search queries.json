@@ -1,5 +1,5 @@
 {
-	"description": "Simple url annotation/search pattern  testing, T45264",
+	"description": "Simple url annotation/search pattern  testing, T45264, #679",
 	"properties": [
 		{
 			"name": "Has url",

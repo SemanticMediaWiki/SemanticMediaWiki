@@ -54,6 +54,10 @@ class RdfFileResourceTest extends MwDBaseUnitTestCase {
 			$this->applicationFactory->getSettings()->set( $key, $value );
 		}
 
+		// Ensure that the DB creates the extra tables for MEDIA/MINE
+		$this->getStore()->clear();
+		$this->getStore()->setupStore( false );
+
 		$this->wgEnableUploads  = $GLOBALS['wgEnableUploads'];
 		$this->wgFileExtensions = $GLOBALS['wgFileExtensions'];
 		$this->wgVerifyMimeType = $GLOBALS['wgVerifyMimeType'];

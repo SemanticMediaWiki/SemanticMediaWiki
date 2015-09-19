@@ -1,5 +1,5 @@
 {
-	"description": "Test paser/in-text annotation for restricted properties",
+	"description": "Test paser/in-text annotation for restricted properties, #914",
 	"properties": [
 		{
 			"name": "Has date",

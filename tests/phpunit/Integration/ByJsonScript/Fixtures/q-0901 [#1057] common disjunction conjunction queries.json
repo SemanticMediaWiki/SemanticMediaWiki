@@ -1,5 +1,5 @@
 {
-	"description": "Disjunction, conjunction tests, refs #19, #1056",
+	"description": "Disjunction, conjunction tests, refs #19 (#1060) + #1056 + #1057",
 	"properties": [
 		{
 			"name": "Has page-1",

@@ -149,7 +149,7 @@ class SMWTurtleSerializer extends SMWSerializer{
 
 		// Avoid posting turtle property declarations already known for the
 		// subject more than once
-		if ( $data->getSubject()->getDataItem()->getNamespace() === SMW_NS_PROPERTY ) {
+		if ( $data->getSubject()->getDataItem() !== null && $data->getSubject()->getDataItem()->getNamespace() === SMW_NS_PROPERTY ) {
 
 			$hash = $data->getHash();
 			$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheFor( 'turtle.serializer' );
@@ -206,7 +206,7 @@ class SMWTurtleSerializer extends SMWSerializer{
 						foreach ( $collection as $subvalue ) {
 							$this->serializeNestedExpData( $subvalue, $indent . "\t\t" );
 							if ( $class_type_prop ) {
-								$this->requireDeclaration( $subvalue, SMW_SERIALIZER_DECL_CLASS );
+								$this->requireDeclaration( $subvalue->getSubject(), SMW_SERIALIZER_DECL_CLASS );
 							}
 						}
 						$this->post_ns_buffer .= " )";

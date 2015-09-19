@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Integration\Query;
+namespace SMW\Tests\Integration\ByJsonScript;
 
 use SMW\Tests\Utils\UtilityFactory;
 

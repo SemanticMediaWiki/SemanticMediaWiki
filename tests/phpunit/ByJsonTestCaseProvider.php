@@ -88,18 +88,36 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 
 	abstract protected function getTestCaseLocation();
 
-	abstract protected function getJsonTestCaseVersion();
-
 	/**
 	 * @param JsonTestCaseFileHandler $jsonTestCaseFileHandler
 	 */
 	abstract protected function runTestCaseFile( JsonTestCaseFileHandler $jsonTestCaseFileHandler );
 
 	/**
+	 * @return string
+	 */
+	protected function getRequiredJsonTestCaseMinVersion() {
+		return '0.1';
+	}
+
+	/**
+	 * @param string $file
+	 * @return boolean
+	 */
+	protected function canExecuteTestCasesFor( $file ) {
+		return true;
+	}
+
+	/**
 	 * @test
 	 * @dataProvider jsonFileProvider
 	 */
 	public function executeTestCasesFor( $file ) {
+
+		if ( !$this->canExecuteTestCasesFor( $file ) ) {
+			$this->markTestSkipped( $file . ' excluded from test run' );
+		}
+
 		$this->fileReader->setFile( $file );
 		$this->runTestCaseFile( new JsonTestCaseFileHandler( $this->fileReader ) );
 	}
@@ -166,9 +184,9 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 			$this->markTestIncomplete( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 
-		if ( $jsonTestCaseFileHandler->requiredToSkipForJsonVersion( $this->getJsonTestCaseVersion() ) ) {
-			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
-		}
+	//	if ( $jsonTestCaseFileHandler->requiredToSkipForJsonVersion( $this->getRequiredJsonTestCaseMinVersion() ) ) {
+		//	$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
+	//	}
 
 		if ( $jsonTestCaseFileHandler->requiredToSkipForMwVersion( $GLOBALS['wgVersion'] ) ) {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );

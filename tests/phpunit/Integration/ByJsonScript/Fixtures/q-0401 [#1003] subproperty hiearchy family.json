@@ -1,5 +1,5 @@
 {
-	"description": "Simple hierarchy of properties",
+	"description": "Simple hierarchy of properties, #1003",
 	"properties": [
 		{
 			"name": "Family (http://www.cs.man.ac.uk/~stevensr/ontology/family.rdf.owl)",
