@@ -1,0 +1,181 @@
+{
+	"description": "_rec type not strict comparators queries (converted from RecordTypeQueryTest)",
+	"properties": [
+		{
+			"name": "Has title",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"name": "Has year",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"name": "Has population",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"name": "Has population",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"name": "Has area",
+			"contents": "[[Has type::Quantity]] [[Corresponds to::1 km²]] [[Corresponds to::1000 m²]] [[Corresponds to::988.42153133973 rood]]"
+		},
+		{
+			"name": "Population density",
+			"contents": "[[Has type::Record]] [[Has fields::Has population;Has area]]"
+		},
+		{
+			"name": "Book record",
+			"contents": "[[Has type::Record]] [[Has fields::Has title;Has year]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/1101/City A",
+			"contents": "[[Category:Record example]] [[Population density::3900;1 km²]]"
+		},
+		{
+			"name": "Example/1101/City B",
+			"contents": "[[Category:Record example]] [[Population density::20169;1 km²]]"
+		},
+		{
+			"name": "Example/1101/Book A",
+			"contents": "[[Category:Record example]] [[Book record::Title with $&%'\\;* special characters ; 2001]]"
+		},
+		{
+			"name": "Example/1101/Book B",
+			"contents": "[[Category:Record example]] [[Book record::Book B; 2000]]"
+		},
+		{
+			"name": "Example/1101/Book C",
+			"contents": "[[Category:Record example]] [[Book record::Book C;30 Dec 2001]]"
+		},
+		{
+			"name": "Example/1101/Book D",
+			"contents": "[[Category:Record example]] [[Book record::Book D;1900]]"
+		}
+	],
+	"query-testcases": [
+		{
+			"about": "#0 distinct value search",
+			"condition": "[[Category:Record example]] [[Population density::3900;1 km²]]",
+			"printouts" : [ "Population density" ],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Example/1101/City A#0##"
+				],
+				"datavalues": [
+					{
+						"property": "Population_density",
+						"value": "3900;1 km²"
+					}
+				]
+			}
+		},
+		{
+			"about": "#1, T23926 RecordsToContainSpecialCharactersCausedByHtmlEncoding",
+			"condition": "[[Category:Record example]] [[Book record::Title with $&%'\\;* special characters ; 2001]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Example/1101/Book A#0##"
+				]
+			}
+		},
+		{
+			"about": "#2, T36019 RecordToContainFieldComparator",
+			"condition": "[[Category:Record example]] [[Book record::?;<30 Dec 2001]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 4,
+				"results": [
+					"Example/1101/Book A#0##",
+					"Example/1101/Book B#0##",
+					"Example/1101/Book C#0##",
+					"Example/1101/Book D#0##"
+				]
+			}
+		},
+		{
+			"about": "#3",
+			"condition": "[[Category:Record example]] [[[Book record::?;<1901]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Example/1101/Book D#0##"
+				]
+			}
+		},
+		{
+			"about": "#4",
+			"condition": "[[Category:Record example]] [[Book record::?;>30 Dec 2001]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Example/1101/Book C#0##"
+				]
+			}
+		},
+		{
+			"about": "#5",
+			"condition": "[[Category:Record example]] [[Book record::?;>1901]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 3,
+				"results": [
+					"Example/1101/Book A#0##",
+					"Example/1101/Book B#0##",
+					"Example/1101/Book C#0##"
+				]
+			}
+		},
+		{
+			"about": "#6",
+			"condition": "[[Category:Record example]] [[Book record::?;!2001]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 3,
+				"results": [
+					"Example/1101/Book B#0##",
+					"Example/1101/Book C#0##",
+					"Example/1101/Book D#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwStrictComparators": false
+	},
+	"meta": {
+
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
