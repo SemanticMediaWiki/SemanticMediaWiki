@@ -126,6 +126,13 @@ class ParserAfterTidy {
 	 */
 	private function checkForRequestedUpdateByPagePurge( $parserData ) {
 
+		// Only carry out a purge where InTextAnnotationParser have set
+		// an appropriate context reference otherwise it is assumed that the hook
+		// call is part of another non SMW related parse
+		if ( $parserData->getSemanticData()->getSubject()->getContextReference() === null ) {
+			return true;
+		}
+
 		$cache = $this->applicationFactory->getCache();
 
 		$key = $this->applicationFactory->newCacheFactory()->getPurgeCacheKey(
