@@ -69,6 +69,7 @@ Added the following options (It is assumed that the selected TDB back-end suppor
 * #1137 Fixed re-setting of `smw-admin` user group permission to its default
 * #1146 Fixed #set rendering of template supported output (refs #1067)
 * #1096 Fixed inverse prefix for predefined properties that caused misinterpret `Concept` queries
+* #1166 Fixed context awareness of `ParserAfterTidy` in connection with the `purge` action
 
 ## Internal changes
 
