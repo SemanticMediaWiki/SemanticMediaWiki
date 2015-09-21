@@ -74,6 +74,11 @@ class Factbox {
 	private $useInPreview = false;
 
 	/**
+	 * @var boolean
+	 */
+	private $useInActionInfo = false;
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param Store $store
@@ -93,10 +98,21 @@ class Factbox {
 	 *
 	 * @since 2.1
 	 *
-	 * @param boolean
+	 * @param boolean $preview
 	 */
 	public function useInPreview( $preview ) {
 		$this->useInPreview = $preview;
+	}
+
+	/**
+	 * @note contains information about action=info
+	 *
+	 * @since 2.3
+	 *
+	 * @param boolean $actionInfo
+	 */
+	public function useInActionInfo( $actionInfo ) {
+		$this->useInActionInfo = $actionInfo;
 	}
 
 	/**
@@ -181,6 +197,8 @@ class Factbox {
 			$showfactbox = SMW_FACTBOX_HIDDEN;
 		} elseif ( $this->useInPreview ) {
 			$showfactbox = $settings->get( 'smwgShowFactboxEdit' );
+		} elseif ( $this->useInActionInfo ) {
+			$showfactbox = SMW_FACTBOX_NONEMPTY;
 		} else {
 			$showfactbox = $settings->get( 'smwgShowFactbox' );
 		}

@@ -78,7 +78,7 @@ class CachedFactbox {
 	/**
 	 * Prepare and update the OutputPage property
 	 *
-	 * Factbox content is either retrived from a CacheStore or re-parsed from
+	 * Factbox content is either retrieved from a CacheStore or re-parsed from
 	 * the Factbox object
 	 *
 	 * Altered content is tracked using the revision Id, getLatestRevID() only
@@ -204,6 +204,7 @@ class CachedFactbox {
 		);
 
 		$factbox->useInPreview( $requestContext->getRequest()->getCheck( 'wpPreview' ) );
+		$factbox->useInActionInfo( $requestContext->getRequest()->getVal( 'action' ) === 'info' );
 
 		if ( $factbox->doBuild()->isVisible() ) {
 
