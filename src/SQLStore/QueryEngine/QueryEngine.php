@@ -47,7 +47,7 @@ class QueryEngine {
 	 *
 	 * @var QuerySegment[]
 	 */
-	private $querySegments = array();
+	private $querySegmentList = array();
 
 	/**
 	 * Array of sorting requests ("Property_name" => "ASC"/"DESC"). Used during

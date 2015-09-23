@@ -3,12 +3,12 @@
 namespace SMW\Tests\MediaWiki\Specials;
 
 use SMW\Tests\Utils\UtilityFactory;
-use SMW\MediaWiki\Specials\SpecialAsyncJobDispatcher;
+use SMW\MediaWiki\Specials\SpecialDeferredRequestDispatcher;
 use SMW\ApplicationFactory;
 use Title;
 
 /**
- * @covers \SMW\MediaWiki\Specials\SpecialAsyncJobDispatcher
+ * @covers \SMW\MediaWiki\Specials\SpecialDeferredRequestDispatcher
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,7 +16,7 @@ use Title;
  *
  * @author mwjames
  */
-class SpecialAsyncJobDispatcherTest extends \PHPUnit_Framework_TestCase {
+class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 	private $applicationFactory;
 	private $stringValidator;
@@ -47,16 +47,16 @@ class SpecialAsyncJobDispatcherTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\SpecialAsyncJobDispatcher',
-			new SpecialAsyncJobDispatcher()
+			'\SMW\MediaWiki\Specials\SpecialDeferredRequestDispatcher',
+			new SpecialDeferredRequestDispatcher()
 		);
 	}
 
 	public function testGetTargetURL() {
 
 		$this->assertContains(
-			':AsyncJobDispatcher',
-			SpecialAsyncJobDispatcher::getTargetURL()
+			':DeferredRequestDispatcher',
+			SpecialDeferredRequestDispatcher::getTargetURL()
 		);
 	}
 
@@ -64,12 +64,12 @@ class SpecialAsyncJobDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			SpecialAsyncJobDispatcher::getSessionToken( 'Foo' )
+			SpecialDeferredRequestDispatcher::getSessionToken( 'Foo' )
 		);
 
 		$this->assertNotSame(
-			SpecialAsyncJobDispatcher::getSessionToken( 'Bar' ),
-			SpecialAsyncJobDispatcher::getSessionToken( 'Foo' )
+			SpecialDeferredRequestDispatcher::getSessionToken( 'Bar' ),
+			SpecialDeferredRequestDispatcher::getSessionToken( 'Foo' )
 		);
 	}
 
@@ -84,10 +84,10 @@ class SpecialAsyncJobDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$parameters = json_encode( array(
 			'async-job' => array( 'type' => 'SMW\UpdateJob', 'title' => 'Foo' ),
 			'timestamp' => $timestamp,
-			'sessionToken' => SpecialAsyncJobDispatcher::getSessionToken( $timestamp ),
+			'sessionToken' => SpecialDeferredRequestDispatcher::getSessionToken( $timestamp ),
 		) );
 
-		$instance = new SpecialAsyncJobDispatcher();
+		$instance = new SpecialDeferredRequestDispatcher();
 		$instance->disallowToModifyHttpHeader();
 
 		$instance->getContext()->setRequest(
@@ -119,11 +119,11 @@ class SpecialAsyncJobDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$parameters = json_encode( array(
 			'async-job' => array( 'type' => 'SMW\ParserCachePurgeJob', 'title' => 'Foo' ),
 			'timestamp' => $timestamp,
-			'sessionToken' => SpecialAsyncJobDispatcher::getSessionToken( $timestamp ),
+			'sessionToken' => SpecialDeferredRequestDispatcher::getSessionToken( $timestamp ),
 			'idlist' => array( 1, 2 )
 		) );
 
-		$instance = new SpecialAsyncJobDispatcher();
+		$instance = new SpecialDeferredRequestDispatcher();
 		$instance->disallowToModifyHttpHeader();
 
 		$instance->getContext()->setRequest(
@@ -145,10 +145,10 @@ class SpecialAsyncJobDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$parameters = json_encode( array(
 			'timestamp' => $timestamp,
-			'sessionToken' => SpecialAsyncJobDispatcher::getSessionToken( 'Foo' )
+			'sessionToken' => SpecialDeferredRequestDispatcher::getSessionToken( 'Foo' )
 		) );
 
-		$instance = new SpecialAsyncJobDispatcher();
+		$instance = new SpecialDeferredRequestDispatcher();
 		$instance->disallowToModifyHttpHeader();
 
 		$instance->getContext()->setRequest(
@@ -168,7 +168,7 @@ class SpecialAsyncJobDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$request = array();
 
-		$instance = new SpecialAsyncJobDispatcher();
+		$instance = new SpecialDeferredRequestDispatcher();
 		$instance->disallowToModifyHttpHeader();
 
 		$instance->getContext()->setRequest(

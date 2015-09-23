@@ -226,8 +226,8 @@ final class Setup {
 				'page' => 'SMW\SpecialWantedProperties',
 				'group' => 'maintenance'
 			),
-			'AsyncJobDispatcher' => array(
-				'page' => 'SMW\MediaWiki\Specials\SpecialAsyncJobDispatcher',
+			'DeferredRequestDispatcher' => array(
+				'page' => 'SMW\MediaWiki\Specials\SpecialDeferredRequestDispatcher',
 				'group' => 'maintenance'
 			),
 		);

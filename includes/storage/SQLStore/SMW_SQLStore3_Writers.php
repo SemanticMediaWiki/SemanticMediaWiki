@@ -5,7 +5,7 @@ use SMW\MediaWiki\Jobs\JobBase;
 
 use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\SQLStore\PropertyTableRowDiffer;
-use SMW\AsyncJobDispatchManager;
+use SMW\DeferredRequestDispatchManager;
 use Onoi\HttpRequest\HttpRequestFactory;
 
 use SMW\SemanticData;
@@ -726,21 +726,21 @@ class SMWSQLStore3Writers {
 		// Set 'pm' (parser-mode) to 2 indicating to use a new Parser
 		// instance when running the job
 
-		$asyncJobDispatchManager = $this->newAsyncJobDispatchManager();
+		$deferredRequestDispatchManager = $this->newDeferredRequestDispatchManager();
 
 		$parameters = array(
 			'pm' => SMW_UJ_PM_NP
 		);
 
 		if ( $redirectId != 0 ) {
-			$asyncJobDispatchManager->dispatchJobFor(
+			$deferredRequestDispatchManager->dispatchJobRequestFor(
 				'SMW\UpdateJob',
 				$oldTitle,
 				$parameters
 			);
 		}
 
-		$asyncJobDispatchManager->dispatchJobFor(
+		$deferredRequestDispatchManager->dispatchJobRequestFor(
 			'SMW\UpdateJob',
 			$newTitle,
 			$parameters
@@ -1016,18 +1016,18 @@ class SMWSQLStore3Writers {
 		return ( $new_tid == 0 ) ? $sid : $new_tid;
 	}
 
-	private function newAsyncJobDispatchManager() {
+	private function newDeferredRequestDispatchManager() {
 		$httpRequestFactory = new HttpRequestFactory();
 
-		$asyncJobDispatchManager = new AsyncJobDispatchManager(
+		$deferredRequestDispatchManager = new DeferredRequestDispatchManager(
 			$httpRequestFactory->newSocketRequest()
 		);
 
-		$asyncJobDispatchManager->setEnabledState(
-			$GLOBALS['smwgEnabledAsyncJobDispatcher']
+		$deferredRequestDispatchManager->setEnabledHttpDeferredJobRequestState(
+			$GLOBALS['smwgEnabledHttpDeferredJobRequest']
 		);
 
-		return $asyncJobDispatchManager;
+		return $deferredRequestDispatchManager;
 	}
 
 }

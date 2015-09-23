@@ -2,11 +2,11 @@
 
 namespace SMW\Tests;
 
-use SMW\AsyncJobDispatchManager;
+use SMW\DeferredRequestDispatchManager;
 use SMW\DIWikiPage;
 
 /**
- * @covers \SMW\AsyncJobDispatchManager
+ * @covers \SMW\DeferredRequestDispatchManager
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\DIWikiPage;
  *
  * @author mwjames
  */
-class AsyncJobDispatchManagerTest extends \PHPUnit_Framework_TestCase {
+class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -23,15 +23,15 @@ class AsyncJobDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\AsyncJobDispatchManager',
-			new AsyncJobDispatchManager( $httpRequest )
+			'\SMW\DeferredRequestDispatchManager',
+			new DeferredRequestDispatchManager( $httpRequest )
 		);
 	}
 
 	/**
 	 * @dataProvider dispatchableJobProvider
 	 */
-	public function testDispatchFor( $type, $dispatchableAsyncUsageState, $parameters = array() ) {
+	public function testDispatchJobFor( $type, $deferredJobRequestState, $parameters = array() ) {
 
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\SocketRequest' )
 			->disableOriginalConstructor()
@@ -41,12 +41,12 @@ class AsyncJobDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'ping' )
 			->will( $this->returnValue( true ) );
 
-		$instance = new AsyncJobDispatchManager( $httpRequest );
+		$instance = new DeferredRequestDispatchManager( $httpRequest );
 		$instance->reset();
-		$instance->setEnabledState( $dispatchableAsyncUsageState );
+		$instance->setEnabledHttpDeferredJobRequestState( $deferredJobRequestState );
 
 		$this->assertTrue(
-			$instance->dispatchJobFor( $type, DIWikiPage::newFromText( __METHOD__ )->getTitle(), $parameters )
+			$instance->dispatchJobRequestFor( $type, DIWikiPage::newFromText( __METHOD__ )->getTitle(), $parameters )
 		);
 	}
 
@@ -63,11 +63,11 @@ class AsyncJobDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'ping' )
 			->will( $this->returnValue( true ) );
 
-		$instance = new AsyncJobDispatchManager( $httpRequest );
+		$instance = new DeferredRequestDispatchManager( $httpRequest );
 		$instance->reset();
 
 		$this->assertNull(
-			$instance->dispatchJobFor( $type, DIWikiPage::newFromText( __METHOD__ )->getTitle(), $parameters )
+			$instance->dispatchJobRequestFor( $type, DIWikiPage::newFromText( __METHOD__ )->getTitle(), $parameters )
 		);
 	}
 
