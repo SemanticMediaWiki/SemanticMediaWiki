@@ -34,7 +34,7 @@ class ConceptQueryResolverTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$querySegmentListItemResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegmentListItemResolver' )
+		$querySegmentListProcessor = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegmentListProcessor' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -47,8 +47,8 @@ class ConceptQueryResolverTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $querySegmentListBuilder ) );
 
 		$queryEngine->expects( $this->any() )
-			->method( 'getQuerySegmentListItemResolver' )
-			->will( $this->returnValue( $querySegmentListItemResolver ) );
+			->method( 'getQuerySegmentListProcessor' )
+			->will( $this->returnValue( $querySegmentListProcessor ) );
 
 		$instance = new ConceptQueryResolver( $queryEngine );
 

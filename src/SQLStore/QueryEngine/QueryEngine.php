@@ -71,9 +71,9 @@ class QueryEngine {
 	private $querySegmentListBuilder = null;
 
 	/**
-	 * @var QuerySegmentListItemResolver
+	 * @var QuerySegmentListProcessor
 	 */
-	private $querySegmentListItemResolver = null;
+	private $querySegmentListProcessor = null;
 
 	/**
 	 * @var EngineOptions
@@ -85,13 +85,13 @@ class QueryEngine {
 	 *
 	 * @param SQLStore $parentStore
 	 * @param QuerySegmentListBuilder $querySegmentListBuilder
-	 * @param QuerySegmentListItemResolver $querySegmentListItemResolver
+	 * @param QuerySegmentListProcessor $querySegmentListProcessor
 	 * @param EngineOptions $engineOptions
 	 */
-	public function __construct( SQLStore $parentStore, QuerySegmentListBuilder $querySegmentListBuilder, QuerySegmentListItemResolver $querySegmentListItemResolver, EngineOptions $engineOptions ) {
+	public function __construct( SQLStore $parentStore, QuerySegmentListBuilder $querySegmentListBuilder, QuerySegmentListProcessor $querySegmentListProcessor, EngineOptions $engineOptions ) {
 		$this->store = $parentStore;
 		$this->querySegmentListBuilder = $querySegmentListBuilder;
-		$this->querySegmentListItemResolver = $querySegmentListItemResolver;
+		$this->querySegmentListProcessor = $querySegmentListProcessor;
 		$this->engineOptions = $engineOptions;
 	}
 
@@ -107,10 +107,10 @@ class QueryEngine {
 	/**
 	 * @since 2.2
 	 *
-	 * @return QuerySegmentListItemResolver
+	 * @return QuerySegmentListProcessor
 	 */
-	public function getQuerySegmentListItemResolver() {
-		return $this->querySegmentListItemResolver;
+	public function getQuerySegmentListProcessor() {
+		return $this->querySegmentListProcessor;
 	}
 
 	/**
@@ -159,7 +159,7 @@ class QueryEngine {
 		$db = $this->store->getConnection( 'mw.db' );
 
 		$this->queryMode = $query->querymode;
-		$this->querySegments = array();
+		$this->querySegmentList = array();
 
 		$this->errors = array();
 		QuerySegment::$qnum = 0;
@@ -170,7 +170,7 @@ class QueryEngine {
 		$this->querySegmentListBuilder->buildQuerySegmentFor( $query->getDescription() ); // compile query, build query "plan"
 
 		$qid = $this->querySegmentListBuilder->getLastQuerySegmentId();
-		$this->querySegments = $this->querySegmentListBuilder->getQuerySegmentList();
+		$this->querySegmentList = $this->querySegmentListBuilder->getQuerySegmentList();
 		$this->errors = $this->querySegmentListBuilder->getErrors();
 
 		if ( $qid < 0 ) { // no valid/supported condition; ensure that at least only proper pages are delivered
@@ -179,18 +179,18 @@ class QueryEngine {
 			$q->joinTable = SMWSql3SmwIds::tableName;
 			$q->joinfield = "$q->alias.smw_id";
 			$q->where = "$q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND $q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWREDIIW ) . " AND $q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWBORDERIW ) . " AND $q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWINTDEFIW );
-			$this->querySegments[$qid] = $q;
+			$this->querySegmentList[$qid] = $q;
 		}
 
-		if ( isset( $this->querySegments[$qid]->joinTable ) && $this->querySegments[$qid]->joinTable != SMWSql3SmwIds::tableName ) {
+		if ( isset( $this->querySegmentList[$qid]->joinTable ) && $this->querySegmentList[$qid]->joinTable != SMWSql3SmwIds::tableName ) {
 			// manually make final root query (to retrieve namespace,title):
 			$rootid = QuerySegment::$qnum;
 			$qobj = new QuerySegment();
 			$qobj->joinTable  = SMWSql3SmwIds::tableName;
 			$qobj->joinfield  = "$qobj->alias.smw_id";
 			$qobj->components = array( $qid => "$qobj->alias.smw_id" );
-			$qobj->sortfields = $this->querySegments[$qid]->sortfields;
-			$this->querySegments[$rootid] = $qobj;
+			$qobj->sortfields = $this->querySegmentList[$qid]->sortfields;
+			$this->querySegmentList[$rootid] = $qobj;
 		} else { // not such a common case, but worth avoiding the additional inner join:
 			$rootid = $qid;
 		}
@@ -209,11 +209,11 @@ class QueryEngine {
 		}
 
 		// *** Now execute the computed query ***//
-		$this->querySegmentListItemResolver->setQueryMode( $this->queryMode );
-		$this->querySegmentListItemResolver->setQuerySegmentList( $this->querySegments );
+		$this->querySegmentListProcessor->setQueryMode( $this->queryMode );
+		$this->querySegmentListProcessor->setQuerySegmentList( $this->querySegmentList );
 
 		// execute query tree, resolve all dependencies
-		$this->querySegmentListItemResolver->resolveForSegmentItem( $rootid );
+		$this->querySegmentListProcessor->doExecuteSubqueryJoinDependenciesFor( $rootid );
 
 		switch ( $query->querymode ) {
 			case Query::MODE_DEBUG:
@@ -227,7 +227,7 @@ class QueryEngine {
 			break;
 		}
 
-		$this->querySegmentListItemResolver->cleanUp();
+		$this->querySegmentListProcessor->cleanUp();
 		$query->addErrors( $this->errors );
 
 		return $result;
@@ -243,7 +243,7 @@ class QueryEngine {
 	 * @return string
 	 */
 	private function getDebugQueryResult( Query $query, $rootid ) {
-		$qobj = $this->querySegments[$rootid];
+		$qobj = $this->querySegmentList[$rootid];
 
 		$db = $this->store->getConnection();
 
@@ -263,7 +263,7 @@ class QueryEngine {
 		}
 
 		$auxtables = '';
-		foreach ( $this->querySegmentListItemResolver->getListOfResolvedQueries() as $table => $log ) {
+		foreach ( $this->querySegmentListProcessor->getListOfResolvedQueries() as $table => $log ) {
 			$auxtables .= "<li>Temporary table $table";
 			foreach ( $log as $q ) {
 				$auxtables .= "<br />&#160;&#160;<tt>$q</tt>";
@@ -300,7 +300,7 @@ class QueryEngine {
 
 		$queryResult->setCountValue( 0 );
 
-		$qobj = $this->querySegments[$rootid];
+		$qobj = $this->querySegmentList[$rootid];
 
 		if ( $qobj->joinfield === '' ) { // empty result, no query needed
 			return 0;
@@ -351,7 +351,7 @@ class QueryEngine {
 
 		$db = $this->store->getConnection();
 
-		$qobj = $this->querySegments[$rootid];
+		$qobj = $this->querySegmentList[$rootid];
 
 		if ( $qobj->joinfield === '' ) { // empty result, no query needed
 			$result = new QueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->store, false );
@@ -445,7 +445,7 @@ class QueryEngine {
 	 * @param integer $qid
 	 */
 	private function applyOrderConditions( $qid ) {
-		$qobj = $this->querySegments[$qid];
+		$qobj = $this->querySegmentList[$qid];
 
 		$extraProperties = $this->collectedRequiredExtraPropertyDescriptions( $qobj );
 
@@ -484,17 +484,17 @@ class QueryEngine {
 		$this->querySegmentListBuilder->buildQuerySegmentFor( new Conjunction( $extraProperties ) );
 
 		$newQuerySegmentId = $this->querySegmentListBuilder->getLastQuerySegmentId();
-		$this->querySegments = $this->querySegmentListBuilder->getQuerySegmentList();
+		$this->querySegmentList = $this->querySegmentListBuilder->getQuerySegmentList();
 		$this->errors = $this->querySegmentListBuilder->getErrors();
 
-		$newQuerySegment = $this->querySegments[$newQuerySegmentId]; // This is always an QuerySegment::Q_CONJUNCTION ...
+		$newQuerySegment = $this->querySegmentList[$newQuerySegmentId]; // This is always an QuerySegment::Q_CONJUNCTION ...
 
 		foreach ( $newQuerySegment->components as $cid => $field ) { // ... so just re-wire its dependencies
 			$qobj->components[$cid] = $qobj->joinfield;
-			$qobj->sortfields = array_merge( $qobj->sortfields, $this->querySegments[$cid]->sortfields );
+			$qobj->sortfields = array_merge( $qobj->sortfields, $this->querySegmentList[$cid]->sortfields );
 		}
 
-		$this->querySegments[$qid] = $qobj;
+		$this->querySegmentList[$qid] = $qobj;
 	}
 
 	/**
@@ -511,7 +511,7 @@ class QueryEngine {
 
 		// Build ORDER BY options using discovered sorting fields.
 		if ( $this->engineOptions->get( 'smwgQSortingSupport' ) ) {
-			$qobj = $this->querySegments[$rootId];
+			$qobj = $this->querySegmentList[$rootId];
 
 			foreach ( $this->sortKeys as $propkey => $order ) {
 

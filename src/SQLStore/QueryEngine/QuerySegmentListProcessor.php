@@ -4,7 +4,6 @@ namespace SMW\SQLStore\QueryEngine;
 
 use SMW\MediaWiki\Database;
 use SMW\SQLStore\TemporaryIdTableCreator;
-use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMWQuery as Query;
 use RuntimeException;
 
@@ -16,7 +15,7 @@ use RuntimeException;
  * @author Jeroen De Dauw
  * @author mwjames
  */
-class QuerySegmentListItemResolver {
+class QuerySegmentListProcessor {
 
 	/**
 	 * @var Database
@@ -29,9 +28,9 @@ class QuerySegmentListItemResolver {
 	private $tempIdTableCreator;
 
 	/**
-	 * @var ResolverOptions
+	 * @var HierarchyTempTableBuilder
 	 */
-	private $resolverOptions;
+	private $hierarchyTempTableBuilder;
 
 	/**
 	 * Array of arrays of executed queries, indexed by the temporary table names
@@ -60,17 +59,17 @@ class QuerySegmentListItemResolver {
 	/**
 	 * @var array
 	 */
-	private $querySegments = array();
+	private $querySegmentList = array();
 
 	/**
 	 * @param Database $connection
 	 * @param TemporaryIdTableCreator $temporaryIdTableCreator
-	 * @param ResolverOptions $resolverOptions
+	 * @param HierarchyTempTableBuilder $hierarchyTempTableBuilder
 	 */
-	public function __construct( Database $connection, TemporaryIdTableCreator $temporaryIdTableCreator, ResolverOptions $resolverOptions ) {
+	public function __construct( Database $connection, TemporaryIdTableCreator $temporaryIdTableCreator, HierarchyTempTableBuilder $hierarchyTempTableBuilder ) {
 		$this->connection = $connection;
 		$this->tempIdTableCreator = $temporaryIdTableCreator;
-		$this->resolverOptions = $resolverOptions;
+		$this->hierarchyTempTableBuilder = $hierarchyTempTableBuilder;
 	}
 
 	/**
@@ -85,10 +84,10 @@ class QuerySegmentListItemResolver {
 	/**
 	 * @since 2.2
 	 *
-	 * @param &$querySegments
+	 * @param &$querySegmentList
 	 */
-	public function setQuerySegmentList( &$querySegments ) {
-		$this->querySegments =& $querySegments;
+	public function setQuerySegmentList( &$querySegmentList ) {
+		$this->querySegmentList =& $querySegmentList;
 	}
 
 	/**
@@ -108,35 +107,28 @@ class QuerySegmentListItemResolver {
 	 * @param integer $id
 	 * @throws RuntimeException
 	 */
-	public function resolveForSegmentItem( $id ) {
+	public function doExecuteSubqueryJoinDependenciesFor( $id ) {
 
-		$this->hierarchyCache = array();
+		$this->hierarchyTempTableBuilder->emptyHierarchyCache();
 		$this->executedQueries = array();
 
 		// Should never happen
-		if ( !isset( $this->querySegments[$id] ) ) {
+		if ( !isset( $this->querySegmentList[$id] ) ) {
 			throw new RuntimeException( "$id doesn't exist" );
 		}
 
-		$this->resolveForSegment( $this->querySegments[$id] );
+		$this->doResolveBySegment( $this->querySegmentList[$id] );
 	}
 
-	/**
-	 * Process stored queries and change store accordingly. The query obj is modified
-	 * so that it contains non-recursive description of a select to execute for getting
-	 * the actual result.
-	 *
-	 * @param QuerySegment $query
-	 */
-	public function resolveForSegment( QuerySegment &$query ) {
+	private function doResolveBySegment( QuerySegment &$query ) {
 
 		$db = $this->connection;
 
 		switch ( $query->type ) {
 			case QuerySegment::Q_TABLE: // Normal query with conjunctive subcondition.
 				foreach ( $query->components as $qid => $joinField ) {
-					$subQuery = $this->querySegments[$qid];
-					$this->resolveForSegment( $subQuery );
+					$subQuery = $this->querySegmentList[$qid];
+					$this->doResolveBySegment( $subQuery );
 
 					if ( $subQuery->joinTable !== '' ) { // Join with jointable.joinfield
 						$query->from .= ' INNER JOIN ' . $db->tableName( $subQuery->joinTable ) . " AS $subQuery->alias ON $joinField=" . $subQuery->joinfield;
@@ -179,11 +171,11 @@ class QuerySegmentListItemResolver {
 					break;
 				}
 
-				$result = $this->querySegments[$key];
+				$result = $this->querySegmentList[$key];
 				unset( $query->components[$key] );
 
 				// Execute it first (may change jointable and joinfield, e.g. when making temporary tables)
-				$this->resolveForSegment( $result );
+				$this->doResolveBySegment( $result );
 
 				// ... and append to this query the remaining queries.
 				foreach ( $query->components as $qid => $joinfield ) {
@@ -191,7 +183,7 @@ class QuerySegmentListItemResolver {
 				}
 
 				// Second execute, now incorporating remaining conditions.
-				$this->resolveForSegment( $result );
+				$this->doResolveBySegment( $result );
 				$query = $result;
 			break;
 			case QuerySegment::Q_DISJUNCTION:
@@ -205,8 +197,8 @@ class QuerySegmentListItemResolver {
 				$this->executedQueries[$query->alias] = array();
 
 				foreach ( $query->components as $qid => $joinField ) {
-					$subQuery = $this->querySegments[$qid];
-					$this->resolveForSegment( $subQuery );
+					$subQuery = $this->querySegmentList[$qid];
+					$this->doResolveBySegment( $subQuery );
 					$sql = '';
 
 					if ( $subQuery->joinTable !== '' ) {
@@ -267,16 +259,18 @@ class QuerySegmentListItemResolver {
 	 */
 	private function resolveHierarchyForSegment( QuerySegment &$query ) {
 
-		$db = $this->connection;
-		$hierarchytables = $this->resolverOptions->get( 'hierarchytables' );
-
-		if ( $query->type === QuerySegment::Q_PROP_HIERARCHY ) {
-			$depth = $this->resolverOptions->get( 'smwgQSubpropertyDepth' );
-			$smwtable = $db->tableName( $hierarchytables['_SUBP'] );
-		} else {
-			$depth = $this->resolverOptions->get( 'smwgQSubcategoryDepth' );
-			$smwtable = $db->tableName( $hierarchytables['_SUBC'] );
+		switch ( $query->type ) {
+			case QuerySegment::Q_PROP_HIERARCHY:
+				$type = 'property';
+				break;
+			case QuerySegment::Q_CLASS_HIERARCHY:
+				$type = 'class';
+				break;
 		}
+
+		list( $smwtable, $depth ) = $this->hierarchyTempTableBuilder->getHierarchyTableDefinitionForType(
+			$type
+		);
 
 		if ( $depth <= 0 ) { // treat as value, no recursion
 			$query->type = QuerySegment::Q_VALUE;
@@ -285,6 +279,8 @@ class QuerySegmentListItemResolver {
 
 		$values = '';
 		$valuecond = '';
+
+		$db = $this->connection;
 
 		foreach ( $query->joinfield as $value ) {
 			$values .= ( $values ? ',':'' ) . '(' . $db->addQuotes( $value ) . ')';
@@ -315,96 +311,10 @@ class QuerySegmentListItemResolver {
 			__METHOD__
 		);
 
-		if ( array_key_exists( $values, $this->hierarchyCache ) ) { // Just copy known result.
-
-			$db->query(
-				"INSERT INTO $tablename (id) SELECT id" . ' FROM ' . $this->hierarchyCache[$values],
-				__METHOD__
-			);
-
-			return;
-		}
-
-		$this->fillHierarchyCacheForTableId( $tablename, $values, $smwtable, $depth );
-	}
-
-	/**
-	 * @note we use two helper tables. One holds the results of each new iteration, one holds the
-	 * results of the previous iteration. One could of course do with only the above result table,
-	 * but then every iteration would use all elements of this table, while only the new ones
-	 * obtained in the previous step are relevant. So this is a performance measure.
-	 */
-	private function fillHierarchyCacheForTableId( $tablename, $values, $smwtable, $depth ) {
-
-		$db = $this->connection;
-
-		$tmpnew = 'smw_new';
-		$tmpres = 'smw_res';
-
-		$db->query(
-			$this->getCreateTempIDTableSQL( $tmpnew ),
-			__METHOD__
-		);
-
-		$db->query(
-			$this->getCreateTempIDTableSQL( $tmpres ),
-			__METHOD__
-		);
-
-		// Adding multiple values for the same column in sqlite is not supported
-		foreach ( explode( ',', $values ) as $value ) {
-
-			$db->query(
-				"INSERT " . "IGNORE" . " INTO $tablename (id) VALUES $value",
-				__METHOD__
-			);
-
-			$db->query(
-				"INSERT " . "IGNORE" . " INTO $tmpnew (id) VALUES $value",
-				__METHOD__
-			);
-		}
-
-		for ( $i = 0; $i < $depth; $i++ ) {
-			$db->query(
-				"INSERT " . 'IGNORE ' .  "INTO $tmpres (id) SELECT s_id" . '@INT' . " FROM $smwtable, $tmpnew WHERE o_id=id",
-				__METHOD__
-			);
-
-			if ( $db->affectedRows() == 0 ) { // no change, exit loop
-				break;
-			}
-
-			$db->query(
-				"INSERT " . 'IGNORE ' . "INTO $tablename (id) SELECT $tmpres.id FROM $tmpres",
-				__METHOD__
-			);
-
-			if ( $db->affectedRows() == 0 ) { // no change, exit loop
-				break;
-			}
-
-			// empty "new" table
-			$db->query(
-				'TRUNCATE TABLE ' . $tmpnew,
-				__METHOD__
-			);
-
-			$tmpname = $tmpnew;
-			$tmpnew = $tmpres;
-			$tmpres = $tmpname;
-		}
-
-		$this->hierarchyCache[$values] = $tablename;
-
-		$db->query(
-			'DROP TEMPORARY TABLE smw_new',
-			__METHOD__
-		);
-
-		$db->query(
-			'DROP TEMPORARY TABLE smw_res',
-			__METHOD__
+		$this->hierarchyTempTableBuilder->createHierarchyTempTableFor(
+			$type,
+			$tablename,
+			$values
 		);
 	}
 
