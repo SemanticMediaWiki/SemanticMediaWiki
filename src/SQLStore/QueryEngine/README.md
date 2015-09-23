@@ -6,14 +6,14 @@ responsible to return query results from the `SQL` back-end with the help of the
 - The `QuerySegmentListBuilder` transforms `ask` descriptions into individual `QuerySegment`'s (aka `QuerySegmentList`)
 - The `DescriptionInterpreter` interface describes classes that are responsible to interpret a specific
   `Description` object and turn it into an abstract `SQL` construct (a `QuerySegment`)
-- The `QuerySegmentListItemResolver` flattens and transforms a list of `QuerySegment`'s into a non-recursive
+- The `QuerySegmentListProcessor` flattens and transforms a list of `QuerySegment`'s into a non-recursive
   tree of `SQL` statements (including resolving of property/category hierarchies)
 - The `ConceptQueryResolver` encapsulates query processing of a concept description in connection
   with the `ConceptCache` class
 
 ## Overview
 
-![image](https://cloud.githubusercontent.com/assets/1245473/9704868/a2341196-54b4-11e5-99bc-7c211e81eebc.png)
+![image](https://cloud.githubusercontent.com/assets/1245473/10050078/ca42ff12-621a-11e5-84c3-5fd04d945c6c.png)
 
 ### Examples
 ```php

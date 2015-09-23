@@ -9,8 +9,8 @@ use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
 use SMW\SQLStore\Lookup\CachedListLookup;
 use SMW\SQLStore\Lookup\ListLookup;
 use SMW\SQLStore\Lookup\CachedValueLookupStore;
-use SMW\SQLStore\QueryEngine\ResolverOptions;
-use SMW\SQLStore\QueryEngine\QuerySegmentListItemResolver;
+use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
+use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
 use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMW\SQLStore\QueryEngine\ConceptQueryResolver;
 use SMW\SQLStore\QueryEngine\QueryEngine;
@@ -64,26 +64,31 @@ class SQLStoreFactory {
 	 */
 	public function newMasterQueryEngine() {
 
-		$resolverOptions = new ResolverOptions();
-
-		$resolverOptions->set(
-			'hierarchytables',
-			array(
-				'_SUBP' => $this->store->findPropertyTableID( new DIProperty( '_SUBP' ) ),
-				'_SUBC' => $this->store->findPropertyTableID( new DIProperty( '_SUBC' ) )
-			)
+		$hierarchyTempTableBuilder = new HierarchyTempTableBuilder(
+			$this->store->getConnection( 'mw.db' ),
+			$this->newTemporaryIdTableCreator()
 		);
 
-		$querySegmentListItemResolver = new QuerySegmentListItemResolver(
+		$hierarchyTempTableBuilder->setPropertyHierarchyTableDefinition(
+			$this->store->findPropertyTableID( new DIProperty( '_SUBP' ) ),
+			$GLOBALS['smwgQSubpropertyDepth']
+		);
+
+		$hierarchyTempTableBuilder->setClassHierarchyTableDefinition(
+			$this->store->findPropertyTableID( new DIProperty( '_SUBC' ) ),
+			$GLOBALS['smwgQSubcategoryDepth']
+		);
+
+		$querySegmentListProcessor = new QuerySegmentListProcessor(
 			$this->store->getConnection( 'mw.db' ),
 			$this->newTemporaryIdTableCreator(),
-			$resolverOptions
+			$hierarchyTempTableBuilder
 		);
 
 		return new QueryEngine(
 			$this->store,
 			new QuerySegmentListBuilder( $this->store ),
-			$querySegmentListItemResolver,
+			$querySegmentListProcessor,
 			new EngineOptions()
 		);
 	}

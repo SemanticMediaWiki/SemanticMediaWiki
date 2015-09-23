@@ -18,7 +18,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $querySegmentListBuilder;
-	private $querySegmentListItemResolver;
+	private $querySegmentListProcessor;
 	private $engineOptions;
 
 	protected function setUp() {
@@ -31,7 +31,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->querySegmentListItemResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegmentListItemResolver' )
+		$this->querySegmentListProcessor = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegmentListProcessor' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -44,7 +44,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\QueryEngine',
-			new QueryEngine( $this->store, $this->querySegmentListBuilder, $this->querySegmentListItemResolver, $this->engineOptions )
+			new QueryEngine( $this->store, $this->querySegmentListBuilder, $this->querySegmentListProcessor, $this->engineOptions )
 		);
 	}
 
@@ -62,7 +62,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getErrors' )
 			->will( $this->returnValue( array() ) );
 
-		$this->querySegmentListItemResolver->expects( $this->any() )
+		$this->querySegmentListProcessor->expects( $this->any() )
 			->method( 'getListOfResolvedQueries' )
 			->will( $this->returnValue( array() ) );
 
@@ -71,7 +71,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 		$instance = new QueryEngine(
 			$this->store,
 			$this->querySegmentListBuilder,
-			$this->querySegmentListItemResolver,
+			$this->querySegmentListProcessor,
 			$this->engineOptions
 		);
 

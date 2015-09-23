@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine;
 
-use SMW\SQLStore\QueryEngine\QuerySegmentListItemResolver;
+use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
 
 /**
- * @covers \SMW\SQLStore\QueryEngine\QuerySegmentListItemResolver
+ * @covers \SMW\SQLStore\QueryEngine\QuerySegmentListProcessor
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,7 +13,7 @@ use SMW\SQLStore\QueryEngine\QuerySegmentListItemResolver;
  *
  * @author mwjames
  */
-class QuerySegmentListItemResolverTest extends \PHPUnit_Framework_TestCase {
+class QuerySegmentListProcessorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -25,13 +25,13 @@ class QuerySegmentListItemResolverTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$resolverOptions = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ResolverOptions' )
+		$hierarchyTempTableBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\QuerySegmentListItemResolver',
-			new QuerySegmentListItemResolver( $connection, $temporaryIdTableCreator, $resolverOptions )
+			'\SMW\SQLStore\QueryEngine\QuerySegmentListProcessor',
+			new QuerySegmentListProcessor( $connection, $temporaryIdTableCreator, $hierarchyTempTableBuilder )
 		);
 	}
 
@@ -45,18 +45,18 @@ class QuerySegmentListItemResolverTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$resolverOptions = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ResolverOptions' )
+		$hierarchyTempTableBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new QuerySegmentListItemResolver(
+		$instance = new QuerySegmentListProcessor(
 			$connection,
 			$temporaryIdTableCreator,
-			$resolverOptions
+			$hierarchyTempTableBuilder
 		);
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->resolveForSegmentItem( 42 );
+		$instance->doExecuteSubqueryJoinDependenciesFor( 42 );
 	}
 
 }
