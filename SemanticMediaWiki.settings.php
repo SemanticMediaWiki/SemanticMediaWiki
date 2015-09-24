@@ -859,12 +859,14 @@ $GLOBALS['smwgEnabledEditPageHelp'] = true;
 
 ###
 #
-# Improves performance for selected operations that can be executed
-# in asynchronous processing mode.
+# Improves performance for selected Job operations that can be executed in a deferred
+# processing mode (or asynchronous to the current transaction) as those (if enabled)
+# are send as request to a dispatcher in order for them to be decoupled from the
+# initial transaction.
 #
 # @since 2.3
 ##
-$GLOBALS['smwgEnabledAsyncJobDispatcher'] = true;
+$GLOBALS['smwgEnabledHttpDeferredJobRequest'] = true;
 ##
 
 ###
@@ -874,7 +876,7 @@ $GLOBALS['smwgEnabledAsyncJobDispatcher'] = true;
 # The setting requires to run `update.php` (it creates an extra table). Also
 # as noted in #1117, `SMW\ParserCachePurgeJob` should be scheduled accordingly.
 #
-# Requires `smwgEnabledAsyncJobDispatcher` to be set true.
+# Requires `smwgEnabledHttpDeferredJobRequest` to be set true.
 #
 # @since 2.3 (experimental)
 # @default false

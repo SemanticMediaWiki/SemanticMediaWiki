@@ -8,7 +8,7 @@ use Onoi\HttpRequest\HttpRequestFactory;
 use Title;
 
 /**
- * This class is the receiving endpoint for the `AsyncJobDispatchManager` invoked
+ * This class is the receiving endpoint for the `DeferredRequestDispatchManager` invoked
  * job request.
  *
  * This special page is not expected to interact with a user and therefore it is
@@ -19,7 +19,7 @@ use Title;
  *
  * @author mwjames
  */
-class SpecialAsyncJobDispatcher extends SpecialPage {
+class SpecialDeferredRequestDispatcher extends SpecialPage {
 
 	/**
 	 * @var boolean
@@ -30,7 +30,7 @@ class SpecialAsyncJobDispatcher extends SpecialPage {
 	 * @codeCoverageIgnore
 	 */
 	public function __construct() {
-		parent::__construct( 'AsyncJobDispatcher', '', false );
+		parent::__construct( 'DeferredRequestDispatcher', '', false );
 	}
 
 	/**
@@ -55,7 +55,7 @@ class SpecialAsyncJobDispatcher extends SpecialPage {
 	 * @return string
 	 */
 	public static function getTargetURL() {
-		return SpecialPage::getTitleFor( 'AsyncJobDispatcher')->getFullURL();
+		return SpecialPage::getTitleFor( 'DeferredRequestDispatcher')->getFullURL();
 	}
 
 	/**

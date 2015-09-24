@@ -4,16 +4,16 @@ namespace SMW;
 
 use Title;
 use Onoi\HttpRequest\HttpRequest;
-use SMW\MediaWiki\Specials\SpecialAsyncJobDispatcher;
+use SMW\MediaWiki\Specials\SpecialDeferredRequestDispatcher;
 
 /**
  * During the storage of a page, sometimes it is necessary the create extra
  * processing requests that should be executed asynchronously (due to large DB
  * processing time) but without delay of the current transaction. This class
  * initiates and creates a separate request to be handled by the receiving
- * `SpecialAsyncJobDispatcher` endpoint (if it can connect).
+ * `SpecialDeferredRequestDispatcher` endpoint (if it can connect).
  *
- * `AsyncJobDispatchManager` allows to invoke jobs independent from the job
+ * `DeferredRequestDispatchManager` allows to invoke jobs independent from the job
  * scheduler with the objective to be run timely to the current transaction
  * without having to wait on the job scheduler and without blocking the current
  * request.
@@ -23,7 +23,7 @@ use SMW\MediaWiki\Specials\SpecialAsyncJobDispatcher;
  *
  * @author mwjames
  */
-class AsyncJobDispatchManager {
+class DeferredRequestDispatchManager {
 
 	/**
 	 * @var HttpRequest
@@ -49,7 +49,7 @@ class AsyncJobDispatchManager {
 	 *
 	 * @var boolean
 	 */
-	private $enabledState = true;
+	private $enabledHttpDeferredJobRequestState = true;
 
 	/**
 	 * @since 2.3
@@ -58,7 +58,7 @@ class AsyncJobDispatchManager {
 	 */
 	public function __construct( HttpRequest $httpRequest ) {
 		$this->httpRequest = $httpRequest;
-		$this->httpRequest->setOption( ONOI_HTTP_REQUEST_URL, SpecialAsyncJobDispatcher::getTargetURL() );
+		$this->httpRequest->setOption( ONOI_HTTP_REQUEST_URL, SpecialDeferredRequestDispatcher::getTargetURL() );
 	}
 
 	/**
@@ -66,16 +66,16 @@ class AsyncJobDispatchManager {
 	 */
 	public function reset() {
 		self::$canConnectToUrl = null;
-		$this->enabledState = true;
+		$this->enabledHttpDeferredJobRequestState = true;
 	}
 
 	/**
 	 * @since 2.3
 	 *
-	 * @param boolean $enabledState
+	 * @param boolean $enabledHttpDeferredJobRequestState
 	 */
-	public function setEnabledState( $enabledState ) {
-		$this->enabledState = (bool)$enabledState;
+	public function setEnabledHttpDeferredJobRequestState( $enabledHttpDeferredJobRequestState ) {
+		$this->enabledHttpDeferredJobRequestState = (bool)$enabledHttpDeferredJobRequestState;
 	}
 
 	/**
@@ -85,7 +85,7 @@ class AsyncJobDispatchManager {
 	 * @param Title $title
 	 * @param array $parameters
 	 */
-	public function dispatchJobFor( $type, Title $title, $parameters = array() ) {
+	public function dispatchJobRequestFor( $type, Title $title, $parameters = array() ) {
 
 		if ( !$this->doPreliminaryCheckForType( $type, $parameters ) ) {
 			return null;
@@ -95,9 +95,9 @@ class AsyncJobDispatchManager {
 
 		// Build sessionToken as source verification during the POST request
 		$parameters['timestamp'] = time();
-		$parameters['sessionToken'] = SpecialAsyncJobDispatcher::getSessionToken( $parameters['timestamp'] );
+		$parameters['sessionToken'] = SpecialDeferredRequestDispatcher::getSessionToken( $parameters['timestamp'] );
 
-		if ( $this->enabledState && $this->canConnectToUrl() ) {
+		if ( $this->enabledHttpDeferredJobRequestState && $this->canConnectToUrl() ) {
 			return $this->doDispatchAsyncJobFor( $type, $title, $parameters, $dispatchableCallbackJob );
 		}
 
@@ -176,11 +176,11 @@ class AsyncJobDispatchManager {
 		$this->httpRequest->setOption( ONOI_HTTP_REQUEST_CONNECTION_FAILURE_REPEAT, 2 );
 
 		$this->httpRequest->setOption( ONOI_HTTP_REQUEST_ON_COMPLETED_CALLBACK, function( $requestResponse ) {
-			wfDebugLog( 'smw', 'SMW\AsyncJobDispatchManager: ' . json_encode( $requestResponse->getList() ) . "\n" );
+			wfDebugLog( 'smw', 'SMW\DeferredRequestDispatchManager: ' . json_encode( $requestResponse->getList() ) . "\n" );
 		} );
 
 		$this->httpRequest->setOption( ONOI_HTTP_REQUEST_ON_FAILED_CALLBACK, function( $requestResponse ) use ( $dispatchableCallbackJob, $title, $type, $parameters ) {
-			wfDebugLog( 'smw', "SMW\AsyncJobDispatchManager: Connection to SpecialAsyncJobDispatcher failed therefore adding {$type} for " . $title->getPrefixedDBkey() . "\n" );
+			wfDebugLog( 'smw', "SMW\DeferredRequestDispatchManager: Connection to SpecialDeferredRequestDispatcher failed therefore adding {$type} for " . $title->getPrefixedDBkey() . "\n" );
 			call_user_func_array( $dispatchableCallbackJob, array( $title, $parameters ) );
 		} );
 

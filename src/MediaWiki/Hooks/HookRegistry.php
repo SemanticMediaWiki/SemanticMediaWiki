@@ -10,7 +10,7 @@ use SMW\EventHandler;
 use SMW\NamespaceManager;
 use SMW\SQLStore\EmbeddedQueryDependencyLinksStore;
 use SMW\SQLStore\EmbeddedQueryDependencyListResolver;
-use SMW\AsyncJobDispatchManager;
+use SMW\DeferredRequestDispatchManager;
 use SMW\PropertyHierarchyLookup;
 use Onoi\HttpRequest\HttpRequestFactory;
 
@@ -501,15 +501,15 @@ class HookRegistry {
 
 			$httpRequestFactory = new HttpRequestFactory();
 
-			$asyncJobDispatchManager = new AsyncJobDispatchManager(
+			$deferredRequestDispatchManager = new DeferredRequestDispatchManager(
 				$httpRequestFactory->newSocketRequest()
 			);
 
-			$asyncJobDispatchManager->setEnabledState(
-				$applicationFactory->getSettings()->get( 'smwgEnabledAsyncJobDispatcher' )
+			$deferredRequestDispatchManager->setEnabledHttpDeferredJobRequestState(
+				$applicationFactory->getSettings()->get( 'smwgEnabledHttpDeferredJobRequest' )
 			);
 
-			$asyncJobDispatchManager->dispatchJobFor(
+			$deferredRequestDispatchManager->dispatchJobRequestFor(
 				'SMW\ParserCachePurgeJob',
 				$semanticData->getSubject()->getTitle(),
 				$embeddedQueryDependencyLinksStore->buildParserCachePurgeJobParametersFrom( $compositePropertyTableDiffIterator )

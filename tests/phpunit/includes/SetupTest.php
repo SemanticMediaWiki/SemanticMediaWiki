@@ -223,6 +223,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'Properties',
 			'UnusedProperties',
 			'WantedProperties',
+			'DeferredRequestDispatcher'
 		);
 
 		return $this->buildDataProvider( 'wgSpecialPages', $specials, '' );
