@@ -1,10 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Gmelfi"
+			"Gmelfi",
+			"Sarvaturi"
 		]
 	},
 	"browse": "Esplora lu situ",
-	"smw_browselink": "Prupritati",
+	"smw_browselink": "Prupità",
 	"smw-livepreview-loading": "Carricamentu 'n cursu..."
 }
