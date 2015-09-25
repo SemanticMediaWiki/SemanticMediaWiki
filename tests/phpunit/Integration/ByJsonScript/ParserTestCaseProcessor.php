@@ -59,7 +59,7 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	public function process( array $case ) {
 
 		if ( !isset( $case['subject'] ) ) {
-			break;
+			return;
 		}
 
 		$this->assertSemanticDataForCase( $case );
