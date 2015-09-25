@@ -263,7 +263,7 @@ class QueryEngine {
 		}
 
 		$sparql = str_replace( array( '[',':',' ' ), array( '&#x005B;', '&#x003A;', '&#x0020;' ), $sparql );
-		$entries['SPARQL Query'] = "<pre>$sparql</pre>";
+		$entries['SPARQL Query'] = '<div class="smwpre">' . $sparql . '</div>';
 
 		return DebugOutputFormatter::formatOutputFor( 'SPARQLStore', $entries, $query );
 	}

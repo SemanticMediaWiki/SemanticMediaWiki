@@ -29,10 +29,10 @@ class DebugOutputFormatter {
 
 		if ( $query instanceof Query ) {
 			$preEntries = array();
-			$preEntries['Generated Wiki-Query'] = '<pre>' . str_replace( '[', '&#x005B;', $query->getDescription()->getQueryString() ) . '</pre>';
-			$preEntries['Query Metrics'] = 'Query-Size:' . $query->getDescription()->getSize() . '<br />' .
-						'Query-Depth:' . $query->getDescription()->getDepth();
+			$preEntries['Ask query'] = '<div class="smwpre">' . str_replace( '[', '&#x005B;', $query->getDescription()->getQueryString() ) . '</div>';
 			$entries = array_merge( $preEntries, $entries );
+			$entries['Query Metrics'] = 'Query-Size:' . $query->getDescription()->getSize() . '<br />' .
+						'Query-Depth:' . $query->getDescription()->getDepth();
 			$errors = '';
 
 			foreach ( $query->getErrors() as $error ) {

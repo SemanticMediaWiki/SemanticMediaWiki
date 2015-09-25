@@ -1,0 +1,48 @@
+{
+	"description": "Debug output",
+	"properties": [
+		{
+			"name": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"name": "Has text",
+			"contents": "[[Has type::Text]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/0001",
+			"contents": "[[Has page::Foo]] [[Has text::bar]]"
+		},
+		{
+			"name": "Example/0001/1",
+			"contents": "{{#ask:[[Has page::Foo]] [[Has page::42]] |?Has page |?Has text |format=debug }}"
+		}
+	],
+	"format-testcases": [
+		{
+			"about": "#0 simple debug output",
+			"subject": "Example/0001/1",
+			"expected-output": {
+				"to-contain": [
+					"&#x5b;&#x5b;Has page::Foo]] &#x5b;&#x5b;Has page::42]]",
+					"Query-Size:4",
+					"Query-Depth:1",
+					"None"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
