@@ -18,9 +18,7 @@ use ParserOutput;
 
 /**
  * @covers \SMW\SubobjectParserFunction
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -135,7 +133,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider sortKeyProvider
+	 * @dataProvider tokuFixedParameterProvider
 	 */
 	public function testSortKeyAnnotation( array $parameters, array $expected ) {
 		$this->setupInstanceAndAssertSemanticData(
@@ -400,7 +398,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		return $provider;
 	}
 
-	public function sortKeyProvider() {
+	public function tokuFixedParameterProvider() {
 
 		$provider = array();
 
@@ -436,6 +434,50 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'Bar=foo Bar',
 				'@sortkey='
+			),
+			array(
+				'propertyCount'  => 1,
+				'properties'     => array(
+					new DIProperty( 'Bar' )
+				),
+				'propertyValues' => array(
+					'Foo Bar'
+				)
+			)
+		);
+
+		// #2 @category
+		// {{#subobject:
+		// |Bar=foo Bar
+		// |@category=1001
+		// }}
+		$provider[] = array(
+			array(
+				'Bar=foo Bar',
+				'@category=1001'
+			),
+			array(
+				'propertyCount'  => 2,
+				'properties'     => array(
+					new DIProperty( 'Bar' ),
+					new DIProperty( '_INST' )
+				),
+				'propertyValues' => array(
+					'Foo Bar',
+					'1001'
+				)
+			)
+		);
+
+		// #3 @category empty
+		// {{#subobject:
+		// |Bar=foo Bar
+		// |@category=
+		// }}
+		$provider[] = array(
+			array(
+				'Bar=foo Bar',
+				'@category='
 			),
 			array(
 				'propertyCount'  => 1,
