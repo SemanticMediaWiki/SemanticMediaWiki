@@ -187,7 +187,7 @@ class QuerySegmentListProcessor {
 				$query = $result;
 			break;
 			case QuerySegment::Q_DISJUNCTION:
-				if ( $this->queryMode !== Query::MODE_DEBUG ) {
+				if ( $this->queryMode !== Query::MODE_NONE ) {
 					$db->query(
 						$this->getCreateTempIDTableSQL( $db->tableName( $query->alias ) ),
 						__METHOD__
@@ -224,7 +224,7 @@ class QuerySegmentListProcessor {
 					if ( $sql ) {
 						$this->executedQueries[$query->alias][] = $sql;
 
-						if ( $this->queryMode !== Query::MODE_DEBUG ) {
+						if ( $this->queryMode !== Query::MODE_NONE ) {
 							$db->query(
 								$sql,
 								__METHOD__
@@ -302,10 +302,6 @@ class QuerySegmentListProcessor {
 		$query->joinTable = $query->alias;
 		$query->joinfield = "$query->alias.id";
 
-		if ( $this->queryMode == Query::MODE_DEBUG ) {
-			return; // No real queries in debug mode.
-		}
-
 		$db->query(
 			$this->getCreateTempIDTableSQL( $tablename ),
 			__METHOD__
@@ -324,10 +320,6 @@ class QuerySegmentListProcessor {
 	 * on. Being temporary, the tables will vanish with the session anyway.
 	 */
 	public function cleanUp() {
-
-		if ( $this->queryMode  === Query::MODE_DEBUG ) {
-			return;
-		}
 
 		foreach ( $this->executedQueries as $table => $log ) {
 			$this->connection->query(

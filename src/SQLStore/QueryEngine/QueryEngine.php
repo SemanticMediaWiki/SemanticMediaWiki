@@ -243,26 +243,23 @@ class QueryEngine {
 	 * @return string
 	 */
 	private function getDebugQueryResult( Query $query, $rootid ) {
+
 		$qobj = $this->querySegmentList[$rootid];
-
-		$db = $this->store->getConnection();
-
 		$entries = array();
 
-		$sql_options = $this->getSQLOptions( $query, $rootid );
-		list( $startOpts, $useIndex, $tailOpts ) = $db->makeSelectOptions( $sql_options );
+		$sqlOptions = $this->getSQLOptions( $query, $rootid );
+
+		$entries['SQL Query'] = '';
+		$entries['SQL Explain'] = '';
 
 		if ( isset( $qobj->joinfield ) && $qobj->joinfield !== '' ) {
-			$entries['SQL Query'] =
-			           "<tt>SELECT DISTINCT $qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns FROM " .
-			           $db->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from .
-			           ( ( $qobj->where === '' ) ? '':' WHERE ' ) . $qobj->where . "$tailOpts LIMIT " .
-			           $sql_options['LIMIT'] . ' OFFSET ' . $sql_options['OFFSET'] . ';</tt>';
+			$this->doPrepareDebugQueryResult( $qobj, $sqlOptions, $entries );
 		} else {
 			$entries['SQL Query'] = 'Empty result, no SQL query created.';
 		}
 
 		$auxtables = '';
+
 		foreach ( $this->querySegmentListProcessor->getListOfResolvedQueries() as $table => $log ) {
 			$auxtables .= "<li>Temporary table $table";
 			foreach ( $log as $q ) {
@@ -270,6 +267,7 @@ class QueryEngine {
 			}
 			$auxtables .= '</li>';
 		}
+
 		if ( $auxtables ) {
 			$entries['Auxilliary Tables Used'] = "<ul>$auxtables</ul>";
 		} else {
@@ -277,6 +275,55 @@ class QueryEngine {
 		}
 
 		return DebugOutputFormatter::formatOutputFor( 'SQLStore', $entries, $query );
+	}
+
+	private function doPrepareDebugQueryResult( $qobj, $sqlOptions, &$entries ) {
+
+		$db = $this->store->getConnection();
+		list( $startOpts, $useIndex, $tailOpts ) = $db->makeSelectOptions( $sqlOptions );
+
+		$entries['SQL Query'] =
+		           "SELECT DISTINCT $qobj->alias.smw_id AS id,$qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns,$qobj->alias.smw_iw AS iw,$qobj->alias.smw_subobject AS so,$qobj->alias.smw_sortkey AS sortkey FROM " .
+		           $db->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from .
+		           ( ( $qobj->where === '' ) ? '':' WHERE ' ) . $qobj->where . "$tailOpts $startOpts $useIndex LIMIT " .
+		           $sqlOptions['LIMIT'] . ' OFFSET ' . $sqlOptions['OFFSET'];
+
+		$res = $db->query(
+			'EXPLAIN '. $entries['SQL Query'],
+			__METHOD__
+		);
+
+		// https://dev.mysql.com/doc/refman/5.0/en/explain-output.html
+		$entries['SQL Explain'] = "<table><tr><th>ID</th><th>select_type</th><th>table</th><th>type</th><th>possible_keys</th><th>key</th><th>key_len</th><th>ref</th><th>rows</th><th>Extra</th></tr>";
+
+		$hasEntry = false;
+		foreach ( $res as $row ) {
+
+			// sqlite doesn't support this, psql does something else
+			if ( !isset( $row->id ) ) {
+				continue;
+			}
+
+			$hasEntry = true;
+			$entries['SQL Explain'] .= "<tr><td>". $row->id . "</td><td>" . $row->select_type . "</td><td>" . $row->table . "</td><td>" . $row->type  . "</td><td>" . $row->possible_keys . "</td><td>" .
+			$row->key . "</td><td>" . $row->key_len . "</td><td>" . $row->ref . "</td><td>" . $row->rows .  "</td><td>" . $row->Extra . "</td></tr>";
+		}
+
+		if ( $hasEntry ) {
+			$entries['SQL Explain'] .= '</table>';
+		} else {
+			$entries['SQL Explain'] = 'Not supported.';
+		}
+
+		$entries['SQL Query'] = '<div class="smwpre">' . $entries['SQL Query'] . '</div>';
+
+		$entries['SQL Query'] =  str_replace(
+			array( "SELECT DISTINCT", "FROM", "INNER JOIN", "WHERE", "ORDER BY", "LIMIT", "OFFSET" ),
+			array( "SELECT DISTINCT<br>&nbsp;", "<br>FROM<br>&nbsp;", "<br>INNER JOIN<br>&nbsp;", "<br>WHERE<br>&nbsp;", "<br>ORDER BY<br>&nbsp;", "<br>LIMIT<br>&nbsp;", "<br>OFFSET<br>&nbsp;" ),
+			$entries['SQL Query']
+		);
+
+		$db->freeResult( $res );
 	}
 
 	/**
