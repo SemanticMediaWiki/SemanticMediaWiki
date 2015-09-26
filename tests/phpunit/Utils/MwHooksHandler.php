@@ -38,7 +38,9 @@ class MwHooksHandler {
 		'SMW::Parser::BeforeMagicWordsFinder',
 		'SMW::SQLStore::BeforeDataRebuildJobInsert',
 		'SMW::SQLStore::AddCustomFixedPropertyTables',
-		'SMW::SQLStore::AfterDataUpdateComplete'
+		'SMW::SQLStore::AfterDataUpdateComplete',
+		'SMW::Browse::AfterIncomingPropertiesLookupComplete',
+		'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate'
 	);
 
 	/**

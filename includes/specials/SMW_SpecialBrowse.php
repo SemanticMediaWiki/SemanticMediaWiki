@@ -91,6 +91,8 @@ class SMWSpecialBrowse extends SpecialPage {
 		}
 
 		$wgOut->addHTML( $this->displayBrowse() );
+		$this->addExternalHelpLinkFor( 'smw-specials-browse-helplink' );
+
 		SMWOutputs::commitToOutputPage( $wgOut ); // make sure locally collected output data is pushed to the output!
 	}
 
@@ -205,7 +207,9 @@ class SMWSpecialBrowse extends SpecialPage {
 				         $this->displayValue( $dvProperty, $dv, $incoming ) . "</span>\n";
 			}
 
-			if ( $moreIncoming ) { // link to the remaining incoming pages:
+			// Added in 2.3
+			// link to the remaining incoming pages
+			if ( $moreIncoming && wfRunHooks( 'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate', array( $diProperty, $this->subject->getDataItem(), &$body ) ) ) {
 				$body .= Html::element(
 					'a',
 					array(
@@ -381,7 +385,7 @@ class SMWSpecialBrowse extends SpecialPage {
 		}
 
 		// Added in 2.3
-		wfRunHooks( 'SMW::Browse::AfterInPropertiesLookupComplete', array( $store, $indata, $options ) );
+		wfRunHooks( 'SMW::Browse::AfterIncomingPropertiesLookupComplete', array( $store, $indata, $valoptions ) );
 
 		return array( $indata, $more );
 	}
@@ -437,5 +441,17 @@ class SMWSpecialBrowse extends SpecialPage {
 		$nonBreakingSpace = html_entity_decode( '&#160;', ENT_NOQUOTES, 'UTF-8' );
 		$text = preg_replace( '/[\s]/u', $nonBreakingSpace, $text, - 1, $count );
 		return $count > 2 ? preg_replace( '/($nonBreakingSpace)/u', ' ', $text, max( 0, $count - 2 ) ):$text;
+	}
+
+	/**
+	 * FIXME MW 1.25
+	 */
+	private function addExternalHelpLinkFor( $key ) {
+
+		if ( !method_exists( $this, 'addHelpLink' ) ) {
+			return null;
+		}
+
+		$this->addHelpLink( wfMessage( $key )->escaped(), true );
 	}
 }

@@ -30,7 +30,8 @@ Implementing a hook should be made in consideration of the expected performance 
 
 - `SMW::SQLStore::BeforeDataRebuildJobInsert` to add update jobs while running the rebuild process.<sup>Use of `smwRefreshDataJobs` was deprecated with 2.3</sup>
 - `SMW::SQLStore::AddCustomFixedPropertyTables` to add fixed property table definitions
-- `SMW::Browse::AfterInPropertiesLookupComplete` to extend the incoming properties display for `Special:Browse`
+- `SMW::Browse::AfterIncomingPropertiesLookupComplete` to extend the incoming properties display for `Special:Browse`
+- `SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate` to replace the standard `SearchByProperty` with a custom link to an extended list of results (return `false` to replace the link)
 - `SMW::SQLStore::AfterDataUpdateComplete` to add processing after the update has been completed and provides `CompositePropertyTableDiffIterator` to identify entities
    that have been added/removed during the update. <sup>Use of `SMWSQLStore3::updateDataAfter` was deprecated with 2.3</sup>
 

@@ -344,5 +344,7 @@
 	"smw-sp-types_geo": "This is an informatory message shown to the user.",
 	"smw-sp-types_tel": "This is an informatory message shown to the user.",
 	"smw-sp-types_txt": "This is an informatory message shown to the user.",
-	"smw-sp-types_dat": "This is an informatory message shown to the user."
+	"smw-sp-types_dat": "This is an informatory message shown to the user.",
+	"smw-specials-browse-helplink": "{{notranslate}}"
+
 }
