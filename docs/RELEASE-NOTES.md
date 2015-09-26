@@ -80,7 +80,8 @@ Added the following options (It is assumed that the selected TDB back-end suppor
 * #1071 Added `SMW::SQLStore::AddCustomFixedPropertyTables` hook to simplify registration of fixed property tables by extension developers
 * #1068 Added setting to support recursive annotation for selected formats (refs #1055, #711)
 * #1086 Changed redirect update logic to accommodate the manual #REDIRECT (refs #895, #1054)
-* Added `SMW::Browse::AfterInPropertiesLookupComplete` which allows to extend the incoming properties display for `Special:Browse`
+* Added `SMW::Browse::AfterIncomingPropertiesLookupComplete` which allows to extend the incoming properties display for `Special:Browse`
+* Added `SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate` which allows to replace the further result incoming link in `Special:Browse`
 * #1078 Renamed `ParserParameterFormatter` to `ParserParameterProcessor` and `ParameterFormatterFactory` to `ParameterProcessorFactory`
 * #1102 Added `onoi/http-request:~1.0` dependency
 * Decrease chunk size in `UpdateDispatcherJob` (refs #951)
