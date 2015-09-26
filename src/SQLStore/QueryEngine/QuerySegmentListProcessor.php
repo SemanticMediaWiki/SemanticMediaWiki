@@ -204,7 +204,7 @@ class QuerySegmentListProcessor {
 					if ( $subQuery->joinTable !== '' ) {
 						$sql = 'INSERT ' . 'IGNORE ' . 'INTO ' .
 						       $db->tableName( $query->alias ) .
-							   " SELECT $subQuery->joinfield FROM " . $db->tableName( $subQuery->joinTable ) .
+							   " SELECT DISTINCT $subQuery->joinfield FROM " . $db->tableName( $subQuery->joinTable ) .
 							   " AS $subQuery->alias $subQuery->from" . ( $subQuery->where ? " WHERE $subQuery->where":'' );
 					} elseif ( $subQuery->joinfield !== '' ) {
 						// NOTE: this works only for single "unconditional" values without further

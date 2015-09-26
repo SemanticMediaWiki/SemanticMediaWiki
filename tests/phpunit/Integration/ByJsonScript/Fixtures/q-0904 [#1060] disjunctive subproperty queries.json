@@ -121,7 +121,6 @@
 	},
 	"meta": {
 		"skip-on": {
-			"postgres": "pg_query(): Query failed: ERROR:  duplicate key value violates unique constraint",
 			"virtuoso": "Virtuoso 6.1 rdfs / subproperty/property hierarchies are currently not implemented"
 		},
 		"version": "0.1",

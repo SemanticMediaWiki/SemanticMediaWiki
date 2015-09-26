@@ -240,9 +240,6 @@
 		"smwgQMaxSize" : "25"
 	},
 	"meta": {
-		"skip-on": {
-			"postgres": "Unable to run concept tests on postgres, failed with duplicate key value violates unique constraint"
-		},
 		"version": "0.1",
 		"is-incomplete": false
 	}
