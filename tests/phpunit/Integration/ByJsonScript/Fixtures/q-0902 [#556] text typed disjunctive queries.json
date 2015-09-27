@@ -57,9 +57,6 @@
 		}
 	},
 	"meta": {
-		"skip-on": {
-			"postgres": "Skip postgres because of Query failed: ERROR:  duplicate key value violates unique constraint, Key (id)=(146) already exists"
-		},
 		"version": "0.1",
 		"is-incomplete": false,
 		"debug": false

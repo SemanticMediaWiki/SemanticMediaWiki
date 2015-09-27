@@ -352,9 +352,6 @@
 		"smwgQSubcategoryDepth": 10
 	},
 	"meta": {
-		"skip-on": {
-			"postgres": "pg_query(): Query failed: ERROR:  duplicate key value violates unique constraint"
-		},
 		"version": "0.1",
 		"is-incomplete": false,
 		"debug": false
