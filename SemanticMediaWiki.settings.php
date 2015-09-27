@@ -335,7 +335,7 @@ $GLOBALS['smwStrictComparators'] = false;
 # queries that should immediately be answered by the wiki, using whatever
 # computations are needed.
 ##
-$GLOBALS['smwgQMaxSize'] = 12; // Maximal number of conditions in queries, use format=debug for example sizes
+$GLOBALS['smwgQMaxSize'] = 16; // Maximal number of conditions in queries, use format=debug for example sizes
 $GLOBALS['smwgQMaxDepth'] = 4; // Maximal property depth of queries, e.g. [[rel::<q>[[rel2::Test]]</q>]] has depth 2
 
 // The below setting defines which query features should be available by default.
