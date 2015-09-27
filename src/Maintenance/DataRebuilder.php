@@ -232,8 +232,8 @@ class DataRebuilder {
 		$total = $this->end && $this->end - $this->start > 0 ? $this->end - $this->start : $byIdDataRebuildDispatcher->getMaxId();
 
 		$this->reportMessage(
-			" The progress displayed is an estimation which can change \n" .
-			" during the run with (*) indicating an adjustment.\n---\n" );
+			" The displayed progress is an estimation and is self-adjusting \n" .
+			" during the update process.\n---\n" );
 
 		$this->reportMessage( "Processing all IDs from $this->start to " . ( $this->end ? "$this->end" : $byIdDataRebuildDispatcher->getMaxId() ) . " ...\n" );
 
@@ -242,20 +242,15 @@ class DataRebuilder {
 		while ( ( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 ) ) {
 
 			$this->rebuildCount++;
-			$readjust = false;
-
-			// Find a readjust baseline within the range of the total
-			$readjustBaseline = $this->rebuildCount < 600 && $total < 600 ? round( $total / 2 ) : 600;
-
-			if ( $this->rebuildCount % $readjustBaseline === 0 && !$this->end ) {
-				$readjust = $byIdDataRebuildDispatcher->getMaxId() !== $total;
-				$total = $byIdDataRebuildDispatcher->getMaxId();
-			}
+			$progress = '';
 
 			$byIdDataRebuildDispatcher->dispatchRebuildFor( $id );
-			$progress = round( ( ( $this->rebuildCount - 1 ) / $total ) * 100 ) . ( $readjust ? "% (*$total)": '%' );
 
-			$this->reportMessage( "($this->rebuildCount/$total $progress) Processing ID " . $id . " ...\n", $this->verbose );
+			if ( $this->rebuildCount % 60 === 0 ) {
+				$progress = round( ( $this->end - $this->start > 0 ? $this->rebuildCount / $total : $byIdDataRebuildDispatcher->getEstimatedProgress() ) * 100 ) . "%";
+			}
+
+			$this->reportMessage( "($this->rebuildCount/$total) Processing ID " . $id . " ...\n", $this->verbose );
 
 			if ( $this->delay !== false ) {
 				usleep( $this->delay );
