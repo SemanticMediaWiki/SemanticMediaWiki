@@ -16,9 +16,19 @@ use Parser;
  */
 class SubobjectParserFunction {
 
-	// Fixed identifier that describes the sortkey annotation
-	// parameter
+	/**
+	 * Fixed identifier that describes the sortkey annotation parameter
+	 */
 	const PARAM_SORTKEY = '@sortkey';
+
+	/**
+	 * Fixed identifier that describes the subobject category parameter.
+	 *
+	 * We keep it as a @ fixed parameter since the standard annotation would
+	 * require special attention (Category:;instead of ::) when annotating a
+	 * category
+	 */
+	const PARAM_CATEGORY = '@category';
 
 	/**
 	 * @var ParserData
@@ -104,6 +114,10 @@ class SubobjectParserFunction {
 
 			if ( $property === self::PARAM_SORTKEY ) {
 				$property = DIProperty::TYPE_SORTKEY;
+			}
+
+			if ( $property === self::PARAM_CATEGORY ) {
+				$property = DIProperty::TYPE_CATEGORY;
 			}
 
 			foreach ( $values as $value ) {
