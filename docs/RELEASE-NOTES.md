@@ -71,6 +71,7 @@ Added the following options (It is assumed that the selected TDB back-end suppor
 * #1146 Fixed #set rendering of template supported output (refs #1067)
 * #1096 Fixed inverse prefix for predefined properties that caused misinterpret `Concept` queries
 * #1166 Fixed context awareness of `ParserAfterTidy` in connection with the `purge` action
+* #1165 Fixed "duplicate key value violates unique constraint" for postgres on conjunctive and disjunctive queries
 
 ## Internal changes
 
