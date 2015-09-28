@@ -313,7 +313,7 @@
 	"smw-editpage-concept-annotation-enabled": "Aquest concepte pot ser ampliat fent servir la funció d'anàlisi #concept. Per a una descripció de com utilitzar-la, consulteu la pàgina d'ajuda sobre els [https://www.semantic-mediawiki.org/wiki/Help:Concepts conceptes].",
 	"log-name-smw": "Registre de Semantic MediaWiki",
 	"log-description-smw": "Activitats dels [https://www.semantic-mediawiki.org/wiki/Help:Logging tipus d'esdeveniments habilitats] que han estat informats per Semantic MediaWiki i els seus components.",
-	"smw-datavalue-import-unknownns": "L'espai de noms d'importació «$1» és desconegut. Assegureu-vos que els detalls d'importació owl són disponibles mitjançant [[MediaWiki:Smw import $1]]",
+	"smw-datavalue-import-unknownns": "L'espai de noms d'importació «$1» és desconegut. Assegureu-vos que els detalls d'importació OWL són disponibles mitjançant [[MediaWiki:Smw import $1]]",
 	"smw-datavalue-import-missing-nsuri": "No s'ha pogut trobar un URI de l'espai de noms de «$1» en la [[MediaWiki:Smw import $1|importació de $1]].",
 	"smw-datavalue-import-missing-type": "No s'ha trobat definició de tipus per a «$1» a la [[MediaWiki:Smw import $2|importació de $2]].",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|importació de $1]]",

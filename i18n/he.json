@@ -309,7 +309,7 @@
 	"smw-editpage-concept-annotation-enabled": "אפשר להרחיב את הרעיון הזה באמצעות פונקציית המפענח #concept. לתיאור של השימוש ב־#concept, ר' את דף העזרה [https://www.semantic-mediawiki.org/wiki/Help:Concepts concept].",
 	"log-name-smw": "יומן מדיה־ויקי סמנטית",
 	"log-description-smw": "פעולות עבור [https://www.semantic-mediawiki.org/wiki/Help:Logging סוגי אירועים מופעלים] שדווחו על־ידי מדיה־ויקי סמנטית והמרכיבים שלה.",
-	"smw-datavalue-import-unknownns": "מרחב היבוא \"$1\" אינו ידוע. נא לוודא שפרטי יבוא owl זמינים דרך [[MediaWiki:Smw import $1]]",
+	"smw-datavalue-import-unknownns": "מרחב היבוא \"$1\" אינו ידוע. נא לוודא שפרטי יבוא OWL זמינים דרך [[MediaWiki:Smw import $1]]",
 	"smw-datavalue-import-missing-nsuri": "לא ניתן למצוא את URI מרחב השם \"$1\" ב[[MediaWiki:Smw import $1|$1 יבוא]].",
 	"smw-datavalue-import-missing-type": "לא נמצא סוג נתונים עבור \"$1\" ב־[[MediaWiki:Smw import $2|$2 יצוא]].",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|יבוא $1]]",

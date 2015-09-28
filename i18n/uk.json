@@ -310,7 +310,7 @@
 	"smw-editpage-concept-annotation-enabled": "Цей концепт можна розширити з використанням парсерної функції #concept. Опис, як використовувати #concept, див. на довідковій сторінці про [https://www.semantic-mediawiki.org/wiki/Help:Concepts концепт].",
 	"log-name-smw": "Журнал Семантичної MediaWiki",
 	"log-description-smw": "Діяльність щодо [https://www.semantic-mediawiki.org/wiki/Help:Logging увімкнених типів подій], яку реєструє Семантична MediaWiki та її компоненти.",
-	"smw-datavalue-import-unknownns": "Простір назв імпорту «$1» невідомий. Будь ласка, впевніться, що деталі імпорту owl доступні через [[MediaWiki:Smw import $1]]",
+	"smw-datavalue-import-unknownns": "Простір назв імпорту «$1» невідомий. Будь ласка, впевніться, що деталі імпорту OWL доступні через [[MediaWiki:Smw import $1]]",
 	"smw-datavalue-import-missing-nsuri": "Не вдалося знайти URI простору назв «$1» в [[MediaWiki:Smw import $1|імпорті $1]].",
 	"smw-datavalue-import-missing-type": "Не було знайдено визначення типу для «$1» в [[MediaWiki:Smw import $2|імпорті $2]].",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|Імпорт $1]]",

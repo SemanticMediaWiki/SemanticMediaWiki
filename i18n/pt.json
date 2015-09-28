@@ -12,7 +12,8 @@
 			"Waldir",
 			"아라",
 			"555",
-			"Vitorvicentevalente"
+			"Vitorvicentevalente",
+			"Jkb8"
 		]
 	},
 	"smw-desc": "Tornar a sua wiki mais inteligível - para máquinas ''e'' seres humanos ([https://semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
@@ -265,6 +266,7 @@
 	"smw-sp-admin-idlookup-objectid": "ID de objeto:",
 	"smw-livepreview-loading": "A carregar…",
 	"smw-sp-searchbyproperty-resultlist-header": "Lista de resultados",
+	"smw-datavalue-import-unknownns": "O espaço de nomes de importação «$1» é desconhecido. Certifique-se que os detalhes de importação OWL estão disponíveis mediante [[MediaWiki:Smw import $1]]",
 	"smw-pa-property-predefined_type": "\"$1\" é uma propriedade predefinida que descreve o [[Special:Types|tipo de dados]] de uma propriedade.",
 	"smw-datavalue-invalid-number": "\"$1\" não pode ser interpretado como um número.",
 	"smw-sp-types-list": "Lista de tipos de dados",
