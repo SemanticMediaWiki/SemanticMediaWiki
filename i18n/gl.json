@@ -306,7 +306,7 @@
 	"smw-editpage-concept-annotation-enabled": "Este concepto pode ampliarse usando a función de análise #concept. Para unha descrición de como usar #concept, consulte a páxina de axuda sobre os [https://www.semantic-mediawiki.org/wiki/Help:Concepts conceptos].",
 	"log-name-smw": "Rexisto de MediaWiki Semántica",
 	"log-description-smw": "Actividades dos [https://www.semantic-mediawiki.org/wiki/Help:Logging tipos de evento habilitados]  que foron informados pola MediaWiki Semántica e os seus compoñentes.",
-	"smw-datavalue-import-unknownns": "O espazo de nomes de importación \"$1\" é descoñecido. Por favor, asegúrese que os detalles de importación owl están dispoñibles mediante [[MediaWiki:Smw import $1]]",
+	"smw-datavalue-import-unknownns": "O espazo de nomes de importación \"$1\" é descoñecido. Por favor, asegúrese que os detalles de importación OWL están dispoñibles mediante [[MediaWiki:Smw import $1]]",
 	"smw-datavalue-import-missing-nsuri": "Non se puido atopar un URI do espazo de nomes de \"$1\" na [[MediaWiki:Smw import $1|importación de $1]].",
 	"smw-datavalue-import-missing-type": "Non se atopou definición de tipo para \"$1\" na [[MediaWiki:Smw import $2|importación de $2]].",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|importación de $1]]",

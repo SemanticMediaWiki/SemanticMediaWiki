@@ -320,7 +320,7 @@
 	"smw-editpage-concept-annotation-enabled": "此概念可以通过#concept解析器函数扩充。有关如何使用#concept的说明，参见[https://www.semantic-mediawiki.org/wiki/Help:Concepts 概念]帮助页面。",
 	"log-name-smw": "Semantic MediaWiki日志",
 	"log-description-smw": "为[https://www.semantic-mediawiki.org/wiki/Help:Logging 已启用的活动类型]激活，它们已经被Semantic MediaWiki及其组件汇报。",
-	"smw-datavalue-import-unknownns": "导入名字空间“$1”未知。请确信owl导入详细信息存在于[[MediaWiki:Smw import $1]]",
+	"smw-datavalue-import-unknownns": "导入名字空间“$1”未知。请确信OWL导入详细信息存在于[[MediaWiki:Smw import $1]]",
 	"smw-datavalue-import-missing-nsuri": "无法在[[MediaWiki:Smw import $1|$1的导入]]中找到“$1”名字空间的URI。",
 	"smw-datavalue-import-missing-type": "在[[MediaWiki:Smw import $2|$2导出]]中找不到用于“$1”类型定义。",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|$1次导入]]",
