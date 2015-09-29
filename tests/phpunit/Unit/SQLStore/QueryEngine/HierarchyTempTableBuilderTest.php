@@ -51,7 +51,7 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->temporaryIdTableCreator
 		);
 
-		$instance->setPropertyHierarchyTableDefinition( 'bar' , 3 );
+		$instance->setPropertyHierarchyTableDefinition( 'bar', 3 );
 
 		$this->assertEquals(
 			array( '_bar', 3 ),
@@ -86,7 +86,7 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->temporaryIdTableCreator
 		);
 
-		$instance->setClassHierarchyTableDefinition( 'bar' , 3 );
+		$instance->setClassHierarchyTableDefinition( 'bar', 3 );
 		$instance->createHierarchyTempTableFor( 'class', 'foobar', '(42)' );
 
 		$expected = array(
