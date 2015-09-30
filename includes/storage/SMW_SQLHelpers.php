@@ -327,6 +327,11 @@ EOT;
 		} elseif ( $currentFields[$name] != $type ) {
 			self::reportProgress( "   ... changing type of field $name from '$currentFields[$name]' to '$type' ... ", $reportTo );
 
+			// To avoid Error: 1068 Multiple primary key defined when a PRIMARY is involved
+			if ( strpos( $type , 'AUTO_INCREMENT' ) !== false ) {
+				$db->query( "ALTER TABLE $tableName DROP PRIMARY KEY", __METHOD__ );
+			}
+
 			$db->query( "ALTER TABLE $tableName CHANGE `$name` `$name` $type $position", __METHOD__ );
 			$result[$name] = 'up';
 			self::reportProgress( "done.\n", $reportTo );
