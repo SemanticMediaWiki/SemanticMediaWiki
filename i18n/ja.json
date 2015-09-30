@@ -276,5 +276,6 @@
 	"smw-sp-admin-settings-button": "設定の一覧を生成",
 	"smw-sp-admin-idlookup-objectid": "オブジェクト ID:",
 	"smw-livepreview-loading": "読み込み中...",
+	"smw-datavalue-import-unknownns": "重要な名前空間「$1」が不明です。 OWL import details が [[MediaWiki:Smw import $1]] を介して利用可能であることを確認してください。",
 	"smw-datavalue-property-restricted-use": "プロパティ「$1」は利用が限定されています。"
 }
