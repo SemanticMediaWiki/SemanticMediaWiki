@@ -84,7 +84,7 @@ class ByLanguageCollationMapper {
 		}
 
 		// Note sure what this is for, for details see Collation.php
-		if ( $string[0] == "\0" ) {
+		if ( isset( $string[0] ) && $string[0] == "\0" ) {
 			$string = mb_substr( $string, 0, 1, 'UTF-8' );
 		}
 
@@ -98,7 +98,7 @@ class ByLanguageCollationMapper {
 		}
 
 		// Note sure what this is for, for details see Collation.php
-		if ( $string[0] == "\0" ) {
+		if ( isset( $string[0] ) && $string[0] == "\0" ) {
 			$string =  mb_substr( $string, 0, 1, 'UTF-8' );
 		}
 

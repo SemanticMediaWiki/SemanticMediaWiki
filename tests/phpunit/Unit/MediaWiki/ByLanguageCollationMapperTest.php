@@ -72,6 +72,11 @@ class ByLanguageCollationMapperTest extends \PHPUnit_Framework_TestCase {
 	public function letterForUppercaseProvider() {
 
 		$provider[] = array(
+			'',
+			''
+		);
+
+		$provider[] = array(
 			'Foo',
 			'F'
 		);
@@ -95,6 +100,11 @@ class ByLanguageCollationMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function letterForIdentityProvider() {
+
+		$provider[] = array(
+			'',
+			''
+		);
 
 		$provider[] = array(
 			'Foo',
