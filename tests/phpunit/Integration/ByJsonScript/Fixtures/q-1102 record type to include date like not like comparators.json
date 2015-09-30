@@ -1,0 +1,91 @@
+{
+	"description": "_rec type + _dat ~/!~ searc pattern",
+	"properties": [
+		{
+			"name": "Has status",
+			"contents": "[[Has type::Text]] [[Allows value::open]] [[Allows value::closed]] [[Allows value::in progress]]"
+		},
+		{
+			"name": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"name": "Has status record",
+			"contents": "[[Has type::Record]] [[Has fields::Has date; Has status]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/1102/15-Dec-2007",
+			"contents": "{{#subobject:|@category=E-1102|Has status record=15 Dec 2007;closed}}{{#subobject:|@category=E-1102 |Has status record=15 Dec 2007;open}}"
+		},
+		{
+			"name": "Example/1102/16-Dec-2007",
+			"contents": "{{#subobject:|@category=E-1102 |Has status record=16 Dec 2007;closed}}"
+		},
+		{
+			"name": "Example/1102/345-BC",
+			"contents": "{{#subobject:|@category=E-1102|Has status record=345 BC;closed}}"
+		}
+	],
+	"query-testcases": [
+		{
+			"about": "#0 disjunctive match for any status",
+			"condition": "[[Category:E-1102]] [[Has status record::~Dec 2007;?]] OR [[Has status record::~345 BC;?]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 4,
+				"results": [
+					"Example/1102/15-Dec-2007#0##_32971b257b2cfa9a364ae22e21ab4adf",
+					"Example/1102/15-Dec-2007#0##_a95f61c99770cf350f1388ae46e973bb",
+					"Example/1102/16-Dec-2007#0##_f1fd6537c6d2576390a45ba86e58ed5b",
+					"Example/1102/345-BC#0##_6f2d86633d90e76f0e9fa5e5d1fe6598"
+				]
+			}
+		},
+		{
+			"about": "#1 all closed in Dec 2007",
+			"condition": "[[Category:E-1102]] [[Has status record::~Dec 2007;closed]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Example/1102/15-Dec-2007#0##_32971b257b2cfa9a364ae22e21ab4adf",
+					"Example/1102/16-Dec-2007#0##_f1fd6537c6d2576390a45ba86e58ed5b"
+				]
+			}
+		},
+		{
+			"about": "#2 all closed not at the 15 Dec 2007",
+			"condition": "[[Category:E-1102]] [[Has status record::!~ 15 Dec 2007;closed]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Example/1102/16-Dec-2007#0##_f1fd6537c6d2576390a45ba86e58ed5b",
+					"Example/1102/345-BC#0##_6f2d86633d90e76f0e9fa5e5d1fe6598"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwStrictComparators": false
+	},
+	"meta": {
+		"skip-on": {
+			"virtuoso": "Virtuoso 6.1 fails for BC"
+		},
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

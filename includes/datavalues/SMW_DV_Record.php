@@ -76,6 +76,7 @@ class SMWRecordValue extends SMWDataValue {
 			}
 
 			$values[$valueIndex] = str_replace( "-3B", ";", $values[$valueIndex] );
+			$beforePrepareValue = $values[$valueIndex];
 
 			if ( $queryMode ) { // special handling for supporting query parsing
 				$comparator = SMW_CMP_EQ;
@@ -92,11 +93,7 @@ class SMWRecordValue extends SMWDataValue {
 					if ( $queryMode ) {
 						$subdescriptions[] = new SMWSomeProperty(
 							$diProperty,
-							new SMWValueDescription(
-								$dataValue->getDataItem(),
-								$dataValue->getProperty(),
-								$comparator
-							)
+							$dataValue->getQueryDescription( $beforePrepareValue )
 						);
 					} else {
 						$semanticData->addPropertyObjectValue( $diProperty, $dataValue->getDataItem() );

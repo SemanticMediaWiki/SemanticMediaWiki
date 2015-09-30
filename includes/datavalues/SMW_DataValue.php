@@ -9,6 +9,7 @@
  */
 use SMW\DataValueFactory;
 use SMW\Query\QueryComparator;
+use SMW\Deserializers\DVDescriptionDeserializerFactory;
 
 /**
  * Objects of this type represent all that is known about a certain user-provided
@@ -415,22 +416,7 @@ abstract class SMWDataValue {
 ///// Query support /////
 
 	/**
-	 * Create an SMWDescription object based on a value string that was entered
-	 * in a query. Turning inputs that a user enters in place of a value within
-	 * a query string into query conditions is often a standard procedure. The
-	 * processing must take comparators like "<" into account, but otherwise
-	 * the normal parsing function can be used. However, there can be datatypes
-	 * where processing is more complicated, e.g. if the input string contains
-	 * more than one value, each of which may have comparators, as in
-	 * SMWRecordValue. In this case, it makes sense to overwrite this method.
-	 * Another reason to do this is to add new forms of comparators or new ways
-	 * of entering query conditions.
-	 *
-	 * The resulting SMWDescription may or may not make use of the datavalue
-	 * object that this function was called on, so it must be ensured that this
-	 * value is not used elsewhere when calling this method. The function can
-	 * return SMWThingDescription to not impose any condition, e.g. if parsing
-	 * failed. Error messages of this SMWDataValue object are propagated.
+	 * @see DataValueDescriptionDeserializer::deserialize
 	 *
 	 * @note Descriptions of values need to know their property to be able to
 	 * create a parsable wikitext version of a query condition again. Thus it
@@ -438,30 +424,19 @@ abstract class SMWDataValue {
 	 *
 	 * @param string $value
 	 *
-	 * @return SMWDescription
+	 * @return Description
 	 * @throws InvalidArgumentException
 	 */
 	public function getQueryDescription( $value ) {
-		if ( !is_string( $value ) ) {
-			throw new InvalidArgumentException( '$value needs to be a string' );
+
+		$dvDescriptionDeserializerFactory = DVDescriptionDeserializerFactory::getInstance()->getDescriptionDeserializerFor( $this );
+		$description = $dvDescriptionDeserializerFactory->deserialize( $value );
+
+		foreach ( $dvDescriptionDeserializerFactory->getErrors() as $error ) {
+			$this->addError( $error );
 		}
 
-		$comparator = SMW_CMP_EQ;
-
-		self::prepareValue( $value, $comparator );
-
-		if( $comparator == SMW_CMP_LIKE ) {
-			// ignore allowed values when the LIKE comparator is used (BUG 21893)
-			$this->setUserValue( $value, false, true );
-		} else {
-			$this->setUserValue( $value );
-		}
-
-		if ( $this->isValid() ) {
-			return new SMWValueDescription( $this->getDataItem(), $this->m_property, $comparator );
-		} else {
-			return new SMWThingDescription();
-		}
+		return $description;
 	}
 
 	/**
