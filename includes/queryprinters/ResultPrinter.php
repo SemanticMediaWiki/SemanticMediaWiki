@@ -436,6 +436,8 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 			$link->setStyle(  'smw-' . $this->params['format'] . '-' . Sanitizer::escapeClass( $classAffix ) );
 		}
 
+		$link->setParameter( $this->params['format'], 'format' );
+
 		/**
 		 * @var \IParam $param
 		 */
