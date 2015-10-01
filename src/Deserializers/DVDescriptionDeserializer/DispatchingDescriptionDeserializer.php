@@ -21,21 +21,21 @@ class DispatchingDescriptionDeserializer {
 	private $descriptionDeserializers = array();
 
 	/**
-	 * @var DescriptionDeserializer[]
+	 * @var DescriptionDeserializer
 	 */
 	private $defaultDescriptionDeserializer = null;
 
 	/**
 	 * @since  2.3
 	 *
-	 * @param DescriptionDeserializer $defaultInterpreter
+	 * @param DescriptionDeserializer $descriptionDeserializer
 	 */
 	public function addDescriptionDeserializer( DescriptionDeserializer $descriptionDeserializer ) {
 		$this->descriptionDeserializers[] = $descriptionDeserializer;
 	}
 
 	/**
-	 * @since 2.2
+	 * @since 2.3
 	 *
 	 * @param DescriptionDeserializer $defaultDescriptionDeserializer
 	 */

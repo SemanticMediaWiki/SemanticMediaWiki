@@ -31,24 +31,41 @@ class SMWRecordValue extends SMWDataValue {
 	/// cache for properties for the fields of this data value
 	protected $m_diProperties = null;
 
-	protected function parseUserValue( $value ) {
-		$this->parseUserValueOrQuery( $value, false );
+	/**
+	 * @since 2.3
+	 *
+	 * @return DIProperty[]|null
+	 */
+	public function getProperties() {
+		return $this->m_diProperties;
 	}
 
-	protected function parseUserValueOrQuery( $value, $queryMode ) {
+	/**
+	 * @since 2.3
+	 *
+	 * @param string $value
+	 *
+	 * @return array
+	 */
+	public function getValuesFromString( $value ) {
+		// #664 / T17732
+		$value = str_replace( "\;", "-3B", $value );
+
+		// Bug 21926 / T23926
+		// Values that use html entities are encoded with a semicolon
+		$value = htmlspecialchars_decode( $value, ENT_QUOTES );
+
+		return preg_split( '/[\s]*;[\s]*/u', trim( $value ) );
+	}
+
+	protected function parseUserValue( $value ) {
+
 		if ( $value === '' ) {
 			$this->addError( wfMessage( 'smw_novalues' )->text() );
-
-			if ( $queryMode ) {
-				return new SMWThingDescription();
-			} else {
-				return;
-			}
+			return;
 		}
 
-		if ( $queryMode ) {
-			$subdescriptions = array();
-		} elseif ( is_null( $this->m_contextPage ) ) {
+		if ( is_null( $this->m_contextPage ) ) {
 			$semanticData = SMWContainerSemanticData::makeAnonymousContainer();
 		} else {
 			$subobjectName = '_' . hash( 'md4', $value, false ); // md4 is probably fastest of PHP's hashes
@@ -58,14 +75,7 @@ class SMWRecordValue extends SMWDataValue {
 			$semanticData = new SMWContainerSemanticData( $subject );
 		}
 
-		// #664 / T17732
-		$value = str_replace( "\;", "-3B", $value );
-
-		// Bug 21926 / T23926
-		// Values that use html entities are encoded with a semicolon
-		$value = htmlspecialchars_decode( $value, ENT_QUOTES );
-
-		$values = preg_split( '/[\s]*;[\s]*/u', trim( $value ) );
+		$values = $this->getValuesFromString( $value );
 		$valueIndex = 0; // index in value array
 		$propertyIndex = 0; // index in property list
 		$empty = true;
@@ -76,12 +86,6 @@ class SMWRecordValue extends SMWDataValue {
 			}
 
 			$values[$valueIndex] = str_replace( "-3B", ";", $values[$valueIndex] );
-			$beforePrepareValue = $values[$valueIndex];
-
-			if ( $queryMode ) { // special handling for supporting query parsing
-				$comparator = SMW_CMP_EQ;
-				self::prepareValue( $values[$valueIndex], $comparator );
-			}
 
 			// generating the DVs:
 			if ( ( $values[$valueIndex] === '' ) || ( $values[$valueIndex] == '?' ) ) { // explicit omission
@@ -90,23 +94,12 @@ class SMWRecordValue extends SMWDataValue {
 				$dataValue = \SMW\DataValueFactory::getInstance()->newPropertyObjectValue( $diProperty, $values[$valueIndex] );
 
 				if ( $dataValue->isValid() ) { // valid DV: keep
-					if ( $queryMode ) {
-						$subdescriptions[] = new SMWSomeProperty(
-							$diProperty,
-							$dataValue->getQueryDescription( $beforePrepareValue )
-						);
-					} else {
-						$semanticData->addPropertyObjectValue( $diProperty, $dataValue->getDataItem() );
-					}
+					$semanticData->addPropertyObjectValue( $diProperty, $dataValue->getDataItem() );
 
 					$valueIndex++;
 					$empty = false;
 				} elseif ( ( count( $values ) - $valueIndex ) == ( count( $this->m_diProperties ) - $propertyIndex ) ) {
-					// too many errors: keep this one to have enough slots left
-					if ( !$queryMode ) {
-						$semanticData->addPropertyObjectValue( $diProperty, $dataValue->getDataItem() );
-					}
-
+					$semanticData->addPropertyObjectValue( $diProperty, $dataValue->getDataItem() );
 					$this->addError( $dataValue->getErrors() );
 					++$valueIndex;
 				}
@@ -118,18 +111,7 @@ class SMWRecordValue extends SMWDataValue {
 			$this->addError( wfMessage( 'smw_novalues' )->text() );
 		}
 
-		if ( $queryMode ) {
-			switch ( count( $subdescriptions ) ) {
-				case 0:
-				return new SMWThingDescription();
-				case 1:
-				return reset( $subdescriptions );
-				default:
-				return new SMWConjunction( $subdescriptions );
-			}
-		} else {
-			$this->m_dataitem = new SMWDIContainer( $semanticData );
-		}
+		$this->m_dataitem = new SMWDIContainer( $semanticData );
 	}
 
 	/**
@@ -149,14 +131,6 @@ class SMWRecordValue extends SMWDataValue {
 		} else {
 			return false;
 		}
-	}
-
-	/**
-	 * Overwrite SMWDataValue::getQueryDescription() to be able to process
-	 * comparators between all values.
-	 */
-	public function getQueryDescription( $value ) {
-		return $this->parseUserValueOrQuery( $value, true );
 	}
 
 	public function getShortWikiText( $linked = null ) {

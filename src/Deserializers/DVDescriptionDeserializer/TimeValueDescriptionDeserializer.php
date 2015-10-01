@@ -34,10 +34,7 @@ class TimeValueDescriptionDeserializer extends DescriptionDeserializer {
 	/**
 	 * @since 2.3
 	 *
-	 * @param string $value
-	 *
-	 * @return Description
-	 * @throws InvalidArgumentException
+	 * {@inheritDoc}
 	 */
 	public function deserialize( $value ) {
 
@@ -70,7 +67,7 @@ class TimeValueDescriptionDeserializer extends DescriptionDeserializer {
 
 		$upperLimitDataItem = $this->getUpperLimit( $dataItem );
 
-		if ( $this->errors !== array() ) {
+		if ( $this->getErrors() !== array() ) {
 			return new ThingDescription();
 		}
 
@@ -100,7 +97,7 @@ class TimeValueDescriptionDeserializer extends DescriptionDeserializer {
 		$dateTime->setTime( $dataItem->getHour(), $dataItem->getMinute(), $dataItem->getSecond() );
 
 		if ( $dateTime === false ) {
-			return $this->errors[] = 'Cannot compute interval for ' . $dataItem->getSerialization();
+			return $this->addError( 'Cannot compute interval for ' . $dataItem->getSerialization() );
 		}
 
 		if ( $prec === DITime::PREC_Y ) {

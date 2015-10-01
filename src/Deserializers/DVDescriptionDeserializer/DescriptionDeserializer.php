@@ -71,6 +71,21 @@ abstract class DescriptionDeserializer implements DispatchableDeserializer {
 	 */
 	public function setDataValue( DataValue $dataValue ) {
 		$this->dataValue = $dataValue;
+		$this->errors = array();
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @param string $error
+	 */
+	public function addError( $error ) {
+
+		if ( is_array( $error ) ) {
+			return $this->errors = array_merge( $this->errors, $error );
+		}
+
+		$this->errors[] = $error;
 	}
 
 	/**
@@ -89,7 +104,7 @@ abstract class DescriptionDeserializer implements DispatchableDeserializer {
 	 * comparator).
 	 *
 	 * @param string $value
-	 * @param string $comparator
+	 * @param string|integer $comparator
 	 */
 	protected function prepareValue( &$value, &$comparator ) {
 		// Loop over the comparators to determine which one is used and what the actual value is.
