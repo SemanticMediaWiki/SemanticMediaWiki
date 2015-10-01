@@ -31,7 +31,7 @@ if ( version_compare( $GLOBALS['wgVersion'], '1.19c', '<' ) ) {
 }
 
 if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
-	include_once( __DIR__ . '/vendor/autoload.php' );
+	include_once __DIR__ . '/vendor/autoload.php';
 }
 
 // Registration of the extension credits, see Special:Version.
@@ -117,13 +117,13 @@ class_alias( 'SMW\ParameterProcessorFactory', 'SMW\ParameterFormatterFactory' );
 define( 'SEMANTIC_EXTENSION_TYPE', true );
 
 // Load global constants
-require_once( __DIR__ . '/includes/Defines.php' );
+require_once __DIR__ . '/includes/Defines.php';
 
 // Temporary measure to ease Composer/MW 1.22 migration
 require_once __DIR__ . '/includes/NamespaceManager.php';
 
 // Load global functions
-require_once( __DIR__ . '/includes/GlobalFunctions.php' );
+require_once __DIR__ . '/includes/GlobalFunctions.php';
 
 // Load default settings
 require_once __DIR__ . '/SemanticMediaWiki.settings.php';
