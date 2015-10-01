@@ -1,0 +1,105 @@
+<?php
+
+namespace SMW\Deserializers\DVDescriptionDeserializer;
+
+use Deserializers\DispatchableDeserializer;
+use SMW\Query\QueryComparator;
+use SMWDataValue as DataValue;
+
+/**
+ * @private
+ *
+ * @license GNU GPL v2+
+ * @since 2.3
+ *
+ * @author mwjames
+ */
+abstract class DescriptionDeserializer implements DispatchableDeserializer {
+
+	/**
+	 * @var array
+	 */
+	protected $errors = array();
+
+	/**
+	 * @var DataValue
+	 */
+	protected $dataValue;
+
+	/**
+	 * @see DispatchableDeserializer::deserialize
+	 *
+	 * Create an Description object based on a value string that was entered
+	 * in a query. Turning inputs that a user enters in place of a value within
+	 * a query string into query conditions is often a standard procedure. The
+	 * processing must take comparators like "<" into account, but otherwise
+	 * the normal parsing function can be used. However, there can be datatypes
+	 * where processing is more complicated, e.g. if the input string contains
+	 * more than one value, each of which may have comparators, as in
+	 * SMWRecordValue. In this case, it makes sense to overwrite this method.
+	 * Another reason to do this is to add new forms of comparators or new ways
+	 * of entering query conditions.
+	 *
+	 * The resulting Description may or may not make use of the datavalue
+	 * object that this function was called on, so it must be ensured that this
+	 * value is not used elsewhere when calling this method. The function can
+	 * return ThingDescription to not impose any condition, e.g. if parsing
+	 * failed. Error messages of this DataValue object are propagated.
+	 *
+	 * @since 2.3
+	 *
+	 * @param string serialization
+	 *
+	 * @return Description
+	 * @throws InvalidArgumentException
+	 */
+	public abstract function deserialize( $serialization );
+
+	/**
+	 * @see DispatchableDeserializer::isDeserializerFor
+	 *
+	 * @since 2.3
+	 *
+	 * {@inheritDoc}
+	 */
+	public abstract function isDeserializerFor( $serialization );
+
+	/**
+	 * @since 2.3
+	 *
+	 * @param DataValue $dataValue
+	 */
+	public function setDataValue( DataValue $dataValue ) {
+		$this->dataValue = $dataValue;
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @return array
+	 */
+	public function getErrors() {
+		return $this->errors;
+	}
+
+	/**
+	 * Helper function for DescriptionDeserializer::deserialize that prepares a
+	 * single value string, possibly extracting comparators. $value is changed
+	 * to consist only of the remaining effective value string (without the
+	 * comparator).
+	 *
+	 * @param string $value
+	 * @param string $comparator
+	 */
+	protected function prepareValue( &$value, &$comparator ) {
+		// Loop over the comparators to determine which one is used and what the actual value is.
+		foreach ( QueryComparator::getInstance()->getComparatorStrings() as $string ) {
+			if ( strpos( $value, $string ) === 0 ) {
+				$comparator = QueryComparator::getInstance()->getComparatorFromString( substr( $value, 0, strlen( $string ) ) );
+				$value = substr( $value, strlen( $string ) );
+				break;
+			}
+		}
+	}
+
+}
