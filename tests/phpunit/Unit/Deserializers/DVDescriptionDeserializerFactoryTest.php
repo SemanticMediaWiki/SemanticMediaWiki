@@ -65,6 +65,20 @@ class DVDescriptionDeserializerFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructRecordValueDescriptionDeserializer() {
+
+		$dataValue = $this->getMockBuilder( '\SMWRecordValue' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$instance = new DVDescriptionDeserializerFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Deserializers\DVDescriptionDeserializer\RecordValueDescriptionDeserializer',
+			$instance->getDescriptionDeserializerFor( $dataValue )
+		);
+	}
+
 	public function testRegisterAdditionalDescriptionDeserializer() {
 
 		$descriptionDeserializer = $this->getMockBuilder( '\SMW\Deserializers\DVDescriptionDeserializer\DescriptionDeserializer' )

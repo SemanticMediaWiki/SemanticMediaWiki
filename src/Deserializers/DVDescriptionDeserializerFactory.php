@@ -5,6 +5,7 @@ namespace SMW\Deserializers;
 use SMW\Deserializers\DVDescriptionDeserializer\DispatchingDescriptionDeserializer;
 use SMW\Deserializers\DVDescriptionDeserializer\DescriptionDeserializer;
 use SMW\Deserializers\DVDescriptionDeserializer\TimeValueDescriptionDeserializer;
+use SMW\Deserializers\DVDescriptionDeserializer\RecordValueDescriptionDeserializer;
 use SMW\Deserializers\DVDescriptionDeserializer\SomeValueDescriptionDeserializer;
 use SMWDataValue as DataValue;
 
@@ -93,6 +94,7 @@ class DVDescriptionDeserializerFactory {
 
 		$dispatchingDescriptionDeserializer = new DispatchingDescriptionDeserializer();
 		$dispatchingDescriptionDeserializer->addDescriptionDeserializer( new TimeValueDescriptionDeserializer() );
+		$dispatchingDescriptionDeserializer->addDescriptionDeserializer( new RecordValueDescriptionDeserializer() );
 		$dispatchingDescriptionDeserializer->addDefaultDescriptionDeserializer( new SomeValueDescriptionDeserializer() );
 
 		return $dispatchingDescriptionDeserializer;

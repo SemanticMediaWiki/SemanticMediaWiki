@@ -439,25 +439,6 @@ abstract class SMWDataValue {
 		return $description;
 	}
 
-	/**
-	 * Helper function for getQueryDescription() that prepares a single value
-	 * string, possibly extracting comparators. $value is changed to consist
-	 * only of the remaining effective value string (without the comparator).
-	 *
-	 * @param string $value
-	 * @param string $comparator
-	 */
-	static protected function prepareValue( &$value, &$comparator ) {
-		// Loop over the comparators to determine which one is used and what the actual value is.
-		foreach ( QueryComparator::getInstance()->getComparatorStrings() as $string ) {
-			if ( strpos( $value, $string ) === 0 ) {
-				$comparator = QueryComparator::getInstance()->getComparatorFromString( substr( $value, 0, strlen( $string ) ) );
-				$value = substr( $value, strlen( $string ) );
-				break;
-			}
-		}
-	}
-
 ///// Get methods /////
 
 	/**
