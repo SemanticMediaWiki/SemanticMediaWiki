@@ -439,6 +439,28 @@ abstract class SMWDataValue {
 		return $description;
 	}
 
+	/**
+	 * @deprecated 2.3
+	 * @see DescriptionDeserializer::prepareValue
+	 *
+	 * This method is no longer to be used for direct public access, instead a
+	 * DataValue is expected to register a DescriptionDeserializer with
+	 * DVDescriptionDeserializerFactory.
+	 *
+	 * FIXME as of 2.3, SMGeoCoordsValue still uses this method and requires
+	 * migration before 3.0
+	 */
+	static public function prepareValue( &$value, &$comparator ) {
+		// Loop over the comparators to determine which one is used and what the actual value is.
+		foreach ( QueryComparator::getInstance()->getComparatorStrings() as $string ) {
+			if ( strpos( $value, $string ) === 0 ) {
+				$comparator = QueryComparator::getInstance()->getComparatorFromString( substr( $value, 0, strlen( $string ) ) );
+				$value = substr( $value, strlen( $string ) );
+				break;
+			}
+		}
+	}
+
 ///// Get methods /////
 
 	/**
