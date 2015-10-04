@@ -21,10 +21,14 @@ if ( !defined( 'SMW_VERSION' ) ) {
 	die( 'SemanticMediaWiki is not available.' );
 }
 
+// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength.MaxExceeded
+print sprintf( "\n%-20s%s\n", "Semantic MediaWiki:", SMW_VERSION . " ({$GLOBALS['smwgDefaultStore']}, {$GLOBALS['wgDBtype']}" . ( strpos( $GLOBALS['smwgDefaultStore'], 'SQL' ) ? '' : ', ' . $GLOBALS['smwgSparqlDatabaseConnector'] ) . ")" );
+// @codingStandardsIgnoreEnd
+
 if ( is_readable( $path = __DIR__ . '/../vendor/autoload.php' ) ) {
-	print ( "\nMediaWiki: " . $GLOBALS['wgVersion'] . " (Extension vendor autoloader)\n" );
+	print sprintf( "%-20s%s\n\n", "MediaWiki:", $GLOBALS['wgVersion'] . " (Extension vendor autoloader)" );
 } elseif ( is_readable( $path = __DIR__ . '/../../../vendor/autoload.php' ) ) {
-	print ( "\nMediaWiki: " . $GLOBALS['wgVersion'] . " (MediaWiki vendor autoloader)\n" );
+	print sprintf( "%-20s%s\n\n", "MediaWiki:", $GLOBALS['wgVersion'] . " (MediaWiki vendor autoloader)" );
 } else {
 	die( 'To run tests it is required that packages are installed using Composer.' );
 }
