@@ -79,7 +79,7 @@ class RecordValueDescriptionDeserializer extends DescriptionDeserializer {
 		return $this->getDescriptionFor( $subdescriptions );
 	}
 
-	private function getDescriptionFor( $subdescriptions ){
+	private function getDescriptionFor( $subdescriptions ) {
 		switch ( count( $subdescriptions ) ) {
 			case 0:
 			return new ThingDescription();
@@ -90,7 +90,7 @@ class RecordValueDescriptionDeserializer extends DescriptionDeserializer {
 		}
 	}
 
-	private function getDescriptionForProperty( $diProperty, $values, &$valueIndex, $propertyIndex ){
+	private function getDescriptionForProperty( $diProperty, $values, &$valueIndex, $propertyIndex ) {
 
 		$values[$valueIndex] = str_replace( "-3B", ";", $values[$valueIndex] );
 		$beforePrepareValue = $values[$valueIndex];
