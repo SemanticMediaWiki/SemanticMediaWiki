@@ -97,3 +97,16 @@ Added the following options (It is assumed that the selected TDB back-end suppor
 * #1145 Added `onoi/callback-container:~1.0` and removes all custom DIC code from SMW-core
 * (964155) Added removal of whitespace for `DIBlob` values (" Foo " becomes "Foo")
 * #1149 Added `InMemoryPoolCache` to improve performance for the `SPARQLStore` during turtle serialization
+
+## Contributors
+
+* MWJames
+* Jeroen De Dauw
+* Karsten Hoffmeyer (kghbln)
+* Felipe de Jong (jongfeli)
+* Vitaliy Filippov (vitalif)
+* paladox
+* Amir E. Aharoni
+* Joel K. Pettersson
+* umherirrender
+* TranslateWiki.net
