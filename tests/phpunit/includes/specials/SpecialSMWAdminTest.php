@@ -75,7 +75,7 @@ class SpecialSMWAdminTest extends SpecialPageTestCase {
 
 		$database->expects( $this->at( 1 ) )
 			->method( 'selectRow' )
-			->with( $this->equalTo( \SMWSql3SmwIds::tableName ) )
+			->with( $this->equalTo( \SMWSql3SmwIds::TABLE_NAME ) )
 			->will( $this->returnValue( $selectRow ) );
 
 		$store = $this->getMockBuilder( 'SMWSQLStore3' )

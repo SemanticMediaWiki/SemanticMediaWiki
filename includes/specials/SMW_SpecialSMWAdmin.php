@@ -273,7 +273,7 @@ class SMWAdmin extends SpecialPage {
 		$this->printRawOutput( function( $instance ) use ( $objectId ) {
 
 			$row = $instance->getStore()->getConnection( 'mw.db' )->selectRow(
-					\SMWSql3SmwIds::tableName,
+					\SMWSql3SmwIds::TABLE_NAME,
 					array(
 						'smw_title',
 						'smw_namespace',

@@ -306,7 +306,7 @@ class SMWSQLStore3Readers {
 					  's_title=' . $db->addQuotes( $object->getDBkey() ) .
 					  ' AND s_namespace=' . $db->addQuotes( $object->getNamespace() );
 			if ( !$propTable->isFixedPropertyTable() ) { // select property name
-				$from .= ' INNER JOIN ' . $db->tableName( SMWSql3SmwIds::tableName ) . ' AS p ON p_id=p.smw_id';
+				$from .= ' INNER JOIN ' . $db->tableName( SMWSql3SmwIds::TABLE_NAME ) . ' AS p ON p_id=p.smw_id';
 				$select .= 'p.smw_title as prop';
 			} // else: fixed property, no select needed
 		} elseif ( !$propTable->isFixedPropertyTable() ) { // restrict property only
@@ -322,7 +322,7 @@ class SMWSQLStore3Readers {
 		$fields = $diHandler->getFetchFields();
 		foreach ( $fields as $fieldname => $typeid ) { // select object column(s)
 			if ( $typeid == 'p' ) { // get data from ID table
-				$from .= ' INNER JOIN ' . $db->tableName( SMWSql3SmwIds::tableName ) . " AS o$valuecount ON $fieldname=o$valuecount.smw_id";
+				$from .= ' INNER JOIN ' . $db->tableName( SMWSql3SmwIds::TABLE_NAME ) . " AS o$valuecount ON $fieldname=o$valuecount.smw_id";
 				$select .= ( ( $select !== '' ) ? ',' : '' ) .
 					"$fieldname AS id$valuecount" .
 					",o$valuecount.smw_title AS v$valuecount" .
@@ -441,7 +441,7 @@ class SMWSQLStore3Readers {
 		$db = $this->store->getConnection();
 
 		if ( $proptable->usesIdSubject() ) { // join with ID table to get title data
-			$from = $db->tableName( SMWSql3SmwIds::tableName ) . " INNER JOIN " . $db->tableName( $proptable->getName() ) . " AS t1 ON t1.s_id=smw_id";
+			$from = $db->tableName( SMWSql3SmwIds::TABLE_NAME ) . " INNER JOIN " . $db->tableName( $proptable->getName() ) . " AS t1 ON t1.s_id=smw_id";
 			$select = 'smw_title, smw_namespace, smw_iw, smw_sortkey, smw_subobject';
 		} else { // no join needed, title+namespace as given in proptable
 			$from = $db->tableName( $proptable->getName() ) . " AS t1";
@@ -517,7 +517,7 @@ class SMWSQLStore3Readers {
 					if ( $subproptable->usesIdSubject() ) { // simply add property table to check values
 						$from .= " INNER JOIN " . $db->tableName( $subproptable->getName() ) . " AS t$tableIndex ON t$tableIndex.s_id=$joinfield";
 					} else { // exotic case with table that uses subject title+namespace in container object (should never happen in SMW core)
-						$from .= " INNER JOIN " . $db->tableName( SMWSql3SmwIds::tableName ) . " AS ids$tableIndex ON ids$tableIndex.smw_id=$joinfield" .
+						$from .= " INNER JOIN " . $db->tableName( SMWSql3SmwIds::TABLE_NAME ) . " AS ids$tableIndex ON ids$tableIndex.smw_id=$joinfield" .
 						         " INNER JOIN " . $db->tableName( $subproptable->getName() ) . " AS t$tableIndex ON " .
 						         "t$tableIndex.s_title=ids$tableIndex.smw_title AND t$tableIndex.s_namespace=ids$tableIndex.smw_namespace";
 					}
@@ -611,7 +611,7 @@ class SMWSQLStore3Readers {
 				// select all properties
 				$from = $db->tableName( $propertyTable->getName() );
 
-				$from .= " INNER JOIN " . $db->tableName( SMWSql3SmwIds::tableName ) . " ON smw_id=p_id";
+				$from .= " INNER JOIN " . $db->tableName( SMWSql3SmwIds::TABLE_NAME ) . " ON smw_id=p_id";
 				$res = $db->select( $from, 'DISTINCT smw_title,smw_sortkey',
 					// (select sortkey since it might be used in ordering (needed by Postgres))
 					$where . $this->store->getSQLConditions( $suboptions, 'smw_sortkey', 'smw_sortkey' ),
@@ -667,7 +667,7 @@ class SMWSQLStore3Readers {
 
 			$where = $from = '';
 			if ( !$proptable->isFixedPropertyTable() ) { // join ID table to get property titles
-				$from = $db->tableName( SMWSql3SmwIds::tableName ) . " INNER JOIN " . $db->tableName( $proptable->getName() ) . " AS t1 ON t1.p_id=smw_id";
+				$from = $db->tableName( SMWSql3SmwIds::TABLE_NAME ) . " INNER JOIN " . $db->tableName( $proptable->getName() ) . " AS t1 ON t1.p_id=smw_id";
 				$this->prepareValueQuery( $from, $where, $proptable, $value, 1 );
 
 				$res = $db->select( $from, 'DISTINCT smw_title,smw_sortkey',

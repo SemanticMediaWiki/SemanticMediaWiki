@@ -290,7 +290,7 @@ class SMWSQLStore3Writers {
 		$db = $this->store->getConnection();
 
 		$res = $db->select(
-			$db->tablename( SMWSql3SmwIds::tableName ),
+			$db->tablename( SMWSql3SmwIds::TABLE_NAME ),
 			'smw_id,smw_subobject,smw_sortkey',
 			'smw_title = ' . $db->addQuotes( $subject->getDBkey() ) . ' AND ' .
 			'smw_namespace = ' . $db->addQuotes( $subject->getNamespace() ) . ' AND ' .
@@ -569,7 +569,7 @@ class SMWSQLStore3Writers {
 			if ( $sid != 0 ) { // change id entry to refer to the new title
 				// Note that this also changes the reference for internal objects (subobjects)
 				$db->update(
-					SMWSql3SmwIds::tableName,
+					SMWSql3SmwIds::TABLE_NAME,
 					array(
 						'smw_title' => $newTitle->getDBkey(),
 						'smw_namespace' => $newTitle->getNamespace(),
@@ -667,7 +667,7 @@ class SMWSQLStore3Writers {
 			}
 
 			// Associate internal objects (subobjects) with the new title:
-			$table = $db->tableName( SMWSql3SmwIds::tableName );
+			$table = $db->tableName( SMWSql3SmwIds::TABLE_NAME );
 
 			$values = array(
 				'smw_title' => $newTitle->getDBkey(),
@@ -847,7 +847,7 @@ class SMWSQLStore3Writers {
 
 					if ( $proptable->usesIdSubject() ) {
 						$from   = $db->tableName( $proptable->getName() ) . ' INNER JOIN ' .
-							  $db->tableName( SMWSql3SmwIds::tableName ) . ' ON s_id=smw_id';
+							  $db->tableName( SMWSql3SmwIds::TABLE_NAME ) . ' ON s_id=smw_id';
 						$select = 'DISTINCT smw_title AS t,smw_namespace AS ns';
 					} else {
 						$from   = $db->tableName( $proptable->getName() );
@@ -926,7 +926,7 @@ class SMWSQLStore3Writers {
 					);
 				} else {
 					$db->update(
-						SMWSql3SmwIds::tableName,
+						SMWSql3SmwIds::TABLE_NAME,
 						array( 'smw_iw' => SMW_SQL3_SMWREDIIW ),
 						array( 'smw_id' => $sid ),
 						__METHOD__
@@ -967,7 +967,7 @@ class SMWSQLStore3Writers {
 			if ( $smwgQEqualitySupport != SMW_EQ_NONE ) { // mark subject as non-redirect
 
 				$db->update(
-					SMWSql3SmwIds::tableName,
+					SMWSql3SmwIds::TABLE_NAME,
 					array( 'smw_iw' => '' ),
 					array( 'smw_id' => $sid ),
 					__METHOD__

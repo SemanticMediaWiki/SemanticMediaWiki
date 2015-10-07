@@ -63,7 +63,7 @@ class SMWSql3SmwIds {
 	 * @note This should never change. Existing wikis will have to drop and
 	 * rebuild their SMW tables completely to recover from any change here.
 	 */
-	const tableName = SMWSQLStore3::ID_TABLE;
+	const TABLE_NAME = SMWSQLStore3::ID_TABLE;
 
 	/**
 	 * Id for which property table hashes are cached, if any.
@@ -370,7 +370,7 @@ class SMWSql3SmwIds {
 				}
 
 				$row = $db->selectRow(
-					self::tableName,
+					self::TABLE_NAME,
 					$select,
 					array( 'smw_id' => $id ),
 					__METHOD__
@@ -397,7 +397,7 @@ class SMWSql3SmwIds {
 			}
 
 			$row = $db->selectRow(
-				self::tableName,
+				self::TABLE_NAME,
 				$select,
 				array(
 					'smw_title' => $title,
@@ -461,7 +461,7 @@ class SMWSql3SmwIds {
 		$matches = array();
 
 		$rows = $this->store->getConnection( 'mw.db' )->select(
-			self::tableName,
+			self::TABLE_NAME,
 			$select = array( 'smw_id' ),
 			array(
 				'smw_title' => $title,
@@ -564,7 +564,7 @@ class SMWSql3SmwIds {
 			$sequenceValue = $db->nextSequenceValue( $this->getIdTable() . '_smw_id_seq' ); // Bug 42659
 
 			$db->insert(
-				self::tableName,
+				self::TABLE_NAME,
 				array(
 					'smw_id' => $sequenceValue,
 					'smw_title' => $title,
@@ -597,7 +597,7 @@ class SMWSql3SmwIds {
 
 		} elseif ( $sortkey !== '' && $sortkey != $oldsort ) {
 			$db->update(
-				self::tableName,
+				self::TABLE_NAME,
 				array( 'smw_sortkey' => $sortkey ),
 				array( 'smw_id' => $id ),
 				__METHOD__
@@ -642,7 +642,7 @@ class SMWSql3SmwIds {
 	public function updateInterwikiField( $sid, DIWikiPage $subject, $interWiki = null ) {
 
 		$this->store->getConnection()->update(
-			self::tableName,
+			self::TABLE_NAME,
 			array( 'smw_iw' => $interWiki !== null ? $interWiki : $subject->getInterWiki() ),
 			array( 'smw_id' => $sid ),
 			__METHOD__
@@ -770,7 +770,7 @@ class SMWSql3SmwIds {
 		$db = $this->store->getConnection();
 
 		$row = $db->selectRow(
-			self::tableName,
+			self::TABLE_NAME,
 			'*',
 			array( 'smw_id' => $curid ),
 			__METHOD__
@@ -786,7 +786,7 @@ class SMWSql3SmwIds {
 			$sequenceValue = $db->nextSequenceValue( $this->getIdTable() . '_smw_id_seq' ); // Bug 42659
 
 			$db->insert(
-				self::tableName,
+				self::TABLE_NAME,
 				array(
 					'smw_id' => $sequenceValue,
 					'smw_title' => $row->smw_title,
@@ -801,7 +801,7 @@ class SMWSql3SmwIds {
 			$targetid = $db->insertId();
 		} else { // change to given id
 			$db->insert(
-				self::tableName,
+				self::TABLE_NAME,
 				array( 'smw_id' => $targetid,
 					'smw_title' => $row->smw_title,
 					'smw_namespace' => $row->smw_namespace,
@@ -814,7 +814,7 @@ class SMWSql3SmwIds {
 		}
 
 		$db->delete(
-			self::tableName,
+			self::TABLE_NAME,
 			array(
 				'smw_id' => $curid
 			),
@@ -1075,7 +1075,7 @@ class SMWSql3SmwIds {
 		} elseif ( $subjectId !== 0 ) {
 
 			$row = $db->selectRow(
-				self::tableName,
+				self::TABLE_NAME,
 				array( 'smw_proptable_hash' ),
 				'smw_id=' . $subjectId,
 				__METHOD__
@@ -1105,7 +1105,7 @@ class SMWSql3SmwIds {
 		$propertyTableHash = serialize( $newTableHashes );
 
 		$db->update(
-			self::tableName,
+			self::TABLE_NAME,
 			array( 'smw_proptable_hash' => $propertyTableHash ),
 			array( 'smw_id' => $sid ),
 			__METHOD__
@@ -1179,7 +1179,7 @@ class SMWSql3SmwIds {
 	 * @return string
 	 */
 	public function getIdTable() {
-		return self::tableName;
+		return self::TABLE_NAME;
 	}
 
 }

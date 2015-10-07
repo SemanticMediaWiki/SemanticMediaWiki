@@ -115,7 +115,7 @@ class ByIdDataRebuildDispatcher {
 		);
 
 		$maxBySmwId = (int)$db->selectField(
-			\SMWSql3SmwIds::tableName,
+			\SMWSql3SmwIds::TABLE_NAME,
 			'MAX(smw_id)',
 			'',
 			__METHOD__
@@ -211,7 +211,7 @@ class ByIdDataRebuildDispatcher {
 		$db = $this->store->getConnection( 'mw.db' );
 
 		$res = $db->select(
-			\SMWSql3SmwIds::tableName,
+			\SMWSql3SmwIds::TABLE_NAME,
 			array( 'smw_id', 'smw_title', 'smw_namespace', 'smw_iw', 'smw_subobject' ),
 			array(
 				"smw_id >= $id ",
@@ -281,7 +281,7 @@ class ByIdDataRebuildDispatcher {
 			}
 		}
 
-		$db->delete( \SMWSql3SmwIds::tableName, array( 'smw_id' => $id ), __METHOD__ );
+		$db->delete( \SMWSql3SmwIds::TABLE_NAME, array( 'smw_id' => $id ), __METHOD__ );
 	}
 
 	private function findNextIdPosition( &$id, $emptyrange ) {
@@ -301,7 +301,7 @@ class ByIdDataRebuildDispatcher {
 			);
 
 			$nextBySmwId = (int)$db->selectField(
-				\SMWSql3SmwIds::tableName,
+				\SMWSql3SmwIds::TABLE_NAME,
 				'smw_id',
 				"smw_id >= $nextpos",
 				__METHOD__,

@@ -63,7 +63,7 @@ class PropertyStatisticsRebuilder {
 		$this->propertyStatisticsStore->deleteAll();
 
 		$res = $this->store->getConnection( 'mw.db' )->select(
-			\SMWSql3SmwIds::tableName,
+			\SMWSql3SmwIds::TABLE_NAME,
 			array( 'smw_id', 'smw_title' ),
 			array( 'smw_namespace' => SMW_NS_PROPERTY  ),
 			__METHOD__

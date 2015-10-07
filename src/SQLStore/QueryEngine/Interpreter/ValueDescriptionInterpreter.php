@@ -78,7 +78,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
 			$query->joinfield = array( $oid );
 		} else { // Join with SMW IDs table needed for other comparators (apply to title string).
-			$query->joinTable = SMWSql3SmwIds::tableName;
+			$query->joinTable = SMWSql3SmwIds::TABLE_NAME;
 			$query->joinfield = "{$query->alias}.smw_id";
 			$value = $description->getDataItem()->getSortKey();
 
