@@ -17,7 +17,7 @@ class SMWDINumber extends SMWDataItem {
 
 	/**
 	 * Internal value.
-	 * @var numeric
+	 * @var float|int
 	 */
 	protected $m_number;
 
