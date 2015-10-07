@@ -100,6 +100,8 @@ Added the following options (It is assumed that the selected TDB back-end suppor
 
 ## Contributors
 
+; Code contributors
+
 * MWJames
 * Jeroen De Dauw
 * Karsten Hoffmeyer (kghbln)
@@ -111,3 +113,10 @@ Added the following options (It is assumed that the selected TDB back-end suppor
 * umherirrender
 * Kunal Mehta (legoktm)
 * TranslateWiki.net
+
+; Other contributors
+
+* yoonghm
+* cicalese
+* bogota
+* plegault3397
