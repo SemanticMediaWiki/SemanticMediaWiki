@@ -176,17 +176,17 @@ class QueryEngine {
 		if ( $qid < 0 ) { // no valid/supported condition; ensure that at least only proper pages are delivered
 			$qid = QuerySegment::$qnum;
 			$q = new QuerySegment();
-			$q->joinTable = SMWSql3SmwIds::tableName;
+			$q->joinTable = SMWSql3SmwIds::TABLE_NAME;
 			$q->joinfield = "$q->alias.smw_id";
 			$q->where = "$q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND $q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWREDIIW ) . " AND $q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWBORDERIW ) . " AND $q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWINTDEFIW );
 			$this->querySegmentList[$qid] = $q;
 		}
 
-		if ( isset( $this->querySegmentList[$qid]->joinTable ) && $this->querySegmentList[$qid]->joinTable != SMWSql3SmwIds::tableName ) {
+		if ( isset( $this->querySegmentList[$qid]->joinTable ) && $this->querySegmentList[$qid]->joinTable != SMWSql3SmwIds::TABLE_NAME ) {
 			// manually make final root query (to retrieve namespace,title):
 			$rootid = QuerySegment::$qnum;
 			$qobj = new QuerySegment();
-			$qobj->joinTable  = SMWSql3SmwIds::tableName;
+			$qobj->joinTable  = SMWSql3SmwIds::TABLE_NAME;
 			$qobj->joinfield  = "$qobj->alias.smw_id";
 			$qobj->components = array( $qid => "$qobj->alias.smw_id" );
 			$qobj->sortfields = $this->querySegmentList[$qid]->sortfields;

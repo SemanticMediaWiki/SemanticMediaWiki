@@ -310,7 +310,7 @@ class DataRebuilder {
 		$matches = array();
 
 		$res = $this->store->getConnection( 'mw.db' )->select(
-			\SMWSql3SmwIds::tableName,
+			\SMWSql3SmwIds::TABLE_NAME,
 			array( 'smw_id' ),
 			array( 'smw_iw' => SMW_SQL3_SMWDELETEIW ),
 			__METHOD__
