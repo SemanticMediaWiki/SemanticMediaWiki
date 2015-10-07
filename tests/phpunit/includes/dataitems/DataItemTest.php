@@ -9,10 +9,6 @@ use SMWDataItem;
 /**
  * Base class for SMW\DataItem tests.
  *
- * @file
- * @since 1.8
- *
- *
  * @group SMW
  * @group SMWExtension
  * @group SMWDataItems
@@ -37,34 +33,6 @@ abstract class DataItemTest extends MwDBaseUnitTestCase {
 	 * @return array
 	 */
 	public abstract function constructorProvider();
-
-	/**
-	 * @since 1.9
-	 *
-	 * @return array
-	 */
-	public function invalidConstructorArgsProvider() {
-		return array();
-	}
-
-	public function testConstructWithInvalidArgsThrowsException() {
-		$this->assertTrue( true );
-
-		foreach ( $this->invalidConstructorArgsProvider() as $argList ) {
-		// PHPUnit 4.3* didn't caught the exception and failed therefore
-		// disable the assert for the time being
-		// $this->assertConstructWithInvalidArgsThrowsException( $argList );
-		}
-	}
-
-	protected function assertConstructWithInvalidArgsThrowsException( array $argList ) {
-		$this->setExpectedException( 'Exception' );
-
-		call_user_func_array(
-			array( $this, 'newInstance' ),
-			$argList
-		);
-	}
 
 	/**
 	 * Creates and returns a new instance of the data item.

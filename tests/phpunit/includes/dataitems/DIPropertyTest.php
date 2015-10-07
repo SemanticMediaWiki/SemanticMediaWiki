@@ -43,20 +43,6 @@ class DIPropertyTest extends DataItemTest {
 		);
 	}
 
-	/**
-	 * @see DataItemTest::invalidConstructorArgsProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @return array
-	 */
-	public function invalidConstructorArgsProvider() {
-		return array(
-			array( true ),
-			array( array() ),
-		);
-	}
-
 	public function testSetPropertyTypeIdOnUserDefinedProperty() {
 
 		$property = new DIProperty( 'SomeBlobProperty' );

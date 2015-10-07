@@ -6,10 +6,6 @@ namespace SMW\Tests;
  * @covers SMWDINumber
  * @covers SMWDataItem
  *
- * @file
- * @since 1.8
- *
- *
  * @group SMW
  * @group SMWExtension
  * @group SMWDataItems
@@ -42,21 +38,6 @@ class SMWDINumberTest extends DataItemTest {
 		return array(
 			array( 0 ),
 			array( 243.35353 ),
-		);
-	}
-
-	/**
-	 * @see DataItemTest::invalidConstructorArgsProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @return array
-	 */
-	public function invalidConstructorArgsProvider() {
-		return array(
-			array( true ),
-			array( array() ),
-			array( 'abc' ),
 		);
 	}
 

@@ -44,19 +44,4 @@ class SMWDIBooleanTest extends DataItemTest {
 		);
 	}
 
-	/**
-	 * @see DataItemTest::invalidConstructorArgsProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @return array
-	 */
-	public function invalidConstructorArgsProvider() {
-		return array(
-			array( 42 ),
-			array( array() ),
-			array( 'abc' ),
-		);
-	}
-
 }
