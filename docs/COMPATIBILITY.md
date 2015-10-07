@@ -163,6 +163,12 @@ work with more recent versions of PHP and MediaWiki, though this is not guarante
 		<th>PostgreSQL</th>
 	</tr>
 	<tr>
+		<th>SMW 2.3.x</th>
+		<td>Full support (5.x)</td>
+		<td>Full support (3.x)</td>
+		<td>Full support (9.x)</td>
+	</tr>
+	<tr>
 		<th>SMW 2.2.x</th>
 		<td>Full support (5.x)</td>
 		<td>Full support (3.x)</td>
