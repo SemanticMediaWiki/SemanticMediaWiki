@@ -4,6 +4,7 @@ use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\Exporter\DataItemToExpResourceEncoder;
 use SMW\Exporter\DataItemToElementEncoder;
+use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Escaper;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
@@ -426,8 +427,6 @@ class SMWExporter {
 					}
 				}
 			} // else: not in wiki namespace -- TODO: this could be an imported URI
-		} else {
-			// TODO (currently not needed, but will be useful for displaying external SPARQL results)
 		}
 
 		return $dataItem;
@@ -443,7 +442,8 @@ class SMWExporter {
 			$type = DataTypeRegistry::getInstance()->findTypeId( str_replace( '_', ' ', $type->getDBkey() ) );
 		} elseif ( $type == false ) {
 			$type = '';
-		} // else keep $type
+		}
+
 		switch ( $type ) {
 			case '_anu':
 			return 'AnnotationProperty';
@@ -457,7 +457,7 @@ class SMWExporter {
 	}
 
 	/**
-	 * Get an SMWExpNsResource for a special property of SMW, or null if
+	 * Get an ExpNsResource for a special property of SMW, or null if
 	 * no resource is assigned to the given property key. The optional
 	 * namespace is used to select the proper resource for properties that
 	 * must take the type of the annotated object into account for some
@@ -465,7 +465,7 @@ class SMWExporter {
 	 *
 	 * @param $propertyKey string the Id of the special property
 	 * @param $forNamespace integer the namespace of the page which has a value for this property
-	 * @return SMWExpNsResource or null
+	 * @return ExpNsResource|null
 	 */
 	static public function getSpecialPropertyResource( $propertyKey, $forNamespace = NS_MAIN ) {
 		switch ( $propertyKey ) {
@@ -512,18 +512,18 @@ class SMWExporter {
 
 
 	/**
-	 * Create an SMWExpNsResource for some special element that belongs to
+	 * Create an ExpNsResource for some special element that belongs to
 	 * a known vocabulary. An exception is generated when given parameters
 	 * that do not fit any known vocabulary.
 	 *
 	 * @param $namespaceId string (e.g. "rdf")
 	 * @param $localName string (e.g. "type")
-	 * @return SMWExpNsResource
+	 * @return ExpNsResource
 	 */
 	static public function getSpecialNsResource( $namespaceId, $localName ) {
 		$namespace = self::getNamespaceUri( $namespaceId );
 		if ( $namespace !== '' ) {
-			return new SMWExpNsResource( $localName, $namespace, $namespaceId );
+			return new ExpNsResource( $localName, $namespace, $namespaceId );
 		} else {
 			throw new InvalidArgumentException( "The vocabulary '$namespaceId' is not a known special vocabulary." );
 		}
