@@ -167,13 +167,7 @@ class XmlResponseParser implements HttpResponseParser {
 					}
 				break;
 			case 'result' && ( $prevTag == 'results' ):
-				$row = array();
-
-				for ( $i = 0; $i < count( $this->header ); ++$i ) {
-					$row[$i] = null;
-				}
-
-				$this->data[] = $row;
+				$this->data[] = array_fill( 0, count( $this->header ), null );
 				break;
 			case  'literal' && ( $prevTag == 'binding' ):
 				if ( array_key_exists( 'datatype', $attributes ) ) {
