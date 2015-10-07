@@ -109,4 +109,5 @@ Added the following options (It is assumed that the selected TDB back-end suppor
 * Amir E. Aharoni
 * Joel K. Pettersson
 * umherirrender
+* Kunal Mehta (legoktm)
 * TranslateWiki.net
