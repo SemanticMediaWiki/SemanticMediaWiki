@@ -79,20 +79,20 @@ Releases after Composer support:
 	</tr>
 	<tr>
 		<th>SMW 3.0.x</th>
-		<td>5.5.x - latest (possibly 5.4.x)</td>
-		<td>3.3.x - latest</td>
+		<td>5.6.0 - latest (possibly 5.5.x)</td>
+		<td>3.5.0 - latest</td>
 		<td>1.23 - latest</td>
 	</tr>
 	<tr>
 		<th>SMW 2.4.x</th>
 		<td>5.3.2 - latest</td>
-		<td>3.3.x - latest</td>
+		<td>3.5.0 - latest</td>
 		<td>1.19 - latest</td>
 	</tr>
 	<tr>
 		<th>SMW 2.3.x</th>
 		<td>5.3.2 - 5.6.x (beta support for PHP 7)</td>
-		<td>3.5.x - 3.9.x</td>
+		<td>3.5.0 - 3.9.x</td>
 		<td>1.19 - 1.26</td>
 	</tr>
 	<tr>
