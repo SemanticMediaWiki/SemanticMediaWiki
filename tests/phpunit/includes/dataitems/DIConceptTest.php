@@ -39,19 +39,6 @@ class DIConceptTest extends DataItemTest {
 	}
 
 	/**
-	 * @see DataItemTest::invalidConstructorArgsProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @return array
-	 */
-	public function invalidConstructorArgsProvider() {
-		return array(
-			array( 'Bar' ),
-		);
-	}
-
-	/**
 	 * @test DIConcept::setCacheStatus
 	 * @test DIConcept::setCacheDate
 	 * @test DIConcept::setCacheCount
