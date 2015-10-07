@@ -54,10 +54,8 @@ class DispatchingDescriptionDeserializer {
 	public function getDescriptionDeserializerFor( DataValue $dataValue ) {
 
 		foreach ( $this->descriptionDeserializers as $descriptionDeserializer ) {
-
-			$descriptionDeserializer->setDataValue( $dataValue );
-
 			if ( $descriptionDeserializer->isDeserializerFor( $dataValue ) ) {
+				$descriptionDeserializer->setDataValue( $dataValue );
 				return $descriptionDeserializer;
 			}
 		}

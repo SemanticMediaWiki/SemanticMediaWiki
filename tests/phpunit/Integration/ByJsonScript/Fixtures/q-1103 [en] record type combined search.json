@@ -1,0 +1,77 @@
+{
+	"description": "_rec type some additional search pattern",
+	"properties": [
+		{
+			"name": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"name": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"name": "hasWeightMeasure",
+			"contents": "[[Has type::Quantity]] [[Corresponds to::1 g, gram, grams]] [[Corresponds to::0.2 teaspoon, teaspoons]]"
+		},
+		{
+			"name": "hasIngredient",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"name": "Has text number record",
+			"contents": "[[Has type::Record]] [[Has fields::Has text;Has number]]"
+		},
+		{
+			"name": "hasCookingIngredient",
+			"contents": "[[Has type::Record]] [[Has fields::hasIngredient;hasWeightMeasure]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/1103/1",
+			"contents": "[[Category:E-1103]][[Has text number record::SomeText:123]]"
+		},
+		{
+			"name": "Example/1103/2",
+			"contents": "[[Category:E-1103]][[hasCookingIngredient::salt:0.25 teaspoon]]"
+		},
+		{
+			"name": "Example/1103/3",
+			"contents": "{{#ask: [[Category:E-1103]][[hasCookingIngredient::salt;~teaspoon]] |?hasCookingIngredient}}"
+		}
+	],
+	"query-testcases": [
+		{
+			"about": "#0 simple search that causes an error",
+			"condition": "[[Category:E-1103]] [[Has status record::SomeText;~12]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 0
+			}
+		}
+	],
+	"format-testcases": [
+		{
+			"about": "#1 verify no cached DataValue is invoked and causes wrong object deseralization (see #1189)",
+			"subject": "Example/1103/3",
+			"expected-output": {
+				"to-contain": [
+					"&quot;teaspoon&quot; is not a number"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwStrictComparators": false
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
