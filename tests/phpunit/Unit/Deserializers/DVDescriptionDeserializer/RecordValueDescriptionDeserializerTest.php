@@ -49,7 +49,9 @@ class RecordValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase
 		$recordValue->expects( $this->any() )
 			->method( 'getValuesFromString' )
 			->with( $this->stringContains( $value ) )
-			->will( $this->returnCallback( function( $value ){ return explode(';', $value ); } ) );
+			->will( $this->returnCallback( function( $value ) {
+				 return explode(';', $value );
+			} ) );
 
 		$recordValue->expects( $this->any() )
 			->method( 'getPropertyDataItems' )
