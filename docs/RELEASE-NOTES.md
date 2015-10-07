@@ -104,3 +104,26 @@ happens for these features until they mature from being an experimental feature 
 * #1145 Added `onoi/callback-container:~1.0` and removes all custom DIC code from SMW-core
 * (964155) Added removal of whitespace for `DIBlob` values (" Foo " becomes "Foo")
 * #1149 Added `InMemoryPoolCache` to improve performance for the `SPARQLStore` during turtle serialization
+
+## Contributors
+
+; Code contributors
+
+* MWJames
+* Jeroen De Dauw
+* Karsten Hoffmeyer (kghbln)
+* Felipe de Jong (jongfeli)
+* Vitaliy Filippov (vitalif)
+* paladox
+* Amir E. Aharoni
+* Joel K. Pettersson
+* umherirrender
+* Kunal Mehta (legoktm)
+* TranslateWiki.net
+
+; Other contributors
+
+* yoonghm
+* cicalese
+* bogota
+* plegault3397
