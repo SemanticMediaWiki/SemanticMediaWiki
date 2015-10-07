@@ -17,16 +17,6 @@ use SMWErrorValue as ErrorValue;
  */
 class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 
-	/**
-	 * @since 2.2
-	 *
-	 * @param PropertyAnnotator $propertyAnnotator
-	 * @param Store $store
-	 */
-	public function __construct( PropertyAnnotator $propertyAnnotator ) {
-		parent::__construct( $propertyAnnotator );
-	}
-
 	protected function addPropertyValues() {
 
 		$subject = $this->getSemanticData()->getSubject();
