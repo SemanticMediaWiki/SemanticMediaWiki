@@ -49,6 +49,9 @@ If your TDB back-end does not support SPARQL 1.1, this setting needs to be set t
 
 ## Experimental features
 
+These features are disabled by default and can be turned on using configuration. Additional logging
+happens for these features until they mature from being an experimental feature in a future release.
+
 * #1035, #1063 Added `CachedValueLookupStore` as post-cached layer to improve DB read access (`$GLOBALS['smwgValueLookupCacheType']`, $GLOBALS['smwgValueLookupCacheLifetime'])
 * #1116 Added $GLOBALS['smwgValueLookupFeatures'] setting to fain grain the cache access level, default is set to `SMW_VL_SD | SMW_VL_PL | SMW_VL_PV | SMW_VL_PS;`
 * #1117 Added `EmbeddedQueryDependencyLinksStore` to track query dependencies and update altered queries using `ParserCachePurgeJob` for when `$GLOBALS['smwgEnabledQueryDependencyLinksStore']` is enabled
