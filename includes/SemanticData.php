@@ -165,7 +165,7 @@ class SemanticData {
 	 * @return array
 	 */
 	public function __sleep() {
-		return array( 'mSubject' );
+		return array( 'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mHasVisibleProps', 'mHasVisibleSpecs' );
 	}
 
 	/**
