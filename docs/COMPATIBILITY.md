@@ -1,5 +1,5 @@
-For a full list of changes in each release, see the [release notes](releasenotes/). For instructions
-on how to install the latest version of SMW, see the [installation instructions](INSTALL.md).
+For a full list of changes in each release, see the [release notes](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/docs/releasenotes). For instructions
+on how to install the latest version of SMW, see the [installation instructions](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md).
 
 ## Release versions
 
@@ -11,25 +11,25 @@ on how to install the latest version of SMW, see the [installation instructions]
 		<th>Git branch</th>
 	</tr>
 	<tr>
-		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/RELEASE-NOTES.md">SMW 2.3.0</a></th>
+		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/RELEASE-NOTES.md">SMW 2.3.x</a></th>
 		<td>Development version</td>
 		<td></td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
 	</tr>
 	<tr>
-		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.2.0">SMW 2.2.0</a></th>
+		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.2.0">SMW 2.2.x</a></th>
 		<td>Stable release</td>
 		<td>2015-05-09</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.2.x">2.2.x</a></td>
 	</tr>
 	<tr>
-		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.1.0">SMW 2.1.0</a></th>
+		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.1.x">SMW 2.1.x</a></th>
 		<td>Obsolete release</td>
 		<td>2015-01-19</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.1.x">2.1.x</a></td>
 	</tr>
 	<tr>
-		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.0">SMW 2.0.0</a></th>
+		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.0">SMW 2.0.x</a></th>
 		<td>Obsolete release</td>
 		<td>2014-08-04</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.0">2.0</a></td>
