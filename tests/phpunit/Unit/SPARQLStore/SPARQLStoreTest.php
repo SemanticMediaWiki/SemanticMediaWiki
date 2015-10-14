@@ -167,6 +167,11 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 		$oldTitle = Title::newFromText( __METHOD__ . '-old' );
 		$newTitle = Title::newFromText( __METHOD__ . '-new' );
 
+		$respositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RespositoryConnection' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'insertDelete' ) )
+			->getMock();
+
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -176,8 +181,12 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
 			->setConstructorArgs( array( $store ) )
-			->setMethods( array( 'doSparqlDataDelete', 'insertDelete' ) )
+			->setMethods( array( 'doSparqlDataDelete', 'getConnection' ) )
 			->getMock();
+
+		$instance->expects( $this->once() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $respositoryConnection ) );
 
 		$instance->expects( $this->once() )
 			->method( 'doSparqlDataDelete' )

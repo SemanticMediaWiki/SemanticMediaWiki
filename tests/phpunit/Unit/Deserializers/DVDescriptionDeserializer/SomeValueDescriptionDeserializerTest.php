@@ -43,8 +43,15 @@ class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'isValid', 'getDataItem', 'getProperty' ) )
+			->setMethods( array( 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ) )
 			->getMockForAbstractClass();
+
+		$dataValue->expects( $this->once() )
+			->method( 'setUserValue' )
+			->with(
+				$this->anything(),
+				$this->equalTo( false ),
+				$this->equalTo( false ) );
 
 		$dataValue->expects( $this->any() )
 			->method( 'isValid' )
@@ -65,6 +72,29 @@ class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 			$decription,
 			$instance->deserialize( $value )
 		);
+	}
+
+	/**
+	 * @dataProvider likeNotLikeProvider
+	 */
+	public function testDeserializeForLikeNotLike( $value ) {
+
+		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'setUserValue' ) )
+			->getMockForAbstractClass();
+
+		$dataValue->expects( $this->once() )
+			->method( 'setUserValue' )
+			->with(
+				$this->anything(),
+				$this->equalTo( false ),
+				$this->equalTo( true ) );
+
+		$instance = new SomeValueDescriptionDeserializer();
+		$instance->setDataValue( $dataValue );
+
+		$instance->deserialize( $value );
 	}
 
 	public function testInvalidDataValueRetunsThingDescription() {
@@ -105,6 +135,20 @@ class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'Foo',
 			'\SMW\Query\Language\ValueDescription'
+		);
+
+		return $provider;
+	}
+
+
+	public function likeNotLikeProvider() {
+
+		$provider[] = array(
+			'~Foo'
+		);
+
+		$provider[] = array(
+			'!~Foo'
 		);
 
 		return $provider;

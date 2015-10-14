@@ -1,0 +1,110 @@
+{
+	"description": "~/!~ comparator usage on allowed values, #1207",
+	"properties": [
+		{
+			"name": "Has status record",
+			"contents": "[[Has type::Text]] [[Allows value::open]], [[Allows value::closed]], [[Allows value::in progress]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/1201/1",
+			"contents": "[[Category:E-1201]][[Has status record::open]]"
+		},
+		{
+			"name": "Example/1201/2",
+			"contents": "[[Category:E-1201]]{{#set:Has status record=closed}}"
+		},
+		{
+			"name": "Example/1201/3",
+			"contents": "{{#subobject:Has status record=in progress|@category=E-1201}}"
+		},
+		{
+			"name": "Example/1201/4",
+			"contents": "[[Category:E-1201]][[Has status record::none of the above]]"
+		}
+	],
+	"query-testcases": [
+		{
+			"about": "#0 like *en*",
+			"condition": "[[Category:E-1201]][[Has status record::~*en*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Example/1201/1#0##"
+				]
+			}
+		},
+		{
+			"about": "#1 like cl*",
+			"condition": "[[Category:E-1201]][[Has status record::~cl*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Example/1201/2#0##"
+				]
+			}
+		},
+		{
+			"about": "#2 not like cl*",
+			"condition": "[[Category:E-1201]][[Has status record::!~cl*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Example/1201/1#0##",
+					"Example/1201/3#0##_a5585c2dfa8560b361ec9a55cb88affd"
+				]
+			}
+		},
+		{
+			"about": "#3 not like cl* AND *in*",
+			"condition": "[[Category:E-1201]]<q>[[Has status record::!~cl*]] AND [[Has status record::!~*in*]]</q>",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Example/1201/1#0##"
+				]
+			}
+		},
+		{
+			"about": "#4 not like cl* OR *in* (doesn't make much sense, we test it anyway)",
+			"condition": "[[Category:E-1201]]<q>[[Has status record::!~cl*]] OR [[Has status record::!~*in*]]</q>",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 3,
+				"results": [
+					"Example/1201/1#0##",
+					"Example/1201/2#0##",
+					"Example/1201/3#0##_a5585c2dfa8560b361ec9a55cb88affd"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwStrictComparators": false
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

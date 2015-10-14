@@ -29,7 +29,7 @@
 	"subjects": [
 		{
 			"name": "Example/1103/1",
-			"contents": "[[Category:E-1103]][[Has text number record::SomeText:123]]"
+			"contents": "[[Category:E-1103]][[Has text number record::SomeText;123]]"
 		},
 		{
 			"name": "Example/1103/2",
@@ -38,6 +38,10 @@
 		{
 			"name": "Example/1103/3",
 			"contents": "{{#ask: [[Category:E-1103]][[hasCookingIngredient::salt;~teaspoon]] |?hasCookingIngredient}}"
+		},
+		{
+			"name": "Example/1103/4",
+			"contents": "[[Category:E-1103]][[Has text number record::SomeText;1234]]"
 		}
 	],
 	"query-testcases": [
@@ -50,6 +54,20 @@
 			},
 			"queryresult": {
 				"count": 0
+			}
+		},
+		{
+			"about": "#1, see issue #1207",
+			"condition": "[[Category:E-1103]] [[Has text number record::~*eT*;>123]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Example/1103/4#0##"
+				]
 			}
 		}
 	],
@@ -67,7 +85,7 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en",
-		"smwStrictComparators": false
+		"smwStrictComparators": true
 	},
 	"meta": {
 		"version": "0.1",
