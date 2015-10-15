@@ -6,7 +6,8 @@
 			"Priviet",
 			"아라",
 			"Keysuck",
-			"SeoJeongHo"
+			"SeoJeongHo",
+			"Hwangjy9"
 		]
 	},
 	"smw-desc": "위키를 기계와 사람이 더 접근하기 쉽게 합니다 ([https://semantic-mediawiki.org/wiki/Help:User_manual 온라인 설명서])",
@@ -234,7 +235,7 @@
 	"smw_smwadmin_datarefreshprogress": "<strong>업데이트가 이미 진행 중입니다.</strong>\n사용자가 위키에 접근할 때마다 작은 덩어리의 새로 고침 데이터 진행만 있기 때문에 업데이트 진행이 느린 것은 정상입니다.\n더 빠르게 이 업데이트를 마치려면 <code>runJobs.php</code> 미디어위키 유지 보수 스크립트를 호출할 수 있습니다. (일괄 하나에서 수행하는 업데이트의 수를 제한하려면 <code>--maxjobs 1000</code> 옵션을 사용하세요)\n현재 업데이트의 예상된 진행:",
 	"smw_smwadmin_datarefreshbutton": "데이터 업데이트 시작",
 	"smw_smwadmin_datarefreshstop": "이 업데이트 중지",
-	"smw_smwadmin_datarefreshstopconfirm": "예, 확실합니다.",
+	"smw_smwadmin_datarefreshstopconfirm": "예, {{GENDER:$1|확실합니다}}.",
 	"smw_smwadmin_support": "지원 얻기",
 	"smw_smwadmin_supportdocu": "문제가 있을 때 다양한 자료가 도움이 될 수도 있습니다:",
 	"smw_smwadmin_installfile": "설치하는 데 문제가 발생하였다면, <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">INSTALL 파일</a>에서 지침을 확인하고 시작하세요.",
@@ -266,7 +267,7 @@
 	"smw-ui-tooltip-title-note": "참고",
 	"smw-ui-tooltip-title-legend": "범례",
 	"smw_unknowntype": "이 속성의 형식이 잘못되었습니다",
-	"smw-concept-cache-text": "개념은 총 {{PLURAL:$1|문서}} $1개가 있으며, $2에 마지막으로 업데이트했습니다.",
+	"smw-concept-cache-text": "개념은 총 {{PLURAL:$1|문서}} $1개가 있으며, $2 $3에 마지막으로 업데이트했습니다.",
 	"smw_concept_header": "\"$1\" 개념의 문서",
 	"smw_conceptarticlecount": "아래에 {{PLURAL:$1|문서}} $1개를 보여줍니다.",
 	"right-smw-admin": "관리 작업에 접근 (시맨틱 미디어위키)",
