@@ -431,12 +431,10 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			$result .= '|' . $printout->getSerialisation() . "\n";
 		}
 
-		// Find parameters
 		foreach ( $this->params as $param ) {
 			if ( !$param->wasSetToDefault() ) {
-					$result .= '|' . htmlspecialchars( $param->getName() ) . '=';
-					// e.g. sorting returns with an array
-					$result .= $param->getDefinition()->isList() ? implode( $param->getDefinition()->getDelimiter(), $param->getValue() ) . "\n" : $param->getValue() . "\n";
+				$result .= '|' . htmlspecialchars( $param->getName() ) . '=';
+				$result .= htmlspecialchars( $this->m_params[$param->getName()] );
 			}
 		}
 
