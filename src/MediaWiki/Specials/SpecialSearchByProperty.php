@@ -84,4 +84,7 @@ class SpecialSearchByProperty extends SpecialPage {
 		return wfCheckLimits();
 	}
 
+	protected function getGroupName() {
+		return 'smw_group';
+	}
 }

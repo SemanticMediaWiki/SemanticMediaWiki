@@ -157,4 +157,8 @@ class SMWPageProperty extends SpecialPage {
 		$wgOut->addHTML( $html );
 		SMWOutputs::commitToOutputPage( $wgOut ); // make sure locally collected output data is pushed to the output!
 	}
+
+	protected function getGroupName() {
+		return 'smw_group';
+	}
 }

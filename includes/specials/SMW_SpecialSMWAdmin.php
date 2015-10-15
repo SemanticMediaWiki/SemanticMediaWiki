@@ -320,4 +320,7 @@ class SMWAdmin extends SpecialPage {
 		return FormatJson::encode( $input, true );
 	}
 
+	protected function getGroupName() {
+		return 'smw_group';
+	}
 }

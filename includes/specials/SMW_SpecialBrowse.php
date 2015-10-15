@@ -454,4 +454,8 @@ class SMWSpecialBrowse extends SpecialPage {
 
 		$this->addHelpLink( wfMessage( $key )->escaped(), true );
 	}
+
+	protected function getGroupName() {
+		return 'smw_group';
+	}
 }

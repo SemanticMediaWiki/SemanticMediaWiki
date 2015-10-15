@@ -47,4 +47,8 @@ class SpecialSemanticStatistics extends SpecialPage {
 			)->parseAsBlock()
 		);
 	}
+
+	protected function getGroupName() {
+		return 'wiki';
+	}
 }
