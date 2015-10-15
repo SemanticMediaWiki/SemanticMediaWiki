@@ -72,6 +72,7 @@ happens for these features until they mature from being an experimental feature 
 * #1067 Fixed return value of the `#set` parser
 * #1074 Fixed duplicated error message for a `_dat` DataValue
 * #1081 Fixed mismatch of `owl:Class` for categories when used in connection with a vocabulary import
+* #1090 Fixed error on Special:Ask when using a format provided by Semantic Maps
 * #1126 Fixed silent annotations added by the `Factbox` when content contains `[[ ... ]]`
 * #1120 Fixed `\\` encoding in `Resources.php`
 * #233 Fixed disabling of `$GLOBALS['wgFooterIcons']['poweredby']['semanticmediawiki']`
