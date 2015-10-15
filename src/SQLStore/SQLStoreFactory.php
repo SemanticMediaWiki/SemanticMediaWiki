@@ -18,7 +18,6 @@ use SMW\SQLStore\QueryEngine\EngineOptions;
 use Onoi\Cache\Cache;
 use SMW\EventHandler;
 use Onoi\BlobStore\BlobStore;
-use Doctrine\DBAL\Connection;
 use SMW\SQLStore\ConceptCache;
 use SMW\ApplicationFactory;
 use SMW\CircularReferenceGuard;
@@ -41,11 +40,6 @@ class SQLStoreFactory {
 	 * @var Settings
 	 */
 	private $settings;
-
-	/**
-	 * @var Connection|null
-	 */
-	private $dbalConnection = null;
 
 	/**
 	 * @since 2.2
@@ -348,15 +342,6 @@ class SQLStoreFactory {
 
 	private function newTemporaryIdTableCreator() {
 		return new TemporaryIdTableCreator( $GLOBALS['wgDBtype'] );
-	}
-
-	private function getConnection() {
-		if ( $this->dbalConnection === null ) {
-			$SegmentListBuilder = new ConnectionSegmentListBuilder( $GLOBALS );
-			$this->dbalConnection = $SegmentListBuilder->newConnection();
-		}
-
-		return $this->dbalConnection;
 	}
 
 }
