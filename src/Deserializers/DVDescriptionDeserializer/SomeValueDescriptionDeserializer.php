@@ -34,22 +34,25 @@ class SomeValueDescriptionDeserializer extends DescriptionDeserializer {
 	public function deserialize( $value ) {
 
 		if ( !is_string( $value ) ) {
-			throw new InvalidArgumentException( 'value needs to be a string' );
+			throw new InvalidArgumentException( 'Value needs to be a string' );
 		}
 
 		$comparator = SMW_CMP_EQ;
-
 		$this->prepareValue( $value, $comparator );
 
-		if( $comparator == SMW_CMP_LIKE ) {
-			// ignore allowed values when the LIKE comparator is used (BUG 21893)
+		// Ignore allowed values when the ~/!~ comparator is used BUG 21893, #1207
+		if( $comparator == SMW_CMP_LIKE || $comparator == SMW_CMP_NLKE ) {
 			$this->dataValue->setUserValue( $value, false, true );
 		} else {
 			$this->dataValue->setUserValue( $value );
 		}
 
 		if ( $this->dataValue->isValid() ) {
-			return new ValueDescription( $this->dataValue->getDataItem(), $this->dataValue->getProperty(), $comparator );
+			return new ValueDescription(
+				$this->dataValue->getDataItem(),
+				$this->dataValue->getProperty(),
+				$comparator
+			);
 		}
 
 		return new ThingDescription();
