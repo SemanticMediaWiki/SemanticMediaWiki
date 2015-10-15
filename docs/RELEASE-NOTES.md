@@ -74,7 +74,7 @@ happens for these features until they mature from being an experimental feature 
 * #1081 Fixed mismatch of `owl:Class` for categories when used in connection with a vocabulary import
 * #1090 Fixed error on Special:Ask when using a format provided by Semantic Maps
 * #1126 Fixed silent annotations added by the `Factbox` when content contains `[[ ... ]]`
-* #1120 Fixed `\\` encoding in `Resources.php`
+* #1120 Fixed resource loading issue on Windows when using `$wgResourceLoaderDebug=true`
 * #233 Fixed disabling of `$GLOBALS['wgFooterIcons']['poweredby']['semanticmediawiki']`
 * #1137 Fixed re-setting of `smw-admin` user group permission to its default
 * #1146 Fixed #set rendering of template supported output (refs #1067)
