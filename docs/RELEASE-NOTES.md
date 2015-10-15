@@ -82,6 +82,7 @@ happens for these features until they mature from being an experimental feature 
 * #1166 Fixed context awareness of `ParserAfterTidy` in connection with the `purge` action
 * #1165 Fixed "duplicate key value violates unique constraint" for postgres on conjunctive and disjunctive queries
 * #1182 Fixed further link to use the format parameter as specified by `#ask`
+* #1207 Fixed recognition of the `!~` comparator in combination with allowed value queries
 
 ## Internal changes
 
