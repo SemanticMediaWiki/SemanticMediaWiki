@@ -32,10 +32,10 @@ If your TDB back-end does not support SPARQL 1.1, this setting needs to be set t
 
 ## Enhancements
 
-* #1042 Extended `rebuildData.php` to inform about the estimated % progress
+* #1042 Added progress indicator to `rebuildData.php`
 * #1047 Extended context help displayed on `Special:Types` and subsequent type pages
-* #1049 Added resource targets to allow MobileFrontend to load SMW related modules
-* #1053 Added a `CSS` rule to visually distinguish a "normal" from a subobject link
+* #1049 Improved MobileFrontend support
+* #1053 Added a `CSS` rule to visually distinguish subobject links from "normal" links
 * #1063 Added `$GLOBALS['smwgValueLookupCacheType']` to improve DB lookup performance though the use of a responsive cache layer (such as `redis`) and buffer repeated requests either from the API or page view to the back-end.
 * #1066, #1075 Extended `InTextAnnotationParser` to correctly handle `::` or `:::` and allow for proper processing of annotations such as `[[DOI::10.1002/123::abc]]` or `[[Foo:::123]]`
 * #1097 Predefined property aliases are redirected to the base property
@@ -109,7 +109,7 @@ happens for these features until they mature from being an experimental feature 
 
 ## Contributors
 
-; Code contributors
+**Code contributors**
 
 * MWJames
 * Jeroen De Dauw
@@ -123,7 +123,7 @@ happens for these features until they mature from being an experimental feature 
 * Kunal Mehta (legoktm)
 * TranslateWiki.net
 
-; Other contributors
+**Other contributors**
 
 * yoonghm
 * cicalese
