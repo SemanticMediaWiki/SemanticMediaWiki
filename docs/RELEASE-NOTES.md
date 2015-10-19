@@ -21,9 +21,11 @@ If your TDB back-end does not support SPARQL 1.1, this setting needs to be set t
 * #1158 Added basic support for `_geo` queries to the `SPARQLStore`
 * #1159 Added limitation of the `aux` property usage in the Exporter (use `$GLOBALS['smwgExportBCAuxiliaryUse'] = true;` to keep backwards compatibility until 3.x)
 
-### Property/Subject deletion
+### Improved handling of removed entities in SQLStore
 
-* #1100 introduced a deletion marker on entities that got deleted, making those entities no longer available to queries or special page display.
+In previous releases it could happen that deleted entities (subject, property) reappeared in queries even though they have been removed. This release introduces several changes to eleminate some of the issues identified.
+
+* #1100 introduced a deletion marker on entities that got deleted, making them no longer available to queries or special page display.
 * #1127 Added `--shallow-update` to `rebuildData`, to only parse those entities that have a different last modified timestamp compared to that of the last revision. This enables to run `rebuildData` updates on deleted, redirects, and other out of sync entities.
 * Solved #701 where an unconditional namespace query `[[Help:+]]` would display deleted subjects (in case those subjects were deleted)
 * #1105 Added filter to mark deleted redirect targets with `SMW_SQL3_SMWDELETEIW`
