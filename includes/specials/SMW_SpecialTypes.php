@@ -132,4 +132,8 @@ class SMWSpecialTypes extends SpecialPage {
 
 		return $result;
 	}
+
+	protected function getGroupName() {
+		return 'pages';
+	}
 }

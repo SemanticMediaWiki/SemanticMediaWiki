@@ -653,4 +653,8 @@ class SMWAskPage extends SMWQuerySpecialPage {
 
 		return $navigation;
 	}
+
+	protected function getGroupName() {
+		return 'smw_group';
+	}
 }

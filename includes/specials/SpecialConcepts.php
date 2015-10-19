@@ -113,4 +113,8 @@ class SpecialConcepts extends SpecialPage {
 
 		$this->getOutput()->addHTML( $this->getHtml( $diWikiPages, $limit, $from, $until ) );
 	}
+
+	protected function getGroupName() {
+		return 'pages';
+	}
 }
