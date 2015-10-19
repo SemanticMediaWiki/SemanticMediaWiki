@@ -294,7 +294,9 @@
 	"smw-sp-admin-settings-title": "Configuratie-instellingen",
 	"smw-sp-admin-settings-docu": "Geeft een lijst van alle default en localized settings die relevant zijn voor de Semantic MediaWiki omgeving. Raadpleeg de help-pagina [https://semantic-mediawiki.org/wiki/Help:Configuration configuratie] voor meer informatie over afzonderlijke instellingen.",
 	"smw-sp-admin-settings-button": "Genereren van de lijst met instellingen",
+	"smw-sp-admin-idlookup-docu": "Geeft details weer over een intern object-ID dat individuele entiteiten representeert (wikipagina, subobject, enzovoort) in Semantic MediaWiki.",
 	"smw-livepreview-loading": "Bezig met laden…",
 	"smw-sp-searchbyproperty-resultlist-header": "Lijst van resultaten",
+	"log-name-smw": "Logboek Semantic MediaWiki",
 	"smw-sp-types-list": "Lijst van gegevenstypen"
 }
