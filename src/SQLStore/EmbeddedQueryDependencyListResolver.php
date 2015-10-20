@@ -231,7 +231,14 @@ class EmbeddedQueryDependencyListResolver {
 			$data = $printRequest->getData();
 
 			if ( $data instanceof \SMWPropertyValue ) {
-				$subjects[] = $data->getDataItem()->getDiWikiPage();
+
+				$property = $data->getDataItem();
+
+				if ( $property->isInverse() ) {
+					$property = new DIProperty( $property->getKey() );
+				}
+
+				$subjects[] = $property->getDiWikiPage();
 			}
 
 			// Category
