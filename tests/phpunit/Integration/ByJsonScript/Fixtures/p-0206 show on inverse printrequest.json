@@ -1,0 +1,61 @@
+{
+	"description": "#show on inverse printrequest",
+	"properties": [
+		{
+			"name": "HasWorkManifested",
+			"contents": "[[Has type::Page]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/0206/1",
+			"contents": "[[HasWorkManifested::ABC]] + {{#show:{{FULLPAGENAME}}|?-HasWorkManifested|link=none}} + {{#show:{{FULLPAGENAME}}|?HasWorkManifested|link=none}}"
+		},
+		{
+			"name": "Example/0206/2",
+			"contents": "[[HasWorkManifested::{{FULLPAGENAME}}]] + {{#show:{{FULLPAGENAME}}|?-HasWorkManifested|link=none}} + {{#show:{{FULLPAGENAME}}|?HasWorkManifested|link=none}}"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0 where inverse is unknown and not displayed",
+			"subject": "Example/0206/1",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [ "_ASK", "_MDAT", "_SKEY", "HasWorkManifested" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					">ABC</a> +  + ABC"
+				]
+			}
+		},
+		{
+			"about": "#1 inverse pointing to itself",
+			"subject": "Example/0206/2",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [ "_ASK", "_MDAT", "_SKEY", "HasWorkManifested" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					">Example/0206/2</strong> + Example/0206/2 + Example/0206/2"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [ "_MDAT" ]
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
