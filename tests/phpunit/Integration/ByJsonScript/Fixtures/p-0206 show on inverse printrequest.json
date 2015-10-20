@@ -4,6 +4,10 @@
 		{
 			"name": "HasWorkManifested",
 			"contents": "[[Has type::Page]]"
+		},
+		{
+			"name": "HasWorkManifestedAsText",
+			"contents": "[[Has type::Text]]"
 		}
 	],
 	"subjects": [
@@ -14,6 +18,10 @@
 		{
 			"name": "Example/0206/2",
 			"contents": "[[HasWorkManifested::{{FULLPAGENAME}}]] + {{#show:{{FULLPAGENAME}}|?-HasWorkManifested|link=none}} + {{#show:{{FULLPAGENAME}}|?HasWorkManifested|link=none}}"
+		},
+		{
+			"name": "Example/0206/3",
+			"contents": "[[HasWorkManifestedAsText::{{FULLPAGENAME}}]] + {{#show:{{FULLPAGENAME}}|?-HasWorkManifestedAsText|link=none}} + {{#show:{{FULLPAGENAME}}|?HasWorkManifestedAsText|link=none}}"
 		}
 	],
 	"parser-testcases": [
@@ -46,6 +54,22 @@
 			"expected-output": {
 				"to-contain": [
 					">Example/0206/2</strong> + Example/0206/2 + Example/0206/2"
+				]
+			}
+		},
+		{
+			"about": "#2, see #1222, inverse is not displayed compared to #1",
+			"subject": "Example/0206/3",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [ "_ASK", "_MDAT", "_SKEY", "HasWorkManifestedAsText" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"<p>Example/0206/3 +  + Example/0206/3"
 				]
 			}
 		}
