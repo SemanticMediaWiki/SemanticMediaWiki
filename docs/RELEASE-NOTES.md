@@ -51,6 +51,7 @@ happens for these features until they mature from being an experimental feature 
 
 ## Bug fixes
 
+* #400 (#1222) Fixed `RuntimeException` in `SQLStore` caused by a DI type mistmatch during a lookup operation
 * #682 Fixed id mismatch in `SQLStore`
 * #1005 Fixed syntax error in `SQLStore`(`sqlite`) for temporary tables when a disjunctive category/subcategory query is executed
 * #1033 Fixed PHP notice in `JobBase` that was based on an assumption that parameters are always an array
