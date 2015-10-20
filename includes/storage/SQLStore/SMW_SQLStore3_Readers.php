@@ -3,6 +3,7 @@
 use SMW\DataTypeRegistry;
 use SMW\DIWikiPage;
 use SMW\SQLStore\TableDefinition;
+use SMWDataItem as DataItem;
 
 /**
  * Class to provide all basic read methods for SMWSQLStore3.
@@ -425,6 +426,12 @@ class SMWSQLStore3Readers {
 			$noninverse = new SMWDIProperty( $property->getKey(), false );
 			$result = $this->getPropertyValues( $value, $noninverse, $requestOptions );
 			return $result;
+		}
+
+		// #1222, Filter those where types don't match (e.g property = _txt
+		// and value = _wpg)
+		if ( $value !== null && DataTypeRegistry::getInstance()->getDataItemId( $property->findPropertyTypeID() ) !== $value->getDIType() ) {
+			return array();
 		}
 
 		// First build $select, $from, and $where for the DB query
