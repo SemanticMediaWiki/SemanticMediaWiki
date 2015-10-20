@@ -239,6 +239,7 @@ class CachedValueLookupStore implements ValueLookupStore {
 		$pvid = HashBuilder::createHashIdForContent(
 			array(
 				$property->getKey(),
+				$property->isInverse(),
 				(array)$requestOptions,
 				self::VERSION
 			),
@@ -297,6 +298,7 @@ class CachedValueLookupStore implements ValueLookupStore {
 		$psid = HashBuilder::createHashIdForContent(
 			array(
 				$property->getKey(),
+				$property->isInverse(),
 				(array)$requestOptions,
 				self::VERSION
 			),
