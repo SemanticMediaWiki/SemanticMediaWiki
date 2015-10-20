@@ -3,7 +3,7 @@
 This is not a release yet.
 
 
-## New features
+## Highlights
 
 ### Improved SPARQLStore support
 
@@ -21,18 +21,7 @@ If your TDB back-end does not support SPARQL 1.1, this setting needs to be set t
 * #1158 Added basic support for `_geo` queries to the `SPARQLStore`
 * #1159 Added limitation of the `aux` property usage in the Exporter (use `$GLOBALS['smwgExportBCAuxiliaryUse'] = true;` to keep backwards compatibility until 3.x)
 
-### Improved handling of removed entities in SQLStore
-
-In previous releases it could happen that deleted entities (subject, property) reappeared in queries even though they have been removed. This release introduces several changes to eleminate some of the issues identified.
-
-* #1100 introduced a deletion marker on entities that got deleted, making them no longer available to queries or special page display.
-* #1127 Added `--shallow-update` to `rebuildData`, to only parse those entities that have a different last modified timestamp compared to that of the last revision. This enables to run `rebuildData` updates on deleted, redirects, and other out of sync entities.
-* Solved #701 where an unconditional namespace query `[[Help:+]]` would display deleted subjects (in case those subjects were deleted)
-* #1105 Added filter to mark deleted redirect targets with `SMW_SQL3_SMWDELETEIW`
-* #1112 Added filter to mark unused/oudated subobjects with `SMW_SQL3_SMWDELETEIW`
-* #1151 Added removal of unmatched "ghost" pages in the ID_TABLE
-
-### Other new features
+## New features
 
 * #1042 Added progress indicator to `rebuildData.php`
 * #1047 Extended context help displayed on `Special:Types` and subsequent type pages
@@ -85,6 +74,17 @@ happens for these features until they mature from being an experimental feature 
 * #1165 Fixed "duplicate key value violates unique constraint" for postgres on conjunctive and disjunctive queries
 * #1182 Fixed further link to use the format parameter as specified by `#ask`
 * #1207 Fixed usage of the `!~` comparator for properties that have a limited set of allowed values
+
+### Improved handling of removed entities in SQLStore
+
+In previous releases it could happen that deleted entities (subject, property) reappeared in queries even though they have been removed. This release introduces several changes to eleminate some of the issues identified.
+
+* #1100 introduced a deletion marker on entities that got deleted, making them no longer available to queries or special page display.
+* #1127 Added `--shallow-update` to `rebuildData`, to only parse those entities that have a different last modified timestamp compared to that of the last revision. This enables to run `rebuildData` updates on deleted, redirects, and other out of sync entities.
+* Solved #701 where an unconditional namespace query `[[Help:+]]` would display deleted subjects (in case those subjects were deleted)
+* #1105 Added filter to mark deleted redirect targets with `SMW_SQL3_SMWDELETEIW`
+* #1112 Added filter to mark unused/oudated subobjects with `SMW_SQL3_SMWDELETEIW`
+* #1151 Added removal of unmatched "ghost" pages in the ID_TABLE
 
 ## Internal changes
 
