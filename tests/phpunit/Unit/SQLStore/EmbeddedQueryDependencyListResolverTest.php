@@ -10,6 +10,7 @@ use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
+use SMW\Query\PrintRequest;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
@@ -500,6 +501,57 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 			array(
 				DIWikiPage::newFromText( 'Foo' ),
 				DIWikiPage::newFromText( 'FooConcept', SMW_NS_CONCEPT )
+			)
+		);
+
+		#7 Printrequest
+		$pv = \SMWPropertyValue::makeUserProperty( 'Foobaz' );
+
+		$description = new SomeProperty(
+			new DIProperty( 'Foobar', true ),
+			new ValueDescription( DIWikiPage::newFromText( 'Bar' ) )
+		);
+
+		$description->addPrintRequest(
+			new PrintRequest( PrintRequest::PRINT_PROP, '', $pv )
+		);
+
+		$query = new Query( $description );
+		$query->setSubject( $subject );
+
+		$provider[] = array(
+			$query,
+			array(
+				DIWikiPage::newFromText( 'Foo' ),
+				DIWikiPage::newFromText( 'Bar' ),
+				DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY ),
+				DIWikiPage::newFromText( 'Foobaz', SMW_NS_PROPERTY )
+			)
+		);
+
+		#8 Inverse printrequest
+		$pv = \SMWPropertyValue::makeUserProperty( 'Foobaz' );
+		$pv->setInverse( true );
+
+		$description = new SomeProperty(
+			new DIProperty( 'Foobar', true ),
+			new ValueDescription( DIWikiPage::newFromText( 'Bar' ) )
+		);
+
+		$description->addPrintRequest(
+			new PrintRequest( PrintRequest::PRINT_PROP, '', $pv )
+		);
+
+		$query = new Query( $description );
+		$query->setSubject( $subject );
+
+		$provider[] = array(
+			$query,
+			array(
+				DIWikiPage::newFromText( 'Foo' ),
+				DIWikiPage::newFromText( 'Bar' ),
+				DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY ),
+				DIWikiPage::newFromText( 'Foobaz', SMW_NS_PROPERTY )
 			)
 		);
 
