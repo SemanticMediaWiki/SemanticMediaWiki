@@ -93,7 +93,7 @@ Releases after Composer support:
 		<th>SMW 2.3.x</th>
 		<td>5.3.2 - 5.6.x (beta support for PHP 7)</td>
 		<td>3.5.0 - 3.9.x</td>
-		<td>1.19 - 1.25/td>
+		<td>1.19 - 1.25</td>
 	</tr>
 	<tr>
 		<th>SMW 2.2.x</th>
