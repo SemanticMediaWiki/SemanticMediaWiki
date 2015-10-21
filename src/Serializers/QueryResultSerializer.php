@@ -56,6 +56,39 @@ class QueryResultSerializer implements DispatchableSerializer {
 	}
 
 	/**
+	 * Get display title of a page.
+	 *
+	 * @param int $pageId page ID of page being queried
+	 *
+	 * @return string|bool display title value or false if not found
+	 */
+	public static function getDisplayTitle( $pageId ) {
+
+		if ( ! is_numeric( $pageId ) || $pageId < 1 ) {
+
+			return false;
+
+		}
+
+		$dbr = wfGetDB( DB_SLAVE );
+		$row = $dbr->selectRow(
+			'page_props',
+			array( 'pp_value' ),
+			array(
+				'pp_page' => $pageId,
+				'pp_propname' => 'displaytitle'
+			),
+			__METHOD__
+		);
+
+		if ( $row !== false ) {
+			return $row->pp_value;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Get the serialization for the provided data item.
 	 *
 	 * @since 1.7
@@ -100,6 +133,10 @@ class QueryResultSerializer implements DispatchableSerializer {
 						'namespace' => $title->getNamespace(),
 						'exists' => $title->isKnown()
 					);
+				}
+				$displayTitle = self::getDisplayTitle ($title->getArticleID() );
+				if ( $displayTitle ) {
+					$result['displaytitle'] = $displayTitle;
 				}
 				break;
 			case DataItem::TYPE_NUMBER:
