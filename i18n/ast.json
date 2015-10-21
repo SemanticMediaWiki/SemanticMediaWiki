@@ -300,5 +300,13 @@
 	"smw-editpage-property-annotation-enabled": "Esta propiedá puede estendese usando anotaciones semántiques pa especificar un tipu de datu (p. ex. <nowiki>\"[[Has type::Page]]\"</nowiki>) o otres declaraciones d'asistencia (p. ex. <nowiki>\"[[Subproperty of::dc:date]]\"</nowiki>). Pa saber cómo aumentar esta páxina, consulta les páxines d'ayuda [https://www.semantic-mediawiki.org/wiki/Help:Property_declaration declaración d'una propiedá] o la [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes llista de los tipos de datos disponibles].",
 	"smw-editpage-property-annotation-disabled": "Esta propiedá nun puede estendese con una anotación de tipu de datu (p. ex. <nowiki>\"[[Has type::Page]]\"</nowiki>) porque yá ta predefinida (pa más información, consulta la páxina d'ayuda [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propiedaes especiales]).",
 	"smw-editpage-concept-annotation-enabled": "Esti conceptu pué ampliase usando la función de analís #concept. Pa una descripción de como usar #concept, consulta la páxina d'ayuda [https://www.semantic-mediawiki.org/wiki/Help:Concepts conceptos].",
-	"log-name-smw": "Rexistru de MediaWiki Semántica"
+	"log-name-smw": "Rexistru de MediaWiki Semántica",
+	"log-description-smw": "Actividaes de los [https://www.semantic-mediawiki.org/wiki/Help:Logging tipos d'actividá activaos] de los qu'informaron MediaWiki Semántica y los sos componentes.",
+	"smw-datavalue-import-unknownns": "L'espaciu de nomes d'importación «$1» ye desconocíu. Asegúrate que los detalles d'importación OWL tean disponibles vía [[MediaWiki:Smw import $1]]",
+	"smw-datavalue-import-missing-nsuri": "Nun pudo alcontrase la URI del espaciu de nomes «$1» na [[MediaWiki:Smw import $1|importación de $1]].",
+	"smw-datavalue-import-missing-type": "Nun s'alcontró la definición de tipu pa «$1» na [[MediaWiki:Smw import $2|importación de $2]].",
+	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|Importación de $1]]",
+	"smw-datavalue-import-invalidvalue": "«$1» nun ye un formatu válidu, habría de tener el formatu «espaciu de nome»:«identificador» (p.ex. «foaf:nome»).",
+	"smw-pa-property-predefined_impo": "«$1» ye una propiedá predefinida que describe la rellación con un [https://semantic-mediawiki.org/wiki/Help:Import_vocabulary vocabulariu importáu].",
+	"smw-pa-property-predefined_type": "«$1» ye una propiedá predefinida que describe'l [[Special:Types|tipu de datu]] d'una propiedá."
 }
