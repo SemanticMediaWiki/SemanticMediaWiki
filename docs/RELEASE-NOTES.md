@@ -36,7 +36,7 @@ If your TDB back-end does not support SPARQL 1.1, this setting needs to be set t
 * #1129 Extended `~*` search pattern for `_ema` and `_tel` to allow for searches like `[[Has telephone number::~*0123*]]` and `[[Has email::~*123.org]]`
 * #1147 The category result format now supports `columns=0`, which results in automatic column count selection
 * #1171 Added SQL EXPLAIN output to the debug result format
-* #1172 Added `@category` as fixed parameter to `#subobject`
+* #1172 Added `@category` as parameter with a fixed assignment (`_INST`) to `#subobject`
 * #1178 Added `~` and `!~` comparator support for values of type date
 
 ## New experimental features
@@ -54,12 +54,12 @@ happens for these features until they mature from being an experimental feature 
 
 * #400 (#1222) Fixed `RuntimeException` in `SQLStore` caused by a DI type mismatch during a lookup operation
 * #682 Fixed id mismatch in `SQLStore`
-* #1005 Fixed syntax error in `SQLStore`(`sqlite`) for temporary tables when a disjunctive category/subcategory query is executed
-* #1033 Fixed PHP notice in `JobBase` that was based on an assumption that parameters are always an array
+* #1005 Fixed syntax error in `SQLStore`(`SQLite`) for temporary tables on disjunctive category/subcategory queries
+* #1033 Fixed PHP notice in `JobBase` for non-array parameters
 * #1038 Fixed Fatal error: Call to undefined method `SMWDIError::getString`
 * #1046 Fixed RuntimeException in `UndeclaredPropertyListLookup` for when a DB prefix is used
-* #1051 Fixed call to undefined method in `ConceptDescriptionInterpreter`
-* #1054 Fixed behaviour for `#REDIRECT` to create the same data reference as `Special:MovePage`
+* #1051 Fixed call to undefined method in `ConceptDescriptionInterpreter` in `SQLStore`
+* #1054 Fixed behavior for `#REDIRECT` to create the same data reference as `Special:MovePage`
 * #1059 Fixed usage of `[[Has page::~*a*||~*A*]]` for `SPARQLStore` when `Has page` is declared as page type
 * #1060 Fixed usage of `(a OR b) AND (c OR d)` as query pattern for the `SQLStore`
 * #1067 Fixed return value of the `#set` parser
@@ -82,19 +82,19 @@ happens for these features until they mature from being an experimental feature 
 In previous releases it could happen that deleted entities (subject, property) reappeared in queries even though they have been removed. This release introduces several changes to eliminate some of the issues identified.
 
 * #1100 introduced a deletion marker on entities that got deleted, making them no longer available to queries or special page display.
-* #1127 Added `--shallow-update` to `rebuildData.ph`, to only parse those entities that have a different last modified timestamp compared to that of the last revision. This enables to run `rebuildData` updates on deleted, redirects, and other out of sync entities.
+* #1127 Added `--shallow-update` to `rebuildData.php`, to only parse those entities that have a different last modified timestamp compared to that of the last revision. This enables to run `rebuildData.php` updates on deleted, redirects, and other out of sync entities.
 * Solved #701 where an unconditional namespace query `[[Help:+]]` would display deleted subjects (in case those subjects were deleted)
 * #1105 Added filter to mark deleted redirect targets with `SMW_SQL3_SMWDELETEIW`
-* #1112 Added filter to mark unused/oudated subobjects with `SMW_SQL3_SMWDELETEIW`
+* #1112 Added filter to mark outdated subobjects with `SMW_SQL3_SMWDELETEIW`
 * #1151 Added removal of unmatched "ghost" pages in the ID_TABLE
 
 ## Internal changes
 
-* #1018 Added `PropertyTableRowDiffer` to isolate code responsible for computing data diffs (relates to #682)
+* #1018 Added `PropertyTableRowDiffer` to simplify computation of `SemanticData` diff's (relates to #682)
 * #1039 Added `SemanticData::getLastModified`
 * #1041 Added `ByIdDataRebuildDispatcher` to isolate `SMWSQLStore3SetupHandlers::refreshData`
-* #1071 Added `SMW::SQLStore::AddCustomFixedPropertyTables` hook to simplify registration of fixed property tables by extension developers
-* #1068 Added setting to support recursive annotation for selected formats (refs #1055, #711)
+* #1071 Added `SMW::SQLStore::AddCustomFixedPropertyTables` hook to simplify registration of fixed property tables by extensions
+* #1068 Added setting to support recursive annotation for selected result formats (refs #1055, #711)
 * #1086 Changed redirect update logic to accommodate the manual #REDIRECT (refs #895, #1054)
 * Added `SMW::Browse::AfterIncomingPropertiesLookupComplete` which allows to extend the incoming properties display for `Special:Browse`
 * Added `SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate` which allows to replace the further result incoming link in `Special:Browse`
@@ -105,7 +105,7 @@ In previous releases it could happen that deleted entities (subject, property) r
 * #1111 Added support for the atomic DB transaction mode to improve the rollback process in case of a DB transaction failure
 * #1108 Added `CompositePropertyTableDiffIterator` which for the added `'SMW::SQLStore::AfterDataUpdateComplete'` returns ids that have been updated only (as diff of the update)
 * #1119 Added `RequestOptionsProcessor`
-* #1130 Added `AsyncJobDispatchManager` to decouple jobs during update
+* #1130 Added `DeferredRequestDispatchManager` to decouple jobs during an update
 * #1133 Fixed MW 1.25/1.26 API tests
 * #1145 Added `onoi/callback-container:~1.0` and removes all custom DIC code from SMW-core
 * (964155) Added removal of whitespace for `DIBlob` values (" Foo " becomes "Foo")
