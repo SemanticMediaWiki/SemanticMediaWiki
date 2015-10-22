@@ -52,7 +52,11 @@ class ImportValue extends DataValue {
 		);
 
 		if ( $this->importValueParser->getErrors() !== array() ) {
-			$this->addError( call_user_func_array( 'wfMessage', $this->importValueParser->getErrors() )->inContentLanguage()->text() );
+
+			foreach ( $this->importValueParser->getErrors() as $message ) {
+				$this->addError( call_user_func_array( 'wfMessage', $message )->inContentLanguage()->text() );
+			}
+
 			$this->m_dataitem = new DIBlob( 'ERROR' );
 			return;
 		}
