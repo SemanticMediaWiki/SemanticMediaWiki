@@ -29,7 +29,10 @@ class SomeValueDescriptionDeserializer extends DescriptionDeserializer {
 	/**
 	 * @since 2.3
 	 *
-	 * {@inheritDoc}
+	 * @param string $value
+	 *
+	 * @return Description
+	 * @throws InvalidArgumentException
 	 */
 	public function deserialize( $value ) {
 
