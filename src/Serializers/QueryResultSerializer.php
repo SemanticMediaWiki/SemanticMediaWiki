@@ -27,7 +27,7 @@ use Title;
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class QueryResultSerializer implements Serializer {
+class QueryResultSerializer implements DispatchableSerializer {
 
 	/**
 	 * @see SerializerInterface::serialize
