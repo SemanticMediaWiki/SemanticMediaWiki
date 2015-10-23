@@ -195,7 +195,7 @@
 			if ( linker && this.fullurl !== null ){
 				var attributes = this.exists ? { 'href': this.fullurl } : { 'href': this.fullurl, 'class': 'new' };
 				var displaytitle = this.getDisplayTitle();
-				if (displaytitle === null ) {
+				if ( displaytitle === null ) {
 					displaytitle = this.getText();
 				}
 				return html.element( 'a', attributes , displaytitle );
