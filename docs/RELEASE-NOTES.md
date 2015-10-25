@@ -3,9 +3,7 @@
 This is not a release yet.
 
 
-## Highlights
-
-### Improved SPARQLStore support
+## Highlight: Improved SPARQLStore support
 
 SMWs SPARQLStore has now reached full feature parity with the SQLStore. On top of that, various performance improvements where made to the SPARQLStore.
 
