@@ -1,6 +1,6 @@
 # Semantic MediaWiki 2.3
 
-This is not a release yet.
+Released on October 25th, 2015.
 
 
 ## Highlight: Improved SPARQLStore support
