@@ -308,5 +308,10 @@
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|Importación de $1]]",
 	"smw-datavalue-import-invalidvalue": "«$1» nun ye un formatu válidu, habría de tener el formatu «espaciu de nome»:«identificador» (p.ex. «foaf:nome»).",
 	"smw-pa-property-predefined_impo": "«$1» ye una propiedá predefinida que describe la rellación con un [https://semantic-mediawiki.org/wiki/Help:Import_vocabulary vocabulariu importáu].",
-	"smw-pa-property-predefined_type": "«$1» ye una propiedá predefinida que describe'l [[Special:Types|tipu de datu]] d'una propiedá."
+	"smw-pa-property-predefined_type": "«$1» ye una propiedá predefinida que describe'l [[Special:Types|tipu de datu]] d'una propiedá.",
+	"smw-pa-property-predefined_sobj": "«$1» ye una propiedá predefinida que representa una construcción contenedor que permite acumular designaciones propiedá-valor asemeyaes a les d'una páxina wiki normal.",
+	"smw-pa-property-predefined_errp": "\"$1\" ye una propiedá predefinida pa siguir los errores d'entrada por anotaciones de valores irregulares causaos posiblemente por torgues de tipu o de [[Property:Allows value|valores permitíos]].",
+	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value «$1»] ye una propiedá predefinida que puede definir una llista de valores posibles pa torgar asignaciones de valores pa una propiedá.",
+	"smw-datavalue-property-restricted-use": "La propiedá «$1» marcóse pa usu acutáu.",
+	"smw-datavalue-restricted-use": "Esti valor de datos marcóse pa usu acutáu. $1"
 }
