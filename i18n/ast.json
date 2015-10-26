@@ -313,5 +313,17 @@
 	"smw-pa-property-predefined_errp": "\"$1\" ye una propiedá predefinida pa siguir los errores d'entrada por anotaciones de valores irregulares causaos posiblemente por torgues de tipu o de [[Property:Allows value|valores permitíos]].",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value «$1»] ye una propiedá predefinida que puede definir una llista de valores posibles pa torgar asignaciones de valores pa una propiedá.",
 	"smw-datavalue-property-restricted-use": "La propiedá «$1» marcóse pa usu acutáu.",
-	"smw-datavalue-restricted-use": "Esti valor de datos marcóse pa usu acutáu. $1"
+	"smw-datavalue-restricted-use": "Esti valor de datos marcóse pa usu acutáu. $1",
+	"smw-datavalue-invalid-number": "Nun puede interpretase «$1» como númberu.",
+	"smw-query-condition-circular": "Detectóse una posible condición circular en «$1».",
+	"smw-sp-types-list": "Llista de tipos de datos",
+	"smw-sp-types-default": "«$1» ye un tipu de datos integráu.",
+	"smw-sp-types-help": "Hai más información y exemplos na [https://semantic-mediawiki.org/wiki/Help:Type_$1 páxina d'ayuda].",
+	"smw-sp-types_anu": "«$1» ye una variante del tipu de datos [[Special:Types/URL|URL]] que s'usa principalmente pa la declaración d'esportación de ''owl:AnnotationProperty''.",
+	"smw-sp-types_boo": "«$1» ye un tipu de datu primitivu pa describir un valor verdadero/falso.",
+	"smw-sp-types_cod": "«$1» ye una variante del tipu de datu  [[Special:Types/Text|Testu]] pa usar en testos técnicos de llonxitú variable, como llistaos de códigu fonte.",
+	"smw-sp-types_geo": "«$1» ye un tipu de datu que describe allugamientos xeográficos y rique [https://semantic-mediawiki.org/wiki/Semantic_Maps Mapes Semánticos].",
+	"smw-sp-types_tel": "«$1» ye un tipu de datos especial pa describir númberos de teléfonu internacionales acordies con RFC 3966.",
+	"smw-sp-types_txt": "«$1» ye un tipu de datos primitivu pa describir cadenes de testu de llonxitú arbitraria.",
+	"smw-sp-types_dat": "«$1» ye un tipu de datos pa representar puntos nel tiempu nun formatu unificáu."
 }
