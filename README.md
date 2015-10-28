@@ -38,7 +38,7 @@ the available [upgrade guide][smw-installation].
 ```json
 {
 	"require": {
-		"mediawiki/semantic-media-wiki": "~2.3@dev"
+		"mediawiki/semantic-media-wiki": "~2.4@dev"
 	}
 }
 ```
