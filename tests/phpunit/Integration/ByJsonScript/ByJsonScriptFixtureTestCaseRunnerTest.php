@@ -35,6 +35,11 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 	private $parserTestCaseProcessor;
 
 	/**
+	 * @var SpecialPageTestCaseProcessor
+	 */
+	private $specialPageTestCaseProcessor;
+
+	/**
 	 * @var EventDispatcher
 	 */
 	private $eventDispatcher;
@@ -62,6 +67,11 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		$this->parserTestCaseProcessor = new ParserTestCaseProcessor(
 			$this->getStore(),
 			$semanticDataValidator,
+			$stringValidator
+		);
+
+		$this->specialPageTestCaseProcessor = new SpecialPageTestCaseProcessor(
+			$this->getStore(),
 			$stringValidator
 		);
 
@@ -140,6 +150,7 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		);
 
 		$this->tryToProcessParserTestCase( $jsonTestCaseFileHandler );
+		$this->tryToProcessSpecialPageTestCase( $jsonTestCaseFileHandler );
 		$this->tryToProcessRDFTestCase( $jsonTestCaseFileHandler );
 		$this->tryToProcessQueryTestCase( $jsonTestCaseFileHandler );
 	}
@@ -152,6 +163,17 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 
 		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'parser-testcases' ) as $case ) {
 			$this->parserTestCaseProcessor->process( $case );
+		}
+	}
+
+	private function tryToProcessSpecialPageTestCase( $jsonTestCaseFileHandler ) {
+
+		$this->specialPageTestCaseProcessor->setDebugMode(
+			$jsonTestCaseFileHandler->getDebugMode()
+		);
+
+		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'special-testcases' ) as $case ) {
+			$this->specialPageTestCaseProcessor->process( $case );
 		}
 	}
 

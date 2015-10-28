@@ -1,0 +1,39 @@
+{
+	"description": "Special:Properties",
+	"properties": [
+		{
+			"name": "Has test blob property",
+			"contents": "[[Has type::Text]]"
+		}
+	],
+	"subjects": [],
+	"special-testcases": [
+		{
+			"about": "#0 search for user-defined property to contain",
+			"special-page": {
+				"page":"Properties",
+				"query-parameters":{},
+				"request-parameters":{
+					"property": "test blob"
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"title=\"Property:Has test blob property\">Has test blob property</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLanguageCode": "en"
+	},
+	"meta": {
+		"skip-on": {
+			"sqlite": "Too lazy to find out why the DB isn't updated in time after the property has been created."
+		},
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
