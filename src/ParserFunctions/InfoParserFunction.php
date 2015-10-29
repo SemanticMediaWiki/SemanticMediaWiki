@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\ParserHooks;
+namespace SMW\ParserFunctions;
 
 use ParamProcessor\ProcessingResult;
 use Parser;

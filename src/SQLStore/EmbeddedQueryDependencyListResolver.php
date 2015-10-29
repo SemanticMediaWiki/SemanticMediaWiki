@@ -26,9 +26,9 @@ use SMW\Query\Language\ThingDescription;
 class EmbeddedQueryDependencyListResolver {
 
 	/**
-	 * @var Store
+	 * @var QueryResult
 	 */
-	private $store = null;
+	private $queryResult;
 
 	/**
 	 * Specifies a list of property keys to be excluded from the detection
@@ -44,18 +44,13 @@ class EmbeddedQueryDependencyListResolver {
 	private $propertyHierarchyLookup;
 
 	/**
-	 * @var QueryResult
-	 */
-	private $queryResult;
-
-	/**
 	 * @since 2.3
 	 *
-	 * @param Store $store
+	 * @param $queryResult Can be a string for when format=Debug
 	 * @param PropertyHierarchyLookup $propertyHierarchyLookup
 	 */
-	public function __construct( Store $store, PropertyHierarchyLookup $propertyHierarchyLookup ) {
-		$this->store = $store;
+	public function __construct( $queryResult = null, PropertyHierarchyLookup $propertyHierarchyLookup ) {
+		$this->queryResult = $queryResult;
 		$this->propertyHierarchyLookup = $propertyHierarchyLookup;
 	}
 
@@ -70,15 +65,6 @@ class EmbeddedQueryDependencyListResolver {
 		$this->propertyDependencyDetectionBlacklist = array_flip(
 			str_replace( ' ', '_', $propertyDependencyDetectionBlacklist )
 		);
-	}
-
-	/**
-	 * @since 2.3
-	 *
-	 * @param $queryResult
-	 */
-	public function setQueryResult( $queryResult ) {
-		$this->queryResult = $queryResult;
 	}
 
 	/**
@@ -250,7 +236,7 @@ class EmbeddedQueryDependencyListResolver {
 
 	private function getConceptDescription( DIWikiPage $concept ) {
 
-		$value = $this->store->getPropertyValues(
+		$value = $this->queryResult->getStore()->getPropertyValues(
 			$concept,
 			new DIProperty( '_CONC' )
 		);
