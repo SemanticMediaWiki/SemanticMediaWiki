@@ -9,5 +9,6 @@ Not a release yet.
 ## Internal changes
 
 * #1235 Improve query performance in `PropertyUsageListLookup`
+* #1023 Split the `DocumentationParserFunction`
 
 ## Contributors
