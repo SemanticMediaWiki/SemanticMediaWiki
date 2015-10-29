@@ -173,7 +173,7 @@ abstract class QueryPage extends \QueryPage {
 		$options->sort = true;
 
 		if ( $property ) {
-			$options->addStringCondition( str_replace( ' ', '_', $property ), SMWStringCondition::STRCOND_MID );
+			$options->addStringCondition( $property, SMWStringCondition::STRCOND_MID );
 		}
 
 		$res = $this->getResults( $options );

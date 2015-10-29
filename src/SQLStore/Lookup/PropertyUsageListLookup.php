@@ -6,6 +6,7 @@ use SMW\Store;
 use SMW\Store\PropertyStatisticsStore;
 use SMW\SQLStore\Lookup\ListLookup;
 use SMW\DIProperty;
+use SMW\SQLStore\SQLStore;
 use SMWDIError as DIError;
 use SMWRequestOptions as RequestOptions;
 use SMW\InvalidPropertyException;
@@ -59,7 +60,7 @@ class PropertyUsageListLookup implements ListLookup {
 			throw new RuntimeException( "Missing requestOptions" );
 		}
 
-		return $this->buildPropertyList( $this->selectPropertiesFromTable() );
+		return $this->getPropertyList( $this->doQueryPropertyTable() );
 	}
 
 	/**
@@ -89,14 +90,14 @@ class PropertyUsageListLookup implements ListLookup {
 		return 'smwgPropertiesCache#' . json_encode( (array)$this->requestOptions );
 	}
 
-	private function selectPropertiesFromTable() {
+	private function doQueryPropertyTable() {
 
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong
 		$options = array( 'ORDER BY' => 'smw_sortkey' );
 
 		$conditions = array(
 			'smw_namespace' => SMW_NS_PROPERTY,
-			'smw_iw' => '',
+			'smw_iw' => ''
 		);
 
 		if ( $this->requestOptions->limit > 0 ) {
@@ -105,53 +106,39 @@ class PropertyUsageListLookup implements ListLookup {
 		}
 
 		if ( $this->requestOptions->getStringConditions() ) {
-			$conditions[] = $this->store->getSQLConditions( $this->requestOptions, '', 'smw_title', false );
+			$conditions[] = $this->store->getSQLConditions( $this->requestOptions, '', 'smw_sortkey', false );
 		}
 
-		$res = $this->store->getConnection( 'mw.db' )->select(
-			$this->store->getObjectIds()->getIdTable(),
-			array(
-				'smw_id',
-				'smw_title'
-			),
+		$db = $this->store->getConnection( 'mw.db' );
+
+		$res = $db->select(
+			array( $db->tableName( SQLStore::ID_TABLE ), $db->tableName( SQLStore::PROPERTY_STATISTICS_TABLE ) ),
+			array( 'smw_title', 'usage_count' ),
 			$conditions,
 			__METHOD__,
-			$options
+			$options,
+			array( $db->tableName( SQLStore::ID_TABLE ) => array( 'INNER JOIN', array( 'smw_id=p_id' ) ) )
 		);
 
 		return $res;
 	}
 
-	private function buildPropertyList( $res ) {
+	private function getPropertyList( $res ) {
 
 		$result = array();
-		$propertyIds = array();
 
 		foreach ( $res as $row ) {
-			$propertyIds[] = (int)$row->smw_id;
-		}
 
-		$usageCounts = $this->propertyStatisticsStore->getUsageCounts( $propertyIds );
+			try {
+				$property = new DIProperty( str_replace( ' ', '_', $row->smw_title ) );
+			} catch ( InvalidPropertyException $e ) {
+				$property = new DIError( new \Message( 'smw_noproperty', array( $row->smw_title ) ) );
+			}
 
-		foreach ( $res as $row ) {
-			$result[] = $this->addPropertyRowToList( $row, $usageCounts );
+			$result[] = array( $property, (int)$row->usage_count );
 		}
 
 		return $result;
-	}
-
-	private function addPropertyRowToList( $row, $usageCounts ) {
-
-		try {
-			$property = new DIProperty( $row->smw_title );
-		} catch ( InvalidPropertyException $e ) {
-			$property = new DIError( new \Message( 'smw_noproperty', array( $row->smw_title ) ) );
-		}
-
-		// If there is no key entry in the usageCount table for that
-		// particular property it is to be counted with usage 0
-		$count = array_key_exists( (int)$row->smw_id, $usageCounts ) ? $usageCounts[(int)$row->smw_id] : 0;
-		return array( $property, $count );
 	}
 
 }

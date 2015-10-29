@@ -149,6 +149,11 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			NS_MAIN
 		);
 
+		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'maintenance-run' ) as $key => $value ) {
+			$maintenanceRunner = UtilityFactory::getInstance()->newRunnerFactory()->newMaintenanceRunner( $key );
+			$maintenanceRunner->setQuiet()->run();
+		}
+
 		$this->tryToProcessParserTestCase( $jsonTestCaseFileHandler );
 		$this->tryToProcessSpecialPageTestCase( $jsonTestCaseFileHandler );
 		$this->tryToProcessRDFTestCase( $jsonTestCaseFileHandler );

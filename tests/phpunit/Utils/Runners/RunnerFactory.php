@@ -37,6 +37,19 @@ class RunnerFactory {
 	 * @return MaintenanceRunner
 	 */
 	public function newMaintenanceRunner( $maintenanceClass ) {
+
+		switch ( $maintenanceClass ) {
+			case 'rebuildPropertyStatistics':
+				$maintenanceClass = 'SMW\Maintenance\RebuildPropertyStatistics';
+				break;
+			case 'rebuildData':
+				$maintenanceClass = 'SMW\Maintenance\RebuildData';
+				break;
+			case 'rebuildConceptCache';
+				$maintenanceClass = 'SMW\Maintenance\RebuildConceptCache';
+				break;
+		}
+
 		return new MaintenanceRunner( $maintenanceClass );
 	}
 
