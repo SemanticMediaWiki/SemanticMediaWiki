@@ -48,9 +48,9 @@ class ByIdDataRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+			->getMock();
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\ByIdDataRebuildDispatcher',

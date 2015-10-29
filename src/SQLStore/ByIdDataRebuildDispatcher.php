@@ -24,9 +24,14 @@ use Hooks;
 class ByIdDataRebuildDispatcher {
 
 	/**
-	 * @var Store
+	 * @var SQLStore
 	 */
 	private $store = null;
+
+	/**
+	 * @var PropertyTableOutdatedReferenceDisposer
+	 */
+	private $propertyTableOutdatedReferenceDisposer = null;
 
 	/**
 	 * @var integer
@@ -56,10 +61,11 @@ class ByIdDataRebuildDispatcher {
 	/**
 	 * @since 2.3
 	 *
-	 * @param Store $store
+	 * @param SQLStore $store
 	 */
-	public function __construct( Store $store ) {
+	public function __construct( SQLStore $store ) {
 		$this->store = $store;
+		$this->propertyTableOutdatedReferenceDisposer = new PropertyTableOutdatedReferenceDisposer( $store );
 	}
 
 	/**
@@ -212,7 +218,7 @@ class ByIdDataRebuildDispatcher {
 
 		$res = $db->select(
 			\SMWSql3SmwIds::TABLE_NAME,
-			array( 'smw_id', 'smw_title', 'smw_namespace', 'smw_iw', 'smw_subobject' ),
+			array( 'smw_id', 'smw_title', 'smw_namespace', 'smw_iw', 'smw_subobject', 'smw_proptable_hash' ),
 			array(
 				"smw_id >= $id ",
 				" smw_id < " . $db->addQuotes( $id + $this->iterationLimit )
@@ -239,6 +245,8 @@ class ByIdDataRebuildDispatcher {
 
 			if ( $row->smw_subobject !== '' && $row->smw_iw !== SMW_SQL3_SMWDELETEIW ) {
 				// leave subobjects alone; they ought to be changed with their pages
+			} elseif ( $this->isPlainObjectValue( $row ) ) {
+				$this->propertyTableOutdatedReferenceDisposer->attemptToRemoveOutdatedEntryFromIDTable( $row->smw_id );
 			} elseif ( $row->smw_iw === '' && $titleKey != '' ) {
 				// objects representing pages
 				$title = Title::makeTitleSafe( $row->smw_namespace, $titleKey );
@@ -256,7 +264,7 @@ class ByIdDataRebuildDispatcher {
 					$updatejobs[] = $this->newUpdateJob( $title );
 				}
 			} elseif ( $row->smw_iw == SMW_SQL3_SMWIW_OUTDATED || $row->smw_iw == SMW_SQL3_SMWDELETEIW ) { // remove outdated internal object references
-				$this->cleanUpPropertyTablesFor( $row->smw_id );
+				$this->propertyTableOutdatedReferenceDisposer->removeAnyReferenceFromPropertyTablesFor( $row->smw_id );
 			} elseif ( $titleKey != '' ) { // "normal" interwiki pages or outdated internal objects -- delete
 				$diWikiPage = new DIWikiPage( $titleKey, $row->smw_namespace, $row->smw_iw );
 				$emptySemanticData = new SemanticData( $diWikiPage );
@@ -267,21 +275,15 @@ class ByIdDataRebuildDispatcher {
 		$db->freeResult( $res );
 	}
 
-	private function cleanUpPropertyTablesFor( $id ) {
-		$db = $this->store->getConnection( 'mw.db' );
-
-		foreach ( $this->store->getPropertyTables() as $proptable ) {
-			if ( $proptable->usesIdSubject() ) {
-				$db->delete( $proptable->getName(), array( 's_id' => $id ), __METHOD__ );
-			}
-
-			// Need to clean-up possible references in the redirect table
-			if ( strpos( $proptable->getName(), 'fpt_redi' ) !== false  ) {
-				$db->delete( $proptable->getName(), array( 'o_id' => $id ), __METHOD__ );
-			}
-		}
-
-		$db->delete( \SMWSql3SmwIds::TABLE_NAME, array( 'smw_id' => $id ), __METHOD__ );
+	private function isPlainObjectValue( $row ) {
+		return $row->smw_iw != SMW_SQL3_SMWDELETEIW &&
+			$row->smw_iw != SMW_SQL3_SMWREDIIW &&
+			$row->smw_iw != SMW_SQL3_SMWIW_OUTDATED &&
+			// Leave any pre-defined property (_...) untouched
+			$row->smw_title != '' &&
+			$row->smw_title{0} != '_' &&
+			// smw_proptable_hash === null means it is not a subject but an object value
+			$row->smw_proptable_hash === null;
 	}
 
 	private function findNextIdPosition( &$id, $emptyrange ) {
