@@ -2,9 +2,10 @@
 
 namespace SMW;
 
-use ParserHooks\HookDefinition;
 use ParserHooks\HookRegistrant;
 use SMW\MediaWiki\Hooks\HookRegistry;
+use SMW\ParserHooks\DocumentationParserFunction;
+use SMW\ParserHooks\InfoParserFunction;
 
 /**
  * Extension setup and registration
