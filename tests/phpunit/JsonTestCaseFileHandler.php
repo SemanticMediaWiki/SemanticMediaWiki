@@ -195,6 +195,24 @@ class JsonTestCaseFileHandler {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @param string $key
+	 *
+	 * @return array
+	 */
+	public function getContentsFor( $key ) {
+
+		try{
+			$contents = $this->getFileContentsFor( $key );
+		} catch( \Exception $e ) {
+			$contents = array();
+		}
+
+		return $contents;
+	}
+
+	/**
 	 * @since 2.2
 	 *
 	 * @param string $key
@@ -202,14 +220,7 @@ class JsonTestCaseFileHandler {
 	 * @return array
 	 */
 	public function findTestCasesFor( $key ) {
-
-		try{
-			$testcases = $this->getFileContentsFor( $key );
-		} catch( \Exception $e ) {
-			$testcases = array();
-		}
-
-		return $testcases;
+		return $this->getContentsFor( $key );
 	}
 
 	private function getFileContentsFor( $index ) {

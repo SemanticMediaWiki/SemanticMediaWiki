@@ -114,16 +114,11 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider usageCountProvider
 	 */
-	public function testfetchListForValidProperty( $usageCounts, $expectedCount ) {
-
-		$idTable = $this->getMockBuilder( '\stdClass' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'getIdTable' ) )
-			->getMock();
+	public function testfetchListForValidProperty( $expectedCount ) {
 
 		$row = new \stdClass;
 		$row->smw_title = 'Foo';
-		$row->smw_id = 42;
+		$row->usage_count = $expectedCount;
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -136,14 +131,6 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
-
-		$this->store->expects( $this->any() )
-			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
-
-		$this->propertyStatisticsStore->expects( $this->any() )
-			->method( 'getUsageCounts' )
-			->will( $this->returnValue( $usageCounts ) );
 
 		$this->requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
 			->disableOriginalConstructor()
@@ -175,14 +162,9 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testfetchListForInvalidProperty() {
 
-		$idTable = $this->getMockBuilder( '\stdClass' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'getIdTable' ) )
-			->getMock();
-
 		$row = new \stdClass;
 		$row->smw_title = '-Foo';
-		$row->smw_id = 42;
+		$row->usage_count = 42;
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -195,14 +177,6 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
-
-		$this->store->expects( $this->any() )
-			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
-
-		$this->propertyStatisticsStore->expects( $this->any() )
-			->method( 'getUsageCounts' )
-			->will( $this->returnValue( array() ) );
 
 		$this->requestOptions->limit = 1001;
 
@@ -227,27 +201,11 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function usageCountProvider() {
 
-		// No match
 		$provider[] = array(
-			array(),
 			0
 		);
 
-		// No match
 		$provider[] = array(
-			array( 99 => 1001 ),
-			0
-		);
-
-		// Is a match
-		$provider[] = array(
-			array( '42' => 1001 ),
-			1001
-		);
-
-		// Is a match
-		$provider[] = array(
-			array( 42 => 1001 ),
 			1001
 		);
 

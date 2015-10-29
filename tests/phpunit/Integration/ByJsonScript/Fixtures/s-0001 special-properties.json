@@ -4,9 +4,16 @@
 		{
 			"name": "Has test blob property",
 			"contents": "[[Has type::Text]]"
+		},
+		{
+			"name": "Is restricted property",
+			"contents": "[[Has type::Text]] [[Allows value::open]] [[Allows value::closed]]"
 		}
 	],
 	"subjects": [],
+	"maintenance-run": {
+		"rebuildPropertyStatistics": true
+	},
 	"special-testcases": [
 		{
 			"about": "#0 search for user-defined property to contain",
@@ -22,6 +29,21 @@
 					"title=\"Property:Has test blob property\">Has test blob property</a>"
 				]
 			}
+		},
+		{
+			"about": "#1 search for pre-defined property",
+			"special-page": {
+				"page":"Properties",
+				"query-parameters":{},
+				"request-parameters":{
+					"property": "Allow"
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"title=\"Property:Allows value\">Allows value</a>"
+				]
+			}
 		}
 	],
 	"settings": {
@@ -30,7 +52,8 @@
 	},
 	"meta": {
 		"skip-on": {
-			"sqlite": "Too lazy to find out why the DB isn't updated in time after the property has been created."
+			"sqlite": "Returns a `database is locked`",
+			"mw-1.19.20": "The table update on 1.19 lacks behind"
 		},
 		"version": "0.1",
 		"is-incomplete": false,
