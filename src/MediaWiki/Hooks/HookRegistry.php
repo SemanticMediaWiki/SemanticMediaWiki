@@ -13,6 +13,9 @@ use SMW\SQLStore\EmbeddedQueryDependencyListResolver;
 use SMW\DeferredRequestDispatchManager;
 use SMW\PropertyHierarchyLookup;
 use Onoi\HttpRequest\HttpRequestFactory;
+use SMW\ParserFunctions\DocumentationParserFunction;
+use SMW\ParserFunctions\InfoParserFunction;
+use ParserHooks\HookRegistrant;
 
 /**
  * @license GNU GPL v2+
@@ -521,12 +524,8 @@ class HookRegistry {
 		$this->handlers['SMW::Store::AfterQueryResultLookupComplete'] = function ( $store, &$result ) use ( $applicationFactory, $propertyHierarchyLookup ) {
 
 			$embeddedQueryDependencyListResolver = new EmbeddedQueryDependencyListResolver(
-				$store,
+				$result,
 				$propertyHierarchyLookup
-			);
-
-			$embeddedQueryDependencyListResolver->setQueryResult(
-				$result
 			);
 
 			$embeddedQueryDependencyListResolver->setPropertyDependencyDetectionBlacklist(
@@ -585,6 +584,18 @@ class HookRegistry {
 			list( $name, $definition, $flag ) = $parserFunctionFactory->newDeclareParserFunctionDefinition();
 
 			$parser->setFunctionHook( $name, $definition, $flag );
+
+			$hookRegistrant = new HookRegistrant( $parser );
+
+			$infoFunctionDefinition = InfoParserFunction::getHookDefinition();
+			$infoFunctionHandler = new InfoParserFunction();
+			$hookRegistrant->registerFunctionHandler( $infoFunctionDefinition, $infoFunctionHandler );
+			$hookRegistrant->registerHookHandler( $infoFunctionDefinition, $infoFunctionHandler );
+
+			$docsFunctionDefinition = DocumentationParserFunction::getHookDefinition();
+			$docsFunctionHandler = new DocumentationParserFunction();
+			$hookRegistrant->registerFunctionHandler( $docsFunctionDefinition, $docsFunctionHandler );
+			$hookRegistrant->registerHookHandler( $docsFunctionDefinition, $docsFunctionHandler );
 
 			return true;
 		};

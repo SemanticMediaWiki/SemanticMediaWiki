@@ -29,17 +29,18 @@ use SMWDIBlob as DIBlob;
 class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCase {
 
 	private $applicationFactory;
+	private $store;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->applicationFactory->registerObject( 'Store', $this->store );
 	}
 
 	protected function tearDown() {
@@ -50,32 +51,24 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 
 	public function testCanConstruct() {
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
 		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\EmbeddedQueryDependencyListResolver',
-			new EmbeddedQueryDependencyListResolver( $store, $propertyHierarchyLookup )
+			new EmbeddedQueryDependencyListResolver( null, $propertyHierarchyLookup )
 		);
 	}
 
 	public function testTryToGetQueryDependencySubjectListForNonSetQueryResult() {
-
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
 
 		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new EmbeddedQueryDependencyListResolver(
-			$store,
+			null,
 			$propertyHierarchyLookup
 		);
 
@@ -113,20 +106,18 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 			->method( 'getQuery' )
 			->will( $this->returnValue( $query ) );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+		$queryResult->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $this->store ) );
 
 		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new EmbeddedQueryDependencyListResolver(
-			$store,
+			$queryResult,
 			$propertyHierarchyLookup
 		);
-
-		$instance->setQueryResult( $queryResult );
 
 		$this->assertEmpty(
 			$instance->getQueryDependencySubjectList()
@@ -157,9 +148,9 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 			->method( 'getQuery' )
 			->will( $this->returnValue( $query ) );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+		$queryResult->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $this->store ) );
 
 		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
 			->disableOriginalConstructor()
@@ -181,11 +172,10 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 			->will( $this->returnValue( array() ) );
 
 		$instance = new EmbeddedQueryDependencyListResolver(
-			$store,
+			$queryResult,
 			$propertyHierarchyLookup
 		);
 
-		$instance->setQueryResult( $queryResult );
 		$instance->setPropertyDependencyDetectionBlacklist( array( 'Foobar', 'Subprop' ) );
 
 		$expected = array(
@@ -218,20 +208,18 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 			->method( 'getQuery' )
 			->will( $this->returnValue( $query ) );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+		$queryResult->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $this->store ) );
 
 		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new EmbeddedQueryDependencyListResolver(
-			$store,
+			$queryResult,
 			$propertyHierarchyLookup
 		);
-
-		$instance->setQueryResult( $queryResult );
 
 		$this->assertEquals(
 			$expected,
@@ -263,9 +251,9 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 			->method( 'getQuery' )
 			->will( $this->returnValue( $query ) );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+		$queryResult->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $this->store ) );
 
 		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
 			->disableOriginalConstructor()
@@ -287,11 +275,9 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 			->will( $this->returnValue( array() ) );
 
 		$instance = new EmbeddedQueryDependencyListResolver(
-			$store,
+			$queryResult,
 			$propertyHierarchyLookup
 		);
-
-		$instance->setQueryResult( $queryResult );
 
 		$expected = array(
 			DIWikiPage::newFromText( 'Foo' ),
@@ -329,9 +315,9 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 			->method( 'getQuery' )
 			->will( $this->returnValue( $query ) );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+		$queryResult->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $this->store ) );
 
 		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
 			->disableOriginalConstructor()
@@ -353,11 +339,9 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 			->will( $this->returnValue( array() ) );
 
 		$instance = new EmbeddedQueryDependencyListResolver(
-			$store,
+			$queryResult,
 			$propertyHierarchyLookup
 		);
-
-		$instance->setQueryResult( $queryResult );
 
 		$expected = array(
 			DIWikiPage::newFromText( 'Foo' ),

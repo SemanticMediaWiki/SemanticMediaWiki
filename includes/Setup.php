@@ -2,10 +2,7 @@
 
 namespace SMW;
 
-use ParserHooks\HookRegistrant;
 use SMW\MediaWiki\Hooks\HookRegistry;
-use SMW\ParserHooks\DocumentationParserFunction;
-use SMW\ParserHooks\InfoParserFunction;
 
 /**
  * Extension setup and registration
@@ -283,22 +280,6 @@ final class Setup {
 		// Old-style registration
 		$this->globalVars['wgHooks']['AdminLinks'][] = 'SMWHooks::addToAdminLinks';
 		$this->globalVars['wgHooks']['PageSchemasRegisterHandlers'][] = 'SMWHooks::onPageSchemasRegistration';
-
-		$this->globalVars['wgHooks']['ParserFirstCallInit'][] = function( \Parser &$parser ) {
-			$hookRegistrant = new HookRegistrant( $parser );
-
-			$infoFunctionDefinition = InfoParserFunction::getHookDefinition();
-			$infoFunctionHandler = new InfoParserFunction();
-			$hookRegistrant->registerFunctionHandler( $infoFunctionDefinition, $infoFunctionHandler );
-			$hookRegistrant->registerHookHandler( $infoFunctionDefinition, $infoFunctionHandler );
-
-			$docsFunctionDefinition = DocumentationParserFunction::getHookDefinition();
-			$docsFunctionHandler = new DocumentationParserFunction();
-			$hookRegistrant->registerFunctionHandler( $docsFunctionDefinition, $docsFunctionHandler );
-			$hookRegistrant->registerHookHandler( $docsFunctionDefinition, $docsFunctionHandler );
-
-			return true;
-		};
 	}
 
 }
