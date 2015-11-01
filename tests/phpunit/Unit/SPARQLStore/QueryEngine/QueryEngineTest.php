@@ -356,6 +356,45 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetImmediateEmptyQueryResultForLimitLessThanOne() {
+
+		$repositoryResult = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\RepositoryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$compoundConditionBuilder->expects( $this->never() )
+			->method( 'setSortKeys' )
+			->will( $this->returnValue( $compoundConditionBuilder ) );
+
+		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
+
+		$instance = new QueryEngine(
+			$connection,
+			$compoundConditionBuilder,
+			new QueryResultFactory( $store )
+		);
+
+		$query = new Query( $description );
+		$query->setUnboundLimit( -1 );
+
+		$this->assertInstanceOf(
+			'\SMWQueryResult',
+			$instance->getQueryResult( $query )
+		);
+	}
+
 	public function testInstanceQueryResultForMockedSingletonCompostion() {
 
 		$repositoryResult = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\RepositoryResult' )

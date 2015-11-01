@@ -151,7 +151,7 @@ class QueryEngine {
 			return new QueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->store, false );
 			// NOTE: we check this here to prevent unnecessary work, but we check
 			// it after query processing below again in case more errors occurred.
-		} elseif ( $query->querymode == Query::MODE_NONE ) {
+		} elseif ( $query->querymode == Query::MODE_NONE || $query->getLimit() < 1 ) {
 			// don't query, but return something to printer
 			return new QueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->store, true );
 		}
