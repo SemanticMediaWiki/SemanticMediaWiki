@@ -8,6 +8,8 @@ Not a release yet.
 
 ## Bug fixes
 
+* #1244 Find redirect for a propertiy specified as a record field (in `PropertyListValue`)
+
 ## Internal changes
 
 * #1235 Improve query performance in `PropertyUsageListLookup`
