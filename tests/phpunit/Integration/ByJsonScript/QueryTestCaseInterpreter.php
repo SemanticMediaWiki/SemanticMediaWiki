@@ -133,6 +133,15 @@ class QueryTestCaseInterpreter {
 	}
 
 	/**
+	 * @since 2.3
+	 *
+	 * @return boolean
+	 */
+	public function isRequiredToClearStoreCache() {
+		return isset( $this->contents['store']['clear-cache'] ) && $this->contents['store']['clear-cache'];
+	}
+
+	/**
 	 * @since 2.2
 	 *
 	 * @return integer

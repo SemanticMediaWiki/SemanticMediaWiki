@@ -99,6 +99,10 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 		$query->setExtraPrintouts( $queryTestCaseInterpreter->getExtraPrintouts() );
 		$query->setSortKeys( $queryTestCaseInterpreter->getSortKeys() );
 
+		if ( $queryTestCaseInterpreter->isRequiredToClearStoreCache() ) {
+			$this->getStore()->clear();
+		}
+
 		$queryResult = $this->getStore()->getQueryResult( $query );
 
 		$this->printQueryResultToOutput( $queryResult );

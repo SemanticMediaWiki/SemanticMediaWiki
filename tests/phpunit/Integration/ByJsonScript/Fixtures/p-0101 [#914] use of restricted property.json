@@ -90,7 +90,8 @@
 		}
 	],
 	"settings": {
-		"wgContLang": "en"
+		"wgContLang": "en",
+		"smwgPageSpecialProperties": [ "_MDAT" ]
 	},
 	"meta": {
 		"version": "0.1",

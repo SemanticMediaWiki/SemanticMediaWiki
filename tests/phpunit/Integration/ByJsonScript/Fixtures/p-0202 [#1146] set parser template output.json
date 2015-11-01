@@ -57,7 +57,9 @@
 			}
 		}
 	],
-	"settings": {},
+	"settings": {
+		"smwgPageSpecialProperties": [ "_MDAT" ]
+	},
 	"meta": {
 		"version": "0.1",
 		"is-incomplete": false,
