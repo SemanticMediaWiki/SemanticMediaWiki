@@ -67,6 +67,10 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$connection->expects( $this->any() )
+			->method( 'select' )
+			->will( $this->returnValue( new \FakeResultWrapper( array() ) ) );
+
 		$this->store->expects( $this->any() )
 			->method( 'findPropertyTableID' )
 			->will( $this->returnValue( 'Bar' ) );
@@ -103,7 +107,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( array( $row ) ) );
+			->will( $this->returnValue( new \FakeResultWrapper( array( $row ) ) ) );
 
 		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
 			->disableOriginalConstructor()

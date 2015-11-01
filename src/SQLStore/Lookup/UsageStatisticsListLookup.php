@@ -3,6 +3,7 @@
 namespace SMW\SQLStore\Lookup;
 
 use SMW\Store;
+use SMW\SQLStore\SQLStore;
 use SMW\Store\PropertyStatisticsStore;
 use SMW\SQLStore\Lookup\ListLookup;
 use SMW\DIProperty;
@@ -186,13 +187,30 @@ class UsageStatisticsListLookup implements ListLookup {
 	 */
 	public function getPropertyPageCount() {
 
-		$count = $this->store->getConnection()->estimateRowCount(
-			'page',
-			'*',
-			array( 'page_namespace' => SMW_NS_PROPERTY )
+		$options = array();
+
+		// Only match entities that have a NOT null smw_proptable_hash entry
+		// which indicates that it is not a object but a subject value (has
+		// annotations such as `has type` == page was created with ... etc.)
+		$conditions = array(
+			'smw_namespace' => SMW_NS_PROPERTY,
+			'smw_iw' => '',
+			'smw_proptable_hash IS NOT NULL'
 		);
 
-		return (int)$count;
+		$db = $this->store->getConnection( 'mw.db' );
+
+		// Select object ID's against known property ID's that match the conditions
+		$res = $db->select(
+			array( $db->tableName( SQLStore::ID_TABLE ), $db->tableName( SQLStore::PROPERTY_STATISTICS_TABLE ) ),
+			'smw_id',
+			$conditions,
+			__METHOD__,
+			$options,
+			array( $db->tableName( SQLStore::ID_TABLE ) => array( 'INNER JOIN', array( 'smw_id=p_id' ) ) )
+		);
+
+		return $res->numRows();
 	}
 
 	/**
