@@ -4,6 +4,8 @@ Not a release yet.
 
 ## New features and enhancements
 
+* #1243 Make failed queries discoverable
+
 ## Bug fixes
 
 ## Internal changes
