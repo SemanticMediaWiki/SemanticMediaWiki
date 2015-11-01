@@ -1,4 +1,7 @@
 <?php
+
+use SMW\StoreFactory;
+
 /**
  * @ingroup SMWDataValues
  */
@@ -60,25 +63,33 @@ class SMWPropertyListValue extends SMWDataValue {
 	 * @return boolean
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
-		if ( $dataItem instanceof SMWDIBlob ) {
-			$this->m_dataitem = $dataItem;
-			$this->m_diProperties = array();
 
-			foreach ( explode( ';', $dataItem->getString() ) as $propertyKey ) {
-				try {
-					$this->m_diProperties[] = new SMWDIProperty( $propertyKey );
-				} catch ( SMWDataItemException $e ) {
-					$this->m_diProperties[] = new SMWDIProperty( 'Error' );
-					$this->addError( wfMessage( 'smw_parseerror' )->inContentLanguage()->text() );
-				}
-			}
-
-			$this->m_caption = false;
-
-			return true;
-		} else {
+		if ( !$dataItem instanceof SMWDIBlob ) {
 			return false;
 		}
+
+		$this->m_dataitem = $dataItem;
+		$this->m_diProperties = array();
+
+		foreach ( explode( ';', $dataItem->getString() ) as $propertyKey ) {
+			$property = null;
+
+			try {
+				$property = new SMWDIProperty( $propertyKey );
+			} catch ( SMWDataItemException $e ) {
+				$property = new SMWDIProperty( 'Error' );
+				$this->addError( wfMessage( 'smw_parseerror' )->inContentLanguage()->text() );
+			}
+
+			if ( $property instanceof SMWDIProperty ) {
+				 // Find a possible redirect
+				$this->m_diProperties[] = StoreFactory::getStore()->getRedirectTarget( $property );
+			}
+		}
+
+		$this->m_caption = false;
+
+		return true;
 	}
 
 	public function getShortWikiText( $linked = null ) {

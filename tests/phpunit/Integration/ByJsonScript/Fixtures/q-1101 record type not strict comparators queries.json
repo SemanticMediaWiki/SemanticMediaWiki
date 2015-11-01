@@ -14,10 +14,6 @@
 			"contents": "[[Has type::Number]]"
 		},
 		{
-			"name": "Has population",
-			"contents": "[[Has type::Number]]"
-		},
-		{
 			"name": "Has area",
 			"contents": "[[Has type::Quantity]] [[Corresponds to::1 km²]] [[Corresponds to::1000 m²]] [[Corresponds to::988.42153133973 rood]]"
 		},
