@@ -93,7 +93,7 @@ class QueryEngine {
 		}
 
 		// don't query, but return something to the printer
-		if ( $query->querymode == Query::MODE_NONE ) {
+		if ( $query->querymode == Query::MODE_NONE || $query->getLimit() < 1 ) {
 			return $this->queryResultFactory->newEmptyQueryResult( $query, true );
 		}
 

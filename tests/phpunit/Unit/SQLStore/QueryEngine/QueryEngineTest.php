@@ -84,4 +84,36 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetImmediateEmptyQueryResultForLimitLessThanOne() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->never() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$this->querySegmentListBuilder->expects( $this->any() )
+			->method( 'getErrors' )
+			->will( $this->returnValue( array() ) );
+
+		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
+
+		$instance = new QueryEngine(
+			$this->store,
+			$this->querySegmentListBuilder,
+			$this->querySegmentListProcessor,
+			$this->engineOptions
+		);
+
+		$query = new Query( $description );
+		$query->setUnboundLimit( -1 );
+
+		$this->assertInstanceOf(
+			'\SMWQueryResult',
+			$instance->getQueryResult( $query )
+		);
+	}
+
 }
