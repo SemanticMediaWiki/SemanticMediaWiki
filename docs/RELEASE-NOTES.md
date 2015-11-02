@@ -5,6 +5,7 @@ Not a release yet.
 ## New features and enhancements
 
 * #1243 Make failed queries discoverable
+* #1246 Added support for `~`/`!~` on single value queries
 
 ## Bug fixes
 
