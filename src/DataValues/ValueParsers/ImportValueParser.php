@@ -172,7 +172,7 @@ class ImportValueParser implements ValueParser {
 			}
 
 			list( $secname, $typestring ) = explode( '|', $importDefintion, 2 );
-			$list[str_replace( '_', ' ', trim( $secname ) )] = $typestring;
+			$list[trim( $secname )] = $typestring;
 		}
 
 		return array( $uri, $name, $list );

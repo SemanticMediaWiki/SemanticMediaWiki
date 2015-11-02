@@ -208,6 +208,19 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
+		#2 mbox_sha1sum
+		$provider[] = array(
+			" http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n   mbox_sha1sum|Type:Text\n",
+			'Foaf:mbox_sha1sum',
+			array(
+				'Foaf',
+				'mbox_sha1sum',
+				'http://xmlns.com/foaf/0.1/',
+				'[http://www.foaf-project.org/ Friend Of A Friend]',
+				'Type:Text'
+			)
+		);
+
 		return $provider;
 	}
 
