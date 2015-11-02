@@ -197,7 +197,7 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 
 	private function createConditionFromSubConditionElements( $subConditionElements ) {
 
-		if ( $subConditionElements->singletonMatchElement !== null ) {
+		if ( $subConditionElements->singletonMatchElement instanceof ExpElement ) {
 			return $this->createSingletonCondition( $subConditionElements );
 		}
 

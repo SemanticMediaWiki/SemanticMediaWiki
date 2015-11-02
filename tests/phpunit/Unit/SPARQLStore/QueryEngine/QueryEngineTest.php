@@ -296,10 +296,11 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$query = new Query( $description );
+		$query->querymode = Query::MODE_COUNT;
 
 		$this->assertInstanceOf(
 			'\SMWQueryResult',
-			$instance->getCountQueryResult( $query )
+			$instance->getQueryResult( $query )
 		);
 	}
 
@@ -349,10 +350,11 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$query = new Query( $description );
+		$query->querymode = Query::MODE_INSTANCES;
 
 		$this->assertInstanceOf(
 			'\SMWQueryResult',
-			$instance->getInstanceQueryResult( $query )
+			$instance->getQueryResult( $query )
 		);
 	}
 
@@ -410,9 +412,15 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->method( 'ask' )
 			->will( $this->returnValue( $repositoryResult ) );
 
+		$element = $this->getMockBuilder( '\SMW\Exporter\Element' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$condition = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$condition->matchElement = $element;
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -443,10 +451,63 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$query = new Query( $description );
+		$query->querymode = Query::MODE_INSTANCES;
 
 		$this->assertInstanceOf(
 			'\SMWQueryResult',
-			$instance->getInstanceQueryResult( $query )
+			$instance->getQueryResult( $query )
+		);
+	}
+
+	public function testDebugQueryResultForMockedCompostion() {
+
+		// PHPUnit 3.7 goes drumming when trying to a method on an
+		// interface hence the use of the concrete class
+		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnector\GenericHttpRepositoryConnector' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getSparqlForSelect' ) )
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'getSparqlForSelect' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$condition = $this->getMockForAbstractClass( '\SMW\SPARQLStore\QueryEngine\Condition\Condition' );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$compoundConditionBuilder->expects( $this->any() )
+			->method( 'getErrors' )
+			->will( $this->returnValue( array() ) );
+
+		$compoundConditionBuilder->expects( $this->atLeastOnce() )
+			->method( 'setSortKeys' )
+			->will( $this->returnValue( $compoundConditionBuilder ) );
+
+		$compoundConditionBuilder->expects( $this->once() )
+			->method( 'buildCondition' )
+			->will( $this->returnValue( $condition ) );
+
+		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
+
+		$instance = new QueryEngine(
+			$connection,
+			$compoundConditionBuilder,
+			new QueryResultFactory( $store )
+		);
+
+		$query = new Query( $description );
+		$query->querymode = Query::MODE_DEBUG;
+
+		$this->assertInternalType(
+			'string',
+			$instance->getQueryResult( $query )
 		);
 	}
 

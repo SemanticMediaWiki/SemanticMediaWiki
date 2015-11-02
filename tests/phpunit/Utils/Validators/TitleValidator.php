@@ -38,7 +38,7 @@ class TitleValidator extends \PHPUnit_Framework_Assert {
 				$title = Title::newFromText( $title );
 			}
 
-			$this->assertEquals( $isExpected, $title->exists() );
+			$this->assertEquals( $isExpected, $title->exists(), $title->getPrefixedText() );
 		}
 	}
 
