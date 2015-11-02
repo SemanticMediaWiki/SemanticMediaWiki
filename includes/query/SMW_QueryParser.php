@@ -459,9 +459,9 @@ class SMWQueryParser {
 				}
 			} else {
 				$value = \SMW\DataValueFactory::getInstance()->newTypeIDValue( '_wpg', $chunk );
-				$value->setQueryConditionUsage( true );
+
 				if ( $value->isValid() ) {
-					$result = $this->addDescription( $result, new ValueDescription( $value->getDataItem(), null ), false );
+					$result = $this->addDescription( $result, $value->getQueryDescription( $chunk ), false );
 				}
 			}
 

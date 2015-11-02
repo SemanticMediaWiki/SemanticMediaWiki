@@ -838,4 +838,30 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testSingletonLikeConditionForSolitaryWpgValue() {
+
+		$description = new ValueDescription(
+			new DIWikiPage( "Foo*", NS_MAIN ), null, SMW_CMP_LIKE
+		);
+
+		$instance = new CompoundConditionBuilder();
+
+		$condition = $instance->buildCondition( $description );
+
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition',
+			$condition
+		);
+
+		$expectedConditionString = $this->stringBuilder
+			->addString( 'FILTER( regex( ?v1, "^Foo.*$", "s") )' )->addNewLine()
+			->addString( '?result swivt:wikiPageSortKey ?v1 .' )->addNewLine()
+			->getString();
+
+		$this->assertEquals(
+			$expectedConditionString,
+			$instance->convertConditionToString( $condition )
+		);
+	}
+
 }
