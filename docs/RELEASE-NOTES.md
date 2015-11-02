@@ -10,6 +10,7 @@ Not a release yet.
 ## Bug fixes
 
 * #1244 Find redirect for a propertiy specified as a record field (in `PropertyListValue`)
+* #1248 Fixed misplaced replacment of `_` in `ImportValueParser`
 
 ## Internal changes
 
