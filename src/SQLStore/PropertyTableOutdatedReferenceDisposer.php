@@ -121,6 +121,18 @@ class PropertyTableOutdatedReferenceDisposer {
 			);
 		}
 
+		// If the property table is not a fixed table (== assigns a whole
+		// table to a specific property with the p_id column being suppressed)
+		// then check for the p_id field
+		if ( $row === false && !$proptable->isFixedPropertyTable() ) {
+			$row = $db->selectRow(
+				$proptable->getName(),
+				array( 'p_id' ),
+				array( 'p_id' => $id ),
+				__METHOD__
+			);
+		}
+
 		return $row !== false;
 	}
 
