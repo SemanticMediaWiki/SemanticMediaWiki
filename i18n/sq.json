@@ -12,7 +12,7 @@
 	"smw_concept_description": "Përshkrim i konceptit \"$1\"",
 	"smw_no_concept_namespace": "Konceptet mund të përcaktohen vetëm në faqet në namespace Concept:",
 	"smw_multiple_concepts": "Çdo faqe koncepti mund të ketë vetëm një përkufizim të konceptit.",
-	"smw_concept_cache_miss": "Koncepti \"$1\" nuk mund të përdoret në këtë moment, pasi konfigurimi i wiki kërkon që ai të llogaritet off-line.\nNëse problemi nuk do të iki pas një farë kohe, pyesni administratorim e faqes tuaj për ta vënë në dispozicion këtë koncept.",
+	"smw_concept_cache_miss": "Koncepti \"$1\" nuk mund të përdoret në këtë moment, pasi konfigurimi i wiki kërkon që ai të llogaritet off-line.\nNëse problemi nuk do të iki pas një farë kohe, pyesni administratorin e faqes tuaj për ta vënë në dispozicion këtë koncept.",
 	"smw_noinvannot": "Vlerat nuk mund të caktohen për tiparet e anasjelltë.",
 	"smw_baduri": "URI të formës \"$1\" nuk lejohen.",
 	"smw_printername_csv": "Eksport CSV",
