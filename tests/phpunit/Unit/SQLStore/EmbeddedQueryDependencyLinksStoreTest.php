@@ -316,6 +316,80 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 		$instance->addDependencyList( $embeddedQueryDependencyListResolver );
 	}
 
+	public function testAddDependenciesFromQueryResullWhereObjectIdIsYetUnknownWhichRequiresToCreateTheIdOnTheFly() {
+
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'getSMWPageID', 'makeSMWPageID' ) )
+			->getMock();
+
+		$idTable->expects( $this->any() )
+			->method( 'getSMWPageID' )
+			->will( $this->onConsecutiveCalls( 42, 0 ) );
+
+		$idTable->expects( $this->any() )
+			->method( 'makeSMWPageID' )
+			->will( $this->returnValue( 1001 ) );
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'delete' )
+			->with(
+				$this->equalTo( \SMWSQLStore3::QUERY_LINKS_TABLE ),
+				$this->equalTo( array( 's_id' => 42 ) ) );
+
+		$insert[] = array(
+			's_id' => 42,
+			'o_id' => 1001
+		);
+
+		$connection->expects( $this->once() )
+			->method( 'insert' )
+			->with(
+				$this->equalTo( \SMWSQLStore3::QUERY_LINKS_TABLE ),
+				$this->equalTo( $insert ) );
+
+		$connectionManager = $this->getMockBuilder( '\SMW\ConnectionManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connectionManager->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getObjectIds', 'getPropertyValues' ) )
+			->getMockForAbstractClass();
+
+		$store->setConnectionManager( $connectionManager );
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( array() ) );
+
+		$embeddedQueryDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\EmbeddedQueryDependencyListResolver' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$embeddedQueryDependencyListResolver->expects( $this->any() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ )  ) );
+
+		$embeddedQueryDependencyListResolver->expects( $this->any() )
+			->method( 'getQueryDependencySubjectList' )
+			->will( $this->returnValue( array( DIWikiPage::newFromText( 'Foo' ) ) ) );
+
+		$instance = new EmbeddedQueryDependencyLinksStore( $store );
+		$instance->addDependencyList( $embeddedQueryDependencyListResolver );
+	}
+
 	public function testTryToAddDependenciesWithinSkewedTime() {
 
 		$title = $this->getMockBuilder( '\Title' )
