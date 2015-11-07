@@ -296,8 +296,14 @@ class EmbeddedQueryDependencyLinksStore {
 
 			$oid = $this->getIdForSubject( $dependency );
 
+			// If the ID_TABLE didn't contained an valid ID then we create one ourselves
+			// to ensure that object entities are tracked from the start
+			// This can happen when a query is added with object reference that have not
+			// yet been referenced as annotation and therefore do not recognized as
+			// value annotation
 			if ( $oid < 1 ) {
-				continue;
+				$oid = $this->makeIdForSubject( $dependency );
+				wfDebugLog( 'smw', __METHOD__ . ' Unable to fetch object ID for ' . $dependency->getHash() . " add new {$oid} ID \n" );
 			}
 
 			$inserts[$sid . $oid] = array(
@@ -325,8 +331,30 @@ class EmbeddedQueryDependencyLinksStore {
 		$this->connection->endAtomicTransaction( __METHOD__ );
 	}
 
+	/**
+	 * @since 2.3
+	 *
+	 * @param DIWikiPage $subject, $subobjectName
+	 * @param string $subobjectName
+	 */
 	public function getIdForSubject( DIWikiPage $subject, $subobjectName = '' ) {
 		return $this->store->getObjectIds()->getSMWPageID(
+			$subject->getDBkey(),
+			$subject->getNamespace(),
+			$subject->getInterwiki(),
+			$subobjectName,
+			false
+		);
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @param DIWikiPage $subject, $subobjectName
+	 * @param string $subobjectName
+	 */
+	public function makeIdForSubject( DIWikiPage $subject, $subobjectName = '' ) {
+		return $this->store->getObjectIds()->makeSMWPageID(
 			$subject->getDBkey(),
 			$subject->getNamespace(),
 			$subject->getInterwiki(),
