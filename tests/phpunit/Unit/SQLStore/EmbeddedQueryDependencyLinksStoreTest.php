@@ -384,7 +384,7 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 
 		$embeddedQueryDependencyListResolver->expects( $this->any() )
 			->method( 'getQueryDependencySubjectList' )
-			->will( $this->returnValue( array( DIWikiPage::newFromText( 'Foo' ) ) ) );
+			->will( $this->returnValue( array( DIWikiPage::newFromText( 'Foo', NS_CATEGORY ) ) ) );
 
 		$instance = new EmbeddedQueryDependencyLinksStore( $store );
 		$instance->addDependencyList( $embeddedQueryDependencyListResolver );
