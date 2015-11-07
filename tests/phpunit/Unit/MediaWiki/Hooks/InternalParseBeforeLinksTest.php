@@ -213,6 +213,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 				'title'    => $title,
 				'settings' => array(
 					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+					'smwgEnabledInTextAnnotationParserStrictMode' => true,
 					'smwgLinksInValues' => false,
 					'smwgInlineErrors'  => true,
 				),
@@ -235,6 +236,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 				'title'    => $title,
 				'settings' => array(
 					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+					'smwgEnabledInTextAnnotationParserStrictMode' => true,
 					'smwgLinksInValues' => false,
 					'smwgInlineErrors'  => true,
 				),
@@ -256,6 +258,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 				'title'    => $title,
 				'settings' => array(
 					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+					'smwgEnabledInTextAnnotationParserStrictMode' => true,
 					'smwgLinksInValues' => false,
 					'smwgInlineErrors'  => true,
 					'smwgEnabledSpecialPage' => array( 'Ask', 'Foo' )
@@ -280,6 +283,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 				'title'    => $title,
 				'settings' => array(
 					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+					'smwgEnabledInTextAnnotationParserStrictMode' => true,
 					'smwgLinksInValues' => false,
 					'smwgInlineErrors'  => true,
 					'smwgEnabledSpecialPage' => array( 'Ask', 'Foo' )
