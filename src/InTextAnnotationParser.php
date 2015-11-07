@@ -77,6 +77,11 @@ class InTextAnnotationParser {
 	private $contextReference;
 
 	/**
+	 * @var boolean
+	 */
+	private $strictModeState = true;
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
@@ -89,6 +94,19 @@ class InTextAnnotationParser {
 		$this->redirectTargetFinder = $redirectTargetFinder;
 		$this->dataValueFactory = DataValueFactory::getInstance();
 		$this->applicationFactory = ApplicationFactory::getInstance();
+	}
+
+	/**
+	 * Whether a strict interpretation (e.g [[property::value:partOfTheValue::alsoPartOfTheValue]])
+	 * or a more loose interpretation (e.g. [[property1::property2::value]]) for
+	 * annotations is to be applied.
+	 *
+	 * @since 2.3
+	 *
+	 * @param boolean $strictModeState
+	 */
+	public function setStrictModeState( $strictModeState ) {
+		$this->strictModeState = (bool)$strictModeState;
 	}
 
 	/**
@@ -252,12 +270,15 @@ class InTextAnnotationParser {
 
 		if ( array_key_exists( 1, $semanticLink ) ) {
 
-			// Check for colon(s) produced by something like [[Foo::Bar::Foobar]],
-			// [[Foo:::0049 30 12345678]]
+			// #1252 Strict mode being disabled for support of multi property
+			// assignments (e.g. [[property1::property2::value]])
+
+			// #1066 Strict mode is to check for colon(s) produced by something
+			// like [[Foo::Bar::Foobar]], [[Foo:::0049 30 12345678]]
 			// In case a colon appears (in what is expected to be a string without a colon)
 			// then concatenate the string again and split for the first :: occurrence
 			// only
-			if ( strpos( $semanticLink[1], ':' ) !== false && isset( $semanticLink[2] ) ) {
+			if ( $this->strictModeState && strpos( $semanticLink[1], ':' ) !== false && isset( $semanticLink[2] ) ) {
 				list( $semanticLink[1], $semanticLink[2] ) = explode( '::', $semanticLink[1] . '::' . $semanticLink[2], 2 );
 			}
 

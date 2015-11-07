@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Factbox;
 
 use SMW\ParserData;
 use SMW\Settings;
@@ -46,6 +46,7 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 
 		$settings = Settings::newFromArray( array(
 			'smwgNamespacesWithSemanticLinks' => array( $title->getNamespace() => true ),
+			'smwgEnabledInTextAnnotationParserStrictMode' => true,
 			'smwgLinksInValues' => false,
 			'smwgInlineErrors'  => true,
 			)

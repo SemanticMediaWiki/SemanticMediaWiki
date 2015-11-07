@@ -217,11 +217,17 @@ class ApplicationFactory {
 
 		$mwCollaboratorFactory = $this->newMwCollaboratorFactory();
 
-		return new InTextAnnotationParser(
+		$inTextAnnotationParser = new InTextAnnotationParser(
 			$parserData,
 			$mwCollaboratorFactory->newMagicWordsFinder(),
 			$mwCollaboratorFactory->newRedirectTargetFinder()
 		);
+
+		$inTextAnnotationParser->setStrictModeState(
+			$this->getSettings()->get( 'smwgEnabledInTextAnnotationParserStrictMode' )
+		);
+
+		return $inTextAnnotationParser;
 	}
 
 	/**
@@ -268,7 +274,7 @@ class ApplicationFactory {
 	 * @return NamespaceExaminer
 	 */
 	public function getNamespaceExaminer() {
-		return NamespaceExaminer::newFromArray( $this->getSettings()->get( 'smwgNamespacesWithSemanticLinks' ) );
+		return $this->callbackLoader->load( 'NamespaceExaminer' );
 	}
 
 	/**
