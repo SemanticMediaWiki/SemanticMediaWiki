@@ -301,9 +301,8 @@ class EmbeddedQueryDependencyLinksStore {
 			// This can happen when a query is added with object reference that have not
 			// yet been referenced as annotation and therefore do not recognized as
 			// value annotation
-			if ( $oid < 1 ) {
-				$oid = $this->makeIdForSubject( $dependency );
-				wfDebugLog( 'smw', __METHOD__ . ' Unable to fetch object ID for ' . $dependency->getHash() . " add new {$oid} ID \n" );
+			if ( $oid < 1 && ( ( $oid = $this->tryToMakeIdForSubject( $dependency ) ) < 1 ) ) {
+				continue;
 			}
 
 			$inserts[$sid . $oid] = array(
@@ -353,14 +352,23 @@ class EmbeddedQueryDependencyLinksStore {
 	 * @param DIWikiPage $subject, $subobjectName
 	 * @param string $subobjectName
 	 */
-	public function makeIdForSubject( DIWikiPage $subject, $subobjectName = '' ) {
-		return $this->store->getObjectIds()->makeSMWPageID(
+	public function tryToMakeIdForSubject( DIWikiPage $subject, $subobjectName = '' ) {
+
+		if ( $subject->getNamespace() !== NS_CATEGORY && $subject->getNamespace() !== SMW_NS_PROPERTY ) {
+			return 0;
+		}
+
+		$id = $this->store->getObjectIds()->makeSMWPageID(
 			$subject->getDBkey(),
 			$subject->getNamespace(),
 			$subject->getInterwiki(),
 			$subobjectName,
 			false
 		);
+
+		wfDebugLog( 'smw', __METHOD__ . " add new {$id} ID for " . $subject->getHash() . " \n" );
+
+		return $id;
 	}
 
 	private function canSuppressUpdateOnSkewFactorFor( $sid, $subject ) {
