@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Factbox;
 
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\Mock\MockObjectBuilder;

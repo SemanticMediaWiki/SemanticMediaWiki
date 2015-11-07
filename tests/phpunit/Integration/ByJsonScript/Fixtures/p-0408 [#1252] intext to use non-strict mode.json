@@ -1,0 +1,34 @@
+{
+	"description": "#1252 non strict mode suport",
+	"properties": [],
+	"subjects": [
+		{
+			"name": "Example/P0408/1",
+			"contents": "[[Testproperty1::Testproperty2::200]]"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0 disabled strict mode allows for multi property assignment",
+			"subject": "Example/P0408/1",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [ "Testproperty1", "Testproperty2", "_SKEY", "_MDAT" ],
+					"propertyValues": [ "200" ]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"smwgPageSpecialProperties": [ "_MDAT" ],
+		"smwgEnabledInTextAnnotationParserStrictMode": false
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Factbox;
 
 use SMW\Tests\Utils\Mock\MockTitle;
 

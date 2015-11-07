@@ -929,3 +929,18 @@ $GLOBALS['smwgExportBCAuxiliaryUse'] = false;
 # @since 2.3
 ##
 $GLOBALS['smwgExportBCNonCanonicalFormUse'] = false;
+
+##
+# The strict mode is to help to remove ambiguity during the annotation [[ ... :: ... ]]
+# parsing process.
+#
+# The default interpretation (strict) is to find a single triple such as
+# [[property::value:partOfTheValue::alsoPartOfTheValue]] where in case the strict
+# mode is disabled multiple properties can be assigned using a
+# [[property1::property2::value]] notation which may cause value strings to be
+# interpret unanticipated in case of additional colons.
+#
+# @since 2.3
+# @default true
+##
+$GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] = true;

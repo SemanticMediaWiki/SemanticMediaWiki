@@ -113,6 +113,10 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			new RedirectTargetFinder()
 		);
 
+		$instance->setStrictModeState(
+			isset( $settings['smwgEnabledInTextAnnotationParserStrictMode'] ) ? $settings['smwgEnabledInTextAnnotationParserStrictMode'] : true
+		);
+
 		$this->applicationFactory->registerObject(
 			'Settings',
 			Settings::newFromArray( $settings )
@@ -457,6 +461,24 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 				'propertyCount'  => 2,
 				'propertyLabels' => array( 'Foo', 'Bar' ),
 				'propertyValues' => array( 'Foobar', '0049 30 12345678/::Foo', 'ABC' )
+			)
+		);
+
+		#10 #1252 (disabled strict mode)
+		$provider[] = array(
+			NS_MAIN,
+			array(
+				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+				'smwgLinksInValues' => false,
+				'smwgInlineErrors'  => true,
+				'smwgEnabledInTextAnnotationParserStrictMode' => false
+			),
+			'[[Foo::Foobar::テスト]] [[Bar:::ABC|DEF]] [[Foo:::0049 30 12345678/::Foo]] ',
+			array(
+				'resultText'     => '[[:テスト|テスト]] [[:ABC|DEF]] [[:Foo|Foo]]',
+				'propertyCount'  => 4,
+				'propertyLabels' => array( 'Foo', 'Bar:', 'Foobar', ':0049 30 12345678/' ),
+				'propertyValues' => array( 'Foobar', 'Foo', 'ABC', 'テスト' )
 			)
 		);
 
