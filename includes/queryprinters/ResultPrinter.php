@@ -253,10 +253,6 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 			$result = $this->handleNonFileResult( $result, $results, $outputMode );
 		}
 
-		if ( $GLOBALS['wgDBtype'] == 'postgres' ) {
-			$result = pg_unescape_bytea( $result );
-		}
-
 		return $result;
 	}
 
