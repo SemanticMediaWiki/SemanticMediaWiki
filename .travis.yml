@@ -59,3 +59,7 @@ notifications:
       - "chat.freenode.net#semantic-mediawiki"
     on_success: never
     on_failure: always
+
+cache:
+  directories:
+    - $HOME/.composer/cache
