@@ -1,5 +1,7 @@
 <?php
 
+namespace SMW;
+
 /**
  * Container object for various options that can be used when retrieving
  * data from the store. These options are mostly relevant for simple,
@@ -8,11 +10,12 @@
  * Options that should not be used or where default values should be used
  * can be left as initialised.
  *
- * @ingroup SMWStore
+ * @license GNU GPL v2+
+ * @since 1.0
  *
  * @author Markus Krötzsch
  */
-class SMWRequestOptions {
+class RequestOptions {
 
 	/**
 	 * The maximum number of results that should be returned.
@@ -57,23 +60,28 @@ class SMWRequestOptions {
 	 * An array of string conditions that are applied if the result has a
 	 * string label that can be subject to those patterns.
 	 */
-	private $stringcond = array();
+	private $stringConditions = array();
 
 	/**
-	 * Set a new string condition applied to labels of results (if available).
+	 * @since 1.0
 	 *
-	 * @param $string string to match
-	 * @param $condition integer type of condition, one of STRCOND_PRE, STRCOND_POST, STRCOND_MID
+	 * @param srting $string to match
+	 * @param integer $condition one of STRCOND_PRE, STRCOND_POST, STRCOND_MID
+	 * @param boolean $asDisjunctiveCondition
 	 */
-	public function addStringCondition( $string, $condition ) {
-		$this->stringcond[] = new SMWStringCondition( $string, $condition );
+	public function addStringCondition( $string, $condition, $asDisjunctiveCondition = false ) {
+		$this->stringConditions[] = new StringCondition( $string, $condition, $asDisjunctiveCondition );
 	}
 
 	/**
 	 * Return the specified array of SMWStringCondition objects.
+	 *
+	 * @since 1.0
+	 *
+	 * @return array
 	 */
 	public function getStringConditions() {
-		return $this->stringcond;
+		return $this->stringConditions;
 	}
 
 }
