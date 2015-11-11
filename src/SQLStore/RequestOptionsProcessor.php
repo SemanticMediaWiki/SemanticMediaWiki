@@ -114,7 +114,9 @@ class RequestOptionsProcessor {
 					break;
 				}
 
-				$sqlConds .= ( ( $addAnd || ( $sqlConds !== '' ) ) ? ' AND ' : '' ) . $labelCol . ' LIKE ' . $connection->addQuotes( $string );
+				$conditionOperator = $strcond->asDisjunctiveCondition ? ' OR ' : ' AND ';
+
+				$sqlConds .= ( ( $addAnd || ( $sqlConds !== '' ) ) ? $conditionOperator : '' ) . $labelCol . ' LIKE ' . $connection->addQuotes( $string );
 			}
 		}
 
@@ -134,9 +136,9 @@ class RequestOptionsProcessor {
 	 *
 	 * @return SMWDataItem[]
 	 */
-	public function applyRequestOptionsTo( array $data, RequestOptions $requestoptions = null ) {
+	public function applyRequestOptionsTo( array $data, RequestOptions $requestOptions = null ) {
 
-		if ( $data === array() || $requestoptions === null ) {
+		if ( $data === array() || $requestOptions === null ) {
 			return $data;
 		}
 
@@ -144,85 +146,119 @@ class RequestOptionsProcessor {
 		$sortres = array();
 
 		$sampleDataItem = reset( $data );
-		$numeric = is_numeric( $sampleDataItem->getSortKey() );
+		$isNumeric = is_numeric( $sampleDataItem->getSortKey() );
 
 		$i = 0;
 
 		foreach ( $data as $item ) {
-			$ok = true; // keep datavalue only if this remains true
 
-			if ( $item instanceof DIWikiPage ) {
-				$label = $this->store->getWikiPageSortKey( $item );
-				$value = $label;
-			} else {
-				$label = ( $item instanceof DIBlob ) ? $item->getString() : '';
-				$value = $item->getSortKey();
-			}
+			list( $label, $value ) = $this->getSortKeyForItem( $item );
 
-			if ( $requestoptions->boundary !== null ) { // apply value boundary
-				$strc = $numeric ? 0 : strcmp( $value, $requestoptions->boundary );
+			$keepDataValue = $this->applyBoundaryConditions( $requestOptions, $value, $isNumeric );
+			$keepDataValue = $this->applyStringConditions( $requestOptions, $label, $keepDataValue );
 
-				if ( $requestoptions->ascending ) {
-					if ( $requestoptions->include_boundary ) {
-						$ok = $numeric ? ( $value >= $requestoptions->boundary ) : ( $strc >= 0 );
-					} else {
-						$ok = $numeric ? ( $value > $requestoptions->boundary ) : ( $strc > 0 );
-					}
-				} else {
-					if ( $requestoptions->include_boundary ) {
-						$ok = $numeric ? ( $value <= $requestoptions->boundary ) : ( $strc <= 0 );
-					} else {
-						$ok = $numeric ? ( $value < $requestoptions->boundary ) : ( $strc < 0 );
-					}
-				}
-			}
-
-			foreach ( $requestoptions->getStringConditions() as $strcond ) { // apply string conditions
-				switch ( $strcond->condition ) {
-					case StringCondition::STRCOND_PRE:
-						$ok = $ok && ( strpos( $label, $strcond->string ) === 0 );
-						break;
-					case StringCondition::STRCOND_POST:
-						$ok = $ok && ( strpos( strrev( $label ), strrev( $strcond->string ) ) === 0 );
-						break;
-					case StringCondition::STRCOND_MID:
-						$ok = $ok && ( strpos( $label, $strcond->string ) !== false );
-						break;
-				}
-			}
-
-			if ( $ok ) {
+			if ( $keepDataValue ) {
 				$result[$i] = $item;
 				$sortres[$i] = $value;
 				$i++;
 			}
 		}
 
-		if ( $requestoptions->sort ) {
-			$flag = $numeric ? SORT_NUMERIC : SORT_LOCALE_STRING;
-
-			if ( $requestoptions->ascending ) {
-				asort( $sortres, $flag );
-			} else {
-				arsort( $sortres, $flag );
-			}
-
-			$newres = array();
-
-			foreach ( $sortres as $key => $value ) {
-				$newres[] = $result[$key];
-			}
-
-			$result = $newres;
-		}
-
-		if ( $requestoptions->limit > 0 ) {
-			$result = array_slice( $result, $requestoptions->offset, $requestoptions->limit );
-		} else {
-			$result = array_slice( $result, $requestoptions->offset );
-		}
+		$this->applySortRestriction( $requestOptions, $result, $sortres, $isNumeric );
+		$this->applyLimitRestriction( $requestOptions, $result );
 
 		return $result;
+	}
+
+	private function applyStringConditions( $requestOptions, $label, $keepDataValue ) {
+
+		foreach ( $requestOptions->getStringConditions() as $strcond ) { // apply string conditions
+			switch ( $strcond->condition ) {
+				case StringCondition::STRCOND_PRE:
+					$keepDataValue = $keepDataValue && ( strpos( $label, $strcond->string ) === 0 );
+					break;
+				case StringCondition::STRCOND_POST:
+					$keepDataValue = $keepDataValue && ( strpos( strrev( $label ), strrev( $strcond->string ) ) === 0 );
+					break;
+				case StringCondition::STRCOND_MID:
+					$keepDataValue = $keepDataValue && ( strpos( $label, $strcond->string ) !== false );
+					break;
+			}
+		}
+
+		return $keepDataValue;
+	}
+
+	private function applyBoundaryConditions( $requestOptions, $value, $isNumeric ) {
+		$keepDataValue = true; // keep datavalue only if this remains true
+
+		if ( $requestOptions->boundary === null ) {
+			return $keepDataValue;
+		}
+
+		// apply value boundary
+		$strc = $isNumeric ? 0 : strcmp( $value, $requestOptions->boundary );
+
+		if ( $requestOptions->ascending ) {
+			if ( $requestOptions->include_boundary ) {
+				$keepDataValue = $isNumeric ? ( $value >= $requestOptions->boundary ) : ( $strc >= 0 );
+			} else {
+				$keepDataValue = $isNumeric ? ( $value > $requestOptions->boundary ) : ( $strc > 0 );
+			}
+		} else {
+			if ( $requestOptions->include_boundary ) {
+				$keepDataValue = $isNumeric ? ( $value <= $requestOptions->boundary ) : ( $strc <= 0 );
+			} else {
+				$keepDataValue = $isNumeric ? ( $value < $requestOptions->boundary ) : ( $strc < 0 );
+			}
+		}
+
+		return $keepDataValue;
+	}
+
+	private function getSortKeyForItem( $item ) {
+
+		if ( $item instanceof DIWikiPage ) {
+			$label = $this->store->getWikiPageSortKey( $item );
+			$value = $label;
+		} else {
+			$label = ( $item instanceof DIBlob ) ? $item->getString() : '';
+			$value = $item->getSortKey();
+		}
+
+		return array( $label, $value );
+	}
+
+	private function applySortRestriction( $requestOptions, &$result, $sortres, $isNumeric ) {
+
+		if ( !$requestOptions->sort ) {
+			return null;
+		}
+
+		$flag = $isNumeric ? SORT_NUMERIC : SORT_LOCALE_STRING;
+
+		if ( $requestOptions->ascending ) {
+			asort( $sortres, $flag );
+		} else {
+			arsort( $sortres, $flag );
+		}
+
+		$newres = array();
+
+		foreach ( $sortres as $key => $value ) {
+			$newres[] = $result[$key];
+		}
+
+		$result = $newres;
+	}
+
+	private function applyLimitRestriction( $requestOptions, &$result ) {
+
+		if ( $requestOptions->limit > 0 ) {
+			return $result = array_slice( $result, $requestOptions->offset, $requestOptions->limit );
+		}
+
+		$result = array_slice( $result, $requestOptions->offset );
 	}
 
 }

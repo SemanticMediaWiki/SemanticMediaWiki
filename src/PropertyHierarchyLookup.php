@@ -6,7 +6,6 @@ use Onoi\Cache\Cache;
 use SMW\Store;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMWRequestOptions as RequestOptions;
 
 /**
  * @license GNU GPL v2+

@@ -112,6 +112,10 @@ class_alias( 'SMW\SQLStore\QueryEngine\QueryEngine', 'SMWSQLStore3QueryEngine' )
 class_alias( 'SMW\ParserParameterProcessor', 'SMW\ParserParameterFormatter' );
 class_alias( 'SMW\ParameterProcessorFactory', 'SMW\ParameterFormatterFactory' );
 
+// 2.4
+class_alias( 'SMW\RequestOptions', 'SMWRequestOptions' );
+class_alias( 'SMW\StringCondition', 'SMWStringCondition' );
+
 // A flag used to indicate SMW defines a semantic extension type for extension credits.
 // @deprecated, removal in SMW 3.0
 define( 'SEMANTIC_EXTENSION_TYPE', true );
