@@ -9,6 +9,7 @@ Not a release yet.
 * #1246 Added support for `~`/`!~` on single value queries
 * #1267 Added the `browseByProperty` API module to fetch a property list or individual properties via the WebAPI
 * #1268 Restored compliance with MediaWiki's 1.26/1.27 WebAPI interface to ensure continued support for the `ask` and `askargs` output serialization
+* #1257 Changed import of recursive annotations (#1068) from the format to a query level using the `import-annotation` parameter
 
 ## Bug fixes
 
