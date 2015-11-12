@@ -134,7 +134,6 @@ class Settings extends SimpleDictionary {
 			'smwgFallbackSearchType' => $GLOBALS['smwgFallbackSearchType'],
 			'smwgEnabledEditPageHelp' => $GLOBALS['smwgEnabledEditPageHelp'],
 			'smwgSparqlQFeatures' => $GLOBALS['smwgSparqlQFeatures'],
-			'smwgEnabledResultFormatsWithRecursiveAnnotationSupport' => $GLOBALS['smwgEnabledResultFormatsWithRecursiveAnnotationSupport'],
 			'smwgEnabledHttpDeferredJobRequest' => $GLOBALS['smwgEnabledHttpDeferredJobRequest'],
 			'smwgEnabledQueryDependencyLinksStore' => $GLOBALS['smwgEnabledQueryDependencyLinksStore'],
 			'smwgPropertyDependencyDetectionBlacklist' => $GLOBALS['smwgPropertyDependencyDetectionBlacklist'],

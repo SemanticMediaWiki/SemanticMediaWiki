@@ -75,19 +75,6 @@ class AskParserFunction {
 	}
 
 	/**
-	 * A printer run its own isolated wgParser process therefore if the printer
-	 * or a template inclusion is used by a printer, possible extra annotations
-	 * need to be imported for further usage
-	 *
-	 * @since 2.3
-	 *
-	 * @param array $enabledFormatsThatSupportRecursiveParse
-	 */
-	public function setEnabledFormatsThatSupportRecursiveParse( array $enabledFormatsThatSupportRecursiveParse ) {
-		$this->enabledFormatsThatSupportRecursiveParse = $enabledFormatsThatSupportRecursiveParse;
-	}
-
-	/**
 	 * {{#ask}} is disabled (see $smwgQEnabled)
 	 *
 	 * @since 1.9
@@ -178,7 +165,10 @@ class AskParserFunction {
 		$format = $this->params['format']->getValue();
 
 		// FIXME Parser should be injected into the ResultPrinter
-		if ( in_array( $format, $this->enabledFormatsThatSupportRecursiveParse ) ) {
+		// Enables specific formats to import its annotation data from
+		// a recursive parse process in the result format
+		// e.g. using ask query to search/set an invert property value
+		if ( isset( $this->params['import-annotation'] ) && $this->params['import-annotation']->getValue() ) {
 			$this->parserData->importFromParserOutput( $GLOBALS['wgParser']->getOutput() );
 		}
 

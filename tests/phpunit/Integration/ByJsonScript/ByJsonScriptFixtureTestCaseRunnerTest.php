@@ -111,7 +111,6 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			'wgContLang',
 			'wgLang',
 			'wgCapitalLinks',
-			'smwgEnabledResultFormatsWithRecursiveAnnotationSupport',
 			'smwgNamespace',
 			'smwgExportBCNonCanonicalFormUse',
 			'smwgExportBCAuxiliaryUse',

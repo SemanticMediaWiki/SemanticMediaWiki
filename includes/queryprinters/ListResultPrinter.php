@@ -506,6 +506,12 @@ class ListResultPrinter extends ResultPrinter {
 			'default' => '',
 		);
 
+		$params['import-annotation'] = array(
+			'message' => 'smw-paramdesc-import-annotation',
+			'type' => 'boolean',
+			'default' => false
+		);
+
 		return $params;
 	}
 }

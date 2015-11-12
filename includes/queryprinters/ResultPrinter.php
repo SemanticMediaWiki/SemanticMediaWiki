@@ -304,14 +304,14 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 				self::$mRecursionDepth++;
 
 				if ( self::$mRecursionDepth <= self::$maxRecursionDepth ) { // restrict recursion
-					$result = in_array( $this->params['format'], $smwgEnabledResultFormatsWithRecursiveAnnotationSupport ) ? $wgParser->recursivePreprocess( $result ) :'[[SMW::off]]' . $wgParser->replaceVariables( $result ) . '[[SMW::on]]';
+					$result = isset( $this->params['import-annotation'] ) && $this->params['import-annotation'] ? $wgParser->recursivePreprocess( $result ) : '[[SMW::off]]' . $wgParser->replaceVariables( $result ) . '[[SMW::on]]';
 				} else {
 					$result = ''; /// TODO: explain problem (too much recursive parses)
 				}
 
 				self::$mRecursionDepth--;
 			} else { // not during parsing, no preprocessing needed, still protect the result
-				$result = in_array( $this->params['format'], $smwgEnabledResultFormatsWithRecursiveAnnotationSupport ) ? $result : '[[SMW::off]]' . $result . '[[SMW::on]]';
+				$result = isset( $this->params['import-annotation'] ) && $this->params['import-annotation'] ? $result : '[[SMW::off]]' . $result . '[[SMW::on]]';
 			}
 		}
 

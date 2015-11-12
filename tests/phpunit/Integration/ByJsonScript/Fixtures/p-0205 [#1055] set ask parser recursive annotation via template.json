@@ -13,11 +13,15 @@
 		},
 		{
 			"name": "Example/0205/Ask/List",
-			"contents": "{{#ask:[[TestPropertyByAskTemplate::TestValueByAskTemplate]]|link=none|sep=|format=list|template=AskTemplateToAddPropertyAnnotation}}"
+			"contents": "{{#ask:[[TestPropertyByAskTemplate::TestValueByAskTemplate]]|link=none|sep=|format=list|template=AskTemplateToAddPropertyAnnotation|import-annotation=true}}"
 		},
 		{
-			"name": "Example/0205/Ask/Embedded",
-			"contents": "{{#ask:[[TestPropertyByAskTemplate::TestValueByAskTemplate]]|link=none|sep=|format=embedded}}"
+			"name": "Example/0205/Ask/Embedded/1",
+			"contents": "{{#ask:[[TestPropertyByAskTemplate::TestValueByAskTemplate]]|link=none|sep=|format=embedded|import-annotation=false}}"
+		},
+		{
+			"name": "Example/0205/Ask/Embedded/2",
+			"contents": "{{#ask:[[ByAskTemplateToSetProperty::1234]]|link=none|sep=|format=embedded|import-annotation=false}}"
 		}
 	],
 	"parser-testcases": [
@@ -33,8 +37,19 @@
 			}
 		},
 		{
-			"about": "#1 embbeded is exluded from recursive support",
-			"subject": "Example/0205/Ask/Embedded",
+			"about": "#1 embbeded with disabled recursive parse support",
+			"subject": "Example/0205/Ask/Embedded/1",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_ASK", "_MDAT", "_SKEY" ]
+				}
+			}
+		},
+		{
+			"about": "#2 embbeded with disabled recursive parse support",
+			"subject": "Example/0205/Ask/Embedded/2",
 			"store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
@@ -45,7 +60,6 @@
 		}
 	],
 	"settings": {
-		"smwgEnabledResultFormatsWithRecursiveAnnotationSupport": [ "list" ],
 		"smwgPageSpecialProperties": [ "_MDAT" ]
 	},
 	"meta": {

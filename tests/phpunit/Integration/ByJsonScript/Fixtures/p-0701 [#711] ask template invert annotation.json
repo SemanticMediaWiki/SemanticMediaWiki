@@ -24,7 +24,7 @@
 		{
 			"name": "InvertPropertyDeclarator",
 			"namespace": "NS_TEMPLATE",
-			"contents": "<includeonly>{{#ask:[[{{{1}}}::{{PAGENAME}}]]|link=none|sep=|template=InvertPropertySetter|userparam={{{2}}}|format=template }}</includeonly>"
+			"contents": "<includeonly>{{#ask:[[{{{1}}}::{{PAGENAME}}]]|link=none|sep=|template=InvertPropertySetter|userparam={{{2}}}|format=template|import-annotation=true}}</includeonly>"
 		},
 		{
 			"name": "Belgium",
@@ -55,7 +55,6 @@
 	],
 	"settings": {
 		"wgCapitalLinks": true,
-		"smwgEnabledResultFormatsWithRecursiveAnnotationSupport": [ "template" ],
 		"smwgPageSpecialProperties": [ "_MDAT" ]
 	},
 	"meta": {
