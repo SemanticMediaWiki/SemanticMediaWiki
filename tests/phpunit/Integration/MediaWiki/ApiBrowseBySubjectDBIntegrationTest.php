@@ -140,7 +140,8 @@ class ApiBrowseBySubjectDBIntegrationTest extends MwDBaseUnitTestCase {
 			'browsebysubject'
 		);
 
-		if ( $asRawMode ) {
+		// Went away with 1.26/1.27
+		if ( function_exists( 'setRawMode' ) && $asRawMode ) {
 			$instance->getMain()->getResult()->setRawMode();
 		}
 

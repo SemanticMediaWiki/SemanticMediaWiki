@@ -130,7 +130,11 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 			'browsebysubject'
 		);
 
-		$instance->getMain()->getResult()->setRawMode();
+		// Went away with 1.26/1.27
+		if ( function_exists( 'setRawMode' ) ) {
+			$instance->getMain()->getResult()->setRawMode();
+		}
+
 		$instance->execute();
 
 		$printer = $instance->getMain()->createPrinterByName( 'json' );

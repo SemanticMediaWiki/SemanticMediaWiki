@@ -65,12 +65,12 @@ abstract class Query extends ApiBase {
 	 *
 	 * @param SMWQueryResult $queryResult
 	 */
-	protected function addQueryResult( SMWQueryResult $queryResult ) {
+	protected function addQueryResult( SMWQueryResult $queryResult, $outputFormat = 'json' ) {
 
 		$result = $this->getResult();
 
 		$resultFormatter = new ApiQueryResultFormatter( $queryResult );
-		$resultFormatter->setIsRawMode( $result->getIsRawMode() );
+		$resultFormatter->setIsRawMode( ( strpos( strtolower( $outputFormat ), 'xml' ) !== false ) );
 		$resultFormatter->doFormat();
 
 		if ( $resultFormatter->getContinueOffset() ) {

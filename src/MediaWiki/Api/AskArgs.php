@@ -21,6 +21,7 @@ class AskArgs extends Query {
 	public function execute() {
 
 		$parameterFormatter = new ApiRequestParameterFormatter( $this->extractRequestParams() );
+		$outputFormat = 'json';
 
 		$queryResult = $this->getQueryResult( $this->getQuery(
 			$parameterFormatter->getAskArgsApiParameter( 'conditions' ),
@@ -28,7 +29,11 @@ class AskArgs extends Query {
 			$parameterFormatter->getAskArgsApiParameter( 'parameters' )
 		) );
 
-		$this->addQueryResult( $queryResult );
+		if ( $this->getMain()->getPrinter() instanceof \ApiFormatXml ) {
+			$outputFormat = 'xml';
+		}
+
+		$this->addQueryResult( $queryResult, $outputFormat );
 	}
 
 	/**
