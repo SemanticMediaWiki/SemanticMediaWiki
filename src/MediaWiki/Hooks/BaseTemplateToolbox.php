@@ -68,7 +68,7 @@ class BaseTemplateToolbox {
 	protected function performUpdate() {
 
 		$this->toolbox['smw-browse'] = array(
-			'text' => $this->skinTemplate->getSkin()->msg( 'smw_browselink' )->text(),
+			'text' => wfMessage( 'smw_browselink' )->text(),
 			'href' => SpecialPage::getTitleFor( 'Browse', $this->encodePrefixedDBkey() )->getLocalUrl(),
 			'id'   => 't-smwbrowselink',
 			'rel'  => 'smw-browse'
