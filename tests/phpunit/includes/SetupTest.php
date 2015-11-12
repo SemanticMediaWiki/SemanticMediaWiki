@@ -258,6 +258,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'smwinfo',
 			'askargs',
 			'browsebysubject',
+			'browsebyproperty'
 		);
 
 		return $this->buildDataProvider( 'wgAPIModules', $modules, '' );

@@ -1,26 +1,41 @@
 /**
- * JavaScript for property related functions
+ * JavaScript for property autocomplete function
  *
- * @see https://www.mediawiki.org/wiki/Extension:Semantic_MediaWiki
+ * @license GNU GPL v2+
+ * @since 2.4
  *
- * @since 1.8
- * @release 0.1
- *
- * @file
- * @ingroup SMW
- *
- * @licence GNU GPL v2 or later
  * @author mwjames
  */
 
-( function( $ ) {
+( function( $, mw ) {
 	'use strict';
 
 	$( document ).ready( function() {
 
-		// Used in SMW_SpecialSearchByProperty.php
-		// Function is specified in ext.smw.autocomplete
-		$( '#smw-property-input' ).smwAutocomplete();
+		$( '#smw-property-input' ).addClass( 'autocomplete-suggestions' );
+
+		$( '#smw-property-input' ).autocomplete({
+			serviceUrl: mw.util.wikiScript( 'api' ),
+			dataType: 'json',
+			minChars: 3,
+			maxHeight: 150,
+			paramName: 'property',
+			delimiter: "\n",
+			params: {
+				'action': 'browsebyproperty',
+				'format': 'json'
+			},
+			onSearchStart: function( query ) {
+				query.property = query.property.replace( "?", '' );
+			},
+			transformResult: function( response ) {
+				return {
+					suggestions: $.map( response.query, function( dataItem, key ) {
+						return { value: dataItem.label, data: key };
+					} )
+				};
+			}
+		} );
 
 	} );
-} )( jQuery );
+} )( jQuery, mediaWiki );

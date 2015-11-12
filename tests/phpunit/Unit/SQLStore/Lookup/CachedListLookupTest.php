@@ -33,7 +33,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testfetchListFromCache() {
 
-		$expectedCachedItem[md5('123')] = array(
+		$expectedCachedItem = array(
 			'time' => 42,
 			'list' => array( 'Foo' )
 		);
@@ -87,7 +87,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRetrieveResultListFromInjectedListLookup() {
 
-		$expectedCacheItem[md5('123')] = array(
+		$expectedCacheItem = array(
 			'time' => 42,
 			'list' => array( 'Foo' )
 		);
@@ -108,7 +108,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$cache->expects( $this->once() )
+		$cache->expects( $this->at( 1 ) )
 			->method( 'save' )
 			->with(
 				$this->stringContains( 'llc' ),
@@ -151,6 +151,10 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$cache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( serialize( array( 'smw:llc:6283479db90b04ad3a6db333a3c89766' => true ) ) ) );
+
+		$cache->expects( $this->atLeastOnce() )
 			->method( 'delete' )
 			->with(
 				$this->stringContains( 'llc' ) );

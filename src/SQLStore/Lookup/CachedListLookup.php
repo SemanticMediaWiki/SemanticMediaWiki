@@ -14,6 +14,8 @@ use SMW\DIWikiPage;
  */
 class CachedListLookup implements ListLookup {
 
+	const VERSION = '0.1';
+
 	/**
 	 * @var ListLookup
 	 */
@@ -75,7 +77,7 @@ class CachedListLookup implements ListLookup {
 
 		list( $key, $optionsKey ) = $this->getCacheKey( $this->listLookup->getLookupIdentifier() );
 
-		if ( $this->cacheOptions->useCache && $this->cache->contains( $key ) && ( ( $result = $this->tryFetchFromCache( $key, $optionsKey ) ) !== null ) ) {
+		if ( $this->cacheOptions->useCache && ( ( $result = $this->tryFetchFromCache( $key, $optionsKey ) ) !== null ) ) {
 			return $result;
 		}
 
@@ -136,21 +138,33 @@ class CachedListLookup implements ListLookup {
 			$this->listLookup->getLookupIdentifier()
 		);
 
+		$data = unserialize( $this->cache->fetch( $id ) );
+
+		if ( $data && $data !== array() ) {
+			foreach ( $data as $key => $value ) {
+				$this->cache->delete( $key );
+			}
+		}
+
 		$this->cache->delete( $id );
 	}
 
 	private function tryFetchFromCache( $key, $optionsKey ) {
 
-		$data = unserialize( $this->cache->fetch( $key ) );
+		if ( !$this->cache->contains( $key ) ) {
+			return null;
+		}
 
-		if ( !isset( $data[$optionsKey] ) ) {
+		$data = unserialize( $this->cache->fetch( $optionsKey ) );
+
+		if ( $data === array() ) {
 			return null;
 		}
 
 		$this->isCached = true;
-		$this->timestamp = $data[$optionsKey]['time'];
+		$this->timestamp = $data['time'];
 
-		return $data[$optionsKey]['list'];
+		return $data['list'];
 	}
 
 	private function saveToCache( $key, $optionsKey, $list, $time, $ttl ) {
@@ -158,14 +172,17 @@ class CachedListLookup implements ListLookup {
 		$this->timestamp = $time;
 		$this->isCached = false;
 
+		// Collect the options keys
 		$data = unserialize( $this->cache->fetch( $key ) );
+		$data[$optionsKey] = true;
+		$this->cache->save( $key, serialize( $data ), $ttl );
 
-		$data[$optionsKey] = array(
+		$data = array(
 			'time' => $this->timestamp,
 			'list' => $list
 		);
 
-		$this->cache->save( $key, serialize( $data ), $ttl );
+		$this->cache->save( $optionsKey, serialize( $data ), $ttl );
 	}
 
 	private function getCacheKey( $id ) {
@@ -177,8 +194,8 @@ class CachedListLookup implements ListLookup {
 		}
 
 		return array(
-			$this->cachePrefix . md5( $id ),
-			md5( $optionsKey )
+			$this->cachePrefix . md5( $id . self::VERSION ),
+			$this->cachePrefix . md5( $optionsKey . self::VERSION )
 		);
 	}
 

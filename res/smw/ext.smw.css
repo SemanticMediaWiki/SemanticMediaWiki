@@ -466,3 +466,23 @@ label.smw-form-checkbox {
 .smw-subobject-entity {
 	font-style: italic;
 }
+
+/* jquery-autocomplete */
+.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto;}
+.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; font-size: 0.8em; }
+.autocomplete-selected { background: #F0F0F0; }
+.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+.autocomplete-group { padding: 2px 5px; }
+.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+
+input#smw-property-input.autocomplete-suggestions {
+	height: 1.15em;
+	padding: 2px 2px;
+}
+
+.skin-chameleon input#smw-property-input.autocomplete-suggestions {
+	height: 27px;
+	padding: 2px 2px;
+}
+
+.skin-chameleon .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; font-size: 0.9em; }
