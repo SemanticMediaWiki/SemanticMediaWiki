@@ -207,6 +207,13 @@ class CategoryResultPrinter extends ResultPrinter {
 				'type' => 'boolean',
 				'message' => 'smw-paramdesc-named_args',
 				'default' => false,
+			),
+
+			array(
+				'name' => 'import-annotation',
+				'type' => 'boolean',
+				'message' => 'smw-paramdesc-import-annotation',
+				'default' => false,
 			)
 		) );
 	}

@@ -22,7 +22,7 @@
 		},
 		{
 			"name": "PageContainsAskWithTemplateUsage",
-			"contents": "{{#ask: [[Has blob property::Template one]]|format=template|template=TemplateWithReferenceToItself}}"
+			"contents": "{{#ask: [[Has blob property::Template one]]|format=template|template=TemplateWithReferenceToItself|import-annotation=true}}"
 		},
 		{
 			"name": "PageContainsTemplateTransclusion",
