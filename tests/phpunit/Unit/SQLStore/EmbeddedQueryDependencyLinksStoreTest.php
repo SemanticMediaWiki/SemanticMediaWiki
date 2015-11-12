@@ -398,7 +398,7 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 
 		$title->expects( $this->once() )
 			->method( 'getTouched' )
-			->will( $this->returnValue( wfTimestamp( TS_MW ) + 10 ) );
+			->will( $this->returnValue( wfTimestamp( TS_MW ) + 60 ) );
 
 		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
