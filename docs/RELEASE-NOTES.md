@@ -7,6 +7,7 @@ Not a release yet.
 * #498 Extended `rebuildData.php` to remove outdated enitity references (see `PropertyTableOutdatedReferenceDisposer`)
 * #1243 Make failed queries discoverable
 * #1246 Added support for `~`/`!~` on single value queries
+* #1267 Added the `browseByProperty` API module to fetch a property list or individual properties via the WebAPI
 
 ## Bug fixes
 
