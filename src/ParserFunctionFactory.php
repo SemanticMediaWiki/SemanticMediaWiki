@@ -78,10 +78,6 @@ class ParserFunctionFactory {
 			$circularReferenceGuard
 		);
 
-		$instance->setEnabledFormatsThatSupportRecursiveParse(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgEnabledResultFormatsWithRecursiveAnnotationSupport' )
-		);
-
 		return $instance;
 	}
 

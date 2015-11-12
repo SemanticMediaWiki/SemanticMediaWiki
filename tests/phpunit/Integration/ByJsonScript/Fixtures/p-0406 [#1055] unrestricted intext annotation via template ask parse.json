@@ -15,7 +15,7 @@
 		{
 			"name": "TemplateForUnrestrictedParse",
 			"namespace": "NS_TEMPLATE",
-			"contents": "<includeonly>{{#ask: [[HasUnrestrictedPage::{{{1}}}]]|?HasUnrestrictedPage|link=none|format=template|template=CreateAnnotationViaAskTemplate}}</includeonly>"
+			"contents": "<includeonly>{{#ask: [[HasUnrestrictedPage::{{{1}}}]]|?HasUnrestrictedPage|link=none|format=template|template=CreateAnnotationViaAskTemplate|import-annotation=true}}</includeonly>"
 		},
 		{
 			"name": "Page-with-annotation",
@@ -41,8 +41,7 @@
 		}
 	],
 	"settings": {
-		"smwgPageSpecialProperties": [ "_MDAT" ],
-		"smwgEnabledResultFormatsWithRecursiveAnnotationSupport": [ "template" ]
+		"smwgPageSpecialProperties": [ "_MDAT" ]
 	},
 	"meta": {
 		"version": "0.1",
