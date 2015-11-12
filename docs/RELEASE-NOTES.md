@@ -8,6 +8,7 @@ Not a release yet.
 * #1243 Make failed queries discoverable
 * #1246 Added support for `~`/`!~` on single value queries
 * #1267 Added the `browseByProperty` API module to fetch a property list or individual properties via the WebAPI
+* #1268 Restored compliance with MediaWiki's 1.26/1.27 WebAPI interface to ensure continued support for the `ask` and `askargs` output serialization
 
 ## Bug fixes
 
