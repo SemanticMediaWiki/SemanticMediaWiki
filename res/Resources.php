@@ -114,6 +114,12 @@ return array(
 		)
 	),
 
+	// https://github.com/devbridge/jQuery-Autocomplete
+	'ext.jquery.autocomplete' => $moduleTemplate + array(
+		'scripts' => 'jquery/jquery.autocomplete.js',
+		'targets' => array( 'mobile', 'desktop' )
+	),
+
 	// Tooltip qtip2 resources
 	'ext.jquery.qtip.styles' => $moduleTemplate + array(
 		'styles' => 'jquery/jquery.qtip.css',
@@ -200,6 +206,8 @@ return array(
 	// Special:SearchByProperty
 	'ext.smw.property' => $moduleTemplate + array(
 		'scripts' => 'smw/special/ext.smw.special.property.js',
-		'dependencies' => 'ext.smw.autocomplete'
+		'dependencies' => 'ext.jquery.autocomplete',
+		'position' => 'bottom',
+		'targets' => array( 'mobile', 'desktop' )
 	)
 );

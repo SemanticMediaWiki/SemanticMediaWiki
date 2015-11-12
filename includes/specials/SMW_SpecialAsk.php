@@ -44,6 +44,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 
 		$wgOut->addModules( 'ext.smw.style' );
 		$wgOut->addModules( 'ext.smw.ask' );
+		$wgOut->addModules( 'ext.smw.property' );
 
 		$this->setHeaders();
 
@@ -366,7 +367,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			$result .= '<table class="smw-ask-query" style="width: 100%;"><tr><th>' . wfMessage( 'smw_ask_queryhead' )->escaped() . "</th>\n<th>" . wfMessage( 'smw_ask_printhead' )->escaped() . "<br />\n" .
 				'<span style="font-weight: normal;">' . wfMessage( 'smw_ask_printdesc' )->escaped() . '</span>' . "</th></tr>\n" .
 				'<tr><td style="padding-left: 0px;"><textarea class="smw-ask-query-condition" name="q" cols="20" rows="6">' . htmlspecialchars( $this->m_querystring ) . "</textarea></td>\n" .
-				'<td style="padding-left: 7px;"><textarea id="add_property" class="smw-ask-query-printout" name="po" cols="20" rows="6">' . htmlspecialchars( $printoutstring ) . '</textarea></td></tr></table>' . "\n";
+				'<td style="padding-left: 7px;"><textarea id="smw-property-input" class="smw-ask-query-printout" name="po" cols="20" rows="6">' . htmlspecialchars( $printoutstring ) . '</textarea></td></tr></table>' . "\n";
 
 			// Format selection
 			$result .= self::getFormatSelection ( $this->m_params );

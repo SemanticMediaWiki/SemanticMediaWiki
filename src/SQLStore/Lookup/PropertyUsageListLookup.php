@@ -97,7 +97,8 @@ class PropertyUsageListLookup implements ListLookup {
 
 		$conditions = array(
 			'smw_namespace' => SMW_NS_PROPERTY,
-			'smw_iw' => ''
+			'smw_iw' => '',
+			'smw_subobject' => ''
 		);
 
 		if ( $this->requestOptions->limit > 0 ) {

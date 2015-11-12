@@ -1,4 +1,5 @@
-This file contains details about Semantic MediaWiki's API for external use with a description that is reflecting the current master branch (SMW 1.9). For more details on "how to use" MediaWiki's WebAPI, it is recommended to read this [website][api].
+This file contains details about Semantic MediaWiki's API for external use with a description
+of available interfaces. For more details on MediaWiki's WbeAPI, it is recommended to read this [website][guideline].
 
 ## api.php?action=ask
 The `Ask API` allows you to do ask queries against SMW using the MediaWiki API and get results back serialized in one of the formats it supports.
@@ -73,6 +74,7 @@ The following parameters are available and can be concatenate using the "|" char
 * querysize
 * subobjectcount
 * formatcount
+* errorcount
 
 #### Output serialization
 
@@ -137,6 +139,36 @@ An interface to browse facts (the equivalent of `Special:Browse`) of a subject (
 }
 ```
 
-For details on the serialization, see <code>/docs/serializer.md</code>.
+## api.php?action=browsebyproperty
+An interface to browse properties (the equivalent of `Special:Properties`).
+
+> api.php?action=browsebyproperty
+> api.php?action=browsebyproperty&limit=100&format=json&property=name
+
+#### Output serialization
+
+```php
+{
+    "xmlns:Foaf": "http://xmlns.com/foaf/0.1/",
+    "query": {
+        "Foaf:name": {
+            "label": "Foaf:name",
+            "isUserDefined": true,
+            "usageCount": 2
+        },
+        "Has_common_name": {
+            "label": "Has common name",
+            "isUserDefined": true,
+            "usageCount": 1
+        }
+    },
+    "version": 0.1,
+    "meta": {
+        "limit": 100,
+        "count": 2,
+        "isCached": true
+    }
+}
+```
 
 [api]: https://www.mediawiki.org/wiki/Api "Manual:Api"

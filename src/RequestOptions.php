@@ -65,7 +65,7 @@ class RequestOptions {
 	/**
 	 * @since 1.0
 	 *
-	 * @param srting $string to match
+	 * @param string $string to match
 	 * @param integer $condition one of STRCOND_PRE, STRCOND_POST, STRCOND_MID
 	 * @param boolean $asDisjunctiveCondition
 	 */
