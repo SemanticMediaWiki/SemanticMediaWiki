@@ -165,8 +165,18 @@ class SMWPropertyValue extends SMWDataValue {
 	 */
 	public function getWikiPageValue() {
 		if ( !isset( $this->m_wikipage ) ) {
+
 			$diWikiPage = $this->m_dataitem->getDiWikiPage();
-			if ( !is_null( $diWikiPage ) ) {
+
+			// A page representation for an inverse property is not possible
+			// therefore construct its non-inverse representation (label/caption
+			// remains and will show with an inverse indicator)
+			if ( $diWikiPage === null && $this->m_dataitem->isInverse() ) {
+				$property = new SMWDIProperty( $this->m_dataitem->getKey() );
+				$diWikiPage = $property->getDiWikiPage();
+			}
+
+			if ( $diWikiPage !== null ) {
 				$this->m_wikipage = \SMW\DataValueFactory::getInstance()->newDataItemValue( $diWikiPage, null, $this->m_caption );
 				$this->m_wikipage->setOutputFormat( $this->m_outformat );
 				$this->addError( $this->m_wikipage->getErrors() );
