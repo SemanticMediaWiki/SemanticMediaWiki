@@ -12,11 +12,11 @@ require_once $basePath . '/maintenance/Maintenance.php';
 /**
  * Sets up the storage backend currently selected in LocalSettings.php
  * (or the default MySQL store if no other store was selected). This
- * is equivalent to clicking the respective button on the page
+ * is equivalent to clicking the respective button on the special page
  * Special:SMWAdmin. However, the latter may timeout if the setup involves
  * migrating a lot of existing data.
  *
- * Note: if SMW is not installed in its standard path under ./extensions
+ * Note: If SMW is not installed in its standard path under ./extensions
  *       then the MW_INSTALL_PATH environment variable must be set.
  *       See README in the maintenance directory.
  *
@@ -31,10 +31,10 @@ require_once $basePath . '/maintenance/Maintenance.php';
  *
  * --delete   Delete all SMW data, uninstall the selected storage backend. This is useful
  *            when moving to a new storage engine, and in the rare case of unsinstalling
- *            SMW. Deleted data can be recreated using this script (setup) and
- *            SMW_refreshData.php but this may take some time.
+ *            SMW. Deleted data can be recreated using this script (setup) followed by the
+ *            use of the rebuildhData.php script which may take some time.
  *
- * --backend  The backend to use. For instance SMWSQLStore3 or SMWSQLStore2.
+ * --backend  The backend to use, e.g. SMWSQLStore3.
  *
  * --nochecks When specied, no prompts are provided. Deletion will thus happen
  *            without the need to provide any confomration.
@@ -139,7 +139,7 @@ class SetupStore extends \Maintenance {
 		}
 
 		$this->output( "\nAll storage structures for $storeName have been deleted." );
-		$this->output( "You can recreate them with this script, and then use SMW_refreshData.php to rebuild their contents.\n\n");
+		$this->output( "You can recreate them with this script followed by the use of the rebuildData.php script to rebuild their contents.\n\n");
 	}
 
 	/**
