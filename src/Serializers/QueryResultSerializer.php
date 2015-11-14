@@ -2,7 +2,7 @@
 
 namespace SMW\Serializers;
 
-use Serializers\Serializer;
+use Serializers\DispatchableSerializer;
 use SMW\DataValueFactory;
 use SMWDataItem as DataItem;
 use SMW\Query\PrintRequest;
