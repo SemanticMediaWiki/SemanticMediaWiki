@@ -33,7 +33,7 @@ include_once ( $smwgIP . 'languages/SMW_Language.php' );
  */
 class SMWLanguageHu extends SMWLanguage {
 
-        protected $m_DatatypeLabels = array(
+	protected $m_DatatypeLabels = array(
 		'_wpg' => 'Oldal', // name of the page datatype
 		'_txt' => 'Szöveg', // name of the text datatype
 		'_cod' => 'Forráskód', // name of the (source) code datatype
@@ -83,7 +83,7 @@ class SMWLanguageHu extends SMWLanguage {
 	);
 
 	protected $m_SpecialPropertyAliases = array(
-                'Adattípusa' => '_TYPE',
+		'Adattípusa' => '_TYPE',
 	);
 
 	protected $m_Namespaces = array(
