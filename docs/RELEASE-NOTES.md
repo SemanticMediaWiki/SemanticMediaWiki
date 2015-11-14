@@ -16,6 +16,7 @@ Not a release yet.
 * #1244 Find redirect for a property when specified as a record field (in `PropertyListValue`)
 * #1248 Fixed misplaced replacement of `_` in the `ImportValueParser`
 * #1270 Fixed printout display of inverse properties
+* #1272 Fixed serialization of `_rec` type datavalues in the `QueryResultSerializer`
 
 ## Internal changes
 
