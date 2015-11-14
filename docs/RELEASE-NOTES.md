@@ -13,8 +13,9 @@ Not a release yet.
 
 ## Bug fixes
 
-* #1244 Find redirect for a propertiy specified as a record field (in `PropertyListValue`)
-* #1248 Fixed misplaced replacment of `_` in `ImportValueParser`
+* #1244 Find redirect for a property when specified as a record field (in `PropertyListValue`)
+* #1248 Fixed misplaced replacement of `_` in the `ImportValueParser`
+* #1270 Fixed printout display of inverse properties
 
 ## Internal changes
 
