@@ -1,6 +1,6 @@
 <?php
 
-use SMW\StoreFactory;
+use SMW\ApplicationFactory;
 
 /**
  * @ingroup SMWDataValues
@@ -83,7 +83,7 @@ class SMWPropertyListValue extends SMWDataValue {
 
 			if ( $property instanceof SMWDIProperty ) {
 				 // Find a possible redirect
-				$this->m_diProperties[] = StoreFactory::getStore()->getRedirectTarget( $property );
+				$this->m_diProperties[] = ApplicationFactory::getInstance()->getStore()->getRedirectTarget( $property );
 			}
 		}
 

@@ -3,6 +3,8 @@
 namespace SMW\Tests\Serializers;
 
 use SMW\Serializers\QueryResultSerializer;
+use SMW\DIWikipage;
+use SMW\DIProperty;
 use SMWQueryProcessor;
 use SMWQueryResult;
 use SMWDataItem as DataItem;
@@ -55,6 +57,66 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 			$results['printrequests']
 		);
 	}
+
+	public function testQueryResultSerializerForRecordType() {
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$semanticData->expects( $this->atLeastOnce() )
+			->method( 'getProperties' )
+			->will( $this->returnValue( array( new DIProperty( 'Foobar' ) ) ) );
+
+		$semanticData->expects( $this->atLeastOnce() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( array( new DIWikipage( 'Bar', NS_MAIN ) ) ) );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $semanticData ) );
+
+		$store->expects( $this->at( 1 ) )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( array( new \SMWDIBlob( 'BarList1;BarList2' ) ) ) );
+
+		\SMW\ApplicationFactory::getInstance()->registerObject( 'Store', $store );
+
+		$property = \SMW\DIProperty::newFromUserLabel( 'Foo' );
+		$property->setPropertyTypeId( '_rec' );
+
+		$printRequestFactory = new \SMW\Query\PrintRequestFactory();
+
+		$serialization = QueryResultSerializer::getSerialization(
+			\SMW\DIWikipage::newFromText( 'ABC' ),
+			$printRequestFactory->newPropertyPrintRequest( $property )
+		);
+
+		$expected = array(
+			'BarList1' => array(
+				'label'  => 'BarList1',
+				'typeid' => '_wpg',
+				'item'   => array()
+			),
+			'BarList2' => array(
+				'label'  => 'BarList2',
+				'typeid' => '_wpg',
+				'item'   => array()
+			)
+		);
+
+		$this->assertEquals(
+			$expected,
+			$serialization
+		);
+
+		\SMW\ApplicationFactory::getInstance()->clear();
+	}
+
 
 	public function testQueryResultSerializerOnMockOnDIWikiPageNonTitle() {
 

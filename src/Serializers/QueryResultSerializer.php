@@ -43,7 +43,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 			throw new OutOfBoundsException( 'Object was not identified as a QueryResult instance' );
 		}
 
-		return $this->getSerializedQueryResult( $queryResult ) + array( 'serializer' => __CLASS__, 'version' => 0.5 );
+		return $this->getSerializedQueryResult( $queryResult ) + array( 'serializer' => __CLASS__, 'version' => 0.6 );
 	}
 
 	/**
@@ -67,13 +67,39 @@ class QueryResultSerializer implements DispatchableSerializer {
 	public static function getSerialization( DataItem $dataItem, $printRequest = null ) {
 		switch ( $dataItem->getDIType() ) {
 			case DataItem::TYPE_WIKIPAGE:
-				$title = $dataItem->getTitle();
-				$result = array(
-					'fulltext' => $title->getFullText(),
-					'fullurl' => $title->getFullUrl(),
-					'namespace' => $title->getNamespace(),
-					'exists' => $title->isKnown()
-				);
+
+				// Support for a deserializable _rec type with 0.6
+				if ( $printRequest !== null && $printRequest->getTypeID() === '_rec' ) {
+					$recordValue = DataValueFactory::getInstance()->newDataItemValue(
+						$dataItem,
+						$printRequest->getData()->getDataItem()
+					);
+
+					$recordDiValues = array();
+
+					foreach ( $recordValue->getPropertyDataItems() as $property ) {
+						$label = $property->getLabel();
+
+						$recordDiValues[$label] = array(
+							'label'  => $label,
+							'typeid' => $property->findPropertyTypeID(),
+							'item'   => array()
+						);
+
+						foreach ( $recordValue->getDataItem()->getSemanticData()->getPropertyValues( $property ) as $value ) {
+							$recordDiValues[$label]['item'][] = self::getSerialization( $value );
+						}
+					}
+					$result = $recordDiValues;
+				} else {
+					$title = $dataItem->getTitle();
+					$result = array(
+						'fulltext' => $title->getFullText(),
+						'fullurl' => $title->getFullUrl(),
+						'namespace' => $title->getNamespace(),
+						'exists' => $title->isKnown()
+					);
+				}
 				break;
 			case DataItem::TYPE_NUMBER:
 				// dataitems and datavalues
