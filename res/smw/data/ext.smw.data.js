@@ -130,7 +130,7 @@
 							break;
 						case '_dat':
 							$.map( value, function( t ) {
-								factoredValue.push( new smw.dataItem.time( t ) );
+								factoredValue.push( new smw.dataItem.time( ( t.hasOwnProperty( 'timestamp' ) ? t.timestamp : t ) ) );
 							} );
 							break;
 						case '_num':
