@@ -186,7 +186,7 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 		foreach ( $this->getProperties() as $property ) {
 
 			// #619 Do not resolve subobjects for redirects
-			if ( $property->findPropertyTypeID() !== '__sob' || $this->isRedirect() ) {
+			if ( !DataTypeRegistry::getInstance()->isSubDataType( $property->findPropertyTypeID() ) || $this->isRedirect() ) {
 				continue;
 			}
 

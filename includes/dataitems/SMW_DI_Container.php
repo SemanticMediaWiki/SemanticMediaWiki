@@ -72,7 +72,7 @@ class SMWContainerSemanticData extends SMWSemanticData {
 	 */
 	public function getSubject() {
 		if ( $this->hasAnonymousSubject() ) {
-			throw new DataItemException("Trying to get the subject of a container data item that has not been given any. This container can only be used as a search pattern.");
+			throw new DataItemException("This container has been classified as anonymous and by trying to access its subject (that has not been given any) an exception is raised to inform about the incorrect usage. The cotainer can only be used as a search pattern.");
 		} else {
 			return $this->mSubject;
 		}
