@@ -17,6 +17,7 @@ Not a release yet.
 * #1248 Fixed misplaced replacement of `_` in the `ImportValueParser`
 * #1270 Fixed printout display of inverse properties
 * #1272 Fixed serialization of `_rec` type datavalues in the `QueryResultSerializer`
+* #1275 Fixed export of record type data when included in a subobject
 
 ## Internal changes
 
