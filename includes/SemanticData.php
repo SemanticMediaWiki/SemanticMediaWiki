@@ -140,6 +140,17 @@ class SemanticData {
 	private $lastModified = null;
 
 	/**
+	 * Maximum depth for an recursive sub data assignment
+	 * @var integer
+	 */
+	private $subContainerMaxDepth = 2;
+
+	/**
+	 * @var integer
+	 */
+	private $subContainerDepthCounter = 0;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param DIWikiPage $subject to which this data refers
@@ -629,13 +640,16 @@ class SemanticData {
 
 		$this->hash = null;
 
-		if ( !$this->subDataAllowed ) {
-			throw new MWException( "Cannot add subdata. Are you trying to add data to an SMWSemanticData object that is already used as a subdata object?" );
+		if ( $this->subContainerDepthCounter > $this->subContainerMaxDepth ) {
+			throw new MWException( "Cannot add further subdata. You are trying to add data beyond the max depth of {$this->subContainerMaxDepth} to an SemanticData object." );
 		}
+
 		$subobjectName = $semanticData->getSubject()->getSubobjectName();
+
 		if ( $subobjectName == '' ) {
 			throw new MWException( "Cannot add data that is not about a subobject." );
 		}
+
 		if( $semanticData->getSubject()->getDBkey() !== $this->getSubject()->getDBkey() ) {
 			throw new MWException( "Data for a subobject of {$semanticData->getSubject()->getDBkey()} cannot be added to {$this->getSubject()->getDBkey()}." );
 		}
@@ -643,7 +657,7 @@ class SemanticData {
 		if( $this->hasSubSemanticData( $subobjectName ) ) {
 			$this->subSemanticData[$subobjectName]->importDataFrom( $semanticData );
 		} else {
-			$semanticData->subDataAllowed = false;
+			$semanticData->subContainerDepthCounter++;
 			foreach ( $semanticData->getSubSemanticData() as $subsubdata ) {
 				$this->addSubSemanticData( $subsubdata );
 			}

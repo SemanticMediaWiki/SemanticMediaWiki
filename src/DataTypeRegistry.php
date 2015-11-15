@@ -59,6 +59,11 @@ class DataTypeRegistry {
 	private $typeDataItemIds;
 
 	/**
+	 * @var string[]
+	 */
+	private $subDataTypes = array();
+
+	/**
 	 * Lookup map that allows finding a datatype id given a label or alias.
 	 * All labels and aliases (ie array keys) are stored lower case.
 	 *
@@ -177,6 +182,16 @@ class DataTypeRegistry {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @param string
+	 * @return boolean
+	 */
+	public function isSubDataType( $typeId ) {
+		return isset( $this->subDataTypes[$typeId] ) && $this->subDataTypes[$typeId];
+	}
+
+	/**
 	 * A function for registering/overwriting datatypes for SMW. Should be
 	 * called from within the hook 'smwInitDatatypes'.
 	 *
@@ -184,10 +199,12 @@ class DataTypeRegistry {
 	 * @param $className string name of the according subclass of SMWDataValue
 	 * @param $dataItemId integer ID of the data item class that this data value uses, see DataItem
 	 * @param $label mixed string label or false for types that cannot be accessed by users
+	 * @param boolean $isSubDataType
 	 */
-	public function registerDataType( $id, $className, $dataItemId, $label = false ) {
+	public function registerDataType( $id, $className, $dataItemId, $label = false, $isSubDataType = false ) {
 		$this->typeClasses[$id] = $className;
 		$this->typeDataItemIds[$id] = $dataItemId;
+		$this->subDataTypes[$id] = $isSubDataType;
 
 		if ( $label !== false ) {
 			$this->registerTypeLabel( $id, $label );
@@ -431,6 +448,11 @@ class DataTypeRegistry {
 			'__imp' => DataItem::TYPE_BLOB, // Special import vocabulary type
 			'__pro' => DataItem::TYPE_PROPERTY, // Property type (possibly predefined, no always based on a page)
 			'__key' => DataItem::TYPE_BLOB, // Sort key of a page
+		);
+
+		$this->subDataTypes = array(
+			'__sob' => true,
+			'_rec'  => true
 		);
 
 		// Deprecated since 1.9
