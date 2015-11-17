@@ -211,6 +211,11 @@ class SMWSQLStore3Readers {
 			} else {
 				$propTableId = $this->store->findPropertyTableID( $property );
 				$proptables =  $this->store->getPropertyTables();
+
+				if ( !isset( $proptables[$propTableId] ) ) {
+					return array();
+				}
+
 				$sd = $this->getSemanticDataFromTable( $sid, $subject, $proptables[$propTableId] );
 				$result = $this->store->applyRequestOptions( $sd->getPropertyValues( $property ), $requestOptions );
 			}
