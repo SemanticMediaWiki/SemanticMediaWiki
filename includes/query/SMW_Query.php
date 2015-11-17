@@ -60,6 +60,13 @@ class SMWQuery {
 	private $subject;
 
 	/**
+	 * Describes a non-local (remote) query source
+	 *
+	 * @var string|null
+	 */
+	private $querySource = null;
+
+	/**
 	 * Constructor.
 	 * @param $description SMWDescription object describing the query conditions
 	 * @param $inline bool stating whether this query runs in an inline context; used to determine
@@ -92,6 +99,24 @@ class SMWQuery {
 	 */
 	public function getSubject() {
 		return $this->subject;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param string
+	 */
+	public function setQuerySource( $querySource ) {
+		$this->querySource = $querySource;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return string
+	 */
+	public function getQuerySource() {
+		return $this->querySource;
 	}
 
 	/**
@@ -226,7 +251,7 @@ class SMWQuery {
 	 * @param array $sortKeys
 	 */
 	public function setSortKeys( array $sortKeys ) {
-		$this->sortKeys = $sortKeys;
+		$this->sortkeys = $sortKeys;
 	}
 
 	/**
@@ -235,7 +260,7 @@ class SMWQuery {
 	 * @return array
 	 */
 	public function getSortKeys() {
-		return $this->sortKeys;
+		return $this->sortkeys;
 	}
 
 	/**
@@ -293,6 +318,13 @@ class SMWQuery {
 				'mainlabel' => $this->m_mainlabel,
 				'querymode' => $this->querymode
 		);
+
+		// @2.4 Keep the queryID stable with previous versions unless
+		// a query source is selected. The "same" query executed on different
+		// remote systems requires a different queryID
+		if ( $this->querySource !== '' ) {
+			$serialized['parameters']['source'] = $this->querySource;
+		}
 
 		foreach ( $this->getExtraPrintouts() as $printout ) {
 			$serialization = $printout->getSerialisation();

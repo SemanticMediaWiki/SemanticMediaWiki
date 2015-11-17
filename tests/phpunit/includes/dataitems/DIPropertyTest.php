@@ -91,4 +91,15 @@ class DIPropertyTest extends DataItemTest {
 		);
 	}
 
+	public function testUseInterwikiPrefix() {
+
+		$property = new DIProperty( 'Foo' );
+		$property->setInterwiki( 'bar' );
+
+		$this->assertEquals(
+			new \SMW\DiWikiPage( 'Foo', SMW_NS_PROPERTY, 'bar' ),
+			$property->getDiWikiPage()
+		);
+	}
+
 }
