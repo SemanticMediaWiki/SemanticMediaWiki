@@ -19,7 +19,7 @@
 			"printouts" : [ "Member of" ],
 			"parameters" : {
 				"limit" : "10",
-					"sort": { "Member of": "DESC" }
+					"sort": { "Member_of": "DESC" }
 			},
 			"queryresult": {
 				"count": "3",

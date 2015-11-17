@@ -63,6 +63,13 @@ class DIProperty extends SMWDataItem {
 	private $m_proptypeid;
 
 	/**
+	 * Interwiki prefix for when a property represents a non-local entity
+	 *
+	 * @var string
+	 */
+	private $interwiki = '';
+
+	/**
 	 * Initialise a property. This constructor checks that keys of
 	 * predefined properties do really exist (in the current configuration
 	 * of the wiki). No check is performed to see if a user label is in
@@ -189,6 +196,15 @@ class DIProperty extends SMWDataItem {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @param string $interwiki
+	 */
+	public function setInterwiki( $interwiki ) {
+		$this->interwiki = $interwiki;
+	}
+
+	/**
 	 * Get an object of type SMWDIWikiPage that represents the page which
 	 * relates to this property, or null if no such page exists. The latter
 	 * can happen for special properties without user-readable label, and
@@ -212,7 +228,7 @@ class DIProperty extends SMWDataItem {
 		}
 
 		try {
-			return new SMWDIWikiPage( $dbkey, SMW_NS_PROPERTY, '', $subobjectName );
+			return new SMWDIWikiPage( $dbkey, SMW_NS_PROPERTY, $this->interwiki, $subobjectName );
 		} catch ( DataItemException $e ) {
 			return null;
 		}
@@ -257,7 +273,7 @@ class DIProperty extends SMWDataItem {
 
 		if ( !isset( $this->m_proptypeid ) ) {
 			if ( $this->isUserDefined() ) { // normal property
-				$diWikiPage = new SMWDIWikiPage( $this->getKey(), SMW_NS_PROPERTY, '' );
+				$diWikiPage = new SMWDIWikiPage( $this->getKey(), SMW_NS_PROPERTY, $this->interwiki );
 				$typearray = StoreFactory::getStore()->getPropertyValues( $diWikiPage, new self( '_TYPE' ) );
 
 				if ( count( $typearray ) >= 1 ) { // some types given, pick one (hopefully unique)

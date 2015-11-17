@@ -477,6 +477,10 @@ class CompoundConditionBuilder {
 				throw new RuntimeException( "Expected a string value as sortkey" );
 			}
 
+			if ( strpos( $propertyKey, " " ) !== false ) {
+				throw new RuntimeException( "Expected the canonical form of {$propertyKey} (without any whitespace)" );
+			}
+
 			if ( !array_key_exists( $propertyKey, $condition->orderVariables ) ) { // Find missing property to sort by.
 				$this->addOrderForUnknownPropertyKey( $condition, $propertyKey );
 			}

@@ -125,6 +125,7 @@ class SMWQueryProcessor {
 		$query->setExtraPrintouts( $extraPrintouts );
 		$query->setMainLabel( $params['mainlabel']->getValue() );
 		$query->addErrors( $qp->getErrors() ); // keep parsing errors for later output
+		$query->setQuerySource( $params['source']->getValue() );
 
 		// set mode, limit, and offset:
 		$query->querymode = $querymode;

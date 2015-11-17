@@ -354,9 +354,10 @@ class SMWQueryResult {
 
 		return array_merge( $serializeArray, array(
 			'meta'=> array(
-				'hash'   => md5( FormatJson::encode( $serializeArray ) ),
+				'hash'   => HashBuilder::createHashIdForContent( $serializeArray ),
 				'count'  => $this->getCount(),
-				'offset' => $this->mQuery->getOffset()
+				'offset' => $this->mQuery->getOffset(),
+				'source' => $this->mQuery->getQuerySource()
 				)
 			)
 		);
