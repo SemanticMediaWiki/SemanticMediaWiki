@@ -31,7 +31,7 @@
 	"smw-sp-concept-header": "Концептийн могӀам",
 	"smw-sp-concept-count": "МогӀам чохь ю {{PLURAL:$1|концепт|$1 концепташ}}",
 	"smw-sp-concept-empty": "Концепташ цакарий.",
-	"unusedproperties": "Лелош йоцу хӀумнаш",
+	"unusedproperties": "Лелош йоцу билгалонаш",
 	"smw_unusedproperties_docu": "ХӀара хӀумнаш билгалйина, амма уьш цхьам агӀонгахь лелош яц.",
 	"smw_unusedproperty_template": "$1 ю тайп $2",
 	"wantedproperties": "Хаам боца хӀумнаш",
@@ -44,6 +44,7 @@
 	"smw_ask_submit": "Хилам каро",
 	"smw_ask_defaultformat": "Iад йитарца",
 	"smw-ask-delete": "[ДӀаяккха]",
+	"searchbyproperty": "Билгалонца лахар",
 	"smw_sbv_property": "Билгало:",
 	"smw_sbv_value": "МаьӀна:",
 	"smw_sbv_submit": "Лахар",
@@ -71,5 +72,6 @@
 	"smw-sp-properties-header-label": "ХӀумнийн могӀам",
 	"smw-sp-admin-idlookup-title": "Лахар ObjectId",
 	"smw-sp-admin-idlookup-objectid": "Цуна Id:",
-	"smw-livepreview-loading": "Чуйолуш…"
+	"smw-livepreview-loading": "Чуйолуш…",
+	"smw-sp-searchbyproperty-resultlist-header": "Карийнарш"
 }
