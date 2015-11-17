@@ -117,6 +117,28 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 		\SMW\ApplicationFactory::getInstance()->clear();
 	}
 
+	public function testSerializeFormatForTimeValue() {
+
+		$property = \SMW\DIProperty::newFromUserLabel( 'Foo' );
+		$property->setPropertyTypeId( '_dat' );
+
+		$printRequestFactory = new \SMW\Query\PrintRequestFactory();
+
+		$serialization = QueryResultSerializer::getSerialization(
+			\SMWDITime::doUnserialize( '2/1393/1/1' ),
+			$printRequestFactory->newPropertyPrintRequest( $property )
+		);
+
+		$expected = array(
+			'timestamp' => '-18208281600',
+			'raw' => '2/1393/1/1'
+		);
+
+		$this->assertEquals(
+			$expected,
+			$serialization
+		);
+	}
 
 	public function testQueryResultSerializerOnMockOnDIWikiPageNonTitle() {
 

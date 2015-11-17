@@ -43,7 +43,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 			throw new OutOfBoundsException( 'Object was not identified as a QueryResult instance' );
 		}
 
-		return $this->getSerializedQueryResult( $queryResult ) + array( 'serializer' => __CLASS__, 'version' => 0.6 );
+		return $this->getSerializedQueryResult( $queryResult ) + array( 'serializer' => __CLASS__, 'version' => 0.7 );
 	}
 
 	/**
@@ -124,7 +124,10 @@ class QueryResultSerializer implements DispatchableSerializer {
 				$result = $dataItem->getCoordinateSet();
 				break;
 			case DataItem::TYPE_TIME:
-				$result = $dataItem->getMwTimestamp();
+				$result = array(
+					'timestamp' => $dataItem->getMwTimestamp(),
+					'raw' => $dataItem->getSerialization()
+				);
 				break;
 			default:
 				$result = $dataItem->getSerialization();
