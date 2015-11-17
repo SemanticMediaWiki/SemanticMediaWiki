@@ -23,6 +23,7 @@ Not a release yet.
 
 * #1235 Improve query performance in `PropertyUsageListLookup`
 * #1023 Split the `DocumentationParserFunction`
-* #1264 Removed `pg_unescape_bytea` special handling for postgres in the `ResultPrinter` 
+* #1264 Removed `pg_unescape_bytea` special handling for postgres in the `ResultPrinter`
+* #1276 Extended `QueryResultSerializer` (relevant for the API output) to export the raw output of a time related value
 
 ## Contributors
