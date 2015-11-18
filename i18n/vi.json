@@ -143,7 +143,7 @@
 	"smw_smwadmin_datarefreshstopconfirm": "Có chắc",
 	"smw_smwadmin_support": "Trợ giúp",
 	"smw_smwadmin_smwhomepage": "Tài liệu sử dụng đầy đủ của MediaWiki Ngữ nghĩa có sẵn tại <b><a href=\"http://semantic-mediawiki.org/?uselang=vi\">semantic-mediawiki.org</a></b>.",
-	"smw_smwadmin_mediazilla": "Hãy báo cáo lỗi tại <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
+	"smw_smwadmin_mediazilla": "Hãy báo lỗi tại <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
 	"smw_adminlinks_datastructure": "Cấu trúc dữ liệu",
 	"smw_adminlinks_displayingdata": "Hiển thị dữ liệu",
 	"smw_adminlinks_inlinequerieshelp": "Trợ giúp truy vấn nội dòng",
