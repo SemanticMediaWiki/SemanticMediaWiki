@@ -100,12 +100,14 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 			'BarList1' => array(
 				'label'  => 'BarList1',
 				'typeid' => '_wpg',
-				'item'   => array()
+				'item'   => array(),
+				'key'    => 'BarList1'
 			),
 			'BarList2' => array(
 				'label'  => 'BarList2',
 				'typeid' => '_wpg',
-				'item'   => array()
+				'item'   => array(),
+				'key'    => 'BarList2'
 			)
 		);
 
@@ -178,8 +180,8 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 				),
 			array(
 				'printrequests' => array(
-					array( 'label' => 'Foo-1', 'typeid' => '_num', 'mode' => 2, 'format' => false ),
-					array( 'label' => 'Foo-2', 'typeid' => '_num', 'mode' => 2, 'format' => false )
+					array( 'label' => 'Foo-1', 'typeid' => '_num', 'mode' => 2, 'format' => false, 'key' => '' ),
+					array( 'label' => 'Foo-2', 'typeid' => '_num', 'mode' => 2, 'format' => false, 'key' => '' )
 				),
 			)
 		);
