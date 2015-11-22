@@ -287,7 +287,7 @@
 	"smw-pa-property-predefined_ask": "$1 הוא מאפיין מוגדר מראש שמייצג מטא־מידע (בצורת [https://www.semantic-mediawiki.org/wiki/Subobject תת־עצם]) על שאילתות פרטניות.",
 	"smw-pa-property-predefined_asksi": "\"$1\" הוא מאפיין מוגדר מראש שאוסף את מספר התנאים שמשמשים בשאילתה.",
 	"smw-pa-property-predefined_askde": "\"$1\" הוא מאפיין מוגדר מראש שנותן מידע על עומק (ערך מספרי שמחושב על בסיס קינון תת־שאילתה ושרשראות מאפיינים פתורות) של שאילתה בזמן שהרצת שאילתה מוגבלת באמצעות ההגדרה [https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth $smwgQMaxDepth].",
-	"smw-sp-properties-docu": "הדף הזה מציג [https://www.semantic-mediawiki.org/wiki/Property מאפיינים] שזמינים וכאשר מופעל עליו סינון, רק מאפיינים מוגדרים על־ידי משתמש שמתאימים לתנאי מוצגים. לתצוגה מבודלת נא לראות את הדף המיוחד [[Special:UnusedProperties|מאפיינים שאינם בשימוש]] או [[Special:WantedProperties|מאפיינים מבוקשים]].",
+	"smw-sp-properties-docu": "הדף הזה מציג רשימת [https://www.semantic-mediawiki.org/wiki/Property מאפיינים] ומניין השימוש בהם כפי שזמין בוויקי הזה. לסטטיסטיקת ספירה מעודכנת מומלץ שתסריט התחזוקה [https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics rebuildPropertyStatistics] יורץ באופן קבוע. לתצוגה מבודלת נא לראות את הדף המיוחד [[Special:UnusedProperties|מאפיינים שאינם בשימוש]] או [[Special:WantedProperties|מאפיינים מבוקשים]].",
 	"smw-sp-properties-cache-info": "הנתונים האשומים אוחזרו מ[https://www.semantic-mediawiki.org/wiki/Caching מטמון] ועודכנו לאחרונה $1.",
 	"smw-sp-properties-header-label": "רשימת מאפיינים",
 	"smw-sp-admin-settings-title": "הגדרות תצורה",
