@@ -167,13 +167,15 @@ class QueryResultQueryProcessorIntegrationTest extends MwDBaseUnitTestCase {
 					'label'=> '',
 					'typeid' => '_wpg',
 					'mode' => 2,
-					'format' => false
+					'format' => false,
+					'key' => ''
 				),
 				array(
 					'label'=> 'Modification date',
 					'typeid' => '_dat',
 					'mode' => 1,
-					'format' => ''
+					'format' => '',
+					'key' => '_MDAT'
 				)
 			)
 		);
@@ -191,13 +193,15 @@ class QueryResultQueryProcessorIntegrationTest extends MwDBaseUnitTestCase {
 					'label'=> '',
 					'typeid' => '_wpg',
 					'mode' => 2,
-					'format' => false
+					'format' => false,
+					'key' => ''
 				),
 				array(
 					'label'=> 'Modification date',
 					'typeid' => '_dat',
 					'mode' => 1,
-					'format' => 'ISO'
+					'format' => 'ISO',
+					'key' => '_MDAT'
 				)
 			)
 		);
