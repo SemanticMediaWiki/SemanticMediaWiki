@@ -25,5 +25,6 @@ Not a release yet.
 * #1023 Split the `DocumentationParserFunction`
 * #1264 Removed `pg_unescape_bytea` special handling for postgres in the `ResultPrinter`
 * #1276 Extended `QueryResultSerializer` (relevant for the API output) to export the raw output of a time related value
+* #1281 Extended `QueryResultSerializer` to export the internal property key 
 
 ## Contributors
