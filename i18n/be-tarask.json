@@ -199,7 +199,7 @@
 	"smw_smwadmin_datarefreshstopconfirm": "Так, я {{GENDER:$1|ўпэўнены|ўпэўненая}}.",
 	"smw_smwadmin_support": "Падтрымка",
 	"smw_smwadmin_supportdocu": "Вы можаце знайсьці дапамогу ў розных крыніцах у выпадку праблемаў:",
-	"smw_smwadmin_installfile": "Калі ўзьнікнуць выпадковыя праблемы з Вашым усталяваньнем, пачніце з рэкамэндацыяў у <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">файле INSTALL</a>.",
+	"smw_smwadmin_installfile": "Калі ўзьнікнуць праблемы з Вашым усталяваньнем, пачніце з рэкамэндацыяў у <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">файле INSTALL</a>.",
 	"smw_smwadmin_smwhomepage": "Поўная дакумэнтацыя Semantic MediaWiki знаходзіцца на <b><a href=\"https://semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw_smwadmin_mediazilla": "Можна паведамляць пра памылкі ў <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
 	"smw_smwadmin_questions": "Калі Вы маеце пытаньні ці прапановы, далучайцеся да дыскусіі на <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">форуме карыстальнікаў Semantic MediaWiki</a>.",
