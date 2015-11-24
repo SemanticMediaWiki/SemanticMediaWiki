@@ -251,7 +251,7 @@
 	"smw-info-par-icon": "表示するアイコン (「info」と「warning」のいずれか) です。",
 	"prefs-smw": "Semantic MediaWiki",
 	"prefs-ask-options": "意味的検索オプション",
-	"smw-prefs-intro-text": "以下のオプションは [https://semantic-mediawiki.org/ Semantic MediaWiki] (または関連する拡張機能) が提供しています。選択した機能の個別のカスタマイズを有効化できます。これについての詳細は[https://semantic-mediawiki.org/wiki/Help:User_preferences ヘルプ]を参照してください。",
+	"smw-prefs-intro-text": "以下のオプションは [https://www.semantic-mediawiki.org/ Semantic MediaWiki] (または関連する拡張機能) が提供しています。選択した機能の個別のカスタマイズを有効化できます。これについての詳細は[https://www.semantic-mediawiki.org/wiki/Help:User_preferences ヘルプ]を参照してください。",
 	"smw-prefs-ask-options-tooltip-display": "パラメーター文字列を情報ツールチップとして表示",
 	"smw-prefs-ask-options-collapsed-default": "オプションボックスを既定では折り畳む",
 	"smw-ui-tooltip-title-property": "プロパティ",

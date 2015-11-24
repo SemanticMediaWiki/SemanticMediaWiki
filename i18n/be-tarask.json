@@ -208,7 +208,7 @@
 	"smw_adminlinks_inlinequerieshelp": "Дапамога па ўбудаваных запытах",
 	"smw-createproperty-isproperty": "Гэта ўласьцівасьць тыпу $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|1=Дазволенае значэньне|Дазволеныя значэньні}} для гэтай уласьцівасьці:",
-	"smw-prefs-intro-text": "Ніжэйпададзеныя можнасьці прадастаўленыя [https://semantic-mediawiki.org/ сэмантычнай MediaWiki] (ці зьвязанымі пашырэньнямі), каб улучыць індывідуальныя налады для пэўных функцыяў. Па дадатковую інфармацыю зьвярніцеся, калі ласка, у [https://semantic-mediawiki.org/wiki/Help:User_preferences разьдзел дапамогі].",
+	"smw-prefs-intro-text": "Ніжэйпададзеныя можнасьці прадастаўленыя [https://www.semantic-mediawiki.org/ сэмантычнай MediaWiki] (ці зьвязанымі пашырэньнямі), каб улучыць індывідуальныя налады для пэўных функцыяў. Па дадатковую інфармацыю зьвярніцеся, калі ласка, у [https://www.semantic-mediawiki.org/wiki/Help:User_preferences разьдзел дапамогі].",
 	"smw-prefs-ask-options-tooltip-display": "Адлюстроўваць парамэтар у выглядзе інфармацыйнай падказкі",
 	"smw-prefs-ask-options-collapsed-default": "Згортваць поле парамэтраў дапомна",
 	"smw-ui-tooltip-title-note": "Камэнтар",

@@ -227,11 +227,11 @@
 	"smw-query-condition-circular": "Müjelesch, dat en Bedengong en „$1“ em Kreis erm jeiht.",
 	"smw-sp-types-list": "Leß vun de Dahte_Zoote",
 	"smw-sp-types-default": "„$1“ es ene pä Projramm ald faßjelahte un ennjeboute Dahte_Zoot.",
-	"smw-sp-types-help": "Mih Aanjahbe un Beijschpelle fengk mer op dä [https://semantic-mediawiki.org/wiki/Help:Type_$1 Sigg met Hölp] derzoh.",
+	"smw-sp-types-help": "Mih Aanjahbe un Beijschpelle fengk mer op dä [https://www.semantic-mediawiki.org/wiki/Help:Type_$1 Sigg met Hölp] derzoh.",
 	"smw-sp-types_anu": "„$1“ ess_en beschtemmpte Zoot vun [[Special:Types/URL|\n<i lang=\"en\" xml:lang=\"en\" dir=\"ltr\" title=\"Uniform Ressource Locator\">URL</i> ]] dä dermihts för ene Äxpocht noh <i lang=\"en\" xml:lang=\"en\" dir=\"ltr\">owl:AnnotationProperty</i> ze beschriehve jebruch weed.",
 	"smw-sp-types_boo": "„$1“ ess_en eijfache Dahte_Zoot, di Joh/Nää, udder Wohr/Verkiehrt affbelde kann.",
 	"smw-sp-types_cod": "„$1“ ess_en affjewandelte Dahte_Zoot vum [[Special:Types/Text|Täx]], öm täschnesche Täx_Krohm med esu vell Zeische henernander wi nühdesch daazeschtälle, zem Beijschpell Projrammleßte.",
-	"smw-sp-types_geo": "„$1“ ess_en Dahte_Zoot, di Pläz op de Ääd beschriev un et Zohsazprojramm för [https://semantic-mediawiki.org/wiki/Semantic_Maps semantesch Lanndkaate] nühdesch hät.",
+	"smw-sp-types_geo": "„$1“ ess_en Dahte_Zoot, di Pläz op de Ääd beschriev un et Zohsazprojramm för [https://www.semantic-mediawiki.org/wiki/Semantic_Maps semantesch Lanndkaate] nühdesch hät.",
 	"smw-sp-types_tel": "„$1“ ess_en Dahte_Zoot, beschtemmp derför, engenazjonahle Tellefohnnommere em Fommaht vum <i lang=\"en\" xml:lang=\"en\" dir=\"ltr\">RFC 3966</i> daazeschtälle.",
 	"smw-sp-types_txt": "„$1“ ess_en eijfache Dahte_Zoot, bechtemmp derför, esu vell Zeische hengerenander daazeschtälle, wi nühdesch.",
 	"smw-sp-types_dat": "„$1“ ess_en Dahte_Zoot för Zigg_Pongkte en enem eijheijtlejje Fommaht daazeschtälle."
