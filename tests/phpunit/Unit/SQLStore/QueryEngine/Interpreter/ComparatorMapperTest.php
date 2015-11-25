@@ -63,6 +63,23 @@ class ComparatorMapperTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testIsEnabledForCaseInsensitiveSearch() {
+
+		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$valueDescription->expects( $this->once() )
+			->method( 'getComparator' )
+			->will( $this->returnValue( SMW_CMP_LIKE ) );
+
+		$instance = new ComparatorMapper( true );
+
+		$this->assertTrue(
+			$instance->isEnabledEnhancedRegExMatchSearch( $valueDescription )
+		);
+	}
+
 	public function comparatorProvider() {
 
 		$provider[] = array( SMW_CMP_EQ,   'Foo%_*?', array( 'comparator' => '=',  'value' => 'Foo%_*?' ) );

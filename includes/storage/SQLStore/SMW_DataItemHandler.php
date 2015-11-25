@@ -113,6 +113,18 @@ abstract class SMWDataItemHandler {
 	abstract public function getIndexField();
 
 	/**
+	 * Return a different index field (getIndexField) to match values
+	 * (as in case of a blob).
+	 *
+	 * @since 2.4
+	 *
+	 * @return string
+	 */
+	public function getExtraSearchIndexField() {
+		return $this->getIndexField();
+	}
+
+	/**
 	 * Return the label field for this type of SMWDataItem. This should be
 	 * a string column in the database table that can be used for selecting
 	 * values using criteria such as "starts with". The return value can be

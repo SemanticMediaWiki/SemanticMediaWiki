@@ -6,6 +6,7 @@ use SMW\SQLStore\RedirectInfoStore;
 use SMW\HashBuilder;
 use SMW\DIWikiPage;
 use SMW\ApplicationFactory;
+use SMW\SearchField;
 
 /**
  * @ingroup SMWStore
@@ -571,7 +572,8 @@ class SMWSql3SmwIds {
 					'smw_namespace' => $namespace,
 					'smw_iw' => $iw,
 					'smw_subobject' => $subobjectName,
-					'smw_sortkey' => $sortkey
+					'smw_sortkey' => $sortkey,
+					'smw_searchkey' => SearchField::getIndexStringFrom( $sortkey )
 				),
 				__METHOD__
 			);
@@ -598,7 +600,7 @@ class SMWSql3SmwIds {
 		} elseif ( $sortkey !== '' && $sortkey != $oldsort ) {
 			$db->update(
 				self::TABLE_NAME,
-				array( 'smw_sortkey' => $sortkey ),
+				array( 'smw_sortkey' => $sortkey, 'smw_searchkey' => SearchField::getIndexStringFrom( $sortkey ) ),
 				array( 'smw_id' => $id ),
 				__METHOD__
 			);
@@ -793,7 +795,8 @@ class SMWSql3SmwIds {
 					'smw_namespace' => $row->smw_namespace,
 					'smw_iw' => $row->smw_iw,
 					'smw_subobject' => $row->smw_subobject,
-					'smw_sortkey' => $row->smw_sortkey
+					'smw_sortkey' => $row->smw_sortkey,
+					'smw_searchkey' => SearchField::getIndexStringFrom( $row->smw_sortkey )
 				),
 				__METHOD__
 			);
@@ -807,7 +810,8 @@ class SMWSql3SmwIds {
 					'smw_namespace' => $row->smw_namespace,
 					'smw_iw' => $row->smw_iw,
 					'smw_subobject' => $row->smw_subobject,
-					'smw_sortkey' => $row->smw_sortkey
+					'smw_sortkey' => $row->smw_sortkey,
+					'smw_searchkey' => SearchField::getIndexStringFrom( $row->smw_sortkey )
 				),
 				__METHOD__
 			);

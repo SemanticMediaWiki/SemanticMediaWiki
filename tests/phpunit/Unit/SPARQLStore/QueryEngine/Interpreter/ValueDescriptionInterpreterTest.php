@@ -91,7 +91,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$compoundConditionBuilder->setResultVariable( $resultVariable );
 		$compoundConditionBuilder->setJoinVariable( $resultVariable );
 
-		$instance = new ValueDescriptionInterpreter( $compoundConditionBuilder );
+		$instance = new ValueDescriptionInterpreter( $compoundConditionBuilder, false );
 
 		$condition = $instance->interpretDescription( $description );
 
@@ -106,7 +106,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testValueConditionForRediret() {
+	public function testValueConditionForRedirect() {
 
 		$resultVariable = 'result';
 
@@ -121,7 +121,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$compoundConditionBuilder->setResultVariable( $resultVariable );
 		$compoundConditionBuilder->setJoinVariable( $resultVariable );
 
-		$instance = new ValueDescriptionInterpreter( $compoundConditionBuilder );
+		$instance = new ValueDescriptionInterpreter( $compoundConditionBuilder, false );
 
 		$description = new ValueDescription(
 			new DIWikiPage( 'Foo', NS_MAIN ),
@@ -142,6 +142,52 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected = UtilityFactory::getInstance()->newStringBuilder()
 			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
 			->addString( 'FILTER( ?result = ?r1 )' )->addNewLine()
+			->getString();
+
+		$this->assertEquals(
+			$expected,
+			$compoundConditionBuilder->convertConditionToString( $condition )
+		);
+	}
+
+	public function testValueConditionForEnabledEnhancedRegExMatchSearch() {
+
+		$resultVariable = 'result';
+
+		$compoundConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
+			->setMethods( array( 'tryToFindRedirectVariableForDataItem' ) )
+			->getMock();
+
+		$compoundConditionBuilder->expects( $this->once() )
+			->method( 'tryToFindRedirectVariableForDataItem' )
+			->will( $this->returnValue( '?r1' ) );
+
+		$compoundConditionBuilder->setResultVariable( $resultVariable );
+		$compoundConditionBuilder->setJoinVariable( $resultVariable );
+
+		$instance = new ValueDescriptionInterpreter( $compoundConditionBuilder, true );
+
+
+		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
+
+		$description = new ValueDescription(
+			new DIBlob( 'SomePropertyValue' ),
+			new DIProperty( 'Foo' ),
+			SMW_CMP_LIKE
+		);
+
+		$condition = $instance->interpretDescription( $description );
+
+		$expectedConditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
+
+		$this->assertInstanceOf(
+			$expectedConditionType,
+			$condition
+		);
+
+		$expected = UtilityFactory::getInstance()->newStringBuilder()
+			->addString( '?result swivt:page ?url .' )->addNewLine()
+			->addString( 'FILTER( regex( ?result, "^SomePropertyValue$", "i") )' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(

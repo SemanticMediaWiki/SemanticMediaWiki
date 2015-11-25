@@ -3,6 +3,7 @@
 namespace SMW\Maintenance;
 
 use SMW\Store;
+use SMW\SQLStore\SQLStore;
 use SMW\ApplicationFactory;
 use SMW\Store\PropertyStatisticsStore;
 
@@ -55,6 +56,17 @@ class MaintenanceFactory {
 	 */
 	public function newPropertyStatisticsRebuilder( Store $store, PropertyStatisticsStore $propertyStatisticsStore ) {
 		return new PropertyStatisticsRebuilder( $store, $propertyStatisticsStore );
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param SQLStore $store
+	 *
+	 * @return SearchFieldContentRebuilder
+	 */
+	public function newSearchFieldContentRebuilder( SQLStore $store ) {
+		return new SearchFieldContentRebuilder( $store );
 	}
 
 }

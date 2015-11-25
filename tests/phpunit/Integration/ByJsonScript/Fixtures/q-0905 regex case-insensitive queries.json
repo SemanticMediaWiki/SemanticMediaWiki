@@ -1,0 +1,190 @@
+{
+	"description": "Case insensitive regex queries",
+	"properties": [
+		{
+			"name": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"name": "Has url",
+			"contents": "[[Has type::URL]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/Q0905/1",
+			"contents": "[[Category:Q0905]][[Has text::LOREM IPSUM]]"
+		},
+		{
+			"name": "Example/Q0905/2",
+			"contents": "[[Category:Q0905]][[Has text::lOReM iPSUm]]"
+		},
+		{
+			"name": "Example/Q0905/3",
+			"contents": "[[Category:Q0905]][[Has text::テスト]]"
+		},
+		{
+			"name": "Example/Q0905/4",
+			"contents": "[[Category:Q0905]][[Has url::http://example.org/lOReM iPSUm/テスト]]"
+		},
+		{
+			"name": "Example/Q0905/5",
+			"contents": "[[Category:Q0905]][[Has url::http://テスト.org/example/LOREM IPSUM]]"
+		},
+		{
+			"name": "Example/Q0905/6/lOReM iPSUm",
+			"contents": "[[Category:Q0905]]"
+		},
+		{
+			"name": "Example/Q0905/6/LOREM IPSUM",
+			"contents": "[[Category:Q0905]]"
+		},
+		{
+			"name": "Example/Q0905/7",
+			"contents": "[[Category:Q0905]][[Has text::øæåØÆÅabcABC]]"
+		},
+		{
+			"name": "Example/Q0905/8",
+			"contents": "[[Category:Q0905]][[Has text::øæåøæåabcabc]]"
+		}
+	],
+	"query-testcases": [
+		{
+			"about": "#0 blob regex like match (lowercase)",
+			"condition": "[[Category:Q0905]][[Has text::~lorem*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0905/1#0##",
+					"Example/Q0905/2#0##"
+				]
+			}
+		},
+		{
+			"about": "#1 blob regex like match (capital case)",
+			"condition": "[[Category:Q0905]][[Has text::~*REM*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0905/1#0##",
+					"Example/Q0905/2#0##"
+				]
+			}
+		},
+		{
+			"about": "#2 blob regex not like match",
+			"condition": "[[Category:Q0905]][[Has text::!~*REM*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 3,
+				"results": [
+					"Example/Q0905/3#0##",
+					"Example/Q0905/7#0##",
+					"Example/Q0905/8#0##"
+				]
+			}
+		},
+		{
+			"about": "#3 url regex like match",
+			"condition": "[[Category:Q0905]][[Has url::~*rem*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0905/4#0##",
+					"Example/Q0905/5#0##"
+				]
+			}
+		},
+		{
+			"about": "#4 url regex like match",
+			"condition": "[[Category:Q0905]][[Has url::~*REm*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0905/4#0##",
+					"Example/Q0905/5#0##"
+				]
+			}
+		},
+		{
+			"about": "#5 page value regex like match",
+			"condition": "[[Category:Q0905]][[~*/6/lore*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0905/6/lOReM iPSUm#0##",
+					"Example/Q0905/6/LOREM IPSUM#0##"
+				]
+			}
+		},
+		{
+			"about": "#6 page value regex like match",
+			"condition": "[[Category:Q0905]][[~*/6/lORe*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0905/6/lOReM iPSUm#0##",
+					"Example/Q0905/6/LOREM IPSUM#0##"
+				]
+			}
+		},
+		{
+			"about": "#7 blob value regex like match for non-English characters",
+			"condition": "[[Category:Q0905]][[Has text::~*æå*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0905/7#0##",
+					"Example/Q0905/8#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgEnabledEnhancedRegExMatchSearch" : true,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"wgContLang": "en",
+		"smwgQSubpropertyDepth": 10,
+		"smwgQSubcategoryDepth": 10
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

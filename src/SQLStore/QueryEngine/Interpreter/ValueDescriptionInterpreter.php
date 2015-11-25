@@ -9,6 +9,7 @@ use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMWSql3SmwIds;
+use SMW\SearchField;
 
 /**
  * @license GNU GPL v2+
@@ -34,10 +35,11 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	 * @since 2.2
 	 *
 	 * @param QuerySegmentListBuilder $querySegmentListBuilder
+	 * @param boolean|null $enabledEnhancedRegExMatchSearch
 	 */
-	public function __construct( QuerySegmentListBuilder $querySegmentListBuilder ) {
+	public function __construct( QuerySegmentListBuilder $querySegmentListBuilder, $enabledEnhancedRegExMatchSearch = null ) {
 		$this->querySegmentListBuilder = $querySegmentListBuilder;
-		$this->comparatorMapper = new ComparatorMapper();
+		$this->comparatorMapper = new ComparatorMapper( $enabledEnhancedRegExMatchSearch );
 	}
 
 	/**
@@ -80,7 +82,14 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		} else { // Join with SMW IDs table needed for other comparators (apply to title string).
 			$query->joinTable = SMWSql3SmwIds::TABLE_NAME;
 			$query->joinfield = "{$query->alias}.smw_id";
+
 			$value = $description->getDataItem()->getSortKey();
+			$indexField = 'smw_sortkey';
+
+			if ( $this->comparatorMapper->isEnabledEnhancedRegExMatchSearch( $description ) ) {
+				$indexField = 'smw_searchkey';
+				$value = SearchField::getSearchStringFrom( $value );
+			}
 
 			$comparator = $this->comparatorMapper->mapComparator(
 				$description,
@@ -89,7 +98,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
 			$db = $this->querySegmentListBuilder->getStore()->getConnection( 'mw.db' );
 
-			$query->where = "{$query->alias}.smw_sortkey$comparator" . $db->addQuotes( $value ) .
+			$query->where = "{$query->alias}.$indexField$comparator" . $db->addQuotes( $value ) .
 				" AND $query->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) .
 				" AND $query->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWDELETEIW );
 		}

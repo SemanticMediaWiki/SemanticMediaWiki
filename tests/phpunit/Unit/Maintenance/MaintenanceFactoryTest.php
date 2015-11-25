@@ -79,4 +79,18 @@ class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructSearchFieldContentRebuilder() {
+
+		$instance = new MaintenanceFactory();
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'\SMW\Maintenance\SearchFieldContentRebuilder',
+			$instance->newSearchFieldContentRebuilder( $store )
+		);
+	}
+
 }

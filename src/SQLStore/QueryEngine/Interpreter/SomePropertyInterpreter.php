@@ -42,10 +42,11 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 * @since 2.2
 	 *
 	 * @param QuerySegmentListBuilder $querySegmentListBuilder
+	 * @param boolean|null $enabledEnhancedRegExMatchSearch
 	 */
-	public function __construct( QuerySegmentListBuilder $querySegmentListBuilder ) {
+	public function __construct( QuerySegmentListBuilder $querySegmentListBuilder, $enabledEnhancedRegExMatchSearch = null ) {
 		$this->querySegmentListBuilder = $querySegmentListBuilder;
-		$this->comparatorMapper = new ComparatorMapper();
+		$this->comparatorMapper = new ComparatorMapper( $enabledEnhancedRegExMatchSearch );
 	}
 
 	/**
@@ -257,7 +258,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 
 		// Do not support smw_id joined data for now.
 
-		$indexField = $diHandler->getIndexField();
+		$indexField = $this->comparatorMapper->isEnabledEnhancedRegExMatchSearch( $description ) ? $diHandler->getExtraSearchIndexField() : $diHandler->getIndexField();
 		//Hack to get to the field used as index
 		$keys = $diHandler->getWhereConds( $dataItem );
 		$value = $keys[$indexField];
