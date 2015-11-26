@@ -358,6 +358,15 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		// Deprecated: Use of SpecialPage::getTitle was deprecated in MediaWiki 1.23
 		$title = method_exists( $this, 'getPageTitle') ? $this->getPageTitle() : $this->getTitle();
 
+		$storeName = get_class( \SMW\StoreFactory::getStore() );
+
+		if ( strpos( $storeName, "\\") !== false ) {
+			$storeName = explode("\\", $storeName );
+			$storeName = end( $storeName );
+		}
+
+		$environment = $storeName . ( isset( $this->m_params['source'] ) ? ', ' . $this->m_params['source'] : '' );
+
 		if ( $this->m_editquery ) {
 			$result .= Html::openElement( 'form',
 				array( 'action' => $wgScript, 'name' => 'ask', 'method' => 'get' ) );
@@ -408,7 +417,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 						wfMessage( 'smw_ask_hidequery' )->text()
 					) .
 					' | ' . self::getEmbedToggle() .
-					' | <a href="' . wfMessage( 'smw_ask_doculink' )->escaped() . '">' . wfMessage( 'smw_ask_help' )->escaped() . '</a>' .
+					' | <a href="' . wfMessage( 'smw_ask_doculink' )->escaped() . '">' . wfMessage( 'smw_ask_help' )->escaped() . '</a>' . ' | [' . $environment . ']' .
 				"\n</form>";
 		} else { // if $this->m_editquery == false
 			$urltail = str_replace( '&eq=no', '', $urltail ) . '&eq=yes';
@@ -421,7 +430,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 					),
 					wfMessage( 'smw_ask_editquery' )->text()
 				) .
-				'| ' . self::getEmbedToggle() .
+				'| ' . self::getEmbedToggle() . ' | ['. $environment . ']' .
 				'</p>';
 		}
 		//show|hide inline embed code
