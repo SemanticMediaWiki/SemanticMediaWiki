@@ -213,7 +213,7 @@
 	"smw-prefs-ask-options-collapsed-default": "Згортваць поле парамэтраў дапомна",
 	"smw-ui-tooltip-title-note": "Камэнтар",
 	"smw-ui-tooltip-title-legend": "Легенда",
-	"smw_unknowntype": "Тып «$1» не падтрымліваецца для гэтай уласьцівасьці.",
+	"smw_unknowntype": "Тып гэтай уласьцівасьці зьяўляецца няслушным",
 	"smw_concept_header": "Старонкі канцэпцыі «$1»",
 	"smw_conceptarticlecount": "{{PLURAL:$1|Паказаная $1 старонка, якая належыць|Паказаныя $1 старонкі, якія належаць|Паказаныя $1 старонак, якія належаць}} гэтай канцэпцыі.",
 	"smw-livepreview-loading": "Загрузка…"
