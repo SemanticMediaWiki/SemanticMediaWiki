@@ -185,11 +185,11 @@
 	"smw-sp-admin-settings-button": "Lëscht vun den Astellunge generéieren",
 	"smw-livepreview-loading": "Lueden...",
 	"smw-sp-searchbyproperty-resultlist-header": "Lëscht vun de Resultater",
-	"smw-editpage-annotation-disabled": "Dës Säit ass net fir semantesch Notifaktiounen am Text konfiguréiert duerch d'Limitatiounen an dësem Nummraum. Detailer wéi dat fir den Nummraum ageschalt ka gi fannt Dir op der Hëllefsäit fir d'[https://semantic-mediawiki.org/wiki/Help:Configuration configuration Astellungen].",
+	"smw-editpage-annotation-disabled": "Dës Säit ass net fir semantesch Notifaktiounen am Text konfiguréiert duerch d'Limitatiounen an dësem Nummraum. Detailer wéi dat fir den Nummraum ageschalt ka gi fannt Dir op der Hëllefsäit fir d'[https://www.semantic-mediawiki.org/wiki/Help:Configuration configuration Astellungen].",
 	"log-name-smw": "Semantic-MediaWiki-Logbuch",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|$1-Import]]",
 	"smw-datavalue-invalid-number": "\"$1\" kann net als Zuel interpretéiert ginn.",
 	"smw-sp-types-list": "Lëscht vun Datentypen",
 	"smw-sp-types-default": "\"$1\" ass en agebauten Datentyp.",
-	"smw-sp-types-help": "Méi Informatiounen a Beispiller fannt Dir op der [https://semantic-mediawiki.org/wiki/Help:Type_$1 Hëllef-Säit]."
+	"smw-sp-types-help": "Méi Informatiounen a Beispiller fannt Dir op der [https://www.semantic-mediawiki.org/wiki/Help:Type_$1 Hëllef-Säit]."
 }

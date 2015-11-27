@@ -269,7 +269,7 @@
 	"smw-info-par-icon": "Icono que mostrar: ya sea \"info\" (información) o bien \"warning\" (advertencia).",
 	"prefs-smw": "Semantic MediaWiki",
 	"prefs-ask-options": "Opciones de búsqueda semántica",
-	"smw-prefs-intro-text": "[https://semantic-mediawiki.org/ Semantic MediaWiki] (o extensiones relacionadas) suministran las opciones mostradas a continuación para permitir la personalización individual de las funciones seleccionadas. Para más información, consulta [https://semantic-mediawiki.org/wiki/Help:User_preferences esta página de ayuda].",
+	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ Semantic MediaWiki] (o extensiones relacionadas) suministran las opciones mostradas a continuación para permitir la personalización individual de las funciones seleccionadas. Para más información, consulta [https://www.semantic-mediawiki.org/wiki/Help:User_preferences esta página de ayuda].",
 	"smw-prefs-ask-options-tooltip-display": "Mostrar el texto del parámetro como ayuda informativa",
 	"smw-prefs-ask-options-collapsed-default": "Contraer el cuadro de opciones de manera predeterminada",
 	"smw-ui-tooltip-title-property": "Propiedad",
@@ -299,7 +299,7 @@
 	"smw-sp-properties-cache-info": "Los datos listados se han obtenido de la [https://www.semantic-mediawiki.org/wiki/Caching caché], y fueron actualizados por última vez el $1.",
 	"smw-sp-properties-header-label": "Lista de propiedades",
 	"smw-sp-admin-settings-title": "Opciones de configuración",
-	"smw-sp-admin-settings-docu": "Muestra una lista de todas las preferencias predeterminadas y localizadas que son relevantes para el entorno de Semantic MediaWiki. Para más detalles sobre preferencias individuales, consulta la página de ayuda de [https://semantic-mediawiki.org/wiki/Help:Configuration configuración].",
+	"smw-sp-admin-settings-docu": "Muestra una lista de todas las preferencias predeterminadas y localizadas que son relevantes para el entorno de Semantic MediaWiki. Para más detalles sobre preferencias individuales, consulta la página de ayuda de [https://www.semantic-mediawiki.org/wiki/Help:Configuration configuración].",
 	"smw-sp-admin-settings-button": "Generar lista de preferencias",
 	"smw-sp-admin-idlookup-title": "Búsqueda de ObjectId",
 	"smw-sp-admin-idlookup-docu": "Muestra detalles sobre un identificador interno de objeto que representa entidades individuales (wikipágina, subobjeto, etc.) en Semantic MediaWiki.",
@@ -320,5 +320,5 @@
 	"smw-datavalue-invalid-number": "No se puede interpretar a \"$1\" como un número.",
 	"smw-query-condition-circular": "Se detectó una posible condición circular en \"$1\".",
 	"smw-sp-types-list": "Lista de tipos de datos",
-	"smw-sp-types-help": "Más información y ejemplos en la [https://semantic-mediawiki.org/wiki/Help:Type_$1 página de ayuda]."
+	"smw-sp-types-help": "Más información y ejemplos en la [https://www.semantic-mediawiki.org/wiki/Help:Type_$1 página de ayuda]."
 }

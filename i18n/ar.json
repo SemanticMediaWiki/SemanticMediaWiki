@@ -258,7 +258,7 @@
 	"smw-info-par-icon": "أيقونة تظهر، إما \"info\" أو \"warning\".",
 	"prefs-smw": "ميدياويكي الدلالية",
 	"prefs-ask-options": "خيارات البحث الدلالية",
-	"smw-prefs-intro-text": "الخيارات التالية تتيحها [https://semantic-mediawiki.org/ Semantic MediaWiki] )أو ملحقات ذات صلة( لتطويع بعض الوظائفز لمزيد من المعلومات طالع [https://semantic-mediawiki.org/wiki/Help:User_preferences قسم المساعدة].",
+	"smw-prefs-intro-text": "الخيارات التالية تتيحها [https://www.semantic-mediawiki.org/ Semantic MediaWiki] )أو ملحقات ذات صلة( لتطويع بعض الوظائفز لمزيد من المعلومات طالع [https://www.semantic-mediawiki.org/wiki/Help:User_preferences قسم المساعدة].",
 	"smw-prefs-ask-options-tooltip-display": "اعرض نص المعامل كبالون تلميحة",
 	"smw-prefs-ask-options-collapsed-default": "اطو صندوق الخيارات مبدئيا",
 	"smw-ui-tooltip-title-property": "الخصيصة",

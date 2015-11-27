@@ -242,7 +242,7 @@
 	"smw-info-par-message": "Wiadomość do wyświetlenia.",
 	"prefs-smw": "Semantyczna MediaWiki",
 	"prefs-ask-options": "Opcje wyszukiwania semantycznego",
-	"smw-prefs-intro-text": "Opcje poniżej są dostarczane przez [https://semantic-mediawiki.org/ semantyczną MediaWiki] (lub powiązane rozszerzenia), aby umożliwić indywidualne dostosowanie do wybranych funkcji. Więcej informacji na ten temat można uzyskać w [https://semantic-mediawiki.org/wiki/Help:User_preferences sekcji pomocy].",
+	"smw-prefs-intro-text": "Opcje poniżej są dostarczane przez [https://www.semantic-mediawiki.org/ semantyczną MediaWiki] (lub powiązane rozszerzenia), aby umożliwić indywidualne dostosowanie do wybranych funkcji. Więcej informacji na ten temat można uzyskać w [https://www.semantic-mediawiki.org/wiki/Help:User_preferences sekcji pomocy].",
 	"smw-prefs-ask-options-tooltip-display": "Wyświetlaj opis parametru za pomocą „dymku” z informacją",
 	"smw-ui-tooltip-title-property": "Właściwość",
 	"smw-ui-tooltip-title-quantity": "Ilość",

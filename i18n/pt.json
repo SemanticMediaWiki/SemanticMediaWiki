@@ -244,7 +244,7 @@
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|O valor permitido para esta propriedade é|Os valores permitidos para esta propriedade são}}:",
 	"prefs-smw": "Semântica MediaWiki",
 	"prefs-ask-options": "Opções da pesquisa semântica",
-	"smw-prefs-intro-text": "As opções abaixo são fornecidas pelo [https://semantic-mediawiki.org/ Semantic MediaWiki] (ou por extensões relacionadas) para permitir a personalização individualizada de certas funções. Para mais informação, consulte esta [https://semantic-mediawiki.org/wiki/Help:User_preferences secção da ajuda].",
+	"smw-prefs-intro-text": "As opções abaixo são fornecidas pelo [https://www.semantic-mediawiki.org/ Semantic MediaWiki] (ou por extensões relacionadas) para permitir a personalização individualizada de certas funções. Para mais informação, consulte esta [https://www.semantic-mediawiki.org/wiki/Help:User_preferences secção da ajuda].",
 	"smw-prefs-ask-options-tooltip-display": "Mostrar o texto do parâmetro na forma de dica",
 	"smw-prefs-ask-options-collapsed-default": "Por padrão, recolher a caixa de opção",
 	"smw-ui-tooltip-title-property": "Propriedade",
@@ -262,7 +262,7 @@
 	"smw-pa-property-predefined-default": "\"$1\" é uma propriedade predefinida.",
 	"smw-sp-properties-header-label": "Lista de propriedades",
 	"smw-sp-admin-settings-title": "Definições de configuração",
-	"smw-sp-admin-settings-docu": "Mostra uma lista de todas as configurações, por padrão e localizadas, que são relevantes para o ambiente semântico da MediaWiki. Para mais detalhes sobre as configurações individuais, consulte a página de ajuda de [https://semantic-mediawiki.org/wiki/Help:Configuration configuração].",
+	"smw-sp-admin-settings-docu": "Mostra uma lista de todas as configurações, por padrão e localizadas, que são relevantes para o ambiente semântico da MediaWiki. Para mais detalhes sobre as configurações individuais, consulte a página de ajuda de [https://www.semantic-mediawiki.org/wiki/Help:Configuration configuração].",
 	"smw-sp-admin-idlookup-objectid": "ID de objeto:",
 	"smw-livepreview-loading": "A carregar…",
 	"smw-sp-searchbyproperty-resultlist-header": "Lista de resultados",
@@ -270,5 +270,5 @@
 	"smw-pa-property-predefined_type": "\"$1\" é uma propriedade predefinida que descreve o [[Special:Types|tipo de dados]] de uma propriedade.",
 	"smw-datavalue-invalid-number": "\"$1\" não pode ser interpretado como um número.",
 	"smw-sp-types-list": "Lista de tipos de dados",
-	"smw-sp-types-help": "Mais informações e exemplos podem ser encontrados na [https://semantic-mediawiki.org/wiki/Help:Type_$1 página de ajuda]."
+	"smw-sp-types-help": "Mais informações e exemplos podem ser encontrados na [https://www.semantic-mediawiki.org/wiki/Help:Type_$1 página de ajuda]."
 }

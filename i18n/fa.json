@@ -261,7 +261,7 @@
 	"smw-info-par-icon": "آیکون برای نشان داد، یا \"اطلاعات\" و یا \"هشدار\".",
 	"prefs-smw": "مدیاویکی معنایی",
 	"prefs-ask-options": "گزینه‌های جستجوی معنایی",
-	"smw-prefs-intro-text": "گزینه های زیر توسط [https://semantic-mediawiki.org/ Semantic MediaWiki] (یا فرمت‌های مرتبط) برای فعال کردن سفارشی‌سازی فردی در عملیات انتخاب شده، ارائه شدند. برای کسب اطلاعات بیشتر، لطفاً این[https://semantic-mediawiki.org/wiki/Help:User_preferences help section] را مشاهده کنید.",
+	"smw-prefs-intro-text": "گزینه های زیر توسط [https://www.semantic-mediawiki.org/ Semantic MediaWiki] (یا فرمت‌های مرتبط) برای فعال کردن سفارشی‌سازی فردی در عملیات انتخاب شده، ارائه شدند. برای کسب اطلاعات بیشتر، لطفاً این[https://www.semantic-mediawiki.org/wiki/Help:User_preferences help section] را مشاهده کنید.",
 	"smw-prefs-ask-options-tooltip-display": "نمایش متن پارامتر به عنوان اطلاعات تول‌تیپ",
 	"smw-prefs-ask-options-collapsed-default": "فعال کردن جعبه گزینه برای ویران شدن توسط پیش‌فرض",
 	"smw-ui-tooltip-title-property": "ویژگی",
@@ -289,7 +289,7 @@
 	"smw-sp-properties-cache-info": "داده‌های فهرست شده از [https://www.semantic-mediawiki.org/wiki/Caching cache] بازیابی شده‌اند، و آخرین به روز شده بودند $1.",
 	"smw-sp-properties-header-label": "فهرست ویژگی‌ها",
 	"smw-sp-admin-settings-title": "تنظیمات پیکربندی",
-	"smw-sp-admin-settings-docu": "نمایش فهرست همه default و localized settings که به محیط مدیاویکی معنایی مربوط هستند. برای اطلاعات در  تنظیمات فردی، لطفاً به صفحه راهنما [https://semantic-mediawiki.org/wiki/Help:Configuration configuration] مراجعه کنید.",
+	"smw-sp-admin-settings-docu": "نمایش فهرست همه default و localized settings که به محیط مدیاویکی معنایی مربوط هستند. برای اطلاعات در  تنظیمات فردی، لطفاً به صفحه راهنما [https://www.semantic-mediawiki.org/wiki/Help:Configuration configuration] مراجعه کنید.",
 	"smw-sp-admin-settings-button": "ایجاد فهرست تنظیمات",
 	"smw-livepreview-loading": "در حال بارگیری…"
 }
