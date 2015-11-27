@@ -659,6 +659,12 @@ class SemanticData {
 		} else {
 			$semanticData->subContainerDepthCounter++;
 			foreach ( $semanticData->getSubSemanticData() as $subsubdata ) {
+
+				// Skip container that are known to be registered (avoids recursive statement extension)
+				if ( $this->hasSubSemanticData( $subsubdata->getSubject()->getSubobjectName() ) ) {
+					continue;
+				}
+
 				$this->addSubSemanticData( $subsubdata );
 			}
 			$semanticData->subSemanticData = array();

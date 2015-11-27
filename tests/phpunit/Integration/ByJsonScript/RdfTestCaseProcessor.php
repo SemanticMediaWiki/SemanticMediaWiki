@@ -50,6 +50,13 @@ class RdfTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function process( array $case ) {
+
+		// Allows for data to be re-read from the DB instead of being fetched
+		// from the store-id-cache
+		if ( isset( $case['store']['clear-cache'] ) && $case['store']['clear-cache'] ) {
+			$this->store->clear();
+		}
+
 		$this->assertRdfOutputForCase( $case );
 	}
 
