@@ -303,6 +303,7 @@
 	"smw-sp-admin-settings-button": "Generar lista de preferencias",
 	"smw-sp-admin-idlookup-title": "Búsqueda de ObjectId",
 	"smw-sp-admin-idlookup-docu": "Muestra detalles sobre un identificador interno de objeto que representa entidades individuales (wikipágina, subobjeto, etc.) en Semantic MediaWiki.",
+	"smw-sp-admin-idlookup-objectid": "Identificador de objeto:",
 	"smw-livepreview-loading": "Cargando…",
 	"smw-sp-searchbyproperty-description": "Esta página proporciona una [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces interfaz de exploración] simple para encontrar entidades descritas por una propiedad y un valor con nombre. Otras interfaces de búsqueda disponibles incluyen la  [[Special:PageProperty|búsqueda de propiedades de página]] y el [[Special:Ask|constructor de consultas]].",
 	"smw-sp-searchbyproperty-resultlist-header": "Lista de resultados",
