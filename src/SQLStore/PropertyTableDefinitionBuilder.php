@@ -179,6 +179,11 @@ class PropertyTableDefinitionBuilder {
 	 */
 	private function addTableDefinitionForUserDefinedFixedProperties( array $fixedProperties ) {
 		foreach( $fixedProperties as $propertyKey => $tableDIType ) {
+
+			// Normalize the key to be independent from a possible MW setting
+			// (has area == Has_area <> Has_Area)
+			$propertyKey = str_replace( ' ', '_',  ucfirst( $propertyKey ) );
+
 			$this->addPropertyTable(
 				$tableDIType,
 				$this->fixedPropertyTablePrefix . '_' . md5( $propertyKey ),

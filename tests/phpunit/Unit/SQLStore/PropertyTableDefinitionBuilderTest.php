@@ -68,9 +68,10 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testFixedProperties() {
+	public function testUserDefinedFixedPropertyDeclaration() {
 
-		$propertyKey = 'Foo';
+		$propertyKey = 'foo bar';
+		$expectedKey = 'Foo_bar';
 
 		$dataItems = array();
 		$specials = array();
@@ -79,12 +80,12 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new PropertyTableDefinitionBuilder( $dataItems, $specials, $fixed );
 		$instance->doBuild();
 
-		$tableName = $instance->getTablePrefix() . '_' . md5( $propertyKey );
-		$definition = $instance->newTableDefinition( DataItem::TYPE_NUMBER, $tableName, $propertyKey );
+		$tableName = $instance->getTablePrefix() . '_' . md5( $expectedKey );
+		$definition = $instance->newTableDefinition( DataItem::TYPE_NUMBER, $tableName, $expectedKey );
 
 		$expected = array(
 			'definition' => array( $tableName => $definition ),
-			'tableId' => array( $propertyKey => $tableName, '_SKEY' => null )
+			'tableId' => array( $expectedKey => $tableName, '_SKEY' => null )
 		);
 
 		$this->assertEquals(
