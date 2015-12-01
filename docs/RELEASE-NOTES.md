@@ -19,6 +19,7 @@ Not a release yet.
 * #1272 Fixed serialization of `_rec` type datavalues in the `QueryResultSerializer`
 * #1275 Fixed export of record type data when embedded in a subobject
 * #1286 Fixed support for sorting by category
+* #1287 Fixed exception for when `$smwgFixedProperties` contains property keys with spaces
 
 ## Internal changes
 
