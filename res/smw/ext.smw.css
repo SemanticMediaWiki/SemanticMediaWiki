@@ -475,7 +475,7 @@ label.smw-form-checkbox {
 .autocomplete-group { padding: 2px 5px; }
 .autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
 
-input#smw-property-input.autocomplete-suggestions {
+.skin-vector input#smw-property-input.autocomplete-suggestions {
 	height: 1.15em;
 	padding: 2px 2px;
 }
@@ -485,4 +485,14 @@ input#smw-property-input.autocomplete-suggestions {
 	padding: 2px 2px;
 }
 
-.skin-chameleon .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; font-size: 0.9em; }
+.skin-foreground input#smw-property-input.autocomplete-suggestions {
+	height: 32px;
+	padding: 2px 0px 0px 8px;
+}
+
+.skin-chameleon .autocomplete-suggestion, .skin-foreground .autocomplete-suggestion {
+	padding: 2px 5px;
+	white-space: nowrap;
+	overflow: hidden;
+	font-size: 0.9em;
+}
