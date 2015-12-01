@@ -195,6 +195,9 @@ class SMWQueryProcessor {
 				$sortKey = '';
 			}
 			else {
+
+				$sort = $GLOBALS['wgContLang']->getNsText( NS_CATEGORY ) == mb_convert_case( $sort, MB_CASE_TITLE ) ? '_INST' : $sort;
+
 				$propertyValue = SMWPropertyValue::makeUserProperty( trim( $sort ) );
 
 				if ( $propertyValue->isValid() ) {
