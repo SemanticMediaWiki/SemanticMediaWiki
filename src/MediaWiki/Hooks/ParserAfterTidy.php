@@ -141,6 +141,11 @@ class ParserAfterTidy {
 
 		if( $cache->contains( $key ) && $cache->fetch( $key ) ) {
 			$cache->delete( $key );
+
+			// Set a timestamp explicitly to create a new hash for the property
+			// table change row differ and force a data comparison (this doesn't
+			// change the _MDAT annotation)
+			$parserData->getSemanticData()->setLastModified( wfTimestamp( TS_UNIX ) );
 			$parserData->updateStore();
 		}
 
