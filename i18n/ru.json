@@ -298,7 +298,7 @@
 	"smw-sp-admin-settings-title": "Параметры конфигурации",
 	"smw-sp-admin-settings-docu": "Отображает список всех настроек по-умолчанию и локализованных настроек, которые имеют отношение к окружению Semantic MediaWiki. За сведениями об отдельных параметров обратитесь к странице помощи по [https://www.semantic-mediawiki.org/wiki/Help:Configuration конфигурации].",
 	"smw-sp-admin-settings-button": "Создать список настроек",
-	"smw-sp-admin-idlookup-title": "Поиск ObjectId",
+	"smw-sp-admin-idlookup-title": "Поиск ID объекта",
 	"smw-sp-admin-idlookup-docu": "Отображает сведения об идентификаторе внутреннего объекта, который представляет отдельные сущности (вики-страницу, подобъект и т.д.) в Семантической МедиаВики.",
 	"smw-sp-admin-idlookup-objectid": "Идентификатор объекта:",
 	"smw-livepreview-loading": "Загрузка…",

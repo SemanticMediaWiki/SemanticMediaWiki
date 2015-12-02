@@ -16,7 +16,8 @@
 			"아라",
 			"Vengir",
 			"Alan ffm",
-			"WTM"
+			"WTM",
+			"Devwebtel"
 		]
 	},
 	"smw-desc": "Poprawia dostępność wiki zarówno dla automatów jak i ludzi ([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentacja online])",
@@ -264,6 +265,8 @@
 	"smw-sp-properties-cache-info": "Wymienione dane zostały pobrane z [https://www.semantic-mediawiki.org/wiki/Caching cache] i były ostatnio aktualizowane $1.",
 	"smw-sp-properties-header-label": "Lista właściwości",
 	"smw-sp-admin-settings-title": "Ustawienia konfiguracji",
+	"smw-sp-admin-idlookup-title": "Wyszukaj ID obiektu",
+	"smw-sp-admin-idlookup-objectid": "Identyfikator obiektu:",
 	"smw-livepreview-loading": "Trwa ładowanie…",
 	"smw-sp-searchbyproperty-resultlist-header": "Lista wyników",
 	"smw-sp-searchbyproperty-nonvaluequery": "Lista wartości, które mają przypisaną właściwość „$1”.",
