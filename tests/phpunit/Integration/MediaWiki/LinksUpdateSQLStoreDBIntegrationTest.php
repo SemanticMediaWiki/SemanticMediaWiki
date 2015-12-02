@@ -127,11 +127,11 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 		$revision = $wikiPage->getRevision();
 
 		$parserData = $this->retrieveAndLoadData();
-		$this->assertCount( 3, $parserData->getData()->getProperties() );
+		$this->assertCount( 3, $parserData->getSemanticData()->getProperties() );
 
 		$this->assertEquals(
-			$parserData->getData(),
-			$this->retrieveAndLoadData( $revision->getId() )->getData(),
+			$parserData->getSemanticData()->getHash(),
+			$this->retrieveAndLoadData( $revision->getId() )->getSemanticData()->getHash(),
 			'Asserts that data are equals with or without a revision'
 		);
 
@@ -166,7 +166,7 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 	protected function assertPropertyCount( $poExpected, $storeExpected, $parserData ) {
 		$this->semanticDataValidator->assertThatSemanticDataHasPropertyCountOf(
 			$poExpected['count'],
-			$parserData->getData(),
+			$parserData->getSemanticData(),
 			$poExpected['msg']
 		);
 

@@ -70,13 +70,6 @@ class InTextAnnotationParser {
 	protected $isAnnotation = true;
 
 	/**
-	 * Identifies the current parser run (especially when called recursively)
-	 *
-	 * @var string
-	 */
-	private $contextReference;
-
-	/**
 	 * @var boolean
 	 */
 	private $strictModeState = true;
@@ -122,7 +115,9 @@ class InTextAnnotationParser {
 		$title = $this->parserData->getTitle();
 		$this->settings = $this->applicationFactory->getSettings();
 
-		$this->contextReference = 'intp:' . uniqid();
+		// Identifies the current parser run (especially when called recursively)
+		$this->parserData->getSubject()->setContextReference( 'intp:' . uniqid() );
+
 		$this->doStripMagicWordsFromText( $text );
 
 		$this->setSemanticEnabledNamespaceState( $title );
@@ -326,10 +321,7 @@ class InTextAnnotationParser {
 	 */
 	protected function addPropertyValue( array $properties, $value, $valueCaption ) {
 
-		$subject = $this->parserData->getSemanticData()->getSubject();
-
-		// Set a context to a subject to idenitify the parser run
-		$subject->setContextReference( $this->contextReference );
+		$subject = $this->parserData->getSubject();
 
 		// Add properties to the semantic container
 		foreach ( $properties as $property ) {

@@ -352,6 +352,10 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->will( $this->returnValue( $parserOutput ) );
 
 		$parserData->expects( $this->any() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( DIWikiPage::newFromTitle( $title ) ) );
+
+		$parserData->expects( $this->any() )
 			->method( 'getSemanticData' )
 			->will( $this->returnValue( $semanticData ) );
 
