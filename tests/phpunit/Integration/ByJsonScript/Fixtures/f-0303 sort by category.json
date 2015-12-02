@@ -25,11 +25,11 @@
 		},
 		{
 			"name": "Example/F0303/ASC",
-			"contents": "{{#ask: [[Has project::~Project*]] |?Has project |?Category |sort=Category |order=asc |link=none}}"
+			"contents": "{{#ask: [[Has project::~Project*]] |?Has project |?Category |sort=Category,Has project |order=asc,asc |link=none}}"
 		},
 		{
 			"name": "Example/F0303/DESC",
-			"contents": "{{#ask: [[Has project::~Project*]] |?Has project |?Category |sort=Category |order=desc |link=none}}"
+			"contents": "{{#ask: [[Has project::~Project*]] |?Has project |?Category |sort=Category,Has project |order=desc,asc |link=none}}"
 		}
 	],
 	"parser-testcases": [
