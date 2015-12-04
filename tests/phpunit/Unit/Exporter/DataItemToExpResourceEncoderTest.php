@@ -137,6 +137,10 @@ class DataItemToExpResourceEncoderTest extends \PHPUnit_Framework_TestCase {
 			$dataItem
 		);
 
+		$this->assertTrue(
+			$resource->wasMatchedToImportVocab
+		);
+
 		$this->assertSame(
 			$expected,
 			$resource->getSerialization()

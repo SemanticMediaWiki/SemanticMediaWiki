@@ -373,6 +373,12 @@ class CompoundConditionBuilder {
 		}
 
 		$redirectExpElement = Exporter::getInstance()->getResourceElementForWikiPage( $dataItem );
+
+		// If the resource was matched to an imported vocab then no redirect is required
+		if ( isset( $redirectExpElement->wasMatchedToImportVocab ) && $redirectExpElement->wasMatchedToImportVocab ) {
+			return null;
+		}
+
 		$valueName = TurtleSerializer::getTurtleNameForExpElement( $redirectExpElement );
 
 		// Add unknow redirect target/variable for value

@@ -179,6 +179,8 @@ class DataItemToExpResourceEncoder {
 			$diWikiPage
 		);
 
+		$resource->wasMatchedToImportVocab = $importDataItem instanceof DataItem;
+
 		$poolCache->save(
 			$hash,
 			$resource

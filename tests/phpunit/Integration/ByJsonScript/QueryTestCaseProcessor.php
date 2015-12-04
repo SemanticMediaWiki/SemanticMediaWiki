@@ -107,6 +107,10 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
 		$this->printQueryResultToOutput( $queryResult );
 
+		if ( is_string( $queryResult ) ) {
+			return;
+		}
+
 		$this->assertEquals(
 			$queryTestCaseInterpreter->getExpectedCount(),
 			$queryResult->getCount(),
@@ -230,6 +234,10 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function printQueryResultToOutput( $queryResult ) {
+
+		if ( is_string( $queryResult ) ) {
+			return print_r( str_replace( array( "&#x0020;", "&#x003A;" ), array( " ", ":" ), $queryResult ) );
+		}
 
 		if ( !$this->debug ) {
 			return;

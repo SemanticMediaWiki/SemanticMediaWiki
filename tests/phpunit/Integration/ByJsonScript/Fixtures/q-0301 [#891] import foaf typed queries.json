@@ -23,6 +23,11 @@
 			"contents": "[[Imported from::foaf:knows]]"
 		},
 		{
+			"name": "Has name",
+			"namespace": "SMW_NS_PROPERTY",
+			"contents": "#REDIRECT [[Property:Foaf:name]]"
+		},
+		{
 			"name": "John Doe",
 			"contents": "[[Foaf:name::John Doe]], [[Foaf:homepage::http://example.org/JohnDoe]] [[Foaf:knows::Jane Doe]]"
 		},
@@ -89,9 +94,25 @@
 					}
 				]
 			}
+		},
+		{
+			"about": "#2 query on redirected property",
+			"condition": "[[Has name::John Doe]]",
+			"printouts" : [ ],
+			"parameters" : {
+			  "limit" : "10"
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"John Doe#0##"
+				]
+			}
 		}
 	],
 	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
 		"smwgNamespace": "http://example.org/id/",
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,
