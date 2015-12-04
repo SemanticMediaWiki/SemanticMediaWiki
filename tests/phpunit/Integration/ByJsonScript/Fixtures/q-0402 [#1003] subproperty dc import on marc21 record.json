@@ -62,8 +62,11 @@
 			"about": "#0 any value for Marc:title statement",
 			"condition": "[[Marc:title statement::+]]",
 			"printouts" : [ "Has author" ],
+			"store" : {
+				"clear-cache" : true
+			},
 			"parameters" : {
-			  "limit" : 10
+				"limit" : 10
 			},
 			"queryresult": {
 				"count": 2,
@@ -87,8 +90,11 @@
 			"about": "#1 any value for Marc:title on level one of the subproperty hierarchy",
 			"condition": "[[Marc:title::+]]",
 			"printouts" : [ "Has author" ],
+			"store" : {
+				"clear-cache" : true
+			},
 			"parameters" : {
-			  "limit" : 10
+				"limit" : 10
 			},
 			"queryresult": {
 				"count": 3,
@@ -117,8 +123,11 @@
 			"about": "#2 any value for Dc:title on level two of the subproperty hierarchy",
 			"condition": "[[Dc:title::+]]",
 			"printouts" : [ "Has author" ],
+			"store" : {
+				"clear-cache" : true
+			},
 			"parameters" : {
-			  "limit" : 10
+				"limit" : 10
 			},
 			"queryresult": {
 				"count": 3,
@@ -147,8 +156,11 @@
 			"about": "#3 distinct value for Dc:title on level two of the subproperty hierarchy",
 			"condition": "[[Dc:title::~*Animal*]]",
 			"printouts" : [ "Has author" ],
+			"store" : {
+				"clear-cache" : true
+			},
 			"parameters" : {
-			  "limit" : 10
+				"limit" : 10
 			},
 			"queryresult": {
 				"count": 1,
@@ -167,8 +179,11 @@
 			"about": "#4 distinct value for Has author / redirected value / subproperty level zero",
 			"condition": "[[Has author::Shakespeare]]",
 			"printouts" : [],
+			"store" : {
+				"clear-cache" : true
+			},
 			"parameters" : {
-			  "limit" : 10
+				"limit" : 10
 			},
 			"queryresult": {
 				"count": 1,
@@ -181,8 +196,11 @@
 			"about": "#5 distinct value for Dc:creator / redirected value / subproperty level one",
 			"condition": "[[Dc:creator::Shakespeare]]",
 			"printouts" : [],
+			"store" : {
+				"clear-cache" : true
+			},
 			"parameters" : {
-			  "limit" : 10
+				"limit" : 10
 			},
 			"queryresult": {
 				"count": 1,

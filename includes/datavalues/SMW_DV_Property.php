@@ -120,6 +120,9 @@ class SMWPropertyValue extends SMWDataValue {
 			$this->addError( wfMessage( 'smw_noproperty', $value )->inContentLanguage()->text() );
 			$this->m_dataitem = new SMWDIProperty( 'ERROR', false ); // just to have something
 		}
+
+		// Find the "real" target of a property that represents the valueString
+		$this->m_dataitem = $this->m_dataitem->getRedirectTarget();
 	}
 
 	/**

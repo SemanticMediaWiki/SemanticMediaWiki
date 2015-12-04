@@ -31,6 +31,12 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 
 		$this->semanticDataValidator = new SemanticDataValidator();
 		$this->applicationFactory = ApplicationFactory::getInstance();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->applicationFactory->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {

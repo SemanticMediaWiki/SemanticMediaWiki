@@ -28,6 +28,12 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 		parent::setUp();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->applicationFactory->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {
