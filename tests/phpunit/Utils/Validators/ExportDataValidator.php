@@ -39,7 +39,7 @@ class ExportDataValidator extends \PHPUnit_Framework_Assert {
 
 		foreach ( $expProperties as $expProperty ) {
 			foreach ( $expectedProperties as $expectedProperty ) {
-				if ( $expectedProperty == $expProperty ) {
+				if ( $expectedProperty->getHash() === $expProperty->getHash() ) {
 					$actualComparedToCount++;
 					$assertThatExportDataContainsProperty = true;
 				}
@@ -75,7 +75,7 @@ class ExportDataValidator extends \PHPUnit_Framework_Assert {
 
 		foreach ( $expElements as $expElement ) {
 			foreach ( $expectedResources as $expectedResource ) {
-				if ( $expectedResource == $expElement ) {
+				if ( $expectedResource->getHash() === $expElement->getHash() ) {
 					$actualComparedToCount++;
 					$assertThatExportDataContainsResource = true;
 				}
