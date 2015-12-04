@@ -20,6 +20,7 @@ Not a release yet.
 * #1275 Fixed export of record type data when embedded in a subobject
 * #1286 Fixed support for sorting by category
 * #1287 Fixed exception for when `$smwgFixedProperties` contains property keys with spaces
+* #1289 Suppresses redirect statement in sparql query for resources matched to an import vocabulary
 
 ## Internal changes
 
