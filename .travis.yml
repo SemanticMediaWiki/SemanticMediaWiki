@@ -37,6 +37,7 @@ matrix:
     - env: DB=sqlite; MW=1.25.2; TYPE=composer
     - env: DB=sqlite; MW=master; PHPUNIT=4.6.*
     - env: DB=mysql; MW=1.25.2; PHPUNIT=4.3.*; TYPE=benchmark
+    - env: DB=mysql; MW=1.24.1; SESAME=2.7.14
 
 install:
   - travis_retry composer self-update
