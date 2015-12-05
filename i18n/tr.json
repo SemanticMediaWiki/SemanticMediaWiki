@@ -5,7 +5,8 @@
 			"Erdemaslancan",
 			"Karduelis",
 			"Vito Genovese",
-			"Incelemeelemani"
+			"Incelemeelemani",
+			"HakanIST"
 		]
 	},
 	"smw_viewasrdf": "RDF beslemesi",
@@ -140,7 +141,7 @@
 	"smw-sp-properties-header-label": "Özellikler listesi",
 	"smw-sp-admin-settings-title": "Yapılandırma ayarları",
 	"smw-sp-admin-settings-button": "Ayarlar listesi oluşturma",
-	"smw-sp-admin-idlookup-title": "NesneKimliği araştırma",
+	"smw-sp-admin-idlookup-title": "Nesne ID araştırma",
 	"smw-sp-admin-idlookup-objectid": "Nesne kimliği:",
 	"smw-livepreview-loading": "Yükleniyor...",
 	"smw-sp-searchbyproperty-resultlist-header": "Sonuç listesi",

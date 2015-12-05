@@ -298,7 +298,7 @@
 	"smw-pa-property-predefined_ask": "“$1”是表现有关个别查询中媒体信息（[https://www.semantic-mediawiki.org/wiki/Subobject 子对象]形式）的预定义属性。",
 	"smw-pa-property-predefined_asksi": "“$1”是收集一次查询中使用到的条件数的预定义属性。",
 	"smw-pa-property-predefined_askde": "“$1”是当查询执行受到[https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth $smwgQMaxDepth]设置的限制时，报告有关查询深度（在子查询嵌套和已解决属性链的基础上计算的数值）的预定义属性。",
-	"smw-sp-properties-docu": "这个页面列举此wiki上可用的[https://www.semantic-mediawiki.org/wiki/Property 属性]及其使用计数。为确保获得最新的计数统计信息，我们建议您定期运行[https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics rebuildPropertyStatistics]维护脚本。差异化的视图，请参阅[[Special:UnusedProperties|未使用的属性]]或[[Special:WantedProperties|缺乏属性]]特殊页面。",
+	"smw-sp-properties-docu": "这个页面列举此wiki上可用的[https://www.semantic-mediawiki.org/wiki/Property 属性]及其使用计数。为确保获得最新的计数统计信息，我们建议您定期运行[https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics property statistics]维护脚本。差异化的视图，请参阅[[Special:UnusedProperties|未使用的属性]]或[[Special:WantedProperties|缺乏属性]]特殊页面。",
 	"smw-sp-properties-cache-info": "列出数据已检索自[https://www.semantic-mediawiki.org/wiki/Caching cache]，并已更新于$1。",
 	"smw-sp-properties-header-label": "属性列表",
 	"smw-sp-admin-settings-title": "配置设置",
