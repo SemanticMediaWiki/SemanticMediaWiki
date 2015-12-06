@@ -60,11 +60,48 @@ class QueryComparatorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider extractStringComparatorProvider
+	 */
+	public function testExtractComparatorFromString( $string, $expectedString, $expectedComparator ) {
+
+		$comparatorList = '';
+
+		$instance = new QueryComparator( $comparatorList, true );
+
+		$this->assertEquals(
+			$expectedComparator,
+			$instance->extractComparatorFromString( $string )
+		);
+
+		$this->assertEquals(
+			$expectedString,
+			$string
+		);
+	}
+
 	public function stringComparatorProvider() {
 
 		$provider[] = array(
 			'!~',
 			SMW_CMP_NLKE
+		);
+
+		return $provider;
+	}
+
+	public function extractStringComparatorProvider() {
+
+		$provider[] = array(
+			'!~Foo',
+			'Foo',
+			SMW_CMP_NLKE
+		);
+
+		$provider[] = array(
+			'<Foo',
+			'Foo',
+			SMW_CMP_LESS
 		);
 
 		return $provider;

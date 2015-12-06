@@ -99,6 +99,31 @@ class QueryComparator {
 	}
 
 	/**
+	 * Extract possible comparators from a value and alter it to consist
+	 * only of the remaining effective value string (without the comparator).
+	 *
+	 * @since 2.4
+	 *
+	 * @param $value
+	 *
+	 * @return integer
+	 */
+	public function extractComparatorFromString( &$value ) {
+
+		$comparator = SMW_CMP_EQ;
+
+		foreach ( $this->getComparatorStrings() as $string ) {
+			if ( strpos( $value, $string ) === 0 ) {
+				$comparator = $this->getComparatorFromString( substr( $value, 0, strlen( $string ) ) );
+				$value = substr( $value, strlen( $string ) );
+				break;
+			}
+		}
+
+		return $comparator;
+	}
+
+	/**
 	 * Gets the comparator string for a comparator.
 	 *
 	 * @since 1.5.3

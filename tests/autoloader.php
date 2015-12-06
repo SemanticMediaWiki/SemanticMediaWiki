@@ -26,12 +26,15 @@ print sprintf( "\n%-20s%s\n", "Semantic MediaWiki:", SMW_VERSION . " ({$GLOBALS[
 // @codingStandardsIgnoreEnd
 
 if ( is_readable( $path = __DIR__ . '/../vendor/autoload.php' ) ) {
-	print sprintf( "%-20s%s\n\n", "MediaWiki:", $GLOBALS['wgVersion'] . " (Extension vendor autoloader)" );
+	print sprintf( "%-20s%s\n", "MediaWiki:", $GLOBALS['wgVersion'] . " (Extension vendor autoloader)" );
 } elseif ( is_readable( $path = __DIR__ . '/../../../vendor/autoload.php' ) ) {
-	print sprintf( "%-20s%s\n\n", "MediaWiki:", $GLOBALS['wgVersion'] . " (MediaWiki vendor autoloader)" );
+	print sprintf( "%-20s%s\n", "MediaWiki:", $GLOBALS['wgVersion'] . " (MediaWiki vendor autoloader)" );
 } else {
 	die( 'To run tests it is required that packages are installed using Composer.' );
 }
+
+$dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
+print sprintf( "\n%-20s%s\n\n", "Execution date:", $dateTimeUtc->format( 'Y-m-d h:i' ) );
 
 /**
  * Available to aid third-party extensions therefore any change should be made with
