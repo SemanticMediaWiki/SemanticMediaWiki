@@ -86,14 +86,7 @@ abstract class DescriptionDeserializer implements DispatchableDeserializer {
 	 * @param string|integer $comparator
 	 */
 	protected function prepareValue( &$value, &$comparator ) {
-		// Loop over the comparators to determine which one is used and what the actual value is.
-		foreach ( QueryComparator::getInstance()->getComparatorStrings() as $string ) {
-			if ( strpos( $value, $string ) === 0 ) {
-				$comparator = QueryComparator::getInstance()->getComparatorFromString( substr( $value, 0, strlen( $string ) ) );
-				$value = substr( $value, strlen( $string ) );
-				break;
-			}
-		}
+		$comparator = QueryComparator::getInstance()->extractComparatorFromString( $value );
 	}
 
 }

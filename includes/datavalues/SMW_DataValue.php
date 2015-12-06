@@ -144,6 +144,11 @@ abstract class SMWDataValue {
 	protected $isUsedByQueryCondition = false;
 
 	/**
+	 * @var boolean
+	 */
+	protected $approximateValue = false;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param string $typeid
@@ -163,9 +168,9 @@ abstract class SMWDataValue {
 	 *
 	 * @param string $value
 	 * @param mixed $caption
-	 * @param boolean $ignoreAllowedValues
+	 * @param boolean $approximateValue
 	 */
-	public function setUserValue( $value, $caption = false, $ignoreAllowedValues = false ) {
+	public function setUserValue( $value, $caption = false, $approximateValue = false ) {
 
 		$this->m_dataitem = null;
 		$this->mErrors = array(); // clear errors
@@ -174,6 +179,7 @@ abstract class SMWDataValue {
 		$this->mHasSearchLink = false;
 		$this->mHasServiceLinks = false;
 		$this->m_caption = is_string( $caption ) ? trim( $caption ) : false;
+		$this->approximateValue = $approximateValue;
 
 
 		$this->parseUserValue( $value ); // may set caption if not set yet, depending on datavalue
@@ -187,7 +193,7 @@ abstract class SMWDataValue {
 			$this->addError( wfMessage( 'smw_parseerror' )->inContentLanguage()->text() );
 		}
 
-		if ( $this->isValid() && !$ignoreAllowedValues ) {
+		if ( $this->isValid() && !$approximateValue ) {
 			$this->checkAllowedValues();
 		}
 
@@ -443,7 +449,7 @@ abstract class SMWDataValue {
 	 * @deprecated 2.3
 	 * @see DescriptionDeserializer::prepareValue
 	 *
-	 * This method is no longer to be used for direct public access, instead a
+	 * This method should no longer be used for direct public access, instead a
 	 * DataValue is expected to register a DescriptionDeserializer with
 	 * DVDescriptionDeserializerFactory.
 	 *
@@ -451,14 +457,7 @@ abstract class SMWDataValue {
 	 * migration before 3.0
 	 */
 	static public function prepareValue( &$value, &$comparator ) {
-		// Loop over the comparators to determine which one is used and what the actual value is.
-		foreach ( QueryComparator::getInstance()->getComparatorStrings() as $string ) {
-			if ( strpos( $value, $string ) === 0 ) {
-				$comparator = QueryComparator::getInstance()->getComparatorFromString( substr( $value, 0, strlen( $string ) ) );
-				$value = substr( $value, strlen( $string ) );
-				break;
-			}
-		}
+		$comparator = QueryComparator::getInstance()->extractComparatorFromString( $value );
 	}
 
 ///// Get methods /////
