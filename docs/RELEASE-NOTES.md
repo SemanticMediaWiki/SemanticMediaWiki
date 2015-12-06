@@ -10,6 +10,7 @@ Not a release yet.
 * #1267 Added the `browseByProperty` API module to fetch a property list or individual properties via the WebAPI
 * #1268 Restored compliance with MediaWiki's 1.26/1.27 WebAPI interface to ensure continued support for the `ask` and `askargs` output serialization
 * #1257 Changed import of recursive annotations (#1068) from the format to a query level using the `import-annotation` parameter
+* #1291 Added support for range queries such as `[[>AAA]] [[<AAD]]`
 
 ## Bug fixes
 
@@ -29,5 +30,6 @@ Not a release yet.
 * #1264 Removed `pg_unescape_bytea` special handling for postgres in the `ResultPrinter`
 * #1276 Extended `QueryResultSerializer` (relevant for the API output) to export the raw output of a time related value
 * #1281 Extended `QueryResultSerializer` to export the internal property key 
+* #1291 Added `DescriptionProcessor` to isolate code path from the `SMWQueryParser`
 
 ## Contributors
