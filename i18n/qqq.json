@@ -345,5 +345,7 @@
 	"smw-sp-types_tel": "This is an informatory message shown to the user.",
 	"smw-sp-types_txt": "This is an informatory message shown to the user.",
 	"smw-sp-types_dat": "This is an informatory message shown to the user.",
-	"smw-specials-browse-helplink": "{{notranslate}}"
+	"smw-specials-browse-helplink": "{{notranslate}}",
+	"smw-pa-property-predefined_errc": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
+	"smw-pa-property-predefined_errt": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property]."
 }

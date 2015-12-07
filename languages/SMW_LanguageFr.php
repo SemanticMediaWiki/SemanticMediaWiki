@@ -75,7 +75,9 @@ class SMWLanguageFr extends SMWLanguage {
 		'_ASKDE'=> 'Profondeur de la requête',
 		'_ASKDU'=> 'Durée de la requête',
 		'_MEDIA'=> 'Media type',
-		'_MIME' => 'Mime type'
+		'_MIME' => 'Mime type',
+		'_ERRC' => 'Has error',
+		'_ERRT' => 'Has error text'
 	);
 
 	protected $m_SpecialPropertyAliases = array(

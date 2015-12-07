@@ -84,7 +84,9 @@ class SMWLanguageNb extends SMWLanguage {
 		'_ASKDE'=> 'Spørringsdybde',
 		'_ASKDU'=> 'Spørringsvarighet',
 		'_MEDIA'=> 'Mediatype',
-		'_MIME' => 'MIME-type'
+		'_MIME' => 'MIME-type',
+		'_ERRC' => 'Has error',
+		'_ERRT' => 'Has error text'
 	);
 
 	protected $m_SpecialPropertyAliases = array(
