@@ -78,7 +78,9 @@ class SMWLanguageCa extends SMWLanguage {
 		'_ASKDE'=> 'Profunditat de consulta',
 		'_ASKDU'=> 'Durada de consulta',
 		'_MEDIA'=> 'Tipus Media',
-		'_MIME' => 'Tipus MIME'
+		'_MIME' => 'Tipus MIME',
+		'_ERRC' => 'Has error',
+		'_ERRT' => 'Has error text'
 	);
 
 	protected $m_SpecialPropertyAliases = array(

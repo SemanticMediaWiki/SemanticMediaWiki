@@ -82,7 +82,9 @@ class SMWLanguageZh_cn extends SMWLanguage {
 		'_ASKDE'=> '查询深度', // Query depth
 		'_ASKDU'=> '查询持续时间', // Query duration
 		'_MEDIA'=> '媒体类型', //Media type
-		'_MIME' => 'MIME类型' //Mime type
+		'_MIME' => 'MIME类型', //Mime type
+		'_ERRC' => 'Has error',
+		'_ERRT' => 'Has error text'
 	);
 
 	protected $m_SpecialPropertyAliases = array(

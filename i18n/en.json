@@ -321,7 +321,7 @@
 	"smw-datavalue-import-invalidvalue":"\"$1\" is not a valid format and is expected to consists of \"namespace\":\"identifier\" (e.g. \"foaf:name\").",
 	"smw-pa-property-predefined_impo": "\"$1\" is a predefined property that describes a relation to an [https://www.semantic-mediawiki.org/wiki/Help:Import_vocabulary imported vocabulary].",
 	"smw-pa-property-predefined_type": "\"$1\" is a predefined property that describes the [[Special:Types|datatype]] of a property.",
-	"smw-pa-property-predefined_sobj": "\"$1\" is a predefined property representing a container construct that allows to accumulate property-value assignments similar to that of a normal wiki page.",
+	"smw-pa-property-predefined_sobj": "\"$1\" is a predefined property representing a [https://www.semantic-mediawiki.org/wiki/Help:Container container] construct that allows to accumulate property-value assignments similar to that of a normal wiki page.",
 	"smw-pa-property-predefined_errp": "\"$1\" is a predefined property to track input errors for irregular value annotations that was likely caused by type or [[Property:Allows value|allowed value]] restrictions.",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value \"$1\"] is a predefined property that can define a list of permissible values to restrict value assignments for a property.",
 	"smw-datavalue-property-restricted-use": "Property \"$1\" was marked for restricted use.",
@@ -338,5 +338,7 @@
 	"smw-sp-types_tel": "\"$1\" is a special datatype to describe international telephone numbers according to RFC 3966.",
 	"smw-sp-types_txt": "\"$1\" is a primitive datatype to describe strings of arbitrary length.",
 	"smw-sp-types_dat": "\"$1\" is a datatype to represent points in time in a unified format.",
-	"smw-specials-browse-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Special:Browse"
+	"smw-specials-browse-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Special:Browse",
+	"smw-pa-property-predefined_errc": "\"$1\" is a predefined property representing a [https://www.semantic-mediawiki.org/wiki/Help:Container container] for errors that appeared in connection with improper value annotations or input processing.",
+	"smw-pa-property-predefined_errt": "\"$1\" is a predefined property containing a textual description of an error."
 }

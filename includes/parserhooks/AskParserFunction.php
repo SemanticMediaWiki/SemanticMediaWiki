@@ -192,9 +192,14 @@ class AskParserFunction {
 		// In case of an query error add a marker to the subject for
 		// discoverability of a failed query
 		if ( $query->getErrors() !== array() ) {
+			$error = new Error( $this->parserData->getSubject() );
+
 			$this->parserData->getSemanticData()->addPropertyObjectValue(
-				new DIProperty( '_ERRP' ),
-				DIProperty::newFromUserLabel( '_ASK' )->getDiWikiPage()
+				$error->getProperty(),
+				$error->getContainerFor(
+					new DIProperty( '_ASK' ),
+					$query->getQueryString() . ' (' . implode( ' ', $query->getErrors() ) . ')'
+				)
 			);
 		}
 

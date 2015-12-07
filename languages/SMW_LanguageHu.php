@@ -79,7 +79,9 @@ class SMWLanguageHu extends SMWLanguage {
 		'_ASKDE'=> 'Lekérdezése mélysége',
 		'_ASKDU'=> 'Lekérdezése időtartama',
 		'_MEDIA'=> 'Médiatípusa',
-		'_MIME' => 'MIME-Típusa'
+		'_MIME' => 'MIME-Típusa',
+		'_ERRC' => 'Has error',
+		'_ERRT' => 'Has error text'
 	);
 
 	protected $m_SpecialPropertyAliases = array(
