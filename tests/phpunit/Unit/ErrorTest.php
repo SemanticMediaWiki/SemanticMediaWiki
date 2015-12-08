@@ -60,4 +60,48 @@ class ErrorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testErrorContainerForNullProperty() {
+
+		$instance = new Error( DIWikiPage::newFromText( 'Foo' ) );
+
+		$this->assertEquals(
+			new DIProperty( '_ERRC' ),
+			$instance->getProperty()
+		);
+
+		$container = $instance->getContainerFor( null, 'Some error' );
+
+		$expected = array(
+			'propertyCount'  => 1,
+			'propertyKeys'   => array( '_ERRT' ),
+		);
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$container->getSemanticData()
+		);
+	}
+
+	public function testErrorContainerForInverseProperty() {
+
+		$instance = new Error( DIWikiPage::newFromText( 'Foo' ) );
+
+		$this->assertEquals(
+			new DIProperty( '_ERRC' ),
+			$instance->getProperty()
+		);
+
+		$container = $instance->getContainerFor( new DIProperty( 'Foo', true ), array( 'Some error' ) );
+
+		$expected = array(
+			'propertyCount'  => 2,
+			'propertyKeys'   => array( '_ERRP', '_ERRT' ),
+		);
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$container->getSemanticData()
+		);
+	}
+
 }

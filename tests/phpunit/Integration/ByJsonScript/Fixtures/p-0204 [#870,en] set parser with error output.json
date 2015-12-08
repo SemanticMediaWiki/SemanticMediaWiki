@@ -20,7 +20,7 @@
 				"semantic-data": {
 					"strict-mode-valuematch": false,
 					"propertyCount": 4,
-					"propertyKeys": [ "Has_number", "_ERRP", "_SKEY", "_MDAT" ],
+					"propertyKeys": [ "Has_number", "_ERRC", "_SKEY", "_MDAT" ],
 					"propertyValues": [ 12, 66 ]
 				}
 			},

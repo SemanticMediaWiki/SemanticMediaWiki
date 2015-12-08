@@ -292,9 +292,9 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'errors' => 1,
 				'identifier' => 'bar',
-				'propertyCount'  => 0,
-				'propertyLabels' => '',
-				'propertyValues' => '',
+				'propertyCount'  => 1,
+				'strict-mode-valuematch' => false,
+				'propertyKeys' => array( '_ERRC' )
 			)
 		);
 
@@ -307,15 +307,13 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'errors' => 1,
 				'identifier' => 'bar',
-				'propertyCount'  => 0,
-				'propertyLabels' => '',
-				'propertyValues' => '',
+				'propertyCount'  => 1,
+				'strict-mode-valuematch' => false,
+				'propertyKeys' => array( '_ERRC' )
 			)
 		);
 
 		// #6 / asserting that an improper value for a _wpg property would add "Has improper value for"
-		$diPropertyError = new DIProperty( DIProperty::TYPE_ERROR );
-
 		$provider[] = array(
 			array(
 				'identifier' => 'bar',
@@ -324,9 +322,9 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'identifier' => 'bar',
 				'errors' => 1,
+				'strict-mode-valuematch' => false,
 				'propertyCount'  => 1,
-				'propertyLabels' => array( $diPropertyError->getLabel() ),
-				'propertyValues' => 'Foo',
+				'propertyKeys' => array( '_ERRC' )
 			)
 		);
 

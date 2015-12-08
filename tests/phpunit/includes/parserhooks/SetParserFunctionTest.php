@@ -229,8 +229,9 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			array( 'Foo=bar', '_Foo=9001' ),
 			array(
 				'errors' => 1,
-				'propertyCount'  => 1,
-				'propertyLabels' => array( 'Foo' ),
+				'propertyCount'  => 2,
+				'strict-mode-valuematch' => false,
+				'propertyKeys' => array( 'Foo', '_ERRC' ),
 				'propertyValues' => array( 'Bar' )
 			)
 		);

@@ -126,11 +126,9 @@ class ParserData {
 
 	/**
 	 * @since  1.9
-	 *
-	 * @return array
 	 */
-	public function addError( array $errors ) {
-		return $this->errors = array_merge( $errors, $this->errors );
+	public function addError( $error ) {
+		$this->errors = array_merge( $this->errors, (array)$error );
 	}
 
 	/**

@@ -186,10 +186,15 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			);
 		}
 
-		foreach ( $subSemanticData as $actualSemanticDataToAssert ){
+		foreach ( $subSemanticData as $key => $semanticData ){
+
+			if ( strpos( $semanticData->getSubject()->getSubobjectName(), '_ERR' ) !== false ) {
+				continue;
+			}
+
 			$this->semanticDataValidator->assertThatPropertiesAreSet(
 				$expected,
-				$actualSemanticDataToAssert
+				$semanticData
 			);
 		}
 	}
@@ -303,8 +308,9 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'hasErrors' => true,
 				'identifier' => 'Foo_bar_foo',
-				'propertyCount'  => 1,
-				'propertyLabels' => array( 'Bar' ),
+				'strict-mode-valuematch' => false,
+				'propertyCount'  => 2,
+				'propertyKeys'   => array( 'Bar', '_ERRC' ),
 				'propertyValues' => array( 'Foo Bar' )
 			)
 		);
@@ -318,8 +324,9 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'hasErrors' => true,
 				'identifier' => 'Foo_bar_foo',
-				'propertyCount'  => 1,
-				'propertyLabels' => array( 'Bar' ),
+				'strict-mode-valuematch' => false,
+				'propertyCount'  => 2,
+				'propertyKeys' => array( 'Bar', '_ERRC' ),
 				'propertyValues' => array( 'Foo Bar' )
 			)
 		);
@@ -334,7 +341,9 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'hasErrors' => true,
 				'identifier' => 'Foo_bar_foo',
-				'propertyCount'  => 0
+				'strict-mode-valuematch' => false,
+				'propertyCount'  => 1,
+				'propertyKeys' => array( '_ERRC' )
 			)
 		);
 
@@ -350,9 +359,9 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'hasErrors' => true,
 				'identifier' => 'Foo_bar_foo',
+				'strict-mode-valuematch' => false,
 				'propertyCount'  => 1,
-				'propertyLabels' => array( $diPropertyError->getLabel() ),
-				'propertyValues' => array( 'Date' )
+				'propertyKeys' => array( '_ERRC' )
 			)
 		);
 
