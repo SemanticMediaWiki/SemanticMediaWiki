@@ -37,7 +37,7 @@ the following dependency to your [composer.json][composer].
 ## Usage
 
 ```php
-$sanitizer = new Sanitizer( $string );
+$sanitizer = new Sanitizer( 'A string that contains ...' );
 $sanitizer->reduceLengthTo( '200' );
 
 $sanitizer->toLowercase();
@@ -59,12 +59,13 @@ $cacheFactory = new CacheFactory();
 $cache = $cacheFactory->newMediaWikiCache( wfGetCache( 'redis' ) );
 
 $stopwordAnalyzer = new StopwordAnalyzer( $cache );
-$stopwordAnalyzer->loadListBy( StopwordAnalyzer::DEFAULT_STOPWORDLIST );
+$stopwordAnalyzer->loadListByLanguage( array( 'en', 'fr' ) );
 
-$stopwordAnalyzer = new StopwordAnalyzer( $cache );
-
-$sanitizer = new Sanitizer( $string );
+$sanitizer = new Sanitizer( 'This string contains even more ...' );
 $sanitizer->toLowercase();
+
+$sanitizer->setOption( ONOI_TESA_CHARACTER_MIN_LENGTH, 4 );
+$sanitizer->setOption( ONOI_TESA_WORD_WHITELIST, array( 'even', 'more' ) );
 
 $string = $sanitizer->sanitizeBy(
 	$stopwordAnalyzer
@@ -73,12 +74,14 @@ $string = $sanitizer->sanitizeBy(
 
 - It is recommended that the `StopwordAnalyzer` is invoked using a responsive cache provider (such as
 APC or redis) to minimize any latency when the stopword list is loaded.
+- `StopwordAnalyzer` default languages include en, de, fr, es
 
 ### Data sources
 
-- The `Transliterator` used diacritics conversion table has been copied from http://jsperf.com/latinize.
-- The stopwords used by the `StopwordAnalyzer` have been collected from different sources where each `json`
-  file identifies its origin.
+- The `Transliterator` uses the same diacritics conversion table as http://jsperf.com/latinize
+  (except the German diaeresis ä, ü, and ö)
+- The stopwords used by the `StopwordAnalyzer` have been collected from different sources, each `json`
+  file identifies its origin
 
 ## Contribution and support
 
@@ -97,7 +100,7 @@ The library provides unit tests that covers the core-functionality normally run 
 
 ## Release notes
 
-- 0.1.0 Initial release (2015-11-??)
+- 0.1.0 Initial release (2015-12-??)
 
 ## License
 

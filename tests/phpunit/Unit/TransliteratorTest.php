@@ -26,6 +26,14 @@ class TransliteratorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testTransliterationWithoutOptionFlag() {
+
+		$this->assertEquals(
+			'aaaaaea',
+			Transliterator::transliterate( 'àáâãäå' )
+		);
+	}
+
 	public function characterProvider() {
 
 		$provider[] = array(

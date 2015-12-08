@@ -26,10 +26,21 @@ class StopwordAnalyzerTest extends \PHPUnit_Framework_TestCase {
 	public function testCustomStopwordList() {
 
 		$instance = new StopwordAnalyzer();
-		$instance->setCustomStopwordList( array( 'zoo' => array( 'Foo' ) ) );
+
+		$instance->setCustomStopwordList(
+			array(
+				'zoo' => array( 'Foo' ),
+				'doo' => array( 'bar' )
+			)
+		);
 
 		$this->assertTrue(
 			$instance->isStopWord( 'Foo' )
+		);
+
+		$this->assertEquals(
+			array( 'zoo', 'doo' ),
+			$instance->getLanguageList()
 		);
 	}
 
@@ -39,7 +50,7 @@ class StopwordAnalyzerTest extends \PHPUnit_Framework_TestCase {
 	public function testUncachedIsWordCheckForDefaultList( $word, $expected ) {
 
 		$instance = new StopwordAnalyzer();
-		$instance->loadListBy( StopwordAnalyzer::DEFAULT_STOPWORDLIST );
+		$instance->loadListByDefaultLanguages();
 
 		$this->assertEquals(
 			$expected,
@@ -54,6 +65,25 @@ class StopwordAnalyzerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new StopwordAnalyzer();
 		$instance->loadListByLanguage( $languageCode );
+
+		$this->assertEquals(
+			$expected,
+			$instance->isStopWord( $word )
+		);
+
+		$this->assertEquals(
+			(array)$languageCode,
+			$instance->getLanguageList()
+		);
+	}
+
+	/**
+	 * @dataProvider listByLanguageStopWordsProvider
+	 */
+	public function testListFromCustomLocation( $languageCode, $word, $expected ) {
+
+		$instance = new StopwordAnalyzer();
+		$instance->loadListFromCustomLocation( __DIR__ . '/../../../data/stopwords/', $languageCode );
 
 		$this->assertEquals(
 			$expected,

@@ -95,33 +95,6 @@ class SanitizerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testToContainKoreanCharacters() {
-
-		$instance = new Sanitizer( '한국어 텍스트의 예' );
-
-		$this->assertTrue(
-			$instance->containsKoreanCharacters()
-		);
-	}
-
-	public function testToContainJapaneseCharacters() {
-
-		$instance = new Sanitizer( 'IQテスト' );
-
-		$this->assertTrue(
-			$instance->containsJapaneseCharacters()
-		);
-	}
-
-	public function testToContainChineseCharacters() {
-
-		$instance = new Sanitizer( '才可以过关' );
-
-		$this->assertTrue(
-			$instance->containsChineseCharacters()
-		);
-	}
-
 	public function testSanitizeByStopwords() {
 
 		$instance = new Sanitizer( 'Foo bar foobar' );
@@ -135,6 +108,22 @@ class SanitizerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testSanitizeByStopwordsToIncludeExemptionWithMinLengthRestriction() {
+
+		$instance = new Sanitizer( 'Foo bar foobar' );
+
+		$instance->setOption( ONOI_TESA_CHARACTER_MIN_LENGTH, 4 );
+		$instance->setOption( ONOI_TESA_WORD_WHITELIST, array( 'bar' ) );
+
+		$stopwordAnalyzer = new StopwordAnalyzer();
+		$stopwordAnalyzer->setCustomStopwordList( array( 'zh' => array( 'bar' ) ) );
+
+		$this->assertEquals(
+			'bar foobar',
+			$instance->sanitizeBy( $stopwordAnalyzer )
+		);
+	}
+
 	public function testTrySanitizeByStopwordsForNoAvailableToken() {
 
 		$instance = new Sanitizer( '' );
@@ -143,6 +132,18 @@ class SanitizerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'',
+			$instance->sanitizeBy( $stopwordAnalyzer )
+		);
+	}
+
+	public function testTrySanitizeByStopwordsWithProximityCheck() {
+
+		$instance = new Sanitizer( 'foo foo テスト テスト' );
+
+		$stopwordAnalyzer = new StopwordAnalyzer();
+
+		$this->assertEquals(
+			'foo テスト',
 			$instance->sanitizeBy( $stopwordAnalyzer )
 		);
 	}

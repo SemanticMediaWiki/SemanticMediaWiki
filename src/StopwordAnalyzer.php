@@ -14,18 +14,16 @@ use Onoi\Cache\NullCache;
 class StopwordAnalyzer {
 
 	/**
-	 * Any change to the content of this file should be reflected in a version
-	 * change (the version is not necessarily the same as the library).
+	 * Any change to the content of its data files should be reflected in a
+	 * version change (the version number does not necessarily correlate with
+	 * the library version)
 	 */
-	const VERSION = '0.1.2';
-
-	const CACHE = 'onoi:tesa:stopword:';
+	const VERSION = '0.1.3';
 
 	/**
-	 * Supported options
+	 * Prefix
 	 */
-	const NONE = 0x2;
-	const DEFAULT_STOPWORDLIST = 0x4;
+	const CACHE = 'onoi:tesa:stopword:';
 
 	/**
 	 * @var Cache
@@ -43,6 +41,11 @@ class StopwordAnalyzer {
 	private static $internalLookupCache = null;
 
 	/**
+	 * @var array
+	 */
+	private $languageList = array();
+
+	/**
 	 * @since 0.1
 	 *
 	 * @param Cache|null $cache
@@ -55,6 +58,18 @@ class StopwordAnalyzer {
 		if ( $this->cache === null ) {
 			$this->cache = new NullCache();
 		}
+
+		self::$internalLookupCache = array();
+		$this->languageList = array();
+	}
+
+	/**
+	 * @since 0.1
+	 *
+	 * @return array
+	 */
+	public function getLanguageList() {
+		return $this->languageList;
 	}
 
 	/**
@@ -62,30 +77,39 @@ class StopwordAnalyzer {
 	 *
 	 * @param integer $flag
 	 */
-	public function loadListBy( $flag ) {
-
-		self::$internalLookupCache = array();
-
-		if ( $flag === ( $flag | self::DEFAULT_STOPWORDLIST ) ) {
-			$this->loadListFromCache(
-				str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, __DIR__ . '/../data/stopwords/' ),
-				array( 'en', 'de', 'es', 'fr' )
-			);
-		}
+	public function loadListByDefaultLanguages() {
+		$this->languageList = array( 'en', 'de', 'es', 'fr' );
+		$this->loadListByLanguage( $this->languageList );
 	}
 
 	/**
 	 * @since 0.1
 	 *
-	 * @param string $languageCode
+	 * @param string $location
+	 * @param string|array $languageCode
+	 */
+	public function loadListFromCustomLocation( $location, $languageCode ) {
+
+		$this->languageList = (array)$languageCode;
+
+		$this->loadListFromCache(
+			str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $location ),
+			$this->languageList
+		);
+	}
+
+	/**
+	 * @since 0.1
+	 *
+	 * @param string|array $languageCode
 	 */
 	public function loadListByLanguage( $languageCode ) {
 
-		self::$internalLookupCache = array();
+		$this->languageList = (array)$languageCode;
 
 		$this->loadListFromCache(
 			str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, __DIR__ . '/../data/stopwords/' ),
-			array( $languageCode )
+			$this->languageList
 		);
 	}
 
@@ -99,10 +123,14 @@ class StopwordAnalyzer {
 	public function setCustomStopwordList( array $customStopwordList ) {
 
 		self::$internalLookupCache = array();
+		$this->languageList = array();
 
 		foreach ( $customStopwordList as $languageCode => $contents ) {
 			self::$internalLookupCache += array_fill_keys( $contents, true );
+			$this->languageList[$languageCode] = true;
 		}
+
+		$this->languageList = array_keys( $this->languageList );
 	}
 
 	/**
@@ -118,13 +146,12 @@ class StopwordAnalyzer {
 
 	private function loadListFromCache( $location, $languages ) {
 
-		$id = self::CACHE . md5( json_encode( $languages ) . $this->ttl . self::VERSION );
+		self::$internalLookupCache = array();
+		$id = self::CACHE . md5( json_encode( $languages ) . $location . $this->ttl . self::VERSION );
 
 		if ( $this->cache->contains( $id ) ) {
 			return self::$internalLookupCache = $this->cache->fetch( $id );
 		}
-
-		self::$internalLookupCache = array();
 
 		foreach ( $languages as $languageCode ) {
 

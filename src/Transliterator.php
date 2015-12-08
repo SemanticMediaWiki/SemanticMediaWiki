@@ -16,13 +16,14 @@ namespace Onoi\Tesa;
 class Transliterator {
 
 	/**
-	 * Any change to the content of this file should be reflected in a version
-	 * change (the version is not necessarily the same as the library)
+	 * Any change to the mapping of this file should be reflected in a version
+	 * change (the version number does not necessarily correlate with the
+	 * library version)
 	 */
 	const VERSION = '0.1.1';
 
 	/**
-	 * Transliterator supported options
+	 * Transliterator supported option flags
 	 */
 	const NONE = 0x1;
 	const DIACRITICS = 0x2;
@@ -266,7 +267,7 @@ class Transliterator {
 	 *
 	 * @return string
 	 */
-	public static function transliterate( $string, $flag = self::DIACRITICS_TO_LAT ) {
+	public static function transliterate( $string, $flag = self::DIACRITICS ) {
 
 		if ( $flag === ( $flag | self::NONE ) ) {
 			return $string;

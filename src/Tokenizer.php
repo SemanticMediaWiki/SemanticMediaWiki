@@ -12,7 +12,8 @@ class Tokenizer {
 
 	/**
 	 * Any change to the content of this file should be reflected in a version
-	 * change (the version is not necessarily the same as the library).
+	 * change (the version number does not necessarily correlate with the
+	 * library version)
 	 */
 	const VERSION = '0.1';
 

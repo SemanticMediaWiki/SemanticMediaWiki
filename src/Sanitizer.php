@@ -3,6 +3,18 @@
 namespace Onoi\Tesa;
 
 /**
+ * @since 0.1
+ *
+ * @{
+ */
+// @codeCoverageIgnoreStart
+define( 'ONOI_TESA_CHARACTER_MIN_LENGTH', 'ONOI_TESA_CHARACTER_MIN_LENGTH' );
+define( 'ONOI_TESA_WORD_WHITELIST', 'ONOI_TESA_WORD_WHITELIST' );
+// @codeCoverageIgnoreEnd
+/**@}
+ */
+
+/**
  * @license GNU GPL v2+
  * @since 0.1
  *
@@ -11,14 +23,31 @@ namespace Onoi\Tesa;
 class Sanitizer {
 
 	/**
+	 * Any change to the content of its data files should be reflected in a
+	 * version change (the version number does not necessarily correlate with
+	 * the library version)
+	 */
+	const VERSION = '0.1.1';
+
+	/**
 	 * @var string
 	 */
 	private $string = '';
 
 	/**
-	 * @var null
+	 * @var null|string
 	 */
 	private $encoding = null;
+
+	/**
+	 * @var array
+	 */
+	private $whiteList = array();
+
+	/**
+	 * @var array
+	 */
+	private $minLength = 3;
 
 	/**
 	 * @since 0.1
@@ -28,6 +57,23 @@ class Sanitizer {
 	public function __construct( $string ) {
 		$this->string = $string;
 		$this->encoding = $this->detectEncoding( $string );
+	}
+
+	/**
+	 * @since 1.0
+	 *
+	 * @param string $name
+	 * @param mixed $value
+	 */
+	public function setOption( $name, $value ) {
+
+		if ( $name === ONOI_TESA_WORD_WHITELIST && $value !== array() ) {
+			$this->whiteList = array_fill_keys( $value, true );
+		}
+
+		if ( $name === ONOI_TESA_CHARACTER_MIN_LENGTH ) {
+			$this->minLength = (int)$value;
+		}
 	}
 
 	/**
@@ -60,19 +106,29 @@ class Sanitizer {
 	public function sanitizeBy( StopwordAnalyzer $stopwordAnalyzer ) {
 
 		$words = $this->getTokens();
-		$index = array();
 
 		if ( !$words || !is_array( $words ) ) {
 			return $this->string;
 		}
 
-		foreach ( $words as $word ) {
+		$index = array();
+		$pos = 0;
 
-			if ( $stopwordAnalyzer->isStopWord( $word ) ) {
+		foreach ( $words as $key => $word ) {
+
+			// If it is not an exemption and less than the required minimum length
+			// or identified as stop word it is removed
+			if ( !isset( $this->whiteList[$word] ) && ( mb_strlen( $word ) < $this->minLength || $stopwordAnalyzer->isStopWord( $word ) ) ) {
+				continue;
+			}
+
+			// Simple proximity, check for same words appearing next to each other
+			if ( isset( $index[$pos-1] ) && $index[$pos-1] === $word ) {
 				continue;
 			}
 
 			$index[] = $word;
+			$pos++;
 		}
 
 		return implode( ' ' , $index );
@@ -112,33 +168,6 @@ class Sanitizer {
 	 */
 	public function replace( $search, $replace ) {
 		$this->string = str_replace( $search, $replace, $this->string );
-	}
-
-	/**
-	 * @since 0.1
-	 *
-	 * @return boolean
-	 */
-	public function containsJapaneseCharacters() {
-		return preg_match('/[\x{3040}-\x{309F}]/u', $this->string ) > 0 || preg_match('/[\x{30A0}-\x{30FF}]/u', $this->string ) > 0; // isHiragana || isKatakana
-	}
-
-	/**
-	 * @since 0.1
-	 *
-	 * @return boolean
-	 */
-	public function containsKoreanCharacters() {
-		return preg_match('/[\x{3130}-\x{318F}]/u', $this->string ) > 0 || preg_match('/[\x{AC00}-\x{D7AF}]/u', $this->string ) > 0;
-	}
-
-	/**
-	 * @since 0.1
-	 *
-	 * @return boolean
-	 */
-	public function containsChineseCharacters() {
-		return preg_match('/[\x{4e00}-\x{9fa5}]/u', $this->string ) > 0;
 	}
 
 	/**
