@@ -76,8 +76,8 @@ class SMWLanguageEs extends SMWLanguage {
 		'_ASKDU'=> 'Duración de consulta',
 		'_MEDIA'=> 'Tipo Media',
 		'_MIME' => 'Tipo MIME',
-		'_ERRC' => 'Has error',
-		'_ERRT' => 'Has error text'
+		'_ERRC' => 'Has processing error',
+		'_ERRT' => 'Has processing error text'
 	);
 
 	protected $m_SpecialPropertyAliases = array(

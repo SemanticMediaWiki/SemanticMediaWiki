@@ -81,8 +81,8 @@ class SMWLanguageZh_tw extends SMWLanguage {
 		'_ASKDU'=> '查詢持續時間', // Query duration
 		'_MEDIA'=> '媒體類型', // Media type
 		'_MIME' => 'MIME類型', // MIME type
-		'_ERRC' => 'Has error',
-		'_ERRT' => 'Has error text'
+		'_ERRC' => 'Has processing error',
+		'_ERRT' => 'Has processing error text'
 	);
 
 	protected $m_SpecialPropertyAliases = array(

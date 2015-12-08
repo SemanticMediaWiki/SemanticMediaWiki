@@ -94,8 +94,8 @@ abstract class SMWLanguage {
 		'Has query duration' => '_ASKDU',
 		'Has media type'     => '_MEDIA',
 		'Has mime type'      => '_MIME',
-		'Has error'          => '_ERRC',
-		'Has error text'     => '_ERRT',
+		'Has processing error'          => '_ERRC',
+		'Has processing error text'     => '_ERRT',
 	);
 
 	public function __construct() {

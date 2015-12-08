@@ -78,8 +78,8 @@ class SMWLanguageNl extends SMWLanguage {
 		'_ASKDU'=> 'Zoekduur',
 		'_MEDIA'=> 'Heeft Mediatype',
 		'_MIME' => 'Heeft MIME-type',
-		'_ERRC' => 'Has error',
-		'_ERRT' => 'Has error text'
+		'_ERRC' => 'Has processing error',
+		'_ERRT' => 'Has processing error text'
 	);
 
 	protected $m_SpecialPropertyAliases = array(
