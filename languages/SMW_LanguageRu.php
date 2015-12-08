@@ -78,8 +78,8 @@ class SMWLanguageRu extends SMWLanguage {
 		'_ASKDU'=> 'Длительность запроса',
 		'_MEDIA'=> 'Тип медиа',
 		'_MIME' => 'MIME-тип',
-		'_ERRC' => 'Has error',
-		'_ERRT' => 'Has error text'
+		'_ERRC' => 'Has processing error',
+		'_ERRT' => 'Has processing error text'
 	);
 
 	protected $m_SpecialPropertyAliases = array(
