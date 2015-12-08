@@ -125,11 +125,8 @@ class DescriptionProcessor {
 		$dataValue = $this->dataValueFactory->newTypeIDValue( '_wpg', 'QP_WPG_TITLE' );
 		$description = null;
 
-		if ( $dataValue->isValid() ) {
-			$description = $dataValue->getQueryDescription( $chunk );
-		} else {
-			$this->addError( $dataValue->getErrors() );
-		}
+		$description = $dataValue->getQueryDescription( $chunk );
+		$this->addError( $dataValue->getErrors() );
 
 		return $description;
 	}
