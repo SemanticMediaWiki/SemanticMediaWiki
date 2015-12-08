@@ -111,8 +111,7 @@
 				"semantic-data": {
 					"strict-mode-valuematch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SKEY", "_MDAT", "_ERRP" ],
-					"propertyValues": [ "Has page" ]
+					"propertyKeys": [ "_SKEY", "_MDAT", "_ERRC" ]
 				}
 			},
 			"expected-output": {
@@ -129,8 +128,7 @@
 				"semantic-data": {
 					"strict-mode-valuematch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SKEY", "_MDAT", "_ERRP" ],
-					"propertyValues": [ "Has date" ]
+					"propertyKeys": [ "_SKEY", "_MDAT", "_ERRC" ]
 				}
 			},
 			"expected-output": {
@@ -146,8 +144,7 @@
 				"semantic-data": {
 					"strict-mode-valuematch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SKEY", "_MDAT", "_ERRP" ],
-					"propertyValues": [ "Has number" ]
+					"propertyKeys": [ "_SKEY", "_MDAT", "_ERRC" ]
 				}
 			},
 			"expected-output": {

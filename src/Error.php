@@ -41,25 +41,33 @@ class Error {
 	 * @since 2.4
 	 *
 	 * @param DIProperty $property
-	 * @param string $errorMsg
+	 * @param array|string $errorMsg
 	 *
 	 * @return DIContainer
 	 */
-	public function getContainerFor( DIProperty $property, $errorMsg = '' ) {
+	public function getContainerFor( DIProperty $property = null, $errorMsg = '' ) {
+
+		if ( $property !== null && $property->isInverse() ) {
+			$property = new DIProperty( $property->getKey() );
+		}
 
 		$subWikiPage = new DIWikiPage(
 			$this->subject->getDBkey(),
 			$this->subject->getNamespace(),
 			$this->subject->getInterwiki(),
-			'_ERR' . md5( $property->getKey() )
+			'_ERR' . md5( $property !== null ? $property->getKey() : 'UNKNOWN' )
 		);
 
 		$containerSemanticData = new ContainerSemanticData( $subWikiPage );
 
-		$containerSemanticData->addPropertyObjectValue(
-			new DIProperty( '_ERRP' ),
-			$property->getDiWikiPage()
-		);
+		if (  $property !== null ) {
+			$containerSemanticData->addPropertyObjectValue(
+				new DIProperty( '_ERRP' ),
+				$property->getDiWikiPage()
+			);
+		}
+
+		$errorMsg = is_array( $errorMsg ) ? implode( ' ', $errorMsg ) : $errorMsg;
 
 		$containerSemanticData->addPropertyObjectValue(
 			new DIProperty( '_ERRT' ),

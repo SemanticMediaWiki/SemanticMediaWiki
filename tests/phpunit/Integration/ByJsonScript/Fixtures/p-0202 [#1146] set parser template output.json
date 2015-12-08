@@ -41,8 +41,7 @@
 				"semantic-data": {
 					"strict-mode-valuematch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_MDAT", "_SKEY", "_ERRP" ],
-					"propertyValues": [ "Has date" ]
+					"propertyKeys": [ "_MDAT", "_SKEY", "_ERRC" ]
 				}
 			}
 		},

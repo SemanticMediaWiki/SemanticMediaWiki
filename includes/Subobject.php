@@ -84,10 +84,10 @@ class Subobject {
 	/**
 	 * @since 1.9
 	 *
-	 * @param array $error
+	 * @param array|string $error
 	 */
-	protected function addError( array $error ) {
-		$this->errors = array_merge( $this->errors, $error );
+	public function addError( $error ) {
+		$this->errors = array_merge( $this->errors, (array)$error );
 	}
 
 	/**

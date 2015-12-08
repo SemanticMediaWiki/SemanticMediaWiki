@@ -211,9 +211,9 @@ class SemanticData {
 
 		if ( array_key_exists( $property->getKey(), $this->mPropVals ) ) {
 			return $this->mPropVals[$property->getKey()];
-		} else {
-			return array();
 		}
+
+		return array();
 	}
 
 	/**
@@ -232,10 +232,10 @@ class SemanticData {
 	 *
 	 * @since  1.9
 	 *
-	 * @return array
+	 * @return array|string
 	 */
-	public function addError( array $errors ) {
-		return $this->errors = array_merge( $errors, $this->errors );
+	public function addError( $error ) {
+		$this->errors = array_merge( $this->errors, (array)$error );
 	}
 
 	/**
@@ -400,25 +400,25 @@ class SemanticData {
 	 */
 	public function addDataValue( SMWDataValue $dataValue ) {
 
-		if ( !$dataValue->getProperty() instanceof DIProperty ) {
-			$this->addError( $dataValue->getErrors() );
-			return null;
-		}
+		if ( !$dataValue->getProperty() instanceof DIProperty || !$dataValue->isValid() ) {
 
-		if ( !$dataValue->isValid() ) {
+			$error = new Error( $this->getSubject() );
 
 			$this->addPropertyObjectValue(
-				new DIProperty( DIProperty::TYPE_ERROR ),
-				$dataValue->getProperty()->getDiWikiPage()
+				$error->getProperty(),
+				$error->getContainerFor(
+					$dataValue->getProperty(),
+					$dataValue->getErrors()
+				)
 			);
 
-			$this->addError( $dataValue->getErrors() );
-		} else {
-			$this->addPropertyObjectValue(
-				$dataValue->getProperty(),
-				$dataValue->getDataItem()
-			);
+			return $this->addError( $dataValue->getErrors() );
 		}
+
+		$this->addPropertyObjectValue(
+			$dataValue->getProperty(),
+			$dataValue->getDataItem()
+		);
 	}
 
 	/**
@@ -656,6 +656,10 @@ class SemanticData {
 
 		if( $this->hasSubSemanticData( $subobjectName ) ) {
 			$this->subSemanticData[$subobjectName]->importDataFrom( $semanticData );
+
+			foreach ( $semanticData->getSubSemanticData() as $subsubdata ) {
+				$this->addSubSemanticData( $subsubdata );
+			}
 		} else {
 			$semanticData->subContainerDepthCounter++;
 			foreach ( $semanticData->getSubSemanticData() as $subsubdata ) {

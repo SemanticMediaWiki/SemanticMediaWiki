@@ -177,12 +177,16 @@ class DataValueFactory {
 		}
 
 		if ( !$propertyDV->canUse() ) {
-			return new ErrorValue(
+			$dataValue = new ErrorValue(
 				$propertyDV->getPropertyTypeID(),
 				wfMessage( 'smw-datavalue-property-restricted-use', $propertyName )->inContentLanguage()->text(),
 				$valueString,
 				$caption
 			);
+
+			$dataValue->setProperty( $propertyDV->getDataItem() );
+
+			return $dataValue;
 		}
 
 		$propertyDI = $propertyDV->getDataItem();
@@ -198,12 +202,17 @@ class DataValueFactory {
 				$caption,
 				$contextPage
 			);
+
+			$dataValue->setProperty( $propertyDV->getDataItem() );
+
 		} elseif ( $propertyDI instanceof DIProperty && $propertyDI->isInverse() ) {
 			$dataValue = new ErrorValue( $propertyDV->getPropertyTypeID(),
 				wfMessage( 'smw_noinvannot' )->inContentLanguage()->text(),
 				$valueString,
 				$caption
 			);
+
+			$dataValue->setProperty( $propertyDV->getDataItem() );
 		} else {
 			$dataValue = new ErrorValue(
 				$propertyDV->getPropertyTypeID(),
@@ -211,6 +220,8 @@ class DataValueFactory {
 				$valueString,
 				$caption
 			);
+
+			$dataValue->setProperty( $propertyDV->getDataItem() );
 		}
 
 		if ( $dataValue->isValid() && !$dataValue->canUse() ) {
@@ -220,6 +231,8 @@ class DataValueFactory {
 				$valueString,
 				$caption
 			);
+
+			$dataValue->setProperty( $propertyDV->getDataItem() );
 		}
 
 		return $dataValue;

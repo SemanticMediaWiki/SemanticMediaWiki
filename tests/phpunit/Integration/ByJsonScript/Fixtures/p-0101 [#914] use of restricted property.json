@@ -48,13 +48,13 @@
 			"store": {
 				"errors": [],
 				"semantic-data": {
-					"propertyCount": 2,
-					"propertyKeys": [ "_MDAT", "_SKEY" ]
+					"propertyCount": 4,
+					"propertyKeys": [ "_MDAT", "_SKEY", "_SOBJ", "_ERRC" ]
 				}
 			},
 			"expected-output": {
 				"to-contain": [
-					"Property &quot;Modification date&quot; was marked for restricted use."
+					"Property &quot;Modification date&quot; has been marked for restricted use."
 				]
 			}
 		},
@@ -63,13 +63,13 @@
 			"subject": "Has-query",
 			"store": {
 				"semantic-data": {
-					"propertyCount": 2,
-					"propertyKeys": [ "_MDAT", "_SKEY" ]
+					"propertyCount": 4,
+					"propertyKeys": [ "_MDAT", "_SKEY", "_SOBJ", "_ERRC" ]
 				}
 			},
 			"expected-output": {
 				"to-contain": [
-					"Property &quot;Has query&quot; was marked for restricted use."
+					"Property &quot;Has query&quot; has been marked for restricted use."
 				]
 			}
 		},
@@ -78,13 +78,13 @@
 			"subject": "Has-subobject",
 			"store": {
 				"semantic-data": {
-					"propertyCount": 2,
-					"propertyKeys": [ "_MDAT", "_SKEY" ]
+					"propertyCount": 4,
+					"propertyKeys": [ "_MDAT", "_SKEY", "_SOBJ", "_ERRC" ]
 				}
 			},
 			"expected-output": {
 				"to-contain": [
-					"Property &quot;Has subobject&quot; was marked for restricted use."
+					"Property &quot;Has subobject&quot; has been marked for restricted use."
 				]
 			}
 		}
