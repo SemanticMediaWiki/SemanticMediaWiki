@@ -85,8 +85,8 @@ class SMWLanguageDe extends SMWLanguage {
 		'_ASKDU'=> 'Abfragedauer',
 		'_MEDIA'=> 'Medientyp',
 		'_MIME' => 'MIME-Typ',
-		'_ERRC' => 'Has processing error',
-		'_ERRT' => 'Has processing error text'
+		'_ERRC' => 'Verarbeitungsfehler',
+		'_ERRT' => 'Verarbeitungsfehlerhinweis'
 	);
 
 	protected $m_SpecialPropertyAliases = array(
