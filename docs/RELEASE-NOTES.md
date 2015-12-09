@@ -12,6 +12,7 @@ Not a release yet.
 * #1257 Changed import of recursive annotations (#1068) from the format to a query level using the `import-annotation` parameter
 * #1291 Added support for range queries such as `[[>AAA]] [[<AAD]]`
 * #1293 Added `_ERRC` and `_ERRT` as pre-defined properties to aid error analysis
+* #1299 Added check for named identifier in subobject do not to contain a dot (`foo.bar` used by extensions)
 
 ## Bug fixes
 
