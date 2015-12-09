@@ -107,10 +107,11 @@ class SubobjectParserFunction {
 
 		$subject = $this->parserData->getSemanticData()->getSubject();
 
-		// Named subobjects that contain a "." are reserved to be used by extensions
-		// only in order to separate them from user land
+		// Named subobjects containing a "." in the first five characters are reserved to be
+		// used by extensions only in order to separate them from user land and avoid them
+		// accidentally to refer to the same named ID
 		// (i.e. different access restrictions etc.)
-		if ( strpos( $parameters->getFirst(), '.' ) !== false ) {
+		if ( strpos( mb_substr( $parameters->getFirst(), 0, 5 ), '.' ) !== false ) {
 			return $this->addErrorWithMsg(
 				$subject,
 				wfMessage( 'smw-subobject-parser-invalid-naming-scheme', $parameters->getFirst() )->escaped()

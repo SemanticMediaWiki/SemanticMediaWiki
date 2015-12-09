@@ -367,6 +367,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
+		// Has dot restriction
 		#10 {{#subobject:foo.bar
 		// |Bar=foo Bar
 		// |Date=Foo
@@ -379,6 +380,22 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'strict-mode-valuematch' => false,
 				'propertyCount'  => 1,
 				'propertyKeys' => array( '_ERRC' )
+			)
+		);
+
+		// Not dot restriction
+		#11 {{#subobject:foobar.bar
+		// |Bar=foo Bar
+		// }}
+		$provider[] = array(
+			array( 'foobar.bar', 'Bar=foo Bar' ),
+			array(
+				'hasErrors' => false,
+				'identifier' => 'foobar.bar',
+				'strict-mode-valuematch' => false,
+				'propertyCount'  => 1,
+				'propertyKeys' => array( 'Bar' ),
+				'propertyValues' => array( 'Foo Bar' )
 			)
 		);
 

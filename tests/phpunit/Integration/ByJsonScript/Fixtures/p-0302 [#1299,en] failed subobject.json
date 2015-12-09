@@ -9,7 +9,7 @@
 	"subjects": [
 		{
 			"name": "Example/P0302/1",
-			"contents": "{{#subobject:invalid.name |@category=ABC;123|+sep=;}}"
+			"contents": "{{#subobject:abc.name |@category=ABC;123|+sep=;}}"
 		},
 		{
 			"name": "Example/P0302/2",
