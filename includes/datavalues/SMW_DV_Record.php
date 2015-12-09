@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @ingroup SMWDataValues
  */
@@ -81,7 +82,8 @@ class SMWRecordValue extends SMWDataValue {
 		$empty = true;
 
 		foreach ( $this->getPropertyDataItems() as $diProperty ) {
-			if ( !array_key_exists( $valueIndex, $values ) ) {
+
+			if ( !array_key_exists( $valueIndex, $values ) || $this->getErrors() !== array() ) {
 				break; // stop if there are no values left
 			}
 
@@ -107,7 +109,7 @@ class SMWRecordValue extends SMWDataValue {
 			++$propertyIndex;
 		}
 
-		if ( $empty ) {
+		if ( $empty && $this->getErrors() === array()  ) {
 			$this->addError( wfMessage( 'smw_novalues' )->text() );
 		}
 
@@ -239,6 +241,12 @@ class SMWRecordValue extends SMWDataValue {
 	public function getPropertyDataItems() {
 		if ( is_null( $this->m_diProperties ) ) {
 			$this->m_diProperties = self::findPropertyDataItems( $this->m_property );
+
+			foreach ( $this->m_diProperties as $property ) {
+				if ( strpos( $property->findPropertyTypeID(), '_rec' ) !== false ) {
+					$this->addError( wfMessage( 'smw-datavalue-record-invalid-property-declaration', $property->getLabel() )->text() );
+				}
+			}
 
 			if ( count( $this->m_diProperties ) == 0 ) { // TODO internalionalize
 				$this->addError( 'The list of properties to be used for the data fields has not been specified properly.' );
