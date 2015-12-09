@@ -341,5 +341,6 @@
 	"smw-specials-browse-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Special:Browse",
 	"smw-pa-property-predefined_errc": "\"$1\" is a predefined property representing a [https://www.semantic-mediawiki.org/wiki/Help:Container container] for errors that appeared in connection with improper value annotations or input processing.",
 	"smw-pa-property-predefined_errt": "\"$1\" is a predefined property containing a textual description of an error.",
-	"smw-subobject-parser-invalid-naming-scheme": "A user-defined subobject used an invalid naming scheme. The dot notation in the first five characters ($1) is reserved to be used exclusively by extensions."
+	"smw-subobject-parser-invalid-naming-scheme": "A user-defined subobject used an invalid naming scheme. The dot notation in the first five characters ($1) is reserved to be used exclusively by extensions.",
+	"smw-datavalue-record-invalid-property-declaration": "The record definition contains the \"$1\" property which itself is declared as record type and that is not permitted."
 }
