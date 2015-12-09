@@ -85,7 +85,7 @@ class DescriptionProcessor {
 		array_shift( $params );
 
 		$message = new \Message( $msgKey, $params );
-		$this->addError( str_replace( array( '[' ), array( '&#58;' ), $message->inContentLanguage()->text() ) );
+		$this->addError( str_replace( array( '[' ), array( '&#x005B;' ), $message->inContentLanguage()->text() ) );
 	}
 
 	/**

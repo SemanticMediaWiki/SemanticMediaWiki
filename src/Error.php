@@ -51,14 +51,21 @@ class Error {
 			$property = new DIProperty( $property->getKey() );
 		}
 
-		$subWikiPage = new DIWikiPage(
+		$errorMsg = is_array( $errorMsg ) ? implode( ' ', $errorMsg ) : $errorMsg;
+
+		$subject = new DIWikiPage(
 			$this->subject->getDBkey(),
 			$this->subject->getNamespace(),
 			$this->subject->getInterwiki(),
-			'_ERR' . md5( $property !== null ? $property->getKey() : 'UNKNOWN' )
+			'_ERR' . md5( ( $property !== null ? $property->getKey() : 'UNKNOWN' ) . $errorMsg )
 		);
 
-		$containerSemanticData = new ContainerSemanticData( $subWikiPage );
+		// Encode brackets to avoid an annotion is created/included
+		return $this->newDiContainer( $subject, $property, str_replace( '[', '&#x005B;', $errorMsg ) );
+	}
+
+	private function newDiContainer( $subject, $property, $errorMsg ) {
+		$containerSemanticData = new ContainerSemanticData( $subject );
 
 		if (  $property !== null ) {
 			$containerSemanticData->addPropertyObjectValue(
@@ -66,8 +73,6 @@ class Error {
 				$property->getDiWikiPage()
 			);
 		}
-
-		$errorMsg = is_array( $errorMsg ) ? implode( ' ', $errorMsg ) : $errorMsg;
 
 		$containerSemanticData->addPropertyObjectValue(
 			new DIProperty( '_ERRT' ),

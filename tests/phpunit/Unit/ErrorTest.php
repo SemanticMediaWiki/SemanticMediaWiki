@@ -104,4 +104,36 @@ class ErrorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testErrorContainerForSamePropertyAndMsg() {
+
+		$instance = new Error( DIWikiPage::newFromText( 'Foo' ) );
+		$property = new DIProperty( 'Foo' );
+
+		$container = $instance->getContainerFor(
+			$property,
+			array( 'Some error' )
+		);
+
+		$this->assertSame(
+			$container->getHash(),
+			$instance->getContainerFor( $property, array( 'Some error' ) )->getHash()
+		);
+	}
+
+	public function testErrorContainerForSamePropertyButDifferentMsg() {
+
+		$instance = new Error( DIWikiPage::newFromText( 'Foo' ) );
+		$property = new DIProperty( 'Foo' );
+
+		$container = $instance->getContainerFor(
+			$property,
+			array( 'Some error' )
+		);
+
+		$this->assertNotSame(
+			$container->getHash(),
+			$instance->getContainerFor( $property, array( 'Different error' ) )->getHash()
+		);
+	}
+
 }
