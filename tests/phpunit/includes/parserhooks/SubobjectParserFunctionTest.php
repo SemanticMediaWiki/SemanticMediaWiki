@@ -83,10 +83,12 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$instance = $this->acquireInstance( $subobject );
 		$instance->parse( new ParserParameterFormatter( $parameters ) );
 
-		$this->assertContains(
-			$expected['identifier'],
-			$subobject->getSubobjectId()
-		);
+		if ( $expected['identifier'] !== null ) {
+			$this->assertContains(
+				$expected['identifier'],
+				$subobject->getSubobjectId()
+			);
+		}
 	}
 
 	/**
@@ -359,6 +361,21 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'hasErrors' => true,
 				'identifier' => 'Foo_bar_foo',
+				'strict-mode-valuematch' => false,
+				'propertyCount'  => 1,
+				'propertyKeys' => array( '_ERRC' )
+			)
+		);
+
+		#10 {{#subobject:foo.bar
+		// |Bar=foo Bar
+		// |Date=Foo
+		// }}
+		$provider[] = array(
+			array( 'foo.bar', 'Date=Foo' ),
+			array(
+				'hasErrors' => true,
+				'identifier' => null,
 				'strict-mode-valuematch' => false,
 				'propertyCount'  => 1,
 				'propertyKeys' => array( '_ERRC' )

@@ -90,12 +90,11 @@ class SubobjectParserFunction {
 	 */
 	public function parse( ParserParameterProcessor $parameters ) {
 
-		$this->addDataValuesToSubobject( $parameters );
-
-		if ( !$this->subobject->getSemanticData()->isEmpty() ) {
+		if ( $this->addDataValuesToSubobject( $parameters ) && !$this->subobject->getSemanticData()->isEmpty() ) {
 			$this->parserData->getSemanticData()->addSubobject( $this->subobject );
-			$this->parserData->pushSemanticDataToParserOutput();
 		}
+
+		$this->parserData->pushSemanticDataToParserOutput();
 
 		return $this->messageFormatter
 			->addFromArray( $this->subobject->getErrors() )
@@ -108,7 +107,19 @@ class SubobjectParserFunction {
 
 		$subject = $this->parserData->getSemanticData()->getSubject();
 
-		$this->subobject->setEmptyContainerForId( $this->createSubobjectId( $parameters ) );
+		// Named subobjects that contain a "." are reserved to be used by extensions
+		// only in order to separate them from user land
+		// (i.e. different access restrictions etc.)
+		if ( strpos( $parameters->getFirst(), '.' ) !== false ) {
+			return $this->addErrorWithMsg(
+				$subject,
+				wfMessage( 'smw-subobject-parser-invalid-naming-scheme', $parameters->getFirst() )->escaped()
+			);
+		}
+
+		$this->subobject->setEmptyContainerForId(
+			$this->createSubobjectId( $parameters )
+		);
 
 		foreach ( $this->transformParametersToArray( $parameters ) as $property => $values ) {
 
@@ -132,6 +143,8 @@ class SubobjectParserFunction {
 				$this->subobject->addDataValue( $dataValue );
 			}
 		}
+
+		return true;
 	}
 
 	private function createSubobjectId( ParserParameterProcessor $parameters ) {
@@ -157,6 +170,23 @@ class SubobjectParserFunction {
 		}
 
 		return $parameters->toArray();
+	}
+
+	private function addErrorWithMsg( $subject, $errorMsg ) {
+
+		$error = new Error( $subject );
+
+		$this->parserData->getSemanticData()->addPropertyObjectValue(
+			$error->getProperty(),
+			$error->getContainerFor(
+				new DIProperty( '_SOBJ' ),
+				$errorMsg
+			)
+		);
+
+		$this->parserData->addError( $errorMsg );
+
+		return false;
 	}
 
 }

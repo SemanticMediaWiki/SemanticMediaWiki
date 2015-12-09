@@ -213,9 +213,18 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			'propertyKeys'   => array( '_ERRP', '_ERRT' ),
 		);
 
+		$errorID = null;
+
+		foreach ( $parserData->getSemanticData()->getSubSemanticData() as $subSemanticData ) {
+			if ( strpos( $subSemanticData->getSubject()->getSubobjectName(), '_ERR' ) !== false ) {
+				$errorID = $subSemanticData->getSubject()->getSubobjectName();
+				break;
+			}
+		}
+
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
-			$parserData->getSemanticData()->findSubSemanticData( '_ERR6fd39e1d9c9c36a9cf917bdb3d80e0fb' )
+			$parserData->getSemanticData()->findSubSemanticData( $errorID )
 		);
 	}
 

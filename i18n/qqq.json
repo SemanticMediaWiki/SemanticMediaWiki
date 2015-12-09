@@ -347,5 +347,6 @@
 	"smw-sp-types_dat": "This is an informatory message shown to the user.",
 	"smw-specials-browse-helplink": "{{notranslate}}",
 	"smw-pa-property-predefined_errc": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
-	"smw-pa-property-predefined_errt": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property]."
+	"smw-pa-property-predefined_errt": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
+	"smw-subobject-parser-invalid-naming-scheme": "This is an error message shown to the user in case a named identifier contains a dot (foo.bar)."
 }
