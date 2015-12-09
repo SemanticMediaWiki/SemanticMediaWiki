@@ -140,8 +140,9 @@ class SMWResultArray {
 		if ( $di === false ) {
 			return false;
 		}
+
 		if ( $this->mPrintRequest->getMode() == PrintRequest::PRINT_PROP &&
-		     $this->mPrintRequest->getTypeID() == '_rec' &&
+		    strpos( $this->mPrintRequest->getTypeID(), '_rec' ) !== false &&
 		     $this->mPrintRequest->getParameter( 'index' ) !== false ) {
 			// Not efficient, but correct: we need to find the right property for
 			// the selected index of the record here.
@@ -224,7 +225,7 @@ class SMWResultArray {
 				// Print one component of a multi-valued string.
 				// Known limitation: the printrequest still is of type _rec, so if printers check
 				// for this then they will not recognize that it returns some more concrete type.
-				if ( ( $this->mPrintRequest->getTypeID() == '_rec' ) &&
+				if ( strpos( $this->mPrintRequest->getTypeID(), '_rec' ) !== false &&
 				     ( $this->mPrintRequest->getParameter( 'index' ) !== false ) ) {
 					$pos = $this->mPrintRequest->getParameter( 'index' ) - 1;
 					$newcontent = array();

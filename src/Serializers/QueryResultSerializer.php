@@ -69,7 +69,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 			case DataItem::TYPE_WIKIPAGE:
 
 				// Support for a deserializable _rec type with 0.6
-				if ( $printRequest !== null && $printRequest->getTypeID() === '_rec' ) {
+				if ( $printRequest !== null && strpos( $printRequest->getTypeID(), '_rec' ) !== false ) {
 					$recordValue = DataValueFactory::getInstance()->newDataItemValue(
 						$dataItem,
 						$printRequest->getData()->getDataItem()
