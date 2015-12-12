@@ -96,6 +96,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 				'smw_iw' => $dbtypes['w'] . ' NOT NULL',
 				'smw_subobject' => $dbtypes['t'] . ' NOT NULL',
 				'smw_sortkey' => $dbtypes['t']  . ' NOT NULL',
+				'smw_searchkey' => $dbtypes['t'],
 				'smw_proptable_hash' => $dbtypes['l']
 			),
 			$db,
@@ -107,9 +108,11 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			array(
 				'smw_id',
 				'smw_id,smw_sortkey',
+				'smw_id,smw_searchkey',
 				'smw_iw', // iw match lookup
 				'smw_title,smw_namespace,smw_iw,smw_subobject', // id lookup
-				'smw_sortkey' // select by sortkey (range queries)
+				'smw_sortkey', // select by sortkey (range queries)
+				'smw_searchkey'
 			),
 			$db
 		);
@@ -209,6 +212,10 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 				$fieldarray['p_id'] = $dbtypes['p'] . ' NOT NULL';
 				$indexes['po'] = 'p_id,' . $indexes['po'];
 				$indexes['sp'] = $indexes['sp'] . ',p_id';
+
+				if ( $diHandler->getIndexField() !== $diHandler->getExtraSearchIndexField() ) {
+					$indexes['ps'] = 'p_id,' . $diHandler->getExtraSearchIndexField();
+				}
 			}
 
 			// TODO Special handling; concepts should be handled differently

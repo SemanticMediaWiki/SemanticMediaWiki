@@ -221,6 +221,7 @@
 		}
 	],
 	"settings": {
+		"smwgEnabledEnhancedRegExMatchSearch" : false,
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,
 			"NS_CATEGORY": true,

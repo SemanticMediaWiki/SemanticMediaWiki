@@ -16,5 +16,6 @@ $autoloader->addClassMap( array(
 	'SMW\Maintenance\RebuildData'                => __DIR__ . '/../maintenance/rebuildData.php',
 	'SMW\Maintenance\RebuildPropertyStatistics'  => __DIR__ . '/../maintenance/rebuildPropertyStatistics.php',
 	'SMW\Maintenance\DumpRdf'                    => __DIR__ . '/../maintenance/dumpRDF.php',
-	'SMW\Maintenance\SetupStore'                 => __DIR__ . '/../maintenance/setupStore.php'
+	'SMW\Maintenance\SetupStore'                 => __DIR__ . '/../maintenance/setupStore.php',
+	'SMW\Maintenance\RebuildSearchFieldContent'  => __DIR__ . '/../maintenance/rebuildSearchFieldContent.php'
 ) );

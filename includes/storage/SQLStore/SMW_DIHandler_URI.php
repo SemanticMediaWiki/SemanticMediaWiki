@@ -1,4 +1,7 @@
 <?php
+
+use SMW\SearchField;
+
 /**
  * @ingroup SMWDataItemsHandlers
  */
@@ -19,7 +22,16 @@ class SMWDIHandlerUri extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getTableFields() {
-		return array( 'o_serialized' => 't' );
+		return array( 'o_serialized' => 't', 'o_search' => 't' );
+	}
+
+	/**
+	 * @see SMWDataItemHandler::getTableIndexes()
+	 * @since 1.8
+	 * @return array
+	 */
+	public function getTableIndexes() {
+		return array( 'o_serialized', 'o_search' );
 	}
 
 	/**
@@ -38,7 +50,10 @@ class SMWDIHandlerUri extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getWhereConds( SMWDataItem $dataItem ) {
-		return array( 'o_serialized' => $dataItem->getSerialization() );
+		return array(
+			'o_serialized' => $dataItem->getSerialization(),
+			'o_search' => SearchField::getSearchStringFrom( $dataItem->getSerialization() )
+		);
 	}
 
 	/**
@@ -49,7 +64,10 @@ class SMWDIHandlerUri extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getInsertValues( SMWDataItem $dataItem ) {
-		return array( 'o_serialized' => $dataItem->getSerialization() );
+		return array(
+			'o_serialized' => $dataItem->getSerialization(),
+			'o_search' => SearchField::getIndexStringFrom( $dataItem->getSerialization() )
+		);
 	}
 
 	/**
@@ -59,6 +77,15 @@ class SMWDIHandlerUri extends SMWDataItemHandler {
 	 */
 	public function getIndexField() {
 		return 'o_serialized';
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return string
+	 */
+	public function getExtraSearchIndexField() {
+		return 'o_search';
 	}
 
 	/**

@@ -6,18 +6,15 @@ use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\MwDBaseUnitTestCase;
 
 /**
- * @group SMW
- * @group SMWExtension
- * @group semantic-mediawiki-import
- * @group mediawiki-database
+ * @group semantic-mediawiki
  * @group medium
  *
  * @license GNU GPL v2+
- * @since 2.0
+ * @since 2.4
  *
  * @author mwjames
  */
-class SetupStoreMaintenanceTest extends MwDBaseUnitTestCase {
+class RebuildSearchFieldContentMaintenanceTest extends MwDBaseUnitTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 
@@ -42,37 +39,14 @@ class SetupStoreMaintenanceTest extends MwDBaseUnitTestCase {
 	}
 
 	protected function tearDown() {
-
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
 
 		parent::tearDown();
 	}
 
-	public function testSetupStore() {
-
-		$this->importedTitles = array(
-			'Category:Lorem ipsum',
-			'Lorem ipsum',
-			'Elit Aliquam urna interdum',
-			'Platea enim hendrerit',
-			'Property:Has Url',
-			'Property:Has annotation uri',
-			'Property:Has boolean',
-			'Property:Has date',
-			'Property:Has email',
-			'Property:Has number',
-			'Property:Has page',
-			'Property:Has quantity',
-			'Property:Has temperature',
-			'Property:Has text'
-		);
-
-		// 1.19 Title/LinkCache goes nuts for when a page in a previous test got
-		// deleted
-		// $this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
-
-		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\SetupStore' );
+	public function testRebuild() {
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\RebuildSearchFieldContent' );
 		$maintenanceRunner->setQuiet()->run();
 	}
 

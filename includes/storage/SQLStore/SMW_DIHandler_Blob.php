@@ -1,4 +1,7 @@
 <?php
+
+use SMW\SearchField;
+
 /**
  * @ingroup SMWDataItemsHandlers
  */
@@ -39,7 +42,16 @@ class SMWDIHandlerBlob extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getTableFields() {
-		return array( 'o_blob' => 'l', 'o_hash' => 't' );
+		return array( 'o_blob' => 'l', 'o_hash' => 't', 'o_search' => 't' );
+	}
+
+	/**
+	 * @see SMWDataItemHandler::getTableIndexes()
+	 * @since 1.8
+	 * @return array
+	 */
+	public function getTableIndexes() {
+		return array( 'o_hash', 'o_search' );
 	}
 
 	/**
@@ -58,7 +70,10 @@ class SMWDIHandlerBlob extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getWhereConds( SMWDataItem $dataItem ) {
-		return array( 'o_hash' => self::makeHash( $dataItem->getString() ) );
+		return array(
+			'o_hash'   => self::makeHash( $dataItem->getString() ),
+			'o_search' => SearchField::getSearchStringFrom( $dataItem->getString() )
+		);
 	}
 
 	/**
@@ -71,8 +86,9 @@ class SMWDIHandlerBlob extends SMWDataItemHandler {
 	public function getInsertValues( SMWDataItem $dataItem ) {
 		$text = $dataItem->getString();
 		return array(
-			'o_blob' => strlen( $text ) <= self::MAX_HASH_LENGTH ? null : $text,
-			'o_hash' => self::makeHash( $text ),
+			'o_blob'   => strlen( $text ) <= self::MAX_HASH_LENGTH ? null : $text,
+			'o_hash'   => self::makeHash( $text ),
+			'o_search' => SearchField::getIndexStringFrom( $text ),
 		);
 	}
 
@@ -83,6 +99,15 @@ class SMWDIHandlerBlob extends SMWDataItemHandler {
 	 */
 	public function getIndexField() {
 		return 'o_hash';
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return string
+	 */
+	public function getExtraSearchIndexField() {
+		return 'o_search';
 	}
 
 	/**

@@ -76,7 +76,10 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIds ) );
 
-		$instance = new ValueDescriptionInterpreter( new QuerySegmentListBuilder( $store ) );
+		$instance = new ValueDescriptionInterpreter(
+			new QuerySegmentListBuilder( $store ),
+			false
+		);
 
 		$this->assertTrue(
 			$instance->canInterpretDescription( $description )
@@ -88,6 +91,62 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCompileDescriptionForEnabledCaseInsensitiveRegExMatchSearch() {
+
+		$description = new ValueDescription(
+			new DIWikiPage( 'Foo', NS_MAIN ),
+			null,
+			SMW_CMP_LIKE
+		);
+
+		$expected = new \stdClass;
+		$expected->type = 1;
+		$expected->alias = "t0";
+		$expected->joinfield = "t0.smw_id";
+		$expected->where = "t0.smw_searchkey LIKE foo AND t0.smw_iw!=:smw AND t0.smw_iw!=:smw-delete";
+
+		$objectIds = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'getSMWPageID' ) )
+			->getMock();
+
+		$objectIds->expects( $this->any() )
+			->method( 'getSMWPageID' )
+			->will( $this->returnValue( 42 ) );
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'addQuotes' )
+			->will( $this->returnArgument( 0 ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $objectIds ) );
+
+		$instance = new ValueDescriptionInterpreter(
+			new QuerySegmentListBuilder( $store ),
+			true
+		);
+
+		$this->assertTrue(
+			$instance->canInterpretDescription( $description )
+		);
+
+		$this->querySegmentValidator->assertThatContainerHasProperties(
+			$expected,
+			$instance->interpretDescription( $description )
+		);
+	}
 	public function descriptionProvider() {
 
 		#0 SMW_CMP_EQ

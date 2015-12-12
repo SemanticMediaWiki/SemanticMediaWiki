@@ -37,13 +37,24 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	private $exporter;
 
 	/**
+	 * @var string
+	 */
+	private $enabledEnhancedRegExMatchSearch = false;
+
+	/**
 	 * @since 2.1
 	 *
 	 * @param CompoundConditionBuilder|null $compoundConditionBuilder
+	 * @param boolean|null $enabledEnhancedRegExMatchSearch
 	 */
-	public function __construct( CompoundConditionBuilder $compoundConditionBuilder = null ) {
+	public function __construct( CompoundConditionBuilder $compoundConditionBuilder = null, $enabledEnhancedRegExMatchSearch = null ) {
 		$this->compoundConditionBuilder = $compoundConditionBuilder;
+		$this->enabledEnhancedRegExMatchSearch = $enabledEnhancedRegExMatchSearch;
 		$this->exporter = Exporter::getInstance();
+
+		if ( $this->enabledEnhancedRegExMatchSearch === null ) {
+			$this->enabledEnhancedRegExMatchSearch = $GLOBALS['smwgEnabledEnhancedRegExMatchSearch'];
+		}
 	}
 
 	/**
@@ -230,8 +241,12 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
 	private function createFilterConditionToMatchRegexPattern( $dataItem, &$joinVariable, $comparator, $pattern ) {
 
+		// http://www.w3.org/TR/rdf-sparql-query/#restrictString
+		// Regular expression matches may be made case-insensitive with the "i" flag.
+		$filterFlag = $this->enabledEnhancedRegExMatchSearch ? 'i' : 's';
+
 		if ( $dataItem instanceof DIBlob ) {
-			return new FilterCondition( "$comparator( ?$joinVariable, \"$pattern\", \"s\")", array() );
+			return new FilterCondition( "$comparator( ?$joinVariable, \"$pattern\", \"$filterFlag\")", array() );
 		}
 
 		if ( $dataItem instanceof DIUri ) {
@@ -250,7 +265,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		$condition->condition = "?$joinVariable " . $skeyExpElement->getQName(). " ?$filterVariable .\n";
 		$condition->matchElement = "?$joinVariable";
 
-		$filterCondition = new FilterCondition( "$comparator( ?$filterVariable, \"$pattern\", \"s\")", array() );
+		$filterCondition = new FilterCondition( "$comparator( ?$filterVariable, \"$pattern\", \"$filterFlag\")", array() );
 
 		$condition->weakConditions = array( $filterVariable => $filterCondition->getCondition() );
 

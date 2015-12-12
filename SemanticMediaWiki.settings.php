@@ -926,3 +926,16 @@ $GLOBALS['smwgExportBCNonCanonicalFormUse'] = false;
 # @default true
 ##
 $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] = true;
+
+##
+# This setting enables RegEx (like [~*...*], not like [!~...]) searches to operate
+# equally on all input strings without differentiation on lower or CAPITAl letters.
+#
+# It is required that `update.php` is run, followed by `rebuildData.php` because this
+# feature creates an additional search column that expects data to be populated
+# before any RegEx query can successfully return match results.
+#
+# @since 2.4
+# @default false
+##
+$GLOBALS['smwgEnabledEnhancedRegExMatchSearch'] = false;
