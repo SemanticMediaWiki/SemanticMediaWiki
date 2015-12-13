@@ -31,7 +31,8 @@
 			"아라",
 			"Windes",
 			"Wladek92",
-			"VictorBrice"
+			"VictorBrice",
+			"Orlodrim"
 		]
 	},
 	"smw-desc": "Rendre le wiki plus accessible - pour les machines ''et'' les humains ([https://semantic-mediawiki.org/wiki/Help:User_manual documentation en ligne])",
@@ -342,7 +343,7 @@
 	"smw-datavalue-import-invalidvalue": "\"$1\" n'est pas un format valide et devrait se composer de \"espace de noms\":\"identifiant\" (par exemple \"foaf:name\").",
 	"smw-pa-property-predefined_impo": "« $1 » est une proriété prédéfinie qui décrit une relation vers un [https://www.semantic-mediawiki.org/wiki/Help:Import_vocabulary vocabulaire importé].",
 	"smw-pa-property-predefined_type": "\"$1\" est une propriété prédéfinie qui décrit la [[Special:Types|type de donnée]]  d'une propriété.",
-	"smw-pa-property-predefined_sobj": "\"$1\" est une propriété prédéfinie représentant un constructeur de conteneur qui permet d'accumuler des affectations propriété-valeur similaires à celles d'une page wiki normale.",
+	"smw-pa-property-predefined_sobj": "\"$1\" est une propriété prédéfinie représentant un constructeur de [https://www.semantic-mediawiki.org/wiki/Help:Container conteneur] qui permet d'accumuler des affectations propriété-valeur similaires à celles d'une page wiki normale.",
 	"smw-pa-property-predefined_errp": "« $1 » est une propriété prédéfinie pour tracer les erreurs d’entrée pour les valeurs d’annotation incorrectes qui sont sans doute provoquées par une restriction de type ou de [[Property:Allows value|valeur autorisée]].",
 	"smw-pa-property-predefined_pval": " [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value « $1\"] est une propriété prédéfinie qui peut définir une liste de valeurs permises pour limiter des tâches de valeur pour une propriété.",
 	"smw-datavalue-property-restricted-use": "La propriété \"$1\" a été marquée à usage restreint.",

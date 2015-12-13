@@ -321,11 +321,11 @@
 	"smw-datavalue-import-invalidvalue": "«$1» no és un format vàlid i s'espera que consisteixi en «espai de noms»:«identificador» (p. ex., «foaf:name»).",
 	"smw-pa-property-predefined_impo": "«$1» és una propietat predefinida que descriu una relació amb un [https://www.semantic-mediawiki.org/wiki/Help:Import_vocabulary vocabulari importat].",
 	"smw-pa-property-predefined_type": "«$1» és una propietat predefinida que descriu el [[Special:Types|tipus de dades]] d'una propietat.",
-	"smw-pa-property-predefined_sobj": "«$1» és una propietat predefinida que representa un constructe de contenidor que permet acumular assignacions propietat-valor similars a les d'una pàgina wiki normal.",
+	"smw-pa-property-predefined_sobj": "«$1» és una propietat predefinida que representa un constructe de [https://www.semantic-mediawiki.org/wiki/Help:Container contenidor] que permet acumular assignacions propietat-valor similars a les d'una pàgina wiki normal.",
 	"smw-pa-property-predefined_errp": "«$1» és una propietat predefinida per a resseguir errors d'entrada de valors d'anotacions irregulars. Normalment estan causats per restriccions de tipus o de [[Property:Allows value|valors permesos]].",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value «$1»] és una propietat predefinida que defineix una llista de valors permesos per tal de restringir les assignacions de valor d'una propietat.",
 	"smw-datavalue-property-restricted-use": "La propietat «$1» s'ha marcat per a ús restringit.",
-	"smw-datavalue-restricted-use": "El valor de dades s'ha marcat per a ús restringit. $1",
+	"smw-datavalue-restricted-use": "El valor de dades s'ha marcat per a ús restringit «$1».",
 	"smw-datavalue-invalid-number": "«$1» no es pot interpretar com un nombre.",
 	"smw-query-condition-circular": "S'ha detectat una possible condició circular a «$1».",
 	"smw-sp-types-list": "Llista de tipus de dades",
@@ -337,5 +337,7 @@
 	"smw-sp-types_geo": "«$1» és un tipus de dades que descriu ubicacions geogràfiques i requereix [https://www.semantic-mediawiki.org/wiki/Semantic_Maps Semantic Maps].",
 	"smw-sp-types_tel": "«$1» és un tipus de dades especial per a descriure números de telèfon internacionals d'acord amb el RFC 3966.",
 	"smw-sp-types_txt": "«$1» és un tipus de dades primitiu que descriu cadenes de longitud arbitrària.",
-	"smw-sp-types_dat": "«$1» és un tipus de dades per representar punts en el temps en un format unificat."
+	"smw-sp-types_dat": "«$1» és un tipus de dades per representar punts en el temps en un format unificat.",
+	"smw-pa-property-predefined_errc": "«$1» és una propietat predefinida que representa un [https://www.semantic-mediawiki.org/wiki/Help:Container contenidor] d'errors que van aparèixer en connexió amb anotacions de valors o processament d'entrades no adequats.",
+	"smw-pa-property-predefined_errt": "«$1» és una propietat predefinida que conté una descripció contextual d'un error."
 }
