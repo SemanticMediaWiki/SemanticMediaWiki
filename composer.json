@@ -49,7 +49,7 @@
 		"onoi/callback-container": "~1.0"
 	},
 	"require-dev": {
-		"squizlabs/php_codesniffer": "~2.1",
+		"squizlabs/php_codesniffer": "~2.5.0",
 		"phpmd/phpmd": "~2.1"
 	},
 	"replace": {
