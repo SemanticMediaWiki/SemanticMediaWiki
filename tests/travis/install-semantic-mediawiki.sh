@@ -19,12 +19,13 @@ function installPHPUnitWithComposer {
 function installSmwIntoMwWithComposer {
 	echo -e "Running MW root composer install build on $TRAVIS_BRANCH \n"
 
-	cd $MW_INSTALL_PATH
+	cd $MW_INSTALL_PATH/extensions
 
 	installPHPUnitWithComposer
 	composer require mediawiki/semantic-media-wiki "dev-master" --prefer-source --dev
+	
+	cd -mv mediawiki/semantic-media-wiki SemanticMediaWiki
 
-	cd extensions
 	cd SemanticMediaWiki
 
 	# Pull request number, "false" if it's not a pull request
