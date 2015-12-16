@@ -12,7 +12,7 @@ matrix:
       php: 5.5
     - env: DB=mysql; MW=1.23.5; VIRTUOSO=6.1
       php: 5.4
-    - env: DB=mysql; MW=1.24.1; SESAME=2.7.14
+    - env: DB=mysql; MW=1.25.3; SESAME=2.7.14
       php: 5.3
     - env: DB=sqlite; MW=1.22.12; SITELANG=ja
       php: 5.5
@@ -37,7 +37,17 @@ matrix:
     - env: DB=sqlite; MW=1.25.2; TYPE=composer
     - env: DB=sqlite; MW=master; PHPUNIT=4.6.*
     - env: DB=mysql; MW=1.25.2; PHPUNIT=4.3.*; TYPE=benchmark
-    - env: DB=mysql; MW=1.24.1; SESAME=2.7.14
+    - env: DB=mysql; MW=1.25.3; SESAME=2.7.14
+
+# Travis support wrote (Tomcat + Java):
+# bug in the JDK: http://bugs.java.com/bugdatabase/view_bug.do?bug_id=7089443.
+# The hostname for the precise-gce platform is longer than 64 characters on the
+# VM your job is running on
+before_install:
+  - cat /etc/hosts # optionally check the content *before*
+  - sudo hostname "$(hostname | cut -c1-63)"
+  - sed -e "s/^\\(127\\.0\\.0\\.1.*\\)/\\1 $(hostname | cut -c1-63)/" /etc/hosts | sudo tee /etc/hosts
+  - cat /etc/hosts # optionally check the content *after*
 
 install:
   - travis_retry composer self-update

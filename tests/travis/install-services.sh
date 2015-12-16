@@ -27,13 +27,19 @@ fi
 
 if [ "$SESAME" != "" ]
 then
-	sudo apt-get install tomcat6
+	TOMCAT_VERSION=tomcat6
+	sudo java -version
 
-	sudo chown $USER -R /var/lib/tomcat6/
-	sudo chmod g+rw -R /var/lib/tomcat6/
+	sudo apt-get install $TOMCAT_VERSION
 
-	sudo mkdir -p /usr/share/tomcat6/.aduna
-	sudo chown -R tomcat6:tomcat6 /usr/share/tomcat6
+	CATALINA_BASE=/var/lib/$TOMCAT_VERSION
+	CATALINA_HOME=/usr/share/$TOMCAT_VERSION
+
+	sudo chown $USER -R $CATALINA_BASE/
+	sudo chmod g+rw -R $CATALINA_BASE/
+
+	sudo mkdir -p $CATALINA_HOME/.aduna
+	sudo chown -R $TOMCAT_VERSION:$TOMCAT_VERSION $CATALINA_HOME
 
 	# One method to get the war files
 	# wget http://search.maven.org/remotecontent?filepath=org/openrdf/sesame/sesame-http-server/$SESAME/sesame-http-server-$SESAME.war -O openrdf-sesame.war
@@ -45,16 +51,21 @@ then
 
 	# tar caused a lone zero block, using zip instead
 	unzip -q openrdf-sesame-$SESAME-sdk.zip
-	cp openrdf-sesame-$SESAME/war/*.war /var/lib/tomcat6/webapps/
+	cp openrdf-sesame-$SESAME/war/*.war $CATALINA_BASE/webapps/
 
-	sudo service tomcat6 restart
-	sleep 3
+	sudo service $TOMCAT_VERSION restart
+	ps -ef | grep tomcat
+
+	sleep 5
 
 	if curl --output /dev/null --silent --head --fail "http://localhost:8080/openrdf-sesame"
+	#if curl --output /dev/null --silent --head --fail "http://localhost:8080/openrdf-sesame/home/overview.view"
 	then
 		echo "openrdf-sesame service url is reachable"
 	else
 		echo "openrdf-sesame service url is not reachable"
+		sudo cat $CATALINA_BASE/logs/*.log &
+		sudo cat $CATALINA_BASE/logs/catalina.out &
 		exit $E_UNREACHABLE
 	fi
 
