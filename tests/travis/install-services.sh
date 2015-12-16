@@ -101,13 +101,55 @@ then
 fi
 
 # Version 6.1 is available
-if [ "$VIRTUOSO" != "" ]
+if [[ "$VIRTUOSO" == "6."* ]]
 then
 	sudo apt-get install -qq virtuoso-opensource
 	echo "RUN=yes" | sudo tee -a /etc/default/virtuoso-opensource-$VIRTUOSO
 	sudo service virtuoso-opensource-$VIRTUOSO start
 
 	isql-vt 1111 dba dba $BASE_PATH/tests/travis/virtuoso-sparql-permission.sql
+fi
+
+# Version 7 is not available as deb package so we have to build it from scratch
+if [[ "$VIRTUOSO" == "7."* ]]
+then
+	sudo apt-get install libssl-dev -q
+	sudo apt-get install autoconf automake bison flex gawk gperf libtool -q
+
+	#git clone git://github.com/openlink/virtuoso-opensource.git
+	#cd virtuoso-opensource
+	#git pull origin stable/7
+	wget --no-check-certificate -q https://github.com/openlink/virtuoso-opensource/archive/v$VIRTUOSO.zip -O virtuoso-opensource.zip
+
+	unzip -q virtuoso-opensource.zip
+	mv virtuoso-opensource-$VIRTUOSO virtuoso-opensource
+
+	cd virtuoso-opensource
+	./autogen.sh
+
+	# --disable-all-vads: This parameter disables building all the VAD packages (tutorials, demos, etc.).
+	# --with-readline: This parameter is used so that the system Readline library is used
+	# --program-transform-name: Both Virtuoso and unixODBC install a program named isql. Use this parameter to rename virtuosos program to isql-v
+
+	./configure --program-transform-name="s/isql/isql-v/" --with-readline --disable-all-vads |& tee #configure.log
+
+	# Only output error and warnings
+	make > /dev/null
+
+	# Build tree to start the automated test suite
+	# make check
+
+	sudo make install
+
+	## For Virtuoso
+	#export PATH=$PATH:/usr/local/virtuoso-opensource/bin
+
+	sudo /usr/local/virtuoso-opensource/bin/virtuoso-t -f -c /usr/local/virtuoso-opensource/var/lib/virtuoso/db/virtuoso.ini &
+	#sudo /usr/local/virtuoso-opensource/bin/virtuoso-t -f &
+
+	sleep 10
+
+	sudo /usr/local/virtuoso-opensource/bin/isql-v 1111 dba dba $BASE_PATH/tests/travis/virtuoso-sparql-permission.sql
 fi
 
 #@see  http://wiki.blazegraph.com/wiki/index.php/NanoSparqlServer
