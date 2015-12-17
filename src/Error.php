@@ -61,7 +61,7 @@ class Error {
 		);
 
 		// Encode brackets to avoid an annotion is created/included
-		return $this->newDiContainer( $subject, $property, str_replace( '[', '&#x005B;', $errorMsg ) );
+		return $this->newDiContainer( $subject, $property, InTextAnnotationParser::obscureAnnotation( $errorMsg ) );
 	}
 
 	private function newDiContainer( $subject, $property, $errorMsg ) {

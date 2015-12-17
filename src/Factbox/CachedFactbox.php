@@ -6,6 +6,7 @@ use ParserOutput;
 use OutputPage;
 use Onoi\Cache\Cache;
 use SMW\ApplicationFactory;
+use SMW\InTextAnnotationParser;
 use Title;
 
 /**
@@ -208,10 +209,11 @@ class CachedFactbox {
 		if ( $factbox->doBuild()->isVisible() ) {
 
 			$contentParser = $applicationFactory->newContentParser( $title );
-			$contentParser->skipInTextAnnotationParser();
 			$contentParser->parse( $factbox->getContent() );
 
-			$text = $contentParser->getOutput()->getText();
+			$text = InTextAnnotationParser::removeAnnotation(
+				$contentParser->getOutput()->getText()
+			);
 		}
 
 		return $text;
