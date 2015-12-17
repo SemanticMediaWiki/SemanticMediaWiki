@@ -24,6 +24,7 @@ Not a release yet.
 * #1286 Fixed support for sorting by category
 * #1287 Fixed exception for when `$smwgFixedProperties` contains property keys with spaces
 * #1289 Suppresses redirect statement in sparql query for resources matched to an import vocabulary
+* #1314 Fixed hidden annotation copy of `[[ :: ]]` text values when embedded in query results
 
 ## Internal changes
 
@@ -33,5 +34,6 @@ Not a release yet.
 * #1276 Extended `QueryResultSerializer` (relevant for the API output) to export the raw output of a time related value
 * #1281 Extended `QueryResultSerializer` to export the internal property key 
 * #1291 Added `DescriptionProcessor` to isolate code path from the `SMWQueryParser`
+* #1317 Switch to Sesame 2.8.7
 
 ## Contributors
