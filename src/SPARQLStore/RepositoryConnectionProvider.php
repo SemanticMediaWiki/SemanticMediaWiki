@@ -77,16 +77,31 @@ class RepositoryConnectionProvider implements DBConnectionProvider {
 	 * @param string|null $dataEndpoint
 	 */
 	public function __construct( $connectorId = null, $defaultGraph = null, $queryEndpoint = null, $updateEndpoint = null, $dataEndpoint = null ) {
-			$this->connectorId = $connectorId;
+		$this->connectorId = $connectorId;
+		$this->defaultGraph = $defaultGraph;
+		$this->queryEndpoint = $queryEndpoint;
+		$this->updateEndpoint = $updateEndpoint;
+		$this->dataEndpoint = $dataEndpoint;
 
-			if ( $this->connectorId === null ) {
-				$this->connectorId = $GLOBALS['smwgSparqlDatabaseConnector'];
-			}
+		if ( $this->connectorId === null ) {
+			$this->connectorId = $GLOBALS['smwgSparqlDatabaseConnector'];
+		}
 
-			$this->defaultGraph = $defaultGraph;
-			$this->queryEndpoint = $queryEndpoint;
-			$this->updateEndpoint = $updateEndpoint;
-			$this->dataEndpoint = $dataEndpoint;
+		if ( $this->defaultGraph === null ) {
+			$this->defaultGraph = $GLOBALS['smwgSparqlDefaultGraph'];
+		}
+
+		if ( $this->queryEndpoint === null ) {
+			$this->queryEndpoint = $GLOBALS['smwgSparqlQueryEndpoint'];
+		}
+
+		if ( $this->updateEndpoint === null ) {
+			$this->updateEndpoint = $GLOBALS['smwgSparqlUpdateEndpoint'];
+		}
+
+		if ( $this->dataEndpoint === null ) {
+			$this->dataEndpoint = $GLOBALS['smwgSparqlDataEndpoint'];
+		}
 	}
 
 	/**
@@ -127,22 +142,6 @@ class RepositoryConnectionProvider implements DBConnectionProvider {
 	private function connectTo( $connectorId ) {
 
 		$repositoryConnector = $this->mapConnectorIdToClass( $connectorId );
-
-		if ( $this->defaultGraph === null ) {
-			$this->defaultGraph = $GLOBALS['smwgSparqlDefaultGraph'];
-		}
-
-		if ( $this->queryEndpoint === null ) {
-			$this->queryEndpoint = $GLOBALS['smwgSparqlQueryEndpoint'];
-		}
-
-		if ( $this->updateEndpoint === null ) {
-			$this->updateEndpoint = $GLOBALS['smwgSparqlUpdateEndpoint'];
-		}
-
-		if ( $this->dataEndpoint === null ) {
-			$this->dataEndpoint = $GLOBALS['smwgSparqlDataEndpoint'];
-		}
 
 		$curlRequest = new CurlRequest( curl_init() );
 
