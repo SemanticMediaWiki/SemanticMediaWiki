@@ -1,5 +1,7 @@
 <?php
 use SMW\Query\PrintRequest;
+use SMWDIBlob as DIBlob;
+use SMW\InTextAnnotationParser;
 
 /**
  * Container for the contents of a single result field of a query result,
@@ -162,6 +164,13 @@ class SMWResultArray {
 		} else {
 			$diProperty = null;
 		}
+
+		// refs #1314
+		if ( $this->mPrintRequest->getMode() == PrintRequest::PRINT_PROP &&
+			strpos( $this->mPrintRequest->getTypeID(), '_txt' ) !== false ) {
+			$di = new DIBlob( InTextAnnotationParser::removeAnnotation( $di->getString() ) );
+		}
+
 		$dv = \SMW\DataValueFactory::getInstance()->newDataItemValue( $di, $diProperty );
 		if ( $this->mPrintRequest->getOutputFormat() ) {
 			$dv->setOutputFormat( $this->mPrintRequest->getOutputFormat() );
