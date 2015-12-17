@@ -149,7 +149,7 @@
 	"smw_types_docu": "Lo siguiente ye una [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes llista] de tolos tipos de datos que pueden atribuise a les propiedaes.",
 	"smw-special-types-no-such-type": "El tipu de datos especificáu nun esiste",
 	"semanticstatistics": "Estadístiques semántiques",
-	"smw_semstats_text": "Esta wiki contién '''$1''' {{PLURAL:$1|valor|valores}} de propiedá, d'un total {{PLURAL:$2|'''d'una'''|de '''$2'''}} [[Special:Properties|{{PLURAL:$2|propiedá|propiedaes diferentes}}]].\n'''$3''' {{PLURAL:$3|propiedá tien|propiedaes tienen}} una páxina propia ya'l tipu de datos previstu ta especificáu en '''$4''' d'elles.\nAlgunes de les propiedaes esistentes puen ser [[Special:UnusedProperties|propiedaes ensin usu]].\nLes propiedaes qu'índa nun tienen una páxina alcuentrense na [[Special:WantedProperties|llista de propiedaes deseaes]].",
+	"smw_semstats_text": "Esta wiki contien '''$1''' {{PLURAL:$1|valor|valores}} de propiedá, d'un total {{PLURAL:$2|'''d'una'''|de '''$2'''}} [[Special:Properties|{{PLURAL:$2|propiedá|propiedaes distintes}}]].\n'''$3''' {{PLURAL:$3|propiedá tien|propiedaes tienen}} una páxina propia ya'l tipu de datos previstu ta especificáu en '''$4''' d'elles.\nDalgunes de les propiedaes esistentes pueden ser [[Special:UnusedProperties|propiedaes ensin usu]].\nLes propiedaes qu'aínda nun tienen una páxina alcuentrense na [[Special:WantedProperties|llista de propiedaes deseaes]].",
 	"smw-statistics": "Estadístiques semántiques",
 	"smw-statistics-property-instance": "{{PLURAL:$1|Valor|Valores}} de propiedá (total)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|Propiedá|Propiedaes}}]] (total)",
@@ -280,7 +280,7 @@
 	"smw-pa-property-predefined_ask": "«$1» ye una propiedá predefinida que representa metainformación (en forma d'un [https://www.semantic-mediawiki.org/wiki/Subobject suboxetu]) sobro consultes individuales.",
 	"smw-pa-property-predefined_asksi": "«$1» ye una propiedá predefinida que recueye'l númberu de condiciones utilizaes nuna consulta.",
 	"smw-pa-property-predefined_askde": "\"$1\" ye una propiedá predefinida qu'informa sobre la fondura (valor numbéricu calculáu en base al añeramientu de subconsultes y cadenes de propiedaes resueltes) d'una consulta, mientres la execución de consultes tea siendo acutada pola opción [https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth $smwgQMaxDepth].",
-	"smw-sp-properties-docu": "Esta páxina amuesa les [https://www.semantic-mediawiki.org/wiki/Property propiedaes] y la cuenta d'usos disponible pa esta Wiki. Pa unes estadístiques actualizaes de cuentes recomiéndase executar el script [https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics rebuildPropertyStatistics] de mou regular . Pa una vista diferenciada, mira la páxina especial [[Special:UnusedProperties|propiedaes ensin usu]] o [[Special:WantedProperties|propiedaes buscaes]].",
+	"smw-sp-properties-docu": "Esta páxina amuesa les [https://www.semantic-mediawiki.org/wiki/Property propiedaes] y la cuenta d'usos disponible pa esta Wiki. Pa unes estadístiques actualizaes de cuentes recomiéndase executar el script de mantenimientu d'[https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics estadístiques de propiedá] de mou regular . Pa una vista diferenciada, mira la páxina especial [[Special:UnusedProperties|propiedaes ensin usu]] o [[Special:WantedProperties|propiedaes buscaes]].",
 	"smw-sp-properties-cache-info": "Los datos de la llista recuperaronse de la [https://www.semantic-mediawiki.org/wiki/Caching cache], y anovaronse por última vez el $1.",
 	"smw-sp-properties-header-label": "Llista de propiedaes",
 	"smw-sp-admin-settings-title": "Axustes de configuración",
@@ -309,7 +309,7 @@
 	"smw-datavalue-import-invalidvalue": "«$1» nun ye un formatu válidu, habría de tener el formatu «espaciu de nome»:«identificador» (p.ex. «foaf:nome»).",
 	"smw-pa-property-predefined_impo": "«$1» ye una propiedá predefinida que describe la rellación con un [https://www.semantic-mediawiki.org/wiki/Help:Import_vocabulary vocabulariu importáu].",
 	"smw-pa-property-predefined_type": "«$1» ye una propiedá predefinida que describe'l [[Special:Types|tipu de datu]] d'una propiedá.",
-	"smw-pa-property-predefined_sobj": "«$1» ye una propiedá predefinida que representa una construcción contenedor que permite acumular designaciones propiedá-valor asemeyaes a les d'una páxina wiki normal.",
+	"smw-pa-property-predefined_sobj": "«$1» ye una propiedá predefinida que representa una construcción [https://www.semantic-mediawiki.org/wiki/Help:Container contenedor] que permite acumular designaciones propiedá-valor asemeyaes a les d'una páxina wiki normal.",
 	"smw-pa-property-predefined_errp": "\"$1\" ye una propiedá predefinida pa siguir los errores d'entrada por anotaciones de valores irregulares causaos posiblemente por torgues de tipu o de [[Property:Allows value|valores permitíos]].",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value «$1»] ye una propiedá predefinida que puede definir una llista de valores posibles pa torgar asignaciones de valores pa una propiedá.",
 	"smw-datavalue-property-restricted-use": "La propiedá «$1» marcóse pa usu acutáu.",
@@ -325,5 +325,7 @@
 	"smw-sp-types_geo": "«$1» ye un tipu de datu que describe allugamientos xeográficos y rique [https://www.semantic-mediawiki.org/wiki/Semantic_Maps Mapes Semánticos].",
 	"smw-sp-types_tel": "«$1» ye un tipu de datos especial pa describir númberos de teléfonu internacionales acordies con RFC 3966.",
 	"smw-sp-types_txt": "«$1» ye un tipu de datos primitivu pa describir cadenes de testu de llonxitú arbitraria.",
-	"smw-sp-types_dat": "«$1» ye un tipu de datos pa representar puntos nel tiempu nun formatu unificáu."
+	"smw-sp-types_dat": "«$1» ye un tipu de datos pa representar puntos nel tiempu nun formatu unificáu.",
+	"smw-pa-property-predefined_errc": "«$1» ye una propiedá predefinida que representa un [https://www.semantic-mediawiki.org/wiki/Help:Container contenedor] pa los errores qu'apaecieron venceyaos a anotaciones de valores o procesamientu d'entraes inapropiaes.",
+	"smw-pa-property-predefined_errt": "«$1» ye una propiedá predefinida que contien el testu de descripción d'un error."
 }
