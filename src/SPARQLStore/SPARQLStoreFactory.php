@@ -27,12 +27,18 @@ class SPARQLStoreFactory {
 	private $store;
 
 	/**
+	 * @var ApplicationFactory
+	 */
+	private $applicationFactory;
+
+	/**
 	 * @since 2.2
 	 *
 	 * @param SPARQLStore $store
 	 */
 	public function __construct( SPARQLStore $store ) {
 		$this->store = $store;
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	/**
@@ -52,19 +58,18 @@ class SPARQLStoreFactory {
 	public function newMasterQueryEngine() {
 
 		$engineOptions = new EngineOptions();
-		$applicationFactory = ApplicationFactory::getInstance();
 
 		$propertyHierarchyLookup = new PropertyHierarchyLookup(
 			$this->store,
-			$applicationFactory->newCacheFactory()->newFixedInMemoryCache( 500 )
+			$this->applicationFactory->newCacheFactory()->newFixedInMemoryCache( 500 )
 		);
 
 		$propertyHierarchyLookup->setSubcategoryDepth(
-			$applicationFactory->getSettings()->get( 'smwgQSubcategoryDepth' )
+			$this->applicationFactory->getSettings()->get( 'smwgQSubcategoryDepth' )
 		);
 
 		$propertyHierarchyLookup->setSubpropertyDepth(
-			$applicationFactory->getSettings()->get( 'smwgQSubpropertyDepth' )
+			$this->applicationFactory->getSettings()->get( 'smwgQSubpropertyDepth' )
 		);
 
 		$circularReferenceGuard = new CircularReferenceGuard( 'sparql-query' );
@@ -101,9 +106,14 @@ class SPARQLStoreFactory {
 
 		$connectionManager = new ConnectionManager();
 
+		$repositoryConnectionProvider = new RepositoryConnectionProvider();
+		$repositoryConnectionProvider->setHttpVersionTo(
+			$this->applicationFactory->getSettings()->get( 'smwgSparqlRepositoryConnectorForcedHttpVersion' )
+		);
+
 		$connectionManager->registerConnectionProvider(
 			'sparql',
-			new RepositoryConnectionProvider()
+			$repositoryConnectionProvider
 		);
 
 		return $connectionManager;

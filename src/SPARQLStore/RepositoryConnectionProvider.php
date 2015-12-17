@@ -63,6 +63,11 @@ class RepositoryConnectionProvider implements DBConnectionProvider {
 	private $dataEndpoint = null;
 
 	/**
+	 * @var boolean|integer
+	 */
+	private $httpVersion = false;
+
+	/**
 	 * @since 2.0
 	 *
 	 * @param string|null $connectorId
@@ -82,6 +87,15 @@ class RepositoryConnectionProvider implements DBConnectionProvider {
 			$this->queryEndpoint = $queryEndpoint;
 			$this->updateEndpoint = $updateEndpoint;
 			$this->dataEndpoint = $dataEndpoint;
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @return integer $httpVersion
+	 */
+	public function setHttpVersionTo( $httpVersion ) {
+		$this->httpVersion = $httpVersion;
 	}
 
 	/**
@@ -130,9 +144,16 @@ class RepositoryConnectionProvider implements DBConnectionProvider {
 			$this->dataEndpoint = $GLOBALS['smwgSparqlDataEndpoint'];
 		}
 
+		$curlRequest = new CurlRequest( curl_init() );
+
+		// https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1306
+		if ( $this->httpVersion ) {
+			$curlRequest->setOption( CURLOPT_HTTP_VERSION, $this->httpVersion );
+		}
+
 		$connection = new $repositoryConnector(
 			new RepositoryClient( $this->defaultGraph, $this->queryEndpoint, $this->updateEndpoint, $this->dataEndpoint ),
-			new CurlRequest( curl_init() )
+			$curlRequest
 		);
 
 		if ( $this->isRepositoryConnection( $connection ) ) {

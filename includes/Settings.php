@@ -139,7 +139,8 @@ class Settings extends SimpleDictionary {
 			'smwgPropertyDependencyDetectionBlacklist' => $GLOBALS['smwgPropertyDependencyDetectionBlacklist'],
 			'smwgExportBCNonCanonicalFormUse' => $GLOBALS['smwgExportBCNonCanonicalFormUse'],
 			'smwgExportBCAuxiliaryUse' => $GLOBALS['smwgExportBCAuxiliaryUse'],
-			'smwgEnabledInTextAnnotationParserStrictMode' => $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode']
+			'smwgEnabledInTextAnnotationParserStrictMode' => $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'],
+			'smwgSparqlRepositoryConnectorForcedHttpVersion' => $GLOBALS['smwgSparqlRepositoryConnectorForcedHttpVersion']
 		);
 
 		$settings = $settings + array(
