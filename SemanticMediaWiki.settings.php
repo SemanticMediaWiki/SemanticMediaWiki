@@ -114,6 +114,21 @@ $GLOBALS['smwgSparqlDatabaseConnector'] = 'custom';
 ##
 $GLOBALS['smwgSparqlQFeatures'] = SMW_SPARQL_QF_REDI | SMW_SPARQL_QF_SUBP | SMW_SPARQL_QF_SUBC;
 
+##
+# @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1306
+#
+# Setting to explicitly force a CURLOPT_HTTP_VERSION for the endpoint communication
+# and should not be changed unless an error as in #1306 was encountered.
+#
+# @see http://curl.haxx.se/libcurl/c/CURLOPT_HTTP_VERSION.html reads "... libcurl
+# to use the specific HTTP versions. This is not sensible to do unless you have
+# a good reason.""
+#
+# @since 2.3
+# @default false === means to use the default as determined by cURL
+##
+$GLOBALS['smwgSparqlRepositoryConnectorForcedHttpVersion'] = false;
+
 ###
 # Setting this option to true before including this file to enable the old
 # Type: namespace that SMW used up to version 1.5.*. This should only be

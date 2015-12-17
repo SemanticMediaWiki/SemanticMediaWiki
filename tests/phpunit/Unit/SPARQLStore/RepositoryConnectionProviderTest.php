@@ -62,6 +62,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	public function testGetDefaultConnection() {
 
 		$instance = new RepositoryConnectionProvider( 'default' );
+		$instance->setHttpVersionTo( CURL_HTTP_VERSION_NONE );
 
 		$this->assertInstanceOf(
 			'\SMWSparqlDatabase',
