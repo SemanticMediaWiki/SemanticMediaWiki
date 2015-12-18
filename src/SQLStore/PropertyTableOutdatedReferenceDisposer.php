@@ -43,7 +43,7 @@ class PropertyTableOutdatedReferenceDisposer {
 		$canRemoveEntry = true;
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
-			if ( $this->hasReferenceInPropertyTable( $proptable, $id ) ) {
+			if ( $this->hasReferenceByTable( $proptable, $id ) ) {
 				$canRemoveEntry = false;
 				break;
 			}
@@ -91,7 +91,7 @@ class PropertyTableOutdatedReferenceDisposer {
 		);
 	}
 
-	private function hasReferenceInPropertyTable( $proptable, $id ) {
+	private function hasReferenceByTable( $proptable, $id ) {
 
 		$row = false;
 		$db = $this->store->getConnection( 'mw.db' );
@@ -129,6 +129,18 @@ class PropertyTableOutdatedReferenceDisposer {
 				$proptable->getName(),
 				array( 'p_id' ),
 				array( 'p_id' => $id ),
+				__METHOD__
+			);
+		}
+
+		// If the query table contains a reference then we keep the object (could
+		// be a subject, property, or printrequest) where in case the query is
+		// removed the object will also loose its reference
+		if ( $row === false ) {
+			$row = $db->selectRow(
+				SQLStore::QUERY_LINKS_TABLE,
+				array( 'o_id' ),
+				array( 'o_id' => $id ),
 				__METHOD__
 			);
 		}
