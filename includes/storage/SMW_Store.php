@@ -171,16 +171,26 @@ abstract class Store {
 			throw new InvalidArgumentException( 'SMWStore::getRedirectTarget() expects an object of type IProperty or SMWDIWikiPage.' );
 		}
 
+		$hash = $wikipage->getHash();
+		$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheFor( 'store.redirectTarget.lookup' );
+
+		if ( $poolCache->contains( $hash ) ) {
+			return $poolCache->fetch( $hash );
+		}
+
 		$redirectDataItems = $this->getPropertyValues( $wikipage, new DIProperty( '_REDI' ) );
+
 		if ( count( $redirectDataItems ) > 0 ) {
 			if ( $dataItem->getDIType() == SMWDataItem::TYPE_PROPERTY ) {
-				return new DIProperty( end( $redirectDataItems )->getDBkey() );
+				$dataItem = new DIProperty( end( $redirectDataItems )->getDBkey() );
 			} else {
-				return end( $redirectDataItems );
+				$dataItem = end( $redirectDataItems );
 			}
-		} else {
-			return $dataItem;
 		}
+
+		$poolCache->save( $hash, $dataItem );
+
+		return $dataItem;
 	}
 
 ///// Writing methods /////
@@ -212,6 +222,10 @@ abstract class Store {
 	 * @param SemanticData $semanticData
 	 */
 	public function updateData( SemanticData $semanticData ) {
+
+		$subject = $semanticData->getSubject();
+		InMemoryPoolCache::getInstance()->getPoolCacheFor( 'store.redirectTarget.lookup' )->delete( $subject->getHash() );
+
 		/**
 		 * @since 1.6
 		 */
@@ -221,7 +235,7 @@ abstract class Store {
 		$pageUpdater = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newPageUpdater();
 
 		if ( $GLOBALS['smwgAutoRefreshSubject'] && $pageUpdater->canUpdate() ) {
-			$pageUpdater->addPage( $semanticData->getSubject()->getTitle() );
+			$pageUpdater->addPage( $subject->getTitle() );
 			$pageUpdater->doPurgeParserCache();
 			$pageUpdater->doPurgeHtmlCache();
 		}
@@ -444,6 +458,7 @@ abstract class Store {
 	 */
 	public function clear() {
 		$this->connectionManager->releaseConnections();
+		InMemoryPoolCache::getInstance()->resetPoolCacheFor( 'store.redirectTarget.lookup' );
 	}
 
 	/**
