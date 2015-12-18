@@ -186,9 +186,9 @@ abstract class Store {
 			} else {
 				$dataItem = end( $redirectDataItems );
 			}
-		}
 
-		$poolCache->save( $hash, $dataItem );
+			$poolCache->save( $hash, $dataItem );
+		}
 
 		return $dataItem;
 	}
