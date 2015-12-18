@@ -31,7 +31,8 @@
 			"아라",
 			"Windes",
 			"Wladek92",
-			"VictorBrice"
+			"VictorBrice",
+			"Orlodrim"
 		]
 	},
 	"smw-desc": "Rendre le wiki plus accessible - pour les machines ''et'' les humains ([https://semantic-mediawiki.org/wiki/Help:User_manual documentation en ligne])",
@@ -342,11 +343,11 @@
 	"smw-datavalue-import-invalidvalue": "\"$1\" n'est pas un format valide et devrait se composer de \"espace de noms\":\"identifiant\" (par exemple \"foaf:name\").",
 	"smw-pa-property-predefined_impo": "« $1 » est une proriété prédéfinie qui décrit une relation vers un [https://www.semantic-mediawiki.org/wiki/Help:Import_vocabulary vocabulaire importé].",
 	"smw-pa-property-predefined_type": "\"$1\" est une propriété prédéfinie qui décrit la [[Special:Types|type de donnée]]  d'une propriété.",
-	"smw-pa-property-predefined_sobj": "\"$1\" est une propriété prédéfinie représentant un constructeur de conteneur qui permet d'accumuler des affectations propriété-valeur similaires à celles d'une page wiki normale.",
+	"smw-pa-property-predefined_sobj": "\"$1\" est une propriété prédéfinie représentant un constructeur de [https://www.semantic-mediawiki.org/wiki/Help:Container conteneur] qui permet d'accumuler des affectations propriété-valeur similaires à celles d'une page wiki normale.",
 	"smw-pa-property-predefined_errp": "« $1 » est une propriété prédéfinie pour tracer les erreurs d’entrée pour les valeurs d’annotation incorrectes qui sont sans doute provoquées par une restriction de type ou de [[Property:Allows value|valeur autorisée]].",
 	"smw-pa-property-predefined_pval": " [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value « $1\"] est une propriété prédéfinie qui peut définir une liste de valeurs permises pour limiter des tâches de valeur pour une propriété.",
-	"smw-datavalue-property-restricted-use": "La propriété \"$1\" a été marquée à usage restreint.",
-	"smw-datavalue-restricted-use": "Cette valeur de donnée est marquée à usage restreint. $1",
+	"smw-datavalue-property-restricted-use": "La propriété « $1 » a été marquée à usage restreint.",
+	"smw-datavalue-restricted-use": "La valeur de donnée « $1 » est marquée à usage restreint.",
 	"smw-datavalue-invalid-number": "\"$1\" ne peut pas être interprété comme un nombre.",
 	"smw-query-condition-circular": "Une condition circulaire possible a été détectée dans \"$1\".",
 	"smw-sp-types-list": "Liste des types de données",
@@ -358,5 +359,7 @@
 	"smw-sp-types_geo": "« $1 » est un type de données qui décrit des emplacements géographiques et nécessite [https://www.semantic-mediawiki.org/wiki/Semantic_Maps les Cartes Sémantiques].",
 	"smw-sp-types_tel": "\"$1\" est un type de données spécial pour décrire les numéros de téléphone internationaux conformément à la RFC 3966.",
 	"smw-sp-types_txt": "\"$1\" est un type de données primitif pour décrire les chaînes de longueur arbitraire.",
-	"smw-sp-types_dat": "\"$1\" est un type de données pour représenter des points dans le temps, dans un format unifié."
+	"smw-sp-types_dat": "\"$1\" est un type de données pour représenter des points dans le temps, dans un format unifié.",
+	"smw-pa-property-predefined_errc": "« $1 » est une propriété prédéfinie représentant un [https://www.semantic-mediawiki.org/wiki/Help:Container conteneur] pour les erreurs qui apparaissent lors de la connexion pour des annotations de mauvaise valeur ou des traitements d’entrée.",
+	"smw-pa-property-predefined_errt": "« $1 » est une propriété prédéfinie contenant une description textuelle d’une erreur."
 }

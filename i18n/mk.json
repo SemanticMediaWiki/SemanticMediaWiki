@@ -289,7 +289,7 @@
 	"smw-pa-property-predefined_ask": "„$1“ е предодредено својство кое претставува метаинформации (во облик на [https://www.semantic-mediawiki.org/wiki/Subobject subobject]) за одделни барања.",
 	"smw-pa-property-predefined_asksi": "„$1“ е предодредено својство што го собира бројот на услови кои се користат во барање.",
 	"smw-pa-property-predefined_askde": "„$1“ е програмски зададено својство што укажува на содржајноста (бројчена вредност пресметана според вгнездувањето на подбарањата и разложени својствени ланци) на едно барање додека важи ограничување на неговото извршување наметнато од поставката [https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth $smwgQMaxDepth].",
-	"smw-sp-properties-docu": "На оваа страница се наведени [https://www.semantic-mediawiki.org/wiki/Property?uselang=mk својствата] и бројот на употреби достапен на ова вики. За најнови статистики за бројот на употреби се препорачува редовно пуштање на скриптата [https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics rebuildPropertyStatistics]. Друг преглед можете да добиете на службените страници [[Special:UnusedProperties|неискористени својства]] и [[Special:WantedProperties|потребни својства]].",
+	"smw-sp-properties-docu": "На оваа страница се наведени [https://www.semantic-mediawiki.org/wiki/Property?uselang=mk својствата] и бројот на употреби достапен на ова вики. За најнови статистики за бројот на употреби се препорачува редовно пуштање на скриптата за [https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics статистики за својства]. Друг преглед можете да добиете на службените страници [[Special:UnusedProperties|неискористени својства]] и [[Special:WantedProperties|потребни својства]].",
 	"smw-sp-properties-cache-info": "Наведените податоци се преземени од [https://www.semantic-mediawiki.org/wiki/Caching?uselang=mk меѓускладот], a последен пат изменети на $1.",
 	"smw-sp-properties-header-label": "Список на својства",
 	"smw-sp-admin-settings-title": "Нагодувања за поставките",
@@ -318,11 +318,11 @@
 	"smw-datavalue-import-invalidvalue": "„$1“ не претставува важечки формат и се очекува да содржи „именски простор“:„назнака“ (на пр. „фоаф:име“).",
 	"smw-pa-property-predefined_impo": "„$1“ е предодредено својство што ја опишува поврзаноста со [https://www.semantic-mediawiki.org/wiki/Help:Import_vocabulary увезен лексикон].",
 	"smw-pa-property-predefined_type": "„$1“ е предодредено својство што го опишува [[Special:Types|податочниот тип]] на едно својство.",
-	"smw-pa-property-predefined_sobj": "„$1“ е предодредено својство што претставува пополнувачки конструкт кој му овозможува да насобира задавања „својство-вредност“ слично како на нормална викистраница.",
+	"smw-pa-property-predefined_sobj": "„$1“ е предодредено својство што претставува [https://www.semantic-mediawiki.org/wiki/Help:Container пополнувачки] конструкт кој му овозможува да насобира задавања „својство-вредност“ слично како на нормална викистраница.",
 	"smw-pa-property-predefined_errp": "„$1“ е предодредено својство за следење на грешките во внесувањето кај прибелешките со неправилни вредности, веројатно предизвикани од ограничувањата на [[Property:Allows value|допуштени вредности]].",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value „$1“] е предодредено својство што може да определи список на допуштени вредности за ограничување на вредносните доделувања за дадено својство.",
 	"smw-datavalue-property-restricted-use": "Својството „$1“ е означено за ограничена употреба.",
-	"smw-datavalue-restricted-use": "Оваа податочна вредност е означена за ограничена употреба. $1",
+	"smw-datavalue-restricted-use": "Податочната вредност „$1“ е означена за ограничена употреба.",
 	"smw-datavalue-invalid-number": "Не можам да го протолкувам „$1“ како број.",
 	"smw-query-condition-circular": "Во „$1“ е утврден можен кружен услов.",
 	"smw-sp-types-list": "Список на податочни типови",
@@ -334,5 +334,7 @@
 	"smw-sp-types_geo": "„$1“ е податочен тип што опишува географска местоположба и бара [https://www.semantic-mediawiki.org/wiki/Semantic_Maps Семантички карти].",
 	"smw-sp-types_tel": "„$1“ е посебен податочен тип што го опишува меѓународните телефонски броеви според RFC 3966.",
 	"smw-sp-types_txt": "„$1“ е примитивен податочен тип што опишува низи со произволна големина.",
-	"smw-sp-types_dat": "„$1“ е податочен тип што претставува моменти во времето во еднообразен формат."
+	"smw-sp-types_dat": "„$1“ е податочен тип што претставува моменти во времето во еднообразен формат.",
+	"smw-pa-property-predefined_errc": "„$1“ е предодредено својство кое претставува [https://www.semantic-mediawiki.org/wiki/Help:Container пополнувач] за грешки што се јавуваат во врска со несоодветни вредносни прибелешки или неправилна обработка на вносот.",
+	"smw-pa-property-predefined_errt": "„$1“ е предодредено својство што содржи текстуален опис на грешка."
 }

@@ -327,11 +327,11 @@
 	"smw-datavalue-import-invalidvalue": "“$1”不是一个有效格式，并预计包含“名字空间”：“标识符”（例如：“foaf:name”）。",
 	"smw-pa-property-predefined_impo": "“$1”是描述与[https://www.semantic-mediawiki.org/wiki/Help:Import_vocabulary 导入词汇]间关系的预定义属性。",
 	"smw-pa-property-predefined_type": "“$1”是用来描述属性[[Special:Types|数据类型]]的预定义属性。",
-	"smw-pa-property-predefined_sobj": "“$1”是代表允许累计类似一个正常wiki页面的数据类型作业的容器结构的预定义属性。",
+	"smw-pa-property-predefined_sobj": "“$1”是代表允许累计类似一个正常wiki页面的数据类型作业的[https://www.semantic-mediawiki.org/wiki/Help:Container 容器]结构的预定义属性。",
 	"smw-pa-property-predefined_errp": "“$1”是一个预定义的属性，它用于不规则的值注释中追踪输入错误，例如导致的类型或[[Property:Allows value|允许值]]的限制。",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"]是一个预定义的属性，它可以订阅获得允许以为一个属性限制值注释的值的列表。",
 	"smw-datavalue-property-restricted-use": "属性“$1”被标记为限制使用。",
-	"smw-datavalue-restricted-use": "此数据值被标记限制使用。$1",
+	"smw-datavalue-restricted-use": "数据值“$1”被标记为限制使用。",
 	"smw-datavalue-invalid-number": "“$1”不能被解释为一个数字。",
 	"smw-query-condition-circular": "在“$1”中检测到可用的循环环境。",
 	"smw-sp-types-list": "数据类型列表",
@@ -343,5 +343,7 @@
 	"smw-sp-types_geo": "“$1”是一个描述地理位置的数据类型，它需要[https://www.semantic-mediawiki.org/wiki/Semantic_Maps Semantic Maps]。",
 	"smw-sp-types_tel": "“$1”是一个根据RFC 3966描述国际电话号码的数据类型。",
 	"smw-sp-types_txt": "“$1”是一个描述任意长度字符串的原始数据类型。",
-	"smw-sp-types_dat": "“$1”是一个代表统一格式的时间点的数据类型。"
+	"smw-sp-types_dat": "“$1”是一个代表统一格式的时间点的数据类型。",
+	"smw-pa-property-predefined_errc": "“$1”是一个预定义属性，代表出现在连接中的不当值注释或输入处理错误的[https://www.semantic-mediawiki.org/wiki/Help:Container 容器]。",
+	"smw-pa-property-predefined_errt": "“$1”是一个包含一个错误的文字描述的预定义属性。"
 }

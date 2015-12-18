@@ -332,11 +332,11 @@
 	"smw-datavalue-import-invalidvalue": "„$1“ ist kein gültiges Format. Es muss dem Schema „Namensraum“:„Kennung“ (z.&nbsp;B. „foaf:name“) entsprechen.",
 	"smw-pa-property-predefined_impo": "„$1“ ist ein softwareseitig fest definiertes Attribut, das eine Relation zu einem [https://www.semantic-mediawiki.org/wiki/Help:Import_vocabulary importierten Vokabular] beschreibt.",
 	"smw-pa-property-predefined_type": "„$1“ ist ein softwareseitig fest definiertes Attribut, das den [[Special:Types|Datentyp]] eines Attributs beschreibt.",
-	"smw-pa-property-predefined_sobj": "„$1“ ist ein softwareseitig fest definiertes Attribut, das ausschließlich semantische Annotationen (Zuweisungen von Attributwerten zu Attributen) speichert und sich somit ähnlich einer Wikiseite verhält, dessen Inhalt für den Benutzer nicht direkt einsehbar ist.",
+	"smw-pa-property-predefined_sobj": "„$1“ ist ein vordefiniertes Attribut, das ein [https://www.semantic-mediawiki.org/wiki/Help:Container Container]-Konstrukt darstellt, das es ermöglicht, Zuweisungen von Attributwerten anzuhäufen, wie bei einer normalen Wikiseite.",
 	"smw-pa-property-predefined_errp": "„$1“ ist ein softwareseitig fest definiertes Attribut, das fehlerhafte Attributwerte speichert. Fehlerhafte Attributwerte entsprechen entweder nicht dem [https://semantic-mediawiki.org/wiki/Help:Datentyp Datentyp] des Attributs oder sind nicht als [https://semantic-mediawiki.org/wiki/Help:Spezialattribut_Erlaubt_Wert zulässiger Wert] für das Attribut definiert worden.",
 	"smw-pa-property-predefined_pval": "[https://semantic-mediawiki.org/wiki/Help:Spezialattribut_Erlaubt_Wert „$1“] ist ein softwareseitig fest definiertes Attribut, mit dem für ein Attribut zulässige Attributwerte definiert werden können.",
-	"smw-datavalue-property-restricted-use": "Das Attribut „$1“ kann nur eingeschränkt genutzt werden.",
-	"smw-datavalue-restricted-use": "Dieser Datenwert („$1“) kann nur eingeschränkt genutzt werden.",
+	"smw-datavalue-property-restricted-use": "Das Attribut „$1“ wurde für eine eingeschränkte Nutzung markiert.",
+	"smw-datavalue-restricted-use": "Der Datenwert „$1“ wurde für eine eingeschränkte Nutzung markiert.",
 	"smw-datavalue-invalid-number": "„$1“ ist keine gültige Zahl.",
 	"smw-query-condition-circular": "In Vorlage „$1“ wurde ein möglicher Zirkelbezug festgestellt.",
 	"smw-sp-types-list": "Liste der Datentypen",
@@ -348,5 +348,7 @@
 	"smw-sp-types_geo": "„$1“ ist ein Datentyp der zum Speichern der Lage eines Punktes in einer Ebene oder in einem Raum genutzt wird. Er wird von der Softwareerweiterung [https://www.semantic-mediawiki.org/wiki/Semantic_Maps Semantic Maps] bereitgestellt.",
 	"smw-sp-types_tel": "„$1“ ist ein Datentyp der für die Ziffernfolge zur Anwahl eines Zielteilnehmers (Rufnummer) gemäß RFC 3966 genutzt wird.",
 	"smw-sp-types_txt": "„$1“ ist ein Datentyp der für Zeichenketten beliebiger Länge genutzt wird.",
-	"smw-sp-types_dat": "„$1“ ist ein Datentyp der für bestimmte Momente in einem zeitlichen Bezugssystem (Zeitskala) genutzt wird."
+	"smw-sp-types_dat": "„$1“ ist ein Datentyp der für bestimmte Momente in einem zeitlichen Bezugssystem (Zeitskala) genutzt wird.",
+	"smw-pa-property-predefined_errc": "„$1“ ist ein vordefiniertes Attribut, das einen [https://www.semantic-mediawiki.org/wiki/Help:Container Container] für Fehler darstellt, die in Verbindung mit ungenauen Wertannotationen oder Eingabeverarbeitungen aufgetreten sind.",
+	"smw-pa-property-predefined_errt": "„$1“ ist ein vordefiniertes Attribut, das eine Textbeschreibung eines Fehlers enthält."
 }
