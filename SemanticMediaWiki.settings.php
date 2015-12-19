@@ -892,9 +892,12 @@ $GLOBALS['smwgEnabledQueryDependencyLinksStore'] = false;
 # `_MDAT` is excluded to avoid a purge on each page edit with a `Modification date`
 # change that would otherwise trigger a dependency update.
 #
+# '_ASKDU' changes to the duration of a query should not trigger an update of
+# possible query dependencies (as this has no bearing on the result list).
+#
 # @since 2.3 (experimental)
 ##
-$GLOBALS['smwgPropertyDependencyDetectionBlacklist'] = array( '_MDAT', '_SOBJ' );
+$GLOBALS['smwgPropertyDependencyDetectionBlacklist'] = array( '_MDAT', '_SOBJ', '_ASKDU' );
 ##
 
 ###

@@ -37,6 +37,11 @@ class CompositePropertyTableDiffIteratorTest extends \PHPUnit_Framework_TestCase
 			$fixedPropertyRecord[1]
 		);
 
+		$this->assertInternalType(
+			'array',
+			$instance->getFixedPropertyRecords()
+		);
+
 		$this->assertEquals(
 			$expectedOrdered,
 			$instance->getOrderedDiffByTable()

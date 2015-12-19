@@ -64,6 +64,15 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @return array
+	 */
+	public function getFixedPropertyRecords() {
+		return $this->fixedPropertyRecords;
+	}
+
+	/**
 	 * Simplified (ordered by table) diff array to allow for an easier
 	 * post-processing
 	 *

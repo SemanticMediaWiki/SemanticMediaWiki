@@ -803,6 +803,14 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$compositePropertyTableDiffIterator->expects( $this->any() )
+			->method( 'getCombinedIdListOfChangedEntities' )
+			->will( $this->returnValue( array() ) );
+
+		$compositePropertyTableDiffIterator->expects( $this->any() )
+			->method( 'getFixedPropertyRecords' )
+			->will( $this->returnValue( array() ) );
+
 		$this->assertTrue(
 			$instance->isRegistered( $handler )
 		);
