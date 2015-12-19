@@ -135,15 +135,35 @@ class EmbeddedQueryDependencyLinksStore {
 	 * @since 2.3
 	 *
 	 * @param CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator
+	 * @param array $propertyDependencyDetectionBlacklist
+	 *
+	 * @return array
 	 */
-	public function buildParserCachePurgeJobParametersFrom( CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator ) {
+	public function buildParserCachePurgeJobParametersFrom( CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator, array $propertyDependencyDetectionBlacklist ) {
 
 		if ( !$this->isEnabled() ) {
 			return array();
 		}
 
+		$mapCombinedIdListOfChangedEntities = array_flip( $compositePropertyTableDiffIterator->getCombinedIdListOfChangedEntities() );
+		$mapPropertyDependencyDetectionBlacklist = array_flip( $propertyDependencyDetectionBlacklist );
+
+		foreach ( $compositePropertyTableDiffIterator->getFixedPropertyRecords() as $table => $record ) {
+
+			if ( !isset( $mapPropertyDependencyDetectionBlacklist[$record['key']] ) ) {
+				continue;
+			}
+
+			$this->removeBlacklistedPropertyReferencesFromParserCachePurgeJobChangeList(
+				$compositePropertyTableDiffIterator,
+				$mapCombinedIdListOfChangedEntities,
+				$table,
+				$record
+			);
+		}
+
 		return array(
-			'idlist' => $compositePropertyTableDiffIterator->getCombinedIdListOfChangedEntities()
+			'idlist' => array_keys( $mapCombinedIdListOfChangedEntities )
 		);
 	}
 
@@ -391,6 +411,27 @@ class EmbeddedQueryDependencyLinksStore {
 		// Check whether the query has already been registered and only then
 		// check for a possible divergent time
 		return $row !== false && $skewedTouchedTimesamp > wfTimestamp( TS_MW );
+	}
+
+	private function removeBlacklistedPropertyReferencesFromParserCachePurgeJobChangeList( $compositePropertyTableDiffIterator, &$mapCombinedIdListOfChangedEntities, $table, $record ) {
+
+		// Remove matched blacklisted property reference
+		unset( $mapCombinedIdListOfChangedEntities[$record['p_id']] );
+
+		// Try to find any referenced subject ID for the property
+		$orderedDiffByTable = $compositePropertyTableDiffIterator->getOrderedDiffByTable( $table );
+
+		if ( isset( $orderedDiffByTable[$table]['insert'] ) ) {
+			foreach ( $orderedDiffByTable[$table]['insert'] as $insert ) {
+				unset( $mapCombinedIdListOfChangedEntities[$insert['s_id']] );
+			}
+		}
+
+		if ( isset( $orderedDiffByTable[$table]['delete'] ) ) {
+			foreach ( $orderedDiffByTable[$table]['delete'] as $delete ) {
+				unset( $mapCombinedIdListOfChangedEntities[$delete['s_id']] );
+			}
+		}
 	}
 
 }

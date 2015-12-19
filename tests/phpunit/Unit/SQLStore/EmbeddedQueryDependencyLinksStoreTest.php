@@ -101,11 +101,26 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 		);
 	}
 
-	public function testBuildParserCachePurgeJobParameters() {
+	public function testBuildParserCachePurgeJobParametersOnBlacklistedProperty() {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$record = array(
+			'table_foo' => array(
+				'key'  => '_FOO',
+				'p_id' => 2
+			)
+		);
+
+		$tableDiff = array(
+			'table_foo' => array(
+				'insert'  => array(
+					array( 's_id' => 1001 )
+				)
+			)
+		);
 
 		$compositePropertyTableDiffIterator = $this->getMockBuilder( '\SMW\SQLStore\CompositePropertyTableDiffIterator' )
 			->disableOriginalConstructor()
@@ -113,13 +128,21 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 
 		$compositePropertyTableDiffIterator->expects( $this->any() )
 			->method( 'getCombinedIdListOfChangedEntities' )
-			->will( $this->returnValue( array( 1, 2 ) ) );
+			->will( $this->returnValue( array( 1, 2, 1001 ) ) );
+
+		$compositePropertyTableDiffIterator->expects( $this->any() )
+			->method( 'getFixedPropertyRecords' )
+			->will( $this->returnValue( $record ) );
+
+		$compositePropertyTableDiffIterator->expects( $this->any() )
+			->method( 'getOrderedDiffByTable' )
+			->will( $this->returnValue( $tableDiff ) );
 
 		$instance = new EmbeddedQueryDependencyLinksStore( $store );
 
 		$this->assertEquals(
-			array( 'idlist' => array( 1, 2 ) ),
-			$instance->buildParserCachePurgeJobParametersFrom( $compositePropertyTableDiffIterator )
+			array( 'idlist' => array( 1 ) ),
+			$instance->buildParserCachePurgeJobParametersFrom( $compositePropertyTableDiffIterator, array( '_FOO' ) )
 		);
 	}
 
@@ -137,7 +160,7 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 		$instance->setEnabledState( false );
 
 		$this->assertEmpty(
-			$instance->buildParserCachePurgeJobParametersFrom( $compositePropertyTableDiffIterator )
+			$instance->buildParserCachePurgeJobParametersFrom( $compositePropertyTableDiffIterator, array() )
 		);
 	}
 
