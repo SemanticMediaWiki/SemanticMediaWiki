@@ -38,6 +38,7 @@
 			},
 			"expected-output": {
 				"to-contain": [
+					"Example/P0903/1",
 					"Example/P0903/2"
 				]
 			}

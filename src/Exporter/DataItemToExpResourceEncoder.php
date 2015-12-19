@@ -164,7 +164,22 @@ class DataItemToExpResourceEncoder {
 			$modifier = $diWikiPage->getSubobjectName();
 		}
 
-		$importDataItem = $this->tryToFindImportDataItem( $diWikiPage, $modifier );
+		$resource = $this->newExpNsResource(
+			$diWikiPage,
+			$modifier
+		);
+
+		$poolCache->save(
+			$hash,
+			$resource
+		);
+
+		return $resource;
+	}
+
+	private function newExpNsResource( $diWikiPage, $modifier ) {
+
+		 $importDataItem = $this->tryToFindImportDataItem( $diWikiPage, $modifier );
 
 		if ( $importDataItem instanceof DataItem ) {
 			list( $localName, $namespace, $namespaceId ) = $this->defineElementsForImportDataItem( $importDataItem );
@@ -180,11 +195,11 @@ class DataItemToExpResourceEncoder {
 		);
 
 		$resource->wasMatchedToImportVocab = $importDataItem instanceof DataItem;
+		$dbKey = $diWikiPage->getDBkey();
 
-		$poolCache->save(
-			$hash,
-			$resource
-		);
+		if ( $diWikiPage->getNamespace() === SMW_NS_PROPERTY && $dbKey !== '' && $dbKey{0} !== '-' ) {
+			$resource->isUserDefined = DIProperty::newFromUserLabel( $diWikiPage->getDBkey() )->isUserDefined();
+		}
 
 		return $resource;
 	}

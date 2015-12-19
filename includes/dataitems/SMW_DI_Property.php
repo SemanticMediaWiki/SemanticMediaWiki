@@ -368,7 +368,7 @@ class DIProperty extends SMWDataItem {
 	 */
 	public static function newFromUserLabel( $label, $inverse = false ) {
 
-		$id = PropertyRegistry::getInstance()->findPropertyIdByLabel( $label );
+		$id = PropertyRegistry::getInstance()->findPropertyIdByLabel( str_replace( '_', ' ', $label ) );
 
 		if ( $id === false ) {
 			return new self( str_replace( ' ', '_', $label ), $inverse );

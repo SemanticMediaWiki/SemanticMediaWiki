@@ -128,6 +128,7 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'smwgLinksInValues' => false,
 				'smwgInlineErrors'  => true,
+				'smwgCacheType'     => 'hash'
 			),
 			'[[Foo::{{Bam}}]]',
 			'?bar',

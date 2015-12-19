@@ -206,7 +206,8 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase  {
 						'typeid' => '_wpg',
 						'mode' => 2,
 						'format' => false,
-						'key' => ''
+						'key' => '',
+						'redi' => ''
 					)
 				)
 			),
@@ -224,14 +225,16 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase  {
 						'typeid' => '_wpg',
 						'mode' => 2,
 						'format' => false,
-						'key' => ''
+						'key' => '',
+						'redi' => ''
 					),
 					array(
 						'label'=> 'Modification date',
 						'typeid' => '_dat',
 						'mode' => 1,
 						'format' => '',
-						'key' => '_MDAT'
+						'key' => '_MDAT',
+						'redi' => ''
 					)
 				)
 			),
@@ -249,14 +252,16 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase  {
 						'typeid' => '_wpg',
 						'mode' => 2,
 						'format' => false,
-						'key' => ''
+						'key' => '',
+						'redi' => ''
 					),
 					array(
 						'label'=> 'Modification date',
 						'typeid' => '_dat',
 						'mode' => 1,
 						'format' => '',
-						'key' => '_MDAT'
+						'key' => '_MDAT',
+						'redi' => ''
 					)
 				)
 			),

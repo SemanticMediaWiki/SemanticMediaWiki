@@ -104,7 +104,8 @@ class RedirectLookup {
 		return $expNsResource->getNamespaceId() === 'swivt' ||
 			$expNsResource->getNamespaceId() === 'rdf' ||
 			$expNsResource->getNamespaceId() === 'rdfs' ||
-			( $expNsResource->getNamespaceId() === 'property' && strrpos( $expNsResource->getLocalName(), 'aux' ) );
+			( $expNsResource->getNamespaceId() === 'property' && strrpos( $expNsResource->getLocalName(), 'aux' ) ) ||
+			( isset( $expNsResource->isUserDefined ) && !$expNsResource->isUserDefined );
 	}
 
 	private function lookupResourceUriTargetFromDatabase( ExpNsResource $expNsResource ) {

@@ -934,10 +934,24 @@ $GLOBALS['smwgExportBCNonCanonicalFormUse'] = false;
 # The default interpretation (strict) is to find a single triple such as
 # [[property::value:partOfTheValue::alsoPartOfTheValue]] where in case the strict
 # mode is disabled multiple properties can be assigned using a
-# [[property1::property2::value]] notation which may cause value strings to be
+# [[property1::property2::value]] notation but may cause value strings to be
 # interpret unanticipated in case of additional colons.
 #
 # @since 2.3
 # @default true
 ##
 $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] = true;
+
+##
+# If a property is redirected to a different target (Foo -> Bar) then follow it
+# by default in order toallow query results to be displayed equivalent for both
+# queries without having to adjust (or change) a query.
+#
+# @note This setting is mainly provided to restore backwards compatibility where
+# behaviour is not expected to be altered, nevertheless it is recommended that
+# the setting is enabled to improve user friendliness in terms of query execution.
+#
+# @since 2.4
+# @default true
+##
+$GLOBALS['smwgFollowPropertyRedirect'] = true;

@@ -47,6 +47,26 @@ class SMWPropertyValue extends SMWDataValue {
 	private $mPropTypeValue;
 
 	/**
+	 * @var DIProperty
+	 */
+	private $inceptiveProperty = null;
+
+	/**
+	 * @var boolean
+	 */
+	private $followPropertyRedirect = true;
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param string $typeid
+	 */
+	public function __construct( $typeid ) {
+		parent::__construct( $typeid );
+		$this->followPropertyRedirect = $GLOBALS['smwgFollowPropertyRedirect'];
+	}
+
+	/**
 	 * Static function for creating a new property object from a
 	 * propertyname (string) as a user might enter it.
 	 * @note The resulting property object might be invalid if
@@ -94,6 +114,19 @@ class SMWPropertyValue extends SMWDataValue {
 	}
 
 	/**
+	 * @note If the inceptive property and the property referenced in dataItem
+	 * are not equal then the dataItem represents the end target to which the
+	 * inceptive property has been redirected.
+	 *
+	 * @since 2.4
+	 *
+	 * @return DIProperty
+	 */
+	public function getInceptiveProperty() {
+		return $this->inceptiveProperty;
+	}
+
+	/**
 	 * Extended parsing function to first check whether value refers to pre-defined
 	 * property, resolve aliases, and set internal property id accordingly.
 	 * @todo Accept/enforce property namespace.
@@ -121,8 +154,12 @@ class SMWPropertyValue extends SMWDataValue {
 			$this->m_dataitem = new SMWDIProperty( 'ERROR', false ); // just to have something
 		}
 
-		// Find the "real" target of a property that represents the valueString
-		$this->m_dataitem = $this->m_dataitem->getRedirectTarget();
+		$this->inceptiveProperty = $this->m_dataitem;
+
+		// Find the "real" target of a property
+		if ( $this->followPropertyRedirect ) {
+			$this->m_dataitem = $this->m_dataitem->getRedirectTarget();
+		}
 	}
 
 	/**
@@ -131,15 +168,19 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @return boolean
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
-		if ( $dataItem->getDIType() == SMWDataItem::TYPE_PROPERTY ) {
-			$this->m_dataitem = $dataItem;
-			$this->mPropTypeValue = null;
-			unset( $this->m_wikipage );
-			$this->m_caption = false;
-			return true;
-		} else {
+
+		if ( $dataItem->getDIType() !== SMWDataItem::TYPE_PROPERTY ) {
 			return false;
 		}
+
+		$this->inceptiveProperty = $dataItem;
+		$this->m_dataitem = $dataItem;
+
+		$this->mPropTypeValue = null;
+		unset( $this->m_wikipage );
+		$this->m_caption = false;
+
+		return true;
 	}
 
 	public function setCaption( $caption ) {
