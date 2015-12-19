@@ -33,6 +33,12 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 		$this->parserFactory = UtilityFactory::getInstance()->newParserFactory();
 		$this->applicationFactory = ApplicationFactory::getInstance();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->applicationFactory->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {

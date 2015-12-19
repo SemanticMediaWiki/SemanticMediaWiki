@@ -104,10 +104,17 @@ class QueryTestCaseInterpreter {
 
 		foreach ( $this->contents['printouts'] as $printout ) {
 
-			$propertyValue = new PropertyValue( '__pro' );
-			$propertyValue->setDataItem( DIProperty::newFromUserLabel( $printout ) );
+			$label = null;
 
-			$extraPrintouts[] = new PrintRequest( PrintRequest::PRINT_PROP, null, $propertyValue );
+			if ( strpos( $printout, '#') !== false ) {
+				list( $printout, $label ) = explode( '#', $printout );
+			}
+
+			$extraPrintouts[] = new PrintRequest(
+				PrintRequest::PRINT_PROP,
+				$label,
+				PropertyValue::makeUserProperty( $printout )
+			);
 		}
 
 		return $extraPrintouts;

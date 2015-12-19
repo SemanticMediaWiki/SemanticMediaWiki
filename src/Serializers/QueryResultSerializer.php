@@ -43,7 +43,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 			throw new OutOfBoundsException( 'Object was not identified as a QueryResult instance' );
 		}
 
-		return $this->getSerializedQueryResult( $queryResult ) + array( 'serializer' => __CLASS__, 'version' => 0.8 );
+		return $this->getSerializedQueryResult( $queryResult ) + array( 'serializer' => __CLASS__, 'version' => 0.9 );
 	}
 
 	/**
@@ -152,13 +152,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 		$printRequests = array();
 
 		foreach ( $queryResult->getPrintRequests() as $printRequest ) {
-			$printRequests[] = array(
-				'label'  => $printRequest->getLabel(),
-				'key'    => $printRequest->getMode() === PrintRequest::PRINT_PROP ? $printRequest->getData()->getDataItem()->getKey() : '',
-				'typeid' => $printRequest->getTypeID(),
-				'mode'   => $printRequest->getMode(),
-				'format' => $printRequest->getOutputFormat()
-			);
+			$printRequests[] = self::getSerializedPrintRequestFormat( $printRequest );
 		}
 
 		/**
@@ -199,4 +193,35 @@ class QueryResultSerializer implements DispatchableSerializer {
 
 		return array( 'printrequests' => $printRequests, 'results' => $results);
 	}
+
+	private static function getSerializedPrintRequestFormat( $printRequest ) {
+
+		$serialized = array(
+			'label'  => $printRequest->getLabel(),
+			'key'    => '',
+			'redi'   => '',
+			'typeid' => $printRequest->getTypeID(),
+			'mode'   => $printRequest->getMode(),
+			'format' => $printRequest->getOutputFormat()
+		);
+
+		if ( $printRequest->getMode() !== PrintRequest::PRINT_PROP ) {
+			return $serialized;
+		}
+
+		$data = $printRequest->getData();
+
+		if ( $data === null ) {
+			return $serialized;
+		}
+
+		// To match forwarded redirects
+		$serialized['redi'] = !$data->getInceptiveProperty()->equals( $data->getDataItem() ) ? $data->getInceptiveProperty()->getKey() : '';
+
+		// To match internal properties like _MDAT
+		$serialized['key'] = $data->getDataItem()->getKey();
+
+		return $serialized;
+	}
+
 }

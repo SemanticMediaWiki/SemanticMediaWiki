@@ -235,6 +235,20 @@ class DIProperty extends SMWDataItem {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @return DIProperty
+	 */
+	public function getRedirectTarget() {
+
+		if ( $this->m_inverse ) {
+			return $this;
+		}
+
+		return ApplicationFactory::getInstance()->getStore()->getRedirectTarget( $this );
+	}
+
+	/**
 	 * @since  2.0
 	 *
 	 * @return self
@@ -274,7 +288,7 @@ class DIProperty extends SMWDataItem {
 		if ( !isset( $this->m_proptypeid ) ) {
 			if ( $this->isUserDefined() ) { // normal property
 				$diWikiPage = new SMWDIWikiPage( $this->getKey(), SMW_NS_PROPERTY, $this->interwiki );
-				$typearray = StoreFactory::getStore()->getPropertyValues( $diWikiPage, new self( '_TYPE' ) );
+				$typearray = ApplicationFactory::getInstance()->getStore()->getPropertyValues( $diWikiPage, new self( '_TYPE' ) );
 
 				if ( count( $typearray ) >= 1 ) { // some types given, pick one (hopefully unique)
 					$typeDataItem = reset( $typearray );
@@ -354,7 +368,7 @@ class DIProperty extends SMWDataItem {
 	 */
 	public static function newFromUserLabel( $label, $inverse = false ) {
 
-		$id = PropertyRegistry::getInstance()->findPropertyIdByLabel( $label );
+		$id = PropertyRegistry::getInstance()->findPropertyIdByLabel( str_replace( '_', ' ', $label ) );
 
 		if ( $id === false ) {
 			return new self( str_replace( ' ', '_', $label ), $inverse );

@@ -182,7 +182,7 @@ abstract class Store {
 
 		if ( count( $redirectDataItems ) > 0 ) {
 			if ( $dataItem->getDIType() == SMWDataItem::TYPE_PROPERTY ) {
-				$dataItem = new DIProperty( end( $redirectDataItems )->getDBkey() );
+				$dataItem = DIProperty::newFromUserLabel( end( $redirectDataItems )->getDBkey() );
 			} else {
 				$dataItem = end( $redirectDataItems );
 			}

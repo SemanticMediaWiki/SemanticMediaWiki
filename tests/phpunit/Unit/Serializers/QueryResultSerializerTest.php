@@ -180,8 +180,8 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 				),
 			array(
 				'printrequests' => array(
-					array( 'label' => 'Foo-1', 'typeid' => '_num', 'mode' => 2, 'format' => false, 'key' => '' ),
-					array( 'label' => 'Foo-2', 'typeid' => '_num', 'mode' => 2, 'format' => false, 'key' => '' )
+					array( 'label' => 'Foo-1', 'typeid' => '_num', 'mode' => 2, 'format' => false, 'key' => '', 'redi' => '' ),
+					array( 'label' => 'Foo-2', 'typeid' => '_num', 'mode' => 2, 'format' => false, 'key' => '', 'redi' => '' )
 				),
 			)
 		);
