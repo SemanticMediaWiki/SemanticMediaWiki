@@ -14,6 +14,7 @@ Not a release yet.
 * #1293 Added `_ERRC` and `_ERRT` as pre-defined properties to aid error analysis
 * #1299 Added check for named identifier in subobject do not to contain a dot (`foo.bar` used by extensions)
 * #1321 Added [`$smwgSparqlRepositoryConnectorForcedHttpVersion`](https://semantic-mediawiki.org/wiki/Help:$smwgSparqlRepositoryConnectorForcedHttpVersion) setting to force a specific HTTP version in case of a #1306 cURL issue
+* #1290 Added support for properties and prinrequests to be forwared to a redirect target if one exists
 
 ## Bug fixes
 
