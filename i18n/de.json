@@ -350,5 +350,7 @@
 	"smw-sp-types_txt": "„$1“ ist ein Datentyp der für Zeichenketten beliebiger Länge genutzt wird.",
 	"smw-sp-types_dat": "„$1“ ist ein Datentyp der für bestimmte Momente in einem zeitlichen Bezugssystem (Zeitskala) genutzt wird.",
 	"smw-pa-property-predefined_errc": "„$1“ ist ein vordefiniertes Attribut, das einen [https://www.semantic-mediawiki.org/wiki/Help:Container Container] für Fehler darstellt, die in Verbindung mit ungenauen Wertannotationen oder Eingabeverarbeitungen aufgetreten sind.",
-	"smw-pa-property-predefined_errt": "„$1“ ist ein vordefiniertes Attribut, das eine Textbeschreibung eines Fehlers enthält."
+	"smw-pa-property-predefined_errt": "„$1“ ist ein vordefiniertes Attribut, das eine Textbeschreibung eines Fehlers enthält.",
+	"smw-subobject-parser-invalid-naming-scheme": "Ein benutzerdefiniertes Unterobjekt verwendet ein ungültiges Namensschema. Die Punktnotation in den ersten fünf Zeichen ($1) wird ausschließlich für die Verwendung von Erweiterungen reserviert.",
+	"smw-datavalue-record-invalid-property-declaration": "Die Datensatzdefinition enthält das Attribut „$1“, das selbst als Datensatztyp deklariert und nicht erlaubt ist."
 }

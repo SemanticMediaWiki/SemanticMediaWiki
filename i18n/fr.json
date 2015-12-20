@@ -361,5 +361,6 @@
 	"smw-sp-types_txt": "\"$1\" est un type de données primitif pour décrire les chaînes de longueur arbitraire.",
 	"smw-sp-types_dat": "\"$1\" est un type de données pour représenter des points dans le temps, dans un format unifié.",
 	"smw-pa-property-predefined_errc": "« $1 » est une propriété prédéfinie représentant un [https://www.semantic-mediawiki.org/wiki/Help:Container conteneur] pour les erreurs qui apparaissent lors de la connexion pour des annotations de mauvaise valeur ou des traitements d’entrée.",
-	"smw-pa-property-predefined_errt": "« $1 » est une propriété prédéfinie contenant une description textuelle d’une erreur."
+	"smw-pa-property-predefined_errt": "« $1 » est une propriété prédéfinie contenant une description textuelle d’une erreur.",
+	"smw-subobject-parser-invalid-naming-scheme": "Un sous-objet défini par l’utilisateur a utilisé un schéma de nommage invalide. L’utilisation d’un point dans les cinq premiers caractères ($1) est réservée exclusivement aux extensions."
 }
