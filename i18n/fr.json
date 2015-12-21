@@ -362,5 +362,6 @@
 	"smw-sp-types_dat": "\"$1\" est un type de données pour représenter des points dans le temps, dans un format unifié.",
 	"smw-pa-property-predefined_errc": "« $1 » est une propriété prédéfinie représentant un [https://www.semantic-mediawiki.org/wiki/Help:Container conteneur] pour les erreurs qui apparaissent lors de la connexion pour des annotations de mauvaise valeur ou des traitements d’entrée.",
 	"smw-pa-property-predefined_errt": "« $1 » est une propriété prédéfinie contenant une description textuelle d’une erreur.",
-	"smw-subobject-parser-invalid-naming-scheme": "Un sous-objet défini par l’utilisateur a utilisé un schéma de nommage invalide. L’utilisation d’un point dans les cinq premiers caractères ($1) est réservée exclusivement aux extensions."
+	"smw-subobject-parser-invalid-naming-scheme": "Un sous-objet défini par l’utilisateur a utilisé un schéma de nommage invalide. L’utilisation d’un point dans les cinq premiers caractères ($1) est réservée exclusivement aux extensions.",
+	"smw-datavalue-record-invalid-property-declaration": "La définition de l’enregistrement contient la propriété « $1 », qui elle-même est déclarée de type enregistrement, ce qui est interdit."
 }
