@@ -43,9 +43,9 @@ $GLOBALS['wgExtensionCredits']['semantic'][] = array(
 		'[http://korrekt.org Markus Krötzsch]',
 		'[https://www.mediawiki.org/wiki/User:Jeroen_De_Dauw Jeroen De Dauw]',
 		'James Hong Kong',
-		'[https://semantic-mediawiki.org/wiki/Contributors ...]'
+		'[https://www.semantic-mediawiki.org/wiki/Contributors ...]'
 		),
-	'url' => 'https://semantic-mediawiki.org',
+	'url' => 'https://www.semantic-mediawiki.org',
 	'descriptionmsg' => 'smw-desc',
 	'license-name'   => 'GPL-2.0+'
 );
