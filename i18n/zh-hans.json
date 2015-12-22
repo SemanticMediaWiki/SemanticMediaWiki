@@ -345,5 +345,7 @@
 	"smw-sp-types_txt": "“$1”是一个描述任意长度字符串的原始数据类型。",
 	"smw-sp-types_dat": "“$1”是一个代表统一格式的时间点的数据类型。",
 	"smw-pa-property-predefined_errc": "“$1”是一个预定义属性，代表出现在连接中的不当值注释或输入处理错误的[https://www.semantic-mediawiki.org/wiki/Help:Container 容器]。",
-	"smw-pa-property-predefined_errt": "“$1”是一个包含一个错误的文字描述的预定义属性。"
+	"smw-pa-property-predefined_errt": "“$1”是一个包含一个错误的文字描述的预定义属性。",
+	"smw-subobject-parser-invalid-naming-scheme": "用户定义的子对象用于一个无效的命名方案中。前五个字符（$1）中的点记号只保留用于扩展。",
+	"smw-datavalue-record-invalid-property-declaration": "记录的定义包含“$1”属性，它本身被声明为记录类型，并不被允许使用。"
 }
