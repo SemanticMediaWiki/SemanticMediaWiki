@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"පසිඳු කාවින්ද",
-			"عرفان ارشد"
+			"عرفان ارشد",
+			"محبوب عالم"
 		]
 	},
 	"smw_printername_list": "فہرست",
@@ -10,7 +11,7 @@
 	"smw_printername_category": "زمرہ",
 	"smw_exportrdf_submit": "برآمد",
 	"properties": "کی خصوصیات",
-	"smw_purge": "کی تازہ کاری کریں",
+	"smw_purge": "تازہ کرو",
 	"types": "اقسام",
 	"smw_ask_queryhead": "استفہام",
 	"smw_ask_defaultformat": "پہلے سے طے شدہ",
