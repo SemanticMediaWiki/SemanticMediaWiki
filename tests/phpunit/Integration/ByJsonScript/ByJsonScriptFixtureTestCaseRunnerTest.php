@@ -44,6 +44,11 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 	 */
 	private $eventDispatcher;
 
+	/**
+	 * @see ByJsonTestCaseProvider::$deleteAfterState
+	 */
+	protected $deleteAfterState = true;
+
 	protected function setUp() {
 		parent::setUp();
 

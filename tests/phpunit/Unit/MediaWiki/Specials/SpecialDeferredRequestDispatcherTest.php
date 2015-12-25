@@ -60,16 +60,16 @@ class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetSessionToken() {
+	public function testgetRequestToken() {
 
 		$this->assertInternalType(
 			'string',
-			SpecialDeferredRequestDispatcher::getSessionToken( 'Foo' )
+			SpecialDeferredRequestDispatcher::getRequestToken( 'Foo' )
 		);
 
 		$this->assertNotSame(
-			SpecialDeferredRequestDispatcher::getSessionToken( 'Bar' ),
-			SpecialDeferredRequestDispatcher::getSessionToken( 'Foo' )
+			SpecialDeferredRequestDispatcher::getRequestToken( 'Bar' ),
+			SpecialDeferredRequestDispatcher::getRequestToken( 'Foo' )
 		);
 	}
 
@@ -84,7 +84,7 @@ class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$parameters = json_encode( array(
 			'async-job' => array( 'type' => 'SMW\UpdateJob', 'title' => 'Foo' ),
 			'timestamp' => $timestamp,
-			'sessionToken' => SpecialDeferredRequestDispatcher::getSessionToken( $timestamp ),
+			'requestToken' => SpecialDeferredRequestDispatcher::getRequestToken( $timestamp ),
 		) );
 
 		$instance = new SpecialDeferredRequestDispatcher();
@@ -114,12 +114,12 @@ class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$this->applicationFactory->registerObject( 'Store', $store );
 
-		$timestamp =  time();
+		$timestamp = time();
 
 		$parameters = json_encode( array(
 			'async-job' => array( 'type' => 'SMW\ParserCachePurgeJob', 'title' => 'Foo' ),
 			'timestamp' => $timestamp,
-			'sessionToken' => SpecialDeferredRequestDispatcher::getSessionToken( $timestamp ),
+			'requestToken' => SpecialDeferredRequestDispatcher::getRequestToken( $timestamp ),
 			'idlist' => array( 1, 2 )
 		) );
 
@@ -135,7 +135,7 @@ class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testInvalidPostSessionToken() {
+	public function testInvalidPostRequestToken() {
 
 		if ( version_compare( $GLOBALS['wgVersion'], '1.20', '<' ) ) {
 			$this->markTestSkipped( "Skipping test because of missing method" );
@@ -145,7 +145,7 @@ class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$parameters = json_encode( array(
 			'timestamp' => $timestamp,
-			'sessionToken' => SpecialDeferredRequestDispatcher::getSessionToken( 'Foo' )
+			'requestToken' => SpecialDeferredRequestDispatcher::getRequestToken( 'Foo' )
 		) );
 
 		$instance = new SpecialDeferredRequestDispatcher();

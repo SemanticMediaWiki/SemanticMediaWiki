@@ -65,7 +65,7 @@ class SpecialDeferredRequestDispatcher extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	public static function getSessionToken( $key ) {
+	public static function getRequestToken( $key ) {
 		return md5( $key . $GLOBALS['wgSecretKey'] );
 	}
 
@@ -85,8 +85,8 @@ class SpecialDeferredRequestDispatcher extends SpecialPage {
 			true
 		);
 
-		if ( $this->isHttpRequestMethod( 'POST' ) && self::getSessionToken( $parameters['timestamp'] ) !== $parameters['sessionToken'] ) {
-			return $this->modifyHttpHeader( "HTTP/1.0 400 Bad Request", 'Invalid or staled sessionToken was provided for the request' );
+		if ( $this->isHttpRequestMethod( 'POST' ) && self::getRequestToken( $parameters['timestamp'] ) !== $parameters['requestToken'] ) {
+			return $this->modifyHttpHeader( "HTTP/1.0 400 Bad Request", 'Invalid or staled requestToken was provided for the request' );
 		}
 
 		$this->modifyHttpHeader( "HTTP/1.0 202 Accepted" );
@@ -94,7 +94,6 @@ class SpecialDeferredRequestDispatcher extends SpecialPage {
 		if ( !isset( $parameters['async-job'] ) ) {
 			return;
 		}
-
 
 		$type = $parameters['async-job']['type'];
 		$title = Title::newFromDBkey( $parameters['async-job']['title'] );

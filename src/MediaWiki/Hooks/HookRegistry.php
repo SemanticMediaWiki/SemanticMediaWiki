@@ -116,6 +116,16 @@ class HookRegistry {
 			$applicationFactory->getSettings()->get( 'smwgQSubpropertyDepth' )
 		);
 
+		$httpRequestFactory = new HttpRequestFactory();
+
+		$deferredRequestDispatchManager = new DeferredRequestDispatchManager(
+			$httpRequestFactory->newSocketRequest()
+		);
+
+		$deferredRequestDispatchManager->setEnabledHttpDeferredJobRequestState(
+			$applicationFactory->getSettings()->get( 'smwgEnabledHttpDeferredJobRequest' )
+		);
+
 		/**
 		 * Hook: ParserAfterTidy to add some final processing to the fully-rendered page output
 		 *
@@ -492,7 +502,7 @@ class HookRegistry {
 			return true;
 		};
 
-		$this->handlers['SMW::SQLStore::AfterDataUpdateComplete'] = function ( $store, $semanticData, $compositePropertyTableDiffIterator ) use ( $applicationFactory ) {
+		$this->handlers['SMW::SQLStore::AfterDataUpdateComplete'] = function ( $store, $semanticData, $compositePropertyTableDiffIterator ) use ( $applicationFactory, $deferredRequestDispatchManager ) {
 
 			$embeddedQueryDependencyLinksStore = new EmbeddedQueryDependencyLinksStore( $store );
 
@@ -501,16 +511,6 @@ class HookRegistry {
 			);
 
 			$embeddedQueryDependencyLinksStore->pruneOutdatedTargetLinks( $compositePropertyTableDiffIterator );
-
-			$httpRequestFactory = new HttpRequestFactory();
-
-			$deferredRequestDispatchManager = new DeferredRequestDispatchManager(
-				$httpRequestFactory->newSocketRequest()
-			);
-
-			$deferredRequestDispatchManager->setEnabledHttpDeferredJobRequestState(
-				$applicationFactory->getSettings()->get( 'smwgEnabledHttpDeferredJobRequest' )
-			);
 
 			$deferredRequestDispatchManager->dispatchJobRequestFor(
 				'SMW\ParserCachePurgeJob',

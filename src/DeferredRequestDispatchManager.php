@@ -58,7 +58,6 @@ class DeferredRequestDispatchManager {
 	 */
 	public function __construct( HttpRequest $httpRequest ) {
 		$this->httpRequest = $httpRequest;
-		$this->httpRequest->setOption( ONOI_HTTP_REQUEST_URL, SpecialDeferredRequestDispatcher::getTargetURL() );
 	}
 
 	/**
@@ -87,18 +86,20 @@ class DeferredRequestDispatchManager {
 	 */
 	public function dispatchJobRequestFor( $type, Title $title, $parameters = array() ) {
 
+		$this->httpRequest->setOption( ONOI_HTTP_REQUEST_URL, SpecialDeferredRequestDispatcher::getTargetURL() );
+
 		if ( !$this->doPreliminaryCheckForType( $type, $parameters ) ) {
 			return null;
 		}
 
 		$dispatchableCallbackJob = $this->getDispatchableCallbackJobFor( $type );
 
-		// Build sessionToken as source verification during the POST request
+		// Build requestToken as source verification during the POST request
 		$parameters['timestamp'] = time();
-		$parameters['sessionToken'] = SpecialDeferredRequestDispatcher::getSessionToken( $parameters['timestamp'] );
+		$parameters['requestToken'] = SpecialDeferredRequestDispatcher::getRequestToken( $parameters['timestamp'] );
 
 		if ( $this->enabledHttpDeferredJobRequestState && $this->canConnectToUrl() ) {
-			return $this->doDispatchAsyncJobFor( $type, $title, $parameters, $dispatchableCallbackJob );
+			return $this->doPostJobWith( $type, $title, $parameters, $dispatchableCallbackJob );
 		}
 
 		call_user_func_array(
@@ -163,7 +164,7 @@ class DeferredRequestDispatchManager {
 		return self::$canConnectToUrl = $this->httpRequest->ping();
 	}
 
-	private function doDispatchAsyncJobFor( $type, $title, $parameters, $dispatchableCallbackJob ) {
+	private function doPostJobWith( $type, $title, $parameters, $dispatchableCallbackJob ) {
 
 		$parameters['async-job'] = array(
 			'type'  => $type,
