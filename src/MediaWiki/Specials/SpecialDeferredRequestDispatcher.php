@@ -127,6 +127,17 @@ class SpecialDeferredRequestDispatcher extends SpecialPage {
 		print $message;
 		ob_flush();
 		flush();
+
+		// @see SpecialRunJobs
+		// MW 1.27 / https://phabricator.wikimedia.org/T115413
+		// Once the client receives this response, it can disconnect
+		set_error_handler( function ( $errno, $errstr ) {
+			if ( strpos( $errstr, 'Cannot modify header information' ) !== false ) {
+				return true; // bug T115413
+			}
+			// Delegate unhandled errors to the default handlers
+			return false;
+		} );
 	}
 
 	private function runParserCachePurgeJob( $title, $parameters ) {
