@@ -37,7 +37,7 @@ class JobFactory {
 	}
 
 	/**
-	 * @since 2.0
+	 * @since 2.3
 	 *
 	 * @param Title $title
 	 * @param array $parameters
@@ -46,6 +46,18 @@ class JobFactory {
 	 */
 	public function newParserCachePurgeJob( Title $title, array $parameters = array() ) {
 		return new ParserCachePurgeJob( $title, $parameters );
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param Title $title
+	 * @param array $parameters
+	 *
+	 * @return SchemaUpdateJob
+	 */
+	public function newSchemaUpdateJob( Title $title, array $parameters = array() ) {
+		return new SchemaUpdateJob( $title, $parameters );
 	}
 
 }

@@ -139,7 +139,7 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 				$namespace
 			);
 
-			if ( isset( $page['contents']['import-from'] ) && $page['contents']['import-from'] !== '' ) {
+			if ( is_array( $page['contents'] ) && isset( $page['contents']['import-from'] ) ) {
 				$contents = file_get_contents( $this->getTestCaseLocation() . $page['contents']['import-from'] );
 			} else {
 				$contents = $page['contents'];

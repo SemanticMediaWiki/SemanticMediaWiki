@@ -135,6 +135,37 @@ class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testValidPostSchemaUpdateJob() {
+
+		if ( version_compare( $GLOBALS['wgVersion'], '1.20', '<' ) ) {
+			$this->markTestSkipped( "Skipping test because of missing method" );
+		}
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->getMockForAbstractClass();
+
+		$this->applicationFactory->registerObject( 'Store', $store );
+
+		$timestamp = time();
+
+		$parameters = json_encode( array(
+			'async-job' => array( 'type' => 'SMW\SchemaUpdateJob', 'title' => 'Foo' ),
+			'timestamp' => $timestamp,
+			'requestToken' => SpecialDeferredRequestDispatcher::getRequestToken( $timestamp )
+		) );
+
+		$instance = new SpecialDeferredRequestDispatcher();
+		$instance->disallowToModifyHttpHeader();
+
+		$instance->getContext()->setRequest(
+			new \FauxRequest( array( 'parameters' => $parameters ), true )
+		);
+
+		$this->assertTrue(
+			$instance->execute( '' )
+		);
+	}
+
 	public function testInvalidPostRequestToken() {
 
 		if ( version_compare( $GLOBALS['wgVersion'], '1.20', '<' ) ) {

@@ -6,6 +6,7 @@ use SMW\Tests\ByJsonTestCaseProvider;
 use SMW\Tests\JsonTestCaseFileHandler;
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\EventHandler;
+use SMW\SchemaManager;
 use SMW\ApplicationFactory;
 
 /**
@@ -81,6 +82,9 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		);
 
 		$this->eventDispatcher = EventHandler::getInstance()->getEventDispatcher();
+
+		// Avoid the MessageCache during tests
+		SchemaManager::getInstance()->getSchemaReader()->skipMessageCache();
 	}
 
 	/**
@@ -134,7 +138,8 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			'smwgQSubpropertyDepth',
 			'smwgQSubcategoryDepth',
 			'smwgQConceptCaching',
-			'smwgEnabledInTextAnnotationParserStrictMode'
+			'smwgEnabledInTextAnnotationParserStrictMode',
+			'smwgEnabledHttpDeferredJobRequest'
 		);
 
 		foreach ( $permittedSettings as $key ) {
