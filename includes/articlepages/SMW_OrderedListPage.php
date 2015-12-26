@@ -58,10 +58,16 @@ abstract class SMWOrderedListPage extends Article {
 	 * output.
 	 */
 	public function view() {
-		global $wgRequest, $wgUser;
+		global $wgRequest, $wgUser, $wgOut;
 
 		if ( $this->getTitle()->getNamespace() === SMW_NS_PROPERTY ) {
 			$this->findBasePropertyToRedirectFor( $this->getTitle()->getText() );
+		}
+
+		$this->initParameters();
+
+		if ( !isset( $diff ) || !$diffOnly ) {
+			$wgOut->addHTML( $this->getTopText() );
 		}
 
 		parent::view();
@@ -84,6 +90,10 @@ abstract class SMWOrderedListPage extends Article {
 			$outputPage = $this->getContext()->getOutput();
 			$outputPage->redirect( $property->getDiWikiPage()->getTitle()->getFullURL() );
 		}
+	}
+
+	protected function getTopText() {
+		return '';
 	}
 
 	/**

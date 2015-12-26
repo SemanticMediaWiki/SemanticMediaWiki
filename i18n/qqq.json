@@ -349,5 +349,14 @@
 	"smw-pa-property-predefined_errc": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
 	"smw-pa-property-predefined_errt": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
 	"smw-subobject-parser-invalid-naming-scheme": "This is an error message shown to the user in case a named identifier contains a dot (foo.bar).",
-	"smw-datavalue-record-invalid-property-declaration": "This is an error message shown to the user."
+	"smw-datavalue-record-invalid-property-declaration": "This is an error message shown to the user.",
+	"smw-pa-property-predefined_mdat": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
+	"smw-pa-property-predefined_cdat": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
+	"smw-pa-property-predefined_newp": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
+	"smw-pa-property-predefined_ledt": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
+	"smw-pa-property-predefined_mime": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
+	"smw-pa-property-predefined_media": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
+	"smw-pa-property-predefined_askfo": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
+	"smw-pa-property-predefined_askst": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
+	"smw-pa-property-predefined_askdu": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property]."
 }

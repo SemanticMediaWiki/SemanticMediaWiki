@@ -64,12 +64,14 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 	/**
 	 * @var boolean
 	 */
-	private $deleteAfterState = true;
+	protected $deleteAfterState = true;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
+		$utilityFactory->newMwHooksHandler()->deregisterListedHooks();
+		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
 
 		$this->fileReader = $utilityFactory->newJsonFileReader( null );
 		$this->pageCreator = $utilityFactory->newPageCreator();
@@ -137,9 +139,13 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 				$namespace
 			);
 
-			$this->pageCreator
-				->createPage( $title )
-				->doEdit( $page['contents'] );
+			if ( isset( $page['contents']['import-from'] ) && $page['contents']['import-from'] !== '' ) {
+				$contents = file_get_contents( $this->getTestCaseLocation() . $page['contents']['import-from'] );
+			} else {
+				$contents = $page['contents'];
+			}
+
+			$this->pageCreator->createPage( $title, $contents );
 
 			$this->itemsMarkedForDeletion[] = $this->pageCreator->getPage();
 

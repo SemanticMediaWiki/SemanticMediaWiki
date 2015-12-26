@@ -287,7 +287,7 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 			->doEdit( '[[Has type::Page]]' );
 
 		$this->pageCreator
-			->createPage( Title::newFromText( 'Foo' ), NS_MAIN )
+			->createPage( Title::newFromText( 'Foo', NS_MAIN ) )
 			->doEdit( '[[FooProperty::SomePage]]' );
 
 		$this->pageCreator

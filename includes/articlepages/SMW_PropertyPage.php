@@ -38,11 +38,10 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		}
 
 		$list = $this->getSubpropertyList() . $this->getPropertyValueList();
-		$result = $this->getPredefinedPropertyIntro() . ( $list !== '' ? Html::element( 'div', array( 'id' => 'smwfootbr' ) ) . $list : '' );
+		$result = ( $list !== '' ? Html::element( 'div', array( 'id' => 'smwfootbr' ) ) . $list : '' );
 
 		return $result;
 	}
-
 
 	/**
 	 * Returns an introductory text for a predefined property
@@ -55,10 +54,9 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 *
 	 * @return string
 	 */
-	protected function getPredefinedPropertyIntro() {
+	protected function getTopText() {
 
 		if ( !$this->mProperty->isUserDefined() ) {
-
 			$propertyName = htmlspecialchars( $this->mTitle->getText() );
 			$propertyKey  = 'smw-pa-property-predefined' . strtolower( $this->mProperty->getKey() );
 			$messageKey   = wfMessage( $propertyKey )->exists() ? $propertyKey : 'smw-pa-property-predefined-default';

@@ -45,4 +45,14 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testParserCachePurgeJob() {
+
+		$instance = new JobFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\Jobs\ParserCachePurgeJob',
+			$instance->newParserCachePurgeJob( Title::newFromText( __METHOD__ ) )
+		);
+	}
+
 }

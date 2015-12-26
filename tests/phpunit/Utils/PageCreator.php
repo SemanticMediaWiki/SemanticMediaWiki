@@ -42,10 +42,13 @@ class PageCreator {
 
 		$this->page = new \WikiPage( $title );
 
-		$pageContent = 'Content of ' . $title->getFullText() . ' ' . $editContent;
+		if ( $editContent === '' ) {
+			$editContent = 'Content of ' . $title->getFullText();
+		}
+
 		$editMessage = 'SMW system test: create page';
 
-		return $this->doEdit( $pageContent, $editMessage );
+		return $this->doEdit( $editContent, $editMessage );
 	}
 
 	/**

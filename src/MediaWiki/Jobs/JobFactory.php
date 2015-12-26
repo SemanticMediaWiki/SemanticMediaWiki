@@ -40,6 +40,7 @@ class JobFactory {
 	 * @since 2.0
 	 *
 	 * @param Title $title
+	 * @param array $parameters
 	 *
 	 * @return ParserCachePurgeJob
 	 */
