@@ -1,0 +1,58 @@
+{
+	"description": "Using the schema to define properties",
+	"properties": [],
+	"subjects": [
+		{
+			"name": "smw-schema-definition",
+			"namespace": "NS_MEDIAWIKI",
+			"contents": {
+				"import-from": "/../Schemas/simple-schema.json"
+			}
+		},
+		{
+			"name": "Example/P1000/1",
+			"contents": "[[Has wattage::42 W]]"
+		},
+		{
+			"name": "Example/P1000/2",
+			"contents": "{{#ask:[[Has wattage::42 W]] |?Has wattage |format=table }}"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0",
+			"subject": "Example/P1000/2",
+			"store": {
+				"clear-cache": true,
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_MDAT", "_SKEY", "_ASK" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"Example/P1000/1",
+					"42&#160;W",
+					"0.042&#160;kW",
+					"0.0563&#160;hp"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgEnabledHttpDeferredJobRequest": false,
+		"smwgPageSpecialProperties": [ "_MDAT" ],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

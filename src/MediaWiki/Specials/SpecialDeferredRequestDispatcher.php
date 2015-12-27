@@ -107,6 +107,9 @@ class SpecialDeferredRequestDispatcher extends SpecialPage {
 			case 'SMW\ParserCachePurgeJob':
 				$this->runParserCachePurgeJob( $title, $parameters );
 				break;
+			case 'SMW\SchemaUpdateJob':
+				$this->runSchemaUpdateJob( $title, $parameters );
+				break;
 			case 'SMW\UpdateJob':
 				$this->runUpdateJob( $title, $parameters );
 				break;
@@ -153,6 +156,18 @@ class SpecialDeferredRequestDispatcher extends SpecialPage {
 		);
 
 		$purgeParserCacheJob->run();
+	}
+
+	private function runSchemaUpdateJob( $title, $parameters ) {
+
+		wfDebugLog( 'smw', __METHOD__ . ' dispatched for '.  $title->getPrefixedDBkey() . "\n" );
+
+		$updateJob = ApplicationFactory::getInstance()->newJobFactory()->newSchemaUpdateJob(
+			$title,
+			$parameters
+		);
+
+		$updateJob->run();
 	}
 
 	private function runUpdateJob( $title, $parameters ) {

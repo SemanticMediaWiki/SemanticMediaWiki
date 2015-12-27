@@ -130,6 +130,9 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->doTestExecutionForTitleIsMovable( $instance );
 		$this->doTestExecutionForEditPageForm( $instance );
 		$this->doTestExecutionForParserFirstCallInit( $instance );
+		$this->doTestExecutionForUserCan( $instance );
+		$this->doTestExecutionForContentHandlerDefaultModelFor( $instance );
+		$this->doTestExecutionForCategoryPageView( $instance );
 
 		// Usage of registered hooks in/by smw-core
 		$this->doTestExecutionForSMWStoreDropTables( $instance );
@@ -710,6 +713,85 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			array( $this->title, &$isMovable  )
+		);
+	}
+
+	public function doTestExecutionForUserCan( $instance ) {
+
+		$handler = 'userCan';
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$action = 'edit';
+		$result = '';
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( &$this->title, &$user, $action, &$result  )
+		);
+	}
+
+	public function doTestExecutionForContentHandlerDefaultModelFor( $instance ) {
+
+		$handler = 'ContentHandlerDefaultModelFor';
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$model = '';
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( $this->title, &$model )
+		);
+	}
+
+	public function doTestExecutionForCategoryPageView( $instance ) {
+
+		$handler = 'CategoryPageView';
+
+		$outputPage = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$requestContext = $this->getMockBuilder( '\RequestContext' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$requestContext->expects( $this->any() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( $outputPage ) );
+
+		$categoryArticle = $this->getMockBuilder( '\Article' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$categoryArticle->expects( $this->any() )
+			->method( 'getContext' )
+			->will( $this->returnValue( $requestContext ) );
+
+		$categoryArticle->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $this->title ) );
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			array( $categoryArticle )
 		);
 	}
 

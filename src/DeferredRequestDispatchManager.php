@@ -137,12 +137,23 @@ class DeferredRequestDispatchManager {
 			};
 		}
 
+		if ( $type === 'SMW\SchemaUpdateJob' ) {
+			$callback = function ( $title, $parameters ) use ( $jobFactory ) {
+				$updateJob = $jobFactory->newSchemaUpdateJob(
+					$title,
+					$parameters
+				);
+
+				$updateJob->run();
+			};
+		}
+
 		return $callback;
 	}
 
 	private function doPreliminaryCheckForType( $type, array $parameters ) {
 
-		if ( $type !== 'SMW\ParserCachePurgeJob' && $type !== 'SMW\UpdateJob' ) {
+		if ( $type !== 'SMW\ParserCachePurgeJob' && $type !== 'SMW\UpdateJob' && $type !== 'SMW\SchemaUpdateJob' ) {
 			return false;
 		}
 

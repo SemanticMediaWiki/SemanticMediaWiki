@@ -95,6 +95,11 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 			array( 'idlist' => '1|2' )
 		);
 
+		$provider[] = array(
+			'SMW\SchemaUpdateJob',
+			true
+		);
+
 		return $provider;
 	}
 

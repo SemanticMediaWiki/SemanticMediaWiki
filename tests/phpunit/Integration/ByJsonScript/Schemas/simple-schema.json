@@ -1,0 +1,18 @@
+{
+    "description": "Schema list for Semantic MediaWiki",
+    "version": "0.1",
+    "properties": [
+        {
+            "property": "Has wattage",
+            "type": "Quantity",
+            "correspondsTo": [
+                "1 W, Watt, Watts",
+                "0.001 kW",
+                "0.0013410220 hp, bhp, horsepower"
+            ],
+            "categories": [
+                "Schema category"
+            ]
+        }
+    ]
+}

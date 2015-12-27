@@ -2,6 +2,7 @@
 
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
+use SMW\SchemaManager;
 
 /**
  * Implementation of MediaWiki's Article that shows additional information on
@@ -56,7 +57,11 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 */
 	protected function getTopText() {
 
-		if ( !$this->mProperty->isUserDefined() ) {
+		$result = '';
+
+		if ( $this->mProperty->isUserDefined() && !SchemaManager::getInstance()->canEdit( $this->mTitle, $result ) ) {
+			return wfMessage( 'smw-schema-property-notice', $this->mProperty->getLabel() )->parse();
+		} elseif ( !$this->mProperty->isUserDefined() ) {
 			$propertyName = htmlspecialchars( $this->mTitle->getText() );
 			$propertyKey  = 'smw-pa-property-predefined' . strtolower( $this->mProperty->getKey() );
 			$messageKey   = wfMessage( $propertyKey )->exists() ? $propertyKey : 'smw-pa-property-predefined-default';

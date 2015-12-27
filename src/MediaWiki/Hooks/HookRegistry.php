@@ -16,6 +16,7 @@ use Onoi\HttpRequest\HttpRequestFactory;
 use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\InfoParserFunction;
 use ParserHooks\HookRegistrant;
+use SMW\SchemaManager;
 
 /**
  * @license GNU GPL v2+
@@ -220,12 +221,57 @@ class HookRegistry {
 		};
 
 		/**
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ContentHandlerDefaultModelFor
+		 */
+		$this->handlers['ContentHandlerDefaultModelFor'] = function ( $title, &$model ) {
+			return SchemaManager::getInstance()->modifyContentHandlerDefaultModelFor( $title, $model );
+		};
+
+		/**
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/CategoryPageView
+		 */
+		$this->handlers['CategoryPageView'] = function ( $categoryArticle ) {
+
+			$categoryArticle->getContext()->getOutput()->addHTML(
+				SchemaManager::getInstance()->getMessageForCategoryPage( $categoryArticle->getTitle() )
+			);
+
+			return true;
+		};
+
+		/**
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/userCan
+		 */
+		$this->handlers['userCan'] = function ( &$title, &$user, $action, &$result ) {
+
+			if ( $action === 'edit' ) {
+				return SchemaManager::getInstance()->canEdit( $title, $result );
+			}
+
+			if ( $action === 'delete' ) {
+				return SchemaManager::getInstance()->canDelete( $title, $result );
+			}
+
+			return true;
+		};
+
+		/**
 		 * Hook: NewRevisionFromEditComplete called when a revision was inserted
 		 * due to an edit
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/NewRevisionFromEditComplete
 		 */
-		$this->handlers['NewRevisionFromEditComplete'] = function ( $wikiPage, $revision, $baseId, $user ) {
+		$this->handlers['NewRevisionFromEditComplete'] = function ( $wikiPage, $revision, $baseId, $user ) use ( $deferredRequestDispatchManager ) {
+
+			if ( SchemaManager::getInstance()->isSchemaPage( $wikiPage->getTitle() ) ) {
+
+				$deferredRequestDispatchManager->dispatchJobRequestFor(
+					'SMW\SchemaUpdateJob',
+					$wikiPage->getTitle()
+				);
+
+				return true;
+			}
 
 			$newRevisionFromEditComplete = new NewRevisionFromEditComplete(
 				$wikiPage,
@@ -461,13 +507,7 @@ class HookRegistry {
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleIsMovable
 		 */
 		$this->handlers['TitleIsMovable'] = function ( $title, &$isMovable ) {
-
-			$titleIsMovable = new TitleIsMovable(
-				$title,
-				$isMovable
-			);
-
-			return $titleIsMovable->process();
+			return SchemaManager::getInstance()->canMove( $title, $isMovable );
 		};
 
 		/**
