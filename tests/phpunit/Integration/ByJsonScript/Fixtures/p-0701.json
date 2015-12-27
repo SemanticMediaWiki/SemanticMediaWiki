@@ -1,0 +1,65 @@
+{
+	"description": "Test to create inverted annotation using a #ask/template combination (#711, `import-annotation=true`)",
+	"properties": [
+		{
+			"name": "Located in",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"name": "Location of",
+			"contents": "[[Has type::Page]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Location",
+			"namespace": "NS_TEMPLATE",
+			"contents": "<includeonly>[[Located in::{{{Located in}}}]]</includeonly>"
+		},
+		{
+			"name": "InvertPropertySetter",
+			"namespace": "NS_TEMPLATE",
+			"contents": "<includeonly>{{#set:|{{{userparam}}}={{{1}}} }}</includeonly>"
+		},
+		{
+			"name": "InvertPropertyDeclarator",
+			"namespace": "NS_TEMPLATE",
+			"contents": "<includeonly>{{#ask:[[{{{1}}}::{{PAGENAME}}]]|link=none|sep=|template=InvertPropertySetter|userparam={{{2}}}|format=template|import-annotation=true}}</includeonly>"
+		},
+		{
+			"name": "Belgium",
+			"contents": "{{Location|Located in=Europe}}"
+		},
+		{
+			"name": "Italy",
+			"contents": "{{Location|Located in=Europe}}"
+		},
+		{
+			"name": "Europe",
+			"contents": "{{InvertPropertyDeclarator|Located in|Location of}}"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0 inverse annotation",
+			"subject": "Europe",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [ "_SKEY", "_MDAT", "Location_of", "_ASK" ],
+					"propertyValues": [ "Italy", "Belgium" ]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgCapitalLinks": true,
+		"smwgPageSpecialProperties": [ "_MDAT" ]
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

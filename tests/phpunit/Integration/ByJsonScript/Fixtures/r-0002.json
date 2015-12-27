@@ -1,0 +1,77 @@
+{
+	"description": "Test RDF output for redirected pages (#882)",
+	"properties": [
+		{
+			"name": "Has text property for rdf",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"name": "Has page property for rdf",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"name": "Has date property for rdf",
+			"contents": "[[Has type::Date]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Rdf-1-redirect",
+			"contents": "[[Has page property for rdf::Test one]] [[Has text property for rdf::Test one]] [[Has date property for rdf::1 Jan 1970]]"
+		},
+		{
+			"name": "Rdf-2-redirect",
+			"contents": "#REDIRECT [[Rdf-1-redirect]]"
+		}
+	],
+	"rdf-testcases": [
+		{
+			"about": "#0 without backlinks",
+			"exportcontroller" : {
+				"print-pages": [  "Rdf-1-redirect", "Rdf-2-redirect" ],
+				"parameters" : {
+					"backlinks" : false,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D1-2Dredirect\">",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D2-2Dredirect\">",
+					"<swivt:redirectsTo rdf:resource=\"&wiki;Rdf-2D1-2Dredirect\"/>\n",
+					"<owl:sameAs rdf:resource=\"&wiki;Rdf-2D1-2Dredirect\"/>",
+					"<owl:ObjectProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#redirectsTo\" />"
+				]
+			}
+		},
+		{
+			"about": "#1 with enabled backlinks",
+			"exportcontroller" : {
+				"print-pages": [  "Rdf-1-redirect", "Rdf-2-redirect" ],
+				"parameters" : {
+					"backlinks" : true,
+					"recursion" : "2",
+					"revisiondate" : false
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D1-2Dredirect\">",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D2-2Dredirect\">",
+					"<swivt:redirectsTo rdf:resource=\"&wiki;Rdf-2D1-2Dredirect\"/>\n",
+					"<owl:sameAs rdf:resource=\"&wiki;Rdf-2D1-2Dredirect\"/>",
+					"<owl:ObjectProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#redirectsTo\" />"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespace": "http://example.org/id/"
+	},
+	"meta": {
+		"version": "0.2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

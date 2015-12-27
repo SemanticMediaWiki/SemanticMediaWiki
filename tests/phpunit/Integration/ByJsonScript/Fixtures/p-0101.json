@@ -1,0 +1,101 @@
+{
+	"description": "Test in-text annotation for use of restricted properties (#914, en)",
+	"properties": [
+		{
+			"name": "Has date",
+			"contents": "[[Has type::Date]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "To-verify-annotation-works",
+			"contents": "[[Has date::1 Jan 1970]] {{#set:|Has date=1 Jan 1970}} {{#subobject:|Has date=1 Jan 1970}}"
+		},
+		{
+			"name": "Modification-date",
+			"contents": "[[Modification date::1 Jan 1970]] {{#set:|Modification date=1 Jan 1970}} {{#subobject:|Modification date=1 Jan 1970}}"
+		},
+		{
+			"name": "Has-query",
+			"contents": "[[Has query::Invalid]] {{#set:|Has query=Invalid}} {{#subobject:|Has query=Invalid}}"
+		},
+		{
+			"name": "Has-subobject",
+			"contents": "[[Has subobject::Invalid]] {{#set:|Has subobject=Invalid}} {{#subobject:|Has subobject=Invalid}}"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0 verify that annotation/parser works",
+			"subject": "To-verify-annotation-works",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [ "Has_date", "_MDAT", "_SKEY", "_SOBJ" ],
+					"propertyValues": [ "1970-01-01" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"1 Jan 1970"
+				]
+			}
+		},
+		{
+			"about": "#1 verify no free annotation using Modification date (_MDAT) is created by the system",
+			"subject": "Modification-date",
+			"store": {
+				"errors": [],
+				"semantic-data": {
+					"propertyCount": 4,
+					"propertyKeys": [ "_MDAT", "_SKEY", "_SOBJ", "_ERRC" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"Property &quot;Modification date&quot; has been marked for restricted use."
+				]
+			}
+		},
+		{
+			"about": "#2 verify no free annotation using Has query",
+			"subject": "Has-query",
+			"store": {
+				"semantic-data": {
+					"propertyCount": 4,
+					"propertyKeys": [ "_MDAT", "_SKEY", "_SOBJ", "_ERRC" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"Property &quot;Has query&quot; has been marked for restricted use."
+				]
+			}
+		},
+		{
+			"about": "#3 verify no free annotation using Has subobject",
+			"subject": "Has-subobject",
+			"store": {
+				"semantic-data": {
+					"propertyCount": 4,
+					"propertyKeys": [ "_MDAT", "_SKEY", "_SOBJ", "_ERRC" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"Property &quot;Has subobject&quot; has been marked for restricted use."
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"smwgPageSpecialProperties": [ "_MDAT" ]
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

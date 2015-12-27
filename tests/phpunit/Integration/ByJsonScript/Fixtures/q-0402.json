@@ -1,0 +1,224 @@
+{
+	"description": "Test `_SUBP` to map DC imported vocabulary with MARC 21 bibliographic terms (#1003, http://www.loc.gov/marc/bibliographic/bd20x24x.html)",
+	"properties": [
+		{
+			"name": "Smw import dc",
+			"namespace": "NS_MEDIAWIKI",
+			"contents": "http://purl.org/dc/elements/1.1/|[http://purl.org/dc/elements/1.1/ dc]\n title|Type:Text\n type|Type:Text\n date|Type:Date\n description|Type:Text\n creator|Type:Page\n"
+		},
+		{
+			"name": "Dc:title",
+			"contents": "[[Imported from::dc:title]]"
+		},
+		{
+			"name": "Dc:creator",
+			"contents": "[[Imported from::dc:creator]]"
+		},
+		{
+			"name": "Marc:title",
+			"contents": "[[Has type::Text]] [[Subproperty of::Dc:title]]"
+		},
+		{
+			"name": "Marc:main entry personal name",
+			"contents": "[[Has type::Page]] [[Subproperty of::Dc:creator]]"
+		},
+		{
+			"name": "Marc:title statement",
+			"contents": "[[Has type::Text]] [[Subproperty of::Marc:title]]"
+		},
+		{
+			"name": "Marc:varying form of title",
+			"contents": "[[Has type::Text]] [[Subproperty of::Marc:title]]"
+		},
+		{
+			"name": "Has author",
+			"contents": "#REDIRECT [[Property:Marc:main entry personal name]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Animal farm",
+			"contents": "[[Marc:title statement::George Orwell's Animal farm]] [[Has author::George Orwell]]"
+		},
+		{
+			"name": "War and Peace",
+			"contents": "[[Marc:title statement::War and Peace]] [[Has author::Leo Tolstoy]]"
+		},
+		{
+			"name": "King Lear",
+			"contents": "#REDIRECT [[Shakespeare's King Lear]]"
+		},
+		{
+			"name": "Shakespeare",
+			"contents": "#REDIRECT [[William Shakespeare]]"
+		},
+		{
+			"name": "Shakespeare's King Lear",
+			"contents": "[[Marc:title::King Lear]] [[Has author::William Shakespeare]]"
+		}
+	],
+	"query-testcases": [
+		{
+			"about": "#0 any value for Marc:title statement",
+			"condition": "[[Marc:title statement::+]]",
+			"printouts" : [ "Has author" ],
+			"store" : {
+				"clear-cache" : true
+			},
+			"parameters" : {
+				"limit" : 10
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Animal farm#0##",
+					"War and Peace#0##"
+				],
+				"datavalues": [
+					{
+						"property": "Has author",
+						"value": "Leo Tolstoy"
+					},
+					{
+						"property": "Has author",
+						"value": "George Orwell"
+					}
+				]
+			}
+		},
+		{
+			"about": "#1 any value for Marc:title on level one of the subproperty hierarchy",
+			"condition": "[[Marc:title::+]]",
+			"printouts" : [ "Has author" ],
+			"store" : {
+				"clear-cache" : true
+			},
+			"parameters" : {
+				"limit" : 10
+			},
+			"queryresult": {
+				"count": 3,
+				"results": [
+					"Animal farm#0##",
+					"War and Peace#0##",
+					"Shakespeare's King Lear#0##"
+				],
+				"datavalues": [
+					{
+						"property": "Has author",
+						"value": "Leo Tolstoy"
+					},
+					{
+						"property": "Has author",
+						"value": "George Orwell"
+					},
+					{
+						"property": "Has author",
+						"value": "William Shakespeare"
+					}
+				]
+			}
+		},
+		{
+			"about": "#2 any value for Dc:title on level two of the subproperty hierarchy",
+			"condition": "[[Dc:title::+]]",
+			"printouts" : [ "Has author" ],
+			"store" : {
+				"clear-cache" : true
+			},
+			"parameters" : {
+				"limit" : 10
+			},
+			"queryresult": {
+				"count": 3,
+				"results": [
+					"Animal farm#0##",
+					"War and Peace#0##",
+					"Shakespeare's King Lear#0##"
+				],
+				"datavalues": [
+					{
+						"property": "Has author",
+						"value": "Leo Tolstoy"
+					},
+					{
+						"property": "Has author",
+						"value": "George Orwell"
+					},
+					{
+						"property": "Has author",
+						"value": "William Shakespeare"
+					}
+				]
+			}
+		},
+		{
+			"about": "#3 distinct value for Dc:title on level two of the subproperty hierarchy",
+			"condition": "[[Dc:title::~*Animal*]]",
+			"printouts" : [ "Has author" ],
+			"store" : {
+				"clear-cache" : true
+			},
+			"parameters" : {
+				"limit" : 10
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Animal farm#0##"
+				],
+				"datavalues": [
+					{
+						"property": "Has author",
+						"value": "George Orwell"
+					}
+				]
+			}
+		},
+		{
+			"about": "#4 distinct value for Has author / redirected value / subproperty level zero",
+			"condition": "[[Has author::Shakespeare]]",
+			"printouts" : [],
+			"store" : {
+				"clear-cache" : true
+			},
+			"parameters" : {
+				"limit" : 10
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Shakespeare's King Lear#0##"
+				]
+			}
+		},
+		{
+			"about": "#5 distinct value for Dc:creator / redirected value / subproperty level one",
+			"condition": "[[Dc:creator::Shakespeare]]",
+			"printouts" : [],
+			"store" : {
+				"clear-cache" : true
+			},
+			"parameters" : {
+				"limit" : 10
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Shakespeare's King Lear#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgQSubpropertyDepth": 10
+	},
+	"meta": {
+		"skip-on": {
+			"virtuoso": "Virtuoso 6.1 rdfs / subproperty/property hierarchies are currently not implemented"
+		},
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -1,0 +1,123 @@
+{
+	"description": "Test `_qty` queries for custom unit (km²/°C) property value assignments",
+	"properties": [
+		{
+			"name": "Area",
+			"contents": "[[Has type::Quantity]] [[Corresponds to::1 km²]][[Corresponds to::1000 m²]][[Corresponds to::0.38610 sq mi]][[Corresponds to::247.1054 acre]][[Corresponds to::988.4215 rood]]"
+		},
+		{
+			"name": "Has average high temperature",
+			"contents": "[[Has type::Temperature]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Berlin",
+			"contents": "[[Area::891.85 km²]], [[Has average high temperature::13.4 °C]]"
+		},
+		{
+			"name": "Paris",
+			"contents": "[[Area::105.40 km²]], [[Has average high temperature::16.0 °C]]"
+		},
+		{
+			"name": "東京都",
+			"contents": "[[Area::845 sq mi]], [[Has average high temperature::26.0 °C]]"
+		}
+	],
+	"query-testcases": [
+		{
+			"about": "#0 Wildcard search for any value",
+			"condition": "[[Area::+]]",
+			"printouts" : [ "Area" ],
+			"parameters" : {
+			  "limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"Berlin#0##",
+					"Paris#0##",
+					"東京都#0##"
+				],
+				"count": "3",
+				"datavalues": [
+					{
+						"property": "Area",
+						"value": "891.85 km²"
+					},
+					{
+						"property": "Area",
+						"value": "105.40 km²"
+					},
+					{
+						"property": "Area",
+						"value": "845 sq mi"
+					}
+				]
+			}
+		},
+		{
+			"about": "#1 Search for distinct value",
+			"condition": "[[Area::891.85]]",
+			"printouts" : [],
+			"parameters" : {
+			  "limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"Berlin#0##"
+				],
+				"count": "1"
+			}
+		},
+		{
+			"about": "#2 Search for less than distinct value",
+			"condition": "[[Has average high temperature::<15.0 °C]]",
+			"printouts" : [],
+			"parameters" : {
+			  "limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"Berlin#0##"
+				],
+				"count": "1"
+			}
+		},
+		{
+			"about": "#3 Search for greater than or equal distinct value",
+			"condition": "[[Has average high temperature::≥16.0 °C]]",
+			"printouts" : [],
+			"parameters" : {
+			  "limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"Paris#0##",
+					"東京都#0##"
+				],
+				"count": "2"
+			}
+		},
+		{
+			"about": "#4 Search for greater than distinct value",
+			"condition": "[[Has average high temperature::>70 °F]]",
+			"printouts" : [],
+			"parameters" : {
+			  "limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"東京都#0##"
+				],
+				"count": "1"
+			}
+		}
+	],
+	"settings": {
+		"smwStrictComparators" : false
+	},
+	"meta": {
+		"version": "0.1",
+		"debug": false
+	}
+}

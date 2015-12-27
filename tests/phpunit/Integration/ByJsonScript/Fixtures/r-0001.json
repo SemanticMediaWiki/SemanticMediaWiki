@@ -1,0 +1,183 @@
+{
+	"description": "Test RDF output for `_txt`/`_wpg`/`_dat` (#881)",
+	"properties": [
+		{
+			"name": "Has text property for rdf",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"name": "Has page property for rdf",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"name": "Has date property for rdf",
+			"contents": "[[Has type::Date]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Rdf-1",
+			"contents": "[[Has page property for rdf::Test one]] [[Has text property for rdf::Test one]]"
+		},
+		{
+			"name": "Rdf-2",
+			"contents": "[[Has page property for rdf::Test two]] [[Has text property for rdf::Test two]]"
+		},
+		{
+			"name": "Rdf-3",
+			"contents": "{{#subobject:|Has page property for rdf=I--11--O|@sortkey=X99Y}} {{#subobject:Caractères spéciaux|Has text property for rdf={({[[&,,;-]]})} }}"
+		},
+		{
+			"name": "Rdf-4",
+			"contents": "[[Has date property for rdf::31/12/2014]] {{#subobject:|Has date property for rdf=1/1/1970}}"
+		},
+		{
+			"name": "Rdf-5",
+			"contents": "Not permitted to use [[Has subobject::foo]] {{DEFAULTSORT:AA-BB-CC}}"
+		}
+	],
+	"rdf-testcases": [
+		{
+			"about": "#0 Single subject output",
+			"exportcontroller" : {
+				"print-pages": [ "Rdf-1" ],
+				"parameters" : {
+					"backlinks" : false,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"<property:Has_page_property_for_rdf rdf:resource=\"&wiki;Test_one\"/>",
+					"<property:Has_text_property_for_rdf rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Test one</property:Has_text_property_for_rdf>",
+					"<swivt:wikiPageSortKey rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Rdf-1</swivt:wikiPageSortKey>",
+					"<owl:ObjectProperty rdf:about=\"http://example.org/id/Property-3AHas_page_property_for_rdf\" />",
+					"<owl:DatatypeProperty rdf:about=\"http://example.org/id/Property-3AHas_text_property_for_rdf\" />"
+				]
+			}
+		},
+		{
+			"about": "#1",
+			"exportcontroller" : {
+				"print-pages": [ "Rdf-1", "Rdf-2" ],
+				"parameters" : {
+					"backlinks" : false,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D1\">",
+					"<rdfs:label>Rdf-1</rdfs:label>",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D2\">",
+					"<rdfs:label>Rdf-2</rdfs:label>"
+				]
+			}
+		},
+		{
+			"about": "#2 Output for anonymous and named subobject",
+			"exportcontroller" : {
+				"print-pages": [ "Rdf-3" ],
+				"parameters" : {
+					"backlinks" : false,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D3\">",
+					"<property:Has_subobject-23aux rdf:resource=\"&wiki;Rdf-2D3-23_352994736fdd9b50f3506c054ce554ab\"/>",
+					"<property:Has_subobject-23aux rdf:resource=\"&wiki;Rdf-2D3-23Caract-C3-A8res_sp-C3-A9ciaux\"/>",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D3-23_352994736fdd9b50f3506c054ce554ab\">",
+					"<property:Has_page_property_for_rdf rdf:resource=\"&wiki;I-2D-2D11-2D-2DO\"/>",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D3-23Caract-C3-A8res_sp-C3-A9ciaux\">",
+					"<property:Has_text_property_for_rdf rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">{({[[&amp;,,;-]]})}</property:Has_text_property_for_rdf>",
+					"<owl:ObjectProperty rdf:about=\"http://example.org/id/Property-3AHas_subobject-23aux\" />"
+				]
+			}
+		},
+		{
+			"about": "#3 Date output",
+			"exportcontroller" : {
+				"print-pages": [ "Rdf-4" ],
+				"parameters" : {
+					"backlinks" : false,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D4\">",
+					"<property:Has_date_property_for_rdf rdf:datatype=\"http://www.w3.org/2001/XMLSchema#date\">2014-12-31Z</property:Has_date_property_for_rdf>",
+					"<property:Has_date_property_for_rdf-23aux rdf:datatype=\"http://www.w3.org/2001/XMLSchema#double\">2457022.5</property:Has_date_property_for_rdf-23aux>",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D4-23_2c6937c91895c958f837a25691dd53c0\">",
+					"<property:Has_date_property_for_rdf rdf:datatype=\"http://www.w3.org/2001/XMLSchema#date\">1970-01-01Z</property:Has_date_property_for_rdf>",
+					"<property:Has_date_property_for_rdf-23aux rdf:datatype=\"http://www.w3.org/2001/XMLSchema#double\">2440587.5</property:Has_date_property_for_rdf-23aux>",
+					"<owl:DatatypeProperty rdf:about=\"http://example.org/id/Property-3AHas_date_property_for_rdf\" />",
+					"<owl:DatatypeProperty rdf:about=\"http://example.org/id/Property-3AHas_date_property_for_rdf-23aux\" />"
+				]
+			}
+		},
+		{
+			"about": "#4 Property output, see #795",
+			"exportcontroller" : {
+				"print-pages": [ "Property:Has text property for rdf", "Property:Has page property for rdf", "Property:Has date property for rdf" ],
+				"parameters" : {
+					"backlinks" : false,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"<owl:DatatypeProperty rdf:about=\"http://example.org/id/Property-3AHas_text_property_for_rdf\">",
+					"<rdfs:label>Has text property for rdf</rdfs:label>",
+					"<swivt:type rdf:resource=\"http://semantic-mediawiki.org/swivt/1.0#_txt\"/>",
+					"<owl:ObjectProperty rdf:about=\"http://example.org/id/Property-3AHas_page_property_for_rdf\">",
+					"<rdfs:label>Has page property for rdf</rdfs:label>",
+					"<swivt:type rdf:resource=\"http://semantic-mediawiki.org/swivt/1.0#_wpg\"/>",
+					"<owl:DatatypeProperty rdf:about=\"http://example.org/id/Property-3AHas_date_property_for_rdf\">",
+					"<rdfs:label>Has date property for rdf</rdfs:label>",
+					"<swivt:type rdf:resource=\"http://semantic-mediawiki.org/swivt/1.0#_dat\"/>",
+					"<owl:ObjectProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#type\" />"
+				]
+			}
+		},
+		{
+			"about": "#5 Check for proper output despite the use of [[Has subobject:: ... ]] as annotation",
+			"exportcontroller" : {
+				"print-pages": [  "Rdf-5" ],
+				"parameters" : {
+					"backlinks" : false,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D5\">",
+					"<rdfs:label>Rdf-5</rdfs:label>",
+					"<swivt:wikiPageSortKey rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">AA-BB-CC</swivt:wikiPageSortKey>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgExportBCAuxiliaryUse": true,
+		"smwgNamespace": "http://example.org/id/",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_HELP": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "0.2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

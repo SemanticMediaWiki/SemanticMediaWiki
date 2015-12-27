@@ -1,0 +1,42 @@
+{
+	"description": "Test that undeclared properties with references remain after a `rebuildData` run (#1216, en)",
+	"properties": [
+		{
+			"name": "Has number",
+			"contents": "[[Has type::Number]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/0207",
+			"contents": "{{#set:Has number=12}} {{#set:Undeclared property=abc}} [[Undeclared prop::0207]]"
+		}
+	],
+	"maintenance-run": {
+		"rebuildData": true
+	},
+	"parser-testcases": [
+		{
+			"about": "#0 Rebuild + clear cache to verify that the disposer (#1216) didn't remove undeclared properties that still contain references",
+			"subject": "Example/0207",
+			"store": {
+				"clear-cache": true,
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 5,
+					"propertyKeys": [ "Has_number", "_ERRP", "_SKEY", "_MDAT", "Undeclared_property", "Undeclared_prop" ],
+					"propertyValues": [ 12, "Abc", "0207" ]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"smwgPageSpecialProperties": [ "_MDAT" ]
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

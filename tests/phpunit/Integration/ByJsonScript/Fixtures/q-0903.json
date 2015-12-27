@@ -1,0 +1,238 @@
+{
+	"description": "Test `_wpg`/`_num`/`_txt` for disjunction OR || (T31866, #1059, en)",
+	"properties": [
+		{
+			"name": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"name": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"name": "Has text",
+			"contents": "[[Has type::Text]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Sample/Number/1",
+			"contents": "[[Has number::1]]"
+		},
+		{
+			"name": "Sample/Number/2",
+			"contents": "[[Has number::2]]"
+		},
+		{
+			"name": "Sample/Number/3",
+			"contents": "[[Has number::3]]"
+		},
+		{
+			"name": "Sample/Title/1",
+			"contents": "[[Has text::Foo]] [[Has page::123]]"
+		},
+		{
+			"name": "Sample/Title/2",
+			"contents": "[[Has text::Foobar]] [[Has page::ABC]]"
+		},
+		{
+			"name": "Sample/Title/3",
+			"contents": "[[Has text::FOO]] [[Has page::abc]]"
+		},
+		{
+			"name": "Sample/Title/4",
+			"contents": "[[Has text::FoO]] [[Has page::aBc]]"
+		},
+		{
+			"name": "Sample/Title/5",
+			"contents": "[[Has text::FoO]] [[Has page::Sample/Title/2]]"
+		}
+	],
+	"query-testcases": [
+		{
+			"about": "#0",
+			"condition": "[[Has number::1]] OR [[Has number::2]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Sample/Number/1#0##",
+					"Sample/Number/2#0##"
+				]
+			}
+		},
+		{
+			"about": "#1 same as #0",
+			"condition": "[[Has number::1||2]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Sample/Number/1#0##",
+					"Sample/Number/2#0##"
+				]
+			}
+		},
+		{
+			"about": "#2",
+			"condition": "[[Has text::~Foo*]][[Has page::123||ABC]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Sample/Title/1#0##",
+					"Sample/Title/2#0##"
+				]
+			}
+		},
+		{
+			"about": "#3 same as #2",
+			"condition": "[[Has page::123||ABC]][[Has text::~Foo*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Sample/Title/1#0##",
+					"Sample/Title/2#0##"
+				]
+			}
+		},
+		{
+			"about": "#4 same as #2",
+			"condition": "[[Has text::~Foo*]][[Has page::123]] OR [[Has page::ABC]][[Has text::~Foo*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Sample/Title/1#0##",
+					"Sample/Title/2#0##"
+				]
+			}
+		},
+		{
+			"about": "#5",
+			"condition": "[[Has text::+]][[Has text::~*oo*||~*OO*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 3,
+				"results": [
+					"Sample/Title/1#0##",
+					"Sample/Title/2#0##",
+					"Sample/Title/3#0##"
+				]
+			}
+		},
+		{
+			"about": "#6 same as #5",
+			"condition": "[[Has text::+]][[Has text::~*OO*||~*oo*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 3,
+				"results": [
+					"Sample/Title/1#0##",
+					"Sample/Title/2#0##",
+					"Sample/Title/3#0##"
+				]
+			}
+		},
+		{
+			"about": "#7",
+			"condition": "[[Has page::+]][[Has page::~*a*||~*A*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 4,
+				"results": [
+					"Sample/Title/2#0##",
+					"Sample/Title/3#0##",
+					"Sample/Title/4#0##",
+					"Sample/Title/5#0##"
+				]
+			}
+		},
+		{
+			"about": "#8",
+			"condition": "[[Has page::+]][[Has page::~*B*]][[Has text::~*OO*||~*oo*||~*oO*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Sample/Title/2#0##",
+					"Sample/Title/4#0##"
+				]
+			}
+		},
+		{
+			"about": "#9",
+			"condition": "[[Has text::~*oO*]][[Has page::~*Bc*|| <q>[[Has page::~*a*||~*A*]]</q>]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Sample/Title/4#0##",
+					"Sample/Title/5#0##"
+				]
+			}
+		},
+		{
+			"about": "#10, see issue #19",
+			"condition": "[[Has page::~*b*||~*B*]] AND [[Has text::~*oO*||~*OO*||~*oo*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 3,
+				"results": [
+					"Sample/Title/2#0##",
+					"Sample/Title/3#0##",
+					"Sample/Title/4#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"wgContLang": "en",
+		"smwgQSubpropertyDepth": 10,
+		"smwgQSubcategoryDepth": 10
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

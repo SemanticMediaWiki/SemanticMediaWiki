@@ -1,0 +1,72 @@
+{
+	"description": "Test `_CONC` to use `CONCEPT_CACHE_ALL` (#1050, skip postgres + all SPARQL repository)",
+	"properties": [
+		{
+			"name": "Has description",
+			"contents": "[[Has type::Text]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Page-one",
+			"contents": "[[Has description::Bar]]"
+		},
+		{
+			"name": "Page-two",
+			"contents": "[[Has description::Foo]]"
+		},
+		{
+			"name": "Concept-for-any-description",
+			"namespace": "SMW_NS_CONCEPT",
+			"contents": "{{#concept: [[Has description::+]] }}"
+		}
+	],
+	"query-testcases": [
+		{
+			"about": "#0 any value with CONCEPT_CACHE_ALL set (wiki configuration requires the cache to be computed off-line)",
+			"condition": "[[Concept:Concept-for-any-description]]",
+			"printouts" : [],
+			"parameters" : {
+			  "limit" : "10"
+			},
+			"queryresult": {
+				"count": 0,
+				"error": 1
+			}
+		}
+	],
+	"concept-testcases": [
+		{
+			"about": "#1 Check cache",
+			"condition": "[[Concept:Concept-for-any-description]]",
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 0,
+				"error": 1
+			},
+			"conceptcache": [
+				{
+					"concept": "Concept-for-any-description",
+					"count": 2
+				}
+			]
+		}
+	],
+	"settings": {
+		"smwgQConceptCaching": "CONCEPT_CACHE_ALL"
+	},
+	"meta": {
+		"skip-on": {
+			"virtuoso": "CONCEPT_CACHE_ALL isn't implemented",
+			"sesame": "CONCEPT_CACHE_ALL isn't implemented",
+			"fuseki": "CONCEPT_CACHE_ALL isn't implemented",
+			"blazegraph": "CONCEPT_CACHE_ALL isn't implemented",
+			"postgres": "Unable to run concept tests on postgres, see #781"
+		},
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

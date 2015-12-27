@@ -1,0 +1,73 @@
+{
+	"description": "Test `_wpg` for property chain query queries",
+	"properties": [
+		{
+			"name": "Located in",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"name": "Member of",
+			"contents": "[[Has type::Page]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Europe",
+			"contents": "[[Member of::European Union]] {{#subobject:Member of=NATO}}"
+		},
+		{
+			"name": "France",
+			"contents": "[[Located in::Europe]]"
+		},
+		{
+			"name": "Germany",
+			"contents": "{{#set:Located in=Europe}}"
+		},
+		{
+			"name": "Italy",
+			"contents": "{{#subobject:Located in=Europe}}"
+		}
+	],
+	"query-testcases": [
+		{
+			"about": "#0",
+			"condition": "[[Located in.Member of::European Union]]",
+			"printouts" : [],
+			"parameters" : {
+			  "limit" : "10"
+			},
+			"queryresult": {
+				"count": "3",
+				"results": [
+					"Germany#0##",
+					"France#0##",
+					"Italy#0##_261bcb222bdef3105c6906115585880c"
+				]
+			}
+		},
+		{
+			"about": "#1",
+			"condition": "[[Located in.Has subobject.Member of::NATO]]",
+			"printouts" : [],
+			"parameters" : {
+			  "limit" : "10"
+			},
+			"queryresult": {
+				"count": "3",
+				"results": [
+					"Germany#0##",
+					"France#0##",
+					"Italy#0##_261bcb222bdef3105c6906115585880c"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [ "_MDAT" ]
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

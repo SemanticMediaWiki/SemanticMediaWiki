@@ -1,0 +1,77 @@
+{
+	"description": "Test `_qty` range queries using non strict comparators (`smwStrictComparators=false`)",
+	"properties": [
+		{
+			"name": "Has starting wattage",
+			"contents": "[[Has type::Quantity]] [[Display units::kW]] [[Corresponds to::1 W, Watt, Watts]] [[Corresponds to::0.001 kW]] [[Corresponds to::0.0013410220 hp, bhp, horsepower]]"
+		},
+		{
+			"name": "Has running wattage",
+			"contents": "[[Has type::Quantity]] [[Display units::kW]] [[Corresponds to::1 W, Watt, Watts]] [[Corresponds to::0.001 kW]] [[Corresponds to::0.0013410220 hp, bhp, horsepower]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Home appliance",
+			"contents": "{{#subobject:MicrowaveOven|Has starting wattage=1 kW|Has running wattage=1 kW}} {{#subobject:Refrigerator|Has starting wattage=1.2 kW|Has running wattage=130 W}} {{#subobject:Dishwasher|Has starting wattage=540 W|Has running wattage=200 W}} {{#subobject:Blender|Has starting wattage=840 W|Has running wattage=400 W}}"
+		}
+	],
+	"query-testcases": [
+		{
+			"about": "#0",
+			"condition": "[[Has starting wattage::≥1 kW]]",
+			"printouts" : [ "Has starting wattage" ],
+			"parameters" : {
+			  "limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"Home appliance#0##MicrowaveOven",
+					"Home appliance#0##Refrigerator"
+				],
+				"count": "2",
+				"datavalues": [
+					{
+						"property": "Has starting wattage",
+						"value": "1.2 kW"
+					},
+					{
+						"property": "Has starting wattage",
+						"value": "1 kW"
+					}
+				]
+			}
+		},
+		{
+			"about": "#1 Conjunctive condition",
+			"condition": "[[Has starting wattage::≥1 kW]] [[Has running wattage::< 500 W]]",
+			"printouts" : [ "Has starting wattage", "Has running wattage" ],
+			"parameters" : {
+			  "limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"Home appliance#0##Refrigerator"
+				],
+				"count": "1",
+				"datavalues": [
+					{
+						"property": "Has starting wattage",
+						"value": "1.2 kW"
+					},
+					{
+						"property": "Has running wattage",
+						"value": "130 W"
+					}
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwStrictComparators" : false
+	},
+	"meta": {
+		"version": "0.1",
+		"debug": false
+	}
+}

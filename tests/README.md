@@ -17,19 +17,27 @@ For the automated approach, Semantic MediaWiki relies on [PHPUnit][phpunit] as s
 
 ## Running tests
 
-1. Verify that PHUnit is installed and in case it is not use `composer require phpunit/phpunit:~4.6` to add the package
-2. Verify that your MediaWiki installation comes with its test files and folders (e.g. `/mediawiki/tests` ) in order for Semantic MediaWiki to have access to registered MW-core classes. If the `tests` folder is missing, you may download it from a matched [release source](https://github.com/wikimedia/mediawiki/releases).
-3. Run `composer phpunit` from the SMW base directory (e.g. `/extensions/SemanticMediaWiki`) using a standard command line tool which should output something similar to:
+1. Verify that PHUnit is installed and in case it is not use `composer require phpunit/phpunit:~4.7 --update-with-dependencies` to add the package
+2. Verify that your MediaWiki installation comes with its test files and folders (e.g. `/myMediawikiFolder/tests` ) in order for Semantic MediaWiki to have access to registered MW-core classes. If the `tests` folder is missing, you may download it from a matched [release source](https://github.com/wikimedia/mediawiki/releases).
+3. Run `composer phpunit` from the Semantic MediaWiki base directory (e.g. `/extensions/SemanticMediaWiki`) using a standard command line tool which should output something like:
 
-```
-composer phpunit
+<pre>
+$ composer phpunit
+> php ../../tests/phpunit/phpunit.php -c phpunit.xml.dist
 
-MediaWiki: 1.25.2 (MediaWiki vendor autoloader)
-Semantic MediaWiki: 2.3 alpha (SMWSQLStore3, mysql)
+Semantic MediaWiki: 2.4-alpha (SMWSparqlStore, mysql, sesame)
+MediaWiki:          1.25.4 (MediaWiki vendor autoloader)
 
-PHPUnit 4.3.5 by Sebastian Bergmann.
-...
-```
+Execution date:     2015-01-01 01:00
+
+PHPUnit 4.7.7 by Sebastian Bergmann and contributors.
+
+Runtime:        PHP 5.6.8
+Configuration:  .../extensions/SemanticMediaWiki/phpunit.xml.dist
+
+............................................................   60 / 3328 (  1%)
+............................................................  120 / 3328 (  3%)
+</pre>
 
 Information about PHPUnit in connection with MediaWiki can be found at [smw.org][smw] and [mediawiki.org][mw-phpunit-testing].
 
@@ -48,12 +56,12 @@ The use of `MediaWikiTestCase` is discouraged as its binds tests and the test en
 
 ## Integration tests
 
-Integration tests are vital to confirm expected behaviour of a component from an integrative perspective that occurs through the interplay with its surroundings. `SMW\Tests\Integration\` contains most of the tests that target the validation of reciprocity with MediaWiki together with listed services such as:
+Integration tests are vital to confirm expected behaviour of a component from an integrative perspective that occurs through the interplay with its surroundings. `SMW\Tests\Integration\` contains most of the tests that target the validation of reciprocity with MediaWiki and/or other services such as:
 
 - `SPARQLStore` ( `fuseki`, `virtuoso`, `blazegraph`, or `sesame` )
-- Other extensions that require SMW ( `SM`, `SESP`, `SBL` etc.)
+- Extensions such as `SM`, `SESP`, `SBL` etc.
 
-For details about the test environment see [integration testing](../includes/build/travis/README.md).
+Some details about the integration test environment can be found [here](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/travis/README.md).
 
 ### Write integration tests using `json` script
 
@@ -61,13 +69,7 @@ Integration tests can be written in a pseudo `json` script in combination with a
 
 The script like test definition was introduced to lower the barrier of understanding of what is being tested by using a wikitext notation (internally PHPUnit is used by the `ByJsonTestCaseProvider` to run/provide the actually test).
 
-A new test file (with different test cases) is automatically loaded and run by a `TestCaseRunner` as soon as it is placed in a location specified by the runner.
-
-Each `TestCaseRunner` contains a different interpretation of the `json` script to keep the format straightforward but still allows for individual test assertions. Currently the following `TestCaseProcessor` are provided:
-
-- `RdfTestCaseProcessor` for rdf output assertion
-- `QueryTestCaseProcessor` to verify formats, queries, and concepts
-- `ParserTestCaseProcessor` to check for parser and store specific data
+A new test file (with different test cases) is automatically added by a `TestCaseRunner` as soon as it is placed within the location expected by the runner.
 
 The section `properties` and `subjects` contain object entities that are planned to be used during the test which are specified by a name and a content (generally the page content in wikitext).
 
@@ -93,13 +95,27 @@ The section `properties` and `subjects` contain object entities that are planned
 
 The test result assertion is done in a very simplified way but expressive enough for users to understand the test objective and its expected results. For example, verifying that a result printer does output a certain string, one has to the define an expected output in terms of:
 
-```
-"expected-output": {
-	"to-contain": [
-		"<table class=\"sortable wikitable smwtable\">"
-	]
+<pre>
+"format-testcases": [
+	{
+		"about": "#0 this case is expected to output ...",
+		"subject": "Example/Test/1",
+		"expected-output": {
+			"to-contain": [
+				"abc",
+				"123"
+			]
+		}
+	}
 }
-```
+</pre>
+
+Test case definitions are available using specialized assertion methods with:
+
+* `query-testcases`, `concept-testcases`, and `format-testcases`
+* `parser-testcases`
+* `rdf-testcases`
+* `special-testcases`
 
 It can happen that an output is mixed with message dependent content (which when changing the site/content language will make the test script fail) and therefore it is recommended to fix the settings the test is intended for to pass with something like:
 
@@ -114,7 +130,7 @@ It can happen that an output is mixed with message dependent content (which when
 }
 </pre>
 
-For other assertion options it is best to look at existing `json` test files the [ByJsonScript/Fixtures](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures) folder.
+A complete list of available `json` test files can be found [here](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/README.md).
 
 ## Benchmark tests
 

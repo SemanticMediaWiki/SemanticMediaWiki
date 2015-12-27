@@ -1,0 +1,47 @@
+{
+	"description": "Test #ask on failed queries to produce a `_ERRC` (#1297, en)",
+	"properties": [
+		{
+			"name": "HasPropertyForMove",
+			"contents": "[[Has type::Page]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/P0902/1",
+			"contents": "{{#ask:[[Help:]] |format=ul |link=none |headers=show }}"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0 failed NS query",
+			"subject": "Example/P0902/1",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [ "_MDAT", "_SKEY", "_ASK", "_ERRC" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					">&quot;Help:&quot; cannot be used as a page name in this wiki."
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [ "_MDAT" ],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

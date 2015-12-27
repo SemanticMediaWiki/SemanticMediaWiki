@@ -1,0 +1,246 @@
+{
+	"description": "Test `_txt` for `~*` regex queries to validate correct escape pattern as applied in the `QueryEngine`",
+	"properties": [
+		{
+			"name": "Has FirstRegexBlobSearchProperty",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"name": "Has SecondRegexBlobSearchProperty",
+			"contents": "[[Has type::Text]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "RegexTextAnnotationForCharactersThatRequireSpecialEscapePattern",
+			"namespace": "NS_MAIN",
+			"contents": "[[Has FirstRegexBlobSearchProperty::{(+*. \\;)}]]"
+		},
+		{
+			"name": "RegexParserAnnotationForCharactersThatRequireSpecialEscapePattern",
+			"namespace": "NS_MAIN",
+			"contents": "{{#set:|Has FirstRegexBlobSearchProperty=[(*. \\=^)\"]}} {{#subobject:|Has SecondRegexBlobSearchProperty=[(+. \\:)]-|}}"
+		},
+		{
+			"name": "RequiresSuperSpecialEscapePattern",
+			"namespace": "NS_MAIN",
+			"contents": "{{#set:|Has FirstRegexBlobSearchProperty=Foo(\"#^$&-/)-|}}"
+		}
+	],
+	"query-testcases": [
+		{
+			"about": "#0 Left curly brackets",
+			"condition": "[[Has FirstRegexBlobSearchProperty::~*{*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"RegexTextAnnotationForCharactersThatRequireSpecialEscapePattern#0##"
+				],
+				"count": "1"
+			}
+		},
+		{
+			"about": "#1 Right curly brackets",
+			"condition": "[[Has FirstRegexBlobSearchProperty::~*}*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"RegexTextAnnotationForCharactersThatRequireSpecialEscapePattern#0##"
+				],
+				"count": "1"
+			}
+		},
+		{
+			"about": "#2 Left parenthesis",
+			"condition": "[[Has FirstRegexBlobSearchProperty::~*(*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"RegexTextAnnotationForCharactersThatRequireSpecialEscapePattern#0##",
+					"RequiresSuperSpecialEscapePattern#0##",
+					"RegexParserAnnotationForCharactersThatRequireSpecialEscapePattern#0##"
+				],
+				"count": "3"
+			}
+		},
+		{
+			"about": "#3 Disjunctive left parenthesis",
+			"condition": "[[Has FirstRegexBlobSearchProperty::~*(*]] OR [[Has SecondRegexBlobSearchProperty::~*(*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"RegexTextAnnotationForCharactersThatRequireSpecialEscapePattern#0##",
+					"RegexParserAnnotationForCharactersThatRequireSpecialEscapePattern#0##",
+					"RequiresSuperSpecialEscapePattern#0##",
+					"RegexParserAnnotationForCharactersThatRequireSpecialEscapePattern#0##_4726701f0e7d838d922ac6b9414558dc"
+				],
+				"count": "4"
+			}
+		},
+		{
+			"about": "#4 Right parenthesis",
+			"condition": "[[Has FirstRegexBlobSearchProperty::~*)*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"RegexTextAnnotationForCharactersThatRequireSpecialEscapePattern#0##",
+					"RequiresSuperSpecialEscapePattern#0##",
+					"RegexParserAnnotationForCharactersThatRequireSpecialEscapePattern#0##"
+				],
+				"count": "3"
+			}
+		},
+		{
+			"about": "#5 Disjunctive right parenthesis",
+			"condition": "[[Has FirstRegexBlobSearchProperty::~*)*]] OR [[Has SecondRegexBlobSearchProperty::~*)*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"RegexTextAnnotationForCharactersThatRequireSpecialEscapePattern#0##",
+					"RegexParserAnnotationForCharactersThatRequireSpecialEscapePattern#0##",
+					"RequiresSuperSpecialEscapePattern#0##",
+					"RegexParserAnnotationForCharactersThatRequireSpecialEscapePattern#0##_4726701f0e7d838d922ac6b9414558dc"
+				],
+				"count": "4"
+			}
+		},
+		{
+			"about": "#6 Left square brackets",
+			"condition": "[[Has FirstRegexBlobSearchProperty::~*[*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"RegexParserAnnotationForCharactersThatRequireSpecialEscapePattern#0##"
+				],
+				"count": "1"
+			}
+		},
+		{
+			"about": "#7 Right square brackets",
+			"condition": "[[Has FirstRegexBlobSearchProperty::~*]*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"RegexParserAnnotationForCharactersThatRequireSpecialEscapePattern#0##"
+				],
+				"count": "1"
+			}
+		},
+		{
+			"about": "#8",
+			"condition": "[[Has FirstRegexBlobSearchProperty::~*;?}]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"RegexTextAnnotationForCharactersThatRequireSpecialEscapePattern#0##"
+				],
+				"count": "1"
+			}
+		},
+		{
+			"about": "#9",
+			"condition": "[[Has SecondRegexBlobSearchProperty::~*+.*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"RegexParserAnnotationForCharactersThatRequireSpecialEscapePattern#0##_4726701f0e7d838d922ac6b9414558dc"
+				],
+				"count": "1"
+			}
+		},
+		{
+			"about": "#10",
+			"condition": "[[Has FirstRegexBlobSearchProperty::~*=^*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"RegexParserAnnotationForCharactersThatRequireSpecialEscapePattern#0##"
+				],
+				"count": "1"
+			}
+		},
+		{
+			"about": "#11 Composite regex search",
+			"condition": "[[Has FirstRegexBlobSearchProperty::~*{*]][[Has FirstRegexBlobSearchProperty::~*}*]][[Has FirstRegexBlobSearchProperty::~*)*]] OR [[Has SecondRegexBlobSearchProperty::~*)*]] OR [[Has FirstRegexBlobSearchProperty::~*=^*]][[Has SecondRegexBlobSearchProperty::~*+.*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"RegexTextAnnotationForCharactersThatRequireSpecialEscapePattern#0##",
+					"RegexParserAnnotationForCharactersThatRequireSpecialEscapePattern#0##_4726701f0e7d838d922ac6b9414558dc"
+				],
+				"count": "2"
+			}
+		},
+		{
+			"about": "#12 Pipe regex",
+			"condition": "[[Has FirstRegexBlobSearchProperty::~*-|*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"RequiresSuperSpecialEscapePattern#0##"
+				],
+				"count": "1"
+			}
+		},
+		{
+			"about": "#13 Requires special escaping effort",
+			"condition": "[[Has FirstRegexBlobSearchProperty::~*Foo(\"#^$&-/)-|*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"RequiresSuperSpecialEscapePattern#0##"
+				],
+				"count": "1"
+			}
+		}
+	],
+	"settings": {
+		"smwgQMaxSize" : "25"
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false
+	}
+}

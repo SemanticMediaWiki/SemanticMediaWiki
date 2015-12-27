@@ -1,0 +1,77 @@
+{
+	"description": "Test `_txt` query for blob value assignments",
+	"properties": [
+		{
+			"name": "Has blob property",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"name": "Has another blob property",
+			"contents": "[[Has type::Text]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Simple blob subject",
+			"contents": "[[Has blob property::Value One]], [[Has another blob property::Value One]]"
+		},
+		{
+			"name": "Another blob subject",
+			"namespace": "NS_HELP",
+			"contents": "[[Has blob property::Value Two]], [[Has another blob property::Value Two]]"
+		}
+	],
+	"query-testcases": [
+		{
+			"about": "Simple disjunctive blob query",
+			"condition": "[[Has blob property::Value One]] OR [[Has another blob property::Value Two]]",
+			"printouts" : [ "Has blob property" ],
+			"parameters" : {
+			  "limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"Simple blob subject#0##",
+					"Another blob subject#12##"
+				],
+				"count": "2",
+				"dataitems": [
+					{
+						"type": "_txt",
+						"value": "Value Two"
+					},
+					{
+						"type": "_txt",
+						"value": "Value One"
+					}
+				]
+			}
+		},
+		{
+			"about": "Simple conjunctive blob query",
+			"condition": "[[Has blob property::Value One]][[Has another blob property::Value One]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"Simple blob subject#0##"
+				],
+				"count": "1"
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_HELP": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

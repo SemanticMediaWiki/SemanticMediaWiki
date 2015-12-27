@@ -1,0 +1,96 @@
+## Fixtures
+Contains 82 files:
+
+### F
+* [f-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0001.json) Test format=debug output
+* [f-0101.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0101.json) Test format=template output using unnamed arguments (#885)
+* [f-0102.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0102.json) Test format=template output + unicode characters (#988, skip postgres)
+* [f-0103.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0103.json) Test format=template with self reference (#988, guard against template self-reference in ask/show query)
+* [f-0201.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0201.json) Test format=table on boolean table output formatting, #896
+* [f-0202.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0202.json) Test format=table with sep cell formatting, #495 (en, skip 1.19)
+* [f-0203.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0203.json) Test format=table to sort by category (#1286)
+* [f-0301.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0301.json) Test format=category with template usage (#699, en, skip postgres)
+* [f-0302.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0302.json) Test format=category and defaultsort (#699, en)
+* [f-0801.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0801.json) Test format=embedded output (skip 1.19)
+
+### P
+* [p-0101.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0101.json) Test in-text annotation for use of restricted properties (#914, en)
+* [p-0106.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0106.json) Test #info parser output (#1019, en)
+* [p-0107.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0107.json) Test #smwdoc parser output (#1019, en)
+* [p-0202.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0202.json) Test #set parser to use template for output (#1146)
+* [p-0203.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0203.json) Test #set parser in combination with #subobject and template output (#1067, regression check)
+* [p-0204.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0204.json) Test #set parser to produce error output (#870, en, verify that #set calls do not affect each other with previous errors)
+* [p-0205.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0205.json) Test #set/#ask recursive annotation support (#711, #1055, recursive annotation using import-annotation=true via template)
+* [p-0206.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0206.json) Test #show parser on inverse printrequest (#1222, #1223)
+* [p-0207.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0207.json) Test that undeclared properties with references remain after a `rebuildData` run (#1216, en)
+* [p-0301.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0301.json) Test #subobject category annotation (#1172)
+* [p-0302.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0302.json) Test #subobject parser to use invalid assignments and create `_ERRC` (#1299, en)
+* [p-0401.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0401.json) Test annotations with disabled capital links (#673, `wgCapitalLinks=false`)
+* [p-0402.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0402.json) Test in-text parsing for double colon annotation such as `::::` or `:::` (#1066, #1075, en)
+* [p-0403.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0403.json) Test in-text annotations being disabled for when Factbox contains extra `[[ ... ]]` (#1126)
+* [p-0404.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0404.json) Test in-text annonation on different category colon identifier
+* [p-0405.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0405.json) Test in-text annotation via template and manual redirect (#895)
+* [p-0406.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0406.json) Test in-text annotation for unrestricted template parse using `import-annotation=true` (#1055)
+* [p-0407.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0407.json) Test in-text annotation for a redirect that is pointing to a deleted target (#1105)
+* [p-0408.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0408.json) Test in-text annotation for multiple property assignment using non-strict parser mode (#1252, en)
+* [p-0409.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0409.json) Test in-text annotation (and #subobject) for when record type points to another record type and is used as annotation to return a `_ERRC` (#1303)
+* [p-0701.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0701.json) Test to create inverted annotation using a #ask/template combination (#711, `import-annotation=true`)
+* [p-0702.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0702.json) Test #ask with `format=table` on inverse property/printrquest (#1270, en)
+* [p-0901.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0901.json) Test #ask on moved redirected subject (#1086)
+* [p-0902.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0902.json) Test #ask on failed queries to produce a `_ERRC` (#1297, en)
+* [p-0903.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0903.json) Test #ask on redirected printrequest (#1290, en)
+
+### Q
+* [q-0101.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0101.json) Test `_txt` query for blob value assignments
+* [q-0102.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0102.json) Test `_txt` for `~*` regex queries to validate correct escape pattern as applied in the `QueryEngine`
+* [q-0103.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0103.json) Test `_txt` for `~*` regex query with the condition to include the `\` escape character (skip sqlite, postgres)
+* [q-0201.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0201.json) Test `_CONC` queries (skip postgres)
+* [q-0202.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0202.json) Test `_CONC` for guarding against circular/self-reference which otherwise would fail with 'Maximum function nesting level ... reached, aborting' (#945, skip postgres)
+* [q-0203.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0203.json) Test `_CONC` to use `CONCEPT_CACHE_ALL` (#1050, skip postgres + all SPARQL repository)
+* [q-0204.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0204.json) Test `_CONC` on predefined inverse query and subobject inverse query (#1096)
+* [q-0301.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0301.json) Test `_IMPO` queries for imported foaf vocabulary (#891, en)
+* [q-0401.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0401.json) Test `_SUBP` on a simple 'family' subproperty hierarchy example query (#1003, skip virtuoso)
+* [q-0402.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0402.json) Test `_SUBP` to map DC imported vocabulary with MARC 21 bibliographic terms (#1003, http://www.loc.gov/marc/bibliographic/bd20x24x.html)
+* [q-0501.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0501.json) Test `_qty` queries for custom unit (km²/°C) property value assignments
+* [q-0502.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0502.json) Test `_qty` range queries using non strict comparators (`smwStrictComparators=false`)
+* [q-0601.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0601.json) Test `_wpg` for property chain query queries
+* [q-0602.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0602.json) Test `_wpg` sort query with #subobject annotated @sortkey content
+* [q-0603.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0603.json) Test `_wpg` queries for various conditions using #set annotated content
+* [q-0604.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0604.json) Test `_wpg` queries to resolve property/values redirects (#467, skip virtuoso)
+* [q-0605.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0605.json) Test `_wpg` regex search (`!~/~*/~?`) queries (#679)
+* [q-0606.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0606.json) Test `_wpg`/`_num`/`_txt` using subqueries (#466, #627, #625)
+* [q-0607.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0607.json) Test `_wpg`/`_dat`/`_num`/`_txt` subquery example
+* [q-0608.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0608.json) Test `_wpg` for single value approximate (`~/!~`) queries (#1246)
+* [q-0609.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0609.json) Test `_wpg` for single value approximate (`~/!~`) queries with conjunctive category hierarchy (#1246, en, skip virtuoso)
+* [q-0610.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0610.json) Test `_wpg` range queries (#1291, `smwStrictComparators=false`, skip virtuoso)
+* [q-0701.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0701.json) Test `_uri` with some annotation/search pattern (T45264, #679)
+* [q-0702.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0702.json) Test `_uri` with additional annotation/search (#1129)
+* [q-0801.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0801.json) Test `_INST` query (#1004, en)
+* [q-0802.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0802.json) Test `_INST`/`_SUBC` queries (#1005, en, skip virtuoso)
+* [q-0803.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0803.json) Test `_INST`/ Nested category annotation (#1012, en, skip virtuoso) category hierarchy queries
+* [q-0901.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0901.json) Test `_wpg`/`_txt` on various disjunction, conjunction queries (#19, #1060, #1056, #1057)
+* [q-0902.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0902.json) Test `_txt` to correctly apply parentheses for somehting like (a OR b OR c) AND d (#556)
+* [q-0903.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0903.json) Test `_wpg`/`_num`/`_txt` for disjunction OR || (T31866, #1059, en)
+* [q-0904.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0904.json) Test `_wpg`/`_txt` disjunction in connection with property hierarchies (#1060, en, skip virtuoso)
+* [q-1002.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-1002.json) Test `_dat` range for non strict comparators (#285, `smwStrictComparators=false`, skip virtuoso)
+* [q-1003.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-1003.json) Test `_dat` range for strict comparators (#285, `smwStrictComparators=true`, skip virtuoso)
+* [q-1004.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-1004.json) Test `_dat` range for `~`/`!~` comparators (#1178, `smwStrictComparators=false`, skip virtuoso)
+* [q-1101.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-1101.json) Test _rec for non strict comparators queries (`smwStrictComparators=false`)
+* [q-1102.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-1102.json) Test `_rec` queries in combination with `_dat` `~/!~` search pattern (#1178, `smwStrictComparators=false`, skip virtuoso)
+* [q-1103.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-1103.json) Test `_rec` using some additional search pattern (#1189, en)
+* [q-1104.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-1104.json) Test `_rec` to find correct target for redirected property (#1244, en)
+* [q-1105.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-1105.json) Test `_rec` in combination with named subobject (T49472, #1300, en, `smwStrictComparators=false`)
+* [q-1201.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-1201.json) Test `_rec` with `~/!~` comparators on allowed values (#1207, `smwStrictComparators=false`)
+
+### R
+* [r-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/r-0001.json) Test RDF output for `_txt`/`_wpg`/`_dat` (#881)
+* [r-0002.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/r-0002.json) Test RDF output for redirected pages (#882)
+* [r-0003.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/r-0003.json) Test RDF output for imported foaf vocabulary (#884, en)
+* [r-0004.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/r-0004.json) Test RDF output generation for `_INST`/`_SUBC` pages (#922, en)
+* [r-0005.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/r-0005.json) Test RDF wiki-info output (#928, en)
+* [r-0006.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/r-0006.json) Test RDF output generation for pages that contain `_rec` annotations (#1285, #1275)
+
+### S
+* [s-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0001.json) Test output of `Special:Properties` (en, skip-on sqlite, 1.19)
+
+-- Last updated on 2015-12-27 by `readmeContentsBuilder.php`

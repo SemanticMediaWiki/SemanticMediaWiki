@@ -15,12 +15,6 @@ use Title;
  * what sort of tests are run as the content is based on wikitext rather than
  * native PHP.
  *
- * Json files are read from a specified directory and invoked individually which
- * then will be executed by a TestCaseRunner.
- *
- * - ByJsonQueryTestCaseRunnerTest
- * - ByJsonRdfTestCaseRunnerTest
- *
  * @group semantic-mediawiki-integration
  * @group medium
  *
@@ -139,7 +133,7 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 				$namespace
 			);
 
-			if ( isset( $page['contents']['import-from'] ) && $page['contents']['import-from'] !== '' ) {
+			if ( is_array( $page['contents'] ) && isset( $page['contents']['import-from'] ) ) {
 				$contents = file_get_contents( $this->getTestCaseLocation() . $page['contents']['import-from'] );
 			} else {
 				$contents = $page['contents'];
@@ -150,18 +144,7 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 			$this->itemsMarkedForDeletion[] = $this->pageCreator->getPage();
 
 			if ( isset( $page['move-to'] ) ) {
-
-				$target = Title::newFromText(
-					$page['move-to']['target'],
-					$namespace
-				);
-
-				$this->pageCreator->doMoveTo(
-					$target,
-					$page['move-to']['is-redirect']
-				);
-
-				$this->itemsMarkedForDeletion[] = $target;
+				$this->doMove( $page, $namespace );
 			}
 
 			if ( isset( $page['do-delete'] ) && $page['do-delete'] ) {
@@ -223,6 +206,20 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 			$GLOBALS[$key] = $value;
 			ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
 		}
+	}
+
+	private function doMove( $page, $namespace ) {
+		$target = Title::newFromText(
+			$page['move-to']['target'],
+			$namespace
+		);
+
+		$this->pageCreator->doMoveTo(
+			$target,
+			$page['move-to']['is-redirect']
+		);
+
+		$this->itemsMarkedForDeletion[] = $target;
 	}
 
 }
