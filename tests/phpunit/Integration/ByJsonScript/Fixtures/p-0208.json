@@ -1,5 +1,5 @@
 {
-	"description": "Test `#set` for various `_num` values without explicit precision (3 digit implicit), with/without leading zero (#753, en, `smwgMaxNonExpNumber`)",
+	"description": "Test `#set` for various `_num` values without explicit precision (3 digit implicit), with/without leading zero, different printouts, negative numbers (#753, en, `smwgMaxNonExpNumber`)",
 	"properties": [
 		{
 			"name": "Has number",
@@ -16,6 +16,10 @@
 			"contents": "{{#set:Has number=.1;.01;.001;.00001;4.0e-4;.2e-5;.3e5|+sep=; }}"
 		},
 		{
+			"name": "Example/P0208/3",
+			"contents": "{{#set:Has number=-.1;-0.2;-.2e-5;-.3e5|+sep=; }}"
+		},
+		{
 			"name": "Example/P0208/1/1",
 			"contents": "{{#ask: [[Example/P0208/1]] |?Has number |format=table }}"
 		},
@@ -30,6 +34,10 @@
 		{
 			"name": "Example/P0208/2/2",
 			"contents": "{{#ask: [[Example/P0208/2]] |?Has number# |format=table }}"
+		},
+		{
+			"name": "Example/P0208/3/1",
+			"contents": "{{#ask: [[Example/P0208/3]] |?Has number |format=table }}"
 		}
 	],
 	"parser-testcases": [
@@ -130,6 +138,31 @@
 					"0.0004",
 					"2.0E-6",
 					"30000"
+				]
+			}
+		},
+		{
+			"about": "#6 on negative use",
+			"subject": "Example/P0208/3",
+			"store": {
+				"clear-cache": true,
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "Has_number","_SKEY", "_MDAT" ],
+					"propertyValues": [ "-30000", "-2.0e-6", "-0.2", "-0.1" ]
+				}
+			}
+		},
+		{
+			"about": "#7 #ask on negative number output",
+			"subject": "Example/P0208/3/1",
+			"expected-output": {
+				"to-contain": [
+					"-30,000",
+					"-2.0e-6",
+					"-0.2",
+					"-0.1"
 				]
 			}
 		}
