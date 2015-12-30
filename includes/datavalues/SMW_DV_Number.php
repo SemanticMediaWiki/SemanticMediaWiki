@@ -46,6 +46,13 @@ class SMWNumberValue extends SMWDataValue {
 	protected $m_unitvalues;
 
 	/**
+	 * Whether the unit is preferred as prefix or not
+	 *
+	 * @var array
+	 */
+	protected $prefixalUnitPreference = array();
+
+	/**
 	 * Canonical identifier for the unit that the user gave as input. Used
 	 * to avoid printing this in conversion tooltips again. If the
 	 * outputformat was set to show another unit, then the values of
@@ -66,7 +73,7 @@ class SMWNumberValue extends SMWDataValue {
 	 * @return integer 0 (no errors), 1 (no number found at all), 2 (number
 	 * too large for this platform)
 	 */
-	static protected function parseNumberValue( $value, &$number, &$unit ) {
+	static protected function parseNumberValue( $value, &$number, &$unit, &$asPrefix = false ) {
 		// Parse to find $number and (possibly) $unit
 		$decseparator = NumberFormatter::getInstance()->getDecimalSeparatorForContentLanguage();
 		$kiloseparator = NumberFormatter::getInstance()->getThousandsSeparatorForContentLanguage();
@@ -92,8 +99,9 @@ class SMWNumberValue extends SMWDataValue {
 				$numstring = str_replace( $decseparator, '.', $numstring );
 			}
 			list( $number ) = sscanf( $numstring, "%f" );
-			if ( count( $parts ) >= 3 ) {
-				$unit = self::normalizeUnit( $parts[2] );
+			if ( count( $parts ) >= 3  ) {
+				$asPrefix = $parts[0] !== '';
+				$unit = self::normalizeUnit( $parts[0] !== '' ? $parts[0] : $parts[2] );
 			}
 		}
 
@@ -173,11 +181,13 @@ class SMWNumberValue extends SMWDataValue {
 			$sep = '';
 			foreach ( $this->m_unitvalues as $unit => $value ) {
 				if ( $unit != $this->m_unitin ) {
-					$tooltip .= $sep . NumberFormatter::getInstance()->formatNumberToLocalizedText( $value );
+					$number = NumberFormatter::getInstance()->formatNumberToLocalizedText( $value );
 					if ( $unit !== '' ) {
-						$tooltip .= '&#160;' . $unit;
+						$tooltip .= isset( $this->prefixalUnitPreference[$unit] ) && $this->prefixalUnitPreference[$unit] ? $unit . '&#160;' . $number : $number . '&#160;' . $unit;
+					} else{
+						$tooltip .= $number;
 					}
-					$sep = ' <br />';
+					$tooltip .= ' <br />';
 					$i++;
 					if ( $i >= 5 ) { // limit number of printouts in tooltip
 						break;
@@ -215,9 +225,11 @@ class SMWNumberValue extends SMWDataValue {
 				} elseif ( $i > 1 ) {
 					$result .= ', ';
 				}
-				$result .= ( $this->m_outformat != '-' ? NumberFormatter::getInstance()->formatNumberToLocalizedText( $value ) : $value );
+				$number = ( $this->m_outformat != '-' ? NumberFormatter::getInstance()->formatNumberToLocalizedText( $value ) : $value );
 				if ( $unit !== '' ) {
-					$result .= '&#160;' . $unit;
+					$result .= isset( $this->prefixalUnitPreference[$unit] ) && $this->prefixalUnitPreference[$unit] ? $unit . '&#160;' . $number : $number . '&#160;' . $unit;
+				} else {
+					$result .= $number;
 				}
 				$i++;
 				if ( $this->m_outformat == '-' ) { // no further conversions for plain output format
@@ -240,12 +252,19 @@ class SMWNumberValue extends SMWDataValue {
 	}
 
 	public function getWikiValue() {
-		if ( $this->isValid() ) {
-			$unit = $this->getUnit();
-			return NumberFormatter::getInstance()->formatNumberToLocalizedText( $this->m_dataitem->getSerialization() ) . ( $unit !== '' ? ' ' . $unit : '' );
-		} else {
+
+		if ( !$this->isValid() ) {
 			return 'error';
 		}
+
+		$unit = $this->getUnit();
+		$number = NumberFormatter::getInstance()->formatNumberToLocalizedText( $this->m_dataitem->getSerialization() ) ;
+
+		if ( $unit === '' ) {
+			return $number;
+		}
+
+		return isset( $this->prefixalUnitPreference[$unit] ) && $this->prefixalUnitPreference[$unit] ? $unit . ' ' . $number : $number . ' ' . $unit;
 	}
 
 	/**

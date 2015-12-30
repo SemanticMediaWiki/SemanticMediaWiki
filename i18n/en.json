@@ -269,7 +269,7 @@
 	"smw-prefs-ask-options-tooltip-display": "Display parameter text as an info tooltip",
 	"smw-prefs-ask-options-collapsed-default": "Enable option box to be collapsed by default",
 	"smw-ui-tooltip-title-property": "Property",
-	"smw-ui-tooltip-title-quantity": "Quantity",
+	"smw-ui-tooltip-title-quantity": "Unit conversion",
 	"smw-ui-tooltip-title-info": "Information",
 	"smw-ui-tooltip-title-service": "Service links",
 	"smw-ui-tooltip-title-warning": "Error",

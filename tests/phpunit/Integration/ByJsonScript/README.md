@@ -1,5 +1,5 @@
 ## Fixtures
-Contains 84 files:
+Contains 86 files:
 
 ### F
 * [f-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0001.json) Test format=debug output
@@ -9,6 +9,7 @@ Contains 84 files:
 * [f-0201.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0201.json) Test format=table on boolean table output formatting, #896
 * [f-0202.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0202.json) Test format=table with sep cell formatting, #495 (en, skip 1.19)
 * [f-0203.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0203.json) Test format=table to sort by category (#1286)
+* [f-0204.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0204.json) Test `format=table` on `_qty` for different positional unit preference (#1329, en)
 * [f-0301.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0301.json) Test format=category with template usage (#699, en, skip postgres)
 * [f-0302.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0302.json) Test format=category and defaultsort (#699, en)
 * [f-0801.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0801.json) Test format=embedded output (skip 1.19)
@@ -55,6 +56,7 @@ Contains 84 files:
 * [q-0402.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0402.json) Test `_SUBP` to map DC imported vocabulary with MARC 21 bibliographic terms (#1003, http://www.loc.gov/marc/bibliographic/bd20x24x.html)
 * [q-0501.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0501.json) Test `_qty` queries for custom unit (km²/°C) property value assignments
 * [q-0502.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0502.json) Test `_qty` range queries using non strict comparators (`smwStrictComparators=false`)
+* [q-0503.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0503.json) Test `_qty` on positional unit preference in query condition (#1329, `smwStrictComparators=false`)
 * [q-0601.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0601.json) Test `_wpg` for property chain query queries
 * [q-0602.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0602.json) Test `_wpg` sort query with #subobject annotated @sortkey content
 * [q-0603.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0603.json) Test `_wpg` queries for various conditions using #set annotated content
