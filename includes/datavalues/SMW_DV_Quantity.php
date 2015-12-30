@@ -107,6 +107,8 @@ class SMWQuantityValue extends SMWNumberValue {
 			$printunit = $this->getUnit();
 		}
 
+		$asPrefix = isset( $this->prefixalUnitPreference[$printunit] ) && $this->prefixalUnitPreference[$printunit];
+
 		$this->m_unitin = $this->m_unitids[$printunit];
 		$this->m_unitvalues = false; // this array depends on m_unitin if displayunits were used, better invalidate it here
 		$value = $this->m_dataitem->getNumber() * $this->m_unitfactors[$this->m_unitin];
@@ -117,10 +119,14 @@ class SMWQuantityValue extends SMWNumberValue {
 		}
 
 		if ( ( $printunit !== '' ) && ( $this->m_outformat != '-n' ) ) { // -n is the format for displaying the number only
+
+			$sep = '';
+
 			if ( $this->m_outformat != '-u' ) {
-				$this->m_caption .=  ( $this->m_outformat != '-' ? '&#160;' : ' ' );
+				$sep =  ( $this->m_outformat != '-' ? '&#160;' : ' ' );
 			}
-			$this->m_caption .= $printunit;
+
+			$this->m_caption = $asPrefix ? $printunit . $sep . $this->m_caption : $this->m_caption . $sep . $printunit;
 		}
 	}
 
@@ -159,6 +165,7 @@ class SMWQuantityValue extends SMWNumberValue {
 		}
 
 		$factors = \SMW\StoreFactory::getStore()->getPropertyValues( $propertyDiWikiPage, new SMWDIProperty( '_CONV' ) );
+
 		if ( count( $factors ) == 0 ) { // no custom type
 			$this->addError( wfMessage( 'smw_nounitsdeclared' )->inContentLanguage()->text() );
 			return;
@@ -168,11 +175,12 @@ class SMWQuantityValue extends SMWNumberValue {
 
 		foreach ( $factors as $di ) {
 			if ( !( $di instanceof SMWDIBlob ) ||
-			     ( SMWNumberValue::parseNumberValue( $di->getString(), $number, $unit ) != 0 ) ||
+			     ( SMWNumberValue::parseNumberValue( $di->getString(), $number, $unit, $asPrefix ) != 0 ) ||
 			     ( $number == 0 ) ) {
 				continue; // ignore corrupted data and bogus inputs
 			}
 			$unit_aliases = preg_split( '/\s*,\s*/u', $unit );
+
 			$first = true;
 			foreach ( $unit_aliases as $unit ) {
 				$unit = SMWNumberValue::normalizeUnit( $unit );
@@ -188,6 +196,7 @@ class SMWQuantityValue extends SMWNumberValue {
 				}
 				// add all known units to m_unitids to simplify checking for them
 				$this->m_unitids[$unit] = $unitid;
+				$this->prefixalUnitPreference[$unit] = $asPrefix;
 			}
 		}
 
