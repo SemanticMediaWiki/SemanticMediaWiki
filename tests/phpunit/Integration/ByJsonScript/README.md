@@ -1,5 +1,5 @@
 ## Fixtures
-Contains 82 files:
+Contains 84 files:
 
 ### F
 * [f-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0001.json) Test format=debug output
@@ -23,6 +23,8 @@ Contains 82 files:
 * [p-0205.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0205.json) Test #set/#ask recursive annotation support (#711, #1055, recursive annotation using import-annotation=true via template)
 * [p-0206.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0206.json) Test #show parser on inverse printrequest (#1222, #1223)
 * [p-0207.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0207.json) Test that undeclared properties with references remain after a `rebuildData` run (#1216, en)
+* [p-0208.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0208.json) Test `#set` for various `_num` values without explicit precision (3 digit implicit), with/without leading zero (#753, en, `smwgMaxNonExpNumber`)
+* [p-0209.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0209.json) Test `#set` for various `_qty` values without explicit precision (3 digit implicit), with/without leading zero, and different printouts (#753, en, `smwgMaxNonExpNumber`)
 * [p-0301.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0301.json) Test #subobject category annotation (#1172)
 * [p-0302.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0302.json) Test #subobject parser to use invalid assignments and create `_ERRC` (#1299, en)
 * [p-0401.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0401.json) Test annotations with disabled capital links (#673, `wgCapitalLinks=false`)
@@ -93,4 +95,4 @@ Contains 82 files:
 ### S
 * [s-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0001.json) Test output of `Special:Properties` (en, skip-on sqlite, 1.19)
 
--- Last updated on 2015-12-27 by `readmeContentsBuilder.php`
+-- Last updated on 2015-12-30 by `readmeContentsBuilder.php`
