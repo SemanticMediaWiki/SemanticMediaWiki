@@ -47,8 +47,10 @@ then
 	# cp *.war /var/lib/tomcat6/webapps/
 
 	# http://sourceforge.net/projects/sesame/
-	wget http://downloads.sourceforge.net/project/sesame/Sesame%202/$SESAME/openrdf-sesame-$SESAME-sdk.zip
-
+	# Unreliable sourceforge.net download
+	# wget http://downloads.sourceforge.net/project/sesame/Sesame%202/$SESAME/openrdf-sesame-$SESAME-sdk.zip
+	wget https://github.com/mwjames/travis-support/raw/master/sesame/$SESAME/openrdf-sesame-$SESAME-sdk.zip
+	
 	# tar caused a lone zero block, using zip instead
 	unzip -q openrdf-sesame-$SESAME-sdk.zip
 	cp openrdf-sesame-$SESAME/war/*.war $CATALINA_BASE/webapps/
@@ -173,7 +175,9 @@ then
 	#sleep 3
 
 	#Using the jar
-	wget http://downloads.sourceforge.net/project/bigdata/bigdata/$BLAZEGRAPH/bigdata-bundled.jar
+	# Unreliable sourceforge.net download
+	# wget http://downloads.sourceforge.net/project/bigdata/bigdata/$BLAZEGRAPH/bigdata-bundled.jar
+	wget https://github.com/mwjames/travis-support/raw/master/blazegraph/$BLAZEGRAPH/bigdata-bundled.jar
 
 	java -server -Xmx4g -Dbigdata.propertyFile=$BASE_PATH/tests/travis/blazegraph-store.properties -jar bigdata-bundled.jar &>/dev/null &
 	sleep 5
