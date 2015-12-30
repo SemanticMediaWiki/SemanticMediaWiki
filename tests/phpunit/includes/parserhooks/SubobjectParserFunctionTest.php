@@ -83,12 +83,10 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$instance = $this->acquireInstance( $subobject );
 		$instance->parse( new ParserParameterFormatter( $parameters ) );
 
-		if ( $expected['identifier'] !== null ) {
-			$this->assertContains(
-				$expected['identifier'],
-				$subobject->getSubobjectId()
-			);
-		}
+		$this->assertContains(
+			$expected['identifier'],
+			$subobject->getSubobjectId()
+		);
 	}
 
 	/**
@@ -160,6 +158,27 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			'_be96d37a4d7c35be8673cb4229b8fdec',
 			$subobject->getSubobjectId()
 		);
+	}
+
+	public function testRestrictionOnTooShortFirstPartWhenDotIsUsedForUserNamedSubobject() {
+
+		// #1299, #1302
+		// Has dot restriction
+		// {{#subobject:foo.bar
+		// |Date=Foo
+		// }}
+		$parameters = array(
+			'foo.bar',
+			'Date=Foo'
+		);
+
+		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
+
+		$instance = $this->acquireInstance( $subobject );
+		$instance->parse( new ParserParameterFormatter( $parameters ) );
+
+		$this->setExpectedException( '\SMW\InvalidSemanticDataException' );
+		$subobject->getSubobjectId();
 	}
 
 	protected function setupInstanceAndAssertSemanticData( array $parameters, array $expected ) {
@@ -367,24 +386,8 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		// Has dot restriction
-		#10 {{#subobject:foo.bar
-		// |Bar=foo Bar
-		// |Date=Foo
-		// }}
-		$provider[] = array(
-			array( 'foo.bar', 'Date=Foo' ),
-			array(
-				'hasErrors' => true,
-				'identifier' => null,
-				'strict-mode-valuematch' => false,
-				'propertyCount'  => 1,
-				'propertyKeys' => array( '_ERRC' )
-			)
-		);
-
 		// Not dot restriction
-		#11 {{#subobject:foobar.bar
+		#10 {{#subobject:foobar.bar
 		// |Bar=foo Bar
 		// }}
 		$provider[] = array(
