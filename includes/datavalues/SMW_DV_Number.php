@@ -71,10 +71,20 @@ class SMWNumberValue extends SMWDataValue {
 		$decseparator = NumberFormatter::getInstance()->getDecimalSeparatorForContentLanguage();
 		$kiloseparator = NumberFormatter::getInstance()->getThousandsSeparatorForContentLanguage();
 
-		$parts = preg_split( '/([-+]?\s*\d+(?:\\' . $kiloseparator . '\d\d\d)*' .
-		                      '(?:\\' . $decseparator . '\d+)?\s*(?:[eE][-+]?\d+)?)/u',
-		                      trim( str_replace( array( '&nbsp;', '&#160;', '&thinsp;', ' ' ), '', $value ) ),
-		                      2, PREG_SPLIT_DELIM_CAPTURE );
+		// #753
+		$regex = '/([-+]?\s*(?:' .
+				// Either numbers like 10,000.99 that start with a digit
+				'\d+(?:\\' . $kiloseparator . '\d\d\d)*(?:\\' . $decseparator . '\d+)?' .
+				// or numbers like .001 that start with the decimal separator
+				'|\\' . $decseparator . '\d+' .
+				')\s*(?:[eE][-+]?\d+)?)/u';
+
+		$parts = preg_split(
+			$regex,
+			trim( str_replace( array( '&nbsp;', '&#160;', '&thinsp;', ' ' ), '', $value ) ),
+			2,
+			PREG_SPLIT_DELIM_CAPTURE
+		);
 
 		if ( count( $parts ) >= 2 ) {
 			$numstring = str_replace( $kiloseparator, '', preg_replace( '/\s*/u', '', $parts[1] ) ); // simplify

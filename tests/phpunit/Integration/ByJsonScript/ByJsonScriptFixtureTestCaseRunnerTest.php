@@ -134,7 +134,8 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			'smwgQSubpropertyDepth',
 			'smwgQSubcategoryDepth',
 			'smwgQConceptCaching',
-			'smwgEnabledInTextAnnotationParserStrictMode'
+			'smwgEnabledInTextAnnotationParserStrictMode',
+			'smwgMaxNonExpNumber'
 		);
 
 		foreach ( $permittedSettings as $key ) {

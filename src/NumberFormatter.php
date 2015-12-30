@@ -97,10 +97,10 @@ class NumberFormatter {
 			$absValue = abs( $value );
 			if ( $absValue >= $this->maxNonExpNumber ) {
 				$doScientific = true;
-			} elseif ( $absValue <= pow( 10, - $decplaces ) ) {
+			} elseif ( $absValue < pow( 10, - $decplaces ) ) {
 				$doScientific = true;
 			} elseif ( $absValue < 1 ) {
-				if ( $absValue <= pow( 10, - $decplaces ) ) {
+				if ( $absValue < pow( 10, - $decplaces ) ) {
 					$doScientific = true;
 				} else {
 					// Increase decimal places for small numbers, e.g. .00123 should be 5 places.
