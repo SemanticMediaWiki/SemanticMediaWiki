@@ -27,6 +27,7 @@ Not a release yet.
 * #1287 Fixed exception for when `$smwgFixedProperties` contains property keys with spaces
 * #1289 Suppresses redirect statement in sparql query for resources matched to an import vocabulary
 * #1314 Fixed hidden annotation copy of `[[ :: ]]` text values when embedded in query results
+* #753 (T40476) Fixed number parsing of non-zero lead decimal numbers (.1 vs 0.1)
 
 ## Internal changes
 
