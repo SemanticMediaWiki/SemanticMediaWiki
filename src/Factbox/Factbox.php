@@ -279,10 +279,10 @@ class Factbox {
 		$text = '';
 
 		// Hook deprecated with SMW 1.9 and will vanish with SMW 1.11
-		wfRunHooks( 'smwShowFactbox', array( &$text, $semanticData ) );
+		\Hooks::run( 'smwShowFactbox', array( &$text, $semanticData ) );
 
 		// Hook since 1.9
-		if ( wfRunHooks( 'SMW::Factbox::BeforeContentGeneration', array( &$text, $semanticData ) ) ) {
+		if ( \Hooks::run( 'SMW::Factbox::BeforeContentGeneration', array( &$text, $semanticData ) ) ) {
 
 			$this->getTableHeader( $semanticData->getSubject() );
 			$this->getTableContent( $semanticData );

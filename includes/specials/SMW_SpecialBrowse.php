@@ -209,7 +209,7 @@ class SMWSpecialBrowse extends SpecialPage {
 
 			// Added in 2.3
 			// link to the remaining incoming pages
-			if ( $moreIncoming && wfRunHooks( 'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate', array( $diProperty, $this->subject->getDataItem(), &$body ) ) ) {
+			if ( $moreIncoming && \Hooks::run( 'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate', array( $diProperty, $this->subject->getDataItem(), &$body ) ) ) {
 				$body .= Html::element(
 					'a',
 					array(
@@ -385,7 +385,7 @@ class SMWSpecialBrowse extends SpecialPage {
 		}
 
 		// Added in 2.3
-		wfRunHooks( 'SMW::Browse::AfterIncomingPropertiesLookupComplete', array( $store, $indata, $valoptions ) );
+		\Hooks::run( 'SMW::Browse::AfterIncomingPropertiesLookupComplete', array( $store, $indata, $valoptions ) );
 
 		return array( $indata, $more );
 	}

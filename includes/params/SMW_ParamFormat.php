@@ -103,7 +103,7 @@ class SMWParamFormat extends StringParam {
 			 *
 			 * @since 1.5.2
 			 */
-			wfRunHooks( 'SMWResultFormat', array( &$format, $this->printRequests, array() ) );
+			\Hooks::run( 'SMWResultFormat', array( &$format, $this->printRequests, array() ) );
 
 			// If no default was set by an extension, use a table or list, depending on the column count.
 			if ( $format === false ) {

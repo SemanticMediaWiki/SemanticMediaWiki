@@ -456,7 +456,7 @@ class DataTypeRegistry {
 		);
 
 		// Deprecated since 1.9
-		wfRunHooks( 'smwInitDatatypes' );
+		\Hooks::run( 'smwInitDatatypes' );
 
 		// Since 1.9
 		\Hooks::run( 'SMW::DataType::initTypes', array( $this ) );

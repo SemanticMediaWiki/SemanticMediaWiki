@@ -368,11 +368,11 @@ class SMWSQLStore3 extends SMWStore {
 
 		$result = null;
 
-		if ( wfRunHooks( 'SMW::Store::BeforeQueryResultLookupComplete', array( $this, $query, &$result ) ) ) {
+		if ( \Hooks::run( 'SMW::Store::BeforeQueryResultLookupComplete', array( $this, $query, &$result ) ) ) {
 			$result = $this->fetchQueryResult( $query );
 		}
 
-		wfRunHooks( 'SMW::Store::AfterQueryResultLookupComplete', array( $this, &$result ) );
+		\Hooks::run( 'SMW::Store::AfterQueryResultLookupComplete', array( $this, &$result ) );
 
 		return $result;
 	}
