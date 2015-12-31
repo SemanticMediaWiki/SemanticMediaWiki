@@ -18,7 +18,8 @@
 			"Agripinoduarte",
 			"Smmvinicius",
 			"He7d3r",
-			"Rhcastilhos"
+			"Rhcastilhos",
+			"Opraco"
 		]
 	},
 	"smw-desc": "Tornando seu wiki mais acessível - para máquinas ''e'' humanos ([https://semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
@@ -289,7 +290,7 @@
 	"smw-qp-empty-data": "Os dados requisitados não puderam ser exibidos devido a algum critério de seleção insuficiente.",
 	"right-smw-admin": "Acessar as tarefas de administração (Semantic MediaWiki)",
 	"group-smwadministrator": "Administradores do Semantic MediaWiki",
-	"group-smwadministrator-member": "{{GENDER:$1|administrador (SMW)|administradora (SMW)}}",
+	"group-smwadministrator-member": "{{GENDER:$1|administrador|administradora|administrador(a)}} (SMW)",
 	"grouppage-smwadministrator": "{{ns:project}}:Administradores do Semantic MediaWiki",
 	"action-smw-admin": "acessar as tarefas de administração do Semantic MediaWiki",
 	"smw-pa-property-predefined-default": "\"$1\" é uma propriedade predefinida.",
