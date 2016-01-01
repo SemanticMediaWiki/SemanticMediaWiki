@@ -154,7 +154,7 @@ class SMWExportController {
 
 		// let other extensions add additional RDF data for this page
 		$additionalDataArray = array();
-		wfRunHooks( 'smwAddToRDFExport', array( $diWikiPage, &$additionalDataArray, ( $recursiondepth != 0 ), $this->add_backlinks ) );
+		\Hooks::run( 'smwAddToRDFExport', array( $diWikiPage, &$additionalDataArray, ( $recursiondepth != 0 ), $this->add_backlinks ) );
 		foreach ( $additionalDataArray as $additionalData ) {
 			$this->serializer->serializeExpData( $additionalData ); // serialise
 		}

@@ -290,8 +290,8 @@ class DataRebuilder {
 		wfCountDown( 6 );
 
 		$this->store->drop( $this->verbose );
-		wfRunHooks( 'smwDropTables' );
-		wfRunHooks( 'SMW::Store::dropTables', array( $this->verbose ) );
+		\Hooks::run( 'smwDropTables' );
+		\Hooks::run( 'SMW::Store::dropTables', array( $this->verbose ) );
 
 		$this->store->setupStore( $this->verbose );
 

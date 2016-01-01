@@ -223,7 +223,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			foreach ( $diHandler->getTableFields() as $fieldname => $typeid ) {
 				// If the type signature is not recognized and the custom signatures have not been added, add them.
 				if ( !$addedCustomTypeSignatures && !array_key_exists( $typeid, $dbtypes ) ) {
-					wfRunHooks( 'SMWCustomSQLStoreFieldType', array( &$dbtypes ) );
+					\Hooks::run( 'SMWCustomSQLStoreFieldType', array( &$dbtypes ) );
 					$addedCustomTypeSignatures = true;
 				}
 

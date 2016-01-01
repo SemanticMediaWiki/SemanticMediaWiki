@@ -115,10 +115,10 @@ class UpdateDispatcherJob extends JobBase {
 		$this->addUpdateJobsForProperties( array( $property ) );
 
 		// Hook deprecated with SMW 1.9 and will vanish with SMW 1.11
-		wfRunHooks( 'smwUpdatePropertySubjects', array( &$this->jobs ) );
+		\Hooks::run( 'smwUpdatePropertySubjects', array( &$this->jobs ) );
 
 		// Hook since 1.9
-		wfRunHooks( 'SMW::Job::updatePropertyJobs', array( &$this->jobs, $property ) );
+		\Hooks::run( 'SMW::Job::updatePropertyJobs', array( &$this->jobs, $property ) );
 
 		$this->addUpdateJobsForSubjectsThatContainTypeError();
 		$this->addUpdateJobsFromDeserializedSemanticData();

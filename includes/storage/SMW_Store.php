@@ -229,7 +229,7 @@ abstract class Store {
 		/**
 		 * @since 1.6
 		 */
-		wfRunHooks( 'SMWStore::updateDataBefore', array( $this, $semanticData ) );
+		\Hooks::run( 'SMWStore::updateDataBefore', array( $this, $semanticData ) );
 
 		// Invalidate the page, so data stored on it gets displayed immediately in queries.
 		$pageUpdater = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newPageUpdater();
@@ -245,7 +245,7 @@ abstract class Store {
 		/**
 		 * @since 1.6
 		 */
-		wfRunHooks( 'SMWStore::updateDataAfter', array( $this, $semanticData ) );
+		\Hooks::run( 'SMWStore::updateDataAfter', array( $this, $semanticData ) );
 	}
 
 	/**
@@ -436,7 +436,7 @@ abstract class Store {
 	 */
 	public static function setupStore( $verbose = true ) {
 		$result = StoreFactory::getStore()->setup( $verbose );
-		wfRunHooks( 'smwInitializeTables' );
+		\Hooks::run( 'smwInitializeTables' );
 		return $result;
 	}
 

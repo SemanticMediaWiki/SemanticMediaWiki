@@ -131,7 +131,7 @@ class SetupStore extends \Maintenance {
 		$store->drop( !$this->isQuiet() );
 
 		// TODO: this hook should be run on all calls to SMWStore::drop
-		wfRunHooks( 'smwDropTables' );
+		\Hooks::run( 'smwDropTables' );
 
 		// be sure to have some buffer, otherwise some PHPs complain
 		while ( ob_get_level() > 0 ) {

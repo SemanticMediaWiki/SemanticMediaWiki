@@ -60,9 +60,9 @@ class SMWSQLStore3Writers {
 	public function deleteSubject( Title $title ) {
 
 		// @deprecated since 2.1, use 'SMW::SQLStore::BeforeDeleteSubjectComplete'
-		wfRunHooks( 'SMWSQLStore3::deleteSubjectBefore', array( $this->store, $title ) );
+		\Hooks::run( 'SMWSQLStore3::deleteSubjectBefore', array( $this->store, $title ) );
 
-		wfRunHooks( 'SMW::SQLStore::BeforeDeleteSubjectComplete', array( $this->store, $title ) );
+		\Hooks::run( 'SMW::SQLStore::BeforeDeleteSubjectComplete', array( $this->store, $title ) );
 
 		// Fetch all possible matches (including any duplicates created by
 		// incomplete rollback or DB deadlock)
@@ -90,9 +90,9 @@ class SMWSQLStore3Writers {
 		// the ArticleDelete hook
 
 		// @deprecated since 2.1, use 'SMW::SQLStore::AfterDeleteSubjectComplete'
-		wfRunHooks( 'SMWSQLStore3::deleteSubjectAfter', array( $this->store, $title ) );
+		\Hooks::run( 'SMWSQLStore3::deleteSubjectAfter', array( $this->store, $title ) );
 
-		wfRunHooks( 'SMW::SQLStore::AfterDeleteSubjectComplete', array( $this->store, $title ) );
+		\Hooks::run( 'SMW::SQLStore::AfterDeleteSubjectComplete', array( $this->store, $title ) );
 	}
 
 	private function doDeleteReferencesFor( $id, $subject, $subobjects ) {
@@ -137,7 +137,7 @@ class SMWSQLStore3Writers {
 	 * @param SMWSemanticData $data
 	 */
 	public function doDataUpdate( SMWSemanticData $semanticData ) {
-		wfRunHooks( 'SMWSQLStore3::updateDataBefore', array( $this->store, $semanticData ) );
+		\Hooks::run( 'SMWSQLStore3::updateDataBefore', array( $this->store, $semanticData ) );
 
 		$subject = $semanticData->getSubject();
 
@@ -171,9 +171,9 @@ class SMWSQLStore3Writers {
 		}
 
 		// Deprecated since 2.3, use SMW::SQLStore::AfterDataUpdateComplete
-		wfRunHooks( 'SMWSQLStore3::updateDataAfter', array( $this->store, $semanticData ) );
+		\Hooks::run( 'SMWSQLStore3::updateDataAfter', array( $this->store, $semanticData ) );
 
-		wfRunHooks( 'SMW::SQLStore::AfterDataUpdateComplete', array(
+		\Hooks::run( 'SMW::SQLStore::AfterDataUpdateComplete', array(
 			$this->store,
 			$semanticData,
 			$this->propertyTableRowDiffer->getCompositePropertyTableDiff()
@@ -536,7 +536,7 @@ class SMWSQLStore3Writers {
 	public function changeTitle( Title $oldTitle, Title $newTitle, $pageId, $redirectId = 0 ) {
 		global $smwgQEqualitySupport;
 
-		wfRunHooks(
+		\Hooks::run(
 			'SMW::SQLStore::BeforeChangeTitleComplete',
 			array( $this->store, $oldTitle, $newTitle, $pageId, $redirectId )
 		);

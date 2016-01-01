@@ -166,7 +166,7 @@ class ByIdDataRebuildDispatcher {
 		$this->createUpdateJobsForSmwIdRange( $id, $updatejobs, $emptyrange );
 
 		// Deprecated since 2.3, use 'SMW::SQLStore::BeforeDataRebuildJobInsert'
-		wfRunHooks('smwRefreshDataJobs', array( &$updatejobs ) );
+		\Hooks::run('smwRefreshDataJobs', array( &$updatejobs ) );
 
 		Hooks::run( 'SMW::SQLStore::BeforeDataRebuildJobInsert', array( $this->store, &$updatejobs ) );
 

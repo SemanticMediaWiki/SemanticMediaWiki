@@ -331,7 +331,7 @@ class PropertyRegistry {
 		}
 
 		// @deprecated since 2.1
-		wfRunHooks( 'smwInitProperties' );
+		\Hooks::run( 'smwInitProperties' );
 
 		\Hooks::run( 'SMW::Property::initProperties', array( $this ) );
 	}
