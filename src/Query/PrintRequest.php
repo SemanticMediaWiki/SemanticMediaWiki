@@ -96,7 +96,7 @@ class PrintRequest {
 			case self::PRINT_CATS:
 				return htmlspecialchars( $this->m_label ); // TODO: link to Special:Categories
 			case self::PRINT_CCAT:
-				return $linker->makeLinkObj( $this->m_data, htmlspecialchars( $this->m_label ) );
+				return \Linker::link( $this->m_data, htmlspecialchars( $this->m_label ) );
 			case self::PRINT_PROP:
 				return $this->m_data->getShortHTMLText( $linker );
 			case self::PRINT_THIS:
