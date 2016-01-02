@@ -206,6 +206,7 @@
 	"smw_adminlinks_inlinequerieshelp": "Hölp övver de em Wiki sing Sigge enjeboute Froore",
 	"smw-createproperty-isproperty": "Dat ess_en Eijeschaff vun dä Zoot $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|Dä einzijje müjjelesche Wäät för di Eijeschaff es:|De müjjelesche Wääte för di Eijeschaff sin:|Mer han kein müjjelesche Wääte för di Eijeschaff.}}",
+	"smw-ui-tooltip-title-quantity": "De Moßeinheijd ömwandelle",
 	"smw_unknowntype": "De Zoot „$1“ för de Eijeschaff dom_mer nit ongershtöze.",
 	"smw_concept_header": "Sigge vun däm Kumzäp „$1“",
 	"smw_conceptarticlecount": "{{PLURAL:$1|Ein Sigg jehööt|$1 Sigge jehüüre|Et jehüüere kein Sigge}} zoh dämm Kumzäp{{PLURAL:$1|:|:|.}}",
