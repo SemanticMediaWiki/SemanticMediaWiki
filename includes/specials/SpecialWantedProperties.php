@@ -53,16 +53,8 @@ class SpecialWantedProperties extends SpecialPage {
 		SMWOutputs::commitToOutputPage( $out );
 	}
 
-	/**
-	 * FIXME MW 1.24 wfCheckLimits was deprecated in MediaWiki 1.24
-	 */
 	private function getLimitOffset() {
-
-		if ( method_exists( $this->getRequest(), 'getLimitOffset' ) ) {
-			return $this->getRequest()->getLimitOffset();
-		}
-
-		return wfCheckLimits();
+		return $this->getRequest()->getLimitOffset();
 	}
 
 	protected function getGroupName() {
