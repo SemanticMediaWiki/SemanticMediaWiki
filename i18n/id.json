@@ -9,7 +9,8 @@
 			"Naval Scene",
 			"Rex",
 			"පසිඳු කාවින්ද",
-			"아라"
+			"아라",
+			"Arief"
 		]
 	},
 	"smw-desc": "Membuat wiki Anda lebih mudah diakses - oleh mesin ''dan'' manusia ([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentasi daring])",
@@ -200,6 +201,7 @@
 	"smw-createproperty-isproperty": "Ini adalah properti bertipe $1",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|Nilai|Nilai}} yang diizinkan untuk properti ini adalah:",
 	"smw-prefs-intro-text": "Pilihan di bawah disediakan oleh [https://www.semantic-mediawiki.org/ MediaWiki semantik] (atau ekstensi terkait) untuk mengaktifkan kustomisasi individu pada fungsi terpilih. Untuk informasi lebih lanjut, silakan  lihat ini [http://semantic-mediawiki.org/wiki/Help:User_preferences bagian bantuan].",
+	"smw-ui-tooltip-title-quantity": "satuan konversi",
 	"smw-ui-tooltip-title-info": "Informasi",
 	"smw-ui-tooltip-title-warning": "Kesalahan",
 	"smw-ui-tooltip-title-parameter": "Parameter",

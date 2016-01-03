@@ -238,7 +238,7 @@
 	"smw-sp-properties-header-label": "Elenco delle proprietà",
 	"smw-sp-admin-idlookup-objectid": "ID oggetto:",
 	"smw-livepreview-loading": "Caricamento in corso...",
-	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value\"$1\"] è una proprietà predefinita che può definire una lista di valori ammissibili per limitare assegnazioni di valori per una proprietà.",
+	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value \"$1\"] è una proprietà predefinita che può definire una lista di valori ammissibili per limitare assegnazioni di valori per una proprietà ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-datavalue-property-restricted-use": "La proprietà \"$1\" è stata contrassegnata per l'uso limitato.",
 	"smw-datavalue-restricted-use": "Il valore dei dati \"$1\" è stato contrassegnato per l'uso limitato.",
 	"smw-sp-types-list": "Elenco dei tipi di dati",
