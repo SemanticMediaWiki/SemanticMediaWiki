@@ -258,7 +258,7 @@ class SMWNumberValue extends SMWDataValue {
 		}
 
 		$unit = $this->getUnit();
-		$number = NumberFormatter::getInstance()->formatNumberToLocalizedText( $this->m_dataitem->getSerialization() ) ;
+		$number = NumberFormatter::getInstance()->formatNumberToLocalizedText( $this->m_dataitem->getSerialization() );
 
 		if ( $unit === '' ) {
 			return $number;
