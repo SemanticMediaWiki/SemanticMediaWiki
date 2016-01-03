@@ -182,7 +182,7 @@ class PropertyTableDefinitionBuilder {
 
 			// Normalize the key to be independent from a possible MW setting
 			// (has area == Has_area <> Has_Area)
-			$propertyKey = str_replace( ' ', '_',  ucfirst( $propertyKey ) );
+			$propertyKey = str_replace( ' ', '_', ucfirst( $propertyKey ) );
 
 			$this->addPropertyTable(
 				$tableDIType,
