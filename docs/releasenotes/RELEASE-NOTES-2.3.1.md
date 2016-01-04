@@ -1,6 +1,6 @@
 # Semantic MediaWiki 2.3.1
 
-Not a release yet.
+Released on January 4th, 2016.
 
 ## Bug fixes
 
