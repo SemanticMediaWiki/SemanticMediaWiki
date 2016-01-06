@@ -278,7 +278,7 @@
 	"smw-sp-admin-idlookup-objectid": "オブジェクト ID:",
 	"smw-livepreview-loading": "読み込み中...",
 	"smw-datavalue-import-unknownns": "重要な名前空間「$1」が不明です。 OWL import details が [[MediaWiki:Smw import $1]] を介して利用可能であることを確認してください。",
-	"smw-pa-property-predefined_sobj": "「$1」は、通常の Wiki のページと同様のプロパティ値の割り当てを溜めることができ、コンテナの[https://www.semantic-mediawiki.org/wiki/Help:Container 構造]を示す予め定義されたプロパティです。",
+	"smw-pa-property-predefined_sobj": "「$1」は、[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]によって提供される、通常の Wiki のページと同様のプロパティ値の割り当てを溜めることができ、[https://www.semantic-mediawiki.org/wiki/Help:Container コンテナ]の構造を示す定義済みのプロパティです。",
 	"smw-datavalue-property-restricted-use": "プロパティ「$1」は利用が限定されています。",
-	"smw-pa-property-predefined_errt": "「$1」は、エラーを引き起こす記述を含んだ定義済みのプロパティです。"
+	"smw-pa-property-predefined_errt": "「$1」は、[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]によって提供される、エラーの説明を含んだ定義済みのプロパティです。"
 }
