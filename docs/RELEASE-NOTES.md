@@ -16,6 +16,7 @@ Not a release yet.
 * #1321 Added [`$smwgSparqlRepositoryConnectorForcedHttpVersion`](https://semantic-mediawiki.org/wiki/Help:$smwgSparqlRepositoryConnectorForcedHttpVersion) setting to force a specific HTTP version in case of a #1306 cURL issue
 * #1290 Added support for properties and prinrequests to be forwared to a redirect target if one exists
 * #1329 Added positional preference for units when declared in `Corresponds to` (¥ 500 vs 500 JPY)
+* #1350 Enlarged input field on special page "Browse"
 
 ## Bug fixes
 

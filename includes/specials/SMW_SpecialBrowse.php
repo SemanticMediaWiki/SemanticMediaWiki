@@ -426,7 +426,7 @@ class SMWSpecialBrowse extends SpecialPage {
 		return '  <form name="smwbrowse" action="' . htmlspecialchars( $title->getLocalURL() ) . '" method="get">' . "\n" .
 			'    <input type="hidden" name="title" value="' . $title->getPrefixedText() . '"/>' .
 			wfMessage( 'smw_browse_article' )->text() . "<br />\n" .
-		    '    <input type="text" name="article" id="page_input_box" value="' . htmlspecialchars( $this->articletext ) . '" />' . "\n" .
+		    '    <input type="text" name="article" size="40" id="page_input_box" value="' . htmlspecialchars( $this->articletext ) . '" />' . "\n" .
 		    '    <input type="submit" value="' . wfMessage( 'smw_browse_go' )->text() . "\"/>\n" .
 		    "  </form>\n";
 	}
