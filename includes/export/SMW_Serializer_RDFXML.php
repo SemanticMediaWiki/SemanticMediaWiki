@@ -68,7 +68,7 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 	}
 
 	protected function serializeFooter() {
-		$this->post_ns_buffer .= "\t<!-- Created by Semantic MediaWiki, https://semantic-mediawiki.org/ -->\n";
+		$this->post_ns_buffer .= "\t<!-- Created by Semantic MediaWiki, https://www.semantic-mediawiki.org/ -->\n";
 		$this->post_ns_buffer .= '</rdf:RDF>';
 	}
 
