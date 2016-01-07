@@ -86,7 +86,8 @@ class SMWLanguageDe extends SMWLanguage {
 		'_MEDIA'=> 'Medientyp',
 		'_MIME' => 'MIME-Typ',
 		'_ERRC' => 'Verarbeitungsfehler',
-		'_ERRT' => 'Verarbeitungsfehlerhinweis'
+		'_ERRT' => 'Verarbeitungsfehlerhinweis',
+		'_PREC' => 'Display precision of'
 	);
 
 	protected $m_SpecialPropertyAliases = array(

@@ -77,7 +77,8 @@ class SMWLanguageEs extends SMWLanguage {
 		'_MEDIA'=> 'Tipo Media',
 		'_MIME' => 'Tipo MIME',
 		'_ERRC' => 'Has processing error',
-		'_ERRT' => 'Has processing error text'
+		'_ERRT' => 'Has processing error text',
+		'_PREC' => 'Display precision of'
 	);
 
 	protected $m_SpecialPropertyAliases = array(

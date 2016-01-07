@@ -324,6 +324,7 @@ class PropertyRegistry {
 			'_ASKDU' => array( '_num', true, true ), // "has query duration"
 			'_MEDIA' => array( '_txt', true, false ), // "has media type"
 			'_MIME'  => array( '_txt', true, false ), // "has mime type"
+			'_PREC'  => array( '_num', true, true ), // "Display precision of"
 		);
 
 		foreach ( $this->datatypeLabels as $id => $label ) {

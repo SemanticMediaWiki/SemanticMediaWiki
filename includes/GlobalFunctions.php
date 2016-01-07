@@ -87,7 +87,7 @@ function smwfHTMLtoUTF8( $text ) {
  * @deprecated since 2.1, use NumberFormatter instead
  */
 function smwfNumberFormat( $value, $decplaces = 3 ) {
-	return NumberFormatter::getInstance()->formatNumberToLocalizedText( $value, $decplaces );
+	return NumberFormatter::getInstance()->getLocalizedFormattedNumber( $value, $decplaces );
 }
 
 /**

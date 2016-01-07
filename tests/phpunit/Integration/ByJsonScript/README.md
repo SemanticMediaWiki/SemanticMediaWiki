@@ -1,5 +1,5 @@
 ## Fixtures
-Contains 86 files:
+Contains 87 files:
 
 ### F
 * [f-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0001.json) Test format=debug output
@@ -37,6 +37,7 @@ Contains 86 files:
 * [p-0407.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0407.json) Test in-text annotation for a redirect that is pointing to a deleted target (#1105)
 * [p-0408.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0408.json) Test in-text annotation for multiple property assignment using non-strict parser mode (#1252, en)
 * [p-0409.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0409.json) Test in-text annotation (and #subobject) for when record type points to another record type and is used as annotation to return a `_ERRC` (#1303)
+* [p-0410.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0410.json) Test in-text annotation on `_num`/`_tem`/`_qty` type with denoted precision (`_PREC`) and/or `-p<num>` printout precision marker (#1335, en)
 * [p-0701.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0701.json) Test to create inverted annotation using a #ask/template combination (#711, `import-annotation=true`)
 * [p-0702.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0702.json) Test #ask with `format=table` on inverse property/printrquest (#1270, en)
 * [p-0901.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0901.json) Test #ask on moved redirected subject (#1086)
@@ -97,4 +98,4 @@ Contains 86 files:
 ### S
 * [s-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0001.json) Test output of `Special:Properties` (en, skip-on sqlite, 1.19)
 
--- Last updated on 2015-12-30 by `readmeContentsBuilder.php`
+-- Last updated on 2016-01-06 by `readmeContentsBuilder.php`
