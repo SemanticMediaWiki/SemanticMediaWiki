@@ -2,6 +2,8 @@
 
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
+use SMW\RequestOptions;
+use SMW\StringCondition;
 
 /**
  * Implementation of MediaWiki's Article that shows additional information on
@@ -55,20 +57,36 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 * @return string
 	 */
 	protected function getTopText() {
+		$propertyName = htmlspecialchars( $this->mTitle->getText() );
+		$usageCount = '';
+		$requestOptions = new RequestOptions();
+		$requestOptions->limit = 1;
+		$requestOptions->addStringCondition( $propertyName, StringCondition::STRCOND_PRE );
+		$cachedLookupList = $this->store->getPropertiesSpecial( $requestOptions );
+		$usageList = $cachedLookupList->fetchList();
+
+		if ( $usageList && $usageList !== array() ) {
+			$usage = end( $usageList );
+			$usageCount = wfMessage(
+				'smw-pa-property-usage',
+				$propertyName,
+				$usage[1],
+				$this->getContext()->getLanguage()->timeanddate( $cachedLookupList->getTimestamp() )
+			)->parse();
+		}
 
 		if ( !$this->mProperty->isUserDefined() ) {
-			$propertyName = htmlspecialchars( $this->mTitle->getText() );
 			$propertyKey  = 'smw-pa-property-predefined' . strtolower( $this->mProperty->getKey() );
 			$messageKey   = wfMessage( $propertyKey )->exists() ? $propertyKey : 'smw-pa-property-predefined-default';
 
 			return Html::rawElement(
 				'div',
 				array( 'class' => 'smw-pa-property-predefined-intro' ),
-				wfMessage( $messageKey, $propertyName )->parse() . ' ' . wfMessage( 'smw-pa-property-predefined-common' )->parse()
+				wfMessage( $messageKey, $propertyName )->parse() . ' ' . wfMessage( 'smw-pa-property-predefined-common' )->parse() . ' ' . $usageCount
 			);
 		}
 
-		return '';
+		return $usageCount;
 	}
 
 	/**
