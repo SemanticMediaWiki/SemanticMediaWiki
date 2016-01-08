@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Veeven",
-			"రహ్మానుద్దీన్"
+			"రహ్మానుద్దీన్",
+			"Ravichandra"
 		]
 	},
 	"smw_finallistconjunct": ", మరియు",
@@ -60,5 +61,6 @@
 	"smw_smwadmin_announce": "మీ వికీని ప్రకటించండి",
 	"smw_smwadmin_datarefreshbutton": "భోగట్టాను తాజాకరించడం మొదలుపెట్టు",
 	"smw_smwadmin_support": "తోడ్పాటుని పొందడం",
+	"smw-ui-tooltip-title-quantity": "ప్రమాణం మార్పు",
 	"smw-livepreview-loading": "లోడవుతోంది..."
 }
