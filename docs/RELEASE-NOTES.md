@@ -38,6 +38,7 @@ Not a release yet.
 * #1314 Fixed hidden annotation copy of `[[ :: ]]` text values when embedded in query results
 * #753 (T40476) Fixed number parsing of non-zero lead decimal numbers (.1 vs 0.1)
 * #1357 Fixed `|+align=...` usage for `format=table`
+* #1358 Fixed recognition of multi-byte boolean value
 
 ## Internal changes
 
