@@ -86,7 +86,8 @@ class SMWLanguageNb extends SMWLanguage {
 		'_MEDIA'=> 'Mediatype',
 		'_MIME' => 'MIME-type',
 		'_ERRC' => 'Has processing error',
-		'_ERRT' => 'Has processing error text'
+		'_ERRT' => 'Has processing error text',
+		'_PREC' => 'Display precision of'
 	);
 
 	protected $m_SpecialPropertyAliases = array(

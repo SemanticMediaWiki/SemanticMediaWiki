@@ -176,6 +176,7 @@ class SMWSql3SmwIds {
 		'_INST' => 4,
 		'_UNIT' => 7,
 		'_IMPO' => 8,
+		'_PREC' => 11,
 		'_CONV' => 12,
 		'_SERV' => 13,
 		'_PVAL' => 14,
@@ -204,7 +205,7 @@ class SMWSql3SmwIds {
 		'_ASKSI' =>  36,
 		'_ASKDE' =>  37,
 //		'_ASKDU' =>  38,
-//		'_ASKID' =>  39
+//		'_ASKID' =>  39,
 	);
 
 	/**

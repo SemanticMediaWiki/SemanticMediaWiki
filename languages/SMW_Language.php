@@ -96,6 +96,7 @@ abstract class SMWLanguage {
 		'Has mime type'      => '_MIME',
 		'Has processing error'          => '_ERRC',
 		'Has processing error text'     => '_ERRT',
+		'Display precision of'  => '_PREC',
 	);
 
 	public function __construct() {

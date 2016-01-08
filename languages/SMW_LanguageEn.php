@@ -83,11 +83,13 @@ class SMWLanguageEn extends SMWLanguage {
 		'_MEDIA'=> 'Media type',
 		'_MIME' => 'MIME type',
 		'_ERRC' => 'Has processing error',
-		'_ERRT' => 'Has processing error text'
+		'_ERRT' => 'Has processing error text',
+		'_PREC' => 'Display precision of'
 	);
 
 	protected $m_SpecialPropertyAliases = array(
-		'Display unit' => '_UNIT'
+		'Display unit' => '_UNIT',
+		'Display precision' => '_PREC'
 	);
 
 	protected $m_Namespaces = array(

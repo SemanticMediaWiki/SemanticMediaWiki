@@ -95,7 +95,8 @@ class SMWLanguagePl extends SMWLanguage {
 		'_MEDIA'=> 'Media type',
 		'_MIME' => 'Mime type',
 		'_ERRC' => 'Has processing error',
-		'_ERRT' => 'Has processing error text'
+		'_ERRT' => 'Has processing error text',
+		'_PREC' => 'Display precision of'
 	);
 
 	protected $m_SpecialPropertyAliases = array(

@@ -82,7 +82,8 @@ class SMWLanguageZh_tw extends SMWLanguage {
 		'_MEDIA'=> '媒體類型', // Media type
 		'_MIME' => 'MIME類型', // MIME type
 		'_ERRC' => 'Has processing error',
-		'_ERRT' => 'Has processing error text'
+		'_ERRT' => 'Has processing error text',
+		'_PREC' => 'Display precision of'
 	);
 
 	protected $m_SpecialPropertyAliases = array(

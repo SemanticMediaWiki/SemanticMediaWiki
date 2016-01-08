@@ -81,8 +81,9 @@ class PropertySpecificationChangeNotifier {
 			return;
 		}
 
-		$this->compareFor( DIProperty::TYPE_HAS_TYPE );
-		$this->compareFor( DIProperty::TYPE_CONVERSION );
+		$this->compareFor( '_TYPE' );
+		$this->compareFor( '_CONV' );
+		$this->compareFor( '_PREC' );
 
 		foreach ( $this->propertiesToCompare as $propertyKey ) {
 			$this->compareFor( $propertyKey );
