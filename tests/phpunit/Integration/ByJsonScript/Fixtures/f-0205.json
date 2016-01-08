@@ -1,0 +1,62 @@
+{
+	"description": "Test `format=table` on `|+align=`/`|+limit`/`|+order` extra printout parameters (T18571, en)",
+	"properties": [
+		{
+			"name": "Has number",
+			"contents": "[[Has type::Number]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/F0205/1/1",
+			"contents": "[[Has number::1]] [[Has number::42]] [[Has number::.02]]"
+		},
+		{
+			"name": "Example/F0205/1/2",
+			"contents": "[[Has number::21]] [[Has number::1001]] [[Has number::2.02]]"
+		},
+		{
+			"name": "Example/F0205/1a",
+			"contents": "{{#ask: [[~Example/F0205/1/*]] |?Has number |+align=right |+limit=2 |+order=asc |format=table |headers=plain }}"
+		},
+		{
+			"name": "Example/F0205/1b",
+			"contents": "{{#ask: [[~Example/F0205/1/*]] |?Has number |+align=left |+limit=2 |+order=desc |format=table |headers=plain }}"
+		}
+	],
+	"format-testcases": [
+		{
+			"about": "#0",
+			"subject": "Example/F0205/1a",
+			"expected-output": {
+				"to-contain": [
+					"data-sort-value=\"0.02\" style=\"text-align:right;\" class=\"Has-number smwtype_num\">0.02<br />1",
+					"data-sort-value=\"2.02\" style=\"text-align:right;\" class=\"Has-number smwtype_num\">2.02<br />21"
+				]
+			}
+		},
+		{
+			"about": "#1",
+			"subject": "Example/F0205/1b",
+			"expected-output": {
+				"to-contain": [
+					"data-sort-value=\"42\" style=\"text-align:left;\" class=\"Has-number smwtype_num\">42<br />1",
+					"data-sort-value=\"1001\" style=\"text-align:left;\" class=\"Has-number smwtype_num\">1,001<br />21"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
