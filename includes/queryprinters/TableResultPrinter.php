@@ -154,7 +154,7 @@ class TableResultPrinter extends ResultPrinter {
 			$alignment = trim( $resultArray->getPrintRequest()->getParameter( 'align' ) );
 
 			if ( in_array( $alignment, array( 'right', 'left', 'center' ) ) ) {
-				$attributes['style'] = "text-align:' . $alignment . ';";
+				$attributes['style'] = "text-align:$alignment;";
 			}
 			$attributes['class'] = $columnClass . ( $dataValueType !== '' ? ' smwtype' . $dataValueType : '' );
 
