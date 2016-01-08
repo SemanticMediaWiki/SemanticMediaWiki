@@ -29,7 +29,7 @@ class SMWBoolValue extends SMWDataValue {
 			$this->m_caption = $value;
 		}
 
-		$lcv = strtolower( $value );
+		$lcv = mb_strtolower( $value );
 		$boolvalue = false;
 		if ( $lcv === '1' ) {
 			$boolvalue = true;
