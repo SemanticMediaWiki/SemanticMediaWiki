@@ -2,8 +2,7 @@
 
 namespace SMW\DataValues;
 
-use SMW\DataValues\ValueParsers\ImportValueParser;
-use SMW\DataValues\ValueParsers\ValueParserFactory;
+use SMW\DataValues\ValueParserFactory;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
 use SMWDataItem as DataItem;

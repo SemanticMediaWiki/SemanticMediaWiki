@@ -314,6 +314,10 @@ class EmbeddedQueryDependencyLinksStore {
 
 		foreach ( $dependencyList as $dependency ) {
 
+			if ( !$dependency instanceof DIWikiPage ) {
+				continue;
+			}
+
 			$oid = $this->getIdForSubject( $dependency );
 
 			// If the ID_TABLE didn't contained an valid ID then we create one ourselves

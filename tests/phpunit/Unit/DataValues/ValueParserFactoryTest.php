@@ -1,12 +1,11 @@
 <?php
 
-namespace SMW\Tests\DataValues\ValueParsers;
+namespace SMW\Tests\DataValues;
 
-use SMW\DataValues\ValueParsers\ValueParserFactory;
+use SMW\DataValues\ValueParserFactory;
 
 /**
- * @covers \SMW\DataValues\ValueParsers\ValueParserFactory
- *
+ * @covers \SMW\DataValues\ValueParserFactory
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -19,14 +18,14 @@ class ValueParserFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ValueParsers\ValueParserFactory',
+			'\SMW\DataValues\ValueParserFactory',
 			new ValueParserFactory()
 		);
 
 		ValueParserFactory::clear();
 
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ValueParsers\ValueParserFactory',
+			'\SMW\DataValues\ValueParserFactory',
 			ValueParserFactory::getInstance()
 		);
 	}

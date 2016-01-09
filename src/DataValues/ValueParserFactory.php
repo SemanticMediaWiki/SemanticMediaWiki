@@ -1,9 +1,10 @@
 <?php
 
-namespace SMW\DataValues\ValueParsers;
+namespace SMW\DataValues;
 
 use SMW\ControlledVocabularyImportContentFetcher;
 use SMW\MediaWiki\MediaWikiNsContentReader;
+use SMW\DataValues\ValueParsers\ImportValueParser;
 
 /**
  * @license GNU GPL v2+

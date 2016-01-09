@@ -333,13 +333,13 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 
 		$embeddedQueryDependencyListResolver->expects( $this->any() )
 			->method( 'getQueryDependencySubjectList' )
-			->will( $this->returnValue( array( DIWikiPage::newFromText( 'Foo' ) ) ) );
+			->will( $this->returnValue( array( null, DIWikiPage::newFromText( 'Foo' ) ) ) );
 
 		$instance = new EmbeddedQueryDependencyLinksStore( $store );
 		$instance->addDependencyList( $embeddedQueryDependencyListResolver );
 	}
 
-	public function testAddDependenciesFromQueryResullWhereObjectIdIsYetUnknownWhichRequiresToCreateTheIdOnTheFly() {
+	public function testAddDependenciesFromQueryResultWhereObjectIdIsYetUnknownWhichRequiresToCreateTheIdOnTheFly() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( array( 'getSMWPageID', 'makeSMWPageID' ) )
