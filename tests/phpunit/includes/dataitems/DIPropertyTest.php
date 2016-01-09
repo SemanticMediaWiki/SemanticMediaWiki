@@ -3,6 +3,7 @@
 namespace SMW\Tests;
 
 use SMW\DIProperty;
+use SMW\DiWikiPage;
 
 /**
  * @covers \SMW\DIProperty
@@ -97,7 +98,22 @@ class DIPropertyTest extends DataItemTest {
 		$property->setInterwiki( 'bar' );
 
 		$this->assertEquals(
-			new \SMW\DiWikiPage( 'Foo', SMW_NS_PROPERTY, 'bar' ),
+			new DiWikiPage( 'Foo', SMW_NS_PROPERTY, 'bar' ),
+			$property->getDiWikiPage()
+		);
+	}
+
+	public function testCreatePropertyFromLabelThatContainsInverseMarker() {
+
+		$property = DIProperty::newFromUserLabel( '-Foo' );
+		$property->setInterwiki( 'bar' );
+
+		$this->assertTrue(
+			$property->isInverse()
+		);
+
+		$this->assertEquals(
+			new DiWikiPage( 'Foo', SMW_NS_PROPERTY, 'bar' ),
 			$property->getDiWikiPage()
 		);
 	}

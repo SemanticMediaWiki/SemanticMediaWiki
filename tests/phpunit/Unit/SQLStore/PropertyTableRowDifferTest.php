@@ -89,4 +89,54 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCompositePropertyTableDiffIteratorWithUnknownFixedProperty() {
+
+		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyTable->expects( $this->once() )
+			->method( 'usesIdSubject' )
+			->will( $this->returnValue( true ) );
+
+		$propertyTable->expects( $this->once() )
+			->method( 'isFixedPropertyTable' )
+			->will( $this->returnValue( true ) );
+
+		$propertyTable->expects( $this->once() )
+			->method( 'getFixedProperty' )
+			->will( $this->returnValue( '_UNKNOWN_FIXED_PROPERTY' ) );
+
+		$semanticData = new SemanticData(
+			new DIWikiPage( 'Foo', NS_MAIN )
+		);
+
+		$propertyTables = array( $propertyTable );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->setMethods( array( 'getPropertyTables' ) )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( $propertyTables ) );
+
+		$instance = new PropertyTableRowDiffer( $store );
+		$instance->resetCompositePropertyTableDiff();
+
+		$result = $instance->computeTableRowDiffFor(
+			42,
+			$semanticData
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\CompositePropertyTableDiffIterator',
+			$instance->getCompositePropertyTableDiff()
+		);
+
+		$this->assertEmpty(
+			$instance->getCompositePropertyTableDiff()->getFixedPropertyRecords()
+		);
+	}
+
 }

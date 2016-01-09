@@ -4,9 +4,7 @@ namespace SMW;
 
 use SMWDataItem;
 use SMWDIUri;
-use SMWDIWikiPage;
 use SMWLanguage;
-
 use InvalidArgumentException;
 use RuntimeException;
 
@@ -205,21 +203,17 @@ class DIProperty extends SMWDataItem {
 	}
 
 	/**
-	 * Get an object of type SMWDIWikiPage that represents the page which
+	 * Get an object of type DIWikiPage that represents the page which
 	 * relates to this property, or null if no such page exists. The latter
-	 * can happen for special properties without user-readable label, and
-	 * for inverse properties.
+	 * can happen for special properties without user-readable label.
 	 *
 	 * It is possible to construct subobjects of the property's wikipage by
 	 * providing an optional subobject name.
 	 *
 	 * @param string $subobjectName
-	 * @return SMWDIWikiPage|null
+	 * @return DIWikiPage|null
 	 */
 	public function getDiWikiPage( $subobjectName = '' ) {
-		if ( $this->m_inverse ) {
-			return null;
-		}
 
 		if ( $this->isUserDefined() ) {
 			$dbkey = $this->m_key;
@@ -227,8 +221,14 @@ class DIProperty extends SMWDataItem {
 			$dbkey = str_replace( ' ', '_', $this->getLabel() );
 		}
 
+		// If an inverse marker is present just omit the marker so a normal
+		// property page link can be produced independent of its directionality
+		if ( $dbkey !== '' && $dbkey{0} == '-'  ) {
+			$dbkey = substr( $dbkey, 1 );
+		}
+
 		try {
-			return new SMWDIWikiPage( $dbkey, SMW_NS_PROPERTY, $this->interwiki, $subobjectName );
+			return new DIWikiPage( $dbkey, SMW_NS_PROPERTY, $this->interwiki, $subobjectName );
 		} catch ( DataItemException $e ) {
 			return null;
 		}
@@ -287,7 +287,7 @@ class DIProperty extends SMWDataItem {
 
 		if ( !isset( $this->m_proptypeid ) ) {
 			if ( $this->isUserDefined() ) { // normal property
-				$diWikiPage = new SMWDIWikiPage( $this->getKey(), SMW_NS_PROPERTY, $this->interwiki );
+				$diWikiPage = new DIWikiPage( $this->getKey(), SMW_NS_PROPERTY, $this->interwiki );
 				$typearray = ApplicationFactory::getInstance()->getStore()->getPropertyValues( $diWikiPage, new self( '_TYPE' ) );
 
 				if ( count( $typearray ) >= 1 ) { // some types given, pick one (hopefully unique)
@@ -357,9 +357,8 @@ class DIProperty extends SMWDataItem {
 	 * whether the label refers to a known predefined property.
 	 * Note that this function only gives access to the registry data that
 	 * DIProperty stores, but does not do further parsing of user input.
-	 * For example, '-' as first character is not interpreted for inverting
-	 * a property. Likewise, no normalization of title strings is done. To
-	 * process wiki input, SMWPropertyValue should be used.
+	 *
+	 * To process wiki input, SMWPropertyValue should be used.
 	 *
 	 * @param $label string label for the property
 	 * @param $inverse boolean states if the inverse of the property is constructed
@@ -368,13 +367,18 @@ class DIProperty extends SMWDataItem {
 	 */
 	public static function newFromUserLabel( $label, $inverse = false ) {
 
+		if ( $label !== '' && $label{0} == '-' ) {
+			$label = substr( $label, 1 );
+			$inverse = true;
+		}
+
 		$id = PropertyRegistry::getInstance()->findPropertyIdByLabel( str_replace( '_', ' ', $label ) );
 
 		if ( $id === false ) {
 			return new self( str_replace( ' ', '_', $label ), $inverse );
-		} else {
-			return new self( $id, $inverse );
 		}
+
+		return new self( $id, $inverse );
 	}
 
 	/**
