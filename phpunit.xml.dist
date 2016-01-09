@@ -59,6 +59,7 @@
         </whitelist>
     </filter>
     <php>
+       <var name="wgUseFileCache" value="false"/>
        <var name="smwgSparqlDefaultGraph" value="http://example.org/phpunit-testrun"/>
        <var name="smwgValueLookupCacheType" value="hash"/>
        <var name="smwgEnabledHttpDeferredJobRequest" value="false"/>

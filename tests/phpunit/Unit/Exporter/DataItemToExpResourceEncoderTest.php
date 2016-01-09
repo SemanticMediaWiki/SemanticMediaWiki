@@ -64,20 +64,6 @@ class DataItemToExpResourceEncoderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testTryMappingInversPropertyToResourceElementThrowsException() {
-
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$instance = new DataItemToExpResourceEncoder(
-			$store
-		);
-
-		$this->setExpectedException( 'RuntimeException' );
-		$instance->mapPropertyToResourceElement( new DIProperty( 'Foo', true ) );
-	}
-
 	public function testMapPropertyToResourceElement() {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )

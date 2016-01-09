@@ -8,6 +8,7 @@ use SMW\Store;
 use SMW\DIProperty;
 use SMWDIError as DIError;
 use InvalidArgumentException;
+use SMW\DataItemException;
 
 /**
  * @license GNU GPL v2+
@@ -91,9 +92,16 @@ class PropertyTableRowDiffer {
 			// its assigned property/id
 			if ( $propertyTable->isFixedPropertyTable() ) {
 				$fixedProperty['key'] = $propertyTable->getFixedProperty();
-				$fixedProperty['p_id'] = $this->store->getObjectIds()->getSMWPropertyID(
-					new DIProperty( $fixedProperty['key'] )
-				);
+
+				// Isn't registered therefore leave it alone (property was removed etc.)
+				try {
+					$property = new DIProperty( $fixedProperty['key'] );
+					$fixedProperty['p_id'] = $this->store->getObjectIds()->getSMWPropertyID(
+						$property
+					);
+				} catch ( DataItemException $e ) {
+					$fixedProperty = false;
+				}
 			}
 
 			if ( array_key_exists( $tableName, $newData ) ) {

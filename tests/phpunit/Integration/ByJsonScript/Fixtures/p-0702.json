@@ -12,14 +12,18 @@
 			"contents": "{{#subobject:|Has inverse prop=InverseExample|Has number=4040}}"
 		},
 		{
-			"name": "Example/P0702/2",
+			"name": "Example/P0702/1/1",
 			"contents": "{{#ask: [[-Has inverse prop::<q>[[-Has subobject::Example/P0702/1]]</q>]]|?-Has inverse prop||?-Has inverse prop=LabelOnInversePrintout|format=table}}"
+		},
+		{
+			"name": "Example/P0702/2",
+			"contents": "[[-Has inverse prop::Invalid in-text annotation]]"
 		}
 	],
 	"parser-testcases": [
 		{
 			"about": "#0 table output using inverse property (label is inverse, link is to normal property)",
-			"subject": "Example/P0702/2",
+			"subject": "Example/P0702/1/1",
 			"expected-output": {
 				"to-contain": [
 					"Property:Has_inverse_prop\" title=\"Property:Has inverse prop\">-Has inverse prop</a>",
@@ -27,6 +31,18 @@
 					"title=\"Example/P0702/1\">Example/P0702/1</a>",
 					">LabelOnInversePrintout</a>"
 				]
+			}
+		},
+		{
+			"about": "#1 in-text inverse annotation",
+			"subject": "Example/P0702/2",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_SKEY", "_MDAT", "_ERRC" ],
+					"propertyValues": []
+				}
 			}
 		}
 	],
