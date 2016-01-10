@@ -25,5 +25,9 @@
 	"smw_sbv_value": "Аңлатмасы:",
 	"smw_sbv_submit": "Эзләү",
 	"browse": "Сәхифәне карау",
+	"smw_browselink": "Үзенчәлекләрен карау",
+	"group-smwadministrator": "Semantic MediaWiki идәрәчеләре",
+	"group-smwadministrator-member": "{{GENDER:$1|идәрәче (SMW)}}",
+	"grouppage-smwadministrator": "{{ns:project}}:SMW_идәрәчеләре",
 	"smw-livepreview-loading": "Йөкләү..."
 }
