@@ -267,7 +267,7 @@
 	"smw_adminlinks_datastructure": "Datenstruktur",
 	"smw_adminlinks_displayingdata": "Datenanzeige",
 	"smw_adminlinks_inlinequerieshelp": "Hilfe zu eingebetteten Abfragen",
-	"smw_pa_property-usage": "Dem Attribut „$1“ {{PLURAL:$2|0=wurden '''keine''' Datenwerte|wurde '''$2''' Datenwert|wurden ungefähr '''$2''' Datenwerte}} [https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count zugeordnet] ($3).",
+	"smw-pa-property-usage": "Das Attribut „$1“ ist mit einem ungefähren [https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count Verwendungszähler] von {{PLURAL:$2|'''$2'''}} registriert ($3).",
 	"smw-createproperty-isproperty": "Es ist ein Attribut des Datentyps $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|Der mögliche Wert für dieses Attribut ist|Die möglichen Werte für dieses Attribut sind}}:",
 	"smw-paramdesc-category-delim": "Das Trennzeichen für die Ergebniswerte",
@@ -362,5 +362,6 @@
 	"smw-pa-property-predefined_media": "„$1“ ist ein softwareseitig fest definiertes Attribut, das den Medientyp einer hochgeladenen Datei beschreibt und von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt wird.",
 	"smw-pa-property-predefined_askfo": "„$1“ ist ein softwareseitig fest definiertes Attribut, das den Namen des in einer Abfrage verwendeten Ergebnisformats enthält und von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt wird.",
 	"smw-pa-property-predefined_askst": "„$1“ ist ein softwareseitig fest definiertes Attribut, das die Bedingungen der Abfrage als Zeichenfolge beschreibt und von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt wird.",
-	"smw-pa-property-predefined_askdu": "„$1“ ist ein softwareseitig fest definiertes Attribut, das einen Zeitwert (in Sekunden) enthält, den die Abfrage angefordert hat, um ihre Ausführung zu vervollständigen und von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt wird."
+	"smw-pa-property-predefined_askdu": "„$1“ ist ein softwareseitig fest definiertes Attribut, das einen Zeitwert (in Sekunden) enthält, den die Abfrage angefordert hat, um ihre Ausführung zu vervollständigen und von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt wird.",
+	"smw-pa-property-predefined_prec": "„$1“ ist ein vordefiniertes Attribut, das eine [https://www.semantic-mediawiki.org/wiki/Help:Display_precision Anzeigegenauigkeit] (in dezimalen Ziffern) für numerische Datentypen beschreibt."
 }

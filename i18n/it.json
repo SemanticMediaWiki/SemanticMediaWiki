@@ -218,7 +218,7 @@
 	"smw_adminlinks_datastructure": "Struttura dei dati",
 	"smw_adminlinks_displayingdata": "Visualizzazione dati",
 	"smw_adminlinks_inlinequerieshelp": "Aiuto sulle query inline",
-	"smw-createproperty-isproperty": "Questa è una proprietà di tipo $1.",
+	"smw-createproperty-isproperty": "È una proprietà di tipo $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|Il valore permesso per questa proprità è|I valori permessi per questa proprietà sono}}:",
 	"smw-ui-tooltip-title-property": "Proprietà",
 	"smw-ui-tooltip-title-quantity": "Conversione unità",
