@@ -209,7 +209,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		$orderByVariable = $result->orderByVariable;
 
 		if ( $dataItem instanceof DIWikiPage ) {
-			$expElement = $this->exporter->getDataItemExpElement( $dataItem->getSortKeyDataItem() );
+			$expElement = $this->exporter->getDataItemExpElement( new DIBlob( $dataItem->getSortKey() ) );
 		} else {
 			$expElement = $this->exporter->getDataItemHelperExpElement( $dataItem );
 			if ( is_null( $expElement ) ) {
