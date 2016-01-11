@@ -168,7 +168,10 @@ class QuerySegmentListProcessor {
 				// Pick one subquery as anchor point ...
 				foreach ( $query->components as $qkey => $qid ) {
 					$key = $qkey;
-					break;
+
+					if ( $this->querySegmentList[$qkey]->joinTable !== '' ) {
+						break;
+					}
 				}
 
 				$result = $this->querySegmentList[$key];
