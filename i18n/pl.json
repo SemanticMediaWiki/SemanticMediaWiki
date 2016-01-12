@@ -236,7 +236,7 @@
 	"smw_adminlinks_datastructure": "Struktura danych",
 	"smw_adminlinks_displayingdata": "Pokaż dane",
 	"smw_adminlinks_inlinequerieshelp": "Pomoc dotycząca wewnętrznych zapytań",
-	"smw-createproperty-isproperty": "To jest własność typu $1.",
+	"smw-createproperty-isproperty": "To jest właściwość typu $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|Dopuszczalna wartość dla tej własności to|Dopuszczalne wartości dla tej własności to:}}",
 	"smw-paramdesc-category-delim": "Ogranicznik",
 	"smw-paramdesc-category-template": "Szablon do formatowania elementów z",

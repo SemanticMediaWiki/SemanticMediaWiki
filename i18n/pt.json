@@ -240,7 +240,7 @@
 	"smw_adminlinks_datastructure": "Estrutura de dados",
 	"smw_adminlinks_displayingdata": "A mostrar os dados",
 	"smw_adminlinks_inlinequerieshelp": "Ajuda para consultas dinâmicas ''(inline queries)''",
-	"smw-createproperty-isproperty": "Esta é uma propriedade do tipo $1.",
+	"smw-createproperty-isproperty": "É uma propriedade do tipo $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|O valor permitido para esta propriedade é|Os valores permitidos para esta propriedade são}}:",
 	"prefs-smw": "Semântica MediaWiki",
 	"prefs-ask-options": "Opções da pesquisa semântica",

@@ -1,0 +1,17 @@
+{
+	"@metadata": {
+		"authors": [
+			"Emwiemaikel"
+		]
+	},
+	"smw_concept_cache_miss": "Das Konzept „$1“ kann im Moment nicht genutzt werden, da es, gemäss der Konfiguration des Wikis, offline zu berechnen ist.\nFalls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte deinen Websiteadministrator, die Daten dieses Konzepts zu aktualisieren.",
+	"smw-paramdesc-columns": "Die Anzahl der Spalten, die für die Anzeige der Suchergebnisse verwendet werden sollen (standardmässig $1).",
+	"smw-smwdoc-description": "Zeigt eine Übersicht aller Parameter inkl. Beschreibung und Standardwerten, die im Zusammenhang mit dem angegebenen Ergebnisformat genutzt werden können.",
+	"smw_unitnotallowed": "„$1“ wurde nicht als gültige Masseinheit für dieses Attribut festgelegt.",
+	"smw_querytoolarge": "Die folgenden Abfragebedingungen konnten, wegen der auf diesem Wiki gültigen Beschränkungen, bezüglich Grösse und Tiefe von Abfragen, nicht berücksichtigt werden: $1.",
+	"smw_exportrdf_recursive": "Exportiere auch alle relevanten Seiten rekursiv. Diese Einstellung kann zu sehr grossen Ergebnismengen führen!",
+	"smw-sp-property-searchform-inputinfo": "Bei der Eingabe wird zwischen Gross- und Kleinschreibung unterschieden. Bei der Filterung werden nur Attribute angezeigt, die der Bedingung entsprechen.",
+	"smw-statistics-query-size": "Abfragegrösse",
+	"smw-prefs-ask-options-collapsed-default": "Bereich mit den Ausgabeparametern standardmässig einklappen",
+	"smw-sp-types_tel": "„$1“ ist ein Datentyp der für die Ziffernfolge zur Anwahl eines Zielteilnehmers (Rufnummer) gemäss RFC 3966 genutzt wird."
+}
