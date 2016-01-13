@@ -90,7 +90,7 @@ class EditInfoProvider {
 
 	private function prepareTextForEdit() {
 		return $this->wikiPage->prepareTextForEdit(
-			$this->revision->getRawText(),
+			$this->revision->getContent( Revision::RAW ),
 			null,
 			$this->user
 		);
