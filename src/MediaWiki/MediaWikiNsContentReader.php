@@ -68,7 +68,7 @@ class MediaWikiNsContentReader {
 			return $revision->getContent()->getNativeData();
 		}
 
-		return $revision->getRawText();
+		return $revision->getContent( Revision::RAW );
 	}
 
 }
