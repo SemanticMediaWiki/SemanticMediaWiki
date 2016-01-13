@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use Revision;
 use Title;
 use UnexpectedValueException;
 
@@ -109,7 +110,7 @@ class PageCreator {
 		}
 
 		return $this->getPage()->prepareTextForEdit(
-			$this->getPage()->getRevision()->getRawText(),
+			$this->getPage()->getRevision()->getContent( Revision::RAW ),
 			null,
 			null
 		);
