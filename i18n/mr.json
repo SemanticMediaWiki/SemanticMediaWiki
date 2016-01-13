@@ -96,7 +96,7 @@
 	"smw_result_next": "पुढील",
 	"smw_result_results": "निकाल",
 	"smw_result_noresults": "माफ करा, निकाल नाहीत.",
-	"smw-createproperty-isproperty": "हा $1 प्रकारचा गुणधर्म आहे.",
+	"smw-createproperty-isproperty": "तो $1 प्रकारचा गुणधर्म आहे.",
 	"smw-createproperty-allowedvals": "या गुणधर्माच्या योग्य किंमती पुढीलप्रमाणे आहेत:",
 	"prefs-smw": "सेमॅंटिक मिडियाविकि",
 	"smw_unknowntype": "गुणधर्माचा प्रकार “$1” वापरता येत नाही.",
