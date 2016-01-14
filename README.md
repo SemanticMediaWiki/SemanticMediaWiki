@@ -14,11 +14,11 @@ powers Wikipedia – that lets you store and query data within the wiki's pages.
 Semantic MediaWiki is also a full-fledged framework, in conjunction with
 many spinoff extensions, that can turn a wiki into a powerful and flexible
 knowledge management system. All data created within SMW can easily be
-published via the [Semantic Web](https://semantic-mediawiki.org/wiki/Semantic_Web),
+published via the [Semantic Web](https://www.semantic-mediawiki.org/wiki/Semantic_Web),
 allowing other systems to use this data seamlessly.
 
 For a better understanding of how SMW works, have a look at [Semantic MediaWiki deployed in 5 min](https://vimeo.com/82255034), using a [Sesame](https://vimeo.com/126392433) or [Fuseki ](https://vimeo.com/118614078) triplestore, or 
-browse the [smw.org@wiki](https://semantic-mediawiki.org) for a more comprehensive introduction.
+browse the [smw.org@wiki](https://www.semantic-mediawiki.org) for a more comprehensive introduction.
 
 ## Requirements
 
@@ -45,7 +45,7 @@ the available [upgrade guide][smw-installation].
 
 ## Documentation
 
-Most of the documentation can be found on the [SMW wiki](https://semantic-mediawiki.org).
+Most of the documentation can be found on the [SMW wiki](https://www.semantic-mediawiki.org).
 A small core of documentation also comes bundled with the software itself. This documentation
 is minimalistic and less explanatory then what can be found on the SMW wiki. It is however
 always kept up to date, and applies to the version of the code it comes bundled with.
@@ -57,12 +57,12 @@ The most important files are linked below.
 
 ## Contribution and support
 
-[![Twitter](https://semantic-mediawiki.org/w/images/c/c9/Twitter_icon.jpg)](https://twitter.com/#!/semanticmw)
-[![Facebook](https://semantic-mediawiki.org/w/images/thumb/7/77/677166248.png/30px-677166248.png)](https://www.facebook.com/pages/Semantic-MediaWiki/160459700707245)
-[![Google+](https://semantic-mediawiki.org/w/images/a/ae/30px-Google%2B.png)](https://plus.google.com/115301028320198614441/posts)
+[![Twitter](https://www.semantic-mediawiki.org/w/images/c/c9/Twitter_icon.jpg)](https://twitter.com/#!/semanticmw)
+[![Facebook](https://www.semantic-mediawiki.org/w/images/thumb/7/77/677166248.png/30px-677166248.png)](https://www.facebook.com/pages/Semantic-MediaWiki/160459700707245)
+[![Google+](https://www.semantic-mediawiki.org/w/images/a/ae/30px-Google%2B.png)](https://plus.google.com/115301028320198614441/posts)
 
 Many people have contributed to SMW. A list of people who have made contributions in the past can
-be found [here][contributors] or [on the SMW wiki](https://semantic-mediawiki.org/wiki/Help:SMW_Project#Contributors).
+be found [here][contributors] or [on the SMW wiki](https://www.semantic-mediawiki.org/wiki/Help:SMW_Project#Contributors).
 The overview on [how to contribute](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/CONTRIBUTING.md)
 provides information on the different ways available to do so.
 
@@ -74,7 +74,7 @@ have a look at the contribution guideline.
 
 * [File an issue](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues)
 * [Submit a pull request](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pulls)
-* Ask a question on [the mailing list](https://semantic-mediawiki.org/wiki/Mailing_list)
+* Ask a question on [the mailing list](https://www.semantic-mediawiki.org/wiki/Mailing_list)
 * Ask a question on the #semantic-mediawiki IRC channel on Freenode.
 
 
