@@ -17,55 +17,55 @@ on how to install the latest version of SMW, see the [installation instructions]
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
 	</tr>
 	<tr>
-		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.3.0">SMW 2.3.x</a></th>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.3.0">SMW 2.3.x</a></th>
 		<td>Stable release</td>
 		<td>2015-10-25</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.3.x">2.3.x</a></td>
 	</tr>
 	<tr>
-		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.2.0">SMW 2.2.x</a></th>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.2.0">SMW 2.2.x</a></th>
 		<td>Obsolete release</td>
 		<td>2015-05-09</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.2.x">2.2.x</a></td>
 	</tr>
 	<tr>
-		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.1.x">SMW 2.1.x</a></th>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.1.x">SMW 2.1.x</a></th>
 		<td>Obsolete release</td>
 		<td>2015-01-19</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.1.x">2.1.x</a></td>
 	</tr>
 	<tr>
-		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.0">SMW 2.0.x</a></th>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.0">SMW 2.0.x</a></th>
 		<td>Obsolete release</td>
 		<td>2014-08-04</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.0">2.0</a></td>
 	</tr>
 	<tr>
-		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.2">SMW 1.9.2</a></th>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.2">SMW 1.9.2</a></th>
 		<td>Obsolete release</td>
 		<td>2014-04-18</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.9.2">1.9.2</a></td>
 	</tr>
 	<tr>
-		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.1">SMW 1.9.1</a></th>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.1">SMW 1.9.1</a></th>
 		<td>Obsolete release</td>
 		<td>2014-02-09</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.9.1">1.9.1</a></td>
 	</tr>
 	<tr>
-		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.0">SMW 1.9.0</a></th>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.0">SMW 1.9.0</a></th>
 		<td>Obsolete release</td>
 		<td>2014-01-03</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.9">1.9</a></td>
 	</tr>
 	<tr>
-		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.8.0">SMW 1.8.x</a></th>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.8.0">SMW 1.8.x</a></th>
 		<td>Obsolete release</td>
 		<td>2012-12-02</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.8.x">1.8.x</a></td>
 	</tr>
 	<tr>
-		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.7.1">SMW 1.7.1</a></th>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.7.1">SMW 1.7.1</a></th>
 		<td>Obsolete release</td>
 		<td>2012-03-05</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.7.1">1.7.1</a></td>
