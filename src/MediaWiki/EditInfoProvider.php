@@ -89,8 +89,17 @@ class EditInfoProvider {
 	}
 
 	private function prepareTextForEdit() {
+		// keep backwards compatibility with MediaWiki 1.19 by deciding, if the
+		// newer Revision::getContent() method (MW 1.20 and above) or the bc
+		// method Revision::getRawText() is used.
+		if ( method_exists( $this->revision, 'getContent' ) ) {
+			$text = $this->revision->getContent( Revision::RAW );
+		} else {
+			// FIXME: Isn't needed after drop of support for MW 1.19
+			$text = $this->revision->getRawText();
+		}
 		return $this->wikiPage->prepareTextForEdit(
-			$this->revision->getRawText(),
+			$text,
 			null,
 			$this->user
 		);
