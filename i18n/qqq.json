@@ -360,5 +360,6 @@
 	"smw-pa-property-predefined_askfo": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
 	"smw-pa-property-predefined_askst": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
 	"smw-pa-property-predefined_askdu": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
-	"smw-pa-property-predefined_prec": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property]."
+	"smw-pa-property-predefined_prec": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
+	"smw-sp-types-geo-not-available": "This is an informatory message shown to the user."
 }

@@ -5,7 +5,6 @@ namespace SMW\Tests;
 use SMW\PropertySpecificationChangeNotifier;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Settings;
 use SMW\ApplicationFactory;
 
 /**
@@ -29,13 +28,15 @@ class PropertySpecificationChangeNotifierTest extends \PHPUnit_Framework_TestCas
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		$settings = Settings::newFromArray( array(
+		$settings = array(
 			'smwgDeclarationProperties' => array( '_PVAL' ),
 			'smwgCacheType'  => 'hash',
 			'smwgEnableUpdateJobs' => false
-		) );
+		);
 
-		$this->applicationFactory->registerObject( 'Settings', $settings );
+		foreach ( $settings as $key => $value ) {
+			$this->applicationFactory->getSettings()->set( $key, $value );
+		}
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()

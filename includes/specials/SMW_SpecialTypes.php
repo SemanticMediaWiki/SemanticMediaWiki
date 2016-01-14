@@ -85,6 +85,8 @@ class SMWSpecialTypes extends SpecialPage {
 		$until = $wgRequest->getVal( 'until' );
 		$typeValue = DataValueFactory::getInstance()->newTypeIDValue( '__typ', $typeLabel );
 
+		$this->getOutput()->prependHTML( $this->getTypesLink() );
+
 		if ( !$typeValue->isValid() ) {
 			return $this->msg( 'smw-special-types-no-such-type' )->escaped();
 		}
@@ -114,6 +116,8 @@ class SMWSpecialTypes extends SpecialPage {
 			wfMessage( 'smw-sp-types-help', str_replace( ' ', '_', $canonicalLabel ) )->parse()
 		);
 
+		$result .= $this->displayExtraInformationAbout( $typeValue );
+
 		if ( count( $diWikiPages ) > 0 ) {
 			$pageLister = new SMWPageLister( $diWikiPages, null, $smwgTypePagingLimit, $from, $until );
 
@@ -136,4 +140,45 @@ class SMWSpecialTypes extends SpecialPage {
 	protected function getGroupName() {
 		return 'pages';
 	}
+
+	private function displayExtraInformationAbout( $typeValue ) {
+
+		$html = '';
+
+		$dataValue = DataValueFactory::getInstance()->newTypeIDValue(
+			$typeValue->getDataItem()->getFragment()
+		);
+
+		if ( $typeValue->getDataItem()->getFragment() === '_geo' ) {
+
+			$escapedTypeLabel = htmlspecialchars( $typeValue->getWikiValue() );
+
+			if ( $dataValue instanceof \SMWErrorValue ) {
+				$html = \Html::rawElement(
+					'p',
+					array(),
+					wfMessage( 'smw-sp-types-geo-not-available', $escapedTypeLabel )->parse()
+				);
+			}
+		}
+
+		return $html;
+	}
+
+	private function getTypesLink() {
+		return \Html::rawElement(
+			'div',
+			array( 'class' => 'smw-breadcrumb-link' ),
+			\Html::rawElement(
+				'span',
+				array( 'class' => 'smw-breadcrumb-arrow-right' ),
+				''
+			) .
+			\Html::rawElement(
+				'a',
+				array( 'href' => \SpecialPage::getTitleFor( 'Types')->getFullURL() ),
+				$this->msg( 'types' )->escaped()
+		) );
+	}
+
 }
