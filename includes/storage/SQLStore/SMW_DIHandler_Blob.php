@@ -53,6 +53,17 @@ class SMWDIHandlerBlob extends SMWDataItemHandler {
 	}
 
 	/**
+	 * @see SMWDataItemHandler::getTableIndexes
+	 *
+	 * @since 2.4
+	 *
+	 * @return array
+	 */
+	public function getTableIndexes() {
+		return array( 's_id,o_hash' );
+	}
+
+	/**
 	 * Method to return an array of fields=>values for a DataItem
 	 *
 	 * @return array
