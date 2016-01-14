@@ -156,7 +156,7 @@
 	"smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|use|uses}})",
 	"smw_purge": "Refresh",
 	"types": "Types",
-	"smw_types_docu": "The following is a [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes list] of all datatypes that can be assigned to properties.",
+	"smw_types_docu": "The following is a [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes list] of available datatypes with each [https://www.semantic-mediawiki.org/wiki/Help:Datatype datatype] representing a unique set of attributes to describe a value in terms of storage and display characteristics that are hereditary to an assigned property.",
 	"smw-special-types-no-such-type": "The specified data type does not exist",
 	"semanticstatistics": "Semantic statistics",
 	"smw_semstats_text": "This wiki contains '''$1''' property {{PLURAL:$1|value|values}} for a total of '''$2''' [[Special:Properties|{{PLURAL:$2|property|different properties}}]].\n'''$3''' {{PLURAL:$3|property has|properties have}} an own page, and the intended data type is specified for '''$4''' of those.\nSome of the existing properties might be [[Special:UnusedProperties|unused properties]].\nProperties that still lack a page are found on the [[Special:WantedProperties|list of wanted properties]].",
@@ -353,5 +353,6 @@
 	"smw-pa-property-predefined_askfo": "\"$1\" is a predefined property that holds the name of the result format used in a query and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_askst": "\"$1\" is a predefined property that describes the conditions of the query as a string and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_askdu": "\"$1\" is a predefined property containing a time value (in seconds) the query had required to complete its execution and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
-	"smw-pa-property-predefined_prec": "\"$1\" is a predefined property that describes a [https://www.semantic-mediawiki.org/wiki/Help:Display_precision display precision] (in decimal digits) for numeric datatypes."
+	"smw-pa-property-predefined_prec": "\"$1\" is a predefined property that describes a [https://www.semantic-mediawiki.org/wiki/Help:Display_precision display precision] (in decimal digits) for numeric datatypes.",
+	"smw-sp-types-geo-not-available": "[https://www.semantic-mediawiki.org/wiki/Semantic_Maps Semantic Maps] was not detected therefore \"$1\" is restricted in its capacity to operate."
 }

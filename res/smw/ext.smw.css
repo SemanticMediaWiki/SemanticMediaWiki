@@ -496,3 +496,21 @@ label.smw-form-checkbox {
 	overflow: hidden;
 	font-size: 0.9em;
 }
+
+.smw-breadcrumb-link {
+	color: #7D7D7D;
+	font-size: 84%;
+	line-height: 1.2em;
+	margin: 0 0 0.8em 0;
+	width: auto;
+}
+
+.smw-breadcrumb-arrow-right {
+	border-top: 5px solid transparent;
+	border-bottom: 5px solid transparent;
+	border-left: 5px solid #AAAAAA;
+	display: inline-block;
+	position: relative;
+	margin-left: 4px;
+	margin-right: 4px;
+}
