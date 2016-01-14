@@ -32,7 +32,7 @@ if a new release is relevant to them.
 
 ## Improved SPARQLStore support
 
-[Semantic MediaWiki 1.6](http://semantic-mediawiki.org/wiki/SMW_1.6#Synchronizing_SMW_with_RDF_stores)
+[Semantic MediaWiki 1.6](http://www.semantic-mediawiki.org/wiki/SMW_1.6#Synchronizing_SMW_with_RDF_stores)
 introduced support for data synchronization with RDF back-ends. SMW 2.0 makes this functionality a
 first class citizen through many enhancements and stability improvements.
 
@@ -40,9 +40,9 @@ first class citizen through many enhancements and stability improvements.
 * Enhanced and full support for [Virtuoso](https://github.com/openlink/virtuoso-opensource) 6.1
 * Enhanced support for [4store](https://github.com/garlik/4store) 1.1
 
-The [`smwgSparqlDatabase`](https://semantic-mediawiki.org/wiki/Help:$smwgSparqlDatabase) setting
+The [`smwgSparqlDatabase`](https://www.semantic-mediawiki.org/wiki/Help:$smwgSparqlDatabase) setting
 introduced in 1.6 has been deprecated in favour of
-[`$smwgSparqlDatabaseConnector`](https://semantic-mediawiki.org/wiki/Help:$smwgSparqlDatabaseConnector)
+[`$smwgSparqlDatabaseConnector`](https://www.semantic-mediawiki.org/wiki/Help:$smwgSparqlDatabaseConnector)
 (#342) to avoid arbitrary class assignments in `$smwgSparqlDatabase` (now only used to assign custom
 connectors).
 
@@ -54,7 +54,7 @@ but tests have been run successfully with a local `4store` instance).
 
 At this moment, the only RDF store to be tested and to support [SPARQL 1.1](http://www.w3.org/TR/sparql11-query/)
 is `Jena Fuseki` therefore other stores may not support all `query features`. For details to
-the testing environment and its configuration, see the [README](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/includes/src/SPARQLStore/README.md)
+the testing environment and its configuration, see the [README](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SPARQLStore/README.md)
 file.
 
 ## Improved subobject support
