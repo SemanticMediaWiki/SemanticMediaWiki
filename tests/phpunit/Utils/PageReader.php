@@ -79,8 +79,13 @@ class PageReader {
 			);
 		}
 
+		if ( method_exists( $this->getPage()->getRevision(), 'getContent' ) ) {
+			$text = $this->getPage()->getRevision()->getContent( Revision::RAW );
+		} else {
+			$text = $this->getPage()->getRevision()->getRawText();
+		}
 		return $this->page->prepareTextForEdit(
-			$this->page->getRevision()->getRawText(),
+			$text,
 			null,
 			null
 		);
