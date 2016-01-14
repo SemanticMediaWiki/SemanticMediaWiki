@@ -3,6 +3,7 @@
 namespace SMW\Tests\Utils;
 
 use Title;
+use Revision;
 use TextContent;
 
 use UnexpectedValueException;
