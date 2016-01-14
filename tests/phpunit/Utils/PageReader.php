@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use Revision;
 use Title;
 use TextContent;
 
@@ -80,7 +81,7 @@ class PageReader {
 		}
 
 		return $this->page->prepareTextForEdit(
-			$this->page->getRevision()->getRawText(),
+			$this->page->getRevision()->getContent( Revision::RAW ),
 			null,
 			null
 		);

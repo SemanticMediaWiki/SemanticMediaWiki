@@ -85,12 +85,11 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$revision->expects( $this->any() )
-			->method( 'getRawText' )
-			->will( $this->returnValue( 'Foo' ) );
-
-		$revision->expects( $this->any() )
 			->method( 'getContent' )
-			->will( $this->returnValue( $this->newContent() ) );
+			->will( $this->returnValueMap( array(
+				array( \Revision::RAW, null, 'Foo' ),
+				array( \Revision::FOR_PUBLIC, null, $this->newContent() ),
+			) ) );
 
 		#0 No parserOutput object
 		$editInfo = (object)array();
