@@ -22,12 +22,12 @@ Thank you for contributing to Semantic MediaWiki!
 
 [smw]: https://github.com/SemanticMediaWiki/SemanticMediaWiki
 [smw-issues]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues
-[smw-bugs1]: https://semantic-mediawiki.org/wiki/Help:Reporting_bugs
-[smw-bugs2]: https://semantic-mediawiki.org/wiki/Help:Identifying_bugs
-[smw-testing]: https://semantic-mediawiki.org/wiki/Help:Reporting_bugs#Pre-release_testing
+[smw-bugs1]: https://www.semantic-mediawiki.org/wiki/Help:Reporting_bugs
+[smw-bugs2]: https://www.semantic-mediawiki.org/wiki/Help:Identifying_bugs
+[smw-testing]: https://www.semantic-mediawiki.org/wiki/Help:Reporting_bugs#Pre-release_testing
 [smw-testers]: https://github.com/orgs/SemanticMediaWiki/teams/testers
 [twn]: https://translatewiki.net/
 [twn-smw]: https://translatewiki.net/w/i.php?title=Special%3AMessageGroupStats&x=D&group=ext-semanticmediawiki&suppressempty=1
 [smw-ddo]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/README.md
 [mw-testing]: https://www.mediawiki.org/wiki/Manual:PHP_unit_testing
-[smw-npath]: https://semantic-mediawiki.org/wiki/Code_coverage#NPath_complexity
+[smw-npath]: https://www.semantic-mediawiki.org/wiki/Code_coverage#NPath_complexity
