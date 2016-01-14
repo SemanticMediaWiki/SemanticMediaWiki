@@ -3,7 +3,7 @@
 This is a brief installation and configuration guide for [Semantic MediaWiki](../README.md) that
 only contains the core steps. More
 verbose installation instructions with additional explanation and upgrading instructions can be
-found [here](https://semantic-mediawiki.org/wiki/Help:Installation).
+found [here](https://www.semantic-mediawiki.org/wiki/Help:Installation).
 
 A list of supported PHP versions, MediaWiki versions and databases per SMW release can be found
 in the [compatibility matrix](COMPATIBILITY.md).
@@ -95,7 +95,7 @@ Add the following lines to the end of your LocalSettings.php file.
 Log in as a user with administrator permission to your wiki and go to the page "Special:SMWAdmin": 
 
 * Click on the "Initialise or upgrade tables" button in the "Database installation and upgrade" section to setup the database.
-* Click on the "Start updating data" button in the "Data repair and upgrade" section to activate the [automatic data update](https://semantic-mediawiki.org/wiki/Repairing_SMW).
+* Click on the "Start updating data" button in the "Data repair and upgrade" section to activate the [automatic data update](https://www.semantic-mediawiki.org/wiki/Help:Repairing_SMW's_data).
 
 ##### Verify installation success
 
@@ -104,7 +104,7 @@ Semantic MediaWiki section is listed.
 
 ## More instructions
 
-* [Verbose installation instructions](https://semantic-mediawiki.org/wiki/Help:Installation)
-* [Upgrading instructions](https://semantic-mediawiki.org/wiki/Help:Installation#Upgrading)
-* [Configuration instructions](https://semantic-mediawiki.org/wiki/Help:Configuration)
-* [Administrator manual](https://semantic-mediawiki.org/wiki/Help:Administrator_manual)
+* [Verbose installation instructions](https://www.semantic-mediawiki.org/wiki/Help:Installation)
+* [Upgrading instructions](https://www.semantic-mediawiki.org/wiki/Help:Installation#Upgrading)
+* [Configuration instructions](https://www.semantic-mediawiki.org/wiki/Help:Configuration)
+* [Administrator manual](https://www.semantic-mediawiki.org/wiki/Help:Administrator_manual)
