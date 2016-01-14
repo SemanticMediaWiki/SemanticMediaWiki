@@ -4,6 +4,7 @@ namespace SMW\Tests\Utils\Page;
 
 use Title;
 use WikiPage;
+use Revision;
 use RuntimeException;
 
 /**
@@ -90,8 +91,13 @@ class PageEditor {
 			);
 		}
 
+		if ( method_exists( $this->getPage()->getRevision(), 'getContent' ) ) {
+			$text = $this->getPage()->getRevision()->getContent( Revision::RAW );
+		} else {
+			$text = $this->getPage()->getRevision()->getRawText();
+		}
 		return $this->getPage()->prepareTextForEdit(
-			$this->getPage()->getRevision()->getRawText(),
+			$text,
 			null,
 			null
 		);
