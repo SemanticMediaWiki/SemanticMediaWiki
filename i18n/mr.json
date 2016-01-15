@@ -40,7 +40,7 @@
 	"smw_typearticlecount": "हा प्रकार {{PLURAL:$1|वापरणारा|वापरणारे}} $1 गुणधर्म दाखवित आहे.",
 	"smw_attribute_header": "“$1” गुणधर्म वापरणारी पृष्ठे",
 	"smw_attributearticlecount": "हा गुणधर्म वापरणारी $1 पाने दाखवित आहे..",
-	"specialpages-group-smw_group": "सिमँटिक मीडियाविकि",
+	"specialpages-group-smw_group": "सिमँटिक मिडियाविकि",
 	"exportrdf": "RDF कडे पाने निर्यात करा",
 	"smw_exportrdf_docu": "हे पान तुम्हाला एखाद्या पानावरील मजकूर RDF मध्ये घेण्यास मदत करते.\nपाने निर्यात करण्याकरीता, खाली एका ओळीत एक याप्रमाणे पानांची शीर्षके लिहा.",
 	"smw_exportrdf_recursive": "सर्व जुळलेली पाने आपोआप निर्यात करा.\nकृपया नोंद घ्या की निकाल खूप मोठा असू शकतो!",
@@ -96,9 +96,11 @@
 	"smw_result_next": "पुढील",
 	"smw_result_results": "निकाल",
 	"smw_result_noresults": "माफ करा, निकाल नाहीत.",
-	"smw-createproperty-isproperty": "हा $1 प्रकारचा गुणधर्म आहे.",
+	"smw-createproperty-isproperty": "तो $1 प्रकारचा गुणधर्म आहे.",
 	"smw-createproperty-allowedvals": "या गुणधर्माच्या योग्य किंमती पुढीलप्रमाणे आहेत:",
-	"prefs-smw": "सेमॅंटिक मिडियाविकि",
+	"prefs-smw": "सिमॅंटिक मिडियाविकि",
+	"smw-prefs-intro-text": "निवडक क्रियांवर वैयक्तिक अनुकुलन सक्षम करण्यास [https://www.semantic-mediawiki.org/ सिमँटिक मिडियाविकि] (किंवा संबंधित विस्तारकाद्वारे) खालील पर्याय पुरविण्यात आले आहेत. अधिक माहितीसाठी [https://www.semantic-mediawiki.org/wiki/Help:User_preferences सहाय्य विभागाकडे] नजर टाका.",
+	"smw-ui-tooltip-title-quantity": "एकक परिवर्तन",
 	"smw_unknowntype": "गुणधर्माचा प्रकार “$1” वापरता येत नाही.",
 	"smw-livepreview-loading": "चढवत आहे…"
 }

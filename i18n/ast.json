@@ -244,7 +244,8 @@
 	"smw_adminlinks_datastructure": "Estructura de datos",
 	"smw_adminlinks_displayingdata": "Visualización de los datos",
 	"smw_adminlinks_inlinequerieshelp": "Ayuda de les consultes en llinia",
-	"smw-createproperty-isproperty": "Esta ye una propiedá de tipu $1.",
+	"smw-pa-property-usage": "La propiedá «$1» ta rexistrada con una [https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count cuenta d'usos] aproximada de {{PLURAL:$2|'''$2''' usu|'''$2''' usos}} ($3).",
+	"smw-createproperty-isproperty": "Ye una propiedá de tipu $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|El valor permitíu|Los valores permitíos}} pa esta propiedá {{PLURAL:$1|ye|son}}:",
 	"smw-paramdesc-category-delim": "El delimitador",
 	"smw-paramdesc-category-template": "Una plantía cola que dar formatu a los elementos",
@@ -338,5 +339,6 @@
 	"smw-pa-property-predefined_media": "«$1» ye una propiedá predefinida que describe'l tipu de multimedia d'un ficheru xubíu y que ta proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_askfo": "«$1» ye una propiedá predefinida que contien el nome del formatu del resultáu usáu nuna consulta y que ta proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_askst": "«$1» ye una propiedá predefinida que describe les condiciones d'una consulta como cadena y que ta proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
-	"smw-pa-property-predefined_askdu": "«$1» ye una propiedá predefinida que contien un valor de tiempu (en segundos) que la consulta necesitó pa completar la execución y que ta proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]."
+	"smw-pa-property-predefined_askdu": "«$1» ye una propiedá predefinida que contien un valor de tiempu (en segundos) que la consulta necesitó pa completar la execución y que ta proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_prec": "\"$1\" ye una propiedá predefinida que describe una [https://www.semantic-mediawiki.org/wiki/Help:Display_precision precisión de representación] (en cifres decimales) pa tipos de datos numbéricos."
 }
