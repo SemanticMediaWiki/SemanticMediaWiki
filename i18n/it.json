@@ -131,7 +131,7 @@
 	"smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|uso|usi}})",
 	"smw_purge": "Aggiorna",
 	"types": "Tipi",
-	"smw_types_docu": "La seguente è una [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes lista] di tutti i tipi di dati che possono essere assegnati alle proprietà.",
+	"smw_types_docu": "La seguente è una [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes lista] dei tipi di dati  disponibili con ogni [https://www.semantic-mediawiki.org/wiki/Help:Datatype tipo di dati] che rappresenta un unico insieme di attributi per descrivere un valore in termini di archiviazione e visualizzazione di caratteristiche che sono ereditari a una proprietà assegnata.",
 	"smw-special-types-no-such-type": "Il tipo di dati indicato non esiste.",
 	"semanticstatistics": "Statistiche semantiche",
 	"smw_semstats_text": "Questo sito contiene '''$1''' {{PLURAL:$1|valore|valori}} di proprietà per un totale di '''$2''' [[Special:Properties|{{PLURAL:$2|proprietà|differenti proprietà}}]].\n'''$3''' proprietà {{PLURAL:$3|ha|hanno}} una propria pagina e il tipo di dato inteso è specificato per '''$4''' di queste.\nAlcune delle proprietà esistenti possono essere [[Special:UnusedProperties|proprietà non utilizzate]].\nLe proprietà che ancora non hanno una pagina si possono trovare nell'[[Special:WantedProperties|elenco delle proprietà senza descrizione]].",
@@ -245,5 +245,7 @@
 	"smw-sp-types-help": "Ulteriori informazioni ed esempi sono riportati sulla [https://www.semantic-mediawiki.org/wiki/Help:Type_$1 pagina di aiuto].",
 	"smw-sp-types_anu": "\"$1\" è una variante del tipo di dati [[Special:Types/URL|URL]] ed è in gran parte utilizzata per una dichiarazione di esportazione \"owl:AnnotationProperty\".",
 	"smw-sp-types_tel": "\"$1\" è un particolare tipo di dati utilizzato per descrivere i numeri di telefono internazionali secondo la RFC 3966.",
-	"smw-sp-types_dat": "\"$1\" è un tipo di dati impiegato per rappresentare punti nel tempo in un formato unificato."
+	"smw-sp-types_dat": "\"$1\" è un tipo di dati impiegato per rappresentare punti nel tempo in un formato unificato.",
+	"smw-pa-property-predefined_prec": "\"$1\" è una proprietà predefinita che descrive una [https://www.semantic-mediawiki.org/wiki/Help:Display_precision precisione di visualizzazione] (in cifre decimali) per tipi di dati numerici.",
+	"smw-sp-types-geo-not-available": "[https://www.semantic-mediawiki.org/wiki/Semantic_Maps Semantic Maps] non è stata rilevata, pertanto \"$1\" è limitato nella sua capacità di operare."
 }
