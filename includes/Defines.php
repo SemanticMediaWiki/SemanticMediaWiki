@@ -134,3 +134,10 @@ define( 'SMW_VL_PS', 8 ); // enables ValueLookupStore::getPropertySubject
 define( 'SMW_UJ_PM_NP', 2 );    // use a new parser
 define( 'SMW_UJ_PM_CLASTMDATE', 4 ); // compare last modified
 /**@}*/
+
+/**@{
+  * Constants DV features
+  */
+define( 'SMW_DV_NONE', 0 );
+define( 'SMW_DV_PROV_REDI', 2 );  // PropertyValue to follow a property redirect target
+/**@}*/

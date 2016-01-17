@@ -104,9 +104,9 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider propertyValueDataProvider
 	 */
-	public function testAddPropertyValue( $propertyName, $value, $expectedValue, $expectedInstance ) {
+	public function testAddPropertyValueByText( $propertyName, $value, $expectedValue, $expectedInstance ) {
 
-		$dataValue = DataValueFactory::getInstance()->newPropertyValue( $propertyName, $value );
+		$dataValue = DataValueFactory::getInstance()->newPropertyObjectValueByText( $propertyName, $value );
 
 		// Check the returned instance
 		$this->assertInstanceOf( $expectedInstance, $dataValue );
@@ -122,7 +122,7 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 		}
 
 		// Check interface parameters
-		$dataValue = DataValueFactory::getInstance()->newPropertyValue(
+		$dataValue = DataValueFactory::getInstance()->newPropertyObjectValueByText(
 			$propertyName,
 			$value,
 			'FooCaption',
@@ -137,7 +137,7 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testTryToCreateDataValueUsingRestrictedPropertyValue() {
 
-		$dataValue = DataValueFactory::getInstance()->newPropertyValue( 'Has subobject', 'Foo' );
+		$dataValue = DataValueFactory::getInstance()->newPropertyObjectValueByText( 'Has subobject', 'Foo' );
 
 		$this->assertInstanceOf(
 			'\SMWErrorValue',
@@ -146,6 +146,16 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertNotEmpty(
 			$dataValue->getErrors()
+		);
+	}
+
+	public function testToCreateDataValueUsingLegacyNewPropertyValueMethod() {
+
+		$dataValue = DataValueFactory::getInstance()->newPropertyValue( 'Bar', 'Foo' );
+
+		$this->assertInstanceOf(
+			'\SMWDataValue',
+			$dataValue
 		);
 	}
 
@@ -228,7 +238,7 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = DataValueFactory::getInstance();
 
-		$dataValue = $instance->newPropertyValue(
+		$dataValue = $instance->newPropertyObjectValueByText(
 			'has type',
 			'number',
 			null,
@@ -241,6 +251,16 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$GLOBALS['wgCapitalLinks'] = $wgCapitalLinks;
+	}
+
+	public function testNewPropertyValueByLabel() {
+
+		$dataValue = DataValueFactory::getInstance()->newPropertyValueByLabel( 'Foo' );
+
+		$this->assertInstanceOf(
+			'\SMWPropertyValue',
+			$dataValue
+		);
 	}
 
 	/**

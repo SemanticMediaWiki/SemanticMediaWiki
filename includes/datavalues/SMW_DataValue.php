@@ -8,6 +8,7 @@
  * @ingroup SMW
  */
 use SMW\DataValueFactory;
+use SMW\Options;
 use SMW\Query\QueryComparator;
 use SMW\Deserializers\DVDescriptionDeserializerFactory;
 
@@ -134,6 +135,11 @@ abstract class SMWDataValue {
 	 * @var array
 	 */
 	private $extraneousFunctions = array();
+
+	/**
+	 * @var Options
+	 */
+	private $options;
 
 	/**
 	 * Indicates whether a value is being used by a query condition or not which
@@ -266,6 +272,38 @@ abstract class SMWDataValue {
 	 */
 	public function setContextPage( SMWDIWikiPage $contextPage ) {
 		$this->m_contextPage = $contextPage;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return DIWikiPage|null
+	 */
+	public function getContextPage() {
+		return $this->m_contextPage;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return Options $options
+	 */
+	public function setOptions( Options $options ) {
+		$this->options = $options;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return mixed|false
+	 */
+	public function getOptionValueFor( $key ) {
+
+		if ( $this->options !== null && $this->options->has( $key ) ) {
+			return $this->options->get( $key );
+		}
+
+		return false;
 	}
 
 	/**

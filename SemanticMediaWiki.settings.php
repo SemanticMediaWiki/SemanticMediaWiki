@@ -946,15 +946,19 @@ $GLOBALS['smwgExportBCNonCanonicalFormUse'] = false;
 $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] = true;
 
 ##
-# If a property is redirected to a different target (Foo -> Bar) then follow it
-# by default in order toallow query results to be displayed equivalent for both
-# queries without having to adjust (or change) a query.
+# Features or restrictions for specific DataValue types
 #
-# @note This setting is mainly provided to restore backwards compatibility where
+# - SMW_DV_NONE
+#
+# - SMW_DV_PROV_REDI (PropertyValue) If a property is redirected to a different
+# target (Foo -> Bar) then follow it by default in order to allow query results
+# to be displayed equivalent for both queries without having to adjust
+# (or change) a query.
+#
+# This flag is mainly provided to restore backwards compatibility where
 # behaviour is not expected to be altered, nevertheless it is recommended that
 # the setting is enabled to improve user friendliness in terms of query execution.
 #
 # @since 2.4
-# @default true
 ##
-$GLOBALS['smwgFollowPropertyRedirect'] = true;
+$GLOBALS['smwgDVFeatures'] = SMW_DV_PROV_REDI;

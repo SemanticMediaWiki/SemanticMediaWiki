@@ -85,6 +85,10 @@ class DataValueFactory {
 			$dataTypeRegistry->getExtraneousFunctions()
 		);
 
+		$result->setOptions(
+			$dataTypeRegistry->getOptions()
+		);
+
 		if ( $property !== null ) {
 			$result->setProperty( $property );
 		}
@@ -160,7 +164,7 @@ class DataValueFactory {
 	 *
 	 * @return DataValue
 	 */
-	public function newPropertyValue( $propertyName, $valueString,
+	public function newPropertyObjectValueByText( $propertyName, $valueString,
 		$caption = false, DIWikiPage $contextPage = null ) {
 
 		// Enforce upper case for the first character on annotations that are used
@@ -170,7 +174,7 @@ class DataValueFactory {
 			$propertyName = ucfirst( $propertyName );
 		}
 
-		$propertyDV = SMWPropertyValue::makeUserProperty( $propertyName );
+		$propertyDV = $this->newPropertyValueByLabel( $propertyName );
 
 		if ( !$propertyDV->isValid() ) {
 			return $propertyDV;
@@ -236,6 +240,27 @@ class DataValueFactory {
 		}
 
 		return $dataValue;
+	}
+
+	/**
+	 * @deprecated since 2.4, use DataTypeRegistry::newPropertyObjectValueByText
+	 *
+	 * @return DataValue
+	 */
+	public function newPropertyValue( $propertyName, $valueString,
+		$caption = false, DIWikiPage $contextPage = null ) {
+		return $this->newPropertyObjectValueByText( $propertyName, $valueString, $caption, $contextPage );
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param string $propertyName
+	 *
+	 * @return DataValue
+	 */
+	public function newPropertyValueByLabel( $propertyLabel ) {
+		return self::newTypeIdValue( '__pro', $propertyLabel );
 	}
 
 	/**

@@ -1,11 +1,6 @@
 <?php
-/**
- * File holding class SMWPropertyValue.
- *
- * @author Markus Krötzsch
- *
- * @ingroup SMWDataValues
- */
+
+use SMW\DataValueFactory;
 
 /**
  * Objects of this class represent properties in SMW.
@@ -52,18 +47,21 @@ class SMWPropertyValue extends SMWDataValue {
 	private $inceptiveProperty = null;
 
 	/**
-	 * @var boolean
-	 */
-	private $followPropertyRedirect = true;
-
-	/**
 	 * @since 2.4
 	 *
 	 * @param string $typeid
 	 */
 	public function __construct( $typeid ) {
 		parent::__construct( $typeid );
-		$this->followPropertyRedirect = $GLOBALS['smwgFollowPropertyRedirect'];
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return boolean
+	 */
+	public function isToFindPropertyRedirect() {
+		return ( $this->getOptionValueFor( 'smwgDVFeatures' ) & SMW_DV_PROV_REDI ) != 0;
 	}
 
 	/**
@@ -77,10 +75,8 @@ class SMWPropertyValue extends SMWDataValue {
 	 *
 	 * @return SMWPropertyValue
 	 */
-	static public function makeUserProperty( $propertyName ) {
-		$property = new SMWPropertyValue( '__pro' );
-		$property->setUserValue( $propertyName );
-		return $property;
+	static public function makeUserProperty( $propertyLabel ) {
+		return DataValueFactory::getInstance()->newPropertyValueByLabel( $propertyLabel );
 	}
 
 	/**
@@ -156,8 +152,7 @@ class SMWPropertyValue extends SMWDataValue {
 
 		$this->inceptiveProperty = $this->m_dataitem;
 
-		// Find the "real" target of a property
-		if ( $this->followPropertyRedirect ) {
+		if ( $this->isToFindPropertyRedirect() ) {
 			$this->m_dataitem = $this->m_dataitem->getRedirectTarget();
 		}
 	}

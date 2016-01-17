@@ -100,6 +100,11 @@ class DataTypeRegistry {
 	private $extraneousFunctions = array();
 
 	/**
+	 * @var Options
+	 */
+	private $options = null;
+
+	/**
 	 * Returns a DataTypeRegistry instance
 	 *
 	 * @since 1.9
@@ -117,6 +122,11 @@ class DataTypeRegistry {
 			);
 
 			self::$instance->initDatatypes();
+
+			self::$instance->setOption(
+				'smwgDVFeatures',
+				ApplicationFactory::getInstance()->getSettings()->get( 'smwgDVFeatures' )
+			);
 		}
 
 		return self::$instance;
@@ -482,6 +492,30 @@ class DataTypeRegistry {
 	 */
 	public function getExtraneousFunctions() {
 		return $this->extraneousFunctions;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return Options
+	 */
+	public function getOptions() {
+
+		if ( $this->options === null ) {
+			$this->options = new Options();
+		}
+
+		return $this->options;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param string $key
+	 * @param string $value
+	 */
+	public function setOption( $key, $value ) {
+		$this->getOptions()->set( $key, $value );
 	}
 
 }
