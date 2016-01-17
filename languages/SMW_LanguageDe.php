@@ -48,6 +48,7 @@ class SMWLanguageDe extends SMWLanguage {
 		'_tel' => 'Telefonnummer', // name of the telephone number URI datatype
 		'_rec' => 'Verbund', // name of the record datatype
 		'_qty' => 'Maß', // name of the quantity datatype
+		'_mlt_rec' => 'Monolingual text',
 	);
 
 	protected $m_DatatypeAliases = array(
@@ -87,7 +88,9 @@ class SMWLanguageDe extends SMWLanguage {
 		'_MIME' => 'MIME-Typ',
 		'_ERRC' => 'Verarbeitungsfehler',
 		'_ERRT' => 'Verarbeitungsfehlerhinweis',
-		'_PREC' => 'Display precision of'
+		'_PREC'  => 'Display precision of',
+		'_LCODE' => 'Language code',
+		'_TEXT'  => 'Text',
 	);
 
 	protected $m_SpecialPropertyAliases = array(

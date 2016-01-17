@@ -325,6 +325,8 @@ class PropertyRegistry {
 			'_MEDIA' => array( '_txt', true, false ), // "has media type"
 			'_MIME'  => array( '_txt', true, false ), // "has mime type"
 			'_PREC'  => array( '_num', true, true ), // "Display precision of"
+			'_LCODE' => array( '__lcode', true, true ), // "Language code"
+			'_TEXT'  => array( '_txt', true, true ), // "Text"
 		);
 
 		foreach ( $this->datatypeLabels as $id => $label ) {

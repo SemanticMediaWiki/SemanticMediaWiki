@@ -354,5 +354,13 @@
 	"smw-pa-property-predefined_askst": "\"$1\" is a predefined property that describes the conditions of the query as a string and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_askdu": "\"$1\" is a predefined property containing a time value (in seconds) the query had required to complete its execution and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_prec": "\"$1\" is a predefined property that describes a [https://www.semantic-mediawiki.org/wiki/Help:Display_precision display precision] (in decimal digits) for numeric datatypes.",
-	"smw-sp-types-geo-not-available": "[https://www.semantic-mediawiki.org/wiki/Semantic_Maps Semantic Maps] was not detected therefore \"$1\" is restricted in its capacity to operate."
+	"smw-sp-types-geo-not-available": "[https://www.semantic-mediawiki.org/wiki/Semantic_Maps Semantic Maps] was not detected therefore \"$1\" is restricted in its capacity to operate.",
+	"smw-datavalue-monolingual-dataitem-missing": "An expected item for building a monolingual compound value is missing.",
+	"smw-datavalue-monolingual-lcode-parenthesis":"($1)",
+	"smw-datavalue-languagecode-missing": "For the \"$1\" annotation, the parser was unable to determine a language code (i.e. \"foo@en\").",
+	"smw-datavalue-languagecode-invalid": "\"$1\" was not recognized as a supported language code.",
+	"smw-pa-property-predefined_lcode": "\"$1\" is a predefined property that represents a BCP47 formatted language code and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-sp-types_mlt_rec": "\"$1\" is a [https://www.semantic-mediawiki.org/wiki/Help:Container container] datatype that associates a text value with a specific [[Property:Language code|language code]].",
+	"smw-sp-types-mlt-lcode": "The datatype does {{PLURAL:$2|require|not require}} a language code (i.e. {{PLURAL:$2|a value annotation without a language code is not accepted|a value annotation without a language code is accepted}}).",
+	"smw-pa-property-predefined_text": "\"$1\" is a predefined property that represents text of arbitrary length and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]."
 }

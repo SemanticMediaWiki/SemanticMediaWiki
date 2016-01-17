@@ -149,10 +149,9 @@ class SMWSpecialTypes extends SpecialPage {
 			$typeValue->getDataItem()->getFragment()
 		);
 
+		$escapedTypeLabel = htmlspecialchars( $typeValue->getWikiValue() );
+
 		if ( $typeValue->getDataItem()->getFragment() === '_geo' ) {
-
-			$escapedTypeLabel = htmlspecialchars( $typeValue->getWikiValue() );
-
 			if ( $dataValue instanceof \SMWErrorValue ) {
 				$html = \Html::rawElement(
 					'p',
@@ -160,6 +159,14 @@ class SMWSpecialTypes extends SpecialPage {
 					wfMessage( 'smw-sp-types-geo-not-available', $escapedTypeLabel )->parse()
 				);
 			}
+		}
+
+		if ( $typeValue->getDataItem()->getFragment() === '_mlt_rec' ) {
+			$html = \Html::rawElement(
+				'p',
+				array(),
+				wfMessage( 'smw-sp-types-mlt-lcode', $escapedTypeLabel, ( $dataValue->needsLanguageCode() ? 1 : 2 ) )->parse()
+			);
 		}
 
 		return $html;

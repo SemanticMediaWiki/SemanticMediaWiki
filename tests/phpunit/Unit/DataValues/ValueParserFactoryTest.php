@@ -40,4 +40,15 @@ class ValueParserFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+
+	public function testCanConstructMonolingualTextValueParser() {
+
+		$instance = new ValueParserFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\DataValues\ValueParsers\MonolingualTextValueParser',
+			$instance->newMonolingualTextValueParser()
+		);
+	}
+
 }

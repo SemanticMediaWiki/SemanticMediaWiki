@@ -40,6 +40,7 @@ class SMWLanguageFi extends SMWLanguage {
 		'_tel' => 'Puhelinnumero',  // name of the telephone (URI) type
 		'_rec' => 'Tietue', // name of record data type
 		'_qty' => 'Määrä', // name of the number type with units of measurement
+		'_mlt_rec' => 'Monolingual text',
 	);
 
 	protected $m_DatatypeAliases = array(
@@ -74,7 +75,9 @@ class SMWLanguageFi extends SMWLanguage {
 		'_MIME' => 'Mime type',
 		'_ERRC' => 'Has processing error',
 		'_ERRT' => 'Has processing error text',
-		'_PREC' => 'Display precision of'
+		'_PREC'  => 'Display precision of',
+		'_LCODE' => 'Language code',
+		'_TEXT'  => 'Text',
 	);
 
 	protected $m_Namespaces = array(

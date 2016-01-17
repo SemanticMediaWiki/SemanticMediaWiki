@@ -85,4 +85,36 @@ class Localizer {
 		return $this->contentLanguage->getNsIndex( str_replace( ' ', '_', $namespaceName ) );
 	}
 
+	/**
+	 * @since 2.4
+	 *
+	 * @param string $languageCode
+	 *
+	 * @return boolean
+	 */
+	public static function isSupportedLanguage( $languageCode ) {
+
+		$languageCode = mb_strtolower( $languageCode );
+
+		// FIXME 1.19 doesn't know Language::isSupportedLanguage
+		if ( !method_exists( '\Language', 'isSupportedLanguage' ) ) {
+			return Language::isValidBuiltInCode( $languageCode );
+		}
+
+		return Language::isSupportedLanguage( $languageCode );
+	}
+
+	/**
+	 * @see IETF language tag / BCP 47 standards
+	 *
+	 * @since 2.4
+	 *
+	 * @param string $languageCode
+	 *
+	 * @return string
+	 */
+	public static function asBCP47FormattedLanguageCode( $languageCode ) {
+		return wfBCP47( $languageCode );
+	}
+
 }
