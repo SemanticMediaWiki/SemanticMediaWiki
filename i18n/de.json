@@ -169,7 +169,7 @@
 	"smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|Vorkommen}})",
 	"smw_purge": "Neu laden",
 	"types": "Datentypen",
-	"smw_types_docu": "Dies ist eine [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes Übersicht aller Datentypen], die Attributen zugewiesen werden können.",
+	"smw_types_docu": "Dies ist eine [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes Übersicht mit verfügbaren Datentypen]. Jeder [https://www.semantic-mediawiki.org/wiki/Help:Datatype Datentyp] stellt einen eindeutigen Attributsatz dar, um einen Wert in Speicherungsbedingungen zu beschreiben und Eigenschaften anzuzeigen, die auf ein zugewiesenes Attribut vererbt werden.",
 	"smw-special-types-no-such-type": "Der angegebene Datentyp ist nicht vorhanden.",
 	"semanticstatistics": "Statistik zu semantischen Daten",
 	"smw_semstats_text": "Dieses Wiki enthält {{PLURAL:$1|'''1''' Wert|'''$1''' Werte}} für insgesamt '''$2''' [[Special:Properties|{{PLURAL:$2|Attribut|verschiedene Attribute}}]]. '''$3''' {{PLURAL:$3|Attribut wurde|Attribute wurden}} auf einer eigene Seite beschrieben und der gewünschte Datentyp ist für '''$4''' von diesen angegeben worden.\n\nEinige der vorhandenen Attribute könnten [[Special:UnusedProperties|verwaiste Attribute]] sein. Attribute, für die noch eine Seite angelegt werden sollte, sind in der [[Special:WantedProperties|Liste gewünschter Attribute]] aufgeführt.",
@@ -363,5 +363,6 @@
 	"smw-pa-property-predefined_askfo": "„$1“ ist ein softwareseitig fest definiertes Attribut, das den Namen des in einer Abfrage verwendeten Ergebnisformats enthält und von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt wird.",
 	"smw-pa-property-predefined_askst": "„$1“ ist ein softwareseitig fest definiertes Attribut, das die Bedingungen der Abfrage als Zeichenfolge beschreibt und von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt wird.",
 	"smw-pa-property-predefined_askdu": "„$1“ ist ein softwareseitig fest definiertes Attribut, das einen Zeitwert (in Sekunden) enthält, den die Abfrage angefordert hat, um ihre Ausführung zu vervollständigen und von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt wird.",
-	"smw-pa-property-predefined_prec": "„$1“ ist ein vordefiniertes Attribut, das eine [https://www.semantic-mediawiki.org/wiki/Help:Display_precision Anzeigegenauigkeit] (in dezimalen Ziffern) für numerische Datentypen beschreibt."
+	"smw-pa-property-predefined_prec": "„$1“ ist ein vordefiniertes Attribut, das eine [https://www.semantic-mediawiki.org/wiki/Help:Display_precision Anzeigegenauigkeit] (in dezimalen Ziffern) für numerische Datentypen beschreibt.",
+	"smw-sp-types-geo-not-available": "[https://www.semantic-mediawiki.org/wiki/Semantic_Maps_(de) Semantic Maps] wurde nicht erkannt, da „$1“ in seiner Betriebskapazität beschränkt ist."
 }

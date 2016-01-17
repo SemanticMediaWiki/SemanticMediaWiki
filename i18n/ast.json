@@ -146,7 +146,7 @@
 	"smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|usu|usos}})",
 	"smw_purge": "Refrescar",
 	"types": "Tipos",
-	"smw_types_docu": "Lo siguiente ye una [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes llista] de tolos tipos de datos que pueden atribuise a les propiedaes.",
+	"smw_types_docu": "Lo siguiente ye una [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes llista] de tipos de datos disponibles con cada [https://www.semantic-mediawiki.org/wiki/Help:Datatype tipu de datu] que representa un conxuntu únicu d'atributos pa describir un valor en términos de carauterístiques d'almacenamientu y visualización que s'herieden pa una propiedá atribuyida.",
 	"smw-special-types-no-such-type": "El tipu de datos especificáu nun esiste",
 	"semanticstatistics": "Estadístiques semántiques",
 	"smw_semstats_text": "Esta wiki contien '''$1''' {{PLURAL:$1|valor|valores}} de propiedá, d'un total {{PLURAL:$2|'''d'una'''|de '''$2'''}} [[Special:Properties|{{PLURAL:$2|propiedá|propiedaes distintes}}]].\n'''$3''' {{PLURAL:$3|propiedá tien|propiedaes tienen}} una páxina propia ya'l tipu de datos previstu ta especificáu en '''$4''' d'elles.\nDalgunes de les propiedaes esistentes pueden ser [[Special:UnusedProperties|propiedaes ensin usu]].\nLes propiedaes qu'aínda nun tienen una páxina alcuentrense na [[Special:WantedProperties|llista de propiedaes deseaes]].",
@@ -340,5 +340,6 @@
 	"smw-pa-property-predefined_askfo": "«$1» ye una propiedá predefinida que contien el nome del formatu del resultáu usáu nuna consulta y que ta proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_askst": "«$1» ye una propiedá predefinida que describe les condiciones d'una consulta como cadena y que ta proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_askdu": "«$1» ye una propiedá predefinida que contien un valor de tiempu (en segundos) que la consulta necesitó pa completar la execución y que ta proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
-	"smw-pa-property-predefined_prec": "\"$1\" ye una propiedá predefinida que describe una [https://www.semantic-mediawiki.org/wiki/Help:Display_precision precisión de representación] (en cifres decimales) pa tipos de datos numbéricos."
+	"smw-pa-property-predefined_prec": "\"$1\" ye una propiedá predefinida que describe una [https://www.semantic-mediawiki.org/wiki/Help:Display_precision precisión de representación] (en cifres decimales) pa tipos de datos numbéricos.",
+	"smw-sp-types-geo-not-available": "Nun se detectó [https://www.semantic-mediawiki.org/wiki/Semantic_Maps Mapes Semánticos] y, darréu, «$1» tien torgada la capacidá d'operar."
 }
