@@ -36,7 +36,7 @@ class SemanticDataSerializationDBIntegrationTest extends MwDBaseUnitTestCase {
 		$subobject->setEmptyContainerForId( 'SomeSubobjectToSerialize' );
 
 		$subobject->getSemanticData()->addDataValue(
-			DataValueFactory::getInstance()->newPropertyValue( 'Foo', 'Bar' )
+			DataValueFactory::getInstance()->newPropertyObjectValueByText( 'Foo', 'Bar' )
 		);
 
 		$semanticDataBeforeUpdate->addSubobject( $subobject );

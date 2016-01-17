@@ -118,7 +118,7 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->subjects[] = $subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
 		$semanticData = new SemanticData( $subject );
 
-		$dataValue = DataValueFactory::getInstance()->newPropertyValue(
+		$dataValue = DataValueFactory::getInstance()->newPropertyObjectValueByText(
 			$propertyAsString,
 			'Foo',
 			false,
@@ -144,7 +144,7 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 		$subobject->setEmptyContainerForId( 'SomeSubobject' );
 
 		$subobject->getSemanticData()->addDataValue(
-			DataValueFactory::getInstance()->newPropertyValue( 'Foo', 'Bar' )
+			DataValueFactory::getInstance()->newPropertyObjectValueByText( 'Foo', 'Bar' )
 		);
 
 		$semanticData->addPropertyObjectValue(
