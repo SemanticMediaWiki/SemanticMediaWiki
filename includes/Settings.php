@@ -141,7 +141,7 @@ class Settings extends SimpleDictionary {
 			'smwgExportBCAuxiliaryUse' => $GLOBALS['smwgExportBCAuxiliaryUse'],
 			'smwgEnabledInTextAnnotationParserStrictMode' => $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'],
 			'smwgSparqlRepositoryConnectorForcedHttpVersion' => $GLOBALS['smwgSparqlRepositoryConnectorForcedHttpVersion'],
-			'smwgFollowPropertyRedirect' => $GLOBALS['smwgFollowPropertyRedirect']
+			'smwgDVFeatures' => $GLOBALS['smwgDVFeatures']
 		);
 
 		$settings = $settings + array(
