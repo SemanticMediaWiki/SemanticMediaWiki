@@ -214,7 +214,7 @@ class QueryTestCaseInterpreter {
 		}
 
 		foreach ( $this->contents['queryresult']['datavalues'] as $datavalue ) {
-			$dataValues[] = DataValueFactory::getInstance()->newPropertyValue(
+			$dataValues[] = DataValueFactory::getInstance()->newPropertyObjectValueByText(
 				$datavalue['property'],
 				$datavalue['value']
 			);

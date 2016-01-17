@@ -68,16 +68,16 @@ class SemanticDataSerializerTest extends \PHPUnit_Framework_TestCase {
 
 		#1 Single entry
 		$foo = $this->semanticDataFactory->setSubject( DIWikiPage::newFromTitle( $title ) )->newEmptySemanticData();
-		$foo->addDataValue( $this->dataValueFactory->newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$foo->addDataValue( $this->dataValueFactory->newPropertyObjectValueByText( 'Has fooQuex', 'Bar' ) );
 		$provider[] = array( $foo );
 
 		// #2 Single + single subobject entry
 		$foo = $this->semanticDataFactory->setSubject( DIWikiPage::newFromTitle( $title ) )->newEmptySemanticData();
-		$foo->addDataValue( $this->dataValueFactory->newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$foo->addDataValue( $this->dataValueFactory->newPropertyObjectValueByText( 'Has fooQuex', 'Bar' ) );
 
 		$subobject = new Subobject( $title );
 		$subobject->setSemanticData( 'Foo' );
-		$subobject->addDataValue( $this->dataValueFactory->newPropertyValue( 'Has subobjects', 'Bam' ) );
+		$subobject->addDataValue( $this->dataValueFactory->newPropertyObjectValueByText( 'Has subobjects', 'Bam' ) );
 
 		$foo->addPropertyObjectValue(
 			$subobject->getProperty(),
@@ -88,16 +88,16 @@ class SemanticDataSerializerTest extends \PHPUnit_Framework_TestCase {
 
 		#3 Multiple entries
 		$foo = $this->semanticDataFactory->setSubject( DIWikiPage::newFromTitle( $title ) )->newEmptySemanticData();
-		$foo->addDataValue( $this->dataValueFactory->newPropertyValue( 'Has fooQuex', 'Bar' ) );
-		$foo->addDataValue( $this->dataValueFactory->newPropertyValue( 'Has queez', 'Xeey' ) );
+		$foo->addDataValue( $this->dataValueFactory->newPropertyObjectValueByText( 'Has fooQuex', 'Bar' ) );
+		$foo->addDataValue( $this->dataValueFactory->newPropertyObjectValueByText( 'Has queez', 'Xeey' ) );
 
 		$subobject = new Subobject( $title );
 		$subobject->setSemanticData( 'Foo' );
-		$subobject->addDataValue( $this->dataValueFactory->newPropertyValue( 'Has subobjects', 'Bam' ) );
-		$subobject->addDataValue( $this->dataValueFactory->newPropertyValue( 'Has fooQuex', 'Fuz' ) );
+		$subobject->addDataValue( $this->dataValueFactory->newPropertyObjectValueByText( 'Has subobjects', 'Bam' ) );
+		$subobject->addDataValue( $this->dataValueFactory->newPropertyObjectValueByText( 'Has fooQuex', 'Fuz' ) );
 
 		$subobject->setSemanticData( 'Bar' );
-		$subobject->addDataValue( $this->dataValueFactory->newPropertyValue( 'Has fooQuex', 'Fuz' ) );
+		$subobject->addDataValue( $this->dataValueFactory->newPropertyObjectValueByText( 'Has fooQuex', 'Fuz' ) );
 
 		$foo->addPropertyObjectValue(
 			$subobject->getProperty(),

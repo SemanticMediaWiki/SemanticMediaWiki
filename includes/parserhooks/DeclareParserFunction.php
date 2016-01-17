@@ -108,7 +108,7 @@ class DeclareParserFunction {
 
 	private function addDataValue( $property, $value ) {
 
-		$dataValue = DataValueFactory::getInstance()->newPropertyValue(
+		$dataValue = DataValueFactory::getInstance()->newPropertyObjectValueByText(
 			$property,
 			$value,
 			false,

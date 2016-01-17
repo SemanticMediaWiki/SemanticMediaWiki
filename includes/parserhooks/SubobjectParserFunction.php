@@ -134,7 +134,7 @@ class SubobjectParserFunction {
 
 			foreach ( $values as $value ) {
 
-				$dataValue = $this->dataValueFactory->newPropertyValue(
+				$dataValue = $this->dataValueFactory->newPropertyObjectValueByText(
 						$property,
 						$value,
 						false,

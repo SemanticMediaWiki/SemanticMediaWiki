@@ -70,7 +70,7 @@ class ApiBrowseBySubjectDBIntegrationTest extends MwDBaseUnitTestCase {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$semanticData->addDataValue(
-			$this->dataValueFactory->newPropertyValue( __METHOD__, 'Bar' )
+			$this->dataValueFactory->newPropertyObjectValueByText( __METHOD__, 'Bar' )
 		);
 
 		$this->getStore()->updateData( $semanticData );
@@ -98,14 +98,14 @@ class ApiBrowseBySubjectDBIntegrationTest extends MwDBaseUnitTestCase {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$semanticData->addDataValue(
-			$this->dataValueFactory->newPropertyValue( __METHOD__, 'Bar' )
+			$this->dataValueFactory->newPropertyObjectValueByText( __METHOD__, 'Bar' )
 		);
 
 		$subobject = new Subobject( $semanticData->getSubject()->getTitle() );
 		$subobject->setEmptyContainerForId( 'Foo' );
 
 		$subobject->addDataValue(
-			$this->dataValueFactory->newPropertyValue( __METHOD__, 'Bam' )
+			$this->dataValueFactory->newPropertyObjectValueByText( __METHOD__, 'Bam' )
 		);
 
 		$semanticData->addPropertyObjectValue(

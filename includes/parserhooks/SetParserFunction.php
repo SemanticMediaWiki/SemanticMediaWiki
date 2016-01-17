@@ -75,7 +75,7 @@ class SetParserFunction {
 
 			foreach ( $values as $key => $value ) {
 
-				$dataValue = DataValueFactory::getInstance()->newPropertyValue(
+				$dataValue = DataValueFactory::getInstance()->newPropertyObjectValueByText(
 						$property,
 						$value,
 						false,

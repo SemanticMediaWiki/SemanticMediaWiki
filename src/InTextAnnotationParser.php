@@ -386,7 +386,7 @@ class InTextAnnotationParser {
 
 		// Add properties to the semantic container
 		foreach ( $properties as $property ) {
-			$dataValue = $this->dataValueFactory->newPropertyValue(
+			$dataValue = $this->dataValueFactory->newPropertyObjectValueByText(
 				$property,
 				$value,
 				$valueCaption,
