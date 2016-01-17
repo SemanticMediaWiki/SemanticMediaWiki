@@ -66,7 +66,8 @@ abstract class SMWLanguage {
 		'Email'                 => '_ema',
 		'Annotation URI'        => '_anu',
 		'Telephone number'      => '_tel',
-		'Record'                => '_rec'
+		'Record'                => '_rec',
+		'Monolingual text'      => '_mlt_rec', // need the _rec to allow for special treatment
 	);
 	/// Default English aliases for special property names (typically used in all languages)
 	static protected $enPropertyAliases = array(
@@ -97,6 +98,8 @@ abstract class SMWLanguage {
 		'Has processing error'          => '_ERRC',
 		'Has processing error text'     => '_ERRT',
 		'Display precision of'  => '_PREC',
+		'Language code'  => '_LCODE',
+		'Text'           => '_TEXT',
 	);
 
 	public function __construct() {

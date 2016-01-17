@@ -959,6 +959,9 @@ $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] = true;
 # behaviour is not expected to be altered, nevertheless it is recommended that
 # the setting is enabled to improve user friendliness in terms of query execution.
 #
+# - SMW_DV_MLTV_LCODE (MonolingualTextValue) is to require a language code in order
+# for a DV to be completed otherwise a MLTV can operate without a language code
+#
 # @since 2.4
 ##
-$GLOBALS['smwgDVFeatures'] = SMW_DV_PROV_REDI;
+$GLOBALS['smwgDVFeatures'] = SMW_DV_PROV_REDI | SMW_DV_MLTV_LCODE;

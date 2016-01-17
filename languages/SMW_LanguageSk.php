@@ -40,6 +40,7 @@ class SMWLanguageSk extends SMWLanguage {
 		'_tel' => 'Telefónne číslo',  // name of the telephone (URI) type
 		'_rec' => 'Record', // name of record data type //TODO: translate
 		'_qty' => 'Rozmer', // name of the number type with units of measurement
+		'_mlt_rec' => 'Monolingual text',
 	);
 
 	protected $m_DatatypeAliases = array(
@@ -77,7 +78,9 @@ class SMWLanguageSk extends SMWLanguage {
 		'_MIME' => 'Mime type',
 		'_ERRC' => 'Has processing error',
 		'_ERRT' => 'Has processing error text',
-		'_PREC' => 'Display precision of'
+		'_PREC'  => 'Display precision of',
+		'_LCODE' => 'Language code',
+		'_TEXT'  => 'Text',
 	);
 
 	protected $m_SpecialPropertyAliases = array(

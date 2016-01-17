@@ -63,7 +63,9 @@ class PropertyTableInfoFetcher {
 		// vocabulary import and URI assignments
 		'_IMPO', '_URI',
 		// Concepts
-		'_CONC'
+		'_CONC',
+		// Monolingual text
+		'_LCODE', '_TEXT'
 	);
 
 	/**

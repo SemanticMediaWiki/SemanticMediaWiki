@@ -3,14 +3,11 @@
 namespace SMW\Tests;
 
 use SMW\Localizer;
-
 use Language;
 
 /**
  * @covers \SMW\Localizer
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 2.1
@@ -74,6 +71,35 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			SMW_NS_PROPERTY,
 			$instance->getNamespaceIndexByName( 'property' )
+		);
+	}
+
+	public function testSupportedLanguageForLowerCaseLetter() {
+
+		if ( version_compare( $GLOBALS['wgVersion'], '1.20', '<' ) ) {
+			$this->markTestSkipped( 'Skipping because `Language::isSupportedLanguage` is not supported on 1.19' );
+		}
+
+		$this->assertTrue(
+			Localizer::isSupportedLanguage( 'en' )
+		);
+	}
+
+	public function testSupportedLanguageForUpperCaseLetter() {
+
+		if ( version_compare( $GLOBALS['wgVersion'], '1.20', '<' ) ) {
+			$this->markTestSkipped( 'Skipping because `Language::isSupportedLanguage` is not supported on 1.19' );
+		}
+
+		$this->assertTrue(
+			Localizer::isSupportedLanguage( 'ZH-HANS' )
+		);
+	}
+
+	public function testAsBCP47FormattedLanguageCode() {
+		$this->assertEquals(
+			'zh-Hans',
+			Localizer::asBCP47FormattedLanguageCode( 'zh-hans' )
 		);
 	}
 

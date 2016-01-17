@@ -42,6 +42,7 @@ class SMWLanguageId extends SMWLanguage {
 		'_tel' => 'Nomor telepon',  // name of the telephone (URI) type
 		'_rec' => 'Rekaman', // name of record data type
 		'_qty' => 'Quantity', // name of the number type with units of measurement //TODO: translate
+		'_mlt_rec' => 'Monolingual text',
 	);
 
 	protected $m_DatatypeAliases = array(
@@ -78,7 +79,9 @@ class SMWLanguageId extends SMWLanguage {
 		'_MIME' => 'Mime type',
 		'_ERRC' => 'Has processing error',
 		'_ERRT' => 'Has processing error text',
-		'_PREC' => 'Display precision of'
+		'_PREC'  => 'Display precision of',
+		'_LCODE' => 'Language code',
+		'_TEXT'  => 'Text',
 	);
 
 	protected $m_SpecialPropertyAliases = array(
