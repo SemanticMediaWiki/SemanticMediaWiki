@@ -4,7 +4,28 @@
 			"Asoxor"
 		]
 	},
+	"smw_finallistconjunct": "، و",
+	"smw_printername_count": "ئاکامەکان بژمێرە",
+	"smw_printername_csv": "ھەناردەکردنی CSV",
+	"smw_printername_dsv": "ھەناردەکردنی DSV",
+	"smw_printername_json": "ھەناردەکردنی JSON",
+	"smw_printername_list": "لیست",
+	"smw_printername_table": "خشتە",
+	"smw_printername_broadtable": "خشتەی بەرین",
+	"smw_printername_template": "داڕێژە",
+	"smw_printername_rdf": "ھەناردەکردنی RDF",
+	"smw_printername_category": "پۆل",
+	"validator-type-class-SMWParamSource": "دەق",
 	"browse": "بگەڕێ بە ویکیدا",
 	"smw_browse_go": "بڕۆ",
+	"smw_inverse_label_default": "$1 لە",
+	"smw_result_next": "دواتر",
+	"smw_result_results": "ئاکامەکان",
+	"smw_result_noresults": "هیچ ئاکامێک نییە.",
+	"smw_smwadmin_return": "بگەڕێوە بۆ $1.",
+	"smw_smwadmin_datarefreshstopconfirm": "بەڵێ، من {{GENDER:$1|دڵنیام}}.",
+	"smw-ui-tooltip-title-warning": "ھەڵە",
+	"smw-ui-tooltip-title-event": "ڕووداو",
+	"smw-ui-tooltip-title-note": "تێبینی",
 	"smw-livepreview-loading": "باركردن‌..."
 }
