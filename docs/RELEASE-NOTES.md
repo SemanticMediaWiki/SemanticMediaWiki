@@ -6,6 +6,7 @@ Not a release yet.
 
 * #1329
 * #1335
+* #1344
 
 ## New features and enhancements
 
@@ -24,6 +25,7 @@ Not a release yet.
 * #1329 Added positional preference for units when declared in `Corresponds to` (¥ 500 vs 500 JPY)
 * #1350 Enlarged input field on special page "Browse"
 * #1335 Added possibility to specify a display precision for a numeric datatype by either denoting a [`Display precision of`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Display_precision_of) or using `-p<number of digits>` as `#ask` printout option
+* #1344 Added `MonolingualTextValue` and `LanguageCodeValue`
 
 ## Bug fixes
 
