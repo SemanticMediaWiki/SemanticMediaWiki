@@ -75,7 +75,9 @@ class MonolingualTextValueDescriptionDeserializer extends DescriptionDeserialize
 			// in respect of the query condition
 			$dataValue = DataValueFactory::getInstance()->newDataItemValue(
 				new DIBlob( $value === '' ? '?' : $value ),
-				$property
+				$property,
+				false,
+				$this->dataValue->getContextPage()
 			);
 
 			if ( !$dataValue->isValid() ) {
