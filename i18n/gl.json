@@ -248,7 +248,7 @@
 	"smw_adminlinks_datastructure": "Estrutura dos datos",
 	"smw_adminlinks_displayingdata": "Mostrando os datos",
 	"smw_adminlinks_inlinequerieshelp": "Axuda coas pescudas",
-	"smw-pa-property-usage": "A propiedade \"$1\" está rexistrada cun [https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count uso] aproximado de {{PLURAL:$2|'''$2'''|'''$2'''}} ($3).",
+	"smw-pa-property-usage": "A propiedade \"$1\" está rexistrada cun [https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count uso] aproximado de {{PLURAL:$2|'''$2'''}} ($3).",
 	"smw-createproperty-isproperty": "Esta é unha propiedade de clase $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|O valor permitido|Os valores permitidos}} para esta propiedade {{PLURAL:$1|é|son}}:",
 	"smw-paramdesc-category-delim": "O delimitador",
@@ -340,5 +340,12 @@
 	"smw-pa-property-predefined_mime": "\"$1\" é unha propiedade predefinida que describe o tipo MIME dun ficheiro subido. E está proporciona por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
 	"smw-pa-property-predefined_media": "\"$1\" é unha propiedade predefinida que describe o tipo multimedia dun ficheiro subido. E está proporciona por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
 	"smw-pa-property-predefined_askfo": "\"$1\" é unha propiedade predefinida que contén o nome do formato de resultado usado nunha consulta. E está proporciona por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
-	"smw-pa-property-predefined_askst": "\"$1\" é unha propiedade predefinida que describe as condicións da consulta como unha cadea. E está proporciona por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica]."
+	"smw-pa-property-predefined_askst": "\"$1\" é unha propiedade predefinida que describe as condicións da consulta como unha cadea. E está proporciona por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
+	"smw-pa-property-predefined_askdu": "\"$1\" é unha propiedade predefinida que contén o valor de tempo (en segundos) que a consulta requiriu para completar a súa execución. E é proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_prec": "\"$1\" é unha propiedade predefinida que describe unha [https://www.semantic-mediawiki.org/wiki/Help:Display_precision precisión de mostra] (en díxitos decimais) para tipos de datos numéricos.",
+	"smw-datavalue-languagecode-invalid": "Non se recoñece \"$1\" como un código de lingua admitido.",
+	"smw-pa-property-predefined_lcode": "\"$1\" é unha propiedade predefinida que representa un código de lingua con formato BCP47. E está proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
+	"smw-sp-types_mlt_rec": "\"$1\" é un tipo de datos [https://www.semantic-mediawiki.org/wiki/Help:Container contedor] que asocia un valor de texto cun [[Property:Language code|código de lingua]] específico.",
+	"smw-sp-types-mlt-lcode": "O tipo de datos{{PLURAL:$2|require|non require}} un código de lingua (ou sexa, {{PLURAL:$2|non se acepta| acéptase}} unha anotación de valor sen un código de lingua).",
+	"smw-pa-property-predefined_text": "\"$1\" é unha propiedade predefinida que representa texto de lonxitude arbitraria. E está proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica]."
 }

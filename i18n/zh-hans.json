@@ -359,5 +359,8 @@
 	"smw-pa-property-predefined_askst": "“$1”是一个将查询条件描述为字符串的预定义属性，并由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供。",
 	"smw-pa-property-predefined_askdu": "“$1”是包含为完成查询的执行，所需要的时间值（秒）的预定义属性，并由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供。",
 	"smw-pa-property-predefined_prec": "“$1”是一个描述用于数值数据类型的[https://www.semantic-mediawiki.org/wiki/Help:Display_precision 显示精度]（小数位数）的预定义属性。",
-	"smw-sp-types-geo-not-available": "[https://www.semantic-mediawiki.org/wiki/Semantic_Maps Semantic Maps]未被检测，因此“$1”限制于在其容量内操作。"
+	"smw-sp-types-geo-not-available": "[https://www.semantic-mediawiki.org/wiki/Semantic_Maps Semantic Maps]未被检测，因此“$1”限制于在其容量内操作。",
+	"smw-datavalue-languagecode-invalid": "“$1”不认为是支持的语言代码。",
+	"smw-pa-property-predefined_lcode": "“$1”是一个表述BCP47格式语言代码的预定义属性，并由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供。",
+	"smw-pa-property-predefined_text": "“$1”是一个表明任意长度文本的预定义属性，并由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供。"
 }

@@ -180,7 +180,7 @@
 	"smw_wantedproperty_template": "$1 ($2 utilisation{{PLURAL:$2||s}})",
 	"smw_purge": "Réactualiser",
 	"types": "Types de données",
-	"smw_types_docu": "[https://semantic-mediawiki.org/wiki/Help:List_of_datatypes Ceci] est une liste de tous les types de données qui peuvent être assignés aux propriétés.",
+	"smw_types_docu": "[https://semantic-mediawiki.org/wiki/Help:List_of_datatypes Ceci] est une liste des types de données disponibles, chacun de ces [https://www.semantic-mediawiki.org/wiki/Help:Datatype types de données] représentant un ensemble unique d’attributs pour décrire une valeur en termes de stockage et de caractéristiques d’affichage, qui sont héritées d’une propriété affectée.",
 	"smw-special-types-no-such-type": "Le type de données spécifié n’existe pas.",
 	"semanticstatistics": "Statistiques sémantiques",
 	"smw_semstats_text": "Ce wiki contient '''$1''' valeur{{PLURAL:$1||s}} de propriété pour un total de '''$2''' [[Special:Properties|{{PLURAL:$2|propriété différente|propriétés différentes}}]].\n'''$3''' {{PLURAL:$3|propriété a sa|propriétés ont leur}} propre page, et le type de données voulu est spécifié pour '''$4''' de celles-ci.\nCertaines des propriétés existantes peuvent en faite être [[Special:UnusedProperties|inutilisées]].\nLes propriétés qui n’ont pas encore de page se trouvent dans la [[Special:WantedProperties|liste des propriétés demandées]].",
@@ -374,5 +374,13 @@
 	"smw-pa-property-predefined_askfo": "« $1 » est une propriété prédéfinie qui contient le nom du format de résultat utilisé dans une requête, et est fourni par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
 	"smw-pa-property-predefined_askst": "« $1 » est une propriété prédéfinie qui décrit les conditions de la requête sous forme de chaîne, et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
 	"smw-pa-property-predefined_askdu": "« $1 » est une propriété prédéfinie contenant une valeur temporelle (en secondes) représentant le temps pris par la requête pour achever son exécution, et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
-	"smw-pa-property-predefined_prec": "« $1 » est une propriété prédéfinie qui décrit une [https://www.semantic-mediawiki.org/wiki/Help:Display_precision précision d’affichage] (en nombre de chiffres) pour les types de données numériques."
+	"smw-pa-property-predefined_prec": "« $1 » est une propriété prédéfinie qui décrit une [https://www.semantic-mediawiki.org/wiki/Help:Display_precision précision d’affichage] (en nombre de chiffres) pour les types de données numériques.",
+	"smw-sp-types-geo-not-available": "[https://www.semantic-mediawiki.org/wiki/Semantic_Maps Cartes Sémantiques] n’a pas été détecté, donc « $1 » est restreint dans ses capacités de traitement.",
+	"smw-datavalue-monolingual-dataitem-missing": "Un élément attendu pour construire une valeur composée monolingue manque.",
+	"smw-datavalue-languagecode-missing": "Pour l’annotation « $1 », l’analyseur n’a pas pu déterminer un code de langue (par ex. « foo@en »).",
+	"smw-datavalue-languagecode-invalid": "« $1 » n’a pas été reconnu comme un code de langue supporté.",
+	"smw-pa-property-predefined_lcode": "« $1 » est une propriété prédéfinie qui représente un code de langue au format BCP47 et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
+	"smw-sp-types_mlt_rec": "« $1 » est un type de données [https://www.semantic-mediawiki.org/wiki/Help:Container conteneur] qui associe une valeur texte avec un [[Property:Language code|code de langue]] spécifique.",
+	"smw-sp-types-mlt-lcode": "Le type de données ne {{PLURAL:$2|nécessite|nécessite pas}} un code de langue (par ex. {{PLURAL:$2|une annotation de valeur sans code de langue n’est pas acceptée|une annotation de valeur sans code de langue est acceptée}}).",
+	"smw-pa-property-predefined_text": "« $1 » est une propriété prédéfinie qui représente un texte de longueur quelconque et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique]."
 }

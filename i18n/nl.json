@@ -258,7 +258,7 @@
 	"smw_adminlinks_datastructure": "Gegevensstructuur",
 	"smw_adminlinks_displayingdata": "Gegevens weergeven",
 	"smw_adminlinks_inlinequerieshelp": "Hulp bij inline zoekopdrachten",
-	"smw-createproperty-isproperty": "Dit is een eigenschap van type $1.",
+	"smw-createproperty-isproperty": "Het is een eigenschap van het type $1.",
 	"smw-createproperty-allowedvals": "De toegelaten {{PLURAL:$1|waarde voor deze eigenschap is|waarden voor deze eigenschap zijn}}:",
 	"smw-paramdesc-category-delim": "Het scheidingsteken",
 	"smw-paramdesc-category-template": "Een sjabloon om de items mee op te maken",
