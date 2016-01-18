@@ -371,6 +371,7 @@ class MonolingualTextValue extends DataValue {
 
 		if ( $this->m_contextPage === null ) {
 			$containerSemanticData = ContainerSemanticData::makeAnonymousContainer();
+			$containerSemanticData->skipAnonymousCheck();
 		} else {
 			$subobjectName = '_ML' . md5( $value );
 

@@ -111,7 +111,9 @@ class RecordValueDescriptionDeserializer extends DescriptionDeserializer {
 
 		$dataValue = DataValueFactory::getInstance()->newPropertyObjectValue(
 			$diProperty,
-			$values[$valueIndex]
+			$values[$valueIndex],
+			false,
+			$this->dataValue->getContextPage()
 		);
 
 		if ( $dataValue->isValid() ) { // valid DV: keep

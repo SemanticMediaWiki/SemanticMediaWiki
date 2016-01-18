@@ -1,8 +1,6 @@
 <?php
 
-/**
- * @ingroup SMWDataValues
- */
+use SMW\DataValueFactory;
 
 /**
  * SMWDataValue implements the handling of small sets of property-value pairs.
@@ -68,6 +66,7 @@ class SMWRecordValue extends SMWDataValue {
 
 		if ( is_null( $this->m_contextPage ) ) {
 			$semanticData = SMWContainerSemanticData::makeAnonymousContainer();
+			$semanticData->skipAnonymousCheck();
 		} else {
 			$subobjectName = '_' . hash( 'md4', $value, false ); // md4 is probably fastest of PHP's hashes
 			$subject = new SMWDIWikiPage( $this->m_contextPage->getDBkey(),
@@ -93,7 +92,12 @@ class SMWRecordValue extends SMWDataValue {
 			if ( ( $values[$valueIndex] === '' ) || ( $values[$valueIndex] == '?' ) ) { // explicit omission
 				$valueIndex++;
 			} else {
-				$dataValue = \SMW\DataValueFactory::getInstance()->newPropertyObjectValue( $diProperty, $values[$valueIndex] );
+				$dataValue = DataValueFactory::getInstance()->newPropertyObjectValue(
+					$diProperty,
+					$values[$valueIndex],
+					false,
+					$this->getContextPage()
+				);
 
 				if ( $dataValue->isValid() ) { // valid DV: keep
 					$semanticData->addPropertyObjectValue( $diProperty, $dataValue->getDataItem() );
@@ -242,12 +246,6 @@ class SMWRecordValue extends SMWDataValue {
 		if ( is_null( $this->m_diProperties ) ) {
 			$this->m_diProperties = self::findPropertyDataItems( $this->m_property );
 
-			foreach ( $this->m_diProperties as $property ) {
-				if ( strpos( $property->findPropertyTypeID(), '_rec' ) !== false ) {
-					$this->addError( wfMessage( 'smw-datavalue-record-invalid-property-declaration', $property->getLabel() )->text() );
-				}
-			}
-
 			if ( count( $this->m_diProperties ) == 0 ) { // TODO internalionalize
 				$this->addError( 'The list of properties to be used for the data fields has not been specified properly.' );
 			}
@@ -307,7 +305,7 @@ class SMWRecordValue extends SMWDataValue {
 			$propertyValues = $this->m_dataitem->getSemanticData()->getPropertyValues( $propertyDataItem ); // combining this with next line violates PHP strict standards
 			$dataItem = reset( $propertyValues );
 			if ( $dataItem !== false ) {
-				$dataValue = \SMW\DataValueFactory::getInstance()->newDataItemValue( $dataItem, $propertyDataItem );
+				$dataValue = DataValueFactory::getInstance()->newDataItemValue( $dataItem, $propertyDataItem );
 				$result .= $this->makeValueOutputText( $type, $dataValue, $linker );
 			} else {
 				$result .= '?';

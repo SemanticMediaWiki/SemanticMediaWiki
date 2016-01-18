@@ -27,6 +27,11 @@ use SMW\DataItemException;
 class SMWContainerSemanticData extends SMWSemanticData {
 
 	/**
+	 * @var boolean
+	 */
+	private $skipAnonymousCheck = false;
+
+	/**
 	 * Construct a data container that refers to an anonymous subject. See
 	 * the documentation of the class for details.
 	 *
@@ -34,9 +39,15 @@ class SMWContainerSemanticData extends SMWSemanticData {
 	 *
 	 * @param boolean $noDuplicates stating if duplicate data should be avoided
 	 */
-	public static function makeAnonymousContainer( $noDuplicates = true ) {
-		$subject = new SMWDIWikiPage( 'SMWInternalObject', NS_SPECIAL, '' );
-		return new SMWContainerSemanticData( $subject, $noDuplicates );
+	public static function makeAnonymousContainer( $noDuplicates = true, $skipAnonymousCheck = false ) {
+		$subject = new SMWDIWikiPage( 'SMWInternalObject', NS_SPECIAL, '', 'int' );
+		$containerSemanticData = new SMWContainerSemanticData( $subject, $noDuplicates );
+
+		if ( $skipAnonymousCheck ) {
+			$containerSemanticData->skipAnonymousCheck();
+		}
+
+		return $containerSemanticData;
 	}
 
 	/**
@@ -44,7 +55,14 @@ class SMWContainerSemanticData extends SMWSemanticData {
 	 */
 	public function __sleep() {
 		return array( 'mSubject', 'mProperties', 'mPropVals',
-			'mHasVisibleProps', 'mHasVisibleSpecs', 'mNoDuplicates' );
+			'mHasVisibleProps', 'mHasVisibleSpecs', 'mNoDuplicates', 'skipAnonymousCheck' );
+	}
+
+	/**
+	 * @since 2.4
+	 */
+	public function skipAnonymousCheck() {
+		$this->skipAnonymousCheck = true;
 	}
 
 	/**
@@ -56,7 +74,8 @@ class SMWContainerSemanticData extends SMWSemanticData {
 	public function hasAnonymousSubject() {
 		if ( $this->mSubject->getNamespace() == NS_SPECIAL &&
 		     $this->mSubject->getDBkey() == 'SMWInternalObject' &&
-		     $this->mSubject->getInterwiki() === '' ) {
+		     $this->mSubject->getInterwiki() === '' &&
+		     $this->mSubject->getSubobjectName() === 'int' ) {
 			return true;
 		} else {
 			return false;
@@ -71,11 +90,12 @@ class SMWContainerSemanticData extends SMWSemanticData {
 	 * @return SMWDIWikiPage subject
 	 */
 	public function getSubject() {
-		if ( $this->hasAnonymousSubject() ) {
-			throw new DataItemException("This container has been classified as anonymous and by trying to access its subject (that has not been given any) an exception is raised to inform about the incorrect usage. The cotainer can only be used as a search pattern.");
-		} else {
-			return $this->mSubject;
+
+		if ( !$this->skipAnonymousCheck && $this->hasAnonymousSubject() ) {
+			throw new DataItemException("This container has been classified as anonymous and by trying to access its subject (that has not been given any) an exception is raised to inform about the incorrect usage. An anonymous container can only be used for a search pattern match.");
 		}
+
+		return $this->mSubject;
 	}
 
 	/**
