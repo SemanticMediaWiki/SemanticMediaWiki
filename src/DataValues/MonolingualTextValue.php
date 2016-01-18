@@ -275,7 +275,7 @@ class MonolingualTextValue extends DataValue {
 		$dataItem = reset( $dataItems );
 
 		if ( $dataItem === false ) {
-			continue;
+			return null;
 		}
 
 		$dataValue = DataValueFactory::getInstance()->newDataItemValue(
