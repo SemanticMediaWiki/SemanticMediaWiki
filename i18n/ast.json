@@ -341,5 +341,12 @@
 	"smw-pa-property-predefined_askst": "«$1» ye una propiedá predefinida que describe les condiciones d'una consulta como cadena y que ta proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_askdu": "«$1» ye una propiedá predefinida que contien un valor de tiempu (en segundos) que la consulta necesitó pa completar la execución y que ta proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_prec": "\"$1\" ye una propiedá predefinida que describe una [https://www.semantic-mediawiki.org/wiki/Help:Display_precision precisión de representación] (en cifres decimales) pa tipos de datos numbéricos.",
-	"smw-sp-types-geo-not-available": "Nun se detectó [https://www.semantic-mediawiki.org/wiki/Semantic_Maps Mapes Semánticos] y, darréu, «$1» tien torgada la capacidá d'operar."
+	"smw-sp-types-geo-not-available": "Nun se detectó [https://www.semantic-mediawiki.org/wiki/Semantic_Maps Mapes Semánticos] y, darréu, «$1» tien torgada la capacidá d'operar.",
+	"smw-datavalue-monolingual-dataitem-missing": "Falta un elementu esperáu pa construir un valor compuestu monollingüe.",
+	"smw-datavalue-languagecode-missing": "L'analizador nun pudo determinar el códigu de llingua (p.ex. \"fulanu@ast\") pa l'anotación «$1».",
+	"smw-datavalue-languagecode-invalid": "Nun se reconoció «$1» como códigu de llingua válidu.",
+	"smw-pa-property-predefined_lcode": "«$1» ye una propiedá predefinida que representa un códigu de llingua en formatu BCP47 y que ta proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-sp-types_mlt_rec": "«$1» ye un tipu de datos [https://@www.semantic-mediawiki.org/wiki/Help:Container contenedor] qu'asocia un valor de testu con un [[Property:Language code|códigu de llingua]] determináu.",
+	"smw-sp-types-mlt-lcode": "El tipu de datos {{PLURAL:$2|rique|nun rique}} un códigu de llingua (por casu, {{PLURAL:$2|nun s'acepta|s'acepta}} una anotación de valor sin un códigu de llingua).",
+	"smw-pa-property-predefined_text": "«$1» ye una propiedá predefinida que representa testu de cualquier llargor y que ta proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]."
 }

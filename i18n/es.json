@@ -260,7 +260,7 @@
 	"smw_adminlinks_datastructure": "Estructura de datos",
 	"smw_adminlinks_displayingdata": "Mostrando datos",
 	"smw_adminlinks_inlinequerieshelp": "Ayuda de consultas en línea",
-	"smw-createproperty-isproperty": "Esta es una propiedad de tipo $1.",
+	"smw-createproperty-isproperty": "Es una propiedad de tipo $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|El valor permitido para esta propiedad es|Los valores permitidos para esta propiedad son}}:",
 	"smw-paramdesc-category-delim": "El delimitador",
 	"smw-paramdesc-category-template": "Una plantilla con la que dar formato a los elementos",
@@ -335,5 +335,10 @@
 	"smw-pa-property-predefined_askfo": "\"$1\" es una propiedad predefinida que guarda el nombre del formato de resultado usado en una consulta. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_askst": "\"$1\" es una propiedad predefinida que describe las condiciones de la consulta como una cadena. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_askdu": "\"$1\" es una propiedad predefinida que contiene un valor de tiempo (en segundos) que la consulta requirió para completar su ejecución. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
-	"smw-pa-property-predefined_prec": "\"$1\" es una propiedad predefinida que describe una [https://www.semantic-mediawiki.org/wiki/Help:Display_precision precisión de muestra] (en dígitos decimales) para tipos de datos numéricos."
+	"smw-pa-property-predefined_prec": "\"$1\" es una propiedad predefinida que describe una [https://www.semantic-mediawiki.org/wiki/Help:Display_precision precisión de muestra] (en dígitos decimales) para tipos de datos numéricos.",
+	"smw-datavalue-languagecode-invalid": "No se reconoce «$1» como un código de idioma admitido.",
+	"smw-pa-property-predefined_lcode": "\"$1\" es una propiedad predefinida que representa un código de idioma con formato BCP47. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-sp-types_mlt_rec": "\"$1\" es un tipo de datos [https://www.semantic-mediawiki.org/wiki/Help:Container contenedor] que asocia un valor de texto con un [[Property:Language code|código de idioma]] específico.",
+	"smw-sp-types-mlt-lcode": "El tipo de datos{{PLURAL:$2|requiere|no requiere}} un código de idioma (o sea, {{PLURAL:$2|no se acepta|se acepta}} una anotación de valor sin un código de idioma).",
+	"smw-pa-property-predefined_text": "\"$1\" es una propiedad predefinida que representa texto de longitud arbitraria. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]."
 }
