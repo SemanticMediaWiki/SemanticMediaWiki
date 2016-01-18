@@ -92,8 +92,7 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExecuteForInvalidSubjectThrowsException() {
-
-		$this->setExpectedException( 'Exception' );
+		$this->setExpectedException( interface_exists( 'Throwable' ) ? 'Throwable' : 'Exception' );
 
 		$result = $this->apiFactory->doApiRequest( array(
 			'action'  => 'browsebysubject',
