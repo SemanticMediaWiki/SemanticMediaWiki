@@ -42,6 +42,10 @@ class SMWAdmin extends SpecialPage {
 		$this->store = StoreFactory::getStore();
 	}
 
+	public function doesWrites() {
+		return true;
+	}
+
 	public function setStore( Store $store ) {
 		$this->store = $store;
 	}
