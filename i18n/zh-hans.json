@@ -364,5 +364,6 @@
 	"smw-datavalue-languagecode-invalid": "“$1”不认为是支持的语言代码。",
 	"smw-pa-property-predefined_lcode": "“$1”是一个表述BCP47格式语言代码的预定义属性，并由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供。",
 	"smw-sp-types_mlt_rec": "“$1”是一个将文本值与特定[[Property:Language code|语言代码]]联系起来的[https://www.semantic-mediawiki.org/wiki/Help:Container 容器]数据类型。",
+	"smw-sp-types-mlt-lcode": "数据类型{{PLURAL:$2|需要|不需要}}语言代码（也就是说{{PLURAL:$2|不接受不带语言代码的值注释|接受不带语言代码的值注释}}）。",
 	"smw-pa-property-predefined_text": "“$1”是一个表明任意长度文本的预定义属性，并由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供。"
 }
