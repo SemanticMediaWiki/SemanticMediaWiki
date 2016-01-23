@@ -11,7 +11,7 @@
 			"Emilbk"
 		]
 	},
-	"smw-desc": "Gjøre wikien din mer tilgjengelig - for maskiner ''og'' mennesker ([https://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
+	"smw-desc": "Gjøre wikien din mer tilgjengelig - for maskiner ''og'' mennesker ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
 	"smw_viewasrdf": "RDF-kilde",
 	"smw_finallistconjunct": " og",
 	"smw_factbox_head": "Fakta om $1",
@@ -153,7 +153,7 @@
 	"smw_wantedproperty_template": "$1 (brukt {{PLURAL:$2|én gang|$2 ganger}})",
 	"smw_purge": "Gjenoppfrisk",
 	"types": "Typer",
-	"smw_types_docu": "Følgende er en [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes liste] over alle datatyper som kan knyttes til egenskaper.",
+	"smw_types_docu": "Følgende er en [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes liste] over alle datatyper som kan knyttes til egenskaper.",
 	"smw-special-types-no-such-type": "Den angitte datatypen finnes ikke",
 	"semanticstatistics": "Semantisk statistikk",
 	"smw_semstats_text": "Denne wikien inneholder {{PLURAL:$1|'''én''' egenskapsverdi|'''$1''' egenskapsverdier}} for totalt [[Special:Properties|{{PLURAL:$2|'''én''' egenskap|'''$2''' forskjellige egenskaper}}]].\n{{PLURAL:$3|'''Én''' egenskap|'''$3''' egenskaper}} har en egen side, og den mente datatypen er spesifisert for '''$4''' av disse.\nEnkelte av de eksisterende egenskapene kan være [[Special:UnusedProperties|ubrukte egenskaper]].\nEgenskaper som fortsatt mangler en egen side finnes på [[Special:WantedProperties|listen over ønskede egenskaper]].",

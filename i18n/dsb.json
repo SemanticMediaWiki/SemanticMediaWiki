@@ -6,7 +6,7 @@
 			"아라"
 		]
 	},
-	"smw-desc": "Twój wiki pśistupnjejšy cyniś - za mašiny ''a'' luźi\n([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentacija online])",
+	"smw-desc": "Twój wiki pśistupnjejšy cyniś - za mašiny ''a'' luźi\n([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentacija online])",
 	"smw_viewasrdf": "Kanal RDF",
 	"smw_finallistconjunct": "a",
 	"smw_factbox_head": "Fakty wó $1",
@@ -217,7 +217,7 @@
 	"smw_smwadmin_updatenotstarted": "Proces aktualizacije južo běžy.\nNowy se njestartujo.\n\nSlědk k $1.",
 	"smw_smwadmin_updatestopped": "Wše eksistěrujuce aktualizěrowańske procese su se zastajili.\n\nSlědk k $1.",
 	"smw_smwadmin_updatenotstopped": "Aby běžecy proces zastajił, musyš kontrolowy kašćik aktiwěrowaś, aby pódał, až sy napšawdu wěsty.\n\nSlědk k $1.",
-	"smw_smwadmin_docu": "Toś ten specialny bok śi pomaga za instalaciju a aktualizaciju a href=\"https://semantic-mediawiki.org\">Semantic MediaWiki</a>. Mysli se na zawěsćenje gódnotnych datow, nježli až wuwjeźoš administratiwne funkcije.",
+	"smw_smwadmin_docu": "Toś ten specialny bok śi pomaga za instalaciju a aktualizaciju a href=\"https://www.semantic-mediawiki.org\">Semantic MediaWiki</a>. Mysli se na zawěsćenje gódnotnych datow, nježli až wuwjeźoš administratiwne funkcije.",
 	"smw_smwadmin_db": "Instalacija a aktualizacija datoweje banki",
 	"smw_smwadmin_dbdocu": "Semantic MediaWiki trjeba rozšyrjenja za datowu banku MediaWiki, aby semantiske daty składował. Slědujuca funkcija zawěsćijo, až twója datowa banka se pórědnje zarědujo.\nZměny, kótarež cynje se w toś tom kšacu, njewobwliwuju zbytk datoweje banki MediaWiki a daju se lažko anulěrowaś, jolic póžedane.\nToś te zarědowańska funkcija móžo se někotare razy wugbaś, mimo až zawinuju škódu, ale jo trěbna jano jaden raz pśi instalaciji abo aktualizaciji.",
 	"smw_smwadmin_permissionswarn": "Jolic operacija raźi se z SQL-zmólkami, wužywaŕ datoweje banki, kótaregož twój wiki wužywa (skontrolěruj twóju dataja LocalSettings.php), nejskerjej njama dosegajuce pšawa.\nPak zwól toś tomu wužywarjeju pśidatne pšawa za napóranje a lašowanje tabelow, zapódaj nachylu twójo admininistratorowe wužywarske mě w LocalSettings.php, pak wužyj wótglědowański skript <code>setupStore.php</code>, kótarež mógu wósobinske pódaśa administratora wužywaś.",
@@ -232,7 +232,7 @@
 	"smw_smwadmin_support": "Pódpěru wobstaraś",
 	"smw_smwadmin_supportdocu": "Wšake resurse mógli śi w paźe problemow pomagaś:",
 	"smw_smwadmin_installfile": "Joli maš problemy ze swójeju instalaciju, pśecytaj směrnice w dataji <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">INSTALL</a>.",
-	"smw_smwadmin_smwhomepage": "Dopołna wužywarska dokumentacija za Semantic MediaWiki jo na <b><a href=\"https://semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
+	"smw_smwadmin_smwhomepage": "Dopołna wužywarska dokumentacija za Semantic MediaWiki jo na <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw_smwadmin_mediazilla": "Zmólki daju se na <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a> k wěsći daś.",
 	"smw_smwadmin_questions": "Jolic maš dalšne pšašanja abo naraźenja, pśizamkni se diskusiji na <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">wužywarskem forumje Semantic MediaWiki</a>.",
 	"smw_adminlinks_datastructure": "Datowa struktura",

@@ -11,7 +11,7 @@
 			"아라"
 		]
 	},
-	"smw-desc": "הופכת את הוויקי שלכם לנגיש יותר – עבור מכונות וגם עבור בני אדם ([https://semantic-mediawiki.org/wiki/Help:User_manual תיעוד מקוון])",
+	"smw-desc": "הופכת את הוויקי שלכם לנגיש יותר – עבור מכונות וגם עבור בני אדם ([https://www.semantic-mediawiki.org/wiki/Help:User_manual תיעוד מקוון])",
 	"smw_viewasrdf": "הזנת RDF",
 	"smw_finallistconjunct": " וגם",
 	"smw_factbox_head": "עובדות על $1",
@@ -153,7 +153,7 @@
 	"smw_wantedproperty_template": "$1 (בשימוש {{PLURAL:$2|פעם אחת|$2 פעמים}})",
 	"smw_purge": "רענון תבניות ושאילתות",
 	"types": "סוגים",
-	"smw_types_docu": "להלן [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes רשימה] של כל סוגי הנתונים שיכולים להיות מושמים למאפיינים.",
+	"smw_types_docu": "להלן [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes רשימה] של כל סוגי הנתונים שיכולים להיות מושמים למאפיינים.",
 	"smw-special-types-no-such-type": "סוג הנתונים שצוין אינו קיים",
 	"semanticstatistics": "סטטיסטיקה סמנטית",
 	"smw_semstats_text": "אתר ויקי זה מכיל {{PLURAL:$1|ערך מאפיין '''אחד'''|'''$1''' ערכי מאפיינים}} עבור סך כולל של [[Special:Properties|{{PLURAL:$2|מאפין '''אחד'''|'''$2''' מאפיינים שונים}}]].\nל{{PLURAL:מאפיין '''אחד'''|־'''$3''' מאפיינים}} יש דף משלהם, וסוג הנתונים המיועד צוין עבור '''$4''' מאלה.\nייתכן שכמה ממהמאפיינים הקיימים הם [[Special:UnusedProperties|מאפיינים שאינם בשימוש]].\nמאפיינים שעדיין חסר להם דף נמצאים ב[[Special:WantedProperties|רשימת המאפיינים המבוקשים]].",

@@ -30,7 +30,7 @@
 	"smw_false_words": "väär,v,ei,e",
 	"smw_nofloat": "\"$1\" pole number.",
 	"smw_purge": "Värskenda",
-	"smw_types_docu": "Järgnevalt on loetletud kõik [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes andmetüübid], mida omadustele saab omistada.",
+	"smw_types_docu": "Järgnevalt on loetletud kõik [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes andmetüübid], mida omadustele saab omistada.",
 	"smw-special-types-no-such-type": "Soovitud andmetüüpi ei eksisteeri",
 	"smw-statistics": "Semantilised arvandmed",
 	"smw-statistics-property-instance": "Omaduse {{PLURAL:$1|väärtus|väärtusi}} (kokku)",

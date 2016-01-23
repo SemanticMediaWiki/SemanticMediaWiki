@@ -11,7 +11,7 @@
 			"Alirezaaa"
 		]
 	},
-	"smw-desc": "ویکی خود را بیشترقابل دسترس کنید- برای ماشین‌ها ''و'' انسان‌ها ([https://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
+	"smw-desc": "ویکی خود را بیشترقابل دسترس کنید- برای ماشین‌ها ''و'' انسان‌ها ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
 	"smw_viewasrdf": "خوراک RDF",
 	"smw_finallistconjunct": "، و",
 	"smw_factbox_head": "عوامل درباره‌ٔ \"$1\"",
@@ -231,7 +231,7 @@
 	"smw_smwadmin_updatenotstarted": "در حال حاضر یک فرآیند به روز رسانی در‌حال اجرا است.\nنه ایجاد یکی دیگر.\nبازگشت به $1 .",
 	"smw_smwadmin_updatestopped": "تمام فرآیندهای به روز رسانی موجود متوقف شده‌اند.\nبازگشت به $1 .",
 	"smw_smwadmin_updatenotstopped": "برای جلوگیری از روند به‌روزرسانی در حال اجرا، شما باید جعبه بررسی را برای نشان دادن اینکه شما واقعاً مطمئن هستید، فعال کنید.\nبازگشت به $1.",
-	"smw_smwadmin_docu": "این صفحه مخصوص به شما  در طول نصب و ارتقاء <a href=\"https://semantic-mediawiki.org\"> مدیاویکی معنایی </a> کمک می کند.\nبرای پشتیبان گیری داده‌های ارزشمند قبل از اجرای عملیات اداری، به یاد دیشته باشید.",
+	"smw_smwadmin_docu": "این صفحه مخصوص به شما  در طول نصب و ارتقاء <a href=\"https://www.semantic-mediawiki.org\"> مدیاویکی معنایی </a> کمک می کند.\nبرای پشتیبان گیری داده‌های ارزشمند قبل از اجرای عملیات اداری، به یاد دیشته باشید.",
 	"smw_smwadmin_db": "نصب پایگاه اطلاعات و ارتقاء",
 	"smw_smwadmin_dbdocu": "مدیاویکی معنایی به برخی از فرمت‌ها به پایگاه اطلاعاتی مدیاویکی برای ذخیره اطلاعات معنایی، نیاز دارد.\nعملکرد زیر تضمین می کند که پایگاه اطلاعاتی شما به درستی تنظیم شده‌است.\nتغییرات ایجاد شده در این مرحله بر روی بقیه پایگاه اطلاعاتب مدیاویکی تاثیر نمی‌گذارد، و اگر مایل باشید می‌تواند آن را به راحتی انجام ندهد.\nاین تنظیم عملکرد می‌تواند چندین بار بدون انجام هر گونه آسیبی اجرا شود، اما تنها یک بار در نصب یا ارتقاء مورد نیاز است.",
 	"smw_smwadmin_permissionswarn": "اگر عملیات با خطاهای اس‌کیو‌ال با شکست مواجه شود، کاربر پایگاه اطلاعاتی استخدام شده توسط ویکی شما ا (LocalSettings.php خود را بررسی کنید) ممکن است مجوزهای کافی را نداشته باشد.\nیا به این کاربر مجوز اضافی برای ایجاد و حذف جداول اعطاء می‌شود، موقتاً ورود اساس پایگاه اطلاعاتی خود را در LocalSettings.php وارد کنید، یا از متن نگهداری <code>setupStore.php</code> استفاده کنید که می‌تواند از اعتبارنامه‌های یک سرپرست استفاده کند.",
@@ -246,7 +246,7 @@
 	"smw_smwadmin_support": "پشتیبانی شدن",
 	"smw_smwadmin_supportdocu": "منابع گوناگونی که ممکن است به شما در رابطه با مشکلات کمک کند:",
 	"smw_smwadmin_installfile": "اگر شما تجربه مشکلات نصب را داشتید، با بررسی دستورالعمل‌ها در <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">INSTALL file</a> شروع کنید.",
-	"smw_smwadmin_smwhomepage": "مستندات کامل کاربر برای مدیاویکی معنایی در <b><a href=\"https://semantic-mediawiki.org\">semantic-mediawiki.org</a></b> است.",
+	"smw_smwadmin_smwhomepage": "مستندات کامل کاربر برای مدیاویکی معنایی در <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b> است.",
 	"smw_smwadmin_mediazilla": "اشکالات می‌توانند به <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a> گزارش شوند.",
 	"smw_smwadmin_questions": "اگر شما سوالات یا پیشنهادات بیشتری دارید، به گفتگو در<a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">Semantic MediaWiki user forum</a> بپیوندید.",
 	"smw_adminlinks_datastructure": "ساختار داده‌ها",

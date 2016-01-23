@@ -14,7 +14,7 @@
 			"Piramidion"
 		]
 	},
-	"smw-desc": "Робить вашу вікі доступнішою — для машин ''та'' людей ([https://semantic-mediawiki.org/wiki/Help:User_manual довідка в мережі])",
+	"smw-desc": "Робить вашу вікі доступнішою — для машин ''та'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual довідка в мережі])",
 	"smw_viewasrdf": "вивід RDF",
 	"smw_finallistconjunct": " і",
 	"smw_factbox_head": "Відомості про $1",
@@ -154,7 +154,7 @@
 	"smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|звернення|звернення|звернень}})",
 	"smw_purge": "Оновити",
 	"types": "Типи",
-	"smw_types_docu": "Нижче наведено [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes список] усіх типів даних, які можуть бути прив'язані до властивостей.",
+	"smw_types_docu": "Нижче наведено [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes список] усіх типів даних, які можуть бути прив'язані до властивостей.",
 	"smw-special-types-no-such-type": "Указаного типу даних не існує",
 	"semanticstatistics": "Семантична статистика",
 	"smw_semstats_text": "Ця вікі містить '''$1''' {{PLURAL:$1|значення властивості|значення властивостей|значень властивостей}}, для '''$2''' [[Special:Properties|{{PLURAL:$2|властивості|властивостей|властивостей}}]]. '''$3''' {{PLURAL:$3|властивість має|властивості мають|властивостей мають}} відповідні їм сторінки, і відповідний тип даних вказано у '''$4''' із них. Деякі із наявних властивостей можуть бути [[Special:UnusedProperties|властивостями, що не використовуються]]. Властивості, котрі не мають відповідних їм сторінок, можна знайти в [[Special:WantedProperties|списку пропонованих властивостей]].",

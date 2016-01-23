@@ -16,7 +16,7 @@
 			"Rangekill"
 		]
 	},
-	"smw-desc": "Uw wiki toegankelijker maken - voor machines ''en'' mensen ([https://semantic-mediawiki.org/wiki/Help:User_manual online documentatie])",
+	"smw-desc": "Uw wiki toegankelijker maken - voor machines ''en'' mensen ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentatie])",
 	"smw_viewasrdf": "RDF-feed",
 	"smw_finallistconjunct": ", en",
 	"smw_factbox_head": "Feiten over $1",
@@ -160,7 +160,7 @@
 	"smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|keer|keren}} gebruikt)",
 	"smw_purge": "Vernieuwen",
 	"types": "Typen",
-	"smw_types_docu": "Het volgende is een [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes lijst] van alle gegevenstypen die kunnen worden toegewezen aan eigenschappen.",
+	"smw_types_docu": "Het volgende is een [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes lijst] van alle gegevenstypen die kunnen worden toegewezen aan eigenschappen.",
 	"smw-special-types-no-such-type": "Het opgegeven gegevenstype bestaat niet",
 	"semanticstatistics": "Semantische statistieken",
 	"smw_semstats_text": "Deze wiki bevat '''$1''' {{PLURAL:$1|eigenschapswaarde|eigenschapswaarden}} voor '''$2''' [[Special:Properties|{{PLURAL:$2|eigenschap|verschillende eigenschappen}}]].\n'''$3''' {{PLURAL:$3|eigenschap heeft|eigenschappen hebben}} een eigen pagina en het gegevenstype is voor '''$4''' daarvan opgegeven.\nEen aantal van de bestaande eigenschappen is wellicht [[Special:UnusedProperties|ongebruikt]].\nEigenschappen waar nog geen pagina voor is zijn te vinden op de [[Special:WantedProperties|lijst met gewenste eigenschappen]].",

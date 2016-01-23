@@ -21,7 +21,7 @@
 			"Alexmar983"
 		]
 	},
-	"smw-desc": "Rende la tua wiki più accessibile - per le macchine ''e'' per gli umani ([https://semantic-mediawiki.org/wiki/Help:User_manual documentazione in linea])",
+	"smw-desc": "Rende la tua wiki più accessibile - per le macchine ''e'' per gli umani ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentazione in linea])",
 	"smw_viewasrdf": "Feed RDF",
 	"smw_finallistconjunct": " e",
 	"smw_factbox_head": "Fatti riguardanti $1",
@@ -131,7 +131,7 @@
 	"smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|uso|usi}})",
 	"smw_purge": "Aggiorna",
 	"types": "Tipi",
-	"smw_types_docu": "La seguente è una [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes lista] dei tipi di dati  disponibili con ogni [https://www.semantic-mediawiki.org/wiki/Help:Datatype tipo di dati] che rappresenta un unico insieme di attributi per descrivere un valore in termini di archiviazione e visualizzazione di caratteristiche che sono ereditari a una proprietà assegnata.",
+	"smw_types_docu": "La seguente è una [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes lista] dei tipi di dati  disponibili con ogni [https://www.semantic-mediawiki.org/wiki/Help:Datatype tipo di dati] che rappresenta un unico insieme di attributi per descrivere un valore in termini di archiviazione e visualizzazione di caratteristiche che sono ereditari a una proprietà assegnata.",
 	"smw-special-types-no-such-type": "Il tipo di dati indicato non esiste.",
 	"semanticstatistics": "Statistiche semantiche",
 	"smw_semstats_text": "Questo sito contiene '''$1''' {{PLURAL:$1|valore|valori}} di proprietà per un totale di '''$2''' [[Special:Properties|{{PLURAL:$2|proprietà|differenti proprietà}}]].\n'''$3''' proprietà {{PLURAL:$3|ha|hanno}} una propria pagina e il tipo di dato inteso è specificato per '''$4''' di queste.\nAlcune delle proprietà esistenti possono essere [[Special:UnusedProperties|proprietà non utilizzate]].\nLe proprietà che ancora non hanno una pagina si possono trovare nell'[[Special:WantedProperties|elenco delle proprietà senza descrizione]].",
