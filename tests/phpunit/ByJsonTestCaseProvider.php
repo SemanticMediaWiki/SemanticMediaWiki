@@ -60,6 +60,11 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 	 */
 	protected $deleteAfterState = true;
 
+	/**
+	 * @var string
+	 */
+	protected $connectorId = '';
+
 	protected function setUp() {
 		parent::setUp();
 
@@ -70,6 +75,12 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 		$this->fileReader = $utilityFactory->newJsonFileReader( null );
 		$this->pageCreator = $utilityFactory->newPageCreator();
 		$this->pageDeleter = $utilityFactory->newPageDeleter();
+
+		if ( $this->getStore() instanceof \SMWSparqlStore ) {
+			$this->connectorId = strtolower( $GLOBALS['smwgSparqlDatabaseConnector'] );
+		} else {
+			$this->connectorId = strtolower( $this->getDBConnection()->getType() );
+		}
 	}
 
 	protected function tearDown() {
@@ -121,6 +132,12 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 	protected function createPagesFor( array $pages, $defaultNamespace ) {
 
 		foreach ( $pages as $page ) {
+
+			$skipOn = isset( $page['skip-on'] ) ? $page['skip-on'] : array();
+
+			if ( in_array( $this->connectorId, array_keys( $skipOn ) ) ) {
+				continue;
+			}
 
 			if ( !isset( $page['name'] ) || !isset( $page['contents'] ) ) {
 				continue;
