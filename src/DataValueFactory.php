@@ -72,14 +72,17 @@ class DataValueFactory {
 
 		$dataTypeRegistry = DataTypeRegistry::getInstance();
 
-		if ( $dataTypeRegistry->hasDataTypeClassById( $typeId ) ) {
-			$class  = $dataTypeRegistry->getDataTypeClassById( $typeId );
-			$result = new $class( $typeId );
-		} else {
-			return new ErrorValue( $typeId,
+		if ( !$dataTypeRegistry->hasDataTypeClassById( $typeId ) ) {
+			return new ErrorValue(
+				$typeId,
 				wfMessage( 'smw_unknowntype', $typeId )->inContentLanguage()->text(),
-				$valueString, $caption );
+				$valueString,
+				$caption
+			);
 		}
+
+		$class  = $dataTypeRegistry->getDataTypeClassById( $typeId );
+		$result = new $class( $typeId );
 
 		$result->setExtraneousFunctions(
 			$dataTypeRegistry->getExtraneousFunctions()

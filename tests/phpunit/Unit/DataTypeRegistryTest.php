@@ -181,6 +181,32 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testRegisterDataValueFormatter() {
+
+		$dataValueFormatter = $this->getMockBuilder( '\SMW\DataValues\ValueFormatters\DataValueFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataValueFormatter->expects( $this->never() )
+			->method( 'isFormatterFor' );
+
+		$instance = new DataTypeRegistry();
+		$instance->registerDataValueFormatter( $dataValueFormatter );
+	}
+
+	public function testRegisterDVDescriptionDeserializer() {
+
+		$descriptionDeserializer = $this->getMockBuilder( '\SMW\Deserializers\DVDescriptionDeserializer\DescriptionDeserializer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$descriptionDeserializer->expects( $this->never() )
+			->method( 'isDeserializerFor' );
+
+		$instance = new DataTypeRegistry();
+		$instance->registerDVDescriptionDeserializer( $descriptionDeserializer );
+	}
+
 	public function testLookupByLabelIsCaseInsensitive() {
 		$caseVariants = array(
 			'page',
