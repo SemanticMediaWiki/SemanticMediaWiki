@@ -77,6 +77,15 @@ class Localizer {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @return Language
+	 */
+	public static function getExtraneousLanguage() {
+		return $GLOBALS['smwgContLang'];
+	}
+
+	/**
 	 * @since 2.1
 	 *
 	 * @param integer $namespaceId
