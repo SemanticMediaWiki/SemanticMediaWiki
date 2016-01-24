@@ -63,6 +63,26 @@ class JsonTestCaseFileHandler {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @param array $case
+	 * @param string $identifier
+	 *
+	 * @return boolean
+	 */
+	public function requiredToSkipFor( array $case, $identifier ) {
+
+		$skipOn = isset( $case['skip-on'] ) ? $case['skip-on'] : array();
+		$identifier = strtolower( $identifier );
+
+		if ( in_array( $identifier, array_keys( $skipOn ) ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * @since 2.2
 	 *
 	 * @return boolean
