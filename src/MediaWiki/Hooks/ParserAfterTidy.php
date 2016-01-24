@@ -134,6 +134,7 @@ class ParserAfterTidy {
 		}
 
 		$cache = $this->applicationFactory->getCache();
+		$start = microtime( true );
 
 		$key = $this->applicationFactory->newCacheFactory()->getPurgeCacheKey(
 			$this->parser->getTitle()->getArticleID()
@@ -147,6 +148,11 @@ class ParserAfterTidy {
 			// change the _MDAT annotation)
 			$parserData->getSemanticData()->setLastModified( wfTimestamp( TS_UNIX ) );
 			$parserData->updateStore();
+
+			$parserData->addLimitReport(
+				'pagepurge-storeupdatetime',
+				number_format( ( microtime( true ) - $start ), 3 )
+			);
 		}
 
 		return true;

@@ -334,4 +334,34 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testAddLimitReport() {
+
+		$title = $this->getMockBuilder( 'Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( -1 ) );
+
+		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'setLimitReportData' ) )
+			->getMock();
+
+		$parserOutput->expects( $this->once() )
+			->method( 'setLimitReportData' )
+			->with(
+				$this->stringContains( 'smw-limitreport-Foo' ),
+				$this->stringContains( 'Bar' ) );
+
+		// FIXME 1.22+
+		if ( !method_exists( $parserOutput, 'setLimitReportData' ) ) {
+			$this->markTestSkipped( 'LimitReportData is not available.' );
+		}
+
+		$instance = new ParserData( $title, $parserOutput );
+		$instance->addLimitReport( 'Foo', 'Bar' );
+	}
+
 }

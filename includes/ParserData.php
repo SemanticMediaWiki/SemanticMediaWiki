@@ -262,6 +262,24 @@ class ParserData {
 	}
 
 	/**
+	 * @note ParserOutput::setLimitReportData
+	 *
+	 * @since 2.4
+	 *
+	 * @param string $key
+	 * @param string $value
+	 */
+	public function addLimitReport( $key, $value ) {
+
+		// FIXME 1.22+
+		if ( !method_exists( $this->parserOutput, 'setLimitReportData' ) ) {
+			return null;
+		}
+
+		$this->parserOutput->setLimitReportData( 'smw-limitreport-' . $key, $value );
+	}
+
+	/**
 	 * FIXME Remove when MW 1.21 becomes mandatory
 	 */
 	protected function hasExtensionData() {
