@@ -267,7 +267,7 @@ class MonolingualTextValue extends DataValue {
 		$dataItems = $semanticData->getPropertyValues( new DIProperty( '_LCODE' ) );
 		$dataItem = reset( $dataItems );
 
-		if ( $dataItem->getString() !== Localizer::asBCP47FormattedLanguageCode( $languageCode ) ) {
+		if ( $dataItem === false || ( $dataItem->getString() !== Localizer::asBCP47FormattedLanguageCode( $languageCode ) ) ) {
 			return null;
 		}
 

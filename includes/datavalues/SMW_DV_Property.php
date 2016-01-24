@@ -1,6 +1,8 @@
 <?php
 
 use SMW\DataValueFactory;
+use SMW\ApplicationFactory;
+use SMW\Highlighter;
 
 /**
  * Objects of this class represent properties in SMW.
@@ -322,17 +324,13 @@ class SMWPropertyValue extends SMWDataValue {
 	 */
 	protected function highlightText( $text, $linker = null ) {
 
-		if ( !$this->m_dataitem->isUserDefined() ) {
+		$propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
 
-			$msgKey = 'smw-pa-property-predefined' . strtolower( $this->m_dataitem->getKey() );
-			$content = '';
-
-			if ( wfMessage( $msgKey )->exists() ) {
-				$content = $linker === null ? wfMessage( $msgKey, $this->getText() )->escaped() : wfMessage( $msgKey, $this->getText() )->parse();
-			}
+		if ( ( $content = $propertySpecificationLookup->getPropertyDescriptionFor( $this->m_dataitem, $linker ) ) !== '' ) {
 
 			$highlighter = SMW\Highlighter::factory( SMW\Highlighter::TYPE_PROPERTY );
 			$highlighter->setContent( array (
+				'userDefined' => $this->m_dataitem->isUserDefined(),
 				'caption' => $text,
 				'content' => $content !== '' ? $content : wfMessage( 'smw_isspecprop' )->text()
 			) );

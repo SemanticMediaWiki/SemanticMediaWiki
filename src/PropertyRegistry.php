@@ -327,6 +327,7 @@ class PropertyRegistry {
 			'_PREC'  => array( '_num', true, true ), // "Display precision of"
 			'_LCODE' => array( '__lcode', true, true ), // "Language code"
 			'_TEXT'  => array( '_txt', true, true ), // "Text"
+			'_PDESC' => array( '_mlt_rec', true, true ), // "Property description"
 		);
 
 		foreach ( $this->datatypeLabels as $id => $label ) {

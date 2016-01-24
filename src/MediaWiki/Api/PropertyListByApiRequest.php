@@ -7,6 +7,7 @@ use SMW\DIProperty;
 use SMW\NamespaceUriFinder;
 use SMW\RequestOptions;
 use SMW\StringCondition;
+use SMW\PropertySpecificationLookup;
 
 /**
  * @license GNU GPL v2+
@@ -20,6 +21,11 @@ class PropertyListByApiRequest {
 	 * @var Store
 	 */
 	private $store;
+
+	/**
+	 * @var PropertySpecificationLookup
+	 */
+	private $propertySpecificationLookup;
 
 	/**
 	 * @var RequestOptions
@@ -47,12 +53,19 @@ class PropertyListByApiRequest {
 	private $continueOffset = 0;
 
 	/**
+	 * @var string
+	 */
+	private $languageCode = '';
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param Store $store
+	 * @param PropertySpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( Store $store ) {
+	public function __construct( Store $store, PropertySpecificationLookup $propertySpecificationLookup ) {
 		$this->store = $store;
+		$this->propertySpecificationLookup = $propertySpecificationLookup;
 		$this->requestOptions = new RequestOptions();
 		$this->requestOptions->sort = true;
 		$this->requestOptions->limit = 50;
@@ -65,6 +78,15 @@ class PropertyListByApiRequest {
 	 */
 	public function setLimit( $limit ) {
 		$this->requestOptions->limit = (int)$limit;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param string $languageCode
+	 */
+	public function setLanguageCode( $languageCode ) {
+		$this->languageCode = (string)$languageCode;
 	}
 
 	/**
@@ -120,11 +142,19 @@ class PropertyListByApiRequest {
 		$this->continueOffset = 1;
 
 		if ( $property !== '' ) {
-			$property = str_replace( "_", " ", $property );
-			$this->requestOptions->addStringCondition( $property, StringCondition::STRCOND_MID );
+			$property = $this->preprocessPropertyString( $property );
+
+			$this->requestOptions->addStringCondition(
+				$property,
+				StringCondition::STRCOND_MID
+			);
 
 			// Disjunctive condition to allow for auto searches of foaf OR Foaf
-			$this->requestOptions->addStringCondition( ucfirst( $property ), StringCondition::STRCOND_MID, true );
+			$this->requestOptions->addStringCondition(
+				ucfirst( $property ),
+				StringCondition::STRCOND_MID,
+				true
+			);
 		}
 
 		$propertyListLookup = $this->store->getPropertiesSpecial( $this->requestOptions );
@@ -152,6 +182,23 @@ class PropertyListByApiRequest {
 		return true;
 	}
 
+	private function preprocessPropertyString( $property ) {
+
+		if ( $property{0} !== '_' ) {
+			return str_replace( "_", " ", $property );
+		}
+
+		// Try to match something like _MDAT to find a label and
+		// make the request a success
+		try {
+			$property = DIProperty::newFromUserLabel( $property )->getLabel();
+		} catch ( \Exception $e ) {
+			$property = '';
+		}
+
+		return $property;
+	}
+
 	private function addPropertyToList( array $value ) {
 
 		if ( $value === array() || !$value[0] instanceof DIProperty ) {
@@ -166,8 +213,29 @@ class PropertyListByApiRequest {
 
 		$this->propertyList[$key] = array(
 			'label' => $value[0]->getLabel(),
+			'key'   => $value[0]->getKey(),
 			'isUserDefined' => $value[0]->isUserDefined(),
-			'usageCount' => $value[1]
+			'usageCount'  => $value[1],
+			'description' => $this->tryToFindPropertyDescriptionFor( $value[0] )
+		);
+	}
+
+	private function tryToFindPropertyDescriptionFor( DIProperty $property ) {
+
+		if ( $this->languageCode !== '' ) {
+			$this->propertySpecificationLookup->setLanguageCode( $this->languageCode );
+		}
+
+		$description = $this->propertySpecificationLookup->getPropertyDescriptionFor(
+			$property
+		);
+
+		if ( $description === '' || $description === null ) {
+			return $description;
+		}
+
+		return array(
+			$this->propertySpecificationLookup->getLanguageCode() => $description
 		);
 	}
 

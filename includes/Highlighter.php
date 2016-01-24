@@ -176,6 +176,16 @@ class Highlighter extends ContextSource {
 	 * @return string
 	 */
 	private function getContainer() {
+
+		$captionclass = $this->options['captionclass'];
+
+		// 2.4+ can display context for user-defined properties, here we ensure
+		// to keep the style otherwise it displays italic which is by convention
+		// reserved for predefined properties
+		if ( $this->type === self::TYPE_PROPERTY && isset( $this->options['userDefined'] ) ) {
+			$captionclass = $this->options['userDefined'] ? 'smwtext' : $captionclass;
+		}
+
 		return Html::rawElement(
 			'span',
 			array(
@@ -186,7 +196,7 @@ class Highlighter extends ContextSource {
 			), Html::rawElement(
 					'span',
 					array(
-						'class' => $this->options['captionclass']
+						'class' => $captionclass
 					), $this->options['caption']
 				) . Html::rawElement(
 					'div',

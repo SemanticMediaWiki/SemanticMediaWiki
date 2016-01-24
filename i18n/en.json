@@ -362,5 +362,7 @@
 	"smw-pa-property-predefined_lcode": "\"$1\" is a predefined property that represents a BCP47 formatted language code and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-sp-types_mlt_rec": "\"$1\" is a [https://www.semantic-mediawiki.org/wiki/Help:Container container] datatype that associates a text value with a specific [[Property:Language code|language code]].",
 	"smw-sp-types-mlt-lcode": "The datatype does {{PLURAL:$2|require|not require}} a language code (i.e. {{PLURAL:$2|a value annotation without a language code is not accepted|a value annotation without a language code is accepted}}).",
-	"smw-pa-property-predefined_text": "\"$1\" is a predefined property that represents text of arbitrary length and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]."
+	"smw-pa-property-predefined_text": "\"$1\" is a predefined property that represents text of arbitrary length and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_pdesc": "\"$1\" is a predefined property that allows to decribe a property in context of a language and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_list": "\"$1\" is a predefined property to define a list of properties used with a [[Special:Types/Record|record]] typed property and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]."
 }

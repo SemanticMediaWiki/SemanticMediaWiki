@@ -82,6 +82,7 @@ class SMWLanguageId extends SMWLanguage {
 		'_PREC'  => 'Display precision of',
 		'_LCODE' => 'Language code',
 		'_TEXT'  => 'Text',
+		'_PDESC' => 'Has property description'
 	);
 
 	protected $m_SpecialPropertyAliases = array(

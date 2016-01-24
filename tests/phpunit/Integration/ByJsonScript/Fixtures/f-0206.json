@@ -1,0 +1,44 @@
+{
+	"description": "Test `format=table` to display extra property description `_PDESC` (en)",
+	"properties": [
+		{
+			"name": "Has number",
+			"contents": "[[Has type::Number]] [[Has property description::A number to display ....@en]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/F0206/1/1",
+			"contents": "[[Has number::1001]]"
+		},
+		{
+			"name": "Example/F0206/1a",
+			"contents": "{{#ask: [[~Example/F0206/1/*]] |?Has number |format=table }}"
+		}
+	],
+	"format-testcases": [
+		{
+			"about": "#0",
+			"subject": "Example/F0206/1a",
+			"expected-output": {
+				"to-contain": [
+					"<div class=\"smwttcontent\">A number to display ....</div>",
+					"<td data-sort-value=\"1001\" class=\"Has-number smwtype_num\">1,001</td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
