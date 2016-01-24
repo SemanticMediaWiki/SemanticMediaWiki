@@ -93,6 +93,15 @@ abstract class DataValueFormatter implements ValueFormatter {
 	/**
 	 * @since 2.4
 	 *
+	 * @return array
+	 */
+	public function getErrors() {
+		return $this->dataValue->getErrors();
+	}
+
+	/**
+	 * @since 2.4
+	 *
 	 * @param string $key
 	 * @param mixed $value
 	 */

@@ -8,6 +8,7 @@ use SMW\DataValues\ValueFormatters\StringValueFormatter;
 use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
 use SMW\DataValues\ValueFormatters\NoValueFormatter;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
+use SMW\DataValues\ValueFormatters\TimeValueFormatter;
 use SMWDataValue as DataValue;
 
 /**
@@ -100,6 +101,7 @@ class ValueFormatterRegistry {
 		// To be checked only after DispatchingDataValueFormatter::addDataValueFormatter did
 		// not match any previous registered DataValueFormatters
 		$dispatchingDataValueFormatter->addDefaultDataValueFormatter( new StringValueFormatter() );
+		$dispatchingDataValueFormatter->addDefaultDataValueFormatter( new TimeValueFormatter() );
 		$dispatchingDataValueFormatter->addDefaultDataValueFormatter( new NoValueFormatter() );
 
 		return $dispatchingDataValueFormatter;

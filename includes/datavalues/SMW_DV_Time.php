@@ -1,4 +1,7 @@
 <?php
+
+use SMW\DataValues\ValueFormatters\DataValueFormatter;
+
 /**
  * @ingroup SMWDataValues
  */
@@ -590,46 +593,74 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::loadDataItem()
-	 * @param $dataitem SMWDataItem
-	 * @return boolean
+	 * @see SMWDataValue::loadDataItem
+	 *
+	 * {@inheritDoc}
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
-		if ( $dataItem->getDIType() == SMWDataItem::TYPE_TIME ) {
-			$this->m_dataitem = $dataItem;
-			$this->m_caption = $this->m_wikivalue = false;
-			return true;
-		} else {
+
+		if ( $dataItem->getDIType() !== SMWDataItem::TYPE_TIME ) {
 			return false;
 		}
+
+		$this->m_dataitem = $dataItem;
+		$this->m_caption = false;
+		$this->m_wikivalue = false;
+
+		return true;
 	}
 
-	public function getShortWikiText( $linked = null ) {
-		if ( $this->isValid() ) {
-			return ( $this->m_caption !== false ) ? $this->m_caption : $this->getPreferredCaption();
-		}
-
-		// #1074
-		return $this->m_caption !== false ? $this->m_caption : '';
+	/**
+	 * @see SMWDataValue::getShortWikiText
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getShortWikiText( $linker = null ) {
+		return $this->getDataValueFormatter()->format( DataValueFormatter::WIKI_SHORT, $linker );
 	}
 
+	/**
+	 * @see SMWDataValue::getShortHTMLText
+	 *
+	 * {@inheritDoc}
+	 */
 	public function getShortHTMLText( $linker = null ) {
-		return $this->getShortWikiText( $linker ); // safe in HTML
+		return $this->getDataValueFormatter()->format( DataValueFormatter::HTML_SHORT, $linker );
 	}
 
-	public function getLongWikiText( $linked = null ) {
-		return $this->isValid() ? $this->getPreferredCaption() : $this->getErrorText();
+	/**
+	 * @see SMWDataValue::getLongWikiText
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getLongWikiText( $linker = null ) {
+		return $this->getDataValueFormatter()->format( DataValueFormatter::WIKI_LONG, $linker );
 	}
 
+	/**
+	 * @see SMWDataValue::getLongHTMLText
+	 *
+	 * {@inheritDoc}
+	 */
 	public function getLongHTMLText( $linker = null ) {
-		return $this->getLongWikiText( $linker ); // safe in HTML
+		return $this->getDataValueFormatter()->format( DataValueFormatter::HTML_LONG, $linker );
 	}
 
-	/// @todo The preferred caption may not be suitable as a wiki value (i.e. not parsable).
+	/**
+	 * @todo The preferred caption may not be suitable as a wiki value (i.e. not parsable).
+	 * @see SMWDataValue::getLongHTMLText
+	 *
+	 * {@inheritDoc}
+	 */
 	public function getWikiValue() {
-		return $this->m_wikivalue ? $this->m_wikivalue : $this->getPreferredCaption();
+		return $this->m_wikivalue ? $this->m_wikivalue : $this->getLongWikiText();
 	}
 
+	/**
+	 * @see SMWDataValue::isNumeric
+	 *
+	 * {@inheritDoc}
+	 */
 	public function isNumeric() {
 		return true;
 	}
@@ -643,7 +674,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * @return mixed typically a number but possibly false
 	 */
 	public function getYear( $calendarmodel = SMWDITime::CM_GREGORIAN ) {
-		$di = $this->getDataForCalendarModel( $calendarmodel );
+		$di = $this->getDataItemForCalendarModel( $calendarmodel );
 		if ( !is_null( $di ) ) {
 			return $di->getYear();
 		} else {
@@ -660,7 +691,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * @return mixed typically a number but possibly anything given as $default
 	 */
 	public function getMonth( $calendarmodel = SMWDITime::CM_GREGORIAN, $default = 1 ) {
-		$di = $this->getDataForCalendarModel( $calendarmodel );
+		$di = $this->getDataItemForCalendarModel( $calendarmodel );
 		if ( !is_null( $di ) ) {
 			return ( $di->getPrecision() >= SMWDITime::PREC_YM ) ? $di->getMonth() : $default;
 		} else {
@@ -677,7 +708,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * @return mixed typically a number but possibly anything given as $default
 	 */
 	public function getDay( $calendarmodel = SMWDITime::CM_GREGORIAN, $default = 1 ) {
-		$di = $this->getDataForCalendarModel( $calendarmodel );
+		$di = $this->getDataItemForCalendarModel( $calendarmodel );
 		if ( !is_null( $di ) ) {
 			return ( $di->getPrecision() >= SMWDITime::PREC_YMD ) ? $di->getDay() : $default;
 		} else {
@@ -686,21 +717,12 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * Return the time as a string. The time string has the format HH:MM:SS,
-	 * without any timezone information (see class documentation for details
-	 * on current timezone handling).
-	 * The parameter $default optionally specifies the value returned
-	 * if the date is valid but has no explicitly specified time. It can
-	 * also be set to false to detect this situation.
+	 * @see TimeValueFormatter::getTimeStringFromDataItem
+	 *
+	 * @return
 	 */
 	public function getTimeString( $default = '00:00:00' ) {
-		if ( $this->m_dataitem->getPrecision() < SMWDITime::PREC_YMDT ) {
-			return $default;
-		} else {
-			return sprintf( "%02d", $this->m_dataitem->getHour() ) . ':' .
-			       sprintf( "%02d", $this->m_dataitem->getMinute() ) . ':' .
-			       sprintf( "%02d", $this->m_dataitem->getSecond() );
-		}
+		return $this->getDataValueFormatter()->getTimeString( $default );
 	}
 
 	/**
@@ -711,68 +733,25 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * Compute a string representation that largely follows the ISO8601
-	 * standard of representing dates. Large year numbers may have more
-	 * than 4 digits, which is not strictly conforming to the standard.
-	 * The date includes year, month, and day regardless of the input
-	 * precision, but will only include time when specified.
-	 *
-	 * Conforming to the 2000 version of ISO8601, year 1 BC(E) is
-	 * represented as "0000", year 2 BC(E) as "-0001" and so on.
+	 * @see TimeValueFormatter::getISO8601DateFromDataItem
 	 *
 	 * @param $mindefault boolean determining whether values below the
 	 * precision of our input should be completed with minimal or maximal
 	 * conceivable values
+	 *
 	 * @return string
 	 */
 	public function getISO8601Date( $mindefault = true ) {
-		$result = ( $this->getYear() > 0 ) ? '' : '-';
-		$monthnum = $this->getMonth( SMWDITime::CM_GREGORIAN, ( $mindefault ? 1 : 12 ) );
-		$result .= str_pad( $this->getYear(), 4, "0", STR_PAD_LEFT ) .
-			  '-' . str_pad( $monthnum, 2, "0", STR_PAD_LEFT );
-		if ( !$mindefault && ( $this->m_dataitem->getPrecision() < SMWDITime::PREC_YMD ) ) {
-			$maxday = SMWDITime::getDayNumberForMonth( $monthnum, $this->getYear(), SMWDITime::CM_GREGORIAN );
-			$result .= '-' . str_pad( $this->getDay( SMWDITime::CM_GREGORIAN, $maxday ), 2, "0", STR_PAD_LEFT );
-		} else {
-			$result .= '-' . str_pad( $this->getDay(), 2, "0", STR_PAD_LEFT );
-		}
-		if ( $this->m_dataitem->getPrecision() == SMWDITime::PREC_YMDT ) {
-			$result .= 'T' . $this->getTimeString( ( $mindefault ? '00:00:00' : '23:59:59' ) );
-		}
-		return $result;
+		return $this->getDataValueFormatter()->getISO8601Date( $mindefault );
 	}
 
 	/**
-	 * Use MediaWiki's date and time formatting. It can't handle all inputs
-	 * properly, but has superior i18n support.
+	 * @see TimeValueFormatter::getMediaWikiDateFromDataItem
 	 *
 	 * @return string
 	 */
 	public function getMediaWikiDate() {
-		global $wgContLang;
-
-		$dataitem = $this->m_dataitem;
-		$precision = $dataitem->getPrecision();
-
-		$year = $this->getYear();
-		if ( $year < 0 || $year > 9999 ) {
-			$year = '0000';
-		}
-		$year = str_pad( $year, 4, "0", STR_PAD_LEFT );
-
-		if ( $precision <= SMWDITime::PREC_Y ) {
-			return $wgContLang->formatNum( $year, true );
-		}
-
-		$month = str_pad( $this->getMonth( SMWDITime::CM_GREGORIAN ), 2, "0", STR_PAD_LEFT );
-		$day = str_pad( $this->getDay( SMWDITime::CM_GREGORIAN ), 2, "0", STR_PAD_LEFT );
-
-		if ( $precision <= SMWDITime::PREC_YMD ) {
-			return $wgContLang->date( "$year$month$day" . '000000', false, false );
-		}
-
-		$time = str_replace( ':', '', $this->getTimeString() );
-		return $wgContLang->timeanddate( "$year$month$day$time", false, false );
+		return $this->getDataValueFormatter()->getMediaWikiDate();
 	}
 
 	/**
@@ -784,7 +763,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * @param $calendarmodel integer one of SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
 	 * @return SMWDITime
 	 */
-	protected function getDataForCalendarModel( $calendarmodel ) {
+	public function getDataItemForCalendarModel( $calendarmodel ) {
 		if ( $this->m_dataitem->getYear() <= self::PREHISTORY ) {
 			return ( $this->m_dataitem->getCalendarModel() == $calendarmodel ) ? $this->m_dataitem : null;
 		} elseif ( $calendarmodel == SMWDITime::CM_GREGORIAN ) {
@@ -800,79 +779,4 @@ class SMWTimeValue extends SMWDataValue {
 		}
 	}
 
-	/**
-	 * Compute a suitable string to display the given date item.
-	 * @note MediaWiki's date functions are not applicable for the range of historic dates we support.
-	 *
-	 * @since 1.6
-	 *
-	 * @param SMWDITime $dataitem
-	 *
-	 * @return string
-	 * @todo Internationalize the CE and BCE strings.
-	 */
-	public function getCaptionFromDataitem( SMWDITime $dataitem ) {
-		/**
-		 * @var SMWLanguage $smwgContLang
-		 */
-		global $smwgContLang;
-
-		if ( $dataitem->getYear() > 0 ) {
-			$cestring = '';
-			$result = number_format( $dataitem->getYear(), 0, '.', '' ) . ( $cestring ? ( ' ' . $cestring ) : '' );
-		} else {
-			$bcestring = 'BC';
-			$result = number_format( -( $dataitem->getYear() ), 0, '.', '' ) . ( $bcestring ? ( ' ' . $bcestring ) : '' );
-		}
-
-		if ( $dataitem->getPrecision() >= SMWDITime::PREC_YM ) {
-			$result = $smwgContLang->getMonthLabel( $dataitem->getMonth() ) . " " . $result;
-		}
-
-		if ( $dataitem->getPrecision() >= SMWDITime::PREC_YMD ) {
-			$result = $dataitem->getDay() . " " . $result;
-		}
-
-		if ( $dataitem->getPrecision() >= SMWDITime::PREC_YMDT ) {
-			$result .= " " . $this->getTimeString();
-		}
-
-		return $result;
-	}
-
-	/**
-	 * Compute a suitable string to display this date, taking into account
-	 * the output format and the preferrable calendar models for the data.
-	 * @note MediaWiki's date functions are not applicable for the range of historic dates we support.
-	 * @return string
-	 */
-	protected function getPreferredCaption() {
-		$year = $this->m_dataitem->getYear();
-		$format = strtoupper( $this->m_outformat );
-
-		if ( $format == 'ISO' || $this->m_outformat == '-' ) {
-			return $this->getISO8601Date();
-		} elseif ( $format == 'MEDIAWIKI' ) {
-			return $this->getMediaWikiDate();
-		} elseif ( $format == 'SORTKEY' ) {
-			return $this->m_dataitem->getSortKey();
-		} elseif ( $year > self::PREHISTORY && $this->m_dataitem->getPrecision() >= SMWDITime::PREC_YM ) {
-			// Do not convert between Gregorian and Julian if only
-			// year is given (years largely overlap in history, but
-			// assuming 1 Jan as the default date, the year number
-			// would change in conversion).
-			// Also do not convert calendars in prehistory: not
-			// meaningful (getDataForCalendarModel may return null).
-			if ( ( $format == 'JL' ) ||
-				( $this->m_dataitem->getJD() < self::J1582
-				  && $format != 'GR' ) ) {
-				$model = SMWDITime::CM_JULIAN;
-			} else {
-				$model = SMWDITime::CM_GREGORIAN;
-			}
-			return $this->getCaptionFromDataitem( $this->getDataForCalendarModel( $model ) );
-		} else {
-			return $this->getCaptionFromDataitem( $this->m_dataitem );
-		}
-	}
 }

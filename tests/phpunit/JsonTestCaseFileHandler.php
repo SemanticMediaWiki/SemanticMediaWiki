@@ -3,7 +3,7 @@
 namespace SMW\Tests;
 
 use SMW\FileReader;
-
+use SMW\Localizer;
 use RuntimeException;
 
 /**
@@ -165,6 +165,7 @@ class JsonTestCaseFileHandler {
 
 		if ( ( $key === 'wgContLang' || $key === 'wgLang' ) && isset( $settings[$key] ) ) {
 			\RequestContext::getMain()->setLanguage( $settings[$key] );
+			Localizer::getInstance()->clear();
 			return \Language::factory( $settings[$key] );
 		}
 

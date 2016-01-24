@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation for different `_dat` input/output (en)",
+	"description": "Test in-text annotation for different `_dat` input/output (en, skip virtuoso)",
 	"properties": [
 		{
 			"name": "Has date",
@@ -146,6 +146,20 @@
 		{
 			"name": "Example/P0413/16a",
 			"contents": "{{#ask: [[Example/P0413/16]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date }}"
+		},
+		{
+			"name": "Example/P0413/17",
+			"contents": "[[Has date::11000 BC]]",
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
+			}
+		},
+		{
+			"name": "Example/P0413/17a",
+			"contents": "{{#ask: [[Example/P0413/17]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date }}",
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
+			}
 		}
 	],
 	"parser-testcases": [
@@ -593,6 +607,41 @@
 					"<td data-sort-value=\"2451596.5\" class=\"Has-date smwtype_dat\">2000-02-22</td>",
 					"<td data-sort-value=\"2451596.5\" class=\"ISO-Date smwtype_dat\">2000-02-22</td>",
 					"<td data-sort-value=\"2451596.5\" class=\"MW-Date smwtype_dat\">22 February 2000</td>"
+				]
+			}
+		},
+		{
+			"about": "#32 Pre-history",
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
+			},
+			"subject": "Example/P0413/17",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
+					"propertyValues": [ "--11000-01-01" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"11000 BC"
+				]
+			}
+		},
+		{
+			"about": "#33",
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
+			},
+			"subject": "Example/P0413/17a",
+			"expected-output": {
+				"to-contain": [
+					"<td data-sort-value=\"-11001\" class=\"Has-date smwtype_dat\">11000 BC</td>",
+					"<td data-sort-value=\"-11001\" class=\"Has-date smwtype_dat\">--11000-01-01</td>",
+					"<td data-sort-value=\"-11001\" class=\"ISO-Date smwtype_dat\">--11000-01-01</td>",
+					"<td data-sort-value=\"-11001\" class=\"MW-Date smwtype_dat\">0000</td>"
 				]
 			}
 		}
