@@ -53,5 +53,7 @@ Not a release yet.
 * #1291 Added `DescriptionProcessor` to isolate code path from the `SMWQueryParser`
 * #1317 Switch to Sesame 2.8.7
 * #1382 Added `DispatchingDataValueFormatter` and `ValueFormatterRegistry`
+* #1385 Added `StringValueFormatter` and `CodeStringValueFormatter`
+* #1388 Added `TimeValueFormatter`
 
 ## Contributors
