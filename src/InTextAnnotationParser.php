@@ -114,6 +114,7 @@ class InTextAnnotationParser {
 
 		$title = $this->parserData->getTitle();
 		$this->settings = $this->applicationFactory->getSettings();
+		$start = microtime( true );
 
 		// Identifies the current parser run (especially when called recursively)
 		$this->parserData->getSubject()->setContextReference( 'intp:' . uniqid() );
@@ -136,6 +137,11 @@ class InTextAnnotationParser {
 		}
 
 		$this->parserData->pushSemanticDataToParserOutput();
+
+		$this->parserData->addLimitReport(
+			'intext-parsertime',
+			number_format( ( microtime( true ) - $start ), 3 )
+		);
 
 		SMWOutputs::commitToParserOutput( $this->parserData->getOutput() );
 	}
