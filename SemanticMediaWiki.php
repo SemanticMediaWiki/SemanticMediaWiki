@@ -151,6 +151,10 @@ $GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $GLOBALS['smwgI
  */
 $GLOBALS['wgExtensionFunctions'][] = function() {
 
+	// 3.x reverse the order to ensure that smwgMainCacheType is used
+	// as main and smwgCacheType being deprecated with 3.x
+	$GLOBALS['smwgMainCacheType'] = $GLOBALS['smwgCacheType'];
+
 	$applicationFactory = ApplicationFactory::getInstance();
 
 	$namespace = new NamespaceManager( $GLOBALS, __DIR__ );

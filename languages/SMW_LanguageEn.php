@@ -88,11 +88,14 @@ class SMWLanguageEn extends SMWLanguage {
 		'_PREC'  => 'Display precision of',
 		'_LCODE' => 'Language code',
 		'_TEXT'  => 'Text',
+		'_TEXT'  => 'Text',
+		'_PDESC' => 'Has property description'
 	);
 
 	protected $m_SpecialPropertyAliases = array(
 		'Display unit' => '_UNIT',
-		'Display precision' => '_PREC'
+		'Display precision' => '_PREC',
+		'Property description'     => '_PDESC'
 	);
 
 	protected $m_Namespaces = array(

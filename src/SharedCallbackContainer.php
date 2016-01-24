@@ -37,10 +37,16 @@ class SharedCallbackContainer implements CallbackContainer {
 			return StoreFactory::getStore( $callbackLoader->singleton( 'Settings' )->get( 'smwgDefaultStore' ) );
 		} );
 
+		$callbackLoader->registerExpectedReturnType( 'CacheFactory', '\SMW\CacheFactory' );
+
+		$callbackLoader->registerCallback( 'CacheFactory', function() {
+			return new CacheFactory();
+		} );
+
 		$callbackLoader->registerExpectedReturnType( 'Cache', '\Onoi\Cache\Cache' );
 
-		$callbackLoader->registerCallback( 'Cache', function() {
-			return ApplicationFactory::getInstance()->newCacheFactory()->newMediaWikiCompositeCache();
+		$callbackLoader->registerCallback( 'Cache', function() use ( $callbackLoader ) {
+			return $callbackLoader->load( 'CacheFactory' )->newMediaWikiCompositeCache();
 		} );
 
 		$callbackLoader->registerCallback( 'NamespaceExaminer', function() use ( $callbackLoader ) {
@@ -91,6 +97,29 @@ class SharedCallbackContainer implements CallbackContainer {
 
 		$callbackLoader->registerCallback( 'FactboxFactory', function() {
 			return new FactboxFactory();
+		} );
+
+		$callbackLoader->registerExpectedReturnType( 'PropertySpecificationLookup', '\SMW\PropertySpecificationLookup' );
+
+		$callbackLoader->registerCallback( 'PropertySpecificationLookup', function() use ( $callbackLoader ) {
+			$cacheFactory = $callbackLoader->load( 'CacheFactory' );
+
+			$propertySpecificationLookup = new PropertySpecificationLookup(
+				$callbackLoader->load( 'Store' ),
+				$cacheFactory->newMediaWikiCompositeCache()
+			);
+
+			$propertySpecificationLookup->setCachePrefix(
+				$cacheFactory->getCachePrefix()
+			);
+
+			// Uses the language object selected in user preferences. It is one
+			// of two global language objects
+			$propertySpecificationLookup->setLanguageCode(
+				Localizer::getUserLanguage()->getCode()
+			);
+
+			return $propertySpecificationLookup;
 		} );
 	}
 

@@ -30,9 +30,13 @@ class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
+		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->assertInstanceOf(
 			'SMW\MediaWiki\Api\PropertyListByApiRequest',
-			new PropertyListByApiRequest( $this->store )
+			new PropertyListByApiRequest( $this->store, $propertySpecificationLookup )
 		);
 	}
 
@@ -60,13 +64,17 @@ class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
 		$expectedSerializedPropertyList = array(
 			'Foo' => array(
 				'label' => 'Foo',
+				'key' => 'Foo',
 				'isUserDefined' => true,
-				'usageCount' => 42
+				'usageCount' => 42,
+				'description' => ''
 			),
 			'Foaf:Foo' => array(
 				'label' => 'Foaf:Foo',
+				'key' => 'Foaf:Foo',
 				'isUserDefined' => true,
-				'usageCount' => 1001
+				'usageCount' => 1001,
+				'description' => ''
 			)
 		);
 
@@ -96,7 +104,11 @@ class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertiesSpecial' )
 			->will( $this->returnValue( $cachedListLookup ) );
 
-		$instance = new PropertyListByApiRequest( $this->store );
+		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new PropertyListByApiRequest( $this->store, $propertySpecificationLookup );
 		$instance->setLimit( 3 );
 
 		$this->assertTrue(

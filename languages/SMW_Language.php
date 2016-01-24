@@ -100,6 +100,7 @@ abstract class SMWLanguage {
 		'Display precision of'  => '_PREC',
 		'Language code'  => '_LCODE',
 		'Text'           => '_TEXT',
+		'Has property description'     => '_PDESC'
 	);
 
 	public function __construct() {

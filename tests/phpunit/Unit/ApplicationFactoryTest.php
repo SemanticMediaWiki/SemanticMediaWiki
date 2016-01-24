@@ -197,4 +197,12 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructPropertySpecificationLookup() {
+
+		$this->assertInstanceOf(
+			'\SMW\PropertySpecificationLookup',
+			$this->applicationFactory->getPropertySpecificationLookup()
+		);
+	}
+
 }

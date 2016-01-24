@@ -23,11 +23,17 @@ class Localizer {
 	private $contentLanguage = null;
 
 	/**
+	 * @var Language
+	 */
+	private $userLanguage = null;
+
+	/**
 	 * @since 2.1
 	 *
 	 * @param Language $contentLanguage
+	 * @param Language|null $userLanguage
 	 */
-	public function __construct( Language $contentLanguage ) {
+	public function __construct( Language $contentLanguage) {
 		$this->contentLanguage = $contentLanguage;
 	}
 
@@ -37,8 +43,6 @@ class Localizer {
 	 * @return Localizer
 	 */
 	public static function getInstance() {
-
-		// Use $GLOBALS['wgLang'] as well at a later point
 
 		if ( self::$instance === null ) {
 			self::$instance = new self( $GLOBALS['wgContLang'] );
@@ -61,6 +65,15 @@ class Localizer {
 	 */
 	public function getContentLanguage() {
 		return $this->contentLanguage;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return Language
+	 */
+	public static function getUserLanguage() {
+		return $GLOBALS['wgLang'];
 	}
 
 	/**

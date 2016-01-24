@@ -278,6 +278,15 @@ class ApplicationFactory {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @return PropertySpecificationLookup
+	 */
+	public function getPropertySpecificationLookup() {
+		return $this->callbackLoader->singleton( 'PropertySpecificationLookup' );
+	}
+
+	/**
 	 * @since 2.1
 	 *
 	 * @return QueryParser

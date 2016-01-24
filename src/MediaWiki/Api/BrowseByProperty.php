@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Api;
 use ApiBase;
 use SMW\ApplicationFactory;
 use SMW\NamespaceUriFinder;
+use SMW\PropertySpecificationLookup;
 
 /**
  * @license GNU GPL v2+
@@ -20,13 +21,19 @@ class BrowseByProperty extends ApiBase {
 	public function execute() {
 
 		$params = $this->extractRequestParams();
+		$applicationFactory = ApplicationFactory::getInstance();
 
 		$propertyListByApiRequest = new PropertyListByApiRequest(
-			ApplicationFactory::getInstance()->getStore()
+			$applicationFactory->getStore(),
+			$applicationFactory->getPropertySpecificationLookup()
 		);
 
 		$propertyListByApiRequest->setLimit(
 			$params['limit']
+		);
+
+		$propertyListByApiRequest->setLanguageCode(
+			$params['lang']
 		);
 
 		$propertyListByApiRequest->findPropertyListFor(
@@ -71,7 +78,7 @@ class BrowseByProperty extends ApiBase {
 		$this->getResult()->addValue(
 			null,
 			'version',
-			0.1
+			0.2
 		);
 
 		$this->getResult()->addValue(
@@ -104,6 +111,11 @@ class BrowseByProperty extends ApiBase {
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_ISMULTI => false,
 				ApiBase::PARAM_DFLT => 50,
+				ApiBase::PARAM_REQUIRED => false,
+			),
+			'lang' => array(
+				ApiBase::PARAM_TYPE => 'string',
+				ApiBase::PARAM_ISMULTI => false,
 				ApiBase::PARAM_REQUIRED => false,
 			)
 		);

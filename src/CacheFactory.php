@@ -23,10 +23,14 @@ class CacheFactory {
 	/**
 	 * @since 2.2
 	 *
-	 * @param string|integer $mainCacheType
+	 * @param string|integer|null $mainCacheType
 	 */
-	public function __construct( $mainCacheType ) {
+	public function __construct( $mainCacheType = null ) {
 		$this->mainCacheType = $mainCacheType;
+
+		if ( $this->mainCacheType === null ) {
+			$this->mainCacheType = $GLOBALS['smwgMainCacheType'];
+		}
 	}
 
 	/**
