@@ -52,5 +52,6 @@ Not a release yet.
 * #1281 Extended `QueryResultSerializer` to export the internal property key 
 * #1291 Added `DescriptionProcessor` to isolate code path from the `SMWQueryParser`
 * #1317 Switch to Sesame 2.8.7
+* #1382 Added `DispatchingDataValueFormatter` and `ValueFormatterRegistry`
 
 ## Contributors
