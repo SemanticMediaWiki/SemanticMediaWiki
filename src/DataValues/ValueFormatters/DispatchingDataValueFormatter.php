@@ -21,7 +21,7 @@ class DispatchingDataValueFormatter {
 	private $dataValueFormatters = array();
 
 	/**
-	 * @var DataValueFormatter
+	 * @var DataValueFormatter[]
 	 */
 	private $defaultDataValueFormatters = array();
 

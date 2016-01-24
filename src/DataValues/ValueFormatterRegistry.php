@@ -4,6 +4,8 @@ namespace SMW\DataValues;
 
 use SMW\DataValues\ValueFormatters\DispatchingDataValueFormatter;
 use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
+use SMW\DataValues\ValueFormatters\StringValueFormatter;
+use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
 use SMW\DataValues\ValueFormatters\NoValueFormatter;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMWDataValue as DataValue;
@@ -93,9 +95,11 @@ class ValueFormatterRegistry {
 
 		$dispatchingDataValueFormatter = new DispatchingDataValueFormatter();
 		$dispatchingDataValueFormatter->addDataValueFormatter( new MonolingualTextValueFormatter() );
+		$dispatchingDataValueFormatter->addDataValueFormatter( new CodeStringValueFormatter() );
 
 		// To be checked only after DispatchingDataValueFormatter::addDataValueFormatter did
 		// not match any previous registered DataValueFormatters
+		$dispatchingDataValueFormatter->addDefaultDataValueFormatter( new StringValueFormatter() );
 		$dispatchingDataValueFormatter->addDefaultDataValueFormatter( new NoValueFormatter() );
 
 		return $dispatchingDataValueFormatter;
