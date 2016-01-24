@@ -16,10 +16,10 @@ use SMWDataValue as DataValue;
  *
  * @author mwjames
  */
-class DVDescriptionDeserializerFactory {
+class DVDescriptionDeserializerRegistry {
 
 	/**
-	 * @var DescriptionDeserializerFactory
+	 * @var DVDescriptionDeserializerRegistry
 	 */
 	private static $instance = null;
 

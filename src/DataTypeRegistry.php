@@ -3,6 +3,10 @@
 namespace SMW;
 
 use SMWDataItem as DataItem;
+use SMW\DataValues\ValueFormatterRegistry;
+use SMW\DataValues\ValueFormatters\DataValueFormatter;
+use SMW\Deserializers\DVDescriptionDeserializerRegistry;
+use SMW\Deserializers\DVDescriptionDeserializer\DescriptionDeserializer;
 
 /**
  * DataTypes registry class
@@ -139,6 +143,8 @@ class DataTypeRegistry {
 	 */
 	public static function clear() {
 		self::$instance = null;
+		ValueFormatterRegistry::getInstance()->clear();
+		DVDescriptionDeserializerRegistry::getInstance()->clear();
 	}
 
 	/**
@@ -475,6 +481,24 @@ class DataTypeRegistry {
 
 		// Since 1.9
 		\Hooks::run( 'SMW::DataType::initTypes', array( $this ) );
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param DataValueFormatter $dataValueFormatter
+	 */
+	public function registerDataValueFormatter( DataValueFormatter $dataValueFormatter ) {
+		ValueFormatterRegistry::getInstance()->registerDataValueFormatter( $dataValueFormatter );
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param DescriptionDeserializer $descriptionDeserializer
+	 */
+	public function registerDVDescriptionDeserializer( DescriptionDeserializer $descriptionDeserializer ) {
+		DVDescriptionDeserializerRegistry::getInstance()->registerDescriptionDeserializer( $descriptionDeserializer );
 	}
 
 	/**

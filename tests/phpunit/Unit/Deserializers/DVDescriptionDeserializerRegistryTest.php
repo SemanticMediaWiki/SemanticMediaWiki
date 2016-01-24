@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Deserializers;
 
-use SMW\Deserializers\DVDescriptionDeserializerFactory;
+use SMW\Deserializers\DVDescriptionDeserializerRegistry;
 
 /**
- * @covers \SMW\Deserializers\DVDescriptionDeserializerFactory
+ * @covers \SMW\Deserializers\DVDescriptionDeserializerRegistry
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,10 +13,10 @@ use SMW\Deserializers\DVDescriptionDeserializerFactory;
  *
  * @author mwjames
  */
-class DVDescriptionDeserializerFactoryTest extends \PHPUnit_Framework_TestCase {
+class DVDescriptionDeserializerRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	protected function tearDown() {
-		DVDescriptionDeserializerFactory::getInstance()->clear();
+		DVDescriptionDeserializerRegistry::getInstance()->clear();
 		parent::tearDown();
 	}
 
@@ -27,13 +27,13 @@ class DVDescriptionDeserializerFactoryTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Deserializers\DVDescriptionDeserializerFactory',
-			new DVDescriptionDeserializerFactory( $dispatchingDescriptionDeserializer )
+			'\SMW\Deserializers\DVDescriptionDeserializerRegistry',
+			new DVDescriptionDeserializerRegistry( $dispatchingDescriptionDeserializer )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Deserializers\DVDescriptionDeserializerFactory',
-			DVDescriptionDeserializerFactory::getInstance()
+			'\SMW\Deserializers\DVDescriptionDeserializerRegistry',
+			DVDescriptionDeserializerRegistry::getInstance()
 		);
 	}
 
@@ -43,7 +43,7 @@ class DVDescriptionDeserializerFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new DVDescriptionDeserializerFactory();
+		$instance = new DVDescriptionDeserializerRegistry();
 
 		$this->assertInstanceOf(
 			'\SMW\Deserializers\DVDescriptionDeserializer\SomeValueDescriptionDeserializer',
@@ -57,7 +57,7 @@ class DVDescriptionDeserializerFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new DVDescriptionDeserializerFactory();
+		$instance = new DVDescriptionDeserializerRegistry();
 
 		$this->assertInstanceOf(
 			'\SMW\Deserializers\DVDescriptionDeserializer\TimeValueDescriptionDeserializer',
@@ -71,7 +71,7 @@ class DVDescriptionDeserializerFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new DVDescriptionDeserializerFactory();
+		$instance = new DVDescriptionDeserializerRegistry();
 
 		$this->assertInstanceOf(
 			'\SMW\Deserializers\DVDescriptionDeserializer\RecordValueDescriptionDeserializer',
@@ -93,7 +93,7 @@ class DVDescriptionDeserializerFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new DVDescriptionDeserializerFactory();
+		$instance = new DVDescriptionDeserializerRegistry();
 		$instance->registerDescriptionDeserializer( $descriptionDeserializer );
 
 		$this->assertInstanceOf(

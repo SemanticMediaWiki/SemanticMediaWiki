@@ -11,6 +11,7 @@ use SMW\ApplicationFactory;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIContainer as DIContainer;
 use SMWDataItem as DataItem;
+use SMW\DataValues\ValueFormatters\DataValueFormatter;
 
 /**
  * MonolingualTextValue requires two components, a language code and a
@@ -162,46 +163,36 @@ class MonolingualTextValue extends DataValue {
 	/**
 	 * @see DataValue::getShortWikiText
 	 */
-	public function getShortWikiText( $linked = null ) {
-
-		if ( $this->m_caption !== false ) {
-			return $this->m_caption;
-		}
-
-		return $this->makeOutputText( 0, $linked );
+	public function getShortWikiText( $linker = null ) {
+		return $this->getDataValueFormatter()->format( DataValueFormatter::WIKI_SHORT, $linker );
 	}
 
 	/**
 	 * @see DataValue::getShortHTMLText
 	 */
 	public function getShortHTMLText( $linker = null ) {
-
-		if ( $this->m_caption !== false ) {
-			return $this->m_caption;
-		}
-
-		return $this->makeOutputText( 1, $linker );
+		return $this->getDataValueFormatter()->format( DataValueFormatter::HTML_SHORT, $linker );
 	}
 
 	/**
 	 * @see DataValue::getLongWikiText
 	 */
-	public function getLongWikiText( $linked = null ) {
-		return $this->makeOutputText( 2, $linked );
+	public function getLongWikiText( $linker = null ) {
+		return $this->getDataValueFormatter()->format( DataValueFormatter::WIKI_LONG, $linker );
 	}
 
 	/**
 	 * @see DataValue::getLongHTMLText
 	 */
 	public function getLongHTMLText( $linker = null ) {
-		return $this->makeOutputText( 3, $linker );
+		return $this->getDataValueFormatter()->format( DataValueFormatter::HTML_LONG, $linker );
 	}
 
 	/**
 	 * @see DataValue::getWikiValue
 	 */
 	public function getWikiValue() {
-		return $this->makeOutputText( 4 );
+		return $this->getDataValueFormatter()->format( DataValueFormatter::VALUE );
 	}
 
 	/**
@@ -284,87 +275,6 @@ class MonolingualTextValue extends DataValue {
 		);
 
 		return $dataValue;
-	}
-
-	protected function makeOutputText( $type = 0, $linker = null ) {
-
-		if ( !$this->isValid() ) {
-			return ( ( $type == 0 ) || ( $type == 1 ) ) ? '' : $this->getErrorText();
-		}
-
-		// For the inverse case, return the subject that contains the reference
-		// for Foo annotated with [[Bar::abc@en]] -> [[-Bar::Foo]]
-		if ( $this->m_property !== null && $this->m_property->isInverse() ) {
-
-			$dataItems = $this->m_dataitem->getSemanticData()->getPropertyValues( new DIProperty(  $this->m_property->getKey() ) );
-			$dataItem = reset( $dataItems );
-
-			if ( !$dataItem ) {
-				return '';
-			}
-
-			return $dataItem->getDBKey();
-		}
-
-		return $this->getFinalOutputTextFor( $type, $linker );
-	}
-
-	private function getFinalOutputTextFor( $type, $linker ) {
-
-		$text = '';
-		$languagecode = '';
-
-		foreach ( $this->getPropertyDataItems() as $property ) {
-
-			// If we wanted to omit the language code display for some outputs then
-			// this is the point to make it happen
-			if ( ( $type == 0 || $type == 4 ) && $property->getKey() === '_LCODE' ) {
-			// continue;
-			}
-
-			$dataItems = $this->m_dataitem->getSemanticData()->getPropertyValues( $property );
-
-			// Should not happen but just in case
-			if ( !$dataItems === array() ) {
-				$this->addError( wfMessage( 'smw-datavalue-monolingual-dataitem-missing' )->text() );
-				continue;
-			}
-
-			$dataItem = reset( $dataItems );
-
-			if ( $dataItem === false ) {
-				continue;
-			}
-
-			$dataValue = DataValueFactory::getInstance()->newDataItemValue(
-				$dataItem,
-				$property
-			);
-
-			$result = $this->makeValueOutputText(
-				$type,
-				$dataValue,
-				$linker
-			);
-
-			if ( $property->getKey() === '_LCODE' ) {
-				$languagecode = ' ' . wfMessage( 'smw-datavalue-monolingual-lcode-parenthesis', $result )->text();
-			} else {
-				$text = $result;
-			}
-		}
-
-		return $text . $languagecode;
-	}
-
-	private function makeValueOutputText( $type, $dataValue, $linker ) {
-		switch ( $type ) {
-			case 0: return $dataValue->getShortWikiText( $linker );
-			case 1: return $dataValue->getShortHTMLText( $linker );
-			case 2: return $dataValue->getShortWikiText( $linker );
-			case 3: return $dataValue->getShortHTMLText( $linker );
-			case 4: return $dataValue->getWikiValue();
-		}
 	}
 
 	private function newContainerSemanticData( $value ) {

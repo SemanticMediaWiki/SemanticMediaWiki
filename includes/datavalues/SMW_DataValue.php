@@ -10,7 +10,8 @@
 use SMW\DataValueFactory;
 use SMW\Options;
 use SMW\Query\QueryComparator;
-use SMW\Deserializers\DVDescriptionDeserializerFactory;
+use SMW\Deserializers\DVDescriptionDeserializerRegistry;
+use SMW\DataValues\ValueFormatterRegistry;
 
 /**
  * Objects of this type represent all that is known about a certain user-provided
@@ -295,6 +296,8 @@ abstract class SMWDataValue {
 	/**
 	 * @since 2.4
 	 *
+	 * @param string $key
+	 *
 	 * @return mixed|false
 	 */
 	public function getOptionValueFor( $key ) {
@@ -314,6 +317,15 @@ abstract class SMWDataValue {
 	 */
 	public function setCaption( $caption ) {
 		$this->m_caption = $caption;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param string $caption
+	 */
+	public function getCaption() {
+		return $this->m_caption;
 	}
 
 	/**
@@ -398,6 +410,15 @@ abstract class SMWDataValue {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @return string
+	 */
+	public function getOutputFormat() {
+		return $this->m_outformat;
+	}
+
+	/**
 	 * Add a new error string or array of such strings to the error list.
 	 *
 	 * @note Errors should not be escaped here in any way, in contradiction to what
@@ -474,14 +495,26 @@ abstract class SMWDataValue {
 	 */
 	public function getQueryDescription( $value ) {
 
-		$dvDescriptionDeserializerFactory = DVDescriptionDeserializerFactory::getInstance()->getDescriptionDeserializerFor( $this );
-		$description = $dvDescriptionDeserializerFactory->deserialize( $value );
+		$descriptionDeserializer = DVDescriptionDeserializerRegistry::getInstance()->getDescriptionDeserializerFor( $this );
+		$description = $descriptionDeserializer->deserialize( $value );
 
-		foreach ( $dvDescriptionDeserializerFactory->getErrors() as $error ) {
+		foreach ( $descriptionDeserializer->getErrors() as $error ) {
 			$this->addError( $error );
 		}
 
 		return $description;
+	}
+
+	/**
+	 * Returns a DataValueFormatter that was matched and dispatched for the current
+	 * DV instance.
+	 *
+	 * @since 2.4
+	 *
+	 * @return DataValueFormatter
+	 */
+	public function getDataValueFormatter() {
+		return ValueFormatterRegistry::getInstance()->getDataValueFormatterFor( $this );
 	}
 
 	/**
@@ -490,7 +523,7 @@ abstract class SMWDataValue {
 	 *
 	 * This method should no longer be used for direct public access, instead a
 	 * DataValue is expected to register a DescriptionDeserializer with
-	 * DVDescriptionDeserializerFactory.
+	 * DVDescriptionDeserializerRegistry.
 	 *
 	 * FIXME as of 2.3, SMGeoCoordsValue still uses this method and requires
 	 * migration before 3.0
