@@ -6,7 +6,7 @@ Not a release yet.
 
 * #1329
 * #1335
-* #1344
+* #1344 (#1381)
 
 ## New features and enhancements
 
@@ -26,6 +26,7 @@ Not a release yet.
 * #1350 Enlarged input field on special page "Browse"
 * #1335 Added possibility to specify a display precision for a numeric datatype by either denoting a [`Display precision of`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Display_precision_of) or using `-p<number of digits>` as `#ask` printout option
 * #1344 Added `MonolingualTextValue` and `LanguageCodeValue`
+* #1381 Added localizable context help for properties using the predefined property `Has property description` (which is specified as `MonolingualText` type)
 
 ## Bug fixes
 
