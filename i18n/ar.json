@@ -7,10 +7,11 @@
 			"Ouda",
 			"أحمد",
 			"الهميان",
-			"روخو"
+			"روخو",
+			"محمد أحمد عبد الفتاح"
 		]
 	},
-	"smw-desc": "تقرّب الويكي إلى كلٍّ من النّظم الحاسوبية  ''و'' البشر ([https://www.semantic-mediawiki.org/wiki/Help:User_manual دليل المستخدم])",
+	"smw-desc": "تقرّب الويكي إلى كلٍّ من النّظم الحاسوبية  ''و''البشر ([https://www.semantic-mediawiki.org/wiki/Help:User_manual دليل المستخدم])",
 	"smw_viewasrdf": "تلقيمة RDF",
 	"smw_finallistconjunct": " و",
 	"smw_factbox_head": "حقائق عن $1",
