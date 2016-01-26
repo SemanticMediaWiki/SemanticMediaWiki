@@ -23,7 +23,7 @@
 			"Dan Koehl"
 		]
 	},
-	"smw-desc": "Gör din wiki mer tillgänglig – för både maskiner och människor ([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentation online])",
+	"smw-desc": "Gör din wiki mer tillgänglig – för både maskiner och människor ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentation online])",
 	"smw_viewasrdf": "RDF-matning",
 	"smw_finallistconjunct": "och",
 	"smw_factbox_head": "Fakta om ”$1”",

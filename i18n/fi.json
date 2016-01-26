@@ -11,7 +11,7 @@
 			"VezonThunder"
 		]
 	},
-	"smw-desc": "Lisää wikisi helppokäyttöisyyttä - niin koneille \"kuin\" ihmisillekin ([https://semantic-mediawiki.org/wiki/Help:User_manual käyttäjän opas])",
+	"smw-desc": "Lisää wikisi helppokäyttöisyyttä - niin koneille \"kuin\" ihmisillekin ([https://www.semantic-mediawiki.org/wiki/Help:User_manual käyttäjän opas])",
 	"smw_viewasrdf": "RDF-syöte",
 	"smw_finallistconjunct": " ja",
 	"smw_factbox_head": "Tietoja kohteesta $1",
@@ -182,7 +182,7 @@
 	"smw_smwadmin_updatenotstarted": "Päivitysprosessi on jo käynnissä.\nUutta ei käynnistetä.\n\nPalaa sivulle $1.",
 	"smw_smwadmin_updatestopped": "Kaikki nykyiset päivitysprosessit on pysäytetty.\n\nPalaa sivulle $1.",
 	"smw_smwadmin_updatenotstopped": "Jos haluat pysäyttää käynnissä olevan päivitysprosessin, varmista päätöksesi aktivoimalla valintaruutu.\n\nPalaa sivulle $1.",
-	"smw_smwadmin_docu": "Tämä toimintosivu auttaa <a href=\"https://semantic-mediawiki.org\">Semantic MediaWikin</a> asennuksessa ja päivityksessä.\nMuista tehdä varmuuskopiot tärkeistä tiedoista ennen kuin aloitat ylläpitotoiminnot.",
+	"smw_smwadmin_docu": "Tämä toimintosivu auttaa <a href=\"https://www.semantic-mediawiki.org\">Semantic MediaWikin</a> asennuksessa ja päivityksessä.\nMuista tehdä varmuuskopiot tärkeistä tiedoista ennen kuin aloitat ylläpitotoiminnot.",
 	"smw_smwadmin_db": "Tietokannan asennus ja päivitys",
 	"smw_smwadmin_dbdocu": "Semantic MediaWiki tarvitseen joitain MediaWiki-tietokannan laajennuksia, jotta semanttista tietoa voidaan tallentaa.\nAlla oleva toiminto varmistaa, että tietokanta on asennettu oikein.\nTässä vaiheessa tehyt muutokset eivät vaikuta muuhun MediaWiki-tietokantaan ja muutokset on helppo tarvittaessa kumota.\nAsennus voidaan suorittaa monta kertaa ilman että siitä eiheutuisi vahinkoa, mutta se on tehtävä vain kerran asennuksen tai päivityksen yhteydessä.",
 	"smw_smwadmin_dbbutton": "Alusta tai päivitä taulukot",
@@ -195,7 +195,7 @@
 	"smw_smwadmin_datarefreshstopconfirm": "Kyllä, olen varma.",
 	"smw_smwadmin_support": "Tuen hankkiminen",
 	"smw_smwadmin_installfile": "Jos asennuksen kanssa on ongelmia, lue ensin <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">INSTALL-tiedoston</a> ohjeet.",
-	"smw_smwadmin_smwhomepage": "Semantic MediaWikin täydellinen käyttäjän opas löytyy osoitteesta <b><a href=\"https://semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
+	"smw_smwadmin_smwhomepage": "Semantic MediaWikin täydellinen käyttäjän opas löytyy osoitteesta <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw_smwadmin_mediazilla": "Ohjelmistovirheet voi raportoida <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHubiin</a>.",
 	"smw_smwadmin_questions": "Jos sinulla on kysymyksiä tai ehdotuksia, liity keskusteluun <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">Semanttisen MediaWikin käyttäjäfoorumilla</a>.",
 	"smw_adminlinks_datastructure": "Tietorakenne",

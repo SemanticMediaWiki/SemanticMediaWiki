@@ -11,7 +11,7 @@
 			"Matěj Suchánek"
 		]
 	},
-	"smw-desc": "Činíme vaší wiki přístupnější – pro stroje ''i'' lidi ([https://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
+	"smw-desc": "Činíme vaší wiki přístupnější – pro stroje ''i'' lidi ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
 	"smw_viewasrdf": "RDF kanál",
 	"smw_finallistconjunct": " a",
 	"smw_factbox_head": "Skutečnosti o $1 &mdash; kliknutím na <span class=\"smwsearchicon\">+</span> vyhledáte podobné stránky.",
@@ -192,7 +192,7 @@
 	"smw_smwadmin_updatenotstarted": "Proces updatu již probíhá.\nDalší nebyl vytvořen.",
 	"smw_smwadmin_updatestopped": "Všechny procesy aktualizace byly zastaveny.",
 	"smw_smwadmin_updatenotstopped": "Abyste zastavili běžící proces aktualizace, musíte zaškrtnout políčko, čímž potvrdíte, že si jste jisti.",
-	"smw_smwadmin_docu": "Tato speciální stránka vám pomůže s instalací a upgradem <a href=\"https://semantic-mediawiki.org\">Semantic MediaWiki</a>.\nPřed spuštěním administrativních funkcí nezapomeňte zálohovat cenná data.",
+	"smw_smwadmin_docu": "Tato speciální stránka vám pomůže s instalací a upgradem <a href=\"https://www.semantic-mediawiki.org\">Semantic MediaWiki</a>.\nPřed spuštěním administrativních funkcí nezapomeňte zálohovat cenná data.",
 	"smw_smwadmin_db": "Instalace a upgrade databáze",
 	"smw_smwadmin_dbdocu": "Aby mohla Semantic MediaWiki ukládat sémantická data, potřebuje rozšířit databázi MediaWiki.\nFunkce níže zajišťuje, že je vaše databáze správně nastavena.\nZměny provedené v tomto kroku nemají žádný vliv na zbytek databáze MediaWiki, a lze je snadno vzít zpět.\nTuto přípravnou funkci můžete spustit vícekrát, aniž by došlo k jakémukoli poškození, ale je to nutné pouze jednou při instalaci nebo upgradu.",
 	"smw_smwadmin_permissionswarn": "Selže-li operace s SQL chybami, pak uživatel databáze, kterého vaše wiki používá (zkontrolujte LocalSettings.php) pravděpodobně nemá dostatečná oprávnění.\nPřidělte tomuto uživateli dostatečná oprávnění k tvorbě a mazání tabulek, dočasně do LocalSettings.php zadejte údaje rootu databáze, nebo použijte údržbový skript <code>setupStore.php</code>, který používá údaje z AdminSettings.php.",
@@ -207,7 +207,7 @@
 	"smw_smwadmin_support": "Získání podpory",
 	"smw_smwadmin_supportdocu": "V případě problémů vám může pomoci několik zdrojů:",
 	"smw_smwadmin_installfile": "Máte-li problémy s instalací, přečtěte si návod k instalaci v <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">souboru INSTALL</a>.",
-	"smw_smwadmin_smwhomepage": "Kompletní uživatelská dokumentace Semantic MediaWiki je dostupná na <b><a href=\"https://semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
+	"smw_smwadmin_smwhomepage": "Kompletní uživatelská dokumentace Semantic MediaWiki je dostupná na <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw_smwadmin_mediazilla": "Chyby lze hlásit na <a href=\"https://bugzilla.wikimedia.org/\">Bugzille</a>.",
 	"smw_smwadmin_questions": "Další otázky či návrhy můžete pokládat v diskuzi v <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">uživatelském fóru Semantic MediaWiki</a>.",
 	"smw_adminlinks_inlinequerieshelp": "Nápověda k inline dotazům",

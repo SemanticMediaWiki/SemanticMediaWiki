@@ -7,7 +7,7 @@
 			"Y-M D"
 		]
 	},
-	"smw-desc": "Aesaat monedusted ho wiki - evit ar mekanikoù ''hag'' an dud ([https://semantic-mediawiki.org/wiki/Help:User_manual diellerezh enlinenn])",
+	"smw-desc": "Aesaat monedusted ho wiki - evit ar mekanikoù ''hag'' an dud ([https://www.semantic-mediawiki.org/wiki/Help:User_manual diellerezh enlinenn])",
 	"smw_viewasrdf": "Gwelet evel RDF",
 	"smw_finallistconjunct": ", ha",
 	"smw_factbox_head": "Fedoù diwar-benn $1",
@@ -165,7 +165,7 @@
 	"smw_smwadmin_datarefreshstopconfirm": "Ya, sur on.",
 	"smw_smwadmin_support": "Kaout skoazell",
 	"smw_smwadmin_supportdocu": "Dafar a bep seurt a c'hallfe ho skoazellañ ma vez kudennoù :",
-	"smw_smwadmin_smwhomepage": "Emañ teul titouriñ klok implijerien Semantic MediaWiki e <b><a href=\"https://semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
+	"smw_smwadmin_smwhomepage": "Emañ teul titouriñ klok implijerien Semantic MediaWiki e <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw_smwadmin_mediazilla": "An drein a c'hall bezañ danevellet da <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
 	"smw_smwadmin_questions": "Ma chom goulennoù ganeoc'h pe kinnigoù, kemerit perzh er gaoz war <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">forom implijerien Semantic MediaWiki</a>.",
 	"smw_adminlinks_datastructure": "Framm ar roadennoù",

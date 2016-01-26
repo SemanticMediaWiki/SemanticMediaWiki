@@ -10,7 +10,7 @@
 			"Hwangjy9"
 		]
 	},
-	"smw-desc": "위키를 기계와 사람이 더 접근하기 쉽게 합니다 ([https://semantic-mediawiki.org/wiki/Help:User_manual 온라인 설명서])",
+	"smw-desc": "위키를 기계와 사람이 더 접근하기 쉽게 합니다 ([https://www.semantic-mediawiki.org/wiki/Help:User_manual 온라인 설명서])",
 	"smw_viewasrdf": "RDF 피드",
 	"smw_finallistconjunct": ", 그리고",
 	"smw_factbox_head": "\"$1\"에 대한 사실",

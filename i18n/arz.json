@@ -8,7 +8,7 @@
 			"아라"
 		]
 	},
-	"smw-desc": "جعل الويكى الخاص بك أكثر قابليه للوصول - للآلات ''و'' البشر ([https://semantic-mediawiki.org/wiki/Help:User_manual توثيق على الإنترنت])",
+	"smw-desc": "جعل الويكى الخاص بك أكثر قابليه للوصول - للآلات ''و'' البشر ([https://www.semantic-mediawiki.org/wiki/Help:User_manual توثيق على الإنترنت])",
 	"smw_viewasrdf": "تلقيم RDF",
 	"smw_finallistconjunct": "، و",
 	"smw_factbox_head": "حقائق عن $1",
@@ -157,7 +157,7 @@
 	"smw_smwadmin_updatenotstarted": "يوجد بالفعل عمليه تحديث جاريه.\nلا تنشئ واحده أخرى.",
 	"smw_smwadmin_updatestopped": "كل عمليات التحديث الموجوده تم إيقافها",
 	"smw_smwadmin_updatenotstopped": "لوقف عمليه التحديث الجاريه، يجب عليك تفعيل الصندوق لتعبر عن أنك متأكد حقا.",
-	"smw_smwadmin_docu": "هذه الصفحه الخاصه تساعدك خلال تنصيب وترقيه <a href=\"https://semantic-mediawiki.org\">سيمانتيك ميدياويكي</a>.\nتذكر أن تخزن احتياطيا البيانات القيمه قبل تنفيذ وظائف إداريه.",
+	"smw_smwadmin_docu": "هذه الصفحه الخاصه تساعدك خلال تنصيب وترقيه <a href=\"https://www.semantic-mediawiki.org\">سيمانتيك ميدياويكي</a>.\nتذكر أن تخزن احتياطيا البيانات القيمه قبل تنفيذ وظائف إداريه.",
 	"smw_smwadmin_db": "تثبيت و تحديث قاعده البيانات",
 	"smw_smwadmin_dbdocu": "سيمانتيك ميدياويكى يتطلب بعض الامتدادات لقاعده بيانات ميدياويكى حتى يخزن البيانات السيمانتيك.\nالوظيفه التاليه تؤكد أن قاعده بياناتك منصبه بشكل صحيح.\nالتغييرات المعموله فى هذه الخطوه لا تؤثر على بقيه قاعده بيانات ميدياويكى، ويمكن استرجاعها بسهوله فى حاله الرغبه فى ذلك.\nوظيفه التنصيب هذه يمكن تنفيذها عده مرات بدون عمل أى ضرر، لكنها مطلوبه مره واحده عند التنصيب أو الترقيه.",
 	"smw_smwadmin_permissionswarn": "لو أن العمليه فشلت مع أخطاء SQL، فقاعده البيانات التى طبقها المستخدم بواسطه الويكى الخاص بك (تحقق من LocalSettings.php الخاص بك) على الأرجح لا تمتلك سماحات كافيه.\nإما أن تمنح هذا المستخدم سماحات إضافيه لإنشاء وحذف الجداول، مؤقتا أدخل تسجيل الدخول للroot الخاص بقاعده بياناتك فى LocalSettings.php، أو استخدم سكريبت الصيانه <code>setupStore.php</code> الذى يمكنه استخدام تأكيدات AdminSettings.php.",
@@ -172,7 +172,7 @@
 	"smw_smwadmin_support": "أحصل على دعم",
 	"smw_smwadmin_supportdocu": ":مصادر متعدده يمكن أن تساعده فى حاله مشاكل",
 	"smw_smwadmin_installfile": "لو أنك تواجه مشاكل مع تنصيبك، ابدأ بالتحقق من الإرشادات فى <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">ملف INSTALL</a>.",
-	"smw_smwadmin_smwhomepage": "وثائق المستخدم الكامله لسيمانتيك ميدياويكى موجوده فى <b><a href=\"https://semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
+	"smw_smwadmin_smwhomepage": "وثائق المستخدم الكامله لسيمانتيك ميدياويكى موجوده فى <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw_smwadmin_mediazilla": "العلل يمكن إبلاغها إلى <a href=\"https://bugzilla.wikimedia.org/\">ميديازيللا</a>.",
 	"smw_smwadmin_questions": "لو لديك أسئله أو اقتراحات أخرى، انضم إلى النقاش فى <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">منتدى مستخدمى سيمانتيك ميدياويكي</a>.",
 	"smw_adminlinks_datastructure": "هيكل البيانات",

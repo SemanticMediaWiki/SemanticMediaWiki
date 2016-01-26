@@ -22,7 +22,7 @@
 			"Opraco"
 		]
 	},
-	"smw-desc": "Tornando seu wiki mais acessível - para máquinas ''e'' humanos ([https://semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
+	"smw-desc": "Tornando seu wiki mais acessível - para máquinas ''e'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
 	"smw_viewasrdf": "Feed RDF",
 	"smw_finallistconjunct": " e",
 	"smw_factbox_head": "Dados sobre $1",
@@ -164,7 +164,7 @@
 	"smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|uso|usos}})",
 	"smw_purge": "Atualizar",
 	"types": "Tipos",
-	"smw_types_docu": "A seguinte [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes lista] contém todos os tipos de dados que podem ser atribuídos às propriedades.",
+	"smw_types_docu": "A seguinte [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes lista] contém todos os tipos de dados que podem ser atribuídos às propriedades.",
 	"smw-special-types-no-such-type": "O tipo de dados especificado não existe",
 	"semanticstatistics": "Estatísticas de semântica",
 	"smw_semstats_text": "Este wiki contém '''$1''' {{PLURAL:$1|valor|valores}} de propriedades num total de '''$2''' [[Special:Properties|{{PLURAL:$2|propriedade diferente|propriedades diferentes}}]].\n'''$3''' {{PLURAL:$3|propriedade tem|propriedades têm}} sua própria página, e o tipo de dados pretendido está especificado para '''$4''' delas.\nAlgumas das propriedades existentes podem estar [[Special:UnusedProperties|sem uso]].\nAs propriedades que não possuem uma página poderão ser encontradas na [[Special:WantedProperties|lista de propriedades em falta]].",

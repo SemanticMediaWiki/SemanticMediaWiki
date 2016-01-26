@@ -24,7 +24,7 @@
 			"FriedhelmW"
 		]
 	},
-	"smw-desc": "Ermöglicht es, das Wiki zugänglicher zu machen – für Menschen ''und'' Maschinen ([https://semantic-mediawiki.org/wiki/Help:Nutzeranleitung Dokumentation])",
+	"smw-desc": "Ermöglicht es, das Wiki zugänglicher zu machen – für Menschen ''und'' Maschinen ([https://www.semantic-mediawiki.org/wiki/Help:Nutzeranleitung Dokumentation])",
 	"smw_viewasrdf": "RDF-Feed",
 	"smw_finallistconjunct": " und",
 	"smw_factbox_head": "Fakten zu „$1“",
@@ -245,7 +245,7 @@
 	"smw_smwadmin_updatenotstarted": "Es läuft bereits ein Aktualisierungsprozess.\nEs wird kein Neuer begonnen.\n\nZurück zur Seite  $1",
 	"smw_smwadmin_updatestopped": "Alle laufenden Aktualisierungsprozesse wurden vorzeitig beendet.\n\nZurück zur Seite  $1.",
 	"smw_smwadmin_updatenotstopped": "Um den laufenden Aktualisierungsprozess zu vorzeitig zu beenden, musst das Kontrollkästchen markiert werden, um dadurch anzuzeigen, dass man sich diesbezüglich tatsächlich sicher ist.\n\nZurück zur Seite  $1.",
-	"smw_smwadmin_docu": "Diese Spezialseite bietet während Installation und Aktualisierung von <a href=\"https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_–_Startseite\">Semantic MediaWiki</a> Unterstützung. Wichtige Daten sollten vor der Ausführung administrativer Funktionen gesichert werden.",
+	"smw_smwadmin_docu": "Diese Spezialseite bietet während Installation und Aktualisierung von <a href=\"https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_–_Startseite\">Semantic MediaWiki</a> Unterstützung. Wichtige Daten sollten vor der Ausführung administrativer Funktionen gesichert werden.",
 	"smw_smwadmin_db": "Datenbankinstallation und -aktualisierung",
 	"smw_smwadmin_dbdocu": "Semantic MediaWiki benötigt weitere Datentabellen in der MediaWiki-Datenbank, um die semantischen Daten speichern zu können.\nDie folgende Funktion gewährleistet, dass die Datenbank richtig eingerichtet ist.\nDie Datenbankänderungen, die in diesem Schritt durchgeführt werden, beeinträchtigen den Rest der MediaWiki-Datenbank nicht. Sie können, sofern dies gewünscht ist, leicht rückgängig gemacht werden.\nDiese Einrichtungsfunktion kann mehrere Male ausgeführt werden, ohne Schaden zu verursachen. Sie braucht allerdings nur einmal, während der Installation oder Aktualisierung von Semantic MediaWiki, durchgeführt werden.",
 	"smw_smwadmin_permissionswarn": "Sofern diese Aktion mit einem SQL-Fehler abbricht, könnte es sein, dass der Datenbankbenutzer, mit dem das Wiki auf die Datenbank zugreift (siehe die Datei „LocalSettings.php“), über keine ausreichenden Rechte verfügt.\nUm das Problem zu beheben, ist es notwendig, entweder dem Benutzer zusätzliche Rechte zur Erstellung und Löschung von Datenbanktabellen einzuräumen, den Datenbankadministrator zeitweilig in die Datei „LocalSettings.php“ einzutragen, oder aber das Wartungsskript „setupStore.php“ zu nutzen, das von einem Servernutzer mit Administrationsberechtigung ausgeführt werden kann.",
@@ -261,7 +261,7 @@
 	"smw_smwadmin_support": "Unterstützung erhalten",
 	"smw_smwadmin_supportdocu": "Verschiedene Hinweise helfen vielleicht im Fall eines Problems:",
 	"smw_smwadmin_installfile": "Sofern beim Installieren Probleme auftreten, könnten die in der Datei <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">„INSTALL“</a> enthaltenen Informationen weiterhelfen.",
-	"smw_smwadmin_smwhomepage": "Die komplette Nutzerdokumentation von Semantic MediaWiki ist auf <b><a href=\"https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_%E2%80%93_Startseite\">semantic-mediawiki.org</a></b> verfügbar.",
+	"smw_smwadmin_smwhomepage": "Die komplette Nutzerdokumentation von Semantic MediaWiki ist auf <b><a href=\"https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_%E2%80%93_Startseite\">semantic-mediawiki.org</a></b> verfügbar.",
 	"smw_smwadmin_mediazilla": "Fehler können bei <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a> berichtet werden.",
 	"smw_smwadmin_questions": "Im Fall weiterer Fragen oder Anregungen kann man sich an den Diskussionen im <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">„Semantic MediaWiki“-Benutzerforum</a> beteiligen.",
 	"smw_adminlinks_datastructure": "Datenstruktur",

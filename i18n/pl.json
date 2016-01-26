@@ -20,7 +20,7 @@
 			"Devwebtel"
 		]
 	},
-	"smw-desc": "Poprawia dostępność wiki zarówno dla automatów jak i ludzi ([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentacja online])",
+	"smw-desc": "Poprawia dostępność wiki zarówno dla automatów jak i ludzi ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentacja online])",
 	"smw_viewasrdf": "Kanał RDF",
 	"smw_finallistconjunct": " i",
 	"smw_factbox_head": "Fakty o $1",
