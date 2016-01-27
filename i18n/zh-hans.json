@@ -366,5 +366,11 @@
 	"smw-pa-property-predefined_lcode": "“$1”是一个表述BCP47格式语言代码的预定义属性，并由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供。",
 	"smw-sp-types_mlt_rec": "“$1”是一个将文本值与特定[[Property:Language code|语言代码]]联系起来的[https://www.semantic-mediawiki.org/wiki/Help:Container 容器]数据类型。",
 	"smw-sp-types-mlt-lcode": "数据类型{{PLURAL:$2|需要|不需要}}语言代码（也就是说{{PLURAL:$2|不接受不带语言代码的值注释|接受不带语言代码的值注释}}）。",
-	"smw-pa-property-predefined_text": "“$1”是一个表明任意长度文本的预定义属性，并由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供。"
+	"smw-pa-property-predefined_text": "“$1”是一个表明任意长度文本的预定义属性，并由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供。",
+	"smw-pa-property-predefined_pdesc": "“$1”是允许描述语言环境中的属性的预定义属性，并由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供。",
+	"smw-pa-property-predefined_list": "“$1”是定义与[[Special:Types/Record|记录]]类型属性一起使用的属性列表的预定义属性，并由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供。",
+	"smw-limitreport-intext-parsertime": "[SMW]文内注释解析器时间",
+	"smw-limitreport-intext-parsertime-value": "$1秒",
+	"smw-limitreport-pagepurge-storeupdatetime": "[SMW]存储更新时间（在页面刷新时）",
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1秒"
 }

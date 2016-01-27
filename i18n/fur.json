@@ -1,4 +1,9 @@
 {
-	"@metadata": [],
+	"@metadata": {
+		"authors": [
+			"Tocaibon"
+		]
+	},
+	"browse": "Esplore il sît",
 	"smw-livepreview-loading": "Daûr a cjamâ…"
 }
