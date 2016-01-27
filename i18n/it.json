@@ -247,5 +247,7 @@
 	"smw-sp-types_tel": "\"$1\" è un particolare tipo di dati utilizzato per descrivere i numeri di telefono internazionali secondo la RFC 3966.",
 	"smw-sp-types_dat": "\"$1\" è un tipo di dati impiegato per rappresentare punti nel tempo in un formato unificato.",
 	"smw-pa-property-predefined_prec": "\"$1\" è una proprietà predefinita che descrive una [https://www.semantic-mediawiki.org/wiki/Help:Display_precision precisione di visualizzazione] (in cifre decimali) per tipi di dati numerici.",
-	"smw-sp-types-geo-not-available": "[https://www.semantic-mediawiki.org/wiki/Semantic_Maps Semantic Maps] non è stata rilevata, pertanto \"$1\" è limitato nella sua capacità di operare."
+	"smw-sp-types-geo-not-available": "[https://www.semantic-mediawiki.org/wiki/Semantic_Maps Semantic Maps] non è stata rilevata, pertanto \"$1\" è limitato nella sua capacità di operare.",
+	"smw-limitreport-intext-parsertime-value": "$1 secondi",
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 secondi"
 }

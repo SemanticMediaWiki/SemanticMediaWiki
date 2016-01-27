@@ -1,9 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"बिप्लब आनन्द"
+			"बिप्लब आनन्द",
+			"जनक राज भट्ट"
 		]
 	},
 	"browse": "ब्राउज विकि",
-	"smw-livepreview-loading": "लोड हुदैछ..."
+	"smw-livepreview-loading": "लोड हुदैछ...",
+	"smw-limitreport-intext-parsertime-value": "$१ सेकेन्डस",
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$१ सेकेन्डस"
 }
