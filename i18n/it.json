@@ -248,6 +248,11 @@
 	"smw-sp-types_dat": "\"$1\" è un tipo di dati impiegato per rappresentare punti nel tempo in un formato unificato.",
 	"smw-pa-property-predefined_prec": "\"$1\" è una proprietà predefinita che descrive una [https://www.semantic-mediawiki.org/wiki/Help:Display_precision precisione di visualizzazione] (in cifre decimali) per tipi di dati numerici.",
 	"smw-sp-types-geo-not-available": "[https://www.semantic-mediawiki.org/wiki/Semantic_Maps Semantic Maps] non è stata rilevata, pertanto \"$1\" è limitato nella sua capacità di operare.",
+	"smw-datavalue-languagecode-invalid": "\"$1\" non è stato riconosciuto come un codice di lingua supportato.",
+	"smw-pa-property-predefined_lcode": "\"$1\" è una proprietà predefinita che rappresenta un codice di lingua in formato BCP47 ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-sp-types_mlt_rec": "\"$1\" è un tipo di dati [https://www.semantic-mediawiki.org/wiki/Help:Container contenitore] che associa un valore testuale con un specifico [[Property:Language code|codice lingua]].",
+	"smw-pa-property-predefined_text": "\"$1\" è una proprietà predefinita che rappresenta un testo di lunghezza arbitraria ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_pdesc": "\"$1\" è una proprietà predefinita che consente di descrivere una proprietà in contesto di una lingua ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-limitreport-intext-parsertime-value": "$1 secondi",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 secondi"
 }
