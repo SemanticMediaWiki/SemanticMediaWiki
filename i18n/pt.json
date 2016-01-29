@@ -270,5 +270,7 @@
 	"smw-pa-property-predefined_type": "\"$1\" é uma propriedade predefinida que descreve o [[Special:Types|tipo de dados]] de uma propriedade.",
 	"smw-datavalue-invalid-number": "\"$1\" não pode ser interpretado como um número.",
 	"smw-sp-types-list": "Lista de tipos de dados",
-	"smw-sp-types-help": "Mais informações e exemplos podem ser encontrados na [https://www.semantic-mediawiki.org/wiki/Help:Type_$1 página de ajuda]."
+	"smw-sp-types-help": "Mais informações e exemplos podem ser encontrados na [https://www.semantic-mediawiki.org/wiki/Help:Type_$1 página de ajuda].",
+	"smw-limitreport-intext-parsertime-value": "$1 segundos",
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 segundos"
 }
