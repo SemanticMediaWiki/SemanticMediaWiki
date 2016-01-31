@@ -18,6 +18,7 @@
 	"smw_printername_rdf": "ھەناردەکردنی RDF",
 	"smw_printername_category": "پۆل",
 	"validator-type-class-SMWParamSource": "دەق",
+	"smw_nofloat": "«$1» ژمارە نییە.",
 	"smw_type_header": "تایبەتمەندییەکانی جۆری «$1»",
 	"smw_typearticlecount": "نیشاندانی $1 {{PLURAL:$1|تایبەتمەندی}} بە بەکارھێنانی ئەم جۆرەوە.",
 	"properties": "تایبەتمەندییەکان",
