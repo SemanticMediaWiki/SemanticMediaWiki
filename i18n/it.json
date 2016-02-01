@@ -254,7 +254,7 @@
 	"smw-sp-types_mlt_rec": "\"$1\" è un tipo di dati [https://www.semantic-mediawiki.org/wiki/Help:Container contenitore] che associa un valore testuale con un specifico [[Property:Language code|codice lingua]].",
 	"smw-pa-property-predefined_text": "\"$1\" è una proprietà predefinita che rappresenta un testo di lunghezza arbitraria ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_pdesc": "\"$1\" è una proprietà predefinita che consente di descrivere una proprietà in contesto di una lingua ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
-	"smw-pa-property-predefined_list": "\"$1\" è una proprietà predefinita per definire un elenco di proprietà utilizzato con un [[Special:Types/Record|Record]]  proprietà digitata ed è fornito dal [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_list": "\"$1\" è una proprietà predefinita per definire un elenco di proprietà utilizzate con una proprietà tipo [[Special:Types/Record|record]] ed è fornito da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-limitreport-intext-parsertime-value": "$1 secondi",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 secondi"
 }
