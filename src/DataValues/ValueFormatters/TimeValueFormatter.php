@@ -166,9 +166,14 @@ class TimeValueFormatter extends DataValueFormatter {
 
 		$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage();
 
+		// https://en.wikipedia.org/wiki/Anno_Domini
+		// "...placing the "AD" abbreviation before the year number ... BC is
+		// placed after the year number (for example: AD 2016, but 68 BC)..."
+		// Chicago Manual of Style 2010, pp. 476â€“7; Goldstein 2007, p. 6.
+
 		if ( $dataItem->getYear() > 0 ) {
-			$cestring = '';
-			$result = number_format( $dataItem->getYear(), 0, '.', '' ) . ( $cestring ? ( ' ' . $cestring ) : '' );
+			$cestring = $dataItem->getEra() > 0 ? 'AD' : '';
+			$result = ( $cestring ? ( $cestring . ' ' ) : '' ) . number_format( $dataItem->getYear(), 0, '.', '' );
 		} else {
 			$bcestring = 'BC';
 			$result = number_format( -( $dataItem->getYear() ), 0, '.', '' ) . ( $bcestring ? ( ' ' . $bcestring ) : '' );

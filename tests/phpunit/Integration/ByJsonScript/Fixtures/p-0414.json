@@ -46,6 +46,14 @@
 		{
 			"name": "Example/P0414/5a",
 			"contents": "{{#ask: [[Example/P0414/5]] |?Has date#-F[H:i:s.u] |?Has date#-F[Y/m/d H:i] |?Has date#GR-F[Y/m/d H:i] |?Has date#JD=JD }}"
+		},
+		{
+			"name": "Example/P0414/6",
+			"contents": "[[Has date::1902 AD]]"
+		},
+		{
+			"name": "Example/P0414/6a",
+			"contents": "{{#ask: [[Example/P0414/6]]  |?Has date |?Has date#-F[Y] |?Has date#-F[Y/m/d] }}"
 		}
 	],
 	"parser-testcases": [
@@ -185,6 +193,34 @@
 				"to-contain": [
 					"<td data-sort-value=\"-100001\" class=\"Has-date smwtype_dat\">--100000-01-01</td>",
 					"<td data-sort-value=\"-100001\" class=\"JD smwtype_dat\">-34802824.5</td>"
+				]
+			}
+		},
+		{
+			"about": "#10 positive year only with era marker",
+			"subject": "Example/P0414/6",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
+					"propertyValues": [ "AD 1902-01-01" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"1902 AD"
+				]
+			}
+		},
+		{
+			"about": "#11",
+			"subject": "Example/P0414/6a",
+			"expected-output": {
+				"to-contain": [
+					"<td data-sort-value=\"2415750.5\" class=\"Has-date smwtype_dat\">AD 1902</td>",
+					"<td data-sort-value=\"2415750.5\" class=\"Has-date smwtype_dat\">1902</td>",
+					"<td data-sort-value=\"2415750.5\" class=\"Has-date smwtype_dat\">1902/01/01</td>"
 				]
 			}
 		}

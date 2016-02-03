@@ -46,6 +46,10 @@
 		{
 			"name": "Page-error",
 			"contents": "[[Has page::::123|abc]] [[Has page::::xyz]]"
+		},
+		{
+			"name": "Example/P0402/7",
+			"contents": "[[Has date::-901 AD]]"
 		}
 	],
 	"parser-testcases": [
@@ -150,6 +154,22 @@
 			"expected-output": {
 				"to-contain": [
 					"&#58;123"
+				]
+			}
+		},
+		{
+			"about": "#6 negative year with AD/CE era is not allowed",
+			"subject": "Example/P0402/7",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_SKEY", "_MDAT", "_ERRC" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"The date &quot;-901 AD&quot; was not understood."
 				]
 			}
 		}

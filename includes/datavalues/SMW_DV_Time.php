@@ -485,6 +485,12 @@ class SMWTimeValue extends SMWDataValue {
 		if ( ( $era == '-' ) && ( $date['y'] > 0 ) ) { // see class documentation on BC, "year 0", and ISO conformance ...
 			$date['y'] = -( $date['y'] );
 		}
+
+		// Keep information about the era
+		if ( ( $era == '+' ) && ( $date['y'] > 0 ) ) {
+			$date['y'] = $era . $date['y'];
+		}
+
 		// Old Style is a special case of Julian calendar model where the change of the year was 25 March:
 		if ( ( $calendarmodel == 'OS' ) &&
 		     ( ( $date['m'] < 3 ) || ( ( $date['m'] == 3 ) && ( $date['d'] < 25 ) ) ) ) {
