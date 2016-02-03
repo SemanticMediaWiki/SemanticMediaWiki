@@ -35,6 +35,8 @@ class SMWDITime extends SMWDataItem {
 	const PREC_YMD  = 2;
 	const PREC_YMDT = 3;
 
+	const PREHISTORY = -10000;
+
 	/**
 	 * Maximal number of days in a given month.
 	 * @var array
@@ -84,6 +86,11 @@ class SMWDITime extends SMWDataItem {
 	protected $m_seconds;
 
 	/**
+	 * @var integer
+	 */
+	protected $timezone;
+
+	/**
 	 * Create a time data item. All time components other than the year can
 	 * be false to indicate that they are not specified. This will affect
 	 * the internal precision setting. The missing values are initialised
@@ -96,33 +103,42 @@ class SMWDITime extends SMWDataItem {
 	 * @param $hour mixed integer number or false
 	 * @param $minute mixed integer number or false
 	 * @param $second mixed integer number or false
+	 * @param integer|false $timezone
 	 *
 	 * @todo Implement more validation here.
 	 */
 	public function __construct( $calendarmodel, $year, $month = false, $day = false,
-	                             $hour = false, $minute = false, $second = false ) {
+	                             $hour = false, $minute = false, $second = false, $timezone = false ) {
+
 		if ( ( $calendarmodel != self::CM_GREGORIAN ) && ( $calendarmodel != self::CM_JULIAN ) ) {
 			throw new DataItemException( "Unsupported calendar model constant \"$calendarmodel\"." );
 		}
+
 		if ( $year == 0 ) {
 			throw new DataItemException( "There is no year 0 in Gregorian and Julian calendars." );
 		}
+
 		$this->m_model   = $calendarmodel;
 		$this->m_year    = intval( $year );
 		$this->m_month   = $month != false ? intval( $month ) : 1;
 		$this->m_day     = $day != false ? intval( $day ) : 1;
 		$this->m_hours   = $hour !== false ? intval( $hour ) : 0;
 		$this->m_minutes = $minute !== false ? intval( $minute ) : 0;
-		$this->m_seconds = $second !== false ? intval( $second ) : 0;
+		$this->m_seconds = $second !== false ? floatval( $second ) : 0;
+
+		$this->timezone = $timezone !== false ? intval( $timezone ) : 0;
+
 		if ( ( $this->m_hours < 0 ) || ( $this->m_hours > 23 ) ||
 		     ( $this->m_minutes < 0 ) || ( $this->m_minutes > 59 ) ||
 		     ( $this->m_seconds < 0 ) || ( $this->m_seconds > 59 ) ||
 		     ( $this->m_month < 1 ) || ( $this->m_month > 12 ) ) {
 			throw new DataItemException( "Part of the date is out of bounds." );
 		}
+
 		if ( $this->m_day > self::getDayNumberForMonth( $this->m_month, $this->m_year, $this->m_model ) ) {
 			throw new DataItemException( "Month {$this->m_month} in year {$this->m_year} did not have {$this->m_day} days in this calendar model." );
 		}
+
 		if ( $month === false ) {
 			$this->m_precision = self::PREC_Y;
 		} elseif ( $day === false ) {
@@ -171,6 +187,74 @@ class SMWDITime extends SMWDataItem {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @return string
+	 */
+	public function getCalendarModelLiteral() {
+
+		$literal = array(
+			self::CM_GREGORIAN => '',
+			self::CM_JULIAN    => 'JL'
+		);
+
+		return $literal[$this->m_model];
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param DateTime $dateTime
+	 *
+	 * @return SMWDITime|false
+	 */
+	public static function newFromDateTime( DateTime $dateTime ) {
+
+		$calendarModel = self::CM_JULIAN;
+
+		$year = $dateTime->format( 'Y' );
+		$month = $dateTime->format( 'm' );
+		$day = $dateTime->format( 'd' );
+
+		if ( ( $year > 1582 ) ||
+			( ( $year == 1582 ) && ( $month > 10 ) ) ||
+			( ( $year == 1582 ) && ( $month == 10 ) && ( $day > 4 ) ) ) {
+			$calendarModel = self::CM_GREGORIAN;
+		}
+
+		return self::doUnserialize( $calendarModel . '/' . $dateTime->format( 'Y/m/d/H/i/s.u' ) );
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return DateTime
+	 */
+	public function asDateTime() {
+
+		$year = str_pad( $this->m_year , 4, '0', STR_PAD_LEFT );
+
+		// Avoid "Failed to parse time string (-900-02-02 00:00:00) at
+		// position 7 (-): Double timezone specification"
+		if ( $this->m_year < 0 ) {
+			$year = '-' . str_pad( $this->m_year * -1 , 4, '0', STR_PAD_LEFT );
+		}
+
+		// Avoid "Failed to parse time string (1300-11-02 12:03:25.888499949) at
+		// at position 11 (1): The timezone could not ..."
+		$seconds = number_format( str_pad( $this->m_seconds, 2, '0', STR_PAD_LEFT ), 7, '.', '' );
+
+		$time = $year . '-' .
+			str_pad( $this->m_month, 2, '0', STR_PAD_LEFT )     . '-' .
+			str_pad( $this->m_day, 2, '0', STR_PAD_LEFT )       . ' ' .
+			str_pad( $this->m_hours, 2, '0', STR_PAD_LEFT )     . ':' .
+			str_pad( $this->m_minutes, 2, '0', STR_PAD_LEFT )   . ':' .
+			$seconds;
+
+		return new DateTime( $time );
+	}
+
+	/**
 	 * Creates and returns a new instance of SMWDITime from a MW timestamp.
 	 *
 	 * @since 1.8
@@ -198,7 +282,7 @@ class SMWDITime extends SMWDataItem {
 	}
 
 	/**
-	 * Returns a MW timestamp representatation of the value.
+	 * Returns a MW timestamp representation of the value.
 	 *
 	 * @since 1.6.2
 	 *
@@ -263,15 +347,19 @@ class SMWDITime extends SMWDataItem {
 
 	public function getSerialization() {
 		$result = strval( $this->m_model ) . '/' . strval( $this->m_year );
+
 		if ( $this->m_precision >= self::PREC_YM ) {
 			$result .= '/' . strval( $this->m_month );
 		}
+
 		if ( $this->m_precision >= self::PREC_YMD ) {
 			$result .= '/' . strval( $this->m_day );
 		}
+
 		if ( $this->m_precision >= self::PREC_YMDT ) {
-			$result .= '/' . strval( $this->m_hours ) . '/' . strval( $this->m_minutes ) . '/' . strval( $this->m_seconds );
+			$result .= '/' . strval( $this->m_hours ) . '/' . strval( $this->m_minutes ) . '/' . strval( $this->m_seconds ) . '/' . strval( $this->timezone );
 		}
+
 		return $result;
 	}
 
@@ -281,16 +369,17 @@ class SMWDITime extends SMWDataItem {
 	 * @return SMWDITime
 	 */
 	public static function doUnserialize( $serialization ) {
-		$parts = explode( '/', $serialization, 7 );
+		$parts = explode( '/', $serialization, 8 );
 		$values = array();
 
-		for ( $i = 0; $i < 7; $i += 1 ) {
+		for ( $i = 0; $i < 8; $i += 1 ) {
 			if ( $i < count( $parts ) ) {
-				if ( is_numeric( $parts[$i] ) ) {
-					$values[$i] = intval( $parts[$i] );
-				} else {
+
+				if ( !is_numeric( $parts[$i] ) ) {
 					throw new DataItemException( "Unserialization failed: the string \"$serialization\" is no valid datetime specification." );
 				}
+
+				$values[$i] = $i == 6 ? floatval( $parts[$i] ) : intval( $parts[$i] );
 			} else {
 				$values[$i] = false;
 			}
@@ -300,7 +389,7 @@ class SMWDITime extends SMWDataItem {
 			throw new DataItemException( "Unserialization failed: the string \"$serialization\" is no valid URI." );
 		}
 
-		return new self( $values[0], $values[1], $values[2], $values[3], $values[4], $values[5], $values[6] );
+		return new self( $values[0], $values[1], $values[2], $values[3], $values[4], $values[5], $values[6], $values[7] );
 	}
 
 	/**

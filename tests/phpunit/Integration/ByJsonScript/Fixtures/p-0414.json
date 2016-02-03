@@ -1,0 +1,95 @@
+{
+	"description": "Test in-text annotation/free format for `_dat` datatype (#1389, en)",
+	"properties": [
+		{
+			"name": "Has date",
+			"contents": "[[Has type::Date]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/P0414/1",
+			"contents": "[[Has date::Feb 11 1389 10:00:01]]"
+		},
+		{
+			"name": "Example/P0414/1a",
+			"contents": "{{#ask: [[Example/P0414/1]] |?Has date#-F[H:i:s.u] |?Has date#-F[Y/m/d H:i] |?Has date#GR-F[Y/m/d H:i] |?Has date#JD=JD }}"
+		},
+		{
+			"name": "Example/P0414/2",
+			"contents": "[[Has date::100000 BC]]"
+		},
+		{
+			"name": "Example/P0414/2a",
+			"contents": "{{#ask: [[Example/P0414/2]] |?Has date#-F[H:i:s.u] |?Has date#-F[Y/m/d H:i] |?Has date#GR-F[Y/m/d H:i] |?Has date#JD=JD }}"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0 JL calendar date with time",
+			"subject": "Example/P0414/1",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
+					"propertyValues": [ "1389-02-19T10:00:01" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"Feb 11 1389 10:00:01"
+				]
+			}
+		},
+		{
+			"about": "#1",
+			"subject": "Example/P0414/1a",
+			"expected-output": {
+				"to-contain": [
+					"<td data-sort-value=\"2228431.9166782\" class=\"Has-date smwtype_dat\">10:00:01.000000</td>",
+					"<td data-sort-value=\"2228431.9166782\" class=\"Has-date smwtype_dat\">1389/02/11 10:00 JL</td>",
+					"<td data-sort-value=\"2228431.9166782\" class=\"Has-date smwtype_dat\">1389/02/19 10:00</td>",
+					"<td data-sort-value=\"2228431.9166782\" class=\"JD smwtype_dat\">2228431.9166782</td>"
+				]
+			}
+		},
+		{
+			"about": "#2 Prehistory",
+			"subject": "Example/P0414/2",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
+					"propertyValues": [ "--100000-01-01" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"100000 BC"
+				]
+			}
+		},
+		{
+			"about": "#3",
+			"subject": "Example/P0414/2a",
+			"expected-output": {
+				"to-contain": [
+					"<td data-sort-value=\"-100001\" class=\"Has-date smwtype_dat\">--100000-01-01</td>",
+					"<td data-sort-value=\"-100001\" class=\"JD smwtype_dat\">-34802824.5</td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

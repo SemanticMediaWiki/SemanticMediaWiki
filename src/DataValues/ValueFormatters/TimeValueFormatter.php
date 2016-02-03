@@ -3,6 +3,7 @@
 namespace SMW\DataValues\ValueFormatters;
 
 use SMW\Localizer;
+use SMW\IntlTimeFormatter;
 use SMWDataValue as DataValue;
 use SMWTimeValue as TimeValue;
 use SMWDITime as DITime;
@@ -218,6 +219,31 @@ class TimeValueFormatter extends DataValueFormatter {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @param  DITime|null $dataItem
+	 *
+	 * @return string
+	 */
+	public function getCaptionFromFreeFormat( DITime $dataItem = null ) {
+
+		// Prehistory dates are not supported when using this output format
+		// Only match options encapsulated by [ ... ]
+		if (
+			$dataItem !== null &&
+			$dataItem->getYear() > DITime::PREHISTORY &&
+			preg_match("/\[([^\]]*)\]/", $this->dataValue->getOutputFormat(), $matches ) ) {
+			$intlTimeFormatter = new IntlTimeFormatter( $dataItem );
+
+			if ( ( $caption = $intlTimeFormatter->format( $matches[1] ) ) !== false ) {
+				return $caption;
+			}
+		}
+
+		return $this->getISO8601Date();
+	}
+
+	/**
 	 * Compute a suitable string to display this date, taking into account the
 	 * output format and the preferrable calendar models for the data.
 	 *
@@ -237,6 +263,24 @@ class TimeValueFormatter extends DataValueFormatter {
 			return $this->getMediaWikiDate();
 		} elseif ( $format == 'SORTKEY' ) {
 			return $dataItem->getSortKey();
+		} elseif ( $format == 'JD' ) {
+			return $dataItem->getJD();
+		}
+
+		// Does the formatting require calendar conversion?
+		$model = $dataItem->getCalendarModel();
+
+		if (
+			( strpos( $format, 'JL' ) !== false ) ||
+			( $dataItem->getJD() < TimeValue::J1582 && strpos( $format, 'GR' ) === false ) ) {
+			$model = DITime::CM_JULIAN;
+//		} elseif ( strpos( $format, 'GR' ) !== false ) {
+		} else {
+			$model = DITime::CM_GREGORIAN;
+		}
+
+		if ( strpos( $format, '-F[' ) !== false ) {
+			return $this->getCaptionFromFreeFormat( $this->dataValue->getDataItemForCalendarModel( $model ) );
 		} elseif ( $dataItem->getYear() > TimeValue::PREHISTORY && $dataItem->getPrecision() >= DITime::PREC_YM ) {
 			// Do not convert between Gregorian and Julian if only
 			// year is given (years largely overlap in history, but
@@ -244,13 +288,6 @@ class TimeValueFormatter extends DataValueFormatter {
 			// would change in conversion).
 			// Also do not convert calendars in prehistory: not
 			// meaningful (getDataItemForCalendarModel may return null).
-			if ( ( $format == 'JL' ) ||
-				( $dataItem->getJD() < TimeValue::J1582
-				  && $format != 'GR' ) ) {
-				$model = DITime::CM_JULIAN;
-			} else {
-				$model = DITime::CM_GREGORIAN;
-			}
 			return $this->getCaptionFromDataItem( $this->dataValue->getDataItemForCalendarModel( $model ) );
 		}
 
