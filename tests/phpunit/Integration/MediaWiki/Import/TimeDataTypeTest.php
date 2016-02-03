@@ -158,11 +158,11 @@ class TimeDataTypeTest extends MwDBaseUnitTestCase {
 			'valueFormatter' => $this->setWikiValueDateValueFormatter(),
 			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
 			'propertyValues' => array(
-				'1 January 300 BC', // 1 January 300 BC
+				'1 January 300 BC JL', // 1 January 300 BC
 				'2147483647 BC', // 2147483647 BC
 				'14000000000 BC',
-				'24 February 2000',
-				'2 February 1492'
+				'11 February 2000 JL',
+				'2 February 1492 JL'
 			)
 		);
 
@@ -182,11 +182,11 @@ class TimeDataTypeTest extends MwDBaseUnitTestCase {
 			'valueFormatter' => $this->setWikiValueDateWithJLCalendarModelValueFormatter(),
 			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
 			'propertyValues' => array(
-				'1 January 300 BC', // 1 January 300 BC
+				'1 January 300 BC JL', // 1 January 300 BC
 				'2147483647 BC', // 2147483647 BC
 				'14000000000 BC',
-				'11 February 2000',
-				'2 February 1492'
+				'11 February 2000 JL',
+				'2 February 1492 JL'
 			)
 		);
 

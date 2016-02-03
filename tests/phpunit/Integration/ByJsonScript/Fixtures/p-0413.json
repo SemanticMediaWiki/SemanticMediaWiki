@@ -96,7 +96,7 @@
 		},
 		{
 			"name": "Example/P0413/11a",
-			"contents": "{{#ask: [[Example/P0413/11]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date }}",
+			"contents": "{{#ask: [[Example/P0413/11]] |?Has date |?Has date#GR |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date |?Has date#JD=JD }}",
 			"skip-on": {
 				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
 			}
@@ -160,6 +160,22 @@
 			"skip-on": {
 				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
 			}
+		},
+		{
+			"name": "Example/P0413/18",
+			"contents": "[[Has date::2488346.0804977 JD]]"
+		},
+		{
+			"name": "Example/P0413/18a",
+			"contents": "{{#ask: [[Example/P0413/18]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date |?Has date#JD=JD }}"
+		},
+		{
+			"name": "Example/P0413/19",
+			"contents": "[[Has date::2488346.0804977 MJD]]"
+		},
+		{
+			"name": "Example/P0413/19a",
+			"contents": "{{#ask: [[Example/P0413/19]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date |?Has date#JD=JD }}"
 		}
 	],
 	"parser-testcases": [
@@ -481,10 +497,12 @@
 			"subject": "Example/P0413/11a",
 			"expected-output": {
 				"to-contain": [
-					"<td data-sort-value=\"1611848.5\" class=\"Has-date smwtype_dat\">1 January 300 BC</td>",
+					"<td data-sort-value=\"1611848.5\" class=\"Has-date smwtype_dat\">1 January 300 BC JL</td>",
+					"<td data-sort-value=\"1611848.5\" class=\"Has-date smwtype_dat\">28 December 301 BC</td>",
 					"<td data-sort-value=\"1611848.5\" class=\"Has-date smwtype_dat\">--301-12-28</td>",
 					"<td data-sort-value=\"1611848.5\" class=\"ISO-Date smwtype_dat\">--301-12-28</td>",
-					"<td data-sort-value=\"1611848.5\" class=\"MW-Date smwtype_dat\">28 December 0000</td>"
+					"<td data-sort-value=\"1611848.5\" class=\"MW-Date smwtype_dat\">28 December 0000</td>",
+					"<td data-sort-value=\"1611848.5\" class=\"JD smwtype_dat\">1611848.5</td>"
 				]
 			}
 		},
@@ -510,11 +528,11 @@
 			"subject": "Example/P0413/13a",
 			"expected-output": {
 				"to-contain": [
-					"<td data-sort-value=\"2451598.5\" class=\"Has-date smwtype_dat\">24 February 2000</td>",
+					"<td data-sort-value=\"2451598.5\" class=\"Has-date smwtype_dat\">11 February 2000 JL</td>",
 					"<td data-sort-value=\"2451598.5\" class=\"Has-date smwtype_dat\">2000-02-24</td>",
 					"<td data-sort-value=\"2451598.5\" class=\"ISO-Date smwtype_dat\">2000-02-24</td>",
 					"<td data-sort-value=\"2451598.5\" class=\"MW-Date smwtype_dat\">24 February 2000</td>",
-					"<td data-sort-value=\"2451598.5\" class=\"JL-Date smwtype_dat\">11 February 2000</td>",
+					"<td data-sort-value=\"2451598.5\" class=\"JL-Date smwtype_dat\">11 February 2000 JL</td>",
 					"<td data-sort-value=\"2451598.5\" class=\"GR-Date smwtype_dat\">24 February 2000</td>"
 				]
 			}
@@ -541,11 +559,11 @@
 			"subject": "Example/P0413/14a",
 			"expected-output": {
 				"to-contain": [
-					"<td data-sort-value=\"2266042.5\" class=\"Has-date smwtype_dat\">2 February 1492</td>",
+					"<td data-sort-value=\"2266042.5\" class=\"Has-date smwtype_dat\">2 February 1492 JL</td>",
 					"<td data-sort-value=\"2266042.5\" class=\"Has-date smwtype_dat\">1492-02-11</td>",
 					"<td data-sort-value=\"2266042.5\" class=\"ISO-Date smwtype_dat\">1492-02-11</td>",
 					"<td data-sort-value=\"2266042.5\" class=\"MW-Date smwtype_dat\">11 February 1492</td>",
-					"<td data-sort-value=\"2266042.5\" class=\"JL-Date smwtype_dat\">2 February 1492</td>",
+					"<td data-sort-value=\"2266042.5\" class=\"JL-Date smwtype_dat\">2 February 1492 JL</td>",
 					"<td data-sort-value=\"2266042.5\" class=\"GR-Date smwtype_dat\">11 February 1492</td>"
 				]
 			}
@@ -576,7 +594,7 @@
 					"<td data-sort-value=\"2451585.9166667\" class=\"Has-date smwtype_dat\">2000-02-11T10:00:00</td>",
 					"<td data-sort-value=\"2451585.9166667\" class=\"ISO-Date smwtype_dat\">2000-02-11T10:00:00</td>",
 					"<td data-sort-value=\"2451585.9166667\" class=\"MW-Date smwtype_dat\">10:00, 11 February 2000</td>",
-					"<td data-sort-value=\"2451585.9166667\" class=\"JL-Date smwtype_dat\">29 January 2000 10:00:00</td>",
+					"<td data-sort-value=\"2451585.9166667\" class=\"JL-Date smwtype_dat\">29 January 2000 10:00:00 JL</td>",
 					"<td data-sort-value=\"2451585.9166667\" class=\"GR-Date smwtype_dat\">11 February 2000 10:00:00</td>"
 				]
 			}
@@ -642,6 +660,66 @@
 					"<td data-sort-value=\"-11001\" class=\"Has-date smwtype_dat\">--11000-01-01</td>",
 					"<td data-sort-value=\"-11001\" class=\"ISO-Date smwtype_dat\">--11000-01-01</td>",
 					"<td data-sort-value=\"-11001\" class=\"MW-Date smwtype_dat\">0000</td>"
+				]
+			}
+		},
+		{
+			"about": "#34 Direct JD input",
+			"subject": "Example/P0413/18",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
+					"propertyValues": [ "2100-10-04T13:55:55" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"2488346.0804977 JD"
+				]
+			}
+		},
+		{
+			"about": "#35",
+			"subject": "Example/P0413/18a",
+			"expected-output": {
+				"to-contain": [
+					"<td data-sort-value=\"2488346.0804977\" class=\"Has-date smwtype_dat\">4 October 2100 13:55:55</td>",
+					"<td data-sort-value=\"2488346.0804977\" class=\"Has-date smwtype_dat\">2100-10-04T13:55:55</td>",
+					"<td data-sort-value=\"2488346.0804977\" class=\"ISO-Date smwtype_dat\">2100-10-04T13:55:55</td>",
+					"<td data-sort-value=\"2488346.0804977\" class=\"MW-Date smwtype_dat\">13:55, 4 October 2100</td>",
+					"<td data-sort-value=\"2488346.0804977\" class=\"JD smwtype_dat\">2488346.0804977</td>"
+				]
+			}
+		},
+		{
+			"about": "#36 Direct MJD input",
+			"subject": "Example/P0413/19",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
+					"propertyValues": [ "8671-09-27T01:55:55" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"2488346.0804977 MJD"
+				]
+			}
+		},
+		{
+			"about": "#37",
+			"subject": "Example/P0413/19a",
+			"expected-output": {
+				"to-contain": [
+					"<td data-sort-value=\"4888346.5804977\" class=\"Has-date smwtype_dat\">27 September 8671 01:55:55</td>",
+					"<td data-sort-value=\"4888346.5804977\" class=\"Has-date smwtype_dat\">8671-09-27T01:55:55</td>",
+					"<td data-sort-value=\"4888346.5804977\" class=\"ISO-Date smwtype_dat\">8671-09-27T01:55:55</td>",
+					"<td data-sort-value=\"4888346.5804977\" class=\"MW-Date smwtype_dat\">01:55, 27 September 8671</td>",
+					"<td data-sort-value=\"4888346.5804977\" class=\"JD smwtype_dat\">4888346.5804977</td>"
 				]
 			}
 		}
