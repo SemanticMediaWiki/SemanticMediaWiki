@@ -3,8 +3,7 @@
 namespace SMW;
 
 use RuntimeException;
-use Onoi\Cache\Cache;
-use Onoi\Cache\NullCache;
+use Onoi\BlobStore\BlobStore;
 
 /**
  * This class should be accessed via ApplicationFactory::getPropertySpecificationLookup
@@ -20,7 +19,7 @@ class PropertySpecificationLookup {
 	/**
 	 * @var string
 	 */
-	const VERSION = '0.1';
+	const VERSION = '0.2';
 
 	/**
 	 * @var Store
@@ -33,51 +32,26 @@ class PropertySpecificationLookup {
 	private $languageCode = 'en';
 
 	/**
-	 * @var Cache
+	 * @var BlobStore
 	 */
-	private $cache;
-
-	/**
-	 * @var string
-	 */
-	private $cachePrefix = ':smw:pspec:';
-
-	/**
-	 * @var integer
-	 */
-	private $ttl = 604800; // 7 * 24 * 3600
+	private $blobStore;
 
 	/**
 	 * @since 2.4
 	 *
 	 * @param Store $store
-	 * @param Cache|null $cache
+	 * @param BlobStore $blobStore
 	 */
-	public function __construct( Store $store, Cache $cache = null ) {
+	public function __construct( Store $store, BlobStore $blobStore ) {
 		$this->store = $store;
-		$this->cache = $cache;
-
-		if ( $this->cache === null ) {
-			$this->cache = new NullCache();
-		}
+		$this->blobStore = $blobStore;
 	}
 
 	/**
 	 * @since 2.4
 	 */
 	public function resetCacheFor( DIWikiPage $subject ) {
-		$this->cache->delete(
-			$this->cachePrefix . md5( $subject->getHash() . self::VERSION )
-		);
-	}
-
-	/**
-	 * @since 2.4
-	 *
-	 * @param string $cachePrefix
-	 */
-	public function setCachePrefix( $cachePrefix ) {
-		$this->cachePrefix = $cachePrefix . $this->cachePrefix;
+		$this->blobStore->delete( md5( $subject->getHash() . self::VERSION ) );
 	}
 
 	/**
@@ -99,6 +73,89 @@ class PropertySpecificationLookup {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @param DIProperty $property
+	 *
+	 * @return integer|false
+	 */
+	public function getDisplayPrecisionFor( DIProperty $property ) {
+
+		$displayPrecision = false;
+		$key = 'prec';
+
+		$hash = md5(
+			$property->getDiWikiPage()->getHash() . self::VERSION
+		);
+
+		$container = $this->blobStore->read( $hash );
+
+		if ( $container->has( $key ) ) {
+			return $container->get( $key );
+		}
+
+		$dataItems = $this->store->getPropertyValues(
+			$property->getDiWikiPage(),
+			new DIProperty( '_PREC' )
+		);
+
+		if ( $dataItems !== false && $dataItems !== array() ) {
+			$dataItem = end( $dataItems );
+			$displayPrecision = abs( (int)$dataItem->getNumber() );
+		}
+
+		$container->set( $key, $displayPrecision );
+
+		$this->blobStore->save(
+			$container
+		);
+
+		return $displayPrecision;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param DIProperty $property
+	 *
+	 * @return array
+	 */
+	public function getDisplayUnitsFor( DIProperty $property ) {
+
+		$units = array();
+		$key = 'unit';
+
+		$hash = md5(
+			$property->getDiWikiPage()->getHash() . self::VERSION
+		);
+
+		$container = $this->blobStore->read( $hash );
+
+		if ( $container->has( $key ) ) {
+			return $container->get( $key );
+		}
+
+		$dataItems = $this->store->getPropertyValues(
+			$property->getDiWikiPage(),
+			new DIProperty( '_UNIT' )
+		);
+
+		if ( $dataItems !== false && $dataItems !== array() ) {
+			foreach ( $dataItems as $dataItem ) {
+				$units = array_merge( $units, preg_split( '/\s*,\s*/u', $dataItem->getString() ) );
+			}
+		}
+
+		$container->set( $key, $units );
+
+		$this->blobStore->save(
+			$container
+		);
+
+		return $units;
+	}
+
+	/**
 	 * We try to cache anything to avoid unnecessary store connections or DB
 	 * lookups. For cases where a property was changed, the EventDipatcher will
 	 * receive a 'property.spec.change' event (emitted as soon as the content of
@@ -114,44 +171,41 @@ class PropertySpecificationLookup {
 	 */
 	public function getPropertyDescriptionFor( DIProperty $property, $linker = null ) {
 
-		$description = array();
+		$propertyDescription = '';
 
 		// Take the linker into account (Special vs. in page rendering etc.)
-		$key = $this->languageCode . ':' . ( $linker === null ? '-' : '+' );
+		$key = 'pdesc:' . $this->languageCode . ':' . ( $linker === null ? '0' : '1' );
 
-		$hash = $this->cachePrefix . md5(
+		$hash = md5(
 			$property->getDiWikiPage()->getHash() . self::VERSION
 		);
 
-		if ( $this->cache->contains( $hash ) ) {
-			$description = $this->cache->fetch( $hash );
+		$container = $this->blobStore->read( $hash );
 
-			if ( isset( $description[$key] ) ) {
-				return trim( $description[$key] );
-			}
+		if ( $container->has( $key ) ) {
+			return $container->get( $key );
 		}
 
-		$description[$key] = $this->tryToFindLocalPropertyDescription( $property, $linker );
+		$propertyDescription = $this->tryToFindLocalPropertyDescription( $property, $linker );
 
 		// If a local property description wasn't available for a predefined property
 		// the try to find a system translation
-		if ( trim( $description[$key] ) === '' && !$property->isUserDefined() ) {
-			$description[$key] = $this->getPredefinedPropertyDescription( $property, $linker );
+		if ( trim( $propertyDescription ) === '' && !$property->isUserDefined() ) {
+			$propertyDescription = $this->getPredefinedPropertyDescription( $property, $linker );
 		}
 
-		$this->cache->save(
-			$hash,
-			$description,
-			$this->ttl
+		$container->set( $key, $propertyDescription );
+
+		$this->blobStore->save(
+			$container
 		);
 
-		// Ensure that we return an empty string in case it is just true
-		return trim( $description[$key] );
+		return $propertyDescription;
 	}
 
 	private function getPredefinedPropertyDescription( $property, $linker ) {
 
-		$description = ' ';
+		$description = '';
 		$msgKey = 'smw-pa-property-predefined' . strtolower( $property->getKey() );
 
 		if ( !wfMessage( $msgKey )->exists() ) {
@@ -167,7 +221,7 @@ class PropertySpecificationLookup {
 
 	private function tryToFindLocalPropertyDescription( $property, $linker ) {
 
-		$description = ' ';
+		$description = '';
 
 		$dataItems = $this->store->getPropertyValues(
 			$property->getDiWikiPage(),

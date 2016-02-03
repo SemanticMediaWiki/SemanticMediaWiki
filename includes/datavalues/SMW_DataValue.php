@@ -12,6 +12,8 @@ use SMW\Options;
 use SMW\Query\QueryComparator;
 use SMW\Deserializers\DVDescriptionDeserializerRegistry;
 use SMW\DataValues\ValueFormatterRegistry;
+use SMW\ApplicationFactory;
+
 
 /**
  * Objects of this type represent all that is known about a certain user-provided
@@ -515,6 +517,15 @@ abstract class SMWDataValue {
 	 */
 	public function getDataValueFormatter() {
 		return ValueFormatterRegistry::getInstance()->getDataValueFormatterFor( $this );
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return PropertySpecificationLookup
+	 */
+	public function getPropertySpecificationLookup() {
+		return ApplicationFactory::getInstance()->getPropertySpecificationLookup();
 	}
 
 	/**

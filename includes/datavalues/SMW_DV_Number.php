@@ -183,6 +183,24 @@ class SMWNumberValue extends SMWDataValue {
 		}
 	}
 
+	/**
+	 * @since 2.4
+	 *
+	 * @return integer
+	 */
+	public function getLocalizedFormattedNumberByPrecision( $value ) {
+		return NumberFormatter::getInstance()->getLocalizedFormattedNumber( $value, $this->getPrecision() );
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return integer
+	 */
+	public function getUnformattedNumberByPrecision( $value ) {
+		return NumberFormatter::getInstance()->getUnformattedNumberByPrecision( $value, $this->getPrecision() );
+	}
+
 	public function getShortWikiText( $linked = null ) {
 		if ( is_null( $linked ) || ( $linked === false ) || ( $this->m_outformat == '-' )
 			|| ( $this->m_outformat == '-u' ) || ( $this->m_outformat == '-n' ) || ( !$this->isValid() ) ) {
@@ -252,6 +270,7 @@ class SMWNumberValue extends SMWDataValue {
 			if ( $i > 1 ) {
 				$result .= ')';
 			}
+
 			return $result;
 		}
 	}
@@ -371,9 +390,15 @@ class SMWNumberValue extends SMWDataValue {
 
 		$number = $this->m_dataitem->getNumber();
 
-		if ( $this->m_outformat != '-u' ) { // -u is the format for displaying the unit only
-			$this->m_caption .= ( ( $this->m_outformat != '-' ) && ( $this->m_outformat != '-n' ) ? NumberFormatter::getInstance()->getLocalizedFormattedNumber( $number, $this->getPrecision() ) : NumberFormatter::getInstance()->getUnformattedNumberByPrecision( $number, $this->getPrecision() ) );
+		// -u is the format for displaying the unit only
+		if ( $this->m_outformat == '-u' ) {
+			$this->m_caption = '';
+		} elseif ( ( $this->m_outformat != '-' ) && ( $this->m_outformat != '-n' ) ) {
+			$this->m_caption = $this->getLocalizedFormattedNumberByPrecision( $number );
+		} else {
+			$this->m_caption = $this->getUnformattedNumberByPrecision( $number );
 		}
+
 		// no unit ever, so nothing to do about this
 		$this->m_unitin = '';
 	}
@@ -390,23 +415,14 @@ class SMWNumberValue extends SMWDataValue {
 
 	protected function getPrecision() {
 
-		if ( $this->m_property === null ) {
+		if ( $this->getProperty() === null ) {
 			return false;
 		}
 
 		if ( $this->precision === null ) {
-
-			$dataItems = ApplicationFactory::getInstance()->getStore()->getPropertyValues(
-				$this->m_property->getDIWikiPage(),
-				new SMWDIProperty( '_PREC' )
+			$this->precision = $this->getPropertySpecificationLookup()->getDisplayPrecisionFor(
+				$this->getProperty()
 			);
-
-			if ( $dataItems === array() ) {
-				return $this->precision = false;
-			}
-
-			$dataItem = current( $dataItems );
-			$this->precision = abs( $dataItem->getNumber() );
 		}
 
 		return $this->precision;
