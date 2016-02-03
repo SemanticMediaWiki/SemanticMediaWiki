@@ -147,8 +147,9 @@ class SMWTimeValue extends SMWDataValue {
 		$datecomponents = array();
 		$calendarmodel = $era = $hours = $minutes = $seconds = $timeoffset = false;
 
-		// Check if it's parseable by wfTimestamp when it's not a year (which is wrongly interpreted).
-		if ( strlen( $value ) != 4 && wfTimestamp( TS_MW, $value ) !== false ) {
+		if ( $this->isInterpretableAsYearOnly( $value ) ) {
+			$this->m_dataitem = new SMWDITime( $this->getCalendarModel( null, $value, null, null ), $value );
+		} elseif ( strlen( $value ) != 4 && wfTimestamp( TS_MW, $value ) !== false ) {
 			$this->m_dataitem = SMWDITime::newFromTimestamp( $value );
 		}
 		elseif ( $this->parseDateString( $value, $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $timeoffset ) ) {
@@ -777,6 +778,10 @@ class SMWTimeValue extends SMWDataValue {
 			}
 			return $this->m_dataitem_jul;
 		}
+	}
+
+	private function isInterpretableAsYearOnly( $value ) {
+		return strpos( $value, ' ' ) === false && is_numeric( strval( $value ) ) && ( strval( $value ) < 0 || strlen( $value ) < 6 );
 	}
 
 }

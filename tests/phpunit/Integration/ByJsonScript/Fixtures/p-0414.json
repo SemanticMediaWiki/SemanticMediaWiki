@@ -22,6 +22,30 @@
 		{
 			"name": "Example/P0414/2a",
 			"contents": "{{#ask: [[Example/P0414/2]] |?Has date#-F[H:i:s.u] |?Has date#-F[Y/m/d H:i] |?Has date#GR-F[Y/m/d H:i] |?Has date#JD=JD }}"
+		},
+		{
+			"name": "Example/P0414/3",
+			"contents": "[[Has date::1902]]"
+		},
+		{
+			"name": "Example/P0414/3a",
+			"contents": "{{#ask: [[Example/P0414/3]] |?Has date#-F[Y] |?Has date#-F[Y/m/d] |?Has date#JD=JD }}"
+		},
+		{
+			"name": "Example/P0414/4",
+			"contents": "[[Has date::12001102120325]]"
+		},
+		{
+			"name": "Example/P0414/4a",
+			"contents": "{{#ask: [[Example/P0414/4]] |?Has date#-F[Y] |?Has date#-F[Y/m/d] |?Has date#JD=JD }}"
+		},
+		{
+			"name": "Example/P0414/5",
+			"contents": "[[Has date::-100000]]"
+		},
+		{
+			"name": "Example/P0414/5a",
+			"contents": "{{#ask: [[Example/P0414/5]] |?Has date#-F[H:i:s.u] |?Has date#-F[Y/m/d H:i] |?Has date#GR-F[Y/m/d H:i] |?Has date#JD=JD }}"
 		}
 	],
 	"parser-testcases": [
@@ -74,6 +98,89 @@
 		{
 			"about": "#3",
 			"subject": "Example/P0414/2a",
+			"expected-output": {
+				"to-contain": [
+					"<td data-sort-value=\"-100001\" class=\"Has-date smwtype_dat\">--100000-01-01</td>",
+					"<td data-sort-value=\"-100001\" class=\"JD smwtype_dat\">-34802824.5</td>"
+				]
+			}
+		},
+		{
+			"about": "#4 year only",
+			"subject": "Example/P0414/3",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
+					"propertyValues": [ "1902-01-01" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"1902"
+				]
+			}
+		},
+		{
+			"about": "#5",
+			"subject": "Example/P0414/3a",
+			"expected-output": {
+				"to-contain": [
+					"<td data-sort-value=\"2415750.5\" class=\"Has-date smwtype_dat\">1902</td>",
+					"<td data-sort-value=\"2415750.5\" class=\"Has-date smwtype_dat\">1902/01/01</td>",
+					"<td data-sort-value=\"2415750.5\" class=\"JD smwtype_dat\">2415750.5</td>"
+				]
+			}
+		},
+		{
+			"about": "#6 timestamp input (TS_MW as 'YmdHis)",
+			"subject": "Example/P0414/4",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
+					"propertyValues": [ "1200-11-02T12:03:25" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"12001102120325"
+				]
+			}
+		},
+		{
+			"about": "#7",
+			"subject": "Example/P0414/4a",
+			"expected-output": {
+				"to-contain": [
+					"<td data-sort-value=\"2159657.0023727\" class=\"Has-date smwtype_dat\">1200 JL</td>",
+					"<td data-sort-value=\"2159657.0023727\" class=\"Has-date smwtype_dat\">1200/10/26 JL</td>",
+					"<td data-sort-value=\"2159657.0023727\" class=\"JD smwtype_dat\">2159657.0023727</td>"
+				]
+			}
+		},
+		{
+			"about": "#8 negative year without BC",
+			"subject": "Example/P0414/5",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
+					"propertyValues": [ "--100000-01-01" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"-100000"
+				]
+			}
+		},
+		{
+			"about": "#9",
+			"subject": "Example/P0414/5a",
 			"expected-output": {
 				"to-contain": [
 					"<td data-sort-value=\"-100001\" class=\"Has-date smwtype_dat\">--100000-01-01</td>",
