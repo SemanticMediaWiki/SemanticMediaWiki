@@ -132,6 +132,19 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetCaptionFromDataItemForPositiveYearWithEraMarker() {
+
+		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setUserValue( '2000 AD' );
+
+		$instance = new TimeValueFormatter( $timeValue );
+
+		$this->assertEquals(
+			'AD 2000',
+			$instance->getCaptionFromDataItem( $timeValue->getDataItem() )
+		);
+	}
+
 	public function testLeapYear() {
 
 		$timeValue = new TimeValue( '_dat' );

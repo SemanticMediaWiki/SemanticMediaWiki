@@ -91,6 +91,11 @@ class SMWDITime extends SMWDataItem {
 	protected $timezone;
 
 	/**
+	 * @var integer|null
+	 */
+	protected $era = null;
+
+	/**
 	 * Create a time data item. All time components other than the year can
 	 * be false to indicate that they are not specified. This will affect
 	 * the internal precision setting. The missing values are initialised
@@ -127,6 +132,9 @@ class SMWDITime extends SMWDataItem {
 		$this->m_seconds = $second !== false ? floatval( $second ) : 0;
 
 		$this->timezone = $timezone !== false ? intval( $timezone ) : 0;
+		$year = strval( $year );
+		$this->era      = $year{0} === '+' ? 1 : ( $year{0} === '-' ? -1 : 0 );
+
 
 		if ( ( $this->m_hours < 0 ) || ( $this->m_hours > 23 ) ||
 		     ( $this->m_minutes < 0 ) || ( $this->m_minutes > 59 ) ||
@@ -160,6 +168,22 @@ class SMWDITime extends SMWDataItem {
 
 	public function getPrecision() {
 		return $this->m_precision;
+	}
+
+	/**
+	 * Indicates whether a user explicitly used an era marker even for a positive
+	 * year.
+	 *
+	 * - [-1] indicates BC(E)
+	 * - [0]/null indicates no era marker
+	 * - [1] indicates AD/CE was used
+	 *
+	 * @since 2.4
+	 *
+	 * @return integer
+	 */
+	public function getEra() {
+		return $this->era;
 	}
 
 	public function getYear() {
@@ -346,7 +370,7 @@ class SMWDITime extends SMWDataItem {
 	}
 
 	public function getSerialization() {
-		$result = strval( $this->m_model ) . '/' . strval( $this->m_year );
+		$result = strval( $this->m_model ) . '/' . ( $this->era > 0 ? '+' : '' ) . strval( $this->m_year );
 
 		if ( $this->m_precision >= self::PREC_YM ) {
 			$result .= '/' . strval( $this->m_month );
@@ -380,6 +404,11 @@ class SMWDITime extends SMWDataItem {
 				}
 
 				$values[$i] = $i == 6 ? floatval( $parts[$i] ) : intval( $parts[$i] );
+
+				// Find out whether the input contained an explicit AD/CE era marker
+				if ( $i == 1 ) {
+					$values[$i] = ( $parts[1]{0} === '+' ? '+' : '' ) . $values[$i];
+				}
 			} else {
 				$values[$i] = false;
 			}
