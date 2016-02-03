@@ -181,10 +181,13 @@ abstract class Store {
 		$redirectDataItems = $this->getPropertyValues( $wikipage, new DIProperty( '_REDI' ) );
 
 		if ( count( $redirectDataItems ) > 0 ) {
-			if ( $dataItem->getDIType() == SMWDataItem::TYPE_PROPERTY ) {
-				$dataItem = DIProperty::newFromUserLabel( end( $redirectDataItems )->getDBkey() );
+
+			$redirectDataItem = end( $redirectDataItems );
+
+			if ( $dataItem->getDIType() == SMWDataItem::TYPE_PROPERTY && $redirectDataItem instanceof DIWikiPage ) {
+				$dataItem = DIProperty::newFromUserLabel( $redirectDataItem->getDBkey() );
 			} else {
-				$dataItem = end( $redirectDataItems );
+				$dataItem = $redirectDataItem;
 			}
 
 			$poolCache->save( $hash, $dataItem );
