@@ -83,6 +83,7 @@ class PropertySpecificationChangeNotifier {
 
 		$this->compareFor( '_TYPE' );
 		$this->compareFor( '_CONV' );
+		$this->compareFor( '_UNIT' );
 		$this->compareFor( '_PREC' );
 		$this->compareFor( '_PDESC' );
 

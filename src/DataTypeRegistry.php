@@ -405,7 +405,7 @@ class DataTypeRegistry {
 			'_wpc'  => 'SMWWikiPageValue', // Category page type TODO: make available to user space
 			'_wpf'  => 'SMWWikiPageValue', // Form page type for Semantic Forms
 			'_num'  => 'SMWNumberValue', // Number type
-			'_tem'  => 'SMWTemperatureValue', // Temperature type
+			'_tem'  => 'SMW\DataValues\TemperatureValue', // Temperature type
 			'_dat'  => 'SMWTimeValue', // Time type
 			'_boo'  => 'SMWBoolValue', // Boolean type
 			'_rec'  => 'SMWRecordValue', // Value list type (replacing former nary properties)

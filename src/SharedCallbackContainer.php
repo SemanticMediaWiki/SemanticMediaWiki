@@ -4,7 +4,7 @@ namespace SMW;
 
 use Onoi\CallbackContainer\CallbackContainer;
 use Onoi\CallbackContainer\CallbackLoader;
-
+use Onoi\BlobStore\BlobStore;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\TitleCreator;
 use SMW\MediaWiki\Jobs\JobFactory;
@@ -19,8 +19,14 @@ use Closure;
  */
 class SharedCallbackContainer implements CallbackContainer {
 
+	/**
+	 * @see CallbackContainer::register
+	 *
+	 * @since 2.3
+	 */
 	public function register( CallbackLoader $callbackLoader ) {
 		$this->registerCallbackHandlers( $callbackLoader );
+		$this->registerCallbackHandlersByFactory( $callbackLoader );
 	}
 
 	private function registerCallbackHandlers( $callbackLoader ) {
@@ -98,19 +104,42 @@ class SharedCallbackContainer implements CallbackContainer {
 		$callbackLoader->registerCallback( 'FactboxFactory', function() {
 			return new FactboxFactory();
 		} );
+	}
+
+	private function registerCallbackHandlersByFactory( $callbackLoader ) {
+
+		$callbackLoader->registerExpectedReturnType( 'BlobStore', '\Onoi\BlobStore\BlobStore' );
+
+		$callbackLoader->registerCallback( 'BlobStore', function( $namespace, $cacheType = null, $ttl = 0 ) use ( $callbackLoader ) {
+
+			$cacheFactory = $callbackLoader->load( 'CacheFactory' );
+
+			$blobStore = new BlobStore(
+				$namespace,
+				$cacheFactory->newMediaWikiCompositeCache( $cacheType )
+			);
+
+			$blobStore->setNamespacePrefix(
+				$cacheFactory->getCachePrefix()
+			);
+
+			$blobStore->setExpiryInSeconds(
+				$ttl
+			);
+
+			return $blobStore;
+		} );
 
 		$callbackLoader->registerExpectedReturnType( 'PropertySpecificationLookup', '\SMW\PropertySpecificationLookup' );
 
 		$callbackLoader->registerCallback( 'PropertySpecificationLookup', function() use ( $callbackLoader ) {
-			$cacheFactory = $callbackLoader->load( 'CacheFactory' );
+
+			$cacheType = null;
+			$ttl = 604800; // 7 * 24 * 3600
 
 			$propertySpecificationLookup = new PropertySpecificationLookup(
 				$callbackLoader->load( 'Store' ),
-				$cacheFactory->newMediaWikiCompositeCache()
-			);
-
-			$propertySpecificationLookup->setCachePrefix(
-				$cacheFactory->getCachePrefix()
+				$callbackLoader->load( 'BlobStore', 'smw:psl:store', $cacheType, $ttl )
 			);
 
 			// Uses the language object selected in user preferences. It is one
