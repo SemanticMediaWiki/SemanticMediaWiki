@@ -19,7 +19,7 @@ Not a release yet.
 * #1257 Changed import of recursive annotations (#1068) from the format to a query level using the `import-annotation` parameter
 * #1291 Added support for range queries such as `[[>AAA]] [[<AAD]]`
 * #1293 Added `_ERRC` and `_ERRT` as pre-defined properties to aid error analysis
-* #1299 Added check for named identifier in subobject do not to contain a dot (`foo.bar` used by extensions)
+* #1299 Added dot named identifier restriction for subobject names containing a dot (`fooba.bar` reserved for extensions)
 * #1313 Added usage count information to property pages
 * #1321 Added [`$smwgSparqlRepositoryConnectorForcedHttpVersion`](https://semantic-mediawiki.org/wiki/Help:$smwgSparqlRepositoryConnectorForcedHttpVersion) setting to force a specific HTTP version in case of a #1306 cURL issue
 * #1290 Added support for properties and prinrequests to be forwared to a redirect target if one exists
@@ -29,6 +29,7 @@ Not a release yet.
 * #1344 Added `MonolingualTextValue` and `LanguageCodeValue`
 * #1381 Added localizable context help for properties using the predefined property `Has property description` (which is specified as `MonolingualText` type)
 * #1389 Added free date/time formatting support using the `-F[ ... ]` option
+* #1391 Made subobject directly browsable from/in the Factbox
 
 ## Bug fixes
 
