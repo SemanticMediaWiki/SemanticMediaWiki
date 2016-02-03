@@ -256,7 +256,7 @@
 	"smw_adminlinks_datastructure": "Estructura de dades",
 	"smw_adminlinks_displayingdata": "Visualització de les dades",
 	"smw_adminlinks_inlinequerieshelp": "Ajuda de les consultes en línia",
-	"smw-createproperty-isproperty": "Aquesta és una propietat del tipus $1.",
+	"smw-createproperty-isproperty": "És una propietat del tipus $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|El valor permès per a aquestapropietat és|Els valors permesos per a aquestes propietats són}}:",
 	"smw-paramdesc-category-delim": "El delimitador",
 	"smw-paramdesc-category-template": "Una plantilla per donar format als elements amb",
@@ -269,7 +269,7 @@
 	"smw-prefs-ask-options-tooltip-display": "Mostra el text del paràmetre en un rètol flotant informatiu",
 	"smw-prefs-ask-options-collapsed-default": "Habilita que el quadre d'opció estigui reduït per defecte",
 	"smw-ui-tooltip-title-property": "Propietat",
-	"smw-ui-tooltip-title-quantity": "Quantitat",
+	"smw-ui-tooltip-title-quantity": "Conversió d'unitat",
 	"smw-ui-tooltip-title-info": "Informació",
 	"smw-ui-tooltip-title-service": "Enllaços de servei",
 	"smw-ui-tooltip-title-warning": "Error",
@@ -339,5 +339,7 @@
 	"smw-sp-types_txt": "«$1» és un tipus de dades primitiu que descriu cadenes de longitud arbitrària.",
 	"smw-sp-types_dat": "«$1» és un tipus de dades per representar punts en el temps en un format unificat.",
 	"smw-pa-property-predefined_errc": "«$1» és una propietat predefinida que representa un [https://www.semantic-mediawiki.org/wiki/Help:Container contenidor] d'errors que van aparèixer en connexió amb anotacions de valors o processament d'entrades no adequats.",
-	"smw-pa-property-predefined_errt": "«$1» és una propietat predefinida que conté una descripció contextual d'un error."
+	"smw-pa-property-predefined_errt": "«$1» és una propietat predefinida que conté una descripció contextual d'un error.",
+	"smw-limitreport-intext-parsertime-value": "$1 segons",
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 segons"
 }

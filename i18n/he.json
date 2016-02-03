@@ -336,5 +336,19 @@
 	"smw-pa-property-predefined_errc": "\"$1\" הוא מאפיין מוגדר מראש שמייצג [https://www.semantic-mediawiki.org/wiki/Help:Container מבנה] לשגיאות שהופיעו בהקשר של הערות ערך או איבוד קלט שלא עבדו נכון.",
 	"smw-pa-property-predefined_errt": "\"$1\" הוא מאפיין מוגדר מראש שמכיל תיאור טקסט של שגיאה.",
 	"smw-subobject-parser-invalid-naming-scheme": "תת־עצם שהוגדר על־ידי המשתמש עשה שימוש בשיטת מתן שמות בלתי־תקינה. כתיבת נקודה בחמשת האותיות הראשונות ($1) שמורה להרחבות.",
-	"smw-datavalue-record-invalid-property-declaration": "הגדרת הרשומה כוללת את המאפיין \"$1\" שבעצמה מוגדרת בתור סוג רשומה ואינה מותרת."
+	"smw-datavalue-record-invalid-property-declaration": "הגדרת הרשומה כוללת את המאפיין \"$1\" שבעצמה מוגדרת בתור סוג רשומה ואינה מותרת.",
+	"smw-pa-property-predefined_mdat": "\"$1\" היא תכונה מוגדרת שמתאימה לתאריך השינוי האחרון של הנושא ומובנית ב[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_cdat": "\"$1\" היא תכונה מוגדרת שמתאימה לתאריך השינוי הראשון של הנושא ומובנית ב[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_newp": "\"$1\" היא תכונה מוגדרת המגדירה האם הנושא חדש או לא ומובנית ב[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_ledt": "\"$1\" היא תכונה מוגדרת שמכילה את שם הדף של המשתמש שערך את הגרסה האחרונה ומובנית ב[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_mime": "\"$1\" היא תכונה מוגדרת שמציינת את סוג ה-MIME של קובץ שהועלה ומובנית ב[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_media": "\"$1\" היא תכונה מוגדרת שמציינת את סוג המדיה של קובץ שהועלה ומובנית ב[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_askfo": "\"$1\" היא תכונה מוגדרת שמציינת את הפורמט של תוצאת השאילתה ומובנית ב[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_askst": "\"$1\" היא תכונה מוגדרת שמציינת את התנאים של השאילתה כמחרוזת ומובנית ב[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_askdu": "\"$1\" היא תכונה מוגדרת שמציינת את הזמן (בשניות) שנדרש להשלמת השאילתה ומובנית ב[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_prec": "\"$1\" היא תכונה מוגדרת שמציינת את [https://www.semantic-mediawiki.org/wiki/Help:Display_precision דיוק התצוגה] (בספרות דצימליות) לערכים מספריים.",
+	"smw-sp-types-geo-not-available": "[https://www.semantic-mediawiki.org/wiki/Semantic_Maps Semantic Maps] לא נמצא ולכן \"$1\" מוגבל ביכולת פעילותו.",
+	"smw-datavalue-monolingual-dataitem-missing": "חסר פריט דרוש לבניית ערך חד-לשוני.",
+	"smw-limitreport-intext-parsertime-value": "$1 שניות",
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 שניות"
 }

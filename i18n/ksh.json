@@ -237,6 +237,7 @@
 	"smw-sp-types_txt": "„$1“ ess_en eijfache Dahte_Zoot, bechtemmp derför, esu vell Zeische hengerenander daazeschtälle, wi nühdesch.",
 	"smw-sp-types_dat": "„$1“ ess_en Dahte_Zoot för Zigg_Pongkte en enem eijheijtlejje Fommaht daazeschtälle.",
 	"smw-limitreport-intext-parsertime": "[SMW] De Zigg di der Paaser för et Annotehre jebruch hät",
-	"smw-limitreport-intext-parsertime-value": "$1 Sekonde ",
-	"smw-limitreport-pagepurge-storeupdatetime": "[SMW] De Duur för et Ändere fum Zwescheschpeijscher beim Fottschmiiße"
+	"smw-limitreport-intext-parsertime-value": "{{PLURAL:$1|eijn Sekond|$1 Sekond|keijn Sekond}}",
+	"smw-limitreport-pagepurge-storeupdatetime": "[SMW] De Duur för et Ändere fum Zwescheschpeijscher beim Fottschmiiße",
+	"smw-limitreport-pagepurge-storeupdatetime-value": "{{PLURAL:$1|eijn Sekond|$1 Sekond|keijn Sekond}}"
 }

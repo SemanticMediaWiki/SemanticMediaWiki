@@ -191,5 +191,7 @@
 	"smw-datavalue-invalid-number": "\"$1\" kann net als Zuel interpretéiert ginn.",
 	"smw-sp-types-list": "Lëscht vun Datentypen",
 	"smw-sp-types-default": "\"$1\" ass en agebauten Datentyp.",
-	"smw-sp-types-help": "Méi Informatiounen a Beispiller fannt Dir op der [https://www.semantic-mediawiki.org/wiki/Help:Type_$1 Hëllef-Säit]."
+	"smw-sp-types-help": "Méi Informatiounen a Beispiller fannt Dir op der [https://www.semantic-mediawiki.org/wiki/Help:Type_$1 Hëllef-Säit].",
+	"smw-limitreport-intext-parsertime-value": "$1 Sekonnen",
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 Sekonnen"
 }
