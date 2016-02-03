@@ -30,6 +30,7 @@ Not a release yet.
 * #1381 Added localizable context help for properties using the predefined property `Has property description` (which is specified as `MonolingualText` type)
 * #1389 Added free date/time formatting support using the `-F[ ... ]` option
 * #1391 Made subobject directly browsable from/in the Factbox
+* #1396 Indicate `AC/CE` era for positive years if it was explicitly annotated
 
 ## Bug fixes
 
@@ -45,6 +46,7 @@ Not a release yet.
 * #753 (T40476) Fixed number parsing of non-zero lead decimal numbers (.1 vs 0.1)
 * #1357 Fixed `|+align=...` usage for `format=table`
 * #1358 Fixed recognition of multi-byte boolean value
+* #1348 Fixed single year detection in `TimeValue`
 
 ## Internal changes
 
