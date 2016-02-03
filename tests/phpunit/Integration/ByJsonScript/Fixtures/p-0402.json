@@ -32,7 +32,7 @@
 			"contents": "//::Page/::Foo:Bar is not allowed as title; [[Has text::::Text/::Foo:Bar]] [[Has url::http://example.org/:::Foo:Bar]]"
 		},
 		{
-			"name": "Date-error",
+			"name": "Example/P0402/3",
 			"contents": "[[Has date:::1 Jan 1970]]"
 		},
 		{
@@ -127,17 +127,17 @@
 		},
 		{
 			"about": "#4",
-			"subject": "Date-error",
+			"subject": "Example/P0402/3",
 			"store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SKEY", "_MDAT", "_ERRC" ]
+					"propertyKeys": [ "_SKEY", "_MDAT", "Has_date" ]
 				}
 			},
 			"expected-output": {
 				"to-contain": [
-					"&#58;1 Jan 1970"
+					"1 Jan 1970"
 				]
 			}
 		},

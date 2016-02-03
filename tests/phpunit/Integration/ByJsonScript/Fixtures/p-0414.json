@@ -54,6 +54,14 @@
 		{
 			"name": "Example/P0414/6a",
 			"contents": "{{#ask: [[Example/P0414/6]]  |?Has date |?Has date#-F[Y] |?Has date#-F[Y/m/d] }}"
+		},
+		{
+			"name": "Example/P0414/7",
+			"contents": "[[Has date::2012-07-08 11:14:15.888499949]]"
+		},
+		{
+			"name": "Example/P0414/7a",
+			"contents": "{{#ask: [[Example/P0414/7]]  |?Has date |?Has date#-F[H:i:s.u] }}"
 		}
 	],
 	"parser-testcases": [
@@ -221,6 +229,33 @@
 					"<td data-sort-value=\"2415750.5\" class=\"Has-date smwtype_dat\">AD 1902</td>",
 					"<td data-sort-value=\"2415750.5\" class=\"Has-date smwtype_dat\">1902</td>",
 					"<td data-sort-value=\"2415750.5\" class=\"Has-date smwtype_dat\">1902/01/01</td>"
+				]
+			}
+		},
+		{
+			"about": "#12 micro sec",
+			"subject": "Example/P0414/7",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
+					"propertyValues": [ "2012-07-08T11:14:15" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"2012-07-08 11:14:15.888499949"
+				]
+			}
+		},
+		{
+			"about": "#13 `.888499949` is being rounded to `.888500`",
+			"subject": "Example/P0414/7a",
+			"expected-output": {
+				"to-contain": [
+					"<td data-sort-value=\"2456116.9682395\" class=\"Has-date smwtype_dat\">8 July 2012 11:14:15</td>",
+					"<td data-sort-value=\"2456116.9682395\" class=\"Has-date smwtype_dat\">11:14:15.888500</td>"
 				]
 			}
 		}

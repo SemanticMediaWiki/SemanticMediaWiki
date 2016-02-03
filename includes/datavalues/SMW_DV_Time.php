@@ -145,14 +145,14 @@ class SMWTimeValue extends SMWDataValue {
 
 		/// TODO Direct JD input currently cannot cope with decimal numbers
 		$datecomponents = array();
-		$calendarmodel = $era = $hours = $minutes = $seconds = $timeoffset = false;
+		$calendarmodel = $era = $hours = $minutes = $seconds = $microseconds = $timeoffset = $timezone = false;
 
 		if ( $this->isInterpretableAsYearOnly( $value ) ) {
 			$this->m_dataitem = new SMWDITime( $this->getCalendarModel( null, $value, null, null ), $value );
 		} elseif ( strlen( $value ) != 4 && wfTimestamp( TS_MW, $value ) !== false ) {
 			$this->m_dataitem = SMWDITime::newFromTimestamp( $value );
 		}
-		elseif ( $this->parseDateString( $value, $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $timeoffset ) ) {
+		elseif ( $this->parseDateString( $value, $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $microseconds, $timeoffset, $timezone ) ) {
 			if ( ( $calendarmodel === false ) && ( $era === false ) && ( count( $datecomponents ) == 1 ) && ( intval( end( $datecomponents ) ) >= 100000 ) ) {
 				$calendarmodel = 'JD'; // default to JD input if a single number was given as the date
 			}
@@ -172,7 +172,7 @@ class SMWTimeValue extends SMWDataValue {
 					$this->addError( wfMessage( 'smw_nodatetime', $this->m_wikivalue )->inContentLanguage()->text() );
 				}
 			} else {
-				$this->setDateFromParsedValues( $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $timeoffset );
+				$this->setDateFromParsedValues( $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $microseconds, $timeoffset, $timezone );
 			}
 		}
 
@@ -197,7 +197,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * @return boolean stating if the parsing succeeded
 	 * @todo This method in principle allows date parsing to be internationalized further. Should be done.
 	 */
-	protected function parseDateString( $string, &$datecomponents, &$calendarmodel, &$era, &$hours, &$minutes, &$seconds, &$timeoffset ) {
+	protected function parseDateString( $string, &$datecomponents, &$calendarmodel, &$era, &$hours, &$minutes, &$seconds, &$microseconds, &$timeoffset, &$timezone ) {
 		// crude preprocessing for supporting different date separation characters;
 		// * this does not allow localized time notations such as "10.34 pm"
 		// * this creates problems with keywords that contain "." such as "p.m."
@@ -207,7 +207,7 @@ class SMWTimeValue extends SMWDataValue {
 		$matches = preg_split( "/([T]?[0-2]?[0-9]:[\:0-9]+[+\-]?[0-2]?[0-9\:]+|[\p{L}]+|[0-9]+|[ ])/u", $parsevalue, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY );
 		$datecomponents = array();
 		$calendarmodel = $timezoneoffset = $era = $ampm = false;
-		$hours = $minutes = $seconds = $timeoffset = false;
+		$hours = $minutes = $seconds = $microseconds = $timeoffset = $timezone = false;
 		$unclearparts = array();
 		$matchisnumber = false; // used for looking back; numbers are days/months/years by default but may be re-interpreted if certain further symbols are found
 		$matchisdate = false; // used for ensuring that date parts are in one block
@@ -254,6 +254,8 @@ class SMWTimeValue extends SMWDataValue {
 			} elseif ( $prevmatchwasnumber && $prevmatchwasdate && in_array( $match, array( 'st', 'nd', 'rd', 'th' ) ) ) {
 				$datecomponents[] = 'd' . strval( array_pop( $datecomponents ) ); // must be a day; add standard marker
 				$matchisdate = true;
+			} elseif ( count( $match ) == 1 ) {
+				$microseconds = $match;
 			} else {
 				$unclearparts[] = $match;
 			}
@@ -475,7 +477,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * @param $timeoffset double value for time offset (e.g. 3.5), or false if not given
 	 * @return boolean stating if successful
 	 */
-	protected function setDateFromParsedValues( $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $timeoffset ) {
+	protected function setDateFromParsedValues( $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $microseconds, $timeoffset, $timezone ) {
 		$date = false;
 		if ( !$this->interpretDateComponents( $datecomponents, $date ) ) {
 			return false;
@@ -499,7 +501,7 @@ class SMWTimeValue extends SMWDataValue {
 
 		$calmod = $this->getCalendarModel( $calendarmodel, $date['y'], $date['m'], $date['d'] );
 		try {
-			$this->m_dataitem = new SMWDITime( $calmod, $date['y'], $date['m'], $date['d'], $hours, $minutes, $seconds, $this->m_typeid );
+			$this->m_dataitem = new SMWDITime( $calmod, $date['y'], $date['m'], $date['d'], $hours, $minutes, $seconds . '.' . $microseconds );
 		} catch ( SMWDataItemException $e ) {
 			$this->addError( wfMessage( 'smw_nodatetime', $this->m_wikivalue )->inContentLanguage()->text() );
 			return false;
@@ -516,7 +518,7 @@ class SMWTimeValue extends SMWDataValue {
 		if ( $timeoffset != 0 ) {
 			$newjd = $this->m_dataitem->getJD() - $timeoffset / 24;
 			try {
-				$this->m_dataitem = SMWDITime::newFromJD( $newjd, $calmod, $this->m_dataitem->getPrecision(), $this->m_typeid );
+				$this->m_dataitem = SMWDITime::newFromJD( $newjd, $calmod, $this->m_dataitem->getPrecision() );
 			} catch ( SMWDataItemException $e ) {
 				$this->addError( wfMessage( 'smw_nodatetime', $this->m_wikivalue )->inContentLanguage()->text() );
 				return false;
