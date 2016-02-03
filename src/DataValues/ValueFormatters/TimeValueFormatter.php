@@ -191,6 +191,10 @@ class TimeValueFormatter extends DataValueFormatter {
 			$result .= " " . $this->getTimeString();
 		}
 
+		if ( $dataItem->getCalendarModel() !== DITime::CM_GREGORIAN ) {
+			$result .= " " . $dataItem->getCalendarModelLiteral();
+		}
+
 		return $result;
 	}
 
@@ -279,8 +283,7 @@ class TimeValueFormatter extends DataValueFormatter {
 			( strpos( $format, 'JL' ) !== false ) ||
 			( $dataItem->getJD() < TimeValue::J1582 && strpos( $format, 'GR' ) === false ) ) {
 			$model = DITime::CM_JULIAN;
-//		} elseif ( strpos( $format, 'GR' ) !== false ) {
-		} else {
+		} elseif ( strpos( $format, 'GR' ) !== false ) {
 			$model = DITime::CM_GREGORIAN;
 		}
 

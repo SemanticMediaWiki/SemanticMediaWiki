@@ -94,10 +94,7 @@ class TimeValueDescriptionDeserializer extends DescriptionDeserializer {
 	private function getUpperLimit( $dataItem ) {
 
 		$prec = $dataItem->getPrecision();
-
-		$dateTime = new DateTime();
-		$dateTime->setDate( $dataItem->getYear(), $dataItem->getMonth(), $dataItem->getDay() );
-		$dateTime->setTime( $dataItem->getHour(), $dataItem->getMinute(), $dataItem->getSecond() );
+		$dateTime = $dataItem->asDateTime();
 
 		if ( $dateTime === false ) {
 			return $this->addError( 'Cannot compute interval for ' . $dataItem->getSerialization() );

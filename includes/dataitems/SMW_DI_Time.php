@@ -1,6 +1,7 @@
 <?php
 
 use SMW\DataItemException;
+use SMW\JulianDay;
 
 /**
  * This class implements time data items.
@@ -35,13 +36,17 @@ class SMWDITime extends SMWDataItem {
 	const PREC_YMD  = 2;
 	const PREC_YMDT = 3;
 
+	/**
+	 * The year before which we do not accept anything but year numbers and
+	 * largely discourage calendar models.
+	 */
 	const PREHISTORY = -10000;
 
 	/**
 	 * Maximal number of days in a given month.
 	 * @var array
 	 */
-	protected static $m_daysofmonths = array ( 1 => 31, 2 => 29, 3 => 31, 4 => 30, 5 => 31, 6 => 30, 7 => 31, 8 => 31, 9 => 30, 10 => 31, 11 => 30, 12 => 31 );
+	protected static $m_daysofmonths = array( 1 => 31, 2 => 29, 3 => 31, 4 => 30, 5 => 31, 6 => 30, 7 => 31, 8 => 31, 9 => 30, 10 => 31, 11 => 30, 12 => 31 );
 
 	/**
 	 * Precision SMWDITime::PREC_Y, SMWDITime::PREC_YM,
@@ -94,6 +99,11 @@ class SMWDITime extends SMWDataItem {
 	 * @var integer|null
 	 */
 	protected $era = null;
+
+	/**
+	 * @var integer
+	 */
+	protected $julianDay = null;
 
 	/**
 	 * Create a time data item. All time components other than the year can
@@ -158,14 +168,29 @@ class SMWDITime extends SMWDataItem {
 		}
 	}
 
+	/**
+	 * @since 1.6
+	 *
+	 * @return integer
+	 */
 	public function getDIType() {
 		return SMWDataItem::TYPE_TIME;
 	}
 
+	/**
+	 * @since 1.6
+	 *
+	 * @return integer
+	 */
 	public function getCalendarModel() {
 		return $this->m_model;
 	}
 
+	/**
+	 * @since 1.6
+	 *
+	 * @return integer
+	 */
 	public function getPrecision() {
 		return $this->m_precision;
 	}
@@ -186,26 +211,56 @@ class SMWDITime extends SMWDataItem {
 		return $this->era;
 	}
 
+	/**
+	 * @since 1.6
+	 *
+	 * @return integer
+	 */
 	public function getYear() {
 		return $this->m_year;
 	}
 
+	/**
+	 * @since 1.6
+	 *
+	 * @return integer
+	 */
 	public function getMonth() {
 		return $this->m_month;
 	}
 
+	/**
+	 * @since 1.6
+	 *
+	 * @return integer
+	 */
 	public function getDay() {
 		return $this->m_day;
 	}
 
+	/**
+	 * @since 1.6
+	 *
+	 * @return integer
+	 */
 	public function getHour() {
 		return $this->m_hours;
 	}
 
+	/**
+	 * @since 1.6
+	 *
+	 * @return integer
+	 */
 	public function getMinute() {
 		return $this->m_minutes;
 	}
 
+	/**
+	 * @since 1.6
+	 *
+	 * @return integer
+	 */
 	public function getSecond() {
 		return $this->m_seconds;
 	}
@@ -364,11 +419,25 @@ class SMWDITime extends SMWDataItem {
 		}
 	}
 
+	/**
+	 * @since 1.6
+	 *
+	 * @return double
+	 */
 	public function getJD() {
-		return self::date2JD( $this->m_year, $this->m_month, $this->m_day, $this->m_model ) +
-		       self::time2JDoffset( $this->m_hours, $this->m_minutes, $this->m_seconds );
+
+		if ( $this->julianDay === null ) {
+			$this->julianDay = JulianDay::get( $this );
+		}
+
+		return $this->julianDay;
 	}
 
+	/**
+	 * @since 1.6
+	 *
+	 * @return string
+	 */
 	public function getSerialization() {
 		$result = strval( $this->m_model ) . '/' . ( $this->era > 0 ? '+' : '' ) . strval( $this->m_year );
 
@@ -424,121 +493,15 @@ class SMWDITime extends SMWDataItem {
 	/**
 	 * Create a new time data item from the specified Julian Day number,
 	 * calendar model, presicion, and type ID.
+	 *
 	 * @param $jdvalue double Julian Day number
 	 * @param $calendarmodel integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
 	 * @param $precision integer one of SMWDITime::PREC_Y, SMWDITime::PREC_YM, SMWDITime::PREC_YMD, SMWDITime::PREC_YMDT
+	 *
 	 * @return SMWDITime object
 	 */
 	public static function newFromJD( $jdvalue, $calendarmodel, $precision ) {
-		list( $year, $month, $day ) = self::JD2Date( $jdvalue, $calendarmodel );
-		if ( $precision <= self::PREC_YM ) {
-			$day = false;
-			if ( $precision == self::PREC_Y ) {
-				$month = false;
-			}
-		}
-		if ( $precision == self::PREC_YMDT ) {
-			list( $hour, $minute, $second ) = self::JD2Time( $jdvalue );
-		} else {
-			$hour = $minute = $second = false;
-		}
-		return new SMWDITime( $calendarmodel, $year, $month, $day, $hour, $minute, $second );
-	}
-
-	/**
-	 * Compute the Julian Day number from a given date in the specified
-	 * calendar model. This calculation assumes that neither calendar
-	 * has a year 0.
-	 * @param $year integer representing the year
-	 * @param $month integer representing the month
-	 * @param $day integer representing the day
-	 * @param $calendarmodel integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
-	 * @return float Julian Day number
-	 */
-	static public function date2JD( $year, $month, $day, $calendarmodel ) {
-		$astroyear = ( $year < 1 ) ? ( $year + 1 ) : $year;
-		if ( $calendarmodel == self::CM_GREGORIAN ) {
-			$a = intval( ( 14 - $month ) / 12 );
-			$y = $astroyear + 4800 - $a;
-			$m = $month + 12 * $a - 3;
-			return $day + floor( ( 153 * $m + 2 ) / 5 ) + 365 * $y + floor( $y / 4 ) - floor( $y / 100 ) + floor( $y / 400 ) - 32045.5;
-		} else {
-			$y2 = ( $month <= 2 ) ? ( $astroyear - 1 ) : $astroyear;
-			$m2 = ( $month <= 2 ) ? ( $month + 12 ) : $month;
-			return floor( ( 365.25 * ( $y2 + 4716 ) ) ) + floor( ( 30.6001 * ( $m2 + 1 ) ) ) + $day - 1524.5;
-		}
-	}
-
-	/**
-	 * Compute the offset for the Julian Day number from a given time.
-	 * This computation is the same for all calendar models.
-	 * @param $hours integer representing the hour
-	 * @param $minutes integer representing the minutes
-	 * @param $seconds integer representing the seconds
-	 * @return float offset for a Julian Day number to get this time
-	 */
-	static public function time2JDoffset( $hours, $minutes, $seconds ) {
-		return ( $hours / 24 ) + ( $minutes / ( 60 * 24 ) ) + ( $seconds / ( 3600 * 24 ) );
-	}
-
-	/**
-	 * Convert a Julian Day number to a date in the given calendar model.
-	 * This calculation assumes that neither calendar has a year 0.
-	 * @note The algorithm may fail for some cases, in particular since the
-	 * conversion to Gregorian needs positive JD. If this happens, wrong
-	 * values will be returned. Avoid date conversions before 10000 BCE.
-	 * @param $jdvalue float number of Julian Days
-	 * @param $calendarmodel integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
-	 * @return array( yearnumber, monthnumber, daynumber )
-	 */
-	static public function JD2Date( $jdvalue, $calendarmodel ) {
-		if ( $calendarmodel == self::CM_GREGORIAN ) {
-			$jdvalue += 2921940; // add the days of 8000 years (this algorithm only works for positive JD)
-			$j = floor( $jdvalue + 0.5 ) + 32044;
-			$g = floor( $j / 146097 );
-			$dg = $j % 146097;
-			$c = floor( ( ( floor( $dg / 36524 ) + 1 ) * 3 ) / 4 );
-			$dc = $dg - $c * 36524;
-			$b = floor( $dc / 1461 );
-			$db = $dc % 1461;
-			$a = floor( ( ( floor( $db / 365 ) + 1 ) * 3 ) / 4 );
-			$da = $db - ( $a * 365 );
-			$y = $g * 400 + $c * 100 + $b * 4 + $a;
-			$m = floor( ( $da * 5 + 308 ) / 153 ) - 2;
-			$d = $da - floor( ( ( $m + 4 ) * 153 ) / 5 ) + 122;
-
-			$year  = $y - 4800 + floor( ( $m + 2 ) / 12 ) - 8000;
-			$month = ( ( $m + 2 ) % 12 + 1 );
-			$day   = $d + 1;
-		} else {
-			$b = floor( $jdvalue + 0.5 ) + 1524;
-			$c = floor( ( $b - 122.1 ) / 365.25 );
-			$d = floor( 365.25 * $c );
-			$e = floor( ( $b - $d ) / 30.6001 );
-
-			$month = floor( ( $e < 14 ) ? ( $e - 1 ) : ( $e - 13 ) );
-			$year = floor( ( $month > 2 ) ? ( $c - 4716 ) : ( $c - 4715 ) );
-			$day   = ( $b - $d - floor( 30.6001 * $e ) );
-		}
-		$year  = ( $year < 1 ) ? ( $year - 1 ) : $year; // correct "year 0" to -1 (= 1 BC(E))
-		return array( $year, $month, $day );
-	}
-
-	/**
-	 * Extract the time from a Julian Day number and return it as a string.
-	 * This conversion is the same for all calendar models.
-	 * @param $jdvalue float number of Julian Days
-	 * @return array( hours, minutes, seconds )
-	 */
-	static public function JD2Time( $jdvalue ) {
-		$wjd = $jdvalue + 0.5;
-		$fraction = $wjd - floor( $wjd );
-		$time = round( $fraction * 3600 * 24 );
-		$hours = floor( $time / 3600 );
-		$time = $time - $hours * 3600;
-		$minutes = floor( $time / 60 );
-		$seconds = floor( $time - $minutes * 60 );
-		return array( $hours, $minutes, $seconds );
+		return JulianDay::newDiFromJD( $jdvalue, $calendarmodel, $precision );
 	}
 
 	/**

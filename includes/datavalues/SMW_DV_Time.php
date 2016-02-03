@@ -143,7 +143,6 @@ class SMWTimeValue extends SMWDataValue {
 		}
 		$this->m_dataitem = null;
 
-		/// TODO Direct JD input currently cannot cope with decimal numbers
 		$datecomponents = array();
 		$calendarmodel = $era = $hours = $minutes = $seconds = $microseconds = $timeoffset = $timezone = false;
 
@@ -160,11 +159,11 @@ class SMWTimeValue extends SMWDataValue {
 			if ( ( $calendarmodel == 'JD' ) || ( $calendarmodel == 'MJD' ) ) {
 				if ( ( $era === false ) && ( $hours === false ) && ( $timeoffset == 0 ) ) {
 					try {
-						$jd = floatval( reset( $datecomponents ) );
+						$jd = floatval( isset( $datecomponents[1] ) ? $datecomponents[0] . '.' . $datecomponents[1] : $datecomponents[0] );
 						if ( $calendarmodel == 'MJD' ) {
 							$jd += self::MJD_EPOCH;
 						}
-						$this->m_dataitem = SMWDITime::newFromJD( $jd, SMWDITime::CM_GREGORIAN, SMWDITime::PREC_YMDT, $this->m_typeid );
+						$this->m_dataitem = SMWDITime::newFromJD( $jd, SMWDITime::CM_GREGORIAN, SMWDITime::PREC_YMDT );
 					} catch ( SMWDataItemException $e ) {
 						$this->addError( wfMessage( 'smw_nodatetime', $this->m_wikivalue )->inContentLanguage()->text() );
 					}
