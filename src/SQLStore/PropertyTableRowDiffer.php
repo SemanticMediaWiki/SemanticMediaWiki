@@ -9,6 +9,7 @@ use SMW\DIProperty;
 use SMWDIError as DIError;
 use InvalidArgumentException;
 use SMW\DataItemException;
+use RuntimeException;
 
 /**
  * @license GNU GPL v2+
@@ -309,6 +310,11 @@ class PropertyTableRowDiffer {
 			// not stored in a property table, e.g., sortkeys
 			if ( $tableId === null ) {
 				continue;
+			}
+
+			// "Notice: Undefined index"
+			if ( !isset( $propertyTables[$tableId] ) ) {
+				throw new RuntimeException( "Unable to find a property table for " . $property->getKey() );
 			}
 
 			$propertyTable = $propertyTables[$tableId];
