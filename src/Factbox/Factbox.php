@@ -377,7 +377,7 @@ class Factbox {
 				if ( $dataValue->isValid() ) {
 					$valuesHtml[] = Sanitizer::removeHTMLtags(
 						$dataValue->getLongWikiText( true ), null, array(), array(), $excluded
-						) . $dataValue->getInfolinkText( SMW_OUTPUT_WIKI );
+						 ) . $this->getInfolink( $dataValue );
 				}
 			}
 
@@ -394,6 +394,21 @@ class Factbox {
 
 			$this->htmlTableRenderer->addRow();
 		}
+	}
+
+	private function getInfolink( $dataValue ) {
+
+		if ( $dataValue->getProperty()->getKey() !== '_SOBJ' ) {
+			return $dataValue->getInfolinkText( SMW_OUTPUT_WIKI );
+		}
+
+		$browselink = SMWInfolink::newBrowsingLink(
+			' +',
+			$dataValue->getWikiValue(),
+			'smwbrowse'
+		);
+
+		return $browselink->getWikiText();
 	}
 
 }
