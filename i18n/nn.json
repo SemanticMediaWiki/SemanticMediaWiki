@@ -155,6 +155,6 @@
 	"smw-createproperty-allowedvals": "Dei tillatne verdiane for denne eigenskapen er:",
 	"smw_unknowntype": "Typen «$1» som er definert for eigenskapen er ikkje støtta.",
 	"smw_concept_header": "Sider av konseptet «$1»",
-	"smw_conceptarticlecount": "Syner {{PLURAL:$1|éi sida|$1 sider}} som høyrer til konseptet.",
+	"smw_conceptarticlecount": "Syner nedanfor {{PLURAL:$1|éi side|$1 sider}}",
 	"smw-livepreview-loading": "Lastar inn&nbsp;…"
 }
