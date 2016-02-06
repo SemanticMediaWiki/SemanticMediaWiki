@@ -343,9 +343,14 @@
 	"smw-pa-property-predefined_askst": "\"$1\" é unha propiedade predefinida que describe as condicións da consulta como unha cadea. E está proporciona por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
 	"smw-pa-property-predefined_askdu": "\"$1\" é unha propiedade predefinida que contén o valor de tempo (en segundos) que a consulta requiriu para completar a súa execución. E é proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_prec": "\"$1\" é unha propiedade predefinida que describe unha [https://www.semantic-mediawiki.org/wiki/Help:Display_precision precisión de mostra] (en díxitos decimais) para tipos de datos numéricos.",
+	"smw-datavalue-languagecode-missing": "Para a anotación \"$1\", o analizador non foi capaz de determinar un código de lingua (p.ex. \"foo@en\").",
 	"smw-datavalue-languagecode-invalid": "Non se recoñece \"$1\" como un código de lingua admitido.",
 	"smw-pa-property-predefined_lcode": "\"$1\" é unha propiedade predefinida que representa un código de lingua con formato BCP47. E está proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
 	"smw-sp-types_mlt_rec": "\"$1\" é un tipo de datos [https://www.semantic-mediawiki.org/wiki/Help:Container contedor] que asocia un valor de texto cun [[Property:Language code|código de lingua]] específico.",
 	"smw-sp-types-mlt-lcode": "O tipo de datos{{PLURAL:$2|require|non require}} un código de lingua (ou sexa, {{PLURAL:$2|non se acepta| acéptase}} unha anotación de valor sen un código de lingua).",
-	"smw-pa-property-predefined_text": "\"$1\" é unha propiedade predefinida que representa texto de lonxitude arbitraria. E está proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica]."
+	"smw-pa-property-predefined_text": "\"$1\" é unha propiedade predefinida que representa texto de lonxitude arbitraria. E está proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
+	"smw-pa-property-predefined_pdesc": "\"$1\" é unha propiedade predefinida que permite describir unha propiedade en contexto dun idioma. É proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_list": "\"$1\" é unha propiedade predefinida para definir unha lista de propiedades usadas cunha propiedade de tipo [[Special:Types/Record|rexistro]]. É  proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-limitreport-intext-parsertime-value": "$1 segundos",
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 segundos"
 }
