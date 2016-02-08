@@ -386,7 +386,7 @@
 	"smw-pa-property-predefined_pdesc": "« $1 » est une propriété prédéfinie qui permet de décrire une propriété dans le contexte d’une langue et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
 	"smw-pa-property-predefined_list": "« $1 » est une propriété prédéfinie pour définir une liste de propriétés utilisée avec une propriété typée [[Special:Types/Record|enregistrement]], et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
 	"smw-limitreport-intext-parsertime": "[SMW] Temps de l’analyseur annoté dans le contenu",
-	"smw-limitreport-intext-parsertime-value": "$1 secondes",
+	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|seconde|secondes}}",
 	"smw-limitreport-pagepurge-storeupdatetime": "[SMW] Temps de mise à jour de l’enregistrement (sur une purge de page)",
-	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 secondes"
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|seconde|secondes}}"
 }

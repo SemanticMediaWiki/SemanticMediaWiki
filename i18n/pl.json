@@ -276,5 +276,7 @@
 	"smw-datavalue-property-restricted-use": "Właściwość „$1” została oznaczona do ograniczonego użytkowania.",
 	"smw-datavalue-invalid-number": "„$1” nie może być interpretowane jako liczba.",
 	"smw-sp-types-list": "Lista typów danych",
-	"smw-pa-property-predefined_errt": "„$1” jest predefiniowaną właściwością, zawierającą tekstowy opis błędu."
+	"smw-pa-property-predefined_errt": "„$1” jest predefiniowaną właściwością, zawierającą tekstowy opis błędu.",
+	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|sekunda|sekundy|sekund}}",
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|sekunda|sekundy|sekund}}"
 }
