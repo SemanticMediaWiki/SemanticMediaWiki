@@ -261,7 +261,7 @@
 	"smw_smwadmin_support": "Unterstützung erhalten",
 	"smw_smwadmin_supportdocu": "Verschiedene Hinweise helfen vielleicht im Fall eines Problems:",
 	"smw_smwadmin_installfile": "Sofern beim Installieren Probleme auftreten, könnten die in der Datei <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">„INSTALL“</a> enthaltenen Informationen weiterhelfen.",
-	"smw_smwadmin_smwhomepage": "Die komplette Nutzerdokumentation von Semantic MediaWiki ist auf <b><a href=\"https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_%E2%80%93_Startseite\">semantic-mediawiki.org</a></b> verfügbar.",
+	"smw_smwadmin_smwhomepage": "Die Nutzerdokumentation von Semantic MediaWiki ist auf <b><a href=\"https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_%E2%80%93_Startseite\">semantic-mediawiki.org</a></b> verfügbar.",
 	"smw_smwadmin_mediazilla": "Fehler können bei <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a> berichtet werden.",
 	"smw_smwadmin_questions": "Im Fall weiterer Fragen oder Anregungen kann man sich an den Diskussionen im <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">„Semantic MediaWiki“-Benutzerforum</a> beteiligen.",
 	"smw_adminlinks_datastructure": "Datenstruktur",
@@ -372,10 +372,10 @@
 	"smw-sp-types_mlt_rec": "„$1“ ist ein [https://www.semantic-mediawiki.org/wiki/Help:Container Container]-Datentyp, der einen Text mit einem bestimmten [[Property:Language code|Sprachcode]] verknüpft.",
 	"smw-sp-types-mlt-lcode": "Der Datentyp erfordert {{PLURAL:$2|einen|keinen}} Sprachcode (bspw. wird eine Attribut-Datenwert-Zuweisung (Annotation) ohne einen Sprachcode {{PLURAL:$2|nicht akzeptiert|akzeptiert}}).",
 	"smw-pa-property-predefined_text": "„$1“ ist ein softwareseitig fest definiertes Attribut, das einen Text mit einer beliebigen Länge enthält und von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt wird.",
-	"smw-pa-property-predefined_pdesc": "„$1“ ist ein softwareseitig fest definiertes Attribut, das es erlaubt, ein Attribut im Kontext einer Sprache zu beschreiben und von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt wird.",
-	"smw-pa-property-predefined_list": "„$1“ ist ein softwareseitig fest definiertes Attribut für die Definition einer Attributliste, verwendet mit einem [[Special:Types/Record|datensatzartigen]] Attribut. Es wird von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt.",
+	"smw-pa-property-predefined_pdesc": "„$1“ ist ein softwareseitig fest definiertes Attribut, das es erlaubt, ein Attribut im Kontext einer Sprache zu beschreiben. Es wird von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt.",
+	"smw-pa-property-predefined_list": "„$1“ ist ein softwareseitig fest definiertes Attribut zur Definition einer Attributliste in einem [[Special:Types/Record|Attributverbund]]. Es wird von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt.",
 	"smw-limitreport-intext-parsertime": "[SMW] Zeitverbrauch des Parsers für die direkten Annotationen",
-	"smw-limitreport-intext-parsertime-value": "{{PLURAL:$1|Eine Sekunde|$1 Sekunden}}",
+	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|Sekunde|Sekunden}}",
 	"smw-limitreport-pagepurge-storeupdatetime": "[SMW] Dauer der Datenbankaktualisierung (beim Leeren des Seitencaches)",
-	"smw-limitreport-pagepurge-storeupdatetime-value": "{{PLURAL:$1|Eine Sekunde|$1 Sekunden}}"
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|Sekunde|Sekunden}}"
 }

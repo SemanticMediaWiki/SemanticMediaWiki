@@ -7,7 +7,8 @@
 			"아라",
 			"Keysuck",
 			"SeoJeongHo",
-			"Hwangjy9"
+			"Hwangjy9",
+			"밥풀떼기"
 		]
 	},
 	"smw-desc": "위키를 기계와 사람이 더 접근하기 쉽게 합니다 ([https://www.semantic-mediawiki.org/wiki/Help:User_manual 온라인 설명서])",
@@ -289,5 +290,7 @@
 	"smw-sp-admin-idlookup-objectid": "개체 Id:",
 	"smw-livepreview-loading": "불러오는 중...",
 	"smw-datavalue-property-restricted-use": "\"$1\"가 재산권이 제한된 사용을 한다고 표시했습니다.",
-	"smw-datavalue-restricted-use": "이 데이터 값은 제한되어 있습니다. $1"
+	"smw-datavalue-restricted-use": "이 데이터 값은 제한되어 있습니다. $1",
+	"smw-limitreport-intext-parsertime-value": "$1초",
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1초"
 }
