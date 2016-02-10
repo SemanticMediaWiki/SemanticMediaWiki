@@ -16,7 +16,8 @@
 			"NBS",
 			"Tourorist",
 			"Mariya",
-			"Ядерный Трамвай"
+			"Ядерный Трамвай",
+			"Iniquity"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -272,7 +273,7 @@
 	"smw-prefs-ask-options-tooltip-display": "Отображать параметр «текст» в виде всплывающей подсказки",
 	"smw-prefs-ask-options-collapsed-default": "Включить панель параметров свёрнутой по умолчанию",
 	"smw-ui-tooltip-title-property": "Свойство",
-	"smw-ui-tooltip-title-quantity": "Количество",
+	"smw-ui-tooltip-title-quantity": "Преобразование единиц",
 	"smw-ui-tooltip-title-info": "Информация",
 	"smw-ui-tooltip-title-service": "Служебная ссылка",
 	"smw-ui-tooltip-title-warning": "Ошибка",
