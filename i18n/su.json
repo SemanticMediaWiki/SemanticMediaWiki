@@ -1,4 +1,9 @@
 {
-	"@metadata": [],
+	"@metadata": {
+		"authors": [
+			"Kandar"
+		]
+	},
+	"browse": "Sungsi wiki",
 	"smw-livepreview-loading": "Ngamuat…"
 }
