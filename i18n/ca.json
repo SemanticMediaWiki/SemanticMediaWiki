@@ -340,6 +340,8 @@
 	"smw-sp-types_dat": "«$1» és un tipus de dades per representar punts en el temps en un format unificat.",
 	"smw-pa-property-predefined_errc": "«$1» és una propietat predefinida que representa un [https://www.semantic-mediawiki.org/wiki/Help:Container contenidor] d'errors que van aparèixer en connexió amb anotacions de valors o processament d'entrades no adequats.",
 	"smw-pa-property-predefined_errt": "«$1» és una propietat predefinida que conté una descripció contextual d'un error.",
-	"smw-limitreport-intext-parsertime-value": "$1 segons",
-	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 segons"
+	"smw-datavalue-languagecode-invalid": "No s'ha reconegut «$1» com a codi de llengua permès.",
+	"smw-pa-property-predefined_lcode": "«$1» una propietat predefinida que representa un codi de llengua formatat del tipus BCP47 i està proporcionat per [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|segon|segons}}",
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|segon|segons}}"
 }
