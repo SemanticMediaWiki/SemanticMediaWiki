@@ -62,8 +62,8 @@ class SMWDIHandlerGeoCoord extends SMWDataItemHandler {
 	public function getInsertValues( SMWDataItem $dataItem ) {
 		return array(
 			'o_serialized' => $dataItem->getSerialization(),
-			'o_lat' => $dataItem->getLatitude(),
-			'o_lon' => $dataItem->getLongitude()
+			'o_lat' => (string)$dataItem->getLatitude(),
+			'o_lon' => (string)$dataItem->getLongitude()
 		);
 	}
 
