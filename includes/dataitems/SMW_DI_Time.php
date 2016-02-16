@@ -465,26 +465,28 @@ class SMWDITime extends SMWDataItem {
 		$parts = explode( '/', $serialization, 8 );
 		$values = array();
 
+		if ( count( $parts ) <= 1 ) {
+			throw new DataItemException( "Unserialization failed: the string \"$serialization\" is no valid URI." );
+		}
+
 		for ( $i = 0; $i < 8; $i += 1 ) {
+
+			$values[$i] = false;
+
 			if ( $i < count( $parts ) ) {
 
-				if ( !is_numeric( $parts[$i] ) ) {
+				if ( $parts[$i] !== '' && !is_numeric( $parts[$i] ) ) {
 					throw new DataItemException( "Unserialization failed: the string \"$serialization\" is no valid datetime specification." );
 				}
 
+				// 6 == seconds, we want to keep microseconds
 				$values[$i] = $i == 6 ? floatval( $parts[$i] ) : intval( $parts[$i] );
 
 				// Find out whether the input contained an explicit AD/CE era marker
 				if ( $i == 1 ) {
 					$values[$i] = ( $parts[1]{0} === '+' ? '+' : '' ) . $values[$i];
 				}
-			} else {
-				$values[$i] = false;
 			}
-		}
-
-		if ( count( $parts ) <= 1 ) {
-			throw new DataItemException( "Unserialization failed: the string \"$serialization\" is no valid URI." );
 		}
 
 		return new self( $values[0], $values[1], $values[2], $values[3], $values[4], $values[5], $values[6], $values[7] );

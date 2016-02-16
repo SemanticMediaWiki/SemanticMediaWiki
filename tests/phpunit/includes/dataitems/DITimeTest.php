@@ -104,4 +104,28 @@ class DITimeTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testDeserializationOnIncompleteFormat() {
+
+		$instance = new DITime(
+			1, 2013, 0, 2, 0
+		);
+
+		$this->assertEquals(
+			$instance,
+			DITime::doUnserialize( '1/2013/0/2/0/' )
+		);
+	}
+
+	public function testTryToDeserializeOnNonNumericElementsThrowsException() {
+
+		$this->setExpectedException( '\SMW\DataItemException' );
+		DITime::doUnserialize( '1/2013/0/2/0/foo' );
+	}
+
+	public function testTryToDeserializeOnInvalidCountOfElementsThrowsException() {
+
+		$this->setExpectedException( '\SMW\DataItemException' );
+		DITime::doUnserialize( '1' );
+	}
+
 }
