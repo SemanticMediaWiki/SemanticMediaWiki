@@ -424,9 +424,7 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 	 * @return SMWInfolink
 	 */
 	protected function getLink( SMWQueryResult $res, $outputMode, $classAffix = '' ) {
-		$link = $res->getLink();
-
-		$link->setCaption( $this->getSearchLabel( $outputMode ) );
+		$link = $res->getQueryLink( $this->getSearchLabel( $outputMode ) );
 
 		if ( $classAffix !== '' ){
 			$link->setStyle(  'smw-' . $this->params['format'] . '-' . Sanitizer::escapeClass( $classAffix ) );

@@ -1,5 +1,5 @@
 {
-	"description": "Test #set parser to use template for output (#1146)",
+	"description": "Test #set parser to use template for output (#1146, en)",
 	"properties": [
 		{
 			"name": "Has date",
@@ -51,12 +51,14 @@
 			"expected-output": {
 				"to-contain": [
 					"<span class=\"smw-list-furtherresults\">",
-					"searchlabel=SetParserTemplateValue/offset=0\">SetParserTemplateValue</a>"
+					"Special:Ask/-5B-5BSetParserTemplateProperty::SetParserTemplateValue-5D-5D/mainlabel=/offset=0/format=list/searchlabel=SetParserTemplateValue\">SetParserTemplateValue</a>"
 				]
 			}
 		}
 	],
 	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
 		"smwgPageSpecialProperties": [ "_MDAT" ]
 	},
 	"meta": {

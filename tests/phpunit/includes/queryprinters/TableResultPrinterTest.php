@@ -172,7 +172,7 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 		$queryResult = $mockBuilder->newObject( 'QueryResult', array(
 			'getPrintRequests'  => array( $printRequests['pr-1'], $printRequests['pr-2'] ),
 			'getNext'           => array( $resultArray['ra-1'], $resultArray['ra-2'] ),
-			'getLink'           => new \SMWInfolink( true, 'Lala', 'Lula' ),
+			'getQueryLink'      => new \SMWInfolink( true, 'Lala', 'Lula' ),
 			'hasFurtherResults' => true
 		) );
 
