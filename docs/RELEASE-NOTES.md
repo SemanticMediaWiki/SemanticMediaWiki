@@ -31,7 +31,8 @@ Not a release yet.
 * #1389 Added free date/time formatting support using the `-F[ ... ]` option
 * #1391 Made subobject directly browsable from/in the Factbox
 * #1396 Indicate `AC/CE` era for positive years if it was explicitly annotated
-* #1397 Added support in `DITime` for microseconds
+* #1397 Added support for microseconds in `DITime` 
+* #1401 Added support for parsing `年/月/日` date format in `DITime`
 
 ## Bug fixes
 
