@@ -85,7 +85,7 @@
 			"expected-output": {
 				"to-contain": [
 					"<span class=\"smw-category-furtherresults\">",
-					"format=category/link=none/order=desc/headers=plain/columns=1/offset=0"
+					"Special:Ask/-5B-5BHas-20text::+-5D-5D/-3FHas-20text/mainlabel=/order=desc/sort=/offset=0/format=category/link=none/headers=plain/columns=1"
 				]
 			}
 		}

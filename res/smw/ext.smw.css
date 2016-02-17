@@ -514,3 +514,54 @@ label.smw-form-checkbox {
 	margin-left: 4px;
 	margin-right: 4px;
 }
+
+.smw-ask-action-btn {
+	display: inline-block;
+    padding: 3px 6px;
+    margin-bottom: 0;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.smw-ask-action-btn-lblue, a.smw-ask-action-btn-lblue:visited {
+	color: #fff;
+	background-color: #5bc0de;
+	border-color: #46b8da;
+	text-decoration:none;
+}
+
+a.smw-ask-action-btn-lblue:hover {
+	color: #fff;
+	background-color: #31b0d5;
+	border-color: #269abc;
+	text-decoration:none;
+}
+
+.smw-ask-action-btn-dblue, a.smw-ask-action-btn-dblue:visited {
+	color: #fff;
+	background-color: #337ab7;
+	border-color: #2e6da4;
+	text-decoration:none;
+}
+
+.smw-ask-action-btn-dblue:hover, .smw-ask-action-btn-dblue:focus, a.smw-ask-action-btn-dblue:hover, a.smw-ask-action-btn-dblue:focus {
+	color: #fff;
+	background-image:none;
+	background-color: #286090;
+	border-color: #204d74;
+	text-decoration:none;
+}

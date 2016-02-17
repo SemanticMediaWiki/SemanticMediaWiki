@@ -3,6 +3,7 @@
 use SMW\Query\PrintRequest;
 use SMW\SerializerFactory;
 use SMW\HashBuilder;
+use SMW\Query\QueryLink;
 
 /**
  * Objects of this class encapsulate the result of a query in SMW. They
@@ -241,54 +242,11 @@ class SMWQueryResult {
 	 * @return SMWInfolink
 	 */
 	public function getQueryLink( $caption = false ) {
-		$link = $this->getLink();
 
-		if ( $caption === false ) {
-			// The space is right here, not in the QPs!
-			$caption = ' ' . wfMessage( 'smw_iq_moreresults' )->inContentLanguage()->text();
-		}
+		$link = QueryLink::get( $this->mQuery );
 
 		$link->setCaption( $caption );
-
-		$params = array( trim( $this->mQuery->getQueryString() ) );
-
-		foreach ( $this->mQuery->getExtraPrintouts() as /* PrintRequest */ $printout ) {
-			$serialization = $printout->getSerialisation();
-
-			// TODO: this is a hack to get rid of the mainlabel param in case it was automatically added
-			// by SMWQueryProcessor::addThisPrintout. Should be done nicer when this link creation gets redone.
-			if ( $serialization !== '?#' ) {
-				$params[] = $serialization;
-			}
-		}
-
-		if ( $this->mQuery->getMainLabel() !== false ) {
-			$params['mainlabel'] = $this->mQuery->getMainLabel();
-		}
-
-		$params['offset'] = $this->mQuery->getOffset() + count( $this->mResults );
-
-		if ( $params['offset'] === 0 ) {
-			unset( $params['offset'] );
-		}
-
-		if ( $this->mQuery->getLimit() > 0 ) {
-			$params['limit'] = $this->mQuery->getLimit();
-		}
-
-		if ( count( $this->mQuery->sortkeys ) > 0 ) {
-			$order = implode( ',', $this->mQuery->sortkeys );
-			$sort = implode( ',', array_keys( $this->mQuery->sortkeys ) );
-
-			if ( $sort !== '' || $order != 'ASC' ) {
-				$params['order'] = $order;
-				$params['sort'] = $sort;
-			}
-		}
-
-		foreach ( $params as $key => $param ) {
-			$link->setParameter( $param, is_string( $key ) ? $key : false );
-		}
+		$link->setParameter( $this->mQuery->getOffset() + count( $this->mResults ), 'offset' );
 
 		return $link;
 	}

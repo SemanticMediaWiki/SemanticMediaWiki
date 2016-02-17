@@ -2,6 +2,7 @@
 
 use ParamProcessor\Param;
 use SMW\Query\PrintRequest;
+use SMW\Query\QueryLink;
 
 /**
  * This special page for MediaWiki implements a customisable form for
@@ -63,6 +64,8 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			}
 		}
 
+		$this->addExternalHelpLinkFor( 'smw_ask_doculink' );
+
 		SMWOutputs::commitToOutputPage( $wgOut ); // make sure locally collected output data is pushed to the output!
 	}
 
@@ -99,6 +102,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 
 				// p is used for any additional parameters in certain links.
 				$rawparams = SMWInfolink::decodeParameters( $query_values, false );
+
 			}
 		} else { // called from wiki, get all parameters
 			$rawparams = SMWInfolink::decodeParameters( $p, true );
@@ -124,6 +128,20 @@ class SMWAskPage extends SMWQuerySpecialPage {
 				}
 
 				$rawparams[] = $param;
+			}
+		}
+
+		// ?Has property=Foo|+index=1
+		foreach ( $rawparams as $key => $value ) {
+			if (
+				( $key !== '' && $key{0} == '?' && strpos( $value, '|' ) !== false ) ||
+				( is_string( $value ) && $value !== '' && $value{0} == '?' && strpos( $value, '|' ) !== false ) ) {
+				$extra = explode( '|', $value );
+
+				unset( $rawparams[$key] );
+				foreach ( $extra as $k => $val) {
+					$rawparams[] = $k == 0 && $key{0} == '?' ? $key . '=' . $val : $val;
+				}
 			}
 		}
 
@@ -214,12 +232,14 @@ class SMWAskPage extends SMWQuerySpecialPage {
 
 		$urlArgs['p'] = SMWInfolink::encodeParameters( $tmp_parray );
 		$printoutstring = '';
+		$duration = 0;
+		$navigation = '';
 
 		/**
 		 * @var PrintRequest $printout
 		 */
 		foreach ( $this->m_printouts as $printout ) {
-			$printoutstring .= $printout->getSerialisation() . "\n";
+			$printoutstring .= $printout->getSerialisation( true ) . "\n";
 		}
 
 		if ( $printoutstring !== '' ) {
@@ -255,7 +275,9 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			 */
 
 			// Determine query results
+			$duration = microtime( true );
 			$res = $this->getStoreFromParams( $params )->getQueryResult( $queryobj );
+			$duration = number_format( (microtime( true ) - $duration), 4, '.', '' );
 
 			// Try to be smart for rss/ical if no description/title is given and we have a concept query:
 			if ( $this->m_params['format'] == 'rss' ) {
@@ -300,7 +322,6 @@ class SMWAskPage extends SMWQuerySpecialPage {
 					}
 
 					$navigation = $this->getNavigationBar( $res, $urlArgs );
-					$result .= '<div style="text-align: center;">' . "\n" . $navigation . "\n</div>\n";
 					$query_result = $printer->getResult( $res, $params, SMW_OUTPUT_HTML );
 
 					if ( is_array( $query_result ) ) {
@@ -309,7 +330,6 @@ class SMWAskPage extends SMWQuerySpecialPage {
 						$result .= $query_result;
 					}
 
-					$result .= '<div style="text-align: center;">' . "\n" . $navigation . "\n</div>\n";
 				} else {
 					$result = '<div style="text-align: center;">' . wfMessage( 'smw_result_noresults' )->escaped() . '</div>';
 				}
@@ -335,7 +355,9 @@ class SMWAskPage extends SMWQuerySpecialPage {
 
 			$result = $this->getInputForm(
 				$printoutstring,
-				wfArrayToCGI( $urlArgs )
+				wfArrayToCGI( $urlArgs ),
+				$navigation,
+				$duration
 			) . $result;
 
 			$wgOut->addHTML( $result );
@@ -350,7 +372,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 	 *
 	 * @return string
 	 */
-	protected function getInputForm( $printoutstring, $urltail ) {
+	protected function getInputForm( $printoutstring, $urltail, $navigation = '', $duration ) {
 		global $wgScript;
 
 		$result = '';
@@ -365,7 +387,9 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			$storeName = end( $storeName );
 		}
 
-		$environment = $storeName . ( isset( $this->m_params['source'] ) ? ', ' . $this->m_params['source'] : '' );
+		$environment = $storeName . ( isset( $this->m_params['source'] ) ? ' (' . $this->m_params['source'] . ')' : '' );
+		$downloadLink = $this->getExtraDownloadLinks();
+		$sarchInfoText = $duration > 0 ? wfMessage( 'smw-ask-query-search-info', $this->m_querystring, $environment, $duration )->parse() : '';
 
 		if ( $this->m_editquery ) {
 			$result .= Html::openElement( 'form',
@@ -406,31 +430,34 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			$urltail = str_replace( '&eq=yes', '', $urltail ) . '&eq=no'; // FIXME: doing it wrong, srysly
 
 			// Submit
-			$result .= '<br /><input type="submit" value="' . wfMessage( 'smw_ask_submit' )->escaped() . '"/>' .
-				'<input type="hidden" name="eq" value="yes"/>' .
+			$result .= '<fieldset class="smw-ask-actions" style="margin-top:0px;"><legend>' . wfMessage( 'smw-ask-search' )->escaped() . "</legend>\n";
+
+			$result .= '<p>' .  '' . '</p>' . '<input type="submit" class="smw-ask-action-btn smw-ask-action-btn-dblue" value="' . wfMessage( 'smw_ask_submit' )->escaped() . '"/>' . ' ' .
+				'<input type="hidden" name="eq" value="yes"/>' . ' ' .
 					Html::element(
 						'a',
 						array(
+							'class' => 'smw-ask-action-btn smw-ask-action-btn-lblue',
 							'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( $urltail ),
 							'rel' => 'nofollow'
-						),
-						wfMessage( 'smw_ask_hidequery' )->text()
+						), wfMessage( 'smw_ask_hidequery' )->text()
 					) .
-					' | ' . self::getEmbedToggle() .
-					' | <a href="' . wfMessage( 'smw_ask_doculink' )->escaped() . '">' . wfMessage( 'smw_ask_help' )->escaped() . '</a>' . ' | [' . $environment . ']' .
-				"\n</form>";
+					' ' . self::getEmbedToggle() .
+				"\n</form>" . '</p>';
 		} else { // if $this->m_editquery == false
 			$urltail = str_replace( '&eq=no', '', $urltail ) . '&eq=yes';
-			$result .= '<p>' .
+			$result .= '<fieldset class="smw-ask-actions" style="margin-top:0px;"><legend>' . wfMessage( 'smw-ask-search' )->escaped() . "</legend>\n";
+
+			$result .= '<p>' .  '' . '</p>' . ' ' .
 				Html::element(
 					'a',
 					array(
+						'class' => 'smw-ask-action-btn smw-ask-action-btn-lblue',
 						'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( $urltail ),
 						'rel' => 'nofollow'
-					),
-					wfMessage( 'smw_ask_editquery' )->text()
+					), wfMessage( 'smw_ask_editquery' )->text()
 				) .
-				'| ' . self::getEmbedToggle() . ' | ['. $environment . ']' .
+				' ' . self::getEmbedToggle() .
 				'</p>';
 		}
 		//show|hide inline embed code
@@ -438,17 +465,23 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			'{{#ask:' . htmlspecialchars( $this->m_querystring ) . "\n";
 
 		foreach ( $this->m_printouts as $printout ) {
-			$result .= '|' . $printout->getSerialisation() . "\n";
+			$serialization = $printout->getSerialisation( true );
+			$mainlabel = isset( $this->m_params['mainlabel'] ) ? '?=' . $this->m_params['mainlabel'] . '#' : '';
+
+			if ( $serialization !== '?#' && $serialization !== $mainlabel ) {
+				$result .= ' |' . $serialization . "\n";
+			}
 		}
 
 		foreach ( $this->params as $param ) {
 			if ( !$param->wasSetToDefault() ) {
-				$result .= '|' . htmlspecialchars( $param->getName() ) . '=';
-				$result .= htmlspecialchars( $this->m_params[$param->getName()] );
+				$result .= ' |' . htmlspecialchars( $param->getName() ) . '=';
+				$result .= htmlspecialchars( $this->m_params[$param->getName()] ) . "\n";
 			}
 		}
 
-		$result .= '}}</textarea></div><br />';
+		$result .= '}}</textarea></div><p></p>';
+		$result .= ( $navigation !== '' ? '<p>'. $sarchInfoText . '</p>' . '<hr class="smw-form-horizontalrule">' .  $navigation . '&#160;&#160;&#160;' . $downloadLink : '' ) . "</fieldset>\n";
 
 		return $result;
 	}
@@ -558,13 +591,13 @@ class SMWAskPage extends SMWQuerySpecialPage {
 	 * @return string
 	 */
 	protected static function getEmbedToggle() {
-		return '<span id="embed_show"><a href="#" rel="nofollow" onclick="' .
+		return '<span id="embed_show"><a href="#embed_show" class="smw-ask-action-btn smw-ask-action-btn-lblue" rel="nofollow" onclick="' .
 			"document.getElementById('inlinequeryembed').style.display='block';" .
 			"document.getElementById('embed_hide').style.display='inline';" .
 			"document.getElementById('embed_show').style.display='none';" .
 			"document.getElementById('inlinequeryembedarea').select();" .
 			'">' . wfMessage( 'smw_ask_show_embed' )->escaped() . '</a></span>' .
-			'<span id="embed_hide" style="display: none"><a href="#" rel="nofollow" onclick="' .
+			'<span id="embed_hide" style="display: none"><a href="#embed_hide" class="smw-ask-action-btn smw-ask-action-btn-lblue" rel="nofollow" onclick="' .
 			"document.getElementById('inlinequeryembed').style.display='none';" .
 			"document.getElementById('embed_show').style.display='inline';" .
 			"document.getElementById('embed_hide').style.display='none';" .
@@ -585,10 +618,19 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		// Bug 49216
 		$offset = $res->getQuery()->getOffset();
 		$limit  = $this->params['limit']->getValue();
+		$navigation = '';
+
+		// @todo FIXME: i18n: Patchwork text.
+		$navigation .=
+			'<b>' .
+				wfMessage( 'smw_result_results' )->escaped() . ' ' . $wgLang->formatNum( $offset + 1 ) .
+			' &#150; ' .
+				$wgLang->formatNum( $offset + $res->getCount() ) .
+			'</b>&#160;&#160;&#160;&#160;';
 
 		// Prepare navigation bar.
 		if ( $offset > 0 ) {
-			$navigation = Html::element(
+			$navigation .= '(' . Html::element(
 				'a',
 				array(
 					'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( array(
@@ -597,20 +639,11 @@ class SMWAskPage extends SMWQuerySpecialPage {
 					) + $urlArgs ),
 					'rel' => 'nofollow'
 				),
-				wfMessage( 'smw_result_prev' )->text()
-			);
-
+				wfMessage( 'smw_result_prev' )->text() . ' ' . $limit
+			) . ' | ';
 		} else {
-			$navigation = wfMessage( 'smw_result_prev' )->escaped();
+			$navigation .= '(' . wfMessage( 'smw_result_prev' )->escaped() . ' ' . $limit . ' | ';
 		}
-
-		// @todo FIXME: i18n: Patchwork text.
-		$navigation .=
-			'&#160;&#160;&#160;&#160; <b>' .
-				wfMessage( 'smw_result_results' )->escaped() . ' ' . $wgLang->formatNum( $offset + 1 ) .
-			' &#150; ' .
-				$wgLang->formatNum( $offset + $res->getCount() ) .
-			'</b>&#160;&#160;&#160;&#160;';
 
 		if ( $res->hasFurtherResults() ) {
 			$navigation .= Html::element(
@@ -622,10 +655,10 @@ class SMWAskPage extends SMWQuerySpecialPage {
 					)  + $urlArgs ),
 					'rel' => 'nofollow'
 				),
-				wfMessage( 'smw_result_next' )->text()
-			);
+				wfMessage( 'smw_result_next' )->text() . ' ' . $limit
+			) . ')';
 		} else {
-			$navigation .= wfMessage( 'smw_result_next' )->escaped();
+			$navigation .= wfMessage( 'smw_result_next' )->escaped() . ' ' . $limit . ')';
 		}
 
 		$first = true;
@@ -636,7 +669,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			}
 
 			if ( $first ) {
-				$navigation .= '&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(';
+				$navigation .= '&#160;&#160;&#160;(';
 				$first = false;
 			} else {
 				$navigation .= ' | ';
@@ -667,4 +700,64 @@ class SMWAskPage extends SMWQuerySpecialPage {
 	protected function getGroupName() {
 		return 'smw_group';
 	}
+
+	private function getExtraDownloadLinks() {
+
+		$downloadLinks = '';
+
+		if ( $this->m_querystring === '' ) {
+			return $downloadLinks;
+		}
+
+		$params = $this->m_params;
+		$params = SMWQueryProcessor::getProcessedParams( $params, $this->m_printouts );
+
+		$query = SMWQueryProcessor::createQuery(
+			$this->m_querystring,
+			$params,
+			SMWQueryProcessor::SPECIAL_PAGE,
+			'',
+			$this->m_printouts
+		);
+
+		$link = QueryLink::get( $query );
+		$link->setParameter( 'true', 'prettyprint' );
+		$link->setParameter( 'json', 'format' );
+		$link->setCaption( 'JSON' );
+
+		$downloadLinks .= $link->getHtml();
+
+		$link = QueryLink::get( $query );
+		$link->setCaption( 'CSV' );
+		$link->setParameter( 'csv', 'format' );
+
+		$downloadLinks .= ' | ' . $link->getHtml();
+
+		$link = QueryLink::get( $query );
+		$link->setCaption( 'RSS' );
+		$link->setParameter( 'rss', 'format' );
+
+		$downloadLinks .= ' | ' . $link->getHtml();
+
+		$link = QueryLink::get( $query );
+		$link->setCaption( 'RDF' );
+		$link->setParameter( 'rdf', 'format' );
+
+		$downloadLinks .= ' | ' . $link->getHtml();
+
+		return '(' . $downloadLinks . ')';
+	}
+
+	/**
+	 * FIXME MW 1.25
+	 */
+	private function addExternalHelpLinkFor( $key ) {
+
+		if ( !method_exists( $this, 'addHelpLink' ) ) {
+			return null;
+		}
+
+		$this->addHelpLink( wfMessage( $key )->escaped(), true );
+	}
+
 }
