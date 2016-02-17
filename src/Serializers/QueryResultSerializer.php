@@ -8,6 +8,7 @@ use SMWDataItem as DataItem;
 use SMW\Query\PrintRequest;
 use SMWResultArray;
 use SMWQueryResult as QueryResult;
+use SMW\MediaWiki\TitleLookup;
 
 use OutOfBoundsException;
 use Title;
@@ -56,39 +57,6 @@ class QueryResultSerializer implements DispatchableSerializer {
 	}
 
 	/**
-	 * Get display title of a page.
-	 *
-	 * @param int $pageId page ID of page being queried
-	 *
-	 * @return string|bool display title value or false if not found
-	 */
-	public static function getDisplayTitle( $pageId ) {
-
-		if ( ! is_numeric( $pageId ) || $pageId < 1 ) {
-
-			return false;
-
-		}
-
-		$dbr = wfGetDB( DB_SLAVE );
-		$row = $dbr->selectRow(
-			'page_props',
-			array( 'pp_value' ),
-			array(
-				'pp_page' => $pageId,
-				'pp_propname' => 'displaytitle'
-			),
-			__METHOD__
-		);
-
-		if ( $row !== false ) {
-			return $row->pp_value;
-		}
-
-		return false;
-	}
-
-	/**
 	 * Get the serialization for the provided data item.
 	 *
 	 * @since 1.7
@@ -97,7 +65,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 	 *
 	 * @return mixed
 	 */
-	public static function getSerialization( DataItem $dataItem, $printRequest = null ) {
+	public static function getSerialization( DataItem $dataItem, $printRequest = null, $store = null ) {
 		switch ( $dataItem->getDIType() ) {
 			case DataItem::TYPE_WIKIPAGE:
 
@@ -121,7 +89,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 						);
 
 						foreach ( $recordValue->getDataItem()->getSemanticData()->getPropertyValues( $property ) as $value ) {
-							$recordDiValues[$label]['item'][] = self::getSerialization( $value );
+							$recordDiValues[$label]['item'][] = self::getSerialization( $value, null, $store );
 						}
 					}
 					$result = $recordDiValues;
@@ -134,7 +102,8 @@ class QueryResultSerializer implements DispatchableSerializer {
 						'exists' => $title->isKnown()
 					);
 				}
-				$displayTitle = self::getDisplayTitle ($title->getArticleID() );
+				$titleLookup = new TitleLookup( $store->getConnection( 'mw.db' ) );
+				$displayTitle = $titleLookup->getDisplayTitleFor( $title );
 				if ( $displayTitle ) {
 					$result['displaytitle'] = $displayTitle;
 				}
@@ -209,12 +178,12 @@ class QueryResultSerializer implements DispatchableSerializer {
 
 				if ( $printRequest->getMode() === PrintRequest::PRINT_THIS ) {
 					$dataItems = $resultArray->getContent();
-					$result += self::getSerialization( array_shift( $dataItems ), $printRequest );
+					$result += self::getSerialization( array_shift( $dataItems ), $printRequest, $queryResult->getStore() );
 				} elseif ( $resultArray->getContent() !== array() ) {
 					$values = array();
 
 					foreach ( $resultArray->getContent() as $dataItem ) {
-						$values[] = self::getSerialization( $dataItem, $printRequest );
+						$values[] = self::getSerialization( $dataItem, $printRequest, $queryResult->getStore() );
 					}
 					$result['printouts'][$printRequest->getLabel()] = $values;
 				} else {

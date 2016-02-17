@@ -30,6 +30,11 @@ class TitleLookup {
 	private $namespace = null;
 
 	/**
+	 * @var string[]
+	 */
+	private $displayTitles = array();
+
+	/**
 	 * @since 1.9.2
 	 *
 	 * @param Database $connection
@@ -144,6 +149,46 @@ class TitleLookup {
 			false,
 			__METHOD__
 		);
+	}
+
+	/**
+	 * @since 1.9.2
+	 *
+	 * @param Title $title
+	 * @return string
+	 */
+	public function getDisplayTitleFor( Title $title ) {
+
+		$pageId = $title->getArticleID();
+		if ( $pageId < 1 ) {
+			return false;
+		}
+
+		if ( isset( $displayTitles[$pageId] ) ) {
+			return $displayTitles[$pageId];
+		}
+
+		$row = $this->connection->selectRow(
+			'page_props',
+			array( 'pp_value' ),
+			array(
+				'pp_page' => $pageId,
+				'pp_propname' => 'displaytitle'
+			),
+			__METHOD__
+		);
+
+		if ( $row !== false ) {
+			$displayTitle = $row->pp_value;
+			# make sure it is visible (remove tags and &nbsp;)
+			if ( trim( str_replace( '&#160;', '', strip_tags( $displayTitle ) ) ) == '' ) {
+				return false;
+			}
+			$displayTitles[$pageId] = $displayTitle;
+			return $displayTitle;
+		}
+
+		return false;
 	}
 
 	protected function makeTitlesFromSelection( $res ) {
