@@ -33,9 +33,11 @@ Not a release yet.
 * #1396 Indicate `AC/CE` era for positive years if it was explicitly annotated
 * #1397 Added support for microseconds in `DITime` 
 * #1401 Added support for parsing `年/月/日` date format in `DITime`
+* #1407 Added quick result download links to `Special:Ask`
 
 ## Bug fixes
 
+* #541 Fixed duplicate column when "further results ..." are redirected to `Special:Ask`
 * #1244 Find redirect for a property when specified as a record field (in `PropertyListValue`)
 * #1248 Fixed misplaced replacement of `_` in the `ImportValueParser`
 * #1270 Fixed printout display of inverse properties
