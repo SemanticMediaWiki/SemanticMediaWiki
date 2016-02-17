@@ -463,6 +463,33 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
+		// #6 Invalid parameters
+		// {{#ask: [[Modification date::+]]
+		// |?Modification date
+		// |format=list
+		// |someParameterWithoutValue
+		// |{{{template}}}
+		// |@internal
+		// }}
+		$provider[] = array(
+			array(
+				'[[Modification date::+]]',
+				'someParameterWithoutValue',
+				'{{{template}}}',
+				'format=list',
+				'@internal',
+				'?Modification date'
+			),
+			array(
+				'propertyCount'  => 4,
+				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
+				'propertyValues' => array( 'list', 1, 1, '[[Modification date::+]]' )
+			),
+			array(
+				'smwgQueryDurationEnabled' => false
+			)
+		);
+
 		return $provider;
 	}
 

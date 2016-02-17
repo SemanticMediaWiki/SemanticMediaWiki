@@ -104,16 +104,16 @@ class AskParserFunction {
 	 */
 	public function parse( array $rawParams ) {
 
-		// Counter for what? Where and for what is it used?
+		// Do we still need this?
+		// Reference found in SRF_Exhibit.php, SRF_Ploticus.php, SRF_Timeline.php, SRF_JitGraph.php
 		global $smwgIQRunningNumber;
 		$smwgIQRunningNumber++;
 
-		// Remove parser object from parameters array
-		if( isset( $rawParams[0] ) && $rawParams[0] instanceof Parser ) {
-			array_shift( $rawParams );
-		}
-
 		$this->applicationFactory = ApplicationFactory::getInstance();
+
+		$rawParams = $this->pepareRawParameters(
+			$rawParams
+		);
 
 		$result = $this->doFetchResultsForRawParameters(
 			$rawParams
@@ -122,6 +122,31 @@ class AskParserFunction {
 		$this->parserData->pushSemanticDataToParserOutput();
 
 		return $result;
+	}
+
+	private function pepareRawParameters( array $rawParams ) {
+
+		// Remove parser object from parameters array
+		if( isset( $rawParams[0] ) && $rawParams[0] instanceof Parser ) {
+			array_shift( $rawParams );
+		}
+
+		// Filter invalid parameters
+		foreach ( $rawParams as $key => $value ) {
+
+			// First and marked printrequests
+			if (  $key == 0 || ( $value !== '' && $value{0} === '?' ) ) {
+				continue;
+			}
+
+			// Filter parameters that can not be split into
+			// argument=value
+			if ( strpos( $value, '=' ) === false ) {
+				unset( $rawParams[$key] );
+			}
+		}
+
+		return $rawParams;
 	}
 
 	private function doFetchResultsForRawParameters( array $rawParams ) {
