@@ -23,10 +23,23 @@ class QueryLink {
 	 */
 	public static function get( Query $query ) {
 
-		$params = array( trim( $query->getQueryString() ) );
 		$link = Infolink::newInternalLink( '', ':Special:Ask', false, array() );
+		$params = self::getParameters( $query );
 
-		$caption = ' ' . wfMessage( 'smw_iq_moreresults' )->inContentLanguage()->text();
+		foreach ( $params as $key => $param ) {
+			$link->setParameter( $param, is_string( $key ) ? $key : false );
+		}
+
+		$link->setCaption(
+			' ' . wfMessage( 'smw_iq_moreresults' )->inContentLanguage()->text()
+		);
+
+		return $link;
+	}
+
+	private static function getParameters( $query ) {
+
+		$params = array( trim( $query->getQueryString() ) );
 
 		foreach ( $query->getExtraPrintouts() as /* PrintRequest */ $printout ) {
 			$serialization = $printout->getSerialisation( true );
@@ -62,13 +75,7 @@ class QueryLink {
 			}
 		}
 
-		foreach ( $params as $key => $param ) {
-			$link->setParameter( $param, is_string( $key ) ? $key : false );
-		}
-
-		$link->setCaption( $caption );
-
-		return $link;
+		return $params;
 	}
 
 }

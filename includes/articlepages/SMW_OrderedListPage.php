@@ -67,7 +67,13 @@ abstract class SMWOrderedListPage extends Article {
 		$this->initParameters();
 
 		if ( !isset( $diff ) || !$diffOnly ) {
-			$wgOut->addHTML( $this->getTopText() );
+
+			// MW 1.25+
+			if ( method_exists( $wgOut, 'setIndicators' ) ) {
+				$wgOut->setIndicators( array( $this->getTopIndicator() ) );
+			}
+
+			$wgOut->addHTML( $this->getIntroductoryText() );
 		}
 
 		parent::view();
@@ -92,7 +98,21 @@ abstract class SMWOrderedListPage extends Article {
 		}
 	}
 
-	protected function getTopText() {
+	/**
+	 * @since 2.4
+	 *
+	 * @return string
+	 */
+	protected function getTopIndicator() {
+		return '';
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return string
+	 */
+	protected function getIntroductoryText() {
 		return '';
 	}
 

@@ -56,8 +56,23 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 *
 	 * @return string
 	 */
-	protected function getTopText() {
+	protected function getIntroductoryText() {
 		$propertyName = htmlspecialchars( $this->mTitle->getText() );
+		$message = '';
+
+		if ( !$this->mProperty->isUserDefined() ) {
+			$propertyKey  = 'smw-pa-property-predefined' . strtolower( $this->mProperty->getKey() );
+			$messageKey   = wfMessage( $propertyKey )->exists() ? $propertyKey : 'smw-pa-property-predefined-default';
+			$message = wfMessage( $messageKey, $propertyName )->parse() . ' ' . wfMessage( 'smw-pa-property-predefined-common' )->parse();
+		}
+
+		return Html::rawElement( 'div', array( 'class' => 'smw-property-predefined-intro' ), $message );
+	}
+
+	protected function getTopIndicator() {
+
+		$propertyName = htmlspecialchars( $this->mTitle->getText() );
+
 		$usageCount = '';
 		$requestOptions = new RequestOptions();
 		$requestOptions->limit = 1;
@@ -67,26 +82,15 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 		if ( $usageList && $usageList !== array() ) {
 			$usage = end( $usageList );
-			$usageCount = wfMessage(
-				'smw-pa-property-usage',
-				$propertyName,
-				$usage[1],
-				$this->getContext()->getLanguage()->timeanddate( $cachedLookupList->getTimestamp() )
-			)->parse();
+			$usageCount = wfMessage( 'smw-property-page-indicator-usage-count', $propertyName, $usage[1] )->parse() . ' | ';
 		}
 
-		if ( !$this->mProperty->isUserDefined() ) {
-			$propertyKey  = 'smw-pa-property-predefined' . strtolower( $this->mProperty->getKey() );
-			$messageKey   = wfMessage( $propertyKey )->exists() ? $propertyKey : 'smw-pa-property-predefined-default';
-
-			return Html::rawElement(
-				'div',
-				array( 'class' => 'smw-pa-property-predefined-intro' ),
-				wfMessage( $messageKey, $propertyName )->parse() . ' ' . wfMessage( 'smw-pa-property-predefined-common' )->parse() . ' ' . $usageCount
-			);
-		}
-
-		return $usageCount;
+		return Html::rawElement(
+				'span', array(
+				'class' => 'smw-property-page-indicator',
+				'title' => $this->getContext()->getLanguage()->timeanddate( $cachedLookupList->getTimestamp() )
+			), $usageCount . wfMessage( 'smw-property-page-indicator-type-info', $this->mProperty->isUserDefined() )->parse()
+		);
 	}
 
 	/**
