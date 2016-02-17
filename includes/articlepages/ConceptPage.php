@@ -48,11 +48,9 @@ class ConceptPage extends \SMWOrderedListPage {
 	protected function getHtml() {
 
 		if ( $this->limit > 0 ) { // limit==0: configuration setting to disable this completely
-			$store = StoreFactory::getStore();
-			$concept = $store->getConceptCacheStatus( $this->getDataItem() );
 			$description = new ConceptDescription( $this->getDataItem() );
 			$query = SMWPageLister::getQuery( $description, $this->limit, $this->from, $this->until );
-			$queryResult = $store->getQueryResult( $query );
+			$queryResult = ApplicationFactory::getInstance()->getStore()->getQueryResult( $query );
 
 			$diWikiPages = $queryResult->getResults();
 			if ( $this->until !== '' ) {
@@ -72,31 +70,36 @@ class ConceptPage extends \SMWOrderedListPage {
 		$titleText = htmlspecialchars( $this->mTitle->getText() );
 		$resultNumber = min( $this->limit, count( $diWikiPages ) );
 
-		// Concept cache information
-		if ( $concept instanceof DIConcept && $concept->getCacheStatus() === 'full' ){
-			$cacheInformation = Html::element(
-				'span',
-				array( 'class' => 'smw-concept-cache-information' ),
-				' ' . $this->getContext()->msg(
-						'smw-concept-cache-text',
-						$this->getContext()->getLanguage()->formatNum( $concept->getCacheCount() ),
-						$this->getContext()->getLanguage()->date( $concept->getCacheDate() ),
-						$this->getContext()->getLanguage()->time( $concept->getCacheDate() )
-					)->text()
-				);
-		} else {
-			$cacheInformation = '';
-		}
-
-
 		return Html::element( 'br', array( 'id' => 'smwfootbr' ) ) .
 			Html::element( 'a', array( 'name' => 'SMWResults' ), null ) .
 			Html::rawElement( 'div', array( 'id' => 'mw-pages'),
 				Html::rawElement( 'h2', array(), $this->getContext()->msg( 'smw_concept_header', $titleText )->text() ) .
 				Html::element( 'span', array(), $this->getContext()->msg( 'smw_conceptarticlecount', $resultNumber )->parse() ) .
 				smwfEncodeMessages( $errors ) . ' '. $navigation .
-				$cacheInformation .
 				$pageLister->formatList()
 			);
 	}
+
+	protected function getTopIndicator() {
+
+		$concept = ApplicationFactory::getInstance()->getStore()->getConceptCacheStatus( $this->getDataItem() );
+		$cacheInformation = '';
+		$time = '';
+
+		if ( $concept instanceof DIConcept && $concept->getCacheStatus() === 'full' ) {
+			$cacheInformation = wfMessage(
+				'smw-concept-page-indicator-cache-count',
+				$this->getContext()->getLanguage()->formatNum( $concept->getCacheCount() ),
+				$this->getContext()->getLanguage()->timeanddate( $concept->getCacheDate() )
+			)->parse();
+		}
+
+		return Html::rawElement(
+				'span', array(
+				'class' => 'smw-concept-page-indicator',
+				'title' => $time
+			), $cacheInformation
+		);
+	}
+
 }

@@ -565,3 +565,12 @@ a.smw-ask-action-btn-lblue:hover {
 	border-color: #204d74;
 	text-decoration:none;
 }
+
+.smw-concept-page-indicator, .smw-property-page-indicator {
+	line-height: 2.5;
+}
+
+.smw-concept-page-indicator a.external.text, .smw-property-page-indicator a.external.text {
+	background-image:none;
+	padding-right:0;
+}
