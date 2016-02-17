@@ -343,6 +343,6 @@
 	"smw-pa-property-predefined_text": "\"$1\" es una propiedad predefinida que representa texto de longitud arbitraria. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_pdesc": "\"$1\" es una propiedad predefinida que permite describir una propiedad en contexto de un idioma. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_list": "\"$1\" es una propiedad predefinida para definir una lista de propiedades usadas con una propiedad de tipo [[Special:Types/Record|registro]]. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
-	"smw-limitreport-intext-parsertime-value": "$1 segundos",
-	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 segundos"
+	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|segundo|segundos}}",
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|segundo|segundos}}"
 }
