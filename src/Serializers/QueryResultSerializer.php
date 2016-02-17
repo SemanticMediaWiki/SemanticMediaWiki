@@ -100,7 +100,6 @@ class QueryResultSerializer implements DispatchableSerializer {
 	public static function getSerialization( DataItem $dataItem, $printRequest = null ) {
 		switch ( $dataItem->getDIType() ) {
 			case DataItem::TYPE_WIKIPAGE:
-<<<<<<< 922ecc88576ae63b3afb0074d7feebcc4fc290e8
 
 				// Support for a deserializable _rec type with 0.6
 				if ( $printRequest !== null && strpos( $printRequest->getTypeID(), '_rec' ) !== false ) {
@@ -136,16 +135,6 @@ class QueryResultSerializer implements DispatchableSerializer {
 					);
 				}
 				$displayTitle = self::getDisplayTitle ($title->getArticleID() );
-=======
-				$title = $dataItem->getTitle();
-				$result = array(
-					'fulltext' => $title->getFullText(),
-					'fullurl' => $title->getFullUrl(),
-					'namespace' => $title->getNamespace(),
-					'exists' => $title->isKnown()
-				);
-				$displayTitle = self::getDisplayTitle ( $title->getArticleID() );
->>>>>>> fixed spaces and serialization verison number
 				if ( $displayTitle ) {
 					$result['displaytitle'] = $displayTitle;
 				}
