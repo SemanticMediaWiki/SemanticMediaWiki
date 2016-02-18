@@ -32,7 +32,8 @@
 			"Windes",
 			"Wladek92",
 			"VictorBrice",
-			"Orlodrim"
+			"Orlodrim",
+			"Lbayle"
 		]
 	},
 	"smw-desc": "Rendre le wiki plus accessible - pour les machines ''et'' les humains ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentation en ligne])",
@@ -221,7 +222,9 @@
 	"smw_ask_embed_instr": "Pour incruster cette requête dans une page wiki, utilisez le code ci-dessous.",
 	"smw-ask-delete": "[Supprimer]",
 	"smw-ask-sorting": "Tri",
+	"smw-ask-search": "Rechercher",
 	"smw-ask-format-selection-help": "Pour une description détaillée, veuillez visiter la page d'aide $1.",
+	"smw-ask-query-search-info": "La requête <code><nowiki>$1</nowiki></code> a été répondue par $2 en $3 sec.",
 	"searchbyproperty": "Recherche par propriété",
 	"smw_sbv_docu": "Rechercher toutes les pages qui ont une propriété donnée avec une certaine valeur.",
 	"smw_sbv_novalue": "Entrez une valeur correcte pour le critère, ou consultez toutes les valeurs de critère pour \"$1\".",
@@ -278,7 +281,9 @@
 	"smw_adminlinks_datastructure": "Structure des données",
 	"smw_adminlinks_displayingdata": "Affichage des données",
 	"smw_adminlinks_inlinequerieshelp": "Aide sur les requêtes",
-	"smw-pa-property-usage": "La propriété « $1 » est inscrite avec un [https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count nombre d’utilisations] d’environ {{PLURAL:$2|'''$2'''}} ($3).",
+	"smw-property-page-indicator-usage-count": "[https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count Nombre d’utilisations] estimé : {{PLURAL:$2|'''$2'''}}",
+	"smw-property-page-indicator-type-info": "{{PLURAL:$1|Utilisateur|Système}}",
+	"smw-concept-page-indicator-cache-count": "[https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count Compteur du cache] : {{PLURAL:$1|'''$1'''}} ($2)",
 	"smw-createproperty-isproperty": "C’est une propriété de type $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|La valeur autorisée pour cett propriété est|Les valeurs autorisées pour cette propriété sont}} :",
 	"smw-paramdesc-category-delim": "Le délimiteur",
