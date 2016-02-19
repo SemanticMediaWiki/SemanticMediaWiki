@@ -6,7 +6,8 @@
 			"Karduelis",
 			"Vito Genovese",
 			"Incelemeelemani",
-			"HakanIST"
+			"HakanIST",
+			"Sayginer"
 		]
 	},
 	"smw_viewasrdf": "RDF beslemesi",
@@ -89,6 +90,7 @@
 	"smw_ask_hide_embed": "Yerleştirme kodunu gizle",
 	"smw-ask-delete": "[Sil]",
 	"smw-ask-sorting": "Sıralama",
+	"smw-ask-search": "Ara",
 	"searchbyproperty": "Özelliğe göre ara",
 	"smw_sbv_docu": "Belirtilen özellik ve değere sahip tüm sayfaları ara.",
 	"smw_sbv_novalue": "Özellik için geçerli bir değer girin ya da \"$1\" için tüm özellik değerlerini görün.",
