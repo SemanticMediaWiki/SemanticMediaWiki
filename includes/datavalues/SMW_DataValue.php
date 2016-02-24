@@ -375,7 +375,7 @@ abstract class SMWDataValue {
 			}
 
 			$args[0] = 'smw_service_' . str_replace( ' ', '_', $dataItem->getString() ); // messages distinguish ' ' from '_'
-			$text = wfMessage( $args )->inContentLanguage()->text();
+			$text = call_user_func_array( 'wfMessage', $args )->inContentLanguage()->text();
 			$links = preg_split( "/[\n][\s]?/u", $text );
 
 			foreach ( $links as $link ) {

@@ -1,0 +1,74 @@
+{
+	"description": "Test in-text annotation using `_SERV` as provide service links (en)",
+	"properties": [
+		{
+			"name": "PropertyWithServiceLink",
+			"contents": "[[Has type::Text]] [[Provides service::some links]]"
+		},
+		{
+			"name": "PropertyWithAnotherServiceLink",
+			"contents": "[[Has type::Text]] [[Provides service::some other links]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Smw_service_some_other_links",
+			"namespace": "NS_MEDIAWIKI",
+			"contents": " label text1|http://someurl.com"
+		},
+		{
+			"name": "Example/P0418/1",
+			"contents": " [[PropertyWithServiceLink::123]]"
+		},
+		{
+			"name": "Example/P0418/2",
+			"contents": " [[PropertyWithAnotherServiceLink::ABC]]"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0",
+			"subject": "PropertyWithServiceLink",
+			"namespace": "SMW_NS_PROPERTY",
+			"store": {
+				"clear-cache": true,
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [ "_TYPE", "_MDAT", "_SKEY", "_SERV" ],
+					"propertyValues": [ "some links" ]
+				}
+			}
+		},
+		{
+			"about": "#1",
+			"subject": "PropertyWithServiceLink",
+			"namespace": "SMW_NS_PROPERTY",
+			"expected-output": {
+				"to-contain": [
+					"some links"
+				]
+			}
+		},
+		{
+			"about": "#2",
+			"subject": "PropertyWithAnotherServiceLink",
+			"namespace": "SMW_NS_PROPERTY",
+			"expected-output": {
+				"to-contain": [
+					"some other links"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
