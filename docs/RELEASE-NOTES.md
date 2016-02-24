@@ -38,6 +38,7 @@ Not a release yet.
 ## Bug fixes
 
 * #541 Fixed duplicate column when "further results ..." are redirected to `Special:Ask`
+* #753 Fixed number parsing of non-zero lead decimal numbers (.1 vs 0.1) / (T40476)
 * #1244 Find redirect for a property when specified as a record field (in `PropertyListValue`)
 * #1248 Fixed misplaced replacement of `_` in the `ImportValueParser`
 * #1270 Fixed printout display of inverse properties
@@ -45,9 +46,9 @@ Not a release yet.
 * #1275 Fixed export of record type data when embedded in a subobject
 * #1286 Fixed support for sorting by category
 * #1287 Fixed exception for when `$smwgFixedProperties` contains property keys with spaces
-* #1289 Suppresses redirect statement in sparql query for resources matched to an import vocabulary
+* #1289 Fixed redirect statement for resources matched to an import vocabulary (`SPARQL` query)
+* #1301 Fixed `count` query result discrepancy (to exclude redirect and deleted entities)
 * #1314 Fixed hidden annotation copy of `[[ :: ]]` text values when embedded in query results
-* #753 (T40476) Fixed number parsing of non-zero lead decimal numbers (.1 vs 0.1)
 * #1357 Fixed `|+align=...` usage for `format=table`
 * #1358 Fixed recognition of multi-byte boolean value
 * #1348 Fixed single year detection in `TimeValue`
