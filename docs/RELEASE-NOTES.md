@@ -51,6 +51,7 @@ Not a release yet.
 * #1357 Fixed `|+align=...` usage for `format=table`
 * #1358 Fixed recognition of multi-byte boolean value
 * #1348 Fixed single year detection in `TimeValue`
+* #1414 Fixed exception caused by a missing message page on a `Service link` annotation
 
 ## Internal changes
 
