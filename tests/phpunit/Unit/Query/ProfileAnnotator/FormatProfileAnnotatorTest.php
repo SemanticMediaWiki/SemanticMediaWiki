@@ -6,8 +6,9 @@ use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\Query\ProfileAnnotator\FormatProfileAnnotator;
 use SMW\Query\ProfileAnnotator\NullProfileAnnotator;
-use SMW\Subobject;
 use SMW\DIWikiPage;
+use SMWDIContainer as DIContainer;
+use SMWContainerSemanticData as ContainerSemanticData;
 
 /**
  * @covers \SMW\Query\ProfileAnnotator\FormatProfileAnnotator
@@ -42,12 +43,17 @@ class FormatProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCreateProfile() {
 
-		$profiler = new NullProfileAnnotator(
-			new Subobject( DIWikiPage::newFromText( __METHOD__ )->getTitle() ),
-			'foo'
+		$subject =new DIWikiPage( __METHOD__, NS_MAIN, '', 'foo' );
+
+		$container = new DIContainer(
+			new ContainerSemanticData( $subject	)
 		);
 
-		$instance = new FormatProfileAnnotator( $profiler, 'table' );
+		$instance = new FormatProfileAnnotator(
+			new NullProfileAnnotator( $container ),
+			'table'
+		);
+
 		$instance->addAnnotation();
 
 		$expected = array(

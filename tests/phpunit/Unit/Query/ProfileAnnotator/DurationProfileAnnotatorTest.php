@@ -6,8 +6,9 @@ use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\Query\ProfileAnnotator\DurationProfileAnnotator;
 use SMW\Query\ProfileAnnotator\NullProfileAnnotator;
-use SMW\Subobject;
 use SMW\DIWikiPage;
+use SMWDIContainer as DIContainer;
+use SMWContainerSemanticData as ContainerSemanticData;
 
 /**
  * @covers \SMW\Query\ProfileAnnotator\DurationProfileAnnotator
@@ -45,12 +46,17 @@ class DurationProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testCreateProfile( $duration, $expected ) {
 
-		$profiler = new NullProfileAnnotator(
-			new Subobject( DIWikiPage::newFromText( __METHOD__ )->getTitle() ),
-			'foo'
+		$subject =new DIWikiPage( __METHOD__, NS_MAIN, '', 'foo' );
+
+		$container = new DIContainer(
+			new ContainerSemanticData( $subject	)
 		);
 
-		$instance = new DurationProfileAnnotator( $profiler, $duration );
+		$instance = new DurationProfileAnnotator(
+			new NullProfileAnnotator( $container ),
+			$duration
+		);
+
 		$instance->addAnnotation();
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(

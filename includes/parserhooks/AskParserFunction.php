@@ -111,7 +111,7 @@ class AskParserFunction {
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		$rawParams = $this->pepareRawParameters(
+		$rawParams = $this->prepareRawParameters(
 			$rawParams
 		);
 
@@ -124,7 +124,7 @@ class AskParserFunction {
 		return $result;
 	}
 
-	private function pepareRawParameters( array $rawParams ) {
+	private function prepareRawParameters( array $rawParams ) {
 
 		// Remove parser object from parameters array
 		if( isset( $rawParams[0] ) && $rawParams[0] instanceof Parser ) {

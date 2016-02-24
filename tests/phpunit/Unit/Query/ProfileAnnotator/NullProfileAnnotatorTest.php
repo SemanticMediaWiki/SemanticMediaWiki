@@ -3,8 +3,9 @@
 namespace SMW\Tests\Query\ProfileAnnotator;
 
 use SMW\Query\ProfileAnnotator\NullProfileAnnotator;
-use SMW\Subobject;
+use SMWDIContainer as DIContainer;
 use SMW\DIWikiPage;
+use SMWContainerSemanticData as ContainerSemanticData;
 
 /**
  * @covers \SMW\Query\ProfileAnnotator\NullProfileAnnotator
@@ -19,23 +20,26 @@ class NullProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$subobject = $this->getMockBuilder( '\SMW\Subobject' )
+		$container = $this->getMockBuilder( '\SMWDIContainer' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
 			'\SMW\Query\ProfileAnnotator\NullProfileAnnotator',
-			new NullProfileAnnotator( $subobject, 'abc' )
+			new NullProfileAnnotator( $container )
 		);
 	}
 
 	public function testMethodAccess() {
 
-		$subobject = new Subobject( DIWikiPage::newFromText( __METHOD__ )->getTitle() );
+		$subject =new DIWikiPage( __METHOD__, NS_MAIN, '', '_QUERYadcb944aa33b2c972470b73964c547c0' );
+
+		$container = new DIContainer(
+			new ContainerSemanticData( $subject	)
+		);
 
 		$instance = new NullProfileAnnotator(
-			$subobject,
-			'_QUERYadcb944aa33b2c972470b73964c547c0'
+			$container
 		);
 
 		$instance->addAnnotation();
@@ -57,11 +61,6 @@ class NullProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEmpty(
 			$instance->getErrors()
-		);
-
-		$this->assertEquals(
-			'_QUERYadcb944aa33b2c972470b73964c547c0',
-			$subobject->getSubobjectId()
 		);
 	}
 

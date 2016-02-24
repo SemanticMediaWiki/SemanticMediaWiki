@@ -6,8 +6,9 @@ use SMW\Tests\Utils\UtilityFactory;
 
 use SMW\Query\ProfileAnnotator\DescriptionProfileAnnotator;
 use SMW\Query\ProfileAnnotator\NullProfileAnnotator;
-use SMW\Subobject;
 use SMW\DIWikiPage;
+use SMWDIContainer as DIContainer;
+use SMWContainerSemanticData as ContainerSemanticData;
 
 /**
  * @covers \SMW\Query\ProfileAnnotator\DescriptionProfileAnnotator
@@ -46,6 +47,12 @@ class DescriptionProfileTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCreateProfile() {
 
+		$subject =new DIWikiPage( __METHOD__, NS_MAIN, '', 'foo' );
+
+		$container = new DIContainer(
+			new ContainerSemanticData( $subject	)
+		);
+
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -62,12 +69,11 @@ class DescriptionProfileTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDepth' )
 			->will( $this->returnValue( 42 ) );
 
-		$profiler = new NullProfileAnnotator(
-			new Subobject( DIWikiPage::newFromText( __METHOD__ )->getTitle() ),
-			'ichimarukyuu'
+		$instance = new DescriptionProfileAnnotator(
+			new NullProfileAnnotator( $container ),
+			$description
 		);
 
-		$instance = new DescriptionProfileAnnotator( $profiler, $description );
 		$instance->addAnnotation();
 
 		$expected = array(

@@ -2,9 +2,10 @@
 
 namespace SMW\Query\ProfileAnnotator;
 
-use SMW\Subobject;
+use SMW\DIWikiPage;
 use SMWQuery as Query;
-use Title;
+use SMWDIContainer as DIContainer;
+use SMWContainerSemanticData as ContainerSemanticData;
 
 /**
  * @license GNU GPL v2+
@@ -25,9 +26,19 @@ class QueryProfileAnnotatorFactory {
 	 */
 	public function newJointProfileAnnotator( Query $query, $format, $duration = null ) {
 
-		$nullProfileAnnotator = new NullProfileAnnotator(
-			new Subobject( $query->getSubject()->getTitle() ),
+		$subject = new DIWikiPage(
+			$query->getSubject()->getDBkey(),
+			$query->getSubject()->getNamespace(),
+			$query->getSubject()->getInterwiki(),
 			$query->getQueryId()
+		);
+
+		$container = new DIContainer(
+			new ContainerSemanticData( $subject )
+		);
+
+		$nullProfileAnnotator = new NullProfileAnnotator(
+			$container
 		);
 
 		$descriptionProfileAnnotator = new DescriptionProfileAnnotator(
