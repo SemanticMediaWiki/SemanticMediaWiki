@@ -215,6 +215,8 @@ class QueryEngine {
 		// execute query tree, resolve all dependencies
 		$this->querySegmentListProcessor->doExecuteSubqueryJoinDependenciesFor( $rootid );
 
+		$this->applyExtraWhereCondition( $rootid );
+
 		switch ( $query->querymode ) {
 			case Query::MODE_DEBUG:
 				$result = $this->getDebugQueryResult( $query, $rootid );
@@ -499,6 +501,33 @@ class QueryEngine {
 		if ( count( $extraProperties ) > 0 ) {
 			$this->compileAccordingConditionsAndHackThemIntoQobj( $extraProperties, $qobj, $qid );
 		}
+	}
+
+	private function applyExtraWhereCondition( $qid ) {
+
+		$db = $this->store->getConnection();
+
+		if ( !isset( $this->querySegmentList[$qid] ) ) {
+			return null;
+		}
+
+		$qobj = $this->querySegmentList[$qid];
+
+		// Filter elements that should never appear in a result set
+		$extraWhereCondition = array(
+			'del'  => "$qobj->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND $qobj->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWDELETEIW ),
+			'redi' => "$qobj->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWREDIIW )
+		);
+
+		if ( strpos( $qobj->where, SMW_SQL3_SMWIW_OUTDATED ) === false ) {
+			$qobj->where .= $qobj->where === '' ? $extraWhereCondition['del'] : " AND " . $extraWhereCondition['del'];
+		}
+
+		if ( strpos( $qobj->where, SMW_SQL3_SMWREDIIW ) === false ) {
+			$qobj->where .= $qobj->where === '' ? $extraWhereCondition['redi'] : " AND " . $extraWhereCondition['redi'];
+		}
+
+		$this->querySegmentList[$qid] = $qobj;
 	}
 
 	private function collectedRequiredExtraPropertyDescriptions( $qobj ) {
