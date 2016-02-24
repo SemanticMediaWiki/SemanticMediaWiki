@@ -49,6 +49,7 @@ Not a release yet.
 * #1289 Fixed redirect statement for resources matched to an import vocabulary (`SPARQL` query)
 * #1301 Fixed `count` query result discrepancy (to exclude redirect and deleted entities)
 * #1314 Fixed hidden annotation copy of `[[ :: ]]` text values when embedded in query results
+* #1318 Fixed possible `null` object in `AskParserFunction` when creating a `QueryProfile`
 * #1357 Fixed `|+align=...` usage for `format=table`
 * #1358 Fixed recognition of multi-byte boolean value
 * #1348 Fixed single year detection in `TimeValue`
