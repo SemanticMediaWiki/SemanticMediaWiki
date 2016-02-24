@@ -34,7 +34,7 @@ class QueryProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$query->expects( $this->once() )
+		$query->expects( $this->atLeastOnce() )
 			->method( 'getSubject' )
 			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
 

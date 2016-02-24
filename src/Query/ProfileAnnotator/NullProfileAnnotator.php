@@ -3,7 +3,7 @@
 namespace SMW\Query\ProfileAnnotator;
 
 use SMW\DIProperty;
-use SMW\Subobject;
+use SMWDIContainer as DIContainer;
 
 /**
  * @license GNU GPL v2+
@@ -14,24 +14,17 @@ use SMW\Subobject;
 class NullProfileAnnotator implements ProfileAnnotator {
 
 	/**
-	 * @var Subobject
+	 * @var DIContainer
 	 */
-	private $subobject;
-
-	/**
-	 * @var string
-	 */
-	private $queryId = null;
+	private $container;
 
 	/**
 	 * @since 1.9
 	 *
-	 * @param Subobject $subobject
-	 * @param string $queryId
+	 * @param DIContainer $container
 	 */
-	public function __construct( Subobject $subobject, $queryId ) {
-		$this->subobject = $subobject;
-		$this->queryId = $queryId;
+	public function __construct( DIContainer $container ) {
+		$this->container = $container;
 	}
 
 	/**
@@ -40,7 +33,7 @@ class NullProfileAnnotator implements ProfileAnnotator {
 	 * @return array
 	 */
 	public function getErrors() {
-		return $this->subobject->getErrors();
+		return $this->getSemanticData()->getErrors();
 	}
 
 	/**
@@ -59,10 +52,10 @@ class NullProfileAnnotator implements ProfileAnnotator {
 	 *
 	 * @since 1.9
 	 *
-	 * @return SemanticData
+	 * @return DIContainer
 	 */
 	public function getContainer() {
-		return $this->subobject->getContainer();
+		return $this->container;
 	}
 
 	/**
@@ -73,7 +66,7 @@ class NullProfileAnnotator implements ProfileAnnotator {
 	 * @return SemanticData
 	 */
 	public function getSemanticData() {
-		return $this->subobject->getSemanticData();
+		return $this->container->getSemanticData();
 	}
 
 	/**
@@ -81,8 +74,6 @@ class NullProfileAnnotator implements ProfileAnnotator {
 	 *
 	 * @since 1.9
 	 */
-	public function addAnnotation() {
-		$this->subobject->setEmptyContainerForId( $this->queryId );
-	}
+	public function addAnnotation() {}
 
 }
