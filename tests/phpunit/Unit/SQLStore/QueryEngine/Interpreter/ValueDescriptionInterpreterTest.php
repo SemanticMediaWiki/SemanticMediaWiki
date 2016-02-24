@@ -110,7 +110,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected->type = 1;
 		$expected->alias = "t0";
 		$expected->joinfield = "t0.smw_id";
-		$expected->where = "t0.smw_sortkey<=Foo AND t0.smw_iw!=:smw AND t0.smw_iw!=:smw-delete";
+		$expected->where = "t0.smw_sortkey<=Foo";
 
 		$provider[] = array(
 			$description,
@@ -124,7 +124,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$expected->type = 1;
 		$expected->alias = "t0";
 		$expected->joinfield = "t0.smw_id";
-		$expected->where = "t0.smw_sortkey LIKE Foo AND t0.smw_iw!=:smw AND t0.smw_iw!=:smw-delete";
+		$expected->where = "t0.smw_sortkey LIKE Foo";
 
 		$provider[] = array(
 			$description,
