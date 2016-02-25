@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Toliño",
-			"Elisardojm"
+			"Elisardojm",
+			"Banjo"
 		]
 	},
 	"smw-desc": "Fai o seu wiki máis accesible; para máquinas ''e'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en liña])",
@@ -191,6 +192,7 @@
 	"smw_ask_embed_instr": "Para incrustar esta pescuda en liña nunha páxina wiki use o seguinte código.",
 	"smw-ask-delete": "[Borrar]",
 	"smw-ask-sorting": "Ordenación",
+	"smw-ask-search": "Procurar",
 	"smw-ask-format-selection-help": "Para ler unha descrición detallada visite a páxina de axuda $1.",
 	"searchbyproperty": "Procurar por propiedade",
 	"smw_sbv_docu": "Procurar todas as páxinas que teñen a propiedade e o valor dados.",
@@ -248,7 +250,6 @@
 	"smw_adminlinks_datastructure": "Estrutura dos datos",
 	"smw_adminlinks_displayingdata": "Mostrando os datos",
 	"smw_adminlinks_inlinequerieshelp": "Axuda coas pescudas",
-	"smw-pa-property-usage": "A propiedade \"$1\" está rexistrada cun [https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count uso] aproximado de {{PLURAL:$2|'''$2'''}} ($3).",
 	"smw-createproperty-isproperty": "Esta é unha propiedade de clase $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|O valor permitido|Os valores permitidos}} para esta propiedade {{PLURAL:$1|é|son}}:",
 	"smw-paramdesc-category-delim": "O delimitador",
@@ -351,6 +352,6 @@
 	"smw-pa-property-predefined_text": "\"$1\" é unha propiedade predefinida que representa texto de lonxitude arbitraria. E está proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
 	"smw-pa-property-predefined_pdesc": "\"$1\" é unha propiedade predefinida que permite describir unha propiedade en contexto dun idioma. É proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_list": "\"$1\" é unha propiedade predefinida para definir unha lista de propiedades usadas cunha propiedade de tipo [[Special:Types/Record|rexistro]]. É  proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
-	"smw-limitreport-intext-parsertime-value": "$1 segundos",
-	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 segundos"
+	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|segundo|segundos}}",
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|segundo|segundos}}"
 }
