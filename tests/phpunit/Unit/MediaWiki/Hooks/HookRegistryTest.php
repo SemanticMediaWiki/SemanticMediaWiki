@@ -132,7 +132,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->doTestExecutionForParserFirstCallInit( $instance );
 
 		// Usage of registered hooks in/by smw-core
-		$this->doTestExecutionForSMWStoreDropTables( $instance );
+		//$this->doTestExecutionForSMWStoreDropTables( $instance );
 		$this->doTestExecutionForSMWSQLStorAfterDataUpdateComplete( $instance );
 		$this->doTestExecutionForSMWStoreAfterQueryResultLookupComplete( $instance );
 	}

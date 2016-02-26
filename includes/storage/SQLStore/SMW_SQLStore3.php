@@ -372,6 +372,7 @@ class SMWSQLStore3 extends SMWStore {
 			$result = $this->fetchQueryResult( $query );
 		}
 
+		\Hooks::run( 'SMW::SQLStore::AfterQueryResultLookupComplete', array( $this, &$result ) );
 		\Hooks::run( 'SMW::Store::AfterQueryResultLookupComplete', array( $this, &$result ) );
 
 		return $result;

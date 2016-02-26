@@ -1,14 +1,14 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\SQLStore\QueryDependency;
 
-use SMW\SQLStore\EmbeddedQueryDependencyLinksStore;
+use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
 use SMW\ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\DIWikiPage;
 
 /**
- * @covers \SMW\SQLStore\EmbeddedQueryDependencyLinksStore
+ * @covers \SMW\SQLStore\QueryDependency\QueryDependencyLinksStore
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,20 +16,21 @@ use SMW\DIWikiPage;
  *
  * @author mwjames
  */
-class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
+class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 	private $applicationFactory;
+	private $store;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->applicationFactory->registerObject( 'Store', $this->store );
 	}
 
 	protected function tearDown() {
@@ -40,13 +41,17 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 
 	public function testCanConstruct() {
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$deferredDependencyLinksUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater' )
 			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+			->getMock();
+
+		$deferredDependencyLinksUpdater->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $this->store ) );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\EmbeddedQueryDependencyLinksStore',
-			new EmbeddedQueryDependencyLinksStore( $store )
+			'\SMW\SQLStore\QueryDependency\QueryDependencyLinksStore',
+			new QueryDependencyLinksStore( $deferredDependencyLinksUpdater )
 		);
 	}
 
@@ -68,7 +73,17 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new EmbeddedQueryDependencyLinksStore( $store );
+		$deferredDependencyLinksUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$deferredDependencyLinksUpdater->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $store ) );
+
+		$instance = new QueryDependencyLinksStore(
+			$deferredDependencyLinksUpdater
+		);
 
 		$this->assertTrue(
 			$instance->pruneOutdatedTargetLinks( $compositePropertyTableDiffIterator )
@@ -93,7 +108,18 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new EmbeddedQueryDependencyLinksStore( $store );
+		$deferredDependencyLinksUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$deferredDependencyLinksUpdater->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $store ) );
+
+		$instance = new QueryDependencyLinksStore(
+			$deferredDependencyLinksUpdater
+		);
+
 		$instance->setEnabledState( false );
 
 		$this->assertNull(
@@ -138,7 +164,17 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 			->method( 'getOrderedDiffByTable' )
 			->will( $this->returnValue( $tableDiff ) );
 
-		$instance = new EmbeddedQueryDependencyLinksStore( $store );
+		$deferredDependencyLinksUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$deferredDependencyLinksUpdater->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $store ) );
+
+		$instance = new QueryDependencyLinksStore(
+			$deferredDependencyLinksUpdater
+		);
 
 		$this->assertEquals(
 			array( 'idlist' => array( 1 ) ),
@@ -156,7 +192,18 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new EmbeddedQueryDependencyLinksStore( $store );
+		$deferredDependencyLinksUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$deferredDependencyLinksUpdater->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $store ) );
+
+		$instance = new QueryDependencyLinksStore(
+			$deferredDependencyLinksUpdater
+		);
+
 		$instance->setEnabledState( false );
 
 		$this->assertEmpty(
@@ -207,30 +254,51 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
 
-		$instance = new EmbeddedQueryDependencyLinksStore( $store );
+		$deferredDependencyLinksUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$deferredDependencyLinksUpdater->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $store ) );
+
+		$instance = new QueryDependencyLinksStore(
+			$deferredDependencyLinksUpdater
+		);
 
 		$instance->findPartialEmbeddedQueryTargetLinksHashListFor( array( 42 ), 1, 200 );
 	}
 
-	public function testTryToaddDependencyListWhileBeingDisabled() {
+	public function testTryDoUpdateDependenciesByWhileBeingDisabled() {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new EmbeddedQueryDependencyLinksStore( $store );
+		$deferredDependencyLinksUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$deferredDependencyLinksUpdater->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $store ) );
+
+		$instance = new QueryDependencyLinksStore(
+			$deferredDependencyLinksUpdater
+		);
+
 		$instance->setEnabledState( false );
 
-		$embeddedQueryDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\EmbeddedQueryDependencyListResolver' )
+		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertNull(
-			$instance->addDependencyList( $embeddedQueryDependencyListResolver )
+			$instance->doUpdateDependenciesBy( $queryResultDependencyListResolver )
 		);
 	}
 
-	public function testTryToAddDependenciesForWhenDependencyListReturnsEmpty() {
+	public function testTryDoUpdateDependenciesByForWhenDependencyListReturnsEmpty() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( array( 'getSMWPageID' ) )
@@ -249,27 +317,38 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
 
-		$instance = new EmbeddedQueryDependencyLinksStore( $store );
-		$instance->setEnabledState( true );
-
-		$embeddedQueryDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\EmbeddedQueryDependencyListResolver' )
+		$deferredDependencyLinksUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$embeddedQueryDependencyListResolver->expects( $this->once() )
-			->method( 'getQueryDependencySubjectList' )
+		$deferredDependencyLinksUpdater->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $store ) );
+
+		$instance = new QueryDependencyLinksStore(
+			$deferredDependencyLinksUpdater
+		);
+
+		$instance->setEnabledState( true );
+
+		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResultDependencyListResolver->expects( $this->once() )
+			->method( 'getDependencyList' )
 			->will( $this->returnValue( array() ) );
 
-		$embeddedQueryDependencyListResolver->expects( $this->any() )
+		$queryResultDependencyListResolver->expects( $this->any() )
 			->method( 'getSubject' )
 			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
 
 		$this->assertNull(
-			$instance->addDependencyList( $embeddedQueryDependencyListResolver )
+			$instance->doUpdateDependenciesBy( $queryResultDependencyListResolver )
 		);
 	}
 
-	public function testAddDependenciesFromQueryResult() {
+	public function testdoUpdateDependenciesByFromQueryResult() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( array( 'getSMWPageID' ) )
@@ -283,37 +362,10 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->once() )
-			->method( 'delete' )
-			->with(
-				$this->equalTo( \SMWSQLStore3::QUERY_LINKS_TABLE ),
-				$this->equalTo( array( 's_id' => 42 ) ) );
-
-		$insert[] = array(
-			's_id' => 42,
-			'o_id' => 1001
-		);
-
-		$connection->expects( $this->once() )
-			->method( 'insert' )
-			->with(
-				$this->equalTo( \SMWSQLStore3::QUERY_LINKS_TABLE ),
-				$this->equalTo( $insert ) );
-
-		$connectionManager = $this->getMockBuilder( '\SMW\ConnectionManager' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connectionManager->expects( $this->any() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->setMethods( array( 'getObjectIds', 'getPropertyValues' ) )
 			->getMockForAbstractClass();
-
-		$store->setConnectionManager( $connectionManager );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
@@ -323,23 +375,40 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 			->method( 'getPropertyValues' )
 			->will( $this->returnValue( array() ) );
 
-		$embeddedQueryDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\EmbeddedQueryDependencyListResolver' )
+		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$embeddedQueryDependencyListResolver->expects( $this->any() )
+		$queryResultDependencyListResolver->expects( $this->any() )
 			->method( 'getSubject' )
 			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ )  ) );
 
-		$embeddedQueryDependencyListResolver->expects( $this->any() )
-			->method( 'getQueryDependencySubjectList' )
+		$queryResultDependencyListResolver->expects( $this->any() )
+			->method( 'getDependencyList' )
 			->will( $this->returnValue( array( null, DIWikiPage::newFromText( 'Foo' ) ) ) );
 
-		$instance = new EmbeddedQueryDependencyLinksStore( $store );
-		$instance->addDependencyList( $embeddedQueryDependencyListResolver );
+		$deferredDependencyLinksUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$deferredDependencyLinksUpdater->expects( $this->once() )
+			->method( 'addToDeferredUpdateList' )
+			->with(
+				$this->equalTo( 42 ),
+				$this->anything() );
+
+		$deferredDependencyLinksUpdater->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $store ) );
+
+		$instance = new QueryDependencyLinksStore(
+			$deferredDependencyLinksUpdater
+		);
+
+		$instance->doUpdateDependenciesBy( $queryResultDependencyListResolver );
 	}
 
-	public function testAddDependenciesFromQueryResultWhereObjectIdIsYetUnknownWhichRequiresToCreateTheIdOnTheFly() {
+	public function testdoUpdateDependenciesByFromQueryResultWhereObjectIdIsYetUnknownWhichRequiresToCreateTheIdOnTheFly() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( array( 'getSMWPageID', 'makeSMWPageID' ) )
@@ -353,41 +422,10 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 			->method( 'makeSMWPageID' )
 			->will( $this->returnValue( 1001 ) );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->once() )
-			->method( 'delete' )
-			->with(
-				$this->equalTo( \SMWSQLStore3::QUERY_LINKS_TABLE ),
-				$this->equalTo( array( 's_id' => 42 ) ) );
-
-		$insert[] = array(
-			's_id' => 42,
-			'o_id' => 1001
-		);
-
-		$connection->expects( $this->once() )
-			->method( 'insert' )
-			->with(
-				$this->equalTo( \SMWSQLStore3::QUERY_LINKS_TABLE ),
-				$this->equalTo( $insert ) );
-
-		$connectionManager = $this->getMockBuilder( '\SMW\ConnectionManager' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connectionManager->expects( $this->any() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->setMethods( array( 'getObjectIds', 'getPropertyValues' ) )
 			->getMockForAbstractClass();
-
-		$store->setConnectionManager( $connectionManager );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
@@ -397,23 +435,40 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 			->method( 'getPropertyValues' )
 			->will( $this->returnValue( array() ) );
 
-		$embeddedQueryDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\EmbeddedQueryDependencyListResolver' )
+		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$embeddedQueryDependencyListResolver->expects( $this->any() )
+		$queryResultDependencyListResolver->expects( $this->any() )
 			->method( 'getSubject' )
 			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ )  ) );
 
-		$embeddedQueryDependencyListResolver->expects( $this->any() )
-			->method( 'getQueryDependencySubjectList' )
+		$queryResultDependencyListResolver->expects( $this->any() )
+			->method( 'getDependencyList' )
 			->will( $this->returnValue( array( DIWikiPage::newFromText( 'Foo', NS_CATEGORY ) ) ) );
 
-		$instance = new EmbeddedQueryDependencyLinksStore( $store );
-		$instance->addDependencyList( $embeddedQueryDependencyListResolver );
+		$deferredDependencyLinksUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$deferredDependencyLinksUpdater->expects( $this->once() )
+			->method( 'addToDeferredUpdateList' )
+			->with(
+				$this->equalTo( 42 ),
+				$this->anything() );
+
+		$deferredDependencyLinksUpdater->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $store ) );
+
+		$instance = new QueryDependencyLinksStore(
+			$deferredDependencyLinksUpdater
+		);
+
+		$instance->doUpdateDependenciesBy( $queryResultDependencyListResolver );
 	}
 
-	public function testTryToAddDependenciesWithinSkewedTime() {
+	public function testTryDoUpdateDependenciesByWithinSkewedTime() {
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -462,16 +517,27 @@ class EmbeddedQueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase 
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
 
-		$embeddedQueryDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\EmbeddedQueryDependencyListResolver' )
+		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$embeddedQueryDependencyListResolver->expects( $this->any() )
+		$queryResultDependencyListResolver->expects( $this->any() )
 			->method( 'getSubject' )
 			->will( $this->returnValue( $subject ) );
 
-		$instance = new EmbeddedQueryDependencyLinksStore( $store );
-		$instance->addDependencyList( $embeddedQueryDependencyListResolver );
+		$deferredDependencyLinksUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$deferredDependencyLinksUpdater->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $store ) );
+
+		$instance = new QueryDependencyLinksStore(
+			$deferredDependencyLinksUpdater
+		);
+
+		$instance->doUpdateDependenciesBy( $queryResultDependencyListResolver );
 	}
 
 }

@@ -150,6 +150,27 @@ class SharedCallbackContainer implements CallbackContainer {
 
 			return $propertySpecificationLookup;
 		} );
+
+		$callbackLoader->registerExpectedReturnType( 'PropertyHierarchyLookup', '\SMW\PropertyHierarchyLookup' );
+
+		$callbackLoader->registerCallback( 'PropertyHierarchyLookup', function() use ( $callbackLoader ) {
+
+			$propertyHierarchyLookup = new PropertyHierarchyLookup(
+				$callbackLoader->load( 'Store' ),
+				$callbackLoader->load( 'CacheFactory' )->newFixedInMemoryCache( 500 )
+			);
+
+			$propertyHierarchyLookup->setSubcategoryDepth(
+				$callbackLoader->load( 'Settings' )->get( 'smwgQSubcategoryDepth' )
+			);
+
+			$propertyHierarchyLookup->setSubpropertyDepth(
+				$callbackLoader->load( 'Settings' )->get( 'smwgQSubpropertyDepth' )
+			);
+
+			return $propertyHierarchyLookup;
+		} );
+
 	}
 
 }

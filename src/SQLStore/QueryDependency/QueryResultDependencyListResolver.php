@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\SQLStore;
+namespace SMW\SQLStore\QueryDependency;
 
 use SMW\Store;
 use SMWQuery as Query;
@@ -23,7 +23,7 @@ use SMW\Query\Language\ThingDescription;
  *
  * @author mwjames
  */
-class EmbeddedQueryDependencyListResolver {
+class QueryResultDependencyListResolver {
 
 	/**
 	 * @var QueryResult
@@ -99,7 +99,7 @@ class EmbeddedQueryDependencyListResolver {
 	 *
 	 * @return DIWikiPage[]|[]
 	 */
-	public function getQueryDependencySubjectList() {
+	public function getDependencyList() {
 
 		// Resolving dependencies for non-embedded queries or limit=0 (which only
 		// links to Special:Ask via further results) is not required
