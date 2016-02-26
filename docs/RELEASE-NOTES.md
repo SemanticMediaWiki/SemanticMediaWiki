@@ -67,5 +67,6 @@ Not a release yet.
 * #1382 Added `DispatchingDataValueFormatter` and `ValueFormatterRegistry`
 * #1385 Added `StringValueFormatter` and `CodeStringValueFormatter`
 * #1388 Added `TimeValueFormatter`
+* #1421 Added `DeferredDependencyLinksUpdater` to avoid violations reported by `TransactionProfiler` in MW 1.26+ 
 
 ## Contributors
