@@ -1,8 +1,8 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\SQLStore\QueryDependency;
 
-use SMW\SQLStore\EmbeddedQueryDependencyListResolver;
+use SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
 use SMW\Query\Language\ClassDescription;
@@ -18,7 +18,7 @@ use SMWQuery as Query;
 use SMWDIBlob as DIBlob;
 
 /**
- * @covers \SMW\SQLStore\EmbeddedQueryDependencyListResolver
+ * @covers \SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -26,7 +26,7 @@ use SMWDIBlob as DIBlob;
  *
  * @author mwjames
  */
-class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCase {
+class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase {
 
 	private $applicationFactory;
 	private $store;
@@ -56,18 +56,18 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\EmbeddedQueryDependencyListResolver',
-			new EmbeddedQueryDependencyListResolver( null, $propertyHierarchyLookup )
+			'\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver',
+			new QueryResultDependencyListResolver( null, $propertyHierarchyLookup )
 		);
 	}
 
-	public function testTryToGetQueryDependencySubjectListForNonSetQueryResult() {
+	public function testTryToGetDependencyListForNonSetQueryResult() {
 
 		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new EmbeddedQueryDependencyListResolver(
+		$instance = new QueryResultDependencyListResolver(
 			null,
 			$propertyHierarchyLookup
 		);
@@ -81,11 +81,11 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 		);
 
 		$this->assertEmpty(
-			$instance->getQueryDependencySubjectList()
+			$instance->getDependencyList()
 		);
 	}
 
-	public function testTryToGetQueryDependencySubjectListForLimitZeroQuery() {
+	public function testTryToGetDependencyListForLimitZeroQuery() {
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
@@ -114,13 +114,13 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new EmbeddedQueryDependencyListResolver(
+		$instance = new QueryResultDependencyListResolver(
 			$queryResult,
 			$propertyHierarchyLookup
 		);
 
 		$this->assertEmpty(
-			$instance->getQueryDependencySubjectList()
+			$instance->getDependencyList()
 		);
 	}
 
@@ -171,7 +171,7 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 			->with( $this->equalTo( new DIProperty( 'Subprop' ) ) )
 			->will( $this->returnValue( array() ) );
 
-		$instance = new EmbeddedQueryDependencyListResolver(
+		$instance = new QueryResultDependencyListResolver(
 			$queryResult,
 			$propertyHierarchyLookup
 		);
@@ -187,14 +187,14 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 
 		$this->assertEquals(
 			$expected,
-			$instance->getQueryDependencySubjectList()
+			$instance->getDependencyList()
 		);
 	}
 
 	/**
 	 * @dataProvider queryProvider
 	 */
-	public function testGetQueryDependencySubjectList( $query, $expected ) {
+	public function testgetDependencyList( $query, $expected ) {
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -216,14 +216,14 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new EmbeddedQueryDependencyListResolver(
+		$instance = new QueryResultDependencyListResolver(
 			$queryResult,
 			$propertyHierarchyLookup
 		);
 
 		$this->assertEquals(
 			$expected,
-			$instance->getQueryDependencySubjectList()
+			$instance->getDependencyList()
 		);
 	}
 
@@ -274,7 +274,7 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 			->with( $this->equalTo( new DIProperty( 'Subprop' ) ) )
 			->will( $this->returnValue( array() ) );
 
-		$instance = new EmbeddedQueryDependencyListResolver(
+		$instance = new QueryResultDependencyListResolver(
 			$queryResult,
 			$propertyHierarchyLookup
 		);
@@ -288,7 +288,7 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 
 		$this->assertEquals(
 			$expected,
-			$instance->getQueryDependencySubjectList()
+			$instance->getDependencyList()
 		);
 	}
 
@@ -338,7 +338,7 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 			->with( $this->equalTo( DIWikiPage::newFromText( 'Subcat', NS_CATEGORY ) ) )
 			->will( $this->returnValue( array() ) );
 
-		$instance = new EmbeddedQueryDependencyListResolver(
+		$instance = new QueryResultDependencyListResolver(
 			$queryResult,
 			$propertyHierarchyLookup
 		);
@@ -351,7 +351,7 @@ class EmbeddedQueryDependencyListResolverTest extends \PHPUnit_Framework_TestCas
 
 		$this->assertEquals(
 			$expected,
-			$instance->getQueryDependencySubjectList()
+			$instance->getDependencyList()
 		);
 	}
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\SQLStore;
+namespace SMW\SQLStore\QueryDependency;
 
 use SMW\Store;
-use SMWQueryResult as QueryResult;
+use SMW\SQLStore\CompositePropertyTableDiffIterator;
 use SMWSQLStore3;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
@@ -18,12 +18,17 @@ use SMW\EventHandler;
  *
  * @author mwjames
  */
-class EmbeddedQueryDependencyLinksStore {
+class QueryDependencyLinksStore {
 
 	/**
 	 * @var Store
 	 */
 	private $store = null;
+
+	/**
+	 * @var DeferredDependencyLinksUpdater
+	 */
+	private $deferredDependencyLinksUpdater = null;
 
 	/**
 	 * @var Database
@@ -48,10 +53,11 @@ class EmbeddedQueryDependencyLinksStore {
 	/**
 	 * @since 2.3
 	 *
-	 * @param Store $store
+	 * @param DeferredDependencyLinksUpdater $deferredDependencyLinksUpdater
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( DeferredDependencyLinksUpdater $deferredDependencyLinksUpdater ) {
+		$this->deferredDependencyLinksUpdater = $deferredDependencyLinksUpdater;
+		$this->store = $this->deferredDependencyLinksUpdater->getStore();
 		$this->connection = $this->store->getConnection( 'mw.db' );
 	}
 
@@ -232,21 +238,21 @@ class EmbeddedQueryDependencyLinksStore {
 
 	/**
 	 * This method is called from the `SMW::Store::AfterQueryResultLookupComplete` hook
-	 * to resolve and update dependencies fetched fro an embedded query and its
+	 * to resolve and update dependencies fetched from an embedded query and its
 	 * QueryResult object.
 	 *
 	 * @since 2.3
 	 *
-	 * @param EmbeddedQueryDependencyListResolver $embeddedQueryDependencyListResolver
+	 * @param QueryResultDependencyListResolver $queryResultDependencyListResolver
 	 */
-	public function addDependencyList( EmbeddedQueryDependencyListResolver $embeddedQueryDependencyListResolver ) {
+	public function doUpdateDependenciesBy( QueryResultDependencyListResolver $queryResultDependencyListResolver ) {
 
-		if ( !$this->isEnabled() || $embeddedQueryDependencyListResolver->getSubject() === null ) {
+		if ( !$this->isEnabled() || $queryResultDependencyListResolver->getSubject() === null ) {
 			return null;
 		}
 
-		$subject = $embeddedQueryDependencyListResolver->getSubject();
-		$hash = $embeddedQueryDependencyListResolver->getQueryId();
+		$subject = $queryResultDependencyListResolver->getSubject();
+		$hash = $queryResultDependencyListResolver->getQueryId();
 
 		$sid = $this->getIdForSubject(
 			$subject,
@@ -257,101 +263,31 @@ class EmbeddedQueryDependencyLinksStore {
 			return wfDebugLog( 'smw', __METHOD__ . " suppressed (skewed time) for SID " . $sid . "\n" );
 		}
 
-		$dependencyList = $embeddedQueryDependencyListResolver->getQueryDependencySubjectList();
+		$dependencyList = $queryResultDependencyListResolver->getDependencyList();
 
 		if ( $dependencyList === array() ) {
 			return null;
 		}
 
+		$deferredDependencyLinksUpdater = $this->deferredDependencyLinksUpdater;
+
 		if ( $sid > 0 ) {
-			return $this->updateDependencyList( $sid, $dependencyList );
+			return $deferredDependencyLinksUpdater->addToDeferredUpdateList( $sid, $dependencyList );
 		}
 
 		// SID == 0 means the storage update/process has not been finalized
 		// (new object hasn't been registered) hence an event is registered to
 		// update the list after the update process has been completed
 
-		// PHP 5.3 compatibility
-		$embeddedQueryResultLinksUpdater = $this;
-
-		EventHandler::getInstance()->addCallbackListener( 'deferred.embedded.query.dep.update', function() use ( $embeddedQueryResultLinksUpdater, $dependencyList, $subject, $hash ) {
+		EventHandler::getInstance()->addCallbackListener( 'deferred.embedded.query.dep.update', function() use ( $deferredDependencyLinksUpdater, $dependencyList, $subject, $hash ) {
 
 			wfDebugLog( 'smw', __METHOD__ . ' deferred.embedded.query.dep.update for ' . $hash . "\n" );
 
-			$embeddedQueryResultLinksUpdater->updateDependencyList(
-				$embeddedQueryResultLinksUpdater->getIdForSubject( $subject, $hash ),
+			$deferredDependencyLinksUpdater->addToDeferredUpdateList(
+				$deferredDependencyLinksUpdater->getIdForSubject( $subject, $hash ),
 				$dependencyList
 			);
 		} );
-	}
-
-	/**
-	 * @since 2.3
-	 *
-	 * @param integer $sid
-	 * @param array $dependencyList
-	 */
-	public function updateDependencyList( $sid, array $dependencyList ) {
-
-		$this->connection->beginAtomicTransaction( __METHOD__ );
-
-		// Before an insert, delete all entries that for the criteria which is
-		// cheaper then doing an individual upsert or selectRow, this also ensures
-		// that entries are self-corrected for dependencies matched
-		$this->connection->delete(
-			SMWSQLStore3::QUERY_LINKS_TABLE,
-			array(
-				's_id' => $sid
-			),
-			__METHOD__
-		);
-
-		if ( $sid == 0 ) {
-			return $this->connection->endAtomicTransaction( __METHOD__ );
-		}
-
-		$inserts = array();
-
-		foreach ( $dependencyList as $dependency ) {
-
-			if ( !$dependency instanceof DIWikiPage ) {
-				continue;
-			}
-
-			$oid = $this->getIdForSubject( $dependency );
-
-			// If the ID_TABLE didn't contained an valid ID then we create one ourselves
-			// to ensure that object entities are tracked from the start
-			// This can happen when a query is added with object reference that have not
-			// yet been referenced as annotation and therefore do not recognized as
-			// value annotation
-			if ( $oid < 1 && ( ( $oid = $this->tryToMakeIdForSubject( $dependency ) ) < 1 ) ) {
-				continue;
-			}
-
-			$inserts[$sid . $oid] = array(
-				's_id' => $sid,
-				'o_id' => $oid
-			);
-		}
-
-		if ( $inserts === array() ) {
-			return $this->connection->endAtomicTransaction( __METHOD__ );
-		}
-
-		// MW's multi-array insert needs a numeric dimensional array but the key
-		// was used with a hash to avoid duplicate entries hence the re-copy
-		$inserts = array_values( $inserts );
-
-		wfDebugLog( 'smw', __METHOD__ . ' insert for SID ' . $sid . "\n" );
-
-		$this->connection->insert(
-			SMWSQLStore3::QUERY_LINKS_TABLE,
-			$inserts,
-			__METHOD__
-		);
-
-		$this->connection->endAtomicTransaction( __METHOD__ );
 	}
 
 	/**
@@ -370,32 +306,10 @@ class EmbeddedQueryDependencyLinksStore {
 		);
 	}
 
-	/**
-	 * @since 2.3
-	 *
-	 * @param DIWikiPage $subject, $subobjectName
-	 * @param string $subobjectName
-	 */
-	public function tryToMakeIdForSubject( DIWikiPage $subject, $subobjectName = '' ) {
-
-		if ( $subject->getNamespace() !== NS_CATEGORY && $subject->getNamespace() !== SMW_NS_PROPERTY ) {
-			return 0;
-		}
-
-		$id = $this->store->getObjectIds()->makeSMWPageID(
-			$subject->getDBkey(),
-			$subject->getNamespace(),
-			$subject->getInterwiki(),
-			$subobjectName,
-			false
-		);
-
-		wfDebugLog( 'smw', __METHOD__ . " add new {$id} ID for " . $subject->getHash() . " \n" );
-
-		return $id;
-	}
-
 	private function canSuppressUpdateOnSkewFactorFor( $sid, $subject ) {
+
+		static $suppressUpdateCache = array();
+		$hash = $subject->getHash();
 
 		if ( $sid < 1 ) {
 			return false;
@@ -410,11 +324,13 @@ class EmbeddedQueryDependencyLinksStore {
 			__METHOD__
 		);
 
-		$skewedTouchedTimesamp = $subject->getTitle()->getTouched() + $this->skewFactorForDepedencyUpdateInSeconds;
+		if ( !isset( $suppressUpdateCache[$hash] ) ) {
+			$suppressUpdateCache[$hash] = $subject->getTitle()->getTouched() + $this->skewFactorForDepedencyUpdateInSeconds;
+		}
 
 		// Check whether the query has already been registered and only then
 		// check for a possible divergent time
-		return $row !== false && $skewedTouchedTimesamp > wfTimestamp( TS_MW );
+		return $row !== false && $suppressUpdateCache[$hash] > wfTimestamp( TS_MW );
 	}
 
 	private function removeBlacklistedPropertyReferencesFromParserCachePurgeJobChangeList( $compositePropertyTableDiffIterator, &$mapCombinedIdListOfChangedEntities, $table, $record ) {

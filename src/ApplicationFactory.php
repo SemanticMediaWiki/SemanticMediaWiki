@@ -287,6 +287,15 @@ class ApplicationFactory {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @return PropertyHierarchyLookup
+	 */
+	public function newPropertyHierarchyLookup() {
+		return $this->callbackLoader->load( 'PropertyHierarchyLookup' );
+	}
+
+	/**
 	 * @since 2.1
 	 *
 	 * @return QueryParser

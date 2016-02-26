@@ -8,8 +8,7 @@ use RuntimeException;
 use SMW\ApplicationFactory;
 use SMW\EventHandler;
 use SMW\NamespaceManager;
-use SMW\SQLStore\EmbeddedQueryDependencyLinksStore;
-use SMW\SQLStore\EmbeddedQueryDependencyListResolver;
+use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\DeferredRequestDispatchManager;
 use SMW\PropertyHierarchyLookup;
 use Onoi\HttpRequest\HttpRequestFactory;
@@ -102,19 +101,6 @@ class HookRegistry {
 
 		$eventHandler = EventHandler::getInstance();
 		$applicationFactory = ApplicationFactory::getInstance();
-
-		$propertyHierarchyLookup = new PropertyHierarchyLookup(
-			$applicationFactory->getStore(),
-			$applicationFactory->newCacheFactory()->newFixedInMemoryCache( 500 )
-		);
-
-		$propertyHierarchyLookup->setSubcategoryDepth(
-			$applicationFactory->getSettings()->get( 'smwgQSubcategoryDepth' )
-		);
-
-		$propertyHierarchyLookup->setSubpropertyDepth(
-			$applicationFactory->getSettings()->get( 'smwgQSubpropertyDepth' )
-		);
 
 		$httpRequestFactory = new HttpRequestFactory();
 
@@ -493,62 +479,58 @@ class HookRegistry {
 			return $editPageForm->process();
 		};
 
-		$this->handlers['SMW::Store::dropTables'] = function ( $verbose ) use( $eventHandler ) {
+		$this->registerHooksForInternalUse( $applicationFactory, $deferredRequestDispatchManager );
+		$this->registerParserFunctionHooks( $applicationFactory );
+	}
 
-			$eventHandler->getEventDispatcher()->dispatch(
-				'blobstore.drop'
-			);
+	private function registerHooksForInternalUse( ApplicationFactory $applicationFactory, DeferredRequestDispatchManager $deferredRequestDispatchManager ) {
 
-			return true;
-		};
-
+		/**
+		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::SQLStore::AfterDataUpdateComplete
+		 */
 		$this->handlers['SMW::SQLStore::AfterDataUpdateComplete'] = function ( $store, $semanticData, $compositePropertyTableDiffIterator ) use ( $applicationFactory, $deferredRequestDispatchManager ) {
 
-			$embeddedQueryDependencyLinksStore = new EmbeddedQueryDependencyLinksStore( $store );
+			$queryDependencyLinksStoreFactory = new QueryDependencyLinksStoreFactory();
 
-			$embeddedQueryDependencyLinksStore->setEnabledState(
-				$applicationFactory->getSettings()->get( 'smwgEnabledQueryDependencyLinksStore' )
+			$queryDependencyLinksStore = $queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
+				$store
 			);
 
-			$embeddedQueryDependencyLinksStore->pruneOutdatedTargetLinks( $compositePropertyTableDiffIterator );
+			$queryDependencyLinksStore->pruneOutdatedTargetLinks(
+				$compositePropertyTableDiffIterator
+			);
+
+			$jobParameters = $queryDependencyLinksStore->buildParserCachePurgeJobParametersFrom(
+				$compositePropertyTableDiffIterator,
+				$applicationFactory->getSettings()->get( 'smwgPropertyDependencyDetectionBlacklist' )
+			);
 
 			$deferredRequestDispatchManager->dispatchJobRequestFor(
 				'SMW\ParserCachePurgeJob',
 				$semanticData->getSubject()->getTitle(),
-				$embeddedQueryDependencyLinksStore->buildParserCachePurgeJobParametersFrom(
-					$compositePropertyTableDiffIterator,
-					$applicationFactory->getSettings()->get( 'smwgPropertyDependencyDetectionBlacklist' )
-				)
+				$jobParameters
 			);
 
 			return true;
 		};
 
-		$this->handlers['SMW::Store::AfterQueryResultLookupComplete'] = function ( $store, &$result ) use ( $applicationFactory, $propertyHierarchyLookup ) {
+		/**
+		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Store::AfterQueryResultLookupComplete
+		 */
+		$this->handlers['SMW::Store::AfterQueryResultLookupComplete'] = function ( $store, &$result ) use ( $applicationFactory ) {
 
-			$embeddedQueryDependencyListResolver = new EmbeddedQueryDependencyListResolver(
-				$result,
-				$propertyHierarchyLookup
+			$queryDependencyLinksStoreFactory = new QueryDependencyLinksStoreFactory();
+
+			$queryDependencyLinksStore = $queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
+				$store
 			);
 
-			$embeddedQueryDependencyListResolver->setPropertyDependencyDetectionBlacklist(
-				$applicationFactory->getSettings()->get( 'smwgPropertyDependencyDetectionBlacklist' )
-			);
-
-			$embeddedQueryDependencyLinksStore = new EmbeddedQueryDependencyLinksStore( $store );
-
-			$embeddedQueryDependencyLinksStore->setEnabledState(
-				$applicationFactory->getSettings()->get( 'smwgEnabledQueryDependencyLinksStore' )
-			);
-
-			$embeddedQueryDependencyLinksStore->addDependencyList(
-				$embeddedQueryDependencyListResolver
+			$queryDependencyLinksStore->doUpdateDependenciesBy(
+				$queryDependencyLinksStoreFactory->newQueryResultDependencyListResolver( $result )
 			);
 
 			return true;
 		};
-
-		$this->registerParserFunctionHooks( $applicationFactory );
 	}
 
 	private function registerParserFunctionHooks( ApplicationFactory $applicationFactory ) {

@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Jobs;
 
 use SMW\ApplicationFactory;
-use SMW\SQLStore\EmbeddedQueryDependencyLinksStore;
+use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\DIWikiPage;
 use SMW\HashBuilder;
 use Title;
@@ -98,12 +98,14 @@ class ParserCachePurgeJob extends JobBase {
 			return true;
 		}
 
-		$embeddedQueryDependencyLinksStore = new EmbeddedQueryDependencyLinksStore(
+		$queryDependencyLinksStoreFactory = new QueryDependencyLinksStoreFactory();
+
+		$queryDependencyLinksStore = $queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
 			$this->store
 		);
 
 		// +1 to look ahead
-		$hashList = $embeddedQueryDependencyLinksStore->findPartialEmbeddedQueryTargetLinksHashListFor(
+		$hashList = $queryDependencyLinksStore->findPartialEmbeddedQueryTargetLinksHashListFor(
 			$idList,
 			$this->limit + 1,
 			$this->offset
