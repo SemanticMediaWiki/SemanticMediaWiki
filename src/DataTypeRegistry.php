@@ -428,6 +428,7 @@ class DataTypeRegistry {
 			'__pro' => 'SMWPropertyValue', // Property type (possibly predefined, no always based on a page)
 			'__key' => 'SMWStringValue', // Sort key of a page
 			'__lcode' => 'SMW\DataValues\LanguageCodeValue',
+			'__pval' => 'SMW\DataValues\AllowsValue',
 		);
 
 		$this->typeDataItemIds = array(
@@ -456,6 +457,7 @@ class DataTypeRegistry {
 			'__pls' => DataItem::TYPE_BLOB, // Special type list for decalring _rec properties
 			'__con' => DataItem::TYPE_CONCEPT, // Special concept page type
 			'__sps' => DataItem::TYPE_BLOB, // Special string type
+			'__pval' => DataItem::TYPE_BLOB, // Special string type
 			'__spu' => DataItem::TYPE_URI, // Special uri type
 			'__sob' => DataItem::TYPE_WIKIPAGE, // Special subobject type
 			'__sup' => DataItem::TYPE_WIKIPAGE, // Special subproperty type

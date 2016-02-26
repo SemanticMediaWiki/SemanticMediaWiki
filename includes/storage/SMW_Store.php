@@ -227,21 +227,19 @@ abstract class Store {
 	public function updateData( SemanticData $semanticData ) {
 
 		$subject = $semanticData->getSubject();
-		InMemoryPoolCache::getInstance()->getPoolCacheFor( 'store.redirectTarget.lookup' )->delete( $subject->getHash() );
+
+		$dispatchContext = EventHandler::getInstance()->newDispatchContext();
+		$dispatchContext->set( 'subject', $subject );
+
+		EventHandler::getInstance()->getEventDispatcher()->dispatch(
+			'on.before.semanticdata.update.complete',
+			$dispatchContext
+		);
 
 		/**
 		 * @since 1.6
 		 */
 		\Hooks::run( 'SMWStore::updateDataBefore', array( $this, $semanticData ) );
-
-		// Invalidate the page, so data stored on it gets displayed immediately in queries.
-		$pageUpdater = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newPageUpdater();
-
-		if ( $GLOBALS['smwgAutoRefreshSubject'] && $pageUpdater->canUpdate() ) {
-			$pageUpdater->addPage( $subject->getTitle() );
-			$pageUpdater->doPurgeParserCache();
-			$pageUpdater->doPurgeHtmlCache();
-		}
 
 		$this->doDataUpdate( $semanticData );
 
@@ -249,6 +247,11 @@ abstract class Store {
 		 * @since 1.6
 		 */
 		\Hooks::run( 'SMWStore::updateDataAfter', array( $this, $semanticData ) );
+
+		EventHandler::getInstance()->getEventDispatcher()->dispatch(
+			'on.after.semanticdata.update.complete',
+			$dispatchContext
+		);
 	}
 
 	/**

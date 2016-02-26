@@ -13,7 +13,8 @@ use SMW\Query\QueryComparator;
 use SMW\Deserializers\DVDescriptionDeserializerRegistry;
 use SMW\DataValues\ValueFormatterRegistry;
 use SMW\ApplicationFactory;
-
+use SMW\Message;
+use SMW\DIProperty;
 
 /**
  * Objects of this type represent all that is known about a certain user-provided
@@ -436,6 +437,10 @@ abstract class SMWDataValue {
 			$this->mErrors[] = $error;
 			$this->mHasErrors = true;
 		}
+	}
+
+	protected function addErrorMsg( $parameters, $type = null, $language = null ) {
+		$this->addError( Message::get( $parameters, $type, $language ) );
 	}
 
 	/**
@@ -868,52 +873,29 @@ abstract class SMWDataValue {
 	 * Creates an error if the value is illegal.
 	 */
 	protected function checkAllowedValues() {
-		if ( !is_null( $this->m_property ) ) {
-			$propertyDiWikiPage = $this->m_property->getDiWikiPage();
-		}
 
-		if ( is_null( $this->m_property ) || is_null( $propertyDiWikiPage ) ||
-			!isset( $this->m_dataitem ) ) {
-			return; // no property known, or no data to check
-		}
-
-		$allowedvalues = \SMW\StoreFactory::getStore()->getPropertyValues(
-			$propertyDiWikiPage,
-			new SMWDIProperty( '_PVAL' )
-		);
-
-		if ( count( $allowedvalues ) == 0 ) {
+		// If no property known the no data to check
+		if ( $this->m_property === null || !isset( $this->m_dataitem ) ) {
 			return;
 		}
 
-		$hash = $this->m_dataitem->getHash();
-		$testdv = DataValueFactory::getInstance()->newTypeIDValue( $this->getTypeID() );
-		$accept = false;
-		$valuestring = '';
+		$this->checkForAllowedValueList();
+	}
 
-		foreach ( $allowedvalues as $di ) {
-			if ( $di instanceof SMWDIBlob ) {
-				$testdv->setUserValue( $di->getString() );
+	private function checkForAllowedValueList() {
 
-				if ( $hash === $testdv->getDataItem()->getHash() ) {
-					$accept = true;
-					break;
-				} else {
-					if ( $valuestring !== '' ) {
-						$valuestring .= ', ';
-					}
-					$valuestring .= $di->getString();
-				}
-			}
-		}
+		$allowsValue = DataValueFactory::getInstance()->newPropertyObjectValue(
+			new DIProperty( '_PVAL' ) ,
+			false,
+			false,
+			$this->getContextPage()
+		);
 
-		if ( !$accept ) {
-			$this->addError( wfMessage(
-					'smw_notinenum',
-					$this->getWikiValue(), $valuestring
-				)->inContentLanguage()->text()
-			);
-		}
+		$allowsValue->isAllowedValueFor(
+			$this
+		);
+
+		$this->addError( $allowsValue->getErrors() );
 	}
 
 }

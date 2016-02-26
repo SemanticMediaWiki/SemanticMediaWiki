@@ -50,6 +50,7 @@ final class Setup {
 		$this->registerSettings();
 
 		$this->registerConnectionProviders();
+		$this->registerMessageCallbackHandler();
 
 		$this->registerI18n();
 		$this->registerWebApi();
@@ -107,6 +108,48 @@ final class Setup {
 			'mw.db',
 			$mwCollaboratorFactory->newMediaWikiDatabaseConnectionProvider()
 		);
+	}
+
+	private function registerMessageCallbackHandler() {
+
+		Message::registerCallbackHandler( Message::TEXT, function( $arguments, $language ) {
+
+			if ( $language === Message::CONTENT_LANGUAGE ) {
+				$language = Localizer::getInstance()->getContentLanguage();
+			}
+
+			if ( $language === Message::USER_LANGUAGE ) {
+				$language = Localizer::getInstance()->getUserLanguage();
+			}
+
+			return call_user_func_array( 'wfMessage', $arguments )->inLanguage( $language )->text();
+		} );
+
+		Message::registerCallbackHandler( Message::ESCAPED, function( $arguments, $language ) {
+
+			if ( $language === Message::CONTENT_LANGUAGE ) {
+				$language = Localizer::getInstance()->getContentLanguage();
+			}
+
+			if ( $language === Message::USER_LANGUAGE ) {
+				$language = Localizer::getInstance()->getUserLanguage();
+			}
+
+			return call_user_func_array( 'wfMessage', $arguments )->inLanguage( $language )->escaped();
+		} );
+
+		Message::registerCallbackHandler( Message::PARSE, function( $arguments, $language ) {
+
+			if ( $language === Message::CONTENT_LANGUAGE ) {
+				$language = Localizer::getInstance()->getContentLanguage();
+			}
+
+			if ( $language === Message::USER_LANGUAGE ) {
+				$language = Localizer::getInstance()->getUserLanguage();
+			}
+
+			return call_user_func_array( 'wfMessage', $arguments )->inLanguage( $language )->parse();
+		} );
 	}
 
 	/**

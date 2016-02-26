@@ -3,175 +3,123 @@
 namespace SMW\Test;
 
 use SMW\UnusedPropertiesQueryPage;
-use SMW\MessageFormatter;
-
-use SMWDataItem;
+use SMW\DataItemFactory;
+use SMW\Settings;
 
 /**
  * @covers \SMW\UnusedPropertiesQueryPage
- * @covers \SMW\QueryPage
+ * @group semantic-mediawiki
  *
- *
- * @group SMW
- * @group SMWExtension
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
+class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\UnusedPropertiesQueryPage';
-	}
+	private $store;
+	private $skin;
+	private $settings;
+	private $dataItemFactory;
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return DIWikiPage
-	 */
-	private function getMockDIWikiPage( $exists = true ) {
+	protected function setUp() {
+		parent::setUp();
 
-		$text  = $this->newRandomString();
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
 
-		$title = $this->newMockBuilder()->newObject( 'Title', array(
-			'exists'  => $exists,
-			'getText' => $text,
-			'getNamespace'    => NS_MAIN,
-			'getPrefixedText' => $text
-		) );
-
-		$diWikiPage = $this->newMockBuilder()->newObject( 'DIWikiPage', array(
-			'getTitle'  => $title,
-		) );
-
-		return $diWikiPage;
-	}
-
-	/**
-	 * @since 1.9
-	 *
-	 * @return UnusedPropertiesQueryPage
-	 */
-	private function newInstance( $result = null, $values = array() ) {
-
-		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ListLookup' )
+		$this->skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$listLookup->expects( $this->any() )
-			->method( 'fetchList' )
-			->will( $this->returnValue( $result ) );
+		$this->settings = Settings::newFromArray( array() );
 
-		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
-			'getPropertyValues'          => $values,
-			'getUnusedPropertiesSpecial' => $listLookup
-		) );
-
-		$instance = new UnusedPropertiesQueryPage( $mockStore, $this->newSettings() );
-		$instance->setContext( $this->newContext() );
-
-		return $instance;
+		$this->dataItemFactory = new DataItemFactory();
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
+	public function testCanConstruct() {
+
+		$this->assertInstanceOf(
+			'\SMW\UnusedPropertiesQueryPage',
+			new UnusedPropertiesQueryPage( $this->store, $this->settings )
+		);
 	}
 
-	/**
-	 * @dataProvider getUserDefinedDataProvider
-	 *
-	 * @since 1.9
-	 */
-	public function testFormatResult( $isUserDefined ) {
+	public function testFormatResultDIError() {
 
-		// Skin stub object
-		$skin = $this->getMock( 'Skin' );
+		$error = $this->dataItemFactory->newDIError( 'Foo');
 
-		// DIProperty
-		$instance = $this->newInstance();
+		$instance = new UnusedPropertiesQueryPage(
+			$this->store,
+			$this->settings
+		);
 
-		$property = $this->newMockBuilder()->newObject( 'DIProperty', array(
-			'isUserDefined' => $isUserDefined,
-			'getDiWikiPage' => $this->getMockDIWikiPage( true ),
-			'getLabel'      => $this->newRandomString(),
-		) );
+		$result = $instance->formatResult(
+			$this->skin,
+			$error
+		);
 
-		$expected = $property->getDiWikiPage()->getTitle()->getText();
-		$result   = $instance->formatResult( $skin, $property );
+		$this->assertInternalType(
+			'string',
+			$result
+		);
 
-		$this->assertInternalType( 'string', $result );
-		$this->assertContains( $expected, $result );
-
-		// Multiple entries
-		$instance = $this->newInstance();
-		$multiple = array( $this->getMockDIWikiPage(), $this->getMockDIWikiPage() );
-
-		$property = $this->newMockBuilder()->newObject( 'DIProperty', array(
-			'isUserDefined' => $isUserDefined,
-			'getDiWikiPage' => $this->getMockDIWikiPage( true ),
-			'getLabel'      => $this->newRandomString(),
-		) );
-
-		$expected = $property->getDiWikiPage()->getTitle()->getText();
-		$instance = $this->newInstance( null, $multiple );
-
-		$result   = $instance->formatResult( $skin, $property );
-
-		$this->assertInternalType( 'string', $result );
-		$this->assertContains( $expected, $result );
-
-		// DIError
-		$instance = $this->newInstance();
-		$error    = $this->newRandomString();
-		$diError  = $this->newMockBuilder()->newObject( 'DIError', array(
-			'getErrors' => $error
-		) );
-
-		$result   = $instance->formatResult( $skin, $diError );
-
-		$this->assertInternalType( 'string', $result );
-		$this->assertContains( $error, $result );
-
+		$this->assertContains(
+			'Foo',
+			$result
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testInvalidResultException() {
 
+		$instance = new UnusedPropertiesQueryPage(
+			$this->store,
+			$this->settings
+		);
+
 		$this->setExpectedException( '\SMW\InvalidResultException' );
-
-		$instance = $this->newInstance();
-		$skin = $this->getMock( 'Skin' );
-
-		$this->assertInternalType( 'string', $instance->formatResult( $skin, null ) );
-
+		$instance->formatResult( $this->skin, null );
 	}
 
-	/**
-	 * @return array
-	 */
-	public function getUserDefinedDataProvider() {
-		return array( array( true ), array( false ) );
+	public function testFormatPropertyItemOnUserDefinedProperty() {
+
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
+
+		$instance = new UnusedPropertiesQueryPage(
+			$this->store,
+			$this->settings
+		);
+
+		$result = $instance->formatResult(
+			$this->skin,
+			$property
+		);
+
+		$this->assertContains(
+			'Foo',
+			$result
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testGetResults() {
+	public function testFormatPropertyItemOnPredefinedProperty() {
 
-		$expected = 'Lala';
+		$property = $this->dataItemFactory->newDIProperty( '_MDAT' );
 
-		$instance = $this->newInstance( $expected );
-		$this->assertEquals( $expected, $instance->getResults( null ) );
+		$instance = new UnusedPropertiesQueryPage(
+			$this->store,
+			$this->settings
+		);
 
+		$result = $instance->formatResult(
+			$this->skin,
+			$property
+		);
+
+		$this->assertContains(
+			'Help:Special_properties',
+			$result
+		);
 	}
+
 }

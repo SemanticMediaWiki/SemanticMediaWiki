@@ -296,6 +296,15 @@ class ApplicationFactory {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @return CachedPropertyValuesPrefetcher
+	 */
+	public function getCachedPropertyValuesPrefetcher() {
+		return $this->callbackLoader->singleton( 'CachedPropertyValuesPrefetcher' );
+	}
+
+	/**
 	 * @since 2.1
 	 *
 	 * @return QueryParser

@@ -84,4 +84,26 @@ class RequestOptions {
 		return $this->stringConditions;
 	}
 
+	/**
+	 * @since 2.4
+	 *
+	 * @return string
+	 */
+	public function getHash() {
+
+		$stringConditions = '';
+
+		foreach ( $this->stringConditions as $stringCondition ) {
+			$stringConditions .= $stringCondition->getHash();
+		}
+
+		return $this->limit . '#' .
+			$this->offset . '#' .
+			$this->sort . '#' .
+			$this->ascending . '#' .
+			$this->boundary . '#' .
+			$this->include_boundary .
+			( $stringConditions !== '' ? '|' . $stringConditions : '' );
+	}
+
 }

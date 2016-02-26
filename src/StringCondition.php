@@ -55,4 +55,13 @@ class StringCondition {
 		$this->asDisjunctiveCondition = $asDisjunctiveCondition;
 	}
 
+	/**
+	 * @since 2.4
+	 *
+	 * @return string
+	 */
+	public function getHash() {
+		return $this->string . '#' . $this->condition . '#' . $this->asDisjunctiveCondition;
+	}
+
 }

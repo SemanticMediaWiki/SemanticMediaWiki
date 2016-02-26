@@ -3,11 +3,8 @@
 namespace SMW\Tests;
 
 use SMW\PropertySpecificationLookup;
-use SMW\DIProperty;
-use SMWDIContainer as DIContainer;
+use SMW\DataItemFactory;
 use SMWContainerSemanticData as ContainerSemanticData;
-use SMWDIBlob as DIBlob;
-use SMWDINumber as DINumber;
 
 /**
  * @covers \SMW\PropertySpecificationLookup
@@ -20,35 +17,108 @@ use SMWDINumber as DINumber;
  */
 class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
-	private $store;
 	private $blobStore;
+	private $dataItemFactory;
+	private $cachedPropertyValuesPrefetcher;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->cachedPropertyValuesPrefetcher = $this->getMockBuilder( '\SMW\CachedPropertyValuesPrefetcher' )
 			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+			->getMock();
 
 		$this->blobStore = $this->getMockBuilder( '\Onoi\BlobStore\BlobStore' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->dataItemFactory = new DataItemFactory();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			'\SMW\PropertySpecificationLookup',
-			new PropertySpecificationLookup( $this->store, $this->blobStore )
+			new PropertySpecificationLookup( $this->cachedPropertyValuesPrefetcher )
+		);
+	}
+
+	public function testGetAllowedValues() {
+
+		$expected =  array(
+			$this->dataItemFactory->newDIBlob( 'A' ),
+			$this->dataItemFactory->newDIBlob( 'B' )
+		);
+
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
+
+		$this->cachedPropertyValuesPrefetcher->expects( $this->once() )
+			->method( 'getPropertyValues' )
+			->with(
+				$this->equalTo( $property->getDiWikiPage() ),
+				$this->equalTo( $this->dataItemFactory->newDIProperty( '_PVAL' ) ),
+				$this->anything() )
+			->will( $this->returnValue( $expected ) );
+
+		$instance = new PropertySpecificationLookup(
+			$this->cachedPropertyValuesPrefetcher
+		);
+
+		$this->assertEquals(
+			$expected,
+			$instance->getAllowedValuesFor( $property )
+		);
+	}
+
+	public function testGetDisplayPrecision() {
+
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
+
+		$this->cachedPropertyValuesPrefetcher->expects( $this->once() )
+			->method( 'getPropertyValues' )
+			->with(
+				$this->equalTo( $property->getDiWikiPage() ),
+				$this->equalTo( $this->dataItemFactory->newDIProperty( '_PREC' ) ),
+				$this->anything() )
+			->will( $this->returnValue( array( $this->dataItemFactory->newDINumber( -2.3 ) ) ) );
+
+		$instance = new PropertySpecificationLookup(
+			$this->cachedPropertyValuesPrefetcher
+		);
+
+		$this->assertEquals(
+			2,
+			$instance->getDisplayPrecisionFor( $property )
+		);
+	}
+
+	public function testgetDisplayUnits() {
+
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
+
+		$this->cachedPropertyValuesPrefetcher->expects( $this->once() )
+			->method( 'getPropertyValues' )
+			->with(
+				$this->equalTo( $property->getDiWikiPage() ),
+				$this->equalTo( $this->dataItemFactory->newDIProperty( '_UNIT' ) ),
+				$this->anything() )
+			->will( $this->returnValue( array(
+				$this->dataItemFactory->newDIBlob( 'abc,def' ),
+				$this->dataItemFactory->newDIBlob( '123' ) ) ) );
+
+		$instance = new PropertySpecificationLookup(
+			$this->cachedPropertyValuesPrefetcher
+		);
+
+		$this->assertEquals(
+			array( 'abc', 'def', '123' ),
+			$instance->getDisplayUnitsFor( $property )
 		);
 	}
 
 	public function testGetPropertyDescriptionForPredefinedProperty() {
 
-		$instance = new PropertySpecificationLookup(
-			$this->store,
-			$this->blobStore
-		);
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$container = $this->getMockBuilder( '\Onoi\BlobStore\Container' )
 			->disableOriginalConstructor()
@@ -58,13 +128,23 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'read' )
 			->will( $this->returnValue( $container ) );
 
+		$this->cachedPropertyValuesPrefetcher->expects( $this->once() )
+			->method( 'getBlobStore' )
+			->will( $this->returnValue( $this->blobStore ) );
+
+		$instance = new PropertySpecificationLookup(
+			$this->cachedPropertyValuesPrefetcher
+		);
+
 		$this->assertInternalType(
 			'string',
-			$instance->getPropertyDescriptionFor( new DIProperty( '_PDESC' ) )
+			$instance->getPropertyDescriptionFor( $property )
 		);
 	}
 
 	public function testGetPropertyDescriptionForPredefinedPropertyViaCacheForLanguageCode() {
+
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$container = $this->getMockBuilder( '\Onoi\BlobStore\Container' )
 			->disableOriginalConstructor()
@@ -83,21 +163,26 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'read' )
 			->will( $this->returnValue( $container ) );
 
+		$this->cachedPropertyValuesPrefetcher->expects( $this->once() )
+			->method( 'getBlobStore' )
+			->will( $this->returnValue( $this->blobStore ) );
+
 		$instance = new PropertySpecificationLookup(
-			$this->store,
-			$this->blobStore
+			$this->cachedPropertyValuesPrefetcher
 		);
 
 		$instance->setLanguageCode( 'en' );
 
 		$this->assertEquals(
 			1001,
-			$instance->getPropertyDescriptionFor( new DIProperty( '_PDESC' ) )
+			$instance->getPropertyDescriptionFor( $property )
 		);
 	}
 
 	public function testTryToGetLocalPropertyDescriptionForUserdefinedProperty() {
 
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
+
 		$container = $this->getMockBuilder( '\Onoi\BlobStore\Container' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -106,95 +191,26 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'read' )
 			->will( $this->returnValue( $container ) );
 
-		$property = new DIProperty( 'SomeProperty' );
-
-		$this->store->expects( $this->once() )
+		$this->cachedPropertyValuesPrefetcher->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with(
 				$this->equalTo( $property->getDiWikiPage() ),
-				$this->equalTo( new DIProperty( '_PDESC' ) ),
+				$this->equalTo( $this->dataItemFactory->newDIProperty( '_PDESC' ) ),
 				$this->anything() )
 			->will( $this->returnValue( array(
-				new DIContainer( ContainerSemanticData::makeAnonymousContainer() ) ) ) );
+				 $this->dataItemFactory->newDIContainer( ContainerSemanticData::makeAnonymousContainer() ) ) ) );
+
+		$this->cachedPropertyValuesPrefetcher->expects( $this->once() )
+			->method( 'getBlobStore' )
+			->will( $this->returnValue( $this->blobStore ) );
 
 		$instance = new PropertySpecificationLookup(
-			$this->store,
-			$this->blobStore
+			$this->cachedPropertyValuesPrefetcher
 		);
 
 		$this->assertInternalType(
 			'string',
 			$instance->getPropertyDescriptionFor( $property )
-		);
-	}
-
-	public function testGetNonCachedDisplayUnit() {
-
-		$container = $this->getMockBuilder( '\Onoi\BlobStore\Container' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->blobStore->expects( $this->once() )
-			->method( 'read' )
-			->will( $this->returnValue( $container ) );
-
-		$this->blobStore->expects( $this->once() )
-			->method( 'save' );
-
-		$property = new DIProperty( 'SomeProperty' );
-
-		$this->store->expects( $this->once() )
-			->method( 'getPropertyValues' )
-			->with(
-				$this->equalTo( $property->getDiWikiPage() ),
-				$this->equalTo( new DIProperty( '_UNIT' ) ),
-				$this->anything() )
-			->will( $this->returnValue( array(
-				new DIBlob( 'abc,def' ), new DIBlob( '123' ) ) ) );
-
-		$instance = new PropertySpecificationLookup(
-			$this->store,
-			$this->blobStore
-		);
-
-		$this->assertEquals(
-			array( 'abc', 'def', '123' ),
-			$instance->getDisplayUnitsFor( $property )
-		);
-	}
-
-	public function testGetNonCachedDisplayPrecision() {
-
-		$container = $this->getMockBuilder( '\Onoi\BlobStore\Container' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->blobStore->expects( $this->once() )
-			->method( 'read' )
-			->will( $this->returnValue( $container ) );
-
-		$this->blobStore->expects( $this->once() )
-			->method( 'save' );
-
-		$property = new DIProperty( 'SomeProperty' );
-
-		$this->store->expects( $this->once() )
-			->method( 'getPropertyValues' )
-			->with(
-				$this->equalTo( $property->getDiWikiPage() ),
-				$this->equalTo( new DIProperty( '_PREC' ) ),
-				$this->anything() )
-			->will( $this->returnValue( array(
-				new DINumber( -2.3 ) ) ) );
-
-		$instance = new PropertySpecificationLookup(
-			$this->store,
-			$this->blobStore
-		);
-
-		$this->assertEquals(
-			2,
-			$instance->getDisplayPrecisionFor( $property )
 		);
 	}
 

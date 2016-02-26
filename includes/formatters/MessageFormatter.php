@@ -3,7 +3,6 @@
 namespace SMW;
 
 use Html;
-use Message;
 use Language;
 
 /**
@@ -81,7 +80,7 @@ class MessageFormatter {
 	public function addFromKey( $key /*...*/ ) {
 		$params = func_get_args();
 		array_shift( $params );
-		$this->addFromArray( array( new Message( $key, $params ) ) );
+		$this->addFromArray( array( new \Message( $key, $params ) ) );
 		return $this;
 	}
 
@@ -206,7 +205,7 @@ class MessageFormatter {
 
 		foreach ( $messages as $msg ) {
 
-			if ( $msg instanceof Message ) {
+			if ( $msg instanceof \Message ) {
 				$newArray[] = $msg->inLanguage( $this->language )->text();
 			} elseif ( (array)$msg === $msg ) {
 				foreach ( $this->doFormat( $msg ) as $m ) {

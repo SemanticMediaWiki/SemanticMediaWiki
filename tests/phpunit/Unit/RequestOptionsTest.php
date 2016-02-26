@@ -39,6 +39,11 @@ class RequestOptionsTest extends \PHPUnit_Framework_TestCase {
 				$stringCondition->asDisjunctiveCondition
 			);
 		}
+
+		$this->assertEquals(
+			'-1#0##1##1|Foo#0#',
+			$instance->getHash()
+		);
 	}
 
 }
