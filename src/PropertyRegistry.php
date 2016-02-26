@@ -296,7 +296,7 @@ class PropertyRegistry {
 			'_IMPO'  => array( '__imp', true, true ), // "imported from"
 			'_CONV'  => array( '__sps', true, true ), // "corresponds to"
 			'_SERV'  => array( '__sps', true, true ), // "provides service"
-			'_PVAL'  => array( '__sps', true, true ), // "allows value"
+			'_PVAL'  => array( '__pval', true, true ), // "allows value"
 			'_REDI'  => array( '__red', true, true ), // redirects to some page
 			'_SUBP'  => array( '__sup', true, true ), // "subproperty of"
 			'_SUBC'  => array( '__suc', !$useCategoryHierarchy, true ), // "subcategory of"

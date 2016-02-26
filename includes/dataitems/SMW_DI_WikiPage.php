@@ -162,6 +162,26 @@ class DIWikiPage extends SMWDataItem {
 		);
 	}
 
+	/**
+	 * Returns the base part (without a fragment) of a wikipage representation.
+	 *
+	 * @since 2.4
+	 *
+	 * @return DIWikiPage
+	 */
+	public function asBase() {
+		return new self (
+			$this->m_dbkey,
+			$this->m_namespace,
+			$this->m_interwiki
+		);
+	}
+
+	/**
+	 * @since 1.6
+	 *
+	 * @return string
+	 */
 	public function getSerialization() {
 		$segments = array(
 			$this->m_dbkey,

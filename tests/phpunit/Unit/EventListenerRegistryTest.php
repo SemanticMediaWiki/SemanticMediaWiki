@@ -5,7 +5,6 @@ namespace SMW\Tests;
 use SMW\EventListenerRegistry;
 use Onoi\EventDispatcher\EventDispatcherFactory;
 use Onoi\EventDispatcher\EventListenerCollection;
-use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 
 /**
@@ -18,6 +17,16 @@ use SMW\DIWikiPage;
  * @author mwjames
  */
 class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
+
+	private $testEnvironment;
+
+	protected function setUp() {
+		$this->testEnvironment = new TestEnvironment();
+	}
+
+	protected function tearDown() {
+		$this->testEnvironment->tearDown();
+	}
 
 	public function testCanConstruct() {
 
@@ -58,6 +67,8 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->verifyPropertyTypeChangeEvent( $instance );
 		$this->verifyExporterResetEvent( $instance );
 		$this->verifyFactboxCacheDeleteEvent( $instance );
+		$this->verifyOnBeforeSemanticDataUpdateCompleteEvent( $instance );
+		$this->verifyOnAfterSemanticDataUpdateCompleteEvent( $instance );
 	}
 
 	public function verifyExporterResetEvent( EventListenerCollection $instance ) {
@@ -82,7 +93,7 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getInProperties' )
 			->will( $this->returnValue( array() ) );
 
-		ApplicationFactory::getInstance()->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$dispatchContext = EventDispatcherFactory::getInstance()->newDispatchContext();
 		$dispatchContext->set( 'subject', new DIWikiPage( 'Foo', NS_MAIN ) );
@@ -104,12 +115,52 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getArticleID' )
 			->will( $this->returnValue( 42 ) );
 
-		ApplicationFactory::getInstance()->registerObject( 'Cache', $cache );
+		$this->testEnvironment->registerObject( 'Cache', $cache );
 
 		$dispatchContext = EventDispatcherFactory::getInstance()->newDispatchContext();
-		$dispatchContext->set( 'title', $title );
 
-		$this->assertListenerExecuteFor( 'factbox.cache.delete', $instance, $dispatchContext );
+		$dispatchContext->set(
+			'title',
+			$title
+		);
+
+		$this->assertListenerExecuteFor(
+			'factbox.cache.delete',
+			$instance,
+			$dispatchContext
+		);
+	}
+
+	public function verifyOnBeforeSemanticDataUpdateCompleteEvent( EventListenerCollection $instance ) {
+
+		$dispatchContext = EventDispatcherFactory::getInstance()->newDispatchContext();
+
+		$dispatchContext->set(
+			'subject',
+			new DIWikiPage( 'Foo', NS_MAIN )
+		);
+
+		$this->assertListenerExecuteFor(
+			'on.before.semanticdata.update.complete',
+			$instance,
+			$dispatchContext
+		);
+	}
+
+	public function verifyOnAfterSemanticDataUpdateCompleteEvent( EventListenerCollection $instance ) {
+
+		$dispatchContext = EventDispatcherFactory::getInstance()->newDispatchContext();
+
+		$dispatchContext->set(
+			'subject',
+			new DIWikiPage( 'Foo', NS_MAIN )
+		);
+
+		$this->assertListenerExecuteFor(
+			'on.after.semanticdata.update.complete',
+			$instance,
+			$dispatchContext
+		);
 	}
 
 	private function assertListenerExecuteFor( $eventName, $instance, $dispatchContext = null ) {

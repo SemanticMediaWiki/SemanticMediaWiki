@@ -64,6 +64,13 @@ class EventListenerRegistry implements EventListenerCollection {
 			}
 		);
 
+		$this->registerStateChangeEvents();
+
+		return $this->eventListenerCollection;
+	}
+
+	private function registerStateChangeEvents() {
+
 		$this->eventListenerCollection->registerCallback(
 			'property.spec.change', function( $dispatchContext ) {
 
@@ -83,7 +90,37 @@ class EventListenerRegistry implements EventListenerCollection {
 			}
 		);
 
-		return $this->eventListenerCollection;
+		$this->eventListenerCollection->registerCallback(
+			'on.before.semanticdata.update.complete', function( $dispatchContext ) {
+
+				$subject = $dispatchContext->get( 'subject' );
+				$hash = $subject->getHash();
+
+				$inMemoryPoolCache = InMemoryPoolCache::getInstance();
+				$inMemoryPoolCache->getPoolCacheFor( 'store.redirectTarget.lookup' )->delete( $hash );
+
+				$applicationFactory = ApplicationFactory::getInstance();
+				$applicationFactory->getCachedPropertyValuesPrefetcher()->resetCacheFor( $subject );
+
+				$dispatchContext->set( 'propagationstop', true );
+			}
+		);
+
+		$this->eventListenerCollection->registerCallback(
+			'on.after.semanticdata.update.complete', function( $dispatchContext ) {
+
+				$subject = $dispatchContext->get( 'subject' );
+				$pageUpdater = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newPageUpdater();
+
+				if ( $GLOBALS['smwgAutoRefreshSubject'] && $pageUpdater->canUpdate() ) {
+					$pageUpdater->addPage( $subject->getTitle() );
+					$pageUpdater->doPurgeParserCache();
+					$pageUpdater->doPurgeHtmlCache();
+				}
+
+				$dispatchContext->set( 'propagationstop', true );
+			}
+		);
 	}
 
 }

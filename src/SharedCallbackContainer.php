@@ -130,16 +130,27 @@ class SharedCallbackContainer implements CallbackContainer {
 			return $blobStore;
 		} );
 
-		$callbackLoader->registerExpectedReturnType( 'PropertySpecificationLookup', '\SMW\PropertySpecificationLookup' );
+		$callbackLoader->registerExpectedReturnType( 'CachedPropertyValuesPrefetcher', '\SMW\CachedPropertyValuesPrefetcher' );
 
-		$callbackLoader->registerCallback( 'PropertySpecificationLookup', function() use ( $callbackLoader ) {
+		$callbackLoader->registerCallback( 'CachedPropertyValuesPrefetcher', function() use ( $callbackLoader ) {
 
 			$cacheType = null;
 			$ttl = 604800; // 7 * 24 * 3600
 
-			$propertySpecificationLookup = new PropertySpecificationLookup(
+			$cachedPropertyValuesPrefetcher = new CachedPropertyValuesPrefetcher(
 				$callbackLoader->load( 'Store' ),
-				$callbackLoader->load( 'BlobStore', 'smw:psl:store', $cacheType, $ttl )
+				$callbackLoader->load( 'BlobStore', 'smw:pvp:store', $cacheType, $ttl )
+			);
+
+			return $cachedPropertyValuesPrefetcher;
+		} );
+
+		$callbackLoader->registerExpectedReturnType( 'PropertySpecificationLookup', '\SMW\PropertySpecificationLookup' );
+
+		$callbackLoader->registerCallback( 'PropertySpecificationLookup', function() use ( $callbackLoader ) {
+
+			$propertySpecificationLookup = new PropertySpecificationLookup(
+				$callbackLoader->load( 'CachedPropertyValuesPrefetcher' )
 			);
 
 			// Uses the language object selected in user preferences. It is one

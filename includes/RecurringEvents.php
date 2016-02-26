@@ -2,7 +2,6 @@
 
 namespace SMW;
 
-use Message;
 use SMWDITime;
 use SMWTimeValue;
 
@@ -197,7 +196,7 @@ class RecurringEvents {
 		}
 
 		if ( $start_date === null ) {
-			$this->errors[] = new Message( 'smw-events-start-date-missing' );
+			$this->errors[] = Message::get( 'smw-events-start-date-missing' );
 			return;
 		} elseif ( !( $start_date->getDataItem() instanceof SMWDITime ) ) {
 			$this->setError( $start_date->getErrors() );
@@ -206,7 +205,7 @@ class RecurringEvents {
 
 		// Check property
 		if ( is_null( $this->property ) ) {
-			$this->errors[] = new Message( 'smw-events-property-missing' );
+			$this->errors[] = Message::get( 'smw-events-property-missing' );
 			return;
 		}
 

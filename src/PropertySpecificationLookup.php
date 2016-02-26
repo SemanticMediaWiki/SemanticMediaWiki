@@ -17,14 +17,9 @@ use Onoi\BlobStore\BlobStore;
 class PropertySpecificationLookup {
 
 	/**
-	 * @var string
+	 * @var CachedPropertyValuesPrefetcher
 	 */
-	const VERSION = '0.2';
-
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private $cachedPropertyValuesPrefetcher;
 
 	/**
 	 * @var string
@@ -32,26 +27,19 @@ class PropertySpecificationLookup {
 	private $languageCode = 'en';
 
 	/**
-	 * @var BlobStore
-	 */
-	private $blobStore;
-
-	/**
 	 * @since 2.4
 	 *
-	 * @param Store $store
-	 * @param BlobStore $blobStore
+	 * @param CachedPropertyValuesPrefetcher $cachedPropertyValuesPrefetcher
 	 */
-	public function __construct( Store $store, BlobStore $blobStore ) {
-		$this->store = $store;
-		$this->blobStore = $blobStore;
+	public function __construct( CachedPropertyValuesPrefetcher $cachedPropertyValuesPrefetcher ) {
+		$this->cachedPropertyValuesPrefetcher = $cachedPropertyValuesPrefetcher;
 	}
 
 	/**
 	 * @since 2.4
 	 */
 	public function resetCacheFor( DIWikiPage $subject ) {
-		$this->blobStore->delete( md5( $subject->getHash() . self::VERSION ) );
+		$this->cachedPropertyValuesPrefetcher->resetCacheFor( $subject );
 	}
 
 	/**
@@ -77,24 +65,36 @@ class PropertySpecificationLookup {
 	 *
 	 * @param DIProperty $property
 	 *
+	 * @return array
+	 */
+	public function getAllowedValuesFor( DIProperty $property ) {
+
+		$allowsValues = array();
+
+		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
+			$property->getDiWikiPage(),
+			new DIProperty( '_PVAL' )
+		);
+
+		if ( is_array( $dataItems ) && $dataItems !== array() ) {
+			$allowsValues = $dataItems;
+		}
+
+		return $allowsValues;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param DIProperty $property
+	 *
 	 * @return integer|false
 	 */
 	public function getDisplayPrecisionFor( DIProperty $property ) {
 
 		$displayPrecision = false;
-		$key = 'prec';
 
-		$hash = md5(
-			$property->getDiWikiPage()->getHash() . self::VERSION
-		);
-
-		$container = $this->blobStore->read( $hash );
-
-		if ( $container->has( $key ) ) {
-			return $container->get( $key );
-		}
-
-		$dataItems = $this->store->getPropertyValues(
+		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
 			$property->getDiWikiPage(),
 			new DIProperty( '_PREC' )
 		);
@@ -103,12 +103,6 @@ class PropertySpecificationLookup {
 			$dataItem = end( $dataItems );
 			$displayPrecision = abs( (int)$dataItem->getNumber() );
 		}
-
-		$container->set( $key, $displayPrecision );
-
-		$this->blobStore->save(
-			$container
-		);
 
 		return $displayPrecision;
 	}
@@ -123,19 +117,8 @@ class PropertySpecificationLookup {
 	public function getDisplayUnitsFor( DIProperty $property ) {
 
 		$units = array();
-		$key = 'unit';
 
-		$hash = md5(
-			$property->getDiWikiPage()->getHash() . self::VERSION
-		);
-
-		$container = $this->blobStore->read( $hash );
-
-		if ( $container->has( $key ) ) {
-			return $container->get( $key );
-		}
-
-		$dataItems = $this->store->getPropertyValues(
+		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
 			$property->getDiWikiPage(),
 			new DIProperty( '_UNIT' )
 		);
@@ -145,12 +128,6 @@ class PropertySpecificationLookup {
 				$units = array_merge( $units, preg_split( '/\s*,\s*/u', $dataItem->getString() ) );
 			}
 		}
-
-		$container->set( $key, $units );
-
-		$this->blobStore->save(
-			$container
-		);
 
 		return $units;
 	}
@@ -171,36 +148,39 @@ class PropertySpecificationLookup {
 	 */
 	public function getPropertyDescriptionFor( DIProperty $property, $linker = null ) {
 
-		$propertyDescription = '';
+		$localPropertyDescription = '';
 
 		// Take the linker into account (Special vs. in page rendering etc.)
-		$key = 'pdesc:' . $this->languageCode . ':' . ( $linker === null ? '0' : '1' );
+		$key = '--pdesc:' . $this->languageCode . ':' . ( $linker === null ? '0' : '1' );
 
-		$hash = md5(
-			$property->getDiWikiPage()->getHash() . self::VERSION
+		$blobStore = $this->cachedPropertyValuesPrefetcher->getBlobStore();
+
+		$container = $blobStore->read(
+			$this->cachedPropertyValuesPrefetcher->getRootHashFor( $property->getDiWikiPage() )
 		);
-
-		$container = $this->blobStore->read( $hash );
 
 		if ( $container->has( $key ) ) {
 			return $container->get( $key );
 		}
 
-		$propertyDescription = $this->tryToFindLocalPropertyDescription( $property, $linker );
+		$localPropertyDescription = $this->tryToFindLocalPropertyDescription(
+			$property,
+			$linker
+		);
 
 		// If a local property description wasn't available for a predefined property
 		// the try to find a system translation
-		if ( trim( $propertyDescription ) === '' && !$property->isUserDefined() ) {
-			$propertyDescription = $this->getPredefinedPropertyDescription( $property, $linker );
+		if ( trim( $localPropertyDescription ) === '' && !$property->isUserDefined() ) {
+			$localPropertyDescription = $this->getPredefinedPropertyDescription( $property, $linker );
 		}
 
-		$container->set( $key, $propertyDescription );
+		$container->set( $key, $localPropertyDescription );
 
-		$this->blobStore->save(
+		$blobStore->save(
 			$container
 		);
 
-		return $propertyDescription;
+		return $localPropertyDescription;
 	}
 
 	private function getPredefinedPropertyDescription( $property, $linker ) {
@@ -223,7 +203,7 @@ class PropertySpecificationLookup {
 
 		$description = '';
 
-		$dataItems = $this->store->getPropertyValues(
+		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
 			$property->getDiWikiPage(),
 			new DIProperty( '_PDESC' )
 		);
