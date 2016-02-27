@@ -8,6 +8,7 @@ use SMWDataItem as DataItem;
 use SMW\Query\PrintRequest;
 use SMWResultArray;
 use SMWQueryResult as QueryResult;
+use SMW\MediaWiki\TitleLookup;
 
 use OutOfBoundsException;
 use Title;
@@ -43,7 +44,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 			throw new OutOfBoundsException( 'Object was not identified as a QueryResult instance' );
 		}
 
-		return $this->getSerializedQueryResult( $queryResult ) + array( 'serializer' => __CLASS__, 'version' => 0.9 );
+		return $this->getSerializedQueryResult( $queryResult ) + array( 'serializer' => __CLASS__, 'version' => 0.10 );
 	}
 
 	/**
@@ -64,7 +65,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 	 *
 	 * @return mixed
 	 */
-	public static function getSerialization( DataItem $dataItem, $printRequest = null ) {
+	public static function getSerialization( DataItem $dataItem, $printRequest = null, $store = null ) {
 		switch ( $dataItem->getDIType() ) {
 			case DataItem::TYPE_WIKIPAGE:
 
@@ -88,7 +89,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 						);
 
 						foreach ( $recordValue->getDataItem()->getSemanticData()->getPropertyValues( $property ) as $value ) {
-							$recordDiValues[$label]['item'][] = self::getSerialization( $value );
+							$recordDiValues[$label]['item'][] = self::getSerialization( $value, null, $store );
 						}
 					}
 					$result = $recordDiValues;
@@ -100,6 +101,11 @@ class QueryResultSerializer implements DispatchableSerializer {
 						'namespace' => $title->getNamespace(),
 						'exists' => $title->isKnown()
 					);
+				}
+				$titleLookup = new TitleLookup( $store->getConnection( 'mw.db' ) );
+				$displayTitle = $titleLookup->getDisplayTitleFor( $title );
+				if ( $displayTitle ) {
+					$result['displaytitle'] = $displayTitle;
 				}
 				break;
 			case DataItem::TYPE_NUMBER:
@@ -172,12 +178,12 @@ class QueryResultSerializer implements DispatchableSerializer {
 
 				if ( $printRequest->getMode() === PrintRequest::PRINT_THIS ) {
 					$dataItems = $resultArray->getContent();
-					$result += self::getSerialization( array_shift( $dataItems ), $printRequest );
+					$result += self::getSerialization( array_shift( $dataItems ), $printRequest, $queryResult->getStore() );
 				} elseif ( $resultArray->getContent() !== array() ) {
 					$values = array();
 
 					foreach ( $resultArray->getContent() as $dataItem ) {
-						$values[] = self::getSerialization( $dataItem, $printRequest );
+						$values[] = self::getSerialization( $dataItem, $printRequest, $queryResult->getStore() );
 					}
 					$result['printouts'][$printRequest->getLabel()] = $values;
 				} else {

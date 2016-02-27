@@ -55,11 +55,12 @@
 	 *
 	 * @return {smw.dataItem.wikiPage} this
 	 */
-	var wikiPage = function ( fulltext, fullurl, ns, exists ) {
+	var wikiPage = function ( fulltext, fullurl, ns, exists, displaytitle ) {
 		this.fulltext  = fulltext !== ''&& fulltext !==  undefined ? fulltext : null;
 		this.fullurl   = fullurl !== '' && fullurl !==  undefined ? fullurl : null;
 		this.ns        = ns !==  undefined ? ns : 0;
 		this.exists    = exists !==  undefined ? exists : true;
+		this.displaytitle  = displaytitle !== '' && displaytitle !==  undefined ? displaytitle : null;
 
 		// Get mw.Title inheritance
 		if ( this.fulltext !== null ){
@@ -78,9 +79,9 @@
 	 * @class
 	 * @constructor
 	 */
-	smw.dataItem.wikiPage = function( fulltext, fullurl, ns, exists ) {
+	smw.dataItem.wikiPage = function( fulltext, fullurl, ns, exists, displaytitle ) {
 		if ( $.type( fulltext ) === 'string' && $.type( fullurl ) === 'string' ) {
-			this.constructor( fulltext, fullurl, ns, exists );
+			this.constructor( fulltext, fullurl, ns, exists, displaytitle );
 		} else {
 			throw new Error( 'smw.dataItem.wikiPage: fulltext, fullurl must be a string' );
 		}
@@ -149,6 +150,17 @@
 		},
 
 		/**
+		 * Returns display title
+		 *
+		 * @since  2.3
+		 *
+		 * @return {string}
+		 */
+		getDisplayTitle: function() {
+			return this.displaytitle;
+		},
+
+		/**
 		 * Returns if the wikiPage is a known entity or not
 		 *
 		 * @since  1.9
@@ -182,7 +194,11 @@
 		getHtml: function( linker ) {
 			if ( linker && this.fullurl !== null ){
 				var attributes = this.exists ? { 'href': this.fullurl } : { 'href': this.fullurl, 'class': 'new' };
-				return html.element( 'a', attributes , this.getText() );
+				var displaytitle = this.getDisplayTitle();
+				if ( displaytitle === null ) {
+					displaytitle = this.getText();
+				}
+				return html.element( 'a', attributes , displaytitle );
 			}
 			return this.getText();
 		}
