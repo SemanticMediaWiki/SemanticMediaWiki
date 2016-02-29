@@ -35,7 +35,8 @@ Not a release yet.
 * #1397 Added support for microseconds in `DITime` 
 * #1401 Added support for parsing `年/月/日` date format in `DITime`
 * #1407 Added quick result download links to `Special:Ask`
-* #1417 Addded `Allows pattern` property to define a value constraint using regular expressions
+* #1410 Added support for `{{DISPLAYTITLE:title}}` caption using the [`Display title of`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Display_title_of) property
+* #1417 Addded [`Allows pattern`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_pattern) property to define a value constraint using regular expressions
 
 ## Bug fixes
 
