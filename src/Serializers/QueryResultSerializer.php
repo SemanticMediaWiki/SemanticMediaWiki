@@ -43,7 +43,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 			throw new OutOfBoundsException( 'Object was not identified as a QueryResult instance' );
 		}
 
-		return $this->getSerializedQueryResult( $queryResult ) + array( 'serializer' => __CLASS__, 'version' => 0.9 );
+		return $this->getSerializedQueryResult( $queryResult ) + array( 'serializer' => __CLASS__, 'version' => 0.10 );
 	}
 
 	/**
@@ -95,16 +95,16 @@ class QueryResultSerializer implements DispatchableSerializer {
 				} else {
 					$title = $dataItem->getTitle();
 
-					//$wikiPageValue = DataValueFactory::getInstance()->newDataItemValue(
-					//	$dataItem
-					//);
+					$wikiPageValue = DataValueFactory::getInstance()->newDataItemValue(
+						$dataItem
+					);
 
 					$result = array(
 						'fulltext' => $title->getFullText(),
 						'fullurl' => $title->getFullUrl(),
 						'namespace' => $title->getNamespace(),
 						'exists' => $title->isKnown(),
-					//	'displaytitle' => $wikiPageValue->getDisplayTitle()
+						'displaytitle' => $wikiPageValue->getDisplayTitle()
 					);
 				}
 				break;
