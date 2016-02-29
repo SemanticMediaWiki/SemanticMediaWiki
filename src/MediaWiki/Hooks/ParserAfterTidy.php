@@ -63,6 +63,7 @@ class ParserAfterTidy {
 
 		// @see ParserData::setSemanticDataStateToParserOutputProperty
 		if ( $this->parser->getOutput()->getProperty( 'smw-semanticdata-status' ) ||
+			$this->parser->getOutput()->getProperty( 'displaytitle' ) ||
 			$this->parser->getOutput()->getCategoryLinks() ||
 			$this->parser->getDefaultSort() ) {
 			return true;
@@ -110,6 +111,13 @@ class ParserAfterTidy {
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newMandatoryTypePropertyAnnotator(
 			$semanticData
+		);
+
+		$propertyAnnotator->addAnnotation();
+
+		$propertyAnnotator = $propertyAnnotatorFactory->newDisplayTitlePropertyAnnotator(
+			$semanticData,
+			$this->parser->getOutput()->getProperty( 'displaytitle' )
 		);
 
 		$propertyAnnotator->addAnnotation();

@@ -153,10 +153,15 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 		if ( count( $diWikiPages ) > 0 ) {
 			$pageLister = new SMWPageLister( $diWikiPages, null, $this->limit, $this->from, $this->until );
+
 			$this->mTitle->setFragment( '#SMWResults' ); // Make navigation point to the result list.
 			$navigation = $pageLister->getNavigationLinks( $this->mTitle );
 
-			$titleText = htmlspecialchars( $this->mTitle->getText() );
+			$dvWikiPage = DataValueFactory::getInstance()->newDataItemValue(
+				$this->mProperty
+			);
+
+			$titleText = htmlspecialchars( $dvWikiPage->getWikiValue() );
 			$resultNumber = min( $this->limit, count( $diWikiPages ) );
 
 			$result .= "<a name=\"SMWResults\"></a><div id=\"mw-pages\">\n" .
@@ -210,7 +215,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			}
 
 			// Property name
-			$searchlink = SMWInfolink::newBrowsingLink( '+', $dvWikiPage->getShortHTMLText() );
+			$searchlink = SMWInfolink::newBrowsingLink( '+', $dvWikiPage->getWikiValue() );
 			$r .= '<tr><td class="smwpropname">' . $dvWikiPage->getShortHTMLText( smwfGetLinker() ) .
 			      '&#160;' . $searchlink->getHTML( smwfGetLinker() ) . '</td><td class="smwprops">';
 

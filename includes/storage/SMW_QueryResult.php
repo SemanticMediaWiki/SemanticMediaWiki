@@ -304,6 +304,8 @@ class SMWQueryResult {
 	 */
 	public function toArray() {
 
+		$time = microtime( true );
+
 		// @note micro optimization: We call getSerializedQueryResult()
 		// only once and create the hash here instead of calling getHash()
 		// to avoid getSerializedQueryResult() being called again
@@ -315,7 +317,8 @@ class SMWQueryResult {
 				'hash'   => HashBuilder::createHashIdForContent( $serializeArray ),
 				'count'  => $this->getCount(),
 				'offset' => $this->mQuery->getOffset(),
-				'source' => $this->mQuery->getQuerySource()
+				'source' => $this->mQuery->getQuerySource(),
+				'time'   => number_format( ( microtime( true ) - $time ), 6, '.', '' )
 				)
 			)
 		);

@@ -83,18 +83,26 @@ class NewRevisionFromEditComplete {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$parserData = $applicationFactory
-			->newParserData( $this->wikiPage->getTitle(), $this->parserOutput );
+		$parserData = $applicationFactory->newParserData(
+			$this->wikiPage->getTitle(),
+			$this->parserOutput
+		);
 
-		$pageInfoProvider = $applicationFactory
-			->newMwCollaboratorFactory()
-			->newPageInfoProvider( $this->wikiPage, $this->revision, $this->user );
+		$pageInfoProvider = $applicationFactory->newMwCollaboratorFactory()->newPageInfoProvider(
+			$this->wikiPage,
+			$this->revision,
+			$this->user
+		);
 
-		$propertyAnnotator = $applicationFactory
-			->newPropertyAnnotatorFactory()
-			->newPredefinedPropertyAnnotator( $parserData->getSemanticData(), $pageInfoProvider );
+		$propertyAnnotatorFactory = $applicationFactory->newPropertyAnnotatorFactory();
+
+		$propertyAnnotator = $propertyAnnotatorFactory->newPredefinedPropertyAnnotator(
+			$parserData->getSemanticData(),
+			$pageInfoProvider
+		);
 
 		$propertyAnnotator->addAnnotation();
+
 		$parserData->pushSemanticDataToParserOutput();
 
 		return true;

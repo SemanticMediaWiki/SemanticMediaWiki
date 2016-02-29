@@ -65,7 +65,9 @@ class PropertyTableInfoFetcher {
 		// Concepts
 		'_CONC',
 		// Monolingual text
-		'_LCODE', '_TEXT'
+		'_LCODE', '_TEXT',
+		// Display title of
+		'_DTITLE'
 	);
 
 	/**

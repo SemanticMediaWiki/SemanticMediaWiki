@@ -101,7 +101,8 @@ abstract class SMWLanguage {
 		'Language code'  => '_LCODE',
 		'Text'           => '_TEXT',
 		'Has property description'     => '_PDESC',
-		'Allows pattern' => '_PVAP'
+		'Allows pattern' => '_PVAP',
+		'Display title of'     => '_DTITLE'
 	);
 
 	public function __construct() {

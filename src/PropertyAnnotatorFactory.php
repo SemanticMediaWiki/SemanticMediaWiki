@@ -8,6 +8,7 @@ use SMW\PropertyAnnotator\PredefinedPropertyAnnotator;
 use SMW\PropertyAnnotator\SortkeyPropertyAnnotator;
 use SMW\PropertyAnnotator\CategoryPropertyAnnotator;
 use SMW\PropertyAnnotator\MandatoryTypePropertyAnnotator;
+use SMW\PropertyAnnotator\DisplayTitlePropertyAnnotator;
 use SMw\MediaWiki\RedirectTargetFinder;
 use SMW\PageInfo;
 use SMW\SemanticData;
@@ -81,6 +82,21 @@ class PropertyAnnotatorFactory {
 		return new SortkeyPropertyAnnotator(
 			$this->newNullPropertyAnnotator( $semanticData ),
 			$sortkey
+		);
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param SemanticData $semanticData
+	 * @param string|false $displayTitle
+	 *
+	 * @return DisplayTitlePropertyAnnotator
+	 */
+	public function newDisplayTitlePropertyAnnotator( SemanticData $semanticData, $displayTitle ) {
+		return new DisplayTitlePropertyAnnotator(
+			$this->newNullPropertyAnnotator( $semanticData ),
+			$displayTitle
 		);
 	}
 

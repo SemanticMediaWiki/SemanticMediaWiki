@@ -1,4 +1,8 @@
 <?php
+
+use SMW\ApplicationFactory;
+use SMW\DIProperty;
+
 /**
  * @ingroup SMWDataValues
  */
@@ -143,24 +147,25 @@ class SMWWikiPageValue extends SMWDataValue {
 			$dataItem = $dataItem->getSemanticData()->getSubject();
 		}
 
-		if ( $dataItem->getDIType() == SMWDataItem::TYPE_WIKIPAGE ) {
-			$this->m_dataitem = $dataItem;
-			$this->m_id = -1;
-			$this->m_title = null;
-			$this->m_fragment = $dataItem->getSubobjectName();
-			$this->m_prefixedtext = '';
-			$this->m_caption = false; // this class can handle this
-
-			if ( ( $this->m_fixNamespace != NS_MAIN ) &&
-				( $this->m_fixNamespace != $dataItem->getNamespace() ) ) {
-					global $wgContLang;
-					$this->addError( wfMessage( 'smw_wrong_namespace',
-						$wgContLang->getNsText( $this->m_fixNamespace ) )->inContentLanguage()->text() );
-			}
-			return true;
-		} else {
+		if ( $dataItem->getDIType() !== SMWDataItem::TYPE_WIKIPAGE ) {
 			return false;
 		}
+
+		$this->m_dataitem = $dataItem;
+		$this->m_id = -1;
+		$this->m_title = null;
+		$this->m_fragment = $dataItem->getSubobjectName();
+		$this->m_prefixedtext = '';
+		$this->m_caption = false; // this class can handle this
+
+		if ( ( $this->m_fixNamespace != NS_MAIN ) &&
+			( $this->m_fixNamespace != $dataItem->getNamespace() ) ) {
+				global $wgContLang;
+				$this->addError( wfMessage( 'smw_wrong_namespace',
+					$wgContLang->getNsText( $this->m_fixNamespace ) )->inContentLanguage()->text() );
+		}
+
+		return true;
 	}
 
 	/**
@@ -239,6 +244,12 @@ class SMWWikiPageValue extends SMWDataValue {
 		if ( !is_null( $linker ) && $linker !== false &&
 				$this->m_caption !== '' && $this->m_outformat != '-' ) {
 			$this->getTitle();
+		}
+
+		$displayTitle = $this->getDisplayTitle();
+
+		if ( $displayTitle !== '' && $linker === null ) {
+			return htmlspecialchars( $displayTitle );
 		}
 
 		if ( is_null( $linker ) || $linker === false || !$this->isValid() ||
@@ -489,7 +500,14 @@ class SMWWikiPageValue extends SMWDataValue {
 		} else {
 			$fragmentText = '';
 		}
-		return $this->getText() . $fragmentText;
+
+		$displayTitle = $this->getDisplayTitle();
+
+		if ( $displayTitle === '' ) {
+			$displayTitle = $this->getText();
+		}
+
+		return $displayTitle . $fragmentText;
 	}
 
 	/**
@@ -508,7 +526,14 @@ class SMWWikiPageValue extends SMWDataValue {
 		} else {
 			$fragmentText = '';
 		}
-		return ( $this->m_fixNamespace == NS_MAIN ? $this->getPrefixedText() : $this->getText() ) . $fragmentText;
+
+		$displayTitle = $this->getDisplayTitle();
+
+		if ( $displayTitle === '' ) {
+			$displayTitle = $this->m_fixNamespace == NS_MAIN ? $this->getPrefixedText() : $this->getText();
+		}
+
+		return $displayTitle . $fragmentText;
 	}
 
 	/**
@@ -533,6 +558,20 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	public function getSortKey() {
 		return \SMW\StoreFactory::getStore()->getWikiPageSortKey( $this->m_dataitem );
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return string
+	 */
+	public function getDisplayTitle() {
+
+		if ( $this->m_dataitem === null || ( $this->getOptionValueFor( 'smwgDVFeatures' ) & SMW_DV_WPV_DTITLE ) == 0 ) {
+			return '';
+		}
+
+		return $this->findDisplayTitleFor( $this->m_dataitem );
 	}
 
 	/**
@@ -571,11 +610,23 @@ class SMWWikiPageValue extends SMWDataValue {
 		return $dvWikiPage;
 	}
 
-}
+	private function findDisplayTitleFor( $subject ) {
 
-/**
- * SMW\WikiPageValue
- *
- * @since 1.9
- */
-class_alias( 'SMWWikiPageValue', 'SMW\WikiPageValue' );
+		$displayTitle = '';
+
+		$dataItems = ApplicationFactory::getInstance()->getCachedPropertyValuesPrefetcher()->getPropertyValues(
+			$subject,
+			new DIProperty( '_DTITLE' )
+		);
+
+		if ( $dataItems !== null && $dataItems !== array() ) {
+			$displayTitle = end( $dataItems )->getString();
+		} elseif ( $subject->getSubobjectName() !== '' ) {
+			// Check whether the base subject has a DISPLAYTITLE
+			return $this->findDisplayTitleFor( $subject->asBase() );
+		}
+
+		return $displayTitle;
+	}
+
+}

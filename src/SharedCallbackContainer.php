@@ -114,9 +114,8 @@ class SharedCallbackContainer implements CallbackContainer {
 
 	private function registerCallbackHandlersByFactory( $callbackLoader ) {
 
-		$callbackLoader->registerExpectedReturnType( 'BlobStore', '\Onoi\BlobStore\BlobStore' );
-
 		$callbackLoader->registerCallback( 'BlobStore', function( $namespace, $cacheType = null, $ttl = 0 ) use ( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'BlobStore', '\Onoi\BlobStore\BlobStore' );
 
 			$cacheFactory = $callbackLoader->load( 'CacheFactory' );
 
@@ -136,9 +135,8 @@ class SharedCallbackContainer implements CallbackContainer {
 			return $blobStore;
 		} );
 
-		$callbackLoader->registerExpectedReturnType( 'CachedPropertyValuesPrefetcher', '\SMW\CachedPropertyValuesPrefetcher' );
-
 		$callbackLoader->registerCallback( 'CachedPropertyValuesPrefetcher', function() use ( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'CachedPropertyValuesPrefetcher', '\SMW\CachedPropertyValuesPrefetcher' );
 
 			$cacheType = null;
 			$ttl = 604800; // 7 * 24 * 3600
@@ -151,9 +149,8 @@ class SharedCallbackContainer implements CallbackContainer {
 			return $cachedPropertyValuesPrefetcher;
 		} );
 
-		$callbackLoader->registerExpectedReturnType( 'PropertySpecificationLookup', '\SMW\PropertySpecificationLookup' );
-
 		$callbackLoader->registerCallback( 'PropertySpecificationLookup', function() use ( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'PropertySpecificationLookup', '\SMW\PropertySpecificationLookup' );
 
 			$propertySpecificationLookup = new PropertySpecificationLookup(
 				$callbackLoader->load( 'CachedPropertyValuesPrefetcher' )
@@ -168,9 +165,9 @@ class SharedCallbackContainer implements CallbackContainer {
 			return $propertySpecificationLookup;
 		} );
 
-		$callbackLoader->registerExpectedReturnType( 'PropertyHierarchyLookup', '\SMW\PropertyHierarchyLookup' );
 
 		$callbackLoader->registerCallback( 'PropertyHierarchyLookup', function() use ( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'PropertyHierarchyLookup', '\SMW\PropertyHierarchyLookup' );
 
 			$propertyHierarchyLookup = new PropertyHierarchyLookup(
 				$callbackLoader->load( 'Store' ),
@@ -187,7 +184,6 @@ class SharedCallbackContainer implements CallbackContainer {
 
 			return $propertyHierarchyLookup;
 		} );
-
 	}
 
 }

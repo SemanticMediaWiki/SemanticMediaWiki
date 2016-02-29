@@ -964,6 +964,17 @@ $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] = true;
 # - SMW_DV_PVAP (Allows pattern) to allow regular expression pattern matching
 # when `Allows pattern` property is assigned to user-defined property
 #
+# - SMW_DV_WPV_DTITLE (WikiPageValue) is to allow requesting a lookup for a display
+# title and if present will be used as caption for the invoked subject
+#
+# - SMW_DV_PROV_DTITLE (PropertyValue) in combination with SMW_DV_WPV_DTITLE; If
+# enabled it will attempt to resolve a property label by matching it against a
+# possible assigned property "Display title of" value. For example, property
+# "Foo" has "Display title of" "hasFoolishFoo" where "hasFoolishFoo" is being
+# resolved as "Foo" when creating annotations. Currently, this uses an
+# uncached lookup and therefore is disabled by default to avoid a possible
+# performance impact (which has not been established or analyzed).
+#
 # @since 2.4
 ##
-$GLOBALS['smwgDVFeatures'] = SMW_DV_PROV_REDI | SMW_DV_MLTV_LCODE | SMW_DV_PVAP;
+$GLOBALS['smwgDVFeatures'] = SMW_DV_PROV_REDI | SMW_DV_MLTV_LCODE | SMW_DV_PVAP | SMW_DV_WPV_DTITLE;

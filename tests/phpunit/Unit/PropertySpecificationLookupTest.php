@@ -43,6 +43,40 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetPropertyFromDisplayTitle() {
+
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
+
+		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->once() )
+			->method( 'getResults' )
+			->will( $this->returnValue( array( $this->dataItemFactory->newDIWikiPage( 'Foo' ) ) ) );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->once() )
+			->method( 'getQueryResult' )
+			->will( $this->returnValue( $queryResult ) );
+
+		$this->cachedPropertyValuesPrefetcher->expects( $this->once() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $store ) );
+
+		$instance = new PropertySpecificationLookup(
+			$this->cachedPropertyValuesPrefetcher
+		);
+
+		$this->assertEquals(
+			$property,
+			$instance->getPropertyFromDisplayTitle( 'abc' )
+		);
+	}
+
 	public function testGetAllowedPattern() {
 
 		$property = $this->dataItemFactory->newDIProperty( 'Has allowed pattern' );
