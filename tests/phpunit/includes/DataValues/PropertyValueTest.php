@@ -28,7 +28,7 @@ class PropertyValueTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider optionsProvider
 	 */
-	public function testNeedsToFindPropertyRedirectOrNotByOption( $options, $expected ) {
+	public function testOptions( $options, $expected ) {
 
 		$instance = new PropertyValue( '__pro' );
 
@@ -38,7 +38,7 @@ class PropertyValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->isToFindPropertyRedirect()
+			$instance->getOptionValueFor( 'smwgDVFeatures' )
 		);
 	}
 

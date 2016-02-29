@@ -33,6 +33,12 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->semanticDataValidator = new SemanticDataValidator();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->applicationFactory->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {
@@ -168,7 +174,8 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 				'wikiPage' => $wikiPage,
 				'revision' => $revision,
 				'settings' => array(
-					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MODIFICATION_DATE )
+					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MODIFICATION_DATE ),
+					'smwgDVFeatures' => ''
 				)
 			),
 			array(

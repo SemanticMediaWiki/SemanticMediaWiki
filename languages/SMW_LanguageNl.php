@@ -85,7 +85,8 @@ class SMWLanguageNl extends SMWLanguage {
 		'_LCODE' => 'Language code',
 		'_TEXT'  => 'Text',
 		'_PDESC' => 'Has property description',
-		'_PVAP'  => 'Allows pattern'
+		'_PVAP'  => 'Allows pattern',
+		'_DTITLE' => 'Display title of'
 	);
 
 	protected $m_SpecialPropertyAliases = array(

@@ -108,6 +108,15 @@ class CachedPropertyValuesPrefetcher {
 	/**
 	 * @since 2.4
 	 *
+	 * @return Store
+	 */
+	public function getStore() {
+		return $this->store;
+	}
+
+	/**
+	 * @since 2.4
+	 *
 	 * @param DIWikiPage $subject
 	 *
 	 * @return string

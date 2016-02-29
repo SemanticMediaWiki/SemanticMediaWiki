@@ -94,11 +94,17 @@ class QueryResultSerializer implements DispatchableSerializer {
 					$result = $recordDiValues;
 				} else {
 					$title = $dataItem->getTitle();
+
+					//$wikiPageValue = DataValueFactory::getInstance()->newDataItemValue(
+					//	$dataItem
+					//);
+
 					$result = array(
 						'fulltext' => $title->getFullText(),
 						'fullurl' => $title->getFullUrl(),
 						'namespace' => $title->getNamespace(),
-						'exists' => $title->isKnown()
+						'exists' => $title->isKnown(),
+					//	'displaytitle' => $wikiPageValue->getDisplayTitle()
 					);
 				}
 				break;

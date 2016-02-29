@@ -4,6 +4,9 @@ namespace SMW;
 
 use RuntimeException;
 use Onoi\BlobStore\BlobStore;
+use SMW\Query\DescriptionFactory;
+use SMWDIBlob as DIBlob;
+use SMWQuery as Query;
 
 /**
  * This class should be accessed via ApplicationFactory::getPropertySpecificationLookup
@@ -64,6 +67,39 @@ class PropertySpecificationLookup {
 	 */
 	public function setLanguageCode( $languageCode ) {
 		$this->languageCode = Localizer::asBCP47FormattedLanguageCode( $languageCode );
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param string $displayTitle
+	 *
+	 * @return DIProperty|false
+	 */
+	public function getPropertyFromDisplayTitle( $displayTitle ) {
+
+		$descriptionFactory = new DescriptionFactory();
+
+		$description = $descriptionFactory->newSomeProperty(
+			new DIProperty( '_DTITLE' ),
+			$descriptionFactory->newValueDescription( new DIBlob( $displayTitle ) )
+		);
+
+		$query = new Query( $description );
+		$query->setLimit( 1 );
+
+		$dataItems = $this->cachedPropertyValuesPrefetcher->getStore()->getQueryResult( $query )->getResults();
+
+		if ( is_array( $dataItems ) && $dataItems !== array() ) {
+			$dataItem = end( $dataItems );
+
+			// Cache results as a linked list attached to
+			// the property so that it can be purged all together
+
+			return new DIProperty( $dataItem->getDBKey() );
+		}
+
+		return false;
 	}
 
 	/**

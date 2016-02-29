@@ -309,7 +309,7 @@ class Factbox {
 		$dataValue = $this->dataValueFactory->newDataItemValue( $subject, null );
 
 		$browselink = SMWInfolink::newBrowsingLink(
-			$dataValue->getText(),
+			$dataValue->getShortHTMLText(),
 			$dataValue->getWikiValue(),
 			'swmfactboxheadbrowse'
 		);

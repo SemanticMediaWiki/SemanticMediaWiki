@@ -461,14 +461,7 @@ class SMWInfolink {
 
 			foreach ( $ps as $p ) {
 				if ( $p !== '' ) {
-					$p = rawurldecode( str_replace( '-', '%', $p ) );
-					$parts = explode( '=', $p, 2 );
-
-					if ( count( $parts ) > 1 ) {
-						$result[$parts[0]] = $parts[1];
-					} else {
-						$result[] = $p;
-					}
+					$result[] = rawurldecode( str_replace( '-', '%', $p ) );
 				}
 			}
 		}

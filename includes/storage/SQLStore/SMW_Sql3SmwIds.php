@@ -182,6 +182,7 @@ class SMWSql3SmwIds {
 		'_SERV' => 13,
 		'_PVAL' => 14,
 		'_REDI' => 15,
+		'_DTITLE' => 16,
 		'_SUBP' => 17,
 		'_SUBC' => 18,
 		'_CONC' => 19,

@@ -234,7 +234,7 @@ class PrintRequest {
 					}
 				}
 				else {
-					$printname = $this->m_data->getWikiValue();
+					$printname = $this->m_data->isVisible() ? $this->m_data->getDataItem()->getLabel() : '';
 					$result = '?' . $printname;
 
 					if ( $this->m_outputformat !== '' ) {

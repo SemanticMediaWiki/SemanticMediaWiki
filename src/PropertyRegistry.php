@@ -329,6 +329,7 @@ class PropertyRegistry {
 			'_TEXT'  => array( '_txt', true, true ), // "Text"
 			'_PDESC' => array( '_mlt_rec', true, true ), // "Property description"
 			'_PVAP'  => array( '__pvap', true, true ), // "Allows pattern"
+			'_DTITLE' => array( '_txt', false, true ), // "Display title of"
 		);
 
 		foreach ( $this->datatypeLabels as $id => $label ) {

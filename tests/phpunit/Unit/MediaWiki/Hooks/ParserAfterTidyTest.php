@@ -115,11 +115,18 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			$parameters['data-status']
 		);
 
+		$parser->getOutput()->setProperty(
+			'displaytitle',
+			isset( $parameters['displaytitle'] ) ? $parameters['displaytitle'] : false
+		);
+
 		$text   = '';
 
 		$instance = new ParserAfterTidy( $parser, $text );
 
-		$this->assertTrue( $instance->process() );
+		$this->assertTrue(
+			$instance->process()
+		);
 	}
 
 	public function testSemanticDataParserOuputUpdateIntegration() {
@@ -308,6 +315,39 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 				'cache-contains' => true,
 				'cache-fetch'    => false,
 				'data-status' => true
+			)
+		);
+
+		#5, 1410 displaytitle
+		$store = $this->getMockBuilder( 'SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->once() )
+			->method( 'updateData' );
+
+		$title = MockTitle::buildMock( __METHOD__ );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'inNamespace' )
+			->will( $this->returnValue( false ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getArticleID' )
+			->will( $this->returnValue( 5001 ) );
+
+		$provider[] = array(
+			array(
+				'store'    => $store,
+				'title'    => $title,
+				'cache-contains' => true,
+				'cache-fetch'    => true,
+				'data-status' => false,
+				'displaytitle' => 'Foo'
 			)
 		);
 

@@ -58,15 +58,6 @@ class SMWPropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @return boolean
-	 */
-	public function isToFindPropertyRedirect() {
-		return ( $this->getOptionValueFor( 'smwgDVFeatures' ) & SMW_DV_PROV_REDI ) != 0;
-	}
-
-	/**
 	 * Static function for creating a new property object from a
 	 * propertyname (string) as a user might enter it.
 	 * @note The resulting property object might be invalid if
@@ -152,9 +143,18 @@ class SMWPropertyValue extends SMWDataValue {
 			$this->m_dataitem = new SMWDIProperty( 'ERROR', false ); // just to have something
 		}
 
+		// @see the SMW_DV_PROV_DTITLE explanation
+		if ( $this->canFindPropertyByDisplayTitle() ) {
+			$dataItem = $this->getPropertySpecificationLookup()->getPropertyFromDisplayTitle(
+				$value
+			);
+
+			$this->m_dataitem = $dataItem ? $dataItem : $this->m_dataitem;
+		}
+
 		$this->inceptiveProperty = $this->m_dataitem;
 
-		if ( $this->isToFindPropertyRedirect() ) {
+		if ( $this->canFindPropertyRedirect() ) {
 			$this->m_dataitem = $this->m_dataitem->getRedirectTarget();
 		}
 	}
@@ -217,6 +217,7 @@ class SMWPropertyValue extends SMWDataValue {
 				$this->m_wikipage = null;
 			}
 		}
+
 		return $this->m_wikipage;
 	}
 
@@ -279,7 +280,16 @@ class SMWPropertyValue extends SMWDataValue {
 	}
 
 	public function getWikiValue() {
-		return $this->isVisible() ? $this->m_dataitem->getLabel() : '';
+
+		if ( !$this->isVisible() ) {
+			return '';
+		}
+
+		if ( $this->getWikiPageValue() !== null && $this->getWikiPageValue()->getDisplayTitle() !== '' ) {
+			return $this->getWikiPageValue()->getDisplayTitle();
+		}
+
+		return $this->m_dataitem->getLabel();
 	}
 
 	/**
@@ -339,6 +349,25 @@ class SMWPropertyValue extends SMWDataValue {
 		}
 
 		return $text;
+	}
+
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return boolean
+	 */
+	protected function canFindPropertyRedirect() {
+		return ( $this->getOptionValueFor( 'smwgDVFeatures' ) & SMW_DV_PROV_REDI ) != 0;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return boolean
+	 */
+	protected function canFindPropertyByDisplayTitle() {
+		return ( $this->getOptionValueFor( 'smwgDVFeatures' ) & SMW_DV_PROV_DTITLE ) != 0;
 	}
 
 	/**
