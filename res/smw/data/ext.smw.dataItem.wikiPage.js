@@ -181,15 +181,18 @@
 		 * @return {string}
 		 */
 		getHtml: function( linker ) {
+			var displaytitle = this.displaytitle;
+
+			if ( displaytitle === null ) {
+				displaytitle = this.getText();
+			}
+
 			if ( linker && this.fullurl !== null ){
 				var attributes = this.exists ? { 'href': this.fullurl } : { 'href': this.fullurl, 'class': 'new' };
-				var displaytitle = this.displaytitle;
-				if ( displaytitle === null ) {
-					displaytitle = this.getText();
-				}
 				return html.element( 'a', attributes , displaytitle );
 			}
-			return this.getText();
+
+			return displaytitle;
 		}
 	};
 
