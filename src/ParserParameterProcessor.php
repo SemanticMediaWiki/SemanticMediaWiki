@@ -173,6 +173,7 @@ class ParserParameterProcessor {
 
 		while ( key( $params ) !== null ) {
 			$separator = '';
+			$pipe = false;
 			$values = array();
 
 			// Only strings are allowed for processing
@@ -194,6 +195,11 @@ class ParserParameterProcessor {
 						$separator = isset( $nextElement[1] ) ? $nextElement[1] !== '' ? $nextElement[1] : $this->defaultSeparator : $this->defaultSeparator;
 						next( $params );
 					}
+				}
+
+				if ( current( $params ) === '+pipe' ) {
+					$pipe = true;
+					next( $params );
 				}
 			}
 
@@ -223,6 +229,12 @@ class ParserParameterProcessor {
 				if ( $value !== '' ){
 					$results[$currentElement[0]][] = $value;
 				}
+			}
+
+			// +pipe indicates that elements are expected to be concatenated
+			// with a | that was removed during a #parserFunction invocation
+			if ( $pipe ) {
+				$results[$currentElement[0]] = array( implode( '|', $results[$currentElement[0]] ) );
 			}
 		}
 

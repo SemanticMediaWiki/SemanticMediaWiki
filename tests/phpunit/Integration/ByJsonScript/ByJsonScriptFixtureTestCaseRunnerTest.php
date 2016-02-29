@@ -7,6 +7,7 @@ use SMW\Tests\JsonTestCaseFileHandler;
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\EventHandler;
 use SMW\ApplicationFactory;
+use SMW\DataValueFactory;
 
 /**
  * @group semantic-mediawiki
@@ -81,6 +82,12 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		);
 
 		$this->eventDispatcher = EventHandler::getInstance()->getEventDispatcher();
+
+		// This ensures that if content is created in the NS_MEDIAWIKI namespace
+		// that if an object relies on the MediaWikiNsContentReader is used then
+		// the data are read from the DB
+		ApplicationFactory::getInstance()->getMediaWikiNsContentReader()->skipMessageCache();
+		DataValueFactory::getInstance()->clear();
 	}
 
 	/**

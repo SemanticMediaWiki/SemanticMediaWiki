@@ -184,8 +184,7 @@ return array(
 		'styles' => 'smw/special/ext.smw.special.ask.css',
 		'dependencies' => array(
 			'ext.smw.tooltip',
-			'ext.smw.style',
-			'ext.smw.autocomplete'
+			'ext.smw.style'
 		),
 		'messages' => array(
 			'smw-ask-delete',

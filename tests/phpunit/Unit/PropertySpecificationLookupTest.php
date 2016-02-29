@@ -43,6 +43,29 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetAllowedPattern() {
+
+		$property = $this->dataItemFactory->newDIProperty( 'Has allowed pattern' );
+
+		$this->cachedPropertyValuesPrefetcher->expects( $this->once() )
+			->method( 'getPropertyValues' )
+			->with(
+				$this->equalTo( $property->getDiWikiPage() ),
+				$this->equalTo( $this->dataItemFactory->newDIProperty( '_PVAP' ) ),
+				$this->anything() )
+			->will(
+				$this->returnValue( array( $this->dataItemFactory->newDIBlob( 'IPv4' ) ) ) );
+
+		$instance = new PropertySpecificationLookup(
+			$this->cachedPropertyValuesPrefetcher
+		);
+
+		$this->assertEquals(
+			'IPv4',
+			$instance->getAllowedPatternFor( $property )
+		);
+	}
+
 	public function testGetAllowedValues() {
 
 		$expected =  array(
@@ -50,7 +73,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->dataItemFactory->newDIBlob( 'B' )
 		);
 
-		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
+		$property = $this->dataItemFactory->newDIProperty( 'Has allowed values' );
 
 		$this->cachedPropertyValuesPrefetcher->expects( $this->once() )
 			->method( 'getPropertyValues' )

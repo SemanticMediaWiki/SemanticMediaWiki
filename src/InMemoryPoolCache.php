@@ -65,8 +65,12 @@ class InMemoryPoolCache {
 	 *
 	 * @param string $poolCacheName
 	 */
-	public function resetPoolCacheFor( $poolCacheName ) {
-		unset( $this->poolCacheList[$poolCacheName] );
+	public function resetPoolCacheFor( $poolCacheName = '' ) {
+		foreach ( $this->poolCacheList as $key => $value ) {
+			if ( $key === $poolCacheName || $poolCacheName === '' ) {
+				unset( $this->poolCacheList[$key] );
+			}
+		}
 	}
 
 	/**

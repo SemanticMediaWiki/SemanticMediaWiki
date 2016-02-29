@@ -2,10 +2,11 @@
 
 namespace SMW\DataValues;
 
-use SMW\ControlledVocabularyImportContentFetcher;
-use SMW\MediaWiki\MediaWikiNsContentReader;
+use SMW\DataValues\ControlledVocabularyImportContentFetcher;
 use SMW\DataValues\ValueParsers\ImportValueParser;
 use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
+use SMW\DataValues\ValueParsers\AllowsPatternContentParser;
+use SMW\ApplicationFactory;
 
 /**
  * @license GNU GPL v2+
@@ -49,7 +50,7 @@ class ValueParserFactory {
 	public function newImportValueParser() {
 
 		$controlledVocabularyImportContentFetcher = new ControlledVocabularyImportContentFetcher(
-			new MediaWikiNsContentReader()
+			ApplicationFactory::getInstance()->getMediaWikiNsContentReader()
 		);
 
 		return new ImportValueParser( $controlledVocabularyImportContentFetcher );
@@ -62,6 +63,17 @@ class ValueParserFactory {
 	 */
 	public function newMonolingualTextValueParser() {
 		return new MonolingualTextValueParser();
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return newAllowsPatternContentParser
+	 */
+	public function newAllowsPatternContentParser() {
+		return new AllowsPatternContentParser(
+			ApplicationFactory::getInstance()->getMediaWikiNsContentReader()
+		);
 	}
 
 }

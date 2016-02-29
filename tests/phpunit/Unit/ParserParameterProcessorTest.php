@@ -265,6 +265,20 @@ class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
 				)
 			),
 
+			// {{#...:
+			// |Foo=123|345|456|+pipe
+			// }}
+			array(
+				array(
+					'Foo=123',
+					'345',
+					'456',
+					'+pipe'
+				),
+				array(
+					'Foo' => array( '123|345|456' )
+				)
+			)
 		);
 	}
 

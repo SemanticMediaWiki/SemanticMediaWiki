@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\DataValues;
 
-use SMW\ControlledVocabularyImportContentFetcher;
+use SMW\DataValues\ControlledVocabularyImportContentFetcher;
 
 /**
- * @covers \SMW\ControlledVocabularyImportContentFetcher
+ * @covers \SMW\DataValues\ControlledVocabularyImportContentFetcher
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -22,7 +22,7 @@ class ControlledVocabularyImportContentFetcherTest extends \PHPUnit_Framework_Te
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\ControlledVocabularyImportContentFetcher',
+			'\SMW\DataValues\ControlledVocabularyImportContentFetcher',
 			new ControlledVocabularyImportContentFetcher( $mediaWikiNsContentReader )
 		);
 	}

@@ -2,7 +2,7 @@
 
 namespace SMW\DataValues\ValueParsers;
 
-use SMW\ControlledVocabularyImportContentFetcher;
+use SMW\DataValues\ControlledVocabularyImportContentFetcher;
 
 /**
  * @private

@@ -7,6 +7,7 @@ use SMWDIError;
 use SMWErrorValue as ErrorValue;
 use SMWPropertyValue;
 use SMWDataValue as DataValue;
+use SMW\DataValues\ValueConstraintValidator;
 
 /**
  * Factory class for creating SMWDataValue objects for supplied types or
@@ -29,21 +30,26 @@ class DataValueFactory {
 	/**
 	 * @var DataTypeRegistry
 	 */
+	private static $instance = null;
+
+	/**
+	 * @var DataTypeRegistry
+	 */
 	private $dataTypeRegistry = null;
 
 	/**
-	 * FIXME In order to remove wfMessage dependency, a message formatter
-	 * should be injected
-	 *
-	 * @note The constructor is made protected until all static/deprecated
-	 * methods are removed
-	 *
+	 * @var ValueConstraintValidator
+	 */
+	private $valueConstraintValidator = null;
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param DataTypeRegistry|null $dataTypeRegistry
 	 */
-	protected function __construct( DataTypeRegistry $dataTypeRegistry = null ) {
+	protected function __construct( DataTypeRegistry $dataTypeRegistry = null, ValueConstraintValidator $valueConstraintValidator ) {
 		$this->dataTypeRegistry = $dataTypeRegistry;
+		$this->valueConstraintValidator = $valueConstraintValidator;
 	}
 
 	/**
@@ -52,7 +58,23 @@ class DataValueFactory {
 	 * @return DataValueFactory
 	 */
 	public static function getInstance() {
-		return new self( DataTypeRegistry::getInstance() );
+
+		if ( self::$instance === null ) {
+			self::$instance = new self(
+				DataTypeRegistry::getInstance(),
+				ValueConstraintValidator::newInstance()
+			);
+		}
+
+		return self::$instance;
+	}
+
+	/**
+	 * @since 2.4
+	 */
+	public function clear() {
+		$this->dataTypeRegistry->clear();
+		self::$instance = null;
 	}
 
 	/**
@@ -264,6 +286,18 @@ class DataValueFactory {
 	 */
 	public function newPropertyValueByLabel( $propertyLabel ) {
 		return self::newTypeIdValue( '__pro', $propertyLabel );
+	}
+
+	/**
+	 * @private
+	 * @note Called by DataValues::checkAllowedValues
+	 *
+	 * @since 2.4
+	 *
+	 * @return ValueConstraintValidator
+	 */
+	public function getValueConstraintValidator() {
+		return $this->valueConstraintValidator;
 	}
 
 	/**

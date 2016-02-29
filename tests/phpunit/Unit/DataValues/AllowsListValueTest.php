@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\DataValues;
 
-use SMW\DataValues\AllowsValue;
+use SMW\DataValues\AllowsListValue;
 use SMW\Tests\TestEnvironment;
 use SMW\DataItemFactory;
 
 /**
- * @covers \SMW\DataValues\AllowsValue
+ * @covers \SMW\DataValues\AllowsListValue
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,7 +15,7 @@ use SMW\DataItemFactory;
  *
  * @author mwjames
  */
-class AllowsValueTest extends \PHPUnit_Framework_TestCase {
+class AllowsListValueTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -23,7 +23,6 @@ class AllowsValueTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 		$this->testEnvironment = new TestEnvironment();
-
 		$this->dataItemFactory = new DataItemFactory();
 
 		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
@@ -40,28 +39,14 @@ class AllowsValueTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\DataValues\AllowsValue',
-			new AllowsValue()
-		);
-	}
-
-	public function testGetAllowedValuesForProperty() {
-
-		$this->propertySpecificationLookup->expects( $this->any() )
-			->method( 'getAllowedValuesFor' )
-			->will( $this->returnValue( array() ) );
-
-		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
-
-		$instance = new AllowsValue();
-
-		$this->assertInternalType(
-			'array',
-			$instance->getAllowedValuesFor( $property )
+			'\SMW\DataValues\AllowsListValue',
+			new AllowsListValue()
 		);
 	}
 
 	public function testIsAllowedValueOnTheValidatedDataValue() {
+
+		$property = $this->dataItemFactory->newDIProperty( 'ValidAllowedValue' );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedValuesFor' )
@@ -78,16 +63,16 @@ class AllowsValueTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->any() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Bar' ) ) );
+			->will( $this->returnValue( $property ) );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getDataItem' )
 			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Foo' ) ) );
 
-		$instance = new AllowsValue();
+		$instance = new AllowsListValue();
 
 		$this->assertTrue(
-			$instance->isAllowedValueFor( $dataValue )
+			$instance->doCheckAllowedValuesFor( $dataValue )
 		);
 
 		$this->assertEmpty(
@@ -96,6 +81,8 @@ class AllowsValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsNotAllowedValueOnTheValidatedDataValue() {
+
+		$property = $this->dataItemFactory->newDIProperty( 'InvalidAllowedValue' );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedValuesFor' )
@@ -112,16 +99,16 @@ class AllowsValueTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->any() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Bar' ) ) );
+			->will( $this->returnValue( $property ) );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getDataItem' )
 			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Foo' ) ) );
 
-		$instance = new AllowsValue();
+		$instance = new AllowsListValue();
 
 		$this->assertFalse(
-			$instance->isAllowedValueFor( $dataValue )
+			$instance->doCheckAllowedValuesFor( $dataValue )
 		);
 
 		$this->assertNotEmpty(

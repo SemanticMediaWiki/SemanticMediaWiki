@@ -78,7 +78,8 @@ class SMWLanguageFi extends SMWLanguage {
 		'_PREC'  => 'Display precision of',
 		'_LCODE' => 'Language code',
 		'_TEXT'  => 'Text',
-		'_PDESC' => 'Has property description'
+		'_PDESC' => 'Has property description',
+		'_PVAP'  => 'Allows pattern'
 	);
 
 	protected $m_Namespaces = array(

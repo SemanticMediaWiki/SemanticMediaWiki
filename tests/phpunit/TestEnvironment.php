@@ -4,6 +4,7 @@ namespace SMW\Tests;
 
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\ApplicationFactory;
+use SMW\DataValueFactory;
 use SMW\Store;
 
 /**
@@ -20,6 +21,11 @@ class TestEnvironment {
 	private $applicationFactory = null;
 
 	/**
+	 * @var DataValueFactory
+	 */
+	private $dataValueFactory = null;
+
+	/**
 	 * @var array
 	 */
 	private $configuration = array();
@@ -29,6 +35,7 @@ class TestEnvironment {
 	 */
 	public function __construct() {
 		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->dataValueFactory = DataValueFactory::getInstance();
 	}
 
 	/**
@@ -46,6 +53,18 @@ class TestEnvironment {
 			$this->applicationFactory->getSettings()->set( $key, $value );
 		}
 
+		return $this;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param string $poolCache
+	 *
+	 * @return self
+	 */
+	public function resetPoolCacheFor( $poolCache ) {
+		$this->applicationFactory->getInMemoryPoolCache()->resetPoolCacheFor( $poolCache );
 		return $this;
 	}
 
@@ -73,6 +92,7 @@ class TestEnvironment {
 		}
 
 		$this->applicationFactory->clear();
+		$this->dataValueFactory->clear();
 	}
 
 	/**

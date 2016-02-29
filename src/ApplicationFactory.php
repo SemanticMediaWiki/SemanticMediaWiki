@@ -305,6 +305,24 @@ class ApplicationFactory {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @return MediaWikiNsContentReader
+	 */
+	public function getMediaWikiNsContentReader() {
+		return $this->callbackLoader->singleton( 'MediaWikiNsContentReader' );
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return InMemoryPoolCache
+	 */
+	public function getInMemoryPoolCache() {
+		return InMemoryPoolCache::getInstance();
+	}
+
+	/**
 	 * @since 2.1
 	 *
 	 * @return QueryParser

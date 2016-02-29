@@ -38,7 +38,7 @@ class DataItemFactory {
 	 * @return DIProperty
 	 */
 	public function newDIProperty( $key, $inverse = false ) {
-		return new DIProperty( $key, $inverse );
+		return new DIProperty( str_replace( ' ', '_', $key ), $inverse );
 	}
 
 	/**

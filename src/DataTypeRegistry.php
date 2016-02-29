@@ -428,7 +428,8 @@ class DataTypeRegistry {
 			'__pro' => 'SMWPropertyValue', // Property type (possibly predefined, no always based on a page)
 			'__key' => 'SMWStringValue', // Sort key of a page
 			'__lcode' => 'SMW\DataValues\LanguageCodeValue',
-			'__pval' => 'SMW\DataValues\AllowsValue',
+			'__pval' => 'SMW\DataValues\AllowsListValue',
+			'__pvap' => 'SMW\DataValues\AllowsPatternValue',
 		);
 
 		$this->typeDataItemIds = array(
@@ -470,6 +471,7 @@ class DataTypeRegistry {
 			'__pro' => DataItem::TYPE_PROPERTY, // Property type (possibly predefined, no always based on a page)
 			'__key' => DataItem::TYPE_BLOB, // Sort key of a page
 			'__lcode' => DataItem::TYPE_BLOB, // Language code
+			'__pvap' => DataItem::TYPE_BLOB, // Allows pattern
 		);
 
 		$this->subDataTypes = array(
