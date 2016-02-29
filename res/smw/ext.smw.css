@@ -461,6 +461,15 @@ label.smw-form-checkbox {
 	font-weight: 500;
 }
 
+/* Handling Long Words and URLs (Forcing Breaks, Hyphenation, Ellipsis */
+.smwb-value, .smwprops, .smwpropname, .smwtype_wpg, .smwtype_uri {
+	word-break: break-word;
+	word-wrap: break-word;
+	-webkit-hyphens: auto;
+	-moz-hyphens: auto;
+	hyphens: auto;
+}
+
 /* Distinguish subobjects from other titles */
 
 .smw-subobject-entity {
