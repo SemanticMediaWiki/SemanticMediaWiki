@@ -8,6 +8,7 @@ Not a release yet.
 * #1335
 * #1344 (#1381)
 * #1389
+* #1417
 
 ## New features and enhancements
 
@@ -34,6 +35,7 @@ Not a release yet.
 * #1397 Added support for microseconds in `DITime` 
 * #1401 Added support for parsing `年/月/日` date format in `DITime`
 * #1407 Added quick result download links to `Special:Ask`
+* #1417 Addded `Allows pattern` property to define a value constraint using regular expressions
 
 ## Bug fixes
 
@@ -68,5 +70,6 @@ Not a release yet.
 * #1385 Added `StringValueFormatter` and `CodeStringValueFormatter`
 * #1388 Added `TimeValueFormatter`
 * #1421 Added `DeferredDependencyLinksUpdater` to avoid violations reported by `TransactionProfiler` in MW 1.26+ 
+* #1417 Added `PermissionPthValidator` together with new the `smwcurator` group and `smw-patternedit` right
 
 ## Contributors
