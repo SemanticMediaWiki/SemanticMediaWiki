@@ -14,7 +14,7 @@
 
 		$( '#smw-property-input' ).addClass( 'autocomplete-suggestions' );
 
-		$( '#smw-property-input' ).autocomplete({
+		$( '#smw-property-input, .smw-property-input' ).autocomplete({
 			serviceUrl: mw.util.wikiScript( 'api' ),
 			dataType: 'json',
 			minChars: 3,

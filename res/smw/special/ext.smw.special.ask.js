@@ -43,7 +43,7 @@
 			textarea: function(){
 				// Textarea property autocomplete
 				// @see ext.smw.autocomplete
-				$( '#add_property' ).smwAutocomplete( { separator: '\n' } );
+			//	$( '#add_property' ).smwAutocomplete( { separator: '\n' } );
 			},
 			parameter: function(){
 				// Property autocomplete for the single sort field
@@ -203,8 +203,8 @@
 			};
 
 		// Init
-		_init.autocomplete.textarea();
-		_init.autocomplete.parameter();
+		//_init.autocomplete.textarea();
+		//_init.autocomplete.parameter();
 		_init.tooltip();
 		_init.formatHelp( options );
 

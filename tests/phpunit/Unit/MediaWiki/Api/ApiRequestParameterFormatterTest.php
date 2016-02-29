@@ -3,7 +3,7 @@
 namespace SMW\Tests\MediaWiki\Api;
 
 use SMW\MediaWiki\Api\ApiRequestParameterFormatter;
-
+use SMW\Tests\TestEnvironment;
 use SMWQueryResult;
 
 /**
@@ -16,6 +16,16 @@ use SMWQueryResult;
  * @author mwjames
  */
 class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
+
+	private $testEnvironment;
+
+	public function setUp() {
+		$this->testEnvironment = new TestEnvironment();
+	}
+
+	public function tearDown() {
+		$this->testEnvironment->tearDown();
+	}
 
 	public function testCanConstruct() {
 
@@ -84,7 +94,7 @@ class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
 		return new \SMW\Query\PrintRequest(
 			\SMW\Query\PrintRequest::PRINT_PROP,
 			$printout,
-			\SMWPropertyValue::makeUserProperty( $printout )
+			\SMW\DataValueFactory::getInstance()->newPropertyValueByLabel( $printout )
 		);
 	}
 

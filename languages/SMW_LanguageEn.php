@@ -89,13 +89,15 @@ class SMWLanguageEn extends SMWLanguage {
 		'_LCODE' => 'Language code',
 		'_TEXT'  => 'Text',
 		'_TEXT'  => 'Text',
-		'_PDESC' => 'Has property description'
+		'_PDESC' => 'Has property description',
+		'_PVAP'  => 'Allows pattern'
 	);
 
 	protected $m_SpecialPropertyAliases = array(
 		'Display unit' => '_UNIT',
 		'Display precision' => '_PREC',
-		'Property description'     => '_PDESC'
+		'Property description'     => '_PDESC',
+		'Allows pattern' => '_PVAP'
 	);
 
 	protected $m_Namespaces = array(

@@ -159,6 +159,11 @@ abstract class SMWDataValue {
 	protected $approximateValue = false;
 
 	/**
+	 * @var ValueConstraintValidator
+	 */
+	private $valueConstraintValidator = null;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param string $typeid
@@ -439,18 +444,21 @@ abstract class SMWDataValue {
 		}
 	}
 
+	/**
+	 * @since 2.4
+	 *
+	 * @param $parameters
+	 * @param integer|null $type
+	 * @param integer|null $language
+	 */
 	protected function addErrorMsg( $parameters, $type = null, $language = null ) {
 		$this->addError( Message::get( $parameters, $type, $language ) );
 	}
 
 	/**
-	 * Clear error messages. This function is provided temporarily to allow
-	 * n-ary to do this.
-	 * properly so that this function will vanish again.
-	 * @note Do not use this function in external code.
-	 * @todo Check if we can remove this function again.
+	 * @since 2.4
 	 */
-	protected function clearErrors() {
+	public function clearErrors() {
 		$this->mErrors = array();
 		$this->mHasErrors = false;
 	}
@@ -873,29 +881,7 @@ abstract class SMWDataValue {
 	 * Creates an error if the value is illegal.
 	 */
 	protected function checkAllowedValues() {
-
-		// If no property known the no data to check
-		if ( $this->m_property === null || !isset( $this->m_dataitem ) ) {
-			return;
-		}
-
-		$this->checkForAllowedValueList();
-	}
-
-	private function checkForAllowedValueList() {
-
-		$allowsValue = DataValueFactory::getInstance()->newPropertyObjectValue(
-			new DIProperty( '_PVAL' ) ,
-			false,
-			false,
-			$this->getContextPage()
-		);
-
-		$allowsValue->isAllowedValueFor(
-			$this
-		);
-
-		$this->addError( $allowsValue->getErrors() );
+		DataValueFactory::getInstance()->getValueConstraintValidator()->doValidate( $this );
 	}
 
 }

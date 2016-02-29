@@ -41,7 +41,7 @@ class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\DIProperty',
-			$instance->newDIProperty( 'Foo' )
+			$instance->newDIProperty( 'Foo bar' )
 		);
 	}
 

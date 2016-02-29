@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW;
+namespace SMW\DataValues;
 
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use Revision;

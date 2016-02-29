@@ -27,12 +27,18 @@ class PropertySpecificationLookup {
 	private $languageCode = 'en';
 
 	/**
+	 * @var FixedInMemoryCache
+	 */
+	private $intermediaryMemoryCache;
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param CachedPropertyValuesPrefetcher $cachedPropertyValuesPrefetcher
 	 */
 	public function __construct( CachedPropertyValuesPrefetcher $cachedPropertyValuesPrefetcher ) {
 		$this->cachedPropertyValuesPrefetcher = $cachedPropertyValuesPrefetcher;
+		$this->intermediaryMemoryCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheFor( 'property.spec.lookup.cache' );
 	}
 
 	/**
@@ -65,11 +71,46 @@ class PropertySpecificationLookup {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return array
+	 * @return string
+	 */
+	public function getAllowedPatternFor( DIProperty $property ) {
+
+		$allowsPattern = '';
+
+		// Guard against high frequency lookup
+		if ( $this->intermediaryMemoryCache->contains( 'ap:'. $property->getKey() ) ) {
+			return $this->intermediaryMemoryCache->fetch( 'ap:'. $property->getKey() );
+		}
+
+		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
+			$property->getDiWikiPage(),
+			new DIProperty( '_PVAP' )
+		);
+
+		if ( is_array( $dataItems ) && $dataItems !== array() ) {
+			$allowsPattern = end( $dataItems )->getString();
+		}
+
+		$this->intermediaryMemoryCache->save( 'ap:'. $property->getKey(), $allowsPattern );
+
+		return $allowsPattern;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param DIProperty $property
+	 *
+	 * @return integer|false
 	 */
 	public function getAllowedValuesFor( DIProperty $property ) {
 
 		$allowsValues = array();
+
+		// Guard against high frequency lookup
+		if ( $this->intermediaryMemoryCache->contains( 'al:'. $property->getKey() ) ) {
+			return $this->intermediaryMemoryCache->fetch( 'al:'. $property->getKey() );
+		}
 
 		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
 			$property->getDiWikiPage(),
@@ -79,6 +120,8 @@ class PropertySpecificationLookup {
 		if ( is_array( $dataItems ) && $dataItems !== array() ) {
 			$allowsValues = $dataItems;
 		}
+
+		$this->intermediaryMemoryCache->save( 'al:'. $property->getKey(), $allowsValues );
 
 		return $allowsValues;
 	}

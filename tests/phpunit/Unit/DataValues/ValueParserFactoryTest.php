@@ -40,7 +40,6 @@ class ValueParserFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-
 	public function testCanConstructMonolingualTextValueParser() {
 
 		$instance = new ValueParserFactory();
@@ -48,6 +47,16 @@ class ValueParserFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SMW\DataValues\ValueParsers\MonolingualTextValueParser',
 			$instance->newMonolingualTextValueParser()
+		);
+	}
+
+	public function testCanConstructAllowsPatternContentParser() {
+
+		$instance = new ValueParserFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\DataValues\ValueParsers\AllowsPatternContentParser',
+			$instance->newAllowsPatternContentParser()
 		);
 	}
 

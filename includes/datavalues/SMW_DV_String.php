@@ -12,12 +12,18 @@ use SMW\DataValues\ValueFormatters\DataValueFormatter;
  */
 class SMWStringValue extends SMWDataValue {
 
+	/**
+	 * @see DataValue::parseUserValue
+	 *
+	 * @param string $value
+	 */
 	protected function parseUserValue( $value ) {
+
 		if ( $value === '' ) {
-			$this->addError( wfMessage( 'smw_emptystring' )->inContentLanguage()->text() );
+			$this->addErrorMsg( 'smw_emptystring' );
 		}
 
-		$this->m_dataitem = new SMWDIBlob( $value, $this->m_typeid );
+		$this->m_dataitem = new SMWDIBlob( $value );
 	}
 
 	/**

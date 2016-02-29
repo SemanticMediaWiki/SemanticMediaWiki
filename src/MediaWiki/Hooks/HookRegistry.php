@@ -15,6 +15,7 @@ use Onoi\HttpRequest\HttpRequestFactory;
 use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\InfoParserFunction;
 use ParserHooks\HookRegistrant;
+use SMW\PermissionPthValidator;
 
 /**
  * @license GNU GPL v2+
@@ -111,6 +112,8 @@ class HookRegistry {
 		$deferredRequestDispatchManager->setEnabledHttpDeferredJobRequestState(
 			$applicationFactory->getSettings()->get( 'smwgEnabledHttpDeferredJobRequest' )
 		);
+
+		$permissionPthValidator = new PermissionPthValidator();
 
 		/**
 		 * Hook: ParserAfterTidy to add some final processing to the fully-rendered page output
@@ -477,6 +480,13 @@ class HookRegistry {
 			);
 
 			return $editPageForm->process();
+		};
+
+		/**
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/userCan
+		 */
+		$this->handlers['userCan'] = function ( &$title, &$user, $action, &$result ) use ( $permissionPthValidator ) {
+			return $permissionPthValidator->checkUserCanPermissionFor( $title, $user, $action, $result );
 		};
 
 		$this->registerHooksForInternalUse( $applicationFactory, $deferredRequestDispatchManager );

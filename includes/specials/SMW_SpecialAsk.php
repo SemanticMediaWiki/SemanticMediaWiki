@@ -574,7 +574,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			$result .= "</div>\n";
 		}
 
-		$result .=  '<div id="sorting_starter" style="display: none">' . wfMessage( 'smw_ask_sortby' )->escaped() . ' <input type="text" name="sort_num" size="35" />' . "\n";
+		$result .=  '<div id="sorting_starter" style="display: none">' . wfMessage( 'smw_ask_sortby' )->escaped() . ' <input type="text" name="sort_num" size="35" class="smw-property-input" />' . "\n";
 		$result .= ' <select name="order_num">' . "\n";
 		$result .= '	<option value="ASC">' . wfMessage( 'smw_ask_ascorder' )->escaped() . "</option>\n";
 		$result .= '	<option value="DESC">' . wfMessage( 'smw_ask_descorder' )->escaped() . "</option>\n</select>\n";

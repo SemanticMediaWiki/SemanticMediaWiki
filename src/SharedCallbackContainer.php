@@ -8,6 +8,7 @@ use Onoi\BlobStore\BlobStore;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\TitleCreator;
 use SMW\MediaWiki\Jobs\JobFactory;
+use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\Factbox\FactboxFactory;
 use Closure;
 
@@ -67,6 +68,11 @@ class SharedCallbackContainer implements CallbackContainer {
 
 		$callbackLoader->registerCallback( 'MessageFormatter', function( \Language $language ) {
 			return new MessageFormatter( $language );
+		} );
+
+		$callbackLoader->registerCallback( 'MediaWikiNsContentReader', function() use ( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'MediaWikiNsContentReader', '\SMW\MediaWiki\MediaWikiNsContentReader' );
+			return new MediaWikiNsContentReader();
 		} );
 
 		$callbackLoader->registerExpectedReturnType( 'PageCreator', '\SMW\MediaWiki\PageCreator' );

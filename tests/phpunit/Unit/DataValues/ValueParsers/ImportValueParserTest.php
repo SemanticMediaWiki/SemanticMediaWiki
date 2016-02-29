@@ -18,7 +18,7 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$controlledVocabularyImportContentFetcher = $this->getMockBuilder( '\SMW\ControlledVocabularyImportContentFetcher' )
+		$controlledVocabularyImportContentFetcher = $this->getMockBuilder( '\SMW\DataValues\ControlledVocabularyImportContentFetcher' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -30,7 +30,7 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function testTryParseForInvalidValueFormat() {
 
-		$controlledVocabularyImportContentFetcher = $this->getMockBuilder( '\SMW\ControlledVocabularyImportContentFetcher' )
+		$controlledVocabularyImportContentFetcher = $this->getMockBuilder( '\SMW\DataValues\ControlledVocabularyImportContentFetcher' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -44,7 +44,7 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function testTryParseForValidValueFormatErroredByNonExistingImportEntry() {
 
-		$controlledVocabularyImportContentFetcher = $this->getMockBuilder( '\SMW\ControlledVocabularyImportContentFetcher' )
+		$controlledVocabularyImportContentFetcher = $this->getMockBuilder( '\SMW\DataValues\ControlledVocabularyImportContentFetcher' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -66,7 +66,7 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testTryParseForValidValueFormatErroredByUriMismatch( $content ) {
 
-		$controlledVocabularyImportContentFetcher = $this->getMockBuilder( '\SMW\ControlledVocabularyImportContentFetcher' )
+		$controlledVocabularyImportContentFetcher = $this->getMockBuilder( '\SMW\DataValues\ControlledVocabularyImportContentFetcher' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -91,7 +91,7 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testTryParseForValidValueFormatErroredByTypeMismatch( $content, $typelist ) {
 
-		$controlledVocabularyImportContentFetcher = $this->getMockBuilder( '\SMW\ControlledVocabularyImportContentFetcher' )
+		$controlledVocabularyImportContentFetcher = $this->getMockBuilder( '\SMW\DataValues\ControlledVocabularyImportContentFetcher' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -116,7 +116,7 @@ class ImportValueParserTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParseForValidValueToMatchType( $content, $parseValue, $expected ) {
 
-		$controlledVocabularyImportContentFetcher = $this->getMockBuilder( '\SMW\ControlledVocabularyImportContentFetcher' )
+		$controlledVocabularyImportContentFetcher = $this->getMockBuilder( '\SMW\DataValues\ControlledVocabularyImportContentFetcher' )
 			->disableOriginalConstructor()
 			->getMock();
 

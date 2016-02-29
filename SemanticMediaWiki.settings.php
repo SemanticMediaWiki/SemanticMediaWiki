@@ -514,7 +514,7 @@ $GLOBALS['smwgPageSpecialProperties'] = array( '_MDAT' );
 # setting is not normally changed by users but by extensions that add new
 # types that have their own additional declaration properties.
 ##
-$GLOBALS['smwgDeclarationProperties'] = array( '_PVAL', '_LIST' );
+$GLOBALS['smwgDeclarationProperties'] = array( '_PVAL', '_LIST', '_PVAP' );
 ##
 
 // some default settings which usually need no modification
@@ -953,15 +953,17 @@ $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] = true;
 # - SMW_DV_PROV_REDI (PropertyValue) If a property is redirected to a different
 # target (Foo -> Bar) then follow it by default in order to allow query results
 # to be displayed equivalent for both queries without having to adjust
-# (or change) a query.
-#
-# This flag is mainly provided to restore backwards compatibility where
-# behaviour is not expected to be altered, nevertheless it is recommended that
-# the setting is enabled to improve user friendliness in terms of query execution.
+# (or change) a query. This flag is mainly provided to restore backwards
+# compatibility where behaviour is not expected to be altered, nevertheless it is
+# recommended that the setting is enabled to improve user friendliness in terms
+# of query execution.
 #
 # - SMW_DV_MLTV_LCODE (MonolingualTextValue) is to require a language code in order
 # for a DV to be completed otherwise a MLTV can operate without a language code
 #
+# - SMW_DV_PVAP (Allows pattern) to allow regular expression pattern matching
+# when `Allows pattern` property is assigned to user-defined property
+#
 # @since 2.4
 ##
-$GLOBALS['smwgDVFeatures'] = SMW_DV_PROV_REDI | SMW_DV_MLTV_LCODE;
+$GLOBALS['smwgDVFeatures'] = SMW_DV_PROV_REDI | SMW_DV_MLTV_LCODE | SMW_DV_PVAP;

@@ -3,10 +3,10 @@
 namespace SMW\DataValues;
 
 use SMW\DataValueFactory;
+use SMW\ApplicationFactory;
 use SMWStringValue as StringValue;
 use SMWDIBlob as DIBlob;
 use SMW\DIProperty;
-use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 
 /**
@@ -17,7 +17,7 @@ use SMWDataValue as DataValue;
  *
  * @author mwjames
  */
-class AllowsValue extends StringValue {
+class AllowsListValue extends StringValue {
 
 	/**
 	 * @param string $typeid
@@ -29,37 +29,27 @@ class AllowsValue extends StringValue {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIProperty $property
-	 *
-	 * @return array
-	 */
-	public function getAllowedValuesFor( DIProperty $property ) {
-		return $this->getPropertySpecificationLookup()->getAllowedValuesFor( $property );
-	}
-
-	/**
-	 * @since 2.4
-	 *
 	 * @param DataValue $dataValue
 	 */
-	public function isAllowedValueFor( DataValue $dataValue ) {
+	public function doCheckAllowedValuesFor( DataValue $dataValue ) {
 
 		$property = $dataValue->getProperty();
 
-		if ( ( $allowedValues = $this->getAllowedValuesFor( $property ) ) === array() || !is_array( $allowedValues ) ) {
-			return null;
+		if ( ( $allowedValues = $this->getPropertySpecificationLookup()->getAllowedValuesFor( $property ) ) === array() ||
+			!is_array( $allowedValues ) ) {
+			return false;
 		}
 
 		$valuestring = '';
 
-		if ( !$this->testAllowedValues( $dataValue, $allowedValues, $valuestring ) ) {
+		if ( !$this->canMatchAllowedValues( $dataValue, $allowedValues, $valuestring ) ) {
 			$this->addErrorMsg( array( 'smw_notinenum', $dataValue->getWikiValue(), $valuestring ) );
 		}
 
 		return $this->getErrors() === array();
 	}
 
-	private function testAllowedValues( $dataValue, $allowedValues, &$valuestring = '' ) {
+	private function canMatchAllowedValues( $dataValue, $allowedValues, &$valuestring = '' ) {
 
 		$hash = $dataValue->getDataItem()->getHash();
 
