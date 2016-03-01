@@ -53,6 +53,7 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 			}
 
 			$currentValue = array_key_exists( $name, $paramValues ) ? $paramValues[$name] : false;
+			$dataInfo = $definition->getMessage() !== null ? $this->msg( $definition->getMessage() )->text() : '';
 
 			$optionsHtml[] =
 				Html::rawElement(
@@ -60,7 +61,7 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 					array(
 						'class' => $this->isTooltipDisplay() == true ? 'smw-ask-info' : '',
 						'word-wrap' => 'break-word',
-						'data-info' => $this->msg( $definition->getMessage() )->text()
+						'data-info' => $dataInfo
 					), htmlspecialchars( $name ) .  ': ' .
 					$this->showFormatOption( $definition, $currentValue )
 				);
