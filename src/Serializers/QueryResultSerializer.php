@@ -103,7 +103,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 						'fulltext' => $title->getFullText(),
 						'fullurl' => $title->getFullUrl(),
 						'namespace' => $title->getNamespace(),
-						'exists' => $title->isKnown(),
+						'exists' => strval( $title->isKnown() ),
 						'displaytitle' => $wikiPageValue->getDisplayTitle()
 					);
 				}
