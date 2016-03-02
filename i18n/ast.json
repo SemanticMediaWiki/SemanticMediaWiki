@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Tifinaghes",
-			"Xuacu"
+			"Xuacu",
+			"Macofe"
 		]
 	},
 	"smw-desc": "Facer la to wiki más accesible - pa les máquines ''y'' pa los humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en llinia])",
@@ -244,7 +245,6 @@
 	"smw_adminlinks_datastructure": "Estructura de datos",
 	"smw_adminlinks_displayingdata": "Visualización de los datos",
 	"smw_adminlinks_inlinequerieshelp": "Ayuda de les consultes en llinia",
-	"smw-pa-property-usage": "La propiedá «$1» ta rexistrada con una [https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count cuenta d'usos] aproximada de {{PLURAL:$2|'''$2''' usu|'''$2''' usos}} ($3).",
 	"smw-createproperty-isproperty": "Ye una propiedá de tipu $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|El valor permitíu|Los valores permitíos}} pa esta propiedá {{PLURAL:$1|ye|son}}:",
 	"smw-paramdesc-category-delim": "El delimitador",
@@ -272,9 +272,9 @@
 	"smw_conceptarticlecount": "Abaxo {{PLURAL:$1|s'amuesa $1 páxina|s'amuesen $1 páxines}}.",
 	"smw-qp-empty-data": "Los datos solicitaos nun se pudieron amosar por unos criterios de seleición insuficientes.",
 	"right-smw-admin": "Entrar nes xeres alministratives (Semantic MediaWiki)",
-	"group-smwadministrator": "Alministradores de Semantic MediaWiki",
-	"group-smwadministrator-member": "{{GENDER:$1|alministrador|alministradora}} (SMW)",
-	"grouppage-smwadministrator": "{{ns:project}}:Alministradores_SMW",
+	"group-smwadministrator": "Alministradores (Semantic MediaWiki)",
+	"group-smwadministrator-member": "{{GENDER:$1|alministrador|alministradora}} (Semantic MediaWiki)",
+	"grouppage-smwadministrator": "{{ns:project}}:Alministradores (Semantic MediaWiki)",
 	"action-smw-admin": "entrar nes xeres alministratives de Semantic MediaWiki",
 	"smw-pa-property-predefined-default": "«$1» ye una propiedá predefinida.",
 	"smw-pa-property-predefined-common": "Esta propiedá ta pre-encadarmada (tamién conocida como [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propiedá especial]) y vien con otros privilexos alministrativos más pero puede usase como cualquier otra [https://www.semantic-mediawiki.org/wiki/Property propiedá definida pol usuariu].",

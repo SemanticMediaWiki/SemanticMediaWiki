@@ -17,7 +17,8 @@
 			"Tourorist",
 			"Mariya",
 			"Ядерный Трамвай",
-			"Iniquity"
+			"Iniquity",
+			"Macofe"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -288,7 +289,7 @@
 	"smw-qp-empty-data": "Запрошенные данные не удаётся отобразить из-за недостаточности некоторых критериев отбора.",
 	"right-smw-admin": "доступ к администрированию (Semantic MediaWiki)",
 	"group-smwadministrator": "Администраторы Semantic MediaWiki",
-	"group-smwadministrator-member": "{{GENDER:$1|администратор (SMW)}}",
+	"group-smwadministrator-member": "{{GENDER:$1|администратор (Semantic MediaWiki)}}",
 	"grouppage-smwadministrator": "{{ns:project}}:Администраторы_SMW",
 	"action-smw-admin": "доступ к задачам администратора Semantic MediaWiki",
 	"smw-pa-property-predefined-default": "«$1» — это предопределённое свойство.",

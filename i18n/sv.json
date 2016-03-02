@@ -20,7 +20,8 @@
 			"Lokal Profil",
 			"Freked",
 			"Ainali",
-			"Dan Koehl"
+			"Dan Koehl",
+			"Macofe"
 		]
 	},
 	"smw-desc": "Gör din wiki mer tillgänglig – för både maskiner och människor ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentation online])",
@@ -291,7 +292,7 @@
 	"smw-qp-empty-data": "Önskad data kunde inte visas på grund av att vissa urvalskriterier är otillräckliga.",
 	"right-smw-admin": "Tillgång till administrationsåtgärder (Semantisk MediaWiki)",
 	"group-smwadministrator": "Semantic MediaWiki-administratörer",
-	"group-smwadministrator-member": "{{GENDER:$1|administratör (SMW)}}",
+	"group-smwadministrator-member": "{{GENDER:$1|administratör (Semantic MediaWiki)}}",
 	"grouppage-smwadministrator": "{{ns:project}}:SMW_administratörer",
 	"action-smw-admin": "komma åt Semantisk MediaWikis administrationsåtgärder",
 	"smw-pa-property-predefined-default": "\"$1\" är en fördefinierad egenskap.",

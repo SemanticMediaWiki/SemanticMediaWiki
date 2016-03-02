@@ -389,5 +389,6 @@
 	"smw-datavalue-allows-pattern-mismatch": "This is an error message.",
 	"smw-datavalue-allows-pattern-reference-unknown": "This is an error message.",
 	"smw-datavalue-feature-not-supported": "This is an error message.",
-	"smw-pa-property-predefined_pvap": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\n* $1 holds the name of the special property."
+	"smw-pa-property-predefined_pvap": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\n* $1 holds the name of the special property.",
+	"smw-pa-property-predefined_dtitle": "This informatory message describes the [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\n* $1 holds the name of the special property."
 }

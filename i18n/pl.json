@@ -259,9 +259,12 @@
 	"smw_conceptarticlecount": "{{PLURAL:$1|Wyświetlona jest jedna strona |Wyświetlone zostały $1 strony|Wyświetlonych zostało $1 stron}}.",
 	"smw-qp-empty-data": "Żądane dane nie mogły zostać wyświetlone ze względu na niewystarczające kryteria wyboru.",
 	"right-smw-admin": "Dostęp do zarządzania (Semantyczna MediaWiki)",
-	"group-smwadministrator": "Administratorzy SMW",
-	"group-smwadministrator-member": "{{GENDER:$1|administrator SMW|administratorka SMW}}",
-	"grouppage-smwadministrator": "{{ns:project}}:Administratorzy Semantycznej MediaWiki",
+	"group-smwadministrator": "Administratorzy (Semantic MediaWiki)",
+	"group-smwadministrator-member": "{{GENDER:$1|administrator|administratorka}} (Semantic MediaWiki)",
+	"grouppage-smwadministrator": "{{ns:project}}:Administratorzy (Semantic MediaWiki)",
+	"group-smwcurator": "Kuratorzy (Semantic MediaWiki)",
+	"group-smwcurator-member": "{{GENDER:$1|kurator (Semantic MediaWiki)}}",
+	"grouppage-smwcurator": "{{ns:project}}:Kuratorzy (Semantic MediaWiki)",
 	"action-smw-admin": "dostęp do zarządzania semantycznej MediaWiki",
 	"smw-sp-properties-cache-info": "Wymienione dane zostały pobrane z [https://www.semantic-mediawiki.org/wiki/Caching cache] i były ostatnio aktualizowane $1.",
 	"smw-sp-properties-header-label": "Lista właściwości",
@@ -279,5 +282,6 @@
 	"smw-sp-types-list": "Lista typów danych",
 	"smw-pa-property-predefined_errt": "„$1” jest predefiniowaną właściwością, zawierającą tekstowy opis błędu.",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|sekunda|sekundy|sekund}}",
-	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|sekunda|sekundy|sekund}}"
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|sekunda|sekundy|sekund}}",
+	"smw-datavalue-feature-not-supported": "Funkcja „$1” jest nieobsługiwana lub została wyłączona w tej wiki."
 }
