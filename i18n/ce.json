@@ -3,7 +3,8 @@
 		"authors": [
 			"Sasan700",
 			"Умар",
-			"Macofe"
+			"Macofe",
+			"Исмаил Садуев"
 		]
 	},
 	"smw_viewasrdf": "RDF хьост",
@@ -19,7 +20,7 @@
 	"validator-type-class-SMWParamSource": "йоза",
 	"smw-paramdesc-export": "Экспортан параметраш",
 	"smw-label-feed-description": "$2-канал $1",
-	"smw_iq_moreresults": "… тӀехьа догӀург",
+	"smw_iq_moreresults": "… тӀаьхьара хиламаш",
 	"smw_nodatetime": "Дозушдоцу терахь «$1».",
 	"smw_attribute_header": "ХӀара “$1” лелош йолу хӀумнаш",
 	"smw_attributearticlecount": "{{PLURAL:$1|Гуш ю}} $1 {{PLURAL:$1|хӀара хӀума лелош йолу агӀо|хӀара хӀума лелош йолу агӀонаш}}.",
