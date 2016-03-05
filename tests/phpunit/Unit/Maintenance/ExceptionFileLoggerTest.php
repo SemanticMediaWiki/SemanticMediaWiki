@@ -27,7 +27,10 @@ class ExceptionFileLoggerTest extends \PHPUnit_Framework_TestCase {
 	public function testGetter() {
 
 		$instance = new ExceptionFileLogger();
-		$instance->setOptions( new Options() );
+
+		$instance->setOptions( new Options( array(
+			'exception-log' => __DIR__
+		) ) );
 
 		$this->assertInternalType(
 			'boolean',
@@ -43,7 +46,10 @@ class ExceptionFileLoggerTest extends \PHPUnit_Framework_TestCase {
 	public function testDoWriteExceptionLog() {
 
 		$instance = new ExceptionFileLogger();
-		$instance->setOptions( new Options() );
+
+		$instance->setOptions( new Options( array(
+			'exception-log' => __DIR__
+		) ) );
 
 		$instance->doWriteExceptionLog(
 			array( 'Foo' )

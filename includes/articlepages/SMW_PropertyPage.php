@@ -63,7 +63,9 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		if ( !$this->mProperty->isUserDefined() ) {
 			$propertyKey  = 'smw-pa-property-predefined' . strtolower( $this->mProperty->getKey() );
 			$messageKey   = wfMessage( $propertyKey )->exists() ? $propertyKey : 'smw-pa-property-predefined-default';
-			$message = wfMessage( $messageKey, $propertyName )->parse() . ' ' . wfMessage( 'smw-pa-property-predefined-common' )->parse();
+			$message .= wfMessage( $messageKey, $propertyName )->parse();
+			$message .= wfMessage( 'smw-pa-property-predefined-long' . strtolower( $this->mProperty->getKey() ) )->exists() ? ' ' . wfMessage( 'smw-pa-property-predefined-long' . strtolower( $this->mProperty->getKey() ) )->parse() : '';
+			$message .= ' ' . wfMessage( 'smw-pa-property-predefined-common' )->parse();
 		}
 
 		return Html::rawElement( 'div', array( 'class' => 'smw-property-predefined-intro' ), $message );
@@ -82,15 +84,20 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 		if ( $usageList && $usageList !== array() ) {
 			$usage = end( $usageList );
-			$usageCount = wfMessage( 'smw-property-page-indicator-usage-count', $propertyName, $usage[1] )->parse() . ' | ';
+			$usageCount = Html::rawElement(
+				'div' , array(
+					'title' => $this->getContext()->getLanguage()->timeanddate( $cachedLookupList->getTimestamp() ),
+					'class' => 'smw-property-page-indicator usage-count' ),
+				$usage[1]
+			);
 		}
 
-		return Html::rawElement(
-				'span', array(
-				'class' => 'smw-property-page-indicator',
-				'title' => $this->getContext()->getLanguage()->timeanddate( $cachedLookupList->getTimestamp() )
-			), $usageCount . wfMessage( 'smw-property-page-indicator-type-info', $this->mProperty->isUserDefined() )->parse()
-		);
+		return Html::rawElement( 'div', array(), Html::rawElement(
+				'div', array(
+				'class' => 'smw-property-page-indicator property-type',
+				'title' => wfMessage( 'smw-property-page-indicator-type-info', $this->mProperty->isUserDefined() )->parse()
+			), ( $this->mProperty->isUserDefined() ? 'U' : 'S' )
+		) . $usageCount );
 	}
 
 	/**
