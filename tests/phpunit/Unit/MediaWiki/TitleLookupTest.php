@@ -153,6 +153,29 @@ class TitleLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testSelectAllRedirectPages() {
+
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$database->expects( $this->any() )
+			->method( 'select' )
+			->with(
+				$this->equalTo( 'redirect' ),
+				$this->anything(),
+				$this->anything(),
+				$this->anything(),
+				$this->anything() )
+			->will( $this->returnValue( false ) );
+
+		$instance = new TitleLookup( $database );
+
+		$this->assertArrayOfTitles(
+			$instance->selectAllRedirectPages()
+		);
+	}
+
 	public function testMaxIdForMainNamespace() {
 
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )

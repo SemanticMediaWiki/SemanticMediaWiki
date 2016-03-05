@@ -59,6 +59,11 @@ class ByIdDataRebuildDispatcher {
 	private $progress = 1;
 
 	/**
+	 * @var array
+	 */
+	private $dispatchedEntities = array();
+
+	/**
 	 * @since 2.3
 	 *
 	 * @param SQLStore $store
@@ -143,6 +148,15 @@ class ByIdDataRebuildDispatcher {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @return array
+	 */
+	public function getDispatchedEntities() {
+		return $this->dispatchedEntities;
+	}
+
+	/**
 	 * Dispatching of a single or a chunk of ids in either online or batch mode
 	 * using the JobQueueScheduler
 	 *
@@ -153,6 +167,7 @@ class ByIdDataRebuildDispatcher {
 	public function dispatchRebuildFor( &$id ) {
 
 		$updatejobs = array();
+		$this->dispatchedEntities = array();
 
 		// was nothing done in this run?
 		$emptyrange = true;
@@ -204,6 +219,8 @@ class ByIdDataRebuildDispatcher {
 			if ( ( $this->namespaces == false ) || ( in_array( $title->getNamespace(), $this->namespaces ) ) ) {
 				$updatejobs[] = $this->newUpdateJob( $title );
 			}
+
+			$this->dispatchedEntities[] = array( 't' => $title->getPrefixedDBKey() );
 		}
 	}
 
@@ -245,6 +262,7 @@ class ByIdDataRebuildDispatcher {
 
 			if ( $row->smw_subobject !== '' && $row->smw_iw !== SMW_SQL3_SMWDELETEIW ) {
 				// leave subobjects alone; they ought to be changed with their pages
+				$this->dispatchedEntities[] = array( 's' => $row->smw_title . '#' . $row->smw_namespace . '#' .$row->smw_subobject );
 			} elseif ( $this->isPlainObjectValue( $row ) ) {
 				$this->propertyTableOutdatedReferenceDisposer->attemptToRemoveOutdatedEntryFromIDTable( $row->smw_id );
 			} elseif ( $row->smw_iw === '' && $titleKey != '' ) {
@@ -252,6 +270,7 @@ class ByIdDataRebuildDispatcher {
 				$title = Title::makeTitleSafe( $row->smw_namespace, $titleKey );
 
 				if ( $title !== null ) {
+					$this->dispatchedEntities[] = array( 's' => $title->getPrefixedDBKey() );
 					$updatejobs[] = $this->newUpdateJob( $title );
 				}
 
@@ -261,6 +280,7 @@ class ByIdDataRebuildDispatcher {
 				$title = Title::makeTitleSafe( $row->smw_namespace, $titleKey );
 
 				if ( $title !== null && !$title->exists() ) {
+					$this->dispatchedEntities[] = array( 's' => $title->getPrefixedDBKey() );
 					$updatejobs[] = $this->newUpdateJob( $title );
 				}
 			} elseif ( $row->smw_iw == SMW_SQL3_SMWIW_OUTDATED || $row->smw_iw == SMW_SQL3_SMWDELETEIW ) { // remove outdated internal object references
@@ -269,6 +289,7 @@ class ByIdDataRebuildDispatcher {
 				$diWikiPage = new DIWikiPage( $titleKey, $row->smw_namespace, $row->smw_iw );
 				$emptySemanticData = new SemanticData( $diWikiPage );
 				$this->store->updateData( $emptySemanticData );
+				$this->dispatchedEntities[] = array( 's' => $diWikiPage );
 			}
 		}
 
