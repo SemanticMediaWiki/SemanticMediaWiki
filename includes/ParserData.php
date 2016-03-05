@@ -259,7 +259,7 @@ class ParserData {
 		);
 
 		if ( $deferredUpdate ) {
-			$deferredCallableUpdate = new DeferredCallableUpdate( function() use( $storeUpdater ) {
+			$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $storeUpdater ) {
 				wfDebugLog( 'smw', 'DeferredCallableUpdate on updateStore' );
 				$storeUpdater->doUpdate();
 			} );
