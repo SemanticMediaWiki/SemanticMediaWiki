@@ -5,9 +5,7 @@ use SMW\MediaWiki\Jobs\JobBase;
 
 use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\SQLStore\PropertyTableRowDiffer;
-use SMW\DeferredRequestDispatchManager;
-use Onoi\HttpRequest\HttpRequestFactory;
-
+use SMW\ApplicationFactory;
 use SMW\SemanticData;
 use SMW\DIWikiPage;
 
@@ -82,12 +80,8 @@ class SMWSQLStore3Writers {
 		$this->doDataUpdate( $emptySemanticData );
 
 		foreach ( $ids as $id ) {
-			$this->doDeleteReferencesFor( $id, $subject, $subobjects );
+			$this->doDeleteFor( $id, $subject, $subobjects );
 		}
-
-		// 1.9.0.1
-		// The update of possible associative entities is handled by DeleteSubjectJob which is invoked during
-		// the ArticleDelete hook
 
 		// @deprecated since 2.1, use 'SMW::SQLStore::AfterDeleteSubjectComplete'
 		\Hooks::run( 'SMWSQLStore3::deleteSubjectAfter', array( $this->store, $title ) );
@@ -95,7 +89,7 @@ class SMWSQLStore3Writers {
 		\Hooks::run( 'SMW::SQLStore::AfterDeleteSubjectComplete', array( $this->store, $title ) );
 	}
 
-	private function doDeleteReferencesFor( $id, $subject, $subobjects ) {
+	private function doDeleteFor( $id, $subject, $subobjects ) {
 
 		if ( $subject->getNamespace() === SMW_NS_CONCEPT ) { // make sure to clear caches
 			$db = $this->store->getConnection();
@@ -721,30 +715,7 @@ class SMWSQLStore3Writers {
 
 		}
 
-		// 1.24+ reported "Parser state cleared while parsing. Did you call
-		// Parser::parse recursively" when using the global Parser instance
-		// Set 'pm' (parser-mode) to 2 indicating to use a new Parser
-		// instance when running the job
-
-		$deferredRequestDispatchManager = $this->newDeferredRequestDispatchManager();
-
-		$parameters = array(
-			'pm' => SMW_UJ_PM_NP
-		);
-
-		if ( $redirectId != 0 ) {
-			$deferredRequestDispatchManager->dispatchJobRequestFor(
-				'SMW\UpdateJob',
-				$oldTitle,
-				$parameters
-			);
-		}
-
-		$deferredRequestDispatchManager->dispatchJobRequestFor(
-			'SMW\UpdateJob',
-			$newTitle,
-			$parameters
-		);
+		$this->addToDeferredUpdate( $oldTitle, $newTitle, $redirectId );
 	}
 
 	/**
@@ -1016,18 +987,31 @@ class SMWSQLStore3Writers {
 		return ( $new_tid == 0 ) ? $sid : $new_tid;
 	}
 
-	private function newDeferredRequestDispatchManager() {
-		$httpRequestFactory = new HttpRequestFactory();
+	private function addToDeferredUpdate( $oldTitle, $newTitle, $redirectId ) {
 
-		$deferredRequestDispatchManager = new DeferredRequestDispatchManager(
-			$httpRequestFactory->newSocketRequest()
-		);
+		$jobFactory = ApplicationFactory::getInstance()->newJobFactory();
 
-		$deferredRequestDispatchManager->setEnabledHttpDeferredJobRequestState(
-			$GLOBALS['smwgEnabledHttpDeferredJobRequest']
-		);
+		if ( $redirectId != 0 ) {
+			$title = $oldTitle;
+			$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $title, $jobFactory ) {
 
-		return $deferredRequestDispatchManager;
+				wfDebugLog( 'smw', 'DeferredCallableUpdate on changeTitle for ' . $title->getPrefixedDBKey() );
+
+				$jobFactory->newUpdateJob( $title )->run();
+			} );
+
+			$deferredCallableUpdate->pushToDeferredUpdateList();
+		}
+
+		$title = $newTitle;
+		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $title, $jobFactory ) {
+
+			wfDebugLog( 'smw', 'DeferredCallableUpdate on changeTitle for ' . $title->getPrefixedDBKey() );
+
+			$jobFactory->newUpdateJob( $title )->run();
+		} );
+
+		$deferredCallableUpdate->pushToDeferredUpdateList();
 	}
 
 }

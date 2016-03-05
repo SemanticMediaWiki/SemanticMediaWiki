@@ -155,7 +155,7 @@ class ParserAfterTidy {
 			// table change row differ and force a data comparison (this doesn't
 			// change the _MDAT annotation)
 			$parserData->getSemanticData()->setLastModified( wfTimestamp( TS_UNIX ) );
-			$parserData->updateStore();
+			$parserData->updateStore( true );
 
 			$parserData->addLimitReport(
 				'pagepurge-storeupdatetime',

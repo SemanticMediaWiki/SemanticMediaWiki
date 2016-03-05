@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\MediaWiki\Hooks\HookRegistry;
-use SMW\ApplicationFactory;
+use SMW\Tests\TestEnvironment;
 use SMW\DIWikiPage;
 use Title;
 
@@ -25,8 +24,11 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 	private $requestContext;
 	private $skin;
 	private $store;
+	private $testEnvironment;
 
 	protected function setUp() {
+
+		$this->testEnvironment = new TestEnvironment();
 
 		$this->title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -64,11 +66,11 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		ApplicationFactory::getInstance()->registerObject( 'Store', $this->store );
+		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
 	protected function tearDown() {
-		ApplicationFactory::getInstance()->clear();
+		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
@@ -98,7 +100,8 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$globalVars = array(
 			'IP' => 'bar',
 			'wgVersion' => '1.24',
-			'wgLang' => $language
+			'wgLang' => $language,
+			'smwgEnabledDeferredUpdate' => false
 		);
 
 		$instance = new HookRegistry( $globalVars, 'foo' );
@@ -404,6 +407,34 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 	public function doTestExecutionForArticleDelete( $instance ) {
 
 		$handler = 'ArticleDelete';
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$semanticData->expects( $this->any() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'getProperties' )
+			->will( $this->returnValue( array() ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'getSubSemanticData' )
+			->will( $this->returnValue( array() ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $semanticData ) );
+
+		$this->title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$this->title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()

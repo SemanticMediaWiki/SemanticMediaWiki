@@ -9,7 +9,7 @@ use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\NamespaceDescription;
-
+use SMW\Tests\TestEnvironment;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 
@@ -31,12 +31,26 @@ use SMWQuery as Query;
  */
 class QueryParserTest extends \PHPUnit_Framework_TestCase {
 
+	private $testEnvironment;
 	private $queryParser;
+
 
 	protected function setUp() {
 		parent::setUp();
 
+		$this->testEnvironment = new TestEnvironment();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->testEnvironment->registerObject( 'Store', $store );
 		$this->queryParser = new QueryParser();
+	}
+
+	protected function tearDown() {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
 	}
 
 	public function testCanConstruct() {

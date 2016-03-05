@@ -11,25 +11,20 @@ use SMW\HashBuilder;
 use SMW\SemanticData;
 use SMW\ApplicationFactory;
 use SMW\EventHandler;
-use DeferrableUpdate;
-use DeferredUpdates;
+use SMW\DeferredCallableUpdate;
 
 /**
- * Implements MW's DeferrableUpdate to avoid complains from the`TransactionProfiler`
- * which started to appear with 1.26 due to our updates (insert/delete) on the
- * QUERY_LINKS_TABLE taken place on a page view event for reparsed #ask results.
- *
  * @license GNU GPL v2+
  * @since 2.4
  *
  * @author mwjames
  */
-class DeferredDependencyLinksUpdater implements DeferrableUpdate {
+class DependencyLinksTableUpdater {
 
 	/**
 	 * @var array
 	 */
-	private static $deferrableUpdates = array();
+	private static $updateList = array();
 
 	/**
 	 * @var Store
@@ -40,11 +35,6 @@ class DeferredDependencyLinksUpdater implements DeferrableUpdate {
 	 * @var Database
 	 */
 	private $connection = null;
-
-	/**
-	 * @var boolean
-	 */
-	private $disabledDeferredUpdate = false;
 
 	/**
 	 * @since 2.4
@@ -66,19 +56,10 @@ class DeferredDependencyLinksUpdater implements DeferrableUpdate {
 	}
 
 	/**
-	 * @note Only used during unit testing to disable DeferredUpdates
-	 *
-	 * @since 2.4
-	 */
-	public function disableDeferredUpdate() {
-		$this->disabledDeferredUpdate = true;
-	}
-
-	/**
 	 * @since 2.4
 	 */
 	public function clear() {
-		self::$deferrableUpdates = array();
+		self::$updateList = array();
 	}
 
 	/**
@@ -87,39 +68,54 @@ class DeferredDependencyLinksUpdater implements DeferrableUpdate {
 	 * @param integer $sid
 	 * @param array $dependencyList
 	 */
-	public function addToDeferredUpdateList( $sid, array $dependencyList ) {
+	public function addUpdateList( $sid, array $dependencyList ) {
 
-		if ( $this->disabledDeferredUpdate ) {
-			self::$deferrableUpdates[$sid] = $dependencyList;
+		if ( $sid == 0 ) {
+			return null;
 		}
 
-		// An updater for the ID is unkown, register it!
-		if ( !isset( self::$deferrableUpdates[$sid] ) ) {
-			self::$deferrableUpdates[$sid] = $dependencyList;
-			wfDebugLog( 'smw', __METHOD__ . " for " . $sid  );
-			return DeferredUpdates::addUpdate( $this );
+		if ( !isset( self::$updateList[$sid] ) ) {
+			return self::$updateList[$sid] = $dependencyList;
 		}
 
-		self::$deferrableUpdates[$sid] = array_merge( self::$deferrableUpdates[$sid], $dependencyList );
+		self::$updateList[$sid] = array_merge( self::$updateList[$sid], $dependencyList );
 	}
 
 	/**
-	 * @see DeferrableUpdate::doUpdate
-	 *
 	 * @since 2.4
 	 */
 	public function doUpdate() {
-		foreach ( self::$deferrableUpdates as $sid => $dependencyList ) {
+		foreach ( self::$updateList as $sid => $dependencyList ) {
 
 			if ( $dependencyList === array() ) {
 				continue;
 			}
 
-			wfDebugLog( 'smw', __METHOD__ . " for " . $sid  );
-
 			$this->updateDependencyList( $sid, $dependencyList );
-			self::$deferrableUpdates[$sid] = array();
+			self::$updateList[$sid] = array();
 		}
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param array $dependencyList
+	 */
+	public function deleteDependenciesFromList( array $deleteIdList ) {
+
+		wfDebugLog( 'smw', __METHOD__ . ' ' . implode( ' ,', $deleteIdList ) . "\n" );
+
+		$this->connection->beginAtomicTransaction( __METHOD__ );
+
+		$this->connection->delete(
+			SQLStore::QUERY_LINKS_TABLE,
+			array(
+				's_id' => $deleteIdList
+			),
+			__METHOD__
+		);
+
+		$this->connection->endAtomicTransaction( __METHOD__ );
 	}
 
 	/**

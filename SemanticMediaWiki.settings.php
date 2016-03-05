@@ -801,38 +801,6 @@ $GLOBALS['smwgEnabledSpecialPage'] = array( 'Ask' );
 ##
 
 ###
-# Page / subject deletion (action=delete)
-#
-# In case of 'smwgDeleteSubjectWithAssociatesRefresh' => TRUE the deletion
-# process will initiate a refresh/update process of associative entities.
-#
-# It is suggested that the dispatch process of those entities are being carried
-# out as deferred job 'smwgDeleteSubjectAsDeferredJob' => TRUE and the to minimize
-# any performance degradation that can occur when a large pool of associates is
-# assigned to the deleted subject.
-#
-# When 'smwgDeleteSubjectAsDeferredJob' => TRUE, MW 1.19/1.20 will return a
-# 'Array to string conversion in JobQueue' because of an outdated JobQueue class
-# it is therefore advised to update to a newer MW version or not to use this
-# feature.
-#
-# The subject is always removed directly (without delay) and if selected the update
-# of associative entities will always be carried out through a background job (as long as
-# smwgEnableUpdateJobs is set true).
-#
-# Legacy behaviour
-# -'smwgDeleteSubjectAsDeferredJob' => false
-# -'smwgDeleteSubjectWithAssociatesRefresh' => false
-#
-# @since 1.9.0.1
-##
-$GLOBALS['smwgOnDeleteAction'] = array(
-	'smwgDeleteSubjectAsDeferredJob' => false,
-	'smwgDeleteSubjectWithAssociatesRefresh' => false
-);
-##
-
-###
 # Search engine to fall back to in case SMWSearch is used as custom search
 # engine but is unable to interpret the search term as an SMW query
 #
@@ -855,7 +823,18 @@ $GLOBALS['smwgEnabledEditPageHelp'] = true;
 ##
 
 ###
+# Various MediaWiki update operations in MW 1.26+ started to use DeferredUpdates
+# and to ensure that the Store update follows in queue of updates made to a page
+# this setting should be enabled by default for MW 1.26 onwards.
 #
+# It will improve page responsiveness for purge and move action significantly.
+#
+# @since 2.4
+##
+$GLOBALS['smwgEnabledDeferredUpdate'] = true;
+##
+
+###
 # Improves performance for selected Job operations that can be executed in a deferred
 # processing mode (or asynchronous to the current transaction) as those (if enabled)
 # are send as request to a dispatcher in order for them to be decoupled from the
