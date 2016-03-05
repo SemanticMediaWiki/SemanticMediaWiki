@@ -73,5 +73,6 @@ Not a release yet.
 * #1388 Added `TimeValueFormatter`
 * #1421 Added `DeferredDependencyLinksUpdater` to avoid violations reported by `TransactionProfiler` in MW 1.26+ 
 * #1417 Added `PermissionPthValidator` together with new the `smwcurator` group and `smw-patternedit` right
+* #1435 Added `DeferredCallableUpdate` (together with `$GLOBALS['smwgEnabledDeferredUpdate']`) to support MW's `DeferrableUpdate` interface (i.e. to support queuing DB related transactions)
 
 ## Contributors
