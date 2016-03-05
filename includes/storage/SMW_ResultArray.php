@@ -167,8 +167,11 @@ class SMWResultArray {
 
 		// refs #1314
 		if ( $this->mPrintRequest->getMode() == PrintRequest::PRINT_PROP &&
-			strpos( $this->mPrintRequest->getTypeID(), '_txt' ) !== false ) {
-			$di = new DIBlob( InTextAnnotationParser::removeAnnotation( $di->getString() ) );
+			strpos( $this->mPrintRequest->getTypeID(), '_txt' ) !== false &&
+			$di instanceof DIBlob ) {
+			$di = new DIBlob(
+				InTextAnnotationParser::removeAnnotation( $di->getString() )
+			);
 		}
 
 		$dv = \SMW\DataValueFactory::getInstance()->newDataItemValue( $di, $diProperty );

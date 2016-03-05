@@ -30,6 +30,11 @@ class RedirectTargetFinderIntegrationTest extends MwDBaseUnitTestCase {
 	protected function setUp() {
 		parent::setUp();
 
+		$this->testEnvironment->addConfiguration(
+			'smwgEnabledDeferredUpdate',
+			false
+		);
+
 		$this->pageCreator = UtilityFactory::getInstance()->newPageCreator();
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 	}
@@ -78,6 +83,8 @@ class RedirectTargetFinderIntegrationTest extends MwDBaseUnitTestCase {
 			->getPage()
 			->getTitle()
 			->moveTo( $target, false, 'test', true );
+
+		$this->testEnvironment->executePendingDeferredUpdates();
 
 		$expected = array(
 			new DIProperty( '_REDI' )

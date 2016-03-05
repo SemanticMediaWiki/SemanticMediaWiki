@@ -8,7 +8,7 @@ use SMW\ApplicationFactory;
 use SMW\NamespaceExaminer;
 use SMW\PropertyRegistry;
 use SMW\Settings;
-
+use SMW\Tests\TestEnvironment;
 use SMWExporter as Exporter;
 
 use RuntimeException;
@@ -28,6 +28,11 @@ use RuntimeException;
  * @author mwjames
  */
 abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
+
+	/**
+	 * @var TestEnvironment
+	 */
+	protected $testEnvironment;
 
 	/**
 	 * @var MwDatabaseTableBuilder
@@ -62,6 +67,9 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
+		$this->testEnvironment = new TestEnvironment();
+		$this->testEnvironment->addConfiguration( 'smwgEnabledDeferredUpdate', false );
+
 		PropertyRegistry::clear();
 
 		$this->checkIfDatabaseCanBeUsedOtherwiseSkipTest();
@@ -73,9 +81,13 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 			'Cache',
 			ApplicationFactory::getInstance()->newCacheFactory()->newFixedInMemoryCache()
 		);
+
+		$this->testEnvironment->clearPendingDeferredUpdates();
 	}
 
 	protected function tearDown() {
+		$this->testEnvironment->tearDown();
+
 		ApplicationFactory::clear();
 		NamespaceExaminer::clear();
 		PropertyRegistry::clear();

@@ -242,7 +242,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'SMW\UpdateJob',
 			'SMW\RefreshJob',
 			'SMW\UpdateDispatcherJob',
-			'SMW\DeleteSubjectJob',
+			'SMW\ParserCachePurgeJob',
 
 			// Legacy
 			'SMWUpdateJob',

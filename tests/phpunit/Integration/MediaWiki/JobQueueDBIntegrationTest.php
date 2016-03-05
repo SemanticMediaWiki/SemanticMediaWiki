@@ -95,44 +95,6 @@ class JobQueueDBIntegrationTest extends MwDBaseUnitTestCase {
 		parent::tearDown();
 	}
 
-	/**
-	 * @dataProvider titleProvider
-	 */
-	public function testPageDeleteTriggersDeleteSubjectJob( $source, $associate ) {
-
-		$subject = DIWikiPage::newFromTitle( $source['title'] );
-
-		$this->semanticDataValidator->assertThatSemanticDataIsEmpty(
-			$this->getStore()->getSemanticData( $subject )
-		);
-
-		$this->pageCreator
-			->createPage( $source['title'] )
-			->doEdit( $source['edit'] );
-
-		$this->pageCreator
-			->createPage( $associate['title'] )
-			->doEdit( $associate['edit'] );
-
-		$this->semanticDataValidator->assertThatSemanticDataIsNotEmpty(
-			$this->getStore()->getSemanticData( $subject )
-		);
-
-		$this->pageDeleter->deletePage( $source['title'] );
-
-		$this->semanticDataValidator->assertThatSemanticDataIsEmpty(
-			$this->getStore()->getSemanticData( $subject )
-		);
-
-		$this->assertJob( 'SMW\DeleteSubjectJob' );
-
-		foreach ( array( 'withAssociates', 'asDeferredJob', 'semanticData' ) as $parameter ) {
-			$this->assertTrue( $this->job->hasParameter( $parameter ) );
-		}
-
-		$this->pageDeleter->deletePage( $associate['title'] );
-	}
-
 	public function testPageMoveTriggersUpdateJob() {
 
 		$oldTitle = Title::newFromText( __METHOD__ . '-old' );

@@ -14,6 +14,7 @@ use SMW\Maintenance\MaintenanceFactory;
 use SMW\CacheFactory;
 use SMWQueryParser as QueryParser;
 use Title;
+use Closure;
 use Onoi\CallbackContainer\CallbackLoader;
 use Onoi\CallbackContainer\DeferredCallbackLoader;
 
@@ -320,6 +321,26 @@ class ApplicationFactory {
 	 */
 	public function getInMemoryPoolCache() {
 		return InMemoryPoolCache::getInstance();
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param Closure $callback
+	 *
+	 * @return DeferredCallableUpdate
+	 */
+	public function newDeferredCallableUpdate( Closure  $callback ) {
+
+		$deferredCallableUpdate = new DeferredCallableUpdate(
+			$callback
+		);
+
+		$deferredCallableUpdate->enabledDeferredUpdate(
+			$this->getSettings()->get( 'smwgEnabledDeferredUpdate' )
+		);
+
+		return $deferredCallableUpdate;
 	}
 
 	/**

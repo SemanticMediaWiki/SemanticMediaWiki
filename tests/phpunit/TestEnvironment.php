@@ -32,10 +32,40 @@ class TestEnvironment {
 
 	/**
 	 * @since 2.4
+	 *
+	 * @param array $configuration
 	 */
-	public function __construct() {
+	public function __construct( array $configuration = array() ) {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->dataValueFactory = DataValueFactory::getInstance();
+
+		$this->withConfiguration( $configuration );
+	}
+
+	/**
+	 * @since 2.4
+	 */
+	public static function executePendingDeferredUpdates() {
+		\DeferredUpdates::doUpdates();
+	}
+
+	/**
+	 * @since 2.4
+	 */
+	public static function clearPendingDeferredUpdates() {
+		\DeferredUpdates::clearPendingUpdates();
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 *
+	 * @return self
+	 */
+	public function addConfiguration( $key, $value ) {
+		return $this->withConfiguration( array( $key => $value ) );
 	}
 
 	/**
