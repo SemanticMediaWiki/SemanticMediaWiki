@@ -8,7 +8,8 @@
 			"Keysuck",
 			"SeoJeongHo",
 			"Hwangjy9",
-			"밥풀떼기"
+			"밥풀떼기",
+			"HDNua"
 		]
 	},
 	"smw-desc": "위키를 기계와 사람이 더 접근하기 쉽게 합니다 ([https://www.semantic-mediawiki.org/wiki/Help:User_manual 온라인 설명서])",
@@ -272,7 +273,7 @@
 	"smw_concept_header": "\"$1\" 개념의 문서",
 	"smw_conceptarticlecount": "아래에 {{PLURAL:$1|문서}} $1개를 보여줍니다.",
 	"right-smw-admin": "관리 작업에 접근 (시맨틱 미디어위키)",
-	"group-smwadministrator": "시맨틱 미디어위키 관리자",
+	"group-smwadministrator": "관리자(시맨틱 미디어위키)",
 	"group-smwadministrator-member": "{{GENDER:$1|관리자 (SMW)}}",
 	"grouppage-smwadministrator": "{{ns:project}}:SMW_관리자",
 	"action-smw-admin": "시맨틱 미디어위키 관리 작업에 접근",
