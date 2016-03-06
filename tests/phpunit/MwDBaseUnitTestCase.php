@@ -87,7 +87,7 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 
 	protected function tearDown() {
 
-		// If setUp is skipped early this might not me initialized
+		// If setUp is skipped early this might not be initialized
 		if ( $this->testEnvironment !== null ) {
 			$this->testEnvironment->tearDown();
 		}
