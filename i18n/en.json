@@ -230,7 +230,7 @@
 	"smw_result_results": "Results",
 	"smw_result_noresults": "No results.",
 	"smwadmin": "Admin functions for Semantic MediaWiki",
-	"smw_smwadmin_setupsuccess": "The storage engine was set up successfully.",
+	"smw_smwadmin_setupsuccess": "The storage engine was set up.",
 	"smw_smwadmin_return": "Return to $1",
 	"smw_smwadmin_updatestarted": "A new update process for refreshing the semantic data was started.\nAll stored data will be rebuilt or repaired where needed.\nYou can follow the progress of the update on this special page.\n\nReturn to $1.",
 	"smw_smwadmin_updatenotstarted": "There is already an update process running.\nNot creating another one.\n\nReturn to $1.",
