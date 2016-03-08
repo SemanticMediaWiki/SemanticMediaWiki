@@ -3,7 +3,7 @@
 namespace SMW\DataValues\ValueFormatters;
 
 use SMWDataValue as DataValue;
-use SMWStringValue as StringValue;
+
 use SMWOutputs as Outputs;
 
 /**

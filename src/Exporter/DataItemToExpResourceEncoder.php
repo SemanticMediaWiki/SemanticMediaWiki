@@ -4,14 +4,12 @@ namespace SMW\Exporter;
 
 use SMW\Exporter\Element\ExpResource;
 use SMW\Exporter\Element\ExpNsResource;
-use SMW\Exporter\Element\ExpElement;
+
 use SMW\InMemoryPoolCache;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\Store;
 use SMW\DataValueFactory;
-use SMW\ApplicationFactory;
-use Onoi\Cache\Cache;
 
 use SMWExporter as Exporter;
 use SMWDataItem as DataItem;

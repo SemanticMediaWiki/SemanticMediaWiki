@@ -6,7 +6,7 @@ use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\DebugOutputFormatter;
-use SMW\SQLStore\TemporaryIdTableCreator;
+
 use SMW\DIWikiPage;
 use SMWSQLStore3 as SQLStore;
 use SMWQuery as Query;

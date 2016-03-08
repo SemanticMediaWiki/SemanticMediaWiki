@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use RuntimeException;
+
 use User;
 use Title;
 

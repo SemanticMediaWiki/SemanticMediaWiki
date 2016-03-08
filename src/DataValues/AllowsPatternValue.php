@@ -3,10 +3,9 @@
 namespace SMW\DataValues;
 
 use SMWStringValue as StringValue;
-use SMW\Message;
+
 use SMWDataValue as DataValue;
-use SMW\DIProperty;
-use SMW\ApplicationFactory;
+
 use SMW\Localizer;
 
 /**

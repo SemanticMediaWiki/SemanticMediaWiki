@@ -7,9 +7,7 @@ use SMW\SQLStore\CompositePropertyTableDiffIterator;
 use SMWSQLStore3;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\HashBuilder;
-use SMW\SemanticData;
-use SMW\ApplicationFactory;
+
 use SMW\EventHandler;
 
 /**

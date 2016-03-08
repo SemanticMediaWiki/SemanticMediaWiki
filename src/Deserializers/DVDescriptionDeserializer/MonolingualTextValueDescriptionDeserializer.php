@@ -8,7 +8,7 @@ use SMW\Query\Language\ValueDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
+
 use SMWDIBlob as DIBlob;
 use InvalidArgumentException;
 

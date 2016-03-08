@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use SMW\ApplicationFactory;
+
 
 /**
  * A multipurpose non-persistent static pool cache to keep selected items for

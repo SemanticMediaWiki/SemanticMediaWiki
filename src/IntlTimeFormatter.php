@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use DateTimeZone;
+
 use SMWDITime as DITime;
 use Language;
 

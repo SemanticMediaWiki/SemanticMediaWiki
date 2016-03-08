@@ -2,8 +2,8 @@
 
 namespace SMW;
 
-use RuntimeException;
-use Onoi\BlobStore\BlobStore;
+
+
 use SMW\Query\DescriptionFactory;
 use SMWDIBlob as DIBlob;
 use SMWQuery as Query;

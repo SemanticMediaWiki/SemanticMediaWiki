@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Jobs;
 
 use SMW\ApplicationFactory;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
-use SMW\DIWikiPage;
+
 use SMW\HashBuilder;
 use Title;
 use Hooks;

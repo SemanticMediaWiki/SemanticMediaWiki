@@ -5,7 +5,7 @@ namespace SMW\SQLStore\Lookup;
 use SMW\Store;
 use SMW\SQLStore\SQLStore;
 use SMW\Store\PropertyStatisticsStore;
-use SMW\SQLStore\Lookup\ListLookup;
+
 use SMW\DIProperty;
 use RuntimeException;
 

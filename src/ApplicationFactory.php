@@ -11,7 +11,7 @@ use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\TitleCreator;
 use SMW\Query\ProfileAnnotator\QueryProfileAnnotatorFactory;
 use SMW\Maintenance\MaintenanceFactory;
-use SMW\CacheFactory;
+
 use SMWQueryParser as QueryParser;
 use Title;
 use Onoi\CallbackContainer\CallbackLoader;

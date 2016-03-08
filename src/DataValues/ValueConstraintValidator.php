@@ -3,8 +3,6 @@
 namespace SMW\DataValues;
 
 use SMWDataValue as DataValue;
-use SMW\DataValueFactory;
-use SMW\DIProperty;
 
 /**
  * Validates whether a DataValue (property, value) is restricted by some constraints

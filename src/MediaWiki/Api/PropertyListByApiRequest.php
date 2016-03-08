@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Api;
 
 use SMW\Store;
 use SMW\DIProperty;
-use SMW\NamespaceUriFinder;
+
 use SMW\RequestOptions;
 use SMW\StringCondition;
 use SMW\PropertySpecificationLookup;

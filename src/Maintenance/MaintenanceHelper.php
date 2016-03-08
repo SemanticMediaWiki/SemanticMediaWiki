@@ -2,7 +2,7 @@
 
 namespace SMW\Maintenance;
 
-use RuntimeException;
+
 
 /**
  * @license GNU GPL v2+

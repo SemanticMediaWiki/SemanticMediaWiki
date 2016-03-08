@@ -3,9 +3,8 @@
 namespace SMW\DataValues\ValueParsers;
 
 use SMW\DataValues\MonolingualTextValue;
-use SMW\DataValueFactory;
+
 use SMW\Localizer;
-use SMWDataValue as DataValue;
 
 /**
  * @private
