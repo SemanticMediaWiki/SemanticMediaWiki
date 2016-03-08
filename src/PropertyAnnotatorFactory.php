@@ -10,8 +10,7 @@ use SMW\PropertyAnnotator\CategoryPropertyAnnotator;
 use SMW\PropertyAnnotator\MandatoryTypePropertyAnnotator;
 use SMW\PropertyAnnotator\DisplayTitlePropertyAnnotator;
 use SMw\MediaWiki\RedirectTargetFinder;
-use SMW\PageInfo;
-use SMW\SemanticData;
+
 use SMW\Store;
 
 /**

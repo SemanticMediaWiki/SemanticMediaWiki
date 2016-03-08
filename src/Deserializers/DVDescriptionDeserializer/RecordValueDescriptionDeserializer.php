@@ -7,7 +7,7 @@ use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
+
 use InvalidArgumentException;
 
 /**

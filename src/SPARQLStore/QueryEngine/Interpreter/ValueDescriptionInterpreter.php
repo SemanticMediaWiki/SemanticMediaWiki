@@ -2,7 +2,7 @@
 
 namespace SMW\SPARQLStore\QueryEngine\Interpreter;
 
-use SMW\DIProperty;
+
 use SMW\DIWikiPage;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;

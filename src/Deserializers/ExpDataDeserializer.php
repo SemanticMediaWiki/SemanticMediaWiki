@@ -3,11 +3,10 @@
 namespace SMW\Deserializers;
 
 use Deserializers\Deserializer;
-use SMW\Serializers\ExpDataSerializer;
+
 use SMW\Exporter\Element\ExpElement;
 use SMWExpData as ExpData;
 use OutOfBoundsException;
-use RuntimeException;
 
 /**
  * @license GNU GPL v2+

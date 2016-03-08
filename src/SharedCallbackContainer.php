@@ -10,7 +10,6 @@ use SMW\MediaWiki\TitleCreator;
 use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\Factbox\FactboxFactory;
-use Closure;
 
 /**
  * @license GNU GPL v2+

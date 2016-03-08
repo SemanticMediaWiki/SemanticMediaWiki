@@ -5,7 +5,7 @@ namespace SMW;
 use SMWDataItem;
 use SMWDIError;
 use SMWErrorValue as ErrorValue;
-use SMWPropertyValue;
+
 use SMWDataValue as DataValue;
 use SMW\DataValues\ValueConstraintValidator;
 

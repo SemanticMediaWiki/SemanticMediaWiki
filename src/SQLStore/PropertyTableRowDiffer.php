@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore;
 
-use SMW\MediaWiki\Database;
+
 use SMW\SemanticData;
 use SMW\Store;
 use SMW\DIProperty;

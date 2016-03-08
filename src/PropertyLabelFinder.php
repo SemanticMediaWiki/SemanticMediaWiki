@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use RuntimeException;
+
 
 /**
  * @license GNU GPL v2+

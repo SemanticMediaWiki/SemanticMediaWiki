@@ -3,8 +3,7 @@
 namespace SMW\Exporter;
 
 use SMW\Exporter\Element\ExpResource;
-use SMW\Exporter\Element\ExpNsResource;
-use SMW\Exporter\Element\ExpElement;
+
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element;
 use SMWExporter as Exporter;

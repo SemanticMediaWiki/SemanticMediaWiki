@@ -9,7 +9,7 @@ use SMW\Query\Language\ValueDescription;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\Conjunction;
 use InvalidArgumentException;
-use DateTime;
+
 use DateInterval;
 
 /**

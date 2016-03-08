@@ -3,7 +3,7 @@
 namespace SMW\SQLStore\Lookup;
 
 use SMW\InvalidPropertyException;
-use SMW\SQLStore\Lookup\ListLookup;
+
 use SMW\DIProperty;
 use SMW\Store;
 use SMWDIError as DIError;

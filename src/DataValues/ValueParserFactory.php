@@ -2,7 +2,7 @@
 
 namespace SMW\DataValues;
 
-use SMW\DataValues\ControlledVocabularyImportContentFetcher;
+
 use SMW\DataValues\ValueParsers\ImportValueParser;
 use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
 use SMW\DataValues\ValueParsers\AllowsPatternContentParser;

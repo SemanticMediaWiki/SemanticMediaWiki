@@ -3,7 +3,7 @@
 namespace SMW;
 
 use Onoi\EventDispatcher\EventListenerCollection;
-use Onoi\EventDispatcher\EventDispatcherFactory;
+
 use SMWExporter as Exporter;
 use SMW\Query\QueryComparator;
 

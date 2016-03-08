@@ -5,9 +5,7 @@ namespace SMW\SQLStore;
 use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMWDataItem;
-use SMWQuery;
-use SMWQueryParser;
+
 use SMWSQLStore3;
 use SMWWikiPageValue;
 use Title;

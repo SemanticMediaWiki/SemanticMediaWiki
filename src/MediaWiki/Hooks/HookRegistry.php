@@ -4,13 +4,13 @@ namespace SMW\MediaWiki\Hooks;
 
 use Parser;
 use Hooks;
-use RuntimeException;
+
 use SMW\ApplicationFactory;
 use SMW\EventHandler;
 use SMW\NamespaceManager;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\DeferredRequestDispatchManager;
-use SMW\PropertyHierarchyLookup;
+
 use Onoi\HttpRequest\HttpRequestFactory;
 use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\InfoParserFunction;

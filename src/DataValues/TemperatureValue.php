@@ -2,7 +2,7 @@
 
 namespace SMW\DataValues;
 
-use SMW\NumberFormatter;
+
 use SMWNumberValue as NumberValue;
 use SMWDINumber as DINumber;
 

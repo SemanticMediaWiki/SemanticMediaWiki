@@ -6,7 +6,7 @@ use LinkCache;
 use ParserOutput;
 use SMW\ApplicationFactory;
 use SMW\EventHandler;
-use SMW\DIProperty;
+
 use SMW\DIWikiPage;
 use Title;
 

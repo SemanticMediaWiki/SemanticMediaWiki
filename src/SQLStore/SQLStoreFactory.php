@@ -15,10 +15,9 @@ use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMW\SQLStore\QueryEngine\ConceptQueryResolver;
 use SMW\SQLStore\QueryEngine\QueryEngine;
 use SMW\SQLStore\QueryEngine\EngineOptions;
-use Onoi\Cache\Cache;
-use SMW\EventHandler;
+
 use Onoi\BlobStore\BlobStore;
-use SMW\SQLStore\ConceptCache;
+
 use SMW\ApplicationFactory;
 use SMW\CircularReferenceGuard;
 use SMWSQLStore3;

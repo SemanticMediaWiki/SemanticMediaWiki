@@ -3,8 +3,6 @@
 namespace SMW\SQLStore\Lookup;
 
 use Onoi\Cache\Cache;
-use SMW\SQLStore\Lookup\ListLookup;
-use SMW\DIWikiPage;
 
 /**
  * @license GNU GPL v2+
