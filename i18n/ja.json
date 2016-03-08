@@ -15,8 +15,7 @@
 			"SkyDaisy9",
 			"Mfuji",
 			"Sujiniku",
-			"Otokoume",
-			"Macofe"
+			"Otokoume"
 		]
 	},
 	"smw-desc": "ウィキを機械や人間にとってよりアクセスしやすいものにする ([https://www.semantic-mediawiki.org/wiki/Help:User_manual オンラインドキュメント])",
@@ -272,9 +271,9 @@
 	"smw_concept_header": "コンセプト「$1」のページ",
 	"smw_conceptarticlecount": "以下に $1 {{PLURAL:$1|件のページ}}を表示しています。",
 	"right-smw-admin": "アクセス管理作業 (Semantic MediaWiki)",
-	"group-smwadministrator": "管理者 (Semantic MediaWiki)",
-	"group-smwadministrator-member": "{{GENDER:$1|管理者 (Semantic MediaWiki)}}",
-	"grouppage-smwadministrator": "{{ns:project}}:管理者 (Semantic MediaWiki)",
+	"group-smwadministrator": "Semantic MediaWiki 管理者",
+	"group-smwadministrator-member": "{{GENDER:$1|管理者 (SMW)}}",
+	"grouppage-smwadministrator": "{{ns:project}}:SMW_管理者",
 	"action-smw-admin": "Semantic MediaWiki 管理作業へのアクセス",
 	"smw-sp-properties-header-label": "プロパティ一覧",
 	"smw-sp-admin-settings-button": "設定の一覧を生成",

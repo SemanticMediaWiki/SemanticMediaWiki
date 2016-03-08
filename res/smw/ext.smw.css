@@ -462,7 +462,7 @@ label.smw-form-checkbox {
 }
 
 /* Handling Long Words and URLs (Forcing Breaks, Hyphenation, Ellipsis */
-.smwb-value, .smwprops, .smwpropname, .smwtype_wpg, .smwtype_uri {
+.smwb-value, .smwprops, .smwpropname, .smwtype_wpg, .smwtype_uri, .smwb-ivalue, .smwb-title {
 	word-break: break-word;
 	word-wrap: break-word;
 	-webkit-hyphens: auto;
@@ -575,11 +575,30 @@ a.smw-ask-action-btn-lblue:hover {
 	text-decoration:none;
 }
 
-.smw-concept-page-indicator, .smw-property-page-indicator {
-	line-height: 2.5;
-}
-
 .smw-concept-page-indicator a.external.text, .smw-property-page-indicator a.external.text {
 	background-image:none;
 	padding-right:0;
+}
+
+.smw-property-page-indicator.usage-count, .smw-property-page-indicator.property-type {
+	width: 45px;
+	height: 20px;
+	border-radius: 5px;
+	font-size: 9px;
+	color: #111;
+	line-height: 20px;
+	text-align: center;
+	background: #fff;
+	background-color: #eee;
+	border: 1px solid #ddd;
+	float: right;
+	margin-top: 10px;
+}
+
+.smw-property-page-indicator.usage-count {
+	margin-right: 10px;
+}
+
+.skin-vector .smw-property-page-indicator.usage-count, .skin-vector .smw-property-page-indicator.property-type {
+	margin-top: 5px;
 }

@@ -468,6 +468,15 @@ class SMWSQLStore3Readers {
 
 		// ***  Now execute the query and read the results  ***//
 		$result = array();
+
+		if ( !$proptable->isFixedPropertyTable() ) {
+			if ( $where !== '' && strpos( SMW_SQL3_SMWIW_OUTDATED, $where ) === false ) {
+				$where .= " AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWDELETEIW );
+			} else {
+				$where .= " smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWDELETEIW );
+			}
+		}
+
 		$res = $db->select( $from, 'DISTINCT ' . $select,
 		                    $where . $this->store->getSQLConditions( $requestOptions, 'smw_sortkey', 'smw_sortkey', $where !== '' ),
 		                    __METHOD__, $this->store->getSQLOptions( $requestOptions, 'smw_sortkey' ) );
@@ -628,7 +637,6 @@ class SMWSQLStore3Readers {
 					// (select sortkey since it might be used in ordering (needed by Postgres))
 					$where . $this->store->getSQLConditions( $suboptions, 'smw_sortkey', 'smw_sortkey' ),
 					__METHOD__, $this->store->getSQLOptions( $suboptions, 'smw_sortkey' ) );
-
 				foreach ( $res as $row ) {
 					$result[] = new SMWDIProperty( $row->smw_title );
 				}
@@ -682,7 +690,9 @@ class SMWSQLStore3Readers {
 				$from = $db->tableName( SMWSql3SmwIds::TABLE_NAME ) . " INNER JOIN " . $db->tableName( $proptable->getName() ) . " AS t1 ON t1.p_id=smw_id";
 				$this->prepareValueQuery( $from, $where, $proptable, $value, 1 );
 
-				$res = $db->select( $from, 'DISTINCT smw_title,smw_sortkey',
+				$where .= " AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWDELETEIW );
+
+				$res = $db->select( $from, 'DISTINCT smw_title,smw_sortkey,smw_iw',
 						// select sortkey since it might be used in ordering (needed by Postgres)
 						$where . $this->store->getSQLConditions( $subOptions, 'smw_sortkey', 'smw_sortkey', $where !== '' ),
 						__METHOD__, $this->store->getSQLOptions( $subOptions, 'smw_sortkey' ) );

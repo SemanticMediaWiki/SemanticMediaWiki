@@ -47,10 +47,27 @@ class DataRebuilder {
 	 */
 	private $reporter;
 
+	/**
+	 * @var DistinctEntityDataRebuilder
+	 */
+	private $distinctEntityDataRebuilder;
+
+	/**
+	 * @var ExceptionFileLogger
+	 */
+	private $exceptionFileLogger;
+
+	/**
+	 * @var array
+	 */
+	private $exceptionLog = array();
+
+	/**
+	 * @var integer
+	 */
 	private $rebuildCount = 0;
 
 	private $delay = false;
-	private $pages = false;
 	private $canWriteToIdFile = false;
 	private $start = 1;
 	private $end = false;
@@ -72,6 +89,8 @@ class DataRebuilder {
 		$this->store = $store;
 		$this->titleCreator = $titleCreator;
 		$this->reporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
+		$this->distinctEntityDataRebuilder = new DistinctEntityDataRebuilder( $store, $titleCreator );
+		$this->exceptionFileLogger = new ExceptionFileLogger( 'rebuilddata' );
 	}
 
 	/**
@@ -99,10 +118,6 @@ class DataRebuilder {
 			$this->delay = intval( $options->get( 'd' ) ) * 1000; // convert milliseconds to microseconds
 		}
 
-		if ( $options->has( 'page' ) ) {
-			$this->pages = explode( '|', $options->get( 'page' ) );
-		}
-
 		if ( $options->has( 's' ) ) {
 			$this->start = max( 1, intval( $options->get( 's' ) ) );
 		} elseif ( $options->has( 'startidfile' ) ) {
@@ -123,6 +138,7 @@ class DataRebuilder {
 		}
 
 		$this->verbose = $options->has( 'v' );
+		$this->exceptionFileLogger->setOptions( $options );
 
 		$this->setFiltersFromOptions( $options );
 	}
@@ -134,14 +150,21 @@ class DataRebuilder {
 	 */
 	public function rebuild() {
 
-		$this->reportMessage( "\nRunning for storage: " . get_class( $this->store ) . "\n\n" );
+		$storeName = get_class( $this->store );
+
+		if ( strpos( $storeName, "\\") !== false ) {
+			$storeName = explode("\\", $storeName );
+			$storeName = end( $storeName );
+		}
+
+		$this->reportMessage( "\nRunning for storage: " . $storeName . "\n\n" );
 
 		if ( $this->options->has( 'f' ) ) {
 			$this->performFullDelete();
 		}
 
-		if ( $this->pages || $this->options->has( 'query' ) || $this->hasFilters() ) {
-			return $this->doRebuildPagesFor( "Refreshing selected pages!" );
+		if ( $this->options->has( 'page' ) || $this->options->has( 'query' ) || $this->hasFilters() || $this->options->has( 'redirects' ) ) {
+			return $this->doRebuildDistinctEntities();
 		}
 
 		return $this->doRebuildAll();
@@ -160,40 +183,35 @@ class DataRebuilder {
 		return $this->rebuildCount;
 	}
 
-	private function doRebuildPagesFor( $message ) {
+	private function doRebuildDistinctEntities() {
 
-		$this->reportMessage( $message  . "\n" );
+		$this->distinctEntityDataRebuilder->setOptions(
+			$this->options
+		);
 
-		$pages = $this->getPagesFromQuery();
-		$pages = $this->pages ? array_merge( (array)$this->pages, $pages ) : $pages;
-		$pages = $this->hasFilters() ? array_merge( $pages, $this->getPagesFromFilters() ) : $pages;
+		$this->distinctEntityDataRebuilder->setMessageReporter(
+			$this->reporter
+		);
 
-		$this->normalizeBulkOfPages( $pages );
-		$numPages = count( $pages );
+		$this->distinctEntityDataRebuilder->doRebuild();
 
-		foreach ( $pages as $page ) {
+		$this->rebuildCount = $this->distinctEntityDataRebuilder->getRebuildCount();
 
-			$this->rebuildCount++;
-			$percentage = round( ( $this->rebuildCount / $numPages ) * 100 ) ."%";
+		$this->exceptionFileLogger->doWriteExceptionLog(
+			$this->distinctEntityDataRebuilder->getExceptionLog()
+		);
 
-			$this->reportMessage( "($this->rebuildCount/$numPages $percentage) Processing page " . $page->getPrefixedDBkey() . " ...\n", $this->verbose );
-
-			$updatejob = new UpdateJob( $page, array(
-				'pm' => $this->options->has( 'shallow-update' ) ? SMW_UJ_PM_CLASTMDATE : false
-			) );
-
-			$updatejob->run();
-			$this->doPrintDotProgressIndicator( $this->verbose, $percentage );
+		if ( $this->options->has( 'ignore-exceptions' ) && $this->exceptionFileLogger->getExceptionCounter() > 0 ) {
+			$this->reportMessage( "\n" .
+				$this->exceptionFileLogger->getExceptionCounter() . " exceptions were ignored! (See " .
+				$this->exceptionFileLogger->getExceptionFile() . ").\n"
+			);
 		}
-
-		$this->reportMessage( "\n\n$this->rebuildCount pages refreshed.\n" );
 
 		return true;
 	}
 
 	private function doRebuildAll() {
-
-		$linkCache = LinkCache::singleton();
 
 		$byIdDataRebuildDispatcher = $this->store->refreshData(
 			$this->start,
@@ -211,12 +229,11 @@ class DataRebuilder {
 		$this->deleteMarkedSubjects( $byIdDataRebuildDispatcher );
 
 		if ( !$this->options->has( 'skip-properties' ) ) {
-			$this->filters[] = SMW_NS_PROPERTY;
-			$this->doRebuildPagesFor( "Rebuilding property pages." );
+			$this->options->set( 'p', true );
+			$this->doRebuildDistinctEntities();
 			$this->reportMessage( "\n" );
 		}
 
-		$this->rebuildCount = 0;
 		$this->store->clear();
 
 		$this->reportMessage( "Refreshing all semantic data in the database!\n---\n" .
@@ -228,36 +245,48 @@ class DataRebuilder {
 			" refresh). Continue this until all pages have been refreshed.\n---\n"
 		);
 
-
 		$total = $this->end && $this->end - $this->start > 0 ? $this->end - $this->start : $byIdDataRebuildDispatcher->getMaxId();
+		$id = $this->start;
 
 		$this->reportMessage(
-			" The displayed progress is an estimation and is self-adjusting \n" .
+			" The progress displayed is an estimation and is self-adjusting \n" .
 			" during the update process.\n---\n" );
 
-		$this->reportMessage( "Processing all IDs from $this->start to " . ( $this->end ? "$this->end" : $byIdDataRebuildDispatcher->getMaxId() ) . " ...\n" );
+		$this->reportMessage(
+			"Processing all IDs from $this->start to " .
+			( $this->end ? "$this->end" : $byIdDataRebuildDispatcher->getMaxId() ) . " ...\n\n"
+		);
 
-		$id = $this->start;
+		$this->rebuildCount = 0;
 
 		while ( ( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 ) ) {
 
-			$this->rebuildCount++;
 			$progress = '';
+			$text = '';
 
-			$byIdDataRebuildDispatcher->dispatchRebuildFor( $id );
+			$this->rebuildCount++;
+			$this->exceptionLog = array();
+
+			$this->doExecuteFor( $byIdDataRebuildDispatcher, $id );
 
 			if ( $this->rebuildCount % 60 === 0 ) {
 				$progress = round( ( $this->end - $this->start > 0 ? $this->rebuildCount / $total : $byIdDataRebuildDispatcher->getEstimatedProgress() ) * 100 ) . "%";
 			}
 
-			$this->reportMessage( "($this->rebuildCount/$total) Processing ID " . $id . " ...\n", $this->verbose );
+			foreach ( $byIdDataRebuildDispatcher->getDispatchedEntities() as $value ) {
 
-			if ( $this->delay !== false ) {
-				usleep( $this->delay );
-			}
+				$text = $this->getHumanReadableTextFrom( $id, $value );
 
-			if ( $this->rebuildCount % 100 === 0 ) { // every 100 pages only
-				$linkCache->clear(); // avoid memory leaks
+				$this->reportMessage(
+					sprintf( "%-16s%s\n", "($this->rebuildCount/$total)", "Finished processing ID " . $text ),
+					$this->options->has( 'v' )
+				);
+
+				if ( $this->options->has( 'ignore-exceptions' ) && isset( $this->exceptionLog[$id] ) ) {
+					$this->exceptionFileLogger->doWriteExceptionLog(
+						array( $id . ' ' . $text => $this->exceptionLog[$id] )
+					);
+				}
 			}
 
 			$this->doPrintDotProgressIndicator( $this->verbose, $progress );
@@ -266,7 +295,61 @@ class DataRebuilder {
 		$this->writeIdToFile( $id );
 		$this->reportMessage( "\n\n$this->rebuildCount IDs refreshed.\n" );
 
+		if ( $this->options->has( 'ignore-exceptions' ) && $this->exceptionFileLogger->getExceptionCounter() > 0 ) {
+			$this->reportMessage( "\n" .
+				$this->exceptionFileLogger->getExceptionCounter() . " exceptions were ignored! (See " .
+				$this->exceptionFileLogger->getExceptionFile() . ").\n"
+			);
+		}
+
 		return true;
+	}
+
+	private function doExecuteFor( $byIdDataRebuildDispatcher, &$id ) {
+
+		if ( !$this->options->has( 'ignore-exceptions' ) ) {
+			$byIdDataRebuildDispatcher->dispatchRebuildFor( $id );
+		} else {
+
+			try {
+				$byIdDataRebuildDispatcher->dispatchRebuildFor( $id );
+			} catch ( \Exception $e ) {
+				$this->exceptionLog[$id] = array(
+					'msg'   => $e->getMessage(),
+					'trace' => $e->getTraceAsString()
+				);
+			}
+		}
+
+		if ( $this->delay !== false ) {
+			usleep( $this->delay );
+		}
+
+		if ( $this->rebuildCount % 100 === 0 ) { // every 100 pages only
+			LinkCache::singleton()->clear(); // avoid memory leaks
+		}
+	}
+
+	private function getHumanReadableTextFrom( $id, array $entities ) {
+
+		if ( !$this->options->has( 'v' ) ) {
+			return '';
+		}
+
+		// Indicates whether this is a MW page (*) or SMW's object table
+		$text = $id . ( isset( $entities['t'] ) ? '*' : '' );
+
+		$entity = end( $entities );
+
+		if ( $entity instanceof \Title ) {
+			return $text . ' (' . $entity->getPrefixedDBKey() .')';
+		}
+
+		if ( $entity instanceof DIWikiPage ) {
+			return $text . ' (' . $entity->getHash() .')';
+		}
+
+		return $text . ' (' . ( is_string( $entity ) && $entity !== '' ? $entity : 'N/A' ) . ')';
 	}
 
 	private function performFullDelete() {
@@ -324,12 +407,12 @@ class DataRebuilder {
 			return null;
 		}
 
-		$this->reportMessage( "Removing marked for deletion entries.\n" );
+		$this->reportMessage( "Removing table entries (marked for deletion).\n" );
 		$matchesCount = count( $matches );
 
 		foreach ( $matches as $id ) {
 			$this->rebuildCount++;
-			$this->doPrintDotProgressIndicator( $this->verbose, round( $this->rebuildCount / $matchesCount * 100 ) . ' %' );
+			$this->doPrintDotProgressIndicator( false, round( $this->rebuildCount / $matchesCount * 100 ) . ' %' );
 			$byIdDataRebuildDispatcher->dispatchRebuildFor( $id );
 		}
 
@@ -359,78 +442,13 @@ class DataRebuilder {
 	private function setFiltersFromOptions( Options $options ) {
 		$this->filters = array();
 
-		if ( $options->has( 'c' ) ) {
+		if ( $options->has( 'categories' ) ) {
 			$this->filters[] = NS_CATEGORY;
 		}
 
 		if ( $options->has( 'p' ) ) {
 			$this->filters[] = SMW_NS_PROPERTY;
 		}
-	}
-
-	private function getPagesFromQuery() {
-
-		if ( !$this->options->has( 'query' ) ) {
-			return array();
-		}
-
-		$queryString = $this->options->get( 'query' );
-
-		// get number of pages and fix query limit
-		$query = SMWQueryProcessor::createQuery(
-			$queryString,
-			SMWQueryProcessor::getProcessedParams( array( 'format' => 'count' ) )
-		);
-
-		$result = $this->store->getQueryResult( $query );
-
-		// get pages and add them to the pages explicitly listed in the 'page' parameter
-		$query = SMWQueryProcessor::createQuery(
-			$queryString,
-			SMWQueryProcessor::getProcessedParams( array() )
-		);
-
-		$query->setUnboundLimit( $result instanceof \SMWQueryResult ? $result->getCountValue() : $result );
-
-		return $this->store->getQueryResult( $query )->getResults();
-	}
-
-	private function getPagesFromFilters() {
-
-		$pages = array();
-
-		$titleLookup = new TitleLookup( $this->store->getConnection( 'mw.db' ) );
-
-		foreach ( $this->filters as $namespace ) {
-			$pages = array_merge( $pages, $titleLookup->setNamespace( $namespace )->selectAll() );
-		}
-
-		return $pages;
-	}
-
-	private function normalizeBulkOfPages( &$pages ) {
-
-		$titleCache = array();
-
-		foreach ( $pages as $key => &$page ) {
-
-			if ( $page instanceof DIWikiPage ) {
-				$page = $page->getTitle();
-			}
-
-			if ( !$page instanceof Title ) {
-				$page = $this->titleCreator->createFromText( $page );
-			}
-
-			// Filter out pages with fragments (subobjects)
-			if ( isset( $titleCache[$page->getPrefixedDBkey()] ) ) {
-				unset( $pages[$key] );
-			} else{
-				$titleCache[$page->getPrefixedDBkey()] = true;
-			}
-		}
-
-		unset( $titleCache );
 	}
 
 	private function reportMessage( $message, $output = true ) {

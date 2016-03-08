@@ -2,14 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Tests\Utils\Mock\MockTitle;
-use SMW\Tests\Utils\Mock\MockSuperUser;
-
 use SMW\MediaWiki\Hooks\ArticleDelete;
-use SMW\ApplicationFactory;
-use SMW\Settings;
-
-use Title;
+use SMW\Tests\TestEnvironment;
+use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\ArticleDelete
@@ -22,19 +17,26 @@ use Title;
  */
 class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 
-	private $applicationFactory;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
-		$this->applicationFactory->getSettings()->set( 'smwgEnableUpdateJobs', false );
-		$this->applicationFactory->getSettings()->set( 'smwgDeleteSubjectWithAssociatesRefresh', false );
+		$this->testEnvironment = new TestEnvironment();
+
+		$this->testEnvironment->addConfiguration(
+			'smwgEnableUpdateJobs',
+			false
+		);
+
+		$this->testEnvironment->addConfiguration(
+			'smwgEnabledDeferredUpdate',
+			false
+		);
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -66,6 +68,24 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 
 	public function testProcess() {
 
+		$subject = DIWikiPage::newFromText( __METHOD__ );
+
+		$semanticData = $this->getMockBuilder( '\SMWSemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$semanticData->expects( $this->atLeastOnce() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( $subject ) );
+
+		$semanticData->expects( $this->atLeastOnce() )
+			->method( 'getProperties' )
+			->will( $this->returnValue( array() ) );
+
+		$semanticData->expects( $this->atLeastOnce() )
+			->method( 'getSubSemanticData' )
+			->will( $this->returnValue( array() ) );
+
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -73,13 +93,17 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->atLeastOnce() )
 			->method( 'deleteSubject' );
 
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $semanticData ) );
+
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$wikiPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( Title::newFromText( __METHOD__ ) ) );
+			->will( $this->returnValue( $subject->getTitle() ) );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -88,7 +112,7 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 		$reason = '';
 		$error = '';
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$instance = new ArticleDelete(
 			$wikiPage,
@@ -97,7 +121,9 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 			$error
 		);
 
-		$this->assertTrue( $instance->process() );
+		$this->assertTrue(
+			$instance->process()
+		);
 	}
 
 }

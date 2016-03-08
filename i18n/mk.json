@@ -195,7 +195,6 @@
 	"smw_ask_embed_instr": "За да го вметнете ова барање во вики-страницата меѓу редови, употребете го кодот подолу.",
 	"smw-ask-delete": "[Избриши]",
 	"smw-ask-sorting": "Подредување",
-	"smw-ask-search": "Пребарај",
 	"smw-ask-format-selection-help": "Подробен опис можете да прочитате на страницата за помош за $1.",
 	"searchbyproperty": "Пребарај по својство",
 	"smw_sbv_docu": "Пребарување на сите страници кои имаат дадено својство и вредност.",
@@ -254,7 +253,6 @@
 	"smw_adminlinks_datastructure": "Структура на податоците",
 	"smw_adminlinks_displayingdata": "Приказ на податоци",
 	"smw_adminlinks_inlinequerieshelp": "Помош со вметнати барања",
-	"smw-property-page-indicator-type-info": "{{PLURAL:$1|Корисник|Систем}}",
 	"smw-createproperty-isproperty": "Ова е својство од типот $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|Дозволената вредност за ова својство е|Дозволените вредности за ова својство се}}:",
 	"smw-paramdesc-category-delim": "Разделувачот",
@@ -340,7 +338,5 @@
 	"smw-pa-property-predefined_errc": "„$1“ е предодредено својство кое претставува [https://www.semantic-mediawiki.org/wiki/Help:Container пополнувач] за грешки што се јавуваат во врска со несоодветни вредносни прибелешки или неправилна обработка на вносот.",
 	"smw-pa-property-predefined_errt": "„$1“ е предодредено својство што содржи текстуален опис на грешка.",
 	"smw-subobject-parser-invalid-naming-scheme": "Кориснички-зададен подобјект користи неважечка шема за именување. Записот со точки во првите пет знаци ($1) е резервиран за исклучива употреба на додатоците.",
-	"smw-datavalue-record-invalid-property-declaration": "Определбата на записот го содржи својството „$1“, кое самото е зададено како тип на запис и не се допушта.",
-	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|секунда|секунди}}",
-	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|секунда|секунди}}"
+	"smw-datavalue-record-invalid-property-declaration": "Определбата на записот го содржи својството „$1“, кое самото е зададено како тип на запис и не се допушта."
 }

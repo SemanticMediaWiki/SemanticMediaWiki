@@ -8,7 +8,6 @@ use SMW\Tests\Utils\PageDeleter;
 
 use SMW\Tests\MwDBaseUnitTestCase;
 
-use SMW\ApplicationFactory;
 use SMW\ParserData;
 use SMW\DIWikiPage;
 use SMW\ContentParser;
@@ -23,11 +22,7 @@ use User;
 use UnexpectedValueException;
 
 /**
- *
- * @group SMW
- * @group SMWExtension
- * @group semantic-mediawiki-integration
- * @group mediawiki-database
+ * @group semantic-mediawiki
  * @group medium
  *
  * @license GNU GPL v2+
@@ -40,7 +35,6 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 	protected $destroyDatabaseTablesBeforeRun = true;
 
 	private $title = null;
-	private $applicationFactory;
 	private $mwHooksHandler;
 	private $semanticDataValidator;
 	private $pageDeleter;
@@ -48,20 +42,27 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
+		$this->testEnvironment->addConfiguration(
+			'smwgEnabledDeferredUpdate',
+			false
+		);
 
-		$this->mwHooksHandler
-			->deregisterListedHooks()
-			->invokeHooksFromRegistry();
+		$this->testEnvironment->addConfiguration(
+			'smwgPageSpecialProperties',
+			 array( '_MDAT' )
+		);
 
-		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
-		$this->pageDeleter = new PageDeleter();
+		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
-		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', array( '_MDAT' ) );
+		$this->mwHooksHandler->deregisterListedHooks();
+		$this->mwHooksHandler->invokeHooksFromRegistry();
+
+		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
+		$this->pageDeleter = $this->testEnvironment->getUtilityFactory()->newPageDeleter();
 	}
 
 	public function tearDown() {
+
 		$this->mwHooksHandler->restoreListedHooks();
 
 		if ( $this->title !== null ) {
@@ -98,6 +99,8 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 		$beforeAlterationRevId = $this->createSinglePageWithAnnotations();
 		$afterAlterationRevId  = $this->alterPageContentToCreateNewRevisionWithoutAnnotations();
 
+		$this->testEnvironment->executePendingDeferredUpdates();
+
 		$this->fetchRevisionAndRunLinksUpdater(
 			$expected['beforeAlterationRevId'],
 			$beforeAlterationRevId
@@ -112,12 +115,18 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 	protected function createSinglePageWithAnnotations() {
 		$pageCreator = new PageCreator();
 		$pageCreator->createPage( $this->title )->doEdit( 'Add user property Aa and Fuyu {{#set:|Aa=Bb|Fuyu=Natsu}}' );
+
+		$this->testEnvironment->executePendingDeferredUpdates();
+
 		return $pageCreator->getPage()->getRevision()->getId();
 	}
 
 	protected function alterPageContentToCreateNewRevisionWithoutAnnotations() {
 		$pageCreator = new PageCreator();
 		$pageCreator->createPage( $this->title )->doEdit( 'No annotations' );
+
+		$this->testEnvironment->executePendingDeferredUpdates();
+
 		return $pageCreator->getPage()->getRevision()->getId();
 	}
 
@@ -180,6 +189,8 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 	protected function runLinksUpdater( Title $title, $parserOutput ) {
 		$linksUpdate = new LinksUpdate( $title, $parserOutput );
 		$linksUpdate->doUpdate();
+
+		$this->testEnvironment->executePendingDeferredUpdates();
 	}
 
 	protected function retrieveAndLoadData( $revId = null ) {

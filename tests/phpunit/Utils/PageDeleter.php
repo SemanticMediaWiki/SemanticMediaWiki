@@ -3,7 +3,7 @@
 namespace SMW\Tests\Utils;
 
 use SMW\DIWikiPage;
-
+use SMW\Tests\TestEnvironment;
 use Title;
 use WikiPage;
 
@@ -17,11 +17,24 @@ use WikiPage;
 class PageDeleter {
 
 	/**
+	 * @var TestEnvironment
+	 */
+	private $testEnvironment;
+
+	/**
+	 * @since 2.4
+	 */
+	public function __construct() {
+		$this->testEnvironment = new TestEnvironment();
+	}
+
+	/**
 	 * @since 1.9.1
 	 */
 	public function deletePage( Title $title ) {
 		$page = new WikiPage( $title );
 		$page->doDeleteArticle( 'SMW system test: delete page' );
+		$this->testEnvironment->executePendingDeferredUpdates();
 	}
 
 	/**
@@ -47,6 +60,8 @@ class PageDeleter {
 
 			$this->deletePage( $page );
 		}
+
+		$this->testEnvironment->executePendingDeferredUpdates();
 	}
 
 }

@@ -181,7 +181,7 @@
 	"smw-concept-cache-text": "D'Konzept huet am Ganzen {{PLURAL:$1|eng Säit|$1 Säiten}} a gouf fir d'lescht den $2 ëm $3 aktualiséiert.",
 	"smw_concept_header": "Säite vum Konzept \"$1\"",
 	"smw_conceptarticlecount": "Déi $1 {{PLURAL:$1|Säit|Säite}} ginn hei drënner gewisen.",
-	"grouppage-smwadministrator": "{{ns:project}}:Administrateuren (Semantic MediaWiki)",
+	"grouppage-smwadministrator": "{{ns:project}}:SMW-Administrateuren",
 	"smw-sp-admin-settings-title": "Astellunge vun der Konfiguratioun",
 	"smw-sp-admin-settings-button": "Lëscht vun den Astellunge generéieren",
 	"smw-livepreview-loading": "Lueden...",

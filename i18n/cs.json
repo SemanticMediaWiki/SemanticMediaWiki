@@ -8,8 +8,7 @@
 			"Vks",
 			"XenoPheX",
 			"아라",
-			"Matěj Suchánek",
-			"Macofe"
+			"Matěj Suchánek"
 		]
 	},
 	"smw-desc": "Činíme vaší wiki přístupnější – pro stroje ''i'' lidi ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
@@ -229,7 +228,7 @@
 	"smw_concept_header": "Stran konceptu \"$1\"",
 	"smw_conceptarticlecount": "{{PLURAL:$1|zobrazena je|zobrazeny jsou|zobrazeno je}} $1 {{PLURAL:$1|stránka náležející|stránky náležející|stránek náležejících}} tomuto konceptu.",
 	"group-smwadministrator": "Správci Semantic MediaWiki",
-	"group-smwadministrator-member": "{{GENDER:$1|správce|správkyně|správce}} (Semantic MediaWiki)",
+	"group-smwadministrator-member": "{{GENDER:$1|správce|správkyně|správce}} (SMW)",
 	"smw-sp-properties-cache-info": "Uvedená data pocházejí z [https://www.semantic-mediawiki.org/wiki/Caching cache] a byla naposledy aktualizována $1.",
 	"smw-sp-properties-header-label": "Seznam vlastností",
 	"smw-livepreview-loading": "Nahrávám…",

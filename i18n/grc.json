@@ -2,8 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Crazymadlover",
-			"Omnipaedista",
-			"Gts-tg"
+			"Omnipaedista"
 		]
 	},
 	"smw_finallistconjunct": ", καὶ",
@@ -17,7 +16,6 @@
 	"smw_ask_defaultformat": "προκαθωρισμένη",
 	"smw_sbv_property": "Ἰδιότης:",
 	"smw_sbv_value": "Τιμή:",
-	"browse": "Νέμεσθαι βίκι",
 	"smw_browselink": "Ἲδιότηται πλοηγήσεως",
 	"smw_browse_go": "Ἱέναι",
 	"smw_inverse_label_default": "$1 τοῦ",

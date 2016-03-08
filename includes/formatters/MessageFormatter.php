@@ -206,17 +206,18 @@ class MessageFormatter {
 		foreach ( $messages as $msg ) {
 
 			if ( $msg instanceof \Message ) {
-				$newArray[] = $msg->inLanguage( $this->language )->text();
+				$text = $msg->inLanguage( $this->language )->text();
+				$newArray[md5( $text )] = $text;
 			} elseif ( (array)$msg === $msg ) {
 				foreach ( $this->doFormat( $msg ) as $m ) {
-					$newArray[] = $m;
+					$newArray[md5( $m )] = $m;
 				}
 			} elseif ( (string)$msg === $msg ) {
-				$newArray[] = $msg;
+				$newArray[md5( $msg )] = $msg;
 			}
 		}
 
-		return array_unique( $newArray );
+		return $newArray;
 	}
 
 	/**
@@ -232,9 +233,9 @@ class MessageFormatter {
 	protected function getString( $html = true ) {
 
 		if ( $this->escape ) {
-			$messages = array_map( 'htmlspecialchars', $this->doFormat( $this->messages ) );
+			$messages = array_map( 'htmlspecialchars', array_values( $this->doFormat( $this->messages ) ) );
 		} else {
-			$messages = $this->doFormat( $this->messages );
+			$messages = array_values( $this->doFormat( $this->messages ) );
 		}
 
 		if ( count( $messages ) == 1 ) {

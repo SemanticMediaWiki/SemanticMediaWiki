@@ -19,8 +19,7 @@
 			"FRacco",
 			"Giuseppe Forte",
 			"Alexmar983",
-			"Wikitoni",
-			"Macofe"
+			"Wikitoni"
 		]
 	},
 	"smw-desc": "Rende la tua wiki più accessibile - per le macchine ''e'' per gli umani ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentazione in linea])",
@@ -166,7 +165,7 @@
 	"smw_ask_embed_instr": "Per includere questa query in linea in una pagina wiki, usa il codice qui sotto.",
 	"smw-ask-delete": "[Cancella]",
 	"smw-ask-search": "Cerca",
-	"smw-ask-query-search-info": "La query <code><nowiki>$1</nowiki></code> è stata eseguita da <code>$2</code> in $3 {{PLURAL:$3|secondo|secondi}}.",
+	"smw-ask-query-search-info": "La query <code><nowiki>$1</nowiki></code> è stata eseguita da $2 in $3 s.",
 	"searchbyproperty": "Cerca per proprietà",
 	"smw_sbv_docu": "Cerca tutte le pagine che hanno proprietà e valore specificati.",
 	"smw_sbv_novalue": "Inserire un valore valido per la proprietà, o visualizzare tutti i valori di proprietà per \"$1\".",
@@ -239,14 +238,9 @@
 	"smw_unknowntype": "Il tipo di questa proprietà non è valido",
 	"smw_concept_header": "Pagine del concetto \"$1\"",
 	"smw_conceptarticlecount": "Mostro {{PLURAL:$1|una pagina|$1 pagine}}.",
-	"right-smw-patternedit": "Modifica accesso per mantenere le espressioni regolari e i modelli consentiti (Semantic MediaWiki)",
-	"action-smw-patternedit": "modificare le espressioni regolari utilizzate da Semantic MediaWiki",
-	"group-smwadministrator": "Amministratori (Semantic MediaWiki)",
-	"group-smwadministrator-member": "{{GENDER:$1|amministratore|amministratrice|amministratore/trice}} (Semantic MediaWiki)",
-	"grouppage-smwadministrator": "{{ns:project}}:Amministratori (Semantic MediaWiki)",
-	"group-smwcurator": "Curatori (Semantic MediaWiki)",
-	"group-smwcurator-member": "{{GENDER:$1|curatore|curatrice|curatore/trice}} (Semantic MediaWiki)",
-	"grouppage-smwcurator": "{{ns:project}}:Curatori (Semantic MediaWiki)",
+	"group-smwadministrator": "Amministratori Semantic MediaWiki",
+	"group-smwadministrator-member": "{{GENDER:$1|amministratore|amministratrice|amministratore/trice}} Semantic MediaWiki",
+	"grouppage-smwadministrator": "{{ns:project}}:Amministratori Semantic MediaWiki",
 	"smw-pa-property-predefined_ask": "\"$1\" è una proprietà predefinita che rappresenta meta informazioni (sotto forma di [https://www.semantic-mediawiki.org/wiki/Subobject sottoggetto]) su singole interrogazioni ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_asksi": "\"$1\" è una proprietà predefinita che contiene il numero delle condizioni usate in una interrogazione ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_askde": "\"$1\" è una proprietà predefinita che informa sulla profondità (valore numerico calcolato sulla base di sottoquery nidificate e catene di proprietà risolte) di un'interrogazione la quale durante la sua esecuzione è stata limitata dall'impostazione [https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth $smwgQMaxDepth] ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
@@ -285,11 +279,5 @@
 	"smw-pa-property-predefined_pdesc": "\"$1\" è una proprietà predefinita che consente di descrivere una proprietà in contesto di una lingua ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_list": "\"$1\" è una proprietà predefinita per definire un elenco di proprietà utilizzate con una proprietà tipo [[Special:Types/Record|record]] ed è fornito da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|secondo|secondi}}",
-	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|secondo|secondi}}",
-	"smw_allows_pattern": "Questa pagina dovrebbe contenere un elenco di riferimenti (seguito da [https://it.wikipedia.org/wiki/Espressione_regolare espressioni regolari]) e essere disponibile utilizzando la proprietà [[Property:Allows pattern|modello consentito]].",
-	"smw-datavalue-allows-pattern-mismatch": "\"$1\" è stato classificato come non valido dall'espressione regolare \"$2\".",
-	"smw-datavalue-allows-pattern-reference-unknown": "Il modello di riferimento \"$1\" non può corrispondere ad un elemento in [[MediaWiki:Smw allows pattern]].",
-	"smw-datavalue-feature-not-supported": "La funzionalità \"$1\" non è supportata o è stata disattivata su questo wiki.",
-	"smw-pa-property-predefined_pvap": "\"$1\" è una proprietà predefinita che può specificare un [[MediaWiki:Smw allows pattern|modello di riferimento]] da applicare alle corrispondenze delle [https://it.wikipedia.org/wiki/Espressione_regolare espressioni regolari] ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
-	"smw-pa-property-predefined_dtitle": "\"$1\" è una proprietà predefinita che può assegnare un titolo da visualizzare diverso ad un'entità ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]."
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|secondo|secondi}}"
 }

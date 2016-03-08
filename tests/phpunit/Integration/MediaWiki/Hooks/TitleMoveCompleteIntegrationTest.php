@@ -38,7 +38,7 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$utilityFactory = UtilityFactory::getInstance();
+		$utilityFactory = $this->testEnvironment->getUtilityFactory();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->queryResultValidator = $utilityFactory->newValidatorFactory()->newQueryResultValidator();
@@ -52,12 +52,17 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 		);
 
 		$this->pageCreator = $utilityFactory->newPageCreator();
+
+		$this->testEnvironment->addConfiguration(
+			'smwgEnabledDeferredUpdate',
+			false
+		);
 	}
 
 	protected function tearDown() {
 
 		$this->mwHooksHandler->restoreListedHooks();
-		$this->applicationFactory->clear();
+		$this->testEnvironment->tearDown();
 
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->toBeDeleted );
@@ -131,6 +136,8 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 			->getPage()
 			->getTitle()
 			->moveTo( $expectedNewTitle, false, 'test', false );
+
+		$this->testEnvironment->executePendingDeferredUpdates();
 
 		$this->assertNull(
 			WikiPage::factory( $title )->getRevision()

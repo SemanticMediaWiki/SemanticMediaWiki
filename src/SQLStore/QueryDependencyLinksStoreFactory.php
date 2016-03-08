@@ -5,7 +5,7 @@ namespace SMW\SQLStore;
 use SMW\ApplicationFactory;
 use SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver;
 use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
-use SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater;
+use SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater;
 use SMW\Store;
 
 /**
@@ -61,7 +61,7 @@ class QueryDependencyLinksStoreFactory {
 	public function newQueryDependencyLinksStore( $store ) {
 
 		$queryDependencyLinksStore = new QueryDependencyLinksStore(
-			new DeferredDependencyLinksUpdater( $store )
+			new DependencyLinksTableUpdater( $store )
 		);
 
 		$queryDependencyLinksStore->setEnabledState(

@@ -73,8 +73,10 @@ class UpdateDispatcherJob extends JobBase {
 
 			foreach ( array_chunk( $this->jobs, self::CHUNK_SIZE, true ) as $jobs ) {
 
+				$hash = md5( json_encode( $jobs ) );
+
 				$updateDispatcherJob = new self(
-					Title::newFromText( 'UpdateDispatcherJobForSecondaryRun' ),
+					Title::newFromText( 'ChunkedUpdateDispatcherJob-'. $hash ),
 					array( 'job-list' => $jobs )
 				);
 

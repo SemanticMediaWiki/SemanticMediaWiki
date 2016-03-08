@@ -26,9 +26,9 @@ class QueryDependencyLinksStore {
 	private $store = null;
 
 	/**
-	 * @var DeferredDependencyLinksUpdater
+	 * @var DependencyLinksTableUpdater
 	 */
-	private $deferredDependencyLinksUpdater = null;
+	private $dependencyLinksTableUpdater = null;
 
 	/**
 	 * @var Database
@@ -53,11 +53,11 @@ class QueryDependencyLinksStore {
 	/**
 	 * @since 2.3
 	 *
-	 * @param DeferredDependencyLinksUpdater $deferredDependencyLinksUpdater
+	 * @param DependencyLinksTableUpdater $dependencyLinksTableUpdater
 	 */
-	public function __construct( DeferredDependencyLinksUpdater $deferredDependencyLinksUpdater ) {
-		$this->deferredDependencyLinksUpdater = $deferredDependencyLinksUpdater;
-		$this->store = $this->deferredDependencyLinksUpdater->getStore();
+	public function __construct( DependencyLinksTableUpdater $dependencyLinksTableUpdater ) {
+		$this->dependencyLinksTableUpdater = $dependencyLinksTableUpdater;
+		$this->store = $this->dependencyLinksTableUpdater->getStore();
 		$this->connection = $this->store->getConnection( 'mw.db' );
 	}
 
@@ -109,19 +109,7 @@ class QueryDependencyLinksStore {
 				$deleteIdList[] = $delete['o_id'];
 			}
 
-			wfDebugLog( 'smw', __METHOD__ . ' remove ' . implode( ',', $deleteIdList ) . "\n" );
-
-			$this->connection->beginAtomicTransaction( __METHOD__ );
-
-			$this->connection->delete(
-				SMWSQLStore3::QUERY_LINKS_TABLE,
-				array(
-					's_id' => $deleteIdList
-				),
-				__METHOD__
-			);
-
-			$this->connection->endAtomicTransaction( __METHOD__ );
+			$this->dependencyLinksTableUpdater->deleteDependenciesFromList(  $deleteIdList );
 		}
 
 		// Dispatch any event registered earlier during the QueryResult processing
@@ -269,24 +257,33 @@ class QueryDependencyLinksStore {
 			return null;
 		}
 
-		$deferredDependencyLinksUpdater = $this->deferredDependencyLinksUpdater;
+		$dependencyLinksTableUpdater = $this->dependencyLinksTableUpdater;
+		$dependencyLinksTableUpdater->addUpdateList( $sid, $dependencyList );
+
+		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $dependencyLinksTableUpdater ) {
+			wfDebugLog( 'smw', 'DeferredCallableUpdate on QueryDependencyLinksStore' );
+			$dependencyLinksTableUpdater->doUpdate();
+		} );
+
+		$deferredCallableUpdate->enabledDeferredUpdate( true );
 
 		if ( $sid > 0 ) {
-			return $deferredDependencyLinksUpdater->addToDeferredUpdateList( $sid, $dependencyList );
+			return $deferredCallableUpdate->pushToDeferredUpdateList();
 		}
 
 		// SID == 0 means the storage update/process has not been finalized
 		// (new object hasn't been registered) hence an event is registered to
 		// update the list after the update process has been completed
-
-		EventHandler::getInstance()->addCallbackListener( 'deferred.embedded.query.dep.update', function() use ( $deferredDependencyLinksUpdater, $dependencyList, $subject, $hash ) {
+		EventHandler::getInstance()->addCallbackListener( 'deferred.embedded.query.dep.update', function() use ( $dependencyLinksTableUpdater, $dependencyList, $deferredCallableUpdate, $subject, $hash ) {
 
 			wfDebugLog( 'smw', __METHOD__ . ' deferred.embedded.query.dep.update for ' . $hash . "\n" );
 
-			$deferredDependencyLinksUpdater->addToDeferredUpdateList(
-				$deferredDependencyLinksUpdater->getIdForSubject( $subject, $hash ),
+			$dependencyLinksTableUpdater->addUpdateList(
+				$dependencyLinksTableUpdater->getIdForSubject( $subject, $hash ),
 				$dependencyList
 			);
+
+			$deferredCallableUpdate->pushToDeferredUpdateList();
 		} );
 	}
 
