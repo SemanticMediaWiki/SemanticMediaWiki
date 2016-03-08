@@ -18,11 +18,6 @@ use SMWDataValue as DataValue;
 class MonolingualTextValueParser implements ValueParser {
 
 	/**
-	 * @var MonolingualTextValue
-	 */
-	private $monolingualTextValue;
-
-	/**
 	 * @var array
 	 */
 	private $errors = array();

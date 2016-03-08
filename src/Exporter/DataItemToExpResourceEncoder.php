@@ -47,8 +47,6 @@ class DataItemToExpResourceEncoder {
 	 */
 	private $inMemoryPoolCache;
 
-	private $cache;
-
 	/**
 	 * @note Legacy setting expected to vanish with 3.0
 	 *
@@ -71,7 +69,7 @@ class DataItemToExpResourceEncoder {
 	 * @since 2.3
 	 */
 	public function reset() {
-			return $this->inMemoryPoolCache->resetPoolCacheFor( 'exporter.dataitem.resource.encoder' );
+		return $this->inMemoryPoolCache->resetPoolCacheFor( 'exporter.dataitem.resource.encoder' );
 	}
 
 	/**

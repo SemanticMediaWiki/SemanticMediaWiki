@@ -33,7 +33,6 @@ class Search extends SearchEngine {
 	private $fallbackSearch = null;
 
 	private $database = null;
-	private $settings = null;
 
 	private $queryCache = array();
 
