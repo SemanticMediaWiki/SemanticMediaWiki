@@ -254,7 +254,7 @@
 	"smw_result_results": "Résultats",
 	"smw_result_noresults": "Désolé, aucun résultat.",
 	"smwadmin": "Fonctions administrateur pour Semantic MediaWiki",
-	"smw_smwadmin_setupsuccess": "Le moteur de stockage a été installé avec succès.",
+	"smw_smwadmin_setupsuccess": "Le moteur de stockage a été mis en place.",
 	"smw_smwadmin_return": "Revenir vers $1",
 	"smw_smwadmin_updatestarted": "Un nouveau processus de rafraîchissement des données sémantiques a commencé.\nToutes les données stockées seront reconstruites, voire réparées si nécessaire.\nVous pouvez suivre la progression de la mise à jour sur cette page spéciale.\n\nRetour à $1.",
 	"smw_smwadmin_updatenotstarted": "Un processus de mise à jour est déjà en cours d’exécution.\nAucune action n'a été prise.\n\nRetour à $1.",

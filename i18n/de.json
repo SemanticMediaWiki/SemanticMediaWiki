@@ -241,7 +241,7 @@
 	"smw_result_results": "Ergebnisse",
 	"smw_result_noresults": "Es wurden keine Ergebnisse gefunden.",
 	"smwadmin": "Administration von Semantic MediaWiki",
-	"smw_smwadmin_setupsuccess": "Die Speichereinheit wurde erfolgreich eingerichtet.",
+	"smw_smwadmin_setupsuccess": "Die Datenbank wurde erfolgreich eingerichtet.",
 	"smw_smwadmin_return": "Zurück zur Seite $1.",
 	"smw_smwadmin_updatestarted": "Ein Aktualisierungsprozess zu Erneuerung der semantischen Daten wurde gestartet.\nAlle gespeicherten Daten werden, sofern notwendig, entweder neu erstellt oder repariert.\nDer Fortschritt der Aktualisierung kann auf dieser Spezialseite eingesehen werden.\n\nZurück zur Seite $1.",
 	"smw_smwadmin_updatenotstarted": "Es läuft bereits ein Aktualisierungsprozess.\nEs wird kein Neuer begonnen.\n\nZurück zur Seite  $1",

@@ -259,6 +259,7 @@
 	"smw_conceptarticlecount": "{{PLURAL:$1|Wyświetlona jest jedna strona |Wyświetlone zostały $1 strony|Wyświetlonych zostało $1 stron}}.",
 	"smw-qp-empty-data": "Żądane dane nie mogły zostać wyświetlone ze względu na niewystarczające kryteria wyboru.",
 	"right-smw-admin": "Dostęp do zarządzania (Semantyczna MediaWiki)",
+	"action-smw-patternedit": "edycji wyrażeń regularnych, używanych w Semantic MediaWiki",
 	"group-smwadministrator": "Administratorzy (Semantic MediaWiki)",
 	"group-smwadministrator-member": "{{GENDER:$1|administrator|administratorka}} (Semantic MediaWiki)",
 	"grouppage-smwadministrator": "{{ns:project}}:Administratorzy (Semantic MediaWiki)",
