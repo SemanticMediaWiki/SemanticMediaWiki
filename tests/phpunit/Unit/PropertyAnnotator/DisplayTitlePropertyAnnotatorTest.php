@@ -130,6 +130,17 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
+		#3 Strip tags
+		$provider[] = array(
+			'Bar',
+			'<span style="position: absolute; clip: rect(1px 1px 1px 1px); clip: rect(1px, 1px, 1px, 1px);">FOO</span>',
+			array(
+				'propertyCount'  => 1,
+				'propertyKeys'   => '_DTITLE',
+				'propertyValues' => array( 'FOO' ),
+			)
+		);
+
 		return $provider;
 	}
 

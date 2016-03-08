@@ -38,7 +38,7 @@ class DisplayTitlePropertyAnnotator extends PropertyAnnotatorDecorator {
 
 		$this->getSemanticData()->addPropertyObjectValue(
 			new DIProperty( '_DTITLE' ),
-			new DIBlob( $this->displayTitle )
+			new DIBlob( strip_tags(  $this->displayTitle ) )
 		);
 	}
 
