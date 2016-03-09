@@ -6,7 +6,7 @@ use ImportStreamSource;
 use ImportReporter;
 use WikiImporter;
 use RequestContext;
-
+use SMW\Tests\TestEnvironment;
 use RuntimeException;
 
 /**
@@ -26,8 +26,14 @@ class XmlImportRunner {
 	protected $result = null;
 	protected $verbose = false;
 
+	/**
+	 * @var TestEnvironment
+	 */
+	private $testEnvironment;
+
 	public function __construct( $file = null ) {
 		$this->file = $file;
+		$this->testEnvironment = new TestEnvironment();
 	}
 
 	/**
@@ -92,6 +98,8 @@ class XmlImportRunner {
 
 		$this->result = $reporter->close();
 		$this->importTime = microtime( true ) - $start;
+
+		$this->testEnvironment->executePendingDeferredUpdates();
 
 		return $this->result->isGood() && !$this->exception;
 	}

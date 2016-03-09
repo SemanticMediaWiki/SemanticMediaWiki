@@ -218,20 +218,28 @@ class DIProperty extends SMWDataItem {
 		if ( $this->isUserDefined() ) {
 			$dbkey = $this->m_key;
 		} else {
-			$dbkey = str_replace( ' ', '_', $this->getLabel() );
+			$dbkey = $this->getLabel();
 		}
 
-		// If an inverse marker is present just omit the marker so a normal
-		// property page link can be produced independent of its directionality
-		if ( $dbkey !== '' && $dbkey{0} == '-'  ) {
-			$dbkey = substr( $dbkey, 1 );
+		return $this->newDIWikiPage( $dbkey, $subobjectName );
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param string $subobjectName
+	 *
+	 * @return DIWikiPage|null
+	 */
+	public function getCanonicalDiWikiPage( $subobjectName = '' ) {
+
+		if ( $this->isUserDefined() ) {
+			$dbkey = $this->m_key;
+		} else {
+			$dbkey = PropertyRegistry::getInstance()->findCanonicalPropertyLabelById( $this->m_key );
 		}
 
-		try {
-			return new DIWikiPage( $dbkey, SMW_NS_PROPERTY, $this->interwiki, $subobjectName );
-		} catch ( DataItemException $e ) {
-			return null;
-		}
+		return $this->newDIWikiPage( $dbkey, $subobjectName );
 	}
 
 	/**
@@ -414,6 +422,21 @@ class DIProperty extends SMWDataItem {
 	 */
 	static public function registerPropertyAlias( $id, $label ) {
 		PropertyRegistry::getInstance()->registerPropertyAlias( $id, $label );
+	}
+
+	private function newDIWikiPage( $dbkey, $subobjectName ) {
+
+		// If an inverse marker is present just omit the marker so a normal
+		// property page link can be produced independent of its directionality
+		if ( $dbkey !== '' && $dbkey{0} == '-'  ) {
+			$dbkey = substr( $dbkey, 1 );
+		}
+
+		try {
+			return new DIWikiPage( str_replace( ' ', '_', $dbkey ), SMW_NS_PROPERTY, $this->interwiki, $subobjectName );
+		} catch ( DataItemException $e ) {
+			return null;
+		}
 	}
 
 }

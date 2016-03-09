@@ -44,6 +44,19 @@ class NamespaceManager {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @param string $languageCode
+	 *
+	 * @return array
+	 */
+	public static function getNamespacesByLanguageCode( $languageCode ) {
+		$instance = new self( $GLOBALS, $GLOBALS['smwgIP']  );
+		$instance->initContentLanguage( $languageCode );
+		return $GLOBALS['smwgContLang']->getNamespaces();
+	}
+
+	/**
 	 * @see Hooks:CanonicalNamespaces
 	 *
 	 * @since 1.9
@@ -111,6 +124,8 @@ class NamespaceManager {
 				define( $ns, $index );
 			};
 		}
+
+		$globalVars['wgExtraNamespaces'] = ( isset( $globalVars['wgExtraNamespaces'] ) ? $globalVars['wgExtraNamespaces'] : array() ) + self::getCanonicalNames();
 	}
 
 	protected function addNamespaceSettings() {
@@ -121,8 +136,8 @@ class NamespaceManager {
 		/**
 		 * @var SMWLanguage $smwgContLang
 		 */
-		$this->globalVars['wgExtraNamespaces'] = $this->globalVars['wgExtraNamespaces'] + $this->globalVars['smwgContLang']->getNamespaces();
-		$this->globalVars['wgNamespaceAliases'] = $this->globalVars['wgNamespaceAliases'] + $this->globalVars['smwgContLang']->getNamespaceAliases();
+		$this->globalVars['wgExtraNamespaces'] = $this->globalVars['smwgContLang']->getNamespaces() + $this->globalVars['wgExtraNamespaces'];
+		$this->globalVars['wgNamespaceAliases'] = array_flip( $this->globalVars['smwgContLang']->getNamespaces() ) + $this->globalVars['wgNamespaceAliases'];
 
 		// Support subpages only for talk pages by default
 		$this->globalVars['wgNamespacesWithSubpages'] = $this->globalVars['wgNamespacesWithSubpages'] + array(

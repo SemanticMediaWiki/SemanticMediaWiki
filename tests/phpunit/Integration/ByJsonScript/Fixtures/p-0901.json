@@ -91,6 +91,9 @@
 		}
 	},
 	"meta": {
+		"skip-on": {
+			"mw-master": "Skipping because redirect/move causes a failure in 1.27 (#1376) with the DeferredUpdate blocking succeeding tests"
+		},
 		"version": "0.1",
 		"is-incomplete": false,
 		"debug": false

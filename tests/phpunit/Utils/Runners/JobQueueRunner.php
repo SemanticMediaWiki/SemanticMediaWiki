@@ -4,7 +4,7 @@ namespace SMW\Tests\Utils\Runners;
 
 use SMW\DBConnectionProvider;
 use SMW\Tests\Utils\MwDBConnectionProvider;
-
+use SMW\Tests\TestEnvironment;
 use Job;
 use JobQueueGroup;
 
@@ -24,6 +24,11 @@ class JobQueueRunner {
 	protected $dbConnectionProvider = null;
 
 	/**
+	 * @var TestEnvironment
+	 */
+	private $testEnvironment;
+
+	/**
 	 * @since 1.9.2
 	 *
 	 * @param string|null $type
@@ -36,6 +41,8 @@ class JobQueueRunner {
 		if ( $this->dbConnectionProvider === null ) {
 			$this->dbConnectionProvider = new MwDBConnectionProvider();
 		}
+
+		$this->testEnvironment = new TestEnvironment();
 	}
 
 	/**
@@ -88,6 +95,8 @@ class JobQueueRunner {
 				'status' => $job->run()
 			);
 		}
+
+		$this->testEnvironment->executePendingDeferredUpdates();
 	}
 
 	/**

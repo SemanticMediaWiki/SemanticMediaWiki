@@ -101,6 +101,7 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 	}
 
 	public function testFileUploadForDummyTextFile() {
+		Localizer::getInstance()->clear();
 
 		$subject = new DIWikiPage( 'Foo.txt', NS_FILE );
 		$fileNS = Localizer::getInstance()->getNamespaceTextById( NS_FILE );

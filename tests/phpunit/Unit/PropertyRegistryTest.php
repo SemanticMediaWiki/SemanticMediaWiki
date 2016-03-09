@@ -5,6 +5,7 @@ namespace SMW\Tests;
 use SMW\DIProperty;
 use SMW\PropertyRegistry;
 use SMW\PropertyLabelFinder;
+use SMW\PropertyAliasFinder;
 use SMW\DataTypeRegistry;
 
 /**
@@ -43,11 +44,13 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyAliases = array();
+		$propertyAliasFinder = $this->getMockBuilder( '\SMW\PropertyAliasFinder' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->assertInstanceOf(
 			'\SMW\PropertyRegistry',
-			new PropertyRegistry( $datatypeRegistry, $propertyLabelFinder, $propertyAliases )
+			new PropertyRegistry( $datatypeRegistry, $propertyLabelFinder, $propertyAliasFinder )
 		);
 	}
 
@@ -86,7 +89,7 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyAliases = array( 'Has type' => '_TYPE' );
+		$propertyAliases = new PropertyAliasFinder( array( 'Has type' => '_TYPE' ) );
 
 		$instance = new PropertyRegistry(
 			$datatypeRegistry,
@@ -120,7 +123,7 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyAliases = array();
+		$propertyAliases = new PropertyAliasFinder();
 
 		$instance = new PropertyRegistry(
 			$datatypeRegistry,
@@ -171,7 +174,7 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyAliases = array();
+		$propertyAliases = new PropertyAliasFinder();
 
 		$instance = new PropertyRegistry(
 			$datatypeRegistry,
@@ -212,7 +215,7 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyLabelFinder = new PropertyLabelFinder( $store, array() );
 
-		$propertyAliases = array();
+		$propertyAliases = new PropertyAliasFinder();
 
 		$instance = new PropertyRegistry(
 			$datatypeRegistry,
@@ -266,7 +269,7 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyLabelFinder = new PropertyLabelFinder( $store, array() );
 
-		$propertyAliases = array();
+		$propertyAliases = new PropertyAliasFinder();
 
 		$instance = new PropertyRegistry(
 			$datatypeRegistry,
@@ -326,7 +329,7 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyLabelFinder = new PropertyLabelFinder( $store, array() );
 
-		$propertyAliases = array();
+		$propertyAliases = new PropertyAliasFinder();
 
 		$instance = new PropertyRegistry(
 			$datatypeRegistry,

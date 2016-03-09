@@ -119,6 +119,13 @@ class DataTypeRegistry {
 
 		if ( self::$instance === null ) {
 
+			// This is the earliest point we can reset the language in accordance with
+			// the user setting because any access to Language::getCode during the
+			// setup violates MW's internal state
+			NamespaceManager::getNamespacesByLanguageCode(
+				Localizer::getInstance()->getUserLanguage()->getCode()
+			);
+
 			self::$instance = new self(
 				$GLOBALS['smwgContLang']->getDatatypeLabels(),
 				$GLOBALS['smwgContLang']->getDatatypeAliases(),
@@ -310,6 +317,15 @@ class DataTypeRegistry {
 		}
 
 		return '';
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return array
+	 */
+	public function getCanonicalDatatypeLabels() {
+		return $this->canonicalLabels;
 	}
 
 	/**

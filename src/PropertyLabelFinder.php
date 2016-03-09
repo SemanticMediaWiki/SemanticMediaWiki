@@ -22,20 +22,26 @@ class PropertyLabelFinder {
 	 *
 	 * @var string[]
 	 */
-	private $languageIndependentPropertyLabels = array();
+	private $languageDependentPropertyLabels = array();
+
+	/**
+	 * Array with entries "property label" => "property id"
+	 *
+	 * @var string[]
+	 */
+	private $canonicalPropertyLabels = array();
 
 	/**
 	 * @since 2.2
 	 *
 	 * @param Store $store
-	 * @param array $languageIndependentPropertyLabels
+	 * @param array $languageDependentPropertyLabels
+	 * @param array $canonicalPropertyLabels
 	 */
-	public function __construct( Store $store, array $languageIndependentPropertyLabels ) {
+	public function __construct( Store $store, array $languageDependentPropertyLabels, array $canonicalPropertyLabels = array() ) {
 		$this->store = $store;
-
-		foreach ( $languageIndependentPropertyLabels as $id => $label ) {
-			$this->registerPropertyLabel( $id, $label );
-		}
+		$this->languageDependentPropertyLabels = $languageDependentPropertyLabels;
+		$this->canonicalPropertyLabels = $canonicalPropertyLabels;
 	}
 
 	/**
@@ -44,7 +50,18 @@ class PropertyLabelFinder {
 	 * @return array
 	 */
 	public function getKownPredefinedPropertyLabels() {
-		return $this->languageIndependentPropertyLabels;
+		return $this->languageDependentPropertyLabels;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param string $id
+	 *
+	 * @return string|boolean
+	 */
+	public function findCanonicalPropertyLabelById( $id ) {
+		return array_search( $id, $this->canonicalPropertyLabels );
 	}
 
 	/**
@@ -59,8 +76,8 @@ class PropertyLabelFinder {
 	 */
 	public function findPropertyLabelById( $id ) {
 
-		if ( array_key_exists( $id, $this->languageIndependentPropertyLabels ) ) {
-			return $this->languageIndependentPropertyLabels[$id];
+		if ( array_key_exists( $id, $this->languageDependentPropertyLabels ) ) {
+			return $this->languageDependentPropertyLabels[$id];
 		}
 
 		return '';
@@ -74,7 +91,7 @@ class PropertyLabelFinder {
 	 * @return string|false
 	 */
 	public function searchPropertyIdByLabel( $label ) {
-		return array_search( $label, $this->languageIndependentPropertyLabels );
+		return array_search( $label, $this->languageDependentPropertyLabels );
 	}
 
 	/**
@@ -83,8 +100,15 @@ class PropertyLabelFinder {
 	 * @param string $id
 	 * @param string $label
 	 */
-	public function registerPropertyLabel( $id, $label ) {
-		$this->languageIndependentPropertyLabels[$id] = $label;
+	public function registerPropertyLabel( $id, $label, $asCanonical = true ) {
+		$this->languageDependentPropertyLabels[$id] = $label;
+
+		// This is done so extensions can register the property id/label as being
+		// canonical in their representation while the alias may hold translated
+		// language depedendant matches
+		if ( $asCanonical ) {
+			$this->canonicalPropertyLabels[$label] = $id;
+		}
 	}
 
 }

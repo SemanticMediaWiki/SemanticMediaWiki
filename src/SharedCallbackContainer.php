@@ -159,7 +159,7 @@ class SharedCallbackContainer implements CallbackContainer {
 			// Uses the language object selected in user preferences. It is one
 			// of two global language objects
 			$propertySpecificationLookup->setLanguageCode(
-				Localizer::getUserLanguage()->getCode()
+				Localizer::getInstance()->getUserLanguage()->getCode()
 			);
 
 			return $propertySpecificationLookup;

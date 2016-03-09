@@ -33,6 +33,8 @@ if ( is_readable( $path = __DIR__ . '/../vendor/autoload.php' ) ) {
 	die( 'To run tests it is required that packages are installed using Composer.' );
 }
 
+print sprintf( "%-20s%s\n", "Site language:", $GLOBALS['wgLanguageCode'] );
+
 $dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
 print sprintf( "\n%-20s%s\n", "Execution time:", $dateTimeUtc->format( 'Y-m-d h:i' ) );
 

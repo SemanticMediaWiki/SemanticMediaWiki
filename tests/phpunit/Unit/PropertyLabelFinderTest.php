@@ -28,20 +28,23 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$languageIndependentPropertyLabels = array();
+		$canonicalPropertyLabels = array();
 
 		$this->assertInstanceOf(
 			'\SMW\PropertyLabelFinder',
-			new PropertyLabelFinder( $this->store, $languageIndependentPropertyLabels )
+			new PropertyLabelFinder( $this->store, $languageIndependentPropertyLabels, $canonicalPropertyLabels )
 		);
 	}
 
 	public function testPreLoadedPropertyLabel() {
 
 		$languageIndependentPropertyLabels = array( '_Foo' => 'Bar' );
+		$canonicalPropertyLabels = array();
 
 		$instance = new PropertyLabelFinder(
 			$this->store,
-			$languageIndependentPropertyLabels
+			$languageIndependentPropertyLabels,
+			$canonicalPropertyLabels
 		);
 
 		$this->assertEquals(
@@ -58,10 +61,12 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 	public function testRegisterPropertyLabel() {
 
 		$languageIndependentPropertyLabels = array();
+		$canonicalPropertyLabels = array();
 
 		$instance = new PropertyLabelFinder(
 			$this->store,
-			$languageIndependentPropertyLabels
+			$languageIndependentPropertyLabels,
+			$canonicalPropertyLabels
 		);
 
 		$instance->registerPropertyLabel(
@@ -83,15 +88,22 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 			'_Foo',
 			$instance->searchPropertyIdByLabel( 'Bar' )
 		);
+
+		$this->assertEquals(
+			'Bar',
+			$instance->findCanonicalPropertyLabelById( '_Foo' )
+		);
 	}
 
 	public function testSearchPropertyIdForNonRegisteredLabel() {
 
 		$languageIndependentPropertyLabels = array();
+		$canonicalPropertyLabels = array();
 
 		$instance = new PropertyLabelFinder(
 			$this->store,
-			$languageIndependentPropertyLabels
+			$languageIndependentPropertyLabels,
+			$canonicalPropertyLabels
 		);
 
 		$this->assertFalse(

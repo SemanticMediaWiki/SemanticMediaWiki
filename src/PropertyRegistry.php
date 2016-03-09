@@ -43,10 +43,9 @@ class PropertyRegistry {
 	private $datatypeLabels = array();
 
 	/**
-	 * Array with entries "property alias" => "property id"
-	 * @var string[]
+	 * @var PropertyAliasFinder
 	 */
-	private $propertyAliases = array();
+	private $propertyAliasFinder;
 
 	/**
 	 * @since 2.1
@@ -57,15 +56,24 @@ class PropertyRegistry {
 
 		if ( self::$instance === null ) {
 
+			// DataTypeRegistry, resets to the User language
+			$dataTypeRegistry = DataTypeRegistry::getInstance();
+
 			$propertyLabelFinder = new PropertyLabelFinder(
 				ApplicationFactory::getInstance()->getStore(),
-				$GLOBALS['smwgContLang']->getPropertyLabels()
+				$GLOBALS['smwgContLang']->getPropertyLabels(),
+				$GLOBALS['smwgContLang']->getCanonicalPropertyLabels()
+			);
+
+			$propertyAliasFinder = new PropertyAliasFinder(
+				$GLOBALS['smwgContLang']->getPropertyAliases(),
+				$GLOBALS['smwgContLang']->getCanonicalPropertyAliases()
 			);
 
 			self::$instance = new self(
-				DataTypeRegistry::getInstance(),
+				$dataTypeRegistry,
 				$propertyLabelFinder,
-				$GLOBALS['smwgContLang']->getPropertyAliases()
+				$propertyAliasFinder
 			);
 
 			self::$instance->registerPredefinedProperties( $GLOBALS['smwgUseCategoryHierarchy'] );
@@ -79,23 +87,19 @@ class PropertyRegistry {
 	 *
 	 * @param DataTypeRegistry $datatypeRegistry
 	 * @param PropertyLabelFinder $propertyLabelFinder
-	 * @param array $propertyAliases
+	 * @param PropertyAliasFinder $propertyAliasFinder
 	 */
-	public function __construct( DataTypeRegistry $datatypeRegistry, PropertyLabelFinder $propertyLabelFinder, array $propertyAliases ) {
+	public function __construct( DataTypeRegistry $datatypeRegistry, PropertyLabelFinder $propertyLabelFinder, PropertyAliasFinder $propertyAliasFinder ) {
 
 		$this->datatypeLabels = $datatypeRegistry->getKnownTypeLabels();
-		$datatypeAliases = $datatypeRegistry->getKnownTypeAliases();
 		$this->propertyLabelFinder = $propertyLabelFinder;
+		$this->propertyAliasFinder = $propertyAliasFinder;
 
 		foreach ( $this->datatypeLabels as $id => $label ) {
 			$this->registerPropertyLabel( $id, $label );
 		}
 
-		foreach ( $datatypeAliases as $alias => $id ) {
-			$this->registerPropertyAlias( $id, $alias );
-		}
-
-		foreach ( $propertyAliases as $alias => $id ) {
+		foreach ( $datatypeRegistry->getKnownTypeAliases() as $alias => $id ) {
 			$this->registerPropertyAlias( $id, $alias );
 		}
 	}
@@ -122,7 +126,7 @@ class PropertyRegistry {
 	 * @return array
 	 */
 	public function getKnownPropertyAliases() {
-		return $this->propertyAliases;
+		return $this->propertyAliasFinder->getKnownPropertyAliases();
 	}
 
 	/**
@@ -134,14 +138,14 @@ class PropertyRegistry {
 	 * @param string $id
 	 * @param string $typeId SMW type id
 	 * @param string|bool $label user label or false (internal property)
-	 * @param boolean $isVisibleToUser only used if label is given, see isShown()
-	 * @param boolean $isAnnotableByUser
+	 * @param boolean $isVisible only used if label is given, see isShown()
+	 * @param boolean $isAnnotable
 	 *
 	 * @note See self::isShown() for information it
 	 */
-	public function registerProperty( $id, $typeId, $label = false, $isVisibleToUser = false, $isAnnotableByUser = true ) {
+	public function registerProperty( $id, $typeId, $label = false, $isVisible = false, $isAnnotable = true ) {
 
-		$this->propertyTypes[$id] = array( $typeId, $isVisibleToUser, $isAnnotableByUser );
+		$this->propertyTypes[$id] = array( $typeId, $isVisible, $isAnnotable );
 
 		if ( $label !== false ) {
 			$this->registerPropertyLabel( $id, $label );
@@ -161,7 +165,7 @@ class PropertyRegistry {
 	 * alias.
 	 */
 	public function registerPropertyAlias( $id, $label ) {
-		$this->propertyAliases[$label] = $id;
+		$this->propertyAliasFinder->registerPropertyAlias( $id, $label );
 	}
 
 	/**
@@ -179,7 +183,30 @@ class PropertyRegistry {
 	 * @return string
 	 */
 	public function findPropertyLabelById( $id ) {
+
+		// This is a hack but there is no other good way to make it work without
+		// open a whole new can of worms
+		// '__' indicates predefined properties of extensions that contain alias
+		// and translated labels and if available we want the translated label
+		if ( ( substr( $id, 0, 2 ) === '__' ) &&
+			( $label = $this->propertyAliasFinder->findPropertyAliasById( $id ) ) ) {
+			return $label;
+		}
+
+		// core has dedicated files per language so the label is available over
+		// the invoked language
 		return $this->propertyLabelFinder->findPropertyLabelById( $id );
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param string $id
+	 *
+	 * @return string
+	 */
+	public function findCanonicalPropertyLabelById( $id ) {
+		return $this->propertyLabelFinder->findCanonicalPropertyLabelById( $id );
 	}
 
 	/**
@@ -231,8 +258,8 @@ class PropertyRegistry {
 
 		if ( $id !== false ) {
 			return $id;
-		} elseif ( $useAlias && array_key_exists( $label, $this->propertyAliases ) ) {
-			return $this->propertyAliases[$label];
+		} elseif ( $useAlias && $this->propertyAliasFinder->findPropertyIdByAlias( $label ) ) {
+			return $this->propertyAliasFinder->findPropertyIdByAlias( $label );
 		}
 
 		return false;
@@ -342,8 +369,8 @@ class PropertyRegistry {
 		\Hooks::run( 'SMW::Property::initProperties', array( $this ) );
 	}
 
-	private function registerPropertyLabel( $id, $label ) {
-		$this->propertyLabelFinder->registerPropertyLabel( $id, $label );
+	private function registerPropertyLabel( $id, $label, $asCanonical = true ) {
+		$this->propertyLabelFinder->registerPropertyLabel( $id, $label, $asCanonical );
 	}
 
 }
