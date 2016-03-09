@@ -38,6 +38,7 @@ Not a release yet.
 * #1410 Added support for `{{DISPLAYTITLE:title}}` caption using the [`Display title of`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Display_title_of) property
 * #1417 Added [`Allows pattern`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_pattern) property to define a value constraint using regular expressions and the required `smw-patternedit`right to add those expressions
 * #1433 Added `--ignore-exceptions` and `exception-log` options to `rebuildData.php` together with `-v` showing additional information about the update process
+* #1440 ...
 
 ## Bug fixes
 
