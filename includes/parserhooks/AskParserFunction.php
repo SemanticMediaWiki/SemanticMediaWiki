@@ -121,6 +121,12 @@ class AskParserFunction {
 
 		$this->parserData->pushSemanticDataToParserOutput();
 
+		// Allow to reparse in case the user language changed
+		// 1.23+
+		if ( method_exists( $this->parserData->getOutput(), 'recordOption' ) ) {
+			$this->parserData->getOutput()->recordOption( 'userlang' );
+		}
+
 		return $result;
 	}
 
