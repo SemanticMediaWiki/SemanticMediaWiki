@@ -3,8 +3,7 @@
 		"authors": [
 			"Toliño",
 			"Elisardojm",
-			"Banjo",
-			"Macofe"
+			"Banjo"
 		]
 	},
 	"smw-desc": "Fai o seu wiki máis accesible; para máquinas ''e'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en liña])",
@@ -251,8 +250,6 @@
 	"smw_adminlinks_datastructure": "Estrutura dos datos",
 	"smw_adminlinks_displayingdata": "Mostrando os datos",
 	"smw_adminlinks_inlinequerieshelp": "Axuda coas pescudas",
-	"smw-property-page-indicator-type-info": "{{PLURAL:$1|Usuario|Sistema}}",
-	"smw-concept-page-indicator-cache-count": "[https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count Número de caché]: {{PLURAL:$1|'''$1'''}} ($2)",
 	"smw-createproperty-isproperty": "Esta é unha propiedade de clase $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|O valor permitido|Os valores permitidos}} para esta propiedade {{PLURAL:$1|é|son}}:",
 	"smw-paramdesc-category-delim": "O delimitador",
@@ -280,14 +277,9 @@
 	"smw_conceptarticlecount": "A continuación {{PLURAL:$1|móstrase $1 páxina|móstranse $1 páxinas}}.",
 	"smw-qp-empty-data": "Os datos solicitados poderían non amosarse debido a algúns criterios de selección insuficientes.",
 	"right-smw-admin": "Acceder ás tarefas administrativas (Semantic MediaWiki)",
-	"right-smw-patternedit": "Acceso de edición para manter expresións regulares e patróns permitidos (MediaWiki Semántica)",
-	"action-smw-patternedit": "editar expresións regulares utilizadas por MediaWiki Semántica",
-	"group-smwadministrator": "Administradores (Semantic MediaWiki)",
-	"group-smwadministrator-member": "{{GENDER:$1|administrador|administradora}} (Semantic MediaWiki)",
-	"grouppage-smwadministrator": "{{ns:project}}:Administradores (Semantic MediaWiki)",
-	"group-smwcurator": "Conservadores (MediaWiki Semántica)",
-	"group-smwcurator-member": "{{GENDER:$1|conservador|conservadora}} (MediaWiki Semántica)",
-	"grouppage-smwcurator": "{{ns:project}}:Conservadores (MediaWiki Semántica)",
+	"group-smwadministrator": "Administradores de Semantic MediaWiki",
+	"group-smwadministrator-member": "{{GENDER:$1|administrador|administradora}} (SMW)",
+	"grouppage-smwadministrator": "{{ns:project}}:Administradores de SMW",
 	"action-smw-admin": "acceder ás tarefas administrativas de Semantic MediaWiki",
 	"smw-pa-property-predefined-default": "\"$1\" é unha propiedade predefinida.",
 	"smw-pa-property-predefined-common": "Esta propiedade está pre-implantada (tamén coñecida como [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propiedade especial]) e ven con privilexios administrativos adicionais pero só pode ser usada como calquera outra [https://www.semantic-mediawiki.org/wiki/Property user-defined propiedade].",
@@ -361,9 +353,5 @@
 	"smw-pa-property-predefined_pdesc": "\"$1\" é unha propiedade predefinida que permite describir unha propiedade en contexto dun idioma. É proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_list": "\"$1\" é unha propiedade predefinida para definir unha lista de propiedades usadas cunha propiedade de tipo [[Special:Types/Record|rexistro]]. É  proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|segundo|segundos}}",
-	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|segundo|segundos}}",
-	"smw-datavalue-allows-pattern-mismatch": "A expresión regular \"$2\" clasificou a \"$1\" como non válida.",
-	"smw-datavalue-feature-not-supported": "A funcionalidade \"$1\" non é compatible ou foi desactivada nesta wiki.",
-	"smw-pa-property-predefined_pvap": "\"$1\" é unha propiedade predefinida que pode especificar unha [[MediaWiki:Smw allows pattern|referenza de patrón]] para facer coincidir [https://es.wikipedia.org/wiki/Expresi%C3%B3n_regular expresións regulares]. É proporcionada pola [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
-	"smw-pa-property-predefined_dtitle": "\"$1\" é unha propiedade predefinida que pode asignar un título de visualización diferente a unha entidade. É proporcionada pola [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica]."
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|segundo|segundos}}"
 }

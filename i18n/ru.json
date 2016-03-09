@@ -17,8 +17,7 @@
 			"Tourorist",
 			"Mariya",
 			"Ядерный Трамвай",
-			"Iniquity",
-			"Macofe"
+			"Iniquity"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -288,9 +287,9 @@
 	"smw_conceptarticlecount": "Ниже {{PLURAL:$1|показана|показаны|показано}} $1 {{PLURAL:$1|страница|страницы|страниц}}.",
 	"smw-qp-empty-data": "Запрошенные данные не удаётся отобразить из-за недостаточности некоторых критериев отбора.",
 	"right-smw-admin": "доступ к администрированию (Semantic MediaWiki)",
-	"group-smwadministrator": "Администраторы (Semantic MediaWiki)",
-	"group-smwadministrator-member": "{{GENDER:$1|администратор (Semantic MediaWiki)}}",
-	"grouppage-smwadministrator": "{{ns:project}}:Администраторы (Semantic MediaWiki)",
+	"group-smwadministrator": "Администраторы Semantic MediaWiki",
+	"group-smwadministrator-member": "{{GENDER:$1|администратор (SMW)}}",
+	"grouppage-smwadministrator": "{{ns:project}}:Администраторы_SMW",
 	"action-smw-admin": "доступ к задачам администратора Semantic MediaWiki",
 	"smw-pa-property-predefined-default": "«$1» — это предопределённое свойство.",
 	"smw-pa-property-predefined_ask": "«$1» — это предопределённое свойство, которое представляет мета-данные (в форме [https://www.semantic-mediawiki.org/wiki/Subobject подобъекта]) об индивидуальных запросах и предоставляется [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",

@@ -2,21 +2,21 @@
 
 namespace SMW\Tests\Maintenance;
 
-use SMW\Maintenance\DataRebuilder;
+use SMW\Maintenance\DistinctEntityDataRebuilder;
 use SMW\Options;
 use Title;
 
 /**
- * @covers \SMW\Maintenance\DataRebuilder
+ * @covers \SMW\Maintenance\DistinctEntityDataRebuilder
  * @group semantic-mediawiki
  * @group medium
  *
  * @license GNU GPL v2+
- * @since 1.9.2
+ * @since 2.4
  *
  * @author mwjames
  */
-class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
+class DistinctEntityDataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 	protected $obLevel;
 	private $connectionManager;
@@ -67,154 +67,9 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Maintenance\DataRebuilder',
-			new DataRebuilder( $store, $titleCreator )
+			'\SMW\Maintenance\DistinctEntityDataRebuilder',
+			new DistinctEntityDataRebuilder( $store, $titleCreator )
 		);
-	}
-
-	/**
-	 * @depends testCanConstruct
-	 */
-	public function testRebuildAllWithoutOptions() {
-
-		$byIdDataRebuildDispatcher = $this->getMockBuilder( '\SMW\SQLStore\ByIdDataRebuildDispatcher' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$byIdDataRebuildDispatcher->expects( $this->once() )
-			->method( 'dispatchRebuildFor' )
-			->will( $this->returnCallback( array( $this, 'refreshDataOnMockCallback' ) ) );
-
-		$byIdDataRebuildDispatcher->expects( $this->any() )
-			->method( 'getMaxId' )
-			->will( $this->returnValue( 1000 ) );
-
-		$byIdDataRebuildDispatcher->expects( $this->any() )
-			->method( 'getDispatchedEntities' )
-			->will( $this->returnValue( array() ) );
-
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'refreshData' ) )
-			->getMockForAbstractClass();
-
-		$store->expects( $this->once() )
-			->method( 'refreshData' )
-			->will( $this->returnValue( $byIdDataRebuildDispatcher ) );
-
-		$store->setConnectionManager( $this->connectionManager );
-
-		$titleCreator = $this->getMockBuilder( '\SMW\MediaWiki\TitleCreator' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new DataRebuilder( $store, $titleCreator );
-
-		// Needs an end otherwise phpunit is caught up in an infinite loop
-		$instance->setOptions( new Options( array(
-			'e' => 1
-		) ) );
-
-		$this->assertTrue( $instance->rebuild() );
-	}
-
-	/**
-	 * @depends testCanConstruct
-	 */
-	public function testRebuildAllWithFullDelete() {
-
-		$byIdDataRebuildDispatcher = $this->getMockBuilder( '\SMW\SQLStore\ByIdDataRebuildDispatcher' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$byIdDataRebuildDispatcher->expects( $this->atLeastOnce() )
-			->method( 'dispatchRebuildFor' )
-			->will( $this->returnCallback( array( $this, 'refreshDataOnMockCallback' ) ) );
-
-		$byIdDataRebuildDispatcher->expects( $this->any() )
-			->method( 'getMaxId' )
-			->will( $this->returnValue( 1000 ) );
-
-		$byIdDataRebuildDispatcher->expects( $this->any() )
-			->method( 'getDispatchedEntities' )
-			->will( $this->returnValue( array() ) );
-
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->setMethods( array(
-				'refreshData',
-				'drop' ) )
-			->getMockForAbstractClass();
-
-		$store->expects( $this->once() )
-			->method( 'refreshData' )
-			->will( $this->returnValue( $byIdDataRebuildDispatcher ) );
-
-		$store->expects( $this->once() )
-			->method( 'drop' );
-
-		$store->setConnectionManager( $this->connectionManager );
-
-		$titleCreator = $this->getMockBuilder( '\SMW\MediaWiki\TitleCreator' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new DataRebuilder( $store, $titleCreator );
-
-		$instance->setOptions( new Options( array(
-			'e' => 1,
-			'f' => true,
-			'verbose' => false
-		) ) );
-
-		$this->assertTrue( $instance->rebuild() );
-	}
-
-	/**
-	 * @depends testCanConstruct
-	 */
-	public function testRebuildAllWithStopRangeOption() {
-
-		$byIdDataRebuildDispatcher = $this->getMockBuilder( '\SMW\SQLStore\ByIdDataRebuildDispatcher' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$byIdDataRebuildDispatcher->expects( $this->exactly( 6 ) )
-			->method( 'dispatchRebuildFor' )
-			->will( $this->returnCallback( array( $this, 'refreshDataOnMockCallback' ) ) );
-
-		$byIdDataRebuildDispatcher->expects( $this->any() )
-			->method( 'getMaxId' )
-			->will( $this->returnValue( 1000 ) );
-
-		$byIdDataRebuildDispatcher->expects( $this->any() )
-			->method( 'getDispatchedEntities' )
-			->will( $this->returnValue( array() ) );
-
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'refreshData' ) )
-			->getMockForAbstractClass();
-
-		$store->expects( $this->once() )
-			->method( 'refreshData' )
-			->will( $this->returnValue( $byIdDataRebuildDispatcher ) );
-
-		$store->setConnectionManager( $this->connectionManager );
-
-		$titleCreator = $this->getMockBuilder( '\SMW\MediaWiki\TitleCreator' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new DataRebuilder( $store, $titleCreator );
-
-		$instance->setOptions( new Options( array(
-			's' => 2,
-			'n' => 5,
-			'verbose' => false
-		) ) );
-
-		$this->assertTrue( $instance->rebuild() );
 	}
 
 	/**
@@ -256,13 +111,18 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new DataRebuilder( $store, $titleCreator );
+		$instance = new DistinctEntityDataRebuilder(
+			$store,
+			$titleCreator
+		);
 
 		$instance->setOptions( new Options( array(
 			'query' => '[[Category:Foo]]'
 		) ) );
 
-		$this->assertTrue( $instance->rebuild() );
+		$this->assertTrue(
+			$instance->doRebuild()
+		);
 	}
 
 	public function testRebuildSelectedPagesWithCategoryNamespaceFilter() {
@@ -295,13 +155,18 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new DataRebuilder( $store, $titleCreator );
+		$instance = new DistinctEntityDataRebuilder(
+			$store,
+			$titleCreator
+		);
 
 		$instance->setOptions( new Options( array(
 			'categories' => true
 		) ) );
 
-		$this->assertTrue( $instance->rebuild() );
+		$this->assertTrue(
+			$instance->doRebuild()
+		);
 	}
 
 	public function testRebuildSelectedPagesWithPropertyNamespaceFilter() {
@@ -335,13 +200,18 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new DataRebuilder( $store, $titleCreator );
+		$instance = new DistinctEntityDataRebuilder(
+			$store,
+			$titleCreator
+		);
 
 		$instance->setOptions( new Options( array(
 			'p' => true
 		) ) );
 
-		$this->assertTrue( $instance->rebuild() );
+		$this->assertTrue(
+			$instance->doRebuild()
+		);
 	}
 
 	public function testRebuildSelectedPagesWithPageOption() {
@@ -374,13 +244,18 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( 'Main page' ) )
 			->will( $this->returnValue( Title::newFromText( 'Main page' ) ) );
 
-		$instance = new DataRebuilder( $store, $titleCreator );
+		$instance = new DistinctEntityDataRebuilder(
+			$store,
+			$titleCreator
+		);
 
 		$instance->setOptions( new Options( array(
 			'page'  => 'Main page|Some other page|Help:Main page|Main page'
 		) ) );
 
-		$this->assertTrue( $instance->rebuild() );
+		$this->assertTrue(
+			$instance->doRebuild()
+		);
 
 		$this->assertEquals(
 			3,

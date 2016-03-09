@@ -221,4 +221,16 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructDeferredCallableUpdate() {
+
+		$callback = function() {
+			return null;
+		};
+
+		$this->assertInstanceOf(
+			'\SMW\DeferredCallableUpdate',
+			$this->applicationFactory->newDeferredCallableUpdate( $callback )
+		);
+	}
+
 }

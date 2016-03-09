@@ -291,7 +291,7 @@
 	"smw-qp-empty-data": "De gevraagde gegevens kunnen niet worden weergegeven vanwege enkele onvoldoende selectiecriteria.",
 	"right-smw-admin": "Semantic MediaWiki beheren",
 	"group-smwadministrator": "Beheerders voor Semantic MediaWiki",
-	"group-smwadministrator-member": "{{GENDER:$1|beheerder (Semantic MediaWiki)}}",
+	"group-smwadministrator-member": "{{GENDER:$1|beheerder (SMW)}}",
 	"grouppage-smwadministrator": "{{ns:project}}:Beheerders_voor_Semantic_MediaWiki",
 	"action-smw-admin": "Semantic MediaWiki te beheren",
 	"smw-pa-property-predefined-default": "\"$1\" is een vooraf gedefinieerde eigenschap.",

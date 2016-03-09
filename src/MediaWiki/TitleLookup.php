@@ -86,6 +86,30 @@ class TitleLookup {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @return Title[]
+	 */
+	public function selectAllRedirectPages() {
+
+		$tableName = 'redirect';
+		$fields = array( 'rd_namespace', 'rd_title' );
+		//$conditions = array( 'page_namespace' => $this->namespace );
+		$conditions = array();
+		$options = array( 'USE INDEX' => 'PRIMARY' );
+
+		$res = $this->connection->select(
+			$tableName,
+			$fields,
+			$conditions,
+			__METHOD__,
+			$options
+		);
+
+		return $this->makeTitlesFromSelection( $res );
+	}
+
+	/**
 	 * @since 1.9.2
 	 *
 	 * @param int $startId
@@ -166,6 +190,9 @@ class TitleLookup {
 		if ( $this->namespace === NS_CATEGORY ) {
 			$ns = NS_CATEGORY;
 			$title = $row->cat_title;
+		} elseif ( isset( $row->rd_namespace ) ) {
+			$ns =  $row->rd_namespace;
+			$title = $row->rd_title;
 		} else {
 			$ns =  $row->page_namespace;
 			$title = $row->page_title;

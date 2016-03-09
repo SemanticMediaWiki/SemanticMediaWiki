@@ -33,8 +33,7 @@
 			"Wladek92",
 			"VictorBrice",
 			"Orlodrim",
-			"Lbayle",
-			"Macofe"
+			"Lbayle"
 		]
 	},
 	"smw-desc": "Rendre le wiki plus accessible - pour les machines ''et'' les humains ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentation en ligne])",
@@ -225,7 +224,7 @@
 	"smw-ask-sorting": "Tri",
 	"smw-ask-search": "Rechercher",
 	"smw-ask-format-selection-help": "Pour une description détaillée, veuillez visiter la page d'aide $1.",
-	"smw-ask-query-search-info": "La requête <code><nowiki>$1</nowiki></code> a reçu une réponse de <code>$2</code> en $3 {{PLURAL:$3seconde|secondes}}.",
+	"smw-ask-query-search-info": "La requête <code><nowiki>$1</nowiki></code> a été répondue par $2 en $3 sec.",
 	"searchbyproperty": "Recherche par propriété",
 	"smw_sbv_docu": "Rechercher toutes les pages qui ont une propriété donnée avec une certaine valeur.",
 	"smw_sbv_novalue": "Entrez une valeur correcte pour le critère, ou consultez toutes les valeurs de critère pour \"$1\".",
@@ -312,14 +311,9 @@
 	"smw_conceptarticlecount": "Afficher ci-dessous $1 {{PLURAL:$1|page|pages}}.",
 	"smw-qp-empty-data": "Les données demandées n’ont pas pu être affichées à cause de critères de sélection insuffisants.",
 	"right-smw-admin": "Tâches d’administration des accès (MédiaWiki Sémantique)",
-	"right-smw-patternedit": "Modifier l’accès pour gérer les expressions régulières et les motifs autorisés (Médiawiki Sémantique)",
-	"action-smw-patternedit": "modifier les expressions régulières utilisées par Médiawiki Sémantique",
-	"group-smwadministrator": "Administrateurs (MédiaWiki Sémantique)",
-	"group-smwadministrator-member": "{{GENDER:$1|administrateur|administratrice}} (MédiaWiki Sémantique)",
-	"grouppage-smwadministrator": "{{ns:project}}:Administrators (MédiaWiki Sémantique)",
-	"group-smwcurator": "Conservateurs (Médiawiki Sémantique)",
-	"group-smwcurator-member": "{{GENDER:$1|conservateur|conservatrice}} (Médiawiki Sémantique)",
-	"grouppage-smwcurator": "{{ns:project}}:Curators (Semantic MediaWiki)",
+	"group-smwadministrator": "Administrateurs de MédiaWiki Sémantique",
+	"group-smwadministrator-member": "{{GENDER:$1|administrateur(SMW)|administratrice (SMW)}}",
+	"grouppage-smwadministrator": "{{ns:project}}:SMW_administrators",
 	"action-smw-admin": "tâches d’administration des accès à MédiaWiki Sémantique",
 	"smw-pa-property-predefined-default": "\"$1\" est une propriété prédéfinie.",
 	"smw-pa-property-predefined-common": "Cette propriété est pré-déployée (appelée aussi [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propriété spéciale]) et est accompagnée de droits d’administration supplémentaires, mais peut être utilisée exactement comme une autre [https://www.semantic-mediawiki.org/wiki/Property propriété définie par l’utilisateur].",
@@ -399,11 +393,5 @@
 	"smw-limitreport-intext-parsertime": "[SMW] Temps de l’analyseur annoté dans le contenu",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|seconde|secondes}}",
 	"smw-limitreport-pagepurge-storeupdatetime": "[SMW] Temps de mise à jour de l’enregistrement (sur une purge de page)",
-	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|seconde|secondes}}",
-	"smw_allows_pattern": "Cette page est censée contenir une liste des références (suivie par [https://en.wikipedia.org/wiki/Regular_expression des expressions régulières]) et être mise à disposition via la propriété [[Property:Allows pattern|Permettre les motifs]].",
-	"smw-datavalue-allows-pattern-mismatch": "« $1 » a été classé comme non valide par l’expression régulière « $2 ».",
-	"smw-datavalue-allows-pattern-reference-unknown": "La référence de motif « $1 » ne peut être mise en correspondance avec aucune entrée dans [[MediaWiki:Smw allows pattern]].",
-	"smw-datavalue-feature-not-supported": "La fonctionnalité « $1 » n’est pas supportée ou a été désactivée sur ce wiki.",
-	"smw-pa-property-predefined_pvap": "« $1 » est une propriété prédéfinie qui peut spécifier une [[MediaWiki:Smw allows pattern|référence de motif]] pour appliquer [https://en.wikipedia.org/wiki/Regular_expression une expression régulière] correspondante, et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Médiawiki Sémantique].",
-	"smw-pa-property-predefined_dtitle": "« $1 » est une propriété prédéfinie qui peut affecter un titre d’affichage distinct à une entité, et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Médiawiki Sémantique]."
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|seconde|secondes}}"
 }

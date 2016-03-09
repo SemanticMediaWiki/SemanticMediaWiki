@@ -3,8 +3,7 @@
 namespace SMW\Test\MediaWiki\Hooks;
 
 use SMW\MediaWiki\Hooks\LinksUpdateConstructed;
-use SMW\ApplicationFactory;
-
+use SMW\Tests\TestEnvironment;
 use ParserOutput;
 use LinksUpdate;
 use Title;
@@ -20,31 +19,37 @@ use Title;
  */
 class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 
-	private $applicationFactory;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->testEnvironment = new TestEnvironment();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
 
+		$title = Title::newFromText( __METHOD__ );
+		$title->resetArticleID( 10001 );
+
 		$linksUpdate = $this->getMockBuilder( '\LinksUpdate' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$linksUpdate->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Hooks\LinksUpdateConstructed',
@@ -54,8 +59,29 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 
 	public function testProcess() {
 
-		$title = Title::newFromText( __METHOD__ );
-		$title->resetArticleID( rand( 1, 1000 ) );
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getArticleID' )
+			->will( $this->returnValue( 11001 ) );
+
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( __METHOD__ ) );
+
+		$title->expects( $this->any() )
+			->method( 'getPrefixedText' )
+			->will( $this->returnValue( __METHOD__ ) );
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$title->expects( $this->any() )
+			->method( 'isSpecialPage' )
+			->will( $this->returnValue( false ) );
 
 		$parserOutput = new ParserOutput();
 		$parserOutput->setTitleText( $title->getPrefixedText() );
@@ -68,16 +94,22 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->atLeastOnce() )
 			->method( 'updateData' );
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$instance = new LinksUpdateConstructed( new LinksUpdate( $title, $parserOutput ) );
+		$instance = new LinksUpdateConstructed(
+			new LinksUpdate( $title, $parserOutput )
+		);
 
-		$this->assertTrue( $instance->process() );
+		$instance->disableDeferredUpdate();
+
+		$this->assertTrue(
+			$instance->process()
+		);
 	}
 
 	public function testNoExtraParsingForNotEnabledNamespace() {
 
-		$this->applicationFactory->getSettings()->set(
+		$this->testEnvironment->addConfiguration(
 			'smwgNamespacesWithSemanticLinks',
 			array( NS_HELP => false )
 		);
@@ -95,7 +127,7 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 		$parserData->expects( $this->once() )
 			->method( 'updateStore' );
 
-		$this->applicationFactory->registerObject( 'ParserData', $parserData );
+		$this->testEnvironment->registerObject( 'ParserData', $parserData );
 
 		$linksUpdate = $this->getMockBuilder( '\LinksUpdate' )
 			->disableOriginalConstructor()

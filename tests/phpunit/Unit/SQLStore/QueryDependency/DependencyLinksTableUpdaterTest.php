@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\SQLStore\QueryDependency;
 
-use SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater;
-use SMW\ApplicationFactory;
+use SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater;
+use SMW\Tests\TestEnvironment;
 use SMW\SQLStore\SQLStore;
 use SMW\DIWikiPage;
 
 /**
- * @covers \SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater
+ * @covers \SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,25 +16,24 @@ use SMW\DIWikiPage;
  *
  * @author mwjames
  */
-class DeferredDependencyLinksUpdaterTest extends \PHPUnit_Framework_TestCase {
+class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 
-	private $applicationFactory;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->testEnvironment = new TestEnvironment();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -45,12 +44,12 @@ class DeferredDependencyLinksUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater',
-			new DeferredDependencyLinksUpdater( $store )
+			'\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater',
+			new DependencyLinksTableUpdater( $store )
 		);
 	}
 
-	public function testAddToDeferredUpdateList() {
+	public function testaddUpdateList() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( array( 'getSMWPageID' ) )
@@ -100,14 +99,13 @@ class DeferredDependencyLinksUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
 
-		$instance = new DeferredDependencyLinksUpdater(
+		$instance = new DependencyLinksTableUpdater(
 			$store
 		);
 
-		$instance->disableDeferredUpdate();
 		$instance->clear();
 
-		$instance->addToDeferredUpdateList( 42, array( DIWikiPage::newFromText( 'Bar' ) ) );
+		$instance->addUpdateList( 42, array( DIWikiPage::newFromText( 'Bar' ) ) );
 		$instance->doUpdate();
 	}
 
@@ -165,14 +163,13 @@ class DeferredDependencyLinksUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
 
-		$instance = new DeferredDependencyLinksUpdater(
+		$instance = new DependencyLinksTableUpdater(
 			$store
 		);
 
-		$instance->disableDeferredUpdate();
 		$instance->clear();
 
-		$instance->addToDeferredUpdateList( 42, array( DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY ) ) );
+		$instance->addUpdateList( 42, array( DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY ) ) );
 		$instance->doUpdate();
 	}
 

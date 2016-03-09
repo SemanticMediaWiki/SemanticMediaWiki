@@ -3,9 +3,7 @@
 namespace SMW\Tests\MediaWiki\Jobs;
 
 use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\Settings;
-use SMW\ApplicationFactory;
-
+use SMW\Tests\TestEnvironment;
 use Title;
 
 /**
@@ -19,29 +17,27 @@ use Title;
  */
 class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
-	private $applicationFactory;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
-
-		$settings = Settings::newFromArray( array(
+		$this->testEnvironment = new TestEnvironment( array(
 			'smwgCacheType'        => 'hash',
-			'smwgEnableUpdateJobs' => false
+			'smwgEnableUpdateJobs' => false,
+			'smwgEnabledDeferredUpdate' => false,
+			'smwgDVFeatures' => ''
 		) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->applicationFactory->registerObject( 'Store', $store );
-		$this->applicationFactory->registerObject( 'Settings', $settings );
+		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -98,7 +94,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'exists' )
 			->will( $this->returnValue( false ) );
 
-		$this->applicationFactory->registerObject( 'ContentParser', null );
+		$this->testEnvironment->registerObject( 'ContentParser', null );
 
 		$instance = new UpdateJob( $title );
 		$instance->setJobQueueEnabledState( false );
@@ -124,7 +120,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOutput' )
 			->will( $this->returnValue( null ) );
 
-		$this->applicationFactory->registerObject( 'ContentParser', $contentParser );
+		$this->testEnvironment->registerObject( 'ContentParser', $contentParser );
 
 		$instance = new UpdateJob( $title );
 		$instance->setJobQueueEnabledState( false );
@@ -158,7 +154,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOutput' )
 			->will( $this->returnValue( new \ParserOutput ) );
 
-		$this->applicationFactory->registerObject( 'ContentParser', $contentParser );
+		$this->testEnvironment->registerObject( 'ContentParser', $contentParser );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -168,7 +164,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->once() )
 			->method( 'updateData' );
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$instance = new UpdateJob( $title );
 		$instance->setJobQueueEnabledState( false );
@@ -202,7 +198,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOutput' )
 			->will( $this->returnValue( new \ParserOutput ) );
 
-		$this->applicationFactory->registerObject( 'ContentParser', $contentParser );
+		$this->testEnvironment->registerObject( 'ContentParser', $contentParser );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -217,7 +213,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getWikiPageLastModifiedTimestamp' )
 			->will( $this->returnValue( 0 ) );
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$instance = new UpdateJob( $title, array( 'pm' => SMW_UJ_PM_CLASTMDATE ) );
 		$instance->setJobQueueEnabledState( false );

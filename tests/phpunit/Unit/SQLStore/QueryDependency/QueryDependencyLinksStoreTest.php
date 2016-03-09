@@ -41,17 +41,17 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$deferredDependencyLinksUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$deferredDependencyLinksUpdater->expects( $this->any() )
+		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
 			->will( $this->returnValue( $this->store ) );
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryDependency\QueryDependencyLinksStore',
-			new QueryDependencyLinksStore( $deferredDependencyLinksUpdater )
+			new QueryDependencyLinksStore( $dependencyLinksTableUpdater )
 		);
 	}
 
@@ -73,16 +73,16 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$deferredDependencyLinksUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$deferredDependencyLinksUpdater->expects( $this->any() )
+		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
 			->will( $this->returnValue( $store ) );
 
 		$instance = new QueryDependencyLinksStore(
-			$deferredDependencyLinksUpdater
+			$dependencyLinksTableUpdater
 		);
 
 		$this->assertTrue(
@@ -108,16 +108,16 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$deferredDependencyLinksUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$deferredDependencyLinksUpdater->expects( $this->any() )
+		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
 			->will( $this->returnValue( $store ) );
 
 		$instance = new QueryDependencyLinksStore(
-			$deferredDependencyLinksUpdater
+			$dependencyLinksTableUpdater
 		);
 
 		$instance->setEnabledState( false );
@@ -164,16 +164,16 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOrderedDiffByTable' )
 			->will( $this->returnValue( $tableDiff ) );
 
-		$deferredDependencyLinksUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$deferredDependencyLinksUpdater->expects( $this->any() )
+		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
 			->will( $this->returnValue( $store ) );
 
 		$instance = new QueryDependencyLinksStore(
-			$deferredDependencyLinksUpdater
+			$dependencyLinksTableUpdater
 		);
 
 		$this->assertEquals(
@@ -192,16 +192,16 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$deferredDependencyLinksUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$deferredDependencyLinksUpdater->expects( $this->any() )
+		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
 			->will( $this->returnValue( $store ) );
 
 		$instance = new QueryDependencyLinksStore(
-			$deferredDependencyLinksUpdater
+			$dependencyLinksTableUpdater
 		);
 
 		$instance->setEnabledState( false );
@@ -254,16 +254,16 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
 
-		$deferredDependencyLinksUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$deferredDependencyLinksUpdater->expects( $this->any() )
+		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
 			->will( $this->returnValue( $store ) );
 
 		$instance = new QueryDependencyLinksStore(
-			$deferredDependencyLinksUpdater
+			$dependencyLinksTableUpdater
 		);
 
 		$instance->findPartialEmbeddedQueryTargetLinksHashListFor( array( 42 ), 1, 200 );
@@ -275,16 +275,16 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$deferredDependencyLinksUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$deferredDependencyLinksUpdater->expects( $this->any() )
+		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
 			->will( $this->returnValue( $store ) );
 
 		$instance = new QueryDependencyLinksStore(
-			$deferredDependencyLinksUpdater
+			$dependencyLinksTableUpdater
 		);
 
 		$instance->setEnabledState( false );
@@ -317,16 +317,16 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
 
-		$deferredDependencyLinksUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$deferredDependencyLinksUpdater->expects( $this->any() )
+		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
 			->will( $this->returnValue( $store ) );
 
 		$instance = new QueryDependencyLinksStore(
-			$deferredDependencyLinksUpdater
+			$dependencyLinksTableUpdater
 		);
 
 		$instance->setEnabledState( true );
@@ -387,22 +387,22 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDependencyList' )
 			->will( $this->returnValue( array( null, DIWikiPage::newFromText( 'Foo' ) ) ) );
 
-		$deferredDependencyLinksUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$deferredDependencyLinksUpdater->expects( $this->once() )
-			->method( 'addToDeferredUpdateList' )
+		$dependencyLinksTableUpdater->expects( $this->once() )
+			->method( 'addUpdateList' )
 			->with(
 				$this->equalTo( 42 ),
 				$this->anything() );
 
-		$deferredDependencyLinksUpdater->expects( $this->any() )
+		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
 			->will( $this->returnValue( $store ) );
 
 		$instance = new QueryDependencyLinksStore(
-			$deferredDependencyLinksUpdater
+			$dependencyLinksTableUpdater
 		);
 
 		$instance->doUpdateDependenciesBy( $queryResultDependencyListResolver );
@@ -447,22 +447,22 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDependencyList' )
 			->will( $this->returnValue( array( DIWikiPage::newFromText( 'Foo', NS_CATEGORY ) ) ) );
 
-		$deferredDependencyLinksUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$deferredDependencyLinksUpdater->expects( $this->once() )
-			->method( 'addToDeferredUpdateList' )
+		$dependencyLinksTableUpdater->expects( $this->once() )
+			->method( 'addUpdateList' )
 			->with(
 				$this->equalTo( 42 ),
 				$this->anything() );
 
-		$deferredDependencyLinksUpdater->expects( $this->any() )
+		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
 			->will( $this->returnValue( $store ) );
 
 		$instance = new QueryDependencyLinksStore(
-			$deferredDependencyLinksUpdater
+			$dependencyLinksTableUpdater
 		);
 
 		$instance->doUpdateDependenciesBy( $queryResultDependencyListResolver );
@@ -525,16 +525,16 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSubject' )
 			->will( $this->returnValue( $subject ) );
 
-		$deferredDependencyLinksUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DeferredDependencyLinksUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$deferredDependencyLinksUpdater->expects( $this->any() )
+		$dependencyLinksTableUpdater->expects( $this->any() )
 			->method( 'getStore' )
 			->will( $this->returnValue( $store ) );
 
 		$instance = new QueryDependencyLinksStore(
-			$deferredDependencyLinksUpdater
+			$dependencyLinksTableUpdater
 		);
 
 		$instance->doUpdateDependenciesBy( $queryResultDependencyListResolver );

@@ -71,6 +71,9 @@ class EventListenerRegistry implements EventListenerCollection {
 
 	private function registerStateChangeEvents() {
 
+		/**
+		 * Emitted during PropertySpecificationChangeNotifier::notifyDispatcher
+		 */
 		$this->eventListenerCollection->registerCallback(
 			'property.spec.change', function( $dispatchContext ) {
 
@@ -90,32 +93,52 @@ class EventListenerRegistry implements EventListenerCollection {
 			}
 		);
 
+		/**
+		 * Emitted during Store::updateData
+		 */
 		$this->eventListenerCollection->registerCallback(
 			'on.before.semanticdata.update.complete', function( $dispatchContext ) {
 
 				$subject = $dispatchContext->get( 'subject' );
 				$hash = $subject->getHash();
 
-				$inMemoryPoolCache = InMemoryPoolCache::getInstance();
-				$inMemoryPoolCache->getPoolCacheFor( 'store.redirectTarget.lookup' )->delete( $hash );
-
+				wfDebugLog( 'smw', 'Clear CachedPropertyValuesPrefetcher for ' . $hash );
 				$applicationFactory = ApplicationFactory::getInstance();
-				$applicationFactory->getCachedPropertyValuesPrefetcher()->resetCacheFor( $subject );
+
+				$poolCache = $applicationFactory->getInMemoryPoolCache()->getPoolCacheFor(
+					'store.redirectTarget.lookup'
+				);
+
+				$poolCache->delete( $hash );
+
+				$applicationFactory->getCachedPropertyValuesPrefetcher()->resetCacheFor(
+					$subject
+				);
 
 				$dispatchContext->set( 'propagationstop', true );
 			}
 		);
 
+		/**
+		 * Emitted during Store::updateData
+		 */
 		$this->eventListenerCollection->registerCallback(
 			'on.after.semanticdata.update.complete', function( $dispatchContext ) {
 
+				$applicationFactory = ApplicationFactory::getInstance();
 				$subject = $dispatchContext->get( 'subject' );
-				$pageUpdater = ApplicationFactory::getInstance()->newMwCollaboratorFactory()->newPageUpdater();
+
+				$pageUpdater = $applicationFactory->newMwCollaboratorFactory()->newPageUpdater();
 
 				if ( $GLOBALS['smwgAutoRefreshSubject'] && $pageUpdater->canUpdate() ) {
 					$pageUpdater->addPage( $subject->getTitle() );
-					$pageUpdater->doPurgeParserCache();
-					$pageUpdater->doPurgeHtmlCache();
+
+					$deferredCallableUpdate = $applicationFactory->newDeferredCallableUpdate( function() use( $pageUpdater ) {
+						$pageUpdater->doPurgeParserCache();
+						$pageUpdater->doPurgeHtmlCache();
+					} );
+
+					$deferredCallableUpdate->pushToDeferredUpdateList();
 				}
 
 				$dispatchContext->set( 'propagationstop', true );

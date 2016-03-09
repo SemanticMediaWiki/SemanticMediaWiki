@@ -63,6 +63,8 @@ class DumpRdfMaintenanceTest extends MwDBaseUnitTestCase {
 
 	public function testMaintenanceRdfOutput() {
 
+		$this->testEnvironment->executePendingDeferredUpdates();
+
 		$this->importedTitles = array(
 			'Category:Lorem ipsum',
 			'Lorem ipsum',

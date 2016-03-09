@@ -81,11 +81,15 @@ class RebuildData extends \Maintenance {
 								'May leave the wiki temporarily incomplete.', false );
 
 		$this->addOption( 'v', 'Be verbose about the progress', false );
-		$this->addOption( 'c', 'Will refresh only category pages (and other explicitly named namespaces)', false );
+		$this->addOption( 'categories', 'Will refresh only category pages (and other explicitly named namespaces)', false, false, 'c' );
 		$this->addOption( 'p', 'Will refresh only property pages (and other explicitly named namespaces)', false );
+		$this->addOption( 'redirects', 'Only refresh redirect pages', false );
 
 		$this->addOption( 'skip-properties', 'Skip the default properties rebuild (only recommended when successive build steps are used)', false );
 		$this->addOption( 'shallow-update', 'Skip processing of entitites that compare to the last known revision date', false );
+
+		$this->addOption( 'ignore-exceptions', 'Ignore exceptions and log exception to a file', false );
+		$this->addOption( 'exception-log', 'Exception log file location (e.g. /tmp/logs/)', false, true );
 
 		$this->addOption( 'page', '<pagelist> Will refresh only the pages of the given names, with | used as a separator. ' .
 								'Example: --page "Page 1|Page 2" refreshes Page 1 and Page 2 Options -s, -e, -n, ' .
