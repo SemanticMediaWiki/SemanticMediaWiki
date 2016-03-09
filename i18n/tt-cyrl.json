@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Ерней",
-			"Ильнар"
+			"Ильнар",
+			"Macofe"
 		]
 	},
 	"smw_viewasrdf": "RDF чыганак",
@@ -27,7 +28,7 @@
 	"browse": "Сәхифәне карау",
 	"smw_browselink": "Үзенчәлекләрен карау",
 	"group-smwadministrator": "Semantic MediaWiki идәрәчеләре",
-	"group-smwadministrator-member": "{{GENDER:$1|идәрәче (SMW)}}",
+	"group-smwadministrator-member": "{{GENDER:$1|идәрәче (Semantic MediaWiki)}}",
 	"grouppage-smwadministrator": "{{ns:project}}:SMW_идәрәчеләре",
 	"smw-livepreview-loading": "Йөкләү..."
 }
