@@ -145,7 +145,7 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 
 			$description =  Html::rawElement( 'span', array(
 				'class' => 'smw-ask-parameter-description'
-				), '<br />' . $$tooltipInfo
+				), '<br />' . $tooltipInfo
 			);
 		}
 
