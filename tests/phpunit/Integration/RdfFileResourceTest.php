@@ -1,19 +1,16 @@
 <?php
 
-namespace SMW\Tests\Integration\MediaWiki\Hooks;
+namespace SMW\Tests\Integration;
 
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\MwDBaseUnitTestCase;
-
 use SMW\DIWikiPage;
 use SMW\Localizer;
-use SMW\ApplicationFactory;
 use SMWExportController as ExportController;
 use SMWRDFXMLSerializer as RDFXMLSerializer;
 use Title;
 
 /**
- * @group semantic-mediawiki-integration
+ * @group semantic-mediawiki
  * @group medium
  *
  * @license GNU GPL v2+
@@ -26,65 +23,53 @@ class RdfFileResourceTest extends MwDBaseUnitTestCase {
 	private $fixturesFileProvider;
 	private $stringValidator;
 
-	/**
-	 * MW GLOBALS to be restored after the test
-	 */
-	private $wgFileExtensions;
-	private $wgEnableUploads;
-	private $wgVerifyMimeType;
-
 	protected function setUp() {
 		parent::setUp();
 
-		$utilityFactory = UtilityFactory::getInstance();
+		$utilityFactory = $this->testEnvironment->getUtilityFactory();
 
 		$this->fixturesFileProvider = $utilityFactory->newFixturesFactory()->newFixturesFileProvider();
-		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
+		$this->stringValidator = $utilityFactory->newValidatorFactory()->newStringValidator();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
-
-		$settings = array(
+		$this->testEnvironment->withConfiguration( array(
 			'smwgPageSpecialProperties' => array( '_MEDIA', '_MIME' ),
 			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true, NS_FILE => true ),
 			'smwgCacheType' => 'hash',
 			'smwgExportBCAuxiliaryUse' => true
-		);
-
-		foreach ( $settings as $key => $value ) {
-			$this->applicationFactory->getSettings()->set( $key, $value );
-		}
+		) );
 
 		// Ensure that the DB creates the extra tables for MEDIA/MINE
 		$this->getStore()->clear();
 		$this->getStore()->setupStore( false );
 
-		$this->wgEnableUploads  = $GLOBALS['wgEnableUploads'];
-		$this->wgFileExtensions = $GLOBALS['wgFileExtensions'];
-		$this->wgVerifyMimeType = $GLOBALS['wgVerifyMimeType'];
-
-		$GLOBALS['wgEnableUploads'] = true;
-		$GLOBALS['wgFileExtensions'] = array( 'txt' );
-		$GLOBALS['wgVerifyMimeType'] = true;
+		// MW GLOBALS to be restored after the test
+		$this->testEnvironment->withConfiguration( array(
+			'wgEnableUploads'  => true,
+			'wgFileExtensions' => array( 'txt' ),
+			'wgVerifyMimeType' => true
+		) );
 
 		\SMWExporter::clear();
 	}
 
 	protected function tearDown() {
-
-		$GLOBALS['wgEnableUploads'] = $this->wgEnableUploads;
-		$GLOBALS['wgFileExtensions'] = $this->wgFileExtensions;
-		$GLOBALS['wgVerifyMimeType'] = $this->wgVerifyMimeType;
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testFileUploadForDummyTextFile() {
+		Localizer::getInstance()->clear();
 
 		$subject = new DIWikiPage( 'RdfLinkedFile.txt', NS_FILE );
 		$fileNS = Localizer::getInstance()->getNamespaceTextById( NS_FILE );
 
-		$dummyTextFile = $this->fixturesFileProvider->newUploadForDummyTextFile( 'RdfLinkedFile.txt' );
-		$dummyTextFile->doUpload( '[[HasFile::File:RdfLinkedFile.txt]]' );
+		$dummyTextFile = $this->fixturesFileProvider->newUploadForDummyTextFile(
+			'RdfLinkedFile.txt'
+		);
+
+		$dummyTextFile->doUpload(
+			'[[HasFile::File:RdfLinkedFile.txt]]'
+		);
 
 		$exportController = new ExportController( new RDFXMLSerializer() );
 		$exportController->enableBacklinks( false );
@@ -109,6 +94,5 @@ class RdfFileResourceTest extends MwDBaseUnitTestCase {
 			$output
 		);
 	}
-
 
 }

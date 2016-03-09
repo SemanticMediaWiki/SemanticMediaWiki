@@ -72,7 +72,7 @@ class Localizer {
 	 *
 	 * @return Language
 	 */
-	public static function getUserLanguage() {
+	public function getUserLanguage() {
 		return $GLOBALS['wgLang'];
 	}
 
@@ -81,7 +81,7 @@ class Localizer {
 	 *
 	 * @return Language
 	 */
-	public static function getExtraneousLanguage() {
+	public function getExtraneousLanguage() {
 		return $GLOBALS['smwgContLang'];
 	}
 

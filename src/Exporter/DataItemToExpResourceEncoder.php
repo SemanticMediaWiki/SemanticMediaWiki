@@ -120,7 +120,9 @@ class DataItemToExpResourceEncoder {
 	 */
 	public function mapPropertyToResourceElement( DIProperty $property, $useAuxiliaryModifier = false ) {
 
-		$diWikiPage = $property->getDiWikiPage();
+		// We want the a canonical representation to ensure that resources
+		// are language independent
+		$diWikiPage = $property->getCanonicalDiWikiPage();
 
 		if ( $diWikiPage === null ) {
 			throw new RuntimeException( 'Only non-inverse, user-defined properties are permitted.' );

@@ -5,6 +5,7 @@ namespace SMW\Tests\Utils;
 use Title;
 use Revision;
 use UnexpectedValueException;
+use SMW\Tests\TestEnvironment;
 
 /**
  *
@@ -16,8 +17,19 @@ use UnexpectedValueException;
  */
 class PageCreator {
 
-	/** @var WikiPage */
+	/**
+	 * @var TestEnvironment
+	 */
+	private $testEnvironment;
+
+	/**
+	 * @var null
+	 */
 	protected $page = null;
+
+	public function __construct() {
+		$this->testEnvironment = new TestEnvironment();
+	}
 
 	/**
 	 * @since 1.9.1
@@ -71,6 +83,8 @@ class PageCreator {
 			$this->getPage()->doEdit( $pageContent, $editMessage );
 		}
 
+		$this->testEnvironment->executePendingDeferredUpdates();
+
 		return $this;
 	}
 
@@ -87,6 +101,8 @@ class PageCreator {
 			"integration test",
 			$isRedirect
 		);
+
+		$this->testEnvironment->executePendingDeferredUpdates();
 
 		return $this;
 	}

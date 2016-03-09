@@ -17,6 +17,11 @@ class NumberFormatter {
 	private static $instance = null;
 
 	/**
+	 * @var Localizer
+	 */
+	private $localizer = null;
+
+	/**
 	 * @var integer
 	 */
 	private $maxNonExpNumber = null;
@@ -39,10 +44,12 @@ class NumberFormatter {
 	/**
 	 * @since 2.1
 	 *
-	 * @param Language $contentLanguage
+	 * @param integer $maxNonExpNumber
+	 * @param Localizer $localizer
 	 */
-	public function __construct( $maxNonExpNumber ) {
+	public function __construct( $maxNonExpNumber, Localizer $localizer ) {
 		$this->maxNonExpNumber = $maxNonExpNumber;
+		$this->localizer = $localizer;
 	}
 
 	/**
@@ -53,7 +60,10 @@ class NumberFormatter {
 	public static function getInstance() {
 
 		if ( self::$instance === null ) {
-			self::$instance = new self( $GLOBALS['smwgMaxNonExpNumber'] );
+			self::$instance = new self(
+				$GLOBALS['smwgMaxNonExpNumber'],
+				Localizer::getInstance()
+			);
 		}
 
 		return self::$instance;
@@ -204,7 +214,7 @@ class NumberFormatter {
 	public function getThousandsSeparatorForContentLanguage() {
 
 		if ( $this->thousandsSeparatorInContentLanguage === null ) {
-			$this->thousandsSeparatorInContentLanguage = wfMessage( 'smw_kiloseparator' )->inContentLanguage()->text();
+			$this->thousandsSeparatorInContentLanguage = wfMessage( 'smw_kiloseparator' )->inLanguage( $this->localizer->getContentLanguage() )->text();
 		}
 
 		return $this->thousandsSeparatorInContentLanguage;
@@ -218,7 +228,7 @@ class NumberFormatter {
 	public function getDecimalSeparatorForContentLanguage() {
 
 		if ( $this->decimalSeparatorInContentLanguage === null ) {
-			$this->decimalSeparatorInContentLanguage = wfMessage( 'smw_decseparator' )->inContentLanguage()->text();
+			$this->decimalSeparatorInContentLanguage = wfMessage( 'smw_decseparator' )->inLanguage( $this->localizer->getContentLanguage() )->text();
 		}
 
 		return $this->decimalSeparatorInContentLanguage;
@@ -232,7 +242,7 @@ class NumberFormatter {
 	public function getDecimalSeparatorForUserLanguage() {
 
 		if ( $this->decimalSeparatorInUserLanguage === null ) {
-			$this->decimalSeparatorInUserLanguage = wfMessage( 'smw_decseparator' )->text();
+			$this->decimalSeparatorInUserLanguage = wfMessage( 'smw_decseparator' )->inLanguage( $this->localizer->getUserLanguage() )->text();
 		}
 
 		return $this->decimalSeparatorInUserLanguage;

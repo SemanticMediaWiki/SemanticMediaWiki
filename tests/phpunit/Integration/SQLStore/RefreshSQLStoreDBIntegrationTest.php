@@ -99,7 +99,7 @@ class RefreshSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 	public function titleProvider() {
 		$provider = array();
 
-		$provider[] = array( NS_MAIN, 'withInterWiki', 'foo' );
+	//	$provider[] = array( NS_MAIN, 'withInterWiki', 'commons' );
 		$provider[] = array( NS_MAIN, 'normalTite', '' );
 		$provider[] = array( NS_MAIN, 'useUpdateJobs', '' );
 

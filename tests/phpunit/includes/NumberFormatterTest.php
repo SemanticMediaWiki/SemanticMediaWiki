@@ -21,9 +21,13 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
+		$localizer = $this->getMockBuilder( '\SMW\Localizer' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->assertInstanceOf(
 			'\SMW\NumberFormatter',
-			new NumberFormatter( 10000 )
+			new NumberFormatter( 10000, $localizer )
 		);
 
 		$this->assertInstanceOf(
@@ -37,7 +41,19 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testLocalizedFormattedNumber( $maxNonExpNumber, $number, $expected ) {
 
-		$instance = new NumberFormatter( $maxNonExpNumber );
+		$localizer = $this->getMockBuilder( '\SMW\Localizer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$localizer->expects( $this->any() )
+			->method( 'getContentLanguage' )
+			->will( $this->returnValue( 'en' ) );
+
+		$localizer->expects( $this->any() )
+			->method( 'getUserLanguage' )
+			->will( $this->returnValue( 'en' ) );
+
+		$instance = new NumberFormatter( $maxNonExpNumber, $localizer );
 
 		$this->assertEquals(
 			$expected,
@@ -50,7 +66,19 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetUnformattedNumberByPrecision( $maxNonExpNumber, $number, $precision, $expected ) {
 
-		$instance = new NumberFormatter( $maxNonExpNumber );
+		$localizer = $this->getMockBuilder( '\SMW\Localizer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$localizer->expects( $this->any() )
+			->method( 'getContentLanguage' )
+			->will( $this->returnValue( 'en' ) );
+
+		$localizer->expects( $this->any() )
+			->method( 'getUserLanguage' )
+			->will( $this->returnValue( 'en' ) );
+
+		$instance = new NumberFormatter( $maxNonExpNumber, $localizer );
 
 		$this->assertEquals(
 			$expected,

@@ -43,11 +43,6 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 		parent::setUp();
 
 		$this->testEnvironment->addConfiguration(
-			'smwgEnabledDeferredUpdate',
-			false
-		);
-
-		$this->testEnvironment->addConfiguration(
 			'smwgPageSpecialProperties',
 			 array( '_MDAT' )
 		);

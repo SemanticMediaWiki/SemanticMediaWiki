@@ -84,10 +84,19 @@ abstract class SMWLanguage {
 		'Creation date'     => '_CDAT',
 		'Is a new page'     => '_NEWP',
 		'Last editor is'    => '_LEDT',
-		'Has improper value for' => '_ERRP',
+		'Media type'        => '_MEDIA',
+		'MIME type'         => '_MIME',
+		'Has improper value for'    => '_ERRP',
+		'Has processing error'      => '_ERRC',
+		'Has processing error text' => '_ERRT',
 		'Has fields'        => '_LIST',
 		'Has subobject'     => '_SOBJ',
 		'Has query'         => '_ASK',
+		'Query string'      => '_ASKST',
+		'Query format'      => '_ASKFO',
+		'Query size'        => '_ASKSI',
+		'Query depth'       => '_ASKDE',
+		'Query duration'    => '_ASKDU',
 		'Has query string'  => '_ASKST',
 		'Has query format'  => '_ASKFO',
 		'Has query size'    => '_ASKSI',
@@ -95,14 +104,17 @@ abstract class SMWLanguage {
 		'Has query duration' => '_ASKDU',
 		'Has media type'     => '_MEDIA',
 		'Has mime type'      => '_MIME',
-		'Has processing error'          => '_ERRC',
-		'Has processing error text'     => '_ERRT',
 		'Display precision of'  => '_PREC',
 		'Language code'  => '_LCODE',
 		'Text'           => '_TEXT',
 		'Has property description'     => '_PDESC',
 		'Allows pattern' => '_PVAP',
-		'Display title of'     => '_DTITLE'
+		'Display title of'     => '_DTITLE',
+		'Display unit' => '_UNIT',
+		'Display precision' => '_PREC',
+		'Property description'     => '_PDESC',
+		'Has allows pattern' => '_PVAP',
+		'Has display title of'     => '_DTITLE'
 	);
 
 	public function __construct() {
@@ -180,13 +192,19 @@ abstract class SMWLanguage {
 		return $this->m_SpecialProperties;
 	}
 
+	function getCanonicalPropertyAliases() {
+		return self::$enPropertyAliases;
+	}
+
+	function getCanonicalPropertyLabels() {
+		return self::$enPropertyAliases;
+	}
+
 	/**
 	 * Aliases for predefined properties, if any.
 	 */
 	function getPropertyAliases() {
-		return $this->m_useEnDefaultAliases ?
-		       $this->m_SpecialPropertyAliases + self::$enPropertyAliases :
-		       $this->m_SpecialPropertyAliases;
+		return $this->m_SpecialPropertyAliases;
 	}
 
 	/**
