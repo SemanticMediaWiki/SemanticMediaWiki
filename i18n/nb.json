@@ -9,7 +9,8 @@
 			"Njardarlogar",
 			"아라",
 			"Emilbk",
-			"SuperPotato"
+			"SuperPotato",
+			"Macofe"
 		]
 	},
 	"smw-desc": "Gjøre wikien din mer tilgjengelig - for maskiner ''og'' mennesker ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
@@ -278,8 +279,8 @@
 	"smw_conceptarticlecount": "Viser nedenfor {{PLURAL:$1|én side|$1 sider}}.",
 	"smw-qp-empty-data": "Forespurte data kan ikke vises på grunn av utilstrekkelige søkekriterier.",
 	"right-smw-admin": "Administrasjonsoppgaver for tilgang (Semantic MediaWiki)",
-	"group-smwadministrator": "Administratorer for Semantic MediaWiki",
-	"group-smwadministrator-member": "{{GENDER:$1|administrator (SMW)}}",
+	"group-smwadministrator": "Administratorer (Semantic MediaWiki)",
+	"group-smwadministrator-member": "{{GENDER:$1|administrator (Semantic MediaWiki)}}",
 	"grouppage-smwadministrator": "{{ns:project}}:SMW_administratorer",
 	"action-smw-admin": "gå til administrasjonsoppgaver for Semantic MediaWiki",
 	"smw-pa-property-predefined-default": "$1 er en predefinert egenskap (også kjent som ''[https://www.semantic-mediawiki.org/wiki/Help:Special_properties spesialegenskap]''). Dette er en innebygd egenskap med administrative tilleggsrettigheter, men brukes akkurat som en vanlig [https://www.semantic-mediawiki.org/wiki/Property brukerdefinert egenskap].",

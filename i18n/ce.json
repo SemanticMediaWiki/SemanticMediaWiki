@@ -2,7 +2,9 @@
 	"@metadata": {
 		"authors": [
 			"Sasan700",
-			"Умар"
+			"Умар",
+			"Macofe",
+			"Исмаил Садуев"
 		]
 	},
 	"smw_viewasrdf": "RDF хьост",
@@ -18,7 +20,7 @@
 	"validator-type-class-SMWParamSource": "йоза",
 	"smw-paramdesc-export": "Экспортан параметраш",
 	"smw-label-feed-description": "$2-канал $1",
-	"smw_iq_moreresults": "… тӀехьа догӀург",
+	"smw_iq_moreresults": "… тӀаьхьара хиламаш",
 	"smw_nodatetime": "Дозушдоцу терахь «$1».",
 	"smw_attribute_header": "ХӀара “$1” лелош йолу хӀумнаш",
 	"smw_attributearticlecount": "{{PLURAL:$1|Гуш ю}} $1 {{PLURAL:$1|хӀара хӀума лелош йолу агӀо|хӀара хӀума лелош йолу агӀонаш}}.",
@@ -70,7 +72,7 @@
 	"smw-ui-tooltip-title-warning": "ГӀалат",
 	"smw-ui-tooltip-title-note": "Билгалдаккхар",
 	"group-smwadministrator": "Куьйгалхой Semantic MediaWiki",
-	"group-smwadministrator-member": "{{GENDER:$1|куьйгалхо (SMW)}}",
+	"group-smwadministrator-member": "{{GENDER:$1|куьйгалхо (Semantic MediaWiki)}}",
 	"grouppage-smwadministrator": "{{ns:project}}:Куьйгалхой_SMW",
 	"smw-sp-properties-cache-info": "ХӀара хаамаш схьаэцна [https://www.semantic-mediawiki.org/wiki/Caching кэша чура] уьш тӀаьххьара карлабаьхна $1.",
 	"smw-sp-properties-header-label": "ХӀумнийн могӀам",

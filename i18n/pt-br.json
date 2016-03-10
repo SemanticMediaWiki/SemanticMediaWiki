@@ -19,7 +19,8 @@
 			"Smmvinicius",
 			"He7d3r",
 			"Rhcastilhos",
-			"Opraco"
+			"Opraco",
+			"Macofe"
 		]
 	},
 	"smw-desc": "Tornando seu wiki mais acessível - para máquinas ''e'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
@@ -289,9 +290,9 @@
 	"smw_conceptarticlecount": "Exibindo {{PLURAL:$1|uma página|$1 páginas}}.",
 	"smw-qp-empty-data": "Os dados requisitados não puderam ser exibidos devido a algum critério de seleção insuficiente.",
 	"right-smw-admin": "Acessar as tarefas de administração (Semantic MediaWiki)",
-	"group-smwadministrator": "Administradores do Semantic MediaWiki",
-	"group-smwadministrator-member": "{{GENDER:$1|administrador|administradora|administrador(a)}} (SMW)",
-	"grouppage-smwadministrator": "{{ns:project}}:Administradores do Semantic MediaWiki",
+	"group-smwadministrator": "Administradores (Semantic MediaWiki)",
+	"group-smwadministrator-member": "{{GENDER:$1|administrador|administradora|administrador(a)}} (Semantic MediaWiki)",
+	"grouppage-smwadministrator": "{{ns:project}}:Administradores (Semantic MediaWiki)",
 	"action-smw-admin": "acessar as tarefas de administração do Semantic MediaWiki",
 	"smw-pa-property-predefined-default": "\"$1\" é uma propriedade predefinida.",
 	"smw-pa-property-predefined-common": "Esta propriedade é predefinida (também conhecida como [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propriedade especial]) e vem com privilégios administrativos, mas pode ser utilizada como qualquer outra [https://www.semantic-mediawiki.org/wiki/Property propriedade definida pelo usuário].",
