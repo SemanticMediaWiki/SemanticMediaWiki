@@ -16,7 +16,8 @@
 			"Mfuji",
 			"Sujiniku",
 			"Otokoume",
-			"Macofe"
+			"Macofe",
+			"Ridmevo"
 		]
 	},
 	"smw-desc": "ウィキを機械や人間にとってよりアクセスしやすいものにする ([https://www.semantic-mediawiki.org/wiki/Help:User_manual オンラインドキュメント])",
@@ -218,7 +219,7 @@
 	"smw_result_results": "結果",
 	"smw_result_noresults": "該当結果はありません。",
 	"smwadmin": "Semantic MediaWiki の管理機能",
-	"smw_smwadmin_setupsuccess": "ストレージ エンジンを構築しました。",
+	"smw_smwadmin_setupsuccess": "ストレージエンジンが構築されました。",
 	"smw_smwadmin_return": "$1 に戻る",
 	"smw_smwadmin_updatestarted": "意味的データを最新の状態にするための新しい更新プロセスを開始しました。\n格納済みのデータはすべて必要に応じて再構築または修復されます。\nこの特別ページで更新の状況を追うことができます。\n\n$1に戻る。",
 	"smw_smwadmin_updatenotstarted": "既に実行中の更新プロセスがあります。\n新たに作成しないでください。\n\n$1に戻る。",
