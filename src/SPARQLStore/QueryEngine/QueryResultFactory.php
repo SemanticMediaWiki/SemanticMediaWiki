@@ -107,7 +107,9 @@ class QueryResultFactory {
 		}
 
 		if ( $repositoryResult->numRows() > $query->getLimit() ) {
-			array_pop( $resultDataItems );
+			if ( count( $resultDataItems) > 1 ) {
+				array_pop( $resultDataItems );
+			}
 			$hasFurtherResults = true;
 		} else {
 			$hasFurtherResults = false;

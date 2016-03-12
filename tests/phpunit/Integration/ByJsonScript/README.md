@@ -1,5 +1,5 @@
 ## Fixtures
-Contains 99 files:
+Contains 100 files:
 
 ### F
 * [f-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0001.json) Test format=debug output
@@ -81,6 +81,7 @@ Contains 99 files:
 * [q-0611.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0611.json) Test `_wpg` namespace any value queries (#1301, en)
 * [q-0701.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0701.json) Test `_uri` with some annotation/search pattern (T45264, #679)
 * [q-0702.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0702.json) Test `_uri` with additional annotation/search (#1129)
+* [q-0703.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0703.json) Test to map `Foaf` property from back-end
 * [q-0801.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0801.json) Test `_INST` query (#1004, en)
 * [q-0802.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0802.json) Test `_INST`/`_SUBC` queries (#1005, en, skip virtuoso)
 * [q-0803.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0803.json) Test `_INST`/ Nested category annotation (#1012, en, skip virtuoso) category hierarchy queries
@@ -110,4 +111,4 @@ Contains 99 files:
 ### S
 * [s-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0001.json) Test output of `Special:Properties` (en, skip-on sqlite, 1.19)
 
--- Last updated on 2016-02-29 by `readmeContentsBuilder.php`
+-- Last updated on 2016-03-12 by `readmeContentsBuilder.php`
