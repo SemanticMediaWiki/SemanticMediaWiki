@@ -73,7 +73,7 @@ class AllowsPatternContentParser implements ValueParser {
 		$parts = array_map( 'trim', preg_split( "([\n][\s]?)", $contents ) );
 
 		// Get definition from first line
-		$fristLine = array_shift( $parts );
+		array_shift( $parts );
 
 		foreach ( $parts as $part ) {
 
