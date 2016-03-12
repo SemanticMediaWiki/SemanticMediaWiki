@@ -4,6 +4,7 @@ use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\Exporter\DataItemToExpResourceEncoder;
 use SMW\Exporter\DataItemToElementEncoder;
+use SMW\Exporter\DataItemByExpElementMatchFinder;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Escaper;
 use SMW\ApplicationFactory;
@@ -33,6 +34,11 @@ class SMWExporter {
 	 */
 	private static $dataItemToElementEncoder = null;
 
+	/**
+	 * @var DataItemByExpElementMatchFinder
+	 */
+	private static $dataItemByExpElementMatchFinder = null;
+
 	static protected $m_exporturl = false;
 	static protected $m_ent_wiki = false;
 	static protected $m_ent_property = false;
@@ -51,19 +57,25 @@ class SMWExporter {
 			self::$instance = new self();
 			self::$instance->initBaseURIs();
 
-			$cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
+			$applicationFactory = ApplicationFactory::getInstance();
 
+			// FIXME with 3.x
 			// There is no better way of getting around the static use without BC
 			self::$dataItemToElementEncoder = new DataItemToElementEncoder();
 
 			self::$dataItemToExpResourceEncoder = new DataItemToExpResourceEncoder(
-				ApplicationFactory::getInstance()->getStore()
+				$applicationFactory->getStore()
 			);
 
 			self::$dataItemToExpResourceEncoder->reset();
 
 			self::$dataItemToExpResourceEncoder->setBCAuxiliaryUse(
-				ApplicationFactory::getInstance()->getSettings()->get( 'smwgExportBCAuxiliaryUse' )
+				$applicationFactory->getSettings()->get( 'smwgExportBCAuxiliaryUse' )
+			);
+
+			self::$dataItemByExpElementMatchFinder = new DataItemByExpElementMatchFinder(
+				$applicationFactory->getStore(),
+				self::$m_ent_wiki
 			);
 		}
 
@@ -382,54 +394,8 @@ class SMWExporter {
 	 * @param SMWExpElement $expElement
 	 * @return SMWDataItem or null
 	 */
-	static public function findDataItemForExpElement( SMWExpElement $expElement ) {
-		global $wgContLang;
-
-		$dataItem = null;
-		if ( $expElement instanceof SMWExpResource ) {
-			$uri = $expElement->getUri();
-			$wikiNamespace = self::getNamespaceUri( 'wiki' );
-
-			if ( strpos( $uri, $wikiNamespace ) === 0 ) {
-				$localName = substr( $uri, strlen( $wikiNamespace ) );
-				$dbKey = rawurldecode( Escaper::decodeUri( $localName ) );
-
-				$parts = explode( '#', $dbKey, 2 );
-				if ( count( $parts ) == 2 ) {
-					$dbKey = $parts[0];
-					$subobjectname = $parts[1];
-				} else {
-					$subobjectname = '';
-				}
-
-				$parts = explode( ':', $dbKey, 2 );
-				if ( count( $parts ) == 1 ) {
-					$dataItem = new SMWDIWikiPage( $dbKey, NS_MAIN, '', $subobjectname );
-				} else {
-					// try the by far most common cases directly before using Title
-					$namespaceName = str_replace( '_', ' ', $parts[0] );
-					$namespaceId = -1;
-					foreach ( array( SMW_NS_PROPERTY, NS_CATEGORY, NS_USER, NS_HELP ) as $nsId ) {
-						if ( $namespaceName == $wgContLang->getNsText( $nsId ) ) {
-							$namespaceId = $nsId;
-							break;
-						}
-					}
-
-					if ( $namespaceId != -1 ) {
-						$dataItem = new SMWDIWikiPage( $parts[1], $namespaceId, '', $subobjectname );
-					} else {
-						$title = Title::newFromDBkey( $dbKey );
-
-						if ( !is_null( $title ) ) {
-							$dataItem = new SMWDIWikiPage( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki(), $subobjectname );
-						}
-					}
-				}
-			} // else: not in wiki namespace -- TODO: this could be an imported URI
-		}
-
-		return $dataItem;
+	public function findDataItemForExpElement( SMWExpElement $expElement ) {
+		return self::$dataItemByExpElementMatchFinder->tryToFindDataItemForExpElement( $expElement );
 	}
 
 	/**
