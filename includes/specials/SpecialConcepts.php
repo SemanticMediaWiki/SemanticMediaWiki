@@ -2,8 +2,7 @@
 
 namespace SMW;
 
-use SMW\Query\Language\ThingDescription;
-use SMW\Query\Language\SomeProperty as SomeProperty;
+use SMW\Query\Language\NamespaceDescription;
 use SMWPageLister;
 
 use Html;
@@ -45,7 +44,7 @@ class SpecialConcepts extends SpecialPage {
 	 * @return DIWikiPage[]
 	 */
 	public function getResults( $limit, $from, $until ) {
-		$description = new SomeProperty( new DIProperty( '_CONC' ), new ThingDescription() );
+		$description = new NamespaceDescription( SMW_NS_CONCEPT );
 		$query = SMWPageLister::getQuery( $description, $limit, $from, $until );
 		return $this->getStore()->getQueryResult( $query )->getResults();
 	}

@@ -322,7 +322,7 @@ class SMWExporter {
 
 				if ( !is_null( $ed ) ) {
 					if ( $property->getKey() == '_CONC' &&
-					     $ed->getSubject()->getUri() === '' ) {
+						$expData->getSubject()->getUri() !== '' ) {
 						// equivalent to anonymous class -> simplify description
 						foreach ( $ed->getProperties() as $subp ) {
 							if ( $subp->getUri() != self::getSpecialNsResource( 'rdf', 'type' )->getUri() ) {

@@ -96,6 +96,11 @@ class DataItemToElementEncoderTest extends \PHPUnit_Framework_TestCase {
 			new DIProperty( 'Foo' )
 		);
 
+		#8
+		$provider[] = array(
+			new \SMWDIConcept( 'Foo', '', '', '', '' )
+		);
+
 		return $provider;
 	}
 
@@ -118,11 +123,6 @@ class DataItemToElementEncoderTest extends \PHPUnit_Framework_TestCase {
 		#1
 		$provider[] = array(
 			new \SMWDIGeoCoord( array( 'lat' => 52, 'lon' => 1 ) )
-		);
-
-		#2
-		$provider[] = array(
-			new \SMWDIConcept( 'Foo', '', '', '', '' )
 		);
 
 		return $provider;

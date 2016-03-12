@@ -1,5 +1,5 @@
 {
-	"description": "Test `_CONC` for guarding against circular/self-reference which otherwise would fail with 'Maximum function nesting level ... reached, aborting' (#945, skip postgres)",
+	"description": "Test `_CONC` for guarding against circular/self-reference which otherwise would fail with 'Maximum function nesting level ... reached, aborting' (#945, skip postgres, skip virtuoso)",
 	"properties": [
 		{
 			"name": "Has concept description",
@@ -86,7 +86,8 @@
 	"settings": {},
 	"meta": {
 		"skip-on": {
-			"postgres": "Unable to run concept tests on postgres, see #781"
+			"postgres": "Unable to run concept tests on postgres, see #781",
+			"virtuoso": "Virtuoso reports 'SPARQL compiler: Blank node ... is not allowed in a constant clause', see https://github.com/openlink/virtuoso-opensource/issues/126"
 		},
 		"version": "0.1",
 		"is-incomplete": false

@@ -283,7 +283,8 @@ class SMWQueryParser {
 			$chunk = $this->readChunk();
 
 			if ( $chunk == '+' ) {
-				// wildcard, ignore for categories (semantically meaningless, everything is in some class)
+				$description = new NamespaceDescription( $category ? NS_CATEGORY : SMW_NS_CONCEPT );
+				$result = $this->descriptionProcessor->getDisjunctiveCompoundDescriptionFrom( $result, $description );
 			} else { // assume category/concept title
 				/// NOTE: we add m_c...prefix to prevent problems with, e.g., [[Category:Template:Test]]
 				$title = Title::newFromText( ( $category ? $this->categoryPrefix : $this->conceptPrefix ) . $chunk );

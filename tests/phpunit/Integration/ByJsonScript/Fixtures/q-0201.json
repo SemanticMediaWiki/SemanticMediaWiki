@@ -1,5 +1,5 @@
 {
-	"description": "Test `_CONC` queries (skip postgres)",
+	"description": "Test `_CONC` queries (skip postgres, skip virtuoso)",
 	"properties": [
 		{
 			"name": "Population",
@@ -118,7 +118,8 @@
 	"settings": {},
 	"meta": {
 		"skip-on": {
-			"postgres": "Unable to run concept tests on postgres, see #781"
+			"postgres": "Unable to run concept tests on postgres, see #781",
+			"virtuoso": "Virtuoso reports 'SPARQL compiler: Blank node ... is not allowed in a constant clause', see https://github.com/openlink/virtuoso-opensource/issues/126"
 		},
 		"version": "0.1",
 		"is-incomplete": false

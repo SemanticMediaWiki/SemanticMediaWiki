@@ -1,5 +1,5 @@
 {
-	"description": "Test `_CONC` on predefined inverse query and subobject inverse query (#1096)",
+	"description": "Test `_CONC` on predefined inverse query and subobject inverse query (#1096, skip virtuoso)",
 	"properties": [
 		{
 			"name": "Has page",
@@ -100,7 +100,8 @@
 	},
 	"meta": {
 		"skip-on": {
-			"postgres": "Unable to run concept tests on postgres, see #781"
+			"postgres": "Unable to run concept tests on postgres, see #781",
+			"virtuoso": "Virtuoso reports 'SPARQL compiler: Blank node ... is not allowed in a constant clause', see https://github.com/openlink/virtuoso-opensource/issues/126"
 		},
 		"version": "0.1",
 		"is-incomplete": false,
