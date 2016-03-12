@@ -103,4 +103,62 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanGetLanguageCodeOnValidMarkedValue() {
+
+		$value = 'Foo@en';
+
+		$this->assertEquals(
+			'en',
+			Localizer::getLanguageCodeFrom( $value )
+		);
+
+		$this->assertEquals(
+			'Foo',
+			$value
+		);
+	}
+
+	public function testCanGetLanguageCodeOnDoubledMarker() {
+
+		$value = 'Foo@@en';
+
+		$this->assertEquals(
+			'en',
+			Localizer::getLanguageCodeFrom( $value )
+		);
+
+		$this->assertEquals(
+			'Foo@',
+			$value
+		);
+	}
+
+	public function testCanNotGetLanguageCodeOnNonMarkedValue() {
+
+		$value = 'Fooen';
+
+		$this->assertFalse(
+			Localizer::getLanguageCodeFrom( $value )
+		);
+
+		$this->assertEquals(
+			'Fooen',
+			$value
+		);
+	}
+
+	public function testCanNotGetLanguageCodeOnMissingLanguageCode() {
+
+		$value = 'Foo@';
+
+		$this->assertFalse(
+			Localizer::getLanguageCodeFrom( $value )
+		);
+
+		$this->assertEquals(
+			'Foo@',
+			$value
+		);
+	}
+
 }

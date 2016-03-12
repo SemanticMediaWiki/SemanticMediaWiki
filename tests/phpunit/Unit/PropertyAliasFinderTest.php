@@ -69,4 +69,15 @@ class PropertyAliasFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testRegisterAliasByFixedLabel() {
+
+		$instance = new PropertyAliasFinder();
+		$instance->registerAliasByFixedLabel( '_Foo', 'Bar' );
+
+		$this->assertEquals(
+			'_Foo',
+			$instance->findPropertyIdByAlias( 'Bar' )
+		);
+	}
+
 }

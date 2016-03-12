@@ -32,6 +32,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 # this file.
 ##
 $GLOBALS['smwgIP'] = dirname( __FILE__ ) . '/';
+$GLOBALS['smwgExtraneousLanguageFileDir'] = __DIR__ . '/languages';
 ##
 
 ###

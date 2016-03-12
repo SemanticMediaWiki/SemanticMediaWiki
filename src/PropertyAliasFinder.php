@@ -22,6 +22,11 @@ class PropertyAliasFinder {
 	/**
 	 * @var string[]
 	 */
+	private $propertyAliasesByMsgKey = array();
+
+	/**
+	 * @var string[]
+	 */
 	private $canonicalPropertyAliases = array();
 
 	/**
@@ -34,7 +39,7 @@ class PropertyAliasFinder {
 		$this->canonicalPropertyAliases = $canonicalPropertyAliases;
 
 		foreach ( $propertyAliases as $alias => $id ) {
-			$this->registerPropertyAlias( $id, $alias );
+			$this->registerAliasByFixedLabel( $id, $alias );
 		}
 	}
 
@@ -48,13 +53,22 @@ class PropertyAliasFinder {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @return array
+	 */
+	public function getKnownPropertyAliasesWithMsgKey() {
+		return $this->propertyAliasesByMsgKey;
+	}
+
+	/**
 	 * Add a new alias label to an existing property ID. Note that every ID
 	 * should have a primary label.
 	 *
 	 * @param string $id string
 	 * @param string $label
 	 */
-	public function registerPropertyAlias( $id, $label ) {
+	public function registerAliasByFixedLabel( $id, $label ) {
 
 		// Indicates an untranslated MW message key
 		if ( $label !== '' && $label{0} === '<' ) {
@@ -62,6 +76,19 @@ class PropertyAliasFinder {
 		}
 
 		$this->propertyAliases[$label] = $id;
+	}
+
+	/**
+	 * Register an alias using a message key to allow fetching localized
+	 * labels dynamically.
+	 *
+	 * @since 2.4
+	 *
+	 * @param string $id
+	 * @param string $msgKey
+	 */
+	public function registerAliasByMsgKey( $id, $msgKey ) {
+		$this->propertyAliasesByMsgKey[$msgKey] = $id;
 	}
 
 	/**

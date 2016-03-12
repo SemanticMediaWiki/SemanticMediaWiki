@@ -380,7 +380,23 @@ class DIProperty extends SMWDataItem {
 			$inverse = true;
 		}
 
-		$id = PropertyRegistry::getInstance()->findPropertyIdByLabel( str_replace( '_', ' ', $label ) );
+		$id = false;
+
+		// Special handling for when the user value contains a @LCODE marker
+		if ( ( $langCode = Localizer::getLanguageCodeFrom( $label ) ) !== false ) {
+			$id = PropertyRegistry::getInstance()->findPropertyIdByLanguageCode(
+				$label,
+				$langCode
+			);
+		}
+
+		if ( $id !== false ) {
+			return new self( $id, $inverse );
+		}
+
+		$id = PropertyRegistry::getInstance()->findPropertyIdByLabel(
+			str_replace( '_', ' ', $label )
+		);
 
 		if ( $id === false ) {
 			return new self( str_replace( ' ', '_', $label ), $inverse );
