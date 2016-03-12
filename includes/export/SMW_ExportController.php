@@ -246,8 +246,19 @@ class SMWExportController {
 					while ( $resarray !== false ) {
 						$instance = end( $resarray )->getNextDataItem();
 
+						if ( !$instance instanceof \SMWDataItem ) {
+							$resarray = $res->getNext();
+							continue;
+						}
+
 						if ( !array_key_exists( $instance->getHash(), $this->element_done ) ) {
 							$semdata = $this->getSemanticData( $instance, true );
+
+							if ( !$semdata instanceof \SMW\SemanticData ) {
+								$resarray = $res->getNext();
+								continue;
+							}
+
 							$semdata->addPropertyObjectValue( $pinst, $diWikiPage );
 							$expData = SMWExporter::getInstance()->makeExportData( $semdata );
 							$this->serializer->serializeExpData( $expData );

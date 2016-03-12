@@ -125,4 +125,28 @@ class DataItemByExpElementMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testTryToFindDataItemOnInvalidUri() {
+
+		$store = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new DataItemByExpElementMatchFinder(
+			$store,
+			'http://example.org/id/'
+		);
+
+		$expResource = $this->getMockBuilder( '\SMW\Exporter\Element\ExpResource' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$expResource->expects( $this->once() )
+			->method( 'getUri' )
+			->will( $this->returnValue( '_node1abjt1k9bx17' ) );
+
+		$this->assertNull(
+			$instance->tryToFindDataItemForExpElement( $expResource )
+		);
+	}
+
 }

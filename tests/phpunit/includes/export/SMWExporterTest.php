@@ -82,7 +82,7 @@ class SMWExporterTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array( new DIBlob( 'foo' ),   'SMWExpElement' );
 		$provider[] = array( new DIBoolean( true ), 'SMWExpElement' );
 
-		$provider[] = array( new DIConcept( 'Foo', '', '', '', '' ), null );
+		$provider[] = array( new DIConcept( 'Foo', '', '', '', '' ), 'SMWExpData' );
 
 		return $provider;
 	}

@@ -131,6 +131,11 @@ class DataItemByExpElementMatchFinder {
 
 		$dataItem = null;
 
+		// Sesame: Not a valid (absolute) URI: _node1abjt1k9bx17
+		if ( filter_var( $uri, FILTER_VALIDATE_URL ) === FALSE ) {
+			return $dataItem;
+		}
+
 		$respositoryResult = $this->store->getConnection( 'sparql' )->select(
 			'?v1 ?v2',
 			"<$uri> rdfs:label ?v1 . <$uri> swivt:wikiNamespace ?v2",
