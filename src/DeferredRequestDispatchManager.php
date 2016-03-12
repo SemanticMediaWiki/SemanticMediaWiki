@@ -31,11 +31,6 @@ class DeferredRequestDispatchManager {
 	private $httpRequest;
 
 	/**
-	 * @var string
-	 */
-	private $url = '';
-
-	/**
 	 * Is kept static in order for the cli process to only make the check once
 	 * and verify it can/cannot connect.
 	 *

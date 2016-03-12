@@ -41,14 +41,6 @@ class QuerySegmentListProcessor {
 	private $executedQueries = array();
 
 	/**
-	 * Cache of computed hierarchy queries for reuse ("catetgory/property value
-	 * string" => "tablename").
-	 *
-	 * @var string[]
-	 */
-	private $hierarchyCache = array();
-
-	/**
 	 * Query mode copied from given query. Some submethods act differently when
 	 * in Query::MODE_DEBUG.
 	 *

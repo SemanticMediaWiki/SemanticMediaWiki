@@ -23,11 +23,6 @@ class Localizer {
 	private $contentLanguage = null;
 
 	/**
-	 * @var Language
-	 */
-	private $userLanguage = null;
-
-	/**
 	 * @since 2.1
 	 *
 	 * @param Language $contentLanguage
