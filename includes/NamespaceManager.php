@@ -35,7 +35,7 @@ class NamespaceManager {
 		}
 
 		if ( empty( $this->globalVars['smwgContLang'] ) ) {
-			$this->initContentLanguage( $this->globalVars['wgLanguageCode'] );
+			$this->globalVars['smwgContLang'] = ExtraneousLanguage::getInstance()->fetchByLanguageCode( $this->globalVars['wgLanguageCode'] );
 		}
 
 		$this->addNamespaceSettings();
@@ -51,8 +51,7 @@ class NamespaceManager {
 	 * @return array
 	 */
 	public static function getNamespacesByLanguageCode( $languageCode ) {
-		$instance = new self( $GLOBALS, $GLOBALS['smwgIP']  );
-		$instance->initContentLanguage( $languageCode );
+		$GLOBALS['smwgContLang'] = ExtraneousLanguage::getInstance()->fetchByLanguageCode( $languageCode );
 		return $GLOBALS['smwgContLang']->getNamespaces();
 	}
 
@@ -174,43 +173,9 @@ class NamespaceManager {
 
 	}
 
-	/**
-	 * Initialise a global language object for content language. This must happen
-	 * early on, even before user language is known, to determine labels for
-	 * additional namespaces. In contrast, messages can be initialised much later
-	 * when they are actually needed.
-	 *
-	 * @since 1.9
-	 */
-	protected function initContentLanguage( $langcode ) {
-
-		$this->setLanguage( $langcode );
-		$this->isValidLanguageClassOrSetFallback( $this->globalVars['smwContLangClass'], 'en' );
-
-		$this->globalVars['smwgContLang'] = new $this->globalVars['smwContLangClass'];
-	}
-
-	protected function setLanguage( $langcode ) {
-
-		$this->globalVars['smwContLangFile'] = 'SMW_Language' . str_replace( '-', '_', ucfirst( $langcode ) );
-		$this->globalVars['smwContLangClass'] = 'SMWLanguage' . str_replace( '-', '_', ucfirst( $langcode ) );
-
-		$file = $this->directory . '/' . 'languages' . '/' . $this->globalVars['smwContLangFile'] . '.php';
-
-		if ( file_exists( $file ) ) {
-			include_once ( $file );
-		}
-	}
-
 	protected function isValidConfigurationOrSetDefault( $element, $default ) {
 		if ( !isset( $this->globalVars[$element] ) || !is_array( $this->globalVars[$element] ) ) {
 			$this->globalVars[$element] = $default;
-		}
-	}
-
-	protected function isValidLanguageClassOrSetFallback( $langClass, $fallbackLanguageCode ) {
-		if ( !class_exists( $langClass ) ) {
-			$this->setLanguage( $fallbackLanguageCode );
 		}
 	}
 

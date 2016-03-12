@@ -74,7 +74,7 @@ class Localizer {
 	/**
 	 * @since 2.4
 	 *
-	 * @return Language
+	 * @return ExtraneousLanguage
 	 */
 	public function getExtraneousLanguage() {
 		return $GLOBALS['smwgContLang'];
@@ -132,6 +132,30 @@ class Localizer {
 	 */
 	public static function asBCP47FormattedLanguageCode( $languageCode ) {
 		return wfBCP47( $languageCode );
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param string &$value
+	 *
+	 * @return string|false
+	 */
+	public static function getLanguageCodeFrom( &$value ) {
+
+		$langCode = false;
+
+		if ( strpos( $value, '@' ) === false ) {
+			return false;
+		}
+
+		if ( ( $langCode = mb_substr( strrchr( $value, "@" ), 1 ) ) !== '' ) {
+			$value = str_replace( '_', ' ', substr_replace( $value, '', ( mb_strlen( $langCode ) + 1 ) * -1 ) );
+		}
+
+		// Do we want to check here whether isSupportedLanguage or not?
+
+		return $langCode !== '' ? $langCode : false;
 	}
 
 }

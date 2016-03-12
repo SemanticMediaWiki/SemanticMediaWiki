@@ -165,7 +165,20 @@ class PropertyRegistry {
 	 * alias.
 	 */
 	public function registerPropertyAlias( $id, $label ) {
-		$this->propertyAliasFinder->registerPropertyAlias( $id, $label );
+		$this->propertyAliasFinder->registerAliasByFixedLabel( $id, $label );
+	}
+
+	/**
+	 * Register an alias using a message key to allow fetching localized
+	 * labels dynamically (for when the user language is changed etc).
+	 *
+	 * @since 2.4
+	 *
+	 * @param string $id
+	 * @param string $msgKey
+	 */
+	public function registerPropertyAliasByMsgKey( $id, $msgKey ) {
+		$this->propertyAliasFinder->registerAliasByMsgKey( $id, $msgKey );
 	}
 
 	/**
@@ -260,6 +273,45 @@ class PropertyRegistry {
 			return $id;
 		} elseif ( $useAlias && $this->propertyAliasFinder->findPropertyIdByAlias( $label ) ) {
 			return $this->propertyAliasFinder->findPropertyIdByAlias( $label );
+		}
+
+		return false;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param string $label
+	 * @param string $languageCode
+	 *
+	 * @return mixed string property ID or false
+	 */
+	public function findPropertyIdByLanguageCode( $label, $languageCode = '' ) {
+
+		$languageCode = mb_strtolower( trim( $languageCode ) );
+
+		// Match the canonical form
+		if ( $languageCode === 'en' || $languageCode === '' ) {
+			return $this->findPropertyIdByLabel( $label );
+		}
+
+		$extraneousLanguage = ExtraneousLanguage::getInstance()->fetchByLanguageCode(
+			$languageCode
+		);
+
+		// Language dep. stored as aliases
+		$aliases = $extraneousLanguage->getPropertyLabels();
+
+		if ( ( $id = array_search( $label, $aliases ) ) !== false ) {
+			return $id;
+		}
+
+		// Those are mostly from extension that register a msgKey as no dedicated
+		// lang. file exists; maybe this should be cached somehow?
+		foreach ( $this->propertyAliasFinder->getKnownPropertyAliasesWithMsgKey() as $key => $id ) {
+			if ( $label === Message::get( $key, Message::TEXT, $languageCode ) ) {
+				return $id;
+			}
 		}
 
 		return false;

@@ -118,4 +118,19 @@ class DIPropertyTest extends DataItemTest {
 		);
 	}
 
+	public function testCreatePropertyFromLabelThatContainsLanguageMarker() {
+
+		$property = DIProperty::newFromUserLabel( '-Foo@en' );
+		$property->setInterwiki( 'bar' );
+
+		$this->assertTrue(
+			$property->isInverse()
+		);
+
+		$this->assertEquals(
+			new DiWikiPage( 'Foo', SMW_NS_PROPERTY, 'bar' ),
+			$property->getDiWikiPage()
+		);
+	}
+
 }

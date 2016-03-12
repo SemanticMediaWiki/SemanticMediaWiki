@@ -104,6 +104,7 @@ abstract class SMWLanguage {
 		'Has query duration' => '_ASKDU',
 		'Has media type'     => '_MEDIA',
 		'Has mime type'      => '_MIME',
+		'Mime type'      => '_MIME',
 		'Display precision of'  => '_PREC',
 		'Language code'  => '_LCODE',
 		'Text'           => '_TEXT',
