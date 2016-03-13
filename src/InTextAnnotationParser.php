@@ -404,7 +404,10 @@ class InTextAnnotationParser {
 				$subject
 			);
 
-			if ( $this->isEnabledNamespace && $this->isAnnotation ) {
+			if (
+				$this->isEnabledNamespace &&
+				$this->isAnnotation &&
+				$this->parserData->canModifySemanticData() ) {
 				$this->parserData->addDataValue( $dataValue );
 			}
 		}

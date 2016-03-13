@@ -98,6 +98,24 @@ class ParserData {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @return boolean
+	 */
+	public function canModifySemanticData() {
+
+		// getExtensionData returns null if no value was set for this key
+		if (
+			$this->hasExtensionData() &&
+			$this->parserOutput->getExtensionData( 'smw-blockannotation' ) !== null &&
+			$this->parserOutput->getExtensionData( 'smw-blockannotation' ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * @since 2.1
 	 *
 	 * @return boolean
