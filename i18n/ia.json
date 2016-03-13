@@ -184,7 +184,7 @@
 	"smw_result_results": "Resultatos",
 	"smw_result_noresults": "Nulle resultato.",
 	"smwadmin": "Functiones admin pro MediaWiki Semantic",
-	"smw_smwadmin_setupsuccess": "Le motor de immagazinage ha essite installate con successo.",
+	"smw_smwadmin_setupsuccess": "Le motor de immagazinage ha essite configurate con successo.",
 	"smw_smwadmin_return": "Retornar a $1",
 	"smw_smwadmin_updatestarted": "Un nove processo de actualisation pro le refrescamento del datos semantic ha essite comenciate.\nTote le datos immagazinate essera reconstruite o reparate ubi necessari.\nTu pote sequer le progresso del actualisation in iste pagina special.\n\nRetornar a $1.",
 	"smw_smwadmin_updatenotstarted": "Il ha ja un processo de actualisation in curso de execution.\nNon es create un altere.\n\nRetornar a $1.",
@@ -221,5 +221,7 @@
 	"smw_unknowntype": "Typo non supportate \"$1\" definite pro proprietate.",
 	"smw_concept_header": "Paginas del concepto \"$1\"",
 	"smw_conceptarticlecount": "Presentation de $1 {{PLURAL:$1|pagina|paginas}} que appertine a ille concepto.",
-	"smw-livepreview-loading": "Cargamento in curso…"
+	"smw-livepreview-loading": "Cargamento in curso…",
+	"smw-pa-property-predefined_errc": "\"$1\" es un proprietate predefinite fornite per [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] que representa errores connexe a mal annotationes de valores o mal tractamento de entrata.",
+	"smw-pa-property-predefined-long_errc": "Le errores se collige in un [https://www.semantic-mediawiki.org/wiki/Help:Container receptaculo] que pote includer un referentia al proprietate que ha causate le discrepantia."
 }
