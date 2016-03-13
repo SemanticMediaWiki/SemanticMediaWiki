@@ -188,6 +188,11 @@ class InTextAnnotationParser {
 				$caption = false;
 				$value = '';
 
+				// #1453
+				if ( $matches[0] === '[[SMW::off]]' || $matches[0] === '[[SMW::on]]' ) {
+					return false;
+				}
+
 				// Strict mode matching
 				if ( array_key_exists( 1, $matches ) ) {
 					if ( strpos( $matches[1], ':' ) !== false && isset( $matches[2] ) ) {

@@ -164,6 +164,10 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 				$this->doMove( $page, $namespace );
 			}
 
+			if ( isset( $page['do-purge'] ) ) {
+				$this->pageCreator->getPage()->doPurge();
+			}
+
 			if ( isset( $page['do-delete'] ) && $page['do-delete'] ) {
 				$this->pageDeleter->deletePage( $title );
 			}

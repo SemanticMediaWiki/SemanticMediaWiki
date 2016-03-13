@@ -715,7 +715,8 @@ abstract class SMWDataValue {
 			$result .= smwfEncodeMessages( $extralinks, 'service', '', false );
 		}
 
-		return $result;
+		// #1453 SMW::on/off will break any potential link therefore just don't even try
+		return strpos( $result, 'SMW::off' ) !== false || strpos( $result, 'SMW::on' ) !== false ? '' : $result;
 	}
 
 	/**
