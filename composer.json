@@ -38,6 +38,7 @@
 	},
 	"require": {
 		"php": ">=5.3.0",
+		"ext-mbstring": "*",
 		"composer/installers": "1.*,>=1.0.1",
 		"mediawiki/parser-hooks": "~1.4",
 		"serialization/serialization": "~3.2",
