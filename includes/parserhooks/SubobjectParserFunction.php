@@ -53,7 +53,7 @@ class SubobjectParserFunction {
 	/**
 	 * @var boolean
 	 */
-	private $useFirstElementForPropertyLabel = false;
+	private $isEnabledFirstElementPropertyLabel = false;
 
 	/**
 	 * @since 1.9
@@ -72,12 +72,12 @@ class SubobjectParserFunction {
 	/**
 	 * @since 1.9
 	 *
-	 * @param boolean $useFirstElementForPropertyLabel
+	 * @param boolean $isEnabledFirstElementPropertyLabel
 	 *
 	 * @return SubobjectParserFunction
 	 */
-	public function setFirstElementForPropertyLabel( $useFirstElementForPropertyLabel = true ) {
-		$this->useFirstElementForPropertyLabel = (bool)$useFirstElementForPropertyLabel;
+	public function setFirstElementForPropertyLabel( $isEnabledFirstElementPropertyLabel = true ) {
+		$this->isEnabledFirstElementPropertyLabel = (bool)$isEnabledFirstElementPropertyLabel;
 		return $this;
 	}
 
@@ -106,26 +106,30 @@ class SubobjectParserFunction {
 			->getHtml();
 	}
 
-	protected function addDataValuesToSubobject( ParserParameterProcessor $parameters ) {
-
-		$subject = $this->parserData->getSemanticData()->getSubject();
+	protected function addDataValuesToSubobject( ParserParameterProcessor $parserParameterProcessor ) {
 
 		// Named subobjects containing a "." in the first five characters are reserved to be
 		// used by extensions only in order to separate them from user land and avoid having
 		// them accidentally to refer to the same named ID
 		// (i.e. different access restrictions etc.)
-		if ( strpos( mb_substr( $parameters->getFirst(), 0, 5 ), '.' ) !== false ) {
+		if ( strpos( mb_substr( $parserParameterProcessor->getFirst(), 0, 5 ), '.' ) !== false ) {
 			return $this->addErrorWithMsg(
-				$subject,
-				wfMessage( 'smw-subobject-parser-invalid-naming-scheme', $parameters->getFirst() )->escaped()
+				$this->parserData->getSemanticData()->getSubject(),
+				wfMessage( 'smw-subobject-parser-invalid-naming-scheme', $parserParameterProcessor->getFirst() )->escaped()
 			);
 		}
 
-		$this->subobject->setEmptyContainerForId(
-			$this->createSubobjectId( $parameters )
+		list( $parameters, $id ) = $this->getParameters(
+			$parserParameterProcessor
 		);
 
-		foreach ( $this->transformParametersToArray( $parameters ) as $property => $values ) {
+		$this->subobject->setEmptyContainerForId(
+			$id
+		);
+
+		$subject = $this->subobject->getSubject();
+
+		foreach ( $parameters as $property => $values ) {
 
 			if ( $property === self::PARAM_SORTKEY ) {
 				$property = DIProperty::TYPE_SORTKEY;
@@ -151,29 +155,47 @@ class SubobjectParserFunction {
 		return true;
 	}
 
-	private function createSubobjectId( ParserParameterProcessor $parameters ) {
+	private function getParameters( ParserParameterProcessor $parserParameterProcessor ) {
 
-		$isAnonymous = in_array( $parameters->getFirst(), array( null, '' ,'-' ) );
+		$id = $parserParameterProcessor->getFirst();
+		$isAnonymous = in_array( $id, array( null, '' ,'-' ) );
 
-		$this->useFirstElementForPropertyLabel = $this->useFirstElementForPropertyLabel && !$isAnonymous;
+		$this->isEnabledFirstElementPropertyLabel = $this->isEnabledFirstElementPropertyLabel && !$isAnonymous;
 
-		if ( $this->useFirstElementForPropertyLabel || $isAnonymous ) {
-			return HashBuilder::createHashIdForContent( $parameters->toArray(), '_' );
+		$parameters = $this->doPrepareParameters(
+			$parserParameterProcessor
+		);
+
+		// Reclaim the ID to be hash based on the content
+		if ( $this->isEnabledFirstElementPropertyLabel || $isAnonymous ) {
+			$id = HashBuilder::createHashIdForContent( $parameters, '_' );
 		}
 
-		return $parameters->getFirst();
+		return array( $parameters, $id );
 	}
 
-	private function transformParametersToArray( ParserParameterProcessor $parameters ) {
+	private function doPrepareParameters( ParserParameterProcessor $parserParameterProcessor ) {
 
-		if ( $this->useFirstElementForPropertyLabel ) {
-			$parameters->addParameter(
-				$parameters->getFirst(),
+		if ( $this->isEnabledFirstElementPropertyLabel ) {
+			$parserParameterProcessor->addParameter(
+				$parserParameterProcessor->getFirst(),
 				$this->parserData->getTitle()->getPrefixedText()
 			);
 		}
 
-		return $parameters->toArray();
+		$parameters = $parserParameterProcessor->toArray();
+
+		// FIXME 3.0 make sorting default by 3.0
+		// Only sort for a modified sobj otherwise existing ID will change
+		$sort = false;
+
+		// This ensures that an unordered array is ordered and will produce
+		// the same ID even if elements are placed differently
+		if ( $sort ) {
+			ksort( $parameters );
+		}
+
+		return $parameters;
 	}
 
 	private function addErrorWithMsg( $subject, $errorMsg ) {
