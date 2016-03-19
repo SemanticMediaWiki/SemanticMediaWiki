@@ -59,6 +59,10 @@ Not a release yet.
 * #1358 Fixed recognition of multi-byte boolean value
 * #1348 Fixed single year detection in `TimeValue`
 * #1414 Fixed exception caused by a missing message page on a `Service link` annotation
+* #1449 Fixed mapping of imported uri to internal DataItem
+* #1450 Fixed export of concept
+* #1453 Fixed ...
+* #1459 Fixed column display regression in `CategoryResultPrinter` for subobjects
 
 ## Internal changes
 
@@ -75,5 +79,8 @@ Not a release yet.
 * #1421 Added `DeferredDependencyLinksUpdater` to avoid violations reported by `TransactionProfiler` in MW 1.26+ 
 * #1417 Added `PermissionPthValidator` together with new the `smwcurator` group and `smw-patternedit` right
 * #1435 Added `DeferredCallableUpdate` (together with `$GLOBALS['smwgEnabledDeferredUpdate']`) to support MW's `DeferrableUpdate` interface (i.e. to support queuing DB related transactions)
+* #1445 Added `userlang` as `ParserOutput` option
+* #1451 Added `ExtraneousLanguage` interface
+* #1460 Requires PHP extension mbstring in `composer.json`
 
 ## Contributors
