@@ -364,4 +364,37 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		$instance->addLimitReport( 'Foo', 'Bar' );
 	}
 
+	public function testCanModifySemanticData() {
+
+		$title = $this->getMockBuilder( 'Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( -1 ) );
+
+		$parserOutput = new ParserOutput();
+
+		// FIXME 1.21+
+		if ( !method_exists( $parserOutput, 'getExtensionData' ) ) {
+			$this->markTestSkipped( 'getExtensionData is not available.' );
+		}
+
+		$instance = new ParserData(
+			$title,
+			$parserOutput
+		);
+
+		$this->assertTrue(
+			$instance->canModifySemanticData()
+		);
+
+		$parserOutput->setExtensionData( 'smw-blockannotation', true );
+
+		$this->assertFalse(
+			$instance->canModifySemanticData()
+		);
+	}
+
 }

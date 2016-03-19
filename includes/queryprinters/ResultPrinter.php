@@ -271,9 +271,19 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 		/**
 		 * @var \Parser $wgParser
 		 */
-		global $wgParser, $smwgEnabledResultFormatsWithRecursiveAnnotationSupport;
+		global $wgParser;
 
 		$result .= $this->getErrorString( $results ); // append errors
+
+		// MW 1.21+
+		// Block recursive import of annotations unless otherwise specified for
+		// a specific use case
+		if ( method_exists( $wgParser->getOutput(), 'setExtensionData' ) ) {
+			$wgParser->getOutput()->setExtensionData(
+				'smw-blockannotation',
+				$this->params['format'] === 'embedded'
+			);
+		}
 
 		// Apply intro parameter
 		if ( ( $this->mIntro ) && ( $results->getCount() > 0 ) ) {

@@ -82,9 +82,9 @@ class SetParserFunction {
 						$subject
 					);
 
-				$this->parserData->addDataValue(
-					$dataValue
-				);
+				if ( $this->parserData->canModifySemanticData() ) {
+					$this->parserData->addDataValue( $dataValue );
+				}
 
 				$this->messageFormatter->addFromArray( $dataValue->getErrors() );
 

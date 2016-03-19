@@ -90,7 +90,10 @@ class SubobjectParserFunction {
 	 */
 	public function parse( ParserParameterProcessor $parameters ) {
 
-		if ( $this->addDataValuesToSubobject( $parameters ) && !$this->subobject->getSemanticData()->isEmpty() ) {
+		if (
+			$this->parserData->canModifySemanticData() &&
+			$this->addDataValuesToSubobject( $parameters ) &&
+			!$this->subobject->getSemanticData()->isEmpty()  ) {
 			$this->parserData->getSemanticData()->addSubobject( $this->subobject );
 		}
 
@@ -108,8 +111,8 @@ class SubobjectParserFunction {
 		$subject = $this->parserData->getSemanticData()->getSubject();
 
 		// Named subobjects containing a "." in the first five characters are reserved to be
-		// used by extensions only in order to separate them from user land and avoid them
-		// accidentally to refer to the same named ID
+		// used by extensions only in order to separate them from user land and avoid having
+		// them accidentally to refer to the same named ID
 		// (i.e. different access restrictions etc.)
 		if ( strpos( mb_substr( $parameters->getFirst(), 0, 5 ), '.' ) !== false ) {
 			return $this->addErrorWithMsg(
