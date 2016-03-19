@@ -75,11 +75,11 @@ class CategoryResultPrinter extends ResultPrinter {
 				continue;
 			}
 
-			$cur_first_char = $this->getFirstLetterForCategory( $res, $content[0] );
+			$columnIndex = $this->getFirstLetterForCategory( $res, $content[0] );
 
-			if ( !isset( $contentsByIndex[$cur_first_char] ) ) {
-				$contentsByIndex[$cur_first_char] = array();
-				$lastColumnIndex = $cur_first_char;
+			if ( !isset( $contentsByIndex[$columnIndex] ) ) {
+				$contentsByIndex[$columnIndex] = array();
+				$lastColumnIndex = $columnIndex;
 			}
 
 			if ( $this->mTemplate !== '' ) { // build template code
@@ -95,7 +95,6 @@ class CategoryResultPrinter extends ResultPrinter {
 					$res,
 					$row,
 					$first_col,
-					$columnIndex,
 					$templateRenderer
 				);
 
@@ -113,8 +112,6 @@ class CategoryResultPrinter extends ResultPrinter {
 				foreach ( $row as $field ) {
 					$first_value = true;
 					$fieldValues = array();
-
-					$columnIndex = $this->getFirstLetterForCategory( $res, $field->getResultSubject() );
 
 					while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
 
@@ -224,12 +221,13 @@ class CategoryResultPrinter extends ResultPrinter {
 
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_WIKIPAGE ) {
 			$sortKey = $res->getStore()->getWikiPageSortKey( $dataItem );
+
 		}
 
 		return ByLanguageCollationMapper::getInstance()->findFirstLetterForCategory( $sortKey );
 	}
 
-	private function addRowFieldsToTemplate( $res, $row, &$first_col, &$columnIndex, $templateRenderer ) {
+	private function addRowFieldsToTemplate( $res, $row, &$first_col, $templateRenderer ) {
 
 		// explicitly number parameters for more robust parsing (values may contain "=")
 		$i = 0;
@@ -248,7 +246,6 @@ class CategoryResultPrinter extends ResultPrinter {
 			}
 
 			$fieldValues = array();
-			$columnIndex = $this->getFirstLetterForCategory( $res, $field->getResultSubject() );
 
 			while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
 				$fieldValues[] = $text;
