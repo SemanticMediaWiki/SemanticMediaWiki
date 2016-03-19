@@ -1,0 +1,144 @@
+{
+	"description": "Test `format=category` sort output using a template and DEFAULTSORT (#1459, en)",
+	"properties": [
+		{
+			"name": "Has surname",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"name": "Has given name",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"name": "Has initials",
+			"contents": "[[Has type::Text]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "CategoryListTemplate",
+			"namespace": "NS_TEMPLATE",
+			"contents": "<includeonly>{{{1}}}, {{{3}}}</includeonly>"
+		},
+		{
+			"name": "SetSobjWithSort",
+			"namespace": "NS_TEMPLATE",
+			"contents": "<includeonly>{{#subobject:|Has surname={{{Has surname}}}|Has given name={{{Has given name}}}|Has initials={{{Has initials}}}|@category={{{Category}}}|@sortkey={{{Has surname}}},{{{Has initials}}} }}</includeonly>"
+		},
+		{
+			"name": "Example/F0303/1",
+			"contents": "{{#subobject:|Has surname=Abbot|Has given name=John|Has initials=J.|@category=SOBJ1459}}{{#subobject: |Has surname=Arthur|Has given name=Frank Walter|Has initials=F.W.|@category=SOBJ1459}}{{#subobject: |Has surname=Baker|Has given name=George Henry|Has initials=G.H.|@category=SOBJ1459}}"
+		},
+		{
+			"name": "Example/F0303/1aq",
+			"contents": "{{#ask: [[Category:SOBJ1459]] |?Has surname# |?Has given name# |?Has initials# |format=category |mainlabel=- |template=CategoryListTemplate |sort=Has surname,Has initials }}"
+		},
+		{
+			"name": "Example/F0303/1bq",
+			"contents": "{{#ask: [[Category:SOBJ1459]] |?Has surname# |?Has given name# |?Has initials# |format=category |mainlabel=- |headers=hide |sort=Has surname,Has initials }}"
+		},
+		{
+			"name": "Example/F0303/2/1",
+			"contents": "[[Has surname::Abbot]] [[Has given name::John]] [[Has initials::J.]] [[Category:PAGE1459]] {{DEFAULTSORT:Abbot}}"
+		},
+		{
+			"name": "Example/F0303/2/2",
+			"contents": "[[Has surname::Arthur]] [[Has given name::Frank Walter]] [[Has initials::F.W.]] [[Category:PAGE1459]] {{DEFAULTSORT:Arthur}}"
+		},
+		{
+			"name": "Example/F0303/2/3",
+			"contents": "[[Has surname::Baker]] [[Has given name::George Henry]] [[Has initials::G.H.]] [[Category:PAGE1459]] {{DEFAULTSORT:Baker}}"
+		},
+		{
+			"name": "Example/F0303/2aq",
+			"contents": "{{#ask: [[Category:PAGE1459]] |?Has surname# |?Has given name# |?Has initials# |format=category |mainlabel=- |template=CategoryListTemplate |sort=Has surname,Has initials }}"
+		},
+		{
+			"name": "Example/F0303/2bq",
+			"contents": "{{#ask: [[Category:PAGE1459]] |?Has surname# |?Has given name# |?Has initials# |format=category |mainlabel=- |headers=hide |sort=Has surname,Has initials }}"
+		},
+		{
+			"name": "Example/F0303/3",
+			"contents": "{{SetSobjWithSort|Has surname=Abbot|Has given name=John|Has initials=J.|Category=SOBJSORT1459}}{{SetSobjWithSort|Has surname=Arthur|Has given name=Frank Walter|Has initials=F.W.|Category=SOBJSORT1459}}{{SetSobjWithSort|Has surname=Baker|Has given name=George Henry|Has initials=G.H.|Category=SOBJSORT1459}}"
+		},
+		{
+			"name": "Example/F0303/3aq",
+			"contents": "{{#ask: [[Category:SOBJSORT1459]] |?Has surname# |?Has given name# |?Has initials# |format=category |mainlabel=- |template=CategoryListTemplate |sort=Has surname,Has initials }}"
+		}
+	],
+	"format-testcases": [
+		{
+			"about": "#0 using sobj",
+			"subject": "Example/F0303/1aq",
+			"expected-output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
+					"<div class=\"smw-column-header\">A</div><ul><li>Abbot, J.</li></ul></div>",
+					"<div class=\"smw-column-header\">A cont.</div><ul><li>Arthur, F.W.</li></ul></div>",
+					"<div class=\"smw-column-header\">B</div><ul><li>Baker, G.H.</li></ul></div>"
+				]
+			}
+		},
+		{
+			"about": "#1 using sobj",
+			"subject": "Example/F0303/1bq",
+			"expected-output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
+					"<div class=\"smw-column-header\">A</div><ul><li>Abbot (John J.)</li></ul></div>",
+					"<div class=\"smw-column-header\">A cont.</div><ul><li>Arthur (Frank Walter F.W.)</li></ul></div>",
+					"<div class=\"smw-column-header\">B</div><ul><li>Baker (George Henry G.H.)</li></ul></div>"
+				]
+			}
+		},
+		{
+			"about": "#2",
+			"subject": "Example/F0303/2aq",
+			"expected-output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
+					"<div class=\"smw-column-header\">A</div><ul><li>Abbot, J.</li></ul></div>",
+					"<div class=\"smw-column-header\">A cont.</div><ul><li>Arthur, F.W.</li></ul></div>",
+					"<div class=\"smw-column-header\">B</div><ul><li>Baker, G.H.</li></ul></div>"
+				]
+			}
+		},
+		{
+			"about": "#3",
+			"subject": "Example/F0303/2bq",
+			"expected-output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
+					"<div class=\"smw-column-header\">A</div><ul><li>Abbot (John J.)</li></ul></div>",
+					"<div class=\"smw-column-header\">A cont.</div><ul><li>Arthur (Frank Walter F.W.)</li></ul></div>",
+					"<div class=\"smw-column-header\">B</div><ul><li>Baker (George Henry G.H.)</li></ul></div>"
+				]
+			}
+		},
+		{
+			"about": "#4 using sobj",
+			"subject": "Example/F0303/3aq",
+			"expected-output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
+					"<div class=\"smw-column-header\">A</div><ul><li>Abbot, J.</li></ul></div>",
+					"<div class=\"smw-column-header\">A cont.</div><ul><li>Arthur, F.W.</li></ul></div>",
+					"<div class=\"smw-column-header\">B</div><ul><li>Baker, G.H.</li></ul></div>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
