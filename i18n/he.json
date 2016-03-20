@@ -8,7 +8,8 @@
 			"YaronSh",
 			"חיים",
 			"ערן",
-			"아라"
+			"아라",
+			"MojoMann"
 		]
 	},
 	"smw-desc": "הופכת את הוויקי שלכם לנגיש יותר – עבור מכונות וגם עבור בני אדם ([https://www.semantic-mediawiki.org/wiki/Help:User_manual תיעוד מקוון])",
@@ -338,7 +339,7 @@
 	"smw-sp-types_tel": "\"$1\" הוא סוג נתונים מיוחד לתיאור מספר טלפון בין־לאומי בהתאם ל־RFC 3966.",
 	"smw-sp-types_txt": "\"$1\" הוא סוג נתונים פרימיטיבי לתיאור מחרוזות באורך כלשהו.",
 	"smw-sp-types_dat": "\"$1\" הוא סוג נתונים לייצוג נקודות בזמן בתסדיר מאוחד.",
-	"smw-pa-property-predefined_errc": "\"$1\" הוא מאפיין מוגדר מראש שמייצג [https://www.semantic-mediawiki.org/wiki/Help:Container מבנה] לשגיאות שהופיעו בהקשר של הערות ערך או איבוד קלט שלא עבדו נכון ומסופק על־ידי [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_errc": "\"$1\" הוא מאפיין מוגדר מראש שסופק ע\"י [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] ומייצג שגיאות שמופיעות בחיבור עם ערך לא מתאים או עיבוד קלט.",
 	"smw-pa-property-predefined_errt": "\"$1\" הוא מאפיין מוגדר מראש שמכיל תיאור טקסט של שגיאה ומסופק על־ידי [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-subobject-parser-invalid-naming-scheme": "תת־עצם שהוגדר על־ידי המשתמש עשה שימוש בשיטת מתן שמות בלתי־תקינה. כתיבת נקודה בחמשת האותיות הראשונות ($1) שמורה להרחבות.",
 	"smw-datavalue-record-invalid-property-declaration": "הגדרת הרשומה כוללת את המאפיין \"$1\" שבעצמה מוגדרת בתור סוג רשומה ואינה מותרת.",

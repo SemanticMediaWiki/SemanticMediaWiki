@@ -148,6 +148,7 @@
 	"smw_ask_show_embed": "Donn dä Wiki_Kood zom ennfööje aanzeije",
 	"smw_ask_hide_embed": "Donn dä Wiki_Kood zom Ennfööje vershteishe",
 	"smw_ask_embed_instr": "Öm di Frohch en en Sigg em Wikki enzeboue, donn dä Wikki_Koode heh dronger en di Sigg enföhje.",
+	"smw-ask-query-search-info": "Op Aanfrohch <code><nowiki>$1</nowiki></code> hät de Dahtebangk („$2“) en {{PLURAL:$3|ener Sekonde|$3 Sekonde|nix aan Zigg}} jeantwoot.",
 	"searchbyproperty": "Övver de Eijeschaffte söke",
 	"smw_sbv_docu": "Donn noh all dä Sigge söhke, di en beschtemmpte Eijeschaff han, un medd_ennem beschtemmpte Wäät för se.",
 	"smw_sbv_novalue": "Donn ene jöltijje Wäät för di Eijeschavv aanjävve, udder donn Der all de müjjelesche Wääte för „$1“ aanlohre.",
