@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"පසිඳු කාවින්ද",
-			"Susith Chandira Gts"
+			"Susith Chandira Gts",
+			"SusithCM"
 		]
 	},
 	"smw_viewasrdf": "RDF පෝෂකය",
@@ -78,7 +79,7 @@
 	"smw_ask_ascorder": "ආරෝහණ",
 	"smw_ask_descorder": "අවරෝහණ",
 	"smw_ask_submit": "ප්‍රතිඵල සොයන්න",
-	"smw_ask_editquery": "[ප්‍රශ්නය සංස්කරණය කරන්න]",
+	"smw_ask_editquery": "ප්‍රශ්නය සංස්කරණය කරන්න",
 	"smw_add_sortcondition": "[පෙළගැස්වීම් කොන්දේසියක් එක් කරන්න]",
 	"smw_ask_hidequery": "ප්‍රශ්නය සඟවන්න",
 	"smw_ask_help": "විමසුම් උදව්",

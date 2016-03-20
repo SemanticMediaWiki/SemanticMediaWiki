@@ -2,10 +2,12 @@
 	"@metadata": {
 		"authors": [
 			"Roustammr",
-			"Рустам Нурыев"
+			"Рустам Нурыев",
+			"Айсар"
 		]
 	},
 	"browse": "Вики күҙәтеү",
 	"smw_browselink": "Үҙенсәлектәрҙе ҡарарға",
+	"smw_smwadmin_setupsuccess": "Һаҡлау системаһы уңышлы ҡуйылды",
 	"smw-livepreview-loading": "Сығарыу..."
 }
