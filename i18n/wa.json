@@ -1,4 +1,9 @@
 {
-	"@metadata": [],
+	"@metadata": {
+		"authors": [
+			"Srtxg"
+		]
+	},
+	"smw-ui-tooltip-title-legend": "Ledjinde",
 	"smw-livepreview-loading": "Tcherdjant..."
 }
