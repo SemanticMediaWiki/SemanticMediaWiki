@@ -348,6 +348,13 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 			self::$mRecursionDepth--;
 		}
 
+		if ( method_exists( $wgParser->getOutput(), 'setExtensionData' ) ) {
+			$wgParser->getOutput()->setExtensionData(
+				'smw-blockannotation',
+				false
+			);
+		}
+
 		return $result;
 	}
 
