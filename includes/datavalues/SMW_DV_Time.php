@@ -230,7 +230,7 @@ class SMWTimeValue extends SMWDataValue {
 				$era = '+';
 			} elseif ( $era === false && in_array( $match, array( 'BC', 'BCE' ) ) ) {
 				$era = '-';
-			} elseif ( $calendarmodel === false && in_array( $match, array( 'Gr', 'He', 'Jl', 'MJD', 'JD', 'OS' ) ) ) {
+			} elseif ( $calendarmodel === false && in_array( $match, array( 'Gr', 'GR' , 'He', 'Jl', 'JL', 'MJD', 'JD', 'OS' ) ) ) {
 				$calendarmodel = $match;
 			} elseif ( $ampm === false && ( strtolower( $match ) === 'am' || strtolower( $match ) === 'pm' ) ) {
 				$ampm = strtolower( $match );
@@ -581,9 +581,9 @@ class SMWTimeValue extends SMWDataValue {
 		if ( $presetmodel == 'OS' ) { // Old Style is a notational convention of Julian dates only
 			$presetmodel = 'Jl';
 		}
-		if ( $presetmodel == 'Gr' ) {
+		if ( $presetmodel === 'Gr' || $presetmodel === 'GR' ) {
 			return SMWDITime::CM_GREGORIAN;
-		} elseif ( $presetmodel == 'Jl' ) {
+		} elseif (  $presetmodel === 'Jl' || $presetmodel === 'JL' ) {
 			return SMWDITime::CM_JULIAN;
 		}
 		if ( ( $year > 1582 ) ||
