@@ -48,7 +48,7 @@ class SMWLanguageDe extends SMWLanguage {
 		'_tel' => 'Telefonnummer', // name of the telephone number URI datatype
 		'_rec' => 'Verbund', // name of the record datatype
 		'_qty' => 'Maß', // name of the quantity datatype
-		'_mlt_rec' => 'Monolingual text',
+		'_mlt_rec' => 'Einsprachiger Text',
 	);
 
 	protected $m_DatatypeAliases = array(
@@ -88,38 +88,49 @@ class SMWLanguageDe extends SMWLanguage {
 		'_MIME' => 'MIME-Typ',
 		'_ERRC' => 'Verarbeitungsfehler',
 		'_ERRT' => 'Verarbeitungsfehlerhinweis',
-		'_PREC'  => 'Display precision of',
-		'_LCODE' => 'Language code',
-		'_TEXT'  => 'Text',
-		'_PDESC' => 'Has property description',
-		'_PVAP'  => 'Allows pattern',
-		'_DTITLE' => 'Display title of',
-		'_PVUC' => 'Has uniqueness constraint',
+		'_PREC' => 'Anzeigegenauigkeit',
+		'_LCODE' => 'Sprachcode',
+		'_TEXT' => 'Text',
+		'_PDESC' => 'Attributbeschreibung',
+		'_PVAP' => 'Erlaubt Muster',
+		'_DTITLE' => 'Anzeigetitel',
+		'_PVUC' => 'Erlaubt Wert einmal',
 	);
 
 	protected $m_SpecialPropertyAliases = array(
-		'Hat Datentyp'		=> '_TYPE',
-		'Hat erlaubten Wert'	=> '_PVAL',
-		'Hat Einheiten' 	=> '_UNIT',
-		'Hat Medientyp'         => '_MEDIA',
-		'Hat MIME-Typ'          => '_MIME',
-		'Ausgabeeinheit'	=> '_UNIT',
-		'Gleichwertige URI von' => '_URI'
+		'Hat Datentyp' => '_TYPE',
+		'Hat erlaubten Wert' => '_PVAL',
+		'Hat Einheiten' => '_UNIT',
+		'Hat Medientyp' => '_MEDIA',
+		'Hat MIME-Typ' => '_MIME',
+		'Abfrage' => '_ASK',
+		'Unterobjekt' => '_SOBJ',
+		'Komponenten' => '_LIST',
+		'Neue Seite' => '_NEWP',
+		'Letzer Bearbeiter' => '_LEDT',
+		'Ausgabeeinheit' => '_UNIT',
+		'Gleichwertige URI von' => '_URI',
+		'Unpassender Wert' => '_ERRP',
+		'Hat Sprachcode' => '_LCODE',
+		'Hat Anzeigegenauigkeit' => '_PREC',
+		'Hat Attributbeschreibung' => '_PDESC',
+		'Hat Anzeigetitel' => '_DTITLE',
+		'Hat einmal erlaubten Wert' => '_PVUC'
 	);
 
 	protected $m_Namespaces = array(
-		SMW_NS_PROPERTY       => "Attribut",
-		SMW_NS_PROPERTY_TALK  => "Attribut_Diskussion",
-		SMW_NS_TYPE           => "Datentyp",
-		SMW_NS_TYPE_TALK      => "Datentyp_Diskussion",
-		SMW_NS_CONCEPT        => 'Konzept',
-		SMW_NS_CONCEPT_TALK   => 'Konzept_Diskussion',
+		SMW_NS_PROPERTY      => 'Attribut',
+		SMW_NS_PROPERTY_TALK => 'Attribut_Diskussion',
+		SMW_NS_TYPE          => 'Datentyp',
+		SMW_NS_TYPE_TALK     => 'Datentyp_Diskussion',
+		SMW_NS_CONCEPT       => 'Konzept',
+		SMW_NS_CONCEPT_TALK  => 'Konzept_Diskussion',
 	);
 
 	protected $m_dateformats = array( array( SMW_Y ), array( SMW_MY, SMW_YM ), array( SMW_DMY, SMW_MDY, SMW_YMD, SMW_YDM ) );
 
-	protected $m_months = array( "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember" );
+	protected $m_months = array( 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember' );
 
-	protected $m_monthsshort = array( "Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez" );
+	protected $m_monthsshort = array( 'Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez' );
 
 }
