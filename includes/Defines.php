@@ -144,4 +144,5 @@ define( 'SMW_DV_MLTV_LCODE', 4 );  // MonolingualTextValue requires language cod
 define( 'SMW_DV_PVAP', 16 );  // Allows pattern
 define( 'SMW_DV_WPV_DTITLE', 32 );  // WikiPageValue to use an explicit display title
 define( 'SMW_DV_PROV_DTITLE', 64 );  // PropertyValue allow to find a property using the display title
+define( 'SMW_DV_PVUC', 128 );  // Delcares a uniqueness constraint
 /**@}*/

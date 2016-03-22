@@ -190,7 +190,33 @@ class SMWDIContainer extends SMWDataItem {
 	 * @return string
 	 */
 	public function getHash() {
-		return $this->m_semanticData->getHash();
+
+		$hash = $this->getValueHash( $this->m_semanticData );
+		sort( $hash );
+
+		return md5( implode( '#', $hash ) );
+
+		// We want a value hash, not an entity hash!!
+		// return $this->m_semanticData->getHash();
+	}
+
+	private function getValueHash( $semanticData ) {
+
+		$hash = array();
+
+		foreach ( $semanticData->getProperties() as $property ) {
+			$hash[] = $property->getKey();
+
+			foreach ( $semanticData->getPropertyValues( $property ) as $di ) {
+				$hash[] = $di->getHash();
+			}
+		}
+
+		foreach ( $semanticData->getSubSemanticData() as $data ) {
+			$hash[] = $this->getValueHash( $data );
+		}
+
+		return $hash;
 	}
 
 	/**

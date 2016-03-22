@@ -384,5 +384,8 @@
 	"smw-datavalue-allows-pattern-reference-unknown": "The \"$1\" pattern reference could not be match to an entry in [[MediaWiki:Smw allows pattern]].",
 	"smw-datavalue-feature-not-supported": "The \"$1\" feature is not supported or was disabled on this wiki.",
 	"smw-pa-property-predefined_pvap": "\"$1\" is a predefined property that can specify a [[MediaWiki:Smw allows pattern|pattern reference]] to apply [https://en.wikipedia.org/wiki/Regular_expression regular expression] matching and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
-	"smw-pa-property-predefined_dtitle": "\"$1\" is a predefined property that can assign a distinct display title to an entity and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]."
+	"smw-pa-property-predefined_dtitle": "\"$1\" is a predefined property that can assign a distinct display title to an entity and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_pvuc": "\"$1\" is a predefined property indicating that value assignments to a property are expected to be unique and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined-long_pvuc": "Uniqueness is established when two values are not equal in its literal representation and any violation of this constraint will be categorized as error.",
+	"smw-datavalue-uniqueness-constraint-error": "Property \"$1\" only permits unique value assignments and ''$2'' was already annotated in subject \"$3\"."
 }

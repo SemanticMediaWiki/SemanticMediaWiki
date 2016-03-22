@@ -88,7 +88,8 @@ class SMWLanguageHu extends SMWLanguage {
 		'_TEXT'  => 'Text',
 		'_PDESC' => 'Has property description',
 		'_PVAP'  => 'Allows pattern',
-		'_DTITLE' => 'Display title of'
+		'_DTITLE' => 'Display title of',
+		'_PVUC' => 'Has uniqueness constraint',
 	);
 
 	protected $m_SpecialPropertyAliases = array(

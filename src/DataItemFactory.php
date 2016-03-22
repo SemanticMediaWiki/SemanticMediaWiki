@@ -4,6 +4,7 @@ namespace SMW;
 
 use SMWDINumber as DINumber;
 use SMWDIBlob as DIBlob;
+use SMWDIBoolean as DIBoolean;
 use SMWDIError as DIError;
 use SMWDIContainer as DIContainer;
 use SMWContainerSemanticData as ContainerSemanticData;
@@ -86,6 +87,17 @@ class DataItemFactory {
 	 */
 	public function newDIBlob( $text ) {
 		return new DIBlob( $text );
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param boolean $boolean
+	 *
+	 * @return DIBoolean
+	 */
+	public function newDIBoolean( $boolean ) {
+		return new DIBoolean( $boolean );
 	}
 
 }

@@ -221,6 +221,14 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructQueryFactory() {
+
+		$this->assertInstanceOf(
+			'\SMW\QueryFactory',
+			$this->applicationFactory->newQueryFactory()
+		);
+	}
+
 	public function testCanConstructDeferredCallableUpdate() {
 
 		$callback = function() {

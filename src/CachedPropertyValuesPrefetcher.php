@@ -3,6 +3,7 @@
 namespace SMW;
 
 use Onoi\BlobStore\BlobStore;
+use SMWQuery as Query;
 
 /**
  * This class should be accessed via ApplicationFactory::getCachedPropertyValuesPrefetcher
@@ -99,6 +100,17 @@ class CachedPropertyValuesPrefetcher {
 	/**
 	 * @since 2.4
 	 *
+	 * @param Query $query
+	 *
+	 * @return array
+	 */
+	public function queryPropertyValuesFor( Query $query ) {
+		return $this->store->getQueryResult( $query )->getResults();
+	}
+
+	/**
+	 * @since 2.4
+	 *
 	 * @return BlobStore
 	 */
 	public function getBlobStore() {
@@ -123,6 +135,17 @@ class CachedPropertyValuesPrefetcher {
 	 */
 	public function getRootHashFor( DIWikiPage $subject ) {
 		return md5( $subject->asBase()->getHash() . self::VERSION );
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param string $hash
+	 *
+	 * @return string
+	 */
+	public function getHashFor( $hash ) {
+		return md5( $hash . self::VERSION );
 	}
 
 }

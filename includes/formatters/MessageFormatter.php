@@ -101,7 +101,15 @@ class MessageFormatter {
 	 * @return MessageFormatter
 	 */
 	public function addFromArray( array $messages ) {
-		$this->messages = array_merge ( $messages, $this->messages );
+
+		foreach ( $messages as $message ) {
+			if ( is_string( $message ) ) {
+				$this->messages[md5( $message )] = $message;
+			} else{
+				$this->messages[] = $message;
+			}
+		}
+
 		return $this;
 	}
 

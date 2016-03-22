@@ -89,4 +89,14 @@ class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructDIBoolean() {
+
+		$instance = new DataItemFactory();
+
+		$this->assertInstanceOf(
+			'\SMWDIBoolean',
+			$instance->newDIBoolean( true )
+		);
+	}
+
 }

@@ -45,8 +45,9 @@ class ArticleDelete {
 
 		$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
 		$jobFactory = $applicationFactory->newJobFactory();
+		$cachedPropertyValuesPrefetcher = $applicationFactory->getCachedPropertyValuesPrefetcher();
 
-		$deferredCallableUpdate = $applicationFactory->newDeferredCallableUpdate( function() use( $store, $title, $semanticDataSerializer, $jobFactory ) {
+		$deferredCallableUpdate = $applicationFactory->newDeferredCallableUpdate( function() use( $store, $title, $semanticDataSerializer, $jobFactory, $cachedPropertyValuesPrefetcher ) {
 
 			$subject = DIWikiPage::newFromTitle( $title );
 			wfDebugLog( 'smw', 'DeferredCallableUpdate on delete for ' . $subject->getHash() );
@@ -72,6 +73,10 @@ class ArticleDelete {
 			$jobFactory->newUpdateDispatcherJob( $title, array( 'job-list' => $jobList ) )->insert();
 			*/
 			$store->deleteSubject( $title );
+
+			$cachedPropertyValuesPrefetcher->resetCacheFor(
+				$subject
+			);
 		} );
 
 		$deferredCallableUpdate->pushToDeferredUpdateList();
