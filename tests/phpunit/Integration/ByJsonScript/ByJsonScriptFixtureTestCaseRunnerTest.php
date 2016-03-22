@@ -84,10 +84,11 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		$this->eventDispatcher = EventHandler::getInstance()->getEventDispatcher();
 
 		// This ensures that if content is created in the NS_MEDIAWIKI namespace
-		// that if an object relies on the MediaWikiNsContentReader is used then
-		// the data are read from the DB
+		// and an object relies on the MediaWikiNsContentReader then it uses the DB
 		ApplicationFactory::getInstance()->getMediaWikiNsContentReader()->skipMessageCache();
 		DataValueFactory::getInstance()->clear();
+
+		$this->testEnvironment->resetPoolCacheFor( \SMW\PropertySpecificationLookup::POOLCACHE_ID );
 	}
 
 	/**
@@ -229,7 +230,7 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		// Set query parser late to ensure that expected settings are adjusted
 		// (language etc.) because the __construct relies on the context language
 		$this->queryTestCaseProcessor->setQueryParser(
-			ApplicationFactory::getInstance()->newQueryParser()
+			ApplicationFactory::getInstance()->newQueryFactory()->newQueryParser()
 		);
 
 		$this->queryTestCaseProcessor->setDebugMode(

@@ -150,11 +150,18 @@ class UpdateJob extends JobBase {
 
 	private function updateStore( $parserData ) {
 
-		$dispatchContext = EventHandler::getInstance()->newDispatchContext();
+		$eventHandler = EventHandler::getInstance();
+
+		$dispatchContext = $eventHandler->newDispatchContext();
 		$dispatchContext->set( 'title', $this->getTitle() );
 
-		EventHandler::getInstance()->getEventDispatcher()->dispatch(
+		$eventHandler->getEventDispatcher()->dispatch(
 			'factbox.cache.delete',
+			$dispatchContext
+		);
+
+		$eventHandler->getEventDispatcher()->dispatch(
+			'cached.propertyvalues.prefetcher.reset',
 			$dispatchContext
 		);
 

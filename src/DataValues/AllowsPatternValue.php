@@ -3,7 +3,6 @@
 namespace SMW\DataValues;
 
 use SMWStringValue as StringValue;
-use SMW\Message;
 use SMWDataValue as DataValue;
 use SMW\DIProperty;
 use SMW\ApplicationFactory;
@@ -71,60 +70,6 @@ class AllowsPatternValue extends StringValue {
 		}
 
 		return '[['. Localizer::getInstance()->getNamespaceTextById( NS_MEDIAWIKI ) . ':smw allows pattern' . '|' . $this->getDataItem()->getString() .' ]]';
-	}
-
-	/**
-	 * @since 2.4
-	 *
-	 * @param DataValue $dataValue
-	 *
-	 * @return boolean
-	 */
-	public function doCheckAllowedPatternFor( DataValue $dataValue ) {
-
-		if ( ( $dataValue->getOptionValueFor( 'smwgDVFeatures' ) & SMW_DV_PVAP ) == 0 ) {
-			return false;
-		}
-
-		$key = $dataValue->getProperty()->getKey();
-
-		if ( ( $reference = $this->getPropertySpecificationLookup()->getAllowedPatternFor( $dataValue->getProperty() ) ) === '' ) {
-			return false;
-		}
-
-		$content = $this->allowsPatternContentParser->parse(
-			$reference
-		);
-
-		if ( !$content ) {
-			return false;
-		}
-
-		// Prevent a possible remote code execution vulnerability in connection
-		// with PCRE
-		$pattern = str_replace( array( '/e' ), array( '' ), trim( $content ) );
-
-		// Add a mandatory backslash
-		if ( $pattern !== '' && $pattern{0} !== '/' ) {
-			$pattern = '/' . $pattern;
-		}
-
-		if ( substr( $pattern, -1 ) !== '/' ) {
-			$pattern = $pattern . '/';
-		}
-
-		if ( !preg_match( $pattern, $dataValue->getDataItem()->getSortKey() ) ) {
-			$this->addErrorMsg(
-				array(
-					'smw-datavalue-allows-pattern-mismatch',
-					$dataValue->getWikiValue(),
-					$reference
-				)
-			);
-			return false;
-		}
-
-		return true;
 	}
 
 }

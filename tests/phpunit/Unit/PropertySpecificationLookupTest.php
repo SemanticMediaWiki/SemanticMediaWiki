@@ -19,6 +19,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 	private $blobStore;
 	private $dataItemFactory;
+	private $testEnvironment;
 	private $cachedPropertyValuesPrefetcher;
 
 	protected function setUp() {
@@ -33,6 +34,9 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->dataItemFactory = new DataItemFactory();
+		$this->testEnvironment = new TestEnvironment();
+
+		$this->testEnvironment->resetPoolCacheFor( PropertySpecificationLookup::POOLCACHE_ID );
 	}
 
 	public function testCanConstruct() {

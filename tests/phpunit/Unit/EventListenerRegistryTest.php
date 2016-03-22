@@ -67,6 +67,7 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->verifyPropertyTypeChangeEvent( $instance );
 		$this->verifyExporterResetEvent( $instance );
 		$this->verifyFactboxCacheDeleteEvent( $instance );
+		$this->verifyCachedPropertyValuesPrefetcherResetEvent( $instance );
 		$this->verifyOnBeforeSemanticDataUpdateCompleteEvent( $instance );
 		$this->verifyOnAfterSemanticDataUpdateCompleteEvent( $instance );
 	}
@@ -126,6 +127,30 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertListenerExecuteFor(
 			'factbox.cache.delete',
+			$instance,
+			$dispatchContext
+		);
+	}
+
+	public function verifyCachedPropertyValuesPrefetcherResetEvent( EventListenerCollection $instance ) {
+
+		$dispatchContext = EventDispatcherFactory::getInstance()->newDispatchContext();
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$dispatchContext->set(
+			'title',
+			$title
+		);
+
+		$this->assertListenerExecuteFor(
+			'cached.propertyvalues.prefetcher.reset',
 			$instance,
 			$dispatchContext
 		);

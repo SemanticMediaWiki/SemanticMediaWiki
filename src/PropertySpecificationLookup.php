@@ -19,6 +19,8 @@ use SMWQuery as Query;
  */
 class PropertySpecificationLookup {
 
+	const POOLCACHE_ID = 'property.spec.lookup.cache';
+
 	/**
 	 * @var CachedPropertyValuesPrefetcher
 	 */
@@ -41,7 +43,7 @@ class PropertySpecificationLookup {
 	 */
 	public function __construct( CachedPropertyValuesPrefetcher $cachedPropertyValuesPrefetcher ) {
 		$this->cachedPropertyValuesPrefetcher = $cachedPropertyValuesPrefetcher;
-		$this->intermediaryMemoryCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheFor( 'property.spec.lookup.cache' );
+		$this->intermediaryMemoryCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheFor( self::POOLCACHE_ID );
 	}
 
 	/**
@@ -114,6 +116,12 @@ class PropertySpecificationLookup {
 	public function hasUniquenessConstraintFor( DIProperty $property ) {
 
 		$hasUniquenessConstraint = false;
+		$key = $property->getKey();
+
+		// Guard against high frequency lookup
+		if ( $this->intermediaryMemoryCache->contains( 'uc:'. $key ) ) {
+			return $this->intermediaryMemoryCache->fetch( 'uc:'. $key );
+		}
 
 		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
 			$property->getDiWikiPage(),
@@ -123,6 +131,8 @@ class PropertySpecificationLookup {
 		if ( is_array( $dataItems ) && $dataItems !== array() ) {
 			$hasUniquenessConstraint = end( $dataItems )->getBoolean();
 		}
+
+		$this->intermediaryMemoryCache->save( 'uc:'. $key, $hasUniquenessConstraint );
 
 		return $hasUniquenessConstraint;
 	}

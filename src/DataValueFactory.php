@@ -7,7 +7,7 @@ use SMWDIError;
 use SMWErrorValue as ErrorValue;
 use SMWPropertyValue;
 use SMWDataValue as DataValue;
-use SMW\DataValues\ValueConstraintValidator;
+use SMW\DataValues\ValueValidatorRegistry;
 
 /**
  * Factory class for creating SMWDataValue objects for supplied types or
@@ -47,9 +47,8 @@ class DataValueFactory {
 	 *
 	 * @param DataTypeRegistry|null $dataTypeRegistry
 	 */
-	protected function __construct( DataTypeRegistry $dataTypeRegistry = null, ValueConstraintValidator $valueConstraintValidator = null ) {
+	protected function __construct( DataTypeRegistry $dataTypeRegistry = null ) {
 		$this->dataTypeRegistry = $dataTypeRegistry;
-		$this->valueConstraintValidator = $valueConstraintValidator;
 	}
 
 	/**
@@ -73,6 +72,7 @@ class DataValueFactory {
 	 */
 	public function clear() {
 		$this->dataTypeRegistry->clear();
+		ValueValidatorRegistry::getInstance()->clear();
 		self::$instance = null;
 	}
 
@@ -285,23 +285,6 @@ class DataValueFactory {
 	 */
 	public function newPropertyValueByLabel( $propertyLabel ) {
 		return self::newTypeIdValue( '__pro', $propertyLabel );
-	}
-
-	/**
-	 * @private
-	 * @note Called by DataValues::checkAllowedValues
-	 *
-	 * @since 2.4
-	 *
-	 * @return ValueConstraintValidator
-	 */
-	public function getValueConstraintValidator() {
-
-		if ( $this->valueConstraintValidator === null ) {
-			$this->valueConstraintValidator = ValueConstraintValidator::newInstance();
-		}
-
-		return $this->valueConstraintValidator;
 	}
 
 	/**
