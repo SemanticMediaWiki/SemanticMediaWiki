@@ -44,10 +44,10 @@ class EventListenerRegistry implements EventListenerCollection {
 			'factbox.cache.delete', function( $dispatchContext ) {
 
 				$title = $dispatchContext->get( 'title' );
-				$cache = ApplicationFactory::getInstance()->getCache();
+				$applicationFactory = ApplicationFactory::getInstance();
 
-				$cache->delete(
-					ApplicationFactory::getInstance()->newCacheFactory()->getFactboxCacheKey( $title->getArticleID() )
+				$applicationFactory->getCache()->delete(
+					$applicationFactory->newCacheFactory()->getFactboxCacheKey( $title->getArticleID() )
 				);
 			}
 		);
@@ -61,6 +61,25 @@ class EventListenerRegistry implements EventListenerCollection {
 		$this->eventListenerCollection->registerCallback(
 			'query.comparator.reset', function() {
 				QueryComparator::getInstance()->clear();
+			}
+		);
+
+		/**
+		 * Emitted during NewRevisionFromEditComplete, UpdateJob, ArticleDelete
+		 */
+		$this->eventListenerCollection->registerCallback(
+			'cached.propertyvalues.prefetcher.reset', function( $dispatchContext ) {
+
+				$subject = DIWikiPage::newFromTitle( $dispatchContext->get( 'title' ) );
+				wfDebugLog( 'smw', 'Clear CachedPropertyValuesPrefetcher for ' . $subject->getHash() );
+
+				$applicationFactory = ApplicationFactory::getInstance();
+
+				$applicationFactory->getCachedPropertyValuesPrefetcher()->resetCacheFor(
+					$subject
+				);
+
+				$dispatchContext->set( 'propagationstop', true );
 			}
 		);
 
@@ -102,7 +121,6 @@ class EventListenerRegistry implements EventListenerCollection {
 				$subject = $dispatchContext->get( 'subject' );
 				$hash = $subject->getHash();
 
-				wfDebugLog( 'smw', 'Clear CachedPropertyValuesPrefetcher for ' . $hash );
 				$applicationFactory = ApplicationFactory::getInstance();
 
 				$poolCache = $applicationFactory->getInMemoryPoolCache()->getPoolCacheFor(
@@ -110,10 +128,6 @@ class EventListenerRegistry implements EventListenerCollection {
 				);
 
 				$poolCache->delete( $hash );
-
-				$applicationFactory->getCachedPropertyValuesPrefetcher()->resetCacheFor(
-					$subject
-				);
 
 				$dispatchContext->set( 'propagationstop', true );
 			}

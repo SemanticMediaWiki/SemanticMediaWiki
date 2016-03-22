@@ -117,48 +117,4 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testHasAllowedPatternForValidDataValueWithMatchablePattern() {
-
-		$property = $this->dataItemFactory->newDIProperty( 'Has allowed pattern' );
-
-		$this->mediaWikiNsContentReader->expects( $this->once() )
-			->method( 'read' )
-			->will( $this->returnValue( " \nFoo|^(Bar|Foo bar)$/e\n" ) );
-
-		$this->propertySpecificationLookup->expects( $this->any() )
-			->method( 'getAllowedPatternFor' )
-			->will( $this->returnValue( 'Foo' ) );
-
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'getProperty', 'getDataItem', 'getTypeID' ) )
-			->getMockForAbstractClass();
-
-		$dataValue->expects( $this->any() )
-			->method( 'getTypeID' )
-			->will( $this->returnValue( '_txt' ) );
-
-		$dataValue->expects( $this->any() )
-			->method( 'getProperty' )
-			->will( $this->returnValue( $property ) );
-
-		$dataValue->expects( $this->any() )
-			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Foo bar' ) ) );
-
-		$instance = new AllowsPatternValue();
-
-		$dataValue->setOptions( new Options(
-			array( 'smwgDVFeatures' => SMW_DV_PVAP )
-		) );
-
-		$this->assertTrue(
-			$instance->doCheckAllowedPatternFor( $dataValue )
-		);
-
-		$this->assertEmpty(
-			$instance->getErrors()
-		);
-	}
-
 }

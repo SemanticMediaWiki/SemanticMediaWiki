@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\ApplicationFactory;
+use SMW\EventHandler;
 use SMW\DIWikiPage;
 
 /**
@@ -39,15 +40,15 @@ class ArticleDelete {
 	public function process() {
 
 		$applicationFactory = ApplicationFactory::getInstance();
+		$eventHandler = EventHandler::getInstance();
 
 		$title = $this->wikiPage->getTitle();
 		$store = $applicationFactory->getStore();
 
 		$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
 		$jobFactory = $applicationFactory->newJobFactory();
-		$cachedPropertyValuesPrefetcher = $applicationFactory->getCachedPropertyValuesPrefetcher();
 
-		$deferredCallableUpdate = $applicationFactory->newDeferredCallableUpdate( function() use( $store, $title, $semanticDataSerializer, $jobFactory, $cachedPropertyValuesPrefetcher ) {
+		$deferredCallableUpdate = $applicationFactory->newDeferredCallableUpdate( function() use( $store, $title, $semanticDataSerializer, $jobFactory, $eventHandler ) {
 
 			$subject = DIWikiPage::newFromTitle( $title );
 			wfDebugLog( 'smw', 'DeferredCallableUpdate on delete for ' . $subject->getHash() );
@@ -74,8 +75,12 @@ class ArticleDelete {
 			*/
 			$store->deleteSubject( $title );
 
-			$cachedPropertyValuesPrefetcher->resetCacheFor(
-				$subject
+			$dispatchContext = $eventHandler->newDispatchContext();
+			$dispatchContext->set( 'title', $title );
+
+			$eventHandler->getEventDispatcher()->dispatch(
+				'cached.propertyvalues.prefetcher.reset',
+				$dispatchContext
 			);
 		} );
 

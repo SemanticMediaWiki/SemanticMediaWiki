@@ -1,5 +1,5 @@
 ## Fixtures
-Contains 103 files:
+Contains 105 files:
 
 ### F
 * [f-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0001.json) Test format=debug output
@@ -51,6 +51,8 @@ Contains 103 files:
 * [p-0417.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0417.json) Test in-text annotation for `Allows pattern` to match regular expressions (en, skip-on postgres)
 * [p-0418.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0418.json) Test in-text annotation using `_SERV` as provide service links (en)
 * [p-0419.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0419.json) Test in-text annotation for `PRUC` to validate uniqueness
+* [p-0420.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0420.json) Test in-text annotation for `_dat` using JL/GR annotated values (en)
+* [p-0421.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0421.json) Test in-text annotation with combined constraint validation
 * [p-0701.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0701.json) Test to create inverted annotation using a #ask/template combination (#711, `import-annotation=true`)
 * [p-0702.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0702.json) Test #ask with `format=table` on inverse property/printrquest (#1270, en)
 * [p-0901.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0901.json) Test #ask on moved redirected subject (#1086)
@@ -114,4 +116,4 @@ Contains 103 files:
 ### S
 * [s-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0001.json) Test output of `Special:Properties` (en, skip-on sqlite, 1.19)
 
--- Last updated on 2016-03-19 by `readmeContentsBuilder.php`
+-- Last updated on 2016-03-22 by `readmeContentsBuilder.php`

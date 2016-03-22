@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use ParserOutput;
 use SMW\ApplicationFactory;
+use SMW\EventHandler;
 use SMW\MediaWiki\EditInfoProvider;
 
 /**
@@ -104,6 +105,14 @@ class NewRevisionFromEditComplete {
 		$propertyAnnotator->addAnnotation();
 
 		$parserData->pushSemanticDataToParserOutput();
+
+		$dispatchContext = EventHandler::getInstance()->newDispatchContext();
+		$dispatchContext->set( 'title', $this->wikiPage->getTitle() );
+
+		EventHandler::getInstance()->getEventDispatcher()->dispatch(
+			'cached.propertyvalues.prefetcher.reset',
+			$dispatchContext
+		);
 
 		return true;
 	}

@@ -12,6 +12,7 @@ use SMW\Options;
 use SMW\Query\QueryComparator;
 use SMW\Deserializers\DVDescriptionDeserializerRegistry;
 use SMW\DataValues\ValueFormatterRegistry;
+use SMW\DataValues\ValueValidatorRegistry;
 use SMW\ApplicationFactory;
 use SMW\Message;
 use SMW\DIProperty;
@@ -462,7 +463,7 @@ abstract class SMWDataValue {
 	 * @param integer|null $type
 	 * @param integer|null $language
 	 */
-	protected function addErrorMsg( $parameters, $type = null, $language = null ) {
+	public function addErrorMsg( $parameters, $type = null, $language = null ) {
 		$this->addError( Message::get( $parameters, $type, $language ) );
 	}
 
@@ -893,7 +894,7 @@ abstract class SMWDataValue {
 	 * Creates an error if the value is illegal.
 	 */
 	protected function checkAllowedValues() {
-		DataValueFactory::getInstance()->getValueConstraintValidator()->doValidate( $this );
+		ValueValidatorRegistry::getInstance()->getConstraintValueValidator()->validate( $this );
 	}
 
 }
