@@ -14,6 +14,7 @@ use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
 use SMWDIBlob as DIBlob;
 use SMWDIUri as DIUri;
 use SMWExpNsResource as ExpNsResource;
+use SMWExpElement as ExpElement;
 use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 
@@ -116,7 +117,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 			$expElement = $this->exporter->getDataItemExpElement( $dataItem );
 		}
 
-		if ( $expElement === null ) {
+		if ( $expElement === null || !$expElement instanceof ExpElement ) {
 			return new FalseCondition();
 		}
 

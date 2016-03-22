@@ -446,6 +446,7 @@ class DataTypeRegistry {
 			'__lcode' => 'SMW\DataValues\LanguageCodeValue',
 			'__pval' => 'SMW\DataValues\AllowsListValue',
 			'__pvap' => 'SMW\DataValues\AllowsPatternValue',
+			'__pvuc' => 'SMW\DataValues\UniquenessConstraintValue',
 		);
 
 		$this->typeDataItemIds = array(
@@ -488,6 +489,7 @@ class DataTypeRegistry {
 			'__key' => DataItem::TYPE_BLOB, // Sort key of a page
 			'__lcode' => DataItem::TYPE_BLOB, // Language code
 			'__pvap' => DataItem::TYPE_BLOB, // Allows pattern
+			'__pvuc' => DataItem::TYPE_BOOLEAN, // Uniqueness constraint
 		);
 
 		$this->subDataTypes = array(

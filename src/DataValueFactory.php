@@ -47,7 +47,7 @@ class DataValueFactory {
 	 *
 	 * @param DataTypeRegistry|null $dataTypeRegistry
 	 */
-	protected function __construct( DataTypeRegistry $dataTypeRegistry = null, ValueConstraintValidator $valueConstraintValidator ) {
+	protected function __construct( DataTypeRegistry $dataTypeRegistry = null, ValueConstraintValidator $valueConstraintValidator = null ) {
 		$this->dataTypeRegistry = $dataTypeRegistry;
 		$this->valueConstraintValidator = $valueConstraintValidator;
 	}
@@ -61,8 +61,7 @@ class DataValueFactory {
 
 		if ( self::$instance === null ) {
 			self::$instance = new self(
-				DataTypeRegistry::getInstance(),
-				ValueConstraintValidator::newInstance()
+				DataTypeRegistry::getInstance()
 			);
 		}
 
@@ -297,6 +296,11 @@ class DataValueFactory {
 	 * @return ValueConstraintValidator
 	 */
 	public function getValueConstraintValidator() {
+
+		if ( $this->valueConstraintValidator === null ) {
+			$this->valueConstraintValidator = ValueConstraintValidator::newInstance();
+		}
+
 		return $this->valueConstraintValidator;
 	}
 

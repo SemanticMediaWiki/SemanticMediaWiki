@@ -318,6 +318,17 @@ abstract class SMWDataValue {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @param integer $feature
+	 *
+	 * @return boolean
+	 */
+	public function isEnabledFeature( $feature ) {
+		return ( $this->getOptionValueFor( 'smwgDVFeatures' ) & $feature ) != 0;
+	}
+
+	/**
 	 * Change the caption (the text used for displaying this datavalue). The given
 	 * value must be a string.
 	 *

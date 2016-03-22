@@ -180,6 +180,16 @@ class JsonTestCaseFileHandler {
 			return $smwgNamespacesWithSemanticLinks;
 		}
 
+		if ( $key === 'smwgDVFeatures' && isset( $settings[$key] ) ) {
+			$smwgDVFeatures = '';
+
+			foreach ( $settings[$key] as $value ) {
+				$smwgDVFeatures = constant( $value ) | $smwgDVFeatures;
+			}
+
+			return $smwgDVFeatures;
+		}
+
 		// Needs special attention due to constant usage
 		if ( $key === 'smwgQConceptCaching' && isset( $settings[$key] ) ) {
 			return constant( $settings[$key] );

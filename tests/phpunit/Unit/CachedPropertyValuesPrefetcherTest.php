@@ -65,6 +65,39 @@ class CachedPropertyValuesPrefetcherTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testQueryPropertyValuesFor() {
+
+		$expected = array(
+			DIWikiPage::newFromText( 'Foo' )
+		);
+
+		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->atLeastOnce() )
+			->method( 'getResults' )
+			->will( $this->returnValue( $expected ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getQueryResult' )
+			->will( $this->returnValue( $queryResult ) );
+
+		$query = $this->getMockBuilder( '\SMWQuery' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new CachedPropertyValuesPrefetcher(
+			$this->store,
+			$this->blobStore
+		);
+
+		$this->assertEquals(
+			$expected,
+			$instance->queryPropertyValuesFor( $query )
+		);
+	}
+
 	public function testGetPropertyValuesFromCache() {
 
 		$container = $this->getMockBuilder( '\Onoi\BlobStore\Container' )

@@ -115,7 +115,9 @@ abstract class SMWLanguage {
 		'Display precision' => '_PREC',
 		'Property description'     => '_PDESC',
 		'Has allows pattern' => '_PVAP',
-		'Has display title of'     => '_DTITLE'
+		'Has display title of'     => '_DTITLE',
+		'Has uniqueness constraint'     => '_PVUC',
+		'Uniqueness constraint'     => '_PVUC',
 	);
 
 	public function __construct() {

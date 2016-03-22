@@ -515,7 +515,7 @@ $GLOBALS['smwgPageSpecialProperties'] = array( '_MDAT' );
 # setting is not normally changed by users but by extensions that add new
 # types that have their own additional declaration properties.
 ##
-$GLOBALS['smwgDeclarationProperties'] = array( '_PVAL', '_LIST', '_PVAP' );
+$GLOBALS['smwgDeclarationProperties'] = array( '_PVAL', '_LIST', '_PVAP', '_PVUC' );
 ##
 
 // some default settings which usually need no modification
@@ -954,6 +954,11 @@ $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] = true;
 # resolved as "Foo" when creating annotations. Currently, this uses an
 # uncached lookup and therefore is disabled by default to avoid a possible
 # performance impact (which has not been established or analyzed).
+#
+# - SMW_DV_PVUC (Uniqueness constraint) to specify that a property can only
+# assign a value that is unique in its literal representation (the state of
+# uniqueness for a value is established by the fact that it is assigned before
+# any other value of the same representation to a property).
 #
 # @since 2.4
 ##

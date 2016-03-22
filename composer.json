@@ -45,7 +45,7 @@
 		"onoi/message-reporter": "~1.0",
 		"onoi/cache": "~1.2",
 		"onoi/event-dispatcher": "~1.0",
-		"onoi/blob-store": "~1.1",
+		"onoi/blob-store": "~1.2",
 		"onoi/http-request": "~1.1",
 		"onoi/callback-container": "~1.0"
 	},

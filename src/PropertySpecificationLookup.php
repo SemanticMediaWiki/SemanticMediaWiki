@@ -88,7 +88,9 @@ class PropertySpecificationLookup {
 		$query = new Query( $description );
 		$query->setLimit( 1 );
 
-		$dataItems = $this->cachedPropertyValuesPrefetcher->getStore()->getQueryResult( $query )->getResults();
+		$dataItems = $this->cachedPropertyValuesPrefetcher->queryPropertyValuesFor(
+			$query
+		);
 
 		if ( is_array( $dataItems ) && $dataItems !== array() ) {
 			$dataItem = end( $dataItems );
@@ -100,6 +102,29 @@ class PropertySpecificationLookup {
 		}
 
 		return false;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param DIProperty $property
+	 *
+	 * @return boolean
+	 */
+	public function hasUniquenessConstraintFor( DIProperty $property ) {
+
+		$hasUniquenessConstraint = false;
+
+		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
+			$property->getDiWikiPage(),
+			new DIProperty( '_PVUC' )
+		);
+
+		if ( is_array( $dataItems ) && $dataItems !== array() ) {
+			$hasUniquenessConstraint = end( $dataItems )->getBoolean();
+		}
+
+		return $hasUniquenessConstraint;
 	}
 
 	/**

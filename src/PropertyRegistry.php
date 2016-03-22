@@ -409,6 +409,7 @@ class PropertyRegistry {
 			'_PDESC' => array( '_mlt_rec', true, true ), // "Property description"
 			'_PVAP'  => array( '__pvap', true, true ), // "Allows pattern"
 			'_DTITLE' => array( '_txt', false, true ), // "Display title of"
+			'_PVUC'  => array( '__pvuc', true, true ), // Uniqueness constraint
 		);
 
 		foreach ( $this->datatypeLabels as $id => $label ) {

@@ -14,6 +14,8 @@ use SMW\Query\Language\ConceptDescription;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMWDataItem as DataItem;
+use SMWDataValue as DataValue;
+use SMW\DataValue\MonolingualTextValue;
 
 /**
  * @license GNU GPL v2+
@@ -110,6 +112,40 @@ class DescriptionFactory {
 	 */
 	public function newConceptDescription( DIWikiPage $concept ) {
 		return new ConceptDescription( $concept );
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param DataValue $dataValue
+	 *
+	 * @return Description
+	 */
+	public function newFromDataValue( DataValue $dataValue ) {
+
+		if ( !$dataValue->isValid() ) {
+			return $this->newThingDescription();
+		}
+
+		// RecordValue is missing
+
+		// FIXME This knowledge should reside with the DV itself
+		if ( $dataValue instanceof MonolingualTextValue ) {
+			$container =  $dataValue->getDataItem();
+
+			foreach ( $dataValue->getPropertyDataItems() as $property ) {
+				foreach ( $container->getSemanticData()->getPropertyValues( $property ) as $val ) {
+					$value .= ( $property->getKey() == '_LCODE' ? '@' : '' ) . $val->getString();
+				}
+			}
+
+			return $dataValue->getQueryDescription( $value );
+		}
+
+		return $this->newSomeProperty(
+			$dataValue->getProperty(),
+			$this->newValueDescription( $dataValue->getDataItem() )
+		);
 	}
 
 }

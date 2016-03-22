@@ -352,6 +352,15 @@ class ApplicationFactory {
 		return new QueryParser();
 	}
 
+	/**
+	 * @since 2.4
+	 *
+	 * @return QueryFactory
+	 */
+	public function newQueryFactory() {
+		return new QueryFactory();
+	}
+
 	private static function registerBuilder( CallbackLoader $callbackLoader = null ) {
 
 		if ( $callbackLoader === null ) {

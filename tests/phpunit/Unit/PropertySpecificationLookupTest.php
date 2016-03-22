@@ -47,25 +47,9 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$queryResult->expects( $this->once() )
-			->method( 'getResults' )
-			->will( $this->returnValue( array( $this->dataItemFactory->newDIWikiPage( 'Foo' ) ) ) );
-
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$store->expects( $this->once() )
-			->method( 'getQueryResult' )
-			->will( $this->returnValue( $queryResult ) );
-
 		$this->cachedPropertyValuesPrefetcher->expects( $this->once() )
-			->method( 'getStore' )
-			->will( $this->returnValue( $store ) );
+			->method( 'queryPropertyValuesFor' )
+			->will( $this->returnValue( array( $this->dataItemFactory->newDIWikiPage( 'Foo' ) ) ) );
 
 		$instance = new PropertySpecificationLookup(
 			$this->cachedPropertyValuesPrefetcher
@@ -74,6 +58,27 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			$property,
 			$instance->getPropertyFromDisplayTitle( 'abc' )
+		);
+	}
+
+	public function testHasUniquenessConstraint() {
+
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
+
+		$this->cachedPropertyValuesPrefetcher->expects( $this->once() )
+			->method( 'getPropertyValues' )
+			->with(
+				$this->equalTo( $property->getDiWikiPage() ),
+				$this->equalTo( $this->dataItemFactory->newDIProperty( '_PVUC' ) ),
+				$this->anything() )
+			->will( $this->returnValue( array( $this->dataItemFactory->newDIBoolean( true ) ) ) );
+
+		$instance = new PropertySpecificationLookup(
+			$this->cachedPropertyValuesPrefetcher
+		);
+
+		$this->assertTrue(
+			$instance->hasUniquenessConstraintFor( $property )
 		);
 	}
 

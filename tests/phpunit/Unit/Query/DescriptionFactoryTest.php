@@ -6,6 +6,8 @@ use SMW\Query\DescriptionFactory;
 use SMW\DIProperty;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
+use SMW\Tests\TestEnvironment;
+use SMW\DataItemFactory;
 
 /**
  * @covers SMW\Query\DescriptionFactory
@@ -17,6 +19,24 @@ use SMW\Query\Language\Disjunction;
  * @author mwjames
  */
 class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
+
+	private $testEnvironment;
+	private $dataItemFactory;
+
+	protected function setUp() {
+		$this->testEnvironment = new TestEnvironment();
+		$this->dataItemFactory = new DataItemFactory();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+	}
+
+	protected function tearDown() {
+		$this->testEnvironment->tearDown();
+	}
 
 	public function testCanConstruct() {
 
@@ -159,6 +179,52 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'SMW\Query\Language\ConceptDescription',
 			$instance->newConceptDescription( $concept )
+		);
+	}
+
+	public function testCanConstructDescriptionFromInvalidDataValue() {
+
+		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'isValid' ) )
+			->getMockForAbstractClass();
+
+		$dataValue->expects( $this->atLeastOnce() )
+			->method( 'isValid' )
+			->will( $this->returnValue( false ) );
+
+		$instance = new DescriptionFactory();
+
+		$this->assertInstanceOf(
+			'SMW\Query\Language\ThingDescription',
+			$instance->newFromDataValue( $dataValue )
+		);
+	}
+
+	public function testCanConstructDescriptionFromValidDataValue() {
+
+		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'isValid', 'getProperty', 'getDataItem' ) )
+			->getMockForAbstractClass();
+
+		$dataValue->expects( $this->atLeastOnce() )
+			->method( 'isValid' )
+			->will( $this->returnValue( true ) );
+
+		$dataValue->expects( $this->atLeastOnce() )
+			->method( 'getProperty' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Foo' ) ) );
+
+		$dataValue->expects( $this->atLeastOnce() )
+			->method( 'getDataItem' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar' ) ) );
+
+		$instance = new DescriptionFactory();
+
+		$this->assertInstanceOf(
+			'SMW\Query\Language\SomeProperty',
+			$instance->newFromDataValue( $dataValue )
 		);
 	}
 
