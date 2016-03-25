@@ -17,7 +17,7 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 	 * @param string $actual
 	 */
 	public function assertThatStringContains( $expected, $actual, $message = '' ) {
-		$this->doAssertFor( $expected, $actual, $message, function( $actual, &$expected, &$actualCounted ) {
+		$this->doAssertFor( $expected, $actual, $message, 'StringContains', function( $actual, &$expected, &$actualCounted ) {
 			foreach ( $expected as $key => $string ) {
 				if ( strpos( $actual, $string ) !== false ) {
 					$actualCounted++;
@@ -34,7 +34,7 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 	 * @param string $actual
 	 */
 	public function assertThatStringNotContains( $expected, $actual, $message = '' ) {
-		$this->doAssertFor( $expected, $actual, $message, function( $actual, &$expected, &$actualCounted ) {
+		$this->doAssertFor( $expected, $actual, $message, 'StringNotContains', function( $actual, &$expected, &$actualCounted ) {
 			foreach ( $expected as $key => $string ) {
 				if ( strpos( $actual, $string ) === false ) {
 					$actualCounted++;
@@ -44,7 +44,7 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 		} );
 	}
 
-	private function doAssertFor( $expected, $actual, $message = '', $callback ) {
+	private function doAssertFor( $expected, $actual, $message = '', $method = '', $callback ) {
 
 		if ( !is_array( $expected ) ) {
 			$expected = array( $expected );
@@ -72,7 +72,7 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 		self::assertEquals(
 			$expectedToCount,
 			$actualCounted,
-			"Failed on `{$message}` for $actual with " . $this->toString( $expected )
+			"Failed on `{$message}` for $actual with ($method) " . $this->toString( $expected )
 		);
 	}
 

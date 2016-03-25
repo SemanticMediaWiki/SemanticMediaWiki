@@ -45,6 +45,14 @@ abstract class Condition {
 	public $weakConditions = array();
 
 	/**
+	 * Associative array of additional conditions that should can narrow
+	 * down the set of results,
+	 *
+	 * @var array of format "condition identifier" => "condition"
+	 */
+	public $cogentConditions = array();
+
+	/**
 	 * Associative array of additional namespaces that this condition
 	 * requires to be declared
 	 * @var array of format "shortName" => "namespace URI"
@@ -70,8 +78,16 @@ abstract class Condition {
 	 */
 	abstract public function isSafe();
 
+	public function addNamespaces( array $namespaces ) {
+		$this->namespaces = array_merge( $this->namespaces, $namespaces );
+	}
+
 	public function getWeakConditionString() {
 		return implode( '', $this->weakConditions );
+	}
+
+	public function getCogentConditionString() {
+		return implode( '', $this->cogentConditions );
 	}
 
 }

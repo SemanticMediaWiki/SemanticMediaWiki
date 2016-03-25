@@ -110,7 +110,7 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
 	private function assertParserOutputForCase( $case ) {
 
-		if ( !isset( $case['expected-output'] ) || !isset( $case['expected-output']['to-contain'] ) ) {
+		if ( !isset( $case['expected-output'] ) ) {
 			return;
 		}
 
@@ -121,11 +121,21 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
 		$parserOutput = UtilityFactory::getInstance()->newPageReader()->getEditInfo( $subject->getTitle() )->output;
 
-		$this->stringValidator->assertThatStringContains(
-			$case['expected-output']['to-contain'],
-			$parserOutput->getText(),
-			$case['about']
-		);
+		if ( isset( $case['expected-output']['to-contain'] ) ) {
+			$this->stringValidator->assertThatStringContains(
+				$case['expected-output']['to-contain'],
+				$parserOutput->getText(),
+				$case['about']
+			);
+		}
+
+		if ( isset( $case['expected-output']['not-contain'] ) ) {
+			$this->stringValidator->assertThatStringNotContains(
+				$case['expected-output']['not-contain'],
+				$parserOutput->getText(),
+				$case['about']
+			);
+		}
 	}
 
 	private function assertInProperties( DIWikiPage $subject, array $semanticdata, $about ) {

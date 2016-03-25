@@ -3,6 +3,7 @@
 namespace SMW\Tests\Maintenance;
 
 use SMW\Maintenance\DistinctEntityDataRebuilder;
+use SMW\Tests\TestEnvironment;
 use SMW\Options;
 use Title;
 
@@ -20,11 +21,19 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 	protected $obLevel;
 	private $connectionManager;
+	private $testEnvironment;
 
 	// The Store writes to the output buffer during drop/setupStore, to avoid
 	// inappropriate buffer settings which can cause interference during unit
 	// testing, we clean the output buffer
 	protected function setUp() {
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->testEnvironment = new TestEnvironment();
+		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -50,6 +59,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 	protected function tearDown() {
 		parent::tearDown();
+		$this->testEnvironment->tearDown();
 
 		while ( ob_get_level() > $this->obLevel ) {
 			ob_end_clean();
