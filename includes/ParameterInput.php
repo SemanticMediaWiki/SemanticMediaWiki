@@ -140,6 +140,11 @@ class ParameterInput {
 			$value = implode( $this->param->getDelimiter(), $value );
 		}
 
+		// #1473
+		if ( $value === array() ) {
+		   $value = '';
+		}
+
 		return $value;
 	}
 
