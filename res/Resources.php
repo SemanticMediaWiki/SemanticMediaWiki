@@ -9,11 +9,12 @@
  * @author mwjames
  */
 
-$pathParts = ( explode( DIRECTORY_SEPARATOR . 'extensions' . DIRECTORY_SEPARATOR, __DIR__, 2 ) );
+// #1466 (Make sure to work on both Win and Ux)
+$pathParts = explode( '/', str_replace( DIRECTORY_SEPARATOR, '/', __DIR__ ) );
 
 $moduleTemplate = array(
 	'localBasePath' => __DIR__,
-	'remoteExtPath' => str_replace( '\\', '/', end( $pathParts ) ),
+	'remoteExtPath' => implode( '/', array_slice( $pathParts, -2 ) ),
 	'group' => 'ext.smw'
 );
 
