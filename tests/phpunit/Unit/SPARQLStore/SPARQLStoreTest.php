@@ -282,4 +282,17 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 		$instance->getQueryResult( $query );
 	}
 
+	public function testGetPropertyTableIdReferenceFinder() {
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->once() )
+			->method( 'getPropertyTableIdReferenceFinder' );
+
+		$instance = new SPARQLStore( $store );
+		$instance->getPropertyTableIdReferenceFinder();
+	}
+
 }

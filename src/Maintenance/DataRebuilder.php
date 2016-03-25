@@ -254,7 +254,7 @@ class DataRebuilder {
 
 		$this->reportMessage(
 			"Processing all IDs from $this->start to " .
-			( $this->end ? "$this->end" : $byIdDataRebuildDispatcher->getMaxId() ) . " ...\n\n"
+			( $this->end ? "$this->end" : $byIdDataRebuildDispatcher->getMaxId() ) . " ...\n"
 		);
 
 		$this->rebuildCount = 0;

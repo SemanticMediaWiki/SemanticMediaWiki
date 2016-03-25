@@ -3,8 +3,7 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use SMW\MediaWiki\Hooks\FileUpload;
-use SMW\ApplicationFactory;
-
+use SMW\Tests\TestEnvironment;
 use ParserOutput;
 use Title;
 
@@ -19,28 +18,36 @@ use Title;
  */
 class FileUploadTest extends \PHPUnit_Framework_TestCase {
 
-	private $applicationFactory;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
-
-		$settings = array(
+		$this->testEnvironment = new TestEnvironment( array(
 			'smwgPageSpecialProperties' => array( '_MEDIA', '_MIME' ),
 			'smwgNamespacesWithSemanticLinks' => array( NS_FILE => true ),
 			'smwgCacheType'  => 'hash',
 			'smwgEnableUpdateJobs' => false
-		);
+		) );
 
-		foreach ( $settings as $key => $value ) {
-			$this->applicationFactory->getSettings()->set( $key, $value );
-		}
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'hasIDFor' ) )
+			->getMock();
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getObjectIds' ) )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -59,12 +66,6 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 	public function testPerformUpdateForEnabledNamespace() {
 
 		$title = Title::newFromText( __METHOD__, NS_FILE );
-
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$file = $this->getMockBuilder( '\File' )
 			->disableOriginalConstructor()
@@ -96,9 +97,12 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( $title ) )
 			->will( $this->returnValue( $wikiFilePage ) );
 
-		$this->applicationFactory->registerObject( 'PageCreator', $pageCreator );
+		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
 
-		$instance = new FileUpload( $file, true );
+		$instance = new FileUpload(
+			$file,
+			true
+		);
 
 		$this->assertTrue(
 			$instance->process()
@@ -112,12 +116,6 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 	public function testTryToPerformUpdateForDisabledNamespace() {
 
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
-
-		$store = $this->getMockBuilder( 'SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$file = $this->getMockBuilder( 'File' )
 			->disableOriginalConstructor()
@@ -134,9 +132,12 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 		$pageCreator->expects( $this->never() ) // <-- never
 			->method( 'createFilePage' );
 
-		$this->applicationFactory->registerObject( 'PageCreator', $pageCreator );
+		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
 
-		$instance = new FileUpload( $file, false );
+		$instance = new FileUpload(
+			$file,
+			false
+		);
 
 		$this->assertTrue(
 			$instance->process()

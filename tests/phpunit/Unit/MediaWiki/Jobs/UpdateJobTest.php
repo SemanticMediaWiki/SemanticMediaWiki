@@ -29,9 +29,22 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			'smwgDVFeatures' => ''
 		) );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'hasIDFor' ) )
+			->getMock();
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+			->setMethods( array( 'getObjectIds', 'getPropertyValues', 'updateData' ) )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( array() ) );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
@@ -156,13 +169,25 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'ContentParser', $contentParser );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'hasIDFor' ) )
+			->getMock();
+
+		$idTable->expects( $this->atLeastOnce() )
+			->method( 'hasIDFor' )
+			->will( $this->returnValue( true ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'updateData' ) )
-			->getMockForAbstractClass();
+			->setMethods( array( 'clearData', 'getObjectIds' ) )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
 
 		$store->expects( $this->once() )
-			->method( 'updateData' );
+			->method( 'clearData' );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -200,10 +225,18 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'ContentParser', $contentParser );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'hasIDFor' ) )
+			->getMock();
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getPropertyValues', 'getWikiPageLastModifiedTimestamp' ) )
-			->getMockForAbstractClass();
+			->setMethods( array( 'getPropertyValues', 'getWikiPageLastModifiedTimestamp', 'getObjectIds' ) )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )

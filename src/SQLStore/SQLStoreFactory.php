@@ -330,6 +330,24 @@ class SQLStoreFactory {
 		return $propertyTableInfoFetcher;
 	}
 
+	/**
+	 * @since 2.4
+	 *
+	 * @return PropertyTableIdReferenceFinder
+	 */
+	public function newPropertyTableIdReferenceFinder() {
+
+		$propertyTableIdReferenceFinder = new PropertyTableIdReferenceFinder(
+			$this->store
+		);
+
+		$propertyTableIdReferenceFinder->usesCapitalLinks(
+			$GLOBALS['wgCapitalLinks']
+		);
+
+		return $propertyTableIdReferenceFinder;
+	}
+
 	private function newPropertyStatisticsStore() {
 
 		$propertyStatisticsTable = new PropertyStatisticsTable(

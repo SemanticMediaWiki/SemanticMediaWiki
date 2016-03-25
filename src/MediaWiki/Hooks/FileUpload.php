@@ -31,6 +31,9 @@ class FileUpload {
 	 */
 	private $applicationFactory = null;
 
+	/**
+	 * @var boolean
+	 */
 	private $fileReUploadStatus = false;
 
 	/**
@@ -42,6 +45,7 @@ class FileUpload {
 	public function __construct( File $file, $fileReUploadStatus = false ) {
 		$this->file = $file;
 		$this->fileReUploadStatus = $fileReUploadStatus;
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	/**
@@ -64,34 +68,36 @@ class FileUpload {
 
 	private function performUpdate() {
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
-
 		$filePage = $this->makeFilePage();
 
-		$parserData = $this->applicationFactory
-			->newParserData(
-				$this->file->getTitle(),
-				$filePage->getParserOutput( $this->makeCanonicalParserOptions() ) );
+		$parserData = $this->applicationFactory->newParserData(
+			$this->file->getTitle(),
+			$filePage->getParserOutput( $this->makeCanonicalParserOptions() )
+		);
 
-		$pageInfoProvider = $this->applicationFactory
-			->newMwCollaboratorFactory()
-			->newPageInfoProvider( $filePage );
+		$pageInfoProvider = $this->applicationFactory->newMwCollaboratorFactory()->newPageInfoProvider(
+			$filePage
+		);
 
-		$propertyAnnotator = $this->applicationFactory
-			->newPropertyAnnotatorFactory()
-			->newPredefinedPropertyAnnotator( $parserData->getSemanticData(), $pageInfoProvider );
+		$propertyAnnotator = $this->applicationFactory->newPropertyAnnotatorFactory()->newPredefinedPropertyAnnotator(
+			$parserData->getSemanticData(),
+			$pageInfoProvider
+		);
 
 		$propertyAnnotator->addAnnotation();
 
 		$parserData->pushSemanticDataToParserOutput();
-		$parserData->updateStore();
+		$parserData->updateStore( true );
 
 		return true;
 	}
 
 	private function makeFilePage() {
 
-		$filePage = $this->applicationFactory->newPageCreator()->createFilePage( $this->file->getTitle() );
+		$filePage = $this->applicationFactory->newPageCreator()->createFilePage(
+			$this->file->getTitle()
+		);
+
 		$filePage->setFile( $this->file );
 
 		$filePage->smwFileReUploadStatus = $this->fileReUploadStatus;
@@ -110,7 +116,7 @@ class FileUpload {
 	}
 
 	private function isSemanticEnabledNamespace( Title $title ) {
-		return ApplicationFactory::getInstance()->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
+		return $this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
 	}
 
 }

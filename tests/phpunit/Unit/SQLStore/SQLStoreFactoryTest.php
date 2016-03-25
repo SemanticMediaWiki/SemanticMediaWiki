@@ -149,4 +149,14 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructPropertyTableIdReferenceFinder() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'SMW\SQLStore\PropertyTableIdReferenceFinder',
+			$instance->newPropertyTableIdReferenceFinder()
+		);
+	}
+
 }

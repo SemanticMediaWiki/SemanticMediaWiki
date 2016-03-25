@@ -1,0 +1,46 @@
+{
+	"description": "Test output of `Special:SearchByProperty` (en, skip-on sqlite, 1.19)",
+	"properties": [
+		{
+			"name": "Has text",
+			"contents": "[[Has type::Text]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/S0002/1",
+			"contents": "[[Has text::S0002]]"
+		}
+	],
+	"special-testcases": [
+		{
+			"about": "#0 search for user-defined property to contain",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "",
+				"request-parameters":{
+					"property": "Has text"
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"<ul><li>S0002&#160;&#160;",
+					"title=\"Special:SearchByProperty/Has-20text/S0002\">+</a></span>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLanguageCode": "en"
+	},
+	"meta": {
+		"skip-on": {
+			"sqlite": "Returns a `database is locked`",
+			"mw-1.19.20": "The table update on 1.19 lacks behind"
+		},
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -179,10 +179,16 @@ class StoreUpdater {
 			$this->semanticData
 		);
 
+		$subject = $semanticData->getSubject();
+
 		if ( $this->processSemantics ) {
 			$this->store->updateData( $semanticData );
-		} else {
-			$this->store->clearData( $semanticData->getSubject() );
+		} elseif ( $this->store->getObjectIds()->hasIDFor( $subject ) ) {
+			// Only clear the data where it is know that "hasIDFor" is true otherwise
+			// an empty entity is created and later being removed by the
+			// "PropertyTableOutdatedReferenceDisposer" since it is an entity that is
+			// empty == has no reference
+			$this->store->clearData( $subject );
 		}
 
 		return true;

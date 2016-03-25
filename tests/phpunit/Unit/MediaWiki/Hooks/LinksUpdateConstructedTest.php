@@ -26,9 +26,18 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'hasIDFor' ) )
+			->getMock();
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+			->setMethods( array( 'getObjectIds' ) )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
@@ -86,13 +95,25 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 		$parserOutput = new ParserOutput();
 		$parserOutput->setTitleText( $title->getPrefixedText() );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'hasIDFor' ) )
+			->getMock();
+
+		$idTable->expects( $this->atLeastOnce() )
+			->method( 'hasIDFor' )
+			->will( $this->returnValue( true ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'updateData' ) )
-			->getMockForAbstractClass();
+			->setMethods( array( 'clearData', 'getObjectIds' ) )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
 
 		$store->expects( $this->atLeastOnce() )
-			->method( 'updateData' );
+			->method( 'clearData' );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 

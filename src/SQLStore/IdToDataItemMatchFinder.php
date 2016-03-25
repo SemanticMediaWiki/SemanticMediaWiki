@@ -14,7 +14,9 @@ use SMW\HashBuilder;
  *
  * @author mwjames
  */
-class ByIdDataItemFinder {
+class IdToDataItemMatchFinder {
+
+	const POOLCACHE_ID = 'sql.store.id.dataitem.finder';
 
 	/**
 	 * @var Database|null
@@ -43,7 +45,7 @@ class ByIdDataItemFinder {
 	 * @param string $hash
 	 */
 	public function saveToCache( $id, $hash ) {
-		$this->inMemoryPoolCache->getPoolCacheFor( 'sql.store.dataitem.finder' )->save( $id, $hash );
+		$this->inMemoryPoolCache->getPoolCacheFor( self::POOLCACHE_ID  )->save( $id, $hash );
 	}
 
 	/**
@@ -52,14 +54,14 @@ class ByIdDataItemFinder {
 	 * @param string $id
 	 */
 	public function deleteFromCache( $id ) {
-		$this->inMemoryPoolCache->getPoolCacheFor( 'sql.store.dataitem.finder' )->delete( $id );
+		$this->inMemoryPoolCache->getPoolCacheFor( self::POOLCACHE_ID )->delete( $id );
 	}
 
 	/**
 	 * @since 2.1
 	 */
 	public function clear() {
-		$this->inMemoryPoolCache->resetPoolCacheFor( 'sql.store.dataitem.finder' );
+		$this->inMemoryPoolCache->resetPoolCacheFor( self::POOLCACHE_ID );
 	}
 
 	/**
@@ -106,7 +108,7 @@ class ByIdDataItemFinder {
 	 */
 	public function getDataItemForId( $id ) {
 
-		$poolCache = $this->inMemoryPoolCache->getPoolCacheFor( 'sql.store.dataitem.finder' );
+		$poolCache = $this->inMemoryPoolCache->getPoolCacheFor( self::POOLCACHE_ID );
 
 		if ( !$poolCache->contains( $id ) ) {
 

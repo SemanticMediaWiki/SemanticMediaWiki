@@ -29,9 +29,9 @@ class ByIdDataRebuildDispatcher {
 	private $store = null;
 
 	/**
-	 * @var PropertyTableOutdatedReferenceDisposer
+	 * @var PropertyTableIdReferenceDisposer
 	 */
-	private $propertyTableOutdatedReferenceDisposer = null;
+	private $propertyTableIdReferenceDisposer = null;
 
 	/**
 	 * @var integer
@@ -70,7 +70,7 @@ class ByIdDataRebuildDispatcher {
 	 */
 	public function __construct( SQLStore $store ) {
 		$this->store = $store;
-		$this->propertyTableOutdatedReferenceDisposer = new PropertyTableOutdatedReferenceDisposer( $store );
+		$this->propertyTableIdReferenceDisposer = new PropertyTableIdReferenceDisposer( $store );
 	}
 
 	/**
@@ -264,7 +264,7 @@ class ByIdDataRebuildDispatcher {
 				// leave subobjects alone; they ought to be changed with their pages
 				$this->dispatchedEntities[] = array( 's' => $row->smw_title . '#' . $row->smw_namespace . '#' .$row->smw_subobject );
 			} elseif ( $this->isPlainObjectValue( $row ) ) {
-				$this->propertyTableOutdatedReferenceDisposer->attemptToRemoveOutdatedEntryFromIDTable( $row->smw_id );
+				$this->propertyTableIdReferenceDisposer->tryToRemoveOutdatedIDFromEntityTables( $row->smw_id );
 			} elseif ( $row->smw_iw === '' && $titleKey != '' ) {
 				// objects representing pages
 				$title = Title::makeTitleSafe( $row->smw_namespace, $titleKey );
@@ -284,7 +284,7 @@ class ByIdDataRebuildDispatcher {
 					$updatejobs[] = $this->newUpdateJob( $title );
 				}
 			} elseif ( $row->smw_iw == SMW_SQL3_SMWIW_OUTDATED || $row->smw_iw == SMW_SQL3_SMWDELETEIW ) { // remove outdated internal object references
-				$this->propertyTableOutdatedReferenceDisposer->removeAnyReferenceFromPropertyTablesFor( $row->smw_id );
+				$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesFor( $row->smw_id );
 			} elseif ( $titleKey != '' ) { // "normal" interwiki pages or outdated internal objects -- delete
 				$diWikiPage = new DIWikiPage( $titleKey, $row->smw_namespace, $row->smw_iw );
 				$emptySemanticData = new SemanticData( $diWikiPage );

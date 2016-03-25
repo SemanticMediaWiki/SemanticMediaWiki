@@ -99,15 +99,24 @@ class PropertiesQueryPage extends QueryPage {
 		list ( $dataItem, $useCount ) = $result;
 
 		if ( $dataItem instanceof DIProperty ) {
-			return $this->formatPropertyItem( $dataItem, $useCount );
+			$infoLink = '';
+
+			// Add a link to SearchByProperty to hopefully identify the
+			// "hidden" reference
+			if ( $useCount < 1 && $dataItem->isUserDefined() ) {
+				$infoLink = '&#160;' . \SMWInfolink::newPropertySearchLink( '+', $dataItem->getLabel(), '' )->getHTML( $this->getLinker() );
+			}
+
+			return $this->formatPropertyItem( $dataItem, $useCount ) . $infoLink;
+
 		} elseif ( $dataItem instanceof SMWDIError ) {
 			return $this->getMessageFormatter()->clear()
 				->setType( 'warning' )
 				->addFromArray( array( $dataItem->getErrors() ) )
 				->getHtml();
-		} else {
-			throw new InvalidResultException( 'PropertiesQueryPage expects results that are properties or errors.' );
 		}
+
+		throw new InvalidResultException( 'PropertiesQueryPage expects results that are properties or errors.' );
 	}
 
 	/**
