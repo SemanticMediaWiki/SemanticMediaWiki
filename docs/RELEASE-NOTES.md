@@ -40,6 +40,7 @@ Not a release yet.
 * #1433 Added `--ignore-exceptions` and `exception-log` options to `rebuildData.php` together with `-v` showing additional information about the update process
 * #1440 ...
 * #1463 Added support for the [`Has uniqueness constraint`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_uniqueness_constraint) property trait
+* #1474 ...
 
 ## Bug fixes
 
