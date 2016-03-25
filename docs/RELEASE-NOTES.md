@@ -65,6 +65,7 @@ Not a release yet.
 * #1450 Fixed export of concept
 * #1453 Fixed ...
 * #1459 Fixed column display regression in `CategoryResultPrinter` for subobjects
+* #1466 Fixed remote resource path detection that appeared in connection with a non-default extension setup
 * #1473 Fixed exception caused by `ParameterInput` due to "HTML attribute value can not contain a list of values"
 
 ## Internal changes
