@@ -280,8 +280,17 @@ class CompoundConditionBuilder {
 
 		$condition = $this->mapDescriptionToCondition( $description );
 
-		$this->addMissingOrderByConditions( $condition );
-		$this->addRedirectTriplePatternToFinalCondition( $condition );
+		$this->addMissingOrderByConditions(
+			$condition
+		);
+
+		$this->addPropertyPathToMatchRedirectTargets(
+			$condition
+		);
+
+		$this->addFilterToRemoveEntitiesThatContainRedirectPredicate(
+			$condition
+		);
 
 		return $condition;
 	}
@@ -317,6 +326,7 @@ class CompoundConditionBuilder {
 		}
 
 		$conditionAsString .= $condition->getCondition();
+		$conditionAsString .= $condition->getCogentConditionString();
 
 		if ( $condition instanceof SingletonCondition ) { // prepare for ASK, maybe rather use BIND?
 
@@ -555,7 +565,7 @@ class CompoundConditionBuilder {
 	 *	}
 	 * }
 	 */
-	private function addRedirectTriplePatternToFinalCondition( Condition &$condition ) {
+	private function addPropertyPathToMatchRedirectTargets( Condition &$condition ) {
 
 		if ( $this->redirectByVariableReplacementMap === array() ) {
 			return;
@@ -575,6 +585,23 @@ class CompoundConditionBuilder {
 
 		$condition->namespaces = array_merge( $condition->namespaces, $namespaces );
 		$condition->weakConditions += $weakConditions;
+	}
+
+	/**
+	 * @see https://www.w3.org/TR/rdf-sparql-query/#func-bound
+	 *
+	 * Remove entities that contain a "swivt:redirectsTo" predicate
+	 */
+	private function addFilterToRemoveEntitiesThatContainRedirectPredicate( Condition &$condition ) {
+
+		$rediExpElement = Exporter::getInstance()->getSpecialPropertyResource( '_REDI' );
+		$namespaces[$rediExpElement->getNamespaceId()] = $rediExpElement->getNamespace();
+
+		$boundVariable = '?' . $this->getNextVariable( 'o' );
+		$cogentCondition = " OPTIONAL { ?$this->resultVariable " . $rediExpElement->getQName() . " $boundVariable } .\n FILTER ( !bound( $boundVariable ) ) .\n";
+
+		$condition->addNamespaces( $namespaces );
+		$condition->cogentConditions[$boundVariable] = $cogentCondition;
 	}
 
 }

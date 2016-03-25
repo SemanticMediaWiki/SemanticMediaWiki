@@ -247,7 +247,7 @@ class DistinctEntityDataRebuilder {
 			$this->store->getConnection( 'mw.db' )
 		);
 
-		return $titleLookup->selectAllRedirectPages();
+		return $titleLookup->getRedirectPages();
 	}
 
 	private function normalizeBulkOfPages( &$pages ) {

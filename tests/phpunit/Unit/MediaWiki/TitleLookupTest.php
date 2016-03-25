@@ -162,7 +162,7 @@ class TitleLookupTest extends \PHPUnit_Framework_TestCase {
 		$database->expects( $this->any() )
 			->method( 'select' )
 			->with(
-				$this->equalTo( 'redirect' ),
+				$this->equalTo( array( 'page', 'redirect' ) ),
 				$this->anything(),
 				$this->anything(),
 				$this->anything(),
@@ -172,7 +172,7 @@ class TitleLookupTest extends \PHPUnit_Framework_TestCase {
 		$instance = new TitleLookup( $database );
 
 		$this->assertArrayOfTitles(
-			$instance->selectAllRedirectPages()
+			$instance->getRedirectPages()
 		);
 	}
 

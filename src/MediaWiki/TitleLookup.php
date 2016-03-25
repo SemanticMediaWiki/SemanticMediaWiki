@@ -90,20 +90,18 @@ class TitleLookup {
 	 *
 	 * @return Title[]
 	 */
-	public function selectAllRedirectPages() {
+	public function getRedirectPages() {
 
-		$tableName = 'redirect';
-		$fields = array( 'rd_namespace', 'rd_title' );
-		//$conditions = array( 'page_namespace' => $this->namespace );
 		$conditions = array();
-		$options = array( 'USE INDEX' => 'PRIMARY' );
+		$options = array();
 
 		$res = $this->connection->select(
-			$tableName,
-			$fields,
+			array( 'page', 'redirect' ),
+			array( 'page_namespace', 'page_title' ),
 			$conditions,
 			__METHOD__,
-			$options
+			$options,
+			array( 'page' => array( 'INNER JOIN', array( 'page_id=rd_from' ) ) )
 		);
 
 		return $this->makeTitlesFromSelection( $res );

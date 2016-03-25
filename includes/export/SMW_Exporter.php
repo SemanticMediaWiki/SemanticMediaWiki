@@ -313,8 +313,7 @@ class SMWExporter {
 				// Basic namespace filtering to ensure that types match for redirects etc.
 				/// TODO: currently no full check for avoiding OWL DL illegal redirects is done (OWL property type ignored)
 				if ( $filterNamespace && !( $dataItem instanceof SMWDIUri ) &&
-				     ( !( $dataItem instanceof SMWDIWikiPage ) ||
-				        ( $dataItem->getNamespace() != $diSubject->getNamespace() ) ) ) {
+				     ( !( $dataItem instanceof SMWDIWikiPage ) ) ) {
 					continue;
 				}
 
