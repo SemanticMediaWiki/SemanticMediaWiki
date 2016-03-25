@@ -40,11 +40,6 @@ class AskParserFunction {
 	private $showMode = false;
 
 	/**
-	 * @var array
-	 */
-	private $enabledFormatsThatSupportRecursiveParse = array();
-
-	/**
 	 * @var ApplicationFactory
 	 */
 	private $applicationFactory;

@@ -2,22 +2,18 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Utils\UtilityFactory;
-
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\SemanticData;
 use SMW\ParserData;
 use SMW\DIWikiPage;
-
+use SMW\Tests\TestEnvironment;
 use ParserOutput;
 use Title;
 
 /**
  * @covers \SMW\ParserData
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -28,12 +24,20 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
 	private $dataValueFactory;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+		$this->testEnvironment = new TestEnvironment();
+
+		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 		$this->dataValueFactory = DataValueFactory::getInstance();
+	}
+
+	protected function tearDown() {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
@@ -251,24 +255,36 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 	public function testUpdateStore() {
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'hasIDFor' ) )
+			->getMock();
+
+		$idTable->expects( $this->any() )
+			->method( 'hasIDFor' )
+			->will( $this->returnValue( true ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'updateData' ) )
-			->getMockForAbstractClass();
+			->setMethods( array( 'clearData', 'getObjectIds' ) )
+			->getMock();
 
 		$store->expects( $this->once() )
-			->method( 'updateData' );
+			->method( 'clearData' );
 
-		ApplicationFactory::getInstance()->registerObject( 'Store', $store );
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$instance = new ParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
 
-		$this->assertTrue( $instance->updateStore() );
-
-		ApplicationFactory::clear();
+		$this->assertTrue(
+			$instance->updateStore()
+		);
 	}
 
 	public function testSemanticDataStateToParserOutput() {

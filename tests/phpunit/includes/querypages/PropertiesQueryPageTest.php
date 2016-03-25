@@ -5,6 +5,10 @@ namespace SMW\Test;
 use SMW\PropertiesQueryPage;
 use SMW\DataItemFactory;
 use SMW\Settings;
+use SMW\MessageFormatter;
+use SMW\ArrayAccessor;
+use SMW\DIProperty;
+use SMWDataItem;
 
 /**
  * @covers \SMW\PropertiesQueryPage
@@ -145,7 +149,7 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 			array( $property, 0 )
 		);
 
-		$this->assertEmpty(
+		$this->assertNotEmpty(
 			$result
 		);
 	}

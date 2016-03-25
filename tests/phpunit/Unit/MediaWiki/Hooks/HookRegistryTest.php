@@ -349,6 +349,13 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$handler = 'TitleMoveComplete';
 
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'deleteSubject' ) )
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
 		$oldTitle = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -380,6 +387,8 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			$instance->getHandlerFor( $handler ),
 			array( &$oldTitle, &$newTitle, &$user, $oldId, $newId )
 		);
+
+		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
 	public function doTestExecutionForArticlePurge( $instance ) {
@@ -465,6 +474,21 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$handler = 'LinksUpdateConstructed';
 
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'hasIDFor' ) )
+			->getMock();
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getObjectIds' ) )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -493,6 +517,8 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			$instance->getHandlerFor( $handler ),
 			array( $linksUpdate )
 		);
+
+		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
 	public function doTestExecutionForSpecialStatsAddExtra( $instance ) {

@@ -1,7 +1,7 @@
 <?php
 
 use SMW\SQLStore\PropertyStatisticsTable;
-use SMW\SQLStore\ByIdDataItemFinder;
+use SMW\SQLStore\IdToDataItemMatchFinder;
 use SMW\SQLStore\RedirectInfoStore;
 use SMW\HashBuilder;
 use SMW\DIWikiPage;
@@ -127,9 +127,9 @@ class SMWSql3SmwIds {
 	protected $prop_ids = array();
 
 	/**
-	 * @var ByIdDataItemFinder
+	 * @var IdToDataItemMatchFinder
 	 */
-	private $byIdDataItemFinder;
+	private $idToDataItemMatchFinder;
 
 	/**
 	 * @var RedirectInfoStore
@@ -222,7 +222,7 @@ class SMWSql3SmwIds {
 		// Yes, this is a hack, but we only use it for convenient debugging:
 		self::$singleton_debug = $this;
 
-		$this->byIdDataItemFinder = new ByIdDataItemFinder(
+		$this->idToDataItemMatchFinder = new IdToDataItemMatchFinder(
 			$this->store->getConnection( 'mw.db' )
 		);
 
@@ -485,6 +485,30 @@ class SMWSql3SmwIds {
 		}
 
 		return $matches;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param DIWikiPage $subject
+	 *
+	 * @param boolean
+	 */
+	public function hasIDFor( DIWikiPage $subject ) {
+
+		$row = $this->store->getConnection( 'mw.db' )->selectRow(
+			self::TABLE_NAME,
+			array( 'smw_id' ),
+			array(
+				'smw_title' => $subject->getDBKey(),
+				'smw_namespace' => $subject->getNamespace(),
+				'smw_iw' => $subject->getInterWiki(),
+				'smw_subobject' => $subject->getSubobjectName()
+			),
+			__METHOD__
+		);
+
+		return $row !== false;
 	}
 
 	/**
@@ -874,7 +898,7 @@ class SMWSql3SmwIds {
 			$this->regular_sortkeys[$hashKey] = $sortkey;
 		}
 
-		$this->byIdDataItemFinder->saveToCache( $id, $hashKey );
+		$this->idToDataItemMatchFinder->saveToCache( $id, $hashKey );
 
 		if ( $interwiki == SMW_SQL3_SMWREDIIW ) { // speed up detection of redirects when fetching IDs
 			$this->setCache(  $title, $namespace, '', $subobject, 0, '' );
@@ -889,7 +913,7 @@ class SMWSql3SmwIds {
 	 * @return DIWikiPage|null
 	 */
 	public function getDataItemForId( $id ) {
-		return $this->byIdDataItemFinder->getDataItemForId( $id );
+		return $this->idToDataItemMatchFinder->getDataItemForId( $id );
 	}
 
 	/**
@@ -900,7 +924,7 @@ class SMWSql3SmwIds {
 	 * @return string[]
 	 */
 	public function getDataItemPoolHashListFor( array $idlist ) {
-		return $this->byIdDataItemFinder->getDataItemPoolHashListFor( $idlist );
+		return $this->idToDataItemMatchFinder->getDataItemPoolHashListFor( $idlist );
 	}
 
 	/**
@@ -985,7 +1009,7 @@ class SMWSql3SmwIds {
 			unset( $this->regular_sortkeys[$hashKey] );
 		}
 
-		$this->byIdDataItemFinder->deleteFromCache( $id );
+		$this->idToDataItemMatchFinder->deleteFromCache( $id );
 	}
 
 	/**
@@ -1023,7 +1047,7 @@ class SMWSql3SmwIds {
 		$this->prop_sortkeys = array();
 		$this->regular_ids = array();
 		$this->regular_sortkeys = array();
-		$this->byIdDataItemFinder->clear();
+		$this->idToDataItemMatchFinder->clear();
 	}
 
 	/**

@@ -4,11 +4,15 @@ namespace SMW\MediaWiki\Specials\SearchByProperty;
 
 use Html;
 use SMW\DataTypeRegistry;
+use SMW\ApplicationFactory;
+use SMW\DataValueFactory;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\MessageBuilder;
 use SMWDataValue as DataValue;
 use SMWInfolink as Infolink;
 use SMWStringValue as StringValue;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 
 /**
  * @license GNU GPL v2+
@@ -71,6 +75,12 @@ class PageBuilder {
 		$this->messageBuilder = $this->htmlFormRenderer->getMessageBuilder();
 
 		list( $resultMessage, $resultList, $resultCount ) = $this->getResultHtml();
+
+		if ( ( $resultList === '' || $resultList === null ) && $this->pageRequestOptions->property->getDataItem() instanceof DIProperty ) {
+			list( $resultMessage, $resultList, $resultCount ) = $this->tryToFindAtLeastOnePropertyTableReferenceFor(
+				$this->pageRequestOptions->property->getDataItem()
+			);
+		}
 
 		if ( $resultList === '' || $resultList === null ) {
 			$resultList = $this->messageBuilder->getMessage( 'smw_result_noresults' )->text();
@@ -297,6 +307,48 @@ class PageBuilder {
 	private function canShowSearchByPropertyLink ( DataValue $dataValue ) {
 		$dataTypeClass = DataTypeRegistry::getInstance()->getDataTypeClassById( $dataValue->getTypeID() );
 		return $this->pageRequestOptions->value instanceof $dataTypeClass && $this->pageRequestOptions->valueString === '';
+	}
+
+	private function tryToFindAtLeastOnePropertyTableReferenceFor( DIProperty $property ) {
+
+		$resultList = '';
+		$resultMessage = '';
+		$resultCount = 0;
+		$extra = '';
+
+		$dataItem = ApplicationFactory::getInstance()->getStore()->getPropertyTableIdReferenceFinder()->tryToFindAtLeastOneReferenceForProperty(
+			$property
+		);
+
+		if ( !$dataItem instanceof DIWikiPage ) {
+			$resultMessage = 'No reference found.';
+			return array( $resultMessage, $resultList, $resultCount );
+		}
+
+		// In case the item has already been marked as deleted but is yet pending
+		// for removal
+		if ( $dataItem->getInterWiki() === ':smw-delete' ) {
+			$resultMessage = 'Item reference "' . $dataItem->getSubobjectName() . '" has already been marked for removal.';
+			$dataItem = new DIWikiPage( $dataItem->getDBKey(), $dataItem->getNamespace() );
+		}
+
+		$dataValue = DataValueFactory::getInstance()->newDataItemValue(
+			$dataItem,
+			$property
+		);
+
+		if ( $dataValue->isValid() ) {
+			//$resultMessage = 'Item reference for a zero-marked property.';
+			$resultList = $dataValue->getShortHtmlText( $this->linker ) . ' ' . $extra;
+			$resultCount++;
+
+			$resultList .= '&#160;&#160;' . Infolink::newBrowsingLink(
+				'+',
+				$dataValue->getLongWikiText()
+			)->getHTML( $this->linker );
+		}
+
+		return array( $resultMessage, $resultList, $resultCount );
 	}
 
 }

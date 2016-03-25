@@ -41,6 +41,8 @@ class SearchInPageDBIntegrationTest extends MwDBaseUnitTestCase {
 			->createPage( $targetPage )
 			->doEdit( '[[Has some page value::Foo]]' );
 
+		$this->testEnvironment->executePendingDeferredUpdates();
+
 		$search = new Search();
 		$results = $search->searchTitle( '[[Has some page value::Foo]]' );
 
@@ -49,7 +51,10 @@ class SearchInPageDBIntegrationTest extends MwDBaseUnitTestCase {
 			$results
 		);
 
-		$this->assertEquals( 1, $results->getTotalHits() );
+		$this->assertEquals(
+			1,
+			$results->getTotalHits()
+		);
 
 		$pageDeleter = new PageDeleter();
 		$pageDeleter->deletePage( $targetPage );
@@ -74,6 +79,8 @@ class SearchInPageDBIntegrationTest extends MwDBaseUnitTestCase {
 		$pageCreator
 			->createPage( $targetPage )
 			->doEdit( "[[Has coordinates::52°31'N, 13°24'E]]" );
+
+		$this->testEnvironment->executePendingDeferredUpdates();
 
 		$search = new Search();
 		$results = $search->searchTitle( "[[Has coordinates::52°31'N, 13°24'E]]" );

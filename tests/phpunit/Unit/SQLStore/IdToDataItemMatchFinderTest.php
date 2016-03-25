@@ -2,12 +2,13 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\SQLStore\ByIdDataItemFinder;
+use SMW\Tests\TestEnvironment;
+use SMW\SQLStore\IdToDataItemMatchFinder;
 use SMW\InMemoryPoolCache;
 use SMW\DIWikiPage;
 
 /**
- * @covers \SMW\SQLStore\ByIdDataItemFinder
+ * @covers \SMW\SQLStore\IdToDataItemMatchFinder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,10 +16,16 @@ use SMW\DIWikiPage;
  *
  * @author mwjames
  */
-class ByIdDataItemFinderTest extends \PHPUnit_Framework_TestCase {
+class IdToDataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
+
+	private $testEnvironment;
+
+	protected function setUp() {
+		$this->testEnvironment = new TestEnvironment();
+	}
 
 	protected function tearDown() {
-		InMemoryPoolCache::getInstance()->clear();
+		$this->testEnvironment->resetPoolCacheFor( IdToDataItemMatchFinder::POOLCACHE_ID );
 	}
 
 	public function testCanConstruct() {
@@ -28,8 +35,8 @@ class ByIdDataItemFinderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\ByIdDataItemFinder',
-			new ByIdDataItemFinder( $connection )
+			'\SMW\SQLStore\IdToDataItemMatchFinder',
+			new IdToDataItemMatchFinder( $connection )
 		);
 	}
 
@@ -53,7 +60,7 @@ class ByIdDataItemFinderTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( array( 'smw_id' => 42 ) ) )
 			->will( $this->returnValue( $row ) );
 
-		$instance = new ByIdDataItemFinder(
+		$instance = new IdToDataItemMatchFinder(
 			$connection
 		);
 
@@ -66,7 +73,7 @@ class ByIdDataItemFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			1,
-			$stats['sql.store.dataitem.finder']['count']
+			$stats[IdToDataItemMatchFinder::POOLCACHE_ID]['count']
 		);
 	}
 
@@ -79,9 +86,9 @@ class ByIdDataItemFinderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->never() )
 			->method( 'selectRow' );
 
-		InMemoryPoolCache::getInstance()->getPoolCacheFor( 'sql.store.dataitem.finder' )->save( 42, 'Foo#0##' );
+		InMemoryPoolCache::getInstance()->getPoolCacheFor( IdToDataItemMatchFinder::POOLCACHE_ID )->save( 42, 'Foo#0##' );
 
-		$instance = new ByIdDataItemFinder(
+		$instance = new IdToDataItemMatchFinder(
 			$connection
 		);
 
@@ -94,12 +101,12 @@ class ByIdDataItemFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			0,
-			$stats['sql.store.dataitem.finder']['misses']
+			$stats[IdToDataItemMatchFinder::POOLCACHE_ID]['misses']
 		);
 
 		$this->assertEquals(
 			1,
-			$stats['sql.store.dataitem.finder']['hits']
+			$stats[IdToDataItemMatchFinder::POOLCACHE_ID]['hits']
 		);
 	}
 
@@ -112,7 +119,7 @@ class ByIdDataItemFinderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->never() )
 			->method( 'selectRow' );
 
-		$instance = new ByIdDataItemFinder(
+		$instance = new IdToDataItemMatchFinder(
 			$connection
 		);
 
@@ -134,7 +141,7 @@ class ByIdDataItemFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'selectRow' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new ByIdDataItemFinder(
+		$instance = new IdToDataItemMatchFinder(
 			$connection
 		);
 
@@ -155,7 +162,7 @@ class ByIdDataItemFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'selectRow' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new ByIdDataItemFinder(
+		$instance = new IdToDataItemMatchFinder(
 			$connection
 		);
 
@@ -176,7 +183,7 @@ class ByIdDataItemFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'selectRow' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new ByIdDataItemFinder( $connection );
+		$instance = new IdToDataItemMatchFinder( $connection );
 
 		$this->assertNull(
 			$instance->getDataItemForId( 42 )
@@ -203,7 +210,7 @@ class ByIdDataItemFinderTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( array( 'smw_id' => array( 42 ) ) ) )
 			->will( $this->returnValue( array( $row ) ) );
 
-		$instance = new ByIdDataItemFinder(
+		$instance = new IdToDataItemMatchFinder(
 			$connection
 		);
 

@@ -383,6 +383,13 @@ class SPARQLStore extends Store {
 	}
 
 	/**
+	 * @since 2.4
+	 */
+	public function getPropertyTableIdReferenceFinder() {
+		return $this->baseStore->getPropertyTableIdReferenceFinder();
+	}
+
+	/**
 	 * @since  1.9.2
 	 */
 	public function clear() {

@@ -27,13 +27,26 @@ class SpecialSearchByPropertyTest extends \PHPUnit_Framework_TestCase {
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$propertyTableIdReferenceFinder = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableIdReferenceFinder' )
 			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+			->getMock();
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getPropertyTableIdReferenceFinder', 'getPropertyValues', 'getPropertySubjects' ) )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( array() ) );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
 			->will( $this->returnValue( array() ) );
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyTableIdReferenceFinder' )
+			->will( $this->returnValue( $propertyTableIdReferenceFinder ) );
 
 		$this->applicationFactory->registerObject( 'Store', $store );
 

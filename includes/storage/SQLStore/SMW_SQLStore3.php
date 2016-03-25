@@ -83,6 +83,11 @@ class SMWSQLStore3 extends SMWStore {
 	private $propertyTableInfoFetcher = null;
 
 	/**
+	 * @var PropertyTableIdReferenceFinder
+	 */
+	private $propertyTableIdReferenceFinder;
+
+	/**
 	 * @var RequestOptionsProcessor|null
 	 */
 	private $requestOptionsProcessor = null;
@@ -701,6 +706,20 @@ class SMWSQLStore3 extends SMWStore {
 		}
 
 		return $this->propertyTableInfoFetcher;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return PropertyTableIdReferenceFinder
+	 */
+	public function getPropertyTableIdReferenceFinder() {
+
+		if ( $this->propertyTableIdReferenceFinder === null ) {
+			$this->propertyTableIdReferenceFinder = $this->factory->newPropertyTableIdReferenceFinder();
+		}
+
+		return $this->propertyTableIdReferenceFinder;
 	}
 
 	/**

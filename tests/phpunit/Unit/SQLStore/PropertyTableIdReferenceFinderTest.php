@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\SQLStore\PropertyTableOutdatedReferenceDisposer;
-use Title;
+use SMW\SQLStore\PropertyTableIdReferenceFinder;
+use SMW\DIProperty;
 
 /**
- * @covers \SMW\SQLStore\PropertyTableOutdatedReferenceDisposer
+ * @covers \SMW\SQLStore\PropertyTableIdReferenceFinder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use Title;
  *
  * @author mwjames
  */
-class PropertyTableOutdatedReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
+class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 
@@ -29,14 +29,22 @@ class PropertyTableOutdatedReferenceDisposerTest extends \PHPUnit_Framework_Test
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\PropertyTableOutdatedReferenceDisposer',
-			new PropertyTableOutdatedReferenceDisposer( $this->store )
+			'\SMW\SQLStore\PropertyTableIdReferenceFinder',
+			new PropertyTableIdReferenceFinder( $this->store )
 		);
 	}
 
-	public function testTryToRemoveOutdatedEntryFromIDTable() {
+	public function testTryToFindAtLeastOneReferenceForId() {
 
 		$tableDefinition = $connection = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$tableDefinition->expects( $this->atLeastOnce() )
+			->method( 'getFields' )
+			->will( $this->returnValue( array( 'o_id' => 42 ) ) );
+
+		$PropertyTableIdReferenceFinder = $connection = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableIdReferenceFinder' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -48,10 +56,6 @@ class PropertyTableOutdatedReferenceDisposerTest extends \PHPUnit_Framework_Test
 			->method( 'selectRow' )
 			->will( $this->returnValue( false ) );
 
-		$connection->expects( $this->once() )
-			->method( 'delete' )
-			->with( $this->equalTo( \SMW\SQLStore\SQLStore::ID_TABLE ) );
-
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
@@ -60,14 +64,18 @@ class PropertyTableOutdatedReferenceDisposerTest extends \PHPUnit_Framework_Test
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array( $tableDefinition ) ) );
 
-		$instance = new PropertyTableOutdatedReferenceDisposer(
+		$instance = new PropertyTableIdReferenceFinder(
 			$this->store
 		);
 
-		$instance->attemptToRemoveOutdatedEntryFromIDTable( 42 );
+		$instance->tryToFindAtLeastOneReferenceForId( 42 );
 	}
 
-	public function testDeleteReferencesFromPropertyTablesFor() {
+	public function testTryToFindAtLeastOneReferenceForProperty() {
+
+		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$tableDefinition = $connection = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
 			->disableOriginalConstructor()
@@ -85,23 +93,39 @@ class PropertyTableOutdatedReferenceDisposerTest extends \PHPUnit_Framework_Test
 			->method( 'selectRow' )
 			->will( $this->returnValue( false ) );
 
-		$connection->expects( $this->at( 1 ) )
-			->method( 'delete' )
-			->with( $this->equalTo( \SMW\SQLStore\SQLStore::ID_TABLE ) );
-
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
 		$this->store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
+		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array( $tableDefinition ) ) );
 
-		$instance = new PropertyTableOutdatedReferenceDisposer(
+		$instance = new PropertyTableIdReferenceFinder(
 			$this->store
 		);
 
-		$instance->removeAnyReferenceFromPropertyTablesFor( 42 );
+		$instance->tryToFindAtLeastOneReferenceForProperty( new DIProperty( 'Foo' ) );
+	}
+
+	public function testHasResidualReferenceFor() {
+
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( array() ) );
+
+		$instance = new PropertyTableIdReferenceFinder(
+			$this->store
+		);
+
+		$this->assertInternalType(
+			'boolean',
+			$instance->hasResidualReferenceFor( 42 )
+		);
 	}
 
 }

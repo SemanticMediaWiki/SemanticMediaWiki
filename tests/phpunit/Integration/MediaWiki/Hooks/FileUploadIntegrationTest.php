@@ -151,30 +151,4 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 		);
 	}
 
-	public function testDummyTextFileUploadForDisabledNamespace() {
-
-		$this->applicationFactory->getSettings()->set(
-			'smwgNamespacesWithSemanticLinks', array( NS_FILE => false )
-		);
-
-		$subject = new DIWikiPage( 'Bar.txt', NS_FILE );
-
-		$dummyTextFile = $this->fixturesFileProvider->newUploadForDummyTextFile( 'Bar.txt' );
-
-		$this->assertTrue(
-			$dummyTextFile->doUpload( '[[HasFile::File:Bar.txt]]' )
-		);
-
-		$expected = array(
-			'propertyCount'  => 1,
-			'propertyKeys'   => array( '_SKEY' ),
-			'propertyValues' => array( 'Bar.txt' )
-		);
-
-		$this->semanticDataValidator->assertThatPropertiesAreSet(
-			$expected,
-			$this->getStore()->getSemanticData( $subject )
-		);
-	}
-
 }
