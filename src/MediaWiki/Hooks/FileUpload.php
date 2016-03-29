@@ -86,6 +86,9 @@ class FileUpload {
 
 		$propertyAnnotator->addAnnotation();
 
+		// 2.4+
+		\Hooks::run( 'SMW::FileUpload::BeforeUpdate', array( $filePage, $parserData->getSemanticData() ) );
+
 		$parserData->pushSemanticDataToParserOutput();
 		$parserData->updateStore( true );
 
