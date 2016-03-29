@@ -333,8 +333,7 @@ class PageBuilder {
 		}
 
 		$dataValue = DataValueFactory::getInstance()->newDataItemValue(
-			$dataItem,
-			$property
+			$dataItem
 		);
 
 		if ( $dataValue->isValid() ) {
