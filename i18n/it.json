@@ -292,5 +292,8 @@
 	"smw-datavalue-allows-pattern-reference-unknown": "Il modello di riferimento \"$1\" non può corrispondere ad un elemento in [[MediaWiki:Smw allows pattern]].",
 	"smw-datavalue-feature-not-supported": "La funzionalità \"$1\" non è supportata o è stata disattivata su questo wiki.",
 	"smw-pa-property-predefined_pvap": "\"$1\" è una proprietà predefinita che può specificare un [[MediaWiki:Smw allows pattern|modello di riferimento]] da applicare alle corrispondenze delle [https://it.wikipedia.org/wiki/Espressione_regolare espressioni regolari] ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
-	"smw-pa-property-predefined_dtitle": "\"$1\" è una proprietà predefinita che può assegnare un titolo da visualizzare diverso ad un'entità ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]."
+	"smw-pa-property-predefined_dtitle": "\"$1\" è una proprietà predefinita che può assegnare un titolo da visualizzare diverso ad un'entità ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_pvuc": "\"$1\" è una proprietà predefinita che indica che il valore assegnato a una proprietà dovrebbe essere unico ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined-long_pvuc": "L'unicità è stabilita quando i due valori non sono uguali nella sua rappresentazione letterale, e qualsiasi violazione di questo vincolo sarà classificato come errore.",
+	"smw-datavalue-uniqueness-constraint-error": "La proprietà \"$1\" consente l'assegnazione sono di valori unici, e ''$2'' è stato già annotato nel soggetto \"$3\"."
 }

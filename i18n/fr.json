@@ -406,5 +406,8 @@
 	"smw-datavalue-allows-pattern-reference-unknown": "La référence de motif « $1 » ne peut être mise en correspondance avec aucune entrée dans [[MediaWiki:Smw allows pattern]].",
 	"smw-datavalue-feature-not-supported": "La fonctionnalité « $1 » n’est pas supportée ou a été désactivée sur ce wiki.",
 	"smw-pa-property-predefined_pvap": "« $1 » est une propriété prédéfinie qui peut spécifier une [[MediaWiki:Smw allows pattern|référence de motif]] pour appliquer [https://en.wikipedia.org/wiki/Regular_expression une expression régulière] correspondante, et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Médiawiki Sémantique].",
-	"smw-pa-property-predefined_dtitle": "« $1 » est une propriété prédéfinie qui peut affecter un titre d’affichage distinct à une entité, et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Médiawiki Sémantique]."
+	"smw-pa-property-predefined_dtitle": "« $1 » est une propriété prédéfinie qui peut affecter un titre d’affichage distinct à une entité, et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Médiawiki Sémantique].",
+	"smw-pa-property-predefined_pvuc": "« $1 » est une propriété prédéfinie indiquant que les affectations de cette valeur à une propriété doivent être uniques, et elle est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
+	"smw-pa-property-predefined-long_pvuc": "L’unicité est établie quand deux valeurs n’ont pas la même représentation littérale, et toute violation de cette contrainte sera considérée comme une erreur.",
+	"smw-datavalue-uniqueness-constraint-error": "La propriété « $1 » ne permet que des affectations de valeur uniques, et « $2 » a déjà été annoté dans le sujet « $3 »."
 }
