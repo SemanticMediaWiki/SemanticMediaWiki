@@ -297,6 +297,12 @@ class ByIdDataRebuildDispatcher {
 	}
 
 	private function isPlainObjectValue( $row ) {
+
+		// A rogue title should never happen
+		if ( $row->smw_title === '' && $row->smw_proptable_hash === null ) {
+			return true;
+		}
+
 		return $row->smw_iw != SMW_SQL3_SMWDELETEIW &&
 			$row->smw_iw != SMW_SQL3_SMWREDIIW &&
 			$row->smw_iw != SMW_SQL3_SMWIW_OUTDATED &&
