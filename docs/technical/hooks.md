@@ -35,6 +35,10 @@ Implementing a hook should be made in consideration of the expected performance 
 - `SMW::SQLStore::AfterDataUpdateComplete` to add processing after the update has been completed and provides `CompositePropertyTableDiffIterator` to identify entities
    that have been added/removed during the update. <sup>Use of `SMWSQLStore3::updateDataAfter` was deprecated with 2.3</sup>
 
+### 2.4
+
+- `SMW::FileUpload::BeforeUpdate` to add extra annotations before the store update is triggered
+
 For implementation details and examples, see the [integration test](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/SemanticMediaWikiProvidedHookInterfaceIntegrationTest.php).
 
 ## Other available hooks
