@@ -88,5 +88,6 @@ Not a release yet.
 * #1445 Added `userlang` as `ParserOutput` option
 * #1451 Added `ExtraneousLanguage` interface
 * #1460 Requires PHP extension mbstring in `composer.json`
+* #1482 Added the `SMW::FileUpload::BeforeUpdate` hook
 
 ## Contributors
