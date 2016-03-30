@@ -462,7 +462,7 @@ label.smw-form-checkbox {
 }
 
 /* Handling Long Words and URLs (Forcing Breaks, Hyphenation, Ellipsis */
-.smwb-value, .smwprops, .smwpropname, .smwtype_wpg, .smwtype_uri, .smwb-ivalue, .smwb-title {
+.smwb-value, .smwprops, .smwpropname, .smwb-factbox .smwtype_wpg, .smwtype_uri, .smwb-ivalue, .smwb-title {
 	word-break: break-word;
 	word-wrap: break-word;
 	-webkit-hyphens: auto;
