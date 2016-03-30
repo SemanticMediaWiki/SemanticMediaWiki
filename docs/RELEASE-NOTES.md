@@ -41,6 +41,7 @@ Not a release yet.
 * #1440 ...
 * #1463 Added support for the [`Has uniqueness constraint`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_uniqueness_constraint) property trait
 * #1474 ...
+* #1483 Added statistics about [outdated entities](https://www.semantic-mediawiki.org/wiki/Help:Outdated_entities)
 
 ## Bug fixes
 
