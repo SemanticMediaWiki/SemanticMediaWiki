@@ -174,6 +174,7 @@
 	"smw-statistics-subobject-count": "{{PLURAL:$1|Subobject|Subobjects}}",
 	"smw-statistics-datatype-count": "[[Special:Types|{{PLURAL:$1|Datatype|Datatypes}}]]",
 	"smw-statistics-error-count": "{{PLURAL:$1|Property value|Property values}} ([[Property:Has improper value for|{{PLURAL:$1|improper annotation|improper annotations}}]])",
+	"smw-statistics-delete-count": "Outdated {{PLURAL:$1|entity|entities}} (marked for removal)",
 	"smw_uri_doc": "The URI resolver implements the [$1 W3C TAG finding on httpRange-14].\nIt takes care that humans do not turn into websites.",
 	"ask": "Semantic search",
 	"smw_ask_doculink": "https://www.semantic-mediawiki.org/wiki/Help:Semantic_search",

@@ -67,7 +67,8 @@ class UsageStatisticsListLookup implements ListLookup {
 			'DECLPROPS' => $this->getDeclaredPropertiesCount(),
 			'PROPUSES' => $this->getPropertyUsageCount(),
 			'USEDPROPS' => $this->getUsedPropertiesCount(),
-			'ERRORUSES' => $this->getImproperValueForCount()
+			'ERRORUSES' => $this->getImproperValueForCount(),
+			'DELETECOUNT' => $this->getDeleteCount()
 		);
 	}
 
@@ -251,6 +252,26 @@ class UsageStatisticsListLookup implements ListLookup {
 			array( $this->store->getStatisticsTable() ),
 			'Count( * ) AS count',
 			array( 'usage_count > 0' ),
+			__METHOD__
+		);
+
+		$count = $row ? $row->count : $count;
+
+		return (int)$count;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return number
+	 */
+	public function getDeleteCount() {
+		$count = 0;
+
+		$row = $this->store->getConnection()->selectRow(
+			SQLStore::ID_TABLE,
+			'Count( * ) AS count',
+			array( 'smw_iw' => ':smw-delete' ),
 			__METHOD__
 		);
 
