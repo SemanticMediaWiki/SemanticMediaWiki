@@ -199,6 +199,39 @@
 					content: $this.find( "[class='" + option.contentClass + "']" )
 				} )
 			);
+		},
+
+		/**
+		 * @since 2.4
+		 *
+		 * @param {Object} container
+		 */
+		render: function( container ) {
+			var self = this;
+
+			container.each( function() {
+
+				// Get configuration
+				var $this = $( this ),
+					eventPrefs = mw.user.options.get( 'smw-prefs-tooltip-option-click' ) ? 'click' : undefined,
+					state      = $this.data( 'state' ),
+					title      = $this.data( 'title' ),
+					type       = $this.data( 'type' );
+
+				// Assign sub-class
+				// Inline mostly used for special properties and quantity conversions
+				// Persistent extends interactions for service links, info, and error messages
+				$this.addClass( state === 'inline' ? 'smwttinline' : 'smwttpersist' );
+
+				// Call instance
+				self.show( {
+					context: $this,
+					content: $this.find( '.smwttcontent' ),
+					title  : title !== undefined ? title : mw.msg( self.getTitleMsg( type ) ),
+					event  : eventPrefs,
+					button : type === 'warning' || state === 'inline' ? false /* false = no close button */ : true
+				} );
+			} );
 		}
 	};
 
@@ -208,34 +241,11 @@
 	 * @ignore
 	 */
 	$( document ).ready( function() {
+		var tooltip = new smw.util.tooltip();
 
-		$( '.smw-highlighter' ).each( function() {
-
-			// Class reference
-			var tooltip = new smw.util.tooltip();
-
-			// Get configuration
-			var $this = $( this ),
-				eventPrefs = mw.user.options.get( 'smw-prefs-tooltip-option-click' ) ? 'click' : undefined,
-				state      = $this.data( 'state' ),
-				title      = $this.data( 'title' ),
-				type       = $this.data( 'type' );
-
-			// Assign sub-class
-			// Inline mostly used for special properties and quantity conversions
-			// Persistent extends interactions for service links, info, and error messages
-			$this.addClass( state === 'inline' ? 'smwttinline' : 'smwttpersist' );
-
-			// Call instance
-			tooltip.show( {
-				context: $this,
-				content: $this.find( '.smwttcontent' ),
-				title  : title !== undefined ? title : mw.msg( tooltip.getTitleMsg( type ) ),
-				event  : eventPrefs,
-				button : type === 'warning' || state === 'inline' ? false /* false = no close button */ : true
-			} );
-
-		} );
+		tooltip.render(
+			$( '.smw-highlighter' )
+		);
 	} );
 
 } )( jQuery, mediaWiki, semanticMediaWiki );
