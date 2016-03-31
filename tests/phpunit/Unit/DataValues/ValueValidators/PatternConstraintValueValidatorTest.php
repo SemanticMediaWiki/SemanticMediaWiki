@@ -52,13 +52,16 @@ class PatternConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testValidateUsingAMockedQueryEngine() {
+	/**
+	 * @dataProvider allowedPatternProvider
+	 */
+	public function testPatternUsingMockedDataValue( $allowedPattern, $testString, $expectedConstraintViolation ) {
 
 		$property = $this->dataItemFactory->newDIProperty( 'Has allowed pattern' );
 
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( " \nFoo|^(Bar|Foo bar)$/e\n" ) );
+			->will( $this->returnValue( $allowedPattern ) );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedPatternFor' )
@@ -79,7 +82,7 @@ class PatternConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Foo bar' ) ) );
+			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( $testString ) ) );
 
 		$instance = new PatternConstraintValueValidator();
 
@@ -89,9 +92,42 @@ class PatternConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->validate( $dataValue );
 
-		$this->assertFalse(
+		$this->assertEquals(
+			$expectedConstraintViolation,
 			$instance->hasConstraintViolation()
 		);
+	}
+
+	public function allowedPatternProvider() {
+
+		$provider[] = array(
+			" \nFoo|^(Bar|Foo bar)$/e\n",
+			'Foo bar',
+			false
+		);
+
+		#1 valid
+		$provider[] = array(
+			" \nFoo|(ev\d{7}\d{4})|((tt|nm|ch|co|ev)\d{7})\n",
+			'tt0042876',
+			false
+		);
+
+		#2 uses '/\'
+		$provider[] = array(
+			" \nFoo|(ev\d{7}/\d{4})|((tt|nm|ch|co|ev)\d{7})\n",
+			'tt0042876',
+			false
+		);
+
+		#3 "Compilation failed: missing )", suppress error
+		$provider[] = array(
+			" \nFoo|(ev\d{7}\d{4})|((tt|nm|ch|co|ev)\d{7}\n",
+			'Foo',
+			true
+		);
+
+		return $provider;
 	}
 
 }
