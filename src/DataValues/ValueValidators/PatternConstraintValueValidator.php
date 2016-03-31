@@ -96,7 +96,12 @@ class PatternConstraintValueValidator  implements ConstraintValueValidator {
 			$pattern = $pattern . '/';
 		}
 
-		if ( !preg_match( $pattern, $dataValue->getDataItem()->getSortKey() ) ) {
+		// Convert escaping
+		$pattern = str_replace( "/\\", "\\", $pattern );
+
+		// @to suppress any errors caused by an invalid regex, the user should
+		// test the expression before making it available
+		if ( !@preg_match( $pattern, $dataValue->getDataItem()->getSortKey() ) ) {
 			$dataValue->addErrorMsg(
 				array(
 					'smw-datavalue-allows-pattern-mismatch',
