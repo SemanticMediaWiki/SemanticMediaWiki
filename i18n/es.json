@@ -180,6 +180,7 @@
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Concepto|Conceptos}}]]",
 	"smw-statistics-subobject-count": "{{PLURAL:$1|Subobjecto|Subobjectos}}",
 	"smw-statistics-datatype-count": "[[Special:Types|{{PLURAL:$1|Tipo de datos|Tipos de datos}}]]",
+	"smw-statistics-delete-count": "{{PLURAL:$1|Entidad desactualizada (marcada para su eliminación)|Entidades desactualizadas (marcadas para su eliminación)}}",
 	"smw_uri_doc": "El traductor de URI implementa [$1 W3C TAG finding on httpRange-14].\nEsto se preocupa de cosas que los humanos no lo hacen en los sitios web..",
 	"ask": "Búsqueda semántica",
 	"smw_ask_sortby": "Ordenar por columna (opcional)",

@@ -7,7 +7,8 @@
 			"Vito Genovese",
 			"Incelemeelemani",
 			"HakanIST",
-			"Sayginer"
+			"Sayginer",
+			"Hbseren"
 		]
 	},
 	"smw_viewasrdf": "RDF beslemesi",
@@ -71,6 +72,7 @@
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Kavram|Kavram}}]]",
 	"smw-statistics-subobject-count": "{{PLURAL:$1|Altnesne|Altnesne}}",
 	"smw-statistics-datatype-count": "[[Special:Types|{{PLURAL:$1|Veritürü|Veritürü}}]]",
+	"smw-statistics-delete-count": "Zamanı geçmiş {{PLURAL:$1|entity|entities}} (kaldırılmak üzere işaretli)",
 	"ask": "Anlamsal arama",
 	"smw_ask_sortby": "Sütuna göre sırala (isteğe bağlı)",
 	"smw_ask_ascorder": "Artan",
@@ -147,5 +149,8 @@
 	"smw-sp-admin-idlookup-objectid": "Nesne kimliği:",
 	"smw-livepreview-loading": "Yükleniyor...",
 	"smw-sp-searchbyproperty-resultlist-header": "Sonuç listesi",
-	"log-name-smw": "Semantik MediaWiki günlüğü"
+	"log-name-smw": "Semantik MediaWiki günlüğü",
+	"smw-pa-property-predefined_pvuc": "\"$1\" önceden tanımlanmış, bir özelliğe yapılan atamaların eşsiz olmasının beklendiğini belirten bir özelliktir ve [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantik MediaWiki] tarafından sunulur.",
+	"smw-pa-property-predefined-long_pvuc": "Benzersizlik iki değerin değişmez temsilinin eşit olmaması halinde belirlenir ve bu kısıtlamanın herhangi bir ihlali hata olarak kategorize edilir.",
+	"smw-datavalue-uniqueness-constraint-error": "\"$1\" özelliği sadece benzersiz değer atamalarını kabul eder ve ''$2'' halihazırda \"$3\" konusu için atanmış durumda."
 }
