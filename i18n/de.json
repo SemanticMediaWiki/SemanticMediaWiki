@@ -187,6 +187,7 @@
 	"smw-statistics-subobject-count": "{{PLURAL:$1|Unterobjekt|Unterobjekte}}",
 	"smw-statistics-datatype-count": "[[Special:Types|{{PLURAL:$1|Datentyp|Datentypen}}]]",
 	"smw-statistics-error-count": "{{PLURAL:$1|Attributwert|Attributwerte}} ([[Attribut:Hat_unpassenden_Wert_für|{{PLURAL:$1|mit fehlerhafter Annotation|mit fehlerhaften Annotationen}}]])",
+	"smw-statistics-delete-count": "{{PLURAL:$1|Veraltetes Objekt|Veraltete Objekte}} (zur Entfernung markiert)",
 	"smw_uri_doc": "Der URI-Auflöser setzt die Empfehlungen „[$1 W3C TAG finding on httpRange-14]“ um. Er sorgt dafür, dass Menschen nicht zu Webseiten werden.",
 	"ask": "Semantische Suche",
 	"smw_ask_sortby": "Sortiere nach Spalte (optional)",

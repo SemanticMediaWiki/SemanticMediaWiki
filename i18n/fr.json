@@ -200,6 +200,7 @@
 	"smw-statistics-subobject-count": "{{PLURAL:$1|Sous-objet|Sous-objets}}",
 	"smw-statistics-datatype-count": "[[Special:Types|{{PLURAL:$1|Type de donnée|Types de donnée}}]]",
 	"smw-statistics-error-count": "{{PLURAL:$1|Valeur de propriété|Valeurs de propriété}} ([[Property:Has improper value for|{{PLURAL:$1|mauvaise annotation|mauvaises annotations}}]])",
+	"smw-statistics-delete-count": "{{PLURAL:$1|Entité obsolète|Entités obsolètes}} (marqué pour suppression)",
 	"smw_uri_doc": "Le résolveur d’URI implémente la [$1 Conclusion du TAG du W3C à propos du httpRange-14].\nIl peut veiller à ce que les humains ne deviennent pas des sites web.",
 	"ask": "Recherche sémantique",
 	"smw_ask_sortby": "Trier par colonnes (optionnel)",

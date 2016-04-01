@@ -145,6 +145,7 @@
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Concetto|Concetti}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Concetto|Concetti}}]]",
 	"smw-statistics-datatype-count": "[[Special:Types|{{PLURAL:$1|Tipo|Tipi}} di dato]]",
+	"smw-statistics-delete-count": "Entità {{PLURAL:$1|obsoleta|obsolete}} (contrassegnate per la rimozione)",
 	"smw_uri_doc": "Il risolutore di URI implementa il [$1 W3C TAG finding on httpRange-14]. Fa in modo che gli esseri umani non diventino siti Web.",
 	"ask": "Ricerca semantica",
 	"smw_ask_sortby": "Ordina per colonna (opzionale)",
