@@ -187,7 +187,7 @@ class SMWSQLStore3Writers {
 		$this->store->getConnection()->beginAtomicTransaction( __METHOD__ );
 
 		// Take care of redirects
-		$redirects = $data->getPropertyValues( new SMWDIProperty( '_REDI' ) );
+		$redirects = $data->getPropertyValues( new SMW\DIProperty( '_REDI' ) );
 
 		if ( count( $redirects ) > 0 ) {
 			$redirect = end( $redirects ); // at most one redirect per page
@@ -212,7 +212,7 @@ class SMWSQLStore3Writers {
 		}
 
 		// Take care of the sortkey
-		$sortkeyDataItems = $data->getPropertyValues( new SMWDIProperty( '_SKEY' ) );
+		$sortkeyDataItems = $data->getPropertyValues( new SMW\DIProperty( '_SKEY' ) );
 		$sortkeyDataItem = end( $sortkeyDataItems );
 
 		if ( $sortkeyDataItem instanceof SMWDIBlob ) {
@@ -424,7 +424,7 @@ class SMWSQLStore3Writers {
 		}
 
 		if ( $propertyTable->isFixedPropertyTable() ) {
-			$property = new SMWDIProperty( $propertyTable->getFixedProperty() );
+			$property = new SMW\DIProperty( $propertyTable->getFixedProperty() );
 			$pid = $this->store->getObjectIds()->makeSMWPropertyID( $property );
 		}
 
@@ -630,7 +630,7 @@ class SMWSQLStore3Writers {
 			);
 
 			$statsTable->addToUsageCount(
-				$this->store->getObjectIds()->getSMWPropertyID( new SMWDIProperty( '_REDI' ) ),
+				$this->store->getObjectIds()->getSMWPropertyID( new SMW\DIProperty( '_REDI' ) ),
 				1
 			);
 
@@ -980,7 +980,7 @@ class SMWSQLStore3Writers {
 		);
 
 		$statsTable->addToUsageCount(
-			$this->store->getObjectIds()->getSMWPropertyID( new SMWDIProperty( '_REDI' ) ),
+			$this->store->getObjectIds()->getSMWPropertyID( new SMW\DIProperty( '_REDI' ) ),
 			$count
 		);
 

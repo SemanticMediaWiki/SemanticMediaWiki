@@ -218,7 +218,7 @@ class SMWResultArray {
 			case PrintRequest::PRINT_CATS:
 				// Always recompute cache here to ensure output format is respected.
 				self::$catCache = $this->mStore->getPropertyValues( $this->mResult,
-					new SMWDIProperty( '_INST' ), $this->getRequestOptions( false ) );
+					new SMW\DIProperty( '_INST' ), $this->getRequestOptions( false ) );
 				self::$catCacheObj = $this->mResult->getHash();
 
 				$limit = $this->mPrintRequest->getParameter( 'limit' );
@@ -257,7 +257,7 @@ class SMWResultArray {
 			break;
 			case PrintRequest::PRINT_CCAT: ///NOTE: The limit is ignored here.
 				if ( self::$catCacheObj != $this->mResult->getHash() ) {
-					self::$catCache = $this->mStore->getPropertyValues( $this->mResult, new SMWDIProperty( '_INST' ) );
+					self::$catCache = $this->mStore->getPropertyValues( $this->mResult, new SMW\DIProperty( '_INST' ) );
 					self::$catCacheObj = $this->mResult->getHash();
 				}
 

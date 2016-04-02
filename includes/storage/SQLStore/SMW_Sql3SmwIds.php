@@ -763,10 +763,10 @@ class SMWSql3SmwIds {
 			if ( $title{0} != '_' ) {
 				// This normalization also applies to
 				// subobjects of predefined properties.
-				$newTitle = SMWDIProperty::findPropertyID( str_replace( '_', ' ', $title ) );
+				$newTitle = SMW\DIProperty::findPropertyID( str_replace( '_', ' ', $title ) );
 				if ( $newTitle ) {
 					$title = $newTitle;
-					$sortkey = SMWDIProperty::findPropertyLabel( $title );
+					$sortkey = SMW\DIProperty::findPropertyLabel( $title );
 					if ( $sortkey === '' ) {
 						$iw = SMW_SQL3_SMWINTDEFIW;
 					}

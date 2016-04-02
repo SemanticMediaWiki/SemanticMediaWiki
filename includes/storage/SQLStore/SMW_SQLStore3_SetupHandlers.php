@@ -282,7 +282,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 		$this->reportProgress( "   ... writing entries for internal properties ...", $verbose );
 
 		foreach ( SMWSql3SmwIds::$special_ids as $prop => $id ) {
-			$p = new SMWDIProperty( $prop );
+			$p = new SMW\DIProperty( $prop );
 			$db->replace( SMWSQLStore3::ID_TABLE, array( 'smw_id' ), array(
 					'smw_id' => $id,
 					'smw_title' => $p->getKey(),

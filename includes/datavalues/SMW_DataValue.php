@@ -385,7 +385,7 @@ abstract class SMWDataValue {
 		}
 
 		array_unshift( $args, '' ); // add a 0 element as placeholder
-		$servicelinks = \SMW\StoreFactory::getStore()->getPropertyValues( $propertyDiWikiPage, new SMWDIProperty( '_SERV' ) );
+		$servicelinks = \SMW\StoreFactory::getStore()->getPropertyValues( $propertyDiWikiPage, new SMW\DIProperty( '_SERV' ) );
 
 		foreach ( $servicelinks as $dataItem ) {
 			if ( !( $dataItem instanceof SMWDIBlob ) ) {

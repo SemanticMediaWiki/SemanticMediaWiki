@@ -91,7 +91,7 @@ class RdfResultPrinter extends FileExportPrinter {
 							$property = $printreq->getData()->getDataItem();
 						break;
 						case PrintRequest::PRINT_CATS:
-							$property = new SMWDIProperty( '_TYPE' );
+							$property = new SMW\DIProperty( '_TYPE' );
 						break;
 						case PrintRequest::PRINT_CCAT:
 							// not serialised right now

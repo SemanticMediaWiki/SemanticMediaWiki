@@ -194,7 +194,7 @@ class SMWSQLStore3Readers {
 	public function getPropertyValues( $subject, SMWDIProperty $property, $requestOptions = null ) {
 
 		if ( $property->isInverse() ) { // inverses are working differently
-			$noninverse = new SMWDIProperty( $property->getKey(), false );
+			$noninverse = new SMW\DIProperty( $property->getKey(), false );
 			$result = $this->getPropertySubjects( $noninverse, $subject, $requestOptions );
 		} elseif ( !is_null( $subject ) ) { // subject given, use semantic data cache
 			$sid = $this->store->smwIds->getSMWPageID( $subject->getDBkey(),
@@ -428,7 +428,7 @@ class SMWSQLStore3Readers {
 		/// TODO: should we share code with #ask query computation here? Just use queries?
 
 		if ( $property->isInverse() ) { // inverses are working differently
-			$noninverse = new SMWDIProperty( $property->getKey(), false );
+			$noninverse = new SMW\DIProperty( $property->getKey(), false );
 			$result = $this->getPropertyValues( $value, $noninverse, $requestOptions );
 			return $result;
 		}
@@ -624,7 +624,7 @@ class SMWSQLStore3Readers {
 				);
 
 				if ( $db->numRows( $res ) > 0 ) {
-					$result[] = new SMWDIProperty( $propertyTable->getFixedProperty() );
+					$result[] = new SMW\DIProperty( $propertyTable->getFixedProperty() );
 				}
 
 
@@ -638,7 +638,7 @@ class SMWSQLStore3Readers {
 					$where . $this->store->getSQLConditions( $suboptions, 'smw_sortkey', 'smw_sortkey' ),
 					__METHOD__, $this->store->getSQLOptions( $suboptions, 'smw_sortkey' ) );
 				foreach ( $res as $row ) {
-					$result[] = new SMWDIProperty( $row->smw_title );
+					$result[] = new SMW\DIProperty( $row->smw_title );
 				}
 			}
 
@@ -699,7 +699,7 @@ class SMWSQLStore3Readers {
 
 				foreach ( $res as $row ) {
 					try {
-						$result[] = new SMWDIProperty( $row->smw_title );
+						$result[] = new SMW\DIProperty( $row->smw_title );
 					} catch (SMWDataItemException $e) {
 						// has been observed to happen (empty property title); cause unclear; ignore this data
 					}
@@ -710,7 +710,7 @@ class SMWSQLStore3Readers {
 				$res = $db->select( $from, '*', $where, __METHOD__, array( 'LIMIT' => 1 ) );
 
 				if ( $db->numRows( $res ) > 0 ) {
-					$result[] = new SMWDIProperty( $proptable->getFixedProperty() );
+					$result[] = new SMW\DIProperty( $proptable->getFixedProperty() );
 				}
 			}
 			$db->freeResult( $res );

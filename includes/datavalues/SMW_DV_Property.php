@@ -85,7 +85,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 * in any case.
 	 */
 	static public function makeProperty( $propertyid ) {
-		$diProperty = new SMWDIProperty( $propertyid );
+		$diProperty = new SMW\DIProperty( $propertyid );
 		$dvProperty = new SMWPropertyValue( '__pro' );
 		$dvProperty->setDataItem( $diProperty );
 		return $dvProperty;
@@ -137,10 +137,10 @@ class SMWPropertyValue extends SMWDataValue {
 		}
 
 		try {
-			$this->m_dataitem = SMWDIProperty::newFromUserLabel( $propertyName, $inverse, $this->m_typeid );
+			$this->m_dataitem = SMW\DIProperty::newFromUserLabel( $propertyName, $inverse, $this->m_typeid );
 		} catch ( SMWDataItemException $e ) { // happens, e.g., when trying to sort queries by property "-"
 			$this->addError( wfMessage( 'smw_noproperty', $value )->inContentLanguage()->text() );
-			$this->m_dataitem = new SMWDIProperty( 'ERROR', false ); // just to have something
+			$this->m_dataitem = new SMW\DIProperty( 'ERROR', false ); // just to have something
 		}
 
 		// @see the SMW_DV_PROV_DTITLE explanation
@@ -195,7 +195,7 @@ class SMWPropertyValue extends SMWDataValue {
 	}
 
 	public function setInverse( $isinverse ) {
-		return $this->m_dataitem = new SMWDIProperty( $this->m_dataitem->getKey(), ( $isinverse == true ) );
+		return $this->m_dataitem = new SMW\DIProperty( $this->m_dataitem->getKey(), ( $isinverse == true ) );
 	}
 
 	/**
@@ -315,7 +315,7 @@ class SMWPropertyValue extends SMWDataValue {
 
 	/**
 	 * Convenience method to find the type id of this property. Most callers
-	 * should rather use SMWDIProperty::findPropertyTypeId() directly. Note
+	 * should rather use SMW\DIProperty::findPropertyTypeId() directly. Note
 	 * that this is not the same as getTypeID(), which returns the id of
 	 * this property datavalue.
 	 *
@@ -375,10 +375,10 @@ class SMWPropertyValue extends SMWDataValue {
 	 * within the hook 'smwInitProperties'. Ids should start with three underscores "___" to avoid
 	 * current and future confusion with SMW built-ins.
 	 *
-	 * @deprecated Use SMWDIProperty::registerProperty(). Will vanish before SMW 1.7.
+	 * @deprecated Use SMW\DIProperty::registerProperty(). Will vanish before SMW 1.7.
 	 */
 	static public function registerProperty( $id, $typeid, $label = false, $show = false ) {
-		SMWDIProperty::registerProperty( $id, $typeid, $label, $show );
+		SMW\DIProperty::registerProperty( $id, $typeid, $label, $show );
 	}
 
 	/**
@@ -386,14 +386,14 @@ class SMWPropertyValue extends SMWDataValue {
 	 * label, either provided by SMW or registered with registerDatatype. This function should be
 	 * called from within the hook 'smwInitDatatypes'.
 	 *
-	 * @deprecated Use SMWDIProperty::registerPropertyAlias(). Will vanish before SMW 1.7.
+	 * @deprecated Use SMW\DIProperty::registerPropertyAlias(). Will vanish before SMW 1.7.
 	 */
 	static public function registerPropertyAlias( $id, $label ) {
-		SMWDIProperty::registerPropertyAlias( $id, $label );
+		SMW\DIProperty::registerPropertyAlias( $id, $label );
 	}
 
 	/**
-	 * @see SMWDIProperty::isUserDefined()
+	 * @see SMW\DIProperty::isUserDefined()
 	 *
 	 * @deprecated since 1.6
 	 */
@@ -402,7 +402,7 @@ class SMWPropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDIProperty::isShown()
+	 * @see SMW\DIProperty::isShown()
 	 *
 	 * @deprecated since 1.6
 	 */
@@ -411,7 +411,7 @@ class SMWPropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDIProperty::isInverse()
+	 * @see SMW\DIProperty::isInverse()
 	 *
 	 * @deprecated since 1.6
 	 */
@@ -423,7 +423,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 * Return a DB-key-like string: for visible properties, it is the actual DB key,
 	 * for internal (invisible) properties, it is the property ID. The value agrees
 	 * with the first component of getDBkeys() and it can be used in its place.
-	 * @see SMWDIProperty::getKey()
+	 * @see SMW\DIProperty::getKey()
 	 *
 	 * @deprecated since 1.6
 	 */
@@ -432,7 +432,7 @@ class SMWPropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDIProperty::getLabel()
+	 * @see SMW\DIProperty::getLabel()
 	 *
 	 * @deprecated since 1.6
 	 */
