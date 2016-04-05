@@ -2,9 +2,9 @@
 
 namespace SMW;
 
-use Title;
 use Onoi\HttpRequest\HttpRequest;
 use SMW\MediaWiki\Specials\SpecialDeferredRequestDispatcher;
+use Title;
 
 /**
  * During the storage of a page, sometimes it is necessary the create extra

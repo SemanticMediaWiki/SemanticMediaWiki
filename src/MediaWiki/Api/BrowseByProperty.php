@@ -5,7 +5,6 @@ namespace SMW\MediaWiki\Api;
 use ApiBase;
 use SMW\ApplicationFactory;
 use SMW\NamespaceUriFinder;
-use SMW\PropertySpecificationLookup;
 
 /**
  * @license GNU GPL v2+

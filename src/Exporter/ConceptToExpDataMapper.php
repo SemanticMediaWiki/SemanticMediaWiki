@@ -2,22 +2,22 @@
 
 namespace SMW\Exporter;
 
-use SMW\DataValueFactory;
 use SMW\ApplicationFactory;
-use SMW\Exporter\Element\ExpResource;
+use SMW\DataValueFactory;
 use SMW\DIConcept;
 use SMW\DIProperty;
-use SMW\Query\Language\Description;
-use SMW\Query\Language\Conjunction;
-use SMW\Query\Language\Disjunction;
+use SMW\Exporter\Element\ExpResource;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\ConceptDescription;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Description;
+use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\SomeProperty;
-use SMW\Query\Language\ValueDescription;
 use SMW\Query\Language\ThingDescription;
-use SMWExporter as Exporter;
-use SMWExpData as ExpData;
+use SMW\Query\Language\ValueDescription;
 use SMWDataItem as DataItem;
+use SMWExpData as ExpData;
+use SMWExporter as Exporter;
 
 /**
  * @license GNU GPL v2+

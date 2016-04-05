@@ -2,10 +2,9 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Store\PropertyStatisticsStore;
-use SMW\MediaWiki\Database;
-
 use MWException;
+use SMW\MediaWiki\Database;
+use SMW\Store\PropertyStatisticsStore;
 
 /**
  * Simple implementation of PropertyStatisticsTable using MediaWikis

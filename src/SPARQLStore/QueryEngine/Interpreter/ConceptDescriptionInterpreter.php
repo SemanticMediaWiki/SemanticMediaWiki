@@ -5,7 +5,6 @@ namespace SMW\SPARQLStore\QueryEngine\Interpreter;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\CircularReferenceGuard;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Description;
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;

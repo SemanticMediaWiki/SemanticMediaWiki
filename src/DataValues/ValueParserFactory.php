@@ -2,11 +2,10 @@
 
 namespace SMW\DataValues;
 
-use SMW\DataValues\ControlledVocabularyImportContentFetcher;
+use SMW\ApplicationFactory;
+use SMW\DataValues\ValueParsers\AllowsPatternContentParser;
 use SMW\DataValues\ValueParsers\ImportValueParser;
 use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
-use SMW\DataValues\ValueParsers\AllowsPatternContentParser;
-use SMW\ApplicationFactory;
 
 /**
  * @license GNU GPL v2+

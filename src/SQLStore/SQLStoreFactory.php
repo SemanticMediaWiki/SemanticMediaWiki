@@ -2,28 +2,25 @@
 
 namespace SMW\SQLStore;
 
-use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
-use SMW\SQLStore\Lookup\PropertyUsageListLookup;
-use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
-use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
-use SMW\SQLStore\Lookup\CachedListLookup;
-use SMW\SQLStore\Lookup\ListLookup;
-use SMW\SQLStore\Lookup\CachedValueLookupStore;
-use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
-use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
-use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
-use SMW\SQLStore\QueryEngine\ConceptQueryResolver;
-use SMW\SQLStore\QueryEngine\QueryEngine;
-use SMW\SQLStore\QueryEngine\EngineOptions;
-use Onoi\Cache\Cache;
-use SMW\EventHandler;
 use Onoi\BlobStore\BlobStore;
-use SMW\SQLStore\ConceptCache;
 use SMW\ApplicationFactory;
 use SMW\CircularReferenceGuard;
-use SMWSQLStore3;
-use SMWRequestOptions as RequestOptions;
 use SMW\DIProperty;
+use SMW\SQLStore\Lookup\CachedListLookup;
+use SMW\SQLStore\Lookup\CachedValueLookupStore;
+use SMW\SQLStore\Lookup\ListLookup;
+use SMW\SQLStore\Lookup\PropertyUsageListLookup;
+use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
+use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
+use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
+use SMW\SQLStore\QueryEngine\ConceptQueryResolver;
+use SMW\SQLStore\QueryEngine\EngineOptions;
+use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
+use SMW\SQLStore\QueryEngine\QueryEngine;
+use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
+use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
+use SMWRequestOptions as RequestOptions;
+use SMWSQLStore3;
 
 /**
  * @license GNU GPL v2+

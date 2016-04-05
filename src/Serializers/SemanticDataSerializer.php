@@ -2,10 +2,9 @@
 
 namespace SMW\Serializers;
 
+use OutOfBoundsException;
 use Serializers\Serializer;
 use SMW\SemanticData;
-
-use OutOfBoundsException;
 
 /**
  * @license GNU GPL v2+

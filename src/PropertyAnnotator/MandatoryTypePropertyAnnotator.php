@@ -2,12 +2,11 @@
 
 namespace SMW\PropertyAnnotator;
 
+use SMW\DataTypeRegistry;
+use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\PropertyAnnotator;
-use SMW\DataValueFactory;
-use SMW\DataTypeRegistry;
 use SMW\Store;
-use SMWErrorValue as ErrorValue;
 
 /**
  * @license GNU GPL v2+

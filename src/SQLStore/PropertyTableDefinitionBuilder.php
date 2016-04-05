@@ -2,9 +2,9 @@
 
 namespace SMW\SQLStore;
 
+use Hooks;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
-use Hooks;
 
 /**
  * Class that generates property table definitions

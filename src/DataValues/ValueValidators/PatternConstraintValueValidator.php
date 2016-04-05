@@ -3,11 +3,7 @@
 namespace SMW\DataValues\ValueValidators;
 
 use SMW\DataValues\ValueParserFactory;
-use SMW\Message;
 use SMWDataValue as DataValue;
-use SMW\DIProperty;
-use SMW\ApplicationFactory;
-use SMW\Localizer;
 
 /**
  * To suppport regular expressions in connection with the `Allows pattern`

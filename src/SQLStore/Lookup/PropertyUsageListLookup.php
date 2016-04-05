@@ -2,15 +2,14 @@
 
 namespace SMW\SQLStore\Lookup;
 
+use RuntimeException;
+use SMW\DIProperty;
+use SMW\InvalidPropertyException;
+use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Store\PropertyStatisticsStore;
-use SMW\SQLStore\Lookup\ListLookup;
-use SMW\DIProperty;
-use SMW\SQLStore\SQLStore;
 use SMWDIError as DIError;
 use SMWRequestOptions as RequestOptions;
-use SMW\InvalidPropertyException;
-use RuntimeException;
 
 /**
  * @license GNU GPL v2+

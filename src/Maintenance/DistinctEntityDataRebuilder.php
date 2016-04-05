@@ -2,14 +2,14 @@
 
 namespace SMW\Maintenance;
 
+use Onoi\MessageReporter\MessageReporter;
+use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\TitleCreator;
 use SMW\MediaWiki\TitleLookup;
-use Onoi\MessageReporter\MessageReporter;
-use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\Store;
 use SMW\Options;
+use SMW\Store;
 use SMWQueryProcessor;
 use Title;
 

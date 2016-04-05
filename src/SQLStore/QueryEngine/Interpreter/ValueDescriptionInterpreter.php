@@ -5,9 +5,9 @@ namespace SMW\SQLStore\QueryEngine\Interpreter;
 use SMW\DIWikiPage;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;
-use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QuerySegment;
+use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMWSql3SmwIds;
 
 /**

@@ -2,8 +2,8 @@
 
 namespace SMW;
 
-use SMW\Query\Language\Description;
 use SMW\Query\DescriptionFactory;
+use SMW\Query\Language\Description;
 use SMW\Query\PrintRequestFactory;
 use SMWQuery as Query;
 use SMWQueryParser as QueryParser;

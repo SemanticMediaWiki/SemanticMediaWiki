@@ -2,8 +2,8 @@
 
 namespace SMW\SQLStore;
 
-use IteratorAggregate;
 use ArrayIterator;
+use IteratorAggregate;
 
 /**
  * @license GNU GPL v2+

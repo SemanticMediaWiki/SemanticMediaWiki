@@ -2,7 +2,6 @@
 
 namespace SMW\Maintenance;
 
-use RuntimeException;
 use SMW\Options;
 
 /**

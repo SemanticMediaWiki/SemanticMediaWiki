@@ -2,15 +2,13 @@
 
 namespace SMW\Exporter;
 
-use SMW\Exporter\Element\ExpResource;
-use SMW\Exporter\Element\ExpNsResource;
-use SMW\Exporter\Element\ExpElement;
-use SMW\Exporter\Element\ExpLiteral;
+use RuntimeException;
 use SMW\Exporter\Element;
-use SMWExporter as Exporter;
+use SMW\Exporter\Element\ExpLiteral;
+use SMW\Exporter\Element\ExpResource;
 use SMWDataItem as DataItem;
 use SMWDITime as DITime;
-use RuntimeException;
+use SMWExporter as Exporter;
 
 /**
  * @license GNU GPL v2+

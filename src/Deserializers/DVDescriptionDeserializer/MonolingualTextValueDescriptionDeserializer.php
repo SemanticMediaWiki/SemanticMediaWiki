@@ -2,15 +2,14 @@
 
 namespace SMW\Deserializers\DVDescriptionDeserializer;
 
+use InvalidArgumentException;
+use SMW\DataValueFactory;
 use SMW\DataValues\MonolingualTextValue;
-use SMW\Query\Language\ThingDescription;
-use SMW\Query\Language\ValueDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
-use SMW\DataValueFactory;
-use SMW\DIProperty;
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\ValueDescription;
 use SMWDIBlob as DIBlob;
-use InvalidArgumentException;
 
 /**
  * @private

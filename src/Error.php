@@ -3,8 +3,8 @@
 namespace SMW;
 
 use SMWContainerSemanticData as ContainerSemanticData;
-use SMWDIContainer as DIContainer;
 use SMWDIBlob as DIBlob;
+use SMWDIContainer as DIContainer;
 
 /**
  * @license GNU GPL v2+

@@ -2,17 +2,15 @@
 
 namespace SMW\SQLStore\Lookup;
 
-use Onoi\Cache\Cache;
 use Onoi\BlobStore\BlobStore;
-use SMW\SQLStore\ValueLookupStore;
-use SMW\Store;
+use SMW\CircularReferenceGuard;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\HashBuilder;
-use SMW\CircularReferenceGuard;
+use SMW\SQLStore\ValueLookupStore;
+use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWRequestOptions as RequestOptions;
-use RuntimeException;
 
 /**
  * Intermediary (fast) access to serialized blob values to avoid DB access on

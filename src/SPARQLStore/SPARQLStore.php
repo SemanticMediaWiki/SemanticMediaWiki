@@ -11,7 +11,6 @@ use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
 use SMWQuery as Query;
 use SMWTurtleSerializer as TurtleSerializer;
-use SMW\MediaWiki\Jobs\UpdateJob;
 use Title;
 
 /**

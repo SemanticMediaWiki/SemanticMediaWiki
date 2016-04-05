@@ -2,11 +2,8 @@
 
 namespace SMW\DataValues;
 
-use SMWStringValue as StringValue;
-use SMWDataValue as DataValue;
-use SMW\DIProperty;
-use SMW\ApplicationFactory;
 use SMW\Localizer;
+use SMWStringValue as StringValue;
 
 /**
  * To suppport regular expressions in connection with the `Allows pattern`

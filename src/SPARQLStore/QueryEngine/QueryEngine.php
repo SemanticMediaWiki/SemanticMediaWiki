@@ -3,14 +3,13 @@
 namespace SMW\SPARQLStore\QueryEngine;
 
 use RuntimeException;
-use SMW\Query\Language\ThingDescription;
-use SMW\SPARQLStore\RepositoryConnection;
+use SMW\Exporter\Element;
 use SMW\Query\DebugOutputFormatter;
-use SMW\CircularReferenceGuard;
+use SMW\Query\Language\ThingDescription;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
-use SMW\Exporter\Element;
+use SMW\SPARQLStore\RepositoryConnection;
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
 

@@ -2,9 +2,9 @@
 
 namespace SMW\DataValues;
 
-use SMWStringValue as StringValue;
 use SMW\Localizer;
 use SMWDIBlob as DIBlob;
+use SMWStringValue as StringValue;
 
 /**
  * Handles a string value to adhere the BCP47 normative content declaration for

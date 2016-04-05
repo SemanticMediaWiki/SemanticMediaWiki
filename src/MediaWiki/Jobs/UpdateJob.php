@@ -5,9 +5,8 @@ namespace SMW\MediaWiki\Jobs;
 use LinkCache;
 use ParserOutput;
 use SMW\ApplicationFactory;
-use SMW\EventHandler;
-use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\EventHandler;
 use Title;
 
 /**

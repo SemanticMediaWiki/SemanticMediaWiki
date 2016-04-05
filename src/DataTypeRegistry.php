@@ -2,11 +2,11 @@
 
 namespace SMW;
 
-use SMWDataItem as DataItem;
 use SMW\DataValues\ValueFormatterRegistry;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
-use SMW\Deserializers\DVDescriptionDeserializerRegistry;
 use SMW\Deserializers\DVDescriptionDeserializer\DescriptionDeserializer;
+use SMW\Deserializers\DVDescriptionDeserializerRegistry;
+use SMWDataItem as DataItem;
 
 /**
  * DataTypes registry class

@@ -2,15 +2,13 @@
 
 namespace SMW\SQLStore\QueryDependency;
 
-use SMW\Store;
-use SMW\SQLStore\CompositePropertyTableDiffIterator;
-use SMWSQLStore3;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\HashBuilder;
-use SMW\SemanticData;
 use SMW\ApplicationFactory;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\EventHandler;
+use SMW\SQLStore\CompositePropertyTableDiffIterator;
+use SMW\Store;
+use SMWSQLStore3;
 
 /**
  * @license GNU GPL v2+

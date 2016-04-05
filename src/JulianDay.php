@@ -2,8 +2,8 @@
 
 namespace SMW;
 
-use SMWDITime as DITime;
 use RuntimeException;
+use SMWDITime as DITime;
 
 /**
  * Julian dates (abbreviated JD) are a continuous count of days and fractions

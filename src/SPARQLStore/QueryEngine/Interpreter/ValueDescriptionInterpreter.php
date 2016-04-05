@@ -2,7 +2,6 @@
 
 namespace SMW\SPARQLStore\QueryEngine\Interpreter;
 
-use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;
@@ -13,8 +12,8 @@ use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
 use SMWDIBlob as DIBlob;
 use SMWDIUri as DIUri;
-use SMWExpNsResource as ExpNsResource;
 use SMWExpElement as ExpElement;
+use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 

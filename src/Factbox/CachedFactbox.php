@@ -2,9 +2,9 @@
 
 namespace SMW\Factbox;
 
-use ParserOutput;
-use OutputPage;
 use Onoi\Cache\Cache;
+use OutputPage;
+use ParserOutput;
 use SMW\ApplicationFactory;
 use SMW\InTextAnnotationParser;
 use Title;

@@ -2,7 +2,6 @@
 
 namespace SMW\DataValues;
 
-use SMWDataValue as DataValue;
 use SMWBoolValue as BooleanValue;
 
 /**

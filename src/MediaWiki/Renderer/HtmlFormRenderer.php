@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Renderer;
 
-use SMW\MediaWiki\MessageBuilder;
 use Html;
+use SMW\MediaWiki\MessageBuilder;
 use Title;
 use Xml;
 

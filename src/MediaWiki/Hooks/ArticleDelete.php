@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\ApplicationFactory;
-use SMW\EventHandler;
 use SMW\DIWikiPage;
+use SMW\EventHandler;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleDelete

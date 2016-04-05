@@ -5,7 +5,6 @@ namespace SMW\SPARQLStore\QueryEngine\Interpreter;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
-use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;

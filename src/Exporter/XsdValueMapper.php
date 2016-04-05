@@ -2,12 +2,12 @@
 
 namespace SMW\Exporter;
 
-use SMWDIBoolean as DIBoolean;
-use SMWDataItem as DataItem;
-use SMWDITime as DITime;
-use SMWDINumber as DINumber;
-use SMWDIBlob as DIBlob;
 use RuntimeException;
+use SMWDataItem as DataItem;
+use SMWDIBlob as DIBlob;
+use SMWDIBoolean as DIBoolean;
+use SMWDINumber as DINumber;
+use SMWDITime as DITime;
 
 /**
  * This class only maps primitive types (string, boolean, integers ) mostly to

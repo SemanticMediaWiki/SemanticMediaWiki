@@ -2,12 +2,12 @@
 
 namespace SMW;
 
-use SMWDINumber as DINumber;
+use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIBlob as DIBlob;
 use SMWDIBoolean as DIBoolean;
-use SMWDIError as DIError;
 use SMWDIContainer as DIContainer;
-use SMWContainerSemanticData as ContainerSemanticData;
+use SMWDIError as DIError;
+use SMWDINumber as DINumber;
 
 /**
  * @private

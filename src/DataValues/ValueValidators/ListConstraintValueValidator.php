@@ -3,10 +3,8 @@
 namespace SMW\DataValues\ValueValidators;
 
 use SMW\DataValueFactory;
-use SMW\ApplicationFactory;
-use SMWDIBlob as DIBlob;
-use SMW\DIProperty;
 use SMWDataValue as DataValue;
+use SMWDIBlob as DIBlob;
 
 /**
  * @private

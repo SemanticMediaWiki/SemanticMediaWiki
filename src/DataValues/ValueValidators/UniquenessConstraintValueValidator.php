@@ -2,10 +2,9 @@
 
 namespace SMW\DataValues\ValueValidators;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\ApplicationFactory;
 use SMW\CachedPropertyValuesPrefetcher;
+use SMW\DIWikiPage;
 use SMWDataValue as DataValue;
 
 /**

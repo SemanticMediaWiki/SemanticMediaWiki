@@ -3,15 +3,12 @@
 namespace SMW\Maintenance;
 
 use LinkCache;
-use SMW\DIWikiPage;
-use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\MediaWiki\TitleCreator;
-use SMW\MediaWiki\TitleLookup;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\Store;
+use SMW\DIWikiPage;
+use SMW\MediaWiki\TitleCreator;
 use SMW\Options;
-use SMWQueryProcessor;
+use SMW\Store;
 use Title;
 
 /**

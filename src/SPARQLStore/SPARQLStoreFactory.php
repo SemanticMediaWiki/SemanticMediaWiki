@@ -2,15 +2,15 @@
 
 namespace SMW\SPARQLStore;
 
-use SMW\Store;
-use SMW\StoreFactory;
-use SMW\ConnectionManager;
 use SMW\ApplicationFactory;
 use SMW\CircularReferenceGuard;
+use SMW\ConnectionManager;
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
 use SMW\SPARQLStore\QueryEngine\QueryEngine;
 use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
+use SMW\Store;
+use SMW\StoreFactory;
 
 /**
  * @license GNU GPL v2+

@@ -3,29 +3,27 @@
 namespace SMW\SPARQLStore\QueryEngine;
 
 use RuntimeException;
+use SMW\CircularReferenceGuard;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\CircularReferenceGuard;
 use SMW\PropertyHierarchyLookup;
-use SMW\SPARQLStore\HierarchyFinder;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
+use SMW\SPARQLStore\HierarchyFinder;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
-
-use SMW\SPARQLStore\QueryEngine\Interpreter\DispatchingDescriptionInterpreter;
 use SMW\SPARQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter;
-use SMW\SPARQLStore\QueryEngine\Interpreter\ThingDescriptionInterpreter;
-use SMW\SPARQLStore\QueryEngine\Interpreter\SomePropertyInterpreter;
+use SMW\SPARQLStore\QueryEngine\Interpreter\ConceptDescriptionInterpreter;
 use SMW\SPARQLStore\QueryEngine\Interpreter\ConjunctionInterpreter;
 use SMW\SPARQLStore\QueryEngine\Interpreter\DisjunctionInterpreter;
+use SMW\SPARQLStore\QueryEngine\Interpreter\DispatchingDescriptionInterpreter;
 use SMW\SPARQLStore\QueryEngine\Interpreter\NamespaceDescriptionInterpreter;
+use SMW\SPARQLStore\QueryEngine\Interpreter\SomePropertyInterpreter;
+use SMW\SPARQLStore\QueryEngine\Interpreter\ThingDescriptionInterpreter;
 use SMW\SPARQLStore\QueryEngine\Interpreter\ValueDescriptionInterpreter;
-use SMW\SPARQLStore\QueryEngine\Interpreter\ConceptDescriptionInterpreter;
-
 use SMWDataItem as DataItem;
 use SMWExpElement as ExpElement;
 use SMWExpNsResource as ExpNsResource;

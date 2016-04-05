@@ -2,20 +2,20 @@
 
 namespace SMW\SQLStore\QueryDependency;
 
+use SMW\ApplicationFactory;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\PropertyHierarchyLookup;
+use SMW\Query\Language\ClassDescription;
+use SMW\Query\Language\ConceptDescription;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Disjunction;
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\ValueDescription;
 use SMW\Store;
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\ApplicationFactory;
-use SMW\PropertyHierarchyLookup;
-use SMW\Query\Language\ConceptDescription;
-use SMW\Query\Language\SomeProperty;
-use SMW\Query\Language\ValueDescription;
-use SMW\Query\Language\Disjunction;
-use SMW\Query\Language\Conjunction;
-use SMW\Query\Language\ClassDescription;
-use SMW\Query\Language\ThingDescription;
 
 /**
  * @license GNU GPL v2+

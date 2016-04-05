@@ -3,13 +3,13 @@
 namespace SMW\SPARQLStore;
 
 use SMW\DIWikiPage;
-use SMW\SemanticData;
 use SMW\Exporter\Element;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpResource;
-use SMWExporter as Exporter;
+use SMW\SemanticData;
 use SMWExpData as ExpData;
+use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 
 /**

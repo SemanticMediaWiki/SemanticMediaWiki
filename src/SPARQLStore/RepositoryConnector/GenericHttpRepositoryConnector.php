@@ -3,12 +3,12 @@
 namespace SMW\SPARQLStore\RepositoryConnector;
 
 use Onoi\HttpRequest\HttpRequest;
-use SMW\SPARQLStore\RepositoryConnection;
 use SMW\SPARQLStore\BadHttpResponseMapper;
-use SMW\SPARQLStore\RepositoryClient;
 use SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMW\SPARQLStore\QueryEngine\XmlResponseParser;
+use SMW\SPARQLStore\RepositoryClient;
+use SMW\SPARQLStore\RepositoryConnection;
 use SMWExporter as Exporter;
 
 /**

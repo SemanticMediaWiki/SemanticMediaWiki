@@ -2,15 +2,14 @@
 
 namespace SMW\Deserializers\DVDescriptionDeserializer;
 
-use SMWTimeValue as TimeValue;
-use SMWDITime as DITime;
+use DateInterval;
+use InvalidArgumentException;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
-use SMW\Query\Language\Disjunction;
-use SMW\Query\Language\Conjunction;
-use InvalidArgumentException;
-use DateTime;
-use DateInterval;
+use SMWDITime as DITime;
+use SMWTimeValue as TimeValue;
 
 /**
  * @private

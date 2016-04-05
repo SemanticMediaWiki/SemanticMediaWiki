@@ -3,17 +3,15 @@
 namespace SMW\Deserializers;
 
 use Deserializers\Deserializer;
-use SMW\SemanticData;
+use OutOfBoundsException;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-
+use SMW\SemanticData;
 use SMWContainerSemanticData;
-use SMWDIContainer as DIContainer;
 use SMWDataItem as DataItem;
+use SMWDIContainer as DIContainer;
 use SMWErrorValue as ErrorValue;
-
-use OutOfBoundsException;
 
 /**
  * @license GNU GPL v2+

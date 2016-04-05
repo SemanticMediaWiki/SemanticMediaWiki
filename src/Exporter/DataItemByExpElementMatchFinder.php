@@ -2,13 +2,11 @@
 
 namespace SMW\Exporter;
 
-use SMW\Exporter\Element\ExpResource;
-use SMW\Exporter\Element\ExpElement;
-use SMW\Exporter\Escaper;
 use SMW\DIWikiPage;
-use SMW\Store;
+use SMW\Exporter\Element\ExpElement;
+use SMW\Exporter\Element\ExpResource;
 use SMW\Localizer;
-use SMWExporter as Exporter;
+use SMW\Store;
 use SMWDataItem as DataItem;
 use Title;
 

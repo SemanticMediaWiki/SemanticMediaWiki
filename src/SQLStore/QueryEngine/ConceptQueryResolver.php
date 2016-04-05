@@ -2,9 +2,8 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
-use SMW\SQLStore\QueryEngine\QuerySegment;
-use SMWQueryParser as QueryParser;
 use SMWQuery as Query;
+use SMWQueryParser as QueryParser;
 
 /**
  * @license GNU GPL v2+
