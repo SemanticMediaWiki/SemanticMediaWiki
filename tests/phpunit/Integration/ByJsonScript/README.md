@@ -1,5 +1,5 @@
 ## Fixtures
-Contains 105 files:
+Contains 108 files:
 
 ### F
 * [f-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0001.json) Test format=debug output
@@ -58,6 +58,7 @@ Contains 105 files:
 * [p-0901.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0901.json) Test #ask on moved redirected subject (#1086)
 * [p-0902.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0902.json) Test #ask on failed queries to produce a `_ERRC` (#1297, en)
 * [p-0903.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0903.json) Test #ask on redirected printrequest (#1290, en)
+* [p-0904.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0904.json) Test #ask with subject redirected to different NS (en)
 
 ### Q
 * [q-0101.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0101.json) Test `_txt` query for blob value assignments
@@ -115,5 +116,7 @@ Contains 105 files:
 
 ### S
 * [s-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0001.json) Test output of `Special:Properties` (en, skip-on sqlite, 1.19)
+* [s-0002.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0002.json) Test output of `Special:SearchByProperty` (en, skip-on sqlite, 1.19)
+* [s-0003.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0003.json) Test `Special:Ask` output for `format=rdf`/'format=json' (#1453)
 
--- Last updated on 2016-03-22 by `readmeContentsBuilder.php`
+-- Last updated on 2016-04-05 by `readmeContentsBuilder.php`

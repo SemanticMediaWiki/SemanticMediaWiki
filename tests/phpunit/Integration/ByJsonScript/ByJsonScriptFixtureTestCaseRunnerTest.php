@@ -201,6 +201,11 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		);
 
 		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'special-testcases' ) as $case ) {
+
+			if ( $jsonTestCaseFileHandler->requiredToSkipFor( $case, $this->connectorId ) ) {
+				continue;
+			}
+
 			$this->specialPageTestCaseProcessor->process( $case );
 		}
 	}
