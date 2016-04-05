@@ -2,8 +2,8 @@
 
 namespace SMW;
 
-use ParamProcessor\ParamDefinition;
 use Html;
+use ParamProcessor\ParamDefinition;
 use Xml;
 
 /**

@@ -3,10 +3,10 @@
 namespace SMW;
 
 use MWException;
+use SMWContainerSemanticData;
+use SMWDataItem;
 use SMWDataValue;
 use SMWDIContainer;
-use SMWDataItem;
-use SMWContainerSemanticData;
 use SMWPropertyValue;
 
 /**

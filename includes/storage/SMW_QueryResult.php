@@ -1,9 +1,9 @@
 <?php
 
-use SMW\Query\PrintRequest;
-use SMW\SerializerFactory;
 use SMW\HashBuilder;
+use SMW\Query\PrintRequest;
 use SMW\Query\QueryLink;
+use SMW\SerializerFactory;
 
 /**
  * Objects of this class encapsulate the result of a query in SMW. They

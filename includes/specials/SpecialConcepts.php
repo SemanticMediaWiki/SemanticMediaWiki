@@ -2,10 +2,9 @@
 
 namespace SMW;
 
+use Html;
 use SMW\Query\Language\NamespaceDescription;
 use SMWPageLister;
-
-use Html;
 
 /**
  * Special page that lists available concepts

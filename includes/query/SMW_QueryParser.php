@@ -2,13 +2,10 @@
 
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\ConceptDescription;
-use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
-use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
-use SMW\Query\Language\ValueDescription;
 use SMW\Query\Parser\DescriptionProcessor;
 
 /**

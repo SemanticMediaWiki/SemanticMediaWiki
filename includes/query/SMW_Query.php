@@ -1,8 +1,8 @@
 <?php
 
+use SMW\DIWikiPage;
 use SMW\HashBuilder;
 use SMW\Query\PrintRequest;
-use SMW\DIWikiPage;
 
 /**
  * This file contains the class for representing queries in SMW, each

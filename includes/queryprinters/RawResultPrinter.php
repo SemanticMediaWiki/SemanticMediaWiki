@@ -2,10 +2,10 @@
 
 namespace SMW;
 
-use SMWQueryResult;
-use SMWOutputs;
-use Html;
 use FormatJson;
+use Html;
+use SMWOutputs;
+use SMWQueryResult;
 
 /**
  * Base class for result printers that use the serialized results

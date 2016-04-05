@@ -2,13 +2,13 @@
 
 namespace SMW;
 
+use DummyLinker;
 use ParamProcessor\ParamDefinition;
-use SMWQueryResult;
-use SMWQuery;
 use ParserOptions;
 use Sanitizer;
-use DummyLinker;
 use SMWInfolink;
+use SMWQuery;
+use SMWQueryResult;
 use Title;
 
 /**

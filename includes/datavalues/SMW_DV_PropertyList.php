@@ -1,7 +1,5 @@
 <?php
 
-use SMW\ApplicationFactory;
-
 /**
  * @ingroup SMWDataValues
  */

@@ -2,10 +2,9 @@
 
 namespace SMW;
 
-use SMWPropertyValue as PropertyValue;
-
 use Parser;
 use PPFrame;
+use SMWPropertyValue as PropertyValue;
 
 /**
  * Class that provides the {{#declare}} parser function

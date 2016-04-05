@@ -1,10 +1,10 @@
 <?php
 
 use SMW\ApplicationFactory;
-use SMW\Query\PrintRequest;
-use SMW\SemanticData;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Query\PrintRequest;
+use SMW\SemanticData;
 
 /**
  * File holding the SMWExportController class that provides basic functions for

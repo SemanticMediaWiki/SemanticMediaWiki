@@ -7,15 +7,13 @@
  * @defgroup SMWDataValues SMWDataValues
  * @ingroup SMW
  */
-use SMW\DataValueFactory;
-use SMW\Options;
-use SMW\Query\QueryComparator;
-use SMW\Deserializers\DVDescriptionDeserializerRegistry;
+use SMW\ApplicationFactory;
 use SMW\DataValues\ValueFormatterRegistry;
 use SMW\DataValues\ValueValidatorRegistry;
-use SMW\ApplicationFactory;
+use SMW\Deserializers\DVDescriptionDeserializerRegistry;
 use SMW\Message;
-use SMW\DIProperty;
+use SMW\Options;
+use SMW\Query\QueryComparator;
 
 /**
  * Objects of this type represent all that is known about a certain user-provided

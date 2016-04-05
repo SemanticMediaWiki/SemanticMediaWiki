@@ -2,11 +2,10 @@
 
 namespace SMW;
 
+use Html;
+use Parser;
 use SMWInfolink;
 use SMWQueryProcessor;
-
-use Parser;
-use Html;
 use Title;
 
 /**

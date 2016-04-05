@@ -2,9 +2,7 @@
 
 namespace SMW;
 
-use SMW\DataItemException;
 use SMWDataItem;
-use SMWWikiPageValue;
 use Title;
 
 /**

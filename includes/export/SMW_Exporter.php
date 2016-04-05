@@ -1,14 +1,14 @@
 <?php
 
+use SMW\ApplicationFactory;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\Exporter\DataItemToExpResourceEncoder;
-use SMW\Exporter\DataItemToElementEncoder;
+use SMW\DIProperty;
 use SMW\Exporter\DataItemByExpElementMatchFinder;
+use SMW\Exporter\DataItemToElementEncoder;
+use SMW\Exporter\DataItemToExpResourceEncoder;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Escaper;
-use SMW\ApplicationFactory;
-use SMW\DIProperty;
 
 /**
  * SMWExporter is a class for converting internal page-based data (SMWSemanticData) into

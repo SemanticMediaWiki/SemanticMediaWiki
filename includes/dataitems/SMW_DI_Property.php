@@ -2,11 +2,10 @@
 
 namespace SMW;
 
-use SMWDataItem;
-use SMWDIUri;
-use SMWLanguage;
 use InvalidArgumentException;
 use RuntimeException;
+use SMWDataItem;
+use SMWDIUri;
 
 /**
  * This class implements Property data items.

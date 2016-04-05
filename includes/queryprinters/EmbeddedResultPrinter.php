@@ -3,7 +3,6 @@
 namespace SMW;
 
 use SMWQueryResult;
-
 use Title;
 
 /**

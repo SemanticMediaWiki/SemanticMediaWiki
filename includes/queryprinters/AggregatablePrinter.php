@@ -2,8 +2,8 @@
 
 namespace SMW;
 
-use SMWQueryResult;
 use SMWDataItem;
+use SMWQueryResult;
 
 /**
  * Abstract class that supports the aggregation and distributive calculation

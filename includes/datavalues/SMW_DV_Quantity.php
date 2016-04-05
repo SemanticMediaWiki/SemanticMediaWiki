@@ -1,7 +1,7 @@
 <?php
 
-use SMW\NumberFormatter;
 use SMW\ApplicationFactory;
+use SMW\NumberFormatter;
 
 /**
  * @ingroup SMWDataValues
