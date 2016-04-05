@@ -2,11 +2,11 @@
 
 namespace SMW\Test;
 
-use SpecialPageFactory;
-use RequestContext;
 use FauxRequest;
-use SpecialPage;
 use Language;
+use RequestContext;
+use SpecialPage;
+use SpecialPageFactory;
 
 /**
  * Tests for registered special pages

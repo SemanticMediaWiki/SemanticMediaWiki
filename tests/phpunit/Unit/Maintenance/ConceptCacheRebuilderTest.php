@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Maintenance;
 
-use SMW\Maintenance\ConceptCacheRebuilder;
 use SMW\DIConcept;
+use SMW\Maintenance\ConceptCacheRebuilder;
 
 /**
  * @covers \SMW\Maintenance\ConceptCacheRebuilder

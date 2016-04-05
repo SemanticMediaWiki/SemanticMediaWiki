@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Query\ProfileAnnotator;
 
-use SMW\Query\ProfileAnnotator\NullProfileAnnotator;
-use SMWDIContainer as DIContainer;
 use SMW\DIWikiPage;
+use SMW\Query\ProfileAnnotator\NullProfileAnnotator;
 use SMWContainerSemanticData as ContainerSemanticData;
+use SMWDIContainer as DIContainer;
 
 /**
  * @covers \SMW\Query\ProfileAnnotator\NullProfileAnnotator

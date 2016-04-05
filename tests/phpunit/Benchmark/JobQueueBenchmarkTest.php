@@ -2,11 +2,9 @@
 
 namespace SMW\Tests\Benchmark;
 
+use SMW\MediaWiki\Jobs\RefreshJob;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-
-use SMW\MediaWiki\Jobs\RefreshJob;
-
 use Title;
 
 /**

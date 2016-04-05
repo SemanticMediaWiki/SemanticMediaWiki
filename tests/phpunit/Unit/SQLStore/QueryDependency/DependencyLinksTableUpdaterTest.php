@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\SQLStore\QueryDependency;
 
-use SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater;
-use SMW\Tests\TestEnvironment;
-use SMW\SQLStore\SQLStore;
 use SMW\DIWikiPage;
+use SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater;
+use SMW\SQLStore\SQLStore;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater

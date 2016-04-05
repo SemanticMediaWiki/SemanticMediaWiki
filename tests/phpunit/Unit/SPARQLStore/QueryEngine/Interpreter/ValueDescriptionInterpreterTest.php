@@ -2,19 +2,15 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine\Interpreter;
 
-use SMW\SPARQLStore\QueryEngine\Interpreter\ValueDescriptionInterpreter;
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
-
-use SMW\Tests\Utils\UtilityFactory;
-
-use SMW\Query\Language\ValueDescription;
-
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-
+use SMW\Query\Language\ValueDescription;
+use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\Interpreter\ValueDescriptionInterpreter;
+use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
-use SMWDIUri as DIUri;
 use SMWDINumber as DINumber;
+use SMWDIUri as DIUri;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\Interpreter\ValueDescriptionInterpreter

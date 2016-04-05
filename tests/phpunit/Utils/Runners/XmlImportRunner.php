@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Utils\Runners;
 
-use ImportStreamSource;
 use ImportReporter;
-use WikiImporter;
+use ImportStreamSource;
 use RequestContext;
-use SMW\Tests\TestEnvironment;
 use RuntimeException;
+use SMW\Tests\TestEnvironment;
+use WikiImporter;
 
 /**
  * @group SMW

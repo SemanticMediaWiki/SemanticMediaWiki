@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\DataValues;
 
-use SMW\DataValues\AllowsPatternValue;
-use SMW\Tests\TestEnvironment;
 use SMW\DataItemFactory;
+use SMW\DataValues\AllowsPatternValue;
 use SMW\Options;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\AllowsPatternValue

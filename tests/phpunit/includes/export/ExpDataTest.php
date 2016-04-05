@@ -2,11 +2,9 @@
 
 namespace SMW\Tests\Exporter;
 
-use SMW\Exporter\Element\ExpResource;
-use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpLiteral;
+use SMW\Exporter\Element\ExpNsResource;
 use SMWExpData as ExpData;
-use SMWDIBlob as DIBlob;
 
 /**
  * @covers \SMWExpData

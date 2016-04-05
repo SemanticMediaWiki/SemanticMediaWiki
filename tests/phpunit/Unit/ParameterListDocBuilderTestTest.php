@@ -2,9 +2,9 @@
 
 namespace SMW\Test;
 
-use SMW\Tests\Utils\UtilityFactory;
 use ParamProcessor\ParamDefinition;
 use SMW\ParameterListDocBuilder;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @covers SMW\ParameterListDocBuilder

@@ -2,12 +2,9 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Utils\UtilityFactory;
-
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\Subobject;
-
+use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob;
 use Title;
 

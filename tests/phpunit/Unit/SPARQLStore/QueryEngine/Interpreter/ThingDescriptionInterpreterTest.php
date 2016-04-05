@@ -2,12 +2,11 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine\Interpreter;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\SPARQLStore\QueryEngine\Interpreter\ThingDescriptionInterpreter;
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
-use SMW\Query\Language\ThingDescription;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\Query\Language\ThingDescription;
+use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\Interpreter\ThingDescriptionInterpreter;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\Interpreter\ThingDescriptionInterpreter

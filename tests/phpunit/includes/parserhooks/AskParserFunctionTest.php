@@ -2,15 +2,13 @@
 
 namespace SMW\Test;
 
-use SMW\Tests\Utils\UtilityFactory;
-
+use ParserOutput;
+use ReflectionClass;
 use SMW\ApplicationFactory;
 use SMW\AskParserFunction;
 use SMW\Localizer;
-
+use SMW\Tests\Utils\UtilityFactory;
 use Title;
-use ParserOutput;
-use ReflectionClass;
 
 /**
  * @covers \SMW\AskParserFunction

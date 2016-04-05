@@ -2,12 +2,10 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
+use SMW\MediaWiki\Search\Search;
+use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
-use SMW\Tests\MwDBaseUnitTestCase;
-
-use SMW\MediaWiki\Search\Search;
-
 use Title;
 
 /**

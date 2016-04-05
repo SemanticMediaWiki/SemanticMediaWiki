@@ -2,13 +2,9 @@
 
 namespace SMW\Tests\Query\Language;
 
-use SMW\Query\Language\ValueDescription;
-use SMW\Query\Language\ThingDescription;
-
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\Localizer;
-
+use SMW\DIWikiPage;
+use SMW\Query\Language\ValueDescription;
 use SMWDINumber as DINumber;
 
 /**

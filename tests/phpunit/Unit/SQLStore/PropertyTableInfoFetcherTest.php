@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\DIProperty;
+use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMWDataItem as DataItem;
 
 /**

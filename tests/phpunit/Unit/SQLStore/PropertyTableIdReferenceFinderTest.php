@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\SQLStore\PropertyTableIdReferenceFinder;
 use SMW\DIProperty;
+use SMW\SQLStore\PropertyTableIdReferenceFinder;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableIdReferenceFinder

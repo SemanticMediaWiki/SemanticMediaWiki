@@ -2,9 +2,9 @@
 
 namespace SMW\Tests;
 
+use RuntimeException;
 use SMW\FileReader;
 use SMW\Localizer;
-use RuntimeException;
 
 /**
  * @license GNU GPL v2+

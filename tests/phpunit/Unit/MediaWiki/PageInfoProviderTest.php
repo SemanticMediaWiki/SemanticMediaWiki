@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use SMW\Tests\Utils\Mock\MockTitle;
 use SMW\MediaWiki\PageInfoProvider;
+use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
  * @covers \SMW\MediaWiki\PageInfoProvider

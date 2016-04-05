@@ -2,14 +2,13 @@
 
 namespace SMW\Tests\MediaWiki\Specials\SearchByProperty;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\MediaWiki\Specials\SearchByProperty\PageBuilder;
-use SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup;
-use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
-
-use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\DIWikiPage;
 use SMW\Localizer;
+use SMW\MediaWiki\Renderer\HtmlFormRenderer;
+use SMW\MediaWiki\Specials\SearchByProperty\PageBuilder;
+use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
+use SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SearchByProperty\PageBuilder

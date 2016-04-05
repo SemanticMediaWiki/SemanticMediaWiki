@@ -2,11 +2,9 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
-use SMW\Tests\Utils\UtilityFactory;
-
 use SMW\ApplicationFactory;
 use SMW\ContentParser;
-
+use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**

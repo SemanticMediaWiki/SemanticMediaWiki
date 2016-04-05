@@ -2,13 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\Tests\Utils\Mock\MockTitle;
-
-use SMW\MediaWiki\Api\BrowseBySubject;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
-
+use SMW\MediaWiki\Api\BrowseBySubject;
+use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**

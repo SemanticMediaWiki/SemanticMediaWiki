@@ -2,24 +2,18 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\Tests\Utils\PageCreator;
-use SMW\Tests\Utils\PageDeleter;
-
-use SMW\Tests\MwDBaseUnitTestCase;
-
-use SMW\ParserData;
-use SMW\DIWikiPage;
-use SMW\ContentParser;
-
-use ParserOutput;
 use LinksUpdate;
+use ParserOutput;
 use Revision;
-use WikiPage;
+use SMW\ContentParser;
+use SMW\DIWikiPage;
+use SMW\ParserData;
+use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\Utils\PageCreator;
 use Title;
-use User;
-
 use UnexpectedValueException;
+use User;
+use WikiPage;
 
 /**
  * @group semantic-mediawiki

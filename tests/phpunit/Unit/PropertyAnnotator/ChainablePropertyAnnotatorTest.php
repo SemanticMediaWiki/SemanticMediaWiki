@@ -2,12 +2,11 @@
 
 namespace SMW\Tests\PropertyAnnotator;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\PropertyAnnotator\PredefinedPropertyAnnotator;
-use SMW\PropertyAnnotator\CategoryPropertyAnnotator;
-use SMW\PropertyAnnotator\SortkeyPropertyAnnotator;
-use SMW\PropertyAnnotator\NullPropertyAnnotator;
 use SMW\DIProperty;
+use SMW\PropertyAnnotator\CategoryPropertyAnnotator;
+use SMW\PropertyAnnotator\NullPropertyAnnotator;
+use SMW\PropertyAnnotator\PredefinedPropertyAnnotator;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @group semantic-mediawiki

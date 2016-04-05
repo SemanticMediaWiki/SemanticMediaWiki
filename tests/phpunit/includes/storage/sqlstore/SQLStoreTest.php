@@ -2,9 +2,8 @@
 
 namespace SMW\Test\SQLStore;
 
-use SMWSQLStore3;
-use SMW\Settings;
 use SMW\ApplicationFactory;
+use SMWSQLStore3;
 
 /**
  * @covers \SMWSQLStore3

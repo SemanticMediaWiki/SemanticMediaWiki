@@ -4,7 +4,6 @@ namespace SMW\Tests\Benchmark;
 
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-
 use Title;
 
 /**

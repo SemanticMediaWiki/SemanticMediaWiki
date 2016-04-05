@@ -3,11 +3,9 @@
 namespace SMW\Tests\Exporter\Element;
 
 use SMW\Exporter\Element\ExpElement;
-use SMW\Exporter\Element\ExpResource;
-use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpLiteral;
-use SMW\DIWikiPage;
-use SMWDataItem as DataItem;
+use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\Element\ExpResource;
 
 /**
  * @covers \SMW\Exporter\Element\ExpElement

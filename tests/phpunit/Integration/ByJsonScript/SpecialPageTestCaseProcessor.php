@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Integration\ByJsonScript;
 
-use SMW\Tests\Utils\Mock\MockSuperUser;
-use SpecialPageFactory;
 use FauxRequest;
-use SpecialPage;
-use RequestContext;
-use OutputPage;
 use Language;
+use OutputPage;
+use RequestContext;
+use SMW\Tests\Utils\Mock\MockSuperUser;
+use SpecialPage;
+use SpecialPageFactory;
 
 /**
  * @group semantic-mediawiki

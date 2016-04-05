@@ -2,17 +2,13 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
+use SMW\DataValueFactory;
+use SMW\MediaWiki\Api\BrowseBySubject;
+use SMW\SerializerFactory;
+use SMW\Subobject;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\MwApiFactory;
 use SMW\Tests\Utils\SemanticDataFactory;
-
-use SMW\MediaWiki\Api\BrowseBySubject;
-
-use SMW\SemanticData;
-use SMW\DIWikiPage;
-use SMW\DataValueFactory;
-use SMW\Subobject;
-use SMW\SerializerFactory;
 
 /**
  * @group semantic-mediawiki-integration

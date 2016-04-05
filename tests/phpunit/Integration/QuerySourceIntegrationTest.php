@@ -3,7 +3,6 @@
 namespace SMW\Tests\Integration;
 
 use SMW\StoreFactory;
-
 use SMWQueryProcessor;
 
 /**

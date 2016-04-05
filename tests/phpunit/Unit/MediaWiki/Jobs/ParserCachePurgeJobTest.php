@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
-use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\ParserCachePurgeJob

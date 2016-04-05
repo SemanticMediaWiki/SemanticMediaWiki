@@ -2,15 +2,12 @@
 
 namespace SMW\Tests\Serializers;
 
-use SMW\Serializers\QueryResultSerializer;
-use SMW\DIWikipage;
 use SMW\DIProperty;
-use SMWQueryProcessor;
-use SMWQueryResult;
-use SMWDataItem as DataItem;
-use SMW\Tests\Utils\Mock\MockObjectBuilder;
+use SMW\Serializers\QueryResultSerializer;
 use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
 use SMW\Tests\Utils\Mock\MediaWikiMockObjectRepository;
+use SMW\Tests\Utils\Mock\MockObjectBuilder;
+use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\Serializers\QueryResultSerializer

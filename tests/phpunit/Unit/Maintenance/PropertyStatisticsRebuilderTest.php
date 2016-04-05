@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Maintenance;
 
-use SMW\Maintenance\PropertyStatisticsRebuilder;
 use FakeResultWrapper;
+use SMW\Maintenance\PropertyStatisticsRebuilder;
 
 /**
  * @covers \SMW\Maintenance\PropertyStatisticsRebuilder

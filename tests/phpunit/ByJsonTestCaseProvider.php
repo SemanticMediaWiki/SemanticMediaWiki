@@ -2,8 +2,8 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\ApplicationFactory;
+use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**

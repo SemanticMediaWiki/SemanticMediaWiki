@@ -2,15 +2,13 @@
 
 namespace SMW\Tests\Utils;
 
+use CloneDatabase;
+use HashBagOStuff;
+use ObjectCache;
+use RuntimeException;
 use SMW\DBConnectionProvider;
 use SMW\Store;
-
-use ObjectCache;
-use HashBagOStuff;
 use Title;
-
-use RuntimeException;
-use CloneDatabase;
 
 /**
  *

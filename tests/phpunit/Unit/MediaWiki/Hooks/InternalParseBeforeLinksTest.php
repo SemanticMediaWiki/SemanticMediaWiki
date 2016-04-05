@@ -2,14 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\Tests\Utils\Mock\MockTitle;
-
-use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
-
 use SMW\ApplicationFactory;
+use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
 use SMW\Settings;
-
+use SMW\Tests\Utils\Mock\MockTitle;
+use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**

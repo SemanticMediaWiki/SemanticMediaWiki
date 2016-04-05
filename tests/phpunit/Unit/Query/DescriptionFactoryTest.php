@@ -2,12 +2,9 @@
 
 namespace SMW\Tests\Query\Parser;
 
-use SMW\Query\DescriptionFactory;
-use SMW\DIProperty;
-use SMW\Query\Language\Conjunction;
-use SMW\Query\Language\Disjunction;
-use SMW\Tests\TestEnvironment;
 use SMW\DataItemFactory;
+use SMW\Query\DescriptionFactory;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers SMW\Query\DescriptionFactory

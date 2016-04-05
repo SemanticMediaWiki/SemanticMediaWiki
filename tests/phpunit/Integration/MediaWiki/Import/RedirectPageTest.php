@@ -2,14 +2,11 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\Tests\MwDBaseUnitTestCase;
-
-use SMW\Tests\Utils\InSemanticDataFetcher;
-
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-
+use SMW\DIWikiPage;
+use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\Utils\InSemanticDataFetcher;
+use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**

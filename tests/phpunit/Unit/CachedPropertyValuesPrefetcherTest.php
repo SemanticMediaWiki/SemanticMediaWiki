@@ -3,8 +3,8 @@
 namespace SMW\Tests;
 
 use SMW\CachedPropertyValuesPrefetcher;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\CachedPropertyValuesPrefetcher

@@ -3,7 +3,6 @@
 namespace SMW\Tests\DataValues\ValueParsers;
 
 use SMW\DataValues\ValueParsers\AllowsPatternContentParser;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\ValueParsers\AllowsPatternContentParser

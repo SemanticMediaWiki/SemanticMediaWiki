@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\RedirectTargetFinder;
-
 use Title;
 
 /**

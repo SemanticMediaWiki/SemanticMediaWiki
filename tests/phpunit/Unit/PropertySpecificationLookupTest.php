@@ -2,8 +2,8 @@
 
 namespace SMW\Tests;
 
-use SMW\PropertySpecificationLookup;
 use SMW\DataItemFactory;
+use SMW\PropertySpecificationLookup;
 use SMWContainerSemanticData as ContainerSemanticData;
 
 /**

@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Query\Parser;
 
-use SMW\Query\Parser\DescriptionProcessor;
 use SMW\DIProperty;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
+use SMW\Query\Parser\DescriptionProcessor;
 
 /**
  * @covers SMW\Query\Parser\DescriptionProcessor

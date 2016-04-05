@@ -2,14 +2,13 @@
 
 namespace SMW\Test;
 
-use SMW\Tests\Utils\Mock\MockSuperUser;
-
-use RequestContext;
-use Language;
-use SpecialPage;
 use FauxRequest;
-use WebRequest;
+use Language;
 use OutputPage;
+use RequestContext;
+use SMW\Tests\Utils\Mock\MockSuperUser;
+use SpecialPage;
+use WebRequest;
 
 /**
  *

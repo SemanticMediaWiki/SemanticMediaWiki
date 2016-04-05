@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Exporter\Element;
 
-use SMW\Exporter\Element\ExpNsResource;
-use SMW\Exporter\Element\ExpElement;
 use SMW\DIWikiPage;
+use SMW\Exporter\Element\ExpElement;
+use SMW\Exporter\Element\ExpNsResource;
 use SMWDataItem as DataItem;
 
 /**

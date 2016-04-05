@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use ParserOutput;
 use SMW\MediaWiki\Hooks\FileUpload;
 use SMW\Tests\TestEnvironment;
-use ParserOutput;
 use Title;
 
 /**

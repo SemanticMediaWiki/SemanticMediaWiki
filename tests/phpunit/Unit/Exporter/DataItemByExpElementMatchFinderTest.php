@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Exporter;
 
-use SMW\Exporter\DataItemByExpElementMatchFinder;
 use SMW\DIWikiPage;
+use SMW\Exporter\DataItemByExpElementMatchFinder;
 
 /**
  * @covers \SMW\Exporter\DataItemByExpElementMatchFinder

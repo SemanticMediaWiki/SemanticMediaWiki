@@ -2,14 +2,12 @@
 
 namespace SMW\Tests\Integration\SQLStore;
 
-use SMW\Tests\Utils\PageDeleter;
-use SMW\Tests\Utils\PageCreator;
-use SMW\Tests\Utils\MwHooksHandler;
-
 use SMW\Tests\MwDBaseUnitTestCase;
-
-use WikiPage;
+use SMW\Tests\Utils\MwHooksHandler;
+use SMW\Tests\Utils\PageCreator;
+use SMW\Tests\Utils\PageDeleter;
 use Title;
+use WikiPage;
 
 /**
  *

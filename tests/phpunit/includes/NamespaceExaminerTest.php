@@ -3,7 +3,6 @@
 namespace SMW\Test;
 
 use SMW\NamespaceExaminer;
-use SMW\Settings;
 
 /**
  * @covers \SMW\NamespaceExaminer

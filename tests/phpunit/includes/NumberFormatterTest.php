@@ -2,9 +2,8 @@
 
 namespace SMW\Tests;
 
-use SMW\NumberFormatter;
-
 use Language;
+use SMW\NumberFormatter;
 
 /**
  * @covers \SMW\NumberFormatter

@@ -2,13 +2,11 @@
 
 namespace SMW\Tests;
 
-use SMW\ApplicationFactory;
-use SMW\DataValueFactory;
-use SMW\SemanticData;
-use SMW\ParserData;
-use SMW\DIWikiPage;
-use SMW\Tests\TestEnvironment;
 use ParserOutput;
+use SMW\DataValueFactory;
+use SMW\DIWikiPage;
+use SMW\ParserData;
+use SMW\SemanticData;
 use Title;
 
 /**

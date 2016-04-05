@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Renderer;
 
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @covers \SMW\MediaWiki\Renderer\HtmlFormRenderer

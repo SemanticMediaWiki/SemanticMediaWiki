@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\SPARQLStore;
 
-use SMW\SPARQLStore\TurtleTriplesBuilder;
-use SMW\SemanticData;
 use SMW\DIWikiPage;
+use SMW\SemanticData;
+use SMW\SPARQLStore\TurtleTriplesBuilder;
 use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
 

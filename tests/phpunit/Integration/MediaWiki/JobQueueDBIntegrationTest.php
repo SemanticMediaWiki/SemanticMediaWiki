@@ -2,14 +2,11 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\Tests\MwDBaseUnitTestCase;
-
-use SMW\ApplicationFactory;
-use SMW\DIWikiPage;
-
-use Title;
 use Job;
+use SMW\ApplicationFactory;
+use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\Utils\UtilityFactory;
+use Title;
 
 /**
  * @group SMW

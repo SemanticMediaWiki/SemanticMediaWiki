@@ -2,28 +2,21 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
-use SMW\Tests\Utils\UtilityFactory;
-
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
-
-use SMW\Query\Language\ThingDescription;
-use SMW\Query\Language\Conjunction;
-use SMW\Query\Language\Disjunction;
-use SMW\Query\Language\ClassDescription;
-use SMW\Query\Language\NamespaceDescription;
-use SMW\Query\Language\ValueDescription;
-use SMW\Query\Language\SomeProperty;
-
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Localizer;
-
+use SMW\Query\Language\ClassDescription;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Disjunction;
+use SMW\Query\Language\NamespaceDescription;
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\ValueDescription;
+use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\Tests\Utils\UtilityFactory;
 use SMWDataItem as DataItem;
-use SMWDINumber as DINumber;
 use SMWDIBlob as DIBlob;
+use SMWDINumber as DINumber;
 use SMWDITime as DITime;
-use SMW\Query\PrintRequest as PrintRequest;
-use SMWPropertyValue as PropertyValue;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder

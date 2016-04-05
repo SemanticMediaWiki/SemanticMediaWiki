@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Exporter;
 
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\Exporter\XsdValueMapper;
 
 /**

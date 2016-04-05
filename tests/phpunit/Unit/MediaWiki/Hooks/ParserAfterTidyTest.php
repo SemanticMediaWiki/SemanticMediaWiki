@@ -2,14 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\Tests\Utils\Mock\MockTitle;
-
-use SMW\MediaWiki\Hooks\ParserAfterTidy;
-
 use SMW\ApplicationFactory;
-use SMW\Settings;
-
+use SMW\MediaWiki\Hooks\ParserAfterTidy;
+use SMW\Tests\Utils\Mock\MockTitle;
+use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**

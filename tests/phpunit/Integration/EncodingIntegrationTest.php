@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\MediaWiki\Hooks\BaseTemplateToolbox;
 use SMW\ApplicationFactory;
-
+use SMW\MediaWiki\Hooks\BaseTemplateToolbox;
 use Title;
 
 /**

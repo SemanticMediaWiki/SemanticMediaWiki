@@ -2,10 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
-use SMW\Tests\Utils\MwApiFactory;
-
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Api\Info;
+use SMW\Tests\Utils\MwApiFactory;
 
 /**
  * @covers \SMW\MediaWiki\Api\Info

@@ -2,13 +2,12 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
-use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\SemanticData;
 use SMW\Settings;
-
 use Title;
 
 /**

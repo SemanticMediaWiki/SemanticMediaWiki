@@ -2,10 +2,9 @@
 
 namespace SMW\Tests\Utils\Fixtures\Properties;
 
+use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWiKiPage;
-use SMW\DataValueFactory;
-use SMW\SemanticData;
 
 /**
  * @license GNU GPL v2+

@@ -3,7 +3,6 @@
 namespace SMW\Tests;
 
 use SMW\DIProperty;
-use SMW\DiWikiPage;
 
 /**
  * @covers \SMW\DIProperty

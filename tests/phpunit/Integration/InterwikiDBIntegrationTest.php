@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Integration;
 
+use SMW\ApplicationFactory;
+use SMW\DIWikiPage;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMW\DIWikiPage;
-use SMW\ApplicationFactory;
 use SMWExportController as ExportController;
-use SMWRDFXMLSerializer as RDFXMLSerializer;
 use SMWQuery as Query;
+use SMWRDFXMLSerializer as RDFXMLSerializer;
 use Title;
 
 /**

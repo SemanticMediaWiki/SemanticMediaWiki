@@ -2,22 +2,19 @@
 
 namespace SMW\Tests\Utils\Fixtures\Facts;
 
-use SMW\Tests\Utils\UtilityFactory;
+use RuntimeException;
+use SMW\DataValueFactory;
+use SMW\DIWikiPage;
+use SMW\SemanticData;
+use SMW\Subobject;
 use SMW\Tests\Utils\Fixtures\Properties\AreaProperty;
-use SMW\Tests\Utils\Fixtures\Properties\TemperatureProperty;
-use SMW\Tests\Utils\Fixtures\Properties\PopulationProperty;
-use SMW\Tests\Utils\Fixtures\Properties\YearProperty;
-use SMW\Tests\Utils\Fixtures\Properties\PopulationDensityProperty;
 use SMW\Tests\Utils\Fixtures\Properties\CityCategory;
 use SMW\Tests\Utils\Fixtures\Properties\LocatedInProperty;
-
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\DataValueFactory;
-use SMW\Subobject;
-use SMW\SemanticData;
-
-use RuntimeException;
+use SMW\Tests\Utils\Fixtures\Properties\PopulationDensityProperty;
+use SMW\Tests\Utils\Fixtures\Properties\PopulationProperty;
+use SMW\Tests\Utils\Fixtures\Properties\TemperatureProperty;
+use SMW\Tests\Utils\Fixtures\Properties\YearProperty;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @license GNU GPL v2+

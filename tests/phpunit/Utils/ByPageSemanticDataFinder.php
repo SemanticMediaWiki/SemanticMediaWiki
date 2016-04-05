@@ -2,16 +2,14 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Store;
+use ParserOutput;
 use SMW\ParserData;
 use SMW\SemanticData;
-
-use ParserOutput;
-use WikiPage;
+use SMW\Store;
 use Title;
-use User;
-
 use UnexpectedValueException;
+use User;
+use WikiPage;
 
 /**
  *

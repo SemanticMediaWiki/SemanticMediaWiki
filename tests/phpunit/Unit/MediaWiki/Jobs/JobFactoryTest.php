@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Jobs;
 
 use SMW\MediaWiki\Jobs\JobFactory;
-
 use Title;
 
 /**

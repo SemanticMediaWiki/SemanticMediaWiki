@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use SMW\MediaWiki\MagicWordsFinder;
 use ParserOutput;
+use SMW\MediaWiki\MagicWordsFinder;
 
 /**
  * @covers \SMW\MediaWiki\MagicWordsFinder

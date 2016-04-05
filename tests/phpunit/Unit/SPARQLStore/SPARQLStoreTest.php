@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\SPARQLStore;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\SPARQLStore\SPARQLStore;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\SemanticData;
+use SMW\SPARQLStore\SPARQLStore;
 use SMW\Subobject;
+use SMW\Tests\Utils\UtilityFactory;
 use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 use Title;

@@ -2,17 +2,13 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Tests\Utils\Mock\MockTitle;
-
-use SMW\MediaWiki\Hooks\OutputPageParserOutput;
-
-use SMW\Settings;
-use SMW\ApplicationFactory;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-
-use ParserOutput;
 use Language;
+use ParserOutput;
+use SMW\ApplicationFactory;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\MediaWiki\Hooks\OutputPageParserOutput;
+use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\OutputPageParserOutput

@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils\Fixtures\Properties;
 
-use SMW\SemanticData;
 use SMW\DIProperty;
+use SMW\SemanticData;
 
 /**
  * @license GNU GPL v2+

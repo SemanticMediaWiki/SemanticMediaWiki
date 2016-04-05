@@ -2,19 +2,16 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Utils\UtilityFactory;
-
-use SMW\SubobjectParserFunction;
-use SMW\Subobject;
-use SMW\ParserParameterFormatter;
-use SMW\MessageFormatter;
-use SMW\ParserData;
+use ParserOutput;
 use SMW\DIProperty;
 use SMW\Localizer;
-
-use SMWDataItem;
+use SMW\MessageFormatter;
+use SMW\ParserData;
+use SMW\ParserParameterFormatter;
+use SMW\Subobject;
+use SMW\SubobjectParserFunction;
+use SMW\Tests\Utils\UtilityFactory;
 use Title;
-use ParserOutput;
 
 /**
  * @covers \SMW\SubobjectParserFunction

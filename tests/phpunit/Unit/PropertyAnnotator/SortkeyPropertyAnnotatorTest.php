@@ -2,10 +2,9 @@
 
 namespace SMW\Tests\PropertyAnnotator;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\PropertyAnnotator\SortKeyPropertyAnnotator;
 use SMW\PropertyAnnotator\NullPropertyAnnotator;
-use SMW\DIWikiPage;
+use SMW\PropertyAnnotator\SortKeyPropertyAnnotator;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @covers \SMW\PropertyAnnotator\SortKeyPropertyAnnotator

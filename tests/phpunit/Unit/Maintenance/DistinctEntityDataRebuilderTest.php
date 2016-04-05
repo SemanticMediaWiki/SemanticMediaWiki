@@ -3,8 +3,8 @@
 namespace SMW\Tests\Maintenance;
 
 use SMW\Maintenance\DistinctEntityDataRebuilder;
-use SMW\Tests\TestEnvironment;
 use SMW\Options;
+use SMW\Tests\TestEnvironment;
 use Title;
 
 /**

@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\Utils\Fixtures\Properties;
 
-use SMW\SemanticData;
 use SMW\DIProperty;
-
+use SMW\SemanticData;
 use SMWDIBlob as DIBlob;
 
 /**

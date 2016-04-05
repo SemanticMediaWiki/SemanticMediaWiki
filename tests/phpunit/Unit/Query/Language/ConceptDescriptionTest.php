@@ -2,11 +2,10 @@
 
 namespace SMW\Tests\Query\Language;
 
-use SMW\Query\Language\ConceptDescription;
-use SMW\Query\Language\ThingDescription;
-
 use SMW\DIWikiPage;
 use SMW\Localizer;
+use SMW\Query\Language\ConceptDescription;
+use SMW\Query\Language\ThingDescription;
 
 /**
  * @covers \SMW\Query\Language\ConceptDescription

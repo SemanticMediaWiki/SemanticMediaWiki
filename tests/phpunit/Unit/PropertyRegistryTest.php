@@ -2,11 +2,11 @@
 
 namespace SMW\Tests;
 
-use SMW\DIProperty;
-use SMW\PropertyRegistry;
-use SMW\PropertyLabelFinder;
-use SMW\PropertyAliasFinder;
 use SMW\DataTypeRegistry;
+use SMW\DIProperty;
+use SMW\PropertyAliasFinder;
+use SMW\PropertyLabelFinder;
+use SMW\PropertyRegistry;
 
 /**
  * @covers \SMW\PropertyRegistry

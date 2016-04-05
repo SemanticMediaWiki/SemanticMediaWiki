@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Specials\SearchByProperty;
 
-use SMW\Tests\Utils\Validators\ValidatorFactory;
-use SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup;
 use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
+use SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup

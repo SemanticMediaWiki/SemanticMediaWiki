@@ -2,20 +2,15 @@
 
 namespace SMW\Tests\Integration\Query;
 
+use SMW\DataValueFactory;
+use SMW\DIProperty;
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\PrintRequest as PrintRequest;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-
-use SMW\Query\Language\ThingDescription;
-use SMW\Query\Language\SomeProperty;
-
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\DataValueFactory;
-
-use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
-use SMW\Query\PrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
+use SMWQuery as Query;
 
 /**
  * @group SMW

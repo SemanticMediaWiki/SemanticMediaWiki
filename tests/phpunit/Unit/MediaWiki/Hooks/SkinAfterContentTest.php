@@ -2,11 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Tests\Utils\Mock\MockTitle;
-
-use SMW\MediaWiki\Hooks\SkinAfterContent;
 use SMW\ApplicationFactory;
+use SMW\MediaWiki\Hooks\SkinAfterContent;
 use SMW\Settings;
+use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\SkinAfterContent

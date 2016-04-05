@@ -2,10 +2,8 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
-use SMW\Tests\Utils\Mock\IteratorMockBuilder;
-
 use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
-
+use SMW\Tests\Utils\Mock\IteratorMockBuilder;
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
 

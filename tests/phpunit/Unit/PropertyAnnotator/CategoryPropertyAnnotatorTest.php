@@ -2,17 +2,14 @@
 
 namespace SMW\Tests\PropertyAnnotator;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\Tests\Utils\Mock\MockTitle;
-
+use ParserOutput;
+use SMW\ApplicationFactory;
+use SMW\DIWikiPage;
+use SMW\ParserData;
 use SMW\PropertyAnnotator\CategoryPropertyAnnotator;
 use SMW\PropertyAnnotator\NullPropertyAnnotator;
-use SMW\DIWikiPage;
-use SMW\ApplicationFactory;
-use SMW\Settings;
-use SMW\ParserData;
-
-use ParserOutput;
+use SMW\Tests\Utils\Mock\MockTitle;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @covers \SMW\PropertyAnnotator\CategoryPropertyAnnotator

@@ -2,11 +2,10 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Tests\Utils\Mock\MockSuperUser;
-
-use Title;
-use ParserOptions;
 use Parser;
+use ParserOptions;
+use SMW\Tests\Utils\Mock\MockSuperUser;
+use Title;
 use User;
 
 /**

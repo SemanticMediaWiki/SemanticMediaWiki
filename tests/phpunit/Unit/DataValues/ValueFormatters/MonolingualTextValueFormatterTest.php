@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\DataValues\ValueFormatters;
 
-use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
 use SMW\DataValues\MonolingualTextValue;
+use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter

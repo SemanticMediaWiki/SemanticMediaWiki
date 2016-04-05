@@ -2,11 +2,10 @@
 
 namespace SMW\Tests\PropertyAnnotator;
 
-use SMW\Tests\Utils\UtilityFactory;
-
-use SMW\PropertyAnnotator\RedirectPropertyAnnotator;
-use SMW\PropertyAnnotator\NullPropertyAnnotator;
 use SMW\MediaWiki\RedirectTargetFinder;
+use SMW\PropertyAnnotator\NullPropertyAnnotator;
+use SMW\PropertyAnnotator\RedirectPropertyAnnotator;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @covers \SMW\PropertyAnnotator\RedirectPropertyAnnotator

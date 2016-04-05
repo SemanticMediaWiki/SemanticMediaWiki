@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\PropertyAnnotator;
 
-use SMW\Tests\TestEnvironment;
+use SMW\DIWikiPage;
 use SMW\PropertyAnnotator\DisplayTitlePropertyAnnotator;
 use SMW\PropertyAnnotator\NullPropertyAnnotator;
-use SMW\DIWikiPage;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\PropertyAnnotator\DisplayTitlePropertyAnnotator

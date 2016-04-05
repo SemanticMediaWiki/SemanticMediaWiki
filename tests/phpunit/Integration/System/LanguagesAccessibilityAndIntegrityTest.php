@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\System;
 
-use SMW\Tests\Utils\GlobalsProvider;
 use RuntimeException;
+use SMW\Tests\Utils\GlobalsProvider;
 
 /**
  * @covers \SMWLanguage

@@ -2,9 +2,8 @@
 
 namespace SMW\Test;
 
-use SMW\FeedResultPrinter;
-
 use ReflectionClass;
+use SMW\FeedResultPrinter;
 
 /**
  * Tests for the FeedResultPrinter class

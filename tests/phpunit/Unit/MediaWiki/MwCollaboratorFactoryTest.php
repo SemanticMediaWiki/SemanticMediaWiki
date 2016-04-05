@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\ApplicationFactory;
+use SMW\MediaWiki\MwCollaboratorFactory;
 
 /**
  * @covers \SMW\MediaWiki\MwCollaboratorFactory

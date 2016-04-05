@@ -2,10 +2,9 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use SMW\MediaWiki\LazyDBConnectionProvider;
-
 use DatabaseBase;
 use ReflectionClass;
+use SMW\MediaWiki\LazyDBConnectionProvider;
 
 /**
  * @covers \SMW\MediaWiki\LazyDBConnectionProvider

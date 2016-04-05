@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\DataValues;
 
-use SMW\Tests\TestEnvironment;
+use SMW\DataItemFactory;
 use SMW\DataValues\UniquenessConstraintValue;
 use SMW\Options;
-use SMW\DataItemFactory;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\UniquenessConstraintValue

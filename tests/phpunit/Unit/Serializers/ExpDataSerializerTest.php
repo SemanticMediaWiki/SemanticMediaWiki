@@ -2,12 +2,11 @@
 
 namespace SMW\Tests\Serializers;
 
-use SMW\Serializers\ExpDataSerializer;
-use SMW\Exporter\Element\ExpResource;
-use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpLiteral;
-use SMWExpData as ExpData;
+use SMW\Exporter\Element\ExpNsResource;
+use SMW\Serializers\ExpDataSerializer;
 use SMWDIBlob as DIBlob;
+use SMWExpData as ExpData;
 
 /**
  * @covers \SMW\Serializers\ExpDataSerializer

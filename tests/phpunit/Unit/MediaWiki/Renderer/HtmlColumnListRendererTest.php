@@ -2,8 +2,8 @@
 
 namespace SMW\Test\MediaWiki\Renderer;
 
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\MediaWiki\Renderer\HtmlColumnListRenderer;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @covers \SMW\MediaWiki\Renderer\HtmlColumnListRenderer

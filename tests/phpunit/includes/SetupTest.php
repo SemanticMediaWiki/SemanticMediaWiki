@@ -2,8 +2,8 @@
 
 namespace SMW\Tests;
 
-use SMW\Setup;
 use SMW\ApplicationFactory;
+use SMW\Setup;
 
 /**
  * @covers \SMW\Setup

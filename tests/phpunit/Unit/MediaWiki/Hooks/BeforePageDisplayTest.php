@@ -2,12 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Tests\Utils\Mock\MockTitle;
-
-use SMW\MediaWiki\Hooks\BeforePageDisplay;
-
-use OutputPage;
 use Language;
+use OutputPage;
+use SMW\MediaWiki\Hooks\BeforePageDisplay;
+use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\BeforePageDisplay

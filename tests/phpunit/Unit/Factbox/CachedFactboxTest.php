@@ -2,15 +2,13 @@
 
 namespace SMW\Tests\Factbox;
 
-use SMW\Tests\Utils\Mock\MockTitle;
-
-use SMW\Factbox\CachedFactbox;
-use SMW\ApplicationFactory;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-
 use Language;
 use ParserOutput;
+use SMW\ApplicationFactory;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\Factbox\CachedFactbox;
+use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
  * @covers \SMW\Factbox\CachedFactbox

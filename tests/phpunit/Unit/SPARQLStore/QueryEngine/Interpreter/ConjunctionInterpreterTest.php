@@ -2,21 +2,17 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine\Interpreter;
 
-use SMW\SPARQLStore\QueryEngine\Interpreter\ConjunctionInterpreter;
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
-
-use SMW\Tests\Utils\UtilityFactory;
-
-use SMW\Query\Language\SomeProperty;
-use SMW\Query\Language\ValueDescription;
-use SMW\Query\Language\NamespaceDescription;
-use SMW\Query\Language\ClassDescription;
-use SMW\Query\Language\ThingDescription;
-use SMW\Query\Language\Conjunction;
-
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-
+use SMW\DIWikiPage;
+use SMW\Query\Language\ClassDescription;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\NamespaceDescription;
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\ValueDescription;
+use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\Interpreter\ConjunctionInterpreter;
+use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
 
 /**

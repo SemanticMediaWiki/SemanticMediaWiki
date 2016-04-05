@@ -2,15 +2,13 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Utils\UtilityFactory;
-
-use SMW\SetParserFunction;
-use SMW\ParameterFormatterFactory;
-use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
-use SMW\ApplicationFactory;
-
-use Title;
 use ParserOutput;
+use SMW\ApplicationFactory;
+use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
+use SMW\ParameterFormatterFactory;
+use SMW\SetParserFunction;
+use SMW\Tests\Utils\UtilityFactory;
+use Title;
 
 /**
  * @covers \SMW\SetParserFunction

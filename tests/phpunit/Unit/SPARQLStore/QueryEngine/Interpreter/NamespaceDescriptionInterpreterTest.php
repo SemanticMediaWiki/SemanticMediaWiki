@@ -2,12 +2,10 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine\Interpreter;
 
-use SMW\SPARQLStore\QueryEngine\Interpreter\NamespaceDescriptionInterpreter;
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\Query\Language\NamespaceDescription;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
+use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\Interpreter\NamespaceDescriptionInterpreter;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\Interpreter\NamespaceDescriptionInterpreter

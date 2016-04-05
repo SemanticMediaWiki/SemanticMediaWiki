@@ -2,8 +2,6 @@
 
 namespace SMW\Tests\Utils\Fixtures\File;
 
-use SMW\Tests\Utils\Mock\MockSuperUser;
-
 use RuntimeException;
 
 /**

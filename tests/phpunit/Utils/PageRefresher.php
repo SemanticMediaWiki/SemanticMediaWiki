@@ -2,17 +2,14 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\MediaWiki\Jobs\UpdateJob;
-
-use SMW\Store;
-use SMW\ContentParser;
+use RuntimeException;
 use SMW\ApplicationFactory;
+use SMW\ContentParser;
 use SMW\DIWikiPage;
-
+use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\Store;
 use Title;
 use WikiPage;
-
-use RuntimeException;
 
 /**
  *

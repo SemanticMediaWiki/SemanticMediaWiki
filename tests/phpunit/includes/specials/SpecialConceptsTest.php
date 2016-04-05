@@ -2,12 +2,9 @@
 
 namespace SMW\Test;
 
-use SMW\Tests\Utils\UtilityFactory;
-
-use SMW\SpecialConcepts;
 use SMW\DIWikiPage;
-use SMWDataItem;
-
+use SMW\SpecialConcepts;
+use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**

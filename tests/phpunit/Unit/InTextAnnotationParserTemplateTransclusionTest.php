@@ -2,15 +2,15 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Utils\Validators\SemanticDataValidator;
+use ParserOutput;
+use SMW\ApplicationFactory;
 use SMW\InTextAnnotationParser;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
-use SMW\Settings;
 use SMW\ParserData;
-use SMW\ApplicationFactory;
+use SMW\Settings;
+use SMW\Tests\Utils\Validators\SemanticDataValidator;
 use Title;
-use ParserOutput;
 
 /**
  * @covers \SMW\InTextAnnotationParser

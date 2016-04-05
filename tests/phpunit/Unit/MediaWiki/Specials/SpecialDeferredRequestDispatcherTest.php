@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Specials;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\MediaWiki\Specials\SpecialDeferredRequestDispatcher;
 use SMW\ApplicationFactory;
+use SMW\MediaWiki\Specials\SpecialDeferredRequestDispatcher;
+use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**

@@ -2,10 +2,10 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\Error;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\Error;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @covers \SMW\Error

@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\System;
 
-use SMW\Tests\Utils\GlobalsProvider;
 use SMW\ApplicationFactory;
+use SMW\Tests\Utils\GlobalsProvider;
 
 /**
  * @group SMW

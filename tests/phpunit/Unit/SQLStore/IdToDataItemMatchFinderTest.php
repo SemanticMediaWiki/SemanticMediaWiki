@@ -2,10 +2,9 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\Tests\TestEnvironment;
-use SMW\SQLStore\IdToDataItemMatchFinder;
 use SMW\InMemoryPoolCache;
-use SMW\DIWikiPage;
+use SMW\SQLStore\IdToDataItemMatchFinder;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\IdToDataItemMatchFinder

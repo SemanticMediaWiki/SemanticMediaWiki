@@ -2,12 +2,10 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\ApplicationFactory;
-use SMW\ConnectionManager;
-use SMW\DIWikiPage;
-
 use RuntimeException;
+use SMW\ApplicationFactory;
+use SMW\DIWikiPage;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @group semantic-mediawiki

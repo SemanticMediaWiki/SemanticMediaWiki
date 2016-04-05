@@ -2,16 +2,14 @@
 
 namespace SMW\Tests\SPARQLStore;
 
-use SMW\SPARQLStore\RedirectLookup;
-use SMW\InMemoryPoolCache;
 use SMW\DIWikiPage;
-use SMW\DIProperty;
 use SMW\Exporter\Escaper;
-
-use SMWExpNsResource as ExpNsResource;
+use SMW\InMemoryPoolCache;
+use SMW\SPARQLStore\RedirectLookup;
 use SMWExpLiteral as ExpLiteral;
-use SMWExpResource as ExpResource;
+use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
+use SMWExpResource as ExpResource;
 
 /**
  * @covers \SMW\SPARQLStore\RedirectLookup

@@ -2,13 +2,12 @@
 
 namespace SMW\Tests\Exporter;
 
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\InMemoryPoolCache;
+use SMW\DIWikiPage;
 use SMW\Exporter\DataItemToExpResourceEncoder;
 use SMW\Exporter\Element;
 use SMW\Exporter\Escaper;
-use SMWExporter as Exporter;
+use SMW\InMemoryPoolCache;
 
 /**
  * @covers \SMW\Exporter\DataItemToExpResourceEncoder

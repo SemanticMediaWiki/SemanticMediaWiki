@@ -2,10 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\MediaWiki\Api\PropertyListByApiRequest;
-use SMW\ApplicationFactory;
 use SMW\DIProperty;
+use SMW\MediaWiki\Api\PropertyListByApiRequest;
 
 /**
  * @covers \SMW\MediaWiki\Api\PropertyListByApiRequest

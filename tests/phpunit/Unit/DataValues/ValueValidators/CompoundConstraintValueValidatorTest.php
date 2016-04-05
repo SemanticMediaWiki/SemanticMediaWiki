@@ -2,10 +2,7 @@
 
 namespace SMW\Tests\DataValues\ValueValidators;
 
-use SMW\Tests\TestEnvironment;
 use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
-use SMW\Options;
-use SMW\DataItemFactory;
 
 /**
  * @covers \SMW\DataValues\ValueValidators\CompoundConstraintValueValidator

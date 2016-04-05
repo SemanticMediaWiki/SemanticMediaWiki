@@ -2,14 +2,12 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\Deserializers\SemanticDataDeserializer;
-use SMW\Serializers\SemanticDataSerializer;
-
-use SMW\DataValueFactory;
-use SMw\SemanticData;
-use SMW\DIWikiPage;
-use SMW\Subobject;
 use ReflectionClass;
+use SMW\DataValueFactory;
+use SMW\Deserializers\SemanticDataDeserializer;
+use SMW\DIWikiPage;
+use SMW\Serializers\SemanticDataSerializer;
+use SMW\Subobject;
 
 /**
  * @group semantic-mediawiki

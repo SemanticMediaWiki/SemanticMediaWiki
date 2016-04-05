@@ -5,7 +5,6 @@ namespace SMW\Tests;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-
 use SMWDataItem;
 use SMWPropertyValue;
 

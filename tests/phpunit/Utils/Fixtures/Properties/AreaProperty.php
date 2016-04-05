@@ -3,8 +3,8 @@
 namespace SMW\Tests\Utils\Fixtures\Properties;
 
 use SMW\DataValueFactory;
-use SMW\SemanticData;
 use SMW\DIProperty;
+use SMW\SemanticData;
 
 /**
  * @license GNU GPL v2+

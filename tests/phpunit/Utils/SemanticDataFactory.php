@@ -2,12 +2,10 @@
 
 namespace SMW\Tests\Utils;
 
+use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
-
 use Title;
-
-use RuntimeException;
 
 /**
  * @license GNU GPL v2+

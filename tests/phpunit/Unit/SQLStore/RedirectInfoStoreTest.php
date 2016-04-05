@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\SQLStore\RedirectInfoStore;
 use SMW\InMemoryPoolCache;
+use SMW\SQLStore\RedirectInfoStore;
 
 /**
  * @covers \SMW\SQLStore\RedirectInfoStore

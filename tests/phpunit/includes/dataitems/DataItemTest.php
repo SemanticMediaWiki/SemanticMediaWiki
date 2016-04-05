@@ -2,8 +2,6 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\MwDBaseUnitTestCase;
-
 use SMWDataItem;
 
 /**

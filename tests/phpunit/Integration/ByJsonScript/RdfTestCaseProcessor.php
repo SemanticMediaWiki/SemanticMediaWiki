@@ -4,8 +4,6 @@ namespace SMW\Tests\Integration\ByJsonScript;
 
 use SMWExportController as ExportController;
 use SMWRDFXMLSerializer as RDFXMLSerializer;
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\DIWikiPage;
 
 /**
  * @group semantic-mediawiki

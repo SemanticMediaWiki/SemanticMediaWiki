@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Query;
 
-use SMW\Query\PrintRequestFactory;
 use SMW\DIProperty;
+use SMW\Query\PrintRequestFactory;
 
 /**
  * @covers \SMW\Query\PrintRequestFactory

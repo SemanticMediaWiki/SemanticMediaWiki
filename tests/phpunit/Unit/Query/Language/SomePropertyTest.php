@@ -2,14 +2,12 @@
 
 namespace SMW\Tests\Query\Language;
 
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
-use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\ValueDescription;
-
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\Localizer;
 
 /**
  * @covers \SMW\Query\Language\SomeProperty

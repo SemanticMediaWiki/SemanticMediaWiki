@@ -2,11 +2,11 @@
 
 namespace SMW\Test;
 
-use PHPUnit_Framework_TestSuite;
-use PHPUnit_Framework_TestListener;
-use PHPUnit_Framework_Test;
-use PHPUnit_Framework_AssertionFailedError;
 use Exception;
+use PHPUnit_Framework_AssertionFailedError;
+use PHPUnit_Framework_Test;
+use PHPUnit_Framework_TestListener;
+use PHPUnit_Framework_TestSuite;
 
 class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 

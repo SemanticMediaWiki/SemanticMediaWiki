@@ -3,7 +3,6 @@
 namespace SMW\Tests\Factbox;
 
 use SMW\Factbox\FactboxFactory;
-
 use Title;
 
 /**

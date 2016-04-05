@@ -2,13 +2,11 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\Tests\MwDBaseUnitTestCase;
-
-use SMW\DIWikiPage;
 use SMW\ApplicationFactory;
+use SMW\DIWikiPage;
 use SMW\Localizer;
-
+use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**
