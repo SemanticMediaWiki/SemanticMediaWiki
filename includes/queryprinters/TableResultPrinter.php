@@ -184,7 +184,7 @@ class TableResultPrinter extends ResultPrinter {
 
 		foreach ( $dataValues as $dv ) {
 			$value = $dv->getShortText( $outputMode, $this->getLinker( $isSubject ) );
-			$values[] = $value;
+			$values[] = $value === '' ? '&nbsp;' : $value;
 		}
 
 		return implode( $this->params['sep'], $values );
