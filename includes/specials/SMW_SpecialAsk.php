@@ -336,6 +336,13 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			}
 		}
 
+		// FileExport will override the header and cause issues during the unit
+		// test when fetching the output stream therefore use the plain output
+		if ( defined( 'MW_PHPUNIT_TEST' ) && isset( $printer ) && $printer->isExportFormat() ) {
+			$result = $printer->getResult( $res, $params, SMW_OUTPUT_FILE );
+			$printer = null;
+		}
+
 		if ( isset( $printer ) && $printer->isExportFormat() ) {
 			$wgOut->disable();
 
@@ -345,9 +352,9 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			$printer->outputAsFile( $res, $params );
 		} else {
 			if ( $this->m_querystring ) {
-				$wgOut->setHTMLtitle( $this->m_querystring );
+				$this->getOutput()->setHTMLtitle( $this->m_querystring );
 			} else {
-				$wgOut->setHTMLtitle( wfMessage( 'ask' )->text() );
+				$this->getOutput()->setHTMLtitle( wfMessage( 'ask' )->text() );
 			}
 
 			$urlArgs['offset'] = $this->m_params['offset'];
@@ -360,7 +367,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 				$duration
 			) . $result;
 
-			$wgOut->addHTML( $result );
+			$this->getOutput()->addHTML( $result );
 		}
 	}
 

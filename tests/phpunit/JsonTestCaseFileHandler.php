@@ -75,8 +75,24 @@ class JsonTestCaseFileHandler {
 		$skipOn = isset( $case['skip-on'] ) ? $case['skip-on'] : array();
 		$identifier = strtolower( $identifier );
 
-		if ( in_array( $identifier, array_keys( $skipOn ) ) ) {
-			return true;
+		$mwVersion = $GLOBALS['wgVersion'];
+
+		foreach ( $skipOn as $id => $reason ) {
+
+			if ( $identifier === $id ) {
+				return true;
+			}
+
+			if ( strpos( $id, 'mw-' ) === false ) {
+				continue;
+			}
+
+			list( $mw, $versionToSkip ) = explode( "mw-", $id, 2 );
+
+			if ( version_compare( $mwVersion, $versionToSkip, '=' ) ) {
+				$this->reasonToSkip = "MediaWiki " . $mwVersion . " version is not supported ({$reason})";
+				return true;
+			}
 		}
 
 		return false;
