@@ -111,7 +111,7 @@ class SMWDIHandlerWikiPage extends SMWDataItemHandler {
 			if ( $namespace == SMW_NS_PROPERTY && $dbkeys[0] != '' &&
 				$dbkeys[0]{0} == '_' && $dbkeys[2] == '' ) {
 				// Correctly interpret internal property keys
-				$property = new SMWDIProperty( $dbkeys[0] );
+				$property = new SMW\DIProperty( $dbkeys[0] );
 				$wikipage = $property->getDiWikiPage( $dbkeys[4] );
 				if ( !is_null( $wikipage ) ) {
 					return $wikipage;

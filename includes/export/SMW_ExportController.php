@@ -217,8 +217,8 @@ class SMWExportController {
 				if ( NS_CATEGORY === $diWikiPage->getNamespace() ) { // also print elements of categories
 					$options = new SMWRequestOptions();
 					$options->limit = 100; // Categories can be large, always use limit
-					$instances = \SMW\StoreFactory::getStore()->getPropertySubjects( new SMWDIProperty( '_INST' ), $diWikiPage, $options );
-					$pinst = new SMWDIProperty( '_INST' );
+					$instances = \SMW\StoreFactory::getStore()->getPropertySubjects( new SMW\DIProperty( '_INST' ), $diWikiPage, $options );
+					$pinst = new SMW\DIProperty( '_INST' );
 
 					foreach ( $instances as $instance ) {
 						if ( !array_key_exists( $instance->getHash(), $this->element_done ) ) {
@@ -241,7 +241,7 @@ class SMWExportController {
 
 					$res = \SMW\StoreFactory::getStore()->getQueryResult( $query );
 					$resarray = $res->getNext();
-					$pinst = new SMWDIProperty( '_INST' );
+					$pinst = new SMW\DIProperty( '_INST' );
 
 					while ( $resarray !== false ) {
 						$instance = end( $resarray )->getNextDataItem();
@@ -368,7 +368,7 @@ class SMWExportController {
 		if ( $core_props_only ) { // be sure to filter all non-relevant things that may still be present in the retrieved
 			$result = new SMWSemanticData( $diWikiPage );
 			foreach ( array( '_URI', '_TYPE', '_IMPO' ) as $propid ) {
-				$prop = new SMWDIProperty( $propid );
+				$prop = new SMW\DIProperty( $propid );
 				$values = $semdata->getPropertyValues( $prop );
 				foreach ( $values as $dv ) {
 					$result->addPropertyObjectValue( $prop, $dv );

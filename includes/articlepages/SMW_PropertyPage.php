@@ -23,7 +23,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	protected function initParameters() {
 		global $smwgPropertyPagingLimit;
 		$this->limit = $smwgPropertyPagingLimit;
-		$this->mProperty = SMWDIProperty::newFromUserLabel( $this->mTitle->getText() );
+		$this->mProperty = SMW\DIProperty::newFromUserLabel( $this->mTitle->getText() );
 		$this->store = ApplicationFactory::getInstance()->getStore();
 		return true;
 	}
@@ -111,7 +111,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$options = new SMWRequestOptions();
 		$options->sort = true;
 		$options->ascending = true;
-		$subproperties = $this->store->getPropertySubjects( new SMWDIProperty( '_SUBP' ), $this->getDataItem(), $options );
+		$subproperties = $this->store->getPropertySubjects( new SMW\DIProperty( '_SUBP' ), $this->getDataItem(), $options );
 
 		$result = '';
 

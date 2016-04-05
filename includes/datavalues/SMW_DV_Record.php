@@ -269,7 +269,7 @@ class SMWRecordValue extends SMWDataValue {
 			$propertyDiWikiPage = $diProperty->getDiWikiPage();
 
 			if ( !is_null( $propertyDiWikiPage ) ) {
-				$listDiProperty = new SMWDIProperty( '_LIST' );
+				$listDiProperty = new SMW\DIProperty( '_LIST' );
 				$dataItems = \SMW\ApplicationFactory::getInstance()->getStore()->getPropertyValues( $propertyDiWikiPage, $listDiProperty );
 
 				if ( count( $dataItems ) == 1 ) {

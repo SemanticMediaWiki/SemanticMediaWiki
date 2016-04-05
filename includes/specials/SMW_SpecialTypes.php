@@ -93,7 +93,7 @@ class SMWSpecialTypes extends SpecialPage {
 
 		$store = \SMW\StoreFactory::getStore();
 		$options = SMWPageLister::getRequestOptions( $smwgTypePagingLimit, $from, $until );
-		$diWikiPages = $store->getPropertySubjects( new SMWDIProperty( '_TYPE' ), $typeValue->getDataItem(), $options );
+		$diWikiPages = $store->getPropertySubjects( new SMW\DIProperty( '_TYPE' ), $typeValue->getDataItem(), $options );
 
 		if ( !$options->ascending ) {
 			$diWikiPages = array_reverse( $diWikiPages );

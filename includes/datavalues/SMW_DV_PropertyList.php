@@ -42,9 +42,9 @@ class SMWPropertyListValue extends SMWDataValue {
 			$propertyName = smwfNormalTitleText( $propertyName );
 
 			try {
-				$diProperty = SMWDIProperty::newFromUserLabel( $propertyName );
+				$diProperty = SMW\DIProperty::newFromUserLabel( $propertyName );
 			} catch ( SMWDataItemException $e ) {
-				$diProperty = new SMWDIProperty( 'Error' );
+				$diProperty = new SMW\DIProperty( 'Error' );
 				$this->addError( wfMessage( 'smw_noproperty', $propertyName )->inContentLanguage()->text() );
 			}
 
@@ -75,9 +75,9 @@ class SMWPropertyListValue extends SMWDataValue {
 			$property = null;
 
 			try {
-				$property = new SMWDIProperty( $propertyKey );
+				$property = new SMW\DIProperty( $propertyKey );
 			} catch ( SMWDataItemException $e ) {
-				$property = new SMWDIProperty( 'Error' );
+				$property = new SMW\DIProperty( 'Error' );
 				$this->addError( wfMessage( 'smw_parseerror' )->inContentLanguage()->text() );
 			}
 

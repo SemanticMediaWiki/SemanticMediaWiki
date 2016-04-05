@@ -169,7 +169,7 @@ class SMWQuantityValue extends SMWNumberValue {
 
 		$factors = ApplicationFactory::getInstance()->getStore()->getPropertyValues(
 			$propertyDiWikiPage,
-			new SMWDIProperty( '_CONV' )
+			new SMW\DIProperty( '_CONV' )
 		);
 
 		if ( count( $factors ) == 0 ) { // no custom type
@@ -233,7 +233,7 @@ class SMWQuantityValue extends SMWNumberValue {
 
 		$dataItems = ApplicationFactory::getInstance()->getStore()->getPropertyValues(
 			$this->m_property->getDIWikiPage(),
-			new SMWDIProperty( '_UNIT' )
+			new SMW\DIProperty( '_UNIT' )
 		);
 
 		$units = array();
