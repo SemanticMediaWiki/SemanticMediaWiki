@@ -3,10 +3,10 @@
 namespace SMW;
 
 use ParamProcessor\ParamDefinition;
-use SMWDataValue;
-use SMWResultArray;
-use SMWQueryResult;
 use SMW\Query\PrintRequest;
+use SMWDataValue;
+use SMWQueryResult;
+use SMWResultArray;
 
 /**
  * Print query results in tables

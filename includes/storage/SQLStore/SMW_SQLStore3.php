@@ -1,13 +1,13 @@
 <?php
 
+use SMW\DataTypeRegistry;
 use SMW\DIConcept;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\SemanticData;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\SQLStoreFactory;
-use SMW\DataTypeRegistry;
 use SMW\SQLStore\TableDefinition;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\SemanticData;
 
 /**
  * SQL-based implementation of SMW's storage abstraction layer.

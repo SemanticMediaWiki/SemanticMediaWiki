@@ -1,7 +1,7 @@
 <?php
+use SMW\InTextAnnotationParser;
 use SMW\Query\PrintRequest;
 use SMWDIBlob as DIBlob;
-use SMW\InTextAnnotationParser;
 
 /**
  * Container for the contents of a single result field of a query result,

@@ -3,7 +3,6 @@
 use SMW\DataTypeRegistry;
 use SMW\DIWikiPage;
 use SMW\SQLStore\TableDefinition;
-use SMWDataItem as DataItem;
 
 /**
  * Class to provide all basic read methods for SMWSQLStore3.

@@ -1,9 +1,9 @@
 <?php
 
-use ParamProcessor\Param;
-use ParamProcessor\Processor;
 use ParamProcessor\Options;
+use ParamProcessor\Param;
 use ParamProcessor\ParamDefinition;
+use ParamProcessor\Processor;
 use SMW\Query\PrintRequest;
 
 /**

@@ -2,10 +2,10 @@
 
 namespace SMW;
 
-use SMWOutputs;
-use IContextSource;
 use ContextSource;
 use Html;
+use IContextSource;
+use SMWOutputs;
 
 /**
  * Highlighter utility function for Semantic MediaWiki

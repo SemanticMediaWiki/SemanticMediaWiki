@@ -1,8 +1,8 @@
 <?php
 
+use SMW\ApplicationFactory;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\ApplicationFactory;
 
 /**
  * This special page for MediaWiki provides information about types. Type information is

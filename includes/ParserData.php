@@ -2,10 +2,9 @@
 
 namespace SMW;
 
-use SMWDataValue as DataValue;
-
-use Title;
 use ParserOutput;
+use SMWDataValue as DataValue;
+use Title;
 
 /**
  * Handling semantic data exchange with a ParserOutput object

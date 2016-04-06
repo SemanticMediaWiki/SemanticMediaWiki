@@ -1,8 +1,7 @@
 <?php
 
-use SMW\DataValueFactory;
 use SMW\ApplicationFactory;
-use SMW\Highlighter;
+use SMW\DataValueFactory;
 
 /**
  * Objects of this class represent properties in SMW.

@@ -1,8 +1,5 @@
 <?php
 
-use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\MediaWiki\Jobs\JobBase;
-
 use Onoi\MessageReporter\MessageReporter;
 
 /**

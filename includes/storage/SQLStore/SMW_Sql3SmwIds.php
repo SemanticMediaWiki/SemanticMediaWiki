@@ -1,11 +1,10 @@
 <?php
 
-use SMW\SQLStore\PropertyStatisticsTable;
-use SMW\SQLStore\IdToDataItemMatchFinder;
-use SMW\SQLStore\RedirectInfoStore;
-use SMW\HashBuilder;
 use SMW\DIWikiPage;
-use SMW\ApplicationFactory;
+use SMW\HashBuilder;
+use SMW\SQLStore\IdToDataItemMatchFinder;
+use SMW\SQLStore\PropertyStatisticsTable;
+use SMW\SQLStore\RedirectInfoStore;
 
 /**
  * @ingroup SMWStore

@@ -2,9 +2,8 @@
 
 namespace SMW;
 
-use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
-
 use Parser;
+use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 
 /**
  * Class that provides the {{#set}} parser function

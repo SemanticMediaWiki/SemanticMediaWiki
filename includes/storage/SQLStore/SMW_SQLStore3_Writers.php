@@ -1,13 +1,12 @@
 <?php
 
-use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\ApplicationFactory;
+use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\JobBase;
-
+use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\SemanticData;
 use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\SQLStore\PropertyTableRowDiffer;
-use SMW\ApplicationFactory;
-use SMW\SemanticData;
-use SMW\DIWikiPage;
 
 /**
  * Class Handling all the write and update methods for SMWSQLStore3.

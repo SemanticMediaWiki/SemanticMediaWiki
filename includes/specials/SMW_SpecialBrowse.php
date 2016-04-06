@@ -1,7 +1,7 @@
 <?php
 
-use SMW\UrlEncoder;
 use SMW\DIProperty;
+use SMW\UrlEncoder;
 
 /**
  * @ingroup SMWSpecialPage

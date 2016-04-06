@@ -2,9 +2,8 @@
 
 namespace SMW;
 
-use SMW\Query\Language\ConceptDescription;
-
 use Html;
+use SMW\Query\Language\ConceptDescription;
 use SMWPageLister;
 
 /**
