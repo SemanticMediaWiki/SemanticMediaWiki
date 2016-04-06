@@ -6,6 +6,7 @@ use SMW\DIProperty;
 use SMW\PropertyAnnotator\CategoryPropertyAnnotator;
 use SMW\PropertyAnnotator\NullPropertyAnnotator;
 use SMW\PropertyAnnotator\PredefinedPropertyAnnotator;
+use SMW\PropertyAnnotator\SortKeyPropertyAnnotator;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**

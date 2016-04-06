@@ -3,6 +3,7 @@
 namespace SMW\Tests\Serializers;
 
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\Serializers\QueryResultSerializer;
 use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
 use SMW\Tests\Utils\Mock\MediaWikiMockObjectRepository;
@@ -67,7 +68,7 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array( new DIWikipage( 'Bar', NS_MAIN ) ) ) );
+			->will( $this->returnValue( array( new DIWikiPage( 'Bar', NS_MAIN ) ) ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -89,7 +90,7 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 		$printRequestFactory = new \SMW\Query\PrintRequestFactory();
 
 		$serialization = QueryResultSerializer::getSerialization(
-			\SMW\DIWikipage::newFromText( 'ABC' ),
+			\SMW\DIWikiPage::newFromText( 'ABC' ),
 			$printRequestFactory->newPropertyPrintRequest( $property )
 		);
 
@@ -205,7 +206,7 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 			) );
 
 			$printRequests[] = $printRequest;
-			$getResults[] = \SMW\DIWikipage::newFromTitle( new \Title( NS_MAIN, $value['printRequest'] ) );
+			$getResults[] = \SMW\DIWikiPage::newFromTitle( new \Title( NS_MAIN, $value['printRequest'] ) );
 
 			$dataItem = $this->newMockBuilder()->newObject( 'DataItem', array(
 				'getDIType' => DataItem::TYPE_NUMBER,
