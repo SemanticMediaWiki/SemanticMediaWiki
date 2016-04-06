@@ -69,7 +69,8 @@ Not a release yet.
 * #1466 Fixed remote resource path detection that appeared in connection with a non-default extension setup
 * #1473 Fixed exception caused by `ParameterInput` due to "HTML attribute value can not contain a list of values"
 * #1477 Fixed query result from `SPARQLStore` to filter redirects natively
-* #1489 Fixed fatal error in `RdfResultPrinter` due to namespace mismatch 
+* #1489 Fixed fatal error in `RdfResultPrinter` due to namespace mismatch
+* #1496 Fixed concept handling for `postgres`
 
 ## Internal changes
 
