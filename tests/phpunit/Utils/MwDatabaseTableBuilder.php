@@ -226,6 +226,11 @@ class MwDatabaseTableBuilder {
 			$this->getDBPrefix()
 		);
 
+		// Ensure no leftovers
+		if ( $this->getDBConnection()->getType() === 'postgres' ) {
+			$this->cloneDatabase->destroy( true );
+		}
+
 		// Rebuild the DB (in order to exclude temporary table usage)
 		// otherwise some tests will fail with
 		// "Error: 1137 Can't reopen table" on MySQL (see Issue #80)

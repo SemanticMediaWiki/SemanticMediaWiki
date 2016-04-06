@@ -83,9 +83,10 @@ class NewRevisionFromEditComplete {
 	protected function performUpdate() {
 
 		$applicationFactory = ApplicationFactory::getInstance();
+		$title = $this->wikiPage->getTitle();
 
 		$parserData = $applicationFactory->newParserData(
-			$this->wikiPage->getTitle(),
+			$title,
 			$this->parserOutput
 		);
 
@@ -113,6 +114,11 @@ class NewRevisionFromEditComplete {
 			'cached.propertyvalues.prefetcher.reset',
 			$dispatchContext
 		);
+
+		// If the concept was altered make sure to delete the cache
+		if ( $title->getNamespace() === SMW_NS_CONCEPT ) {
+			$applicationFactory->getStore()->deleteConceptCache( $title );
+		}
 
 		return true;
 	}

@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation for `Allows pattern` to match regular expressions (en, skip-on postgres)",
+	"description": "Test in-text annotation for `Allows pattern` to match regular expressions (en)",
 	"properties": [],
 	"subjects": [
 		{
@@ -72,7 +72,6 @@
 	},
 	"meta": {
 		"skip-on": {
-			"postgres": "pg_query(): Query failed: ERROR:  invalid input syntax for type bytea in VALUES ('489','488','/^(([0-9] ... (postgres handling of backslash in a string value)"
 		},
 		"version": "0.1",
 		"is-incomplete": false,

@@ -120,16 +120,19 @@ class ConceptCache {
 
 		$concCacheTableName = $db->tablename( SMWSQLStore3::CONCEPT_CACHE_TABLE );
 
-		if ( $wgDBtype == 'postgres' ) { // PostgresQL: no INSERT IGNORE, check for duplicates explicitly
-			$where = $querySegment->where . ( $querySegment->where ? ' AND ' : '' ) .
-				"NOT EXISTS (SELECT NULL FROM $concCacheTableName" .
-				" WHERE {$concCacheTableName}.s_id = {$querySegment->alias}.s_id " .
-				" AND  {$concCacheTableName}.o_id = {$querySegment->alias}.o_id )";
-		} else { // MySQL just uses INSERT IGNORE, no extra conditions
-			$where = $querySegment->where;
-		}
+		// MySQL just uses INSERT IGNORE, no extra conditions
+		$where = $querySegment->where;
 
-		// TODO: catch db exception
+		if ( $wgDBtype == 'postgres' ) {
+			// PostgresQL: no INSERT IGNORE, check for duplicates explicitly
+			// This code doesn't work and has created all sorts of issues therefore use LEFT JOIN instead
+			// http://people.planetpostgresql.org/dfetter/index.php?/archives/48-Adding-Only-New-Rows-INSERT-IGNORE,-Done-Right.html
+			//	$where = $querySegment->where . ( $querySegment->where ? ' AND ' : '' ) .
+			//		"NOT EXISTS (SELECT NULL FROM $concCacheTableName" .
+			//		" WHERE {$concCacheTableName}.s_id = {$querySegment->alias}.s_id " .
+			//		" AND  {$concCacheTableName}.o_id = {$querySegment->alias}.o_id )";
+			$querySegment->from = str_replace( 'INNER JOIN', 'LEFT JOIN', $querySegment->from );
+		}
 
 		$db->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) .
 			"INTO $concCacheTableName" .
