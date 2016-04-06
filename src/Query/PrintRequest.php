@@ -2,10 +2,10 @@
 
 namespace SMW\Query;
 
-use Title;
-use SMWPropertyValue;
 use InvalidArgumentException;
 use SMWDataValue;
+use SMWPropertyValue;
+use Title;
 
 /**
  * Container class for request for printout, as used in queries to

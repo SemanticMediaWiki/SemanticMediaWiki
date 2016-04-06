@@ -2,14 +2,13 @@
 
 namespace SMW\SQLStore;
 
-use SMW\MediaWiki\Database;
+use InvalidArgumentException;
+use RuntimeException;
+use SMW\DataItemException;
+use SMW\DIProperty;
 use SMW\SemanticData;
 use SMW\Store;
-use SMW\DIProperty;
 use SMWDIError as DIError;
-use InvalidArgumentException;
-use SMW\DataItemException;
-use RuntimeException;
 
 /**
  * @license GNU GPL v2+

@@ -2,10 +2,10 @@
 
 namespace SMW\Maintenance;
 
-use SMW\DIConcept;
-use SMW\MediaWiki\TitleLookup;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\DIConcept;
+use SMW\MediaWiki\TitleLookup;
 use SMW\Settings;
 use SMW\Store;
 use Title;

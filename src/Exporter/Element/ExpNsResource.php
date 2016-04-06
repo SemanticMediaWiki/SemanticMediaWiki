@@ -2,9 +2,9 @@
 
 namespace SMW\Exporter\Element;
 
-use SMWDataItem as DataItem;
-use RuntimeException;
 use InvalidArgumentException;
+use RuntimeException;
+use SMWDataItem as DataItem;
 
 /**
  * A single resource (individual) for export, defined by a URI for which there

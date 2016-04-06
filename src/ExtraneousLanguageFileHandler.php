@@ -2,9 +2,9 @@
 
 namespace SMW;
 
-use RuntimeException;
 use Onoi\Cache\Cache;
 use Onoi\Cache\NullCache;
+use RuntimeException;
 
 /**
  * @license GNU GPL v2+

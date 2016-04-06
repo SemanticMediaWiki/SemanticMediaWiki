@@ -2,11 +2,11 @@
 
 namespace SMW;
 
+use Hooks;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMWOutputs;
 use Title;
-use Hooks;
 
 /**
  * Class collects all functions for wiki text parsing / processing that are

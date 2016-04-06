@@ -2,11 +2,10 @@
 
 namespace SMW\SQLStore;
 
-use SMW\MediaWiki\Database;
-use SMWStringCondition as StringCondition;
-use SMWRequestOptions as RequestOptions;
 use SMW\DIWikiPage;
 use SMWDIBlob as DIBlob;
+use SMWRequestOptions as RequestOptions;
+use SMWStringCondition as StringCondition;
 
 /**
  * @license GNU GPL v2+

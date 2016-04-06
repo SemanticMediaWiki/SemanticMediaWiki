@@ -2,10 +2,10 @@
 
 namespace SMW;
 
+use Closure;
 use DeferrableUpdate;
 use DeferredUpdates;
 use RuntimeException;
-use Closure;
 
 /**
  * @see MWCallableUpdate

@@ -2,16 +2,14 @@
 
 namespace SMW;
 
-use SMW\PropertyAnnotator\NullPropertyAnnotator;
-use SMW\PropertyAnnotator\RedirectPropertyAnnotator;
-use SMW\PropertyAnnotator\PredefinedPropertyAnnotator;
-use SMW\PropertyAnnotator\SortkeyPropertyAnnotator;
-use SMW\PropertyAnnotator\CategoryPropertyAnnotator;
-use SMW\PropertyAnnotator\MandatoryTypePropertyAnnotator;
-use SMW\PropertyAnnotator\DisplayTitlePropertyAnnotator;
 use SMw\MediaWiki\RedirectTargetFinder;
-use SMW\PageInfo;
-use SMW\SemanticData;
+use SMW\PropertyAnnotator\CategoryPropertyAnnotator;
+use SMW\PropertyAnnotator\DisplayTitlePropertyAnnotator;
+use SMW\PropertyAnnotator\MandatoryTypePropertyAnnotator;
+use SMW\PropertyAnnotator\NullPropertyAnnotator;
+use SMW\PropertyAnnotator\PredefinedPropertyAnnotator;
+use SMW\PropertyAnnotator\RedirectPropertyAnnotator;
+use SMW\PropertyAnnotator\SortkeyPropertyAnnotator;
 use SMW\Store;
 
 /**

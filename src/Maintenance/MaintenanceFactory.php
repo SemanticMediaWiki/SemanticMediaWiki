@@ -2,8 +2,8 @@
 
 namespace SMW\Maintenance;
 
-use SMW\Store;
 use SMW\ApplicationFactory;
+use SMW\Store;
 use SMW\Store\PropertyStatisticsStore;
 
 /**

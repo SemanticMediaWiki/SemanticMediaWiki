@@ -3,11 +3,11 @@
 namespace SMW\Query\Parser;
 
 use SMW\DataValueFactory;
+use SMW\DIProperty;
+use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
-use SMW\Query\DescriptionFactory;
-use SMW\DIProperty;
 
 /**
  * @license GNU GPL v2+

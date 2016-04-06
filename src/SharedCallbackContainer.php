@@ -2,15 +2,14 @@
 
 namespace SMW;
 
+use Onoi\BlobStore\BlobStore;
 use Onoi\CallbackContainer\CallbackContainer;
 use Onoi\CallbackContainer\CallbackLoader;
-use Onoi\BlobStore\BlobStore;
-use SMW\MediaWiki\PageCreator;
-use SMW\MediaWiki\TitleCreator;
+use SMW\Factbox\FactboxFactory;
 use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\MediaWiki\MediaWikiNsContentReader;
-use SMW\Factbox\FactboxFactory;
-use Closure;
+use SMW\MediaWiki\PageCreator;
+use SMW\MediaWiki\TitleCreator;
 
 /**
  * @license GNU GPL v2+

@@ -2,8 +2,8 @@
 
 namespace SMW\DataValues;
 
-use SMW\MediaWiki\MediaWikiNsContentReader;
 use Revision;
+use SMW\MediaWiki\MediaWikiNsContentReader;
 use Title;
 
 /**

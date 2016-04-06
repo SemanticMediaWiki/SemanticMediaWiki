@@ -2,8 +2,8 @@
 
 namespace SMW\SQLStore;
 
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMWDataItem as DataItem;
 
 /**

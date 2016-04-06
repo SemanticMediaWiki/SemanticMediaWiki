@@ -2,12 +2,12 @@
 
 namespace SMW\DataValues\ValueFormatters;
 
-use SMW\Localizer;
-use SMW\IntlTimeFormatter;
-use SMWDataValue as DataValue;
-use SMWTimeValue as TimeValue;
-use SMWDITime as DITime;
 use RuntimeException;
+use SMW\IntlTimeFormatter;
+use SMW\Localizer;
+use SMWDataValue as DataValue;
+use SMWDITime as DITime;
+use SMWTimeValue as TimeValue;
 
 /**
  * @license GNU GPL v2+

@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Api;
 
-use SMW\SimpleDictionary;
 use SMW\Query\PrintRequest;
+use SMW\SimpleDictionary;
 use SMWPropertyValue;
 
 /**

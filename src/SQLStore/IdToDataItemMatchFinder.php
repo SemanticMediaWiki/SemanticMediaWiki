@@ -2,11 +2,10 @@
 
 namespace SMW\SQLStore;
 
-use SMW\MediaWiki\Database;
-use SMW\InMemoryPoolCache;
-use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\HashBuilder;
+use SMW\InMemoryPoolCache;
+use SMW\MediaWiki\Database;
 
 /**
  * @license GNU GPL v2+

@@ -8,6 +8,7 @@ use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Localizer;
 use SMW\MediaWiki\HtmlTableRenderer;
 use SMW\MediaWiki\MessageBuilder;
 use SMW\ParserData;
@@ -16,7 +17,6 @@ use SMW\SemanticData;
 use SMW\Store;
 use SMWInfolink;
 use SMWSemanticData;
-use SMW\Localizer;
 
 /**
  * Class handling the "Factbox" content rendering

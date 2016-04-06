@@ -2,10 +2,9 @@
 
 namespace SMW\DataValues;
 
-use SMW\DataValues\ValueParserFactory;
+use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
-use SMWDataItem as DataItem;
 
 /**
  * This datavalue implements datavalues used by special property '_IMPO' used

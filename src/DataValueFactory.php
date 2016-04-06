@@ -2,12 +2,11 @@
 
 namespace SMW;
 
+use SMW\DataValues\ValueValidatorRegistry;
 use SMWDataItem;
+use SMWDataValue as DataValue;
 use SMWDIError;
 use SMWErrorValue as ErrorValue;
-use SMWPropertyValue;
-use SMWDataValue as DataValue;
-use SMW\DataValues\ValueValidatorRegistry;
 
 /**
  * Factory class for creating SMWDataValue objects for supplied types or

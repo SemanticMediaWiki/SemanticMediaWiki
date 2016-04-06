@@ -2,9 +2,9 @@
 
 namespace SMW\SPARQLStore\QueryEngine;
 
+use SMW\Exporter\Element\ExpElement;
 use SMW\Store;
 use SMWExporter as Exporter;
-use SMW\Exporter\Element\ExpElement;
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
 

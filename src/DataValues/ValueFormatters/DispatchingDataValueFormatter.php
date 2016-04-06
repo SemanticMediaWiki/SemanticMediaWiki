@@ -2,8 +2,8 @@
 
 namespace SMW\DataValues\ValueFormatters;
 
-use SMWDataValue as DataValue;
 use RuntimeException;
+use SMWDataValue as DataValue;
 
 /**
  * @private

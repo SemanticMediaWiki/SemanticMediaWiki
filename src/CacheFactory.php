@@ -2,9 +2,8 @@
 
 namespace SMW;
 
-use Onoi\Cache\CacheFactory as OnoiCacheFactory;
-use SMW\ApplicationFactory;
 use ObjectCache;
+use Onoi\Cache\CacheFactory as OnoiCacheFactory;
 use RuntimeException;
 
 /**

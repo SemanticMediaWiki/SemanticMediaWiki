@@ -2,19 +2,19 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
-use OutOfBoundsException;
 use InvalidArgumentException;
+use OutOfBoundsException;
+use SMW\CircularReferenceGuard;
 use SMW\Query\Language\Description;
 use SMW\SQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\Interpreter\ConceptDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\Interpreter\DisjunctionConjunctionInterpreter;
+use SMW\SQLStore\QueryEngine\Interpreter\DispatchingDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\Interpreter\NamespaceDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\Interpreter\SomePropertyInterpreter;
 use SMW\SQLStore\QueryEngine\Interpreter\ThingDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\Interpreter\ValueDescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\Interpreter\DispatchingDescriptionInterpreter;
 use SMW\Store;
-use SMW\CircularReferenceGuard;
 
 /**
  * @license GNU GPL v2+

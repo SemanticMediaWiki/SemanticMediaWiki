@@ -3,15 +3,15 @@
 namespace SMW;
 
 use Deserializers\Deserializer;
+use OutOfBoundsException;
 use Serializers\Serializer;
-use SMW\Serializers\SemanticDataSerializer;
+use SMW\Deserializers\ExpDataDeserializer;
 use SMW\Deserializers\SemanticDataDeserializer;
 use SMW\Serializers\ExpDataSerializer;
-use SMW\Deserializers\ExpDataDeserializer;
 use SMW\Serializers\QueryResultSerializer;
-use SMWQueryResult as QueryResult;
+use SMW\Serializers\SemanticDataSerializer;
 use SMWExpData as ExpData;
-use OutOfBoundsException;
+use SMWQueryResult as QueryResult;
 
 /**
  * @license GNU GPL v2+

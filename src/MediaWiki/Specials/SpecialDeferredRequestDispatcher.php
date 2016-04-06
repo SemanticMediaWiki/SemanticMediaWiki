@@ -2,9 +2,8 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use SpecialPage;
 use SMW\ApplicationFactory;
-use Onoi\HttpRequest\HttpRequestFactory;
+use SpecialPage;
 use Title;
 
 /**

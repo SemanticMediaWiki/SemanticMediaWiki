@@ -2,21 +2,20 @@
 
 namespace SMW;
 
+use Closure;
+use Onoi\CallbackContainer\CallbackLoader;
+use Onoi\CallbackContainer\DeferredCallbackLoader;
 use Parser;
 use ParserOutput;
 use SMW\Factbox\FactboxFactory;
+use SMW\Maintenance\MaintenanceFactory;
 use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\TitleCreator;
 use SMW\Query\ProfileAnnotator\QueryProfileAnnotatorFactory;
-use SMW\Maintenance\MaintenanceFactory;
-use SMW\CacheFactory;
 use SMWQueryParser as QueryParser;
 use Title;
-use Closure;
-use Onoi\CallbackContainer\CallbackLoader;
-use Onoi\CallbackContainer\DeferredCallbackLoader;
 
 /**
  * Application instances access for internal and external use

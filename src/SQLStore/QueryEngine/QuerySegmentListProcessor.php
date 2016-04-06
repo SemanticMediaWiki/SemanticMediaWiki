@@ -2,10 +2,10 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
+use RuntimeException;
 use SMW\MediaWiki\Database;
 use SMW\SQLStore\TemporaryIdTableCreator;
 use SMWQuery as Query;
-use RuntimeException;
 
 /**
  * @license GNU GPL v2+

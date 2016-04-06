@@ -2,9 +2,8 @@
 
 namespace SMW;
 
-use DateTimeZone;
-use SMWDITime as DITime;
 use Language;
+use SMWDITime as DITime;
 
 /**
  * @license GNU GPL v2+

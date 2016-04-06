@@ -2,16 +2,9 @@
 
 namespace SMW\SQLStore\QueryDependency;
 
-use SMW\Store;
-use SMWQueryResult as QueryResult;
-use SMW\SQLStore\SQLStore;
 use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\HashBuilder;
-use SMW\SemanticData;
-use SMW\ApplicationFactory;
-use SMW\EventHandler;
-use SMW\DeferredCallableUpdate;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+

@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki\Hooks;
 
 use LinksUpdate;
-use Title;
 use SMW\ApplicationFactory;
 use SMW\SemanticData;
+use Title;
 
 /**
  * LinksUpdateConstructed hook is called at the end of LinksUpdate()

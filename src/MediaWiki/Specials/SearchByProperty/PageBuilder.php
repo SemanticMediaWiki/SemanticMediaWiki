@@ -3,16 +3,16 @@
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
 use Html;
-use SMW\DataTypeRegistry;
 use SMW\ApplicationFactory;
+use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\MediaWiki\Renderer\HtmlFormRenderer;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\MediaWiki\MessageBuilder;
+use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMWDataValue as DataValue;
 use SMWInfolink as Infolink;
 use SMWStringValue as StringValue;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 
 /**
  * @license GNU GPL v2+

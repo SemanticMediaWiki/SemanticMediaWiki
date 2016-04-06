@@ -4,8 +4,6 @@ namespace SMW;
 
 use Onoi\Cache\Cache;
 use SMW\Store;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 
 /**
  * @license GNU GPL v2+

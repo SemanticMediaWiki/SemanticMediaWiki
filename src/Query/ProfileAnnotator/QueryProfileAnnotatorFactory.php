@@ -3,9 +3,9 @@
 namespace SMW\Query\ProfileAnnotator;
 
 use SMW\DIWikiPage;
-use SMWQuery as Query;
-use SMWDIContainer as DIContainer;
 use SMWContainerSemanticData as ContainerSemanticData;
+use SMWDIContainer as DIContainer;
+use SMWQuery as Query;
 
 /**
  * @license GNU GPL v2+

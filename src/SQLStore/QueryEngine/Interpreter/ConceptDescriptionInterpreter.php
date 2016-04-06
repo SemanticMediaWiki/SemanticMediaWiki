@@ -4,9 +4,9 @@ namespace SMW\SQLStore\QueryEngine\Interpreter;
 
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Description;
-use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QuerySegment;
+use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMWQueryParser as QueryParser;
 use SMWSQLStore3;
 

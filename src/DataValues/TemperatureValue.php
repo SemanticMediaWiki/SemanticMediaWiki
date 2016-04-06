@@ -2,9 +2,8 @@
 
 namespace SMW\DataValues;
 
-use SMW\NumberFormatter;
-use SMWNumberValue as NumberValue;
 use SMWDINumber as DINumber;
+use SMWNumberValue as NumberValue;
 
 /**
  * This datavalue implements unit support for measuring temperatures. This is

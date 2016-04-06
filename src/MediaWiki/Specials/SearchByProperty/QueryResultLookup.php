@@ -6,8 +6,8 @@ use SMW\DataValueFactory;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
-use SMW\Store;
 use SMW\Query\PrintRequest as PrintRequest;
+use SMW\Store;
 use SMWQuery as Query;
 use SMWRequestOptions as RequestOptions;
 

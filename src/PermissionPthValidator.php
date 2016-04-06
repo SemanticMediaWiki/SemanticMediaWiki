@@ -2,9 +2,8 @@
 
 namespace SMW;
 
-use RuntimeException;
-use User;
 use Title;
+use User;
 
 /**
  * @license GNU GPL v2+

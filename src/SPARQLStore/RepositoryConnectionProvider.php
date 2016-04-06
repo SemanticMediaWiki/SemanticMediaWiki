@@ -2,10 +2,9 @@
 
 namespace SMW\SPARQLStore;
 
+use Onoi\HttpRequest\CurlRequest;
 use RuntimeException;
 use SMW\DBConnectionProvider;
-use Onoi\HttpRequest\CurlRequest;
-use SMW\SPARQLStore\RepositoryConnection;
 
 /**
  * Provides an one-stop solution for creating a valid instance for a

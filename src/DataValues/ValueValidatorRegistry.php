@@ -3,7 +3,6 @@
 namespace SMW\DataValues;
 
 use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
-use SMWDataValue as DataValue;
 
 /**
  * @license GNU GPL v2+

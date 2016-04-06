@@ -2,9 +2,9 @@
 
 namespace SMW\Exporter\Element;
 
+use RuntimeException;
 use SMW\Exporter\Element;
 use SMWDataItem as DataItem;
-use RuntimeException;
 
 /**
  * ExpElement is a class for representing single elements that appear in

@@ -2,10 +2,10 @@
 
 namespace SMW\Deserializers\DVDescriptionDeserializer;
 
-use SMWDataValue as DataValue;
+use InvalidArgumentException;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
-use InvalidArgumentException;
+use SMWDataValue as DataValue;
 
 /**
  * @private

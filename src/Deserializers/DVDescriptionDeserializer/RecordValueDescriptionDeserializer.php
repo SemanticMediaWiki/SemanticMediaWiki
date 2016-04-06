@@ -2,13 +2,12 @@
 
 namespace SMW\Deserializers\DVDescriptionDeserializer;
 
-use SMWRecordValue as RecordValue;
-use SMW\Query\Language\ThingDescription;
+use InvalidArgumentException;
+use SMW\DataValueFactory;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
-use SMW\DataValueFactory;
-use SMW\DIProperty;
-use InvalidArgumentException;
+use SMW\Query\Language\ThingDescription;
+use SMWRecordValue as RecordValue;
 
 /**
  * @private

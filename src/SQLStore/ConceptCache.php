@@ -5,13 +5,10 @@ namespace SMW\SQLStore;
 use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMWDataItem;
-use SMWQuery;
-use SMWQueryParser;
+use SMW\SQLStore\QueryEngine\ConceptQueryResolver;
 use SMWSQLStore3;
 use SMWWikiPageValue;
 use Title;
-use SMW\SQLStore\QueryEngine\ConceptQueryResolver;
 
 /**
  * @license GNU GPL v2+

@@ -2,15 +2,14 @@
 
 namespace SMW\SQLStore;
 
-use SMW\SemanticData;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\Store;
-use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\MediaWiki\Jobs\JobBase;
-
-use Title;
 use Hooks;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\MediaWiki\Jobs\JobBase;
+use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\SemanticData;
+use SMW\Store;
+use Title;
 
 /**
  * @license GNU GPL v2+

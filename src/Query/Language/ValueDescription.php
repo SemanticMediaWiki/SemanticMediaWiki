@@ -4,8 +4,8 @@ namespace SMW\Query\Language;
 
 use SMW\DataValueFactory;
 use SMw\DIProperty;
-use SMWDataItem as DataItem;
 use SMW\Query\QueryComparator;
+use SMWDataItem as DataItem;
 
 /**
  * Description of one data value, or of a range of data values.

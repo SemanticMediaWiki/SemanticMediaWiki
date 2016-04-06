@@ -2,10 +2,10 @@
 
 namespace SMW\DataValues\ValueFormatters;
 
-use SMWDataValue as DataValue;
-use SMWStringValue as StringValue;
 use RuntimeException;
 use SMW\Highlighter;
+use SMWDataValue as DataValue;
+use SMWStringValue as StringValue;
 
 /**
  * @license GNU GPL v2+

@@ -2,8 +2,8 @@
 
 namespace SMW\Query;
 
-use SMWQuery as Query;
 use SMWInfolink as Infolink;
+use SMWQuery as Query;
 
 /**
  * Representing a Special:Ask query link to further query results

@@ -2,12 +2,12 @@
 
 namespace SMW\DataValues;
 
+use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
+use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DataValues\ValueFormatters\DispatchingDataValueFormatter;
 use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
-use SMW\DataValues\ValueFormatters\StringValueFormatter;
-use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
 use SMW\DataValues\ValueFormatters\NoValueFormatter;
-use SMW\DataValues\ValueFormatters\DataValueFormatter;
+use SMW\DataValues\ValueFormatters\StringValueFormatter;
 use SMW\DataValues\ValueFormatters\TimeValueFormatter;
 use SMWDataValue as DataValue;
 

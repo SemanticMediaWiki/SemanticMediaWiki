@@ -3,10 +3,8 @@
 namespace SMW\SPARQLStore;
 
 use RuntimeException;
-use Onoi\Cache\Cache;
-use SMW\ApplicationFactory;
-use SMW\InMemoryPoolCache;
 use SMW\DIWikiPage;
+use SMW\InMemoryPoolCache;
 use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
 use SMWExpResource as ExpResource;

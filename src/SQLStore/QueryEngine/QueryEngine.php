@@ -2,20 +2,19 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
+use RuntimeException;
+use SMW\DIWikiPage;
+use SMW\InvalidPredefinedPropertyException;
+use SMW\Query\DebugOutputFormatter;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
-use SMW\Query\DebugOutputFormatter;
-use SMW\SQLStore\TemporaryIdTableCreator;
-use SMW\DIWikiPage;
-use SMWSQLStore3 as SQLStore;
-use SMWQuery as Query;
-use SMWSql3SmwIds;
-use SMWQueryResult as QueryResult;
 use SMWDataItem as DataItem;
 use SMWPropertyValue as PropertyValue;
-use SMW\InvalidPredefinedPropertyException;
-use RuntimeException;
+use SMWQuery as Query;
+use SMWQueryResult as QueryResult;
+use SMWSql3SmwIds;
+use SMWSQLStore3 as SQLStore;
 
 /**
  * Class that implements query answering for SQLStore.

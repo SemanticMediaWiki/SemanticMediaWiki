@@ -2,11 +2,11 @@
 
 namespace SMW\DataValues\ValueFormatters;
 
-use SMW\DataValues\MonolingualTextValue;
+use RuntimeException;
 use SMW\DataValueFactory;
+use SMW\DataValues\MonolingualTextValue;
 use SMW\DIProperty;
 use SMWDataValue as DataValue;
-use RuntimeException;
 
 /**
  * @license GNU GPL v2+
