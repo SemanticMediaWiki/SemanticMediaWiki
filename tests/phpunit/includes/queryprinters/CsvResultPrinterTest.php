@@ -2,13 +2,11 @@
 
 namespace SMW\Test;
 
-use SMW\Tests\Utils\Mock\MockObjectBuilder;
-use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
-
-use SMW\CsvResultPrinter;
-use SMWDataItem;
-
 use ReflectionClass;
+use SMW\CsvResultPrinter;
+use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
+use SMW\Tests\Utils\Mock\MockObjectBuilder;
+use SMWDataItem;
 
 /**
  * Tests for the CsvResultPrinter class

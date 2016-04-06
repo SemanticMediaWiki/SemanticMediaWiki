@@ -2,13 +2,11 @@
 
 namespace SMW\Tests\Serializers;
 
-use SMW\Serializers\SemanticDataSerializer;
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\DataValueFactory;
-use SMw\SemanticData;
 use SMW\DIWikiPage;
+use SMW\Serializers\SemanticDataSerializer;
 use SMW\Subobject;
-
+use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**

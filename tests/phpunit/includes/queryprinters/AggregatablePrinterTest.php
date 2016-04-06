@@ -2,14 +2,12 @@
 
 namespace SMW\Test;
 
+use ReflectionClass;
 use SMW\AggregatablePrinter;
-use SMW\Tests\Utils\Mock\MockObjectBuilder;
 use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
-
+use SMW\Tests\Utils\Mock\MockObjectBuilder;
 use SMWDataItem;
 use SMWDINumber;
-
-use ReflectionClass;
 use SMWQueryResult;
 
 /**

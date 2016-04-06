@@ -2,17 +2,13 @@
 
 namespace SMW\Tests\PropertyAnnotator;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\Tests\Utils\Mock\MockTitle;
-
-use SMW\PropertyAnnotator\PredefinedPropertyAnnotator;
-use SMW\PropertyAnnotator\NullPropertyAnnotator;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\ApplicationFactory;
-use SMW\Settings;
 use SMW\Localizer;
-
+use SMW\PropertyAnnotator\NullPropertyAnnotator;
+use SMW\PropertyAnnotator\PredefinedPropertyAnnotator;
+use SMW\Tests\Utils\Mock\MockTitle;
+use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**

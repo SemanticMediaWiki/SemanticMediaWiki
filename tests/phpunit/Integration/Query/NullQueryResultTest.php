@@ -2,14 +2,13 @@
 
 namespace SMW\Tests\Integration\Query;
 
-use SMW\DIWikiPage;
 use SMW\ApplicationFactory;
-
-use SMWQuery as Query;
-use SMW\Query\Language\ValueDescription;
+use SMW\DIWikiPage;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
+use SMW\Query\Language\ValueDescription;
+use SMWQuery as Query;
 
 /**
  * @group SMW

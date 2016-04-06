@@ -2,8 +2,8 @@
 
 namespace SMW\Tests;
 
-use SMW\Localizer;
 use Language;
+use SMW\Localizer;
 
 /**
  * @covers \SMW\Localizer

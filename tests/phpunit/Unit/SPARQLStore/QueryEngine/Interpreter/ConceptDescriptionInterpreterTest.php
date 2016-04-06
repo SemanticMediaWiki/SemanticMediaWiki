@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine\Interpreter;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\SPARQLStore\QueryEngine\Interpreter\ConceptDescriptionInterpreter;
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
-use SMW\Query\Language\ConceptDescription;
-use SMW\DIWikiPage;
+use SMW\ApplicationFactory;
 use SMW\DIConcept;
 use SMW\DIProperty;
-use SMW\ApplicationFactory;
+use SMW\DIWikiPage;
+use SMW\Query\Language\ConceptDescription;
+use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\Interpreter\ConceptDescriptionInterpreter;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\Interpreter\ConceptDescriptionInterpreter

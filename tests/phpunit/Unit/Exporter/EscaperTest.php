@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Exporter;
 
-use SMW\Exporter\Escaper;
 use SMW\DIWikiPage;
+use SMW\Exporter\Escaper;
 
 /**
  * @covers \SMW\Exporter\Escaper

@@ -2,17 +2,15 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Tests\Utils\Validators\SemanticDataValidator;
-
-use SMW\MediaWiki\Hooks\NewRevisionFromEditComplete;
-use SMW\DIProperty;
-use SMW\ApplicationFactory;
-use SMW\Settings;
-
 use ParserOutput;
-use WikiPage;
 use Revision;
+use SMW\ApplicationFactory;
+use SMW\DIProperty;
+use SMW\MediaWiki\Hooks\NewRevisionFromEditComplete;
+use SMW\Settings;
+use SMW\Tests\Utils\Validators\SemanticDataValidator;
 use Title;
+use WikiPage;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\NewRevisionFromEditComplete

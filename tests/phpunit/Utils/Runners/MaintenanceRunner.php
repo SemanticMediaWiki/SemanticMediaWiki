@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils\Runners;
 
-use RuntimeException;
 use DomainException;
+use RuntimeException;
 
 /**
  * Running maintenance scripts via phpunit is not really possible but instead

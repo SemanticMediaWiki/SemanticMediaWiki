@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use SMW\MediaWiki\Hooks\TitleIsMovable;
-
 use Title;
 
 /**

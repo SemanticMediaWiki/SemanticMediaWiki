@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\SQLStore\PropertyTableRowDiffer;
-use SMW\SQLStore\SQLStore;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
+use SMW\SQLStore\PropertyTableRowDiffer;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableRowDiffer

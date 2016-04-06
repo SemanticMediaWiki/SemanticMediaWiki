@@ -2,15 +2,13 @@
 
 namespace SMW\Test;
 
-use SMW\Tests\MwDBaseUnitTestCase;
-
-use SMW\StoreFactory;
+use SMW\ConnectionManager;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\ConnectionManager;
-
-use Title;
+use SMW\StoreFactory;
+use SMW\Tests\MwDBaseUnitTestCase;
 use SMWRequestOptions;
+use Title;
 
 /**
  * Tests for the SMWStore class.

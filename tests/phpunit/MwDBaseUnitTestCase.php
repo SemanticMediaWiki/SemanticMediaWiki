@@ -2,16 +2,14 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Utils\MwDatabaseTableBuilder;
-use SMW\StoreFactory;
+use RuntimeException;
 use SMW\ApplicationFactory;
 use SMW\NamespaceExaminer;
 use SMW\PropertyRegistry;
 use SMW\Settings;
-use SMW\Tests\TestEnvironment;
+use SMW\StoreFactory;
+use SMW\Tests\Utils\MwDatabaseTableBuilder;
 use SMWExporter as Exporter;
-
-use RuntimeException;
 
 /**
  * @group SMW

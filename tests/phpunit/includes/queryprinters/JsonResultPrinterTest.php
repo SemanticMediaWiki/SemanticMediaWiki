@@ -2,13 +2,10 @@
 
 namespace SMW\Test;
 
-use SMW\Tests\Utils\Mock\MockObjectBuilder;
-use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
-
-use SMW\JsonResultPrinter;
-use SMW\ResultPrinter;
-
 use ReflectionClass;
+use SMW\JsonResultPrinter;
+use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
+use SMW\Tests\Utils\Mock\MockObjectBuilder;
 
 /**
  * @covers \SMW\JsonResultPrinter

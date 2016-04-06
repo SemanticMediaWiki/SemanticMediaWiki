@@ -2,10 +2,9 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
-use SMW\SPARQLStore\QueryEngine\QueryEngine;
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
+use SMW\SPARQLStore\QueryEngine\QueryEngine;
 use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
-use SMW\DIProperty;
 use SMWQuery as Query;
 
 /**

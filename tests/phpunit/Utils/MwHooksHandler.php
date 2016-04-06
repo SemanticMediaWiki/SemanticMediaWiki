@@ -2,10 +2,9 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\MediaWiki\Hooks\HookRegistry;
-
 use Closure;
 use RuntimeException;
+use SMW\MediaWiki\Hooks\HookRegistry;
 
 /**
  * @license GNU GPL v2+

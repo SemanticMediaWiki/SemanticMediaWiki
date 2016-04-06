@@ -2,10 +2,10 @@
 
 namespace SMW\Tests;
 
-use SMW\EventListenerRegistry;
 use Onoi\EventDispatcher\EventDispatcherFactory;
 use Onoi\EventDispatcher\EventListenerCollection;
 use SMW\DIWikiPage;
+use SMW\EventListenerRegistry;
 
 /**
  * @covers \SMW\EventListenerRegistry

@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\SQLStore\QueryEngine\QuerySegment;
-use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
+use SMW\DIWikiPage;
+use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
-use SMW\Query\Language\ClassDescription;
-use SMW\DIWikiPage;
+use SMW\SQLStore\QueryEngine\QuerySegment;
+use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\QuerySegmentListBuilder

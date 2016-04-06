@@ -2,14 +2,12 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\SemanticData;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\SemanticData;
 use SMW\StoreFactory;
-
 use SMWDITime as DITime;
 use SMWSql3StubSemanticData as StubSemanticData;
-
 use Title;
 
 /**

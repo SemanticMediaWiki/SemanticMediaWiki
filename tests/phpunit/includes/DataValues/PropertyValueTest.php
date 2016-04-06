@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\DataValues;
 
-use SMW\DIProperty;
-use SMWPropertyValue as PropertyValue;
 use SMW\Options;
+use SMWPropertyValue as PropertyValue;
 
 /**
  * @covers \SMWPropertyValue

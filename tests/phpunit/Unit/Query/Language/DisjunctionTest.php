@@ -2,14 +2,13 @@
 
 namespace SMW\Tests\Query\Language;
 
-use SMW\Query\Language\Disjunction;
-use SMW\Query\Language\Conjunction;
-use SMW\Query\Language\ThingDescription;
-use SMW\Query\Language\NamespaceDescription;
-use SMW\Query\Language\ValueDescription;
-
 use SMW\DIWikiPage;
 use SMW\Localizer;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Disjunction;
+use SMW\Query\Language\NamespaceDescription;
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\ValueDescription;
 
 /**
  * @covers \SMW\Query\Language\Disjunction

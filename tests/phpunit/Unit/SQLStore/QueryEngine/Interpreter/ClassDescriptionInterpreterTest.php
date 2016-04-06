@@ -2,12 +2,11 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 
-use SMW\Tests\Utils\UtilityFactory;
-
+use SMW\DIWikiPage;
+use SMW\Query\Language\ClassDescription;
 use SMW\SQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
-use SMW\Query\Language\ClassDescription;
-use SMW\DIWikiPage;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter

@@ -2,12 +2,6 @@
 
 namespace SMW\Tests\Utils\Validators;
 
-use SMW\DIWikiPage;
-
-use SMWDataValue as DataValue;
-use SMWDataItem as DataItem;
-use SMWQueryResult as QueryResult;
-
 use SMWExpData as ExpData;
 use SMWExpResource as ExpResource;
 

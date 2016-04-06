@@ -2,19 +2,15 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\Tests\MwDBaseUnitTestCase;
-
-use SMW\StoreFactory;
-use SMW\Localizer;
 use SMW\DataValueFactory;
-use SMW\SemanticData;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Localizer;
+use SMW\SemanticData;
+use SMW\StoreFactory;
 use SMW\Subobject;
-
+use SMW\Tests\Utils\UtilityFactory;
 use SMWDITime as DITime;
-
 use Title;
 
 /**

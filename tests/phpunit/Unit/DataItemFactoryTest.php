@@ -3,8 +3,6 @@
 namespace SMW\Tests;
 
 use SMW\DataItemFactory;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
 
 /**
  * @covers \SMW\DataItemFactory

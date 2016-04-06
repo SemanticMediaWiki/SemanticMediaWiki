@@ -2,10 +2,8 @@
 
 namespace SMW\Test\SQLStore;
 
-use SMW\Tests\MwDBaseUnitTestCase;
-
 use SMW\SQLStore\PropertyStatisticsTable;
-use SMW\StoreFactory;
+use SMW\Tests\MwDBaseUnitTestCase;
 
 /**
  * @covers \SMW\SQLStore\PropertyStatisticsTable

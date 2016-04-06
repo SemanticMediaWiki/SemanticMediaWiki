@@ -2,14 +2,11 @@
 
 namespace SMW\Tests\Integration\ByJsonScript;
 
-use SMW\Tests\Utils\UtilityFactory;
-
-use SMW\FileReader;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
+use SMW\DIWikiPage;
 use SMW\Query\PrintRequest as PrintRequest;
+use SMW\Tests\Utils\UtilityFactory;
 use SMWDataItem as DataItem;
 use SMWPropertyValue as PropertyValue;
 

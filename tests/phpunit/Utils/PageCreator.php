@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Utils;
 
-use Title;
 use Revision;
-use UnexpectedValueException;
 use SMW\Tests\TestEnvironment;
+use Title;
+use UnexpectedValueException;
 
 /**
  *

@@ -2,10 +2,8 @@
 
 namespace SMW\Tests\Integration\ByJsonScript;
 
-use SMW\Tests\ByJsonTestCaseProvider;
-use SMW\Tests\JsonTestCaseFileHandler;
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\DIWikiPage;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @group semantic-mediawiki

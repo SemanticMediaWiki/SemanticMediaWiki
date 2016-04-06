@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Query\ProfileAnnotator;
 
-use SMW\Query\ProfileAnnotator\QueryProfileAnnotatorFactory;
 use SMW\DIWikiPage;
+use SMW\Query\ProfileAnnotator\QueryProfileAnnotatorFactory;
 
 /**
  * @covers \SMW\Query\ProfileAnnotator\QueryProfileAnnotatorFactory

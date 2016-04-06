@@ -2,13 +2,10 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Utils\UtilityFactory;
-
-use SMW\StoreUpdater;
-use SMW\Tests\TestEnvironment;
-use SMW\SemanticData;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\SemanticData;
+use SMW\StoreUpdater;
 
 /**
  * @covers \SMW\StoreUpdater

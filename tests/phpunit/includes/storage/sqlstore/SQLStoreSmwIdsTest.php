@@ -4,7 +4,6 @@ namespace SMW\Tests\SQLStore;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-
 use SMWSql3SmwIds;
 
 /**

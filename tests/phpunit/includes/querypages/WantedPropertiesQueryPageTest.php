@@ -2,9 +2,9 @@
 
 namespace SMW\Test;
 
-use SMW\WantedPropertiesQueryPage;
 use SMW\DataItemFactory;
 use SMW\Settings;
+use SMW\WantedPropertiesQueryPage;
 
 /**
  * @covers \SMW\WantedPropertiesQueryPage

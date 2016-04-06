@@ -2,14 +2,12 @@
 
 namespace SMW\Tests\Integration;
 
+use SMW\DataValueFactory;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-
-use SMW\DataValueFactory;
-
-use SMWQueryProcessor  as QueryProcessor;
 use SMWQuery as Query;
 use SMWQueryParser as QueryParser;
+use SMWQueryProcessor as QueryProcessor;
 
 /**
  * @covers \SMWQueryResult

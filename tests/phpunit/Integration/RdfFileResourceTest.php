@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\DIWikiPage;
 use SMW\Localizer;
+use SMW\Tests\MwDBaseUnitTestCase;
 use SMWExportController as ExportController;
 use SMWRDFXMLSerializer as RDFXMLSerializer;
 use Title;

@@ -2,13 +2,11 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use SMW\Tests\Utils\MwHooksHandler;
-use SMW\Tests\MwDBaseUnitTestCase;
-
-use SMW\NamespaceManager;
-
-use SMW\Settings;
 use MWNamespace;
+use SMW\NamespaceManager;
+use SMW\Settings;
+use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\Utils\MwHooksHandler;
 
 /**
  *

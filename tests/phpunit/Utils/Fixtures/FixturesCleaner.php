@@ -3,8 +3,6 @@
 namespace SMW\Tests\Utils\Fixtures;
 
 use SMW\Tests\Utils\UtilityFactory;
-
-use SMW\DIWikiPage;
 use Title;
 
 /**

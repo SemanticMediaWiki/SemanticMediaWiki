@@ -2,9 +2,9 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\ParserFunctionFactory;
 use SMW\DIWikiPage;
+use SMW\ParserFunctionFactory;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @covers \SMW\ParserFunctionFactory

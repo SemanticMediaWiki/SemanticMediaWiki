@@ -2,13 +2,10 @@
 
 namespace SMW\Test;
 
-use SMW\PropertiesQueryPage;
-use SMW\DataItemFactory;
-use SMW\Settings;
-use SMW\MessageFormatter;
 use SMW\ArrayAccessor;
-use SMW\DIProperty;
-use SMWDataItem;
+use SMW\DataItemFactory;
+use SMW\PropertiesQueryPage;
+use SMW\Settings;
 
 /**
  * @covers \SMW\PropertiesQueryPage

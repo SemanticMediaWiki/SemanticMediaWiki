@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\DataValues\ValueValidators;
 
-use SMW\Tests\TestEnvironment;
+use SMW\DataItemFactory;
 use SMW\DataValues\ValueValidators\PatternConstraintValueValidator;
 use SMW\Options;
-use SMW\DataItemFactory;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\ValueValidators\PatternConstraintValueValidator

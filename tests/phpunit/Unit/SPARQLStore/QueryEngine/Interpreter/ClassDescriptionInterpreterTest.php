@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine\Interpreter;
 
-use SMW\SPARQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter;
-use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\Query\Language\ClassDescription;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\Query\Language\ClassDescription;
+use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter

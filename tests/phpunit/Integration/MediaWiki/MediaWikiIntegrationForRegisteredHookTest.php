@@ -2,21 +2,16 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use SMW\Tests\Utils\UtilityFactory;
+use RequestContext;
+use SMW\ApplicationFactory;
+use SMW\DIWikiPage;
+use SMW\ParserData;
+use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
-
-use SMW\Tests\MwDBaseUnitTestCase;
-
-use SMW\MediaWiki\Hooks\ArticlePurge;
-use SMW\SemanticData;
-use SMW\ParserData;
-use SMW\DIWikiPage;
-use SMW\ApplicationFactory;
-
-use RequestContext;
-use WikiPage;
+use SMW\Tests\Utils\UtilityFactory;
 use Title;
+use WikiPage;
 
 /**
  * @group semantic-mediawiki

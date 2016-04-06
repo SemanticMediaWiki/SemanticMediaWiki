@@ -2,10 +2,7 @@
 
 namespace SMW\Tests\SQLStore\Writer;
 
-use \SMWSQLStore3Writers;
-use SMW\SemanticData;
-use SMW\DIWikiPage;
-
+use SMWSQLStore3Writers;
 use Title;
 
 /**

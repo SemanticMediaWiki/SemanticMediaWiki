@@ -3,7 +3,6 @@
 namespace SMW\Tests;
 
 use SMW\CacheFactory;
-use SMW\ApplicationFactory;
 
 /**
  * @covers \SMW\CacheFactory

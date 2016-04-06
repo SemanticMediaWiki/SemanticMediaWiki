@@ -2,11 +2,10 @@
 
 namespace SMW\Tests\System;
 
-use SMW\ApplicationFactory;
-
 use ResourceLoader;
-use ResourceLoaderModule;
 use ResourceLoaderContext;
+use ResourceLoaderModule;
+use SMW\ApplicationFactory;
 
 /**
  * @group semantic-mediawiki

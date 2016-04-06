@@ -3,7 +3,7 @@
 namespace SMW\Tests;
 
 use SMW\DIProperty;
-use SMW\DiWikiPage;
+use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\DIProperty
@@ -98,7 +98,7 @@ class DIPropertyTest extends DataItemTest {
 		$property->setInterwiki( 'bar' );
 
 		$this->assertEquals(
-			new DiWikiPage( 'Foo', SMW_NS_PROPERTY, 'bar' ),
+			new DIWikiPage( 'Foo', SMW_NS_PROPERTY, 'bar' ),
 			$property->getDiWikiPage()
 		);
 	}
@@ -113,7 +113,7 @@ class DIPropertyTest extends DataItemTest {
 		);
 
 		$this->assertEquals(
-			new DiWikiPage( 'Foo', SMW_NS_PROPERTY, 'bar' ),
+			new DIWikiPage( 'Foo', SMW_NS_PROPERTY, 'bar' ),
 			$property->getDiWikiPage()
 		);
 	}
@@ -128,7 +128,7 @@ class DIPropertyTest extends DataItemTest {
 		);
 
 		$this->assertEquals(
-			new DiWikiPage( 'Foo', SMW_NS_PROPERTY, 'bar' ),
+			new DIWikiPage( 'Foo', SMW_NS_PROPERTY, 'bar' ),
 			$property->getDiWikiPage()
 		);
 	}

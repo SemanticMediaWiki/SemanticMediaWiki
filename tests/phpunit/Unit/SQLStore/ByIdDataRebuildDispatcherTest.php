@@ -2,11 +2,9 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\SQLStore\ByIdDataRebuildDispatcher;
 use SMW\ApplicationFactory;
+use SMW\SQLStore\ByIdDataRebuildDispatcher;
 use SMW\SQLStore\SQLStore;
-use SMW\DIWikiPage;
-use SMW\SemanticData;
 
 /**
  * @covers \SMW\SQLStore\ByIdDataRebuildDispatcher

@@ -2,18 +2,12 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Utils\Validators\SemanticDataValidator;
-
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\SemanticData;
 use SMW\DataValueFactory;
-use SMW\Subobject;
+use SMW\DIWikiPage;
+use SMW\SemanticData;
 use SMW\SerializerFactory;
-
-use SMWDIBlob as DIBlob;
-
+use SMW\Subobject;
+use SMW\Tests\MwDBaseUnitTestCase;
 use Title;
 
 /**

@@ -3,7 +3,6 @@
 namespace SMW\Tests;
 
 use SMW\DIWikiPage;
-
 use SMWQueryResult as QueryResult;
 
 /**

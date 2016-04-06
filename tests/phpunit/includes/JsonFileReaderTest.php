@@ -2,9 +2,8 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Utils\UtilityFactory;
-
 use SMW\JsonFileReader;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @covers \SMW\JsonFileReader

@@ -3,7 +3,6 @@
 namespace SMW\Tests\Benchmark;
 
 use SMW\Tests\MwDBaseUnitTestCase;
-
 use Title;
 
 /**

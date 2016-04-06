@@ -2,20 +2,20 @@
 
 namespace SMW\Tests\SQLStore\QueryDependency;
 
-use SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver;
-use SMW\Query\Language\SomeProperty;
-use SMW\Query\Language\ValueDescription;
+use SMW\ApplicationFactory;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\ConceptDescription;
-use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
+use SMW\Query\Language\NamespaceDescription;
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ValueDescription;
 use SMW\Query\PrintRequest;
-use SMW\ApplicationFactory;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMWQuery as Query;
+use SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver;
 use SMWDIBlob as DIBlob;
+use SMWQuery as Query;
 
 /**
  * @covers \SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver

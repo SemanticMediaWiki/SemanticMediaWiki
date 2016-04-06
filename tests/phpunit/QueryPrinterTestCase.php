@@ -2,9 +2,8 @@
 
 namespace SMW\Test;
 
-use SMW\ResultPrinter;
-
 use ReflectionClass;
+use SMW\ResultPrinter;
 
 /**
  * Class contains methods to access data in connection with the QueryPrinter

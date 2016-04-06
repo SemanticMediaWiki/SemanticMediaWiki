@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\SQLStore\Lookup\CachedValueLookupStore;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\SemanticData;
+use SMW\SQLStore\Lookup\CachedValueLookupStore;
 
 /**
  * @covers \SMW\SQLStore\Lookup\CachedValueLookupStore

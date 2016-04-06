@@ -2,13 +2,10 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 
-use SMW\Tests\Utils\UtilityFactory;
-
+use SMW\Query\Language\NamespaceDescription;
 use SMW\SQLStore\QueryEngine\Interpreter\NamespaceDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
-
-use SMW\Query\Language\Disjunction;
-use SMW\Query\Language\NamespaceDescription;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Interpreter\NamespaceDescriptionInterpreter

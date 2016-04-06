@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Tests\Utils\Validators\ValidatorFactory;
-use SMW\Tests\Utils\Fixtures\FixturesFactory;
-use SMW\Tests\Utils\Runners\RunnerFactory;
-use SMW\Tests\Utils\Page\PageEditor;
 use SMW\JsonFileReader;
 use SMW\Tests\Utils\File\BulkFileProvider;
+use SMW\Tests\Utils\Fixtures\FixturesFactory;
+use SMW\Tests\Utils\Page\PageEditor;
+use SMW\Tests\Utils\Runners\RunnerFactory;
+use SMW\Tests\Utils\Validators\ValidatorFactory;
 
 /**
  * @license GNU GPL v2+

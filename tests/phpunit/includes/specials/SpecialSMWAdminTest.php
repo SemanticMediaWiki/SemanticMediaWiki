@@ -2,10 +2,9 @@
 
 namespace SMW\Test;
 
-use SMW\Tests\Utils\Mock\MockSuperUser;
-
-use SMWAdmin;
 use FauxRequest;
+use SMW\Tests\Utils\Mock\MockSuperUser;
+use SMWAdmin;
 use User;
 
 /**

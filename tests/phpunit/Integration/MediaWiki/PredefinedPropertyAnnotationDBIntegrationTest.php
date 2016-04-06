@@ -2,15 +2,12 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Utils\UtilityFactory;
-
+use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
-use SMW\ApplicationFactory;
-
+use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\Utils\UtilityFactory;
 use SMWDITime as DITime;
-
 use Title;
 
 /**

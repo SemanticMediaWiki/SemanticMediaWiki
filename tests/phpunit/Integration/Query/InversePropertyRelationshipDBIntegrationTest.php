@@ -2,28 +2,15 @@
 
 namespace SMW\Tests\Integration\Query;
 
+use SMW\DataValueFactory;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ValueDescription;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-
-use SMW\Query\Language\ThingDescription;
-use SMW\Query\Language\ValueDescription;
-use SMW\Query\Language\SomeProperty;
-
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\SemanticData;
-use SMW\DataValueFactory;
-use SMW\Subobject;
-
-use SMWQueryParser as QueryParser;
-use SMWDIBlob as DIBlob;
-use SMWDINumber as DINumber;
 use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
-use SMWDataValue as DataValue;
-use SMWDataItem as DataItem;
-use SMW\Query\PrintRequest as PrintRequest;
-use SMWPropertyValue as PropertyValue;
+use SMWQueryParser as QueryParser;
 
 /**
  * @see http://semantic-mediawiki.org/wiki/Inverse_Properties

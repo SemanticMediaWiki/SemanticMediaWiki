@@ -2,10 +2,10 @@
 
 namespace SMW\Tests;
 
-use SMW\PropertySpecificationChangeNotifier;
+use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\ApplicationFactory;
+use SMW\PropertySpecificationChangeNotifier;
 
 /**
  * @covers \SMW\PropertySpecificationChangeNotifier

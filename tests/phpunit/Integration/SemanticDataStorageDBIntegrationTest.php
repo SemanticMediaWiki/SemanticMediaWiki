@@ -2,18 +2,15 @@
 
 namespace SMW\Tests\Integration;
 
+use SMW\ApplicationFactory;
+use SMW\DataValueFactory;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\SemanticData;
+use SMW\Subobject;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-
-use SMW\ApplicationFactory;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\SemanticData;
-use SMW\DataValueFactory;
-use SMW\Subobject;
-
 use SMWDIBlob as DIBlob;
-
 use Title;
 
 /**

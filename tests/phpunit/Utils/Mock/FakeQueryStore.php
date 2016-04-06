@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Utils\Mock;
 
+use SMWQuery;
 use SMWQueryResult;
 use SMWSQLStore3;
-use SMWQuery;
 
 /**
  * FIXME One would wish to have a FakeStore but instead SMWSQLStore3 is used in

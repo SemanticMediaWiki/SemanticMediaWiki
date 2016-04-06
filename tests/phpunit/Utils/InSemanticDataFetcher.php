@@ -2,10 +2,9 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Store;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
-
+use SMW\Store;
 use SMWRequestOptions as RequestOptions;
 
 /**

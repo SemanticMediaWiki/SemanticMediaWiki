@@ -2,27 +2,22 @@
 
 namespace SMW\Tests\Utils\Fixtures;
 
-use SMW\Tests\Utils\UtilityFactory;
+use RuntimeException;
+use SMW\Store;
+use SMW\Tests\Utils\Fixtures\Facts\BerlinFactsheet;
+use SMW\Tests\Utils\Fixtures\Facts\FranceFactsheet;
+use SMW\Tests\Utils\Fixtures\Facts\ParisFactsheet;
 use SMW\Tests\Utils\Fixtures\Properties\AreaProperty;
-use SMW\Tests\Utils\Fixtures\Properties\PopulationDensityProperty;
-use SMW\Tests\Utils\Fixtures\Properties\CapitalOfProperty;
-use SMW\Tests\Utils\Fixtures\Properties\StatusProperty;
-use SMW\Tests\Utils\Fixtures\Properties\PopulationProperty;
+use SMW\Tests\Utils\Fixtures\Properties\BookRecordProperty;
+use SMW\Tests\Utils\Fixtures\Properties\CityCategory;
 use SMW\Tests\Utils\Fixtures\Properties\FoundedProperty;
 use SMW\Tests\Utils\Fixtures\Properties\LocatedInProperty;
-use SMW\Tests\Utils\Fixtures\Properties\CityCategory;
-use SMW\Tests\Utils\Fixtures\Properties\BookRecordProperty;
-use SMW\Tests\Utils\Fixtures\Properties\YearProperty;
+use SMW\Tests\Utils\Fixtures\Properties\PopulationDensityProperty;
+use SMW\Tests\Utils\Fixtures\Properties\PopulationProperty;
+use SMW\Tests\Utils\Fixtures\Properties\StatusProperty;
 use SMW\Tests\Utils\Fixtures\Properties\TitleProperty;
 use SMW\Tests\Utils\Fixtures\Properties\UrlProperty;
-
-use SMW\Tests\Utils\Fixtures\Facts\BerlinFactsheet;
-use SMW\Tests\Utils\Fixtures\Facts\ParisFactsheet;
-use SMW\Tests\Utils\Fixtures\Facts\FranceFactsheet;
-
-use SMW\Store;
-
-use RuntimeException;
+use SMW\Tests\Utils\Fixtures\Properties\YearProperty;
 
 /**
  * @license GNU GPL v2+

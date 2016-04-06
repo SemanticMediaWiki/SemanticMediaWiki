@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Integration\ByJsonScript;
 
+use SMW\ApplicationFactory;
+use SMW\DataValueFactory;
+use SMW\EventHandler;
 use SMW\Tests\ByJsonTestCaseProvider;
 use SMW\Tests\JsonTestCaseFileHandler;
 use SMW\Tests\Utils\UtilityFactory;
-use SMW\EventHandler;
-use SMW\ApplicationFactory;
-use SMW\DataValueFactory;
 
 /**
  * @group semantic-mediawiki

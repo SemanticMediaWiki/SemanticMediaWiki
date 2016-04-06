@@ -2,10 +2,9 @@
 
 namespace SMW\Tests\Utils\File;
 
-use SMW\Tests\Utils\Mock\MockSuperUser;
-
-use UploadBase;
 use RuntimeException;
+use SMW\Tests\Utils\Mock\MockSuperUser;
+use UploadBase;
 
 /**
  * @license GNU GPL v2+

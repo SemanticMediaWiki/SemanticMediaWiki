@@ -2,12 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
-use SMW\Tests\Utils\MwApiFactory;
-
-use SMW\StoreFactory;
-use SMW\ApplicationFactory;
-
 use ReflectionClass;
+use SMW\ApplicationFactory;
+use SMW\Tests\Utils\MwApiFactory;
 
 /**
  * @covers \SMW\MediaWiki\Api\Query

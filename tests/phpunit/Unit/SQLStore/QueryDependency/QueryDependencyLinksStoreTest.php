@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\SQLStore\QueryDependency;
 
-use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
 use SMW\ApplicationFactory;
-use SMW\SQLStore\SQLStore;
 use SMW\DIWikiPage;
+use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SQLStore\QueryDependency\QueryDependencyLinksStore

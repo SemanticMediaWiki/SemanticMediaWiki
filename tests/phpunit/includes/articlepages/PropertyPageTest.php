@@ -3,7 +3,6 @@
 namespace SMW\Test;
 
 use SMWPropertyPage as PropertyPage;
-
 use Title;
 
 /**

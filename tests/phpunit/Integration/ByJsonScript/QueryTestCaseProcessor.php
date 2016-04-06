@@ -3,8 +3,8 @@
 namespace SMW\Tests\Integration\ByJsonScript;
 
 use SMW\Store;
-use SMWQueryParser as QueryParser;
 use SMWQuery as Query;
+use SMWQueryParser as QueryParser;
 use Title;
 
 /**

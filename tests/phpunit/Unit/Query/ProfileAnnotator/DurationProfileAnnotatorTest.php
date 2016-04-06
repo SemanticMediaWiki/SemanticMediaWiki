@@ -2,13 +2,12 @@
 
 namespace SMW\Tests\Query\ProfileAnnotator;
 
-use SMW\Tests\Utils\UtilityFactory;
-
+use SMW\DIWikiPage;
 use SMW\Query\ProfileAnnotator\DurationProfileAnnotator;
 use SMW\Query\ProfileAnnotator\NullProfileAnnotator;
-use SMW\DIWikiPage;
-use SMWDIContainer as DIContainer;
+use SMW\Tests\Utils\UtilityFactory;
 use SMWContainerSemanticData as ContainerSemanticData;
+use SMWDIContainer as DIContainer;
 
 /**
  * @covers \SMW\Query\ProfileAnnotator\DurationProfileAnnotator

@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\Utils\Runners;
 
-use SMW\DBConnectionProvider;
-use SMW\Tests\Utils\MwDBConnectionProvider;
-use SMW\Tests\TestEnvironment;
 use Job;
 use JobQueueGroup;
+use SMW\DBConnectionProvider;
+use SMW\Tests\TestEnvironment;
+use SMW\Tests\Utils\MwDBConnectionProvider;
 
 /**
  * Partly copied from the MW 1.19 RunJobs maintenance script

@@ -2,10 +2,10 @@
 
 namespace SMW\Test\MediaWiki\Hooks;
 
+use LinksUpdate;
+use ParserOutput;
 use SMW\MediaWiki\Hooks\LinksUpdateConstructed;
 use SMW\Tests\TestEnvironment;
-use ParserOutput;
-use LinksUpdate;
 use Title;
 
 /**

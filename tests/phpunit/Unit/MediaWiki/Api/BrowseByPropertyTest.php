@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\MediaWiki\Api\BrowseByProperty;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
+use SMW\MediaWiki\Api\BrowseByProperty;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @covers \SMW\MediaWiki\Api\BrowseByProperty

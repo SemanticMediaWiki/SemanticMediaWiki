@@ -2,19 +2,16 @@
 
 namespace SMW\Tests\Export;
 
+use SMW\DataValueFactory;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\Exporter\Escaper;
+use SMW\Subobject;
+use SMW\Tests\Utils\Fixtures\FixturesProvider;
 use SMW\Tests\Utils\SemanticDataFactory;
 use SMW\Tests\Utils\Validators\ExportDataValidator;
-
-use SMW\Tests\Utils\Fixtures\FixturesProvider;
-
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\DataValueFactory;
-use SMW\Subobject;
-use SMW\Exporter\Escaper;
-
-use SMWExporter as Exporter;
 use SMWExpNsResource as ExpNsResource;
+use SMWExporter as Exporter;
 use SMWExpResource as ExpResource;
 
 /**

@@ -2,10 +2,9 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\SQLStore\QueryEngine\Interpreter\ThingDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
-use SMW\Query\Language\ThingDescription;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Interpreter\ThingDescriptionInterpreter

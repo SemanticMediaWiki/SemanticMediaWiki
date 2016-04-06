@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils\Fixtures\Properties;
 
-use SMW\DIProperty;
 use SMW\DataValueFactory;
+use SMW\DIProperty;
 use SMW\SemanticData;
 
 /**

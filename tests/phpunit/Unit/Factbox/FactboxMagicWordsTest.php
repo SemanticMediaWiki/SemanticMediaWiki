@@ -2,13 +2,12 @@
 
 namespace SMW\Tests\Factbox;
 
+use ParserOutput;
+use ReflectionClass;
+use SMW\ApplicationFactory;
+use SMW\Factbox\Factbox;
 use SMW\ParserData;
 use SMW\Settings;
-use SMW\Factbox\Factbox;
-use SMW\ApplicationFactory;
-
-use ReflectionClass;
-use ParserOutput;
 use Title;
 
 /**

@@ -2,16 +2,13 @@
 
 namespace SMW\Tests\Benchmark;
 
-use SMW\Tests\MwDBaseUnitTestCase;
-
 use SMW\DIProperty;
-use SMWPropertyValue as PropertyValue;
 use SMW\Query\PrintRequest as PrintRequest;
-
-use SMWQueryParser as QueryParser;
+use SMW\Tests\MwDBaseUnitTestCase;
+use SMWPropertyValue as PropertyValue;
 use SMWQuery as Query;
+use SMWQueryParser as QueryParser;
 use SMWQueryResult as QueryResult;
-
 use Title;
 
 /**

@@ -2,9 +2,9 @@
 
 namespace SMW\Tests;
 
-use SMW\PropertyHierarchyLookup;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\PropertyHierarchyLookup;
 
 /**
  * @covers \SMW\PropertyHierarchyLookup

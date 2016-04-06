@@ -2,14 +2,11 @@
 
 namespace SMW\Tests\Utils\Validators;
 
-use SMW\DataValueFactory;
-use SMW\SemanticData;
-use SMW\DIProperty;
-
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
-
 use RuntimeException;
+use SMW\DataValueFactory;
+use SMW\DIProperty;
+use SMW\SemanticData;
+use SMWDataItem as DataItem;
 
 /**
  *

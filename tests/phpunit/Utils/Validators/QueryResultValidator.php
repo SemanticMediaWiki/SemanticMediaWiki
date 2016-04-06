@@ -2,14 +2,12 @@
 
 namespace SMW\Tests\Utils\Validators;
 
-use SMW\DIWikiPage;
-
-use SMWDataValue as DataValue;
-use SMWDataItem as DataItem;
-use SMWQueryResult as QueryResult;
-
 use Closure;
 use RuntimeException;
+use SMW\DIWikiPage;
+use SMWDataItem as DataItem;
+use SMWDataValue as DataValue;
+use SMWQueryResult as QueryResult;
 
 /**
  * @license GNU GPL v2+

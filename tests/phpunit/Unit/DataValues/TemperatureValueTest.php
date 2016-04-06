@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\DataValues;
 
-use SMW\DataValues\TemperatureValue;
 use SMW\ApplicationFactory;
+use SMW\DataValues\TemperatureValue;
 use SMW\DIProperty;
 
 /**

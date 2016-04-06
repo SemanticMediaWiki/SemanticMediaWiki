@@ -2,13 +2,12 @@
 
 namespace SMW\Tests\PropertyAnnotator;
 
-use SMW\Tests\Utils\UtilityFactory;
-
-use SMW\PropertyAnnotator\MandatoryTypePropertyAnnotator;
-use SMW\PropertyAnnotator\NullPropertyAnnotator;
+use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\DataValueFactory;
+use SMW\PropertyAnnotator\MandatoryTypePropertyAnnotator;
+use SMW\PropertyAnnotator\NullPropertyAnnotator;
+use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
 use SMWDIUri as DIUri;
 

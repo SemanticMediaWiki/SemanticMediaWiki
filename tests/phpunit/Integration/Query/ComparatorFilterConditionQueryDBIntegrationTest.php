@@ -2,24 +2,17 @@
 
 namespace SMW\Tests\Integration\Query;
 
+use SMW\DIProperty;
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ValueDescription;
+use SMW\SPARQLStore\SPARQLStore;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-
-use SMW\SPARQLStore\SPARQLStore;
-
-use SMW\Query\Language\ValueDescription;
-use SMW\Query\Language\SomeProperty;
-use SMW\Query\Language\ThingDescription;
-
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-
-use SMWDINumber as DINumber;
+use SMwConjunction as Conjunction;
 use SMWDIBlob as DIBlob;
+use SMWDINumber as DINumber;
 use SMWDITime as DITime;
 use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
-use SMwConjunction as Conjunction;
 
 /**
  * @group SMW

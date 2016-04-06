@@ -2,13 +2,12 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Tests\Utils\Mock\MockSuperUser;
-
-use ApiResult;
 use ApiMain;
-use RequestContext;
-use WebRequest;
+use ApiResult;
 use FauxRequest;
+use RequestContext;
+use SMW\Tests\Utils\Mock\MockSuperUser;
+use WebRequest;
 
 /**
  * Class contains Api related request methods

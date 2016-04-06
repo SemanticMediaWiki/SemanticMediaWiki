@@ -2,18 +2,12 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use SMW\Tests\Utils\Validators\SemanticDataValidator;
-use SMW\Tests\Utils\ParserFactory;
-use SMW\Tests\Utils\PageCreator;
-use SMW\Tests\MwDBaseUnitTestCase;
-
-use SMW\ContentParser;
-use SMW\ParserData;
-use SMW\DIWikiPage;
-
-use Title;
 use LinksUpdate;
 use ParserOutput;
+use SMW\DIWikiPage;
+use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\Utils\PageCreator;
+use Title;
 
 /**
  *

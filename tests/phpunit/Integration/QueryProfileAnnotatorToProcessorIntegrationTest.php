@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\ApplicationFactory;
-use SMW\Localizer;
 use SMW\DIWikiPage;
+use SMW\Localizer;
+use SMW\Tests\Utils\UtilityFactory;
 use SMWQueryProcessor;
 
 /**

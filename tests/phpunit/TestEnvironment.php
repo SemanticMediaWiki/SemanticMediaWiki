@@ -2,10 +2,10 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Store;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @license GNU GPL v2+

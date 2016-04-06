@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Exporter;
 
+use SMW\DIWikiPage;
 use SMW\Exporter\ConceptToExpDataMapper;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Query\DescriptionFactory;
-use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\Exporter\ConceptToExpDataMapper

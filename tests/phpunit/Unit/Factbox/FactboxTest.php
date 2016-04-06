@@ -2,21 +2,19 @@
 
 namespace SMW\Tests\Factbox;
 
-use SMW\Tests\Utils\UtilityFactory;
-use SMW\Tests\Utils\Mock\MockObjectBuilder;
-use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
-use SMW\Tests\Utils\Mock\MediaWikiMockObjectRepository;
-
+use ParserOutput;
+use ReflectionClass;
 use SMW\ApplicationFactory;
-use SMW\TableFormatter;
-use SMW\ParserData;
-use SMW\Factbox\Factbox;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Factbox\Factbox;
+use SMW\ParserData;
 use SMW\SemanticData;
-
-use ReflectionClass;
-use ParserOutput;
+use SMW\TableFormatter;
+use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
+use SMW\Tests\Utils\Mock\MediaWikiMockObjectRepository;
+use SMW\Tests\Utils\Mock\MockObjectBuilder;
+use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**

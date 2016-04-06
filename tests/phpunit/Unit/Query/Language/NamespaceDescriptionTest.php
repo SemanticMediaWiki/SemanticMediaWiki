@@ -2,11 +2,9 @@
 
 namespace SMW\Tests\Query\Language;
 
+use SMW\Localizer;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\ThingDescription;
-
-use SMW\DIWikiPage;
-use SMW\Localizer;
 
 /**
  * @covers \SMW\Query\Language\NamespaceDescription

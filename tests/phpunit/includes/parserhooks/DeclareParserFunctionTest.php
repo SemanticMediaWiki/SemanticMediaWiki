@@ -2,13 +2,11 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Utils\UtilityFactory;
-
-use SMW\DeclareParserFunction;
-use SMW\ApplicationFactory;
-
-use Title;
 use ParserOutput;
+use SMW\ApplicationFactory;
+use SMW\DeclareParserFunction;
+use SMW\Tests\Utils\UtilityFactory;
+use Title;
 
 /**
  * @covers \SMW\DeclareParserFunction

@@ -2,8 +2,7 @@
 
 namespace SMW\Tests\SQLStore\Writer;
 
-use \SMWSQLStore3Writers;
-
+use SMWSQLStore3Writers;
 use Title;
 
 /**

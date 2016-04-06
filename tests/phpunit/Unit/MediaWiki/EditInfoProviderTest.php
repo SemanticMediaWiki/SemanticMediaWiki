@@ -2,10 +2,8 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use SMW\MediaWiki\EditInfoProvider;
-use SMW\Tests\Utils\Mock\MockTitle;
-
 use ParserOutput;
+use SMW\MediaWiki\EditInfoProvider;
 
 /**
  * @covers \SMW\MediaWiki\EditInfoProvider

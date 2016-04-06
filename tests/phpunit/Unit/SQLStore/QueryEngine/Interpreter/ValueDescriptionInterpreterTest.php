@@ -2,14 +2,11 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 
-use SMW\Tests\Utils\UtilityFactory;
-
+use SMW\DIWikiPage;
+use SMW\Query\Language\ValueDescription;
 use SMW\SQLStore\QueryEngine\Interpreter\ValueDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
-
-use SMW\Query\Language\ValueDescription;
-
-use SMW\DIWikiPage;
+use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
 
 /**

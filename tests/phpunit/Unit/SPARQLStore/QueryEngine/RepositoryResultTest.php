@@ -3,7 +3,6 @@
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
-
 use SMWExpLiteral as ExpLiteral;
 
 /**

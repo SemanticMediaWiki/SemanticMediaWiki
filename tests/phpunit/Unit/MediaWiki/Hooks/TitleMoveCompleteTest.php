@@ -2,12 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Tests\Utils\Mock\MockTitle;
-use SMW\Tests\Utils\Mock\MockSuperUser;
-
-use SMW\MediaWiki\Hooks\TitleMoveComplete;
 use SMW\ApplicationFactory;
+use SMW\MediaWiki\Hooks\TitleMoveComplete;
 use SMW\Settings;
+use SMW\Tests\Utils\Mock\MockSuperUser;
+use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\TitleMoveComplete

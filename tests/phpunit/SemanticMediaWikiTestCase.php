@@ -2,29 +2,21 @@
 
 namespace SMW\Test;
 
-use SMW\Tests\Utils\Mock\MockSuperUser;
-use SMW\Tests\Utils\Mock\MockObjectBuilder;
+use FauxRequest;
+use Language;
+use ReflectionClass;
+use RequestContext;
+use SMW\DependencyContainer;
+use SMW\DIWikiPage;
+use SMW\Settings;
+use SMW\SimpleDependencyBuilder;
+use SMW\StoreFactory;
 use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
 use SMW\Tests\Utils\Mock\MediaWikiMockObjectRepository;
-
-use SMW\SimpleDependencyBuilder;
-use SMW\DependencyContainer;
-use SMW\DataValueFactory;
-use SMW\StoreFactory;
-use SMW\SemanticData;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\Settings;
-
-use RequestContext;
-use FauxRequest;
-use WebRequest;
-use Language;
+use SMW\Tests\Utils\Mock\MockObjectBuilder;
+use SMW\Tests\Utils\Mock\MockSuperUser;
 use Title;
-
-use ReflectionClass;
-
-use SMWDataItem;
+use WebRequest;
 
 /**
  * @codeCoverageIgnore

@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\DBConnectionProvider;
 use DatabaseBase;
+use SMW\DBConnectionProvider;
 
 /**
  *

@@ -2,10 +2,9 @@
 
 namespace SMW\Tests;
 
-use SMW\HashBuilder;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-
+use SMW\DIWikiPage;
+use SMW\HashBuilder;
 use Title;
 
 /**

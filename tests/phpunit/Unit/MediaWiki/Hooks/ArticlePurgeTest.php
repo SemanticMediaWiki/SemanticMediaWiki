@@ -2,13 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Tests\Utils\Mock\MockTitle;
-
+use SMW\ApplicationFactory;
+use SMW\Factbox\FactboxCache;
 use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\Settings;
-use SMW\Factbox\FactboxCache;
-use SMW\ApplicationFactory;
-
+use SMW\Tests\Utils\Mock\MockTitle;
 use WikiPage;
 
 /**
