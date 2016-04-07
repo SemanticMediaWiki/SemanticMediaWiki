@@ -101,21 +101,6 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 
 	public function wikiPageDataProvider() {
 
-		$revision = $this->getMockBuilder( '\Revision' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$revision->expects( $this->any() )
-			->method( 'getRawText' )
-			->will( $this->returnValue( 'Foo' ) );
-
-		$revision->expects( $this->any() )
-			->method( 'getContent' )
-			->will( $this->returnValueMap( array(
-				array( \Revision::RAW, null, 'Foo' ),
-				array( \Revision::FOR_PUBLIC, null, $this->newContent() ),
-			) ) );
-
 		#0 No parserOutput object
 		$editInfo = (object)array();
 		$editInfo->output = null;
@@ -136,7 +121,7 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'editInfo' => $editInfo,
 				'wikiPage' => $wikiPage,
-				'revision' => $revision,
+				'revision' => $this->newRevisionStub(),
 				'settings' => array()
 			),
 			array()
@@ -170,7 +155,7 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'editInfo' => $editInfo,
 				'wikiPage' => $wikiPage,
-				'revision' => $revision,
+				'revision' => $this->newRevisionStub(),
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MODIFICATION_DATE ),
 					'smwgDVFeatures' => ''
@@ -186,7 +171,27 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 		return $provider;
 	}
 
-	private function newContent() {
+	private function newRevisionStub() {
+
+		$revision = $this->getMockBuilder( '\Revision' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$revision->expects( $this->any() )
+			->method( 'getRawText' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$revision->expects( $this->any() )
+			->method( 'getContent' )
+			->will( $this->returnValueMap( array(
+				array( \Revision::RAW, null, 'Foo' ),
+				array( \Revision::FOR_PUBLIC, null, $this->newContentStub() ),
+			) ) );
+
+		return $revision;
+	}
+
+	private function newContentStub() {
 
 		if ( !class_exists( 'ContentHandler' ) ) {
 			return null;
@@ -210,5 +215,4 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		return $content;
 	}
-
 }

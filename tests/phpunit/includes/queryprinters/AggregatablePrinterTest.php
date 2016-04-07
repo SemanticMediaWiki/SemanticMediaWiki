@@ -4,8 +4,6 @@ namespace SMW\Test;
 
 use ReflectionClass;
 use SMW\AggregatablePrinter;
-use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
-use SMW\Tests\Utils\Mock\MockObjectBuilder;
 use SMWDataItem;
 use SMWDINumber;
 use SMWQueryResult;
@@ -49,15 +47,27 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 	}
 
 	/**
-	 * @test AggregatablePrinter::getResultText
 	 * @dataProvider errorMessageProvider
 	 *
 	 * @since 1.9
 	 */
 	public function testGetResultTextErrorMessage( $setup, $expected ) {
 
+		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getErrors', 'getNext', 'addErrors' ) )
+			->getMock();
+
+		$queryResult->expects( $this->any() )
+			->method( 'getNext' )
+			->will( $this->returnValue( array() ) );
+
+		$queryResult->expects( $this->any() )
+			->method( 'getErrors' )
+			->will( $this->returnValue( array( $expected['message'] ) ) );
+
 		$instance    = $this->newInstance( $setup['parameters'] );
-		$queryResult = $setup['queryResult'];
+	//	$queryResult = $setup['queryResult'];
 
 		$reflection = new ReflectionClass( '\SMW\AggregatablePrinter' );
 		$method = $reflection->getMethod( 'getResultText' );
@@ -111,7 +121,6 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 	}
 
 	/**
-	 * @test AggregatablePrinter::getNumericResults
 	 * @dataProvider numberDataProvider
 	 *
 	 * @since 1.9
@@ -145,21 +154,14 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 	 */
 	public function errorMessageProvider() {
 
-		$mockBuilder = new MockObjectBuilder();
-		$mockBuilder->registerRepository( new CoreMockObjectRepository() );
-
 		$message = wfMessage( 'smw-qp-aggregatable-empty-data' )->inContentLanguage()->text();
 
 		$provider = array();
 
-		$queryResult = $mockBuilder->newObject( 'QueryResult', array(
-			'getErrors'  => array( $message )
-		) );
-
 		$provider[] = array(
 			array(
 				'parameters'  => array( 'distribution' => true ),
-				'queryResult' => $queryResult
+		//		'queryResult' => $queryResult
 				),
 			array(
 				'message'     => $message
@@ -170,7 +172,7 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 		$provider[] = array(
 			array(
 				'parameters'  => array( 'distribution' => false ),
-				'queryResult' => $queryResult
+			//	'queryResult' => $queryResult
 				),
 			array(
 				'message'     => $message
@@ -236,48 +238,96 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 	 */
 	private function buildMockQueryResult( $setup ) {
 
-		$mockBuilder = new MockObjectBuilder();
-		$mockBuilder->registerRepository( new CoreMockObjectRepository() );
-
 		$printRequests = array();
-		$resultArray   = array();
+		$resultArrays   = array();
 
 		foreach ( $setup as $value ) {
 
-			$printRequest = $mockBuilder->newObject( 'PrintRequest', array(
-				'getText'  => $value['printRequest'],
-				'getLabel' => $value['printRequest']
-			) );
+			$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
+				->disableOriginalConstructor()
+				->getMock();
+
+			$printRequest->expects( $this->any() )
+				->method( 'getText' )
+				->will( $this->returnValue( $value['printRequest'] ) );
+
+			$printRequest->expects( $this->any() )
+				->method( 'getLabel' )
+				->will( $this->returnValue( $value['printRequest'] ) );
 
 			$printRequests[] = $printRequest;
 
-			$dataItem = $mockBuilder->newObject( 'DataItem', array(
-				'getDIType' => SMWDataItem::TYPE_NUMBER,
-				'getNumber' => $value['number']
-			) );
+			$dataItem = $this->getMockBuilder( '\SMWDINumber' )
+				->disableOriginalConstructor()
+				->getMock();
 
-			$dataValue = $mockBuilder->newObject( 'DataValue', array(
-				'DataValueType'    => 'SMWNumberValue',
-				'getTypeID'        => '_num',
-				'getShortWikiText' => $value['dataValue'],
-				'getDataItem'      => $dataItem
-			) );
+			$dataItem->expects( $this->any() )
+				->method( 'getDIType' )
+				->will( $this->returnValue( SMWDataItem::TYPE_NUMBER ) );
 
-			$resultArray[] = $mockBuilder->newObject( 'ResultArray', array(
-				'getText'          => $value['printRequest'],
-				'getPrintRequest'  => $printRequest,
-				'getNextDataValue' => $dataValue,
-				'getNextDataItem'  => $dataItem
-			) );
+			$dataItem->expects( $this->any() )
+				->method( 'getNumber' )
+				->will( $this->returnValue( $value['number'] ) );
 
+			$dataValue = $this->getMockBuilder( '\SMWNumberValue' )
+				->disableOriginalConstructor()
+				->getMock();
+
+			$dataValue->expects( $this->any() )
+				->method( 'getTypeID' )
+				->will( $this->returnValue( '_num' ) );
+
+			$dataValue->expects( $this->any() )
+				->method( 'getShortWikiText' )
+				->will( $this->returnValue( $value['dataValue'] ) );
+
+			$dataValue->expects( $this->any() )
+				->method( 'getDataItem' )
+				->will( $this->returnValue( $dataItem ) );
+
+			$resultArray = $this->getMockBuilder( '\SMWResultArray' )
+				->disableOriginalConstructor()
+				->setMethods( array( 'getText', 'getPrintRequest', 'getNextDataValue', 'getNextDataItem' ) )
+				->getMock();
+
+			$resultArray->expects( $this->any() )
+				->method( 'getText' )
+				->will( $this->returnValue( $value['printRequest'] ) );
+
+			$resultArray->expects( $this->any() )
+				->method( 'getPrintRequest' )
+				->will( $this->returnValue( $printRequest ) );
+
+			$resultArray->expects( $this->any() )
+				->method( 'getNextDataValue' )
+				->will( $this->onConsecutiveCalls( $dataValue, false ) );
+
+			$resultArray->expects( $this->any() )
+				->method( 'getNextDataItem' )
+				->will( $this->onConsecutiveCalls( $dataItem, false ) );
+
+			$resultArrays[] = $resultArray;
 		}
 
-		$queryResult = $mockBuilder->newObject( 'QueryResult', array(
-			'getPrintRequests'  => $printRequests,
-			'getNext'           => $resultArray,
-			'getLink'           => new \SMWInfolink( true, 'Lala', 'Lula' ),
-			'hasFurtherResults' => true
-		) );
+		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->any() )
+			->method( 'getPrintRequests' )
+			->will( $this->returnValue( $printRequests ) );
+
+		$queryResult->expects( $this->any() )
+			->method( 'getNext' )
+			->will( $this->onConsecutiveCalls( $resultArrays, false ) );
+
+		$queryResult->expects( $this->any() )
+			->method( 'getLink' )
+			->will( $this->returnValue( new \SMWInfolink( true, 'Lala', 'Lula' ) ) );
+
+		$queryResult->expects( $this->any() )
+			->method( 'hasFurtherResults' )
+			->will( $this->returnValue( true ) );
 
 		return $queryResult;
 	}
