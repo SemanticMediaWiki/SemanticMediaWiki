@@ -4,17 +4,13 @@ namespace SMW\Tests\Factbox;
 
 use ParserOutput;
 use ReflectionClass;
-use SMW\ApplicationFactory;
+use SMW\Tests\TestEnvironment;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Factbox\Factbox;
 use SMW\ParserData;
 use SMW\SemanticData;
 use SMW\TableFormatter;
-use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
-use SMW\Tests\Utils\Mock\MediaWikiMockObjectRepository;
-use SMW\Tests\Utils\Mock\MockObjectBuilder;
-use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**
@@ -29,26 +25,19 @@ use Title;
 class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 	private $stringValidator;
-	private $applicationFactory;
-	private $mockbuilder;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
-		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
+		$this->testEnvironment = new TestEnvironment();
+		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
 
-		// This needs to be fixed but not now
-		$this->mockbuilder = new MockObjectBuilder();
-		$this->mockbuilder->registerRepository( new CoreMockObjectRepository() );
-		$this->mockbuilder->registerRepository( new MediaWikiMockObjectRepository() );
-
-		$this->applicationFactory->getSettings()->set( 'smwgShowFactbox', SMW_FACTBOX_NONEMPTY );
+		$this->testEnvironment->addConfiguration( 'smwgShowFactbox', SMW_FACTBOX_NONEMPTY );
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -129,20 +118,33 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
 
-		$this->applicationFactory->getSettings()->set('smwgShowFactbox', SMW_FACTBOX_NONEMPTY );
+		$this->testEnvironment->addConfiguration( 'smwgShowFactbox', SMW_FACTBOX_NONEMPTY );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$mockSemanticData = $this->mockbuilder->newObject( 'SemanticData', array(
-			'getSubject'           => $subject,
-			'hasVisibleProperties' => true,
-			'getPropertyValues'    => array( $subject ),
-			'getProperties'        => array( DIProperty::newFromUserLabel( 'SomeFancyProperty' ) )
-		) );
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$parserOutput = $this->setupParserOutput( $mockSemanticData );
+		$semanticData->expects( $this->any() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( $subject ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'hasVisibleProperties' )
+			->will( $this->returnValue( true ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( array( $subject ) ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'getProperties' )
+			->will( $this->returnValue( array( DIProperty::newFromUserLabel( 'SomeFancyProperty' ) ) ) );
+
+		$parserOutput = $this->setupParserOutput( $semanticData );
 
 		$message = $this->getMockBuilder( '\Message' )
 			->disableOriginalConstructor()
@@ -253,20 +255,41 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetContentDataSimulation( $setup, $expected ) {
 
-		$mockSemanticData = $this->mockbuilder->newObject( 'SemanticData', array(
-			'hasVisibleSpecialProperties' => $setup['hasVisibleSpecialProperties'],
-			'hasVisibleProperties'        => $setup['hasVisibleProperties'],
-			'isEmpty'                     => $setup['isEmpty']
-		) );
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$mockStore = $this->mockbuilder->newObject( 'Store', array(
-			'getSemanticData' => $mockSemanticData,
-		) );
+		$semanticData->expects( $this->any() )
+			->method( 'hasVisibleSpecialProperties' )
+			->will( $this->returnValue( $setup['hasVisibleSpecialProperties'] ) );
 
-		$mockParserData = $this->mockbuilder->newObject( 'ParserData', array(
-			'getSubject'  => $this->mockbuilder->newObject( 'DIWikiPage' ),
-			'getSemanticData'     => null
-		) );
+		$semanticData->expects( $this->any() )
+			->method( 'hasVisibleProperties' )
+			->will( $this->returnValue( $setup['hasVisibleProperties'] ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'isEmpty' )
+			->will( $this->returnValue( $setup['isEmpty'] ) );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $semanticData ) );
+
+		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parserData->expects( $this->any() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+
+		$parserData->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( null ) );
 
 		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
 			->disableOriginalConstructor()
@@ -277,8 +300,8 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 		$factbox = $this->getMock( '\SMW\Factbox\Factbox',
 			array( 'createTable' ),
 			array(
-				$mockStore,
-				$mockParserData,
+				$store,
+				$parserData,
 				$messageBuilder
 			)
 		);
@@ -448,15 +471,32 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getMessage' )
 			->will( $this->returnValue( $message ) );
 
-		$mockDIProperty = $this->mockbuilder->newObject( 'DIProperty', array(
-			'isUserDefined' => $test['isUserDefined'],
-			'isShown'       => $test['isShown'],
-			'getLabel'      => 'Quuey'
-		) );
+		$property = $this->getMockBuilder( '\SMW\DIProperty' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$parserData->setSemanticData( new SemanticData( DIWikiPage::newFromTitle( $title ) ) );
+		$property->expects( $this->any() )
+			->method( 'isUserDefined' )
+			->will( $this->returnValue( $test['isUserDefined'] ) );
+
+		$property->expects( $this->any() )
+			->method( 'isShown' )
+			->will( $this->returnValue( $test['isShown'] ) );
+
+		$property->expects( $this->any() )
+			->method( 'getLabel' )
+			->will( $this->returnValue( 'Quuey' ) );
+
+		$property->expects( $this->any() )
+			->method( 'getDIType' )
+			->will( $this->returnValue( \SMWDataItem::TYPE_PROPERTY ) );
+
+		$parserData->setSemanticData(
+			new SemanticData( DIWikiPage::newFromTitle( $title ) )
+		);
+
 		$parserData->getSemanticData()->addPropertyObjectValue(
-			$mockDIProperty,
+			$property,
 			DIWikiPage::newFromTitle( $title )
 		);
 

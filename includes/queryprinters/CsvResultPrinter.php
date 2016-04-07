@@ -149,11 +149,3 @@ class CsvResultPrinter extends FileExportPrinter {
 		return $params;
 	}
 }
-
-/**
- * SMWCsvResultPrinter
- * @codeCoverageIgnore
- *
- * @deprecated since SMW 1.9
- */
-class_alias( 'SMW\CsvResultPrinter', 'SMWCsvResultPrinter' );

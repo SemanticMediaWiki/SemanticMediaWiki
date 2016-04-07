@@ -73,29 +73,13 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 			'smwgToolboxBrowseLink'           => true
 		);
 
-		$message = $this->getMockBuilder( '\Message' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$skin = $this->getMockBuilder( '\Skin' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$skin->expects( $this->atLeastOnce() )
-			->method( 'getTitle' )
-			->will( $this->returnValue( Title::newFromText( __METHOD__ ) ) );
-
-		$skin->expects( $this->any() )
-			->method( 'msg' )
-			->will( $this->returnValue( $message ) );
-
 		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$skinTemplate->expects( $this->atLeastOnce() )
 			->method( 'getSkin' )
-			->will( $this->returnValue( $skin ) );
+			->will( $this->returnValue( $this->newSkinStub() ) );
 
 		$skinTemplate->data['isarticle'] = true;
 
@@ -111,7 +95,7 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 
 		$skinTemplate->expects( $this->atLeastOnce() )
 			->method( 'getSkin' )
-			->will( $this->returnValue( $skin ) );
+			->will( $this->returnValue( $this->newSkinStub() ) );
 
 		$skinTemplate->data['isarticle'] = false;
 
@@ -127,7 +111,7 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 
 		$skinTemplate->expects( $this->atLeastOnce() )
 			->method( 'getSkin' )
-			->will( $this->returnValue( $skin ) );
+			->will( $this->returnValue( $this->newSkinStub() ) );
 
 		$skinTemplate->data['isarticle'] = true;
 
@@ -142,6 +126,16 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		#3 smwgNamespacesWithSemanticLinks = false
+		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$skinTemplate->expects( $this->atLeastOnce() )
+			->method( 'getSkin' )
+			->will( $this->returnValue( $this->newSkinStub() ) );
+
+		$skinTemplate->data['isarticle'] = true;
+
 		$settings = array(
 			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => false ),
 			'smwgToolboxBrowseLink'           => true
@@ -188,6 +182,27 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		return $provider;
+	}
+
+	private function newSkinStub() {
+
+		$message = $this->getMockBuilder( '\Message' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$skin = $this->getMockBuilder( '\Skin' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$skin->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( Title::newFromText( __METHOD__ ) ) );
+
+		$skin->expects( $this->any() )
+			->method( 'msg' )
+			->will( $this->returnValue( $message ) );
+
+		return $skin;
 	}
 
 }

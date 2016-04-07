@@ -195,6 +195,13 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		#6 Combined entries
+		$userPage = MockTitle::buildMock( 'Lula' );
+		$userNS = Localizer::getInstance()->getNamespaceTextById( NS_USER );
+
+		$userPage->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_USER ) );
+
 		$provider[] = array(
 			array(
 				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'withCombinedEntries' ) ),
