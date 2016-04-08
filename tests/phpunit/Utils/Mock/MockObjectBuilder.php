@@ -5,7 +5,7 @@ namespace SMW\Tests\Utils\Mock;
 use InvalidArgumentException;
 use OutOfBoundsException;
 use SMW\ObjectDictionary;
-use SMW\SimpleDictionary;
+use SMW\Options;
 
 /**
  * @codeCoverageIgnore
@@ -98,7 +98,7 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function getInvokedMethods() {
-		return array_keys( $this->configuration->toArray() );
+		return array_keys( $this->configuration->getOptions() );
 	}
 
 	/**
@@ -181,10 +181,12 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	 */
 	protected function setupConfiguration( $config ) {
 
-		$configuration = new SimpleDictionary( $config );
+		$configuration = new Options( $config );
 
-		if ( $this->configuration instanceof SimpleDictionary ) {
-			return $this->configuration->merge( $configuration->toArray() );
+		if ( $this->configuration instanceof Options ) {
+			return $this->configuration = new Options(
+				array_merge( $this->configuration->getOptions(), $configuration->getOptions() )
+			);
 		}
 
 		$this->configuration = $configuration;

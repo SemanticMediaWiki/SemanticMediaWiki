@@ -127,22 +127,22 @@ class QueryDependencyLinksStore {
 	 * @since 2.3
 	 *
 	 * @param CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator
-	 * @param array $propertyDependencyDetectionBlacklist
+	 * @param array $propertyDependencyExemptionlist
 	 *
 	 * @return array
 	 */
-	public function buildParserCachePurgeJobParametersFrom( CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator, array $propertyDependencyDetectionBlacklist ) {
+	public function buildParserCachePurgeJobParametersFrom( CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator, array $propertyDependencyExemptionlist ) {
 
 		if ( !$this->isEnabled() ) {
 			return array();
 		}
 
 		$mapCombinedIdListOfChangedEntities = array_flip( $compositePropertyTableDiffIterator->getCombinedIdListOfChangedEntities() );
-		$mapPropertyDependencyDetectionBlacklist = array_flip( $propertyDependencyDetectionBlacklist );
+		$mapPropertyDependencyExemptionlist = array_flip( $propertyDependencyExemptionlist );
 
 		foreach ( $compositePropertyTableDiffIterator->getFixedPropertyRecords() as $table => $record ) {
 
-			if ( !isset( $mapPropertyDependencyDetectionBlacklist[$record['key']] ) ) {
+			if ( !isset( $mapPropertyDependencyExemptionlist[$record['key']] ) ) {
 				continue;
 			}
 

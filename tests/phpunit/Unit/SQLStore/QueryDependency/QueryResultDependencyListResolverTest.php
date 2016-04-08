@@ -176,7 +176,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			$propertyHierarchyLookup
 		);
 
-		$instance->setPropertyDependencyDetectionBlacklist( array( 'Foobar', 'Subprop' ) );
+		$instance->setPropertyDependencyExemptionlist( array( 'Foobar', 'Subprop' ) );
 
 		$expected = array(
 			DIWikiPage::newFromText( 'Foo' ),

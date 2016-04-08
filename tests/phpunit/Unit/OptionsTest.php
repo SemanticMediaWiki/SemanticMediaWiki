@@ -9,7 +9,7 @@ use SMW\Options;
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
- * @since   1.2
+ * @since   2.3
  *
  * @author mwjames
  */
@@ -36,6 +36,18 @@ class OptionsTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			42,
 			$instance->get( 'Foo' )
+		);
+	}
+
+	public function testGetOptions() {
+
+		$instance = new Options(
+			array( 'Foo' => 42 )
+		);
+
+		$this->assertEquals(
+			array( 'Foo' => 42 ),
+			$instance->getOptions()
 		);
 	}
 

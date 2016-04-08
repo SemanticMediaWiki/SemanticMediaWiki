@@ -92,6 +92,8 @@ class SearchInPageDBIntegrationTest extends MwDBaseUnitTestCase {
 			$this->markTestIncomplete( "Test was marked as incomplete because the SPARQLStore doesn't support the Geo data type" );
 		}
 
+		$this->testEnvironment->executePendingDeferredUpdates();
+
 		$this->assertEquals(
 			1,
 			$results->getTotalHits()

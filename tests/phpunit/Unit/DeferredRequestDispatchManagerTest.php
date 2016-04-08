@@ -50,6 +50,28 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testDispatchParserCachePurgeJob() {
+
+		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\SocketRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$httpRequest->expects( $this->once() )
+			->method( 'ping' )
+			->will( $this->returnValue( true ) );
+
+		$instance = new DeferredRequestDispatchManager( $httpRequest );
+		$instance->reset();
+		$instance->setEnabledHttpDeferredJobRequestState( true );
+
+		$parameters = array( 'idlist' => '1|2' );
+		$title = DIWikiPage::newFromText( __METHOD__ )->getTitle();
+
+		$this->assertTrue(
+			$instance->dispatchParserCachePurgeJobFor( $title, $parameters )
+		);
+	}
+
 	/**
 	 * @dataProvider preliminaryCheckProvider
 	 */

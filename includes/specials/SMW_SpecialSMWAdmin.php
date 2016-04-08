@@ -266,7 +266,7 @@ class SMWAdmin extends SpecialPage {
 
 	protected function doListConfigurationSettings() {
 		$this->printRawOutput( function( $instance ) {
-			print '<pre>' . $instance->encodeJson( Settings::newFromGlobals()->toArray() ) . '</pre>';
+			print '<pre>' . $instance->encodeJson( Settings::newFromGlobals()->getOptions() ) . '</pre>';
 		} );
 	}
 
