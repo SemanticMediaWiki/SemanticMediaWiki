@@ -15,7 +15,10 @@ then
 	# http://archive.apache.org/dist/jena/binaries/jena-fuseki-$FUSEKI-distribution.tar.gz
 	# http://www.eu.apache.org/dist/jena/binaries/jena-fuseki-$FUSEKI-distribution.tar.gz
 
-	wget http://archive.apache.org/dist/jena/binaries/jena-fuseki-$FUSEKI-distribution.tar.gz
+	# Avoid ERROR 503: Service Unavailable
+	# wget http://archive.apache.org/dist/jena/binaries/jena-fuseki-$FUSEKI-distribution.tar.gz
+	wget https://github.com/mwjames/travis-support/raw/master/fuseki/$FUSEKI/jena-fuseki-$FUSEKI-distribution.tar.gz
+	
 	tar -zxf jena-fuseki-$FUSEKI-distribution.tar.gz
 	mv jena-fuseki-$FUSEKI fuseki
 
