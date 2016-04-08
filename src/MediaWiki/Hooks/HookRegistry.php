@@ -230,7 +230,7 @@ class HookRegistry {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleMoveComplete
 		 */
-		$this->handlers['TitleMoveComplete'] = function ( &$oldTitle, &$newTitle, &$user, $oldId, $newId ) {
+		$this->handlers['TitleMoveComplete'] = function ( $oldTitle, $newTitle, $user, $oldId, $newId ) {
 
 			$titleMoveComplete = new TitleMoveComplete(
 				$oldTitle,
