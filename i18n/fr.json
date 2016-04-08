@@ -200,7 +200,7 @@
 	"smw-statistics-subobject-count": "{{PLURAL:$1|Sous-objet|Sous-objets}}",
 	"smw-statistics-datatype-count": "[[Special:Types|{{PLURAL:$1|Type de donnée|Types de donnée}}]]",
 	"smw-statistics-error-count": "{{PLURAL:$1|Valeur de propriété|Valeurs de propriété}} ([[Property:Has improper value for|{{PLURAL:$1|mauvaise annotation|mauvaises annotations}}]])",
-	"smw-statistics-delete-count": "{{PLURAL:$1|Entité obsolète|Entités obsolètes}} (marqué pour suppression)",
+	"smw-statistics-delete-count": "Entité{{PLURAL:$1||s}} obsolète{{PLURAL:$1||s}} (marquée{{PLURAL:$1||s}} à supprimer)",
 	"smw_uri_doc": "Le résolveur d’URI implémente la [$1 Conclusion du TAG du W3C à propos du httpRange-14].\nIl peut veiller à ce que les humains ne deviennent pas des sites web.",
 	"ask": "Recherche sémantique",
 	"smw_ask_sortby": "Trier par colonnes (optionnel)",
@@ -409,6 +409,6 @@
 	"smw-pa-property-predefined_pvap": "« $1 » est une propriété prédéfinie qui peut spécifier une [[MediaWiki:Smw allows pattern|référence de motif]] pour appliquer [https://en.wikipedia.org/wiki/Regular_expression une expression régulière] correspondante, et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Médiawiki Sémantique].",
 	"smw-pa-property-predefined_dtitle": "« $1 » est une propriété prédéfinie qui peut affecter un titre d’affichage distinct à une entité, et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Médiawiki Sémantique].",
 	"smw-pa-property-predefined_pvuc": "« $1 » est une propriété prédéfinie indiquant que les affectations de cette valeur à une propriété doivent être uniques, et elle est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
-	"smw-pa-property-predefined-long_pvuc": "L’unicité est établie quand deux valeurs n’ont pas la même représentation littérale, et toute violation de cette contrainte sera considérée comme une erreur.",
+	"smw-pa-property-predefined-long_pvuc": "L’unicité est établie quand deux valeurs n’ont pas la même représentation littérale, et toute violation de cette contrainte sera catégorisée comme une erreur.",
 	"smw-datavalue-uniqueness-constraint-error": "La propriété « $1 » ne permet que des affectations de valeurs uniques, et « $2 » a déjà été annoté dans le sujet « $3 »."
 }

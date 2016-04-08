@@ -19,7 +19,8 @@
 			"Wifidel",
 			"Macofe",
 			"Felipe95a",
-			"Ryo567"
+			"Ryo567",
+			"AlvaroMolina"
 		]
 	},
 	"smw-desc": "Haciendo tu wiki más accesible - para máquinas ''y'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
@@ -361,5 +362,8 @@
 	"smw-datavalue-allows-pattern-mismatch": "La expresión regular \"$2\" clasificó a \"$1\" como no válida.",
 	"smw-datavalue-feature-not-supported": "La funcionalidad \"$1\" no es compatible o se desactivó en este wiki.",
 	"smw-pa-property-predefined_pvap": "\"$1\" es una propiedad predefinida que puedes especificar una [[MediaWiki:Smw allows pattern|referencia de patrón]] para hacer coincidir [https://es.wikipedia.org/wiki/Expresi%C3%B3n_regular expresiones regulares]. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
-	"smw-pa-property-predefined_dtitle": "\"$1\" es una propiedad predefinida que puede asignar un título de visualización diferente. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]."
+	"smw-pa-property-predefined_dtitle": "\"$1\" es una propiedad predefinida que puede asignar un título de visualización diferente. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_pvuc": "\"$1\" es una propiedad predefinida que indica que se espera que las asignaciones de valores a una propiedad sean únicas. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined-long_pvuc": "La singularidad se establece cuando dos valores no son iguales en su representación literal y cualquier violación de esta restricción se clasifican como de error.",
+	"smw-datavalue-uniqueness-constraint-error": "La propiedad \"$1\" sólo permite que el único valor de las cesiones y \"$2\" ya fue anotado en el \" asunto \"$3\"."
 }

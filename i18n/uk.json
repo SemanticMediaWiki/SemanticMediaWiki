@@ -172,6 +172,7 @@
 	"smw-statistics-subobject-count": "{{PLURAL:$1|Підоб'єкт|Підоб'єкти|Підоб'єктів}}",
 	"smw-statistics-datatype-count": "[[Special:Types|{{PLURAL:$1|Тип даних|Типи даних|Типів даних}}]]",
 	"smw-statistics-error-count": "{{PLURAL:$1|Значення властивості}} ([[Property:Has improper value for|{{PLURAL:$1|неправильна анотація|неправильні анотації}}]])",
+	"smw-statistics-delete-count": "{{PLURAL:$1|Застаріла сутність (позначена до вилучення)|Застарілі сутності (позначені до вилучення)}}",
 	"smw_uri_doc": "Оброблювач URI виконує [$1 «W3C TAG finding on httpRange-14»].\nЦя функція спрощує пошук семантичної інформації.",
 	"ask": "Семантичний пошук",
 	"smw_ask_sortby": "Сортувати за стовпцем (необов’язково)",
@@ -378,5 +379,8 @@
 	"smw-datavalue-allows-pattern-reference-unknown": "Посилання на шаблон «$1» не вдалося порівняти із записом на [[MediaWiki:Smw allows pattern]].",
 	"smw-datavalue-feature-not-supported": "Функція «$1» не підтримується або була вимкнена в цій вікі.",
 	"smw-pa-property-predefined_pvap": "«$1» — це попередньо визначена властивість, якою можна вказати [[MediaWiki:Smw allows pattern|посилання на шаблон]], аби застосувати зіставлення [https://en.wikipedia.org/wiki/Regular_expression регулярних виразів], і яка забезпечується [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Семантичною MediaWiki].",
-	"smw-pa-property-predefined_dtitle": "«$1» — це попередньо визначена властивість, якою для сутності можна призначити окрему назву для відображення, і яка забезпечується [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Семантичною MediaWiki]."
+	"smw-pa-property-predefined_dtitle": "«$1» — це попередньо визначена властивість, якою для сутності можна призначити окрему назву для відображення, і яка забезпечується [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Семантичною MediaWiki].",
+	"smw-pa-property-predefined_pvuc": "«$1» — це попередньо визначена властивість, яка означає, що присвоєння значень властивості повинні бути унікальними. Вона забезпечується [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Семантичною MediaWiki].",
+	"smw-pa-property-predefined-long_pvuc": "Унікальність встановлюється, коли два значення є неоднаковими у своїй символьній репрезентації, і будь-яке порушення цього обмеження буде кваліфіковано як помилку.",
+	"smw-datavalue-uniqueness-constraint-error": "Властивість «$1» дозволяє лише унікальні присвоєння значень, а ''$2'' вже було анотовано в темі «$3»."
 }

@@ -181,6 +181,7 @@
 	"smw-statistics-subobject-count": "Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.\n\nParameters:\n* $1 - number of subobjects",
 	"smw-statistics-datatype-count": "Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.\n\nParameters:\n* $1 - number of datatypes",
 	"smw-statistics-error-count": "Used as a label linking to the respective property that is displayed on the [[Special:Statistics|Statistics]] page. See also message {{msg-mw|smw-statistics-property-instance}}.\n\nParameters:\n* $1 - number of property values\n\n{{doc-important|\"Property:Has improper value for\" must be localized}}",
+	"smw-statistics-delete-count": "Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.\n\nParameters:\n* $1 - number of marked entities",
 	"smw_uri_doc": "{{doc-important|Do not alter or translate link targets!}}\nThis message sketches the (very technical) function of this unlisted special page.\nIt probably does not need translation in most cases. The special page as such is used in all URIs used by Semantic MediaWiki.\nWhen somebody resolves such a URI, the special page will redirect to the according wiki page or to the according metadata export (OWL/RDF/XML).\nThis is controlled by the HTTP request header. Semantic Web crawlers and browsers can thus request more metadata on a particular subject, while humans are referred to readable pages.\nThis method is called ''content negotiation''.\n\nParameters:\n* $1 - the URL http://www.w3.org/2001/tag/issues.html#httpRange-14 (hard-coded)",
 	"ask": "{{doc-special|Ask}}",
 	"smw_ask_doculink": "{{notranslate}}\nThis message should be the URL of the semantic query documentation for that language. For English, this is https://semantic-mediawiki.org/wiki/Help:Semantic_search. For other languages, it should be an ''existing'' page on semantic-mediawiki.org. Note that only some languages have own documentations yet.\n\nThe SMW Project welcomes documentation translators! Please contact Markus Krötzsch (https://semantic-mediawiki.org/wiki/Markus) for getting a login at semantic-mediawiki.org if you wish to create SMW handbooks in another language.",
@@ -357,6 +358,7 @@
 	"smw-sp-types_dat": "This is an informatory message shown to the user.",
 	"smw-specials-browse-helplink": "{{notranslate}}",
 	"smw-pa-property-predefined_errc": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
+	"smw-pa-property-predefined-long_errc": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
 	"smw-pa-property-predefined_errt": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
 	"smw-subobject-parser-invalid-naming-scheme": "This is an error message shown to the user in case a named identifier contains a dot (foo.bar).",
 	"smw-datavalue-record-invalid-property-declaration": "This is an error message shown to the user.\n\n* $1 holds the name of the property of type record.",
@@ -390,5 +392,8 @@
 	"smw-datavalue-allows-pattern-reference-unknown": "This is an error message.",
 	"smw-datavalue-feature-not-supported": "This is an error message.",
 	"smw-pa-property-predefined_pvap": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\n* $1 holds the name of the special property.",
-	"smw-pa-property-predefined_dtitle": "This informatory message describes the [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\n* $1 holds the name of the special property."
+	"smw-pa-property-predefined_dtitle": "This informatory message describes the [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\n* $1 holds the name of the special property.",
+	"smw-pa-property-predefined_pvuc": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
+	"smw-pa-property-predefined-long_pvuc": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
+	"smw-datavalue-uniqueness-constraint-error": "This is an error message.\n\nParameters:\n* $1 holds the name of the property\n* $2 holds the name of the data value\n* $3 holds the name of the page"
 }
