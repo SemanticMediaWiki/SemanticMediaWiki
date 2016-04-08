@@ -44,8 +44,8 @@ class QueryDependencyLinksStoreFactory {
 			$this->applicationFactory->newPropertyHierarchyLookup()
 		);
 
-		$queryResultDependencyListResolver->setPropertyDependencyDetectionBlacklist(
-			$this->applicationFactory->getSettings()->get( 'smwgPropertyDependencyDetectionBlacklist' )
+		$queryResultDependencyListResolver->setPropertyDependencyExemptionlist(
+			$this->applicationFactory->getSettings()->get( 'smwgPropertyDependencyExemptionlist' )
 		);
 
 		return $queryResultDependencyListResolver;

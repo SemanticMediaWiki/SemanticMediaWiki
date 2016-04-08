@@ -62,4 +62,13 @@ class Options {
 		throw new InvalidArgumentException( "{$key} is an unregistered option" );
 	}
 
+	/**
+	 * @since 2.4
+	 *
+	 * @return array
+	 */
+	public function getOptions() {
+		return $this->options;
+	}
+
 }

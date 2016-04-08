@@ -73,6 +73,16 @@ class DeferredRequestDispatchManager {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @param Title $title
+	 * @param array $parameters
+	 */
+	public function dispatchParserCachePurgeJobFor( Title $title, $parameters = array() ) {
+		return $this->dispatchJobRequestFor( 'SMW\ParserCachePurgeJob', $title, $parameters );
+	}
+
+	/**
 	 * @since 2.3
 	 *
 	 * @param string $type
@@ -81,11 +91,14 @@ class DeferredRequestDispatchManager {
 	 */
 	public function dispatchJobRequestFor( $type, Title $title, $parameters = array() ) {
 
-		$this->httpRequest->setOption( ONOI_HTTP_REQUEST_URL, SpecialDeferredRequestDispatcher::getTargetURL() );
-
 		if ( !$this->doPreliminaryCheckForType( $type, $parameters ) ) {
 			return null;
 		}
+
+		$this->httpRequest->setOption(
+			ONOI_HTTP_REQUEST_URL,
+			SpecialDeferredRequestDispatcher::getTargetURL()
+		);
 
 		$dispatchableCallbackJob = $this->getDispatchableCallbackJobFor( $type );
 

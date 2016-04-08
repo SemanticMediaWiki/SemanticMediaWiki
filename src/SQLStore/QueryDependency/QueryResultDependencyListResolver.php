@@ -36,7 +36,7 @@ class QueryResultDependencyListResolver {
 	 *
 	 * @var array
 	 */
-	private $propertyDependencyDetectionBlacklist = array();
+	private $propertyDependencyExemptionlist = array();
 
 	/**
 	 * @var PropertyHierarchyLookup
@@ -57,13 +57,13 @@ class QueryResultDependencyListResolver {
 	/**
 	 * @since 2.3
 	 *
-	 * @param array $propertyDependencyDetectionBlacklist
+	 * @param array $propertyDependencyExemptionlist
 	 */
-	public function setPropertyDependencyDetectionBlacklist( array $propertyDependencyDetectionBlacklist ) {
+	public function setPropertyDependencyExemptionlist( array $propertyDependencyExemptionlist ) {
 		// Make sure that user defined properties are correctly normalized and flip
 		// to build an index based map
-		$this->propertyDependencyDetectionBlacklist = array_flip(
-			str_replace( ' ', '_', $propertyDependencyDetectionBlacklist )
+		$this->propertyDependencyExemptionlist = array_flip(
+			str_replace( ' ', '_', $propertyDependencyExemptionlist )
 		);
 	}
 
@@ -183,7 +183,7 @@ class QueryResultDependencyListResolver {
 
 		$key = str_replace( ' ', '_', $property->getKey() );
 
-		if ( !isset( $this->propertyDependencyDetectionBlacklist[$key] ) ) {
+		if ( !isset( $this->propertyDependencyExemptionlist[$key] ) ) {
 			$subjects[] = $property->getDiWikiPage();
 		}
 	}

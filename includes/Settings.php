@@ -3,26 +3,19 @@
 namespace SMW;
 
 /**
- * Encapsulate Semantic MediaWiki settings
- *
- * @note Initial idea has been borrowed from EducationProgram Extension/Jeroen De Dauw
- *
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * Encapsulate Semantic MediaWiki settings to access values through a
  * specified interface
  *
- * @ingroup SMW
+ * @license GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
-class Settings extends SimpleDictionary {
+class Settings extends Options {
 
-	/** @var Settings */
+	/**
+	 * @var Settings
+	 */
 	private static $instance = null;
 
 	/**
@@ -137,7 +130,7 @@ class Settings extends SimpleDictionary {
 			'smwgEnabledDeferredUpdate' => $GLOBALS['smwgEnabledDeferredUpdate'],
 			'smwgEnabledHttpDeferredJobRequest' => $GLOBALS['smwgEnabledHttpDeferredJobRequest'],
 			'smwgEnabledQueryDependencyLinksStore' => $GLOBALS['smwgEnabledQueryDependencyLinksStore'],
-			'smwgPropertyDependencyDetectionBlacklist' => $GLOBALS['smwgPropertyDependencyDetectionBlacklist'],
+			'smwgPropertyDependencyExemptionlist' => $GLOBALS['smwgPropertyDependencyExemptionlist'],
 			'smwgExportBCNonCanonicalFormUse' => $GLOBALS['smwgExportBCNonCanonicalFormUse'],
 			'smwgExportBCAuxiliaryUse' => $GLOBALS['smwgExportBCAuxiliaryUse'],
 			'smwgEnabledInTextAnnotationParserStrictMode' => $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'],
@@ -210,12 +203,10 @@ class Settings extends SimpleDictionary {
 			throw new InvalidSettingsArgumentException( "'{$key}' is not a valid settings key" );
 		}
 
-		return $this->lookup( $key );
+		return parent::get( $key );
 	}
 
 	/**
-	 * Resets the instance
-	 *
 	 * @since 1.9
 	 */
 	public static function clear() {
@@ -223,18 +214,12 @@ class Settings extends SimpleDictionary {
 	}
 
 	/**
-	 * Iterates over a nested array to find a element
-	 *
-	 * @since 1.9
-	 *
-	 * @param string $key
-	 *
-	 * @return mixed|null
+	 * Iterates over a nested array to find an element
 	 */
 	private function doIterate( $key ) {
 
 		$iterator = new \RecursiveIteratorIterator(
-			new \RecursiveArrayIterator( $this->toArray() ),
+			new \RecursiveArrayIterator( $this->getOptions() ),
 			\RecursiveIteratorIterator::CHILD_FIRST
 		);
 

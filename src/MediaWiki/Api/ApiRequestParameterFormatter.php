@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Api;
 
 use SMW\Query\PrintRequest;
-use SMW\SimpleDictionary;
+use SMW\Options;
 use SMWPropertyValue;
 
 /**
@@ -76,7 +76,7 @@ final class ApiRequestParameterFormatter {
 	 */
 	protected function formatAskArgs() {
 
-		$result = new SimpleDictionary();
+		$result = new Options();
 
 		// Set defaults
 		$result->set( 'conditions', array() );

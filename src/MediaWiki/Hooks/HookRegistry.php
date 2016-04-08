@@ -510,11 +510,10 @@ class HookRegistry {
 
 			$jobParameters = $queryDependencyLinksStore->buildParserCachePurgeJobParametersFrom(
 				$compositePropertyTableDiffIterator,
-				$applicationFactory->getSettings()->get( 'smwgPropertyDependencyDetectionBlacklist' )
+				$applicationFactory->getSettings()->get( 'smwgPropertyDependencyExemptionlist' )
 			);
 
-			$deferredRequestDispatchManager->dispatchJobRequestFor(
-				'SMW\ParserCachePurgeJob',
+			$deferredRequestDispatchManager->dispatchParserCachePurgeJobFor(
 				$semanticData->getSubject()->getTitle(),
 				$jobParameters
 			);
