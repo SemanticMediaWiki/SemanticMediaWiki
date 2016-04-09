@@ -41,16 +41,17 @@ class XsdValueMapper {
 	public function process( DataItem $dataItem ) {
 
 		if ( $dataItem instanceof DIBoolean ) {
-			return $this->parseToBooleanValue( $dataItem );
+			$this->parseToBooleanValue( $dataItem );
 		} elseif ( $dataItem instanceof DINumber ) {
-			return $this->parseToDoubleValue( $dataItem );
+			$this->parseToDoubleValue( $dataItem );
 		} elseif ( $dataItem instanceof DIBlob ) {
-			return $this->parseToStringValue( $dataItem );
+			$this->parseToStringValue( $dataItem );
 		} elseif ( $dataItem instanceof DITime && $dataItem->getCalendarModel() === DITime::CM_GREGORIAN ) {
-			return $this->parseToTimeValueForGregorianCalendarModel( $dataItem );
+			$this->parseToTimeValueForGregorianCalendarModel( $dataItem );
 		}
-
-		throw new RuntimeException( "Cannot match the dataItem of type " . $dataItem->getDIType() );
+		else {
+			throw new RuntimeException( "Cannot match the dataItem of type " . $dataItem->getDIType() );
+		}
 	}
 
 	/**
