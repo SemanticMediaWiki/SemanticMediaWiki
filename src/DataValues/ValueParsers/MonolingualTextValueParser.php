@@ -38,7 +38,6 @@ class MonolingualTextValueParser implements ValueParser {
 	public function parse( $userValue ) {
 
 		$text = $userValue;
-		$dataValues = array();
 
 		$languageCode = mb_substr( strrchr( $userValue, "@" ), 1 );
 

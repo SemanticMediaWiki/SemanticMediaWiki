@@ -260,8 +260,6 @@ class PropertySpecificationLookup {
 	 */
 	public function getPropertyDescriptionFor( DIProperty $property, $linker = null ) {
 
-		$localPropertyDescription = '';
-
 		// Take the linker into account (Special vs. in page rendering etc.)
 		$key = '--pdesc:' . $this->languageCode . ':' . ( $linker === null ? '0' : '1' );
 

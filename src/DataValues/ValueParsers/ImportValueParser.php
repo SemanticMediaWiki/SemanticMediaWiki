@@ -147,8 +147,6 @@ class ImportValueParser implements ValueParser {
 	private function doParse( $contents ) {
 
 		$list = array();
-		$uri = '';
-		$name = '';
 
 		if ( $contents === '' ) {
 			return null;

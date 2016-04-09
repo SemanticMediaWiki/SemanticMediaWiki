@@ -98,7 +98,6 @@ class HookRegistry {
 
 	private function addCallbackHandlers( $basePath, $globalVars ) {
 
-		$eventHandler = EventHandler::getInstance();
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$httpRequestFactory = new HttpRequestFactory();

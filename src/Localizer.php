@@ -143,8 +143,6 @@ class Localizer {
 	 */
 	public static function getLanguageCodeFrom( &$value ) {
 
-		$langCode = false;
-
 		if ( strpos( $value, '@' ) === false ) {
 			return false;
 		}
