@@ -73,7 +73,7 @@ class ValueFormatterRegistry {
 			$this->dispatchingDataValueFormatter = $this->newDispatchingDataValueFormatter();
 		}
 
-		return $this->dispatchingDataValueFormatter->addDataValueFormatter( $dataValueFormatter );
+		$this->dispatchingDataValueFormatter->addDataValueFormatter( $dataValueFormatter );
 	}
 
 	/**

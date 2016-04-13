@@ -65,7 +65,7 @@ class DataItemToExpResourceEncoder {
 	 * @since 2.3
 	 */
 	public function reset() {
-		return $this->inMemoryPoolCache->resetPoolCacheFor( 'exporter.dataitem.resource.encoder' );
+		$this->inMemoryPoolCache->resetPoolCacheFor( 'exporter.dataitem.resource.encoder' );
 	}
 
 	/**

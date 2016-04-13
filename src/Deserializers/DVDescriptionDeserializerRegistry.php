@@ -72,7 +72,7 @@ class DVDescriptionDeserializerRegistry {
 			$this->dispatchingDescriptionDeserializer = $this->newDispatchingDescriptionDeserializer();
 		}
 
-		return $this->dispatchingDescriptionDeserializer->addDescriptionDeserializer( $descriptionDeserializer );
+		$this->dispatchingDescriptionDeserializer->addDescriptionDeserializer( $descriptionDeserializer );
 	}
 
 	/**
