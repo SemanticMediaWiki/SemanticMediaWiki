@@ -89,6 +89,7 @@ class Ask extends Query {
 	protected function getExamples() {
 		return array(
 			'api.php?action=ask&query=[[Modification%20date::%2B]]|%3FModification%20date|sort%3DModification%20date|order%3Ddesc',
+			'api.php?action=ask&query=[[Modification%20date::%2B]]|limit%3D5|offset%3D1'
 		);
 	}
 
