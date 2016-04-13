@@ -28,7 +28,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testSetIndexedTagNameException() {
+	public function testInvalidSetIndexedTagNameThrowsException() {
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -37,13 +37,17 @@ class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ApiQueryResultFormatter( $queryResult );
 		$instance->setIsRawMode( true );
 
-		$reflector = new ReflectionClass( '\SMW\MediaWiki\Api\ApiQueryResultFormatter' );
-		$method = $reflector->getMethod( 'setIndexedTagName' );
-		$method->setAccessible( true );
+		// Used to work in PHP 5 but not with PHP 7, made the
+		// method public to test the exception without reflection
+		// $reflector = new ReflectionClass( 'SMW\MediaWiki\Api\ApiQueryResultFormatter' );
+		// $method = $reflector->getMethod( 'setIndexedTagName' );
+		// $method->setAccessible( true );
+		// $method->invoke( $instance, $arr, null )
+
+		$arr = array();
 
 		$this->setExpectedException( 'InvalidArgumentException' );
-
-		$this->assertTrue( $method->invoke( $instance, array(), null ) );
+		$instance->setIndexedTagName( $arr, null );
 	}
 
 	/**

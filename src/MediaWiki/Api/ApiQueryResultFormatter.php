@@ -195,7 +195,7 @@ class ApiQueryResultFormatter {
 	 * @param array &$arr
 	 * @param string $tag
 	 */
-	protected function setIndexedTagName( &$arr, $tag ) {
+	public function setIndexedTagName( &$arr, $tag = null ) {
 
 		if ( !$this->isRawMode ) {
 			return;
