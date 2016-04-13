@@ -140,8 +140,6 @@ class SpecialDeferredRequestDispatcher extends SpecialPage {
 
 	private function runParserCachePurgeJob( $title, $parameters ) {
 
-		$idlist = array();
-
 		if ( !isset( $parameters['idlist'] ) || $parameters['idlist'] === array() ) {
 			return;
 		}

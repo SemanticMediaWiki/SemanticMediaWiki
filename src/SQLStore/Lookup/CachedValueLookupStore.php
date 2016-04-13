@@ -217,8 +217,6 @@ class CachedValueLookupStore implements ValueLookupStore {
 	 */
 	public function getPropertyValues( DIWikiPage $subject = null, DIProperty $property, $requestOptions = null ) {
 
-		$container = array();
-
 		// The cache is not used for $subject === null (means all values for
 		// the given property are returned)
 		if ( $subject === null || !$this->blobStore->canUse() || !$this->canUseValueLookupFeature( SMW_VL_PV ) ) {

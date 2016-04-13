@@ -259,7 +259,6 @@ class DataRebuilder {
 		while ( ( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 ) ) {
 
 			$progress = '';
-			$text = '';
 
 			$this->rebuildCount++;
 			$this->exceptionLog = array();

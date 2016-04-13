@@ -109,7 +109,6 @@ class DataItemByExpElementMatchFinder {
 	private function tryToMatchNamespaceName( $name ) {
 		// try the by far most common cases directly before using Title
 		$namespaceName = str_replace( '_', ' ', $name );
-		$namespaceId = -1;
 
 		if ( ( $namespaceId = Localizer::getInstance()->getNamespaceIndexByName( $name ) ) !== false ) {
 			return $namespaceId;

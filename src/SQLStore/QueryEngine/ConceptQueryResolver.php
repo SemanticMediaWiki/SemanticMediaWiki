@@ -48,7 +48,6 @@ class ConceptQueryResolver {
 	 */
 	public function prepareQuerySegmentFor( $conceptDescriptionText ) {
 
-		$querySegmentList = array();
 		QuerySegment::$qnum = 0;
 
 		$querySegmentListBuilder = $this->queryEngine->getQuerySegmentListBuilder();

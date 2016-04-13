@@ -69,7 +69,6 @@ class CachedPropertyValuesPrefetcher {
 	 */
 	public function getPropertyValues( DIWikiPage $subject, DIProperty $property, RequestOptions $requestOptions = null ) {
 
-		$datItems = array();
 		$key = $property->getKey() . ':' . $subject->getSubobjectName() . ':' . (
 			$requestOptions !== null ? $requestOptions->getHash() : null
 		);
