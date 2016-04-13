@@ -1,8 +1,12 @@
 {
-	"description": "Test format=table on boolean table output formatting, #896",
+	"description": "Test format=table on boolean table output formatting (#896, #1464)",
 	"properties": [
 		{
 			"name": "Has success state",
+			"contents": "[[Has type::Boolean]]"
+		},
+		{
+			"name": "Has boolean",
 			"contents": "[[Has type::Boolean]]"
 		},
 		{
@@ -30,6 +34,22 @@
 		{
 			"name": "BooleanTable-ToLabelBoolValueAndColumn",
 			"contents": "{{#ask: [[Category:BoolProjects]]|?Has success state#success,failure=Status|limit=10|format=table}}"
+		},
+		{
+			"name": "Example/F0201/3",
+			"contents": "{{#subobject: |Has boolean=true |@category=F0201 }}{{#subobject: |Has boolean=false |@category=F0201 }}"
+		},
+		{
+			"name": "Example/F0201/3a",
+			"contents": "{{#ask: [[Category:F0201]] |?Has boolean#✓,✕ }}"
+		},
+		{
+			"name": "Example/F0201/3b",
+			"contents": "{{#ask: [[Category:F0201]] |?Has boolean#○,× }}"
+		},
+		{
+			"name": "Example/F0201/3c",
+			"contents": "{{#ask: [[Category:F0201]] |?Has boolean#<span style=\"color: green; font-size: 120%;\">&#10003;</span>,<span style=\"color: #AA0000; font-size: 120%;\">&#10005;</span>=Label on (&#10003;,&#10005;) }}"
 		}
 	],
 	"format-testcases": [
@@ -71,6 +91,36 @@
 					"title=\"Project one\">Project one</a></td><td data-sort-value=\"1\" class=\"Status smwtype_boo\">success</td>",
 					"title=\"Project two\">Project two</a></td><td data-sort-value=\"0\" class=\"Status smwtype_boo\">failure</td>",
 					"</table>"
+				]
+			}
+		},
+		{
+			"about": "#3",
+			"subject": "Example/F0201/3a",
+			"expected-output": {
+				"to-contain": [
+					"<td data-sort-value=\"1\" class=\"Has-boolean smwtype_boo\">✓</td>",
+					"<td data-sort-value=\"0\" class=\"Has-boolean smwtype_boo\">✕</td>"
+				]
+			}
+		},
+		{
+			"about": "#4",
+			"subject": "Example/F0201/3b",
+			"expected-output": {
+				"to-contain": [
+					"<td data-sort-value=\"1\" class=\"Has-boolean smwtype_boo\">○</td>",
+					"<td data-sort-value=\"0\" class=\"Has-boolean smwtype_boo\">×</td>"
+				]
+			}
+		},
+		{
+			"about": "#5 (#1464)",
+			"subject": "Example/F0201/3c",
+			"expected-output": {
+				"to-contain": [
+					"<td data-sort-value=\"1\" class=\"Label-on-(&amp;#10003;,&amp;#10005;) smwtype_boo\"><span style=\"color: green; font-size: 120%;\">&#10003;</span></td>",
+					"<td data-sort-value=\"0\" class=\"Label-on-(&amp;#10003;,&amp;#10005;) smwtype_boo\"><span style=\"color: #AA0000; font-size: 120%;\">&#10005;</span></td>"
 				]
 			}
 		}
