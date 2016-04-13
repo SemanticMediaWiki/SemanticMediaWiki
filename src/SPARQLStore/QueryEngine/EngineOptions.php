@@ -2,7 +2,7 @@
 
 namespace SMW\SPARQLStore\QueryEngine;
 
-use InvalidArgumentException;
+use SMW\Options;
 
 /**
  * @license GNU GPL v2+
@@ -10,61 +10,20 @@ use InvalidArgumentException;
  *
  * @author mwjames
  */
-class EngineOptions {
-
-	/**
-	 * @var array
-	 */
-	private $options = array();
+class EngineOptions extends Options {
 
 	/**
 	 * @since 2.2
 	 */
 	public function __construct() {
-		$this->set( 'smwgIgnoreQueryErrors', $GLOBALS['smwgIgnoreQueryErrors'] );
-		$this->set( 'smwgQSortingSupport', $GLOBALS['smwgQSortingSupport'] );
-		$this->set( 'smwgQRandSortingSupport', $GLOBALS['smwgQRandSortingSupport'] );
-		$this->set( 'smwgQSubpropertyDepth', $GLOBALS['smwgQSubpropertyDepth'] );
-		$this->set( 'smwgQSubcategoryDepth', $GLOBALS['smwgQSubcategoryDepth'] );
-		$this->set( 'smwgSparqlQFeatures', $GLOBALS['smwgSparqlQFeatures'] );
-	}
-
-	/**
-	 * @since 2.2
-	 *
-	 * @param string $key
-	 * @param mixed $value
-	 */
-	public function set( $key, $value ) {
-		$this->options[$key] = $value;
-	}
-
-	/**
-	 * @since 2.2
-	 *
-	 * @param string $key
-	 *
-	 * @return boolean
-	 */
-	public function has( $key ) {
-		return isset( $this->options[$key] ) || array_key_exists( $key, $this->options );
-	}
-
-	/**
-	 * @since 2.2
-	 *
-	 * @param string $key
-	 *
-	 * @return string
-	 * @throws InvalidArgumentException
-	 */
-	public function get( $key ) {
-
-		if ( $this->has( $key ) ) {
-			return $this->options[$key];
-		}
-
-		throw new InvalidArgumentException( "{$key} is an unregistered option" );
+		parent::__construct( array(
+			'smwgIgnoreQueryErrors'   => $GLOBALS['smwgIgnoreQueryErrors'],
+			'smwgQSortingSupport'     => $GLOBALS['smwgQSortingSupport'],
+			'smwgQRandSortingSupport' => $GLOBALS['smwgQRandSortingSupport'],
+			'smwgQSubpropertyDepth'   => $GLOBALS['smwgQSubpropertyDepth'],
+			'smwgQSubcategoryDepth'   => $GLOBALS['smwgQSubcategoryDepth'],
+			'smwgSparqlQFeatures'     => $GLOBALS['smwgSparqlQFeatures']
+		) );
 	}
 
 }

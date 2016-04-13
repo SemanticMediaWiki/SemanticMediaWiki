@@ -74,7 +74,8 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 			return $query;
 		}
 
-		$row = $this->getConceptForId( $conceptId );
+		$db = $this->querySegmentListBuilder->getStore()->getConnection( 'mw.db.queryengine' );
+		$row = $this->getConceptForId( $db, $conceptId );
 
 		// No description found, concept does not exist.
 		if ( $row === false ) {
@@ -97,7 +98,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 
 			$query->joinTable = SMWSQLStore3::CONCEPT_CACHE_TABLE;
 			$query->joinfield = "$query->alias.s_id";
-			$query->where = "$query->alias.o_id=" . $this->querySegmentListBuilder->getStore()->getConnection( 'mw.db' )->addQuotes( $conceptId );
+			$query->where = "$query->alias.o_id=" . $db->addQuotes( $conceptId );
 		} elseif ( $row->concept_txt ) { // Parse description and process it recursively.
 			if ( $may_be_computed ) {
 				$qid = $this->querySegmentListBuilder->buildQuerySegmentFor( $this->getConceptQueryDescription( $row->concept_txt ) );
@@ -126,8 +127,8 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	 * This should be faster, but we must implement the unescaping that concepts
 	 * do on getWikiValue
 	 */
-	private function getConceptForId( $id ) {
-		return $this->querySegmentListBuilder->getStore()->getConnection( 'mw.db' )->selectRow(
+	private function getConceptForId( $db, $id ) {
+		return $db->selectRow(
 			'smw_fpt_conc',
 			array( 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date' ),
 			array( 's_id' => $id ),

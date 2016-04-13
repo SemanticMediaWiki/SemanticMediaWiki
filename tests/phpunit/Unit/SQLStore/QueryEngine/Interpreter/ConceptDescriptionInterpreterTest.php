@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 
-use SMW\DIWikiPage;
-use SMW\Query\Language\ConceptDescription;
+use SMW\DataItemFactory;
+use SMW\Query\DescriptionFactory;
 use SMW\SQLStore\QueryEngine\Interpreter\ConceptDescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
-use SMW\Tests\Utils\UtilityFactory;
+use SMW\SQLStore\QueryEngineFactory;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Interpreter\ConceptDescriptionInterpreter
@@ -20,11 +20,23 @@ use SMW\Tests\Utils\UtilityFactory;
 class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	private $querySegmentValidator;
+	private $descriptionInterpreterFactory;
+
+	private $descriptionFactory;
+	private $dataItemFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->querySegmentValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQuerySegmentValidator();
+		$this->descriptionFactory = new DescriptionFactory();
+		$this->dataItemFactory = new DataItemFactory();
+
+		$this->descriptionInterpreterFactory = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$testEnvironment = new TestEnvironment();
+		$this->querySegmentValidator = $testEnvironment->getUtilityFactory()->newValidatorFactory()->newQuerySegmentValidator();
 	}
 
 	public function testCanConstruct() {
@@ -33,13 +45,9 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Interpreter\ConceptDescriptionInterpreter',
-			new ConceptDescriptionInterpreter( $querySegmentListBuilder, $circularReferenceGuard )
+			new ConceptDescriptionInterpreter( $querySegmentListBuilder )
 		);
 	}
 
@@ -83,21 +91,22 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $circularReferenceGuard ) );
 
 		$instance = new ConceptDescriptionInterpreter(
-			$querySegmentListBuilder,
-			$circularReferenceGuard
+			$querySegmentListBuilder
 		);
 
-		$concept = new ConceptDescription( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) );
+		$description = $this->descriptionFactory->newConceptDescription(
+			$this->dataItemFactory->newDIWikiPage( 'Foo', SMW_NS_CONCEPT )
+		);
 
 		$instance->interpretDescription(
-			$concept
+			$description
 		);
 	}
 
 	/**
 	 * @dataProvider descriptionProvider
 	 */
-	public function testCompileDescription( $description, $concept, $expected ) {
+	public function testInterpretDescription( $description, $concept, $expected ) {
 
 		$objectIds = $this->getMockBuilder( '\stdClass' )
 			->setMethods( array( 'getSMWPageID' ) )
@@ -131,13 +140,10 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIds ) );
 
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
-			->disableOriginalConstructor()
-			->getMock();
+		$queryEngineFactory = new QueryEngineFactory( $store );
 
 		$instance = new ConceptDescriptionInterpreter(
-			new QuerySegmentListBuilder( $store ),
-			$circularReferenceGuard
+			$queryEngineFactory->newQuerySegmentListBuilder()
 		);
 
 		$this->assertTrue(
@@ -152,9 +158,15 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	public function descriptionProvider() {
 
+		$descriptionFactory = new DescriptionFactory();
+		$dataItemFactory = new DataItemFactory();
+
 		#0 No concept
 		$concept = false;
-		$description = new ConceptDescription( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) );
+
+		$description = $descriptionFactory->newConceptDescription(
+			$dataItemFactory->newDIWikiPage( 'Foo', SMW_NS_CONCEPT )
+		);
 
 		$expected = new \stdClass;
 		$expected->type = 1;
@@ -173,7 +185,9 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$concept->concept_depth = 1;
 		$concept->cache_date = strtotime( "now" );
 
-		$description = new ConceptDescription( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) );
+		$description = $descriptionFactory->newConceptDescription(
+			$dataItemFactory->newDIWikiPage( 'Foo', SMW_NS_CONCEPT )
+		);
 
 		$expected = new \stdClass;
 		$expected->type = 1;
@@ -195,7 +209,9 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$concept->concept_depth = 1;
 		$concept->cache_date = false;
 
-		$description = new ConceptDescription( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) );
+		$description = $descriptionFactory->newConceptDescription(
+			$dataItemFactory->newDIWikiPage( 'Foo', SMW_NS_CONCEPT )
+		);
 
 		$expected = new \stdClass;
 		$expected->type = 1;

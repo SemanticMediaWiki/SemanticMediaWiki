@@ -97,7 +97,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 */
 	private function interpretPropertyConditionForDescription( QuerySegment $query, SomeProperty $description ) {
 
-		$db = $this->querySegmentListBuilder->getStore()->getConnection( 'mw.db' );
+		$db = $this->querySegmentListBuilder->getStore()->getConnection( 'mw.db.queryengine' );
 
 		$property = $description->getProperty();
 
@@ -147,7 +147,6 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$pquery->type = QuerySegment::Q_PROP_HIERARCHY;
 			$pquery->joinfield = array( $pid );
 			$query->components[$pqid] = "{$query->alias}.p_id";
-			$pquery->segmentNumber = $pqid;
 
 			$this->querySegmentListBuilder->addQuerySegment( $pquery );
 
@@ -248,7 +247,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 
 		$where = '';
 		$dataItem = $description->getDataItem();
-		$db = $this->querySegmentListBuilder->getStore()->getConnection( 'mw.db' );
+		$db = $this->querySegmentListBuilder->getStore()->getConnection( 'mw.db.queryengine' );
 
 		// TODO Better get the handle from the property type
 		// Some comparators (e.g. LIKE) could use DI values of

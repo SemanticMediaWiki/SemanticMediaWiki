@@ -3,10 +3,11 @@
 namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 
 use SMW\DIWikiPage;
-use SMW\Query\Language\ClassDescription;
+use SMW\Query\DescriptionFactory;
+use SMW\DataItemFactory;
 use SMW\SQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
-use SMW\Tests\Utils\UtilityFactory;
+use SMW\SQLStore\QueryEngineFactory;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter
@@ -24,14 +25,15 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->querySegmentValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQuerySegmentValidator();
+		$testEnvironment = new TestEnvironment();
+		$this->querySegmentValidator = $testEnvironment->getUtilityFactory()->newValidatorFactory()->newQuerySegmentValidator();
 	}
 
 	public function testCanConstruct() {
 
 		$querySegmentListBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegmentListBuilder' )
 			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+			->getMock();
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter',
@@ -68,8 +70,10 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIds ) );
 
+		$queryEngineFactory = new QueryEngineFactory( $store );
+
 		$instance = new ClassDescriptionInterpreter(
-			new QuerySegmentListBuilder( $store )
+			$queryEngineFactory->newQuerySegmentListBuilder()
 		);
 
 		$this->assertTrue(
@@ -84,9 +88,15 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	public function descriptionProvider() {
 
+		$descriptionFactory = new DescriptionFactory();
+		$dataItemFactory = new DataItemFactory();
+
 		#0
 		$pageId = 42;
-		$description = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );
+
+		$description = $descriptionFactory->newClassDescription(
+			$dataItemFactory->newDIWikiPage( 'Foo', NS_CATEGORY )
+		);
 
 		$expected = new \stdClass;
 		$expected->type = 1;
@@ -101,7 +111,10 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		#1 Empty
 		$pageId = 0;
-		$description = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );
+
+		$description = $descriptionFactory->newClassDescription(
+			$dataItemFactory->newDIWikiPage( 'Foo', NS_CATEGORY )
+		);
 
 		$expected = new \stdClass;
 		$expected->type = 2;
