@@ -68,7 +68,8 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"SMW\\": "src/"
+			"SMW\\": "src/",
+			"SMW\\Maintenance\\": "maintenance/"
 		},
 		"files" : [
 			"SemanticMediaWiki.php"

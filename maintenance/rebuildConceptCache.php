@@ -2,8 +2,6 @@
 
 namespace SMW\Maintenance;
 
-use SMW\Maintenance\ConceptCacheRebuilder;
-use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\ApplicationFactory;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
@@ -130,14 +128,16 @@ class RebuildConceptCache extends \Maintenance {
 			$maintenanceHelper->setGlobalToValue( 'wgShowDBErrorBacktrace', true );
 		}
 
-		$reporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
-		$reporter->registerReporterCallback( array( $this, 'reportMessage' ) );
+		$conceptCacheRebuilder = $maintenanceFactory->newConceptCacheRebuilder(
+			$applicationFactory->getStore(),
+			array( $this, 'reportMessage' )
+		);
 
-		$conceptCacheRebuilder = $maintenanceFactory->newConceptCacheRebuilder( $applicationFactory->getStore() );
-		$conceptCacheRebuilder->setMessageReporter( $reporter );
 		$conceptCacheRebuilder->setParameters( $this->mOptions );
 
-		$result = $this->checkForRebuildState( $conceptCacheRebuilder->rebuild() );
+		$result = $this->checkForRebuildState(
+			$conceptCacheRebuilder->rebuild()
+		);
 
 		if ( $result && $this->hasOption( 'report-runtime' ) ) {
 			$this->reportMessage( "\n" . $maintenanceHelper->transformRuntimeValuesForOutput() . "\n" );

@@ -5,6 +5,9 @@ namespace SMW\Maintenance;
 use SMW\ApplicationFactory;
 use SMW\Store;
 use SMW\Store\PropertyStatisticsStore;
+use SMW\SQLStore\PropertyStatisticsTable;
+use SMW\SQLStore\SQLStore;
+use Onoi\MessageReporter\MessageReporterFactory;
 
 /**
  * @license GNU GPL v2+
@@ -27,34 +30,83 @@ class MaintenanceFactory {
 	 * @since 2.2
 	 *
 	 * @param Store $store
+	 * @param Callable|null $reporterCallback
 	 *
 	 * @return DataRebuilder
 	 */
-	public function newDataRebuilder( Store $store ) {
-		return new DataRebuilder( $store, ApplicationFactory::getInstance()->newTitleCreator() );
+	public function newDataRebuilder( Store $store, $reporterCallback = null ) {
+
+		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
+		$messageReporter->registerReporterCallback( $reporterCallback );
+
+		$dataRebuilder = new DataRebuilder(
+			$store,
+			ApplicationFactory::getInstance()->newTitleCreator()
+		);
+
+		$dataRebuilder->setMessageReporter( $messageReporter );
+
+		return $dataRebuilder;
 	}
 
 	/**
 	 * @since 2.2
 	 *
 	 * @param Store $store
+	 * @param Callable|null $reporterCallback
 	 *
 	 * @return ConceptCacheRebuilder
 	 */
-	public function newConceptCacheRebuilder( Store $store ) {
-		return new ConceptCacheRebuilder( $store, ApplicationFactory::getInstance()->getSettings() );
+	public function newConceptCacheRebuilder( Store $store, $reporterCallback = null ) {
+
+		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
+		$messageReporter->registerReporterCallback( $reporterCallback );
+
+		$conceptCacheRebuilder = new ConceptCacheRebuilder(
+			$store,
+			ApplicationFactory::getInstance()->getSettings()
+		);
+
+		$conceptCacheRebuilder->setMessageReporter( $messageReporter );
+
+		return $conceptCacheRebuilder;
 	}
 
 	/**
 	 * @since 2.2
 	 *
 	 * @param Store $store
-	 * @param PropertyStatisticsStore $propertyStatisticsStore
+	 * @param Callable|null $reporterCallback
 	 *
 	 * @return PropertyStatisticsRebuilder
 	 */
-	public function newPropertyStatisticsRebuilder( Store $store, PropertyStatisticsStore $propertyStatisticsStore ) {
-		return new PropertyStatisticsRebuilder( $store, $propertyStatisticsStore );
+	public function newPropertyStatisticsRebuilder( Store $store, $reporterCallback = null ) {
+
+		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
+		$messageReporter->registerReporterCallback( $reporterCallback );
+
+		$propertyStatisticsTable = new PropertyStatisticsTable(
+			$store->getConnection( 'mw.db' ),
+			SQLStore::PROPERTY_STATISTICS_TABLE
+		);
+
+		$propertyStatisticsRebuilder = new PropertyStatisticsRebuilder(
+			$store,
+			$propertyStatisticsTable
+		);
+
+		$propertyStatisticsRebuilder->setMessageReporter( $messageReporter );
+
+		return $propertyStatisticsRebuilder;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return RebuildPropertyStatistics
+	 */
+	public function newRebuildPropertyStatistics() {
+		return new RebuildPropertyStatistics();
 	}
 
 }

@@ -69,8 +69,10 @@ class PropertyStatisticsRebuilder {
 			__METHOD__
 		);
 
+		$i = 0;
+
 		foreach ( $res as $row ) {
-			$this->reportMessage( '.' );
+			$this->reportMessage( ( $i++ % 60 === 0 ? "\n" : ''  ) . '.' );
 
 			$usageCount = 0;
 			foreach ( $this->store->getPropertyTables() as $propertyTable ) {
@@ -88,7 +90,7 @@ class PropertyStatisticsRebuilder {
 
 		$propCount = $res->numRows();
 		$this->store->getConnection( 'mw.db' )->freeResult( $res );
-		$this->reportMessage( "\nUpdated statistics for $propCount Properties.\n" );
+		$this->reportMessage( "\n\nUpdated statistics for $propCount Properties.\n" );
 	}
 
 	protected function getPropertyTableRowCount( $propertyTable, $id ) {

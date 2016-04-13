@@ -15,6 +15,16 @@ use SMW\Maintenance\MaintenanceFactory;
  */
 class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
 
+	private $store;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+	}
+
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
@@ -37,13 +47,9 @@ class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new MaintenanceFactory();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
 		$this->assertInstanceOf(
 			'\SMW\Maintenance\DataRebuilder',
-			$instance->newDataRebuilder( $store )
+			$instance->newDataRebuilder( $this->store )
 		);
 	}
 
@@ -51,13 +57,9 @@ class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new MaintenanceFactory();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
 		$this->assertInstanceOf(
 			'\SMW\Maintenance\ConceptCacheRebuilder',
-			$instance->newConceptCacheRebuilder( $store )
+			$instance->newConceptCacheRebuilder( $this->store )
 		);
 	}
 
@@ -65,17 +67,19 @@ class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new MaintenanceFactory();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
 		$this->assertInstanceOf(
 			'\SMW\Maintenance\PropertyStatisticsRebuilder',
-			$instance->newPropertyStatisticsRebuilder( $store, $propertyStatisticsStore )
+			$instance->newPropertyStatisticsRebuilder( $this->store )
+		);
+	}
+
+	public function testCanConstructRebuildPropertyStatistics() {
+
+		$instance = new MaintenanceFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Maintenance\RebuildPropertyStatistics',
+			$instance->newRebuildPropertyStatistics()
 		);
 	}
 
