@@ -117,6 +117,13 @@ class CodeStringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'<div class="smwpre">&lt;foo&gt;</div>'
 		);
 
+		$provider[] = array(
+			'*Foo',
+			CodeStringValueFormatter::WIKI_LONG,
+			null,
+			'<div class="smwpre"><div style="height:5em; overflow:auto;">*Foo</div></div>'
+		);
+
 		return $provider;
 	}
 

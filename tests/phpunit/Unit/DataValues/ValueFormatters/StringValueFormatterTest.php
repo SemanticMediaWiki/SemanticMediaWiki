@@ -150,6 +150,34 @@ class StringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'&lt;foo&gt;'
 		);
 
+		$provider[] = array(
+			'*Foo',
+			StringValueFormatter::WIKI_LONG,
+			null,
+			"\n" . '*Foo' . "\n"
+		);
+
+		$provider[] = array(
+			'#Foo',
+			StringValueFormatter::WIKI_LONG,
+			null,
+			"\n" . '#Foo' . "\n"
+		);
+
+		$provider[] = array(
+			':Foo',
+			StringValueFormatter::WIKI_LONG,
+			null,
+			"\n" . ':Foo' . "\n"
+		);
+
+		$provider[] = array(
+			'* Foo',
+			StringValueFormatter::HTML_LONG,
+			null,
+			"\n" . '* Foo' . "\n"
+		);
+
 		return $provider;
 	}
 
