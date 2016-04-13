@@ -89,13 +89,11 @@ class ExtraneousLanguageFileHandler {
 			include_once ( $file );
 		}
 
-		if ( !class_exists( $langClass ) ) {
-			return $this->newClassByLanguageCode( 'en' );
-		} else {
+		if ( class_exists( $langClass ) ) {
 			return new $langClass;
 		}
 
-		throw new RuntimeException( "Expected a {$file} file" );
+		return $this->newClassByLanguageCode( 'en' );
 	}
 
 }
