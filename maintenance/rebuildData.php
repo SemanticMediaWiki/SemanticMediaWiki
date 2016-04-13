@@ -2,7 +2,6 @@
 
 namespace SMW\Maintenance;
 
-use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\ApplicationFactory;
 use SMW\StoreFactory;
 use SMW\Options;
@@ -87,6 +86,7 @@ class RebuildData extends \Maintenance {
 
 		$this->addOption( 'skip-properties', 'Skip the default properties rebuild (only recommended when successive build steps are used)', false );
 		$this->addOption( 'shallow-update', 'Skip processing of entitites that compare to the last known revision date', false );
+		$this->addOption( 'with-property-statistics', 'Execute `rebuildPropertyStatistics` after the `rebuildData` run has finished.', false );
 
 		$this->addOption( 'ignore-exceptions', 'Ignore exceptions and log exception to a file', false );
 		$this->addOption( 'exception-log', 'Exception log file location (e.g. /tmp/logs/)', false, true );
@@ -132,17 +132,27 @@ class RebuildData extends \Maintenance {
 			$maintenanceHelper->setGlobalToValue( 'wgShowDBErrorBacktrace', true );
 		}
 
-		$reporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
-		$reporter->registerReporterCallback( array( $this, 'reportMessage' ) );
-
 		$store = StoreFactory::getStore( $this->hasOption( 'b' ) ? $this->getOption( 'b' ) : null );
 		$store->setUpdateJobsEnabledState( false );
 
-		$dataRebuilder = $maintenanceFactory->newDataRebuilder( $store );
-		$dataRebuilder->setMessageReporter( $reporter );
-		$dataRebuilder->setOptions( new Options( $this->mOptions ) );
+		$dataRebuilder = $maintenanceFactory->newDataRebuilder(
+			$store,
+			array( $this, 'reportMessage' )
+		);
 
-		$result = $this->checkForRebuildState( $dataRebuilder->rebuild() );
+		$dataRebuilder->setOptions(
+			new Options( $this->mOptions )
+		);
+
+		$result = $this->checkForRebuildState(
+			$dataRebuilder->rebuild()
+		);
+
+		if ( $result && $this->hasOption( 'with-property-statistics' ) ) {
+			$this->reportMessage( "---\n\n" );
+			$rebuildPropertyStatistics = $maintenanceFactory->newRebuildPropertyStatistics();
+			$rebuildPropertyStatistics->execute();
+		}
 
 		if ( $result && $this->hasOption( 'report-runtime' ) ) {
 			$this->reportMessage( "\n" . $maintenanceHelper->transformRuntimeValuesForOutput() . "\n" );
