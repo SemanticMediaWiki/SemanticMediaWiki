@@ -106,11 +106,6 @@ class QuerySegment {
 	/**
 	 * @var integer
 	 */
-	public $segmentNumber;
-
-	/**
-	 * @var integer
-	 */
 	public $queryNumber;
 
 	/**

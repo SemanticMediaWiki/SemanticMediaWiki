@@ -2,13 +2,10 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 
-use SMW\Query\Language\Conjunction;
-use SMW\Query\Language\Disjunction;
-use SMW\Query\Language\NamespaceDescription;
-use SMW\Query\Language\ThingDescription;
+use SMW\Query\DescriptionFactory;
 use SMW\SQLStore\QueryEngine\Interpreter\DisjunctionConjunctionInterpreter;
-use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
-use SMW\Tests\Utils\UtilityFactory;
+use SMW\SQLStore\QueryEngineFactory;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Interpreter\DisjunctionConjunctionInterpreter
@@ -22,11 +19,13 @@ use SMW\Tests\Utils\UtilityFactory;
 class DisjunctionConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	private $querySegmentValidator;
+	private $descriptionFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->querySegmentValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQuerySegmentValidator();
+		$testEnvironment = new TestEnvironment();
+		$this->querySegmentValidator = $testEnvironment->getUtilityFactory()->newValidatorFactory()->newQuerySegmentValidator();
 	}
 
 	public function testCanConstruct() {
@@ -44,7 +43,7 @@ class DisjunctionConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase 
 	/**
 	 * @dataProvider descriptionProvider
 	 */
-	public function testCompileDescription( $description, $expected ) {
+	public function testInterpretDescription( $description, $expected ) {
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -58,7 +57,11 @@ class DisjunctionConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase 
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new DisjunctionConjunctionInterpreter( new QuerySegmentListBuilder( $store ) );
+		$queryEngineFactory = new QueryEngineFactory( $store );
+
+		$instance = new DisjunctionConjunctionInterpreter(
+			$queryEngineFactory->newQuerySegmentListBuilder()
+		);
 
 		$this->assertTrue(
 			$instance->canInterpretDescription( $description )
@@ -72,10 +75,18 @@ class DisjunctionConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase 
 
 	public function descriptionProvider() {
 
+		$descriptionFactory = new DescriptionFactory();
+
 		#0 Disjunction
-		$description = new Disjunction();
-		$description->addDescription( new NamespaceDescription( NS_HELP ) );
-		$description->addDescription( new NamespaceDescription( NS_MAIN ) );
+		$description = $descriptionFactory->newDisjunction();
+
+		$description->addDescription(
+			$descriptionFactory->newNamespaceDescription( NS_HELP )
+		);
+
+		$description->addDescription(
+			$descriptionFactory->newNamespaceDescription( NS_MAIN )
+		);
 
 		$expectedDisjunction = new \stdClass;
 		$expectedDisjunction->type = 3;
@@ -87,9 +98,15 @@ class DisjunctionConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase 
 		);
 
 		#1 Conjunction
-		$description = new Conjunction();
-		$description->addDescription( new NamespaceDescription( NS_HELP ) );
-		$description->addDescription( new NamespaceDescription( NS_MAIN ) );
+		$description = $descriptionFactory->newConjunction();
+
+		$description->addDescription(
+			$descriptionFactory->newNamespaceDescription( NS_HELP )
+		);
+
+		$description->addDescription(
+			$descriptionFactory->newNamespaceDescription( NS_MAIN )
+		);
 
 		$expectedConjunction = new \stdClass;
 		$expectedConjunction->type = 4;
@@ -101,8 +118,11 @@ class DisjunctionConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase 
 		);
 
 		#2 No query
-		$description = new Conjunction();
-		$description->addDescription( new ThingDescription() );
+		$description = $descriptionFactory->newConjunction();
+
+		$description->addDescription(
+			$descriptionFactory->newThingDescription()
+		);
 
 		$expectedConjunction = new \stdClass;
 		$expectedConjunction->type = 0;

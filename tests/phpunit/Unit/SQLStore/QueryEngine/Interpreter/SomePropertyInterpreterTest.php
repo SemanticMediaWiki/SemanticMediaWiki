@@ -2,16 +2,11 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMW\Query\Language\Disjunction;
-use SMW\Query\Language\SomeProperty;
-use SMW\Query\Language\ThingDescription;
-use SMW\Query\Language\ValueDescription;
+use SMW\DataItemFactory;
+use SMW\Query\DescriptionFactory;
 use SMW\SQLStore\QueryEngine\Interpreter\SomePropertyInterpreter;
-use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
-use SMW\Tests\Utils\UtilityFactory;
-use SMWDIBlob as DIBlob;
+use SMW\SQLStore\QueryEngineFactory;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Interpreter\SomePropertyInterpreter
@@ -25,11 +20,17 @@ use SMWDIBlob as DIBlob;
 class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	private $querySegmentValidator;
+	private $descriptionFactory;
+	private $dataItemFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->querySegmentValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQuerySegmentValidator();
+		$this->descriptionFactory = new DescriptionFactory();
+		$this->dataItemFactory = new DataItemFactory();
+
+		$testEnvironment = new TestEnvironment();
+		$this->querySegmentValidator = $testEnvironment->getUtilityFactory()->newValidatorFactory()->newQuerySegmentValidator();
 	}
 
 	public function testCanConstruct() {
@@ -54,15 +55,19 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'findPropertyTableID' )
 			->will( $this->returnValue( '' ) );
 
-		$description = new SomeProperty(
-			new DIProperty( 'Foo' ),
-			new ThingDescription()
+		$description = $this->descriptionFactory->newSomeProperty(
+			$this->dataItemFactory->newDIProperty( 'Foo' ),
+			$this->descriptionFactory->newThingDescription()
 		);
 
 		$expected = new \stdClass;
 		$expected->type = 0;
 
-		$instance = new SomePropertyInterpreter( new QuerySegmentListBuilder( $store ) );
+		$queryEngineFactory = new QueryEngineFactory( $store );
+
+		$instance = new SomePropertyInterpreter(
+			$queryEngineFactory->newQuerySegmentListBuilder()
+		);
 
 		$this->assertTrue(
 			$instance->canInterpretDescription( $description )
@@ -96,15 +101,19 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array( 'Foo' => $proptable ) ) );
 
-		$description = new SomeProperty(
-			new DIProperty( 'Foo' ),
-			new ThingDescription()
+		$description = $this->descriptionFactory->newSomeProperty(
+			$this->dataItemFactory->newDIProperty( 'Foo' ),
+			$this->descriptionFactory->newThingDescription()
 		);
 
 		$expected = new \stdClass;
 		$expected->type = 0;
 
-		$instance = new SomePropertyInterpreter( new QuerySegmentListBuilder( $store ) );
+		$queryEngineFactory = new QueryEngineFactory( $store );
+
+		$instance = new SomePropertyInterpreter(
+			$queryEngineFactory->newQuerySegmentListBuilder()
+		);
 
 		$this->assertTrue(
 			$instance->canInterpretDescription( $description )
@@ -150,15 +159,18 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array( 'Foo' => $proptable ) ) );
 
-		$description = new SomeProperty(
+		$description = $this->descriptionFactory->newSomeProperty(
 			$property,
-			new ThingDescription()
+			$this->descriptionFactory->newThingDescription()
 		);
-
 		$expected = new \stdClass;
 		$expected->type = 0;
 
-		$instance = new SomePropertyInterpreter( new QuerySegmentListBuilder( $store ) );
+		$queryEngineFactory = new QueryEngineFactory( $store );
+
+		$instance = new SomePropertyInterpreter(
+			$queryEngineFactory->newQuerySegmentListBuilder()
+		);
 
 		$this->assertTrue(
 			$instance->canInterpretDescription( $description )
@@ -255,10 +267,14 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDataItemHandlerForDIType' )
 			->will( $this->returnValue( $dataItemHandler ) );
 
-		$querySegmentListBuilder = new QuerySegmentListBuilder( $store );
+		$queryEngineFactory = new QueryEngineFactory( $store );
+
+		$querySegmentListBuilder = $queryEngineFactory->newQuerySegmentListBuilder();
 		$querySegmentListBuilder->setSortKeys( $sortKeys );
 
-		$instance = new SomePropertyInterpreter( $querySegmentListBuilder );
+		$instance = new SomePropertyInterpreter(
+			$querySegmentListBuilder
+		);
 
 		$this->assertTrue(
 			$instance->canInterpretDescription( $description )
@@ -272,16 +288,19 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	public function descriptionProvider() {
 
+		$descriptionFactory = new DescriptionFactory();
+		$dataItemFactory = new DataItemFactory();
+
 		#0 Blob + wildcard
 		$isFixedPropertyTable = false;
 		$indexField = '';
 		$sortKeys = array();
-		$property = new DIProperty( 'Foo' );
+		$property = $dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_txt' );
 
-		$description = new SomeProperty(
+		$description = $descriptionFactory->newSomeProperty(
 			$property,
-			new ThingDescription()
+			$descriptionFactory->newThingDescription()
 		);
 
 		$expected = new \stdClass;
@@ -302,12 +321,12 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$isFixedPropertyTable = false;
 		$indexField = 'wikipageIndex';
 		$sortKeys = array();
-		$property = new DIProperty( 'Foo' );
+		$property = $dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_wpg' );
 
-		$description = new SomeProperty(
+		$description = $descriptionFactory->newSomeProperty(
 			$property,
-			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ), null, SMW_CMP_EQ )
+			$descriptionFactory->newValueDescription( $dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN ), null, SMW_CMP_EQ )
 		);
 
 		$expected = new \stdClass;
@@ -330,12 +349,12 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$isFixedPropertyTable = false;
 		$indexField = 'wikipageIndex';
 		$sortKeys = array( 'Foo' => 'DESC' );
-		$property = new DIProperty( 'Foo' );
+		$property = $dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_wpg' );
 
-		$description = new SomeProperty(
+		$description = $descriptionFactory->newSomeProperty(
 			$property,
-			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ), null, SMW_CMP_EQ )
+			$descriptionFactory->newValueDescription( $dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN ), null, SMW_CMP_EQ )
 		);
 
 		$expected = new \stdClass;
@@ -359,12 +378,12 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$isFixedPropertyTable = false;
 		$indexField = 'blobIndex';
 		$sortKeys = array();
-		$property = new DIProperty( 'Foo' );
+		$property = $dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_txt' );
 
-		$description = new SomeProperty(
+		$description = $descriptionFactory->newSomeProperty(
 			$property,
-			new ValueDescription( new DIBlob( 'Bar' ), null, SMW_CMP_EQ )
+			$descriptionFactory->newValueDescription( $dataItemFactory->newDIBlob( 'Bar' ), null, SMW_CMP_EQ )
 		);
 
 		$expected = new \stdClass;
@@ -387,12 +406,12 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$isFixedPropertyTable = false;
 		$indexField = 'blobIndex';
 		$sortKeys = array( 'Foo' => 'ASC' );
-		$property = new DIProperty( 'Foo' );
+		$property = $dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_txt' );
 
-		$description = new SomeProperty(
+		$description = $descriptionFactory->newSomeProperty(
 			$property,
-			new ValueDescription( new DIBlob( 'Bar' ), null, SMW_CMP_EQ )
+			$descriptionFactory->newValueDescription( $dataItemFactory->newDIBlob( 'Bar' ), null, SMW_CMP_EQ )
 		);
 
 		$expected = new \stdClass;
@@ -416,7 +435,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$isFixedPropertyTable = false;
 		$indexField = 'blobIndex';
 		$sortKeys = array();
-		$property = new DIProperty( 'Foo' );
+		$property = $dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_txt' );
 
 		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
@@ -430,13 +449,13 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$valueDescription->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( new DIBlob( '13,56' ) ) );
+			->will( $this->returnValue( $dataItemFactory->newDIBlob( '13,56' ) ) );
 
 		$valueDescription->expects( $this->once() )
 			->method( 'getSQLCondition' )
 			->will( $this->returnValue( 'foo AND bar' ) );
 
-		$description = new SomeProperty(
+		$description = $descriptionFactory->newSomeProperty(
 			$property,
 			$valueDescription
 		);
@@ -462,14 +481,14 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$isFixedPropertyTable = false;
 		$indexField = '';
 		$sortKeys = array();
-		$property = new DIProperty( 'Foo' );
+		$property = $dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_txt' );
 
-		$description = new SomeProperty(
+		$description = $descriptionFactory->newSomeProperty(
 			$property,
-			new Disjunction( array(
-				new ValueDescription( new DIBlob( 'Bar' ) ),
-				new ValueDescription( new DIBlob( 'Baz' ) )
+			$descriptionFactory->newDisjunction( array(
+				$descriptionFactory->newValueDescription( $dataItemFactory->newDIBlob( 'Bar' ) ),
+				$descriptionFactory->newValueDescription( $dataItemFactory->newDIBlob( 'Baz' ) )
 			) )
 		);
 

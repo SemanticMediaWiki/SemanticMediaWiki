@@ -80,7 +80,6 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 			$query->joinTable = $this->querySegmentListBuilder->getStore()->findPropertyTableID( new DIProperty( '_INST' ) );
 			$query->joinfield = "$query->alias.s_id";
 			$query->components[$cqid] = "$query->alias.o_id";
-			$cquery->segmentNumber = $cqid;
 
 			$this->querySegmentListBuilder->addQuerySegment( $cquery );
 		}

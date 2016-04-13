@@ -2,12 +2,11 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 
-use SMW\DIWikiPage;
-use SMW\Query\Language\ValueDescription;
+use SMW\DataItemFactory;
+use SMW\Query\DescriptionFactory;
 use SMW\SQLStore\QueryEngine\Interpreter\ValueDescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
-use SMW\Tests\Utils\UtilityFactory;
-use SMWDIBlob as DIBlob;
+use SMW\SQLStore\QueryEngineFactory;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Interpreter\ValueDescriptionInterpreter
@@ -21,11 +20,17 @@ use SMWDIBlob as DIBlob;
 class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	private $querySegmentValidator;
+	private $descriptionFactory;
+	private $dataItemFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->querySegmentValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQuerySegmentValidator();
+		$this->descriptionFactory = new DescriptionFactory();
+		$this->dataItemFactory = new DataItemFactory();
+
+		$testEnvironment = new TestEnvironment();
+		$this->querySegmentValidator = $testEnvironment->getUtilityFactory()->newValidatorFactory()->newQuerySegmentValidator();
 	}
 
 	public function testCanConstruct() {
@@ -43,7 +48,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider descriptionProvider
 	 */
-	public function testCompileDescription( $description, $expected ) {
+	public function testInterpretDescription( $description, $expected ) {
 
 		$objectIds = $this->getMockBuilder( '\stdClass' )
 			->setMethods( array( 'getSMWPageID' ) )
@@ -73,7 +78,11 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIds ) );
 
-		$instance = new ValueDescriptionInterpreter( new QuerySegmentListBuilder( $store ) );
+		$queryEngineFactory = new QueryEngineFactory( $store );
+
+		$instance = new ValueDescriptionInterpreter(
+			$queryEngineFactory->newQuerySegmentListBuilder()
+		);
 
 		$this->assertTrue(
 			$instance->canInterpretDescription( $description )
@@ -87,8 +96,13 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	public function descriptionProvider() {
 
+		$descriptionFactory = new DescriptionFactory();
+		$dataItemFactory = new DataItemFactory();
+
 		#0 SMW_CMP_EQ
-		$description = new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ );
+		$description = $descriptionFactory->newValueDescription(
+			$dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ
+		);
 
 		$expected = new \stdClass;
 		$expected->type = 2;
@@ -101,7 +115,9 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		#1 SMW_CMP_LEQ
-		$description = new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_LEQ );
+		$description = $descriptionFactory->newValueDescription(
+			$dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_LEQ
+		);
 
 		$expected = new \stdClass;
 		$expected->type = 1;
@@ -115,7 +131,9 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		#2 SMW_CMP_LIKE
-		$description = new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_LIKE );
+		$description = $descriptionFactory->newValueDescription(
+			$dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_LIKE
+		);
 
 		$expected = new \stdClass;
 		$expected->type = 1;
@@ -129,7 +147,9 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		#3 not a DIWikiPage
-		$description = new ValueDescription( new DIBLob( 'Foo' ) );
+		$description = $descriptionFactory->newValueDescription(
+			$dataItemFactory->newDIBLob( 'Foo' )
+		);
 
 		$expected = new \stdClass;
 		$expected->type = 1;

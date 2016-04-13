@@ -14,11 +14,6 @@ use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
 use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
 use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
 use SMW\SQLStore\QueryEngine\ConceptQueryResolver;
-use SMW\SQLStore\QueryEngine\EngineOptions;
-use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
-use SMW\SQLStore\QueryEngine\QueryEngine;
-use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
-use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
 use SMWRequestOptions as RequestOptions;
 use SMWSQLStore3;
 
@@ -39,6 +34,11 @@ class SQLStoreFactory {
 	private $settings;
 
 	/**
+	 * @var QueryEngineFactory
+	 */
+	private $queryEngineFactory;
+
+	/**
 	 * @since 2.2
 	 *
 	 * @param SMWSQLStore3 $store
@@ -46,6 +46,7 @@ class SQLStoreFactory {
 	public function __construct( SMWSQLStore3 $store ) {
 		$this->store = $store;
 		$this->settings = ApplicationFactory::getInstance()->getSettings();
+		$this->queryEngineFactory = new QueryEngineFactory( $store );
 	}
 
 	/**
@@ -54,34 +55,7 @@ class SQLStoreFactory {
 	 * @return QueryEngine
 	 */
 	public function newMasterQueryEngine() {
-
-		$hierarchyTempTableBuilder = new HierarchyTempTableBuilder(
-			$this->store->getConnection( 'mw.db' ),
-			$this->newTemporaryIdTableCreator()
-		);
-
-		$hierarchyTempTableBuilder->setPropertyHierarchyTableDefinition(
-			$this->store->findPropertyTableID( new DIProperty( '_SUBP' ) ),
-			$GLOBALS['smwgQSubpropertyDepth']
-		);
-
-		$hierarchyTempTableBuilder->setClassHierarchyTableDefinition(
-			$this->store->findPropertyTableID( new DIProperty( '_SUBC' ) ),
-			$GLOBALS['smwgQSubcategoryDepth']
-		);
-
-		$querySegmentListProcessor = new QuerySegmentListProcessor(
-			$this->store->getConnection( 'mw.db' ),
-			$this->newTemporaryIdTableCreator(),
-			$hierarchyTempTableBuilder
-		);
-
-		return new QueryEngine(
-			$this->store,
-			new QuerySegmentListBuilder( $this->store ),
-			$querySegmentListProcessor,
-			new EngineOptions()
-		);
+		return $this->queryEngineFactory->newQueryEngine();
 	}
 
 	/**
@@ -90,7 +64,7 @@ class SQLStoreFactory {
 	 * @return QueryEngine
 	 */
 	public function newSlaveQueryEngine() {
-		return $this->newMasterQueryEngine();
+		return $this->queryEngineFactory->newQueryEngine();
 	}
 
 	/**
@@ -355,8 +329,5 @@ class SQLStoreFactory {
 		return $propertyStatisticsTable;
 	}
 
-	private function newTemporaryIdTableCreator() {
-		return new TemporaryIdTableCreator( $GLOBALS['wgDBtype'] );
-	}
 
 }

@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 
-use SMW\Query\Language\NamespaceDescription;
+use SMW\Query\DescriptionFactory;
 use SMW\SQLStore\QueryEngine\Interpreter\NamespaceDescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
-use SMW\Tests\Utils\UtilityFactory;
+use SMW\SQLStore\QueryEngineFactory;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Interpreter\NamespaceDescriptionInterpreter
@@ -19,11 +19,15 @@ use SMW\Tests\Utils\UtilityFactory;
 class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	private $querySegmentValidator;
+	private $descriptionFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->querySegmentValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQuerySegmentValidator();
+		$this->descriptionFactory = new DescriptionFactory();
+
+		$testEnvironment = new TestEnvironment();
+		$this->querySegmentValidator = $testEnvironment->getUtilityFactory()->newValidatorFactory()->newQuerySegmentValidator();
 	}
 
 	public function testCanConstruct() {
@@ -38,7 +42,7 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCompileDescription() {
+	public function testInterpretDescription() {
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -52,17 +56,23 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$querySegmentListBuilder = new QuerySegmentListBuilder( $store );
+		$queryEngineFactory = new QueryEngineFactory( $store );
 
-		$description = new NamespaceDescription( NS_HELP );
+		$description = $this->descriptionFactory->newNamespaceDescription(
+			NS_HELP
+		);
 
 		$expected = new \stdClass;
 		$expected->type = 1;
 		$expected->where = "t0.smw_namespace=";
 
-		$instance = new NamespaceDescriptionInterpreter( $querySegmentListBuilder );
+		$instance = new NamespaceDescriptionInterpreter(
+			$queryEngineFactory->newQuerySegmentListBuilder()
+		);
 
-		$this->assertTrue( $instance->canInterpretDescription( $description ) );
+		$this->assertTrue(
+			$instance->canInterpretDescription( $description )
+		);
 
 		$this->querySegmentValidator->assertThatContainerHasProperties(
 			$expected,

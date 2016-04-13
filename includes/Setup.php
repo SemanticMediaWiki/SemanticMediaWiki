@@ -108,6 +108,12 @@ final class Setup {
 			'mw.db',
 			$mwCollaboratorFactory->newMediaWikiDatabaseConnectionProvider()
 		);
+
+		// Connection can be used to redirect queries to another DB cluster
+		$connectionManager->registerConnectionProvider(
+			'mw.db.queryengine',
+			$mwCollaboratorFactory->newMediaWikiDatabaseConnectionProvider()
+		);
 	}
 
 	private function registerMessageCallbackHandler() {

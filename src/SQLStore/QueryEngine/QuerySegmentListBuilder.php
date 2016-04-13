@@ -6,14 +6,6 @@ use InvalidArgumentException;
 use OutOfBoundsException;
 use SMW\CircularReferenceGuard;
 use SMW\Query\Language\Description;
-use SMW\SQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\Interpreter\ConceptDescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\Interpreter\DisjunctionConjunctionInterpreter;
-use SMW\SQLStore\QueryEngine\Interpreter\DispatchingDescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\Interpreter\NamespaceDescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\Interpreter\SomePropertyInterpreter;
-use SMW\SQLStore\QueryEngine\Interpreter\ThingDescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\Interpreter\ValueDescriptionInterpreter;
 use SMW\Store;
 
 /**
@@ -30,6 +22,11 @@ class QuerySegmentListBuilder {
 	 * @var Store
 	 */
 	private $store;
+
+	/**
+	 * @var DispatchingDescriptionInterpreter
+	 */
+	private $dispatchingDescriptionInterpreter = null;
 
 	/**
 	 * Array of generated QueryContainer query descriptions (index => object).
@@ -58,32 +55,18 @@ class QuerySegmentListBuilder {
 	private $lastQuerySegmentId = -1;
 
 	/**
-	 * @var DispatchingDescriptionInterpreter
-	 */
-	private $dispatchingDescriptionInterpreter = null;
-
-	/**
 	 * @since 2.2
 	 *
 	 * @param Store $store
+	 * @param DescriptionInterpreterFactory $descriptionInterpreterFactory
 	 */
-	public function __construct( Store $store ) {
+	public function __construct( Store $store, DescriptionInterpreterFactory $descriptionInterpreterFactory ) {
 		$this->store = $store;
-
-		QuerySegment::$qnum = 0;
-
-		$this->dispatchingDescriptionInterpreter = new DispatchingDescriptionInterpreter();
-		$this->dispatchingDescriptionInterpreter->addDefaultInterpreter( new ThingDescriptionInterpreter( $this ) );
-
-		$this->dispatchingDescriptionInterpreter->addInterpreter( new SomePropertyInterpreter( $this ) );
-		$this->dispatchingDescriptionInterpreter->addInterpreter( new DisjunctionConjunctionInterpreter( $this ) );
-		$this->dispatchingDescriptionInterpreter->addInterpreter( new NamespaceDescriptionInterpreter( $this ) );
-		$this->dispatchingDescriptionInterpreter->addInterpreter( new ClassDescriptionInterpreter( $this ) );
-		$this->dispatchingDescriptionInterpreter->addInterpreter( new ValueDescriptionInterpreter( $this ) );
-		$this->dispatchingDescriptionInterpreter->addInterpreter( new ConceptDescriptionInterpreter( $this ) );
-
+		$this->dispatchingDescriptionInterpreter = $descriptionInterpreterFactory->newDispatchingDescriptionInterpreter( $this );
 		$this->circularReferenceGuard = new CircularReferenceGuard( 'sql-query' );
 		$this->circularReferenceGuard->setMaxRecursionDepth( 2 );
+
+		QuerySegment::$qnum = 0;
 	}
 
 	/**
@@ -162,7 +145,7 @@ class QuerySegmentListBuilder {
 	 * @param QuerySegment $query
 	 */
 	public function addQuerySegment( QuerySegment $query ) {
-		$this->querySegments[$query->segmentNumber] = $query;
+		$this->querySegments[$query->queryNumber] = $query;
 	}
 
 	/**
@@ -204,11 +187,11 @@ class QuerySegmentListBuilder {
 	 */
 	public function buildQuerySegmentFor( Description $description ) {
 
-		$query = $this->dispatchingDescriptionInterpreter->interpretDescription( $description );
+		$querySegment = $this->dispatchingDescriptionInterpreter->interpretDescription(
+			$description
+		);
 
-		$this->registerQuerySegment( $query );
-
-		$this->lastQuerySegmentId = $query->type === QuerySegment::Q_NOQUERY ? -1 : $query->queryNumber;
+		$this->lastQuerySegmentId = $this->registerQuerySegment( $querySegment );
 
 		return $this->lastQuerySegmentId;
 	}
@@ -222,10 +205,8 @@ class QuerySegmentListBuilder {
 	 */
 	private function registerQuerySegment( QuerySegment $query ) {
 		if ( $query->type === QuerySegment::Q_NOQUERY ) {
-			return;
+			return -1;
 		}
-
-		$query->segmentNumber = $query->queryNumber;
 
 		$this->addQuerySegment( $query );
 
@@ -237,6 +218,8 @@ class QuerySegmentListBuilder {
 				$query->sortfields = array_merge( $this->findQuerySegment( $cid )->sortfields, $query->sortfields );
 			}
 		}
+
+		return $query->queryNumber;
 	}
 
 }

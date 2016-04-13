@@ -53,10 +53,12 @@ class NamespaceDescriptionInterpreter implements DescriptionInterpreter {
 	 */
 	public function interpretDescription( Description $description ) {
 
+		$db = $this->querySegmentListBuilder->getStore()->getConnection( 'mw.db.queryengine' );
+
 		$query = new QuerySegment();
 		$query->joinTable = SMWSql3SmwIds::TABLE_NAME;
 		$query->joinfield = "$query->alias.smw_id";
-		$query->where = "$query->alias.smw_namespace=" . $this->querySegmentListBuilder->getStore()->getConnection( 'mw.db' )->addQuotes( $description->getNamespace() );
+		$query->where = "$query->alias.smw_namespace=" . $db->addQuotes( $description->getNamespace() );
 
 		return $query;
 	}

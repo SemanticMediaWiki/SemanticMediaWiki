@@ -155,7 +155,7 @@ class QueryEngine {
 			return new QueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->store, true );
 		}
 
-		$db = $this->store->getConnection( 'mw.db' );
+		$db = $this->store->getConnection( 'mw.db.queryengine' );
 
 		$this->queryMode = $query->querymode;
 		$this->querySegmentList = array();
@@ -280,7 +280,7 @@ class QueryEngine {
 
 	private function doPrepareDebugQueryResult( $qobj, $sqlOptions, &$entries ) {
 
-		$db = $this->store->getConnection();
+		$db = $this->store->getConnection( 'mw.db.queryengine' );
 		list( $startOpts, $useIndex, $tailOpts ) = $db->makeSelectOptions( $sqlOptions );
 
 		$entries['SQL Query'] =
@@ -354,7 +354,7 @@ class QueryEngine {
 			return 0;
 		}
 
-		$db = $this->store->getConnection( 'mw.db' );
+		$db = $this->store->getConnection( 'mw.db.queryengine' );
 
 		$sql_options = array( 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() );
 
@@ -395,9 +395,9 @@ class QueryEngine {
 	 * @return QueryResult
 	 */
 	private function getInstanceQueryResult( Query $query, $rootid ) {
-		global $wgDBtype;
 
-		$db = $this->store->getConnection();
+		$db = $this->store->getConnection( 'mw.db.queryengine' );
+		$dbType = $db->getType();
 
 		$qobj = $this->querySegmentList[$rootid];
 
@@ -414,7 +414,7 @@ class QueryEngine {
 		$res = $db->select(
 			$db->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from,
 			"DISTINCT $qobj->alias.smw_id AS id,$qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns,$qobj->alias.smw_iw AS iw,$qobj->alias.smw_subobject AS so,$qobj->alias.smw_sortkey AS sortkey" .
-			  ( $wgDBtype == 'postgres' ? ( ( $sortfields ? ',' : '' ) . $sortfields ) : '' ),
+			  ( $dbType == 'postgres' ? ( ( $sortfields ? ',' : '' ) . $sortfields ) : '' ),
 			$qobj->where,
 			__METHOD__,
 			$sql_options
@@ -504,7 +504,7 @@ class QueryEngine {
 
 	private function applyExtraWhereCondition( $qid ) {
 
-		$db = $this->store->getConnection();
+		$db = $this->store->getConnection( 'mw.db.queryengine' );
 
 		if ( !isset( $this->querySegmentList[$qid] ) ) {
 			return null;
@@ -587,6 +587,7 @@ class QueryEngine {
 		// Build ORDER BY options using discovered sorting fields.
 		if ( $this->engineOptions->get( 'smwgQSortingSupport' ) ) {
 			$qobj = $this->querySegmentList[$rootId];
+			$type = $this->store->getConnection( 'mw.db.queryengine' )->getType();
 
 			foreach ( $this->sortKeys as $propkey => $order ) {
 
@@ -597,7 +598,7 @@ class QueryEngine {
 				// #835
 				// SELECT DISTINCT and ORDER BY RANDOM causes an issue for postgres
 				// Disable RANDOM support for postgres
-				if ( $this->store->getConnection()->getType() === 'postgres' ) {
+				if ( $type === 'postgres' ) {
 					$this->engineOptions->set( 'smwgQRandSortingSupport', false );
 				}
 
