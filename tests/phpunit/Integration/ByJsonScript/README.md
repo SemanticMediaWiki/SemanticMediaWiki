@@ -1,5 +1,5 @@
 ## Fixtures
-Contains 108 files:
+Contains 109 files:
 
 ### F
 * [f-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0001.json) Test format=debug output
@@ -12,6 +12,7 @@ Contains 108 files:
 * [f-0204.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0204.json) Test `format=table` on `_qty` for different positional unit preference (#1329, en)
 * [f-0205.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0205.json) Test `format=table` on `|+align=`/`|+limit`/`|+order` extra printout parameters (T18571, en)
 * [f-0206.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0206.json) Test `format=table` to display extra property description `_PDESC` (en)
+* [f-0207.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0207.json) Test `format=table` on formatted indent when using */#/: (en)
 * [f-0301.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0301.json) Test format=category with template usage (#699, en, skip postgres)
 * [f-0302.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0302.json) Test format=category and defaultsort (#699, en)
 * [f-0303.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0303.json) Test `format=category` sort output using a template and DEFAULTSORT (#1459, en)
@@ -48,7 +49,7 @@ Contains 108 files:
 * [p-0414.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0414.json) Test in-text annotation/free format for `_dat` datatype (#1389, en)
 * [p-0415.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0415.json) Test in-text annotation on `_tem` with display unit preference (en)
 * [p-0416.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0416.json) Test in-text annotation with DISPLAYTITLE (#1410, `wgRestrictDisplayTitle`, en)
-* [p-0417.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0417.json) Test in-text annotation for `Allows pattern` to match regular expressions (en, skip-on postgres)
+* [p-0417.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0417.json) Test in-text annotation for `Allows pattern` to match regular expressions (en)
 * [p-0418.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0418.json) Test in-text annotation using `_SERV` as provide service links (en)
 * [p-0419.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0419.json) Test in-text annotation for `PRUC` to validate uniqueness
 * [p-0420.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0420.json) Test in-text annotation for `_dat` using JL/GR annotated values (en)
@@ -117,6 +118,6 @@ Contains 108 files:
 ### S
 * [s-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0001.json) Test output of `Special:Properties` (en, skip-on sqlite, 1.19)
 * [s-0002.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0002.json) Test output of `Special:SearchByProperty` (en, skip-on sqlite, 1.19)
-* [s-0003.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0003.json) Test `Special:Ask` output for `format=rdf`/'format=json' (#1453)
+* [s-0003.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0003.json) Test `Special:Ask` output for `format=rdf`/'format=json' (#1453, en, skip-on 1.19)
 
--- Last updated on 2016-04-05 by `readmeContentsBuilder.php`
+-- Last updated on 2016-04-12 by `readmeContentsBuilder.php`

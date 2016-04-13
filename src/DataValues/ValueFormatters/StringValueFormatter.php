@@ -63,6 +63,12 @@ class StringValueFormatter extends DataValueFormatter {
 		$abbreviate = $type === self::WIKI_LONG || $type === self::HTML_LONG;
 		$text = $this->dataValue->getDataItem()->getString() ;
 
+		// Appease the MW parser to correctly apply formatting on the
+		// first indent
+		if ( $text !== '' && ( $text{0} === '*' || $text{0} === '#' || $text{0} === ':' ) ) {
+			$text = "\n" . $text . "\n";
+		}
+
 		if ( $type === self::HTML_SHORT || $type === self::HTML_LONG ) {
 			$text = smwfXMLContentEncode( $text );
 		}

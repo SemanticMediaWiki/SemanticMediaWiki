@@ -73,7 +73,7 @@
 			}
 		},
 		{
-			"about": "#1",
+			"about": "#1 (: as leading text element to be converted to an indent)",
 			"subject": "Double-double-colon",
 			"store": {
 				"semantic-data": {
@@ -85,7 +85,7 @@
 			},
 			"expected-output": {
 				"to-contain": [
-					":Text/::Foo:Bar",
+					"<dd>Text/::Foo:Bar",
 					"http://example.org/:::Foo:Bar"
 				]
 			}
