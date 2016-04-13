@@ -74,14 +74,14 @@ class XsdValueMapperTest extends \PHPUnit_Framework_TestCase {
 		#3
 		$provider[] = array(
 			new \SMWDITime( 1, '1970' ),
-			'1970Z',
+			'1970',
 			'gYear'
 		);
 
 		#4
 		$provider[] = array(
 			new \SMWDITime( 1, '1970', '12' ),
-			'1970-12Z',
+			'1970-12',
 			'gYearMonth'
 		);
 
