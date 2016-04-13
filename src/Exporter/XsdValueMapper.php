@@ -48,8 +48,7 @@ class XsdValueMapper {
 			$this->parseToStringValue( $dataItem );
 		} elseif ( $dataItem instanceof DITime && $dataItem->getCalendarModel() === DITime::CM_GREGORIAN ) {
 			$this->parseToTimeValueForGregorianCalendarModel( $dataItem );
-		}
-		else {
+		} else {
 			throw new RuntimeException( "Cannot match the dataItem of type " . $dataItem->getDIType() );
 		}
 	}
@@ -110,10 +109,16 @@ class XsdValueMapper {
 						sprintf( "%02d", $dataItem->getMinute()) . ':' .
 						sprintf( "%02d", $dataItem->getSecond() );
 				}
+
+				// https://www.w3.org/TR/2005/NOTE-timezone-20051013/
+				// "Time zone identification in the date and time types relies
+				// entirely on time zone offset from UTC."
+				// Zone offset Z indicates UTC
+				$xsdvalue .= 'Z';
 			}
 		}
 
-		$this->xsdValue = $xsdvalue .= 'Z';
+		$this->xsdValue = $xsdvalue;
 		$this->xsdType = $xsdtype;
 	}
 
