@@ -12,7 +12,7 @@ Not a release yet.
 
 ## New features and enhancements
 
-* #498 Extended `rebuildData.php` to remove outdated enitity references (see `PropertyTableOutdatedReferenceDisposer`)
+* #498 Extended `rebuildData.php` to remove outdated enitity references (see `PropertyTableIdReferenceDisposer`)
 * #1243 Make failed queries discoverable
 * #1246 Added support for `~`/`!~` on single value queries
 * #1267 Added the `browseByProperty` API module to fetch a property list or individual properties via the WebAPI
@@ -42,6 +42,7 @@ Not a release yet.
 * #1463 Added support for the [`Has uniqueness constraint`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_uniqueness_constraint) property trait
 * #1474 ...
 * #1483 Added statistics about [outdated entities](https://www.semantic-mediawiki.org/wiki/Help:Outdated_entities)
+* #1513 `StringValueFormatter` to add `\n` on the first text element if it contains `*/#/:` 
 
 ## Bug fixes
 
