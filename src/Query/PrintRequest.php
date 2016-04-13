@@ -4,8 +4,9 @@ namespace SMW\Query;
 
 use InvalidArgumentException;
 use SMWDataValue;
-use SMWPropertyValue;
+use SMWPropertyValue as PropertyValue;
 use Title;
+use SMW\Localizer;
 
 /**
  * Container class for request for printout, as used in queries to
@@ -52,7 +53,7 @@ class PrintRequest {
 		if ( ( ( $mode == self::PRINT_CATS || $mode == self::PRINT_THIS ) &&
 				!is_null( $data ) ) ||
 			( $mode == self::PRINT_PROP &&
-				( !( $data instanceof SMWPropertyValue ) || !$data->isValid() ) ) ||
+				( !( $data instanceof PropertyValue ) || !$data->isValid() ) ) ||
 			( $mode == self::PRINT_CCAT &&
 				!( $data instanceof Title ) )
 		) {
@@ -143,7 +144,7 @@ class PrintRequest {
 
 	/**
 	 * Return additional data related to the print request. The result might be
-	 * an object of class SMWPropertyValue or Title, or simply NULL if no data
+	 * an object of class PropertyValue or Title, or simply NULL if no data
 	 * is required for the given type of printout.
 	 */
 	public function getData() {
@@ -307,6 +308,94 @@ class PrintRequest {
 		if ( $this->m_data instanceof SMWDataValue ) {
 			$this->m_data->setCaption( $label );
 		}
+	}
+
+	/**
+	 * Create an PrintRequest object from a string description as one
+	 * would normally use in #ask and related inputs. The string must start
+	 * with a "?" and may contain label and formatting parameters after "="
+	 * or "#", respectively. However, further parameters, given in #ask by
+	 * "|+param=value" are not allowed here; they must be added
+	 * individually.
+	 *
+	 * @since 2.4
+	 *
+	 * @param string $text
+	 * @param $showMode = false
+	 *
+	 * @return PrintRequest|null
+	 */
+	public static function newFromText( $text, $showMode = false ) {
+
+		list( $parts, $propparts, $printRequestLabel ) = self::doSplitText( $text );
+		$data = null;
+
+		if ( $printRequestLabel === '' ) { // print "this"
+			$printmode = PrintRequest::PRINT_THIS;
+			$label = ''; // default
+		} elseif ( self::isCategory( $printRequestLabel ) ) { // print categories
+			$printmode = PrintRequest::PRINT_CATS;
+			$label = $showMode ? '' : Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY ); // default
+		} else { // print property or check category
+			$title = Title::newFromText( $printRequestLabel, SMW_NS_PROPERTY ); // trim needed for \n
+			if ( is_null( $title ) ) { // not a legal property/category name; give up
+				return null;
+			}
+
+			if ( $title->getNamespace() == NS_CATEGORY ) {
+				$printmode = PrintRequest::PRINT_CCAT;
+				$data = $title;
+				$label = $showMode ? '' : $title->getText();  // default
+			} else { // enforce interpretation as property (even if it starts with something that looks like another namespace)
+				$printmode = PrintRequest::PRINT_PROP;
+				$data = PropertyValue::makeUserProperty( $printRequestLabel );
+				if ( !$data->isValid() ) { // not a property; give up
+					return null;
+				}
+				$label = $showMode ? '' : $data->getWikiValue();  // default
+			}
+		}
+
+		if ( count( $propparts ) == 1 ) { // no outputformat found, leave empty
+			$propparts[] = false;
+		} elseif ( trim( $propparts[1] ) === '' ) { // "plain printout", avoid empty string to avoid confusions with "false"
+			$propparts[1] = '-';
+		}
+
+		if ( count( $parts ) > 1 ) { // label found, use this instead of default
+			$label = trim( $parts[1] );
+		}
+
+		try {
+			return new PrintRequest( $printmode, $label, $data, trim( $propparts[1] ) );
+		} catch ( InvalidArgumentException $e ) { // something still went wrong; give up
+			return null;
+		}
+	}
+
+	private static function isCategory( $text ) {
+		return Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY ) == mb_convert_case( $text, MB_CASE_TITLE ) ||
+		$text == 'Category';
+	}
+
+	private static function doSplitText( $text ) {
+		// 1464
+		// Temporary encode "=" within a <> entity (<span>...</span>)
+		$text = preg_replace_callback( "/(<(.*?)>(.*?)>)/u", function( $matches ) {
+			foreach ( $matches as $match ) {
+				return str_replace( array( '=' ), array( '-3D' ), $match );
+			}
+		}, $text );
+
+		$parts = explode( '=', $text, 2 );
+
+		// Restore temporary encoding
+		$parts[0] = str_replace( array( '-3D' ), array( '=' ), $parts[0] );
+
+		$propparts = explode( '#', $parts[0], 2 );
+		$printRequestLabel = trim( $propparts[0] );
+
+		return array( $parts, $propparts, $printRequestLabel );
 	}
 
 }

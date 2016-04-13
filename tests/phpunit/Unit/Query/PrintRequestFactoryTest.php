@@ -24,10 +24,13 @@ class PrintRequestFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testPropertyPrintRequest() {
+	public function testCanConstructPrintRequestFromProperty() {
 
 		$instance = new PrintRequestFactory();
-		$printRequest = $instance->newPropertyPrintRequest( new DIProperty( 'Foo' ) );
+
+		$printRequest = $instance->newPrintRequestByProperty(
+			new DIProperty( 'Foo' )
+		);
 
 		$this->assertInstanceOf(
 			'\SMW\Query\PrintRequest',
@@ -37,6 +40,34 @@ class PrintRequestFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			'Foo',
 			$printRequest->getLabel()
+		);
+	}
+
+	public function testCanConstructPrintRequestFromText() {
+
+		$instance = new PrintRequestFactory();
+
+		$printRequest = $instance->newPrintRequestFromText(
+			'Foo'
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\Query\PrintRequest',
+			$printRequest
+		);
+	}
+
+	public function testPrintRequestFromTextToReturnNullOnInvalidText() {
+
+		$instance = new PrintRequestFactory();
+
+		$printRequest = $instance->newPrintRequestFromText(
+			'--[[Foo',
+			false
+		);
+
+		$this->assertNull(
+			$printRequest
 		);
 	}
 

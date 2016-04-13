@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Serializers;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItemFactory;
 use SMW\Serializers\QueryResultSerializer;
 use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
 use SMW\Tests\Utils\Mock\MediaWikiMockObjectRepository;
 use SMW\Tests\Utils\Mock\MockObjectBuilder;
 use SMWDataItem as DataItem;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Serializers\QueryResultSerializer
@@ -20,6 +20,21 @@ use SMWDataItem as DataItem;
  * @author mwjames
  */
 class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
+
+	private $testEnvironment;
+	private $dataItemFactory;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->testEnvironment = new TestEnvironment();
+		$this->dataItemFactory = new DataItemFactory();
+	}
+
+	protected function tearDown() {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
+	}
 
 	public function testCanConstructor() {
 
@@ -64,11 +79,11 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( array( new DIProperty( 'Foobar' ) ) ) );
+			->will( $this->returnValue( array( $this->dataItemFactory->newDIProperty( 'Foobar' ) ) ) );
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array( new DIWikiPage( 'Bar', NS_MAIN ) ) ) );
+			->will( $this->returnValue( array( $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN ) ) ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -80,9 +95,9 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->at( 1 ) )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array( new \SMWDIBlob( 'BarList1;BarList2' ) ) ) );
+			->will( $this->returnValue( array( $this->dataItemFactory->newDIBlob( 'BarList1;BarList2' ) ) ) );
 
-		\SMW\ApplicationFactory::getInstance()->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$property = \SMW\DIProperty::newFromUserLabel( 'Foo' );
 		$property->setPropertyTypeId( '_rec' );
@@ -91,7 +106,7 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 
 		$serialization = QueryResultSerializer::getSerialization(
 			\SMW\DIWikiPage::newFromText( 'ABC' ),
-			$printRequestFactory->newPropertyPrintRequest( $property )
+			$printRequestFactory->newPrintRequestByProperty( $property )
 		);
 
 		$expected = array(
@@ -113,8 +128,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 			$expected,
 			$serialization
 		);
-
-		\SMW\ApplicationFactory::getInstance()->clear();
 	}
 
 	public function testSerializeFormatForTimeValue() {
@@ -126,7 +139,7 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 
 		$serialization = QueryResultSerializer::getSerialization(
 			\SMWDITime::doUnserialize( '2/1393/1/1' ),
-			$printRequestFactory->newPropertyPrintRequest( $property )
+			$printRequestFactory->newPrintRequestByProperty( $property )
 		);
 
 		$expected = array(
