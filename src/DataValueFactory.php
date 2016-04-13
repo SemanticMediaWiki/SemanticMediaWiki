@@ -37,11 +37,6 @@ class DataValueFactory {
 	private $dataTypeRegistry = null;
 
 	/**
-	 * @var ValueConstraintValidator
-	 */
-	private $valueConstraintValidator = null;
-
-	/**
 	 * @since 1.9
 	 *
 	 * @param DataTypeRegistry|null $dataTypeRegistry

@@ -44,11 +44,6 @@ class DistinctEntityDataRebuilder {
 	/**
 	 * @var array
 	 */
-	private $pages = array();
-
-	/**
-	 * @var array
-	 */
 	private $exceptionLog = array();
 
 	/**
