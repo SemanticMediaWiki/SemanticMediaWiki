@@ -5,6 +5,7 @@ use ParamProcessor\Param;
 use ParamProcessor\ParamDefinition;
 use ParamProcessor\Processor;
 use SMW\Query\PrintRequest;
+use SMW\Query\PrintRequestFactory;
 
 /**
  * This file contains a static class for accessing functions to generate and execute
@@ -283,6 +284,8 @@ class SMWQueryProcessor {
 		$printouts = array();
 
 		$lastprintout = null;
+		$printRequestFactory = new PrintRequestFactory();
+
 		foreach ( $rawParams as $name => $rawParam ) {
 			// special handling for arrays - this can happen if the
 			// parameter came from a checkboxes input in Special:Ask:
@@ -308,7 +311,7 @@ class SMWQueryProcessor {
 			if ( $rawParam === '' ) {
 			} elseif ( $rawParam { 0 } == '?' ) { // print statement
 				$rawParam = substr( $rawParam, 1 );
-				$lastprintout = self::getSMWPrintRequestFromString( $rawParam, $showMode );
+				$lastprintout = $printRequestFactory->newPrintRequestFromText( $rawParam, $showMode );
 				if ( !is_null( $lastprintout ) ) {
 					$printouts[] = $lastprintout;
 				}
@@ -341,72 +344,6 @@ class SMWQueryProcessor {
 		}
 
 		return array( $queryString, $parameters, $printouts);
-	}
-
-	/**
-	 * Create an SMWPrintRequest object from a string description as one
-	 * would normally use in #ask and related inputs. The string must start
-	 * with a "?" and may contain label and formatting parameters after "="
-	 * or "#", respectively. However, further parameters, given in #ask by
-	 * "|+param=value" are not allowed here; they must be added
-	 * individually.
-	 *
-	 * @param string $printRequestString
-	 * @param boolean $showMode
-	 *
-	 * @return PrintRequest||null
-	 * @since 1.8
-	 */
-	static protected function getSMWPrintRequestFromString( $printRequestString, $showMode ) {
-		global $wgContLang;
-
-		$parts = explode( '=', $printRequestString, 2 );
-		$propparts = explode( '#', $parts[0], 2 );
-		$printRequestLabel = trim( $propparts[0] );
-
-		$data = null;
-
-		if ( $printRequestLabel === '' ) { // print "this"
-			$printmode = PrintRequest::PRINT_THIS;
-			$label = ''; // default
-		} elseif ( $wgContLang->getNsText( NS_CATEGORY ) == mb_convert_case( $printRequestLabel, MB_CASE_TITLE ) || $printRequestLabel == 'Category' ) { // print categories
-			$printmode = PrintRequest::PRINT_CATS;
-			$label = $showMode ? '' : $wgContLang->getNSText( NS_CATEGORY ); // default
-		} else { // print property or check category
-			$title = Title::newFromText( $printRequestLabel, SMW_NS_PROPERTY ); // trim needed for \n
-			if ( is_null( $title ) ) { // not a legal property/category name; give up
-				return null;
-			}
-
-			if ( $title->getNamespace() == NS_CATEGORY ) {
-				$printmode = PrintRequest::PRINT_CCAT;
-				$data = $title;
-				$label = $showMode ? '' : $title->getText();  // default
-			} else { // enforce interpretation as property (even if it starts with something that looks like another namespace)
-				$printmode = PrintRequest::PRINT_PROP;
-				$data = SMWPropertyValue::makeUserProperty( $printRequestLabel );
-				if ( !$data->isValid() ) { // not a property; give up
-					return null;
-				}
-				$label = $showMode ? '' : $data->getWikiValue();  // default
-			}
-		}
-
-		if ( count( $propparts ) == 1 ) { // no outputformat found, leave empty
-			$propparts[] = false;
-		} elseif ( trim( $propparts[1] ) === '' ) { // "plain printout", avoid empty string to avoid confusions with "false"
-			$propparts[1] = '-';
-		}
-
-		if ( count( $parts ) > 1 ) { // label found, use this instead of default
-			$label = trim( $parts[1] );
-		}
-
-		try {
-			return new PrintRequest( $printmode, $label, $data, trim( $propparts[1] ) );
-		} catch ( InvalidArgumentException $e ) { // something still went wrong; give up
-			return null;
-		}
 	}
 
 	/**
