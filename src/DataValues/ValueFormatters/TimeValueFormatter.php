@@ -164,7 +164,10 @@ class TimeValueFormatter extends DataValueFormatter {
 	 */
 	public function getCaptionFromDataItem( DITime $dataItem ) {
 
-		$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage();
+		// If the language code is empty then the content language code is used
+		$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage(
+			$this->dataValue->getLanguageCode()
+		);
 
 		// https://en.wikipedia.org/wiki/Anno_Domini
 		// "...placing the "AD" abbreviation before the year number ... BC is

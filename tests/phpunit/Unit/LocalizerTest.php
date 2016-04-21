@@ -161,4 +161,19 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testExtraneousLanguage() {
+
+		$this->assertInstanceOf(
+			'\SMW\ExtraneousLanguage',
+			Localizer::getInstance()->getExtraneousLanguage()
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\ExtraneousLanguage',
+			Localizer::getInstance()->getExtraneousLanguage( 'en' )
+		);
+
+		Localizer::clear();
+	}
+
 }

@@ -74,10 +74,17 @@ class Localizer {
 	/**
 	 * @since 2.4
 	 *
+	 * @param string $languageCode
+	 *
 	 * @return ExtraneousLanguage
 	 */
-	public function getExtraneousLanguage() {
-		return $GLOBALS['smwgContLang'];
+	public function getExtraneousLanguage( $languageCode = '' ) {
+
+		if ( $languageCode === '' ) {
+			$languageCode = $this->getContentLanguage()->getCode();
+		}
+
+		return ExtraneousLanguage::getInstance()->fetchByLanguageCode( $languageCode );
 	}
 
 	/**

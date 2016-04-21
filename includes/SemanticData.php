@@ -638,6 +638,7 @@ class SemanticData {
 	 */
 	public function addSubSemanticData( SemanticData $semanticData ) {
 
+		$semanticData->setLastModified( $this->getLastModified() );
 		$this->hash = null;
 
 		if ( $this->subContainerDepthCounter > $this->subContainerMaxDepth ) {
