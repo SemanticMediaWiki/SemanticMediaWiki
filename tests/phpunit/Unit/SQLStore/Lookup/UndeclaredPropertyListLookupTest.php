@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\Lookup;
 
 use SMW\DIProperty;
 use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
+use SMW\RequestOptions;
 
 /**
  * @covers \SMW\SQLStore\Lookup\UndeclaredPropertyListLookup
@@ -95,32 +96,23 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 	public function testLookupIdentifierChangedByRequestOptions() {
 
 		$defaultPropertyType = '_foo';
+		$requestOptions = new RequestOptions();
 
 		$instance = new UndeclaredPropertyListLookup(
 			$this->store,
 			$defaultPropertyType,
-			$this->requestOptions
+			$requestOptions
 		);
 
 		$lookupIdentifier = $instance->getLookupIdentifier();
-
-		$this->assertContains(
-			'UndeclaredPropertyListLookup',
-			$lookupIdentifier
-		);
-
-		$this->requestOptions->limit = 100;
+		$requestOptions->limit = 100;
 
 		$instance = new UndeclaredPropertyListLookup(
 			$this->store,
 			$defaultPropertyType,
-			$this->requestOptions
+			$requestOptions
 		);
 
-		$this->assertContains(
-			'UndeclaredPropertyListLookup',
-			$instance->getLookupIdentifier()
-		);
 
 		$this->assertNotSame(
 			$lookupIdentifier,

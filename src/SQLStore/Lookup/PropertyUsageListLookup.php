@@ -86,7 +86,7 @@ class PropertyUsageListLookup implements ListLookup {
 	 * @return string
 	 */
 	public function getLookupIdentifier() {
-		return 'smwgPropertiesCache#' . json_encode( (array)$this->requestOptions );
+		return __METHOD__ . '#' . ( $this->requestOptions !== null ? $this->requestOptions->getHash() : '' );
 	}
 
 	private function doQueryPropertyTable() {
