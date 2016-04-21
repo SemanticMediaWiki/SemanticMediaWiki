@@ -12,7 +12,7 @@ use Onoi\Cache\Cache;
  */
 class CachedListLookup implements ListLookup {
 
-	const VERSION = '0.1';
+	const VERSION = '0.2';
 
 	/**
 	 * @var ListLookup
@@ -193,7 +193,7 @@ class CachedListLookup implements ListLookup {
 
 		return array(
 			$this->cachePrefix . md5( $id . self::VERSION ),
-			$this->cachePrefix . md5( $optionsKey . self::VERSION )
+			$this->cachePrefix . md5( $id . $optionsKey . self::VERSION )
 		);
 	}
 

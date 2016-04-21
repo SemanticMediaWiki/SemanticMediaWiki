@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\Lookup;
 
 use SMW\DIProperty;
 use SMW\SQLStore\Lookup\PropertyUsageListLookup;
+use SMW\RequestOptions;
 
 /**
  * @covers \SMW\SQLStore\Lookup\PropertyUsageListLookup
@@ -61,37 +62,29 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertContains(
-			'smwgPropertiesCache',
+			'PropertyUsageListLookup',
 			$instance->getLookupIdentifier()
 		);
 	}
 
 	public function testLookupIdentifierChangedByRequestOptions() {
 
+		$requestOptions = new RequestOptions();
+
 		$instance = new PropertyUsageListLookup(
 			$this->store,
 			$this->propertyStatisticsStore,
-			$this->requestOptions
+			$requestOptions
 		);
 
 		$lookupIdentifier = $instance->getLookupIdentifier();
 
-		$this->assertContains(
-			'smwgPropertiesCache',
-			$lookupIdentifier
-		);
-
-		$this->requestOptions->limit = 100;
+		$requestOptions->limit = 100;
 
 		$instance = new PropertyUsageListLookup(
 			$this->store,
 			$this->propertyStatisticsStore,
-			$this->requestOptions
-		);
-
-		$this->assertContains(
-			'smwgPropertiesCache',
-			$instance->getLookupIdentifier()
+			$requestOptions
 		);
 
 		$this->assertNotSame(

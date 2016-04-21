@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\Lookup;
 
 use SMW\DIProperty;
 use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
+use SMW\RequestOptions;
 
 /**
  * @covers \SMW\SQLStore\Lookup\UnusedPropertyListLookup
@@ -68,30 +69,22 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testLookupIdentifierChangedByRequestOptions() {
 
+		$requestOptions = new RequestOptions();
+
 		$instance = new UnusedPropertyListLookup(
 			$this->store,
 			$this->propertyStatisticsTable,
-			$this->requestOptions
+			$requestOptions
 		);
 
 		$lookupIdentifier = $instance->getLookupIdentifier();
 
-		$this->assertContains(
-			'UnusedPropertyListLookup',
-			$lookupIdentifier
-		);
-
-		$this->requestOptions->limit = 100;
+		$requestOptions->limit = 100;
 
 		$instance = new UnusedPropertyListLookup(
 			$this->store,
 			$this->propertyStatisticsTable,
-			$this->requestOptions
-		);
-
-		$this->assertContains(
-			'UnusedPropertyListLookup',
-			$instance->getLookupIdentifier()
+			$requestOptions
 		);
 
 		$this->assertNotSame(
