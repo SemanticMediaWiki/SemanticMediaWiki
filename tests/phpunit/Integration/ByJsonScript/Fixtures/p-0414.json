@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation/free format for `_dat` datatype (#1389, en)",
+	"description": "Test in-text annotation/free format for `_dat` datatype (#1389, #1401, en)",
 	"properties": [
 		{
 			"name": "Has date",
@@ -70,6 +70,14 @@
 		{
 			"name": "Example/P0414/8a",
 			"contents": "{{#ask: [[Example/P0414/8]]  |?Has date |?Has date#-F[Y年m月d日 H:i] }}"
+		},
+		{
+			"name": "Example/P0414/9",
+			"contents": "[[Has date::2010年1月6日 16時57分]]"
+		},
+		{
+			"name": "Example/P0414/9a",
+			"contents": "{{#ask: [[Example/P0414/9]]  |?Has date |?Has date#-F[Y年m月d日 H:i] }}"
 		}
 	],
 	"parser-testcases": [
@@ -287,6 +295,16 @@
 		{
 			"about": "#15",
 			"subject": "Example/P0414/8a",
+			"expected-output": {
+				"to-contain": [
+					"<td data-sort-value=\"2455203.20625\" class=\"Has-date smwtype_dat\">6 January 2010 16:57:00</td>",
+					"<td data-sort-value=\"2455203.20625\" class=\"Has-date smwtype_dat\">2010年01月06日 16:57</td>"
+				]
+			}
+		},
+		{
+			"about": "#16",
+			"subject": "Example/P0414/9a",
 			"expected-output": {
 				"to-contain": [
 					"<td data-sort-value=\"2455203.20625\" class=\"Has-date smwtype_dat\">6 January 2010 16:57:00</td>",
