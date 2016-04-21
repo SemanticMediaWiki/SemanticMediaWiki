@@ -178,6 +178,12 @@ class SMWResultArray {
 		if ( $this->mPrintRequest->getOutputFormat() ) {
 			$dv->setOutputFormat( $this->mPrintRequest->getOutputFormat() );
 		}
+
+		// Allow the DV formatter to access a specific language code
+		$dv->setLanguageCode(
+			\SMW\Localizer::getInstance()->getUserLanguage()->getCode()
+		);
+
 		return $dv;
 	}
 

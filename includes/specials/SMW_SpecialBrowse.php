@@ -2,6 +2,7 @@
 
 use SMW\DIProperty;
 use SMW\UrlEncoder;
+use SMW\Localizer;
 
 /**
  * @ingroup SMWSpecialPage
@@ -250,6 +251,11 @@ class SMWSpecialBrowse extends SpecialPage {
 	 */
 	private function displayValue( SMWPropertyValue $property, SMWDataValue $dataValue, $incoming ) {
 		$linker = smwfGetLinker();
+
+		// Allow the DV formatter to access a specific language code
+		$dataValue->setLanguageCode(
+			Localizer::getInstance()->getUserLanguage()->getCode()
+		);
 
 		$html = $dataValue->getLongHTMLText( $linker );
 
