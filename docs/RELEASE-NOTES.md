@@ -4,15 +4,16 @@ Not a release yet.
 
 ## Highlights
 
-* #1329
-* #1335
-* #1344 (#1381)
-* #1389
-* #1417
+* Added positional preference for units (#1329)
+* Added a possibility to specify a fixed precision for numeric datatypes (#1335)
+* Added support for monolingual text datatype where a specific language (as code) can be added to a text value (#1344, #1381)
+* Extended date/time query output formatting by supporting PHP's `DateTime` format rules (#1389)
+* Added support for constraint specification using regular expressions (#1417). The use of `regular expressions` and thus the `Allows pattern` property to express a constraint assignment is restricted to users with the [`smw-patternedit`](https://www.semantic-mediawiki.org/wiki/Help:Permissions_and_user_rights) right.
+* Added support for `{{DISPLAYTITLE:...}}` (#1410)
 
 ## New features and enhancements
 
-* #498 Extended `rebuildData.php` to remove outdated enitity references (see `PropertyTableIdReferenceDisposer`)
+* #498 Extended `rebuildData.php` to remove outdated entity references (see `PropertyTableIdReferenceDisposer`)
 * #1243 Make failed queries discoverable
 * #1246 Added support for `~`/`!~` on single value queries
 * #1267 Added the `browseByProperty` API module to fetch a property list or individual properties via the WebAPI
@@ -32,17 +33,17 @@ Not a release yet.
 * #1389 Added free date/time formatting support using the `-F[ ... ]` option
 * #1391 Made subobject directly browsable from/in the Factbox
 * #1396 Indicate `AC/CE` era for positive years if it was explicitly annotated
-* #1397 Added support for microseconds in `DITime` 
+* #1397 Added support for microseconds in `DITime`
 * #1401 Added support for parsing `年/月/日` date format in `DITime`
 * #1407 Added quick result download links to `Special:Ask`
 * #1410 Added support for `{{DISPLAYTITLE:title}}` caption using the [`Display title of`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Display_title_of) property
 * #1417 Added [`Allows pattern`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_pattern) property to define a value constraint using regular expressions and the required `smw-patternedit`right to add those expressions
 * #1433 Added `--ignore-exceptions` and `exception-log` options to `rebuildData.php` together with `-v` showing additional information about the update process
-* #1440 ...
+* #1440 Added various changes to accommodate MW 1.27
 * #1463 Added support for the [`Has uniqueness constraint`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_uniqueness_constraint) property trait
-* #1474 ...
+* #1474 Added search link for zero properties on `Special:Properties`
 * #1483 Added statistics about [outdated entities](https://www.semantic-mediawiki.org/wiki/Help:Outdated_entities)
-* #1513 `StringValueFormatter` to add `\n` on the first text element if it contains `*/#/:` 
+* #1513 `StringValueFormatter` to add `\n` on the first text element if it contains `*/#/:`
 
 ## Bug fixes
 
@@ -51,7 +52,7 @@ Not a release yet.
 * #1244 Find redirect for a property when specified as a record field (in `PropertyListValue`)
 * #1248 Fixed misplaced replacement of `_` in the `ImportValueParser`
 * #1270 Fixed printout display of inverse properties
-* #1272 Fixed serialization of `_rec` type datavalues in the `QueryResultSerializer`
+* #1272 Fixed serialization of `_rec` type in the `QueryResultSerializer`
 * #1275 Fixed export of record type data when embedded in a subobject
 * #1286 Fixed support for sorting by category
 * #1287 Fixed exception for when `$smwgFixedProperties` contains property keys with spaces
@@ -63,9 +64,9 @@ Not a release yet.
 * #1358 Fixed recognition of multi-byte boolean value
 * #1348 Fixed single year detection in `TimeValue`
 * #1414 Fixed exception caused by a missing message page on a `Service link` annotation
-* #1449 Fixed mapping of imported uri to internal DataItem
+* #1449 Fixed mapping of imported URI to an internal `DataItem`
 * #1450 Fixed export of concept
-* #1453 Fixed ...
+* #1453 Fixed off/on display in text value
 * #1459 Fixed column display regression in `CategoryResultPrinter` for subobjects
 * #1466 Fixed remote resource path detection that appeared in connection with a non-default extension setup
 * #1473 Fixed exception caused by `ParameterInput` due to "HTML attribute value can not contain a list of values"
@@ -77,20 +78,21 @@ Not a release yet.
 
 * #1235 Improve query performance in `PropertyUsageListLookup`
 * #1023 Split the `DocumentationParserFunction`
-* #1264 Removed `pg_unescape_bytea` special handling for postgres in the `ResultPrinter`
+* #1264 Removed `pg_unescape_bytea` special handling for `postgres` in the `ResultPrinter`
 * #1276 Extended `QueryResultSerializer` (relevant for the API output) to export the raw output of a time related value
-* #1281 Extended `QueryResultSerializer` to export the internal property key 
+* #1281 Extended `QueryResultSerializer` to export the internal property key
 * #1291 Added `DescriptionProcessor` to isolate code path from the `SMWQueryParser`
 * #1317 Switch to Sesame 2.8.7
 * #1382 Added `DispatchingDataValueFormatter` and `ValueFormatterRegistry`
 * #1385 Added `StringValueFormatter` and `CodeStringValueFormatter`
 * #1388 Added `TimeValueFormatter`
-* #1421 Added `DeferredDependencyLinksUpdater` to avoid violations reported by `TransactionProfiler` in MW 1.26+ 
+* #1421 Added `DeferredDependencyLinksUpdater` to avoid violations reported by `TransactionProfiler` in MW 1.26+
 * #1417 Added `PermissionPthValidator` together with new the `smwcurator` group and `smw-patternedit` right
 * #1435 Added `DeferredCallableUpdate` (together with `$GLOBALS['smwgEnabledDeferredUpdate']`) to support MW's `DeferrableUpdate` interface (i.e. to support queuing DB related transactions)
 * #1445 Added `userlang` as `ParserOutput` option
 * #1451 Added `ExtraneousLanguage` interface
 * #1460 Requires PHP extension mbstring in `composer.json`
 * #1482 Added the `SMW::FileUpload::BeforeUpdate` hook
+* #1512 Fixed test suite to support PHP7
 
 ## Contributors
