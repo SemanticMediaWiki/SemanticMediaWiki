@@ -490,7 +490,7 @@ label.smw-form-checkbox {
 }
 
 .skin-chameleon input#smw-property-input.autocomplete-suggestions {
-	height: 27px;
+	height: 30px;
 	padding: 2px 2px;
 }
 
@@ -575,17 +575,17 @@ a.smw-ask-action-btn-lblue:hover {
 	text-decoration:none;
 }
 
-.smw-concept-page-indicator a.external.text, .smw-property-page-indicator a.external.text {
+.smw-concept-page-indicator a.external.text, .smw-page-indicator a.external.text {
 	background-image:none;
 	padding-right:0;
 }
 
-.smw-property-page-indicator.usage-count, .smw-property-page-indicator.property-type {
+.smw-page-indicator, .smw-page-indicator.usage-count, .smw-page-indicator.property-type {
 	width: 45px;
-	height: 20px;
-	border-radius: 5px;
+	height: 21px;
+	border-radius: 4px;
 	font-size: 9px;
-	color: #111;
+	color: #777;
 	line-height: 20px;
 	text-align: center;
 	background: #fff;
@@ -595,10 +595,10 @@ a.smw-ask-action-btn-lblue:hover {
 	margin-top: 10px;
 }
 
-.smw-property-page-indicator.usage-count {
+.smw-page-indicator.usage-count {
 	margin-right: 10px;
 }
 
-.skin-vector .smw-property-page-indicator.usage-count, .skin-vector .smw-property-page-indicator.property-type {
+.skin-vector .smw-page-indicator.usage-count, .skin-vector .smw-page-indicator.property-type {
 	margin-top: 5px;
 }

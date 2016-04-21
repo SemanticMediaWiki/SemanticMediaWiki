@@ -87,15 +87,15 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$usageCount = Html::rawElement(
 				'div' , array(
 					'title' => $this->getContext()->getLanguage()->timeanddate( $cachedLookupList->getTimestamp() ),
-					'class' => 'smw-property-page-indicator usage-count' ),
+					'class' => 'smw-page-indicator usage-count' ),
 				$usage[1]
 			);
 		}
 
 		return Html::rawElement( 'div', array(), Html::rawElement(
 				'div', array(
-				'class' => 'smw-property-page-indicator property-type',
-				'title' => wfMessage( 'smw-property-page-indicator-type-info', $this->mProperty->isUserDefined() )->parse()
+				'class' => 'smw-page-indicator property-type',
+				'title' => wfMessage( 'smw-page-indicator-type-info', $this->mProperty->isUserDefined() )->parse()
 			), ( $this->mProperty->isUserDefined() ? 'U' : 'S' )
 		) . $usageCount );
 	}
