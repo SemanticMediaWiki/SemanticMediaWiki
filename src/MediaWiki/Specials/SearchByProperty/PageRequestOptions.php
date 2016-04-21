@@ -91,7 +91,7 @@ class PageRequestOptions {
 		$value = isset( $this->requestOptions['value'] ) ? $this->requestOptions['value'] : next( $params );
 
 		$property = $this->urlEncoder->decode( $property );
-		$value = str_replace( array( '-25' ), array( '%' ), $value );
+		$value = str_replace( array( '-25', '_' ), array( '%', ' ' ), $value );
 
 		$this->property = PropertyValue::makeUserProperty( $property );
 

@@ -10,6 +10,10 @@
 		{
 			"name": "Example/S0002/1",
 			"contents": "[[Has text::S0002]]"
+		},
+		{
+			"name": "Example/S0002/2",
+			"contents": "[[Has text::foo bar]]"
 		}
 	],
 	"special-testcases": [
@@ -26,6 +30,40 @@
 				"to-contain": [
 					"<ul><li>S0002&#160;&#160;",
 					"title=\"Special:SearchByProperty/Has-20text/S0002\">+</a></span>"
+				]
+			}
+		},
+		{
+			"about": "#1 value to contain `_`",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "",
+				"request-parameters":{
+					"property": "Has text",
+					"value": "foo_bar"
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"Example-2FS0002-2F2",
+					"<small>(foo bar)</small>"
+				]
+			}
+		},
+		{
+			"about": "#2 value to contain ` `",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "",
+				"request-parameters":{
+					"property": "Has text",
+					"value": "foo bar"
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"Example-2FS0002-2F2",
+					"<small>(foo bar)</small>"
 				]
 			}
 		}
