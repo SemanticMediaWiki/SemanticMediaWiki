@@ -38,11 +38,11 @@ Not a release yet.
 * #1407 Added quick result download links to `Special:Ask`
 * #1410 Added support for `{{DISPLAYTITLE:title}}` caption using the [`Display title of`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Display_title_of) property
 * #1417 Added [`Allows pattern`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_pattern) property to define a value constraint using regular expressions and the required `smw-patternedit`right to add those expressions
-* #1433 Added `--ignore-exceptions` and `exception-log` options to `rebuildData.php` together with `-v` showing additional information about the update process
+* #1433 Added `--ignore-exceptions` and `exception-log` options to `rebuildData.php` while option `-v` is showing additional information about the processed entities
 * #1440 Added various changes to accommodate MW 1.27
 * #1463 Added support for the [`Has uniqueness constraint`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_uniqueness_constraint) property trait
-* #1474 Added search link for zero properties on `Special:Properties`
-* #1483 Added statistics about [outdated entities](https://www.semantic-mediawiki.org/wiki/Help:Outdated_entities)
+* #1474 Added a search link for zero properties to the `Special:Properties`
+* #1483 Added statistics about [outdated entities](https://www.semantic-mediawiki.org/wiki/Help:Outdated_entities) to the `Special:Statistics`
 * #1513 `StringValueFormatter` to add `\n` on the first text element if it contains `*/#/:`
 
 ## Bug fixes
@@ -73,6 +73,7 @@ Not a release yet.
 * #1477 Fixed query result from `SPARQLStore` to filter redirects natively
 * #1489 Fixed fatal error in `RdfResultPrinter` due to namespace mismatch
 * #1496 Fixed concept handling for `postgres`
+* #1526 Fixed `_` handling for value strings submitted to the `Special:SearchByProperty`
 
 ## Internal changes
 
