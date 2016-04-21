@@ -76,6 +76,14 @@ class PropertyTableIdReferenceDisposer {
 				);
 			}
 
+			if ( !$proptable->isFixedPropertyTable() ) {
+				$this->connection->delete(
+					$proptable->getName(),
+					array( 'p_id' => $id ),
+					__METHOD__
+				);
+			}
+
 			$fields = $proptable->getFields( $this->store );
 
 			// Match tables (including ftp_redi) that contain an object reference
@@ -108,6 +116,12 @@ class PropertyTableIdReferenceDisposer {
 		$this->connection->delete(
 			SQLStore::QUERY_LINKS_TABLE,
 			array( 's_id' => $id ),
+			__METHOD__
+		);
+
+		$this->connection->delete(
+			SQLStore::QUERY_LINKS_TABLE,
+			array( 'o_id' => $id ),
 			__METHOD__
 		);
 	}

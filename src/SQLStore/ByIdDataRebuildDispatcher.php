@@ -234,7 +234,7 @@ class ByIdDataRebuildDispatcher {
 
 		$res = $db->select(
 			\SMWSql3SmwIds::TABLE_NAME,
-			array( 'smw_id', 'smw_title', 'smw_namespace', 'smw_iw', 'smw_subobject', 'smw_proptable_hash' ),
+			array( 'smw_id', 'smw_title', 'smw_namespace', 'smw_iw', 'smw_subobject', 'smw_sortkey', 'smw_proptable_hash' ),
 			array(
 				"smw_id >= $id ",
 				" smw_id < " . $db->addQuotes( $id + $this->iterationLimit )
@@ -290,6 +290,10 @@ class ByIdDataRebuildDispatcher {
 				$this->store->updateData( $emptySemanticData );
 				$this->dispatchedEntities[] = array( 's' => $diWikiPage );
 			}
+
+			if ( $row->smw_namespace == SMW_NS_PROPERTY && $row->smw_iw == '' && $row->smw_subobject == '' ) {
+				$this->markPossibleDuplicateProperties( $row );
+			}
 		}
 
 		$db->freeResult( $res );
@@ -310,6 +314,40 @@ class ByIdDataRebuildDispatcher {
 			$row->smw_title{0} != '_' &&
 			// smw_proptable_hash === null means it is not a subject but an object value
 			$row->smw_proptable_hash === null;
+	}
+
+	private function markPossibleDuplicateProperties( $row ) {
+
+		$db = $this->store->getConnection( 'mw.db' );
+
+		// Use the sortkey (comparing the label and not the "_..." key) in order
+		// to match possible duplicate properties by label (not by key)
+		$duplicates = $db->select(
+			\SMWSql3SmwIds::TABLE_NAME,
+			'smw_id',
+			array(
+				"smw_id !=" . $db->addQuotes( $row->smw_id ),
+				"smw_sortkey =" . $db->addQuotes( $row->smw_sortkey ),
+				"smw_namespace =" . $row->smw_namespace,
+				"smw_subobject =" . $db->addQuotes( $row->smw_subobject )
+			),
+			__METHOD__,
+			array( 'ORDER BY' => "smw_id ASC" )
+		);
+
+		if ( $duplicates === false ) {
+			return;
+		}
+
+		// Instead of copying ID's across DB tables have the re-parse to ensure
+		// that all property value ID's are reassigned together while the duplicate
+		// is marked for removal until the next run
+		foreach ( $duplicates as $duplicate ) {
+			$this->store->getObjectIds()->updateInterwikiField(
+				$duplicate->smw_id,
+				new DIWikiPage( $row->smw_title, $row->smw_namespace, SMW_SQL3_SMWDELETEIW )
+			);
+		}
 	}
 
 	private function findNextIdPosition( &$id, $emptyrange ) {
