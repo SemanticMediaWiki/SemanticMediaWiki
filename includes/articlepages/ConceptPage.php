@@ -72,6 +72,7 @@ class ConceptPage extends \SMWOrderedListPage {
 		return Html::element( 'br', array( 'id' => 'smwfootbr' ) ) .
 			Html::element( 'a', array( 'name' => 'SMWResults' ), null ) .
 			Html::rawElement( 'div', array( 'id' => 'mw-pages'),
+				$this->getCacheInformation() .
 				Html::rawElement( 'h2', array(), $this->getContext()->msg( 'smw_concept_header', $titleText )->text() ) .
 				Html::element( 'span', array(), $this->getContext()->msg( 'smw_conceptarticlecount', $resultNumber )->parse() ) .
 				smwfEncodeMessages( $errors ) . ' '. $navigation .
@@ -79,26 +80,24 @@ class ConceptPage extends \SMWOrderedListPage {
 			);
 	}
 
-	protected function getTopIndicator() {
+	private function getCacheInformation() {
 
 		$concept = ApplicationFactory::getInstance()->getStore()->getConceptCacheStatus( $this->getDataItem() );
-		$cacheInformation = '';
-		$time = '';
+		$cacheInformation = wfMessage( 'smw-concept-no-cache' )->text();
 
 		if ( $concept instanceof DIConcept && $concept->getCacheStatus() === 'full' ) {
 			$cacheInformation = wfMessage(
-				'smw-concept-page-indicator-cache-count',
+				'smw-concept-cache-count',
 				$this->getContext()->getLanguage()->formatNum( $concept->getCacheCount() ),
 				$this->getContext()->getLanguage()->timeanddate( $concept->getCacheDate() )
 			)->parse();
 		}
 
 		return Html::rawElement(
-				'span', array(
-				'class' => 'smw-concept-page-indicator',
-				'title' => $time
-			), $cacheInformation
-		);
+			'h2',
+			array(),
+			$this->getContext()->msg( 'smw-concept-cache-header' )->text()
+		) . $cacheInformation;
 	}
 
 }
