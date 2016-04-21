@@ -201,7 +201,7 @@ class SMWTimeValue extends SMWDataValue {
 		// * this does not allow localized time notations such as "10.34 pm"
 		// * this creates problems with keywords that contain "." such as "p.m."
 		// * yet "." is an essential date separation character in languages such as German
-		$parsevalue = str_replace( array( '/', '.', '&nbsp;', ',', '年', '月', '日' ), array( '-', ' ', ' ', ' ', '-', '-', ' ' ), $string );
+		$parsevalue = str_replace( array( '/', '.', '&nbsp;', ',', '年', '月', '日', '時', '分' ), array( '-', ' ', ' ', ' ', '-', '-', ' ', ':', ' ' ), $string );
 
 		$matches = preg_split( "/([T]?[0-2]?[0-9]:[\:0-9]+[+\-]?[0-2]?[0-9\:]+|[\p{L}]+|[0-9]+|[ ])/u", $parsevalue, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY );
 		$datecomponents = array();
