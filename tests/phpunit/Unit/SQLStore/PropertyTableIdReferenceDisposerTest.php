@@ -93,7 +93,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'selectRow' )
 			->will( $this->returnValue( false ) );
 
-		$connection->expects( $this->at( 1 ) )
+		$connection->expects( $this->at( 2 ) )
 			->method( 'delete' )
 			->with( $this->equalTo( \SMW\SQLStore\SQLStore::ID_TABLE ) );
 
