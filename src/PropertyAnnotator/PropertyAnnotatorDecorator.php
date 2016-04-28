@@ -3,6 +3,7 @@
 namespace SMW\PropertyAnnotator;
 
 use SMW\PropertyAnnotator;
+use SMW\DataItemFactory;
 
 /**
  * Decorator that contains the reference to the invoked PropertyAnnotator
@@ -22,12 +23,18 @@ abstract class PropertyAnnotatorDecorator implements PropertyAnnotator {
 	protected $propertyAnnotator;
 
 	/**
+	 * @var DataItemFactory
+	 */
+	protected $dataItemFactory;
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param PropertyAnnotator $propertyAnnotator
 	 */
 	public function __construct( PropertyAnnotator $propertyAnnotator ) {
 		$this->propertyAnnotator = $propertyAnnotator;
+		$this->dataItemFactory = new DataItemFactory();
 	}
 
 	/**

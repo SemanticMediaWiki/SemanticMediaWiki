@@ -503,7 +503,7 @@ class CompoundConditionBuilder {
 
 	private function addOrderForUnknownPropertyKey( Condition &$condition, $propertyKey ) {
 
-		if ( $propertyKey === '' ) { // order by result page sortkey
+		if ( $propertyKey === '' || $propertyKey === '#' ) { // order by result page sortkey
 
 			$this->addOrderByData(
 				$condition,

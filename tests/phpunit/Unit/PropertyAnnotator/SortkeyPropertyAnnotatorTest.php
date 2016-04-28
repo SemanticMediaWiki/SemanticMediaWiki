@@ -5,6 +5,7 @@ namespace SMW\Tests\PropertyAnnotator;
 use SMW\PropertyAnnotator\NullPropertyAnnotator;
 use SMW\PropertyAnnotator\SortKeyPropertyAnnotator;
 use SMW\Tests\Utils\UtilityFactory;
+use SMW\DataItemFactory;
 
 /**
  * @covers \SMW\PropertyAnnotator\SortKeyPropertyAnnotator
@@ -19,12 +20,14 @@ class SortKeyPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
+	private $dataItemFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+		$this->dataItemFactory = new DataItemFactory();
 	}
 
 	public function testCanConstruct() {
@@ -46,10 +49,8 @@ class SortKeyPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider defaultSortDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testAddDefaultSortOnMockObserver( array $parameters, array $expected ) {
+	public function testAddAnnotation( array $parameters, array $expected ) {
 
 		$semanticData = $this->semanticDataFactory->setTitle( $parameters['title'] )->newEmptySemanticData();
 
@@ -59,6 +60,34 @@ class SortKeyPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->addAnnotation();
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$instance->getSemanticData()
+		);
+	}
+
+	public function testDontOverrideAnnotationIfAlreadyAvailable() {
+
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
+
+		$semanticData->addPropertyObjectValue(
+			$this->dataItemFactory->newDIProperty( '_SKEY' ),
+			$this->dataItemFactory->newDIBlob( 'FOO' )
+		);
+
+		$instance = new SortKeyPropertyAnnotator(
+			new NullPropertyAnnotator( $semanticData ),
+			'bar'
+		);
+
+		$instance->addAnnotation();
+
+		$expected = array(
+			'propertyCount'  => 1,
+			'propertyKeys'   => '_SKEY',
+			'propertyValues' => array( 'FOO' ),
+		);
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,

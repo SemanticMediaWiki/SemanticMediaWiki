@@ -20,14 +20,21 @@ class DisplayTitlePropertyAnnotator extends PropertyAnnotatorDecorator {
 	private $displayTitle;
 
 	/**
+	 * @var string
+	 */
+	private $defaultSort;
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param PropertyAnnotator $propertyAnnotator
 	 * @param string|false $displayTitle
+	 * @param string $defaultSort
 	 */
-	public function __construct( PropertyAnnotator $propertyAnnotator, $displayTitle = false ) {
+	public function __construct( PropertyAnnotator $propertyAnnotator, $displayTitle = false, $defaultSort = '' ) {
 		parent::__construct( $propertyAnnotator );
 		$this->displayTitle = $displayTitle;
+		$this->defaultSort = $defaultSort;
 	}
 
 	protected function addPropertyValues() {
@@ -36,10 +43,24 @@ class DisplayTitlePropertyAnnotator extends PropertyAnnotatorDecorator {
 			return;
 		}
 
-		$this->getSemanticData()->addPropertyObjectValue(
-			new DIProperty( '_DTITLE' ),
-			new DIBlob( strip_tags(  $this->displayTitle ) )
+		// #1439
+		$dataItem = $this->dataItemFactory->newDIBlob(
+			strip_tags(  $this->displayTitle )
 		);
+
+		$this->getSemanticData()->addPropertyObjectValue(
+			$this->dataItemFactory->newDIProperty( '_DTITLE' ),
+			$dataItem
+		);
+
+		// If the defaultSort is empty then no explicit sortKey was expected
+		// therefore use the title content before the SortKeyPropertyAnnotator
+		if ( $this->defaultSort === '' ) {
+			$this->getSemanticData()->addPropertyObjectValue(
+				$this->dataItemFactory->newDIProperty( '_SKEY' ),
+				$dataItem
+			);
+		}
 	}
 
 }

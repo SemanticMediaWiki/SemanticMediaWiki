@@ -49,7 +49,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider displayTitleProvider
 	 */
-	public function testAddAnnotationForDisplayTitle( $title, $displayTitle, array $expected ) {
+	public function testAddAnnotationForDisplayTitle( $title, $displayTitle, $defaultSort, array $expected ) {
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
 			$title
@@ -57,7 +57,8 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DisplayTitlePropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
-			$displayTitle
+			$displayTitle,
+			$defaultSort
 		);
 
 		$instance->addAnnotation();
@@ -82,8 +83,8 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		$instance->addAnnotation();
 
 		$expected = array(
-			'propertyCount'  => 1,
-			'propertyKeys'   => '_DTITLE',
+			'propertyCount'  => 2,
+			'propertyKeys'   => array( '_DTITLE', '_SKEY' ),
 			'propertyValues' => array( 'Bar' ),
 		);
 
@@ -101,9 +102,10 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'Foo',
 			'Lala',
+			'',
 			array(
-				'propertyCount'  => 1,
-				'propertyKeys'   => '_DTITLE',
+				'propertyCount'  => 2,
+				'propertyKeys'   => array( '_DTITLE', '_SKEY' ),
 				'propertyValues' => array( 'Lala' ),
 			)
 		);
@@ -111,6 +113,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		#1 Empty
 		$provider[] = array(
 			'Bar',
+			'',
 			'',
 			array(
 				'propertyCount'  => 0,
@@ -123,6 +126,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'Bar',
 			false,
+			'',
 			array(
 				'propertyCount'  => 0,
 				'propertyKeys'   => '',
@@ -134,10 +138,23 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'Bar',
 			'<span style="position: absolute; clip: rect(1px 1px 1px 1px); clip: rect(1px, 1px, 1px, 1px);">FOO</span>',
+			'',
+			array(
+				'propertyCount'  => 2,
+				'propertyKeys'   => array( '_DTITLE', '_SKEY' ),
+				'propertyValues' => array( 'FOO' ),
+			)
+		);
+
+		#4 with different sortkey
+		$provider[] = array(
+			'Foo',
+			'Lala',
+			'BAR',
 			array(
 				'propertyCount'  => 1,
-				'propertyKeys'   => '_DTITLE',
-				'propertyValues' => array( 'FOO' ),
+				'propertyKeys'   => array( '_DTITLE' ),
+				'propertyValues' => array( 'Lala' ),
 			)
 		);
 
