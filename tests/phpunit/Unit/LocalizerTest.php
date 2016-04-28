@@ -176,4 +176,17 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 		Localizer::clear();
 	}
 
+	public function testConvertDoubleWidth() {
+
+		$this->assertEquals(
+			'2000',
+			Localizer::convertDoubleWidth( '２０００' )
+		);
+
+		$this->assertEquals(
+			'aBc',
+			Localizer::getInstance()->convertDoubleWidth( 'ａＢｃ' )
+		);
+	}
+
 }
