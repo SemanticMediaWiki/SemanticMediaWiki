@@ -541,6 +541,13 @@ class QueryEngine {
 			if ( !array_key_exists( $propkey, $qobj->sortfields ) ) { // Find missing property to sort by.
 				if ( $propkey === '' ) { // Sort by first result column (page titles).
 					$qobj->sortfields[$propkey] = "$qobj->alias.smw_sortkey";
+				} elseif ( $propkey === '#' ) { // Sort by first result column (page titles).
+					// PHP7 showed a rather erratic behaviour where in cases
+					// the sortkey contains the same string for comparison, the
+					// result returned from the DB was mixed in order therefore
+					// using # as indicator to search for additional fields if
+					// no specific property is given (see test cases in #1534)
+					$qobj->sortfields[$propkey] = "$qobj->alias.smw_sortkey,$qobj->alias.smw_title,$qobj->alias.smw_subobject";
 				} else { // Try to extend query.
 					$sortprop = PropertyValue::makeUserProperty( $propkey );
 

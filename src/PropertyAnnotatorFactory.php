@@ -88,13 +88,15 @@ class PropertyAnnotatorFactory {
 	 *
 	 * @param SemanticData $semanticData
 	 * @param string|false $displayTitle
+	 * @param string $defaultSort
 	 *
 	 * @return DisplayTitlePropertyAnnotator
 	 */
-	public function newDisplayTitlePropertyAnnotator( SemanticData $semanticData, $displayTitle ) {
+	public function newDisplayTitlePropertyAnnotator( SemanticData $semanticData, $displayTitle, $defaultSort ) {
 		return new DisplayTitlePropertyAnnotator(
 			$this->newNullPropertyAnnotator( $semanticData ),
-			$displayTitle
+			$displayTitle,
+			$defaultSort
 		);
 	}
 

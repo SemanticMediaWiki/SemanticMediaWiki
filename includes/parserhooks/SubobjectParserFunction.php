@@ -152,6 +152,10 @@ class SubobjectParserFunction {
 			}
 		}
 
+		$this->doAugmentSortKeyForWhenDisplayTitleIsAccessible(
+			$this->subobject->getSemanticData()
+		);
+
 		return true;
 	}
 
@@ -196,6 +200,25 @@ class SubobjectParserFunction {
 		}
 
 		return $parameters;
+	}
+
+	private function doAugmentSortKeyForWhenDisplayTitleIsAccessible( $semanticData ) {
+
+		$sortkey = new DIProperty( DIProperty::TYPE_SORTKEY );
+		$displayTitle = new DIProperty( DIProperty::TYPE_DISPLAYTITLE );
+
+		if ( $semanticData->hasProperty( $sortkey ) || !$semanticData->hasProperty( $displayTitle ) ) {
+			return null;
+		}
+
+		$pv = $semanticData->getPropertyValues(
+			$displayTitle
+		);
+
+		$semanticData->addPropertyObjectValue(
+			$sortkey,
+			end( $pv )
+		);
 	}
 
 	private function addErrorWithMsg( $subject, $errorMsg ) {

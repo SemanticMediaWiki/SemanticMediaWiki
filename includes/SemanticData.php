@@ -199,6 +199,17 @@ class SemanticData {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @param DIProperty $property
+	 *
+	 * @return boolean
+	 */
+	public function hasProperty( DIProperty $property ) {
+		return isset( $this->mProperties[$property->getKey()] ) || array_key_exists( $property->getKey(), $this->mProperties );
+	}
+
+	/**
 	 * Get the array of all stored values for some property.
 	 *
 	 * @param DIProperty $property
@@ -360,6 +371,15 @@ class SemanticData {
 			}
 		} else {
 			$this->mHasVisibleProps = true;
+		}
+
+		// Inherit the sortkey from the root if not explicitly given
+		if ( $this->mSubject->getSubobjectName() === '' && $property->getKey() === DIProperty::TYPE_SORTKEY ) {
+			foreach ( $this->subSemanticData as $subSemanticData ) {
+				if ( !$subSemanticData->hasProperty( $property ) ) {
+					$subSemanticData->addPropertyObjectValue( $property, $dataItem );
+				}
+			}
 		}
 	}
 

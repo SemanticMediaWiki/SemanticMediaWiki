@@ -39,6 +39,7 @@ class DIProperty extends SMWDataItem {
 	const TYPE_ASKQUERY = '_ASK';
 	const TYPE_MEDIA = '_MEDIA';
 	const TYPE_MIME = '_MIME';
+	const TYPE_DISPLAYTITLE = '_DTITLE';
 
 	/**
 	 * Either an internal SMW property key (starting with "_") or the DB

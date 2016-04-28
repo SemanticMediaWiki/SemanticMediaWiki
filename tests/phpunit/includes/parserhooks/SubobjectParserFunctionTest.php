@@ -533,6 +533,49 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
+		// #4 display title to set sortkey
+		// {{#subobject:
+		// |Display title of=Foo
+		// }}
+		$provider[] = array(
+			array(
+				'Display title of=Foo'
+			),
+			array(
+				'propertyCount'  => 2,
+				'properties'     => array(
+					new DIProperty( '_DTITLE' ),
+					new DIProperty( '_SKEY' )
+				),
+				'propertyValues' => array(
+					'Foo'
+				)
+			)
+		);
+
+		// #4 display title to set sortkey
+		// {{#subobject:
+		// |Display title of=Foo
+		// |@sortkey=Bar
+		// }}
+		$provider[] = array(
+			array(
+				'Display title of=Foo',
+				'@sortkey=Bar'
+			),
+			array(
+				'propertyCount'  => 2,
+				'properties'     => array(
+					new DIProperty( '_DTITLE' ),
+					new DIProperty( '_SKEY' )
+				),
+				'propertyValues' => array(
+					'Foo',
+					'Bar'
+				)
+			)
+		);
+
 		return $provider;
 	}
 

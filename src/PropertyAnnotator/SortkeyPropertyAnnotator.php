@@ -4,7 +4,6 @@ namespace SMW\PropertyAnnotator;
 
 use SMW\DIProperty;
 use SMW\PropertyAnnotator;
-use SMWDIBlob as DIBlob;
 
 /**
  * @license GNU GPL v2+
@@ -34,10 +33,16 @@ class SortKeyPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 		$sortkey = $this->defaultSort ? $this->defaultSort : $this->getSemanticData()->getSubject()->getSortKey();
 
-		$this->getSemanticData()->addPropertyObjectValue(
-			new DIProperty( DIProperty::TYPE_SORTKEY ),
-			new DIBlob( $sortkey )
+		$property = $this->dataItemFactory->newDIProperty(
+			DIProperty::TYPE_SORTKEY
 		);
+
+		if ( !$this->getSemanticData()->hasProperty( $property ) ) {
+			$this->getSemanticData()->addPropertyObjectValue(
+				$property,
+				$this->dataItemFactory->newDIBlob( $sortkey )
+			);
+		}
 	}
 
 }
