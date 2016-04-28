@@ -68,7 +68,7 @@
 					"<td class=\"smwtype_wpg\">Example/F0207/1/3</td><td class=\"Has-text smwtype_txt\">",
 					"<li> abc",
 					"<li> def",
-					"<tr class=\"row-even\"><td class=\"smwtype_wpg\">Example/F0207/1/4</td><td class=\"Has-text smwtype_txt\">",
+					"<tr data-row-number=\"4\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/F0207/1/4</td><td class=\"Has-text smwtype_txt\">",
 					"<dd> ABC",
 					"<dd> DEF"
 				]
