@@ -1,0 +1,90 @@
+{
+	"description": "Test in-text annotation `_dat` on partial dates (en)",
+	"properties": [
+		{
+			"name": "Has date",
+			"contents": "[[Has type::Date]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/P0422/1",
+			"contents": "[[Has date::Jan 1990]], [[Has date::02 1990]], [[Has date::1782]], [[Has date::1990年6月]], [[Has date::1990年4月28日 7時01分]], [[Has date::１９９０年９月]]"
+		},
+		{
+			"name": "Example/P0422/Q/1",
+			"contents": "{{#show: Example/P0422/1 |?Has date }}"
+		},
+		{
+			"name": "Example/P0422/2",
+			"contents": "{{#subobject:|Has date=Jan 1923|@category=Partial dates}} {{#subobject:|Has date=Feb 1960|@category=Partial dates}} {{#subobject:|Has date=1645|@category=Partial dates}}"
+		},
+		{
+			"name": "Example/P0422/Q/2/1",
+			"contents": "{{#ask: [[Category:Partial dates]] |?Has date |sort=Has date|order=asc |link=none }}"
+		},
+		{
+			"name": "Example/P0422/Q/2/2",
+			"contents": "{{#ask: [[Category:Partial dates]] |?Has date |sort=Has date|order=desc |link=none }}"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0",
+			"subject": "Example/P0422/1",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_SKEY", "_MDAT", "Has_date" ],
+					"propertyValues": [ "1990-01-01", "1990-02-01", "1782-01-01", "1990-06-01", "1990-04-28T07:01:00", "1990-09-01" ]
+				}
+			}
+		},
+		{
+			"about": "#1",
+			"subject": "Example/P0422/Q/1",
+			"expected-output": {
+				"to-contain": [
+					"January 1990",
+					"February 1990",
+					"1782",
+					"June 1990",
+					"28 April 1990 07:01:00",
+					"September 1990"
+				]
+			}
+		},
+		{
+			"about": "#2 (sort asc)",
+			"subject": "Example/P0422/Q/2/1",
+			"expected-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0422/2#_519df0ee370ade5d506e5dd769a14b26</td><td data-sort-value=\"2321884.5\" class=\"Has-date smwtype_dat\">1645</td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0422/2#_a9167ae46aa815bb052650683c4719d6</td><td data-sort-value=\"2423420.5\" class=\"Has-date smwtype_dat\">January 1923</td></tr>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0422/2#_803b6de7d53ad0173871f4e4210ce477</td><td data-sort-value=\"2436965.5\" class=\"Has-date smwtype_dat\">February 1960</td></tr>"
+				]
+			}
+		},
+		{
+			"about": "#3 (sort desc)",
+			"subject": "Example/P0422/Q/2/2",
+			"expected-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0422/2#_803b6de7d53ad0173871f4e4210ce477</td><td data-sort-value=\"2436965.5\" class=\"Has-date smwtype_dat\">February 1960</td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0422/2#_a9167ae46aa815bb052650683c4719d6</td><td data-sort-value=\"2423420.5\" class=\"Has-date smwtype_dat\">January 1923</td></tr>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0422/2#_519df0ee370ade5d506e5dd769a14b26</td><td data-sort-value=\"2321884.5\" class=\"Has-date smwtype_dat\">1645</td></tr>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

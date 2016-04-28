@@ -163,4 +163,36 @@ class Localizer {
 		return $langCode !== '' ? $langCode : false;
 	}
 
+	/**
+	 * @see Language::convertDoubleWidth
+	 *
+	 * Convert double-width roman characters to single-width.
+	 * range: ff00-ff5f ~= 0020-007f
+	 *
+	 * @param string $string
+	 *
+	 * @return string
+	 */
+	public static function convertDoubleWidth( $string ) {
+		static $full = null;
+		static $half = null;
+
+		if ( $full === null ) {
+			$fullWidth = "０１２３４５６７８９ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ";
+			$halfWidth = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+			// http://php.net/manual/en/function.str-split.php, mb_str_split
+			$length = mb_strlen( $fullWidth, "UTF-8" );
+			$full = array();
+
+			for ( $i = 0; $i < $length; $i += 1 ) {
+				$full[] = mb_substr( $fullWidth, $i, 1, "UTF-8" );
+			}
+
+			$half = str_split( $halfWidth );
+		}
+
+		return str_replace( $full, $half, trim( $string ) );
+	}
+
 }

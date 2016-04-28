@@ -13,6 +13,7 @@ use SMW\DataValues\ValueValidatorRegistry;
 use SMW\Deserializers\DVDescriptionDeserializerRegistry;
 use SMW\Message;
 use SMW\Options;
+use SMW\Localizer;
 use SMW\Query\QueryComparator;
 
 /**
@@ -916,6 +917,17 @@ abstract class SMWDataValue {
 	 */
 	protected function checkAllowedValues() {
 		ValueValidatorRegistry::getInstance()->getConstraintValueValidator()->validate( $this );
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param string $value
+	 *
+	 * @return string
+	 */
+	protected function convertDoubleWidth( $value ) {
+		return Localizer::convertDoubleWidth( $value );
 	}
 
 }
