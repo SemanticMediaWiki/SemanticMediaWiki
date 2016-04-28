@@ -37,7 +37,7 @@
 					"<table class=\"sortable wikitable smwtable\">",
 					"<th>&#160;</th><th class=\"Has-page\">Has page</th>",
 					"<th class=\"Has-text\">Has text</th>",
-					"<tr class=\"row-odd\"><td class=\"smwtype_wpg\">Table-page</td>",
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Table-page</td>",
 					"<td class=\"Has-page smwtype_wpg\">Foo<br />42</td>",
 					"<td class=\"Has-text smwtype_txt\">bar<br />1001</td></tr>",
 					"</table>"
@@ -52,7 +52,7 @@
 					"<table class=\"sortable wikitable smwtable\">",
 					"<th>&#160;</th><th class=\"Has-page\">Has page</th>",
 					"<th class=\"Has-text\">Has text</th>",
-					"<tr class=\"row-odd\"><td class=\"smwtype_wpg\">Table-page</td>",
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Table-page</td>",
 					"<td class=\"Has-page smwtype_wpg\">Foo;42</td>",
 					"<td class=\"Has-text smwtype_txt\">bar;1001</td></tr>",
 					"</table>"
@@ -67,7 +67,7 @@
 					"<table class=\"sortable wikitable smwtable\" width=\"100%\">",
 					"<th>&#160;</th><th class=\"Has-page\">Has page</th>",
 					"<th class=\"Has-text\">Has text</th>",
-					"<tr class=\"row-odd\"><td class=\"smwtype_wpg\">Table-page</td>",
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Table-page</td>",
 					"<td class=\"Has-page smwtype_wpg\">Foo;42</td>",
 					"<td class=\"Has-text smwtype_txt\">bar;1001</td></tr>",
 					"</table>"

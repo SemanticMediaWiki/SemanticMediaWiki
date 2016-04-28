@@ -70,9 +70,15 @@ class TableResultPrinter extends ResultPrinter {
 			}
 		}
 
+		$rowNumber = 0;
+
 		while ( $subject = $res->getNext() ) {
+			$rowNumber++;
 			$this->getRowForSubject( $subject, $outputMode, $columnClasses );
-			$this->htmlTableRenderer->addRow();
+
+			$this->htmlTableRenderer->addRow(
+				array( 'data-row-number' => $rowNumber )
+			);
 		}
 
 		// print further results footer

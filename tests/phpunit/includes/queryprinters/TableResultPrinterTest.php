@@ -186,7 +186,7 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 			'<table class="tableClass">',
 			'<th class="PrintRequest-PageValue">PrintRequest-PageValue</th>',
 			'<th class="PrintRequest-NumberValue">PrintRequest-NumberValue</th>',
-			'<tr class="row-odd">',
+			'<tr data-row-number="1" class="row-odd">',
 			'class="PrintRequest-PageValue smwtype_wpg">ResultArray-PageValue</td>',
 			'<td data-sort-value="9001"',
 			'class="PrintRequest-NumberValue smwtype_num">9001</td></tr>',
