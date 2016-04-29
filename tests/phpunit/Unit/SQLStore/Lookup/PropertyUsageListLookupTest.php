@@ -111,6 +111,7 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$row = new \stdClass;
 		$row->smw_title = 'Foo';
+		$row->smw_id = 42;
 		$row->usage_count = $expectedCount;
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -142,8 +143,11 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 			$result
 		);
 
+		$property = new DIProperty( 'Foo' );
+		$property->id = 42;
+
 		$expected = array(
-			new DIProperty( 'Foo' ),
+			$property,
 			$expectedCount
 		);
 
@@ -157,6 +161,7 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$row = new \stdClass;
 		$row->smw_title = '-Foo';
+		$row->smw_id = 42;
 		$row->usage_count = 42;
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )

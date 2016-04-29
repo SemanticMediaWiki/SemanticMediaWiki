@@ -4,7 +4,9 @@ namespace SMW;
 
 use Html;
 use SMW\Query\Language\ConceptDescription;
+use SMW\MediaWiki\ByLanguageCollationMapper;
 use SMWPageLister;
+use SMWDataItem as DataItem;
 
 /**
  * Special handling for relation/attribute description pages.
@@ -45,10 +47,15 @@ class ConceptPage extends \SMWOrderedListPage {
 	 * @return string
 	 */
 	protected function getHtml() {
+		global $smwgConceptPagingLimit, $wgRequest;
 
 		if ( $this->limit > 0 ) { // limit==0: configuration setting to disable this completely
 			$description = new ConceptDescription( $this->getDataItem() );
 			$query = SMWPageLister::getQuery( $description, $this->limit, $this->from, $this->until );
+
+			$query->setLimit( $wgRequest->getVal( 'limit', $smwgConceptPagingLimit ) );
+			$query->setOffset( $wgRequest->getVal( 'offset', '0' ) );
+
 			$queryResult = ApplicationFactory::getInstance()->getStore()->getQueryResult( $query );
 
 			$diWikiPages = $queryResult->getResults();
@@ -64,19 +71,17 @@ class ConceptPage extends \SMWOrderedListPage {
 
 		$pageLister = new SMWPageLister( $diWikiPages, null, $this->limit, $this->from, $this->until );
 		$this->mTitle->setFragment( '#SMWResults' ); // Make navigation point to the result list.
-		$navigation = $pageLister->getNavigationLinks( $this->mTitle );
 
 		$titleText = htmlspecialchars( $this->mTitle->getText() );
-		$resultNumber = min( $this->limit, count( $diWikiPages ) );
 
 		return Html::element( 'br', array( 'id' => 'smwfootbr' ) ) .
 			Html::element( 'a', array( 'name' => 'SMWResults' ), null ) .
 			Html::rawElement( 'div', array( 'id' => 'mw-pages'),
 				$this->getCacheInformation() .
 				Html::rawElement( 'h2', array(), $this->getContext()->msg( 'smw_concept_header', $titleText )->text() ) .
-				Html::element( 'span', array(), $this->getContext()->msg( 'smw_conceptarticlecount', $resultNumber )->parse() ) .
-				smwfEncodeMessages( $errors ) . ' '. $navigation .
-				$pageLister->formatList()
+				$this->getNavigationLinks( 'smw_conceptarticlecount', $diWikiPages, $smwgConceptPagingLimit ) .
+				smwfEncodeMessages( $errors ) . ' ' .
+				$this->getFormattedColumns( $diWikiPages )
 			);
 	}
 
@@ -98,6 +103,43 @@ class ConceptPage extends \SMWOrderedListPage {
 			array(),
 			$this->getContext()->msg( 'smw-concept-cache-header' )->text()
 		) . $cacheInformation;
+	}
+
+	private function getFormattedColumns( array $diWikiPages ) {
+
+		if ( $diWikiPages === array() ) {
+			return '';
+		}
+
+		$mwCollaboratorFactory = ApplicationFactory::getInstance()->newMwCollaboratorFactory();
+		$htmlColumnListRenderer = $mwCollaboratorFactory->newHtmlColumnListRenderer();
+
+		foreach ( $diWikiPages as $value ) {
+			$dv = DataValueFactory::getInstance()->newDataItemValue( $value );
+			$contentsByIndex[$this->getFirstLetterForCategory( $value )][] = $dv->getLongHTMLText( smwfGetLinker() );
+		}
+
+		$htmlColumnListRenderer->setColumnRTLDirectionalityState(
+			$this->getContext()->getLanguage()->isRTL()
+		);
+
+		$htmlColumnListRenderer->setColumnClass( 'smw-column-responsive' );
+		$htmlColumnListRenderer->setNumberOfColumns( 1 );
+		$htmlColumnListRenderer->addContentsByIndex( $contentsByIndex );
+
+		return $htmlColumnListRenderer->getHtml();
+	}
+
+	private function getFirstLetterForCategory( DataItem $dataItem ) {
+
+		$sortKey = $dataItem->getSortKey();
+
+		if ( $dataItem->getDIType() == DataItem::TYPE_WIKIPAGE ) {
+			$sortKey = ApplicationFactory::getInstance()->getStore()->getWikiPageSortKey( $dataItem );
+
+		}
+
+		return ByLanguageCollationMapper::getInstance()->findFirstLetterForCategory( $sortKey );
 	}
 
 }

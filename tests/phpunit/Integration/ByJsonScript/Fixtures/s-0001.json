@@ -26,7 +26,8 @@
 			},
 			"expected-output": {
 				"to-contain": [
-					"title=\"Property:Has test blob property\">Has test blob property</a>"
+					"Property:Has_test_blob_property\" title=\"ID:",
+					"Has test blob property"
 				]
 			}
 		},
@@ -41,7 +42,7 @@
 			},
 			"expected-output": {
 				"to-contain": [
-					"title=\"Property:Allows value\">Allows value</a>"
+					"Property:Allows_value\" title=\"ID: 14 (_PVAL)\">Allows value</a>"
 				]
 			}
 		}

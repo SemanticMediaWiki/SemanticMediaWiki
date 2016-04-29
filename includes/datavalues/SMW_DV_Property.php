@@ -192,7 +192,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 *
 	 * @param array $linkAttributes
 	 */
-	public function setLinkAttributes( array $setLinkAttributes ) {
+	public function setLinkAttributes( array $linkAttributes ) {
 		$this->linkAttributes = $linkAttributes;
 
 		if ( $this->getWikiPageValue() instanceof SMWDataValue ) {

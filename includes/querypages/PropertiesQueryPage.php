@@ -193,6 +193,11 @@ class PropertiesQueryPage extends QueryPage {
 		$typestring = SMWTypesValue::newFromTypeId( $this->settings->get( 'smwgPDefaultType' ) )->getLongHTMLText( $this->getLinker() );
 
 		$label = htmlspecialchars( $property->getLabel() );
+		$linkAttributes = array();
+
+		if ( isset( $property->id ) ) {
+			$linkAttributes['title'] = 'ID: ' . $property->id;
+		}
 
 		if ( $title->exists() ) {
 
@@ -209,12 +214,12 @@ class PropertiesQueryPage extends QueryPage {
 				$this->getMessageFormatter()->addFromKey( 'smw_propertylackstype', $typestring );
 			}
 
-			$proplink = $this->getLinker()->link( $title, $label );
+			$proplink = $this->getLinker()->link( $title, $label, $linkAttributes );
 
 		} else {
 
 			$this->getMessageFormatter()->addFromKey( 'smw_propertylackspage' );
-			$proplink = $this->getLinker()->link( $title, $label, array(), array( 'action' => 'view' ) );
+			$proplink = $this->getLinker()->link( $title, $label, $linkAttributes, array( 'action' => 'view' ) );
 		}
 
 		return array( $typestring, $proplink );
@@ -230,9 +235,16 @@ class PropertiesQueryPage extends QueryPage {
 	 * @return array
 	 */
 	private function getPredefinedPropertyInfo( DIProperty $property ) {
+
+		$dv = DataValueFactory::getInstance()->newDataItemValue( $property, null );
+
+		$dv->setLinkAttributes( array(
+			'title' => 'ID: ' . ( isset( $property->id ) ? $property->id : 'N/A' ) . ' (' . $property->getKey() . ')'
+		) );
+
 		return array(
 			SMWTypesValue::newFromTypeId( $property->findPropertyTypeID() )->getLongHTMLText( $this->getLinker() ),
-			DataValueFactory::getInstance()->newDataItemValue( $property, null )->getShortHtmlText( $this->getLinker() )
+			$dv->getShortHtmlText( $this->getLinker() )
 		);
 	}
 

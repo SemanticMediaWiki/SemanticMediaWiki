@@ -76,7 +76,9 @@ class PageBuilder {
 
 		list( $resultMessage, $resultList, $resultCount ) = $this->getResultHtml();
 
-		if ( ( $resultList === '' || $resultList === null ) && $this->pageRequestOptions->property->getDataItem() instanceof DIProperty ) {
+		if ( ( $resultList === '' || $resultList === null ) &&
+			$this->pageRequestOptions->property->getDataItem() instanceof DIProperty &&
+			$this->pageRequestOptions->valueString === '' ) {
 			list( $resultMessage, $resultList, $resultCount ) = $this->tryToFindAtLeastOnePropertyTableReferenceFor(
 				$this->pageRequestOptions->property->getDataItem()
 			);
