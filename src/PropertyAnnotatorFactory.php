@@ -9,7 +9,7 @@ use SMW\PropertyAnnotator\MandatoryTypePropertyAnnotator;
 use SMW\PropertyAnnotator\NullPropertyAnnotator;
 use SMW\PropertyAnnotator\PredefinedPropertyAnnotator;
 use SMW\PropertyAnnotator\RedirectPropertyAnnotator;
-use SMW\PropertyAnnotator\SortkeyPropertyAnnotator;
+use SMW\PropertyAnnotator\SortKeyPropertyAnnotator;
 use SMW\Store;
 
 /**
@@ -74,10 +74,10 @@ class PropertyAnnotatorFactory {
 	 * @param SemanticData $semanticData
 	 * @param string $sortkey
 	 *
-	 * @return SortkeyPropertyAnnotator
+	 * @return SortKeyPropertyAnnotator
 	 */
-	public function newSortkeyPropertyAnnotator( SemanticData $semanticData, $sortkey ) {
-		return new SortkeyPropertyAnnotator(
+	public function newSortKeyPropertyAnnotator( SemanticData $semanticData, $sortkey ) {
+		return new SortKeyPropertyAnnotator(
 			$this->newNullPropertyAnnotator( $semanticData ),
 			$sortkey
 		);

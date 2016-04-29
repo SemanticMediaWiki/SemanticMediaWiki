@@ -116,7 +116,7 @@ class ParserAfterTidy {
 
 		$propertyAnnotator->addAnnotation();
 
-		$propertyAnnotator = $propertyAnnotatorFactory->newSortkeyPropertyAnnotator(
+		$propertyAnnotator = $propertyAnnotatorFactory->newSortKeyPropertyAnnotator(
 			$semanticData,
 			$this->parser->getDefaultSort()
 		);
