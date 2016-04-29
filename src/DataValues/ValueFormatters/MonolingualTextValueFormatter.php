@@ -6,6 +6,7 @@ use RuntimeException;
 use SMW\DataValueFactory;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DIProperty;
+use SMW\Message;
 use SMWDataValue as DataValue;
 
 /**
@@ -84,11 +85,13 @@ class MonolingualTextValueFormatter extends DataValueFormatter {
 			//continue;
 			}
 
-			$dataItems = $this->dataValue->getDataItem()->getSemanticData()->getPropertyValues( $property );
+			$dataItems = $this->dataValue->getDataItem()->getSemanticData()->getPropertyValues(
+				$property
+			);
 
 			// Should not happen but just in case
 			if ( !$dataItems === array() ) {
-				$this->dataValue->addError( wfMessage( 'smw-datavalue-monolingual-dataitem-missing' )->text() );
+				$this->dataValue->addErrorMsg( 'smw-datavalue-monolingual-dataitem-missing' );
 				continue;
 			}
 
@@ -110,7 +113,7 @@ class MonolingualTextValueFormatter extends DataValueFormatter {
 			);
 
 			if ( $property->getKey() === '_LCODE' ) {
-				$languagecode = ' ' . wfMessage( 'smw-datavalue-monolingual-lcode-parenthesis', $result )->text();
+				$languagecode = ' ' . Message::get( array( 'smw-datavalue-monolingual-lcode-parenthesis', $result ) );
 			} else {
 				$text = $result;
 			}

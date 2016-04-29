@@ -59,7 +59,7 @@ class MonolingualTextValueDescriptionDeserializer extends DescriptionDeserialize
 			if (
 				( $languageCode === '' ) &&
 				( $property->getKey() === '_LCODE' ) &&
-				( !$this->dataValue->needsLanguageCode() ) ) {
+				( !$this->dataValue->isEnabledFeature( SMW_DV_MLTV_LCODE ) ) ) {
 				continue;
 			}
 
