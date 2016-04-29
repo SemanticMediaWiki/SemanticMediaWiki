@@ -73,7 +73,7 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testNewSortkeyPropertyAnnotator() {
+	public function testNewSortKeyPropertyAnnotator() {
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -82,8 +82,8 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new PropertyAnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyAnnotator\SortkeyPropertyAnnotator',
-			$instance->newSortkeyPropertyAnnotator( $semanticData, 'Foo' )
+			'\SMW\PropertyAnnotator\SortKeyPropertyAnnotator',
+			$instance->newSortKeyPropertyAnnotator( $semanticData, 'Foo' )
 		);
 	}
 
