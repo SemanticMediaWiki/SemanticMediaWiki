@@ -45,11 +45,17 @@ class MonolingualTextValue extends DataValue {
 	private $monolingualTextValueParser = null;
 
 	/**
+	 * @var DataValueFactory
+	 */
+	private $dataValueFactory = null;
+
+	/**
 	 * @param string $typeid
 	 */
 	public function __construct( $typeid = '' ) {
 		parent::__construct( '_mlt_rec' );
 		$this->monolingualTextValueParser = ValueParserFactory::getInstance()->newMonolingualTextValueParser();
+		$this->dataValueFactory = DataValueFactory::getInstance();
 	}
 
 	/**
@@ -58,17 +64,8 @@ class MonolingualTextValue extends DataValue {
 	 * @param SMWDIProperty[] $properties
 	 */
 	public function setFieldProperties( array $properties ) {
-		// Keep the interface, but the properties for this type
+		// Keep the interface while the properties for this type
 		// are fixed.
-	}
-
-	/**
-	 * @since 2.4
-	 *
-	 * @return integer
-	 */
-	public function needsLanguageCode() {
-		return ( $this->getOptionValueFor( 'smwgDVFeatures' ) & SMW_DV_MLTV_LCODE ) != 0;
 	}
 
 	/**
@@ -85,7 +82,7 @@ class MonolingualTextValue extends DataValue {
 
 		if (
 			( $languageCode !== '' && $languageCodeValue->getErrors() !== array() ) ||
-			( $languageCode === '' && $this->needsLanguageCode() ) ) {
+			( $languageCode === '' && $this->isEnabledFeature( SMW_DV_MLTV_LCODE ) ) ) {
 			$this->addError( $languageCodeValue->getErrors() );
 			return;
 		}
@@ -100,9 +97,15 @@ class MonolingualTextValue extends DataValue {
 				continue;
 			}
 
-			$dataValue = DataValueFactory::getInstance()->newPropertyObjectValue(
+			$value = $text;
+
+			if ( $property->getKey() === '_LCODE' ) {
+				$value = $languageCode;
+			}
+
+			$dataValue = $this->dataValueFactory->newPropertyObjectValue(
 				$property,
-				$property->getKey() === '_LCODE' ? $languageCode : $text,
+				$value,
 				false,
 				$this->m_contextPage
 			);
@@ -269,7 +272,7 @@ class MonolingualTextValue extends DataValue {
 			return null;
 		}
 
-		$dataValue = DataValueFactory::getInstance()->newDataItemValue(
+		$dataValue = $this->dataValueFactory->newDataItemValue(
 			$dataItem,
 			new DIProperty( '_TEXT' )
 		);

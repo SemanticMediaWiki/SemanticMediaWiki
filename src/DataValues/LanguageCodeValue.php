@@ -36,17 +36,20 @@ class LanguageCodeValue extends StringValue {
 		$languageCode = Localizer::asBCP47FormattedLanguageCode( $userValue );
 
 		if ( $languageCode === '' ) {
-			$this->addError( wfMessage(
+			$this->addErrorMsg( array(
 				'smw-datavalue-languagecode-missing',
-				$this->m_property !== null ? $this->m_property->getLabel() : 'UNKNOWN' )->text()
-			);
+				$this->m_property !== null ? $this->m_property->getLabel() : 'UNKNOWN'
+			) );
 			return;
 		}
 
 		// Checks whether any localisation is available for that language tag in
 		// MediaWiki
 		if ( !Localizer::isSupportedLanguage( $languageCode ) ) {
-			$this->addError( wfMessage( 'smw-datavalue-languagecode-invalid', $languageCode )->text() );
+			$this->addErrorMsg( array(
+				'smw-datavalue-languagecode-invalid',
+				$languageCode
+			) );
 			return;
 		}
 

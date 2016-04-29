@@ -67,6 +67,11 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	protected $m_fixNamespace = NS_MAIN;
 
+	/**
+	 * @var array
+	 */
+	protected $linkAttributes = array();
+
 	public function __construct( $typeid ) {
 		parent::__construct( $typeid );
 		switch ( $typeid ) {
@@ -157,6 +162,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		$this->m_fragment = $dataItem->getSubobjectName();
 		$this->m_prefixedtext = '';
 		$this->m_caption = false; // this class can handle this
+		$this->linksAttributes = array();
 
 		if ( ( $this->m_fixNamespace != NS_MAIN ) &&
 			( $this->m_fixNamespace != $dataItem->getNamespace() ) ) {
@@ -166,6 +172,15 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 
 		return true;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param array $linkAttributes
+	 */
+	public function setLinkAttributes( array $linkAttributes ) {
+		$this->linkAttributes = $linkAttributes;
 	}
 
 	/**
@@ -215,11 +230,13 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 
 		if ( $this->m_fragment !== '' ) {
+			$this->linkAttributes['class'] = 'smw-subobject-entity';
+		}
+
+		if ( $this->linkAttributes !== array() ) {
 			$link = \Html::rawElement(
 				'span',
-				array(
-					'class' => 'smw-subobject-entity'
-				),
+				$this->linkAttributes,
 				$link
 			);
 		}
@@ -236,9 +253,9 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	public function getShortHTMLText( $linker = null ) {
 
-		$attributes = array(
-			'class' => $this->m_fragment !== '' ? 'smw-subobject-entity' : ''
-		);
+		if ( $this->m_fragment !== '' ) {
+			$this->linkAttributes['class'] = 'smw-subobject-entity';
+		}
 
 		// init the Title object, may reveal hitherto unnoticed errors:
 		if ( !is_null( $linker ) && $linker !== false &&
@@ -269,7 +286,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		return $linker->link(
 			$this->getTitle(),
 			$caption,
-			$attributes
+			$this->linkAttributes
 		);
 	}
 
@@ -300,11 +317,13 @@ class SMWWikiPageValue extends SMWDataValue {
 		$link = '[[:' . $this->getWikiLinkTarget() . '|' . $this->getLongCaptionText() . ']]';
 
 		if ( $this->m_fragment !== '' ) {
+			$this->linkAttributes['class'] = 'smw-subobject-entity';
+		}
+
+		if ( $this->linkAttributes !== array() ) {
 			$link = \Html::rawElement(
 				'span',
-				array(
-					'class' => 'smw-subobject-entity'
-				),
+				$this->linkAttributes,
 				$link
 			);
 		}
@@ -321,9 +340,9 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	public function getLongHTMLText( $linker = null ) {
 
-		$attributes = array(
-			'class' => $this->m_fragment !== '' ? 'smw-subobject-entity' : ''
-		);
+		if ( $this->m_fragment !== '' ) {
+			$this->linkAttributes['class'] = 'smw-subobject-entity';
+		}
 
 		// init the Title object, may reveal hitherto unnoticed errors:
 		if ( !is_null( $linker ) && ( $this->m_outformat != '-' ) ) {
@@ -342,9 +361,10 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 
 		// all others use default linking, no embedding of images here
-		return $linker->link( $this->getTitle(),
+		return $linker->link(
+			$this->getTitle(),
 			htmlspecialchars( $this->getLongCaptionText() ),
-			$attributes
+			$this->linkAttributes
 		);
 	}
 
@@ -567,7 +587,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	public function getDisplayTitle() {
 
-		if ( $this->m_dataitem === null || ( $this->getOptionValueFor( 'smwgDVFeatures' ) & SMW_DV_WPV_DTITLE ) == 0 ) {
+		if ( $this->m_dataitem === null || !$this->isEnabledFeature( SMW_DV_WPV_DTITLE ) ) {
 			return '';
 		}
 
