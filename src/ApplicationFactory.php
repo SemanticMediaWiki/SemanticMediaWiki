@@ -90,6 +90,17 @@ class ApplicationFactory {
 	}
 
 	/**
+	 * @private
+	 *
+	 * @since 2.4
+	 *
+	 * @return CallbackLoader
+	 */
+	public function getCallbackInstantiator() {
+		return $this->callbackLoader;
+	}
+
+	/**
 	 * @since 2.0
 	 *
 	 * @return SerializerFactory
@@ -160,7 +171,7 @@ class ApplicationFactory {
 	 * @return CacheFactory
 	 */
 	public function newCacheFactory() {
-		return new CacheFactory( $this->getSettings()->get( 'smwgCacheType' ) );
+		return $this->callbackLoader->load( 'CacheFactory', $this->getSettings()->get( 'smwgCacheType' ) );
 	}
 
 	/**

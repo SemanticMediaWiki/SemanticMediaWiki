@@ -72,15 +72,23 @@ class NewRevisionFromEditComplete {
 	 * @return boolean
 	 */
 	public function process() {
-		return $this->getParserOutputFromEditInfo() instanceof ParserOutput ? $this->performUpdate() : true;
+		return $this->canUseParserOutputFromEditInfo() ? $this->doProcess() : true;
 	}
 
-	protected function getParserOutputFromEditInfo() {
-		$editInfoProvider = new EditInfoProvider( $this->wikiPage, $this->revision, $this->user );
-		return $this->parserOutput = $editInfoProvider->fetchEditInfo()->getOutput();
+	private function canUseParserOutputFromEditInfo() {
+
+		$editInfoProvider = new EditInfoProvider(
+			$this->wikiPage,
+			$this->revision,
+			$this->user
+		);
+
+		$this->parserOutput = $editInfoProvider->fetchEditInfo()->getOutput();
+
+		return $this->parserOutput instanceof ParserOutput;
 	}
 
-	protected function performUpdate() {
+	private function doProcess() {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$title = $this->wikiPage->getTitle();

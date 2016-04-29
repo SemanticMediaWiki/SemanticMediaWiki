@@ -20,11 +20,17 @@ class CacheFactory {
 	private $mainCacheType;
 
 	/**
+	 * @var CallbackInstantiator
+	 */
+	private $callbackInstantiator;
+
+	/**
 	 * @since 2.2
 	 *
 	 * @param string|integer|null $mainCacheType
 	 */
 	public function __construct( $mainCacheType = null ) {
+		$this->callbackInstantiator = ApplicationFactory::getInstance()->getCallbackInstantiator();
 		$this->mainCacheType = $mainCacheType;
 
 		if ( $this->mainCacheType === null ) {
@@ -128,6 +134,27 @@ class CacheFactory {
 		) );
 
 		return $compositeCache;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param string $namespace
+	 * @param string|integer|null $cacheType
+	 * @param integer $cacheLifetime
+	 *
+	 * @return BlobStore
+	 */
+	public function newBlobStore( $namespace, $cacheType = null, $cacheLifetime = 0 ) {
+
+		$blobStore = $this->callbackInstantiator->load( 'BlobStore', $namespace, $cacheType, $cacheLifetime );
+
+		// If CACHE_NONE is selected, disable the usage
+		$blobStore->setUsageState(
+			$cacheType !== CACHE_NONE
+		);
+
+		return $blobStore;
 	}
 
 }

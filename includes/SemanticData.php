@@ -268,28 +268,7 @@ class SemanticData {
 			return $this->hash;
 		}
 
-		$hash = array();
-
-		$hash[] = $this->mSubject->getSerialization();
-
-		foreach ( $this->getProperties() as $property ) {
-			$hash[] = $property->getKey();
-
-			foreach ( $this->getPropertyValues( $property ) as $di ) {
-				$hash[] = $di->getSerialization();
-			}
-		}
-
-		foreach ( $this->getSubSemanticData() as $data ) {
-			$hash[] = $data->getHash();
-		}
-
-		sort( $hash );
-
-		$this->hash = md5( implode( '#', $hash ) );
-		unset( $hash );
-
-		return $this->hash;
+		return $this->hash = Hash::createFromSemanticData( $this );
 	}
 
 	/**

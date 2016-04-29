@@ -110,4 +110,14 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructBlobStore() {
+
+		$instance = new CacheFactory( 'hash' );
+
+		$this->assertInstanceOf(
+			'Onoi\BlobStore\BlobStore',
+			$instance->newBlobStore( 'foo', CACHE_NONE )
+		);
+	}
+
 }

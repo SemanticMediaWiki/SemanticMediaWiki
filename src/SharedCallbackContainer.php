@@ -39,14 +39,14 @@ class SharedCallbackContainer implements CallbackContainer {
 
 		$callbackLoader->registerExpectedReturnType( 'Store', '\SMW\Store' );
 
-		$callbackLoader->registerCallback( 'Store', function() use ( $callbackLoader ) {
+		$callbackLoader->registerCallback( 'Store', function( $store = null ) use ( $callbackLoader ) {
 			return StoreFactory::getStore( $callbackLoader->singleton( 'Settings' )->get( 'smwgDefaultStore' ) );
 		} );
 
 		$callbackLoader->registerExpectedReturnType( 'CacheFactory', '\SMW\CacheFactory' );
 
-		$callbackLoader->registerCallback( 'CacheFactory', function() {
-			return new CacheFactory();
+		$callbackLoader->registerCallback( 'CacheFactory', function( $mainCacheType = null ) {
+			return new CacheFactory( $mainCacheType );
 		} );
 
 		$callbackLoader->registerExpectedReturnType( 'Cache', '\Onoi\Cache\Cache' );
@@ -134,11 +134,8 @@ class SharedCallbackContainer implements CallbackContainer {
 			return $blobStore;
 		} );
 
-		$callbackLoader->registerCallback( 'CachedPropertyValuesPrefetcher', function() use ( $callbackLoader ) {
+		$callbackLoader->registerCallback( 'CachedPropertyValuesPrefetcher', function( $cacheType = null, $ttl = 604800 ) use ( $callbackLoader ) {
 			$callbackLoader->registerExpectedReturnType( 'CachedPropertyValuesPrefetcher', '\SMW\CachedPropertyValuesPrefetcher' );
-
-			$cacheType = null;
-			$ttl = 604800; // 7 * 24 * 3600
 
 			$cachedPropertyValuesPrefetcher = new CachedPropertyValuesPrefetcher(
 				$callbackLoader->load( 'Store' ),

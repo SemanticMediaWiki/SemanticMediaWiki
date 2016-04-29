@@ -9,6 +9,7 @@ use SMW\StoreFactory;
 use SMWDITime as DITime;
 use SMWSql3StubSemanticData as StubSemanticData;
 use Title;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMWSql3StubSemanticData
@@ -24,12 +25,25 @@ use Title;
 class Sql3StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
+	private $testEnvironment;
 
 	protected function setUp() {
 
-		$this->store = $this->getMockBuilder( '\SMWSQLStore3' )
+		$this->testEnvironment = new TestEnvironment();
+
+		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getRedirectTarget' )
+			->will( $this->returnArgument( 0 ) );
+
+		$this->testEnvironment->registerObject( 'Store', $this->store );
+	}
+
+	protected function tearDown() {
+		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
@@ -110,16 +124,12 @@ class Sql3StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 			$dataItem
 		);
 
-		StoreFactory::setDefaultStoreForUnitTest( $this->store );
-
 		$serialization = serialize( $instance );
 
 		$this->assertEquals(
 			$instance->getHash(),
 			unserialize( $serialization )->getHash()
 		);
-
-		StoreFactory::clear();
 	}
 
 	/**

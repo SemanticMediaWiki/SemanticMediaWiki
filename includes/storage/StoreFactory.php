@@ -51,23 +51,6 @@ class StoreFactory {
 	}
 
 	/**
-	 * @note This method should not be used in production code and is mostly
-	 * provided to inject instances during unit testing
-	 *
-	 * @since 2.0
-	 *
-	 * @param Store $instance
-	 */
-	public static function setDefaultStoreForUnitTest( Store $instance ) {
-
-		if ( self::$defaultStore === null ) {
-			self::$defaultStore = self::getConfiguration()->get( 'smwgDefaultStore' );
-		}
-
-		self::$instance[self::$defaultStore] = $instance;
-	}
-
-	/**
 	 * @since 1.9
 	 */
 	public static function clear() {
