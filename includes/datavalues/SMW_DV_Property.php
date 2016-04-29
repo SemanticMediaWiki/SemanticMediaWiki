@@ -143,7 +143,7 @@ class SMWPropertyValue extends SMWDataValue {
 		}
 
 		// @see the SMW_DV_PROV_DTITLE explanation
-		if ( $this->canFindPropertyByDisplayTitle() ) {
+		if ( $this->isEnabledFeature( SMW_DV_PROV_DTITLE ) ) {
 			$dataItem = $this->getPropertySpecificationLookup()->getPropertyFromDisplayTitle(
 				$value
 			);
@@ -153,7 +153,7 @@ class SMWPropertyValue extends SMWDataValue {
 
 		$this->inceptiveProperty = $this->m_dataitem;
 
-		if ( $this->canFindPropertyRedirect() ) {
+		if ( $this->isEnabledFeature( SMW_DV_PROV_REDI ) ) {
 			$this->m_dataitem = $this->m_dataitem->getRedirectTarget();
 		}
 	}
@@ -348,25 +348,6 @@ class SMWPropertyValue extends SMWDataValue {
 		}
 
 		return $text;
-	}
-
-
-	/**
-	 * @since 2.4
-	 *
-	 * @return boolean
-	 */
-	protected function canFindPropertyRedirect() {
-		return ( $this->getOptionValueFor( 'smwgDVFeatures' ) & SMW_DV_PROV_REDI ) != 0;
-	}
-
-	/**
-	 * @since 2.4
-	 *
-	 * @return boolean
-	 */
-	protected function canFindPropertyByDisplayTitle() {
-		return ( $this->getOptionValueFor( 'smwgDVFeatures' ) & SMW_DV_PROV_DTITLE ) != 0;
 	}
 
 	/**

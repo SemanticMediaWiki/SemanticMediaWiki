@@ -5,6 +5,7 @@ namespace SMW\Tests;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\HashBuilder;
+use SMW\SemanticData;
 use Title;
 
 /**
@@ -87,6 +88,18 @@ class HashBuilderTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains(
 			'Bar',
 			HashBuilder::createHashIdForContent( array( 'Foo' ), 'Bar' )
+		);
+	}
+
+	public function testCreateFromSemanticData() {
+
+		$semanticData = new SemanticData(
+			DIWikiPage::newFromText( __METHOD__ )
+		);
+
+		$this->assertInternalType(
+			'string',
+			HashBuilder::createFromSemanticData( $semanticData )
 		);
 	}
 

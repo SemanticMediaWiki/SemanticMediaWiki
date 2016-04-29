@@ -79,14 +79,10 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 
 		$this->hasConstraintViolation = false;
 
-		if (
-			!$dataValue instanceof DataValue ||
-			$dataValue->getContextPage() === null ||
-			!$dataValue->isEnabledFeature( SMW_DV_PVUC ) ) {
+		if ( !$this->canValidate( $dataValue ) ) {
 			return $this->hasConstraintViolation;
 		}
 
-		$dataItem = $dataValue->getDataItem();
 		$property = $dataValue->getProperty();
 
 		if ( !$dataValue->getPropertySpecificationLookup()->hasUniquenessConstraintFor( $property ) ) {
@@ -94,6 +90,7 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 		}
 
 		$blobStore = $this->cachedPropertyValuesPrefetcher->getBlobStore();
+		$dataItem = $dataValue->getDataItem();
 
 		$hash = $this->cachedPropertyValuesPrefetcher->getHashFor(
 			$property->getKey() . ':' . $dataItem->getHash()
@@ -183,6 +180,10 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 		);
 
 		return $page;
+	}
+
+	private function canValidate( $dataValue ) {
+		return $dataValue instanceof DataValue && $dataValue->getContextPage() !== null && $dataValue->isEnabledFeature( SMW_DV_PVUC );
 	}
 
 }

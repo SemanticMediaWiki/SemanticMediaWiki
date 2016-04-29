@@ -7,15 +7,13 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Localizer;
 use SMW\SemanticData;
-use SMW\StoreFactory;
 use SMW\Subobject;
-use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\TestEnvironment;
 use SMWDITime as DITime;
 use Title;
 
 /**
  * @covers \SMW\SemanticData
- *
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -27,30 +25,34 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
 	private $dataValueFactory;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
-		// DIProperty::findPropertyTypeID is called during the test
-		// which itself will access the store and to avoid unnecessary
-		// DB reads inject a mock
-		$store = $this->getMockBuilder( '\SMWSQLStore3' )
+		$this->testEnvironment = new TestEnvironment();
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
-		$this->dataValueFactory = DataValueFactory::getInstance();
+		$store->expects( $this->any() )
+			->method( 'getRedirectTarget' )
+			->will( $this->returnArgument( 0 ) );
 
-		StoreFactory::setDefaultStoreForUnitTest( $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
+		$this->dataValueFactory = DataValueFactory::getInstance();
 	}
 
 	protected function tearDown() {
-		StoreFactory::clear();
+		$this->testEnvironment->tearDown();
 	}
 
 	public function testConstructor() {
 
-		$instance = new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) );
+		$instance = new SemanticData( DIWikiPage::newFromText( __METHOD__ ) );
 
 		$this->assertInstanceOf(
 			'\SMW\SemanticData',
@@ -65,7 +67,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetPropertyValues() {
 
-		$instance = new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) );
+		$instance = new SemanticData( DIWikiPage::newFromText( __METHOD__ ) );
 
 		$this->assertInstanceOf(
 			'SMW\DIWikiPage',
@@ -83,7 +85,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 	public function testAddPropertyValue() {
 
-		$instance = new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) );
+		$instance = new SemanticData( DIWikiPage::newFromText( __METHOD__ ) );
 
 		$instance->addPropertyValue(
 			'addPropertyValue',
@@ -106,14 +108,13 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetHash() {
 
-		$title = Title::newFromText( __METHOD__ );
-		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
+		$instance = new SemanticData( DIWikiPage::newFromText( __METHOD__ ) );
 
 		$instance->addDataValue(
 			DataValueFactory::getInstance()->newPropertyObjectValueByText( 'Has fooQuex', 'Bar' )
 		);
 
-		$subobject = $this->newSubobject( $title );
+		$subobject = $this->newSubobject( $instance->getSubject()->getTitle() );
 
 		$instance->addPropertyObjectValue(
 			$subobject->getProperty(),

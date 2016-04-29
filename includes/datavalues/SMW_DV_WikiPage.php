@@ -557,7 +557,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return string sortkey
 	 */
 	public function getSortKey() {
-		return \SMW\StoreFactory::getStore()->getWikiPageSortKey( $this->m_dataitem );
+		return ApplicationFactory::getInstance()->getStore()->getWikiPageSortKey( $this->m_dataitem );
 	}
 
 	/**

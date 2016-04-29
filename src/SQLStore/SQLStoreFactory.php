@@ -2,7 +2,6 @@
 
 namespace SMW\SQLStore;
 
-use Onoi\BlobStore\BlobStore;
 use SMW\ApplicationFactory;
 use SMW\CircularReferenceGuard;
 use SMW\DIProperty;
@@ -238,22 +237,10 @@ class SQLStoreFactory {
 
 		$cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
 
-		$blobStore = new BlobStore(
+		$blobStore = $cacheFactory->newBlobStore(
 			'smw:vl:store',
-			$cacheFactory->newMediaWikiCompositeCache( $GLOBALS['smwgValueLookupCacheType'] )
-		);
-
-		// If CACHE_NONE is selected, disable the usage
-		$blobStore->setUsageState(
-			$GLOBALS['smwgValueLookupCacheType'] !== CACHE_NONE
-		);
-
-		$blobStore->setExpiryInSeconds(
-			$GLOBALS['smwgValueLookupCacheLifetime']
-		);
-
-		$blobStore->setNamespacePrefix(
-			$cacheFactory->getCachePrefix()
+			$this->settings->get( 'smwgValueLookupCacheType' ),
+			$this->settings->get( 'smwgValueLookupCacheLifetime' )
 		);
 
 		$cachedValueLookupStore = new CachedValueLookupStore(
@@ -262,7 +249,7 @@ class SQLStoreFactory {
 		);
 
 		$cachedValueLookupStore->setValueLookupFeatures(
-			$GLOBALS['smwgValueLookupFeatures']
+			$this->settings->get( 'smwgValueLookupFeatures' )
 		);
 
 		$cachedValueLookupStore->setCircularReferenceGuard(

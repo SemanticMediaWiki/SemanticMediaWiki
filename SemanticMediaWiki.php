@@ -115,6 +115,7 @@ class_alias( 'SMW\ParameterProcessorFactory', 'SMW\ParameterFormatterFactory' );
 // 2.4
 class_alias( 'SMW\RequestOptions', 'SMWRequestOptions' );
 class_alias( 'SMW\StringCondition', 'SMWStringCondition' );
+class_alias( 'SMW\HashBuilder', 'SMW\Hash' );
 
 // A flag used to indicate SMW defines a semantic extension type for extension credits.
 // @deprecated, removal in SMW 3.0
