@@ -121,13 +121,24 @@ td.smwpropname, th.smwpropname, td.smwspecname {
 	padding-right: 1em;
 }
 
-td.smwpropname {
-	width: 33%;
+/* Property page */
+.property-page-results td.smwpropname {
+	width: 50%;
 }
 
-td.smwprops, td.smwspecs {
+.property-page-results td.smwprops, td.smwspecs {
 	vertical-align: top;
-	width: 75%;
+	width: 50%;
+}
+
+@media (min-width: 600px) {
+	.property-page-results td.smwpropname {
+		width: 33%;
+	}
+
+	.property-page-results td.smwprops, td.smwspecs {
+		width: 75%;
+	}
 }
 
 .property-page-results {
@@ -282,8 +293,7 @@ span.smwsearchicon {
 #bodyContent span.rdflink a {
 	padding-right: 15px;
 	color: #888888;
-	/* @embed */ background: url(../images/rdf_flyer.18.gif) center right no-repeat;
-	background-size: 10px 10px;
+	/* @embed */ background: url(../images/rdf_flyer.10.png) center right no-repeat;
 }
 
 #bodyContent span.rdflink a:hover {
@@ -291,14 +301,24 @@ span.smwsearchicon {
 	color: #0000FF;
 	padding-right: 15px;
 	margin-right: 0px;
-	/* @embed */ background: url(../images/rdf_flyer.18.gif) center right no-repeat;
-	background-size: 10px 10px;
+	/* @embed */ background: url(../images/rdf_flyer.12.png) center right no-repeat;
 }
 
 /* @TODO Browse and Factbox should be split into seperated CSS file, CSS style file for Semantic MediaWiki Special Browse. */
 table.smwb-factbox {
 	border-left: 8px solid #DDDDDD;
 	width: 100%
+}
+
+.smwb-factbox .smwb-propvalue th, .smwb-ifactbox .smwb-ipropvalue th, .smwb-ifactbox .smwb-propvalue th {
+	width: 25%
+}
+
+/* Only apply when less then 350*/
+@media (max-width: 400px) {
+	.smwb-factbox .smwb-propvalue th, .smwb-ifactbox .smwb-ipropvalue th, .smwb-ifactbox .smwb-propvalue th {
+		width: 50%
+	}
 }
 
 tr.smwb-title {
@@ -313,7 +333,6 @@ tr.smwb-title td {
 }
 
 tr.smwb-propvalue {
-	width: 100%;
 	background-color: #EEEEEE;
 }
 
@@ -334,7 +353,6 @@ tr.smwb-propvalue td {
 	border: 0px solid white;
 	border-bottom: 2px solid white;
 	border-top: 2px solid white;
-	width: 90%;
 }
 
 tr.smwb-center {
@@ -365,7 +383,6 @@ tr.smwb-ititle td {
 }
 
 tr.smwb-ipropvalue {
-	width: 100%;
 	background-color: #EEEEEE;
 	text-align: right;
 }
@@ -385,7 +402,6 @@ tr.smwb-ipropvalue td {
 	border-bottom: 3px solid white;
 	border-top: 3px solid white;
 	padding-right: 1em;
-	width: 90%;
 }
 
 span.smwb-ivalue {
@@ -529,6 +545,17 @@ label.smw-form-checkbox {
 	hyphens: auto;
 }
 
+/* Only apply when less then 350*/
+@media (max-width: 400px) {
+	.smwb-propvalue, .smwb-ipropvalue {
+		word-break: break-word;
+		word-wrap: break-word;
+		-webkit-hyphens: auto;
+		-moz-hyphens: auto;
+		hyphens: auto;
+	}
+}
+
 /* Distinguish subobjects from other titles */
 
 .smw-subobject-entity {
@@ -660,4 +687,33 @@ a.smw-ask-action-btn-lblue:hover {
 
 .skin-vector .smw-page-indicator.usage-count, .skin-vector .smw-page-indicator.property-type {
 	margin-top: 5px;
+}
+
+.browse-input-resp { display: flex; }
+.browse-input-resp .input-field { flex: 1; margin: 0 0 0 0; }
+.browse-input-resp .button-field { flex: 0; margin: 0 0 0 1rem; }
+
+.skin-chameleon .browse-input-resp .mw-ui-button {
+	padding: .3em 1em;
+}
+
+.browse-input-resp .mw-ui-input:focus {
+	box-shadow: inset 0 0 0 1px #ddd;
+	border-color: #ddd;
+	outline: 0;
+}
+
+.smw-page-indicator-rdflink {
+    line-height: 24px;
+    margin-right: 10px;
+}
+
+.smw-page-indicator-rdflink a {
+	/* @embed */ background: url(../images/rdf_flyer.18.png);
+	background-repeat: no-repeat;
+	background-position: left center;
+	padding-left: 28px;
+	display: inline-block;
+	height: 24px;
+	line-height: 24px;
 }

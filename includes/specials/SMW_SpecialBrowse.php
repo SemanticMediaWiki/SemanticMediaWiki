@@ -3,6 +3,8 @@
 use SMW\DIProperty;
 use SMW\UrlEncoder;
 use SMW\Localizer;
+use SMW\SemanticData;
+use SMW\ApplicationFactory;
 
 /**
  * @ingroup SMWSpecialPage
@@ -91,10 +93,19 @@ class SMWSpecialBrowse extends SpecialPage {
 			$this->showincoming = false;
 		}
 
-		$wgOut->addHTML( $this->displayBrowse() );
-		$this->addExternalHelpLinkFor( 'smw-specials-browse-helplink' );
+		$out = $this->getOutput();
 
-		SMWOutputs::commitToOutputPage( $wgOut ); // make sure locally collected output data is pushed to the output!
+		$out->addModuleStyles( array(
+			'mediawiki.ui',
+			'mediawiki.ui.button',
+			'mediawiki.ui.checkbox',
+			'mediawiki.ui.input',
+		) );
+
+		$out->addHTML( $this->displayBrowse() );
+		$this->addExternalHelpLinks();
+
+		SMWOutputs::commitToOutputPage( $out ); // make sure locally collected output data is pushed to the output!
 	}
 
 	/**
@@ -104,17 +115,21 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @return string  A HTML string with the factbox
 	 */
 	private function displayBrowse() {
-		global $wgContLang, $wgOut;
+		global $wgContLang;
 		$html = "\n";
 		$leftside = !( $wgContLang->isRTL() ); // For right to left languages, all is mirrored
+		$modules = array();
 
 		if ( $this->subject->isValid() ) {
+
+			$semanticData = new SemanticData( $this->subject->getDataItem() );
+			$store = ApplicationFactory::getInstance()->getStore();
 
 			$html .= $this->displayHead();
 
 			if ( $this->showoutgoing ) {
-				$data = \SMW\StoreFactory::getStore()->getSemanticData( $this->subject->getDataItem() );
-				$html .= $this->displayData( $data, $leftside );
+				$semanticData = $store->getSemanticData( $this->subject->getDataItem() );
+				$html .= $this->displayData( $semanticData, $leftside );
 				$html .= $this->displayCenter();
 			}
 
@@ -132,9 +147,12 @@ class SMWSpecialBrowse extends SpecialPage {
 
 			$this->articletext = $this->subject->getWikiValue();
 
+			\Hooks::run( 'SMW::Browse::AfterDataLookupComplete', array( $store, $semanticData, &$html, &$modules ) );
+			$this->getOutput()->addModules( $modules );
+
 			// Add a bit space between the factbox and the query form
 			if ( !$this->including() ) {
-				$html .= "<p> &#160; </p>\n";
+				$html .= '<div style="margin-top:15px;"></div>' ."\n";
 			}
 		}
 
@@ -142,7 +160,7 @@ class SMWSpecialBrowse extends SpecialPage {
 			$html .= $this->queryForm();
 		}
 
-		$wgOut->addHTML( $html );
+		$this->getOutput()->addHTML( $html );
 	}
 
 	/**
@@ -369,7 +387,7 @@ class SMWSpecialBrowse extends SpecialPage {
 			$options->offset = $this->offset;
 		}
 
-		$store = \SMW\StoreFactory::getStore();
+		$store = ApplicationFactory::getInstance()->getStore();
 		$inproperties = $store->getInProperties( $this->subject->getDataItem(), $options );
 
 		if ( count( $inproperties ) == self::$incomingpropertiescount ) {
@@ -411,7 +429,7 @@ class SMWSpecialBrowse extends SpecialPage {
 
 		if ( $incoming && $smwgBrowseShowInverse ) {
 			$oppositeprop = SMWPropertyValue::makeUserProperty( wfMessage( 'smw_inverse_label_property' )->text() );
-			$labelarray = \SMW\StoreFactory::getStore()->getPropertyValues( $property->getDataItem()->getDiWikiPage(), $oppositeprop->getDataItem() );
+			$labelarray = ApplicationFactory::getInstance()->getStore()->getPropertyValues( $property->getDataItem()->getDiWikiPage(), $oppositeprop->getDataItem() );
 			$rv = ( count( $labelarray ) > 0 ) ? $labelarray[0]->getLongWikiText():
 				wfMessage( 'smw_inverse_label_default', $property->getWikiValue() )->text();
 		} else {
@@ -427,13 +445,18 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @return A string containing the HTML for the form
 	 */
 	private function queryForm() {
+
+		if ( $this->getRequest()->getVal( 'printable' ) === 'yes' ) {
+			return '';
+		}
+
 		SMWOutputs::requireResource( 'ext.smw.browse' );
 		$title = SpecialPage::getTitleFor( 'Browse' );
 		return '  <form name="smwbrowse" action="' . htmlspecialchars( $title->getLocalURL() ) . '" method="get">' . "\n" .
 			'    <input type="hidden" name="title" value="' . $title->getPrefixedText() . '"/>' .
 			wfMessage( 'smw_browse_article' )->text() . "<br />\n" .
-		    '    <input type="text" name="article" size="40" id="page_input_box" value="' . htmlspecialchars( $this->articletext ) . '" />' . "\n" .
-		    '    <input type="submit" value="' . wfMessage( 'smw_browse_go' )->text() . "\"/>\n" .
+		    ' <div class="browse-input-resp"> <div class="input-field"><input type="text" name="article" size="40" id="page_input_box" class="input mw-ui-input" value="' . htmlspecialchars( $this->articletext ) . '" /></div>' .
+		    ' <div class="button-field"><input type="submit" class="input-button mw-ui-button" value="' . wfMessage( 'smw_browse_go' )->text() . "\"/></div></div>\n" .
 		    "  </form>\n";
 	}
 
@@ -452,13 +475,31 @@ class SMWSpecialBrowse extends SpecialPage {
 	/**
 	 * FIXME MW 1.25
 	 */
-	private function addExternalHelpLinkFor( $key ) {
+	private function addExternalHelpLinks() {
 
-		if ( !method_exists( $this, 'addHelpLink' ) ) {
+		if ( !method_exists( $this, 'addHelpLink' ) || ( $this->getRequest()->getVal( 'printable' ) === 'yes' ) ) {
 			return null;
 		}
 
-		$this->addHelpLink( wfMessage( $key )->escaped(), true );
+		if ( $this->subject->isValid() ) {
+			$link = SpecialPage::getTitleFor( 'ExportRDF', $this->subject->getTitle()->getPrefixedText() )->getLocalUrl( 'syntax=rdf' );
+
+			$this->getOutput()->setIndicators( array(
+				Html::rawElement(
+					'div',
+					array(
+						'class' => 'mw-indicator smw-page-indicator-rdflink'
+					),
+					Html::rawElement(
+						'a',
+						array(
+							'href' => $link
+					), 'RDF' )
+				)
+			) );
+		}
+
+		$this->addHelpLink( wfMessage( 'smw-specials-browse-helplink' )->escaped(), true );
 	}
 
 	protected function getGroupName() {
