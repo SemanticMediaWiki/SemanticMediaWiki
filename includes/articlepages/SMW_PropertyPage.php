@@ -4,6 +4,7 @@ use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\RequestOptions;
 use SMW\StringCondition;
+use SMW\Localizer;
 
 /**
  * Implementation of MediaWiki's Article that shows additional information on
@@ -145,8 +146,14 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 * @return string
 	 */
 	protected function getPropertyValueList() {
+		global $smwgPropertyPagingLimit, $wgRequest;
+
 		if ( $this->limit > 0 ) { // limit==0: configuration setting to disable this completely
 			$options = SMWPageLister::getRequestOptions( $this->limit, $this->from, $this->until );
+
+			$options->limit = $wgRequest->getVal( 'limit', $smwgPropertyPagingLimit );
+			$options->offset = $wgRequest->getVal( 'offset', '0' );
+
 			$diWikiPages = $this->store->getAllPropertySubjects( $this->mProperty, $options );
 
 			if ( !$options->ascending ) {
@@ -168,16 +175,19 @@ class SMWPropertyPage extends SMWOrderedListPage {
 				$this->mProperty
 			);
 
+			// Allow the DV formatter to access a specific language code
+			$dvWikiPage->setLanguageCode(
+				Localizer::getInstance()->getUserLanguage()->getCode()
+			);
+
 			$titleText = htmlspecialchars( $dvWikiPage->getWikiValue() );
 			$resultNumber = min( $this->limit, count( $diWikiPages ) );
 
 			$result .= "<a name=\"SMWResults\"></a><div id=\"mw-pages\">\n" .
 			           '<h2>' . wfMessage( 'smw_attribute_header', $titleText )->text() . "</h2>\n<p>";
-			if ( !$this->mProperty->isUserDefined() ) {
-				$result .= wfMessage( 'smw_isspecprop' )->text() . ' ';
-			}
-			$result .= wfMessage( 'smw_attributearticlecount' )->numParams( $resultNumber )->text() . "</p>\n" .
-			           $navigation . $this->subjectObjectList( $diWikiPages ) . $navigation . "\n</div>";
+
+			$result .= $this->getNavigationLinks( 'smw_attributearticlecount', $diWikiPages, $smwgPropertyPagingLimit ) .
+			           $this->subjectObjectList( $diWikiPages ) . "\n</div>";
 		}
 
 		return $result;
@@ -206,24 +216,31 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$start = 0;
 		}
 
-		$r = '<table style="width: 100%; ">';
+		$r = '<table class="property-page-results" style="width: 100%;" cellspacing="0" cellpadding="0">';
 		$prev_start_char = 'None';
+		$languageCode = Localizer::getInstance()->getUserLanguage()->getCode();
 
 		for ( $index = $start; $index < $ac; $index++ ) {
 			$diWikiPage = $diWikiPages[$index];
 			$dvWikiPage = DataValueFactory::getInstance()->newDataItemValue( $diWikiPage, null );
+
+			// Allow the DV formatter to access a specific language code
+			$dvWikiPage->setLanguageCode(
+				$languageCode
+			);
+
 			$sortkey = $this->store->getWikiPageSortKey( $diWikiPage );
 			$start_char = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
 
 			// Header for index letters
 			if ( $start_char != $prev_start_char ) {
-				$r .= '<tr><th class="smwpropname"><h3>' . htmlspecialchars( $start_char ) . "</h3></th><th></th></tr>\n";
+				$r .= '<tr class="header-row" ><th class="smwpropname"><div class="header-title">' . htmlspecialchars( $start_char ) . "</div></th><th></th></tr>\n";
 				$prev_start_char = $start_char;
 			}
 
 			// Property name
 			$searchlink = SMWInfolink::newBrowsingLink( '+', $dvWikiPage->getWikiValue() );
-			$r .= '<tr><td class="smwpropname">' . $dvWikiPage->getShortHTMLText( smwfGetLinker() ) .
+			$r .= '<tr class="value-row" ><td class="smwpropname">' . $dvWikiPage->getShortHTMLText( smwfGetLinker() ) .
 			      '&#160;' . $searchlink->getHTML( smwfGetLinker() ) . '</td><td class="smwprops">';
 
 			// Property values
@@ -240,6 +257,11 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 				if ( $i < $smwgMaxPropertyValues + 1 ) {
 					$dv = DataValueFactory::getInstance()->newDataItemValue( $di, $this->mProperty );
+
+					$dv->setLanguageCode(
+						$languageCode
+					);
+
 					$r .= $dv->getShortHTMLText( smwfGetLinker() ) . $dv->getInfolinkText( SMW_OUTPUT_HTML, smwfGetLinker() );
 				} else {
 					$searchlink = SMWInfolink::newInversePropertySearchLink( '…', $dvWikiPage->getWikiValue(), $this->mTitle->getText() );

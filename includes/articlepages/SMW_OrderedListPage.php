@@ -2,6 +2,7 @@
 
 use SMW\DIProperty;
 use SMW\PropertyRegistry;
+use SMW\ApplicationFactory;
 
 /**
  * Abstract subclass of MediaWiki's Article that handles the common tasks of
@@ -114,6 +115,44 @@ abstract class SMWOrderedListPage extends Article {
 	 */
 	protected function getIntroductoryText() {
 		return '';
+	}
+
+	/**
+	 * @since 2.4
+	 */
+	protected function getNavigationLinks( $msgKey, array $diWikiPages, $default = 50 ) {
+		global $wgRequest;
+
+		$mwCollaboratorFactory = ApplicationFactory::getInstance()->newMwCollaboratorFactory();
+
+		$messageBuilder = $mwCollaboratorFactory->newMessageBuilder(
+			$this->getContext()->getLanguage()
+		);
+
+		$title = $this->mTitle;
+		$title->setFragment( '#SMWResults' ); // Make navigation point to the result list.
+
+		$resultCount = count( $diWikiPages );
+		$navigation = '';
+
+		if ( $resultCount > 0 ) {
+			$navigation = $messageBuilder->prevNextToText(
+				$title,
+				$wgRequest->getVal( 'limit', $default ),
+				$wgRequest->getVal( 'offset', '0' ),
+				array(),
+				$resultCount < $wgRequest->getVal( 'limit', $default )
+			);
+
+			$navigation = Html::rawElement('div', array(), $navigation );
+		}
+
+		return Html::rawElement(
+			'p',
+			array(),
+			Html::element( 'span', array(), wfMessage( $msgKey, $resultCount )->parse() ) . '<br>' .
+			$navigation
+		);
 	}
 
 	/**

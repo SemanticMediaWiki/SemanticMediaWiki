@@ -121,9 +121,64 @@ td.smwpropname, th.smwpropname, td.smwspecname {
 	padding-right: 1em;
 }
 
+td.smwpropname {
+	width: 33%;
+}
+
 td.smwprops, td.smwspecs {
 	vertical-align: top;
 	width: 75%;
+}
+
+.property-page-results {
+	margin-top: 0.9em;
+}
+
+.property-page-results table {
+	border: none;
+}
+
+.property-page-results .header-row {
+	/* background-color: #f5f5f5; */
+}
+
+.property-page-results .value-row:hover {
+	background-color: #f5f5f5;
+}
+
+.property-page-results .header-row > th {
+	border-bottom: 0px solid #ddd;
+}
+
+.property-page-results tr.value-row > td {
+	padding-bottom: 0.2em;
+	padding-top: 0.2em;
+}
+
+.property-page-results .header-row + tr.value-row td {
+	padding-top: 0.3em;
+}
+
+.property-page-results .header-title {
+	font-weight: bold;
+	font-size: 1.17em;
+	line-height: 1.6;
+	margin-top: 0.0em;
+	color: #333;
+	overflow: hidden;
+	padding: 2px 3px;
+}
+
+.property-page-results tr.value-row:nth-child(even) {
+  /*  background-color: #f5f5f5; */
+}
+
+.smwtable-striped tbody > tr:nth-child(even) {
+   background-color: #f5f5f5;
+}
+
+.smwtable-striped tbody > tr:nth-child(odd) {
+   background-color: #fff;
 }
 
 div.smwhr hr {
@@ -411,9 +466,13 @@ label.smw-form-checkbox {
 }
 
 .smw-column-responsive {
-	-webkit-column-width: 25em;
-	-moz-column-width: 25em;
-	column-width: 25em;
+  -webkit-columns: 3 20em;
+     -moz-columns: 3 20em;
+          columns: 3 20em;
+  -webkit-column-gap: 1em;
+     -moz-column-gap: 1em;
+          column-gap: 1em;
+          margin-bottom: -2em;
 }
 
 .smw-column[dir="rtl"] {

@@ -113,7 +113,7 @@ class PropertyUsageListLookup implements ListLookup {
 
 		$res = $db->select(
 			array( $db->tableName( SQLStore::ID_TABLE ), $db->tableName( SQLStore::PROPERTY_STATISTICS_TABLE ) ),
-			array( 'smw_title', 'usage_count' ),
+			array( 'smw_id', 'smw_title', 'usage_count' ),
 			$conditions,
 			__METHOD__,
 			$options,
@@ -131,6 +131,7 @@ class PropertyUsageListLookup implements ListLookup {
 
 			try {
 				$property = new DIProperty( str_replace( ' ', '_', $row->smw_title ) );
+				$property->id = $row->smw_id;
 			} catch ( InvalidPropertyException $e ) {
 				$property = new DIError( new \Message( 'smw_noproperty', array( $row->smw_title ) ) );
 			}
