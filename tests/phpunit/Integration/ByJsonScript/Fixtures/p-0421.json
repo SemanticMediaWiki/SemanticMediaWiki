@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation with combined constraint validation",
+	"description": "Test in-text annotation with combined constraint validation (`smwgDVFeatures`)",
 	"properties": [
 		{
 			"name": "Has Url",

@@ -275,6 +275,10 @@ class SMWSpecialBrowse extends SpecialPage {
 			Localizer::getInstance()->getUserLanguage()->getCode()
 		);
 
+		$dataValue->setContextPage(
+			$this->subject->getDataItem()
+		);
+
 		$html = $dataValue->getLongHTMLText( $linker );
 
 		if ( $dataValue->getTypeID() === '_wpg' || $dataValue->getTypeID() === '__sob' ) {

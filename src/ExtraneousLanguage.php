@@ -235,6 +235,27 @@ class ExtraneousLanguage {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @param integer|null $precision
+	 *
+	 * @return string
+	 */
+	public function getPreferredDateFormatByPrecision( $precision = null ) {
+
+		$dateOutputFormats = $this->getLanguage()->getPreferredDateFormats();
+
+		foreach ( $dateOutputFormats as $key => $format ) {
+			if ( @constant( $key ) === $precision ) {
+				return $format;
+			}
+		}
+
+		// Fallback
+		return 'd F Y H:i:s';
+	}
+
+	/**
 	 * @deprecated use findMonthNumberByLabel
 	 */
 	public function findMonth( $label ) {

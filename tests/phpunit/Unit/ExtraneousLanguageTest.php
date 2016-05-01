@@ -91,4 +91,61 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetPreferredDateFormatByPrecisionOnMatchedPrecision() {
+
+		$language = $this->getMockBuilder( '\SMWLanguage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$language->expects( $this->atLeastOnce() )
+			->method( 'getPreferredDateFormats' )
+			->will( $this->returnValue(
+				array( 'SMW_PREC_YMDT' => 'd m Y' ) ) );
+
+		$extraneousLanguageFileHandler = $this->getMockBuilder( '\SMW\ExtraneousLanguageFileHandler' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$extraneousLanguageFileHandler->expects( $this->atLeastOnce() )
+			->method( 'newByLanguageCode' )
+			->will( $this->returnValue( $language ) );
+
+		$instance = new ExtraneousLanguage(
+			$extraneousLanguageFileHandler
+		);
+
+		$this->assertEquals(
+			'd m Y',
+			$instance->getPreferredDateFormatByPrecision( SMW_PREC_YMDT )
+		);
+	}
+
+	public function testGetPreferredDateFormatOnNotMatchablePrecision() {
+
+		$language = $this->getMockBuilder( '\SMWLanguage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$language->expects( $this->atLeastOnce() )
+			->method( 'getPreferredDateFormats' )
+			->will( $this->returnValue( array( 'Foo' => 'd m Y' ) ) );
+
+		$extraneousLanguageFileHandler = $this->getMockBuilder( '\SMW\ExtraneousLanguageFileHandler' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$extraneousLanguageFileHandler->expects( $this->atLeastOnce() )
+			->method( 'newByLanguageCode' )
+			->will( $this->returnValue( $language ) );
+
+		$instance = new ExtraneousLanguage(
+			$extraneousLanguageFileHandler
+		);
+
+		$this->assertEquals(
+			'd F Y H:i:s',
+			$instance->getPreferredDateFormatByPrecision( SMW_PREC_YMDT )
+		);
+	}
+
 }

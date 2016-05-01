@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation for `_dat` using JL/GR annotated values (en)",
+	"description": "Test in-text annotation for `_dat` using JL/GR annotated values (en, `smwgDVFeatures`)",
 	"properties": [
 		{
 			"name": "Has date",
@@ -55,9 +55,9 @@
 			"subject": "Example/P0420/1a",
 			"expected-output": {
 				"to-contain": [
-					"<td data-sort-value=\"2336583.5\" class=\"Has-date smwtype_dat\">21 March 1685 JL</td>",
+					"<td data-sort-value=\"2336583.5\" class=\"Has-date smwtype_dat\">21 March 1685 <sup>JL</sup></td>",
 					"<td data-sort-value=\"2336583.5\" class=\"Has-date smwtype_dat\">31 March 1685</td>",
-					"<td data-sort-value=\"2336583.5\" class=\"Has-date smwtype_dat\">21 March 1685 JL</td>"
+					"<td data-sort-value=\"2336583.5\" class=\"Has-date smwtype_dat\">21 March 1685 <sup>JL</sup></td>"
 				]
 			}
 		},
@@ -66,9 +66,9 @@
 			"subject": "Example/P0420/2a",
 			"expected-output": {
 				"to-contain": [
-					"<td data-sort-value=\"2336583.5\" class=\"Has-date smwtype_dat\">21 March 1685 JL</td>",
+					"<td data-sort-value=\"2336583.5\" class=\"Has-date smwtype_dat\">21 March 1685 <sup>JL</sup></td>",
 					"<td data-sort-value=\"2336583.5\" class=\"Has-date smwtype_dat\">31 March 1685</td>",
-					"<td data-sort-value=\"2336583.5\" class=\"Has-date smwtype_dat\">21 March 1685 JL</td>"
+					"<td data-sort-value=\"2336583.5\" class=\"Has-date smwtype_dat\">21 March 1685 <sup>JL</sup></td>"
 				]
 			}
 		},
@@ -79,14 +79,15 @@
 				"to-contain": [
 					"<td data-sort-value=\"2336573.5\" class=\"Has-date smwtype_dat\">21 March 1685</td>",
 					"<td data-sort-value=\"2336573.5\" class=\"Has-date smwtype_dat\">21 March 1685</td>",
-					"<td data-sort-value=\"2336573.5\" class=\"Has-date smwtype_dat\">11 March 1685 JL</td>"
+					"<td data-sort-value=\"2336573.5\" class=\"Has-date smwtype_dat\">11 March 1685 <sup>JL</sup></td>"
 				]
 			}
 		}
 	],
 	"settings": {
 		"wgContLang": "en",
-		"wgLang": "en"
+		"wgLang": "en",
+		"smwgDVFeatures": [ "SMW_DV_TIMEV_CM" ]
 	},
 	"meta": {
 

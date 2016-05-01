@@ -39,13 +39,40 @@ class IntlTimeFormatter {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @return string|boolean
+	 */
+	public function getLocalizedFormat() {
+
+		$dateTime = $this->dataItem->asDateTime();
+
+		if ( !$dateTime ) {
+			return false;
+		}
+
+		$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage(
+			$this->language
+		);
+
+		$preferredDateFormatByPrecision = $extraneousLanguage->getPreferredDateFormatByPrecision(
+			$this->dataItem->getPrecision()
+		);
+
+		return $this->formatWithLocalizedTextReplacement(
+			$dateTime,
+			$preferredDateFormatByPrecision
+		);
+	}
+
+	/**
 	 * Permitted formatting options are specified by http://php.net/manual/en/function.date.php
 	 *
 	 * @since 2.4
 	 *
 	 * @param string $format
 	 *
-	 * @return string
+	 * @return string|boolean
 	 */
 	public function format( $format ) {
 
@@ -55,19 +82,22 @@ class IntlTimeFormatter {
 			return false;
 		}
 
-		$output = $this->getFormattedOutputWithTextualRepresentationReplacement(
+		$output = $this->formatWithLocalizedTextReplacement(
 			$dateTime,
 			$format
 		);
 
-		if ( $this->dataItem->getCalendarModel() !== DITime::CM_GREGORIAN && $this->containsDateFormatRule( $format ) ) {
-			$output .= ' ' . $this->dataItem->getCalendarModelLiteral();
-		}
-
 		return $output;
 	}
 
-	private function containsDateFormatRule( $format ) {
+	/**
+	 * @since 2.4
+	 *
+	 * @param string $format
+	 *
+	 * @return boolean
+	 */
+	public function containsValidDateFormatRule( $format ) {
 
 		foreach ( str_split( $format ) as $value ) {
 			if ( in_array( $value, array( 'd', 'D', 'j', 'l', 'N', 'w', 'W', 'F', 'M', 'm', 'n', 't', 'L', 'o', 'Y', 'y', "c", 'r' ) ) ) {
@@ -88,7 +118,7 @@ class IntlTimeFormatter {
 	 * - a	Lowercase Ante meridiem and Post meridiem am or pm
 	 * - A	Uppercase Ante meridiem and Post meridiem
 	 */
-	private function getFormattedOutputWithTextualRepresentationReplacement( $dateTime, $format ) {
+	private function formatWithLocalizedTextReplacement( $dateTime, $format ) {
 
 		$output = $dateTime->format( $format );
 

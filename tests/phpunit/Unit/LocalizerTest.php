@@ -16,6 +16,10 @@ use SMW\Localizer;
  */
 class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
+	protected function tearDown() {
+		Localizer::clear();
+	}
+
 	public function testCanConstruct() {
 
 		$language = $this->getMockBuilder( '\Language' )
@@ -50,8 +54,6 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 			$GLOBALS['wgContLang'],
 			Localizer::getInstance()->getContentLanguage()
 		);
-
-		Localizer::clear();
 	}
 
 	public function testNamespaceTextById() {
@@ -161,19 +163,80 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetLanguageCodeByRule_OnTitleExpectedToPageLanguage() {
+
+		$contentLanguage = $this->getMockBuilder( '\Language' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$contentLanguage->expects( $this->atLeastOnce() )
+			->method( 'getCode' )
+			->will( $this->returnValue( 'en' ) );
+
+		$instance = new Localizer( $contentLanguage );
+
+		$pageLanguage = $this->getMockBuilder( '\Language' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$pageLanguage->expects( $this->once() )
+			->method( 'getCode' )
+			->will( $this->returnValue( 'foo' ) );
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'getPageLanguage' )
+			->will( $this->returnValue( $pageLanguage ) );
+
+		$this->assertEquals(
+			$pageLanguage,
+			$instance->getPreferredLanguageByRule( $title )
+		);
+	}
+
+	public function testGetLanguageCodeByRule_OnNotProvidedTitlePageLanguageExpectedToReturnUserLanguage() {
+
+		$contentLanguage = $this->getMockBuilder( '\Language' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new Localizer( $contentLanguage );
+
+		$this->assertEquals(
+			$instance->getUserLanguage(),
+			$instance->getPreferredLanguageByRule( null )
+		);
+	}
+
 	public function testExtraneousLanguage() {
 
+		$instance = Localizer::getInstance();
+
 		$this->assertInstanceOf(
 			'\SMW\ExtraneousLanguage',
-			Localizer::getInstance()->getExtraneousLanguage()
+			$instance->getExtraneousLanguage()
 		);
 
 		$this->assertInstanceOf(
 			'\SMW\ExtraneousLanguage',
-			Localizer::getInstance()->getExtraneousLanguage( 'en' )
+			$instance->getExtraneousLanguage( 'en' )
 		);
 
-		Localizer::clear();
+		$language = $this->getMockBuilder( '\Language' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$language->expects( $this->once() )
+			->method( 'getCode' )
+			->will( $this->returnValue( 'en' ) );
+
+		$this->assertInstanceOf(
+			'\SMW\ExtraneousLanguage',
+			$instance->getExtraneousLanguage( $language )
+		);
 	}
 
 	public function testConvertDoubleWidth() {
