@@ -162,7 +162,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		$this->m_fragment = $dataItem->getSubobjectName();
 		$this->m_prefixedtext = '';
 		$this->m_caption = false; // this class can handle this
-		$this->linksAttributes = array();
+		$this->linkAttributes = array();
 
 		if ( ( $this->m_fixNamespace != NS_MAIN ) &&
 			( $this->m_fixNamespace != $dataItem->getNamespace() ) ) {
