@@ -272,6 +272,8 @@ class TimeValueFormatter extends DataValueFormatter {
 	}
 
 	/**
+	 * @private
+	 *
 	 * @since 2.4
 	 *
 	 * @param  DITime|null $dataItem

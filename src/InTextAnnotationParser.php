@@ -134,6 +134,10 @@ class InTextAnnotationParser {
 
 		if ( $this->isEnabledNamespace ) {
 			$this->parserData->getOutput()->addModules( $this->getModules() );
+
+			if ( method_exists( $this->parserData->getOutput(), 'recordOption' ) ) {
+				$this->parserData->getOutput()->recordOption( 'userlang' );
+			}
 		}
 
 		$this->parserData->pushSemanticDataToParserOutput();

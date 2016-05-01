@@ -72,11 +72,13 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider timeInputProvider
 	 */
-	public function testFormat( $timeUserValue, $type, $format, $linker, $expected ) {
+	public function testFormat( $timeUserValue, $type, $format, $linker, $languageCode, $expected ) {
 
 		$timeValue = new TimeValue( '_dat' );
 		$timeValue->setUserValue( $timeUserValue );
+
 		$timeValue->setOutputFormat( $format );
+		$timeValue->setLanguageCode( $languageCode );
 
 		$instance = new TimeValueFormatter( $timeValue );
 
@@ -194,118 +196,200 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testMediaWikiDate_WithDifferentLanguage() {
+
+		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setUserValue( '2015-02-28' );
+		$timeValue->setLanguageCode( 'en' );
+
+		$instance = new TimeValueFormatter( $timeValue );
+
+		$this->assertEquals(
+			'28 February 2015',
+			$instance->getMediaWikiDate()
+		);
+
+		$timeValue->setLanguageCode( 'ja' );
+
+		$instance = new TimeValueFormatter( $timeValue );
+
+		$this->assertEquals(
+			'2015年2月28日 (土)',
+			$instance->getMediaWikiDate()
+		);
+	}
+
+	public function testLOCLOutputFormat() {
+
+		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setUserValue( '2015-02-28' );
+
+		$timeValue->setLanguageCode( 'en' );
+		$timeValue->setOutputFormat( 'LOCL' );
+
+		$instance = new TimeValueFormatter( $timeValue );
+
+		$this->assertEquals(
+			$instance->format( TimeValueFormatter::WIKI_LONG ),
+			$instance->getLocalizedFormat( $timeValue->getDataItem() )
+		);
+
+		$this->assertEquals(
+			$instance->format( TimeValueFormatter::HTML_LONG ),
+			$instance->getLocalizedFormat( $timeValue->getDataItem() )
+		);
+	}
+
 	public function timeInputProvider() {
 
+		#0
 		$provider[] = array(
 			'2000',
 			TimeValueFormatter::VALUE,
 			'',
 			null,
+			'',
 			'2000'
 		);
 
+		#1
 		$provider[] = array(
 			'2000',
 			TimeValueFormatter::VALUE,
 			'ISO',
 			null,
+			'',
 			'2000'
 		);
 
+		#2
 		$provider[] = array(
 			'2000',
 			TimeValueFormatter::WIKI_SHORT,
 			'ISO',
 			null,
+			'',
 			'2000'
 		);
 
+		#3
 		$provider[] = array(
 			'2000',
 			TimeValueFormatter::HTML_SHORT,
 			'ISO',
 			null,
+			'',
 			'2000'
 		);
 
+		#4
 		$provider[] = array(
 			'2000',
 			TimeValueFormatter::WIKI_LONG,
 			'ISO',
 			null,
+			'',
 			'2000-01-01'
 		);
 
+		#5
 		$provider[] = array(
 			'2000',
 			TimeValueFormatter::HTML_LONG,
 			'ISO',
 			null,
+			'',
 			'2000-01-01'
 		);
 
+		#6
 		$provider[] = array(
 			'2000',
 			TimeValueFormatter::WIKI_LONG,
 			'MEDIAWIKI',
 			null,
+			'',
 			'2000'
 		);
 
+		#7
 		$provider[] = array(
 			'2000',
 			TimeValueFormatter::HTML_LONG,
 			'MEDIAWIKI',
 			null,
+			'',
 			'2000'
 		);
 
+		#8
 		$provider[] = array(
 			'2000-02',
 			TimeValueFormatter::VALUE,
 			'',
 			null,
+			'',
 			'2000-02'
 		);
 
+		#9
 		$provider[] = array(
 			'2000-02',
 			TimeValueFormatter::VALUE,
 			'ISO',
 			null,
+			'',
 			'2000-02'
 		);
 
+		#10
 		$provider[] = array(
 			'2000-02',
 			TimeValueFormatter::WIKI_SHORT,
 			'',
 			null,
+			'',
 			'2000-02'
 		);
 
+		#11
 		$provider[] = array(
 			'2000-02',
 			TimeValueFormatter::HTML_SHORT,
 			'ISO',
 			null,
+			'',
 			'2000-02'
 		);
 
+		#12
 		$provider[] = array(
 			'2000-02',
 			TimeValueFormatter::WIKI_LONG,
 			'ISO',
 			null,
+			'',
 			'2000-02-01'
 		);
 
+		#13
 		$provider[] = array(
 			'2000-02',
 			TimeValueFormatter::HTML_LONG,
 			'ISO',
 			null,
+			'',
 			'2000-02-01'
+		);
+
+		#14
+		$provider[] = array(
+			'2000-02',
+			TimeValueFormatter::HTML_LONG,
+			'LOCL',
+			null,
+			'en',
+			'February 2000'
 		);
 
 		return $provider;

@@ -98,7 +98,6 @@ class SMWSpecialBrowse extends SpecialPage {
 		$out->addModuleStyles( array(
 			'mediawiki.ui',
 			'mediawiki.ui.button',
-			'mediawiki.ui.checkbox',
 			'mediawiki.ui.input',
 		) );
 
@@ -272,12 +271,15 @@ class SMWSpecialBrowse extends SpecialPage {
 
 		// Allow the DV formatter to access a specific language code
 		$dataValue->setLanguageCode(
-			Localizer::getInstance()->getUserLanguage()->getCode()
+			Localizer::getInstance()->getPreferredLanguageByRule( $this->subject->getDataItem() )->getCode()
 		);
 
 		$dataValue->setContextPage(
 			$this->subject->getDataItem()
 		);
+
+		// Use LOCL formatting where appropriate (date)
+		$dataValue->setOutputFormat( 'LOCL' );
 
 		$html = $dataValue->getLongHTMLText( $linker );
 
