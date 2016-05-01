@@ -181,7 +181,7 @@ class SMWResultArray {
 
 		// Allow the DV formatter to access a specific language code
 		$dv->setLanguageCode(
-			\SMW\Localizer::getInstance()->getUserLanguage()->getCode()
+			\SMW\Localizer::getInstance()->getPreferredLanguageByRule( $this->mResult )->getCode()
 		);
 
 		$dv->setContextPage(

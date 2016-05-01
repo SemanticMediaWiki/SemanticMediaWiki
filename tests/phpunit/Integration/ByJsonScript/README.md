@@ -1,12 +1,12 @@
 ## Fixtures
-Contains 109 files:
+Contains 113 files:
 
 ### F
 * [f-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0001.json) Test format=debug output
 * [f-0101.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0101.json) Test format=template output using unnamed arguments (#885)
 * [f-0102.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0102.json) Test format=template output + unicode characters (#988, skip postgres)
 * [f-0103.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0103.json) Test format=template with self reference (#988, guard against template self-reference in ask/show query)
-* [f-0201.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0201.json) Test format=table on boolean table output formatting, #896
+* [f-0201.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0201.json) Test format=table on boolean table output formatting (#896, #1464)
 * [f-0202.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0202.json) Test format=table with sep cell formatting, #495 (en, skip 1.19)
 * [f-0203.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0203.json) Test format=table to sort by category (#1286)
 * [f-0204.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0204.json) Test `format=table` on `_qty` for different positional unit preference (#1329, en)
@@ -45,15 +45,17 @@ Contains 109 files:
 * [p-0410.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0410.json) Test in-text annotation on `_num`/`_tem`/`_qty` type with denoted precision (`_PREC`) and/or `-p<num>` printout precision marker (#1335, en)
 * [p-0411.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0411.json) Test in-text annotation (and #subobject) using a monolingual property (#1344, en)
 * [p-0412.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0412.json) Test in-text annotation for `_boo` datatype (ja)
-* [p-0413.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0413.json) Test in-text annotation for different `_dat` input/output (en, skip virtuoso)
-* [p-0414.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0414.json) Test in-text annotation/free format for `_dat` datatype (#1389, en)
+* [p-0413.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0413.json) Test in-text annotation for different `_dat` input/output (en, skip virtuoso, `smwgDVFeatures`)
+* [p-0414.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0414.json) Test in-text annotation/free format for `_dat` datatype (#1389, #1401, en, `smwgDVFeatures`)
 * [p-0415.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0415.json) Test in-text annotation on `_tem` with display unit preference (en)
 * [p-0416.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0416.json) Test in-text annotation with DISPLAYTITLE (#1410, `wgRestrictDisplayTitle`, en)
 * [p-0417.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0417.json) Test in-text annotation for `Allows pattern` to match regular expressions (en)
 * [p-0418.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0418.json) Test in-text annotation using `_SERV` as provide service links (en)
-* [p-0419.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0419.json) Test in-text annotation for `PRUC` to validate uniqueness
-* [p-0420.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0420.json) Test in-text annotation for `_dat` using JL/GR annotated values (en)
-* [p-0421.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0421.json) Test in-text annotation with combined constraint validation
+* [p-0419.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0419.json) Test in-text annotation for `PRUC` to validate uniqueness (`smwgDVFeatures`)
+* [p-0420.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0420.json) Test in-text annotation for `_dat` using JL/GR annotated values (en, `smwgDVFeatures`)
+* [p-0421.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0421.json) Test in-text annotation with combined constraint validation (`smwgDVFeatures`)
+* [p-0422.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0422.json) Test in-text annotation `_dat` on partial dates (en)
+* [p-0423.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0423.json) Test in-text annotation / `#ask` (#MEDIAWIKI, #LOCL) output for `_dat` datatype (`wgContLang` = en, `wgLang` = ja)
 * [p-0701.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0701.json) Test to create inverted annotation using a #ask/template combination (#711, `import-annotation=true`)
 * [p-0702.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0702.json) Test #ask with `format=table` on inverse property/printrquest (#1270, en)
 * [p-0901.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0901.json) Test #ask on moved redirected subject (#1086)
@@ -119,5 +121,7 @@ Contains 109 files:
 * [s-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0001.json) Test output of `Special:Properties` (en, skip-on sqlite, 1.19)
 * [s-0002.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0002.json) Test output of `Special:SearchByProperty` (en, skip-on sqlite, 1.19)
 * [s-0003.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0003.json) Test `Special:Ask` output for `format=rdf`/'format=json' (#1453, en, skip-on 1.19)
+* [s-0004.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0004.json) Test `Special:Browse` output for `_dat' (`wgContLang` = en, `wgLang` = ja)
+* [s-0005.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0005.json) Test `Special:Browse` output for `_dat' (`wgContLang` = en, `wgLang` = en, `smwgDVFeatures`)
 
--- Last updated on 2016-04-12 by `readmeContentsBuilder.php`
+-- Last updated on 2016-05-01 by `readmeContentsBuilder.php`

@@ -116,10 +116,12 @@ class AskParserFunction {
 
 		$this->parserData->pushSemanticDataToParserOutput();
 
-		// Allow to reparse in case the user language changed
-		// 1.23+
+		// 1.23+ add options so changes are recognized in case of:
+		// - 'userlang' will trigger a cache fragmentation by user language
+		// - 'dateformat'  will trigger a cache fragmentation by date preference
 		if ( method_exists( $this->parserData->getOutput(), 'recordOption' ) ) {
 			$this->parserData->getOutput()->recordOption( 'userlang' );
+			$this->parserData->getOutput()->recordOption( 'dateformat' );
 		}
 
 		return $result;

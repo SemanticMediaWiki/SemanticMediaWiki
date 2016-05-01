@@ -1,0 +1,45 @@
+{
+	"description": "Test `Special:Browse` output for `_dat' (`wgContLang` = en, `wgLang` = ja)",
+	"properties": [
+		{
+			"name": "Has date",
+			"contents": "[[Has type::Date]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/S0004/1",
+			"contents": "[[Has date::12 Jan 1991 8:56]] [[Category:S0004]"
+		}
+	],
+	"special-testcases": [
+		{
+			"about": "#0",
+			"special-page": {
+				"page":"Browse",
+				"query-parameters": "Example/S0004/1",
+				"request-parameters":{}
+			},
+			"expected-output": {
+				"to-contain": [
+					"<span class=\"smwb-value\">1991年1月12日 (金) 08:56:00&#160;&#160;",
+					"title=\"Special:SearchByProperty/Has-20date/1991年1月12日-20(金)-2008:56:00\">+</a></span>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "ja",
+		"smwgPageSpecialProperties": [ "_MDAT" ],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
