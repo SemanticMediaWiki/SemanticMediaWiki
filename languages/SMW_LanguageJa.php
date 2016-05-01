@@ -17,15 +17,11 @@ include_once ( $smwgIP . 'languages/SMW_Language.php' );
 
 
 /**
- * English language labels for important SMW labels (namespaces, datatypes,...).
- *
- * @author Markus Krötzsch
- * @ingroup SMWLanguage
- * @ingroup Language
+ * @since 2.4
  */
-class SMWLanguageEn extends SMWLanguage {
+class SMWLanguageJa extends SMWLanguage {
 
-	protected $m_useEnDefaultAliases = false; // not needed for English, obviously
+	protected $m_useEnDefaultAliases = true; // not needed for English, obviously
 
 	protected $m_DatatypeLabels = array(
 		'_wpg' => 'Page', // name of page datatype
@@ -118,10 +114,10 @@ class SMWLanguageEn extends SMWLanguage {
 	protected $m_monthsshort = array( "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" );
 
 	protected $preferredDateFormatsByPrecision = array(
-		'SMW_PREC_Y'    => 'Y',
-		'SMW_PREC_YM'   => 'F Y',
-		'SMW_PREC_YMD'  => 'F j, Y',
-		'SMW_PREC_YMDT' => 'H:i:s, j F Y'
+		'SMW_PREC_Y'    => 'Y年',
+		'SMW_PREC_YM'   => 'Y年n月',
+		'SMW_PREC_YMD'  => 'Y年n月j日 (D)',
+		'SMW_PREC_YMDT' => 'Y年n月j日 (D) H:i:s'
 	);
 }
 

@@ -110,6 +110,15 @@ define( 'SMW_DAY_YEAR', 3 ); // an entered digit can be either a month or a year
 /**@}*/
 
 /**@{
+ * Constants for date/time precision
+ */
+define( 'SMW_PREC_Y', 0 );
+define( 'SMW_PREC_YM', 1 );
+define( 'SMW_PREC_YMD', 2 );
+define( 'SMW_PREC_YMDT', 3 );
+/**@}*/
+
+/**@{
  * Constants for SPARQL supported features (mostly SPARQL 1.1) because we are unable
  * to verify against the REST API whether a feature is supported or not
  */
@@ -145,4 +154,5 @@ define( 'SMW_DV_PVAP', 16 );  // Allows pattern
 define( 'SMW_DV_WPV_DTITLE', 32 );  // WikiPageValue to use an explicit display title
 define( 'SMW_DV_PROV_DTITLE', 64 );  // PropertyValue allow to find a property using the display title
 define( 'SMW_DV_PVUC', 128 );  // Delcares a uniqueness constraint
+define( 'SMW_DV_TIMEV_CM', 256 );  // TimeValue to indicate calendar model
 /**@}*/

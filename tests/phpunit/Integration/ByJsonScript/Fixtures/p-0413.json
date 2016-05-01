@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation for different `_dat` input/output (en, skip virtuoso)",
+	"description": "Test in-text annotation for different `_dat` input/output (en, skip virtuoso, `smwgDVFeatures`)",
 	"properties": [
 		{
 			"name": "Has date",
@@ -497,7 +497,7 @@
 			"subject": "Example/P0413/11a",
 			"expected-output": {
 				"to-contain": [
-					"<td data-sort-value=\"1611848.5\" class=\"Has-date smwtype_dat\">1 January 300 BC JL</td>",
+					"<td data-sort-value=\"1611848.5\" class=\"Has-date smwtype_dat\">1 January 300 BC <sup>JL</sup></td>",
 					"<td data-sort-value=\"1611848.5\" class=\"Has-date smwtype_dat\">28 December 301 BC</td>",
 					"<td data-sort-value=\"1611848.5\" class=\"Has-date smwtype_dat\">--301-12-28</td>",
 					"<td data-sort-value=\"1611848.5\" class=\"ISO-Date smwtype_dat\">--301-12-28</td>",
@@ -528,11 +528,11 @@
 			"subject": "Example/P0413/13a",
 			"expected-output": {
 				"to-contain": [
-					"<td data-sort-value=\"2451598.5\" class=\"Has-date smwtype_dat\">11 February 2000 JL</td>",
+					"<td data-sort-value=\"2451598.5\" class=\"Has-date smwtype_dat\">11 February 2000 <sup>JL</sup></td>",
 					"<td data-sort-value=\"2451598.5\" class=\"Has-date smwtype_dat\">2000-02-24</td>",
 					"<td data-sort-value=\"2451598.5\" class=\"ISO-Date smwtype_dat\">2000-02-24</td>",
 					"<td data-sort-value=\"2451598.5\" class=\"MW-Date smwtype_dat\">24 February 2000</td>",
-					"<td data-sort-value=\"2451598.5\" class=\"JL-Date smwtype_dat\">11 February 2000 JL</td>",
+					"<td data-sort-value=\"2451598.5\" class=\"JL-Date smwtype_dat\">11 February 2000 <sup>JL</sup></td>",
 					"<td data-sort-value=\"2451598.5\" class=\"GR-Date smwtype_dat\">24 February 2000</td>"
 				]
 			}
@@ -559,11 +559,11 @@
 			"subject": "Example/P0413/14a",
 			"expected-output": {
 				"to-contain": [
-					"<td data-sort-value=\"2266042.5\" class=\"Has-date smwtype_dat\">2 February 1492 JL</td>",
+					"<td data-sort-value=\"2266042.5\" class=\"Has-date smwtype_dat\">2 February 1492 <sup>JL</sup></td>",
 					"<td data-sort-value=\"2266042.5\" class=\"Has-date smwtype_dat\">1492-02-11</td>",
 					"<td data-sort-value=\"2266042.5\" class=\"ISO-Date smwtype_dat\">1492-02-11</td>",
 					"<td data-sort-value=\"2266042.5\" class=\"MW-Date smwtype_dat\">11 February 1492</td>",
-					"<td data-sort-value=\"2266042.5\" class=\"JL-Date smwtype_dat\">2 February 1492 JL</td>",
+					"<td data-sort-value=\"2266042.5\" class=\"JL-Date smwtype_dat\">2 February 1492 <sup>JL</sup></td>",
 					"<td data-sort-value=\"2266042.5\" class=\"GR-Date smwtype_dat\">11 February 1492</td>"
 				]
 			}
@@ -594,7 +594,7 @@
 					"<td data-sort-value=\"2451585.9166667\" class=\"Has-date smwtype_dat\">2000-02-11T10:00:00</td>",
 					"<td data-sort-value=\"2451585.9166667\" class=\"ISO-Date smwtype_dat\">2000-02-11T10:00:00</td>",
 					"<td data-sort-value=\"2451585.9166667\" class=\"MW-Date smwtype_dat\">10:00, 11 February 2000</td>",
-					"<td data-sort-value=\"2451585.9166667\" class=\"JL-Date smwtype_dat\">29 January 2000 10:00:00 JL</td>",
+					"<td data-sort-value=\"2451585.9166667\" class=\"JL-Date smwtype_dat\">29 January 2000 10:00:00 <sup>JL</sup></td>",
 					"<td data-sort-value=\"2451585.9166667\" class=\"GR-Date smwtype_dat\">11 February 2000 10:00:00</td>"
 				]
 			}
@@ -726,7 +726,8 @@
 	],
 	"settings": {
 		"wgContLang": "en",
-		"wgLang": "en"
+		"wgLang": "en",
+		"smwgDVFeatures": [ "SMW_DV_TIMEV_CM" ]
 	},
 	"meta": {
 

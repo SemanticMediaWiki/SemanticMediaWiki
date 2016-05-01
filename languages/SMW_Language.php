@@ -37,6 +37,14 @@ abstract class SMWLanguage {
 	/// each case, and the constants define the obvious order (e.g. SMW_YDM means "first Year,
 	/// then Day, then Month). Unlisted combinations will not be accepted at all.
 	protected $m_dateformats = array( array( SMW_Y ), array( SMW_MY, SMW_YM ), array( SMW_DMY, SMW_MDY, SMW_YMD, SMW_YDM ) );
+
+	protected $preferredDateFormatsByPrecision = array(
+		'SMW_PREC_Y'    => 'Y',
+		'SMW_PREC_YM'   => 'F Y',
+		'SMW_PREC_YMD'  => 'F j, Y',
+		'SMW_PREC_YMDT' => 'H:i:s, j F Y'
+	);
+
 	/// Should English default aliases be used in this language?
 	protected $m_useEnDefaultAliases = true;
 	/// Default English aliases for namespaces (typically used in all languages)
@@ -233,6 +241,10 @@ abstract class SMWLanguage {
 	 */
 	function getDateFormats() {
 		return $this->m_dateformats;
+	}
+
+	function getPreferredDateFormats() {
+		return $this->preferredDateFormatsByPrecision;
 	}
 
 	/**

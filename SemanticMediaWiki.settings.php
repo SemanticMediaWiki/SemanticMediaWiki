@@ -960,6 +960,9 @@ $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] = true;
 # uniqueness for a value is established by the fact that it is assigned before
 # any other value of the same representation to a property).
 #
+# - SMW_DV_TIMEV_CM (TimeValue) to indicate the CalendarModel if is not a
+# CM_GREGORIAN
+#
 # @since 2.4
 ##
-$GLOBALS['smwgDVFeatures'] = SMW_DV_PROV_REDI | SMW_DV_MLTV_LCODE | SMW_DV_PVAP | SMW_DV_WPV_DTITLE;
+$GLOBALS['smwgDVFeatures'] = SMW_DV_PROV_REDI | SMW_DV_MLTV_LCODE | SMW_DV_PVAP | SMW_DV_WPV_DTITLE | SMW_DV_TIMEV_CM;

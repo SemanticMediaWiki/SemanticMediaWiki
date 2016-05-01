@@ -184,6 +184,10 @@ class SMWResultArray {
 			\SMW\Localizer::getInstance()->getUserLanguage()->getCode()
 		);
 
+		$dv->setContextPage(
+			$this->mResult
+		);
+
 		return $dv;
 	}
 

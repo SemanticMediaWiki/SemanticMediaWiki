@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation/free format for `_dat` datatype (#1389, #1401, en)",
+	"description": "Test in-text annotation/free format for `_dat` datatype (#1389, #1401, en, `smwgDVFeatures`)",
 	"properties": [
 		{
 			"name": "Has date",
@@ -104,7 +104,7 @@
 			"expected-output": {
 				"to-contain": [
 					"<td data-sort-value=\"2228431.9166782\" class=\"Has-date smwtype_dat\">10:00:01.000000</td>",
-					"<td data-sort-value=\"2228431.9166782\" class=\"Has-date smwtype_dat\">1389/02/11 10:00 JL</td>",
+					"<td data-sort-value=\"2228431.9166782\" class=\"Has-date smwtype_dat\">1389/02/11 10:00 <sup>JL</sup></td>",
 					"<td data-sort-value=\"2228431.9166782\" class=\"Has-date smwtype_dat\">1389/02/19 10:00</td>",
 					"<td data-sort-value=\"2228431.9166782\" class=\"JD smwtype_dat\">2228431.9166782</td>"
 				]
@@ -187,8 +187,8 @@
 			"subject": "Example/P0414/4a",
 			"expected-output": {
 				"to-contain": [
-					"<td data-sort-value=\"2159657.0023727\" class=\"Has-date smwtype_dat\">1200 JL</td>",
-					"<td data-sort-value=\"2159657.0023727\" class=\"Has-date smwtype_dat\">1200/10/26 JL</td>",
+					"<td data-sort-value=\"2159657.0023727\" class=\"Has-date smwtype_dat\">1200 <sup>JL</sup></td>",
+					"<td data-sort-value=\"2159657.0023727\" class=\"Has-date smwtype_dat\">1200/10/26 <sup>JL</sup></td>",
 					"<td data-sort-value=\"2159657.0023727\" class=\"JD smwtype_dat\">2159657.0023727</td>"
 				]
 			}
@@ -315,7 +315,8 @@
 	],
 	"settings": {
 		"wgContLang": "en",
-		"wgLang": "en"
+		"wgLang": "en",
+		"smwgDVFeatures": [ "SMW_DV_TIMEV_CM" ]
 	},
 	"meta": {
 

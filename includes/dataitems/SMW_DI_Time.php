@@ -31,10 +31,10 @@ class SMWDITime extends SMWDataItem {
 	const CM_GREGORIAN = 1;
 	const CM_JULIAN = 2;
 
-	const PREC_Y    = 0;
-	const PREC_YM   = 1;
-	const PREC_YMD  = 2;
-	const PREC_YMDT = 3;
+	const PREC_Y    = SMW_PREC_Y;
+	const PREC_YM   = SMW_PREC_YM;
+	const PREC_YMD  = SMW_PREC_YMD;
+	const PREC_YMDT = SMW_PREC_YMDT;
 
 	/**
 	 * The year before which we do not accept anything but year numbers and

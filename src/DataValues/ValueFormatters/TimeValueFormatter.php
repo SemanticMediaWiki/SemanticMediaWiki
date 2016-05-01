@@ -120,7 +120,9 @@ class TimeValueFormatter extends DataValueFormatter {
 		$dataItem = $this->dataValue->getDataItemForCalendarModel( DITime::CM_GREGORIAN );
 		$precision = $dataItem->getPrecision();
 
-		$contentLanguage = Localizer::getInstance()->getContentLanguage();
+		$language = Localizer::getInstance()->getLanguage(
+			$this->dataValue->getLanguageCode()
+		);
 
 		$year = $dataItem->getYear();
 
@@ -131,19 +133,26 @@ class TimeValueFormatter extends DataValueFormatter {
 		$year = str_pad( $year, 4, "0", STR_PAD_LEFT );
 
 		if ( $precision <= DITime::PREC_Y ) {
-			return $contentLanguage->formatNum( $year, true );
+			return $language->formatNum( $year, true );
 		}
 
 		$month = str_pad( $dataItem->getMonth(), 2, "0", STR_PAD_LEFT );
 		$day = str_pad( $dataItem->getDay(), 2, "0", STR_PAD_LEFT );
 
+		// date/timeanddate options:
+		// 1. Whether to adjust the time output according to the user
+		// configured offset ($timecorrection)
+		// 2. format, if it's false output the default one (default true)
+		// 3. timecorrection, the time offset as returned from
+		// Special:Preferences
+
 		if ( $precision <= DITime::PREC_YMD ) {
-			return $contentLanguage->date( "$year$month$day" . '000000', false, false );
+			return $language->date( "$year$month$day" . '000000', false, true, false );
 		}
 
 		$time = str_replace( ':', '', $this->getTimeString() );
 
-		return $contentLanguage->timeanddate( "$year$month$day$time", false, false );
+		return $language->timeanddate( "$year$month$day$time", false, true, false );
 	}
 
 	/**
@@ -166,7 +175,7 @@ class TimeValueFormatter extends DataValueFormatter {
 
 		// If the language code is empty then the content language code is used
 		$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage(
-			$this->dataValue->getLanguageCode()
+			Localizer::getInstance()->getContentLanguage( $this->dataValue->getContextPage() )
 		);
 
 		// https://en.wikipedia.org/wiki/Anno_Domini
@@ -194,9 +203,7 @@ class TimeValueFormatter extends DataValueFormatter {
 			$result .= " " . $this->getTimeString();
 		}
 
-		if ( $dataItem->getCalendarModel() !== DITime::CM_GREGORIAN ) {
-			$result .= " " . $dataItem->getCalendarModelLiteral();
-		}
+		$result .= $this->hintCalendarModel( $dataItem );
 
 		return $result;
 	}
@@ -239,21 +246,57 @@ class TimeValueFormatter extends DataValueFormatter {
 	 */
 	public function getCaptionFromFreeFormat( DITime $dataItem = null ) {
 
+		$language = Localizer::getInstance()->getLanguage(
+			$this->dataValue->getLanguageCode()
+		);
+
 		// Prehistory dates are not supported when using this output format
 		// Only match options encapsulated by [ ... ]
 		if (
 			$dataItem !== null &&
 			$dataItem->getYear() > DITime::PREHISTORY &&
 			preg_match("/\[([^\]]*)\]/", $this->dataValue->getOutputFormat(), $matches ) ) {
-			$intlTimeFormatter = new IntlTimeFormatter( $dataItem );
+			$intlTimeFormatter = new IntlTimeFormatter( $dataItem, $language );
 
 			if ( ( $caption = $intlTimeFormatter->format( $matches[1] ) ) !== false ) {
+
+				if ( $intlTimeFormatter->containsValidDateFormatRule( $matches[1] ) ) {
+					$caption .= $this->hintCalendarModel( $dataItem );
+				}
+
 				return $caption;
 			}
 		}
 
 		return $this->getISO8601Date();
 	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param  DITime|null $dataItem
+	 *
+	 * @return string
+	 */
+	public function getLocalizedFormat( DITime $dataItem = null ) {
+
+		$language = Localizer::getInstance()->getLanguage(
+			$this->dataValue->getLanguageCode()
+		);
+
+		if ( $dataItem !== null && $dataItem->getYear() > DITime::PREHISTORY ) {
+
+			$intlTimeFormatter = new IntlTimeFormatter(
+				$dataItem,
+				$language
+			);
+
+			return $intlTimeFormatter->getLocalizedFormat() . $this->hintCalendarModel( $dataItem );
+		}
+
+		return $this->getISO8601Date();
+	}
+
 
 	/**
 	 * Compute a suitable string to display this date, taking into account the
@@ -292,6 +335,8 @@ class TimeValueFormatter extends DataValueFormatter {
 
 		if ( strpos( $format, '-F[' ) !== false ) {
 			return $this->getCaptionFromFreeFormat( $this->dataValue->getDataItemForCalendarModel( $model ) );
+		} elseif ( $format == 'LOCL' ) {
+			return $this->getLocalizedFormat( $this->dataValue->getDataItemForCalendarModel( $model ) );
 		} elseif ( $dataItem->getYear() > TimeValue::PREHISTORY && $dataItem->getPrecision() >= DITime::PREC_YM ) {
 			// Do not convert between Gregorian and Julian if only
 			// year is given (years largely overlap in history, but
@@ -303,6 +348,15 @@ class TimeValueFormatter extends DataValueFormatter {
 		}
 
 		return $this->getCaptionFromDataItem( $dataItem );
+	}
+
+	private function hintCalendarModel( $dataItem ) {
+
+		if ( $this->dataValue->isEnabledFeature( SMW_DV_TIMEV_CM ) && $dataItem->getCalendarModel() !== DITime::CM_GREGORIAN ) {
+			return ' ' . \Html::rawElement( 'sup', array(), $dataItem->getCalendarModelLiteral() );
+		}
+
+		return '';
 	}
 
 }

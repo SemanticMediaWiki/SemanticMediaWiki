@@ -3,6 +3,7 @@
 namespace SMW\Tests;
 
 use SMW\IntlTimeFormatter;
+use Language;
 use SMWDITime as DITime;
 
 /**
@@ -48,6 +49,40 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider localizedFormatProvider
+	 */
+	public function testGetLocalizedFormat( $serialization, $languageCode, $expected ) {
+
+		$instance = new IntlTimeFormatter(
+			DITime::doUnserialize( $serialization ),
+			Language::factory( $languageCode )
+		);
+
+		$this->assertEquals(
+			$expected,
+			$instance->getLocalizedFormat()
+		);
+	}
+
+	public function testContainsValidDateFormatRule() {
+
+		$formatOption = 'F Y/m/d H:i:s';
+
+		$language = $this->getMockBuilder( '\Language' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new IntlTimeFormatter(
+			DITime::doUnserialize( '1/2000/12/12/1/1/20.200' ),
+			$language
+		);
+
+		$this->assertTrue(
+			$instance->containsValidDateFormatRule( $formatOption )
+		);
+	}
+
 	public function testFormatWithLocalizedMonthReplacement() {
 
 		// F - A full textual representation of a month, such as January or March
@@ -86,7 +121,7 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'2/2000/12/12/1/1/20/200',
 			'Y/m/d H:i:s',
-			'2000/12/12 01:01:20 JL'
+			'2000/12/12 01:01:20'
 		);
 
 		#2
@@ -100,7 +135,7 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'2/1300/11/02/12/03/25.888499949',
 			'Y-m-d H:i:s.u',
-			'1300-11-02 12:03:25.888500 JL'
+			'1300-11-02 12:03:25.888500'
 		);
 
 		#4 time alone doesn't require a calendar model
@@ -113,4 +148,29 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 		return $provider;
 	}
 
+	public function localizedFormatProvider() {
+
+		#0
+		$provider[] = array(
+			'1/2000/12/12/1/1/20/200',
+			'en',
+			'01:01:20, 12 December 2000'
+		);
+
+		#1
+		$provider[] = array(
+			'1/2000/12/12/1/1/20/200',
+			'ja',
+			'2000年12月12日 (月) 01:01:20'
+		);
+
+		#2
+		$provider[] = array(
+			'1/2000/12/12/1/1/20/200',
+			'es',
+			'01:01:20 12 dic 2000'
+		);
+
+		return $provider;
+	}
 }

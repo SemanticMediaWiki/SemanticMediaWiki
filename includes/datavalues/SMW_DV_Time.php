@@ -663,7 +663,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * {@inheritDoc}
 	 */
 	public function getWikiValue() {
-		return $this->m_wikivalue ? $this->m_wikivalue : $this->getLongWikiText();
+		return $this->m_wikivalue ? $this->m_wikivalue : strip_tags( $this->getLongWikiText() );
 	}
 
 	/**

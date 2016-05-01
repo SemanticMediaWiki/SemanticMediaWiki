@@ -50,7 +50,7 @@ class ExtraneousLanguageFileHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = array(
 			'ja',
-			'\SMWLanguageEn'
+			'\SMWLanguageJa'
 		);
 
 		$provider[] = array(

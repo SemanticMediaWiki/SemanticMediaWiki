@@ -3,6 +3,7 @@
 namespace SMW;
 
 use Language;
+use Title;
 
 /**
  * @license GNU GPL v2+
@@ -26,9 +27,8 @@ class Localizer {
 	 * @since 2.1
 	 *
 	 * @param Language $contentLanguage
-	 * @param Language|null $userLanguage
 	 */
-	public function __construct( Language $contentLanguage) {
+	public function __construct( Language $contentLanguage ) {
 		$this->contentLanguage = $contentLanguage;
 	}
 
@@ -56,9 +56,20 @@ class Localizer {
 	/**
 	 * @since 2.1
 	 *
+	 * @param DIWikiPage|Title|null $title
+	 *
 	 * @return Language
 	 */
-	public function getContentLanguage() {
+	public function getContentLanguage( $title = null ) {
+
+		if ( $title instanceof DIWikiPage ) {
+			$title = $title->getTitle();
+		}
+
+		if ( $title instanceof Title ) {
+			return $title->getPageLanguage();
+		}
+
 		return $this->contentLanguage;
 	}
 
@@ -72,13 +83,90 @@ class Localizer {
 	}
 
 	/**
+	 * By rule means that
+	 *
+	 * 1. If the page content language is different from the content language then
+	 * use the page content language (as it is clear that the page content was
+	 * intended to be in a specific language)
+	 * 2. If the page content language and content language are indifferent then
+	 * use the user language
+	 * 3. If the page content language and user language could not be determined then
+	 * use the content language
+	 *
+	 * General rules:
+	 * - Special pages are in the user language
+	 * - Display of values (DV) should follow rules outlined above
+	 * - Storage of values (DI) should always use the content language
+	 *
+	 * Notes:
+	 * - The page content language is the language in which the content of a page is
+	 * written in wikitext
+	 *
+	 * @since 2.4
+	 *
+	 * @param DIWikiPage|Title|null $title
+	 *
+	 * @return Language
+	 */
+	public function getPreferredLanguageByRule( $title = null ) {
+
+		$pageLanguage = '';
+		$language = $this->getUserLanguage();
+
+		if ( $title instanceof DIWikiPage ) {
+			$title = $title->getTitle();
+		}
+
+		if ( $title instanceof Title ) {
+			$pageLanguage = $title->getPageLanguage();
+		}
+
+		// If the page language is different from the global content language
+		// then we assume that an explicit language object was given otherwise
+		// the Title is using the content language as fallback
+		if (
+			$pageLanguage !== '' &&
+			$pageLanguage->getCode() !== $this->getContentLanguage()->getCode() ) {
+			$language = $pageLanguage;
+		}
+
+		if ( $language === '' ) {
+			$language = $this->getContentLanguage();
+		}
+
+		return $language;
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param string $languageCode
 	 *
+	 * @return Language
+	 */
+	public function getLanguage( $languageCode = '' ) {
+
+		if ( $languageCode === '' ) {
+			return $this->getContentLanguage();
+		}
+
+		return Language::factory( $languageCode );
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param Language|string $languageCode
+	 *
 	 * @return ExtraneousLanguage
 	 */
-	public function getExtraneousLanguage( $languageCode = '' ) {
+	public function getExtraneousLanguage( $language = '' ) {
+
+		$languageCode = $language;
+
+		if ( $language instanceof Language ) {
+			$languageCode = $language->getCode();
+		}
 
 		if ( $languageCode === '' ) {
 			$languageCode = $this->getContentLanguage()->getCode();
