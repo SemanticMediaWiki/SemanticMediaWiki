@@ -44,6 +44,7 @@ Not a release yet.
 * #1474 Added a search link for zero properties to the `Special:Properties`
 * #1483 Added statistics about [outdated entities](https://www.semantic-mediawiki.org/wiki/Help:Outdated_entities) to the `Special:Statistics`
 * #1513 `StringValueFormatter` to add `\n` on the first text element if it contains `*/#/:`
+* #1545 Added `#LOCL` as `TimeValue` output format
 
 ## Bug fixes
 
