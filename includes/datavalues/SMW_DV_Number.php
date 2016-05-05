@@ -70,6 +70,25 @@ class SMWNumberValue extends SMWDataValue {
 	protected $precision = null;
 
 	/**
+	 * @since 2.4
+	 *
+	 * @param string $typeid
+	 */
+	public function __construct( $typeid = '' ) {
+		parent::__construct( $typeid );
+
+		$this->setOption(
+			'separator.thousands',
+			NumberFormatter::getInstance()->getThousandsSeparatorForContentLanguage()
+		);
+
+		$this->setOption(
+			'separator.decimal',
+			NumberFormatter::getInstance()->getDecimalSeparatorForContentLanguage()
+		);
+	}
+
+	/**
 	 * Parse a string of the form "number unit" where unit is optional. The
 	 * results are stored in the $number and $unit parameters. Returns an
 	 * error code.
@@ -79,10 +98,10 @@ class SMWNumberValue extends SMWDataValue {
 	 * @return integer 0 (no errors), 1 (no number found at all), 2 (number
 	 * too large for this platform)
 	 */
-	static protected function parseNumberValue( $value, &$number, &$unit, &$asPrefix = false ) {
+	public function parseNumberValue( $value, &$number, &$unit, &$asPrefix = false ) {
 		// Parse to find $number and (possibly) $unit
-		$decseparator = NumberFormatter::getInstance()->getDecimalSeparatorForContentLanguage();
-		$kiloseparator = NumberFormatter::getInstance()->getThousandsSeparatorForContentLanguage();
+		$decseparator = $this->getOptionValueFor( 'separator.decimal' );
+		$kiloseparator = $this->getOptionValueFor( 'separator.thousands' );
 
 		// #753
 		$regex = '/([-+]?\s*(?:' .
@@ -107,7 +126,7 @@ class SMWNumberValue extends SMWDataValue {
 			list( $number ) = sscanf( $numstring, "%f" );
 			if ( count( $parts ) >= 3  ) {
 				$asPrefix = $parts[0] !== '';
-				$unit = self::normalizeUnit( $parts[0] !== '' ? $parts[0] : $parts[2] );
+				$unit = $this->normalizeUnit( $parts[0] !== '' ? $parts[0] : $parts[2] );
 			}
 		}
 
@@ -134,7 +153,7 @@ class SMWNumberValue extends SMWDataValue {
 		$this->m_unitin = false;
 		$this->m_unitvalues = false;
 		$number = $unit = '';
-		$error = self::parseNumberValue( $value, $number, $unit );
+		$error = $this->parseNumberValue( $value, $number, $unit );
 
 		if ( $error == 1 ) { // no number found
 			$this->addError( wfMessage( 'smw_nofloat', $value )->inContentLanguage()->text() );
@@ -333,7 +352,7 @@ class SMWNumberValue extends SMWDataValue {
 	 * so that, e.g., "km²" and "km<sup>2</sup>" do not need to be
 	 * distinguished.
 	 */
-	static protected function normalizeUnit( $unit ) {
+	public function normalizeUnit( $unit ) {
 		$unit = str_replace( array( '[[', ']]' ), '', trim( $unit ) ); // allow simple links to be used inside annotations
 		$unit = str_replace( array( '²', '<sup>2</sup>' ), '&sup2;', $unit );
 		$unit = str_replace( array( '³', '<sup>3</sup>' ), '&sup3;', $unit );
