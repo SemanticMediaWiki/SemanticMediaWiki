@@ -55,22 +55,25 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetDefaultFallbackSearchEngineForNullFallbackSearchType() {
 
-		$dbMock = $this->getMockBuilder( '\DatabaseBase' )
+		// #1531
+		$searchEngine = class_exists( 'SearchDatabase' ) ? 'SearchDatabase' : 'SearchEngine';
+
+		$databaseBase = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
 			->setMethods( array( 'getSearchEngine' ) )
 			->getMockForAbstractClass();
 
-		$dbMock->expects( $this->once() )
+		$databaseBase->expects( $this->once() )
 			->method( 'getSearchEngine' )
-			->will( $this->returnValue( 'SearchEngine' ) );
+			->will( $this->returnValue( $searchEngine ) );
 
 		ApplicationFactory::getInstance()->getSettings()->set( 'smwgFallbackSearchType', null );
 
 		$search = new Search();
-		$search->setDB( $dbMock );
+		$search->setDB( $databaseBase );
 
 		$this->assertInstanceOf(
-			'SearchEngine',
+			$searchEngine,
 			$search->getFallbackSearchEngine()
 		);
 	}
