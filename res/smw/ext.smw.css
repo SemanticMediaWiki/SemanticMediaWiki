@@ -192,6 +192,10 @@ td.smwpropname, th.smwpropname, td.smwspecname {
    background-color: #fff;
 }
 
+.smwtable-striped tbody > tr:hover {
+	background-color: #eee;
+}
+
 div.smwhr hr {
 	background-color: #DDDDDD;
 	color: #DDDDDD;
