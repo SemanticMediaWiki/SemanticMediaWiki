@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<sparql xmlns="http://www.w3.org/2005/sparql-results#">
+	<head>
+		<variable name="result"/>
+	</head>
+	<results>
+		<result>
+			<binding name="result"><uri>http://example.org/id/F安o</uri></binding>
+		</result>
+		<result>
+			<binding name="result"><uri>http://example.org/id/B定ar</uri></binding>
+		</result>
+		<result>
+			<binding name="result"><literal datatype="http://www.w3.org/2001/XMLSchema#string">Quux安定</literal></binding>
+		</result>
+	</results>
+</sparql>
