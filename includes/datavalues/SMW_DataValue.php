@@ -321,7 +321,24 @@ abstract class SMWDataValue {
 	 * @return Options $options
 	 */
 	public function setOptions( Options $options ) {
-		$this->options = $options;
+		foreach ( $options->getOptions() as $key => $value ) {
+			$this->setOption( $key, $value );
+		}
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return string $key
+	 * @param mxied $value
+	 */
+	public function setOption( $key, $value ) {
+
+		if ( $this->options === null ) {
+			$this->options = new Options();
+		}
+
+		$this->options->set( $key, $value );
 	}
 
 	/**
