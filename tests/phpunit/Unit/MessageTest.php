@@ -3,6 +3,7 @@
 namespace SMW\Tests;
 
 use SMW\Message;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Message
@@ -14,6 +15,12 @@ use SMW\Message;
  * @author mwjames
  */
 class MessageTest extends \PHPUnit_Framework_TestCase {
+
+	private $testEnvironment;
+
+	public function setUp() {
+		$this->testEnvironment = new TestEnvironment();
+	}
 
 	public function testCanConstruct() {
 
@@ -60,6 +67,63 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->deregisterHandlerFor( 'Foo' );
+	}
+
+	public function testFromCache() {
+
+		$this->testEnvironment->resetPoolCacheFor( Message::POOLCACHE_ID );
+
+		$instance = new Message();
+		$instance->clear();
+
+		$instance->registerCallbackHandler( 'SimpleText', function( $parameters, $language ) {
+			return 'Foo';
+		} );
+
+		$instance->get( 'Foo', 'SimpleText' );
+
+		$this->assertEquals(
+			array(
+				'inserts' => 1,
+				'deletes' => 0,
+				'max'     => 1000,
+				'count'   => 1,
+				'hits'    => 0,
+				'misses'  => 1
+			),
+			$instance->getCache()->getStats()
+		);
+
+		$instance->get( 'Foo', 'SimpleText', 'ooo' );
+
+		$this->assertEquals(
+			array(
+				'inserts' => 2,
+				'deletes' => 0,
+				'max'     => 1000,
+				'count'   => 2,
+				'hits'    => 0,
+				'misses'  => 2
+			),
+			$instance->getCache()->getStats()
+		);
+
+		// Repeated request
+		$instance->get( 'Foo', 'SimpleText' );
+
+		$this->assertEquals(
+			array(
+				'inserts' => 2,
+				'deletes' => 0,
+				'max'     => 1000,
+				'count'   => 2,
+				'hits'    => 1,
+				'misses'  => 2
+			),
+			$instance->getCache()->getStats()
+		);
+
+		$instance->deregisterHandlerFor( 'SimpleText' );
 	}
 
 }

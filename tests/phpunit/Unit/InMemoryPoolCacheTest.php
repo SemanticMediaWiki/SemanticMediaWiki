@@ -9,7 +9,7 @@ use SMW\InMemoryPoolCache;
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
- * @since   1.2
+ * @since  2.3
  *
  * @author mwjames
  */
@@ -54,13 +54,18 @@ class InMemoryPoolCacheTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertNotEmpty(
-			$instance->getStats( 'Foo' )
+			$instance->getStats()
+		);
+
+		$this->assertInternalType(
+			'string',
+			$instance->getFormattedStats()
 		);
 
 		$instance->resetPoolCacheFor( 'Foo' );
 
 		$this->assertEmpty(
-			$instance->getStats( 'Foo' )
+			$instance->getStats()
 		);
 	}
 
