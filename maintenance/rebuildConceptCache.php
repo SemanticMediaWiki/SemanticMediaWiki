@@ -100,6 +100,7 @@ class RebuildConceptCache extends \Maintenance {
 		$this->addOption( 's', '<startid> Process only concepts with page id of at least <startid>', false, true );
 		$this->addOption( 'e', '<endid> Process only concepts with page id of at most <endid>', false, true );
 
+		$this->addOption( 'with-maintenance-log', 'Add log entry to `Special:Log` about the maintenance run.', false );
 		$this->addOption( 'report-runtime', 'Report execution time and memory usage', false );
 		$this->addOption( 'debug', 'Sets global variables to support debug ouput while running the script', false );
 		$this->addOption( 'quiet', 'Do not give any output', false );
@@ -141,6 +142,11 @@ class RebuildConceptCache extends \Maintenance {
 
 		if ( $result && $this->hasOption( 'report-runtime' ) ) {
 			$this->reportMessage( "\n" . $maintenanceHelper->transformRuntimeValuesForOutput() . "\n" );
+		}
+
+		if ( $this->hasOption( 'with-maintenance-log' ) ) {
+			$maintenanceLogger = $maintenanceFactory->newMaintenanceLogger( 'RebuildConceptCacheLogger' );
+			$maintenanceLogger->log( $maintenanceHelper->transformRuntimeValuesForOutput() );
 		}
 
 		$maintenanceHelper->reset();

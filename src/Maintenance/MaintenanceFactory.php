@@ -8,6 +8,7 @@ use SMW\Store\PropertyStatisticsStore;
 use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\SQLStore\SQLStore;
 use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\MediaWiki\ManualEntryLogger;
 
 /**
  * @license GNU GPL v2+
@@ -107,6 +108,17 @@ class MaintenanceFactory {
 	 */
 	public function newRebuildPropertyStatistics() {
 		return new RebuildPropertyStatistics();
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param string $performer
+	 *
+	 * @return MaintenanceLogger
+	 */
+	public function newMaintenanceLogger( $performer ) {
+		return new MaintenanceLogger( $performer, new ManualEntryLogger() );
 	}
 
 }

@@ -17,36 +17,39 @@ class ManualEntryLogger {
 	/**
 	 * @var array
 	 */
-	private $logEventTypes = array();
+	private $eventTypes = array();
 
 	/**
-	 * @note This is set in the constructor to make them non-accessible through
-	 * the standard settings as those are bound to MediaWiki and this class
+	 * @since 2.4
 	 *
-	 * @since 2.1
+	 * @param string $eventTypes
 	 */
-	public function __construct() {
-		$GLOBALS['wgLogTypes'][] = 'smw';
-		$GLOBALS['wgFilterLogTypes']['smw'] = true;
+	public function registerLoggableEventType( $eventType ) {
+		$this->eventTypes[$eventType] = true;
 	}
 
 	/**
 	 * @since 2.1
 	 *
-	 * @param array $logEventTypes
+	 * @param array $eventTypes
 	 */
-	public function registerLoggableEventTypes( array $logEventTypes ) {
-		$this->logEventTypes = $logEventTypes;
+	public function registerLoggableEventTypes( array $eventTypes ) {
+		$this->eventTypes = $eventTypes;
 	}
 
 	/**
 	 * @since 2.1
+	 *
+	 * @param string $type
+	 * @param string $performer
+	 * @param string $target
+	 * @param string $comment
 	 *
 	 * @return integer|null
 	 */
 	public function log( $type, $performer, $target, $comment ) {
 
-		if ( !isset( $this->logEventTypes[$type] ) || !$this->logEventTypes[$type] ) {
+		if ( !isset( $this->eventTypes[$type] ) || !$this->eventTypes[$type] ) {
 			return null;
 		}
 
