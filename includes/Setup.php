@@ -65,6 +65,9 @@ final class Setup {
 
 	private function addSomeDefaultConfigurations() {
 
+		$this->globalVars['wgLogTypes'][] = 'smw';
+		$this->globalVars['wgFilterLogTypes']['smw'] = true;
+
 		$this->globalVars['smwgMasterStore'] = null;
 		$this->globalVars['smwgIQRunningNumber'] = 0;
 

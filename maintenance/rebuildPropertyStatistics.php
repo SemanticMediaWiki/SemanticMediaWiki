@@ -20,6 +20,7 @@ class RebuildPropertyStatistics extends \Maintenance {
 
 	public function __construct() {
 		$this->mDescription = 'Rebuild the property usage statistics (only works with SQLStore3 for now)';
+		$this->addOption( 'with-maintenance-log', 'Add log entry to `Special:Log` about the maintenance run.', false );
 
 		parent::__construct();
 	}
@@ -37,12 +38,20 @@ class RebuildPropertyStatistics extends \Maintenance {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();
 
+		$maintenanceHelper = $maintenanceFactory->newMaintenanceHelper();
+		$maintenanceHelper->initRuntimeValues();
+
 		$statisticsRebuilder = $maintenanceFactory->newPropertyStatisticsRebuilder(
 			$applicationFactory->getStore(),
 			array( $this, 'reportMessage' )
 		);
 
 		$statisticsRebuilder->rebuild();
+
+		if ( $this->hasOption( 'with-maintenance-log' ) ) {
+			$maintenanceLogger = $maintenanceFactory->newMaintenanceLogger( 'RebuildPropertyStatisticsLogger' );
+			$maintenanceLogger->log( $maintenanceHelper->transformRuntimeValuesForOutput() );
+		}
 	}
 
 	/**

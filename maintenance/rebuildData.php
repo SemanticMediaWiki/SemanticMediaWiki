@@ -90,6 +90,7 @@ class RebuildData extends \Maintenance {
 
 		$this->addOption( 'ignore-exceptions', 'Ignore exceptions and log exception to a file', false );
 		$this->addOption( 'exception-log', 'Exception log file location (e.g. /tmp/logs/)', false, true );
+		$this->addOption( 'with-maintenance-log', 'Add log entry to `Special:Log` about the maintenance run.', false );
 
 		$this->addOption( 'page', '<pagelist> Will refresh only the pages of the given names, with | used as a separator. ' .
 								'Example: --page "Page 1|Page 2" refreshes Page 1 and Page 2 Options -s, -e, -n, ' .
@@ -156,6 +157,11 @@ class RebuildData extends \Maintenance {
 
 		if ( $result && $this->hasOption( 'report-runtime' ) ) {
 			$this->reportMessage( "\n" . $maintenanceHelper->transformRuntimeValuesForOutput() . "\n" );
+		}
+
+		if ( $this->hasOption( 'with-maintenance-log' ) ) {
+			$maintenanceLogger = $maintenanceFactory->newMaintenanceLogger( 'RebuildDataLogger' );
+			$maintenanceLogger->log( $maintenanceHelper->transformRuntimeValuesForOutput() );
 		}
 
 		$maintenanceHelper->reset();

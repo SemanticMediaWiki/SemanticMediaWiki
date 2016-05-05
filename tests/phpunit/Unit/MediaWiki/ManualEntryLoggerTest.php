@@ -51,7 +51,7 @@ class ManualEntryLoggerTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( 'Foo' ) )
 			->will( $this->returnValue( $manualLogEntry ) );
 
-		$instance->registerLoggableEventTypes( array( 'Foo' => true ) );
+		$instance->registerLoggableEventType( 'Foo' );
 
 		$this->assertInternalType(
 			'integer',
