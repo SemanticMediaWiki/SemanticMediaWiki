@@ -1,5 +1,5 @@
 ## Fixtures
-Contains 113 files:
+Contains 114 files:
 
 ### F
 * [f-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0001.json) Test format=debug output
@@ -116,6 +116,7 @@ Contains 113 files:
 * [r-0004.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/r-0004.json) Test RDF output generation for `_INST`/`_SUBC` pages (#922, en)
 * [r-0005.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/r-0005.json) Test RDF wiki-info output (#928, en)
 * [r-0006.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/r-0006.json) Test RDF output generation for pages that contain `_rec` annotations (#1285, #1275)
+* [r-0007.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/r-0007.json) Test RDF output for imported dc/gna vocabulary, owl:AnnotationProperty, owl:DatatypeProperty, owl:ObjectProperty, Equivalent URI (#795, `wgRestrictDisplayTitle`, en)
 
 ### S
 * [s-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0001.json) Test output of `Special:Properties` (en, skip-on sqlite, 1.19)
@@ -124,4 +125,4 @@ Contains 113 files:
 * [s-0004.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0004.json) Test `Special:Browse` output for `_dat' (`wgContLang` = en, `wgLang` = ja)
 * [s-0005.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0005.json) Test `Special:Browse` output for `_dat' (`wgContLang` = en, `wgLang` = en, `smwgDVFeatures`)
 
--- Last updated on 2016-05-01 by `readmeContentsBuilder.php`
+-- Last updated on 2016-05-05 by `readmeContentsBuilder.php`
