@@ -196,17 +196,29 @@ class XmlResponseParser implements HttpResponseParser {
 	private function handleCharacterData( $parser, $characterData ) {
 
 		$prevTag = end( $this->xmlOpenTags );
-		$rowcount = count( $this->data );
+		$rowcount = count( $this->data ) - 1;
+
+		// UTF-8 is being split therefore concatenate the string (use row as indicator
+		// to detect a sliced string)
+		if ( isset( $this->data[$rowcount] ) && ( $element = end( $this->data[$rowcount] ) ) !== null ) {
+			switch ( $prevTag ) {
+				case 'uri':
+					$characterData = $element->getUri() . $characterData;
+					break;
+				case 'literal':
+					$characterData = $element->getLexicalForm() . $characterData;
+			}
+		}
 
 		switch ( $prevTag ) {
 			case 'uri':
-				$this->data[$rowcount-1][$this->xmlBindIndex] = new ExpResource( $characterData );
+				$this->data[$rowcount][$this->xmlBindIndex] = new ExpResource( $characterData );
 				break;
 			case 'literal':
-				$this->data[$rowcount-1][$this->xmlBindIndex] = new ExpLiteral( $characterData, $this->currentDataType );
+				$this->data[$rowcount][$this->xmlBindIndex] = new ExpLiteral( $characterData, $this->currentDataType );
 				break;
 			case 'bnode':
-				$this->data[$rowcount-1][$this->xmlBindIndex] = new ExpResource( '_' . $characterData );
+				$this->data[$rowcount][$this->xmlBindIndex] = new ExpResource( '_' . $characterData );
 				break;
 			case 'boolean':
 				// no "results" in this case

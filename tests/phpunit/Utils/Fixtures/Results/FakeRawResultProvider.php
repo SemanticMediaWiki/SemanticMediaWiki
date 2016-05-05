@@ -55,6 +55,10 @@ class FakeRawResultProvider {
 		return $this->getFixtureContentsFor( 'invalid-sparql-result.xml' );
 	}
 
+	public function getMixedRowsSparqlResultUtf8Xml() {
+		return $this->getFixtureContentsFor( 'mixed-rows-sparql-result-utf8.xml' );
+	}
+
 	private function getFixtureContentsFor( $fixture ) {
 		if ( $file = $this->isReadableFile( $this->getFixtureLocation() . $fixture ) ) {
 			return file_get_contents( $file );

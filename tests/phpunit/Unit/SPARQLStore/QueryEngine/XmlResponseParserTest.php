@@ -145,11 +145,20 @@ class XmlResponseParserTest extends \PHPUnit_Framework_TestCase {
 			new ExpLiteral( 'true', 'http://www.w3.org/2001/XMLSchema#boolean' )
 		);
 
-
 		#10
 		$provider[] = array(
 			'',
 			new ExpLiteral( 'false', 'http://www.w3.org/2001/XMLSchema#boolean' )
+		);
+
+		#11
+		$provider[] = array(
+			$rawResultProvider->getMixedRowsSparqlResultUtf8Xml(),
+			array(
+				new ExpResource( 'http://example.org/id/F安o' ),
+				new ExpResource( 'http://example.org/id/B定ar' ),
+				new ExpLiteral( 'Quux安定', 'http://www.w3.org/2001/XMLSchema#string' )
+			)
 		);
 
 		return $provider;
