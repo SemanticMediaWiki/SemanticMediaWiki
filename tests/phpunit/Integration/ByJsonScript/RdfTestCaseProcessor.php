@@ -4,6 +4,7 @@ namespace SMW\Tests\Integration\ByJsonScript;
 
 use SMWExportController as ExportController;
 use SMWRDFXMLSerializer as RDFXMLSerializer;
+use SMWTurtleSerializer as TurtleSerializer;
 
 /**
  * @group semantic-mediawiki
@@ -60,7 +61,13 @@ class RdfTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
 	private function assertRdfOutputForCase( $case ) {
 
-		$exportController = new ExportController( new RDFXMLSerializer() );
+		if ( isset( $case['exportcontroller']['syntax'] ) && $case['exportcontroller']['syntax'] === 'turtle' ) {
+			$serializer = new TurtleSerializer();
+		} else {
+			$serializer = new RDFXMLSerializer();
+		}
+
+		$exportController = new ExportController( $serializer );
 		$exportController->enableBacklinks( $case['exportcontroller']['parameters']['backlinks'] );
 
 		ob_start();
@@ -83,11 +90,21 @@ class RdfTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			print_r( $output );
 		}
 
-		$this->stringValidator->assertThatStringContains(
-			$case['expected-output']['to-contain'],
-			$output,
-			$case['about']
-		);
+		if ( isset( $case['expected-output']['to-contain'] ) ) {
+			$this->stringValidator->assertThatStringContains(
+				$case['expected-output']['to-contain'],
+				$output,
+				$case['about']
+			);
+		}
+
+		if ( isset( $case['expected-output']['not-contain'] ) ) {
+			$this->stringValidator->assertThatStringNotContains(
+				$case['expected-output']['not-contain'],
+				$output,
+				$case['about']
+			);
+		}
 	}
 
 }

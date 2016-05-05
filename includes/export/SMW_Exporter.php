@@ -206,6 +206,9 @@ class SMWExporter {
 
 		} else {
 
+			// #1410 (use the display title as label when available)
+			$displayTitle = DataValueFactory::getInstance()->newDataItemValue( $diWikiPage )->getDisplayTitle();
+
 			$pageTitle = str_replace( '_', ' ', $diWikiPage->getDBkey() );
 			if ( $diWikiPage->getNamespace() !== 0 ) {
 				$prefixedSubjectTitle = $wgContLang->getNsText( $diWikiPage->getNamespace()) . ":" . $pageTitle;
@@ -232,7 +235,7 @@ class SMWExporter {
 			$result->addPropertyObjectValue( self::getSpecialNsResource( 'rdf', 'type' ), $maintype_pe );
 
 			if ( !$wikiPageExpElement->isBlankNode() ) {
-				$ed = new SMWExpLiteral( $label );
+				$ed = new SMWExpLiteral( $displayTitle !== '' ? $displayTitle : $label );
 				$result->addPropertyObjectValue( self::getSpecialNsResource( 'rdfs', 'label' ), $ed );
 				$ed = new SMWExpResource( self::getNamespaceUri( 'wikiurl' ) . $prefixedSubjectUrl );
 				$result->addPropertyObjectValue( self::getSpecialNsResource( 'swivt', 'page' ), $ed );
