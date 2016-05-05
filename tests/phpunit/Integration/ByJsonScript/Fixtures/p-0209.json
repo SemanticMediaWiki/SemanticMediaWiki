@@ -3,7 +3,7 @@
 	"properties": [
 		{
 			"name": "Has area",
-			"contents": "[[Has type::Quantity]] [[Corresponds to::1 km²]] [[Corresponds to::0.38610 sq mi]] [[Corresponds to::1000 m²]] [[Corresponds to::247.1054 acre]] [[Corresponds to::988.42155 rood]]"
+			"contents": "[[Has type::Quantity]] [[Corresponds to::1 km²]] [[Corresponds to::0.38610 sq mi, sqmi]] [[Corresponds to::1000 m²]] [[Corresponds to::247.1054 acre]] [[Corresponds to::988.42155 rood]]"
 		}
 	],
 	"subjects": [
@@ -17,43 +17,43 @@
 		},
 		{
 			"name": "Example/P0209/1/1",
-			"contents": "{{#ask: [[Example/P0209/1]] |?Has area |format=table }}"
+			"contents": "{{#ask: [[Example/P0209/1]] |?Has area|+order=desc |format=table }}"
 		},
 		{
 			"name": "Example/P0209/1/2",
-			"contents": "{{#ask: [[Example/P0209/1]] |?Has area# |format=table }}"
+			"contents": "{{#ask: [[Example/P0209/1]] |?Has area#|+order=desc |format=table }}"
 		},
 		{
 			"name": "Example/P0209/1/3",
-			"contents": "{{#ask: [[Example/P0209/1]] |?Has area#-n |format=table }}"
+			"contents": "{{#ask: [[Example/P0209/1]] |?Has area#-n|+order=desc |format=table }}"
 		},
 		{
 			"name": "Example/P0209/1/4",
-			"contents": "{{#ask: [[Example/P0209/1]] |?Has area#-u |format=table }}"
+			"contents": "{{#ask: [[Example/P0209/1]] |?Has area#-u|+order=desc |format=table }}"
 		},
 		{
 			"name": "Example/P0209/1/5",
-			"contents": "{{#ask: [[Example/P0209/1]] |?Has area#m² |format=table }}"
+			"contents": "{{#ask: [[Example/P0209/1]] |?Has area#m²|+order=desc |format=table }}"
 		},
 		{
 			"name": "Example/P0209/2/1",
-			"contents": "{{#ask: [[Example/P0209/2]] |?Has area |format=table }}"
+			"contents": "{{#ask: [[Example/P0209/2]] |?Has area|+order=desc |format=table }}"
 		},
 		{
 			"name": "Example/P0209/2/2",
-			"contents": "{{#ask: [[Example/P0209/2]] |?Has area# |format=table }}"
+			"contents": "{{#ask: [[Example/P0209/2]] |?Has area#|+order=desc |format=table }}"
 		},
 		{
 			"name": "Example/P0209/2/3",
-			"contents": "{{#ask: [[Example/P0209/2]] |?Has area#-n |format=table }}"
+			"contents": "{{#ask: [[Example/P0209/2]] |?Has area#-n|+order=desc |format=table }}"
 		},
 		{
 			"name": "Example/P0209/2/4",
-			"contents": "{{#ask: [[Example/P0209/2]] |?Has area#-u |format=table }}"
+			"contents": "{{#ask: [[Example/P0209/2]] |?Has area#-u|+order=desc |format=table }}"
 		},
 		{
 			"name": "Example/P0209/2/5",
-			"contents": "{{#ask: [[Example/P0209/2]] |?Has area#m² |format=table }}"
+			"contents": "{{#ask: [[Example/P0209/2]] |?Has area#m²|+order=desc |format=table }}"
 		}
 	],
 	"parser-testcases": [
@@ -88,7 +88,7 @@
 			"subject": "Example/P0209/1/1",
 			"expected-output": {
 				"to-contain": [
-					"data-sort-value=\"64.750064750065\"",
+					"data-sort-value=\"77.700077700078\"",
 					"<span class=\"smwtext\">64.75&#160;km²</span>",
 					"25&#160;sqmi",
 					"64,750.065&#160;m²",
@@ -111,7 +111,7 @@
 			"subject": "Example/P0209/1/2",
 			"expected-output": {
 				"to-contain": [
-					"data-sort-value=\"64.750064750065\"",
+					"data-sort-value=\"77.700077700078\"",
 					"64.750064750065 km²",
 					"77.700077700078 km²",
 					"0.01 km²"
@@ -123,9 +123,9 @@
 			"subject": "Example/P0209/1/3",
 			"expected-output": {
 				"to-contain": [
-					"data-sort-value=\"64.750064750065\"",
-					"64.750064750065<br />",
-					"<br />77.700077700078<br />",
+					"data-sort-value=\"77.700077700078\"",
+					"77.700077700078<br />",
+					"<br />64.750064750065<br />",
 					"<br />0.01"
 				]
 			}
@@ -135,7 +135,7 @@
 			"subject": "Example/P0209/1/4",
 			"expected-output": {
 				"to-contain": [
-					"data-sort-value=\"64.750064750065\"",
+					"data-sort-value=\"77.700077700078\"",
 					"<br />km²<br />"
 				]
 			}
@@ -145,7 +145,7 @@
 			"subject": "Example/P0209/1/5",
 			"expected-output": {
 				"to-contain": [
-					"data-sort-value=\"64.750064750065\"",
+					"data-sort-value=\"77.700077700078\"",
 					"<span class=\"smwtext\">64,750.065&#160;m²</span>",
 					"<span class=\"smwtext\">77,700.078&#160;m²</span>",
 					"<span class=\"smwtext\">10&#160;m²</span>"
@@ -157,7 +157,7 @@
 			"subject": "Example/P0209/2/1",
 			"expected-output": {
 				"to-contain": [
-					"data-sort-value=\"0.64750064750065\"",
+					"data-sort-value=\"0.77700077700078\"",
 					"<span class=\"smwtext\">0.648&#160;km²</span>",
 					"<span class=\"smwtext\">0.777&#160;km²</span>",
 					"<span class=\"smwtext\">1.0e-4&#160;km²</span>"
@@ -169,9 +169,9 @@
 			"subject": "Example/P0209/2/2",
 			"expected-output": {
 				"to-contain": [
-					"data-sort-value=\"0.64750064750065\"",
-					"0.64750064750065 km²<br />",
-					"<br />0.77700077700078 km²<br />",
+					"data-sort-value=\"0.77700077700078\"",
+					"0.77700077700078 km²<br />",
+					"<br />0.64750064750065 km²<br />",
 					"<br />0.0001 km²"
 				]
 			}
@@ -181,9 +181,9 @@
 			"subject": "Example/P0209/2/3",
 			"expected-output": {
 				"to-contain": [
-					"data-sort-value=\"0.64750064750065\"",
-					"0.64750064750065<br />",
-					"<br />0.77700077700078<br />",
+					"data-sort-value=\"0.77700077700078\"",
+					"0.77700077700078<br />",
+					"<br />0.64750064750065<br />",
 					"<br />0.0001"
 				]
 			}
@@ -193,7 +193,7 @@
 			"subject": "Example/P0209/2/5",
 			"expected-output": {
 				"to-contain": [
-					"data-sort-value=\"0.64750064750065\"",
+					"data-sort-value=\"0.77700077700078\"",
 					"<span class=\"smwtext\">647.501&#160;m²</span>",
 					"<span class=\"smwtext\">777.001&#160;m²</span>",
 					"<span class=\"smwtext\">0.1&#160;m²</span>"
