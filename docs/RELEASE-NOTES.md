@@ -75,6 +75,7 @@ Not a release yet.
 * #1489 Fixed fatal error in `RdfResultPrinter` due to namespace mismatch
 * #1496 Fixed concept handling for `postgres`
 * #1526 Fixed `_` handling for value strings submitted to the `Special:SearchByProperty`
+* #1550 Fixed `SPARQLStore` `XML` response parsing for strings that contain UTF-8 characters
 
 ## Internal changes
 
