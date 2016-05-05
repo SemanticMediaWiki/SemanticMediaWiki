@@ -29,6 +29,7 @@ Not a release yet.
 * #1350 Enlarged input field on special page "Browse"
 * #1335 Added possibility to specify a display precision for a numeric datatype by either denoting a [`Display precision of`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Display_precision_of) or using `-p<number of digits>` as `#ask` printout option
 * #1344 Added `MonolingualTextValue` and `LanguageCodeValue`
+* #1361 Added `--with-maintenance-log` option to `rebuildData.php`, `rebuildPropertyStatistics.php`, and `rebuildConceptCache.php`
 * #1381 Added localizable context help for properties using the predefined property `Has property description` (which is specified as `MonolingualText` type)
 * #1389 Added free date/time formatting support using the `-F[ ... ]` option
 * #1391 Made subobject directly browsable from/in the Factbox
