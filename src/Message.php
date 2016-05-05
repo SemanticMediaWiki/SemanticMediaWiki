@@ -3,6 +3,7 @@
 namespace SMW;
 
 use Closure;
+use Language;
 
 /**
  * @private
@@ -19,7 +20,17 @@ use Closure;
 class Message {
 
 	/**
-	 * Processing mode
+	 * @var array
+	 */
+	private static $messageCache = null;
+
+	/**
+	 * PoolCache ID
+	 */
+	const POOLCACHE_ID = 'message.cache';
+
+	/**
+	 * MW processing mode
 	 */
 	const TEXT = 0x2;
 	const ESCAPED = 0x4;
@@ -57,6 +68,27 @@ class Message {
 
 	/**
 	 * @since 2.4
+	 */
+	public static function clear() {
+		self::$messageCache = null;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return FixedInMemoryLruCache
+	 */
+	public static function getCache() {
+
+		if ( self::$messageCache === null ) {
+			self::$messageCache = InMemoryPoolCache::getInstance()->getPoolCacheFor( self::POOLCACHE_ID, 1000 );
+		}
+
+		return self::$messageCache;
+	}
+
+	/**
+	 * @since 2.4
 	 *
 	 * @param string|array $parameters
 	 * @param integer|null $type
@@ -77,6 +109,12 @@ class Message {
 			$language = Message::CONTENT_LANGUAGE;
 		}
 
+		$hash = self::getHash( $parameters, $type, $language );
+
+		if ( $content = self::getCache()->fetch( $hash ) ) {
+			return $content;
+		}
+
 		if ( isset( self::$messageHandler[$type] ) && is_callable( self::$messageHandler[$type] ) ) {
 			$handler = self::$messageHandler[$type];
 		}
@@ -85,7 +123,23 @@ class Message {
 			return '';
 		}
 
-		return call_user_func_array( $handler, array( $parameters, $language ) );
+		$message = call_user_func_array(
+			$handler,
+			array( $parameters, $language )
+		);
+
+		self::getCache()->save( $hash, $message );
+
+		return $message;
+	}
+
+	private static function getHash( $parameters, $type = null, $language = null ) {
+
+		if ( $language instanceof Language ) {
+			$language = $language->getCode();
+		}
+
+		return md5( json_encode( $parameters ) . '#' . $type . '#' . $language );
 	}
 
 }

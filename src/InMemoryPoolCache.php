@@ -88,16 +88,52 @@ class InMemoryPoolCache {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @return string
+	 */
+	public function getFormattedStats() {
+
+		$stats = '';
+		ksort( $this->poolCacheList );
+
+		foreach ( $this->poolCacheList as $key => $value ) {
+			$stats .= '- ' . $key . "\n";
+
+			$hits = 0;
+			$misses = 0;
+
+			foreach ( $value->getStats() as $k => $v ) {
+				$stats .= '  - ' . $k . ' ' . $v . "\n";
+
+				if ( $k === 'hits' ) {
+					$hits = $v;
+				}
+
+				if ( $k === 'misses' ) {
+					$misses = $v;
+				}
+			}
+
+			$hitRatio = $hits > 0 ? round( $hits / ( $hits + $misses ), 4 ) : 0;
+			$stats .= '  - ' . 'hit ratio ' . $hitRatio . ', miss ratio ' . round( 1 - $hitRatio, 4 ) . "\n";
+		}
+
+		return $stats;
+	}
+
+	/**
 	 * @since 2.3
 	 *
 	 * @param string $poolCacheName
+	 * @param integer $cacheSize
 	 *
 	 * @return Cache
 	 */
-	public function getPoolCacheFor( $poolCacheName ) {
+	public function getPoolCacheFor( $poolCacheName, $cacheSize = 500 ) {
 
 		if ( !isset( $this->poolCacheList[$poolCacheName] ) ) {
-			$this->poolCacheList[$poolCacheName] = $this->cacheFactory->newFixedInMemoryCache( 500 );
+			$this->poolCacheList[$poolCacheName] = $this->cacheFactory->newFixedInMemoryCache( $cacheSize );
 		}
 
 		return $this->poolCacheList[$poolCacheName];
