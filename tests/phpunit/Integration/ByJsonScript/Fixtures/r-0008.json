@@ -1,0 +1,81 @@
+{
+	"description": "Test RDF output generation on pages that contain incoming error annotations (`wgContLang=en`, `wgLang=es`, syntax=rdf/turtle)",
+	"properties": [
+		{
+			"name": "Has area without unit",
+			"contents": "[[Has type::Quantity]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/R0008/1",
+			"contents": "[[Has area without unit::1 m]]"
+		}
+	],
+	"rdf-testcases": [
+		{
+			"about": "#0 incoming (error) is exported in canonical form (especially when user language is different)",
+			"exportcontroller" : {
+				"print-pages": [ "Property:Has area without unit" ],
+				"parameters" : {
+					"backlinks" : true,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"<owl:DatatypeProperty rdf:about=\"http://example.org/id/Property-3AHas_area_without_unit\">",
+					"<rdfs:label>Has area without unit</rdfs:label>",
+					"<swivt:wikiPageSortKey rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Has area without unit</swivt:wikiPageSortKey>",
+					"<swivt:type rdf:resource=\"http://semantic-mediawiki.org/swivt/1.0#_qty\"/>"
+				],
+				"not-contain": [
+					"<owl:ObjectProperty rdf:about=\"http://example.org/id/Property-3ATiene_valor_incorrecto_para\">",
+					"<swivt:wikiPageSortKey rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Tiene valor incorrecto para</swivt:wikiPageSortKey>"
+				]
+			}
+		},
+		{
+			"about": "#1 (turtle)",
+			"exportcontroller" : {
+				"syntax": "turtle",
+				"print-pages": [ "Property:Has area without unit" ],
+				"parameters" : {
+					"backlinks" : true,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"property:Has_area_without_unit",
+					"rdf:type  owl:DatatypeProperty ;",
+					"rdfs:label  \"Has area without unit\" ;",
+					"swivt:wikiNamespace  \"102\"^^xsd:integer ;",
+					"swivt:wikiPageSortKey  \"Has area without unit\" ;",
+					"swivt:type  <http://semantic-mediawiki.org/swivt/1.0#_qty> .",
+					"<http://example.org/id/Example/R0008/1-23_ERRadfff161e75b2273a8190dbe8c78dbda>",
+					"swivt:masterPage  <http://example.org/id/Example/R0008/1> ;",
+					"property:Has_improper_value_for  property:Has_area_without_unit ;"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgExportBCNonCanonicalFormUse": false,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"wgContLang": "en",
+		"wgLang": "es",
+		"smwgNamespace": "http://example.org/id/"
+	},
+	"meta": {
+		"version": "0.2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

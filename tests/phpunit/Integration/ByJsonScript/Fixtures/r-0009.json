@@ -1,0 +1,81 @@
+{
+	"description": "Test RDF output generation that contain a monolingual text annotations `_PDESC` (`wgContLang=en`, `wgLang=es`, syntax=rdf/turtle)",
+	"properties": [
+		{
+			"name": "Has number",
+			"contents": "[[Has type::Number]] [[Has property description::Is a number@en]] [[Has property description::数@ja]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/R0008/1",
+			"contents": "[[Has area without unit::1 m]]"
+		}
+	],
+	"rdf-testcases": [
+		{
+			"about": "#0",
+			"exportcontroller" : {
+				"print-pages": [ "Property:Has number" ],
+				"parameters" : {
+					"backlinks" : true,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"<owl:DatatypeProperty rdf:about=\"http://example.org/id/Property-3AHas_number\">",
+					"<property:Has_property_description rdf:resource=\"http://example.org/id/Property-3AHas_number-23_ML13b181afba7d1e489a656a75fa7917b2\"/>",
+					"<property:Has_property_description rdf:resource=\"http://example.org/id/Property-3AHas_number-23_ML4c33eabf5c7dfbb1292c817504951018\"/>",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Property-3AHas_number-23_ML13b181afba7d1e489a656a75fa7917b2\">",
+					"<property:Text rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Is a number</property:Text>",
+					"<property:Language_code rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">en</property:Language_code>",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Property-3AHas_number-23_ML4c33eabf5c7dfbb1292c817504951018\">",
+					"<property:Text rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">数</property:Text>",
+					"<property:Language_code rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">ja</property:Language_code>"
+				]
+			}
+		},
+		{
+			"about": "#0",
+			"exportcontroller" : {
+				"syntax": "turtle",
+				"print-pages": [ "Property:Has number" ],
+				"parameters" : {
+					"backlinks" : true,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"rdfs:label  \"Has number\" ;",
+					"property:Has_property_description  property:Has_number-23_ML13b181afba7d1e489a656a75fa7917b2 ,  property:Has_number-23_ML4c33eabf5c7dfbb1292c817504951018 ;",
+					"swivt:wikiPageSortKey  \"Has number\" ;",
+					"swivt:type  <http://semantic-mediawiki.org/swivt/1.0#_num> .",
+					"property:Language_code  \"en\" ;",
+					"property:Text  \"Is a number\" .",
+					"property:Language_code  \"ja\" ;",
+					"property:Text  \"数\" ."
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgExportBCNonCanonicalFormUse": false,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"wgContLang": "en",
+		"wgLang": "es",
+		"smwgNamespace": "http://example.org/id/"
+	},
+	"meta": {
+		"version": "0.2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
