@@ -59,6 +59,13 @@ class PropertyLabelFinder {
 	 * @return string|boolean
 	 */
 	public function findCanonicalPropertyLabelById( $id ) {
+
+		// This is fixed otherwise the `_txt` assignment interferes with the label
+		// declaration
+		if ( $id === '_TEXT' ) {
+			return 'Text';
+		}
+
 		return array_search( $id, $this->canonicalPropertyLabels );
 	}
 

@@ -141,6 +141,13 @@ class SMWExporter {
 
 		$subject = $semdata->getSubject();
 
+		// Make sure to use the canonical form, a localized representation
+		// should not carry a reference to a subject (e.g invoked as incoming
+		// property caused by a different user language)
+		if ( $subject->getNamespace() === SMW_NS_PROPERTY && $subject->getSubobjectName() === '' ) {
+			$subject = DIProperty::newFromUserLabel( $subject->getDBKey() )->getCanonicalDiWikiPage();
+		}
+
 		// #649 Alwways make sure to have a least one valid sortkey
 		if ( !$semdata->getPropertyValues( new DIProperty( '_SKEY' ) ) && $subject->getSortKey() !== '' ) {
 			$semdata->addPropertyObjectValue(
