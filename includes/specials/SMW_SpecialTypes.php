@@ -165,7 +165,7 @@ class SMWSpecialTypes extends SpecialPage {
 			$html = \Html::rawElement(
 				'p',
 				array(),
-				wfMessage( 'smw-sp-types-mlt-lcode', $escapedTypeLabel, ( $dataValue->needsLanguageCode() ? 1 : 2 ) )->parse()
+				wfMessage( 'smw-sp-types-mlt-lcode', $escapedTypeLabel, ( $dataValue->isEnabledFeature( SMW_DV_MLTV_LCODE ) ? 1 : 2 ) )->parse()
 			);
 		}
 
