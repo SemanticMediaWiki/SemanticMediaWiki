@@ -1,0 +1,43 @@
+{
+	"description": "Test `format=table` with further results link (`wgContLang=en`, `wgLang=es`)",
+	"properties": [
+		{
+			"name": "Has text",
+			"contents": "[[Has type::Text]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/F0208/1",
+			"contents": "[[Has text::F0208]] [[Category:F0208]]"
+		},
+		{
+			"name": "Example/F0208/Q1.1",
+			"contents": "{{#ask: [[Has text::F0208]] |?Has text |?Modification date |limit=0 }}"
+		}
+	],
+	"format-testcases": [
+		{
+			"about": "#0",
+			"subject": "Example/F0208/Q1.1",
+			"expected-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20text::F0208-5D-5D/-3FHas-20text/-3FModification-20date%3DFecha-20de-20modificaci%C3%B3n/mainlabel%3D/offset%3D0/format%3Dtable"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "es",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
