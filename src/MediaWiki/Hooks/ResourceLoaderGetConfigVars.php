@@ -56,11 +56,7 @@ class ResourceLoaderGetConfigVars {
 		}
 
 		foreach ( array_keys( $GLOBALS['smwgResultFormats'] ) as $format ) {
-			// Special formats "count" and "debug" currently not supported.
-			if ( $format != 'broadtable' && $format != 'count' && $format != 'debug' ) {
-				$printer = SMWQueryProcessor::getResultPrinter( $format, SMWQueryProcessor::SPECIAL_PAGE );
-				$this->vars['smw-config']['formats'][$format] = htmlspecialchars( $printer->getName() );
-			}
+			$this->vars['smw-config']['formats'][$format] = htmlspecialchars( $format );
 		}
 
 		return true;
