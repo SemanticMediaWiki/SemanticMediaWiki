@@ -9,9 +9,9 @@ MW_INSTALL_PATH=$BASE_PATH/../mw
 function installPHPUnitWithComposer {
 	if [ "$PHPUNIT" != "" ]
 	then
-		composer require 'phpunit/phpunit='$PHPUNIT --prefer-source --update-with-dependencies
+		composer require 'phpunit/phpunit='$PHPUNIT --update-with-dependencies
 	else
-		composer require 'phpunit/phpunit=3.7.*' --prefer-source --update-with-dependencies
+		composer require 'phpunit/phpunit=3.7.*' --update-with-dependencies
 	fi
 }
 
@@ -22,7 +22,7 @@ function installSmwIntoMwWithComposer {
 	cd $MW_INSTALL_PATH
 
 	installPHPUnitWithComposer
-	composer require mediawiki/semantic-media-wiki "dev-master" --prefer-source --dev
+	composer require mediawiki/semantic-media-wiki "dev-master" --dev
 
 	cd extensions
 	cd SemanticMediaWiki
@@ -54,7 +54,7 @@ function installSmwAsTarballLikeBuild {
 
 	cd $MW_INSTALL_PATH/extensions
 	composer create-project mediawiki/semantic-media-wiki SemanticMediaWiki dev-master -s dev --prefer-dist --no-dev
-	
+
 	cd SemanticMediaWiki
 	installPHPUnitWithComposer
 }
@@ -66,7 +66,7 @@ function installSmwByRunningComposerInstallInIt {
 	cd $MW_INSTALL_PATH/extensions/SemanticMediaWiki
 
 	installPHPUnitWithComposer
-	composer install --prefer-source
+	composer install
 }
 
 if [ "$TYPE" == "composer" ]

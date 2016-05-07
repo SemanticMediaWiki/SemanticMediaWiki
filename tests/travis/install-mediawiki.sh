@@ -25,7 +25,7 @@ cd mw
 ## MW 1.25 requires Psr\Logger
 if [ -f composer.json ]
 then
-  composer install --prefer-source
+  composer install
 fi
 
 if [ "$DB" == "postgres" ]
