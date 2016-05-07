@@ -2,7 +2,7 @@
 
 use SMW\HashBuilder;
 use SMW\Query\PrintRequest;
-use SMW\Query\QueryLink;
+use SMW\Query\QueryLinker;
 use SMW\SerializerFactory;
 
 /**
@@ -243,7 +243,7 @@ class SMWQueryResult {
 	 */
 	public function getQueryLink( $caption = false ) {
 
-		$link = QueryLink::get( $this->mQuery );
+		$link = QueryLinker::get( $this->mQuery );
 
 		$link->setCaption( $caption );
 		$link->setParameter( $this->mQuery->getOffset() + count( $this->mResults ), 'offset' );
