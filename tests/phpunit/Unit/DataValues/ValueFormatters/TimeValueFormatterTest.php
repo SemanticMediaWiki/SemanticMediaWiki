@@ -78,7 +78,9 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$timeValue->setUserValue( $timeUserValue );
 
 		$timeValue->setOutputFormat( $format );
-		$timeValue->setLanguageCode( $languageCode );
+
+		$timeValue->setOption( 'user.language', $languageCode );
+		$timeValue->setOption( 'content.language', $languageCode );
 
 		$instance = new TimeValueFormatter( $timeValue );
 
@@ -199,8 +201,9 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testMediaWikiDate_WithDifferentLanguage() {
 
 		$timeValue = new TimeValue( '_dat' );
+
 		$timeValue->setUserValue( '2015-02-28' );
-		$timeValue->setLanguageCode( 'en' );
+		$timeValue->setOption( 'user.language', 'en' );
 
 		$instance = new TimeValueFormatter( $timeValue );
 
@@ -209,7 +212,7 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			$instance->getMediaWikiDate()
 		);
 
-		$timeValue->setLanguageCode( 'ja' );
+		$timeValue->setOption( 'user.language', 'ja' );
 
 		$instance = new TimeValueFormatter( $timeValue );
 
@@ -224,7 +227,7 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$timeValue = new TimeValue( '_dat' );
 		$timeValue->setUserValue( '2015-02-28' );
 
-		$timeValue->setLanguageCode( 'en' );
+		$timeValue->setOption( 'user.language', 'en' );
 		$timeValue->setOutputFormat( 'LOCL' );
 
 		$instance = new TimeValueFormatter( $timeValue );

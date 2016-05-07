@@ -161,7 +161,7 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'1/2000/12/12/1/1/20/200',
 			'ja',
-			'2000年12月12日 (月) 01:01:20'
+			'2000年12月12日 (火) 01:01:20'
 		);
 
 		#2

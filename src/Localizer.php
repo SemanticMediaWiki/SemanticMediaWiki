@@ -83,19 +83,18 @@ class Localizer {
 	}
 
 	/**
-	 * By rule means that
+	 * @note
 	 *
-	 * 1. If the page content language is different from the content language then
-	 * use the page content language (as it is clear that the page content was
-	 * intended to be in a specific language)
-	 * 2. If the page content language and content language are indifferent then
-	 * use the user language
-	 * 3. If the page content language and user language could not be determined then
-	 * use the content language
+	 * 1. If the page content language is availabe use it as preferred language
+	 * (as it is clear that the page content was intended to be in a specific
+	 * language)
+	 * 2. If no page content language was assigned use the global content
+	 * language
 	 *
 	 * General rules:
 	 * - Special pages are in the user language
-	 * - Display of values (DV) should follow rules outlined above
+	 * - Display of values (DV) should use the user language if available otherwise
+	 * use the content language as fallback
 	 * - Storage of values (DI) should always use the content language
 	 *
 	 * Notes:
@@ -108,33 +107,22 @@ class Localizer {
 	 *
 	 * @return Language
 	 */
-	public function getPreferredLanguageByRule( $title = null ) {
+	public function getPreferredContentLanguage( $title = null ) {
 
-		$pageLanguage = '';
-		$language = $this->getUserLanguage();
+		$language = '';
 
 		if ( $title instanceof DIWikiPage ) {
 			$title = $title->getTitle();
 		}
 
-		if ( $title instanceof Title ) {
-			$pageLanguage = $title->getPageLanguage();
-		}
-
 		// If the page language is different from the global content language
 		// then we assume that an explicit language object was given otherwise
 		// the Title is using the content language as fallback
-		if (
-			$pageLanguage !== '' &&
-			$pageLanguage->getCode() !== $this->getContentLanguage()->getCode() ) {
-			$language = $pageLanguage;
+		if ( $title instanceof Title ) {
+			$language = $title->getPageLanguage();
 		}
 
-		if ( $language === '' ) {
-			$language = $this->getContentLanguage();
-		}
-
-		return $language;
+		return $language instanceof Language ? $language : $this->getContentLanguage();
 	}
 
 	/**
@@ -146,7 +134,7 @@ class Localizer {
 	 */
 	public function getLanguage( $languageCode = '' ) {
 
-		if ( $languageCode === '' ) {
+		if ( $languageCode === '' || !$languageCode || $languageCode === null ) {
 			return $this->getContentLanguage();
 		}
 
@@ -168,7 +156,7 @@ class Localizer {
 			$languageCode = $language->getCode();
 		}
 
-		if ( $languageCode === '' ) {
+		if ( $languageCode === '' || !$languageCode || $languageCode === null ) {
 			$languageCode = $this->getContentLanguage()->getCode();
 		}
 

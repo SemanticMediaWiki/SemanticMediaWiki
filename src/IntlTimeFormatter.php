@@ -123,7 +123,7 @@ class IntlTimeFormatter {
 		$output = $dateTime->format( $format );
 
 		$monthNumber = $dateTime->format( 'n' );
-		$dayNumber = $dateTime->format( 'N' );
+		$dayNumber = $dateTime->format( 'N' ) + 1;
 
 		if ( strpos( $format, 'F' ) !== false ) {
 			$output = str_replace(
