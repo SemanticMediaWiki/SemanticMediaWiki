@@ -58,6 +58,16 @@ class ExtraneousLanguageFileHandlerTest extends \PHPUnit_Framework_TestCase {
 			'\SMWLanguageEn'
 		);
 
+		$provider[] = array(
+			'zh-hans',
+			'\SMWLanguageZh_cn'
+		);
+
+		$provider[] = array(
+			'zh-tw',
+			'\SMWLanguageZh_tw'
+		);
+
 		return $provider;
 	}
 

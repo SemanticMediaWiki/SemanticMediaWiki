@@ -93,7 +93,14 @@ class ExtraneousLanguageFileHandler {
 			return new $langClass;
 		}
 
-		return $this->newClassByLanguageCode( 'en' );
+		$fallbackLanguageCode = 'en';
+
+		// This is a hack until the JSON format conversion is done
+		if ( strpos( $languageCode, 'zh' ) !== false ) {
+			$fallbackLanguageCode = 'zh-cn';
+		}
+
+		return $this->newClassByLanguageCode( $fallbackLanguageCode );
 	}
 
 }
