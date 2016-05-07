@@ -2,7 +2,7 @@
 
 use ParamProcessor\Param;
 use SMW\Query\PrintRequest;
-use SMW\Query\QueryLink;
+use SMW\Query\QueryLinker;
 
 /**
  * This special page for MediaWiki implements a customisable form for
@@ -394,7 +394,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			$storeName = end( $storeName );
 		}
 
-		$environment = $storeName . ( isset( $this->m_params['source'] ) ? ' (' . $this->m_params['source'] . ')' : '' );
+		$environment = isset( $this->m_params['source'] ) ? $this->m_params['source'] : $storeName;
 		$downloadLink = $this->getExtraDownloadLinks();
 		$sarchInfoText = $duration > 0 ? wfMessage( 'smw-ask-query-search-info', $this->m_querystring, $environment, $duration )->parse() : '';
 
@@ -727,26 +727,26 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			$this->m_printouts
 		);
 
-		$link = QueryLink::get( $query );
+		$link = QueryLinker::get( $query );
 		$link->setParameter( 'true', 'prettyprint' );
 		$link->setParameter( 'json', 'format' );
 		$link->setCaption( 'JSON' );
 
 		$downloadLinks .= $link->getHtml();
 
-		$link = QueryLink::get( $query );
+		$link = QueryLinker::get( $query );
 		$link->setCaption( 'CSV' );
 		$link->setParameter( 'csv', 'format' );
 
 		$downloadLinks .= ' | ' . $link->getHtml();
 
-		$link = QueryLink::get( $query );
+		$link = QueryLinker::get( $query );
 		$link->setCaption( 'RSS' );
 		$link->setParameter( 'rss', 'format' );
 
 		$downloadLinks .= ' | ' . $link->getHtml();
 
-		$link = QueryLink::get( $query );
+		$link = QueryLinker::get( $query );
 		$link->setCaption( 'RDF' );
 		$link->setParameter( 'rdf', 'format' );
 

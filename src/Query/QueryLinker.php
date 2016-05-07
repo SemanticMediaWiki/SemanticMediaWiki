@@ -12,7 +12,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class QueryLink {
+class QueryLinker {
 
 	/**
 	 * @since 2.4
@@ -53,6 +53,10 @@ class QueryLink {
 
 		if ( $query->getMainLabel() !== false ) {
 			$params['mainlabel'] = $query->getMainLabel();
+		}
+
+		if ( $query->getQuerySource() !== '' ) {
+			$params['source'] = $query->getQuerySource();
 		}
 
 		$params['offset'] = $query->getOffset();

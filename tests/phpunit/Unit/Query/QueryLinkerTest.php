@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Query;
 
-use SMW\Query\QueryLink as QueryLink;
+use SMW\Query\QueryLinker;
 
 /**
- * @covers SMW\Query\QueryLink
+ * @covers SMW\Query\QueryLinker
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,13 +13,13 @@ use SMW\Query\QueryLink as QueryLink;
  *
  * @author mwjames
  */
-class QueryLinkTest extends \PHPUnit_Framework_TestCase {
+class QueryLinkerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'SMW\Query\QueryLink',
-			new QueryLink()
+			'SMW\Query\QueryLinker',
+			new QueryLinker()
 		);
 	}
 
@@ -35,7 +35,7 @@ class QueryLinkTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'SMWInfolink',
-			QueryLink::get( $query )
+			QueryLinker::get( $query )
 		);
 	}
 
