@@ -110,4 +110,11 @@ class SMWLanguageZh_tw extends SMWLanguage {
 
 	protected $m_months = array( "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" );
 
+	protected $preferredDateFormatsByPrecision = array(
+		'SMW_PREC_Y'    => 'Y年',
+		'SMW_PREC_YM'   => 'Y年n月',
+		'SMW_PREC_YMD'  => 'Y年n月j日 (D)',
+		'SMW_PREC_YMDT' => 'Y年n月j日 (D) H:i:s'
+	);
+
 }
