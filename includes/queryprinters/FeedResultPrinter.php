@@ -218,18 +218,7 @@ final class FeedResultPrinter extends FileExportPrinter {
 		}
 
 		if ( $subject instanceof Title ) {
-			$wikiPage = WikiPage::newFromID( $subject->getArticleID() );
-
-			if ( $wikiPage->exists() ){
-				return new FeedItem(
-					$subject->getPrefixedText(),
-					$this->feedItemDescription( $rowItems, $this->getPageContent( $wikiPage ) ),
-					$subject->getFullURL(),
-					$wikiPage->getTimestamp(),
-					$wikiPage->getUserText(),
-					$this->feedItemComments()
-				);
-			}
+			return $this->newFeedItem( $subject, $rowItems );
 		}
 
 		return array();
@@ -299,6 +288,30 @@ final class FeedResultPrinter extends FileExportPrinter {
 	 */
 	protected function feedItemComments( ) {
 		return '';
+	}
+
+	private function newFeedItem( $subject, $rowItems ) {
+		$wikiPage = WikiPage::newFromID( $subject->getArticleID() );
+
+		if ( $wikiPage !== null && $wikiPage->exists() ){
+			$feedItem = new FeedItem(
+				$subject->getPrefixedText(),
+				$this->feedItemDescription( $rowItems, $this->getPageContent( $wikiPage ) ),
+				$subject->getFullURL(),
+				$wikiPage->getTimestamp(),
+				$wikiPage->getUserText(),
+				$this->feedItemComments()
+			);
+		} else {
+			// #1562
+			$feedItem = new FeedItem(
+				$subject->getPrefixedText(),
+				'',
+				$subject->getFullURL()
+			);
+		}
+
+		return $feedItem;
 	}
 
 	/**
