@@ -176,7 +176,8 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			);
 
 			// Allow the DV formatter to access a specific language code
-			$dvWikiPage->setLanguageCode(
+			$dvWikiPage->setOption(
+				'user.language',
 				Localizer::getInstance()->getUserLanguage()->getCode()
 			);
 
@@ -225,7 +226,8 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$dvWikiPage = DataValueFactory::getInstance()->newDataItemValue( $diWikiPage, null );
 
 			// Allow the DV formatter to access a specific language code
-			$dvWikiPage->setLanguageCode(
+			$dvWikiPage->setOption(
+				'user.language',
 				$languageCode
 			);
 
@@ -258,7 +260,8 @@ class SMWPropertyPage extends SMWOrderedListPage {
 				if ( $i < $smwgMaxPropertyValues + 1 ) {
 					$dv = DataValueFactory::getInstance()->newDataItemValue( $di, $this->mProperty );
 
-					$dv->setLanguageCode(
+					$dv->setOption(
+						'user.language',
 						$languageCode
 					);
 

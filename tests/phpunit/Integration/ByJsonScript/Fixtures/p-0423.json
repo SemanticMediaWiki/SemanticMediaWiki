@@ -72,7 +72,7 @@
 			"subject": "Example/P0423/Q1.3",
 			"expected-output": {
 				"to-contain": [
-					"<td data-sort-value=\"2435851.0034722\" class=\"Has-date smwtype_dat\">1957年1月12日 (金) 12:05:00</td>"
+					"<td data-sort-value=\"2435851.0034722\" class=\"Has-date smwtype_dat\">1957年1月12日 (土) 12:05:00</td>"
 				]
 			}
 		},
@@ -81,7 +81,7 @@
 			"subject": "Example/P0423/Q1.4",
 			"expected-output": {
 				"to-contain": [
-					"<p>1957年1月12日 (金) 12:05:00"
+					"<p>1957年1月12日 (土) 12:05:00"
 				]
 			}
 		}

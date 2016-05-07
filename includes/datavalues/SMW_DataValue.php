@@ -103,11 +103,6 @@ abstract class SMWDataValue {
 	protected $m_outformat = false;
 
 	/**
-	 * @var string
-	 */
-	private $languageCode = '';
-
-	/**
 	 * Used to control the addition of the standard search link.
 	 * @var boolean
 	 */
@@ -273,24 +268,6 @@ abstract class SMWDataValue {
 	 */
 	public function getProperty() {
 		return $this->m_property;
-	}
-
-	/**
-	 * @since 2.4
-	 *
-	 * @param string $languageCode
-	 */
-	public function setLanguageCode( $languageCode ) {
-		$this->languageCode = $languageCode;
-	}
-
-	/**
-	 * @since 2.4
-	 *
-	 * @return string
-	 */
-	public function getLanguageCode() {
-		return $this->languageCode;
 	}
 
 	/**

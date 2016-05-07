@@ -5,6 +5,7 @@ use SMW\UrlEncoder;
 use SMW\Localizer;
 use SMW\SemanticData;
 use SMW\ApplicationFactory;
+use SMW\DataValueFactory;
 
 /**
  * @ingroup SMWSpecialPage
@@ -70,7 +71,7 @@ class SMWSpecialBrowse extends SpecialPage {
 			$this->articletext = UrlEncoder::decode( $query );
 		}
 
-		$this->subject = \SMW\DataValueFactory::getInstance()->newTypeIDValue( '_wpg', $this->articletext );
+		$this->subject = DataValueFactory::getInstance()->newTypeIDValue( '_wpg', $this->articletext );
 		$offsettext = $wgRequest->getVal( 'offset' );
 		$this->offset = ( is_null( $offsettext ) ) ? 0 : intval( $offsettext );
 
@@ -181,7 +182,7 @@ class SMWSpecialBrowse extends SpecialPage {
 		$diProperties = $data->getProperties();
 		$noresult = true;
 		foreach ( $diProperties as $key => $diProperty ) {
-			$dvProperty = \SMW\DataValueFactory::getInstance()->newDataItemValue( $diProperty, null );
+			$dvProperty = DataValueFactory::getInstance()->newDataItemValue( $diProperty, null );
 
 			if ( $dvProperty->isVisible() ) {
 				$dvProperty->setCaption( $this->getPropertyLabel( $dvProperty, $incoming ) );
@@ -216,9 +217,9 @@ class SMWSpecialBrowse extends SpecialPage {
 				}
 
 				if ( $incoming ) {
-					$dv = \SMW\DataValueFactory::getInstance()->newDataItemValue( $di, null );
+					$dv = DataValueFactory::getInstance()->newDataItemValue( $di, null );
 				} else {
-					$dv = \SMW\DataValueFactory::getInstance()->newDataItemValue( $di, $diProperty );
+					$dv = DataValueFactory::getInstance()->newDataItemValue( $di, $diProperty );
 				}
 
 				$body .= "<span class=\"{$ccsPrefix}value\">" .
@@ -270,8 +271,14 @@ class SMWSpecialBrowse extends SpecialPage {
 		$linker = smwfGetLinker();
 
 		// Allow the DV formatter to access a specific language code
-		$dataValue->setLanguageCode(
-			Localizer::getInstance()->getPreferredLanguageByRule( $this->subject->getDataItem() )->getCode()
+		$dataValue->setOption(
+			'content.language',
+			Localizer::getInstance()->getPreferredContentLanguage( $this->subject->getDataItem() )->getCode()
+		);
+
+		$dataValue->setOption(
+			'user.language',
+			Localizer::getInstance()->getUserLanguage()->getCode()
 		);
 
 		$dataValue->setContextPage(

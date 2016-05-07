@@ -169,19 +169,11 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$contentLanguage->expects( $this->atLeastOnce() )
-			->method( 'getCode' )
-			->will( $this->returnValue( 'en' ) );
-
 		$instance = new Localizer( $contentLanguage );
 
 		$pageLanguage = $this->getMockBuilder( '\Language' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$pageLanguage->expects( $this->once() )
-			->method( 'getCode' )
-			->will( $this->returnValue( 'foo' ) );
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -193,7 +185,7 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$pageLanguage,
-			$instance->getPreferredLanguageByRule( $title )
+			$instance->getPreferredContentLanguage( $title )
 		);
 	}
 
@@ -206,8 +198,8 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Localizer( $contentLanguage );
 
 		$this->assertEquals(
-			$instance->getUserLanguage(),
-			$instance->getPreferredLanguageByRule( null )
+			$instance->getContentLanguage(),
+			$instance->getPreferredContentLanguage( null )
 		);
 	}
 
