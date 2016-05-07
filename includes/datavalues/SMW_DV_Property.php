@@ -225,18 +225,20 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @return SMWWikiPageValue or null
 	 */
 	public function getWikiPageValue() {
-		if ( !isset( $this->m_wikipage ) ) {
 
-			$diWikiPage = $this->m_dataitem->getDiWikiPage();
+		if ( isset( $this->m_wikipage ) ) {
+			return $this->m_wikipage;
+		}
 
-			if ( $diWikiPage !== null ) {
-				$this->m_wikipage = \SMW\DataValueFactory::getInstance()->newDataItemValue( $diWikiPage, null, $this->m_caption );
-				$this->m_wikipage->setOutputFormat( $this->m_outformat );
-				$this->m_wikipage->setLinkAttributes( $this->linkAttributes );
-				$this->addError( $this->m_wikipage->getErrors() );
-			} else { // should rarely happen ($value is only changed if the input $value really was a label for a predefined prop)
-				$this->m_wikipage = null;
-			}
+		$diWikiPage = $this->m_dataitem->getCanonicalDiWikiPage();
+
+		if ( $diWikiPage !== null ) {
+			$this->m_wikipage = \SMW\DataValueFactory::getInstance()->newDataItemValue( $diWikiPage, null, $this->m_caption );
+			$this->m_wikipage->setOutputFormat( $this->m_outformat );
+			$this->m_wikipage->setLinkAttributes( $this->linkAttributes );
+			$this->addError( $this->m_wikipage->getErrors() );
+		} else { // should rarely happen ($value is only changed if the input $value really was a label for a predefined prop)
+			$this->m_wikipage = null;
 		}
 
 		return $this->m_wikipage;
