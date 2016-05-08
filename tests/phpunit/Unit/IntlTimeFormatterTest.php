@@ -3,7 +3,7 @@
 namespace SMW\Tests;
 
 use SMW\IntlTimeFormatter;
-use Language;
+use SMW\Localizer;
 use SMWDITime as DITime;
 
 /**
@@ -32,7 +32,7 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider formatProvider
 	 */
-	public function testFormat( $serialization, $formatOption, $expected ) {
+	public function testFormat( $serialization, $languageCode, $formatOption, $expected ) {
 
 		$language = $this->getMockBuilder( '\Language' )
 			->disableOriginalConstructor()
@@ -40,7 +40,7 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new IntlTimeFormatter(
 			DITime::doUnserialize( $serialization ),
-			$language
+			Localizer::getInstance()->getLanguage( $languageCode )
 		);
 
 		$this->assertEquals(
@@ -56,7 +56,7 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new IntlTimeFormatter(
 			DITime::doUnserialize( $serialization ),
-			Language::factory( $languageCode )
+			Localizer::getInstance()->getLanguage( $languageCode )
 		);
 
 		$this->assertEquals(
@@ -113,6 +113,7 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 		#0
 		$provider[] = array(
 			'1/2000/12/12/1/1/20/200',
+			'en',
 			'Y/m/d H:i:s',
 			'2000/12/12 01:01:20'
 		);
@@ -120,6 +121,7 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 		#1
 		$provider[] = array(
 			'2/2000/12/12/1/1/20/200',
+			'en',
 			'Y/m/d H:i:s',
 			'2000/12/12 01:01:20'
 		);
@@ -127,6 +129,7 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 		#2
 		$provider[] = array(
 			'1/2000/12/12/1/1/20.200',
+			'en',
 			'Y/m/d H:i:s.u',
 			'2000/12/12 01:01:20.200000'
 		);
@@ -134,6 +137,7 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 		#3
 		$provider[] = array(
 			'2/1300/11/02/12/03/25.888499949',
+			'en',
 			'Y-m-d H:i:s.u',
 			'1300-11-02 12:03:25.888500'
 		);
@@ -141,8 +145,25 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 		#4 time alone doesn't require a calendar model
 		$provider[] = array(
 			'2/1300/11/02/12/03/25.888499949',
+			'en',
 			'H:i:s.u',
 			'12:03:25.888500'
+		);
+
+		#5
+		$provider['on monthnumber 12'] = array(
+			'1/2000/12/12',
+			'en',
+			'Y-m-d M',
+			'2000-12-12 Dec'
+		);
+
+		#4
+		$provider['on daynumber 7'] = array(
+			'1/2016/05/08/1/1/20/200',
+			'en',
+			'Y-m-d D',
+			'2016-05-08 Sun'
 		);
 
 		return $provider;
@@ -169,6 +190,20 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 			'1/2000/12/12/1/1/20/200',
 			'es',
 			'01:01:20 12 dic 2000'
+		);
+
+		#3
+		$provider['on daynumber 1'] = array(
+			'1/2016/05/02/1/1/20/200',
+			'ja',
+			'2016年5月2日 (月) 01:01:20'
+		);
+
+		#4
+		$provider['on daynumber 7'] = array(
+			'1/2016/05/08/1/1/20/200',
+			'ja',
+			'2016年5月8日 (日) 01:01:20'
 		);
 
 		return $provider;
