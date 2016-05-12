@@ -48,6 +48,9 @@ class SMWSQLStore3 extends SMWStore {
 	/**
 	 * Specifies the border limit (upper bound) for pre-defined properties used
 	 * in the ID_TABLE
+	 *
+	 * When changing the upper bound, please make sure to copy the current upper
+	 * bound as legcy to the SMWSQLStore3SetupHandlers::checkPredefinedPropertyBorder
 	 */
 	const FIXED_PROPERTY_ID_UPPERBOUND = 50;
 
