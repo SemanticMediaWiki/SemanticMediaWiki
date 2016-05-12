@@ -48,6 +48,7 @@ Not a release yet.
 * #1545 Added `#LOCL` as `TimeValue` output format
 * #1570 Added ["Object ID disposal"](https://www.semantic-mediawiki.org/wiki/Help:Object_ID_disposal) `to Special:SMWAdmin`
 * #1572 Extended the query parser to support property chaining on subtypes
+* #1542 Extended the query parser to support conditions with object values that contain `=` (#640)
 
 ## Bug fixes
 
