@@ -56,7 +56,11 @@ class ManualEntryLogger {
 		$logEntry = $this->newManualLogEntryForType( $type );
 		$logEntry->setTarget( Title::newFromText( $target ) );
 
-		$logEntry->setPerformer( User::newFromName( $performer ) );
+		if ( is_string( $performer) ) {
+			$performer = User::newFromName( $performer );
+		}
+
+		$logEntry->setPerformer( $performer );
 		$logEntry->setParameters( array() );
 		$logEntry->setComment( $comment );
 
