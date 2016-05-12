@@ -244,39 +244,10 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 	protected function setupPredefinedProperties( $verbose, DatabaseBase $db ) {
 		global $wgDBtype;
 
-		$this->reportProgress( "Setting up internal property indices ...\n", $verbose );
-
-		// Check if we already have this structure
-		$borderiw = $db->selectField( SMWSQLStore3::ID_TABLE, 'smw_iw', 'smw_id=' . $db->addQuotes( \SMWSql3SmwIds::FXD_PROP_BORDER_ID ) );
-
-		if ( $borderiw != SMW_SQL3_SMWBORDERIW ) {
-			$this->reportProgress( "   ... allocating space for internal properties ...\n", $verbose );
-			$this->store->smwIds->moveSMWPageID( \SMWSql3SmwIds::FXD_PROP_BORDER_ID ); // make sure position 50 is empty
-
-			$db->insert( SMWSQLStore3::ID_TABLE, array(
-					'smw_id' => \SMWSql3SmwIds::FXD_PROP_BORDER_ID,
-					'smw_title' => '',
-					'smw_namespace' => 0,
-					'smw_iw' => SMW_SQL3_SMWBORDERIW,
-					'smw_subobject' => '',
-					'smw_sortkey' => ''
-				), 'SMW::setup'
-			); // put dummy "border element" on index 50
-
-			$this->reportProgress( '   ', $verbose );
-
-			for ( $i = 0; $i < \SMWSql3SmwIds::FXD_PROP_BORDER_ID; $i++ ) { // make way for built-in ids
-				$this->store->smwIds->moveSMWPageID( $i );
-				$this->reportProgress( '.', $verbose );
-			}
-
-			$this->reportProgress( "   done.\n", $verbose );
-		} else {
-			$this->reportProgress( "   ... space for internal properties already allocated.\n", $verbose );
-		}
+		$this->checkPredefinedPropertyBorder( $verbose, $db );
 
 		// now write actual properties; do that each time, it is cheap enough and we can update sortkeys by current language
-		$this->reportProgress( "   ... writing entries for internal properties ...", $verbose );
+		$this->reportProgress( "   ... writing entries for internal properties ...\n", $verbose );
 
 		foreach ( SMWSql3SmwIds::$special_ids as $prop => $id ) {
 			$p = new SMW\DIProperty( $prop );
@@ -291,7 +262,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			);
 		}
 
-		$this->reportProgress( " done.\n", $verbose );
+		$this->reportProgress( "   ... done.\n", $verbose );
 
 		if ( $wgDBtype == 'postgres' ) {
 			$sequenceIndex = SMWSQLStore3::ID_TABLE . '_smw_id_seq';
@@ -361,6 +332,53 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 	 */
 	public function reportMessage( $message ) {
 		$this->reportProgress( $message );
+	}
+
+	private function checkPredefinedPropertyBorder( $verbose, DatabaseBase $db ) {
+
+		$this->reportProgress( "Setting up internal property indices ...\n", $verbose );
+
+		// Check if we already have this structure
+		$expectedID = SMWSQLStore3::FIXED_PROPERTY_ID_UPPERBOUND;
+
+		$currentID = $db->selectRow(
+			SMWSQLStore3::ID_TABLE,
+			'smw_id',
+			'smw_iw=' . $db->addQuotes( SMW_SQL3_SMWBORDERIW )
+		);
+
+		if ( $currentID !== false && $currentID->smw_id == $expectedID ) {
+			return $this->reportProgress( "   ... space for internal properties already allocated.\n", $verbose );
+		}
+
+		// Legacy bound
+		$currentID = $currentID === false ? 50 : $currentID->smw_id;
+
+		$this->reportProgress( "   ... allocating space for internal properties ...\n", $verbose );
+		$this->store->smwIds->moveSMWPageID( $expectedID );
+
+		$db->insert(
+			SMWSQLStore3::ID_TABLE,
+			array(
+				'smw_id' => $expectedID,
+				'smw_title' => '',
+				'smw_namespace' => 0,
+				'smw_iw' => SMW_SQL3_SMWBORDERIW,
+				'smw_subobject' => '',
+				'smw_sortkey' => ''
+			),
+			__METHOD__
+		);
+
+		$this->reportProgress( "   ... moving from $currentID to $expectedID " , $verbose );
+
+		// make way for built-in ids
+		for ( $i = $currentID; $i < $expectedID; $i++ ) {
+			$this->store->smwIds->moveSMWPageID( $i );
+			$this->reportProgress( '.', $verbose );
+		}
+
+		$this->reportProgress( "\n   ... done.\n", $verbose );
 	}
 
 }
