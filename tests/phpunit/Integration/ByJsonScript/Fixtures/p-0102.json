@@ -1,0 +1,69 @@
+{
+	"description": "Test in-text annotation on properties with invalid names/charaters (#1567, `wgContLang=en`)",
+	"properties": [
+		{
+			"name": "Has #",
+			"contents": "[[Has type::Date]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/P0102/1",
+			"contents": "[[&#124; &#93;&#93;&lt;/td&gt;&lt;::123]]"
+		},
+		{
+			"name": "Example/P0102/2",
+			"contents": "[[<code>Has property a</code>::ABC]] {{#set: <code>Has property b</code>=DEF }}"
+		},
+		{
+			"name": "Example/P0102/3",
+			"contents": "[[<code>Has property e::ABC]] {{#set: <code>Has property f=DEF }}"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0 do not allow #",
+			"subject": "Example/P0102/1",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_ERRC", "_MDAT", "_SKEY" ]
+				}
+			}
+		},
+		{
+			"about": "#1 strip tags",
+			"subject": "Example/P0102/2",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [ "Has_property_a", "Has_property_b", "_MDAT", "_SKEY" ],
+					"propertyValues": [ "ABC", "DEF" ]
+				}
+			}
+		},
+		{
+			"about": "#2 remove broken tags",
+			"subject": "Example/P0102/3",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [ "Has_property_e", "Has_property_f", "_MDAT", "_SKEY" ],
+					"propertyValues": [ "ABC", "DEF" ]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"smwgPageSpecialProperties": [ "_MDAT" ]
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -133,17 +133,13 @@ class SMWPropertyValue extends SMWDataValue {
 		if ( $this->m_caption === false ) { // always use this as caption
 			$this->m_caption = $value;
 		}
-		$propertyName = smwfNormalTitleText( ltrim( rtrim( $value, ' ]' ), ' [' ) ); // slightly normalise label
-		$inverse = false;
-		if ( ( $propertyName !== '' ) && ( $propertyName { 0 } == '-' ) ) { // property refers to an inverse
-			$propertyName = smwfNormalTitleText( (string)substr( $value, 1 ) );
-			/// NOTE The cast is necessary at least in PHP 5.3.3 to get string '' instead of boolean false.
-			/// NOTE It is necessary to normalize again here, since normalization may uppercase the first letter.
-			$inverse = true;
-		}
+
+		list( $propertyName, $inverse ) = $this->doNormalizeUserValue(
+			$value
+		);
 
 		try {
-			$this->m_dataitem = DIProperty::newFromUserLabel( $propertyName, $inverse, $this->m_typeid );
+			$this->m_dataitem = DIProperty::newFromUserLabel( $propertyName, $inverse );
 		} catch ( SMWDataItemException $e ) { // happens, e.g., when trying to sort queries by property "-"
 			$this->addError( wfMessage( 'smw_noproperty', $value )->inContentLanguage()->text() );
 			$this->m_dataitem = new DIProperty( 'ERROR', false ); // just to have something
@@ -442,6 +438,30 @@ class SMWPropertyValue extends SMWDataValue {
 	 */
 	public function getText() {
 		return $this->m_dataitem->getLabel();
+	}
+
+	private function doNormalizeUserValue( $value ) {
+
+		// #1567
+		if ( strpos( $value, '#' ) !== false ) {
+			$this->addErrorMsg( array( 'smw-datavalue-property-invalid-name', '#' ) );
+			$this->m_dataitem = new DIProperty( 'ERROR', false );
+		}
+
+		$value = strip_tags( $value );
+		$inverse = false;
+
+		// slightly normalise label
+		$propertyName = smwfNormalTitleText( ltrim( rtrim( $value, ' ]' ), ' [' ) );
+
+		if ( ( $propertyName !== '' ) && ( $propertyName { 0 } == '-' ) ) { // property refers to an inverse
+			$propertyName = smwfNormalTitleText( (string)substr( $value, 1 ) );
+			/// NOTE The cast is necessary at least in PHP 5.3.3 to get string '' instead of boolean false.
+			/// NOTE It is necessary to normalize again here, since normalization may uppercase the first letter.
+			$inverse = true;
+		}
+
+		return array( $propertyName, $inverse );
 	}
 
 }
