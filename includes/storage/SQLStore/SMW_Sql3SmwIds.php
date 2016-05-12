@@ -54,7 +54,7 @@ class SMWSql3SmwIds {
 	 * Specifies the border limit for pre-defined properties declared
 	 * in SMWSql3SmwIds::special_ids
 	 */
-	const FXD_PROP_BORDER_ID = 50;
+	const FXD_PROP_BORDER_ID = SMWSQLStore3::FIXED_PROPERTY_ID_UPPERBOUND;
 
 	/**
 	 * Name of the table to store IDs in.

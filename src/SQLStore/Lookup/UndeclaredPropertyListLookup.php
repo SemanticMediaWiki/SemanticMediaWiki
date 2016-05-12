@@ -6,6 +6,7 @@ use RuntimeException;
 use SMW\DIProperty;
 use SMW\InvalidPropertyException;
 use SMW\Store;
+use SMW\SQLStore\SQLStore;
 use SMWDIError as DIError;
 use SMWRequestOptions as RequestOptions;
 
@@ -104,8 +105,10 @@ class UndeclaredPropertyListLookup implements ListLookup {
 		$options['GROUP BY'] = 'smw_title';
 
 		$conditions = array(
-			'smw_id > ' . \SMWSql3SmwIds::FXD_PROP_BORDER_ID,
+			'smw_id > ' . SQLStore::FIXED_PROPERTY_ID_UPPERBOUND,
 			'page_id IS NULL',
+			'smw_iw' => '',
+			'smw_subobject' => ''
 		);
 
 		$db = $this->store->getConnection( 'mw.db' );

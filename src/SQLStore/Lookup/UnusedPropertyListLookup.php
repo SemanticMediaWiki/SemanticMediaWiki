@@ -5,6 +5,7 @@ namespace SMW\SQLStore\Lookup;
 use RuntimeException;
 use SMW\DIProperty;
 use SMW\InvalidPropertyException;
+use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Store\PropertyStatisticsStore;
 use SMWDIError as DIError;
@@ -100,8 +101,10 @@ class UnusedPropertyListLookup implements ListLookup {
 		}
 
 		$conditions = array(
+			'smw_id > ' . SQLStore::FIXED_PROPERTY_ID_UPPERBOUND,
 			'smw_namespace' => SMW_NS_PROPERTY,
-			'smw_iw' => ''
+			'smw_iw' => '',
+			'smw_subobject' => ''
 		);
 
 		$conditions['usage_count'] = 0;

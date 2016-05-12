@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore;
 
 use SMW\DIProperty;
 use SMW\SQLStore\PropertyTableIdReferenceFinder;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableIdReferenceFinder
@@ -125,6 +126,17 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInternalType(
 			'boolean',
 			$instance->hasResidualReferenceFor( 42 )
+		);
+	}
+
+	public function testConfirmBorderId() {
+
+		$instance = new PropertyTableIdReferenceFinder(
+			$this->store
+		);
+
+		$this->assertTrue(
+			$instance->hasResidualReferenceFor( SQLStore::FIXED_PROPERTY_ID_UPPERBOUND )
 		);
 	}
 

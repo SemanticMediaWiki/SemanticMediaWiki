@@ -90,6 +90,11 @@ class PropertyTableIdReferenceFinder {
 	 * @return boolean
 	 */
 	public function hasResidualReferenceFor( $id ) {
+
+		if ( $id == SQLStore::FIXED_PROPERTY_ID_UPPERBOUND ) {
+			return true;
+		}
+
 		return (bool)$this->tryToFindAtLeastOneReferenceForId( $id );
 	}
 

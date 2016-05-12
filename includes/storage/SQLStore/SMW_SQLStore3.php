@@ -46,6 +46,12 @@ define( 'SMW_SQL3_SMWDELETEIW', ':smw-delete' ); // virtual "interwiki prefix" m
 class SMWSQLStore3 extends SMWStore {
 
 	/**
+	 * Specifies the border limit (upper bound) for pre-defined properties used
+	 * in the ID_TABLE
+	 */
+	const FIXED_PROPERTY_ID_UPPERBOUND = 50;
+
+	/**
 	 * Name of the table to store the concept cache in.
 	 *
 	 * @note This should never change. If it is changed, the concept caches
