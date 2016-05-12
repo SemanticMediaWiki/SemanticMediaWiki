@@ -146,14 +146,6 @@ abstract class SMWDataValue {
 	private $options;
 
 	/**
-	 * Indicates whether a value is being used by a query condition or not which
-	 * can lead to a modified validation of a value.
-	 *
-	 * @var boolean
-	 */
-	protected $isUsedByQueryCondition = false;
-
-	/**
 	 * @var boolean
 	 */
 	protected $approximateValue = false;
@@ -235,15 +227,6 @@ abstract class SMWDataValue {
 		$this->mErrors = $this->m_infolinks = array();
 		$this->mHasErrors = $this->mHasSearchLink = $this->mHasServiceLinks = $this->m_caption = false;
 		return $this->loadDataItem( $dataItem );
-	}
-
-	/**
-	 * @since 2.3
-	 *
-	 * @param boolean $usedByQueryCondition
-	 */
-	public function setQueryConditionUsage( $usedByQueryCondition ) {
-		$this->isUsedByQueryCondition = (bool)$usedByQueryCondition;
 	}
 
 	/**

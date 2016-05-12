@@ -99,7 +99,10 @@ class DescriptionProcessor {
 	public function getDescriptionForPropertyObjectValue( DIProperty $property, $chunk ) {
 
 		$dataValue = $this->dataValueFactory->newPropertyObjectValue( $property );
-		$dataValue->setQueryConditionUsage( true ); // FIXME
+
+		// Indicates whether a value is being used by a query condition or not which
+		// can lead to a modified validation of a value.
+		$dataValue->setOption( 'description.processor', true );
 
 		$description = $dataValue->getQueryDescription( $chunk );
 		$this->addError( $dataValue->getErrors() );
