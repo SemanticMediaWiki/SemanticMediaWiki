@@ -7,6 +7,7 @@ use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Parser\DescriptionProcessor;
+use SMW\DataTypeRegistry;
 
 /**
  * Objects of this class are in charge of parsing a query string in order
@@ -579,7 +580,7 @@ class SMWQueryParser {
 	}
 
 	private function isPagePropertyType( $typeid ) {
-		return $typeid == '_wpg' || $typeid == '__sob';
+		return $typeid == '_wpg' || DataTypeRegistry::getInstance()->isSubDataType( $typeid );
 	}
 
 }
