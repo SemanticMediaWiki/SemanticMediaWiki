@@ -159,4 +159,14 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructDeferredCachedListLookupUpdate() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'SMW\DeferredCallableUpdate',
+			$instance->newDeferredCallableCachedListLookupUpdate()
+		);
+	}
+
 }

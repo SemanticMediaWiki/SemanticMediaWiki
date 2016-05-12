@@ -217,6 +217,29 @@ class SQLStoreFactory {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @return DeferredCallableUpdate
+	 */
+	public function newDeferredCallableCachedListLookupUpdate() {
+
+		// PHP 5.3
+		$factory = $this;
+
+		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $factory ) {
+			wfDebugLog( 'smw', 'DeferredCachedListLookupUpdate' );
+
+			$factory->newPropertyUsageCachedListLookup()->deleteCache();
+			$factory->newUnusedPropertyCachedListLookup()->deleteCache();
+			$factory->newUndeclaredPropertyCachedListLookup()->deleteCache();
+			$factory->newUsageStatisticsCachedListLookup()->deleteCache();
+
+		} );
+
+		return $deferredCallableUpdate;
+	}
+
+	/**
 	 * @since 2.3
 	 *
 	 * @return ByIdDataRebuildDispatcher

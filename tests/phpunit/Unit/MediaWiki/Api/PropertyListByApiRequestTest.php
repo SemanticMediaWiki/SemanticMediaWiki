@@ -95,7 +95,7 @@ class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $list ) );
 
 		$cachedListLookup->expects( $this->once() )
-			->method( 'isCached' )
+			->method( 'isFromCache' )
 			->will( $this->returnValue( $isCached ) );
 
 		$this->store->expects( $this->once() )

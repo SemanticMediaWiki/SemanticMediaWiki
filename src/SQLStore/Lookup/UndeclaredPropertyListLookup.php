@@ -74,7 +74,7 @@ class UndeclaredPropertyListLookup implements ListLookup {
 	 *
 	 * @return boolean
 	 */
-	public function isCached() {
+	public function isFromCache() {
 		return false;
 	}
 
@@ -92,7 +92,7 @@ class UndeclaredPropertyListLookup implements ListLookup {
 	 *
 	 * @return string
 	 */
-	public function getLookupIdentifier() {
+	public function getHash() {
 		return __METHOD__ . '#' . ( $this->requestOptions !== null ? $this->requestOptions->getHash() : '' );
 	}
 

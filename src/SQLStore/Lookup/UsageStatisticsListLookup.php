@@ -76,7 +76,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @return boolean
 	 */
-	public function isCached() {
+	public function isFromCache() {
 		return false;
 	}
 
@@ -94,7 +94,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @return string
 	 */
-	public function getLookupIdentifier() {
+	public function getHash() {
 		return 'statistics-lookup';
 	}
 

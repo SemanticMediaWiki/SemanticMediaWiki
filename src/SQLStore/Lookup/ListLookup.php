@@ -3,8 +3,8 @@
 namespace SMW\SQLStore\Lookup;
 
 /**
- * A simple interface for fetching a list from either a DB or use a decorator
- * to cache results
+ * A simple interface for fetching a list from either a DB or being used as
+ * decorator to cache results
  *
  * @license GNU GPL v2+
  * @since 2.2
@@ -25,7 +25,7 @@ interface ListLookup {
 	 *
 	 * @return boolean
 	 */
-	public function isCached();
+	public function isFromCache();
 
 	/**
 	 * A unique identifier that can describe a specific lookup instance to
@@ -35,7 +35,7 @@ interface ListLookup {
 	 *
 	 * @return string
 	 */
-	public function getLookupIdentifier();
+	public function getHash();
 
 	/**
 	 * @since 2.2

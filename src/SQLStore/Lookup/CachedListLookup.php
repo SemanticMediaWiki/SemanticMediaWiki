@@ -32,7 +32,7 @@ class CachedListLookup implements ListLookup {
 	/**
 	 * @var boolean
 	 */
-	private $isCached = false;
+	private $isFromCache = false;
 
 	/**
 	 * @var integer
@@ -73,7 +73,7 @@ class CachedListLookup implements ListLookup {
 	 */
 	public function fetchList() {
 
-		list( $key, $optionsKey ) = $this->getCacheKey( $this->listLookup->getLookupIdentifier() );
+		list( $key, $optionsKey ) = $this->getCacheKey( $this->listLookup->getHash() );
 
 		if ( $this->cacheOptions->useCache && ( ( $result = $this->tryFetchFromCache( $key, $optionsKey ) ) !== null ) ) {
 			return $result;
@@ -105,8 +105,8 @@ class CachedListLookup implements ListLookup {
 	 *
 	 * @return boolean
 	 */
-	public function isCached() {
-		return $this->isCached;
+	public function isFromCache() {
+		return $this->isFromCache;
 	}
 
 	/**
@@ -123,8 +123,8 @@ class CachedListLookup implements ListLookup {
 	 *
 	 * @return string
 	 */
-	public function getLookupIdentifier() {
-		return $this->listLookup->getLookupIdentifier();
+	public function getHash() {
+		return $this->listLookup->getHash();
 	}
 
 	/**
@@ -133,7 +133,7 @@ class CachedListLookup implements ListLookup {
 	public function deleteCache() {
 
 		list( $id, $optionsKey ) = $this->getCacheKey(
-			$this->listLookup->getLookupIdentifier()
+			$this->listLookup->getHash()
 		);
 
 		$data = unserialize( $this->cache->fetch( $id ) );
@@ -159,7 +159,7 @@ class CachedListLookup implements ListLookup {
 			return null;
 		}
 
-		$this->isCached = true;
+		$this->isFromCache = true;
 		$this->timestamp = $data['time'];
 
 		return $data['list'];
@@ -168,7 +168,7 @@ class CachedListLookup implements ListLookup {
 	private function saveToCache( $key, $optionsKey, $list, $time, $ttl ) {
 
 		$this->timestamp = $time;
-		$this->isCached = false;
+		$this->isFromCache = false;
 
 		// Collect the options keys
 		$data = unserialize( $this->cache->fetch( $key ) );
