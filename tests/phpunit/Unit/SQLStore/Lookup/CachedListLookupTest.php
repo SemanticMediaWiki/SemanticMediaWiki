@@ -43,7 +43,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$listLookup->expects( $this->atLeastOnce() )
-			->method( 'getLookupIdentifier' )
+			->method( 'getHash' )
 			->will( $this->returnValue( 'Bar#123' ) );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
@@ -77,11 +77,11 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'Bar#123',
-			$instance->getLookupIdentifier()
+			$instance->getHash()
 		);
 
 		$this->assertTrue(
-			$instance->isCached()
+			$instance->isFromCache()
 		);
 	}
 
@@ -132,7 +132,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertFalse(
-			$instance->isCached()
+			$instance->isFromCache()
 		);
 	}
 
@@ -143,7 +143,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$listLookup->expects( $this->once() )
-			->method( 'getLookupIdentifier' )
+			->method( 'getHash' )
 			->will( $this->returnValue( 'Foo#123' ) );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )

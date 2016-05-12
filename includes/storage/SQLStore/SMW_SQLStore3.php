@@ -325,7 +325,10 @@ class SMWSQLStore3 extends SMWStore {
 		);
 
 		$this->getWriter()->deleteSubject( $title );
-		$this->tryToInvalidateCachedListLookupEntryFor( $subject );
+
+		$this->doDeferredCachedListLookupUpdate(
+			$subject
+		);
 	}
 
 	protected function doDataUpdate( SemanticData $semanticData ) {
@@ -335,7 +338,10 @@ class SMWSQLStore3 extends SMWStore {
 		);
 
 		$this->getWriter()->doDataUpdate( $semanticData );
-		$this->tryToInvalidateCachedListLookupEntryFor( $semanticData->getSubject() );
+
+		$this->doDeferredCachedListLookupUpdate(
+			$semanticData->getSubject()
+		);
 	}
 
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
@@ -349,19 +355,19 @@ class SMWSQLStore3 extends SMWStore {
 		);
 
 		$this->getWriter()->changeTitle( $oldtitle, $newtitle, $pageid, $redirid );
-		$this->tryToInvalidateCachedListLookupEntryFor( DIWikiPage::newFromTitle( $oldtitle ) );
+
+		$this->doDeferredCachedListLookupUpdate(
+			DIWikiPage::newFromTitle( $oldtitle )
+		);
 	}
 
-	private function tryToInvalidateCachedListLookupEntryFor( DIWikiPage $subject ) {
+	private function doDeferredCachedListLookupUpdate( DIWikiPage $subject ) {
 
 		if ( $subject->getNamespace() !== SMW_NS_PROPERTY ) {
 			return null;
 		}
 
-		$this->factory->newPropertyUsageCachedListLookup()->deleteCache();
-		$this->factory->newUnusedPropertyCachedListLookup()->deleteCache();
-		$this->factory->newUndeclaredPropertyCachedListLookup()->deleteCache();
-		$this->factory->newUsageStatisticsCachedListLookup()->deleteCache();
+		$this->factory->newDeferredCallableCachedListLookupUpdate()->pushToDeferredUpdateList();
 	}
 
 ///// Query answering /////

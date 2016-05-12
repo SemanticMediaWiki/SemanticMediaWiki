@@ -175,7 +175,7 @@ class PropertyListByApiRequest {
 		$this->meta = array(
 			'limit' => $this->requestOptions->limit,
 			'count' => count( $this->propertyList ),
-			'isCached' => $propertyListLookup->isCached()
+			'isCached' => $propertyListLookup->isFromCache()
 		);
 
 		return true;

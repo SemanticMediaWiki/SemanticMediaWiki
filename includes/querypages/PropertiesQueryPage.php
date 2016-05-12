@@ -51,7 +51,7 @@ class PropertiesQueryPage extends QueryPage {
 	 */
 	public function getCacheInfo() {
 
-		if ( $this->listLookup->isCached() ) {
+		if ( $this->listLookup->isFromCache() ) {
 			return $this->msg( 'smw-sp-properties-cache-info', $this->getLanguage()->userTimeAndDate( $this->listLookup->getTimestamp(), $this->getUser() ) )->parse();
 		}
 

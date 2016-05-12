@@ -52,12 +52,12 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertFalse(
-			$instance->isCached()
+			$instance->isFromCache()
 		);
 
 		$this->assertEquals(
 			'statistics-lookup',
-			$instance->getLookupIdentifier()
+			$instance->getHash()
 		);
 	}
 

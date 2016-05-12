@@ -57,12 +57,12 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertFalse(
-			$instance->isCached()
+			$instance->isFromCache()
 		);
 
 		$this->assertContains(
 			'UndeclaredPropertyListLookup',
-			$instance->getLookupIdentifier()
+			$instance->getHash()
 		);
 	}
 
@@ -104,7 +104,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			$requestOptions
 		);
 
-		$lookupIdentifier = $instance->getLookupIdentifier();
+		$lookupIdentifier = $instance->getHash();
 		$requestOptions->limit = 100;
 
 		$instance = new UndeclaredPropertyListLookup(
@@ -116,7 +116,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertNotSame(
 			$lookupIdentifier,
-			$instance->getLookupIdentifier()
+			$instance->getHash()
 		);
 	}
 

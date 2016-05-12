@@ -58,12 +58,12 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertFalse(
-			$instance->isCached()
+			$instance->isFromCache()
 		);
 
 		$this->assertContains(
 			'PropertyUsageListLookup',
-			$instance->getLookupIdentifier()
+			$instance->getHash()
 		);
 	}
 
@@ -77,7 +77,7 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 			$requestOptions
 		);
 
-		$lookupIdentifier = $instance->getLookupIdentifier();
+		$lookupIdentifier = $instance->getHash();
 
 		$requestOptions->limit = 100;
 
@@ -89,7 +89,7 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertNotSame(
 			$lookupIdentifier,
-			$instance->getLookupIdentifier()
+			$instance->getHash()
 		);
 	}
 
