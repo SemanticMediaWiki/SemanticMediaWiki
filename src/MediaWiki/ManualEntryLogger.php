@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki;
 
 use ManualLogEntry;
+use LogEntry;
 use Title;
 use User;
 
@@ -15,9 +16,23 @@ use User;
 class ManualEntryLogger {
 
 	/**
+	 * @var logEntry
+	 */
+	private $logEntry = null;
+
+	/**
 	 * @var array
 	 */
 	private $eventTypes = array();
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param LogEntry|null $logEntry
+	 */
+	public function __construct( LogEntry $logEntry = null ) {
+		$this->logEntry = $logEntry;
+	}
 
 	/**
 	 * @since 2.4
@@ -26,15 +41,6 @@ class ManualEntryLogger {
 	 */
 	public function registerLoggableEventType( $eventType ) {
 		$this->eventTypes[$eventType] = true;
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @param array $eventTypes
-	 */
-	public function registerLoggableEventTypes( array $eventTypes ) {
-		$this->eventTypes = $eventTypes;
 	}
 
 	/**
@@ -68,6 +74,11 @@ class ManualEntryLogger {
 	}
 
 	protected function newManualLogEntryForType( $type ) {
+
+		if ( $this->logEntry !== null ) {
+			return $this->logEntry;
+		}
+
 		return new ManualLogEntry( 'smw', $type );
 	}
 

@@ -20,6 +20,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 
 	public function setUp() {
 		$this->testEnvironment = new TestEnvironment();
+		$this->testEnvironment->resetPoolCacheFor( Message::POOLCACHE_ID );
 	}
 
 	public function testCanConstruct() {
@@ -69,9 +70,37 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 		$instance->deregisterHandlerFor( 'Foo' );
 	}
 
-	public function testFromCache() {
+	public function testRegisteredHandlerWithLanguage() {
 
-		$this->testEnvironment->resetPoolCacheFor( Message::POOLCACHE_ID );
+		$language = $this->getMockBuilder( '\Language' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$language->expects( $this->once() )
+			->method( 'getCode' )
+			->will( $this->returnValue( 'en' ) );
+
+		$instanceSpy = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'hasLanguage' ) )
+			->getMock();
+
+		$instanceSpy->expects( $this->once() )
+			->method( 'hasLanguage' )
+			->with( $this->identicalTo( $language ) );
+
+		$instance = new Message();
+		$instance->clear();
+
+		$instance->registerCallbackHandler( 'Foo', function( $parameters, $language ) use ( $instanceSpy ){
+			$instanceSpy->hasLanguage( $language );
+			return 'UNKNOWN';
+		} );
+
+		$instance->get( 'Bar', 'Foo', $language );
+		$instance->deregisterHandlerFor( 'Foo' );
+	}
+
+	public function testFromCache() {
 
 		$instance = new Message();
 		$instance->clear();

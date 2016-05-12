@@ -32,6 +32,25 @@ class ManualEntryLoggerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testRegisterLoggableEventType() {
+
+		$manualLogEntry = $this->getMockBuilder( '\ManualLogEntry' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$manualLogEntry->expects( $this->once() )
+			->method( 'insert' )
+			->will( $this->returnValue( 42 ) );
+
+		$instance = new ManualEntryLogger( $manualLogEntry );
+		$instance->registerLoggableEventType( 'Foo' );
+
+		$this->assertEquals(
+			42,
+			$instance->log( 'Foo', 'Bar', 'Baz', 'Yui' )
+		);
+	}
+
 	public function testLogToTableForLoggableEvent() {
 
 		$manualLogEntry = $this->getMockBuilder( '\ManualLogEntry' )

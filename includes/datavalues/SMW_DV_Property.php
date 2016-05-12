@@ -443,7 +443,7 @@ class SMWPropertyValue extends SMWDataValue {
 	private function doNormalizeUserValue( $value ) {
 
 		// #1567
-		if ( strpos( $value, '#' ) !== false ) {
+		if ( strpos( $value, '#' ) !== false && strlen( $value ) > 1 ) {
 			$this->addErrorMsg( array( 'smw-datavalue-property-invalid-name', '#' ) );
 			$this->m_dataitem = new DIProperty( 'ERROR', false );
 		}
