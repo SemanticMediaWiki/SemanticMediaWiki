@@ -33,7 +33,7 @@ class SMWQueryResult {
 	/**
 	 * Array of SMWPrintRequest objects, indexed by their natural hash keys
 	 *
-*@var PrintRequest[]
+	 * @var PrintRequest[]
 	 */
 	protected $mPrintRequests;
 
@@ -63,6 +63,13 @@ class SMWQueryResult {
 	private $countValue;
 
 	/**
+	 * Indicates whether results have been retrieved from cache or not
+	 *
+	 * @var boolean
+	 */
+	private $isFromCache = false;
+
+	/**
 	 * Initialise the object with an array of SMWPrintRequest objects, which
 	 * define the structure of the result "table" (one for each column).
 	 *
@@ -81,6 +88,24 @@ class SMWQueryResult {
 		$this->mFurtherResults = $furtherRes;
 		$this->mQuery = $query;
 		$this->mStore = $store;
+	}
+
+	/**
+	 * @since  2.4
+	 *
+	 * @param boolean $isFromCache
+	 */
+	public function setFromCache( $isFromCache ) {
+		$this->isFromCache = (bool)$isFromCache;
+	}
+
+	/**
+	 * @since  2.4
+	 *
+	 * @return boolean
+	 */
+	public function isFromCache() {
+		return $this->isFromCache;
 	}
 
 	/**
