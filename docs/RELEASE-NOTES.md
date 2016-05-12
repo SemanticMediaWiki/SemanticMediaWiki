@@ -47,6 +47,7 @@ Not a release yet.
 * #1513 `StringValueFormatter` to add `\n` on the first text element if it contains `*/#/:`
 * #1545 Added `#LOCL` as `TimeValue` output format
 * #1570 Added ["Object ID disposal"](https://www.semantic-mediawiki.org/wiki/Help:Object_ID_disposal) `to Special:SMWAdmin`
+* #1572 Extended the query parser to support property chaining on subtypes
 
 ## Bug fixes
 
