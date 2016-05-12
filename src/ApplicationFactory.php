@@ -340,9 +340,10 @@ class ApplicationFactory {
 	 *
 	 * @return DeferredCallableUpdate
 	 */
-	public function newDeferredCallableUpdate( Closure  $callback ) {
+	public function newDeferredCallableUpdate( Closure $callback ) {
 
-		$deferredCallableUpdate = new DeferredCallableUpdate(
+		$deferredCallableUpdate = $this->callbackLoader->create(
+			'DeferredCallableUpdate',
 			$callback
 		);
 

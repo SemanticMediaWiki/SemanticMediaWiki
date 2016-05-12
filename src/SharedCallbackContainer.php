@@ -109,6 +109,12 @@ class SharedCallbackContainer implements CallbackContainer {
 		$callbackLoader->registerCallback( 'FactboxFactory', function() {
 			return new FactboxFactory();
 		} );
+
+		$callbackLoader->registerExpectedReturnType( 'DeferredCallableUpdate', '\SMW\DeferredCallableUpdate' );
+
+		$callbackLoader->registerCallback( 'DeferredCallableUpdate', function( \Closure $callback ) {
+			return new DeferredCallableUpdate( $callback );
+		} );
 	}
 
 	private function registerCallbackHandlersByFactory( $callbackLoader ) {

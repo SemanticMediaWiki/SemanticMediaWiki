@@ -19,6 +19,7 @@ use Title;
  */
 class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
+	private $parser;
 	private $title;
 	private $outputPage;
 	private $requestContext;
@@ -29,6 +30,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 
 		$this->testEnvironment = new TestEnvironment();
+
+		$this->parser = $this->getMockBuilder( '\Parser' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -66,7 +71,21 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
+		$contentParser = $this->getMockBuilder( '\SMW\ContentParser' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$contentParser->expects( $this->any() )
+			->method( 'parse' )
+			->will( $this->returnValue( $this->parser ) );
+
+		$deferredCallableUpdate = $this->getMockBuilder( '\SMW\DeferredCallableUpdate' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->testEnvironment->registerObject( 'Store', $this->store );
+		$this->testEnvironment->registerObject( 'ContentParser', $contentParser );
+		$this->testEnvironment->registerObject( 'DeferredCallableUpdate', $deferredCallableUpdate );
 	}
 
 	protected function tearDown() {
@@ -149,11 +168,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isSpecialPage' )
 			->will( $this->returnValue( true ) );
 
-		$parser = $this->getMockBuilder( '\Parser' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$parser->expects( $this->any() )
+		$this->parser->expects( $this->any() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $this->title ) );
 
@@ -165,7 +180,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$parser, &$text )
+			array( &$this->parser, &$text )
 		);
 	}
 
