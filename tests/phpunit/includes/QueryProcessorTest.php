@@ -117,6 +117,11 @@ class SMWQueryProcessorTest extends MwDBaseUnitTestCase {
 			'[[Located in::Foo]][[Has url::http://example.org/api.php?action=Foo]]'
 		);
 
+		$provider[] = array(
+			array( '[[This has a = in it]]', 'link=none', 'sep=| ]][[Location of::', '[[Has url::http://example.org/api.php?action=Foo]]' ),
+			'[[This has a = in it]][[Has url::http://example.org/api.php?action=Foo]]'
+		);
+
 		return $provider;
 	}
 

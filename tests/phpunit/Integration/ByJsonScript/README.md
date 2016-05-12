@@ -90,6 +90,7 @@ Contains 119 files:
 * [q-0609.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0609.json) Test `_wpg` for single value approximate (`~/!~`) queries with conjunctive category hierarchy (#1246, en, skip virtuoso)
 * [q-0610.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0610.json) Test `_wpg` range queries (#1291, `smwStrictComparators=false`, skip virtuoso)
 * [q-0611.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0611.json) Test `_wpg` namespace any value queries (#1301, en)
+* [q-0612.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0612.json) Test `_wpg` object value that contains `=` (#640, #710, en)
 * [q-0701.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0701.json) Test `_uri` with some annotation/search pattern (T45264, #679)
 * [q-0702.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0702.json) Test `_uri` with additional annotation/search (#1129)
 * [q-0703.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0703.json) Test to map `Foaf` property from back-end / using a localized predefined property `A le type@fr` (en)

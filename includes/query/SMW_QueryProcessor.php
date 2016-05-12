@@ -296,7 +296,7 @@ class SMWQueryProcessor {
 			// Bug 32955 / #640
 			// Modify (e.g. replace `=`) a condition string only if enclosed by [[ ... ]]
 			$rawParam = preg_replace_callback(
-				'/\[\[(?:([^:][^]]*):[=:])+([^\[\]]*)\]\]/xu',
+				'/\[\[([^\[\]]*)\]\]/xu',
 				function( array $matches ) {
 					return str_replace( array( '=' ), array( '-3D' ), $matches[0] );
 				},
