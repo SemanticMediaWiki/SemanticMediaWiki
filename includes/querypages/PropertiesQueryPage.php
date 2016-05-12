@@ -111,7 +111,7 @@ class PropertiesQueryPage extends QueryPage {
 		} elseif ( $dataItem instanceof SMWDIError ) {
 			return $this->getMessageFormatter()->clear()
 				->setType( 'warning' )
-				->addFromArray( array( $dataItem->getErrors() ) )
+				->addFromArray( array( $dataItem->getErrors(), 'ID: ' . ( isset( $dataItem->id ) ? $dataItem->id : 'N/A' ) ) )
 				->getHtml();
 		}
 
@@ -160,14 +160,20 @@ class PropertiesQueryPage extends QueryPage {
 			// @todo Should use numParams for $useCount?
 			return $this->msg( 'smw_property_template_notype' )
 				->rawParams( $proplink )->numParams( $useCount )->text() . ' ' .
-				$this->getMessageFormatter()->setType( 'warning' )->escape( false )->getHtml();
+				$this->getMessageFormatter()
+					->setType( 'warning' )
+					->addFromArray( array( 'ID: ' . ( isset( $property->id ) ? $property->id : 'N/A' ) ) )
+					->escape( false )->getHtml();
 
 		} else {
 
 			// @todo Should use numParams for $useCount?
 			return $this->msg( 'smw_property_template' )
 				->rawParams( $proplink, $typestring )->numParams( $useCount )->escaped() . ' ' .
-				$this->getMessageFormatter()->setType( 'warning' )->escape( false )->getHtml();
+				$this->getMessageFormatter()
+					->setType( 'warning' )
+					->addFromArray( array( 'ID: ' . ( isset( $property->id ) ? $property->id : 'N/A' ) ) )
+					->escape( false )->getHtml();
 
 		}
 	}

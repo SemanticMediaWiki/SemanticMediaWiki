@@ -59,4 +59,35 @@ class ManualEntryLoggerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testLogToTableForLoggableEventWithPerformer() {
+
+		$performer = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$manualLogEntry = $this->getMockBuilder( '\ManualLogEntry' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$manualLogEntry->expects( $this->once() )
+			->method( 'insert' )
+			->will( $this->returnValue( 42 ) );
+
+		$instance = $this->getMockBuilder( '\SMW\MediaWiki\ManualEntryLogger' )
+			->setMethods( array( 'newManualLogEntryForType' ) )
+			->getMock();
+
+		$instance->expects( $this->once() )
+			->method( 'newManualLogEntryForType' )
+			->with( $this->equalTo( 'Foo' ) )
+			->will( $this->returnValue( $manualLogEntry ) );
+
+		$instance->registerLoggableEventType( 'Foo' );
+
+		$this->assertInternalType(
+			'integer',
+			$instance->log( 'Foo', $performer, 'Baz', 'Yui' )
+		);
+	}
+
 }

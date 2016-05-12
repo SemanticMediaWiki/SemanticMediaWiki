@@ -179,8 +179,8 @@ class ApplicationFactory {
 	 *
 	 * @return Store
 	 */
-	public function getStore() {
-		return $this->callbackLoader->singleton( 'Store' );
+	public function getStore( $store = null ) {
+		return $this->callbackLoader->singleton( 'Store', $store );
 	}
 
 	/**

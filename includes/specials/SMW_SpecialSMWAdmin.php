@@ -2,6 +2,8 @@
 
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Jobs\RefreshJob;
+use SMW\SQLStore\PropertyTableIdReferenceDisposer;
+use SMW\MediaWiki\ManualEntryLogger;
 use SMW\Settings;
 use SMW\Store;
 use SMW\StoreFactory;
@@ -87,8 +89,6 @@ class SMWAdmin extends SpecialPage {
 		switch ( $this->getRequest()->getText( 'action' ) ) {
 			case 'listsettings':
 				return $this->doListConfigurationSettings();
-			case 'idlookup':
-				return $this->doIdLookup( $this->getRequest()->getVal( 'objectId' ) );
 			case 'updatetables':
 				return $this->doUpdateTables();
 			case 'refreshstore':
@@ -109,7 +109,7 @@ class SMWAdmin extends SpecialPage {
 			->addSubmitButton( $this->messageBuilder->getMessage( 'smw_smwadmin_dbbutton' )->text() )
 			->getForm();
 
-		$html .= Html::element( 'br', array(), '' );
+		$html .= Html::element( 'p', array(), '' );
 
 		$this->htmlFormRenderer
 			->setName( 'refreshwiki' )
@@ -149,10 +149,17 @@ class SMWAdmin extends SpecialPage {
 				->addSubmitButton( $this->messageBuilder->getMessage( 'smw_smwadmin_datarefreshbutton' )->text() );
 		}
 
-		$html .= $this->htmlFormRenderer->getForm() . Html::element( 'br', array(), '' );
-		$html .= $this->getSettingsSectionForm() . Html::element( 'br', array(), '' );
-		$html .= $this->getIdLookupSectionForm() . Html::element( 'br', array(), '' );
-		$html .= $this->getAnnounceSectionForm() . Html::element( 'br', array(), '' );
+		if ( $this->getRequest()->getText( 'action' ) === 'iddispose' ) {
+			$this->doIdDispose( (int)$this->getRequest()->getVal( 'id' ) );
+		}
+
+		$id = (int)$this->getRequest()->getText( 'id' );
+
+		$html .= $this->htmlFormRenderer->getForm() . Html::element( 'p', array(), '' );
+		$html .= $this->getSettingsSectionForm() . Html::element( 'p', array(), '' );
+		$html .= $this->getIdLookupSectionForm( $id ) . Html::element( 'p', array(), '' );
+		$html .= $this->getIdDisposeSectionForm( $id ) . Html::element( 'p', array(), '' );
+		$html .= $this->getAnnounceSectionForm() . Html::element( 'p', array(), '' );
 		$html .= $this->getSupportSectionForm();
 
 		$this->getOutput()->addHTML( $html );
@@ -195,7 +202,28 @@ class SMWAdmin extends SpecialPage {
 			->getForm();
 	}
 
-	protected function getIdLookupSectionForm() {
+	protected function getIdLookupSectionForm( $id ) {
+
+		$message = '';
+
+		if ( $id > 0 && $this->getRequest()->getText( 'action' ) === 'idlookup' ) {
+
+			$row = $this->getStore()->getConnection( 'mw.db' )->selectRow(
+					\SMWSql3SmwIds::TABLE_NAME,
+					array(
+						'smw_title',
+						'smw_namespace',
+						'smw_iw',
+						'smw_subobject'
+					),
+					'smw_id=' . $id,
+					__METHOD__
+			);
+
+			$message = '<pre>' . $this->encodeJson( array( $id, $row ) ) . '</pre>';
+		} else {
+			$id = null;
+		}
 
 		return $this->htmlFormRenderer
 			->setName( 'idlookup' )
@@ -204,10 +232,53 @@ class SMWAdmin extends SpecialPage {
 			->addHeader( 'h2', $this->messageBuilder->getMessage( 'smw-sp-admin-idlookup-title' )->text() )
 			->addParagraph( $this->messageBuilder->getMessage( 'smw-sp-admin-idlookup-docu' )->text() )
 			->addInputField(
-				$this->messageBuilder->getMessage( 'smw-sp-admin-idlookup-objectid' )->text(),
-				'objectId',
-				null )
+				$this->messageBuilder->getMessage( 'smw-sp-admin-objectid' )->text(),
+				'id',
+				$id
+			)
+			->addNonBreakingSpace()
 			->addSubmitButton( $this->messageBuilder->getMessage( 'allpagessubmit' )->text() )
+			->addParagraph( $message )
+			->getForm();
+	}
+
+	protected function getIdDisposeSectionForm( $id ) {
+
+		$message = '';
+
+		if ( $id < 1 ) {
+			$id = null;
+		}
+
+		if ( $id > 0 && $GLOBALS['wgRequest']->getText( 'dispose' ) == 'yes' ) {
+			$message = $this->messageBuilder->getMessage( 'smw-sp-admin-iddispose-done', $id )->text();
+			$id = null;
+		}
+
+		return $this->htmlFormRenderer
+			->setName( 'iddispose' )
+			->setMethod( 'get' )
+			->addHiddenField( 'action', 'iddispose' )
+			->addHeader( 'h2', $this->messageBuilder->getMessage( 'smw-sp-admin-iddispose-title' )->text() )
+			->addParagraph( $this->messageBuilder->getMessage( 'smw-sp-admin-iddispose-docu' )->parse() )
+			->addParagraph( $message )
+			->addHiddenField( 'id', $id )
+			->addInputField(
+				$this->messageBuilder->getMessage( 'smw-sp-admin-objectid' )->text(),
+				'id',
+				$id,
+				null,
+				20,
+				'',
+				true
+			)
+			->addNonBreakingSpace()
+			->addSubmitButton( $this->messageBuilder->getMessage( 'allpagessubmit' )->text() )
+			->addCheckbox(
+				$this->messageBuilder->getMessage( 'smw_smwadmin_datarefreshstopconfirm' )->escaped(),
+				'dispose',
+				'yes'
+			)
 			->getForm();
 	}
 
@@ -270,25 +341,21 @@ class SMWAdmin extends SpecialPage {
 		} );
 	}
 
-	protected function doIdLookup( $objectId ) {
-		$objectId = (int)$objectId;
+	protected function doIdDispose( $id ) {
 
-		$this->printRawOutput( function( $instance ) use ( $objectId ) {
+		if ( $GLOBALS['wgRequest']->getText( 'dispose' ) !== 'yes' || $id < 1 ) {
+			return $id;
+		}
 
-			$row = $instance->getStore()->getConnection( 'mw.db' )->selectRow(
-					\SMWSql3SmwIds::TABLE_NAME,
-					array(
-						'smw_title',
-						'smw_namespace',
-						'smw_iw',
-						'smw_subobject'
-					),
-					'smw_id=' . $objectId,
-					__METHOD__
-			);
+		$propertyTableIdReferenceDisposer = new PropertyTableIdReferenceDisposer(
+			ApplicationFactory::getInstance()->getStore( '\SMW\SQLStore\SQLStore' )
+		);
 
-			print '<pre>' . $instance->encodeJson( array( $objectId, $row ) ) . '</pre>';
-		} );
+		$propertyTableIdReferenceDisposer->cleanupTableEntriesFor( $id );
+
+		$manualEntryLogger = new ManualEntryLogger();
+		$manualEntryLogger->registerLoggableEventType( 'admin' );
+		$manualEntryLogger->log( 'admin', $this->getUser(), 'Special:SMWAdmin', 'Forced removal of ID '. $id );
 	}
 
 	protected function printRawOutput( $text ) {
