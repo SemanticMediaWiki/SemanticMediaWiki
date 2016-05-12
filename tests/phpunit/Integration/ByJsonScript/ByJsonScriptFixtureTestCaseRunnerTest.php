@@ -168,8 +168,15 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
-		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'maintenance-run' ) as $key => $value ) {
-			$maintenanceRunner = UtilityFactory::getInstance()->newRunnerFactory()->newMaintenanceRunner( $key );
+		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'maintenance-run' ) as $runner => $options ) {
+			$maintenanceRunner = UtilityFactory::getInstance()->newRunnerFactory()->newMaintenanceRunner(
+				$runner
+			);
+
+			$maintenanceRunner->setOptions(
+				(array)$options
+			);
+
 			$maintenanceRunner->setQuiet()->run();
 		}
 
