@@ -105,7 +105,7 @@ class Message {
 			$type = Message::TEXT;
 		}
 
-		if ( $language === null ) {
+		if ( $language === null || !$language ) {
 			$language = Message::CONTENT_LANGUAGE;
 		}
 

@@ -1,5 +1,5 @@
 {
-	"description": "Test `Special:Browse` output for `_dat' (`wgContLang` = en, `wgLang` = ja)",
+	"description": "Test `Special:Browse` output for `_dat' (`wgContLang=en`, `wgLang=ja`)",
 	"properties": [
 		{
 			"name": "Has date",
@@ -9,7 +9,7 @@
 	"subjects": [
 		{
 			"name": "Example/S0004/1",
-			"contents": "[[Has date::12 Jan 1991 8:56]] [[Category:S0004]"
+			"contents": "[[Has date::12 Jan 1991 8:56]] [[Category:S0004]]"
 		}
 	],
 	"special-testcases": [

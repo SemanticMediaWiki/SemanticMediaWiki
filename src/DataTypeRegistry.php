@@ -423,7 +423,7 @@ class DataTypeRegistry {
 			'_num'  => 'SMWNumberValue', // Number type
 			'_tem'  => 'SMW\DataValues\TemperatureValue', // Temperature type
 			'_dat'  => 'SMWTimeValue', // Time type
-			'_boo'  => 'SMWBoolValue', // Boolean type
+			'_boo'  => 'SMW\DataValues\BooleanValue', // Boolean type
 			'_rec'  => 'SMWRecordValue', // Value list type (replacing former nary properties)
 			'_mlt_rec'  => 'SMW\DataValues\MonolingualTextValue',
 			'_qty'  => 'SMWQuantityValue', // Type for numbers with units of measurement
