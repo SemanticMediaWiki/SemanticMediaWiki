@@ -142,7 +142,7 @@ class SMWURIValue extends SMWDataValue {
 					$hierpart = '+' . substr( $hierpart, 2 );
 				}
 
-				if ( !$this->isUsedByQueryCondition && ( ( strlen( preg_replace( '/[^0-9]/', '', $hierpart ) ) < 6 ) ||
+				if ( !$this->getOptionValueFor( 'description.processor' ) && ( ( strlen( preg_replace( '/[^0-9]/', '', $hierpart ) ) < 6 ) ||
 					( preg_match( '<[-+./][-./]>', $hierpart ) ) ||
 					( !self::isValidTelURI( 'tel:' . $hierpart ) ) ) ) { /// TODO: introduce error-message for "bad" phone number
 					$this->addError( wfMessage( 'smw_baduri', $this->m_wikitext )->inContentLanguage()->text() );
@@ -156,7 +156,7 @@ class SMWURIValue extends SMWDataValue {
 					$this->m_wikitext = $value;
 				}
 
-				if ( !$this->isUsedByQueryCondition && !Sanitizer::validateEmail( $value ) ) {
+				if ( !$this->getOptionValueFor( 'description.processor' ) && !Sanitizer::validateEmail( $value ) ) {
 					/// TODO: introduce error-message for "bad" email
 					$this->addError( wfMessage( 'smw_baduri', $value )->inContentLanguage()->text() );
 					return;
