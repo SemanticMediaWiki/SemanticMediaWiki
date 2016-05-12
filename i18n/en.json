@@ -204,7 +204,7 @@
 	"smw-ask-sorting": "Sorting",
 	"smw-ask-search": "Search",
 	"smw-ask-format-selection-help": "For a detailed description, please visit the $1 help page.",
-	"smw-ask-query-search-info":"The query <code><nowiki>$1</nowiki></code> was answered by the {{PLURAL:$3|<code>$2</code> (from cache)|<code>$2</code>}} in $4 {{PLURAL:$4|second|seconds}}.",
+	"smw-ask-query-search-info":"The query <code><nowiki>$1</nowiki></code> was answered by the {{PLURAL:$3|1=<code>$2</code> (from cache)|<code>$2</code>}} in $4 {{PLURAL:$4|second|seconds}}.",
 	"searchbyproperty": "Search by property",
 	"smw_sbv_docu": "Search for all pages that have a given property and value.",
 	"smw_sbv_novalue": "Enter a valid value for the property, or view all property values for \"$1\".",
