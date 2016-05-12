@@ -46,6 +46,7 @@ Not a release yet.
 * #1483 Added statistics about [outdated entities](https://www.semantic-mediawiki.org/wiki/Help:Outdated_entities) to the `Special:Statistics`
 * #1513 `StringValueFormatter` to add `\n` on the first text element if it contains `*/#/:`
 * #1545 Added `#LOCL` as `TimeValue` output format
+* #1570 Added ["Object ID disposal"](https://www.semantic-mediawiki.org/wiki/Help:Object_ID_disposal) `to Special:SMWAdmin`
 
 ## Bug fixes
 
@@ -78,6 +79,7 @@ Not a release yet.
 * #1526 Fixed `_` handling for value strings submitted to the `Special:SearchByProperty`
 * #1550 Fixed `SPARQLStore` `XML` response parsing for strings that contain UTF-8 characters
 * #1562 Fixed fatal error in `FeedResultPrinter` due to usage of an interwiki assignment
+* #1568 Fixed usage of invalid characters/tags in property name
 
 ## Internal changes
 
