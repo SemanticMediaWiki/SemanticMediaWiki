@@ -22,6 +22,10 @@
 		{
 			"name": "Example/Q1105/2",
 			"contents": "{{#subobject: Test|Has text=Bar}} {{#subobject: Test|Has text=Foo|Has record text=abc;456}}"
+		},
+		{
+			"name": "Example/Q1105/3",
+			"contents": "{{#subobject: Test|Has text=Foo|Has record text=def;456}}"
 		}
 	],
 	"query-testcases": [
@@ -50,6 +54,24 @@
 						"property": "Has record text",
 						"value": "abc;456"
 					}
+				]
+			}
+		},
+		{
+			"about": "#1 same as #0 only to use property chain notation",
+			"store" : {
+				"clear-cache" : true
+			},
+			"condition": "[[Has record text.Has text::abc]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q1105/1#0##Test",
+					"Example/Q1105/2#0##Test"
 				]
 			}
 		}

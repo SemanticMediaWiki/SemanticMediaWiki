@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation for `_rec`/`_mlt_rec` (+ subobject) for when record type points to another record type (en)",
+	"description": "Test in-text annotation for `_rec`/`_mlt_rec` (+ subobject) for when record type points to another record type (`wgContLang=en`, `wgLang=en`)",
 	"properties": [
 		{
 			"name": "Has text",

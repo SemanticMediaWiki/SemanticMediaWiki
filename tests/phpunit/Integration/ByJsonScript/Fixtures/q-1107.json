@@ -1,0 +1,81 @@
+{
+	"description": "Test `_rec`/`_mlt_rec`(`_PDESC`) to use property chaining (`wgContLang=en`)",
+	"properties": [
+		{
+			"name": "Has text",
+			"contents": "[[Has type::Text]] [[Has property description::Text property@en]]"
+		},
+		{
+			"name": "Has number",
+			"contents": "[[Has type::Number]] [[Has property description::Number property@en]]"
+		},
+		{
+			"name": "Has record text",
+			"contents": "[[Has type::Record]] [[Has fields::Has text;Has number]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/Q1107/1",
+			"contents": "{{#subobject: Test|Has text=Foo|Has record text=abc;222}}"
+		}
+	],
+	"query-testcases": [
+		{
+			"about": "#0",
+			"store" : {
+				"clear-cache" : true
+			},
+			"condition": "[[Has property description.Language code::en]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Has text#102##",
+					"Has number#102##"
+				]
+			}
+		},
+		{
+			"about": "#1",
+			"condition": "[[Has subobject.Has record text.Has number::222]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q1107/1#0##"
+				]
+			}
+		},
+		{
+			"about": "#2",
+			"condition": "[[Has record text.Has number::222]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q1107/1#0##Test"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
