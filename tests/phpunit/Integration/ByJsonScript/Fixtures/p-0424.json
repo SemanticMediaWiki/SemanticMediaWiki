@@ -1,0 +1,92 @@
+{
+	"description": "Test in-text annotation for `_boo` datatype using `LOCL` (`wgContLang=en`, `wgLang=fr`)",
+	"properties": [
+		{
+			"name": "Has boolean",
+			"contents": "[[Has type::Boolean]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/P0424/1",
+			"contents": "[[Has boolean::true]] [[Category:P0424]]"
+		},
+		{
+			"name": "Example/P0424/2",
+			"contents": "{{#set:Has boolean=false}} [[Category:P0424]]"
+		},
+		{
+			"name": "Example/P0424/Q1.1",
+			"contents": "{{#ask: [[Category:P0424]] |?Has boolean |?Has boolean#LOCL}}"
+		},
+		{
+			"name": "Example/P0424/Q1.2",
+			"contents": "{{#ask: [[Category:P0424]] |?Has boolean |?Has boolean#LOCL@ja}}"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0 true",
+			"subject": "Example/P0424/1",
+			"store": {
+				"clear-cache": true,
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [ "Has_boolean", "_SKEY", "_MDAT", "_INST" ],
+					"propertyValues": [ true ]
+				}
+			}
+		},
+		{
+			"about": "#1 false",
+			"subject": "Example/P0424/2",
+			"store": {
+				"clear-cache": true,
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [ "Has_boolean", "_SKEY", "_MDAT", "_INST" ],
+					"propertyValues": [ false ]
+				}
+			}
+		},
+		{
+			"about": "#3 LOCL used the user language",
+			"subject": "Example/P0424/Q1.1",
+			"expected-output": {
+				"to-contain": [
+					"<td data-sort-value=\"1\" class=\"Has-boolean smwtype_boo\">true</td>",
+					"<td data-sort-value=\"1\" class=\"Has-boolean smwtype_boo\">vrai</td>",
+					"<td data-sort-value=\"0\" class=\"Has-boolean smwtype_boo\">false</td>",
+					"<td data-sort-value=\"0\" class=\"Has-boolean smwtype_boo\">faux</td>"
+				]
+			}
+		},
+		{
+			"about": "#4 LOCL@js uses a specific language",
+			"subject": "Example/P0424/Q1.2",
+			"expected-output": {
+				"to-contain": [
+					"<td data-sort-value=\"1\" class=\"Has-boolean smwtype_boo\">true</td>",
+					"<td data-sort-value=\"1\" class=\"Has-boolean smwtype_boo\">真</td>",
+					"<td data-sort-value=\"0\" class=\"Has-boolean smwtype_boo\">false</td>",
+					"<td data-sort-value=\"0\" class=\"Has-boolean smwtype_boo\">偽</td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "fr",
+		"smwgPageSpecialProperties": [ "_MDAT" ]
+	},
+	"meta": {
+		"skip-on": {
+			"mw-1.22.12": "Somehow the content lang is not set correctly on Travis (locally works fine)."
+		},
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

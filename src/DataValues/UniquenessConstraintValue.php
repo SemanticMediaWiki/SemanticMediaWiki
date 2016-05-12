@@ -2,8 +2,6 @@
 
 namespace SMW\DataValues;
 
-use SMWBoolValue as BooleanValue;
-
 /**
  * @license GNU GPL v2+
  * @since 2.4

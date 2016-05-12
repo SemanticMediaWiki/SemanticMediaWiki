@@ -115,6 +115,11 @@ class DataValueFactory {
 			$result->setContextPage( $contextPage );
 		}
 
+		$result->setOption(
+			'user.language',
+			Localizer::getInstance()->getUserLanguage()->getCode()
+		);
+
 		if ( $valueString !== false ) {
 			$result->setUserValue( $valueString, $caption );
 		}

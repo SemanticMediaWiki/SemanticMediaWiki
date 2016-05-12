@@ -219,17 +219,10 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 		$r = '<table class="property-page-results" style="width: 100%;" cellspacing="0" cellpadding="0">';
 		$prev_start_char = 'None';
-		$languageCode = Localizer::getInstance()->getUserLanguage()->getCode();
 
 		for ( $index = $start; $index < $ac; $index++ ) {
 			$diWikiPage = $diWikiPages[$index];
 			$dvWikiPage = DataValueFactory::getInstance()->newDataItemValue( $diWikiPage, null );
-
-			// Allow the DV formatter to access a specific language code
-			$dvWikiPage->setOption(
-				'user.language',
-				$languageCode
-			);
 
 			$sortkey = $this->store->getWikiPageSortKey( $diWikiPage );
 			$start_char = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
@@ -260,10 +253,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 				if ( $i < $smwgMaxPropertyValues + 1 ) {
 					$dv = DataValueFactory::getInstance()->newDataItemValue( $di, $this->mProperty );
 
-					$dv->setOption(
-						'user.language',
-						$languageCode
-					);
+					$dv->setOutputFormat( 'LOCL' );
 
 					$r .= $dv->getShortHTMLText( smwfGetLinker() ) . $dv->getInfolinkText( SMW_OUTPUT_HTML, smwfGetLinker() );
 				} else {

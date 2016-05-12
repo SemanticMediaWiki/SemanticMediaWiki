@@ -110,7 +110,11 @@ class InMemoryPoolCache {
 					$hits = $v;
 				}
 
-				if ( $k === 'misses' ) {
+				if ( $k === 'inserts' ) {
+					$misses = $v;
+				}
+
+				if ( $k === 'misses' && $v > 0 ) {
 					$misses = $v;
 				}
 			}

@@ -264,6 +264,11 @@ abstract class SMWDataValue {
 	 */
 	public function setContextPage( SMWDIWikiPage $contextPage ) {
 		$this->m_contextPage = $contextPage;
+
+		$this->setOption(
+			'content.language',
+			Localizer::getInstance()->getPreferredContentLanguage( $contextPage )->getCode()
+		);
 	}
 
 	/**
