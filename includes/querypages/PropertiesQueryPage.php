@@ -146,7 +146,9 @@ class PropertiesQueryPage extends QueryPage {
 				// Show even messed up property names.
 				$typestring = '';
 				$proplink = $property->getLabel();
-				$this->getMessageFormatter()->addFromKey( 'smw_notitle', $proplink );
+				$this->getMessageFormatter()
+					->addFromArray( array( 'ID: ' . ( isset( $property->id ) ? $property->id : 'N/A' ) ) )
+					->addFromKey( 'smw_notitle', $proplink );
 			} else {
 				list( $typestring, $proplink ) = $this->getUserDefinedPropertyInfo( $title, $property, $useCount );
 			}
@@ -162,7 +164,6 @@ class PropertiesQueryPage extends QueryPage {
 				->rawParams( $proplink )->numParams( $useCount )->text() . ' ' .
 				$this->getMessageFormatter()
 					->setType( 'warning' )
-					->addFromArray( array( 'ID: ' . ( isset( $property->id ) ? $property->id : 'N/A' ) ) )
 					->escape( false )->getHtml();
 
 		} else {
@@ -172,7 +173,6 @@ class PropertiesQueryPage extends QueryPage {
 				->rawParams( $proplink, $typestring )->numParams( $useCount )->escaped() . ' ' .
 				$this->getMessageFormatter()
 					->setType( 'warning' )
-					->addFromArray( array( 'ID: ' . ( isset( $property->id ) ? $property->id : 'N/A' ) ) )
 					->escape( false )->getHtml();
 
 		}
