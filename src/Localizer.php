@@ -56,20 +56,9 @@ class Localizer {
 	/**
 	 * @since 2.1
 	 *
-	 * @param DIWikiPage|Title|null $title
-	 *
 	 * @return Language
 	 */
-	public function getContentLanguage( $title = null ) {
-
-		if ( $title instanceof DIWikiPage ) {
-			$title = $title->getTitle();
-		}
-
-		if ( $title instanceof Title ) {
-			return $title->getPageLanguage();
-		}
-
+	public function getContentLanguage() {
 		return $this->contentLanguage;
 	}
 

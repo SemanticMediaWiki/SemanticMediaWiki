@@ -18,6 +18,10 @@
 		{
 			"name": "Example/P0102/3",
 			"contents": "[[<code>Has property e::ABC]] {{#set: <code>Has property f=DEF }}"
+		},
+		{
+			"name": "Example/P0102/Q3.1",
+			"contents": "{{#ask: [[<code>Has property e::ABC]] |link=none |format=table |sort=# |order=asc}}"
 		}
 	],
 	"parser-testcases": [
@@ -53,6 +57,17 @@
 					"propertyCount": 4,
 					"propertyKeys": [ "Has_property_e", "Has_property_f", "_MDAT", "_SKEY" ],
 					"propertyValues": [ "ABC", "DEF" ]
+				}
+			}
+		},
+		{
+			"about": "#3 allow things like sort=#",
+			"subject": "Example/P0102/Q3.1",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_ASK", "_MDAT", "_SKEY" ]
 				}
 			}
 		}
