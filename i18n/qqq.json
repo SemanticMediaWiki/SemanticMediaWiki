@@ -208,7 +208,7 @@
 	"smw-ask-sorting": "This is the text for the header of the section on [[Special:Ask]] that allows to specify sorting options for specific properties that are queried for.",
 	"smw-ask-search": "This is the label of an info box on \"Special:Ask\". Translate as a noun.\n\n{{Identical|Search}}",
 	"smw-ask-format-selection-help": "This is a text displayed on [[Special:Ask]] to inform about a help page on [https://semantic-mediawiki.org/wiki/ Semantic MediaWiki].\n\nParameters:\n* $1 - a link which points to Help: page on semantic-mediawiki.org",
-	"smw-ask-query-search-info": "An informatory message shown on \"Special:Ask\":\n\nParameters:\n* $1 shows the code of the query, e.g. <code><nowiki>[[Has number::+]]</nowiki></code>\n* $2 shows the name of the database backend that returned the answer, e.g. \"SMWSQLStore3\"\n* $3 shows the elapsed time needed to return the answer, e.g. 0.00635",
+	"smw-ask-query-search-info": "An informatory message shown on \"Special:Ask\":\n\nParameters:\n* $1 shows the code of the query, e.g. <code><nowiki>[[Has number::+]]</nowiki></code>\n* $2 shows the name of the database backend that returned the answer, e.g. \"SMWSQLStore3\"\n* $3 indicates whether it is retrieved from cache or not \n* $4 shows the elapsed time needed to return the answer, e.g. 0.00635",
 	"searchbyproperty": "{{doc-special|SearchByProperty}}",
 	"smw_sbv_docu": "This is the information message shown on [[Special:SearchByProperty]] in case no property and no property value were not yet provided to search for.",
 	"smw_sbv_novalue": "This is an information message shown on [[Special:SearchByProperty]] in case no property value was provided.\n\nParameters:\n* $1 - the name of the property",

@@ -219,6 +219,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		// TODO: hold into account $smwgAutocompleteInSpecialAsk
 
 		$result = '';
+		$res = null;
 
 		// build parameter strings for URLs, based on current settings
 		$urlArgs['q'] = $this->m_querystring;
@@ -360,11 +361,14 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			$urlArgs['offset'] = $this->m_params['offset'];
 			$urlArgs['limit'] = $this->m_params['limit'];
 
+			$isFromCache = $res !== null ? $res->isFromCache() : false;
+
 			$result = $this->getInputForm(
 				$printoutstring,
 				wfArrayToCGI( $urlArgs ),
 				$navigation,
-				$duration
+				$duration,
+				$isFromCache
 			) . $result;
 
 			$this->getOutput()->addHTML( $result );
@@ -379,7 +383,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 	 *
 	 * @return string
 	 */
-	protected function getInputForm( $printoutstring, $urltail, $navigation = '', $duration ) {
+	protected function getInputForm( $printoutstring, $urltail, $navigation = '', $duration, $isFromCache = false ) {
 		global $wgScript;
 
 		$result = '';
@@ -396,7 +400,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 
 		$environment = isset( $this->m_params['source'] ) ? $this->m_params['source'] : $storeName;
 		$downloadLink = $this->getExtraDownloadLinks();
-		$sarchInfoText = $duration > 0 ? wfMessage( 'smw-ask-query-search-info', $this->m_querystring, $environment, $duration )->parse() : '';
+		$sarchInfoText = $duration > 0 ? wfMessage( 'smw-ask-query-search-info', $this->m_querystring, $environment, $isFromCache, $duration )->parse() : '';
 
 		if ( $this->m_editquery ) {
 			$result .= Html::openElement( 'form',
