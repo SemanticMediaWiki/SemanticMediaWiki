@@ -46,9 +46,12 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 			// Maybe there is a better way but somehow I couldn't find one therefore
 			// 'source' display will be omitted where no alternative source was found or
 			// a source that was marked as default but had no other available options
-			if ( ( $name == 'source' && count ( $definition->getAllowedValues() ) == 0 ) || (
-				$name == 'source' && in_array( 'default', $definition->getAllowedValues() ) &&
-				count ( $definition->getAllowedValues() ) < 2 ) ) {
+			$allowedValues = $definition->getAllowedValues();
+			if ( $name == 'source' && (
+					count( $allowedValues ) == 0 ||
+					in_array( 'default', $allowedValues ) && count( $allowedValues ) < 2
+				) ) {
+
 				continue;
 			}
 
@@ -56,15 +59,16 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 			$dataInfo = $definition->getMessage() !== null ? $this->msg( $definition->getMessage() )->text() : '';
 
 			$optionsHtml[] =
-				Html::rawElement(
-					'span',
+				'<td>' .
+				Html::rawElement( 'span',
 					array(
-						'class' => $this->isTooltipDisplay() == true ? 'smw-ask-info' : '',
+						'class'     => $this->isTooltipDisplay() == true ? 'smw-ask-info' : '',
 						'word-wrap' => 'break-word',
 						'data-info' => $dataInfo
-					), htmlspecialchars( $name ) .  ': ' .
-					$this->showFormatOption( $definition, $currentValue )
-				);
+					),
+					htmlspecialchars( $name ) . ': ' ) .
+				'</td>' .
+				$this->showFormatOption( $definition, $currentValue );
 		}
 
 		$i = 0;
@@ -92,7 +96,7 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 			$i++;
 
 			// Collect elements for a row
-			$rowHtml .= Html::rawElement('td', array(), $option );
+			$rowHtml .=  $option;
 
 			// Create table row
 			if ( $i % 3 == 0 ){
