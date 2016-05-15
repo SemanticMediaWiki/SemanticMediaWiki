@@ -141,7 +141,7 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 
 		// Parameter description text
 		if ( !$this->isTooltipDisplay() ) {
-			$tooltipInfo = $definition->getMessage() !== null ? $this->msg( $definition->getMessage() )->escaped() : '';
+			$tooltipInfo = $definition->getMessage() !== null ? $this->msg( $definition->getMessage() )->parse() : '';
 
 			$description =  Html::rawElement( 'span', array(
 				'class' => 'smw-ask-parameter-description'
