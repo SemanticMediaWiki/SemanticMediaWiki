@@ -1,9 +1,13 @@
 {
-	"description": "Test output of `Special:SearchByProperty` (en, skip-on sqlite, 1.19)",
+	"description": "Test output of `Special:SearchByProperty` (`wgContLang=en`, skip-on sqlite, 1.19)",
 	"properties": [
 		{
 			"name": "Has text",
 			"contents": "[[Has type::Text]]"
+		},
+		{
+			"name": "Has number",
+			"contents": "[[Has type::Number]] [[Display precision of::2]]"
 		}
 	],
 	"subjects": [
@@ -14,6 +18,10 @@
 		{
 			"name": "Example/S0002/2",
 			"contents": "[[Has text::foo bar]]"
+		},
+		{
+			"name": "Example/S0002/3",
+			"contents": "[[Has number::3.555567]]"
 		}
 	],
 	"special-testcases": [
@@ -64,6 +72,26 @@
 				"to-contain": [
 					"Example-2FS0002-2F2",
 					"<small>(foo bar)</small>"
+				]
+			}
+		},
+		{
+			"about": "#3 value input not be constraint by precision",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "",
+				"request-parameters":{
+					"property": "Has number",
+					"value": "3.555567"
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"Example-2FS0002-2F3",
+					"<small>(3.556)</small>"
+				],
+				"not-contain": [
+					"value=3.56"
 				]
 			}
 		}

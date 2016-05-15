@@ -433,7 +433,8 @@ class SMWNumberValue extends SMWDataValue {
 
 	protected function getPrecision() {
 
-		if ( $this->getProperty() === null ) {
+		// In case of a value description, don't restrict the value with a display precision
+		if ( $this->getProperty() === null || $this->getOptionValueFor( 'value.description' ) ) {
 			return false;
 		}
 

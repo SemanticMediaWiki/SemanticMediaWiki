@@ -1,5 +1,5 @@
 {
-	"description": "Test format=debug output",
+	"description": "Test `format=debug` output",
 	"properties": [
 		{
 			"name": "Has page",
@@ -8,6 +8,10 @@
 		{
 			"name": "Has text",
 			"contents": "[[Has type::Text]]"
+		},
+		{
+			"name": "Has number",
+			"contents": "[[Has type::Number]] [[Display precision of::2]]"
 		}
 	],
 	"subjects": [
@@ -16,8 +20,16 @@
 			"contents": "[[Has page::Foo]] [[Has text::bar]]"
 		},
 		{
+			"name": "Example/F0001/2",
+			"contents": "[[Has number::3.555567]]"
+		},
+		{
 			"name": "Example/0001/1",
 			"contents": "{{#ask:[[Has page::Foo]] [[Has page::42]] |?Has page |?Has text |format=debug }}"
+		},
+		{
+			"name": "Example/F0001/Q.1",
+			"contents": "{{#ask: [[Has number::3.555567]] |?Has number |format=debug }}"
 		}
 	],
 	"format-testcases": [
@@ -30,6 +42,15 @@
 					"Query-Size:4",
 					"Query-Depth:1",
 					"None"
+				]
+			}
+		},
+		{
+			"about": "#1 value input/output not be constraint by precision",
+			"subject": "Example/F0001/Q.1",
+			"expected-output": {
+				"to-contain": [
+					"<div class=\"smwpre\">&#x5b;&#x5b;Has number::3.556]]</div>"
 				]
 			}
 		}
