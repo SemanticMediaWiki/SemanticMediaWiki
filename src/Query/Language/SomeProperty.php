@@ -50,11 +50,14 @@ class SomeProperty extends Description {
 
 	public function getQueryString( $asValue = false ) {
 		$subDescription = $this->description;
-		$propertyChainString = $this->property->getLabel();
+
+		// Use the canonical label to ensure that conditions contain
+		// language indep. references
+		$propertyChainString = $this->property->getCanonicalLabel();
 		$propertyname = $propertyChainString;
 
 		while ( ( $propertyname !== '' ) && ( $subDescription instanceof SomeProperty ) ) { // try to use property chain syntax
-			$propertyname = $subDescription->getProperty()->getLabel();
+			$propertyname = $subDescription->getProperty()->getCanonicalLabel();
 
 			if ( $propertyname !== '' ) {
 				$propertyChainString .= '.' . $propertyname;

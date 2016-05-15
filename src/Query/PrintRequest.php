@@ -239,14 +239,11 @@ class PrintRequest {
 					$printname = '';
 
 					if ( $this->m_data->isVisible() ) {
-						$printname = $this->m_data->getDataItem()->getLabel();
-
+						// #1564
 						// Use the canonical form for predefined properties to ensure
 						// that local representations are for display but points to
 						// the correct property
-						if ( !$this->m_data->getDataItem()->isUserDefined() ) {
-							$printname = str_replace( '_', ' ', $this->m_data->getDataItem()->getCanonicalDiWikiPage()->getDBKey() );
-						}
+						$printname = $this->m_data->getDataItem()->getCanonicalLabel();
 					}
 
 					$result = '?' . $printname;

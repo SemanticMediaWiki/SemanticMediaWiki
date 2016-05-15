@@ -133,4 +133,19 @@ class DIPropertyTest extends DataItemTest {
 		);
 	}
 
+	public function testCanonicalRepresentation() {
+
+		$property = new DIProperty( '_MDAT' );
+
+		$this->assertEquals(
+			'Modification date',
+			$property->getCanonicalLabel()
+		);
+
+		$this->assertEquals(
+			new DIWikiPage( 'Modification_date', SMW_NS_PROPERTY ),
+			$property->getCanonicalDiWikiPage()
+		);
+	}
+
 }
