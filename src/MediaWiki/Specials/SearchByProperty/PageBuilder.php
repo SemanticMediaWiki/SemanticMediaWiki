@@ -257,6 +257,8 @@ class PageBuilder {
 		$html = '';
 
 		foreach ( $results as $result ) {
+
+			$result[0]->setOutputFormat( 'LOCL' );
 			$listitem = $result[0]->getLongHTMLText( $this->linker );
 
 			if ( $this->canShowSearchByPropertyLink( $result[0] ) ) {
@@ -285,6 +287,8 @@ class PageBuilder {
 				( !$result[1]->getDataItem() instanceof \SMWDIError ) &&
 				( !$this->pageRequestOptions->value->getDataItem()->equals( $result[1]->getDataItem() )
 					|| $highlight ) ) {
+
+				$result[1]->setOutputFormat( 'LOCL' );
 
 				$listitem .= "&#160;<em><small>" . $this->messageBuilder->getMessage( 'parentheses' )
 					->rawParams( $result[1]->getLongHTMLText( $this->linker ) )
@@ -337,6 +341,8 @@ class PageBuilder {
 		$dataValue = DataValueFactory::getInstance()->newDataItemValue(
 			$dataItem
 		);
+
+		$dataValue->setOutputFormat( 'LOCL' );
 
 		if ( $dataValue->isValid() ) {
 			//$resultMessage = 'Item reference for a zero-marked property.';
