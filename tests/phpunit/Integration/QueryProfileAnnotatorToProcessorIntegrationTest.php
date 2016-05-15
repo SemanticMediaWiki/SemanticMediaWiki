@@ -39,7 +39,9 @@ class QueryProfileAnnotatorToProcessorIntegrationTest extends \PHPUnit_Framework
 			false
 		);
 
-		$query->setSubject( DIWikiPage::newFromText( __METHOD__ ) );
+		$query->setContextPage(
+			DIWikiPage::newFromText( __METHOD__ )
+		);
 
 		$queryProfileAnnotatorFactory = ApplicationFactory::getInstance()->newQueryProfileAnnotatorFactory();
 

@@ -55,9 +55,9 @@ class SMWQuery {
 	private $m_mainlabel = ''; // Since 1.6
 
 	/**
-	 * @var DIWikiPage
+	 * @var DIWikiPage|null
 	 */
-	private $subject;
+	private $contextPage;
 
 	/**
 	 * Describes a non-local (remote) query source
@@ -86,19 +86,19 @@ class SMWQuery {
 	/**
 	 * @since 2.3
 	 *
-	 * @param DIWikiPage $subject
+	 * @param DIWikiPage|null $contextPage
 	 */
-	public function setSubject( DIWikiPage $subject ) {
-		$this->subject = $subject;
+	public function setContextPage( DIWikiPage $contextPage = null ) {
+		$this->contextPage = $contextPage;
 	}
 
 	/**
 	 * @since 2.3
 	 *
-	 * @return DIWikiPage $subject
+	 * @return DIWikiPage|null
 	 */
-	public function getSubject() {
-		return $this->subject;
+	public function getContextPage() {
+		return $this->contextPage;
 	}
 
 	/**

@@ -26,19 +26,8 @@ class QueryProfileAnnotatorFactory {
 	 */
 	public function newJointProfileAnnotator( Query $query, $format, $duration = null ) {
 
-		$subject = new DIWikiPage(
-			$query->getSubject()->getDBkey(),
-			$query->getSubject()->getNamespace(),
-			$query->getSubject()->getInterwiki(),
-			$query->getQueryId()
-		);
-
-		$container = new DIContainer(
-			new ContainerSemanticData( $subject )
-		);
-
 		$nullProfileAnnotator = new NullProfileAnnotator(
-			$container
+			$this->newDIContainer( $query )
 		);
 
 		$descriptionProfileAnnotator = new DescriptionProfileAnnotator(
@@ -57,6 +46,33 @@ class QueryProfileAnnotatorFactory {
 		);
 
 		return $durationProfileAnnotator;
+	}
+
+	/**
+	 * @param Query $query
+	 *
+	 * @return DIContainer
+	 */
+	private function newDIContainer( Query $query ) {
+
+		$subject = $query->getContextPage();
+
+		if ( $subject === null ) {
+			$containerSemanticData = ContainerSemanticData::makeAnonymousContainer();
+		} else {
+			$subject = new DIWikiPage(
+				$subject->getDBkey(),
+				$subject->getNamespace(),
+				$subject->getInterwiki(),
+				$query->getQueryId()
+			);
+
+			$containerSemanticData = new ContainerSemanticData( $subject );
+		}
+
+		return new DIContainer(
+			$containerSemanticData
+		);
 	}
 
 }

@@ -183,7 +183,7 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 	}
 
 	private function canValidate( $dataValue ) {
-		return $dataValue instanceof DataValue && $dataValue->getContextPage() !== null && $dataValue->isEnabledFeature( SMW_DV_PVUC );
+		return $dataValue instanceof DataValue && $dataValue->getProperty() !== null && $dataValue->getContextPage() !== null && $dataValue->isEnabledFeature( SMW_DV_PVUC );
 	}
 
 }

@@ -91,7 +91,7 @@ class QueryResultDependencyListResolver {
 	 * @return DIWikiPage|null
 	 */
 	public function getSubject() {
-		return $this->getQuery() !== null ? $this->getQuery()->getSubject() : null;
+		return $this->getQuery() !== null ? $this->getQuery()->getContextPage() : null;
 	}
 
 	/**

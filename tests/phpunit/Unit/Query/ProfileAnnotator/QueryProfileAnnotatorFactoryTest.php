@@ -35,8 +35,34 @@ class QueryProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$query->expects( $this->atLeastOnce() )
-			->method( 'getSubject' )
+			->method( 'getContextPage' )
 			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+
+		$query->expects( $this->once() )
+			->method( 'getDescription' )
+			->will( $this->returnValue( $description ) );
+
+		$instance = new QueryProfileAnnotatorFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Query\ProfileAnnotator\ProfileAnnotator',
+			$instance->newJointProfileAnnotator( $query, '' )
+		);
+	}
+
+	public function testConstructJointProfileAnnotatorOnNullContextPage() {
+
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query = $this->getMockBuilder( '\SMWQuery' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query->expects( $this->atLeastOnce() )
+			->method( 'getContextPage' )
+			->will( $this->returnValue( null ) );
 
 		$query->expects( $this->once() )
 			->method( 'getDescription' )

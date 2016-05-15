@@ -59,6 +59,39 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 		);
 	}
 
+	public function testCanNotValidateOnNullProperty() {
+
+		$cachedPropertyValuesPrefetcher = $this->getMockBuilder( '\SMW\CachedPropertyValuesPrefetcher' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getProperty', 'getDataItem', 'getContextPage' ) )
+			->getMockForAbstractClass();
+
+		$dataValue->expects( $this->atLeastOnce() )
+			->method( 'getProperty' )
+			->will( $this->returnValue( null ) );
+
+		$dataValue->expects( $this->never() )
+			->method( 'getContextPage' );
+
+		$dataValue->expects( $this->never() )
+			->method( 'getDataItem' );
+
+		$dataValue->setOption(
+			'smwgDVFeatures',
+			SMW_DV_PVUC
+		);
+
+		$instance = new UniquenessConstraintValueValidator(
+			$cachedPropertyValuesPrefetcher
+		);
+
+		$instance->validate( $dataValue );
+	}
+
 	public function testValidateUsingAMockedQueryEngine() {
 
 		$property = $this->dataItemFactory->newDIProperty( 'ValidAllowedValue' );
@@ -96,8 +129,9 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 			->method( 'getDataItem' )
 			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Foo' ) ) );
 
-		$dataValue->setOptions(
-			new Options( array( 'smwgDVFeatures' => SMW_DV_PVUC ) )
+		$dataValue->setOption(
+			'smwgDVFeatures',
+			SMW_DV_PVUC
 		);
 
 		$instance = new UniquenessConstraintValueValidator(

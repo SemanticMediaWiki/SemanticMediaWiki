@@ -94,7 +94,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			->getMock();
 
 		$query = new Query( $description );
-		$query->setSubject( $subject );
+		$query->setContextPage( $subject );
 
 		$query->setUnboundLimit( 0 );
 
@@ -134,7 +134,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 		);
 
 		$query = new Query( $description );
-		$query->setSubject( $subject );
+		$query->setContextPage( $subject );
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -237,7 +237,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 		);
 
 		$query = new Query( $description );
-		$query->setSubject( $subject );
+		$query->setContextPage( $subject );
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -301,7 +301,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 		);
 
 		$query = new Query( $description );
-		$query->setSubject( $subject );
+		$query->setContextPage( $subject );
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -366,7 +366,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 		);
 
 		$query = new Query( $description );
-		$query->setSubject( $subject );
+		$query->setContextPage( $subject );
 
 		$provider[] = array(
 			$query,
@@ -384,7 +384,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 		);
 
 		$query = new Query( $description );
-		$query->setSubject( $subject );
+		$query->setContextPage( $subject );
 
 		$provider[] = array(
 			$query,
@@ -401,7 +401,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 		);
 
 		$query = new Query( $description );
-		$query->setSubject( $subject );
+		$query->setContextPage( $subject );
 
 		$provider[] = array(
 			$query,
@@ -423,7 +423,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			new NamespaceDescription( NS_MAIN )
 		) ) );
 
-		$query->setSubject( $subject );
+		$query->setContextPage( $subject );
 
 		$provider[] = array(
 			$query,
@@ -445,7 +445,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			new NamespaceDescription( NS_MAIN )
 		) ) );
 
-		$query->setSubject( $subject );
+		$query->setContextPage( $subject );
 
 		$provider[] = array(
 			$query,
@@ -462,7 +462,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 		);
 
 		$query = new Query( $description );
-		$query->setSubject( $subject );
+		$query->setContextPage( $subject );
 
 		$provider[] = array(
 			$query,
@@ -478,7 +478,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 		);
 
 		$query = new Query( $description );
-		$query->setSubject( $subject );
+		$query->setContextPage( $subject );
 
 		$provider[] = array(
 			$query,
@@ -501,7 +501,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 		);
 
 		$query = new Query( $description );
-		$query->setSubject( $subject );
+		$query->setContextPage( $subject );
 
 		$provider[] = array(
 			$query,
@@ -527,7 +527,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 		);
 
 		$query = new Query( $description );
-		$query->setSubject( $subject );
+		$query->setContextPage( $subject );
 
 		$provider[] = array(
 			$query,

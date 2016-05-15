@@ -4,6 +4,7 @@ namespace SMW\Query\Parser;
 
 use SMW\DataValueFactory;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
@@ -34,6 +35,11 @@ class DescriptionProcessor {
 	private $queryFeatures;
 
 	/**
+	 * @var DIWikiPage|null
+	 */
+	private $contextPage;
+
+	/**
 	 * @var array
 	 */
 	private $errors = array();
@@ -47,6 +53,15 @@ class DescriptionProcessor {
 		$this->queryFeatures = $queryFeatures === false ? $GLOBALS['smwgQFeatures'] : $queryFeatures;
 		$this->dataValueFactory = DataValueFactory::getInstance();
 		$this->descriptionFactory = new DescriptionFactory();
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param DIWikiPage|null $contextPage
+	 */
+	public function setContextPage( DIWikiPage $contextPage = null ) {
+		$this->contextPage = $contextPage;
 	}
 
 	/**
@@ -96,9 +111,10 @@ class DescriptionProcessor {
 	 *
 	 * @return Description|null
 	 */
-	public function getDescriptionForPropertyObjectValue( DIProperty $property, $chunk ) {
+	public function constructDescriptionForPropertyObjectValue( DIProperty $property, $chunk ) {
 
 		$dataValue = $this->dataValueFactory->newPropertyObjectValue( $property );
+		$dataValue->setContextPage( $this->contextPage );
 
 		// Indicates whether a value is being used by a query condition or not which
 		// can lead to a modified validation of a value.
@@ -117,7 +133,7 @@ class DescriptionProcessor {
 	 *
 	 * @return Description|null
 	 */
-	public function getDescriptionForWikiPageValueChunk( $chunk ) {
+	public function constructDescriptionForWikiPageValueChunk( $chunk ) {
 
 		// Only create a simple WpgValue to initiate the query description target
 		// operation. If the chunk contains something like "≤Issue/1220" then the
@@ -126,6 +142,8 @@ class DescriptionProcessor {
 		// DataValue::getQueryDescription hence no need to use it as input for
 		// the factory instance
 		$dataValue = $this->dataValueFactory->newTypeIDValue( '_wpg', 'QP_WPG_TITLE' );
+		$dataValue->setContextPage( $this->contextPage );
+
 		$description = null;
 
 		$description = $dataValue->getQueryDescription( $chunk );
@@ -142,8 +160,8 @@ class DescriptionProcessor {
 	 *
 	 * @return Description|null
 	 */
-	public function getDisjunctiveCompoundDescriptionFrom( Description $currentDescription = null, Description $newDescription = null ) {
-		return $this->getCompoundDescription( $currentDescription, $newDescription, SMW_DISJUNCTION_QUERY );
+	public function constructDisjunctiveCompoundDescriptionFrom( Description $currentDescription = null, Description $newDescription = null ) {
+		return $this->newCompoundDescription( $currentDescription, $newDescription, SMW_DISJUNCTION_QUERY );
 	}
 
 	/**
@@ -154,8 +172,8 @@ class DescriptionProcessor {
 	 *
 	 * @return Description|null
 	 */
-	public function getConjunctiveCompoundDescriptionFrom( Description $currentDescription = null, Description $newDescription = null ) {
-		return $this->getCompoundDescription( $currentDescription, $newDescription, SMW_CONJUNCTION_QUERY );
+	public function constructConjunctiveCompoundDescriptionFrom( Description $currentDescription = null, Description $newDescription = null ) {
+		return $this->newCompoundDescription( $currentDescription, $newDescription, SMW_CONJUNCTION_QUERY );
 	}
 
 	/**
@@ -170,7 +188,7 @@ class DescriptionProcessor {
 	 * The return value is the expected combined description. The object $currentDescription will
 	 * also be changed (if it was non-NULL).
 	 */
-	private function getCompoundDescription( Description $currentDescription = null, Description $newDescription = null, $compoundType = SMW_CONJUNCTION_QUERY ) {
+	private function newCompoundDescription( Description $currentDescription = null, Description $newDescription = null, $compoundType = SMW_CONJUNCTION_QUERY ) {
 
 		$notallowedmessage = 'smw_noqueryfeature';
 

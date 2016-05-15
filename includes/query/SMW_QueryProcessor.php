@@ -99,12 +99,13 @@ class SMWQueryProcessor {
 	 *
 	 * @return SMWQuery
 	 */
-	static public function createQuery( $queryString, array $params, $context = self::INLINE_QUERY, $format = '', array $extraPrintouts = array() ) {
+	static public function createQuery( $queryString, array $params, $context = self::INLINE_QUERY, $format = '', array $extraPrintouts = array(), $contextPage = null ) {
 		global $smwgQDefaultNamespaces, $smwgQFeatures, $smwgQConceptFeatures;
 
 		// parse query:
 		$queryfeatures = ( $context == self::CONCEPT_DESC ) ? $smwgQConceptFeatures : $smwgQFeatures;
 		$qp = new SMWQueryParser( $queryfeatures );
+		$qp->setContextPage( $contextPage );
 		$qp->setDefaultNamespaces( $smwgQDefaultNamespaces );
 		$desc = $qp->getQueryDescription( $queryString );
 
@@ -123,6 +124,7 @@ class SMWQueryProcessor {
 
 		$query = new SMWQuery( $desc, ( $context != self::SPECIAL_PAGE ), ( $context == self::CONCEPT_DESC ) );
 		$query->setQueryString( $queryString );
+		$query->setContextPage( $contextPage );
 		$query->setExtraPrintouts( $extraPrintouts );
 		$query->setMainLabel( $params['mainlabel']->getValue() );
 		$query->addErrors( $qp->getErrors() ); // keep parsing errors for later output
@@ -363,7 +365,7 @@ class SMWQueryProcessor {
 	 * @param boolean $showMode process like #show parser function?
 	 * @return array( SMWQuery, array of IParam )
 	 */
-	static public function getQueryAndParamsFromFunctionParams( array $rawParams, $outputMode, $context, $showMode ) {
+	static public function getQueryAndParamsFromFunctionParams( array $rawParams, $outputMode, $context, $showMode, $contextPage = null ) {
 		list( $queryString, $params, $printouts ) = self::getComponentsFromFunctionParams( $rawParams, $showMode );
 
 		if ( !$showMode ) {
@@ -372,7 +374,7 @@ class SMWQueryProcessor {
 
 		$params = self::getProcessedParams( $params, $printouts );
 
-		$query  = self::createQuery( $queryString, $params, $context, '', $printouts );
+		$query  = self::createQuery( $queryString, $params, $context, '', $printouts, $contextPage );
 		return array( $query, $params );
 	}
 
