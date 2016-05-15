@@ -143,6 +143,8 @@ class SMWQuery {
 
 	public function setDescription( SMWDescription $description ) {
 		$this->description = $description;
+		$this->queryString = false;
+
 		foreach ( $this->m_extraprintouts as $printout ) {
 			$this->description->addPrintRequest( $printout );
 		}
@@ -182,7 +184,22 @@ class SMWQuery {
 		$this->queryString = $querystring;
 	}
 
-	public function getQueryString() {
+	/**
+	 * @since 1.7
+	 *
+	 * @param  boolean $fresh
+	 *
+	 * @return string
+	 */
+	public function getQueryString( $fresh = false ) {
+
+		// Mostly relevant on requesting a further results link to
+		// ensure that localized values are transformed into a canonical
+		// representation
+		if ( $fresh && $this->description !== null ) {
+			return $this->description->getQueryString();
+		}
+
 		if ( $this->queryString !== false ) {
 			return $this->queryString;
 		} elseif ( !is_null( $this->description ) ) {

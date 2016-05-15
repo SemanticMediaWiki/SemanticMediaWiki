@@ -1,5 +1,5 @@
 {
-	"description": "Test `format=table` with further results link (`wgContLang=en`, `wgLang=es`)",
+	"description": "Test `format=table` further results link for user/predefined property (`wgContLang=en`, `wgLang=es`)",
 	"properties": [
 		{
 			"name": "Has text",
@@ -14,6 +14,14 @@
 		{
 			"name": "Example/F0208/Q1.1",
 			"contents": "{{#ask: [[Has text::F0208]] |?Has text |?Modification date |limit=0 }}"
+		},
+		{
+			"name": "Example/F0208/Q2.1",
+			"contents": "{{#ask: [[Modification date::+]] |?Modification date |limit=0 }}"
+		},
+		{
+			"name": "Example/F0208/Q2.2",
+			"contents": "{{#ask: [[Fecha de modificación@es::+]] |?Fecha de modificación@es |limit=0 }}"
 		}
 	],
 	"format-testcases": [
@@ -23,6 +31,24 @@
 			"expected-output": {
 				"to-contain": [
 					"Special:Ask/-5B-5BHas-20text::F0208-5D-5D/-3FHas-20text/-3FModification-20date%3DFecha-20de-20modificaci%C3%B3n/mainlabel%3D/offset%3D0/format%3Dtable"
+				]
+			}
+		},
+		{
+			"about": "#1 predefined properties linking to canonical properties",
+			"subject": "Example/F0208/Q2.1",
+			"expected-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BModification-20date::%2B-5D-5D/-3FModification-20date%3DFecha-20de-20modificaci%C3%B3n/mainlabel%3D/offset%3D0/format%3Dtable"
+				]
+			}
+		},
+		{
+			"about": "#2 predefined properties linking to canonical properties",
+			"subject": "Example/F0208/Q2.2",
+			"expected-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BModification-20date::%2B-5D-5D/-3FModification-20date%3DFecha-20de-20modificaci%C3%B3n/mainlabel%3D/offset%3D0/format%3Dtable"
 				]
 			}
 		}

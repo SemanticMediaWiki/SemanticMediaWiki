@@ -196,6 +196,21 @@ class DIProperty extends SMWDataItem {
 	/**
 	 * @since 2.4
 	 *
+	 * @return string
+	 */
+	public function getCanonicalLabel() {
+		$prefix = $this->m_inverse ? '-' : '';
+
+		if ( $this->isUserDefined() ) {
+			return $prefix . str_replace( '_', ' ', $this->m_key );
+		}
+
+		return $prefix . PropertyRegistry::getInstance()->findCanonicalPropertyLabelById( $this->m_key );
+	}
+
+	/**
+	 * @since 2.4
+	 *
 	 * @param string $interwiki
 	 */
 	public function setInterwiki( $interwiki ) {

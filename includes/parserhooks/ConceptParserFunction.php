@@ -105,7 +105,7 @@ class ConceptParserFunction {
 	private function buildConceptInfoBox( Title $title, $queryString, $documentation ) {
 		return Html::rawElement( 'div', array( 'class' => 'smwfact' ),
 			Html::rawElement( 'span', array( 'class' => 'smwfactboxhead' ),
-				wfMessage( 'smw_concept_description', $title->getText() )->inContentLanguage()->text() ) .
+				wfMessage( 'smw_concept_description', $title->getText() )->text() ) .
 			Html::rawElement( 'span', array( 'class' => 'smwrdflink' ), $this->getRdfLink( $title )->getWikiText() ) .
 			Html::element( 'br', array() ) .
 			Html::element( 'p', array( 'class' => 'concept-documenation' ), $documentation ? $documentation : '' ) .
@@ -116,7 +116,7 @@ class ConceptParserFunction {
 
 	private function getRdfLink( Title $title ) {
 		return SMWInfolink::newInternalLink(
-			wfMessage( 'smw_viewasrdf' )->inContentLanguage()->text(),
+			wfMessage( 'smw_viewasrdf' )->text(),
 			$title->getPageLanguage()->getNsText( NS_SPECIAL ) . ':ExportRDF/' . $title->getPrefixedText(), 'rdflink'
 		);
 	}
