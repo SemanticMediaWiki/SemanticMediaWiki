@@ -75,16 +75,6 @@ class InTextAnnotationParser {
 	private $strictModeState = true;
 
 	/**
-	 * @var string
-	 */
-	private $contentLanguage = '';
-
-	/**
-	 * @var string
-	 */
-	private $userLanguage = '';
-
-	/**
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
@@ -125,9 +115,6 @@ class InTextAnnotationParser {
 		$title = $this->parserData->getTitle();
 		$this->settings = $this->applicationFactory->getSettings();
 		$start = microtime( true );
-
-		$this->contentLanguage = Localizer::getInstance()->getPreferredContentLanguage( $title )->getCode();
-		$this->userLanguage = Localizer::getInstance()->getUserLanguage()->getCode();
 
 		// Identifies the current parser run (especially when called recursively)
 		$this->parserData->getSubject()->setContextReference( 'intp:' . uniqid() );
@@ -419,16 +406,6 @@ class InTextAnnotationParser {
 				$value,
 				$valueCaption,
 				$subject
-			);
-
-			$dataValue->setOption(
-				'content.language',
-				$this->contentLanguage
-			);
-
-			$dataValue->setOption(
-				'user.language',
-				$this->userLanguage
 			);
 
 			if (

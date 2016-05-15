@@ -8,6 +8,7 @@ use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Parser\DescriptionProcessor;
 use SMW\DataTypeRegistry;
+use SMW\DIWikiPage;
 
 /**
  * Objects of this class are in charge of parsing a query string in order
@@ -48,6 +49,15 @@ class SMWQueryParser {
 	}
 
 	/**
+	 * @since 2.4
+	 *
+	 * @param DIWikiPage|null $contextPage
+	 */
+	public function setContextPage( DIWikiPage $contextPage = null ) {
+		$this->descriptionProcessor->setContextPage( $contextPage );
+	}
+
+	/**
 	 * Provide an array of namespace constants that are used as default restrictions.
 	 * If NULL is given, no such default restrictions will be added (faster).
 	 */
@@ -56,7 +66,7 @@ class SMWQueryParser {
 
 		if ( !is_null( $namespaceArray ) ) {
 			foreach ( $namespaceArray as $ns ) {
-				$this->defaultNamespace = $this->descriptionProcessor->getDisjunctiveCompoundDescriptionFrom(
+				$this->defaultNamespace = $this->descriptionProcessor->constructDisjunctiveCompoundDescriptionFrom(
 					$this->defaultNamespace,
 					new NamespaceDescription( $ns )
 				);
@@ -82,7 +92,7 @@ class SMWQueryParser {
 		$result = $this->getSubqueryDescription( $setNS );
 
 		if ( !$setNS ) { // add default namespaces if applicable
-			$result = $this->descriptionProcessor->getConjunctiveCompoundDescriptionFrom( $this->defaultNamespace, $result );
+			$result = $this->descriptionProcessor->constructConjunctiveCompoundDescriptionFrom( $this->defaultNamespace, $result );
 		}
 
 		if ( is_null( $result ) ) { // parsing went wrong, no default namespaces
@@ -150,13 +160,13 @@ class SMWQueryParser {
 					$ld = $this->getLinkDescription( $setsubNS );
 
 					if ( !is_null( $ld ) ) {
-						$conjunction = $this->descriptionProcessor->getConjunctiveCompoundDescriptionFrom( $conjunction, $ld );
+						$conjunction = $this->descriptionProcessor->constructConjunctiveCompoundDescriptionFrom( $conjunction, $ld );
 					}
 				break;
 				case 'AND':
 				case '<q>': // enter new subquery, currently irrelevant but possible
 					$this->pushDelimiter( '</q>' );
-					$conjunction = $this->descriptionProcessor->getConjunctiveCompoundDescriptionFrom( $conjunction, $this->getSubqueryDescription( $setsubNS ) );
+					$conjunction = $this->descriptionProcessor->constructConjunctiveCompoundDescriptionFrom( $conjunction, $this->getSubqueryDescription( $setsubNS ) );
 				break;
 				case 'OR':
 				case '||':
@@ -169,13 +179,13 @@ class SMWQueryParser {
 							$newdisjuncts = array();
 
 							foreach ( $disjuncts as $conj ) {
-								$newdisjuncts[] = $this->descriptionProcessor->getConjunctiveCompoundDescriptionFrom( $conj, $this->defaultNamespace );
+								$newdisjuncts[] = $this->descriptionProcessor->constructConjunctiveCompoundDescriptionFrom( $conj, $this->defaultNamespace );
 							}
 
 							$disjuncts = $newdisjuncts;
 						} elseif ( !$hasNamespaces && $mustSetNS ) {
 							// add ns restriction to current result
-							$conjunction = $this->descriptionProcessor->getConjunctiveCompoundDescriptionFrom( $conjunction, $this->defaultNamespace );
+							$conjunction = $this->descriptionProcessor->constructConjunctiveCompoundDescriptionFrom( $conjunction, $this->defaultNamespace );
 						}
 					}
 
@@ -221,7 +231,7 @@ class SMWQueryParser {
 					$setNS = false;
 					return null;
 				} else {
-					$result = $this->descriptionProcessor->getDisjunctiveCompoundDescriptionFrom( $result, $d );
+					$result = $this->descriptionProcessor->constructDisjunctiveCompoundDescriptionFrom( $result, $d );
 				}
 			}
 		} else {
@@ -282,7 +292,7 @@ class SMWQueryParser {
 
 			if ( $chunk == '+' ) {
 				$description = new NamespaceDescription( $category ? NS_CATEGORY : SMW_NS_CONCEPT );
-				$result = $this->descriptionProcessor->getDisjunctiveCompoundDescriptionFrom( $result, $description );
+				$result = $this->descriptionProcessor->constructDisjunctiveCompoundDescriptionFrom( $result, $description );
 			} else { // assume category/concept title
 				/// NOTE: we add m_c...prefix to prevent problems with, e.g., [[Category:Template:Test]]
 				$title = Title::newFromText( ( $category ? $this->categoryPrefix : $this->conceptPrefix ) . $chunk );
@@ -290,7 +300,7 @@ class SMWQueryParser {
 				if ( !is_null( $title ) ) {
 					$diWikiPage = new SMWDIWikiPage( $title->getDBkey(), $title->getNameSpace(), '' );
 					$desc = $category ? new ClassDescription( $diWikiPage ) : new ConceptDescription( $diWikiPage );
-					$result = $this->descriptionProcessor->getDisjunctiveCompoundDescriptionFrom( $result, $desc );
+					$result = $this->descriptionProcessor->constructDisjunctiveCompoundDescriptionFrom( $result, $desc );
 				}
 			}
 
@@ -343,9 +353,9 @@ class SMWQueryParser {
 			switch ( $chunk ) {
 				case '+': // wildcard, add namespaces for page-type properties
 					if ( !is_null( $this->defaultNamespace ) && ( $this->isPagePropertyType( $typeid ) || $inverse ) ) {
-						$innerdesc = $this->descriptionProcessor->getDisjunctiveCompoundDescriptionFrom( $innerdesc, $this->defaultNamespace );
+						$innerdesc = $this->descriptionProcessor->constructDisjunctiveCompoundDescriptionFrom( $innerdesc, $this->defaultNamespace );
 					} else {
-						$innerdesc = $this->descriptionProcessor->getDisjunctiveCompoundDescriptionFrom( $innerdesc, new ThingDescription() );
+						$innerdesc = $this->descriptionProcessor->constructDisjunctiveCompoundDescriptionFrom( $innerdesc, new ThingDescription() );
 					}
 					$chunk = $this->readChunk();
 				break;
@@ -353,10 +363,10 @@ class SMWQueryParser {
 					if ( $this->isPagePropertyType( $typeid ) || $inverse ) {
 						$this->pushDelimiter( '</q>' );
 						$setsubNS = true;
-						$innerdesc = $this->descriptionProcessor->getDisjunctiveCompoundDescriptionFrom( $innerdesc, $this->getSubqueryDescription( $setsubNS ) );
+						$innerdesc = $this->descriptionProcessor->constructDisjunctiveCompoundDescriptionFrom( $innerdesc, $this->getSubqueryDescription( $setsubNS ) );
 					} else { // no subqueries allowed for non-pages
 						$this->descriptionProcessor->addErrorWithMsgKey( 'smw_valuesubquery', end( $propertynames ) );
-						$innerdesc = $this->descriptionProcessor->getDisjunctiveCompoundDescriptionFrom( $innerdesc, new ThingDescription() );
+						$innerdesc = $this->descriptionProcessor->constructDisjunctiveCompoundDescriptionFrom( $innerdesc, new ThingDescription() );
 					}
 					$chunk = $this->readChunk();
 				break;
@@ -390,9 +400,9 @@ class SMWQueryParser {
 						}
 					} ///NOTE: at this point, we normally already read one more chunk behind the value
 
-					$innerdesc = $this->descriptionProcessor->getDisjunctiveCompoundDescriptionFrom(
+					$innerdesc = $this->descriptionProcessor->constructDisjunctiveCompoundDescriptionFrom(
 						$innerdesc,
-						$this->descriptionProcessor->getDescriptionForPropertyObjectValue( $property->getDataItem(), $value )
+						$this->descriptionProcessor->constructDescriptionForPropertyObjectValue( $property->getDataItem(), $value )
 					);
 
 			}
@@ -401,8 +411,8 @@ class SMWQueryParser {
 
 		if ( is_null( $innerdesc ) ) { // make a wildcard search
 			$innerdesc = ( !is_null( $this->defaultNamespace ) && $this->isPagePropertyType( $typeid ) ) ?
-							$this->descriptionProcessor->getDisjunctiveCompoundDescriptionFrom( $innerdesc, $this->defaultNamespace ) :
-							$this->descriptionProcessor->getDisjunctiveCompoundDescriptionFrom( $innerdesc, new ThingDescription() );
+							$this->descriptionProcessor->constructDisjunctiveCompoundDescriptionFrom( $innerdesc, $this->defaultNamespace ) :
+							$this->descriptionProcessor->constructDisjunctiveCompoundDescriptionFrom( $innerdesc, new ThingDescription() );
 			$this->descriptionProcessor->addErrorWithMsgKey( 'smw_propvalueproblem', $property->getWikiValue() );
 		}
 
@@ -446,12 +456,12 @@ class SMWQueryParser {
 				$idx = \SMW\Localizer::getInstance()->getNamespaceIndexByName( $list[0] );
 
 				if ( $idx !== false ) {
-					$result = $this->descriptionProcessor->getDisjunctiveCompoundDescriptionFrom( $result, new NamespaceDescription( $idx ) );
+					$result = $this->descriptionProcessor->constructDisjunctiveCompoundDescriptionFrom( $result, new NamespaceDescription( $idx ) );
 				}
 			} else {
-				$result = $this->descriptionProcessor->getDisjunctiveCompoundDescriptionFrom(
+				$result = $this->descriptionProcessor->constructDisjunctiveCompoundDescriptionFrom(
 					$result,
-					$this->descriptionProcessor->getDescriptionForWikiPageValueChunk( $chunk )
+					$this->descriptionProcessor->constructDescriptionForWikiPageValueChunk( $chunk )
 				);
 			}
 
@@ -472,7 +482,7 @@ class SMWQueryParser {
 		if ( is_null( $result ) ) { // no useful information or concrete error found
 			$this->descriptionProcessor->addErrorWithMsgKey( 'smw_unexpectedpart', $chunk ); // was smw_badqueryatom
 		} elseif ( !$hasNamespaces && $setNS && !is_null( $this->defaultNamespace  ) ) {
-			$result = $this->descriptionProcessor->getConjunctiveCompoundDescriptionFrom( $result, $this->defaultNamespace );
+			$result = $this->descriptionProcessor->constructConjunctiveCompoundDescriptionFrom( $result, $this->defaultNamespace );
 			$hasNamespaces = true;
 		}
 

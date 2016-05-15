@@ -161,15 +161,18 @@ class AskParserFunction {
 		$queryDuration = 0;
 		$start = microtime( true );
 
+		$contextPage = $this->parserData->getSubject();
+
 		list( $this->query, $this->params ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
 			$rawParams,
 			SMW_OUTPUT_WIKI,
 			SMWQueryProcessor::INLINE_QUERY,
-			$this->showMode
+			$this->showMode,
+			$contextPage
 		);
 
-		$this->query->setSubject(
-			DIWIkiPage::newFromTitle( $this->parserData->getTitle() )
+		$this->query->setContextPage(
+			$contextPage
 		);
 
 		$queryHash = $this->query->getHash();

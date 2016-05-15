@@ -260,9 +260,9 @@ abstract class SMWDataValue {
 	 *
 	 * @since 1.7
 	 *
-	 * @param SMWDIWikiPage $contextPage
+	 * @param SMWDIWikiPage|null $contextPage
 	 */
-	public function setContextPage( SMWDIWikiPage $contextPage ) {
+	public function setContextPage( SMWDIWikiPage $contextPage = null ) {
 		$this->m_contextPage = $contextPage;
 
 		$this->setOption(
