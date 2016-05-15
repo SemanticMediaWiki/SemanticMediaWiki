@@ -110,6 +110,9 @@ class PageRequestOptions {
 				$this->urlEncoder->decode( $value )
 			);
 
+			// Signals that we don't want any precision limitation
+			$this->value->setOption( 'value.description', true );
+
 			$this->valueString = $this->value->isValid() ? $this->value->getWikiValue() : $value;
 		}
 

@@ -90,6 +90,9 @@ class ValueDescription extends Description {
 		$comparator = QueryComparator::getInstance()->getStringForComparator( $this->comparator );
 		$dataValue = DataValueFactory::getInstance()->newDataItemValue( $this->dataItem, $this->property );
 
+		// Signals that we don't want any precision limitation
+		$dataValue->setOption( 'value.description', true );
+
 		if ( $asValue ) {
 			return $comparator . $dataValue->getWikiValue();
 		}
