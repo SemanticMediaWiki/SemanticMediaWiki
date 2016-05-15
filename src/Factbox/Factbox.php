@@ -372,6 +372,7 @@ class Factbox {
 			foreach ( $semanticData->getPropertyValues( $propertyDi ) as $dataItem ) {
 
 				$dataValue = $this->dataValueFactory->newDataItemValue( $dataItem, $propertyDi );
+				$dataValue->setOutputFormat( 'LOCL' );
 				$dataValue->setServiceLinksRenderState( false );
 
 				if ( $dataValue->isValid() ) {
