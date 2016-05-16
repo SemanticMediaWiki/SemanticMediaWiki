@@ -2,37 +2,18 @@
 
 namespace SMW;
 
-use ContextSource;
 use Html;
-use IContextSource;
 use SMWOutputs;
 
 /**
  * Highlighter utility function for Semantic MediaWiki
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
- *
- *
  * @license GNU GPL v2+
  * @since   1.9
  *
  * @author mwjames
- *
- * @ingroup SMW
  */
-class Highlighter extends ContextSource {
+class Highlighter {
 
 	// Highlighter ID for no types
 	const TYPE_NOTYPE    = 0;
@@ -64,37 +45,35 @@ class Highlighter extends ContextSource {
 	private $type;
 
 	/**
-	 * Constructor
-	 *
+	 * @var string|null
+	 */
+	private $language = null;
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param int $type
-	 * @param \IContextSource|null $context
+	 * @param string|null $language
 	 */
-	public function __construct( $type, IContextSource $context = null ) {
-		if ( !$context ) {
-			$context = \RequestContext::getMain();
-		}
-		$this->setContext( $context );
+	public function __construct( $type, $language = null ) {
 		$this->type = $type;
+		$this->language = $language;
 	}
 
 	/**
-	 * Factory method
-	 *
 	 * @since 1.9
 	 *
 	 * @param string|int $type
-	 * @param \IContextSource|null $context
+	 * @param string|null $language
 	 *
 	 * @return Highlighter
 	 */
-	public static function factory( $type, IContextSource $context = null ) {
+	public static function factory( $type, $language = null ) {
 		if ( $type === '' || !is_int( $type ) ) {
 			$type = self::getTypeId( $type );
 		}
 
-		return new Highlighter( $type, $context );
+		return new Highlighter( $type, $language );
 	}
 
 	/**
@@ -105,9 +84,7 @@ class Highlighter extends ContextSource {
 	 * @return string
 	 */
 	public function getHtml() {
-		//@todo Introduce temporary fix, for more information see bug 43205
 		SMWOutputs::requireResource( 'ext.smw.tooltips' );
-		// $this->getOutput()->addModules( 'ext.smw.tooltips' );
 		return $this->getContainer();
 	}
 
@@ -186,13 +163,15 @@ class Highlighter extends ContextSource {
 			$captionclass = $this->options['userDefined'] ? 'smwtext' : $captionclass;
 		}
 
+		$language = is_string( $this->language ) ? $this->language : Message::USER_LANGUAGE;
+
 		return Html::rawElement(
 			'span',
 			array(
 				'class'      => 'smw-highlighter',
 				'data-type'  => $this->options['type'],
 				'data-state' => $this->options['state'],
-				'data-title' => $this->msg( $this->options['title'] )->text(),
+				'data-title' => Message::get( $this->options['title'], Message::TEXT, $language ),
 			), Html::rawElement(
 					'span',
 					array(

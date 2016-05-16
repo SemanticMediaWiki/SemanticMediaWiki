@@ -5,82 +5,60 @@ namespace SMW\Test;
 use SMW\Highlighter;
 
 /**
- * Tests for the Highlighter class
- *
- * @file
+ * @covers \SMW\Highlighter
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
- * @since   1.9
+ * @since 1.9
  *
  * @author mwjames
  */
-
-/**
- * @covers \SMW\Highlighter
- *
- *
- * @group SMW
- * @group SMWExtension
- */
-class HighlighterTest extends SemanticMediaWikiTestCase {
+class HighlighterTest extends \PHPUnit_Framework_TestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string|false
+	 * @dataProvider getTypeDataProvider
 	 */
-	public function getClass() {
-		return '\SMW\Highlighter';
+	public function testCanConstruct( $type ) {
+
+		$this->assertInstanceOf(
+			'\SMW\Highlighter',
+			Highlighter::factory( $type )
+		);
 	}
 
 	/**
-	 * @test Highlighter::factory
 	 * @dataProvider getTypeDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param $type
-	 */
-	public function testFactory( $type ) {
-		$instance = Highlighter::factory( $type );
-		$this->assertInstanceOf( $this->getClass(), $instance );
-	}
-
-	/**
-	 * @test Highlighter::getTypeId
-	 * @dataProvider getTypeDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param $type
-	 * @param $expected
 	 */
 	public function testGetTypeId( $type, $expected ) {
 		$results = Highlighter::getTypeId( $type );
 
-		$this->assertInternalType( 'integer', $results );
-		$this->assertEquals( $expected, $results );
+		$this->assertInternalType(
+			'integer',
+			$results
+		);
+
+		$this->assertEquals(
+			$expected,
+			$results
+		);
 	}
 
 	/**
-	 * @test Highlighter::getHtml
 	 * @dataProvider getTypeDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param $type
 	 */
 	public function testGetHtml( $type ) {
 
 		$instance = Highlighter::factory( $type );
-		$title    = $this->newTitle();
 
 		$instance->setContent( array(
-			'title' => $title->getFullText()
+			'title' => 'Foo'
 		) );
 
 		// Check without caption/content set
-		$this->assertInternalType( 'string', $instance->getHtml() );
+		$this->assertInternalType(
+			'string',
+			$instance->getHtml()
+		);
 
 		$instance->setContent( array(
 			'caption' => '123',
@@ -88,14 +66,12 @@ class HighlighterTest extends SemanticMediaWikiTestCase {
 		) );
 
 		// Check with caption/content set
-		$this->assertInternalType( 'string', $instance->getHtml() );
+		$this->assertInternalType(
+			'string',
+			$instance->getHtml()
+		);
 	}
 
-	/**
-	 * Provides test sample
-	 *
-	 * @return array
-	 */
 	public function getTypeDataProvider() {
 		return array(
 			array( '' , Highlighter::TYPE_NOTYPE ),

@@ -9,6 +9,7 @@ use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
 use SMW\DataValues\ValueFormatters\NoValueFormatter;
 use SMW\DataValues\ValueFormatters\StringValueFormatter;
 use SMW\DataValues\ValueFormatters\TimeValueFormatter;
+use SMW\DataValues\ValueFormatters\NumberValueFormatter;
 use SMWDataValue as DataValue;
 
 /**
@@ -101,6 +102,7 @@ class ValueFormatterRegistry {
 		// To be checked only after DispatchingDataValueFormatter::addDataValueFormatter did
 		// not match any previous registered DataValueFormatters
 		$dispatchingDataValueFormatter->addDefaultDataValueFormatter( new StringValueFormatter() );
+		$dispatchingDataValueFormatter->addDefaultDataValueFormatter( new NumberValueFormatter() );
 		$dispatchingDataValueFormatter->addDefaultDataValueFormatter( new TimeValueFormatter() );
 		$dispatchingDataValueFormatter->addDefaultDataValueFormatter( new NoValueFormatter() );
 

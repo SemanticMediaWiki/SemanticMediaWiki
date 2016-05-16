@@ -3,6 +3,7 @@
 use SMW\Highlighter;
 use SMW\IntlNumberFormatter;
 use SMW\Localizer;
+use SMW\DataValues\ValueFormatters\DataValueFormatter;
 
 /**
  * @ingroup SMWDataValues
@@ -208,7 +209,8 @@ class SMWNumberValue extends SMWDataValue {
 			return null;
 		}
 
-		$formatstring = $this->findPreferredLanguageFrom( $formatstring );
+		// #1591
+		$this->findPreferredLanguageFrom( $formatstring );
 
 		// #1335
 		$this->m_outformat = $this->findPrecisionFrom( $formatstring );
@@ -238,82 +240,40 @@ class SMWNumberValue extends SMWDataValue {
 		return $this->getNumberFormatter()->format( $value, $this->getPreferredDisplayPrecision(), IntlNumberFormatter::VALUE_FORMAT );
 	}
 
-	public function getShortWikiText( $linked = null ) {
-		if ( is_null( $linked ) || ( $linked === false ) || ( $this->m_outformat == '-' )
-			|| ( $this->m_outformat == '-u' ) || ( $this->m_outformat == '-n' ) || ( !$this->isValid() ) ) {
-			return $this->m_caption;
-		} else {
-			$this->makeConversionValues();
-			$tooltip = '';
-			$i = 0;
-			$sep = '';
-			foreach ( $this->m_unitvalues as $unit => $value ) {
-				if ( $unit != $this->m_unitin ) {
-					$number = $this->getLocalizedFormattedNumber( $value );
-					if ( $unit !== '' ) {
-						$tooltip .= $this->hasPrefixalUnitPreference( $unit ) ? $unit . '&#160;' . $number : $number . '&#160;' . $unit;
-					} else{
-						$tooltip .= $number;
-					}
-					$tooltip .= ' <br />';
-					$i++;
-					if ( $i >= 5 ) { // limit number of printouts in tooltip
-						break;
-					}
-				}
-			}
-			if ( $tooltip !== '' ) {
-				$highlighter = Highlighter::factory( Highlighter::TYPE_QUANTITY );
-				$highlighter->setContent( array (
-					'caption' => $this->m_caption,
-					'content' => $tooltip
-				) );
-
-				return $highlighter->getHtml();
-			} else {
-				return $this->m_caption;
-			}
-		}
+	/**
+	 * @see DataValue::getShortWikiText
+	 *
+	 * @return string
+	 */
+	public function getShortWikiText( $linker = null ) {
+		return $this->getDataValueFormatter()->format( DataValueFormatter::WIKI_SHORT, $linker );
 	}
 
+	/**
+	 * @see DataValue::getShortHTMLText
+	 *
+	 * @return string
+	 */
 	public function getShortHTMLText( $linker = null ) {
-		return $this->getShortWikiText( $linker );
+		return $this->getDataValueFormatter()->format( DataValueFormatter::HTML_SHORT, $linker );
 	}
 
-	public function getLongWikiText( $linked = null ) {
-		if ( !$this->isValid() ) {
-			return $this->getErrorText();
-		} else {
-			$this->makeConversionValues();
-			$result = '';
-			$i = 0;
-			foreach ( $this->m_unitvalues as $unit => $value ) {
-				if ( $i == 1 ) {
-					$result .= ' (';
-				} elseif ( $i > 1 ) {
-					$result .= ', ';
-				}
-				$number = ( $this->m_outformat != '-' ? $this->getLocalizedFormattedNumber( $value ) : $value );
-				if ( $unit !== '' ) {
-					$result .= $this->hasPrefixalUnitPreference( $unit ) ? $unit . '&#160;' . $number : $number . '&#160;' . $unit;
-				} else {
-					$result .= $number;
-				}
-				$i++;
-				if ( $this->m_outformat == '-' ) { // no further conversions for plain output format
-					break;
-				}
-			}
-			if ( $i > 1 ) {
-				$result .= ')';
-			}
-
-			return $result;
-		}
+	/**
+	 * @see DataValue::getLongWikiText
+	 *
+	 * @return string
+	 */
+	public function getLongWikiText( $linker = null ) {
+		return $this->getDataValueFormatter()->format( DataValueFormatter::WIKI_LONG, $linker );
 	}
 
+	/**
+	 * @see DataValue::getLongHTMLText
+	 *
+	 * @return string
+	 */
 	public function getLongHTMLText( $linker = null ) {
-		return $this->getLongWikiText( $linker );
+		return $this->getDataValueFormatter()->format( DataValueFormatter::HTML_LONG, $linker );
 	}
 
 	public function getNumber() {
@@ -321,22 +281,7 @@ class SMWNumberValue extends SMWDataValue {
 	}
 
 	public function getWikiValue() {
-
-		if ( !$this->isValid() ) {
-			return 'error';
-		}
-
-		$unit = $this->getUnit();
-
-		$number = $this->getNormalizedFormattedNumber(
-			$this->m_dataitem->getNumber()
-		);
-
-		if ( $unit === '' ) {
-			return $number;
-		}
-
-		return $this->hasPrefixalUnitPreference( $unit ) ? $unit . ' ' . $number : $number . ' ' . $unit;
+		return $this->getDataValueFormatter()->format( DataValueFormatter::VALUE );
 	}
 
 	/**
@@ -353,6 +298,28 @@ class SMWNumberValue extends SMWDataValue {
 		$this->setOption( 'no.displayprecision', false );
 
 		return $infoLinks;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return string
+	 */
+	public function getCanonicalMainUnit() {
+		return $this->m_unitin;
+	}
+
+	/**
+	 * Returns array of converted unit-value-pairs that can be
+	 * printed.
+	 *
+	 * @since 2.4
+	 *
+	 * @return array
+	 */
+	public function getConvertedUnitValues() {
+		$this->makeConversionValues();
+		return $this->m_unitvalues;
 	}
 
 	/**
@@ -540,7 +507,7 @@ class SMWNumberValue extends SMWDataValue {
 		return $this->intlNumberFormatter;
 	}
 
-	private function findPreferredLanguageFrom( $formatstring ) {
+	private function findPreferredLanguageFrom( &$formatstring ) {
 		// Localized preferred user language
 		if ( strpos( $formatstring, 'LOCL' ) !== false && ( $languageCode = Localizer::getLanguageCodeFrom( $formatstring ) ) !== false ) {
 			$this->intlNumberFormatter->setOption(
@@ -550,7 +517,7 @@ class SMWNumberValue extends SMWDataValue {
 		}
 
 		// Remove any remaining
-		return str_replace( array( '#LOCL', 'LOCL' ), '', $formatstring );
+		$formatstring = str_replace( array( '#LOCL', 'LOCL' ), '', $formatstring );
 	}
 
 }
