@@ -32,7 +32,7 @@ class IntlNumberFormatter {
 	const VALUE_FORMAT = 'VF';
 
 	/**
-	 * @var NumberFormatter
+	 * @var IntlNumberFormatter
 	 */
 	private static $instance = null;
 
@@ -64,7 +64,7 @@ class IntlNumberFormatter {
 	/**
 	 * @since 2.1
 	 *
-	 * @return Localizer
+	 * @return IntlNumberFormatter
 	 */
 	public static function getInstance() {
 
