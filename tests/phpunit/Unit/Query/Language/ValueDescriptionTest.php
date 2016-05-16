@@ -77,7 +77,7 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$provider[] = array(
+		$provider['page.1'] = array(
 			$dataItem,
 			null,
 			SMW_CMP_LEQ,
@@ -94,7 +94,7 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 		$property = DIProperty::newFromUserLabel( 'Foo' )->setPropertyTypeId( '_num' );
 		$dataItem = new DINumber( 9001 );
 
-		$provider[] = array(
+		$provider['num.1'] = array(
 			$dataItem,
 			$property,
 			SMW_CMP_LEQ,
@@ -102,8 +102,25 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 				'comparator'  => SMW_CMP_LEQ,
 				'dataItem'    => $dataItem,
 				'property'    => $property,
-				'queryString' => '[[≤9,001]]',
-				'queryStringAsValue' => '≤9,001',
+				'queryString' => '[[≤9001]]',
+				'queryStringAsValue' => '≤9001',
+				'isSingleton' => false
+			)
+		);
+
+		$property = DIProperty::newFromUserLabel( 'Foo' )->setPropertyTypeId( '_num' );
+		$dataItem = new DINumber( 9001.356 );
+
+		$provider['num.2'] = array(
+			$dataItem,
+			$property,
+			SMW_CMP_GEQ,
+			array(
+				'comparator'  => SMW_CMP_GEQ,
+				'dataItem'    => $dataItem,
+				'property'    => $property,
+				'queryString' => '[[≥9001.356]]',
+				'queryStringAsValue' => '≥9001.356',
 				'isSingleton' => false
 			)
 		);

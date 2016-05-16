@@ -101,7 +101,7 @@ class RecordDataTypeTest extends MwDBaseUnitTestCase {
 		$valueString = 'ForSingleTestAsPage;ForSingleTestAsText;3333';
 
 		if ( $property->findPropertyTypeID() === '_rec' ) {
-			$valueString = 'ForSingleTestAsPage; ForSingleTestAsText; 3,333';
+			$valueString = 'ForSingleTestAsPage; ForSingleTestAsText; 3333';
 		}
 
 		$expectedRecordTypeValuesAsWikiValue = array(

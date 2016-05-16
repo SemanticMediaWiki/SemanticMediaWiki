@@ -79,7 +79,7 @@ class TemperatureValue extends NumberValue {
 
 		if ( ( $this->m_outformat ) && ( $this->m_outformat != '-' ) &&
 		     ( $this->m_outformat != '-n' ) && ( $this->m_outformat != '-u' ) ) { // first try given output unit
-			$printUnit = NumberValue::normalizeUnit( $this->m_outformat );
+			$printUnit = $this->normalizeUnit( $this->m_outformat );
 			$this->m_unitin = $this->getUnitID( $printUnit );
 		} else {
 			$this->m_unitin = $this->getPreferredDisplayUnit();
@@ -95,10 +95,10 @@ class TemperatureValue extends NumberValue {
 		if ( $this->m_outformat == '-u' ) {
 			$this->m_caption = '';
 		} elseif ( ( $this->m_outformat != '-' ) && ( $this->m_outformat != '-n' ) ) {
-			$this->m_caption = $this->getLocalizedFormattedNumberByPrecision( $value );
+			$this->m_caption = $this->getLocalizedFormattedNumber( $value );
 			$this->m_caption .= '&#160;';
 		} else {
-			$this->m_caption = $this->getUnformattedNumberByPrecision( $value );
+			$this->m_caption = $this->getNormalizedFormattedNumber( $value );
 			$this->m_caption .=  ' ';
 		}
 

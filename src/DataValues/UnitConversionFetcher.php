@@ -135,6 +135,8 @@ class UnitConversionFetcher {
 			new DIProperty( '_CONV' )
 		);
 
+		$this->numberValue->setContextPage( $property->getDiWikiPage() );
+
 		if ( $factors === null || $factors === array() ) { // no custom type
 			return $this->errors[] = 'smw_nounitsdeclared';
 		}
