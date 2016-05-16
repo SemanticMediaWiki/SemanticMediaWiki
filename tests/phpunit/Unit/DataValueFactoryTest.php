@@ -373,7 +373,8 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 
 			array( '_dat' , '1 Jan 1970'    , '1 Jan 1970'   , 'SMWTimeValue' ), // #0
 			array( '_uri' , 'Foo'           , 'Foo'          , 'SMWURIValue' ), // #0
-			array( '_num' , 9001            , '9,001'        , 'SMWNumberValue' ), // #0
+			array( '_num' , 9001            , '9001'        , 'SMWNumberValue' ), // #0
+			array( '_num' , 9001.5            , '9001.5'        , 'SMWNumberValue' ), // #0
 		);
 	}
 

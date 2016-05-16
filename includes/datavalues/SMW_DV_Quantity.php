@@ -120,7 +120,7 @@ class SMWQuantityValue extends SMWNumberValue {
 		$this->m_caption = '';
 
 		if ( $this->m_outformat != '-u' ) { // -u is the format for displaying the unit only
-			$this->m_caption .= ( ( $this->m_outformat != '-' ) && ( $this->m_outformat != '-n' ) ? NumberFormatter::getInstance()->getLocalizedFormattedNumber( $value, $this->getPrecision() ) : NumberFormatter::getInstance()->getUnformattedNumberByPrecision( $value, $this->getPrecision() ) );
+			$this->m_caption .= ( ( $this->m_outformat != '-' ) && ( $this->m_outformat != '-n' ) ? $this->getLocalizedFormattedNumber( $value ) : $this->getNormalizedFormattedNumber( $value ) );
 		}
 
 		if ( ( $printunit !== '' ) && ( $this->m_outformat != '-n' ) ) { // -n is the format for displaying the number only
@@ -195,7 +195,7 @@ class SMWQuantityValue extends SMWNumberValue {
 		);
 
 		foreach ( $units as $unit ) {
-			$unit = SMWNumberValue::normalizeUnit( $unit );
+			$unit = $this->normalizeUnit( $unit );
 			if ( array_key_exists( $unit, $this->m_unitids ) ) {
 				$this->m_displayunits[] = $unit; // do not avoid duplicates, users can handle this
 			} // note: we ignore unsuppported units -- no way to display them

@@ -51,7 +51,20 @@ class PageCreator {
 	 *
 	 * @return PageCreator
 	 */
-	public function createPage( Title $title, $editContent = '' ) {
+	public function createPage( Title $title, $editContent = '', $pageContentLanguage = '' ) {
+
+		if ( $pageContentLanguage !== '' ) {
+			\Hooks::register( 'PageContentLanguage', function( $titleByHook, &$pageLang ) use( $title, $pageContentLanguage ) {
+
+				// Only change the pageContentLanguage for the selected page
+				if ( $title->getPrefixedDBKey() === $titleByHook->getPrefixedDBKey() ) {
+					$pageLang = $pageContentLanguage;
+				}
+
+				// MW 1.19
+				return true;
+			} );
+		}
 
 		$this->page = new \WikiPage( $title );
 

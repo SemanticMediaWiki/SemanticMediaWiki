@@ -38,7 +38,7 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 		$instance->setUserValue( '100 Fahrenheit' );
 
 		$this->assertContains(
-			'310.928 K',
+			'310.92777777778 K',
 			$instance->getWikiValue()
 		);
 

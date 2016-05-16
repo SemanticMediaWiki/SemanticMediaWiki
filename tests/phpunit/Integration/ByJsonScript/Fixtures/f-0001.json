@@ -50,7 +50,7 @@
 			"subject": "Example/F0001/Q.1",
 			"expected-output": {
 				"to-contain": [
-					"<div class=\"smwpre\">&#x5b;&#x5b;Has number::3.556]]</div>"
+					"<div class=\"smwpre\">&#x5b;&#x5b;Has number::3.555567]]</div>"
 				]
 			}
 		}

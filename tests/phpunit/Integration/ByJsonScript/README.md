@@ -1,8 +1,8 @@
 ## Fixtures
-Contains 125 files:
+Contains 127 files:
 
 ### F
-* [f-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0001.json) Test format=debug output
+* [f-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0001.json) Test `format=debug` output
 * [f-0101.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0101.json) Test format=template output using unnamed arguments (#885)
 * [f-0102.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0102.json) Test format=template output + unicode characters (#988, skip postgres)
 * [f-0103.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0103.json) Test format=template with self reference (#988, guard against template self-reference in ask/show query)
@@ -14,6 +14,7 @@ Contains 125 files:
 * [f-0206.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0206.json) Test `format=table` to display extra property description `_PDESC` (en)
 * [f-0207.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0207.json) Test `format=table` on formatted indent when using */#/: (en)
 * [f-0208.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0208.json) Test `format=table` further results link for user/predefined property (`wgContLang=en`, `wgLang=es`)
+* [f-0209.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0209.json) Test `format=table` on `_tem`/ `_num` with `LOCAL@...` output (#1591, `wgContLang=es`, `wgLang=en`)
 * [f-0301.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0301.json) Test format=category with template usage (#699, en, skip postgres)
 * [f-0302.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0302.json) Test format=category and defaultsort (#699, en)
 * [f-0303.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0303.json) Test `format=category` sort output using a template and DEFAULTSORT (#1459, en)
@@ -59,6 +60,7 @@ Contains 125 files:
 * [p-0422.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0422.json) Test in-text annotation `_dat` on partial dates (en)
 * [p-0423.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0423.json) Test in-text annotation / `#ask` (#MEDIAWIKI, #LOCL) output for `_dat` datatype (`wgContLang` = en, `wgLang` = ja)
 * [p-0424.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0424.json) Test in-text annotation for `_boo` datatype using `LOCL` (`wgContLang=en`, `wgLang=fr`)
+* [p-0425.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0425.json) Test in-text annotation on `_tem`/ `_num` with different page content language (#1591, `wgContLang=es`, `wgLang=en`)
 * [p-0501.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0501.json) Test `#concept` on predefined property (`wgContLang=en`, `wgLang=es`)
 * [p-0701.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0701.json) Test to create inverted annotation using a #ask/template combination (#711, `import-annotation=true`)
 * [p-0702.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0702.json) Test #ask with `format=table` on inverse property/printrquest (#1270, en)
@@ -128,7 +130,7 @@ Contains 125 files:
 
 ### S
 * [s-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0001.json) Test output of `Special:Properties` (en, skip-on sqlite, 1.19)
-* [s-0002.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0002.json) Test output of `Special:SearchByProperty` (en, skip-on sqlite, 1.19)
+* [s-0002.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0002.json) Test output of `Special:SearchByProperty` (`wgContLang=en`, skip-on sqlite, 1.19)
 * [s-0003.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0003.json) Test `Special:Ask` output for `format=rdf`/'format=json' (#1453, en, skip-on 1.19)
 * [s-0004.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0004.json) Test `Special:Browse` output for `_dat' (`wgContLang=en`, `wgLang=ja`)
 * [s-0005.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0005.json) Test `Special:Browse` output for `_dat' (`wgContLang` = en, `wgLang` = en, `smwgDVFeatures`)
@@ -136,4 +138,4 @@ Contains 125 files:
 * [s-0007.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0007.json) Test output of `Special:UnusedProperties` (`wgContLang=en`, `wgLang=en`, skip-on sqlite, 1.19)
 * [s-0008.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0008.json) Test `Special:Browse` output for `_dat', `_boo` (`wgContLang=en`, `wgLang=es`)
 
--- Last updated on 2016-05-15 by `readmeContentsBuilder.php`
+-- Last updated on 2016-05-16 by `readmeContentsBuilder.php`

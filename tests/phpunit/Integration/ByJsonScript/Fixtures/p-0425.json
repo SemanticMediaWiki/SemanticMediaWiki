@@ -1,0 +1,69 @@
+{
+	"description": "Test in-text annotation on `_tem`/ `_num` with different page content language (#1591, `wgContLang=es`, `wgLang=en`)",
+	"properties": [
+		{
+			"name": "Has temperature",
+			"contents": "[[Has type::Temperature]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/P0425/1",
+			"contentlanguage": "fr",
+			"contents": "[[Has temperature::310.928 K]]"
+		},
+		{
+			"name": "Example/P0425/2",
+			"contentlanguage": "en",
+			"contents": "[[Has temperature::310.928 K]]"
+		},
+		{
+			"name": "Example/P0425/3",
+			"contentlanguage": "fr",
+			"contents": "[[Has temperature::310,928 K]]"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0 page content language FR and . do not match",
+			"subject": "Example/P0425/1",
+			"expected-output": {
+				"to-contain": [
+					"<div class=\"smwttcontent\">&quot;.928K&quot; no está declarada como una unidad de medida válida para esta propiedad.</div>"
+				]
+			}
+		},
+		{
+			"about": "#1 page content language EN and . do match",
+			"subject": "Example/P0425/2",
+			"expected-output": {
+				"to-contain": [
+					"<span class=\"smwtext\">310.928 K</span><div class=\"smwttcontent\">37.778&#160;°C <br />100&#160;°F <br />559.67&#160;°R <br /></div></span>"
+				]
+			}
+		},
+		{
+			"about": "#2 page content language FR and , do match",
+			"subject": "Example/P0425/3",
+			"expected-output": {
+				"to-contain": [
+					"<span class=\"smwtext\">310,928 K</span><div class=\"smwttcontent\">37.778&#160;°C <br />100&#160;°F <br />559.67&#160;°R <br /></div></span>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgLang": "en",
+		"wgContLang": "es",
+		"wgLanguageCode": "es",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -144,6 +144,7 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 			}
 
 			$namespace = isset( $page['namespace'] ) ? constant( $page['namespace'] ) : $defaultNamespace;
+			$pageContentLanguage = isset( $page['contentlanguage'] ) ? $page['contentlanguage'] : '';
 
 			$title = Title::newFromText(
 				$page['name'],
@@ -156,7 +157,7 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 				$contents = $page['contents'];
 			}
 
-			$this->pageCreator->createPage( $title, $contents );
+			$this->pageCreator->createPage( $title, $contents, $pageContentLanguage );
 
 			$this->itemsMarkedForDeletion[] = $this->pageCreator->getPage();
 
