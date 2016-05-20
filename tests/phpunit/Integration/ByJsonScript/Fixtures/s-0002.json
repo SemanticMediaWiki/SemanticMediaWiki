@@ -22,6 +22,10 @@
 		{
 			"name": "Example/S0002/3",
 			"contents": "[[Has number::3.555567]]"
+		},
+		{
+			"name": "Example/S0002/4",
+			"contents": "[[Has number::1.2e-13]]"
 		}
 	],
 	"special-testcases": [
@@ -92,6 +96,40 @@
 				],
 				"not-contain": [
 					"value=3.56"
+				]
+			}
+		},
+		{
+			"about": "#4 do not encode e- for a number value",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "",
+				"request-parameters":{
+					"property": "Has number",
+					"value": "1.2e-13"
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"Example-2FS0002-2F4",
+					"<small>(1.2e-13)</small>"
+				]
+			}
+		},
+		{
+			"about": "#5 same as 1.2e-13",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "",
+				"request-parameters":{
+					"property": "Has number",
+					"value": "0.00000000000012"
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"Example-2FS0002-2F4",
+					"<small>(1.2e-13)</small>"
 				]
 			}
 		}
