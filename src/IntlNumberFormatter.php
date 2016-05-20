@@ -145,7 +145,7 @@ class IntlNumberFormatter {
 	public function format( $value, $precision = false, $format = '' ) {
 
 		if ( $format === self::VALUE_FORMAT ) {
-			return $this->getHalfFormattedNumberWithPrecision( $value, $precision );
+			return $this->getValueFormattedNumberWithPrecision( $value, $precision );
 		}
 
 		if ( $precision !== false || $format === self::DEFAULT_FORMAT ) {
@@ -241,16 +241,21 @@ class IntlNumberFormatter {
 		return $value;
 	}
 
-	private function getHalfFormattedNumberWithPrecision( $value, $precision = false ) {
+	private function getValueFormattedNumberWithPrecision( $value, $precision = false ) {
 
-		if ( $precision === false ) {
-			return floatval( $value ); // ensures === is usable otherwise int/float fails
+		// The decimal are in ISO format (.), the separator as plain representation
+		// may collide with the content language (FR) therefore use the content language
+		// to match the decimal separator
+		if ( $this->isScientific( $value ) ) {
+			return $this->doFormatExponentialNotation( $value );
 		}
+
+		$precision = $precision === false ? $this->getPrecisionFrom( $value ) : $precision;
 
 		return $this->doFormatWithPrecision(
 			$value,
 			$precision,
-			$this->getSeparator( self::DECIMAL_SEPARATOR, self::USER_LANGUAGE ),
+			$this->getSeparator( self::DECIMAL_SEPARATOR, self::CONTENT_LANGUAGE ),
 			''
 		);
 	}
@@ -273,11 +278,37 @@ class IntlNumberFormatter {
 		return floor( $value ) !== $value;
 	}
 
+	private function isScientific( $value ) {
+		return strpos( $value, 'E' ) !== false || strpos( $value, 'e' ) !== false;
+	}
+
 	private function applyDefaultPrecision( $value ) {
 		return round( $value, $this->defaultPrecision );
 	}
 
+	private function getPrecisionFrom( $value ) {
+		return strlen( strrchr( $value, "." ) ) - 1;
+	}
+
+	private function doFormatExponentialNotation( $value ) {
+		return str_replace(
+			array( '.', 'E' ),
+			array( $this->getSeparator( self::DECIMAL_SEPARATOR, self::CONTENT_LANGUAGE ), 'e' ),
+			$value
+		);
+	}
+
 	private function doFormatWithPrecision( $value, $precision = false, $decimal, $thousand ) {
+
+		$replacement = 0;
+
+		// Don't try to be more precise than the actual value (e.g avoid turning
+		// 72.769482308 into 72.76948230799999350892904)
+		if ( ( $actualPrecision = $this->getPrecisionFrom( $value ) ) < $precision && $actualPrecision > 0 && !$this->isScientific( $value ) ) {
+			$replacement = $precision - $actualPrecision;
+			$precision = $actualPrecision;
+		}
+
 		// Format to some level of precision; number_format does rounding and
 		// locale formatting, x and y are used temporarily since number_format
 		// supports only single characters for either
@@ -290,6 +321,10 @@ class IntlNumberFormatter {
 			),
 			$value
 		);
+
+		if ( $replacement > 0 ) {
+			 $value .= str_repeat( '0', $replacement );
+		}
 
 		return $value;
 	}

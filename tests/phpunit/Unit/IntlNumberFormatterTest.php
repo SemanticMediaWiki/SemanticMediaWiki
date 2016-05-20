@@ -209,6 +209,42 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 			'312.23545555'
 		);
 
+		$provider['un.7'] = array(
+			10000000,
+			312.23545555,
+			6,
+			'en',
+			'en',
+			'312.235456'
+		);
+
+		$provider['un.8'] = array(
+			10000000,
+			312.23545555,
+			9,
+			'en',
+			'en',
+			'312.235455550'
+		);
+
+		$provider['un.9'] = array(
+			10000000,
+			1.334e-13,
+			false,
+			'en',
+			'en',
+			'1.334e-13'
+		);
+
+		$provider['un.10'] = array(
+			10000000,
+			1.334e-13,
+			false,
+			'en',
+			'fr',
+			'1,334e-13'
+		);
+
 		return $provider;
 	}
 
