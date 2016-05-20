@@ -1,5 +1,5 @@
 {
-	"description": "Test `Special:Browse` output for `_dat', `_boo` (`wgContLang=en`, `wgLang=es`)",
+	"description": "Test `Special:Browse` output for `_dat', `_boo`, `_sobj`, `_uri` (`wgContLang=en`, `wgLang=es`)",
 	"properties": [
 		{
 			"name": "Has date",
@@ -16,6 +16,10 @@
 		{
 			"name": "Has atomic mass unit",
 			"contents": "[[Has type::Quantity]] [[Corresponds to::1 u]] [[Corresponds to::1.660539040e-27 kg]]"
+		},
+		{
+			"name": "Has url",
+			"contents": "[[Has type::URL]]"
 		}
 	],
 	"subjects": [
@@ -30,6 +34,14 @@
 		{
 			"name": "Example/S0008/3 (Hydrogen-1 atom)",
 			"contents": "[[Has atomic mass unit::1.007825 u]] [[Category:S0008]]"
+		},
+		{
+			"name": "Example/S0008/4",
+			"contents": "{{#subobject:ABC::DEF|Has number=123}}"
+		},
+		{
+			"name": "Example/S0008/5",
+			"contents": "[[Has url::http://example.org/some1::23:334/::56]]"
 		}
 	],
 	"special-testcases": [
@@ -77,6 +89,34 @@
 				"to-contain": [
 					"<span class=\"smwb-value\">1,008&#160;u (1,673533e-27&#160;kg)&#160;&#160;",
 					"Special:SearchByProperty/Has-20atomic-20mass-20unit/1.007825-20u"
+				]
+			}
+		},
+		{
+			"about": "#3 named subobject contains :: (encoded with -3A)",
+			"special-page": {
+				"page":"Browse",
+				"query-parameters": "Example-2FS0008-2F4-23ABC-2D3A-2D3ADEF",
+				"request-parameters":{}
+			},
+			"expected-output": {
+				"to-contain": [
+					"<span class=\"smwb-value\">123&#160;&#160;",
+					"Special:SearchByProperty/Has-20number/123"
+				]
+			}
+		},
+		{
+			"about": "#4 url contains :: (encoded with -3A)",
+			"special-page": {
+				"page":"Browse",
+				"query-parameters": "Example/S0008/5",
+				"request-parameters":{}
+			},
+			"expected-output": {
+				"to-contain": [
+					"href=\"http://example.org/some1::23:334/::56\">http://example.org/some1::23:334/::56</a>&#160;&#160;",
+					"Special:SearchByProperty/Has-20url/http-2D3A-2F-2Fexample.org-2Fsome1-2D3A-2D3A23-2D3A334-2F-2D3A-2D3A56"
 				]
 			}
 		}

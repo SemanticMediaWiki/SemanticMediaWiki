@@ -374,7 +374,7 @@ class Factbox {
 
 				$dataValue = $this->dataValueFactory->newDataItemValue( $dataItem, $propertyDi );
 				$dataValue->setOutputFormat( 'LOCL' );
-				$dataValue->setServiceLinksRenderState( false );
+				$dataValue->disableServiceLinks();
 
 				if ( $dataValue->isValid() ) {
 					$valuesHtml[] = Sanitizer::removeHTMLtags(
@@ -404,9 +404,17 @@ class Factbox {
 			return $dataValue->getInfolinkText( SMW_OUTPUT_WIKI );
 		}
 
+		$value = $dataValue->getWikiValue();
+
+		// InTextAnnotationParser will detect :: therefore avoid link
+		// breakage by encoding the string
+		if ( strpos( $value, '::' ) !== false ) {
+			$value = str_replace( ':', '-3A', $value );
+		}
+
 		$browselink = SMWInfolink::newBrowsingLink(
 			' +',
-			$dataValue->getWikiValue(),
+			$value,
 			'smwbrowse'
 		);
 
