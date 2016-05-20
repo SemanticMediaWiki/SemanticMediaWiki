@@ -10,6 +10,7 @@ Not a release yet.
 * Extended date/time query output formatting by supporting PHP's `DateTime` format rules (#1389)
 * Added support for constraint specification using regular expressions (#1417). The use of `regular expressions` and thus the `Allows pattern` property to express a constraint assignment is restricted to users with the [`smw-patternedit`](https://www.semantic-mediawiki.org/wiki/Help:Permissions_and_user_rights) right.
 * Added support for `{{DISPLAYTITLE:...}}` (#1410)
+* [Localization](https://www.semantic-mediawiki.org/wiki/Localization) support for selected data values
 
 ## New features and enhancements
 
@@ -45,10 +46,12 @@ Not a release yet.
 * #1474 Added a search link for zero properties to the `Special:Properties`
 * #1483 Added statistics about [outdated entities](https://www.semantic-mediawiki.org/wiki/Help:Outdated_entities) to the `Special:Statistics`
 * #1513 `StringValueFormatter` to add `\n` on the first text element if it contains `*/#/:`
+* #1542 Extended the query parser to support conditions with object values that contain `=` (#640)
 * #1545 Added `#LOCL` as `TimeValue` output format
 * #1570 Added ["Object ID disposal"](https://www.semantic-mediawiki.org/wiki/Help:Object_ID_disposal) `to Special:SMWAdmin`
 * #1572 Extended the query parser to support property chaining on subtypes
-* #1542 Extended the query parser to support conditions with object values that contain `=` (#640)
+* #1580 Added `#LOCL` as `BooleanValue` output format
+* #1591 Added `#LOCL` as `NumberValue` output format
 
 ## Bug fixes
 
@@ -82,6 +85,10 @@ Not a release yet.
 * #1550 Fixed `SPARQLStore` `XML` response parsing for strings that contain UTF-8 characters
 * #1562 Fixed fatal error in `FeedResultPrinter` due to usage of an interwiki assignment
 * #1568 Fixed usage of invalid characters/tags in property name
+* #1594 Fixed handling of numbers with scientific notation in `Special:SearchByProperty`
+* #1597 Fixed possible ID collision in `DependencyLinksTableUpdater`
+* #1598 Fixed content language setting for `InfoLinks`
+* #1589 Fixed display precision constraint during condition building
 
 ## Internal changes
 
@@ -103,5 +110,9 @@ Not a release yet.
 * #1460 Requires PHP extension mbstring in `composer.json`
 * #1482 Added the `SMW::FileUpload::BeforeUpdate` hook
 * #1512 Fixed test suite to support PHP7
+* #1575 Removed `smw_subobject` from `PropertyListLookup` query
+* #1591 Added `IntlNumberFormatter`
+* #1593 Added `NumberValueFormatter`
+* #1601 Added `InfoLinksProvider`
 
 ## Contributors
