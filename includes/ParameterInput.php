@@ -221,7 +221,7 @@ class ParameterInput {
 		foreach ( $valueList as $value ) {
 			$options[] =
 				'<option value="' . htmlspecialchars( $value ) . '"' .
-					( in_array( $value, $currentValues ) ? ' selected' : '' ) . '>' . htmlspecialchars( $value ) .
+					( in_array( $value, $currentValues ) ? ' selected="selected"' : '' ) . '>' . htmlspecialchars( $value ) .
 				'</option>';
 		}
 

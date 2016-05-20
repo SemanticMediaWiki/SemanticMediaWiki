@@ -402,9 +402,10 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		$downloadLink = $this->getExtraDownloadLinks();
 		$sarchInfoText = $duration > 0 ? wfMessage( 'smw-ask-query-search-info', $this->m_querystring, $environment, $isFromCache, $duration )->parse() : '';
 
+		$result .= Html::openElement( 'form',
+			array( 'action' => $wgScript, 'name' => 'ask', 'method' => 'get' ) );
+
 		if ( $this->m_editquery ) {
-			$result .= Html::openElement( 'form',
-				array( 'action' => $wgScript, 'name' => 'ask', 'method' => 'get' ) );
 			$result .= Html::hidden( 'title', $title->getPrefixedDBKey() );
 
 			// Table for main query and printouts.
@@ -439,38 +440,32 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			$result .= "</fieldset>\n";
 
 			$urltail = str_replace( '&eq=yes', '', $urltail ) . '&eq=no'; // FIXME: doing it wrong, srysly
+			$btnFindResults = '<input type="submit" class="smw-ask-action-btn smw-ask-action-btn-dblue" value="' . wfMessage( 'smw_ask_submit' )->escaped() . '"/>' . ' ' .
+				'<input type="hidden" name="eq" value="yes"/>' . ' ';
+			$msgShowHide = 'smw_ask_hidequery';
 
-			// Submit
-			$result .= '<fieldset class="smw-ask-actions" style="margin-top:0px;"><legend>' . wfMessage( 'smw-ask-search' )->escaped() . "</legend>\n";
-
-			$result .= '<p>' .  '' . '</p>' . '<input type="submit" class="smw-ask-action-btn smw-ask-action-btn-dblue" value="' . wfMessage( 'smw_ask_submit' )->escaped() . '"/>' . ' ' .
-				'<input type="hidden" name="eq" value="yes"/>' . ' ' .
-					Html::element(
-						'a',
-						array(
-							'class' => 'smw-ask-action-btn smw-ask-action-btn-lblue',
-							'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( $urltail ),
-							'rel' => 'nofollow'
-						), wfMessage( 'smw_ask_hidequery' )->text()
-					) .
-					' ' . self::getEmbedToggle() .
-				"\n</form>" . '</p>';
 		} else { // if $this->m_editquery == false
 			$urltail = str_replace( '&eq=no', '', $urltail ) . '&eq=yes';
-			$result .= '<fieldset class="smw-ask-actions" style="margin-top:0px;"><legend>' . wfMessage( 'smw-ask-search' )->escaped() . "</legend>\n";
-
-			$result .= '<p>' .  '' . '</p>' . ' ' .
-				Html::element(
-					'a',
-					array(
-						'class' => 'smw-ask-action-btn smw-ask-action-btn-lblue',
-						'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( $urltail ),
-						'rel' => 'nofollow'
-					), wfMessage( 'smw_ask_editquery' )->text()
-				) .
-				' ' . self::getEmbedToggle() .
-				'</p>';
+			$btnFindResults = '';
+			$msgShowHide = 'smw_ask_editquery';
 		}
+
+		// Submit
+		$result .= '<fieldset class="smw-ask-actions" style="margin-top:0px;"><legend>' . wfMessage( 'smw-ask-search' )->escaped() . "</legend>\n" .
+			'<p>' .  '' . '</p>' .
+
+			$btnFindResults .
+
+			Html::element(
+				'a',
+				array(
+					'class' => 'smw-ask-action-btn smw-ask-action-btn-lblue',
+					'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( $urltail ),
+					'rel' => 'nofollow'
+				), wfMessage( $msgShowHide )->text()
+			) .
+			' ' . self::getEmbedToggle();
+
 		//show|hide inline embed code
 		$result .= '<div id="inlinequeryembed" style="display: none"><div id="inlinequeryembedinstruct">' . wfMessage( 'smw_ask_embed_instr' )->escaped() . '</div><textarea id="inlinequeryembedarea" readonly="yes" cols="20" rows="6" onclick="this.select()">' .
 			'{{#ask:' . htmlspecialchars( $this->m_querystring ) . "\n";
@@ -492,7 +487,8 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		}
 
 		$result .= '}}</textarea></div><p></p>';
-		$result .= ( $navigation !== '' ? '<p>'. $sarchInfoText . '</p>' . '<hr class="smw-form-horizontalrule">' .  $navigation . '&#160;&#160;&#160;' . $downloadLink : '' ) . "</fieldset>\n";
+		$result .= ( $navigation !== '' ? '<p>'. $sarchInfoText . '</p>' . '<hr class="smw-form-horizontalrule">' .  $navigation . '&#160;&#160;&#160;' . $downloadLink : '' ) .
+			"\n</fieldset>\n</form>\n";
 
 		return $result;
 	}
@@ -516,7 +512,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			}
 		}
 
-		$result .= '<br /><span class="smw-ask-query-format" style=vertical-align:middle;">' . wfMessage( 'smw_ask_format_as' )->escaped() . ' <input type="hidden" name="eq" value="yes"/>' . "\n" .
+		$result .= '<br /><span class="smw-ask-query-format" style="vertical-align:middle;">' . wfMessage( 'smw_ask_format_as' )->escaped() . ' <input type="hidden" name="eq" value="yes"/>' . "\n" .
 			Html::openElement(
 				'select',
 				array(
@@ -526,7 +522,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 					'data-url' => $url,
 				)
 			) . "\n" .
-			'	<option value="broadtable"' . ( $params['format'] == 'broadtable' ? ' selected' : '' ) . '>' .
+			'	<option value="broadtable"' . ( $params['format'] == 'broadtable' ? ' selected="selected"' : '' ) . '>' .
 			htmlspecialchars( $printer->getName() ) . ' (' . wfMessage( 'smw_ask_defaultformat' )->escaped() . ')</option>' . "\n";
 
 		$formats = array();
@@ -542,7 +538,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		natcasesort( $formats );
 
 		foreach ( $formats as $format => $name ) {
-			$result .= '	<option value="' . $format . '"' . ( $params['format'] == $format ? ' selected' : '' ) . '>' . $name . "</option>\n";
+			$result .= '	<option value="' . $format . '"' . ( $params['format'] == $format ? ' selected="selected"' : '' ) . '>' . $name . "</option>\n";
 		}
 
 		$result .= "</select></span>\n";
