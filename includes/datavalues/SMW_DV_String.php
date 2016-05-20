@@ -1,16 +1,21 @@
 <?php
 
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
+use SMWDIBlob as DIBlob;
+use SMWDataItem as DataItem;
+use SMWDataValue as DataValue;
 
 /**
  * This datavalue implements String-Datavalues suitable for defining
  * String-types of properties.
  *
+ * @license GNU GPL v2+
+ * @since 1.6
+ *
  * @author Nikolas Iwan
  * @author Markus Krötzsch
- * @ingroup SMWDataValues
  */
-class SMWStringValue extends SMWDataValue {
+class SMWStringValue extends DataValue {
 
 	/**
 	 * @see DataValue::parseUserValue
@@ -23,43 +28,70 @@ class SMWStringValue extends SMWDataValue {
 			$this->addErrorMsg( 'smw_emptystring' );
 		}
 
-		$this->m_dataitem = new SMWDIBlob( $value );
+		$this->m_dataitem = new DIBlob( $value );
 	}
 
 	/**
-	 * @see SMWDataValue::loadDataItem()
-	 * @param $dataitem SMWDataItem
+	 * @see DataValue::loadDataItem
+	 *
+	 * @param SMWDataItem $dataitem
+	 *
 	 * @return boolean
 	 */
-	protected function loadDataItem( SMWDataItem $dataItem ) {
-		if ( $dataItem instanceof SMWDIBlob ) {
-			$this->m_caption = false;
-			$this->m_dataitem = $dataItem;
-			return true;
-		} else {
+	protected function loadDataItem( DataItem $dataItem ) {
+
+		if ( !$dataItem instanceof DIBlob ) {
 			return false;
 		}
+
+		$this->m_caption = false;
+		$this->m_dataitem = $dataItem;
+
+		return true;
 	}
 
+	/**
+	 * @see DataValue::getShortWikiText
+	 *
+	 * @return string
+	 */
 	public function getShortWikiText( $linker = null ) {
 		return $this->getDataValueFormatter()->format( DataValueFormatter::WIKI_SHORT, $linker );
 	}
 
+	/**
+	 * @see DataValue::getShortHTMLText
+	 *
+	 * @return string
+	 */
 	public function getShortHTMLText( $linker = null ) {
 		return $this->getDataValueFormatter()->format( DataValueFormatter::HTML_SHORT, $linker );
 	}
 
+	/**
+	 * @see DataValue::getLongWikiText
+	 *
+	 * @return string
+	 */
 	public function getLongWikiText( $linker = null ) {
 		return $this->getDataValueFormatter()->format( DataValueFormatter::WIKI_LONG, $linker );
 	}
 
 	/**
 	 * @todo Rather parse input to obtain properly formatted HTML.
+	 * @see DataValue::getLongHTMLText
+	 *
+	 * @return string
 	 */
 	public function getLongHTMLText( $linker = null ) {
 		return $this->getDataValueFormatter()->format( DataValueFormatter::HTML_LONG, $linker );
 	}
 
+	/**
+	 * @see DataValue::getWikiValue
+	 *
+	 * @return string
+	 */
 	public function getWikiValue() {
 		return $this->getDataValueFormatter()->format( DataValueFormatter::VALUE );
 	}
@@ -74,22 +106,24 @@ class SMWStringValue extends SMWDataValue {
 	}
 
 	public function getInfolinks() {
+
 		if ( $this->m_typeid != '_cod' ) {
 			return parent::getInfolinks();
-		} else {
-			return $this->m_infolinks;
 		}
+
+		return array();
 	}
 
 	protected function getServiceLinkParams() {
+
+		if ( !$this->isValid() ) {
+			return false;
+		}
+
 		// Create links to mapping services based on a wiki-editable message. The parameters
 		// available to the message are:
 		// $1: urlencoded string
-		if ( $this->isValid() ) {
-			return array( rawurlencode( $this->m_dataitem->getString() ) );
-		} else {
-			return false;
-		}
+		return array( rawurlencode( $this->m_dataitem->getString() ) );
 	}
 
 }

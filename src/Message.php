@@ -133,7 +133,16 @@ class Message {
 		return $message;
 	}
 
-	private static function getHash( $parameters, $type = null, $language = null ) {
+	/**
+	 * @since 2.4
+	 *
+	 * @param array $parameters
+	 * @param integer $type
+	 * @param integer|string|Language $language
+	 *
+	 * @return string
+	 */
+	public static function getHash( $parameters, $type = null, $language = null ) {
 
 		if ( $language instanceof Language ) {
 			$language = $language->getCode();

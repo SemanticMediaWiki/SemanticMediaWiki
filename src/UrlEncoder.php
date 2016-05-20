@@ -72,6 +72,8 @@ class UrlEncoder {
 		// Apply decoding for SMW's own url encoding strategy (see SMWInfolink)
 		$string = str_replace( '%', '-', rawurldecode( str_replace( '-', '%', $string ) ) );
 
+		$string = str_replace( array( '-2D', '-3A' ), array( '-', ':' ), $string );
+
 		// Sanitize remaining string content
 		$string = trim( htmlspecialchars( $string, ENT_NOQUOTES ) );
 		$string = str_replace( '&nbsp;', ' ', str_replace( array( '&#160;', '&amp;' ), array( ' ', '&' ), $string ) );

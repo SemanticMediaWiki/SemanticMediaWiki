@@ -15,6 +15,7 @@ use SMW\Message;
 use SMW\Options;
 use SMW\Localizer;
 use SMW\Query\QueryComparator;
+use SMW\DataValues\InfoLinksProvider;
 
 /**
  * Objects of this type represent all that is known about a certain user-provided
@@ -90,29 +91,11 @@ abstract class SMWDataValue {
 	protected $m_typeid;
 
 	/**
-	 * Array of SMWInfolink objects.
-	 * @var array
-	 */
-	protected $m_infolinks = array();
-
-	/**
 	 * Output formatting string, false when not set.
 	 * @see setOutputFormat()
 	 * @var mixed
 	 */
 	protected $m_outformat = false;
-
-	/**
-	 * Used to control the addition of the standard search link.
-	 * @var boolean
-	 */
-	private $mHasSearchLink;
-
-	/**
-	 * Used to control service link creation.
-	 * @var boolean
-	 */
-	private $mHasServiceLinks;
 
 	/**
 	 * Array of error text messages. Private to allow us to track error insertion
@@ -127,11 +110,6 @@ abstract class SMWDataValue {
 	 * @var boolean
 	 */
 	private $mHasErrors = false;
-
-	/**
-	 * @var boolean
-	 */
-	private $serviceLinksRenderState = true;
 
 	/**
 	 * Extraneous services and object container
@@ -154,6 +132,11 @@ abstract class SMWDataValue {
 	 * @var ValueConstraintValidator
 	 */
 	private $valueConstraintValidator = null;
+
+	/**
+	 * @var InfoLinksProvider
+	 */
+	private $infoLinksProvider = null;
 
 	/**
 	 * Constructor.
@@ -182,9 +165,7 @@ abstract class SMWDataValue {
 		$this->m_dataitem = null;
 		$this->mErrors = array(); // clear errors
 		$this->mHasErrors = false;
-		$this->m_infolinks = array(); // clear links
-		$this->mHasSearchLink = false;
-		$this->mHasServiceLinks = false;
+		$this->getInfoLinksProvider()->init();
 		$this->m_caption = is_string( $caption ) ? trim( $caption ) : false;
 		$this->approximateValue = $approximateValue;
 
@@ -223,9 +204,10 @@ abstract class SMWDataValue {
 	 * @return boolean
 	 */
 	public function setDataItem( SMWDataItem $dataItem ) {
+		$this->getInfoLinksProvider()->init();
 		$this->m_dataitem = null;
-		$this->mErrors = $this->m_infolinks = array();
-		$this->mHasErrors = $this->mHasSearchLink = $this->mHasServiceLinks = $this->m_caption = false;
+		$this->mErrors = array();
+		$this->mHasErrors = $this->m_caption = false;
 		return $this->loadDataItem( $dataItem );
 	}
 
@@ -358,57 +340,7 @@ abstract class SMWDataValue {
 	 * @param SMWInfolink $link
 	 */
 	public function addInfolink( SMWInfolink $link ) {
-		$this->m_infolinks[] = $link;
-	}
-
-	/**
-	 * Servicelinks are special kinds of infolinks that are created from
-	 * current parameters and in-wiki specification of URL templates. This
-	 * method adds the current property's servicelinks found in the
-	 * messages. The number and content of the parameters is depending on
-	 * the datatype, and the service link message is usually crafted with a
-	 * particular datatype in mind.
-	 */
-	public function addServiceLinks() {
-		if ( $this->mHasServiceLinks ) {
-			return;
-		}
-
-		if ( !is_null( $this->m_property ) ) {
-			$propertyDiWikiPage = $this->m_property->getDiWikiPage();
-		}
-
-		if ( is_null( $this->m_property ) || is_null( $propertyDiWikiPage ) ) {
-			return; // no property known, or not associated with a page
-		}
-
-		$args = $this->getServiceLinkParams();
-
-		if ( $args === false ) {
-			return; // no services supported
-		}
-
-		array_unshift( $args, '' ); // add a 0 element as placeholder
-		$servicelinks = \SMW\StoreFactory::getStore()->getPropertyValues( $propertyDiWikiPage, new SMW\DIProperty( '_SERV' ) );
-
-		foreach ( $servicelinks as $dataItem ) {
-			if ( !( $dataItem instanceof SMWDIBlob ) ) {
-				continue;
-			}
-
-			$args[0] = 'smw_service_' . str_replace( ' ', '_', $dataItem->getString() ); // messages distinguish ' ' from '_'
-			$text = call_user_func_array( 'wfMessage', $args )->inContentLanguage()->text();
-			$links = preg_split( "/[\n][\s]?/u", $text );
-
-			foreach ( $links as $link ) {
-				$linkdat = explode( '|', $link, 2 );
-
-				if ( count( $linkdat ) == 2 ) {
-					$this->addInfolink( SMWInfolink::newExternalLink( $linkdat[0], trim( $linkdat[1] ) ) );
-				}
-			}
-		}
-		$this->mHasServiceLinks = true;
+		$this->getInfoLinksProvider()->addInfolink( $link );
 	}
 
 	/**
@@ -698,41 +630,7 @@ abstract class SMWDataValue {
 	 * @return string
 	 */
 	public function getInfolinkText( $outputformat, $linker = null ) {
-		$result = '';
-		$first = true;
-		$extralinks = array();
-
-		switch ( $outputformat ) {
-			case SMW_OUTPUT_WIKI:
-				foreach ( $this->getInfolinks() as $link ) {
-					if ( $first ) {
-						$result .= '<!-- -->  ' . $link->getWikiText();
-							// the comment is needed to prevent MediaWiki from linking URL-strings together with the nbsps!
-						$first = false;
-					} else {
-						$extralinks[] = $link->getWikiText();
-					}
-				}
-				break;
-
-			case SMW_OUTPUT_HTML: case SMW_OUTPUT_FILE: default:
-				foreach ( $this->getInfolinks() as $link ) {
-					if ( $first ) {
-						$result .= '&#160;&#160;' . $link->getHTML( $linker );
-						$first = false;
-					} else {
-						$extralinks[] = $link->getHTML( $linker );
-					}
-				}
-				break;
-		}
-
-		if ( count( $extralinks ) > 0 ) {
-			$result .= smwfEncodeMessages( $extralinks, 'service', '', false );
-		}
-
-		// #1453 SMW::on/off will break any potential link therefore just don't even try
-		return strpos( $result, 'SMW::off' ) !== false || strpos( $result, 'SMW::on' ) !== false ? '' : $result;
+		return $this->getInfoLinksProvider()->getInfolinkText( $outputformat, $linker );
 	}
 
 	/**
@@ -755,10 +653,9 @@ abstract class SMWDataValue {
 
 	/**
 	 * @since 2.1
-	 * @param boolean $renderState
 	 */
-	public function setServiceLinksRenderState( $renderState = true ) {
-		$this->serviceLinksRenderState = $renderState;
+	public function disableServiceLinks() {
+		$this->getInfoLinksProvider()->disableServiceLinks();
 	}
 
 	/**
@@ -768,19 +665,12 @@ abstract class SMWDataValue {
 	 * but is always an array.
 	 */
 	public function getInfolinks() {
-		if ( $this->isValid() && !is_null( $this->m_property ) ) {
-			if ( !$this->mHasSearchLink ) { // add default search link
-				$this->mHasSearchLink = true;
-				$this->m_infolinks[] = SMWInfolink::newPropertySearchLink( '+',
-					$this->m_property->getLabel(), $this->getWikiValue() );
-			}
 
-			if ( !$this->mHasServiceLinks && $this->serviceLinksRenderState ) { // add further service links
-				$this->addServiceLinks();
-			}
-		}
+		$this->getInfoLinksProvider()->setServiceLinkParameters(
+			$this->getServiceLinkParams()
+		);
 
-		return $this->m_infolinks;
+		return $this->getInfoLinksProvider()->createInfoLinks();
 	}
 
 	/**
@@ -910,6 +800,15 @@ abstract class SMWDataValue {
 	 */
 	protected function convertDoubleWidth( $value ) {
 		return Localizer::convertDoubleWidth( $value );
+	}
+
+	private function getInfoLinksProvider() {
+
+		if ( $this->infoLinksProvider === null ) {
+			$this->infoLinksProvider = new InfoLinksProvider( $this );
+		}
+
+		return $this->infoLinksProvider;
 	}
 
 }
