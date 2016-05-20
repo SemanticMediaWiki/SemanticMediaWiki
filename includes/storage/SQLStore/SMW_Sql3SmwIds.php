@@ -1,7 +1,9 @@
 <?php
 
 use SMW\DIWikiPage;
+use SMW\DIProperty;
 use SMW\HashBuilder;
+use SMW\ApplicationFactory;
 use SMW\SQLStore\IdToDataItemMatchFinder;
 use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\SQLStore\RedirectInfoStore;
@@ -63,6 +65,8 @@ class SMWSql3SmwIds {
 	 * rebuild their SMW tables completely to recover from any change here.
 	 */
 	const TABLE_NAME = SMWSQLStore3::ID_TABLE;
+
+	const POOLCACHE_ID = 'sql.store.id.cache';
 
 	/**
 	 * Id for which property table hashes are cached, if any.
@@ -228,6 +232,8 @@ class SMWSql3SmwIds {
 		$this->redirectInfoStore = new RedirectInfoStore(
 			$this->store->getConnection( 'mw.db' )
 		);
+
+		$this->intermediaryIdCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheFor( self::POOLCACHE_ID );
 	}
 
 	/**
@@ -494,6 +500,29 @@ class SMWSql3SmwIds {
 	 * @param boolean
 	 */
 	public function hasIDFor( DIWikiPage $subject ) {
+		return $this->getIDFor( $subject ) > 0;
+	}
+
+	/**
+	 * @note SMWSql3SmwIds::getSMWPageID has some issues with the cache as it returned
+	 * 0 even though an object was matchable but since I'm too busy to investigate, using
+	 * this method is safer then trying to encipher getSMWPageID related methods.
+	 *
+	 * It uses the PoolCache which means Lru is in place to avoid memory leakage.
+	 *
+	 * @since 2.4
+	 *
+	 * @param DIWikiPage $subject
+	 *
+	 * @param integer
+	 */
+	public function getIDFor( DIWikiPage $subject ) {
+
+		$hash = HashBuilder::getHashIdForDiWikiPage( $subject );
+
+		if ( ( $id = $this->intermediaryIdCache->fetch( $hash ) ) > 0 ) {
+			return $id;
+		}
 
 		$row = $this->store->getConnection( 'mw.db' )->selectRow(
 			self::TABLE_NAME,
@@ -507,7 +536,32 @@ class SMWSql3SmwIds {
 			__METHOD__
 		);
 
-		return $row !== false;
+		// Try to match a predefined property
+		if ( $subject->getNamespace() === SMW_NS_PROPERTY && $subject->getInterWiki() === '' ) {
+			$property = DIProperty::newFromUserLabel( $subject->getDBKey() );
+
+			if ( isset( self::$special_ids[$property->getKey()] ) ) {
+				$row = new \stdClass;
+				$row->smw_id = self::$special_ids[$property->getKey()];
+			}
+		}
+
+		if ( $row === false ) {
+			wfDebugLog( 'smw', __METHOD__  . " $hash was a cache miss" );
+			return 0;
+		}
+
+		// Legacy
+		$this->setCache(
+			$subject->getDBKey(),
+			$subject->getNamespace(),
+			$subject->getInterWiki(),
+			$subject->getSubobjectName(),
+			$row->smw_id,
+			$subject->getSortKey()
+		);
+
+		return $row->smw_id;
 	}
 
 	/**
@@ -898,6 +952,7 @@ class SMWSql3SmwIds {
 		}
 
 		$this->idToDataItemMatchFinder->saveToCache( $id, $hashKey );
+		$this->intermediaryIdCache->save( $hashKey, $id );
 
 		if ( $interwiki == SMW_SQL3_SMWREDIIW ) { // speed up detection of redirects when fetching IDs
 			$this->setCache(  $title, $namespace, '', $subobject, 0, '' );
@@ -997,17 +1052,19 @@ class SMWSql3SmwIds {
 	 */
 	public function deleteCache( $title, $namespace, $interwiki, $subobject ) {
 
+		$hashKey = HashBuilder::createHashIdFromSegments( $title, $namespace, $interwiki, $subobject );
+
 		if ( $namespace == SMW_NS_PROPERTY && $interwiki === '' && $subobject === '' ) {
 			$id =  isset( $this->prop_ids[$title] ) ?  $this->prop_ids[$title] : 0;
 			unset( $this->prop_ids[$title] );
 			unset( $this->prop_sortkeys[$title] );
 		} else {
-			$hashKey = HashBuilder::createHashIdFromSegments( $title, $namespace, $interwiki, $subobject );
 			$id = isset( $this->regular_ids[$hashKey] ) ? $this->regular_ids[$hashKey] : 0;
 			unset( $this->regular_ids[$hashKey] );
 			unset( $this->regular_sortkeys[$hashKey] );
 		}
 
+		$this->intermediaryIdCache->delete( $hashKey );
 		$this->idToDataItemMatchFinder->deleteFromCache( $id );
 	}
 

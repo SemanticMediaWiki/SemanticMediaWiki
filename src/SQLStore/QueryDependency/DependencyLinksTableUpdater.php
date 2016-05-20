@@ -187,13 +187,12 @@ class DependencyLinksTableUpdater {
 	 * @param string $subobjectName
 	 */
 	public function getIdForSubject( DIWikiPage $subject, $subobjectName = '' ) {
-		return $this->store->getObjectIds()->getSMWPageID(
-			$subject->getDBkey(),
-			$subject->getNamespace(),
-			$subject->getInterwiki(),
-			$subobjectName,
-			false
+
+		$id = $this->store->getObjectIds()->getIDFor(
+			$subject
 		);
+
+		return $id;
 	}
 
 	/**

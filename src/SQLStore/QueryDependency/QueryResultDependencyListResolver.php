@@ -184,7 +184,7 @@ class QueryResultDependencyListResolver {
 		$key = str_replace( ' ', '_', $property->getKey() );
 
 		if ( !isset( $this->propertyDependencyExemptionlist[$key] ) ) {
-			$subjects[] = $property->getDiWikiPage();
+			$subjects[] = $property->getCanonicalDiWikiPage();
 		}
 	}
 
@@ -217,7 +217,7 @@ class QueryResultDependencyListResolver {
 			$data = $printRequest->getData();
 
 			if ( $data instanceof \SMWPropertyValue ) {
-				$subjects[] = $data->getDataItem()->getDiWikiPage();
+				$subjects[] = $data->getDataItem()->getCanonicalDiWikiPage();
 			}
 
 			// Category
