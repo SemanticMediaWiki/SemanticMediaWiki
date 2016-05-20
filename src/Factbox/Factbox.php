@@ -290,7 +290,7 @@ class Factbox {
 			$text .= Html::rawElement( 'div',
 				array( 'class' => 'smwfact' ),
 				$this->htmlTableRenderer->getHeaderItems() .
-				$this->htmlTableRenderer->getHtml( array( 'class' => 'smwfacttable' ) )
+				$this->htmlTableRenderer->getHtml( array( 'class' => 'smwfacttable', 'cellspacing' => "0", 'cellpadding' => "2" ) )
 			);
 		}
 
@@ -358,6 +358,7 @@ class Factbox {
 				$attributes['property'] = array( 'class' => 'smwpropname' );
 				$attributes['values'] = array( 'class' => 'smwprops' );
 			} elseif ( $propertyDv->isVisible() ) {
+				$propertyDv->setCaption( $propertyDi->getLabel() );
 				// Predefined property
 				$attributes['property'] = array( 'class' => 'smwspecname' );
 				$attributes['values'] = array( 'class' => 'smwspecs' );

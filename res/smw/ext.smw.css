@@ -121,6 +121,10 @@ td.smwpropname, th.smwpropname, td.smwspecname {
 	padding-right: 1em;
 }
 
+.smwfact tbody > tr.row-even > td {
+	background-color: #fff;
+}
+
 /* Property page */
 .property-page-results td.smwpropname {
 	width: 50%;
@@ -132,11 +136,11 @@ td.smwpropname, th.smwpropname, td.smwspecname {
 }
 
 @media (min-width: 600px) {
-	.property-page-results td.smwpropname {
+	.smwfact td.smwpropname, .property-page-results td.smwpropname {
 		width: 33%;
 	}
 
-	.property-page-results td.smwprops, td.smwspecs {
+	.smwfact td.smwprops, .property-page-results td.smwprops, td.smwspecs {
 		width: 75%;
 	}
 }

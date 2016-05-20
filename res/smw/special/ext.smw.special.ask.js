@@ -47,7 +47,7 @@
 			},
 			parameter: function(){
 				// Property autocomplete for the single sort field
-				$( '.smw-ask-input-sort' ).smwAutocomplete();
+				//$( '.smw-ask-input-sort' ).smwAutocomplete();
 			}
 		},
 
