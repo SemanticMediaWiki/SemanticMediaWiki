@@ -415,7 +415,7 @@ class DataTypeRegistry {
 			'_ema'  => 'SMWURIValue', // Email type
 			'_uri'  => 'SMWURIValue', // URL/URI type
 			'_anu'  => 'SMWURIValue', // Annotation URI type
-			'_tel'  => 'SMWURIValue', // Phone number (URI) type
+			'_tel'  => 'SMW\DataValues\TelephoneUriValue', // Phone number (URI) type
 			'_wpg'  => 'SMWWikiPageValue', // Page type
 			'_wpp'  => 'SMWWikiPageValue', // Property page type TODO: make available to user space
 			'_wpc'  => 'SMWWikiPageValue', // Category page type TODO: make available to user space
