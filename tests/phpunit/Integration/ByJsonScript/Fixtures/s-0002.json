@@ -1,5 +1,5 @@
 {
-	"description": "Test output of `Special:SearchByProperty` (`wgContLang=en`, skip-on sqlite, 1.19)",
+	"description": "Test output from `Special:SearchByProperty` for `_num`, `_txt`, `_tel` (`wgContLang=en`, skip-on sqlite, 1.19)",
 	"properties": [
 		{
 			"name": "Has text",
@@ -8,6 +8,10 @@
 		{
 			"name": "Has number",
 			"contents": "[[Has type::Number]] [[Display precision of::2]]"
+		},
+		{
+			"name": "Has telephone number",
+			"contents": "[[Has type::Telephone number]]"
 		}
 	],
 	"subjects": [
@@ -26,6 +30,10 @@
 		{
 			"name": "Example/S0002/4",
 			"contents": "[[Has number::1.2e-13]]"
+		},
+		{
+			"name": "Example/S0002/5",
+			"contents": "[[Has telephone number::+1-201-555-0123]]"
 		}
 	],
 	"special-testcases": [
@@ -130,6 +138,40 @@
 				"to-contain": [
 					"Example-2FS0002-2F4",
 					"<small>(1.2e-13)</small>"
+				]
+			}
+		},
+		{
+			"about": "#6 telephone number",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "",
+				"request-parameters":{
+					"property": "Has telephone number",
+					"value": "+1-201-555-0123"
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"Example-2FS0002-2F5",
+					"+1-201-555-0123"
+				]
+			}
+		},
+		{
+			"about": "#6 telephone number",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "",
+				"request-parameters":{
+					"property": "Has telephone number",
+					"value": "+1-201-555-0123"
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"Example-2FS0002-2F5",
+					"+1-201-555-0123"
 				]
 			}
 		}

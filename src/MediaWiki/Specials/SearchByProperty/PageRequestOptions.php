@@ -5,6 +5,8 @@ namespace SMW\MediaWiki\Specials\SearchByProperty;
 use SMW\DataValueFactory;
 use SMW\UrlEncoder;
 use SMWPropertyValue as PropertyValue;
+use SMW\DataValues\TelephoneUriValue;
+use SMWNumberValue as NumberValue;
 
 /**
  * @license GNU GPL v2+
@@ -95,8 +97,8 @@ class PageRequestOptions {
 		);
 
 		$value = str_replace(
-			array( '-25', '_', '-2D', '-20' ),
-			array( '%', ' ', '-', ' ' ),
+			array( '-25', '_', '-2D' ),
+			array( '%', ' ', '-' ),
 			$value
 		);
 
@@ -122,10 +124,14 @@ class PageRequestOptions {
 			$this->property->getDataItem()
 		);
 
-		if ( $this->value instanceof \SMWNumberValue ) {
+		if ( $this->value instanceof NumberValue ) {
+			$value = str_replace( array(  '-20' ), array( ' ' ), $value);
 			// Do not try to decode things like 1.2e-13
 			// Signals that we don't want any precision limitation
 			$this->value->setOption( 'no.displayprecision', true );
+		} elseif ( $this->value instanceof TelephoneUriValue ) {
+			// No encoding to avoid turning +1-201-555-0123
+			// into +1 1U523 or further obfuscate %2B1-2D201-2D555-2D0123 ...
 		} else {
 			$value = $this->urlEncoder->decode( $value );
 		}

@@ -182,8 +182,40 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
+		#10
+		$provider[] = array(
+			'',
+			array(
+				'property' => 'Temperature',
+				'value'    => '373,15-20K',
+				'nearbySearchForType' => array( '_wpg' )
+			),
+			array(
+				'limit'  => 20,
+				'offset' => 0,
+				'nearbySearch' => false,
+				'propertyString' => 'Temperature',
+				'valueString'    => '373,15 K',
+			)
+		);
 
-//
+		#11
+		$provider[] = array(
+			'',
+			array(
+				'property' => 'Telephone number',
+				'value'    => '%2B1-2D201-2D555-2D0123',
+				'nearbySearchForType' => array( '_tel' )
+			),
+			array(
+				'limit'  => 20,
+				'offset' => 0,
+				'nearbySearch' => true,
+				'propertyString' => 'Telephone number',
+				'valueString'    => '%2B1-201-555-0123',
+			)
+		);
+
 		return $provider;
 	}
 
