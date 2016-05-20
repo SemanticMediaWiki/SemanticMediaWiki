@@ -492,12 +492,12 @@ class HookRegistry {
 
 	private function registerHooksForInternalUse( ApplicationFactory $applicationFactory, DeferredRequestDispatchManager $deferredRequestDispatchManager ) {
 
+		$queryDependencyLinksStoreFactory = new QueryDependencyLinksStoreFactory();
+
 		/**
 		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::SQLStore::AfterDataUpdateComplete
 		 */
-		$this->handlers['SMW::SQLStore::AfterDataUpdateComplete'] = function ( $store, $semanticData, $compositePropertyTableDiffIterator ) use ( $applicationFactory, $deferredRequestDispatchManager ) {
-
-			$queryDependencyLinksStoreFactory = new QueryDependencyLinksStoreFactory();
+		$this->handlers['SMW::SQLStore::AfterDataUpdateComplete'] = function ( $store, $semanticData, $compositePropertyTableDiffIterator ) use ( $applicationFactory, $queryDependencyLinksStoreFactory, $deferredRequestDispatchManager ) {
 
 			$queryDependencyLinksStore = $queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
 				$store
@@ -523,9 +523,7 @@ class HookRegistry {
 		/**
 		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Store::AfterQueryResultLookupComplete
 		 */
-		$this->handlers['SMW::Store::AfterQueryResultLookupComplete'] = function ( $store, &$result ) use ( $applicationFactory ) {
-
-			$queryDependencyLinksStoreFactory = new QueryDependencyLinksStoreFactory();
+		$this->handlers['SMW::Store::AfterQueryResultLookupComplete'] = function ( $store, &$result ) use ( $queryDependencyLinksStoreFactory ) {
 
 			$queryDependencyLinksStore = $queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
 				$store
