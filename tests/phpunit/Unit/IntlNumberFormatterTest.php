@@ -229,6 +229,15 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$provider['un.9'] = array(
 			10000000,
+			312.23545555,
+			null,
+			'en',
+			'en',
+			'312.235455550'
+		);
+
+		$provider['un.10'] = array(
+			10000000,
 			1.334e-13,
 			false,
 			'en',
@@ -236,7 +245,7 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 			'1.334e-13'
 		);
 
-		$provider['un.10'] = array(
+		$provider['un.11'] = array(
 			10000000,
 			1.334e-13,
 			false,

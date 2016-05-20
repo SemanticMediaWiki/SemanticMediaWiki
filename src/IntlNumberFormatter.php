@@ -250,7 +250,9 @@ class IntlNumberFormatter {
 			return $this->doFormatExponentialNotation( $value );
 		}
 
-		$precision = $precision === false ? $this->getPrecisionFrom( $value ) : $precision;
+		if ( $precision === false || $precision === null ) {
+			$precision = $this->getPrecisionFrom( $value );
+		}
 
 		return $this->doFormatWithPrecision(
 			$value,

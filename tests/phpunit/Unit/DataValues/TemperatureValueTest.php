@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\DataValues;
 
-use SMW\ApplicationFactory;
 use SMW\DataValues\TemperatureValue;
-use SMW\DIProperty;
+use SMW\DataItemFactory;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\TemperatureValue
@@ -16,6 +16,25 @@ use SMW\DIProperty;
  * @author mwjames
  */
 class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
+
+	private $testEnvironment;
+	private $dataItemFactory;
+	private $propertySpecificationLookup;
+
+	protected function setUp() {
+		$this->testEnvironment = new TestEnvironment();
+		$this->dataItemFactory = new DataItemFactory();
+
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
+	}
+
+	protected function tearDown() {
+		$this->testEnvironment->tearDown();
+	}
 
 	public function testCanConstruct() {
 
@@ -61,18 +80,46 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSetUserValueToReturnOnPreferredDisplayUnit() {
 
-		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$propertySpecificationLookup->expects( $this->once() )
+		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'getDisplayUnitsFor' )
 			->will( $this->returnValue( array( 'Celsius' ) ) );
 
-		ApplicationFactory::getInstance()->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
+		$instance = new TemperatureValue();
+
+		$instance->setProperty(
+			$this->dataItemFactory->newDIProperty( 'Foo' )
+		);
+
+		$instance->setUserValue( '100 °C' );
+
+		$this->assertContains(
+			'373.15 K',
+			$instance->getWikiValue()
+		);
+
+		$this->assertContains(
+			'100 °C',
+			$instance->getShortWikiText()
+		);
+
+		$this->assertContains(
+			'100&#160;°C (373&#160;K, 212&#160;°F, 672&#160;°R)',
+			$instance->getLongWikiText()
+		);
+	}
+
+	public function testSetUserValueToReturnOnPreferredDisplayPrecision() {
+
+		$this->propertySpecificationLookup->expects( $this->once() )
+			->method( 'getDisplayPrecisionFor' )
+			->will( $this->returnValue( 0 ) );
 
 		$instance = new TemperatureValue();
-		$instance->setProperty( new DIProperty( 'Foo' ) );
+
+		$instance->setProperty(
+			$this->dataItemFactory->newDIProperty( 'Foo' )
+		);
+
 		$instance->setUserValue( '100 °C' );
 
 		$this->assertContains(
@@ -86,11 +133,9 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertContains(
-			'100&#160;°C (373&#160;K, 212&#160;°F, 672&#160;°R)',
+			'373&#160;K (100&#160;°C, 212&#160;°F, 672&#160;°R)',
 			$instance->getLongWikiText()
 		);
-
-		ApplicationFactory::getInstance()->clear();
 	}
 
 }
