@@ -3,6 +3,7 @@
 use SMW\Highlighter;
 use SMW\IntlNumberFormatter;
 use SMW\Localizer;
+use SMW\Message;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 
 /**
@@ -294,6 +295,7 @@ class SMWNumberValue extends SMWDataValue {
 		// When generating an infoLink, use the normalized value without any
 		// precision limitation
 		$this->setOption( 'no.displayprecision', true );
+		$this->setOption( 'content.language', Message::CONTENT_LANGUAGE );
 		$infoLinks = parent::getInfolinks();
 		$this->setOption( 'no.displayprecision', false );
 

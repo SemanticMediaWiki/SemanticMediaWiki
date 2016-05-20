@@ -8,12 +8,28 @@
 		{
 			"name": "Has boolean",
 			"contents": "[[Has type::Boolean]]"
+		},
+		{
+			"name": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"name": "Has atomic mass unit",
+			"contents": "[[Has type::Quantity]] [[Corresponds to::1 u]] [[Corresponds to::1.660539040e-27 kg]]"
 		}
 	],
 	"subjects": [
 		{
 			"name": "Example/S0008/1",
 			"contents": "[[Has date::12 Jan 1991 8:56]] [[Has boolean::true]] [[Category:S0008]]"
+		},
+		{
+			"name": "Example/S0008/2",
+			"contents": "[[Has number::0.00000000000012]] [[Has number::72.769482308]] [[Has number::1.334e-13]] [[Category:S0008]]"
+		},
+		{
+			"name": "Example/S0008/3 (Hydrogen-1 atom)",
+			"contents": "[[Has atomic mass unit::1.007825 u]] [[Category:S0008]]"
 		}
 	],
 	"special-testcases": [
@@ -29,6 +45,38 @@
 					"<span class=\"smwb-value\">verdadero&#160;&#160;",
 					"SearchByProperty/Has-20boolean/true",
 					"<span class=\"smwb-value\">08:56:00 12 ene 1991&#160;&#160;"
+				]
+			}
+		},
+		{
+			"about": "#1 (numbers)",
+			"special-page": {
+				"page":"Browse",
+				"query-parameters": "Example/S0008/2",
+				"request-parameters":{}
+			},
+			"expected-output": {
+				"to-contain": [
+					"<span class=\"smwb-value\">1,2e-13&#160;&#160;",
+					"<span class=\"smwb-value\">72,769&#160;&#160;",
+					"<span class=\"smwb-value\">1,334e-13&#160;&#160;",
+					"Special:SearchByProperty/Has-20number/1.2e-2D13",
+					"Special:SearchByProperty/Has-20number/72.769482308",
+					"Special:SearchByProperty/Has-20number/1.334e-2D13"
+				]
+			}
+		},
+		{
+			"about": "#2 (quantity)",
+			"special-page": {
+				"page":"Browse",
+				"query-parameters": "Example/S0008/3 (Hydrogen-1 atom)",
+				"request-parameters":{}
+			},
+			"expected-output": {
+				"to-contain": [
+					"<span class=\"smwb-value\">1,008&#160;u (1,673533e-27&#160;kg)&#160;&#160;",
+					"Special:SearchByProperty/Has-20atomic-20mass-20unit/1.007825-20u"
 				]
 			}
 		}
