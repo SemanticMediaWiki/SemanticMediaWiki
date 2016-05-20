@@ -165,23 +165,25 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		#8
+		#9
 		$provider[] = array(
 			'',
 			array(
-				'property' => '',
-				'value'    => 'Foo_bar',
+				'property' => 'Number',
+				'value'    => '2',
 				'nearbySearchForType' => array( '_wpg' )
 			),
 			array(
 				'limit'  => 20,
 				'offset' => 0,
 				'nearbySearch' => false,
-				'propertyString' => '',
-				'valueString'    => 'Foo bar',
+				'propertyString' => 'Number',
+				'valueString'    => '2.0',
 			)
 		);
 
+
+//
 		return $provider;
 	}
 

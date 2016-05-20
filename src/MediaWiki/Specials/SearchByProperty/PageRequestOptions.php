@@ -94,7 +94,11 @@ class PageRequestOptions {
 			str_replace( array( '_' ), array( ' ' ), $property )
 		);
 
-		$value = str_replace( array( '-25', '_' ), array( '%', ' ' ), $value );
+		$value = str_replace(
+			array( '-25', '_', '-2D', '-20' ),
+			array( '%', ' ', '-', ' ' ),
+			$value
+		);
 
 		$this->property = PropertyValue::makeUserProperty( $property );
 
@@ -104,21 +108,31 @@ class PageRequestOptions {
 			$this->valueString = $value;
 		} else {
 			$this->propertyString = $this->property->getWikiValue();
-
-			$this->value = DataValueFactory::getInstance()->newPropertyObjectValue(
-				$this->property->getDataItem(),
-				$this->urlEncoder->decode( $value )
-			);
-
-			// Signals that we don't want any precision limitation
-			$this->value->setOption( 'value.description', true );
-
-			$this->valueString = $this->value->isValid() ? $this->value->getWikiValue() : $value;
+			$this->setValue( $value );
 		}
 
 		$this->setLimit();
 		$this->setOffset();
 		$this->setNearbySearch();
+	}
+
+	private function setValue( $value ) {
+
+		$this->value = DataValueFactory::getInstance()->newPropertyObjectValue(
+			$this->property->getDataItem()
+		);
+
+		if ( $this->value instanceof \SMWNumberValue ) {
+			// Do not try to decode things like 1.2e-13
+			// Signals that we don't want any precision limitation
+			$this->value->setOption( 'no.displayprecision', true );
+		} else {
+			$value = $this->urlEncoder->decode( $value );
+		}
+
+		$this->value->setUserValue( $value );
+
+		$this->valueString = $this->value->isValid() ? $this->value->getWikiValue() : $value;
 	}
 
 	private function setLimit() {
