@@ -41,6 +41,11 @@ class Database {
 	private $dbPrefix = '';
 
 	/**
+	 * @var string
+	 */
+	private $disabledTransactions = false;
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param DBConnectionProvider $readConnectionProvider
@@ -317,10 +322,12 @@ class Database {
 	}
 
 	/**
-	 * @note Use a blank trx profiler to ignore expections
+	 * @note Use a blank trx profiler to ignore exceptions
+	 *
 	 * @since 2.4
 	 */
 	function resetTransactionProfiler() {
+		// MW 1.27
 		if ( method_exists( $this->writeConnection(), 'setTransactionProfiler' ) ) {
 			$this->writeConnection()->setTransactionProfiler( new \TransactionProfiler() );
 		}
@@ -333,6 +340,32 @@ class Database {
 	 */
 	function clearFlag( $flag ) {
 		$this->writeConnection()->clearFlag( $flag );
+	}
+
+	/**
+	 * @note According to notes in SqlBagOStuff.php#L161
+	 * "... and PostgreSQL needs to know if we are in transaction or not"
+	 *
+	 * @since 2.4
+	 */
+	public function disableTransactions() {
+		if ( $this->writeConnection()->getType() == 'mysql' && $this->writeConnection()->getFlag( DBO_TRX ) ) {
+			$this->writeConnection()->clearFlag( DBO_TRX );
+			$this->disabledTransactions = true;
+		}
+	}
+
+	/**
+	 * Can only be used in cases where Database::disableTransactions was
+	 * successful
+	 *
+	 * @since 2.4
+	 */
+	public function enableTransactions() {
+		if ( $this->disabledTransactions ) {
+			$this->writeConnection()->setFlag( DBO_TRX );
+			$this->disabledTransactions = false;
+		}
 	}
 
 	/**
