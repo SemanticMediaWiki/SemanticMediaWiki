@@ -175,7 +175,7 @@ class TimeValueFormatter extends DataValueFormatter {
 
 		// If the language code is empty then the content language code is used
 		$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage(
-			$this->dataValue->getOptionValueFor( 'content.language' )
+			Localizer::getInstance()->getContentLanguage()
 		);
 
 		// https://en.wikipedia.org/wiki/Anno_Domini
