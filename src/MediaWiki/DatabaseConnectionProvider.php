@@ -34,6 +34,15 @@ class DatabaseConnectionProvider implements DBConnectionProvider {
 	}
 
 	/**
+	 * @see #1499
+	 *
+	 * @since 2.4
+	 */
+	public function resetTransactionProfiler() {
+		$this->getConnection()->resetTransactionProfiler();
+	}
+
+	/**
 	 * @see DBConnectionProvider::releaseConnection
 	 *
 	 * @since 2.1

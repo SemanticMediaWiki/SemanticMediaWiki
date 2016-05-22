@@ -317,6 +317,25 @@ class Database {
 	}
 
 	/**
+	 * @note Use a blank trx profiler to ignore expections
+	 * @since 2.4
+	 */
+	function resetTransactionProfiler() {
+		if ( method_exists( $this->writeConnection(), 'setTransactionProfiler' ) ) {
+			$this->writeConnection()->setTransactionProfiler( new \TransactionProfiler() );
+		}
+	}
+
+	/**
+	 * @see DatabaseBase::clearFlag
+	 *
+	 * @since 2.4
+	 */
+	function clearFlag( $flag ) {
+		$this->writeConnection()->clearFlag( $flag );
+	}
+
+	/**
 	 * @see DatabaseBase::insert
 	 *
 	 * @since 1.9.1

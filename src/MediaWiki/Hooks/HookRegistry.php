@@ -544,13 +544,6 @@ class HookRegistry {
 		 */
 		$this->handlers['ParserFirstCallInit'] = function ( &$parser ) use( $applicationFactory ) {
 
-			// We shouldn't care for this but 1.27 is spamming the logs with false
-			// DB performance expectation violations hence we silence it
-			// https://gerrit.wikimedia.org/r/#/c/279462/1
-			if ( method_exists( \Profiler::instance(), 'getTransactionProfiler' ) ) {
-				\Profiler::instance()->getTransactionProfiler()->resetExpectations();
-			}
-
 			$parserFunctionFactory = $applicationFactory->newParserFunctionFactory( $parser );
 
 			list( $name, $definition, $flag ) = $parserFunctionFactory->newAskParserFunctionDefinition();
