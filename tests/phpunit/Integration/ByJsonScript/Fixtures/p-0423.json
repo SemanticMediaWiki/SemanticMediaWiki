@@ -12,6 +12,11 @@
 			"contents": "[[Has date::12 Jan 1957 12:05]]"
 		},
 		{
+			"name": "Example/P0423/2",
+			"contentlanguage": "fr",
+			"contents": "[[Has date::12 April 1957 12:05]]"
+		},
+		{
 			"name": "Example/P0423/Q1.1",
 			"contents": "{{#ask: [[Has date::12 Jan 1957 12:05]] |?Has date |?Has date#MEDIAWIKI }}"
 		},
@@ -26,6 +31,10 @@
 		{
 			"name": "Example/P0423/Q1.4",
 			"contents": "{{#show: Example/P0423/1 |?Has date#LOCL }}"
+		},
+		{
+			"name": "Example/P0423/Q2.1",
+			"contents": "{{#show: Example/P0423/2 |?Has date }}"
 		}
 	],
 	"parser-testcases": [
@@ -82,6 +91,18 @@
 			"expected-output": {
 				"to-contain": [
 					"<p>1957年1月12日 (土) 12:05:00"
+				]
+			}
+		},
+		{
+			"about": "#5 page vs global content language",
+			"subject": "Example/P0423/Q2.1",
+			"expected-output": {
+				"to-contain": [
+					"<p>12 April 1957 12:05:00"
+				],
+				"not-contain": [
+					"<p>12 avril 1957 12:05:00"
 				]
 			}
 		}
