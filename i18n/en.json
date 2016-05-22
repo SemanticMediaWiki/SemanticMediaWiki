@@ -12,7 +12,7 @@
 	"smw_factbox_head": "Facts about \"$1\"",
 	"smw_isspecprop": "This property is a special property in this wiki.",
 	"smw-concept-cache-header": "Cache usage",
-	"smw-concept-cache-count": "The [https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count concept cache] contains {{PLURAL:$1|'''$1'''}} entities ($2).",
+	"smw-concept-cache-count": "The [https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count concept cache] contains {{PLURAL:$1|'''one''' entity|'''$1''' entities}} ($2).",
 	"smw-concept-no-cache": "No cache available.",
 	"smw_concept_description": "Description of concept \"$1\"",
 	"smw_no_concept_namespace": "Concepts can only be defined on pages in the Concept: namespace.",
