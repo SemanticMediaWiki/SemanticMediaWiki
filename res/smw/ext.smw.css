@@ -705,6 +705,10 @@ a.smw-ask-action-btn-lblue:hover {
 	padding: .3em 1em;
 }
 
+.skin-chameleon .smwfact td {
+	padding: 5px;
+}
+
 .browse-input-resp .mw-ui-input:focus {
 	box-shadow: inset 0 0 0 1px #ddd;
 	border-color: #ddd;
