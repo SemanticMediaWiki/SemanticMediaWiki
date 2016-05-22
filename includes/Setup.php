@@ -113,9 +113,12 @@ final class Setup {
 		);
 
 		// Connection can be used to redirect queries to another DB cluster
+		$queryengineConnectionProvider = $mwCollaboratorFactory->newMediaWikiDatabaseConnectionProvider();
+		$queryengineConnectionProvider->resetTransactionProfiler();
+
 		$connectionManager->registerConnectionProvider(
 			'mw.db.queryengine',
-			$mwCollaboratorFactory->newMediaWikiDatabaseConnectionProvider()
+			$queryengineConnectionProvider
 		);
 	}
 
