@@ -157,6 +157,11 @@ class QueryEngine {
 
 		$db = $this->store->getConnection( 'mw.db.queryengine' );
 
+		// #1605
+		// "... creating temporary tables in a transaction is not replication-safe
+		// and causes errors in MySQL 5.6. ..."
+		$db->disableTransactions();
+
 		$this->queryMode = $query->querymode;
 		$this->querySegmentList = array();
 
@@ -204,6 +209,7 @@ class QueryEngine {
 				$query->querymode != Query::MODE_DEBUG &&
 				count( $this->errors ) > 0 ) {
 			$query->addErrors( $this->errors );
+			$db->enableTransactions();
 			return new QueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->store, false );
 		}
 
@@ -230,6 +236,8 @@ class QueryEngine {
 
 		$this->querySegmentListProcessor->cleanUp();
 		$query->addErrors( $this->errors );
+
+		$db->enableTransactions();
 
 		return $result;
 	}

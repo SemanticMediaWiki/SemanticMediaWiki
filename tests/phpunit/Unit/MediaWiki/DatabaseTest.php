@@ -364,6 +364,48 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		$instance->commitTransaction( __METHOD__ );
 	}
 
+	public function testDisableEnableTransactions() {
+
+		$database = $this->getMockBuilder( '\DatabaseBase' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getFlag', 'clearFlag', 'setFlag' ) )
+			->getMockForAbstractClass();
+
+		$database->expects( $this->any() )
+			->method( 'getType' )
+			->will( $this->returnValue( 'mysql' ) );
+
+		$database->expects( $this->any() )
+			->method( 'getFlag' )
+			->will( $this->returnValue( true ) );
+
+		$database->expects( $this->once() )
+			->method( 'clearFlag' );
+
+		$database->expects( $this->once() )
+			->method( 'setFlag' );
+
+		$readConnectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$writeConnectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$writeConnectionProvider->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $database ) );
+
+		$instance = new Database(
+			$readConnectionProvider,
+			$writeConnectionProvider
+		);
+
+		$instance->disableTransactions();
+		$instance->enableTransactions();
+	}
+
 	public function testMissingWriteConnectionThrowsException() {
 
 		$connectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
