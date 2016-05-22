@@ -55,7 +55,7 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			$instance,
-			call_user_func_array( array( $parserFunctionFactory, $method ), array() )
+			call_user_func_array( array( $parserFunctionFactory, $method ), array( $parser ) )
 		);
 	}
 

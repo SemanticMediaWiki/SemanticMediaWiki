@@ -45,185 +45,211 @@ class ParserFunctionFactory {
 	 * @deprecated since 2.1, use newSubobjectParserFunction
 	 */
 	public function getSubobjectParser() {
-		return $this->newSubobjectParserFunction();
+		return $this->newSubobjectParserFunction( $this->parser );
 	}
 
 	/**
 	 * @deprecated since 2.1, use newRecurringEventsParserFunction
 	 */
 	public function getRecurringEventsParser() {
-		return $this->newRecurringEventsParserFunction();
+		return $this->newRecurringEventsParserFunction( $this->parser );
 	}
 
 	/**
 	 * @since 2.1
 	 *
+	 * @param Parser $parser
+	 *
 	 * @return AskParserFunction
 	 */
-	public function newAskParserFunction() {
+	public function newAskParserFunction( Parser $parser ) {
 
 		$circularReferenceGuard = new CircularReferenceGuard( 'ask-parser' );
 		$circularReferenceGuard->setMaxRecursionDepth( 2 );
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
-			$this->parser->getTitle(),
-			$this->parser->getOutput()
+			$parser->getTitle(),
+			$parser->getOutput()
 		);
 
-		$messageFormatter = new MessageFormatter( $this->parser->getTargetLanguage() );
+		$messageFormatter = new MessageFormatter(
+			$parser->getTargetLanguage()
+		);
 
-		$instance = new AskParserFunction(
+		$askParserFunction = new AskParserFunction(
 			$parserData,
 			$messageFormatter,
 			$circularReferenceGuard
 		);
 
-		return $instance;
+		return $askParserFunction;
 	}
 
 	/**
 	 * @since 2.1
 	 *
+	 * @param Parser $parser
+	 *
 	 * @return ShowParserFunction
 	 */
-	public function newShowParserFunction() {
+	public function newShowParserFunction( Parser $parser ) {
 
 		$circularReferenceGuard = new CircularReferenceGuard( 'show-parser' );
 		$circularReferenceGuard->setMaxRecursionDepth( 2 );
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
-			$this->parser->getTitle(),
-			$this->parser->getOutput()
+			$parser->getTitle(),
+			$parser->getOutput()
 		);
 
-		$messageFormatter = new MessageFormatter( $this->parser->getTargetLanguage() );
+		$messageFormatter = new MessageFormatter(
+			$parser->getTargetLanguage()
+		);
 
-		$instance = new ShowParserFunction(
+		$showParserFunction = new ShowParserFunction(
 			$parserData,
 			$messageFormatter,
 			$circularReferenceGuard
 		);
 
-		return $instance;
+		return $showParserFunction;
 	}
 
 	/**
 	 * @since 2.1
 	 *
+	 * @param Parser $parser
+	 *
 	 * @return SetParserFunction
 	 */
-	public function newSetParserFunction() {
+	public function newSetParserFunction( Parser $parser ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$parserData = $applicationFactory->newParserData(
-			$this->parser->getTitle(),
-			$this->parser->getOutput()
+			$parser->getTitle(),
+			$parser->getOutput()
 		);
 
 		$messageFormatter = new MessageFormatter(
-			$this->parser->getTargetLanguage()
+			$parser->getTargetLanguage()
 		);
 
 		$templateRenderer = $applicationFactory->newMwCollaboratorFactory()->newWikitextTemplateRenderer();
 
-		$instance = new SetParserFunction(
+		$setParserFunction = new SetParserFunction(
 			$parserData,
 			$messageFormatter,
 			$templateRenderer
 		);
 
-		return $instance;
+		return $setParserFunction;
 	}
 
 	/**
 	 * @since 2.1
 	 *
+	 * @param Parser $parser
+	 *
 	 * @return ConceptParserFunction
 	 */
-	public function newConceptParserFunction() {
+	public function newConceptParserFunction( Parser $parser ) {
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
-			$this->parser->getTitle(),
-			$this->parser->getOutput()
+			$parser->getTitle(),
+			$parser->getOutput()
 		);
 
-		$messageFormatter = new MessageFormatter( $this->parser->getTargetLanguage() );
+		$messageFormatter = new MessageFormatter(
+			$parser->getTargetLanguage()
+		);
 
-		$instance = new ConceptParserFunction(
+		$conceptParserFunction = new ConceptParserFunction(
 			$parserData,
 			$messageFormatter
 		);
 
-		return $instance;
+		return $conceptParserFunction;
 	}
 
 	/**
 	 * @since 2.1
 	 *
+	 * @param Parser $parser
+	 *
 	 * @return SubobjectParserFunction
 	 */
-	public function newSubobjectParserFunction() {
+	public function newSubobjectParserFunction( Parser $parser ) {
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
-			$this->parser->getTitle(),
-			$this->parser->getOutput()
+			$parser->getTitle(),
+			$parser->getOutput()
 		);
 
-		$subobject = new Subobject( $this->parser->getTitle() );
-		$messageFormatter = new MessageFormatter( $this->parser->getTargetLanguage() );
+		$subobject = new Subobject( $parser->getTitle() );
 
-		$instance = new SubobjectParserFunction(
+		$messageFormatter = new MessageFormatter(
+			$parser->getTargetLanguage()
+		);
+
+		$subobjectParserFunction = new SubobjectParserFunction(
 			$parserData,
 			$subobject,
 			$messageFormatter
 		);
 
-		return $instance;
+		return $subobjectParserFunction;
 	}
 
 	/**
 	 * @since 2.1
 	 *
+	 * @param Parser $parser
+	 *
 	 * @return RecurringEventsParserFunction
 	 */
-	public function newRecurringEventsParserFunction() {
+	public function newRecurringEventsParserFunction( Parser $parser ) {
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
-			$this->parser->getTitle(),
-			$this->parser->getOutput()
+			$parser->getTitle(),
+			$parser->getOutput()
 		);
 
-		$subobject = new Subobject( $this->parser->getTitle() );
-		$messageFormatter = new MessageFormatter( $this->parser->getTargetLanguage() );
+		$subobject = new Subobject( $parser->getTitle() );
 
-		$instance = new RecurringEventsParserFunction(
+		$messageFormatter = new MessageFormatter(
+			$parser->getTargetLanguage()
+		);
+
+		$recurringEventsParserFunction = new RecurringEventsParserFunction(
 			$parserData,
 			$subobject,
 			$messageFormatter,
 			ApplicationFactory::getInstance()->getSettings()
 		);
 
-		return $instance;
+		return $recurringEventsParserFunction;
 	}
 
 	/**
 	 * @since 2.1
 	 *
+	 * @param Parser $parser
+	 *
 	 * @return DeclareParserFunction
 	 */
-	public function newDeclareParserFunction() {
+	public function newDeclareParserFunction( Parser $parser ) {
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
-			$this->parser->getTitle(),
-			$this->parser->getOutput()
+			$parser->getTitle(),
+			$parser->getOutput()
 		);
 
-		$instance = new DeclareParserFunction(
+		$declareParserFunction = new DeclareParserFunction(
 			$parserData
 		);
 
-		return $instance;
+		return $declareParserFunction;
 	}
 
 	/**
@@ -239,7 +265,10 @@ class ParserFunctionFactory {
 		$askParserFunctionDefinition = function( $parser ) use( $parserFunctionFactory ) {
 
 			$smwgQEnabled = ApplicationFactory::getInstance()->getSettings()->get( 'smwgQEnabled' );
-			$askParserFunction = $parserFunctionFactory->newFromParser( $parser )->newAskParserFunction();
+
+			$askParserFunction = $parserFunctionFactory->newAskParserFunction(
+				$parser
+			);
 
 			if ( !$smwgQEnabled ) {
 				return $askParserFunction->isQueryDisabled();
@@ -264,7 +293,10 @@ class ParserFunctionFactory {
 		$showParserFunctionDefinition = function( $parser ) use( $parserFunctionFactory ) {
 
 			$smwgQEnabled = ApplicationFactory::getInstance()->getSettings()->get( 'smwgQEnabled' );
-			$showParserFunction = $parserFunctionFactory->newFromParser( $parser )->newShowParserFunction();
+
+			$showParserFunction = $parserFunctionFactory->newShowParserFunction(
+				$parser
+			);
 
 			if ( !$smwgQEnabled ) {
 				return $showParserFunction->isQueryDisabled();
@@ -288,7 +320,9 @@ class ParserFunctionFactory {
 
 		$subobjectParserFunctionDefinition = function( $parser ) use( $parserFunctionFactory ) {
 
-			$subobjectParserFunction = $parserFunctionFactory->newFromParser( $parser )->newSubobjectParserFunction();
+			$subobjectParserFunction = $parserFunctionFactory->newSubobjectParserFunction(
+				$parser
+			);
 
 			return $subobjectParserFunction->parse(
 				ParameterProcessorFactory::newFromArray( func_get_args() )
@@ -310,7 +344,9 @@ class ParserFunctionFactory {
 
 		$recurringEventsParserFunctionDefinition = function( $parser ) use( $parserFunctionFactory ) {
 
-			$recurringEventsParserFunction = $parserFunctionFactory->newFromParser( $parser )->newRecurringEventsParserFunction();
+			$recurringEventsParserFunction = $parserFunctionFactory->newRecurringEventsParserFunction(
+				$parser
+			);
 
 			return $recurringEventsParserFunction->parse(
 				ParameterProcessorFactory::newFromArray( func_get_args() )
@@ -332,7 +368,9 @@ class ParserFunctionFactory {
 
 		$setParserFunctionDefinition = function( $parser ) use( $parserFunctionFactory ) {
 
-			$setParserFunction = $parserFunctionFactory->newFromParser( $parser )->newSetParserFunction();
+			$setParserFunction = $parserFunctionFactory->newSetParserFunction(
+				$parser
+			);
 
 			return $setParserFunction->parse(
 				ParameterProcessorFactory::newFromArray( func_get_args() )
@@ -354,7 +392,9 @@ class ParserFunctionFactory {
 
 		$conceptParserFunctionDefinition = function( $parser ) use( $parserFunctionFactory ) {
 
-			$conceptParserFunction = $parserFunctionFactory->newFromParser( $parser )->newConceptParserFunction();
+			$conceptParserFunction = $parserFunctionFactory->newConceptParserFunction(
+				$parser
+			);
 
 			return $conceptParserFunction->parse( func_get_args() );
 		};
@@ -373,7 +413,12 @@ class ParserFunctionFactory {
 		$parserFunctionFactory = $this;
 
 		$declareParserFunctionDefinition = function( $parser, $frame, $args ) use( $parserFunctionFactory ) {
-			return $parserFunctionFactory->newFromParser( $parser )->newDeclareParserFunction()->parse( $frame, $args );
+
+			$declareParserFunction = $parserFunctionFactory->newDeclareParserFunction(
+				$parser
+			);
+
+			return $declareParserFunction->parse( $frame, $args );
 		};
 
 		return array( 'declare', $declareParserFunctionDefinition, Parser::SFH_OBJECT_ARGS );
