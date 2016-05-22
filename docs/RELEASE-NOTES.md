@@ -114,5 +114,6 @@ Not a release yet.
 * #1591 Added `IntlNumberFormatter`
 * #1593 Added `NumberValueFormatter`
 * #1601 Added `InfoLinksProvider`
+* #1606 Disabled DB transactions in `QueryEngine` to avoid potential issues when creating temporary tables
 
 ## Contributors
