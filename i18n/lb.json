@@ -11,6 +11,8 @@
 	"smw_finallistconjunct": ", an",
 	"smw_factbox_head": "Fakten iwwer $1",
 	"smw_isspecprop": "Dëse Eegeschaft ass eng Spezial-Eegschaft an dëser Wiki.",
+	"smw-concept-cache-header": "Benotze vum Tëschespäicher",
+	"smw-concept-no-cache": "Keen Tëschespäicher disponibel.",
 	"smw_concept_description": "Beschreiwung vum Konzept \"$1\"",
 	"smw_multiple_concepts": "Op jiddwer Konzeptsäit ka just eng Definitioun vun engem Konzept stoen.",
 	"version-semantic": "Softwareerweiderungen (Semantic MediaWiki)",

@@ -271,7 +271,7 @@
 	"smw-sp-properties-header-label": "Lista właściwości",
 	"smw-sp-admin-settings-title": "Ustawienia konfiguracji",
 	"smw-sp-admin-idlookup-title": "Wyszukaj ID obiektu",
-	"smw-sp-admin-idlookup-objectid": "Identyfikator obiektu:",
+	"smw-sp-admin-objectid": "Identyfikator obiektu:",
 	"smw-livepreview-loading": "Trwa ładowanie…",
 	"smw-sp-searchbyproperty-resultlist-header": "Lista wyników",
 	"smw-sp-searchbyproperty-nonvaluequery": "Lista wartości, które mają przypisaną właściwość „$1”.",

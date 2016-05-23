@@ -295,7 +295,7 @@
 	"smw-sp-admin-settings-button": "Δημιουργία λίστας ρυθμίσεων",
 	"smw-sp-admin-idlookup-title": "Αναζήτηση αναγνωριστικού αντικειμένου",
 	"smw-sp-admin-idlookup-docu": "Παρουσιάζει λεπτομέρειες σχετικά με ένα αναγνωριστικό εσωτερικού αντικειμένου που αντιπροσωπεύει μεμονωμένες οντότητες (σελίδα wiki, υποαντικείμενο κλπ.) στο Σημασιολογικό MediaWiki.",
-	"smw-sp-admin-idlookup-objectid": "Αναγνωριστικό αντικειμένου:",
+	"smw-sp-admin-objectid": "Αναγνωριστικό αντικειμένου:",
 	"smw-livepreview-loading": "Φόρτωση σε εξέλιξη...",
 	"smw-sp-searchbyproperty-description": "Αυτή η σελίδα παρέχει μια απλή [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces διεπαφή περιήγησης] για την εύρεση οντοτήτων που περιγράφονται από κάποια ιδιότητα και κάποια ονομαστική τιμή. Άλλες διαθέσιμες διεπαφές αναζήτησης περιλαμβάνουν την [[Special:PageProperty|αναζήτηση ιδιοτήτων σελίδας]] και το [[Special:Ask|εργαλείο κατασκευής ερωτημάτων]].",
 	"smw-sp-searchbyproperty-resultlist-header": "Λίστα αποτελεσμάτων",

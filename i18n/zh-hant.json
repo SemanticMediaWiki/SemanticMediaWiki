@@ -17,7 +17,8 @@
 			"Wrightbus",
 			"아라",
 			"Cwlin0416",
-			"LNDDYL"
+			"LNDDYL",
+			"Reke"
 		]
 	},
 	"smw-desc": "讓您的 Wiki 更易於取得所需的資料 - 不論是對機器''與''人類\n([https://www.semantic-mediawiki.org/wiki/Help:User_manual 線上說明文件])",
@@ -25,6 +26,7 @@
 	"smw_finallistconjunct": " 和",
 	"smw_factbox_head": "關於 \"$1\" 的事實",
 	"smw_isspecprop": "此屬性為此 Wiki 的特殊屬性。",
+	"smw-concept-cache-header": "暫存使用",
 	"smw_concept_description": "概念 \"$1\" 的描述",
 	"smw_no_concept_namespace": "概念只能定義於命名空間 Concept: 中。",
 	"smw_multiple_concepts": "每頁概念頁面只能擁有一個概念定義。",
@@ -292,7 +294,7 @@
 	"smw-sp-admin-settings-title": "配置設定",
 	"smw-sp-admin-settings-button": "產生設定清單",
 	"smw-sp-admin-idlookup-title": "ObjectId 查詢",
-	"smw-sp-admin-idlookup-objectid": "物件 Id：",
+	"smw-sp-admin-objectid": "物件 Id：",
 	"smw-livepreview-loading": "讀取中...",
 	"smw-sp-searchbyproperty-resultlist-header": "結果清單",
 	"smw-editpage-annotation-enabled": "此頁面支援語義文內註釋 (例如 <nowiki>\"[[Is specified as::World Heritage Site]]\"</nowiki>) 來建立由 Semantic MediaWiki 提供的結構化、可查詢的內容。 如何使用標示法或 #ask 分析器功能的詳細說明，請查看 [https://www.semantic-mediawiki.org/wiki/Help:Getting_started 入門指引]、[https://www.semantic-mediawiki.org/wiki/Help:In-text_annotation 文內註釋]或[https://www.semantic-mediawiki.org/wiki/Help:Inline_queries 行內查詢]說明頁面。",

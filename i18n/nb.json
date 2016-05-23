@@ -294,7 +294,7 @@
 	"smw-sp-admin-settings-button": "Generer innstillingslisten",
 	"smw-sp-admin-idlookup-title": "Objekt-id-oppslag",
 	"smw-sp-admin-idlookup-docu": "Viser detaljer om en intern objekt-id som representerer individuelle elementer (wikipage, subobjekt etc.) i Semantic MediaWIki.",
-	"smw-sp-admin-idlookup-objectid": "Objekt-id:",
+	"smw-sp-admin-objectid": "Objekt-id:",
 	"smw-livepreview-loading": "Laster…",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|sekund|sekunder}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|sekund|sekunder}}"

@@ -160,7 +160,7 @@
 	"smw_adminlinks_datastructure": "Estructura de las donadas",
 	"smw_adminlinks_displayingdata": "Afichatge de las donadas",
 	"smw_adminlinks_inlinequerieshelp": "Ajuda sus las requèstas",
-	"smw-property-page-indicator-type-info": "{{PLURAL:$1|Utilizaire|Sistèma}}",
+	"smw-page-indicator-type-info": "{{PLURAL:$1|Utilizaire|Sistèma}}",
 	"smw-createproperty-isproperty": "Aquò es una proprietat del tipe $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|La valor autorizada per aquesta proprietat es|Las valors autorizadas per aquesta proprietat son}} :",
 	"smw_unknowntype": "Lo tipe d'aquesta proprietat es invalid",

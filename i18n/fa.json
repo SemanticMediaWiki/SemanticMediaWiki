@@ -8,7 +8,8 @@
 			"Momeni",
 			"Reza1615",
 			"ZxxZxxZ",
-			"Alirezaaa"
+			"Alirezaaa",
+			"Mahdy Saffar"
 		]
 	},
 	"smw-desc": "ویکی خود را بیشترقابل دسترس کنید- برای ماشین‌ها ''و'' انسان‌ها ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
@@ -265,7 +266,7 @@
 	"smw-prefs-ask-options-tooltip-display": "نمایش متن پارامتر به عنوان اطلاعات تول‌تیپ",
 	"smw-prefs-ask-options-collapsed-default": "فعال کردن جعبه گزینه برای ویران شدن توسط پیش‌فرض",
 	"smw-ui-tooltip-title-property": "ویژگی",
-	"smw-ui-tooltip-title-quantity": "کمیت",
+	"smw-ui-tooltip-title-quantity": "تبدیل واحد",
 	"smw-ui-tooltip-title-info": "اطلاعات",
 	"smw-ui-tooltip-title-service": "پیوندهای خدمت",
 	"smw-ui-tooltip-title-warning": "خطا",
@@ -274,7 +275,7 @@
 	"smw-ui-tooltip-title-note": "یادداشت",
 	"smw-ui-tooltip-title-legend": "افسانه",
 	"smw_unknowntype": "نوع اين ويژگي نامعتبر است",
-	"smw-concept-cache-text": "مفهوم، مجموع $1 {{PLURAL:$1|صفحه|صفحات}} را دارد، و آخرین به روز رسانی $2 بود.",
+	"smw-concept-cache-text": "مفهوم، مجموعاً $1 صفحه دارد، و آخرین به روز رسانی در $2 $3 بود.",
 	"smw_concept_header": "صفحه‌های مفهوم \"$1\"",
 	"smw_conceptarticlecount": "نمایش زیر $1 {{PLURAL:$1|صفحه|صفحات}}.",
 	"right-smw-admin": "دسترسی به وظایف مدیریت (مدیاویکی معنایی)",
@@ -291,5 +292,6 @@
 	"smw-sp-admin-settings-title": "تنظیمات پیکربندی",
 	"smw-sp-admin-settings-docu": "نمایش فهرست همه default و localized settings که به محیط مدیاویکی معنایی مربوط هستند. برای اطلاعات در  تنظیمات فردی، لطفاً به صفحه راهنما [https://www.semantic-mediawiki.org/wiki/Help:Configuration configuration] مراجعه کنید.",
 	"smw-sp-admin-settings-button": "ایجاد فهرست تنظیمات",
-	"smw-livepreview-loading": "در حال بارگیری…"
+	"smw-livepreview-loading": "در حال بارگیری…",
+	"smw-sp-searchbyproperty-resultlist-header": "فهرست نتایج"
 }
