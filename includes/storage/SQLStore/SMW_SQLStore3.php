@@ -263,7 +263,7 @@ class SMWSQLStore3 extends SMWStore {
 	/**
 	 * @param mixed $subject
 	 * @param DIProperty $property
-	 * @param null $requestoptions
+	 * @param null $requestOptions
 	 *
 	 * @return SMWDataItem[]
 	 */
