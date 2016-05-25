@@ -24,20 +24,15 @@ class TemporaryIdTableCreator {
 			// Remove any double quotes from the name
 			$tableName = str_replace( '"', '', $tableName );
 
-			return "CREATE OR REPLACE FUNCTION pg_temp.create_{$tableName}() RETURNS void AS "
-			. "$$ "
-			. "BEGIN "
-			. " IF EXISTS(SELECT NULL FROM pg_tables WHERE tablename='{$tableName}' AND schemaname = ANY (current_schemas(true))) "
-			. " THEN DELETE FROM {$tableName}; "
-			. " ELSE "
-			. "  CREATE TEMPORARY TABLE {$tableName} (id INTEGER PRIMARY KEY); "
-			. "    CREATE RULE {$tableName}_ignore AS ON INSERT TO {$tableName} WHERE (EXISTS (SELECT NULL FROM {$tableName} "
-			. "	 WHERE ({$tableName}.id = new.id))) DO INSTEAD NOTHING; "
-			. " END IF; "
-			. "END; "
-			. "$$ "
-			. "LANGUAGE 'plpgsql'; "
-			. "SELECT pg_temp.create_{$tableName}(); ";
+			return "DO \$\$BEGIN "
+				. " IF EXISTS(SELECT NULL FROM pg_tables WHERE tablename='{$tableName}' AND schemaname = ANY (current_schemas(true))) "
+				. " THEN DELETE FROM {$tableName}; "
+				. " ELSE "
+				. "  CREATE TEMPORARY TABLE {$tableName} (id INTEGER PRIMARY KEY); "
+				. "    CREATE RULE {$tableName}_ignore AS ON INSERT TO {$tableName} WHERE (EXISTS (SELECT 1 FROM {$tableName} "
+				. "	 WHERE ({$tableName}.id = new.id))) DO INSTEAD NOTHING; "
+				. " END IF; "
+				. "END\$\$";
 		}
 
 		// MySQL_ just a temporary table, use INSERT IGNORE later
