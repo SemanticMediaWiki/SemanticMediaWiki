@@ -214,7 +214,8 @@ class SMWAdmin extends SpecialPage {
 						'smw_title',
 						'smw_namespace',
 						'smw_iw',
-						'smw_subobject'
+						'smw_subobject',
+						'smw_sortkey'
 					),
 					'smw_id=' . $id,
 					__METHOD__
