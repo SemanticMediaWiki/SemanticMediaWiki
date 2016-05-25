@@ -89,6 +89,23 @@ class TestEnvironment {
 	/**
 	 * @since 2.4
 	 *
+	 * @param string $name
+	 */
+	public function resetMediaWikiService( $name ) {
+
+		// MW 1.27+
+		if ( !class_exists( '\MediaWiki\MediaWikiServices' ) ) {
+			return null;
+		}
+
+		\MediaWiki\MediaWikiServices::getInstance()->resetServiceForTesting( $name );
+
+		return $this;
+	}
+
+	/**
+	 * @since 2.4
+	 *
 	 * @param string $poolCache
 	 *
 	 * @return self
