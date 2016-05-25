@@ -43,9 +43,9 @@ class DisplayTitlePropertyAnnotator extends PropertyAnnotatorDecorator {
 			return;
 		}
 
-		// #1439
+		// #1439, #1611
 		$dataItem = $this->dataItemFactory->newDIBlob(
-			strip_tags(  $this->displayTitle )
+			strip_tags( htmlspecialchars_decode( $this->displayTitle ) )
 		);
 
 		$this->getSemanticData()->addPropertyObjectValue(

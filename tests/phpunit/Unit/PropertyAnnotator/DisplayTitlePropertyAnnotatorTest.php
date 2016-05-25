@@ -146,7 +146,20 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		#4 with different sortkey
+
+		#4 Strip tags
+		$provider[] = array(
+			'Foo',
+			"A 'quote' is <b>bold</b>",
+			'',
+			array(
+				'propertyCount'  => 2,
+				'propertyKeys'   => array( '_DTITLE', '_SKEY' ),
+				'propertyValues' => array( "A 'quote' is bold" ),
+			)
+		);
+
+		#5 with different sortkey
 		$provider[] = array(
 			'Foo',
 			'Lala',
@@ -155,6 +168,30 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 				'propertyCount'  => 1,
 				'propertyKeys'   => array( '_DTITLE' ),
 				'propertyValues' => array( 'Lala' ),
+			)
+		);
+
+		#6 unencoded Html entity
+		$provider[] = array(
+			'Foo',
+			'ABC & DEF',
+			'',
+			array(
+				'propertyCount'  => 2,
+				'propertyKeys'   => array( '_DTITLE', '_SKEY' ),
+				'propertyValues' => array( 'ABC & DEF' ),
+			)
+		);
+
+		#7 decoded/encoded Html entity
+		$provider[] = array(
+			'Foo',
+			'ABC &amp; DEF',
+			'',
+			array(
+				'propertyCount'  => 2,
+				'propertyKeys'   => array( '_DTITLE', '_SKEY' ),
+				'propertyValues' => array( 'ABC & DEF' ),
 			)
 		);
 
