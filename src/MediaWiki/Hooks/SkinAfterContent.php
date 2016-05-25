@@ -50,7 +50,9 @@ class SkinAfterContent {
 
 	private function canPerformUpdate() {
 
-		if ( $this->skin->getContext()->getRequest()->getVal( 'action' ) === 'delete' ) {
+		$request = $this->skin->getContext()->getRequest();
+
+		if ( $request->getVal( 'action' ) === 'delete' || $request->getVal( 'action' ) === 'purge' ) {
 			return false;
 		}
 

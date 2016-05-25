@@ -305,6 +305,43 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			array( 'text' => '' )
 		);
 
+		// #5 "purge" request
+		$text   = __METHOD__ . 'text-purge';
+
+		$title = MockTitle::buildMock( __METHOD__ . 'purge-request' );
+
+		$outputPage = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$skin = $this->getMockBuilder( '\Skin' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$skin->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$skin->expects( $this->atLeastOnce() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( $outputPage ) );
+
+		$context = new \RequestContext( );
+		$context->setRequest( new \FauxRequest( array( 'action' => 'purge' ), true ) );
+
+		$skin->expects( $this->atLeastOnce() )
+			->method( 'getContext' )
+			->will( $this->returnValue( $context ) );
+
+		$provider[] = array(
+			array( 'skin' => $skin, 'text' => $text ),
+			array( 'text' => '' )
+		);
+
 		return $provider;
 	}
 
