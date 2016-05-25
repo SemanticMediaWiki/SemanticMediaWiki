@@ -141,8 +141,9 @@ class SMWResultArray {
 	 * @return SMWDataValue|false
 	 */
 	public function getNextDataValue() {
-		$di = $this->getNextDataItem();
-		if ( $di === false ) {
+		$dataItem = $this->getNextDataItem();
+
+		if ( $dataItem === false ) {
 			return false;
 		}
 
@@ -152,8 +153,12 @@ class SMWResultArray {
 			// Not efficient, but correct: we need to find the right property for
 			// the selected index of the record here.
 			$pos = $this->mPrintRequest->getParameter( 'index' ) - 1;
-			$recordValue = DataValueFactory::getInstance()->newDataItemValue( $di,
-				$this->mPrintRequest->getData()->getDataItem() );
+
+			$recordValue = DataValueFactory::getInstance()->newDataItemValue(
+				$dataItem,
+				$this->mPrintRequest->getData()->getDataItem()
+			);
+
 			$diProperties = $recordValue->getPropertyDataItems();
 
 			if ( array_key_exists( $pos, $diProperties ) &&
@@ -171,34 +176,26 @@ class SMWResultArray {
 		// refs #1314
 		if ( $this->mPrintRequest->getMode() == PrintRequest::PRINT_PROP &&
 			strpos( $this->mPrintRequest->getTypeID(), '_txt' ) !== false &&
-			$di instanceof DIBlob ) {
-			$di = new DIBlob(
-				InTextAnnotationParser::removeAnnotation( $di->getString() )
+			$dataItem instanceof DIBlob ) {
+			$dataItem = new DIBlob(
+				InTextAnnotationParser::removeAnnotation( $dataItem->getString() )
 			);
 		}
 
-		$dv = DataValueFactory::getInstance()->newDataItemValue( $di, $diProperty );
-
-		// Allow the DV formatter to access a specific language code
-		$dv->setOption(
-			'content.language',
-			Localizer::getInstance()->getPreferredContentLanguage( $this->mResult )->getCode()
+		$dataValue = DataValueFactory::getInstance()->newDataItemValue(
+			$dataItem,
+			$diProperty
 		);
 
-		$dv->setOption(
-			'user.language',
-			Localizer::getInstance()->getUserLanguage()->getCode()
-		);
-
-		$dv->setContextPage(
+		$dataValue->setContextPage(
 			$this->mResult
 		);
 
 		if ( $this->mPrintRequest->getOutputFormat() ) {
-			$dv->setOutputFormat( $this->mPrintRequest->getOutputFormat() );
+			$dataValue->setOutputFormat( $this->mPrintRequest->getOutputFormat() );
 		}
 
-		return $dv;
+		return $dataValue;
 	}
 
 	/**
