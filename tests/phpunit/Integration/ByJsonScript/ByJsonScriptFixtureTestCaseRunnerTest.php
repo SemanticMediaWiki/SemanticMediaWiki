@@ -88,6 +88,11 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		ApplicationFactory::getInstance()->getMediaWikiNsContentReader()->skipMessageCache();
 		DataValueFactory::getInstance()->clear();
 
+		// Reset the Title/TitleParser otherwise a singleton instance holds an outdated
+		// content language reference
+		$this->testEnvironment->resetMediaWikiService( '_MediaWikiTitleCodec' );
+		$this->testEnvironment->resetMediaWikiService( 'TitleParser' );
+
 		$this->testEnvironment->resetPoolCacheFor( \SMW\PropertySpecificationLookup::POOLCACHE_ID );
 	}
 
