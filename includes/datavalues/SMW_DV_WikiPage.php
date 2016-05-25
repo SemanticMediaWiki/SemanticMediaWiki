@@ -363,7 +363,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		// all others use default linking, no embedding of images here
 		return $linker->link(
 			$this->getTitle(),
-			htmlspecialchars( $this->getLongCaptionText() ),
+			$this->getLongCaptionText(),
 			$this->linkAttributes
 		);
 	}
