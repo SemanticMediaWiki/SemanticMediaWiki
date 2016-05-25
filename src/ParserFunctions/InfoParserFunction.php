@@ -27,6 +27,10 @@ class InfoParserFunction implements HookHandler {
 	public function handle( Parser $parser, ProcessingResult $result ) {
 		$parameters = $result->getParameters();
 
+		if ( !isset( $parameters['message'] ) || $parameters['message']->getValue() === '' ) {
+			return '';
+		}
+
 		/**
 		 * Non-escaping is safe bacause a user's message is passed through parser, which will
 		 * handle unsafe HTM elements.
