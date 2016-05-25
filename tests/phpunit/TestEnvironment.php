@@ -98,7 +98,12 @@ class TestEnvironment {
 			return null;
 		}
 
-		\MediaWiki\MediaWikiServices::getInstance()->resetServiceForTesting( $name );
+		try {
+			\MediaWiki\MediaWikiServices::getInstance()->resetServiceForTesting( $name );
+		} catch( \Exception $e ) {
+			// Do nothing just avoid a
+			// MediaWiki\Services\NoSuchServiceException: No such service ...
+		}
 
 		return $this;
 	}
