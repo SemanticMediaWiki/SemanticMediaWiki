@@ -90,6 +90,7 @@ Not a release yet.
 * #1598 Fixed content language setting for `InfoLinks`
 * #1589 Fixed display precision constraint during condition building
 * #1608 Fixed that a `#info` without a message will create an empty tooltip or when used as `<info />` causing a failure
+* #1610 Fixed a potential exception in the `postgres` implementation when creating temporary tables 
 
 ## Internal changes
 
