@@ -270,14 +270,13 @@ class SPARQLStore extends Store {
 	 * @since 1.6
 	 */
 	public function getQueryResult( Query $query ) {
-		$callEndpoint = $GLOBALS['smwgCallSparqlEndpointInQuery'];
 		$result = null;
 
 		if ( \Hooks::run( 'SMW::Store::BeforeQueryResultLookupComplete', array( $this, $query, &$result ) ) ) {
-			if ($callEndpoint == true) {
+			if ($GLOBALS['smwgCallSparqlEndpointInQuery']) {
 				$result = $this->fetchQueryResult( $query );
 			} else {
-				$result = $this->baseStore->getQueryResult($query);
+				$result = $this->baseStore->getQueryResult( $query );
 			}
 		}
 
