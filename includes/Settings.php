@@ -135,7 +135,8 @@ class Settings extends Options {
 			'smwgExportBCAuxiliaryUse' => $GLOBALS['smwgExportBCAuxiliaryUse'],
 			'smwgEnabledInTextAnnotationParserStrictMode' => $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'],
 			'smwgSparqlRepositoryConnectorForcedHttpVersion' => $GLOBALS['smwgSparqlRepositoryConnectorForcedHttpVersion'],
-			'smwgDVFeatures' => $GLOBALS['smwgDVFeatures']
+			'smwgDVFeatures' => $GLOBALS['smwgDVFeatures'],
+			'smwgCallSparqlEndpointInQuery' => $GLOBALS['smwgCallSparqlEndpointInQuery']
 		);
 
 		$settings = $settings + array(
