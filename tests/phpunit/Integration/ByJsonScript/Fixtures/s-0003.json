@@ -1,5 +1,5 @@
 {
-	"description": "Test `Special:Ask` output for `format=rdf`/'format=json' (#1453, en, skip-on 1.19)",
+	"description": "Test `Special:Ask` output for `format=rdf`/`format=json`/DISPLAYTITLE (#1453, #1619, `wgRestrictDisplayTitle`, `wgContLang=en`, skip-on 1.19)",
 	"properties": [
 		{
 			"name": "Has boolean",
@@ -10,6 +10,10 @@
 		{
 			"name": "Example/S0003/1",
 			"contents": "[[Has boolean::true]] [[Category:S0003]]"
+		},
+		{
+			"name": "Example/S0003/2",
+			"contents": "{{DISPLAYTITLE:FOO-S0003}} [[Category:S0003]]"
 		},
 		{
 			"name": "Example/S0003/Q1",
@@ -69,11 +73,41 @@
 					"\"key\": \"Has_boolean\""
 				]
 			}
+		},
+		{
+			"about": "#3 (link=subject)",
+			"special-page": {
+				"page":"Ask",
+				"query-parameters": "-5B-5BCategory:S0003-5D-5D/mainlabel=/offset=0/format=table/link=subject",
+				"request-parameters":{}
+			},
+			"expected-output": {
+				"to-contain": [
+					"FOO-S0003"
+				]
+			}
+		},
+		{
+			"about": "#4 (link=none)",
+			"special-page": {
+				"page":"Ask",
+				"query-parameters": "-5B-5BCategory:S0003-5D-5D/mainlabel=/offset=0/format=table/link=none",
+				"request-parameters":{}
+			},
+			"expected-output": {
+				"to-contain": [
+					"Example/S0003/2"
+				],
+				"not-contain": [
+					"FOO-S0003"
+				]
+			}
 		}
 	],
 	"settings": {
 		"wgContLang": "en",
 		"wgLanguageCode": "en",
+		"wgRestrictDisplayTitle": false,
 		"smwgNamespace": "http://example.org/id/",
 		"smwgPageSpecialProperties": [ "_MDAT" ],
 		"smwgNamespacesWithSemanticLinks": {

@@ -335,6 +335,19 @@ abstract class SMWDataValue {
 	}
 
 	/**
+	 * Returns a preferred caption and may deviate from the standard caption as
+	 * a subclass is permitted to override this method and provide a more
+	 * contextualized display representation (language or value context etc.).
+	 *
+	 * @since 2.4
+	 *
+	 * @return string
+	 */
+	public function getPreferredCaption() {
+		return $this->m_caption;
+	}
+
+	/**
 	 * Adds a single SMWInfolink object to the m_infolinks array.
 	 *
 	 * @param SMWInfolink $link

@@ -263,12 +263,6 @@ class SMWWikiPageValue extends SMWDataValue {
 			$this->getTitle();
 		}
 
-		$displayTitle = $this->getDisplayTitle();
-
-		if ( $displayTitle !== '' && $linker === null ) {
-			return htmlspecialchars( $displayTitle );
-		}
-
 		if ( is_null( $linker ) || $linker === false || !$this->isValid() ||
 				$this->m_outformat == '-' || $this->m_caption === '' ) {
 
@@ -502,6 +496,28 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	public function getInterwiki() {
 		return $this->m_dataitem->getInterwiki();
+	}
+
+	/**
+	 * DataValue::getPreferredCaption
+	 *
+	 * @since 2.4
+	 *
+	 * @return string
+	 */
+	public function getPreferredCaption() {
+
+		if ( ( $preferredCaption = parent::getPreferredCaption() ) !== '' && $preferredCaption !== false ) {
+			return $preferredCaption;
+		}
+
+		$preferredCaption = $this->getDisplayTitle();
+
+		if ( $preferredCaption === '' ) {
+			$preferredCaption = $this->getText();
+		}
+
+		return $preferredCaption;
 	}
 
 	/**
