@@ -31,6 +31,7 @@
 	"smw_factbox_head": "Hechos relativos a \"$1\"",
 	"smw_isspecprop": "Esta propiedad es una propiedad especial en este wiki.",
 	"smw-concept-cache-header": "Uso de la caché",
+	"smw-concept-cache-count": "El [https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count caché de conceptos] contiene {{PLURAL:$1|'''una''' entidad|'''$1''' entidades}} ($2).",
 	"smw_concept_description": "Descripción del concepto \"$1\"",
 	"smw_no_concept_namespace": "Los conceptos solo pueden definirse en páginas del espacio de nombres Concept:.",
 	"smw_multiple_concepts": "Cada página de concepto solamente puede tener una definición de concepto.",

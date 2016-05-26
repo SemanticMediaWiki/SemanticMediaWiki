@@ -44,7 +44,7 @@
 	"smw_factbox_head": "Faits relatifs à $1 &mdash; Recherche de pages similaires avec <span class=\"smwsearchicon\">+</span>.",
 	"smw_isspecprop": "Cette propriété est une propriété spéciale dans ce wiki.",
 	"smw-concept-cache-header": "Utilisation du cache",
-	"smw-concept-cache-count": "Le [https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count cache de concept] contient {{PLURAL:$1|'''$1''' entité|'''$1''' entités}} ($2).",
+	"smw-concept-cache-count": "Le [https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count cache de concept] contient {{PLURAL:$1|'''une''' entité|'''$1''' entités}} ($2).",
 	"smw-concept-no-cache": "Pas de cache disponible.",
 	"smw_concept_description": "Description du concept « $1 »",
 	"smw_no_concept_namespace": "Les concepts ne peuvent être définis que dans les pages appartenant à l’espace de noms Concept:.",

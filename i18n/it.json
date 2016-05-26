@@ -30,6 +30,7 @@
 	"smw_factbox_head": "Fatti riguardanti $1",
 	"smw_isspecprop": "Questa proprietà è una proprietà speciale all'interno di questo wiki.",
 	"smw-concept-cache-header": "Utilizzo della cache",
+	"smw-concept-cache-count": "La [https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count cache di concetti] contiene {{PLURAL:$1|'''una''' entità|'''$1''' entità}} ($2).",
 	"smw-concept-no-cache": "La cache non è disponibile.",
 	"smw_concept_description": "Descrizione del concetto \"$1\"",
 	"smw_no_concept_namespace": "I concetti possono essere definiti solo sulle pagine nel namespace Concept:.",
