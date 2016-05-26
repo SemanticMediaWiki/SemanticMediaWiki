@@ -966,3 +966,9 @@ $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] = true;
 # @since 2.4
 ##
 $GLOBALS['smwgDVFeatures'] = SMW_DV_PROV_REDI | SMW_DV_MLTV_LCODE | SMW_DV_PVAP | SMW_DV_WPV_DTITLE | SMW_DV_TIMEV_CM;
+
+##
+# When a Sparql database connection is configured, by setting this option to false, semantic queries will be executed directly on database instead of calling sparql endpoint.
+#
+##
+$GLOBALS['smwgCallSparqlEndpointInQuery'] = true;
