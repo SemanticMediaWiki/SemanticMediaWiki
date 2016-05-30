@@ -19,7 +19,7 @@
 	"smw_factbox_head": "עובדות על $1",
 	"smw_isspecprop": "זהו מאפיין מיוחד באתר ויקי זה.",
 	"smw-concept-cache-header": "שימוש במטמון",
-	"smw-concept-cache-count": "[https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count מטמון הרעיונות] מכיל {{PLURAL:$1|'''$1'''}} ישויות ($2)",
+	"smw-concept-cache-count": "[https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count מטמון הרעיונות] מכיל {{PLURAL:$1|ישות אחת|'''$1''' ישויות}} ($2)",
 	"smw-concept-no-cache": "אין מטמון זמין.",
 	"smw_concept_description": "תיאור הרעיון \"$1\"",
 	"smw_no_concept_namespace": "ניתן להגדיר רעיונות רק בדפים שבמרחב השם Concept:.",

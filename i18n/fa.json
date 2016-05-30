@@ -9,7 +9,8 @@
 			"Reza1615",
 			"ZxxZxxZ",
 			"Alirezaaa",
-			"Mahdy Saffar"
+			"Mahdy Saffar",
+			"AzorAhai"
 		]
 	},
 	"smw-desc": "ویکی خود را بیشترقابل دسترس کنید- برای ماشین‌ها ''و'' انسان‌ها ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
@@ -197,6 +198,7 @@
 	"smw_ask_embed_instr": "برای جاسازی این سوال خطی در یک صفحه ویکی از کد زیر استفاده کنید.",
 	"smw-ask-delete": "[حذف]",
 	"smw-ask-sorting": "دسته بندی",
+	"smw-ask-search": "جستجو",
 	"smw-ask-format-selection-help": "برای شرح مفصل، لطفاً صفحه راهنما $1 را مشاهده کنید.",
 	"searchbyproperty": "جستجو بر اساس ویژگی",
 	"smw_sbv_docu": "جستجو برای همه صفحاتی که یک خاصیت داده شده و مقدار دارند.",
