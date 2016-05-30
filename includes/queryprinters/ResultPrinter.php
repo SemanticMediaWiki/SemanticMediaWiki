@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use DummyLinker;
+use Linker;
 use ParamProcessor\ParamDefinition;
 use ParserOptions;
 use Sanitizer;
@@ -177,7 +177,7 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 		$this->mInline = $inline;
 		$this->mLinkFirst = ( $smwgQDefaultLinking != 'none' );
 		$this->mLinkOthers = ( $smwgQDefaultLinking == 'all' );
-		$this->mLinker = class_exists( 'DummyLinker' ) ? new DummyLinker() : new \Linker(); ///TODO: how can we get the default or user skin here (depending on context)?
+		$this->mLinker = new Linker(); ///TODO: how can we get the default or user skin here (depending on context)?
 	}
 
 	/**

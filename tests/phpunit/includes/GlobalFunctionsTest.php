@@ -40,8 +40,7 @@ class GlobalFunctionsTest extends SemanticMediaWikiTestCase {
 	public function testSmwfGetLinker() {
 		$instance = smwfGetLinker();
 
-		$linker = class_exists( 'DummyLinker' ) ? 'DummyLinker' : 'Linker';
-		$this->assertInstanceOf( $linker, $instance );
+		$this->assertInstanceOf( 'Linker', $instance );
 	}
 
 	/**
