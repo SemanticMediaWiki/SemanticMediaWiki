@@ -201,7 +201,7 @@ class SearchTable {
 	 *
 	 * @return integer
 	 */
-	public function getPropertyID( DIProperty $property ) {
+	public function getPropertyIdBy( DIProperty $property ) {
 		return $this->store->getObjectIds()->getIDFor( $property->getCanonicalDiWikiPage() );
 	}
 

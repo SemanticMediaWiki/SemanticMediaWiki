@@ -141,6 +141,54 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetWhereConditionWithPropertyOnTempTable() {
+
+		$textSanitizer = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$textSanitizer->expects( $this->once() )
+			->method( 'sanitize' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$this->searchTable->expects( $this->once() )
+			->method( 'getTextSanitizer' )
+			->will( $this->returnValue( $textSanitizer ) );
+
+		$this->searchTable->expects( $this->once() )
+			->method( 'getIndexField' )
+			->will( $this->returnValue( 'indexField' ) );
+
+		$this->searchTable->expects( $this->atLeastOnce() )
+			->method( 'addQuotes' )
+			->will( $this->returnArgument( 0 ) );
+
+		$instance = new SQLiteValueMatchConditionBuilder(
+			$this->searchTable
+		);
+
+		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$description->expects( $this->atLeastOnce() )
+			->method( 'getProperty' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Foo' ) ) );
+
+		$description->expects( $this->atLeastOnce() )
+			->method( 'getDataItem' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar' ) ) );
+
+		$description->expects( $this->once() )
+			->method( 'getComparator' )
+			->will( $this->returnValue( SMW_CMP_LIKE ) );
+
+		$this->assertSame(
+			'tempTable.indexField MATCH Foo AND tempTable.p_id=',
+			$instance->getWhereCondition( $description, 'tempTable' )
+		);
+	}
+
 	/**
 	 * @dataProvider searchTermProvider
 	 */
