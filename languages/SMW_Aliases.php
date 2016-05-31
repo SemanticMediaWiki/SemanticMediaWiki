@@ -21,6 +21,7 @@ $specialPageAliases['en'] = array(
 	'Concepts' => array( 'Concepts' ),
 	'SMWAdmin' => array( 'SMWAdmin' ),
 	'SearchByProperty' => array( 'SearchByProperty' ),
+	'ProcessingErrorList' => array( 'ProcessingErrorList' ),
 	'SemanticStatistics' => array( 'SemanticStatistics' ),
 	'Types' => array( 'Types' ),
 	'URIResolver' => array( 'URIResolver' ),
