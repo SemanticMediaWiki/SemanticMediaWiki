@@ -342,7 +342,7 @@ class Factbox {
 
 		// Do exclude some tags from processing otherwise the display
 		// can become distorted due to unresolved/open tags (see Bug 23185)
-		$excluded = array( 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol', 'b', 'sup', 'sub' );
+		$excluded = array( 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol', 'b', 'sub' );
 		$attributes = array();
 
 		foreach ( $semanticData->getProperties() as $propertyDi ) {

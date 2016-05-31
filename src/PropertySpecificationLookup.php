@@ -3,6 +3,8 @@
 namespace SMW;
 
 use SMW\Query\DescriptionFactory;
+use Onoi\Cache\Cache;
+use SMW\Message;
 use SMWDIBlob as DIBlob;
 use SMWQuery as Query;
 
@@ -30,7 +32,7 @@ class PropertySpecificationLookup {
 	private $languageCode = 'en';
 
 	/**
-	 * @var FixedInMemoryCache
+	 * @var Cache
 	 */
 	private $intermediaryMemoryCache;
 
@@ -38,10 +40,11 @@ class PropertySpecificationLookup {
 	 * @since 2.4
 	 *
 	 * @param CachedPropertyValuesPrefetcher $cachedPropertyValuesPrefetcher
+	 * @param Cache $intermediaryMemoryCache
 	 */
-	public function __construct( CachedPropertyValuesPrefetcher $cachedPropertyValuesPrefetcher ) {
+	public function __construct( CachedPropertyValuesPrefetcher $cachedPropertyValuesPrefetcher, Cache $intermediaryMemoryCache ) {
 		$this->cachedPropertyValuesPrefetcher = $cachedPropertyValuesPrefetcher;
-		$this->intermediaryMemoryCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheFor( self::POOLCACHE_ID );
+		$this->intermediaryMemoryCache = $intermediaryMemoryCache;
 	}
 
 	/**
@@ -114,11 +117,11 @@ class PropertySpecificationLookup {
 	public function hasUniquenessConstraintBy( DIProperty $property ) {
 
 		$hasUniquenessConstraint = false;
-		$key = $property->getKey();
+		$key = 'uc:'. $property->getKey();
 
 		// Guard against high frequency lookup
-		if ( $this->intermediaryMemoryCache->contains( 'uc:'. $key ) ) {
-			return $this->intermediaryMemoryCache->fetch( 'uc:'. $key );
+		if ( $this->intermediaryMemoryCache->contains( $key ) ) {
+			return $this->intermediaryMemoryCache->fetch( $key );
 		}
 
 		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
@@ -130,7 +133,7 @@ class PropertySpecificationLookup {
 			$hasUniquenessConstraint = end( $dataItems )->getBoolean();
 		}
 
-		$this->intermediaryMemoryCache->save( 'uc:'. $key, $hasUniquenessConstraint );
+		$this->intermediaryMemoryCache->save( $key, $hasUniquenessConstraint );
 
 		return $hasUniquenessConstraint;
 	}
@@ -327,15 +330,17 @@ class PropertySpecificationLookup {
 			$msgKey = 'smw-pa-property-predefined' . strtolower( $key );
 		}
 
-		if ( !wfMessage( $msgKey )->exists() ) {
+		if ( !Message::exists( $msgKey ) ) {
 			return $description;
 		}
 
-		$message = wfMessage( $msgKey, $property->getLabel() )->inLanguage(
+		$message = Message::get(
+			array( $msgKey, $property->getLabel() ),
+			$linker === null ? Message::ESCAPED : Message::PARSE,
 			$this->languageCode
 		);
 
-		return $linker === null ? $message->escaped() : $message->parse();
+		return $message;
 	}
 
 	private function tryToFindLocalPropertyDescription( $property, $linker ) {
