@@ -96,7 +96,7 @@ class SMWStringValue extends DataValue {
 		return $this->getDataValueFormatter()->format( DataValueFormatter::VALUE );
 	}
 
-	public function getWikiValueForLengthOf( $length ) {
+	public function getWikiValueByLengthOf( $length ) {
 
 		if ( mb_strlen( $this->getWikiValue() ) > $length ) {
 			return mb_substr( $this->getWikiValue(), 0, $length );

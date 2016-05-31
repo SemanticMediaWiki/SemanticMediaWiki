@@ -32,12 +32,12 @@ class StringValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'abcdefあい',
-			$instance->getWikiValueForLengthOf( 8 )
+			$instance->getWikiValueByLengthOf( 8 )
 		);
 
 		$this->assertEquals(
 			'abcdefあいうエオ',
-			$instance->getWikiValueForLengthOf( 14 )
+			$instance->getWikiValueByLengthOf( 14 )
 		);
 	}
 
