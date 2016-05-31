@@ -1,0 +1,119 @@
+<?php
+
+namespace SMW\Exporter;
+
+use SMW\Exporter\ResourceBuilders\PropertyValueResourceBuilder;
+use SMW\Exporter\ResourceBuilders\ConceptPropertyValueResourceBuilder;
+use SMW\Exporter\ResourceBuilders\ImportFromPropertyValueResourceBuilder;
+use SMW\Exporter\ResourceBuilders\PredefinedPropertyValueResourceBuilder;
+use SMW\Exporter\ResourceBuilders\RedirectPropertyValueResourceBuilder;
+use SMW\Exporter\ResourceBuilders\AuxiliaryPropertyValueResourceBuilder;
+use SMW\DIProperty;
+use SMWDataItem as DataItem;
+use SMWExpData as ExpData;
+
+/**
+ * @private
+ *
+ * @license GNU GPL v2+
+ * @since 2.5
+ *
+ * @author mwjames
+ */
+class DispatchingResourceBuilder implements ResourceBuilder {
+
+	/**
+	 * @var ResourceBuilder[]
+	 */
+	private $resourceBuilders = array();
+
+	/**
+	 * @var ResourceBuilder
+	 */
+	private $defaultResourceBuilder = null;
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param DIProperty $property
+	 *
+	 * @return boolean
+	 */
+	public function isResourceBuilderFor( DIProperty $property ) {
+
+		if ( $this->resourceBuilders === array() ) {
+			$this->initResourceBuilders();
+		}
+
+		foreach ( $this->resourceBuilders as $resourceBuilder ) {
+			if ( $resourceBuilder->isResourceBuilderFor( $property ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * {@inheritDoc}
+	 */
+	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
+		return $this->findResourceBuilder( $property )->addResourceValue( $expData, $property, $dataItem );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param DIProperty $property
+	 *
+	 * @return ResourceBuilder $resourceBuilder
+	 */
+	public function findResourceBuilder( DIProperty $property ) {
+
+		if ( $this->resourceBuilders === array() ) {
+			$this->initResourceBuilders();
+		}
+
+		foreach ( $this->resourceBuilders as $resourceBuilder ) {
+			if ( $resourceBuilder->isResourceBuilderFor( $property ) ) {
+				return $resourceBuilder;
+			}
+		}
+
+		return $this->defaultResourceBuilder;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param ResourceBuilder $resourceBuilder
+	 */
+	public function addResourceBuilder( ResourceBuilder $resourceBuilder ) {
+		$this->resourceBuilders[] = $resourceBuilder;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param ResourceBuilder $defaultResourceBuilder
+	 */
+	public function addDefaultResourceBuilder( ResourceBuilder $defaultResourceBuilder ) {
+		$this->defaultResourceBuilder = $defaultResourceBuilder;
+	}
+
+	private function initResourceBuilders() {
+
+		$this->addResourceBuilder( new ConceptPropertyValueResourceBuilder() );
+		$this->addResourceBuilder( new ImportFromPropertyValueResourceBuilder() );
+
+		$this->addResourceBuilder( new RedirectPropertyValueResourceBuilder() );
+		$this->addResourceBuilder( new AuxiliaryPropertyValueResourceBuilder() );
+
+		$this->addResourceBuilder( new PredefinedPropertyValueResourceBuilder() );
+
+		$this->addDefaultResourceBuilder( new PropertyValueResourceBuilder() );
+	}
+
+}

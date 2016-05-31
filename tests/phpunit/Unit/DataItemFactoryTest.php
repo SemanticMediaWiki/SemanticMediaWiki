@@ -97,4 +97,14 @@ class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructDIConcept() {
+
+		$instance = new DataItemFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\DIConcept',
+			$instance->newDIConcept( 'Foo' )
+		);
+	}
+
 }
