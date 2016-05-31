@@ -1,0 +1,118 @@
+{
+	"description": "Test in-text `_dat` annotation with time offset, time zone, am/pm (`wgContLang=en`, `wgLang=en`)",
+	"properties": [
+		{
+			"name": "Has date",
+			"contents": "[[Has type::Date]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/P0429/1",
+			"contents": "[[Has date::1 Jan 1971 13:45:23-3:30]]"
+		},
+		{
+			"name": "Example/P0429/Q.1",
+			"contents": "{{#show: Example/P0429/1 |?Has date }}"
+		},
+		{
+			"name": "Example/P0429/2",
+			"contents": "[[Has date::1 Jan 1971 13:45:23 EST]]"
+		},
+		{
+			"name": "Example/P0429/Q.2",
+			"contents": "{{#show: Example/P0429/2 |?Has date }}"
+		},
+		{
+			"name": "Example/P0429/3",
+			"contents": "[[Has date::1 Jan 1971 13:45:23 am]]"
+		},
+		{
+			"name": "Example/P0429/4",
+			"contents": "[[Has date::1 Jan 1971 5:05:23 pm]]"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0 timeoffset",
+			"subject": "Example/P0429/1",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_SKEY", "_MDAT", "Has_date" ],
+					"propertyValues": [ "1971-01-01T16:15:23" ]
+				}
+			}
+		},
+		{
+			"about": "#1",
+			"subject": "Example/P0429/Q.1",
+			"expected-output": {
+				"to-contain": [
+					"1 January 1971 16:15:23"
+				]
+			}
+		},
+		{
+			"about": "#2 timezone",
+			"subject": "Example/P0429/2",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_SKEY", "_MDAT", "Has_date" ],
+					"propertyValues": [ "1971-01-01T18:45:23" ]
+				}
+			}
+		},
+		{
+			"about": "#3",
+			"subject": "Example/P0429/Q.2",
+			"expected-output": {
+				"to-contain": [
+					"1 January 1971 18:45:23"
+				]
+			}
+		},
+		{
+			"about": "#4 invalid am/pm",
+			"subject": "Example/P0429/3",
+			"expected-output": {
+				"to-contain": [
+					"&quot;1 Jan 1971 13:45:23 am&quot; contains &quot;13&quot; as hour element that is invalid for a 12-hour convention."
+				]
+			}
+		},
+		{
+			"about": "#5 valid am/pm",
+			"subject": "Example/P0429/4",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_SKEY", "_MDAT", "Has_date" ],
+					"propertyValues": [ "1971-01-01T17:05:23" ]
+				}
+			}
+		},
+		{
+			"about": "#6 valid am/pm",
+			"subject": "Example/P0429/4",
+			"expected-output": {
+				"to-contain": [
+					"1 Jan 1971 5:05:23 pm"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
