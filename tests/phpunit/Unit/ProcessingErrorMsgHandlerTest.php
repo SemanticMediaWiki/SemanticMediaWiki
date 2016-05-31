@@ -53,6 +53,11 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 			$expected,
 			ProcessingErrorMsgHandler::normalizeMessages( $messages, null, 'en' )
 		);
+
+		$this->assertInternalType(
+			'string',
+			ProcessingErrorMsgHandler::getMessagesAsString( $messages, null, 'en' )
+		);
 	}
 
 	public function testPush() {

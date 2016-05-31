@@ -8,6 +8,7 @@ use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\ProcessingErrorMsgHandler;
 use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMWDataValue as DataValue;
@@ -146,11 +147,11 @@ class PageBuilder {
 
 		// #1728
 		if ( !$this->pageRequestOptions->property->isValid() ) {
-			return array( implode( ',', $this->pageRequestOptions->property->getErrors() ), '', 0 );
+			return array( ProcessingErrorMsgHandler::getMessagesAsString( $this->pageRequestOptions->property->getErrors() ), '', 0 );
 		}
 
 		if ( $this->pageRequestOptions->valueString !== '' && !$this->pageRequestOptions->value->isValid() ) {
-			return array( implode( ',', $this->pageRequestOptions->value->getErrors() ), '', 0 );
+			return array( ProcessingErrorMsgHandler::getMessagesAsString( $this->pageRequestOptions->value->getErrors() ), '', 0 );
 		}
 
 		$exactResults = $this->queryResultLookup->doQuery( $this->pageRequestOptions );
