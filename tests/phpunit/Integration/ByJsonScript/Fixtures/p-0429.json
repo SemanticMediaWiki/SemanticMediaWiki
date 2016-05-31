@@ -21,7 +21,7 @@
 		},
 		{
 			"name": "Example/P0429/Q.2",
-			"contents": "{{#show: Example/P0429/2 |?Has date }}"
+			"contents": "{{#show: Example/P0429/2 |?Has date }} {{#show: Example/P0429/2 |?Has date#LOCL#TZ }}"
 		},
 		{
 			"name": "Example/P0429/3",
@@ -30,6 +30,22 @@
 		{
 			"name": "Example/P0429/4",
 			"contents": "[[Has date::1 Jan 1971 5:05:23 pm]]"
+		},
+		{
+			"name": "Example/P0429/5",
+			"contents": "[[Has date::1 Jan 1971 13:45:23 America/New_York]]"
+		},
+		{
+			"name": "Example/P0429/Q.5.1",
+			"contents": "{{#show: Example/P0429/5 |?Has date#LOCL#TZ }}"
+		},
+		{
+			"name": "Example/P0429/Q.5.2",
+			"contents": "{{#show: Example/P0429/5 |?Has date#LOCL#TZ@ja }}"
+		},
+		{
+			"name": "Example/P0429/Q.5.3",
+			"contents": "{{#show: Example/P0429/5 |?Has date#LOCL@ja#TZ }}"
 		}
 	],
 	"parser-testcases": [
@@ -71,7 +87,8 @@
 			"subject": "Example/P0429/Q.2",
 			"expected-output": {
 				"to-contain": [
-					"1 January 1971 18:45:23"
+					"1 January 1971 18:45:23",
+					"13:45:23 EST, 1 January 1971"
 				]
 			}
 		},
@@ -102,6 +119,33 @@
 			"expected-output": {
 				"to-contain": [
 					"1 Jan 1971 5:05:23 pm"
+				]
+			}
+		},
+		{
+			"about": "#7 long timezone name",
+			"subject": "Example/P0429/Q.5.1",
+			"expected-output": {
+				"to-contain": [
+					"13:45:23 America/New_York, 1 January 1971"
+				]
+			}
+		},
+		{
+			"about": "#8 long timezone name",
+			"subject": "Example/P0429/Q.5.2",
+			"expected-output": {
+				"to-contain": [
+					"1971年1月1日 (金) 13:45:23 America/New_York"
+				]
+			}
+		},
+		{
+			"about": "#9 long timezone name",
+			"subject": "Example/P0429/Q.5.3",
+			"expected-output": {
+				"to-contain": [
+					"1971年1月1日 (金) 13:45:23 America/New_York"
 				]
 			}
 		}

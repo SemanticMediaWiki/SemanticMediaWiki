@@ -39,10 +39,11 @@ abstract class SMWLanguage {
 	protected $m_dateformats = array( array( SMW_Y ), array( SMW_MY, SMW_YM ), array( SMW_DMY, SMW_MDY, SMW_YMD, SMW_YDM ) );
 
 	protected $preferredDateFormatsByPrecision = array(
-		'SMW_PREC_Y'    => 'Y',
-		'SMW_PREC_YM'   => 'F Y',
-		'SMW_PREC_YMD'  => 'F j, Y',
-		'SMW_PREC_YMDT' => 'H:i:s, j F Y'
+		'SMW_PREC_Y'     => 'Y',
+		'SMW_PREC_YM'    => 'F Y',
+		'SMW_PREC_YMD'   => 'F j, Y',
+		'SMW_PREC_YMDT'  => 'H:i:s, j F Y',
+		'SMW_PREC_YMDTZ' => 'H:i:s T, j F Y'
 	);
 
 	/// Should English default aliases be used in this language?

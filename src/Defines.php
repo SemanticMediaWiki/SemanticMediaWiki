@@ -116,6 +116,7 @@ define( 'SMW_PREC_Y', 0 );
 define( 'SMW_PREC_YM', 1 );
 define( 'SMW_PREC_YMD', 2 );
 define( 'SMW_PREC_YMDT', 3 );
+define( 'SMW_PREC_YMDTZ', 4 ); // with time zone
 /**@}*/
 
 /**@{

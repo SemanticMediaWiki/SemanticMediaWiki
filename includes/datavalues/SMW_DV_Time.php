@@ -1,6 +1,7 @@
 <?php
 
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
+use SMW\Libs\Time\Timezone;
 
 /**
  * @ingroup SMWDataValues
@@ -107,27 +108,6 @@ class SMWTimeValue extends SMWDataValue {
 	protected static $m_monthsshort = array( 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' );
 	protected static $m_formats = array( SMW_Y => array( 'y' ), SMW_YM => array( 'y', 'm' ), SMW_MY => array( 'm', 'y' ), SMW_YDM => array( 'y', 'd', 'm' ), SMW_YMD => array( 'y', 'm', 'd' ), SMW_DMY => array( 'd', 'm', 'y' ), SMW_MDY => array( 'm', 'd', 'y' ) );
 
-	/// General purpose time zone monikers and their associated offsets in hours and fractions of hours
-	protected static $m_tz = array( 'A' => 1, 'ACDT' => 10.5, 'ACST' => 9.5, 'ADT' => -3, 'AEDT' => 11,
-		'AEST' => 10, 'AKDT' => -8, 'AKST' => -9, 'AST' => -4, 'AWDT' => 9, 'AWST' => 8,
-		'B' => 2, 'BST' => 1, 'C' => 3, 'CDT' => - 5, 'CEDT' => 2, 'CEST' => 2,
-		'CET' => 1, 'CST' => -6, 'CXT' => 7, 'D' => 4, 'E' => 5, 'EDT' => - 4,
-		'EEDT' => 3, 'EEST' => 3, 'EET' => 2, 'EST' => - 5, 'F' => 6, 'G' => 7,
-		'GMT' => 0, 'H' => 8, 'HAA' => - 3, 'HAC' => - 5, 'HADT' => - 9, 'HAE' => -4,
-		'HAP' => -7, 'HAR' => -6, 'HAST' => -10, 'HAT' => -2.5, 'HAY' => -8,
-		'HNA' => -4, 'HNC' => -6, 'HNE' => -5, 'HNP' => -8, 'HNR' => -7, 'HNT' => -3.5,
-		'HNY' => -9, 'I' => 9, 'IST' => 1, 'K' => 10, 'L' => 11, 'M' => 12,
-		'MDT' => -6, 'MESZ' => 2, 'MEZ' => 1, 'MSD' => 4, 'MSK' => 3, 'MST' => -7,
-		'N' => -1, 'NDT' => -2.5, 'NFT' => 11.5, 'NST' => -3.5, 'O' => -2, 'P' => -3 ,
-		'PDT' => -7, 'PST' => -8, 'Q' => - 4, 'R' => - 5, 'S' => -6, 'T' => -7,
-		'U' => -8, 'UTC' => 0, 'V' => - 9, 'W' => -10, 'WDT' => 9, 'WEDT' => 1,
-		'WEST' => 1, 'WET' => 0, 'WST' => 8, 'X' => -11, 'Y' => -12, 'Z' => 0 );
-	/// Military time zone monikers and their associated offsets in hours
-	protected static $m_miltz = array( 'A' => 1, 'B' => 2, 'C' => 3, 'D' => 4, 'E' => 5, 'F' => 6,
-		'G' => 7, 'H' => 8, 'I' => 9, 'K' => 10, 'L' => 11, 'M' => 12, 'N' => -1, 'O' => -2,
-		'P' => -3, 'Q' => -4, 'R' => -5, 'S' => -6, 'T' => -7, 'U' => -8, 'V' => -9,
-		'W' => -10, 'X' => -11, 'Y' => -12, 'Z' => 0 );
-
 	/// Moment of switchover to Gregorian calendar.
 	const J1582 = 2299160.5;
 	/// Offset of Julian Days for Modified JD inputs.
@@ -147,7 +127,6 @@ class SMWTimeValue extends SMWDataValue {
 
 		$datecomponents = array();
 		$calendarmodel = $era = $hours = $minutes = $seconds = $microseconds = $timeoffset = $timezone = false;
-
 		if ( $this->isInterpretableAsYearOnly( $value ) ) {
 			$this->m_dataitem = new SMWDITime( $this->getCalendarModel( null, $value, null, null ), $value );
 		} elseif ( $this->isInterpretableAsTimestamp( $value ) ) {
@@ -164,7 +143,7 @@ class SMWTimeValue extends SMWDataValue {
 						if ( $calendarmodel == 'MJD' ) {
 							$jd += self::MJD_EPOCH;
 						}
-						$this->m_dataitem = SMWDITime::newFromJD( $jd, SMWDITime::CM_GREGORIAN, SMWDITime::PREC_YMDT );
+						$this->m_dataitem = SMWDITime::newFromJD( $jd, SMWDITime::CM_GREGORIAN, SMWDITime::PREC_YMDT, $timezone );
 					} catch ( SMWDataItemException $e ) {
 						$this->addErrorMsg( array( 'smw-datavalue-time-invalid-jd', $this->m_wikivalue, $e->getMessage() ) );
 					}
@@ -198,6 +177,19 @@ class SMWTimeValue extends SMWDataValue {
 	 * @todo This method in principle allows date parsing to be internationalized further. Should be done.
 	 */
 	protected function parseDateString( $string, &$datecomponents, &$calendarmodel, &$era, &$hours, &$minutes, &$seconds, &$microseconds, &$timeoffset, &$timezone ) {
+
+		$calendarmodel = $timezoneoffset = $era = $ampm = false;
+		$hours = $minutes = $seconds = $microseconds = $timeoffset = $timezone = false;
+
+		// Fetch possible "America/Argentina/Mendoza"
+		$timzoneIdentifier = substr( $string, strrpos( $string, ' ' ) + 1 );
+
+		if ( Timezone::isValid( $timzoneIdentifier ) ) {
+			$string = str_replace( $timzoneIdentifier, '', $string );
+			$timezoneoffset = Timezone::getOffsetByAbbreviation( $timzoneIdentifier ) / 3600;
+			$timezone = Timezone::getIdByAbbreviation( $timzoneIdentifier );
+		}
+
 		// crude preprocessing for supporting different date separation characters;
 		// * this does not allow localized time notations such as "10.34 pm"
 		// * this creates problems with keywords that contain "." such as "p.m."
@@ -206,8 +198,6 @@ class SMWTimeValue extends SMWDataValue {
 
 		$matches = preg_split( "/([T]?[0-2]?[0-9]:[\:0-9]+[+\-]?[0-2]?[0-9\:]+|[\p{L}]+|[0-9]+|[ ])/u", $parsevalue, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY );
 		$datecomponents = array();
-		$calendarmodel = $timezoneoffset = $era = $ampm = false;
-		$hours = $minutes = $seconds = $microseconds = $timeoffset = $timezone = false;
 		$unclearparts = array();
 		$matchisnumber = false; // used for looking back; numbers are days/months/years by default but may be re-interpreted if certain further symbols are found
 		$matchisdate = false; // used for ensuring that date parts are in one block
@@ -237,16 +227,17 @@ class SMWTimeValue extends SMWDataValue {
 				$ampm = strtolower( $match );
 			} elseif ( $hours === false && self::parseTimeString( $match, $hours, $minutes, $seconds, $timeoffset ) ) {
 				// nothing to do
-			} elseif ( $hours !== false && $timezoneoffset === false &&
-			           array_key_exists( $match, self::$m_tz ) ) {
+			} elseif ( $hours !== false && $timezoneoffset === false && Timezone::isValid( $match ) ) {
 				// only accept timezone if time has already been set
-				$timezoneoffset = self::$m_tz[$match];
+				$timezoneoffset = Timezone::getOffsetByAbbreviation( $match ) / 3600;
+				$timezone = Timezone::getIdByAbbreviation( $match );
 			} elseif ( $prevmatchwasnumber && $hours === false && $timezoneoffset === false &&
-			           array_key_exists( $match, self::$m_miltz ) &&
-				   self::parseMilTimeString( end( $datecomponents ), $hours, $minutes, $seconds ) ) {
+					Timezone::isMilitary( $match ) &&
+					self::parseMilTimeString( end( $datecomponents ), $hours, $minutes, $seconds ) ) {
 					// military timezone notation is found after a number -> re-interpret the number as military time
 					array_pop( $datecomponents );
-					$timezoneoffset = self::$m_miltz[$match];
+					$timezoneoffset = Timezone::getOffsetByAbbreviation( $match ) / 3600;
+					$timezone = Timezone::getIdByAbbreviation( $match );
 			} elseif ( ( $prevmatchwasdate || count( $datecomponents ) == 0 ) &&
 				   $this->parseMonthString( $match, $monthname ) ) {
 				$datecomponents[] = $monthname;
@@ -260,6 +251,8 @@ class SMWTimeValue extends SMWDataValue {
 				$unclearparts[] = $match;
 			}
 		}
+
+
 		// Useful for debugging:
 		// 		print "\n\n Results \n\n";
 		// 		debug_zval_dump( $datecomponents );
@@ -269,6 +262,11 @@ class SMWTimeValue extends SMWDataValue {
 		// Abort if we found unclear or over-specific information:
 		if ( count( $unclearparts ) != 0 ) {
 			$this->addErrorMsg( array( 'smw-datavalue-time-invalid-values', $this->m_wikivalue, implode( ', ', $unclearparts ) ) );
+			return false;
+		}
+
+		if ( ( $timezoneoffset !== false && $timeoffset !== false ) ) {
+			$this->addErrorMsg( array( 'smw-datavalue-time-invalid-offset-zone-usage', $this->m_wikivalue ) );
 			return false;
 		}
 
@@ -520,7 +518,7 @@ class SMWTimeValue extends SMWDataValue {
 
 		$calmod = $this->getCalendarModel( $calendarmodel, $date['y'], $date['m'], $date['d'] );
 		try {
-			$this->m_dataitem = new SMWDITime( $calmod, $date['y'], $date['m'], $date['d'], $hours, $minutes, $seconds . '.' . $microseconds );
+			$this->m_dataitem = new SMWDITime( $calmod, $date['y'], $date['m'], $date['d'], $hours, $minutes, $seconds . '.' . $microseconds, $timezone );
 		} catch ( SMWDataItemException $e ) {
 			$this->addErrorMsg( array( 'smw-datavalue-time-invalid', $this->m_wikivalue, $e->getMessage() ) );
 			return false;
@@ -537,7 +535,7 @@ class SMWTimeValue extends SMWDataValue {
 		if ( $timeoffset != 0 ) {
 			$newjd = $this->m_dataitem->getJD() - $timeoffset / 24;
 			try {
-				$this->m_dataitem = SMWDITime::newFromJD( $newjd, $calmod, $this->m_dataitem->getPrecision() );
+				$this->m_dataitem = SMWDITime::newFromJD( $newjd, $calmod, $this->m_dataitem->getPrecision(), $timezone );
 			} catch ( SMWDataItemException $e ) {
 				$this->addErrorMsg( array( 'smw-datavalue-time-invalid-jd', $this->m_wikivalue, $e->getMessage() ) );
 				return false;
