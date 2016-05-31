@@ -493,18 +493,20 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getPrefixedText() {
-		global $wgContLang;
-		if ( $this->m_prefixedtext === '' ) {
-			if ( $this->isValid() ) {
-				$nstext = $wgContLang->getNSText( $this->m_dataitem->getNamespace() );
-				$this->m_prefixedtext =
-					( $this->m_dataitem->getInterwiki() !== '' ?
-						$this->m_dataitem->getInterwiki() . ':' : '' ) .
-					( $nstext !== '' ? "$nstext:" : '' ) . $this->getText();
-			} else {
-				$this->m_prefixedtext = 'NO_VALID_VALUE';
-			}
+
+		if ( $this->m_prefixedtext !== '' ) {
+			return $this->m_prefixedtext;
 		}
+
+		$this->m_prefixedtext = 'NO_VALID_VALUE';
+
+		if ( $this->isValid() ) {
+			$nstext = Localizer::getInstance()->getNamespaceTextById( $this->m_dataitem->getNamespace() );
+			$this->m_prefixedtext =
+				( $this->m_dataitem->getInterwiki() !== '' ? $this->m_dataitem->getInterwiki() . ':' : '' ) .
+				( $nstext !== '' ? "$nstext:" : '' ) . $this->getText();
+		}
+
 		return $this->m_prefixedtext;
 	}
 

@@ -160,7 +160,7 @@ class Localizer {
 	 * @return string
 	 */
 	public function getNamespaceTextById( $namespaceId ) {
-		return $this->contentLanguage->getNsText( $namespaceId );
+		return str_replace( '_', ' ', $this->contentLanguage->getNsText( $namespaceId ) );
 	}
 
 	/**
