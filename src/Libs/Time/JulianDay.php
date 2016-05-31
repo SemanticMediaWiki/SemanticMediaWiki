@@ -1,9 +1,8 @@
 <?php
 
-namespace SMW;
+namespace SMW\Libs\Time;
 
 use RuntimeException;
-use SMWDITime as DITime;
 
 /**
  * Julian dates (abbreviated JD) are a continuous count of days and fractions
@@ -20,7 +19,7 @@ use SMWDITime as DITime;
  *
  * @author Markus Krötzsch
  */
-class JulianDay {
+class JulianDay implements CalendarModel {
 
 	/**
 	 * Moment of switchover to Gregorian calendar.
@@ -33,65 +32,21 @@ class JulianDay {
 	const MJD = 2400000.5;
 
 	/**
-	 * Create a new time dataItem from a specified Julian Day number,
-	 * calendar model, presicion.
-	 *
-	 * @param double $jdValue
-	 * @param integer|null $calendarmodel
-	 * @param integer|null $precision
-	 *
-	 * @return DITime object
-	 */
-	public static function newDiFromJD( $jdValue, $calendarModel = null, $precision = null ) {
-
-		if ( $calendarModel === null ) { // 1582/10/15
-			$calendarModel = $jdValue < self::J1582 ? DITime::CM_JULIAN : DITime::CM_GREGORIAN;
-		}
-
-		if ( $precision === null ) {
-			$precision = strpos( strval( $jdValue ), '.5' ) !== false ? DITime::PREC_YMD : DITime::PREC_YMDT;
-		}
-
-		list( $year, $month, $day ) = self::JD2Date( $jdValue, $calendarModel );
-
-		if ( $precision <= DITime::PREC_YM ) {
-			$day = false;
-			if ( $precision === DITime::PREC_Y ) {
-				$month = false;
-			}
-		}
-
-		if ( $precision === DITime::PREC_YMDT ) {
-			list( $hour, $minute, $second ) = self::JD2Time( $jdValue );
-		} else {
-			$hour = $minute = $second = false;
-		}
-
-		return new DITime( $calendarModel, $year, $month, $day, $hour, $minute, $second );
-	}
-
-	/**
 	 * @since 2.4
 	 *
-	 * @param DITime $dataItem
+	 * @param integer $calendarmodel
+	 * @param integer $year
+	 * @param integer $month
+	 * @param integer $day
+	 * @param integer $hour
+	 * @param integer $minute
+	 * @param integer $second
 	 *
 	 * @return float
 	 */
-	public static function get( DITime $dataItem ) {
-
-		$jdValue = self::date2JD(
-			$dataItem->getYear(),
-			$dataItem->getMonth(),
-			$dataItem->getDay(),
-			$dataItem->getCalendarModel()
-		) + self::time2JDoffset(
-			$dataItem->getHour(),
-			$dataItem->getMinute(),
-			$dataItem->getSecond()
-		);
-
+	public static function getJD( $calendarModel = self::CM_GREGORIAN, $year, $month, $day, $hour, $minute, $second ) {
 		// Keep microseconds to a certain degree distinguishable
-		return floatval( number_format( $jdValue, 7, '.', '' ) );
+		return floatval( number_format( self::date2JD( $calendarModel, $year, $month, $day ) + self::time2JDoffset( $hour, $minute, $second ), 7, '.', '' ) );
 	}
 
 	/**
@@ -100,12 +55,12 @@ class JulianDay {
 	 *
 	 * @since 2.4
 	 *
-	 * @param DITime $dataItem
+	 * @param float jdValue
 	 *
 	 * @return float
 	 */
-	public static function getModifiedJulianDate( DITime $dataItem ) {
-		return self::get( $dataItem ) - self::MJD;
+	public static function getModifiedJulianDate( $jdValue ) {
+		return $jdValue - self::MJD;
 	}
 
 	/**
@@ -116,20 +71,20 @@ class JulianDay {
 	 * @param $year integer representing the year
 	 * @param $month integer representing the month
 	 * @param $day integer representing the day
-	 * @param $calendarmodel integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
+	 * @param $calendarmodel integer either CM_GREGORIAN or CM_JULIAN
 	 *
 	 * @return float Julian Day number
 	 * @throws RuntimeException
 	 */
-	protected static function date2JD( $year, $month, $day, $calendarmodel ) {
+	protected static function date2JD( $calendarmodel, $year, $month, $day ) {
 		$astroyear = ( $year < 1 ) ? ( $year + 1 ) : $year;
 
-		if ( $calendarmodel === DITime::CM_GREGORIAN ) {
+		if ( $calendarmodel === self::CM_GREGORIAN ) {
 			$a = intval( ( 14 - $month ) / 12 );
 			$y = $astroyear + 4800 - $a;
 			$m = $month + 12 * $a - 3;
 			return $day + floor( ( 153 * $m + 2 ) / 5 ) + 365 * $y + floor( $y / 4 ) - floor( $y / 100 ) + floor( $y / 400 ) - 32045.5;
-		} elseif ( $calendarmodel === DITime::CM_JULIAN ) {
+		} elseif ( $calendarmodel === self::CM_JULIAN ) {
 			$y2 = ( $month <= 2 ) ? ( $astroyear - 1 ) : $astroyear;
 			$m2 = ( $month <= 2 ) ? ( $month + 12 ) : $month;
 			return floor( ( 365.25 * ( $y2 + 4716 ) ) ) + floor( ( 30.6001 * ( $m2 + 1 ) ) ) + $day - 1524.5;
@@ -159,17 +114,21 @@ class JulianDay {
 	 * conversion to Gregorian needs positive JD. If this happens, wrong
 	 * values will be returned. Avoid date conversions before 10000 BCE.
 	 *
-	 * @param $jdvalue float number of Julian Days
-	 * @param $calendarmodel integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
+	 * @param $jdValue float number of Julian Days
+	 * @param $calendarModel integer either CM_GREGORIAN or CM_JULIAN
 	 *
-	 * @return array( yearnumber, monthnumber, daynumber )
+	 * @return array( calendarModel, yearnumber, monthnumber, daynumber )
 	 * @throws RuntimeException
 	 */
-	protected static function JD2Date( $jdvalue, $calendarmodel ) {
+	public static function JD2Date( $jdValue, $calendarModel = null ) {
 
-		if ( $calendarmodel === DITime::CM_GREGORIAN ) {
-			$jdvalue += 2921940; // add the days of 8000 years (this algorithm only works for positive JD)
-			$j = floor( $jdvalue + 0.5 ) + 32044;
+		if ( $calendarModel === null ) { // 1582/10/15
+			$calendarModel = $jdValue < self::J1582 ? self::CM_JULIAN : self::CM_GREGORIAN;
+		}
+
+		if ( $calendarModel === self::CM_GREGORIAN ) {
+			$jdValue += 2921940; // add the days of 8000 years (this algorithm only works for positive JD)
+			$j = floor( $jdValue + 0.5 ) + 32044;
 			$g = floor( $j / 146097 );
 			$dg = $j % 146097;
 			$c = floor( ( ( floor( $dg / 36524 ) + 1 ) * 3 ) / 4 );
@@ -185,8 +144,8 @@ class JulianDay {
 			$year  = $y - 4800 + floor( ( $m + 2 ) / 12 ) - 8000;
 			$month = ( ( $m + 2 ) % 12 + 1 );
 			$day   = $d + 1;
-		} elseif ( $calendarmodel === DITime::CM_JULIAN ) {
-			$b = floor( $jdvalue + 0.5 ) + 1524;
+		} elseif ( $calendarModel === self::CM_JULIAN ) {
+			$b = floor( $jdValue + 0.5 ) + 1524;
 			$c = floor( ( $b - 122.1 ) / 365.25 );
 			$d = floor( 365.25 * $c );
 			$e = floor( ( $b - $d ) / 30.6001 );
@@ -195,12 +154,12 @@ class JulianDay {
 			$year = floor( ( $month > 2 ) ? ( $c - 4716 ) : ( $c - 4715 ) );
 			$day   = ( $b - $d - floor( 30.6001 * $e ) );
 		} else {
-			throw new RuntimeException( "Unsupported calendar model ($calendarmodel)" );
+			throw new RuntimeException( "Unsupported calendar model ($calendarModel)" );
 		}
 
 		$year  = ( $year < 1 ) ? ( $year - 1 ) : $year; // correct "year 0" to -1 (= 1 BC(E))
 
-		return array( $year, $month, $day );
+		return array( $calendarModel, $year, $month, $day );
 	}
 
 	/**
@@ -210,7 +169,7 @@ class JulianDay {
 	 * @param $jdvalue float number of Julian Days
 	 * @return array( hours, minutes, seconds )
 	 */
-	protected static function JD2Time( $jdvalue ) {
+	public static function JD2Time( $jdvalue ) {
 		$wjd = $jdvalue + 0.5;
 		$fraction = $wjd - floor( $wjd );
 		$time = round( $fraction * 3600 * 24 );
