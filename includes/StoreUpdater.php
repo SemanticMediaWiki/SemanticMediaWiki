@@ -142,8 +142,14 @@ class StoreUpdater {
 			User::newFromId( $revision->getUser() )
 		);
 
-		$propertyAnnotator = $this->applicationFactory->newPropertyAnnotatorFactory()->newPredefinedPropertyAnnotator(
-			$this->semanticData,
+		$propertyAnnotatorFactory = $this->applicationFactory->newPropertyAnnotatorFactory();
+
+		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
+			$this->semanticData
+		);
+
+		$propertyAnnotator = $propertyAnnotatorFactory->newPredefinedPropertyAnnotator(
+			$propertyAnnotator,
 			$pageInfoProvider
 		);
 

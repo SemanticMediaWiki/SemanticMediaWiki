@@ -39,9 +39,9 @@ class PropertyAnnotatorFactory {
 	 *
 	 * @return RedirectPropertyAnnotator
 	 */
-	public function newRedirectPropertyAnnotator( SemanticData $semanticData, RedirectTargetFinder $redirectTargetFinder ) {
+	public function newRedirectPropertyAnnotator( PropertyAnnotator $propertyAnnotator, RedirectTargetFinder $redirectTargetFinder ) {
 		return new RedirectPropertyAnnotator(
-			$this->newNullPropertyAnnotator( $semanticData ),
+			$propertyAnnotator,
 			$redirectTargetFinder
 		);
 	}
@@ -54,10 +54,10 @@ class PropertyAnnotatorFactory {
 	 *
 	 * @return PredefinedPropertyAnnotator
 	 */
-	public function newPredefinedPropertyAnnotator( SemanticData $semanticData, PageInfo $pageInfo ) {
+	public function newPredefinedPropertyAnnotator( PropertyAnnotator $propertyAnnotator, PageInfo $pageInfo ) {
 
 		$predefinedPropertyAnnotator = new PredefinedPropertyAnnotator(
-			$this->newNullPropertyAnnotator( $semanticData ),
+			$propertyAnnotator,
 			$pageInfo
 		);
 
@@ -76,9 +76,9 @@ class PropertyAnnotatorFactory {
 	 *
 	 * @return SortKeyPropertyAnnotator
 	 */
-	public function newSortKeyPropertyAnnotator( SemanticData $semanticData, $sortkey ) {
+	public function newSortKeyPropertyAnnotator( PropertyAnnotator $propertyAnnotator, $sortkey ) {
 		return new SortKeyPropertyAnnotator(
-			$this->newNullPropertyAnnotator( $semanticData ),
+			$propertyAnnotator,
 			$sortkey
 		);
 	}
@@ -92,10 +92,10 @@ class PropertyAnnotatorFactory {
 	 *
 	 * @return DisplayTitlePropertyAnnotator
 	 */
-	public function newDisplayTitlePropertyAnnotator( SemanticData $semanticData, $displayTitle, $defaultSort ) {
+	public function newDisplayTitlePropertyAnnotator( PropertyAnnotator $propertyAnnotator, $displayTitle, $defaultSort ) {
 
 		$displayTitlePropertyAnnotator = new DisplayTitlePropertyAnnotator(
-			$this->newNullPropertyAnnotator( $semanticData ),
+			$propertyAnnotator,
 			$displayTitle,
 			$defaultSort
 		);
@@ -115,10 +115,10 @@ class PropertyAnnotatorFactory {
 	 *
 	 * @return CategoryPropertyAnnotator
 	 */
-	public function newCategoryPropertyAnnotator( SemanticData $semanticData, array $categories ) {
+	public function newCategoryPropertyAnnotator( PropertyAnnotator $propertyAnnotator, array $categories ) {
 
 		$categoryPropertyAnnotator = new CategoryPropertyAnnotator(
-			$this->newNullPropertyAnnotator( $semanticData ),
+			$propertyAnnotator,
 			$categories
 		);
 
@@ -144,9 +144,9 @@ class PropertyAnnotatorFactory {
 	 *
 	 * @return MandatoryTypePropertyAnnotator
 	 */
-	public function newMandatoryTypePropertyAnnotator( SemanticData $semanticData ) {
+	public function newMandatoryTypePropertyAnnotator( PropertyAnnotator $propertyAnnotator ) {
 		return new MandatoryTypePropertyAnnotator(
-			$this->newNullPropertyAnnotator( $semanticData )
+			$propertyAnnotator
 		);
 	}
 

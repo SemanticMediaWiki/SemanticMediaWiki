@@ -39,7 +39,7 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNewRedirectPropertyAnnotator() {
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$propertyAnnotator = $this->getMockBuilder( '\SMW\PropertyAnnotator' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -51,13 +51,13 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\PropertyAnnotator\RedirectPropertyAnnotator',
-			$instance->newRedirectPropertyAnnotator( $semanticData, $redirectTargetFinder )
+			$instance->newRedirectPropertyAnnotator( $propertyAnnotator, $redirectTargetFinder )
 		);
 	}
 
 	public function testNewPredefinedPropertyAnnotator() {
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$propertyAnnotator = $this->getMockBuilder( '\SMW\PropertyAnnotator' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -69,13 +69,13 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\PropertyAnnotator\PredefinedPropertyAnnotator',
-			$instance->newPredefinedPropertyAnnotator( $semanticData, $pageInfo )
+			$instance->newPredefinedPropertyAnnotator( $propertyAnnotator, $pageInfo )
 		);
 	}
 
 	public function testNewSortKeyPropertyAnnotator() {
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$propertyAnnotator = $this->getMockBuilder( '\SMW\PropertyAnnotator' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -83,13 +83,13 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\PropertyAnnotator\SortKeyPropertyAnnotator',
-			$instance->newSortKeyPropertyAnnotator( $semanticData, 'Foo' )
+			$instance->newSortKeyPropertyAnnotator( $propertyAnnotator, 'Foo' )
 		);
 	}
 
 	public function testNewCategoryPropertyAnnotator() {
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$propertyAnnotator = $this->getMockBuilder( '\SMW\PropertyAnnotator' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -97,13 +97,13 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\PropertyAnnotator\CategoryPropertyAnnotator',
-			$instance->newCategoryPropertyAnnotator( $semanticData, array() )
+			$instance->newCategoryPropertyAnnotator( $propertyAnnotator, array() )
 		);
 	}
 
 	public function testCanConstructMandatoryTypePropertyAnnotator() {
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$propertyAnnotator = $this->getMockBuilder( '\SMW\PropertyAnnotator' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -111,7 +111,7 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\PropertyAnnotator\MandatoryTypePropertyAnnotator',
-			$instance->newMandatoryTypePropertyAnnotator( $semanticData )
+			$instance->newMandatoryTypePropertyAnnotator( $propertyAnnotator )
 		);
 	}
 

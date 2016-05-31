@@ -79,8 +79,14 @@ class FileUpload {
 			$filePage
 		);
 
-		$propertyAnnotator = $this->applicationFactory->newPropertyAnnotatorFactory()->newPredefinedPropertyAnnotator(
-			$parserData->getSemanticData(),
+		$propertyAnnotatorFactory = $this->applicationFactory->newPropertyAnnotatorFactory();
+
+		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
+			$parserData->getSemanticData()
+		);
+
+		$propertyAnnotator = $propertyAnnotatorFactory->newPredefinedPropertyAnnotator(
+			$propertyAnnotator,
 			$pageInfoProvider
 		);
 
