@@ -48,6 +48,11 @@ class SMWQuery implements QueryContext {
 	 */
 	const PROC_PRINT_TIME = 'print.time';
 
+	/**
+	 * Suppress a possible cache request
+	 */
+	const NO_CACHE = 'no.cache';
+
 	public $sort = false;
 	public $sortkeys = array(); // format: "Property key" => "ASC" / "DESC" (note: order of entries also matters)
 	public $querymode = self::MODE_INSTANCES;
