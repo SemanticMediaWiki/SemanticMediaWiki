@@ -193,7 +193,7 @@ class DataValueFactory {
 	 */
 	public function newDataValueByText( $propertyName, $valueString, $caption = false, DIWikiPage $contextPage = null ) {
 
-		$propertyDV = $this->newPropertyValueByLabel( $propertyName, $contextPage );
+		$propertyDV = $this->newPropertyValueByLabel( $propertyName, $caption, $contextPage );
 
 		if ( !$propertyDV->isValid() ) {
 			return $propertyDV;
@@ -265,12 +265,13 @@ class DataValueFactory {
 	 * @since 2.4
 	 *
 	 * @param string $propertyLabel
+	 * @param string|false $caption
 	 * @param DIWikiPage|null $contextPage
 	 *
 	 * @return DataValue
 	 */
-	public function newPropertyValueByLabel( $propertyLabel, DIWikiPage $contextPage = null ) {
-		return $this->newDataValueByType( '__pro', $propertyLabel, false, null, $contextPage );
+	public function newPropertyValueByLabel( $propertyLabel, $caption = false, DIWikiPage $contextPage = null ) {
+		return $this->newDataValueByType( '__pro', $propertyLabel, $caption, null, $contextPage );
 	}
 
 	/**

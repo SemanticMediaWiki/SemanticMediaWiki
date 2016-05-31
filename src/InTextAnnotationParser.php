@@ -121,7 +121,7 @@ class InTextAnnotationParser {
 
 		$this->doStripMagicWordsFromText( $text );
 
-		$this->setSemanticEnabledNamespaceState( $title );
+		$this->isSemanticEnabled( $title );
 		$this->addRedirectTargetAnnotation( $text );
 
 		$linksInValues = $this->settings->get( 'smwgLinksInValues' );
@@ -420,6 +420,10 @@ class InTextAnnotationParser {
 
 		$subject = $this->parserData->getSubject();
 
+		if ( ( $propertyLink = $this->getPropertyLink( $subject, $properties, $value, $valueCaption ) ) !== '' ) {
+			return $propertyLink;
+		}
+
 		// Add properties to the semantic container
 		foreach ( $properties as $property ) {
 			$dataValue = $this->dataValueFactory->newDataValueByText(
@@ -474,8 +478,26 @@ class InTextAnnotationParser {
 		return $words;
 	}
 
-	private function setSemanticEnabledNamespaceState( Title $title ) {
+	private function isSemanticEnabled( Title $title ) {
 		$this->isEnabledNamespace = $this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
+	}
+
+	private function getPropertyLink( $subject, $properties, $value, $valueCaption ) {
+
+		// #...
+		if ( strlen( $value ) == 3 && $value === '@@@' ) {
+			$property = end( $properties );
+
+			$dataValue = $this->dataValueFactory->newPropertyValueByLabel(
+				$property,
+				$valueCaption,
+				$subject
+			);
+
+			return $dataValue->getShortWikitext( true );
+		}
+
+		return '';
 	}
 
 }

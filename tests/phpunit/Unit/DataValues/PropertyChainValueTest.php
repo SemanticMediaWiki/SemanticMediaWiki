@@ -123,7 +123,7 @@ class PropertyChainValueTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			$this->testEnvironment->getLocalizedTextByNamespace( SMW_NS_PROPERTY, '[[:Property:Bar|Property:Bar]]&nbsp;<span title="Foo.Bar">⠉</span>' ),
+			$this->testEnvironment->getLocalizedTextByNamespace( SMW_NS_PROPERTY, '[[:Property:Bar|Bar]]&nbsp;<span title="Foo.Bar">⠉</span>' ),
 			$instance->getLongWikiText( 'linker' )
 		);
 	}
