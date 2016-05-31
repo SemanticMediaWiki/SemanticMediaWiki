@@ -18,6 +18,11 @@ use RuntimeException;
 class PropertyValueFormatter extends DataValueFormatter {
 
 	/**
+	 * @var PropertySpecificationLookup
+	 */
+	private $propertySpecificationLookup;
+
+	/**
 	 * @since 2.5
 	 *
 	 * {@inheritDoc}
@@ -45,7 +50,9 @@ class PropertyValueFormatter extends DataValueFormatter {
 			return $this->getWikiValue();
 		}
 
+		$this->propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
 		$wikiPageValue = $this->prepareWikiPageValue( $linker );
+		$text = '';
 
 		if ( $wikiPageValue === null ) {
 			return '';
@@ -135,11 +142,11 @@ class PropertyValueFormatter extends DataValueFormatter {
 		}
 
 		$dataItem = $this->dataValue->getDataItem();
-		$propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
 
-		$propertyDescription = $propertySpecificationLookup->getPropertyDescriptionBy(
+		$propertyDescription = $this->propertySpecificationLookup->getPropertyDescriptionBy(
 			$dataItem,
-			$linker
+			$linker,
+			$this->dataValue->getOptionBy( PropertyValue::OPT_USER_LANGUAGE )
 		);
 
 		return !$dataItem->isUserDefined() || $propertyDescription !== '';
@@ -147,22 +154,44 @@ class PropertyValueFormatter extends DataValueFormatter {
 
 	private function hintPreferredLabelUse() {
 
-		$preferredLabel = $this->dataValue->getPreferredLabel();
-		$label = $this->dataValue->getDataItem()->getLabel();
-
 		if ( !$this->dataValue->isEnabledFeature( SMW_DV_PROV_LHNT ) ||
-			$preferredLabel === $this->dataValue->getDataItem()->getCanonicalLabel() ||
-			$preferredLabel === '' ) {
+			$this->dataValue->getOptionBy( PropertyValue::OPT_NO_PREF_LHNT ) ) {
 			return '';
 		}
 
+		$property = $this->dataValue->getDataItem();
+
+		$preferredLabel = $this->findPreferredLabel(
+			$property,
+			$this->dataValue->getOptionBy( PropertyValue::OPT_USER_LANGUAGE )
+		);
+
+		if ( $preferredLabel === '' || $preferredLabel === $property->getCanonicalLabel() ) {
+			return '';
+		}
+
+		$label = $property->getLabel();
 		$preferredLabelMarker = '';
 
 		if ( $preferredLabel !== $label ) {
-			$preferredLabelMarker = '&nbsp;' . \Html::rawElement( 'span', array( 'title' => $label ), '<sup>ᵖ</sup>' );
+			$preferredLabelMarker = '&nbsp;' . \Html::rawElement( 'span', array( 'title' => $property->getCanonicalLabel() ), '<sup>ᵖ</sup>' );
 		}
 
 		return $preferredLabelMarker;
+	}
+
+	private function findPreferredLabel( $property, $languageCode ) {
+
+		if ( $property->isUserDefined() ) {
+			return $this->dataValue->getPreferredLabel();
+		}
+
+		// For predefined properties we make a direct lookup
+		// to find out whether a prefLabel is present
+		return $this->propertySpecificationLookup->getPreferredPropertyLabelBy(
+			$property->getKey(),
+			$languageCode
+		);
 	}
 
 }

@@ -39,6 +39,11 @@ class SMWPropertyValue extends SMWDataValue {
 	const OPT_NO_HIGHLIGHT = 'no.highlight';
 
 	/**
+	 * Avoid the display of a preferred label marker
+	 */
+	const OPT_NO_PREF_LHNT = 'no.preflabel.marker';
+
+	/**
 	 * Cache for wiki page value object associated to this property, or
 	 * null if no such page exists. Use getWikiPageValue() to get the data.
 	 * @var SMWWikiPageValue

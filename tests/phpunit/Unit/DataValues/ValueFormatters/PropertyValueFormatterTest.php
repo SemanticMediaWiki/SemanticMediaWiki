@@ -55,7 +55,20 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testWithCaptionOutput() {
+	public function testFormatWithInvalidFormat() {
+
+		$propertyValue = new PropertyValue();
+		$propertyValue->setDataItem( $this->dataItemFactory->newDIProperty( 'Foo' ) );
+
+		$instance = new PropertyValueFormatter( $propertyValue );
+
+		$this->assertEquals(
+			'',
+			$instance->format( 'Foo' )
+		);
+	}
+
+	public function testFormatWithCaptionOutput() {
 
 		$propertyValue = new PropertyValue();
 		$propertyValue->setDataItem( $this->dataItemFactory->newDIProperty( 'Foo' ) );
@@ -86,6 +99,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$propertyValue->setOption( PropertyValue::OPT_USER_LANGUAGE, 'en' );
 
 		$instance = new PropertyValueFormatter( $propertyValue );
+		$expected = $this->testEnvironment->getLocalizedTextByNamespace( SMW_NS_PROPERTY, $expected );
 
 		$this->assertEquals(
 			$expected,
@@ -102,6 +116,14 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		// PropertyRegistry instance
 		\SMW\PropertyRegistry::clear();
 
+		$this->propertyLabelFinder = $this->getMockBuilder( '\SMW\PropertyLabelFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->propertyLabelFinder->expects( $this->any() )
+			->method( 'findPropertyListByLabelAndLanguageCode' )
+			->will( $this->returnValue( array() ) );
+
 		$this->propertyLabelFinder->expects( $this->any() )
 			->method( 'findPreferredPropertyLabelByLanguageCode' )
 			->will( $this->returnValue( $preferredLabel ) );
@@ -109,6 +131,8 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$this->propertyLabelFinder->expects( $this->any() )
 			->method( 'searchPropertyIdByLabel' )
 			->will( $this->returnValue( false ) );
+
+		$this->testEnvironment->registerObject( 'PropertyLabelFinder', $this->propertyLabelFinder );
 
 		$propertyValue = new PropertyValue();
 
@@ -119,6 +143,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$propertyValue->setUserValue( $property );
 
 		$instance = new PropertyValueFormatter( $propertyValue );
+		$expected = $this->testEnvironment->getLocalizedTextByNamespace( SMW_NS_PROPERTY, $expected );
 
 		$this->assertEquals(
 			$expected,
