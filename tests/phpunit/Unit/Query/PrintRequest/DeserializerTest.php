@@ -4,8 +4,9 @@ namespace SMW\Tests\Query\PrintRequest;
 
 use SMW\Query\PrintRequest\Deserializer;
 use SMWPropertyValue as PropertyValue;
-use SMW\Query\PrintRequest;
 use SMW\Localizer;
+use SMW\DataValues\PropertyChainValue;
+use SMW\Query\PrintRequest;
 
 /**
  * @covers SMW\Query\PrintRequest\Deserializer
@@ -120,6 +121,26 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			PrintRequest::PRINT_PROP,
 			PropertyValue::class,
 			'<span style="color: green; font-size: 120%;">&#10003;</span>,<span style="color: #AA0000; font-size: 120%;">&#10005;</span>'
+		);
+
+		#7
+		$provider[] = array(
+			'Foo.Bar',
+			false,
+			'Bar',
+			PrintRequest::PRINT_CHAIN,
+			PropertyChainValue::class,
+			''
+		);
+
+		#8
+		$provider[] = array(
+			'Foo.Bar#foobar',
+			false,
+			'Bar',
+			PrintRequest::PRINT_CHAIN,
+			PropertyChainValue::class,
+			'foobar'
 		);
 
 		return $provider;

@@ -4,6 +4,7 @@ namespace SMW\Query\PrintRequest;
 
 use SMW\Query\PrintRequest;
 use SMWPropertyValue as PropertyValue;
+use SMW\DataValues\PropertyChainValue;
 use SMW\Localizer;
 use Title;
 use InvalidArgumentException;
@@ -46,6 +47,14 @@ class Deserializer {
 		} elseif ( self::isCategory( $printRequestLabel ) ) { // print categories
 			$printmode = PrintRequest::PRINT_CATS;
 			$label = $showMode ? '' : Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY ); // default
+		} elseif ( PropertyChainValue::isChained( $printRequestLabel ) ) {
+
+			$data = new PropertyChainValue();
+			$data->setUserValue( $printRequestLabel );
+
+			$printmode = PrintRequest::PRINT_CHAIN;
+			$label = $showMode ? '' : $data->getLastPropertyChainValue()->getWikiValue();  // default
+
 		} else { // print property or check category
 			$title = Title::newFromText( $printRequestLabel, SMW_NS_PROPERTY ); // trim needed for \n
 

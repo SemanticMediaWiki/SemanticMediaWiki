@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation for '_ref_rec' type (`wgContLang=en`, `wgLang=en`)",
+	"description": "Test in-text annotation for '_ref_rec' type (#1808, `wgContLang=en`, `wgLang=en`)",
 	"properties": [
 		{
 			"name": "Has number with ref",
@@ -52,7 +52,7 @@
 			"expected-output": {
 				"to-contain": [
 					"123<span class=\"smw-reference smw-reference-indicator smw-highlighter smwttinline\" data-title=\"Reference\"",
-					"data-content=\"&lt;ul&gt;&lt;li&gt;Date: 1 January 2000&lt;/li&gt;&lt;li&gt;URL: &lt;a class=&quot;external&quot; rel=&quot;nofollow&quot; href=&quot;http://example.org&quot;&gt;http://example.org&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;\""
+					"data-content=\"&lt;ul&gt;&lt;li&gt;Date: January 1, 2000&lt;/li&gt;&lt;li&gt;URL: &lt;a class=&quot;external&quot; rel=&quot;nofollow&quot; href=&quot;http://example.org&quot;&gt;http://example.org&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;\""
 				]
 			}
 		},

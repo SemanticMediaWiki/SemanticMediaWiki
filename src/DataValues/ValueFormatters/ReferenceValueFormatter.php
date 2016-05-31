@@ -10,6 +10,7 @@ use SMW\DIWikiPage;
 use SMW\Message;
 use SMWDataValue as DataValue;
 use SMWDIUri as DIUri;
+use SMWDITime as DITime;
 
 /**
  * @license GNU GPL v2+
@@ -39,8 +40,7 @@ class ReferenceValueFormatter extends DataValueFormatter {
 			throw new RuntimeException( "The formatter is missing a valid ReferenceValue object" );
 		}
 
-		if (
-			$this->dataValue->getCaption() !== false &&
+		if ( $this->dataValue->getCaption() !== false &&
 			( $type === self::WIKI_SHORT || $type === self::HTML_SHORT ) ) {
 			return $this->dataValue->getCaption();
 		}
@@ -101,6 +101,9 @@ class ReferenceValueFormatter extends DataValueFormatter {
 
 			$propertyValues = $this->dataValue->getDataItem()->getSemanticData()->getPropertyValues( $propertyDataItem );
 			$dataItem = reset( $propertyValues );
+
+			// By definition the first element in the list is the VALUE other
+			// members are referencing to
 			$isValue = $results === array();
 
 			if ( $dataItem !== false ) {
@@ -122,13 +125,18 @@ class ReferenceValueFormatter extends DataValueFormatter {
 
 	private function findValueOutputFor( $isValue, $type, $dataValue, $linker ) {
 
+		$dataItem = $dataValue->getDataItem();
+
 		// Turn Uri/Page links into a href representation when not used as value
 		if ( !$isValue &&
-			(
-				$dataValue->getDataItem() instanceof DIUri ||
-				$dataValue->getDataItem() instanceof DIWikiPage
+			( $dataItem instanceof DIUri || $dataItem instanceof DIWikiPage
 			) && $type !== self::VALUE ) {
 			return $dataValue->getShortHTMLText( smwfGetLinker() );
+		}
+
+		// Dates and times are to be displayed in a localized format
+		if ( !$isValue && $dataItem instanceof DITime && $type !== self::VALUE ) {
+			$dataValue->setOutputFormat( 'LOCL' );
 		}
 
 		switch ( $type ) {

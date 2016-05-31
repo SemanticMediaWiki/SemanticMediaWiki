@@ -235,6 +235,7 @@ class SMWPropertyValue extends SMWDataValue {
 			$this->m_wikipage = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $diWikiPage, null, $this->m_caption );
 			$this->m_wikipage->setOutputFormat( $this->m_outformat );
 			$this->m_wikipage->setLinkAttributes( $this->linkAttributes );
+			$this->m_wikipage->setOptions( $this->getOptions() );
 			$this->addError( $this->m_wikipage->getErrors() );
 		} else { // should rarely happen ($value is only changed if the input $value really was a label for a predefined prop)
 			$this->m_wikipage = null;

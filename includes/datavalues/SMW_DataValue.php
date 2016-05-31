@@ -272,9 +272,14 @@ abstract class SMWDataValue {
 	/**
 	 * @since 2.4
 	 *
-	 * @return Options $options
+	 * @return Options|null $options
 	 */
-	public function setOptions( Options $options ) {
+	public function setOptions( Options $options = null ) {
+
+		if ( $options === null ) {
+			return;
+		}
+
 		foreach ( $options->getOptions() as $key => $value ) {
 			$this->setOption( $key, $value );
 		}
@@ -826,6 +831,10 @@ abstract class SMWDataValue {
 	 */
 	protected function convertDoubleWidth( $value ) {
 		return Localizer::convertDoubleWidth( $value );
+	}
+
+	protected function getOptions() {
+		return $this->options;
 	}
 
 	private function getInfoLinksProvider() {
