@@ -1,14 +1,14 @@
 <?php
 
-namespace SMW\Tests\PropertyAnnotator;
+namespace SMW\Tests\PropertyAnnotators;
 
 use SMW\DataItemFactory;
-use SMW\PropertyAnnotator\NullPropertyAnnotator;
-use SMW\PropertyAnnotator\SortKeyPropertyAnnotator;
+use SMW\PropertyAnnotators\NullPropertyAnnotator;
+use SMW\PropertyAnnotators\SortKeyPropertyAnnotator;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
- * @covers \SMW\PropertyAnnotator\SortKeyPropertyAnnotator
+ * @covers \SMW\PropertyAnnotators\SortKeyPropertyAnnotator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -42,7 +42,7 @@ class SortKeyPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyAnnotator\SortKeyPropertyAnnotator',
+			'\SMW\PropertyAnnotators\SortKeyPropertyAnnotator',
 			$instance
 		);
 	}

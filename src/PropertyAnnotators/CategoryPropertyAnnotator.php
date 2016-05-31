@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\PropertyAnnotator;
+namespace SMW\PropertyAnnotators;
 
 use SMW\ApplicationFactory;
 use SMW\DIProperty;

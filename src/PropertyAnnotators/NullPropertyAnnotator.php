@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\PropertyAnnotator;
+namespace SMW\PropertyAnnotators;
 
 use SMW\PropertyAnnotator;
 use SMW\SemanticData;

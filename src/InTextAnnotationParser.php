@@ -205,7 +205,7 @@ class InTextAnnotationParser {
 
 			$this->redirectTargetFinder->findRedirectTargetFromText( $text );
 
-			$propertyAnnotatorFactory = $this->applicationFactory->newPropertyAnnotatorFactory();
+			$propertyAnnotatorFactory = $this->applicationFactory->getPropertyAnnotatorFactory();
 
 			$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
 				$this->parserData->getSemanticData()

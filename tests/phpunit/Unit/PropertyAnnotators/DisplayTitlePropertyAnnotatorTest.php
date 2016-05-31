@@ -1,14 +1,14 @@
 <?php
 
-namespace SMW\Tests\PropertyAnnotator;
+namespace SMW\Tests\PropertyAnnotators;
 
 use SMW\DIWikiPage;
-use SMW\PropertyAnnotator\DisplayTitlePropertyAnnotator;
-use SMW\PropertyAnnotator\NullPropertyAnnotator;
+use SMW\PropertyAnnotators\DisplayTitlePropertyAnnotator;
+use SMW\PropertyAnnotators\NullPropertyAnnotator;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\PropertyAnnotator\DisplayTitlePropertyAnnotator
+ * @covers \SMW\PropertyAnnotators\DisplayTitlePropertyAnnotator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -41,7 +41,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyAnnotator\DisplayTitlePropertyAnnotator',
+			'\SMW\PropertyAnnotators\DisplayTitlePropertyAnnotator',
 			$instance
 		);
 	}

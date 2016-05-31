@@ -82,7 +82,7 @@ class ParserAfterTidy {
 		);
 
 		$this->updateAnnotationsForAfterParse(
-			$this->applicationFactory->newPropertyAnnotatorFactory(),
+			$this->applicationFactory->getPropertyAnnotatorFactory(),
 			$parserData->getSemanticData()
 		);
 

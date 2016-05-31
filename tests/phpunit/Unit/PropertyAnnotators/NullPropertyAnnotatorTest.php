@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\PropertyAnnotator;
+namespace SMW\Tests\PropertyAnnotators;
 
-use SMW\PropertyAnnotator\NullPropertyAnnotator;
+use SMW\PropertyAnnotators\NullPropertyAnnotator;
 
 /**
- * @covers \SMW\PropertyAnnotator\NullPropertyAnnotator
+ * @covers \SMW\PropertyAnnotators\NullPropertyAnnotator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -22,7 +22,7 @@ class NullPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyAnnotator\NullPropertyAnnotator',
+			'\SMW\PropertyAnnotators\NullPropertyAnnotator',
 			new NullPropertyAnnotator( $semanticData )
 		);
 	}
@@ -41,7 +41,7 @@ class NullPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyAnnotator\NullPropertyAnnotator',
+			'\SMW\PropertyAnnotators\NullPropertyAnnotator',
 			$instance->addAnnotation()
 		);
 

@@ -108,6 +108,13 @@ class SharedCallbackContainer implements CallbackContainer {
 			return InMemoryPoolCache::getInstance();
 		} );
 
+		/**
+		 * @var PropertyAnnotatorFactory
+		 */
+		$callbackLoader->registerCallback( 'PropertyAnnotatorFactory', function() use( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'PropertyAnnotatorFactory', '\SMW\PropertyAnnotatorFactory' );
+			return new PropertyAnnotatorFactory();
+		} );
 	}
 
 	private function registerCallbackHandlersByFactory( $callbackLoader ) {
