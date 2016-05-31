@@ -241,6 +241,18 @@ class Localizer {
 	 * @since 2.5
 	 *
 	 * @param integer $index
+	 * @param string $text
+	 *
+	 * @return string
+	 */
+	public function createTextWithNamespacePrefix( $index, $text ) {
+		return $this->getNamespaceTextById( $index ) . ':' . $text;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param integer $ns
 	 * @param string $url
 	 *
 	 * @return string

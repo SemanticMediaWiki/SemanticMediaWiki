@@ -268,6 +268,16 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCreateTextWithNamespacePrefix() {
+
+		$instance = new Localizer( Language::factory( 'en') );
+
+		$this->assertEquals(
+			'Property:foo bar',
+			$instance->createTextWithNamespacePrefix( SMW_NS_PROPERTY, 'foo bar' )
+		);
+	}
+
 	public function testGetCanonicalizedUrlByNamespace() {
 
 		$language = $this->getMockBuilder( '\Language' )

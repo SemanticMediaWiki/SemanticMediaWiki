@@ -44,9 +44,13 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			return '';
 		}
 
-		if ( $this->propertyValue->getDataItem()->getPreferredLabel() !== '' && $this->mTitle->getText() !== $this->propertyValue->getDataItem()->getPreferredLabel() ) {
+		$label = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getFormattedPropertyLabelFrom(
+			$this->propertyValue->getDataItem()
+		);
+
+		if ( $this->mTitle->getText() !== $label ) {
 			$this->getContext()->getOutput()->setPageTitle(
-				wfMessage( 'smw-property-preferred-title-format', $this->mTitle->getPrefixedText(), $this->propertyValue->getWikiValue() )->text()
+				Localizer::getInstance()->createTextWithNamespacePrefix( SMW_NS_PROPERTY, $label )
 			);
 		}
 
@@ -68,7 +72,11 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 * @return string
 	 */
 	protected function getIntroductoryText() {
-		$propertyName = htmlspecialchars( $this->mTitle->getText() );
+
+		$propertyName = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getFormattedPropertyLabelFrom(
+			$this->propertyValue->getDataItem()
+		);
+
 		$message = '';
 
 		if ( $this->mProperty->isUserDefined() ) {

@@ -392,16 +392,15 @@ class HtmlContentBuilder {
 	private function displayHead() {
 
 		if ( $this->subject->getDataItem()->getNamespace() === SMW_NS_PROPERTY ) {
-			$property = \SMWDIProperty::newFromUserLabel( $this->subject->getDataItem()->getDBKey() );
 			$caption = '';
 
-			$title = $property->getCanonicalDiWikiPage()->getTitle();
+			$label = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getFormattedPropertyLabelFrom(
+				DIProperty::newFromUserLabel( $this->subject->getDataItem()->getDBKey() )
+			);
 
-			if ( ( $preferredLabel = $property->getPreferredLabel() ) !== '' && $title->getText() !== $preferredLabel ) {
-				$caption = wfMessage( 'smw-property-preferred-title-format', $title->getPrefixedText(), $preferredLabel )->text();
-			}
-
-			$this->subject->setCaption( $caption );
+			$this->subject->setCaption(
+				Localizer::getInstance()->createTextWithNamespacePrefix( SMW_NS_PROPERTY, $label )
+			);
 		}
 
 		$html = "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n" .
