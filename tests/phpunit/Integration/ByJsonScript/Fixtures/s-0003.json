@@ -63,7 +63,7 @@
 			},
 			"special-page": {
 				"page":"Ask",
-				"query-parameters": "-5B-5BCategory:S0003-5D-5D/-3FCategory/-3FHas-20boolean=Text/mainlabel=/limit=100/offset=0/format=json/link=none",
+				"query-parameters": "-5B-5BCategory:S0003-5D-5D/-3FCategory/-3FHas-20boolean=Text/mainlabel=/limit=100/offset=0/format=json/unescape=true/prettyprint=true/link=none",
 				"request-parameters":{}
 			},
 			"expected-output": {

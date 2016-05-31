@@ -80,6 +80,7 @@
 	"smw-paramdesc-import-annotation": "Additional annotated data are to be copied during the parsing of a subject",
 	"smw-paramdesc-export": "Export option",
 	"smw-paramdesc-prettyprint": "A pretty-print output that displays additional indents and newlines",
+	"smw-paramdesc-json-unescape": "Output to contain unescaped slashes and multibyte Unicode characters.",
 	"smw-paramdesc-source": "Alternative query source",
 	"smw-paramdesc-jsonsyntax": "JSON syntax to be used",
 	"smw-printername-feed": "RSS and Atom feed",

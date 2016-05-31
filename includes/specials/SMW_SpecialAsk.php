@@ -737,6 +737,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 
 		$link = QueryLinker::get( $query );
 		$link->setParameter( 'true', 'prettyprint' );
+		$link->setParameter( 'true', 'unescape' );
 		$link->setParameter( 'json', 'format' );
 		$link->setCaption( 'JSON' );
 

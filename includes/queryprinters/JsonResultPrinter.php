@@ -59,11 +59,12 @@ class JsonResultPrinter extends FileExportPrinter {
 	 * @return string|boolean
 	 */
 	public function getFileName( SMWQueryResult $queryResult ) {
+
 		if ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) !== '' ) {
 			return str_replace( ' ', '_', $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) . '.json';
-		} else {
-			return 'result.json';
 		}
+
+		return 'result.json';
 	}
 
 	/**
@@ -83,13 +84,16 @@ class JsonResultPrinter extends FileExportPrinter {
 				return $this->params['default'] !== '' ? $this->params['default'] : '';
 			}
 
+			$flags = $this->params['prettyprint'] ? JSON_PRETTY_PRINT : 0;
+			$flags = $flags | ( $this->params['unescape'] ? JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES : 0 );
+
 			// Serialize queryResult
-			$result = FormatJSON::encode(
+			$result = json_encode(
 				array_merge(
 					$res->serializeToArray(),
 					array ( 'rows' => $res->getCount() )
 				),
-				$this->params['prettyprint']
+				$flags
 			);
 
 		} else {
@@ -124,6 +128,12 @@ class JsonResultPrinter extends FileExportPrinter {
 			'type' => 'boolean',
 			'default' => '',
 			'message' => 'smw-paramdesc-prettyprint',
+		);
+
+		$params['unescape'] = array(
+			'type' => 'boolean',
+			'default' => '',
+			'message' => 'smw-paramdesc-json-unescape',
 		);
 
 		return $params;
