@@ -1,9 +1,10 @@
 <?php
 
-namespace SMW\Query\ProfileAnnotator;
+namespace SMW\Query\ProfileAnnotators;
 
 use SMW\DIProperty;
 use SMW\Query\Language\Description;
+use SMW\Query\ProfileAnnotator;
 use SMWDIBlob as DIBlob;
 use SMWDINumber as DINumber;
 

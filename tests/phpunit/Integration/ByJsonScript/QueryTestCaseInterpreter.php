@@ -5,6 +5,7 @@ namespace SMW\Tests\Integration\ByJsonScript;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
+use SMW\DIProperty;
 use SMW\Query\PrintRequest as PrintRequest;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDataItem as DataItem;
@@ -211,8 +212,8 @@ class QueryTestCaseInterpreter {
 		}
 
 		foreach ( $this->contents['queryresult']['datavalues'] as $datavalue ) {
-			$dataValues[] = DataValueFactory::getInstance()->newDataValueByText(
-				$datavalue['property'],
+			$dataValues[] = DataValueFactory::getInstance()->newDataValueByProperty(
+				DIProperty::newFromUserLabel( $datavalue['property'] ),
 				$datavalue['value']
 			);
 		}

@@ -3,10 +3,11 @@
 namespace SMW\Query;
 
 use SMW\DIWikiPage;
-use SMW\Query\ProfileAnnotator\NullProfileAnnotator;
-use SMW\Query\ProfileAnnotator\DescriptionProfileAnnotator;
-use SMW\Query\ProfileAnnotator\FormatProfileAnnotator;
-use SMW\Query\ProfileAnnotator\DurationProfileAnnotator;
+use SMW\Query\ProfileAnnotators\NullProfileAnnotator;
+use SMW\Query\ProfileAnnotators\DescriptionProfileAnnotator;
+use SMW\Query\ProfileAnnotators\FormatProfileAnnotator;
+use SMW\Query\ProfileAnnotators\DurationProfileAnnotator;
+use SMW\Query\ProfileAnnotators\SourceProfileAnnotator;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIContainer as DIContainer;
 use SMWQuery as Query;
@@ -28,16 +29,16 @@ class ProfileAnnotatorFactory {
 	 */
 	public function newDescriptionProfileAnnotator( Query $query ) {
 
-		$nullProfileAnnotator = new NullProfileAnnotator(
+		$profileAnnotator = new NullProfileAnnotator(
 			$this->newDIContainer( $query )
 		);
 
-		$descriptionProfileAnnotator = new DescriptionProfileAnnotator(
-			$nullProfileAnnotator,
+		$profileAnnotator = new DescriptionProfileAnnotator(
+			$profileAnnotator,
 			$query->getDescription()
 		);
 
-		return $descriptionProfileAnnotator;
+		return $profileAnnotator;
 	}
 
 	/**
@@ -45,33 +46,52 @@ class ProfileAnnotatorFactory {
 	 *
 	 * @param Query $query
 	 * @param string $format
-	 * @param integer|null $duration
 	 *
 	 * @return ProfileAnnotator
 	 */
-	public function newCombinedProfileAnnotator( Query $query, $format, $duration = null ) {
+	public function newCombinedProfileAnnotator( Query $query, $format ) {
 
-		$descriptionProfileAnnotator = $this->newDescriptionProfileAnnotator(
+		$profileAnnotator = $this->newDescriptionProfileAnnotator(
 			$query
 		);
 
-		$formatProfileAnnotator = new FormatProfileAnnotator(
-			$descriptionProfileAnnotator,
+		$profileAnnotator = $this->newFormatProfileAnnotator(
+			$profileAnnotator,
 			$format
 		);
 
-		$durationProfileAnnotator = new DurationProfileAnnotator(
-			$formatProfileAnnotator,
-			$duration
+		$profileAnnotator = $this->mergeWithDurationProfileAnnotator(
+			$profileAnnotator,
+			$query
 		);
 
-		return $durationProfileAnnotator;
+		return $profileAnnotator;
+	}
+
+	private function newFormatProfileAnnotator( $profileAnnotator, $format ) {
+		return new FormatProfileAnnotator( $profileAnnotator, $format );
+	}
+
+	private function mergeWithDurationProfileAnnotator( $profileAnnotator, $query ) {
+
+		if ( $query->getOptionBy( 'smwgQueryDurationEnabled' ) === false ) {
+			return $profileAnnotator;
+		}
+
+		if ( ( $duration = $query->getOptionBy( Query::PROC_QUERY_TIME ) ) > 0 ) {
+			$profileAnnotator = new DurationProfileAnnotator( $profileAnnotator, $duration );
+		}
+
+		if ( ( $duration = $query->getOptionBy( Query::PROC_PRINT_TIME ) ) > 0 ) {
+			$profileAnnotator = new DurationProfileAnnotator( $profileAnnotator, $duration );
+		}
+
+		return $profileAnnotator;
 	}
 
 	/**
-	 * @param Query $query
-	 *
-	 * @return DIContainer
+	 * #1416 create container manually to avoid any issues that may arise from
+	 * a failed Title::makeTitleSafe.
 	 */
 	private function newDIContainer( Query $query ) {
 

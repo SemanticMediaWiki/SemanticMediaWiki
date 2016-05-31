@@ -1,16 +1,16 @@
 <?php
 
-namespace SMW\Tests\Query\ProfileAnnotator;
+namespace SMW\Tests\Query\ProfileAnnotators;
 
 use SMW\DIWikiPage;
-use SMW\Query\ProfileAnnotator\FormatProfileAnnotator;
-use SMW\Query\ProfileAnnotator\NullProfileAnnotator;
+use SMW\Query\ProfileAnnotators\FormatProfileAnnotator;
+use SMW\Query\ProfileAnnotators\NullProfileAnnotator;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIContainer as DIContainer;
 
 /**
- * @covers \SMW\Query\ProfileAnnotator\FormatProfileAnnotator
+ * @covers \SMW\Query\ProfileAnnotators\FormatProfileAnnotator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -30,12 +30,12 @@ class FormatProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\ProfileAnnotator\ProfileAnnotator' )
+		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\ProfileAnnotator' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\ProfileAnnotator\FormatProfileAnnotator',
+			'\SMW\Query\ProfileAnnotators\FormatProfileAnnotator',
 			new FormatProfileAnnotator( $profileAnnotator, 'table' )
 		);
 	}

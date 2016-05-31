@@ -1,14 +1,14 @@
 <?php
 
-namespace SMW\Tests\Query\ProfileAnnotator;
+namespace SMW\Tests\Query\ProfileAnnotators;
 
 use SMW\DIWikiPage;
-use SMW\Query\ProfileAnnotator\NullProfileAnnotator;
+use SMW\Query\ProfileAnnotators\NullProfileAnnotator;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIContainer as DIContainer;
 
 /**
- * @covers \SMW\Query\ProfileAnnotator\NullProfileAnnotator
+ * @covers \SMW\Query\ProfileAnnotators\NullProfileAnnotator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -25,7 +25,7 @@ class NullProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\ProfileAnnotator\NullProfileAnnotator',
+			'\SMW\Query\ProfileAnnotators\NullProfileAnnotator',
 			new NullProfileAnnotator( $container )
 		);
 	}

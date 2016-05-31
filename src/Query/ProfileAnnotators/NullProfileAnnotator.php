@@ -1,9 +1,10 @@
 <?php
 
-namespace SMW\Query\ProfileAnnotator;
+namespace SMW\Query\ProfileAnnotators;
 
 use SMW\DIProperty;
 use SMWDIContainer as DIContainer;
+use SMW\Query\ProfileAnnotator;
 
 /**
  * @license GNU GPL v2+

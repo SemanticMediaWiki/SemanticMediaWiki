@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Query\ProfileAnnotator;
+namespace SMW\Query;
 
 use SMW\PropertyAnnotator;
 
