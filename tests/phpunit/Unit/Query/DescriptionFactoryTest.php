@@ -202,7 +202,7 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'isValid', 'getProperty', 'getDataItem' ) )
+			->setMethods( array( 'isValid', 'getProperty', 'getDataItem', 'getWikiValue' ) )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
@@ -216,6 +216,10 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getDataItem' )
 			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar' ) ) );
+
+		$dataValue->expects( $this->atLeastOnce() )
+			->method( 'getWikiValue' )
+			->will( $this->returnValue( 'Bar' ) );
 
 		$instance = new DescriptionFactory();
 

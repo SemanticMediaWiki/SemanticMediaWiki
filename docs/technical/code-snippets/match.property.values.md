@@ -52,9 +52,8 @@ $queryResult = $applicationFactory->getStore()->getQueryResult( $query );
 $descriptionFactory = $queryFactory->newDescriptionFactory();
 
 // [[Foo::Bar]] with a limit of 42 matches
-$description = $descriptionFactory->newSomeProperty(
-	$dataValue->getProperty(),
-	$dataValue->getQueryDescription()
+$description = $descriptionFactory->newFromDataValue(
+	$dataValue
 );
 
 $query = $queryFactory->newQuery( $description );
