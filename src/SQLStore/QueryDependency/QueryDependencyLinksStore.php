@@ -9,7 +9,8 @@ use SMW\EventHandler;
 use SMW\SQLStore\CompositePropertyTableDiffIterator;
 use SMW\Store;
 use SMW\RequestOptions;
-use SMWSQLStore3;
+use SMW\SQLStore\SQLStore;
+use SMWQueryResult as QueryResult;
 
 /**
  * @license GNU GPL v2+
@@ -22,22 +23,32 @@ class QueryDependencyLinksStore {
 	/**
 	 * @var Store
 	 */
-	private $store = null;
+	private $store;
 
 	/**
 	 * @var DependencyLinksTableUpdater
 	 */
-	private $dependencyLinksTableUpdater = null;
+	private $dependencyLinksTableUpdater;
+
+	/**
+	 * @var QueryResultDependencyListResolver
+	 */
+	private $queryResultDependencyListResolver;
 
 	/**
 	 * @var Database
 	 */
-	private $connection = null;
+	private $connection;
 
 	/**
 	 * @var boolean
 	 */
 	private $isEnabled = true;
+
+	/**
+	 * @var boolean
+	 */
+	private $isCommandLineMode = false;
 
 	/**
 	 * Time factor to be used to determine whether an update should actually occur
@@ -52,12 +63,35 @@ class QueryDependencyLinksStore {
 	/**
 	 * @since 2.3
 	 *
+	 * @param QueryResultDependencyListResolver $queryResultDependencyListResolver
 	 * @param DependencyLinksTableUpdater $dependencyLinksTableUpdater
 	 */
-	public function __construct( DependencyLinksTableUpdater $dependencyLinksTableUpdater ) {
+	public function __construct( QueryResultDependencyListResolver $queryResultDependencyListResolver, DependencyLinksTableUpdater $dependencyLinksTableUpdater ) {
+		$this->queryResultDependencyListResolver = $queryResultDependencyListResolver;
 		$this->dependencyLinksTableUpdater = $dependencyLinksTableUpdater;
 		$this->store = $this->dependencyLinksTableUpdater->getStore();
 		$this->connection = $this->store->getConnection( 'mw.db' );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param Store $store
+	 */
+	public function setStore( Store $store ) {
+		$this->store = $store;
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:$wgCommandLineMode
+	 * Indicates whether MW is running in command-line mode.
+	 *
+	 * @since 2.5
+	 *
+	 * @param boolean $isCommandLineMode
+	 */
+	public function isCommandLineMode( $isCommandLineMode ) {
+		$this->isCommandLineMode = $isCommandLineMode;
 	}
 
 	/**
@@ -213,7 +247,7 @@ class QueryDependencyLinksStore {
 		}
 
 		$rows = $this->connection->select(
-			SMWSQLStore3::QUERY_LINKS_TABLE,
+			SQLStore::QUERY_LINKS_TABLE,
 			array( 's_id' ),
 			$conditions,
 			__METHOD__,
@@ -242,18 +276,18 @@ class QueryDependencyLinksStore {
 	 *
 	 * @since 2.3
 	 *
-	 * @param QueryResultDependencyListResolver $queryResultDependencyListResolver
+	 * @param QueryResult|string $queryResult
 	 */
-	public function doUpdateDependenciesBy( QueryResultDependencyListResolver $queryResultDependencyListResolver ) {
+	public function doUpdateDependenciesFrom( $queryResult ) {
 
-		if ( !$this->isEnabled() || $queryResultDependencyListResolver->getSubject() === null ) {
+		if ( !$this->canUpdateDependencies( $queryResult ) ) {
 			return null;
 		}
 
 		$start = microtime( true );
 
-		$subject = $queryResultDependencyListResolver->getSubject();
-		$hash = $queryResultDependencyListResolver->getQueryId();
+		$subject = $queryResult->getQuery()->getContextPage();
+		$hash = $queryResult->getQuery()->getQueryId();
 
 		$sid = $this->dependencyLinksTableUpdater->getId(
 			$subject,
@@ -265,16 +299,17 @@ class QueryDependencyLinksStore {
 		}
 
 		$dependencyLinksTableUpdater = $this->dependencyLinksTableUpdater;
+		$queryResultDependencyListResolver = $this->queryResultDependencyListResolver;
 
-		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $subject, $sid, $hash, $dependencyLinksTableUpdater, $queryResultDependencyListResolver ) {
+		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $subject, $sid, $hash, $queryResult, $dependencyLinksTableUpdater, $queryResultDependencyListResolver ) {
 
-			$dependencyList = $queryResultDependencyListResolver->getDependencyList();
+			$dependencyList = $queryResultDependencyListResolver->getDependencyListFrom( $queryResult );
 
 			// Add extra dependencies which we only get "late" after the QueryResult
 			// object as been resolved by the ResultPrinter, this is done to
 			// avoid having to process the QueryResult recursively on its own
 			// (which would carry a performance penalty)
-			$dependencyListByLateRetrieval = $queryResultDependencyListResolver->getDependencyListByLateRetrieval();
+			$dependencyListByLateRetrieval = $queryResultDependencyListResolver->getDependencyListByLateRetrievalFrom( $queryResult );
 
 			if ( $dependencyList === array() && $dependencyListByLateRetrieval === array() ) {
 				return wfDebugLog( 'smw', 'No dependency list available ' . $hash );
@@ -301,13 +336,17 @@ class QueryDependencyLinksStore {
 
 		$deferredCallableUpdate->setOrigin( __METHOD__ );
 
-		// https://www.mediawiki.org/wiki/Manual:$wgCommandLineMode
-		// Indicates whether MW is running in command-line mode.
-		$deferredCallableUpdate->markAsPending( $GLOBALS['wgCommandLineMode'] );
+		$deferredCallableUpdate->markAsPending( $this->isCommandLineMode );
 		$deferredCallableUpdate->enabledDeferredUpdate( true );
 		$deferredCallableUpdate->pushToUpdateQueue();
 
 		wfDebugLog( 'smw', __METHOD__ . ' procTime (sec): ' . round( ( microtime( true ) - $start ), 7 ) );
+
+		return true;
+	}
+
+	private function canUpdateDependencies( $queryResult ) {
+		return $this->isEnabled() && $queryResult instanceof QueryResult && $queryResult->getQuery() !== null && $queryResult->getQuery()->getContextPage() !== null && $queryResult->getQuery()->getLimit() > 0;
 	}
 
 	private function canSuppressUpdateOnSkewFactorFor( $sid, $subject ) {
@@ -319,7 +358,7 @@ class QueryDependencyLinksStore {
 		}
 
 		$row = $this->connection->selectRow(
-			SMWSQLStore3::QUERY_LINKS_TABLE,
+			SQLStore::QUERY_LINKS_TABLE,
 			array(
 				's_id'
 			),

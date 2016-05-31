@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\SQLStore\QueryDependency;
 
-use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\ClassDescription;
@@ -16,6 +15,7 @@ use SMW\Query\PrintRequest;
 use SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver;
 use SMWDIBlob as DIBlob;
 use SMWQuery as Query;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver
@@ -28,23 +28,23 @@ use SMWQuery as Query;
  */
 class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase {
 
-	private $applicationFactory;
+	private $testEnvironment;
 	private $store;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->testEnvironment = new TestEnvironment();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->applicationFactory->registerObject( 'Store', $this->store );
+		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
+		$this->testEnvironment->tearDown();
 
 		parent::tearDown();
 	}
@@ -57,35 +57,26 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver',
-			new QueryResultDependencyListResolver( null, $propertyHierarchyLookup )
+			new QueryResultDependencyListResolver( $propertyHierarchyLookup )
 		);
 	}
 
-	public function testTryToGetDependencyListForNonSetQueryResult() {
+	public function testTryTogetDependencyListFromForNonSetQueryResult() {
 
 		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new QueryResultDependencyListResolver(
-			null,
 			$propertyHierarchyLookup
 		);
 
-		$this->assertNull(
-			$instance->getQueryId()
-		);
-
-		$this->assertNull(
-			$instance->getSubject()
-		);
-
 		$this->assertEmpty(
-			$instance->getDependencyList()
+			$instance->getDependencyListFrom( '' )
 		);
 	}
 
-	public function testTryToGetDependencyListForLimitZeroQuery() {
+	public function testTryTogetDependencyListFromForLimitZeroQuery() {
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
@@ -106,7 +97,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			->method( 'getQuery' )
 			->will( $this->returnValue( $query ) );
 
-		$queryResult->expects( $this->any() )
+		$queryResult->expects( $this->never() )
 			->method( 'getStore' )
 			->will( $this->returnValue( $this->store ) );
 
@@ -115,12 +106,11 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			->getMock();
 
 		$instance = new QueryResultDependencyListResolver(
-			$queryResult,
 			$propertyHierarchyLookup
 		);
 
 		$this->assertEmpty(
-			$instance->getDependencyList()
+			$instance->getDependencyListFrom( $queryResult )
 		);
 	}
 
@@ -167,7 +157,6 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 				array( DIWikiPage::newFromText( 'Subprop', SMW_NS_PROPERTY ) ) ) );
 
 		$instance = new QueryResultDependencyListResolver(
-			$queryResult,
 			$propertyHierarchyLookup
 		);
 
@@ -182,14 +171,15 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 
 		$this->assertEquals(
 			$expected,
-			$instance->getDependencyList()
+			$instance->getDependencyListFrom( $queryResult )
 		);
 	}
+
 
 	/**
 	 * @dataProvider queryProvider
 	 */
-	public function testgetDependencyList( $query, $expected ) {
+	public function testgetDependencyListFrom( $query, $expected ) {
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -212,17 +202,16 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			->getMock();
 
 		$instance = new QueryResultDependencyListResolver(
-			$queryResult,
 			$propertyHierarchyLookup
 		);
 
 		$this->assertEquals(
 			$expected,
-			$instance->getDependencyList()
+			$instance->getDependencyListFrom( $queryResult )
 		);
 	}
 
-	public function testGetDependencyListByLateRetrieval() {
+	public function testgetDependencyListByLateRetrievalFrom() {
 
 		$subject = DIWikiPage::newFromText( 'Bar' );
 
@@ -258,13 +247,12 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			->getMock();
 
 		$instance = new QueryResultDependencyListResolver(
-			$queryResult,
 			$propertyHierarchyLookup
 		);
 
 		$this->assertEquals(
 			array( $subject ),
-			$instance->getDependencyListByLateRetrieval()
+			$instance->getDependencyListByLateRetrievalFrom( $queryResult )
 		);
 	}
 
@@ -311,7 +299,6 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 				array( DIWikiPage::newFromText( 'Subprop', SMW_NS_PROPERTY ) ) ) );
 
 		$instance = new QueryResultDependencyListResolver(
-			$queryResult,
 			$propertyHierarchyLookup
 		);
 
@@ -324,7 +311,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 
 		$this->assertEquals(
 			$expected,
-			$instance->getDependencyList()
+			$instance->getDependencyListFrom( $queryResult )
 		);
 	}
 
@@ -372,7 +359,6 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 					DIWikiPage::newFromText( 'Foocat', NS_CATEGORY ) ) ) );
 
 		$instance = new QueryResultDependencyListResolver(
-			$queryResult,
 			$propertyHierarchyLookup
 		);
 
@@ -385,7 +371,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 
 		$this->assertEquals(
 			$expected,
-			$instance->getDependencyList()
+			$instance->getDependencyListFrom( $queryResult )
 		);
 	}
 

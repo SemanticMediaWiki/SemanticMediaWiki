@@ -20,33 +20,18 @@ use SMW\Store;
 class QueryDependencyLinksStoreFactory {
 
 	/**
-	 * @var $applicationFactory
-	 */
-	private $applicationFactory;
-
-	/**
 	 * @since 2.4
-	 */
-	public function __construct() {
-		$this->applicationFactory = ApplicationFactory::getInstance();
-	}
-
-	/**
-	 * @since 2.4
-	 *
-	 * @param QueryResult|string $queryResult
 	 *
 	 * @return QueryResultDependencyListResolver
 	 */
-	public function newQueryResultDependencyListResolver( $queryResult ) {
+	public function newQueryResultDependencyListResolver() {
 
 		$queryResultDependencyListResolver = new QueryResultDependencyListResolver(
-			$queryResult,
-			$this->applicationFactory->newPropertyHierarchyLookup()
+			ApplicationFactory::getInstance()->newPropertyHierarchyLookup()
 		);
 
 		$queryResultDependencyListResolver->setPropertyDependencyExemptionlist(
-			$this->applicationFactory->getSettings()->get( 'smwgQueryDependencyPropertyExemptionlist' )
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgQueryDependencyPropertyExemptionlist' )
 		);
 
 		return $queryResultDependencyListResolver;
@@ -62,12 +47,15 @@ class QueryDependencyLinksStoreFactory {
 	public function newQueryDependencyLinksStore( $store ) {
 
 		$queryDependencyLinksStore = new QueryDependencyLinksStore(
+			$this->newQueryResultDependencyListResolver(),
 			new DependencyLinksTableUpdater( $store )
 		);
 
 		$queryDependencyLinksStore->setEnabled(
-			$this->applicationFactory->getSettings()->get( 'smwgEnabledQueryDependencyLinksStore' )
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgEnabledQueryDependencyLinksStore' )
 		);
+
+		$queryDependencyLinksStore->isCommandLineMode( $GLOBALS['wgCommandLineMode'] );
 
 		return $queryDependencyLinksStore;
 	}
@@ -88,11 +76,11 @@ class QueryDependencyLinksStoreFactory {
 		);
 
 		$entityIdListRelevanceDetectionFilter->setPropertyExemptionlist(
-			$this->applicationFactory->getSettings()->get( 'smwgQueryDependencyPropertyExemptionlist' )
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgQueryDependencyPropertyExemptionlist' )
 		);
 
 		$entityIdListRelevanceDetectionFilter->setAffiliatePropertyDetectionlist(
-			$this->applicationFactory->getSettings()->get( 'smwgQueryDependencyAffiliatePropertyDetectionlist' )
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgQueryDependencyAffiliatePropertyDetectionlist' )
 		);
 
 		return $entityIdListRelevanceDetectionFilter;
