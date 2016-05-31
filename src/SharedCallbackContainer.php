@@ -10,6 +10,7 @@ use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\TitleCreator;
+use SMW\Query\QuerySourceFactory;
 
 /**
  * @license GNU GPL v2+
@@ -108,6 +109,26 @@ class SharedCallbackContainer implements CallbackContainer {
 
 		$callbackLoader->registerCallback( 'FactboxFactory', function() {
 			return new FactboxFactory();
+		} );
+
+		/**
+		 * @var QuerySourceFactory
+		 */
+		$callbackLoader->registerCallback( 'QuerySourceFactory', function() use ( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'QuerySourceFactory', '\SMW\Query\QuerySourceFactory' );
+
+			return new QuerySourceFactory(
+				$callbackLoader->load( 'Store' ),
+				$callbackLoader->load( 'Settings' )->get( 'smwgQuerySources' )
+			);
+		} );
+
+		/**
+		 * @var QueryFactory
+		 */
+		$callbackLoader->registerCallback( 'QueryFactory', function() use ( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'QueryFactory', '\SMW\QueryFactory' );
+			return new QueryFactory();
 		} );
 
 		$callbackLoader->registerExpectedReturnType( 'DeferredCallableUpdate', '\SMW\DeferredCallableUpdate' );

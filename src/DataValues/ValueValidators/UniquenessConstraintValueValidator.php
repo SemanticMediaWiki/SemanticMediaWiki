@@ -58,7 +58,7 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 			$this->cachedPropertyValuesPrefetcher = ApplicationFactory::getInstance()->getCachedPropertyValuesPrefetcher();
 		}
 
-		$this->queryFactory = ApplicationFactory::getInstance()->newQueryFactory();
+		$this->queryFactory = ApplicationFactory::getInstance()->getQueryFactory();
 	}
 
 	/**

@@ -12,6 +12,7 @@ use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\RepositoryConnection;
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
+use SMW\QueryEngine as QueryEngineInterface;
 
 /**
  * Class mapping SMWQuery objects to SPARQL, and for controlling the execution
@@ -23,7 +24,7 @@ use SMWQueryResult as QueryResult;
  * @author Markus Krötzsch
  * @author mwjames
  */
-class QueryEngine {
+class QueryEngine implements QueryEngineInterface {
 
 	/// The name of the SPARQL variable that represents the query result.
 	const RESULT_VARIABLE = 'result';
