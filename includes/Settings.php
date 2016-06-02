@@ -131,11 +131,12 @@ class Settings extends Options {
 			'smwgEnabledHttpDeferredJobRequest' => $GLOBALS['smwgEnabledHttpDeferredJobRequest'],
 			'smwgEnabledQueryDependencyLinksStore' => $GLOBALS['smwgEnabledQueryDependencyLinksStore'],
 			'smwgQueryDependencyPropertyExemptionlist' => $GLOBALS['smwgQueryDependencyPropertyExemptionlist'],
+			'smwgQueryDependencyAffiliatePropertyDetectionlist' => $GLOBALS['smwgQueryDependencyAffiliatePropertyDetectionlist'],
 			'smwgExportBCNonCanonicalFormUse' => $GLOBALS['smwgExportBCNonCanonicalFormUse'],
 			'smwgExportBCAuxiliaryUse' => $GLOBALS['smwgExportBCAuxiliaryUse'],
 			'smwgEnabledInTextAnnotationParserStrictMode' => $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'],
 			'smwgSparqlRepositoryConnectorForcedHttpVersion' => $GLOBALS['smwgSparqlRepositoryConnectorForcedHttpVersion'],
-			'smwgDVFeatures' => $GLOBALS['smwgDVFeatures']
+			'smwgDVFeatures' => $GLOBALS['smwgDVFeatures'],
 		);
 
 		$settings = $settings + array(

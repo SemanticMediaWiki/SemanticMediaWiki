@@ -5,6 +5,7 @@ namespace SMW\Tests\SQLStore\QueryDependency;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
+use SMW\SQLStore\QueryDependency\EntityIdListRelevanceDetectionFilter;
 use SMW\SQLStore\SQLStore;
 
 /**
@@ -131,38 +132,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->getMock();
-
-		$record = array(
-			'table_foo' => array(
-				'key'  => '_FOO',
-				'p_id' => 2
-			)
-		);
-
-		$tableDiff = array(
-			'table_foo' => array(
-				'insert'  => array(
-					array( 's_id' => 1001 )
-				)
-			)
-		);
-
-		$compositePropertyTableDiffIterator = $this->getMockBuilder( '\SMW\SQLStore\CompositePropertyTableDiffIterator' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$compositePropertyTableDiffIterator->expects( $this->any() )
-			->method( 'getCombinedIdListOfChangedEntities' )
-			->will( $this->returnValue( array( 1, 2, 1001 ) ) );
-
-		$compositePropertyTableDiffIterator->expects( $this->any() )
-			->method( 'getFixedPropertyRecords' )
-			->will( $this->returnValue( $record ) );
-
-		$compositePropertyTableDiffIterator->expects( $this->any() )
-			->method( 'getOrderedDiffByTable' )
-			->will( $this->returnValue( $tableDiff ) );
+			->getMockForAbstractClass();
 
 		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
@@ -172,13 +142,21 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getStore' )
 			->will( $this->returnValue( $store ) );
 
+		$entityIdListRelevanceDetectionFilter = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\EntityIdListRelevanceDetectionFilter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$entityIdListRelevanceDetectionFilter->expects( $this->once() )
+			->method( 'getFilteredIdList' )
+			->will( $this->returnValue( array( 1 ) ) );
+
 		$instance = new QueryDependencyLinksStore(
 			$dependencyLinksTableUpdater
 		);
 
 		$this->assertEquals(
 			array( 'idlist' => array( 1 ) ),
-			$instance->buildParserCachePurgeJobParametersFrom( $compositePropertyTableDiffIterator, array( '_FOO' ) )
+			$instance->buildParserCachePurgeJobParametersFrom( $entityIdListRelevanceDetectionFilter )
 		);
 	}
 
@@ -188,10 +166,6 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$compositePropertyTableDiffIterator = $this->getMockBuilder( '\SMW\SQLStore\CompositePropertyTableDiffIterator' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -200,6 +174,10 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getStore' )
 			->will( $this->returnValue( $store ) );
 
+		$entityIdListRelevanceDetectionFilter = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\EntityIdListRelevanceDetectionFilter' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$instance = new QueryDependencyLinksStore(
 			$dependencyLinksTableUpdater
 		);
@@ -207,7 +185,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$instance->setEnabledState( false );
 
 		$this->assertEmpty(
-			$instance->buildParserCachePurgeJobParametersFrom( $compositePropertyTableDiffIterator, array() )
+			$instance->buildParserCachePurgeJobParametersFrom( $entityIdListRelevanceDetectionFilter )
 		);
 	}
 
