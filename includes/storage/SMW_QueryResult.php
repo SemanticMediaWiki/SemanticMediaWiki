@@ -4,6 +4,7 @@ use SMW\HashBuilder;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryLinker;
 use SMW\SerializerFactory;
+use SMW\Query\TemporaryEntityListAccumulator;
 
 /**
  * Objects of this class encapsulate the result of a query in SMW. They
@@ -70,6 +71,11 @@ class SMWQueryResult {
 	private $isFromCache = false;
 
 	/**
+	 * @var TemporaryEntityListAccumulator
+	 */
+	private $temporaryEntityListAccumulator;
+
+	/**
 	 * Initialise the object with an array of SMWPrintRequest objects, which
 	 * define the structure of the result "table" (one for each column).
 	 *
@@ -88,6 +94,16 @@ class SMWQueryResult {
 		$this->mFurtherResults = $furtherRes;
 		$this->mQuery = $query;
 		$this->mStore = $store;
+		$this->temporaryEntityListAccumulator = new TemporaryEntityListAccumulator( $query );
+	}
+
+	/**
+	 * @since  2.4
+	 *
+	 * @return TemporaryEntityListAccumulator
+	 */
+	public function getEntityListAccumulator() {
+		return $this->temporaryEntityListAccumulator;
 	}
 
 	/**
@@ -134,7 +150,9 @@ class SMWQueryResult {
 		$row = array();
 
 		foreach ( $this->mPrintRequests as $p ) {
-			$row[] = new SMWResultArray( $page, $p, $this->mStore );
+			$resultArray = new SMWResultArray( $page, $p, $this->mStore );
+			$resultArray->setEntityListAccumulator( $this->temporaryEntityListAccumulator );
+			$row[] = $resultArray;
 		}
 
 		return $row;
@@ -163,6 +181,7 @@ class SMWQueryResult {
 	 * @since 2.3
 	 */
 	public function reset() {
+		$this->temporaryEntityListAccumulator->pruneEntityList();
 		return reset( $this->mResults );
 	}
 
