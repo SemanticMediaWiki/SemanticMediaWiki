@@ -877,7 +877,7 @@ $GLOBALS['smwgEnabledQueryDependencyLinksStore'] = false;
 #
 # @since 2.3 (experimental)
 ##
-$GLOBALS['smwgPropertyDependencyExemptionlist'] = array( '_MDAT', '_SOBJ', '_ASKDU' );
+$GLOBALS['smwgQueryDependencyPropertyExemptionlist'] = array( '_MDAT', '_SOBJ', '_ASKDU' );
 ##
 
 ###
