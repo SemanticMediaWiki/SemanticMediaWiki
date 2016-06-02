@@ -45,7 +45,7 @@ class QueryDependencyLinksStoreFactory {
 		);
 
 		$queryResultDependencyListResolver->setPropertyDependencyExemptionlist(
-			$this->applicationFactory->getSettings()->get( 'smwgPropertyDependencyExemptionlist' )
+			$this->applicationFactory->getSettings()->get( 'smwgQueryDependencyPropertyExemptionlist' )
 		);
 
 		return $queryResultDependencyListResolver;
