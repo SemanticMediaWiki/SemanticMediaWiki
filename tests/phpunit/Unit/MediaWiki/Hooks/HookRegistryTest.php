@@ -906,6 +906,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( array() ) );
 
 		$compositePropertyTableDiffIterator->expects( $this->any() )
+			->method( 'getOrderedDiffByTable' )
+			->will( $this->returnValue( array() ) );
+
+		$compositePropertyTableDiffIterator->expects( $this->any() )
 			->method( 'getFixedPropertyRecords' )
 			->will( $this->returnValue( array() ) );
 

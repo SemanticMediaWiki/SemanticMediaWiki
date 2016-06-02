@@ -23,7 +23,7 @@ class QueryDependencyLinksStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function canConstructQueryResultDependencyListResolver() {
+	public function testCanConstructQueryResultDependencyListResolver() {
 
 		$instance = new QueryDependencyLinksStoreFactory();
 
@@ -33,7 +33,7 @@ class QueryDependencyLinksStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function canConstructQueryDependencyLinksStore() {
+	public function testCanConstructQueryDependencyLinksStore() {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -44,6 +44,24 @@ class QueryDependencyLinksStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryDependency\QueryDependencyLinksStore',
 			$instance->newQueryDependencyLinksStore( $store )
+		);
+	}
+
+	public function testCanConstructEntityIdListRelevanceDetectionFilter() {
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$compositePropertyTableDiffIterator = $this->getMockBuilder( '\SMW\SQLStore\CompositePropertyTableDiffIterator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new QueryDependencyLinksStoreFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\QueryDependency\EntityIdListRelevanceDetectionFilter',
+			$instance->newEntityIdListRelevanceDetectionFilter( $store, $compositePropertyTableDiffIterator )
 		);
 	}
 

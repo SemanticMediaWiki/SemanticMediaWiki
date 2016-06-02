@@ -507,9 +507,13 @@ class HookRegistry {
 				$compositePropertyTableDiffIterator
 			);
 
+			$entityIdListRelevanceDetectionFilter = $queryDependencyLinksStoreFactory->newEntityIdListRelevanceDetectionFilter(
+				$store,
+				$compositePropertyTableDiffIterator
+			);
+
 			$jobParameters = $queryDependencyLinksStore->buildParserCachePurgeJobParametersFrom(
-				$compositePropertyTableDiffIterator,
-				$applicationFactory->getSettings()->get( 'smwgQueryDependencyPropertyExemptionlist' )
+				$entityIdListRelevanceDetectionFilter
 			);
 
 			$deferredRequestDispatchManager->dispatchParserCachePurgeJobFor(

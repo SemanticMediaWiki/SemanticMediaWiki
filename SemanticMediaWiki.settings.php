@@ -881,6 +881,19 @@ $GLOBALS['smwgQueryDependencyPropertyExemptionlist'] = array( '_MDAT', '_SOBJ', 
 ##
 
 ###
+# Listed properties are marked as affiliate, meaning that when an alteration to
+# a property value occurs query dependencies for the related entity are recorded
+# as well. For example, _DTITLE is most likely such property where a change would
+# normally not be reflected in query results (as it not directlty linked to a
+# query) but when added as an affiliated, changes to its content will be
+# handled as if it is linked to an embedded entity.
+#
+# @since 2.4 (experimental)
+##
+$GLOBALS['smwgQueryDependencyAffiliatePropertyDetectionlist'] = array();
+##
+
+###
 # The setting is introduced the keep backwards compatibility with existing Rdf/Turtle
 # exports. The `aux` marker is epxected only used to be used for selected properties
 # to generate a helper value and not for any other predefined property.
