@@ -93,8 +93,8 @@ class TestEnvironment {
 	 */
 	public function resetMediaWikiService( $name ) {
 
-		// MW 1.27+
-		if ( !class_exists( '\MediaWiki\MediaWikiServices' ) ) {
+		// MW 1.27+ (yet 1.27.0.rc has no access to "resetServiceForTesting")
+		if ( !class_exists( '\MediaWiki\MediaWikiServices' ) || !method_exists( \MediaWiki\MediaWikiServices::getInstance(), 'resetServiceForTesting' ) ) {
 			return null;
 		}
 
