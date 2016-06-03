@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author أحمد غربية <ahmad@arabdigitalexpression.org>
  * @file
  * @ingroup SMWLanguage
  */
@@ -19,27 +20,28 @@ include_once ( $smwgIP . 'languages/SMW_Language.php' );
  *
  * @author Mahmoud Zouari  mahmoudzouari@yahoo.fr http://www.cri.ensmp.fr
  * @author Meno25
+ * @auhtor Ahmad Gharbeia أحمد غربية <ahmad@arabdigitalexpression.org>
  * @ingroup SMWLanguage
  * @ingroup Language
  */
 class SMWLanguageAr extends SMWLanguage {
 
 	protected $m_DatatypeLabels = array(
-		'_wpg' => 'الصفحة', // name of page datatype
+		'_wpg' => 'صفحة', // name of page datatype
 		'_txt' => 'نص',  // name of the text type
 		'_cod' => 'كود',  // name of the (source) code type
 		'_boo' => 'منطقي',  // name of the boolean type
 		'_num' => 'عدد',  // name for the datatype of numbers
-		'_geo' => 'الإحداثيات الجغرافية', // name of the geocoord type
-		'_tem' => 'الحرارة',  // name of the temperature type
-		'_dat' => 'التاريخ',  // name of the datetime (calendar) type
-		'_ema' => 'البريد الإلكتروني',  // name of the email type
-		'_uri' => 'مسار',  // name of the URL type
-		'_anu' => 'التعليق علي معرف الموارد الموحد',  // name of the annotation URI type (OWL annotation property)
-		'_tel' => 'رقم الهاتف',  // name of the telephone (URI) type
-		'_rec' => 'تسجيل', // name of record data type
-		'_qty' => 'Quantity', // name of the number type with units of measurement //TODO: translate
-		'_mlt_rec' => 'Monolingual text',
+		'_geo' => 'إحداثيات جغرافية', // name of the geocoord type
+		'_tem' => 'درجة حرارة',  // name of the temperature type
+		'_dat' => 'تاريخ',  // name of the datetime (calendar) type
+		'_ema' => 'عنوان بريد إلكتروني',  // name of the email type
+		'_uri' => 'URL',  // name of the URL type
+		'_anu' => 'URL حاشية',  // name of the annotation URI type (OWL annotation property)
+		'_tel' => 'رقم هاتفي',  // name of the telephone (URI) type
+		'_rec' => 'ّسجل', // name of record data type
+		'_qty' => 'كميّة', // name of the number type with units of measurement
+		'_mlt_rec' => 'نص أحادي اللغة',
 	);
 
 	protected $m_DatatypeAliases = array(
@@ -52,62 +54,58 @@ class SMWLanguageAr extends SMWLanguage {
 
 	protected $m_SpecialProperties = array(
 		// always start upper-case
-		'_TYPE'  => 'لديه نوع',
-		'_URI'   => 'معرف الموارد الموحد معادلة',
-		'_SUBP' => 'الخاصية الفرعية ل',
-		'_SUBC' => 'تصنيف فرعي من',
-		'_UNIT' => 'عرض الوحدات',
-		'_IMPO' => 'المستوردة من',
-		'_CONV' => 'يقابل',
-		'_SERV' => 'يوفر الخدمة',
-		'_PVAL' => 'يسمح بالقيمة',
+		'_TYPE' => 'من النوع',
+		'_URI'  => 'URL مكافئ',
+		'_SUBP' => 'خصيصة فرعية من',
+		'_SUBC' => 'مُصنّف على التصنيف',
+		'_UNIT' => 'وحدة العرض',
+		'_IMPO' => 'مستوردة من',
+		'_CONV' => 'توافق',
+		'_SERV' => 'تقدّم خدمة',
+		'_PVAL' => 'تقبل القيمة',
 		'_MDAT' => 'تاريخ التعديل',
-		'_CDAT' => 'Creation date', // TODO: translate
-		'_NEWP' => 'Is a new page', // TODO: translate
-		'_LEDT' => 'Last editor is', // TODO: translate
-		'_ERRP' => 'يمتلك قيمة غير صحيحة ل',
-		'_LIST' => 'يمتلك حقول',
-		'_SOBJ' => 'Has subobject', // TODO: translate
-		'_ASK'  => 'Has query', // TODO: translate
-		'_ASKST'=> 'Query string', // TODO: translate
-		'_ASKFO'=> 'Query format', // TODO: translate
-		'_ASKSI'=> 'Query size', // TODO: translate
-		'_ASKDE'=> 'Query depth', // TODO: translate
-		'_ASKDU'=> 'Query duration', // TODO: translate
-		'_MEDIA'=> 'Media type',
-		'_MIME' => 'MIME type',
-		'_ERRC' => 'Has processing error',
-		'_ERRT' => 'Has processing error text',
-		'_PREC'  => 'Display precision of',
-		'_LCODE' => 'Language code',
-		'_TEXT'  => 'Text',
-		'_PDESC' => 'Has property description',
-		'_PVAP'  => 'Allows pattern',
-		'_DTITLE' => 'Display title of',
-		'_PVUC' => 'Has uniqueness constraint',
+		'_CDAT' => 'تاريخ الإنشاء',
+		'_NEWP' => 'هي صفحة جديدة',
+		'_LEDT' => 'آخر مَن حرّرها',
+		'_ERRP' => 'فيها قيمة غير صحيحة في',//الخصيصة
+		'_LIST' => 'يتأّلف من الحقول',//السجِّل
+		'_SOBJ' => 'تحوي الكائن الفرعي', //الصفحة
+		'_ASK'  => 'فيها الاستعلام',//الصفحة
+		'_ASKST'=> 'نص الاستعلام',
+		'_ASKFO'=> 'صيغة الاستعلام',
+		'_ASKSI'=> 'حجم الاستعلام',
+		'_ASKDE'=> 'عمق الاستعلام',
+		'_ASKDU'=> 'مدّة الاستعلام',
+		'_MEDIA'=> 'نوع الميديا',
+		'_MIME' => 'نوع MIME',
+		'_ERRC' => 'بها خطأ في المعالجة',
+		'_ERRT' => 'لها وصف الخطأ في المعالجة',
+		'_PREC'  => 'تعرض الدّقة إلى',
+		'_LCODE' => 'رمز اللغة',
+		'_TEXT'  => 'نص',
+		'_PDESC' => 'لها وصف الخصيصة',
+		'_PVAP'  => 'تقبل النمط',
+		'_DTITLE' => 'تعرض العنوان',
+		'_PVUC' => 'مقيّدة بالتفرّد',
 	);
 
 	protected $m_SpecialPropertyAliases = array(
-		'عرض الوحدة' => '_UNIT'
+		'وحدة العرض' => '_UNIT'
 	);
 
 	protected $m_Namespaces = array(
-		SMW_NS_PROPERTY       => 'خاصية',
-		SMW_NS_PROPERTY_TALK  => 'نقاش_الخاصية',
+		SMW_NS_PROPERTY       => 'خصيصة',
+		SMW_NS_PROPERTY_TALK  => 'نقاش_الخصيصة',
 		SMW_NS_TYPE           => 'نوع',
 		SMW_NS_TYPE_TALK      => 'نقاش_النوع',
-		SMW_NS_CONCEPT        => 'مبدأ',
-		SMW_NS_CONCEPT_TALK   => 'نقاش_المبدأ'
+		SMW_NS_CONCEPT        => 'مفهوم',
+		SMW_NS_CONCEPT_TALK   => 'نقاش_المفهوم'
 	);
 
 	protected $m_dateformats = array( array( SMW_Y ), array( SMW_MY, SMW_YM ), array( SMW_MDY, SMW_DMY, SMW_YMD, SMW_YDM ) );
 
 	protected $m_months = array( "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر" );
 
-	protected $m_monthsshort = array( "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر" );
+	protected $m_monthsshort = array( "ينا", "فبر", "مارس", "أبريل", "ماي", "يوني", "يولي", "غسط", "سبت", "أكت", "نوف", "ديس" );
 
 }
-
-
-
-
