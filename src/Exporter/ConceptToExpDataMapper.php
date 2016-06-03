@@ -89,27 +89,25 @@ class ConceptToExpDataMapper {
 			return $result;
 		}
 
-		if ( !$exact ) {
-			$result = new ExpData(
-				new ExpResource( '' )
-			);
-
-			$result->addPropertyObjectValue(
-				$this->exporter->getSpecialNsResource( 'rdf', 'type' ),
-				new ExpData( $this->exporter->getSpecialNsResource( 'owl', 'Class' ) )
-			);
-
-			$result->addPropertyObjectValue(
-				$this->exporter->getSpecialNsResource( 'rdfs', 'subClassOf' ),
-				$owldesc
-			);
-
-			return $result;
-		} else {
+		if ( $exact ) {
 			return $owldesc;
 		}
 
-		return null;
+		$result = new ExpData(
+			new ExpResource( '' )
+		);
+
+		$result->addPropertyObjectValue(
+			$this->exporter->getSpecialNsResource( 'rdf', 'type' ),
+			new ExpData( $this->exporter->getSpecialNsResource( 'owl', 'Class' ) )
+		);
+
+		$result->addPropertyObjectValue(
+			$this->exporter->getSpecialNsResource( 'rdfs', 'subClassOf' ),
+			$owldesc
+		);
+
+		return $result;
 	}
 
 	/**
