@@ -59,8 +59,14 @@ class TemporaryEntityListAccumulatorTest extends \PHPUnit_Framework_TestCase {
 		$instance->addToEntityList( null, $dataItem );
 
 		$this->assertEquals(
-			array( $dataItem ),
+			array( 'Foo#0#' => $dataItem ),
 			$instance->getEntityList( 'FOO:123' )
+		);
+
+		$instance->pruneEntityList();
+
+		$this->assertEmpty(
+			$instance->getEntityList()
 		);
 	}
 
@@ -83,44 +89,8 @@ class TemporaryEntityListAccumulatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			array(
-				'FOO:BAR' => array( $dataItem ),
-				'FOO:123' => array( DIWikiPage::newFromText( 'Foo' ) ) // from previous run
+				'FOO:BAR' => array( 'Bar#0#' => $dataItem )
 			),
-			$instance->getEntityList()
-		);
-	}
-
-	/**
-	 * @depends testAddAnotherToEntityList
-	 */
-	public function testGetAndPruneEntityList() {
-
-		$instance = new TemporaryEntityListAccumulator(
-			$this->query
-		);
-
-		$this->assertCount(
-			2,
-			$instance->getEntityList()
-		);
-
-		$this->assertNotEmpty(
-			$instance->getEntityList( 'FOO:123' )
-		);
-
-		$instance->pruneEntityList( 'FOO:123' );
-
-		$this->assertEmpty(
-			$instance->getEntityList( 'FOO:123' )
-		);
-
-		$this->assertNotEmpty(
-			$instance->getEntityList( 'FOO:BAR' )
-		);
-
-		$instance->pruneEntityList();
-
-		$this->assertEmpty(
 			$instance->getEntityList()
 		);
 	}

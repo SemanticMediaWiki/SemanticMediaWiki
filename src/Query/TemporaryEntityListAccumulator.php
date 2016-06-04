@@ -35,7 +35,7 @@ class TemporaryEntityListAccumulator {
 	/**
 	 * @var array
 	 */
-	private static $entityList = array();
+	private $entityList = array();
 
 	/**
 	 * @since 2.4
@@ -68,10 +68,10 @@ class TemporaryEntityListAccumulator {
 	public function getEntityList( $queryID = null ) {
 
 		if ( $queryID !== null ) {
-			return isset( self::$entityList[$queryID] ) ? self::$entityList[$queryID] : array();
+			return isset( $this->entityList[$queryID] ) ? $this->entityList[$queryID] : array();
 		}
 
-		return self::$entityList;
+		return $this->entityList;
 	}
 
 	/**
@@ -82,10 +82,10 @@ class TemporaryEntityListAccumulator {
 	public function pruneEntityList( $queryID = null ) {
 
 		if ( $queryID === null ) {
-			return self::$entityList = array();
+			return $this->entityList = array();
 		}
 
-		unset( self::$entityList[$queryID] );
+		unset( $this->entityList[$queryID] );
 	}
 
 	/**
@@ -98,12 +98,12 @@ class TemporaryEntityListAccumulator {
 
 		$queryID = $this->getQueryId();
 
-		if ( !isset( self::$entityList[$queryID] ) ) {
-			self::$entityList[$queryID] = array();
+		if ( !isset( $this->entityList[$queryID] ) ) {
+			$this->entityList[$queryID] = array();
 		}
 
 		if ( $dataItem instanceof DIWikiPage ) {
-			self::$entityList[$queryID][] = $dataItem;
+			$this->entityList[$queryID][$dataItem->getHash()] = $dataItem;
 		}
 	}
 
