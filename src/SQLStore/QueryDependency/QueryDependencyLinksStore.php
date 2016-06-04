@@ -252,7 +252,7 @@ class QueryDependencyLinksStore {
 			// (which would carry a performance penalty)
 			$dependencyLinksTableUpdater->addUpdateList(
 				$sid,
-				$queryResultDependencyListResolver->getDependencyListByLateRetrieval( $hash )
+				$queryResultDependencyListResolver->getDependencyListByLateRetrieval()
 			);
 
 			$dependencyLinksTableUpdater->doUpdate();
@@ -279,7 +279,7 @@ class QueryDependencyLinksStore {
 
 			$dependencyLinksTableUpdater->addUpdateList(
 				$sid,
-				$queryResultDependencyListResolver->getDependencyListByLateRetrieval( $hash )
+				$queryResultDependencyListResolver->getDependencyListByLateRetrieval()
 			);
 
 			$deferredCallableUpdate->pushToDeferredUpdateList();

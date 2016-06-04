@@ -181,7 +181,6 @@ class SMWQueryResult {
 	 * @since 2.3
 	 */
 	public function reset() {
-		$this->temporaryEntityListAccumulator->pruneEntityList();
 		return reset( $this->mResults );
 	}
 
