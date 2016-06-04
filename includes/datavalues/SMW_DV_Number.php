@@ -174,6 +174,8 @@ class SMWNumberValue extends SMWDataValue {
 			$this->addErrorMsg( array( 'smw_infinite', $value ) );
 		} elseif ( $this->getTypeID() === '_num' && $unit !== '' ) {
 			$this->addErrorMsg( array( 'smw-datavalue-number-textnotallowed', $unit, $number ) );
+		} elseif ( $number === null ) {
+			$this->addErrorMsg( array( 'smw-datavalue-number-nullnotallowed', $value ) ); // #1628
 		} elseif ( $this->convertToMainUnit( $number, $unit ) === false ) { // so far so good: now convert unit and check if it is allowed
 			$this->addErrorMsg( array( 'smw_unitnotallowed', $unit ) );
 		} // note that convertToMainUnit() also sets m_dataitem if valid
