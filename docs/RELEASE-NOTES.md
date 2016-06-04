@@ -11,6 +11,7 @@ Not a release yet.
 * Added support for constraint specification using regular expressions (#1417). The use of `regular expressions` and thus the `Allows pattern` property to express a constraint assignment is restricted to users with the [`smw-patternedit`](https://www.semantic-mediawiki.org/wiki/Help:Permissions_and_user_rights) right.
 * Added support for `{{DISPLAYTITLE:...}}` (#1410)
 * [Localization](https://www.semantic-mediawiki.org/wiki/Localization) support for selected data values
+* Most updates now occur in [deferred mode](https://www.semantic-mediawiki.org/wiki/Deferred_updates) to conform with [T92357](https://phabricator.wikimedia.org/T92357), avoid potential race conditions, and improve performance during a page purge. Extensions that wish to extend data objects are encouraged to use hooks and avoid conflicts when updates are queued.
 
 ## New features and enhancements
 
@@ -25,10 +26,10 @@ Not a release yet.
 * #1299 Added dot named identifier restriction for subobject names containing a dot (`fooba.bar` reserved for extensions)
 * #1313 Added usage count information to property pages
 * #1321 Added [`$smwgSparqlRepositoryConnectorForcedHttpVersion`](https://semantic-mediawiki.org/wiki/Help:$smwgSparqlRepositoryConnectorForcedHttpVersion) setting to force a specific HTTP version in case of a #1306 cURL issue
-* #1290 Added support for properties and prinrequests to be forwared to a redirect target if one exists
+* #1290 Added support for properties and `prinrequests` to be forwarded to a redirect target if one exists
 * #1329 Added positional preference for units when declared in `Corresponds to` (¥ 500 vs 500 JPY)
 * #1350 Enlarged input field on special page "Browse"
-* #1335 Added possibility to specify a display precision for a numeric datatype by either denoting a [`Display precision of`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Display_precision_of) or using `-p<number of digits>` as `#ask` printout option
+* #1335 Added possibility to specify a display precision for a numeric `datatype` by either denoting a [`Display precision of`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Display_precision_of) or using `-p<number of digits>` as `#ask` printout option
 * #1344 Added `MonolingualTextValue` and `LanguageCodeValue`
 * #1361 Added `--with-maintenance-log` option to `rebuildData.php`, `rebuildPropertyStatistics.php`, and `rebuildConceptCache.php`
 * #1381 Added localizable context help for properties using the predefined property `Has property description` (which is specified as `MonolingualText` type)
@@ -52,6 +53,7 @@ Not a release yet.
 * #1572 Extended the query parser to support property chaining on subtypes
 * #1580 Added `#LOCL` as `BooleanValue` output format
 * #1591 Added `#LOCL` as `NumberValue` output format
+* #1626 Added `$GLOBALS['smwgQueryDependencyAffiliatePropertyDetectionlist']` to monitor affiliate properties required for initiating a query dependency update
 
 ## Bug fixes
 
@@ -90,7 +92,8 @@ Not a release yet.
 * #1598 Fixed content language setting for `InfoLinks`
 * #1589 Fixed display precision constraint during condition building
 * #1608 Fixed that a `#info` without a message will create an empty tooltip or when used as `<info />` causing a failure
-* #1610 Fixed a potential exception in the `postgres` implementation when creating temporary tables 
+* #1610 Fixed a potential exception in the `postgres` implementation when creating temporary tables
+* #1628 Fixed exception when `NumberValue` tries to use a `NULL` as numeric value.
 
 ## Internal changes
 
@@ -117,5 +120,6 @@ Not a release yet.
 * #1593 Added `NumberValueFormatter`
 * #1601 Added `InfoLinksProvider`
 * #1606 Disabled DB transactions in `QueryEngine` to avoid potential issues when creating temporary tables
+* #1626 Added `EntityIdListRelevanceDetectionFilter` and `TemporaryEntityListAccumulator` in #1627
 
 ## Contributors
