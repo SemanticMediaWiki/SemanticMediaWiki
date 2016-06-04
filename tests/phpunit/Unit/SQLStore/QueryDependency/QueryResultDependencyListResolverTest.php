@@ -227,6 +227,52 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 		);
 	}
 
+	public function testGetDependencyListByLateRetrieval() {
+
+		$subject = DIWikiPage::newFromText( 'Bar' );
+
+		$description = new ClassDescription(
+			DIWikiPage::newFromText( 'Foocat', NS_CATEGORY )
+		);
+
+		$query = new Query( $description );
+		$query->setContextPage( DIWikiPage::newFromText( 'Foo' ) );
+
+		$temporaryEntityListAccumulator = $this->getMockBuilder( '\SMW\Query\TemporaryEntityListAccumulator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$temporaryEntityListAccumulator->expects( $this->once() )
+			->method( 'getEntityList' )
+			->will( $this->returnValue( array( $subject ) ) );
+
+		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->once() )
+			->method( 'getEntityListAccumulator' )
+			->will( $this->returnValue( $temporaryEntityListAccumulator ) );
+
+		$queryResult->expects( $this->any() )
+			->method( 'getQuery' )
+			->will( $this->returnValue( $query ) );
+
+		$propertyHierarchyLookup = $this->getMockBuilder( '\SMW\PropertyHierarchyLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new QueryResultDependencyListResolver(
+			$queryResult,
+			$propertyHierarchyLookup
+		);
+
+		$this->assertEquals(
+			array( $subject ),
+			$instance->getDependencyListByLateRetrieval()
+		);
+	}
+
 	public function testResolvePropertyHierarchy() {
 
 		$subject = DIWikiPage::newFromText( 'Foo' );

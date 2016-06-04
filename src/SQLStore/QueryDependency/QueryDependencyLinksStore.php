@@ -243,8 +243,18 @@ class QueryDependencyLinksStore {
 		$dependencyLinksTableUpdater = $this->dependencyLinksTableUpdater;
 		$dependencyLinksTableUpdater->addUpdateList( $sid, $dependencyList );
 
-		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $dependencyLinksTableUpdater ) {
-			wfDebugLog( 'smw', 'DeferredCallableUpdate on QueryDependencyLinksStore' );
+		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $sid, $hash, $dependencyLinksTableUpdater, $queryResultDependencyListResolver ) {
+			wfDebugLog( 'smw', 'DeferredCallableUpdate on QueryDependencyLinksStore::doUpdateDependenciesBy for ' . $hash );
+
+			// Add extra dependencies which we only get "late" after the QueryResult
+			// object as been resolved by the ResultPrinter, this is done to
+			// avoid having to process the QueryResult recursively on its own
+			// (which would carry a performance penalty)
+			$dependencyLinksTableUpdater->addUpdateList(
+				$sid,
+				$queryResultDependencyListResolver->getDependencyListByLateRetrieval( $hash )
+			);
+
 			$dependencyLinksTableUpdater->doUpdate();
 		} );
 
@@ -257,13 +267,19 @@ class QueryDependencyLinksStore {
 		// SID == 0 means the storage update/process has not been finalized
 		// (new object hasn't been registered) hence an event is registered to
 		// update the list after the update process has been completed
-		EventHandler::getInstance()->addCallbackListener( 'deferred.embedded.query.dep.update', function() use ( $dependencyLinksTableUpdater, $dependencyList, $deferredCallableUpdate, $subject, $hash ) {
+		EventHandler::getInstance()->addCallbackListener( 'deferred.embedded.query.dep.update', function() use ( $subject, $hash, $dependencyList, $deferredCallableUpdate, $dependencyLinksTableUpdater, $queryResultDependencyListResolver ) {
 
-			wfDebugLog( 'smw', __METHOD__ . ' deferred.embedded.query.dep.update for ' . $hash . "\n" );
+			wfDebugLog( 'smw', 'QueryDependencyLinksStore::doUpdateDependenciesBy as deferred.embedded.query.dep.update for ' . $hash );
+			$sid = $dependencyLinksTableUpdater->getIdForSubject( $subject, $hash );
 
 			$dependencyLinksTableUpdater->addUpdateList(
-				$dependencyLinksTableUpdater->getIdForSubject( $subject, $hash ),
+				$sid,
 				$dependencyList
+			);
+
+			$dependencyLinksTableUpdater->addUpdateList(
+				$sid,
+				$queryResultDependencyListResolver->getDependencyListByLateRetrieval( $hash )
 			);
 
 			$deferredCallableUpdate->pushToDeferredUpdateList();

@@ -5,6 +5,9 @@ use SMW\Query\PrintRequest;
 use SMW\Localizer;
 use SMW\DataValueFactory;
 use SMWDIBlob as DIBlob;
+use SMWQuery as Query;
+use SMWDataItem as DataItem;
+use SMW\Query\TemporaryEntityListAccumulator;
 
 /**
  * Container for the contents of a single result field of a query result,
@@ -37,6 +40,11 @@ class SMWResultArray {
 	 * @var SMWDataItem[]|false
 	 */
 	private $mContent;
+
+	/**
+	 * @var TemporaryEntityListAccumulator|null
+	 */
+	private $temporaryEntityListAccumulator;
 
 	static private $catCacheObj = false;
 	static private $catCache = false;
@@ -73,6 +81,19 @@ class SMWResultArray {
 	 */
 	public function getResultSubject() {
 		return $this->mResult;
+	}
+
+	/**
+	 * Temporary track what entities are used while being instantiated, so an external
+	 * service can have access to the list without requiring to resolve the objects
+	 * independently.
+	 *
+	 * @since  2.4
+	 *
+	 * @return TemporaryEntityListAccumulator
+	 */
+	public function setEntityListAccumulator( TemporaryEntityListAccumulator $temporaryEntityListAccumulator ) {
+		$this->temporaryEntityListAccumulator = $temporaryEntityListAccumulator;
 	}
 
 	/**
@@ -114,6 +135,11 @@ class SMWResultArray {
 	public function getNextDataItem() {
 		$this->loadContent();
 		$result = current( $this->mContent );
+
+		if ( $this->temporaryEntityListAccumulator !== null && $result instanceof DataItem ) {
+			$this->temporaryEntityListAccumulator->addToEntityList( null, $result );
+		}
+
 		next( $this->mContent );
 		return $result;
 	}
@@ -193,6 +219,10 @@ class SMWResultArray {
 
 		if ( $this->mPrintRequest->getOutputFormat() ) {
 			$dataValue->setOutputFormat( $this->mPrintRequest->getOutputFormat() );
+		}
+
+		if ( $this->temporaryEntityListAccumulator !== null && $dataItem instanceof DataItem ) {
+			$this->temporaryEntityListAccumulator->addToEntityList( $diProperty, $dataItem );
 		}
 
 		return $dataValue;

@@ -95,6 +95,42 @@ class QueryResultDependencyListResolver {
 	}
 
 	/**
+	 * At the point where the QueryResult instantiates results by means of the
+	 * ResultArray, record the objects with the help of the TemporaryEntityListAccumulator.
+	 * Processing is depending and various factors which could be to early with
+	 * the row instance is not yet being resolved.
+	 *
+	 * QueryDependencyLinksStore::updateDependencyList is executed in deferred
+	 * mode therefore allows a "late" access to track dependencies of column/row
+	 * entities without having to resolve the QueryResult object on its own, see
+	 * ResultArray::getNextDataValue/ResultArray::getNextDataItem.
+	 *
+	 * @since 2.4
+	 *
+	 * @return DIWikiPage[]|[]
+	 */
+	public function getDependencyListByLateRetrieval() {
+
+		if ( $this->getSubject() === null || $this->getQuery()->getLimit() == 0 ) {
+			return array();
+		}
+
+		$id = $this->getQueryId();
+		$entityListAccumulator = $this->queryResult->getEntityListAccumulator();
+
+		$dependencyList = $entityListAccumulator->getEntityList(
+			$id
+		);
+
+		// Avoid a possible memory-leak by clearing the retrieved list
+		$entityListAccumulator->pruneEntityList(
+			$id
+		);
+
+		return $dependencyList;
+	}
+
+	/**
 	 * @since 2.3
 	 *
 	 * @return DIWikiPage[]|[]
