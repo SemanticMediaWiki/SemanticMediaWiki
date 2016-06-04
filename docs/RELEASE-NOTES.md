@@ -103,7 +103,7 @@ Not a release yet.
 * #1276 Extended `QueryResultSerializer` (relevant for the API output) to export the raw output of a time related value
 * #1281 Extended `QueryResultSerializer` to export the internal property key
 * #1291 Added `DescriptionProcessor` to isolate code path from the `SMWQueryParser`
-* #1317 Switch to Sesame 2.8.7
+* #1319 Switched from Sesame 2.7.14 to 2.8.7 in the CI environment
 * #1382 Added `DispatchingDataValueFormatter` and `ValueFormatterRegistry`
 * #1385 Added `StringValueFormatter` and `CodeStringValueFormatter`
 * #1388 Added `TimeValueFormatter`
@@ -121,5 +121,6 @@ Not a release yet.
 * #1601 Added `InfoLinksProvider`
 * #1606 Disabled DB transactions in `QueryEngine` to avoid potential issues when creating temporary tables
 * #1626 Added `EntityIdListRelevanceDetectionFilter` and `TemporaryEntityListAccumulator` in #1627
+* #1635 Switched from Fuseki 1.1.0 to 2.4.0 in the CI environment
 
 ## Contributors
