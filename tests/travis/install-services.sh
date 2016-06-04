@@ -3,7 +3,7 @@ set -ex
 BASE_PATH=$(pwd)
 E_UNREACHABLE=86
 
-if [ "$FOURSTORE" != "" ] || [ "$VIRTUOSO" != "" ] || [ "$SESAME" != "" ]
+if [ "$FOURSTORE" != "" ] || [ "$VIRTUOSO" != "" ] || [ "$SESAME" != "" ] || [[ "$FUSEKI" == "2."* ]]
 then
 	sudo apt-get update -qq
 fi
@@ -17,10 +17,28 @@ then
 
 	# Avoid ERROR 503: Service Unavailable
 	# wget http://archive.apache.org/dist/jena/binaries/jena-fuseki-$FUSEKI-distribution.tar.gz
-	wget https://github.com/mwjames/travis-support/raw/master/fuseki/$FUSEKI/jena-fuseki-$FUSEKI-distribution.tar.gz
-	
-	tar -zxf jena-fuseki-$FUSEKI-distribution.tar.gz
-	mv jena-fuseki-$FUSEKI fuseki
+
+	if [[ "$FUSEKI" == "2."* ]]
+	then
+
+		# Fuseki requires Java8 for Fuseki2 v2.3.0 onwards
+		sudo apt-get install oracle-java8-installer
+
+		export JAVA_HOME="/usr/lib/jvm/java-8-oracle";
+		export PATH="$PATH:/usr/lib/jvm/java-8-oracle/bin";
+		export java_path="/usr/lib/jvm/java-8-oracle/jre/bin/java";
+
+		wget https://github.com/mwjames/travis-support/raw/master/fuseki/$FUSEKI/apache-jena-fuseki-$FUSEKI.tar.gz
+
+		# option z caused "gzip: stdin: not in gzip format"
+		tar -xf apache-jena-fuseki-$FUSEKI.tar.gz
+		mv apache-jena-fuseki-$FUSEKI fuseki
+	else
+		wget https://github.com/mwjames/travis-support/raw/master/fuseki/$FUSEKI/jena-fuseki-$FUSEKI-distribution.tar.gz
+
+		tar -zxf jena-fuseki-$FUSEKI-distribution.tar.gz
+		mv jena-fuseki-$FUSEKI fuseki
+	fi
 
 	cd fuseki
 
@@ -53,7 +71,7 @@ then
 	# Unreliable sourceforge.net download
 	# wget http://downloads.sourceforge.net/project/sesame/Sesame%202/$SESAME/openrdf-sesame-$SESAME-sdk.zip
 	wget https://github.com/mwjames/travis-support/raw/master/sesame/$SESAME/openrdf-sesame-$SESAME-sdk.zip
-	
+
 	# tar caused a lone zero block, using zip instead
 	unzip -q openrdf-sesame-$SESAME-sdk.zip
 	cp openrdf-sesame-$SESAME/war/*.war $CATALINA_BASE/webapps/
