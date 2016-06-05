@@ -1,0 +1,181 @@
+{
+    "@metadata": {
+        "authors": []
+    },
+    "fallbackLanguage": "en",
+    "dataTypeLabels": {
+        "_wpg": "Stránka",
+        "_txt": "Text",
+        "_cod": "Kód",
+        "_boo": "Pravdivostná hodnota",
+        "_num": "Číslo",
+        "_geo": "Zemepisné súradnice",
+        "_tem": "Teplota",
+        "_dat": "Dátum",
+        "_ema": "Email",
+        "_uri": "URL",
+        "_anu": "URI anotácie",
+        "_tel": "Telefónne číslo",
+        "_rec": "Record",
+        "_qty": "Rozmer",
+        "_mlt_rec": "Monolingual text",
+        "_eid": "External identifier",
+        "_ref_rec": "Reference"
+    },
+    "dataTypeAliases": {
+        "URI": "_uri",
+        "Celé číslo": "_num",
+        "Desatinné číslo": "_num",
+        "Reťazec": "_txt"
+    },
+    "propertyLabels": {
+        "_TYPE": "Má typ",
+        "_URI": "Ekvivalent URI",
+        "_SUBP": "Je podatribútom",
+        "_SUBC": "Je podkategóriou",
+        "_UNIT": "Zobrazovacie jednotky",
+        "_IMPO": "Importovaný z",
+        "_CONV": "Zodpovedá",
+        "_SERV": "Poskytuje službu",
+        "_PVAL": "Povolená hodnota",
+        "_MDAT": "Dátum zmeny",
+        "_CDAT": "Dátum vytvorenia",
+        "_NEWP": "Nová stránka",
+        "_LEDT": "Posledný editor",
+        "_ERRP": "Má nesprávnu hodnotu pre",
+        "_LIST": "Has fields",
+        "_SOBJ": "Má podobjekt",
+        "_ASK": "Má požiadavku",
+        "_ASKST": "Reťazec požiadavky",
+        "_ASKFO": "Formát požiadavky",
+        "_ASKSI": "Veľkosť požiadavky",
+        "_ASKDE": "Hĺbka požiadavky",
+        "_ASKDU": "Query duration",
+        "_MEDIA": "Media type",
+        "_MIME": "Mime type",
+        "_ERRC": "Has processing error",
+        "_ERRT": "Has processing error text",
+        "_PREC": "Display precision of",
+        "_LCODE": "Language code",
+        "_TEXT": "Text",
+        "_PDESC": "Has property description",
+        "_PVAP": "Allows pattern",
+        "_DTITLE": "Display title of",
+        "_PVUC": "Has uniqueness constraint",
+        "_PEID": "External identifier",
+        "_PEFU": "External formatter uri"
+    },
+    "propertyAliases": {
+        "Zobrazovacia jednotka": "_UNIT"
+    },
+    "dateFormatsByPrecision": {
+        "SMW_PREC_Y": "Y",
+        "SMW_PREC_YM": "F Y",
+        "SMW_PREC_YMD": "F j, Y",
+        "SMW_PREC_YMDT": "H:i:s, j F Y"
+    },
+    "namespaces": {
+        "SMW_NS_PROPERTY": "Atribút",
+        "SMW_NS_PROPERTY_TALK": "Diskusia o atribúte",
+        "SMW_NS_TYPE": "Typ",
+        "SMW_NS_TYPE_TALK": "Diskusia o type",
+        "SMW_NS_CONCEPT": "Concept",
+        "SMW_NS_CONCEPT_TALK": "Concept_talk"
+    },
+    "namespaceAliases": [],
+    "dateFormats": [
+        [
+            "SMW_Y"
+        ],
+        [
+            "SMW_MY",
+            "SMW_YM"
+        ],
+        [
+            "SMW_DMY",
+            "SMW_MDY",
+            "SMW_YMD",
+            "SMW_YDM"
+        ]
+    ],
+    "months": [
+        [
+            "January",
+            "January"
+        ],
+        [
+            "February",
+            "February"
+        ],
+        [
+            "March",
+            "March"
+        ],
+        [
+            "April",
+            "April"
+        ],
+        [
+            "May",
+            "May"
+        ],
+        [
+            "June",
+            "June"
+        ],
+        [
+            "July",
+            "July"
+        ],
+        [
+            "August",
+            "August"
+        ],
+        [
+            "September",
+            "September"
+        ],
+        [
+            "October",
+            "October"
+        ],
+        [
+            "November",
+            "November"
+        ],
+        [
+            "December",
+            "December"
+        ]
+    ],
+    "days": [
+        [
+            "Monday",
+            "Mon"
+        ],
+        [
+            "Tuesday",
+            "Tue"
+        ],
+        [
+            "Wednesday",
+            "Wed"
+        ],
+        [
+            "Thursday",
+            "Thu"
+        ],
+        [
+            "Friday",
+            "Fri"
+        ],
+        [
+            "Saturday",
+            "Sat"
+        ],
+        [
+            "Sunday",
+            "Sun"
+        ]
+    ]
+}

@@ -1,0 +1,12 @@
+{
+    "@metadata": {
+        "authors": []
+    },
+    "fallbackLanguage": false,
+    "dataTypeLabels": {
+        "dataTypeLabels-fallback": "bar"
+    },
+    "dataTypeAliases": {
+        "dataTypeAliases-fallback": "bar"
+    }
+}

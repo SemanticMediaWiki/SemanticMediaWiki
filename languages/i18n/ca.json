@@ -1,0 +1,186 @@
+{
+    "@metadata": {
+        "authors": []
+    },
+    "fallbackLanguage": "en",
+    "dataTypeLabels": {
+        "_wpg": "Pàgina",
+        "_txt": "Text",
+        "_cod": "Codi",
+        "_boo": "Booleà",
+        "_num": "Nombre",
+        "_geo": "Coordenades geogràfiques",
+        "_tem": "Temperatura",
+        "_dat": "Data",
+        "_ema": "Adreça electrònica",
+        "_uri": "URL",
+        "_anu": "URI-Anotació",
+        "_tel": "Número de telèfon",
+        "_rec": "Registre",
+        "_qty": "Quantitat",
+        "_mlt_rec": "Monolingual text",
+        "_eid": "External identifier",
+        "_ref_rec": "Reference"
+    },
+    "dataTypeAliases": {
+        "URI": "_uri",
+        "Decimal": "_num",
+        "Enter": "_num",
+        "Cadena": "_txt",
+        "Enumeració": "_txt",
+        "Número de telèfon": "_tel",
+        "Adreça electrònica": "_ema",
+        "Coordenada geogràfica": "_geo",
+        "Polígon geogràfic": "_gpo"
+    },
+    "propertyLabels": {
+        "_TYPE": "Té tipus",
+        "_URI": "URI equivalent",
+        "_SUBP": "Subpropietat de",
+        "_SUBC": "Subcategoria de",
+        "_UNIT": "Unitats de mesura",
+        "_IMPO": "Importat de",
+        "_CONV": "Correspon a",
+        "_SERV": "Proporciona servei",
+        "_PVAL": "Permet valor",
+        "_MDAT": "Data de modificació",
+        "_CDAT": "Data de creació",
+        "_NEWP": "És pàgina nova",
+        "_LEDT": "Darrer editor és",
+        "_ERRP": "Té valor incorrecte per a",
+        "_LIST": "Té camps",
+        "_SOBJ": "Té subobjecte",
+        "_ASK": "Té consulta",
+        "_ASKST": "Cadena de consulta",
+        "_ASKFO": "Format de consulta",
+        "_ASKSI": "Mida de consulta",
+        "_ASKDE": "Profunditat de consulta",
+        "_ASKDU": "Durada de consulta",
+        "_MEDIA": "Tipus Media",
+        "_MIME": "Tipus MIME",
+        "_ERRC": "Has processing error",
+        "_ERRT": "Has processing error text",
+        "_PREC": "Display precision of",
+        "_LCODE": "Language code",
+        "_TEXT": "Text",
+        "_PDESC": "Has property description",
+        "_PVAP": "Allows pattern",
+        "_DTITLE": "Display title of",
+        "_PVUC": "Has uniqueness constraint",
+        "_PEID": "External identifier",
+        "_PEFU": "External formatter uri"
+    },
+    "propertyAliases": {
+        "Unitat de mesura": "_UNIT"
+    },
+    "dateFormatsByPrecision": {
+        "SMW_PREC_Y": "Y",
+        "SMW_PREC_YM": "F Y",
+        "SMW_PREC_YMD": "F j, Y",
+        "SMW_PREC_YMDT": "H:i:s, j F Y"
+    },
+    "namespaces": {
+        "SMW_NS_PROPERTY": "Propietat",
+        "SMW_NS_PROPERTY_TALK": "Propietat_Discussió",
+        "SMW_NS_TYPE": "Tipus",
+        "SMW_NS_TYPE_TALK": "Tipus_Discussió",
+        "SMW_NS_CONCEPT": "Concepte",
+        "SMW_NS_CONCEPT_TALK": "Concepte_Discussió"
+    },
+    "namespaceAliases": [],
+    "dateFormats": [
+        [
+            "SMW_Y"
+        ],
+        [
+            "SMW_MY",
+            "SMW_YM"
+        ],
+        [
+            "SMW_MDY",
+            "SMW_DMY",
+            "SMW_YMD",
+            "SMW_YDM"
+        ]
+    ],
+    "months": [
+        [
+            "gener",
+            "gen"
+        ],
+        [
+            "febrer",
+            "febr"
+        ],
+        [
+            "març",
+            "març"
+        ],
+        [
+            "abril",
+            "abr"
+        ],
+        [
+            "maig",
+            "maig"
+        ],
+        [
+            "juny",
+            "juny"
+        ],
+        [
+            "juliol",
+            "jul"
+        ],
+        [
+            "agost",
+            "ag"
+        ],
+        [
+            "setembre",
+            "set"
+        ],
+        [
+            "octubre",
+            "oct"
+        ],
+        [
+            "novembre",
+            "nov"
+        ],
+        [
+            "desembre",
+            "des"
+        ]
+    ],
+    "days": [
+        [
+            "Monday",
+            "Mon"
+        ],
+        [
+            "Tuesday",
+            "Tue"
+        ],
+        [
+            "Wednesday",
+            "Wed"
+        ],
+        [
+            "Thursday",
+            "Thu"
+        ],
+        [
+            "Friday",
+            "Fri"
+        ],
+        [
+            "Saturday",
+            "Sat"
+        ],
+        [
+            "Sunday",
+            "Sun"
+        ]
+    ]
+}

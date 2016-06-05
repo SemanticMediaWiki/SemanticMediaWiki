@@ -1,0 +1,196 @@
+{
+    "@metadata": {
+        "authors": []
+    },
+    "fallbackLanguage": "en",
+    "dataTypeLabels": {
+        "_wpg": "Página",
+        "_txt": "Texto",
+        "_cod": "Código",
+        "_boo": "Booleano",
+        "_num": "Número",
+        "_geo": "Coordenadas geográficas",
+        "_tem": "Temperatura",
+        "_dat": "Data",
+        "_ema": "Email",
+        "_uri": "URL",
+        "_anu": "URI",
+        "_tel": "Número de telefone",
+        "_rec": "Registro",
+        "_qty": "Quantidade",
+        "_mlt_rec": "Monolingual text",
+        "_eid": "External identifier",
+        "_ref_rec": "Reference"
+    },
+    "dataTypeAliases": {
+        "Entidade": "_wpg",
+        "Ponto flutuante": "_num",
+        "Inteiro": "_num",
+        "Coordenadas": "_geo",
+        "E-mail": "_ema",
+        "Anotação de URI": "_uri",
+        "Telefone": "_tel",
+        "URI": "_uri",
+        "Número inteiro": "_num",
+        "Folga": "_num",
+        "Variável Booléen": "_boo",
+        "Enumeração": "_txt",
+        "Cadeia": "_txt"
+    },
+    "propertyLabels": {
+        "_TYPE": "Possui tipo",
+        "_URI": "URI equivalente ",
+        "_SUBP": "Subpropriedade de",
+        "_SUBC": "Subcategoria de",
+        "_UNIT": "Unidades de exibição",
+        "_IMPO": "Importada de",
+        "_CONV": "Corresponde a",
+        "_SERV": "Fornece serviço",
+        "_PVAL": "Perminte valor",
+        "_MDAT": "Data de modificação",
+        "_CDAT": "Data de criação",
+        "_NEWP": "É uma nova página",
+        "_LEDT": "O ultimo editor é",
+        "_ERRP": "Possui valor impróprio para",
+        "_LIST": "Possui campos",
+        "_SOBJ": "Possui subobjeto",
+        "_ASK": "Possui consulta",
+        "_ASKST": "Consulta",
+        "_ASKFO": "Formato da consulta",
+        "_ASKSI": "Tamanho da consulta",
+        "_ASKDE": "Profundidade da consulta",
+        "_ASKDU": "Query duration",
+        "_MEDIA": "Media type",
+        "_MIME": "Mime type",
+        "_ERRC": "Has processing error",
+        "_ERRT": "Has processing error text",
+        "_PREC": "Display precision of",
+        "_LCODE": "Language code",
+        "_TEXT": "Text",
+        "_PDESC": "Has property description",
+        "_PVAP": "Allows pattern",
+        "_DTITLE": "Display title of",
+        "_PVUC": "Has uniqueness constraint",
+        "_PEID": "External identifier",
+        "_PEFU": "External formatter uri"
+    },
+    "propertyAliases": {
+        "Exibe unidade": "_UNIT",
+        "É do tipo": "_TYPE",
+        "Possui URI equivalente": "_URI",
+        "Importado de": "_IMPO",
+        "Corresponde ao": "_CONV",
+        "Tem o tipo": "_TYPE",
+        "Unidade de amostra": "_UNIT"
+    },
+    "dateFormatsByPrecision": {
+        "SMW_PREC_Y": "Y",
+        "SMW_PREC_YM": "F Y",
+        "SMW_PREC_YMD": "F j, Y",
+        "SMW_PREC_YMDT": "H:i:s, j F Y"
+    },
+    "namespaces": {
+        "SMW_NS_PROPERTY": "Propriedade",
+        "SMW_NS_PROPERTY_TALK": "Discussão_propriedade",
+        "SMW_NS_TYPE": "Tipo",
+        "SMW_NS_TYPE_TALK": "Discussão_tipo",
+        "SMW_NS_CONCEPT": "Conceito",
+        "SMW_NS_CONCEPT_TALK": "Discussão_conceito"
+    },
+    "namespaceAliases": [],
+    "dateFormats": [
+        [
+            "SMW_Y"
+        ],
+        [
+            "SMW_MY",
+            "SMW_YM"
+        ],
+        [
+            "SMW_MDY",
+            "SMW_DMY",
+            "SMW_YMD",
+            "SMW_YDM"
+        ]
+    ],
+    "months": [
+        [
+            "Janeiro",
+            "Jan"
+        ],
+        [
+            "Fevereiro",
+            "Fev"
+        ],
+        [
+            "Março",
+            "Mar"
+        ],
+        [
+            "Abril",
+            "Abr"
+        ],
+        [
+            "Maio",
+            "Mai"
+        ],
+        [
+            "Junho",
+            "Jun"
+        ],
+        [
+            "Julho",
+            "Jul"
+        ],
+        [
+            "Agosto",
+            "Ago"
+        ],
+        [
+            "Setembro",
+            "Set"
+        ],
+        [
+            "Outubro",
+            "Out"
+        ],
+        [
+            "Novembro",
+            "Nov"
+        ],
+        [
+            "Dezembro",
+            "Dez"
+        ]
+    ],
+    "days": [
+        [
+            "Monday",
+            "Mon"
+        ],
+        [
+            "Tuesday",
+            "Tue"
+        ],
+        [
+            "Wednesday",
+            "Wed"
+        ],
+        [
+            "Thursday",
+            "Thu"
+        ],
+        [
+            "Friday",
+            "Fri"
+        ],
+        [
+            "Saturday",
+            "Sat"
+        ],
+        [
+            "Sunday",
+            "Sun"
+        ]
+    ]
+}

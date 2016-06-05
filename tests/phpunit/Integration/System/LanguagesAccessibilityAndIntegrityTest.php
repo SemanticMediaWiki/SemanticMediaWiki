@@ -3,7 +3,7 @@
 namespace SMW\Tests\System;
 
 use RuntimeException;
-use SMW\Tests\Utils\GlobalsProvider;
+use SMW\ExtraneousLanguage\ExtraneousLanguage;
 
 /**
  * @covers \SMWLanguage
@@ -21,23 +21,7 @@ use SMW\Tests\Utils\GlobalsProvider;
  */
 class LanguagesAccessibilityAndIntegrityTest extends \PHPUnit_Framework_TestCase {
 
-	private $globalsProvider;
-
-	protected function setUp() {
-		parent::setUp();
-
-		$this->globalsProvider = GlobalsProvider::getInstance();
-	}
-
 	/**
-	 * @dataProvider languageCodeProvider
-	 */
-	public function testLanguageIsAvailable( $langcode ) {
-		$this->assertTrue( class_exists( $this->loadLanguageFileAndConstructClass( $langcode ) ) );
-	}
-
-	/**
-	 * @depends testLanguageIsAvailable
 	 * @dataProvider languageCodeProvider
 	 */
 	public function testCommonInterfaceMethods( $langcode ) {
@@ -55,7 +39,7 @@ class LanguagesAccessibilityAndIntegrityTest extends \PHPUnit_Framework_TestCase
 		$class = $this->loadLanguageFileAndConstructClass( $langcode );
 
 		foreach ( $methods as $method => $type ) {
-			$this->assertInternalType( $type, call_user_func( array( new $class, $method ) ) );
+			$this->assertInternalType( $type, call_user_func( array( $class, $method ) ) );
 		}
 	}
 
@@ -67,8 +51,8 @@ class LanguagesAccessibilityAndIntegrityTest extends \PHPUnit_Framework_TestCase
 
 		$class = $this->loadLanguageFileAndConstructClass( $langcode );
 
-		$baseToCompareInstance = new \SMWLanguageEn;
-		$targetLanguageInstance = new $class;
+		$baseToCompareInstance = ExtraneousLanguage::getInstance()->fetchByLanguageCode( 'en' );
+		$targetLanguageInstance = $class;
 
 		$result = array_diff_key(
 			$baseToCompareInstance->getPropertyLabels(),
@@ -90,8 +74,8 @@ class LanguagesAccessibilityAndIntegrityTest extends \PHPUnit_Framework_TestCase
 
 		for ( $i=1; $i <= 12; $i++ ) {
 
-			$label = call_user_func( array( new $class, 'getMonthLabel' ), $i );
-			$month = call_user_func( array( new $class, 'findMonth' ), $label );
+			$label = call_user_func( array( $class, 'getMonthLabel' ), $i );
+			$month = call_user_func( array( $class, 'findMonth' ), $label );
 
 			$this->assertInternalType( 'string', $label );
 			$this->assertEquals( $i, $month );
@@ -115,20 +99,8 @@ class LanguagesAccessibilityAndIntegrityTest extends \PHPUnit_Framework_TestCase
 		return $provider;
 	}
 
-	/**
-	 * @note Language files are not resolved by the Composer classmap
-	 */
 	private function loadLanguageFileAndConstructClass( $langcode ) {
-
-		$lang = 'SMW_Language' . str_replace( '-', '_', ucfirst( $langcode ) );
-		$file = $this->globalsProvider->get( 'smwgIP' ) . '/' . 'languages' . '/' . $lang . '.php';
-
-		if ( file_exists( $file ) ) {
-			include_once ( $file );
-			return 'SMWLanguage' . str_replace( '-', '_', ucfirst( $langcode ) );
-		}
-
-		throw new RuntimeException( "Expected {$file} to be accessible" );
+		return ExtraneousLanguage::getInstance()->fetchByLanguageCode( $langcode );
 	}
 
 	private function formatAsString( $expected ) {

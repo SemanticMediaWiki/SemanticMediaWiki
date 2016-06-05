@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use SMW\ExtraneousLanguage\ExtraneousLanguage;
 use Language;
 use Title;
 

@@ -1,0 +1,9 @@
+{
+    "@metadata": {
+        "authors": []
+    },
+    "fallbackLanguage": "foo-fallback",
+    "dataTypeLabels": {
+        "dataTypeLabels-partial": "bar"
+    }
+}

@@ -232,12 +232,12 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 		$instance = Localizer::getInstance();
 
 		$this->assertInstanceOf(
-			'\SMW\ExtraneousLanguage',
+			'\SMW\ExtraneousLanguage\ExtraneousLanguage',
 			$instance->getExtraneousLanguage()
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\ExtraneousLanguage',
+			'\SMW\ExtraneousLanguage\ExtraneousLanguage',
 			$instance->getExtraneousLanguage( 'en' )
 		);
 
@@ -250,7 +250,7 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'en' ) );
 
 		$this->assertInstanceOf(
-			'\SMW\ExtraneousLanguage',
+			'\SMW\ExtraneousLanguage\ExtraneousLanguage',
 			$instance->getExtraneousLanguage( $language )
 		);
 	}
