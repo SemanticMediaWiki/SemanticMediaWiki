@@ -6,7 +6,8 @@
 			"Milicevic01",
 			"Rancher",
 			"Slaven Kosanovic",
-			"Sociologist"
+			"Sociologist",
+			"Kghbln"
 		]
 	},
 	"smw_viewasrdf": "RDF dovod",
@@ -174,7 +175,7 @@
 	"smw_smwadmin_supportdocu": "Postoji više mesta koja mogu pomoći u slučaju problema:",
 	"smw_smwadmin_installfile": "Ako se nađete u problemima sa vašom instalacijom, pogledajte vodič u <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">fajlu INSTALL</a>.",
 	"smw_smwadmin_smwhomepage": "Potpuna korisnička dokumentacija za Semantički medijaviki, nalazi se na sajtu <b><a href=\"http://semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
-	"smw_smwadmin_mediazilla": "Bagovi se mogu prijavljivati na <a href=\"https://bugzilla.wikimedia.org/\">Medijazilu</a>.",
+	"smw_smwadmin_mediazilla": "Bagovi se mogu prijavljivati na <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">Medijazilu</a>.",
 	"smw_smwadmin_questions": "Ako imate daljih pitanja ili sugestija, uključite se u diskusiju na listi <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">Semantic MediaWiki user forum</a>.",
 	"smw_adminlinks_datastructure": "Struktura podataka",
 	"smw_adminlinks_displayingdata": "Prikazivanje podataka",

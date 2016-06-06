@@ -21,7 +21,8 @@
 			"Alexmar983",
 			"Wikitoni",
 			"Macofe",
-			"Urielejh"
+			"Urielejh",
+			"Matteocng"
 		]
 	},
 	"smw-desc": "Rende la tua wiki più accessibile - per le macchine ''e'' per gli umani ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentazione in linea])",
@@ -256,9 +257,12 @@
 	"smw-pa-property-predefined_asksi": "\"$1\" è una proprietà predefinita che contiene il numero delle condizioni usate in una interrogazione ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_askde": "\"$1\" è una proprietà predefinita che informa sulla profondità (valore numerico calcolato sulla base di sottoquery nidificate e catene di proprietà risolte) di un'interrogazione la quale durante la sua esecuzione è stata limitata dall'impostazione [https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth $smwgQMaxDepth] ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-sp-properties-header-label": "Elenco delle proprietà",
+	"smw-sp-admin-iddispose-title": "Smaltimento di ID oggetto",
+	"smw-sp-admin-iddispose-docu": "L'operazione di smaltimento non ha restrizioni e rimuove l'ID di un oggetto interno dal motore di archiviazione, se confermata. Avvia questa attività con '''cautela''' e solo dopo aver consultato la [https://www.semantic-mediawiki.org/wiki/Help:Object_ID_disposal documentazione].",
 	"smw-sp-admin-objectid": "ID oggetto:",
 	"smw-livepreview-loading": "Caricamento in corso...",
 	"smw-sp-searchbyproperty-resultlist-header": "Elenco dei risultati",
+	"smw-datavalue-number-nullnotallowed": "\"$1\" restituito con un \"NULL\", che non è consentito come numero.",
 	"smw-pa-property-predefined_impo": "\"$1\" è una proprietà predefinita che descrive una relazione ad un [https://www.semantic-mediawiki.org/wiki/Help:Import_vocabulary vocabolario importato] ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_type": "\"$1\" è una proprietà predefinita che descrive il [[Special:Types|tipo  di dati]] di una proprietà ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_sobj": "\"$1\" è una proprietà predefinita che rappresenta un costrutto [https://www.semantic-mediawiki.org/wiki/Help:Container contenitore] ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",

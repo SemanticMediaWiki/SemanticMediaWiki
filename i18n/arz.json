@@ -5,7 +5,8 @@
 			"Meno25",
 			"Ouda",
 			"Ramsis II",
-			"아라"
+			"아라",
+			"Kghbln"
 		]
 	},
 	"smw-desc": "جعل الويكى الخاص بك أكثر قابليه للوصول - للآلات ''و'' البشر ([https://www.semantic-mediawiki.org/wiki/Help:User_manual توثيق على الإنترنت])",
@@ -173,7 +174,7 @@
 	"smw_smwadmin_supportdocu": ":مصادر متعدده يمكن أن تساعده فى حاله مشاكل",
 	"smw_smwadmin_installfile": "لو أنك تواجه مشاكل مع تنصيبك، ابدأ بالتحقق من الإرشادات فى <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">ملف INSTALL</a>.",
 	"smw_smwadmin_smwhomepage": "وثائق المستخدم الكامله لسيمانتيك ميدياويكى موجوده فى <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
-	"smw_smwadmin_mediazilla": "العلل يمكن إبلاغها إلى <a href=\"https://bugzilla.wikimedia.org/\">ميديازيللا</a>.",
+	"smw_smwadmin_mediazilla": "العلل يمكن إبلاغها إلى <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/\">ميديازيللا</a>.",
 	"smw_smwadmin_questions": "لو لديك أسئله أو اقتراحات أخرى، انضم إلى النقاش فى <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">منتدى مستخدمى سيمانتيك ميدياويكي</a>.",
 	"smw_adminlinks_datastructure": "هيكل البيانات",
 	"smw_adminlinks_displayingdata": "عرض البيانات",

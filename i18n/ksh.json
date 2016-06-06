@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Purodha",
-			"아라"
+			"아라",
+			"Kghbln"
 		]
 	},
 	"smw-desc": "Määt Ding Wikki bäßer ze bruche - för Minsche un Maschihne. ([https://www.semantic-mediawiki.org/wiki/Help:User_manual Handbohch])",
@@ -200,7 +201,7 @@
 	"smw_smwadmin_supportdocu": "Bei Probleme kriss De velleich Hölp övver en Aanzahl vun Müjjeleschkeite:",
 	"smw_smwadmin_installfile": "Wann De Schwiireschkeite met Dinge Enshtallzjuhn häs, dann donn met de Reeschlinnije en dä Dattei <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">INSTALL</a> anfange, donoh ze söke, wat De donn kanns.",
 	"smw_smwadmin_smwhomepage": "De kumplätte Dokku för et <i lang=\"en\">Semantic Mediawiki</i> es op <b><a href=\"http://semantic-mediawiki.org\">semantic-mediawiki.org</a></b> ze fenge.",
-	"smw_smwadmin_mediazilla": "Fähler kanns De övver <a href=\"https://bugzilla.wikimedia.org/\" lang=\"en\">Bugzilla</a> melde.",
+	"smw_smwadmin_mediazilla": "Fähler kanns De övver <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\" lang=\"en\">GitHub</a> melde.",
 	"smw_smwadmin_questions": "Wann De noch Froore häß odder Vörschlääsch maache odder klaafe wells, jangk op et <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\"><i lang=\"en\">Semantic MediaWiki</i> Metmaacher Forum</a> un donn doh metschwaade.",
 	"smw_adminlinks_datastructure": "De Daateschtroktuur",
 	"smw_adminlinks_displayingdata": "Daate aanzeije",

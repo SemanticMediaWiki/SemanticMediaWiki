@@ -6,7 +6,8 @@
 			"Tivek",
 			"아라",
 			"SpeedyGonsales",
-			"Bugoslav"
+			"Bugoslav",
+			"Kghbln"
 		]
 	},
 	"smw-desc": "Čini Vaš wiki dostupnijim - za strojeve ''i'' ljude ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentacija])",
@@ -176,7 +177,7 @@
 	"smw_smwadmin_supportdocu": "U slučaju problema poslužite se sljedećim izvorima:",
 	"smw_smwadmin_installfile": "U slučaju problema s Vašom instalacijom pogledajte naputke u datoteci <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">INSTALL</a>.",
 	"smw_smwadmin_smwhomepage": "Potpuna korisnička dokumentacija za Semantic MediaWiki nalazi se na <a href=\"http://semantic-mediawiki.org\"><b>semantic-mediawiki.org</b></a>.",
-	"smw_smwadmin_mediazilla": "Greške (bugove) možete prijaviti na <a href=\"https://bugzilla.wikimedia.org/\">Bugzilli</a>.",
+	"smw_smwadmin_mediazilla": "Greške (bugove) možete prijaviti na <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
 	"smw_smwadmin_questions": "Ukoliko imate pitanja ili prijedloge, pridružite se raspravi na <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">korisničkom forumu Semantic MediaWiki</a>.",
 	"smw_adminlinks_datastructure": "Struktura podataka",
 	"smw_adminlinks_displayingdata": "Prikaz podataka",

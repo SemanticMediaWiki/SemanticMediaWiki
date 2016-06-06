@@ -7,7 +7,8 @@
 			"Slaven Kosanovic",
 			"Жељко Тодоровић",
 			"Михајло Анђелковић",
-			"Сербијана"
+			"Сербијана",
+			"Kghbln"
 		]
 	},
 	"smw_viewasrdf": "RDF довод",
@@ -175,7 +176,7 @@
 	"smw_smwadmin_supportdocu": "Постоји више места која могу помоћи у случају проблема:",
 	"smw_smwadmin_installfile": "Ако наиђете на проблем при инсталацији, најпре прочитајте смернице у <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">датотеци INSTALL</a>.",
 	"smw_smwadmin_smwhomepage": "Потпуна корисничка документација за Семантички медијавики, налази се на сајту <b><a href=\"http://semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
-	"smw_smwadmin_mediazilla": "Багови се могу пријављивати на <a href=\"https://bugzilla.wikimedia.org/\">Медијазилу</a>.",
+	"smw_smwadmin_mediazilla": "Багови се могу пријављивати на <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">Медијазилу</a>.",
 	"smw_smwadmin_questions": "Ако имате даљих питања или сугестија, укључите се у дискусију на листи <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">Semantic MediaWiki user forum</a>.",
 	"smw_adminlinks_datastructure": "Структура података",
 	"smw_adminlinks_displayingdata": "Приказивање података",
