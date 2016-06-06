@@ -42,12 +42,12 @@ $magicWords['ar'] = array(
 	'info' => array( 0, 'معلومات' ),
 	'concept' => array( 0, 'مفهوم' ),
 	'subobject' => array( 0, 'كائن_فرعي' ),
-	'smwdoc' => array( 0, 'وثائق_سمو' ),
-	'set' => array( 0, 'مجموعة' ),
-	'set_recurring_event' => array( 0, 'ضبط_حدث_متكرر' ),
-	'declare' => array( 0, 'إقرار' ),
-	'SMW_NOFACTBOX' => array( 0, '__لا_صندوق_حقائق__' ),
-	'SMW_SHOWFACTBOX' => array( 0, '__عرض_صندوق_الحقائق__' ),
+	'smwdoc' => array( 0, 'وثائق_سمو', 'توثيق_سمو' ),
+	'set' => array( 0, 'تعيين' ), //من تعيين القيمة للمتغير\الكائن
+	'set_recurring_event' => array( 0, 'تعيين_حدث_متكرر' ),
+	'declare' => array( 0, 'إقرار', 'إعلان' ),
+	'SMW_NOFACTBOX' => array( 0, '__لا_صندوق_حقائق__', '__لا_صندوق_حقيقة__' ),
+	'SMW_SHOWFACTBOX' => array( 0, '__عرض_صندوق_الحقائق__', '__عرض_صندوق_الحقيقة__' ,)
 );
 
 /** Egyptian Arabic (مصرى) */
