@@ -326,7 +326,7 @@ class SMWInfolink {
 	 */
 	protected function getLinker( &$linker = null ) {
 		if ( is_null( $linker ) ) {
-			$linker = class_exists('DummyLinker') ? new DummyLinker : new Linker;
+			$linker = new Linker;
 		}
 		return $linker;
 	}
