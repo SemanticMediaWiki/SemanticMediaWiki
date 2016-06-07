@@ -258,6 +258,9 @@ class QueryDependencyLinksStore {
 			$dependencyLinksTableUpdater->doUpdate();
 		} );
 
+		// https://www.mediawiki.org/wiki/Manual:$wgCommandLineMode
+		// Indicates whether MW is running in command-line mode.
+		$deferredCallableUpdate->markAsPending( $GLOBALS['wgCommandLineMode'] );
 		$deferredCallableUpdate->enabledDeferredUpdate( true );
 
 		if ( $sid > 0 ) {

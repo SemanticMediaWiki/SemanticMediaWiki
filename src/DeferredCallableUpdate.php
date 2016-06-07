@@ -26,6 +26,16 @@ class DeferredCallableUpdate implements DeferrableUpdate {
 	private $enabledDeferredUpdate = true;
 
 	/**
+	 * @var boolean
+	 */
+	private $isPending = false;
+
+	/**
+	 * @var array
+	 */
+	private static $pendingUpdates = array();
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param Closure $callback
@@ -52,6 +62,29 @@ class DeferredCallableUpdate implements DeferrableUpdate {
 	}
 
 	/**
+	 * @note If wgCommandLineMode = true (e.g. MW is in CLI mode) then
+	 * DeferredUpdates::addUpdate pushes updates directly into execution mode
+	 * which may not be desirable for all update processes therefore hold on to it
+	 * by using an internal waitableUpdate list and release them at convenience.
+	 *
+	 * @since 2.4
+	 */
+	public function markAsPending( $isPending = false ) {
+		$this->isPending = $isPending;
+	}
+
+	/**
+	 * @since 2.4
+	 */
+	public static function releasePendingUpdates() {
+		foreach ( self::$pendingUpdates as $update ) {
+			DeferredUpdates::addUpdate( $update );
+		}
+
+		self::$pendingUpdates = array();
+	}
+
+	/**
 	 * @see DeferrableUpdate::doUpdate
 	 *
 	 * @since 2.4
@@ -64,6 +97,10 @@ class DeferredCallableUpdate implements DeferrableUpdate {
 	 * @since 2.4
 	 */
 	public function pushToDeferredUpdateList() {
+
+		if ( $this->isPending && $this->enabledDeferredUpdate ) {
+			return self::$pendingUpdates[] = $this;
+		}
 
 		if ( $this->enabledDeferredUpdate ) {
 			return DeferredUpdates::addUpdate( $this );

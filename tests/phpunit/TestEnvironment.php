@@ -4,6 +4,7 @@ namespace SMW\Tests;
 
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
+use SMW\DeferredCallableUpdate;
 use SMW\Store;
 use SMW\Tests\Utils\UtilityFactory;
 
@@ -46,6 +47,7 @@ class TestEnvironment {
 	 * @since 2.4
 	 */
 	public static function executePendingDeferredUpdates() {
+		DeferredCallableUpdate::releasePendingUpdates();
 		\DeferredUpdates::doUpdates();
 	}
 
@@ -53,6 +55,7 @@ class TestEnvironment {
 	 * @since 2.4
 	 */
 	public static function clearPendingDeferredUpdates() {
+		DeferredCallableUpdate::releasePendingUpdates();
 		\DeferredUpdates::clearPendingUpdates();
 	}
 

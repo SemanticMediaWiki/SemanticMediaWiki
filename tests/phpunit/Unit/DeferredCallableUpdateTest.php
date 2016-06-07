@@ -64,6 +64,34 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->executePendingDeferredUpdates();
 	}
 
+	public function testWaitableUpdate() {
+
+		$this->testEnvironment->clearPendingDeferredUpdates();
+
+		$test = $this->getMockBuilder( '\stdClass' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'doTest' ) )
+			->getMock();
+
+		$test->expects( $this->once() )
+			->method( 'doTest' );
+
+		$callback = function() use ( $test ) {
+			$test->doTest();
+		};
+
+		$instance = new DeferredCallableUpdate(
+			$callback
+		);
+
+		$instance->markAsPending( true );
+		$instance->pushToDeferredUpdateList();
+
+		$instance->releasePendingUpdates();
+
+		$this->testEnvironment->executePendingDeferredUpdates();
+	}
+
 	public function testUpdateWithDisabledDeferredUpdate() {
 
 		$test = $this->getMockBuilder( '\stdClass' )
