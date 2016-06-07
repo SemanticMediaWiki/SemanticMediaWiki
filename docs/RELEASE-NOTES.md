@@ -94,6 +94,7 @@ Not a release yet.
 * #1608 Fixed that a `#info` without a message will create an empty tooltip or when used as `<info />` causing a failure
 * #1610 Fixed a potential exception in the `postgres` implementation when creating temporary tables
 * #1628 Fixed exception when `NumberValue` tries to use a `NULL` as numeric value.
+* #1638 Fixed possible invalid property in case the label contains `[`
 
 ## Internal changes
 
