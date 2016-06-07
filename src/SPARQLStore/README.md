@@ -10,14 +10,15 @@ The `SPARQLStore` is composed of a base store (by default using the existing `SQ
 
 ## Repository connector
 
-A repository connector is responsible to establish a communication (via REST) between Semantic MediaWiki and an external [TDB][tdb] with the main objective to transfer/update triples from SMW to the back-end and to return result matches for a query request.
+A repository connector is responsible for establishing a communication between Semantic MediaWiki and an external [TDB][tdb] with the main objective to transfer/update triples from SMW to the back-end and to return result matches for a query request.
 
-The following client repositories are currently supported:
+The following client repositories have been tested:
 
 - [Jena Fuseki][fuseki]
 - [Virtuoso][virtuoso]
-- [4Store][4store]
+- [Blazegraph][blazegraph]
 - [Sesame][sesame]
+- [4Store][4store]
 
 ### Create a connection
 <pre>
@@ -33,13 +34,13 @@ $connection = $connectionManager->getConnection( 'sparql' )
 
 ## QueryEngine
 
-The `QueryEngine` is responsible for transforming a `ask` description object into a qualified
-[`SPARQL` query language][sparql-query] string.
+The `QueryEngine` is responsible for transforming an `#ask` description object into a qualified
+[`SPARQL` query][sparql-query] expression.
 
-- The `CompoundConditionBuilder` builds a SPARQL condition from a `#ask` query artefact (aka `Description` object)
-- The condition is transformed into a qualified `SPARQL` statement for which the repository connector is making a request to the back-end and is expected to return a list of raw results (as `XML` or `Json`)
+- The `CompoundConditionBuilder` builds a SPARQL condition from an `#ask` query artefact (aka [`Description`][ask query] object)
+- The condition is transformed into a qualified `SPARQL` statement for which the [repository connector][connector] is making a http request to the back-end while awaiting an expected list of subjects that matched the condition in form of a `XML` or `JSON` response
 - The raw results are being parsed by a `HttpResponseParser` to provide a unified `RepositoryResult` object
-- During the final step, the `QueryResultFactory` converts the `RepositoryResult` into a SMW specific `QueryResult` object which will fetch the remaining data (those selected as printrequests) from the base store and make them available to a `QueryResultPrinter`
+- During the final step, the `QueryResultFactory` converts the `RepositoryResult` into a SMW specific `QueryResult` object which will fetch the remaining data (those selected as printrequests) from the base store and make them available to a [`QueryResultPrinter`][resultprinter]
 
 ### Create a query request
 <pre>
@@ -75,3 +76,7 @@ $queryResult = $queryEngine->getQueryResult( $query );
 [4store]: https://github.com/garlik/4store
 [tdb]: http://en.wikipedia.org/wiki/Triplestore
 [sesame]: http://rdf4j.org/
+[blazegraph]: https://wiki.blazegraph.com/wiki/index.php/Main_Page
+[ask query]: https://www.semantic-mediawiki.org/wiki/Query_language
+[connector]: https://www.semantic-mediawiki.org/wiki/Help:SPARQLStore/RepositoryConnector
+[resultprinter]: https://www.semantic-mediawiki.org/wiki/Help:SPARQLStore/RepositoryConnector
