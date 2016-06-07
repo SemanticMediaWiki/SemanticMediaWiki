@@ -62,6 +62,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $setup['statistics'] ) );
 
 		ApplicationFactory::getInstance()->registerObject( 'Store', $store );
+		ApplicationFactory::getInstance()->getSettings()->set( 'smwgSemanticsEnabled', true );
 
 		$extraStats = $setup['extraStats'];
 		$version = $setup['version'];
@@ -82,6 +83,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		ApplicationFactory::getInstance()->registerObject( 'Store', StoreFactory::getStore() );
+		ApplicationFactory::getInstance()->getSettings()->set( 'smwgSemanticsEnabled', true );
 
 		$extraStats = array();
 		$version = '1.21';

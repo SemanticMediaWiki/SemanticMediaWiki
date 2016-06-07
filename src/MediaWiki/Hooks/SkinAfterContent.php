@@ -52,7 +52,7 @@ class SkinAfterContent {
 
 		$request = $this->skin->getContext()->getRequest();
 
-		if ( $request->getVal( 'action' ) === 'delete' || $request->getVal( 'action' ) === 'purge' ) {
+		if ( $request->getVal( 'action' ) === 'delete' || $request->getVal( 'action' ) === 'purge' || !ApplicationFactory::getInstance()->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
 			return false;
 		}
 
