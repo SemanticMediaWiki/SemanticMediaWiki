@@ -243,6 +243,7 @@ class PropertiesQueryPage extends QueryPage {
 	private function getPredefinedPropertyInfo( DIProperty $property ) {
 
 		$dv = DataValueFactory::getInstance()->newDataItemValue( $property, null );
+		$dv->setCaption( $property->getLabel() );
 
 		$dv->setLinkAttributes( array(
 			'title' => 'ID: ' . ( isset( $property->id ) ? $property->id : 'N/A' ) . ' (' . $property->getKey() . ')'

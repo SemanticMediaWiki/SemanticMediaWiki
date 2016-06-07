@@ -345,7 +345,7 @@
 	"smw-pa-property-predefined_errp": "\"$1\" is a predefined property to track input errors for irregular value annotations that was likely caused by type or [[Property:Allows value|allowed value]] restrictions and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value \"$1\"] is a predefined property that can define a list of permissible values to restrict value assignments for a property and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-datavalue-property-restricted-use": "Property \"$1\" has been marked for restricted use.",
-	"smw-datavalue-property-invalid-name": "Property name contains invalid characters (e.g. $1) .",
+	"smw-datavalue-property-invalid-name": "The value \"$1\" contains invalid characters (e.g. $2) for a property name.",
 	"smw-datavalue-restricted-use": "Datavalue \"$1\" has been marked for restricted use.",
 	"smw-datavalue-invalid-number": "\"$1\" can not be interpreted as a number.",
 	"smw-query-condition-circular": "A possible circular condition has been detected in \"$1\".",

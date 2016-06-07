@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation on properties with invalid names/charaters (#1567, `wgContLang=en`)",
+	"description": "Test in-text annotation on properties with invalid names/charaters (#1567, #1638, `wgContLang=en`)",
 	"properties": [
 		{
 			"name": "Has #",
@@ -18,6 +18,10 @@
 		{
 			"name": "Example/P0102/3",
 			"contents": "[[<code>Has property e::ABC]] {{#set: <code>Has property f=DEF }}"
+		},
+		{
+			"name": "Example/P0102/4",
+			"contents": "[[File:[[Picture:: Foo.png ]]"
 		},
 		{
 			"name": "Example/P0102/Q3.1",
@@ -68,6 +72,17 @@
 					"strict-mode-valuematch": false,
 					"propertyCount": 3,
 					"propertyKeys": [ "_ASK", "_MDAT", "_SKEY" ]
+				}
+			}
+		},
+		{
+			"about": "#4 `[` to produce an error",
+			"subject": "Example/P0102/4",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_ERRC", "_MDAT", "_SKEY" ]
 				}
 			}
 		}

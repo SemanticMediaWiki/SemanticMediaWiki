@@ -442,9 +442,10 @@ class SMWPropertyValue extends SMWDataValue {
 
 	private function doNormalizeUserValue( $value ) {
 
-		// #1567
-		if ( strpos( $value, '#' ) !== false && strlen( $value ) > 1 ) {
-			$this->addErrorMsg( array( 'smw-datavalue-property-invalid-name', '#' ) );
+		if (
+			( $pos = strpos( $value, '#' ) ) !== false && strlen( $value ) > 1 || /* #1567 */
+			( $pos = strpos( $value, '[' ) ) !== false ) /* #1638 */ {
+			$this->addErrorMsg( array( 'smw-datavalue-property-invalid-name', $value, substr(  $value, $pos, 1 ) ) );
 			$this->m_dataitem = new DIProperty( 'ERROR', false );
 		}
 
