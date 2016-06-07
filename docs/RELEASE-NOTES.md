@@ -4,7 +4,7 @@ Not a release yet.
 
 ## Highlights
 
-* Added positional preference for units (#1329)
+* Added positional preference for units: `[[Corresponds to::€ 1]]` vs. `[[Corresponds to::1 €]]` (#1329)
 * Added the possibility to specify a display precision for a numeric datatype (i.e. Number, Quantity, Temperature) using the [`Display precision of`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Display_precision_of) property. A printout precision denoted in a `#ask` query using `-p<digit>` will override a possible predetermined precision (set by `Display precision of`) of a property.(#1335)
 * Added support for monolingual text datatype where a specific language (as code) can be added to a text value (#1344, #1381)
 * Extended date/time query output formatting by supporting PHP's `DateTime` format rules (#1389)
