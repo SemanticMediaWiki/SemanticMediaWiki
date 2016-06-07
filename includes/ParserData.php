@@ -263,6 +263,8 @@ class ParserData {
 	}
 
 	/**
+	 * @private This method is not for public use
+	 *
 	 * @since 1.9
 	 *
 	 * @return boolean
@@ -275,9 +277,11 @@ class ParserData {
 			$this->getUpdateJobState()
 		);
 
+		DeferredCallableUpdate::releasePendingUpdates();
+
 		if ( $deferredUpdate ) {
 			$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $storeUpdater ) {
-				wfDebugLog( 'smw', 'DeferredCallableUpdate on updateStore' );
+				wfDebugLog( 'smw', 'DeferredCallableUpdate on ParserData::updateStore' );
 				$storeUpdater->doUpdate();
 			} );
 
