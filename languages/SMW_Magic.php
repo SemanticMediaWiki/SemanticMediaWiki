@@ -3,6 +3,7 @@
 /**
  * Magic words
  *
+ * @author أحمد غربية <ahmad@arabdigitalexpression.org>
  * @file
  * @ingroup Extensions
  * @ingroup SMWLanguage
@@ -39,14 +40,14 @@ $magicWords['ar'] = array(
 	'ask' => array( 0, 'سؤال' ),
 	'show' => array( 0, 'عرض' ),
 	'info' => array( 0, 'معلومات' ),
-	'concept' => array( 0, 'مبدأ' ),
+	'concept' => array( 0, 'مفهوم' ),
 	'subobject' => array( 0, 'كائن_فرعي' ),
-	'smwdoc' => array( 0, 'توثيق_سمو' ),
-	'set' => array( 0, 'مجموعة' ),
-	'set_recurring_event' => array( 0, 'ضبط_حدث_متكرر' ),
-	'declare' => array( 0, 'إعلان' ),
-	'SMW_NOFACTBOX' => array( 0, '__لا_صندوق_حقيقة__' ),
-	'SMW_SHOWFACTBOX' => array( 0, '__عرض_صندوق_الحقيقة__' ),
+	'smwdoc' => array( 0, 'وثائق_سمو', 'توثيق_سمو' ),
+	'set' => array( 0, 'تعيين' ), //من تعيين القيمة للمتغير\الكائن
+	'set_recurring_event' => array( 0, 'تعيين_حدث_متكرر' ),
+	'declare' => array( 0, 'إقرار', 'إعلان' ),
+	'SMW_NOFACTBOX' => array( 0, '__لا_صندوق_حقائق__', '__لا_صندوق_حقيقة__' ),
+	'SMW_SHOWFACTBOX' => array( 0, '__عرض_صندوق_الحقائق__', '__عرض_صندوق_الحقيقة__' ,)
 );
 
 /** Egyptian Arabic (مصرى) */
