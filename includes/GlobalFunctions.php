@@ -2,6 +2,7 @@
 
 use SMW\NamespaceManager;
 use SMW\NumberFormatter;
+use SMW\CompatibilityMode;
 use SMW\SPARQLStore\SparqlDBConnectionProvider;
 
 /**
@@ -223,4 +224,16 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	}
 
 	return true;
+}
+
+/**
+ * To disable Semantic MediaWiki's operational functionality
+ *
+ * @note This function can be used to temporary disable SMW but it is paramount
+ * that after SMW is re-enabled to run `rebuildData.php` in order for data to
+ * represent a state that mirrors the actual environment (deleted, moved pages
+ * are not tracked when disabled).
+ */
+function disableSemantics() {
+	CompatibilityMode::disableSemantics();
 }

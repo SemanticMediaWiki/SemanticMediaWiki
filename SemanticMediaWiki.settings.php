@@ -36,6 +36,20 @@ $GLOBALS['smwgExtraneousLanguageFileDir'] = __DIR__ . '/languages';
 ##
 
 ###
+# Semantic MediaWiki's operational state
+##
+$GLOBALS['smwgSemanticsEnabled'] = true;
+##
+
+###
+# CompatibilityMode is to force SMW to work with other extensions that may impact
+# performance in an unanticipated way.
+#
+##
+$GLOBALS['smwgEnabledCompatibilityMode'] = false;
+##
+
+###
 # Use another storage backend for Semantic MediaWiki. The default is suitable
 # for most uses of SMW.
 ##

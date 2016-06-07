@@ -58,7 +58,8 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'wgVersion'         => '1.21',
 			'wgLanguageCode'    => 'en',
 			'wgLang'            => $language,
-			'IP'                => 'Foo'
+			'IP'                => 'Foo',
+			'smwgSemanticsEnabled' => true
 		);
 
 		foreach ( $this->defaultConfig as $key => $value ) {

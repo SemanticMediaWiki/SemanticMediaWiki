@@ -40,6 +40,8 @@ class Settings extends Options {
 			'smwgScriptPath' => $GLOBALS['smwgScriptPath'],
 			'smwgIP' => $GLOBALS['smwgIP'],
 			'smwgExtraneousLanguageFileDir' => $GLOBALS['smwgExtraneousLanguageFileDir'],
+			'smwgSemanticsEnabled' => $GLOBALS['smwgSemanticsEnabled'],
+			'smwgEnabledCompatibilityMode' => $GLOBALS['smwgEnabledCompatibilityMode'],
 			'smwgDefaultStore' => $GLOBALS['smwgDefaultStore'],
 			'smwgSparqlDatabaseConnector' => $GLOBALS['smwgSparqlDatabaseConnector'],
 			'smwgSparqlDatabase' => $GLOBALS['smwgSparqlDatabase'],

@@ -26,8 +26,9 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
 		$settings = Settings::newFromArray( array(
-			'smwgFactboxUseCache' => true,
-			'smwgCacheType'       => 'hash'
+			'smwgFactboxUseCache'  => true,
+			'smwgCacheType'        => 'hash',
+			'smwgSemanticsEnabled' => true
 		) );
 
 		$this->applicationFactory->registerObject( 'Settings', $settings );

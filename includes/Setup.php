@@ -89,6 +89,10 @@ final class Setup {
 			'Settings',
 			Settings::newFromGlobals( $this->globalVars )
 		);
+
+		if ( CompatibilityMode::requiresCompatibilityMode() ) {
+			CompatibilityMode::disableSemantics();
+		}
 	}
 
 	private function registerConnectionProviders() {
@@ -182,6 +186,11 @@ final class Setup {
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgAPIModules
 	 */
 	private function registerWebApi() {
+
+		if ( !$this->applicationFactory->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
+			return;
+		}
+
 		$this->globalVars['wgAPIModules']['smwinfo'] = '\SMW\MediaWiki\Api\Info';
 		$this->globalVars['wgAPIModules']['ask']     = '\SMW\MediaWiki\Api\Ask';
 		$this->globalVars['wgAPIModules']['askargs'] = '\SMW\MediaWiki\Api\AskArgs';
@@ -209,6 +218,10 @@ final class Setup {
 	 */
 	private function registerPermissions() {
 
+		if ( !$this->applicationFactory->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
+			return;
+		}
+
 		// Rights
 		$this->globalVars['wgAvailableRights'][] = 'smw-admin';
 		$this->globalVars['wgAvailableRights'][] = 'smw-patternedit';
@@ -231,6 +244,10 @@ final class Setup {
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgSpecialPages
 	 */
 	private function registerSpecialPages() {
+
+		if ( !$this->applicationFactory->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
+			return;
+		}
 
 		$specials = array(
 			'Ask' => array(
@@ -311,6 +328,10 @@ final class Setup {
 	 */
 	private function registerFooterIcon() {
 
+		if ( !$this->applicationFactory->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
+			return;
+		}
+
 		if( isset( $this->globalVars['wgFooterIcons']['poweredby']['semanticmediawiki'] ) ) {
 			return;
 		}
@@ -336,6 +357,10 @@ final class Setup {
 
 		$hookRegistry = new HookRegistry( $this->globalVars, $this->directory );
 		$hookRegistry->register();
+
+		if ( !$this->applicationFactory->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
+			return;
+		}
 
 		// Old-style registration
 		$this->globalVars['wgHooks']['AdminLinks'][] = 'SMWHooks::addToAdminLinks';

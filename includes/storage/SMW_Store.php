@@ -226,6 +226,10 @@ abstract class Store {
 	 */
 	public function updateData( SemanticData $semanticData ) {
 
+		if ( !ApplicationFactory::getInstance()->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
+			return;
+		}
+
 		$subject = $semanticData->getSubject();
 
 		$dispatchContext = EventHandler::getInstance()->newDispatchContext();

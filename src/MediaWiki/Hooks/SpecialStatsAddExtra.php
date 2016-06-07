@@ -82,6 +82,11 @@ class SpecialStatsAddExtra {
 	 * @return true
 	 */
 	public function process() {
+
+		if ( !ApplicationFactory::getInstance()->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
+			return true;
+		}
+
 		return version_compare( $this->version, '1.21', '<' ) ? $this->copyLegacyStatistics() : $this->copyStatistics();
 	}
 
