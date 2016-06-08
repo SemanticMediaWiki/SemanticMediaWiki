@@ -30,8 +30,8 @@ class RebuildPropertyStatistics extends \Maintenance {
 	 */
 	public function execute() {
 
-		if ( !defined( 'SMW_VERSION' ) ) {
-			$this->output( "You need to have SMW enabled in order to use this maintenance script!\n\n" );
+		if ( !defined( 'SMW_VERSION' ) || !$GLOBALS['smwgSemanticsEnabled'] ) {
+			$this->output( "\nYou need to have SMW enabled in order to use this maintenance script!\n" );
 			exit;
 		}
 

@@ -24,7 +24,24 @@ class CompatibilityMode {
 	 * @return boolean
 	 */
 	public static function requiresCompatibilityMode() {
-		return !$GLOBALS['smwgEnabledCompatibilityMode'] && defined( 'CARGO_VERSION' );
+		return !$GLOBALS['smwgEnabledCompatibilityMode'] && ( defined( 'CARGO_VERSION' ) ||  defined( 'WB_VERSION' ) );
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return boolean
+	 */
+	public static function extensionNotEnabled() {
+
+		if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
+			return !$GLOBALS['smwgSemanticsEnabled'];
+		}
+
+		$GLOBALS['smwgSemanticsEnabled'] = true;
+		ApplicationFactory::getInstance()->getSettings()->set( 'smwgSemanticsEnabled', true );
+
+		return false;
 	}
 
 	/**

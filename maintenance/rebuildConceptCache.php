@@ -112,8 +112,8 @@ class RebuildConceptCache extends \Maintenance {
 	 */
 	public function execute() {
 
-		if ( !defined( 'SMW_VERSION' ) ) {
-			$this->reportMessage( "You need to have SMW enabled in order to run the maintenance script!\n\n" );
+		if ( !defined( 'SMW_VERSION' ) || !$GLOBALS['smwgSemanticsEnabled'] ) {
+			$this->reportMessage( "\nYou need to have SMW enabled in order to run the maintenance script!\n" );
 			return false;
 		}
 
