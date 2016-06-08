@@ -23,4 +23,12 @@ class CompatibilityModeTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testExtensionNotEnabled() {
+
+		$this->assertInternalType(
+			'boolean',
+			CompatibilityMode::extensionNotEnabled()
+		);
+	}
+
 }

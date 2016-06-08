@@ -76,8 +76,8 @@ class SetupStore extends \Maintenance {
 	public function execute() {
 		// TODO It would be good if this script would work with SMW not being enable (yet).
 		// Then one could setup the store without first enabling SMW (which will break the wiki until the store is setup).
-		if ( !defined( 'SMW_VERSION' ) ) {
-			$this->output( "You need to have SMW enabled in order to use this maintenance script!\n\n" );
+		if ( !defined( 'SMW_VERSION' ) || !$GLOBALS['smwgSemanticsEnabled'] ) {
+			$this->output( "\nYou need to have SMW enabled in order to use this maintenance script!\n" );
 			exit;
 		}
 

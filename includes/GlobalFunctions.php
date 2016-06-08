@@ -224,6 +224,8 @@ function enableSemantics( $namespace = null, $complete = false ) {
 		$smwgNamespace = $namespace;
 	}
 
+	$GLOBALS['smwgSemanticsEnabled'] = true;
+
 	return true;
 }
 
