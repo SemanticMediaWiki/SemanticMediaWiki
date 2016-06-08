@@ -37,7 +37,7 @@ class Settings extends Options {
 	public static function newFromGlobals() {
 
 		$settings = array(
-			'smwgScriptPath' => $GLOBALS['smwgScriptPath'],
+			'smwgScriptPath' => isset( $GLOBALS['smwgScriptPath'] ) ? $GLOBALS['smwgScriptPath'] : '',
 			'smwgIP' => $GLOBALS['smwgIP'],
 			'smwgExtraneousLanguageFileDir' => $GLOBALS['smwgExtraneousLanguageFileDir'],
 			'smwgSemanticsEnabled' => $GLOBALS['smwgSemanticsEnabled'],
@@ -106,12 +106,12 @@ class Settings extends Options {
 			'smwgAutoRefreshSubject' => $GLOBALS['smwgAutoRefreshSubject'],
 			'smwgAutoRefreshOnPurge' => $GLOBALS['smwgAutoRefreshOnPurge'],
 			'smwgAutoRefreshOnPageMove' => $GLOBALS['smwgAutoRefreshOnPageMove'],
-			'smwgContLang' => $GLOBALS['smwgContLang'],
+			'smwgContLang' => isset( $GLOBALS['smwgContLang'] ) ? $GLOBALS['smwgContLang'] : '',
 			'smwgMaxPropertyValues' => $GLOBALS['smwgMaxPropertyValues'],
 			'smwgQSubpropertyDepth' => $GLOBALS['smwgQSubpropertyDepth'],
 			'smwgNamespace' => $GLOBALS['smwgNamespace'],
-			'smwgMasterStore' => $GLOBALS['smwgMasterStore'],
-			'smwgIQRunningNumber' => $GLOBALS['smwgIQRunningNumber'],
+			'smwgMasterStore' => isset( $GLOBALS['smwgMasterStore'] ) ? $GLOBALS['smwgMasterStore'] : '',
+			'smwgIQRunningNumber' => isset( $GLOBALS['smwgIQRunningNumber'] ) ? $GLOBALS['smwgIQRunningNumber'] : 0,
 			'smwgCacheUsage' => $GLOBALS['smwgCacheUsage'],
 			'smwgCacheType' => $GLOBALS['smwgCacheType'],
 			'smwgMainCacheType' => $GLOBALS['smwgMainCacheType'],
