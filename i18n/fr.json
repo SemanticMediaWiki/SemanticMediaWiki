@@ -39,6 +39,7 @@
 		]
 	},
 	"smw-desc": "Rendre le wiki plus accessible - pour les machines ''et'' les humains ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentation en ligne])",
+	"smw-semantics-not-enabled": "La fonctionnalité MédiaWiki Sémantique n’est pas activée sur ce wiki.",
 	"smw_viewasrdf": "Voir comme RDF",
 	"smw_finallistconjunct": " et",
 	"smw_factbox_head": "Faits relatifs à $1 &mdash; Recherche de pages similaires avec <span class=\"smwsearchicon\">+</span>.",
@@ -370,7 +371,7 @@
 	"smw-pa-property-predefined_errp": "« $1 » est une propriété prédéfinie pour tracer les erreurs d’entrée pour les valeurs d’annotation incorrectes qui sont sans doute provoquées par une restriction de type ou de [[Property:Allows value|valeur autorisée]] et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value « $1 »] est une propriété prédéfinie qui peut définir une liste de valeurs permises pour limiter des tâches de valeur pour une propriété et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
 	"smw-datavalue-property-restricted-use": "La propriété « $1 » a été marquée à usage restreint.",
-	"smw-datavalue-property-invalid-name": "Le nom de propriété contient des caractères non valides (par ex. $1).",
+	"smw-datavalue-property-invalid-name": "La valeur «$1» contient des caractères non valides (par exemple, $2) pour un nom de propriété.",
 	"smw-datavalue-restricted-use": "La valeur de donnée « $1 » est marquée à usage restreint.",
 	"smw-datavalue-invalid-number": "\"$1\" ne peut pas être interprété comme un nombre.",
 	"smw-query-condition-circular": "Une condition circulaire possible a été détectée dans \"$1\".",

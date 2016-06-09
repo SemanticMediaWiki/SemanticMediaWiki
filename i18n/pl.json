@@ -282,7 +282,7 @@
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|Import $1]]",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value „$1”] jest predefiniowaną właściwością, która może zdefiniować listę dopuszczalnych wartości ograniczających przyporządkowania wartości dla właściwości.",
 	"smw-datavalue-property-restricted-use": "Właściwość „$1” została oznaczona do ograniczonego użytkowania.",
-	"smw-datavalue-property-invalid-name": "Nazwa właściwości zawiera nieprawidłowe znaki (np. $1).",
+	"smw-datavalue-property-invalid-name": "Wartość „$1” zawiera nieprawidłowe znaki (np. $2) dla nazwy właściwości.",
 	"smw-datavalue-invalid-number": "„$1” nie może być interpretowane jako liczba.",
 	"smw-sp-types-list": "Lista typów danych",
 	"smw-pa-property-predefined_errt": "„$1” jest predefiniowaną właściwością, zawierającą tekstowy opis błędu.",

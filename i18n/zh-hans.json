@@ -20,6 +20,7 @@
 		]
 	},
 	"smw-desc": "让您更亲近wiki——对机器''与''人都是如此（[https://www.semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
+	"smw-semantics-not-enabled": "语义MediaWiki功能没有为此wiki启用。",
 	"smw_viewasrdf": "RDF源",
 	"smw_finallistconjunct": "，和",
 	"smw_factbox_head": "关于“$1”的事实",
@@ -351,7 +352,7 @@
 	"smw-pa-property-predefined_errp": "“$1”是一个预定义的属性，它用于不规则的值注释中追踪输入错误，例如导致的类型或[[Property:Allows value|允许值]]的限制，并由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供。",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value “$1”]是一个预定义的属性，它可以订阅获得允许以为一个属性限制值注释的值的列表，并由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供。",
 	"smw-datavalue-property-restricted-use": "属性“$1”被标记为限制使用。",
-	"smw-datavalue-property-invalid-name": "属性名称包含无效字符（例如$1）。",
+	"smw-datavalue-property-invalid-name": "值“$1”包含用于属性名称的无效字符（例如$2）。",
 	"smw-datavalue-restricted-use": "数据值“$1”被标记为限制使用。",
 	"smw-datavalue-invalid-number": "“$1”不能被解释为一个数字。",
 	"smw-query-condition-circular": "在“$1”中检测到可用的循环环境。",

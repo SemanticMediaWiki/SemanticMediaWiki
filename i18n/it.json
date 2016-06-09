@@ -26,6 +26,7 @@
 		]
 	},
 	"smw-desc": "Rende la tua wiki più accessibile - per le macchine ''e'' per gli umani ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentazione in linea])",
+	"smw-semantics-not-enabled": "Le funzionalità di Semantic MediaWiki non sono abilitate per questo wiki.",
 	"smw_viewasrdf": "Feed RDF",
 	"smw_finallistconjunct": " e",
 	"smw_factbox_head": "Fatti riguardanti $1",
@@ -270,7 +271,7 @@
 	"smw-pa-property-predefined_errp": "\"$1\" è una proprietà predefinita per tenere traccia di errori di inserimento per valori di annotazioni irregolari che sono stati probabilmente causati da restrizioni di tipo o [[Property:Allows value|valori consentiti]] ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value \"$1\"] è una proprietà predefinita che può definire una lista di valori ammissibili per limitare assegnazioni di valori per una proprietà ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-datavalue-property-restricted-use": "La proprietà \"$1\" è stata contrassegnata per l'uso limitato.",
-	"smw-datavalue-property-invalid-name": "Il nome della proprietà contiene caratteri non validi (ad esempio: $1).",
+	"smw-datavalue-property-invalid-name": "Il valore \"$1\" contiene caratteri non validi (ad esempio: $2) per un nome di proprietà.",
 	"smw-datavalue-restricted-use": "Il valore dei dati \"$1\" è stato contrassegnato per l'uso limitato.",
 	"smw-sp-types-list": "Elenco dei tipi di dati",
 	"smw-sp-types-help": "Ulteriori informazioni ed esempi sono riportati sulla [https://www.semantic-mediawiki.org/wiki/Help:Type_$1 pagina di aiuto].",

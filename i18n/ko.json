@@ -11,10 +11,12 @@
 			"밥풀떼기",
 			"HDNua",
 			"Revi",
-			"Ykhwong"
+			"Ykhwong",
+			"Jonghaya"
 		]
 	},
 	"smw-desc": "위키를 기계와 사람이 더 접근하기 쉽게 합니다 ([https://www.semantic-mediawiki.org/wiki/Help:User_manual 온라인 설명서])",
+	"smw-semantics-not-enabled": "시맨틱 미디어위키 기능은 이 위키에서 사용할 수 없습니다.",
 	"smw_viewasrdf": "RDF 피드",
 	"smw_finallistconjunct": ", 그리고",
 	"smw_factbox_head": "\"$1\"에 대한 사실",
@@ -293,7 +295,9 @@
 	"smw-sp-admin-iddispose-done": "\"$1\" ID가 스토리지 백엔드에서 제거되었습니다.",
 	"smw-sp-admin-objectid": "개체 Id:",
 	"smw-livepreview-loading": "불러오는 중...",
+	"smw-datavalue-number-nullnotallowed": "\"$1\"가 숫자를 허용하지 않는 \"NULL\"과 함께 반환되었습니다.",
 	"smw-datavalue-property-restricted-use": "\"$1\" 속성은 이용이 제한되어 있습니다.",
+	"smw-datavalue-property-invalid-name": "\"$1\" 값에 이름속성에 맞지 않는 부적절한 문자(예를 들면, $2)가 포함되어있습니다.",
 	"smw-datavalue-restricted-use": "데이터 값 $1은(는) 이용이 제한되어 있습니다.",
 	"smw-limitreport-intext-parsertime-value": "$1초",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1초"

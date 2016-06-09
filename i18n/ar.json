@@ -9,7 +9,8 @@
 			"الهميان",
 			"روخو",
 			"محمد أحمد عبد الفتاح",
-			"أحمد غربية Ahmad Gharbeia <ahmad@arabdigitalexpression.org>"
+			"أحمد غربية Ahmad Gharbeia <ahmad@arabdigitalexpression.org>",
+			"Kghbln"
 		]
 	},
 	"smw-desc": "تقرّب الويكي إلى كلٍّ من النّظم الحاسوبية  ''و'' البشر ([https://www.semantic-mediawiki.org/wiki/Help:User_manual دليل المستخدم])",
@@ -144,7 +145,7 @@
 	"smw-sp-property-searchform": "عرض الخصائص التي تحتوي على:",
 	"smw-sp-property-searchform-inputinfo": "الإدخال حساس لحالة الأحرف، و عندما يستخدم كمرشّح فإنّ الخصائص التي تتطابق مع الشرط وحدها تُعرض.",
 	"concepts": "المفاهيم",
-	"smw-sp-concept-docu": "يمكن عدّ [https://www.www.semantic-mediawiki.org/wiki/Help:Concepts المفهوم] تصنيفا ديناميًّا، أي تعدادًا لمجموعة من الصفحات لم يُنشّأ يدويا، بل تُولّده ميدياويكي الدلالية من وصف استعلام مُعطى.",
+	"smw-sp-concept-docu": "يمكن عدّ [https://www.semantic-mediawiki.org/wiki/Help:Concepts المفهوم] تصنيفا ديناميًّا، أي تعدادًا لمجموعة من الصفحات لم يُنشّأ يدويا، بل تُولّده ميدياويكي الدلالية من وصف استعلام مُعطى.",
 	"smw-sp-concept-header": "قائمة مفاهيم",
 	"smw-sp-concept-count": "{{PLURAL:$1|المفهوم|المفهومان|$1 المفاهيم}} التالية {{PLURAL:$1|مسرود|مسرودان|مسرودة}}",
 	"smw-sp-concept-empty": "لا توجد مفاهيم.",
@@ -245,8 +246,8 @@
 	"smw_smwadmin_support": "الحصول على دعم",
 	"smw_smwadmin_supportdocu": "توجد مصادر متعددة للمساعدة في حال حدوث مشاكل:",
 	"smw_smwadmin_installfile": "لو واجهتك مشاكل مع تنصيبتك فابدأ بمراجعة الإرشادات في <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">ملف INSTALL</a>.",
-	"smw_smwadmin_smwhomepage": "وثائق الاستخدام الكاملة لميدياويكي الدلالية موجودة في <b><a href=\"https://www.semantic-mediawiki.org\">www.semantic-mediawiki.org</a></b>.",
-	"smw_smwadmin_mediazilla": "العلّات يمكن الإبلاغ عنها في <a href=\"https://bugzilla.wikimedia.org/\">ميديازيللا</a>.",
+	"smw_smwadmin_smwhomepage": "وثائق الاستخدام الكاملة لميدياويكي الدلالية موجودة في <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
+	"smw_smwadmin_mediazilla": "العلّات يمكن الإبلاغ عنها في <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/\">ميديازيللا</a>.",
 	"smw_smwadmin_questions": "إن كانت لديك أسئلة أو اقتراحات فشارك في النقاش في <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">منتدى مستخدمي سيمانتيك ميدياويكي</a>.",
 	"smw_adminlinks_datastructure": "هيكل البيانات",
 	"smw_adminlinks_displayingdata": "عرض البيانات",
