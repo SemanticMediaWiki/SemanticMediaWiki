@@ -70,7 +70,7 @@ class EntityIdListRelevanceDetectionFilterTest extends \PHPUnit_Framework_TestCa
 				),
 				'delete' => array(
 					array(
-						's_id' => 201,
+						's_id' => 202,
 						'o_serialized' => '1/2016/6/1/11/1/59/0',
 						'o_sortkey' => '2457540.9582292'
 					)
@@ -84,11 +84,12 @@ class EntityIdListRelevanceDetectionFilterTest extends \PHPUnit_Framework_TestCa
 
 		$compositePropertyTableDiffIterator = $this->getMockBuilder( '\SMW\SQLStore\CompositePropertyTableDiffIterator' )
 			->disableOriginalConstructor()
+			->setMethods( array( 'getCombinedIdListOfChangedEntities', 'getOrderedDiffByTable' ) )
 			->getMock();
 
 		$compositePropertyTableDiffIterator->expects( $this->once() )
 			->method( 'getCombinedIdListOfChangedEntities' )
-			->will( $this->returnValue( array( 29, 201, 1001 ) ) );
+			->will( $this->returnValue( array( 29, 201, 202, 1001 ) ) );
 
 		$compositePropertyTableDiffIterator->expects( $this->any() )
 			->method( 'getOrderedDiffByTable' )
@@ -126,7 +127,7 @@ class EntityIdListRelevanceDetectionFilterTest extends \PHPUnit_Framework_TestCa
 				),
 				'delete' => array(
 					array(
-						's_id' => 201,
+						's_id' => 202,
 						'o_serialized' => '1/2016/6/1/11/1/59/0',
 						'o_sortkey' => '2457540.9582292'
 					)
@@ -140,6 +141,7 @@ class EntityIdListRelevanceDetectionFilterTest extends \PHPUnit_Framework_TestCa
 
 		$compositePropertyTableDiffIterator = $this->getMockBuilder( '\SMW\SQLStore\CompositePropertyTableDiffIterator' )
 			->disableOriginalConstructor()
+			->setMethods( array( 'getCombinedIdListOfChangedEntities', 'getOrderedDiffByTable' ) )
 			->getMock();
 
 		$compositePropertyTableDiffIterator->expects( $this->once() )
@@ -160,7 +162,7 @@ class EntityIdListRelevanceDetectionFilterTest extends \PHPUnit_Framework_TestCa
 		);
 
 		$this->assertEquals(
-			array( 1001, 201 ),
+			array( 1001, 201, 202 ),
 			$instance->getFilteredIdList()
 		);
 	}
@@ -208,6 +210,7 @@ class EntityIdListRelevanceDetectionFilterTest extends \PHPUnit_Framework_TestCa
 
 		$compositePropertyTableDiffIterator = $this->getMockBuilder( '\SMW\SQLStore\CompositePropertyTableDiffIterator' )
 			->disableOriginalConstructor()
+			->setMethods( array( 'getCombinedIdListOfChangedEntities', 'getOrderedDiffByTable' ) )
 			->getMock();
 
 		$compositePropertyTableDiffIterator->expects( $this->once() )

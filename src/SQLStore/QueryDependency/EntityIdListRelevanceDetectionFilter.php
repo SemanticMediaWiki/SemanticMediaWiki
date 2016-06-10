@@ -9,16 +9,15 @@ use SMW\SQLStore\CompositePropertyTableDiffIterator;
 use SMW\Store;
 
 /**
- * This class filters entities recorded in CompositePropertyTableDiffIterator
- * by applying a rule set.
+ * This class filters entities recorded in the CompositePropertyTableDiffIterator
+ * and applies a relevance rule set by:
  *
- * - Exempted properties are removed from the update list
- * - Properties that are affiliated are checked and the related entity is added
- *   to the update list that would eventually trigger a dependency update
+ * - Remove exempted properties (not relevant)
+ * - Add properties that are affiliated on a relational change
  *
- * By affiliation implies that a property listed is no directly related to a query
+ * By affiliation implies that a property listed is not directly related to a query
  * dependency, yet it is monitored and can, if altered trigger a dependency update
- * that normally only reserved for dependent properties.
+ * that normally is only reserved to dependent properties.
  *
  * @license GNU GPL v2+
  * @since 2.4
@@ -94,114 +93,80 @@ class EntityIdListRelevanceDetectionFilter {
 		);
 
 		$affiliateEntityList = array();
+		$tableChangeOps = $this->compositePropertyTableDiffIterator->getTableChangeOps();
 
-		foreach ( $this->compositePropertyTableDiffIterator->getOrderedDiffByTable() as $tableName => $diff ) {
-			$this->applyFilterToDiffElement( $diff, $affiliateEntityList, $combinedChangedEntityList );
+		foreach ( $tableChangeOps as $tableChangeOp ) {
+			$this->applyFilterToTableChangeOp(
+				$tableChangeOp,
+				$affiliateEntityList,
+				$combinedChangedEntityList
+			);
 		}
 
-		$listOfChangedEntitiesByRule = array_merge(
+		$filteredIdList = array_merge(
 			array_keys( $combinedChangedEntityList ),
 			array_keys( $affiliateEntityList )
 		);
 
 		wfDebugLog( 'smw', __METHOD__ . ' processing (sec): ' . round( ( microtime( true ) - $start ), 6 )  );
 
-		return $listOfChangedEntitiesByRule;
+		return $filteredIdList;
 	}
 
-	private function applyFilterToDiffElement( $diff, &$affiliateEntityList, &$combinedChangedEntityList ) {
+	private function applyFilterToTableChangeOp( $tableChangeOp, &$affiliateEntityList, &$combinedChangedEntityList ) {
 
-		// User-defined
-		if ( !isset( $diff['property'] ) ) {
-			if ( isset( $diff['insert'] ) ) {
-				foreach ( $diff['insert'] as $insert ) {
-					$this->addIdToAffiliateEntityList( $insert, $affiliateEntityList, $combinedChangedEntityList );
-				}
+		foreach ( $tableChangeOp->getFieldChangeOps( 'insert' ) as $insertFieldChangeOp ) {
+
+			// Copy fields temporarily
+			if ( $tableChangeOp->isFixedPropertyOp() ) {
+				$insertFieldChangeOp->set( 'p_id', $tableChangeOp->getFixedPropertyValueFor( 'p_id' ) );
+				$insertFieldChangeOp->set( 'key', $tableChangeOp->getFixedPropertyValueFor( 'key' ) );
 			}
 
-			if ( isset( $diff['delete'] ) ) {
-				foreach ( $diff['delete'] as $delete ) {
-					$this->addIdToAffiliateEntityList( $delete, $affiliateEntityList, $combinedChangedEntityList );
-				}
+			$this->modifyEntityList( $insertFieldChangeOp, $affiliateEntityList, $combinedChangedEntityList );
+		}
+
+		foreach ( $tableChangeOp->getFieldChangeOps( 'delete' ) as $deleteFieldChangeOp ) {
+
+			if ( $tableChangeOp->isFixedPropertyOp() ) {
+				$deleteFieldChangeOp->set( 'p_id', $tableChangeOp->getFixedPropertyValueFor( 'p_id' ) );
+				$deleteFieldChangeOp->set( 'key', $tableChangeOp->getFixedPropertyValueFor( 'key' ) );
 			}
 
-			return;
-		}
-
-		// Exemption goes for inclusion
-
-		// Fixed
-		if ( isset( $this->propertyExemptionlist[$diff['property']['key']] ) ) {
-			$this->unsetIdFromEntityList(
-				$diff['property']['p_id'],
-				$diff,
-				$combinedChangedEntityList
-			);
-
-			return;
-		}
-
-		if ( !isset( $this->affiliatePropertyDetectionlist[$diff['property']['key']]) ) {
-			return;
-		}
-
-		if ( isset( $diff['insert'] ) ) {
-			foreach ( $diff['insert'] as $insert ) {
-				$affiliateEntityList[$insert['s_id']] = true;
-			}
-		}
-
-		if ( isset( $diff['delete'] ) ) {
-			foreach ( $diff['delete'] as $delete ) {
-				$affiliateEntityList[$delete['s_id']] = true;
-			}
+			$this->modifyEntityList( $deleteFieldChangeOp, $affiliateEntityList, $combinedChangedEntityList );
 		}
 	}
 
-	private function addIdToAffiliateEntityList( $diff, &$affiliateEntityList, &$combinedChangedEntityList ) {
+	private function modifyEntityList( $fieldChangeOp, &$affiliateEntityList, &$combinedChangedEntityList ) {
 
 		$key = '';
 
-		if ( isset( $diff['p_id'] ) ) {
-			$dataItem = $this->store->getObjectIds()->getDataItemForId( $diff['p_id'] );
+		if ( $fieldChangeOp->has( 'key' ) ) {
+			$key = $fieldChangeOp->get( 'key' );
+		} elseif ( $fieldChangeOp->has( 'p_id' ) ) {
+			$dataItem = $this->store->getObjectIds()->getDataItemForId( $fieldChangeOp->get( 'p_id' ) );
 			$key = $dataItem->getDBKey();
-
-			if ( isset( $this->propertyExemptionlist[$key]) ) {
-				$this->unsetIdFromEntityList(
-					$diff['p_id'],
-					$diff,
-					$combinedChangedEntityList
-				);
-
-				return null;
-			}
 		}
 
-		if ( isset( $this->affiliatePropertyDetectionlist[$key]) ) {
-			$affiliateEntityList[$diff['s_id']] = true;
+		// Exclusion before inclusion
+		if ( isset( $this->propertyExemptionlist[$key]) ) {
+			return $this->unsetEntityList( $fieldChangeOp, $combinedChangedEntityList );
+		}
+
+		if ( isset( $this->affiliatePropertyDetectionlist[$key] ) && $fieldChangeOp->has( 's_id' ) ) {
+			$affiliateEntityList[$fieldChangeOp->get( 's_id' )] = true;
 		}
 	}
 
-	private function unsetIdFromEntityList( $id, $diff, &$combinedChangedEntityList ) {
-
+	private function unsetEntityList( $fieldChangeOp, &$combinedChangedEntityList ) {
 		// Remove matched blacklisted property reference
-		unset( $combinedChangedEntityList[$id] );
-
-		if ( isset( $diff['s_id'] ) ) {
-			unset( $combinedChangedEntityList[$diff['s_id']] );
+		if ( $fieldChangeOp->has( 'p_id' ) ) {
+			unset( $combinedChangedEntityList[$fieldChangeOp->get( 'p_id' )] );
 		}
 
 		// Remove associated subject ID's
-		if ( isset( $diff['insert'] ) ) {
-			foreach ( $diff['insert'] as $insert ) {
-				unset( $combinedChangedEntityList[$insert['s_id']] );
-			}
-		}
-
-		if ( isset( $diff['delete'] ) ) {
-			foreach ( $diff['delete'] as $delete ) {
-				unset( $combinedChangedEntityList[$delete['s_id']] );
-			}
+		if ( $fieldChangeOp->has( 's_id' ) ) {
+			unset( $combinedChangedEntityList[$fieldChangeOp->get( 's_id' )] );
 		}
 	}
 
