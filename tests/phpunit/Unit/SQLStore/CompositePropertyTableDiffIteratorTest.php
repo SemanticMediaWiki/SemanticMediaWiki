@@ -53,6 +53,68 @@ class CompositePropertyTableDiffIteratorTest extends \PHPUnit_Framework_TestCase
 		);
 	}
 
+	public function testGetTableChangeOps() {
+
+		$diff = array(
+			0 => array(
+				'insert' => array(
+					'smw_di_number' => array(
+						0 => array(
+							's_id' => 3668,
+							'p_id' => 61,
+							'o_serialized' => '123',
+							'o_sortkey' => '123',
+						),
+						1 => array(
+							's_id' => 3668,
+							'p_id' => 62,
+							'o_serialized' => '1234',
+							'o_sortkey' => '1234',
+						),
+					),
+					'smw_fpt_mdat' => array(
+						0 => array(
+							's_id' => 3668,
+							'o_serialized' => '1/2015/8/16/9/28/39',
+							'o_sortkey' => '2457250.8948958',
+						),
+					),
+				),
+				'delete' => array(
+					'smw_di_number' => array(),
+					'smw_fpt_mdat'  => array(),
+				)
+			)
+		);
+
+		$instance = new CompositePropertyTableDiffIterator(
+			$diff
+		);
+
+		$this->assertCount(
+			1,
+			$instance->getTableChangeOps( 'smw_di_number' )
+		);
+
+		$this->assertInternalType(
+			'array',
+			$instance->getTableChangeOps()
+		);
+	}
+
+	public function testTryToGetTableChangeOpForSingleTable() {
+
+		$diff = array();
+
+		$instance = new CompositePropertyTableDiffIterator(
+			$diff
+		);
+
+		$this->assertEmpty(
+			$instance->getTableChangeOps( 'smw_di_number' )
+		);
+	}
+
 	public function diffDataProvider() {
 
 		$provider[] = array(

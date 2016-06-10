@@ -75,6 +75,10 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$compositePropertyTableDiffIterator->expects( $this->once() )
+			->method( 'getTableChangeOps' )
+			->will( $this->returnValue( array() ) );
+
 		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
 			->getMock();

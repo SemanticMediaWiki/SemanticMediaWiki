@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore;
 
+use SMW\SQLStore\ChangeOp\TableChangeOp;
 use ArrayIterator;
 use IteratorAggregate;
 
@@ -70,6 +71,27 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 	 */
 	public function getFixedPropertyRecords() {
 		return $this->fixedPropertyRecords;
+	}
+
+	/**
+	 * ChangeOp (TableChangeOp/FieldChangeOp) representation of the composite
+	 * diff.
+	 *
+	 * @since 2.4
+	 *
+	 * @param string|null $table
+	 *
+	 * @return TableChangeOp[]|[]
+	 */
+	public function getTableChangeOps( $table = null ) {
+
+		$tableChangeOps = array();
+
+		foreach ( $this->getOrderedDiffByTable( $table ) as $tableName => $diff ) {
+			$tableChangeOps[] = new TableChangeOp( $tableName, $diff );
+		}
+
+		return $tableChangeOps;
 	}
 
 	/**
