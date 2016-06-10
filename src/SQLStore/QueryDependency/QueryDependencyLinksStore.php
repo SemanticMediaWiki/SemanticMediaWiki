@@ -96,18 +96,22 @@ class QueryDependencyLinksStore {
 			new DIProperty( '_ASK' )
 		);
 
-		$diff = $compositePropertyTableDiffIterator->getOrderedDiffByTable( $tableName );
+		$tableChangeOps = $compositePropertyTableDiffIterator->getTableChangeOps( $tableName );
 
 		// Remove any dependency for queries that are no longer used
-		if ( isset( $diff[$tableName]['delete'] ) ) {
+		foreach ( $tableChangeOps as $tableChangeOp ) {
+
+			if ( !$tableChangeOp->hasChangeOp( 'delete' ) ) {
+				continue;
+			}
 
 			$deleteIdList = array();
 
-			foreach ( $diff[$tableName]['delete'] as $delete ) {
-				$deleteIdList[] = $delete['o_id'];
+			foreach ( $tableChangeOp->getFieldChangeOps( 'delete' ) as $fieldChangeOp ) {
+				$deleteIdList[] = $fieldChangeOp->get( 'o_id' );
 			}
 
-			$this->dependencyLinksTableUpdater->deleteDependenciesFromList(  $deleteIdList );
+			$this->dependencyLinksTableUpdater->deleteDependenciesFromList( $deleteIdList );
 		}
 
 		// Dispatch any event registered earlier during the QueryResult processing
