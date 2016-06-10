@@ -328,7 +328,9 @@ class SMWQueryProcessor {
 					}
 				}
 			} else { // parameter or query
-				$parts = explode( '=', $rawParam, 2 );
+
+				// #1645
+				$parts = $showMode && $name == 0 ? $rawParam : explode( '=', $rawParam, 2 );
 
 				if ( count( $parts ) >= 2 ) {
 					// don't trim here, some parameters care for " "
