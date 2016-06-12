@@ -19,17 +19,18 @@ use SMW\Tests\TestEnvironment;
 class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
+	private $store;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->testEnvironment->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
 	protected function tearDown() {
@@ -39,17 +40,13 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater',
-			new DependencyLinksTableUpdater( $store )
+			new DependencyLinksTableUpdater( $this->store )
 		);
 	}
 
-	public function testaddUpdateList() {
+	public function testAddUpdateList() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( array( 'getIDFor' ) )
@@ -107,6 +104,28 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->addUpdateList( 42, array( DIWikiPage::newFromText( 'Bar' ) ) );
 		$instance->doUpdate();
+	}
+
+	public function testAddUpdateListOnNull_List() {
+
+		$instance = new DependencyLinksTableUpdater(
+			$this->store
+		);
+
+		$this->assertNull(
+			$instance->addUpdateList( 42, null )
+		);
+	}
+
+	public function testAddUpdateListOnZero_Id() {
+
+		$instance = new DependencyLinksTableUpdater(
+			$this->store
+		);
+
+		$this->assertNull(
+			$instance->addUpdateList( 0, array() )
+		);
 	}
 
 	public function testAddDependenciesFromQueryResultWhereObjectIdIsYetUnknownWhichRequiresToCreateTheIdOnTheFly() {
