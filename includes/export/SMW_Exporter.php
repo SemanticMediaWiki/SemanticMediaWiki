@@ -214,7 +214,7 @@ class SMWExporter {
 		} else {
 
 			// #1410 (use the display title as label when available)
-			$displayTitle = DataValueFactory::getInstance()->newDataItemValue( $diWikiPage )->getDisplayTitle();
+			$displayTitle = DataValueFactory::getInstance()->newDataValueByItem( $diWikiPage )->getDisplayTitle();
 
 			$pageTitle = str_replace( '_', ' ', $diWikiPage->getDBkey() );
 			if ( $diWikiPage->getNamespace() !== 0 ) {
@@ -342,7 +342,7 @@ class SMWExporter {
 						}
 					} elseif ( $property->getKey() == '_IMPO' ) {
 
-						$dataValue = DataValueFactory::getInstance()->newDataItemValue(
+						$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 							$dataItem,
 							$property
 						);

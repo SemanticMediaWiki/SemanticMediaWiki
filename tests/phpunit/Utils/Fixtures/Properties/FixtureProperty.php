@@ -38,7 +38,7 @@ abstract class FixtureProperty {
 		$semanticData = new SemanticData( $this->property->getDiWikiPage() );
 
 		$semanticData->addDataValue(
-			DataValueFactory::getInstance()->newPropertyObjectValue(
+			DataValueFactory::getInstance()->newDataValueByProperty(
 				new DIProperty( '_TYPE' ),
 				$this->property->findPropertyTypeID()
 			)

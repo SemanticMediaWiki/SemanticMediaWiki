@@ -180,7 +180,7 @@ class SMWResultArray {
 			// the selected index of the record here.
 			$pos = $this->mPrintRequest->getParameter( 'index' ) - 1;
 
-			$recordValue = DataValueFactory::getInstance()->newDataItemValue(
+			$recordValue = DataValueFactory::getInstance()->newDataValueByItem(
 				$dataItem,
 				$this->mPrintRequest->getData()->getDataItem()
 			);
@@ -208,7 +208,7 @@ class SMWResultArray {
 			);
 		}
 
-		$dataValue = DataValueFactory::getInstance()->newDataItemValue(
+		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$dataItem,
 			$diProperty
 		);
@@ -290,7 +290,7 @@ class SMWResultArray {
 					$newcontent = array();
 
 					foreach ( $this->mContent as $diContainer ) {
-						/* SMWRecordValue */ $recordValue = DataValueFactory::getInstance()->newDataItemValue( $diContainer, $propertyValue->getDataItem() );
+						/* SMWRecordValue */ $recordValue = DataValueFactory::getInstance()->newDataValueByItem( $diContainer, $propertyValue->getDataItem() );
 						$dataItems = $recordValue->getDataItems();
 
 						if ( array_key_exists( $pos, $dataItems ) &&

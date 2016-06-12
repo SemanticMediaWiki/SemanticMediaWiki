@@ -111,7 +111,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SemanticData( DIWikiPage::newFromText( __METHOD__ ) );
 
 		$instance->addDataValue(
-			DataValueFactory::getInstance()->newPropertyObjectValueByText( 'Has fooQuex', 'Bar' )
+			DataValueFactory::getInstance()->newDataValueByText( 'Has fooQuex', 'Bar' )
 		);
 
 		$subobject = $this->newSubobject( $instance->getSubject()->getTitle() );
@@ -134,11 +134,11 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValueByText( 'Foo', 'Bar' )
+			$this->dataValueFactory->newDataValueByText( 'Foo', 'Bar' )
 		);
 
 		$instance->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValueByText( 'Bar', 'Foo' )
+			$this->dataValueFactory->newDataValueByText( 'Bar', 'Foo' )
 		);
 
 		$instanceToCheck = new SemanticData(
@@ -146,11 +146,11 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instanceToCheck->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValueByText( 'Bar', 'Foo' )
+			$this->dataValueFactory->newDataValueByText( 'Bar', 'Foo' )
 		);
 
 		$instanceToCheck->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValueByText( 'Foo', 'Bar' )
+			$this->dataValueFactory->newDataValueByText( 'Foo', 'Bar' )
 		);
 
 		$this->assertEquals(
@@ -165,11 +165,11 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		$subobject->setEmptyContainerForId( 'Foo' );
 
 		$subobject->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValueByText( 'Foo', 'Bar' )
+			$this->dataValueFactory->newDataValueByText( 'Foo', 'Bar' )
 		);
 
 		$subobject->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValueByText( 'Bar', 'Foo' )
+			$this->dataValueFactory->newDataValueByText( 'Bar', 'Foo' )
 		);
 
 		$instance = new SemanticData(
@@ -184,11 +184,11 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		$subobject->setEmptyContainerForId( 'Foo' );
 
 		$subobject->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValueByText( 'Bar', 'Foo' )
+			$this->dataValueFactory->newDataValueByText( 'Bar', 'Foo' )
 		);
 
 		$subobject->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValueByText( 'Foo', 'Bar' )
+			$this->dataValueFactory->newDataValueByText( 'Foo', 'Bar' )
 		);
 
 		$instanceToCheck = new SemanticData(
@@ -214,7 +214,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		$firstHash = $instance->getHash();
 
 		$instance->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValueByText( 'Foo', 'Bar' )
+			$this->dataValueFactory->newDataValueByText( 'Foo', 'Bar' )
 		);
 
 		$secondHash = $instance->getHash();
@@ -228,7 +228,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		$subobject->setEmptyContainerForId( 'Foo' );
 
 		$subobject->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValueByText( 'Foo', 'Bar' )
+			$this->dataValueFactory->newDataValueByText( 'Foo', 'Bar' )
 		);
 
 		$instance->addSubSemanticData(
@@ -447,7 +447,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
 
 		$instance->addDataValue(
-			DataValueFactory::getInstance()->newPropertyObjectValueByText( 'Has fooQuex', 'Bar' )
+			DataValueFactory::getInstance()->newDataValueByText( 'Has fooQuex', 'Bar' )
 		);
 
 		$this->assertTrue(
@@ -552,7 +552,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		// #0 Single DataValue is added
 		$provider[] = array(
 			array(
-				DataValueFactory::getInstance()->newPropertyObjectValueByText( 'Foo', 'Bar' ),
+				DataValueFactory::getInstance()->newDataValueByText( 'Foo', 'Bar' ),
 			),
 			array(
 				'error'         => 0,
@@ -565,8 +565,8 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		// #1 Equal Datavalues will only result in one added object
 		$provider[] = array(
 			array(
-				DataValueFactory::getInstance()->newPropertyObjectValueByText( 'Foo', 'Bar' ),
-				DataValueFactory::getInstance()->newPropertyObjectValueByText( 'Foo', 'Bar' ),
+				DataValueFactory::getInstance()->newDataValueByText( 'Foo', 'Bar' ),
+				DataValueFactory::getInstance()->newDataValueByText( 'Foo', 'Bar' ),
 			),
 			array(
 				'error'         => 0,
@@ -579,8 +579,8 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		// #2 Two different DataValue objects
 		$provider[] = array(
 			array(
-				DataValueFactory::getInstance()->newPropertyObjectValueByText( 'Foo', 'Bar' ),
-				DataValueFactory::getInstance()->newPropertyObjectValueByText( 'Lila', 'Lula' ),
+				DataValueFactory::getInstance()->newDataValueByText( 'Foo', 'Bar' ),
+				DataValueFactory::getInstance()->newDataValueByText( 'Lila', 'Lula' ),
 			),
 			array(
 				'error'         => 0,
@@ -593,7 +593,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		// #3 Error (Inverse)
 		$provider[] = array(
 			array(
-				DataValueFactory::getInstance()->newPropertyObjectValueByText( '-Foo', 'Bar' ),
+				DataValueFactory::getInstance()->newDataValueByText( '-Foo', 'Bar' ),
 			),
 			array(
 				'error'         => 1,
@@ -604,8 +604,8 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		// #4 One valid DataValue + an error object
 		$provider[] = array(
 			array(
-				DataValueFactory::getInstance()->newPropertyObjectValueByText( 'Foo', 'Bar' ),
-				DataValueFactory::getInstance()->newPropertyObjectValueByText( '-Foo', 'bar' ),
+				DataValueFactory::getInstance()->newDataValueByText( 'Foo', 'Bar' ),
+				DataValueFactory::getInstance()->newDataValueByText( '-Foo', 'bar' ),
 			),
 			array(
 				'error'         => 1,
@@ -619,7 +619,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		// #5 Error (Predefined)
 		$provider[] = array(
 			array(
-				DataValueFactory::getInstance()->newPropertyObjectValueByText( '_Foo', 'Bar' ),
+				DataValueFactory::getInstance()->newDataValueByText( '_Foo', 'Bar' ),
 			),
 			array(
 				'error'         => 1,
@@ -630,7 +630,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		// #6 Error (Known predefined property)
 		$provider[] = array(
 			array(
-				DataValueFactory::getInstance()->newPropertyObjectValueByText( 'Modification date', 'Bar' ),
+				DataValueFactory::getInstance()->newDataValueByText( 'Modification date', 'Bar' ),
 			),
 			array(
 				'error'         => 1,
@@ -647,7 +647,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		$subobject->setEmptyContainerForId( 'Foo' );
 
 		$subobject->addDataValue(
-			DataValueFactory::getInstance()->newPropertyObjectValueByText( $property, $value )
+			DataValueFactory::getInstance()->newDataValueByText( $property, $value )
 		);
 
 		return $subobject;

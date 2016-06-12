@@ -86,7 +86,7 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 		$property->setPropertyTypeId( '_wpg' );
 
 		$semanticData->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValue( $property, 'Bar' )
+			$this->dataValueFactory->newDataValueByProperty( $property, 'Bar' )
 		);
 
 		$this->store->doSparqlDataUpdate( $semanticData );
@@ -134,7 +134,7 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 		$property->setPropertyTypeId( '_wpg' );
 
 		$semanticData->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValue( $property, 'Bar' )
+			$this->dataValueFactory->newDataValueByProperty( $property, 'Bar' )
 		);
 
 		$this->store->doSparqlDataUpdate( $semanticData );
@@ -175,7 +175,7 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 		$dataItem = new DINumber( 99999 );
 
 		$subobject->addDataValue(
-			$this->dataValueFactory->newDataItemValue( $dataItem, $property )
+			$this->dataValueFactory->newDataValueByItem( $dataItem, $property )
 		);
 
 		$semanticData->addPropertyObjectValue(

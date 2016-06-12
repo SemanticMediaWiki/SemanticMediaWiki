@@ -202,7 +202,7 @@ class DataItemToExpResourceEncoder {
 
 	private function defineElementsForImportDataItem( DataItem $dataItem ) {
 
-		$importValue = $this->dataValueFactory->newDataItemValue(
+		$importValue = $this->dataValueFactory->newDataValueByItem(
 			$dataItem,
 			new DIProperty( '_IMPO' )
 		);

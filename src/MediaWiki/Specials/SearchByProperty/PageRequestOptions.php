@@ -120,7 +120,7 @@ class PageRequestOptions {
 
 	private function setValue( $value ) {
 
-		$this->value = DataValueFactory::getInstance()->newPropertyObjectValue(
+		$this->value = DataValueFactory::getInstance()->newDataValueByProperty(
 			$this->property->getDataItem()
 		);
 

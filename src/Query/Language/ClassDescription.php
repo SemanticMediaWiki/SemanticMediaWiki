@@ -59,7 +59,7 @@ class ClassDescription extends Description {
 		$first = true;
 
 		foreach ( $this->m_diWikiPages as $wikiPage ) {
-			$wikiValue = DataValueFactory::getInstance()->newDataItemValue( $wikiPage, null );
+			$wikiValue = DataValueFactory::getInstance()->newDataValueByItem( $wikiPage, null );
 			if ( $first ) {
 				$result = '[[' . $wikiValue->getPrefixedText();
 				$first = false;

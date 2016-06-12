@@ -47,6 +47,9 @@ use SMW\DataValues\InfoLinksProvider;
  */
 abstract class SMWDataValue {
 
+	const OPT_USER_LANGUAGE = 'user.language';
+	const OPT_CONTENT_LANGUAGE = 'content.language';
+
 	/**
 	 * Associated data item. This is the reference to the immutable object
 	 * that represents the current data content. All other data stored here
@@ -248,7 +251,7 @@ abstract class SMWDataValue {
 		$this->m_contextPage = $contextPage;
 
 		$this->setOption(
-			'content.language',
+			self::OPT_CONTENT_LANGUAGE,
 			Localizer::getInstance()->getPreferredContentLanguage( $contextPage )->getCode()
 		);
 	}

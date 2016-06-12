@@ -212,7 +212,7 @@ class PropertiesQueryPage extends QueryPage {
 
 			if ( count( $types ) >= 1 ) {
 
-				$typeDataValue = DataValueFactory::getInstance()->newDataItemValue( current( $types ), $typeProperty );
+				$typeDataValue = DataValueFactory::getInstance()->newDataValueByItem( current( $types ), $typeProperty );
 				$typestring = $typeDataValue->getLongHTMLText( $this->getLinker() );
 
 			} else {
@@ -242,7 +242,7 @@ class PropertiesQueryPage extends QueryPage {
 	 */
 	private function getPredefinedPropertyInfo( DIProperty $property ) {
 
-		$dv = DataValueFactory::getInstance()->newDataItemValue( $property, null );
+		$dv = DataValueFactory::getInstance()->newDataValueByItem( $property, null );
 		$dv->setCaption( $property->getLabel() );
 
 		$dv->setLinkAttributes( array(

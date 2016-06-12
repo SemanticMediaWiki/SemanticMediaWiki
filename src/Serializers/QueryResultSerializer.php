@@ -69,7 +69,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 
 				// Support for a deserializable _rec type with 0.6
 				if ( $printRequest !== null && strpos( $printRequest->getTypeID(), '_rec' ) !== false ) {
-					$recordValue = DataValueFactory::getInstance()->newDataItemValue(
+					$recordValue = DataValueFactory::getInstance()->newDataValueByItem(
 						$dataItem,
 						$printRequest->getData()->getDataItem()
 					);
@@ -94,7 +94,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 				} else {
 					$title = $dataItem->getTitle();
 
-					$wikiPageValue = DataValueFactory::getInstance()->newDataItemValue(
+					$wikiPageValue = DataValueFactory::getInstance()->newDataValueByItem(
 						$dataItem
 					);
 
@@ -116,7 +116,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 				// (unit is part of the datavalue object)
 				if ( $printRequest !== null && $printRequest->getTypeID() === '_qty' ) {
 					$diProperty = $printRequest->getData()->getDataItem();
-					$dataValue = DataValueFactory::getInstance()->newDataItemValue( $dataItem, $diProperty );
+					$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $dataItem, $diProperty );
 
 					$result = array(
 						'value' => $dataValue->getNumber(),

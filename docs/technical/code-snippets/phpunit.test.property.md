@@ -5,7 +5,7 @@ $property = new DIProperty( 'Foo' );
 $property->setPropertyTypeId( '_txt' );
 
 // Using a dedicated property to created a DV
-$dataValue = DataValueFactory::getInstance()->newPropertyObjectValue(
+$dataValue = DataValueFactory::getInstance()->newDataValueByProperty(
 	$property,
 	'Some text'
 );
@@ -49,7 +49,7 @@ ApplicationFactory::getInstance()->registerObject( 'Store', $store );
 // Create a DV from a string value instead of using a dedicated typed
 // property (used by #set, #subobject since the user input is a string and not
 // a typed object)
-$dataValue = DataValueFactory::getInstance()->newPropertyObjectValueByText(
+$dataValue = DataValueFactory::getInstance()->newDataValueByText(
 	'SomePropertyOfTypeBlob',
 	'Some text'
 );

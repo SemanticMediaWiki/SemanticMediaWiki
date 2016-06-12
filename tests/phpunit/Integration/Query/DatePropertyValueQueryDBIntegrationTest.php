@@ -64,7 +64,7 @@ class DatePropertyValueQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$property = new DIProperty( 'SomeDateProperty' );
 		$property->setPropertyTypeId( '_dat' );
 
-		$dataValue = $this->dataValueFactory->newPropertyObjectValue(
+		$dataValue = $this->dataValueFactory->newDataValueByProperty(
 			$property,
 			'1 January 1970'
 		);

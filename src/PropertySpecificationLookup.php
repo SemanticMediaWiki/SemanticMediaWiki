@@ -333,7 +333,7 @@ class PropertySpecificationLookup {
 
 		foreach ( $dataItems as $dataItem ) {
 
-			$dataValue = DataValueFactory::getInstance()->newDataItemValue(
+			$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 				$dataItem,
 				new DIProperty( '_PDESC' )
 			);

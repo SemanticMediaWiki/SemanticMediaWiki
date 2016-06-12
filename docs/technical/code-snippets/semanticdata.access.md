@@ -18,7 +18,7 @@ $property = new DIProperty( 'SomeProperty' );
 
 // Add individual instances of a value for a known property
 foreach ( $values as $value ) {
-	$dataValue = DataValueFactory::getInstance()->newPropertyObjectValue(
+	$dataValue = DataValueFactory::getInstance()->newDataValueByProperty(
 		$property,
 		trim( $value ), // Text value
 		false,
@@ -31,7 +31,7 @@ foreach ( $values as $value ) {
 // Add individual instances of a value for a property only known by
 // its textual representation
 foreach ( $values as $value ) {
-	$dataValue = DataValueFactory::getInstance()->newPropertyObjectValueByText(
+	$dataValue = DataValueFactory::getInstance()->newDataValueByText(
 		$property,
 		trim( $value ), // Text value
 		false,

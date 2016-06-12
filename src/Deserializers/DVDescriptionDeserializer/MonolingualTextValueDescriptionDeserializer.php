@@ -72,7 +72,7 @@ class MonolingualTextValueDescriptionDeserializer extends DescriptionDeserialize
 			// avoid having ~zh-* being validated when building a DV
 			// If one of the values is empty use, ? so queries can be arbitrary
 			// in respect of the query condition
-			$dataValue = DataValueFactory::getInstance()->newDataItemValue(
+			$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 				new DIBlob( $value === '' ? '?' : $value ),
 				$property,
 				false,

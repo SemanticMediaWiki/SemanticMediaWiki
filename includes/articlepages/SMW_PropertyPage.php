@@ -171,7 +171,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$this->mTitle->setFragment( '#SMWResults' ); // Make navigation point to the result list.
 			$navigation = $pageLister->getNavigationLinks( $this->mTitle );
 
-			$dvWikiPage = DataValueFactory::getInstance()->newDataItemValue(
+			$dvWikiPage = DataValueFactory::getInstance()->newDataValueByItem(
 				$this->mProperty
 			);
 
@@ -222,7 +222,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 		for ( $index = $start; $index < $ac; $index++ ) {
 			$diWikiPage = $diWikiPages[$index];
-			$dvWikiPage = DataValueFactory::getInstance()->newDataItemValue( $diWikiPage, null );
+			$dvWikiPage = DataValueFactory::getInstance()->newDataValueByItem( $diWikiPage, null );
 
 			$sortkey = $this->store->getWikiPageSortKey( $diWikiPage );
 			$start_char = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
@@ -251,7 +251,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 				$i++;
 
 				if ( $i < $smwgMaxPropertyValues + 1 ) {
-					$dv = DataValueFactory::getInstance()->newDataItemValue( $di, $this->mProperty );
+					$dv = DataValueFactory::getInstance()->newDataValueByItem( $di, $this->mProperty );
 
 					$dv->setOutputFormat( 'LOCL' );
 

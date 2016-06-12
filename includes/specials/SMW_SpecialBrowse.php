@@ -182,7 +182,7 @@ class SMWSpecialBrowse extends SpecialPage {
 		$diProperties = $data->getProperties();
 		$noresult = true;
 		foreach ( $diProperties as $key => $diProperty ) {
-			$dvProperty = DataValueFactory::getInstance()->newDataItemValue( $diProperty, null );
+			$dvProperty = DataValueFactory::getInstance()->newDataValueByItem( $diProperty, null );
 
 			if ( $dvProperty->isVisible() ) {
 				$dvProperty->setCaption( $this->getPropertyLabel( $dvProperty, $incoming ) );
@@ -217,9 +217,9 @@ class SMWSpecialBrowse extends SpecialPage {
 				}
 
 				if ( $incoming ) {
-					$dv = DataValueFactory::getInstance()->newDataItemValue( $di, null );
+					$dv = DataValueFactory::getInstance()->newDataValueByItem( $di, null );
 				} else {
-					$dv = DataValueFactory::getInstance()->newDataItemValue( $di, $diProperty );
+					$dv = DataValueFactory::getInstance()->newDataValueByItem( $di, $diProperty );
 				}
 
 				$body .= "<span class=\"{$ccsPrefix}value\">" .

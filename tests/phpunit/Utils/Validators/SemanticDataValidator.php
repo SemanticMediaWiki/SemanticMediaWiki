@@ -269,7 +269,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 
 		foreach ( $dataItems as $dataItem ) {
 
-			$dataValue = DataValueFactory::getInstance()->newDataItemValue( $dataItem, $property );
+			$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $dataItem, $property );
 
 			switch ( $dataValue->getDataItem()->getDIType() ) {
 				case DataItem::TYPE_TIME:

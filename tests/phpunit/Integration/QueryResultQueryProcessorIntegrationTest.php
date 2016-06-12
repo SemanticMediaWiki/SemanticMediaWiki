@@ -67,14 +67,14 @@ class QueryResultQueryProcessorIntegrationTest extends MwDBaseUnitTestCase {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 		$this->subjects[] = $semanticData->getSubject();
 
-		$dataValue = $this->dataValueFactory->newPropertyObjectValue(
+		$dataValue = $this->dataValueFactory->newDataValueByProperty(
 			$property,
 			'http://example.org/api.php?action=Foo'
 		);
 
 		$semanticData->addDataValue( $dataValue );
 
-		$dataValue = $this->dataValueFactory->newPropertyObjectValue(
+		$dataValue = $this->dataValueFactory->newDataValueByProperty(
 			$property,
 			'http://example.org/Bar 42'
 		);

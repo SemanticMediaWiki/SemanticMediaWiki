@@ -229,7 +229,7 @@ class SMWPropertyValue extends SMWDataValue {
 		$diWikiPage = $this->m_dataitem->getCanonicalDiWikiPage();
 
 		if ( $diWikiPage !== null ) {
-			$this->m_wikipage = \SMW\DataValueFactory::getInstance()->newDataItemValue( $diWikiPage, null, $this->m_caption );
+			$this->m_wikipage = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $diWikiPage, null, $this->m_caption );
 			$this->m_wikipage->setOutputFormat( $this->m_outformat );
 			$this->m_wikipage->setLinkAttributes( $this->linkAttributes );
 			$this->addError( $this->m_wikipage->getErrors() );

@@ -66,7 +66,7 @@ class SpecialCharactersQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	 */
 	public function testSpecialCharactersInQuery( $subject, $subobjectId, $property, $dataItem ) {
 
-		$dataValue = $this->dataValueFactory->newDataItemValue(
+		$dataValue = $this->dataValueFactory->newDataValueByItem(
 			$dataItem,
 			$property
 		);

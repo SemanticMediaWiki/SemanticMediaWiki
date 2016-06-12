@@ -126,7 +126,7 @@ class SMWPageProperty extends SpecialPage {
 						continue;
 					}
 
-					$dv = \SMW\DataValueFactory::getInstance()->newDataItemValue( $di, $property->getDataItem() );
+					$dv = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $di, $property->getDataItem() );
 					$html .= '<li>' . $dv->getLongHTMLText( $linker ); // do not show infolinks, the magnifier "+" is ambiguous with the browsing '+' for '_wpg' (see below)
 
 					if ( $property->getDataItem()->findPropertyTypeID() == '_wpg' ) {

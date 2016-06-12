@@ -36,7 +36,7 @@ class CityCategory extends FixtureProperty {
 	 * @return DataValue
 	 */
 	public function getCategoryValue() {
-		return DataValueFactory::getInstance()->newDataItemValue(
+		return DataValueFactory::getInstance()->newDataValueByItem(
 			$this->asSubject(),
 			$this->getProperty()
 		);

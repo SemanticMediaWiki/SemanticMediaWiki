@@ -67,7 +67,7 @@ class RedirectLookupIntegrationTest extends \PHPUnit_Framework_TestCase {
 		$property = new DIProperty( 'RedirectLookupForExistingEntry' );
 
 		$semanticData = new SemanticData( new DIWikiPage( __METHOD__, NS_MAIN, '' ) );
-		$semanticData->addDataValue( DataValueFactory::getInstance()->newPropertyObjectValue( $property, 'Bar' ) );
+		$semanticData->addDataValue( DataValueFactory::getInstance()->newDataValueByProperty( $property, 'Bar' ) );
 
 		$this->store->doSparqlDataUpdate( $semanticData );
 

@@ -101,7 +101,7 @@ class MonolingualTextValueFormatter extends DataValueFormatter {
 				continue;
 			}
 
-			$dataValue = DataValueFactory::getInstance()->newDataItemValue(
+			$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 				$dataItem,
 				$property
 			);
