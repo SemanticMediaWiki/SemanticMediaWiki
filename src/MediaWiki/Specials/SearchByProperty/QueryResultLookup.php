@@ -61,7 +61,7 @@ class QueryResultLookup {
 
 		foreach ( $res as $result ) {
 			$results[] = array(
-				$dataValueFactory->newDataItemValue( $result, null ),
+				$dataValueFactory->newDataValueByItem( $result, null ),
 				$pageRequestOptions->value
 			);
 		}

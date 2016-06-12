@@ -98,7 +98,7 @@ class ParisFactsheet {
 
 		$locatedInProperty = new LocatedInProperty();
 
-		return $this->dataValueFactory->newDataItemValue(
+		return $this->dataValueFactory->newDataValueByItem(
 			new DIWikiPage( 'France', NS_MAIN ),
 			$locatedInProperty->getProperty()
 		);
@@ -115,7 +115,7 @@ class ParisFactsheet {
 
 		$areaProperty = new AreaProperty();
 
-		return $this->dataValueFactory->newPropertyObjectValue(
+		return $this->dataValueFactory->newDataValueByProperty(
 			$areaProperty->getProperty(),
 			'105.40 km²',
 			'City of Paris'
@@ -133,7 +133,7 @@ class ParisFactsheet {
 
 		$temperatureProperty = new TemperatureProperty();
 
-		return $this->dataValueFactory->newPropertyObjectValue(
+		return $this->dataValueFactory->newDataValueByProperty(
 			$temperatureProperty->getProperty(),
 			'16.0 °C',
 			'Average high temperature'
@@ -151,7 +151,7 @@ class ParisFactsheet {
 
 		$populationProperty = new PopulationProperty();
 
-		return $this->dataValueFactory->newPropertyObjectValue(
+		return $this->dataValueFactory->newDataValueByProperty(
 			$populationProperty->getProperty(),
 			'2234105'
 		);
@@ -172,7 +172,7 @@ class ParisFactsheet {
 
 		$populationDensityProperty = new PopulationDensityProperty();
 
-		return $this->dataValueFactory->newPropertyObjectValue(
+		return $this->dataValueFactory->newDataValueByProperty(
 			$populationDensityProperty->getProperty(),
 			'20169;1 km²',
 			'Population density',
@@ -198,7 +198,7 @@ class ParisFactsheet {
 
 		$yearProperty = new YearProperty();
 
-		$yearDataValue = $this->dataValueFactory->newPropertyObjectValue(
+		$yearDataValue = $this->dataValueFactory->newDataValueByProperty(
 			$yearProperty->getProperty(),
 			'2009'
 		);

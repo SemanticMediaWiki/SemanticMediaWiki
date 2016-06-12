@@ -66,7 +66,7 @@ class ConceptToExpDataMapper {
 	 */
 	public function getElementFor( DIConcept $concept ) {
 
-		$dataValue = DataValueFactory::getInstance()->newDataItemValue(
+		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$concept
 		);
 

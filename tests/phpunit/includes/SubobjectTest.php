@@ -118,7 +118,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 
 		foreach ( $parameters['properties'] as $property => $value ){
 
-			$dataValue = DataValueFactory::getInstance()->newPropertyObjectValueByText(
+			$dataValue = DataValueFactory::getInstance()->newDataValueByText(
 				$property,
 				$value
 			);
@@ -158,7 +158,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getLabel' )
 			->will( $this->returnValue( $parameters['property']['label'] ) );
 
-		$dataValue = DataValueFactory::getInstance()->newDataItemValue(
+		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$parameters['dataItem'],
 			$property
 		);

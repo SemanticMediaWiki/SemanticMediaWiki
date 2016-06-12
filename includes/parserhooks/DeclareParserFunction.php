@@ -101,13 +101,13 @@ class DeclareParserFunction {
 			$this->addDataValue( $propertystring, $valuestring );
 		}
 
-		// $value = \SMW\DataValueFactory::getInstance()->newPropertyObjectValue( $property->getDataItem(), $valuestring );
+		// $value = \SMW\DataValueFactory::getInstance()->newDataValueByProperty( $property->getDataItem(), $valuestring );
 		// if (!$value->isValid()) continue;
 	}
 
 	private function addDataValue( $property, $value ) {
 
-		$dataValue = DataValueFactory::getInstance()->newPropertyObjectValueByText(
+		$dataValue = DataValueFactory::getInstance()->newDataValueByText(
 			$property,
 			$value,
 			false,

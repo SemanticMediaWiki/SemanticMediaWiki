@@ -63,7 +63,7 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends MwDBaseUnitTestCase 
 		$this->pageCreator
 			->createPage( $title, '{{DEFAULTSORT:SortForFoo}}' );
 
-		$dvPageModificationTime = $this->dataValueFactory->newDataItemValue(
+		$dvPageModificationTime = $this->dataValueFactory->newDataValueByItem(
 			DITime::newFromTimestamp( $this->pageCreator->getPage()->getTimestamp() )
 		);
 

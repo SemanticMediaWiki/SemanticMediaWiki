@@ -130,7 +130,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 			$types = $this->store->getPropertyValues( $property->getDiWikiPage(), new DIProperty( '_TYPE' ) );
 
 			if ( count( $types ) >= 1 ) {
-				$typeDataValue = DataValueFactory::getInstance()->newDataItemValue( current( $types ), new DIProperty( '_TYPE' ) );
+				$typeDataValue = DataValueFactory::getInstance()->newDataValueByItem( current( $types ), new DIProperty( '_TYPE' ) );
 			} else {
 				$typeDataValue = SMWTypesValue::newFromTypeId( '_wpg' );
 				$this->getMessageFormatter()->addFromKey( 'smw_propertylackstype', $typeDataValue->getLongHTMLText() );
@@ -138,7 +138,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 
 		} else {
 			$typeDataValue = SMWTypesValue::newFromTypeId( $property->findPropertyTypeID() );
-			$propertyLink  = DataValueFactory::getInstance()->newDataItemValue( $property, null )->getShortHtmlText( $this->getLinker() );
+			$propertyLink  = DataValueFactory::getInstance()->newDataValueByItem( $property, null )->getShortHtmlText( $this->getLinker() );
 		}
 
 		return $this->msg( 'smw_unusedproperty_template', $propertyLink, $typeDataValue->getLongHTMLText( $this->getLinker() )	)->text() . ' ' .

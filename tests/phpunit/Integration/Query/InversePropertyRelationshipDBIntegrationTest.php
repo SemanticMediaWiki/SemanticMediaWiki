@@ -123,7 +123,7 @@ class InversePropertyRelationshipDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$dataItem = new DIWikiPage( $value, NS_MAIN, '' );
 
-		return $this->dataValueFactory->newDataItemValue(
+		return $this->dataValueFactory->newDataValueByItem(
 			$dataItem,
 			$property
 		);

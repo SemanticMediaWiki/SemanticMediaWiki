@@ -86,7 +86,7 @@ class FranceFactsheet {
 
 		$locatedInProperty = new LocatedInProperty();
 
-		return $this->dataValueFactory->newDataItemValue(
+		return $this->dataValueFactory->newDataValueByItem(
 			DIWikiPage::newFromText( 'European Union', NS_MAIN ),
 			$locatedInProperty->getProperty(),
 			'EU'

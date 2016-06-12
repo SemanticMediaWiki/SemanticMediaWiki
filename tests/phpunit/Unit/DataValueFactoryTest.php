@@ -71,7 +71,7 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 		$propertyDV = SMWPropertyValue::makeUserProperty( $propertyName );
 		$propertyDI = $propertyDV->getDataItem();
 
-		$dataValue = DataValueFactory::getInstance()->newPropertyObjectValue( $propertyDI, $value );
+		$dataValue = DataValueFactory::getInstance()->newDataValueByProperty( $propertyDI, $value );
 
 		// Check the returned instance
 		$this->assertInstanceOf( $expectedInstance, $dataValue );
@@ -87,7 +87,7 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 		}
 
 		// Check interface parameters
-		$dataValue = DataValueFactory::getInstance()->newPropertyObjectValue(
+		$dataValue = DataValueFactory::getInstance()->newDataValueByProperty(
 			$propertyDI,
 			$value,
 			'FooCaption',
@@ -105,7 +105,7 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testAddPropertyValueByText( $propertyName, $value, $expectedValue, $expectedInstance ) {
 
-		$dataValue = DataValueFactory::getInstance()->newPropertyObjectValueByText( $propertyName, $value );
+		$dataValue = DataValueFactory::getInstance()->newDataValueByText( $propertyName, $value );
 
 		// Check the returned instance
 		$this->assertInstanceOf( $expectedInstance, $dataValue );
@@ -121,7 +121,7 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 		}
 
 		// Check interface parameters
-		$dataValue = DataValueFactory::getInstance()->newPropertyObjectValueByText(
+		$dataValue = DataValueFactory::getInstance()->newDataValueByText(
 			$propertyName,
 			$value,
 			'FooCaption',
@@ -136,7 +136,7 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testTryToCreateDataValueUsingRestrictedPropertyValue() {
 
-		$dataValue = DataValueFactory::getInstance()->newPropertyObjectValueByText( 'Has subobject', 'Foo' );
+		$dataValue = DataValueFactory::getInstance()->newDataValueByText( 'Has subobject', 'Foo' );
 
 		$this->assertInstanceOf(
 			'\SMWErrorValue',
@@ -237,7 +237,7 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = DataValueFactory::getInstance();
 
-		$dataValue = $instance->newPropertyObjectValueByText(
+		$dataValue = $instance->newDataValueByText(
 			'has type',
 			'number',
 			null,
@@ -263,11 +263,11 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider newDataItemValueDataProvider
+	 * @dataProvider newDataValueByItemDataProvider
 	 */
 	public function testNewDataItemValue( $setup ) {
 
-		$dataValue = DataValueFactory::getInstance()->newDataItemValue(
+		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$setup['dataItem'],
 			$setup['property'],
 			$setup['caption']
@@ -279,7 +279,7 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function newDataItemValueDataProvider() {
+	public function newDataValueByItemDataProvider() {
 
 		$provider = array();
 

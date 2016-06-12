@@ -338,7 +338,7 @@ class PageBuilder {
 			$dataItem = new DIWikiPage( $dataItem->getDBKey(), $dataItem->getNamespace() );
 		}
 
-		$dataValue = DataValueFactory::getInstance()->newDataItemValue(
+		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$dataItem
 		);
 

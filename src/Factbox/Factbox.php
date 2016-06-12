@@ -306,7 +306,7 @@ class Factbox {
 	 */
 	protected function getTableHeader( DIWikiPage $subject ) {
 
-		$dataValue = $this->dataValueFactory->newDataItemValue( $subject, null );
+		$dataValue = $this->dataValueFactory->newDataValueByItem( $subject, null );
 
 		$browselink = SMWInfolink::newBrowsingLink(
 			$dataValue->getPreferredCaption(),
@@ -346,7 +346,7 @@ class Factbox {
 		$attributes = array();
 
 		foreach ( $semanticData->getProperties() as $propertyDi ) {
-			$propertyDv = $this->dataValueFactory->newDataItemValue( $propertyDi, null );
+			$propertyDv = $this->dataValueFactory->newDataValueByItem( $propertyDi, null );
 
 			if ( !$propertyDi->isShown() ) {
 				// showing this is not desired, hide
@@ -372,7 +372,7 @@ class Factbox {
 			$valuesHtml = array();
 			foreach ( $semanticData->getPropertyValues( $propertyDi ) as $dataItem ) {
 
-				$dataValue = $this->dataValueFactory->newDataItemValue( $dataItem, $propertyDi );
+				$dataValue = $this->dataValueFactory->newDataValueByItem( $dataItem, $propertyDi );
 				$dataValue->setOutputFormat( 'LOCL' );
 				$dataValue->disableServiceLinks();
 

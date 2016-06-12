@@ -176,7 +176,7 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 			->newEmptySemanticData();
 
 		$semanticData->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValue( new DIProperty( '_SUBP' ), 'SomeTopProperty' )
+			$this->dataValueFactory->newDataValueByProperty( new DIProperty( '_SUBP' ), 'SomeTopProperty' )
 		);
 
 		$exportData = Exporter::getInstance()->makeExportData( $semanticData );
@@ -205,7 +205,7 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$semanticData->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValue( new DIProperty( '_INST' ), 'SomeCategory' )
+			$this->dataValueFactory->newDataValueByProperty( new DIProperty( '_INST' ), 'SomeCategory' )
 		);
 
 		$exportData = Exporter::getInstance()->makeExportData( $semanticData );
@@ -236,7 +236,7 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 			->newEmptySemanticData();
 
 		$semanticData->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValue( new DIProperty( '_SUBC' ), 'SomeTopCategory' )
+			$this->dataValueFactory->newDataValueByProperty( new DIProperty( '_SUBC' ), 'SomeTopCategory' )
 		);
 
 		$exportData = Exporter::getInstance()->makeExportData( $semanticData );

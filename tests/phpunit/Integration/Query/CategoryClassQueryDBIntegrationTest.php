@@ -58,7 +58,7 @@ class CategoryClassQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$property = new DIProperty( '_INST' );
 
-		$dataValue = $this->dataValueFactory->newPropertyObjectValue( $property, 'SomeCategory' );
+		$dataValue = $this->dataValueFactory->newDataValueByProperty( $property, 'SomeCategory' );
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 

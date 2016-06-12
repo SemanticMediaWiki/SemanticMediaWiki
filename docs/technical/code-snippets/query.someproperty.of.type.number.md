@@ -13,7 +13,7 @@ $property->setPropertyTypeId( '_num' );
 
 $dataItem = new DINumber( 1111 );
 
-$dataValue = DataValueFactory::getInstance()->newDataItemValue(
+$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 	$dataItem,
 	$property
 );

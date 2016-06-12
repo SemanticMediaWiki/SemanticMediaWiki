@@ -6,7 +6,7 @@ $subject = new DIWikiPage( 'Foo', NS_MAIN );
 $subobject = new Subobject( $subject->getTitle() );
 $subobject->setEmptyContainerForId( 'SomeSubobject' );
 
-$dataValue = DataValueFactory::getInstance()->newPropertyObjectValueByText(
+$dataValue = DataValueFactory::getInstance()->newDataValueByText(
 	'SomeProperty,
 	'SomeValue'
 );
@@ -49,7 +49,7 @@ $containerSubject = new DIWikiPage(
 // for the particular subobjectName
 $containerSemanticData = new ContainerSemanticData( $containerSubject );
 
-$dataValue = DataValueFactory::getInstance()->newPropertyObjectValueByText(
+$dataValue = DataValueFactory::getInstance()->newDataValueByText(
 	'SomeProperty,
 	'SomeValue'
 );

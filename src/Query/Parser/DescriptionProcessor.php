@@ -113,7 +113,7 @@ class DescriptionProcessor {
 	 */
 	public function constructDescriptionForPropertyObjectValue( DIProperty $property, $chunk ) {
 
-		$dataValue = $this->dataValueFactory->newPropertyObjectValue( $property );
+		$dataValue = $this->dataValueFactory->newDataValueByProperty( $property );
 		$dataValue->setContextPage( $this->contextPage );
 
 		// Indicates whether a value is being used by a query condition or not which

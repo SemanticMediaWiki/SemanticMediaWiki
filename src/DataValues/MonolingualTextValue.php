@@ -103,7 +103,7 @@ class MonolingualTextValue extends DataValue {
 				$value = $languageCode;
 			}
 
-			$dataValue = $this->dataValueFactory->newPropertyObjectValue(
+			$dataValue = $this->dataValueFactory->newDataValueByProperty(
 				$property,
 				$value,
 				false,
@@ -272,7 +272,7 @@ class MonolingualTextValue extends DataValue {
 			return null;
 		}
 
-		$dataValue = $this->dataValueFactory->newDataItemValue(
+		$dataValue = $this->dataValueFactory->newDataValueByItem(
 			$dataItem,
 			new DIProperty( '_TEXT' )
 		);

@@ -98,7 +98,7 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
 		);
 
-		$importValue = DataValueFactory::getInstance()->newDataItemValue(
+		$importValue = DataValueFactory::getInstance()->newDataValueByItem(
 			new DIBlob( 'foo' . ' ' . 'bar' . ' ' . 'buz' . ' ' . 'Type:Text' ),
 			new DIProperty( '_IMPO' )
 		);
@@ -128,14 +128,14 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
 		);
 
-		$importValue = DataValueFactory::getInstance()->newDataItemValue(
+		$importValue = DataValueFactory::getInstance()->newDataValueByItem(
 			new DIBlob( 'foo' . ' ' . 'bar' . ' ' . 'buz' . ' ' . 'Type:Page' ),
 			new DIProperty( '_IMPO' )
 		);
 
 		$semanticData->addDataValue( $importValue );
 
-		$typeValue = DataValueFactory::getInstance()->newDataItemValue(
+		$typeValue = DataValueFactory::getInstance()->newDataValueByItem(
 			new DIUri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', '_txt' ),
 			new DIProperty( '_TYPE' )
 		);
@@ -177,7 +177,7 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
 		);
 
-		$importValue = DataValueFactory::getInstance()->newDataItemValue(
+		$importValue = DataValueFactory::getInstance()->newDataValueByItem(
 			new DIBlob( 'foo' . ' ' . 'bar' . ' ' . 'buz' . ' ' . 'Type-Text' ),
 			new DIProperty( '_IMPO' )
 		);
@@ -207,7 +207,7 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
 		);
 
-		$importValue = DataValueFactory::getInstance()->newDataItemValue(
+		$importValue = DataValueFactory::getInstance()->newDataValueByItem(
 			new DIBlob( 'foo' . ' ' . 'bar' . ' ' . 'buz' . ' ' . 'Type:Bogus' ),
 			new DIProperty( '_IMPO' )
 		);

@@ -115,7 +115,7 @@ class ConceptPage extends \SMWOrderedListPage {
 		$htmlColumnListRenderer = $mwCollaboratorFactory->newHtmlColumnListRenderer();
 
 		foreach ( $diWikiPages as $value ) {
-			$dv = DataValueFactory::getInstance()->newDataItemValue( $value );
+			$dv = DataValueFactory::getInstance()->newDataValueByItem( $value );
 			$contentsByIndex[$this->getFirstLetterForCategory( $value )][] = $dv->getLongHTMLText( smwfGetLinker() );
 		}
 

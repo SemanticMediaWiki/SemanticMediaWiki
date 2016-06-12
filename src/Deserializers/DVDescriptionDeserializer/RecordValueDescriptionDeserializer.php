@@ -108,7 +108,7 @@ class RecordValueDescriptionDeserializer extends DescriptionDeserializer {
 			return $description;
 		}
 
-		$dataValue = DataValueFactory::getInstance()->newPropertyObjectValue(
+		$dataValue = DataValueFactory::getInstance()->newDataValueByProperty(
 			$diProperty,
 			$values[$valueIndex],
 			false,

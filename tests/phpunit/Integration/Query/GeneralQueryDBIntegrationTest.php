@@ -64,7 +64,7 @@ class GeneralQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$semanticData->addDataValue(
-			$this->dataValueFactory->newDataItemValue( $semanticData->getSubject(), $property )
+			$this->dataValueFactory->newDataValueByItem( $semanticData->getSubject(), $property )
 		);
 
 		$this->getStore()->updateData( $semanticData );
@@ -94,7 +94,7 @@ class GeneralQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$property = new DIProperty( 'SomePropertyWithInvalidValueAssignment' );
 		$property->setPropertyTypeId( '_tem' );
 
-		$dataValue = $this->dataValueFactory->newPropertyObjectValue( $property, '1 Jan 1970' );
+		$dataValue = $this->dataValueFactory->newDataValueByProperty( $property, '1 Jan 1970' );
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 		$semanticData->addDataValue( $dataValue );

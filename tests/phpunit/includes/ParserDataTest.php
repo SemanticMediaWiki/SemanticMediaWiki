@@ -123,7 +123,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValueByText( 'Foo', 'Bar' )
+			$this->dataValueFactory->newDataValueByText( 'Foo', 'Bar' )
 		);
 
 		$this->assertFalse(
@@ -145,7 +145,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ParserData( $title, $parserOutput );
 
 		$instance->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValueByText( 'Foo', 'Bar' )
+			$this->dataValueFactory->newDataValueByText( 'Foo', 'Bar' )
 		);
 
 		$this->assertFalse( $instance->getSemanticData()->isEmpty() );
@@ -175,7 +175,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$semanticData->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValueByText( 'Foo', 'Bar' )
+			$this->dataValueFactory->newDataValueByText( 'Foo', 'Bar' )
 		);
 
 		$instance->setSemanticData( $semanticData );
@@ -207,7 +207,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ParserData( $title, $parserOutput );
 
 		$instance->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValueByText(
+			$this->dataValueFactory->newDataValueByText(
 				$propertyName,
 				$value
 			)
@@ -299,7 +299,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValueByText(
+			$this->dataValueFactory->newDataValueByText(
 				'Foo',
 				'Bar'
 			)
@@ -320,7 +320,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$import->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValueByText(
+			$this->dataValueFactory->newDataValueByText(
 				'Foo',
 				'Bar'
 			)

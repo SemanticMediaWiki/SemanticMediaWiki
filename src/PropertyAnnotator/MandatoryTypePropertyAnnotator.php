@@ -52,7 +52,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	private function addTypeFromImportVocabulary( $property, $dataItem ) {
 
-		$importValue = DataValueFactory::getInstance()->newDataItemValue(
+		$importValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$dataItem,
 			$property
 		);
@@ -71,7 +71,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 			return;
 		}
 
-		$dataValue = DataValueFactory::getInstance()->newPropertyObjectValue(
+		$dataValue = DataValueFactory::getInstance()->newDataValueByProperty(
 			$property,
 			$typeId
 		);
