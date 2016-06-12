@@ -20,10 +20,12 @@ use SMW\Tests\Utils\Mock\MockTitle;
 class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 
 	private $applicationFactory;
+	private $user;
 
 	protected function setUp() {
 		parent::setUp();
 
+		$this->user = new MockSuperUser();
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
@@ -41,7 +43,7 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 		$instance = new TitleMoveComplete(
 			$oldTitle,
 			$newTitle,
-			new MockSuperUser(),
+			$this->user,
 			0,
 			0
 		);
@@ -75,7 +77,7 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 		$instance = new TitleMoveComplete(
 			$oldTitle,
 			$newTitle,
-			new MockSuperUser(),
+			$this->user,
 			0,
 			0
 		);
@@ -110,7 +112,7 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 		$instance = new TitleMoveComplete(
 			$oldTitle,
 			$newTitle,
-			new MockSuperUser(),
+			$this->user,
 			0,
 			0
 		);
