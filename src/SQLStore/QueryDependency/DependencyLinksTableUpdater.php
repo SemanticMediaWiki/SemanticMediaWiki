@@ -59,11 +59,11 @@ class DependencyLinksTableUpdater {
 	 * @since 2.4
 	 *
 	 * @param integer $sid
-	 * @param array $dependencyList
+	 * @param array|null $dependencyList
 	 */
-	public function addUpdateList( $sid, array $dependencyList ) {
+	public function addUpdateList( $sid, array $dependencyList = null ) {
 
-		if ( $sid == 0 ) {
+		if ( $sid == 0 || $dependencyList === null ) {
 			return null;
 		}
 
