@@ -10,7 +10,8 @@
 			"روخو",
 			"محمد أحمد عبد الفتاح",
 			"أحمد غربية Ahmad Gharbeia <ahmad@arabdigitalexpression.org>",
-			"Kghbln"
+			"Kghbln",
+			"Alaa"
 		]
 	},
 	"smw-desc": "تقرّب الويكي إلى كلٍّ من النّظم الحاسوبية  ''و'' البشر ([https://www.semantic-mediawiki.org/wiki/Help:User_manual دليل المستخدم])",
@@ -19,7 +20,7 @@
 	"smw_factbox_head": "حقائق عن $1",
 	"smw_isspecprop": "هذه خصيصة مميَّزة في هذه الويكي.",
 	"smw_concept_description": "وصف المفهوم \"$1\"",
-	"smw_no_concept_namespace": "المفاهيم لا يمكن تعريفها إلا في الصفحات في فضاء التسمية \"مفهوم\"",
+	"smw_no_concept_namespace": "المفاهيم لا يمكن تعريفها إلا في الصفحات ضمن مفهوم : نطاق التسمية",
 	"smw_multiple_concepts": "كل صفحة مفهوم لا يمكن أن تضمّ أكثر من تعريف مفهوم واحد.",
 	"smw_concept_cache_miss": "المبدأ \"$1\" لا يمكن استخدامه حاليا إذ أن كيفية ضبط الويكي تقضي بتعطيلها. إذا لم تنته المشكلة بعد برهة، فسَل إداري الموقع ليتيح هذا المبدأ.",
 	"smw_noinvannot": "لا يمكن تعيين قيم لخصائص معكوسة.",
