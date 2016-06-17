@@ -2,8 +2,8 @@
 
 namespace SMW\PropertyAnnotator;
 
-use SMW\PropertyAnnotator;
 use SMW\DataItemFactory;
+use SMW\PropertyAnnotator;
 
 /**
  * Decorator that contains the reference to the invoked PropertyAnnotator

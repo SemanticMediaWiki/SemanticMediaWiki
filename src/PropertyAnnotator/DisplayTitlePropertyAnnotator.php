@@ -2,9 +2,7 @@
 
 namespace SMW\PropertyAnnotator;
 
-use SMW\DIProperty;
 use SMW\PropertyAnnotator;
-use SMWDIBlob as DIBlob;
 
 /**
  * @license GNU GPL v2+

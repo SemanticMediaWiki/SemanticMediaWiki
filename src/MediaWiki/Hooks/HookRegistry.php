@@ -8,7 +8,6 @@ use Parser;
 use ParserHooks\HookRegistrant;
 use SMW\ApplicationFactory;
 use SMW\DeferredRequestDispatchManager;
-use SMW\EventHandler;
 use SMW\NamespaceManager;
 use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\InfoParserFunction;

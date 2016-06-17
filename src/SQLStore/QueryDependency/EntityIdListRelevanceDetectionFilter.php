@@ -2,10 +2,8 @@
 
 namespace SMW\SQLStore\QueryDependency;
 
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\CompositePropertyTableDiffIterator;
+use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
 /**

@@ -3,15 +3,13 @@
 namespace SMW\SQLStore;
 
 use SMW\ApplicationFactory;
-use SMW\CircularReferenceGuard;
 use SMW\DIProperty;
-use SMW\SQLStore\QueryEngine\ConceptQueryResolver;
+use SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SQLStore\QueryEngine\EngineOptions;
 use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
 use SMW\SQLStore\QueryEngine\QueryEngine;
 use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
-use SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory;
 
 /**
  * @license GNU GPL v2+

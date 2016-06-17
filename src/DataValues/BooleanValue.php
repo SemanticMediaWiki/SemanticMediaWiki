@@ -4,9 +4,9 @@ namespace SMW\DataValues;
 
 use SMW\Localizer;
 use SMW\Message;
-use SMWDIBoolean as DIBoolean;
-use SMWDataValue as DataValue;
 use SMWDataItem as DataItem;
+use SMWDataValue as DataValue;
+use SMWDIBoolean as DIBoolean;
 
 /**
  * This datavalue implements the handling of Boolean datavalues.

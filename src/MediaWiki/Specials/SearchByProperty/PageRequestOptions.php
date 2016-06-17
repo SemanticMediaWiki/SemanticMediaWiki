@@ -3,10 +3,10 @@
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
 use SMW\DataValueFactory;
-use SMW\UrlEncoder;
-use SMWPropertyValue as PropertyValue;
 use SMW\DataValues\TelephoneUriValue;
+use SMW\UrlEncoder;
 use SMWNumberValue as NumberValue;
+use SMWPropertyValue as PropertyValue;
 
 /**
  * @license GNU GPL v2+

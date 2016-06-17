@@ -4,7 +4,6 @@ namespace SMW\SQLStore;
 
 use SMW\ApplicationFactory;
 use SMW\CircularReferenceGuard;
-use SMW\DIProperty;
 use SMW\SQLStore\Lookup\CachedListLookup;
 use SMW\SQLStore\Lookup\CachedValueLookupStore;
 use SMW\SQLStore\Lookup\ListLookup;

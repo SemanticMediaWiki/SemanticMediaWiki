@@ -4,9 +4,9 @@ namespace SMW\SQLStore;
 
 use SMW\ApplicationFactory;
 use SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater;
+use SMW\SQLStore\QueryDependency\EntityIdListRelevanceDetectionFilter;
 use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
 use SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver;
-use SMW\SQLStore\QueryDependency\EntityIdListRelevanceDetectionFilter;
 use SMW\Store;
 
 /**

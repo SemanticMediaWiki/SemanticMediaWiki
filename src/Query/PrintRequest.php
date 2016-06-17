@@ -3,10 +3,10 @@
 namespace SMW\Query;
 
 use InvalidArgumentException;
+use SMW\Localizer;
 use SMWDataValue;
 use SMWPropertyValue as PropertyValue;
 use Title;
-use SMW\Localizer;
 
 /**
  * Container class for request for printout, as used in queries to

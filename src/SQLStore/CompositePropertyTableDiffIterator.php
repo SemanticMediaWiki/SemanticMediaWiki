@@ -2,9 +2,9 @@
 
 namespace SMW\SQLStore;
 
-use SMW\SQLStore\ChangeOp\TableChangeOp;
 use ArrayIterator;
 use IteratorAggregate;
+use SMW\SQLStore\ChangeOp\TableChangeOp;
 
 /**
  * @license GNU GPL v2+
