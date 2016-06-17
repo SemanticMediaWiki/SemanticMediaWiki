@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
-use ReflectionClass;
 use SMW\MediaWiki\Api\ApiQueryResultFormatter;
 
 /**

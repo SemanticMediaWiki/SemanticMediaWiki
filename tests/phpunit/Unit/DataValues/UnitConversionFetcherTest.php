@@ -4,8 +4,8 @@ namespace SMW\Tests\DataValues;
 
 use SMW\DataItemFactory;
 use SMW\DataValues\UnitConversionFetcher;
-use SMWNumberValue as NumberValue;
 use SMW\Tests\TestEnvironment;
+use SMWNumberValue as NumberValue;
 
 /**
  * @covers \SMW\DataValues\UnitConversionFetcher

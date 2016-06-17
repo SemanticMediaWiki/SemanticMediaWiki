@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Integration;
 
-use SMWAskPage;
 use DOMDocument;
+use SMWAskPage;
 
 /**
  * @group semantic-mediawiki

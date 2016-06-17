@@ -3,8 +3,8 @@
 namespace SMW\Tests\SQLStore\Lookup;
 
 use SMW\DIProperty;
-use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
 use SMW\RequestOptions;
+use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
 
 /**
  * @covers \SMW\SQLStore\Lookup\UnusedPropertyListLookup

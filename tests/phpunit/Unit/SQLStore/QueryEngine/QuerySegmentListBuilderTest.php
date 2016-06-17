@@ -6,9 +6,9 @@ use SMW\DIWikiPage;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
+use SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
-use SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\Tests\TestEnvironment;
 
 /**

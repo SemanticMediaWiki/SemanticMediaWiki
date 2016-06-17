@@ -8,7 +8,6 @@ use SMW\DIWikiPage;
 use SMW\Localizer;
 use SMW\SemanticData;
 use SMW\Subobject;
-use SMW\Tests\TestEnvironment;
 use SMWDITime as DITime;
 use Title;
 

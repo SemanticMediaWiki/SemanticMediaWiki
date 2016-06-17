@@ -3,7 +3,6 @@
 namespace SMW\Tests;
 
 use SMW\Message;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Message
