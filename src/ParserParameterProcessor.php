@@ -99,7 +99,7 @@ class ParserParameterProcessor {
 	 *
 	 * @since 1.9
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public function toArray() {
 		return $this->parameters;
