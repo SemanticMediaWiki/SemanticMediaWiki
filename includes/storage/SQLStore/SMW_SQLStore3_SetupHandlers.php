@@ -1,6 +1,7 @@
 <?php
 
 use Onoi\MessageReporter\MessageReporter;
+use SMW\CompatibilityMode;
 
 /**
  * @ingroup SMWStore
@@ -32,6 +33,14 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 	}
 
 	public function setup( $verbose = true ) {
+
+		// If for some reason the enableSemantics was not yet enabled
+		// still allow to run the tables create in order for the
+		// setup to be completed
+		if ( CompatibilityMode::extensionNotEnabled() ) {
+			CompatibilityMode::enableTemporaryCliUpdateMode();
+		}
+
 		$this->reportProgress( "Setting up standard database configuration for SMW ...\n\n", $verbose );
 		$this->reportProgress( "Selected storage engine is \"SMWSQLStore3\" (or an extension thereof)\n\n", $verbose );
 
