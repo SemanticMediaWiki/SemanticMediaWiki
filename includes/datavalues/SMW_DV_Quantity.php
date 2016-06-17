@@ -1,9 +1,8 @@
 <?php
 
-use SMW\ApplicationFactory;
-use SMW\NumberFormatter;
-use SMW\Message;
 use SMW\DataValues\UnitConversionFetcher;
+use SMW\Message;
+use SMW\NumberFormatter;
 
 /**
  * @ingroup SMWDataValues

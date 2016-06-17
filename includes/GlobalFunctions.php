@@ -1,8 +1,8 @@
 <?php
 
+use SMW\CompatibilityMode;
 use SMW\NamespaceManager;
 use SMW\NumberFormatter;
-use SMW\CompatibilityMode;
 use SMW\SPARQLStore\SparqlDBConnectionProvider;
 
 /**

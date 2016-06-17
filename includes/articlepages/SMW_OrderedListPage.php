@@ -1,9 +1,8 @@
 <?php
 
-use SMW\DIProperty;
-
-use SMW\PropertyRegistry;
 use SMW\ApplicationFactory;
+use SMW\DIProperty;
+use SMW\PropertyRegistry;
 
 /**
  * Abstract subclass of MediaWiki's Article that handles the common tasks of

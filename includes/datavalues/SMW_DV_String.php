@@ -1,9 +1,9 @@
 <?php
 
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
-use SMWDIBlob as DIBlob;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
+use SMWDIBlob as DIBlob;
 
 /**
  * This datavalue implements String-Datavalues suitable for defining

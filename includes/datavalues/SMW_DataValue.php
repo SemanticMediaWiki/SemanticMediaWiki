@@ -8,14 +8,14 @@
  * @ingroup SMW
  */
 use SMW\ApplicationFactory;
+use SMW\DataValues\InfoLinksProvider;
 use SMW\DataValues\ValueFormatterRegistry;
 use SMW\DataValues\ValueValidatorRegistry;
 use SMW\Deserializers\DVDescriptionDeserializerRegistry;
+use SMW\Localizer;
 use SMW\Message;
 use SMW\Options;
-use SMW\Localizer;
 use SMW\Query\QueryComparator;
-use SMW\DataValues\InfoLinksProvider;
 
 /**
  * Objects of this type represent all that is known about a certain user-provided

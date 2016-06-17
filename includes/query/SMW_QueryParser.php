@@ -1,5 +1,7 @@
 <?php
 
+use SMW\DataTypeRegistry;
+use SMW\DIWikiPage;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Description;
@@ -7,8 +9,6 @@ use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Parser\DescriptionProcessor;
-use SMW\DataTypeRegistry;
-use SMW\DIWikiPage;
 
 /**
  * Objects of this class are in charge of parsing a query string in order

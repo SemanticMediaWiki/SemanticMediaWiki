@@ -2,9 +2,9 @@
 
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
+use SMW\Localizer;
 use SMW\RequestOptions;
 use SMW\StringCondition;
-use SMW\Localizer;
 
 /**
  * Implementation of MediaWiki's Article that shows additional information on

@@ -1,11 +1,11 @@
 <?php
 
-use SMW\DIProperty;
-use SMW\UrlEncoder;
-use SMW\Localizer;
-use SMW\SemanticData;
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
+use SMW\DIProperty;
+use SMW\Localizer;
+use SMW\SemanticData;
+use SMW\UrlEncoder;
 
 /**
  * @ingroup SMWSpecialPage
