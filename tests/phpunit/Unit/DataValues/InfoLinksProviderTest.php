@@ -4,8 +4,8 @@ namespace SMW\Tests\DataValues;
 
 use SMW\DataItemFactory;
 use SMW\DataValues\InfoLinksProvider;
-use SMW\Tests\TestEnvironment;
 use SMW\Message;
+use SMW\Tests\TestEnvironment;
 use SMWNumberValue as NumberValue;
 use SMWStringValue as StringValue;
 

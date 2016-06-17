@@ -2,11 +2,10 @@
 
 namespace SMW\Tests\SQLStore\QueryDependency;
 
-use SMW\Tests\TestEnvironment;
 use SMW\DIWikiPage;
 use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
-use SMW\SQLStore\QueryDependency\EntityIdListRelevanceDetectionFilter;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\QueryDependency\QueryDependencyLinksStore

@@ -3,7 +3,6 @@
 namespace SMW\Tests;
 
 use ParserOutput;
-use SMW\Tests\TestEnvironment;
 use SMW\InTextAnnotationParser;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;

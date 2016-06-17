@@ -4,13 +4,13 @@ namespace SMW\Tests\Factbox;
 
 use ParserOutput;
 use ReflectionClass;
-use SMW\Tests\TestEnvironment;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Factbox\Factbox;
 use SMW\ParserData;
 use SMW\SemanticData;
 use SMW\TableFormatter;
+use SMW\Tests\TestEnvironment;
 use Title;
 
 /**

@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\PropertyAnnotator;
 
+use SMW\DataItemFactory;
 use SMW\PropertyAnnotator\NullPropertyAnnotator;
 use SMW\PropertyAnnotator\SortKeyPropertyAnnotator;
 use SMW\Tests\Utils\UtilityFactory;
-use SMW\DataItemFactory;
 
 /**
  * @covers \SMW\PropertyAnnotator\SortKeyPropertyAnnotator

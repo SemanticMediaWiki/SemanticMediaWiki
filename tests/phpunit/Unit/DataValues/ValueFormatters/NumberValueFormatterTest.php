@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\DataValues\ValueFormatters;
 
+use SMW\DataValues\TemperatureValue;
 use SMW\DataValues\ValueFormatters\NumberValueFormatter;
 use SMWNumberValue as NumberValue;
-use SMW\DataValues\TemperatureValue;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\NumberValueFormatter

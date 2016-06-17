@@ -4,7 +4,6 @@ namespace SMW\Tests\DataValues\ValueValidators;
 
 use SMW\DataItemFactory;
 use SMW\DataValues\ValueValidators\UniquenessConstraintValueValidator;
-use SMW\Options;
 use SMW\Tests\TestEnvironment;
 
 /**

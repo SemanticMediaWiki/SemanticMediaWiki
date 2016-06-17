@@ -3,8 +3,8 @@
 namespace SMW\Test;
 
 use FauxRequest;
-use SMW\Tests\Utils\Mock\MockSuperUser;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Utils\Mock\MockSuperUser;
 use SMWAdmin;
 use User;
 
