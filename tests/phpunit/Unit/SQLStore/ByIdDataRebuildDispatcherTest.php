@@ -24,14 +24,27 @@ class ByIdDataRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'hasIDFor' ) )
+			->getMock();
+
+		$idTable->expects( $this->any() )
+			->method( 'hasIDFor' )
+			->will( $this->returnValue( 0 ) );
+
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getWikiPageLastModifiedTimestamp' ) )
+			->setMethods( array( 'getWikiPageLastModifiedTimestamp', 'getObjectIds' ) )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )
 			->method( 'getWikiPageLastModifiedTimestamp' )
 			->will( $this->returnValue( 0 ) );
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
 
 		$this->applicationFactory->registerObject( 'Store', $store );
 		$this->applicationFactory->getSettings()->set( 'smwgCacheType', 'hash' );

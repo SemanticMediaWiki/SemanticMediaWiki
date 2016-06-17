@@ -324,7 +324,7 @@ class ByIdDataRebuildDispatcher {
 		// to match possible duplicate properties by label (not by key)
 		$duplicates = $db->select(
 			\SMWSql3SmwIds::TABLE_NAME,
-			'smw_id',
+			array( 'smw_id', 'smw_title' ),
 			array(
 				"smw_id !=" . $db->addQuotes( $row->smw_id ),
 				"smw_sortkey =" . $db->addQuotes( $row->smw_sortkey ),
@@ -343,6 +343,14 @@ class ByIdDataRebuildDispatcher {
 		// that all property value ID's are reassigned together while the duplicate
 		// is marked for removal until the next run
 		foreach ( $duplicates as $duplicate ) {
+
+			// If titles don't match then continue because it could be that
+			// Property:Foo with displaytitle foobar -> sortkey ->foobar
+			// Property:Bar with displaytitle foobar -> sortkey ->foobar
+			if ( $row->smw_title !== $duplicate->smw_title ) {
+				continue;
+			}
+
 			$this->store->getObjectIds()->updateInterwikiField(
 				$duplicate->smw_id,
 				new DIWikiPage( $row->smw_title, $row->smw_namespace, SMW_SQL3_SMWDELETEIW )
