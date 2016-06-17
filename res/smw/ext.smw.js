@@ -72,7 +72,7 @@ var smw = ( function ( $, undefined ) {
 		 */
 		msg: function() {
 			if ( typeof mediaWiki === 'undefined' ) {
-				message = window.wgSMWMessages[arguments[0]];
+				var message = window.wgSMWMessages[arguments[0]];
 
 				for ( var i = arguments.length - 1; i > 0; i-- ) {
 					message = message.replace( '$' + i, arguments[i] );
