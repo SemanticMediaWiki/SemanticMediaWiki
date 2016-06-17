@@ -3,10 +3,10 @@
 namespace SMW;
 
 use Html;
-use SMW\Query\Language\ConceptDescription;
 use SMW\MediaWiki\ByLanguageCollationMapper;
-use SMWPageLister;
+use SMW\Query\Language\ConceptDescription;
 use SMWDataItem as DataItem;
+use SMWPageLister;
 
 /**
  * Special handling for relation/attribute description pages.

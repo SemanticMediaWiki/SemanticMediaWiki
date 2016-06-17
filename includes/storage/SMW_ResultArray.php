@@ -1,13 +1,11 @@
 <?php
 
+use SMW\DataValueFactory;
 use SMW\InTextAnnotationParser;
 use SMW\Query\PrintRequest;
-use SMW\Localizer;
-use SMW\DataValueFactory;
-use SMWDIBlob as DIBlob;
-use SMWQuery as Query;
-use SMWDataItem as DataItem;
 use SMW\Query\TemporaryEntityListAccumulator;
+use SMWDataItem as DataItem;
+use SMWDIBlob as DIBlob;
 
 /**
  * Container for the contents of a single result field of a query result,

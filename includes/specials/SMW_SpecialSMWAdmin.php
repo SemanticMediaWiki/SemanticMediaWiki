@@ -2,9 +2,9 @@
 
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Jobs\RefreshJob;
-use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\MediaWiki\ManualEntryLogger;
 use SMW\Settings;
+use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\Store;
 use SMW\StoreFactory;
 

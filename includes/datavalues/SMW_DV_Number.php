@@ -1,10 +1,9 @@
 <?php
 
-use SMW\Highlighter;
+use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\IntlNumberFormatter;
 use SMW\Localizer;
 use SMW\Message;
-use SMW\DataValues\ValueFormatters\DataValueFormatter;
 
 /**
  * @ingroup SMWDataValues

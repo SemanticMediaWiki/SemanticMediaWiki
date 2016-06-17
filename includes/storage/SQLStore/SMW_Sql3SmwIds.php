@@ -1,9 +1,9 @@
 <?php
 
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\HashBuilder;
 use SMW\ApplicationFactory;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\HashBuilder;
 use SMW\SQLStore\IdToDataItemMatchFinder;
 use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\SQLStore\RedirectInfoStore;

@@ -3,8 +3,8 @@
 use SMW\HashBuilder;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryLinker;
-use SMW\SerializerFactory;
 use SMW\Query\TemporaryEntityListAccumulator;
+use SMW\SerializerFactory;
 
 /**
  * Objects of this class encapsulate the result of a query in SMW. They
