@@ -165,44 +165,44 @@ class ByIdDataRebuildDispatcher {
 	 */
 	public function dispatchRebuildFor( &$id ) {
 
-		$updatejobs = array();
+		$updateJobs = array();
 		$this->dispatchedEntities = array();
 
 		// was nothing done in this run?
-		$emptyrange = true;
+		$emptyRange = true;
 
-		$this->createUpdateJobsForTitleIdRange( $id, $updatejobs );
+		$this->createUpdateJobsForTitleIdRange( $id, $updateJobs );
 
-		if ( $updatejobs !== array() ) {
-			$emptyrange = false;
+		if ( $updateJobs !== array() ) {
+			$emptyRange = false;
 		}
 
-		$this->createUpdateJobsForSmwIdRange( $id, $updatejobs, $emptyrange );
+		$this->createUpdateJobsForSmwIdRange( $id, $updateJobs, $emptyRange );
 
 		// Deprecated since 2.3, use 'SMW::SQLStore::BeforeDataRebuildJobInsert'
-		\Hooks::run('smwRefreshDataJobs', array( &$updatejobs ) );
+		\Hooks::run('smwRefreshDataJobs', array( &$updateJobs ) );
 
-		Hooks::run( 'SMW::SQLStore::BeforeDataRebuildJobInsert', array( $this->store, &$updatejobs ) );
+		Hooks::run( 'SMW::SQLStore::BeforeDataRebuildJobInsert', array( $this->store, &$updateJobs ) );
 
 		if ( $this->useJobQueueScheduler ) {
-			JobBase::batchInsert( $updatejobs );
+			JobBase::batchInsert( $updateJobs );
 		} else {
-			foreach ( $updatejobs as $job ) {
+			foreach ( $updateJobs as $job ) {
 				$job->run();
 			}
 		}
 
 		// -1 means that no next position is available
-		$this->findNextIdPosition( $id, $emptyrange );
+		$this->findNextIdPosition( $id, $emptyRange );
 
 		return $this->progress = $id > 0 ? $id / $this->getMaxId() : 1;
 	}
 
 	/**
 	 * @param integer $id
-	 * @param UpdateJob[] &$updatejobs
+	 * @param UpdateJob[] &$updateJobs
 	 */
-	private function createUpdateJobsForTitleIdRange( $id, &$updatejobs ) {
+	private function createUpdateJobsForTitleIdRange( $id, &$updateJobs ) {
 
 		// Update by MediaWiki page id --> make sure we get all pages.
 		$tids = array();
@@ -216,7 +216,7 @@ class ByIdDataRebuildDispatcher {
 
 		foreach ( $titles as $title ) {
 			if ( ( $this->namespaces == false ) || ( in_array( $title->getNamespace(), $this->namespaces ) ) ) {
-				$updatejobs[] = $this->newUpdateJob( $title );
+				$updateJobs[] = $this->newUpdateJob( $title );
 			}
 
 			$this->dispatchedEntities[] = array( 't' => $title->getPrefixedDBKey() );
@@ -225,9 +225,10 @@ class ByIdDataRebuildDispatcher {
 
 	/**
 	 * @param integer $id
-	 * @param UpdateJob[] &$updatejobs
+	 * @param UpdateJob[] &$updateJobs
+	 * @param bool $emptyRange
 	 */
-	private function createUpdateJobsForSmwIdRange( $id, &$updatejobs, &$emptyrange ) {
+	private function createUpdateJobsForSmwIdRange( $id, &$updateJobs, &$emptyRange ) {
 
 		// update by internal SMW id --> make sure we get all objects in SMW
 		$db = $this->store->getConnection( 'mw.db' );
@@ -243,8 +244,7 @@ class ByIdDataRebuildDispatcher {
 		);
 
 		foreach ( $res as $row ) {
-
-			$emptyrange = false; // note this even if no jobs were created
+			$emptyRange = false; // note this even if no jobs were created
 
 			if ( $this->namespaces && !in_array( $row->smw_namespace, $this->namespaces ) ) {
 				continue;
@@ -270,7 +270,7 @@ class ByIdDataRebuildDispatcher {
 
 				if ( $title !== null ) {
 					$this->dispatchedEntities[] = array( 's' => $title->getPrefixedDBKey() );
-					$updatejobs[] = $this->newUpdateJob( $title );
+					$updateJobs[] = $this->newUpdateJob( $title );
 				}
 
 			} elseif ( $row->smw_iw == SMW_SQL3_SMWREDIIW && $titleKey != '' ) {
@@ -280,7 +280,7 @@ class ByIdDataRebuildDispatcher {
 
 				if ( $title !== null && !$title->exists() ) {
 					$this->dispatchedEntities[] = array( 's' => $title->getPrefixedDBKey() );
-					$updatejobs[] = $this->newUpdateJob( $title );
+					$updateJobs[] = $this->newUpdateJob( $title );
 				}
 			} elseif ( $row->smw_iw == SMW_SQL3_SMWIW_OUTDATED || $row->smw_iw == SMW_SQL3_SMWDELETEIW ) { // remove outdated internal object references
 				$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesFor( $row->smw_id );
@@ -350,18 +350,18 @@ class ByIdDataRebuildDispatcher {
 		}
 	}
 
-	private function findNextIdPosition( &$id, $emptyrange ) {
+	private function findNextIdPosition( &$id, $emptyRange ) {
 
-		$nextpos = $id + $this->iterationLimit;
+		$nextPosition = $id + $this->iterationLimit;
 		$db = $this->store->getConnection( 'mw.db' );
 
 		// nothing found, check if there will be more pages later on
-		if ( $emptyrange && $nextpos > \SMWSql3SmwIds::FXD_PROP_BORDER_ID ) {
+		if ( $emptyRange && $nextPosition > \SMWSql3SmwIds::FXD_PROP_BORDER_ID ) {
 
 			$nextByPageId = (int)$db->selectField(
 				'page',
 				'page_id',
-				"page_id >= $nextpos",
+				"page_id >= $nextPosition",
 				__METHOD__,
 				array( 'ORDER BY' => "page_id ASC" )
 			);
@@ -369,16 +369,16 @@ class ByIdDataRebuildDispatcher {
 			$nextBySmwId = (int)$db->selectField(
 				\SMWSql3SmwIds::TABLE_NAME,
 				'smw_id',
-				"smw_id >= $nextpos",
+				"smw_id >= $nextPosition",
 				__METHOD__,
 				array( 'ORDER BY' => "smw_id ASC" )
 			);
 
 			// Next position is determined by the pool with the maxId
-			$nextpos = $nextBySmwId != 0 && $nextBySmwId > $nextByPageId ? $nextBySmwId : $nextByPageId;
+			$nextPosition = $nextBySmwId != 0 && $nextBySmwId > $nextByPageId ? $nextBySmwId : $nextByPageId;
 		}
 
-		$id = $nextpos ? $nextpos : -1;
+		$id = $nextPosition ? $nextPosition : -1;
 	}
 
 	private function newUpdateJob( $title ) {
