@@ -45,6 +45,18 @@ class CompatibilityMode {
 	}
 
 	/**
+	 * Allows to run `update.php` with a bare-bone setup in cases where enabledSemantics
+	 * has not yet been enabled.
+	 *
+	 * @since 2.4
+	 */
+	public static function enableTemporaryCliUpdateMode() {
+		$GLOBALS['smwgSemanticsEnabled'] = true;
+		ApplicationFactory::getInstance()->getSettings()->set( 'smwgSemanticsEnabled', true );
+		ApplicationFactory::getInstance()->getSettings()->set( 'smwgPageSpecialProperties', array( '_MDAT' ) );
+	}
+
+	/**
 	 * @since 2.4
 	 */
 	public static function disableSemantics() {
