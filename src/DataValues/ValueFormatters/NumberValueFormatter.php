@@ -81,7 +81,6 @@ class NumberValueFormatter extends DataValueFormatter {
 		$tooltip = '';
 
 		$i = 0;
-		$sep = '';
 
 		foreach ( $convertedUnitValues as $unit => $value ) {
 			if ( $unit != $this->dataValue->getCanonicalMainUnit() ) {

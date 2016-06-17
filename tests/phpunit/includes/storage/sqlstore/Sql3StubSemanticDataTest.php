@@ -5,11 +5,10 @@ namespace SMW\Tests\SQLStore;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
-use SMW\StoreFactory;
+use SMW\Tests\TestEnvironment;
 use SMWDITime as DITime;
 use SMWSql3StubSemanticData as StubSemanticData;
 use Title;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMWSql3StubSemanticData

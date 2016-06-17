@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Interpreter;
 
-use SMW\DIWikiPage;
-use SMW\Query\DescriptionFactory;
 use SMW\DataItemFactory;
+use SMW\Query\DescriptionFactory;
 use SMW\SQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter;
 use SMW\SQLStore\QueryEngineFactory;
 use SMW\Tests\TestEnvironment;
