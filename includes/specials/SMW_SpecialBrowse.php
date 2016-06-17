@@ -170,7 +170,7 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @param[in] $left bool  Should properties be displayed on the left side?
 	 * @param[in] $incoming bool  Is this an incoming? Or an outgoing?
 	 *
-	 * @return A string containing the HTML with the factbox
+	 * @return string A string containing the HTML with the factbox
 	 */
 	private function displayData( SMWSemanticData $data, $left = true, $incoming = false ) {
 		// Some of the CSS classes are different for the left or the right side.
@@ -304,7 +304,7 @@ class SMWSpecialBrowse extends SpecialPage {
 	/**
 	 * Displays the subject that is currently being browsed to.
 	 *
-	 * @return A string containing the HTML with the subject line
+	 * @return string A string containing the HTML with the subject line
 	 */
 	private function displayHead() {
 		global $wgOut;
@@ -455,7 +455,7 @@ class SMWSpecialBrowse extends SpecialPage {
 	/**
 	 * Creates the query form in order to quickly switch to a specific article.
 	 *
-	 * @return A string containing the HTML for the form
+	 * @return string A string containing the HTML for the form
 	 */
 	private function queryForm() {
 
