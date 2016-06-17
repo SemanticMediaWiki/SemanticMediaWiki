@@ -252,7 +252,7 @@ class DataValueFactory {
 		if ( $dataValue->isValid() && !$dataValue->canUse() ) {
 			$dataValue = new ErrorValue(
 				$propertyDV->getPropertyTypeID(),
-				wfMessage( 'smw-datavalue-restricted-use', implode( ',', $datavalue->getErrors() ) )->inContentLanguage()->text(),
+				wfMessage( 'smw-datavalue-restricted-use', implode( ',', $dataValue->getErrors() ) )->inContentLanguage()->text(),
 				$valueString,
 				$caption
 			);
