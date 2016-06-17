@@ -136,7 +136,6 @@ class EntityIdListRelevanceDetectionFilter {
 	}
 
 	private function modifyEntityList( $fieldChangeOp, &$affiliateEntityList, &$combinedChangedEntityList ) {
-
 		$key = '';
 
 		if ( $fieldChangeOp->has( 'key' ) ) {
@@ -148,7 +147,8 @@ class EntityIdListRelevanceDetectionFilter {
 
 		// Exclusion before inclusion
 		if ( isset( $this->propertyExemptionlist[$key]) ) {
-			return $this->unsetEntityList( $fieldChangeOp, $combinedChangedEntityList );
+			$this->unsetEntityList( $fieldChangeOp, $combinedChangedEntityList );
+			return;
 		}
 
 		if ( isset( $this->affiliatePropertyDetectionlist[$key] ) && $fieldChangeOp->has( 's_id' ) ) {
