@@ -122,7 +122,8 @@ class StoreUpdater {
 		$revision = $wikiPage->getRevision();
 
 		$this->updateSemanticData( $title, $wikiPage, $revision );
-		$this->doRealUpdate( $this->inspectPropertySpecification() );
+		$this->inspectPropertySpecification();
+		$this->doRealUpdate();
 
 		return true;
 	}
