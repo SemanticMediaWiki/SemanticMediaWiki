@@ -3,7 +3,6 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\ApplicationFactory;
-use SMW\Cache\CacheFactory;
 use WikiPage;
 
 /**
