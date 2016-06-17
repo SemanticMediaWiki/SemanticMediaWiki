@@ -5,8 +5,8 @@ namespace SMW\SQLStore\Lookup;
 use RuntimeException;
 use SMW\DIProperty;
 use SMW\InvalidPropertyException;
-use SMW\Store;
 use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMWDIError as DIError;
 use SMWRequestOptions as RequestOptions;
 

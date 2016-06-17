@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki;
 
-use ManualLogEntry;
 use LogEntry;
+use ManualLogEntry;
 use Title;
 use User;
 

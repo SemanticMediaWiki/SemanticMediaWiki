@@ -2,11 +2,11 @@
 
 namespace SMW\Query;
 
-use SMWQuery as Query;
-use SMWDataItem as DataItem;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Store;
+use SMWDataItem as DataItem;
+use SMWQuery as Query;
 
 /**
  * This class records selected entities used in a QueryResult by the time the

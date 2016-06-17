@@ -7,9 +7,9 @@ use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DataValues\ValueFormatters\DispatchingDataValueFormatter;
 use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
 use SMW\DataValues\ValueFormatters\NoValueFormatter;
+use SMW\DataValues\ValueFormatters\NumberValueFormatter;
 use SMW\DataValues\ValueFormatters\StringValueFormatter;
 use SMW\DataValues\ValueFormatters\TimeValueFormatter;
-use SMW\DataValues\ValueFormatters\NumberValueFormatter;
 use SMWDataValue as DataValue;
 
 /**

@@ -2,13 +2,12 @@
 
 namespace SMW\Maintenance;
 
+use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\ApplicationFactory;
-use SMW\Store;
-use SMW\Store\PropertyStatisticsStore;
+use SMW\MediaWiki\ManualEntryLogger;
 use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\SQLStore\SQLStore;
-use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\MediaWiki\ManualEntryLogger;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+

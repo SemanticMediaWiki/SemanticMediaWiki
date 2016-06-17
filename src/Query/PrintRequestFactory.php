@@ -4,9 +4,7 @@ namespace SMW\Query;
 
 use SMW\DIProperty;
 use SMWPropertyValue as PropertyValue;
-use SMW\Localizer;
 use Title;
-use InvalidArgumentException;
 
 /**
  * @license GNU GPL v2+

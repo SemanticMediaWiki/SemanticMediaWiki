@@ -2,11 +2,11 @@
 
 namespace SMW\DataValues;
 
-use SMWNumberValue as NumberValue;
-use SMW\DIProperty;
 use SMW\ApplicationFactory;
 use SMW\CachedPropertyValuesPrefetcher;
+use SMW\DIProperty;
 use SMWDIBlob as DIBlob;
+use SMWNumberValue as NumberValue;
 
 /**
  * Returns conversion data from a cache instance to enable a responsive query

@@ -3,7 +3,6 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MWNamespace;
-use SMWQueryProcessor;
 
 /**
  * Hook: ResourceLoaderGetConfigVars called right before

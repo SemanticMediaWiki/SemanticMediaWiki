@@ -2,14 +2,12 @@
 
 namespace SMW\DataValues;
 
-use SMWInfolink as Infolink;
-use SMWDataValue  as DataValue;
 use SMW\ApplicationFactory;
-use SMW\InTextAnnotationParser;
 use SMW\DIProperty;
 use SMW\Message;
-use SMWStringValue as StringValue;
+use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
+use SMWInfolink as Infolink;
 
 /**
  * @license GNU GPL v2+
