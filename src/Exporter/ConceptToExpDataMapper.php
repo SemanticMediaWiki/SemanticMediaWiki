@@ -79,9 +79,9 @@ class ConceptToExpDataMapper {
 		);
 
 		$exact = true;
-		$owldesc = $this->getExpDataFromDescription( $description, $exact );
+		$owlDescription = $this->getExpDataFromDescription( $description, $exact );
 
-		if ( $owldesc === false ) {
+		if ( $owlDescription === false ) {
 			$result = new ExpData(
 				$this->exporter->getSpecialNsResource( 'owl','Thing' )
 			);
@@ -89,27 +89,25 @@ class ConceptToExpDataMapper {
 			return $result;
 		}
 
-		if ( !$exact ) {
-			$result = new ExpData(
-				new ExpResource( '' )
-			);
-
-			$result->addPropertyObjectValue(
-				$this->exporter->getSpecialNsResource( 'rdf', 'type' ),
-				new ExpData( $this->exporter->getSpecialNsResource( 'owl', 'Class' ) )
-			);
-
-			$result->addPropertyObjectValue(
-				$this->exporter->getSpecialNsResource( 'rdfs', 'subClassOf' ),
-				$owldesc
-			);
-
-			return $result;
-		} else {
-			return $owldesc;
+		if ( $exact ) {
+			return $owlDescription;
 		}
 
-		return null;
+		$result = new ExpData(
+			new ExpResource( '' )
+		);
+
+		$result->addPropertyObjectValue(
+			$this->exporter->getSpecialNsResource( 'rdf', 'type' ),
+			new ExpData( $this->exporter->getSpecialNsResource( 'owl', 'Class' ) )
+		);
+
+		$result->addPropertyObjectValue(
+			$this->exporter->getSpecialNsResource( 'rdfs', 'subClassOf' ),
+			$owlDescription
+		);
+
+		return $result;
 	}
 
 	/**
