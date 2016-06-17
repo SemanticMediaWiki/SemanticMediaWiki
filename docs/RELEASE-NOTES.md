@@ -4,8 +4,23 @@ Not a release yet.
 
 ## Highlights
 
-* Added positional preference for units: `[[Corresponds to::€ 1]]` vs. `[[Corresponds to::1 €]]` (#1329)
-* Added the possibility to specify a display precision for a numeric datatype (i.e. Number, Quantity, Temperature) using the [`Display precision of`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Display_precision_of) property. A printout precision denoted in a `#ask` query using `-p<digit>` will override a possible predetermined precision (set by `Display precision of`) of a property.(#1335)
+### Positional units
+
+It is now possible to specify which position a [custom unit](https://www.semantic-mediawiki.org/wiki/Help:Custom_units)
+should have in `Corresponds to` annotations. This means you can specify `[[Corresponds to::€ 1]]`
+instead of `[[Corresponds to::1 €]]`. You can find a
+[small example](http://sandbox.semantic-mediawiki.org/wiki/Issue/1329_(Positional_unit_preference)) on the Sandbox.
+
+### Display precision
+
+You can now specify the precision used for display of numeric properties (i.e. those of type Number,
+Quantity, Temperature). This is done using the
+[`Display precision of`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Display_precision_of)
+property. You can override this display precision per `#ask` query, by using `-p<digit>`.
+You can [view the examples](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1335).
+
+### Other highlights
+
 * Added support for monolingual text datatype where a specific language (as code) can be added to a text value (#1344, #1381)
 * Extended date/time query output formatting by supporting PHP's `DateTime` format rules (#1389)
 * Added support for constraint specification using regular expressions (#1417). The use of `regular expressions` and thus the `Allows pattern` property to express a constraint assignment is restricted to users with the [`smw-patternedit`](https://www.semantic-mediawiki.org/wiki/Help:Permissions_and_user_rights) right.
