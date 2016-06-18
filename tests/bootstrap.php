@@ -4,6 +4,9 @@ if ( PHP_SAPI !== 'cli' ) {
 	die( 'Not an entry point' );
 }
 
+error_reporting( -1 );
+ini_set( 'display_errors', '1' );
+
 $autoloader = require __DIR__ . '/autoloader.php';
 
 $autoloader->addPsr4( 'SMW\\Test\\', __DIR__ . '/phpunit' );
