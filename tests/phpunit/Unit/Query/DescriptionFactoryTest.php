@@ -225,4 +225,35 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructDescriptionFromMonolingualTextValue() {
+
+		$containerSemanticData = $this->getMockBuilder( '\SMWContainerSemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$containerSemanticData->expects( $this->atLeastOnce() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( array( $this->dataItemFactory->newDIBlob( 'Bar' ) ) ) );
+
+		$dataValue = $this->getMockBuilder( '\SMW\DataValues\MonolingualTextValue' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'isValid', 'getProperty', 'getDataItem' ) )
+			->getMock();
+
+		$dataValue->expects( $this->atLeastOnce() )
+			->method( 'isValid' )
+			->will( $this->returnValue( true ) );
+
+		$dataValue->expects( $this->atLeastOnce() )
+			->method( 'getDataItem' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIContainer( $containerSemanticData ) ) );
+
+		$instance = new DescriptionFactory();
+
+		$this->assertInstanceOf(
+			'SMW\Query\Language\Conjunction',
+			$instance->newFromDataValue( $dataValue )
+		);
+	}
+
 }
