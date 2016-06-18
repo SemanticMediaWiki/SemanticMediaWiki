@@ -1,0 +1,97 @@
+{
+	"description": "Test `#ask` query-in-query construct (`_sobj`/`_dat`/`_num`) (`wgContLang=en`, `wgLang=en`)",
+	"properties": [
+		{
+			"name": "Assessment year",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"name": "Assessment value",
+			"contents": "[[Has type::Number]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/P0905/1",
+			"contents": "{{#subobject: |Assessment name=Assessment 1a |Assessment year=2005 |Assessment value=13 |@category=Assessment}}{{#subobject: |Assessment name=Assessment 1b |Assessment year=2006 |Assessment value=2 |@category=Assessment}}{{#subobject: |Assessment name=Assessment 1c |Assessment year=2005 |Assessment value=14 |@category=Assessment }}"
+		},
+		{
+			"name": "Example/P0905/Q1",
+			"contents": "{{#ask: [[Category:Assessment]] |?Assessment name |?Assessment year |?Assessment value }}"
+		},
+		{
+			"name": "Example/P0905/Q2",
+			"contents": "{{#ask: [[Category:Assessment]] <q>[[Assessment value::{{#ask: [[Category:Assessment]] |?Assessment value|sort=Assessment value|order=desc|limit=1 |headers=hide|mainlabel=-|link=none|searchlabel=}}]] </q> |?Assessment name |?Assessment year |?Assessment value }}"
+		},
+		{
+			"name": "Example/P0905/Q3",
+			"contents": "{{#ask: [[-Has subobject::Example/P0905/1]] <q>[[Assessment value::{{#ask: [[-Has subobject::Example/P0905/1]] |?Assessment value|sort=Assessment value|order=desc|limit=1 |headers=hide|mainlabel=-|link=none|searchlabel=}}]] </q> |?Assessment name |?Assessment year |?Assessment value }}"
+		},
+		{
+			"name": "Example/P0905/Q4",
+			"contents": "{{#ask: [[Category:Assessment]] <q>[[Assessment value::{{#ask: [[Category:Assessment]] |?Assessment value|sort=Assessment value|order=asc|limit=1 |headers=hide|mainlabel=-|link=none|searchlabel=}}]] </q> |?Assessment name |?Assessment year |?Assessment value }}"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0",
+			"subject": "Example/P0905/Q1",
+			"expected-output": {
+				"to-contain": [
+					"Assessment 1a</a></td><td data-sort-value=\"2453371.5\" class=\"Assessment-year smwtype_dat\">2005</td><td data-sort-value=\"13\"",
+					"Assessment 1b</a></td><td data-sort-value=\"2453736.5\" class=\"Assessment-year smwtype_dat\">2006</td><td data-sort-value=\"2\"",
+					"Assessment 1c</a></td><td data-sort-value=\"2453371.5\" class=\"Assessment-year smwtype_dat\">2005</td><td data-sort-value=\"14\""
+				]
+			}
+		},
+		{
+			"about": "#1 ony return highest Assessment value ",
+			"subject": "Example/P0905/Q2",
+			"expected-output": {
+				"to-contain": [
+					"Assessment 1c</a></td><td data-sort-value=\"2453371.5\" class=\"Assessment-year smwtype_dat\">2005</td><td data-sort-value=\"14\""
+				],
+				"not-contain": [
+					"Assessment 1a</a></td><td data-sort-value=\"2453371.5\" class=\"Assessment-year smwtype_dat\">2005</td><td data-sort-value=\"13\"",
+					"Assessment 1b</a></td><td data-sort-value=\"2453736.5\" class=\"Assessment-year smwtype_dat\">2006</td><td data-sort-value=\"2\""
+				]
+			}
+		},
+		{
+			"about": "#2 same as #1",
+			"subject": "Example/P0905/Q3",
+			"expected-output": {
+				"to-contain": [
+					"Assessment 1c</a></td><td data-sort-value=\"2453371.5\" class=\"Assessment-year smwtype_dat\">2005</td><td data-sort-value=\"14\""
+				],
+				"not-contain": [
+					"Assessment 1a</a></td><td data-sort-value=\"2453371.5\" class=\"Assessment-year smwtype_dat\">2005</td><td data-sort-value=\"13\"",
+					"Assessment 1b</a></td><td data-sort-value=\"2453736.5\" class=\"Assessment-year smwtype_dat\">2006</td><td data-sort-value=\"2\""
+				]
+			}
+		},
+		{
+			"about": "#3 return only lowest Assessment value",
+			"subject": "Example/P0905/Q4",
+			"expected-output": {
+				"to-contain": [
+					"Assessment 1b</a></td><td data-sort-value=\"2453736.5\" class=\"Assessment-year smwtype_dat\">2006</td><td data-sort-value=\"2\""
+				],
+				"not-contain": [
+					"Assessment 1a</a></td><td data-sort-value=\"2453371.5\" class=\"Assessment-year smwtype_dat\">2005</td><td data-sort-value=\"13\"",
+					"Assessment 1c</a></td><td data-sort-value=\"2453371.5\" class=\"Assessment-year smwtype_dat\">2005</td><td data-sort-value=\"14\""
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [ "_MDAT" ]
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
