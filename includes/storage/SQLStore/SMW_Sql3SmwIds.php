@@ -277,7 +277,7 @@ class SMWSql3SmwIds {
 	 * @param integer $namespace
 	 */
 	public function addRedirectForId( $id, $title, $namespace ) {
-		return $this->redirectInfoStore->addRedirectForId( $id, $title, $namespace );
+		$this->redirectInfoStore->addRedirectForId( $id, $title, $namespace );
 	}
 
 	/**
@@ -289,7 +289,7 @@ class SMWSql3SmwIds {
 	 * @param integer $namespace
 	 */
 	public function deleteRedirectEntry( $title, $namespace ) {
-		return $this->redirectInfoStore->deleteRedirectEntry( $title, $namespace );
+		$this->redirectInfoStore->deleteRedirectEntry( $title, $namespace );
 	}
 
 	/**
