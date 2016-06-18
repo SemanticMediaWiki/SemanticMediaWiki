@@ -7,6 +7,8 @@ use SMW\DIProperty;
 use SMW\Exporter\DataItemByExpElementMatchFinder;
 use SMW\Exporter\DataItemToElementEncoder;
 use SMW\Exporter\DataItemToExpResourceEncoder;
+use SMW\Exporter\Element\ExpElement;
+use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Escaper;
 
@@ -208,7 +210,7 @@ class SMWExporter {
 			// #520
 			$result->addPropertyObjectValue(
 				self::getSpecialNsResource( 'swivt', 'wikiNamespace' ),
-				new SMWExpLiteral( strval( $diWikiPage->getNamespace() ), 'http://www.w3.org/2001/XMLSchema#integer' )
+				new ExpLiteral( strval( $diWikiPage->getNamespace() ), 'http://www.w3.org/2001/XMLSchema#integer' )
 			);
 
 		} else {
@@ -242,19 +244,19 @@ class SMWExporter {
 			$result->addPropertyObjectValue( self::getSpecialNsResource( 'rdf', 'type' ), $maintype_pe );
 
 			if ( !$wikiPageExpElement->isBlankNode() ) {
-				$ed = new SMWExpLiteral( $displayTitle !== '' ? $displayTitle : $label );
+				$ed = new ExpLiteral( $displayTitle !== '' ? $displayTitle : $label );
 				$result->addPropertyObjectValue( self::getSpecialNsResource( 'rdfs', 'label' ), $ed );
 				$ed = new SMWExpResource( self::getNamespaceUri( 'wikiurl' ) . $prefixedSubjectUrl );
 				$result->addPropertyObjectValue( self::getSpecialNsResource( 'swivt', 'page' ), $ed );
 				$ed = new SMWExpResource( self::$m_exporturl . '/' . $prefixedSubjectUrl );
 				$result->addPropertyObjectValue( self::getSpecialNsResource( 'rdfs', 'isDefinedBy' ), $ed );
-				$ed = new SMWExpLiteral( strval( $diWikiPage->getNamespace() ), 'http://www.w3.org/2001/XMLSchema#integer' );
+				$ed = new ExpLiteral( strval( $diWikiPage->getNamespace() ), 'http://www.w3.org/2001/XMLSchema#integer' );
 				$result->addPropertyObjectValue( self::getSpecialNsResource( 'swivt', 'wikiNamespace' ), $ed );
 
 				if ( $addStubData ) {
 					// Add a default sort key; for pages that exist in the wiki,
 					// this is set during parsing
-					$defaultSortkey = new SMWExpLiteral( $diWikiPage->getSortKey() );
+					$defaultSortkey = new ExpLiteral( $diWikiPage->getSortKey() );
 					$result->addPropertyObjectValue( self::getSpecialPropertyResource( '_SKEY' ), $defaultSortkey );
 				}
 
@@ -397,13 +399,13 @@ class SMWExporter {
 	}
 
 	/**
-	 * Try to find an SMWDataItem that the given SMWExpElement might
+	 * Try to find an SMWDataItem that the given ExpElement might
 	 * represent. Returns null if this attempt failed.
 	 *
-	 * @param SMWExpElement $expElement
+	 * @param ExpElement $expElement
 	 * @return SMWDataItem or null
 	 */
-	public function findDataItemForExpElement( SMWExpElement $expElement ) {
+	public function findDataItemForExpElement( ExpElement $expElement ) {
 		return self::$dataItemByExpElementMatchFinder->tryToFindDataItemForExpElement( $expElement );
 	}
 
@@ -579,7 +581,7 @@ class SMWExporter {
 		$data = new SMWExpData( new SMWExpResource( $ontologyuri ) );
 		$ed = self::getSpecialNsResource( 'owl', 'Ontology' );
 		$data->addPropertyObjectValue( self::getSpecialNsResource( 'rdf', 'type' ), $ed );
-		$ed = new SMWExpLiteral( date( DATE_W3C ), 'http://www.w3.org/2001/XMLSchema#dateTime' );
+		$ed = new ExpLiteral( date( DATE_W3C ), 'http://www.w3.org/2001/XMLSchema#dateTime' );
 		$data->addPropertyObjectValue( self::getSpecialNsResource( 'swivt', 'creationDate' ), $ed );
 		$ed = new SMWExpResource( 'http://semantic-mediawiki.org/swivt/1.0' );
 		$data->addPropertyObjectValue( self::getSpecialNsResource( 'owl', 'imports' ), $ed );
@@ -618,16 +620,16 @@ class SMWExporter {
 	 * elements are always preferred in query answering.
 	 *
 	 * @param $dataItem SMWDataItem
-	 * @return SMWExpElement or null
+	 * @return ExpElement|null
 	 */
 	static public function getDataItemHelperExpElement( SMWDataItem $dataItem ) {
 
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_TIME ) {
-			return new SMWExpLiteral( (string)$dataItem->getSortKey(), 'http://www.w3.org/2001/XMLSchema#double', '', $dataItem );
+			return new ExpLiteral( (string)$dataItem->getSortKey(), 'http://www.w3.org/2001/XMLSchema#double', '', $dataItem );
 		}
 
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_GEO ) {
-			return new SMWExpLiteral( (string)$dataItem->getSortKey(), 'http://www.w3.org/2001/XMLSchema#string', '', $dataItem );
+			return new ExpLiteral( (string)$dataItem->getSortKey(), 'http://www.w3.org/2001/XMLSchema#string', '', $dataItem );
 		}
 
 		return null;
