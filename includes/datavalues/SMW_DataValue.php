@@ -132,11 +132,6 @@ abstract class SMWDataValue {
 	protected $approximateValue = false;
 
 	/**
-	 * @var ValueConstraintValidator
-	 */
-	private $valueConstraintValidator = null;
-
-	/**
 	 * @var InfoLinksProvider
 	 */
 	private $infoLinksProvider = null;
