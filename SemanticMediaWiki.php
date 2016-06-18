@@ -24,144 +24,129 @@ if ( defined( 'SMW_VERSION' ) ) {
 	return 1;
 }
 
-define( 'SMW_VERSION', '2.4-alpha' );
+define( 'SMW_VERSION', '2.4.0-alpha' );
 
 if ( version_compare( $GLOBALS['wgVersion'], '1.19c', '<' ) ) {
 	die( '<b>Error:</b> This version of Semantic MediaWiki requires MediaWiki 1.19 or above; use SMW 1.8.x for MediaWiki 1.18.x or 1.17.x.' );
 }
 
-if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
-	include_once __DIR__ . '/vendor/autoload.php';
-}
+SemanticMediaWiki::initExtension();
 
-// Registration of the extension credits, see Special:Version.
-$GLOBALS['wgExtensionCredits']['semantic'][] = array(
-	'path' => __FILE__,
-	'name' => 'Semantic MediaWiki',
-	'version' => SMW_VERSION,
-	'author' => array(
-		'[http://korrekt.org Markus Krötzsch]',
-		'[https://www.mediawiki.org/wiki/User:Jeroen_De_Dauw Jeroen De Dauw]',
-		'James Hong Kong',
-		'[https://www.semantic-mediawiki.org/wiki/Contributors ...]'
-		),
-	'url' => 'https://www.semantic-mediawiki.org',
-	'descriptionmsg' => 'smw-desc',
-	'license-name'   => 'GPL-2.0+'
-);
-
-// Compatibility aliases for classes that got moved into the SMW namespace in 1.9.
-class_alias( 'SMW\Store', 'SMWStore' );
-class_alias( 'SMW\MediaWiki\Jobs\UpdateJob', 'SMWUpdateJob' );
-class_alias( 'SMW\MediaWiki\Jobs\RefreshJob', 'SMWRefreshJob' );
-class_alias( 'SMW\SemanticData', 'SMWSemanticData' );
-class_alias( 'SMW\DIWikiPage', 'SMWDIWikiPage' );
-class_alias( 'SMW\DIProperty', 'SMWDIProperty' );
-class_alias( 'SMW\Serializers\QueryResultSerializer', 'SMWDISerializer' );
-class_alias( 'SMW\DataValueFactory', 'SMWDataValueFactory' );
-class_alias( 'SMW\DataItemException', 'SMWDataItemException' );
-class_alias( 'SMW\SQLStore\TableDefinition', 'SMWSQLStore3Table' );
-class_alias( 'SMW\DIConcept', 'SMWDIConcept' );
-class_alias( 'SMW\TableResultPrinter', 'SMWTableResultPrinter' );
-
-// 2.0
-class_alias( 'SMW\FileExportPrinter', 'SMWExportPrinter' );
-class_alias( 'SMW\ResultPrinter', 'SMWResultPrinter' );
-class_alias( 'SMW\AggregatablePrinter', 'SMWAggregatablePrinter' );
-class_alias( 'SMW\CategoryResultPrinter', 'SMWCategoryResultPrinter' );
-class_alias( 'SMW\DsvResultPrinter', 'SMWDSVResultPrinter' );
-class_alias( 'SMW\EmbeddedResultPrinter', 'SMWEmbeddedResultPrinter' );
-class_alias( 'SMW\RdfResultPrinter', 'SMWRDFResultPrinter' );
-class_alias( 'SMW\ListResultPrinter', 'SMWListResultPrinter' );
-class_alias( 'SMW\QueryResultPrinter', 'SMWIResultPrinter' );
-class_alias( 'SMW\RawResultPrinter', 'SMW\ApiResultPrinter' );
-
-// 2.0
-class_alias( 'SMW\SPARQLStore\SPARQLStore', 'SMWSparqlStore' );
-class_alias( 'SMW\SPARQLStore\RepositoryConnector\FourstoreHttpRepositoryConnector', 'SMWSparqlDatabase4Store' );
-class_alias( 'SMW\SPARQLStore\RepositoryConnector\VirtuosoHttpRepositoryConnector', 'SMWSparqlDatabaseVirtuoso' );
-class_alias( 'SMW\SPARQLStore\RepositoryConnector\GenericHttpRepositoryConnector', 'SMWSparqlDatabase' );
-
-// 2.1
-class_alias( 'SMWSQLStore3', 'SMW\SQLStore\SQLStore' );
-class_alias( 'SMW\Query\Language\Description', 'SMWDescription' );
-class_alias( 'SMW\Query\Language\ThingDescription', 'SMWThingDescription' );
-class_alias( 'SMW\Query\Language\ClassDescription', 'SMWClassDescription' );
-class_alias( 'SMW\Query\Language\ConceptDescription', 'SMWConceptDescription' );
-class_alias( 'SMW\Query\Language\NamespaceDescription', 'SMWNamespaceDescription' );
-class_alias( 'SMW\Query\Language\ValueDescription', 'SMWValueDescription' );
-class_alias( 'SMW\Query\Language\Conjunction', 'SMWConjunction' );
-class_alias( 'SMW\Query\Language\Disjunction', 'SMWDisjunction' );
-class_alias( 'SMW\Query\Language\SomeProperty', 'SMWSomeProperty' );
-class_alias( 'SMW\Query\PrintRequest', 'SMWPrintRequest' );
-class_alias( 'SMW\MediaWiki\Search\Search', 'SMWSearch' );
-
-// 2.2
-// Some weird SF dependency needs to be removed as quick as possible
-class_alias( 'SMW\SQLStore\Lookup\ListLookup', 'SMW\SQLStore\PropertiesCollector' );
-class_alias( 'SMW\SQLStore\Lookup\ListLookup', 'SMW\SQLStore\UnusedPropertiesCollector' );
-
-class_alias( 'SMW\Exporter\Element\ExpElement', 'SMWExpElement' );
-class_alias( 'SMW\Exporter\Element\ExpResource', 'SMWExpResource' );
-class_alias( 'SMW\Exporter\Element\ExpNsResource', 'SMWExpNsResource' );
-class_alias( 'SMW\Exporter\Element\ExpLiteral', 'SMWExpLiteral' );
-class_alias( 'SMW\DataValues\ImportValue', 'SMWImportValue' );
-class_alias( 'SMW\SQLStore\QueryEngine\QueryEngine', 'SMWSQLStore3QueryEngine' );
-
-// 2.3
-class_alias( 'SMW\ParserParameterProcessor', 'SMW\ParserParameterFormatter' );
-class_alias( 'SMW\ParameterProcessorFactory', 'SMW\ParameterFormatterFactory' );
-
-// 2.4
-class_alias( 'SMW\RequestOptions', 'SMWRequestOptions' );
-class_alias( 'SMW\StringCondition', 'SMWStringCondition' );
-class_alias( 'SMW\HashBuilder', 'SMW\Hash' );
-class_alias( 'SMW\DataValues\BooleanValue', 'SMWBoolValue' );
-
-// A flag used to indicate SMW defines a semantic extension type for extension credits.
-// @deprecated, removal in SMW 3.0
-define( 'SEMANTIC_EXTENSION_TYPE', true );
-
-// Load global constants
-require_once __DIR__ . '/includes/Defines.php';
-
-// Temporary measure to ease Composer/MW 1.22 migration
-require_once __DIR__ . '/includes/NamespaceManager.php';
-
-// Load global functions
-require_once __DIR__ . '/includes/GlobalFunctions.php';
-
-// Load default settings
-require_once __DIR__ . '/SemanticMediaWiki.settings.php';
-
-// Because of MW 1.19 we need to register message files here
-$GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] = $GLOBALS['smwgIP'] . 'i18n';
-$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWiki'] = $GLOBALS['smwgIP'] . 'languages/SMW_Messages.php';
-$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiAlias'] = $GLOBALS['smwgIP'] . 'languages/SMW_Aliases.php';
-$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $GLOBALS['smwgIP'] . 'languages/SMW_Magic.php';
+$GLOBALS['wgExtensionFunctions'][] = function() {
+	SemanticMediaWiki::onExtensionFunction();
+};
 
 /**
- * Setup and initialization
- *
- * @note $wgExtensionFunctions variable is an array that stores
- * functions to be called after most of MediaWiki initialization
- * has finalized
- *
- * @see https://www.mediawiki.org/wiki/Manual:$wgExtensionFunctions
- *
- * @since  1.9
+ * @codeCoverageIgnore
  */
-$GLOBALS['wgExtensionFunctions'][] = function() {
+class SemanticMediaWiki {
 
-	// 3.x reverse the order to ensure that smwgMainCacheType is used
-	// as main and smwgCacheType being deprecated with 3.x
-	$GLOBALS['smwgMainCacheType'] = $GLOBALS['smwgCacheType'];
+	/**
+	 * As soon as Composer is autoloading this file, start the init process for some
+	 * components.
+	 *
+	 * @since 2.4
+	 */
+	public static function initExtension() {
 
-	$applicationFactory = ApplicationFactory::getInstance();
+		if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
+			include_once __DIR__ . '/vendor/autoload.php';
+		}
 
-	$namespace = new NamespaceManager( $GLOBALS, __DIR__ );
-	$namespace->run();
+		// Registration of the extension credits, see Special:Version.
+		$GLOBALS['wgExtensionCredits']['semantic'][] = array(
+			'path' => __FILE__,
+			'name' => 'Semantic MediaWiki',
+			'version' => SMW_VERSION,
+			'author' => array(
+				'[http://korrekt.org Markus Krötzsch]',
+				'[https://www.mediawiki.org/wiki/User:Jeroen_De_Dauw Jeroen De Dauw]',
+				'James Hong Kong',
+				'[https://www.semantic-mediawiki.org/wiki/Contributors ...]'
+				),
+			'url' => 'https://www.semantic-mediawiki.org',
+			'descriptionmsg' => 'smw-desc',
+			'license-name'   => 'GPL-2.0+'
+		);
 
-	$setup = new Setup( $applicationFactory, $GLOBALS, __DIR__ );
-	$setup->run();
-};
+		// A flag used to indicate SMW defines a semantic extension type for extension credits.
+		// @deprecated, removal in SMW 3.0
+		define( 'SEMANTIC_EXTENSION_TYPE', true );
+
+		// Load class_alias
+		require_once __DIR__ . '/includes/Aliases.php';
+
+		// Load global constants
+		require_once __DIR__ . '/includes/Defines.php';
+
+		// Temporary measure to ease Composer/MW 1.22 migration
+		require_once __DIR__ . '/includes/NamespaceManager.php';
+
+		// Load global functions
+		require_once __DIR__ . '/includes/GlobalFunctions.php';
+
+		// Load default settings
+		require_once __DIR__ . '/SemanticMediaWiki.settings.php';
+
+		// Because of MW 1.19 we need to register message files here
+		$GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] = $GLOBALS['smwgIP'] . 'i18n';
+		$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWiki'] = $GLOBALS['smwgIP'] . 'languages/SMW_Messages.php';
+		$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiAlias'] = $GLOBALS['smwgIP'] . 'languages/SMW_Aliases.php';
+		$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $GLOBALS['smwgIP'] . 'languages/SMW_Magic.php';
+	}
+
+	/**
+	 * Setup and initialization
+	 *
+	 * @note $wgExtensionFunctions variable is an array that stores
+	 * functions to be called after most of MediaWiki initialization
+	 * has finalized
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:$wgExtensionFunctions
+	 *
+	 * @since  1.9
+	 */
+	public static function onExtensionFunction() {
+
+		// 3.x reverse the order to ensure that smwgMainCacheType is used
+		// as main and smwgCacheType being deprecated with 3.x
+		$GLOBALS['smwgMainCacheType'] = $GLOBALS['smwgCacheType'];
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$namespace = new NamespaceManager( $GLOBALS );
+		$namespace->init();
+
+		$setup = new Setup( $applicationFactory, $GLOBALS, __DIR__ );
+		$setup->run();
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return string|null
+	 */
+	public static function getVersion() {
+		return SMW_VERSION;
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @return array
+	 */
+	public static function getExtendedVersion() {
+
+		$store = '';
+
+		if ( isset( $GLOBALS['smwgDefaultStore'] ) ) {
+			$store = $GLOBALS['smwgDefaultStore'] . ( strpos( $GLOBALS['smwgDefaultStore'], 'SQL' ) ? '' : ' ['. $GLOBALS['smwgSparqlDatabaseConnector'] .']' );
+		};
+
+		return array(
+			'store' => $store,
+			'db'    => isset( $GLOBALS['wgDBtype'] ) ? $GLOBALS['wgDBtype'] : 'N/A'
+		);
+	}
+
+}
