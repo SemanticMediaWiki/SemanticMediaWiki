@@ -66,7 +66,7 @@ class HtmlFormRenderer {
 	private $actionUrl = false;
 
 	/**
-	 * @var string
+	 * @var string[]
 	 */
 	private $content = array();
 
