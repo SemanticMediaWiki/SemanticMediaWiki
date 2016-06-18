@@ -135,7 +135,7 @@ class SemanticMediaWiki {
 	 *
 	 * @return array
 	 */
-	public static function getExtendedVersion() {
+	public static function getStoreVersion() {
 
 		$store = '';
 

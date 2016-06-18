@@ -12,7 +12,7 @@
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author mwjames
  */
-final class SMWHooks {
+final class SMWExternalHooks {
 
 	/**
 	 * TODO
