@@ -1,75 +1,73 @@
 <?php
 
 /**
- * Indicate class aliases in a way PHPStorm and Eclipse understand.
- * This is purely an IDE helper file, and is not loaded by the extension.
- *
- * @since 1.9
- *
- * @ingroup SMW
- *
- * @licence GNU GPL v2+
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
+ * SemanticMediaWiki compatibility aliases for classes that got moved into the SMW namespace
  */
 
-throw new Exception( 'Not an actual source file' );
+// 1.9.
+class_alias( 'SMW\Store', 'SMWStore' );
+class_alias( 'SMW\MediaWiki\Jobs\UpdateJob', 'SMWUpdateJob' );
+class_alias( 'SMW\MediaWiki\Jobs\RefreshJob', 'SMWRefreshJob' );
+class_alias( 'SMW\SemanticData', 'SMWSemanticData' );
+class_alias( 'SMW\DIWikiPage', 'SMWDIWikiPage' );
+class_alias( 'SMW\DIProperty', 'SMWDIProperty' );
+class_alias( 'SMW\Serializers\QueryResultSerializer', 'SMWDISerializer' );
+class_alias( 'SMW\DataValueFactory', 'SMWDataValueFactory' );
+class_alias( 'SMW\DataItemException', 'SMWDataItemException' );
+class_alias( 'SMW\SQLStore\TableDefinition', 'SMWSQLStore3Table' );
+class_alias( 'SMW\DIConcept', 'SMWDIConcept' );
+class_alias( 'SMW\TableResultPrinter', 'SMWTableResultPrinter' );
 
-class SMWDataItemException extends SMW\DataItemException {
-}
+// 2.0
+class_alias( 'SMW\FileExportPrinter', 'SMWExportPrinter' );
+class_alias( 'SMW\ResultPrinter', 'SMWResultPrinter' );
+class_alias( 'SMW\AggregatablePrinter', 'SMWAggregatablePrinter' );
+class_alias( 'SMW\CategoryResultPrinter', 'SMWCategoryResultPrinter' );
+class_alias( 'SMW\DsvResultPrinter', 'SMWDSVResultPrinter' );
+class_alias( 'SMW\EmbeddedResultPrinter', 'SMWEmbeddedResultPrinter' );
+class_alias( 'SMW\RdfResultPrinter', 'SMWRDFResultPrinter' );
+class_alias( 'SMW\ListResultPrinter', 'SMWListResultPrinter' );
+class_alias( 'SMW\QueryResultPrinter', 'SMWIResultPrinter' );
+class_alias( 'SMW\RawResultPrinter', 'SMW\ApiResultPrinter' );
 
-abstract class SMWStore extends SMW\Store {
-}
+// 2.0
+class_alias( 'SMW\SPARQLStore\SPARQLStore', 'SMWSparqlStore' );
+class_alias( 'SMW\SPARQLStore\RepositoryConnector\FourstoreHttpRepositoryConnector', 'SMWSparqlDatabase4Store' );
+class_alias( 'SMW\SPARQLStore\RepositoryConnector\VirtuosoHttpRepositoryConnector', 'SMWSparqlDatabaseVirtuoso' );
+class_alias( 'SMW\SPARQLStore\RepositoryConnector\GenericHttpRepositoryConnector', 'SMWSparqlDatabase' );
 
-class SMWSemanticData extends SMW\SemanticData {
-}
+// 2.1
+class_alias( 'SMWSQLStore3', 'SMW\SQLStore\SQLStore' );
+class_alias( 'SMW\Query\Language\Description', 'SMWDescription' );
+class_alias( 'SMW\Query\Language\ThingDescription', 'SMWThingDescription' );
+class_alias( 'SMW\Query\Language\ClassDescription', 'SMWClassDescription' );
+class_alias( 'SMW\Query\Language\ConceptDescription', 'SMWConceptDescription' );
+class_alias( 'SMW\Query\Language\NamespaceDescription', 'SMWNamespaceDescription' );
+class_alias( 'SMW\Query\Language\ValueDescription', 'SMWValueDescription' );
+class_alias( 'SMW\Query\Language\Conjunction', 'SMWConjunction' );
+class_alias( 'SMW\Query\Language\Disjunction', 'SMWDisjunction' );
+class_alias( 'SMW\Query\Language\SomeProperty', 'SMWSomeProperty' );
+class_alias( 'SMW\Query\PrintRequest', 'SMWPrintRequest' );
+class_alias( 'SMW\MediaWiki\Search\Search', 'SMWSearch' );
 
-class SMWDIWikiPage extends SMW\DIWikiPage {
-}
+// 2.2
+// Some weird SF dependency needs to be removed as quick as possible
+class_alias( 'SMW\SQLStore\Lookup\ListLookup', 'SMW\SQLStore\PropertiesCollector' );
+class_alias( 'SMW\SQLStore\Lookup\ListLookup', 'SMW\SQLStore\UnusedPropertiesCollector' );
 
-class SMWDIConcept extends SMW\DIConcept {
-}
+class_alias( 'SMW\Exporter\Element\ExpElement', 'SMWExpElement' );
+class_alias( 'SMW\Exporter\Element\ExpResource', 'SMWExpResource' );
+class_alias( 'SMW\Exporter\Element\ExpNsResource', 'SMWExpNsResource' );
+class_alias( 'SMW\Exporter\Element\ExpLiteral', 'SMWExpLiteral' );
+class_alias( 'SMW\DataValues\ImportValue', 'SMWImportValue' );
+class_alias( 'SMW\SQLStore\QueryEngine\QueryEngine', 'SMWSQLStore3QueryEngine' );
 
-class SMWDIProperty extends SMW\DIProperty {
-}
+// 2.3
+class_alias( 'SMW\ParserParameterProcessor', 'SMW\ParserParameterFormatter' );
+class_alias( 'SMW\ParameterProcessorFactory', 'SMW\ParameterFormatterFactory' );
 
-class SMWDISerializer extends SMW\Serializers\QueryResultSerializer {
-}
-
-class SMWUpdateJob extends SMW\UpdateJob {
-}
-
-class SMWRefreshJob extends SMW\RefreshJob {
-}
-
-abstract class SMWResultPrinter extends SMW\ResultPrinter {
-}
-
-class SMWCategoryResultPrinter extends SMW\CategoryResultPrinter {
-}
-
-class SMWDSVResultPrinter extends SMW\DsvResultPrinter {
-}
-
-class SMWEmbeddedResultPrinter extends SMW\EmbeddedResultPrinter {
-}
-
-class SMWRDFResultPrinter extends SMW\RdfResultPrinter {
-}
-
-class SMWListResultPrinter extends SMW\ListResultPrinter {
-}
-
-interface SMWIResultPrinter extends SMW\QueryResultPrinter {
-}
-
-class SMWSparqlDatabase4Store extends SMW\SPARQLStore\FourstoreHttpDatabaseConnector {
-}
-
-class SMWSparqlDatabaseVirtuoso extends SMW\SPARQLStore\VirtuosoHttpDatabaseConnector {
-}
-
-class SMWSparqlStore extends SMW\SPARQLStore\SPARQLStore {
-}
-
-class SMWSparqlDatabase extends SMW\SPARQLStore\GenericHttpDatabaseConnector {
-}
+// 2.4
+class_alias( 'SMW\RequestOptions', 'SMWRequestOptions' );
+class_alias( 'SMW\StringCondition', 'SMWStringCondition' );
+class_alias( 'SMW\HashBuilder', 'SMW\Hash' );
+class_alias( 'SMW\DataValues\BooleanValue', 'SMWBoolValue' );

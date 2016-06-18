@@ -62,7 +62,9 @@ class NamespaceRegistrationDBIntegrationTest extends MwDBaseUnitTestCase {
 			->method( 'isDefinedConstant' )
 			->will( $this->returnValue( false ) );
 
-		$this->assertTrue( $instance->run() );
+		$this->assertTrue(
+			$instance->init()
+		);
 	}
 
 	public function testCanonicalNames() {

@@ -11,24 +11,24 @@ namespace SMW;
  */
 class NamespaceManager {
 
-	/** @var array */
+	/**
+	 * @var array
+	 */
 	protected $globalVars;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param array &$globalVars
-	 * @param string|null &directory
 	 */
-	public function __construct( &$globalVars, $directory = null ) {
+	public function __construct( &$globalVars ) {
 		$this->globalVars =& $globalVars;
-		$this->directory = $directory;
 	}
 
 	/**
 	 * @since 1.9
 	 */
-	public function run() {
+	public function init() {
 
 		if ( !$this->isDefinedConstant( 'SMW_NS_PROPERTY' ) ) {
 			$this->initCustomNamespace( $this->globalVars );

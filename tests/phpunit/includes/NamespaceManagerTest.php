@@ -6,30 +6,15 @@ use SMW\NamespaceManager;
 
 /**
  * @covers \SMW\NamespaceManager
+ * @group semantic-mediawiki
  *
- * @group SMW
- * @group SMWExtension
- * @group medium
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class NamespaceManagerTest extends SemanticMediaWikiTestCase {
+class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\NamespaceManager';
-	}
-
-	/**
-	 * @since 1.9
-	 *
-	 * @return NamespaceManager
-	 */
 	private function newInstance( &$test = array(), $langCode = 'en' ) {
 
 		$default = array(
@@ -47,28 +32,25 @@ class NamespaceManagerTest extends SemanticMediaWikiTestCase {
 		return new NamespaceManager( $test, $smwBasePath );
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testCanConstruct() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
+
+		$this->assertInstanceOf(
+			'\SMW\NamespaceManager',
+			$this->newInstance()
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testExecution() {
 
 		$test = array();
 
-		$this->newInstance( $test )->run();
-		$this->assertNotEmpty( $test );
+		$this->newInstance( $test )->init();
 
+		$this->assertNotEmpty(
+			$test
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testExecutionWithIncompleteConfiguration() {
 
 		$test = array(
@@ -76,45 +58,46 @@ class NamespaceManagerTest extends SemanticMediaWikiTestCase {
 			'wgNamespaceAliases' => ''
 		);
 
-		$this->newInstance( $test )->run();
-		$this->assertNotEmpty( $test );
+		$this->newInstance( $test )->init();
 
+		$this->assertNotEmpty(
+			$test
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testExecutionWithLanguageFallback() {
 
 		$test = array();
 
-		$this->newInstance( $test, 'foo' )->run();
-		$this->assertNotEmpty( $test );
+		$this->newInstance( $test, 'foo' )->init();
 
+		$this->assertNotEmpty(
+			$test
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testGetCanonicalNames() {
 
 		$result = NamespaceManager::getCanonicalNames();
 
-		$this->assertInternalType( 'array', $result );
-		$this->assertCount( 6, $result );
+		$this->assertInternalType(
+			'array',
+			$result
+		);
 
+		$this->assertCount(
+			6,
+			$result
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testBuildNamespaceIndex() {
-		$this->assertInternalType( 'array', NamespaceManager::buildNamespaceIndex( 100 ) );
+		$this->assertInternalType(
+			'array',
+			NamespaceManager::buildNamespaceIndex( 100 )
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testInitCustomNamespace() {
 
 		$test = array();
@@ -126,7 +109,6 @@ class NamespaceManagerTest extends SemanticMediaWikiTestCase {
 			$test['smwgNamespaceIndex'],
 			'Asserts that smwgNamespaceIndex is being set to a default index'
 		);
-
 	}
 
 }

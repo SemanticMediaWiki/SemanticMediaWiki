@@ -17,12 +17,12 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	die( 'MediaWiki is not available.' );
 }
 
-if ( !defined( 'SMW_VERSION' ) ) {
-	die( 'SemanticMediaWiki is not available.' );
+if ( !class_exists( 'SemanticMediaWiki' ) || ( $version = SemanticMediaWiki::getVersion() ) === null ) {
+	die( "\Semantic MediaWiki is not available, please check your LocalSettings or Composer settings.\n" );
 }
 
 // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength.MaxExceeded
-print sprintf( "\n%-20s%s\n", "Semantic MediaWiki:", SMW_VERSION . " ({$GLOBALS['smwgDefaultStore']}, {$GLOBALS['wgDBtype']}" . ( strpos( $GLOBALS['smwgDefaultStore'], 'SQL' ) ? '' : ', ' . $GLOBALS['smwgSparqlDatabaseConnector'] ) . ")" );
+print sprintf( "\n%-20s%s\n", "Semantic MediaWiki:", $version . ' ('. implode( ', ', SemanticMediaWiki::getExtendedVersion() ) . ')' );
 // @codingStandardsIgnoreEnd
 
 if ( is_readable( $path = __DIR__ . '/../vendor/autoload.php' ) ) {
