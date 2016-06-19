@@ -713,6 +713,18 @@ a.smw-ask-action-btn-lblue:hover {
 	margin-right: 10px;
 }
 
+.smw-page-indicator.usage-count.moderate {
+	background-color: #F2D29B;
+	border: 1px solid #F2D29B;
+	color: #AA4C2C;
+}
+
+.smw-page-indicator.usage-count.high {
+	background-color: #FF887F;
+	border: 1px solid #FFB79E;
+	color: #800000;
+}
+
 .skin-vector .smw-page-indicator.usage-count, .skin-vector .smw-page-indicator.property-type {
 	margin-top: 5px;
 }

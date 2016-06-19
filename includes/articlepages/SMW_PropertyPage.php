@@ -76,7 +76,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 		$propertyName = htmlspecialchars( $this->mTitle->getText() );
 
-		$usageCount = '';
+		$usageCountHtml = '';
 		$requestOptions = new RequestOptions();
 		$requestOptions->limit = 1;
 		$requestOptions->addStringCondition( $propertyName, StringCondition::STRCOND_PRE );
@@ -85,11 +85,12 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 		if ( $usageList && $usageList !== array() ) {
 			$usage = end( $usageList );
-			$usageCount = Html::rawElement(
+			$usageCount = $usage[1];
+			$usageCountHtml = Html::rawElement(
 				'div', array(
 					'title' => $this->getContext()->getLanguage()->timeanddate( $cachedLookupList->getTimestamp() ),
-					'class' => 'smw-page-indicator usage-count' ),
-				$usage[1]
+					'class' => 'smw-page-indicator usage-count' . ( $usageCount < 25000 ? ( $usageCount > 5000 ? ' moderate' : '' ) : ' high' ) ),
+				$usageCount
 			);
 		}
 
@@ -98,7 +99,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 				'class' => 'smw-page-indicator property-type',
 				'title' => wfMessage( 'smw-page-indicator-type-info', $this->mProperty->isUserDefined() )->parse()
 			), ( $this->mProperty->isUserDefined() ? 'U' : 'S' )
-		) . $usageCount );
+		) . $usageCountHtml );
 	}
 
 	/**
