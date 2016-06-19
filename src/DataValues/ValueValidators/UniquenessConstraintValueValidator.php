@@ -92,7 +92,7 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 		$blobStore = $this->cachedPropertyValuesPrefetcher->getBlobStore();
 		$dataItem = $dataValue->getDataItem();
 
-		$hash = $this->cachedPropertyValuesPrefetcher->getHashFor(
+		$hash = $this->cachedPropertyValuesPrefetcher->createHashFromString(
 			$property->getKey() . ':' . $dataItem->getHash()
 		);
 
@@ -170,7 +170,7 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 		$blobStore = $this->cachedPropertyValuesPrefetcher->getBlobStore();
 
 		$container = $blobStore->read(
-			$this->cachedPropertyValuesPrefetcher->getRootHashFor( $page )
+			$this->cachedPropertyValuesPrefetcher->getRootHashFrom( $page )
 		);
 
 		$container->addToLinkedList( $hash );

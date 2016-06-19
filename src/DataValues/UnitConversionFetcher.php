@@ -189,7 +189,7 @@ class UnitConversionFetcher {
 
 		// Ensure that when the property page is altered the cache gets
 		// evicted
-		$hash = $this->cachedPropertyValuesPrefetcher->getRootHashFor(
+		$hash = $this->cachedPropertyValuesPrefetcher->getRootHashFrom(
 			$propertyDiWikiPage
 		);
 

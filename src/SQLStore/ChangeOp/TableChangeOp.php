@@ -59,7 +59,7 @@ class TableChangeOp {
 	 *
 	 * @return null|string
 	 */
-	public function getFixedPropertyValueFor( $id ) {
+	public function getFixedPropertyValueBy( $id ) {
 		return $this->isFixedPropertyOp() && isset( $this->changeOps['property'][$id] ) ? $this->changeOps['property'][$id] : null;
 	}
 

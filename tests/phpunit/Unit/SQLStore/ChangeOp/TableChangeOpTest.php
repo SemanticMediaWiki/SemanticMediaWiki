@@ -46,7 +46,7 @@ class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertNull(
-			$instance->getFixedPropertyValueFor( 'key' )
+			$instance->getFixedPropertyValueBy( 'key' )
 		);
 
 		$this->assertInternalType(
@@ -103,7 +103,7 @@ class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertSame(
 			'_MDAT',
-			$instance->getFixedPropertyValueFor( 'key' )
+			$instance->getFixedPropertyValueBy( 'key' )
 		);
 
 		$this->assertInternalType(

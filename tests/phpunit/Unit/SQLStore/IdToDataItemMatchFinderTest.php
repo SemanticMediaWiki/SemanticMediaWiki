@@ -72,7 +72,7 @@ class IdToDataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\DIWikiPage',
-			$instance->getDataItemForId( 42 )
+			$instance->getDataItemById( 42 )
 		);
 
 		$stats = InMemoryPoolCache::getInstance()->getStats();
@@ -101,7 +101,7 @@ class IdToDataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\DIWikiPage',
-			$instance->getDataItemForId( 42 )
+			$instance->getDataItemById( 42 )
 		);
 
 		$stats = InMemoryPoolCache::getInstance()->getStats();
@@ -135,7 +135,7 @@ class IdToDataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\DIWikiPage',
-			$instance->getDataItemForId( 42 )
+			$instance->getDataItemById( 42 )
 		);
 	}
 
@@ -155,10 +155,10 @@ class IdToDataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->saveToCache( 42, 'Foo#14##' );
-		$instance->getDataItemForId( 42 );
+		$instance->getDataItemById( 42 );
 
 		$instance->deleteFromCache( 42 );
-		$instance->getDataItemForId( 42 );
+		$instance->getDataItemById( 42 );
 	}
 
 	public function testClearCache() {
@@ -177,10 +177,10 @@ class IdToDataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->saveToCache( 42, 'Foo#0##' );
-		$instance->getDataItemForId( 42 );
+		$instance->getDataItemById( 42 );
 
 		$instance->clear();
-		$instance->getDataItemForId( 42 );
+		$instance->getDataItemById( 42 );
 	}
 
 	public function testNullForUnknownId() {
@@ -199,7 +199,7 @@ class IdToDataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertNull(
-			$instance->getDataItemForId( 42 )
+			$instance->getDataItemById( 42 )
 		);
 	}
 

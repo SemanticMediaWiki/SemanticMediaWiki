@@ -191,11 +191,11 @@ class EntityIdListRelevanceDetectionFilterTest extends \PHPUnit_Framework_TestCa
 		);
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getDataItemForId' ) )
+			->setMethods( array( 'getDataItemById' ) )
 			->getMock();
 
 		$idTable->expects( $this->any() )
-			->method( 'getDataItemForId' )
+			->method( 'getDataItemById' )
 			->with( $this->equalTo( 100 ) )
 			->will( $this->returnValue( DIWikiPage::newFromText( 'Has date', SMW_NS_PROPERTY ) ) );
 

@@ -117,8 +117,8 @@ class EntityIdListRelevanceDetectionFilter {
 
 			// Copy fields temporarily
 			if ( $tableChangeOp->isFixedPropertyOp() ) {
-				$insertFieldChangeOp->set( 'p_id', $tableChangeOp->getFixedPropertyValueFor( 'p_id' ) );
-				$insertFieldChangeOp->set( 'key', $tableChangeOp->getFixedPropertyValueFor( 'key' ) );
+				$insertFieldChangeOp->set( 'p_id', $tableChangeOp->getFixedPropertyValueBy( 'p_id' ) );
+				$insertFieldChangeOp->set( 'key', $tableChangeOp->getFixedPropertyValueBy( 'key' ) );
 			}
 
 			$this->modifyEntityList( $insertFieldChangeOp, $affiliateEntityList, $combinedChangedEntityList );
@@ -127,8 +127,8 @@ class EntityIdListRelevanceDetectionFilter {
 		foreach ( $tableChangeOp->getFieldChangeOps( 'delete' ) as $deleteFieldChangeOp ) {
 
 			if ( $tableChangeOp->isFixedPropertyOp() ) {
-				$deleteFieldChangeOp->set( 'p_id', $tableChangeOp->getFixedPropertyValueFor( 'p_id' ) );
-				$deleteFieldChangeOp->set( 'key', $tableChangeOp->getFixedPropertyValueFor( 'key' ) );
+				$deleteFieldChangeOp->set( 'p_id', $tableChangeOp->getFixedPropertyValueBy( 'p_id' ) );
+				$deleteFieldChangeOp->set( 'key', $tableChangeOp->getFixedPropertyValueBy( 'key' ) );
 			}
 
 			$this->modifyEntityList( $deleteFieldChangeOp, $affiliateEntityList, $combinedChangedEntityList );
@@ -141,8 +141,8 @@ class EntityIdListRelevanceDetectionFilter {
 		if ( $fieldChangeOp->has( 'key' ) ) {
 			$key = $fieldChangeOp->get( 'key' );
 		} elseif ( $fieldChangeOp->has( 'p_id' ) ) {
-			$dataItem = $this->store->getObjectIds()->getDataItemForId( $fieldChangeOp->get( 'p_id' ) );
-			$key = $dataItem->getDBKey();
+			$dataItem = $this->store->getObjectIds()->getDataItemById( $fieldChangeOp->get( 'p_id' ) );
+			$key = $dataItem !== null ? $dataItem->getDBKey() : null;
 		}
 
 		// Exclusion before inclusion

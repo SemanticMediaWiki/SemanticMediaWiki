@@ -161,7 +161,7 @@ class TextByChangeUpdater {
 
 			// Copy fields temporarily
 			if ( $tableChangeOp->isFixedPropertyOp() ) {
-				$insertFieldChangeOp->set( 'p_id', $tableChangeOp->getFixedPropertyValueFor( 'p_id' ) );
+				$insertFieldChangeOp->set( 'p_id', $tableChangeOp->getFixedPropertyValueBy( 'p_id' ) );
 			}
 
 			$this->doAggregateFromFieldChangeOp( TableChangeOp::OP_INSERT, $insertFieldChangeOp, $inserts );
@@ -171,7 +171,7 @@ class TextByChangeUpdater {
 
 			// Copy fields temporarily
 			if ( $tableChangeOp->isFixedPropertyOp() ) {
-				$deleteFieldChangeOp->set( 'p_id', $tableChangeOp->getFixedPropertyValueFor( 'p_id' ) );
+				$deleteFieldChangeOp->set( 'p_id', $tableChangeOp->getFixedPropertyValueBy( 'p_id' ) );
 			}
 
 			$this->doAggregateFromFieldChangeOp( TableChangeOp::OP_DELETE, $deleteFieldChangeOp, $deletes );
