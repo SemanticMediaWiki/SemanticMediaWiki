@@ -6,6 +6,7 @@ use InvalidArgumentException;
 use SMW\Localizer;
 use SMWDataValue;
 use SMWPropertyValue as PropertyValue;
+use SMW\Query\PrintRequest\Deserializer;
 use Title;
 
 /**
@@ -17,13 +18,26 @@ use Title;
  */
 class PrintRequest {
 
-	/// Query mode to print all direct categories of the current element.
+	/**
+	 * Query mode to print all direct categories of the current element.
+	 */
 	const PRINT_CATS = 0;
-	/// Query mode to print all property values of a certain attribute of the current element.
+
+	/**
+	 * Query mode to print all property values of a certain attribute of the
+	 * current element.
+	 */
 	const PRINT_PROP = 1;
-	/// Query mode to print the current element (page in result set).
+
+	/**
+	 * Query mode to print the current element (page in result set).
+	 */
 	const PRINT_THIS = 2;
-	/// Query mode to print whether current element is in given category (Boolean printout).
+
+	/**
+	 * Query mode to print whether current element is in given category
+	 * (Boolean printout).
+	 */
 	const PRINT_CCAT = 3;
 
 	protected $m_mode; // type of print request
@@ -73,6 +87,17 @@ class PrintRequest {
 		if ( $params !== null ) {
 			$this->m_params = $params;
 		}
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param integer $mode
+	 *
+	 * @return boolean
+	 */
+	public function isMode( $mode ) {
+		return $this->m_mode === $mode ;
 	}
 
 	public function getMode() {
@@ -162,13 +187,15 @@ class PrintRequest {
 	 * @return string
 	 */
 	public function getTypeID() {
-		if ( $this->m_typeid === false ) {
-			if ( $this->m_mode == self::PRINT_PROP ) {
-				$this->m_typeid = $this->m_data->getDataItem()->findPropertyTypeID();
-			}
-			else {
-				$this->m_typeid = '_wpg';
-			}
+
+		if ( $this->m_typeid !== false ) {
+			return $this->m_typeid;
+		}
+
+		if ( $this->m_mode == self::PRINT_PROP ) {
+			$this->m_typeid = $this->m_data->getDataItem()->findPropertyTypeID();
+		} else {
+			$this->m_typeid = '_wpg';
 		}
 
 		return $this->m_typeid;
@@ -183,18 +210,21 @@ class PrintRequest {
 	 * @return string
 	 */
 	public function getHash() {
-		if ( $this->m_hash === false ) {
-			$this->m_hash = $this->m_mode . ':' . $this->m_label . ':';
 
-			if ( $this->m_data instanceof Title ) {
-				$this->m_hash .= $this->m_data->getPrefixedText() . ':';
-			}
-			elseif ( $this->m_data instanceof SMWDataValue ) {
-				$this->m_hash .= $this->m_data->getHash() . ':';
-			}
-
-			$this->m_hash .= $this->m_outputformat . ':' . implode( '|', $this->m_params );
+		if ( $this->m_hash !== false ) {
+			return $this->m_hash;
 		}
+
+		$this->m_hash = $this->m_mode . ':' . $this->m_label . ':';
+
+		if ( $this->m_data instanceof Title ) {
+			$this->m_hash .= $this->m_data->getPrefixedText() . ':';
+		}
+		elseif ( $this->m_data instanceof SMWDataValue ) {
+			$this->m_hash .= $this->m_data->getHash() . ':';
+		}
+
+		$this->m_hash .= $this->m_outputformat . ':' . implode( '|', $this->m_params );
 
 		return $this->m_hash;
 	}
@@ -233,8 +263,7 @@ class PrintRequest {
 					if ( $this->m_outputformat != 'x' ) {
 						$result .= '#' . $this->m_outputformat;
 					}
-				}
-				else {
+				} else {
 
 					$printname = '';
 
@@ -321,13 +350,7 @@ class PrintRequest {
 	}
 
 	/**
-	 * Create an PrintRequest object from a string description as one
-	 * would normally use in #ask and related inputs. The string must start
-	 * with a "?" and may contain label and formatting parameters after "="
-	 * or "#", respectively. However, further parameters, given in #ask by
-	 * "|+param=value" are not allowed here; they must be added
-	 * individually.
-	 *
+	 * @see Deserializer::deserialize
 	 * @since 2.4
 	 *
 	 * @param string $text
@@ -336,76 +359,7 @@ class PrintRequest {
 	 * @return PrintRequest|null
 	 */
 	public static function newFromText( $text, $showMode = false ) {
-
-		list( $parts, $propparts, $printRequestLabel ) = self::doSplitText( $text );
-		$data = null;
-
-		if ( $printRequestLabel === '' ) { // print "this"
-			$printmode = self::PRINT_THIS;
-			$label = ''; // default
-		} elseif ( self::isCategory( $printRequestLabel ) ) { // print categories
-			$printmode = self::PRINT_CATS;
-			$label = $showMode ? '' : Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY ); // default
-		} else { // print property or check category
-			$title = Title::newFromText( $printRequestLabel, SMW_NS_PROPERTY ); // trim needed for \n
-			if ( is_null( $title ) ) { // not a legal property/category name; give up
-				return null;
-			}
-
-			if ( $title->getNamespace() == NS_CATEGORY ) {
-				$printmode = self::PRINT_CCAT;
-				$data = $title;
-				$label = $showMode ? '' : $title->getText();  // default
-			} else { // enforce interpretation as property (even if it starts with something that looks like another namespace)
-				$printmode = self::PRINT_PROP;
-				$data = PropertyValue::makeUserProperty( $printRequestLabel );
-				if ( !$data->isValid() ) { // not a property; give up
-					return null;
-				}
-				$label = $showMode ? '' : $data->getWikiValue();  // default
-			}
-		}
-
-		if ( count( $propparts ) == 1 ) { // no outputformat found, leave empty
-			$propparts[] = false;
-		} elseif ( trim( $propparts[1] ) === '' ) { // "plain printout", avoid empty string to avoid confusions with "false"
-			$propparts[1] = '-';
-		}
-
-		if ( count( $parts ) > 1 ) { // label found, use this instead of default
-			$label = trim( $parts[1] );
-		}
-
-		try {
-			return new PrintRequest( $printmode, $label, $data, trim( $propparts[1] ) );
-		} catch ( InvalidArgumentException $e ) { // something still went wrong; give up
-			return null;
-		}
-	}
-
-	private static function isCategory( $text ) {
-		return Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY ) == mb_convert_case( $text, MB_CASE_TITLE ) ||
-		$text == 'Category';
-	}
-
-	private static function doSplitText( $text ) {
-		// 1464
-		// Temporary encode "=" within a <> entity (<span>...</span>)
-		$text = preg_replace_callback( "/(<(.*?)>(.*?)>)/u", function( $matches ) {
-			foreach ( $matches as $match ) {
-				return str_replace( array( '=' ), array( '-3D' ), $match );
-			}
-		}, $text );
-
-		$parts = explode( '=', $text, 2 );
-
-		// Restore temporary encoding
-		$parts[0] = str_replace( array( '-3D' ), array( '=' ), $parts[0] );
-
-		$propparts = explode( '#', $parts[0], 2 );
-		$printRequestLabel = trim( $propparts[0] );
-
-		return array( $parts, $propparts, $printRequestLabel );
+		return Deserializer::deserialize( $text, $showMode );
 	}
 
 }

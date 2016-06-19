@@ -3,7 +3,7 @@
 use SMW\HashBuilder;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryLinker;
-use SMW\Query\TemporaryEntityListAccumulator;
+use SMW\Query\Result\EntityListAccumulator;
 use SMW\SerializerFactory;
 
 /**
@@ -71,9 +71,9 @@ class SMWQueryResult {
 	private $isFromCache = false;
 
 	/**
-	 * @var TemporaryEntityListAccumulator
+	 * @var EntityListAccumulator
 	 */
-	private $temporaryEntityListAccumulator;
+	private $entityListAccumulator;
 
 	/**
 	 * Initialise the object with an array of SMWPrintRequest objects, which
@@ -94,16 +94,16 @@ class SMWQueryResult {
 		$this->mFurtherResults = $furtherRes;
 		$this->mQuery = $query;
 		$this->mStore = $store;
-		$this->temporaryEntityListAccumulator = new TemporaryEntityListAccumulator( $query );
+		$this->entityListAccumulator = new EntityListAccumulator( $query );
 	}
 
 	/**
 	 * @since  2.4
 	 *
-	 * @return TemporaryEntityListAccumulator
+	 * @return EntityListAccumulator
 	 */
 	public function getEntityListAccumulator() {
-		return $this->temporaryEntityListAccumulator;
+		return $this->entityListAccumulator;
 	}
 
 	/**
@@ -151,7 +151,7 @@ class SMWQueryResult {
 
 		foreach ( $this->mPrintRequests as $p ) {
 			$resultArray = new SMWResultArray( $page, $p, $this->mStore );
-			$resultArray->setEntityListAccumulator( $this->temporaryEntityListAccumulator );
+			$resultArray->setEntityListAccumulator( $this->entityListAccumulator );
 			$row[] = $resultArray;
 		}
 

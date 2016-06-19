@@ -96,7 +96,7 @@ class QueryResultDependencyListResolver {
 
 	/**
 	 * At the point where the QueryResult instantiates results by means of the
-	 * ResultArray, record the objects with the help of the TemporaryEntityListAccumulator.
+	 * ResultArray, record the objects with the help of the EntityListAccumulator.
 	 * Processing is depending and various factors which could be to early with
 	 * the row instance is not yet being resolved.
 	 *

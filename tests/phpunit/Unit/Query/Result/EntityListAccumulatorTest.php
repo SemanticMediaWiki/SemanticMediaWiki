@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests\Query;
+namespace SMW\Tests\Query\Result;
 
 use SMW\DIWikiPage;
-use SMW\Query\TemporaryEntityListAccumulator;
+use SMW\Query\Result\EntityListAccumulator;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\Query\TemporaryEntityListAccumulator
+ * @covers \SMW\Query\Result\EntityListAccumulator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TemporaryEntityListAccumulatorTest extends \PHPUnit_Framework_TestCase {
+class EntityListAccumulatorTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $query;
@@ -38,8 +38,8 @@ class TemporaryEntityListAccumulatorTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\Query\TemporaryEntityListAccumulator',
-			new TemporaryEntityListAccumulator( $this->query )
+			EntityListAccumulator::class,
+			new EntityListAccumulator( $this->query )
 		);
 	}
 
@@ -51,12 +51,12 @@ class TemporaryEntityListAccumulatorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getQueryId' )
 			->will( $this->returnValue( 'FOO:123' ) );
 
-		$instance = new TemporaryEntityListAccumulator(
+		$instance = new EntityListAccumulator(
 			$this->query
 		);
 
 		$instance->pruneEntityList();
-		$instance->addToEntityList( null, $dataItem );
+		$instance->addToEntityList( $dataItem );
 
 		$this->assertEquals(
 			array( 'Foo#0#' => $dataItem ),
@@ -81,11 +81,11 @@ class TemporaryEntityListAccumulatorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getQueryId' )
 			->will( $this->returnValue( 'FOO:BAR' ) );
 
-		$instance = new TemporaryEntityListAccumulator(
+		$instance = new EntityListAccumulator(
 			$this->query
 		);
 
-		$instance->addToEntityList( null, $dataItem );
+		$instance->addToEntityList( $dataItem );
 
 		$this->assertEquals(
 			array(
