@@ -8,6 +8,8 @@ use SMWDataValue;
 use SMWPropertyValue as PropertyValue;
 use SMW\DataValues\PropertyChainValue;
 use SMW\Query\PrintRequest\Deserializer;
+use SMW\Query\PrintRequest\Serializer;
+use SMW\Query\PrintRequest\Formatter;
 use Title;
 
 /**
@@ -123,59 +125,21 @@ class PrintRequest {
 	 * If it is NULL, no links will be created.
 	 */
 	public function getHTMLText( $linker = null ) {
-		if ( is_null( $linker ) || ( $this->m_label === '' ) ) {
-			return htmlspecialchars( $this->m_label );
-		}
-
-		switch ( $this->m_mode ) {
-			case self::PRINT_CATS:
-				return htmlspecialchars( $this->m_label ); // TODO: link to Special:Categories
-			case self::PRINT_CCAT:
-				return \Linker::link( $this->m_data, htmlspecialchars( $this->m_label ) );
-			case self::PRINT_CHAIN:
-			case self::PRINT_PROP:
-				return $this->m_data->getShortHTMLText( $linker );
-			case self::PRINT_THIS:
-			default:
-				return htmlspecialchars( $this->m_label );
-		}
+		return Formatter::format( $this, $linker, Formatter::FORMAT_HTML );
 	}
 
 	/**
 	 * Obtain a Wiki-formatted representation of the label.
 	 */
-	public function getWikiText( $linked = false ) {
-		if ( is_null( $linked ) || ( $linked === false ) || ( $this->m_label === '' ) ) {
-			return $this->m_label;
-		}
-		else {
-			switch ( $this->m_mode ) {
-				case self::PRINT_CATS:
-					return $this->m_label; // TODO: link to Special:Categories
-				case self::PRINT_CHAIN:
-				case self::PRINT_PROP:
-					return $this->m_data->getShortWikiText( $linked );
-				case self::PRINT_CCAT:
-					return '[[:' . $this->m_data->getPrefixedText() . '|' . $this->m_label . ']]';
-				case self::PRINT_THIS:
-				default:
-					return $this->m_label;
-			}
-		}
+	public function getWikiText( $linker = false ) {
+		return Formatter::format( $this, $linker, Formatter::FORMAT_WIKI );
 	}
 
 	/**
 	 * Convenience method for accessing the text in either HTML or Wiki format.
 	 */
-	public function getText( $outputmode, $linker = null ) {
-		switch ( $outputmode ) {
-			case SMW_OUTPUT_WIKI:
-				return $this->getWikiText( $linker );
-			case SMW_OUTPUT_HTML:
-			case SMW_OUTPUT_FILE:
-			default:
-				return $this->getHTMLText( $linker );
-		}
+	public function getText( $outputMode, $linker = null ) {
+		return Formatter::format( $this, $linker, $outputMode );
 	}
 
 	/**
@@ -249,75 +213,7 @@ class PrintRequest {
 	 *                include the extra print request parameters
 	 */
 	public function getSerialisation( $showparams = false ) {
-		$parameters = '';
-
-		if ( $showparams ) {
-			foreach ( $this->m_params as $key => $value ) {
-				$parameters .= "|+" . $key . "=" . $value;
-			}
-		}
-
-		switch ( $this->m_mode ) {
-			case self::PRINT_CATS:
-				global $wgContLang;
-				$catlabel = $wgContLang->getNSText( NS_CATEGORY );
-				$result = '?' . $catlabel;
-				if ( $this->m_label != $catlabel ) {
-					$result .= '=' . $this->m_label;
-				}
-
-				return $result . $parameters;
-			case self::PRINT_CHAIN:
-			case self::PRINT_PROP:
-			case self::PRINT_CCAT:
-				if ( $this->m_mode == self::PRINT_CCAT ) {
-					$printname = $this->m_data->getPrefixedText();
-					$result = '?' . $printname;
-
-					if ( $this->m_outputformat != 'x' ) {
-						$result .= '#' . $this->m_outputformat;
-					}
-				} elseif ( $this->m_mode == self::PRINT_CHAIN ) {
-					$printname = $this->m_data->getDataItem()->getString();
-					$result = '?' . $printname;
-				} else {
-
-					$printname = '';
-
-					if ( $this->m_data->isVisible() ) {
-						// #1564
-						// Use the canonical form for predefined properties to ensure
-						// that local representations are for display but points to
-						// the correct property
-						$printname = $this->m_data->getDataItem()->getCanonicalLabel();
-					}
-
-					$result = '?' . $printname;
-
-					if ( $this->m_outputformat !== '' ) {
-						$result .= '#' . $this->m_outputformat;
-					}
-				}
-				if ( $printname != $this->m_label ) {
-					$result .= '=' . $this->m_label;
-				}
-
-				return $result . $parameters;
-			case self::PRINT_THIS:
-				$result = '?';
-
-				if ( $this->m_label !== '' ) {
-					$result .= '=' . $this->m_label;
-				}
-
-				if ( $this->m_outputformat !== '' ) {
-					$result .= '#' . $this->m_outputformat;
-				}
-
-				return $result . $parameters;
-			default:
-				return ''; // no current serialisation
-		}
+		return Serializer::serialize( $this, $showparams );
 	}
 
 	/**
