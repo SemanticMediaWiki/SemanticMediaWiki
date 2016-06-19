@@ -113,7 +113,7 @@ class DataValueFactory {
 
 		$dataValue->setOption(
 			DataValue::OPT_CONTENT_LANGUAGE,
-			Localizer::getInstance()->getPreferredContentLanguage()->getCode()
+			Localizer::getInstance()->getContentLanguage()->getCode()
 		);
 
 		if ( $property !== null ) {

@@ -136,6 +136,29 @@ class PropertySpecificationLookup {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param DIProperty $property
+	 *
+	 * @return DataItem|null
+	 */
+	public function getExternalFormatterUriFor( DIProperty $property ) {
+
+		$dataItem = null;
+
+		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
+			$property->getDiWikiPage(),
+			new DIProperty( '_PEFU' )
+		);
+
+		if ( is_array( $dataItems ) && $dataItems !== array() ) {
+			$dataItem = end( $dataItems );
+		}
+
+		return $dataItem;
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param DIProperty $property

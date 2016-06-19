@@ -5,6 +5,7 @@ namespace SMW\Tests;
 use SMW\DataItemFactory;
 use SMW\PropertySpecificationLookup;
 use SMWContainerSemanticData as ContainerSemanticData;
+use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\PropertySpecificationLookup
@@ -83,6 +84,28 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue(
 			$instance->hasUniquenessConstraintFor( $property )
+		);
+	}
+
+	public function testGetExternalFormatterUri() {
+
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
+
+		$this->cachedPropertyValuesPrefetcher->expects( $this->once() )
+			->method( 'getPropertyValues' )
+			->with(
+				$this->equalTo( $property->getDiWikiPage() ),
+				$this->equalTo( $this->dataItemFactory->newDIProperty( '_PEFU' ) ),
+				$this->anything() )
+			->will( $this->returnValue( array( $this->dataItemFactory->newDIUri( 'http', 'example.org/$1' ) ) ) );
+
+		$instance = new PropertySpecificationLookup(
+			$this->cachedPropertyValuesPrefetcher
+		);
+
+		$this->assertInstanceOf(
+			DataItem::class,
+			$instance->getExternalFormatterUriFor( $property )
 		);
 	}
 

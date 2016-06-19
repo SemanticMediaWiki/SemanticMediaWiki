@@ -41,6 +41,7 @@ class SMWLanguageFr extends SMWLanguage {
 		'_rec' => 'Enregistrement', // name of record data type
 		'_qty' => 'Quantité', // name of the number type with units of measurement
 		'_mlt_rec' => 'Monolingual text',
+		'_eid' => 'External identifier',
 	);
 
 	protected $m_DatatypeAliases = array(
@@ -86,6 +87,8 @@ class SMWLanguageFr extends SMWLanguage {
 		'_PVAP'  => 'Allows pattern',
 		'_DTITLE' => 'Display title of',
 		'_PVUC' => 'Has uniqueness constraint',
+		'_PEID' => 'External identifier',
+		'_PEFU' => 'External formatter uri',
 	);
 
 	protected $m_SpecialPropertyAliases = array(

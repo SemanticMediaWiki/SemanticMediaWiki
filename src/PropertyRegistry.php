@@ -422,6 +422,8 @@ class PropertyRegistry {
 			'_PVAP'  => array( '__pvap', true, true ), // "Allows pattern"
 			'_DTITLE' => array( '_txt', false, true ), // "Display title of"
 			'_PVUC'  => array( '__pvuc', true, true ), // Uniqueness constraint
+			'_PEID'  => array( '_eid', true, true ), // External identifier
+			'_PEFU'  => array( '__pefu', true, true ), // External formatter uri
 		);
 
 		foreach ( $this->datatypeLabels as $id => $label ) {

@@ -479,6 +479,8 @@ class DataTypeRegistry {
 			'__pval' => 'SMW\DataValues\AllowsListValue',
 			'__pvap' => 'SMW\DataValues\AllowsPatternValue',
 			'__pvuc' => 'SMW\DataValues\UniquenessConstraintValue',
+			'_eid' => 'SMW\DataValues\ExternalIdentifierValue',
+			'__pefu' => 'SMW\DataValues\ExternalFormatterUriValue',
 		);
 
 		$this->typeDataItemIds = array(
@@ -502,6 +504,7 @@ class DataTypeRegistry {
 			'_geo'  => DataItem::TYPE_GEO, // Geographical coordinates
 			'_gpo'  => DataItem::TYPE_BLOB, // Geographical polygon
 			'_qty'  => DataItem::TYPE_NUMBER, // Type for numbers with units of measurement
+			'_eid' => DataItem::TYPE_BLOB, // External ID
 			// Special types are not available directly for users (and have no local language name):
 			'__typ' => DataItem::TYPE_URI, // Special type page type
 			'__pls' => DataItem::TYPE_BLOB, // Special type list for decalring _rec properties
@@ -523,6 +526,7 @@ class DataTypeRegistry {
 			'__lcode' => DataItem::TYPE_BLOB, // Language code
 			'__pvap' => DataItem::TYPE_BLOB, // Allows pattern
 			'__pvuc' => DataItem::TYPE_BOOLEAN, // Uniqueness constraint
+			'__pefu' => DataItem::TYPE_URI, // External formatter uri
 		);
 
 		$this->subDataTypes = array(

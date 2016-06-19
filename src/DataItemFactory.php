@@ -8,6 +8,7 @@ use SMWDIBoolean as DIBoolean;
 use SMWDIContainer as DIContainer;
 use SMWDIError as DIError;
 use SMWDINumber as DINumber;
+use SMWDIUri as DIUri;
 
 /**
  * @private
@@ -113,6 +114,20 @@ class DataItemFactory {
 	 */
 	public function newDIConcept( $concept, $docu = '', $queryfeatures = 0, $size = 0, $depth = 0 ) {
 		return new DIConcept( $concept, $docu, $queryfeatures, $size, $depth );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $scheme
+	 * @param string $hierpart
+	 * @param string $query
+	 * @param string $fragment
+	 *
+	 * @return DIUri
+	 */
+	public function newDIUri( $scheme, $hierpart, $query = '', $fragment = '' ) {
+		return new DIUri( $scheme, $hierpart, $query, $fragment );
 	}
 
 }

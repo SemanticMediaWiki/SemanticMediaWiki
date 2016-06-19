@@ -8,6 +8,7 @@ use SMW\Exporter\ResourceBuilders\ImportFromPropertyValueResourceBuilder;
 use SMW\Exporter\ResourceBuilders\PredefinedPropertyValueResourceBuilder;
 use SMW\Exporter\ResourceBuilders\RedirectPropertyValueResourceBuilder;
 use SMW\Exporter\ResourceBuilders\AuxiliaryPropertyValueResourceBuilder;
+use SMW\Exporter\ResourceBuilders\ExternalIdentifierPropertyValueResourceBuilder;
 use SMW\DIProperty;
 use SMWDataItem as DataItem;
 use SMWExpData as ExpData;
@@ -104,6 +105,8 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 	}
 
 	private function initResourceBuilders() {
+
+		$this->addResourceBuilder( new ExternalIdentifierPropertyValueResourceBuilder() );
 
 		$this->addResourceBuilder( new ConceptPropertyValueResourceBuilder() );
 		$this->addResourceBuilder( new ImportFromPropertyValueResourceBuilder() );

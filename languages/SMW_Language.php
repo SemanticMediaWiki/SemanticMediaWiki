@@ -75,6 +75,7 @@ abstract class SMWLanguage {
 		'Annotation URI'        => '_anu',
 		'Telephone number'      => '_tel',
 		'Record'                => '_rec',
+		'External identifier'   => '_eid',
 		'Monolingual text'      => '_mlt_rec', // need the _rec to allow for special treatment
 	);
 	/// Default English aliases for special property names (typically used in all languages)
@@ -126,6 +127,8 @@ abstract class SMWLanguage {
 		'Has display title of'     => '_DTITLE',
 		'Has uniqueness constraint'     => '_PVUC',
 		'Uniqueness constraint'     => '_PVUC',
+		'External identifier'     => '_PEID',
+		'External formatter uri'  => '_PEFU',
 	);
 
 	public function __construct() {
