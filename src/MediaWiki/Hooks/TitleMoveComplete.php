@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use SMW\ApplicationFactory;
 use SMW\Factbox\FactboxCache;
+use SMW\EventHandler;
 
 /**
  * TitleMoveComplete occurs whenever a request to move an article
@@ -92,6 +93,24 @@ class TitleMoveComplete {
 		//		$this->newId
 		//	);
 		}
+
+		$eventHandler = EventHandler::getInstance();
+
+		$dispatchContext = $eventHandler->newDispatchContext();
+		$dispatchContext->set( 'title', $this->oldTitle );
+
+		$eventHandler->getEventDispatcher()->dispatch(
+			'cached.propertyvalues.prefetcher.reset',
+			$dispatchContext
+		);
+
+		$dispatchContext = $eventHandler->newDispatchContext();
+		$dispatchContext->set( 'title', $this->newTitle );
+
+		$eventHandler->getEventDispatcher()->dispatch(
+			'cached.propertyvalues.prefetcher.reset',
+			$dispatchContext
+		);
 
 		return true;
 	}
