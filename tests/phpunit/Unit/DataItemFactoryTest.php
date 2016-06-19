@@ -4,6 +4,7 @@ namespace SMW\Tests;
 
 use SMW\DataItemFactory;
 use SMWDIUri as DIUri;
+use SMWDITime as DITime;
 
 /**
  * @covers \SMW\DataItemFactory
@@ -115,6 +116,16 @@ class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			DIUri::class,
 			$instance->newDIUri( 'http', 'example.org' )
+		);
+	}
+
+	public function testCanConstructDITime() {
+
+		$instance = new DataItemFactory();
+
+		$this->assertInstanceOf(
+			DITime::class,
+			$instance->newDITime( 1, '1900' )
 		);
 	}
 

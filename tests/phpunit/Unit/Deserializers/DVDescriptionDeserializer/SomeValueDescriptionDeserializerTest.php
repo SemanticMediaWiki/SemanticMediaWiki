@@ -3,6 +3,7 @@
 namespace SMW\Tests\Deserializers\DVDescriptionDeserializer;
 
 use SMW\Deserializers\DVDescriptionDeserializer\SomeValueDescriptionDeserializer;
+use SMW\ApplicationFactory;
 
 /**
  * @covers \SMW\Deserializers\DVDescriptionDeserializer\SomeValueDescriptionDeserializer
@@ -14,6 +15,14 @@ use SMW\Deserializers\DVDescriptionDeserializer\SomeValueDescriptionDeserializer
  * @author mwjames
  */
 class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
+
+	private $dataItemFactory;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->dataItemFactory = ApplicationFactory::getInstance()->getDataItemFactory();
+	}
 
 	public function testCanConstruct() {
 
@@ -58,11 +67,11 @@ class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( new \SMWDITime( 1, '1970' ) ) );
+			->will( $this->returnValue($this->dataItemFactory->newDITime( 1, '1970' ) ) );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( new \SMW\DIProperty( 'Foo' ) ) );
+			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Foo' ) ) );
 
 		$instance = new SomeValueDescriptionDeserializer();
 		$instance->setDataValue( $dataValue );
@@ -126,6 +135,40 @@ class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->setExpectedException( 'InvalidArgumentException' );
 		$instance->deserialize( array() );
+	}
+
+	public function testWikiPageValueOnNonMainNamespace() {
+
+		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ) )
+			->getMockForAbstractClass();
+
+		$dataValue->expects( $this->atLeastOnce() )
+			->method( 'setUserValue' )
+			->with(
+				$this->anything(),
+				$this->equalTo( false ) );
+
+		$dataValue->expects( $this->any() )
+			->method( 'isValid' )
+			->will( $this->returnValue( true ) );
+
+		$dataValue->expects( $this->any() )
+			->method( 'getDataItem' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( '~Foo', NS_HELP ) ) );
+
+		$dataValue->expects( $this->any() )
+			->method( 'getProperty' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Foo' ) ) );
+
+		$instance = new SomeValueDescriptionDeserializer();
+		$instance->setDataValue( $dataValue );
+
+		$this->assertInstanceOf(
+			'\SMW\Query\Language\Conjunction',
+			$instance->deserialize( 'Help:~Foo' )
+		);
 	}
 
 	public function valueProvider() {
