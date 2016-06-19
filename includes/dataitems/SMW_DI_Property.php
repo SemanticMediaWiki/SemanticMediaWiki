@@ -167,7 +167,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @return boolean
 	 */
-	public function isUnrestrictedForUse() {
+	public function isUnrestricted() {
 
 		if ( $this->isUserDefined() ) {
 			return true;
@@ -250,6 +250,10 @@ class DIProperty extends SMWDataItem {
 
 		if ( $this->isUserDefined() ) {
 			$dbkey = $this->m_key;
+		} elseif ( $this->m_key === $this->findPropertyTypeID() ) {
+			// If _dat as property [[Date::...]] refers directly to its _dat type
+			// then use the en-label as canonical representation
+			$dbkey = PropertyRegistry::getInstance()->findPropertyLabelByLanguageCode( $this->m_key, 'en' );
 		} else {
 			$dbkey = PropertyRegistry::getInstance()->findCanonicalPropertyLabelById( $this->m_key );
 		}

@@ -116,4 +116,26 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testFindPropertyLabelByLanguageCode() {
+
+		$languageIndependentPropertyLabels = array();
+		$canonicalPropertyLabels = array();
+
+		$instance = new PropertyLabelFinder(
+			$this->store,
+			$languageIndependentPropertyLabels,
+			$canonicalPropertyLabels
+		);
+
+		$this->assertEquals(
+			'Booléen',
+			$instance->findPropertyLabelByLanguageCode( '_boo', 'fr' )
+		);
+
+		$this->assertEquals(
+			'Boolean',
+			$instance->findPropertyLabelByLanguageCode( '_boo', 'en' )
+		);
+	}
+
 }

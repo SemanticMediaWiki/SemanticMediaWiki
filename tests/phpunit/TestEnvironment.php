@@ -115,12 +115,20 @@ class TestEnvironment {
 	/**
 	 * @since 2.4
 	 *
-	 * @param string $poolCache
+	 * @param string|array $poolCache
 	 *
 	 * @return self
 	 */
 	public function resetPoolCacheFor( $poolCache ) {
+
+		if ( is_array( $poolCache ) ) {
+			foreach ( $poolCache as $pc ) {
+				$this->resetPoolCacheFor( $pc );
+			}
+		}
+
 		$this->applicationFactory->getInMemoryPoolCache()->resetPoolCacheFor( $poolCache );
+
 		return $this;
 	}
 

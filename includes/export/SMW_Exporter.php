@@ -4,6 +4,7 @@ use SMW\ApplicationFactory;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
+use SMW\NamespaceUriFinder;
 use SMW\Exporter\DataItemByExpElementMatchFinder;
 use SMW\Exporter\DataItemToElementEncoder;
 use SMW\Exporter\DataItemToExpResourceEncoder;
@@ -20,6 +21,8 @@ use SMW\Exporter\Escaper;
  * @ingroup SMW
  */
 class SMWExporter {
+
+	const POOLCACHE_ID = 'exporter.shared';
 
 	/**
 	 * @var SMWExporter
@@ -60,6 +63,9 @@ class SMWExporter {
 			self::$instance->initBaseURIs();
 
 			$applicationFactory = ApplicationFactory::getInstance();
+
+			$poolCache = $applicationFactory->getInMemoryPoolCache();
+			$poolCache->resetPoolCacheFor( self::POOLCACHE_ID );
 
 			// FIXME with 3.x
 			// There is no better way of getting around the static use without BC
@@ -110,11 +116,11 @@ class SMWExporter {
 
 		global $smwgNamespace; // complete namespace for URIs (with protocol, usually http://)
 
+		$resolver = Title::makeTitle( NS_SPECIAL, 'URIResolver' );
+
 		if ( '' == $smwgNamespace ) {
-			$resolver = SpecialPage::getTitleFor( 'URIResolver' );
 			$smwgNamespace = $resolver->getFullURL() . '/';
 		} elseif ( $smwgNamespace[0] == '.' ) {
-			$resolver = SpecialPage::getTitleFor( 'URIResolver' );
 			$smwgNamespace = "http://" . substr( $smwgNamespace, 1 ) . $resolver->getLocalURL() . '/';
 		}
 
@@ -128,8 +134,17 @@ class SMWExporter {
 		self::$m_ent_property = self::$m_ent_wiki . Escaper::encodeUri( $property . ':' );
 		self::$m_ent_category = self::$m_ent_wiki . Escaper::encodeUri( $category . ':' );
 
-		$title = SpecialPage::getTitleFor( 'ExportRDF' );
+		$title = Title::makeTitle( NS_SPECIAL, 'ExportRDF' );
 		self::$m_exporturl    = self::$m_ent_wikiurl . $title->getPrefixedURL();
+
+		// Canonical form, the title object always contains a wgContLang reference
+		// therefore replace it
+		if ( !$GLOBALS['smwgExportBCNonCanonicalFormUse'] ) {
+			$special = wfUrlencode( '/' . $wgContLang->getNsText( NS_SPECIAL ) .':' );
+
+			self::$m_ent_wiki = str_replace( $special , '/Special:', self::$m_ent_wiki );
+			self::$m_exporturl = str_replace( $special , '/Special:', self::$m_exporturl );
+		}
 	}
 
 	/**
@@ -264,6 +279,13 @@ class SMWExporter {
 					// this is set during parsing
 					$defaultSortkey = new ExpLiteral( $diWikiPage->getSortKey() );
 					$result->addPropertyObjectValue( self::getSpecialPropertyResource( '_SKEY' ), $defaultSortkey );
+				}
+
+				if ( $diWikiPage->getPageLanguage() ) {
+					$result->addPropertyObjectValue(
+						self::getSpecialNsResource( 'swivt', 'wikiPageContentLanguage' ),
+						new ExpLiteral( strval( $diWikiPage->getPageLanguage() ), 'http://www.w3.org/2001/XMLSchema#string' )
+					);
 				}
 
 				if ( $diWikiPage->getNamespace() === NS_FILE ) {
@@ -548,6 +570,11 @@ class SMWExporter {
 	 */
 	static public function getNamespaceUri( $shortName ) {
 		self::initBaseURIs();
+
+		if ( ( $uri = NamespaceUriFinder::getUri( $shortName ) ) !== false ) {
+			return $uri;
+		}
+
 		switch ( $shortName ) {
 			case 'wiki':
 			return self::$m_ent_wiki;
