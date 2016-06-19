@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests\Exporter;
+namespace SMW\Tests\Exporter\ResourceBuilders;
 
-use SMW\Exporter\DispatchingResourceBuilder;
+use SMW\Exporter\ResourceBuilders\DispatchingResourceBuilder;
 use SMW\Exporter\ResourceBuilder;
 use SMW\DataItemFactory;
 
 /**
- * @covers \SMW\Exporter\DispatchingResourceBuilder
+ * @covers \SMW\Exporter\ResourceBuilders\DispatchingResourceBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

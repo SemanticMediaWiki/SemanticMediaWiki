@@ -59,8 +59,7 @@ class ExpLiteral extends ExpElement {
 			throw new InvalidArgumentException( '$datatype needs to be a string' );
 		}
 
-		// http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal
-		if ( !is_string( $lang ) || ( $lang !== '' && $datatype !== 'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString' ) ) {
+		if ( !is_string( $lang )  ) {
 			throw new InvalidArgumentException( '$lang needs to be a string and $datatype has to be of langString type' );
 		}
 
@@ -68,7 +67,17 @@ class ExpLiteral extends ExpElement {
 
 		$this->lexicalForm = $lexicalForm;
 		$this->datatype = $datatype;
-		$this->lang = $lang;
+
+		// 'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString'
+		// can also be used instead of the simple Foo@lang-tag convention
+
+		// https://www.w3.org/TR/2004/REC-rdf-concepts-20040210/#dfn-language-identifier
+		// "...Plain literals have a lexical form and optionally a language tag as
+		// defined by [RFC-3066], normalized to lowercase..."
+		// https://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal
+		// "...Lexical representations of language tags may be converted to
+		// lower case. The value space of language tags is always in lower case..."
+		$this->lang = strtolower( $lang );
 	}
 
 	/**

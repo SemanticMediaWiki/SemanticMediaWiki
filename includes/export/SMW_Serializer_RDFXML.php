@@ -180,11 +180,20 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 	 */
 	protected function serializeExpLiteral( SMWExpNsResource $expResourceProperty, SMWExpLiteral $expLiteral, $indent ) {
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName();
-		if ( $expLiteral->getDatatype() !== '' ) {
+
+		// https://www.w3.org/TR/rdf-syntax-grammar/#section-Syntax-languages
+		// "... to indicate that the included content is in the given language.
+		// Typed literals which includes XML literals are not affected by this
+		// attribute. The most specific in-scope language present (if any) is
+		// applied to property element string literal ..."
+		if ( $expLiteral->getDatatype() !== '' && $expLiteral->getLang() !== '' ) {
+			$this->post_ns_buffer .= ' xml:lang="' . $expLiteral->getLang() . '"';
+		} elseif ( $expLiteral->getDatatype() !== '' ) {
 			$this->post_ns_buffer .= ' rdf:datatype="' . $expLiteral->getDatatype() . '"';
 		}
-		$this->post_ns_buffer .= '>' . $this->makeAttributeValueString( $expLiteral->getLexicalForm() ) .
-			'</' . $expResourceProperty->getQName() . ">\n";
+
+		$this->post_ns_buffer .= '>' . $this->makeAttributeValueString( $expLiteral->getLexicalForm() );
+		$this->post_ns_buffer .= '</' . $expResourceProperty->getQName() . ">\n";
 	}
 
 	/**

@@ -13,7 +13,7 @@ use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Escaper;
-use SMW\Exporter\DispatchingResourceBuilder;
+use SMW\Exporter\ResourceBuilders\DispatchingResourceBuilder;
 
 /**
  * SMWExporter is a class for converting internal page-based data (SMWSemanticData) into
