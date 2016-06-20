@@ -1,5 +1,5 @@
 {
-	"description": "Test `Special:Browse` output for `_dat', `_boo`, `_sobj`, `_uri` (`wgContLang=en`, `wgLang=es`)",
+	"description": "Test `Special:Browse` output for `_dat', `_boo`, `_sobj`, `_uri` (`wgContLang=en`, `wgLang=es`, skip-on 1.25.6)",
 	"properties": [
 		{
 			"name": "Has date",
@@ -132,7 +132,7 @@
 	},
 	"meta": {
 		"skip-on": {
-			"mw-1.22.12": "Somehow the content lang is not set correctly on Travis (locally works fine)."
+			"mw-1.25.6": "Somehow the content lang is not set correctly on Travis (locally works fine)."
 		},
 		"version": "0.1",
 		"is-incomplete": false,

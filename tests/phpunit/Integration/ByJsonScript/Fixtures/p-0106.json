@@ -1,5 +1,5 @@
 {
-	"description": "Test #info parser output (#1019, `wgContLang=en`, `wgLang=en`, skip-on 1.22)",
+	"description": "Test #info parser output (#1019, `wgContLang=en`, `wgLang=en`, skip-on 1.25.6)",
 	"properties": [],
 	"subjects": [
 		{
@@ -42,7 +42,7 @@
 	},
 	"meta": {
 		"skip-on": {
-			"mw-1.22.12": "Somehow the content lang is not set correctly on Travis (locally works fine)."
+			"mw-1.25.6": "Somehow the content lang is not set correctly on Travis (locally works fine)."
 		},
 		"version": "0.1",
 		"is-incomplete": false,

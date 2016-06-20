@@ -3,35 +3,35 @@ language: php
 matrix:
   fast_finish: true
   include:
-    - env: DB=mysql; MW=1.26.3; TYPE=coverage; PHPUNIT=4.8.*
+    - env: DB=mysql; MW=1.27.0; TYPE=coverage; PHPUNIT=4.8.*
       php: 7.0
-    - env: DB=mysql; MW=1.26.3; FUSEKI=2.4.0
+    - env: DB=mysql; MW=REL1_26; FUSEKI=2.4.0
       php: 5.5
-    - env: DB=mysql; MW=1.23.5; VIRTUOSO=6.1
-      php: 5.4
-    - env: DB=mysql; MW=1.25.6; SESAME=2.8.7
-      php: 5.3
-    - env: DB=sqlite; MW=1.22.12; SITELANG=ja
+    - env: DB=mysql; MW=REL1_25; VIRTUOSO=6.1
+      php: 5.6
+    - env: DB=mysql; MW=REL1_25; SESAME=2.8.7
       php: 5.5
-    - env: DB=postgres; MW=1.19.20;
-      php: 5.4
-    - env: DB=mysql; MW=1.24.1; BLAZEGRAPH=1.5.2; PHPUNIT=4.7.*
+    - env: DB=sqlite; MW=1.25.6; SITELANG=ja
+      php: 5.5
+    - env: DB=postgres; MW=REL1_26;
+      php: 5.5
+    - env: DB=mysql; MW=REL1_26; BLAZEGRAPH=1.5.2; PHPUNIT=4.8.*
       php: 5.6
-    - env: DB=mysql; MW=1.25.6; TYPE=benchmark; PHPUNIT=4.3.*;
+    - env: DB=mysql; MW=REL1_25; TYPE=benchmark; PHPUNIT=4.8.*
       php: hhvm
-    - env: DB=sqlite; MW=master; PHPUNIT=4.6.*
+    - env: DB=sqlite; MW=master; PHPUNIT=4.8.*
       php: hhvm
-    - env: DB=sqlite; MW=1.25.6; TYPE=composer
+    - env: DB=sqlite; MW=REL1_26; TYPE=composer; PHPUNIT=4.8.*
       php: 5.6
-    - env: DB=mysql; MW=1.19.20; TYPE=relbuild
-      php: 5.4
+    - env: DB=mysql; MW=REL1_25; TYPE=relbuild
+      php: 5.5
   allow_failures:
-    - env: DB=mysql; MW=1.26.3; TYPE=coverage; PHPUNIT=4.8.*
-    - env: DB=mysql; MW=1.19.20; TYPE=relbuild
-    - env: DB=sqlite; MW=1.25.6; TYPE=composer
-    - env: DB=sqlite; MW=master; PHPUNIT=4.6.*
-    - env: DB=mysql; MW=1.25.6; TYPE=benchmark; PHPUNIT=4.3.*;
-    - env: DB=mysql; MW=1.25.6; SESAME=2.8.7
+    - env: DB=mysql; MW=1.27.0; TYPE=coverage; PHPUNIT=4.8.*
+    - env: DB=mysql; MW=REL1_25; TYPE=relbuild
+    - env: DB=sqlite; MW=REL1_26; TYPE=composer; PHPUNIT=4.8.*
+    - env: DB=sqlite; MW=master; PHPUNIT=4.8.*
+    - env: DB=mysql; MW=REL1_25; TYPE=benchmark; PHPUNIT=4.8.*
+    - env: DB=mysql; MW=REL1_25; SESAME=2.8.7
 
 # Travis support wrote (Tomcat + Java):
 # bug in the JDK: http://bugs.java.com/bugdatabase/view_bug.do?bug_id=7089443.
