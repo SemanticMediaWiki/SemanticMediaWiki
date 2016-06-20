@@ -148,15 +148,6 @@ class ApplicationFactory {
 	}
 
 	/**
-	 * @since 2.1
-	 *
-	 * @return QueryProfileAnnotatorFactory
-	 */
-	public function newQueryProfileAnnotatorFactory() {
-		return new QueryProfileAnnotatorFactory();
-	}
-
-	/**
 	 * @since 2.2
 	 *
 	 * @return MaintenanceFactory

@@ -5,6 +5,7 @@ namespace SMW;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\Description;
 use SMW\Query\PrintRequestFactory;
+use SMW\Query\ProfileAnnotatorFactory;
 use SMWQuery as Query;
 use SMWQueryParser as QueryParser;
 
@@ -15,6 +16,15 @@ use SMWQueryParser as QueryParser;
  * @author mwjames
  */
 class QueryFactory {
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return ProfileAnnotatorFactory
+	 */
+	public function newProfileAnnotatorFactory() {
+		return new ProfileAnnotatorFactory();
+	}
 
 	/**
 	 * @since 2.4

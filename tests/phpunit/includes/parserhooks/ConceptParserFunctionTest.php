@@ -163,7 +163,9 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		foreach ( $parserData->getSemanticData()->getProperties() as $property ){
 
-			$this->assertEquals( '_CONC', $property->getKey() );
+			if ( $property->getKey() !== '_CONC' ) {
+				continue;
+			}
 
 			foreach ( $parserData->getSemanticData()->getPropertyValues( $property ) as $dataItem ) {
 				$this->assertEquals( $expected['conceptQuery'], $dataItem->getConceptQuery() );
@@ -187,7 +189,7 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			),
 			array(
 				'result' => true,
-				'propertyCount' => 1,
+				'propertyCount' => 2,
 				'conceptQuery'  => '[[Modification date::+]]',
 				'conceptDocu'   => '',
 				'conceptSize'   => 1,
@@ -206,7 +208,7 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			),
 			array(
 				'result' => true,
-				'propertyCount' => 1,
+				'propertyCount' => 2,
 				'conceptQuery'  => '[[Modification date::+]]',
 				'conceptDocu'   => 'Foooooooo',
 				'conceptSize'   => 1,
@@ -225,7 +227,7 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			),
 			array(
 				'result' => true,
-				'propertyCount' => 1,
+				'propertyCount' => 2,
 				'conceptQuery'  => '[[Modification date::+]]',
 				'conceptDocu'   => 'Foooooooo',
 				'conceptSize'   => 1,

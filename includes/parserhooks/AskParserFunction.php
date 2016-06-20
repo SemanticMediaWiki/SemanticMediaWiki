@@ -227,19 +227,19 @@ class AskParserFunction {
 			$this->addProcessingError( $query->getErrors() );
 		}
 
-		$queryProfileAnnotatorFactory = $this->applicationFactory->newQueryProfileAnnotatorFactory();
+		$profileAnnotatorFactory = $this->applicationFactory->getQueryFactory()->newProfileAnnotatorFactory();
 
-		$jointProfileAnnotator = $queryProfileAnnotatorFactory->newJointProfileAnnotator(
+		$combinedProfileAnnotator = $profileAnnotatorFactory->newCombinedProfileAnnotator(
 			$query,
 			$format,
 			$duration
 		);
 
-		$jointProfileAnnotator->addAnnotation();
+		$combinedProfileAnnotator->addAnnotation();
 
 		$this->parserData->getSemanticData()->addPropertyObjectValue(
-			$jointProfileAnnotator->getProperty(),
-			$jointProfileAnnotator->getContainer()
+			$combinedProfileAnnotator->getProperty(),
+			$combinedProfileAnnotator->getContainer()
 		);
 	}
 
