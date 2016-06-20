@@ -11,9 +11,15 @@ on how to install the latest version of SMW, see the [installation instructions]
 		<th>Git branch</th>
 	</tr>
 	<tr>
+		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1365">SMW 3.0.x</a></th>
+		<td>Future version</td>
+		<td>Late 2016 or early 2017</td>
+		<td></td>
+	</tr>
+	<tr>
 		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/RELEASE-NOTES.md">SMW 2.4.x</a></th>
 		<td>Development version</td>
-		<td></td>
+		<td>June or July 2016</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
 	</tr>
 	<tr>
@@ -74,7 +80,9 @@ on how to install the latest version of SMW, see the [installation instructions]
 
 ## Platform compatibility
 
-Releases after Composer support:
+**Releases after Composer support:**
+
+Increases of minimum requirements are indicated in bold.
 
 <table>
 	<tr>
@@ -85,9 +93,9 @@ Releases after Composer support:
 	</tr>
 	<tr>
 		<th>SMW 3.0.x</th>
-		<td>5.6.0 - latest (possibly 5.5.x)</td>
+		<td><strong>5.6.0</strong> - latest (possibly 5.5.x)</td>
 		<td>3.5.0 - latest</td>
-		<td>1.23 - latest</td>
+		<td><strong>1.23</strong> - latest</td>
 	</tr>
 	<tr>
 		<th>SMW 2.4.x</th>
@@ -98,7 +106,7 @@ Releases after Composer support:
 	<tr>
 		<th>SMW 2.3.x</th>
 		<td>5.3.2 - 5.6.x (beta support for PHP 7)</td>
-		<td>3.5.0 - 3.9.x</td>
+		<td><strong>3.5.0</strong> - 3.9.x</td>
 		<td>1.19 - 1.25</td>
 	</tr>
 	<tr>
@@ -127,7 +135,7 @@ Releases after Composer support:
 	</tr>
 </table>
 
-Releases before Composer support:
+**Releases before Composer support:**
 
 <table>
 	<tr>
