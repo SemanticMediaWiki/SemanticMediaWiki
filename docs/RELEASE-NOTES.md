@@ -4,6 +4,17 @@ Not a release yet.
 
 ## Highlights
 
+### Support for multiple languages
+
+* Added support for monolingual text datatype where a specific language (as code) can be added to a text value (#1344, #1381)
+* [Localization](https://www.semantic-mediawiki.org/wiki/Localization) support for selected data values
+
+### Pattern based constraints
+
+Added support for constraint specification using regular expressions (#1417). The use of `regular
+expressions` and thus the `Allows pattern` property to express a constraint assignment is restricted
+to users with the [`smw-patternedit`](https://www.semantic-mediawiki.org/wiki/Help:Permissions_and_user_rights) right.
+
 ### Positional units
 
 It is now possible to specify which position a [custom unit](https://www.semantic-mediawiki.org/wiki/Help:Custom_units)
@@ -19,14 +30,20 @@ Quantity, Temperature). This is done using the
 property. You can override this display precision per `#ask` query, by using `-p<digit>`.
 You can [view the examples](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1335).
 
-### Other highlights
+### Enhanced date and time formatting
 
-* Added support for monolingual text datatype where a specific language (as code) can be added to a text value (#1344, #1381)
-* Extended date/time query output formatting by supporting PHP's `DateTime` format rules (#1389)
-* Added support for constraint specification using regular expressions (#1417). The use of `regular expressions` and thus the `Allows pattern` property to express a constraint assignment is restricted to users with the [`smw-patternedit`](https://www.semantic-mediawiki.org/wiki/Help:Permissions_and_user_rights) right.
-* Added support for `{{DISPLAYTITLE:...}}` (#1410)
-* [Localization](https://www.semantic-mediawiki.org/wiki/Localization) support for selected data values
-* Most updates now occur in [deferred mode](https://www.semantic-mediawiki.org/wiki/Deferred_updates) to conform with [T92357](https://phabricator.wikimedia.org/T92357), avoid potential race conditions, and improve performance during a page purge. Extensions that wish to extend data objects are encouraged to use hooks and avoid conflicts when updates are queued.
+Extended date/time query output formatting by supporting PHP's `DateTime` format rules (#1389)
+
+### Display Title storage
+
+When using MediaWiki's `{{DISPLAYTITLE:...}}`, it will now get stored by SMW so you can query its value.  (#1410)
+
+### Performance improvements
+
+* Most updates now occur in [deferred mode](https://www.semantic-mediawiki.org/wiki/Deferred_updates) to
+conform with [T92357](https://phabricator.wikimedia.org/T92357), avoid potential race conditions, and
+improve performance during a page purge. Extensions that wish to extend data objects are encouraged to
+use hooks and avoid conflicts when updates are queued.
 
 ## New features and enhancements
 
