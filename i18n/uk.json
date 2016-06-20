@@ -340,7 +340,7 @@
 	"smw-pa-property-predefined_errp": "«$1» — це попередньо визначена властивість для відслідковування помилок вводу для анотацій нерегулярних значень, що були, вірогідно, спричинені обмеженнями типу чи [[Property:Allows value|дозволених значень]], забезпечується [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value «$1»] — попередньо визначена властивість, яка може визначати список дозволених значень, щоб обмежувати призначення значень для властивості, і забезпечується [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-datavalue-property-restricted-use": "Властивість «$1» було позначено для обмеженого використання.",
-	"smw-datavalue-property-invalid-name": "Назва властивості містить неприпустимі символи (наприклад, $1).",
+	"smw-datavalue-property-invalid-name": "Значення «$1» містить неприпустимі для назви властивості символи (наприклад, $2).",
 	"smw-datavalue-restricted-use": "Значення даних «$1» було позначено для обмеженого використання.",
 	"smw-datavalue-invalid-number": "«$1» не може бути інтерпретовано як число.",
 	"smw-query-condition-circular": "Можливу циклічну умову було виявлено у «$1».",

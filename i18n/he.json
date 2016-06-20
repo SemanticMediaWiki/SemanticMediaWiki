@@ -290,7 +290,7 @@
 	"smw-qp-empty-data": "לא ניתן להציג את הנתונים המבוקשים בגלל אמות מידה בלתי־מספיקות לבחירה.",
 	"right-smw-admin": "גישה למשימות ניהול (מדיה־ויקי סמנטית)",
 	"right-smw-patternedit": "עריכת גישה כדי לתחזק ביטויים רגולריים ותבניות (מדיה־ויקי סמנטית)",
-	"action-smw-patternedit": "לערוך ביטויים רגולריים שבשימוש מדיה־ויקי סמנטית",
+	"action-smw-patternedit": "לערוך ביטויים רגולריים שבשימוש של מדיה־ויקי סמנטית",
 	"group-smwadministrator": "מנהלים (מדיה־ויקי סמנטית)",
 	"group-smwadministrator-member": "{{GENDER:$1|מנהל|מנהלת}} (מדיה־ויקי סמנטית)",
 	"grouppage-smwadministrator": "{{ns:project}}:מנהלים (מדיה־ויקי סמנטית)",

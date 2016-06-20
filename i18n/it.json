@@ -263,7 +263,7 @@
 	"smw-sp-admin-objectid": "ID oggetto:",
 	"smw-livepreview-loading": "Caricamento in corso...",
 	"smw-sp-searchbyproperty-resultlist-header": "Elenco dei risultati",
-	"smw-datavalue-number-nullnotallowed": "\"$1\" restituito con un \"NULL\", che non è consentito come numero.",
+	"smw-datavalue-number-nullnotallowed": "\"$1\" ha restituito un \"NULL\", che non è consentito come numero.",
 	"smw-pa-property-predefined_impo": "\"$1\" è una proprietà predefinita che descrive una relazione ad un [https://www.semantic-mediawiki.org/wiki/Help:Import_vocabulary vocabolario importato] ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_type": "\"$1\" è una proprietà predefinita che descrive il [[Special:Types|tipo  di dati]] di una proprietà ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_sobj": "\"$1\" è una proprietà predefinita che rappresenta un costrutto [https://www.semantic-mediawiki.org/wiki/Help:Container contenitore] ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
