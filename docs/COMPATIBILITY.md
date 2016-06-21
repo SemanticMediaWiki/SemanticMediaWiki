@@ -80,13 +80,13 @@ on how to install the latest version of SMW, see the [installation instructions]
 
 ## Platform compatibility
 
-**Releases after Composer support:**
-
 The PHP and MediaWiki version ranges listed are those in which SMW is known to work. It might also
 work with more recent versions of PHP and MediaWiki, though this is not guaranteed. Increases of
 minimum requirements are indicated in bold.
 
 Note that HHVM is only required if you do not use PHP.
+
+**Releases after Composer support:**
 
 <table>
 	<tr>
