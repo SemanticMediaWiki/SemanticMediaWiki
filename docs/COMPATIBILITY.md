@@ -82,7 +82,7 @@ on how to install the latest version of SMW, see the [installation instructions]
 
 **Releases after Composer support:**
 
-Increases of minimum requirements are indicated in bold.
+Increases of minimum requirements are indicated in bold. Note that HHVM is only required if you do not use PHP.
 
 <table>
 	<tr>
