@@ -26,7 +26,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 * {@inheritDoc}
 	 */
 	public function isFormatterFor( DataValue $dataValue ) {
-		return $dataValue instanceOf TimeValue;
+		return $dataValue instanceof TimeValue;
 	}
 
 	/**
@@ -36,7 +36,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 */
 	public function format( $type, $linker = null ) {
 
-		if ( !$this->dataValue instanceOf TimeValue ) {
+		if ( !$this->dataValue instanceof TimeValue ) {
 			throw new RuntimeException( "The formatter is missing a valid TimeValue object" );
 		}
 

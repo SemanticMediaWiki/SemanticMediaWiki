@@ -24,7 +24,7 @@ class CompatibilityMode {
 	 * @return boolean
 	 */
 	public static function requiresCompatibilityMode() {
-		return !$GLOBALS['smwgEnabledCompatibilityMode'] && ( defined( 'CARGO_VERSION' ) ||  defined( 'WB_VERSION' ) );
+		return !$GLOBALS['smwgEnabledCompatibilityMode'] && ( defined( 'CARGO_VERSION' ) || defined( 'WB_VERSION' ) );
 	}
 
 	/**

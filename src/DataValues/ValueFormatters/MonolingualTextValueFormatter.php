@@ -23,7 +23,7 @@ class MonolingualTextValueFormatter extends DataValueFormatter {
 	 * {@inheritDoc}
 	 */
 	public function isFormatterFor( DataValue $dataValue ) {
-		return $dataValue instanceOf MonolingualTextValue;
+		return $dataValue instanceof MonolingualTextValue;
 	}
 
 	/**
@@ -33,7 +33,7 @@ class MonolingualTextValueFormatter extends DataValueFormatter {
 	 */
 	public function format( $type, $linker = null ) {
 
-		if ( !$this->dataValue instanceOf MonolingualTextValue ) {
+		if ( !$this->dataValue instanceof MonolingualTextValue ) {
 			throw new RuntimeException( "The formatter is missing a valid MonolingualTextValue object" );
 		}
 
@@ -124,11 +124,16 @@ class MonolingualTextValueFormatter extends DataValueFormatter {
 
 	private function findValueOutputFor( $type, $dataValue, $linker ) {
 		switch ( $type ) {
-			case self::VALUE: return $dataValue->getWikiValue();
-			case self::WIKI_SHORT: return $dataValue->getShortWikiText( $linker );
-			case self::HTML_SHORT: return $dataValue->getShortHTMLText( $linker );
-			case self::WIKI_LONG: return $dataValue->getShortWikiText( $linker );
-			case self::HTML_LONG: return $dataValue->getShortHTMLText( $linker );
+			case self::VALUE:
+				return $dataValue->getWikiValue();
+			case self::WIKI_SHORT:
+				return $dataValue->getShortWikiText( $linker );
+			case self::HTML_SHORT:
+				return $dataValue->getShortHTMLText( $linker );
+			case self::WIKI_LONG:
+				return $dataValue->getShortWikiText( $linker );
+			case self::HTML_LONG:
+				return $dataValue->getShortHTMLText( $linker );
 		}
 	}
 

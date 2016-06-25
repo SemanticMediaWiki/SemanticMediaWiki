@@ -29,7 +29,7 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 		$special = new SMWAskPage();
 		$special->execute( null );
 
-		$html = $GLOBALS[ 'wgOut' ]->getHtml();
+		$html = $GLOBALS['wgOut']->getHtml();
 		$html = '<!DOCTYPE html><html><body>' . $html . '</body></html>';
 
 		$document = new DOMDocument();
@@ -64,7 +64,7 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 
 			$oldVal = $wgRequest->getText( $key, null );
 			if ( $oldVal !== null ) {
-				$this->oldRequestValues[ $key ] = $oldVal;
+				$this->oldRequestValues[$key] = $oldVal;
 			}
 
 			$wgRequest->setVal( $key, $value );

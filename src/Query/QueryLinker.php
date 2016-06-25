@@ -46,7 +46,7 @@ class QueryLinker {
 
 			// TODO: this is a hack to get rid of the mainlabel param in case it was automatically added
 			// by SMWQueryProcessor::addThisPrintout. Should be done nicer when this link creation gets redone.
-			if ( $serialization !== '?#' &&  $serialization !== '?=' . $query->getMainLabel() . '#' ) {
+			if ( $serialization !== '?#' && $serialization !== '?=' . $query->getMainLabel() . '#' ) {
 				$params[] = $serialization;
 			}
 		}

@@ -99,7 +99,7 @@ class MonolingualTextValueDescriptionDeserializer extends DescriptionDeserialize
 		}
 
 		if ( $count == 1 ) {
-			return  reset( $subdescriptions );
+			return reset( $subdescriptions );
 		}
 
 		return new Conjunction( $subdescriptions );

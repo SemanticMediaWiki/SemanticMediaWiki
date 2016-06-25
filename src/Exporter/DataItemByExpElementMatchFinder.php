@@ -129,7 +129,7 @@ class DataItemByExpElementMatchFinder {
 		$dataItem = null;
 
 		// Sesame: Not a valid (absolute) URI: _node1abjt1k9bx17
-		if ( filter_var( $uri, FILTER_VALIDATE_URL ) === FALSE ) {
+		if ( filter_var( $uri, FILTER_VALIDATE_URL ) === false ) {
 			return $dataItem;
 		}
 

@@ -379,7 +379,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			__METHOD__
 		);
 
-		$this->reportProgress( "   ... moving from $currentID to $expectedID " , $verbose );
+		$this->reportProgress( "   ... moving from $currentID to $expectedID ", $verbose );
 
 		// make way for built-in ids
 		for ( $i = $currentID; $i < $expectedID; $i++ ) {

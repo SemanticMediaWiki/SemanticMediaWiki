@@ -86,7 +86,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		if ( $usageList && $usageList !== array() ) {
 			$usage = end( $usageList );
 			$usageCount = Html::rawElement(
-				'div' , array(
+				'div', array(
 					'title' => $this->getContext()->getLanguage()->timeanddate( $cachedLookupList->getTimestamp() ),
 					'class' => 'smw-page-indicator usage-count' ),
 				$usage[1]

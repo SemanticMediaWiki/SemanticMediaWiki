@@ -102,11 +102,11 @@ class Message {
 		$parameters = (array)$parameters;
 
 		if ( $type === null ) {
-			$type = Message::TEXT;
+			$type = self::TEXT;
 		}
 
 		if ( $language === null || !$language ) {
-			$language = Message::CONTENT_LANGUAGE;
+			$language = self::CONTENT_LANGUAGE;
 		}
 
 		$hash = self::getHash( $parameters, $type, $language );
