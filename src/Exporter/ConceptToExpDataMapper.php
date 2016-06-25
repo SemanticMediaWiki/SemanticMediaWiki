@@ -54,7 +54,7 @@ class ConceptToExpDataMapper {
 	 * @return boolean
 	 */
 	public function isMapperFor( DataItem $dataItem ) {
-		return $dataItem instanceOf DIConcept;
+		return $dataItem instanceof DIConcept;
 	}
 
 	/**
@@ -83,7 +83,7 @@ class ConceptToExpDataMapper {
 
 		if ( $owlDescription === false ) {
 			$result = new ExpData(
-				$this->exporter->getSpecialNsResource( 'owl','Thing' )
+				$this->exporter->getSpecialNsResource( 'owl', 'Thing' )
 			);
 
 			return $result;

@@ -311,12 +311,12 @@ class SMWDITime extends SMWDataItem {
 	 */
 	public function asDateTime() {
 
-		$year = str_pad( $this->m_year , 4, '0', STR_PAD_LEFT );
+		$year = str_pad( $this->m_year, 4, '0', STR_PAD_LEFT );
 
 		// Avoid "Failed to parse time string (-900-02-02 00:00:00) at
 		// position 7 (-): Double timezone specification"
 		if ( $this->m_year < 0 ) {
-			$year = '-' . str_pad( $this->m_year * -1 , 4, '0', STR_PAD_LEFT );
+			$year = '-' . str_pad( $this->m_year * -1, 4, '0', STR_PAD_LEFT );
 		}
 
 		// Avoid "Failed to parse time string (1300-11-02 12:03:25.888499949) at

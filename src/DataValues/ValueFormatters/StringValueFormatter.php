@@ -21,7 +21,7 @@ class StringValueFormatter extends DataValueFormatter {
 	 * {@inheritDoc}
 	 */
 	public function isFormatterFor( DataValue $dataValue ) {
-		return $dataValue instanceOf StringValue;
+		return $dataValue instanceof StringValue;
 	}
 
 	/**
@@ -31,7 +31,7 @@ class StringValueFormatter extends DataValueFormatter {
 	 */
 	public function format( $type, $linker = null ) {
 
-		if ( !$this->dataValue instanceOf StringValue ) {
+		if ( !$this->dataValue instanceof StringValue ) {
 			throw new RuntimeException( "The formatter is missing a valid StringValue object" );
 		}
 
@@ -61,7 +61,7 @@ class StringValueFormatter extends DataValueFormatter {
 		// explicitly. The result will contain mark-up that must not be escaped
 		// again.
 		$abbreviate = $type === self::WIKI_LONG || $type === self::HTML_LONG;
-		$text = $this->dataValue->getDataItem()->getString() ;
+		$text = $this->dataValue->getDataItem()->getString();
 
 		// Appease the MW parser to correctly apply formatting on the
 		// first indent

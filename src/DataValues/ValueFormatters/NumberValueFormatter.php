@@ -21,7 +21,7 @@ class NumberValueFormatter extends DataValueFormatter {
 	 * {@inheritDoc}
 	 */
 	public function isFormatterFor( DataValue $dataValue ) {
-		return $dataValue instanceOf NumberValue;
+		return $dataValue instanceof NumberValue;
 	}
 
 	/**
@@ -31,7 +31,7 @@ class NumberValueFormatter extends DataValueFormatter {
 	 */
 	public function format( $type, $linker = null ) {
 
-		if ( !$this->dataValue instanceOf NumberValue ) {
+		if ( !$this->dataValue instanceof NumberValue ) {
 			throw new RuntimeException( "The formatter is missing a valid NumberValue object" );
 		}
 

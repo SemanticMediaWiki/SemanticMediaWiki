@@ -39,7 +39,7 @@ $dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
 print sprintf( "\n%-20s%s\n", "Execution time:", $dateTimeUtc->format( 'Y-m-d h:i' ) );
 
 if ( extension_loaded('xdebug') && xdebug_is_enabled() ) {
-	print sprintf( "%-20s%s\n\n", "Xdebug:",  phpversion('xdebug') . ' (enabled)' );
+	print sprintf( "%-20s%s\n\n", "Xdebug:", phpversion('xdebug') . ' (enabled)' );
 } else {
 	print sprintf( "%-20s%s\n\n", "Xdebug:", 'Disabled (or not installed)' );
 }

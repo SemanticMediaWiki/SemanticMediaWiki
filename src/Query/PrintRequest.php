@@ -341,10 +341,10 @@ class PrintRequest {
 		$data = null;
 
 		if ( $printRequestLabel === '' ) { // print "this"
-			$printmode = PrintRequest::PRINT_THIS;
+			$printmode = self::PRINT_THIS;
 			$label = ''; // default
 		} elseif ( self::isCategory( $printRequestLabel ) ) { // print categories
-			$printmode = PrintRequest::PRINT_CATS;
+			$printmode = self::PRINT_CATS;
 			$label = $showMode ? '' : Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY ); // default
 		} else { // print property or check category
 			$title = Title::newFromText( $printRequestLabel, SMW_NS_PROPERTY ); // trim needed for \n
@@ -353,11 +353,11 @@ class PrintRequest {
 			}
 
 			if ( $title->getNamespace() == NS_CATEGORY ) {
-				$printmode = PrintRequest::PRINT_CCAT;
+				$printmode = self::PRINT_CCAT;
 				$data = $title;
 				$label = $showMode ? '' : $title->getText();  // default
 			} else { // enforce interpretation as property (even if it starts with something that looks like another namespace)
-				$printmode = PrintRequest::PRINT_PROP;
+				$printmode = self::PRINT_PROP;
 				$data = PropertyValue::makeUserProperty( $printRequestLabel );
 				if ( !$data->isValid() ) { // not a property; give up
 					return null;

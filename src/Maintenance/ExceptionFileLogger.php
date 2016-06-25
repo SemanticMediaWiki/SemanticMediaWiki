@@ -47,7 +47,7 @@ class ExceptionFileLogger {
 
 		$dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
 
-		$this->exceptionFile = $options->has( 'exception-log' ) ? $options->get( 'exception-log' ) : __DIR__ . "../../../" ;
+		$this->exceptionFile = $options->has( 'exception-log' ) ? $options->get( 'exception-log' ) : __DIR__ . "../../../";
 
 		//if ( !is_writable( $this->exceptionFile ) ) {
 		//	die( "`$this->exceptionFile` is not writable.\n" );
