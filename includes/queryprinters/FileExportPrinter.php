@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMWQuery;
+use SMWQueryProcessor;
 use SMWQueryResult;
 
 /**
@@ -60,6 +62,18 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 */
 	public function getFileName( SMWQueryResult $queryResult ) {
 		return false;
+	}
+
+	/**
+	 * File exports use MODE_INSTANCES on special pages (so that instances are
+	 * retrieved for the export) and MODE_NONE otherwise (displaying just a download link).
+	 *
+	 * @param $mode
+	 *
+	 * @return integer
+	 */
+	public function getQueryMode( $mode ) {
+		return $mode == SMWQueryProcessor::SPECIAL_PAGE ? SMWQuery::MODE_INSTANCES : SMWQuery::MODE_NONE;
 	}
 
 }
