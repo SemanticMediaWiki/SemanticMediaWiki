@@ -64,6 +64,8 @@ class NamespaceManager {
 	 */
 	public static function getCanonicalNames() {
 
+		global $smwgHistoricTypeNamespace;
+
 		$canonicalNames = array(
 			SMW_NS_PROPERTY      => 'Property',
 			SMW_NS_PROPERTY_TALK => 'Property_talk',
@@ -72,6 +74,11 @@ class NamespaceManager {
 			SMW_NS_CONCEPT       => 'Concept',
 			SMW_NS_CONCEPT_TALK  => 'Concept_talk'
 		);
+
+		if ( !$smwgHistoricTypeNamespace ) {
+			unset( $canonicalNames[SMW_NS_TYPE] );
+			unset( $canonicalNames[SMW_NS_TYPE_TALK] );
+		}
 
 		return $canonicalNames;
 	}
