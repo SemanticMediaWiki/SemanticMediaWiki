@@ -86,9 +86,28 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertCount(
+			4,
+			$result
+		);
+	}
+
+	public function testGetCanonicalNamesWithTypeNamespace() {
+
+		$GLOBALS['smwgHistoricTypeNamespace'] = true;
+
+		$result = NamespaceManager::getCanonicalNames();
+
+		$this->assertInternalType(
+			'array',
+			$result
+		);
+
+		$this->assertCount(
 			6,
 			$result
 		);
+
+		unset( $GLOBALS['smwgHistoricTypeNamespace'] );
 	}
 
 	public function testBuildNamespaceIndex() {
