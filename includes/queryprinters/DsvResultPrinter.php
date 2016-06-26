@@ -3,8 +3,6 @@
 namespace SMW;
 
 use Sanitizer;
-use SMWQuery;
-use SMWQueryProcessor;
 use SMWQueryResult;
 
 /**
@@ -63,10 +61,6 @@ class DsvResultPrinter extends FileExportPrinter {
 	 */
 	public function getFileName( SMWQueryResult $queryResult ) {
 		return $this->fileName;
-	}
-
-	public function getQueryMode( $context ) {
-		return $context == SMWQueryProcessor::SPECIAL_PAGE ? SMWQuery::MODE_INSTANCES : SMWQuery::MODE_NONE;
 	}
 
 	public function getName() {

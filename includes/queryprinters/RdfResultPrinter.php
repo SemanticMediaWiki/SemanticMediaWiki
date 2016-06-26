@@ -4,8 +4,6 @@ namespace SMW;
 
 use SMW\Query\PrintRequest;
 use SMWExporter;
-use SMWQuery;
-use SMWQueryProcessor;
 use SMWQueryResult;
 use SMWRDFXMLSerializer;
 use SMWTurtleSerializer;
@@ -62,10 +60,6 @@ class RdfResultPrinter extends FileExportPrinter {
 	 */
 	public function getFileName( SMWQueryResult $queryResult ) {
 		return $this->syntax == 'turtle' ? 'result.ttl' : 'result.rdf';
-	}
-
-	public function getQueryMode( $context ) {
-		return ( $context == SMWQueryProcessor::SPECIAL_PAGE ) ? SMWQuery::MODE_INSTANCES : SMWQuery::MODE_NONE;
 	}
 
 	public function getName() {
