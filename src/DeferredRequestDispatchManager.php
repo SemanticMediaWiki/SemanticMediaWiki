@@ -83,6 +83,16 @@ class DeferredRequestDispatchManager {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param Title $title
+	 * @param array $parameters
+	 */
+	public function dispatchSearchTableUpdateJobFor( Title $title, $parameters = array() ) {
+		return $this->dispatchJobRequestFor( 'SMW\SearchTableUpdateJob', $title, $parameters );
+	}
+
+	/**
 	 * @since 2.3
 	 *
 	 * @param string $type
@@ -134,6 +144,18 @@ class DeferredRequestDispatchManager {
 			};
 		}
 
+		if ( $type === 'SMW\SearchTableUpdateJob' ) {
+			$callback = function ( $title, $parameters ) use ( $jobFactory ) {
+
+				$purgeParserCacheJob = $jobFactory->newSearchTableUpdateJob(
+					$title,
+					$parameters
+				);
+
+				$purgeParserCacheJob->insert();
+			};
+		}
+
 		if ( $type === 'SMW\UpdateJob' ) {
 			$callback = function ( $title, $parameters ) use ( $jobFactory ) {
 				$updateJob = $jobFactory->newUpdateJob(
@@ -150,7 +172,7 @@ class DeferredRequestDispatchManager {
 
 	private function doPreliminaryCheckForType( $type, array $parameters ) {
 
-		if ( $type !== 'SMW\ParserCachePurgeJob' && $type !== 'SMW\UpdateJob' ) {
+		if ( $type !== 'SMW\ParserCachePurgeJob' && $type !== 'SMW\UpdateJob' && $type !== 'SMW\SearchTableUpdateJob' ) {
 			return false;
 		}
 
@@ -189,7 +211,7 @@ class DeferredRequestDispatchManager {
 		} );
 
 		$this->httpRequest->setOption( ONOI_HTTP_REQUEST_ON_FAILED_CALLBACK, function( $requestResponse ) use ( $dispatchableCallbackJob, $title, $type, $parameters ) {
-			wfDebugLog( 'smw', "SMW\DeferredRequestDispatchManager: Connection to SpecialDeferredRequestDispatcher failed therefore adding {$type} for " . $title->getPrefixedDBkey() . "\n" );
+			wfDebugLog( 'smw', "SMW\DeferredRequestDispatchManager: Connection to SpecialDeferredRequestDispatcher failed on {$type} with " . json_encode( $requestResponse->getList() ). " " . $title->getPrefixedDBkey() . "\n" );
 			call_user_func_array( $dispatchableCallbackJob, array( $title, $parameters ) );
 		} );
 

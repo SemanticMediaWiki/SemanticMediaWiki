@@ -210,9 +210,13 @@ EOT;
 	}
 
 	/**
-	 * Create an index using the suitable SQL for various RDBMS.
+	 * @see RdbmsTableBuilder::doCreateIndex
 	 */
-	protected function doCreateIndex( $tableName, $indexType, $indexName, $columns ) {
+	protected function doCreateIndex( $tableName, $indexType, $indexName, $columns, array $indexOptions ) {
+
+		if ( $indexType === 'FULLTEXT' ) {
+			return $this->reportMessage( "   ... skipping the fulltext index creation ..." );
+		}
 
 		$tableName = $this->connection->tableName( $tableName, 'raw' );
 		$indexName = "{$tableName}_index{$indexName}";

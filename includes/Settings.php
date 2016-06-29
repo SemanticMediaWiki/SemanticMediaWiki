@@ -139,6 +139,12 @@ class Settings extends Options {
 			'smwgEnabledInTextAnnotationParserStrictMode' => $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'],
 			'smwgSparqlRepositoryConnectorForcedHttpVersion' => $GLOBALS['smwgSparqlRepositoryConnectorForcedHttpVersion'],
 			'smwgDVFeatures' => $GLOBALS['smwgDVFeatures'],
+			'smwgEnabledFulltextSearch' => $GLOBALS['smwgEnabledFulltextSearch'],
+			'smwgFulltextDeferredUpdate' => $GLOBALS['smwgFulltextDeferredUpdate'],
+			'smwgFulltextSearchTableOptions' => $GLOBALS['smwgFulltextSearchTableOptions'],
+			'smwgFulltextSearchPropertyExemptionList' => $GLOBALS['smwgFulltextSearchPropertyExemptionList'],
+			'smwgFulltextSearchMinTokenSize' => $GLOBALS['smwgFulltextSearchMinTokenSize'],
+			'smwgFulltextLanguageDetection' => $GLOBALS['smwgFulltextLanguageDetection']
 		);
 
 		$settings = $settings + array(
@@ -168,6 +174,27 @@ class Settings extends Options {
 	 */
 	public static function newFromArray( array $settings ) {
 		return new self( $settings );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 */
+	public function add( $key, $value ) {
+
+		if ( !$this->has( $key ) ) {
+			return $this->set( $key, $value );
+		}
+
+		$val = $this->get( $key );
+
+		if ( is_array( $val ) ) {
+			$value = array_merge_recursive( $val, $value );
+		}
+
+		return $this->set( $key, $value );
 	}
 
 	/**

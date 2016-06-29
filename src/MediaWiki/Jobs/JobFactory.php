@@ -48,4 +48,16 @@ class JobFactory {
 		return new ParserCachePurgeJob( $title, $parameters );
 	}
 
+	/**
+	 * @since 2.5
+	 *
+	 * @param Title $title
+	 * @param array $parameters
+	 *
+	 * @return SearchTableUpdateJob
+	 */
+	public function newSearchTableUpdateJob( Title $title, array $parameters = array() ) {
+		return new SearchTableUpdateJob( $title, $parameters );
+	}
+
 }

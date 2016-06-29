@@ -206,6 +206,7 @@ final class Setup {
 		$this->globalVars['wgJobClasses']['SMW\RefreshJob'] = 'SMW\MediaWiki\Jobs\RefreshJob';
 		$this->globalVars['wgJobClasses']['SMW\UpdateDispatcherJob'] = 'SMW\MediaWiki\Jobs\UpdateDispatcherJob';
 		$this->globalVars['wgJobClasses']['SMW\ParserCachePurgeJob'] = 'SMW\MediaWiki\Jobs\ParserCachePurgeJob';
+		$this->globalVars['wgJobClasses']['SMW\SearchTableUpdateJob'] = 'SMW\MediaWiki\Jobs\SearchTableUpdateJob';
 
 		// Legacy definition to be removed with 1.10
 		$this->globalVars['wgJobClasses']['SMWUpdateJob']  = 'SMW\MediaWiki\Jobs\UpdateJob';

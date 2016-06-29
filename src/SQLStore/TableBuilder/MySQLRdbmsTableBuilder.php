@@ -57,8 +57,23 @@ class MySQLRdbmsTableBuilder extends RdbmsTableBuilder {
 	 * @see RdbmsTableBuilder::getSQLFromDBTableOptions
 	 */
 	protected function getSQLFromDBTableOptions( array $tableOptions ) {
+
+		if ( isset( $tableOptions['ftSearchOptions']['mysql'] ) ) {
+
+			$tableOption = $tableOptions['ftSearchOptions']['mysql'];
+
+			// By convention the first index has table specific relevance
+			if ( is_array( $tableOption ) ) {
+				$tableOption = isset( $tableOption[0] ) ? $tableOption[0] : '';
+			}
+
+			return $tableOption;
+		}
+
 		// This replacement is needed for compatibility, see http://bugs.mysql.com/bug.php?id=17501
-		return str_replace( 'TYPE', 'ENGINE', $GLOBALS['wgDBTableOptions'] );
+		if ( isset( $tableOptions['wgDBTableOptions'] ) ) {
+			return str_replace( 'TYPE', 'ENGINE', $tableOptions['wgDBTableOptions'] );
+		}
 	}
 
 	/**
@@ -175,12 +190,28 @@ class MySQLRdbmsTableBuilder extends RdbmsTableBuilder {
 	/**
 	 * @see RdbmsTableBuilder::doCreateIndex
 	 */
-	protected function doCreateIndex( $tableName, $indexType, $indexName, $columns ) {
+	protected function doCreateIndex( $tableName, $indexType, $indexName, $columns, array $indexOptions ) {
 
 		$tableName = $this->connection->tableName( $tableName );
+		$indexOption = '';
 
 		$this->reportMessage( "   ... creating new index $columns ..." );
-		$this->connection->query( "ALTER TABLE $tableName ADD $indexType ($columns)", __METHOD__ );
+
+		if ( isset( $indexOptions['ftSearchOptions']['mysql'] ) ) {
+			$indexOption = $indexOptions['ftSearchOptions']['mysql'];
+
+			// By convention the second index has index specific relevance
+			if ( is_array( $indexOption ) ) {
+				$indexOption = isset( $indexOption[1] ) ? $indexOption[1] : '';
+			}
+		}
+
+		if ( $indexType === 'FULLTEXT' ) {
+			$this->connection->query( "ALTER TABLE $tableName ADD $indexType $columns ($columns) $indexOption", __METHOD__ );
+		} else {
+			$this->connection->query( "ALTER TABLE $tableName ADD $indexType ($columns)", __METHOD__ );
+		}
+
 		$this->reportMessage( "done.\n" );
 	}
 

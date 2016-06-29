@@ -7,6 +7,7 @@ use SMW\DataValueFactory;
 use SMW\DeferredCallableUpdate;
 use SMW\Store;
 use SMW\Tests\Utils\UtilityFactory;
+use RuntimeException;
 
 /**
  * @license GNU GPL v2+
@@ -150,6 +151,16 @@ class TestEnvironment {
 		$this->dataValueFactory->clear();
 	}
 
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param array $pages
+	 */
+	public function flushPages( $pages ) {
+		$this->getUtilityFactory()->newPageDeleter()->doDeletePoolOfPages( $pages );
+	}
+
 	/**
 	 * @since 2.4
 	 *
@@ -157,6 +168,27 @@ class TestEnvironment {
 	 */
 	public function getUtilityFactory() {
 		return UtilityFactory::getInstance();
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $target
+	 * @param string $file
+	 *
+	 * @return string
+	 * @throws RuntimeException
+	 */
+	public function getFixturesLocation( $target = '', $file = '' ) {
+
+		$fixturesLocation = __DIR__ . '/Fixtures' . ( $target !== '' ? "/{$target}" :  '' ) . '/' . $file;
+		$fixturesLocation = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $fixturesLocation );
+
+		if ( !file_exists( $fixturesLocation ) && !is_dir( $fixturesLocation ) ) {
+			throw new RuntimeException( "{$fixturesLocation} does not exist." );
+		}
+
+		return $fixturesLocation;
 	}
 
 }

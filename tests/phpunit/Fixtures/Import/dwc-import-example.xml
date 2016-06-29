@@ -1,0 +1,307 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.10/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.10/ http://www.mediawiki.org/xml/export-0.10.xsd" version="0.10" xml:lang="en">
+  <siteinfo>
+    <sitename>mw-test</sitename>
+    <dbname>mw-test</dbname>
+    <base>http://localhost:8080/mw-test/index.php/Main_Page</base>
+    <generator>MediaWiki 1.25.1</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Media</namespace>
+      <namespace key="-1" case="first-letter">Special</namespace>
+      <namespace key="0" case="first-letter" />
+      <namespace key="1" case="first-letter">Talk</namespace>
+      <namespace key="2" case="first-letter">User</namespace>
+      <namespace key="3" case="first-letter">User talk</namespace>
+      <namespace key="4" case="first-letter">mw-test</namespace>
+      <namespace key="5" case="first-letter">mw-test talk</namespace>
+      <namespace key="6" case="first-letter">File</namespace>
+      <namespace key="7" case="first-letter">File talk</namespace>
+      <namespace key="8" case="first-letter">MediaWiki</namespace>
+      <namespace key="9" case="first-letter">MediaWiki talk</namespace>
+      <namespace key="10" case="first-letter">Template</namespace>
+      <namespace key="11" case="first-letter">Template talk</namespace>
+      <namespace key="12" case="first-letter">Help</namespace>
+      <namespace key="13" case="first-letter">Help talk</namespace>
+      <namespace key="14" case="first-letter">Category</namespace>
+      <namespace key="15" case="first-letter">Category talk</namespace>
+      <namespace key="102" case="first-letter">Property</namespace>
+      <namespace key="103" case="first-letter">Property talk</namespace>
+      <namespace key="108" case="first-letter">Concept</namespace>
+      <namespace key="109" case="first-letter">Concept talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>MediaWiki:Smw import dwc</title>
+    <ns>8</ns>
+    <id>1287</id>
+    <revision>
+      <id>4669</id>
+      <timestamp>2015-08-05T18:38:11Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;http://rs.tdwg.org/dwc/terms/|[http://rs.tdwg.org/dwc/terms/ Darwin Core Terms (DwC)]  scientificName|Type:Text  vernacularName|Type:Monolingual text  taxonID|Type:Text  kingd...&quot;</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="299">http://rs.tdwg.org/dwc/terms/|[http://rs.tdwg.org/dwc/terms/ Darwin Core Terms (DwC)]
+ scientificName|Type:Text
+ vernacularName|Type:Monolingual text
+ taxonID|Type:Text
+ kingdom|Type:Text
+ phylum|Type:Text
+ family|Type:Text
+ genus|Type:Text
+ order|Type:Text
+ class|Type:Text
+
+[[Category:Dwc import]]</text>
+      <sha1>14269h4v28zrlit9yhq25mj2nhzxomp</sha1>
+    </revision>
+  </page>
+  <page>
+    <title>Category:Dwc import</title>
+    <ns>14</ns>
+    <id>1291</id>
+    <revision>
+      <id>4673</id>
+      <timestamp>2015-08-05T18:39:29Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;http://rs.tdwg.org/dwc/terms/&quot;</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="29">http://rs.tdwg.org/dwc/terms/</text>
+      <sha1>gaz4e878f2b2sie5mo6b7aeyndbq0d4</sha1>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Dwc:genus</title>
+    <ns>102</ns>
+    <id>1290</id>
+    <revision>
+      <id>4672</id>
+      <timestamp>2015-08-05T18:39:08Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;* [[Imported from::dwc:genus]] {{DISPLAYTITLE:dwc:genus}}  [[Category:Dwc import]]&quot;</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="82">* [[Imported from::dwc:genus]] {{DISPLAYTITLE:dwc:genus}}
+
+[[Category:Dwc import]]</text>
+      <sha1>gsxqimgmffeoojuc7mtdx7xjyzgrdua</sha1>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Dwc:kingdom</title>
+    <ns>102</ns>
+    <id>1292</id>
+    <revision>
+      <id>4676</id>
+      <parentid>4675</parentid>
+      <timestamp>2015-08-05T18:41:15Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="775">* [[Imported from::dwc:kingdom]] {{DISPLAYTITLE:dwc:kingdom}}
+* Property description:
+** [[Has property description::The full scientific name of the kingdom in which the taxon is classified. (&quot;Animalia&quot;, &quot;Plantae&quot;)@en]]
+** [[Has property description::El nombre científico completo del reino en el que se clasifica el taxón.@es]]
+** [[Has property description::分类单元所属界的完整学名。@zh-Hans]]
+** [[Has property description::その分類群が位置づけられている、分類上の「界」のフルネーム。@ja]]
+** [[Has property description::Le nom scientifique complet du règne dans lequel le taxon est classé@fr]]
+
+Retrieved 20:32, February 29, 2016 from http://terms.tdwg.org/w/index.php?title=dwc:kingdom&amp;oldid=10142
+
+[[Category:Dwc import]]</text>
+      <sha1>jdgcwwgncncbui9un4h14p4zyqki1m3</sha1>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Dwc:order</title>
+    <ns>102</ns>
+    <id>1293</id>
+    <revision>
+      <id>4677</id>
+      <timestamp>2015-08-05T18:42:18Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;* [[Imported from::dwc:order]] {{DISPLAYTITLE:dwc:order}}  [[Category:Dwc import]]&quot;</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="82">* [[Imported from::dwc:order]] {{DISPLAYTITLE:dwc:order}}
+
+[[Category:Dwc import]]</text>
+      <sha1>asv9cxea8cm6lr4luptlimsvau0oagz</sha1>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Dwc:phylum</title>
+    <ns>102</ns>
+    <id>1294</id>
+    <revision>
+      <id>4679</id>
+      <timestamp>2015-08-05T18:43:11Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;* [[Imported from::dwc:phylum]] {{DISPLAYTITLE:dwc:phylum}}  [[Category:Dwc import]]&quot;</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="84">* [[Imported from::dwc:phylum]] {{DISPLAYTITLE:dwc:phylum}}
+
+[[Category:Dwc import]]</text>
+      <sha1>i9rkmrniujg125dykx2ka2fkdv85kdc</sha1>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Dwc:scientificName</title>
+    <ns>102</ns>
+    <id>1295</id>
+    <revision>
+      <id>4680</id>
+      <timestamp>2015-08-05T18:43:47Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;* [[Imported from::dwc:scientificName]] {{DISPLAYTITLE:dwc:scientificName}}  [[Category:Dwc import]]&quot;</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="100">* [[Imported from::dwc:scientificName]] {{DISPLAYTITLE:dwc:scientificName}}
+
+[[Category:Dwc import]]</text>
+      <sha1>4r77lhnl3jsbazjgxqrr3i4qdvm5bil</sha1>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Dwc:taxonID</title>
+    <ns>102</ns>
+    <id>1296</id>
+    <revision>
+      <id>4681</id>
+      <timestamp>2015-08-05T18:45:07Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;* [[Imported from::dwc:taxonID]] {{DISPLAYTITLE:dwc:taxonID}}  [[Category:Dwc import]]&quot;</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="86">* [[Imported from::dwc:taxonID]] {{DISPLAYTITLE:dwc:taxonID}}
+
+[[Category:Dwc import]]</text>
+      <sha1>gzoh496mp6y6xzeihd08xitzd6fo18c</sha1>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Dwc:vernacularName</title>
+    <ns>102</ns>
+    <id>1297</id>
+    <revision>
+      <id>4689</id>
+      <parentid>4688</parentid>
+      <timestamp>2015-08-05T18:54:18Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="663">* [[Imported from::dwc:vernacularName]] {{DISPLAYTITLE:dwc:vernacularName}}
+* Property description:
+** [[Has property description::A common or vernacular name@en]]
+** [[Has property description::Nom commun ou vernaculaire@fr]]
+** [[Has property description::Ein geräuchlicher Name oder Volksname@de]]
+** [[Has property description::Ein geräuchlicher Name oder Volksname@de]]
+** [[Has property description::一般名、あるいは通俗名@ja]]
+** [[Has property description::一个常见或者俗名@zh-Hans]]
+** [[Has property description::Un nombre común o vernacular@es]]
+
+http://terms.tdwg.org/w/index.php?title=dwc:vernacularName
+
+[[Category:Dwc import]]</text>
+      <sha1>pdeh0ku8smvn732nlxvshf82km6j9km</sha1>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Dwc:class</title>
+    <ns>102</ns>
+    <id>1288</id>
+    <revision>
+      <id>4683</id>
+      <parentid>4670</parentid>
+      <timestamp>2015-08-05T18:46:00Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="82">* [[Imported from::dwc:class]] {{DISPLAYTITLE:dwc:class}}
+
+[[Category:Dwc import]]</text>
+      <sha1>mlkipjysemqufxpfqd96qro2pvrbdmq</sha1>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Dwc:family</title>
+    <ns>102</ns>
+    <id>1289</id>
+    <revision>
+      <id>4684</id>
+      <parentid>4671</parentid>
+      <timestamp>2015-08-05T18:46:11Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="84">* [[Imported from::dwc:family]] {{DISPLAYTITLE:dwc:family}}
+
+[[Category:Dwc import]]</text>
+      <sha1>ed6vrz42groes5xa8jhrrsbfdrdifmg</sha1>
+    </revision>
+  </page>
+  <page>
+    <title>GBIFID:2706490</title>
+    <ns>0</ns>
+    <id>1286</id>
+    <revision>
+      <id>4691</id>
+      <parentid>4690</parentid>
+      <timestamp>2015-08-05T18:55:46Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text xml:space="preserve" bytes="497">[[dwc:scientificName::Agrostis capillaris L.]]
+
+* [[dwc:kingdom::Plantea]]
+* [[dwc:phylum::Magnoliophyta]]
+* [[dwc:class::Liliopsida]]
+* [[dwc:order::Poales]]
+* [[dwc:family::Poaceae]]
+* [[dwc:genus::Agrostis]]
+* [[dwc:vernacularName::Gewoon struisgras@en]] [[dwc:vernacularName::Rotes Straußgras@de]] [[dwc:vernacularName::Agrostis commun@fr]] [[dwc:vernacularName::Agrostis capillaris@es]]
+* [[dwc:taxonID::1365]]
+
+[[Category:Dwc import]] __SHOWFACTBOX__ {{DISPLAYTITLE:Agrostis capillaris L.}}</text>
+      <sha1>77qals7ynkvp7t6spigid49yy59gkje</sha1>
+    </revision>
+  </page>
+</mediawiki>

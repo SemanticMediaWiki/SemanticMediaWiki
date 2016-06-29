@@ -64,6 +64,7 @@
        <var name="smwgSparqlDefaultGraph" value="http://example.org/phpunit-testrun"/>
        <var name="smwgValueLookupCacheType" value="hash"/>
        <var name="smwgEnabledDeferredUpdate" value="false"/>
+       <var name="smwgEnabledFulltextSearch" value="false"/>
        <var name="smwgEnabledHttpDeferredJobRequest" value="false"/>
        <var name="smwgEnabledQueryDependencyLinksStore" value="true"/>
        <var name="benchmarkQueryRepetitionExecutionThreshold" value="5"/>

@@ -1,0 +1,199 @@
+{
+	"description": "Test `_txt`/`~` with enabled Fulltext search support (only enabled for MySQL)",
+	"properties": [
+		{
+			"name": "Has text",
+			"contents": "[[Has type::Text]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/Q0104/1",
+			"contents": "{{#subobject: |Has text=MySQL vs MariaDB database}} {{#subobject: |Has text=Oracle vs MariaDB database}} {{#subobject: |Has text=PostgreSQL vs MariaDB database and more of}} {{#subobject: |Has text=MariaDB overview}}"
+		},
+		{
+			"name": "Example/Q0104/2",
+			"contents": "{{#subobject: |Has text=Elastic search}} {{#subobject: |Has text=Sphinx search}}"
+		},
+		{
+			"name": "Example/Q0104/3",
+			"contents": "{{#subobject: |Has text=...a hyphenated phrase that has special significance when it appears at the beginning of text...}} {{#subobject: |Has text=...a hyphenated phrase that has NOT any special significance when it appears at the beginning of text...}}"
+		},
+		{
+			"name": "Example/Q0104/4",
+			"contents": "{{#subobject: |Has text=Text with a category|@category=Q0104}} {{#subobject: |Has text=Text without a category}}"
+		}
+	],
+	"job-run":[
+		"SMW\\SearchTableUpdateJob"
+	],
+	"query-testcases": [
+		{
+			"about": "#0 with boolean include/not include",
+			"condition": "[[Has text::~+MariaDB -database]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0104/1#0##_55b020117d21e4b7967cf5bf78cf6b32"
+				]
+			}
+		},
+		{
+			"about": "#1",
+			"condition": "[[Has text::~+database]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 3,
+				"results": [
+					"Example/Q0104/1#0##_7980f674d00e51fbc91cc663a43054c5",
+					"Example/Q0104/1#0##_507a001e2e9e0e7659aa33e8c4b2d471",
+					"Example/Q0104/1#0##_1a377960fd7e6c287e97c519278761b4"
+				]
+			}
+		},
+		{
+			"about": "#2 (plus sorting)",
+			"condition": "[[Has text::~DATA*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10",
+				"sort": { "Has_text": "DESC" }
+			},
+			"queryresult": {
+				"count": 3,
+				"results": [
+					"Example/Q0104/1#0##_1a377960fd7e6c287e97c519278761b4",
+					"Example/Q0104/1#0##_507a001e2e9e0e7659aa33e8c4b2d471",
+					"Example/Q0104/1#0##_7980f674d00e51fbc91cc663a43054c5"
+				]
+			}
+		},
+		{
+			"about": "#3 (plus sorting)",
+			"condition": "[[Has text::~sear*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10",
+				"sort": { "Has_text": "ASC" }
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0104/2#0##_977ae79c0c362dc7a2ceaf94859178e7",
+					"Example/Q0104/2#0##_29a504fbd2492700363d5491902958e9"
+				]
+			}
+		},
+		{
+			"about": "#4 include/not include",
+			"condition": "[[Has text::~sear*, -elas*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10",
+				"sort": { "Has_text": "DESC" }
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0104/2#0##_29a504fbd2492700363d5491902958e9"
+				]
+			}
+		},
+		{
+			"about": "#5 same as #4",
+			"condition": "[[Has text::!~elastic*, +sear*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0104/2#0##_29a504fbd2492700363d5491902958e9"
+				]
+			}
+		},
+		{
+			"about": "#6 phrase matching",
+			"condition": "[[Has text::~\"phrase that has special\"]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0104/3#0##_1aa6fcbe946e44dc061627ce545e0cd9"
+				]
+			}
+		},
+		{
+			"about": "#7 similar to #5 but not used in phrase matching mode",
+			"condition": "[[Has text::~phrase that has special]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0104/3#0##_1aa6fcbe946e44dc061627ce545e0cd9",
+					"Example/Q0104/3#0##_682a8c9f798c14548a4599b68d83b78e"
+				]
+			}
+		},
+		{
+			"about": "#8 free search",
+			"condition": "[[~~with a category]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0104/4#0##_5a524a435267f6e6d2d45d64a419c1da",
+					"Example/Q0104/4#0##_d4fe48d7241e6530c628f32168815beb"
+				]
+			}
+		},
+		{
+			"about": "#9 free search",
+			"condition": "[[~~with a category]] [[Category:Q0104]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0104/4#0##_d4fe48d7241e6530c628f32168815beb"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgEnabledFulltextSearch": true,
+		"smwgFulltextDeferredUpdate": false
+	},
+	"meta": {
+		"skip-on": {
+			"postgres": "Not supported by PostgreSQL.",
+			"sqlite": "Not supported by SQLite.",
+			"sesame": "Not supported by SPARQLStore (Sesame).",
+			"virtuoso": "Not supported by SPARQLStore (Virtuoso).",
+			"fuseki": "Not supported by SPARQLStore (Fuskei).",
+			"blazegraph": "Not supported by SPARQLStore (Blazegraph)."
+		},
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

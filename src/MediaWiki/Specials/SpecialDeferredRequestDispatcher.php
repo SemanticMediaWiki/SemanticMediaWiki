@@ -106,6 +106,9 @@ class SpecialDeferredRequestDispatcher extends SpecialPage {
 			case 'SMW\ParserCachePurgeJob':
 				$this->runParserCachePurgeJob( $title, $parameters );
 				break;
+			case 'SMW\SearchTableUpdateJob':
+				$this->runSearchTableUpdateJob( $title, $parameters );
+				break;
 			case 'SMW\UpdateJob':
 				$this->runUpdateJob( $title, $parameters );
 				break;
@@ -150,6 +153,16 @@ class SpecialDeferredRequestDispatcher extends SpecialPage {
 		);
 
 		$purgeParserCacheJob->run();
+	}
+
+	private function runSearchTableUpdateJob( $title, $parameters ) {
+
+		$searchTableUpdateJob = ApplicationFactory::getInstance()->newJobFactory()->newSearchTableUpdateJob(
+			$title,
+			$parameters
+		);
+
+		$searchTableUpdateJob->run();
 	}
 
 	private function runUpdateJob( $title, $parameters ) {

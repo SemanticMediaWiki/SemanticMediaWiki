@@ -54,4 +54,14 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructSearchTableUpdateJob() {
+
+		$instance = new JobFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\Jobs\SearchTableUpdateJob',
+			$instance->newSearchTableUpdateJob( Title::newFromText( __METHOD__ ) )
+		);
+	}
+
 }
