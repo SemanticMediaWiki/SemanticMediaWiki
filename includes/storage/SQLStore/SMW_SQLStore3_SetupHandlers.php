@@ -2,6 +2,8 @@
 
 use Onoi\MessageReporter\MessageReporter;
 use SMW\CompatibilityMode;
+use SMW\SQLStore\SQLStoreFactory;
+use Onoi\MessageReporter\MessageReporterFactory;
 
 /**
  * @ingroup SMWStore
@@ -28,8 +30,11 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 	 */
 	protected $store;
 
+	private $factory;
+
 	public function __construct( SMWSQLStore3 $parentstore ) {
 		$this->store = $parentstore;
+		$this->factory = new SQLStoreFactory( $parentstore );
 	}
 
 	public function setup( $verbose = true ) {
@@ -67,106 +72,132 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 
 		$reportTo = $verbose ? $this : null; // Use $this to report back from static SMWSQLHelpers.
 
-		// Repeatedly used DB field types defined here for convenience.
-		$dbtypes = array(
-			'b' => ( $wgDBtype == 'postgres' ? 'BOOLEAN' : 'TINYINT(1)' ),
-			't' => SMWSQLHelpers::getStandardDBType( 'title' ),
-			'l' => SMWSQLHelpers::getStandardDBType( 'blob' ),
-			'f' => ( $wgDBtype == 'postgres' ? 'DOUBLE PRECISION' : 'DOUBLE' ),
-			'i' => ( $wgDBtype == 'postgres' ? 'bigint' : 'INT(8)' ),
-			'j' => ( $wgDBtype == 'postgres' || $wgDBtype == 'sqlite' ? 'INTEGER' : 'INT(8) UNSIGNED' ),
-			'p' => SMWSQLHelpers::getStandardDBType( 'id' ),
-			'n' => SMWSQLHelpers::getStandardDBType( 'namespace' ),
-			'w' => SMWSQLHelpers::getStandardDBType( 'iw' )
-		);
+		$rdbmsTableBuilder = $this->factory->newRdbmsTableBuilder();
 
-		switch ( $wgDBtype ) {
-			case 'sqlite':
-				$idType = $dbtypes['p'] . ' NOT NULL PRIMARY KEY AUTOINCREMENT';
-				break;
-			case 'postgres':
-				$idType = $dbtypes['p'] . ' NOT NULL PRIMARY KEY';
-				break;
-			default:
-				$idType = $dbtypes['p'] . ' NOT NULL KEY AUTO_INCREMENT';
-				break;
+		if ( $verbose ) {
+			$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
+			$messageReporter->registerReporterCallback( array( $this , 'reportProgress' ) );
+
+			$rdbmsTableBuilder->setMessageReporter( $messageReporter );
 		}
 
-		// Set up table for internal IDs used in this store:
-		SMWSQLHelpers::setupTable(
-			SMWSQLStore3::ID_TABLE,
-			array(
-				'smw_id' => $idType,
-				'smw_namespace' => $dbtypes['n'] . ' NOT NULL',
-				'smw_title' => $dbtypes['t'] . ' NOT NULL',
-				'smw_iw' => $dbtypes['w'] . ' NOT NULL',
-				'smw_subobject' => $dbtypes['t'] . ' NOT NULL',
-				'smw_sortkey' => $dbtypes['t']  . ' NOT NULL',
-				'smw_proptable_hash' => $dbtypes['l']
-			),
-			$db,
-			$reportTo
+		// Repeatedly used DB field types defined here for convenience.
+		$dbtypes = array(
+			'b' => $rdbmsTableBuilder->getStandardFieldType( 'boolean' ),
+			't' => $rdbmsTableBuilder->getStandardFieldType( 'title' ),
+			's' => $rdbmsTableBuilder->getStandardFieldType( 'sort' ),
+			'l' => $rdbmsTableBuilder->getStandardFieldType( 'blob' ),
+			'f' => $rdbmsTableBuilder->getStandardFieldType( 'double' ),
+			'i' => $rdbmsTableBuilder->getStandardFieldType( 'integer' ),
+			'j' => $rdbmsTableBuilder->getStandardFieldType( 'integer unsigned' ),
+			'u' => $rdbmsTableBuilder->getStandardFieldType( 'usage count' ),
+			'p' => $rdbmsTableBuilder->getStandardFieldType( 'id' ),
+			'n' => $rdbmsTableBuilder->getStandardFieldType( 'namespace' ),
+			'w' => $rdbmsTableBuilder->getStandardFieldType( 'iw' )
 		);
 
-		SMWSQLHelpers::setupIndex(
+		// Set up table for internal IDs used in this store:
+		$rdbmsTableBuilder->createTable(
 			SMWSQLStore3::ID_TABLE,
 			array(
-				'smw_id',
-				'smw_id,smw_sortkey',
-				'smw_iw', // iw match lookup
-				'smw_title,smw_namespace,smw_iw,smw_subobject', // id lookup
-				'smw_sortkey' // select by sortkey (range queries)
-			),
-			$db
+				'fields' => array(
+					'smw_id' => $rdbmsTableBuilder->getStandardFieldType( 'id primary' ),
+					'smw_namespace' => $dbtypes['n'] . ' NOT NULL',
+					'smw_title' => $dbtypes['t'] . ' NOT NULL',
+					'smw_iw' => $dbtypes['w'] . ' NOT NULL',
+					'smw_subobject' => $dbtypes['t'] . ' NOT NULL',
+					'smw_sortkey' => $dbtypes['t']  . ' NOT NULL',
+					'smw_proptable_hash' => $dbtypes['l']
+				),
+				'wgDBname' => $GLOBALS['wgDBname'],
+				'wgDBTableOptions' => $GLOBALS['wgDBTableOptions']
+			)
+		);
+
+		$rdbmsTableBuilder->createIndex(
+			SMWSQLStore3::ID_TABLE,
+			array(
+				'indicies' => array(
+					'smw_id',
+					'smw_id,smw_sortkey',
+					'smw_iw', // iw match lookup
+					'smw_title,smw_namespace,smw_iw,smw_subobject', // id lookup
+					'smw_sortkey', // select by sortkey (range queries)
+				)
+			)
 		);
 
 		// Set up concept cache: member elements (s)->concepts (o)
-		SMWSQLHelpers::setupTable(
+		$rdbmsTableBuilder->createTable(
 			SMWSQLStore3::CONCEPT_CACHE_TABLE,
 			array(
-				's_id' => $dbtypes['p'] . ' NOT NULL',
-				'o_id' => $dbtypes['p'] . ' NOT NULL'
-			),
-			$db,
-			$reportTo
+				'fields' => array(
+					's_id' => $dbtypes['p'] . ' NOT NULL',
+					'o_id' => $dbtypes['p'] . ' NOT NULL'
+				),
+				'wgDBname' => $GLOBALS['wgDBname'],
+				'wgDBTableOptions' => $GLOBALS['wgDBTableOptions']
+			)
 		);
 
-		SMWSQLHelpers::setupIndex( SMWSQLStore3::CONCEPT_CACHE_TABLE, array( 'o_id' ), $db );
+		$rdbmsTableBuilder->createIndex(
+			SMWSQLStore3::CONCEPT_CACHE_TABLE,
+			array(
+				'indicies' => array(
+					'o_id'
+				)
+			)
+		);
 
-		SMWSQLHelpers::setupTable(
+		// Set up ...
+		$rdbmsTableBuilder->createTable(
 			SMWSQLStore3::QUERY_LINKS_TABLE,
 			array(
-				's_id' => $dbtypes['p'] . ' NOT NULL',
-				'o_id' => $dbtypes['p'] . ' NOT NULL'
-			),
-			$db,
-			$reportTo
+				'fields' => array(
+					's_id' => $dbtypes['p'] . ' NOT NULL',
+					'o_id' => $dbtypes['p'] . ' NOT NULL'
+				),
+				'wgDBname' => $GLOBALS['wgDBname'],
+				'wgDBTableOptions' => $GLOBALS['wgDBTableOptions']
+			)
 		);
 
-		SMWSQLHelpers::setupIndex( SMWSQLStore3::QUERY_LINKS_TABLE,
+		$rdbmsTableBuilder->createIndex(
+			SMWSQLStore3::QUERY_LINKS_TABLE,
 			array(
-				's_id',
-				'o_id',
-				's_id,o_id'
-			),
-			$db
+				'indicies' => array(
+					's_id',
+					'o_id',
+					's_id,o_id'
+				)
+			)
 		);
 
 		// Set up table for stats on Properties (only counts for now)
-		SMWSQLHelpers::setupTable(
+		$rdbmsTableBuilder->createTable(
 			SMWSQLStore3::PROPERTY_STATISTICS_TABLE,
 			array(
-				'p_id' => $dbtypes['p'],
-				'usage_count' => ( $wgDBtype == 'postgres' ?  $dbtypes['i'] :  $dbtypes['j'] )
-			),
-			$db,
-			$reportTo
+				'fields' => array(
+					'p_id' => $dbtypes['p'],
+					'usage_count' => $dbtypes['u']
+				),
+				'wgDBname' => $GLOBALS['wgDBname'],
+				'wgDBTableOptions' => $GLOBALS['wgDBTableOptions']
+			)
 		);
 
-		SMWSQLHelpers::setupIndex( SMWSQLStore3::PROPERTY_STATISTICS_TABLE, array( array( 'p_id', 'UNIQUE INDEX' ), 'usage_count' ), $db );
+		$rdbmsTableBuilder->createIndex(
+			SMWSQLStore3::PROPERTY_STATISTICS_TABLE,
+			array(
+				'indicies' => array(
+					array( 'p_id', 'UNIQUE INDEX' ),
+					'usage_count'
+				)
+			)
+		);
 
 		// Set up all property tables as defined:
-		$this->setupPropertyTables( $dbtypes, $db, $reportTo );
+		$this->setupPropertyTables( $rdbmsTableBuilder, $dbtypes );
 
 		$this->reportProgress( "Database initialized successfully.\n\n", $verbose );
 	}
@@ -176,10 +207,8 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 	 *
 	 * @since 1.8
 	 * @param array $dbtypes
-	 * @param DatabaseBase|Database $db
-	 * @param SMWSQLStore3SetupHandlers|null $reportTo
 	 */
-	protected function setupPropertyTables( array $dbtypes, $db, SMWSQLStore3SetupHandlers $reportTo = null ) {
+	protected function setupPropertyTables( $rdbmsTableBuilder, array $dbtypes ) {
 		$addedCustomTypeSignatures = false;
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
@@ -239,9 +268,21 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 				}
 			}
 
-			SMWSQLHelpers::setupTable( $proptable->getName(), $fieldarray, $db, $reportTo );
+			$rdbmsTableBuilder->createTable(
+				$proptable->getName(),
+				array(
+					'fields' => $fieldarray,
+					'wgDBname' => $GLOBALS['wgDBname'],
+					'wgDBTableOptions' => $GLOBALS['wgDBTableOptions']
+				)
+			);
 
-			SMWSQLHelpers::setupIndex( $proptable->getName(), $indexes, $db, $reportTo );
+			$rdbmsTableBuilder->createIndex(
+				$proptable->getName(),
+				array(
+					'indicies' => $indexes
+				)
+			);
 		}
 	}
 
@@ -288,11 +329,17 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 	}
 
 	public function drop( $verbose = true ) {
-		global $wgDBtype;
 
 		$this->reportProgress( "Deleting all database content and tables generated by SMW ...\n\n", $verbose );
 
-		$dbw = $this->store->getConnection( 'mw.db' );
+		$rdbmsTableBuilder = $this->factory->newRdbmsTableBuilder();
+
+		if ( $verbose ) {
+			$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
+			$messageReporter->registerReporterCallback( array( $this , 'reportProgress' ) );
+
+			$rdbmsTableBuilder->setMessageReporter( $messageReporter );
+		}
 
 		$tables = array(
 			SMWSQLStore3::ID_TABLE,
@@ -305,13 +352,13 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			$tables[] = $proptable->getName();
 		}
 
-		foreach ( $tables as $table ) {
-			$name = $dbw->tableName( $table );
-			$dbw->query( 'DROP TABLE ' . ( $wgDBtype == 'postgres' ? '' : 'IF EXISTS ' ) . $name, 'SMWSQLStore3::drop' );
-			$this->reportProgress( " ... dropped table $name.\n", $verbose );
+		foreach ( $tables as $tableName ) {
+			$rdbmsTableBuilder->dropTable( $tableName );
 		}
 
 		$this->reportProgress( "All data removed successfully.\n", $verbose );
+
+		\Hooks::run( 'SMW::SQLStore::AfterDropTablesComplete', array( $this->store, $rdbmsTableBuilder ) );
 
 		return true;
 	}

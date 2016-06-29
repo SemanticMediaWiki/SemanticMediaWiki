@@ -14,6 +14,8 @@ use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
 use SMW\SQLStore\QueryEngine\ConceptQueryResolver;
 use SMWRequestOptions as RequestOptions;
 use SMWSQLStore3;
+use SMW\SQLStore\TableBuilder\RdbmsTableBuilder;
+use Onoi\MessageReporter\MessageReporterFactory;
 
 /**
  * @license GNU GPL v2+
@@ -326,6 +328,24 @@ class SQLStoreFactory {
 		);
 
 		return $propertyTableIdReferenceFinder;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return RdbmsTableBuilder
+	 */
+	public function newRdbmsTableBuilder() {
+
+		$rdbmsTableBuilder = RdbmsTableBuilder::factory(
+			$this->store->getConnection( DB_MASTER )
+		);
+
+		$rdbmsTableBuilder->setMessageReporter(
+			MessageReporterFactory::getInstance()->newNullMessageReporter()
+		);
+
+		return $rdbmsTableBuilder;
 	}
 
 	private function newPropertyStatisticsStore() {
