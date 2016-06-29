@@ -259,7 +259,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider textWithAnnotationProvider
+	 * @dataProvider stripTextWithAnnotationProvider
 	 */
 	public function testStrip( $text, $expectedRemoval, $expectedObscuration ) {
 
@@ -274,7 +274,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function textWithAnnotationProvider() {
+	public function stripTextWithAnnotationProvider() {
 
 		$provider = array();
 
@@ -312,6 +312,13 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			'Suspendisse tincidunt semper facilisi',
 			'Suspendisse tincidunt semper facilisi',
 			'Suspendisse tincidunt semper facilisi'
+		);
+
+		// #1747
+		$provider[] = array(
+			'[[Foo|Bar::Foobar]] [[File:Example.png|alt=Bar::Foobar|Caption]] [[File:Example.png|Bar::Foobar|link=Foo]]',
+			'[[Foo|Bar::Foobar]] [[File:Example.png|alt=Bar::Foobar|Caption]] [[File:Example.png|Bar::Foobar|link=Foo]]',
+			'&#x005B;&#x005B;Foo|Bar::Foobar]] &#x005B;&#x005B;File:Example.png|alt=Bar::Foobar|Caption]] &#x005B;&#x005B;File:Example.png|Bar::Foobar|link=Foo]]'
 		);
 
 		return $provider;
@@ -543,6 +550,40 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 				'propertyCount'  => 4,
 				'propertyLabels' => array( 'Foo', 'Bar:', 'Foobar', ':0049 30 12345678/' ),
 				'propertyValues' => array( 'Foobar', 'Foo', 'ABC', 'テスト' )
+			)
+		);
+
+		#11 #1747 (left pipe)
+		$provider[] = array(
+			NS_MAIN,
+			array(
+				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+				'smwgLinksInValues' => false,
+				'smwgInlineErrors'  => true,
+				'smwgEnabledInTextAnnotationParserStrictMode' => false
+			),
+			'[[Foo|Bar::Foobar]] [[File:Example.png|alt=Bar::Foobar|Caption]] [[File:Example.png|Bar::Foobar|link=Foo]]',
+			array(
+				'resultText'     => '[[Foo|Bar::Foobar]] [[File:Example.png|alt=Bar::Foobar|Caption]] [[File:Example.png|Bar::Foobar|link=Foo]]',
+				'propertyCount'  => 0,
+			)
+		);
+
+		#12 #1747 (left pipe + including one annotation)
+		$provider[] = array(
+			NS_MAIN,
+			array(
+				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+				'smwgLinksInValues' => false,
+				'smwgInlineErrors'  => true,
+				'smwgEnabledInTextAnnotationParserStrictMode' => true
+			),
+			'[[Foo|Bar::Foobar]] [[File:Example.png|alt=Bar::Foobar|Caption]] [[Foo::Foobar::テスト]] [[File:Example.png|Bar::Foobar|link=Foo]]',
+			array(
+				'resultText'     => '[[Foo|Bar::Foobar]] [[File:Example.png|alt=Bar::Foobar|Caption]] [[:Foobar::テスト|Foobar::テスト]] [[File:Example.png|Bar::Foobar|link=Foo]]',
+				'propertyCount'  => 1,
+				'propertyLabels' => array( 'Foo' ),
+				'propertyValues' => array( 'Foobar::テスト' )
 			)
 		);
 
