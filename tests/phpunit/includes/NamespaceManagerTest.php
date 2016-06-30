@@ -3,6 +3,7 @@
 namespace SMW\Test;
 
 use SMW\NamespaceManager;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\NamespaceManager
@@ -14,6 +15,16 @@ use SMW\NamespaceManager;
  * @author mwjames
  */
 class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
+
+	private $testEnvironment;
+
+	protected function setUp() {
+		$this->testEnvironment = new TestEnvironment();
+	}
+
+	protected function tearDown() {
+		$this->testEnvironment->tearDown();
+	}
 
 	private function newInstance( &$test = array(), $langCode = 'en' ) {
 
@@ -78,6 +89,11 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetCanonicalNames() {
 
+		$this->testEnvironment->addConfiguration(
+			'smwgHistoricTypeNamespace',
+			false
+		);
+
 		$result = NamespaceManager::getCanonicalNames();
 
 		$this->assertInternalType(
@@ -93,7 +109,10 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetCanonicalNamesWithTypeNamespace() {
 
-		$GLOBALS['smwgHistoricTypeNamespace'] = true;
+		$this->testEnvironment->addConfiguration(
+			'smwgHistoricTypeNamespace',
+			true
+		);
 
 		$result = NamespaceManager::getCanonicalNames();
 
@@ -106,8 +125,6 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 			6,
 			$result
 		);
-
-		unset( $GLOBALS['smwgHistoricTypeNamespace'] );
 	}
 
 	public function testBuildNamespaceIndex() {
