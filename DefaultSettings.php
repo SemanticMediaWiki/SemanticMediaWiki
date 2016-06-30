@@ -1,26 +1,17 @@
 <?php
 
-namespace SMW;
-
 /**
- * SemanticMediaWiki default settings
+ * DO NOT EDIT!
  *
+ * The following default settings are to be used by the extension itself,
+ * please modify settings in the LocalSettings file.
+ *
+ * Most settings should be make  between including this file and the call
+ * to enableSemantics(). Exceptions that need to be set before are
+ * documented below.
+ *
+ * @codeCoverageIgnore
  */
-
-/**
- * @file
- * @ingroup SMW
- */
-
-#################################################################
-#    CHANGING THE CONFIGURATION FOR SEMANTIC MEDIAWIKI          #
-#################################################################
-# Do not change this file directly, but copy custom settings    #
-# into your LocalSettings.php. Most settings should be make     #
-# between including this file and the call to enableSemantics().#
-# Exceptions that need to be set before are documented below.   #
-#################################################################
-
 if ( !defined( 'MEDIAWIKI' ) ) {
   die( "This file is part of the Semantic MediaWiki extension. It is not a valid entry point.\n" );
 }
