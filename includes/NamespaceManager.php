@@ -73,6 +73,11 @@ class NamespaceManager {
 			SMW_NS_CONCEPT_TALK  => 'Concept_talk'
 		);
 
+		if ( !array_key_exists( 'smwgHistoricTypeNamespace', $GLOBALS ) || !$GLOBALS['smwgHistoricTypeNamespace'] ) {
+			unset( $canonicalNames[SMW_NS_TYPE] );
+			unset( $canonicalNames[SMW_NS_TYPE_TALK] );
+		}
+
 		return $canonicalNames;
 	}
 
