@@ -1,35 +1,16 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 /**
- * Tests for the GlobalFunctions
+ * @group semantic-mediawiki
  *
+ * @license GNU GPL v2+
  * @since 1.9
  *
- * @file
- *
- * @licence GNU GPL v2+
  * @author mwjames
  */
-
-/**
- * Tests for the GlobalFunctions
- *
- *
- * @group SMW
- * @group SMWExtension
- */
-class GlobalFunctionsTest extends SemanticMediaWikiTestCase {
-
-	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string|false
-	 */
-	public function getClass() {
-		return false;
-	}
+class GlobalFunctionsTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @covers ::smwfGetLinker
