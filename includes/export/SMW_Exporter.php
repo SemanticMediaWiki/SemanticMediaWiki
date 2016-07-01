@@ -150,6 +150,12 @@ class SMWExporter {
 			$subject = DIProperty::newFromUserLabel( $subject->getDBKey() )->getCanonicalDiWikiPage();
 		}
 
+	       // #1690 Couldn't match a CanonicalDiWikiPage which is most likely caused
+	       // by an outdated pre-defined property therefore use the original subject
+	       if ( $subject->getDBKey() === '' ) {
+	           $subject = $semdata->getSubject();
+	       }
+
 		// #649 Alwways make sure to have a least one valid sortkey
 		if ( !$semdata->getPropertyValues( new DIProperty( '_SKEY' ) ) && $subject->getSortKey() !== '' ) {
 			$semdata->addPropertyObjectValue(
