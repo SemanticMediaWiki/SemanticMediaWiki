@@ -18,6 +18,11 @@ class DatabaseConnectionProvider implements DBConnectionProvider {
 	private $connection = null;
 
 	/**
+	 * @var Database
+	 */
+	private $resetTransactionProfiler = false;
+
+	/**
 	 * @see DBConnectionProvider::getConnection
 	 *
 	 * @since 2.1
@@ -34,12 +39,12 @@ class DatabaseConnectionProvider implements DBConnectionProvider {
 	}
 
 	/**
-	 * @see #1499
+	 * @see #1499, #1603
 	 *
 	 * @since 2.4
 	 */
 	public function resetTransactionProfiler() {
-		$this->getConnection()->resetTransactionProfiler();
+		$this->resetTransactionProfiler = true;
 	}
 
 	/**
@@ -59,6 +64,11 @@ class DatabaseConnectionProvider implements DBConnectionProvider {
 		);
 
 		$connection->setDBPrefix( $GLOBALS['wgDBprefix'] );
+
+		// #1695
+		if ( $this->resetTransactionProfiler ) {
+			$connection->resetTransactionProfiler();
+		}
 
 		return $connection;
 	}
