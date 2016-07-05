@@ -42,11 +42,11 @@ $someProperty = new SomeProperty(
 /**
  * Equivalent to [[:+]][[Category:Foo]][[Foo::+]]
  */
-$description = new Conjunction( array(
-	$$namespaceDescription,
+$description = new Conjunction( [
+	$namespaceDescription,
 	$classDescription,
 	$someProperty
-) );
+] );
 ```
 ```php
 $query = new Query( $description );
