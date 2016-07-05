@@ -109,6 +109,13 @@ class SMWWikiPageValue extends SMWDataValue {
 			$this->m_caption = $value;
 		}
 
+		// #1701 If the DV is part of a Description and an approximate search
+		// (e.g. ~foo* / ~Foo*) then use the value as-is and avoid being
+		// transformed by the Title object
+		if ( $this->getOptionValueFor( 'approximate.comparator.context' ) ) {
+			return $this->m_dataitem = new SMWDIWikiPage( $value, NS_MAIN );
+		}
+
 		if ( $value !== '' ) {
 			if ( $value[0] == '#' ) {
 				if ( is_null( $this->m_contextPage ) ) {

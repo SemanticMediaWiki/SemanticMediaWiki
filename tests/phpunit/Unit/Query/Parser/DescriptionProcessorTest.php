@@ -59,9 +59,28 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DescriptionProcessor();
 
+		$valueDescription = $instance->constructDescriptionForWikiPageValueChunk( 'bar' );
+
 		$this->assertInstanceOf(
 			'SMW\Query\Language\ValueDescription',
-			$instance->constructDescriptionForWikiPageValueChunk( 'bar' )
+			$valueDescription
+		);
+
+		$this->assertEquals(
+			new DIWikiPage( 'Bar', NS_MAIN ),
+			$valueDescription->getDataItem()
+		);
+	}
+
+	public function testconstructDescriptionForWikiPageValueChunkOnApproximateValue() {
+
+		$instance = new DescriptionProcessor();
+
+		$valueDescription = $instance->constructDescriptionForWikiPageValueChunk( '~bar' );
+
+		$this->assertEquals(
+			new DIWikiPage( 'bar', NS_MAIN ),
+			$valueDescription->getDataItem()
 		);
 	}
 
