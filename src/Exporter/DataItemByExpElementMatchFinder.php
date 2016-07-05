@@ -157,10 +157,24 @@ class DataItemByExpElementMatchFinder {
 				$namespace = NS_MAIN;
 			}
 
-			$dataItem = new DIWikiPage( $dbKey, $namespace );
+			$dataItem = new DIWikiPage(
+				$this->getFittingKeyByCapitalLinks( $dbKey, $namespace ),
+				$namespace
+			);
 		}
 
 		return $dataItem;
+	}
+
+	private function getFittingKeyByCapitalLinks( $dbKey, $namespace ) {
+
+		// https://www.mediawiki.org/wiki/Manual:$wgCapitalLinks
+		// https://www.mediawiki.org/wiki/Manual:$wgCapitalLinkOverrides
+		if ( $GLOBALS['wgCapitalLinks'] || ( isset( $GLOBALS['wgCapitalLinkOverrides'][$namespace] ) && $GLOBALS['wgCapitalLinkOverrides'][$namespace] ) ) {
+			return mb_strtoupper( mb_substr( $dbKey, 0, 1 ) ) . mb_substr( $dbKey, 1 );
+		}
+
+		return $dbKey;
 	}
 
 }
