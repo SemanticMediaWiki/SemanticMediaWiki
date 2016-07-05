@@ -1,5 +1,5 @@
 {
-	"description": "Test `Special:Browse` output for `_dat` (`wgContLang=en`, `wgLang=en`, `smwgDVFeatures=SMW_DV_TIMEV_CM`)",
+	"description": "Test `Special:Browse` output for `_dat`, '_REDI' (`wgContLang=en`, `wgLang=en`, `smwgDVFeatures=SMW_DV_TIMEV_CM | SMW_DV_WPV_DTITLE`, `wgRestrictDisplayTitle=false`)",
 	"properties": [
 		{
 			"name": "Has date",
@@ -9,7 +9,15 @@
 	"subjects": [
 		{
 			"name": "Example/S0005/1",
-			"contents": "[[Has date::12 Jan 1991 8:56]] [[Has date::12 Jan 1345]] [[Category:S0004]"
+			"contents": "[[Has date::12 Jan 1991 8:56]] [[Has date::12 Jan 1345]] [[Category:S0004]]"
+		},
+		{
+			"name": "Example/S0005/2",
+			"contents": "#REDIRECT [[Example/S0005/3]]"
+		},
+		{
+			"name": "Example/S0005/3",
+			"contents": "{{DISPLAYTITLE:ABC}}"
 		}
 	],
 	"special-testcases": [
@@ -29,6 +37,24 @@
 					"<span class=\"smwb-value\">January 12, 1345 <sup>JL</sup>&#160;&#160;"
 				]
 			}
+		},
+		{
+			"about": "#1 (redirect to show source page instead of DISPLAYTITLE)",
+			"special-page": {
+				"page":"Browse",
+				"query-parameters": "Example/S0005/3",
+				"request-parameters":{
+					"output": "legacy"
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"class=\"mw-redirect\" title=\"Example/S0005/2\">Example/S0005/2"
+				],
+				"not-contain": [
+					"class=\"mw-redirect\" title=\"Example/S0005/2\">ABC"
+				]
+			}
 		}
 	],
 	"settings": {
@@ -39,7 +65,11 @@
 			"NS_MAIN": true,
 			"SMW_NS_PROPERTY": true
 		},
-		"smwgDVFeatures": [ "SMW_DV_TIMEV_CM" ]
+		"wgRestrictDisplayTitle": false,
+		"smwgDVFeatures": [
+			"SMW_DV_TIMEV_CM",
+			"SMW_DV_WPV_DTITLE"
+		]
 	},
 	"meta": {
 		"version": "0.1",

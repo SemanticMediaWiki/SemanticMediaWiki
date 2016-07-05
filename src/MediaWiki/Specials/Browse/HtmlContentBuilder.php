@@ -300,6 +300,11 @@ class HtmlContentBuilder {
 					$dv = DataValueFactory::getInstance()->newDataValueByItem( $di, $diProperty );
 				}
 
+				// For a redirect, disable the DisplayTitle to show the original (aka source) page
+				if ( $diProperty->getKey() == '_REDI' ) {
+					$dv->setOption( 'smwgDVFeatures', ( $dv->getOptionValueFor( 'smwgDVFeatures' ) & ~SMW_DV_WPV_DTITLE ) );
+				}
+
 				$body .= "<span class=\"{$ccsPrefix}value\">" .
 				         $this->displayValue( $dvProperty, $dv, $incoming ) . "</span>\n";
 			}
