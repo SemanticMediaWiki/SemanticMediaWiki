@@ -159,3 +159,28 @@ to conform with [T92357](https://phabricator.wikimedia.org/T92357) Extensions th
 data objects are encouraged to use hooks and avoid conflicts when updates are queued.
 
 ## Contributors
+
+* MWJames
+* Jeroen De Dauw
+* Karsten Hoffmeyer
+* Felipe de Jong
+* Florian
+* Niklas Laxström
+* Ahmad Gharbeia
+* Stephan Gambke
+* Amir E. Aharoni
+* Siebrand Mazeland
+* jongfeli
+* Cindy Cicalese
+* Hangya
+* Sébastien Beyou
+* Aaron Schulz
+* Jaider Andrade Ferreira
+* Kunal Mehta
+* Ori Livneh
+* Peter Grassberger
+* Reedy
+* Vitaliy Filippov
+* Wolfgang Fahl
+* gesinn.it
+* TranslateWiki.net
