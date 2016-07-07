@@ -127,6 +127,20 @@ class PatternConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 			true
 		);
 
+		#4
+		$provider[] = array(
+			" \nFoo|\d{8}\n",
+			'00564222',
+			false
+		);
+
+		#5
+		$provider[] = array(
+			" \nFoo|/\d{8}\n",
+			'00564222',
+			false
+		);
+
 		return $provider;
 	}
 
