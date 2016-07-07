@@ -6,8 +6,10 @@ Not a release yet.
 
 ### Support for multiple languages
 
-* Added support for monolingual text datatype where a specific language (as code) can be added to a text value (#1344, #1381)
-* [Localization](https://www.semantic-mediawiki.org/wiki/Localization) support for selected data values
+Added support for [multilingual content](https://www.semantic-mediawiki.org/wiki/Localization_and_multilingual_content).
+This includes the introduction of the [monolongual text datatype](https://www.semantic-mediawiki.org/wiki/Help:Type_Monolingual_text),
+a new [special property to describe properties](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_property_description)
+and the new [Semantic Interlanguage Links extension](https://www.semantic-mediawiki.org/wiki/Extension:Semantic_Interlanguage_Links).
 
 ### Pattern based constraints
 
@@ -32,11 +34,15 @@ You can [view the examples](https://github.com/SemanticMediaWiki/SemanticMediaWi
 
 ### Enhanced date and time formatting
 
-Extended date/time query output formatting by supporting PHP's `DateTime` format rules (#1389)
+Extended [date and time formatting](https://www.semantic-mediawiki.org/wiki/Help:Type_Date)
+by supporting PHP's `DateTime` format rules.
 
 ### Display Title storage
 
-When using MediaWiki's `{{DISPLAYTITLE:...}}`, it will now get stored by SMW so you can query its value.  (#1410)
+MediaWiki's `{{DISPLAYTITLE:...}}` can now be stored as the
+[Display title of](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Display_title_of)
+special property, so it can be used in queries.
+
 
 ### Performance improvements
 
