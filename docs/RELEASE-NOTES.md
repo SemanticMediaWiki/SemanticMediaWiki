@@ -44,6 +44,18 @@ MediaWiki's `{{DISPLAYTITLE:...}}` can now be stored as the
 special property, so it can be used in queries.
 
 
+## Compatibility changes
+
+Support was added for MediaWiki 1.26 and MediaWiki 1.27. SMW 2.3 has know issues with these versions
+of MediaWiki, so you are highly encouraged to upgrade SMW if you plan to use one of them. While SMW
+2.3 already had beta support for PHP 7, this release fully supports it.
+
+This release does not drop support for anything. It is however the last release to support PHP older
+than 5.5 and MediaWiki older than 1.25.
+
+For more information, see the [compatibility overview](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/COMPATIBILITY.md).
+
+
 ## New features and enhancements
 
 * [#498](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/498) Extended `rebuildData.php` to remove outdated entity references (see `PropertyTableIdReferenceDisposer`)
