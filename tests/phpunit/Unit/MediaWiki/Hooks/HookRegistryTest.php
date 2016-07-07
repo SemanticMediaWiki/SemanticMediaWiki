@@ -376,6 +376,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$oldTitle->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_SPECIAL ) );
+
+		$oldTitle->expects( $this->any() )
 			->method( 'isSpecialPage' )
 			->will( $this->returnValue( true ) );
 
