@@ -92,8 +92,6 @@ minimum requirements are indicated in bold.
 
 Note that HHVM is only required if you do not use PHP.
 
-**Releases after Composer support:**
-
 <table>
 	<tr>
 		<th></th>
