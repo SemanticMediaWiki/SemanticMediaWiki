@@ -44,13 +44,6 @@ MediaWiki's `{{DISPLAYTITLE:...}}` can now be stored as the
 special property, so it can be used in queries.
 
 
-### Performance improvements
-
-* Most updates now occur in [deferred mode](https://www.semantic-mediawiki.org/wiki/Deferred_updates) to
-conform with [T92357](https://phabricator.wikimedia.org/T92357), avoid potential race conditions, and
-improve performance during a page purge. Extensions that wish to extend data objects are encouraged to
-use hooks and avoid conflicts when updates are queued.
-
 ## New features and enhancements
 
 * #498 Extended `rebuildData.php` to remove outdated entity references (see `PropertyTableIdReferenceDisposer`)
@@ -161,5 +154,8 @@ use hooks and avoid conflicts when updates are queued.
 * #1606 Disabled DB transactions in `QueryEngine` to avoid potential issues when creating temporary tables
 * #1626 Added `EntityIdListRelevanceDetectionFilter` and `TemporaryEntityListAccumulator` in #1627
 * #1635 Switched from Fuseki 1.1.0 to 2.4.0 in the CI environment
+* Most updates now occur in [deferred mode](https://www.semantic-mediawiki.org/wiki/Deferred_updates)
+to conform with [T92357](https://phabricator.wikimedia.org/T92357) Extensions that wish to extend
+data objects are encouraged to use hooks and avoid conflicts when updates are queued.
 
 ## Contributors
