@@ -17,13 +17,13 @@ knowledge management system. All data created within SMW can easily be
 published via the [Semantic Web](https://www.semantic-mediawiki.org/wiki/Semantic_Web),
 allowing other systems to use this data seamlessly.
 
-For a better understanding of how SMW works, have a look at [Semantic MediaWiki deployed in 5 min](https://vimeo.com/82255034), using a [Sesame](https://vimeo.com/126392433) or [Fuseki ](https://vimeo.com/118614078) triplestore, or 
+For a better understanding of how SMW works, have a look at [Semantic MediaWiki deployed in 5 min](https://vimeo.com/82255034), using a [Sesame](https://vimeo.com/126392433) or [Fuseki ](https://vimeo.com/118614078) triplestore, or
 browse the [smw.org@wiki](https://www.semantic-mediawiki.org) for a more comprehensive introduction.
 
 ## Requirements
 
-- PHP 5.3.2 or later
-- MediaWiki 1.19 or later
+- PHP 5.5 or later
+- MediaWiki 1.25 or later
 - MySQL 5+, SQLite 3+ or PostgreSQL 9.x
 
 A list of supported PHP versions, MediaWiki versions and databases per SMW release can be found
@@ -38,7 +38,7 @@ the available [upgrade guide][smw-installation].
 ```json
 {
 	"require": {
-		"mediawiki/semantic-media-wiki": "~2.4@dev"
+		"mediawiki/semantic-media-wiki": "~2.5@dev"
 	}
 }
 ```
