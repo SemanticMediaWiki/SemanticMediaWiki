@@ -20,15 +20,15 @@ to users with the [`smw-patternedit`](https://www.semantic-mediawiki.org/wiki/He
 ### Positional units
 
 It is now possible to specify which position a [custom unit](https://www.semantic-mediawiki.org/wiki/Help:Custom_units)
-should have in `Corresponds to` annotations. This means you can specify `[[Corresponds to::€ 1]]`
-instead of `[[Corresponds to::1 €]]`. You can find a
+should have in [Corresponds to](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Corresponds_to) annotations.
+This means you can specify `[[Corresponds to::€ 1]]` instead of `[[Corresponds to::1 €]]`. You can find a
 [small example](http://sandbox.semantic-mediawiki.org/wiki/Issue/1329_(Positional_unit_preference)) on the Sandbox.
 
 ### Display precision
 
 You can now specify the precision used for display of numeric properties (i.e. those of type Number,
 Quantity, Temperature). This is done using the
-[`Display precision of`](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Display_precision_of)
+[Display precision of](https://www.semantic-mediawiki.org/wiki/Help:Special_property_Display_precision_of)
 property. You can override this display precision per `#ask` query, by using `-p<digit>`.
 You can [view the examples](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1335).
 
