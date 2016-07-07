@@ -19,7 +19,8 @@
 			"Ядерный Трамвай",
 			"Iniquity",
 			"Macofe",
-			"Alexandr Efremov"
+			"Alexandr Efremov",
+			"Mailman"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -320,6 +321,7 @@
 	"smw-sp-admin-settings-button": "Создать список настроек",
 	"smw-sp-admin-idlookup-title": "Поиск ID объекта",
 	"smw-sp-admin-idlookup-docu": "Отображает сведения об идентификаторе внутреннего объекта, который представляет отдельные сущности (вики-страницу, подобъект и т.д.) в Семантической МедиаВики.",
+	"smw-sp-admin-iddispose-done": "Идентификатор «$1» был удален из хранилища",
 	"smw-sp-admin-objectid": "Идентификатор объекта:",
 	"smw-livepreview-loading": "Загрузка…",
 	"smw-sp-searchbyproperty-description": "На этой странице предоставлен простой [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces интерфейс просмотра] для нахождения сущностей по описанным свойствам и именованным значениям. Другие доступные интерфейсы поиска включают в себя [[Special:PageProperty|страницу поиск свойств]] и [[Special:Ask|построитель поисковых запросов]].",
@@ -345,6 +347,7 @@
 	"smw-pa-property-predefined_errp": "«$1» — это предварительно определенное свойство для отслеживания ошибок ввода аннотаций нерегулярных значений, что были, вероятно, вызваны ограничениями типа или [[Property:Allows value|разрешенных значений]], обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value «$1»] — \nпредварительно определенное свойство, которое может определять список разрешенных значений, чтобы ограничивать назначение значений для свойства, и обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-datavalue-property-restricted-use": "Свойство «$1» было отмечено для ограниченного использования.",
+	"smw-datavalue-property-invalid-name": "Значение «$1» содержит недопустимые символы, например, «$2».",
 	"smw-datavalue-restricted-use": "Значение данных «$1» было отмечено для ограниченного использования.",
 	"smw-datavalue-invalid-number": "«$1» не может быть интерпретировано как число.",
 	"smw-query-condition-circular": "Возможное циклическое условие было обнаружено в «$1».",

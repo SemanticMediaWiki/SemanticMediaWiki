@@ -15,6 +15,7 @@
 		]
 	},
 	"smw-desc": "Робить вашу вікі доступнішою — для машин ''та'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual довідка в мережі])",
+	"smw-semantics-not-enabled": "Функціонал Семантичного Медіавікі не ввімкнено в цій вікі.",
 	"smw_viewasrdf": "вивід RDF",
 	"smw_finallistconjunct": " і",
 	"smw_factbox_head": "Відомості про $1",
@@ -319,6 +320,7 @@
 	"smw-sp-searchbyproperty-nonvaluequery": "Список значень, яким призначена властивість «$1».",
 	"smw-sp-searchbyproperty-valuequery": "Список сторінок, що мають властивість «$1» із анотованим значенням «$2».",
 	"smw-datavalue-number-textnotallowed": "«$1» не може бути присвоєно заявленому типу числа типу зі значенням $2.",
+	"smw-datavalue-number-nullnotallowed": "«$1» повернув значення «NULL», яке не дозволене в якості числа.",
 	"smw-editpage-annotation-enabled": "Ця сторінка підтримує семантичні анотації в тексті (e.g. <nowiki>\"[[Is specified as::World Heritage Site]]\"</nowiki>) для побудови структурованого контенту, у який можна робити запити, що забезпечується Семантичною Semantic MediaWiki. Для комплексного опису, як використовувати анотації або парсерну функцію ask, будь ласка, відвідайте сторінки [https://www.semantic-mediawiki.org/wiki/Help:Getting_started початку роботи], [https://www.semantic-mediawiki.org/wiki/Help:In-text_annotation анотації в тексті] та довідкову сторінку [https://www.semantic-mediawiki.org/wiki/Help:Inline_queries рядкових запитів].",
 	"smw-editpage-annotation-disabled": "На цій сторінці не можливі семантичні анотації в тексті через обмеження простору назв. Деталі щодо того, як дозволити простір назв, описані на довідковій сторінці [https://www.semantic-mediawiki.org/wiki/Help:Configuration конфігурації].",
 	"smw-editpage-property-annotation-enabled": "Цю властивість можна розширити з допомогою семантичних анотацій для вказання типу даних (e.g. <nowiki>\"[[Has type::Page]]\"</nowiki>) або інших підтримуваних тверджень (e.g. <nowiki>\"[[Subproperty of::dc:date]]\"</nowiki>). Опис, як розширити цю сторінки, див на сторінці довідки про [https://www.semantic-mediawiki.org/wiki/Help:Property_declaration заявлення властивості] або [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes список доступних типів даних].",

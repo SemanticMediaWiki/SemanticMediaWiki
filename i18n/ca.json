@@ -17,6 +17,7 @@
 		]
 	},
 	"smw-desc": "Fent el vostre wiki més accessible — per a les màquines «i també» per als humans ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentació en línia])",
+	"smw-semantics-not-enabled": "No s'ha habilitat la funcionalitat de Semantic MediaWiki en aquest wiki.",
 	"smw_viewasrdf": "Canal RDF",
 	"smw_finallistconjunct": ", i",
 	"smw_factbox_head": "Dades sobre $1",
@@ -325,13 +326,14 @@
 	"smw-editpage-concept-annotation-enabled": "Aquest concepte pot ser ampliat fent servir la funció d'anàlisi #concept. Per a una descripció de com utilitzar-la, consulteu la pàgina d'ajuda sobre els [https://www.semantic-mediawiki.org/wiki/Help:Concepts conceptes].",
 	"log-name-smw": "Registre de Semantic MediaWiki",
 	"log-description-smw": "Activitats dels [https://www.semantic-mediawiki.org/wiki/Help:Logging tipus d'esdeveniments habilitats] que han estat informats per Semantic MediaWiki i els seus components.",
+	"logentry-smw-maintenance": "Esdeveniments relacionats amb el manteniment emesos per Semantic MediaWiki",
 	"smw-datavalue-import-unknownns": "L'espai de noms d'importació «$1» és desconegut. Assegureu-vos que els detalls d'importació OWL són disponibles mitjançant [[MediaWiki:Smw import $1]]",
 	"smw-datavalue-import-missing-nsuri": "No s'ha pogut trobar un URI de l'espai de noms de «$1» en la [[MediaWiki:Smw import $1|importació de $1]].",
 	"smw-datavalue-import-missing-type": "No s'ha trobat definició de tipus per a «$1» a la [[MediaWiki:Smw import $2|importació de $2]].",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|importació de $1]]",
 	"smw-datavalue-import-invalidvalue": "«$1» no és un format vàlid i s'espera que consisteixi en «espai de noms»:«identificador» (p. ex., «foaf:name»).",
-	"smw-pa-property-predefined_impo": "«$1» és una propietat predefinida que descriu una relació amb un [https://www.semantic-mediawiki.org/wiki/Help:Import_vocabulary vocabulari importat].",
-	"smw-pa-property-predefined_type": "«$1» és una propietat predefinida que descriu el [[Special:Types|tipus de dades]] d'una propietat.",
+	"smw-pa-property-predefined_impo": "«$1» és una propietat predefinida que descriu una relació amb un [https://www.semantic-mediawiki.org/wiki/Help:Import_vocabulary vocabulari importat] i està proporcionada per [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_type": "«$1» és una propietat predefinida que descriu el [[Special:Types|tipus de dades]] d'una propietat i està proporcionada per [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_sobj": "«$1» és una propietat predefinida que representa un constructe de [https://www.semantic-mediawiki.org/wiki/Help:Container contenidor] que permet acumular assignacions propietat-valor similars a les d'una pàgina wiki normal.",
 	"smw-pa-property-predefined_errp": "«$1» és una propietat predefinida per a resseguir errors d'entrada de valors d'anotacions irregulars. Normalment estan causats per restriccions de tipus o de [[Property:Allows value|valors permesos]].",
 	"smw-pa-property-predefined_pval": "[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_value «$1»] és una propietat predefinida que defineix una llista de valors permesos per tal de restringir les assignacions de valor d'una propietat.",
@@ -358,5 +360,8 @@
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|segon|segons}}",
 	"smw-limitreport-pagepurge-storeupdatetime": "[SMW] Temps d'actualització de l'emmagatzematge (en la purga de la pàgina)",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|segon|segons}}",
+	"smw-datavalue-allows-pattern-mismatch": "S'ha classificat «$1» com a no vàlid per l'expressió regular «$2».",
+	"smw-datavalue-allows-pattern-reference-unknown": "La referència de patró «$1» no ha pogut coincidir amb una entrada en  [[MediaWiki:Smw allows pattern]].",
+	"smw-datavalue-feature-not-supported": "La característica «$1» no és compatible amb el wiki o bé se n'ha inhabilitat.",
 	"smw-datavalue-uniqueness-constraint-error": "La propietat «$1» només permet assignacions de valor únic i «$2» ja estava anotada en el subjecte «$3»."
 }
