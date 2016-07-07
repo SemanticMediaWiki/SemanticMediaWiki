@@ -391,7 +391,7 @@
 	"smw-limitreport-intext-parsertime-value" : "$1 {{PLURAL:$1|second|seconds}}",
 	"smw-limitreport-pagepurge-storeupdatetime": "[SMW] Store update time (on page purge)",
 	"smw-limitreport-pagepurge-storeupdatetime-value" : "$1 {{PLURAL:$1|second|seconds}}",
-	"smw_allows_pattern": "This page is expected to contain a list of references (followed by [https://en.wikipedia.org/wiki/Regular_expression regular expressions]) and to be made available using the [[Property:Allows pattern|Allows pattern]] property.",
+	"smw_allows_pattern": "This page is expected to contain a list of references (followed by [https://en.wikipedia.org/wiki/Regular_expression regular expressions]) and to be made available by the [[Property:Allows pattern|Allows pattern]] property. To edit this page, the <code>smw-patternedit</code> right is required.",
 	"smw-datavalue-allows-pattern-mismatch": "\"$1\" was classified as invalid by the \"$2\" regular expression.",
 	"smw-datavalue-allows-pattern-reference-unknown": "The \"$1\" pattern reference could not be match to an entry in [[MediaWiki:Smw allows pattern]].",
 	"smw-datavalue-feature-not-supported": "The \"$1\" feature is not supported or was disabled on this wiki.",
