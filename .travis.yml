@@ -6,7 +6,7 @@ matrix:
     - env: DB=mysql; MW=1.26.3; TYPE=coverage; PHPUNIT=4.8.*
       php: 7.0
     - env: DB=mysql; MW=1.26.3; FUSEKI=2.4.0
-      php: 5.5
+      php: 7.1
     - env: DB=mysql; MW=1.23.5; VIRTUOSO=6.1
       php: 5.4
     - env: DB=mysql; MW=1.25.6; SESAME=2.8.7
