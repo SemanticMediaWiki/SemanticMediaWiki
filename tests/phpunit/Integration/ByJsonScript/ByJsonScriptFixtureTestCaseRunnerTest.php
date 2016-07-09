@@ -151,7 +151,8 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			'smwgMaxNonExpNumber',
 			'wgAllowDisplayTitle',
 			'wgRestrictDisplayTitle', // Restrict {{DISPLAYTITLE}} to titles ...
-			'smwgDVFeatures'
+			'smwgDVFeatures',
+			'smwgEnabledQueryDependencyLinksStore'
 		);
 
 		foreach ( $permittedSettings as $key ) {
