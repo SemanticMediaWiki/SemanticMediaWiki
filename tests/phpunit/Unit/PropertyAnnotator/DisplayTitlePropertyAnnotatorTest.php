@@ -195,6 +195,18 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
+		#8 decoded/encoded ' (&#39;) entity
+		$provider[] = array(
+			'Foo',
+			'ABC &#39; DEF',
+			'',
+			array(
+				'propertyCount'  => 2,
+				'propertyKeys'   => array( '_DTITLE', '_SKEY' ),
+				'propertyValues' => array( "ABC ' DEF" ),
+			)
+		);
+
 		return $provider;
 	}
 
