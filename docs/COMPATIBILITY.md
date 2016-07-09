@@ -18,15 +18,15 @@ on how to install the latest version of SMW, see the [installation instructions]
 	</tr>
 	<tr>
 		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/milestones/SMW%202.5">SMW 2.5.x</a></th>
-		<td>Planned release</td>
+		<td>Development version</td>
 		<td>Q4 2016</td>
-		<td></td>
+		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
 	</tr>
 	<tr>
 		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/RELEASE-NOTES.md">SMW 2.4.x</a></th>
-		<td>Development version</td>
-		<td>June or July 2016</td>
-		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
+		<td>Stable release</td>
+		<td>2016-07-09</td>
+		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.4.x">2.4.x</a></td>
 	</tr>
 	<tr>
 		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.3.0">SMW 2.3.x</a></th>
@@ -113,9 +113,9 @@ Note that HHVM is only required if you do not use PHP.
 	</tr>
 	<tr>
 		<th>SMW 2.4.x</th>
-		<td>5.3.2 - latest</td>
-		<td>3.5.0 - latest</td>
-		<td>1.19 - latest</td>
+		<td>5.3.2 - 7.0</td>
+		<td>3.5.0 - 3.9.x</td>
+		<td>1.19 - 1.27</td>
 	</tr>
 	<tr>
 		<th>SMW 2.3.x</th>

@@ -1,6 +1,6 @@
 # Semantic MediaWiki 2.4
 
-Not a release yet.
+Released on July 9th, 2016.
 
 ## Highlights
 
