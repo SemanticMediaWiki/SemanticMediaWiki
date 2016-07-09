@@ -5,6 +5,7 @@ namespace SMW\DataValues;
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
+use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Localizer;
@@ -60,7 +61,7 @@ class MonolingualTextValue extends DataValue {
 	/**
 	 * @see RecordValue::setFieldProperties
 	 *
-	 * @param SMWDIProperty[] $properties
+	 * @param DIProperty[] $properties
 	 */
 	public function setFieldProperties( array $properties ) {
 		// Keep the interface while the properties for this type
@@ -71,7 +72,7 @@ class MonolingualTextValue extends DataValue {
 	 * @see DataValue::parseUserValue
 	 * @note called by DataValue::setUserValue
 	 *
-	 * @param string $value
+	 * @param string $userValue
 	 */
 	protected function parseUserValue( $userValue ) {
 
