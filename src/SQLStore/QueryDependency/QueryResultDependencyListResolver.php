@@ -213,36 +213,62 @@ class QueryResultDependencyListResolver {
 			$property = new DIProperty( $property->getKey() );
 		}
 
+		$subject = $property->getCanonicalDiWikiPage();
+
 		if ( $this->propertyHierarchyLookup->hasSubpropertyFor( $property ) ) {
-			$this->doMatchSubproperty( $subjects, $property );
+			$this->doMatchSubproperty( $subjects, $subject, $property );
 		}
 
+		// Use the key here do match against pre-defined properties (e.g. _MDAT)
 		$key = str_replace( ' ', '_', $property->getKey() );
 
 		if ( !isset( $this->propertyDependencyExemptionlist[$key] ) ) {
-			$subjects[] = $property->getCanonicalDiWikiPage();
+			$subjects[$subject->getHash()] = $subject;
 		}
 	}
 
 	private function doMatchSubcategory( &$subjects, DIWikiPage $category ) {
 
-		$subcategories = $this->propertyHierarchyLookup->findSubcategoryListFor( $category );
+		$hash = $category->getHash();
+		$subcategories = array();
+
+		// #1713
+		// Safeguard against a possible category (or redirect thereof) to point
+		// to itself by relying on tracking the hash of already inserted objects
+		if ( !isset( $subjects[$hash] ) ) {
+			$subcategories = $this->propertyHierarchyLookup->findSubcategoryListFor( $category );
+		}
 
 		foreach ( $subcategories as $subcategory ) {
+
+			$subjects[$subcategory->getHash()] = $subcategory;
 
 			if ( $this->propertyHierarchyLookup->hasSubcategoryFor( $subcategory ) ) {
 				$this->doMatchSubcategory( $subjects, $subcategory );
 			}
-
-			$subjects[] = $subcategory;
 		}
 	}
 
-	private function doMatchSubproperty( &$subjects, DIProperty $property ) {
+	private function doMatchSubproperty( &$subjects, $subject, DIProperty $property ) {
 
-		$subproperties = $this->propertyHierarchyLookup->findSubpropertListFor( $property );
+		$subproperties = array();
+
+		// Using the DBKey as short-cut, as we don't expect to match sub-properties for
+		// pre-defined properties instead it should be sufficient for user-defined
+		// properties to rely on the normalized DBKey (e.g Has_page)
+		if (
+			!isset( $subjects[$subject->getHash()] ) &&
+			!isset( $this->propertyDependencyExemptionlist[$subject->getDBKey()] ) ) {
+			$subproperties = $this->propertyHierarchyLookup->findSubpropertListFor( $property );
+		}
 
 		foreach ( $subproperties as $subproperty ) {
+
+			if ( isset( $this->propertyDependencyExemptionlist[$subproperty->getDBKey()] ) ) {
+				continue;
+			}
+
+			$subjects[$subproperty->getHash()] = $subproperty;
 			$this->doMatchProperty( $subjects, new DIProperty( $subproperty->getDBKey() ) );
 		}
 	}
