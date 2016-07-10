@@ -2,6 +2,7 @@
 
 namespace SMW\ParserFunctions;
 
+use ParamProcessor\ProcessingError;
 use ParamProcessor\ProcessingResult;
 use Parser;
 use ParserHooks\HookDefinition;
@@ -25,6 +26,10 @@ class InfoParserFunction implements HookHandler {
 	 * @return mixed
 	 */
 	public function handle( Parser $parser, ProcessingResult $result ) {
+		if ( $result->hasFatal() ) {
+			return $this->getOutputForErrors( $result->getErrors() );
+		}
+
 		$parameters = $result->getParameters();
 
 		if ( !isset( $parameters['message'] ) || $parameters['message']->getValue() === '' ) {
@@ -51,6 +56,15 @@ class InfoParserFunction implements HookHandler {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * @param ProcessingError[] $errors
+	 * @return string
+	 */
+	private function getOutputForErrors( $errors ) {
+		// TODO: see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1485
+		return 'A fatal error occurred in the #info parser function';
 	}
 
 	public static function getHookDefinition() {
