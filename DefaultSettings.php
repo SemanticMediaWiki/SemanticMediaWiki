@@ -993,6 +993,9 @@ $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] = true;
 # - SMW_DV_TIMEV_CM (TimeValue) to indicate the CalendarModel if is not a
 # CM_GREGORIAN
 #
+# - SMW_DV_NUMV_USPACE (Number/QuantityValue) to preserve spaces within
+# unit labels
+#
 # @since 2.4
 ##
 $GLOBALS['smwgDVFeatures'] = SMW_DV_PROV_REDI | SMW_DV_MLTV_LCODE | SMW_DV_PVAP | SMW_DV_WPV_DTITLE | SMW_DV_TIMEV_CM;
