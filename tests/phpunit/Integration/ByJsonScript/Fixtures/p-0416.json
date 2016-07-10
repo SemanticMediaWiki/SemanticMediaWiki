@@ -56,6 +56,10 @@
 			"contents": "{{DISPLAYTITLE:ABC & DEF}}, see #1611"
 		},
 		{
+			"name": "Example/P0416/8'a",
+			"contents": "{{DISPLAYTITLE:<span style=\"position: absolute; clip: rect(1px 1px 1px 1px); clip: rect(1px, 1px, 1px, 1px);\">{{FULLPAGENAME}}</span>}} "
+		},
+		{
 			"name": "Example/P0416/Q6.1",
 			"contents": "{{#ask: [[Category:P0416]] [[~P0416]] |link=none |format=table |sort=# |order=asc}}"
 		},
@@ -70,6 +74,10 @@
 		{
 			"name": "Example/P0416/Q7.1",
 			"contents": "{{#ask: [[Display title of::ABC & DEF]] |link=none |format=table |sort=# |order=asc}}"
+		},
+		{
+			"name": "Example/P0416/Q8.1",
+			"contents": "{{#ask: [[Display title of::Example/P0416/8'a]] |link=none |format=table |sort=# |order=asc}}"
 		}
 	],
 	"parser-testcases": [
@@ -196,6 +204,15 @@
 			"expected-output": {
 				"to-contain": [
 					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0416/7</td></tr>"
+				]
+			}
+		},
+		{
+			"about": "#12 Display title/query includes '",
+			"subject": "Example/P0416/Q8.1",
+			"expected-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0416/8'a</td></tr>"
 				]
 			}
 		}
