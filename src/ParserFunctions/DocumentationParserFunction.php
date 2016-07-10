@@ -3,6 +3,7 @@
 namespace SMW\ParserFunctions;
 
 use ParamProcessor\ParamDefinition;
+use ParamProcessor\ProcessingError;
 use ParamProcessor\ProcessingResult;
 use Parser;
 use ParserHooks\HookDefinition;
@@ -22,8 +23,6 @@ use SMWQueryProcessor;
 class DocumentationParserFunction implements HookHandler {
 
 	/**
-	 * Field to store the value of the language parameter.
-	 *
 	 * @var string
 	 */
 	private $language;
@@ -35,6 +34,10 @@ class DocumentationParserFunction implements HookHandler {
 	 * @return mixed
 	 */
 	public function handle( Parser $parser, ProcessingResult $result ) {
+		if ( $result->hasFatal() ) {
+			return $this->getOutputForErrors( $result->getErrors() );
+		}
+
 		$parameters = $result->getParameters();
 
 		$this->language = $parameters['language']->getValue();
@@ -80,6 +83,15 @@ class DocumentationParserFunction implements HookHandler {
 		return ParamDefinition::getCleanDefinitions(
 			SMWQueryProcessor::getResultPrinter( $format )->getParamDefinitions( SMWQueryProcessor::getParameters() )
 		);
+	}
+
+	/**
+	 * @param ProcessingError[] $errors
+	 * @return string
+	 */
+	private function getOutputForErrors( $errors ) {
+		// TODO: see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1485
+		return 'A fatal error occurred in the #smwdoc parser function';
 	}
 
 	public static function getHookDefinition() {
