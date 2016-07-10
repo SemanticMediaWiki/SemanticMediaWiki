@@ -1,5 +1,5 @@
 {
-	"description": "Test output from `Special:SearchByProperty` for `_num`, `_txt`, `_tel` (`wgContLang=en`, skip-on sqlite, 1.19)",
+	"description": "Test output from `Special:SearchByProperty` for `_num`, `_txt`, `_tel` (`wgContLang=en`, skip-on sqlite, postgres)",
 	"properties": [
 		{
 			"name": "Has text",
@@ -183,7 +183,7 @@
 	"meta": {
 		"skip-on": {
 			"sqlite": "Returns a `database is locked`",
-			"mw-1.19.20": "The table update on 1.19 lacks behind"
+			"postgres": "The table update lacks behind"
 		},
 		"version": "0.1",
 		"is-incomplete": false,
