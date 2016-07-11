@@ -400,7 +400,7 @@
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|Sekunde|Sekunden}}",
 	"smw-limitreport-pagepurge-storeupdatetime": "[SMW] Dauer der Datenbankaktualisierung (beim Leeren des Seitencaches)",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|Sekunde|Sekunden}}",
-	"smw_allows_pattern": "Auf dieser Seite werden Referenzobjekte mit entsprechenden, auf [https://de.wikipedia.org/wiki/Regulärer_Ausdruck regulären Ausdrücken] gestützten, Musterreferenzen gespeichert (<code>Referenzobjekt|Musterreferenz</code>) und mithilfe des Spezialattributs „[[Property:Allows pattern|Erlaubt Muster]]“ verfügbar gemacht.",
+	"smw_allows_pattern": "Auf dieser Seite werden Referenzobjekte mit entsprechenden auf [https://de.wikipedia.org/wiki/Regulärer_Ausdruck regulären Ausdrücken] gestützten Musterreferenzen gespeichert (<code>Referenzobjekt|Musterreferenz</code>) und durch das Spezialattribut „[[Property:Allows pattern|Erlaubt Muster]]“ verfügbar gemacht. Um diese Seite zu bearbeiten, ist das Recht <code>smw-patternedit</code> erforderlich.",
 	"smw-datavalue-allows-pattern-mismatch": "„$1“ wurde vom regulären Ausdruck „$2“ als ungültig klassifiziert.",
 	"smw-datavalue-allows-pattern-reference-unknown": "Die Musterreferenz „$1“ entspricht keinem Eintrag in [[MediaWiki:Smw allows pattern]].",
 	"smw-datavalue-feature-not-supported": "Die Funktion „$1“ ist auf diesem Wiki deaktiviert oder wird nicht unterstützt.",

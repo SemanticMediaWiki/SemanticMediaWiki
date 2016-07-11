@@ -414,7 +414,7 @@
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|seconde|secondes}}",
 	"smw-limitreport-pagepurge-storeupdatetime": "[SMW] Temps de mise à jour de l’enregistrement (sur une purge de page)",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|seconde|secondes}}",
-	"smw_allows_pattern": "Cette page est censée contenir une liste des références (suivie par [https://en.wikipedia.org/wiki/Regular_expression des expressions régulières]) et être mise à disposition via la propriété [[Property:Allows pattern|Permettre les motifs]].",
+	"smw_allows_pattern": "Cette page est censée contenir une liste des références (suivie par [https://en.wikipedia.org/wiki/Regular_expression des expressions régulières]) et être mise à disposition via la propriété [[Property:Allows pattern|Permettre les motifs]]. Pour modifier cette page, le droit <code>smw-patternedit</code> est nécessaire.",
 	"smw-datavalue-allows-pattern-mismatch": "« $1 » a été classé comme non valide par l’expression régulière « $2 ».",
 	"smw-datavalue-allows-pattern-reference-unknown": "La référence de motif « $1 » ne peut être mise en correspondance avec aucune entrée dans [[MediaWiki:Smw allows pattern]].",
 	"smw-datavalue-feature-not-supported": "La fonctionnalité « $1 » n’est pas supportée ou a été désactivée sur ce wiki.",

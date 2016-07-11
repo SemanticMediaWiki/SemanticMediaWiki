@@ -371,6 +371,7 @@
 	"smw-pa-property-predefined_list": "\"$1\" es una propiedad predefinida para definir una lista de propiedades usadas con una propiedad de tipo [[Special:Types/Record|registro]]. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|segundo|segundos}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|segundo|segundos}}",
+	"smw_allows_pattern": "Esta página debería contener una lista de referencias (seguido de [https://es.wikipedia.org/wiki/Expresi%C3%B3n_regular expresiones regulares]) y estar disponible por la propiedad [[Property:Allows pattern|Permite patrón]]. Para editar esta página, se requiere el permiso <code>smw-patternedit</code>.",
 	"smw-datavalue-allows-pattern-mismatch": "La expresión regular \"$2\" clasificó a \"$1\" como no válida.",
 	"smw-datavalue-feature-not-supported": "La funcionalidad \"$1\" no es compatible o se desactivó en este wiki.",
 	"smw-pa-property-predefined_pvap": "\"$1\" es una propiedad predefinida que puedes especificar una [[MediaWiki:Smw allows pattern|referencia de patrón]] para hacer coincidir [https://es.wikipedia.org/wiki/Expresi%C3%B3n_regular expresiones regulares]. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",

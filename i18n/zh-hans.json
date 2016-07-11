@@ -395,7 +395,7 @@
 	"smw-limitreport-intext-parsertime-value": "$1{{PLURAL:$1|秒}}",
 	"smw-limitreport-pagepurge-storeupdatetime": "[SMW]存储更新时间（在页面刷新时）",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1{{PLURAL:$1|秒}}",
-	"smw_allows_pattern": "此页面预计包含参考文献列表（跟随[https://zh.wikipedia.org/wiki/正则表达式 正则表达式]），并可使用[[Property:Allows pattern|允许的模式]]属性。",
+	"smw_allows_pattern": "此页面预计包含参考文献列表（跟随[https://zh.wikipedia.org/wiki/正则表达式 正则表达式]），并可通过[[Property:Allows pattern|允许的模式]]属性使用。要编辑此页面，需要<code>smw-patternedit</code>权限。",
 	"smw-datavalue-allows-pattern-mismatch": "“$1”被“$2”正则表达式归类为无效。",
 	"smw-datavalue-allows-pattern-reference-unknown": "“$1”模式参考文献不能匹配[[MediaWiki:Smw allows pattern]]中的条目。",
 	"smw-datavalue-feature-not-supported": "“$1”功能未被支持，或在该wiki禁用。",

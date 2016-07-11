@@ -300,7 +300,7 @@
 	"smw-pa-property-predefined_list": "\"$1\" è una proprietà predefinita per definire un elenco di proprietà utilizzate con una proprietà tipo [[Special:Types/Record|record]] ed è fornito da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|secondo|secondi}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|secondo|secondi}}",
-	"smw_allows_pattern": "Questa pagina dovrebbe contenere un elenco di riferimenti (seguito da [https://it.wikipedia.org/wiki/Espressione_regolare espressioni regolari]) e essere disponibile utilizzando la proprietà [[Property:Allows pattern|modello consentito]].",
+	"smw_allows_pattern": "Questa pagina dovrebbe contenere un elenco di riferimenti (seguito da [https://it.wikipedia.org/wiki/Espressione_regolare espressioni regolari]) e essere disponibile dalla proprietà [[Property:Allows pattern|modello consentito]]. Per modificare questa pagina, è necessario il diritto <code>smw-patternedit</code>.",
 	"smw-datavalue-allows-pattern-mismatch": "\"$1\" è stato classificato come non valido dall'espressione regolare \"$2\".",
 	"smw-datavalue-allows-pattern-reference-unknown": "Il modello di riferimento \"$1\" non può corrispondere ad un elemento in [[MediaWiki:Smw allows pattern]].",
 	"smw-datavalue-feature-not-supported": "La funzionalità \"$1\" non è supportata o è stata disattivata su questo wiki.",
