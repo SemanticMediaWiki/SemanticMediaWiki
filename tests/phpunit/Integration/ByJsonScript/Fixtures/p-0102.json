@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation on properties with invalid names/charaters (#1567, #1638, `wgContLang=en`)",
+	"description": "Test in-text annotation on properties with invalid names/charaters (#1567, #1638, #1727 `wgContLang=en`)",
 	"properties": [
 		{
 			"name": "Has #",
@@ -26,6 +26,26 @@
 		{
 			"name": "Example/P0102/Q3.1",
 			"contents": "{{#ask: [[<code>Has property e::ABC]] |link=none |format=table |sort=# |order=asc}}"
+		},
+		{
+			"name": "Example/P0102/5",
+			"contents": "[[<Foo>::abc]]"
+		},
+		{
+			"name": "Example/P0102/6",
+			"contents": "[[<Foo-<Bar>::abc]]"
+		},
+		{
+			"name": "Example/P0102/7",
+			"contents": "[[-<Foo>-<Bar>::abc]]"
+		},
+		{
+			"name": "Example/P0102/8",
+			"contents": "[[Foo-<Bar::abc]]"
+		},
+		{
+			"name": "Example/P0102/9",
+			"contents": "[[Foo-<Bar>::abc]]"
 		}
 	],
 	"parser-testcases": [
@@ -83,6 +103,61 @@
 					"strict-mode-valuematch": false,
 					"propertyCount": 3,
 					"propertyKeys": [ "_ERRC", "_MDAT", "_SKEY" ]
+				}
+			}
+		},
+		{
+			"about": "#5 `<>` to produce an error",
+			"subject": "Example/P0102/5",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_ERRC", "_MDAT", "_SKEY" ]
+				}
+			}
+		},
+		{
+			"about": "#6 `<>` to produce an error",
+			"subject": "Example/P0102/6",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_ERRC", "_MDAT", "_SKEY" ]
+				}
+			}
+		},
+		{
+			"about": "#7 `<>` to produce an error",
+			"subject": "Example/P0102/7",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_ERRC", "_MDAT", "_SKEY" ]
+				}
+			}
+		},
+		{
+			"about": "#8 to cut the name at `<`",
+			"subject": "Example/P0102/8",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "Foo-", "_MDAT", "_SKEY" ]
+				}
+			}
+		},
+		{
+			"about": "#9 to cut the name at `<`",
+			"subject": "Example/P0102/9",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "Foo-", "_MDAT", "_SKEY" ]
 				}
 			}
 		}
