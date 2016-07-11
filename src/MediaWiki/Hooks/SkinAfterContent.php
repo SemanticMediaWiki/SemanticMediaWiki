@@ -50,6 +50,10 @@ class SkinAfterContent {
 
 	private function canPerformUpdate() {
 
+		if ( !$this->skin instanceof Skin ) {
+			return false;
+		}
+
 		$request = $this->skin->getContext()->getRequest();
 
 		if ( $request->getVal( 'action' ) === 'delete' || $request->getVal( 'action' ) === 'purge' || !ApplicationFactory::getInstance()->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
