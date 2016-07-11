@@ -240,12 +240,8 @@ class QueryDependencyLinksStore {
 
 		$dependencyList = $queryResultDependencyListResolver->getDependencyList();
 
-		if ( $dependencyList === array() ) {
-			return null;
-		}
-
 		$dependencyLinksTableUpdater = $this->dependencyLinksTableUpdater;
-		$dependencyLinksTableUpdater->addUpdateList( $sid, $dependencyList );
+		$dependencyLinksTableUpdater->addToUpdateList( $sid, $dependencyList );
 
 		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $sid, $hash, $dependencyLinksTableUpdater, $queryResultDependencyListResolver ) {
 			wfDebugLog( 'smw', 'DeferredCallableUpdate on QueryDependencyLinksStore::doUpdateDependenciesBy for ' . $hash );
@@ -254,7 +250,7 @@ class QueryDependencyLinksStore {
 			// object as been resolved by the ResultPrinter, this is done to
 			// avoid having to process the QueryResult recursively on its own
 			// (which would carry a performance penalty)
-			$dependencyLinksTableUpdater->addUpdateList(
+			$dependencyLinksTableUpdater->addToUpdateList(
 				$sid,
 				$queryResultDependencyListResolver->getDependencyListByLateRetrieval()
 			);
@@ -279,12 +275,12 @@ class QueryDependencyLinksStore {
 			wfDebugLog( 'smw', 'QueryDependencyLinksStore::doUpdateDependenciesBy as deferred.embedded.query.dep.update for ' . $hash );
 			$sid = $dependencyLinksTableUpdater->getIdForSubject( $subject, $hash );
 
-			$dependencyLinksTableUpdater->addUpdateList(
+			$dependencyLinksTableUpdater->addToUpdateList(
 				$sid,
 				$dependencyList
 			);
 
-			$dependencyLinksTableUpdater->addUpdateList(
+			$dependencyLinksTableUpdater->addToUpdateList(
 				$sid,
 				$queryResultDependencyListResolver->getDependencyListByLateRetrieval()
 			);

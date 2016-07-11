@@ -275,13 +275,15 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$queryResultDependencyListResolver->expects( $this->any() )
+		$queryResultDependencyListResolver->expects( $this->never() )
 			->method( 'getDependencyListByLateRetrieval' )
 			->will( $this->returnValue( array() ) );
 
-		$this->assertNull(
-			$instance->doUpdateDependenciesBy( $queryResultDependencyListResolver )
-		);
+		$queryResultDependencyListResolver->expects( $this->never() )
+			->method( 'getDependencyList' )
+			->will( $this->returnValue( array() ) );
+
+		$instance->doUpdateDependenciesBy( $queryResultDependencyListResolver );
 	}
 
 	public function testTryDoUpdateDependenciesByForWhenDependencyListReturnsEmpty() {
@@ -333,9 +335,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSubject' )
 			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
 
-		$this->assertNull(
-			$instance->doUpdateDependenciesBy( $queryResultDependencyListResolver )
-		);
+		$instance->doUpdateDependenciesBy( $queryResultDependencyListResolver );
 	}
 
 	public function testdoUpdateDependenciesByFromQueryResult() {
@@ -386,7 +386,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$dependencyLinksTableUpdater->expects( $this->once() )
-			->method( 'addUpdateList' )
+			->method( 'addToUpdateList' )
 			->with(
 				$this->equalTo( 42 ),
 				$this->anything() );
@@ -450,7 +450,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$dependencyLinksTableUpdater->expects( $this->once() )
-			->method( 'addUpdateList' )
+			->method( 'addToUpdateList' )
 			->with(
 				$this->equalTo( 42 ),
 				$this->anything() );
