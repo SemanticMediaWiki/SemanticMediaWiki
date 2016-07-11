@@ -46,7 +46,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testAddUpdateList() {
+	public function testAddToUpdateList() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( array( 'getIDFor' ) )
@@ -102,29 +102,40 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->clear();
 
-		$instance->addUpdateList( 42, array( DIWikiPage::newFromText( 'Bar' ) ) );
+		$instance->addToUpdateList( 42, array( DIWikiPage::newFromText( 'Bar' ) ) );
 		$instance->doUpdate();
 	}
 
-	public function testAddUpdateListOnNull_List() {
+	public function testAddToUpdateListOnNull_List() {
 
 		$instance = new DependencyLinksTableUpdater(
 			$this->store
 		);
 
 		$this->assertNull(
-			$instance->addUpdateList( 42, null )
+			$instance->addToUpdateList( 42, null )
 		);
 	}
 
-	public function testAddUpdateListOnZero_Id() {
+	public function testAddToUpdateListOnZero_Id() {
 
 		$instance = new DependencyLinksTableUpdater(
 			$this->store
 		);
 
 		$this->assertNull(
-			$instance->addUpdateList( 0, array() )
+			$instance->addToUpdateList( 0, array() )
+		);
+	}
+
+	public function testAddToUpdateListOnEmpty_List() {
+
+		$instance = new DependencyLinksTableUpdater(
+			$this->store
+		);
+
+		$this->assertNull(
+			$instance->addToUpdateList( 42, array() )
 		);
 	}
 
@@ -188,7 +199,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->clear();
 
-		$instance->addUpdateList( 42, array( DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY ) ) );
+		$instance->addToUpdateList( 42, array( DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY ) ) );
 		$instance->doUpdate();
 	}
 
