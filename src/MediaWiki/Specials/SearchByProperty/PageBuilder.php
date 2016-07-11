@@ -144,6 +144,11 @@ class PageBuilder {
 			return array( $this->messageBuilder->getMessage( 'smw_sbv_docu' )->text(), '', 0 );
 		}
 
+		// #1728
+		if ( !$this->pageRequestOptions->property->isValid() ) {
+			return array( implode( ',', $this->pageRequestOptions->property->getErrors() ), '', 0 );
+		}
+
 		if ( $this->pageRequestOptions->valueString !== '' && !$this->pageRequestOptions->value->isValid() ) {
 			return array( implode( ',', $this->pageRequestOptions->value->getErrors() ), '', 0 );
 		}
