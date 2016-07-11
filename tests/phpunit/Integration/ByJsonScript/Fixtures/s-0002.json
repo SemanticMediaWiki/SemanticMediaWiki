@@ -1,5 +1,5 @@
 {
-	"description": "Test output from `Special:SearchByProperty` for `_num`, `_txt`, `_tel` (`wgContLang=en`, skip-on sqlite, 1.19)",
+	"description": "Test output from `Special:SearchByProperty` for `_num`, `_txt`, `_tel` (#1728, `wgContLang=en`, `wgLang=en`, skip-on sqlite, postgres)",
 	"properties": [
 		{
 			"name": "Has text",
@@ -174,10 +174,27 @@
 					"+1-201-555-0123"
 				]
 			}
+		},
+		{
+			"about": "#7 invalid property and avoid a `...must be an instance of SMWDIProperty, instance of SMWDIError given...`",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "",
+				"request-parameters":{
+					"property": ">[[Foo",
+					"value": ""
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"&gt;[[Foo"
+				]
+			}
 		}
 	],
 	"settings": {
 		"wgContLang": "en",
+		"wgLang": "en",
 		"wgLanguageCode": "en"
 	},
 	"meta": {
