@@ -129,7 +129,7 @@ abstract class JobBase extends Job {
 	/**
 	 * @see https://gerrit.wikimedia.org/r/#/c/162009
 	 *
-	 * @param \SMW\MediaWiki\Jobs\JobBase[] $jobs
+	 * @param self[] $jobs
 	 */
 	public static function batchInsert( $jobs ) {
 
