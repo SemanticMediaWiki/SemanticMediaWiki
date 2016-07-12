@@ -348,9 +348,9 @@ final class Setup {
 	}
 
 	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:$this->globalVars['wgHooks']
+	 * @see https://www.mediawiki.org/wiki/Manual:$wgHooks
 	 *
-	 * @note $this->globalVars['wgHooks'] contains a list of hooks which specifies for every event an
+	 * @note $wgHooks contains a list of hooks which specifies for every event an
 	 * array of functions to be called.
 	 */
 	private function registerHooks() {
