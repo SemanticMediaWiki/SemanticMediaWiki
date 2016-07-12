@@ -9,6 +9,8 @@ technical documentation. The later can be found in [docs/technical](technical/RE
 
 * [Installation instructions](INSTALL.md)
 * [Latest release notes](RELEASE-NOTES.md)
+* [SMW 2.4.1 release notes](releasenotes/RELEASE-NOTES-2.4.1.md)
+* [SMW 2.4.0 release notes](releasenotes/RELEASE-NOTES-2.4.0.md)
 * [SMW 2.3.1 release notes](releasenotes/RELEASE-NOTES-2.3.1.md)
 * [SMW 2.3.0 release notes](releasenotes/RELEASE-NOTES-2.3.0.md)
 * [SMW 2.2.3 release notes](releasenotes/RELEASE-NOTES-2.2.3.md)
