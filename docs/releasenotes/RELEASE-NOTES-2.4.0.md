@@ -196,5 +196,5 @@ data objects are encouraged to use hooks and avoid conflicts when updates are qu
 * Reedy
 * Vitaliy Filippov
 * Wolfgang Fahl
-* gesinn.it
+* Alexander Gesinn
 * TranslateWiki.net translators
