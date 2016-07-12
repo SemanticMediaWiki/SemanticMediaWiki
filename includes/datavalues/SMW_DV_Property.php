@@ -449,7 +449,9 @@ class SMWPropertyValue extends SMWDataValue {
 			$this->m_dataitem = new DIProperty( 'ERROR', false );
 		}
 
-		$value = strip_tags( $value );
+		// #1727 <Foo> or <Foo-<Bar> are not permitted but
+		// Foo-<Bar will be converted to Foo-
+		$value = strip_tags( htmlspecialchars_decode( $value ) );
 		$inverse = false;
 
 		// slightly normalise label
