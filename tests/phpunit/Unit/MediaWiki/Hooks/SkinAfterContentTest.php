@@ -54,6 +54,16 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testTryToProcessOnNullSkin() {
+
+		$data = '';
+		$instance = new SkinAfterContent( $data, null );
+
+		$this->assertTrue(
+			$instance->process()
+		);
+	}
+
 	/**
 	 * @dataProvider outputDataProvider
 	 */
