@@ -385,7 +385,7 @@
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|секунда|секунди|секунд}}",
 	"smw-limitreport-pagepurge-storeupdatetime": "[SMW] Час оновлення store-бази даних (при оновленні сторінки)",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|секунда|секунди|секунд}}",
-	"smw_allows_pattern": "Ця сторінка повинна містити список посилань (після якого йдуть [https://uk.wikipedia.org/wiki/Регулярний_вираз регулярні вирази]), і доступ до неї має бути відкритий за допомогою властивості «[[Property:Allows pattern|Allows pattern]]».",
+	"smw_allows_pattern": "Ця сторінка повинна містити список посилань (після якого йдуть [https://uk.wikipedia.org/wiki/Регулярний_вираз регулярні вирази]), і доступ до неї має бути відкритий за допомогою властивості «[[Property:Allows pattern|Allows pattern]]». Щоб редагувати цю сторінку, потрібне право <code>smw-patternedit</code>.",
 	"smw-datavalue-allows-pattern-mismatch": "Регулярний вираз «$2» класифікував значення «$1» як неприпустиме.",
 	"smw-datavalue-allows-pattern-reference-unknown": "Посилання на шаблон «$1» не вдалося порівняти із записом на [[MediaWiki:Smw allows pattern]].",
 	"smw-datavalue-feature-not-supported": "Функція «$1» не підтримується або була вимкнена в цій вікі.",

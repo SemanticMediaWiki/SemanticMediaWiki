@@ -161,6 +161,7 @@
 	"smw-statistics-property-total-legacy": "{{PLURAL:$1|プロパティ}} (合計)",
 	"smw-statistics-property-page": "{{PLURAL:$1|プロパティ}}(ページに登録)",
 	"smw-statistics-property-type": "{{PLURAL:$1|プロパティ}}(データ型に割り当てられています)",
+	"smw-statistics-query-inline-legacy": "{{PLURAL:$1|クエリ}}",
 	"smw-statistics-query-inline": "[[Property:Has query|{{PLURAL:$1|クエリ}}]]",
 	"smw-statistics-query-size": "クエリのサイズ",
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|コンセプト}}",
