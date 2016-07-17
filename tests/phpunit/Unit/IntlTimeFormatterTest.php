@@ -206,6 +206,27 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 			'2016年5月8日 (日) 01:01:20'
 		);
 
+		#5
+		$provider['midnight-ja'] = array(
+			'1/2016/05/08/00/00/00/00',
+			'ja',
+			'2016年5月8日 (日) 00:00:00'
+		);
+
+		#6
+		$provider['midnight-en'] = array(
+			'1/2016/05/08/0/0/0/0',
+			'en',
+			'00:00:00, 8 May 2016'
+		);
+
+		#6
+		$provider['after-midnight'] = array(
+			'1/2016/05/08/0/0/01/0',
+			'en',
+			'00:00:01, 8 May 2016'
+		);
+
 		return $provider;
 	}
 }

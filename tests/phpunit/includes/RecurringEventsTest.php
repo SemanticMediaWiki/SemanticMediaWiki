@@ -164,7 +164,7 @@ class RecurringEventsTest extends SemanticMediaWikiTestCase {
 				),
 				array(
 					'errors' => 0,
-					'dates' => array( '1 February 1970', '1 February 1971 00:00:00', '1 February 1972 00:00:00', '1 February 1973 00:00:00' ),
+					'dates' => array( '1 February 1970', '1 February 1971', '1 February 1972', '1 February 1973' ),
 					'property' => 'Has birthday',
 					'parameters' => array( 'has title' => array( 'Birthday' ) )
 				)
@@ -190,7 +190,7 @@ class RecurringEventsTest extends SemanticMediaWikiTestCase {
 				),
 				array(
 					'errors' => 0,
-					'dates' => array( '1 February 1970', '1 February 1971 00:00:00', '1 February 1972 00:00:00' ),
+					'dates' => array( '1 February 1970', '1 February 1971', '1 February 1972' ),
 					'property' => 'Has birthday',
 					'parameters' => array( 'has title' => array( 'Birthday' ) )
 				)
@@ -218,7 +218,7 @@ class RecurringEventsTest extends SemanticMediaWikiTestCase {
 				),
 				array(
 					'errors' => 0,
-					'dates' => array( '1 February 1970', '14 February 1971 00:00:00' ),
+					'dates' => array( '1 February 1970', '14 February 1971' ),
 					'property' => 'Has birthday',
 					'parameters' => array( 'has title' => array( 'Birthday' ) )
 				)
@@ -268,7 +268,7 @@ class RecurringEventsTest extends SemanticMediaWikiTestCase {
 				),
 				array(
 					'errors' => 0,
-					'dates' => array( '4 January 2010', '11 January 2010 00:00:00', '1 February 2010 00:00:00', 'March 16, 2010', 'March 23, 2010' ),
+					'dates' => array( '4 January 2010', '11 January 2010', '1 February 2010', 'March 16, 2010', 'March 23, 2010' ),
 					'property' => 'Has date',
 					'parameters' => array()
 				)
@@ -296,7 +296,7 @@ class RecurringEventsTest extends SemanticMediaWikiTestCase {
 				),
 				array(
 					'errors' => 0,
-					'dates' => array( '4 January 2010', '11 January 2010 00:00:00', '1 February 2010 00:00:00', 'March 16, 2010', 'March 23, 2010' ),
+					'dates' => array( '4 January 2010', '11 January 2010', '1 February 2010', 'March 16, 2010', 'March 23, 2010' ),
 					'property' => 'Has date',
 					'parameters' => array()
 				)

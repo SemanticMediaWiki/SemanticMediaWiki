@@ -102,9 +102,9 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'errors' => false,
 				'dates' => array(
 					'1 February 1970',
-					'1 February 1971 00:00:00',
-					'1 February 1972 00:00:00',
-					'1 February 1973 00:00:00'
+					'1 February 1971',
+					'1 February 1972',
+					'1 February 1973'
 				),
 				'property' => array(
 					'Has birthday',
@@ -174,8 +174,8 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'errors' => false,
 				'dates' => array(
 					'4 January 2010',
-					'11 January 2010 00:00:00',
-					'1 February 2010 00:00:00',
+					'11 January 2010',
+					'1 February 2010',
 					'March 16, 2010',
 					'March 23, 2010'
 				),
@@ -209,8 +209,8 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'errors' => false,
 				'dates' => array(
 					'4 January 2010',
-					'11 January 2010 00:00:00',
-					'1 February 2010 00:00:00',
+					'11 January 2010',
+					'1 February 2010',
 					'March 16, 2010',
 					'March 23, 2010'
 				),
@@ -245,8 +245,8 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'errors' => false,
 				'dates' => array(
 					'4 January 2010',
-					'11 January 2010 00:00:00',
-					'1 February 2010 00:00:00',
+					'11 January 2010',
+					'1 February 2010',
 					'March 16, 2010',
 					'March 23, 2010'
 				),
