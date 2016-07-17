@@ -4,6 +4,7 @@ use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\Highlighter;
+use SMW\Message;
 
 /**
  * Objects of this class represent properties in SMW.
@@ -138,10 +139,12 @@ class SMWPropertyValue extends SMWDataValue {
 			$value
 		);
 
+		$contentLanguage = $this->getOptionValueFor( self::OPT_CONTENT_LANGUAGE );
+
 		try {
-			$this->m_dataitem = DIProperty::newFromUserLabel( $propertyName, $inverse );
+			$this->m_dataitem = DIProperty::newFromUserLabel( $propertyName, $inverse, $contentLanguage );
 		} catch ( SMWDataItemException $e ) { // happens, e.g., when trying to sort queries by property "-"
-			$this->addError( wfMessage( 'smw_noproperty', $value )->inContentLanguage()->text() );
+			$this->addErrorMsg( array( 'smw_noproperty', $value ) );
 			$this->m_dataitem = new DIProperty( 'ERROR', false ); // just to have something
 		}
 
@@ -453,6 +456,14 @@ class SMWPropertyValue extends SMWDataValue {
 		// Foo-<Bar will be converted to Foo-
 		$value = strip_tags( htmlspecialchars_decode( $value ) );
 		$inverse = false;
+
+		// Enforce upper case for the first character on annotations that are used
+		// within the property namespace in order to avoid confusion when
+		// $wgCapitalLinks setting is disabled
+		if ( $this->getContextPage() !== null && $this->getContextPage()->getNamespace() === SMW_NS_PROPERTY ) {
+			// ucfirst is not utf-8 safe hence the reliance on mb_strtoupper
+			$value = mb_strtoupper( mb_substr( $value, 0, 1 ) ) . mb_substr( $value, 1 );
+		}
 
 		// slightly normalise label
 		$propertyName = smwfNormalTitleText( ltrim( rtrim( $value, ' ]' ), ' [' ) );

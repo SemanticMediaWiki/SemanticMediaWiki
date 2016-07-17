@@ -106,6 +106,16 @@ class DataValueFactory {
 			$dataTypeRegistry->getOptions()
 		);
 
+		$dataValue->setOption(
+			DataValue::OPT_USER_LANGUAGE,
+			Localizer::getInstance()->getUserLanguage()->getCode()
+		);
+
+		$dataValue->setOption(
+			DataValue::OPT_CONTENT_LANGUAGE,
+			Localizer::getInstance()->getPreferredContentLanguage()->getCode()
+		);
+
 		if ( $property !== null ) {
 			$dataValue->setProperty( $property );
 		}
@@ -113,11 +123,6 @@ class DataValueFactory {
 		if ( !is_null( $contextPage ) ) {
 			$dataValue->setContextPage( $contextPage );
 		}
-
-		$dataValue->setOption(
-			DataValue::OPT_USER_LANGUAGE,
-			Localizer::getInstance()->getUserLanguage()->getCode()
-		);
 
 		if ( $valueString !== false ) {
 			$dataValue->setUserValue( $valueString, $caption );
@@ -188,14 +193,7 @@ class DataValueFactory {
 	 */
 	public function newDataValueByText( $propertyName, $valueString, $caption = false, DIWikiPage $contextPage = null ) {
 
-		// Enforce upper case for the first character on annotations that are used
-		// within the property namespace in order to avoid confusion when
-		// $wgCapitalLinks setting is disabled
-		if ( $contextPage !== null && $contextPage->getNamespace() === SMW_NS_PROPERTY ) {
-			$propertyName = ucfirst( $propertyName );
-		}
-
-		$propertyDV = $this->newPropertyValueByLabel( $propertyName );
+		$propertyDV = $this->newPropertyValueByLabel( $propertyName, $contextPage );
 
 		if ( !$propertyDV->isValid() ) {
 			return $propertyDV;
@@ -267,11 +265,12 @@ class DataValueFactory {
 	 * @since 2.4
 	 *
 	 * @param string $propertyLabel
+	 * @param DIWikiPage|null $contextPage
 	 *
 	 * @return DataValue
 	 */
-	public function newPropertyValueByLabel( $propertyLabel ) {
-		return $this->newDataValueByType( '__pro', $propertyLabel );
+	public function newPropertyValueByLabel( $propertyLabel, DIWikiPage $contextPage = null ) {
+		return $this->newDataValueByType( '__pro', $propertyLabel, false, null, $contextPage );
 	}
 
 /// Deprecated methods

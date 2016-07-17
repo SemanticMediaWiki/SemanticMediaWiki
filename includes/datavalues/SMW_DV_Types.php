@@ -1,6 +1,7 @@
 <?php
 
 use SMW\DataTypeRegistry;
+use SMW\Message;
 
 /**
  * This datavalue implements special processing suitable for defining types of
@@ -36,19 +37,21 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	protected function parseUserValue( $value ) {
-		global $wgContLang, $smwgHistoricTypeNamespace;
+		global $smwgHistoricTypeNamespace;
 
 		if ( $this->m_caption === false ) {
 			$this->m_caption = $value;
 		}
 
 		$valueParts = explode( ':', $value, 2 );
+		$contentLanguage = $this->getOptionValueFor( self::OPT_CONTENT_LANGUAGE );
+
 		if ( $smwgHistoricTypeNamespace && count( $valueParts ) > 1 ) {
 			$namespace = smwfNormalTitleText( $valueParts[0] );
 			$value = $valueParts[1];
-			$typeNamespace = $wgContLang->getNsText( SMW_NS_TYPE );
+			$typeNamespace = Localizer::getInstance()->getLanguage( $contentLanguage )->getNsText( SMW_NS_TYPE );
 			if ( $namespace != $typeNamespace ) {
-				$this->addError( wfMessage( 'smw_wrong_namespace', $typeNamespace )->inContentLanguage()->text() );
+				$this->addErrorMsg( array( 'smw_wrong_namespace', $typeNamespace ) );
 			}
 		}
 
@@ -56,11 +59,11 @@ class SMWTypesValue extends SMWDataValue {
 			$this->m_typeId = $value;
 		} else {
 			$this->m_givenLabel = smwfNormalTitleText( $value );
-			$this->m_typeId = DataTypeRegistry::getInstance()->findTypeId( $this->m_givenLabel );
+			$this->m_typeId = DataTypeRegistry::getInstance()->findTypeIdByLanguage( $this->m_givenLabel, $contentLanguage );
 		}
 
 		if ( $this->m_typeId === '' ) {
-			$this->addError( wfMessage( 'smw_unknowntype', $this->m_givenLabel )->inContentLanguage()->text() );
+			$this->addErrorMsg( array( 'smw_unknowntype', $this->m_givenLabel ) );
 			$this->m_realLabel = $this->m_givenLabel;
 		} else {
 			$this->m_realLabel = DataTypeRegistry::getInstance()->findTypeLabel( $this->m_typeId );
@@ -71,7 +74,7 @@ class SMWTypesValue extends SMWDataValue {
 			$this->m_dataitem = self::getTypeUriFromTypeId( $this->m_typeId );
 		} catch ( SMWDataItemException $e ) {
 			$this->m_dataitem = self::getTypeUriFromTypeId( 'notype' );
-			$this->addError( wfMessage( 'smw_parseerror' )->inContentLanguage()->text() );
+			$this->addErrorMsg( 'smw_parseerror' );
 		}
 	}
 

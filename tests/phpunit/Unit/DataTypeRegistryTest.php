@@ -221,6 +221,21 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
+	public function testFindTypeIdByLanguage() {
+
+		$instance = new DataTypeRegistry();
+
+		$this->assertSame(
+			'_num',
+			$instance->findTypeIdByLanguage( 'Número' , 'es' )
+		);
+
+		$this->assertSame(
+			'_num',
+			$instance->findTypeIdByLanguage( '数值型' , 'zh-Hans' )
+		);
+	}
+
 	protected function assertRegistryFindsIdForLabels( $inputLabel, array $equivalentLabels ) {
 		$id = '_wpg';
 

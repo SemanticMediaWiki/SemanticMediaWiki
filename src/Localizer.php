@@ -207,6 +207,7 @@ class Localizer {
 	}
 
 	/**
+	 * @deprecated 2.5, use Localizer::getAnnotatedLanguageCodeFrom instead
 	 * @since 2.4
 	 *
 	 * @param string &$value
@@ -214,6 +215,17 @@ class Localizer {
 	 * @return string|false
 	 */
 	public static function getLanguageCodeFrom( &$value ) {
+		return self::getAnnotatedLanguageCodeFrom( $value );
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param string &$value
+	 *
+	 * @return string|false
+	 */
+	public static function getAnnotatedLanguageCodeFrom( &$value ) {
 
 		if ( strpos( $value, '@' ) === false ) {
 			return false;
