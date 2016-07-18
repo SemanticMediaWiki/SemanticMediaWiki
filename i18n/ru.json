@@ -390,7 +390,7 @@
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|секунда|секунды|секунд}}",
 	"smw-limitreport-pagepurge-storeupdatetime": "[SMW] Время обновления store-базы данных (при обновлении страницы)",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|секунда|секунды|секунд}}",
-	"smw_allows_pattern": "Эта страница должна содержать список ссылок (после которого идут [https://uk.wikipedia.org/wiki/Регулярний_вираз регулярные выражения]), и доступ к ней должен быть открыт с помощью свойства «[[Property:Allows pattern|Allows pattern]]».",
+	"smw_allows_pattern": "Эта страница должна содержать список ссылок (после которого идут [https://ru.wikipedia.org/wiki/Регулярные_выражения регулярные выражения]), и доступ к ней должен быть открыт с помощью свойства «[[Property:Allows pattern|Allows pattern]]». Для редактирования этой страницы необходимы права <code>smw-patternedit</code>.",
 	"smw-datavalue-allows-pattern-mismatch": "Регулярное выражение «$2» классифицировало значение «$1» как недопустимое.",
 	"smw-datavalue-allows-pattern-reference-unknown": "Ссылки на шаблон «$1» не удалось сравнить с записью на [[MediaWiki:Smw allows pattern]].",
 	"smw-datavalue-feature-not-supported": "Функция «$1» не поддерживается или была выключена в этой вики.",
