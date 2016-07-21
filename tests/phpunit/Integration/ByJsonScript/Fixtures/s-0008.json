@@ -1,5 +1,5 @@
 {
-	"description": "Test `Special:Browse` output for `_dat', `_boo`, `_sobj`, `_uri` (`wgContLang=en`, `wgLang=es`, skip-on 1.25.6)",
+	"description": "Test `Special:Browse` output for `_dat`, `_boo`, `_sobj`, `_uri` (`wgContLang=en`, `wgLang=es`, skip-on 1.25.6)",
 	"properties": [
 		{
 			"name": "Has date",
@@ -50,7 +50,9 @@
 			"special-page": {
 				"page":"Browse",
 				"query-parameters": "Example/S0008/1",
-				"request-parameters":{}
+				"request-parameters":{
+					"output": "legacy"
+				}
 			},
 			"expected-output": {
 				"to-contain": [
@@ -65,7 +67,9 @@
 			"special-page": {
 				"page":"Browse",
 				"query-parameters": "Example/S0008/2",
-				"request-parameters":{}
+				"request-parameters":{
+					"output": "legacy"
+				}
 			},
 			"expected-output": {
 				"to-contain": [
@@ -83,7 +87,9 @@
 			"special-page": {
 				"page":"Browse",
 				"query-parameters": "Example/S0008/3 (Hydrogen-1 atom)",
-				"request-parameters":{}
+				"request-parameters":{
+					"output": "legacy"
+				}
 			},
 			"expected-output": {
 				"to-contain": [
@@ -97,7 +103,9 @@
 			"special-page": {
 				"page":"Browse",
 				"query-parameters": "Example-2FS0008-2F4-23ABC-2D3A-2D3ADEF",
-				"request-parameters":{}
+				"request-parameters":{
+					"output": "legacy"
+				}
 			},
 			"expected-output": {
 				"to-contain": [
@@ -111,7 +119,9 @@
 			"special-page": {
 				"page":"Browse",
 				"query-parameters": "Example/S0008/5",
-				"request-parameters":{}
+				"request-parameters":{
+					"output": "legacy"
+				}
 			},
 			"expected-output": {
 				"to-contain": [

@@ -256,7 +256,7 @@ final class Setup {
 				'group' => 'smw_group'
 			),
 			'Browse' => array(
-				'page' =>  'SMWSpecialBrowse',
+				'page' =>  'SMW\MediaWiki\Specials\SpecialBrowse',
 				'group' => 'smw_group'
 			),
 			'PageProperty' => array(

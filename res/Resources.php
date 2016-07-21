@@ -177,7 +177,8 @@ return array(
 	// Autocomplete resources
 	'ext.smw.autocomplete' => $moduleTemplate + array(
 		'scripts' => 'smw/util/ext.smw.util.autocomplete.js',
-		'dependencies' => 'jquery.ui.autocomplete'
+		'dependencies' => 'jquery.ui.autocomplete',
+		'targets' => array( 'mobile', 'desktop' )
 	),
 	// Special:Ask
 	'ext.smw.ask' => $moduleTemplate + array(
@@ -198,8 +199,17 @@ return array(
 	'ext.smw.browse' => $moduleTemplate + array(
 		'scripts' => 'smw/special/ext.smw.special.browse.js',
 		'dependencies' => array(
+			'mediawiki.api',
 			'ext.smw.style',
 			'ext.smw.autocomplete'
+		),
+		'position' => 'top',
+		'messages' => array(
+			'smw-browse-api-subject-serialization-invalid'
+		),
+		'targets' => array(
+			'mobile',
+			'desktop'
 		)
 	),
 

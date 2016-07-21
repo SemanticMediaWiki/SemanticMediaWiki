@@ -223,6 +223,8 @@
 	"smw_browse_hide_incoming": "hide properties that link here",
 	"smw_browse_no_outgoing": "This page has no properties.",
 	"smw_browse_no_incoming": "No properties link to this page.",
+	"smw-browse-subject-invalid": "The subject validation returned with a \"$1\" error.",
+	"smw-browse-api-subject-serialization-invalid" : "The subject has an invalid serialization format.",
 	"smw_inverse_label_default": "$1 of",
 	"smw_inverse_label_property": "Inverse property label",
 	"pageproperty": "Page property search",

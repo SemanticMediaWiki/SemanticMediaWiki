@@ -28,8 +28,8 @@ use SpecialPageFactory;
  * @covers \SMW\SpecialConcepts
  * @covers \SMW\SpecialPage
  * @covers SMWAskPage
- * @covers SMWSpecialBrowse
  * @covers SMWAdmin
+ * @covers \SMW\MediaWiki\Specials\SpecialBrowse
  * @covers \SMW\MediaWiki\Specials\SpecialSearchByProperty
  *
  * @note Test base was borrowed from the EducationProgram extension
