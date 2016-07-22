@@ -94,6 +94,29 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNoAnnotationWhenDisabled() {
+
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
+			DIWikiPage::newFromText( 'Foo' )
+		);
+
+		$instance = new DisplayTitlePropertyAnnotator(
+			new NullPropertyAnnotator( $semanticData ),
+			'Bar'
+		);
+		$instance->canCreateAnnotation( false );
+		$instance->addAnnotation();
+
+		$expected = array(
+			'propertyCount'  => 0
+		);
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$instance->getSemanticData()
+		);
+	}
+
 	public function displayTitleProvider() {
 
 		$provider = array();
