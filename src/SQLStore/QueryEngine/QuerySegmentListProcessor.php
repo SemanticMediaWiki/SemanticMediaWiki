@@ -4,7 +4,7 @@ namespace SMW\SQLStore\QueryEngine;
 
 use RuntimeException;
 use SMW\MediaWiki\Database;
-use SMW\SQLStore\TemporaryIdTableCreator;
+use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 use SMWQuery as Query;
 
 /**
@@ -23,9 +23,9 @@ class QuerySegmentListProcessor {
 	private $connection;
 
 	/**
-	 * @var TemporaryIdTableCreator
+	 * @var TemporaryTableBuilder
 	 */
-	private $tempIdTableCreator;
+	private $temporaryTableBuilder;
 
 	/**
 	 * @var HierarchyTempTableBuilder
@@ -55,12 +55,12 @@ class QuerySegmentListProcessor {
 
 	/**
 	 * @param Database $connection
-	 * @param TemporaryIdTableCreator $temporaryIdTableCreator
+	 * @param TemporaryTableBuilder $temporaryTableBuilder
 	 * @param HierarchyTempTableBuilder $hierarchyTempTableBuilder
 	 */
-	public function __construct( Database $connection, TemporaryIdTableCreator $temporaryIdTableCreator, HierarchyTempTableBuilder $hierarchyTempTableBuilder ) {
+	public function __construct( Database $connection, TemporaryTableBuilder $temporaryTableBuilder, HierarchyTempTableBuilder $hierarchyTempTableBuilder ) {
 		$this->connection = $connection;
-		$this->tempIdTableCreator = $temporaryIdTableCreator;
+		$this->temporaryTableBuilder = $temporaryTableBuilder;
 		$this->hierarchyTempTableBuilder = $hierarchyTempTableBuilder;
 	}
 
@@ -183,10 +183,7 @@ class QuerySegmentListProcessor {
 			break;
 			case QuerySegment::Q_DISJUNCTION:
 				if ( $this->queryMode !== Query::MODE_NONE ) {
-					$db->query(
-						$this->getCreateTempIDTableSQL( $db->tableName( $query->alias ) ),
-						__METHOD__
-					);
+					$this->temporaryTableBuilder->createTable( $db->tableName( $query->alias ) );
 				}
 
 				$this->executedQueries[$query->alias] = array();
@@ -297,11 +294,6 @@ class QuerySegmentListProcessor {
 		$query->joinTable = $query->alias;
 		$query->joinfield = "$query->alias.id";
 
-		$db->query(
-			$this->getCreateTempIDTableSQL( $tablename ),
-			__METHOD__
-		);
-
 		$this->hierarchyTempTableBuilder->createHierarchyTempTableFor(
 			$type,
 			$tablename,
@@ -315,28 +307,9 @@ class QuerySegmentListProcessor {
 	 * on. Being temporary, the tables will vanish with the session anyway.
 	 */
 	public function cleanUp() {
-
 		foreach ( $this->executedQueries as $table => $log ) {
-			$this->connection->query(
-				"DROP TEMPORARY TABLE " . $this->connection->tableName( $table ),
-				__METHOD__
-			);
+			$this->temporaryTableBuilder->dropTable( $this->connection->tableName( $table ) );
 		}
-	}
-
-	/**
-	 * Get SQL code suitable to create a temporary table of the given name, used to store ids.
-	 * MySQL can do that simply by creating new temporary tables. PostgreSQL first checks if such
-	 * a table exists, so the code is ready to reuse existing tables if the code was modified to
-	 * keep them after query answering. Also, PostgreSQL tables will use a RULE to achieve built-in
-	 * duplicate elimination. The latter is done using INSERT IGNORE in MySQL.
-	 *
-	 * @param string $tableName
-	 *
-	 * @return string
-	 */
-	private function getCreateTempIDTableSQL( $tableName ) {
-		return $this->tempIdTableCreator->getSqlToCreate( $tableName );
 	}
 
 }

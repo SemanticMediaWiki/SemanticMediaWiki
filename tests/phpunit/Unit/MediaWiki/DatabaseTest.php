@@ -364,11 +364,11 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		$instance->commitTransaction( __METHOD__ );
 	}
 
-	public function testDisableEnableTransactions() {
+	public function testDoQueryWithAutoCommit() {
 
 		$database = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getFlag', 'clearFlag', 'setFlag' ) )
+			->setMethods( array( 'getFlag', 'clearFlag', 'setFlag', 'getType', 'query' ) )
 			->getMockForAbstractClass();
 
 		$database->expects( $this->any() )
@@ -389,6 +389,10 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$readConnectionProvider->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $database ) );
+
 		$writeConnectionProvider = $this->getMockBuilder( '\SMW\DBConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -402,8 +406,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			$writeConnectionProvider
 		);
 
-		$instance->disableTransactions();
-		$instance->enableTransactions();
+		$instance->queryWithAutoCommit( 'foo' );
 	}
 
 	public function testMissingWriteConnectionThrowsException() {

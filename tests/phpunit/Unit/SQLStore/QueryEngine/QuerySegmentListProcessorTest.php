@@ -21,7 +21,7 @@ class QuerySegmentListProcessorTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$temporaryIdTableCreator = $this->getMockBuilder( '\SMW\SQLStore\TemporaryIdTableCreator' )
+		$temporaryTableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TemporaryTableBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -31,7 +31,7 @@ class QuerySegmentListProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\QuerySegmentListProcessor',
-			new QuerySegmentListProcessor( $connection, $temporaryIdTableCreator, $hierarchyTempTableBuilder )
+			new QuerySegmentListProcessor( $connection, $temporaryTableBuilder, $hierarchyTempTableBuilder )
 		);
 	}
 
@@ -41,7 +41,7 @@ class QuerySegmentListProcessorTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$temporaryIdTableCreator = $this->getMockBuilder( '\SMW\SQLStore\TemporaryIdTableCreator' )
+		$temporaryTableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TemporaryTableBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -51,7 +51,7 @@ class QuerySegmentListProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new QuerySegmentListProcessor(
 			$connection,
-			$temporaryIdTableCreator,
+			$temporaryTableBuilder,
 			$hierarchyTempTableBuilder
 		);
 
