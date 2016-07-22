@@ -58,7 +58,9 @@ class TimeValueDescriptionDeserializer extends DescriptionDeserializer {
 			}
 		}
 
-		$this->dataValue->setUserValue( $value, false, true );
+		// #1178 to support queries like [[Has date::~ Dec 2001]]
+		$this->dataValue->setOption( TimeValue::OPT_QUERY_COMP_CONTEXT, true );
+		$this->dataValue->setUserValue( $value );
 
 		if ( !$this->dataValue->isValid() ) {
 			return new ThingDescription();

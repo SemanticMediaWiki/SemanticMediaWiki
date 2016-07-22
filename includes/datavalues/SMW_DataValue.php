@@ -65,6 +65,12 @@ abstract class SMWDataValue {
 	const OPT_QUERY_CONTEXT = 'query.context';
 
 	/**
+	 * Describes a state where a DataValue is part of a query condition and
+	 * contains a comparator.
+	 */
+	const OPT_QUERY_COMP_CONTEXT = 'query.comparator.context';
+
+	/**
 	 * Associated data item. This is the reference to the immutable object
 	 * that represents the current data content. All other data stored here
 	 * is only about presentation and parsing, but is not relevant to the
@@ -141,11 +147,6 @@ abstract class SMWDataValue {
 	private $options;
 
 	/**
-	 * @var boolean
-	 */
-	protected $approximateValue = false;
-
-	/**
 	 * @var InfoLinksProvider
 	 */
 	private $infoLinksProvider = null;
@@ -166,21 +167,16 @@ abstract class SMWDataValue {
 	 * The given value is a string as supplied by some user. An alternative
 	 * label for printout might also be specified.
 	 *
-	 * The third argument was added in SMW 1.9 and should not be used from outside SMW.
-	 *
 	 * @param string $value
 	 * @param mixed $caption
-	 * @param boolean $approximateValue
 	 */
-	public function setUserValue( $value, $caption = false, $approximateValue = false ) {
+	public function setUserValue( $value, $caption = false ) {
 
 		$this->m_dataitem = null;
 		$this->mErrors = array(); // clear errors
 		$this->mHasErrors = false;
 		$this->getInfoLinksProvider()->init();
 		$this->m_caption = is_string( $caption ) ? trim( $caption ) : false;
-		$this->approximateValue = $approximateValue;
-
 
 		$this->parseUserValue( $value ); // may set caption if not set yet, depending on datavalue
 
@@ -195,10 +191,9 @@ abstract class SMWDataValue {
 			$this->addErrorMsg( array( 'smw-datavalue-stripmarker-parse-error', $value ) );
 		}
 
-		if ( $this->isValid() && !$approximateValue && !$this->getOptionValueFor( self::OPT_QUERY_CONTEXT ) ) {
+		if ( $this->isValid() && !$this->getOptionValueFor( self::OPT_QUERY_CONTEXT ) ) {
 			$this->checkAllowedValues();
 		}
-
 	}
 
 	/**

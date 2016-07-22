@@ -141,13 +141,7 @@ class DescriptionProcessor {
 		$dataValue = $this->dataValueFactory->newTypeIDValue( '_wpg', 'QP_WPG_TITLE' );
 		$dataValue->setContextPage( $this->contextPage );
 
-		// Ensure special handling for ~foo* or !~Foo* in WikiPageDataValue
-		// to capture upper/lower case
-		$dataValue->setOption(
-			'approximate.comparator.context',
-			( $chunk{0} === '~' || $chunk{0} === '!' )
-		);
-
+		$dataValue->setOption( DataValue::OPT_QUERY_CONTEXT, true );
 		$description = null;
 
 		$description = $dataValue->getQueryDescription( $chunk );

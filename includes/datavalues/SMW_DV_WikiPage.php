@@ -118,8 +118,14 @@ class SMWWikiPageValue extends SMWDataValue {
 		// #1701 If the DV is part of a Description and an approximate search
 		// (e.g. ~foo* / ~Foo*) then use the value as-is and avoid being
 		// transformed by the Title object
-		if ( $this->getOptionValueFor( 'approximate.comparator.context' ) ) {
-			return $this->m_dataitem = new SMWDIWikiPage( $value, NS_MAIN );
+		// If the vaue contains a valid NS then use the Title to create a correct
+		// instance to distinguish [[~Foo*]] from [[Help:~Foo*]]
+		if ( $this->getOptionValueFor( self::OPT_QUERY_COMP_CONTEXT ) ) {
+			if ( ( $title = Title::newFromText( $value ) ) !== null && $title->getNamespace() !== NS_MAIN ) {
+				return $this->m_dataitem = SMWDIWikiPage::newFromTitle( $title );
+			} else {
+				return $this->m_dataitem = new SMWDIWikiPage( $value, NS_MAIN );
+			}
 		}
 
 		if ( $value[0] == '#' ) {
