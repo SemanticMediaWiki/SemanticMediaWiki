@@ -3,6 +3,7 @@
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\Localizer;
+use SMW\Message;
 
 /**
  * @ingroup SMWDataValues
@@ -110,6 +111,10 @@ class SMWWikiPageValue extends SMWDataValue {
 			$this->m_caption = $value;
 		}
 
+		if ( $value === '' ) {
+			return $this->addErrorMsg( array( 'smw-datavalue-wikipage-empty' ) );
+		}
+
 		// #1701 If the DV is part of a Description and an approximate search
 		// (e.g. ~foo* / ~Foo*) then use the value as-is and avoid being
 		// transformed by the Title object
@@ -117,34 +122,30 @@ class SMWWikiPageValue extends SMWDataValue {
 			return $this->m_dataitem = new SMWDIWikiPage( $value, NS_MAIN );
 		}
 
-		if ( $value !== '' ) {
-			if ( $value[0] == '#' ) {
-				if ( is_null( $this->m_contextPage ) ) {
-					$this->addErrorMsg( array( 'smw_notitle', $value ) );
-					return;
-				} else {
-					$this->m_title = Title::makeTitle( $this->m_contextPage->getNamespace(),
-						$this->m_contextPage->getDBkey(), substr( $value, 1 ),
-						$this->m_contextPage->getInterwiki() );
-				}
+		if ( $value[0] == '#' ) {
+			if ( is_null( $this->m_contextPage ) ) {
+				$this->addErrorMsg( array( 'smw-datavalue-wikipage-missing-fragment-context', $value ) );
+				return;
 			} else {
-				$this->m_title = Title::newFromText( $value, $this->m_fixNamespace );
-			}
-
-			/// TODO: Escape the text so users can see punctuation problems (bug 11666).
-			if ( is_null( $this->m_title ) ) {
-				$this->addErrorMsg( array( 'smw_notitle', $value ) );
-			} elseif ( ( $this->m_fixNamespace != NS_MAIN ) &&
-				 ( $this->m_fixNamespace != $this->m_title->getNamespace() ) ) {
-				$this->addErrorMsg( array( 'smw_wrong_namespace', $wgContLang->getNsText( $this->m_fixNamespace ) ) );
-			} else {
-				$this->m_fragment = str_replace( ' ', '_', $this->m_title->getFragment() );
-				$this->m_prefixedtext = '';
-				$this->m_id = -1; // unset id
-				$this->m_dataitem = SMWDIWikiPage::newFromTitle( $this->m_title, $this->m_typeid );
+				$this->m_title = Title::makeTitle( $this->m_contextPage->getNamespace(),
+					$this->m_contextPage->getDBkey(), substr( $value, 1 ),
+					$this->m_contextPage->getInterwiki() );
 			}
 		} else {
-			$this->addErrorMsg( array( 'smw_notitle', $value ) );
+			$this->m_title = Title::newFromText( $value, $this->m_fixNamespace );
+		}
+
+		/// TODO: Escape the text so users can see punctuation problems (bug 11666).
+		if ( is_null( $this->m_title ) ) {
+			$this->addErrorMsg( array( 'smw-datavalue-wikipage-invalid-title', $value ) );
+		} elseif ( ( $this->m_fixNamespace != NS_MAIN ) &&
+			 ( $this->m_fixNamespace != $this->m_title->getNamespace() ) ) {
+			$this->addErrorMsg( array( 'smw_wrong_namespace', $wgContLang->getNsText( $this->m_fixNamespace ) ) );
+		} else {
+			$this->m_fragment = str_replace( ' ', '_', $this->m_title->getFragment() );
+			$this->m_prefixedtext = '';
+			$this->m_id = -1; // unset id
+			$this->m_dataitem = SMWDIWikiPage::newFromTitle( $this->m_title, $this->m_typeid );
 		}
 	}
 

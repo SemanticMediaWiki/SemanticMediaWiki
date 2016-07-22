@@ -303,7 +303,16 @@ class TimeValueFormatter extends DataValueFormatter {
 			$language
 		);
 
-		return $intlTimeFormatter->getLocalizedFormat() . $this->hintCalendarModel( $dataItem );
+		// Avoid an exception on "DateTime::__construct(): Failed to parse time
+		// string (2147483647-01-01 00:00:0.0000000) at position 17 (0): Double
+		// time specification" for an annotation like [[Date::Jan 10000000000]]
+		try {
+			$localizedFormat = $intlTimeFormatter->getLocalizedFormat() . $this->hintCalendarModel( $dataItem );
+		} catch ( \Exception $e ) {
+			$localizedFormat = $this->getISO8601Date();
+		}
+
+		return $localizedFormat;
 	}
 
 	/**

@@ -169,7 +169,7 @@
 			},
 			"expected-output": {
 				"to-contain": [
-					"&quot;-901 AD&quot; contains an uninterpretable dash."
+					"&quot;-901 AD&quot; contains an extrinsic dash or other characters that are invalid for a date interpretation."
 				]
 			}
 		}

@@ -76,7 +76,7 @@ class SMWPropertyListValue extends SMWDataValue {
 				$property = new SMW\DIProperty( $propertyKey );
 			} catch ( SMWDataItemException $e ) {
 				$property = new SMW\DIProperty( 'Error' );
-				$this->addErrorMsg( array( 'smw_parseerror' ) );
+				$this->addErrorMsg( array( 'smw-datavalue-propertylist-invalid-property-key', $dataItem->getString(), $propertyKey ) );
 			}
 
 			if ( $property instanceof SMWDIProperty ) {

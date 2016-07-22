@@ -88,7 +88,7 @@ class ImportValue extends DataValue {
 		$parts = explode( ' ', $dataItem->getString(), 4 );
 
 		if ( count( $parts ) != 4 ) {
-			$this->addErrorMsg( array( 'smw_parseerror' ) );
+			$this->addErrorMsg( array( 'smw-datavalue-import-invalid-format', $dataItem->getString() ) );
 		} else {
 			$this->m_namespace = $parts[0];
 			$this->m_section = $parts[1];

@@ -74,7 +74,7 @@ class SMWTypesValue extends SMWDataValue {
 			$this->m_dataitem = self::getTypeUriFromTypeId( $this->m_typeId );
 		} catch ( SMWDataItemException $e ) {
 			$this->m_dataitem = self::getTypeUriFromTypeId( 'notype' );
-			$this->addErrorMsg( 'smw_parseerror' );
+			$this->addErrorMsg( array( 'smw-datavalue-type-invalid-typeuri', $this->m_typeId ) );
 		}
 	}
 
