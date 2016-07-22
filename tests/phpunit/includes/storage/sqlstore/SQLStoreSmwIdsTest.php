@@ -8,11 +8,7 @@ use SMWSql3SmwIds;
 
 /**
  * @covers \SMWSql3SmwIds
- *
- * @group SMW
- * @group SMWExtension
- *
- * @group semantic-mediawiki-sqlstore
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9.1
@@ -20,6 +16,20 @@ use SMWSql3SmwIds;
  * @author mwjames
  */
 class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
+
+	private $store;
+	private $idToDataItemMatchFinder;
+
+	protected function setUp() {
+
+		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->idToDataItemMatchFinder = $this->getMockBuilder( '\SMW\SQLStore\IdToDataItemMatchFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+	}
 
 	public function testCanConstruct() {
 
@@ -37,7 +47,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMWSql3SmwIds',
-			new SMWSql3SmwIds( $store )
+			new SMWSql3SmwIds( $store, $this->idToDataItemMatchFinder )
 		);
 	}
 
@@ -57,7 +67,10 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new SMWSql3SmwIds( $store );
+		$instance = new SMWSql3SmwIds(
+			$store,
+			$this->idToDataItemMatchFinder
+		);
 
 		$this->assertFalse(
 			$instance->checkIsRedirect( $subject )
@@ -108,7 +121,10 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new SMWSql3SmwIds( $store );
+		$instance = new SMWSql3SmwIds(
+			$store,
+			$this->idToDataItemMatchFinder
+		);
 
 		$result = $instance->getSMWPropertyID( new DIProperty( 'Foo' ) );
 
@@ -141,7 +157,10 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new SMWSql3SmwIds( $store );
+		$instance = new SMWSql3SmwIds(
+			$store,
+			$this->idToDataItemMatchFinder
+		);
 
 		$sortkey = $parameters['sortkey'];
 
@@ -189,7 +208,10 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new SMWSql3SmwIds( $store );
+		$instance = new SMWSql3SmwIds(
+			$store,
+			$this->idToDataItemMatchFinder
+		);
 
 		$sortkey = $parameters['sortkey'];
 
@@ -208,33 +230,23 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetDataItemForId() {
 
-		$row = new \stdClass;
-		$row->smw_title = 'Foo';
-		$row->smw_namespace = 0;
-		$row->smw_iw = '';
-		$row->smw_subobject ='';
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->with(
-				$this->anything(),
-				$this->anything(),
-				$this->equalTo( array( 'smw_id' => 42 ) ) )
-			->will( $this->returnValue( $row ) );
-
-		$store = $this->getMockBuilder( 'SMWSQLStore3' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->atLeastOnce() )
+		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new SMWSql3SmwIds( $store );
+		$this->idToDataItemMatchFinder->expects( $this->once() )
+			->method( 'getDataItemForId' )
+			->with( $this->equalTo( 42 ) )
+			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN ) ) );
+
+		$instance = new SMWSql3SmwIds(
+			$this->store,
+			$this->idToDataItemMatchFinder
+		);
 
 		$this->assertInstanceOf(
 			'\SMW\DIWikiPage',
@@ -263,7 +275,10 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new SMWSql3SmwIds( $store );
+		$instance = new SMWSql3SmwIds(
+			$store,
+			$this->idToDataItemMatchFinder
+		);
 
 		$instance->updateInterwikiField(
 			42,

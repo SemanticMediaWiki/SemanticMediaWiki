@@ -16,10 +16,14 @@ use SMWRequestOptions as RequestOptions;
 use SMWSQLStore3;
 use SMW\SQLStore\TableBuilder\TableBuilder;
 use Onoi\MessageReporter\MessageReporterFactory;
+use SMWSql3SmwIds as IdTableManager;
 
 /**
  * @license GNU GPL v2+
+ * @since   2.2
+ *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
+ * @author mwjames
  */
 class SQLStoreFactory {
 
@@ -29,9 +33,9 @@ class SQLStoreFactory {
 	private $store;
 
 	/**
-	 * @var Settings
+	 * @var ApplicationFactory
 	 */
-	private $settings;
+	private $applicationFactory;
 
 	/**
 	 * @var QueryEngineFactory
@@ -45,7 +49,7 @@ class SQLStoreFactory {
 	 */
 	public function __construct( SMWSQLStore3 $store ) {
 		$this->store = $store;
-		$this->settings = ApplicationFactory::getInstance()->getSettings();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->queryEngineFactory = new QueryEngineFactory( $store );
 	}
 
@@ -65,6 +69,21 @@ class SQLStoreFactory {
 	 */
 	public function newSlaveQueryEngine() {
 		return $this->queryEngineFactory->newQueryEngine();
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return IdTableManager
+	 */
+	public function newIdTableManager() {
+
+		$idToDataItemMatchFinder = new IdToDataItemMatchFinder(
+			$this->store->getConnection( 'mw.db' ),
+			$this->applicationFactory->getIteratorFactory()
+		);
+
+		return new IdTableManager( $this->store, $idToDataItemMatchFinder );
 	}
 
 	/**
@@ -110,6 +129,8 @@ class SQLStoreFactory {
 	 */
 	public function newUsageStatisticsCachedListLookup() {
 
+		$settings = $this->applicationFactory->getSettings();
+
 		$usageStatisticsListLookup = new UsageStatisticsListLookup(
 			$this->store,
 			$this->newPropertyStatisticsStore()
@@ -117,8 +138,8 @@ class SQLStoreFactory {
 
 		return $this->newCachedListLookup(
 			$usageStatisticsListLookup,
-			$this->settings->get( 'smwgStatisticsCache' ),
-			$this->settings->get( 'smwgStatisticsCacheExpiry' )
+			$settings->get( 'smwgStatisticsCache' ),
+			$settings->get( 'smwgStatisticsCacheExpiry' )
 		);
 	}
 
@@ -131,6 +152,8 @@ class SQLStoreFactory {
 	 */
 	public function newPropertyUsageCachedListLookup( RequestOptions $requestOptions = null ) {
 
+		$settings = $this->applicationFactory->getSettings();
+
 		$propertyUsageListLookup = new PropertyUsageListLookup(
 			$this->store,
 			$this->newPropertyStatisticsStore(),
@@ -139,8 +162,8 @@ class SQLStoreFactory {
 
 		return $this->newCachedListLookup(
 			$propertyUsageListLookup,
-			$this->settings->get( 'smwgPropertiesCache' ),
-			$this->settings->get( 'smwgPropertiesCacheExpiry' )
+			$settings->get( 'smwgPropertiesCache' ),
+			$settings->get( 'smwgPropertiesCacheExpiry' )
 		);
 	}
 
@@ -153,6 +176,8 @@ class SQLStoreFactory {
 	 */
 	public function newUnusedPropertyCachedListLookup( RequestOptions $requestOptions = null ) {
 
+		$settings = $this->applicationFactory->getSettings();
+
 		$unusedPropertyListLookup = new UnusedPropertyListLookup(
 			$this->store,
 			$this->newPropertyStatisticsStore(),
@@ -161,8 +186,8 @@ class SQLStoreFactory {
 
 		return $this->newCachedListLookup(
 			$unusedPropertyListLookup,
-			$this->settings->get( 'smwgUnusedPropertiesCache' ),
-			$this->settings->get( 'smwgUnusedPropertiesCacheExpiry' )
+			$settings->get( 'smwgUnusedPropertiesCache' ),
+			$settings->get( 'smwgUnusedPropertiesCacheExpiry' )
 		);
 	}
 
@@ -175,16 +200,18 @@ class SQLStoreFactory {
 	 */
 	public function newUndeclaredPropertyCachedListLookup( RequestOptions $requestOptions = null ) {
 
+		$settings = $this->applicationFactory->getSettings();
+
 		$undeclaredPropertyListLookup = new UndeclaredPropertyListLookup(
 			$this->store,
-			$this->settings->get( 'smwgPDefaultType' ),
+			$settings->get( 'smwgPDefaultType' ),
 			$requestOptions
 		);
 
 		return $this->newCachedListLookup(
 			$undeclaredPropertyListLookup,
-			$this->settings->get( 'smwgWantedPropertiesCache' ),
-			$this->settings->get( 'smwgWantedPropertiesCacheExpiry' )
+			$settings->get( 'smwgWantedPropertiesCache' ),
+			$settings->get( 'smwgWantedPropertiesCacheExpiry' )
 		);
 	}
 
@@ -199,7 +226,7 @@ class SQLStoreFactory {
 	 */
 	public function newCachedListLookup( ListLookup $listLookup, $useCache, $cacheExpiry ) {
 
-		$cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
+		$cacheFactory = $this->applicationFactory->newCacheFactory();
 
 		$cacheOptions = $cacheFactory->newCacheOptions( array(
 			'useCache' => $useCache,
@@ -256,15 +283,17 @@ class SQLStoreFactory {
 	 */
 	public function newCachedValueLookupStore() {
 
+		$settings = $this->applicationFactory->getSettings();
+
 		$circularReferenceGuard = new CircularReferenceGuard( 'vl:store' );
 		$circularReferenceGuard->setMaxRecursionDepth( 2 );
 
-		$cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
+		$cacheFactory = $this->applicationFactory->newCacheFactory();
 
 		$blobStore = $cacheFactory->newBlobStore(
 			'smw:vl:store',
-			$this->settings->get( 'smwgValueLookupCacheType' ),
-			$this->settings->get( 'smwgValueLookupCacheLifetime' )
+			$settings->get( 'smwgValueLookupCacheType' ),
+			$settings->get( 'smwgValueLookupCacheLifetime' )
 		);
 
 		$cachedValueLookupStore = new CachedValueLookupStore(
@@ -273,7 +302,7 @@ class SQLStoreFactory {
 		);
 
 		$cachedValueLookupStore->setValueLookupFeatures(
-			$this->settings->get( 'smwgValueLookupFeatures' )
+			$settings->get( 'smwgValueLookupFeatures' )
 		);
 
 		$cachedValueLookupStore->setCircularReferenceGuard(
@@ -299,14 +328,16 @@ class SQLStoreFactory {
 	 */
 	public function newPropertyTableInfoFetcher() {
 
+		$settings = $this->applicationFactory->getSettings();
+
 		$propertyTableInfoFetcher = new PropertyTableInfoFetcher();
 
 		$propertyTableInfoFetcher->setCustomFixedPropertyList(
-			$this->settings->get( 'smwgFixedProperties' )
+			$settings->get( 'smwgFixedProperties' )
 		);
 
 		$propertyTableInfoFetcher->setCustomSpecialPropertyList(
-			$this->settings->get( 'smwgPageSpecialProperties' )
+			$settings->get( 'smwgPageSpecialProperties' )
 		);
 
 		return $propertyTableInfoFetcher;

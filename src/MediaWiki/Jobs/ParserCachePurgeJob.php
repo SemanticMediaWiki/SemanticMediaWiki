@@ -138,7 +138,7 @@ class ParserCachePurgeJob extends JobBase {
 		$this->addPagesToUpdater( $hashList );
 	}
 
-	private function doBuildUniqueTargetLinksHashList( array $targetLinksHashList ) {
+	private function doBuildUniqueTargetLinksHashList( $targetLinksHashList ) {
 
 		$uniqueTargetLinksHashList = array();
 

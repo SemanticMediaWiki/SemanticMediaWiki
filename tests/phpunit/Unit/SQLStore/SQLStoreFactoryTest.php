@@ -75,6 +75,16 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstractIdTableManager() {
+
+		$instance = new SQLStoreFactory( new SMWSQLStore3() );
+
+		$this->assertInstanceOf(
+			'SMWSql3SmwIds',
+			$instance->newIdTableManager()
+		);
+	}
+
 	public function testCanConstructUsageStatisticsCachedListLookup() {
 
 		$instance = new SQLStoreFactory( new SMWSQLStore3() );

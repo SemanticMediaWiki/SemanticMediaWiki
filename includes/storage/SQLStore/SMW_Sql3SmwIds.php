@@ -220,14 +220,12 @@ class SMWSql3SmwIds {
 	 * @since 1.8
 	 * @param SMWSQLStore3 $store
 	 */
-	public function __construct( SMWSQLStore3 $store ) {
+	public function __construct( SMWSQLStore3 $store, IdToDataItemMatchFinder $idToDataItemMatchFinder ) {
 		$this->store = $store;
 		// Yes, this is a hack, but we only use it for convenient debugging:
 		self::$singleton_debug = $this;
 
-		$this->idToDataItemMatchFinder = new IdToDataItemMatchFinder(
-			$this->store->getConnection( 'mw.db' )
-		);
+		$this->idToDataItemMatchFinder = $idToDataItemMatchFinder;
 
 		$this->redirectInfoStore = new RedirectInfoStore(
 			$this->store->getConnection( 'mw.db' )
