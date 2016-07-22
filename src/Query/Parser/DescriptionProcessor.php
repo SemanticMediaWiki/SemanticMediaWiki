@@ -3,6 +3,7 @@
 namespace SMW\Query\Parser;
 
 use SMW\DataValueFactory;
+use SMWDataValue as DataValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Message;
@@ -114,7 +115,7 @@ class DescriptionProcessor {
 
 		// Indicates whether a value is being used by a query condition or not which
 		// can lead to a modified validation of a value.
-		$dataValue->setOption( 'description.processor', true );
+		$dataValue->setOption( DataValue::OPT_QUERY_CONTEXT, true );
 
 		$description = $dataValue->getQueryDescription( $chunk );
 		$this->addError( $dataValue->getErrors() );

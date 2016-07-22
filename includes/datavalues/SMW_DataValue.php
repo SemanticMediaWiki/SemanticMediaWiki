@@ -47,8 +47,22 @@ use SMW\Query\QueryComparator;
  */
 abstract class SMWDataValue {
 
+	/**
+	 * Contains the user language a user operates in.
+	 */
 	const OPT_USER_LANGUAGE = 'user.language';
+
+	/**
+	 * Contains either the global "site" content language or a specified page
+	 * content language invoked by the context page.
+	 */
 	const OPT_CONTENT_LANGUAGE = 'content.language';
+
+	/**
+	 * Describes a state where a DataValue is part of a query condition and may
+	 * (or not) require a different treatment.
+	 */
+	const OPT_QUERY_CONTEXT = 'query.context';
 
 	/**
 	 * Associated data item. This is the reference to the immutable object
@@ -181,7 +195,7 @@ abstract class SMWDataValue {
 			$this->addErrorMsg( array( 'smw-datavalue-stripmarker-parse-error', $value ) );
 		}
 
-		if ( $this->isValid() && !$approximateValue ) {
+		if ( $this->isValid() && !$approximateValue && !$this->getOptionValueFor( self::OPT_QUERY_CONTEXT ) ) {
 			$this->checkAllowedValues();
 		}
 

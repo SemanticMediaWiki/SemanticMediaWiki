@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation for `PRUC` to validate uniqueness (`smwgDVFeatures`)",
+	"description": "Test in-text annotation for `_PVUC` to validate uniqueness (`smwgDVFeatures`)",
 	"properties": [
 		{
 			"name": "Has Url",
