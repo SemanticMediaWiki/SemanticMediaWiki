@@ -262,7 +262,17 @@ $specialPageAliases['fi'] = array(
 
 /** French (français) */
 $specialPageAliases['fr'] = array(
+	'Ask' => array( 'Requêter' ),
+	'Browse' => array( 'Parcourir' ),
+	'ExportRDF' => array( 'Export_RDF' ),
+	'PageProperty' => array( 'Propriétés_de_la_page' ),
 	'Properties' => array( 'Propriétés' ),
+	'Concepts' => array( 'Concepts' ),
+	'SearchByProperty' => array( 'Recherche_par_propriété' ),
+	'SemanticStatistics' => array( 'Statistiques_sémantiques' ),
+	'Types' => array( 'Types' ),
+	'UnusedProperties' => array( 'Propriétés_inutilisées' ),
+	'WantedProperties' => array( 'Propriétés_demandées' ),
 );
 
 /** Galician (galego) */
