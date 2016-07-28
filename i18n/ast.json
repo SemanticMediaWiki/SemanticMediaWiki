@@ -12,7 +12,7 @@
 	"smw_factbox_head": "Fechos sobro $1",
 	"smw_isspecprop": "Esta propiedá ye una propiedá especial nesta wiki.",
 	"smw-concept-cache-header": "Usu de la caché",
-	"smw-concept-cache-count": "La [https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count caché de conceptos] contien {{PLURAL:$1|'''$1''' entidá|'''$1''' entidaes}} ($2).",
+	"smw-concept-cache-count": "La [https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count caché de conceptos] contien {{PLURAL:$1|'''una''' entidá|'''$1''' entidaes}} ($2).",
 	"smw-concept-no-cache": "Nun hai caché disponible.",
 	"smw_concept_description": "Descripción del conceptu \"$1\"",
 	"smw_no_concept_namespace": "Los conceptos sólo puen definise nes páxines del espaciu de nomes Conceptu:.",
