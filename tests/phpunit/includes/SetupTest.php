@@ -276,7 +276,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	public function messagesFilesDataProvider() {
 
 		$modules = array(
-			'SemanticMediaWiki',
 			'SemanticMediaWikiAlias',
 			'SemanticMediaWikiMagic',
 			'SemanticMediaWikiNamespaces'
