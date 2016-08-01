@@ -142,6 +142,20 @@ class MwCollaboratorFactory {
 	}
 
 	/**
+	 * Wikia Change
+	 * QueryEngineDatabase use slave for read and write operation.
+	 * There is no write in QueryEngine but ->query() use writeConnection.
+	 * Query needs to create temporary tables and insert data to it.
+	 *
+	 *
+	 * @return QueryEngineDatabaseConnectionProvider
+	 */
+	public function newQueryEngineDatabaseConnectionProvider(){
+		return new QueryEngineDatabaseConnectionProvider();
+	}
+
+
+	/**
 	 * @since 2.0
 	 *
 	 * @param WikiPage $wkiPage
