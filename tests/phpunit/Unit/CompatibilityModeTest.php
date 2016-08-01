@@ -15,14 +15,6 @@ use SMW\CompatibilityMode;
  */
 class CompatibilityModeTest extends \PHPUnit_Framework_TestCase {
 
-	public function testRequiresCompatibilityMode() {
-
-		$this->assertInternalType(
-			'boolean',
-			CompatibilityMode::requiresCompatibilityMode()
-		);
-	}
-
 	public function testExtensionNotEnabled() {
 
 		$this->assertInternalType(

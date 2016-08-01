@@ -90,7 +90,7 @@ final class Setup {
 			Settings::newFromGlobals( $this->globalVars )
 		);
 
-		if ( CompatibilityMode::requiresCompatibilityMode() || CompatibilityMode::extensionNotEnabled() ) {
+		if ( CompatibilityMode::extensionNotEnabled() ) {
 			CompatibilityMode::disableSemantics();
 		}
 	}
