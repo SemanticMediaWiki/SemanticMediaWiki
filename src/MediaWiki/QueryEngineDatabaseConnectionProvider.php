@@ -41,10 +41,9 @@ class QueryEngineDatabaseConnectionProvider implements DBConnectionProvider {
 
 	private function createConnection() {
 
-		$connection = new Database(
-			new LazyDBConnectionProvider( DB_SLAVE ),
-			new LazyDBConnectionProvider( DB_SLAVE )
-		);
+		$connectionProvider = new LazyDBConnectionProvider( DB_SLAVE );
+		// use same connection to read/write see explanation in this class doc
+		$connection = new Database( $connectionProvider, $connectionProvider );
 
 		global $wgDBprefix;
 		$connection->setDBPrefix( $wgDBprefix );
