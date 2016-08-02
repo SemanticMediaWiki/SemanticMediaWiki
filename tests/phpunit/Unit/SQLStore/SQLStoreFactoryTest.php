@@ -169,4 +169,30 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructRdbmsTableBuilder() {
+
+		$connection = $this->getMockBuilder( '\DatabaseBase' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$connection->expects( $this->any() )
+			->method( 'getType' )
+			->will( $this->returnValue( 'mysql' ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->once() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new SQLStoreFactory( $store );
+
+		$this->assertInstanceOf(
+			'SMW\SQLStore\TableBuilder\RdbmsTableBuilder',
+			$instance->newRdbmsTableBuilder()
+		);
+	}
+
 }
