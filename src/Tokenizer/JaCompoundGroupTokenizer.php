@@ -12,7 +12,10 @@ use Onoi\Tesa\CharacterExaminer;
  */
 class JaCompoundGroupTokenizer implements Tokenizer {
 
-	private $compound = [
+	/**
+	 * @var array
+	 */
+	private $compound = array(
 		"あっ",
 		"あり",
 		"ある",
@@ -126,7 +129,7 @@ class JaCompoundGroupTokenizer implements Tokenizer {
 		"。",
 		"「",
 		"」"
-	];
+	);
 
 	/**
 	 * @var Tokenizer

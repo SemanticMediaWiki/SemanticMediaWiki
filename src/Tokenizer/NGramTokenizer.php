@@ -96,7 +96,7 @@ class NGramTokenizer implements Tokenizer {
 
 	private function createNGrams( $text, $ngramSize, $withMarker ) {
 
-		$ngramList = [];
+		$ngramList = array();
 
 		// Identify the beginning-of-word and end-of-word
 		if ( $withMarker ) {
