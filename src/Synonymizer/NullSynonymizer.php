@@ -2,8 +2,6 @@
 
 namespace Onoi\Tesa\Synonymizer;
 
-use Cdb\Reader;
-
 /**
  * @license GNU GPL v2+
  * @since 0.1
