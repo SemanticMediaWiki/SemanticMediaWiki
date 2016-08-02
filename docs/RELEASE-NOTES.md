@@ -28,6 +28,7 @@ THIS IS NOT A RELEASE YET
 
 * #1511 Removed I18n shim originally required for MediaWiki < 1.23
 * #1726 Allows `QueryDependencyLinksStore` to execute `getDependencyListByLateRetrieval` even in cases of an intial empty list
+* #1750 Added `RdbmsTableBuilder` to replace `SMWSQLHelpers`
 
 ## Contributors
 
