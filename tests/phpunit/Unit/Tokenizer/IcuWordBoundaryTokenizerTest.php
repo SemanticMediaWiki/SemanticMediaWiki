@@ -18,8 +18,8 @@ class IcuWordBoundaryTokenizerTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		$instance = new IcuWordBoundaryTokenizer();
 
-		if ( !$instance->isAvailable() ) {
-			$this->markTestSkipped( 'ICU extension is not available.' );
+		if ( !$instance->isAvailable() || INTL_ICU_VERSION != '54.1' ) {
+			$this->markTestSkipped( 'ICU extension is not available or does not match the expected version constraint.' );
 		}
 	}
 

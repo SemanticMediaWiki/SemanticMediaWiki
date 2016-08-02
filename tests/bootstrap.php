@@ -22,6 +22,8 @@ if ( is_readable( $path = __DIR__ . '/../vendor/autoload.php' ) ) {
 	die( 'The test suite requires a Composer based deployement.' );
 }
 
+print sprintf( "%-25s%s\n\n", "ICU (intl) extension:", ( extension_loaded( 'intl' ) ? INTL_ICU_VERSION : '(disabled)' ) );
+
 $autoLoader = require $path;
 $autoLoader->addPsr4( 'Onoi\\Tesa\\Tests\\', __DIR__ . '/phpunit/Unit' );
 $autoLoader->addPsr4( 'Onoi\\Tesa\\Tests\\Integration\\', __DIR__ . '/phpunit/Integration' );
