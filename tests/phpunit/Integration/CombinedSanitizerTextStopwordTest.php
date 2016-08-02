@@ -2,8 +2,7 @@
 
 namespace Onoi\Tesa\Tests\Integration;
 
-use Onoi\Tesa\StopwordAnalyzer;
-use Onoi\Tesa\Sanitizer;
+use Onoi\Tesa\SanitizerFactory;
 
 /**
  * @group onoi-tesa
@@ -13,26 +12,27 @@ use Onoi\Tesa\Sanitizer;
  *
  * @author mwjames
  */
-class SampleTextStopwordTest extends \PHPUnit_Framework_TestCase {
+class CombinedSanitizerTextStopwordTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider textByLanguageProvider
 	 */
 	public function testByLanguage( $languageCode, $text, $expected ) {
 
-		$stopwordAnalyzer = new StopwordAnalyzer();
-		$stopwordAnalyzer->loadListByLanguage( $languageCode );
+		$sanitizerFactory = new SanitizerFactory();
 
-		$sanitizer = new Sanitizer( $text );
+		$sanitizer = $sanitizerFactory->newSanitizer( $text );
 		$sanitizer->toLowercase();
 
-		$string = $sanitizer->sanitizeBy(
-			$stopwordAnalyzer
+		$text = $sanitizer->sanitizeWith(
+			$sanitizerFactory->newGenericRegExTokenizer(),
+			$sanitizerFactory->newCdbStopwordAnalyzer( $languageCode ),
+			$sanitizerFactory->newNullSynonymizer()
 		);
 
 		$this->assertEquals(
 			$expected,
-			$string
+			$text
 		);
 	}
 
@@ -93,7 +93,7 @@ class SampleTextStopwordTest extends \PHPUnit_Framework_TestCase {
 			//
 			"goal query expansion regard increasing recall precision potentially increase decrease mathematically " .
 			"equated including result set pages relevant quality equally relevant pages included result set potential " .
-			"relevant user's desired query included query expansion relevance"
+			"relevant user desired query included query expansion relevance"
 		);
 
 		return $provider;

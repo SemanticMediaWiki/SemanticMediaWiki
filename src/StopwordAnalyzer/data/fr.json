@@ -1,7 +1,7 @@
 {
 	"@source": "http://www.ranks.nl/stopwords/french",
 	"version": "0.1",
-	"fr":[
+	"list":[
 		"alors",
 		"au",
 		"aucuns",

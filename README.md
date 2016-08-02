@@ -7,19 +7,15 @@
 [![Packagist download count](https://poser.pugx.org/onoi/tesa/d/total.png)](https://packagist.org/packages/onoi/tesa)
 [![Dependency Status](https://www.versioneye.com/php/onoi:tesa/badge.png)](https://www.versioneye.com/php/onoi:tesa)
 
-Deployed independent from the [Semantic MediaWiki][smw] project. The library contains a small collection of
-helper classes to support sanitization of text or string elements of arbitrary length with the aim to improve
-search match confidence during a query execution.
-
-This library includes:
-
-- `Transliterator` to help convert diacritics or greek letters into a romanized version
-- `StopwordAnalyzer` to manage a list of registered stopwords
-- `Tokenizer` to split a text by common punctuation
+The library contains a small collection of helper classes to support sanitization
+of text or string elements of arbitrary length with the aim to improve
+search match confidence during a query execution that is required by [Semantic MediaWiki][smw]
+project and is deployed independently.
 
 ## Requirements
 
-PHP 5.3 / HHVM 3.5 or later
+- PHP 5.3 / HHVM 3.5 or later
+- Recommended to enable the [ICU][icu] extension
 
 ## Installation
 
@@ -37,9 +33,15 @@ the following dependency to your [composer.json][composer].
 ## Usage
 
 ```php
-$sanitizer = new Sanitizer( 'A string that contains ...' );
-$sanitizer->reduceLengthTo( '200' );
+use Onoi\Tesa\SanitizerFactory;
+use Onoi\Tesa\Transliterator;
+use Onoi\Tesa\Sanitizer;
 
+$sanitizerFactory = new SanitizerFactory();
+
+$sanitizer = $sanitizerFactory->newSanitizer( 'A string that contains ...' );
+
+$sanitizer->reduceLengthTo( 200 );
 $sanitizer->toLowercase();
 
 $sanitizer->replace(
@@ -47,41 +49,29 @@ $sanitizer->replace(
 	array( '' )
 );
 
+$sanitizer->setOption( Sanitizer::MIN_LENGTH, 4 );
+$sanitizer->setOption( Sanitizer::WHITELIST, array( 'that' ) );
+
 $sanitizer->applyTransliteration(
 	Transliterator::DIACRITICS | Transliterator::GREEK
 );
-```
 
-```php
-use Onoi\Cache\CacheFactory;
-
-$cacheFactory = new CacheFactory();
-$cache = $cacheFactory->newMediaWikiCache( wfGetCache( 'redis' ) );
-
-$stopwordAnalyzer = new StopwordAnalyzer( $cache );
-$stopwordAnalyzer->loadListByLanguage( array( 'en', 'fr' ) );
-
-$sanitizer = new Sanitizer( 'This string contains even more ...' );
-$sanitizer->toLowercase();
-
-$sanitizer->setOption( ONOI_TESA_CHARACTER_MIN_LENGTH, 4 );
-$sanitizer->setOption( ONOI_TESA_WORD_WHITELIST, array( 'even', 'more' ) );
-
-$string = $sanitizer->sanitizeBy(
-	$stopwordAnalyzer
+$text = $sanitizer->sanitizeWith(
+	$sanitizerFactory->newGenericTokenizer(),
+	$sanitizerFactory->newNullStopwordAnalyzer(),
+	$sanitizerFactory->newNullSynonymizer()
 );
+
 ```
 
-- It is recommended that the `StopwordAnalyzer` is invoked using a responsive cache provider (such as
-APC or redis) to minimize any latency when the stopword list is loaded.
-- `StopwordAnalyzer` default languages include en, de, fr, es
-
-### Data sources
-
-- The `Transliterator` uses the same diacritics conversion table as http://jsperf.com/latinize
-  (except the German diaeresis ä, ü, and ö)
-- The stopwords used by the `StopwordAnalyzer` have been collected from different sources, each `json`
-  file identifies its origin
+- `SanitizerFactory` is expected to be the sole entry point for services and instances
+  when used outside of this library
+- `IcuWordBoundaryTokenizer` is a preferred tokenizer in case the [ICU][icu] extension is available
+- `NGramTokenizer` is provided to increase CJK match confidence in case the
+  back-end does not provide an explicit ngram tokenizer
+- `StopwordAnalyzer` together with a `LanguageDetector` is provided as a means to
+  reduce ambiguity of frequent "noise" words from a possible search index
+- `Synonymizer` currently only provides an interface
 
 ## Contribution and support
 
@@ -100,7 +90,20 @@ The library provides unit tests that covers the core-functionality normally run 
 
 ## Release notes
 
-- 0.1.0 Initial release (2015-12-??)
+- 0.1.0 Initial release (2016-08-??)
+ - Added `SanitizerFactory` with support for a
+ - `Tokenizer`, `LanguageDetector`, `Synonymizer`, and `StopwordAnalyzer` interface
+
+## Acknowledgments
+
+- The `Transliterator` uses the same diacritics conversion table as http://jsperf.com/latinize
+  (except the German diaeresis ä, ü, and ö)
+- The stopwords used by the `StopwordAnalyzer` have been collected from different sources, each `json`
+  file identifies its origin
+- `CdbStopwordAnalyzer` relies on `wikimedia/cdb` to avoid using an external database or cache
+  layer (with extra stopwords being available [here](https://github.com/6/stopwords-json))
+- `JaTinySegmenterTokenizer` is based on the work of Taku Kudo and his [tiny_segmenter.js](http://chasen.org/~taku/software/TinySegmenter)
+- `TextCatLanguageDetector` uses the [`wikimedia/textcat`][textcat] library to make predictions about a language
 
 ## License
 
@@ -111,3 +114,5 @@ The library provides unit tests that covers the core-functionality normally run 
 [license]: https://www.gnu.org/copyleft/gpl.html
 [travis]: https://travis-ci.org/onoi/tesa
 [smw]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/
+[icu]: http://php.net/manual/en/intro.intl.php
+[textcat]: https://github.com/wikimedia/wikimedia-textcat

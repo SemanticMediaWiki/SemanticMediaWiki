@@ -17,19 +17,52 @@ class CharacterExaminerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testToContainKoreanCharacters() {
 		$this->assertTrue(
-			CharacterExaminer::contains( ONOI_TESA_CHAR_EXAMINER_HANGUL, '한국어 텍스트의 예' )
+			CharacterExaminer::contains( CharacterExaminer::HANGUL, '한국어 텍스트의 예' )
+		);
+
+		$this->assertFalse(
+			CharacterExaminer::contains( CharacterExaminer::HAN, '한국어 텍스트의 예' )
 		);
 	}
 
 	public function testToContainJapaneseCharacters() {
+
 		$this->assertTrue(
-			CharacterExaminer::contains( ONOI_TESA_CHAR_EXAMINER_HIRAGANA_KATAKANA, 'IQテスト' )
+			CharacterExaminer::contains( CharacterExaminer::LATIN, '脳のIQテスト' )
+		);
+
+		$this->assertTrue(
+			CharacterExaminer::contains( CharacterExaminer::HIRAGANA_KATAKANA, '脳のIQテスト' )
+		);
+
+		$this->assertTrue(
+			CharacterExaminer::contains( CharacterExaminer::HAN, '脳のIQテスト' )
 		);
 	}
 
 	public function testToContainChineseCharacters() {
+
+		$this->assertFalse(
+			CharacterExaminer::contains( CharacterExaminer::LATIN, '才可以过关' )
+		);
+
 		$this->assertTrue(
-			CharacterExaminer::contains( ONOI_TESA_CHAR_EXAMINER_CJK_UNIFIED, '才可以过关' )
+			CharacterExaminer::contains( CharacterExaminer::CJK_UNIFIED, '才可以过关' )
+		);
+
+		$this->assertTrue(
+			CharacterExaminer::contains( CharacterExaminer::HAN, '才可以过关' )
+		);
+	}
+
+	public function testToContainCyrillic() {
+
+		$this->assertFalse(
+			CharacterExaminer::contains( CharacterExaminer::LATIN, 'Привет' )
+		);
+
+		$this->assertTrue(
+			CharacterExaminer::contains( CharacterExaminer::CYRILLIC, 'Привет' )
 		);
 	}
 

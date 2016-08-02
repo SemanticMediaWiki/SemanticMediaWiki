@@ -1,7 +1,7 @@
 {
-	"@source": "https://github.com/SUL-DIG/hcrc_solr/blob/master/conf/stopwords_all_lang.txt / stopwords_ja.txt",
+	"@source": "https://github.com/SUL-DIG/hcrc_solr/blob/master/conf/stopwords_all_lang.txt, stopwords_ja.txt",
 	"version": "0.1",
-	"ja":[
+	"list":[
 		"あっ",
 		"あり",
 		"ある",

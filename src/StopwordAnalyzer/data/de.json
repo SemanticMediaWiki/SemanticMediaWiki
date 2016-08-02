@@ -1,7 +1,7 @@
 {
 	"@source": "http://www.ranks.nl/stopwords/german, https://github.com/SUL-DIG/hcrc_solr/stopwords_de.txt",
 	"version": "0.1",
-	"de":[
+	"list":[
 		"aber",
 		"alle",
 		"allem",

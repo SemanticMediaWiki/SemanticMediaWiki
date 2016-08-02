@@ -1,7 +1,7 @@
 {
 	"@source": "http://www.ranks.nl/stopwords/spanish",
 	"version": "0.1",
-	"es":[
+	"list":[
 		"alguna",
 		"algunas",
 		"alguno",

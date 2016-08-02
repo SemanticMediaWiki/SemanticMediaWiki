@@ -20,7 +20,7 @@ class Transliterator {
 	 * change (the version number does not necessarily correlate with the
 	 * library version)
 	 */
-	const VERSION = '0.1.1';
+	const VERSION = '0.2';
 
 	/**
 	 * Transliterator supported option flags

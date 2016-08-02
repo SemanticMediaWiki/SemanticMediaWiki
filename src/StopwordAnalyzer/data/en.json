@@ -1,7 +1,7 @@
 {
 	"@source": "http://www.lextek.com/manuals/onix/stopwords1.html, http://dev.mysql.com/doc/refman/5.7/en/fulltext-stopwords.html",
 	"version": "0.1",
-	"en":[
+	"list":[
 		"a",
 		"about",
 		"an",

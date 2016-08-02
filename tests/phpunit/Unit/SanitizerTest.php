@@ -3,8 +3,7 @@
 namespace Onoi\Tesa\Tests;
 
 use Onoi\Tesa\Sanitizer;
-use Onoi\Tesa\Tokenizer;
-use Onoi\Tesa\StopwordAnalyzer;
+use Onoi\Tesa\SanitizerFactory;
 
 /**
  * @covers \Onoi\Tesa\Sanitizer
@@ -16,6 +15,12 @@ use Onoi\Tesa\StopwordAnalyzer;
  * @author mwjames
  */
 class SanitizerTest extends \PHPUnit_Framework_TestCase {
+
+	private $sanitizerFactory;
+
+	protected function setUp() {
+		$this->sanitizerFactory = new SanitizerFactory();
+	}
 
 	public function testTransliteration() {
 
@@ -95,59 +100,6 @@ class SanitizerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testSanitizeByStopwords() {
-
-		$instance = new Sanitizer( 'Foo bar foobar' );
-
-		$stopwordAnalyzer = new StopwordAnalyzer();
-		$stopwordAnalyzer->setCustomStopwordList( array( 'zh' => array( 'bar' ) ) );
-
-		$this->assertEquals(
-			'Foo foobar',
-			$instance->sanitizeBy( $stopwordAnalyzer )
-		);
-	}
-
-	public function testSanitizeByStopwordsToIncludeExemptionWithMinLengthRestriction() {
-
-		$instance = new Sanitizer( 'Foo bar foobar' );
-
-		$instance->setOption( ONOI_TESA_CHARACTER_MIN_LENGTH, 4 );
-		$instance->setOption( ONOI_TESA_WORD_WHITELIST, array( 'bar' ) );
-
-		$stopwordAnalyzer = new StopwordAnalyzer();
-		$stopwordAnalyzer->setCustomStopwordList( array( 'zh' => array( 'bar' ) ) );
-
-		$this->assertEquals(
-			'bar foobar',
-			$instance->sanitizeBy( $stopwordAnalyzer )
-		);
-	}
-
-	public function testTrySanitizeByStopwordsForNoAvailableToken() {
-
-		$instance = new Sanitizer( '' );
-
-		$stopwordAnalyzer = new StopwordAnalyzer();
-
-		$this->assertEquals(
-			'',
-			$instance->sanitizeBy( $stopwordAnalyzer )
-		);
-	}
-
-	public function testTrySanitizeByStopwordsWithProximityCheck() {
-
-		$instance = new Sanitizer( 'foo foo テスト テスト' );
-
-		$stopwordAnalyzer = new StopwordAnalyzer();
-
-		$this->assertEquals(
-			'foo テスト',
-			$instance->sanitizeBy( $stopwordAnalyzer )
-		);
-	}
-
 	public function testReplace() {
 
 		$instance = new Sanitizer( 'テスト' );
@@ -159,40 +111,112 @@ class SanitizerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	/**
-	 * @dataProvider stringProvider
-	 */
-	public function testGetTokens( $string, $flag, $expected ) {
+	public function testSanitizeWithSimpleStopwordList() {
 
-		$instance = new Sanitizer( $string );
+		$text = 'Foo bar foobar';
+
+		$tokenizer = $this->getMockBuilder( '\Onoi\Tesa\Tokenizer\Tokenizer' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$tokenizer->expects( $this->once() )
+			->method( 'tokenize' )
+			->with( $this->equalTo( $text ) )
+			->will( $this->returnValue( array( 'Foo', 'bar', 'foobar' ) ) );
+
+		$synonymizer = $this->getMockBuilder( '\Onoi\Tesa\Synonymizer\Synonymizer' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$synonymizer->expects( $this->any() )
+			->method( 'synonymize' )
+			->will($this->returnArgument( 0 ) );
+
+		$instance = new Sanitizer( $text );
+
+		$stopwordAnalyzer = $this->sanitizerFactory->newArrayStopwordAnalyzer(
+			array( 'bar' )
+		);
 
 		$this->assertEquals(
-			$expected,
-			$instance->getTokens( $flag )
+			'Foo foobar',
+			$instance->sanitizeWith( $tokenizer, $stopwordAnalyzer, $synonymizer )
 		);
 	}
 
-	public function stringProvider() {
+	public function testSanitizeByStopwordsToIncludeExemptionWithMinLengthRestriction() {
 
-		$provider[] = array(
-			'A test string (that has no);deep meaning',
-			Tokenizer::LAZY,
-			array( 'A', 'test', 'string', '(that', 'has', 'no);deep', 'meaning' )
+		$text = 'Foo bar foobar';
+
+		$tokenizer = $this->getMockBuilder( '\Onoi\Tesa\Tokenizer\Tokenizer' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$tokenizer->expects( $this->once() )
+			->method( 'isWordTokenizer' )
+			->will( $this->returnValue( true ) );
+
+		$tokenizer->expects( $this->once() )
+			->method( 'tokenize' )
+			->with( $this->equalTo( $text ) )
+			->will( $this->returnValue( array( 'Foo', 'bar', 'foobar' ) ) );
+
+		$synonymizer = $this->getMockBuilder( '\Onoi\Tesa\Synonymizer\Synonymizer' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$synonymizer->expects( $this->any() )
+			->method( 'synonymize' )
+			->will($this->returnArgument( 0 ) );
+
+		$instance = new Sanitizer( $text );
+
+		$stopwordAnalyzer = $this->sanitizerFactory->newArrayStopwordAnalyzer(
+			array( 'bar' )
 		);
 
-		$provider[] = array(
-			'A test string (that has no);deep meaning',
-			Tokenizer::STRICT,
-			array( 'A', 'test', 'string', 'that', 'has', 'no' , 'deep', 'meaning' )
-		);
+		$instance->setOption( Sanitizer::MIN_LENGTH, 4 );
+		$instance->setOption( Sanitizer::WHITELIST, array( 'bar' ) );
 
-		$provider[] = array(
-			'Abc def',
-			null,
-			false
+		$this->assertEquals(
+			'bar foobar',
+			$instance->sanitizeWith( $tokenizer, $stopwordAnalyzer, $synonymizer )
 		);
+	}
 
-		return $provider;
+	public function testTrySanitizeByStopwordsWithProximityCheck() {
+
+		$text = 'foo foo テスト テスト';
+
+		$tokenizer = $this->getMockBuilder( '\Onoi\Tesa\Tokenizer\Tokenizer' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$tokenizer->expects( $this->once() )
+			->method( 'isWordTokenizer' )
+			->will( $this->returnValue( true ) );
+
+		$tokenizer->expects( $this->once() )
+			->method( 'tokenize' )
+			->with( $this->equalTo( $text ) )
+			->will( $this->returnValue( array( 'foo', 'foo', 'テスト', 'テスト' ) ) );
+
+		$synonymizer = $this->getMockBuilder( '\Onoi\Tesa\Synonymizer\Synonymizer' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$synonymizer->expects( $this->any() )
+			->method( 'synonymize' )
+			->will($this->returnArgument( 0 ) );
+
+		$instance = new Sanitizer( $text );
+
+		$stopwordAnalyzer = $this->sanitizerFactory->newArrayStopwordAnalyzer();
+
+		$this->assertEquals(
+			'foo テスト',
+			$instance->sanitizeWith( $tokenizer, $stopwordAnalyzer, $synonymizer )
+		);
 	}
 
 }

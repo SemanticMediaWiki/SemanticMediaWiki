@@ -2,17 +2,10 @@
 
 namespace Onoi\Tesa;
 
-/**
- * @since 0.1
- *
- * @{
- */
-// @codeCoverageIgnoreStart
-define( 'ONOI_TESA_CHARACTER_MIN_LENGTH', 'ONOI_TESA_CHARACTER_MIN_LENGTH' );
-define( 'ONOI_TESA_WORD_WHITELIST', 'ONOI_TESA_WORD_WHITELIST' );
-// @codeCoverageIgnoreEnd
-/**@}
- */
+use Onoi\Tesa\Tokenizer\Tokenizer;
+use Onoi\Tesa\Synonymizer\Synonymizer;
+use Onoi\Tesa\StopwordAnalyzer\StopwordAnalyzer;
+use RuntimeException;
 
 /**
  * @license GNU GPL v2+
@@ -22,22 +15,20 @@ define( 'ONOI_TESA_WORD_WHITELIST', 'ONOI_TESA_WORD_WHITELIST' );
  */
 class Sanitizer {
 
+	const WHITELIST = 'WHITELIST';
+	const MIN_LENGTH = 'MIN_LENGTH';
+
 	/**
 	 * Any change to the content of its data files should be reflected in a
 	 * version change (the version number does not necessarily correlate with
 	 * the library version)
 	 */
-	const VERSION = '0.1.1';
+	const VERSION = '0.2';
 
 	/**
 	 * @var string
 	 */
 	private $string = '';
-
-	/**
-	 * @var null|string
-	 */
-	private $encoding = null;
 
 	/**
 	 * @var array
@@ -54,9 +45,8 @@ class Sanitizer {
 	 *
 	 * @param string $string
 	 */
-	public function __construct( $string ) {
-		$this->string = $string;
-		$this->encoding = $this->detectEncoding( $string );
+	public function __construct( $string = '' ) {
+		$this->setText( $string );
 	}
 
 	/**
@@ -67,13 +57,22 @@ class Sanitizer {
 	 */
 	public function setOption( $name, $value ) {
 
-		if ( $name === ONOI_TESA_WORD_WHITELIST && $value !== array() ) {
+		if ( $name === self::WHITELIST && is_array( $value ) && $value !== array() ) {
 			$this->whiteList = array_fill_keys( $value, true );
 		}
 
-		if ( $name === ONOI_TESA_CHARACTER_MIN_LENGTH ) {
+		if ( $name === self::MIN_LENGTH ) {
 			$this->minLength = (int)$value;
 		}
+	}
+
+	/**
+	 * @since 0.1
+	 *
+	 * @param string $string
+	 */
+	public function setText( $string ) {
+		$this->string = $string;
 	}
 
 	/**
@@ -82,30 +81,34 @@ class Sanitizer {
 	 * @param integer $flag
 	 */
 	public function applyTransliteration( $flag = Transliterator::DIACRITICS ) {
-		$this->string = Transliterator::transliterate( $this->string, $flag );
+		$this->string = Normalizer::applyTransliteration( $this->string, $flag );
 	}
 
 	/**
+	 * @see Localizer::convertDoubleWidth
+	 *
 	 * @since 0.1
 	 *
 	 * @param integer $flag
-	 *
-	 * @return array
 	 */
-	public function getTokens( $flag = Tokenizer::STRICT ) {
-		return Tokenizer::tokenize( $this->string, $flag );
+	public function convertDoubleWidth() {
+		$this->string = Normalizer::convertDoubleWidth( $this->string );
 	}
 
 	/**
 	 * @since 0.1
 	 *
+	 * @param Tokenizer $tokenizer
 	 * @param StopwordAnalyzer $stopwordAnalyzer
 	 *
 	 * @return string
 	 */
-	public function sanitizeBy( StopwordAnalyzer $stopwordAnalyzer ) {
+	public function sanitizeWith( Tokenizer $tokenizer, StopwordAnalyzer $stopwordAnalyzer, Synonymizer $synonymizer ) {
 
-		$words = $this->getTokens();
+		// Treat non-words tokenizers (Ja,Zh*) differently
+		$minLength = $tokenizer->isWordTokenizer() ? $this->minLength : 1;
+
+		$words = $tokenizer->tokenize( $this->string );
 
 		if ( !$words || !is_array( $words ) ) {
 			return $this->string;
@@ -116,9 +119,11 @@ class Sanitizer {
 
 		foreach ( $words as $key => $word ) {
 
+			$word = $synonymizer->synonymize( $word );
+
 			// If it is not an exemption and less than the required minimum length
 			// or identified as stop word it is removed
-			if ( !isset( $this->whiteList[$word] ) && ( mb_strlen( $word ) < $this->minLength || $stopwordAnalyzer->isStopWord( $word ) ) ) {
+			if ( !isset( $this->whiteList[$word] ) && ( mb_strlen( $word ) < $minLength || $stopwordAnalyzer->isStopWord( $word ) ) ) {
 				continue;
 			}
 
@@ -127,7 +132,7 @@ class Sanitizer {
 				continue;
 			}
 
-			$index[] = $word;
+			$index[] = trim( $word );
 			$pos++;
 		}
 
@@ -138,7 +143,7 @@ class Sanitizer {
 	 * @since 0.1
 	 */
 	public function toLowercase() {
-		$this->string = mb_strtolower( $this->string, $this->encoding );
+		$this->string = Normalizer::toLowercase( $this->string );
 	}
 
 	/**
@@ -147,16 +152,7 @@ class Sanitizer {
 	 * @param integer $length
 	 */
 	public function reduceLengthTo( $length ) {
-
-		if ( mb_strlen( $this->string ) <= $length ) {
-			return;
-		}
-
-		if ( strpos( $this->string, ' ' ) !== false ) {
-			$length = strrpos( mb_substr( $this->string, 0, $length, $this->encoding ), ' ' ); // last whole word
-		}
-
-		$this->string = mb_substr( $this->string, 0, $length, $this->encoding );
+		$this->string = Normalizer::reduceLengthTo( $this->string, $length );
 	}
 
 	/**
@@ -177,10 +173,6 @@ class Sanitizer {
 	 */
 	public function __toString() {
 		return $this->string;
-	}
-
-	private function detectEncoding( $string) {
-		return mb_detect_encoding( $string );
 	}
 
 }
