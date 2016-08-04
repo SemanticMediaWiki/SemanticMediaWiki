@@ -237,7 +237,7 @@
 	"smw_smwadmin_docu": "이 특수 문서는 <a href=\"http://semantic-mediawiki.org\">시맨틱 미디어위키</a>의 설치와 업그레이드를 하는 동안 도와줍니다.\n관리 기능을 실행하기 전에 중요한 데이터를 백업해야 합니다.",
 	"smw_smwadmin_db": "데이터베이스 설치와 업그레이드",
 	"smw_smwadmin_dbdocu": "시맨틱 미디어위키는 시멘틱 데이터를 저장하기 위해 미디어위키 데이터베이스에 몇 가지 확장 기능이 필요합니다.\n아래의 기능은 데이터베이스가 제대로 설정되어 있는지 확인합니다.\n이 단계에서 바뀐 내용은 미디어위키 데이터베이스의 나머지에 영향을 주지 않고, 원한다면 쉽게 되돌릴 수 있습니다.\n이 설정 기능은 어떠한 피해 없이 여러 번 실행될 수 있지만, 설치나 업그레이드에는 한 번만 필요합니다.",
-	"smw_smwadmin_permissionswarn": "SQL 오류로 작업이 실패하면, 위키가 고용한 데이터베이스 사용자(LocalSettings.php를 확인하세요)는 아마도 충분한 권한이 없습니다.\n일시적으로 LocalSettings.php에서 데이터베이스 루트(root)의 로그인을 입력해서, 이 사용자가 테이블을 만들고 삭제할 수 있는 추가적인 권한을 부여하거나, 관리자의 자격 증명을 사용할 수 있는, <code>setupStore.php</code> 유지 관리 스크립트를 사용하세요.",
+	"smw_smwadmin_permissionswarn": "SQL 오류로 작업이 실패하면, 위키가 고용한 데이터베이스 사용자(LocalSettings.php를 확인하세요)는 아마도 충분한 권한이 없을 것입니다.\n테이블을 만들고 삭제할 추가 권한을 이 사용자에게 부여하거나, 일시적으로 LocalSettings.php에 데이터베이스 루트의 로그인을 입력하거나, 관리자의 자격 증명을 사용할 수 있는 <code>setupStore.php</code> 유지 관리 스크립트를 사용하세요.",
 	"smw_smwadmin_dbbutton": "표를 초기화하거나 업그레이드",
 	"smw_smwadmin_announce": "내 위키 발표",
 	"smw_smwadmin_datarefresh": "데이터 복구와 업그레이드",
