@@ -46,16 +46,10 @@ class MonolingualTextValue extends DataValue {
 	private $monolingualTextValueParser = null;
 
 	/**
-	 * @var DataValueFactory
-	 */
-	private $dataValueFactory = null;
-
-	/**
 	 * @param string $typeid
 	 */
 	public function __construct( $typeid = '' ) {
 		parent::__construct( '_mlt_rec' );
-		$this->dataValueFactory = DataValueFactory::getInstance();
 	}
 
 	/**
@@ -103,7 +97,7 @@ class MonolingualTextValue extends DataValue {
 				$value = $languageCode;
 			}
 
-			$dataValue = $this->dataValueFactory->newDataValueByProperty(
+			$dataValue = DataValueFactory::getInstance()->newDataValueByProperty(
 				$property,
 				$value,
 				false,
@@ -272,7 +266,7 @@ class MonolingualTextValue extends DataValue {
 			return null;
 		}
 
-		$dataValue = $this->dataValueFactory->newDataValueByItem(
+		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$dataItem,
 			new DIProperty( '_TEXT' )
 		);

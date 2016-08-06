@@ -85,7 +85,7 @@ class MonolingualTextValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'foo@en',
 			MonolingualTextValueFormatter::VALUE,
 			null,
-			'foo (en)'
+			'foo@en'
 		);
 
 		$provider[] = array(

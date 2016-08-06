@@ -97,7 +97,7 @@
 					"strict-mode-valuematch": false,
 					"propertyCount": 3,
 					"propertyKeys": [ "Has_record_one_mlt", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "test (en); 42" ]
+					"propertyValues": [ "test@en; 42" ]
 				}
 			}
 		},
@@ -109,7 +109,7 @@
 					"strict-mode-valuematch": false,
 					"propertyCount": 2,
 					"propertyKeys": [ "Has_record_one_mlt", "_SKEY" ],
-					"propertyValues": [ "test (en); 42" ]
+					"propertyValues": [ "test@en; 42" ]
 				}
 			}
 		},
@@ -121,7 +121,7 @@
 					"strict-mode-valuematch": false,
 					"propertyCount": 3,
 					"propertyKeys": [ "Has_record_two_mlt", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "one (en); two (fr)\\; 123" ]
+					"propertyValues": [ "one@en; two@fr\\; 123" ]
 				}
 			}
 		},
@@ -133,7 +133,7 @@
 					"strict-mode-valuematch": false,
 					"propertyCount": 2,
 					"propertyKeys": [ "Has_record_two_mlt", "_SKEY" ],
-					"propertyValues": [ "one (en); two (fr)\\; 123" ]
+					"propertyValues": [ "one@en; two@fr\\; 123" ]
 				}
 			}
 		},

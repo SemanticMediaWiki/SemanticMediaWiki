@@ -112,8 +112,10 @@ class MonolingualTextValueFormatter extends DataValueFormatter {
 				$linker
 			);
 
-			if ( $property->getKey() === '_LCODE' ) {
+			if ( $property->getKey() === '_LCODE' && $type !== self::VALUE ) {
 				$languagecode = ' ' . Message::get( array( 'smw-datavalue-monolingual-lcode-parenthesis', $result ) );
+			} elseif ( $property->getKey() === '_LCODE' && $type === self::VALUE ) {
+				$languagecode = '@' . $result;
 			} else {
 				$text = $result;
 			}
