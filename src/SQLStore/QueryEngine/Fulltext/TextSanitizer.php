@@ -152,7 +152,7 @@ class TextSanitizer {
 		// Remove possible spaces added by the tokenizer
 		$text = str_replace(
 			array( ' *', '* ', ' "', '" ', '+ ', '- ', '@ ' ),
-			array( '*', '*', '"', '"', '+', '-', '@' ),
+			array( '*', '*', '"', '"', ' +', ' -', '@' ),
 			$text
 		) . $affix;
 

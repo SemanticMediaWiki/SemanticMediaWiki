@@ -32,11 +32,18 @@ class TextSanitizerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testSanitize() {
+	/**
+	 * @dataProvider textOnMockProvider
+	 */
+	public function testSanitizs( $text, $expected ) {
 
 		$sanitizer = $this->getMockBuilder( '\Onoi\Tesa\Sanitizer' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$sanitizer->expects( $this->atLeastOnce() )
+			->method( 'sanitizeWith' )
+			->will( $this->returnValue( $text ) );
 
 		$stopwordAnalyzer = $this->getMockBuilder( '\Onoi\Tesa\StopwordAnalyzer\StopwordAnalyzer' )
 			->disableOriginalConstructor()
@@ -70,7 +77,41 @@ class TextSanitizerTest extends \PHPUnit_Framework_TestCase {
 			$this->sanitizerFactory
 		);
 
-		$instance->sanitize( 'foo' );
+		$this->assertEquals(
+			$expected,
+			$instance->sanitize( $text )
+		);
 	}
+
+	public function textOnMockProvider() {
+
+		$provider[] = array(
+			'foo',
+			'foo'
+		);
+
+		$provider[] = array(
+			'foo* - bar',
+			'foo* -bar'
+		);
+
+		$provider[] = array(
+			'foo* + bar',
+			'foo* +bar'
+		);
+
+		$provider[] = array(
+			'foo *',
+			'foo*'
+		);
+
+		$provider[] = array(
+			'* foo *',
+			'*foo*'
+		);
+
+		return $provider;
+	}
+
 
 }
