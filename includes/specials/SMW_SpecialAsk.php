@@ -3,6 +3,7 @@
 use ParamProcessor\Param;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryLinker;
+use SMW\MediaWiki\Specials\Ask\HtmlContentBuilder;
 
 /**
  * This special page for MediaWiki implements a customisable form for
@@ -220,6 +221,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 
 		$result = '';
 		$res = null;
+		$htmlContentBuilder = new HtmlContentBuilder();
 
 		// build parameter strings for URLs, based on current settings
 		$urlArgs['q'] = $this->m_querystring;
@@ -235,6 +237,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		$printoutstring = '';
 		$duration = 0;
 		$navigation = '';
+		$queryobj = null;
 
 		/**
 		 * @var PrintRequest $printout
@@ -332,7 +335,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 					}
 
 				} else {
-					$result = '<div style="text-align: center;">' . wfMessage( 'smw_result_noresults' )->escaped() . '</div>';
+					$result = Html::element( 'div', array( 'class' => 'smw-callout smw-callout-info' ), wfMessage( 'smw_result_noresults' )->escaped() );;
 				}
 			}
 		}
@@ -370,6 +373,8 @@ class SMWAskPage extends SMWQuerySpecialPage {
 				$duration,
 				$isFromCache
 			) . $result;
+
+			$result .= $htmlContentBuilder->getFormattedErrorString( $queryobj );
 
 			$this->getOutput()->addHTML( $result );
 		}
