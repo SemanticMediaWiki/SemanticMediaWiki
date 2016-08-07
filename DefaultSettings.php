@@ -990,3 +990,100 @@ $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] = true;
 # @since 2.4
 ##
 $GLOBALS['smwgDVFeatures'] = SMW_DV_PROV_REDI | SMW_DV_MLTV_LCODE | SMW_DV_PVAP | SMW_DV_WPV_DTITLE | SMW_DV_TIMEV_CM;
+
+##
+# Fulltext search support
+#
+# If enabled, it will store text elements using a separate table in order for the
+# DB back-end to use special fulltext index operations.
+#
+# - Tested with MySQL/MariaDB
+#
+# @since 2.5
+##
+$GLOBALS['smwgEnabledFulltextSearch'] = false;
+
+##
+# Throttle the amount of expected index updates.
+#
+# It can be of advantage to postpone the update using a deferred job execution to
+# decouple changes to the storage back-end and the fulltext index table.
+#
+# In case `smwgFulltextDeferredUpdate` and `$GLOBALS['smwgEnabledDeferredUpdate']` are
+# enabled then the updater will try to open a new process for posting instructions
+# to execute the `SearchTableUpdateJob` immediately otherwise `SearchTableUpdateJob`
+# will be enqueued and `runJobs.php` is required to be schedule for execution.
+#
+# If a user wants to avoid the JobQueue for executing updates via `SearchTableUpdateJob`
+# then this setting should be disabled.
+#
+# @since 2.5
+# @default true
+##
+$GLOBALS['smwgFulltextDeferredUpdate'] = true;
+
+##
+# Fulltext search table options
+#
+# This setting directly influences how a ft table is created therefore please
+# change the content with caution.
+#
+# - MySQL version 5.6 or later with only MyISAM and InnoDB storage engines
+# to support full-text search (according to sources)
+#
+# - MariaDB full-text indexes can be used only with MyISAM and Aria tables,
+# from MariaDB 10.0.5 with InnoDB tables and from MariaDB 10.0.15
+# with Mroonga tables (according to sources)
+#
+# It is possible to extend the option decription (MySQL 5.7+)  with
+# 'mysql' => array( 'ENGINE=MyISAM, DEFAULT CHARSET=utf8', 'WITH PARSER ngram' )
+#
+# @since 2.5
+##
+$GLOBALS['smwgFulltextSearchTableOptions'] = array(
+	'mysql' => array( 'ENGINE=MyISAM, DEFAULT CHARSET=utf8' )
+);
+
+##
+# List of property keys for which value assignments are being exempted from the
+# fulltext indexing process because there are either insignificant or mostly
+# represent single terms which are not required to be searched via a FT or a
+# proximity.
+#
+# Listed properties will use the standard LIKE/NLIKE expression when used in
+# connection with the ~/!~ operator.
+#
+# @since 2.5
+##
+$GLOBALS['smwgFulltextSearchPropertyExemptionList'] = array(
+	'_ASKFO', '_ASKST', '_IMPO', '_LCODE', '_UNIT', '_CONV', '_TYPE', '_ERRT'
+);
+
+##
+# Describes the minimum word/token length to help to decide whether MATCH or LIKE
+# operators are to be used for a condition statement.
+#
+# For MySQL it is expected it corresponds to either innodb_ft_min_token_size or
+# ft_min_word_len
+#
+# @since 2.5
+##
+$GLOBALS['smwgFulltextSearchMinTokenSize'] = 3;
+
+##
+# To detect a possible language candidate from an indexable text element.
+#
+# TextCatLanguageDetector, a large list of languages does have a detrimental
+# influence on the performance when trying to detect a language from a free text.
+#
+# Stopwords are only applied after language detection has been enabled.
+#
+# @see https://github.com/wikimedia/wikimedia-textcat
+#
+# @since 2.5
+# @default empty list (language detection is disabled by default)
+##
+$GLOBALS['smwgFulltextLanguageDetection'] = array(
+//	'TextCatLanguageDetector' => array( 'en', 'de', 'fr', 'es', 'ja', 'zh' )
+//	'CdbNGramLanguageDetector' => array( 'en', 'de', 'fr', 'es', 'ja', 'zh' )
+);

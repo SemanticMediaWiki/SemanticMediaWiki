@@ -881,6 +881,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$handler = 'SMW::SQLStore::AfterDataUpdateComplete';
 
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -892,6 +896,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->any() )
 			->method( 'getPropertyTableInfoFetcher' )
 			->will( $this->returnValue( $propertyTableInfoFetcher ) );
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()

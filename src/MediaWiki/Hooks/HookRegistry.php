@@ -9,6 +9,7 @@ use ParserHooks\HookRegistrant;
 use SMW\ApplicationFactory;
 use SMW\DeferredRequestDispatchManager;
 use SMW\NamespaceManager;
+use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\InfoParserFunction;
 use SMW\PermissionPthValidator;
@@ -518,6 +519,18 @@ class HookRegistry {
 			$deferredRequestDispatchManager->dispatchParserCachePurgeJobFor(
 				$semanticData->getSubject()->getTitle(),
 				$jobParameters
+			);
+
+			$fulltextSearchTableFactory = new FulltextSearchTableFactory();
+
+			$textByChangeUpdater = $fulltextSearchTableFactory->newTextByChangeUpdater(
+				$store
+			);
+
+			$textByChangeUpdater->pushUpdates(
+				$semanticData->getSubject(),
+				$compositePropertyTableDiffIterator,
+				$deferredRequestDispatchManager
 			);
 
 			return true;

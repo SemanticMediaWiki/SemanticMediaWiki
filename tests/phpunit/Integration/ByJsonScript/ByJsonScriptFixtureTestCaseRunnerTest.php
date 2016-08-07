@@ -152,7 +152,9 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			'wgAllowDisplayTitle',
 			'wgRestrictDisplayTitle', // Restrict {{DISPLAYTITLE}} to titles ...
 			'smwgDVFeatures',
-			'smwgEnabledQueryDependencyLinksStore'
+			'smwgEnabledQueryDependencyLinksStore',
+			'smwgEnabledFulltextSearch',
+			'smwgFulltextDeferredUpdate'
 		);
 
 		foreach ( $permittedSettings as $key ) {
@@ -184,6 +186,14 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			);
 
 			$maintenanceRunner->setQuiet()->run();
+		}
+
+		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'job-run' ) as $jobType ) {
+			$jobQueueRunner = UtilityFactory::getInstance()->newRunnerFactory()->newJobQueueRunner(
+				$jobType
+			);
+
+			$jobQueueRunner->run();
 		}
 
 		$this->tryToProcessParserTestCase( $jsonTestCaseFileHandler );

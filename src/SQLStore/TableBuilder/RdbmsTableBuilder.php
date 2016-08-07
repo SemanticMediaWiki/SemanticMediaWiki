@@ -163,7 +163,7 @@ abstract class RdbmsTableBuilder implements TableBuilder, MessageReporter {
 				$indexType = 'INDEX';
 			}
 
-			$this->doCreateIndex( $tableName, $indexType, $indexName, $columns );
+			$this->doCreateIndex( $tableName, $indexType, $indexName, $columns, $indexOptions );
 		}
 
 		$this->reportMessage( "   ... done.\n" );
@@ -222,7 +222,7 @@ abstract class RdbmsTableBuilder implements TableBuilder, MessageReporter {
 	 * @param string $indexName
 	 * @param $columns
 	 */
-	abstract protected function doCreateIndex( $tableName, $indexType, $indexName, $columns );
+	abstract protected function doCreateIndex( $tableName, $indexType, $indexName, $columns, array $indexOptions );
 
 	private function doCreateTable( $tableName, array $tableOptions = null ) {
 

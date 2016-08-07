@@ -173,6 +173,36 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			)
 		);
 
+		// TEXT and BLOB is stored off the table with the table just having a pointer
+		// VARCHAR is stored inline with the table
+		$rdbmsTableBuilder->createTable(
+			SMWSQLStore3::FT_SEARCH_TABLE,
+			array(
+				'fields' => array(
+					's_id' => $dbtypes['p'] . ' NOT NULL',
+					'p_id' => $dbtypes['p'] . ' NOT NULL',
+					'o_text' => 'TEXT',
+					'o_sort' => $dbtypes['t'],
+				),
+				'wgDBname' => $GLOBALS['wgDBname'],
+				'wgDBTableOptions' => $GLOBALS['wgDBTableOptions'],
+				'ftSearchOptions'  => $GLOBALS['smwgFulltextSearchTableOptions']
+			)
+		);
+
+		$rdbmsTableBuilder->createIndex(
+			SMWSQLStore3::FT_SEARCH_TABLE,
+			array(
+				'indicies' => array(
+					's_id',
+					'p_id',
+					'o_sort',
+					array( 'o_text', 'FULLTEXT' )
+				),
+				'ftSearchOptions' => $GLOBALS['smwgFulltextSearchTableOptions']
+			)
+		);
+
 		// Set up table for stats on Properties (only counts for now)
 		$rdbmsTableBuilder->createTable(
 			SMWSQLStore3::PROPERTY_STATISTICS_TABLE,
@@ -345,7 +375,8 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			SMWSQLStore3::ID_TABLE,
 			SMWSQLStore3::CONCEPT_CACHE_TABLE,
 			SMWSQLStore3::PROPERTY_STATISTICS_TABLE,
-			SMWSQLStore3::QUERY_LINKS_TABLE
+			SMWSQLStore3::QUERY_LINKS_TABLE,
+			SMWSQLStore3::FT_SEARCH_TABLE
 		);
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {

@@ -124,6 +124,12 @@ class PropertyTableIdReferenceDisposer {
 			array( 'o_id' => $id ),
 			__METHOD__
 		);
+
+		$this->connection->delete(
+			SQLStore::FT_SEARCH_TABLE,
+			array( 's_id' => $id ),
+			__METHOD__
+		);
 	}
 
 }

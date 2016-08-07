@@ -116,7 +116,7 @@ class SQLiteRdbmsTableBuilder extends MySQLRdbmsTableBuilder {
 	}
 
 	/**
-	 * @see GeneralTableCreator::doDropObsoleteIndicies
+	 * @see MySQLRdbmsTableBuilder::doDropObsoleteIndicies
 	 */
 	protected function doDropObsoleteIndicies( $tableName, array &$indicies ) {
 
@@ -130,9 +130,13 @@ class SQLiteRdbmsTableBuilder extends MySQLRdbmsTableBuilder {
 	}
 
 	/**
-	 * @see GeneralTableCreator::doCreateIndex
+	 * @see MySQLRdbmsTableBuilder::doCreateIndex
 	 */
-	protected function doCreateIndex( $tableName, $indexType, $indexName, $columns ) {
+	protected function doCreateIndex( $tableName, $indexType, $indexName, $columns, array $indexOptions ) {
+
+		if ( $indexType === 'FULLTEXT' ) {
+			return $this->reportMessage( "   ... skipping the fulltext index creation ..." );
+		}
 
 		$tableName = $this->connection->tableName( $tableName );
 		$indexName = "{$tableName}_index{$indexName}";

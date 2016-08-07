@@ -40,7 +40,7 @@ class SharedCallbackContainer implements CallbackContainer {
 		$callbackLoader->registerExpectedReturnType( 'Store', '\SMW\Store' );
 
 		$callbackLoader->registerCallback( 'Store', function( $store = null ) use ( $callbackLoader ) {
-			return StoreFactory::getStore( $callbackLoader->singleton( 'Settings' )->get( 'smwgDefaultStore' ) );
+			return StoreFactory::getStore( $store !== null ? $store : $callbackLoader->singleton( 'Settings' )->get( 'smwgDefaultStore' ) );
 		} );
 
 		$callbackLoader->registerExpectedReturnType( 'CacheFactory', '\SMW\CacheFactory' );
