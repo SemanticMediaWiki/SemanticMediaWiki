@@ -10,6 +10,7 @@ use SMW\Query\PrintRequest as PrintRequest;
 use SMW\Store;
 use SMWQuery as Query;
 use SMWRequestOptions as RequestOptions;
+use SMW\Query\DescriptionFactory;
 
 /**
  * @license GNU GPL v2+
@@ -90,22 +91,22 @@ class QueryResultLookup {
 			$comparator = SMW_CMP_LIKE;
 		}
 
+		$descriptionFactory = new DescriptionFactory();
+
 		if ( $pageRequestOptions->valueString === '' || $pageRequestOptions->valueString === null ) {
-			$description = new ThingDescription();
+			$description = $descriptionFactory->newThingDescription();
 		} else {
-			$description = new ValueDescription(
-				$pageRequestOptions->value->getDataItem(),
-				$pageRequestOptions->property->getDataItem(),
-				$comparator
+
+			$pageRequestOptions->value->setProperty(
+				$pageRequestOptions->property->getDataItem()
+			);
+
+			$description = $descriptionFactory->newFromDataValue(
+				$pageRequestOptions->value
 			);
 		}
 
-		$someProperty = new SomeProperty(
-			$pageRequestOptions->property->getDataItem(),
-			$description
-		);
-
-		$query = new Query( $someProperty );
+		$query = new Query( $description );
 
 		$query->setLimit( $pageRequestOptions->limit );
 		$query->setOffset( $pageRequestOptions->offset );

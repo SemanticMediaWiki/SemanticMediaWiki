@@ -288,7 +288,7 @@ $GLOBALS['smwgBrowseShowAll'] = true;
 # @since 2.1 enabled default types, to disable the functionality either set the
 # variable to array() or false
 ##
-$GLOBALS['smwgSearchByPropertyFuzzy'] = array( '_num', '_txt', '_dat' );
+$GLOBALS['smwgSearchByPropertyFuzzy'] = array( '_num', '_txt', '_dat', '_mlt_rec' );
 ##
 
 ###

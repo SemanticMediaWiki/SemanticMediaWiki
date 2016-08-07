@@ -111,7 +111,7 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 		$instance->setUserValue( 'Foo@en' );
 
 		$this->assertEquals(
-			'Foo (en)',
+			'Foo@en',
 			$instance->getWikiValue()
 		);
 	}

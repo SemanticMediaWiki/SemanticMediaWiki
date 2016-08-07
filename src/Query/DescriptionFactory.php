@@ -141,12 +141,18 @@ class DescriptionFactory {
 				}
 			}
 
-			return $dataValue->getQueryDescription( $value );
+			$description = $dataValue->getQueryDescription( $value );
+		} else {
+			$description = $this->newValueDescription( $dataValue->getDataItem() );
+		}
+
+		if ( $dataValue->getProperty() === null ) {
+			return $description;
 		}
 
 		return $this->newSomeProperty(
 			$dataValue->getProperty(),
-			$this->newValueDescription( $dataValue->getDataItem() )
+			$description
 		);
 	}
 
