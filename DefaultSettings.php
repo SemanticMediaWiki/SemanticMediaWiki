@@ -1087,3 +1087,22 @@ $GLOBALS['smwgFulltextLanguageDetection'] = array(
 //	'TextCatLanguageDetector' => array( 'en', 'de', 'fr', 'es', 'ja', 'zh' )
 //	'CdbNGramLanguageDetector' => array( 'en', 'de', 'fr', 'es', 'ja', 'zh' )
 );
+
+##
+# Using MySQL's "Global Transaction Identifier" will create issues when executing
+# queries that rely on temporary tables, according to the documentation "... the
+# operations listed here cannot be used ... CREATE TEMPORARY TABLE statements
+# inside transactions".
+#
+# MySQL Global transaction identifier is a unique transaction ID assigned to every
+# transaction that happens in MySQL database.
+#
+# Issue is encountered when @@GLOBAL.ENFORCE_GTID_CONSISTENCY = 1
+#
+# @see https://dev.mysql.com/doc/refman/5.6/en/replication-options-gtids.html
+# @see https://support.software.dell.com/kb/184275
+#
+# @since 2.5
+# @default false
+##
+$GLOBALS['smwgQTemporaryTablesAutoCommitMode'] = false;

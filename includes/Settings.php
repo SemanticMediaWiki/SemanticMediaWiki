@@ -144,7 +144,8 @@ class Settings extends Options {
 			'smwgFulltextSearchTableOptions' => $GLOBALS['smwgFulltextSearchTableOptions'],
 			'smwgFulltextSearchPropertyExemptionList' => $GLOBALS['smwgFulltextSearchPropertyExemptionList'],
 			'smwgFulltextSearchMinTokenSize' => $GLOBALS['smwgFulltextSearchMinTokenSize'],
-			'smwgFulltextLanguageDetection' => $GLOBALS['smwgFulltextLanguageDetection']
+			'smwgFulltextLanguageDetection' => $GLOBALS['smwgFulltextLanguageDetection'],
+			'smwgQTemporaryTablesAutoCommitMode' => $GLOBALS['smwgQTemporaryTablesAutoCommitMode'],
 		);
 
 		$settings = $settings + array(

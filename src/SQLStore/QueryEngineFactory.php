@@ -4,6 +4,7 @@ namespace SMW\SQLStore;
 
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
+use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SQLStore\QueryEngine\EngineOptions;
 use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
@@ -25,9 +26,9 @@ class QueryEngineFactory {
 	private $store;
 
 	/**
-	 * @var Settings
+	 * @var ApplicationFactory
 	 */
-	private $settings;
+	private $applicationFactory;
 
 	/**
 	 * @since 2.4
@@ -36,7 +37,7 @@ class QueryEngineFactory {
 	 */
 	public function __construct( SQLStore $store ) {
 		$this->store = $store;
-		$this->settings = ApplicationFactory::getInstance()->getSettings();
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	/**
@@ -59,25 +60,26 @@ class QueryEngineFactory {
 	public function newQuerySegmentListProcessor() {
 
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
+		$temporaryTableBuilder = $this->newTemporaryTableBuilder();
 
 		$hierarchyTempTableBuilder = new HierarchyTempTableBuilder(
 			$connection,
-			$this->newTemporaryIdTableCreator()
+			$temporaryTableBuilder
 		);
 
 		$hierarchyTempTableBuilder->setPropertyHierarchyTableDefinition(
 			$this->store->findPropertyTableID( new DIProperty( '_SUBP' ) ),
-			$this->settings->get( 'smwgQSubpropertyDepth' )
+			$this->applicationFactory->getSettings()->get( 'smwgQSubpropertyDepth' )
 		);
 
 		$hierarchyTempTableBuilder->setClassHierarchyTableDefinition(
 			$this->store->findPropertyTableID( new DIProperty( '_SUBC' ) ),
-			$this->settings->get( 'smwgQSubcategoryDepth' )
+			$this->applicationFactory->getSettings()->get( 'smwgQSubcategoryDepth' )
 		);
 
 		$querySegmentListProcessor = new QuerySegmentListProcessor(
 			$connection,
-			$this->newTemporaryIdTableCreator(),
+			$temporaryTableBuilder,
 			$hierarchyTempTableBuilder
 		);
 
@@ -98,8 +100,17 @@ class QueryEngineFactory {
 		);
 	}
 
-	private function newTemporaryIdTableCreator() {
-		return new TemporaryIdTableCreator( $GLOBALS['wgDBtype'] );
+	private function newTemporaryTableBuilder() {
+
+		$temporaryTableBuilder = new TemporaryTableBuilder(
+			$this->store->getConnection( 'mw.db.queryengine' )
+		);
+
+		$temporaryTableBuilder->withAutoCommit(
+			$this->applicationFactory->getSettings()->get( 'smwgQTemporaryTablesAutoCommitMode' )
+		);
+
+		return $temporaryTableBuilder;
 	}
 
 }

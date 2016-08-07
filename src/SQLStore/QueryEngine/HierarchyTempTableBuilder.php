@@ -4,7 +4,7 @@ namespace SMW\SQLStore\QueryEngine;
 
 use RuntimeException;
 use SMW\MediaWiki\Database;
-use SMW\SQLStore\TemporaryIdTableCreator;
+use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 
 /**
  * @license GNU GPL v2+
@@ -21,9 +21,9 @@ class HierarchyTempTableBuilder {
 	private $connection;
 
 	/**
-	 * @var TemporaryIdTableCreator
+	 * @var TemporaryTableBuilder
 	 */
-	private $tempIdTableCreator;
+	private $temporaryTableBuilder;
 
 	/**
 	 * Cache of computed hierarchy queries for reuse ("catetgory/property value
@@ -42,11 +42,11 @@ class HierarchyTempTableBuilder {
 	 * @since 2.3
 	 *
 	 * @param Database $connection
-	 * @param TemporaryIdTableCreator $temporaryIdTableCreator
+	 * @param TemporaryTableBuilder $temporaryTableBuilder
 	 */
-	public function __construct( Database $connection, TemporaryIdTableCreator $temporaryIdTableCreator ) {
+	public function __construct( Database $connection, TemporaryTableBuilder $temporaryTableBuilder ) {
 		$this->connection = $connection;
-		$this->tempIdTableCreator = $temporaryIdTableCreator;
+		$this->temporaryTableBuilder = $temporaryTableBuilder;
 	}
 
 	/**
@@ -113,6 +113,8 @@ class HierarchyTempTableBuilder {
 	 */
 	public function createHierarchyTempTableFor( $type, $tablename, $valueComposite ) {
 
+		$this->temporaryTableBuilder->createTable( $tablename );
+
 		list( $smwtable, $depth ) = $this->getHierarchyTableDefinitionForType( $type );
 
 		if ( array_key_exists( $valueComposite, $this->hierarchyCache ) ) { // Just copy known result.
@@ -141,15 +143,8 @@ class HierarchyTempTableBuilder {
 		$tmpnew = 'smw_new';
 		$tmpres = 'smw_res';
 
-		$db->query(
-			$this->tempIdTableCreator->getSqlToCreate( $tmpnew ),
-			__METHOD__
-		);
-
-		$db->query(
-			$this->tempIdTableCreator->getSqlToCreate( $tmpres ),
-			__METHOD__
-		);
+		$this->temporaryTableBuilder->createTable( $tmpnew );
+		$this->temporaryTableBuilder->createTable( $tmpres );
 
 		// Adding multiple values for the same column in sqlite is not supported
 		foreach ( explode( ',', $values ) as $value ) {
@@ -197,15 +192,8 @@ class HierarchyTempTableBuilder {
 
 		$this->hierarchyCache[$values] = $tablename;
 
-		$db->query(
-			'DROP TEMPORARY TABLE smw_new',
-			__METHOD__
-		);
-
-		$db->query(
-			'DROP TEMPORARY TABLE smw_res',
-			__METHOD__
-		);
+		$this->temporaryTableBuilder->dropTable( $tmpnew );
+		$this->temporaryTableBuilder->dropTable( $tmpres );
 	}
 
 }
