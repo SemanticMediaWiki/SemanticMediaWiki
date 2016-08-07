@@ -4,7 +4,7 @@ THIS IS NOT A RELEASE YET
 
 ## Highlights
 
-*
+* #1481
 
 ## Compatibility changes
 
@@ -14,6 +14,7 @@ THIS IS NOT A RELEASE YET
 
 * #1759 Improved `Special:Ask` error output 
 * #1760 Improved handling of `MonolingualTextValue` in `Special:SearchByProperty`
+* #1481 Enhanced the `SQLStore` to support fulltext searches provided by the MySQL/MariaDB back-end (see #1481 for limitations and features supported)
 
 ## Bug fixes
 
