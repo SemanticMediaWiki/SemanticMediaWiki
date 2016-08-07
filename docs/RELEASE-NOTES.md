@@ -15,7 +15,8 @@ THIS IS NOT A RELEASE YET
 * #1759 Improved `Special:Ask` error output 
 * #1760 Improved handling of `MonolingualTextValue` in `Special:SearchByProperty`
 * #1481 Enhanced the `SQLStore` to support fulltext searches provided by the `MySQL`/`MariaDB` back-end (see #1481 for limitations and features supported)
-* #1758 Added the `smwgQTemporaryTablesAutoCommitMode` setting to mitigate possible issues with temporary tables in `MySQL` for when `enforce_gtid_consistency=true` is set
+* #1758 Added the [`$smwgQTemporaryTablesAutoCommitMode`](https://www.semantic-mediawiki.org/wiki/Help:$smwgQTemporaryTablesAutoCommitMode) setting to mitigate possible issues with temporary tables in `MySQL` for when `enforce_gtid_consistency=true` is set
+* #1756 Extended the display characteristics of `Special:Browse` to load content via the API back-end (legacy display can be retained by setting [`$smwgBrowseByApi`](https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi) to `false`) 
 
 ## Bug fixes
 
