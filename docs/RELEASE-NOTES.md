@@ -12,7 +12,8 @@ THIS IS NOT A RELEASE YET
 
 ## New features and enhancements
 
-* #1759 Improveed `Special:Ask` error output 
+* #1759 Improved `Special:Ask` error output 
+* #1760 Improved handling of `MonolingualTextValue` in `Special:SearchByProperty`
 
 ## Bug fixes
 
