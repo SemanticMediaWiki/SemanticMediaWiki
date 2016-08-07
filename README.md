@@ -90,7 +90,7 @@ The library provides unit tests that covers the core-functionality normally run 
 
 ## Release notes
 
-- 0.1.0 Initial release (2016-08-??)
+- 0.1.0 Initial release (2016-08-07)
  - Added `SanitizerFactory` with support for a
  - `Tokenizer`, `LanguageDetector`, `Synonymizer`, and `StopwordAnalyzer` interface
 
