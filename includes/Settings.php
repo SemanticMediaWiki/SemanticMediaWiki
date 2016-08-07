@@ -62,6 +62,7 @@ class Settings extends Options {
 			'smwgMaxNumRecurringEvents' => $GLOBALS['smwgMaxNumRecurringEvents'],
 			'smwgBrowseShowInverse' => $GLOBALS['smwgBrowseShowInverse'],
 			'smwgBrowseShowAll' => $GLOBALS['smwgBrowseShowAll'],
+			'smwgBrowseByApi' => $GLOBALS['smwgBrowseByApi'],
 			'smwgSearchByPropertyFuzzy' => $GLOBALS['smwgSearchByPropertyFuzzy'],
 			'smwgTypePagingLimit' => $GLOBALS['smwgTypePagingLimit'],
 			'smwgConceptPagingLimit' => $GLOBALS['smwgConceptPagingLimit'],

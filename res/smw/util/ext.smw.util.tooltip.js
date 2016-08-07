@@ -236,16 +236,37 @@
 	};
 
 	/**
+	 * @since 2.5
+	 * @method
+	 *
+	 * @param {Object} context
+	 */
+	smw.util.tooltip.prototype.initFromContext = function( context ) {
+		this.render( context.find( '.smw-highlighter' ) );
+	};
+
+	/**
+	 * Factory
+	 * @since 2.5
+	 */
+	var Factory = {
+		newTooltip: function() {
+			return new smw.util.tooltip();
+		}
+	}
+
+	/**
 	 * Implementation of a tooltip instance
 	 * @since 1.8
 	 * @ignore
 	 */
 	$( document ).ready( function() {
-		var tooltip = new smw.util.tooltip();
-
-		tooltip.render(
+		Factory.newTooltip().render(
 			$( '.smw-highlighter' )
 		);
 	} );
+
+	smw.Factory = smw.Factory || {};
+	smw.Factory = $.extend( smw.Factory, Factory );
 
 } )( jQuery, mediaWiki, semanticMediaWiki );

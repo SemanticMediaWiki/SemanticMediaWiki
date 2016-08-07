@@ -1,111 +1,190 @@
 <?php
 
+namespace SMW\MediaWiki\Specials\Browse;
+
+use SMW\SemanticData;
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\Localizer;
-use SMW\SemanticData;
-use SMW\UrlEncoder;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\Store;
+use Html;
+use SMWDataValue as DataValue;
+use SMW\RequestOptions;
 
 /**
- * @ingroup SMWSpecialPage
- * @ingroup SpecialPage
- *
- * A factbox like view on an article, implemented by a special page.
+ * @license GNU GPL v2+
+ * @since   2.5
  *
  * @author Denny Vrandecic
+ * @author mwjames
  */
+class HtmlContentBuilder {
 
-/**
- * A factbox view on one specific article, showing all the Semantic data about it
- *
- * @ingroup SMWSpecialPage
- * @ingroup SpecialPage
- */
-class SMWSpecialBrowse extends SpecialPage {
-	/// int How  many incoming values should be asked for
-	static public $incomingvaluescount = 8;
-	/// int  How many incoming properties should be asked for
-	static public $incomingpropertiescount = 21;
-	/// SMWDataValue  Topic of this page
-	private $subject = null;
-	/// Text to be set in the query form
-	private $articletext = "";
-	/// bool  To display outgoing values?
+	/**
+	 * @var Store
+	 */
+	private $store;
+
+	/**
+	 * @var DIWikiPage
+	 */
+	private $subject;
+
+	/**
+	 * @var boolean
+	 */
 	private $showoutgoing = true;
-	/// bool  To display incoming values?
+
+	/**
+	 * To display incoming values?
+	 *
+	 * @var boolean
+	 */
 	private $showincoming = false;
-	/// int  At which incoming property are we currently?
+
+	/**
+	 * At which incoming property are we currently?
+	 * @var integer
+	 */
 	private $offset = 0;
 
 	/**
-	 * Constructor
+	 * How many incoming values should be asked for
+	 * @var integer
 	 */
-	public function __construct() {
-		global $smwgBrowseShowAll;
-		parent::__construct( 'Browse', '', true, false, 'default', true );
-		if ( $smwgBrowseShowAll ) {
-			self::$incomingvaluescount = 21;
-			self::$incomingpropertiescount = - 1;
-		}
+	private $incomingValuesCount = 8;
+
+	/**
+	 * How many incoming properties should be asked for
+	 * @var integer
+	 */
+	private $incomingPropertiesCount = 21;
+
+	/**
+	 * @var array
+	 */
+	private $extraModules = array();
+
+	/**
+	 * @var array
+	 */
+	private $options = array();
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param Store $store
+	 * @param DIWikiPage $subject
+	 */
+	public function __construct( Store $store, DIWikiPage $subject ) {
+		$this->store = $store;
+		$this->subject = DataValueFactory::getInstance()->newDataValueByItem( $subject );
 	}
 
 	/**
-	 * Main entry point for Special Pages
+	 * @since 2.5
 	 *
-	 * @param[in] $query string  Given by MediaWiki
+	 * @param string $key
+	 * @param mixed $value
 	 */
-	public function execute( $query ) {
-		global $wgRequest, $wgOut, $smwgBrowseShowAll;
-		$this->setHeaders();
-		// get the GET parameters
-		$this->articletext = $wgRequest->getVal( 'article' );
+	public function setOption( $key, $value ) {
+		$this->options[$key] = $value;
+	}
 
-		// @see SMWInfolink::encodeParameters
-		if ( $query === null && $this->getRequest()->getCheck( 'x' ) ) {
-			$query = $this->getRequest()->getVal( 'x' );
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $key
+	 *
+	 * @return mixed
+	 */
+	public function getOption( $key ) {
+
+		if ( isset( $this->options[$key] ) ) {
+			return $this->options[$key];
 		}
 
-		// no GET parameters? Then try the URL
-		if ( is_null( $this->articletext ) ) {
-			$this->articletext = UrlEncoder::decode( $query );
+		return null;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $json
+	 */
+	public function setOptionsFromJsonFormat( $json ) {
+		$this->options = json_decode( $json, true );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getHtml() {
+
+		if ( ( $offset = $this->getOption( 'offset' ) ) ) {
+			$this->offset = $offset;
 		}
 
-		$this->subject = DataValueFactory::getInstance()->newTypeIDValue( '_wpg', $this->articletext );
-		$offsettext = $wgRequest->getVal( 'offset' );
-		$this->offset = ( is_null( $offsettext ) ) ? 0 : intval( $offsettext );
-
-		$dir = $wgRequest->getVal( 'dir' );
-
-		if ( $smwgBrowseShowAll ) {
+		if ( $this->getOption( 'showAll' ) ) {
+			$this->incomingValuesCount = 21;
+			$this->incomingPropertiesCount = - 1;
 			$this->showoutgoing = true;
 			$this->showincoming = true;
 		}
 
-		if ( $dir === 'both' || $dir === 'in' ) {
+		if ( $this->getOption( 'dir' ) === 'both' || $this->getOption( 'dir' ) === 'in' ) {
 			$this->showincoming = true;
 		}
 
-		if ( $dir === 'in' ) {
+		if ( $this->getOption( 'dir' ) === 'in' ) {
 			$this->showoutgoing = false;
 		}
 
-		if ( $dir === 'out' ) {
+		if ( $this->getOption( 'dir' ) === 'out' ) {
 			$this->showincoming = false;
 		}
 
-		$out = $this->getOutput();
+		return $this->doGenerateHtml();
+	}
 
-		$out->addModuleStyles( array(
-			'mediawiki.ui',
-			'mediawiki.ui.button',
-			'mediawiki.ui.input',
-		) );
+	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getEmptyHtml() {
+		global $wgContLang;
 
-		$out->addHTML( $this->displayBrowse() );
-		$this->addExternalHelpLinks();
+		$leftside = !( $wgContLang->isRTL() );
+		$html = "\n";
 
-		SMWOutputs::commitToOutputPage( $out ); // make sure locally collected output data is pushed to the output!
+		$semanticData = new SemanticData( $this->subject->getDataItem() );
+		$this->articletext = $this->subject->getWikiValue();
+
+		$html .= $this->displayHead();
+		$html .= $this->displayData( $semanticData, $leftside );
+		$html .= $this->displayCenter();
+		$html .= $this->displayData( $semanticData, $leftside, true );
+		$html .= $this->displayBottom( false );
+
+		if ( $this->getOption( 'printable' ) !== 'yes' ) {
+			$html .= $this->queryForm( $this->articletext );
+		}
+
+		return $html;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public static function getPageSearchQuickForm( $articletext = '' ) {
+		return "\n" . self::queryForm( $articletext );
 	}
 
 	/**
@@ -114,7 +193,7 @@ class SMWSpecialBrowse extends SpecialPage {
 	 *
 	 * @return string  A HTML string with the factbox
 	 */
-	private function displayBrowse() {
+	private function doGenerateHtml() {
 		global $wgContLang;
 		$html = "\n";
 		$leftside = !( $wgContLang->isRTL() ); // For right to left languages, all is mirrored
@@ -123,21 +202,18 @@ class SMWSpecialBrowse extends SpecialPage {
 		if ( $this->subject->isValid() ) {
 
 			$semanticData = new SemanticData( $this->subject->getDataItem() );
-			$store = ApplicationFactory::getInstance()->getStore();
-
 			$html .= $this->displayHead();
 
 			if ( $this->showoutgoing ) {
-				$semanticData = $store->getSemanticData( $this->subject->getDataItem() );
+				$semanticData = $this->store->getSemanticData( $this->subject->getDataItem() );
 				$html .= $this->displayData( $semanticData, $leftside );
 				$html .= $this->displayCenter();
 			}
 
 			if ( $this->showincoming ) {
 				list( $indata, $more ) = $this->getInData();
-				global $smwgBrowseShowInverse;
 
-				if ( !$smwgBrowseShowInverse ) {
+				if ( !$this->getOption( 'showInverse' ) ) {
 					$leftside = !$leftside;
 				}
 
@@ -147,20 +223,22 @@ class SMWSpecialBrowse extends SpecialPage {
 
 			$this->articletext = $this->subject->getWikiValue();
 
-			\Hooks::run( 'SMW::Browse::AfterDataLookupComplete', array( $store, $semanticData, &$html, &$modules ) );
-			$this->getOutput()->addModules( $modules );
-
-			// Add a bit space between the factbox and the query form
-			if ( !$this->including() ) {
-				$html .= '<div style="margin-top:15px;"></div>' ."\n";
-			}
+			\Hooks::run( 'SMW::Browse::AfterDataLookupComplete', array( $this->store, $semanticData, &$html, &$this->extraModules ) );
 		}
 
-		if ( !$this->including() ) {
-			$html .= $this->queryForm();
+		if ( $this->getOption( 'printable' ) !== 'yes' ) {
+			$html .= $this->queryForm( $this->articletext );
 		}
 
-		$this->getOutput()->addHTML( $html );
+		$html .= Html::element(
+			'div',
+			array(
+				'class' => 'smwb-modules',
+				'data-modules' => json_encode( $this->extraModules )
+			)
+		);
+
+		return $html;
 	}
 
 	/**
@@ -172,7 +250,7 @@ class SMWSpecialBrowse extends SpecialPage {
 	 *
 	 * @return string A string containing the HTML with the factbox
 	 */
-	private function displayData( SMWSemanticData $data, $left = true, $incoming = false ) {
+	private function displayData( SemanticData $data, $left = true, $incoming = false ) {
 		// Some of the CSS classes are different for the left or the right side.
 		// In this case, there is an "i" after the "smwb-". This is set here.
 		$ccsPrefix = $left ? 'smwb-' : 'smwb-i';
@@ -201,7 +279,7 @@ class SMWSpecialBrowse extends SpecialPage {
 
 			$values = $data->getPropertyValues( $diProperty );
 
-			if ( $incoming && ( count( $values ) >= self::$incomingvaluescount ) ) {
+			if ( $incoming && ( count( $values ) >= $this->incomingValuesCount ) ) {
 				$moreIncoming = true;
 				array_pop( $values );
 			} else {
@@ -229,10 +307,10 @@ class SMWSpecialBrowse extends SpecialPage {
 			// Added in 2.3
 			// link to the remaining incoming pages
 			if ( $moreIncoming && \Hooks::run( 'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate', array( $diProperty, $this->subject->getDataItem(), &$body ) ) ) {
-				$body .= Html::element(
+				$body .= \Html::element(
 					'a',
 					array(
-						'href' => SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( array(
+						'href' => \SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( array(
 							 'property' => $dvProperty->getWikiValue(),
 							 'value' => $this->subject->getWikiValue()
 						) )
@@ -262,22 +340,22 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * Displays a value, including all relevant links (browse and search by property)
 	 *
 	 * @param[in] $property SMWPropertyValue  The property this value is linked to the subject with
-	 * @param[in] $value SMWDataValue  The actual value
+	 * @param[in] $value DataValue  The actual value
 	 * @param[in] $incoming bool  If this is an incoming or outgoing link
 	 *
 	 * @return string  HTML with the link to the article, browse, and search pages
 	 */
-	private function displayValue( SMWPropertyValue $property, SMWDataValue $dataValue, $incoming ) {
+	private function displayValue( \SMWPropertyValue $property, DataValue $dataValue, $incoming ) {
 		$linker = smwfGetLinker();
 
 		// Allow the DV formatter to access a specific language code
 		$dataValue->setOption(
-			'content.language',
+			DataValue::OPT_CONTENT_LANGUAGE,
 			Localizer::getInstance()->getPreferredContentLanguage( $this->subject->getDataItem() )->getCode()
 		);
 
 		$dataValue->setOption(
-			'user.language',
+			DataValue::OPT_USER_LANGUAGE,
 			Localizer::getInstance()->getUserLanguage()->getCode()
 		);
 
@@ -291,9 +369,9 @@ class SMWSpecialBrowse extends SpecialPage {
 		$html = $dataValue->getLongHTMLText( $linker );
 
 		if ( $dataValue->getTypeID() === '_wpg' || $dataValue->getTypeID() === '__sob' ) {
-			$html .= "&#160;" . SMWInfolink::newBrowsingLink( '+', $dataValue->getLongWikiText() )->getHTML( $linker );
+			$html .= "&#160;" . \SMWInfolink::newBrowsingLink( '+', $dataValue->getLongWikiText() )->getHTML( $linker );
 		} elseif ( $incoming && $property->isVisible() ) {
-			$html .= "&#160;" . SMWInfolink::newInversePropertySearchLink( '+', $dataValue->getTitle(), $property->getDataItem()->getLabel(), 'smwsearch' )->getHTML( $linker );
+			$html .= "&#160;" . \SMWInfolink::newInversePropertySearchLink( '+', $dataValue->getTitle(), $property->getDataItem()->getLabel(), 'smwsearch' )->getHTML( $linker );
 		} elseif ( $dataValue->getProperty() instanceof DIProperty && $dataValue->getProperty()->getKey() !== '_INST' ) {
 			$html .= $dataValue->getInfolinkText( SMW_OUTPUT_HTML, $linker );
 		}
@@ -307,9 +385,7 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @return string A string containing the HTML with the subject line
 	 */
 	private function displayHead() {
-		global $wgOut;
 
-		$wgOut->setHTMLTitle( $this->subject->getTitle() );
 		$html = "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n" .
 			"<tr class=\"smwb-title\"><td colspan=\"2\">\n" .
 			$this->subject->getLongHTMLText( smwfGetLinker() ) . "\n" .
@@ -342,19 +418,20 @@ class SMWSpecialBrowse extends SpecialPage {
 	private function displayBottom( $more ) {
 		$html  = "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n" .
 		         "<tr class=\"smwb-center\"><td colspan=\"2\">\n";
-		global $smwgBrowseShowAll;
-		if ( !$smwgBrowseShowAll ) {
+
+		if ( !$this->getOption( 'showAll' ) ) {
 			if ( ( $this->offset > 0 ) || $more ) {
-				$offset = max( $this->offset - self::$incomingpropertiescount + 1, 0 );
+				$offset = max( $this->offset - $this->incomingPropertiesCount + 1, 0 );
 				$html .= ( $this->offset == 0 ) ? wfMessage( 'smw_result_prev' )->text():
 					     $this->linkHere( wfMessage( 'smw_result_prev' )->text(), $this->showoutgoing, true, $offset );
-				$offset = $this->offset + self::$incomingpropertiescount - 1;
+				$offset = $this->offset + $this->incomingPropertiesCount - 1;
 				// @todo FIXME: i18n patchwork.
 				$html .= " &#160;&#160;&#160;  <strong>" . wfMessage( 'smw_result_results' )->text() . " " . ( $this->offset + 1 ) .
 						 " – " . ( $offset ) . "</strong>  &#160;&#160;&#160; ";
 				$html .= $more ? $this->linkHere( wfMessage( 'smw_result_next' )->text(), $this->showoutgoing, true, $offset ):wfMessage( 'smw_result_next' )->text();
 			}
 		}
+
 		$html .= "&#160;\n" . "</td></tr>\n" . "</table>\n";
 		return $html;
 	}
@@ -375,7 +452,7 @@ class SMWSpecialBrowse extends SpecialPage {
 		return Html::element(
 			'a',
 			array(
-				'href' => SpecialPage::getSafeTitleFor( 'Browse' )->getLocalURL( array(
+				'href' => \SpecialPage::getSafeTitleFor( 'Browse' )->getLocalURL( array(
 					'offset' => $offset,
 					'dir' => $out ? ( $in ? 'both' : 'out' ) : 'in',
 					'article' => $this->subject->getLongWikiText()
@@ -392,37 +469,39 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @return array(SMWSemanticData, bool)  The semantic data including all inproperties, and if there are more inproperties left
 	 */
 	private function getInData() {
-		$indata = new SMWSemanticData( $this->subject->getDataItem() );
-		$options = new SMWRequestOptions();
-		$options->sort = true;
-		$options->limit = self::$incomingpropertiescount;
+		$indata = new SemanticData( $this->subject->getDataItem() );
+
+		$propRequestOptions = new RequestOptions();
+		$propRequestOptions->sort = true;
+		$propRequestOptions->limit = $this->incomingPropertiesCount;
+
 		if ( $this->offset > 0 ) {
-			$options->offset = $this->offset;
+			$propRequestOptions->offset = $this->offset;
 		}
 
-		$store = ApplicationFactory::getInstance()->getStore();
-		$inproperties = $store->getInProperties( $this->subject->getDataItem(), $options );
+		$incomingProperties = $this->store->getInProperties( $this->subject->getDataItem(), $propRequestOptions );
+		$more = false;
 
-		if ( count( $inproperties ) == self::$incomingpropertiescount ) {
+		if ( count( $incomingProperties ) == $this->incomingPropertiesCount ) {
 			$more = true;
-			array_pop( $inproperties ); // drop the last one
-		} else {
-			$more = false;
+			array_pop( $incomingProperties ); // drop the last one
 		}
 
-		$valoptions = new SMWRequestOptions();
-		$valoptions->sort = true;
-		$valoptions->limit = self::$incomingvaluescount;
+		$valRequestOptions = new RequestOptions();
+		$valRequestOptions->sort = true;
+		$valRequestOptions->limit = $this->incomingValuesCount;
 
-		foreach ( $inproperties as $property ) {
-			$values = $store->getPropertySubjects( $property, $this->subject->getDataItem(), $valoptions );
+		foreach ( $incomingProperties as $property ) {
+			$values = $this->store->getPropertySubjects( $property, $this->subject->getDataItem(), $valRequestOptions );
 			foreach ( $values as $value ) {
 				$indata->addPropertyObjectValue( $property, $value );
 			}
 		}
 
 		// Added in 2.3
-		\Hooks::run( 'SMW::Browse::AfterIncomingPropertiesLookupComplete', array( $store, $indata, $valoptions ) );
+		// Whether to show a more link or not can be set via
+		// SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate
+		\Hooks::run( 'SMW::Browse::AfterIncomingPropertiesLookupComplete', array( $this->store, $indata, $valRequestOptions ) );
 
 		return array( $indata, $more );
 	}
@@ -437,12 +516,11 @@ class SMWSpecialBrowse extends SpecialPage {
 	 *
 	 * @return string  The label of the property
 	 */
-	private function getPropertyLabel( SMWPropertyValue $property, $incoming = false ) {
-		global $smwgBrowseShowInverse;
+	private function getPropertyLabel( \SMWPropertyValue $property, $incoming = false ) {
 
-		if ( $incoming && $smwgBrowseShowInverse ) {
-			$oppositeprop = SMWPropertyValue::makeUserProperty( wfMessage( 'smw_inverse_label_property' )->text() );
-			$labelarray = ApplicationFactory::getInstance()->getStore()->getPropertyValues( $property->getDataItem()->getDiWikiPage(), $oppositeprop->getDataItem() );
+		if ( $incoming && $this->getOption( 'showInverse' ) ) {
+			$oppositeprop = \SMWPropertyValue::makeUserProperty( wfMessage( 'smw_inverse_label_property' )->text() );
+			$labelarray = $this->store->getPropertyValues( $property->getDataItem()->getDiWikiPage(), $oppositeprop->getDataItem() );
 			$rv = ( count( $labelarray ) > 0 ) ? $labelarray[0]->getLongWikiText():
 				wfMessage( 'smw_inverse_label_default', $property->getWikiValue() )->text();
 		} else {
@@ -457,20 +535,21 @@ class SMWSpecialBrowse extends SpecialPage {
 	 *
 	 * @return string A string containing the HTML for the form
 	 */
-	private function queryForm() {
+	private static function queryForm( $articletext ) {
 
-		if ( $this->getRequest()->getVal( 'printable' ) === 'yes' ) {
-			return '';
-		}
+		$title = \SpecialPage::getTitleFor( 'Browse' );
 
-		SMWOutputs::requireResource( 'ext.smw.browse' );
-		$title = SpecialPage::getTitleFor( 'Browse' );
-		return '  <form name="smwbrowse" action="' . htmlspecialchars( $title->getLocalURL() ) . '" method="get">' . "\n" .
+		$html = '<div style="margin-top:15px;"></div>' ."\n";
+		$dir = $title->getPageLanguage()->isRTL() ? 'rtl' : 'ltr';
+
+		$html .= '  <form name="smwbrowse" action="' . htmlspecialchars( $title->getLocalURL() ) . '" method="get">' . "\n" .
 			'    <input type="hidden" name="title" value="' . $title->getPrefixedText() . '"/>' .
 			wfMessage( 'smw_browse_article' )->text() . "<br />\n" .
-		    ' <div class="browse-input-resp"> <div class="input-field"><input type="text" name="article" size="40" id="page_input_box" class="input mw-ui-input" value="' . htmlspecialchars( $this->articletext ) . '" /></div>' .
+		    ' <div class="browse-input-resp"> <div class="input-field"><input type="text"  dir="' . $dir . '" name="article" size="40" id="smwb-page-search" class="input mw-ui-input" value="' . htmlspecialchars( $articletext ) . '" /></div>' .
 		    ' <div class="button-field"><input type="submit" class="input-button mw-ui-button" value="' . wfMessage( 'smw_browse_go' )->text() . "\"/></div></div>\n" .
 		    "  </form>\n";
+
+		return $html;
 	}
 
 	/**
@@ -485,37 +564,4 @@ class SMWSpecialBrowse extends SpecialPage {
 		return $count > 2 ? preg_replace( '/($nonBreakingSpace)/u', ' ', $text, max( 0, $count - 2 ) ):$text;
 	}
 
-	/**
-	 * FIXME MW 1.25
-	 */
-	private function addExternalHelpLinks() {
-
-		if ( !method_exists( $this, 'addHelpLink' ) || ( $this->getRequest()->getVal( 'printable' ) === 'yes' ) ) {
-			return null;
-		}
-
-		if ( $this->subject->isValid() ) {
-			$link = SpecialPage::getTitleFor( 'ExportRDF', $this->subject->getTitle()->getPrefixedText() )->getLocalUrl( 'syntax=rdf' );
-
-			$this->getOutput()->setIndicators( array(
-				Html::rawElement(
-					'div',
-					array(
-						'class' => 'mw-indicator smw-page-indicator-rdflink'
-					),
-					Html::rawElement(
-						'a',
-						array(
-							'href' => $link
-					), 'RDF' )
-				)
-			) );
-		}
-
-		$this->addHelpLink( wfMessage( 'smw-specials-browse-helplink' )->escaped(), true );
-	}
-
-	protected function getGroupName() {
-		return 'smw_group';
-	}
 }

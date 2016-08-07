@@ -281,6 +281,12 @@ $GLOBALS['smwgBrowseShowAll'] = true;
 ##
 
 ###
+# Whether the browse display is to be generated using an API request or not.
+##
+$GLOBALS['smwgBrowseByApi'] = true;
+##
+
+###
 # Should the search by property special page display nearby results when there
 # are only a few results with the exact value? Switch this off if this page has
 # performance problems.

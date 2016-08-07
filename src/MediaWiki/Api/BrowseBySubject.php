@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Api;
 use ApiBase;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Specials\Browse\HtmlContentBuilder;
 
 /**
  * Browse a subject api module
@@ -31,15 +32,47 @@ class BrowseBySubject extends ApiBase {
 
 		$params = $this->extractRequestParams();
 
+		if ( isset( $params['type'] ) && $params['type'] === 'html' ) {
+			$data = $this->getHtmlFormat( $params );
+		} else {
+			$data = $this->getRawFormat( $params );
+		}
+
+		$this->getResult()->addValue(
+			null,
+			'query',
+			$data
+		);
+	}
+
+	protected function getHtmlFormat( $params ) {
+
+		$subject = new DIWikiPage(
+			$params['subject'],
+			$params['ns'],
+			$params['iw'],
+			$params['subobject']
+		);
+
+		$htmlContentBuilder = new HtmlContentBuilder(
+			ApplicationFactory::getInstance()->getStore(),
+			$subject
+		);
+
+		$htmlContentBuilder->setOptionsFromJsonFormat( $params['options'] );
+
+		return $htmlContentBuilder->getHtml();
+	}
+
+	protected function getRawFormat( $params ) {
+
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$title = $applicationFactory
-			->newTitleCreator()
-			->createFromText( $params['subject'] );
+		$title = $applicationFactory->newTitleCreator()->createFromText(
+			$params['subject']
+		);
 
-		$deepRedirectTargetResolver = $applicationFactory
-			->newMwCollaboratorFactory()
-			->newDeepRedirectTargetResolver();
+		$deepRedirectTargetResolver = $applicationFactory->newMwCollaboratorFactory()->newDeepRedirectTargetResolver();
 
 		try {
 			$title = $deepRedirectTargetResolver->findRedirectTargetFor( $title );
@@ -54,17 +87,13 @@ class BrowseBySubject extends ApiBase {
 			$params['subobject']
 		);
 
-		$semanticData = $applicationFactory
-			->getStore()
-			->getSemanticData( $dataItem );
+		$semanticData = $applicationFactory->getStore()->getSemanticData(
+			$dataItem
+		);
 
 		$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
 
-		$this->getResult()->addValue(
-			null,
-			'query',
-			$this->doFormat( $semanticDataSerializer->serialize( $semanticData ) )
-		);
+		return $this->doFormat( $semanticDataSerializer->serialize( $semanticData ) );
 	}
 
 	protected function doFormat( $serialized ) {
@@ -110,7 +139,31 @@ class BrowseBySubject extends ApiBase {
 				ApiBase::PARAM_ISMULTI => false,
 				ApiBase::PARAM_REQUIRED => true,
 			),
+			'ns' => array(
+				ApiBase::PARAM_TYPE => 'integer',
+				ApiBase::PARAM_ISMULTI => false,
+				ApiBase::PARAM_DFLT => '',
+				ApiBase::PARAM_REQUIRED => false,
+			),
+			'iw' => array(
+				ApiBase::PARAM_TYPE => 'string',
+				ApiBase::PARAM_ISMULTI => false,
+				ApiBase::PARAM_DFLT => '',
+				ApiBase::PARAM_REQUIRED => false,
+			),
 			'subobject' => array(
+				ApiBase::PARAM_TYPE => 'string',
+				ApiBase::PARAM_ISMULTI => false,
+				ApiBase::PARAM_DFLT => '',
+				ApiBase::PARAM_REQUIRED => false,
+			),
+			'type' => array(
+				ApiBase::PARAM_TYPE => 'string',
+				ApiBase::PARAM_ISMULTI => false,
+				ApiBase::PARAM_DFLT => '',
+				ApiBase::PARAM_REQUIRED => false,
+			),
+			'options' => array(
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_ISMULTI => false,
 				ApiBase::PARAM_DFLT => '',

@@ -1,5 +1,5 @@
 {
-	"description": "Test `Special:Browse` output for `_dat' (`wgContLang` = en, `wgLang` = en, `smwgDVFeatures`)",
+	"description": "Test `Special:Browse` output for `_dat` (`wgContLang=en`, `wgLang=en`, `smwgDVFeatures=SMW_DV_TIMEV_CM`)",
 	"properties": [
 		{
 			"name": "Has date",
@@ -18,7 +18,9 @@
 			"special-page": {
 				"page":"Browse",
 				"query-parameters": "Example/S0005/1",
-				"request-parameters":{}
+				"request-parameters":{
+					"output": "legacy"
+				}
 			},
 			"expected-output": {
 				"to-contain": [
