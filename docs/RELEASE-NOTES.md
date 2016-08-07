@@ -14,7 +14,8 @@ THIS IS NOT A RELEASE YET
 
 * #1759 Improved `Special:Ask` error output 
 * #1760 Improved handling of `MonolingualTextValue` in `Special:SearchByProperty`
-* #1481 Enhanced the `SQLStore` to support fulltext searches provided by the MySQL/MariaDB back-end (see #1481 for limitations and features supported)
+* #1481 Enhanced the `SQLStore` to support fulltext searches provided by the `MySQL`/`MariaDB` back-end (see #1481 for limitations and features supported)
+* #1758 Added the `smwgQTemporaryTablesAutoCommitMode` setting to mitigate possible issues with temporary tables in `MySQL` for when `enforce_gtid_consistency=true` is set
 
 ## Bug fixes
 
