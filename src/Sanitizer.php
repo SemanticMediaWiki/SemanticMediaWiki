@@ -50,7 +50,7 @@ class Sanitizer {
 	}
 
 	/**
-	 * @since 1.0
+	 * @since 0.1
 	 *
 	 * @param string $name
 	 * @param mixed $value
