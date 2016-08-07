@@ -12,7 +12,7 @@ THIS IS NOT A RELEASE YET
 
 ## New features and enhancements
 
-*
+* #1759 Improveed `Special:Ask` error output 
 
 ## Bug fixes
 
