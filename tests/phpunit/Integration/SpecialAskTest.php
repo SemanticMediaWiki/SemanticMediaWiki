@@ -32,6 +32,9 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 		$html = $GLOBALS['wgOut']->getHtml();
 		$html = '<!DOCTYPE html><html><body>' . $html . '</body></html>';
 
+		// Known tags DOMDocument has issues with
+		$html = str_replace( array( '<nowiki>', '</nowiki>' ), '', $html );
+
 		$document = new DOMDocument();
 		$result = $document->loadHTML( $html );
 		$this->assertTrue( $result );

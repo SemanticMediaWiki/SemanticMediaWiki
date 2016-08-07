@@ -517,6 +517,9 @@ label.smw-form-checkbox {
 }
 
 .smw-callout-info {
+	border: 1px solid #d9edf7;
+	background-color: #d9edf7;
+	border-left-width: 5px;
 	border-left-color: #1b809e;
 }
 
@@ -525,6 +528,9 @@ label.smw-form-checkbox {
 }
 
 .smw-callout-warning {
+	border: 1px solid #fcf8e3;
+	background-color: #fcf8e3;
+	border-left-width: 5px;
 	border-left-color: #aa6708;
 }
 
@@ -532,7 +538,21 @@ label.smw-form-checkbox {
 	color: #aa6708;
 }
 
+.smw-callout-success {
+	border: 1px solid #dff0d8;
+	background-color: #dff0d8;
+	border-left-width: 5px;
+	border-left-color: #3c763d;
+}
+
+.smw-callout-success .title {
+	color: #3c763d;
+}
+
 .smw-callout-error {
+	border: 1px solid #f2dede;
+	background-color: #f2dede;
+	border-left-width: 5px;
 	border-left-color: #ce4844;
 }
 
