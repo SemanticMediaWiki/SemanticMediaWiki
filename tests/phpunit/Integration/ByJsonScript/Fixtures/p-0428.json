@@ -1,0 +1,39 @@
+{
+	"description": "Test `_TYPE` annotations on different content language (`wgContLang=fr`, `wgLang=en`)",
+	"properties": [
+		{
+			"name": "Has text",
+			"contents": "[[A le type::Texte]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/P0428/1",
+			"contents": "[[Has text::#-Foo]]"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0",
+			"subject": "Example/P0428/1",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_SKEY", "_MDAT", "Has_text" ],
+					"propertyValues": [ "#-Foo" ]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "fr",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [ "_MDAT" ]
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

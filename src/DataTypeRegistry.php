@@ -280,6 +280,37 @@ class DataTypeRegistry {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param string $label
+	 * @param string|false $languageCode
+	 *
+	 * @return string
+	 */
+	public function findTypeIdByLanguage( $label, $languageCode = false ) {
+
+		$label = mb_strtolower( $label );
+
+		if ( !$languageCode ) {
+			return $this->findTypeId( $label );
+		}
+
+		$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage( $languageCode );
+
+		$datatypeLabels = $extraneousLanguage->getDatatypeLabels();
+		$datatypeLabels = array_flip( $datatypeLabels );
+		$datatypeLabels += $extraneousLanguage->getDatatypeAliases();
+
+		foreach ( $datatypeLabels as $key => $id ) {
+			if ( mb_strtolower( $key ) === $label ) {
+				return $id;
+			}
+		}
+
+		return '';
+	}
+
+	/**
 	 * Get the translated user label for a given internal ID. If the ID does
 	 * not have a label associated with it in the current language, the
 	 * empty string is returned. This is the case both for internal type ids

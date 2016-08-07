@@ -133,6 +133,26 @@ class DIPropertyTest extends DataItemTest {
 		);
 	}
 
+	public function testCreatePropertyFromLabelWithExplicitLanguageCode() {
+
+		$property = DIProperty::newFromUserLabel( 'Fecha de modificación', '', 'es' );
+
+		$this->assertEquals(
+			'_MDAT',
+			$property->getKey()
+		);
+	}
+
+	public function testCreatePropertyFromLabelWithAnnotatedLangCodeToTakePrecedence() {
+
+		$property = DIProperty::newFromUserLabel( 'A le type@fr', '', 'es' );
+
+		$this->assertEquals(
+			'_TYPE',
+			$property->getKey()
+		);
+	}
+
 	public function testCanonicalRepresentation() {
 
 		$property = new DIProperty( '_MDAT' );
