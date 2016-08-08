@@ -234,6 +234,8 @@
 	"smw_browse_hide_incoming": "verstecke Attribute die hierhin verlinken",
 	"smw_browse_no_outgoing": "Diese Seite enthält keine Attribute.",
 	"smw_browse_no_incoming": "Keine Attribute verlinken auf diese Seite.",
+	"smw-browse-subject-invalid": "Die Seitenvalidierung hat den Fehler „$1“ zurückgegeben.",
+	"smw-browse-api-subject-serialization-invalid": "Die Seite hat ein ungültiges Serialisierungsformat.",
 	"smw_inverse_label_default": "$1 von",
 	"smw_inverse_label_property": "Bezeichnung des inversen Attributs",
 	"pageproperty": "Attributwerte einer Seite",

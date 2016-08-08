@@ -248,6 +248,8 @@
 	"smw_browse_hide_incoming": "cacher les propriétés qui pointent ici",
 	"smw_browse_no_outgoing": "Cette page n’a aucune propriété.",
 	"smw_browse_no_incoming": "Aucune propriété ne pointe vers cette page.",
+	"smw-browse-subject-invalid": "La validation du sujet est revenue avec l'erreur \"$1\".",
+	"smw-browse-api-subject-serialization-invalid": "Le sujet a un format de sérialisation invalide.",
 	"smw_inverse_label_default": "$1 de",
 	"smw_inverse_label_property": "Label de la propriété inverse",
 	"pageproperty": "Rechercher dans les propriétés de la page",
