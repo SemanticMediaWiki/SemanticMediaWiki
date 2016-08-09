@@ -358,7 +358,7 @@ class SMWPropertyValue extends SMWDataValue {
 
 		$propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
 
-		if ( ( $content = $propertySpecificationLookup->getPropertyDescriptionFor( $this->m_dataitem, $linker ) ) !== '' ) {
+		if ( ( $content = $propertySpecificationLookup->getPropertyDescriptionFor( $this->m_dataitem, $linker ) ) !== '' || !$this->m_dataitem->isUserDefined() ) {
 
 			$highlighter = Highlighter::factory( Highlighter::TYPE_PROPERTY );
 			$highlighter->setContent( array (
