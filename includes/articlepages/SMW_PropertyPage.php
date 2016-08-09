@@ -5,6 +5,7 @@ use SMW\DataValueFactory;
 use SMW\Localizer;
 use SMW\RequestOptions;
 use SMW\StringCondition;
+use SMW\PropertyRegistry;
 
 /**
  * Implementation of MediaWiki's Article that shows additional information on
@@ -61,13 +62,22 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$propertyName = htmlspecialchars( $this->mTitle->getText() );
 		$message = '';
 
-		if ( !$this->mProperty->isUserDefined() ) {
-			$propertyKey  = 'smw-pa-property-predefined' . strtolower( $this->mProperty->getKey() );
-			$messageKey   = wfMessage( $propertyKey )->exists() ? $propertyKey : 'smw-pa-property-predefined-default';
-			$message .= wfMessage( $messageKey, $propertyName )->parse();
-			$message .= wfMessage( 'smw-pa-property-predefined-long' . strtolower( $this->mProperty->getKey() ) )->exists() ? ' ' . wfMessage( 'smw-pa-property-predefined-long' . strtolower( $this->mProperty->getKey() ) )->parse() : '';
-			$message .= ' ' . wfMessage( 'smw-pa-property-predefined-common' )->parse();
+		if ( $this->mProperty->isUserDefined() ) {
+			return $message;
 		}
+
+		$key = $this->mProperty->getKey();
+
+		if ( ( $messageKey = PropertyRegistry::getInstance()->findPropertyDescriptionMsgKeyById( $key ) ) !== '' ) {
+			$messageKeyLong = $messageKey . '-long';
+		} else {
+			$messageKey = 'smw-pa-property-predefined' . strtolower( $key );
+			$messageKeyLong = 'smw-pa-property-predefined-long' . strtolower( $key );
+		}
+
+		$message .= wfMessage( $messageKey )->exists() ? wfMessage( $messageKey, $propertyName )->parse() : wfMessage( 'smw-pa-property-predefined-default' )->parse();
+		$message .= wfMessage( $messageKeyLong )->exists() ? ' ' . wfMessage( $messageKeyLong )->parse() : '';
+		$message .= ' ' . wfMessage( 'smw-pa-property-predefined-common' )->parse();
 
 		return Html::rawElement( 'div', array( 'class' => 'smw-property-predefined-intro' ), $message );
 	}
