@@ -6,6 +6,7 @@ use SMW\SQLStore\SQLStore;
 use SMW\ApplicationFactory;
 use SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder;
 use SMW\SQLStore\QueryEngine\Fulltext\MySQLValueMatchConditionBuilder;
+use SMW\SQLStore\QueryEngine\Fulltext\SQLiteValueMatchConditionBuilder;
 use SMW\SQLStore\QueryEngine\Fulltext\TextByChangeUpdater;
 use SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
@@ -47,6 +48,11 @@ class FulltextSearchTableFactory {
 		switch ( $type ) {
 			case 'mysql':
 				return new MySQLValueMatchConditionBuilder(
+					$this->newSearchTable( $store )
+				);
+				break;
+			case 'sqlite':
+				return new SQLiteValueMatchConditionBuilder(
 					$this->newSearchTable( $store )
 				);
 				break;

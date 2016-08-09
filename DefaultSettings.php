@@ -1004,6 +1004,7 @@ $GLOBALS['smwgDVFeatures'] = SMW_DV_PROV_REDI | SMW_DV_MLTV_LCODE | SMW_DV_PVAP 
 # DB back-end to use special fulltext index operations.
 #
 # - Tested with MySQL/MariaDB
+# - Tested with SQLite
 #
 # @since 2.5
 ##
@@ -1041,13 +1042,19 @@ $GLOBALS['smwgFulltextDeferredUpdate'] = true;
 # from MariaDB 10.0.5 with InnoDB tables and from MariaDB 10.0.15
 # with Mroonga tables (according to sources)
 #
+# - SQLite FTS3 has been available since version 3.5, FTS4 were added with
+# version 3.7.4, and FTS5 is available with version 3.9.0 (according to
+# sources); The setting allows to specify extra arguments after the module
+# engine such as array( 'FTS4', 'tokenize=porter' ).
+#
 # It is possible to extend the option decription (MySQL 5.7+)  with
 # 'mysql' => array( 'ENGINE=MyISAM, DEFAULT CHARSET=utf8', 'WITH PARSER ngram' )
 #
 # @since 2.5
 ##
 $GLOBALS['smwgFulltextSearchTableOptions'] = array(
-	'mysql' => array( 'ENGINE=MyISAM, DEFAULT CHARSET=utf8' )
+	'mysql'  => array( 'ENGINE=MyISAM, DEFAULT CHARSET=utf8' ),
+	'sqlite' => array( 'FTS4' )
 );
 
 ##

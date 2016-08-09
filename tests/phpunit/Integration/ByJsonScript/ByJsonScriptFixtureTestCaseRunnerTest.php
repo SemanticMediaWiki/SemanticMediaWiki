@@ -266,8 +266,13 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			$jsonTestCaseFileHandler->getDebugMode()
 		);
 
-		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'query-testcases' ) as $queryCase ) {
-			$this->queryTestCaseProcessor->processQueryCase( new QueryTestCaseInterpreter( $queryCase ) );
+		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'query-testcases' ) as $case ) {
+
+			if ( $jsonTestCaseFileHandler->requiredToSkipFor( $case, $this->connectorId ) ) {
+				continue;
+			}
+
+			$this->queryTestCaseProcessor->processQueryCase( new QueryTestCaseInterpreter( $case ) );
 		}
 
 		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'concept-testcases' ) as $conceptCase ) {

@@ -44,7 +44,12 @@ class DeferredRequestDispatchManager {
 	 *
 	 * @var boolean
 	 */
-	private $enabledHttpDeferredJobRequestState = true;
+	private $enabledHttpDeferredRequest = true;
+
+	/**
+	 * @var boolean
+	 */
+	private $preferredWithJobQueue = false;
 
 	/**
 	 * @since 2.3
@@ -60,16 +65,29 @@ class DeferredRequestDispatchManager {
 	 */
 	public function reset() {
 		self::$canConnectToUrl = null;
-		$this->enabledHttpDeferredJobRequestState = true;
+		$this->enabledHttpDeferredRequest = true;
 	}
 
 	/**
 	 * @since 2.3
 	 *
-	 * @param boolean $enabledHttpDeferredJobRequestState
+	 * @param boolean $enabledHttpDeferredRequest
 	 */
-	public function setEnabledHttpDeferredJobRequestState( $enabledHttpDeferredJobRequestState ) {
-		$this->enabledHttpDeferredJobRequestState = (bool)$enabledHttpDeferredJobRequestState;
+	public function setEnabledHttpDeferredRequest( $enabledHttpDeferredRequest ) {
+		$this->enabledHttpDeferredRequest = (bool)$enabledHttpDeferredRequest;
+	}
+
+	/**
+	 * Certain types of jobs or tasks may prefer to be executed using the job
+	 * queue therefore indicate whether the dispatcher should try opening a
+	 * http request or not.
+	 *
+	 * @since 2.5
+	 *
+	 * @param boolean $preferredWithJobQueue
+	 */
+	public function setPreferredWithJobQueue( $preferredWithJobQueue ) {
+		$this->preferredWithJobQueue = (bool)$preferredWithJobQueue;
 	}
 
 	/**
@@ -116,7 +134,7 @@ class DeferredRequestDispatchManager {
 		$parameters['timestamp'] = time();
 		$parameters['requestToken'] = SpecialDeferredRequestDispatcher::getRequestToken( $parameters['timestamp'] );
 
-		if ( $this->enabledHttpDeferredJobRequestState && $this->canConnectToUrl() ) {
+		if ( !$this->preferredWithJobQueue && $this->enabledHttpDeferredRequest && $this->canConnectToUrl() ) {
 			return $this->doPostJobWith( $type, $title, $parameters, $dispatchableCallbackJob );
 		}
 
