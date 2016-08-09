@@ -75,7 +75,7 @@ class DIWikiPage extends SMWDataItem {
 			list( $dbkey, $subobjectname ) = explode( '#', $dbkey );
 		}
 
-		$this->m_dbkey = $dbkey;
+		$this->m_dbkey = str_replace( ' ', '_', $dbkey );
 		$this->m_namespace = (int)$namespace; // really make this an integer
 		$this->m_interwiki = $interwiki;
 		$this->m_subobjectname = $subobjectname;

@@ -505,8 +505,8 @@ class SMWSql3SmwIds {
 
 	/**
 	 * @note SMWSql3SmwIds::getSMWPageID has some issues with the cache as it returned
-	 * 0 even though an object was matchable but since I'm too busy to investigate, using
-	 * this method is safer then trying to encipher getSMWPageID related methods.
+	 * 0 even though an object was matchable, using this method is safer then trying
+	 * to encipher getSMWPageID related methods.
 	 *
 	 * It uses the PoolCache which means Lru is in place to avoid memory leakage.
 	 *
@@ -518,11 +518,29 @@ class SMWSql3SmwIds {
 	 */
 	public function getIDFor( DIWikiPage $subject ) {
 
+		// Try to match a predefined property
+		if ( $subject->getNamespace() === SMW_NS_PROPERTY && $subject->getInterWiki() === '' ) {
+			$property = DIProperty::newFromUserLabel( $subject->getDBKey() );
+			$key = $property->getKey();
+
+			// Has a fixed ID?
+			if ( isset( self::$special_ids[$key] ) ) {
+				return self::$special_ids[$key];
+			}
+
+			// Switch title for fixed properties without a fixed ID (e.g. _MIME is the smw_title)
+			if ( !$property->isUserDefined() ) {
+				$subject = new DIWikiPage( $key, SMW_NS_PROPERTY );
+			}
+		}
+
 		$hash = HashBuilder::getHashIdForDiWikiPage( $subject );
 
-		if ( ( $id = $this->intermediaryIdCache->fetch( $hash ) ) > 0 ) {
+		if ( ( $id = $this->intermediaryIdCache->fetch( $hash ) ) !== false ) {
 			return $id;
 		}
+
+		$id = 0;
 
 		$row = $this->store->getConnection( 'mw.db' )->selectRow(
 			self::TABLE_NAME,
@@ -536,19 +554,8 @@ class SMWSql3SmwIds {
 			__METHOD__
 		);
 
-		// Try to match a predefined property
-		if ( $subject->getNamespace() === SMW_NS_PROPERTY && $subject->getInterWiki() === '' ) {
-			$property = DIProperty::newFromUserLabel( $subject->getDBKey() );
-
-			if ( isset( self::$special_ids[$property->getKey()] ) ) {
-				$row = new \stdClass;
-				$row->smw_id = self::$special_ids[$property->getKey()];
-			}
-		}
-
-		if ( $row === false ) {
-			wfDebugLog( 'smw', __METHOD__  . " $hash was a cache miss" );
-			return 0;
+		if ( $row !== false ) {
+			$id = $row->smw_id;
 		}
 
 		// Legacy
@@ -557,11 +564,11 @@ class SMWSql3SmwIds {
 			$subject->getNamespace(),
 			$subject->getInterWiki(),
 			$subject->getSubobjectName(),
-			$row->smw_id,
+			$id,
 			$subject->getSortKey()
 		);
 
-		return $row->smw_id;
+		return $id;
 	}
 
 	/**
