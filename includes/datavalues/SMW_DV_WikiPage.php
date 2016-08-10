@@ -119,7 +119,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		if ( $value !== '' ) {
 			if ( $value[0] == '#' ) {
 				if ( is_null( $this->m_contextPage ) ) {
-					$this->addError( wfMessage( 'smw_notitle', $value )->inContentLanguage()->text() );
+					$this->addErrorMsg( array( 'smw_notitle', $value ) );
 					return;
 				} else {
 					$this->m_title = Title::makeTitle( $this->m_contextPage->getNamespace(),
@@ -132,11 +132,10 @@ class SMWWikiPageValue extends SMWDataValue {
 
 			/// TODO: Escape the text so users can see punctuation problems (bug 11666).
 			if ( is_null( $this->m_title ) ) {
-				$this->addError( wfMessage( 'smw_notitle', $value )->inContentLanguage()->text() );
+				$this->addErrorMsg( array( 'smw_notitle', $value ) );
 			} elseif ( ( $this->m_fixNamespace != NS_MAIN ) &&
 				 ( $this->m_fixNamespace != $this->m_title->getNamespace() ) ) {
-				$this->addError( wfMessage( 'smw_wrong_namespace',
-					$wgContLang->getNsText( $this->m_fixNamespace ) )->inContentLanguage()->text() );
+				$this->addErrorMsg( array( 'smw_wrong_namespace', $wgContLang->getNsText( $this->m_fixNamespace ) ) );
 			} else {
 				$this->m_fragment = str_replace( ' ', '_', $this->m_title->getFragment() );
 				$this->m_prefixedtext = '';
@@ -144,7 +143,7 @@ class SMWWikiPageValue extends SMWDataValue {
 				$this->m_dataitem = SMWDIWikiPage::newFromTitle( $this->m_title, $this->m_typeid );
 			}
 		} else {
-			$this->addError(  wfMessage( 'smw_notitle', $value )->inContentLanguage()->text() );
+			$this->addErrorMsg( array( 'smw_notitle', $value ) );
 		}
 	}
 
@@ -154,6 +153,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return boolean
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
+
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_CONTAINER ) {
 			// might throw an exception, we just pass it through
 			$dataItem = $dataItem->getSemanticData()->getSubject();

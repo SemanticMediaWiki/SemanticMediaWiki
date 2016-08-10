@@ -385,7 +385,7 @@ class PropertyRegistry {
 			'_NEWP'  => array( '_boo', false, false ), // "is a new page"
 			'_LEDT'  => array( '_wpg', false, false ), // "last editor is"
 			'_ERRC'  => array( '__sob', false, false ), // "has error"
-			'_ERRT'  => array( '_txt', false, false ), // "has error text"
+			'_ERRT'  => array( '__errt', false, false ), // "has error text"
 			'_ERRP'  => array( '_wpp', false, false ), // "has improper value for"
 			'_LIST'  => array( '__pls', true, true ), // "has fields"
 			'_SKEY'  => array( '__key', false, true ), // sort key of a page

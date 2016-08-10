@@ -401,14 +401,13 @@ class SemanticData {
 
 		if ( !$dataValue->getProperty() instanceof DIProperty || !$dataValue->isValid() ) {
 
-			$error = new Error( $this->getSubject() );
+			$processingErrorMsgHandler = new ProcessingErrorMsgHandler(
+				$this->getSubject()
+			);
 
-			$this->addPropertyObjectValue(
-				$error->getProperty(),
-				$error->getContainerFor(
-					$dataValue->getProperty(),
-					$dataValue->getErrors()
-				)
+			$processingErrorMsgHandler->pushTo(
+				$this,
+				$processingErrorMsgHandler->getErrorContainerFromDataValue( $dataValue )
 			);
 
 			return $this->addError( $dataValue->getErrors() );

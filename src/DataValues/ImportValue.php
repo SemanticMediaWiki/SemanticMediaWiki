@@ -52,7 +52,7 @@ class ImportValue extends DataValue {
 		if ( $this->importValueParser->getErrors() !== array() ) {
 
 			foreach ( $this->importValueParser->getErrors() as $message ) {
-				$this->addError( call_user_func_array( 'wfMessage', $message )->inContentLanguage()->text() );
+				$this->addErrorMsg( $message );
 			}
 
 			$this->m_dataitem = new DIBlob( 'ERROR' );
@@ -88,7 +88,7 @@ class ImportValue extends DataValue {
 		$parts = explode( ' ', $dataItem->getString(), 4 );
 
 		if ( count( $parts ) != 4 ) {
-			$this->addError( wfMessage( 'smw_parseerror' )->inContentLanguage()->text() );
+			$this->addErrorMsg( array( 'smw_parseerror' ) );
 		} else {
 			$this->m_namespace = $parts[0];
 			$this->m_section = $parts[1];

@@ -46,11 +46,6 @@ class SubobjectParserFunction {
 	protected $messageFormatter;
 
 	/**
-	 * @var DataValueFactory
-	 */
-	private $dataValueFactory = null;
-
-	/**
 	 * @var boolean
 	 */
 	private $isEnabledFirstElementPropertyLabel = false;
@@ -66,7 +61,6 @@ class SubobjectParserFunction {
 		$this->parserData = $parserData;
 		$this->subobject = $subobject;
 		$this->messageFormatter = $messageFormatter;
-		$this->dataValueFactory = DataValueFactory::getInstance();
 	}
 
 	/**
@@ -113,9 +107,8 @@ class SubobjectParserFunction {
 		// them accidentally to refer to the same named ID
 		// (i.e. different access restrictions etc.)
 		if ( strpos( mb_substr( $parserParameterProcessor->getFirst(), 0, 5 ), '.' ) !== false ) {
-			return $this->addErrorWithMsg(
-				$this->parserData->getSemanticData()->getSubject(),
-				wfMessage( 'smw-subobject-parser-invalid-naming-scheme', $parserParameterProcessor->getFirst() )->escaped()
+			return $this->parserData->addError(
+				Message::encode( array( 'smw-subobject-parser-invalid-naming-scheme', $parserParameterProcessor->getFirst() ) )
 			);
 		}
 
@@ -141,7 +134,7 @@ class SubobjectParserFunction {
 
 			foreach ( $values as $value ) {
 
-				$dataValue = $this->dataValueFactory->newDataValueByText(
+				$dataValue = DataValueFactory::getInstance()->newDataValueByText(
 						$property,
 						$value,
 						false,
@@ -219,23 +212,6 @@ class SubobjectParserFunction {
 			$sortkey,
 			end( $pv )
 		);
-	}
-
-	private function addErrorWithMsg( $subject, $errorMsg ) {
-
-		$error = new Error( $subject );
-
-		$this->parserData->getSemanticData()->addPropertyObjectValue(
-			$error->getProperty(),
-			$error->getContainerFor(
-				new DIProperty( '_SOBJ' ),
-				$errorMsg
-			)
-		);
-
-		$this->parserData->addError( $errorMsg );
-
-		return false;
 	}
 
 }

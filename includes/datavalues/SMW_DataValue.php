@@ -404,14 +404,20 @@ abstract class SMWDataValue {
 	}
 
 	/**
+	 * Messages are not resolved until the output and instead will be kept with the
+	 * message and argument keys (e.g. `[2,"smw_baduri","~*0123*"]`). This allows to
+	 * switch the a representation without requiring language context by the object
+	 * that reports an error.
+	 *
 	 * @since 2.4
 	 *
 	 * @param $parameters
 	 * @param integer|null $type
 	 * @param integer|null $language
 	 */
-	public function addErrorMsg( $parameters, $type = null, $language = null ) {
-		$this->addError( Message::get( $parameters, $type, $language ) );
+	public function addErrorMsg( $parameters, $type = null ) {
+		$this->mErrors[] = Message::encode( $parameters, $type );
+		$this->mHasErrors = true;
 	}
 
 	/**

@@ -471,6 +471,7 @@ class DataTypeRegistry {
 			'__sin' => 'SMWWikiPageValue', // Special instance of type
 			'__red' => 'SMWWikiPageValue', // Special redirect type
 			'__err' => 'SMWErrorValue', // Special error type
+			'__errt' => 'SMW\DataValues\ErrorMsgTextValue', // Special error type
 			'__imp' => 'SMW\DataValues\ImportValue', // Special import vocabulary type
 			'__pro' => 'SMWPropertyValue', // Property type (possibly predefined, no always based on a page)
 			'__key' => 'SMWStringValue', // Sort key of a page
@@ -515,6 +516,7 @@ class DataTypeRegistry {
 			'__sin' => DataItem::TYPE_WIKIPAGE, // Special instance of type
 			'__red' => DataItem::TYPE_WIKIPAGE, // Special redirect type
 			'__err' => DataItem::TYPE_ERROR, // Special error type
+			'__errt' => DataItem::TYPE_BLOB, // error text
 			'__imp' => DataItem::TYPE_BLOB, // Special import vocabulary type
 			'__pro' => DataItem::TYPE_PROPERTY, // Property type (possibly predefined, no always based on a page)
 			'__key' => DataItem::TYPE_BLOB, // Sort key of a page

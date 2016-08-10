@@ -154,4 +154,35 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 		$instance->deregisterHandlerFor( 'SimpleText' );
 	}
 
+	public function testEncode() {
+
+		$this->assertEquals(
+			'[2,"Foo"]',
+			Message::encode( 'Foo' )
+		);
+
+		$this->assertEquals(
+			'[2,"Foo"]',
+			Message::encode( array( 'Foo' ) )
+		);
+
+		$this->assertEquals(
+			'[2,"Foo"]',
+			Message::encode( '[2,"Foo"]' )
+		);
+	}
+
+	public function testDecode() {
+
+		$this->assertEquals(
+			false,
+			Message::decode( 'Foo' )
+		);
+
+		$this->assertEquals(
+			'Foo',
+			Message::decode( '[2,"Foo"]' )
+		);
+	}
+
 }

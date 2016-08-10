@@ -248,6 +248,18 @@ class ParserData {
 			'smw-semanticdata-status',
 			$this->semanticData->getProperties() !== array()
 		);
+
+		// Ensure any errors are reported and recorded
+		$processingErrorMsgHandler = new ProcessingErrorMsgHandler(
+			$this->getSubject()
+		);
+
+		foreach ( $this->errors as $error ) {
+			$processingErrorMsgHandler->pushTo(
+				$this->semanticData,
+				$processingErrorMsgHandler->getErrorContainerFromMsg( $error )
+			);
+		}
 	}
 
 	/**

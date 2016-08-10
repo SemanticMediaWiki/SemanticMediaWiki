@@ -22,7 +22,7 @@ class SMWErrorValue extends SMWDataValue {
 		parent::__construct( $typeid );
 		$this->m_caption = ( $caption !== false ) ? $caption : $uservalue;
 		if ( $errormsg !== '' ) {
-			$this->addError( $errormsg );
+			$this->addErrorMsg( $errormsg );
 		}
 	}
 
@@ -30,7 +30,7 @@ class SMWErrorValue extends SMWDataValue {
 		if ( $this->m_caption === false ) {
 			$this->m_caption = $value;
 		}
-		$this->addError( wfMessage( 'smw_parseerror' )->inContentLanguage()->text() );
+		$this->addErrorMsg( 'smw_parseerror' );
 	}
 
 	/**
@@ -39,6 +39,7 @@ class SMWErrorValue extends SMWDataValue {
 	 * @return boolean
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
+
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_ERROR ) {
 			$this->addError( $dataItem->getErrors() );
 			$this->m_caption = $this->getErrorText();

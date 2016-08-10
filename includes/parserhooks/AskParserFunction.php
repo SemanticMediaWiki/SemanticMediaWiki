@@ -223,15 +223,7 @@ class AskParserFunction {
 		// In case of an query error add a marker to the subject for
 		// discoverability of a failed query
 		if ( $query->getErrors() !== array() ) {
-			$error = new Error( $this->parserData->getSubject() );
-
-			$this->parserData->getSemanticData()->addPropertyObjectValue(
-				$error->getProperty(),
-				$error->getContainerFor(
-					new DIProperty( '_ASK' ),
-					$query->getQueryString() . ' (' . implode( ' ', $query->getErrors() ) . ')'
-				)
-			);
+			return $this->addProcessingError( $query->getErrors() );
 		}
 
 		$queryProfileAnnotatorFactory = $this->applicationFactory->newQueryProfileAnnotatorFactory();
@@ -248,6 +240,20 @@ class AskParserFunction {
 			$jointProfileAnnotator->getProperty(),
 			$jointProfileAnnotator->getContainer()
 		);
+	}
+
+	private function addProcessingError( $errors ) {
+
+		$processingErrorMsgHandler = new ProcessingErrorMsgHandler(
+			$this->parserData->getSubject()
+		);
+
+		foreach ( $errors as $error ) {
+			$processingErrorMsgHandler->pushTo(
+				$this->parserData->getSemanticData(),
+				$processingErrorMsgHandler->getErrorContainerFromMsg( $error, new DIProperty( '_ASK' ) )
+			);
+		}
 	}
 
 }
