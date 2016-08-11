@@ -232,6 +232,8 @@
 	"smw_browse_hide_incoming": "{{doc-actionlink}}\nThis is the text of the link on [[Special:Browse]] that hides the properties linking to a page when clicked.\n\nSee also:\n* {{msg-mw|Smw browse show incoming}}",
 	"smw_browse_no_outgoing": "This is the information message shown on [[Special:Browse]] in case the browsed page does not contain any properties.",
 	"smw_browse_no_incoming": "This is the information message shown on [[Special:Browse]] in case no properties link to the browsed page.",
+	"smw-browse-subject-invalid": "This is an error/warning message.\n\nParameters:\n* $1 holds the error/warning",
+	"smw-browse-api-subject-serialization-invalid": "This is an error message.",
 	"smw_inverse_label_default": "Inverse label default. Parameters:\n* $1 - a place marker",
 	"smw_inverse_label_property": "Can as well be translated as \"Name of\", or \"Denomination of the inverse propery\". The inverse property is one having both its direction, and its source/target sets inverted. For example, the property \"is child of\" is the inverse propery of \"is parent of\".",
 	"pageproperty": "This is the name of [[Special:PageProperty]].",

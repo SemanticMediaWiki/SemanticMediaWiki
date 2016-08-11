@@ -230,6 +230,8 @@
 	"smw_browse_hide_incoming": "ocultar propiedades que vinculen aquí",
 	"smw_browse_no_outgoing": "Esta página no tiene propiedades.",
 	"smw_browse_no_incoming": "Ninguna propiedad vincula aquí.",
+	"smw-browse-subject-invalid": "La validación del tema devolvió el error \"$1\".",
+	"smw-browse-api-subject-serialization-invalid": "El tema tiene un formato de serialización no válido.",
 	"smw_inverse_label_default": "$1 de",
 	"smw_inverse_label_property": "Etiqueta de propiedad inversa",
 	"pageproperty": "Búsqueda de propiedades de página",

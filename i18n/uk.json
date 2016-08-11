@@ -219,6 +219,8 @@
 	"smw_browse_hide_incoming": "приховати властивості, що посилаються сюди",
 	"smw_browse_no_outgoing": "Ця сторінка не містить властивостей.",
 	"smw_browse_no_incoming": "На цю сторінку не посилається жодна властивість.",
+	"smw-browse-subject-invalid": "Перевірка суб'єкта повернулася з помилкою «$1».",
+	"smw-browse-api-subject-serialization-invalid": "Суб'єкт має некоректний формат серіалізації.",
 	"smw_inverse_label_default": "$1 з",
 	"smw_inverse_label_property": "Назва зворотної властивості",
 	"pageproperty": "Пошук властивостей сторінки",

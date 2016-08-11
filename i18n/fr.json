@@ -38,7 +38,7 @@
 			"Yasten"
 		]
 	},
-	"smw-desc": "Rendre le wiki plus accessible - pour les machines ''et'' les humains ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentation en ligne])",
+	"smw-desc": "Rendre votre wiki plus accessible - pour les machines ''et'' les humains ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentation en ligne])",
 	"smw-semantics-not-enabled": "La fonctionnalité MédiaWiki Sémantique n’est pas activée sur ce wiki.",
 	"smw_viewasrdf": "Voir comme RDF",
 	"smw_finallistconjunct": " et",
@@ -53,7 +53,7 @@
 	"smw_concept_cache_miss": "Le concept « $1 » ne peut être utilisé en ce moment, car la configuration du wiki exige qu’il soit lancé hors-ligne. Si le problème persiste encore, demandez à l'administrateur de votre site de rendre ce concept disponible.",
 	"smw_noinvannot": "Les valeurs ne peuvent pas être allouées pour inverser des propriétés.",
 	"version-semantic": "Extensions sémantiques",
-	"smw_baduri": "Désolé. Les URIs du domaine « $1 » ne sont pas autorisées.",
+	"smw_baduri": "Les URIs du type « $1 » ne sont pas autorisées.",
 	"smw_csv_link": "CSV",
 	"smw_dsv_link": "DSV",
 	"smw_printername_count": "Comptage des résultats",
@@ -102,7 +102,7 @@
 	"smw-smwdoc-par-format": "Le format de résultat dans lequel afficher la documentation d'un paramètre",
 	"smw-smwdoc-par-parameters": "Les paramètres à afficher. \"specific\" pour ceux ajoutés par le format, \"base\" pour ceux disponibles dans tous les formats, et \"all\" pour les deux.",
 	"smw-paramdesc-sort": "Propriété sur laquelle trier la requête",
-	"smw-paramdesc-order": "Ordre du tri de la requête",
+	"smw-paramdesc-order": "Ordre de tri pour la requête",
 	"smw-paramdesc-searchlabel": "Titre du lien permettant d'accéder aux résultats suivants (par défaut, «… autres résultats»)",
 	"smw-paramdesc-named_args": "Nommez les arguments transmis au modèle",
 	"smw-paramdesc-export": "Options d’exportation",

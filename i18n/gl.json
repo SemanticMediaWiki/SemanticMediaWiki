@@ -217,6 +217,8 @@
 	"smw_browse_hide_incoming": "agochar as propiedades que ligan cara a aquí",
 	"smw_browse_no_outgoing": "Esta páxina non ten propiedades.",
 	"smw_browse_no_incoming": "Ningunha propiedade liga con esta páxina.",
+	"smw-browse-subject-invalid": "A validación do tema devolveu o erro \"$1\".",
+	"smw-browse-api-subject-serialization-invalid": "O tema ten un formato de serialización incorrecto.",
 	"smw_inverse_label_default": "$1 de",
 	"smw_inverse_label_property": "Etiqueta da propiedade inversa",
 	"pageproperty": "Procura de propiedades de páxinas",

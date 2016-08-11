@@ -229,6 +229,8 @@
 	"smw_browse_hide_incoming": "隐藏链接到此页的属性",
 	"smw_browse_no_outgoing": "这个页面没有设置属性。",
 	"smw_browse_no_incoming": "没有属性连接到此页。",
+	"smw-browse-subject-invalid": "主题验证返回“$1”错误。",
+	"smw-browse-api-subject-serialization-invalid": "主题有无效的序列化格式。",
 	"smw_inverse_label_default": "的$1",
 	"smw_inverse_label_property": "逆属性标签",
 	"pageproperty": "页面属性搜索",
