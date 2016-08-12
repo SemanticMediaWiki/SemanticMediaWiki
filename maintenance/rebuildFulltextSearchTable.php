@@ -12,7 +12,7 @@ require_once $basePath . '/maintenance/Maintenance.php';
 
 /**
  * @license GNU GPL v2+
- * @since 2.4
+ * @since 2.5
  *
  * @author mwjames
  */
