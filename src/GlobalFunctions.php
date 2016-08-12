@@ -4,7 +4,7 @@ use SMW\CompatibilityMode;
 use SMW\NamespaceManager;
 use SMW\NumberFormatter;
 use SMW\SPARQLStore\SparqlDBConnectionProvider;
-use SMW\processingErrorMsgHandler;
+use SMW\ProcessingErrorMsgHandler;
 
 /**
  * Global functions specified and used by Semantic MediaWiki. In general, it is
