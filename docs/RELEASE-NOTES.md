@@ -8,7 +8,7 @@ THIS IS NOT A RELEASE YET
 
 ## Compatibility changes
 
-*
+* ...
 
 ## New features and enhancements
 
@@ -29,6 +29,7 @@ THIS IS NOT A RELEASE YET
 * #1727 Fixed an issue when property names contain `<` or `>` symbols 
 * #1728 Fixed fatal error in `Special:SearchByProperty` on when the property name contains invalid characters
 * #1731 Fixed possible error in the `SkinAfterContent` hook when a null object is used
+* #1775 Fixed time offset recognition 
 
 ## Internal changes
 
@@ -38,4 +39,4 @@ THIS IS NOT A RELEASE YET
 
 ## Contributors
 
-*
+* ...
