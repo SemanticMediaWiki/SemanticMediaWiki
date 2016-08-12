@@ -133,22 +133,15 @@ class DIPropertyTest extends DataItemTest {
 		);
 	}
 
-	public function testCreatePropertyFromLabelWithExplicitLanguageCode() {
+	/**
+	 * @dataProvider labelProvider
+	 */
+	public function testNewFromLabel( $label, $iw, $lc, $expected ) {
 
-		$property = DIProperty::newFromUserLabel( 'Fecha de modificación', '', 'es' );
-
-		$this->assertEquals(
-			'_MDAT',
-			$property->getKey()
-		);
-	}
-
-	public function testCreatePropertyFromLabelWithAnnotatedLangCodeToTakePrecedence() {
-
-		$property = DIProperty::newFromUserLabel( 'A le type@fr', '', 'es' );
+		$property = DIProperty::newFromUserLabel( $label, $iw, $lc );
 
 		$this->assertEquals(
-			'_TYPE',
+			$expected,
 			$property->getKey()
 		);
 	}
@@ -166,6 +159,26 @@ class DIPropertyTest extends DataItemTest {
 			new DIWikiPage( 'Modification_date', SMW_NS_PROPERTY ),
 			$property->getCanonicalDiWikiPage()
 		);
+	}
+
+	public function labelProvider() {
+
+		$provider['testCreatePropertyFromLabelWithAnnotatedLangCodeToTakePrecedence'] = array(
+			'A le type@fr', '', 'es',
+			'_TYPE'
+		);
+
+		$provider['testCreatePropertyFromLabelWithExplicitLanguageCode'] = array(
+			'Fecha de modificación', '', 'es' ,
+			'_MDAT'
+		);
+
+		$provider['MIMEType'] = array(
+			'MIME_type', '', '',
+			'_MIME'
+		);
+
+		return $provider;
 	}
 
 }
