@@ -33,7 +33,7 @@ class SMWPropertyListValue extends SMWDataValue {
 				$propertyName = $propertyNameParts[1];
 				$propertyNamespace = $wgContLang->getNsText( SMW_NS_PROPERTY );
 				if ( $namespace != $propertyNamespace ) {
-					$this->addError( wfMessage( 'smw_wrong_namespace', $propertyNamespace )->inContentLanguage()->text() );
+					$this->addErrorMsg( array( 'smw_wrong_namespace', $propertyNamespace ) );
 				}
 			}
 
@@ -43,7 +43,7 @@ class SMWPropertyListValue extends SMWDataValue {
 				$diProperty = SMW\DIProperty::newFromUserLabel( $propertyName );
 			} catch ( SMWDataItemException $e ) {
 				$diProperty = new SMW\DIProperty( 'Error' );
-				$this->addError( wfMessage( 'smw_noproperty', $propertyName )->inContentLanguage()->text() );
+				$this->addErrorMsg( array( 'smw_noproperty', $propertyName ) );
 			}
 
 			$this->m_diProperties[] = $diProperty;
@@ -76,7 +76,7 @@ class SMWPropertyListValue extends SMWDataValue {
 				$property = new SMW\DIProperty( $propertyKey );
 			} catch ( SMWDataItemException $e ) {
 				$property = new SMW\DIProperty( 'Error' );
-				$this->addError( wfMessage( 'smw_parseerror' )->inContentLanguage()->text() );
+				$this->addErrorMsg( array( 'smw_parseerror' ) );
 			}
 
 			if ( $property instanceof SMWDIProperty ) {

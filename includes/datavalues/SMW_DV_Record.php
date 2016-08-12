@@ -60,7 +60,7 @@ class SMWRecordValue extends SMWDataValue {
 	protected function parseUserValue( $value ) {
 
 		if ( $value === '' ) {
-			$this->addError( wfMessage( 'smw_novalues' )->text() );
+			$this->addErrorMsg( array( 'smw_novalues' ) );
 			return;
 		}
 
@@ -114,7 +114,7 @@ class SMWRecordValue extends SMWDataValue {
 		}
 
 		if ( $empty && $this->getErrors() === array()  ) {
-			$this->addError( wfMessage( 'smw_novalues' )->text() );
+			$this->addErrorMsg( array( 'smw_novalues' ) );
 		}
 
 		$this->m_dataitem = new SMWDIContainer( $semanticData );
