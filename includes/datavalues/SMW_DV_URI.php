@@ -1,6 +1,7 @@
 <?php
 
 use SMW\UrlEncoder;
+use SMW\Message;
 
 /**
  * @ingroup SMWDataValues
@@ -69,7 +70,7 @@ class SMWURIValue extends SMWDataValue {
 
 		$scheme = $hierpart = $query = $fragment = '';
 		if ( $value === '' ) { // do not accept empty strings
-			$this->addError( wfMessage( 'smw_emptystring' )->inContentLanguage()->text() );
+			$this->addErrorMsg( array( 'smw_emptystring' ) );
 			return;
 		}
 
@@ -92,7 +93,7 @@ class SMWURIValue extends SMWDataValue {
 					$parts[0] = 'http';
 				}
 				// check against blacklist
-				$uri_blacklist = explode( "\n", wfMessage( 'smw_uri_blacklist' )->inContentLanguage()->text() );
+				$uri_blacklist = explode( "\n", Message::get( 'smw_uri_blacklist', Message::TEXT, Message::CONTENT_LANGUAGE ) );
 				foreach ( $uri_blacklist as $uri ) {
 					$uri = trim( $uri );
 					if ( $uri !== '' && $uri == mb_substr( $value, 0, mb_strlen( $uri ) ) ) { // disallowed URI!

@@ -2,6 +2,7 @@
 
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
+use SMW\Localizer;
 
 /**
  * @ingroup SMWDataValues
@@ -173,9 +174,12 @@ class SMWWikiPageValue extends SMWDataValue {
 
 		if ( ( $this->m_fixNamespace != NS_MAIN ) &&
 			( $this->m_fixNamespace != $dataItem->getNamespace() ) ) {
-				global $wgContLang;
-				$this->addError( wfMessage( 'smw_wrong_namespace',
-					$wgContLang->getNsText( $this->m_fixNamespace ) )->inContentLanguage()->text() );
+				$this->addErrorMsg(
+					array(
+						'smw_wrong_namespace',
+						Localizer::getInstance()->getNamespaceTextById( $this->m_fixNamespace )
+					)
+				);
 		}
 
 		return true;
@@ -420,11 +424,12 @@ class SMWWikiPageValue extends SMWDataValue {
 			$this->m_title = $this->m_dataitem->getTitle();
 
 			if ( is_null( $this->m_title ) ) { // should not normally happen, but anyway ...
-				global $wgContLang;
-				$this->addError( wfMessage(
-					'smw_notitle',
-					$wgContLang->getNsText( $this->m_dataitem->getNamespace() ) . ':' . $this->m_dataitem->getDBkey()
-				)->inContentLanguage()->text() );
+				$this->addErrorMsg(
+					array(
+						'smw_notitle',
+						Localizer::getInstance()->getNamespaceTextById( $this->m_dataitem->getNamespace() ) . ':' . $this->m_dataitem->getDBkey()
+					)
+				);
 			}
 		}
 
