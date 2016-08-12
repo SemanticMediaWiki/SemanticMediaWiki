@@ -2,6 +2,8 @@
 
 namespace SMW\MediaWiki\Specials\Ask;
 
+use SMW\ProcessingErrorMsgHandler;
+use SMW\Message;
 use SMWQuery as Query;
 use Html;
 
@@ -26,22 +28,25 @@ class HtmlContentBuilder {
 			return '';
 		}
 
-		if ( count( $query->getErrors() ) == 1 ) {
-			$error = implode( ' ', $query->getErrors() );
-		} else {
+		$errors = array();
 
-			// Filter any duplicate messages
-			$errors = array();
-			foreach ( $query->getErrors() as $key => $value ) {
+		foreach ( ProcessingErrorMsgHandler::normalizeMessages( $query->getErrors() ) as $value ) {
 
-				if ( is_array( $value ) ) {
-					$value = implode( ' ', $value );
-				}
-
-				$errors[md5( $value )] = $value;
+			if ( $value === '' ) {
+				continue;
 			}
 
-			$error = '<li>' . implode( '</li><li>', $errors ) . '</li>';
+			if ( is_array( $value ) ) {
+				$value = implode( " ", $value );
+			}
+
+			$errors[] = $value;
+		}
+
+		if ( count( $errors ) > 1 ) {
+			$error = '<ul><li>' . implode( '</li><li>', $errors ) . '</li></ul>';
+		} else {
+			$error =  implode( ' ', $errors ) ;
 		}
 
 		return Html::rawElement( 'div', array( 'class' => 'smw-callout smw-callout-error' ), $error );

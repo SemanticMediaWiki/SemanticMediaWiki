@@ -311,6 +311,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			}
 
 			$printer = SMWQueryProcessor::getResultPrinter( $this->m_params['format'], SMWQueryProcessor::SPECIAL_PAGE );
+			$printer->setShowErrors( false );
 
 			global $wgRequest;
 
@@ -372,9 +373,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 				$navigation,
 				$duration,
 				$isFromCache
-			) . $result;
-
-			$result .= $htmlContentBuilder->getFormattedErrorString( $queryobj );
+			) . $htmlContentBuilder->getFormattedErrorString( $queryobj ) . $result;
 
 			$this->getOutput()->addHTML( $result );
 		}

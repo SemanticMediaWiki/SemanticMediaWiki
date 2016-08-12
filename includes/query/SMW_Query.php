@@ -3,6 +3,7 @@
 use SMW\DIWikiPage;
 use SMW\HashBuilder;
 use SMW\Query\PrintRequest;
+use SMW\Message;
 
 /**
  * This file contains the class for representing queries in SMW, each
@@ -299,10 +300,10 @@ class SMWQuery {
 			$this->description = $this->description->prune( $maxsize, $maxdepth, $log );
 
 			if ( count( $log ) > 0 ) {
-				$this->errors[] = array(
+				$this->errors[] = Message::encode( array(
 					'smw_querytoolarge',
 					str_replace( '[', '&#x005B;', implode( ', ', $log ) )
-				);
+				) );
 			}
 		}
 	}
