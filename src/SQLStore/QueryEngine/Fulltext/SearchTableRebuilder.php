@@ -33,6 +33,16 @@ class SearchTableRebuilder {
 	private $messageReporter;
 
 	/**
+	 * @var boolean
+	 */
+	private $reportVerbose = false;
+
+	/**
+	 * @var array
+	 */
+	private $skippedTables = array();
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param SearchTableUpdater $searchTableUpdater
@@ -63,6 +73,15 @@ class SearchTableRebuilder {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param boolean $reportVerbose
+	 */
+	public function reportWithVerbosity( $reportVerbose ) {
+		$this->reportVerbose = (bool)$reportVerbose;
+	}
+
+	/**
 	 * @see RebuildFulltextSearchTable::execute
 	 *
 	 * @since 2.5
@@ -72,22 +91,29 @@ class SearchTableRebuilder {
 	public function run() {
 
 		if ( !$this->searchTableUpdater->isEnabled() ) {
-			return $this->messageReporter->reportMessage( "\n" . "FullText search indexing is not enabled or supported." ."\n\n" );
+			return $this->reportMessage( "\n" . "FullText search indexing is not enabled or supported." ."\n\n" );
 		}
 
 		$this->searchTableUpdater->flushTable();
 
-		$this->messageReporter->reportMessage( "\n" . "The index table was purged." ."\n" );
-		$this->messageReporter->reportMessage( "\n" . "Rebuilding the text index from (rows finished/expected):" ."\n\n" );
+		$this->reportMessage( "\n" . "The index table was purged." ."\n" );
+		$this->reportMessage( "\n" . "Rebuilding the text index from (rows finished/expected):" ."\n\n" );
 
 		foreach ( $this->searchTableUpdater->getPropertyTables() as $proptable ) {
 
 			// Only care for Blob/Uri tables
 			if ( $proptable->getDiType() !== DataItem::TYPE_BLOB && $proptable->getDiType() !== DataItem::TYPE_URI ) {
+				$this->skippedTables[$proptable->getName()] = 'Not a blob or URI table type.';
 				continue;
 			}
 
 			$this->doRebuildOnPropertyTable( $proptable );
+		}
+
+		$this->reportMessage( "\n" . "Table(s) not used for indexing:" ."\n\n", $this->reportVerbose );
+
+		foreach ( $this->skippedTables as $tableName => $reason ) {
+			$this->reportMessage( "\r". sprintf( "%-36s%s", "- {$tableName}", $reason . "\n" ), $this->reportVerbose );
 		}
 
 		return true;
@@ -116,7 +142,7 @@ class SearchTableRebuilder {
 			);
 
 			if ( $searchTable->isExemptedPropertyById( $pid ) ) {
-				return;
+				return $this->skippedTables[$table] = 'Fixed property table that belongs to the ' . $proptable->getFixedProperty() . ' exempted property.';
 			}
 		}
 
@@ -128,7 +154,7 @@ class SearchTableRebuilder {
 		);
 
 		if ( $rows === false || $rows === null ) {
-			return;
+			return $this->skippedTables[$table] = 'Empty table.';
 		}
 
 		$this->doRebuildFromRows( $searchTable, $table, $pid, $rows );
@@ -138,6 +164,10 @@ class SearchTableRebuilder {
 
 		$i = 0;
 		$expected = $rows->numRows();
+
+		if ( $expected == 0 ) {
+			return $this->skippedTables[$table] = 'Empty table.';
+		}
 
 		foreach ( $rows as $row ) {
 			$i++;
@@ -156,7 +186,7 @@ class SearchTableRebuilder {
 				continue;
 			}
 
-			$this->messageReporter->reportMessage(
+			$this->reportMessage(
 				"\r". sprintf( "%-35s%s", "- {$table}", sprintf( "%4.0f%% (%s/%s)",( $i / $expected ) * 100, $i, $expected ) )
 			);
 
@@ -170,7 +200,13 @@ class SearchTableRebuilder {
 			$this->searchTableUpdater->update( $sid, $pid, trim( $text ) . ' ' . trim( $indexableText ) );
 		}
 
-		$this->messageReporter->reportMessage( "\n" );
+		$this->reportMessage( "\n" );
+	}
+
+	private function reportMessage( $message, $verbose = true ) {
+		if ( $verbose ) {
+			$this->messageReporter->reportMessage( $message );
+		}
 	}
 
 }

@@ -21,6 +21,8 @@ class RebuildFulltextSearchTable extends \Maintenance {
 	public function __construct() {
 		$this->mDescription = 'Rebuild the fulltext search index (only works with SQLStore)';
 		$this->addOption( 'report-runtime', 'Report execution time and memory usage', false );
+		$this->addOption( 'v', 'Show additional (verbose) information about the progress', false );
+		$this->addOption( 'quick', 'Suppress abort operation', false );
 
 		parent::__construct();
 	}
@@ -30,7 +32,7 @@ class RebuildFulltextSearchTable extends \Maintenance {
 	 */
 	public function execute() {
 
-		if ( !defined( 'SMW_VERSION' ) ) {
+		if ( !defined( 'SMW_VERSION' ) || !$GLOBALS['smwgSemanticsEnabled'] ) {
 			$this->output( "You need to have SMW enabled in order to use this maintenance script!\n\n" );
 			exit;
 		}
@@ -43,6 +45,10 @@ class RebuildFulltextSearchTable extends \Maintenance {
 		// Only the SQLStore is supported
 		$searchTableRebuilder = $fulltextSearchTableFactory->newSearchTableRebuilder(
 			$applicationFactory->getStore( '\SMW\SQLStore\SQLStore' )
+		);
+
+		$searchTableRebuilder->reportWithVerbosity(
+			$this->hasOption( 'v' )
 		);
 
 		$this->reportMessage(
@@ -82,8 +88,10 @@ class RebuildFulltextSearchTable extends \Maintenance {
 			"dependencies on table content and selected options.\n"
 		);
 
-		$this->reportMessage( "\n" . 'Abort the rebuild with control-c in the next five seconds ...  ' );
-		wfCountDown( 5 );
+		if ( !$this->hasOption( 'quick' ) ) {
+			$this->reportMessage( "\n" . 'Abort the rebuild with control-c in the next five seconds ...  ' );
+			wfCountDown( 5 );
+		}
 
 		$maintenanceHelper = $maintenanceFactory->newMaintenanceHelper();
 		$maintenanceHelper->initRuntimeValues();

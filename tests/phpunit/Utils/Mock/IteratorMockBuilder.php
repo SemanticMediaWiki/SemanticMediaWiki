@@ -6,10 +6,7 @@ use RuntimeException;
 
 /**
  * Convenience mock builder for Iterator classes
- *
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 2.0
@@ -20,6 +17,7 @@ class IteratorMockBuilder extends \PHPUnit_Framework_TestCase {
 
 	private $iteratorClass;
 	private $items = array();
+	private $methods = array();
 	private $counter = 0;
 
 	/**
@@ -47,6 +45,34 @@ class IteratorMockBuilder extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * @since  2.5
+	 *
+	 * @param array $methods
+	 *
+	 * @return IteratorMockBuilder
+	 */
+	public function setMethods( array $methods ) {
+		$this->methods = $methods;
+		return $this;
+	}
+
+	/**
+	 * @note When other methods called before the actual current/next then
+	 * set the counter to ensure the starting point matches the expected
+	 * InvokeCount.
+	 *
+	 * @since  2.5
+	 *
+	 * @param integer $num
+	 *
+	 * @return IteratorMockBuilder
+	 */
+	public function incrementInvokedCounterBy( $num ) {
+		$this->counter += $num;
+		return $this;
+	}
+
+	/**
 	 * @since  2.0
 	 *
 	 * @return PHPUnit_Framework_MockObject_MockObject
@@ -56,13 +82,12 @@ class IteratorMockBuilder extends \PHPUnit_Framework_TestCase {
 
 		$instance = $this->getMockBuilder( $this->iteratorClass )
 			->disableOriginalConstructor()
+			->setMethods( $this->methods )
 			->getMock();
 
 		if ( !$instance instanceof \Iterator ) {
 			throw new RuntimeException( "Instance is not an Iterator" );
 		}
-
-		$this->counter = 0;
 
 		$instance->expects( $this->at( $this->counter++ ) )
 			->method( 'rewind' );
