@@ -271,7 +271,6 @@ class ParserData {
 	 */
 	public function addDataValue( DataValue $dataValue ) {
 		$this->semanticData->addDataValue( $dataValue );
-		$this->addError( $this->semanticData->getErrors() );
 	}
 
 	/**

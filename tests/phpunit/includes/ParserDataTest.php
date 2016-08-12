@@ -214,7 +214,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		if ( $errorCount > 0 ) {
-			return $this->assertCount( $errorCount, $instance->getErrors() );
+			return $this->assertCount( $errorCount, $instance->getSemanticData()->getErrors() );
 		}
 
 		$expected = array(
