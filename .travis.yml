@@ -26,22 +26,34 @@ matrix:
     - env: DB=mysql; MW=REL1_25; TYPE=relbuild
       php: 5.5
   allow_failures:
+    # Takes at least ~35 min to complete therefore allow it run without delaying
+    # the status update
     - env: DB=mysql; MW=1.27.0; TYPE=coverage; PHPUNIT=4.8.*
+    # Can fail when pushed/used with newly Composer dependencies
     - env: DB=mysql; MW=REL1_25; TYPE=relbuild
+    # Can fail when pushed/used with newly Composer dependencies
     - env: DB=sqlite; MW=REL1_26; TYPE=composer; PHPUNIT=4.8.*
+    # This is MW master, you never know what WMF developers have put in for easter eggs
     - env: DB=sqlite; MW=master; PHPUNIT=4.8.*
+    # May take a moment and is non-critical therefore allow it to run without delaying the status
     - env: DB=mysql; MW=REL1_25; TYPE=benchmark; PHPUNIT=4.8.*
     - env: DB=mysql; MW=REL1_25; SESAME=2.8.7
 
-# Travis support wrote (Tomcat + Java):
+# Dec 16, 2015 (GCE switch): Travis support wrote (Tomcat + Java):
 # bug in the JDK: http://bugs.java.com/bugdatabase/view_bug.do?bug_id=7089443.
 # The hostname for the precise-gce platform is longer than 64 characters on the
 # VM your job is running on
+#- sudo hostname "$(hostname | cut -c1-63)"
+#- sed -e "s/^\\(127\\.0\\.0\\.1.*\\)/\\1 $(hostname | cut -c1-63)/" /etc/hosts | sudo tee /etc/hosts
+#- cat /etc/hosts # optionally check the content *after*
+
+# Aug 12, 2016: (incident:2p40l49r3yxd) Travis support asks to add `sudo sysctl ...`
+# After investigation, removed the lines from Dec 16, 2015 as it emptied the hosts file
 before_install:
+  - sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
+  - sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
+  - ip addr # for confirmation. can be skipped
   - cat /etc/hosts # optionally check the content *before*
-  - sudo hostname "$(hostname | cut -c1-63)"
-  - sed -e "s/^\\(127\\.0\\.0\\.1.*\\)/\\1 $(hostname | cut -c1-63)/" /etc/hosts | sudo tee /etc/hosts
-  - cat /etc/hosts # optionally check the content *after*
 
 install:
   - travis_retry composer self-update
