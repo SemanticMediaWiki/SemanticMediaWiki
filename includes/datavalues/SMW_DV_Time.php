@@ -150,10 +150,9 @@ class SMWTimeValue extends SMWDataValue {
 
 		if ( $this->isInterpretableAsYearOnly( $value ) ) {
 			$this->m_dataitem = new SMWDITime( $this->getCalendarModel( null, $value, null, null ), $value );
-		} elseif ( strlen( $value ) != 4 && wfTimestamp( TS_MW, $value ) !== false ) {
+		} elseif ( $this->isInterpretableAsTimestamp( $value ) ) {
 			$this->m_dataitem = SMWDITime::newFromTimestamp( $value );
-		}
-		elseif ( $this->parseDateString( $value, $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $microseconds, $timeoffset, $timezone ) ) {
+		} elseif ( $this->parseDateString( $value, $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $microseconds, $timeoffset, $timezone ) ) {
 			if ( ( $calendarmodel === false ) && ( $era === false ) && ( count( $datecomponents ) == 1 ) && ( intval( end( $datecomponents ) ) >= 100000 ) ) {
 				$calendarmodel = 'JD'; // default to JD input if a single number was given as the date
 			}
@@ -268,9 +267,13 @@ class SMWTimeValue extends SMWDataValue {
 		// 		debug_zval_dump( $unclearparts );
 
 		// Abort if we found unclear or over-specific information:
-		if ( count( $unclearparts ) != 0 ||
-		     ( $timezoneoffset !== false && $timeoffset !== false ) ) {
-			$this->addError( wfMessage( 'smw_nodatetime', $this->m_wikivalue )->inContentLanguage()->text() );
+		if ( count( $unclearparts ) != 0 ) {
+			$this->addErrorMsg( array( 'smw-datavalue-time-invalid-values', $this->m_wikivalue, implode( ', ', $unclearparts ) ) );
+			return false;
+		}
+
+		if ( ( $timezoneoffset !== false && $timeoffset !== false ) ) {
+			$this->addErrorMsg( array( 'smw-datavalue-time-invalid-offset-zone-usage', $this->m_wikivalue ) );
 			return false;
 		}
 
@@ -278,7 +281,7 @@ class SMWTimeValue extends SMWDataValue {
 		// Check if the a.m. and p.m. information is meaningful
 
 		if ( $ampm !== false && ( $hours > 12 || $hours == 0 ) ) { // Note: the == 0 check subsumes $hours===false
-			$this->addError( wfMessage( 'smw_nodatetime', $this->m_wikivalue )->inContentLanguage()->text() );
+			$this->addErrorMsg( array( 'smw-datavalue-time-invalid-ampm', $this->m_wikivalue, $hours ) );
 			return false;
 		} elseif ( $ampm == 'am' && $hours == 12 ) {
 			$hours = 0;
@@ -440,10 +443,25 @@ class SMWTimeValue extends SMWDataValue {
 				$propercomponents[] = $numvalue;
 			}
 		}
+
 		if ( ( $error ) || ( $justfounddash ) || ( count( $propercomponents ) == 0 ) || ( count( $propercomponents ) > 3 ) ) {
-			$this->addError( wfMessage( 'smw_nodatetime', $this->m_wikivalue )->inContentLanguage()->text() );
+
+			$msgKey = 'smw-datavalue-time-invalid-date-components';
+
+			if ( $justfounddash ) {
+				$msgKey .= '-dash';
+			} elseif ( count( $propercomponents ) == 0 ) {
+				$msgKey .= '-empty';
+			} elseif ( count( $propercomponents ) > 3 ) {
+				$msgKey .= '-three';
+			} else{
+				$msgKey .= '-common';
+			}
+
+			$this->addErrorMsg( array( $msgKey, $this->m_wikivalue ) );
 			return false;
 		}
+
 		// Now use the bitvector to find the preferred interpretation of the date components:
 		$dateformats = $smwgContLang->getDateFormats();
 		$date = array( 'y' => false, 'm' => false, 'd' => false );
@@ -791,6 +809,11 @@ class SMWTimeValue extends SMWDataValue {
 
 	private function isInterpretableAsYearOnly( $value ) {
 		return strpos( $value, ' ' ) === false && is_numeric( strval( $value ) ) && ( strval( $value ) < 0 || strlen( $value ) < 6 );
+	}
+
+	private function isInterpretableAsTimestamp( $value ) {
+		// 1200-11-02T12:03:25 or 20120320055913
+		return ( ( strlen( $value ) > 4 && substr( $value, 10, 1 ) === 'T' ) || strlen( $value ) == 14 ) && wfTimestamp( TS_MW, $value ) !== false;
 	}
 
 }
