@@ -5,6 +5,7 @@ namespace SMW\Query\Parser;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Message;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
@@ -95,12 +96,7 @@ class DescriptionProcessor {
 	 * @param string $msgKey
 	 */
 	public function addErrorWithMsgKey( $msgKey /*...*/ ) {
-
-		$params = func_get_args();
-		array_shift( $params );
-
-		$message = new \Message( $msgKey, $params );
-		$this->addError( str_replace( array( '[' ), array( '&#x005B;' ), $message->inContentLanguage()->text() ) );
+		$this->errors[] = Message::encode( func_get_args() );
 	}
 
 	/**

@@ -9,6 +9,7 @@ use SMW\DIWikiPage;
 use SMW\HashBuilder;
 use SMW\SQLStore\ValueLookupStore;
 use SMW\Store;
+use SMW\Localizer;
 use SMWDataItem as DataItem;
 use SMWRequestOptions as RequestOptions;
 
@@ -127,12 +128,16 @@ class CachedValueLookupStore implements ValueLookupStore {
 
 		$container = $this->blobStore->read( $sid );
 
+		// Make sure that when switching user languages, user labels etc.
+		// are appropriately generated
+		$userLang = Localizer::getInstance()->getUserLanguage()->getCode();
+
 		$sdid = HashBuilder::createHashIdForContent(
 			array(
 				(array)$filter,
 				self::VERSION
 			),
-			'sd:'
+			'sd:'. $userLang . ':'
 		);
 
 		if ( $container->has( $sdid ) ) {

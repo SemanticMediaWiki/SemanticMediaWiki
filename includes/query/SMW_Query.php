@@ -299,10 +299,10 @@ class SMWQuery {
 			$this->description = $this->description->prune( $maxsize, $maxdepth, $log );
 
 			if ( count( $log ) > 0 ) {
-				$this->errors[] = wfMessage(
+				$this->errors[] = array(
 					'smw_querytoolarge',
 					str_replace( '[', '&#x005B;', implode( ', ', $log ) )
-				)->inContentLanguage()->text();
+				);
 			}
 		}
 	}

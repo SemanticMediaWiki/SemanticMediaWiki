@@ -19,8 +19,8 @@
 			"store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
-					"propertyCount": 4,
-					"propertyKeys": [ "_MDAT", "_SKEY", "_ASK", "_ERRC" ]
+					"propertyCount": 3,
+					"propertyKeys": [ "_MDAT", "_SKEY", "_ERRC" ]
 				}
 			},
 			"expected-output": {

@@ -89,7 +89,7 @@ class DataValueFactory {
 		if ( !$dataTypeRegistry->hasDataTypeClassById( $typeId ) ) {
 			return new ErrorValue(
 				$typeId,
-				wfMessage( 'smw_unknowntype', $typeId )->inContentLanguage()->text(),
+				array( 'smw_unknowntype', $typeId ),
 				$valueString,
 				$caption
 			);
@@ -202,7 +202,7 @@ class DataValueFactory {
 		if ( !$propertyDV->canUse() ) {
 			$dataValue = new ErrorValue(
 				$propertyDV->getPropertyTypeID(),
-				wfMessage( 'smw-datavalue-property-restricted-use', $propertyName )->inContentLanguage()->text(),
+				array( 'smw-datavalue-property-restricted-use', $propertyName ),
 				$valueString,
 				$caption
 			);
@@ -230,7 +230,7 @@ class DataValueFactory {
 
 		} elseif ( $propertyDI instanceof DIProperty && $propertyDI->isInverse() ) {
 			$dataValue = new ErrorValue( $propertyDV->getPropertyTypeID(),
-				wfMessage( 'smw_noinvannot' )->inContentLanguage()->text(),
+				array( 'smw_noinvannot' ),
 				$valueString,
 				$caption
 			);
@@ -239,7 +239,7 @@ class DataValueFactory {
 		} else {
 			$dataValue = new ErrorValue(
 				$propertyDV->getPropertyTypeID(),
-				wfMessage( 'smw-property-name-invalid', $propertyName )->inContentLanguage()->text(),
+				array( 'smw-property-name-invalid', $propertyName ),
 				$valueString,
 				$caption
 			);
@@ -250,7 +250,7 @@ class DataValueFactory {
 		if ( $dataValue->isValid() && !$dataValue->canUse() ) {
 			$dataValue = new ErrorValue(
 				$propertyDV->getPropertyTypeID(),
-				wfMessage( 'smw-datavalue-restricted-use', implode( ',', $dataValue->getErrors() ) )->inContentLanguage()->text(),
+				array( 'smw-datavalue-restricted-use', implode( ',', $dataValue->getErrors() ) ),
 				$valueString,
 				$caption
 			);
@@ -271,6 +271,20 @@ class DataValueFactory {
 	 */
 	public function newPropertyValueByLabel( $propertyLabel, DIWikiPage $contextPage = null ) {
 		return $this->newDataValueByType( '__pro', $propertyLabel, false, null, $contextPage );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $typeid
+	 * @param string|array $errormsg
+	 * @param string $uservalue
+	 * @param string $caption
+	 *
+	 * @return ErrorValue
+	 */
+	public function newErrorValue( $typeid, $errormsg = '', $uservalue = '', $caption = false ) {
+		return new ErrorValue( $typeid, $errormsg, $uservalue, $caption );
 	}
 
 /// Deprecated methods

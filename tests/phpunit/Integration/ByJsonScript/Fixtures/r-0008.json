@@ -55,7 +55,7 @@
 					"swivt:wikiNamespace  \"102\"^^xsd:integer ;",
 					"swivt:wikiPageSortKey  \"Has area without unit\" ;",
 					"swivt:type  <http://semantic-mediawiki.org/swivt/1.0#_qty> .",
-					"<http://example.org/id/Example/R0008/1-23_ERRadfff161e75b2273a8190dbe8c78dbda>",
+					"<http://example.org/id/Example/R0008/1-23_ERR3b4d92de525df0eeb65e83ea06e2a5d4>",
 					"swivt:masterPage  <http://example.org/id/Example/R0008/1> ;",
 					"property:Has_improper_value_for  property:Has_area_without_unit ;"
 				]

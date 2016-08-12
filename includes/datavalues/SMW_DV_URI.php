@@ -96,7 +96,7 @@ class SMWURIValue extends SMWDataValue {
 				foreach ( $uri_blacklist as $uri ) {
 					$uri = trim( $uri );
 					if ( $uri !== '' && $uri == mb_substr( $value, 0, mb_strlen( $uri ) ) ) { // disallowed URI!
-						$this->addError( wfMessage( 'smw_baduri', $value )->inContentLanguage()->text() );
+						$this->addErrorMsg( array( 'smw_baduri', $value ) );
 						return;
 					}
 				}
@@ -145,7 +145,7 @@ class SMWURIValue extends SMWDataValue {
 				if ( !$this->getOptionValueFor( 'description.processor' ) && ( ( strlen( preg_replace( '/[^0-9]/', '', $hierpart ) ) < 6 ) ||
 					( preg_match( '<[-+./][-./]>', $hierpart ) ) ||
 					( !self::isValidTelURI( 'tel:' . $hierpart ) ) ) ) { /// TODO: introduce error-message for "bad" phone number
-					$this->addError( wfMessage( 'smw_baduri', $this->m_wikitext )->inContentLanguage()->text() );
+					$this->addErrorMsg( array( 'smw_baduri', $this->m_wikitext ) );
 					return;
 				}
 				break;
@@ -158,7 +158,7 @@ class SMWURIValue extends SMWDataValue {
 
 				if ( !$this->getOptionValueFor( 'description.processor' ) && !Sanitizer::validateEmail( $value ) ) {
 					/// TODO: introduce error-message for "bad" email
-					$this->addError( wfMessage( 'smw_baduri', $value )->inContentLanguage()->text() );
+					$this->addErrorMsg( array( 'smw_baduri', $value ) );
 					return;
 				}
 				$hierpart = str_replace( array( '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ), array( ':', '/', '#', '@', '?', '=', '&', '%' ), rawurlencode( $value ) );
@@ -168,7 +168,7 @@ class SMWURIValue extends SMWDataValue {
 		try {
 			$this->m_dataitem = new SMWDIUri( $scheme, $hierpart, $query, $fragment, $this->m_typeid );
 		} catch ( SMWDataItemException $e ) {
-			$this->addError( wfMessage( 'smw_baduri', $this->m_wikitext )->inContentLanguage()->text() );
+			$this->addErrorMsg( array( 'smw_baduri', $this->m_wikitext ) );
 		}
 	}
 

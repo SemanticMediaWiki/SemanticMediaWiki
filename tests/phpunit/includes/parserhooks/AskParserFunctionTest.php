@@ -293,8 +293,8 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expected = array(
-			'propertyCount'  => 2,
-			'propertyKeys'   => array( '_ASK', '_ERRC' ),
+			'propertyCount'  => 1,
+			'propertyKeys'   => array( '_ERRC' ),
 		);
 
 		$parserData = $this->applicationFactory->newParserData(

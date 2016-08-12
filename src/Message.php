@@ -10,7 +10,7 @@ use Language;
  *
  * Object agnostic handler class that encapsulates a foreign Message object
  * (e.g MW's Message class). It is expected that a registered handler returns a
- * simple string respresentation for the parameters, type, and language given.
+ * simple string representation for the parameters, type, and language given.
  *
  * @license GNU GPL v2+
  * @since 2.4
@@ -85,6 +85,78 @@ class Message {
 		}
 
 		return self::$messageCache;
+	}
+
+	/**
+	 * Encodes a message into a JSON representation that can transferred,
+	 * transformed, and stored while allowing to add an infinite amount of
+	 * arguments.
+	 *
+	 * '[2,"Foo", "Bar"]' => Preferred output type, Message ID, Argument $1 ... $
+	 *
+	 * @since 2.5
+	 *
+	 * @param string|array $parameters
+	 * @param integer|null $type
+	 *
+	 * @return string
+	 */
+	public static function encode( $message, $type = null ) {
+
+		if ( is_string( $message ) && json_decode( $message ) && json_last_error() === JSON_ERROR_NONE ) {
+			return $message;
+		}
+
+		if ( $type === null ) {
+			$type = Message::TEXT;
+		}
+
+		return json_encode( array_merge( (array)$type, (array)$message ) );
+	}
+
+	/**
+	 * @FIXME Needs to be MW agnostic !
+	 *
+	 * @since 2.5
+	 *
+	 * @param string $messageId
+	 *
+	 * @return boolean
+	 */
+	public static function exists( $message ) {
+		return wfMessage( $message )->exists();
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $json
+	 * @param integer|null $type
+	 * @param integer|null $language
+	 *
+	 * @return string|boolean
+	 */
+	public static function decode( $message, $type = null, $language = null ) {
+
+		$message = json_decode( $message );
+		$asType = null;
+
+		if ( json_last_error() !== JSON_ERROR_NONE || $message === '' || $message === null ) {
+			return false;
+		}
+
+		// If the first element is numeric then its signals the expected message
+		// formatter type
+		if ( isset( $message[0] ) && is_numeric( $message[0] ) ) {
+			$asType = array_shift( $message );
+		}
+
+		// Is it a msgKey or a simple text?
+		if ( isset( $message[0] ) && !self::exists( $message[0] ) ) {
+			return $message[0];
+		}
+
+		return self::get( $message, $type !== null ? $type : $asType, $language );
 	}
 
 	/**

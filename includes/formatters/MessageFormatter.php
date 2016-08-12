@@ -102,6 +102,8 @@ class MessageFormatter {
 	 */
 	public function addFromArray( array $messages ) {
 
+		$messages = ProcessingErrorMsgHandler::normalizeMessages( $messages );
+
 		foreach ( $messages as $message ) {
 			if ( is_string( $message ) ) {
 				$this->messages[md5( $message )] = $message;

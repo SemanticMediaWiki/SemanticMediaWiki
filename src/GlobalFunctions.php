@@ -4,6 +4,7 @@ use SMW\CompatibilityMode;
 use SMW\NamespaceManager;
 use SMW\NumberFormatter;
 use SMW\SPARQLStore\SparqlDBConnectionProvider;
+use SMW\processingErrorMsgHandler;
 
 /**
  * Global functions specified and used by Semantic MediaWiki. In general, it is
@@ -103,6 +104,9 @@ function smwfNumberFormat( $value, $decplaces = 3 ) {
  * @return string
  */
 function smwfEncodeMessages( array $messages, $type = 'warning', $seperator = ' <!--br-->', $escape = true ) {
+
+	$messages = ProcessingErrorMsgHandler::normalizeMessages( $messages );
+
 	if (  $messages !== array() ) {
 
 		if ( $escape ) {
@@ -119,6 +123,12 @@ function smwfEncodeMessages( array $messages, $type = 'warning', $seperator = ' 
 
 			$errorList = '<ul>' . implode( $seperator, $messages ) . '</ul>';
 		}
+
+		$errorList = str_replace(
+			array( '&amp;', '&lt;', '&gt;', '&#160;', '<nowiki>', '</nowiki>', '[',  ),
+			array( '&', '<', '>', ' ', '', '', '&#x005B;' ),
+			$errorList
+		);
 
 		// Type will be converted internally
 		$highlighter = SMW\Highlighter::factory( $type );

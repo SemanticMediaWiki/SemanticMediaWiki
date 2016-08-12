@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation for use of restricted properties (#914, en)",
+	"description": "Test in-text annotation for use of restricted properties (#914, `wgContLang=en`, `wgLang=en`)",
 	"properties": [
 		{
 			"name": "Has date",
@@ -91,6 +91,7 @@
 	],
 	"settings": {
 		"wgContLang": "en",
+		"wgLang": "en",
 		"smwgPageSpecialProperties": [ "_MDAT" ]
 	},
 	"meta": {

@@ -133,8 +133,8 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$stringValue = new StringValue( '_txt' );
 
-		$stringValue->setOption( 'user.language', 'en' );
-		$stringValue->setOption( 'content.language', 'en' );
+		$stringValue->setOption( StringValue::OPT_USER_LANGUAGE, 'en' );
+		$stringValue->setOption( StringValue::OPT_CONTENT_LANGUAGE, 'en' );
 
 		$stringValue->setProperty(
 			$this->dataItemFactory->newDIProperty( 'Foo' )
@@ -145,7 +145,7 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new InfoLinksProvider( $stringValue );
 
 		$this->assertContains(
-			'<div class="smwttcontent">[SERVICELINK-B SERVICELINK-A]</div>',
+			'<div class="smwttcontent">&#x005B;SERVICELINK-B SERVICELINK-A]</div>',
 			$instance->getInfolinkText( SMW_OUTPUT_WIKI )
 		);
 

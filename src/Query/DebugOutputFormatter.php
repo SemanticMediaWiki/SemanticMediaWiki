@@ -3,6 +3,7 @@
 namespace SMW\Query;
 
 use SMWQuery as Query;
+use SMW\ProcessingErrorMsgHandler;
 
 /**
  * @license GNU GPL v2+
@@ -35,7 +36,11 @@ class DebugOutputFormatter {
 						'Query-Depth:' . $query->getDescription()->getDepth();
 			$errors = '';
 
-			foreach ( $query->getErrors() as $error ) {
+			$queryErrors = ProcessingErrorMsgHandler::normalizeMessages(
+				$query->getErrors()
+			);
+
+			foreach ( $queryErrors as $error ) {
 				$errors .= $error . '<br />';
 			}
 

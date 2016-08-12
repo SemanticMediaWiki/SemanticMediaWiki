@@ -25,11 +25,11 @@
 	],
 	"parser-testcases": [
 		{
-			"about": "#0 page content language FR and . do not match",
+			"about": "#0 page content language FR and . do not match, uses `en` as display language",
 			"subject": "Example/P0425/1",
 			"expected-output": {
 				"to-contain": [
-					"<div class=\"smwttcontent\">&quot;.928K&quot; no está declarada como una unidad de medida válida para esta propiedad.</div>"
+					"<div class=\"smwttcontent\">&quot;.928K&quot; is not declared as a valid unit of measurement for this property.</div>"
 				]
 			}
 		},
