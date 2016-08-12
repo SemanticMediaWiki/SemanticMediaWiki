@@ -5,6 +5,7 @@ namespace SMW\Test;
 use SMW\DataItemFactory;
 use SMW\Settings;
 use SMW\UnusedPropertiesQueryPage;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\UnusedPropertiesQueryPage
@@ -21,9 +22,12 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 	private $skin;
 	private $settings;
 	private $dataItemFactory;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
+
+		$this->testEnvironment = new TestEnvironment();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -33,9 +37,32 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$container = $this->getMockBuilder( '\Onoi\BlobStore\Container' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$blobStore = $this->getMockBuilder( '\Onoi\BlobStore\BlobStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$blobStore->expects( $this->any() )
+			->method( 'read' )
+			->will( $this->returnValue( $container ) );
+
+		$cachedPropertyValuesPrefetcher = $this->getMockBuilder( '\SMW\CachedPropertyValuesPrefetcher' )
+			->setConstructorArgs( array( $this->store, $blobStore ) )
+			->setMethods( null )
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'CachedPropertyValuesPrefetcher', $cachedPropertyValuesPrefetcher );
+
 		$this->settings = Settings::newFromArray( array() );
 
 		$this->dataItemFactory = new DataItemFactory();
+	}
+
+	protected function tearDown() {
+		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
