@@ -125,11 +125,17 @@ class PropertyTableIdReferenceDisposer {
 			__METHOD__
 		);
 
-		$this->connection->delete(
-			SQLStore::FT_SEARCH_TABLE,
-			array( 's_id' => $id ),
-			__METHOD__
-		);
+		// Avoid Query: DELETE FROM `smw_ft_search` WHERE s_id = '92575'
+		// Error: 126 Incorrect key file for table '.\mw@002d25@002d01\smw_ft_search.MYI'; ...
+		try {
+			$this->connection->delete(
+				SQLStore::FT_SEARCH_TABLE,
+				array( 's_id' => $id ),
+				__METHOD__
+			);
+		} catch ( \DBError $e ) {
+			wfDebugLog( 'smw', __METHOD__ . ' reported: ' . $e->getMessage() );
+		}
 	}
 
 }
