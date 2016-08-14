@@ -19,6 +19,7 @@ THIS IS NOT A RELEASE YET
 * #1756 Extended the display characteristics of `Special:Browse` to load content via the API back-end (legacy display can be retained by setting [`$smwgBrowseByApi`](https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi) to `false`) 
 * #1761 Added content language context to recognize localized property type `[[Has type ...]]` annotations
 * #1768 Improved general error display to be more user context friendly
+* #1779 Added [`Special:ProcessingErrorList`](https://www.semantic-mediawiki.org/wiki/Help:Special:ProcessingErrorList) 
 
 ## Bug fixes
 
@@ -36,6 +37,7 @@ THIS IS NOT A RELEASE YET
 * #1511 Removed I18n shim originally required for MediaWiki < 1.23
 * #1726 Allows `QueryDependencyLinksStore` to execute `getDependencyListByLateRetrieval` even in cases of an intial empty list
 * #1750 Added `RdbmsTableBuilder` to replace `SMWSQLHelpers`
+* #1780 Added `ResourceBuilder` and `DispatchingResourceBuilder`
 
 ## Contributors
 
