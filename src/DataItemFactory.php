@@ -100,4 +100,19 @@ class DataItemFactory {
 		return new DIBoolean( $boolean );
 	}
 
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $concept
+	 * @param string $docu
+	 * @param integer $queryfeatures
+	 * @param integer $size
+	 * @param integer $depth
+	 *
+	 * @return DIConcept
+	 */
+	public function newDIConcept( $concept, $docu = '', $queryfeatures = 0, $size = 0, $depth = 0 ) {
+		return new DIConcept( $concept, $docu, $queryfeatures, $size, $depth );
+	}
+
 }

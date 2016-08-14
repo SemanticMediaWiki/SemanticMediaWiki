@@ -8,8 +8,7 @@
 		},
 		{
 			"name": "Example/R0010/2",
-			"contentlanguage": "fr",
-			"contents": "[[Booléen::false]]"
+			"contents": "[[Date::2034]]"
 		},
 		{
 			"name": "Example/R0010/Q1",
@@ -35,6 +34,24 @@
 				"not-contain":[
 					"Sp%C3%A9cial:ExportRDF/Example/R0010/1",
 					"<property:Booleano rdf:datatype=\"http://www.w3.org/2001/XMLSchema#boolean\">true</property:Booleano>"
+				]
+			}
+		},
+		{
+			"about": "#1",
+			"exportcontroller" : {
+				"print-pages": [ "Example/R0010/2" ],
+				"parameters" : {
+					"backlinks" : true,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"Special:ExportRDF/Example/R0010/2",
+					"<property:Date rdf:datatype=\"http://www.w3.org/2001/XMLSchema#gYear\">2034</property:Date>",
+					"<property:Date-23aux rdf:datatype=\"http://www.w3.org/2001/XMLSchema#double\">2463963.5</property:Date-23aux>"
 				]
 			}
 		},

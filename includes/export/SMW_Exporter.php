@@ -12,6 +12,7 @@ use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Escaper;
+use SMW\Exporter\DispatchingResourceBuilder;
 
 /**
  * SMWExporter is a class for converting internal page-based data (SMWSemanticData) into
@@ -44,6 +45,11 @@ class SMWExporter {
 	 */
 	private static $dataItemByExpElementMatchFinder = null;
 
+	/**
+	 * @var DispatchingResourceBuilder
+	 */
+	private static $dispatchingResourceBuilder = null;
+
 	static protected $m_exporturl = false;
 	static protected $m_ent_wiki = false;
 	static protected $m_ent_property = false;
@@ -70,6 +76,8 @@ class SMWExporter {
 			// FIXME with 3.x
 			// There is no better way of getting around the static use without BC
 			self::$dataItemToElementEncoder = new DataItemToElementEncoder();
+
+			self::$dispatchingResourceBuilder = new DispatchingResourceBuilder();
 
 			self::$dataItemToExpResourceEncoder = new DataItemToExpResourceEncoder(
 				$applicationFactory->getStore()
@@ -317,20 +325,11 @@ class SMWExporter {
 	 */
 	static public function addPropertyValues( SMWDIProperty $property, array $dataItems, SMWExpData &$expData ) {
 
+		$resourceBuilder = self::$dispatchingResourceBuilder->findResourceBuilder( $property );
+
 		if ( $property->isUserDefined() ) {
-			$pe = self::getResourceElementForProperty( $property );
-			$peHelper = self::getResourceElementForProperty( $property, true );
-
 			foreach ( $dataItems as $dataItem ) {
-				$ed = self::getDataItemExpElement( $dataItem );
-				if ( !is_null( $ed ) ) {
-					$expData->addPropertyObjectValue( $pe, $ed );
-				}
-
-				$edHelper = self::getDataItemHelperExpElement( $dataItem );
-				if ( !is_null( $edHelper ) ) {
-					$expData->addPropertyObjectValue( $peHelper, $edHelper );
-				}
+				$resourceBuilder->addResourceValue( $expData, $property, $dataItem );
 			}
 		} else { // pre-defined property, only exported if known
 			$diSubject = $expData->getSubject()->getDataItem();
@@ -357,57 +356,7 @@ class SMWExporter {
 					continue;
 				}
 
-				$ed = self::getDataItemExpElement( $dataItem );
-
-				if ( !is_null( $ed ) ) {
-					if ( $property->getKey() == '_CONC' &&
-						$expData->getSubject()->getUri() !== '' ) {
-						// equivalent to anonymous class -> simplify description
-						foreach ( $ed->getProperties() as $subp ) {
-							if ( $subp->getUri() != self::getSpecialNsResource( 'rdf', 'type' )->getUri() ) {
-								foreach ( $ed->getValues( $subp ) as $subval ) {
-									$expData->addPropertyObjectValue( $subp, $subval );
-								}
-							}
-						}
-					} elseif ( $property->getKey() == '_IMPO' ) {
-
-						$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
-							$dataItem,
-							$property
-						);
-
-						if ( !$dataValue instanceof \SMWImportValue ) {
-							continue;
-						}
-
-						$expData->addPropertyObjectValue(
-							$pe,
-							self::getDataItemExpElement( new SMWDIBlob( $dataValue->getImportReference() ) )
-						);
-
-					} elseif ( $property->getKey() == '_REDI' ) {
-						$expData->addPropertyObjectValue( $pe, $ed );
-
-						$expData->addPropertyObjectValue(
-							self::getSpecialPropertyResource( '_URI' ),
-							$ed
-						);
-					} elseif ( !$property->isUserDefined() && !self::hasSpecialPropertyResource( $property ) ) {
-						$expData->addPropertyObjectValue(
-							self::getResourceElementForProperty( $property, true ),
-							$ed
-						);
-					} else {
-						$expData->addPropertyObjectValue( $pe, $ed );
-					}
-				}
-
-				$edHelper = self::getDataItemHelperExpElement( $dataItem );
-
-				if ( $edHelper !== null ) {
-					$expData->addPropertyObjectValue( $peHelper, $edHelper );
-				}
+				$resourceBuilder->addResourceValue( $expData, $property, $dataItem );
 			}
 		}
 	}
