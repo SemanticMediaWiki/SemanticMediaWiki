@@ -89,6 +89,36 @@ class PropertyLabelFinder {
 	}
 
 	/**
+	 * @note An empty string is returned for incomplete translation (language
+	 * bug) or deliberately invisible property
+	 *
+	 * @since 2.5
+	 *
+	 * @param string $id
+	 * @param string $languageCode
+	 *
+	 * @return string
+	 */
+	public function findPropertyLabelByLanguageCode( $id, $languageCode = '' ) {
+
+		if ( $languageCode === '' ) {
+			return $this->findPropertyLabelById( $id );
+		}
+
+		$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage(
+			mb_strtolower( trim( $languageCode ) )
+		);
+
+		$labels = $extraneousLanguage->getPropertyLabels() + $extraneousLanguage->getDatatypeLabels();
+
+		if ( isset( $labels[$id] ) ) {
+			return $labels[$id];
+		}
+
+		return '';
+	}
+
+	/**
 	 * @since 2.2
 	 *
 	 * @param string $label

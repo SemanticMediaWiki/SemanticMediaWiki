@@ -258,7 +258,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @return boolean
 	 */
 	public function canUse() {
-		return $this->isValid() && $this->m_dataitem->isUnrestrictedForUse();
+		return $this->isValid() && $this->m_dataitem->isUnrestricted();
 	}
 
 	public function getShortWikiText( $linked = null ) {

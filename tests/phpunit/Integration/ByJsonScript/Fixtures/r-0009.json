@@ -6,12 +6,7 @@
 			"contents": "[[Has type::Number]] [[Has property description::Is a number@en]] [[Has property description::数@ja]]"
 		}
 	],
-	"subjects": [
-		{
-			"name": "Example/R0008/1",
-			"contents": "[[Has area without unit::1 m]]"
-		}
-	],
+	"subjects": [],
 	"rdf-testcases": [
 		{
 			"about": "#0",

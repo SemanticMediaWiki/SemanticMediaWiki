@@ -1,0 +1,79 @@
+{
+	"description": "Test RDF output on canonical entities (`wgContLang=fr`, `wgLang=es`, syntax=rdf/turtle)",
+	"properties": [],
+	"subjects": [
+		{
+			"name": "Example/R0010/1",
+			"contents": "[[Boolean::true]]"
+		},
+		{
+			"name": "Example/R0010/2",
+			"contentlanguage": "fr",
+			"contents": "[[Booléen::false]]"
+		},
+		{
+			"name": "Example/R0010/Q1",
+			"contents": "{{#ask: [[Booléen::+]] }}"
+		}
+	],
+	"rdf-testcases": [
+		{
+			"about": "#0",
+			"exportcontroller" : {
+				"print-pages": [ "Example/R0010/1" ],
+				"parameters" : {
+					"backlinks" : true,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"Special:ExportRDF/Example/R0010/1",
+					"<property:Boolean rdf:datatype=\"http://www.w3.org/2001/XMLSchema#boolean\">true</property:Boolean>"
+				],
+				"not-contain":[
+					"Sp%C3%A9cial:ExportRDF/Example/R0010/1",
+					"<property:Booleano rdf:datatype=\"http://www.w3.org/2001/XMLSchema#boolean\">true</property:Booleano>"
+				]
+			}
+		},
+		{
+			"about": "#2",
+			"exportcontroller" : {
+				"print-pages": [ "Example/R0010/Q1" ],
+				"parameters" : {
+					"backlinks" : true,
+					"recursion" : "1",
+					"revisiondate" : false
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"<swivt:wikiPageContentLanguage rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">fr</swivt:wikiPageContentLanguage>",
+					"<property:Has_query rdf:resource=\"&wiki;Example/R0010/Q1-23_QUERY3873375c1eb14b2382922133b97c8379\"/>"
+				],
+				"not-contain":[
+					"Sp%C3%A9cial:ExportRDF/Example/R0010/2",
+					"<property:Booleano rdf:datatype=\"http://www.w3.org/2001/XMLSchema#boolean\">true</property:Booleano>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgExportBCNonCanonicalFormUse": false,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"wgContLang": "fr",
+		"wgLang": "es",
+		"smwgNamespace": "http://example.org/id/"
+	},
+	"meta": {
+		"version": "0.2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

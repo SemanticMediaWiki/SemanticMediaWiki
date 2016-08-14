@@ -223,6 +223,18 @@ class PropertyRegistry {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param string $id
+	 * @param string $languageCode
+	 *
+	 * @return string
+	 */
+	public function findPropertyLabelByLanguageCode( $id, $languageCode = '' ) {
+		return $this->propertyLabelFinder->findPropertyLabelByLanguageCode( $id, $languageCode );
+	}
+
+	/**
 	 * @deprecated since 2.1 use findPropertyLabelById instead
 	 */
 	public function findPropertyLabel( $id ) {
@@ -295,7 +307,7 @@ class PropertyRegistry {
 			return $this->findPropertyIdByLabel( $label );
 		}
 
-		$extraneousLanguage = ExtraneousLanguage::getInstance()->fetchByLanguageCode(
+		$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage(
 			$languageCode
 		);
 

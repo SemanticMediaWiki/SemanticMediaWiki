@@ -51,6 +51,11 @@ class DIWikiPage extends SMWDataItem {
 	private $contextReference = null;
 
 	/**
+	 * @var string
+	 */
+	private $pageLanguage = null;
+
+	/**
 	 * Contructor. We do not bother with too much detailed validation here,
 	 * regarding the known namespaces, canonicity of the dbkey (namespace
 	 * exrtacted?), validity of interwiki prefix (known?), and general use
@@ -143,6 +148,26 @@ class DIWikiPage extends SMWDataItem {
 	 */
 	public function getContextReference() {
 		return $this->contextReference;
+	}
+
+	/**
+	 * Returns the page content language
+	 *
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getPageLanguage() {
+
+		if ( $this->pageLanguage === null ) {
+			$this->pageLanguage = false;
+
+			if ( ( $title = $this->getTitle() ) !== null ) {
+				$this->pageLanguage = $title->getPageLanguage()->getCode();
+			}
+		}
+
+		return $this->pageLanguage;
 	}
 
 	/**
