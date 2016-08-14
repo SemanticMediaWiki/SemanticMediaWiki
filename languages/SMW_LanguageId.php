@@ -43,6 +43,7 @@ class SMWLanguageId extends SMWLanguage {
 		'_rec' => 'Rekaman', // name of record data type
 		'_qty' => 'Quantity', // name of the number type with units of measurement //TODO: translate
 		'_mlt_rec' => 'Monolingual text',
+		'_eid' => 'External identifier',
 	);
 
 	protected $m_DatatypeAliases = array(
@@ -86,6 +87,8 @@ class SMWLanguageId extends SMWLanguage {
 		'_PVAP'  => 'Allows pattern',
 		'_DTITLE' => 'Display title of',
 		'_PVUC' => 'Has uniqueness constraint',
+		'_PEID' => 'External identifier',
+		'_PEFU' => 'External formatter uri',
 	);
 
 	protected $m_SpecialPropertyAliases = array(

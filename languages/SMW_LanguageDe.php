@@ -49,6 +49,7 @@ class SMWLanguageDe extends SMWLanguage {
 		'_rec' => 'Verbund', // name of the record datatype
 		'_qty' => 'Maß', // name of the quantity datatype
 		'_mlt_rec' => 'Einsprachiger Text',
+		'_eid' => 'External identifier',
 	);
 
 	protected $m_DatatypeAliases = array(
@@ -95,6 +96,8 @@ class SMWLanguageDe extends SMWLanguage {
 		'_PVAP' => 'Erlaubt Muster',
 		'_DTITLE' => 'Anzeigetitel',
 		'_PVUC' => 'Erlaubt Wert einmal',
+		'_PEID' => 'External identifier',
+		'_PEFU' => 'External formatter uri',
 	);
 
 	protected $m_SpecialPropertyAliases = array(

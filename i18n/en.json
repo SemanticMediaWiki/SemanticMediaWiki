@@ -416,5 +416,14 @@
 	"smw-datavalue-time-invalid-date-components-dash": "\"$1\" contains an uninterpretable dash.",
 	"smw-datavalue-time-invalid-date-components-empty": "\"$1\" contains some empty components.",
 	"smw-datavalue-time-invalid-date-components-three": "\"$1\" contains more than three components.",
-	"smw-datavalue-time-invalid-ampm": "\"$1\" contains \"$2\" as hour element that is invalid for a 12-hour convention."
+	"smw-datavalue-time-invalid-ampm": "\"$1\" contains \"$2\" as hour element that is invalid for a 12-hour convention.",
+	"smw-datavalue-external-formatter-uri-missing-placeholder": "Formatter uri is missing the ''$1'' placeholder.",
+	"smw-datavalue-external-formatter-invalid-uri": " \"$1\" is an invalid URL.",
+	"smw-datavalue-external-identifier-formatter-missing": "The property is missing an [[Property:External formatter uri|\"External formatter uri\"]] assignment.",
+	"smw-pa-property-predefined_eid": "\"$1\" is a [[Special:Types/External identifier|type]] and predefined property provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] to represent external identifiers.",
+	"smw-pa-property-predefined_peid": "\"$1\" is a predefined property that specifies an external identifier and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_pefu": "\"$1\" is a predefined property that specifies a URI and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined-long_pefu": "The URI is expected to contain a placeholder so that external identifiers can be formatted and positioned correctly.",
+	"smw-sp-types_eid": "\"$1\" is a restricted [https://www.semantic-mediawiki.org/wiki/Type_String String] type that requires assigned properties to declare an [[Property:External formatter uri|External formatter uri]]."
 }
+

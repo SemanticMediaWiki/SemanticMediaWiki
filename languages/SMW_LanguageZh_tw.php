@@ -43,6 +43,7 @@ class SMWLanguageZh_tw extends SMWLanguage {
 		'_rec' => '記錄型', // name of record type
 		'_qty' => '數量型', // name of the number type with units of measurement
 		'_mlt_rec' => 'Monolingual text',
+		'_eid' => 'External identifier',
 	);
 
 	protected $m_DatatypeAliases = array(
@@ -91,6 +92,8 @@ class SMWLanguageZh_tw extends SMWLanguage {
 		'_PVAP'  => 'Allows pattern',
 		'_DTITLE' => 'Display title of',
 		'_PVUC' => 'Has uniqueness constraint',
+		'_PEID' => 'External identifier',
+		'_PEFU' => 'External formatter uri',
 	);
 
 	protected $m_SpecialPropertyAliases = array(
