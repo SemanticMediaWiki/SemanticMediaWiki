@@ -258,6 +258,11 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			$urlArgs['order'] = $this->m_params['order'];
 		}
 
+		if ( $this->getRequest()->getCheck( 'bTitle' ) ) {
+			$urlArgs['bTitle'] = $this->getRequest()->getVal( 'bTitle' );
+			$urlArgs['bMsg'] = $this->getRequest()->getVal( 'bMsg' );
+		}
+
 		if ( $this->m_querystring !== '' ) {
 			// FIXME: this is a hack
 			SMWQueryProcessor::addThisPrintout( $this->m_printouts, $this->m_params );
@@ -404,7 +409,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 
 		$environment = isset( $this->m_params['source'] ) ? $this->m_params['source'] : $storeName;
 		$downloadLink = $this->getExtraDownloadLinks();
-		$sarchInfoText = $duration > 0 ? wfMessage( 'smw-ask-query-search-info', $this->m_querystring, $environment, $isFromCache, $duration )->parse() : '';
+		$searchInfoText = $duration > 0 ? wfMessage( 'smw-ask-query-search-info', $this->m_querystring, $environment, $isFromCache, $duration )->parse() : '';
 
 		$result .= Html::openElement( 'form',
 			array( 'action' => $wgScript, 'name' => 'ask', 'method' => 'get' ) );
@@ -491,7 +496,13 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		}
 
 		$result .= '}}</textarea></div><p></p>';
-		$result .= ( $navigation !== '' ? '<p>'. $sarchInfoText . '</p>' . '<hr class="smw-form-horizontalrule">' .  $navigation . '&#160;&#160;&#160;' . $downloadLink : '' ) .
+
+		$this->doFinalModificationsOnBorrowedOutput(
+			$result,
+			$searchInfoText
+		);
+
+		$result .= ( $navigation !== '' ? '<p>'. $searchInfoText . '</p>' . '<hr class="smw-form-horizontalrule">' .  $navigation . '&#160;&#160;&#160;' . $downloadLink : '' ) .
 			"\n</fieldset>\n</form>\n";
 
 		return $result;
@@ -757,6 +768,24 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		$downloadLinks .= ' | ' . $link->getHtml();
 
 		return '(' . $downloadLinks . ')';
+	}
+
+	private function doFinalModificationsOnBorrowedOutput( &$html, &$searchInfoText ) {
+
+		if ( !$this->getRequest()->getCheck( 'bTitle' ) ) {
+			return;
+		}
+
+		$borrowedMessage = $this->getRequest()->getVal( 'bMsg' );
+
+		$searchInfoText = '';
+		$html = "\n<fieldset><p>" . ( wfMessage( $borrowedMessage )->exists() ? wfMessage( $borrowedMessage )->parse() : '' ) . "</p>";
+
+		$borrowedTitle = $this->getRequest()->getVal( 'bTitle' );
+
+		if ( wfMessage( $borrowedTitle )->exists() ) {
+			$this->getOutput()->setPageTitle( wfMessage( $borrowedTitle )->text() );
+		}
 	}
 
 	/**

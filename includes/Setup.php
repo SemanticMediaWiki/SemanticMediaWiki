@@ -267,6 +267,10 @@ final class Setup {
 				'page' => 'SMW\MediaWiki\Specials\SpecialSearchByProperty',
 				'group' => 'smw_group'
 			),
+			'ProcessingErrorList' => array(
+				'page' => 'SMW\MediaWiki\Specials\SpecialProcessingErrorList',
+				'group' => 'smw_group'
+			),
 			'SMWAdmin' => array(
 				'page' => 'SMWAdmin',
 				'group' => 'smw_group'
