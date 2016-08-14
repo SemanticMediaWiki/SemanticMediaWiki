@@ -174,8 +174,9 @@ abstract class Store {
 		$hash = $wikipage->getHash();
 		$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheFor( 'store.redirectTarget.lookup' );
 
-		if ( $poolCache->contains( $hash ) ) {
-			return $poolCache->fetch( $hash );
+		// Ensure that the same type context is used
+		if ( ( $di = $poolCache->fetch( $hash ) ) !== false && $di->getDIType() === $dataItem->getDIType() ) {
+			return $di;
 		}
 
 		$redirectDataItems = $this->getPropertyValues( $wikipage, new DIProperty( '_REDI' ) );
