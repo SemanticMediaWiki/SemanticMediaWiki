@@ -31,11 +31,15 @@ class BrowseByProperty extends ApiBase {
 			$params['limit']
 		);
 
+		$propertyListByApiRequest->setListOnly(
+			$params['listonly']
+		);
+
 		$propertyListByApiRequest->setLanguageCode(
 			$params['lang']
 		);
 
-		$propertyListByApiRequest->findPropertyListFor(
+		$propertyListByApiRequest->findPropertyListBy(
 			$params['property']
 		);
 
@@ -77,7 +81,7 @@ class BrowseByProperty extends ApiBase {
 		$this->getResult()->addValue(
 			null,
 			'version',
-			0.2
+			2
 		);
 
 		$this->getResult()->addValue(
@@ -116,6 +120,12 @@ class BrowseByProperty extends ApiBase {
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_ISMULTI => false,
 				ApiBase::PARAM_REQUIRED => false,
+			),
+			'listonly' => array(
+				ApiBase::PARAM_TYPE => 'string',
+				ApiBase::PARAM_DFLT => false,
+				ApiBase::PARAM_ISMULTI => false,
+				ApiBase::PARAM_REQUIRED => false,
 			)
 		);
 	}
@@ -128,8 +138,10 @@ class BrowseByProperty extends ApiBase {
 	 */
 	public function getParamDescription() {
 		return array(
-			'property' => 'To select a specific property',
-			'limit' => 'To specify the size of the list request'
+			'property' => 'To match a specific property',
+			'limit'    => 'To specify the size of the list request',
+			'lang'     => 'To specify a specific language used for some attributes (description etc.)',
+			'listonly' => 'To specify that only a property list is returned without further details'
 		);
 	}
 
@@ -155,6 +167,7 @@ class BrowseByProperty extends ApiBase {
 		return array(
 			'api.php?action=browsebyproperty&property=Modification_date',
 			'api.php?action=browsebyproperty&limit=50',
+			'api.php?action=browsebyproperty&limit=5&listonly=true',
 		);
 	}
 

@@ -110,7 +110,7 @@ class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
 		$instance->setLimit( 3 );
 
 		$this->assertTrue(
-			$instance->findPropertyListFor( 'Foo' )
+			$instance->findPropertyListBy( 'Foo' )
 		);
 
 		$this->assertEquals(
