@@ -99,7 +99,7 @@
 	"smw_wrong_namespace": "Only pages in namespace \"$1\" are allowed here.",
 	"smw_manytypes": "More than one type defined for property.",
 	"smw_emptystring": "Empty strings are not accepted.",
-	"smw_notinenum": "\"$1\" is not in the list of possible values ($2) for this property.",
+	"smw_notinenum": "\"$1\" is not in the list ($2) of [[Property:Allows value|allowed values]] for the \"$3\" property.",
 	"smw_noboolean": "\"$1\" is not recognized as a Boolean (true/false) value.",
 	"smw_true_words": "true,t,yes,y",
 	"smw_false_words": "false,f,no,n",

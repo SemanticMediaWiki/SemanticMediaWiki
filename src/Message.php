@@ -156,7 +156,7 @@ class Message {
 			return $message[0];
 		}
 
-		return self::get( $message, $type !== null ? $type : $asType, $language );
+		return self::get( $message, ( $asType !== null ? $asType: $type ), $language );
 	}
 
 	/**

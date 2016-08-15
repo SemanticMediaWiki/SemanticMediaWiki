@@ -104,6 +104,8 @@ class MonolingualTextValue extends DataValue {
 				$this->m_contextPage
 			);
 
+			$this->addError( $dataValue->getErrors() );
+
 			$dataValues[] = $dataValue;
 		}
 
