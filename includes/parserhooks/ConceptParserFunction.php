@@ -138,6 +138,11 @@ class ConceptParserFunction {
 
 	private function addQueryProfile( $query ) {
 
+		// If the smwgQueryProfiler is marked with FALSE then just don't create a profile.
+		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgQueryProfiler' ) === false ) {
+			return;
+		}
+
 		$query->setContextPage(
 			$this->parserData->getSemanticData()->getSubject()
 		);

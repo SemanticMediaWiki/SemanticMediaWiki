@@ -394,6 +394,7 @@ class SMWSQLStore3 extends SMWStore {
 	public function getQueryResult( SMWQuery $query ) {
 
 		$result = null;
+		$start = microtime( true );
 
 		if ( \Hooks::run( 'SMW::Store::BeforeQueryResultLookupComplete', array( $this, $query, &$result ) ) ) {
 			$result = $this->fetchQueryResult( $query );
@@ -401,6 +402,8 @@ class SMWSQLStore3 extends SMWStore {
 
 		\Hooks::run( 'SMW::SQLStore::AfterQueryResultLookupComplete', array( $this, &$result ) );
 		\Hooks::run( 'SMW::Store::AfterQueryResultLookupComplete', array( $this, &$result ) );
+
+		$query->setOption( SMWQuery::PROC_QUERY_TIME, microtime( true ) - $start );
 
 		return $result;
 	}

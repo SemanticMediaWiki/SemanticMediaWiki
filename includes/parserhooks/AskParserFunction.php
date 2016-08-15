@@ -4,6 +4,7 @@ namespace SMW;
 
 use Parser;
 use SMWQueryProcessor;
+use SMWQuery as Query;
 
 /**
  * Provides the {{#ask}} parser function
@@ -154,16 +155,9 @@ class AskParserFunction {
 
 	private function doFetchResultsForRawParameters( array $rawParams ) {
 
-		// FIXME QueryDuration should be a property of the QueryProcessor or
-		// QueryEngine but since we don't want to open the pandora's box and
-		// increase issues within the current QueryProcessor implementation
-		// we will track the time outside of the actual execution framework
-		$queryDuration = 0;
-		$start = microtime( true );
-
 		$contextPage = $this->parserData->getSubject();
 
-		list( $this->query, $this->params ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
+		list( $query, $this->params ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
 			$rawParams,
 			SMW_OUTPUT_WIKI,
 			SMWQueryProcessor::INLINE_QUERY,
@@ -171,11 +165,11 @@ class AskParserFunction {
 			$contextPage
 		);
 
-		$this->query->setContextPage(
+		$query->setContextPage(
 			$contextPage
 		);
 
-		$queryHash = $this->query->getHash();
+		$queryHash = $query->getHash();
 
 		$this->circularReferenceGuard->mark( $queryHash );
 
@@ -187,7 +181,7 @@ class AskParserFunction {
 		}
 
 		$result = SMWQueryProcessor::getResultFromQuery(
-			$this->query,
+			$query,
 			$this->params,
 			SMW_OUTPUT_WIKI,
 			SMWQueryProcessor::INLINE_QUERY
@@ -203,28 +197,34 @@ class AskParserFunction {
 			$this->parserData->importFromParserOutput( $GLOBALS['wgParser']->getOutput() );
 		}
 
-		if ( $this->applicationFactory->getSettings()->get( 'smwgQueryDurationEnabled' ) ) {
-			$queryDuration = microtime( true ) - $start;
-		}
-
 		$this->circularReferenceGuard->unmark( $queryHash );
-
-		$this->createQueryProfile(
-			$this->query,
-			$format,
-			$queryDuration
-		);
-
-		return $result;
-	}
-
-	private function createQueryProfile( $query, $format, $duration ) {
 
 		// In case of an query error add a marker to the subject for discoverability
 		// of a failed query, don't bail-out as we can have results and errors
 		// at the same time
 		if ( $query->getErrors() !== array() ) {
 			$this->addProcessingError( $query->getErrors() );
+		}
+
+		$this->createQueryProfile(
+			$query,
+			$format
+		);
+
+		return $result;
+	}
+
+	private function createQueryProfile( $query, $format ) {
+
+		// If the smwgQueryProfiler is marked with FALSE then just don't create a profile.
+		if ( $this->applicationFactory->getSettings()->get( 'smwgQueryProfiler' ) === false ) {
+			return;
+		}
+
+		$duration = 0;
+
+		if ( $this->applicationFactory->getSettings()->get( 'smwgQueryDurationEnabled' ) ) {
+			$duration = $query->getOptionBy( Query::PROC_QUERY_TIME );
 		}
 
 		$profileAnnotatorFactory = $this->applicationFactory->getQueryFactory()->newProfileAnnotatorFactory();

@@ -272,12 +272,15 @@ class SPARQLStore extends Store {
 	public function getQueryResult( Query $query ) {
 
 		$result = null;
+		$start = microtime( true );
 
 		if ( \Hooks::run( 'SMW::Store::BeforeQueryResultLookupComplete', array( $this, $query, &$result ) ) ) {
 			$result = $this->fetchQueryResult( $query );
 		}
 
 		\Hooks::run( 'SMW::Store::AfterQueryResultLookupComplete', array( $this, &$result ) );
+
+		$query->setOption( Query::PROC_QUERY_TIME, microtime( true ) - $start );
 
 		return $result;
 	}
