@@ -49,16 +49,16 @@ class SMWLanguageDe extends SMWLanguage {
 		'_rec' => 'Verbund', // name of the record datatype
 		'_qty' => 'Maß', // name of the quantity datatype
 		'_mlt_rec' => 'Einsprachiger Text',
-		'_eid' => 'External identifier',
+		'_eid' => 'Externe Kennung'
 	);
 
 	protected $m_DatatypeAliases = array(
-		'URI'			=> '_uri',
-		'Ganze Zahl'		=> '_num',
-		'Dezimalzahl'		=> '_num',
-		'Aufzählung'		=> '_txt',
-		'Zeichenkette'		=> '_txt',
-		'Menge' 		=> '_qty',
+		'URI' => '_uri',
+		'Ganze Zahl' => '_num',
+		'Dezimalzahl' => '_num',
+		'Aufzählung' => '_txt',
+		'Zeichenkette' => '_txt',
+		'Menge'	=> '_qty'
 	);
 
 	protected $m_SpecialProperties = array(
@@ -96,8 +96,8 @@ class SMWLanguageDe extends SMWLanguage {
 		'_PVAP' => 'Erlaubt Muster',
 		'_DTITLE' => 'Anzeigetitel',
 		'_PVUC' => 'Erlaubt Wert einmal',
-		'_PEID' => 'External identifier',
-		'_PEFU' => 'External formatter uri',
+		'_PEID' => 'Kennung zur externen URI',
+		'_PEFU' => 'Formatierungsanweisung zur externen URI'
 	);
 
 	protected $m_SpecialPropertyAliases = array(
@@ -118,7 +118,8 @@ class SMWLanguageDe extends SMWLanguage {
 		'Hat Anzeigegenauigkeit' => '_PREC',
 		'Hat Attributbeschreibung' => '_PDESC',
 		'Hat Anzeigetitel' => '_DTITLE',
-		'Hat einmal erlaubten Wert' => '_PVUC'
+		'Hat einmal erlaubten Wert' => '_PVUC',
+		'Externe Kennung' => '_PEID'
 	);
 
 	protected $m_Namespaces = array(
@@ -127,7 +128,7 @@ class SMWLanguageDe extends SMWLanguage {
 		SMW_NS_TYPE          => 'Datentyp',
 		SMW_NS_TYPE_TALK     => 'Datentyp_Diskussion',
 		SMW_NS_CONCEPT       => 'Konzept',
-		SMW_NS_CONCEPT_TALK  => 'Konzept_Diskussion',
+		SMW_NS_CONCEPT_TALK  => 'Konzept_Diskussion'
 	);
 
 	protected $m_dateformats = array( array( SMW_Y ), array( SMW_MY, SMW_YM ), array( SMW_DMY, SMW_MDY, SMW_YMD, SMW_YDM ) );
