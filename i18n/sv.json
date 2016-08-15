@@ -316,5 +316,7 @@
 	"smw-pa-property-predefined_type": "\"$1\" är en fördefinierad egenskap som beskrivs i [[Special:Typer|datatyp]] av en fastighet.",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|sekund|sekunder}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|sekund|sekunder}}",
-	"smw_allows_pattern": "Den här sidan är förväntad att innehålla en lista av referenser (följt av [https://en.wikipedia.org/wiki/Regular_expression regular expressions]) och att bli tillgänglig genom att använda [[Property:Allows pattern|Allows pattern]] egenskap."
+	"smw_allows_pattern": "Den här sidan är förväntad att innehålla en lista av referenser (följt av [https://en.wikipedia.org/wiki/Regular_expression regular expressions]) och att bli tillgänglig genom att använda [[Property:Allows pattern|Allows pattern]] egenskap.",
+	"smw-datavalue-time-invalid-date-components-empty": "\"$1\" innehåller några tomma komponenter.",
+	"smw-datavalue-time-invalid-date-components-three": "\"$1\" innehåller mer än tre komponenter."
 }

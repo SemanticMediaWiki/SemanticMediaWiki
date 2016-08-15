@@ -7,6 +7,7 @@
 		]
 	},
 	"smw-desc": "Är Wiki méi accessibel machen - fir Maschinnen ''a'' Menschen ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
+	"smw-title": "Semantic MediaWiki",
 	"smw_viewasrdf": "RDF-Feed",
 	"smw_finallistconjunct": ", an",
 	"smw_factbox_head": "Fakten iwwer $1",
@@ -197,5 +198,9 @@
 	"smw-sp-types-default": "\"$1\" ass en agebauten Datentyp.",
 	"smw-sp-types-help": "Méi Informatiounen a Beispiller fannt Dir op der [https://www.semantic-mediawiki.org/wiki/Help:Type_$1 Hëllef-Säit].",
 	"smw-limitreport-intext-parsertime-value": "$1  {{PLURAL:$1|Sekonn|Sekonnen}}",
-	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|Sekonn|Sekonnen}}"
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|Sekonn|Sekonnen}}",
+	"smw-datavalue-time-invalid-date-components-common": "\"$1\" huet eng Informatioun déi net kann interpretéiert ginn.",
+	"smw-datavalue-time-invalid-date-components-empty": "\"$1\" huet e puer eidel Komponenten",
+	"smw-datavalue-time-invalid-date-components-three": "\"$1\" huet méi wéi dräi Komponenten.",
+	"smw-datavalue-time-invalid-ampm": "\"$1\" huet \"$2\" als Stonnenelement, dat ass fir eng 12-Stonne-Konventioun awer net valabel."
 }

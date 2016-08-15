@@ -110,7 +110,7 @@
 	"smw_noqueryfeature": "Uma característica da consulta não é suportada nesta wiki e parte da consulta foi descartada ($1).",
 	"smw_noconjunctions": "Conjunções em consultas não são suportadas nesta wiki e parte da consulta foi descartada ($1).",
 	"smw_nodisjunctions": "Disjunções em consultas não são suportadas nesta wiki e parte da consulta foi descartada ($1).",
-	"smw_querytoolarge": "Não foi possível considerar as seguintes condições da consulta, devido às restrições da wiki para o tamanho e profundidade das consultas: $1.",
+	"smw_querytoolarge": "Não foi possível considerar as seguintes condições da consulta (<code>$1</code>), devido às restrições da wiki para o tamanho e profundidade das consultas.",
 	"smw_notemplategiven": "Para este formato de consulta funcionar, forneça um valor para o parâmetro \"template\".",
 	"smw_db_sparqlqueryproblem": "Não foi possível obter da base de dados SPARQL o resultado da consulta. Este erro pode ser temporário ou indicativo de um defeito no software da base de dados.",
 	"smw_db_sparqlqueryincomplete": "A consulta revelou-se difícil e foi interrompida. Podem faltar alguns resultados. Se possível, tente usar uma consulta mais simples, por favor.",

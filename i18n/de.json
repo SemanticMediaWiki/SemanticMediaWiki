@@ -25,6 +25,7 @@
 		]
 	},
 	"smw-desc": "Ermöglicht es, das Wiki zugänglicher zu machen – für Menschen ''und'' Maschinen ([https://www.semantic-mediawiki.org/wiki/Help:Nutzeranleitung Dokumentation])",
+	"smw-title": "Semantic MediaWiki",
 	"smw-semantics-not-enabled": "Momentan kann Semantic MediaWiki nicht auf diesem Wiki genutzt werden.",
 	"smw_viewasrdf": "RDF-Feed",
 	"smw_finallistconjunct": " und",
@@ -133,7 +134,7 @@
 	"smw_noqueryfeature": "Einige Abfragebestandteile werden nicht von diesem Wiki unterstützt. Der entsprechende Teil der Abfrage wurde ignoriert ($1).",
 	"smw_noconjunctions": "UND-Verknüpfungen in den Abfragen werden nicht von diesem Wiki unterstützt. Der entsprechende Teil der Abfrage wurde ignoriert ($1).",
 	"smw_nodisjunctions": "Disjunktionen (ODER) in Abfragen werden nicht von diesem Wiki unterstützt. Der entsprechende Teil der Abfrage wurde ignoriert ($1).",
-	"smw_querytoolarge": "Die folgenden Abfragebedingungen konnten, wegen der auf diesem Wiki gültigen Beschränkungen, bezüglich Größe und Tiefe von Abfragen, nicht berücksichtigt werden: $1.",
+	"smw_querytoolarge": "Die folgenden Abfragebedingungen <code>$1</code> konnten aufgrund der auf diesem Wiki gültigen Beschränkungen bezüglich Größe und Tiefe von Abfragen nicht berücksichtigt werden:",
 	"smw_notemplategiven": "Der Parameter „template“ muss angegeben werden, damit diese Abfrage durchgeführt werden kann.",
 	"smw_db_sparqlqueryproblem": "Das Abfrageergebnis konnte nicht aus der SPARQL-Datenbank abgerufen werden. Dieser Fehler kann vorübergehend sein oder auf einen Fehler Datenbank hinweisen.",
 	"smw_db_sparqlqueryincomplete": "Das Ausführen der Abfrage erwies sich als zu umfangreich und wurde abgebrochen. Einige der möglichen Ergebnisse könnten daher fehlen. Sofern möglich, sollte stattdessen eine einfachere Abfrage genutzt werden.",
@@ -415,5 +416,12 @@
 	"smw-pa-property-predefined_num": "„$1“ ist ein [[Special:Types/Number|Datentyp]] für Zahlenwerte. Er wird Attributen mit Hilfe eines von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] bereitgestellten, softwareseitig fest definierten Attributs (Spezialattribut), zugeordnet.",
 	"smw-pa-property-predefined_dat": "„$1“ ist ein [[Special:Types/Date|Datentyp]] für Datumswerte. Er wird Attributen mit Hilfe eines von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] bereitgestellten, softwareseitig fest definierten Attributs (Spezialattribut), zugeordnet.",
 	"smw-pa-property-predefined_uri": "„$1“ ist ein [[Special:Types/URL|Datentyp]] für URI-/URL-Werte. Er wird Attributen mit Hilfe eines von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] bereitgestellten, softwareseitig fest definierten Attributs (Spezialattribut), zugeordnet.",
-	"smw-pa-property-predefined_qty": "„$1“ ist ein [[Special:Types/Quantity|Datentyp]] für Datenwerte mit Maßangaben. Er wird Attributen mit Hilfe eines von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] bereitgestellten, softwareseitig fest definierten Attributs (Spezialattribut), zugeordnet."
+	"smw-pa-property-predefined_qty": "„$1“ ist ein [[Special:Types/Quantity|Datentyp]] für Datenwerte mit Maßangaben. Er wird Attributen mit Hilfe eines von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] bereitgestellten, softwareseitig fest definierten Attributs (Spezialattribut), zugeordnet.",
+	"smw-datavalue-time-invalid-offset-zone-usage": "„$1“ enthält einen Versatz und Zonenidentifikator, der nicht unterstützt wird.",
+	"smw-datavalue-time-invalid-values": "Der Wert „$1“ enthält nicht interpretierbare Informationen in Form von „$2“.",
+	"smw-datavalue-time-invalid-date-components-common": "„$1“ enthält einige nicht interpretierbare Informationen.",
+	"smw-datavalue-time-invalid-date-components-dash": "„$1“ enthält einen nicht interpretierbaren Gedankenstrich.",
+	"smw-datavalue-time-invalid-date-components-empty": "„$1“ enthält einige leere Komponenten.",
+	"smw-datavalue-time-invalid-date-components-three": "„$1“ enthält mehr als drei Komponenten.",
+	"smw-datavalue-time-invalid-ampm": "„$1“ enthält „$2“ als Stundenelement, das für eine 12-Stunden-Regel ungültig ist."
 }

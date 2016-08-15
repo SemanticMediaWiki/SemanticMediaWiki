@@ -39,6 +39,7 @@
 		]
 	},
 	"smw-desc": "Rendre votre wiki plus accessible - pour les machines ''et'' les humains ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentation en ligne])",
+	"smw-title": "MédiaWiki Sémantique",
 	"smw-semantics-not-enabled": "La fonctionnalité MédiaWiki Sémantique n’est pas activée sur ce wiki.",
 	"smw_viewasrdf": "Voir comme RDF",
 	"smw_finallistconjunct": " et",
@@ -147,7 +148,7 @@
 	"smw_noqueryfeature": "Quelques fonctionnalités de requêtes ne sont pas supportées sur ce wiki et une partie d’entre elles ont été retirées ($1).",
 	"smw_noconjunctions": "Les conjonctions dans les requêtes ne sont pas supportées sur ce wiki et une parties d’entres elles ont été retirées ($1).",
 	"smw_nodisjunctions": "Les disjonctions dans les requêtes ne sont pas supportées sur ce wiki et des parties de la requête ont été ignorées ($1).",
-	"smw_querytoolarge": "Les conditions suivantes de la requête n’ont pu être évaluées en raison des restrictions de ce wiki à la taille ou à la profondeur des requêtes : $1.",
+	"smw_querytoolarge": "Les conditions suivantes de la requête <code>$1</code> n’ont pas pu être évaluées en raison des restrictions de ce wiki sur la taille ou la profondeur de cette requête.",
 	"smw_notemplategiven": "Veuillez fournir une valeur pour le paramètre « modèle » pour ce format de requête afin de travailler.",
 	"smw_db_sparqlqueryproblem": "Le résultat de la requête n'a pas pu être obtenu à partir de la base de données SPARQL. Cette erreur peut être temporaire ou indiquer un bogue dans le logiciel de la base de données.",
 	"smw_db_sparqlqueryincomplete": "Il s’est avéré trop difficile de répondre à la requête et celle-ci a été abandonnée. Certains résultats pourraient manquer. Si possible, essayez plutôt d’utiliser une requête plus simple.",
@@ -429,5 +430,12 @@
 	"smw-pa-property-predefined_num": "« $1 » est un [[Special:Types/Number|type]] et une propriété prédéfinie fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique] pour représenter des valeurs numériques.",
 	"smw-pa-property-predefined_dat": "« $1 » est un [[Special:Types/Date|type]] et une propriété prédéfinie fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique] pour représenter des valeurs de date.",
 	"smw-pa-property-predefined_uri": "« $1 » est un [[Special:Types/URL|type]] et une propriété prédéfinie fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique] pour représenter des valeurs d’URI/URL.",
-	"smw-pa-property-predefined_qty": "« $1 » est un [[Special:Types/Quantity|type]] et une propriété prédéfinie fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique] pour représenter des valeurs de quantité."
+	"smw-pa-property-predefined_qty": "« $1 » est un [[Special:Types/Quantity|type]] et une propriété prédéfinie fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique] pour représenter des valeurs de quantité.",
+	"smw-datavalue-time-invalid-offset-zone-usage": "« $1 » contient un décalage et un identificateur de zone qui n'est pas pris en charge.",
+	"smw-datavalue-time-invalid-values": "La valeur « $1 » contient des informations non interprétables sous la forme « $2 ».",
+	"smw-datavalue-time-invalid-date-components-common": "« $1 » contient des informations non interprétables.",
+	"smw-datavalue-time-invalid-date-components-dash": "« $1 » contient un tiret non interprétable.",
+	"smw-datavalue-time-invalid-date-components-empty": "« $1 » contient des composants vides.",
+	"smw-datavalue-time-invalid-date-components-three": "« $1 » contient plus de trois composants.",
+	"smw-datavalue-time-invalid-ampm": "« $1 » contient « $2 », en tant qu'élément de type heure et n'est pas valide d'après le format conventionnel sur 12 heures."
 }

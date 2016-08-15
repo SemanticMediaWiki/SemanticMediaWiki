@@ -26,6 +26,7 @@
 		]
 	},
 	"smw-desc": "Rende la tua wiki più accessibile - per le macchine ''e'' per gli umani ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentazione in linea])",
+	"smw-title": "Semantic MediaWiki",
 	"smw-semantics-not-enabled": "Le funzionalità di Semantic MediaWiki non sono abilitate per questo wiki.",
 	"smw_viewasrdf": "Feed RDF",
 	"smw_finallistconjunct": " e",
@@ -107,7 +108,7 @@
 	"smw_noqueryfeature": "Qualche funzionalità di query non è stata supportata in questa wiki e parte della query è stata rimossa ($1).",
 	"smw_noconjunctions": "Le congiunzioni nelle query non sono supportate in questa wiki e parte della query è stata rimossa ($1).",
 	"smw_nodisjunctions": "La disgiunzione all'interno delle query non &egrave; supportata in questo wiki, quindi parte della query &egrave; stata ignorata ($1).",
-	"smw_querytoolarge": "Le seguenti condizioni all'interno della query non sono state considerate a causa delle restrizioni di dimensione o profondit&agrave; delle query impostate per questo wiki: $1.",
+	"smw_querytoolarge": "Le seguenti condizioni all'interno della query <code>$1</code> non sono state considerate a causa delle restrizioni di dimensione o profondità delle query impostate per questo wiki.",
 	"smw_notemplategiven": "Per favore fornisci un valore per il parametro \"template\" per far funzionare questo formato di query.",
 	"smw_type_header": "Proprietà del tipo \"$1\"",
 	"smw_typearticlecount": "Visualizzazione di $1 {{PLURAL:$1|proprietà|proprietà}} che usano questo tipo.",

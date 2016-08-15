@@ -15,6 +15,7 @@
 		]
 	},
 	"smw-desc": "Робить вашу вікі доступнішою — для машин ''та'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual довідка в мережі])",
+	"smw-title": "Семантична MediaWiki",
 	"smw-semantics-not-enabled": "Функціонал Семантичного Медіавікі не ввімкнено в цій вікі.",
 	"smw_viewasrdf": "вивід RDF",
 	"smw_finallistconjunct": " і",
@@ -119,7 +120,7 @@
 	"smw_noqueryfeature": "Певна функція запиту не підтримується у цій вікі, тому ця частина запиту була пропущена ($1).",
 	"smw_noconjunctions": "Операція логічного «і» не підтримується у цій вікі, тому ця частина запиту була пропущена ($1).",
 	"smw_nodisjunctions": "Операція логічного «або» не підтримується у цій вікі, тому ця частина запиту була пропущена ($1).",
-	"smw_querytoolarge": "Наступні умови запиту не можуть бути опрацьовані в зв’язку з обмеженнями цього вікі в розмірі та/або глибині запиту: $1.",
+	"smw_querytoolarge": "Умови запиту <code>$1</code> не можуть бути опрацьовані через чинні у вікі обмеження в розмірі та/або глибині запиту.",
 	"smw_notemplategiven": "Щоб цей формат запиту спрацював, потрібно вказати значення параметра «template».",
 	"smw_db_sparqlqueryproblem": "Не вдалося отримати результат запиту до бази даних SPARQL. Ця може бути тимчасова помилка або проблема в програмному забезпеченні бази даних.",
 	"smw_db_sparqlqueryincomplete": "Пошук відповіді на запит виявився занадто складним і був перерваний. Деякі результати можуть бути не показані. По можливості спробуйте спростити запит.",
@@ -400,5 +401,12 @@
 	"smw-pa-property-predefined_num": "«$1» — [[Special:Types/Number|тип]] і наперед визначена властивість, яку надає [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Семантична MediaWiki] для представлення числових значень.",
 	"smw-pa-property-predefined_dat": "«$1» — [[Special:Types/Date|тип]] і наперед визначена властивість, яку надає [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Семантична MediaWiki] для представлення значень дат.",
 	"smw-pa-property-predefined_uri": "«$1» — [[Special:Types/URL|тип]] і наперед визначена властивість, яку надає [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Семантична MediaWiki] для представлення значень URI/URL.",
-	"smw-pa-property-predefined_qty": "«$1» — [[Special:Types/Quantity|тип]] і наперед визначена властивість, яку надає [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Семантична MediaWiki] для представлення кількісних значень."
+	"smw-pa-property-predefined_qty": "«$1» — [[Special:Types/Quantity|тип]] і наперед визначена властивість, яку надає [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Семантична MediaWiki] для представлення кількісних значень.",
+	"smw-datavalue-time-invalid-offset-zone-usage": "«$1» містить ідентифікатори зміщення та зони, що не підтримуються.",
+	"smw-datavalue-time-invalid-values": "Значення «$1» містить інформацію, непридатну до інтерпретації у формі «$2».",
+	"smw-datavalue-time-invalid-date-components-common": "«$1» містить деяку інформацію, непридатну до інтерпретації.",
+	"smw-datavalue-time-invalid-date-components-dash": "«$1» містить тире, непридатне до інтерпретації.",
+	"smw-datavalue-time-invalid-date-components-empty": "«$1» містить деякі порожні компоненти.",
+	"smw-datavalue-time-invalid-date-components-three": "«$1» містить понад три компоненти.",
+	"smw-datavalue-time-invalid-ampm": "«$1» містить «$2» як елемент години, непридатний для 12-годинного формату часу."
 }

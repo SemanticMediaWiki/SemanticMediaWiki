@@ -20,6 +20,7 @@
 		]
 	},
 	"smw-desc": "让您更亲近wiki——对机器''与''人都是如此（[https://www.semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
+	"smw-title": "语义MediaWiki",
 	"smw-semantics-not-enabled": "语义MediaWiki功能没有为此wiki启用。",
 	"smw_viewasrdf": "RDF源",
 	"smw_finallistconjunct": "，和",
@@ -128,7 +129,7 @@
 	"smw_noqueryfeature": "此维基不支持一些查询功能，查询被部分停止（$1）。",
 	"smw_noconjunctions": "此维基不支持查询中的合取，查询被部分停止（$1）。",
 	"smw_nodisjunctions": "此维基不支持查询中的析取，查询被部分停止（$1）。",
-	"smw_querytoolarge": "由于维基对查询长度和深度的限制，以下查询状态无法包含：$1",
+	"smw_querytoolarge": "由于wiki对查询大小或深度的限制，下列查询条件<code>$1</code>无法考虑。",
 	"smw_notemplategiven": "为使查询格式正常工作，请为参数“模板”赋值。",
 	"smw_db_sparqlqueryproblem": "无法从SPARQL数据库获得查询结果。这个错误可能是暂时的，也可能是数据库软件的错误造成的。",
 	"smw_db_sparqlqueryincomplete": "本查询太过复杂因而被中止，可能会因此丢失部分结果。如果可能，请尝试改用一个较简单的查询。",
@@ -410,5 +411,12 @@
 	"smw-pa-property-predefined_num": "“$1”是一种由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供，代表数值的[[Special:Types/Number|类型]]和预定义属性。",
 	"smw-pa-property-predefined_dat": "“$1”是一种由语义MediaWiki提供，代表日期值的[[Special:Types/Date|类型]]和预定义属性。",
 	"smw-pa-property-predefined_uri": "“$1”是一种由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供，代表URI/URL值的[[Special:Types/URL|类型]]和预定义属性。",
-	"smw-pa-property-predefined_qty": "“$1”是一种由语义MediaWiki提供，代表量值的[[Special:Types/Quantity|类型]]和预定义属性。"
+	"smw-pa-property-predefined_qty": "“$1”是一种由语义MediaWiki提供，代表量值的[[Special:Types/Quantity|类型]]和预定义属性。",
+	"smw-datavalue-time-invalid-offset-zone-usage": "“$1”包含不被支持的偏移和区域标识符。",
+	"smw-datavalue-time-invalid-values": "“$1”值包含在“$2”的形式下无法解释的信息。",
+	"smw-datavalue-time-invalid-date-components-common": "“$1”包含一些无法解释的信息。",
+	"smw-datavalue-time-invalid-date-components-dash": "“$1”包含一个无法解释的信息。",
+	"smw-datavalue-time-invalid-date-components-empty": "“$1”包含一些空部件。",
+	"smw-datavalue-time-invalid-date-components-three": "“$1”包含超过3个部件。",
+	"smw-datavalue-time-invalid-ampm": "“$1”包含“$2”作为小时元素，它在12小时制中是无效的。"
 }

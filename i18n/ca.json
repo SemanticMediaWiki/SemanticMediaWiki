@@ -17,6 +17,7 @@
 		]
 	},
 	"smw-desc": "Fent el vostre wiki més accessible — per a les màquines «i també» per als humans ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentació en línia])",
+	"smw-title": "Semantic MediaWiki",
 	"smw-semantics-not-enabled": "No s'ha habilitat la funcionalitat de Semantic MediaWiki en aquest wiki.",
 	"smw_viewasrdf": "Canal RDF",
 	"smw_finallistconjunct": ", i",
@@ -222,6 +223,8 @@
 	"smw_browse_hide_incoming": "amaga les propietats que hi enllacen",
 	"smw_browse_no_outgoing": "La pàgina no té cap propietat.",
 	"smw_browse_no_incoming": "No enllaça cap propietat a la pàgina.",
+	"smw-browse-subject-invalid": "La validació del subjecte ha retornat amb un error «$1».",
+	"smw-browse-api-subject-serialization-invalid": "El subjecte té un format de serialització no vàlid.",
 	"smw_inverse_label_default": "$1 de",
 	"smw_inverse_label_property": "Etiqueta de propietat inversa",
 	"pageproperty": "Cerca de les propietats de la pàgina",

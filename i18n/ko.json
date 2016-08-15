@@ -16,6 +16,7 @@
 		]
 	},
 	"smw-desc": "위키를 기계와 사람이 더 접근하기 쉽게 합니다 ([https://www.semantic-mediawiki.org/wiki/Help:User_manual 온라인 설명서])",
+	"smw-title": "시맨틱 미디어위키",
 	"smw-semantics-not-enabled": "시맨틱 미디어위키 기능은 이 위키에서 사용할 수 없습니다.",
 	"smw_viewasrdf": "RDF 피드",
 	"smw_finallistconjunct": ", 그리고",
@@ -118,7 +119,7 @@
 	"smw_noqueryfeature": "일부 쿼리 기능은 이 위키에서 지원하지 않아 쿼리의 부분을 없앴습니다. ($1)",
 	"smw_noconjunctions": "쿼리의 접속사는 이 위키에서 지원하지 않아 쿼리의 부분을 없앴습니다. ($1)",
 	"smw_nodisjunctions": "쿼리의 분리사는 이 위키에서 지원하지 않아 쿼리의 부분을 없앴습니다. ($1)",
-	"smw_querytoolarge": "쿼리의 길이나 깊이가 위키의 제한 때문에 다음 쿼리 조건은 고려하지 않았습니다: $1",
+	"smw_querytoolarge": "쿼리의 크기나 깊이에 대한 위키의 제한으로 인해 다음의 쿼리 조건 <code>$1</code>은(는) 고려하지 못했습니다.",
 	"smw_notemplategiven": "작동할 이 쿼리 형식에 \"틀\" 변수에 대한 값을 제공하세요.",
 	"smw_db_sparqlqueryproblem": "쿼리 결과는 SPARQL 데이터베이스에서 가져올 수 없습니다. 이 오류는 일시적이거나 데이터베이스 소프트웨어의 버그일 수 있습니다.",
 	"smw_db_sparqlqueryincomplete": "쿼리 응답이 너무 어려운 것으로 밝혀져 중단되었습니다. 일부 결과는 사라졌을 수 있습니다. 가능하면 간단한 쿼리를 대신 사용하세요.",
@@ -253,7 +254,7 @@
 	"smw_smwadmin_mediazilla": "버그는 <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>에 보고할 수 있습니다.",
 	"smw_smwadmin_questions": "만약 추가적인 질문이나 제안이 있으면, <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">시맨틱 미디어위키 사용자 포럼</a>에서 토론에 참여하세요.",
 	"smw_adminlinks_datastructure": "데이터 구조",
-	"smw_adminlinks_displayingdata": "데이터 보이기",
+	"smw_adminlinks_displayingdata": "데이터 표시",
 	"smw_adminlinks_inlinequerieshelp": "인라인 쿼리 도움말",
 	"smw-page-indicator-type-info": "{{PLURAL:$1|사용자|시스템}}",
 	"smw-createproperty-isproperty": "$1 유형의 속성입니다.",
@@ -324,5 +325,12 @@
 	"smw-datavalue-record-invalid-property-declaration": "레코드 정의에는 그 자체가 레코드 타입으로 선언된, 허용되지 않는 \"$1\" 프로퍼티를 포함하고 있습니다.",
 	"smw-datavalue-languagecode-invalid": "\"$1\"는 지원되는 언어 코드로 인식되지 않습니다.",
 	"smw-limitreport-intext-parsertime-value": "$1초",
-	"smw-limitreport-pagepurge-storeupdatetime-value": "$1초"
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1초",
+	"smw-datavalue-time-invalid-offset-zone-usage": "\"$1\"에는 지원하지 않는 오프셋과 구역 식별자가 포함되어 있습니다.",
+	"smw-datavalue-time-invalid-values": "\"$1\" 값에는 \"$2\" 형태의 해석할 수 없는 정보가 포함되어 있습니다.",
+	"smw-datavalue-time-invalid-date-components-common": "\"$1\"에는 일부 해석할 수 없는 정보가 포함되어 있습니다.",
+	"smw-datavalue-time-invalid-date-components-dash": "\"$1\"에는 해석할 수 없는 대시가 포함되어 있습니다.",
+	"smw-datavalue-time-invalid-date-components-empty": "\"$1\"에는 일부 비어있는 구성 요소가 포함되어 있습니다.",
+	"smw-datavalue-time-invalid-date-components-three": "\"$1\"에는 세 개 이상의 구성 요소가 포함되어 있습니다.",
+	"smw-datavalue-time-invalid-ampm": "\"$1\"에는 12시간 변환에 유효하지 않은 시간 요소로서 \"$2\"이(가) 포함되어 있습니다."
 }
