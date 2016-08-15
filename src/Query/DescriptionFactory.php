@@ -129,19 +129,8 @@ class DescriptionFactory {
 
 		// RecordValue is missing
 
-		// FIXME This knowledge should reside with the DV itself
 		if ( $dataValue instanceof MonolingualTextValue ) {
-			$container =  $dataValue->getDataItem();
-
-			$value = '';
-
-			foreach ( $dataValue->getPropertyDataItems() as $property ) {
-				foreach ( $container->getSemanticData()->getPropertyValues( $property ) as $val ) {
-					$value .= ( $property->getKey() == '_LCODE' ? '@' : '' ) . $val->getString();
-				}
-			}
-
-			$description = $dataValue->getQueryDescription( $value );
+			$description = $dataValue->getQueryDescription( $dataValue->toString() );
 		} else {
 			$description = $this->newValueDescription( $dataValue->getDataItem() );
 		}
