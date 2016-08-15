@@ -167,25 +167,7 @@ class ReferenceValue extends AbstractMultiValue {
 	 * {@inheritDoc}
 	 */
 	public function getDataItems() {
-
-		if ( !$this->isValid() ) {
-			return array();
-		}
-
-		$result = array();
-		$index = 0;
-
-		foreach ( $this->getPropertyDataItems() as $diProperty ) {
-			$values = $this->getDataItem()->getSemanticData()->getPropertyValues( $diProperty );
-			if ( count( $values ) > 0 ) {
-				$result[$index] = reset( $values );
-			} else {
-				$result[$index] = null;
-			}
-			$index += 1;
-		}
-
-		return $result;
+		return parent::getDataItems();
 	}
 
 	/**
