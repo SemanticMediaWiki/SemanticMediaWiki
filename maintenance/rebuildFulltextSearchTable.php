@@ -21,6 +21,7 @@ class RebuildFulltextSearchTable extends \Maintenance {
 	public function __construct() {
 		$this->mDescription = 'Rebuild the fulltext search index (only works with SQLStore)';
 		$this->addOption( 'report-runtime', 'Report execution time and memory usage', false );
+		$this->addOption( 'with-maintenance-log', 'Add log entry to `Special:Log` about the maintenance run.', false );
 		$this->addOption( 'v', 'Show additional (verbose) information about the progress', false );
 		$this->addOption( 'quick', 'Suppress abort operation', false );
 
@@ -108,6 +109,11 @@ class RebuildFulltextSearchTable extends \Maintenance {
 			$this->reportMessage(
 				"\n" . $maintenanceHelper->transformRuntimeValuesForOutput() . "\n"
 			);
+		}
+
+		if ( $this->hasOption( 'with-maintenance-log' ) ) {
+			$maintenanceLogger = $maintenanceFactory->newMaintenanceLogger( 'RebuildFulltextSearchTableLogger' );
+			$maintenanceLogger->log( $maintenanceHelper->transformRuntimeValuesForOutput() );
 		}
 
 		$maintenanceHelper->reset();
