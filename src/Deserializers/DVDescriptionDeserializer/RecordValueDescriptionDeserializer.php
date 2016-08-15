@@ -8,6 +8,7 @@ use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMWRecordValue as RecordValue;
+use SMW\DataValues\ReferenceValue;
 
 /**
  * @private
@@ -25,7 +26,7 @@ class RecordValueDescriptionDeserializer extends DescriptionDeserializer {
 	 * {@inheritDoc}
 	 */
 	public function isDeserializerFor( $serialization ) {
-		return $serialization instanceof RecordValue;
+		return $serialization instanceof RecordValue || $serialization instanceof ReferenceValue;
 	}
 
 	/**

@@ -464,4 +464,49 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testDataTypePropertyExemptionList() {
+
+		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$datatypeRegistry->expects( $this->once() )
+			->method( 'getKnownTypeLabels' )
+			->will( $this->returnValue( array( '_foo' => 'Foo', '_foobar' => 'Foobar' ) ) );
+
+		$datatypeRegistry->expects( $this->once() )
+			->method( 'getKnownTypeAliases' )
+			->will( $this->returnValue( array( 'Bar' => '_bar' ) ) );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$propertyLabelFinder = new PropertyLabelFinder( $store, array() );
+
+		$propertyAliases = new PropertyAliasFinder();
+
+		$dataTypePropertyExemptionList = array( 'Foo', 'Bar' );
+
+		$instance = new PropertyRegistry(
+			$datatypeRegistry,
+			$propertyLabelFinder,
+			$propertyAliases,
+			$dataTypePropertyExemptionList
+		);
+
+		$this->assertEquals(
+			'_foobar',
+			$instance->findPropertyIdByLabel( 'Foobar' )
+		);
+
+		$this->assertFalse(
+			$instance->findPropertyIdByLabel( 'Foo' )
+		);
+
+		$this->assertFalse(
+			$instance->findPropertyIdByLabel( 'Bar' )
+		);
+	}
+
 }

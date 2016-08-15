@@ -44,6 +44,7 @@ class SMWLanguageEn extends SMWLanguage {
 		'_qty' => 'Quantity', // name of the number type with units of measurement
 		'_mlt_rec' => 'Monolingual text',
 		'_eid' => 'External identifier',
+		'_ref_rec' => 'Reference',
 	);
 
 	protected $m_DatatypeAliases = array(

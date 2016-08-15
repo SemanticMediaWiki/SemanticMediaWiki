@@ -77,7 +77,9 @@ abstract class SMWLanguage {
 		'Record'                => '_rec',
 		'External identifier'   => '_eid',
 		'Monolingual text'      => '_mlt_rec', // need the _rec to allow for special treatment
+		'Reference'             => '_ref_rec', // need the _rec to allow for special treatment
 	);
+
 	/// Default English aliases for special property names (typically used in all languages)
 	static protected $enPropertyAliases = array(
 		'Has type'          => '_TYPE',

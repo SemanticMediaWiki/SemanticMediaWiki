@@ -293,6 +293,7 @@
 	"smw-ui-tooltip-title-event": "Event",
 	"smw-ui-tooltip-title-note": "Note",
 	"smw-ui-tooltip-title-legend": "Legend",
+	"smw-ui-tooltip-title-reference": "Reference",
 	"smw_unknowntype": "The type of this property is invalid",
 	"smw-concept-cache-text": "The concept has a total of $1 {{PLURAL:$1|page|pages}}, and was last updated $3, $2.",
 	"smw_concept_header": "Pages of concept \"$1\"",
@@ -438,6 +439,8 @@
 	"smw-datavalue-type-invalid-typeuri": "The \"$1\" type could not be transformed into a valid URI representation.",
 	"smw-datavalue-wikipage-missing-fragment-context": "The wikipage input value \"$1\" cannot be used without a context page.",
 	"smw-datavalue-wikipage-invalid-title": "The wikipage input value \"$1\" contains invalid characters or is incomplete and can therefore cause unexpected results during a query or annotation process.",
-	"smw-datavalue-wikipage-empty": "The wikipage input value is empty (e.g. <code>[[SomeProperty::]], [[]]</code>) and can therefore not be used as name or as part of a query condition."
+	"smw-datavalue-wikipage-empty": "The wikipage input value is empty (e.g. <code>[[SomeProperty::]], [[]]</code>) and can therefore not be used as name or as part of a query condition.",
+	"smw-sp-types_ref_rec": "\"$1\" is a [https://www.semantic-mediawiki.org/wiki/Container container] type that allows to record additional information (e.g. provenance data) about a value assignment.",
+	"smw-datavalue-reference-outputformat": "$1: $2",
+	"smw-datavalue-reference-invalid-fields-definition": "The [[Special:Types/Reference|Reference]] type expects a list of properties to be declared using the [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields Has fields] property."
 }
-

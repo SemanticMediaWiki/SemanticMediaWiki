@@ -33,6 +33,7 @@ class Highlighter {
 	const TYPE_NOTE      = 7;
 	//  Highlighter ID for service links
 	const TYPE_SERVICE   = 8;
+	const TYPE_REFERENCE = 9;
 
 	/**
 	 * @var array $options
@@ -137,6 +138,8 @@ class Highlighter {
 			return self::TYPE_NOTE;
 			case 'service':
 			return self::TYPE_SERVICE;
+			case 'reference':
+			return self::TYPE_REFERENCE;
 			default:
 			return self::TYPE_NOTYPE;
 		}
@@ -168,10 +171,11 @@ class Highlighter {
 		return Html::rawElement(
 			'span',
 			array(
-				'class'      => 'smw-highlighter',
-				'data-type'  => $this->options['type'],
-				'data-state' => $this->options['state'],
-				'data-title' => Message::get( $this->options['title'], Message::TEXT, $language ),
+				'class'        => 'smw-highlighter',
+				'data-type'    => $this->options['type'],
+				'data-content' => isset( $this->options['data-content'] ) ? $this->options['data-content'] : null,
+				'data-state'   => $this->options['state'],
+				'data-title'   => Message::get( $this->options['title'], Message::TEXT, $language ),
 			), Html::rawElement(
 					'span',
 					array(
@@ -234,6 +238,11 @@ class Highlighter {
 				$settings['state'] = 'persistent';
 				$settings['title'] = 'smw-ui-tooltip-title-service';
 				$settings['captionclass'] = 'smwtticon service';
+				break;
+			case self::TYPE_REFERENCE:
+				$settings['state'] = 'persistent';
+				$settings['title'] = 'smw-ui-tooltip-title-reference';
+				$settings['captionclass'] = 'smwtext';
 				break;
 			case self::TYPE_HELP:
 			case self::TYPE_INFO:

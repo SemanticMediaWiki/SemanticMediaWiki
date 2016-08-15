@@ -1,0 +1,148 @@
+<?php
+
+namespace SMW\DataValues\ValueFormatters;
+
+use RuntimeException;
+use SMW\DataValueFactory;
+use SMW\DataValues\ReferenceValue;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\Message;
+use SMWDataValue as DataValue;
+use SMWDIUri as DIUri;
+
+/**
+ * @license GNU GPL v2+
+ * @since 2.5
+ *
+ * @author mwjames
+ */
+class ReferenceValueFormatter extends DataValueFormatter {
+
+	/**
+	 * @since 2.5
+	 *
+	 * {@inheritDoc}
+	 */
+	public function isFormatterFor( DataValue $dataValue ) {
+		return $dataValue instanceof ReferenceValue;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * {@inheritDoc}
+	 */
+	public function format( $type, $linker = null ) {
+
+		if ( !$this->dataValue instanceof ReferenceValue ) {
+			throw new RuntimeException( "The formatter is missing a valid ReferenceValue object" );
+		}
+
+		if (
+			$this->dataValue->getCaption() !== false &&
+			( $type === self::WIKI_SHORT || $type === self::HTML_SHORT ) ) {
+			return $this->dataValue->getCaption();
+		}
+
+		return $this->getOutputText( $type, $linker );
+	}
+
+	protected function getOutputText( $type, $linker = null ) {
+
+		if ( !$this->dataValue->isValid() ) {
+			return ( ( $type == self::WIKI_SHORT ) || ( $type == self::HTML_SHORT ) ) ? '' : $this->dataValue->getErrorText();
+		}
+
+		return $this->createOutput( $type, $linker );
+	}
+
+	private function createOutput( $type, $linker ) {
+
+		$results = $this->getListOfFormattedPropertyDataItems(
+			$type,
+			$linker,
+			$this->dataValue->getPropertyDataItems()
+		);
+
+		if ( $type == self::VALUE ) {
+			return implode( ';', $results ) ;
+		}
+
+		$result = array_shift( $results );
+		$class = 'smw-reference-otiose';
+
+		// "smw-highlighter smwttinline" signals to invoke the tooltip
+		if ( count( $results ) > 0 ) {
+			$class = 'smw-reference smw-reference-indicator smw-highlighter smwttinline';
+		}
+
+		// Add an extra "title" attribute to support nojs environments by allowing
+		// it to display references even without JS, it will be removed when JS is available
+		// to show the "normal" tooltip
+		$result .= \Html::rawElement(
+			'span',
+			array(
+				'class' => $class,
+				'data-title'   =>  Message::get( 'smw-ui-tooltip-title-reference', Message::TEXT, Message::USER_LANGUAGE ),
+				'data-content' => '<ul><li>' . implode( '</li><li>', $results ) . '</li></ul>',
+				'title' => strip_tags( implode( ', ', $results ) )
+			)
+		);
+
+		return $result;
+	}
+
+	private function getListOfFormattedPropertyDataItems( $type, $linker, $propertyDataItems ) {
+
+		$results = array();
+
+		foreach ( $propertyDataItems as $propertyDataItem ) {
+
+			$propertyValues = $this->dataValue->getDataItem()->getSemanticData()->getPropertyValues( $propertyDataItem );
+			$dataItem = reset( $propertyValues );
+			$isValue = $results === array();
+
+			if ( $dataItem !== false ) {
+				$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $dataItem, $propertyDataItem );
+				$output = $this->findValueOutputFor( $isValue, $type, $dataValue, $linker );
+			} else {
+				$output = '?';
+			}
+
+			if ( !$isValue && $type !== self::VALUE ) {
+				$output = Message::get( array( 'smw-datavalue-reference-outputformat', $propertyDataItem->getLabel(), $output ), Message::TEXT );
+			}
+
+			$results[] = $output;
+		}
+
+		return $results;
+	}
+
+	private function findValueOutputFor( $isValue, $type, $dataValue, $linker ) {
+
+		// Turn Uri/Page links into a href representation when not used as value
+		if ( !$isValue &&
+			(
+				$dataValue->getDataItem() instanceof DIUri ||
+				$dataValue->getDataItem() instanceof DIWikiPage
+			) && $type !== self::VALUE ) {
+			return $dataValue->getShortHTMLText( smwfGetLinker() );
+		}
+
+		switch ( $type ) {
+			case self::VALUE:
+				return $dataValue->getWikiValue();
+			case self::WIKI_SHORT:
+				return $dataValue->getShortWikiText( $linker );
+			case self::HTML_SHORT:
+				return $dataValue->getShortHTMLText( $linker );
+			case self::WIKI_LONG:
+				return $dataValue->getShortWikiText( $linker );
+			case self::HTML_LONG:
+				return $dataValue->getShortHTMLText( $linker );
+		}
+	}
+
+}
