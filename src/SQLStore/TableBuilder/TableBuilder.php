@@ -2,89 +2,175 @@
 
 namespace SMW\SQLStore\TableBuilder;
 
+use Onoi\MessageReporter\MessageReporter;
+use SMW\SQLStore\TableBuilder as TableBuilderInterface;
+use DatabaseBase;
+use RuntimeException;
+
 /**
  * @license GNU GPL v2+
  * @since 2.5
  *
+ * @author Markus Krötzsch
+ * @author Marcel Gsteiger
+ * @author Jeroen De Dauw
  * @author mwjames
  */
-interface TableBuilder {
+abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 
 	/**
-	 * Generic creation and updating function for database tables. Ideally, it
-	 * would be able to modify a table's signature in arbitrary ways, but it will
-	 * fail for some changes. Its string-based interface is somewhat too
-	 * impoverished for a permanent solution. It would be possible to go for update
-	 * scripts (specific to each change) in the style of MediaWiki instead.
-	 *
-	 * Make sure the table of the given name has the given fields, provided
-	 * as an array with entries fieldname => typeparams. typeparams should be
-	 * in a normalised form and order to match to existing values.
-	 *
-	 * The function returns an array that includes all columns that have been
-	 * changed. For each such column, the array contains an entry
-	 * columnname => action, where action is one of 'up', 'new', or 'del'
-	 *
-	 * @note The function partly ignores the order in which fields are set up.
-	 * Only if the type of some field changes will its order be adjusted explicitly.
-	 *
-	 * ```
-	 * $tableOptions = array(
-	 * 	'fields' => array(
-	 * 	),
-	 * 	'wgDBname' => $GLOBALS['$wgDBname'],
-	 * 	'wgDBTableOptions' => $GLOBALS['wgDBTableOptions']
-	 *  ...
-	 * )
-	 *```
+	 * @var DatabaseBase
+	 */
+	protected $connection;
+
+	/**
+	 * @var MessageReporter
+	 */
+	private $messageReporter;
+
+	/**
 	 * @since 2.5
 	 *
+	 * @param DatabaseBase $connection
+	 */
+	protected function __construct( DatabaseBase $connection ) {
+		$this->connection = $connection;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param DatabaseBase $connection
+	 *
+	 * @return TableBuilder
+	 * @throws RuntimeException
+	 */
+	public static function factory( DatabaseBase $connection ) {
+
+		$instance = null;
+
+		switch ( $connection->getType() ) {
+			case 'mysql':
+				$instance = new MySQLTableBuilder( $connection );
+				break;
+			case 'sqlite':
+				$instance = new SQLiteTableBuilder( $connection );
+				break;
+			case 'postgres':
+				$instance = new PostgresTableBuilder( $connection );
+				break;
+		}
+
+		if ( $instance === null ) {
+			throw new RuntimeException( "Unknown DB type " . $connection->getType() );
+		}
+
+		return $instance;
+	}
+
+	/**
+	 * @see MessageReporterAware::setMessageReporter
+	 *
+	 * @since 2.5
+	 *
+	 * @param MessageReporter $messageReporter
+	 */
+	public function setMessageReporter( MessageReporter $messageReporter ) {
+		$this->messageReporter = $messageReporter;
+	}
+
+	/**
+	 * @see MessageReporter::reportMessage
+	 *
+	 * @since 2.5
+	 *
+	 * @param string $message
+	 */
+	public function reportMessage( $message ) {
+
+		if ( $this->messageReporter === null ) {
+			return;
+		}
+
+		$this->messageReporter->reportMessage( $message );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getStandardFieldType( $input ) {
+		return false;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * {@inheritDoc}
+	 */
+	public function createTable( $tableName, array $tableOptions = null ) {
+
+		$this->reportMessage( "Checking table $tableName ...\n" );
+
+		if ( $this->connection->tableExists( $tableName ) === false ) { // create new table
+			$this->reportMessage( "   Table not found, now creating...\n" );
+			$this->doCreateTable( $tableName, $tableOptions );
+		} else {
+			$this->reportMessage( "   Table already exists, checking structure ...\n" );
+			$this->doUpdateTable( $tableName, $tableOptions );
+		}
+
+		$this->reportMessage( "   ... done.\n" );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * {@inheritDoc}
+	 */
+	public function createIndex( $tableName, array $indexOptions = null ) {
+		$this->reportMessage( "Checking index structures for table $tableName ...\n" );
+		$this->doCreateIndicies( $tableName, $indexOptions );
+		$this->reportMessage( "   ... done.\n" );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * {@inheritDoc}
+	 */
+	public function dropTable( $tableName ) {
+
+		if ( $this->connection->tableExists( $tableName ) === false ) { // create new table
+			return $this->reportMessage( " ... $tableName not found, skipping removal.\n" );
+		}
+
+		$this->doDropTable( $tableName );
+		$this->reportMessage( " ... dropped table $tableName.\n" );
+	}
+
+	/**
 	 * @param string $tableName
-	 * @param array|null $tableOptions
+	 * @param array $tableOptions
 	 */
-	public function createTable( $tableName, array $tableOptions = null );
+	abstract protected function doCreateTable( $tableName, array $tableOptions = null);
 
 	/**
-	 * Removes a table from the RDBMS backend.
-	 *
-	 * @since 2.5
-	 *
+	 * @param string $tableName
+	 * @param array $tableOptions
+	 */
+	abstract protected function doUpdateTable( $tableName, array $tableOptions = null );
+
+	/**
+	 * @param string $tableName
+	 * @param array $indexOptions
+	 */
+	abstract protected function doCreateIndicies( $tableName, array $indexOptions = null );
+
+	/**
 	 * @param string $tableName
 	 */
-	public function dropTable( $tableName );
-
-	/**
-	 * Generic method to create or update index information of a table
-	 *
-	 * ```
-	 * $indexOptions = array(
-	 * 	'indicies' => array(
-	 * 	)
-	 *  ...
-	 * )
-	 *```
-	 *
-	 * @since 2.5
-	 *
-	 * @param string $indexName
-	 * @param array|null $indexOptions
-	 */
-	public function createIndex( $tableName, array $indexOptions = null );
-
-	/**
-	 * Database backends often have different types that need to be used
-	 * repeatedly in (Semantic) MediaWiki. This function provides the
-	 * preferred type (as a string) for various common kinds of columns.
-	 * The input is one of the following strings: 'id' (page id numbers or
-	 * similar), 'title' (title strings or similar), 'namespace' (namespace
-	 * numbers), 'blob' (longer text blobs), 'iw' (interwiki prefixes).
-	 *
-	 * @since 2.5
-	 *
-	 * @param string $input
-	 *
-	 * @return string|false SQL type declaration
-	 */
-	public function getStandardFieldType( $input );
+	abstract protected function doDropTable( $tableName );
 
 }

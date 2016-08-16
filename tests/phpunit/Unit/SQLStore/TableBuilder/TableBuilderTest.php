@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder;
 
-use SMW\SQLStore\TableBuilder\RdbmsTableBuilder;
+use SMW\SQLStore\TableBuilder\TableBuilder;
 
 /**
- * @covers \SMW\SQLStore\TableBuilder\RdbmsTableBuilder
+ * @covers \SMW\SQLStore\TableBuilder\TableBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,7 +13,7 @@ use SMW\SQLStore\TableBuilder\RdbmsTableBuilder;
  *
  * @author mwjames
  */
-class RdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
+class TableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructForMySQL() {
 
@@ -26,8 +26,8 @@ class RdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'mysql' ) );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableBuilder\MySQLRdbmsTableBuilder',
-			RdbmsTableBuilder::factory( $connection )
+			'\SMW\SQLStore\TableBuilder\MySQLTableBuilder',
+			TableBuilder::factory( $connection )
 		);
 	}
 
@@ -42,8 +42,8 @@ class RdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'sqlite' ) );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableBuilder\SQLiteRdbmsTableBuilder',
-			RdbmsTableBuilder::factory( $connection )
+			'\SMW\SQLStore\TableBuilder\SQLiteTableBuilder',
+			TableBuilder::factory( $connection )
 		);
 	}
 
@@ -58,8 +58,8 @@ class RdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'postgres' ) );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableBuilder\PostgresRdbmsTableBuilder',
-			RdbmsTableBuilder::factory( $connection )
+			'\SMW\SQLStore\TableBuilder\PostgresTableBuilder',
+			TableBuilder::factory( $connection )
 		);
 	}
 
@@ -74,7 +74,7 @@ class RdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'foo' ) );
 
 		$this->setExpectedException( 'RuntimeException' );
-		RdbmsTableBuilder::factory( $connection );
+		TableBuilder::factory( $connection );
 	}
 
 }

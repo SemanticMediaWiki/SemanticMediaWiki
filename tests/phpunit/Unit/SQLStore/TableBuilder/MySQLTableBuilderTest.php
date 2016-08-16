@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder;
 
-use SMW\SQLStore\TableBuilder\PostgresRdbmsTableBuilder;
+use SMW\SQLStore\TableBuilder\MySQLTableBuilder;
 
 /**
- * @covers \SMW\SQLStore\TableBuilder\PostgresRdbmsTableBuilder
+ * @covers \SMW\SQLStore\TableBuilder\MySQLTableBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,7 +13,7 @@ use SMW\SQLStore\TableBuilder\PostgresRdbmsTableBuilder;
  *
  * @author mwjames
  */
-class PostgresRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
+class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -23,11 +23,11 @@ class PostgresRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'postgres' ) );
+			->will( $this->returnValue( 'mysql' ) );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableBuilder\PostgresRdbmsTableBuilder',
-			PostgresRdbmsTableBuilder::factory( $connection )
+			'\SMW\SQLStore\TableBuilder\MySQLTableBuilder',
+			MySQLTableBuilder::factory( $connection )
 		);
 	}
 
@@ -40,7 +40,7 @@ class PostgresRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'postgres' ) );
+			->will( $this->returnValue( 'mysql' ) );
 
 		$connection->expects( $this->any() )
 			->method( 'tableExists' )
@@ -50,7 +50,7 @@ class PostgresRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'query' )
 			->with( $this->stringContains( 'CREATE TABLE' ) );
 
-		$instance = PostgresRdbmsTableBuilder::factory( $connection );
+		$instance = MySQLTableBuilder::factory( $connection );
 
 		$tableOptions = array(
 			'fields' => array( 'bar' => 'text' )
@@ -68,7 +68,7 @@ class PostgresRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'postgres' ) );
+			->will( $this->returnValue( 'mysql' ) );
 
 		$connection->expects( $this->any() )
 			->method( 'tableExists' )
@@ -76,14 +76,14 @@ class PostgresRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->at( 2 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'SELECT a.attname as' ) )
+			->with( $this->stringContains( 'DESCRIBE' ) )
 			->will( $this->returnValue( array() ) );
 
 		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'ALTER TABLE "foo" ADD "bar" TEXT' ) );
+			->with( $this->stringContains( 'ALTER TABLE "foo" ADD `bar` text FIRST' ) );
 
-		$instance = PostgresRdbmsTableBuilder::factory( $connection );
+		$instance = MySQLTableBuilder::factory( $connection );
 
 		$tableOptions = array(
 			'fields' => array( 'bar' => 'text' )
@@ -96,31 +96,27 @@ class PostgresRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query', 'indexInfo' ) )
+			->setMethods( array( 'tableExists', 'query' ) )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'postgres' ) );
+			->will( $this->returnValue( 'mysql' ) );
 
 		$connection->expects( $this->any() )
 			->method( 'tableExists' )
 			->will( $this->returnValue( false ) );
 
-		$connection->expects( $this->any() )
-			->method( 'indexInfo' )
-			->will( $this->returnValue( false ) );
-
 		$connection->expects( $this->at( 1 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'SELECT  i.relname AS indexname' ) )
+			->with( $this->stringContains( 'SHOW INDEX' ) )
 			->will( $this->returnValue( array() ) );
 
-		$connection->expects( $this->at( 3 ) )
+		$connection->expects( $this->at( 2 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'CREATE INDEX foo_index0 ON foo (bar)' ) );
+			->with( $this->stringContains( 'ALTER TABLE "foo" ADD INDEX (bar)' ) );
 
-		$instance = PostgresRdbmsTableBuilder::factory( $connection );
+		$instance = MySQLTableBuilder::factory( $connection );
 
 		$indexOptions = array(
 			'indicies' => array( 'bar' )
@@ -138,7 +134,7 @@ class PostgresRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'postgres' ) );
+			->will( $this->returnValue( 'mysql' ) );
 
 		$connection->expects( $this->once() )
 			->method( 'tableExists' )
@@ -146,9 +142,9 @@ class PostgresRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'query' )
-			->with( $this->stringContains( 'DROP TABLE IF EXISTS "foo"' ) );
+			->with( $this->stringContains( 'DROP TABLE "foo"' ) );
 
-		$instance = PostgresRdbmsTableBuilder::factory( $connection );
+		$instance = MySQLTableBuilder::factory( $connection );
 
 		$instance->dropTable( 'foo' );
 	}

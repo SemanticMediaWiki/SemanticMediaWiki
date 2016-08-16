@@ -72,36 +72,36 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 
 		$reportTo = $verbose ? $this : null; // Use $this to report back from static SMWSQLHelpers.
 
-		$rdbmsTableBuilder = $this->factory->newRdbmsTableBuilder();
+		$tableBuilder = $this->factory->newTableBuilder();
 
 		if ( $verbose ) {
 			$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
 			$messageReporter->registerReporterCallback( array( $this , 'reportProgress' ) );
 
-			$rdbmsTableBuilder->setMessageReporter( $messageReporter );
+			$tableBuilder->setMessageReporter( $messageReporter );
 		}
 
 		// Repeatedly used DB field types defined here for convenience.
 		$dbtypes = array(
-			'b' => $rdbmsTableBuilder->getStandardFieldType( 'boolean' ),
-			't' => $rdbmsTableBuilder->getStandardFieldType( 'title' ),
-			's' => $rdbmsTableBuilder->getStandardFieldType( 'sort' ),
-			'l' => $rdbmsTableBuilder->getStandardFieldType( 'blob' ),
-			'f' => $rdbmsTableBuilder->getStandardFieldType( 'double' ),
-			'i' => $rdbmsTableBuilder->getStandardFieldType( 'integer' ),
-			'j' => $rdbmsTableBuilder->getStandardFieldType( 'integer unsigned' ),
-			'u' => $rdbmsTableBuilder->getStandardFieldType( 'usage count' ),
-			'p' => $rdbmsTableBuilder->getStandardFieldType( 'id' ),
-			'n' => $rdbmsTableBuilder->getStandardFieldType( 'namespace' ),
-			'w' => $rdbmsTableBuilder->getStandardFieldType( 'iw' )
+			'b' => $tableBuilder->getStandardFieldType( 'boolean' ),
+			't' => $tableBuilder->getStandardFieldType( 'title' ),
+			's' => $tableBuilder->getStandardFieldType( 'sort' ),
+			'l' => $tableBuilder->getStandardFieldType( 'blob' ),
+			'f' => $tableBuilder->getStandardFieldType( 'double' ),
+			'i' => $tableBuilder->getStandardFieldType( 'integer' ),
+			'j' => $tableBuilder->getStandardFieldType( 'integer unsigned' ),
+			'u' => $tableBuilder->getStandardFieldType( 'usage count' ),
+			'p' => $tableBuilder->getStandardFieldType( 'id' ),
+			'n' => $tableBuilder->getStandardFieldType( 'namespace' ),
+			'w' => $tableBuilder->getStandardFieldType( 'iw' )
 		);
 
 		// Set up table for internal IDs used in this store:
-		$rdbmsTableBuilder->createTable(
+		$tableBuilder->createTable(
 			SMWSQLStore3::ID_TABLE,
 			array(
 				'fields' => array(
-					'smw_id' => $rdbmsTableBuilder->getStandardFieldType( 'id primary' ),
+					'smw_id' => $tableBuilder->getStandardFieldType( 'id primary' ),
 					'smw_namespace' => $dbtypes['n'] . ' NOT NULL',
 					'smw_title' => $dbtypes['t'] . ' NOT NULL',
 					'smw_iw' => $dbtypes['w'] . ' NOT NULL',
@@ -114,7 +114,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			)
 		);
 
-		$rdbmsTableBuilder->createIndex(
+		$tableBuilder->createIndex(
 			SMWSQLStore3::ID_TABLE,
 			array(
 				'indicies' => array(
@@ -128,7 +128,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 		);
 
 		// Set up concept cache: member elements (s)->concepts (o)
-		$rdbmsTableBuilder->createTable(
+		$tableBuilder->createTable(
 			SMWSQLStore3::CONCEPT_CACHE_TABLE,
 			array(
 				'fields' => array(
@@ -140,7 +140,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			)
 		);
 
-		$rdbmsTableBuilder->createIndex(
+		$tableBuilder->createIndex(
 			SMWSQLStore3::CONCEPT_CACHE_TABLE,
 			array(
 				'indicies' => array(
@@ -150,7 +150,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 		);
 
 		// Set up ...
-		$rdbmsTableBuilder->createTable(
+		$tableBuilder->createTable(
 			SMWSQLStore3::QUERY_LINKS_TABLE,
 			array(
 				'fields' => array(
@@ -162,7 +162,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			)
 		);
 
-		$rdbmsTableBuilder->createIndex(
+		$tableBuilder->createIndex(
 			SMWSQLStore3::QUERY_LINKS_TABLE,
 			array(
 				'indicies' => array(
@@ -175,7 +175,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 
 		// TEXT and BLOB is stored off the table with the table just having a pointer
 		// VARCHAR is stored inline with the table
-		$rdbmsTableBuilder->createTable(
+		$tableBuilder->createTable(
 			SMWSQLStore3::FT_SEARCH_TABLE,
 			array(
 				'fields' => array(
@@ -190,7 +190,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			)
 		);
 
-		$rdbmsTableBuilder->createIndex(
+		$tableBuilder->createIndex(
 			SMWSQLStore3::FT_SEARCH_TABLE,
 			array(
 				'indicies' => array(
@@ -204,7 +204,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 		);
 
 		// Set up table for stats on Properties (only counts for now)
-		$rdbmsTableBuilder->createTable(
+		$tableBuilder->createTable(
 			SMWSQLStore3::PROPERTY_STATISTICS_TABLE,
 			array(
 				'fields' => array(
@@ -216,7 +216,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			)
 		);
 
-		$rdbmsTableBuilder->createIndex(
+		$tableBuilder->createIndex(
 			SMWSQLStore3::PROPERTY_STATISTICS_TABLE,
 			array(
 				'indicies' => array(
@@ -227,7 +227,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 		);
 
 		// Set up all property tables as defined:
-		$this->setupPropertyTables( $rdbmsTableBuilder, $dbtypes );
+		$this->setupPropertyTables( $tableBuilder, $dbtypes );
 
 		$this->reportProgress( "Database initialized successfully.\n\n", $verbose );
 	}
@@ -238,7 +238,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 	 * @since 1.8
 	 * @param array $dbtypes
 	 */
-	protected function setupPropertyTables( $rdbmsTableBuilder, array $dbtypes ) {
+	protected function setupPropertyTables( $tableBuilder, array $dbtypes ) {
 		$addedCustomTypeSignatures = false;
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
@@ -298,7 +298,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 				}
 			}
 
-			$rdbmsTableBuilder->createTable(
+			$tableBuilder->createTable(
 				$proptable->getName(),
 				array(
 					'fields' => $fieldarray,
@@ -307,7 +307,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 				)
 			);
 
-			$rdbmsTableBuilder->createIndex(
+			$tableBuilder->createIndex(
 				$proptable->getName(),
 				array(
 					'indicies' => $indexes
@@ -362,13 +362,13 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 
 		$this->reportProgress( "Deleting all database content and tables generated by SMW ...\n\n", $verbose );
 
-		$rdbmsTableBuilder = $this->factory->newRdbmsTableBuilder();
+		$tableBuilder = $this->factory->newtableBuilder();
 
 		if ( $verbose ) {
 			$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
 			$messageReporter->registerReporterCallback( array( $this , 'reportProgress' ) );
 
-			$rdbmsTableBuilder->setMessageReporter( $messageReporter );
+			$tableBuilder->setMessageReporter( $messageReporter );
 		}
 
 		$tables = array(
@@ -384,12 +384,12 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 		}
 
 		foreach ( $tables as $tableName ) {
-			$rdbmsTableBuilder->dropTable( $tableName );
+			$tableBuilder->dropTable( $tableName );
 		}
 
 		$this->reportProgress( "All data removed successfully.\n", $verbose );
 
-		\Hooks::run( 'SMW::SQLStore::AfterDropTablesComplete', array( $this->store, $rdbmsTableBuilder ) );
+		\Hooks::run( 'SMW::SQLStore::AfterDropTablesComplete', array( $this->store, $tableBuilder ) );
 
 		return true;
 	}

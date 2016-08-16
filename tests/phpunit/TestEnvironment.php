@@ -7,6 +7,7 @@ use SMW\DataValueFactory;
 use SMW\DeferredCallableUpdate;
 use SMW\Store;
 use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\Utils\Mock\ConfigurableStub;
 use RuntimeException;
 
 /**
@@ -159,6 +160,31 @@ class TestEnvironment {
 		$this->dataValueFactory->clear();
 	}
 
+	/**
+	 * @since 2.5
+	 *
+	 * @param $originalClassName
+	 * @param array $configuration
+	 *
+	 * @return PHPUnit_Framework_MockObject_MockObject
+	 */
+	public function createConfiguredStub( $originalClassName, array $configuration ) {
+		$configurableStub = new ConfigurableStub();
+		return $configurableStub->createConfiguredStub( $originalClassName, $configuration );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param $originalClassName
+	 * @param array $configuration
+	 *
+	 * @return PHPUnit_Framework_MockObject_MockObject
+	 */
+	public function createConfiguredAbstractStub( $originalClassName, array $configuration ) {
+		$configurableStub = new ConfigurableStub();
+		return $configurableStub->createConfiguredAbstractStub( $originalClassName, $configuration );
+	}
 
 	/**
 	 * @since 2.5
