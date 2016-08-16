@@ -84,7 +84,8 @@ class ArticleDelete {
 			);
 		} );
 
-		$deferredCallableUpdate->pushToDeferredUpdateList();
+		$deferredCallableUpdate->setOrigin( __METHOD__ );
+		$deferredCallableUpdate->pushUpdate();
 
 		return true;
 	}

@@ -375,7 +375,9 @@ class SMWSQLStore3 extends SMWStore {
 			return null;
 		}
 
-		$this->factory->newDeferredCallableCachedListLookupUpdate()->pushToDeferredUpdateList();
+		$deferredCallableUpdate = $this->factory->newDeferredCallableCachedListLookupUpdate();
+		$deferredCallableUpdate->setOrigin( __METHOD__ );
+		$deferredCallableUpdate->pushUpdate();
 	}
 
 ///// Query answering /////
