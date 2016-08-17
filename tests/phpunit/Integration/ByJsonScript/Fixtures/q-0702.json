@@ -30,7 +30,7 @@
 	],
 	"query-testcases": [
 		{
-			"about": "#0",
+			"about": "#0 search phone number +1-2012-555-5555",
 			"condition": "[[Has telephone number::+1-2012-555-5555]]",
 			"printouts" : [ "Has telephone number" ],
 			"parameters" : {
@@ -85,7 +85,7 @@
 			}
 		},
 		{
-			"about": "#3",
+			"about": "#3 search e-mail address Lorem@ipsum.org",
 			"condition": "[[Has email::Lorem@ipsum.org]]",
 			"printouts" : [],
 			"parameters" : {
@@ -99,7 +99,7 @@
 			}
 		},
 		{
-			"about": "#4",
+			"about": "#4 search e-mail address that contains 123.org",
 			"condition": "[[Has email::~*123.org]]",
 			"printouts" : [ "Has email" ],
 			"parameters" : {
@@ -114,6 +114,40 @@
 					{
 						"property": "Has email",
 						"value": "mailto:Lorem@123.org"
+					}
+				]
+			}
+		},
+		{
+			"about": "#5 search phone number that does not contain 123",
+			"condition": "[[Has telephone number::!~*123*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": "1",
+				"results": [
+					"Page/07/02/2#0##"
+				]
+			}
+		},
+		{
+			"about": "#6 search e-mail address that does not contain 123.org",
+			"condition": "[[Has email::!~*123.org]]",
+			"printouts" : [ "Has email" ],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": "1",
+				"results": [
+					"Page/07/02/3#0##"
+				],
+				"datavalues": [
+					{
+						"property": "Has email",
+						"value": "mailto:Lorem@ipsum.org"
 					}
 				]
 			}
