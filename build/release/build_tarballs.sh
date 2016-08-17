@@ -27,7 +27,7 @@ cd $BUILD_DIR
 
 composer create-project mediawiki/semantic-media-wiki SemanticMediaWiki $COMPOSER_VERSION -s dev --prefer-dist --no-dev
 
-NAME="Semantic_MediaWiki_$VERSION_and_dependencies"
+NAME="Semantic_MediaWiki_${VERSION}_and_dependencies"
 DIR="SemanticMediaWiki"
 
 zip -r "$NAME.zip" $DIR
