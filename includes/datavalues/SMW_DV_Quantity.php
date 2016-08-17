@@ -47,7 +47,7 @@ class SMWQuantityValue extends SMWNumberValue {
 
 		if ( array_key_exists( $unit, $this->m_unitids ) ) {
 			$this->m_unitin = $this->m_unitids[$unit];
-			assert( '$this->m_unitfactors[$this->m_unitin] != 0 /* Should be filtered by initConversionData() */' );
+			assert( $this->m_unitfactors[$this->m_unitin] != 0 /* Should be filtered by initConversionData() */ );
 			$this->m_dataitem = new SMWDINumber( $number / $this->m_unitfactors[$this->m_unitin], $this->m_typeid );
 			return true;
 		} else { // unsupported unit
