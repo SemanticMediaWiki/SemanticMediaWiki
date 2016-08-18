@@ -3,9 +3,9 @@
 namespace SMW\Tests\Integration\SQLStore\TableBuilder;
 
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\SQLStore\TableBuilder\RdbmsTableBuilder;
-use SMW\SQLStore\TableBuilder\PostgresRdbmsTableBuilder;
-use SMW\SQLStore\TableBuilder\SQLiteRdbmsTableBuilder;
+use SMW\SQLStore\TableBuilder\TableBuilder;
+use SMW\SQLStore\TableBuilder\PostgresTableBuilder;
+use SMW\SQLStore\TableBuilder\SQLiteTableBuilder;
 use Onoi\MessageReporter\MessageReporterFactory;
 
 /**
@@ -17,10 +17,10 @@ use Onoi\MessageReporter\MessageReporterFactory;
  *
  * @author mwjames
  */
-class RdbmsTableBuilderIntegrationTest extends MwDBaseUnitTestCase {
+class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 	private $messageReporterFactory;
-	private $rdbmsTableBuilder;
+	private $TableBuilder;
 	private $stringValidator;
 
 	protected function setUp() {
@@ -28,7 +28,7 @@ class RdbmsTableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->messageReporterFactory = MessageReporterFactory::getInstance();
 
-		$this->rdbmsTableBuilder = RdbmsTableBuilder::factory(
+		$this->tableBuilder = TableBuilder::factory(
 			$this->getStore()->getConnection( DB_MASTER )
 		);
 
@@ -43,20 +43,20 @@ class RdbmsTableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
-		$this->rdbmsTableBuilder->setMessageReporter(
+		$this->tableBuilder->setMessageReporter(
 			$messageReporter
 		);
 
 		$definition = array(
 			'fields' => array(
-				'id'   => $this->rdbmsTableBuilder->getStandardFieldType( 'id primary' ),
-				't_text' => $this->rdbmsTableBuilder->getStandardFieldType( 'blob' ),
+				'id'   => $this->tableBuilder->getStandardFieldType( 'id primary' ),
+				't_text' => $this->tableBuilder->getStandardFieldType( 'blob' ),
 			),
 			'wgDBname' => $GLOBALS['wgDBname'],
 			'wgDBTableOptions' => $GLOBALS['wgDBTableOptions']
 		);
 
-		$this->rdbmsTableBuilder->createTable( 'rdbms_test', $definition );
+		$this->tableBuilder->createTable( 'rdbms_test', $definition );
 
 		$expected = array(
 			'Checking table rdbms_test',
@@ -73,22 +73,22 @@ class RdbmsTableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
-		$this->rdbmsTableBuilder->setMessageReporter(
+		$this->tableBuilder->setMessageReporter(
 			$messageReporter
 		);
 
 		$definition = array(
 			'fields' => array(
-				'id'   => $this->rdbmsTableBuilder->getStandardFieldType( 'id primary' ),
-				't_text' => $this->rdbmsTableBuilder->getStandardFieldType( 'blob' ),
-				't_num'  => $this->rdbmsTableBuilder->getStandardFieldType( 'integer' ),
-				't_int'  => $this->rdbmsTableBuilder->getStandardFieldType( 'integer' )
+				'id'   => $this->tableBuilder->getStandardFieldType( 'id primary' ),
+				't_text' => $this->tableBuilder->getStandardFieldType( 'blob' ),
+				't_num'  => $this->tableBuilder->getStandardFieldType( 'integer' ),
+				't_int'  => $this->tableBuilder->getStandardFieldType( 'integer' )
 			),
 			'wgDBname' => $GLOBALS['wgDBname'],
 			'wgDBTableOptions' => $GLOBALS['wgDBTableOptions']
 		);
 
-		$this->rdbmsTableBuilder->createTable( 'rdbms_test', $definition );
+		$this->tableBuilder->createTable( 'rdbms_test', $definition );
 
 		$expected = array(
 			'Checking table rdbms_test',
@@ -106,22 +106,22 @@ class RdbmsTableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
-		$this->rdbmsTableBuilder->setMessageReporter(
+		$this->tableBuilder->setMessageReporter(
 			$messageReporter
 		);
 
 		$definition = array(
 			'fields' => array(
-				'id'   => $this->rdbmsTableBuilder->getStandardFieldType( 'id primary' ),
-				't_text' => $this->rdbmsTableBuilder->getStandardFieldType( 'blob' ),
-				't_num'  => $this->rdbmsTableBuilder->getStandardFieldType( 'double' ),
-				't_int'  => $this->rdbmsTableBuilder->getStandardFieldType( 'integer' )
+				'id'   => $this->tableBuilder->getStandardFieldType( 'id primary' ),
+				't_text' => $this->tableBuilder->getStandardFieldType( 'blob' ),
+				't_num'  => $this->tableBuilder->getStandardFieldType( 'double' ),
+				't_int'  => $this->tableBuilder->getStandardFieldType( 'integer' )
 			),
 			'wgDBname' => $GLOBALS['wgDBname'],
 			'wgDBTableOptions' => $GLOBALS['wgDBTableOptions']
 		);
 
-		$this->rdbmsTableBuilder->createTable( 'rdbms_test', $definition );
+		$this->tableBuilder->createTable( 'rdbms_test', $definition );
 
 		$expected = array(
 			'Checking table rdbms_test',
@@ -130,7 +130,7 @@ class RdbmsTableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 		);
 
 		// Not supported
-		if ( $this->rdbmsTableBuilder instanceof SQLiteRdbmsTableBuilder ) {
+		if ( $this->tableBuilder instanceof SQLiteTableBuilder ) {
 			$expected = str_replace( 'changing type of field t_num', 'changing field type is not supported', $expected );
 		}
 
@@ -144,7 +144,7 @@ class RdbmsTableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
-		$this->rdbmsTableBuilder->setMessageReporter(
+		$this->tableBuilder->setMessageReporter(
 			$messageReporter
 		);
 
@@ -155,7 +155,7 @@ class RdbmsTableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 			)
 		);
 
-		$this->rdbmsTableBuilder->createIndex( 'rdbms_test', $definition );
+		$this->tableBuilder->createIndex( 'rdbms_test', $definition );
 
 		$expected = array(
 			'Checking index structures for table rdbms_test',
@@ -164,7 +164,7 @@ class RdbmsTableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 		);
 
 		// ID message, Primary doesn't implicitly exists before
-		if ( $this->rdbmsTableBuilder instanceof PostgresRdbmsTableBuilder || $this->rdbmsTableBuilder instanceof SQLiteRdbmsTableBuilder ) {
+		if ( $this->tableBuilder instanceof PostgresTableBuilder || $this->tableBuilder instanceof SQLiteTableBuilder ) {
 			$expected = str_replace( 'index id is fine', 'creating new index id', $expected );
 		}
 
@@ -178,7 +178,7 @@ class RdbmsTableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
-		$this->rdbmsTableBuilder->setMessageReporter(
+		$this->tableBuilder->setMessageReporter(
 			$messageReporter
 		);
 
@@ -189,7 +189,7 @@ class RdbmsTableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 			)
 		);
 
-		$this->rdbmsTableBuilder->createIndex( 'rdbms_test', $definition );
+		$this->tableBuilder->createIndex( 'rdbms_test', $definition );
 
 		$expected = array(
 			'Checking index structures for table rdbms_test',
@@ -198,7 +198,7 @@ class RdbmsTableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 			'creating new index t_num,t_int',
 		);
 
-		if ( $this->rdbmsTableBuilder instanceof SQLiteRdbmsTableBuilder ) {
+		if ( $this->tableBuilder instanceof SQLiteTableBuilder ) {
 			$expected = str_replace( 'index id is fine', 'creating new index id', $expected );
 			$expected = 'removing index';
 		}
@@ -213,11 +213,11 @@ class RdbmsTableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
-		$this->rdbmsTableBuilder->setMessageReporter(
+		$this->tableBuilder->setMessageReporter(
 			$messageReporter
 		);
 
-		$this->rdbmsTableBuilder->dropTable( 'rdbms_test' );
+		$this->tableBuilder->dropTable( 'rdbms_test' );
 
 		$expected = array(
 			'dropped table rdbms_test'
@@ -233,11 +233,11 @@ class RdbmsTableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
-		$this->rdbmsTableBuilder->setMessageReporter(
+		$this->tableBuilder->setMessageReporter(
 			$messageReporter
 		);
 
-		$this->rdbmsTableBuilder->dropTable( 'foo_test' );
+		$this->tableBuilder->dropTable( 'foo_test' );
 
 		$expected = array(
 			'foo_test not found, skipping removal'

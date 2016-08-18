@@ -8,10 +8,12 @@ namespace SMW\SQLStore\TableBuilder;
  *
  * @author mwjames
  */
-class MySQLRdbmsTableBuilder extends RdbmsTableBuilder {
+class MySQLTableBuilder extends TableBuilder {
 
 	/**
-	 * @see RdbmsTableBuilder::getStandardFieldType
+	 * @since 2.5
+	 *
+	 * {@inheritDoc}
 	 */
 	public function getStandardFieldType( $input ) {
 
@@ -45,18 +47,38 @@ class MySQLRdbmsTableBuilder extends RdbmsTableBuilder {
 		return false;
 	}
 
+	/** Create */
+
 	/**
-	 * @see RdbmsTableBuilder::getSQLFromDBName
+	 * @since 2.5
+	 *
+	 * {@inheritDoc}
 	 */
-	protected function getSQLFromDBName( array $tableOptions ) {
+	protected function doCreateTable( $tableName, array $tableOptions = null ) {
+
+		$tableName = $this->connection->tableName( $tableName );
+
+		$sql = 'CREATE TABLE ' . $this->getSQLFromDBName( $tableOptions ) . $tableName . ' (';
+
+		$fieldSql = array();
+		$fields = $tableOptions['fields'];
+
+		foreach ( $fields as $fieldName => $fieldType ) {
+			$fieldSql[] = "$fieldName  $fieldType";
+		}
+
+		$sql .= implode( ',', $fieldSql ) . ') ';
+		$sql .= $this->getSQLFromDBTableOptions( $tableOptions );
+
+		$this->connection->query( $sql, __METHOD__ );
+	}
+
+	private function getSQLFromDBName( array $tableOptions ) {
 		global $wgDBname;
 		return "`$wgDBname`.";
 	}
 
-	/**
-	 * @see RdbmsTableBuilder::getSQLFromDBTableOptions
-	 */
-	protected function getSQLFromDBTableOptions( array $tableOptions ) {
+	private function getSQLFromDBTableOptions( array $tableOptions ) {
 
 		if ( isset( $tableOptions['ftSearchOptions']['mysql'] ) ) {
 
@@ -76,10 +98,39 @@ class MySQLRdbmsTableBuilder extends RdbmsTableBuilder {
 		}
 	}
 
+	/** Update */
+
 	/**
-	 * @see RdbmsTableBuilder::getCurrentFields
+	 * @since 2.5
+	 *
+	 * {@inheritDoc}
 	 */
-	protected function getCurrentFields( $tableName ) {
+	protected function doUpdateTable( $tableName, array $tableOptions = null ) {
+
+		$tableName = $this->connection->tableName( $tableName );
+		$currentFields = $this->getCurrentFields( $tableName );
+
+		$fields = $tableOptions['fields'];
+		$position = 'FIRST';
+
+		// Loop through all the field definitions, and handle each definition for either postgres or MySQL.
+		foreach ( $fields as $fieldName => $fieldType ) {
+			$this->doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, $tableOptions );
+
+			$position = "AFTER $fieldName";
+			$currentFields[$fieldName] = false;
+		}
+
+		// The updated fields have their value set to false, so if a field has a value
+		// that differs from false, it's an obsolete one that should be removed.
+		foreach ( $currentFields as $fieldName => $value ) {
+			if ( $value !== false ) {
+				$this->doDropField( $tableName, $fieldName );
+			}
+		}
+	}
+
+	private function getCurrentFields( $tableName ) {
 
 		$sql = 'DESCRIBE ' . $tableName;
 
@@ -111,17 +162,7 @@ class MySQLRdbmsTableBuilder extends RdbmsTableBuilder {
 		return $currentFields;
 	}
 
-	/**
-	 * @see RdbmsTableBuilder::doDropTable
-	 */
-	protected function doDropTable( $tableName ) {
-		$this->connection->query( 'DROP TABLE ' . $this->connection->tableName( $tableName ), __METHOD__ );
-	}
-
-	/**
-	 * @see RdbmsTableBuilder::doUpdateField
-	 */
-	protected function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $tableOptions ) {
+	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $tableOptions ) {
 
 		if ( !array_key_exists( $fieldName, $currentFields ) ) {
 			$this->doCreateField( $tableName, $fieldName, $position, $fieldType );
@@ -132,13 +173,13 @@ class MySQLRdbmsTableBuilder extends RdbmsTableBuilder {
 		}
 	}
 
-	protected function doCreateField( $tableName, $fieldName, $position, $fieldType ) {
+	private function doCreateField( $tableName, $fieldName, $position, $fieldType ) {
 		$this->reportMessage( "   ... creating field $fieldName ... " );
 		$this->connection->query( "ALTER TABLE $tableName ADD `$fieldName` $fieldType $position", __METHOD__ );
 		$this->reportMessage( "done.\n" );
 	}
 
-	protected function doUpdateFieldType( $tableName, $fieldName, $position, $oldFieldType, $newFieldType ) {
+	private function doUpdateFieldType( $tableName, $fieldName, $position, $oldFieldType, $newFieldType ) {
 		$this->reportMessage( "   ... changing type of field $fieldName from '$oldFieldType' to '$newFieldType' ... " );
 
 		// To avoid Error: 1068 Multiple primary key defined when a PRIMARY is involved
@@ -157,17 +198,43 @@ class MySQLRdbmsTableBuilder extends RdbmsTableBuilder {
 		$this->reportMessage( "done.\n" );
 	}
 
-	/**
-	 * @see RdbmsTableBuilder::doDropField
-	 */
-	protected function doDropField( $tableName, $fieldName ) {
+	private function doDropField( $tableName, $fieldName ) {
+		$this->reportMessage( "   ... deleting obsolete field $fieldName ... " );
 		$this->connection->query( "ALTER TABLE $tableName DROP COLUMN `$fieldName`", __METHOD__ );
+		$this->reportMessage( "done.\n" );
 	}
 
+	/** Index */
+
 	/**
-	 * @see RdbmsTableBuilder::doDropObsoleteIndicies
+	 * @since 2.5
+	 *
+	 * {@inheritDoc}
 	 */
-	protected function doDropObsoleteIndicies( $tableName, array &$indicies ) {
+	protected function doCreateIndicies( $tableName, array $indexOptions = null ) {
+
+		$indicies = $indexOptions['indicies'];
+
+		// First remove possible obsolete indicies
+		$this->doDropObsoleteIndicies( $tableName, $indicies );
+
+		// Add new indexes.
+		foreach ( $indicies as $indexName => $index ) {
+			// If the index is an array, it contains the column
+			// name as first element, and index type as second one.
+			if ( is_array( $index ) ) {
+				$columns = $index[0];
+				$indexType = count( $index ) > 1 ? $index[1] : 'INDEX';
+			} else {
+				$columns = $index;
+				$indexType = 'INDEX';
+			}
+
+			$this->doCreateIndex( $tableName, $indexType, $indexName, $columns, $indexOptions );
+		}
+	}
+
+	private function doDropObsoleteIndicies( $tableName, array &$indicies ) {
 
 		$tableName = $this->connection->tableName( $tableName );
 		$currentIndicies = $this->getIndexInfo( $tableName );
@@ -185,34 +252,6 @@ class MySQLRdbmsTableBuilder extends RdbmsTableBuilder {
 				$this->doDropIndex( $tableName, $indexName, $indexColumn );
 			}
 		}
-	}
-
-	/**
-	 * @see RdbmsTableBuilder::doCreateIndex
-	 */
-	protected function doCreateIndex( $tableName, $indexType, $indexName, $columns, array $indexOptions ) {
-
-		$tableName = $this->connection->tableName( $tableName );
-		$indexOption = '';
-
-		$this->reportMessage( "   ... creating new index $columns ..." );
-
-		if ( isset( $indexOptions['ftSearchOptions']['mysql'] ) ) {
-			$indexOption = $indexOptions['ftSearchOptions']['mysql'];
-
-			// By convention the second index has index specific relevance
-			if ( is_array( $indexOption ) ) {
-				$indexOption = isset( $indexOption[1] ) ? $indexOption[1] : '';
-			}
-		}
-
-		if ( $indexType === 'FULLTEXT' ) {
-			$this->connection->query( "ALTER TABLE $tableName ADD $indexType $columns ($columns) $indexOption", __METHOD__ );
-		} else {
-			$this->connection->query( "ALTER TABLE $tableName ADD $indexType ($columns)", __METHOD__ );
-		}
-
-		$this->reportMessage( "done.\n" );
 	}
 
 	/**
@@ -247,6 +286,42 @@ class MySQLRdbmsTableBuilder extends RdbmsTableBuilder {
 		$this->reportMessage( "   ... removing index $columns ..." );
 		$this->connection->query( 'DROP INDEX ' . $indexName . ' ON ' . $tableName, __METHOD__ );
 		$this->reportMessage( "done.\n" );
+	}
+
+	private function doCreateIndex( $tableName, $indexType, $indexName, $columns, array $indexOptions ) {
+
+		$tableName = $this->connection->tableName( $tableName );
+		$indexOption = '';
+
+		$this->reportMessage( "   ... creating new index $columns ..." );
+
+		if ( isset( $indexOptions['ftSearchOptions']['mysql'] ) ) {
+			$indexOption = $indexOptions['ftSearchOptions']['mysql'];
+
+			// By convention the second index has index specific relevance
+			if ( is_array( $indexOption ) ) {
+				$indexOption = isset( $indexOption[1] ) ? $indexOption[1] : '';
+			}
+		}
+
+		if ( $indexType === 'FULLTEXT' ) {
+			$this->connection->query( "ALTER TABLE $tableName ADD $indexType $columns ($columns) $indexOption", __METHOD__ );
+		} else {
+			$this->connection->query( "ALTER TABLE $tableName ADD $indexType ($columns)", __METHOD__ );
+		}
+
+		$this->reportMessage( "done.\n" );
+	}
+
+	/** Drop */
+
+	/**
+	 * @since 2.5
+	 *
+	 * {@inheritDoc}
+	 */
+	protected function doDropTable( $tableName ) {
+		$this->connection->query( 'DROP TABLE ' . $this->connection->tableName( $tableName ), __METHOD__ );
 	}
 
 }

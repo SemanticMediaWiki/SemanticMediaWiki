@@ -2,10 +2,11 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder;
 
-use SMW\SQLStore\TableBuilder\MySQLRdbmsTableBuilder;
+use SMW\SQLStore\TableBuilder\SQLiteTableBuilder;
+use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\SQLStore\TableBuilder\MySQLRdbmsTableBuilder
+ * @covers \SMW\SQLStore\TableBuilder\SQLiteTableBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,7 +14,13 @@ use SMW\SQLStore\TableBuilder\MySQLRdbmsTableBuilder;
  *
  * @author mwjames
  */
-class MySQLRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
+class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
+
+	private $testEnvironment;
+
+	protected function setUp() {
+		$this->testEnvironment = new TestEnvironment();
+	}
 
 	public function testCanConstruct() {
 
@@ -23,11 +30,11 @@ class MySQLRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'mysql' ) );
+			->will( $this->returnValue( 'sqlite' ) );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableBuilder\MySQLRdbmsTableBuilder',
-			MySQLRdbmsTableBuilder::factory( $connection )
+			'\SMW\SQLStore\TableBuilder\SQLiteTableBuilder',
+			SQLiteTableBuilder::factory( $connection )
 		);
 	}
 
@@ -40,7 +47,7 @@ class MySQLRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'mysql' ) );
+			->will( $this->returnValue( 'sqlite' ) );
 
 		$connection->expects( $this->any() )
 			->method( 'tableExists' )
@@ -50,7 +57,7 @@ class MySQLRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'query' )
 			->with( $this->stringContains( 'CREATE TABLE' ) );
 
-		$instance = MySQLRdbmsTableBuilder::factory( $connection );
+		$instance = SQLiteTableBuilder::factory( $connection );
 
 		$tableOptions = array(
 			'fields' => array( 'bar' => 'text' )
@@ -68,7 +75,7 @@ class MySQLRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'mysql' ) );
+			->will( $this->returnValue( 'sqlite' ) );
 
 		$connection->expects( $this->any() )
 			->method( 'tableExists' )
@@ -76,14 +83,14 @@ class MySQLRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->at( 2 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'DESCRIBE' ) )
+			->with( $this->stringContains( 'PRAGMA table_info("foo")' ) )
 			->will( $this->returnValue( array() ) );
 
 		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'ALTER TABLE "foo" ADD `bar` text FIRST' ) );
+			->with( $this->stringContains( 'ALTER TABLE "foo" ADD `bar` text' ) );
 
-		$instance = MySQLRdbmsTableBuilder::factory( $connection );
+		$instance = SQLiteTableBuilder::factory( $connection );
 
 		$tableOptions = array(
 			'fields' => array( 'bar' => 'text' )
@@ -101,7 +108,7 @@ class MySQLRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'mysql' ) );
+			->will( $this->returnValue( 'sqlite' ) );
 
 		$connection->expects( $this->any() )
 			->method( 'tableExists' )
@@ -109,14 +116,14 @@ class MySQLRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->at( 1 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'SHOW INDEX' ) )
+			->with( $this->stringContains( 'PRAGMA index_list("foo")' ) )
 			->will( $this->returnValue( array() ) );
 
 		$connection->expects( $this->at( 2 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'ALTER TABLE "foo" ADD INDEX (bar)' ) );
+			->with( $this->stringContains( 'CREATE INDEX "foo"_index0' ) );
 
-		$instance = MySQLRdbmsTableBuilder::factory( $connection );
+		$instance = SQLiteTableBuilder::factory( $connection );
 
 		$indexOptions = array(
 			'indicies' => array( 'bar' )
@@ -134,7 +141,7 @@ class MySQLRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'mysql' ) );
+			->will( $this->returnValue( 'sqlite' ) );
 
 		$connection->expects( $this->once() )
 			->method( 'tableExists' )
@@ -144,7 +151,7 @@ class MySQLRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'query' )
 			->with( $this->stringContains( 'DROP TABLE "foo"' ) );
 
-		$instance = MySQLRdbmsTableBuilder::factory( $connection );
+		$instance = SQLiteTableBuilder::factory( $connection );
 
 		$instance->dropTable( 'foo' );
 	}

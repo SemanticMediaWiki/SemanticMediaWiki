@@ -169,7 +169,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructRdbmsTableBuilder() {
+	public function testCanConstructTableBuilder() {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
@@ -190,8 +190,8 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SQLStoreFactory( $store );
 
 		$this->assertInstanceOf(
-			'SMW\SQLStore\TableBuilder\RdbmsTableBuilder',
-			$instance->newRdbmsTableBuilder()
+			'SMW\SQLStore\TableBuilder\TableBuilder',
+			$instance->newTableBuilder()
 		);
 	}
 

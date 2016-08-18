@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder;
 
-use SMW\SQLStore\TableBuilder\SQLiteRdbmsTableBuilder;
+use SMW\SQLStore\TableBuilder\PostgresTableBuilder;
 
 /**
- * @covers \SMW\SQLStore\TableBuilder\SQLiteRdbmsTableBuilder
+ * @covers \SMW\SQLStore\TableBuilder\PostgresTableBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,7 +13,7 @@ use SMW\SQLStore\TableBuilder\SQLiteRdbmsTableBuilder;
  *
  * @author mwjames
  */
-class SQLiteRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
+class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -23,11 +23,11 @@ class SQLiteRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'sqlite' ) );
+			->will( $this->returnValue( 'postgres' ) );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableBuilder\SQLiteRdbmsTableBuilder',
-			SQLiteRdbmsTableBuilder::factory( $connection )
+			'\SMW\SQLStore\TableBuilder\PostgresTableBuilder',
+			PostgresTableBuilder::factory( $connection )
 		);
 	}
 
@@ -40,7 +40,7 @@ class SQLiteRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'sqlite' ) );
+			->will( $this->returnValue( 'postgres' ) );
 
 		$connection->expects( $this->any() )
 			->method( 'tableExists' )
@@ -50,7 +50,7 @@ class SQLiteRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'query' )
 			->with( $this->stringContains( 'CREATE TABLE' ) );
 
-		$instance = SQLiteRdbmsTableBuilder::factory( $connection );
+		$instance = PostgresTableBuilder::factory( $connection );
 
 		$tableOptions = array(
 			'fields' => array( 'bar' => 'text' )
@@ -68,7 +68,7 @@ class SQLiteRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'sqlite' ) );
+			->will( $this->returnValue( 'postgres' ) );
 
 		$connection->expects( $this->any() )
 			->method( 'tableExists' )
@@ -76,14 +76,14 @@ class SQLiteRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->at( 2 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'PRAGMA table_info("foo")' ) )
+			->with( $this->stringContains( 'SELECT a.attname as' ) )
 			->will( $this->returnValue( array() ) );
 
 		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'ALTER TABLE "foo" ADD `bar` text' ) );
+			->with( $this->stringContains( 'ALTER TABLE "foo" ADD "bar" TEXT' ) );
 
-		$instance = SQLiteRdbmsTableBuilder::factory( $connection );
+		$instance = PostgresTableBuilder::factory( $connection );
 
 		$tableOptions = array(
 			'fields' => array( 'bar' => 'text' )
@@ -96,27 +96,31 @@ class SQLiteRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( array( 'tableExists', 'query', 'indexInfo' ) )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'sqlite' ) );
+			->will( $this->returnValue( 'postgres' ) );
 
 		$connection->expects( $this->any() )
 			->method( 'tableExists' )
 			->will( $this->returnValue( false ) );
 
+		$connection->expects( $this->any() )
+			->method( 'indexInfo' )
+			->will( $this->returnValue( false ) );
+
 		$connection->expects( $this->at( 1 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'PRAGMA index_list("foo")' ) )
+			->with( $this->stringContains( 'SELECT  i.relname AS indexname' ) )
 			->will( $this->returnValue( array() ) );
 
-		$connection->expects( $this->at( 2 ) )
+		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'CREATE INDEX "foo"_index0' ) );
+			->with( $this->stringContains( 'CREATE INDEX foo_index0 ON foo (bar)' ) );
 
-		$instance = SQLiteRdbmsTableBuilder::factory( $connection );
+		$instance = PostgresTableBuilder::factory( $connection );
 
 		$indexOptions = array(
 			'indicies' => array( 'bar' )
@@ -134,7 +138,7 @@ class SQLiteRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'sqlite' ) );
+			->will( $this->returnValue( 'postgres' ) );
 
 		$connection->expects( $this->once() )
 			->method( 'tableExists' )
@@ -142,9 +146,9 @@ class SQLiteRdbmsTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'query' )
-			->with( $this->stringContains( 'DROP TABLE "foo"' ) );
+			->with( $this->stringContains( 'DROP TABLE IF EXISTS "foo"' ) );
 
-		$instance = SQLiteRdbmsTableBuilder::factory( $connection );
+		$instance = PostgresTableBuilder::factory( $connection );
 
 		$instance->dropTable( 'foo' );
 	}
