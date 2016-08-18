@@ -39,6 +39,7 @@ THIS IS NOT A RELEASE YET
 * #1726 Allows `QueryDependencyLinksStore` to execute `getDependencyListByLateRetrieval` even in cases of an intial empty list
 * #1750 Added `RdbmsTableBuilder` to replace `SMWSQLHelpers`
 * #1780 Added `ResourceBuilder` and `DispatchingResourceBuilder`
+* #1791 Added `PropertyRegistry::registerPropertyDescriptionByMsgKey`
 
 ## Contributors
 
