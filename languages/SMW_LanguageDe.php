@@ -141,7 +141,7 @@ class SMWLanguageDe extends SMWLanguage {
 		'SMW_PREC_Y' => 'Y',
 		'SMW_PREC_YM' => 'F Y',
 		'SMW_PREC_YMD' => 'j. F Y',
-		'SMW_PREC_YMDT' => 'j. F Y, H:i Uhr'
+		'SMW_PREC_YMDT' => 'j. F Y, H:i:s Uhr'
 	);
 
 }
