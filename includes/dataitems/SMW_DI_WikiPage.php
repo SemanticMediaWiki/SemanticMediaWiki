@@ -263,10 +263,7 @@ class DIWikiPage extends SMWDataItem {
 	 * @return DIWikiPage
 	 */
 	public static function newFromText( $text, $namespace = NS_MAIN ) {
-		return new self(
-			str_replace( ' ', '_', $text ),
-			$namespace
-		);
+		return new self( $text, $namespace );
 	}
 
 	public function equals( SMWDataItem $di ) {
