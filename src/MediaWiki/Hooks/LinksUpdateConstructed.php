@@ -71,6 +71,11 @@ class LinksUpdateConstructed {
 			$this->updateEmptySemanticData( $parserData, $title );
 		}
 
+		// Push updates on properties directly without delay
+		if ( $title->getNamespace() === SMW_NS_PROPERTY ) {
+			$this->enabledDeferredUpdate = false;
+		}
+
 		$parserData->updateStore(
 			$this->enabledDeferredUpdate
 		);
