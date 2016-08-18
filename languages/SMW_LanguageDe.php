@@ -136,5 +136,12 @@ class SMWLanguageDe extends SMWLanguage {
 	protected $m_months = array( 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember' );
 
 	protected $m_monthsshort = array( 'Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez' );
+	
+	protected $preferredDateFormatsByPrecision = array(
+		'SMW_PREC_Y' => 'Y',
+		'SMW_PREC_YM' => 'F Y',
+		'SMW_PREC_YMD' => 'j. F Y',
+		'SMW_PREC_YMDT' => 'j. F Y, H:i Uhr'
+	);
 
 }
