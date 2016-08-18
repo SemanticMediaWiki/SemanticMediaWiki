@@ -43,7 +43,7 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DeferredRequestDispatchManager( $httpRequest );
 		$instance->reset();
-		$instance->setEnabledHttpDeferredJobRequestState( $deferredJobRequestState );
+		$instance->setEnabledHttpDeferredRequest( $deferredJobRequestState );
 
 		$this->assertTrue(
 			$instance->dispatchJobRequestFor( $type, DIWikiPage::newFromText( __METHOD__ )->getTitle(), $parameters )
@@ -62,7 +62,7 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DeferredRequestDispatchManager( $httpRequest );
 		$instance->reset();
-		$instance->setEnabledHttpDeferredJobRequestState( true );
+		$instance->setEnabledHttpDeferredRequest( true );
 
 		$parameters = array( 'idlist' => '1|2' );
 		$title = DIWikiPage::newFromText( __METHOD__ )->getTitle();

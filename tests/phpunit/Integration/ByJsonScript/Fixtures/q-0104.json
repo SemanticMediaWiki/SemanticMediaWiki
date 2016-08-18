@@ -1,5 +1,5 @@
 {
-	"description": "Test `_txt`/`~` with enabled Fulltext search support (only enabled for MySQL)",
+	"description": "Test `_txt`/`~` with enabled full-text search support (only enabled for MySQL, SQLite)",
 	"properties": [
 		{
 			"name": "Has text",
@@ -151,6 +151,9 @@
 		},
 		{
 			"about": "#8 free search (wide proximity)",
+			"skip-on": {
+				"sqlite": "works different in comparison to MySQL, see #9"
+			},
 			"condition": "[[~~with a category]]",
 			"printouts" : [],
 			"parameters" : {
@@ -166,6 +169,21 @@
 		},
 		{
 			"about": "#9 free search (wide proximity)",
+			"condition": "[[~~with* a category]] [[~Example/Q0104/*]]",
+			"printouts" : [],
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0104/4#0##_5a524a435267f6e6d2d45d64a419c1da",
+					"Example/Q0104/4#0##_d4fe48d7241e6530c628f32168815beb"
+				]
+			}
+		},
+		{
+			"about": "#10 free search (wide proximity)",
 			"condition": "[[~~with a category]] [[Category:Q0104]]",
 			"printouts" : [],
 			"parameters" : {
@@ -179,7 +197,7 @@
 			}
 		},
 		{
-			"about": "#10 retain spaces on +/- operators",
+			"about": "#11 retain spaces on +/- operators",
 			"condition": "[[Has text::~+*maria* -postgres*]]",
 			"printouts" : [],
 			"parameters" : {
@@ -202,7 +220,6 @@
 	"meta": {
 		"skip-on": {
 			"postgres": "Not supported by PostgreSQL.",
-			"sqlite": "Not supported by SQLite.",
 			"sesame": "Not supported by SPARQLStore (Sesame).",
 			"virtuoso": "Not supported by SPARQLStore (Virtuoso).",
 			"fuseki": "Not supported by SPARQLStore (Fuskei).",

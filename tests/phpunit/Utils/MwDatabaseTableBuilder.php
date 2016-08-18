@@ -279,7 +279,7 @@ class MwDatabaseTableBuilder {
 	}
 
 	private function isNotSearchindex( $table ) {
-		return strpos( $table, 'searchindex' ) === false;
+		return strpos( $table, 'searchindex' ) === false && strpos( $table, 'smw_ft_search' ) === false;
 	}
 
 	private function isAvailableDatabaseType() {

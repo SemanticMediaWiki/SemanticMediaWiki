@@ -106,8 +106,15 @@ class HookRegistry {
 			$httpRequestFactory->newSocketRequest()
 		);
 
-		$deferredRequestDispatchManager->setEnabledHttpDeferredJobRequestState(
+		$deferredRequestDispatchManager->setEnabledHttpDeferredRequest(
 			$applicationFactory->getSettings()->get( 'smwgEnabledHttpDeferredJobRequest' )
+		);
+
+		// SQLite has no lock manager making table lock contention very common
+		// hence use the JobQueue to enqueue any change request and avoid
+		// a rollback due to canceled DB transactions
+		$deferredRequestDispatchManager->setPreferredWithJobQueue(
+			$GLOBALS['wgDBtype'] === 'sqlite'
 		);
 
 		$permissionPthValidator = new PermissionPthValidator();

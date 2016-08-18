@@ -123,9 +123,13 @@ class TextByChangeUpdater {
 			return;
 		}
 
+		$start = microtime( true );
+
 		foreach ( $parameters['diff'] as $tableName => $changeOp ) {
 			$this->doUpdateFromTableChangeOp( new TableChangeOp( $tableName, $changeOp ) );
 		}
+
+		wfDebugLog( 'smw', __METHOD__ . ' procTime (sec): '. round( ( microtime( true ) - $start ), 5 ) );
 	}
 
 	/**
@@ -144,7 +148,6 @@ class TextByChangeUpdater {
 		foreach ( $compositePropertyTableDiffIterator->getTableChangeOps() as $tableChangeOp ) {
 			$this->doUpdateFromTableChangeOp( $tableChangeOp );
 		}
-
 
 		wfDebugLog( 'smw', __METHOD__ . ' procTime (sec): '. round( ( microtime( true ) - $start ), 5 ) );
 	}
@@ -221,8 +224,13 @@ class TextByChangeUpdater {
 	}
 
 	private function doUpdateOnAggregatedValues( $inserts, $deletes ) {
-
 		// Remove any "deletes" first
+		$this->doUpdateOnDeletes( $deletes );
+		$this->doUpdateOnInserts( $inserts );
+	}
+
+	private function doUpdateOnDeletes( $deletes ) {
+
 		foreach ( $deletes as $key => $values ) {
 			list( $sid, $pid ) = explode( ':', $key, 2 );
 
@@ -243,6 +251,9 @@ class TextByChangeUpdater {
 
 			$this->searchTableUpdater->update( $sid, $pid, $text );
 		}
+	}
+
+	private function doUpdateOnInserts( $inserts ) {
 
 		foreach ( $inserts as $key => $value ) {
 			list( $sid, $pid ) = explode( ':', $key, 2 );
