@@ -280,26 +280,29 @@ class ParserData {
 	 *
 	 * @return boolean
 	 */
-	public function updateStore( $deferredUpdate = false ) {
+	public function updateStore( $enabledDeferredUpdate = false ) {
 
-		$storeUpdater = ApplicationFactory::getInstance()->newStoreUpdater( $this->semanticData );
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$storeUpdater = $applicationFactory->newStoreUpdater( $this->semanticData );
 
 		$storeUpdater->setUpdateJobsEnabledState(
-			$this->getUpdateJobState()
+			$this->updateJobs
 		);
 
 		DeferredCallableUpdate::releasePendingUpdates();
 
-		if ( $deferredUpdate ) {
-			$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $storeUpdater ) {
-				wfDebugLog( 'smw', 'DeferredCallableUpdate on ParserData::updateStore' );
-				$storeUpdater->doUpdate();
-			} );
-
-			$deferredCallableUpdate->pushToDeferredUpdateList();
-		} else {
+		$deferredCallableUpdate = $applicationFactory->newDeferredCallableUpdate( function() use( $storeUpdater ) {
 			$storeUpdater->doUpdate();
-		}
+		} );
+
+		$deferredCallableUpdate->setOrigin( __METHOD__ );
+
+		$deferredCallableUpdate->enabledDeferredUpdate(
+			$enabledDeferredUpdate
+		);
+
+		$deferredCallableUpdate->pushUpdate();
 
 		return true;
 	}

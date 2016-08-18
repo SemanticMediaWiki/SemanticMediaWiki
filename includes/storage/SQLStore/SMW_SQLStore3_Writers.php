@@ -993,24 +993,20 @@ class SMWSQLStore3Writers {
 		if ( $redirectId != 0 ) {
 			$title = $oldTitle;
 			$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $title, $jobFactory ) {
-
-				wfDebugLog( 'smw', 'DeferredCallableUpdate on changeTitle for ' . $title->getPrefixedDBKey() );
-
 				$jobFactory->newUpdateJob( $title )->run();
 			} );
 
-			$deferredCallableUpdate->pushToDeferredUpdateList();
+			$deferredCallableUpdate->setOrigin( __METHOD__ . ' for ' . $title->getPrefixedDBKey() );
+			$deferredCallableUpdate->pushUpdate();
 		}
 
 		$title = $newTitle;
 		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $title, $jobFactory ) {
-
-			wfDebugLog( 'smw', 'DeferredCallableUpdate on changeTitle for ' . $title->getPrefixedDBKey() );
-
 			$jobFactory->newUpdateJob( $title )->run();
 		} );
 
-		$deferredCallableUpdate->pushToDeferredUpdateList();
+		$deferredCallableUpdate->setOrigin( __METHOD__ . ' for ' . $title->getPrefixedDBKey() );
+		$deferredCallableUpdate->pushUpdate();
 	}
 
 }

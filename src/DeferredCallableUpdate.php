@@ -31,6 +31,11 @@ class DeferredCallableUpdate implements DeferrableUpdate {
 	private $isPending = false;
 
 	/**
+	 * @var string
+	 */
+	private $origin = '';
+
+	/**
 	 * @var array
 	 */
 	private static $pendingUpdates = array();
@@ -74,6 +79,26 @@ class DeferredCallableUpdate implements DeferrableUpdate {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param string $origin
+	 */
+	public function setOrigin( $origin ) {
+		$this->origin = $origin;
+	}
+
+	/**
+	 * @see DeferrableCallback::getOrigin
+	 *
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getOrigin() {
+		return $this->origin;
+	}
+
+	/**
 	 * @since 2.4
 	 */
 	public static function releasePendingUpdates() {
@@ -90,19 +115,30 @@ class DeferredCallableUpdate implements DeferrableUpdate {
 	 * @since 2.4
 	 */
 	public function doUpdate() {
+		wfDebugLog( 'smw', $this->origin . ' doUpdate' );
 		call_user_func( $this->callback );
 	}
 
 	/**
 	 * @since 2.4
+	 * @deprecated since 2.5, use DeferredCallableUpdate::pushUpdate
 	 */
 	public function pushToDeferredUpdateList() {
+		$this->pushUpdate();
+	}
+
+	/**
+	 * @since 2.5
+	 */
+	public function pushUpdate() {
 
 		if ( $this->isPending && $this->enabledDeferredUpdate ) {
+			wfDebugLog( 'smw', $this->origin . ' (as pending DeferredCallableUpdate)' );
 			return self::$pendingUpdates[] = $this;
 		}
 
 		if ( $this->enabledDeferredUpdate ) {
+			wfDebugLog( 'smw', $this->origin . ' (as DeferredCallableUpdate)' );
 			return DeferredUpdates::addUpdate( $this );
 		}
 

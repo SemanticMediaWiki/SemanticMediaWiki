@@ -258,21 +258,21 @@ class QueryDependencyLinksStore {
 			$dependencyLinksTableUpdater->doUpdate();
 		} );
 
+		$deferredCallableUpdate->setOrigin( __METHOD__ );
+
 		// https://www.mediawiki.org/wiki/Manual:$wgCommandLineMode
 		// Indicates whether MW is running in command-line mode.
 		$deferredCallableUpdate->markAsPending( $GLOBALS['wgCommandLineMode'] );
 		$deferredCallableUpdate->enabledDeferredUpdate( true );
 
 		if ( $sid > 0 ) {
-			return $deferredCallableUpdate->pushToDeferredUpdateList();
+			return $deferredCallableUpdate->pushUpdate();
 		}
 
 		// SID == 0 means the storage update/process has not been finalized
 		// (new object hasn't been registered) hence an event is registered to
 		// update the list after the update process has been completed
 		EventHandler::getInstance()->addCallbackListener( 'deferred.embedded.query.dep.update', function() use ( $subject, $hash, $dependencyList, $deferredCallableUpdate, $dependencyLinksTableUpdater, $queryResultDependencyListResolver ) {
-
-			wfDebugLog( 'smw', 'QueryDependencyLinksStore::doUpdateDependenciesBy as deferred.embedded.query.dep.update for ' . $hash );
 			$sid = $dependencyLinksTableUpdater->getIdForSubject( $subject, $hash );
 
 			$dependencyLinksTableUpdater->addToUpdateList(
@@ -285,7 +285,8 @@ class QueryDependencyLinksStore {
 				$queryResultDependencyListResolver->getDependencyListByLateRetrieval()
 			);
 
-			$deferredCallableUpdate->pushToDeferredUpdateList();
+			$deferredCallableUpdate->setOrigin( 'QueryDependencyLinksStore::doUpdateDependenciesBy as deferred.embedded.query.dep.update for ' . $hash );
+			$deferredCallableUpdate->pushUpdate();
 		} );
 	}
 

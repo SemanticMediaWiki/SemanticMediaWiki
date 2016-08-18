@@ -111,7 +111,23 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->enabledDeferredUpdate( false );
-		$instance->pushToDeferredUpdateList();
+		$instance->pushUpdate();
+	}
+
+	public function testOrigin() {
+
+		$callback = function() {};
+
+		$instance = new DeferredCallableUpdate(
+			$callback
+		);
+
+		$instance->setOrigin( 'Foo' );
+
+		$this->assertEquals(
+			'Foo',
+			$instance->getOrigin()
+		);
 	}
 
 }
