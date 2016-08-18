@@ -19,6 +19,7 @@ THIS IS NOT A RELEASE YET
 * #1758 Added the [`$smwgQTemporaryTablesAutoCommitMode`](https://www.semantic-mediawiki.org/wiki/Help:$smwgQTemporaryTablesAutoCommitMode) setting to mitigate possible issues with temporary tables in `MySQL` for when `enforce_gtid_consistency=true` is set
 * #1756 Extended the display characteristics of `Special:Browse` to load content via the API back-end (legacy display can be retained by setting [`$smwgBrowseByApi`](https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi) to `false`) 
 * #1761 Added content language context to recognize localized property type `[[Has type ...]]` annotations
+* #1764 Added `--with-maintenance-log` option to the "rebuildFulltextSearchTable.php" maintenance script
 * #1768 Improved general error display to be more user context friendly
 * #1779 Added [`Special:ProcessingErrorList`](https://www.semantic-mediawiki.org/wiki/Help:Special:ProcessingErrorList) 
 * #1793 Extended `#LOCL` support for the date type (`TimeValue`)
