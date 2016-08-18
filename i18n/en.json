@@ -77,6 +77,7 @@
 	"smw-paramdesc-order": "Order of the query sort",
 	"smw-paramdesc-searchlabel": "Text for continuing the search",
 	"smw-paramdesc-named_args": "Name the arguments passed to the template",
+	"smw-paramdesc-import-annotation": "Additional annotated data are to be copied during the parsing of a subject",
 	"smw-paramdesc-export": "Export option",
 	"smw-paramdesc-prettyprint": "A pretty-print output that displays additional indents and newlines",
 	"smw-paramdesc-source": "Alternative query source",
