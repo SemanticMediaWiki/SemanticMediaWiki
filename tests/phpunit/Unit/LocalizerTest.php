@@ -120,7 +120,7 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanGetAnnotatedLanguageCodeOnDoubledMarker() {
+	public function testCanGetAnnotatedLanguageCodeOnDoubledMarkedValue() {
 
 		$value = 'Foo@@en';
 
@@ -132,6 +132,30 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			'Foo@',
 			$value
+		);
+	}
+
+	public function testCanGetAnnotatedLanguageCodeOnValueWithDash() {
+
+		$value = 'Foo@zh-Hans';
+
+		$this->assertEquals(
+			'zh-Hans',
+			Localizer::getAnnotatedLanguageCodeFrom( $value )
+		);
+
+		$this->assertEquals(
+			'Foo',
+			$value
+		);
+	}
+
+	public function testCanNotGetAnnotatedLanguageCodeThatContainsInvalidCharacter() {
+
+		$value = 'Foo@en#bar';
+
+		$this->assertFalse(
+			Localizer::getAnnotatedLanguageCodeFrom( $value )
 		);
 	}
 

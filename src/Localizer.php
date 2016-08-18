@@ -236,8 +236,11 @@ class Localizer {
 		}
 
 		// Do we want to check here whether isSupportedLanguage or not?
+		if ( $langCode !== '' && ctype_alpha( str_replace( array( '-' ), '', $langCode ) ) ) {
+			return $langCode;
+		}
 
-		return $langCode !== '' ? $langCode : false;
+		return false;
 	}
 
 	/**
