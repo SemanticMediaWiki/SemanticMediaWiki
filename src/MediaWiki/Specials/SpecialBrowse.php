@@ -191,6 +191,11 @@ class SpecialBrowse extends SpecialPage {
 		if ( $this->getRequest()->getVal( 'printable' ) === 'yes' ) {
 			return null;
 		}
+		
+		// FIXME with SMW 3.0, allow to be used with MW 1.25-
+		if ( !method_exists( $this, 'addHelpLink' ) ) {
+			return null;
+		}
 
 		if ( $this->subjectDV->isValid() ) {
 			$link = SpecialPage::getTitleFor( 'ExportRDF', $this->subjectDV->getTitle()->getPrefixedText() );
