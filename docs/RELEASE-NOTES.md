@@ -21,6 +21,7 @@ THIS IS NOT A RELEASE YET
 * #1761 Added content language context to recognize localized property type `[[Has type ...]]` annotations
 * #1768 Improved general error display to be more user context friendly
 * #1779 Added [`Special:ProcessingErrorList`](https://www.semantic-mediawiki.org/wiki/Help:Special:ProcessingErrorList) 
+* #1793 Extended `#LOCL` support for the date type (`TimeValue`)
 
 ## Bug fixes
 
