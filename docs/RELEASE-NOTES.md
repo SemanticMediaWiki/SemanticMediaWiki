@@ -4,7 +4,7 @@ THIS IS NOT A RELEASE YET
 
 ## Highlights
 
-* #1481
+* #1481/#1801
 
 ## Compatibility changes
 
@@ -15,7 +15,7 @@ THIS IS NOT A RELEASE YET
 * #1708 Added the [External identifier](https://www.semantic-mediawiki.org/wiki/Help:Type_External_identifier) type
 * #1759 Improved `Special:Ask` error output 
 * #1760 Improved handling of `MonolingualTextValue` in `Special:SearchByProperty`
-* #1481 Enhanced the `SQLStore` to support fulltext searches provided by the `MySQL`/`MariaDB` back-end (see #1481 for limitations and features supported)
+* #1481 Enhanced the `SQLStore` to support full-text searches provided by the `MySQL`/`MariaDB` back-end (see #1481 for limitations and features supported)
 * #1758 Added the [`$smwgQTemporaryTablesAutoCommitMode`](https://www.semantic-mediawiki.org/wiki/Help:$smwgQTemporaryTablesAutoCommitMode) setting to mitigate possible issues with temporary tables in `MySQL` for when `enforce_gtid_consistency=true` is set
 * #1756 Extended the display characteristics of `Special:Browse` to load content via the API back-end (legacy display can be retained by setting [`$smwgBrowseByApi`](https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi) to `false`) 
 * #1761 Added content language context to recognize localized property type `[[Has type ...]]` annotations
@@ -23,6 +23,7 @@ THIS IS NOT A RELEASE YET
 * #1768 Improved general error display to be more user context friendly
 * #1779 Added [`Special:ProcessingErrorList`](https://www.semantic-mediawiki.org/wiki/Help:Special:ProcessingErrorList) 
 * #1793 Extended `#LOCL` support for the date type (`TimeValue`)
+* #1801 Added `SQLStore` full-text search support for `SQLite`
 
 ## Bug fixes
 
