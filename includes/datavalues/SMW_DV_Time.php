@@ -166,10 +166,11 @@ class SMWTimeValue extends SMWDataValue {
 						}
 						$this->m_dataitem = SMWDITime::newFromJD( $jd, SMWDITime::CM_GREGORIAN, SMWDITime::PREC_YMDT );
 					} catch ( SMWDataItemException $e ) {
-						$this->addError( wfMessage( 'smw_nodatetime', $this->m_wikivalue )->inContentLanguage()->text() );
+						$this->addErrorMsg( array( 'smw_nodatetime', $this->m_wikivalue ) );
 					}
 				} else {
-					$this->addError( wfMessage( 'smw_nodatetime', $this->m_wikivalue )->inContentLanguage()->text() );
+					var_dump( $this->m_wikivalue );
+					$this->addErrorMsg( array( 'smw_nodatetime', $this->m_wikivalue ) );
 				}
 			} else {
 				$this->setDateFromParsedValues( $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $microseconds, $timeoffset, $timezone );
@@ -476,7 +477,7 @@ class SMWTimeValue extends SMWDataValue {
 			}
 		}
 		if ( $date['y'] === false ) { // no band matches the entered date
-			$this->addError( wfMessage( 'smw_nodatetime', $this->m_wikivalue )->inContentLanguage()->text() );
+			$this->addErrorMsg( array( 'smw_nodatetime', $this->m_wikivalue ) );
 			return false;
 		}
 		return true;
@@ -522,7 +523,7 @@ class SMWTimeValue extends SMWDataValue {
 		try {
 			$this->m_dataitem = new SMWDITime( $calmod, $date['y'], $date['m'], $date['d'], $hours, $minutes, $seconds . '.' . $microseconds );
 		} catch ( SMWDataItemException $e ) {
-			$this->addError( wfMessage( 'smw_nodatetime', $this->m_wikivalue )->inContentLanguage()->text() );
+			$this->addErrorMsg( array( 'smw_nodatetime', $this->m_wikivalue ) );
 			return false;
 		}
 
@@ -531,7 +532,7 @@ class SMWTimeValue extends SMWDataValue {
 		// conversion would not be reliable if JD numbers get too huge:
 		if ( ( $date['y'] <= self::PREHISTORY ) &&
 		     ( ( $this->m_dataitem->getPrecision() > SMWDITime::PREC_Y ) || ( $calendarmodel !== false ) ) ) {
-			$this->addError( wfMessage( 'smw_nodatetime', $this->m_wikivalue )->inContentLanguage()->text() );
+			$this->addErrorMsg( array( 'smw_nodatetime', $this->m_wikivalue ) );
 			return false;
 		}
 		if ( $timeoffset != 0 ) {
@@ -539,7 +540,7 @@ class SMWTimeValue extends SMWDataValue {
 			try {
 				$this->m_dataitem = SMWDITime::newFromJD( $newjd, $calmod, $this->m_dataitem->getPrecision() );
 			} catch ( SMWDataItemException $e ) {
-				$this->addError( wfMessage( 'smw_nodatetime', $this->m_wikivalue )->inContentLanguage()->text() );
+				$this->addErrorMsg( array( 'smw_nodatetime', $this->m_wikivalue ) );
 				return false;
 			}
 		}

@@ -341,7 +341,7 @@ class RecurringEvents {
 		$all_date_strings = array_filter( array_merge( $all_date_strings, $included_dates ) );
 
 		// Set dates
-		$this->dates = $all_date_strings;
+		$this->dates = str_replace( ' 00:00:00', '', $all_date_strings );
 	}
 
 	/**
