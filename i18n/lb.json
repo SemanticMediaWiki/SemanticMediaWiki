@@ -122,6 +122,7 @@
 	"smw-ask-search": "Sichen",
 	"smw-ask-format-selection-help": "Fir eng detailléiert Beschreiwung gitt w.e.g. op d'$1 Hëllefssäit.",
 	"searchbyproperty": "No Eegeschafte sichen",
+	"processingerrorlist": "Feelerlëscht gëtt verschafft",
 	"smw_sbv_docu": "Sichen no alle Säiten déi eng bestëmmten Eegeschaft mat engem bestëmmte Wäert hunn.",
 	"smw_sbv_displayresult": "Eng Lëscht vun alle Säiten déi d'Eegeschaft \"$1\" mam Wäert \"$2\" hunn",
 	"smw_sbv_property": "Eegeschaft:",
@@ -202,5 +203,6 @@
 	"smw-datavalue-time-invalid-date-components-common": "\"$1\" huet eng Informatioun déi net kann interpretéiert ginn.",
 	"smw-datavalue-time-invalid-date-components-empty": "\"$1\" huet e puer eidel Komponenten",
 	"smw-datavalue-time-invalid-date-components-three": "\"$1\" huet méi wéi dräi Komponenten.",
-	"smw-datavalue-time-invalid-ampm": "\"$1\" huet \"$2\" als Stonnenelement, dat ass fir eng 12-Stonne-Konventioun awer net valabel."
+	"smw-datavalue-time-invalid-ampm": "\"$1\" huet \"$2\" als Stonnenelement, dat ass fir eng 12-Stonne-Konventioun awer net valabel.",
+	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" ass keng valabel URL"
 }

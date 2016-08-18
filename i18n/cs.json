@@ -11,10 +11,12 @@
 			"Matěj Suchánek",
 			"Macofe",
 			"Kghbln",
-			"Dvorapa"
+			"Dvorapa",
+			"Marek Pavlica"
 		]
 	},
 	"smw-desc": "Činíme vaší wiki přístupnější – pro stroje ''i'' lidi ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
+	"smw-title": "Sémantická MediaWiki",
 	"smw_viewasrdf": "RDF kanál",
 	"smw_finallistconjunct": " a",
 	"smw_factbox_head": "Skutečnosti o $1 &mdash; kliknutím na <span class=\"smwsearchicon\">+</span> vyhledáte podobné stránky.",

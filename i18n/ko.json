@@ -202,6 +202,7 @@
 	"smw-ask-search": "검색",
 	"smw-ask-format-selection-help": "자세한 설명에 대해서는 $1 도움말 문서로 방문하세요.",
 	"searchbyproperty": "속성으로 검색",
+	"processingerrorlist": "오류 목록을 처리합니다",
 	"smw_sbv_docu": "주어진 속성과 값을 가지고 모든 문서를 검색합니다.",
 	"smw_sbv_novalue": "속성에 대한 올바른 값을 입력하거나 \"$1\"에 대한 모든 속성 값을 보세요.",
 	"smw_sbv_displayresult": "\"$2\" 값으로 \"$1\" 속성을 가진 모든 문서의 목록입니다",
@@ -332,5 +333,6 @@
 	"smw-datavalue-time-invalid-date-components-dash": "\"$1\"에는 해석할 수 없는 대시가 포함되어 있습니다.",
 	"smw-datavalue-time-invalid-date-components-empty": "\"$1\"에는 일부 비어있는 구성 요소가 포함되어 있습니다.",
 	"smw-datavalue-time-invalid-date-components-three": "\"$1\"에는 세 개 이상의 구성 요소가 포함되어 있습니다.",
-	"smw-datavalue-time-invalid-ampm": "\"$1\"에는 12시간 변환에 유효하지 않은 시간 요소로서 \"$2\"이(가) 포함되어 있습니다."
+	"smw-datavalue-time-invalid-ampm": "\"$1\"에는 12시간 변환에 유효하지 않은 시간 요소로서 \"$2\"이(가) 포함되어 있습니다.",
+	"smw-datavalue-external-formatter-invalid-uri": "\"$1\"은(는) 유효하지 않은 URL입니다."
 }

@@ -26,6 +26,7 @@
 		]
 	},
 	"smw-desc": "Haciendo tu wiki más accesible - para máquinas ''y'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
+	"smw-title": "Semantic MediaWiki",
 	"smw-semantics-not-enabled": "No se habilitó la funcionalidad de MediaWiki Semántica para este wiki.",
 	"smw_viewasrdf": "Ver como RDF",
 	"smw_finallistconjunct": "y",

@@ -176,7 +176,7 @@
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|רעיון|רעיונות}}]]",
 	"smw-statistics-subobject-count": "{{PLURAL:$1|עצם־משנה|עצמי־משנה}}",
 	"smw-statistics-datatype-count": "[[Special:Types|{{PLURAL:$1|סוג נתונים|סוגי נתונים}}]]",
-	"smw-statistics-error-count": "{{PLURAL:$1|ערך מאפיין|ערכי מאפיין}} ([[Property:Has improper value for|{{PLURAL:$1|הערה לא מתאימה|הערות לא מתאימות}}]])",
+	"smw-statistics-error-count": "{{PLURAL:$1|ערך מאפיין|ערכי מאפיין}} ([[Special:ProcessingErrorList|{{PLURAL:$1|הערה לא מתאימה|הערות לא מתאימות}}]])",
 	"smw-statistics-delete-count": "{{PLURAL:$1|ישות מיושנת (מסומנת להסרה)|ישויות מיושנות (מסומנות להסרה)}}",
 	"smw_uri_doc": "פותרן כתובות מיישם את [$1 חיפוש W3C TAG ב־httpRange-14]. הוא דואג לכך שאנשים לא יהפכו לאתרי אינטרנט.",
 	"ask": "חיפוש סמנטי",
@@ -205,6 +205,7 @@
 	"smw-ask-format-selection-help": "למידע נוסף, יש לבקר בדף העזרה $1.",
 	"smw-ask-query-search-info": "השאילתה <code><nowiki>$1</nowiki></code> נענתה על־ידי {{PLURAL:$3|1=<code>$2</code> (ממטמון)|<code>$2</code> (ממטמון)|<code>$2</code>}} {{PLURAL:$4|בשנייה אחת|ב־$4 שניות}}.",
 	"searchbyproperty": "חיפוש לפי מאפיין",
+	"processingerrorlist": "רשימת שגיאות עיבוד",
 	"smw_sbv_docu": "חיפוש כל הדפים שיש להם מאפיין וערך מסוימים.",
 	"smw_sbv_novalue": "יש לכתוב ערך תקין למאפיין, או שאפשר לצפות בכל ערכי המאפיינים עבור \"$1\".",
 	"smw_sbv_displayresult": "רשימת כל הדפים שיש להם מאפיין \"$1\" עם הערך \"$2\"",
@@ -399,5 +400,6 @@
 	"smw-pa-property-predefined_num": "\"$1\" הוא [[Special:Types/Number|סוג]] ומאפיין מוגדר מראש שמסופק על־ידי [https://www.semantic-mediawiki.org/wiki/Help:Special_properties מדיה־ויקי סמנטית] כדי לייצג ערכים מספריים.",
 	"smw-pa-property-predefined_dat": "\"$1\" הוא [[Special:Types/Date|סוג]] ומאפיין מוגדר מראש שמסופק על־ידי [https://www.semantic-mediawiki.org/wiki/Help:Special_properties מדיה־ויקי סמנטית] כדי לייצג ערכי תאריכים.",
 	"smw-pa-property-predefined_uri": "\"$1\" הוא [[Special:Types/URL|סוג]] ומאפיין מוגדר מראש שמסופק על־ידי [https://www.semantic-mediawiki.org/wiki/Help:Special_properties מדיה־ויקי סמנטית] כדי לייצג ערכי URI/URL.",
-	"smw-pa-property-predefined_qty": "\"$1\" הוא [[Special:Types/Quantity|סוג]] ומאפיין מוגדר מראש שמסופק על־ידי [https://www.semantic-mediawiki.org/wiki/Help:Special_properties מדיה־ויקי סמנטית] כדי לייצג ערכי כמות."
+	"smw-pa-property-predefined_qty": "\"$1\" הוא [[Special:Types/Quantity|סוג]] ומאפיין מוגדר מראש שמסופק על־ידי [https://www.semantic-mediawiki.org/wiki/Help:Special_properties מדיה־ויקי סמנטית] כדי לייצג ערכי כמות.",
+	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" אינה כתובת URL תקינה."
 }

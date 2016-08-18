@@ -162,7 +162,7 @@
 	"smw-statistics-query-size": "Tamanho da consulta",
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Conceito|Conceitos}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Conceito|Conceitos}}]]",
-	"smw-statistics-subobject-count": "{{PLURAL:$1|Subobjeto|Subobjetos}}",
+	"smw-statistics-subobject-count": "[[Property:Has subobject|{{PLURAL:$1|Subobjeto|Subobjetos}}]]",
 	"smw-statistics-datatype-count": "[[Special:Types|{{PLURAL:$1|Tipo de dados|Tipos de dados}}]]",
 	"smw_uri_doc": "O resolvedor de URIs implementa a [$1 descoberta TAG da W3C sobre o httpRange-14].\nCertifica-se de que os seres humanos não se tornem em sites da internet.",
 	"ask": "Pesquisa semântica",
