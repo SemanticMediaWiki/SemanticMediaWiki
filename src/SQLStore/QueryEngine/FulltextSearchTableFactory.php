@@ -132,6 +132,11 @@ class FulltextSearchTableFactory {
 			$settings->get( 'smwgFulltextDeferredUpdate' )
 		);
 
+		// https://www.mediawiki.org/wiki/Manual:$wgCommandLineMode
+		$textByChangeUpdater->isCommandLineMode(
+			$GLOBALS['wgCommandLineMode']
+		);
+
 		return $textByChangeUpdater;
 	}
 

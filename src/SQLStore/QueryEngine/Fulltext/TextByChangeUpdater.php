@@ -32,6 +32,11 @@ class TextByChangeUpdater {
 	private $asDeferredUpdate = true;
 
 	/**
+	 * @var boolean
+	 */
+	private $isCommandLineMode = false;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param SearchTableUpdater $searchTableUpdater
@@ -54,6 +59,19 @@ class TextByChangeUpdater {
 	}
 
 	/**
+	 * When running from commandLine, push updates directly to avoid overhead when
+	 * it is known that within that mode transactions are FIFO (i.e. the likelihood
+	 * for race conditions of unfinished updates are diminishable).
+	 *
+	 * @since 2.5
+	 *
+	 * @param boolean $isCommandLineMode
+	 */
+	public function isCommandLineMode( $isCommandLineMode ) {
+		$this->isCommandLineMode = (bool)$isCommandLineMode;
+	}
+
+	/**
 	 * @see SMW::SQLStore::AfterDataUpdateComplete hook
 	 *
 	 * @since 2.5
@@ -64,8 +82,12 @@ class TextByChangeUpdater {
 	 */
 	public function pushUpdates( DIWikiPage $subject, CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator, DeferredRequestDispatchManager $deferredRequestDispatchManager ) {
 
+		if ( !$this->searchTableUpdater->isEnabled() ) {
+			return;
+		}
+
 		// Update within the same transaction as started by SMW::SQLStore::AfterDataUpdateComplete
-		if ( !$this->asDeferredUpdate ) {
+		if ( !$this->asDeferredUpdate || $this->isCommandLineMode ) {
 			return $this->pushUpdatesFromPropertyTableDiff( $compositePropertyTableDiffIterator );
 		}
 

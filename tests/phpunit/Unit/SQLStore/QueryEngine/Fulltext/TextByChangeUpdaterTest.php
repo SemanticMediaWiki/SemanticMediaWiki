@@ -43,7 +43,7 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testPushUpdatesOnDisabledDeferredUpdateAndNullChange() {
 
-		$this->searchTableUpdater->expects( $this->once() )
+		$this->searchTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'isEnabled' )
 			->will( $this->returnValue( true ) );
 
@@ -77,6 +77,10 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testPushUpdatesAsDeferredUpdate() {
 
+		$this->searchTableUpdater->expects( $this->atLeastOnce() )
+			->method( 'isEnabled' )
+			->will( $this->returnValue( true ) );
+
 		$compositePropertyTableDiffIterator = $this->getMockBuilder( '\SMW\SQLStore\CompositePropertyTableDiffIterator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -99,6 +103,41 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
 
 		$instance->asDeferredUpdate( true );
+
+		$instance->pushUpdates(
+			$subject,
+			$compositePropertyTableDiffIterator,
+			$deferredRequestDispatchManager
+		);
+	}
+
+	public function testPushUpdatesDirectlyWhenExecutedFromCommandLine() {
+
+		$this->searchTableUpdater->expects( $this->atLeastOnce() )
+			->method( 'isEnabled' )
+			->will( $this->returnValue( true ) );
+
+		$compositePropertyTableDiffIterator = $this->getMockBuilder( '\SMW\SQLStore\CompositePropertyTableDiffIterator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$compositePropertyTableDiffIterator->expects( $this->once() )
+			->method( 'getTableChangeOps' )
+			->will( $this->returnValue( array() ) );
+
+		$deferredRequestDispatchManager = $this->getMockBuilder( '\SMW\DeferredRequestDispatchManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new TextByChangeUpdater(
+			$this->searchTableUpdater,
+			$this->connection
+		);
+
+		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
+
+		$instance->asDeferredUpdate( true );
+		$instance->isCommandLineMode( true );
 
 		$instance->pushUpdates(
 			$subject,
