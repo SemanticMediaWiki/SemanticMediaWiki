@@ -227,7 +227,7 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$timeValue = new TimeValue( '_dat' );
 		$timeValue->setUserValue( '2015-02-28' );
 
-		$timeValue->setOption( 'user.language', 'en' );
+		$timeValue->setOption( TimeValue::OPT_USER_LANGUAGE, 'en' );
 		$timeValue->setOutputFormat( 'LOCL' );
 
 		$instance = new TimeValueFormatter( $timeValue );
@@ -239,6 +239,22 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$instance->format( TimeValueFormatter::HTML_LONG ),
+			$instance->getLocalizedFormat( $timeValue->getDataItem() )
+		);
+	}
+
+	public function testLOCLOutputFormatWithSpecificAnnotatedLanguage() {
+
+		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setUserValue( '2015-02-28' );
+
+		$timeValue->setOption( TimeValue::OPT_USER_LANGUAGE, 'en' );
+		$timeValue->setOutputFormat( 'LOCL@ja' );
+
+		$instance = new TimeValueFormatter( $timeValue );
+
+		$this->assertEquals(
+			'2015年2月28日 (土)',
 			$instance->getLocalizedFormat( $timeValue->getDataItem() )
 		);
 	}

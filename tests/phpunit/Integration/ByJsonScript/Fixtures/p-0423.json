@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation / `#ask` (#MEDIAWIKI, #LOCL) output for `_dat` datatype (`wgContLang` = en, `wgLang` = ja)",
+	"description": "Test in-text annotation / `#ask` (#MEDIAWIKI, #LOCL) output for `_dat` datatype (#1545, `wgContLang=en`, `wgLang=ja`)",
 	"properties": [
 		{
 			"name": "Has date",
@@ -31,6 +31,10 @@
 		{
 			"name": "Example/P0423/Q1.4",
 			"contents": "{{#show: Example/P0423/1 |?Has date#LOCL }}"
+		},
+		{
+			"name": "Example/P0423/Q1.5",
+			"contents": "{{#show: Example/P0423/1 |?Has date#LOCL@fr }}"
 		},
 		{
 			"name": "Example/P0423/Q2.1",
@@ -86,7 +90,7 @@
 			}
 		},
 		{
-			"about": "#4 (#show LOCL)",
+			"about": "#4 (#show LOCL for user lang)",
 			"subject": "Example/P0423/Q1.4",
 			"expected-output": {
 				"to-contain": [
@@ -95,7 +99,16 @@
 			}
 		},
 		{
-			"about": "#5 page vs global content language",
+			"about": "#5 (#show LOCL@fr for annotated fr lang and not for user lang)",
+			"subject": "Example/P0423/Q1.5",
+			"expected-output": {
+				"to-contain": [
+					"<p>12:05:00, 12 janvier 1957"
+				]
+			}
+		},
+		{
+			"about": "#6 page vs global content language",
 			"subject": "Example/P0423/Q2.1",
 			"expected-output": {
 				"to-contain": [

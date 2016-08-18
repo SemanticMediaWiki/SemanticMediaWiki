@@ -282,23 +282,29 @@ class TimeValueFormatter extends DataValueFormatter {
 	 */
 	public function getLocalizedFormat( DITime $dataItem = null ) {
 
-		$language = Localizer::getInstance()->getLanguage(
-			$this->dataValue->getOptionValueFor( 'user.language' )
-		);
-
-		if ( $dataItem !== null && $dataItem->getYear() > DITime::PREHISTORY ) {
-
-			$intlTimeFormatter = new IntlTimeFormatter(
-				$dataItem,
-				$language
-			);
-
-			return $intlTimeFormatter->getLocalizedFormat() . $this->hintCalendarModel( $dataItem );
+		if ( $dataItem === null ) {
+			return '';
 		}
 
-		return $this->getISO8601Date();
-	}
+		if ( $dataItem->getYear() < DITime::PREHISTORY ) {
+			return $this->getISO8601Date();
+		}
 
+		$outputFormat = $this->dataValue->getOutputFormat();
+
+		if ( ( $language = Localizer::getInstance()->getAnnotatedLanguageCodeFrom( $outputFormat ) ) === false ) {
+			$language = $this->dataValue->getOptionValueFor( DataValue::OPT_USER_LANGUAGE );
+		}
+
+		$language = Localizer::getInstance()->getLanguage( $language );
+
+		$intlTimeFormatter = new IntlTimeFormatter(
+			$dataItem,
+			$language
+		);
+
+		return $intlTimeFormatter->getLocalizedFormat() . $this->hintCalendarModel( $dataItem );
+	}
 
 	/**
 	 * Compute a suitable string to display this date, taking into account the
@@ -337,7 +343,7 @@ class TimeValueFormatter extends DataValueFormatter {
 
 		if ( strpos( $format, '-F[' ) !== false ) {
 			return $this->getCaptionFromFreeFormat( $this->dataValue->getDataItemForCalendarModel( $model ) );
-		} elseif ( $format == 'LOCL' ) {
+		} elseif ( strpos( $format, 'LOCL' ) !== false ) {
 			return $this->getLocalizedFormat( $this->dataValue->getDataItemForCalendarModel( $model ) );
 		} elseif ( $dataItem->getYear() > TimeValue::PREHISTORY && $dataItem->getPrecision() >= DITime::PREC_YM ) {
 			// Do not convert between Gregorian and Julian if only
