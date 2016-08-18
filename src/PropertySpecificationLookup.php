@@ -319,7 +319,11 @@ class PropertySpecificationLookup {
 	private function getPredefinedPropertyDescription( $property, $linker ) {
 
 		$description = '';
-		$msgKey = 'smw-pa-property-predefined' . strtolower( $property->getKey() );
+		$key = $property->getKey();
+
+		if ( ( $msgKey = PropertyRegistry::getInstance()->findPropertyDescriptionMsgKeyById( $key ) ) === '' ) {
+			$msgKey = 'smw-pa-property-predefined' . strtolower( $key );
+		}
 
 		if ( !wfMessage( $msgKey )->exists() ) {
 			return $description;

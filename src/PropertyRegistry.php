@@ -43,6 +43,11 @@ class PropertyRegistry {
 	private $datatypeLabels = array();
 
 	/**
+	 * @var string[]
+	 */
+	private $propertyDescriptionMsgKeys = array();
+
+	/**
 	 * @var PropertyAliasFinder
 	 */
 	private $propertyAliasFinder;
@@ -179,6 +184,30 @@ class PropertyRegistry {
 	 */
 	public function registerPropertyAliasByMsgKey( $id, $msgKey ) {
 		$this->propertyAliasFinder->registerAliasByMsgKey( $id, $msgKey );
+	}
+
+	/**
+	 * Register a description message key for allowing it to be displayed in a
+	 * localized context.
+	 *
+	 * @since 2.5
+	 *
+	 * @param string $id
+	 * @param string $msgKey
+	 */
+	public function registerPropertyDescriptionMsgKeyById( $id, $msgKey ) {
+		$this->propertyDescriptionMsgKeys[$id] = $msgKey;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $id
+	 *
+	 * @return string
+	 */
+	public function findPropertyDescriptionMsgKeyById( $id ) {
+		return isset( $this->propertyDescriptionMsgKeys[$id] ) ? $this->propertyDescriptionMsgKeys[$id] : '';
 	}
 
 	/**

@@ -424,4 +424,44 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testPropertyDescriptionMsgKey() {
+
+		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$datatypeRegistry->expects( $this->once() )
+			->method( 'getKnownTypeLabels' )
+			->will( $this->returnValue( array() ) );
+
+		$datatypeRegistry->expects( $this->once() )
+			->method( 'getKnownTypeAliases' )
+			->will( $this->returnValue( array() ) );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$propertyLabelFinder = new PropertyLabelFinder( $store, array() );
+
+		$propertyAliases = new PropertyAliasFinder();
+
+		$instance = new PropertyRegistry(
+			$datatypeRegistry,
+			$propertyLabelFinder,
+			$propertyAliases
+		);
+
+		$instance->registerPropertyDescriptionMsgKeyById( '_foo', 'bar' );
+
+		$this->assertEquals(
+			'bar',
+			$instance->findPropertyDescriptionMsgKeyById( '_foo' )
+		);
+
+		$this->assertEmpty(
+			$instance->findPropertyDescriptionMsgKeyById( 'unknown' )
+		);
+	}
+
 }
