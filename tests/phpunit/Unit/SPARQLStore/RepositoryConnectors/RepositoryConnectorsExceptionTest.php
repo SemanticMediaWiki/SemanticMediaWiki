@@ -1,14 +1,14 @@
 <?php
 
-namespace SMW\Tests\SPARQLStore;
+namespace SMW\Tests\SPARQLStore\RepositoryConnectors;
 
 use SMW\SPARQLStore\RepositoryClient;
 
 /**
- * @covers \SMW\SPARQLStore\RepositoryConnector\FusekiHttpRepositoryConnector
- * @covers \SMW\SPARQLStore\RepositoryConnector\FourstoreHttpRepositoryConnector
- * @covers \SMW\SPARQLStore\RepositoryConnector\VirtuosoHttpRepositoryConnector
- * @covers \SMW\SPARQLStore\RepositoryConnector\GenericHttpRepositoryConnector
+ * @covers \SMW\SPARQLStore\RepositoryConnectors\FusekiHttpRepositoryConnector
+ * @covers \SMW\SPARQLStore\RepositoryConnectors\FourstoreHttpRepositoryConnector
+ * @covers \SMW\SPARQLStore\RepositoryConnectors\VirtuosoHttpRepositoryConnector
+ * @covers \SMW\SPARQLStore\RepositoryConnectors\GenericHttpRepositoryConnector
  *
  * @group semantic-mediawiki
  *
@@ -17,15 +17,15 @@ use SMW\SPARQLStore\RepositoryClient;
  *
  * @author mwjames
  */
-class RepositoryConnectionExceptionTest extends \PHPUnit_Framework_TestCase {
+class RepositoryConnectorsExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	private $defaultGraph;
 
 	private $databaseConnectors = array(
-		'\SMW\SPARQLStore\RepositoryConnector\GenericHttpRepositoryConnector',
-		'\SMW\SPARQLStore\RepositoryConnector\FusekiHttpRepositoryConnector',
-		'\SMW\SPARQLStore\RepositoryConnector\FourstoreHttpRepositoryConnector',
-		'\SMW\SPARQLStore\RepositoryConnector\VirtuosoHttpRepositoryConnector',
+		'\SMW\SPARQLStore\RepositoryConnectors\GenericHttpRepositoryConnector',
+		'\SMW\SPARQLStore\RepositoryConnectors\FusekiHttpRepositoryConnector',
+		'\SMW\SPARQLStore\RepositoryConnectors\FourstoreHttpRepositoryConnector',
+		'\SMW\SPARQLStore\RepositoryConnectors\VirtuosoHttpRepositoryConnector',
 
 		// Legacy and should be removed once obsolete
 		'SMWSparqlDatabase4Store',
@@ -49,7 +49,7 @@ class RepositoryConnectionExceptionTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\RepositoryConnector\GenericHttpRepositoryConnector',
+			'\SMW\SPARQLStore\RepositoryConnectors\GenericHttpRepositoryConnector',
 			new $httpConnector( new RepositoryClient( $this->defaultGraph, '' ), $httpRequest )
 		);
 	}

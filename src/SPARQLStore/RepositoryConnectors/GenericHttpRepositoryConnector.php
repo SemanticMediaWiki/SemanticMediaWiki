@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\SPARQLStore\RepositoryConnector;
+namespace SMW\SPARQLStore\RepositoryConnectors;
 
 use Onoi\HttpRequest\HttpRequest;
 use SMW\SPARQLStore\BadHttpResponseMapper;
@@ -21,12 +21,20 @@ use SMWExporter as Exporter;
  */
 class GenericHttpRepositoryConnector implements RepositoryConnection {
 
-	/// Flag denoting endpoints being capable of querying
+	/**
+	 * Flag denoting endpoints being capable of querying
+	 */
 	const EP_TYPE_QUERY = 1;
-	/// Flag denoting endpoints being capable of updating
+
+	/**
+	 * Flag denoting endpoints being capable of updating
+	 */
 	const EP_TYPE_UPDATE = 2;
-	/// Flag denoting endpoints being capable of SPARQL HTTP graph management
-	const EP_TYPE_DATA   = 4;
+
+	/**
+	 * Flag denoting endpoints being capable of SPARQL HTTP graph management
+	 */
+	const EP_TYPE_DATA = 4;
 
 	/**
 	 * @var RepositoryClient
