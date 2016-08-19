@@ -33,6 +33,15 @@ class SpecialDeferredRequestDispatcher extends SpecialPage {
 	}
 
 	/**
+	 * SpecialPage::doesWrites
+	 *
+	 * @return boolean
+	 */
+	public function doesWrites() {
+		return true;
+	}
+
+	/**
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
