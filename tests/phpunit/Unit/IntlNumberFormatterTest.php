@@ -77,7 +77,7 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider separatorProvider
 	 */
-	public function testGetSeparator( $type, $locale, $userLanguage, $contentLanguage, $expected ) {
+	public function testgetSeparatorByLanguage( $type, $locale, $userLanguage, $contentLanguage, $expected ) {
 
 		$instance = new IntlNumberFormatter( 10000000 );
 
@@ -86,7 +86,7 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->getSeparator( $type, $locale )
+			$instance->getSeparatorByLanguage( $type, $locale )
 		);
 	}
 
@@ -99,21 +99,21 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'FOO',
-			$instance->getSeparator( IntlNumberFormatter::DECIMAL_SEPARATOR, 'zzz' )
+			$instance->getSeparatorByLanguage( IntlNumberFormatter::DECIMAL_SEPARATOR, 'zzz' )
 		);
 
 		$this->assertEquals(
 			'BAR',
-			$instance->getSeparator( IntlNumberFormatter::THOUSANDS_SEPARATOR, 'zzz' )
+			$instance->getSeparatorByLanguage( IntlNumberFormatter::THOUSANDS_SEPARATOR, 'zzz' )
 		);
 	}
 
-	public function testTryToGetSeparatorOnInvalidTypeThrowsException() {
+	public function testTryTogetSeparatorByLanguageOnInvalidTypeThrowsException() {
 
 		$instance = new IntlNumberFormatter( 10000000 );
 
 		$this->setExpectedException( 'InvalidArgumentException' );
-		$instance->getSeparator( 'Foo' );
+		$instance->getSeparatorByLanguage( 'Foo' );
 	}
 
 	public function numberProvider() {

@@ -74,7 +74,7 @@ class EventListenerRegistry implements EventListenerCollection {
 
 				$applicationFactory = ApplicationFactory::getInstance();
 
-				$applicationFactory->getCachedPropertyValuesPrefetcher()->resetCacheFor(
+				$applicationFactory->getCachedPropertyValuesPrefetcher()->resetCacheBy(
 					$subject
 				);
 
@@ -104,8 +104,8 @@ class EventListenerRegistry implements EventListenerCollection {
 
 				$updateDispatcherJob->run();
 
-				Exporter::getInstance()->resetCacheFor( $subject );
-				$applicationFactory->getPropertySpecificationLookup()->resetCacheFor( $subject );
+				Exporter::getInstance()->resetCacheBy( $subject );
+				$applicationFactory->getPropertySpecificationLookup()->resetCacheBy( $subject );
 
 				$dispatchContext->set( 'propagationstop', true );
 			}

@@ -2,7 +2,7 @@
 
 use SMW\DataValues\UnitConversionFetcher;
 use SMW\Message;
-use SMW\NumberFormatter;
+use SMW\ApplicationFactory;
 
 /**
  * @ingroup SMWDataValues
@@ -189,7 +189,7 @@ class SMWQuantityValue extends SMWNumberValue {
 			return;
 		}
 
-		$units = $this->getPropertySpecificationLookup()->getDisplayUnitsFor(
+		$units = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getDisplayUnitsBy(
 			$this->getProperty()
 		);
 

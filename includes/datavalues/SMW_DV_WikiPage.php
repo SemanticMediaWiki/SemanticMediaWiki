@@ -120,7 +120,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		// transformed by the Title object
 		// If the vaue contains a valid NS then use the Title to create a correct
 		// instance to distinguish [[~Foo*]] from [[Help:~Foo*]]
-		if ( $this->getOptionValueFor( self::OPT_QUERY_COMP_CONTEXT ) ) {
+		if ( $this->getOptionBy( self::OPT_QUERY_COMP_CONTEXT ) ) {
 			if ( ( $title = Title::newFromText( $value ) ) !== null && $title->getNamespace() !== NS_MAIN ) {
 				return $this->m_dataitem = SMWDIWikiPage::newFromTitle( $title );
 			} else {

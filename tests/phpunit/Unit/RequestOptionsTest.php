@@ -46,4 +46,26 @@ class RequestOptionsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testLimit() {
+
+		$instance = new RequestOptions();
+		$instance->setLimit( 42 );
+
+		$this->assertEquals(
+			42,
+			$instance->getLimit()
+		);
+	}
+
+	public function testOffset() {
+
+		$instance = new RequestOptions();
+		$instance->setOffset( 42 );
+
+		$this->assertEquals(
+			42,
+			$instance->getOffset()
+		);
+	}
+
 }

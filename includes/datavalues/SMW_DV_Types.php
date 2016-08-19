@@ -44,7 +44,7 @@ class SMWTypesValue extends SMWDataValue {
 		}
 
 		$valueParts = explode( ':', $value, 2 );
-		$contentLanguage = $this->getOptionValueFor( self::OPT_CONTENT_LANGUAGE );
+		$contentLanguage = $this->getOptionBy( self::OPT_CONTENT_LANGUAGE );
 
 		if ( $smwgHistoricTypeNamespace && count( $valueParts ) > 1 ) {
 			$namespace = smwfNormalTitleText( $valueParts[0] );

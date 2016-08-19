@@ -4,6 +4,7 @@ use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\IntlNumberFormatter;
 use SMW\Localizer;
 use SMW\Message;
+use SMW\ApplicationFactory;
 
 /**
  * @ingroup SMWDataValues
@@ -84,7 +85,7 @@ class SMWNumberValue extends SMWDataValue {
 	public function __construct( $typeid = '' ) {
 		parent::__construct( $typeid );
 		$this->intlNumberFormatter = IntlNumberFormatter::getInstance();
-		$this->intlNumberFormatter->initialize();
+		$this->intlNumberFormatter->reset();
 	}
 
 	/**
@@ -102,12 +103,12 @@ class SMWNumberValue extends SMWDataValue {
 		$intlNumberFormatter = $this->getNumberFormatter();
 
 		// Parse to find $number and (possibly) $unit
-		$kiloseparator = $intlNumberFormatter->getSeparator(
+		$kiloseparator = $intlNumberFormatter->getSeparatorByLanguage(
 			IntlNumberFormatter::THOUSANDS_SEPARATOR,
 			IntlNumberFormatter::CONTENT_LANGUAGE
 		);
 
-		$decseparator = $intlNumberFormatter->getSeparator(
+		$decseparator = $intlNumberFormatter->getSeparatorByLanguage(
 			IntlNumberFormatter::DECIMAL_SEPARATOR,
 			IntlNumberFormatter::CONTENT_LANGUAGE
 		);
@@ -453,12 +454,12 @@ class SMWNumberValue extends SMWDataValue {
 	protected function getPreferredDisplayPrecision() {
 
 		// In case of a value description, don't restrict the value with a display precision
-		if ( $this->getProperty() === null || $this->getOptionValueFor( 'value.description' ) || $this->getOptionValueFor( 'no.displayprecision' ) ) {
+		if ( $this->getProperty() === null || $this->getOptionBy( 'value.description' ) || $this->getOptionBy( 'no.displayprecision' ) ) {
 			return false;
 		}
 
 		if ( $this->precision === null ) {
-			$this->precision = $this->getPropertySpecificationLookup()->getDisplayPrecisionFor(
+			$this->precision = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getDisplayPrecisionBy(
 				$this->getProperty()
 			);
 		}
@@ -492,22 +493,22 @@ class SMWNumberValue extends SMWDataValue {
 
 		$this->intlNumberFormatter->setOption(
 			'user.language',
-			$this->getOptionValueFor( 'user.language' )
+			$this->getOptionBy( 'user.language' )
 		);
 
 		$this->intlNumberFormatter->setOption(
 			'content.language',
-			$this->getOptionValueFor( 'content.language' )
+			$this->getOptionBy( 'content.language' )
 		);
 
 		$this->intlNumberFormatter->setOption(
 			'separator.thousands',
-			$this->getOptionValueFor( 'separator.thousands' )
+			$this->getOptionBy( 'separator.thousands' )
 		);
 
 		$this->intlNumberFormatter->setOption(
 			'separator.decimal',
-			$this->getOptionValueFor( 'separator.decimal' )
+			$this->getOptionBy( 'separator.decimal' )
 		);
 
 		return $this->intlNumberFormatter;

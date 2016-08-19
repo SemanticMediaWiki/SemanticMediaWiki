@@ -102,7 +102,7 @@ class NumberValueFormatter extends DataValueFormatter {
 			return $this->dataValue->getCaption();
 		}
 
-		$highlighter = Highlighter::factory( Highlighter::TYPE_QUANTITY, $this->dataValue->getOptionValueFor( 'user.language' ) );
+		$highlighter = Highlighter::factory( Highlighter::TYPE_QUANTITY, $this->dataValue->getOptionBy( 'user.language' ) );
 		$highlighter->setContent( array (
 			'caption' => $this->dataValue->getCaption(),
 			'content' => $tooltip

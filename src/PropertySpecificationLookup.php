@@ -17,7 +17,7 @@ use SMWQuery as Query;
  */
 class PropertySpecificationLookup {
 
-	const POOLCACHE_ID = 'property.spec.lookup.cache';
+	const POOLCACHE_ID = 'property.specification.lookup';
 
 	/**
 	 * @var CachedPropertyValuesPrefetcher
@@ -47,8 +47,8 @@ class PropertySpecificationLookup {
 	/**
 	 * @since 2.4
 	 */
-	public function resetCacheFor( DIWikiPage $subject ) {
-		$this->cachedPropertyValuesPrefetcher->resetCacheFor( $subject );
+	public function resetCacheBy( DIWikiPage $subject ) {
+		$this->cachedPropertyValuesPrefetcher->resetCacheBy( $subject );
 	}
 
 	/**
@@ -111,7 +111,7 @@ class PropertySpecificationLookup {
 	 *
 	 * @return boolean
 	 */
-	public function hasUniquenessConstraintFor( DIProperty $property ) {
+	public function hasUniquenessConstraintBy( DIProperty $property ) {
 
 		$hasUniquenessConstraint = false;
 		$key = $property->getKey();
@@ -142,7 +142,7 @@ class PropertySpecificationLookup {
 	 *
 	 * @return DataItem|null
 	 */
-	public function getExternalFormatterUriFor( DIProperty $property ) {
+	public function getExternalFormatterUriBy( DIProperty $property ) {
 
 		$dataItem = null;
 
@@ -165,13 +165,14 @@ class PropertySpecificationLookup {
 	 *
 	 * @return string
 	 */
-	public function getAllowedPatternFor( DIProperty $property ) {
+	public function getAllowedPatternBy( DIProperty $property ) {
 
 		$allowsPattern = '';
+		$key = 'ap:'. $property->getKey();
 
 		// Guard against high frequency lookup
-		if ( $this->intermediaryMemoryCache->contains( 'ap:'. $property->getKey() ) ) {
-			return $this->intermediaryMemoryCache->fetch( 'ap:'. $property->getKey() );
+		if ( $this->intermediaryMemoryCache->contains( $key ) ) {
+			return $this->intermediaryMemoryCache->fetch( $key );
 		}
 
 		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
@@ -183,7 +184,7 @@ class PropertySpecificationLookup {
 			$allowsPattern = end( $dataItems )->getString();
 		}
 
-		$this->intermediaryMemoryCache->save( 'ap:'. $property->getKey(), $allowsPattern );
+		$this->intermediaryMemoryCache->save( $key, $allowsPattern );
 
 		return $allowsPattern;
 	}
@@ -195,13 +196,14 @@ class PropertySpecificationLookup {
 	 *
 	 * @return integer|false
 	 */
-	public function getAllowedValuesFor( DIProperty $property ) {
+	public function getAllowedValuesBy( DIProperty $property ) {
 
 		$allowsValues = array();
+		$key = 'al:'. $property->getKey();
 
 		// Guard against high frequency lookup
-		if ( $this->intermediaryMemoryCache->contains( 'al:'. $property->getKey() ) ) {
-			return $this->intermediaryMemoryCache->fetch( 'al:'. $property->getKey() );
+		if ( $this->intermediaryMemoryCache->contains( $key ) ) {
+			return $this->intermediaryMemoryCache->fetch( $key );
 		}
 
 		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
@@ -213,7 +215,7 @@ class PropertySpecificationLookup {
 			$allowsValues = $dataItems;
 		}
 
-		$this->intermediaryMemoryCache->save( 'al:'. $property->getKey(), $allowsValues );
+		$this->intermediaryMemoryCache->save( $key, $allowsValues );
 
 		return $allowsValues;
 	}
@@ -225,7 +227,7 @@ class PropertySpecificationLookup {
 	 *
 	 * @return integer|false
 	 */
-	public function getDisplayPrecisionFor( DIProperty $property ) {
+	public function getDisplayPrecisionBy( DIProperty $property ) {
 
 		$displayPrecision = false;
 
@@ -249,7 +251,7 @@ class PropertySpecificationLookup {
 	 *
 	 * @return array
 	 */
-	public function getDisplayUnitsFor( DIProperty $property ) {
+	public function getDisplayUnitsBy( DIProperty $property ) {
 
 		$units = array();
 
@@ -271,7 +273,7 @@ class PropertySpecificationLookup {
 	 * We try to cache anything to avoid unnecessary store connections or DB
 	 * lookups. For cases where a property was changed, the EventDipatcher will
 	 * receive a 'property.spec.change' event (emitted as soon as the content of
-	 * a property page was altered) with PropertySpecificationLookup::resetCacheFor
+	 * a property page was altered) with PropertySpecificationLookup::resetCacheBy
 	 * being invoked to remove the cache entry for that specific property.
 	 *
 	 * @since 2.4
@@ -281,7 +283,7 @@ class PropertySpecificationLookup {
 	 *
 	 * @return string
 	 */
-	public function getPropertyDescriptionFor( DIProperty $property, $linker = null ) {
+	public function getPropertyDescriptionBy( DIProperty $property, $linker = null ) {
 
 		// Take the linker into account (Special vs. in page rendering etc.)
 		$key = '--pdesc:' . $this->languageCode . ':' . ( $linker === null ? '0' : '1' );

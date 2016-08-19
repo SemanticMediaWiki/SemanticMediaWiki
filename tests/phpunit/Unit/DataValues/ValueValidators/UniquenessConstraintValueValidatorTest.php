@@ -108,7 +108,7 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 			->will( $this->returnValue( array( $this->dataItemFactory->newDIWikiPage( 'UV', NS_MAIN ) ) ) );
 
 		$this->propertySpecificationLookup->expects( $this->once() )
-			->method( 'hasUniquenessConstraintFor' )
+			->method( 'hasUniquenessConstraintBy' )
 			->will( $this->returnValue( true ) );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )

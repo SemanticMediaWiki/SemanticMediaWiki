@@ -64,7 +64,7 @@ class PatternConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $allowedPattern ) );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
-			->method( 'getAllowedPatternFor' )
+			->method( 'getAllowedPatternBy' )
 			->will( $this->returnValue( 'Foo' ) );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )

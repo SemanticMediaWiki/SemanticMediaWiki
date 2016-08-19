@@ -3,7 +3,7 @@
 namespace SMW\DataValues;
 
 use SMWStringValue as StringValue;
-use SMW\DataValueFactory;
+use SMW\ApplicationFactory;
 use SMW\DIProperty;
 
 /**
@@ -129,7 +129,7 @@ class ExternalIdentifierValue extends StringValue {
 			return '';
 		}
 
-		$dataValue = DataValueFactory::getInstance()->newDataValueByType(
+		$dataValue = ApplicationFactory::getInstance()->getDataValueFactory()->newDataValueByType(
 			'_uri',
 			$this->getExternalFormattedUri( $this->m_dataitem->getString() )
 		);
@@ -143,7 +143,7 @@ class ExternalIdentifierValue extends StringValue {
 			return $this->externalFormattedUri;
 		}
 
-		$dataItem = $this->getPropertySpecificationLookup()->getExternalFormatterUriFor(
+		$dataItem = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getExternalFormatterUriBy(
 			$this->getProperty()
 		);
 
@@ -152,7 +152,7 @@ class ExternalIdentifierValue extends StringValue {
 			return;
 		}
 
-		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
+		$dataValue = ApplicationFactory::getInstance()->getDataValueFactory()->newDataValueByItem(
 			$dataItem,
 			new DIProperty( '_PEFU' )
 		);

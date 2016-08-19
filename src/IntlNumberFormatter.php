@@ -87,7 +87,7 @@ class IntlNumberFormatter {
 	/**
 	 * @since 2.4
 	 */
-	public function initialize() {
+	public function reset() {
 		$this->options->set( 'separator.decimal', false );
 		$this->options->set( 'separator.thousands', false );
 		$this->options->set( 'user.language', false );
@@ -113,7 +113,7 @@ class IntlNumberFormatter {
 	 *
 	 * @return string
 	 */
-	public function getSeparator( $type, $locale = '' ) {
+	public function getSeparatorByLanguage( $type, $locale = '' ) {
 
 		$language = $locale === self::USER_LANGUAGE ? $this->getUserLanguage() : $this->getContentLanguage();
 
@@ -152,7 +152,7 @@ class IntlNumberFormatter {
 			return $this->getDefaultFormattedNumberWithPrecision( $value, $precision );
 		}
 
-		return $this->getFormattedNumberByHeuristicRule( $value, $precision );
+		return $this->doFormatByHeuristicRuleWith( $value, $precision );
 	}
 
 	/**
@@ -168,12 +168,12 @@ class IntlNumberFormatter {
 	 *
 	 * @return string
 	 */
-	private function getFormattedNumberByHeuristicRule( $value, $precision = false ) {
+	private function doFormatByHeuristicRuleWith( $value, $precision = false ) {
 
 		// BC configuration to keep default behaviour
 		$precision = $this->defaultPrecision;
 
-		$decseparator = $this->getSeparator(
+		$decseparator = $this->getSeparatorByLanguage(
 			self::DECIMAL_SEPARATOR,
 			self::USER_LANGUAGE
 		);
@@ -221,7 +221,7 @@ class IntlNumberFormatter {
 				$value,
 				$precision,
 				$decseparator,
-				$this->getSeparator( self::THOUSANDS_SEPARATOR, self::USER_LANGUAGE )
+				$this->getSeparatorByLanguage( self::THOUSANDS_SEPARATOR, self::USER_LANGUAGE )
 			);
 
 			// Make it more readable by removing ending .000 from nnn.000
@@ -257,7 +257,7 @@ class IntlNumberFormatter {
 		return $this->doFormatWithPrecision(
 			$value,
 			$precision,
-			$this->getSeparator( self::DECIMAL_SEPARATOR, self::CONTENT_LANGUAGE ),
+			$this->getSeparatorByLanguage( self::DECIMAL_SEPARATOR, self::CONTENT_LANGUAGE ),
 			''
 		);
 	}
@@ -271,8 +271,8 @@ class IntlNumberFormatter {
 		return $this->doFormatWithPrecision(
 			$value,
 			$precision,
-			$this->getSeparator( self::DECIMAL_SEPARATOR, self::USER_LANGUAGE ),
-			$this->getSeparator( self::THOUSANDS_SEPARATOR, self::USER_LANGUAGE )
+			$this->getSeparatorByLanguage( self::DECIMAL_SEPARATOR, self::USER_LANGUAGE ),
+			$this->getSeparatorByLanguage( self::THOUSANDS_SEPARATOR, self::USER_LANGUAGE )
 		);
 	}
 
@@ -295,7 +295,7 @@ class IntlNumberFormatter {
 	private function doFormatExponentialNotation( $value ) {
 		return str_replace(
 			array( '.', 'E' ),
-			array( $this->getSeparator( self::DECIMAL_SEPARATOR, self::CONTENT_LANGUAGE ), 'e' ),
+			array( $this->getSeparatorByLanguage( self::DECIMAL_SEPARATOR, self::CONTENT_LANGUAGE ), 'e' ),
 			$value
 		);
 	}

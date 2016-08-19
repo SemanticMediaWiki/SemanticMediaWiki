@@ -3,6 +3,7 @@
 namespace SMW\DataValues\ValueValidators;
 
 use SMW\DataValueFactory;
+use SMW\ApplicationFactory;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
 use SMW\Message;
@@ -48,7 +49,7 @@ class ListConstraintValueValidator implements ConstraintValueValidator {
 
 		$property = $dataValue->getProperty();
 
-		if ( ( $allowedListValues = $dataValue->getPropertySpecificationLookup()->getAllowedValuesFor( $property ) ) === array() ||
+		if ( ( $allowedListValues = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getAllowedValuesBy( $property ) ) === array() ||
 			!is_array( $allowedListValues ) ) {
 			return $this->hasConstraintViolation;
 		}
@@ -75,7 +76,7 @@ class ListConstraintValueValidator implements ConstraintValueValidator {
 
 		$hash = $dataValue->getDataItem()->getHash();
 
-		$testDataValue = DataValueFactory::getInstance()->newTypeIDValue(
+		$testDataValue = ApplicationFactory::getInstance()->getDataValueFactory()->newTypeIDValue(
 			$dataValue->getTypeID()
 		);
 

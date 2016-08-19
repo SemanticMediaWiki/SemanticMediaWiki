@@ -49,7 +49,7 @@ class ListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 		$property = $this->dataItemFactory->newDIProperty( 'ValidAllowedValue' );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
-			->method( 'getAllowedValuesFor' )
+			->method( 'getAllowedValuesBy' )
 			->will( $this->returnValue( array( $this->dataItemFactory->newDIBlob( 'Foo' ) ) ) );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
@@ -83,7 +83,7 @@ class ListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 		$property = $this->dataItemFactory->newDIProperty( 'InvalidAllowedValue' );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
-			->method( 'getAllowedValuesFor' )
+			->method( 'getAllowedValuesBy' )
 			->will( $this->returnValue( array( $this->dataItemFactory->newDIBlob( 'NOTALLOWED' ) ) ) );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
