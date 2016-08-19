@@ -13,6 +13,8 @@ use SMW\Store;
  */
 class PropertyHierarchyLookup {
 
+	const POOLCACHE_ID = 'property.hierarchy.lookup';
+
 	/**
 	 * @var Store
 	 */
@@ -71,7 +73,7 @@ class PropertyHierarchyLookup {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return  boolean
+	 * @return boolean
 	 */
 	public function hasSubpropertyFor( DIProperty $property ) {
 
@@ -79,7 +81,17 @@ class PropertyHierarchyLookup {
 			return false;
 		}
 
-		return $this->hasMatchFor( '_SUBP', $property->getKey(), $property->getDiWikiPage() );
+		$requestOptions = new RequestOptions();
+		$requestOptions->limit = 1;
+
+		$result = $this->findMatchesWith(
+			'_SUBP',
+			$property->getKey(),
+			$property->getDiWikiPage(),
+			$requestOptions
+		);
+
+		return $result !== array();
 	}
 
 	/**
@@ -95,7 +107,17 @@ class PropertyHierarchyLookup {
 			return false;
 		}
 
-		return $this->hasMatchFor( '_SUBC', $category->getDBKey(), $category );
+		$requestOptions = new RequestOptions();
+		$requestOptions->limit = 1;
+
+		$result = $this->findMatchesWith(
+			'_SUBC',
+			$category->getDBKey(),
+			$category,
+			$requestOptions
+		);
+
+		return $result !== array();
 	}
 
 	/**
@@ -106,7 +128,7 @@ class PropertyHierarchyLookup {
 	 * @return DIWikiPage[]|[]
 	 */
 	public function findSubpropertListFor( DIProperty $property ) {
-		return $this->findMatchesFor( '_SUBP', $property->getKey(), $property->getDiWikiPage() );
+		return $this->findMatchesWith( '_SUBP', $property->getKey(), $property->getDiWikiPage(), new RequestOptions() );
 	}
 
 	/**
@@ -117,20 +139,17 @@ class PropertyHierarchyLookup {
 	 * @return DIWikiPage[]|[]
 	 */
 	public function findSubcategoryListFor( DIWikiPage $category ) {
-		return $this->findMatchesFor( '_SUBC', $category->getDBKey(), $category );
+		return $this->findMatchesWith( '_SUBC', $category->getDBKey(), $category, new RequestOptions() );
 	}
 
-	private function hasMatchFor( $id, $key, DIWikiPage $subject ) {
+	private function findMatchesWith( $id, $key, DIWikiPage $subject, $requestOptions ) {
 
-		$key = 'm#' . $id . '#' . $key;
+		$key = $id . '#' . $key . '#' . $requestOptions->getHash();
 
 		if ( $this->cache->contains( $key ) ) {
 			return $this->cache->fetch( $key );
 		}
 
-		$requestOptions = new RequestOptions();
-		$requestOptions->limit = 1;
-
 		$result = $this->store->getPropertySubjects(
 			new DIProperty( $id ),
 			$subject,
@@ -139,31 +158,7 @@ class PropertyHierarchyLookup {
 
 		$this->cache->save(
 			$key,
-			$result !== array()
-		);
-
-		return $result !== array();
-	}
-
-	private function findMatchesFor( $id, $key, DIWikiPage $subject ) {
-
-		$key = 'f#' . $id . '#' . $key;
-
-		if ( $this->cache->contains( $key ) ) {
-			return unserialize( $this->cache->fetch( $key ) );
-		}
-
-		$requestOptions = new RequestOptions();
-
-		$result = $this->store->getPropertySubjects(
-			new DIProperty( $id ),
-			$subject,
-			$requestOptions
-		);
-
-		$this->cache->save(
-			$key,
-			serialize( $result )
+			$result
 		);
 
 		wfDebugLog( 'smw', __METHOD__ . " {$id} and " . $subject->getDBKey() . "\n" );
