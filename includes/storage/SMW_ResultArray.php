@@ -173,24 +173,16 @@ class SMWResultArray {
 
 		if ( $this->mPrintRequest->getMode() == PrintRequest::PRINT_PROP &&
 		    strpos( $this->mPrintRequest->getTypeID(), '_rec' ) !== false &&
-		     $this->mPrintRequest->getParameter( 'index' ) !== false ) {
-			// Not efficient, but correct: we need to find the right property for
-			// the selected index of the record here.
-			$pos = $this->mPrintRequest->getParameter( 'index' ) - 1;
+		    $this->mPrintRequest->getParameter( 'index' ) !== false ) {
 
 			$recordValue = DataValueFactory::getInstance()->newDataValueByItem(
 				$dataItem,
 				$this->mPrintRequest->getData()->getDataItem()
 			);
 
-			$diProperties = $recordValue->getPropertyDataItems();
-
-			if ( array_key_exists( $pos, $diProperties ) &&
-				!is_null( $diProperties[$pos] ) ) {
-				$diProperty = $diProperties[$pos];
-			} else {
-				$diProperty = null;
-			}
+			$diProperty = $recordValue->getPropertyDataItemByIndex(
+				$this->mPrintRequest->getParameter( 'index' )
+			);
 		} elseif ( $this->mPrintRequest->getMode() == PrintRequest::PRINT_PROP ) {
 			$diProperty = $this->mPrintRequest->getData()->getDataItem();
 		} else {
@@ -284,16 +276,14 @@ class SMWResultArray {
 				// for this then they will not recognize that it returns some more concrete type.
 				if ( strpos( $this->mPrintRequest->getTypeID(), '_rec' ) !== false &&
 				     ( $this->mPrintRequest->getParameter( 'index' ) !== false ) ) {
-					$pos = $this->mPrintRequest->getParameter( 'index' ) - 1;
+					$index = $this->mPrintRequest->getParameter( 'index' );
 					$newcontent = array();
 
 					foreach ( $this->mContent as $diContainer ) {
 						/* SMWRecordValue */ $recordValue = DataValueFactory::getInstance()->newDataValueByItem( $diContainer, $propertyValue->getDataItem() );
-						$dataItems = $recordValue->getDataItems();
 
-						if ( array_key_exists( $pos, $dataItems ) &&
-							( !is_null( $dataItems[$pos] ) ) ) {
-							$newcontent[] = $dataItems[$pos];
+						if ( ( $dataItem = $recordValue->getDataItemByIndex( $index ) ) !== null ) {
+							$newcontent[] = $dataItem;
 						}
 					}
 
