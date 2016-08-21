@@ -167,7 +167,7 @@ class QueryEngine implements QueryEngineInterface {
 
 		// *** First compute abstract representation of the query (compilation) ***//
 		$this->querySegmentListBuilder->setSortKeys( $this->sortKeys );
-		$this->querySegmentListBuilder->buildQuerySegmentFor( $query->getDescription() ); // compile query, build query "plan"
+		$this->querySegmentListBuilder->getQuerySegmentFrom( $query->getDescription() ); // compile query, build query "plan"
 
 		$qid = $this->querySegmentListBuilder->getLastQuerySegmentId();
 		$this->querySegmentList = $this->querySegmentListBuilder->getQuerySegmentList();
@@ -213,7 +213,7 @@ class QueryEngine implements QueryEngineInterface {
 		$this->querySegmentListProcessor->setQuerySegmentList( $this->querySegmentList );
 
 		// execute query tree, resolve all dependencies
-		$this->querySegmentListProcessor->doExecuteSubqueryJoinDependenciesFor( $rootid );
+		$this->querySegmentListProcessor->doResolveQueryDependenciesById( $rootid );
 
 		$this->applyExtraWhereCondition( $rootid );
 
@@ -564,7 +564,7 @@ class QueryEngine implements QueryEngineInterface {
 
 	private function compileAccordingConditionsAndHackThemIntoQobj( array $extraProperties, $qobj, $qid ) {
 		$this->querySegmentListBuilder->setSortKeys( $this->sortKeys );
-		$this->querySegmentListBuilder->buildQuerySegmentFor( new Conjunction( $extraProperties ) );
+		$this->querySegmentListBuilder->getQuerySegmentFrom( new Conjunction( $extraProperties ) );
 
 		$newQuerySegmentId = $this->querySegmentListBuilder->getLastQuerySegmentId();
 		$this->querySegmentList = $this->querySegmentListBuilder->getQuerySegmentList();

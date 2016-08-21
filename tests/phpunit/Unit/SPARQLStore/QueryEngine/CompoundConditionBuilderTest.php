@@ -12,6 +12,7 @@ use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
@@ -30,18 +31,20 @@ use SMWDITime as DITime;
 class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $stringBuilder;
+	private $descriptionInterpreterFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
+		$this->descriptionInterpreterFactory = new DescriptionInterpreterFactory();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder',
-			new CompoundConditionBuilder()
+			new CompoundConditionBuilder( $this->descriptionInterpreterFactory )
 		);
 	}
 
@@ -54,9 +57,9 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
-		$condition = $instance->buildCondition( $description );
+		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
@@ -84,11 +87,11 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance
 			->setSortKeys( array( 'Foo' => 'DESC' ) )
-			->buildCondition( $description );
+			->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
@@ -118,11 +121,11 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance
 			->setSortKeys( array( 'Bar' => 'DESC' ) )
-			->buildCondition( $description );
+			->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
@@ -153,11 +156,11 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$condition = $instance
 			->setSortKeys( array( '' => 'DESC' ) )
-			->buildCondition( $description );
+			->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
@@ -186,11 +189,11 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 		$instance->setSortKeys( array( 'Foo', 'ASC' ) );
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->buildCondition( $description );
+		$instance->getConditionFrom( $description );
 	}
 
 	public function testQueryForSinglePropertyWithValue() {
@@ -200,9 +203,9 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new DIProperty( 'Foo' )
 		);
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
-		$condition = $instance->buildCondition( $description );
+		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition',
@@ -230,9 +233,9 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ValueDescription( new DIBlob( 'SomePropertyBlobValue' ) )
 		);
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
-		$condition = $instance->buildCondition( $description );
+		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
@@ -261,9 +264,9 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ValueDescription( new DIWikiPage( 'SomePropertyPageValue', NS_MAIN ), null, SMW_CMP_LEQ )
 		);
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
-		$condition = $instance->buildCondition( $description );
+		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
@@ -294,9 +297,9 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ValueDescription( new DIBlob( 'SomePropertyBlobValue' ), null, SMW_CMP_NLKE )
 		);
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
-		$condition = $instance->buildCondition( $description );
+		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
@@ -328,9 +331,9 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			$category
 		);
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
-		$condition = $instance->buildCondition( $description );
+		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
@@ -353,9 +356,9 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$description = new NamespaceDescription( NS_HELP );
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
-		$condition = $instance->buildCondition( $description );
+		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
@@ -385,9 +388,9 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 				new DIProperty( 'Bar' ), new ThingDescription() ),
 		) );
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
-		$condition = $instance->buildCondition( $conjunction );
+		$condition = $instance->getConditionFrom( $conjunction );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
@@ -418,9 +421,9 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 				new ValueDescription( new DINumber( 9 ), null, SMW_CMP_LEQ ) ),
 		) );
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
-		$condition = $instance->buildCondition( $conjunction );
+		$condition = $instance->getConditionFrom( $conjunction );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
@@ -449,9 +452,9 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new SomeProperty( new DIProperty( 'Bar' ), new ThingDescription() )
 		) );
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
-		$condition = $instance->buildCondition( $conjunction );
+		$condition = $instance->getConditionFrom( $conjunction );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
@@ -486,9 +489,9 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 				new ValueDescription( new DIBlob( "BB?" ), null, SMW_CMP_NLKE )  )
 		) );
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
-		$condition = $instance->buildCondition( $conjunction );
+		$condition = $instance->getConditionFrom( $conjunction );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
@@ -523,9 +526,9 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ValueDescription( new DITime( 1, 1970, 01, 01, 1, 1 ), null, SMW_CMP_GEQ )
 		);
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
-		$condition = $instance->buildCondition( $description );
+		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
@@ -554,9 +557,9 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
-		$condition = $instance->buildCondition( $description );
+		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
@@ -593,9 +596,9 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			$disjunction
 		);
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
-		$condition = $instance->buildCondition( $description );
+		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
@@ -645,9 +648,9 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			$conjunction
 		);
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
-		$condition = $instance->buildCondition( $description );
+		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
@@ -686,9 +689,9 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
-		$condition = $instance->buildCondition( $description );
+		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
@@ -715,7 +718,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 		$instance->addOrderByData( $condition, 'foo', DataItem::TYPE_NUMBER );
 
 		$this->assertEquals(
@@ -730,7 +733,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 		$instance->addOrderByData( $condition, 'foo', DataItem::TYPE_WIKIPAGE );
 
 		$this->assertEquals(
@@ -750,7 +753,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanUseQFeature() {
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$this->assertInternalType(
 			'boolean',
@@ -760,7 +763,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testTryToFindRedirectVariableForNonWpgDataItem() {
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$this->assertNull(
 			$instance->tryToFindRedirectVariableForDataItem( new DINumber( 1 ) )
@@ -795,6 +798,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
+			->setConstructorArgs( array( $this->descriptionInterpreterFactory ) )
 			->setMethods( array( 'canUseQFeature' ) )
 			->getMock();
 
@@ -803,7 +807,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( SMW_SPARQL_QF_REDI ) )
 			->will( $this->returnValue( true ) );
 
-		$condition = $instance->buildCondition( $description );
+		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
@@ -845,6 +849,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$description = new ValueDescription( $diWikiPage, null );
 
 		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder' )
+			->setConstructorArgs( array( $this->descriptionInterpreterFactory ) )
 			->setMethods( array( 'canUseQFeature' ) )
 			->getMock();
 
@@ -853,7 +858,7 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( SMW_SPARQL_QF_REDI ) )
 			->will( $this->returnValue( true ) );
 
-		$condition = $instance->buildCondition( $description );
+		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition',
@@ -880,9 +885,9 @@ class CompoundConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new DIWikiPage( "Foo*", NS_MAIN ), null, SMW_CMP_LIKE
 		);
 
-		$instance = new CompoundConditionBuilder();
+		$instance = new CompoundConditionBuilder( $this->descriptionInterpreterFactory );
 
-		$condition = $instance->buildCondition( $description );
+		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition',

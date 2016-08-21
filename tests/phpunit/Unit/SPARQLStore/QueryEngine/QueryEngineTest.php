@@ -98,7 +98,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( array( 'bogus-error' ) ) );
 
 		$compoundConditionBuilder->expects( $this->atLeastOnce() )
-			->method( 'buildCondition' )
+			->method( 'getConditionFrom' )
 			->will( $this->returnValue( $condition ) );
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
@@ -190,7 +190,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $compoundConditionBuilder ) );
 
 		$compoundConditionBuilder->expects( $this->atLeastOnce() )
-			->method( 'buildCondition' )
+			->method( 'getConditionFrom' )
 			->will( $this->returnValue( $condition ) );
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
@@ -225,7 +225,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $compoundConditionBuilder ) );
 
 		$compoundConditionBuilder->expects( $this->atLeastOnce() )
-			->method( 'buildCondition' )
+			->method( 'getConditionFrom' )
 			->will( $this->returnValue( $condition ) );
 
 		$queryResultFactory = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\QueryResultFactory' )
@@ -283,7 +283,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $compoundConditionBuilder ) );
 
 		$compoundConditionBuilder->expects( $this->once() )
-			->method( 'buildCondition' )
+			->method( 'getConditionFrom' )
 			->will( $this->returnValue( $condition ) );
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
@@ -337,7 +337,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $compoundConditionBuilder ) );
 
 		$compoundConditionBuilder->expects( $this->once() )
-			->method( 'buildCondition' )
+			->method( 'getConditionFrom' )
 			->will( $this->returnValue( $condition ) );
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
@@ -438,7 +438,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $compoundConditionBuilder ) );
 
 		$compoundConditionBuilder->expects( $this->once() )
-			->method( 'buildCondition' )
+			->method( 'getConditionFrom' )
 			->will( $this->returnValue( $condition ) );
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
@@ -490,7 +490,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $compoundConditionBuilder ) );
 
 		$compoundConditionBuilder->expects( $this->once() )
-			->method( 'buildCondition' )
+			->method( 'getConditionFrom' )
 			->will( $this->returnValue( $condition ) );
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );

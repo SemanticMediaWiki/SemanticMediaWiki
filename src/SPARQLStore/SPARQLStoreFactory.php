@@ -6,6 +6,7 @@ use SMW\ApplicationFactory;
 use SMW\CircularReferenceGuard;
 use SMW\ConnectionManager;
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
 use SMW\SPARQLStore\QueryEngine\QueryEngine;
 use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
@@ -58,10 +59,11 @@ class SPARQLStoreFactory {
 
 		$engineOptions = new EngineOptions();
 
-		$circularReferenceGuard = new CircularReferenceGuard( 'sparql-query' );
+		$circularReferenceGuard = new CircularReferenceGuard( 'sparql-queryengine' );
 		$circularReferenceGuard->setMaxRecursionDepth( 2 );
 
 		$compoundConditionBuilder = new CompoundConditionBuilder(
+			new DescriptionInterpreterFactory(),
 			$engineOptions
 		);
 

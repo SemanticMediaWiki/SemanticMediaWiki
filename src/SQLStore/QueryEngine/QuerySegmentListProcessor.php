@@ -99,7 +99,7 @@ class QuerySegmentListProcessor {
 	 * @param integer $id
 	 * @throws RuntimeException
 	 */
-	public function doExecuteSubqueryJoinDependenciesFor( $id ) {
+	public function doResolveQueryDependenciesById( $id ) {
 
 		$this->hierarchyTempTableBuilder->emptyHierarchyCache();
 		$this->executedQueries = array();
