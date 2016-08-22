@@ -159,7 +159,7 @@
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Koncept|Koncepty}}]]",
 	"smw-statistics-subobject-count": "{{PLURAL:$1|Podobiekt|Podobiekty}}",
 	"smw-statistics-datatype-count": "[[Special:Types|{{PLURAL:$1|Typ danych|Typy danych}}]]",
-	"smw-statistics-error-count": "{{PLURAL:$1|Wartość|Wartości}} właściwości ([[Property:Has improper value for|{{PLURAL:$1|niewłaściwa adnotacja|niewłaściwe adnotacje}}]])",
+	"smw-statistics-error-count": "{{PLURAL:$1|Wartość|Wartości}} właściwości ([[Special:ProcessingErrorList|{{PLURAL:$1|niewłaściwa adnotacja|niewłaściwe adnotacje}}]])",
 	"smw_uri_doc": "Resolver URI implementuje [$1 W3C TAG finding on httpRange-14]. Dzięki temu ludzie nie zamieniają się w strony WWW.",
 	"ask": "Wyszukiwanie semantyczne",
 	"smw_ask_sortby": "Sortuj według kolumny (opcjonalnie)",

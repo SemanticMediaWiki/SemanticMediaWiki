@@ -169,6 +169,7 @@
 	"smw-ask-sorting": "Řazení",
 	"smw-ask-format-selection-help": "Detailní popis najdete na stránce nápovědy $1.",
 	"searchbyproperty": "Hledat podle hodnoty vlastnosti",
+	"processingerrorlist": "Chyba při zpracovávání seznamu",
 	"smw_sbv_docu": "Hledat na wiki článek, který má vlastnost s jistou hodnotou.",
 	"smw_sbv_novalue": "Nebyla uvedena hodnota. Prosím, vložte ji ve formuláři nebo zobrazte všechny atributy typu $1",
 	"smw_sbv_displayresult": "Seznam všech článků, které mají vlastnost $1 s hodnotou $2.",

@@ -24,6 +24,7 @@
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
+	"smw-title": "Семантическая МедиаВики",
 	"smw_viewasrdf": "RDF источник",
 	"smw_finallistconjunct": " и",
 	"smw_factbox_head": "Факты: $1",
@@ -309,7 +310,7 @@
 	"grouppage-smwcurator": "{{ns:project}}:Кураторы (Semantic MediaWiki)",
 	"action-smw-admin": "доступ к задачам администратора Semantic MediaWiki",
 	"smw-pa-property-predefined-default": "«$1» — это предопределённое свойство.",
-	"smw-pa-property-predefined-common": "Это предварительно развернутое свойство (также известное как [https://www.semantic-mediawiki.org/wiki/Help:Special_properties специальное свойство]) и несет дополнительные административные привилегии, но может быть использовано, как любое другое [https: / /www.semantic-mediawiki.org/wiki/Property определеное пользователем свойство].",
+	"smw-pa-property-predefined-common": "Это предварительно развернутое свойство (также известное как [https://www.semantic-mediawiki.org/wiki/Help:Special_properties специальное свойство]) и несет дополнительные административные привилегии, но может быть использовано, как любое другое [https://www.semantic-mediawiki.org/wiki/Property определенное пользователем свойство].",
 	"smw-pa-property-predefined_ask": "«$1» — это предопределённое свойство, которое представляет мета-данные (в форме [https://www.semantic-mediawiki.org/wiki/Subobject подобъекта]) об индивидуальных запросах и предоставляется [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_asksi": "«$1» — это предопределённое свойство, которое собирает количество условий, используемых в запросе и предоставляется [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_askde": "«$1» - было получено свойство, которое информирует о глубине (числовом значение, рассчитанном на базе вложенных подзапросов и решенных цепочек свойств) запроса, в то время как выполнение запроса ограничено настройкой [https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth $smwgQMaxDepth], и обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",

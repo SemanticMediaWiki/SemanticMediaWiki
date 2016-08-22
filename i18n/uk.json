@@ -80,6 +80,7 @@
 	"smw-paramdesc-order": "Порядок сортування запиту",
 	"smw-paramdesc-searchlabel": "Текст для продовження пошуку",
 	"smw-paramdesc-named_args": "Імена аргументів, переданих в шаблон",
+	"smw-paramdesc-import-annotation": "Додаткові анотовані дані, що мають бути скопійовані під час парсингу суб'єкта",
 	"smw-paramdesc-export": "Параметри експорту",
 	"smw-paramdesc-prettyprint": "Вивід докладного друку, який відображає додаткові відступи та символи",
 	"smw-paramdesc-source": "Альтернативне джерело запиту",

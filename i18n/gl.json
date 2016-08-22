@@ -410,5 +410,8 @@
 	"smw-datavalue-time-invalid-date-components-three": "\"$1\" contén máis de tres componentes.",
 	"smw-datavalue-time-invalid-ampm": "\"$1\" contén \"$2\" como un elemento horario que é inválido para o formato convencional de 12 horas.",
 	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" é un enderezo URL non válido.",
-	"smw-pa-property-predefined_eid": "\"$1\" é un [[Special:Types/External identifier|tipo]] e propiedade predefinida proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica] para representar identificadores externos."
+	"smw-pa-property-predefined_eid": "\"$1\" é un [[Special:Types/External identifier|tipo]] e propiedade predefinida proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica] para representar identificadores externos.",
+	"smw-pa-property-predefined_peid": "\"$1\" é unha propiedade predefinida que un identificador externo. E está proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
+	"smw-pa-property-predefined_pefu": "\"$1\" é unha propiedade predefinida que especifica un URI. E está proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
+	"smw-pa-property-predefined-long_pefu": "O URI se espera que conteña un parámetro posicional para que os identificadores externos poidan ser formatados e inicializados correctamente."
 }

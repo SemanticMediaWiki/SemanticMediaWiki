@@ -106,6 +106,7 @@
 	"smw-paramdesc-order": "Ordre de tri pour la requête",
 	"smw-paramdesc-searchlabel": "Titre du lien permettant d'accéder aux résultats suivants (par défaut, «… autres résultats»)",
 	"smw-paramdesc-named_args": "Nommez les arguments transmis au modèle",
+	"smw-paramdesc-import-annotation": "Les données supplémentaires annotées sont copiées lors de l’analyse d’un sujet",
 	"smw-paramdesc-export": "Options d’exportation",
 	"smw-paramdesc-prettyprint": "Une sortie d'impression plus claire qui affiche de nouvelles lignes et indentations",
 	"smw-paramdesc-source": "Source de requête alternative",

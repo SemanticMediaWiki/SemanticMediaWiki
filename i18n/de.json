@@ -92,6 +92,7 @@
 	"smw-paramdesc-order": "Die Sortierreihenfolge für die Ergebnisse der Abfrage",
 	"smw-paramdesc-searchlabel": "Der Text zum Anzeigen weiterer Abfrageergebnisse",
 	"smw-paramdesc-named_args": "Die an die Vorlage zu übergebenden Argumente",
+	"smw-paramdesc-import-annotation": "Zusätzliche annotierte Daten werden während des Parsens einer Seite kopiert",
 	"smw-paramdesc-export": "Die Exportoption",
 	"smw-paramdesc-prettyprint": "Die unformatierte Anzeige mit zusätzlichen Einzügen und neuen Zeilen",
 	"smw-paramdesc-source": "Die alternative Abfragequelle",
