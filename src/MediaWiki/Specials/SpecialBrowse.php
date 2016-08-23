@@ -128,6 +128,13 @@ class SpecialBrowse extends SpecialPage {
 				'div',
 				array(
 					'class' => 'smwb-status'
+				),
+					Html::rawElement(
+					'div',
+					array(
+						'class' => 'smw-nojs smw-callout smw-callout-error',
+					),
+					Message::get( 'smw-browse-js-disabled', Message::PARSE )
 				)
 			) . Html::rawElement(
 				'div',
@@ -191,7 +198,7 @@ class SpecialBrowse extends SpecialPage {
 		if ( $this->getRequest()->getVal( 'printable' ) === 'yes' ) {
 			return null;
 		}
-		
+
 		// FIXME with SMW 3.0, allow to be used with MW 1.25-
 		if ( !method_exists( $this, 'addHelpLink' ) ) {
 			return null;
