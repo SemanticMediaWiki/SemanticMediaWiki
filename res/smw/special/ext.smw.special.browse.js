@@ -6,20 +6,31 @@
  */
 
 /*global jQuery, mediaWiki, mw, smw */
+( function ( $, mw ) {
 
-// (ES6), see https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Classes
-class Browse {
+	'use strict';
+
+	// http://monc.se/kitchen/152/avoiding-flickering-in-jquery
+	// DOM ready is too late and will cause flashing of content while this
+	// method will hide the element immediately when JS is available
+	document.write( '<style type="text/css">.smw-nojs{display:none}</style>' );
 
 	/**
-	 * @since 2.5
+	 * @since  2.5.0
 	 * @constructor
 	 *
-	 * @param {Object} api
+	 * @param {Object} mwApi
+	 * @param {Object} util
+	 *
+	 * @return {this}
 	 */
-	constructor ( api ) {
-		this.VERSION = "2.5";
-		this.api = api;
-	}
+	var browse = function ( mwApi ) {
+
+		this.VERSION = "2.5.0";
+		this.api = mwApi;
+
+		return this;
+	};
 
 	/**
 	 * @since 2.5
@@ -27,7 +38,7 @@ class Browse {
 	 *
 	 * @param {Object} context
 	 */
-	setContext ( context ) {
+	browse.prototype.setContext = function( context ) {
 		this.context = context;
 	}
 
@@ -35,7 +46,7 @@ class Browse {
 	 * @since 2.5
 	 * @method
 	 */
-	doApiRequest () {
+	browse.prototype.doApiRequest = function() {
 
 		var self = this,
 			subject = self.context.data( 'subject' ),
@@ -76,7 +87,7 @@ class Browse {
 	 *
 	 * @param {string} error
 	 */
-	reportError ( error ) {
+	browse.prototype.reportError = function( error ) {
 		this.context.find( '.smwb-status' ).append( error ).addClass( 'smw-callout smw-callout-error' );
 	}
 
@@ -86,16 +97,11 @@ class Browse {
 	 *
 	 * @param {string} content
 	 */
-	appendContent ( content ) {
+	browse.prototype.appendContent = function( content ) {
 
 		var self = this;
 
 		self.context.find( '.smwb-content' ).replaceWith( content );
-
-		// Re-apply JS-component instances on new content
-		mw.loader.using( 'ext.smw.tooltips' ).done( function () {
-			smw.Factory.newTooltip().initFromContext( self.context );
-		} );
 
 		mw.loader.using( 'ext.smw.browse' ).done( function () {
 			self.context.find( '#smwb-page-search' ).smwAutocomplete( { search: 'page', namespace: 0 } );
@@ -105,26 +111,22 @@ class Browse {
 			self.context.find( '.smwb-modules' ).data( 'modules' )
 		);
 
+		// Re-apply JS-component instances on new content
 		// Trigger an event
 		$( document ).trigger( 'SMW::Browse::ApiParseComplete' , {
 			'context': self.context
 		} );
 	}
-}
 
-( function ( $, mw ) {
-
-	'use strict';
-
-	var browse = new Browse(
+	var instance = new browse(
 		new mw.Api()
 	);
 
 	$( document ).ready( function() {
 
 		$( '.smwb-container' ).each( function() {
-			browse.setContext( $( this ) );
-			browse.doApiRequest();
+			instance.setContext( $( this ) );
+			instance.doApiRequest();
 		} );
 
 		$( '#smwb-page-search' ).smwAutocomplete( { search: 'page', namespace: 0 } );

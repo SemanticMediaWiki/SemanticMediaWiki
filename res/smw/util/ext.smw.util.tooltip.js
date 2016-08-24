@@ -216,6 +216,7 @@
 					eventPrefs = mw.user.options.get( 'smw-prefs-tooltip-option-click' ) ? 'click' : undefined,
 					state      = $this.data( 'state' ),
 					title      = $this.data( 'title' ),
+					content    = $this.data( 'content' ),
 					type       = $this.data( 'type' );
 
 				// Assign sub-class
@@ -223,10 +224,14 @@
 				// Persistent extends interactions for service links, info, and error messages
 				$this.addClass( state === 'inline' ? 'smwttinline' : 'smwttpersist' );
 
+				// Remove title content which is supposed to be used when nojs is enabled
+				// and the "real" tooltip cannot show the ccontent
+				$this.removeAttr( "title" );
+
 				// Call instance
 				self.show( {
 					context: $this,
-					content: $this.find( '.smwttcontent' ),
+					content: content !== undefined ? content : $this.find( '.smwttcontent' ),
 					title  : title !== undefined ? title : mw.msg( self.getTitleMsg( type ) ),
 					event  : eventPrefs,
 					button : type === 'warning' || state === 'inline' ? false /* false = no close button */ : true
@@ -246,6 +251,22 @@
 	};
 
 	/**
+	 * @since 2.5
+	 * @method
+	 */
+	smw.util.tooltip.prototype.registerEventListeners = function() {
+
+		var self = this;
+
+		// Listen to the Special:Browse event
+		$ ( document ).on( 'SMW::Browse::ApiParseComplete', function( event, opts ) {
+			 self.initFromContext( opts.context );
+		} );
+
+		return self;
+	};
+
+	/**
 	 * Factory
 	 * @since 2.5
 	 */
@@ -255,15 +276,16 @@
 		}
 	}
 
+	// Register addEventListeners early on
+	var instance = Factory.newTooltip().registerEventListeners();
+
 	/**
 	 * Implementation of a tooltip instance
 	 * @since 1.8
 	 * @ignore
 	 */
 	$( document ).ready( function() {
-		Factory.newTooltip().render(
-			$( '.smw-highlighter' )
-		);
+		instance.initFromContext( $( this ) );
 	} );
 
 	smw.Factory = smw.Factory || {};
