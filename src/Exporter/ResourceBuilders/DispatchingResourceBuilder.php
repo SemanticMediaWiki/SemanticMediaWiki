@@ -1,15 +1,9 @@
 <?php
 
-namespace SMW\Exporter;
+namespace SMW\Exporter\ResourceBuilders;
 
-use SMW\Exporter\ResourceBuilders\PropertyValueResourceBuilder;
-use SMW\Exporter\ResourceBuilders\ConceptPropertyValueResourceBuilder;
-use SMW\Exporter\ResourceBuilders\ImportFromPropertyValueResourceBuilder;
-use SMW\Exporter\ResourceBuilders\PredefinedPropertyValueResourceBuilder;
-use SMW\Exporter\ResourceBuilders\RedirectPropertyValueResourceBuilder;
-use SMW\Exporter\ResourceBuilders\AuxiliaryPropertyValueResourceBuilder;
-use SMW\Exporter\ResourceBuilders\ExternalIdentifierPropertyValueResourceBuilder;
 use SMW\DIProperty;
+use SMW\Exporter\ResourceBuilder;
 use SMWDataItem as DataItem;
 use SMWExpData as ExpData;
 
@@ -107,6 +101,7 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 	private function initResourceBuilders() {
 
 		$this->addResourceBuilder( new ExternalIdentifierPropertyValueResourceBuilder() );
+		$this->addResourceBuilder( new MonolingualTextPropertyValueResourceBuilder() );
 
 		$this->addResourceBuilder( new ConceptPropertyValueResourceBuilder() );
 		$this->addResourceBuilder( new ImportFromPropertyValueResourceBuilder() );

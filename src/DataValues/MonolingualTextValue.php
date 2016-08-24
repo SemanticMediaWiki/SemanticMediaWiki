@@ -13,6 +13,7 @@ use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIContainer as DIContainer;
+use SMWDIBlob as DIBlob;
 
 /**
  * MonolingualTextValue requires two components, a language code and a
@@ -253,36 +254,65 @@ class MonolingualTextValue extends AbstractMultiValue {
 	/**
 	 * @since 2.4
 	 *
+	 * @param string $languageCode
+	 *
 	 * @return DataValue|null
 	 */
 	public function getTextValueByLanguage( $languageCode ) {
 
-		if ( !$this->isValid() || $this->getDataItem() === array() ) {
+		if ( ( $list = $this->toArray() ) === array() ) {
 			return null;
 		}
 
-		$semanticData = $this->getDataItem()->getSemanticData();
-
-		$dataItems = $semanticData->getPropertyValues( new DIProperty( '_LCODE' ) );
-		$dataItem = reset( $dataItems );
-
-		if ( $dataItem === false || ( $dataItem->getString() !== Localizer::asBCP47FormattedLanguageCode( $languageCode ) ) ) {
+		if ( $list['_LCODE'] !== Localizer::asBCP47FormattedLanguageCode( $languageCode ) ) {
 			return null;
 		}
 
-		$dataItems = $semanticData->getPropertyValues( new DIProperty( '_TEXT' ) );
-		$dataItem = reset( $dataItems );
-
-		if ( $dataItem === false ) {
+		if ( $list['_TEXT'] === '' ) {
 			return null;
 		}
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
-			$dataItem,
+			new DIBlob( $list['_TEXT'] ),
 			new DIProperty( '_TEXT' )
 		);
 
 		return $dataValue;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return array
+	 */
+	public function toArray() {
+
+		if ( !$this->isValid() || $this->getDataItem() === array() ) {
+			return array();
+		}
+
+		$semanticData = $this->getDataItem()->getSemanticData();
+
+		$list = array(
+			'_TEXT'  => '',
+			'_LCODE' => ''
+		);
+
+		$dataItems = $semanticData->getPropertyValues( new DIProperty( '_TEXT' ) );
+		$dataItem = reset( $dataItems );
+
+		if ( $dataItem !== false  ) {
+			$list['_TEXT'] = $dataItem->getString();
+		}
+
+		$dataItems = $semanticData->getPropertyValues( new DIProperty( '_LCODE' ) );
+		$dataItem = reset( $dataItems );
+
+		if ( $dataItem !== false ) {
+			$list['_LCODE'] = $dataItem->getString();
+		}
+
+		return $list;
 	}
 
 	private function newContainerSemanticData( $value ) {
