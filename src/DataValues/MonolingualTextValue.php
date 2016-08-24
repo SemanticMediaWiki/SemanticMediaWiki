@@ -33,7 +33,7 @@ use SMWDIContainer as DIContainer;
  *
  * @author mwjames
  */
-class MonolingualTextValue extends DataValue {
+class MonolingualTextValue extends AbstractMultiValue {
 
 	/**
 	 * @var DIProperty[]|null
@@ -53,13 +53,22 @@ class MonolingualTextValue extends DataValue {
 	}
 
 	/**
-	 * @see RecordValue::setFieldProperties
+	 * @see AbstractMultiValue::setFieldProperties
 	 *
 	 * @param DIProperty[] $properties
 	 */
 	public function setFieldProperties( array $properties ) {
 		// Keep the interface while the properties for this type
 		// are fixed.
+	}
+
+	/**
+	 * @see AbstractMultiValue::getProperties
+	 *
+	 * @param DIProperty[] $properties
+	 */
+	public function getProperties() {
+		self::$properties;
 	}
 
 	/**
@@ -194,11 +203,11 @@ class MonolingualTextValue extends DataValue {
 
 	/**
 	 * @since 2.4
-	 * @note called by SMWResultArray::getNextDataValue
+	 * @note called by AbstractRecordValue::getPropertyDataItems
 	 *
 	 * @return DIProperty[]
 	 */
-	public static function getPropertyDataItems() {
+	public function getPropertyDataItems() {
 
 		if ( self::$properties !== null && self::$properties !== array() ) {
 			return self::$properties;
@@ -213,7 +222,7 @@ class MonolingualTextValue extends DataValue {
 
 	/**
 	 * @since 2.4
-	 * @note called by SMWResultArray::loadContent
+	 * @note called by AbstractRecordValue::getDataItems
 	 *
 	 * @return DataItem[]
 	 */
