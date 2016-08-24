@@ -169,7 +169,6 @@ class SMWTimeValue extends SMWDataValue {
 						$this->addErrorMsg( array( 'smw_nodatetime', $this->m_wikivalue ) );
 					}
 				} else {
-					var_dump( $this->m_wikivalue );
 					$this->addErrorMsg( array( 'smw_nodatetime', $this->m_wikivalue ) );
 				}
 			} else {
