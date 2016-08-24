@@ -129,12 +129,16 @@ class SpecialBrowse extends SpecialPage {
 				array(
 					'class' => 'smwb-status'
 				),
+				Html::rawElement(
+					'noscript',
+					array(),
 					Html::rawElement(
-					'div',
-					array(
-						'class' => 'smw-nojs smw-callout smw-callout-error',
-					),
-					Message::get( 'smw-browse-js-disabled', Message::PARSE )
+						'div',
+						array(
+							'class' => 'smw-callout smw-callout-error',
+						),
+						Message::get( 'smw-browse-js-disabled', Message::PARSE )
+					)
 				)
 			) . Html::rawElement(
 				'div',
