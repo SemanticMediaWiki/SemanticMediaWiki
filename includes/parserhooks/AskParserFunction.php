@@ -220,10 +220,11 @@ class AskParserFunction {
 
 	private function createQueryProfile( $query, $format, $duration ) {
 
-		// In case of an query error add a marker to the subject for
-		// discoverability of a failed query
+		// In case of an query error add a marker to the subject for discoverability
+		// of a failed query, don't bail-out as we can have results and errors
+		// at the same time
 		if ( $query->getErrors() !== array() ) {
-			return $this->addProcessingError( $query->getErrors() );
+			$this->addProcessingError( $query->getErrors() );
 		}
 
 		$queryProfileAnnotatorFactory = $this->applicationFactory->newQueryProfileAnnotatorFactory();

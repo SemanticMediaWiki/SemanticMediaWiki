@@ -193,7 +193,7 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->parse( $params );
-/*
+
 		$expected = array(
 			'output' => 'class="smwtticon warning"', // lazy content check for the error
 			'propertyCount'  => 4,
@@ -205,7 +205,7 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			$expected,
 			$parserData->getSemanticData()->findSubSemanticData( '_QUERYc685f41368e6d9c59dfc9d8d69ef557f' )
 		);
-*/
+
 		$expected = array(
 			'propertyCount'  => 2,
 			'propertyKeys'   => array( '_ERRP', '_ERRT' ),
