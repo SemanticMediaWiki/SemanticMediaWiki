@@ -205,6 +205,12 @@ class InTextAnnotationParser {
 				}
 
 				if ( array_key_exists( 2, $matches ) ) {
+
+					// #1747
+					if ( strpos( $matches[1], '|' ) !== false ) {
+						return $matches[0];
+					}
+
 					$parts = explode( '|', $matches[2] );
 					$value = array_key_exists( 0, $parts ) ? $parts[0] : '';
 					$caption = array_key_exists( 1, $parts ) ? $parts[1] : false;
@@ -307,7 +313,16 @@ class InTextAnnotationParser {
 		$caption = false;
 
 		if ( array_key_exists( 2, $semanticLink ) ) {
+
+			// #1747 avoid a mismatch on an annotation like [[Foo|Bar::Foobar]]
+			// where the left part of :: is split and would contain "Foo|Bar"
+			// hence this type is categorized as no value annotation
+			if ( strpos( $semanticLink[1], '|' ) !== false ) {
+				return $semanticLink[0];
+			}
+
 			$parts = explode( '|', $semanticLink[2] );
+
 			if ( array_key_exists( 0, $parts ) ) {
 				$value = $parts[0];
 			}
