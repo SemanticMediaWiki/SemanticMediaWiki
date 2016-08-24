@@ -113,6 +113,8 @@ class MonolingualTextValue extends AbstractMultiValue {
 				$this->m_contextPage
 			);
 
+			$this->addError( $dataValue->getErrors() );
+
 			$dataValues[] = $dataValue;
 		}
 

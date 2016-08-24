@@ -5,6 +5,7 @@ namespace SMW\DataValues\ValueValidators;
 use SMW\DataValueFactory;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
+use SMW\Message;
 
 /**
  * @private
@@ -60,8 +61,10 @@ class ListConstraintValueValidator implements ConstraintValueValidator {
 				array(
 					'smw_notinenum',
 					$dataValue->getWikiValue(),
-					$valuestring
-				)
+					$valuestring,
+					$property->getLabel()
+				),
+				Message::PARSE
 			);
 
 			$this->hasConstraintViolation = true;
