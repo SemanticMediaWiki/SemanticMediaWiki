@@ -10,11 +10,6 @@
 
 	'use strict';
 
-	// http://monc.se/kitchen/152/avoiding-flickering-in-jquery
-	// DOM ready is too late and will cause flashing of content while this
-	// method will hide the element immediately when JS is available
-	document.write( '<style type="text/css">.smw-nojs{display:none}</style>' );
-
 	/**
 	 * @since  2.5.0
 	 * @constructor
