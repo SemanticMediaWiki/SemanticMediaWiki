@@ -219,6 +219,28 @@ class Localizer {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param integer $ns
+	 * @param string $url
+	 *
+	 * @return string
+	 */
+	public function getCanonicalizedUrlByNamespace( $ns, $url ) {
+
+		$namespace = $this->getNamespaceTextById( $ns );
+
+		return str_replace(
+			array(
+				wfUrlencode( '/' . $namespace .':' ),
+				'/' . $namespace .':'
+			),
+			'/' . \MWNamespace::getCanonicalName( $ns ) . ':',
+			$url
+		);
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param string &$value

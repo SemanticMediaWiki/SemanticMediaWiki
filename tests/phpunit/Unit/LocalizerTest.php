@@ -268,4 +268,27 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetCanonicalizedUrlByNamespace() {
+
+		$language = $this->getMockBuilder( '\Language' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$language->expects( $this->exactly( 2 ) )
+			->method( 'getNsText' )
+			->will( $this->returnValue( 'Spécial' ) );
+
+		$instance = new Localizer( $language );
+
+		$this->assertEquals(
+			'http://example.org/wiki/Special:URIResolver/Property-3AHas_query',
+			$instance->getCanonicalizedUrlByNamespace( NS_SPECIAL, 'http://example.org/wiki/Sp%C3%A9cial:URIResolver/Property-3AHas_query' )
+		);
+
+		$this->assertEquals(
+			'http://example.org/wiki/Special:URIResolver/Property-3AHas_query',
+			$instance->getCanonicalizedUrlByNamespace( NS_SPECIAL, 'http://example.org/wiki/Spécial:URIResolver/Property-3AHas_query' )
+		);
+	}
+
 }

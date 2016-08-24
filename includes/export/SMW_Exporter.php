@@ -4,6 +4,7 @@ use SMW\ApplicationFactory;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
+use SMW\Localizer;
 use SMW\NamespaceUriFinder;
 use SMW\Exporter\DataItemByExpElementMatchFinder;
 use SMW\Exporter\DataItemToElementEncoder;
@@ -148,10 +149,12 @@ class SMWExporter {
 		// Canonical form, the title object always contains a wgContLang reference
 		// therefore replace it
 		if ( !$GLOBALS['smwgExportBCNonCanonicalFormUse'] ) {
-			$special = wfUrlencode( '/' . $wgContLang->getNsText( NS_SPECIAL ) .':' );
+			$localizer = Localizer::getInstance();
 
-			self::$m_ent_wiki = str_replace( $special , '/Special:', self::$m_ent_wiki );
-			self::$m_exporturl = str_replace( $special , '/Special:', self::$m_exporturl );
+			self::$m_ent_property = $localizer->getCanonicalizedUrlByNamespace( NS_SPECIAL, self::$m_ent_property );
+			self::$m_ent_category = $localizer->getCanonicalizedUrlByNamespace( NS_SPECIAL, self::$m_ent_category );
+			self::$m_ent_wiki = $localizer->getCanonicalizedUrlByNamespace( NS_SPECIAL, self::$m_ent_wiki );
+			self::$m_exporturl = $localizer->getCanonicalizedUrlByNamespace( NS_SPECIAL, self::$m_exporturl );
 		}
 	}
 
