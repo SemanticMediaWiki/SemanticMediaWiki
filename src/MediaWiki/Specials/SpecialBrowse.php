@@ -93,12 +93,17 @@ class SpecialBrowse extends SpecialPage {
 	private function getHtml( $webRequest ) {
 
 		if ( !$this->subjectDV->isValid() ) {
+
+			foreach ( $this->subjectDV->getErrors() as $error ) {
+				$error = Message::decode( $error );
+			}
+
 			return Html::rawElement(
 					'div',
 					array(
 						'class' => 'smw-callout smw-callout-error'
 					),
-					Message::get( array( 'smw-browse-subject-invalid', $this->subjectDV->getErrors() ) )
+					Message::get( array( 'smw-browse-invalid-subject', $error ) )
 				) . HtmlContentBuilder::getPageSearchQuickForm();
 		}
 
