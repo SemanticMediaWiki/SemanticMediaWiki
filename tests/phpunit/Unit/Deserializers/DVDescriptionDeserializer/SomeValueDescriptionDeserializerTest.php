@@ -50,7 +50,6 @@ class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'setUserValue' )
 			->with(
 				$this->anything(),
-				$this->equalTo( false ),
 				$this->equalTo( false ) );
 
 		$dataValue->expects( $this->any() )
@@ -88,8 +87,7 @@ class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'setUserValue' )
 			->with(
 				$this->anything(),
-				$this->equalTo( false ),
-				$this->equalTo( true ) );
+				$this->equalTo( false ) );
 
 		$instance = new SomeValueDescriptionDeserializer();
 		$instance->setDataValue( $dataValue );

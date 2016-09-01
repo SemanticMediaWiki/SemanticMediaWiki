@@ -43,12 +43,12 @@ class SomeValueDescriptionDeserializer extends DescriptionDeserializer {
 		$comparator = SMW_CMP_EQ;
 		$this->prepareValue( $value, $comparator );
 
-		// Ignore allowed values when the ~/!~ comparator is used BUG 21893, #1207
-		if( $comparator == SMW_CMP_LIKE || $comparator == SMW_CMP_NLKE ) {
-			$this->dataValue->setUserValue( $value, false, true );
-		} else {
-			$this->dataValue->setUserValue( $value );
-		}
+		$this->dataValue->setOption(
+			DataValue::OPT_QUERY_COMP_CONTEXT,
+			( $comparator !== SMW_CMP_EQ && $comparator !== SMW_CMP_NEQ )
+		);
+
+		$this->dataValue->setUserValue( $value );
 
 		if ( $this->dataValue->isValid() ) {
 			return new ValueDescription(
