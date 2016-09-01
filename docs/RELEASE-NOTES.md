@@ -38,6 +38,7 @@ THIS IS NOT A RELEASE YET
 * #1728 Fixed fatal error in `Special:SearchByProperty` on when the property name contains invalid characters
 * #1731 Fixed possible error in the `SkinAfterContent` hook when a null object is used
 * #1775 Fixed time offset recognition 
+* #1817 Disabled `DataValue` constraint validation when used in a query context 
 
 ## Internal changes
 
@@ -46,6 +47,7 @@ THIS IS NOT A RELEASE YET
 * #1750 Added `RdbmsTableBuilder` to replace `SMWSQLHelpers`
 * #1780 Added `ResourceBuilder` and `DispatchingResourceBuilder`
 * #1791 Added `PropertyRegistry::registerPropertyDescriptionByMsgKey`
+* #1776 Added `QueryEngine` and `StoreAware` interface
 
 ## Contributors
 
