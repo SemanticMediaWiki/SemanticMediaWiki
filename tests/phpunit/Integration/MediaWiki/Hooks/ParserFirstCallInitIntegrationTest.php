@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
-use SMW\ApplicationFactory;
 use SMW\ContentParser;
-use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\TestEnvironment;
 use Title;
 
 /**
@@ -19,27 +18,38 @@ use Title;
 class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	private $mwHooksHandler;
-	private $applicationFactory;
 	private $parserFactory;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$utilityFactory = UtilityFactory::getInstance();
+		$this->testEnvironment = new TestEnvironment( array(
+			'smwgCacheType' => CACHE_NONE
+		) );
 
-		$this->mwHooksHandler = $utilityFactory->newMwHooksHandler();
+		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
 
-		$this->parserFactory = $utilityFactory->newParserFactory();
+		$this->parserFactory = $this->testEnvironment->getUtilityFactory()->newParserFactory();
+
+		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->any() )
+			->method( 'getErrors' )
+			->will( $this->returnValue( array() ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$store->expects( $this->any() )
+			->method( 'getQueryResult' )
+			->will( $this->returnValue( $queryResult ) );
 
-		$this->applicationFactory->getSettings()->set( 'smwgCacheType', CACHE_NONE );
+		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$this->mwHooksHandler->register(
 			'ParserFirstCallInit',
@@ -49,7 +59,7 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	protected function tearDown() {
 		$this->mwHooksHandler->restoreListedHooks();
-		$this->applicationFactory->clear();
+		$this->testEnvironment->tearDown();
 
 		parent::tearDown();
 	}
@@ -67,7 +77,7 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 		$title = Title::newFromText( __METHOD__ );
 		$parser = $this->parserFactory->newFromTitle( $title );
 
-		$this->applicationFactory->getSettings()->set( 'smwgQEnabled', true );
+		$this->testEnvironment->addConfiguration( 'smwgQEnabled', true );
 
 		$instance = new ContentParser( $title, $parser );
 		$instance->parse( $text );
@@ -99,7 +109,7 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 		$title = Title::newFromText( __METHOD__ );
 		$parser = $this->parserFactory->newFromTitle( $title );
 
-		$this->applicationFactory->getSettings()->set( 'smwgQEnabled', false );
+		$this->testEnvironment->addConfiguration( 'smwgQEnabled', false );
 
 		$instance = new ContentParser( $title, $parser );
 		$instance->parse( $text );

@@ -15,6 +15,7 @@ use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
 use SMWSql3SmwIds;
 use SMWSQLStore3 as SQLStore;
+use SMW\QueryEngine as QueryEngineInterface;
 
 /**
  * Class that implements query answering for SQLStore.
@@ -26,7 +27,7 @@ use SMWSQLStore3 as SQLStore;
  * @author Jeroen De Dauw
  * @author mwjames
  */
-class QueryEngine {
+class QueryEngine implements QueryEngineInterface {
 
 	/**
 	 * @var SQLStore

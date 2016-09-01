@@ -8,6 +8,7 @@ use SMWQueryResult;
 use SMWRequestOptions;
 use SMWSemanticData;
 use Title;
+use SMW\QueryEngine;
 
 /**
  * This group contains all parts of SMW that relate to storing and retrieving
@@ -28,7 +29,7 @@ use Title;
  *
  * @author Markus Krötzsch
  */
-abstract class Store {
+abstract class Store implements QueryEngine {
 
 	/**
 	 * @var boolean

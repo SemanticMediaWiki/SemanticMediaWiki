@@ -6,6 +6,7 @@ use ParamProcessor\ParamDefinition;
 use ParamProcessor\Processor;
 use SMW\Query\PrintRequest;
 use SMW\Query\PrintRequestFactory;
+use SMW\ApplicationFactory;
 
 /**
  * This file contains a static class for accessing functions to generate and execute
@@ -488,15 +489,7 @@ class SMWQueryProcessor {
 	}
 
 	private static function getStoreFromParams( array $params ) {
-
-		$storeId = null;
-		$source  = $params['source']->getValue();
-
-		if ( $source !== '' ) {
-			$storeId = $GLOBALS['smwgQuerySources'][$source];
-		}
-
-		return \SMW\StoreFactory::getStore( $storeId );
+		return ApplicationFactory::getInstance()->getQuerySource( $params['source']->getValue() );
 	}
 
 	/**

@@ -4,13 +4,11 @@ namespace SMW\Tests\Integration;
 
 use SMW\StoreFactory;
 use SMWQueryProcessor;
+use SMW\Tests\TestEnvironment;
 
 /**
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  * @group medium
- * @group semantic-mediawiki-integration
- * @group mediawiki-databaseless
  *
  * @license GNU GPL v2+
  * @since   1.9.2
@@ -19,27 +17,48 @@ use SMWQueryProcessor;
  */
 class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 
-	protected $smwgQuerySources = array();
+	private $testEnvironment;
+	private $store;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->smwgQuerySources = $GLOBALS['smwgQuerySources'];
+		$this->testEnvironment = new TestEnvironment();
 
-		$GLOBALS['smwgQuerySources'] = array(
-			'foo' => 'SMW\Tests\Utils\Mock\FakeQueryStore',
-			'bar' => 'SMW\Test\NonExistentQueryStore'
+		$this->testEnvironment->addConfiguration(
+			'smwgQuerySources',
+			array(
+				'foo'    => 'SMW\Tests\Utils\Mock\FakeQueryStore',
+				'foobar' => 'SMW\Tests\Integration\AnotherFakeQueryStoreWhichDoesNotImplentTheQueryEngineInterface',
+				'bar'    => 'SMW\Tests\NonExistentQueryStore',
+			)
 		);
+
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
 	protected function tearDown() {
-		StoreFactory::clear();
-		$GLOBALS['smwgQuerySources'] = $this->smwgQuerySources;
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testQueryProcessorWithDefaultSource() {
+
+		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->atLeastOnce() )
+			->method( 'getErrors' )
+			->will( $this->returnValue( array() ) );
+
+		$this->store->expects( $this->atLeastOnce() )
+			->method( 'getQueryResult' )
+			->will( $this->returnValue( $queryResult ) );
 
 		$rawParams = array(
 			'[[Modification date::+]]',
@@ -47,8 +66,6 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 			'format=list',
 			'source=default'
 		);
-
-		$this->setupStore( 'default' );
 
 		$this->assertInternalType(
 			'string',
@@ -58,6 +75,18 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	public function testQueryProcessorWithValidSource() {
 
+		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->any() )
+			->method( 'getErrors' )
+			->will( $this->returnValue( array() ) );
+
+		$this->store->expects( $this->atLeastOnce() )
+			->method( 'getQueryResult' )
+			->will( $this->returnValue( $queryResult ) );
+
 		$rawParams = array(
 			'[[Modification date::+]]',
 			'?Modification date',
@@ -65,7 +94,59 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 			'source=foo'
 		);
 
-		$this->setupStore( 'foo', 1 );
+		$this->assertInternalType(
+			'string',
+			$this->makeQueryResultFromRawParameters( $rawParams )
+		);
+	}
+
+	public function testQueryProcessorWithInvalidSourceSwitchesToDefault() {
+
+		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->atLeastOnce() )
+			->method( 'getErrors' )
+			->will( $this->returnValue( array() ) );
+
+		$this->store->expects( $this->atLeastOnce() )
+			->method( 'getQueryResult' )
+			->will( $this->returnValue( $queryResult ) );
+
+		$rawParams = array(
+			'[[Modification date::+]]',
+			'?Modification date',
+			'format=list',
+			'source=bar'
+		);
+
+		$this->assertInternalType(
+			'string',
+			$this->makeQueryResultFromRawParameters( $rawParams )
+		);
+	}
+
+	public function testQuerySourceOnCount() {
+
+		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->atLeastOnce() )
+			->method( 'getCountValue' )
+			->will( $this->returnValue( 42 ) );
+
+		$this->store->expects( $this->atLeastOnce() )
+			->method( 'getQueryResult' )
+			->will( $this->returnValue( $queryResult ) );
+
+		$rawParams = array(
+			'[[Modification date::+]]',
+			'?Modification date',
+			'format=count',
+			'source=foo'
+		);
 
 		$this->assertInternalType(
 			'string',
@@ -75,107 +156,15 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	public function testQueryProcessorWithInvalidSource() {
 
-		$this->setExpectedException( 'RuntimeException' );
-
 		$rawParams = array(
 			'[[Modification date::+]]',
 			'?Modification date',
 			'format=list',
-			'source=bar'
+			'source=foobar'
 		);
-
-		$this->setupStore( 'bar' );
-
-		$this->assertInternalType(
-			'string',
-			$this->makeQueryResultFromRawParameters( $rawParams )
-		);
-	}
-
-	public function testQueryRoutingWithDefaultSource() {
-
-		$printrequest = $this->getMockBuilder( 'SMW\Query\PrintRequest' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$description = $this->getMockBuilder( 'SMWDescription' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$description->expects( $this->atLeastOnce() )
-			->method( 'getPrintrequests' )
-			->will( $this->returnValue( array( $printrequest ) ) );
-
-		$query = $this->getMockBuilder( 'SMWQuery' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$query->expects( $this->atLeastOnce() )
-			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
-
-		$query->expects( $this->atLeastOnce() )
-			->method( 'getLimit' )
-			->will( $this->returnValue( 0 ) );
-
-		$count = $this->setupStore( 'default' )
-			->getQueryResult( $query )
-			->getCount();
-
-		$this->assertInternalType( 'integer', $count );
-	}
-
-	public function testQueryRoutingWithAnotherValidSource() {
-
-		$query = $this->getMockBuilder( 'SMWQuery' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$count = $this->setupStore( 'foo', 1 )
-			->getQueryResult( $query )
-			->getCount();
-
-		$this->assertInternalType( 'integer', $count );
-	}
-
-	public function testQueryRoutingWithInvalidSourceThrowsException() {
 
 		$this->setExpectedException( 'RuntimeException' );
-
-		$query = $this->getMockBuilder( 'SMWQuery' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$count = $this->setupStore( 'bar' )
-			->getQueryResult( $query )
-			->getCount();
-
-		$this->assertInternalType( 'integer', $count );
-	}
-
-	protected function setupStore( $source, $expectedToRun = 0 ) {
-
-		$storeId = isset( $GLOBALS['smwgQuerySources'][$source] ) ? $GLOBALS['smwgQuerySources'][$source] : null;
-
-		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$queryResult->expects( $this->exactly( $expectedToRun ) )
-			->method( 'getCount' )
-			->will( $this->returnValue( 0 ) );
-
-		$queryResult->expects( $this->any() )
-			->method( 'getErrors' )
-			->will( $this->returnValue( array() ) );
-
-		$store = StoreFactory::getStore( $storeId );
-
-		if ( method_exists( $store, 'setQueryResult' ) ) {
-			$store->setQueryResult( $queryResult );
-		}
-
-		return $store;
+		$this->makeQueryResultFromRawParameters( $rawParams );
 	}
 
 	protected function makeQueryResultFromRawParameters( $rawParams ) {
@@ -195,4 +184,7 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+}
+
+class AnotherFakeQueryStoreWhichDoesNotImplentTheQueryEngineInterface {
 }

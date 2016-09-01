@@ -259,7 +259,7 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		// Set query parser late to ensure that expected settings are adjusted
 		// (language etc.) because the __construct relies on the context language
 		$this->queryTestCaseProcessor->setQueryParser(
-			ApplicationFactory::getInstance()->newQueryFactory()->newQueryParser()
+			ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser()
 		);
 
 		$this->queryTestCaseProcessor->setDebugMode(

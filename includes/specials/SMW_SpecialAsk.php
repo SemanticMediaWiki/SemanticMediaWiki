@@ -4,6 +4,7 @@ use ParamProcessor\Param;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryLinker;
 use SMW\MediaWiki\Specials\Ask\HtmlContentBuilder;
+use SMW\ApplicationFactory;
 
 /**
  * This special page for MediaWiki implements a customisable form for
@@ -200,15 +201,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 	}
 
 	private function getStoreFromParams( array $params ) {
-
-		$storeId = null;
-		$source  = $params['source']->getValue();
-
-		if ( $source !== '' ) {
-			$storeId = $GLOBALS['smwgQuerySources'][$source];
-		}
-
-		return \SMW\StoreFactory::getStore( $storeId );
+		return ApplicationFactory::getInstance()->getQuerySource( $params['source']->getValue() );
 	}
 
 	/**

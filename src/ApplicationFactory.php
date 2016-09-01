@@ -175,6 +175,17 @@ class ApplicationFactory {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param string|null $source
+	 *
+	 * @return QueryEngine
+	 */
+	public function getQuerySource( $source = null ) {
+		return $this->callbackLoader->singleton( 'QuerySourceFactory' )->getWithLocalFallback( $source );
+	}
+
+	/**
 	 * @since 2.0
 	 *
 	 * @return Store
@@ -364,12 +375,12 @@ class ApplicationFactory {
 	}
 
 	/**
-	 * @since 2.4
+	 * @since 2.5
 	 *
 	 * @return QueryFactory
 	 */
-	public function newQueryFactory() {
-		return new QueryFactory();
+	public function getQueryFactory() {
+		return $this->callbackLoader->singleton( 'QueryFactory' );
 	}
 
 	private static function registerBuilder( CallbackLoader $callbackLoader = null ) {
