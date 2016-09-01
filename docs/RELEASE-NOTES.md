@@ -5,6 +5,7 @@ THIS IS NOT A RELEASE YET
 ## Highlights
 
 * #1481/#1801
+* #1808
 
 ## Compatibility changes
 
@@ -27,7 +28,8 @@ THIS IS NOT A RELEASE YET
 * #1793 Extended `#LOCL` support for the date type (`TimeValue`)
 * #1801 Added `SQLStore` full-text search support for `SQLite`
 * #1802 Improved `#set_recurring_event` to avoid displaying a `00:00:00` time 
-* #1809 Added support for using a property name as index identifier in the `Record` type 
+* #1809 Added support for using a property name as index identifier in the `Record` type
+* #1808 Added support for recording [provenance data](https://www.semantic-mediawiki.org/wiki/Referenced_statement)
 
 ## Bug fixes
 
