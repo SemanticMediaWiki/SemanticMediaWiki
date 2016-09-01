@@ -14,6 +14,7 @@ THIS IS NOT A RELEASE YET
 
 * #1481 Enhanced the `SQLStore` to support full-text searches provided by the `MySQL`/`MariaDB` back-end (see #1481 for limitations and features supported)
 * #1708 Added the [External identifier](https://www.semantic-mediawiki.org/wiki/Help:Type_External_identifier) type
+* #1718 Added feature flag `SMW_DV_NUMV_USPACE` to allow preserving spaces in unit labels
 * #1747 Extended `InTextAnnotationParser` to check for a possible pipe syntax in combination with `::` 
 * #1759 Improved `Special:Ask` error output 
 * #1760 Improved handling of `MonolingualTextValue` in `Special:SearchByProperty`
