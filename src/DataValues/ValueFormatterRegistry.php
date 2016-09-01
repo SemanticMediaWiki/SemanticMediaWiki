@@ -6,6 +6,7 @@ use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DataValues\ValueFormatters\DispatchingDataValueFormatter;
 use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
+use SMW\DataValues\ValueFormatters\ReferenceValueFormatter;
 use SMW\DataValues\ValueFormatters\NoValueFormatter;
 use SMW\DataValues\ValueFormatters\NumberValueFormatter;
 use SMW\DataValues\ValueFormatters\StringValueFormatter;
@@ -96,6 +97,8 @@ class ValueFormatterRegistry {
 	private function newDispatchingDataValueFormatter() {
 
 		$dispatchingDataValueFormatter = new DispatchingDataValueFormatter();
+
+		$dispatchingDataValueFormatter->addDataValueFormatter( new ReferenceValueFormatter() );
 		$dispatchingDataValueFormatter->addDataValueFormatter( new MonolingualTextValueFormatter() );
 		$dispatchingDataValueFormatter->addDataValueFormatter( new CodeStringValueFormatter() );
 

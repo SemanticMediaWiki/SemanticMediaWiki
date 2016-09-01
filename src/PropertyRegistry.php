@@ -78,7 +78,8 @@ class PropertyRegistry {
 			self::$instance = new self(
 				$dataTypeRegistry,
 				$propertyLabelFinder,
-				$propertyAliasFinder
+				$propertyAliasFinder,
+				$GLOBALS['smwgDataTypePropertyExemptionList']
 			);
 
 			self::$instance->registerPredefinedProperties( $GLOBALS['smwgUseCategoryHierarchy'] );
@@ -93,18 +94,32 @@ class PropertyRegistry {
 	 * @param DataTypeRegistry $datatypeRegistry
 	 * @param PropertyLabelFinder $propertyLabelFinder
 	 * @param PropertyAliasFinder $propertyAliasFinder
+	 * @param array $dataTypePropertyExemptionList
 	 */
-	public function __construct( DataTypeRegistry $datatypeRegistry, PropertyLabelFinder $propertyLabelFinder, PropertyAliasFinder $propertyAliasFinder ) {
+	public function __construct( DataTypeRegistry $datatypeRegistry, PropertyLabelFinder $propertyLabelFinder, PropertyAliasFinder $propertyAliasFinder, array $dataTypePropertyExemptionList = array() ) {
 
 		$this->datatypeLabels = $datatypeRegistry->getKnownTypeLabels();
 		$this->propertyLabelFinder = $propertyLabelFinder;
 		$this->propertyAliasFinder = $propertyAliasFinder;
 
+		// To get an index access
+		$dataTypePropertyExemptionList = array_flip( $dataTypePropertyExemptionList );
+
 		foreach ( $this->datatypeLabels as $id => $label ) {
+
+			if ( isset( $dataTypePropertyExemptionList[$label] ) ) {
+				continue;
+			}
+
 			$this->registerPropertyLabel( $id, $label );
 		}
 
 		foreach ( $datatypeRegistry->getKnownTypeAliases() as $alias => $id ) {
+
+			if ( isset( $dataTypePropertyExemptionList[$alias] ) ) {
+				continue;
+			}
+
 			$this->registerPropertyAlias( $id, $alias );
 		}
 	}

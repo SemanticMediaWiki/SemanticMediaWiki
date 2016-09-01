@@ -101,6 +101,7 @@ class Settings extends Options {
 			'smwgNamespacesWithSemanticLinks' => $GLOBALS['smwgNamespacesWithSemanticLinks'],
 			'smwgPageSpecialProperties' => $GLOBALS['smwgPageSpecialProperties'],
 			'smwgDeclarationProperties' => $GLOBALS['smwgDeclarationProperties'],
+			'smwgDataTypePropertyExemptionList' => $GLOBALS['smwgDataTypePropertyExemptionList'],
 			'smwgTranslate' => $GLOBALS['smwgTranslate'],
 			'smwgAdminRefreshStore' => $GLOBALS['smwgAdminRefreshStore'],
 			'smwgAutocompleteInSpecialAsk' => $GLOBALS['smwgAutocompleteInSpecialAsk'],

@@ -762,6 +762,20 @@ a.smw-ask-action-btn-lblue:hover {
 	line-height: 24px;
 }
 
+.smw-reference-indicator {
+	vertical-align: super;
+	margin-left:2px;
+	font-size: 10px;
+}
+
+.smw-reference-indicator::before {
+	content: "";
+}
+
+.smw-reference-indicator::after {
+	content: "≡";
+}
+
 .is-disabled {
 	opacity: .5;
 	position: relative;

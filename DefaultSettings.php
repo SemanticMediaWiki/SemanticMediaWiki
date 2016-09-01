@@ -535,6 +535,20 @@ $GLOBALS['smwgPageSpecialProperties'] = array( '_MDAT' );
 $GLOBALS['smwgDeclarationProperties'] = array( '_PVAL', '_LIST', '_PVAP', '_PVUC' );
 ##
 
+###
+# By default, DataTypes (Date, URL etc.) are registered with a corresponding
+# property of the same name to match the expected semantics. Yet, users can
+# decide to change the behaviour by exempting listed DataTypes from the property
+# registration process.
+#
+# @since 2.5
+##
+$GLOBALS['smwgDataTypePropertyExemptionList'] = array(
+	'Record',
+	'Reference'
+);
+##
+
 // some default settings which usually need no modification
 
 ###
