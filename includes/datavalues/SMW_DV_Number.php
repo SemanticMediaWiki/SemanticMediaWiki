@@ -120,9 +120,12 @@ class SMWNumberValue extends SMWDataValue {
 				'|\\' . $decseparator . '\d+' .
 				')\s*(?:[eE][-+]?\d+)?)/u';
 
+		// #1718 Whether to preserve spaces in unit labels or not (e.g. sq mi, sqmi)
+		$space = $this->isEnabledFeature( SMW_DV_NUMV_USPACE ) ? ' ' : '';
+
 		$parts = preg_split(
 			$regex,
-			trim( str_replace( array( '&nbsp;', '&#160;', '&thinsp;', ' ' ), '', $value ) ),
+			trim( str_replace( array( '&nbsp;', '&#160;', '&thinsp;', ' ' ), $space, $value ) ),
 			2,
 			PREG_SPLIT_DELIM_CAPTURE
 		);
