@@ -89,7 +89,7 @@ class ImportValueParser implements ValueParser {
 		if ( strpos( $value, ':' ) === false ) {
 
 			$this->errors[] = array(
-				'smw-datavalue-import-invalidvalue',
+				'smw-datavalue-import-invalid-value',
 				$value
 			);
 
@@ -102,7 +102,7 @@ class ImportValueParser implements ValueParser {
 		if ( !$this->controlledVocabularyImportContentFetcher->contains( $namespace ) ) {
 
 			$this->errors[] = array(
-				'smw-datavalue-import-unknownns',
+				'smw-datavalue-import-unknown-namespace',
 				$namespace
 			);
 
@@ -120,7 +120,7 @@ class ImportValueParser implements ValueParser {
 		if ( $uri === '' ) {
 
 			$this->errors[] = array(
-				'smw-datavalue-import-missing-nsuri',
+				'smw-datavalue-import-missing-namespace-uri',
 				$namespace
 			);
 

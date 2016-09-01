@@ -30,7 +30,7 @@ class SMWErrorValue extends SMWDataValue {
 		if ( $this->m_caption === false ) {
 			$this->m_caption = $value;
 		}
-		$this->addErrorMsg( 'smw_parseerror' );
+		$this->addErrorMsg( array( 'smw-datavalue-parse-error', $value ) );
 	}
 
 	/**

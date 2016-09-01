@@ -22,11 +22,17 @@
 					"propertyCount": 4,
 					"propertyKeys": [ "_MDAT", "_SKEY", "_ASK", "_ERRC" ]
 				}
-			},
-			"expected-output": {
-				"to-contain": [
-					">&quot;Help:&quot; cannot be used as a page name in this wiki."
-				]
+			}
+		},
+		{
+			"about": "#1 error record on empty Help:",
+			"subject": "Example/P0902/1#_ERRaefa648d070f2edc4b171586eae9b1b0",
+			"store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "_ERRP", "_ERRT", "_SKEY" ]
+				}
 			}
 		}
 	],

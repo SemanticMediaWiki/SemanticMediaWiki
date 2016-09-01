@@ -39,6 +39,14 @@
 		{
 			"name": "Example/P0423/Q2.1",
 			"contents": "{{#show: Example/P0423/2 |?Has date }}"
+		},
+		{
+			"name": "Example/P0423/3",
+			"contents": "[[Has date::Jan 10000000000]]"
+		},
+		{
+			"name": "Example/P0423/Q3.1",
+			"contents": "{{#ask: [[Example/P0423/3]] |?Has date#LOCL }}"
 		}
 	],
 	"parser-testcases": [
@@ -116,6 +124,15 @@
 				],
 				"not-contain": [
 					"<p>12 avril 1957 12:05:00"
+				]
+			}
+		},
+		{
+			"about": "#7 avoid a possible `DateTime ... Failed to parse time ...` on large dates, only checking some minor output since WINOS reports 784354016999.5, yet Linux returns 3652426721059.5 (float precision issue)",
+			"subject": "Example/P0423/Q3.1",
+			"expected-output": {
+				"to-contain": [
+					"class=\"Has-date smwtype_dat\">"
 				]
 			}
 		}
