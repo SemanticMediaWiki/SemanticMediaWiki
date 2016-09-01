@@ -3,9 +3,10 @@
 use SMW\DataValueFactory;
 use SMW\InTextAnnotationParser;
 use SMW\Query\PrintRequest;
-use SMW\Query\TemporaryEntityListAccumulator;
+use SMW\Query\Result\EntityListAccumulator;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
+use SMW\Query\Result\ResultFieldMatchFinder;
 
 /**
  * Container for the contents of a single result field of a query result,
@@ -40,12 +41,14 @@ class SMWResultArray {
 	private $mContent;
 
 	/**
-	 * @var TemporaryEntityListAccumulator|null
+	 * @var EntityListAccumulator
 	 */
-	private $temporaryEntityListAccumulator;
+	private $entityListAccumulator;
 
-	static private $catCacheObj = false;
-	static private $catCache = false;
+	/**
+	 * @var ResultFieldMatchFinder
+	 */
+	private $resultFieldMatchFinder;
 
 	/**
 	 * Constructor.
@@ -59,6 +62,9 @@ class SMWResultArray {
 		$this->mPrintRequest = $printRequest;
 		$this->mStore = $store;
 		$this->mContent = false;
+
+		// FIXME 3.0; Inject the object
+		$this->resultFieldMatchFinder = new ResultFieldMatchFinder( $store, $printRequest );
 	}
 
 	/**
@@ -88,10 +94,10 @@ class SMWResultArray {
 	 *
 	 * @since  2.4
 	 *
-	 * @return TemporaryEntityListAccumulator
+	 * @return EntityListAccumulator
 	 */
-	public function setEntityListAccumulator( TemporaryEntityListAccumulator $temporaryEntityListAccumulator ) {
-		$this->temporaryEntityListAccumulator = $temporaryEntityListAccumulator;
+	public function setEntityListAccumulator( EntityListAccumulator $entityListAccumulator ) {
+		$this->entityListAccumulator = $entityListAccumulator;
 	}
 
 	/**
@@ -134,8 +140,8 @@ class SMWResultArray {
 		$this->loadContent();
 		$result = current( $this->mContent );
 
-		if ( $this->temporaryEntityListAccumulator !== null && $result instanceof DataItem ) {
-			$this->temporaryEntityListAccumulator->addToEntityList( null, $result );
+		if ( $this->entityListAccumulator !== null && $result instanceof DataItem ) {
+			$this->entityListAccumulator->addToEntityList( $result );
 		}
 
 		next( $this->mContent );
@@ -211,8 +217,8 @@ class SMWResultArray {
 			$dataValue->setOutputFormat( $this->mPrintRequest->getOutputFormat() );
 		}
 
-		if ( $this->temporaryEntityListAccumulator !== null && $dataItem instanceof DataItem ) {
-			$this->temporaryEntityListAccumulator->addToEntityList( $diProperty, $dataItem );
+		if ( $this->entityListAccumulator !== null && $dataItem instanceof DataItem ) {
+			$this->entityListAccumulator->addToEntityList( $dataItem, $diProperty );
 		}
 
 		return $dataValue;
@@ -244,74 +250,13 @@ class SMWResultArray {
 	 * done when needed.
 	 */
 	protected function loadContent() {
+
 		if ( $this->mContent !== false ) {
 			return;
 		}
 
-		switch ( $this->mPrintRequest->getMode() ) {
-			case PrintRequest::PRINT_THIS: // NOTE: The limit is ignored here.
-				$this->mContent = array( $this->mResult );
-			break;
-			case PrintRequest::PRINT_CATS:
-				// Always recompute cache here to ensure output format is respected.
-				self::$catCache = $this->mStore->getPropertyValues( $this->mResult,
-					new SMW\DIProperty( '_INST' ), $this->getRequestOptions( false ) );
-				self::$catCacheObj = $this->mResult->getHash();
-
-				$limit = $this->mPrintRequest->getParameter( 'limit' );
-				$this->mContent = ( $limit === false ) ? ( self::$catCache ) :
-					array_slice( self::$catCache, 0, $limit );
-			break;
-			case PrintRequest::PRINT_PROP:
-				$propertyValue = $this->mPrintRequest->getData();
-				if ( $propertyValue->isValid() ) {
-					$this->mContent = $this->mStore->getPropertyValues( $this->mResult,
-						$propertyValue->getDataItem(), $this->getRequestOptions() );
-				} else {
-					$this->mContent = array();
-				}
-
-				// Print one component of a multi-valued string.
-				// Known limitation: the printrequest still is of type _rec, so if printers check
-				// for this then they will not recognize that it returns some more concrete type.
-				if ( strpos( $this->mPrintRequest->getTypeID(), '_rec' ) !== false &&
-				     ( $this->mPrintRequest->getParameter( 'index' ) !== false ) ) {
-					$index = $this->mPrintRequest->getParameter( 'index' );
-					$newcontent = array();
-
-					foreach ( $this->mContent as $diContainer ) {
-						/* SMWRecordValue */ $recordValue = DataValueFactory::getInstance()->newDataValueByItem( $diContainer, $propertyValue->getDataItem() );
-
-						if ( ( $dataItem = $recordValue->getDataItemByIndex( $index ) ) !== null ) {
-							$newcontent[] = $dataItem;
-						}
-					}
-
-					$this->mContent = $newcontent;
-				}
-			break;
-			case PrintRequest::PRINT_CCAT: ///NOTE: The limit is ignored here.
-				if ( self::$catCacheObj != $this->mResult->getHash() ) {
-					self::$catCache = $this->mStore->getPropertyValues( $this->mResult, new SMW\DIProperty( '_INST' ) );
-					self::$catCacheObj = $this->mResult->getHash();
-				}
-
-				$found = false;
-				$prkey = $this->mPrintRequest->getData()->getDBkey();
-
-				foreach ( self::$catCache as $cat ) {
-					if ( $cat->getDBkey() == $prkey ) {
-						$found = true;
-						break;
-					}
-				}
-				$this->mContent = array( new SMWDIBoolean( $found ) );
-			break;
-			default: $this->mContent = array(); // Unknown print request.
-		}
-
-		reset( $this->mContent );
-
+		$this->mContent = $this->resultFieldMatchFinder->getResultsBy( $this->mResult );
+		return reset( $this->mContent );
 	}
 
 	/**
@@ -325,29 +270,7 @@ class SMWResultArray {
 	 * @return SMWRequestOptions|null
 	 */
 	protected function getRequestOptions( $useLimit = true ) {
-		$limit = $useLimit ? $this->mPrintRequest->getParameter( 'limit' ) : false;
-		$order = trim( $this->mPrintRequest->getParameter( 'order' ) );
-
-		// Important: use "!=" for order, since trim() above does never return "false", use "!==" for limit since "0" is meaningful here.
-		if ( ( $limit !== false ) || ( $order != false ) ) {
-			$options = new SMWRequestOptions();
-
-			if ( $limit !== false ) {
-				$options->limit = trim( $limit );
-			}
-
-			if ( ( $order == 'descending' ) || ( $order == 'reverse' ) || ( $order == 'desc' ) ) {
-				$options->sort = true;
-				$options->ascending = false;
-			} elseif ( ( $order == 'ascending' ) || ( $order == 'asc' ) ) {
-				$options->sort = true;
-				$options->ascending = true;
-			}
-		} else {
-			$options = null;
-		}
-
-		return $options;
+		return $this->resultFieldMatchFinder->getRequestOptions( $useLimit );
 	}
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Query;
+namespace SMW\Query\Result;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -20,7 +20,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class TemporaryEntityListAccumulator {
+class EntityListAccumulator {
 
 	/**
 	 * @var Query
@@ -91,10 +91,10 @@ class TemporaryEntityListAccumulator {
 	/**
 	 * @since  2.4
 	 *
-	 * @param DIProperty|null $property
 	 * @param DataItem $dataItem
+	 * @param DIProperty|null $property
 	 */
-	public function addToEntityList( DIProperty $property = null, DataItem $dataItem ) {
+	public function addToEntityList( DataItem $dataItem, DIProperty $property = null ) {
 
 		$queryID = $this->getQueryId();
 

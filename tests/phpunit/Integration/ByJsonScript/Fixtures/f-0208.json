@@ -1,5 +1,5 @@
 {
-	"description": "Test `format=table` further results link for user/predefined property (`wgContLang=en`, `wgLang=es`)",
+	"description": "Test `format=table` with `limit=0` (further result links) for user/predefined properties, `mainlabel=-`, `#show` (`wgContLang=en`, `wgLang=es`)",
 	"properties": [
 		{
 			"name": "Has text",
@@ -22,6 +22,30 @@
 		{
 			"name": "Example/F0208/Q2.2",
 			"contents": "{{#ask: [[Fecha de modificación@es::+]] |?Fecha de modificación@es |limit=0 }}"
+		},
+		{
+			"name": "Example/F0208/3",
+			"contents": "[[Has page::F0208]]"
+		},
+		{
+			"name": "Example/F0208/Q3.1",
+			"contents": "{{#ask: [[Has page::F0208]] |mainlabel |?Has page |format=table |headers=plain |link=none |limit=0 }}"
+		},
+		{
+			"name": "Example/F0208/Q3.2",
+			"contents": "{{#ask: [[Has page::F0208]] |mainlabel |?Has page#Foo |format=table |headers=plain |link=none |limit=0 }}"
+		},
+		{
+			"name": "Example/F0208/Q3.3",
+			"contents": "{{#ask: [[Has page::F0208]] |mainlabel |?Has page# |format=table |headers=plain |link=none |limit=0 }}"
+		},
+		{
+			"name": "Example/F0208/Q3.4",
+			"contents": "{{#ask: [[Has page::F0208]] |mainlabel=- |?Has page |format=table |headers=plain |link=none |limit=0 }}"
+		},
+		{
+			"name": "Example/F0208/Q3.5",
+			"contents": "{{#show: Example/F0208/3 |mainlabel=- |?Has page |format=table |headers=plain |link=none |limit=0 }}"
 		}
 	],
 	"format-testcases": [
@@ -31,6 +55,9 @@
 			"expected-output": {
 				"to-contain": [
 					"Special:Ask/-5B-5BHas-20text::F0208-5D-5D/-3FHas-20text/-3FModification-20date%3DFecha-20de-20modificaci%C3%B3n/mainlabel%3D/offset%3D0/format%3Dtable"
+				],
+				"not-contain": [
+					"Special:Ask/-5B-5BHas-20text::F0208-5D-5D/-3FHas-20text-23/-3FModification-20date-23=Fecha-20de-20modificación/mainlabel=/offset=0/format=table"
 				]
 			}
 		},
@@ -49,6 +76,51 @@
 			"expected-output": {
 				"to-contain": [
 					"Special:Ask/-5B-5BModification-20date::%2B-5D-5D/-3FModification-20date%3DFecha-20de-20modificaci%C3%B3n/mainlabel%3D/offset%3D0/format%3Dtable"
+				]
+			}
+		},
+		{
+			"about": "#3",
+			"subject": "Example/F0208/Q3.1",
+			"expected-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::F0208-5D-5D/-3FHas-20page/mainlabel=/offset=0/format=table/link=none/headers=plain"
+				]
+			}
+		},
+		{
+			"about": "#4",
+			"subject": "Example/F0208/Q3.2",
+			"expected-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::F0208-5D-5D/-3FHas-20page-23Foo/mainlabel=/offset=0/format=table/link=none/headers=plain"
+				]
+			}
+		},
+		{
+			"about": "#5",
+			"subject": "Example/F0208/Q3.3",
+			"expected-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::F0208-5D-5D/-3FHas-20page-23-2D/mainlabel=/offset=0/format=table/link=none/headers=plain"
+				]
+			}
+		},
+		{
+			"about": "#6",
+			"subject": "Example/F0208/Q3.4",
+			"expected-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::F0208-5D-5D/-3FHas-20page/mainlabel=-2D/offset=0/format=table/link=none/headers=plain"
+				]
+			}
+		},
+		{
+			"about": "#7 (#show)",
+			"subject": "Example/F0208/Q3.5",
+			"expected-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5B:Example-2FF0208-2F3-5D-5D/-3FHas-20page=/mainlabel=-2D/offset=0/format=table/link=none/headers=plain"
 				]
 			}
 		}
