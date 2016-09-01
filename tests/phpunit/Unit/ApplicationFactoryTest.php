@@ -65,14 +65,6 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructQueryProfilerFactory() {
-
-		$this->assertInstanceOf(
-			'\SMW\Query\ProfileAnnotator\QueryProfileAnnotatorFactory',
-			$this->applicationFactory->newQueryProfileAnnotatorFactory()
-		);
-	}
-
 	public function testCanConstructQuerySource() {
 
 		$this->assertInstanceOf(

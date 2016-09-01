@@ -5,7 +5,7 @@ namespace SMW\Tests\Integration;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\Localizer;
-use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\TestEnvironment;
 use SMWQueryProcessor;
 
 /**
@@ -24,7 +24,8 @@ class QueryProfileAnnotatorToProcessorIntegrationTest extends \PHPUnit_Framework
 	protected function setUp() {
 		parent::setUp();
 
-		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+		$testEnvironment = new TestEnvironment();
+		$this->semanticDataValidator = $testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 	}
 
 	/**
@@ -43,23 +44,23 @@ class QueryProfileAnnotatorToProcessorIntegrationTest extends \PHPUnit_Framework
 			DIWikiPage::newFromText( __METHOD__ )
 		);
 
-		$queryProfileAnnotatorFactory = ApplicationFactory::getInstance()->newQueryProfileAnnotatorFactory();
+		$profileAnnotatorFactory = ApplicationFactory::getInstance()->getQueryFactory()->newProfileAnnotatorFactory();
 
-		$jointProfileAnnotator = $queryProfileAnnotatorFactory->newJointProfileAnnotator(
+		$combinedProfileAnnotator = $profileAnnotatorFactory->newCombinedProfileAnnotator(
 			$query,
 			$formattedParams['format']->getValue()
 		);
 
-		$jointProfileAnnotator->addAnnotation();
+		$combinedProfileAnnotator->addAnnotation();
 
 		$this->assertInstanceOf(
 			'\SMW\SemanticData',
-			$jointProfileAnnotator->getContainer()->getSemanticData()
+			$combinedProfileAnnotator->getSemanticData()
 		);
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
-			$jointProfileAnnotator->getContainer()->getSemanticData()
+			$combinedProfileAnnotator->getSemanticData()
 		);
 	}
 

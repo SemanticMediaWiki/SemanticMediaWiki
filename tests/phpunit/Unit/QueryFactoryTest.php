@@ -24,6 +24,16 @@ class QueryFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructProfileAnnotatorFactory() {
+
+		$instance = new QueryFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Query\ProfileAnnotatorFactory',
+			$instance->newProfileAnnotatorFactory()
+		);
+	}
+
 	public function testCanConstructQuery() {
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )

@@ -93,6 +93,8 @@ class ConceptParserFunction {
 			->addFromArray( $query->getErrors() )
 			->addFromArray( $this->parserData->getErrors() );
 
+		$this->addQueryProfile( $query );
+
 		$this->parserData->pushSemanticDataToParserOutput();
 
 		if ( $this->messageFormatter->exists() ) {
@@ -132,6 +134,26 @@ class ConceptParserFunction {
 		);
 
 		return $query;
+	}
+
+	private function addQueryProfile( $query ) {
+
+		$query->setContextPage(
+			$this->parserData->getSemanticData()->getSubject()
+		);
+
+		$profileAnnotatorFactory = ApplicationFactory::getInstance()->getQueryFactory()->newProfileAnnotatorFactory();
+
+		$descriptionProfileAnnotator = $profileAnnotatorFactory->newDescriptionProfileAnnotator(
+			$query
+		);
+
+		$descriptionProfileAnnotator->addAnnotation();
+
+		$this->parserData->getSemanticData()->addPropertyObjectValue(
+			$descriptionProfileAnnotator->getProperty(),
+			$descriptionProfileAnnotator->getContainer()
+		);
 	}
 
 }

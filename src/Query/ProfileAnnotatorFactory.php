@@ -1,8 +1,12 @@
 <?php
 
-namespace SMW\Query\ProfileAnnotator;
+namespace SMW\Query;
 
 use SMW\DIWikiPage;
+use SMW\Query\ProfileAnnotator\NullProfileAnnotator;
+use SMW\Query\ProfileAnnotator\DescriptionProfileAnnotator;
+use SMW\Query\ProfileAnnotator\FormatProfileAnnotator;
+use SMW\Query\ProfileAnnotator\DurationProfileAnnotator;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIContainer as DIContainer;
 use SMWQuery as Query;
@@ -13,7 +17,28 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class QueryProfileAnnotatorFactory {
+class ProfileAnnotatorFactory {
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param Query $query
+	 *
+	 * @return DescriptionProfileAnnotator
+	 */
+	public function newDescriptionProfileAnnotator( Query $query ) {
+
+		$nullProfileAnnotator = new NullProfileAnnotator(
+			$this->newDIContainer( $query )
+		);
+
+		$descriptionProfileAnnotator = new DescriptionProfileAnnotator(
+			$nullProfileAnnotator,
+			$query->getDescription()
+		);
+
+		return $descriptionProfileAnnotator;
+	}
 
 	/**
 	 * @since 2.1
@@ -24,15 +49,10 @@ class QueryProfileAnnotatorFactory {
 	 *
 	 * @return ProfileAnnotator
 	 */
-	public function newJointProfileAnnotator( Query $query, $format, $duration = null ) {
+	public function newCombinedProfileAnnotator( Query $query, $format, $duration = null ) {
 
-		$nullProfileAnnotator = new NullProfileAnnotator(
-			$this->newDIContainer( $query )
-		);
-
-		$descriptionProfileAnnotator = new DescriptionProfileAnnotator(
-			$nullProfileAnnotator,
-			$query->getDescription()
+		$descriptionProfileAnnotator = $this->newDescriptionProfileAnnotator(
+			$query
 		);
 
 		$formatProfileAnnotator = new FormatProfileAnnotator(
