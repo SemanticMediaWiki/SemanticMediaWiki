@@ -14,7 +14,8 @@
 			"555",
 			"Vitorvicentevalente",
 			"Jkb8",
-			"Diniscoelho"
+			"Diniscoelho",
+			"Fúlvio"
 		]
 	},
 	"smw-desc": "Tornar a sua wiki mais inteligível - para máquinas ''e'' seres humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
@@ -251,7 +252,7 @@
 	"smw-prefs-ask-options-tooltip-display": "Mostrar o texto do parâmetro na forma de dica",
 	"smw-prefs-ask-options-collapsed-default": "Por padrão, recolher a caixa de opção",
 	"smw-ui-tooltip-title-property": "Propriedade",
-	"smw-ui-tooltip-title-quantity": "Quantidade",
+	"smw-ui-tooltip-title-quantity": "Conversão de unidade",
 	"smw-ui-tooltip-title-info": "Informação",
 	"smw-ui-tooltip-title-service": "Ligações de serviços",
 	"smw-ui-tooltip-title-warning": "Erro",
@@ -269,8 +270,7 @@
 	"smw-sp-admin-objectid": "ID de objeto:",
 	"smw-livepreview-loading": "A carregar…",
 	"smw-sp-searchbyproperty-resultlist-header": "Lista de resultados",
-	"smw-datavalue-import-unknownns": "O domínio importado \"$1\" é desconhecido. Certifique-se que os detalhes de importação OWL estão disponíveis mediante [[MediaWiki:Smw import $1]]",
-	"smw-pa-property-predefined_type": "\"$1\" é uma propriedade predefinida que descreve o [[Special:Types|tipo de dados]] de uma propriedade.",
+	"smw-pa-property-predefined_type": "\"$1\" é uma propriedade predefinida que descreve o [[Special:Types|tipo de dados]] de uma propriedade e é fornecida pela [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-datavalue-property-invalid-name": "O valor de \"$1\" contém caracteres inválidos (por exemplo, $2) para um nome de propriedade.",
 	"smw-datavalue-invalid-number": "\"$1\" não pode ser interpretado como um número.",
 	"smw-sp-types-list": "Lista de tipos de dados",

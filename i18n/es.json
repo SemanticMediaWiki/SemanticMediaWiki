@@ -22,7 +22,8 @@
 			"Ryo567",
 			"AlvaroMolina",
 			"Indiralena",
-			"Lemondoge"
+			"Lemondoge",
+			"Dgstranz"
 		]
 	},
 	"smw-desc": "Haciendo tu wiki más accesible - para máquinas ''y'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
@@ -231,7 +232,7 @@
 	"smw_browse_hide_incoming": "ocultar propiedades que vinculen aquí",
 	"smw_browse_no_outgoing": "Esta página no tiene propiedades.",
 	"smw_browse_no_incoming": "Ninguna propiedad vincula aquí.",
-	"smw-browse-subject-invalid": "La validación del tema devolvió el error \"$1\".",
+	"smw-browse-invalid-subject": "La validación del tema devolvió el error \"$1\".",
 	"smw-browse-api-subject-serialization-invalid": "El tema tiene un formato de serialización no válido.",
 	"smw_inverse_label_default": "$1 de",
 	"smw_inverse_label_property": "Etiqueta de propiedad inversa",
@@ -335,8 +336,6 @@
 	"smw-editpage-property-annotation-disabled": "Esta propiedad no puede extenderse con una anotación de tipo de dato (p. ej. <nowiki>\"[[Has type::Page]]\"</nowiki>) porque ya está predefinida (para más información, consulta la página de ayuda [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propiedades especiales]).",
 	"log-name-smw": "Registro de Semantic MediaWiki",
 	"log-show-hide-smw": "$1 el registro de Semantic MediaWiki",
-	"smw-datavalue-import-unknownns": "Se desconoce el espacio de nombres importado \"$1\". Asegúrate que los detalles de importación OWL estén disponibles vía [[MediaWiki:Smw import $1]]",
-	"smw-datavalue-import-invalidvalue": "\"$1\" no es un formato válido y se espera que consiste en el \"espacio de nombres\":\"identificador\" (por ejemplo, \"foaf:name\").",
 	"smw-pa-property-predefined_impo": "\"$1\" es una propiedad predefinida que describe una relación con un [https://www.semantic-mediawiki.org/wiki/Help:Import_vocabulary vocabulario importado]. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_type": "\"$1\" es una propiedad predefinida que describe el [[Special:Types|tipo de datos]] de una propiedad. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_sobj": "\"$1\" es una propiedad predefinida que representa un [https://www.semantic-mediawiki.org/wiki/Help:Container contenedor]. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
@@ -381,5 +380,6 @@
 	"smw-pa-property-predefined_dtitle": "\"$1\" es una propiedad predefinida que puede asignar un título de visualización diferente. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_pvuc": "\"$1\" es una propiedad predefinida que indica que se espera que las asignaciones de valores a una propiedad sean únicas. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined-long_pvuc": "La singularidad se establece cuando dos valores no son iguales en su representación literal y cualquier violación de esta restricción se clasifican como de error.",
-	"smw-datavalue-uniqueness-constraint-error": "La propiedad \"$1\" sólo permite que el único valor de las cesiones y \"$2\" ya fue anotado en el \" asunto \"$3\"."
+	"smw-datavalue-uniqueness-constraint-error": "La propiedad \"$1\" sólo permite que el único valor de las cesiones y \"$2\" ya fue anotado en el \" asunto \"$3\".",
+	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" es una dirección URL no válida."
 }

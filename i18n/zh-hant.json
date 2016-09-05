@@ -300,8 +300,6 @@
 	"smw-editpage-annotation-enabled": "此頁面支援語義文內註釋 (例如 <nowiki>\"[[Is specified as::World Heritage Site]]\"</nowiki>) 來建立由 Semantic MediaWiki 提供的結構化、可查詢的內容。 如何使用標示法或 #ask 分析器功能的詳細說明，請查看 [https://www.semantic-mediawiki.org/wiki/Help:Getting_started 入門指引]、[https://www.semantic-mediawiki.org/wiki/Help:In-text_annotation 文內註釋]或[https://www.semantic-mediawiki.org/wiki/Help:Inline_queries 行內查詢]說明頁面。",
 	"smw-editpage-annotation-disabled": "由於命名空間限制，此頁面在語義文內註釋中不會開啟。有關如何開啟命名空間的詳細資料在[https://www.semantic-mediawiki.org/wiki/Help:Configuration 設定]說明頁面中闡述。",
 	"log-name-smw": "語意 MediaWiki 日誌",
-	"smw-datavalue-import-unknownns": "匯入的命名空間 \"$1\" 不明，請確認 OWL 匯入詳細資訊，可至 [[MediaWiki:Smw import $1]] 取得。",
-	"smw-datavalue-import-missing-nsuri": "無法在[[MediaWiki:Smw import $1|$1 匯入]]資料中找到 \"$1\" 命名空間的 URI。",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|$1 匯入]]",
 	"smw-pa-property-predefined_impo": "\"$1\" 是預先定義的屬性，用來描述與[https://www.semantic-mediawiki.org/wiki/Help:Import_vocabulary 已匯入詞彙]間的關係。",
 	"smw-pa-property-predefined_type": "\"$1\" 是預先定義的屬性，用來描述屬性的[[Special:Types|資料型態]]。",

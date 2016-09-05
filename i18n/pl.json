@@ -87,7 +87,7 @@
 	"smw_wrong_namespace": "Dozwolone są tutaj tylko strony z przestrzeni nazw „$1”.",
 	"smw_manytypes": "Zdefiniowano więcej niż jeden typ dla atrybutu.",
 	"smw_emptystring": "Puste łańcuchy znakowe są niedozwolone.",
-	"smw_notinenum": "“$1” nie jest na liście dozwolonych wartości ($2) dla tego atrybutu.",
+	"smw_notinenum": "„$1” nie znajduje się na liście ($2) [[Property:Allows value|dozwolonych wartości]] dla właściwości „$3”.",
 	"smw_noboolean": "“$1” nie zostało rozpoznane jako wartość logiczna (prawda/fałsz).",
 	"smw_true_words": "prawda,t,yes,y,tak,true",
 	"smw_false_words": "fałsz,f,no,n,nie,false",
@@ -257,6 +257,7 @@
 	"smw-ui-tooltip-title-event": "Wydarzenie",
 	"smw-ui-tooltip-title-note": "Notatka",
 	"smw-ui-tooltip-title-legend": "Legenda",
+	"smw-ui-tooltip-title-reference": "Przypis",
 	"smw_unknowntype": "Typ atrybutu jest nieprawidłowy.",
 	"smw_concept_header": "Strony koncepcji „$1”",
 	"smw_conceptarticlecount": "{{PLURAL:$1|Wyświetlona jest jedna strona |Wyświetlone zostały $1 strony|Wyświetlonych zostało $1 stron}}.",
@@ -290,5 +291,6 @@
 	"smw-datavalue-languagecode-invalid": "„$1” nie został rozpoznany jako obsługiwany kod języka.",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|sekunda|sekundy|sekund}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|sekunda|sekundy|sekund}}",
-	"smw-datavalue-feature-not-supported": "Funkcja „$1” jest nieobsługiwana lub została wyłączona w tej wiki."
+	"smw-datavalue-feature-not-supported": "Funkcja „$1” jest nieobsługiwana lub została wyłączona w tej wiki.",
+	"smw-datavalue-reference-outputformat": "$1: $2"
 }

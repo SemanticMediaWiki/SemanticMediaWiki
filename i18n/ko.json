@@ -218,6 +218,7 @@
 	"smw_browse_hide_incoming": "여기에 링크 속성을 숨기기",
 	"smw_browse_no_outgoing": "이 문서에는 속성이 없습니다.",
 	"smw_browse_no_incoming": "이 문서에 링크한 속성이 없습니다.",
+	"smw-browse-js-disabled": "자바스크립트가 비활성화되어 있거나 사용할 수 없는 것으로 의심되며, 지원하는 브라우저를 사용할 것을 권고합니다. 다른 옵션은 [https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi $smwgBrowseByApi] 설정 문서에서 논할 수 있습니다.",
 	"smw_inverse_label_default": "$1입니다",
 	"smw_inverse_label_property": "역 속성 레이블",
 	"pageproperty": "문서 속성 검색",
@@ -279,6 +280,7 @@
 	"smw-ui-tooltip-title-event": "사건",
 	"smw-ui-tooltip-title-note": "참고",
 	"smw-ui-tooltip-title-legend": "범례",
+	"smw-ui-tooltip-title-reference": "각주",
 	"smw_unknowntype": "이 속성의 형식이 잘못되었습니다",
 	"smw-concept-cache-text": "개념은 총 {{PLURAL:$1|문서}} $1개가 있으며, $2 $3에 마지막으로 업데이트했습니다.",
 	"smw_concept_header": "\"$1\" 개념의 문서",
@@ -311,10 +313,8 @@
 	"smw-datavalue-number-nullnotallowed": "\"$1\"가 숫자를 허용하지 않는 \"NULL\"과 함께 반환되었습니다.",
 	"log-name-smw": "시맨틱 미디어위키 로그",
 	"log-show-hide-smw": "$1 시맨틱 미디어위키 로그",
-	"smw-datavalue-import-missing-nsuri": "[[MediaWiki:Smw import $1|$1 가져오기]]에서 \"$1\" 이름공간 URI를 찾을 수 없습니다.",
 	"smw-datavalue-import-missing-type": "[[MediaWiki:Smw import $2|$2 가져오기]]에서 \"$1\"에 대한 유형 정의를 찾을 수 없습니다.",
 	"smw-datavalue-import-link": "[[MediaWiki:Smw import $1|$1 가져오기]]",
-	"smw-datavalue-import-invalidvalue": "\"$1\"는 유효한 포맷이 아니며 \"이름공간\":\"식별자\"로의 구성을 예측합니다. (예: \"foaf:name\")",
 	"smw-datavalue-property-restricted-use": "\"$1\" 속성은 이용이 제한되어 있습니다.",
 	"smw-datavalue-property-invalid-name": "\"$1\" 값에 이름속성에 맞지 않는 부적절한 문자(예를 들면, $2)가 포함되어있습니다.",
 	"smw-datavalue-restricted-use": "데이터 값 $1은(는) 이용이 제한되어 있습니다.",
@@ -334,5 +334,7 @@
 	"smw-datavalue-time-invalid-date-components-empty": "\"$1\"에는 일부 비어있는 구성 요소가 포함되어 있습니다.",
 	"smw-datavalue-time-invalid-date-components-three": "\"$1\"에는 세 개 이상의 구성 요소가 포함되어 있습니다.",
 	"smw-datavalue-time-invalid-ampm": "\"$1\"에는 12시간 변환에 유효하지 않은 시간 요소로서 \"$2\"이(가) 포함되어 있습니다.",
-	"smw-datavalue-external-formatter-invalid-uri": "\"$1\"은(는) 유효하지 않은 URL입니다."
+	"smw-datavalue-external-formatter-invalid-uri": "\"$1\"은(는) 유효하지 않은 URL입니다.",
+	"smw-datavalue-parse-error": "지정한 \"$1\" 값을 인식하지 못했습니다.",
+	"smw-datavalue-reference-outputformat": "$1: $2"
 }

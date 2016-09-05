@@ -26,6 +26,7 @@
 		]
 	},
 	"smw-desc": "Gör din wiki mer tillgänglig – för både maskiner och människor ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentation online])",
+	"smw-title": "Semantic MediaWiki",
 	"smw_viewasrdf": "RDF-matning",
 	"smw_finallistconjunct": "och",
 	"smw_factbox_head": "Fakta om ”$1”",
@@ -106,7 +107,7 @@
 	"smw_wrong_namespace": "Endast sidor i namnrymden \"$1\" tillåts här.",
 	"smw_manytypes": "Mer än en typ definierad för egenskapen.",
 	"smw_emptystring": "Tomma stränger accepteras inte.",
-	"smw_notinenum": "\"$1\" är inte i listan över möjliga värden ($2) för den här egenskapen.",
+	"smw_notinenum": "\"$1\" är inte i listan ($2) över [[Property:Allows value|tillåtna värden]] för egenskapen \"$3\".",
 	"smw_noboolean": "\"$1\" är inte ett giltigt booleskt värde (sant/falskt).",
 	"smw_true_words": "sant,s,ja,j",
 	"smw_false_words": "falskt,f,nej,n",
@@ -318,5 +319,6 @@
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|sekund|sekunder}}",
 	"smw_allows_pattern": "Den här sidan är förväntad att innehålla en lista av referenser (följt av [https://en.wikipedia.org/wiki/Regular_expression regular expressions]) och att bli tillgänglig genom att använda [[Property:Allows pattern|Allows pattern]] egenskap.",
 	"smw-datavalue-time-invalid-date-components-empty": "\"$1\" innehåller några tomma komponenter.",
-	"smw-datavalue-time-invalid-date-components-three": "\"$1\" innehåller mer än tre komponenter."
+	"smw-datavalue-time-invalid-date-components-three": "\"$1\" innehåller mer än tre komponenter.",
+	"smw-datavalue-reference-outputformat": "$1: $2"
 }

@@ -11,7 +11,8 @@
 			"محمد أحمد عبد الفتاح",
 			"أحمد غربية Ahmad Gharbeia <ahmad@arabdigitalexpression.org>",
 			"Kghbln",
-			"Alaa"
+			"Alaa",
+			"Moud hosny"
 		]
 	},
 	"smw-desc": "تقرّب الويكي إلى كلٍّ من النّظم الحاسوبية  ''و'' البشر ([https://www.semantic-mediawiki.org/wiki/Help:User_manual دليل المستخدم])",
@@ -215,6 +216,7 @@
 	"smw_browse_hide_incoming": "أخفِ الخصائص التي تربط هنا",
 	"smw_browse_no_outgoing": "هذه الصفحة ليست بها خصائص.",
 	"smw_browse_no_incoming": "لا خصائص تربط إلى هذه الصفحة.",
+	"smw-browse-invalid-subject": "التحقق من هذا الموضوع عاد مع الخطأ \"$1\" .",
 	"smw_inverse_label_default": "$1 من",
 	"smw_inverse_label_property": "عنوان الخصيصة العكسية",
 	"pageproperty": "البحث في خصائص صفحة",
@@ -275,9 +277,11 @@
 	"smw-ui-tooltip-title-event": "حدث",
 	"smw-ui-tooltip-title-note": "ملاحظة",
 	"smw-ui-tooltip-title-legend": "مفتاح الشكل",
+	"smw-ui-tooltip-title-reference": "مرجع",
 	"smw_unknowntype": "نوع هذه الخصيصة غير مدعوم.",
 	"smw_concept_header": "صفحات المفهوم \"$1\"",
 	"smw_conceptarticlecount": "عرض {{PLURAL:$1||صفحة واحدة تنتمي|صفحتين تنتميان|$1 صفحات تنتمي|$1 صفحة تنتمي}} إلى هذا المفهوم.",
 	"smw-sp-properties-header-label": "قائمة خصائص",
-	"smw-livepreview-loading": "جاري التحميل..."
+	"smw-livepreview-loading": "جاري التحميل...",
+	"smw-datavalue-reference-outputformat": "$1: $2"
 }

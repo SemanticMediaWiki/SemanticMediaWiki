@@ -60,7 +60,7 @@
 	"smw_notitle": "\"$1\" kann net als Numm vun enger Säit op dëser Wiki benotzt ginn.",
 	"smw_wrong_namespace": "Nëmme Säiten aus dem Nummraum \"$1\" sinn hei erlaabt.",
 	"smw_emptystring": "Eidel Zeeche ginn net akzeptéiert.",
-	"smw_notinenum": "\"$1\" ass net an der Lëscht vun de méigleche Wäerter ($2) fir dës Eegeschaft.",
+	"smw_notinenum": "\"$1\" ass net an der Lëscht ($2) vun den [[Property:Allows value|erlaabte Wäerter]] fir d'Eegeschaft \"$3\".",
 	"smw_true_words": "wouer,w,jo,j",
 	"smw_false_words": "falsch,f,neen,n",
 	"smw_nofloat": "\"$1\" ass keng Zuel.",
@@ -182,6 +182,7 @@
 	"smw-ui-tooltip-title-event": "Evenement",
 	"smw-ui-tooltip-title-note": "Notiz",
 	"smw-ui-tooltip-title-legend": "Erklärung",
+	"smw-ui-tooltip-title-reference": "Referenz",
 	"smw-concept-cache-text": "D'Konzept huet am Ganzen {{PLURAL:$1|eng Säit|$1 Säiten}} a gouf fir d'lescht den $2 ëm $3 aktualiséiert.",
 	"smw_concept_header": "Säite vum Konzept \"$1\"",
 	"smw_conceptarticlecount": "Déi $1 {{PLURAL:$1|Säit|Säite}} ginn hei drënner gewisen.",
@@ -202,7 +203,8 @@
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|Sekonn|Sekonnen}}",
 	"smw-datavalue-time-invalid-date-components-common": "\"$1\" huet eng Informatioun déi net kann interpretéiert ginn.",
 	"smw-datavalue-time-invalid-date-components-empty": "\"$1\" huet e puer eidel Komponenten",
-	"smw-datavalue-time-invalid-date-components-three": "\"$1\" huet méi wéi dräi Komponenten.",
+	"smw-datavalue-time-invalid-date-components-three": "\"$1\" huet méi wéi dräi Komponenten, déi fir d'Interpretatioun vun engem Datum obligatoresch sinn.",
 	"smw-datavalue-time-invalid-ampm": "\"$1\" huet \"$2\" als Stonnenelement, dat ass fir eng 12-Stonne-Konventioun awer net valabel.",
-	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" ass keng valabel URL"
+	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" ass keng valabel URL",
+	"smw-datavalue-reference-outputformat": "$1: $2"
 }
