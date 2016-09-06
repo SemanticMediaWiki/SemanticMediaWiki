@@ -98,9 +98,10 @@
 		 *
 		 * @return {jQuery.Promise}
 		 */
-		fetch: function( queryString, useCache ){
+		fetch: function( queryString, useCache, action ){
 			var self = this,
-				apiDeferred = $.Deferred();
+				apiDeferred = $.Deferred(),
+				action = action || 'ask';
 
 			if ( !queryString || typeof queryString !== 'string' ) {
 				throw new Error( 'Invalid query string: ' + queryString );
@@ -113,7 +114,7 @@
 				// stored resultObjects, each change in the queryString will result
 				// in another hash key which will ensure only objects are stored
 				// with this key can be reused
-				var hash = md5( queryString );
+				var hash = md5( queryString + action );
 
 				var resultObject = $.jStorage.get( hash );
 				if ( resultObject !== null ) {
@@ -128,7 +129,7 @@
 				url: mw.util.wikiScript( 'api' ),
 				dataType: 'json',
 				data: {
-					'action': 'ask',
+					'action': action,
 					'format': 'json',
 					'query' : queryString
 					},
