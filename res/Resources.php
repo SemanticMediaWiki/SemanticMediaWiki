@@ -70,6 +70,7 @@ return array(
 			'smw/data/ext.smw.dataItem.unknown.js',
 			'smw/data/ext.smw.dataItem.number.js',
 			'smw/data/ext.smw.dataItem.text.js',
+			'smw/data/ext.smw.dataItem.geo.js',
 		),
 		'dependencies' => array(
 			'ext.smw',

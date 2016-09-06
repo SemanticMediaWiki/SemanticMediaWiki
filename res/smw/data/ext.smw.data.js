@@ -149,6 +149,11 @@
 								factoredValue.push( new smw.dataItem.text( s, typeid ) );
 							} );
 							break;
+						case '_geo':
+							$.map( value, function( g ) {
+								factoredValue.push( new smw.dataItem.geo( g, typeid ) );
+							} );
+							break;
 						default:
 							// Register all non identifiable types as unknown
 							$.map( value, function( v ) {
