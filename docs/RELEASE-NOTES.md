@@ -6,6 +6,7 @@ THIS IS NOT A RELEASE YET
 
 * #1481/#1801
 * #1808
+* #1824
 
 ## Compatibility changes
 
@@ -30,6 +31,7 @@ THIS IS NOT A RELEASE YET
 * #1802 Improved `#set_recurring_event` to avoid displaying a `00:00:00` time 
 * #1809 Added support for using a property name as index identifier in the `Record` type
 * #1808 Added support for recording [provenance data](https://www.semantic-mediawiki.org/wiki/Referenced_statement)
+* #1824 Added support for the property chain syntax in printrequests
 
 ## Bug fixes
 
