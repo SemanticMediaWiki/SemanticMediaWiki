@@ -315,6 +315,22 @@ class MonolingualTextValue extends AbstractMultiValue {
 		return $list;
 	}
 
+	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function toString() {
+
+		if ( !$this->isValid() || $this->getDataItem() === array() ) {
+			return '';
+		}
+
+		$list = $this->toArray();
+
+		return $list['_TEXT'] . '@' . $list['_LCODE'];
+	}
+
 	private function newContainerSemanticData( $value ) {
 
 		if ( $this->m_contextPage === null ) {

@@ -161,4 +161,15 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testToString() {
+
+		$instance = new MonolingualTextValue();
+		$instance->setUserValue( 'Foo@en' );
+
+		$this->assertSame(
+			'Foo@en',
+			$instance->toString()
+		);
+	}
+
 }
