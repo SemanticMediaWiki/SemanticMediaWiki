@@ -23,6 +23,11 @@ class DisplayTitlePropertyAnnotator extends PropertyAnnotatorDecorator {
 	private $defaultSort;
 
 	/**
+	 * @var boolean
+	 */
+	private $canCreateAnnotation = true;
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param PropertyAnnotator $propertyAnnotator
@@ -35,9 +40,20 @@ class DisplayTitlePropertyAnnotator extends PropertyAnnotatorDecorator {
 		$this->defaultSort = $defaultSort;
 	}
 
+	/**
+	 * @see SMW_DV_WPV_DTITLE in $GLOBALS['smwgDVFeatures']
+	 *
+	 * @since 2.5
+	 *
+	 * @param boolean $canCreateAnnotation
+	 */
+	public function canCreateAnnotation( $canCreateAnnotation ) {
+		$this->canCreateAnnotation = (bool)$canCreateAnnotation;
+	}
+
 	protected function addPropertyValues() {
 
-		if ( !$this->displayTitle || $this->displayTitle === '' ) {
+		if ( !$this->canCreateAnnotation || !$this->displayTitle || $this->displayTitle === '' ) {
 			return;
 		}
 

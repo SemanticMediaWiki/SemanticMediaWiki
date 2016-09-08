@@ -93,11 +93,18 @@ class PropertyAnnotatorFactory {
 	 * @return DisplayTitlePropertyAnnotator
 	 */
 	public function newDisplayTitlePropertyAnnotator( SemanticData $semanticData, $displayTitle, $defaultSort ) {
-		return new DisplayTitlePropertyAnnotator(
+
+		$displayTitlePropertyAnnotator = new DisplayTitlePropertyAnnotator(
 			$this->newNullPropertyAnnotator( $semanticData ),
 			$displayTitle,
 			$defaultSort
 		);
+
+		$displayTitlePropertyAnnotator->canCreateAnnotation(
+			( ApplicationFactory::getInstance()->getSettings()->get( 'smwgDVFeatures' ) & SMW_DV_WPV_DTITLE ) != 0
+		);
+
+		return $displayTitlePropertyAnnotator;
 	}
 
 	/**
