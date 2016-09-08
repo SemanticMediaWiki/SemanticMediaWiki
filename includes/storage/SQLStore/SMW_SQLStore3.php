@@ -178,9 +178,8 @@ class SMWSQLStore3 extends SMWStore {
 	 * @since 1.8
 	 */
 	public function __construct() {
-		$this->smwIds = new SMWSql3SmwIds( $this );
 		$this->factory = new SQLStoreFactory( $this );
-
+		$this->smwIds = $this->factory->newIdTableManager();
 		$this->cachedValueLookupStore = $this->factory->newCachedValueLookupStore();
 	}
 

@@ -197,6 +197,14 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructIteratorFactory() {
+
+		$this->assertInstanceOf(
+			'\SMW\IteratorFactory',
+			$this->applicationFactory->getIteratorFactory()
+		);
+	}
+
 	public function testCanConstructPropertySpecificationLookup() {
 
 		$this->assertInstanceOf(

@@ -213,6 +213,15 @@ class ApplicationFactory {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @return IteratorFactory
+	 */
+	public function getIteratorFactory() {
+		return $this->callbackLoader->singleton( 'IteratorFactory' );
+	}
+
+	/**
 	 * @since 2.0
 	 *
 	 * @return Cache

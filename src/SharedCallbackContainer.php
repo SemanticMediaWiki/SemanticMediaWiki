@@ -28,6 +28,7 @@ class SharedCallbackContainer implements CallbackContainer {
 	public function register( CallbackLoader $callbackLoader ) {
 		$this->registerCallbackHandlers( $callbackLoader );
 		$this->registerCallbackHandlersByFactory( $callbackLoader );
+		$this->registerCallbackHandlersByConstructedInstance( $callbackLoader );
 	}
 
 	private function registerCallbackHandlers( $callbackLoader ) {
@@ -42,12 +43,6 @@ class SharedCallbackContainer implements CallbackContainer {
 
 		$callbackLoader->registerCallback( 'Store', function( $store = null ) use ( $callbackLoader ) {
 			return StoreFactory::getStore( $store !== null ? $store : $callbackLoader->singleton( 'Settings' )->get( 'smwgDefaultStore' ) );
-		} );
-
-		$callbackLoader->registerExpectedReturnType( 'CacheFactory', '\SMW\CacheFactory' );
-
-		$callbackLoader->registerCallback( 'CacheFactory', function( $mainCacheType = null ) {
-			return new CacheFactory( $mainCacheType );
 		} );
 
 		$callbackLoader->registerExpectedReturnType( 'Cache', '\Onoi\Cache\Cache' );
@@ -99,12 +94,45 @@ class SharedCallbackContainer implements CallbackContainer {
 			return new ContentParser( $title );
 		} );
 
+		$callbackLoader->registerExpectedReturnType( 'DeferredCallableUpdate', '\SMW\DeferredCallableUpdate' );
+
+		$callbackLoader->registerCallback( 'DeferredCallableUpdate', function( \Closure $callback ) {
+			return new DeferredCallableUpdate( $callback );
+		} );
+	}
+
+	private function registerCallbackHandlersByFactory( $callbackLoader ) {
+
+		/**
+		 * @var CacheFactory
+		 */
+		$callbackLoader->registerExpectedReturnType( 'CacheFactory', '\SMW\CacheFactory' );
+
+		$callbackLoader->registerCallback( 'CacheFactory', function( $mainCacheType = null ) {
+			return new CacheFactory( $mainCacheType );
+		} );
+
+		/**
+		 * @var IteratorFactory
+		 */
+		$callbackLoader->registerExpectedReturnType( 'IteratorFactory', '\SMW\IteratorFactory' );
+
+		$callbackLoader->registerCallback( 'IteratorFactory', function() {
+			return new IteratorFactory();
+		} );
+
+		/**
+		 * @var JobFactory
+		 */
 		$callbackLoader->registerExpectedReturnType( 'JobFactory', '\SMW\MediaWiki\Jobs\JobFactory' );
 
 		$callbackLoader->registerCallback( 'JobFactory', function() {
 			return new JobFactory();
 		} );
 
+		/**
+		 * @var FactboxFactory
+		 */
 		$callbackLoader->registerExpectedReturnType( 'FactboxFactory', '\SMW\Factbox\FactboxFactory' );
 
 		$callbackLoader->registerCallback( 'FactboxFactory', function() {
@@ -130,16 +158,13 @@ class SharedCallbackContainer implements CallbackContainer {
 			$callbackLoader->registerExpectedReturnType( 'QueryFactory', '\SMW\QueryFactory' );
 			return new QueryFactory();
 		} );
-
-		$callbackLoader->registerExpectedReturnType( 'DeferredCallableUpdate', '\SMW\DeferredCallableUpdate' );
-
-		$callbackLoader->registerCallback( 'DeferredCallableUpdate', function( \Closure $callback ) {
-			return new DeferredCallableUpdate( $callback );
-		} );
 	}
 
-	private function registerCallbackHandlersByFactory( $callbackLoader ) {
+	private function registerCallbackHandlersByConstructedInstance( $callbackLoader ) {
 
+		/**
+		 * @var BlobStore
+		 */
 		$callbackLoader->registerCallback( 'BlobStore', function( $namespace, $cacheType = null, $ttl = 0 ) use ( $callbackLoader ) {
 			$callbackLoader->registerExpectedReturnType( 'BlobStore', '\Onoi\BlobStore\BlobStore' );
 
@@ -161,6 +186,9 @@ class SharedCallbackContainer implements CallbackContainer {
 			return $blobStore;
 		} );
 
+		/**
+		 * @var CachedPropertyValuesPrefetcher
+		 */
 		$callbackLoader->registerCallback( 'CachedPropertyValuesPrefetcher', function( $cacheType = null, $ttl = 604800 ) use ( $callbackLoader ) {
 			$callbackLoader->registerExpectedReturnType( 'CachedPropertyValuesPrefetcher', '\SMW\CachedPropertyValuesPrefetcher' );
 
@@ -172,6 +200,9 @@ class SharedCallbackContainer implements CallbackContainer {
 			return $cachedPropertyValuesPrefetcher;
 		} );
 
+		/**
+		 * @var PropertySpecificationLookup
+		 */
 		$callbackLoader->registerCallback( 'PropertySpecificationLookup', function() use ( $callbackLoader ) {
 			$callbackLoader->registerExpectedReturnType( 'PropertySpecificationLookup', '\SMW\PropertySpecificationLookup' );
 
@@ -188,7 +219,9 @@ class SharedCallbackContainer implements CallbackContainer {
 			return $propertySpecificationLookup;
 		} );
 
-
+		/**
+		 * @var PropertyHierarchyLookup
+		 */
 		$callbackLoader->registerCallback( 'PropertyHierarchyLookup', function() use ( $callbackLoader ) {
 			$callbackLoader->registerExpectedReturnType( 'PropertyHierarchyLookup', '\SMW\PropertyHierarchyLookup' );
 

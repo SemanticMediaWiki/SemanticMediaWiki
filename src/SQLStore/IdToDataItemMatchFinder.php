@@ -4,8 +4,9 @@ namespace SMW\SQLStore;
 
 use SMW\DIWikiPage;
 use SMW\HashBuilder;
-use SMW\InMemoryPoolCache;
+use SMW\ApplicationFactory;
 use SMW\MediaWiki\Database;
+use SMW\IteratorFactory;
 
 /**
  * @license GNU GPL v2+
@@ -23,6 +24,11 @@ class IdToDataItemMatchFinder {
 	private $connection = null;
 
 	/**
+	 * @var IteratorFactory
+	 */
+	private $iteratorFactory;
+
+	/**
 	 * @var InMemoryPoolCache
 	 */
 	private $inMemoryPoolCache;
@@ -31,10 +37,12 @@ class IdToDataItemMatchFinder {
 	 * @since 2.1
 	 *
 	 * @param Database $connection
+	 * @param IteratorFactory $iteratorFactory
 	 */
-	public function __construct( Database $connection ) {
+	public function __construct( Database $connection, IteratorFactory $iteratorFactory ) {
 		$this->connection = $connection;
-		$this->inMemoryPoolCache = InMemoryPoolCache::getInstance();
+		$this->iteratorFactory = $iteratorFactory;
+		$this->inMemoryPoolCache = ApplicationFactory::getInstance()->getInMemoryPoolCache();
 	}
 
 	/**
@@ -84,18 +92,18 @@ class IdToDataItemMatchFinder {
 			__METHOD__
 		);
 
-		$dataItemPoolHashList = array();
+		$resultIterator = $this->iteratorFactory->newResultIterator( $rows );
 
-		foreach ( $rows as $row ) {
-			$dataItemPoolHashList[] = HashBuilder::createHashIdFromSegments(
+		$mappingIterator = $this->iteratorFactory->newMappingIterator( $resultIterator, function( $row ) {
+			return HashBuilder::createHashIdFromSegments(
 				$row->smw_title,
 				$row->smw_namespace,
 				$row->smw_iw,
 				$row->smw_subobject
 			);
-		}
+		} );
 
-		return $dataItemPoolHashList;
+		return $mappingIterator;
 	}
 
 	/**
