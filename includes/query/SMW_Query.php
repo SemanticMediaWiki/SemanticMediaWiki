@@ -37,6 +37,17 @@ class SMWQuery {
 	const MODE_DEBUG = 3; // prepare query, but show debug data instead of executing it
 	const MODE_NONE = 4;  // do nothing with the query
 
+	/**
+	 * The time the QueryEngine required to answer a query condition
+	 */
+	const PROC_QUERY_TIME = 'query.time';
+
+	/**
+	 * The time a ResultPrinter required to build the final result including all
+	 * PrintRequests
+	 */
+	const PROC_PRINT_TIME = 'print.time';
+
 	public $sort = false;
 	public $sortkeys = array(); // format: "Property key" => "ASC" / "DESC" (note: order of entries also matters)
 	public $querymode = self::MODE_INSTANCES;
@@ -66,6 +77,11 @@ class SMWQuery {
 	 * @var string|null
 	 */
 	private $querySource = null;
+
+	/**
+	 * @var array
+	 */
+	private $options = array();
 
 	/**
 	 * Constructor.
@@ -183,6 +199,27 @@ class SMWQuery {
 
 	public function setQueryString( $querystring ) {
 		$this->queryString = $querystring;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string|integer $key
+	 * @param mixed $value
+	 */
+	public function setOption( $key, $value ) {
+		$this->options[$key] = $value;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string|integer $key
+	 *
+	 * @return mixed
+	 */
+	public function getOptionBy( $key ) {
+		return isset( $this->options[$key] ) ? $this->options[$key] : false;
 	}
 
 	/**

@@ -454,6 +454,7 @@ class SMWQueryProcessor {
 	public static function getResultFromQuery( SMWQuery $query, array $params, $outputMode, $context ) {
 
 		$res = self::getStoreFromParams( $params )->getQueryResult( $query );
+		$start = microtime( true );
 
 		if ( ( $query->querymode == SMWQuery::MODE_INSTANCES ) ||
 			( $query->querymode == SMWQuery::MODE_NONE ) ) {
@@ -461,7 +462,7 @@ class SMWQueryProcessor {
 			$printer = self::getResultPrinter( $params['format']->getValue(), $context );
 			$result = $printer->getResult( $res, $params, $outputMode );
 
-
+			$query->setOption( SMWQuery::PROC_PRINT_TIME, microtime( true ) - $start );
 			return $result;
 		} else { // result for counting or debugging is just a string or number
 
@@ -483,6 +484,7 @@ class SMWQueryProcessor {
 				$result = smwfEncodeMessages( $query->getErrors() );
 			}
 
+			$query->setOption( SMWQuery::PROC_PRINT_TIME, microtime( true ) - $start );
 
 			return $result;
 		}

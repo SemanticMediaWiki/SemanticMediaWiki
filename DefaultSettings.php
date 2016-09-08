@@ -812,10 +812,15 @@ $GLOBALS['smwgShowHiddenCategories'] = true;
 # QueryProfiler related setting to enable/disable specific monitorable profile
 # data
 #
-# @note If these settings are changed, please ensure to run update.php
+# @note If these settings are changed, please ensure to run update.php/rebuildData.php
+#
+# - smwgQueryProfiler can be set false itself allowing it to disable its
+# functionality but it may impact secondary processes that rely on profile
+# information to be available (Notification system etc.)
 #
 # - smwgQueryDurationEnabled to record query duration (the time
 # between the query result selection and output its)
+#
 #
 # @since 1.9
 ##
