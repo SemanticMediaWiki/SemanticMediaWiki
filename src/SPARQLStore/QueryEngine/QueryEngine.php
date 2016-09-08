@@ -93,7 +93,7 @@ class QueryEngine implements QueryEngineInterface {
 
 		$this->compoundConditionBuilder->setSortKeys( $query->sortkeys );
 
-		$compoundCondition = $this->compoundConditionBuilder->buildCondition(
+		$compoundCondition = $this->compoundConditionBuilder->getConditionFrom(
 			$query->getDescription()
 		);
 

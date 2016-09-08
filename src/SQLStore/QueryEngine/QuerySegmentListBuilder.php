@@ -185,7 +185,7 @@ class QuerySegmentListBuilder {
 	 *
 	 * @return integer
 	 */
-	public function buildQuerySegmentFor( Description $description ) {
+	public function getQuerySegmentFrom( Description $description ) {
 
 		$querySegment = $this->dispatchingDescriptionInterpreter->interpretDescription(
 			$description

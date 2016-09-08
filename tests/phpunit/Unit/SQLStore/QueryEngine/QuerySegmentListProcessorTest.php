@@ -56,7 +56,7 @@ class QuerySegmentListProcessorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->doExecuteSubqueryJoinDependenciesFor( 42 );
+		$instance->doResolveQueryDependenciesById( 42 );
 	}
 
 }

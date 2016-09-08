@@ -55,7 +55,7 @@ class ConceptQueryResolver {
 
 		$qp = new QueryParser( $this->conceptFeatures );
 
-		$querySegmentListBuilder->buildQuerySegmentFor(
+		$querySegmentListBuilder->getQuerySegmentFrom(
 			$qp->getQueryDescription( $conceptDescriptionText )
 		);
 
@@ -71,7 +71,7 @@ class ConceptQueryResolver {
 
 		$querySegmentListProcessor->setQueryMode( Query::MODE_INSTANCES );
 		$querySegmentListProcessor->setQuerySegmentList( $querySegmentList );
-		$querySegmentListProcessor->doExecuteSubqueryJoinDependenciesFor( $qid );
+		$querySegmentListProcessor->doResolveQueryDependenciesById( $qid );
 
 		return $querySegmentList[$qid];
 	}

@@ -72,7 +72,7 @@ class QuerySegmentListBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->descriptionInterpreterFactory
 		);
 
-		$instance->buildQuerySegmentFor( $description );
+		$instance->getQuerySegmentFrom( $description );
 
 		$expected = new \stdClass;
 		$expected->type = 1;
@@ -110,7 +110,7 @@ class QuerySegmentListBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->descriptionInterpreterFactory
 		);
 
-		$instance->buildQuerySegmentFor( $description );
+		$instance->getQuerySegmentFrom( $description );
 
 		$expectedDisjunction = new \stdClass;
 		$expectedDisjunction->type = 3;
@@ -177,7 +177,7 @@ class QuerySegmentListBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->descriptionInterpreterFactory
 		);
 
-		$instance->buildQuerySegmentFor( $description );
+		$instance->getQuerySegmentFrom( $description );
 
 		$expectedClass = new \stdClass;
 		$expectedClass->type = 1;

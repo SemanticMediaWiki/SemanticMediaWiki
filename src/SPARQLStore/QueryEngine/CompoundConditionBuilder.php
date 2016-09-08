@@ -15,15 +15,6 @@ use SMW\SPARQLStore\HierarchyFinder;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
-use SMW\SPARQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter;
-use SMW\SPARQLStore\QueryEngine\Interpreter\ConceptDescriptionInterpreter;
-use SMW\SPARQLStore\QueryEngine\Interpreter\ConjunctionInterpreter;
-use SMW\SPARQLStore\QueryEngine\Interpreter\DisjunctionInterpreter;
-use SMW\SPARQLStore\QueryEngine\Interpreter\DispatchingDescriptionInterpreter;
-use SMW\SPARQLStore\QueryEngine\Interpreter\NamespaceDescriptionInterpreter;
-use SMW\SPARQLStore\QueryEngine\Interpreter\SomePropertyInterpreter;
-use SMW\SPARQLStore\QueryEngine\Interpreter\ThingDescriptionInterpreter;
-use SMW\SPARQLStore\QueryEngine\Interpreter\ValueDescriptionInterpreter;
 use SMWDataItem as DataItem;
 use SMWExpElement as ExpElement;
 use SMWExpNsResource as ExpNsResource;
@@ -103,25 +94,16 @@ class CompoundConditionBuilder {
 	/**
 	 * @since 2.2
 	 *
+	 * @param DescriptionInterpreterFactory $descriptionInterpreterFactory
 	 * @param EngineOptions|null $engineOptions
 	 */
-	public function __construct( EngineOptions $engineOptions = null ) {
+	public function __construct( DescriptionInterpreterFactory $descriptionInterpreterFactory, EngineOptions $engineOptions = null ) {
+		$this->dispatchingDescriptionInterpreter = $descriptionInterpreterFactory->newDispatchingDescriptionInterpreter( $this );
 		$this->engineOptions = $engineOptions;
 
 		if ( $this->engineOptions === null ) {
 			$this->engineOptions = new EngineOptions();
 		}
-
-		$this->dispatchingDescriptionInterpreter = new DispatchingDescriptionInterpreter();
-		$this->dispatchingDescriptionInterpreter->addDefaultInterpreter( new ThingDescriptionInterpreter( $this ) );
-
-		$this->dispatchingDescriptionInterpreter->addInterpreter( new SomePropertyInterpreter( $this ) );
-		$this->dispatchingDescriptionInterpreter->addInterpreter( new ConjunctionInterpreter( $this ) );
-		$this->dispatchingDescriptionInterpreter->addInterpreter( new DisjunctionInterpreter( $this ) );
-		$this->dispatchingDescriptionInterpreter->addInterpreter( new NamespaceDescriptionInterpreter( $this ) );
-		$this->dispatchingDescriptionInterpreter->addInterpreter( new ClassDescriptionInterpreter( $this ) );
-		$this->dispatchingDescriptionInterpreter->addInterpreter( new ValueDescriptionInterpreter( $this ) );
-		$this->dispatchingDescriptionInterpreter->addInterpreter( new ConceptDescriptionInterpreter( $this ) );
 	}
 
 	/**
@@ -270,7 +252,7 @@ class CompoundConditionBuilder {
 	 *
 	 * @return Condition
 	 */
-	public function buildCondition( Description $description ) {
+	public function getConditionFrom( Description $description ) {
 		$this->variableCounter = 0;
 
 		$this->setJoinVariable( $this->resultVariable );
