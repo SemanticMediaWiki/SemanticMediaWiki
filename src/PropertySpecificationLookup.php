@@ -289,7 +289,7 @@ class PropertySpecificationLookup {
 		$blobStore = $this->cachedPropertyValuesPrefetcher->getBlobStore();
 
 		$container = $blobStore->read(
-			$this->cachedPropertyValuesPrefetcher->getRootHashFor( $property->getDiWikiPage() )
+			$this->cachedPropertyValuesPrefetcher->getRootHashFrom( $property->getDiWikiPage() )
 		);
 
 		if ( $container->has( $key ) ) {

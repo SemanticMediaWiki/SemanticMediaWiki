@@ -113,7 +113,7 @@ class IdToDataItemMatchFinder {
 	 *
 	 * @return DIWikiPage|null
 	 */
-	public function getDataItemForId( $id ) {
+	public function getDataItemById( $id ) {
 
 		$poolCache = $this->inMemoryPoolCache->getPoolCacheFor( self::POOLCACHE_ID );
 

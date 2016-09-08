@@ -55,7 +55,7 @@ class CachedPropertyValuesPrefetcher {
 	 * @since 2.4
 	 */
 	public function resetCacheFor( DIWikiPage $subject ) {
-		$this->blobStore->delete( $this->getRootHashFor( $subject ) );
+		$this->blobStore->delete( $this->getRootHashFrom( $subject ) );
 	}
 
 	/**
@@ -74,7 +74,7 @@ class CachedPropertyValuesPrefetcher {
 		);
 
 		$container = $this->blobStore->read(
-			$this->getRootHashFor( $subject )
+			$this->getRootHashFrom( $subject )
 		);
 
 		if ( $container->has( $key ) ) {
@@ -132,7 +132,7 @@ class CachedPropertyValuesPrefetcher {
 	 *
 	 * @return string
 	 */
-	public function getRootHashFor( DIWikiPage $subject ) {
+	public function getRootHashFrom( DIWikiPage $subject ) {
 		return md5( $subject->asBase()->getHash() . self::VERSION );
 	}
 
@@ -143,7 +143,7 @@ class CachedPropertyValuesPrefetcher {
 	 *
 	 * @return string
 	 */
-	public function getHashFor( $hash ) {
+	public function createHashFromString( $hash ) {
 		return md5( $hash . self::VERSION );
 	}
 

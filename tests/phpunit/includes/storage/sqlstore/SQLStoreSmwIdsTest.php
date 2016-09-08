@@ -228,7 +228,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( 9999, $result );
 	}
 
-	public function testGetDataItemForId() {
+	public function testGetDataItemById() {
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -239,7 +239,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $connection ) );
 
 		$this->idToDataItemMatchFinder->expects( $this->once() )
-			->method( 'getDataItemForId' )
+			->method( 'getDataItemById' )
 			->with( $this->equalTo( 42 ) )
 			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN ) ) );
 
@@ -250,7 +250,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\DIWikiPage',
-			$instance->getDataItemForId( 42 )
+			$instance->getDataItemById( 42 )
 		);
 	}
 

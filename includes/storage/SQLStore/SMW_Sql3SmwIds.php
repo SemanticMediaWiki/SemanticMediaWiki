@@ -971,8 +971,8 @@ class SMWSql3SmwIds {
 	 *
 	 * @return DIWikiPage|null
 	 */
-	public function getDataItemForId( $id ) {
-		return $this->idToDataItemMatchFinder->getDataItemForId( $id );
+	public function getDataItemById( $id ) {
+		return $this->idToDataItemMatchFinder->getDataItemById( $id );
 	}
 
 	/**

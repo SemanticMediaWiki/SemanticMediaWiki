@@ -118,7 +118,7 @@ class PropertyTableIdReferenceFinder {
 		// If null is returned it means that a reference was found bu no DI could
 		// be matched therefore is categorized as false positive
 		if ( isset( $reference->s_id ) ) {
-			$reference = $this->store->getObjectIds()->getDataItemForId( $reference->s_id );
+			$reference = $this->store->getObjectIds()->getDataItemById( $reference->s_id );
 		}
 
 		return $reference === false || $reference === null ? false : $reference;

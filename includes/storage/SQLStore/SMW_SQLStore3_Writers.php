@@ -250,7 +250,7 @@ class SMWSQLStore3Writers {
 
 		if ( $redirects === array() && $subject->getSubobjectName() === ''  ) {
 
-			$dataItemFromId = $this->store->getObjectIds()->getDataItemForId( $sid );
+			$dataItemFromId = $this->store->getObjectIds()->getDataItemById( $sid );
 
 			// If for some reason the internal redirect marker is still set but no
 			// redirect annotations are known then do update the interwiki field

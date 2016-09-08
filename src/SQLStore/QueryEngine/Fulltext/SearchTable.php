@@ -88,7 +88,7 @@ class SearchTable {
 	 */
 	public function isExemptedPropertyById( $id ) {
 
-		$dataItem = $this->store->getObjectIds()->getDataItemForId(
+		$dataItem = $this->store->getObjectIds()->getDataItemById(
 			$id
 		);
 
