@@ -52,7 +52,7 @@
 	"smw_wrong_namespace": "Samo stranice iz imenskog prostora \"$1\" su dozvoljene ovde.",
 	"smw_manytypes": "Više od jednog tipa je definisano za ovu osobinu.",
 	"smw_emptystring": "Prazni stringovi nisu prihvatljivi.",
-	"smw_notinenum": "\"$1\" nije na spisku mogućih vrednosti ($2) za ovu osobinu.",
+	"smw_notinenum": "„$1“ nije na spisku ($2)  [[Property:Allows value|mogućih vrednosti]] za osobinu „$3“.",
 	"smw_noboolean": "\"$1\" nije prepoznat kao Bolova vrednost (istinito/neistinito).",
 	"smw_true_words": "istinito, i, da, d",
 	"smw_false_words": "neistinito, n, ne, n",

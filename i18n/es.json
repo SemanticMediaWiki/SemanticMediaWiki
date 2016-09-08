@@ -297,6 +297,7 @@
 	"smw-ui-tooltip-title-event": "Evento",
 	"smw-ui-tooltip-title-note": "Nota",
 	"smw-ui-tooltip-title-legend": "Leyenda",
+	"smw-ui-tooltip-title-reference": "Referencia",
 	"smw_unknowntype": "El tipo de esta propiedad no es válido",
 	"smw-concept-cache-text": "El concepto tiene un total de $1 {{PLURAL:$1|página|páginas}}, y se actualizó por última vez el $3 a las $2.",
 	"smw_concept_header": "Páginas de concepto \"$1\"",
@@ -381,5 +382,6 @@
 	"smw-pa-property-predefined_pvuc": "\"$1\" es una propiedad predefinida que indica que se espera que las asignaciones de valores a una propiedad sean únicas. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined-long_pvuc": "La singularidad se establece cuando dos valores no son iguales en su representación literal y cualquier violación de esta restricción se clasifican como de error.",
 	"smw-datavalue-uniqueness-constraint-error": "La propiedad \"$1\" sólo permite que el único valor de las cesiones y \"$2\" ya fue anotado en el \" asunto \"$3\".",
-	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" es una dirección URL no válida."
+	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" es una dirección URL no válida.",
+	"smw-datavalue-reference-outputformat": "$1: $2"
 }

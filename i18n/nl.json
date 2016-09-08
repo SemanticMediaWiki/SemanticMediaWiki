@@ -283,6 +283,7 @@
 	"smw-ui-tooltip-title-event": "Evenement",
 	"smw-ui-tooltip-title-note": "Opmerking",
 	"smw-ui-tooltip-title-legend": "Legenda",
+	"smw-ui-tooltip-title-reference": "Referentie",
 	"smw_unknowntype": "Het type van deze eigenschap is ongeldig",
 	"smw-concept-cache-text": "Het concept heeft in totaal $1 {{PLURAL:$1|pagina|pagina's}} en is voor het laatst bijgewerkt op $3, $2.",
 	"smw_concept_header": "Pagina's met het concept \"$1\"",
@@ -324,5 +325,6 @@
 	"smw-sp-types_geo": "\"$1\" is een gegevenstype dat geografische locaties beschrijft. Gebruik ervan vereist [https://www.semantic-mediawiki.org/wiki/Semantic_Maps Semantic Maps].",
 	"smw-sp-types_tel": "\"$1\" is een speciaal gegevenstype om internationale telefoonnummers te beschrijven conform RFC 3966.",
 	"smw-sp-types_txt": "\"$1\" is een primitief gegevenstype om tekenreeksen van willekeurige lengte te beschrijven.",
-	"smw-sp-types_dat": "\"$1\" is een gegevenstype om punten in de tijd te representeren in een uniform formaat."
+	"smw-sp-types_dat": "\"$1\" is een gegevenstype om punten in de tijd te representeren in een uniform formaat.",
+	"smw-datavalue-reference-outputformat": "$1: $2"
 }

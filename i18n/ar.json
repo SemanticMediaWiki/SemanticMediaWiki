@@ -283,5 +283,6 @@
 	"smw_conceptarticlecount": "عرض {{PLURAL:$1||صفحة واحدة تنتمي|صفحتين تنتميان|$1 صفحات تنتمي|$1 صفحة تنتمي}} إلى هذا المفهوم.",
 	"smw-sp-properties-header-label": "قائمة خصائص",
 	"smw-livepreview-loading": "جاري التحميل...",
+	"smw-datavalue-parse-error": "القيمة المعطاة \"$1\" لم يتم فهمها.",
 	"smw-datavalue-reference-outputformat": "$1: $2"
 }

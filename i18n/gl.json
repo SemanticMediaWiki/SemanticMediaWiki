@@ -287,6 +287,7 @@
 	"smw-ui-tooltip-title-event": "Evento",
 	"smw-ui-tooltip-title-note": "Nota",
 	"smw-ui-tooltip-title-legend": "Lenda",
+	"smw-ui-tooltip-title-reference": "Referencia",
 	"smw_unknowntype": "O tipo desta propiedade non é válido",
 	"smw-concept-cache-text": "O concepto ten {{PLURAL:$1|unha páxina|un total de $1 páxinas}}. A súa última actualización foi o $3, $2.",
 	"smw_concept_header": "Páxinas do concepto \"$1\"",
@@ -414,9 +415,17 @@
 	"smw-datavalue-time-invalid-date-components-sequence": "\"$1\" contén unha secuencia que non pode interpretarse cunha matriz de correspondencia dispoñible para os compoñentes dunha data.",
 	"smw-datavalue-time-invalid-ampm": "\"$1\" contén \"$2\" como un elemento horario que é inválido para o formato convencional de 12 horas.",
 	"smw-datavalue-time-invalid-jd": "Imposible interpretar o valor de entrada \"$1\" como un número válido JD (día xuliano). \"$2\" foi informado.",
+	"smw-datavalue-time-invalid-prehistoric": "Imposible interpretar un valor de entrada prehistórico \"$1\". Por exemplo, se especifica máis que os anos nun modelo de calendario pode devolver resultados incorrectos nun contexto prehistórico.",
+	"smw-datavalue-time-invalid": "Imposible interpretar o valor da entrada \"$1\" como unha data ou un compoñente de tempo válidos. Notificouse \"$2\".",
 	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" é un enderezo URL non válido.",
 	"smw-pa-property-predefined_eid": "\"$1\" é un [[Special:Types/External identifier|tipo]] e propiedade predefinida proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica] para representar identificadores externos.",
 	"smw-pa-property-predefined_peid": "\"$1\" é unha propiedade predefinida que un identificador externo. E está proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
 	"smw-pa-property-predefined_pefu": "\"$1\" é unha propiedade predefinida que especifica un URI. E está proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
-	"smw-pa-property-predefined-long_pefu": "O URI se espera que conteña un parámetro posicional para que os identificadores externos poidan ser formatados e inicializados correctamente."
+	"smw-pa-property-predefined-long_pefu": "O URI se espera que conteña un parámetro posicional para que os identificadores externos poidan ser formatados e inicializados correctamente.",
+	"smw-datavalue-stripmarker-parse-error": "O valor indicado \"$1\" contén [https://en.wikipedia.org/wiki/Help:Strip_markers marcadores de banda] e polo tanto non pode ser analizado abondo.",
+	"smw-datavalue-parse-error": "O valor dado \"$1\" non foi entendido.",
+	"smw-datavalue-propertylist-invalid-property-key": "A lista de propiedades \"$1\" contén unha clave de propiedade \"$2\" inválida.",
+	"smw-datavalue-type-invalid-typeuri": "O tipo \"$1\" non pode ser transformado nunha representación URI válida.",
+	"smw-datavalue-wikipage-missing-fragment-context": "O valor de entrada da wikipáxina \"$1\" non ser usado sen unha páxina de contexto.",
+	"smw-datavalue-reference-outputformat": "$1 : $2"
 }

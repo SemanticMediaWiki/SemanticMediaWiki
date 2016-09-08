@@ -244,6 +244,7 @@
 	"smw-ui-tooltip-title-event": "Evento",
 	"smw-ui-tooltip-title-note": "Nota",
 	"smw-ui-tooltip-title-legend": "Legenda",
+	"smw-ui-tooltip-title-reference": "Nota",
 	"smw_unknowntype": "Il tipo di questa proprietà non è valido",
 	"smw_concept_header": "Pagine del concetto \"$1\"",
 	"smw_conceptarticlecount": "Mostro {{PLURAL:$1|una pagina|$1 pagine}}.",
