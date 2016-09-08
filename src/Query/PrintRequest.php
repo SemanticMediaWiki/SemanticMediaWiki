@@ -6,6 +6,7 @@ use InvalidArgumentException;
 use SMW\Localizer;
 use SMWDataValue;
 use SMWPropertyValue as PropertyValue;
+use SMW\DataValues\PropertyChainValue;
 use SMW\Query\PrintRequest\Deserializer;
 use Title;
 
@@ -40,6 +41,12 @@ class PrintRequest {
 	 */
 	const PRINT_CCAT = 3;
 
+	/**
+	 * Query mode indicating a chainable property value entity, with the last
+	 * element to represent the printable output
+	 */
+	const PRINT_CHAIN = 4;
+
 	protected $m_mode; // type of print request
 
 	protected $m_label; // string for labelling results, contains no markup
@@ -68,6 +75,8 @@ class PrintRequest {
 				!is_null( $data ) ) ||
 			( $mode == self::PRINT_PROP &&
 				( !( $data instanceof PropertyValue ) || !$data->isValid() ) ) ||
+			( $mode == self::PRINT_CHAIN &&
+				( !( $data instanceof PropertyChainValue ) || !$data->isValid() ) ) ||
 			( $mode == self::PRINT_CCAT &&
 				!( $data instanceof Title ) )
 		) {
@@ -123,6 +132,7 @@ class PrintRequest {
 				return htmlspecialchars( $this->m_label ); // TODO: link to Special:Categories
 			case self::PRINT_CCAT:
 				return \Linker::link( $this->m_data, htmlspecialchars( $this->m_label ) );
+			case self::PRINT_CHAIN:
 			case self::PRINT_PROP:
 				return $this->m_data->getShortHTMLText( $linker );
 			case self::PRINT_THIS:
@@ -142,6 +152,7 @@ class PrintRequest {
 			switch ( $this->m_mode ) {
 				case self::PRINT_CATS:
 					return $this->m_label; // TODO: link to Special:Categories
+				case self::PRINT_CHAIN:
 				case self::PRINT_PROP:
 					return $this->m_data->getShortWikiText( $linked );
 				case self::PRINT_CCAT:
@@ -194,6 +205,8 @@ class PrintRequest {
 
 		if ( $this->m_mode == self::PRINT_PROP ) {
 			$this->m_typeid = $this->m_data->getDataItem()->findPropertyTypeID();
+		} elseif ( $this->m_mode == self::PRINT_CHAIN ) {
+			$this->m_typeid = $this->m_data->getLastPropertyChainValue()->getDataItem()->findPropertyTypeID();
 		} else {
 			$this->m_typeid = '_wpg';
 		}
@@ -254,6 +267,7 @@ class PrintRequest {
 				}
 
 				return $result . $parameters;
+			case self::PRINT_CHAIN:
 			case self::PRINT_PROP:
 			case self::PRINT_CCAT:
 				if ( $this->m_mode == self::PRINT_CCAT ) {
@@ -263,6 +277,9 @@ class PrintRequest {
 					if ( $this->m_outputformat != 'x' ) {
 						$result .= '#' . $this->m_outputformat;
 					}
+				} elseif ( $this->m_mode == self::PRINT_CHAIN ) {
+					$printname = $this->m_data->getDataItem()->getString();
+					$result = '?' . $printname;
 				} else {
 
 					$printname = '';

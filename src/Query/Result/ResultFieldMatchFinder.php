@@ -113,7 +113,7 @@ class ResultFieldMatchFinder {
 		}
 
 		// Request all property values of a certain attribute of the current element.
-		if ( $this->printRequest->isMode( PrintRequest::PRINT_PROP ) ) {
+		if ( $this->printRequest->isMode( PrintRequest::PRINT_PROP ) || $this->printRequest->isMode( PrintRequest::PRINT_CHAIN ) ) {
 
 			$content = $this->getResultContent(
 				$dataItem
@@ -127,7 +127,11 @@ class ResultFieldMatchFinder {
 			// Known limitation: the printrequest still is of type _rec, so if printers check
 			// for this then they will not recognize that it returns some more concrete type.
 
-			$propertyValue = $this->printRequest->getData();
+			if ( $this->printRequest->isMode( PrintRequest::PRINT_CHAIN ) ) {
+				$propertyValue = $this->printRequest->getData()->getLastPropertyChainValue();
+			} else {
+				$propertyValue = $this->printRequest->getData();
+			}
 
 			$index = $this->printRequest->getParameter( 'index' );
 			$newcontent = array();
@@ -165,6 +169,7 @@ class ResultFieldMatchFinder {
 	public function getRequestOptions( $useLimit = true ) {
 		$limit = $useLimit ? $this->printRequest->getParameter( 'limit' ) : false;
 		$order = trim( $this->printRequest->getParameter( 'order' ) );
+		$options = null;
 
 		// Important: use "!=" for order, since trim() above does never return "false", use "!==" for limit since "0" is meaningful here.
 		if ( ( $limit !== false ) || ( $order != false ) ) {
@@ -181,8 +186,6 @@ class ResultFieldMatchFinder {
 				$options->sort = true;
 				$options->ascending = true;
 			}
-		} else {
-			$options = null;
 		}
 
 		return $options;
@@ -199,6 +202,30 @@ class ResultFieldMatchFinder {
 
 		if ( !$dataValue->isValid() ) {
 			return array();
+		}
+
+		// If it is a chain then try to find a connected DIWikiPage subject that
+		// matches the property on the chained PrintRequest.
+		// For example, Number.Date.SomeThing will not return any meaningful results
+		// because Number will return a DINumber object and not a DIWikiPage.
+		// If on the other hand Has page.Number (with Number being the Last and
+		// `Has page` is of type Page) then the iteration will lookup on results
+		// for `Has page` and try to match a Number annotation on the results
+		// retrieved from `Has page`.
+		if ( $this->printRequest->isMode( PrintRequest::PRINT_CHAIN ) ) {
+
+			// Output of the previous iteration is the input for the next iteration
+			foreach ( $dataValue->getPropertyChainValues() as $pv ) {
+				$dataItems = $this->doFetchPropertyValues( $dataItems, $pv );
+
+				// If the results return empty then it means that for this element
+				// the chain has no matchable items hence we stop
+				if ( $dataItems === array() ) {
+					return array();
+				}
+			}
+
+			$dataValue = $dataValue->getLastPropertyChainValue();
 		}
 
 		return $this->doFetchPropertyValues( $dataItems, $dataValue );

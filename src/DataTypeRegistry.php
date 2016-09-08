@@ -482,6 +482,7 @@ class DataTypeRegistry {
 			'__pvuc' => 'SMW\DataValues\UniquenessConstraintValue',
 			'_eid' => 'SMW\DataValues\ExternalIdentifierValue',
 			'__pefu' => 'SMW\DataValues\ExternalFormatterUriValue',
+			'__pchn' => 'SMW\DataValues\PropertyChainValue',
 		);
 
 		$this->typeDataItemIds = array(
@@ -529,6 +530,7 @@ class DataTypeRegistry {
 			'__pvap' => DataItem::TYPE_BLOB, // Allows pattern
 			'__pvuc' => DataItem::TYPE_BOOLEAN, // Uniqueness constraint
 			'__pefu' => DataItem::TYPE_URI, // External formatter uri
+			'__pchn' => DataItem::TYPE_BLOB, // Property chain
 		);
 
 		$this->subDataTypes = array(

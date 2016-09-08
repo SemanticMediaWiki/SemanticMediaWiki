@@ -25,7 +25,11 @@
 		},
 		{
 			"name": "Example/F0208/3",
-			"contents": "[[Has page::F0208]]"
+			"contents": "[[Has page::F0208]] {{#subobject:Has text=ABC}}"
+		},
+		{
+			"name": "Example/F0208/4",
+			"contents": "[[Has page::Example/F0208/3]]"
 		},
 		{
 			"name": "Example/F0208/Q3.1",
@@ -46,6 +50,14 @@
 		{
 			"name": "Example/F0208/Q3.5",
 			"contents": "{{#show: Example/F0208/3 |mainlabel=- |?Has page |format=table |headers=plain |link=none |limit=0 }}"
+		},
+		{
+			"name": "Example/F0208/Q4.1",
+			"contents": "{{#ask:[[Has page::Example/F0208/3]] |mainlabel=- |?Has page.Has subobject.Has text |format=table |headers=plain |link=none |limit=0 }}"
+		},
+		{
+			"name": "Example/F0208/Q4.2",
+			"contents": "{{#ask:[[Has page::Example/F0208/3]] |mainlabel=- |?Has page.Has subobject.Has text=SomeOtherText |format=table |headers=plain |link=none |limit=0 }}"
 		}
 	],
 	"format-testcases": [
@@ -121,6 +133,24 @@
 			"expected-output": {
 				"to-contain": [
 					"Special:Ask/-5B-5B:Example-2FF0208-2F3-5D-5D/-3FHas-20page=/mainlabel=-2D/offset=0/format=table/link=none/headers=plain"
+				]
+			}
+		},
+		{
+			"about": "#8 (property chain on printrequest)",
+			"subject": "Example/F0208/Q4.1",
+			"expected-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::Example-2FF0208-2F3-5D-5D/-3FHas-20page.Has-20subobject.Has-20text=Has-20text/mainlabel=-2D/offset=0/format=table/link=none/headers=plain"
+				]
+			}
+		},
+		{
+			"about": "#9 (property chain on printrequest)",
+			"subject": "Example/F0208/Q4.2",
+			"expected-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::Example-2FF0208-2F3-5D-5D/-3FHas-20page.Has-20subobject.Has-20text=SomeOtherText/mainlabel=-2D/offset=0/format=table/link=none/headers=plain"
 				]
 			}
 		}

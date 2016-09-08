@@ -189,8 +189,10 @@ class SMWResultArray {
 			$diProperty = $recordValue->getPropertyDataItemByIndex(
 				$this->mPrintRequest->getParameter( 'index' )
 			);
-		} elseif ( $this->mPrintRequest->getMode() == PrintRequest::PRINT_PROP ) {
+		} elseif ( $this->mPrintRequest->isMode( PrintRequest::PRINT_PROP ) ) {
 			$diProperty = $this->mPrintRequest->getData()->getDataItem();
+		} elseif ( $this->mPrintRequest->isMode( PrintRequest::PRINT_CHAIN ) ) {
+			$diProperty = $this->mPrintRequest->getData()->getLastPropertyChainValue()->getDataItem();
 		} else {
 			$diProperty = null;
 		}

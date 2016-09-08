@@ -6,6 +6,7 @@ use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DeferredCallableUpdate;
 use SMW\Store;
+use SMW\Localizer;
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\Mock\ConfigurableStub;
 use RuntimeException;
@@ -202,6 +203,25 @@ class TestEnvironment {
 	 */
 	public function getUtilityFactory() {
 		return UtilityFactory::getInstance();
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param integer $ns
+	 * @param string $url
+	 *
+	 * @return string
+	 */
+	public function getLocalizedTextByNamespace( $ns, $text ) {
+
+		$namespace = Localizer::getInstance()->getNamespaceTextById( $ns );
+
+		return str_replace(
+			\MWNamespace::getCanonicalName( $ns ) . ':',
+			$namespace . ':',
+			$text
+		);
 	}
 
 	/**
