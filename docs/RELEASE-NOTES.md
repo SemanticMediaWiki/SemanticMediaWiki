@@ -42,6 +42,7 @@ THIS IS NOT A RELEASE YET
 * #1731 Fixed possible error in the `SkinAfterContent` hook when a null object is used
 * #1775 Fixed time offset recognition 
 * #1817 Disabled `DataValue` constraint validation when used in a query context 
+* #1823 Fixed annotation of `Display title of` when `SMW_DV_WPV_DTITLE` is disabled
 
 ## Internal changes
 
