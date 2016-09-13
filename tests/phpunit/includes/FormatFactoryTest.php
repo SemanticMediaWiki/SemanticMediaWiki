@@ -137,7 +137,7 @@ class FormatFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @test FormatFactory::getPrinter
 	 */
 	public function testGetPrinterException() {
-		$this->SetExpectedException( 'MWException' );
+		$this->setExpectedException( 'MWException' );
 
 		$factory = new FormatFactory();
 		$factory->getPrinter( 'lula' );
@@ -149,7 +149,7 @@ class FormatFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @test FormatFactory::getCanonicalName
 	 */
 	public function testGetCanonicalNameException() {
-		$this->SetExpectedException( 'MWException' );
+		$this->setExpectedException( 'MWException' );
 
 		$factory = new FormatFactory();
 		$factory->getCanonicalName( 9001 );
@@ -162,7 +162,7 @@ class FormatFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider getRegisterFormatExceptioDataProvider
 	 */
 	public function testRegisterFormatException( $formatName, $class ) {
-		$this->SetExpectedException( 'MWException' );
+		$this->setExpectedException( 'MWException' );
 
 		$factory = new FormatFactory();
 		$factory->registerFormat( $formatName, $class );
@@ -174,7 +174,7 @@ class FormatFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider getRegisterAliasesExceptioDataProvider
 	 */
 	public function testRegisterAliasesException( $formatName, array $aliases ) {
-		$this->SetExpectedException( 'MWException' );
+		$this->setExpectedException( 'MWException' );
 
 		$factory = new FormatFactory();
 		$factory->registerAliases( $formatName, $aliases );
