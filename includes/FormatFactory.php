@@ -17,54 +17,49 @@ use MWException;
 final class FormatFactory {
 
 	/**
-	 * Returns an instance of the factory.
+	 * Returns the global instance of the factory.
 	 *
 	 * @since 1.9
 	 *
-	 * @return FormatFactory
+	 * @return self
 	 */
 	public static function singleton() {
 		static $instance = null;
 
 		if ( $instance === null ) {
-			$instance = new self();
+			$instance = self::newFromGlobalState();
+		}
 
-			global $smwgResultFormats, $smwgResultAliases;
+		return $instance;
+	}
 
-			foreach ( $smwgResultFormats as $formatName => $printerClass ) {
-				$instance->registerFormat( $formatName, $printerClass );
-			}
+	private static function newFromGlobalState() {
+		$instance = new self();
 
-			foreach ( $smwgResultAliases as $formatName => $aliases ) {
-				$instance->registerAliases( $formatName, $aliases );
-			}
+		foreach ( $GLOBALS['smwgResultFormats'] as $formatName => $printerClass ) {
+			$instance->registerFormat( $formatName, $printerClass );
+		}
+
+		foreach ( $GLOBALS['smwgResultAliases'] as $formatName => $aliases ) {
+			$instance->registerAliases( $formatName, $aliases );
 		}
 
 		return $instance;
 	}
 
 	/**
-	 * Constructor. Protected to enforce use of singleton.
-	 */
-	//protected function __construct() {} // TODO: enable when tests can deal w/ it
-
-	/**
 	 * Format registry. Format names pointing to their associated QueryResultPrinter implementing classes.
 	 *
-	 * @since 1.9
-	 *
-	 * @var array
+	 * @var string[]
 	 */
-	protected $formats = array();
+	private $formats = array();
 
 	/**
 	 * Form alias registry. Aliases pointing to their canonical format name.
 	 *
-	 * @since 1.9
-	 *
-	 * @var array
+	 * @var string[]
 	 */
-	protected $aliases = array();
+	private $aliases = array();
 
 	/**
 	 * Registers a format.
@@ -121,7 +116,7 @@ final class FormatFactory {
 	 *
 	 * @since 1.9
 	 *
-	 * @return array of string
+	 * @return string[]
 	 */
 	public function getFormats() {
 		return array_keys( $this->formats );
@@ -149,6 +144,7 @@ final class FormatFactory {
 	 * @param string $formatName
 	 *
 	 * @return QueryResultPrinter
+	 * @throws MWException
 	 */
 	public function getPrinter( $formatName ) {
 		$class = $this->getPrinterClass( $formatName );
@@ -165,7 +161,7 @@ final class FormatFactory {
 	 * @return string
 	 * @throws MWException
 	 */
-	protected function getPrinterClass( $formatName ) {
+	private function getPrinterClass( $formatName ) {
 		$formatName = $this->getCanonicalName( $formatName );
 
 		if ( !array_key_exists( $formatName, $this->formats ) ) {
