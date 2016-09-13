@@ -3,6 +3,9 @@
 namespace SMW\Tests;
 
 use SMW\FormatFactory;
+use SMW\QueryResultPrinter;
+use SMW\TableResultPrinter;
+use SMWListResultPrinter;
 
 /**
  * @covers \SMW\FormatFactory
@@ -12,8 +15,6 @@ use SMW\FormatFactory;
  * @group SMWQueries
  *
  * @license GNU GPL v2+
- * @since 1.9
- *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class FormatFactoryTest extends \PHPUnit_Framework_TestCase {
@@ -21,7 +22,7 @@ class FormatFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function testSingleton() {
 		$instance = FormatFactory::singleton();
 
-		$this->assertInstanceOf( 'SMW\FormatFactory', $instance );
+		$this->assertInstanceOf( FormatFactory::class, $instance );
 		$this->assertTrue( FormatFactory::singleton() === $instance );
 
 		global $smwgResultFormats, $smwgResultAliases;
@@ -41,34 +42,25 @@ class FormatFactoryTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
-	/**
-	 * @return FormatFactory
-	 */
-	protected function getNewInstance() {
-//		$reflector = new \ReflectionClass( 'SMW\FormatFactory' );
-//		$constructor = $reflector->getConstructor();
-//		$constructor->setAccessible( true );
-//		return $constructor->invoke( $reflector );
-		return new FormatFactory();
-	}
-
 	public function testRegisterFormat() {
-		$factory = $this->getNewInstance();
+		$factory = new FormatFactory();
 
-		$factory->registerFormat( 'table', 'SMWTablePrinter' );
-		$factory->registerFormat( 'list', 'SMWListResultPrinter' );
+		$factory->registerFormat( 'table', TableResultPrinter::class );
+		$factory->registerFormat( 'list', SMWListResultPrinter::class );
 
-		$this->assertArrayEquals( array( 'table', 'list' ), $factory->getFormats() );
+		$this->assertContains( 'table', $factory->getFormats() );
+		$this->assertContains( 'list', $factory->getFormats() );
+		$this->assertCount( 2, $factory->getFormats() );
 
-		$factory->registerFormat( 'table', 'SMWListResultPrinter' );
+		$factory->registerFormat( 'table', SMWListResultPrinter::class );
 
 		$printer = $factory->getPrinter( 'table' );
 
-		$this->assertInstanceOf( 'SMWListResultPrinter', $printer );
+		$this->assertInstanceOf( SMWListResultPrinter::class, $printer );
 	}
 
 	public function testRegisterAliases() {
-		$factory = $this->getNewInstance();
+		$factory = new FormatFactory();
 
 		$this->assertEquals( 'foo', $factory->getCanonicalName( 'foo' ) );
 
@@ -95,7 +87,7 @@ class FormatFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		foreach ( $factory->getFormats() as $format ) {
 			$printer = $factory->getPrinter( $format );
-			$this->assertInstanceOf( 'SMW\QueryResultPrinter', $printer );
+			$this->assertInstanceOf( QueryResultPrinter::class, $printer );
 		}
 
 		// In case there are no formats PHPUnit would otherwise complain here.
@@ -103,12 +95,12 @@ class FormatFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFormats() {
-		$factory = $this->getNewInstance();
+		$factory = new FormatFactory();
 
 		$this->assertInternalType( 'array', $factory->getFormats() );
 
-		$factory->registerFormat( 'table', 'SMWTablePrinter' );
-		$factory->registerFormat( 'list', 'SMWListResultPrinter' );
+		$factory->registerFormat( 'table', TableResultPrinter::class );
+		$factory->registerFormat( 'list', SMWListResultPrinter::class );
 
 		$factory->registerAliases( 'foo', array( 'bar' ) );
 		$factory->registerAliases( 'foo', array( 'baz' ) );
@@ -117,11 +109,13 @@ class FormatFactoryTest extends \PHPUnit_Framework_TestCase {
 		$formats = $factory->getFormats();
 		$this->assertInternalType( 'array', $formats );
 
-		$this->assertArrayEquals( array( 'table', 'list' ), $formats );
+		$this->assertContains( 'table', $factory->getFormats() );
+		$this->assertContains( 'list', $factory->getFormats() );
+		$this->assertCount( 2, $factory->getFormats() );
 	}
 
 	public function testHasFormat() {
-		$factory = $this->getNewInstance();
+		$factory = new FormatFactory();
 
 		$this->assertFalse( $factory->hasFormat( 'ohi' ) );
 
@@ -141,13 +135,11 @@ class FormatFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @test FormatFactory::getPrinter
-	 *
-	 * @since 1.9
 	 */
 	public function testGetPrinterException() {
 		$this->SetExpectedException( 'MWException' );
 
-		$factory = $this->getNewInstance();
+		$factory = new FormatFactory();
 		$factory->getPrinter( 'lula' );
 
 		$this->assertTrue( true );
@@ -155,13 +147,11 @@ class FormatFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @test FormatFactory::getCanonicalName
-	 *
-	 * @since 1.9
 	 */
 	public function testGetCanonicalNameException() {
 		$this->SetExpectedException( 'MWException' );
 
-		$factory = $this->getNewInstance();
+		$factory = new FormatFactory();
 		$factory->getCanonicalName( 9001 );
 
 		$this->assertTrue( true );
@@ -170,13 +160,11 @@ class FormatFactoryTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @test FormatFactory::registerFormat
 	 * @dataProvider getRegisterFormatExceptioDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testRegisterFormatException( $formatName, $class ) {
 		$this->SetExpectedException( 'MWException' );
 
-		$factory = $this->getNewInstance();
+		$factory = new FormatFactory();
 		$factory->registerFormat( $formatName, $class );
 		$this->assertTrue( true );
 	}
@@ -184,13 +172,11 @@ class FormatFactoryTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @test FormatFactory::registerAliases
 	 * @dataProvider getRegisterAliasesExceptioDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testRegisterAliasesException( $formatName, array $aliases ) {
 		$this->SetExpectedException( 'MWException' );
 
-		$factory = $this->getNewInstance();
+		$factory = new FormatFactory();
 		$factory->registerAliases( $formatName, $aliases );
 		$this->assertTrue( true );
 	}
@@ -216,32 +202,6 @@ class FormatFactoryTest extends \PHPUnit_Framework_TestCase {
 		return array(
 			array( 1001, array( 'Foo' => 'Bar' ) ),
 			array( 'Foo', array( 'Foo' => 9001 ) ),
-		);
-	}
-
-	protected function objectAssociativeSort( array &$array ) {
-		uasort(
-			$array,
-			function ( $a, $b ) {
-				return serialize( $a ) > serialize( $b ) ? 1 : -1;
-			}
-		);
-	}
-
-	protected function assertArrayEquals( array $expected, array $actual, $ordered = false, $named = false ) {
-		if ( !$ordered ) {
-			$this->objectAssociativeSort( $expected );
-			$this->objectAssociativeSort( $actual );
-		}
-
-		if ( !$named ) {
-			$expected = array_values( $expected );
-			$actual = array_values( $actual );
-		}
-
-		call_user_func_array(
-			array( $this, 'assertEquals' ),
-			array_merge( array( $expected, $actual ), array_slice( func_get_args(), 4 ) )
 		);
 	}
 
