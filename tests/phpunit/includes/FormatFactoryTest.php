@@ -159,7 +159,7 @@ class FormatFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @test FormatFactory::registerFormat
-	 * @dataProvider getRegisterFormatExceptioDataProvider
+	 * @dataProvider registerFormatExceptioProvider
 	 */
 	public function testRegisterFormatException( $formatName, $class ) {
 		$this->setExpectedException( 'MWException' );
@@ -170,8 +170,20 @@ class FormatFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * Register format exception data provider
+	 *
+	 * @return array
+	 */
+	public function registerFormatExceptioProvider() {
+		return array(
+			array( 1001, 'Foo' ),
+			array( 'Foo', 9001 ),
+		);
+	}
+
+	/**
 	 * @test FormatFactory::registerAliases
-	 * @dataProvider getRegisterAliasesExceptioDataProvider
+	 * @dataProvider registerAliasesExceptionProvider
 	 */
 	public function testRegisterAliasesException( $formatName, array $aliases ) {
 		$this->setExpectedException( 'MWException' );
@@ -182,23 +194,11 @@ class FormatFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * Register format exception data provider
-	 *
-	 * @return array
-	 */
-	public function getRegisterFormatExceptioDataProvider() {
-		return array(
-			array( 1001, 'Foo' ),
-			array( 'Foo', 9001 ),
-		);
-	}
-
-	/**
 	 * Register aliases exception data provider
 	 *
 	 * @return array
 	 */
-	public function getRegisterAliasesExceptioDataProvider() {
+	public function registerAliasesExceptionProvider() {
 		return array(
 			array( 1001, array( 'Foo' => 'Bar' ) ),
 			array( 'Foo', array( 'Foo' => 9001 ) ),
