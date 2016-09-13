@@ -216,6 +216,7 @@
 	"smw-ask-format-selection-help": "Для подробного описания, пожалуйста, посетите страницу справки $1.",
 	"smw-ask-query-search-info": "На запрос <code><nowiki>$1</nowiki></code> был получен ответ из {{PLURAL:$3|1=<code>$2</code> (из кеша)|<code>$2</code> (из кеша)|<code>$2</code>}} за $4 {{PLURAL:$4|секунду|секунды|секунд}}.",
 	"searchbyproperty": "Искать по свойству",
+	"processingerrorlist": "Список ошибок обработки",
 	"smw_sbv_docu": "Искать все страницы, которые содержат указаннок свойство и значение.",
 	"smw_sbv_novalue": "Укажите значение или просмотрите все значения свойства $1.",
 	"smw_sbv_displayresult": "Список всех страниц, которые содержат свойство $1 со значением $2.",
@@ -396,5 +397,9 @@
 	"smw-pa-property-predefined_dtitle": "«$1» — это предварительно определенное свойство, которой для сущности можно назначить отдельное название для отображения, и которое обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_pvuc": "«$1» — это предварительно определенное свойство, которое означает, что присвоение значений свойств должны быть уникальными. Оно обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined-long_pvuc": "Уникальность устанавливается, когда два значения являются неодинаковыми в своей символьной репрезентации, и любое нарушение этого ограничения будет квалифицировано как ошибка.",
-	"smw-datavalue-uniqueness-constraint-error": "Свойство «$1» позволяет только уникальные присвоенные значения, а «$2» уже было аннотировано в теме «$3»."
+	"smw-datavalue-uniqueness-constraint-error": "Свойство «$1» позволяет только уникальные присвоенные значения, а «$2» уже было аннотировано в теме «$3».",
+	"smw-datavalue-external-formatter-invalid-uri": "«$1» — недопустимый URL-адрес.",
+	"smw-datavalue-parse-error": "Переданное значение «$1» не было понято.",
+	"smw-datavalue-propertylist-invalid-property-key": "Список свойств «$1» содержит недопустимый ключ свойства «$2».",
+	"smw-datavalue-reference-outputformat": "$1: $2"
 }
