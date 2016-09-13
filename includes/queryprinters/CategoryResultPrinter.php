@@ -46,10 +46,7 @@ class CategoryResultPrinter extends ResultPrinter {
 	}
 
 	protected function getResultText( SMWQueryResult $res, $outputMode ) {
-
-		$result = '';
 		$contentsByIndex = array();
-		$columnIndex = '';
 
 		// Print all result rows:
 		$rowindex = 0;
