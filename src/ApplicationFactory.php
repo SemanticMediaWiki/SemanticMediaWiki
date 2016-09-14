@@ -341,7 +341,7 @@ class ApplicationFactory {
 	 * @return InMemoryPoolCache
 	 */
 	public function getInMemoryPoolCache() {
-		return InMemoryPoolCache::getInstance();
+		return $this->callbackLoader->singleton( 'InMemoryPoolCache' );
 	}
 
 	/**

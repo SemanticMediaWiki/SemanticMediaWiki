@@ -135,12 +135,24 @@ class InMemoryPoolCache {
 	 * @return Cache
 	 */
 	public function getPoolCacheFor( $poolCacheName, $cacheSize = 500 ) {
+		return $this->getPoolCacheById( $poolCacheName, $cacheSize );
+	}
 
-		if ( !isset( $this->poolCacheList[$poolCacheName] ) ) {
-			$this->poolCacheList[$poolCacheName] = $this->cacheFactory->newFixedInMemoryCache( $cacheSize );
+	/**
+	 * @since 2.3
+	 *
+	 * @param string $poolCacheId
+	 * @param integer $cacheSize
+	 *
+	 * @return Cache
+	 */
+	public function getPoolCacheById( $poolCacheId, $cacheSize = 500 ) {
+
+		if ( !isset( $this->poolCacheList[$poolCacheId] ) ) {
+			$this->poolCacheList[$poolCacheId] = $this->cacheFactory->newFixedInMemoryCache( $cacheSize );
 		}
 
-		return $this->poolCacheList[$poolCacheName];
+		return $this->poolCacheList[$poolCacheId];
 	}
 
 }

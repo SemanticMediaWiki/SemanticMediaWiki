@@ -99,6 +99,15 @@ class SharedCallbackContainer implements CallbackContainer {
 		$callbackLoader->registerCallback( 'DeferredCallableUpdate', function( \Closure $callback ) {
 			return new DeferredCallableUpdate( $callback );
 		} );
+
+		/**
+		 * @var InMemoryPoolCache
+		 */
+		$callbackLoader->registerCallback( 'InMemoryPoolCache', function() use( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'InMemoryPoolCache', '\SMW\InMemoryPoolCache' );
+			return InMemoryPoolCache::getInstance();
+		} );
+
 	}
 
 	private function registerCallbackHandlersByFactory( $callbackLoader ) {
@@ -227,7 +236,7 @@ class SharedCallbackContainer implements CallbackContainer {
 
 			$propertyHierarchyLookup = new PropertyHierarchyLookup(
 				$callbackLoader->load( 'Store' ),
-				$callbackLoader->load( 'CacheFactory' )->newFixedInMemoryCache( 500 )
+				$callbackLoader->singleton( 'InMemoryPoolCache' )->getPoolCacheById( PropertyHierarchyLookup::POOLCACHE_ID )
 			);
 
 			$propertyHierarchyLookup->setSubcategoryDepth(
