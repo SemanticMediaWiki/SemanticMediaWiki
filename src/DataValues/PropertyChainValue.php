@@ -130,6 +130,13 @@ class PropertyChainValue extends StringValue {
 	}
 
 	/**
+	 * @see PropertyValue::isVisible
+	 */
+	public function isVisible() {
+		return $this->isValid() && ( $this->lastPropertyChainValue->getDataItem()->isUserDefined() || $this->lastPropertyChainValue->getDataItem()->getLabel() !== '' );
+	}
+
+	/**
 	 * @see SMWDataValue::loadDataItem()
 	 *
 	 * @param $dataitem SMWDataItem
