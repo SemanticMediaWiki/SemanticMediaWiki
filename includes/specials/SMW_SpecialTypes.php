@@ -45,6 +45,8 @@ class SMWSpecialTypes extends SpecialPage {
 	protected function getTypesList() {
 
 		$typeLabels = DataTypeRegistry::getInstance()->getKnownTypeLabels();
+
+		$contentsByIndex = array();
 		asort( $typeLabels, SORT_STRING );
 
 		$mwCollaboratorFactory = ApplicationFactory::getInstance()->newMwCollaboratorFactory();
