@@ -146,7 +146,11 @@ abstract class SMWOrderedListPage extends Article {
 				$title,
 				$wgRequest->getVal( 'limit', $default ),
 				$wgRequest->getVal( 'offset', '0' ),
-				array(),
+				array(
+					'value'  => $wgRequest->getVal( 'value', '' ),
+					'from'   => $wgRequest->getVal( 'from', '' ),
+					'until'  => $wgRequest->getVal( 'until', '' )
+				),
 				$resultCount < $wgRequest->getVal( 'limit', $default )
 			);
 
