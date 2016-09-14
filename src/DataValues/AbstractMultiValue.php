@@ -40,6 +40,16 @@ abstract class AbstractMultiValue extends DataValue {
 	abstract public function getProperties();
 
 	/**
+	 * Return the array (list) of properties that the individual entries of
+	 * this datatype consist of.
+	 *
+	 * @since 2.5
+	 *
+	 * @return DIProperty[]|null
+	 */
+	abstract public function getPropertyDataItems();
+
+	/**
 	 * Create a list (array with numeric keys) containing the datavalue
 	 * objects that this SMWRecordValue object holds. Values that are not
 	 * present are set to null. Note that the first index in the array is
@@ -49,17 +59,23 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @return DataItem[]|null
 	 */
-	abstract public function getDataItems();
+	public function getDataItems() {
 
-	/**
-	 * Return the array (list) of properties that the individual entries of
-	 * this datatype consist of.
-	 *
-	 * @since 2.5
-	 *
-	 * @return DIProperty[]|null
-	 */
-	abstract public function getPropertyDataItems();
+		if ( !$this->isValid() ) {
+			return array();
+		}
+
+		$dataItems = array();
+		$index = 0;
+
+		foreach ( $this->getPropertyDataItems() as $diProperty ) {
+			$values = $this->getDataItem()->getSemanticData()->getPropertyValues( $diProperty );
+			$dataItems[$index] = count( $values ) > 0 ? reset( $values ) : null;
+			$index++;
+		}
+
+		return $dataItems;
+	}
 
 	/**
 	 * @note called by SMWResultArray::loadContent for matching an index as denoted

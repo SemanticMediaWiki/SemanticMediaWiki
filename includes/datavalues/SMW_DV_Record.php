@@ -209,32 +209,12 @@ class SMWRecordValue extends AbstractMultiValue {
 	}
 
 	/**
-	 * Create a list (array with numeric keys) containing the datavalue
-	 * objects that this SMWRecordValue object holds. Values that are not
-	 * present are set to null. Note that the first index in the array is
-	 * 0, not 1.
-	 *
 	 * @since 1.6
 	 *
-	 * @return array of DataItem
+	 * {@inheritDoc}
 	 */
 	public function getDataItems() {
-		if ( $this->isValid() ) {
-			$result = array();
-			$index = 0;
-			foreach ( $this->getPropertyDataItems() as $diProperty ) {
-				$values = $this->getDataItem()->getSemanticData()->getPropertyValues( $diProperty );
-				if ( count( $values ) > 0 ) {
-					$result[$index] = reset( $values );
-				} else {
-					$result[$index] = null;
-				}
-				$index += 1;
-			}
-			return $result;
-		} else {
-			return array();
-		}
+		return parent::getDataItems();
 	}
 
 	/**
