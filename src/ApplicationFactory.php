@@ -222,6 +222,15 @@ class ApplicationFactory {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @return DataValueFactory
+	 */
+	public function getDataValueFactory() {
+		return DataValueFactory::getInstance();
+	}
+
+	/**
 	 * @since 2.0
 	 *
 	 * @return Cache

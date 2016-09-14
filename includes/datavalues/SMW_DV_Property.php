@@ -139,7 +139,7 @@ class SMWPropertyValue extends SMWDataValue {
 			$value
 		);
 
-		$contentLanguage = $this->getOptionValueFor( self::OPT_CONTENT_LANGUAGE );
+		$contentLanguage = $this->getOptionBy( self::OPT_CONTENT_LANGUAGE );
 
 		try {
 			$this->m_dataitem = DIProperty::newFromUserLabel( $propertyName, $inverse, $contentLanguage );
@@ -150,7 +150,7 @@ class SMWPropertyValue extends SMWDataValue {
 
 		// @see the SMW_DV_PROV_DTITLE explanation
 		if ( $this->isEnabledFeature( SMW_DV_PROV_DTITLE ) ) {
-			$dataItem = $this->getPropertySpecificationLookup()->getPropertyFromDisplayTitle(
+			$dataItem = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getPropertyFromDisplayTitle(
 				$value
 			);
 
@@ -359,7 +359,7 @@ class SMWPropertyValue extends SMWDataValue {
 
 		$propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
 
-		if ( ( $content = $propertySpecificationLookup->getPropertyDescriptionFor( $this->m_dataitem, $linker ) ) !== '' || !$this->m_dataitem->isUserDefined() ) {
+		if ( ( $content = $propertySpecificationLookup->getPropertyDescriptionBy( $this->m_dataitem, $linker ) ) !== '' || !$this->m_dataitem->isUserDefined() ) {
 
 			$highlighter = Highlighter::factory( Highlighter::TYPE_PROPERTY );
 			$highlighter->setContent( array (

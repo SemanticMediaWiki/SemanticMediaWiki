@@ -82,13 +82,13 @@ class DVDescriptionDeserializerRegistry {
 	 *
 	 * @return DescriptionDeserializer
 	 */
-	public function getDescriptionDeserializerFor( DataValue $dataValue ) {
+	public function getDescriptionDeserializerBy( DataValue $dataValue ) {
 
 		if ( $this->dispatchingDescriptionDeserializer === null ) {
 			$this->dispatchingDescriptionDeserializer = $this->newDispatchingDescriptionDeserializer();
 		}
 
-		return $this->dispatchingDescriptionDeserializer->getDescriptionDeserializerFor( $dataValue );
+		return $this->dispatchingDescriptionDeserializer->getDescriptionDeserializerBy( $dataValue );
 	}
 
 	private function newDispatchingDescriptionDeserializer() {

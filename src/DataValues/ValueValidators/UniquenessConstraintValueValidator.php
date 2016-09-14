@@ -85,7 +85,7 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 
 		$property = $dataValue->getProperty();
 
-		if ( !$dataValue->getPropertySpecificationLookup()->hasUniquenessConstraintFor( $property ) ) {
+		if ( !ApplicationFactory::getInstance()->getPropertySpecificationLookup()->hasUniquenessConstraintBy( $property ) ) {
 			return $this->hasConstraintViolation;
 		}
 

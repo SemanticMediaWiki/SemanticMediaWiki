@@ -110,8 +110,8 @@ class SMWExporter {
 	/**
 	 * @since 2.2
 	 */
-	public function resetCacheFor( SMWDIWikiPage $diWikiPage ) {
-		self::$dataItemToExpResourceEncoder->resetCacheFor( $diWikiPage );
+	public function resetCacheBy( SMWDIWikiPage $diWikiPage ) {
+		self::$dataItemToExpResourceEncoder->resetCacheBy( $diWikiPage );
 	}
 
 	/**

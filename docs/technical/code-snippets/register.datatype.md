@@ -29,7 +29,7 @@ class FooValue extends DataValue {
 	 * @param string $value
 	 */
 	protected function parseUserValue( $userValue ) {
-		if ( $this->getOptionValueFor( 'settingRelevantForTheFactoryProcess' ) === 42 ) {
+		if ( $this->getOptionBy( 'settingRelevantForTheFactoryProcess' ) === 42 ) {
 
 		}
 	}

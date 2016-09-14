@@ -83,7 +83,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertTrue(
-			$instance->hasUniquenessConstraintFor( $property )
+			$instance->hasUniquenessConstraintBy( $property )
 		);
 	}
 
@@ -105,7 +105,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			DataItem::class,
-			$instance->getExternalFormatterUriFor( $property )
+			$instance->getExternalFormatterUriBy( $property )
 		);
 	}
 
@@ -128,7 +128,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'IPv4',
-			$instance->getAllowedPatternFor( $property )
+			$instance->getAllowedPatternBy( $property )
 		);
 	}
 
@@ -155,7 +155,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->getAllowedValuesFor( $property )
+			$instance->getAllowedValuesBy( $property )
 		);
 	}
 
@@ -177,7 +177,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			2,
-			$instance->getDisplayPrecisionFor( $property )
+			$instance->getDisplayPrecisionBy( $property )
 		);
 	}
 
@@ -201,7 +201,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			array( 'abc', 'def', '123' ),
-			$instance->getDisplayUnitsFor( $property )
+			$instance->getDisplayUnitsBy( $property )
 		);
 	}
 
@@ -227,7 +227,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			$instance->getPropertyDescriptionFor( $property )
+			$instance->getPropertyDescriptionBy( $property )
 		);
 	}
 
@@ -264,7 +264,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			1001,
-			$instance->getPropertyDescriptionFor( $property )
+			$instance->getPropertyDescriptionBy( $property )
 		);
 	}
 
@@ -299,7 +299,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			$instance->getPropertyDescriptionFor( $property )
+			$instance->getPropertyDescriptionBy( $property )
 		);
 	}
 

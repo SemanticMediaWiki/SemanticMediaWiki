@@ -51,7 +51,7 @@ class DispatchingDescriptionDeserializer {
 	 * @return DescriptionDeserializer
 	 * @throws RuntimeException
 	 */
-	public function getDescriptionDeserializerFor( DataValue $dataValue ) {
+	public function getDescriptionDeserializerBy( DataValue $dataValue ) {
 
 		foreach ( $this->descriptionDeserializers as $descriptionDeserializer ) {
 			if ( $descriptionDeserializer->isDeserializerFor( $dataValue ) ) {

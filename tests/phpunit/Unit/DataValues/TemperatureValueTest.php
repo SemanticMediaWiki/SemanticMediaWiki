@@ -81,7 +81,7 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 	public function testSetUserValueToReturnOnPreferredDisplayUnit() {
 
 		$this->propertySpecificationLookup->expects( $this->once() )
-			->method( 'getDisplayUnitsFor' )
+			->method( 'getDisplayUnitsBy' )
 			->will( $this->returnValue( array( 'Celsius' ) ) );
 
 		$instance = new TemperatureValue();
@@ -111,7 +111,7 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 	public function testSetUserValueToReturnOnPreferredDisplayPrecision() {
 
 		$this->propertySpecificationLookup->expects( $this->once() )
-			->method( 'getDisplayPrecisionFor' )
+			->method( 'getDisplayPrecisionBy' )
 			->will( $this->returnValue( 0 ) );
 
 		$instance = new TemperatureValue();

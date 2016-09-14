@@ -37,7 +37,7 @@ class PropertyValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->getOptionValueFor( 'smwgDVFeatures' )
+			$instance->getOptionBy( 'smwgDVFeatures' )
 		);
 	}
 

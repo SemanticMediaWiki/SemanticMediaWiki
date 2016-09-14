@@ -264,7 +264,7 @@ class PropertyListByApiRequest {
 			$this->propertySpecificationLookup->setLanguageCode( $this->languageCode );
 		}
 
-		$description = $this->propertySpecificationLookup->getPropertyDescriptionFor(
+		$description = $this->propertySpecificationLookup->getPropertyDescriptionBy(
 			$property
 		);
 

@@ -48,7 +48,7 @@ class ExternalIdentifierValueTest extends \PHPUnit_Framework_TestCase {
 	public function testGetShortWikiText() {
 
 		$this->propertySpecificationLookup->expects( $this->once() )
-			->method( 'getExternalFormatterUriFor' )
+			->method( 'getExternalFormatterUriBy' )
 			->will( $this->returnValue( $this->dataItemFactory->newDIUri( 'http', 'example.org/$1' ) ) );
 
 		$instance = new ExternalIdentifierValue();
@@ -70,7 +70,7 @@ class ExternalIdentifierValueTest extends \PHPUnit_Framework_TestCase {
 	public function testGetShortHTMLText() {
 
 		$this->propertySpecificationLookup->expects( $this->once() )
-			->method( 'getExternalFormatterUriFor' )
+			->method( 'getExternalFormatterUriBy' )
 			->will( $this->returnValue( $this->dataItemFactory->newDIUri( 'http', 'example.org/$1' ) ) );
 
 		$instance = new ExternalIdentifierValue();

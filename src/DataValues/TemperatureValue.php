@@ -4,6 +4,7 @@ namespace SMW\DataValues;
 
 use SMWDINumber as DINumber;
 use SMWNumberValue as NumberValue;
+use SMW\ApplicationFactory;
 
 /**
  * This datavalue implements unit support for measuring temperatures. This is
@@ -162,7 +163,7 @@ class TemperatureValue extends NumberValue {
 			return $unit;
 		}
 
-		$units = $this->getPropertySpecificationLookup()->getDisplayUnitsFor(
+		$units = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getDisplayUnitsBy(
 			$this->getProperty()
 		);
 

@@ -121,7 +121,7 @@ class TimeValueFormatter extends DataValueFormatter {
 		$precision = $dataItem->getPrecision();
 
 		$language = Localizer::getInstance()->getLanguage(
-			$this->dataValue->getOptionValueFor( 'user.language' )
+			$this->dataValue->getOptionBy( 'user.language' )
 		);
 
 		$year = $dataItem->getYear();
@@ -247,7 +247,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	public function getCaptionFromFreeFormat( DITime $dataItem = null ) {
 
 		$language = Localizer::getInstance()->getLanguage(
-			$this->dataValue->getOptionValueFor( 'user.language' )
+			$this->dataValue->getOptionBy( 'user.language' )
 		);
 
 		// Prehistory dates are not supported when using this output format
@@ -293,7 +293,7 @@ class TimeValueFormatter extends DataValueFormatter {
 		$outputFormat = $this->dataValue->getOutputFormat();
 
 		if ( ( $language = Localizer::getInstance()->getAnnotatedLanguageCodeFrom( $outputFormat ) ) === false ) {
-			$language = $this->dataValue->getOptionValueFor( DataValue::OPT_USER_LANGUAGE );
+			$language = $this->dataValue->getOptionBy( DataValue::OPT_USER_LANGUAGE );
 		}
 
 		$language = Localizer::getInstance()->getLanguage( $language );

@@ -42,7 +42,7 @@ class DispatchingDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertInstanceOf(
 			'\SMW\Deserializers\DVDescriptionDeserializer\DescriptionDeserializer',
-			$instance->getDescriptionDeserializerFor( $dataValue )
+			$instance->getDescriptionDeserializerBy( $dataValue )
 		);
 	}
 
@@ -65,7 +65,7 @@ class DispatchingDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertInstanceOf(
 			'\SMW\Deserializers\DVDescriptionDeserializer\DescriptionDeserializer',
-			$instance->getDescriptionDeserializerFor( $dataValue )
+			$instance->getDescriptionDeserializerBy( $dataValue )
 		);
 	}
 
@@ -87,7 +87,7 @@ class DispatchingDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase
 		$instance->addDescriptionDeserializer( $descriptionDeserializer );
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->getDescriptionDeserializerFor( $dataValue );
+		$instance->getDescriptionDeserializerBy( $dataValue );
 	}
 
 }

@@ -3,6 +3,7 @@
 namespace SMW\DataValues\ValueValidators;
 
 use SMW\DataValues\ValueParserFactory;
+use SMW\ApplicationFactory;
 use SMWDataValue as DataValue;
 
 /**
@@ -58,7 +59,7 @@ class PatternConstraintValueValidator  implements ConstraintValueValidator {
 			return $this->hasConstraintViolation;
 		}
 
-		if ( ( $reference = $dataValue->getPropertySpecificationLookup()->getAllowedPatternFor( $dataValue->getProperty() ) ) === '' ) {
+		if ( ( $reference = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getAllowedPatternBy( $dataValue->getProperty() ) ) === '' ) {
 			return $this->hasConstraintViolation;
 		}
 

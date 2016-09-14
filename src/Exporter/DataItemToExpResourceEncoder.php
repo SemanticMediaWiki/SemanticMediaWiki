@@ -82,7 +82,7 @@ class DataItemToExpResourceEncoder {
 	 *
 	 * @param DIWikiPage $subject
 	 */
-	public function resetCacheFor( DIWikiPage $subject ) {
+	public function resetCacheBy( DIWikiPage $subject ) {
 
 		$hash = $subject->getHash();
 

@@ -191,7 +191,7 @@ abstract class SMWDataValue {
 			$this->addErrorMsg( array( 'smw-datavalue-stripmarker-parse-error', $value ) );
 		}
 
-		if ( $this->isValid() && !$this->getOptionValueFor( self::OPT_QUERY_CONTEXT ) ) {
+		if ( $this->isValid() && !$this->getOptionBy( self::OPT_QUERY_CONTEXT ) ) {
 			$this->checkAllowedValues();
 		}
 	}
@@ -307,7 +307,7 @@ abstract class SMWDataValue {
 	 *
 	 * @return mixed|false
 	 */
-	public function getOptionValueFor( $key ) {
+	public function getOptionBy( $key ) {
 
 		if ( $this->options !== null && $this->options->has( $key ) ) {
 			return $this->options->get( $key );
@@ -324,7 +324,7 @@ abstract class SMWDataValue {
 	 * @return boolean
 	 */
 	public function isEnabledFeature( $feature ) {
-		return ( $this->getOptionValueFor( 'smwgDVFeatures' ) & $feature ) != 0;
+		return ( $this->getOptionBy( 'smwgDVFeatures' ) & $feature ) != 0;
 	}
 
 	/**
@@ -482,14 +482,19 @@ abstract class SMWDataValue {
 	 * create a parsable wikitext version of a query condition again. Thus it
 	 * might be necessary to call setProperty() before using this method.
 	 *
-	 * @param string $value
+	 * @param string|null $value
 	 *
 	 * @return Description
 	 * @throws InvalidArgumentException
 	 */
-	public function getQueryDescription( $value ) {
+	public function getQueryDescription( $value = null ) {
 
-		$descriptionDeserializer = DVDescriptionDeserializerRegistry::getInstance()->getDescriptionDeserializerFor( $this );
+		$descriptionDeserializer = DVDescriptionDeserializerRegistry::getInstance()->getDescriptionDeserializerBy( $this );
+
+		if ( $value === null ) {
+			$value = $this->getWikiValue();
+		}
+
 		$description = $descriptionDeserializer->deserialize( $value );
 
 		foreach ( $descriptionDeserializer->getErrors() as $error ) {
@@ -509,15 +514,6 @@ abstract class SMWDataValue {
 	 */
 	public function getDataValueFormatter() {
 		return ValueFormatterRegistry::getInstance()->getDataValueFormatterFor( $this );
-	}
-
-	/**
-	 * @since 2.4
-	 *
-	 * @return PropertySpecificationLookup
-	 */
-	public function getPropertySpecificationLookup() {
-		return ApplicationFactory::getInstance()->getPropertySpecificationLookup();
 	}
 
 	/**

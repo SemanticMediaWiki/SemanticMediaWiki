@@ -47,7 +47,7 @@ class DVDescriptionDeserializerRegistryTest extends \PHPUnit_Framework_TestCase 
 
 		$this->assertInstanceOf(
 			'\SMW\Deserializers\DVDescriptionDeserializer\SomeValueDescriptionDeserializer',
-			$instance->getDescriptionDeserializerFor( $dataValue )
+			$instance->getDescriptionDeserializerBy( $dataValue )
 		);
 	}
 
@@ -61,7 +61,7 @@ class DVDescriptionDeserializerRegistryTest extends \PHPUnit_Framework_TestCase 
 
 		$this->assertInstanceOf(
 			'\SMW\Deserializers\DVDescriptionDeserializer\TimeValueDescriptionDeserializer',
-			$instance->getDescriptionDeserializerFor( $dataValue )
+			$instance->getDescriptionDeserializerBy( $dataValue )
 		);
 	}
 
@@ -75,7 +75,7 @@ class DVDescriptionDeserializerRegistryTest extends \PHPUnit_Framework_TestCase 
 
 		$this->assertInstanceOf(
 			'\SMW\Deserializers\DVDescriptionDeserializer\RecordValueDescriptionDeserializer',
-			$instance->getDescriptionDeserializerFor( $dataValue )
+			$instance->getDescriptionDeserializerBy( $dataValue )
 		);
 	}
 
@@ -98,7 +98,7 @@ class DVDescriptionDeserializerRegistryTest extends \PHPUnit_Framework_TestCase 
 
 		$this->assertInstanceOf(
 			'\SMW\Deserializers\DVDescriptionDeserializer\DescriptionDeserializer',
-			$instance->getDescriptionDeserializerFor( $dataValue )
+			$instance->getDescriptionDeserializerBy( $dataValue )
 		);
 	}
 

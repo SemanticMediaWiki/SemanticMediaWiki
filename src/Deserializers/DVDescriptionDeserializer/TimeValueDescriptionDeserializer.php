@@ -31,6 +31,15 @@ class TimeValueDescriptionDeserializer extends DescriptionDeserializer {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getPrimitiveValue() {
+		return $this->dataValue->getMediaWikiDate();
+	}
+
+	/**
 	 * @since 2.3
 	 *
 	 * @param string $value

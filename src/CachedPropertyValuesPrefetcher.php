@@ -54,7 +54,7 @@ class CachedPropertyValuesPrefetcher {
 	/**
 	 * @since 2.4
 	 */
-	public function resetCacheFor( DIWikiPage $subject ) {
+	public function resetCacheBy( DIWikiPage $subject ) {
 		$this->blobStore->delete( $this->getRootHashFrom( $subject ) );
 	}
 

@@ -205,6 +205,14 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructDataValueFactory() {
+
+		$this->assertInstanceOf(
+			'\SMW\DataValueFactory',
+			$this->applicationFactory->getDataValueFactory()
+		);
+	}
+
 	public function testCanConstructPropertySpecificationLookup() {
 
 		$this->assertInstanceOf(
