@@ -32,6 +32,7 @@ THIS IS NOT A RELEASE YET
 * #1809 Added support for using a property name as index identifier in the `Record` type
 * #1808 Added support for recording [provenance data](https://www.semantic-mediawiki.org/wiki/Referenced_statement)
 * #1824 Added support for the property chain syntax in printrequests
+* #1652 Added support for approximate queries that contain a namespace `[[Help:~Abc*]]`
 
 ## Bug fixes
 
