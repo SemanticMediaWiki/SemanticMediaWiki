@@ -71,3 +71,6 @@ class_alias( 'SMW\RequestOptions', 'SMWRequestOptions' );
 class_alias( 'SMW\StringCondition', 'SMWStringCondition' );
 class_alias( 'SMW\HashBuilder', 'SMW\Hash' );
 class_alias( 'SMW\DataValues\BooleanValue', 'SMWBoolValue' );
+
+// 2.5
+class_alias( 'SMW\QueryPrinterFactory', 'SMW\FormatFactory' );
