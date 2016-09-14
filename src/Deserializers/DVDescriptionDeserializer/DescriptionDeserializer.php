@@ -4,7 +4,10 @@ namespace SMW\Deserializers\DVDescriptionDeserializer;
 
 use Deserializers\DispatchableDeserializer;
 use SMW\Query\QueryComparator;
+use SMW\Query\DescriptionFactory;
 use SMWDataValue as DataValue;
+use SMW\ApplicationFactory;
+use SMW\DataItemFactory;
 
 /**
  * @private
@@ -34,6 +37,16 @@ use SMWDataValue as DataValue;
 abstract class DescriptionDeserializer implements DispatchableDeserializer {
 
 	/**
+	 * @var DescriptionFactory
+	 */
+	protected $descriptionFactory;
+
+	/**
+	 * @var DataItemFactory
+	 */
+	protected $dataItemFactory;
+
+	/**
 	 * @var array
 	 */
 	protected $errors = array();
@@ -42,6 +55,25 @@ abstract class DescriptionDeserializer implements DispatchableDeserializer {
 	 * @var DataValue
 	 */
 	protected $dataValue;
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param DescriptionFactory|null $descriptionFactory
+	 * @param DataItemFactory|null $dataItemFactory
+	 */
+	public function __construct( DescriptionFactory $descriptionFactory = null, DescriptionFactory $dataItemFactory = null ) {
+		$this->descriptionFactory = $descriptionFactory;
+		$this->dataItemFactory = $dataItemFactory;
+
+		if ( $this->descriptionFactory === null ) {
+			$this->descriptionFactory = ApplicationFactory::getInstance()->getQueryFactory()->newDescriptionFactory();
+		}
+
+		if ( $this->dataItemFactory === null ) {
+			$this->dataItemFactory = ApplicationFactory::getInstance()->getDataItemFactory();
+		}
+	}
 
 	/**
 	 * @since 2.3

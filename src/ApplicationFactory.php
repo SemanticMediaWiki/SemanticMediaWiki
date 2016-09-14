@@ -375,12 +375,22 @@ class ApplicationFactory {
 	}
 
 	/**
+	 * @deprecated since 2.5, use QueryFactory::newQueryParser
 	 * @since 2.1
 	 *
 	 * @return QueryParser
 	 */
 	public function newQueryParser() {
-		return new QueryParser();
+		return $this->getQueryFactory()->newQueryParser();
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return DataItemFactory
+	 */
+	public function getDataItemFactory() {
+		return $this->callbackLoader->singleton( 'DataItemFactory' );
 	}
 
 	/**

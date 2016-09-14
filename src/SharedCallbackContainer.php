@@ -167,6 +167,14 @@ class SharedCallbackContainer implements CallbackContainer {
 			$callbackLoader->registerExpectedReturnType( 'QueryFactory', '\SMW\QueryFactory' );
 			return new QueryFactory();
 		} );
+
+		/**
+		 * @var DataItemFactory
+		 */
+		$callbackLoader->registerCallback( 'DataItemFactory', function() use ( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'DataItemFactory', '\SMW\DataItemFactory' );
+			return new DataItemFactory();
+		} );
 	}
 
 	private function registerCallbackHandlersByConstructedInstance( $callbackLoader ) {
