@@ -12,7 +12,7 @@
 
 	$( document ).ready( function() {
 
-		$( '#smw-property-input, .smw-property-input' ).autocomplete({
+		$( '#smw-property-input, .smw-property-input' ).autocomplete( {
 			serviceUrl: mw.util.wikiScript( 'api' ),
 			dataType: 'json',
 			minChars: 3,
@@ -21,7 +21,9 @@
 			delimiter: "\n",
 			params: {
 				'action': 'browsebyproperty',
-				'format': 'json'
+				'format': 'json',
+				'listonly': true,
+				'limit': 100
 			},
 			onSearchStart: function( query ) {
 				query.property = query.property.replace( "?", '' );
