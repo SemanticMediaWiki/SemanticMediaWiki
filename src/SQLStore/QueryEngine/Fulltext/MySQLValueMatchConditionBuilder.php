@@ -137,7 +137,7 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 		// Full text is collected in a single table therefore limit the match
 		// process by adding the PID as an additional condition
 		if ( $property !== null ) {
-			$propertyCondition = 'AND ' . $temporaryTable . 'p_id=' . $this->searchTable->getPropertyID( $property );
+			$propertyCondition = 'AND ' . $temporaryTable . 'p_id=' . $this->searchTable->getPropertyIdBy( $property );
 		}
 
 		$querySearchModifier = $this->getQuerySearchModifier(

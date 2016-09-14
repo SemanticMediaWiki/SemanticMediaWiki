@@ -107,7 +107,7 @@ class SearchTableRebuilder {
 				continue;
 			}
 
-			$this->doRebuildOnPropertyTable( $proptable );
+			$this->doRebuildByPropertyTable( $proptable );
 		}
 
 		$this->reportMessage( "\n" . "Table(s) not used for indexing:" ."\n\n", $this->reportVerbose );
@@ -119,7 +119,7 @@ class SearchTableRebuilder {
 		return true;
 	}
 
-	private function doRebuildOnPropertyTable( $proptable ) {
+	private function doRebuildByPropertyTable( $proptable ) {
 
 		$searchTable = $this->getSearchTable();
 
@@ -137,7 +137,7 @@ class SearchTableRebuilder {
 		if ( $proptable->isFixedPropertyTable() ) {
 			unset( $fetchFields[1] ); // p_id
 
-			$pid = $searchTable->getPropertyID(
+			$pid = $searchTable->getPropertyIdBy(
 				new DIProperty( $proptable->getFixedProperty() )
 			);
 
