@@ -7,21 +7,21 @@ use MWException;
 /**
  * Factory for "result formats", ie classes implementing QueryResultPrinter.
  *
- * @since 2.5 (since 1.9, renamed in 2.5)
+ * @since 1.9
  *
  * @ingroup SMW
  *
  * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-final class QueryPrinterFactory {
+final class FormatFactory {
 
 	/**
 	 * Returns the global instance of the factory.
 	 *
-	 * @since 2.5
+	 * @since 1.9
 	 *
-	 * @return QueryPrinterFactory
+	 * @return self
 	 */
 	public static function singleton() {
 		static $instance = null;
@@ -66,7 +66,7 @@ final class QueryPrinterFactory {
 	 * If there is a format already with the provided name,
 	 * it will be overridden with the newly provided data.
 	 *
-	 * @since 2.5
+	 * @since 1.9
 	 *
 	 * @param string $formatName
 	 * @param string $class
@@ -90,7 +90,7 @@ final class QueryPrinterFactory {
 	 * If an aliases is already registered, it will
 	 * be overridden with the newly provided data.
 	 *
-	 * @since 2.5
+	 * @since 1.9
 	 *
 	 * @param string $formatName
 	 * @param array $aliases
@@ -114,7 +114,7 @@ final class QueryPrinterFactory {
 	/**
 	 * Returns the canonical format names.
 	 *
-	 * @since 2.5
+	 * @since 1.9
 	 *
 	 * @return string[]
 	 */
@@ -125,7 +125,7 @@ final class QueryPrinterFactory {
 	/**
 	 * Returns if there is a format or format alias with the provided name.
 	 *
-	 * @since 2.5
+	 * @since 1.9
 	 *
 	 * @param string $formatName Format name or alias
 	 *
@@ -139,7 +139,7 @@ final class QueryPrinterFactory {
 	/**
 	 * Returns a new instance of the handling result printer for the provided format.
 	 *
-	 * @since 2.5
+	 * @since 1.9
 	 *
 	 * @param string $formatName
 	 *
@@ -153,6 +153,8 @@ final class QueryPrinterFactory {
 
 	/**
 	 * Returns the QueryResultPrinter implementing class that is the printer for the provided format.
+	 *
+	 * @since 1.9
 	 *
 	 * @param string $formatName Format name or alias
 	 *
@@ -172,7 +174,7 @@ final class QueryPrinterFactory {
 	/**
 	 * Resolves format aliases into their associated canonical format name.
 	 *
-	 * @since 2.5
+	 * @since 1.9
 	 *
 	 * @param string $formatName Format name or alias
 	 *
