@@ -47,11 +47,6 @@ class NewRevisionFromEditComplete {
 	private $user = null;
 
 	/**
-	 * @var ParserOutput|null
-	 */
-	private $parserOutput = null;
-
-	/**
 	 * @since  1.9
 	 *
 	 * @param WikiPage $article the article edited
@@ -72,10 +67,33 @@ class NewRevisionFromEditComplete {
 	 * @return boolean
 	 */
 	public function process() {
-		return $this->canUseParserOutputFromEditInfo() ? $this->doProcess() : true;
+
+		$parserOutput = $this->fetchParserOutputFromEditInfo();
+
+		if ( !$parserOutput instanceof ParserOutput ) {
+			return true;
+		}
+
+		$this->doExtendParserOutput( $parserOutput );
+		$title = $this->wikiPage->getTitle();
+
+		$dispatchContext = EventHandler::getInstance()->newDispatchContext();
+		$dispatchContext->set( 'title', $title );
+
+		EventHandler::getInstance()->getEventDispatcher()->dispatch(
+			'cached.propertyvalues.prefetcher.reset',
+			$dispatchContext
+		);
+
+		// If the concept was altered make sure to delete the cache
+		if ( $title->getNamespace() === SMW_NS_CONCEPT ) {
+			ApplicationFactory::getInstance()->getStore()->deleteConceptCache( $title );
+		}
+
+		return true;
 	}
 
-	private function canUseParserOutputFromEditInfo() {
+	private function fetchParserOutputFromEditInfo() {
 
 		$editInfoProvider = new EditInfoProvider(
 			$this->wikiPage,
@@ -83,19 +101,17 @@ class NewRevisionFromEditComplete {
 			$this->user
 		);
 
-		$this->parserOutput = $editInfoProvider->fetchEditInfo()->getOutput();
-
-		return $this->parserOutput instanceof ParserOutput;
+		return $editInfoProvider->fetchEditInfo()->getOutput();
 	}
 
-	private function doProcess() {
+	private function doExtendParserOutput( $parserOutput ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$title = $this->wikiPage->getTitle();
 
 		$parserData = $applicationFactory->newParserData(
 			$title,
-			$this->parserOutput
+			$parserOutput
 		);
 
 		$pageInfoProvider = $applicationFactory->newMwCollaboratorFactory()->newPageInfoProvider(
@@ -106,29 +122,18 @@ class NewRevisionFromEditComplete {
 
 		$propertyAnnotatorFactory = $applicationFactory->newPropertyAnnotatorFactory();
 
+		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
+			$parserData->getSemanticData()
+		);
+
 		$propertyAnnotator = $propertyAnnotatorFactory->newPredefinedPropertyAnnotator(
-			$parserData->getSemanticData(),
+			$propertyAnnotator,
 			$pageInfoProvider
 		);
 
 		$propertyAnnotator->addAnnotation();
 
 		$parserData->pushSemanticDataToParserOutput();
-
-		$dispatchContext = EventHandler::getInstance()->newDispatchContext();
-		$dispatchContext->set( 'title', $this->wikiPage->getTitle() );
-
-		EventHandler::getInstance()->getEventDispatcher()->dispatch(
-			'cached.propertyvalues.prefetcher.reset',
-			$dispatchContext
-		);
-
-		// If the concept was altered make sure to delete the cache
-		if ( $title->getNamespace() === SMW_NS_CONCEPT ) {
-			$applicationFactory->getStore()->deleteConceptCache( $title );
-		}
-
-		return true;
 	}
 
 }

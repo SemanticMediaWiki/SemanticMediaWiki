@@ -81,7 +81,7 @@ class ParserAfterTidy {
 			$this->parser->getOutput()
 		);
 
-		$this->updateAnnotionsForAfterParse(
+		$this->updateAnnotationsForAfterParse(
 			$this->applicationFactory->newPropertyAnnotatorFactory(),
 			$parserData->getSemanticData()
 		);
@@ -93,31 +93,29 @@ class ParserAfterTidy {
 		return true;
 	}
 
-	private function updateAnnotionsForAfterParse( $propertyAnnotatorFactory, $semanticData ) {
+	private function updateAnnotationsForAfterParse( $propertyAnnotatorFactory, $semanticData ) {
 
-		$propertyAnnotator = $propertyAnnotatorFactory->newCategoryPropertyAnnotator(
-			$semanticData,
-			$this->parser->getOutput()->getCategoryLinks()
-		);
-
-		$propertyAnnotator->addAnnotation();
-
-		$propertyAnnotator = $propertyAnnotatorFactory->newMandatoryTypePropertyAnnotator(
+		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
 			$semanticData
 		);
 
-		$propertyAnnotator->addAnnotation();
+		$propertyAnnotator = $propertyAnnotatorFactory->newCategoryPropertyAnnotator(
+			$propertyAnnotator,
+			$this->parser->getOutput()->getCategoryLinks()
+		);
+
+		$propertyAnnotator = $propertyAnnotatorFactory->newMandatoryTypePropertyAnnotator(
+			$propertyAnnotator
+		);
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newDisplayTitlePropertyAnnotator(
-			$semanticData,
+			$propertyAnnotator,
 			$this->parser->getOutput()->getProperty( 'displaytitle' ),
 			$this->parser->getDefaultSort()
 		);
 
-		$propertyAnnotator->addAnnotation();
-
 		$propertyAnnotator = $propertyAnnotatorFactory->newSortKeyPropertyAnnotator(
-			$semanticData,
+			$propertyAnnotator,
 			$this->parser->getDefaultSort()
 		);
 
