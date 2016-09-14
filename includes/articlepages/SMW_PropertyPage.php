@@ -159,19 +159,38 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	protected function getPropertyValueList() {
 		global $smwgPropertyPagingLimit, $wgRequest;
 
-		if ( $this->limit > 0 ) { // limit==0: configuration setting to disable this completely
-			$options = SMWPageLister::getRequestOptions( $this->limit, $this->from, $this->until );
-
-			$options->limit = $wgRequest->getVal( 'limit', $smwgPropertyPagingLimit );
-			$options->offset = $wgRequest->getVal( 'offset', '0' );
-
-			$diWikiPages = $this->store->getAllPropertySubjects( $this->mProperty, $options );
-
-			if ( !$options->ascending ) {
-				$diWikiPages = array_reverse( $diWikiPages );
-			}
-		} else {
+		 // limit==0: configuration setting to disable this completely
+		if ( $this->limit < 1 ) {
 			return '';
+		}
+
+		$diWikiPages = array();
+		$options = SMWPageLister::getRequestOptions( $this->limit, $this->from, $this->until );
+
+		$options->limit = $wgRequest->getVal( 'limit', $smwgPropertyPagingLimit );
+		$options->offset = $wgRequest->getVal( 'offset', '0' );
+
+		if ( ( $value = $wgRequest->getVal( 'value', '' ) ) !== '' ) {
+			$dv = DataValueFactory::getInstance()->newDataValueByProperty( $this->mProperty, $value );
+			$description = $dv->getQueryDescription( $value );
+
+			$queryFactory = ApplicationFactory::getInstance()->getQueryFactory();
+
+			$description = $queryFactory->newDescriptionFactory()->newSomeProperty(
+				$this->mProperty,
+				$description
+			);
+
+			$query = $queryFactory->newQuery( $description );
+			$query->setLimit( $options->limit );
+			$query->setOffset( $options->offset );
+			$diWikiPages = ApplicationFactory::getInstance()->getStore()->getQueryResult( $query )->getResults();
+		} else {
+			$diWikiPages = $this->store->getAllPropertySubjects( $this->mProperty, $options );
+		}
+
+		if ( !$options->ascending ) {
+			$diWikiPages = array_reverse( $diWikiPages );
 		}
 
 		$result = '';
