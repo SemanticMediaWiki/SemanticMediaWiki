@@ -18,7 +18,7 @@ use Countable;
  *
  * @author mwjames
  */
-class MappingIterator extends IteratorIterator implements Countable  {
+class MappingIterator extends IteratorIterator implements Countable {
 
 	/**
 	 * @var callable

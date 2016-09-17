@@ -15,7 +15,7 @@
  *
  * @ingroup SMW
  */
-class SMWRDFXMLSerializer extends SMWSerializer{
+class SMWRDFXMLSerializer extends SMWSerializer {
 	/**
 	 * True if the $pre_ns_buffer contains the beginning of a namespace
 	 * declaration block to which further declarations for the current

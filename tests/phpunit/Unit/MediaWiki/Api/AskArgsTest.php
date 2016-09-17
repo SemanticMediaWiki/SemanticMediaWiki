@@ -15,7 +15,7 @@ use SMW\Tests\Utils\MwApiFactory;
  *
  * @author mwjames
  */
-class AskArgsTest extends \PHPUnit_Framework_TestCase  {
+class AskArgsTest extends \PHPUnit_Framework_TestCase {
 
 	private $apiFactory;
 	private $applicationFactory;

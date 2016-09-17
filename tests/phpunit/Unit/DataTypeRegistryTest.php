@@ -227,12 +227,12 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertSame(
 			'_num',
-			$instance->findTypeIdByLanguage( 'Número' , 'es' )
+			$instance->findTypeIdByLanguage( 'Número', 'es' )
 		);
 
 		$this->assertSame(
 			'_num',
-			$instance->findTypeIdByLanguage( '数值型' , 'zh-Hans' )
+			$instance->findTypeIdByLanguage( '数值型', 'zh-Hans' )
 		);
 	}
 

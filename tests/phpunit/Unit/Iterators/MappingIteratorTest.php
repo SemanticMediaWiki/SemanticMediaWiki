@@ -20,14 +20,16 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			MappingIterator::class,
-			new MappingIterator( array(), function() {} )
+			new MappingIterator( array(), function() {
+			} )
 		);
 	}
 
 	public function testInvalidConstructorArgumentThrowsException() {
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance = new MappingIterator( 2, function() {} );
+		$instance = new MappingIterator( 2, function() {
+		} );
 	}
 
 	public function testdoIterateOnArray() {

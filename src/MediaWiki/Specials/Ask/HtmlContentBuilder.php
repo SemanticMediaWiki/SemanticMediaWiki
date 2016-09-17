@@ -46,7 +46,7 @@ class HtmlContentBuilder {
 		if ( count( $errors ) > 1 ) {
 			$error = '<ul><li>' . implode( '</li><li>', $errors ) . '</li></ul>';
 		} else {
-			$error =  implode( ' ', $errors ) ;
+			$error =  implode( ' ', $errors );
 		}
 
 		return Html::rawElement( 'div', array( 'class' => 'smw-callout smw-callout-error' ), $error );

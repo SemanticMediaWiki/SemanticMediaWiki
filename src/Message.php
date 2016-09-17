@@ -108,7 +108,7 @@ class Message {
 		}
 
 		if ( $type === null ) {
-			$type = Message::TEXT;
+			$type = self::TEXT;
 		}
 
 		return json_encode( array_merge( (array)$type, (array)$message ) );
