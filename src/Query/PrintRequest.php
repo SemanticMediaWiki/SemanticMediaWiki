@@ -108,7 +108,7 @@ class PrintRequest {
 	 * @return boolean
 	 */
 	public function isMode( $mode ) {
-		return $this->m_mode === $mode ;
+		return $this->m_mode === $mode;
 	}
 
 	public function getMode() {

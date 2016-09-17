@@ -116,7 +116,8 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 
 	public function testOrigin() {
 
-		$callback = function() {};
+		$callback = function() {
+		};
 
 		$instance = new DeferredCallableUpdate(
 			$callback

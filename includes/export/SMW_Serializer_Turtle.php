@@ -17,7 +17,7 @@ use SMW\InMemoryPoolCache;
  *
  * @ingroup SMW
  */
-class SMWTurtleSerializer extends SMWSerializer{
+class SMWTurtleSerializer extends SMWSerializer {
 	/**
 	 * Array of non-trivial sub-SMWExpData elements that cannot be nested while
 	 * serializing some SMWExpData. The elements of the array are serialized

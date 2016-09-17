@@ -334,7 +334,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 					}
 
 				} else {
-					$result = Html::element( 'div', array( 'class' => 'smw-callout smw-callout-info' ), wfMessage( 'smw_result_noresults' )->escaped() );;
+					$result = Html::element( 'div', array( 'class' => 'smw-callout smw-callout-info' ), wfMessage( 'smw_result_noresults' )->escaped() );
 				}
 			}
 		}

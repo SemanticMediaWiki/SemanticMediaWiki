@@ -229,7 +229,7 @@ class SMWURIValue extends SMWDataValue {
 
 		if ( is_null( $linker ) || ( !$this->isValid() ) || ( $url === '' ) ||
 			( $this->m_outformat == '-' ) || ( $this->m_outformat == 'nowiki' ) ||
-			( $this->m_caption === '' ) ||  is_bool( $linker ) ) {
+			( $this->m_caption === '' ) || is_bool( $linker ) ) {
 			return $caption;
 		} else {
 			return $linker->makeExternalLink( $url, $caption );
@@ -263,7 +263,7 @@ class SMWURIValue extends SMWDataValue {
 		list( $url, $wikitext ) = $this->decodeUriContext( $this->m_wikitext );
 
 		if ( is_null( $linker ) || ( !$this->isValid() ) || ( $url === '' ) ||
-			( $this->m_outformat == '-' ) || ( $this->m_outformat == 'nowiki' ) ||  is_bool( $linker ) ) {
+			( $this->m_outformat == '-' ) || ( $this->m_outformat == 'nowiki' ) || is_bool( $linker ) ) {
 			return $wikitext;
 		} else {
 			return $linker->makeExternalLink( $url, $wikitext );

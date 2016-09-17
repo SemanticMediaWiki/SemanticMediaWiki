@@ -66,7 +66,7 @@ class ReferenceValueFormatter extends DataValueFormatter {
 		);
 
 		if ( $type == self::VALUE ) {
-			return implode( ';', $results ) ;
+			return implode( ';', $results );
 		}
 
 		$result = array_shift( $results );

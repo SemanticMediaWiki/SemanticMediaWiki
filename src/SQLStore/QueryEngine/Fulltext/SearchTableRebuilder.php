@@ -187,7 +187,7 @@ class SearchTableRebuilder {
 			}
 
 			$this->reportMessage(
-				"\r". sprintf( "%-35s%s", "- {$table}", sprintf( "%4.0f%% (%s/%s)",( $i / $expected ) * 100, $i, $expected ) )
+				"\r". sprintf( "%-35s%s", "- {$table}", sprintf( "%4.0f%% (%s/%s)", ( $i / $expected ) * 100, $i, $expected ) )
 			);
 
 			$text = $this->searchTableUpdater->read( $sid, $pid );
