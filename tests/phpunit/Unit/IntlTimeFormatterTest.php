@@ -52,7 +52,7 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider localizedFormatProvider
 	 */
-	public function testGetLocalizedFormat( $serialization, $languageCode, $expected ) {
+	public function testGetLocalizedFormat( $serialization, $languageCode, $flag, $expected ) {
 
 		$instance = new IntlTimeFormatter(
 			DITime::doUnserialize( $serialization ),
@@ -61,7 +61,7 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->getLocalizedFormat()
+			$instance->getLocalizedFormat( $flag )
 		);
 	}
 
@@ -158,12 +158,20 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 			'2000-12-12 Dec'
 		);
 
-		#4
+		#6
 		$provider['on daynumber 7'] = array(
 			'1/2016/05/08/1/1/20/200',
 			'en',
 			'Y-m-d D',
 			'2016-05-08 Sun'
+		);
+
+		#7
+		$provider['on timezone 1'] = array(
+			'1/1970/1/12/11/43/0/14',
+			'en',
+			'Y-m-d H:i:s T',
+			'1970-01-12 11:43:00 UTC'
 		);
 
 		return $provider;
@@ -175,6 +183,7 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'1/2000/12/12/1/1/20/200',
 			'en',
+			IntlTimeFormatter::LOCL_DEFAULT,
 			'01:01:20, 12 December 2000'
 		);
 
@@ -182,6 +191,7 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'1/2000/12/12/1/1/20/200',
 			'ja',
+			IntlTimeFormatter::LOCL_DEFAULT,
 			'2000年12月12日 (火) 01:01:20'
 		);
 
@@ -189,6 +199,7 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'1/2000/12/12/1/1/20/200',
 			'es',
+			IntlTimeFormatter::LOCL_DEFAULT,
 			'01:01:20 12 dic 2000'
 		);
 
@@ -196,6 +207,7 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 		$provider['on daynumber 1'] = array(
 			'1/2016/05/02/1/1/20/200',
 			'ja',
+			IntlTimeFormatter::LOCL_DEFAULT,
 			'2016年5月2日 (月) 01:01:20'
 		);
 
@@ -203,6 +215,7 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 		$provider['on daynumber 7'] = array(
 			'1/2016/05/08/1/1/20/200',
 			'ja',
+			IntlTimeFormatter::LOCL_DEFAULT,
 			'2016年5月8日 (日) 01:01:20'
 		);
 
@@ -210,6 +223,7 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 		$provider['midnight-ja'] = array(
 			'1/2016/05/08/00/00/00/00',
 			'ja',
+			IntlTimeFormatter::LOCL_DEFAULT,
 			'2016年5月8日 (日) 00:00:00'
 		);
 
@@ -217,16 +231,35 @@ class IntlTimeFormatterTest extends \PHPUnit_Framework_TestCase {
 		$provider['midnight-en'] = array(
 			'1/2016/05/08/0/0/0/0',
 			'en',
+			IntlTimeFormatter::LOCL_DEFAULT,
 			'00:00:00, 8 May 2016'
 		);
 
-		#6
+		#7
 		$provider['after-midnight'] = array(
 			'1/2016/05/08/0/0/01/0',
 			'en',
+			IntlTimeFormatter::LOCL_DEFAULT,
 			'00:00:01, 8 May 2016'
+		);
+
+		#8
+		$provider['timezone-short'] = array(
+			'1/1970/1/12/11/43/0/14',
+			'en',
+			IntlTimeFormatter::LOCL_TIMEZONE,
+			'12:43:00 BST, 12 January 1970'
+		);
+
+		#9
+		$provider['timezone-long'] = array(
+			'1/1970/1/12/11/43/0/America/Cuiaba',
+			'en',
+			IntlTimeFormatter::LOCL_TIMEZONE,
+			'07:43:00 America/Cuiaba, 12 January 1970'
 		);
 
 		return $provider;
 	}
+
 }

@@ -139,10 +139,9 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 		$this->m_minutes = $minute !== false ? intval( $minute ) : 0;
 		$this->m_seconds = $second !== false ? floatval( $second ) : 0;
 
-		$this->timezone = $timezone !== false ? intval( $timezone ) : 0;
+		$this->timezone = $timezone !== false ? $timezone : 0;
 		$year = strval( $year );
 		$this->era      = $year{0} === '+' ? 1 : ( $year{0} === '-' ? -1 : 0 );
-
 
 		if ( $this->isOutOfBoundsBySome() ) {
 			throw new DataItemException( "Part of the date is out of bounds." );
@@ -171,6 +170,15 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 */
 	public function getCalendarModel() {
 		return $this->m_model;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return integer
+	 */
+	public function getTimezone() {
+		return $this->timezone;
 	}
 
 	/**
@@ -470,6 +478,12 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 
 			$values[$i] = false;
 
+			// Can contain something like '1/1970/1/12/11/43/0/Asia/Tokyo'
+			if ( $i == 7 && isset( $parts[$i] ) ) {
+				$values[$i] = strval( $parts[$i] );
+				continue;
+			}
+
 			if ( $i < count( $parts ) ) {
 
 				if ( $parts[$i] !== '' && !is_numeric( $parts[$i] ) ) {
@@ -499,7 +513,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 *
 	 * @return DITime object
 	 */
-	public static function newFromJD( $jdValue, $calendarModel = null, $precision = null ) {
+	public static function newFromJD( $jdValue, $calendarModel = null, $precision = null, $timezone = false ) {
 
 		$hour = $minute = $second = false;
 		$year = $month = $day = false;
@@ -521,7 +535,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 			list( $hour, $minute, $second ) = JulianDay::JD2Time( $jdValue );
 		}
 
-		return new self( $calendarModel, $year, $month, $day, $hour, $minute, $second );
+		return new self( $calendarModel, $year, $month, $day, $hour, $minute, $second, $timezone );
 	}
 
 	/**

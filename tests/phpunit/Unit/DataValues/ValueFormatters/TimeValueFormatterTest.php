@@ -259,6 +259,48 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testLOCLOutputFormatWithTimeZone() {
+
+		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setUserValue( '2015-02-28 12:12:00 A' );
+
+		$timeValue->setOption( TimeValue::OPT_USER_LANGUAGE, 'en' );
+		$timeValue->setOutputFormat( 'LOCL#TZ' );
+
+		$instance = new TimeValueFormatter( $timeValue );
+
+		$this->assertEquals(
+			'12:12:00 A, 28 February 2015',
+			$instance->format( TimeValueFormatter::HTML_LONG )
+		);
+
+		$this->assertEquals(
+			'2015-02-28 12:12:00 A',
+			$instance->format( TimeValueFormatter::WIKI_SHORT )
+		);
+	}
+
+	public function testLOCLOutputFormatWithTimeZoneOnSpecificAnnotatedLanguage() {
+
+		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setUserValue( '2015-02-28 12:12:00 A' );
+
+		$timeValue->setOption( TimeValue::OPT_USER_LANGUAGE, 'en' );
+		$timeValue->setOutputFormat( 'LOCL@ja#TZ' );
+
+		$instance = new TimeValueFormatter( $timeValue );
+
+		$this->assertEquals(
+			'2015年2月28日 (土) 12:12:00 A',
+			$instance->format( TimeValueFormatter::HTML_LONG )
+		);
+
+		$this->assertEquals(
+			'2015-02-28 12:12:00 A',
+			$instance->format( TimeValueFormatter::WIKI_SHORT )
+		);
+	}
+
 	public function timeInputProvider() {
 
 		#0

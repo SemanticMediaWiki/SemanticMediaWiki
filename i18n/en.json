@@ -425,6 +425,7 @@
 	"smw-datavalue-time-invalid-jd": "Unable to interpret the \"$1\" input value as valid JD (Julian day) number. \"$2\" was reported.",
 	"smw-datavalue-time-invalid-prehistoric": "Unable to interpret a prehistoric \"$1\" input value. For example, having specified more than years or a calendar model may return unexpected results in a prehistoric context.",
 	"smw-datavalue-time-invalid": "Unable to interpret the \"$1\" input value as valid date or time component. \"$2\" was reported.",
+	"smw-datavalue-time-invalid-offset-zone-usage": "\"$1\" contains an offset and zone identifier which is not supported.",
 	"smw-datavalue-external-formatter-uri-missing-placeholder": "Formatter uri is missing the ''$1'' placeholder.",
 	"smw-datavalue-external-formatter-invalid-uri": " \"$1\" is an invalid URL.",
 	"smw-datavalue-external-identifier-formatter-missing": "The property is missing an [[Property:External formatter uri|\"External formatter uri\"]] assignment.",

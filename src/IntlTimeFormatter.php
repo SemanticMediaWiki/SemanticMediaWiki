@@ -4,6 +4,8 @@ namespace SMW;
 
 use Language;
 use SMWDITime as DITime;
+use DateTimeZone;
+use SMW\Libs\Time\Timezone;
 
 /**
  * @license GNU GPL v2+
@@ -12,6 +14,9 @@ use SMWDITime as DITime;
  * @author mwjames
  */
 class IntlTimeFormatter {
+
+	const LOCL_DEFAULT = 0;
+	const LOCL_TIMEZONE = 0x2;
 
 	/**
 	 * @var DITime
@@ -41,28 +46,48 @@ class IntlTimeFormatter {
 	/**
 	 * @since 2.4
 	 *
+	 * @param integer $formatFlag
+	 *
 	 * @return string|boolean
 	 */
-	public function getLocalizedFormat() {
+	public function getLocalizedFormat( $formatFlag = self::LOCL_DEFAULT ) {
 
 		$dateTime = $this->dataItem->asDateTime();
+		$timezoneLiteral = '';
 
 		if ( !$dateTime ) {
 			return false;
+		}
+
+		if ( $formatFlag === self::LOCL_TIMEZONE ) {
+			$timezoneLiteral = $this->getTimezoneLiteralWithModifiedDateTime( $dateTime );
 		}
 
 		$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage(
 			$this->language
 		);
 
+		$precision = $this->dataItem->getPrecision();
+
+		// Look for the Z precision which indicates the position of the TZ
+		if ( $precision === SMW_PREC_YMDT && $timezoneLiteral !== '' ) {
+			$precision = SMW_PREC_YMDTZ;
+		}
+
 		$preferredDateFormatByPrecision = $extraneousLanguage->getPreferredDateFormatByPrecision(
-			$this->dataItem->getPrecision()
+			$precision
 		);
 
-		return $this->formatWithLocalizedTextReplacement(
+		// Mark the position since we cannot use DateTime::setTimezone in case
+		// it is a military zone
+		$preferredDateFormatByPrecision = str_replace( 'T', '**', $preferredDateFormatByPrecision );
+
+		$dateString = $this->formatWithLocalizedTextReplacement(
 			$dateTime,
 			$preferredDateFormatByPrecision
 		);
+
+		return str_replace( '**', $timezoneLiteral, $dateString );
 	}
 
 	/**
@@ -163,6 +188,34 @@ class IntlTimeFormatter {
 		}
 
 		return $output;
+	}
+
+	private function getTimezoneLiteralWithModifiedDateTime( &$dateTime ) {
+
+		$timezone = 0;
+
+		// If the date/time is in the UTC form then it is assumed that no other
+		// TZ was selected to modify a value output hence it would be possible
+		// to match a user preference with the `timecorrection` setting and use
+		// it as an input for those dates to make the display take into account
+		// a user ontext.
+		//
+		// - Inject/use a setter for the `timecorrection` preference as it depends
+		// on a User object.
+		// - The ParserCache doesn't recognizes changes for users with different
+		// `timecorrection` settings therefore this needs to be dealt with before
+		// otherwise a change by one user will remain active in the ParserCache
+		// even though a different user has a different `timecorrection` setting.
+		// Changes to the output is only triggered when the ParserCache is evicted or
+		// purged manually.
+		if ( $this->dataItem->getTimezone() === '0' ) {
+		//	$parts = explode( '|', $GLOBALS['wgUser']->getOption( 'timecorrection' ) );
+		//	$timezone = count( $parts ) == 3 ? $parts[2] : false;
+		} else {
+			$timezone = $this->dataItem->getTimezone();
+		}
+
+		return Timezone::getTimezoneLiteralWithModifiedDateTime( $dateTime, $timezone );
 	}
 
 }
