@@ -28,6 +28,13 @@ use Title;
 class InTextAnnotationParser {
 
 	/**
+	 * Internal state for switching SMW link annotations off/on during parsing
+	 * ([[SMW::on]] and [[SMW:off]])
+	 */
+	const OFF = '[[SMW::off]]';
+	const ON = '[[SMW::on]]';
+
+	/**
 	 * @var ParserData
 	 */
 	private $parserData;
@@ -158,7 +165,7 @@ class InTextAnnotationParser {
 	 * @return text
 	 */
 	public static function decodeSquareBracket( $text ) {
-		return str_replace( array( '%5B', '%5D' ), array( '[', ']' ), $text );
+		return InTextAnnotationSanitizer::decodeSquareBracket( $text );
 	}
 
 	/**
@@ -169,13 +176,7 @@ class InTextAnnotationParser {
 	 * @return text
 	 */
 	public static function obscureAnnotation( $text ) {
-		return preg_replace_callback(
-			self::getRegexpPattern( false ),
-			function( array $matches ) {
-				return str_replace( '[', '&#x005B;', $matches[0] );
-			},
-			self::decodeSquareBracket( $text )
-		);
+		return InTextAnnotationSanitizer::obscureAnnotation( $text );
 	}
 
 	/**
@@ -186,40 +187,7 @@ class InTextAnnotationParser {
 	 * @return text
 	 */
 	public static function removeAnnotation( $text ) {
-		return preg_replace_callback(
-			self::getRegexpPattern( false ),
-			function( array $matches ) {
-				$caption = false;
-				$value = '';
-
-				// #1453
-				if ( $matches[0] === '[[SMW::off]]' || $matches[0] === '[[SMW::on]]' ) {
-					return false;
-				}
-
-				// Strict mode matching
-				if ( array_key_exists( 1, $matches ) ) {
-					if ( strpos( $matches[1], ':' ) !== false && isset( $matches[2] ) ) {
-						list( $matches[1], $matches[2] ) = explode( '::', $matches[1] . '::' . $matches[2], 2 );
-					}
-				}
-
-				if ( array_key_exists( 2, $matches ) ) {
-
-					// #1747
-					if ( strpos( $matches[1], '|' ) !== false ) {
-						return $matches[0];
-					}
-
-					$parts = explode( '|', $matches[2] );
-					$value = array_key_exists( 0, $parts ) ? $parts[0] : '';
-					$caption = array_key_exists( 1, $parts ) ? $parts[1] : false;
-				}
-
-				return $caption !== false ? $caption : $value;
-			},
-			self::decodeSquareBracket( $text )
-		);
+		return InTextAnnotationSanitizer::removeAnnotation( $text );
 	}
 
 	/**
@@ -283,7 +251,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return string
 	 */
-	protected static function getRegexpPattern( $linksInValues ) {
+	public static function getRegexpPattern( $linksInValues ) {
 		if ( $linksInValues ) {
 			return '/\[\[             # Beginning of the link
 				(?:([^:][^]]*):[=:])+ # Property name (or a list of those)
