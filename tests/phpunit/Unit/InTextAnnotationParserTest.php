@@ -4,14 +4,13 @@ namespace SMW\Tests;
 
 use ParserOutput;
 use ReflectionClass;
-use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\InTextAnnotationParser;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\ParserData;
 use SMW\Settings;
-use SMW\Tests\Utils\Validators\SemanticDataValidator;
+use SMW\Tests\TestEnvironment;
 use Title;
 
 /**
@@ -26,24 +25,23 @@ use Title;
 class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
-	private $applicationFactory;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->semanticDataValidator = new SemanticDataValidator();
-		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->testEnvironment = new TestEnvironment();
+		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -120,7 +118,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			isset( $settings['smwgEnabledInTextAnnotationParserStrictMode'] ) ? $settings['smwgEnabledInTextAnnotationParserStrictMode'] : true
 		);
 
-		$this->applicationFactory->registerObject(
+		$this->testEnvironment->registerObject(
 			'Settings',
 			Settings::newFromArray( $settings )
 		);
@@ -156,7 +154,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 		);
 
 
-		$this->applicationFactory->registerObject(
+		$this->testEnvironment->registerObject(
 			'Settings',
 			Settings::newFromArray( $settings )
 		);
@@ -200,7 +198,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			'smwgInlineErrors'  => true,
 		);
 
-		$this->applicationFactory->registerObject(
+		$this->testEnvironment->registerObject(
 			'Settings',
 			Settings::newFromArray( $settings )
 		);
@@ -326,6 +324,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function textDataProvider() {
 
+		$testEnvironment = new TestEnvironment();
 		$provider = array();
 
 		// #0 NS_MAIN; [[FooBar...]] with a different caption
@@ -584,6 +583,22 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 				'propertyCount'  => 1,
 				'propertyLabels' => array( 'Foo' ),
 				'propertyValues' => array( 'Foobar::テスト' )
+			)
+		);
+
+		#13 @@@ syntax
+		$provider[] = array(
+			NS_MAIN,
+			array(
+				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+				'smwgLinksInValues' => false,
+				'smwgInlineErrors'  => true,
+				'smwgEnabledInTextAnnotationParserStrictMode' => true
+			),
+			'[[Foo::@@@]] [[Bar::@@@|Foobar]]',
+			array(
+				'resultText'     => $testEnvironment->getLocalizedTextByNamespace( SMW_NS_PROPERTY, '[[:Property:Foo|Foo]] [[:Property:Bar|Foobar]]' ),
+				'propertyCount'  => 0
 			)
 		);
 

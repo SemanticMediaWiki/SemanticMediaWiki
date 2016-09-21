@@ -556,6 +556,10 @@ class SMWWikiPageValue extends SMWDataValue {
 			$fragmentText = '';
 		}
 
+		if ( $this->m_caption && $this->m_caption !== '' ) {
+			return $this->m_caption;
+		}
+
 		$displayTitle = $this->getDisplayTitle();
 
 		if ( $displayTitle === '' ) {
@@ -580,6 +584,10 @@ class SMWWikiPageValue extends SMWDataValue {
 			$fragmentText = '#' . $this->m_fragment;
 		} else {
 			$fragmentText = '';
+		}
+
+		if ( $this->m_caption && $this->m_caption !== '' ) {
+			return $this->m_caption;
 		}
 
 		$displayTitle = $this->getDisplayTitle();
