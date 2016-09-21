@@ -4,6 +4,7 @@ namespace SMW\DataValues;
 
 use SMW\Localizer;
 use SMWStringValue as StringValue;
+use SMW\Message;
 
 /**
  * To suppport regular expressions in connection with the `Allows pattern`
@@ -49,7 +50,7 @@ class AllowsPatternValue extends StringValue {
 		);
 
 		if ( !$content ) {
-			$this->addErrorMsg( array( 'smw-datavalue-allows-pattern-reference-unknown', $value ) );
+			$this->addErrorMsg( array( 'smw-datavalue-allows-pattern-reference-unknown', $value ), Message::PARSE );
 		}
 
 		parent::parseUserValue( $value );

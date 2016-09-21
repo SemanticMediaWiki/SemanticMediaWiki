@@ -95,6 +95,32 @@ class ProcessingErrorMsgHandler {
 	/**
 	 * @since 2.5
 	 *
+	 * @param array $messages
+	 * @param integer|null $type
+	 * @param integer|null $language
+	 *
+	 * @return string
+	 */
+	public static function getMessagesAsString( array $messages, $type = null, $language = null ) {
+
+		$normalizeMessages = self::normalizeMessages( $messages, $type, $language );
+		$msg = array();
+
+		foreach ( $normalizeMessages as $message ) {
+
+			if ( !is_string( $message ) ) {
+				continue;
+			}
+
+			$msg[] = $message;
+		}
+
+		return implode( ',', $msg );
+	}
+
+	/**
+	 * @since 2.5
+	 *
 	 * @param SemanticData $semanticData
 	 * @param DIContainer|null $container
 	 */
