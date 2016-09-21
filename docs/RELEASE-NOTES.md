@@ -15,6 +15,7 @@ THIS IS NOT A RELEASE YET
 ## New features and enhancements
 
 * #1481 Enhanced the `SQLStore` to support full-text searches provided by the `MySQL`/`MariaDB` back-end (see #1481 for limitations and features supported)
+* #1652 Added support for approximate queries that contain a namespace `[[Help:~Abc*]]`
 * #1708 Added the [External identifier](https://www.semantic-mediawiki.org/wiki/Help:Type_External_identifier) type
 * #1718 Added feature flag `SMW_DV_NUMV_USPACE` to allow preserving spaces in unit labels
 * #1747 Extended `InTextAnnotationParser` to check for a possible pipe syntax in combination with `::` 
@@ -32,7 +33,7 @@ THIS IS NOT A RELEASE YET
 * #1809 Added support for using a property name as index identifier in the `Record` type
 * #1808 Added support for recording [provenance data](https://www.semantic-mediawiki.org/wiki/Referenced_statement)
 * #1824 Added support for the property chain syntax in printrequests
-* #1652 Added support for approximate queries that contain a namespace `[[Help:~Abc*]]`
+* #1838 Added `Timezone` support for the `LOCL` output format 
 
 ## Bug fixes
 
