@@ -476,25 +476,22 @@ abstract class SMWDataValue {
 ///// Query support /////
 
 	/**
+	 * FIXME 3.0, allow NULL as value
+	 *
 	 * @see DataValueDescriptionDeserializer::deserialize
 	 *
 	 * @note Descriptions of values need to know their property to be able to
 	 * create a parsable wikitext version of a query condition again. Thus it
 	 * might be necessary to call setProperty() before using this method.
 	 *
-	 * @param string|null $value
+	 * @param string $value
 	 *
 	 * @return Description
 	 * @throws InvalidArgumentException
 	 */
-	public function getQueryDescription( $value = null ) {
+	public function getQueryDescription( $value ) {
 
 		$descriptionDeserializer = DVDescriptionDeserializerRegistry::getInstance()->getDescriptionDeserializerBy( $this );
-
-		if ( $value === null ) {
-			$value = $this->getWikiValue();
-		}
-
 		$description = $descriptionDeserializer->deserialize( $value );
 
 		foreach ( $descriptionDeserializer->getErrors() as $error ) {

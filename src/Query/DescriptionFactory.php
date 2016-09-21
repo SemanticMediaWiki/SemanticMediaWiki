@@ -127,13 +127,10 @@ class DescriptionFactory {
 			return $this->newThingDescription();
 		}
 
-		// RecordValue is missing
+		// Avoid circular reference when called from outside of the DV context
+		$dataValue->setOption( DataValue::OPT_QUERY_CONTEXT, true );
 
-		if ( $dataValue instanceof MonolingualTextValue ) {
-			$description = $dataValue->getQueryDescription( $dataValue->toString() );
-		} else {
-			$description = $this->newValueDescription( $dataValue->getDataItem() );
-		}
+		$description = $dataValue->getQueryDescription( $dataValue->getWikiValue() );
 
 		if ( $dataValue->getProperty() === null ) {
 			return $description;
