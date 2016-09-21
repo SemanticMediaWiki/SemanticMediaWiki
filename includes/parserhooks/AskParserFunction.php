@@ -221,25 +221,20 @@ class AskParserFunction {
 			return;
 		}
 
-		$duration = 0;
-
-		if ( $this->applicationFactory->getSettings()->get( 'smwgQueryDurationEnabled' ) ) {
-			$duration = $query->getOptionBy( Query::PROC_QUERY_TIME );
-		}
+		$query->setOption(
+			'smwgQueryDurationEnabled',
+			$this->applicationFactory->getSettings()->get( 'smwgQueryDurationEnabled' )
+		);
 
 		$profileAnnotatorFactory = $this->applicationFactory->getQueryFactory()->newProfileAnnotatorFactory();
 
 		$combinedProfileAnnotator = $profileAnnotatorFactory->newCombinedProfileAnnotator(
 			$query,
-			$format,
-			$duration
+			$format
 		);
 
-		$combinedProfileAnnotator->addAnnotation();
-
-		$this->parserData->getSemanticData()->addPropertyObjectValue(
-			$combinedProfileAnnotator->getProperty(),
-			$combinedProfileAnnotator->getContainer()
+		$combinedProfileAnnotator->pushAnnotationsTo(
+			$this->parserData->getSemanticData()
 		);
 	}
 

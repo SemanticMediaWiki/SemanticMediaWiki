@@ -45,7 +45,7 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ProfileAnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\ProfileAnnotator\DescriptionProfileAnnotator',
+			'\SMW\Query\ProfileAnnotators\DescriptionProfileAnnotator',
 			$instance->newDescriptionProfileAnnotator( $query )
 		);
 	}
@@ -71,7 +71,7 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ProfileAnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\ProfileAnnotator\ProfileAnnotator',
+			'\SMW\Query\ProfileAnnotator',
 			$instance->newCombinedProfileAnnotator( $query, '' )
 		);
 	}
@@ -97,7 +97,7 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ProfileAnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\ProfileAnnotator\ProfileAnnotator',
+			'\SMW\Query\ProfileAnnotator',
 			$instance->newCombinedProfileAnnotator( $query, '' )
 		);
 	}

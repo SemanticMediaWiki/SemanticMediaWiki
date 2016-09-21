@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Integration;
+namespace SMW\Tests\Integration\Query;
 
 use SMW\StoreFactory;
 use SMWQueryProcessor;
@@ -29,7 +29,7 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 			'smwgQuerySources',
 			array(
 				'foo'    => 'SMW\Tests\Utils\Mock\FakeQueryStore',
-				'foobar' => 'SMW\Tests\Integration\AnotherFakeQueryStoreWhichDoesNotImplentTheQueryEngineInterface',
+				'foobar' => 'SMW\Tests\Integration\Query\AnotherFakeQueryStoreWhichDoesNotImplentTheQueryEngineInterface',
 				'bar'    => 'SMW\Tests\NonExistentQueryStore',
 			)
 		);

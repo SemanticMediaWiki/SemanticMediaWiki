@@ -1,16 +1,16 @@
 <?php
 
-namespace SMW\Tests\Query\ProfileAnnotator;
+namespace SMW\Tests\Query\ProfileAnnotators;
 
 use SMW\DIWikiPage;
-use SMW\Query\ProfileAnnotator\DurationProfileAnnotator;
-use SMW\Query\ProfileAnnotator\NullProfileAnnotator;
+use SMW\Query\ProfileAnnotators\DurationProfileAnnotator;
+use SMW\Query\ProfileAnnotators\NullProfileAnnotator;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIContainer as DIContainer;
 
 /**
- * @covers \SMW\Query\ProfileAnnotator\DurationProfileAnnotator
+ * @covers \SMW\Query\ProfileAnnotators\DurationProfileAnnotator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -30,12 +30,12 @@ class DurationProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\ProfileAnnotator\ProfileAnnotator' )
+		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\ProfileAnnotator' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\ProfileAnnotator\DurationProfileAnnotator',
+			'\SMW\Query\ProfileAnnotators\DurationProfileAnnotator',
 			new DurationProfileAnnotator( $profileAnnotator, 0.42 )
 		);
 	}

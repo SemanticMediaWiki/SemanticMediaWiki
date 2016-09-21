@@ -153,11 +153,8 @@ class ConceptParserFunction {
 			$query
 		);
 
-		$descriptionProfileAnnotator->addAnnotation();
-
-		$this->parserData->getSemanticData()->addPropertyObjectValue(
-			$descriptionProfileAnnotator->getProperty(),
-			$descriptionProfileAnnotator->getContainer()
+		$descriptionProfileAnnotator->pushAnnotationsTo(
+			$this->parserData->getSemanticData()
 		);
 	}
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Integration;
+namespace SMW\Tests\Integration\Query\ProfileAnnotators;
 
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
@@ -17,7 +17,7 @@ use SMWQueryProcessor;
  *
  * @author mwjames
  */
-class QueryProfileAnnotatorToProcessorIntegrationTest extends \PHPUnit_Framework_TestCase {
+class ProfileAnnotatorWithQueryProcessorIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
 
