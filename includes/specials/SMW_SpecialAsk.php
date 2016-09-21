@@ -38,6 +38,15 @@ class SMWAskPage extends SMWQuerySpecialPage {
 	}
 
 	/**
+	 * SpecialPage::doesWrites
+	 *
+	 * @return boolean
+	 */
+	public function doesWrites() {
+		return true;
+	}
+
+	/**
 	 * Main entrypoint for the special page.
 	 *
 	 * @param string $p
@@ -428,7 +437,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			}
 
 			// Other options fieldset
-			$result .= '<fieldset class="smw-ask-options smwExpandedFieldset"><legend>' . wfMessage( 'smw_ask_otheroptions' )->escaped() . "</legend>\n";
+			$result .= '<fieldset class="smw-ask-options-fields"><legend>' . wfMessage( 'smw_ask_otheroptions' )->escaped() . "</legend>\n";
 
 			// Info text for when the fieldset is collapsed
 			$result .= Html::element( 'div', array(
