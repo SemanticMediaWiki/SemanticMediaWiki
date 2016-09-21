@@ -107,7 +107,7 @@ class JsonResultPrinterTest extends QueryPrinterTestCase {
 
 		$expected = array_merge( $result, array( 'rows' => count( $result ) ) );
 
-		$instance = $this->newInstance( array( 'prettyprint' => false ) );
+		$instance = $this->newInstance( array( 'prettyprint' => false, 'unescape' => false ) );
 
 		$reflector = new ReflectionClass( '\SMW\JsonResultPrinter' );
 		$getResultText = $reflector->getMethod( 'getResultText' );
