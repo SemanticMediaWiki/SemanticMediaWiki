@@ -99,9 +99,13 @@ abstract class SMWOrderedListPage extends Article {
 			PropertyRegistry::getInstance()->findPropertyIdByLabel( $label )
 		);
 
-		if ( $property->getLabel() !== '' && $label !== $property->getLabel() ) {
+		// Ensure to redirect to `Property:Modification date` and not using
+		// a possible user contextualized version such as `Property:Date de modification`
+		$canonicalLabel = $property->getCanonicalLabel();
+
+		if ( $canonicalLabel !== '' && $label !== $canonicalLabel ) {
 			$outputPage = $this->getContext()->getOutput();
-			$outputPage->redirect( $property->getDiWikiPage()->getTitle()->getFullURL() );
+			$outputPage->redirect( $property->getCanonicalDiWikiPage()->getTitle()->getFullURL() );
 		}
 	}
 
