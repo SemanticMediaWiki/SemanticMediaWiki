@@ -34,6 +34,7 @@ THIS IS NOT A RELEASE YET
 * #1808 Added support for recording [provenance data](https://www.semantic-mediawiki.org/wiki/Referenced_statement)
 * #1824 Added support for the property chain syntax in printrequests
 * #1838 Added `Timezone` support for the `LOCL` output format 
+* #1854 Added unescaped output support for `format=json`
 
 ## Bug fixes
 
