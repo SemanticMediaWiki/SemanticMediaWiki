@@ -35,6 +35,7 @@ THIS IS NOT A RELEASE YET
 * #1824 Added support for the property chain syntax in printrequests
 * #1838 Added `Timezone` support for the `LOCL` output format 
 * #1854 Added unescaped output support for `format=json`
+* #1855 Added `@@@` as special annotation syntax to generate a property link (e.g `[[Foo::@@@]]`)
 
 ## Bug fixes
 
