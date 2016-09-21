@@ -23,12 +23,12 @@ class RepositoryConnectionProvider implements DBConnectionProvider {
 	 * @var array
 	 */
 	private $connectorIdToClass = array(
-		'default'   => 'SMW\SPARQLStore\RepositoryConnector\GenericHttpRepositoryConnector',
-		'generic'   => 'SMW\SPARQLStore\RepositoryConnector\GenericHttpRepositoryConnector',
-		'sesame'    => 'SMW\SPARQLStore\RepositoryConnector\GenericHttpRepositoryConnector',
-		'fuseki'    => 'SMW\SPARQLStore\RepositoryConnector\FusekiHttpRepositoryConnector',
-		'virtuoso'  => 'SMW\SPARQLStore\RepositoryConnector\VirtuosoHttpRepositoryConnector',
-		'4store'    => 'SMW\SPARQLStore\RepositoryConnector\FourstoreHttpRepositoryConnector',
+		'default'   => 'SMW\SPARQLStore\RepositoryConnectors\GenericHttpRepositoryConnector',
+		'generic'   => 'SMW\SPARQLStore\RepositoryConnectors\GenericHttpRepositoryConnector',
+		'sesame'    => 'SMW\SPARQLStore\RepositoryConnectors\GenericHttpRepositoryConnector',
+		'fuseki'    => 'SMW\SPARQLStore\RepositoryConnectors\FusekiHttpRepositoryConnector',
+		'virtuoso'  => 'SMW\SPARQLStore\RepositoryConnectors\VirtuosoHttpRepositoryConnector',
+		'4store'    => 'SMW\SPARQLStore\RepositoryConnectors\FourstoreHttpRepositoryConnector',
 	);
 
 	/**
