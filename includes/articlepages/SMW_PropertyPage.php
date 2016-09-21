@@ -6,6 +6,8 @@ use SMW\Localizer;
 use SMW\RequestOptions;
 use SMW\StringCondition;
 use SMW\PropertyRegistry;
+use SMWDataValue as DataValue;
+use SMW\DIProperty;
 
 /**
  * Implementation of MediaWiki's Article that shows additional information on
@@ -25,7 +27,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	protected function initParameters() {
 		global $smwgPropertyPagingLimit;
 		$this->limit = $smwgPropertyPagingLimit;
-		$this->mProperty = SMW\DIProperty::newFromUserLabel( $this->mTitle->getText() );
+		$this->mProperty = DIProperty::newFromUserLabel( $this->mTitle->getText() );
 		$this->store = ApplicationFactory::getInstance()->getStore();
 		return true;
 	}
@@ -171,20 +173,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$options->offset = $wgRequest->getVal( 'offset', '0' );
 
 		if ( ( $value = $wgRequest->getVal( 'value', '' ) ) !== '' ) {
-			$dv = DataValueFactory::getInstance()->newDataValueByProperty( $this->mProperty, $value );
-			$description = $dv->getQueryDescription( $value );
-
-			$queryFactory = ApplicationFactory::getInstance()->getQueryFactory();
-
-			$description = $queryFactory->newDescriptionFactory()->newSomeProperty(
-				$this->mProperty,
-				$description
-			);
-
-			$query = $queryFactory->newQuery( $description );
-			$query->setLimit( $options->limit );
-			$query->setOffset( $options->offset );
-			$diWikiPages = ApplicationFactory::getInstance()->getStore()->getQueryResult( $query )->getResults();
+			$diWikiPages = $this->doQuerySubjectListWithValue( $value, $options );
 		} else {
 			$diWikiPages = $this->store->getAllPropertySubjects( $this->mProperty, $options );
 		}
@@ -207,7 +196,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 			// Allow the DV formatter to access a specific language code
 			$dvWikiPage->setOption(
-				'user.language',
+				DataValue::OPT_USER_LANGUAGE,
 				Localizer::getInstance()->getUserLanguage()->getCode()
 			);
 
@@ -298,6 +287,27 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$r .= '</table>';
 
 		return $r;
+	}
+
+	private function doQuerySubjectListWithValue( $value, $options ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$dataValue = $applicationFactory->getDataValueFactory()->newDataValueByProperty( $this->mProperty );
+		$dataValue->setOption( DataValue::OPT_QUERY_CONTEXT, true );
+		$dataValue->setUserValue( $value );
+		$queryFactory = $applicationFactory->getQueryFactory();
+
+		$description = $queryFactory->newDescriptionFactory()->newFromDataValue(
+			$dataValue
+		);
+
+		$query = $queryFactory->newQuery( $description );
+		$query->setLimit( $options->limit );
+		$query->setOffset( $options->offset );
+		$query->setSortKeys( array( '' => 'asc' ) );
+
+		return $this->store->getQueryResult( $query )->getResults();
 	}
 
 }
