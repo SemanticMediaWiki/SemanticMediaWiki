@@ -20,7 +20,8 @@
 			"Iniquity",
 			"Macofe",
 			"Alexandr Efremov",
-			"Mailman"
+			"Mailman",
+			"Туллук"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -91,6 +92,7 @@
 	"smw-paramdesc-named_args": "Имена аргументов, передаваемых в шаблон",
 	"smw-paramdesc-export": "Параметры экспорта",
 	"smw-paramdesc-prettyprint": "Красивый вывод на печать, который отображает дополнительные отступы и переводы строк",
+	"smw-paramdesc-json-unescape": "Вывод должен содержать экранированные слеши и многобайтовые символы Юникода.",
 	"smw-paramdesc-source": "Альтернативный источник запроса",
 	"smw-paramdesc-jsonsyntax": "Синтаксис JSON, который будет использоваться",
 	"smw-printername-feed": "Лента RSS и Atom",
@@ -295,6 +297,7 @@
 	"smw-ui-tooltip-title-event": "Событие",
 	"smw-ui-tooltip-title-note": "Примечание",
 	"smw-ui-tooltip-title-legend": "Легенда",
+	"smw-ui-tooltip-title-reference": "Примечание",
 	"smw_unknowntype": "Для этого свойства задан некорректный тип",
 	"smw-concept-cache-text": "Концепт имеет в общей сложности $1 {{PLURAL:$1|страницу|страницы|страниц}} и последний раз обновлялся $2 в $3.",
 	"smw_concept_header": "Страницы, использующие представление «$1»",
@@ -363,7 +366,7 @@
 	"smw-pa-property-predefined_errc": "«$1» — это предварительно определенное свойство, обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] и представляет ошибки, которые возникли в связи с неправильными аннотациями значений или обработкой ввода.",
 	"smw-pa-property-predefined-long_errc": "Ошибки накапливаются в [https://www.semantic-mediawiki.org/wiki/Help:Container контейнере], который также может включать ссылки на свойство, которое и повлекло несоответствие.",
 	"smw-pa-property-predefined_errt": "«$1» — это предварительно определенное свойство, содержит текстовое описание ошибки и обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
-	"smw-subobject-parser-invalid-naming-scheme": "Определенный пользователем подобъект использовал недействительную схему наименования. Точка в первых пяти символах ($1) предназначена для использования исключительно расширениями.",
+	"smw-subobject-parser-invalid-naming-scheme": "Определенный пользователем подобъект содержал недействительную схему наименования. Точка ($1) в первых пяти символах предназначена для использования исключительно расширениями. Вы можете установить [https://www.semantic-mediawiki.org/wiki/Help:Adding_subobjects#Named_identifier именованный идентификатор].",
 	"smw-datavalue-record-invalid-property-declaration": "Запись содержит свойство «$1», которая сама по себе объявлена типом записи, и это не допускается.",
 	"smw-pa-property-predefined_mdat": "«$1» — это предварительно определенное свойство, что соответствует дате последнего изменения объекта, и обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_cdat": "«$1» — это предварительно определенное свойство, что соответствует дате первой версии субъекта, и обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",

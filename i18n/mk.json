@@ -7,6 +7,7 @@
 		]
 	},
 	"smw-desc": "Го прави вашето вики подостапно - за машини ''и'' луѓе ([https://www.semantic-mediawiki.org/wiki/Help:User_manual?uselang=mk документација])",
+	"smw-title": "Семантички МедијаВики",
 	"smw-semantics-not-enabled": "Семантички МедијаВики не е овозможен на ова вики.",
 	"smw_viewasrdf": "RDF канал",
 	"smw_finallistconjunct": " и",
@@ -348,5 +349,6 @@
 	"smw-subobject-parser-invalid-naming-scheme": "Кориснички-зададен подобјект користи неважечка шема за именување. Записот со точки во првите пет знаци ($1) е резервиран за исклучива употреба на додатоците.",
 	"smw-datavalue-record-invalid-property-declaration": "Определбата на записот го содржи својството „$1“, кое самото е зададено како тип на запис и не се допушта.",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|секунда|секунди}}",
-	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|секунда|секунди}}"
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|секунда|секунди}}",
+	"smw-datavalue-reference-outputformat": "$1: $2"
 }
