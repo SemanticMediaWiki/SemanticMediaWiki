@@ -100,6 +100,8 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 
 	private function initResourceBuilders() {
 
+		$this->addResourceBuilder( new PropertyDescriptionValueResourceBuilder() );
+
 		$this->addResourceBuilder( new ExternalIdentifierPropertyValueResourceBuilder() );
 		$this->addResourceBuilder( new MonolingualTextPropertyValueResourceBuilder() );
 
