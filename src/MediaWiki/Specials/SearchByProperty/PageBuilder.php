@@ -269,7 +269,7 @@ class PageBuilder {
 
 			if ( $this->canShowSearchByPropertyLink( $result[0] ) ) {
 
-				$value = $result[0] instanceof StringValue ? $result[0]->getWikiValueForLengthOf( 72 ) : $result[0]->getWikiValue();
+				$value = $result[0] instanceof StringValue ? $result[0]->getWikiValueByLengthOf( 72 ) : $result[0]->getWikiValue();
 
 				$listitem .= '&#160;&#160;' . Infolink::newPropertySearchLink(
 					'+',
