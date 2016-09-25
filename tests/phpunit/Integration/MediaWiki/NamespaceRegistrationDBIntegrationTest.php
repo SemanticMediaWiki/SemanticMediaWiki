@@ -48,13 +48,10 @@ class NamespaceRegistrationDBIntegrationTest extends MwDBaseUnitTestCase {
 			'wgLanguageCode'     => 'en'
 		);
 
-		$smwBasePath = __DIR__ . '../../../..';
-
 		$instance = $this->getMock( '\SMW\NamespaceManager',
 			array( 'isDefinedConstant' ),
 			array(
-				&$default,
-				$smwBasePath
+				&$default
 			)
 		);
 

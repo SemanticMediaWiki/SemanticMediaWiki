@@ -1,0 +1,255 @@
+{
+	"@metadata": {
+		"authors": []
+	},
+	"fallbackLanguage": false,
+	"dataTypeLabels":{
+		"_wpg": "Page",
+		"_txt": "Text",
+		"_cod": "Code",
+		"_boo": "Boolean",
+		"_num": "Number",
+		"_geo": "Geographic coordinates",
+		"_tem": "Temperature",
+		"_dat": "Date",
+		"_ema": "Email",
+		"_uri": "URL",
+		"_anu": "Annotation URI",
+		"_tel": "Telephone number",
+		"_rec": "Record",
+		"_qty": "Quantity",
+		"_mlt_rec": "Monolingual text",
+		"_eid": "External identifier",
+		"_ref_rec": "Reference"
+	},
+	"dataTypeAliases":{
+		"URI": "_uri",
+		"Float": "_num",
+		"Integer": "_num",
+		"Enumeration" : "_txt",
+		"String": "_txt",
+		"Phone number": "_tel",
+		"E-mail": "_ema",
+		"Geographic coordinate": "_geo",
+		"Geographic polygon": "_gpo",
+		"URL": "_uri",
+		"Page": "_wpg",
+		"String": "_txt",
+		"Text": "_txt",
+		"Code": "_cod",
+		"Boolean": "_boo",
+		"Number": "_num",
+		"Geographic coordinates": "_geo",
+		"Geographic polygon": "_gpo",
+		"Temperature": "_tem",
+		"Quantity": "_qty",
+		"Date": "_dat",
+		"Email": "_ema",
+		"Annotation URI": "_anu",
+		"Telephone number": "_tel",
+		"Record": "_rec",
+		"Monolingual text": "_mlt_rec",
+		"External identifier": "_eid",
+		"Reference": "_ref_rec"
+	},
+	"propertyLabels":{
+		"_TYPE": "Has type",
+		"_URI": "Equivalent URI",
+		"_SUBP": "Subproperty of",
+		"_SUBC": "Subcategory of",
+		"_UNIT": "Display units",
+		"_IMPO": "Imported from",
+		"_CONV": "Corresponds to",
+		"_SERV": "Provides service",
+		"_PVAL": "Allows value",
+		"_MDAT": "Modification date",
+		"_CDAT": "Creation date",
+		"_NEWP": "Is a new page",
+		"_LEDT": "Last editor is",
+		"_ERRP": "Has improper value for",
+		"_LIST": "Has fields",
+		"_SOBJ": "Has subobject",
+		"_ASK": "Has query",
+		"_ASKST": "Query string",
+		"_ASKFO": "Query format",
+		"_ASKSI": "Query size",
+		"_ASKDE": "Query depth",
+		"_ASKDU": "Query duration",
+		"_MEDIA": "Media type",
+		"_MIME": "MIME type",
+		"_ERRC": "Has processing error",
+		"_ERRT": "Has processing error text",
+		"_PREC": "Display precision of",
+		"_LCODE": "Language code",
+		"_TEXT": "Text",
+		"_PDESC": "Has property description",
+		"_PVAP": "Allows pattern",
+		"_DTITLE": "Display title of",
+		"_PVUC": "Has uniqueness constraint",
+		"_PEID": "External identifier",
+		"_PEFU": "External formatter uri"
+	},
+	"propertyAliases": {
+		"Display unit": "_UNIT",
+		"Display units": "_UNIT",
+		"Has type": "_TYPE",
+		"Equivalent URI": "_URI",
+		"Subproperty of": "_SUBP",
+		"Subcategory of": "_SUBC",
+		"Display units": "_UNIT",
+		"Imported from": "_IMPO",
+		"Corresponds to": "_CONV",
+		"Provides service": "_SERV",
+		"Allows value": "_PVAL",
+		"Modification date" : "_MDAT",
+		"Creation date": "_CDAT",
+		"Is a new page": "_NEWP",
+		"Last editor is": "_LEDT",
+		"Has improper value for": "_ERRP",
+		"Has fields": "_LIST",
+		"Has subobject": "_SOBJ",
+		"Has query": "_ASK",
+		"Has query string": "_ASKST",
+		"Has query format": "_ASKFO",
+		"Has query size": "_ASKSI",
+		"Has query depth": "_ASKDE",
+		"Has query duration": "_ASKDU",
+		"Has media type": "_MEDIA",
+		"Has mime type": "_MIME",
+		"Display precision of": "_PREC",
+		"Display precision": "_PREC",
+		"Language code": "_LCODE",
+		"Text": "_TEXT",
+		"Has property description": "_PDESC",
+		"Property description": "_PDESC",
+		"Has allows pattern": "_PVAP",
+		"Has display title of": "_DTITLE",
+		"Has uniqueness constraint": "_PVUC",
+		"External identifier": "_PEID",
+		"External formatter uri": "_PEFU"
+	},
+	"namespaces":{
+		"SMW_NS_PROPERTY": "Property",
+		"SMW_NS_PROPERTY_TALK": "Property_talk",
+		"SMW_NS_TYPE": "Type",
+		"SMW_NS_TYPE_TALK": "Type_talk",
+		"SMW_NS_CONCEPT": "Concept",
+		"SMW_NS_CONCEPT_TALK": "Concept_talk"
+	},
+	"namespaceAliases": {
+		"Property": "SMW_NS_PROPERTY",
+		"Property_talk": "SMW_NS_PROPERTY_TALK",
+		"Type": "SMW_NS_TYPE",
+		"Type_talk": "SMW_NS_TYPE_TALK",
+		"Concept": "SMW_NS_CONCEPT",
+		"Concept_talk": "SMW_NS_CONCEPT_TALK"
+	},
+	"dateFormatsByPrecision": {
+		"SMW_PREC_Y": "Y",
+		"SMW_PREC_YM": "F Y",
+		"SMW_PREC_YMD": "F j, Y",
+		"SMW_PREC_YMDT": "H:i:s, j F Y",
+		"SMW_PREC_YMDTZ": "H:i:s T, j F Y"
+	},
+	"dateFormats": [
+		[
+			"SMW_Y"
+		],
+		[
+			"SMW_MY",
+			"SMW_YM"
+		],
+		[
+			"SMW_MDY",
+			"SMW_DMY",
+			"SMW_YMD",
+			"SMW_YDM"
+		]
+	],
+	"@months": [
+		"Twelve strings naming the months, Twelve short strings briefly naming the month"
+	],
+	"months": [
+		[
+			"January",
+			"Jan"
+		],
+		[
+			"February",
+			"Feb"
+		],
+		[
+			"March",
+			"Mar"
+		],
+		[
+			"April",
+			"Apr"
+		],
+		[
+			"May",
+			"May"
+		],
+		[
+			"June",
+			"Jun"
+		],
+		[
+			"July",
+			"Jul"
+		],
+		[
+			"August",
+			"Aug"
+		],
+		[
+			"September",
+			"Sep"
+		],
+		[
+			"October",
+			"Oct"
+		],
+		[
+			"November",
+			"Nov"
+		],
+		[
+			"December",
+			"Dec"
+		]
+	],
+	"@days": [
+		"Follows ISO-8601 numeric representation, starting with Monday together with short name"
+	],
+	"days":[
+		[
+			"Monday",
+			"Mon"
+		],
+		[
+			"Tuesday",
+			"Tue"
+		],
+		[
+			"Wednesday",
+			"Wed"
+		],
+		[
+			"Thrusday",
+			"Thu"
+		],
+		[
+			"Friday",
+			"Fri"
+		],
+		[
+			"Saturday",
+			"Sat"
+		],
+		[
+			"Sunday",
+			"Sun"
+		]
+	]
+}

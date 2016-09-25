@@ -17,7 +17,7 @@
  * @ingroup SMWLanguage
  * @ingroup Language
  */
-abstract class SMWLanguage {
+class SMWLanguage {
 
 	// the special message arrays ...
 	protected $m_DatatypeLabels;
@@ -137,9 +137,9 @@ abstract class SMWLanguage {
 	public function __construct() {
 		// `$this->m_SpecialProperties' is set in descendants.
 		// Let us initialize reverse mapping.
-		foreach ( $this->m_SpecialProperties as $propId => $propName ) {
-			$this->m_SpecialPropertyIds[$propName] = $propId;
-		}
+	//	foreach ( $this->m_SpecialProperties as $propId => $propName ) {
+	//		$this->m_SpecialPropertyIds[$propName] = $propId;
+	//	}
 	}
 
 
@@ -147,6 +147,7 @@ abstract class SMWLanguage {
 	 * Function that returns an array of namespace identifiers.
 	 */
 	function getNamespaces() {
+		return $this->m_Namespaces;
 		global $smwgHistoricTypeNamespace;
 		$namespaces = $this->m_Namespaces;
 		if ( !$smwgHistoricTypeNamespace ) {
@@ -160,6 +161,7 @@ abstract class SMWLanguage {
 	 * Function that returns an array of namespace aliases, if any.
 	 */
 	function getNamespaceAliases() {
+		return $this->m_NamespaceAliases;
 		global $smwgHistoricTypeNamespace;
 
 		$namespaceAliases = $this->m_NamespaceAliases;
@@ -197,6 +199,7 @@ abstract class SMWLanguage {
 	 * should also have a primary label defined in m_DatatypeLabels.
 	 */
 	function getDatatypeAliases() {
+		return $this->m_DatatypeAliases;
 		return $this->m_useEnDefaultAliases ?
 		       $this->m_DatatypeAliases + self::$enDatatypeAliases :
 		       $this->m_DatatypeAliases;
@@ -222,6 +225,10 @@ abstract class SMWLanguage {
 	 */
 	function getPropertyAliases() {
 		return $this->m_SpecialPropertyAliases;
+
+//		return $this->m_useEnDefaultAliases ?
+//		       $this->m_SpecialPropertyAliases + self::$enPropertyAliases :
+//		       $this->m_SpecialPropertyAliases;
 	}
 
 	/**
@@ -277,6 +284,31 @@ abstract class SMWLanguage {
 		return ( ( $number >= 1 ) && ( $number <= 12 ) ) ? $this->m_months[(int)( $number - 1 )] : '';
 	}
 
+	function getMonths() {
+		return $this->m_months;
+	}
+
+	function getMonthsShort() {
+		return $this->m_monthsshort;
+	}
+
+	public function getTargetFileFor( $languageCode ) {
+		return __DIR__ . '/i18n/' . $languageCode . '.json';
+	}
+
+	public function getLanguageFor( $languageCode ) {
+
+		$contLangFile = 'SMW_Language' . str_replace( '-', '_', ucfirst( $languageCode ) );
+		$contLangClass = 'SMWLanguage' . str_replace( '-', '_', ucfirst( $languageCode ) );
+
+		$file =  str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, __DIR__ . '/' . $contLangFile . '.php' );
+
+		if ( file_exists( $file ) ) {
+			require_once ( $file );
+			return new $contLangClass;
+		}
+
+	}
+
+
 }
-
-

@@ -235,7 +235,7 @@ class TestEnvironment {
 	 */
 	public function getFixturesLocation( $target = '', $file = '' ) {
 
-		$fixturesLocation = __DIR__ . '/Fixtures' . ( $target !== '' ? "/{$target}" :  '' ) . '/' . $file;
+		$fixturesLocation = __DIR__ . '/Fixtures' . ( $target !== '' ? "/{$target}" :  '' ) . ( $file !== '' ? '/' . $file : '' );
 		$fixturesLocation = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $fixturesLocation );
 
 		if ( !file_exists( $fixturesLocation ) && !is_dir( $fixturesLocation ) ) {

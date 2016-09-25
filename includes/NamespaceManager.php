@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMW\ExtraneousLanguage\ExtraneousLanguage;
+
 /**
  * @license GNU GPL v2+
  * @since 1.9
@@ -141,7 +143,7 @@ class NamespaceManager {
 		 * @var SMWLanguage $smwgContLang
 		 */
 		$this->globalVars['wgExtraNamespaces'] = $this->globalVars['smwgContLang']->getNamespaces() + $this->globalVars['wgExtraNamespaces'];
-		$this->globalVars['wgNamespaceAliases'] = array_flip( $this->globalVars['smwgContLang']->getNamespaces() ) + $this->globalVars['wgNamespaceAliases'];
+		$this->globalVars['wgNamespaceAliases'] = array_flip( $this->globalVars['smwgContLang']->getNamespaceAliases() ) + $this->globalVars['wgNamespaceAliases'];
 
 		// Support subpages only for talk pages by default
 		$this->globalVars['wgNamespacesWithSubpages'] = $this->globalVars['wgNamespacesWithSubpages'] + array(
