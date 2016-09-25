@@ -3,8 +3,6 @@
 namespace SMW\Deserializers\DVDescriptionDeserializer;
 
 use InvalidArgumentException;
-use SMW\Query\Language\ThingDescription;
-use SMW\Query\Language\ValueDescription;
 use SMWDataValue as DataValue;
 use SMW\DIWikiPage;
 
@@ -79,12 +77,11 @@ class SomeValueDescriptionDeserializer extends DescriptionDeserializer {
 
 	private function findApproriateDescription( $comparator, $dataItem, $description ) {
 
-		$value = $dataItem->getDBKey();
-
 		// Normalize a possible earlier encoded string part in order for the
 		// QueryComparator::extractComparatorFromString to work its magic
+		$value = str_replace( array( '-3C', '-3E' ), array( '<', '>' ), $dataItem->getDBKey() );
+
 		if ( $comparator === SMW_CMP_EQ || $comparator === SMW_CMP_NEQ ) {
-			$value = str_replace( array( '-3C', '-3E' ), array( '<', '>' ), $value );
 			$this->prepareValue( $value, $comparator );
 		}
 

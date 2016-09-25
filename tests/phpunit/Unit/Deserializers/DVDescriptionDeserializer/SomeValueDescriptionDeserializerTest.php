@@ -4,6 +4,7 @@ namespace SMW\Tests\Deserializers\DVDescriptionDeserializer;
 
 use SMW\Deserializers\DVDescriptionDeserializer\SomeValueDescriptionDeserializer;
 use SMW\ApplicationFactory;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Deserializers\DVDescriptionDeserializer\SomeValueDescriptionDeserializer
@@ -17,11 +18,16 @@ use SMW\ApplicationFactory;
 class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 	private $dataItemFactory;
+	private $dataValueFactory;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
+		$this->testEnvironment = new TestEnvironment();
+
 		$this->dataItemFactory = ApplicationFactory::getInstance()->getDataItemFactory();
+		$this->dataValueFactory = ApplicationFactory::getInstance()->getDataValueFactory();
 	}
 
 	public function testCanConstruct() {
@@ -171,6 +177,22 @@ class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testWikiPageValueOnNonMainNamespaceWithGreaterThanLessThan() {
+
+		$dataValue = $this->dataValueFactory->newDataValueByProperty(
+			$this->dataItemFactory->newDIProperty( 'Foo' ),
+			'Bar'
+		);
+
+		$instance = new SomeValueDescriptionDeserializer();
+		$instance->setDataValue( $dataValue );
+
+		$this->assertSame(
+			$this->testEnvironment->getLocalizedTextByNamespace( NS_HELP, '[[Help:+]] [[≤>Foo]]' ),
+			$instance->deserialize( '<Help:>Foo' )->getQueryString()
+		);
+	}
+
 	public function valueProvider() {
 
 		$provider[] = array(
@@ -180,7 +202,6 @@ class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 		return $provider;
 	}
-
 
 	public function likeNotLikeProvider() {
 
