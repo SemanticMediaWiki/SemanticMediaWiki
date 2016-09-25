@@ -17,7 +17,7 @@
 			"subject": "Info-warning",
 			"expected-output": {
 				"to-contain": [
-					"<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Error\">",
+					"<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Error\" title=\"an error text\">",
 					"<span class=\"smwtticon warning\">",
 					"<div class=\"smwttcontent\">an error text</div>"
 				]
@@ -28,7 +28,7 @@
 			"subject": "Info-note",
 			"expected-output": {
 				"to-contain": [
-					"<span class=\"smw-highlighter\" data-type=\"7\" data-state=\"inline\" data-title=\"Note\">",
+					"<span class=\"smw-highlighter\" data-type=\"7\" data-state=\"inline\" data-title=\"Note\" title=\"an info note\">",
 					"<span class=\"smwtticon note\">",
 					"<div class=\"smwttcontent\">an info note</div>"
 				]
