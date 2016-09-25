@@ -174,7 +174,7 @@ class DIPropertyTest extends DataItemTest {
 		);
 
 		$provider['MIMEType'] = array(
-			'MIME_type', '', '',
+			'MIME_type', '', 'en',
 			'_MIME'
 		);
 

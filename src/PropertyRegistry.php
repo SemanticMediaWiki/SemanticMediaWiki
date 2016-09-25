@@ -342,12 +342,12 @@ class PropertyRegistry {
 	 *
 	 * @return mixed string property ID or false
 	 */
-	public function findPropertyIdByLanguageCode( $label, $languageCode = '' ) {
+	public function findPropertyIdFromLabelByLanguageCode( $label, $languageCode = '' ) {
 
 		$languageCode = mb_strtolower( trim( $languageCode ) );
 
 		// Match the canonical form
-		if ( $languageCode === 'en' || $languageCode === '' ) {
+		if ( $languageCode === '' ) {
 			return $this->findPropertyIdByLabel( $label );
 		}
 

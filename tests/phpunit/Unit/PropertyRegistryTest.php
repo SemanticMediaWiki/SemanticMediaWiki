@@ -356,7 +356,7 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testFindPropertyIdByLanguageCode() {
+	public function testfindPropertyIdFromLabelByLanguageCode() {
 
 		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
 			->disableOriginalConstructor()
@@ -386,7 +386,7 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'_TYPE',
-			$instance->findPropertyIdByLanguageCode( 'A le type', 'fr' )
+			$instance->findPropertyIdFromLabelByLanguageCode( 'A le type', 'fr' )
 		);
 	}
 
