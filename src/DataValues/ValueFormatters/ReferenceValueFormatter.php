@@ -9,6 +9,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Message;
 use SMWDataValue as DataValue;
+use SMWPropertyValue as PropertyValue;
 use SMWDIUri as DIUri;
 use SMWDITime as DITime;
 
@@ -113,8 +114,23 @@ class ReferenceValueFormatter extends DataValueFormatter {
 				$output = '?';
 			}
 
+			$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
+				$propertyDataItem
+			);
+
+			// Tooltip in tooltip isn't expected to work therefore avoid them
+			// when generating property labels in a reference output
+			$dataValue->setOption( PropertyValue::OPT_NO_HIGHLIGHT, true );
+
 			if ( !$isValue && $type !== self::VALUE ) {
-				$output = Message::get( array( 'smw-datavalue-reference-outputformat', $propertyDataItem->getLabel(), $output ), Message::TEXT );
+				$output = Message::get(
+					array(
+						'smw-datavalue-reference-outputformat',
+						$dataValue->getShortHTMLText( smwfGetLinker() ),
+						$output
+					),
+					Message::TEXT
+				);
 			}
 
 			$results[] = $output;
@@ -129,8 +145,8 @@ class ReferenceValueFormatter extends DataValueFormatter {
 
 		// Turn Uri/Page links into a href representation when not used as value
 		if ( !$isValue &&
-			( $dataItem instanceof DIUri || $dataItem instanceof DIWikiPage
-			) && $type !== self::VALUE ) {
+			( $dataItem instanceof DIUri || $dataItem instanceof DIWikiPage ) &&
+			$type !== self::VALUE ) {
 			return $dataValue->getShortHTMLText( smwfGetLinker() );
 		}
 

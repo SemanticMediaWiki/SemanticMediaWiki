@@ -20,12 +20,15 @@ class ReferenceValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
+	private $stringValidator;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
+
+		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
 
 		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
 			->disableOriginalConstructor()
@@ -87,15 +90,18 @@ class ReferenceValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$referenceValue->setFieldProperties( array(
 			$this->dataItemFactory->newDIProperty( 'Foo' ),
-			$this->dataItemFactory->newDIProperty( 'Bar' ),
-			$this->dataItemFactory->newDIProperty( 'Foobar' )
+			$this->dataItemFactory->newDIProperty( 'Date' ),
+			$this->dataItemFactory->newDIProperty( 'URL' )
 		) );
+
+		$referenceValue->setOption( ReferenceValue::OPT_CONTENT_LANGUAGE, 'en' );
+		$referenceValue->setOption( ReferenceValue::OPT_USER_LANGUAGE, 'en' );
 
 		$referenceValue->setUserValue( $suserValue );
 
 		$instance = new ReferenceValueFormatter( $referenceValue );
 
-		$this->assertEquals(
+		$this->stringValidator->assertThatStringContains(
 			$expected,
 			$instance->format( $type, $linker )
 		);
@@ -122,28 +128,48 @@ class ReferenceValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'abc',
 			ReferenceValueFormatter::WIKI_SHORT,
 			null,
-			'Abc<span class="smw-reference smw-reference-indicator smw-highlighter smwttinline" data-title="Reference" data-content="&lt;ul&gt;&lt;li&gt;Bar: ?&lt;/li&gt;&lt;li&gt;Foobar: ?&lt;/li&gt;&lt;/ul&gt;" title="Bar: ?, Foobar: ?"></span>'
+			array(
+				'Abc',
+				'class="smw-reference smw-reference-indicator smw-highlighter smwttinline"',
+				'data-title="Reference"',
+				'title="Date: ?, URL: ?"'
+			)
 		);
 
 		$provider[] = array(
 			'abc',
 			ReferenceValueFormatter::HTML_SHORT,
 			null,
-			'Abc<span class="smw-reference smw-reference-indicator smw-highlighter smwttinline" data-title="Reference" data-content="&lt;ul&gt;&lt;li&gt;Bar: ?&lt;/li&gt;&lt;li&gt;Foobar: ?&lt;/li&gt;&lt;/ul&gt;" title="Bar: ?, Foobar: ?"></span>'
+			array(
+				'Abc',
+				'class="smw-reference smw-reference-indicator smw-highlighter smwttinline"',
+				'data-title="Reference"',
+				'title="Date: ?, URL: ?"'
+			)
 		);
 
 		$provider[] = array(
 			'abc',
 			ReferenceValueFormatter::WIKI_LONG,
 			null,
-			'Abc<span class="smw-reference smw-reference-indicator smw-highlighter smwttinline" data-title="Reference" data-content="&lt;ul&gt;&lt;li&gt;Bar: ?&lt;/li&gt;&lt;li&gt;Foobar: ?&lt;/li&gt;&lt;/ul&gt;" title="Bar: ?, Foobar: ?"></span>'
+			array(
+				'Abc',
+				'class="smw-reference smw-reference-indicator smw-highlighter smwttinline"',
+				'data-title="Reference"',
+				'title="Date: ?, URL: ?"'
+			)
 		);
 
 		$provider[] = array(
 			'abc',
 			ReferenceValueFormatter::HTML_LONG,
 			null,
-			'Abc<span class="smw-reference smw-reference-indicator smw-highlighter smwttinline" data-title="Reference" data-content="&lt;ul&gt;&lt;li&gt;Bar: ?&lt;/li&gt;&lt;li&gt;Foobar: ?&lt;/li&gt;&lt;/ul&gt;" title="Bar: ?, Foobar: ?"></span>'
+			array(
+				'Abc',
+				'class="smw-reference smw-reference-indicator smw-highlighter smwttinline"',
+				'data-title="Reference"',
+				'title="Date: ?, URL: ?"'
+			)
 		);
 
 		return $provider;

@@ -33,6 +33,11 @@ use SMW\Message;
 class SMWPropertyValue extends SMWDataValue {
 
 	/**
+	 * Avoid the display of a tooltip
+	 */
+	const OPT_NO_HIGHLIGHT = 'no.highlight';
+
+	/**
 	 * Cache for wiki page value object associated to this property, or
 	 * null if no such page exists. Use getWikiPageValue() to get the data.
 	 * @var SMWWikiPageValue
@@ -208,7 +213,7 @@ class SMWPropertyValue extends SMWDataValue {
 
 	public function setOutputFormat( $formatstring ) {
 		$this->m_outformat = $formatstring;
-		if ( $this->m_wikipage instanceof SMWDataValue ) {
+		if ( $this->getWikiPageValue() instanceof SMWDataValue ) {
 			$this->m_wikipage->setOutputFormat( $formatstring );
 		}
 	}
@@ -356,6 +361,10 @@ class SMWPropertyValue extends SMWDataValue {
 	 * Create special highlighting for hinting at special properties.
 	 */
 	protected function highlightText( $text, $linker = null ) {
+
+		if ( $this->getOptionBy( self::OPT_NO_HIGHLIGHT ) === true ) {
+			return $text;
+		}
 
 		$propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
 
