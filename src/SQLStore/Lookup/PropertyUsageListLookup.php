@@ -131,11 +131,11 @@ class PropertyUsageListLookup implements ListLookup {
 
 			try {
 				$property = new DIProperty( str_replace( ' ', '_', $row->smw_title ) );
-				$property->id = $row->smw_id;
 			} catch ( InvalidPropertyException $e ) {
 				$property = new DIError( new \Message( 'smw_noproperty', array( $row->smw_title ) ) );
 			}
 
+			$property->id = isset( $row->smw_id ) ? $row->smw_id : -1;
 			$result[] = array( $property, (int)$row->usage_count );
 		}
 
