@@ -1,18 +1,18 @@
 <?php
 
-namespace SMW\Tests\PropertyAnnotator;
+namespace SMW\Tests\PropertyAnnotators;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Localizer;
-use SMW\PropertyAnnotator\NullPropertyAnnotator;
-use SMW\PropertyAnnotator\PredefinedPropertyAnnotator;
+use SMW\PropertyAnnotators\NullPropertyAnnotator;
+use SMW\PropertyAnnotators\PredefinedPropertyAnnotator;
 use SMW\Tests\Utils\Mock\MockTitle;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**
- * @covers \SMW\PropertyAnnotator\PredefinedPropertyAnnotator
+ * @covers \SMW\PropertyAnnotators\PredefinedPropertyAnnotator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -48,7 +48,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyAnnotator\PredefinedPropertyAnnotator',
+			'\SMW\PropertyAnnotators\PredefinedPropertyAnnotator',
 			$instance
 		);
 	}

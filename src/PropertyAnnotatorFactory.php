@@ -3,13 +3,13 @@
 namespace SMW;
 
 use SMw\MediaWiki\RedirectTargetFinder;
-use SMW\PropertyAnnotator\CategoryPropertyAnnotator;
-use SMW\PropertyAnnotator\DisplayTitlePropertyAnnotator;
-use SMW\PropertyAnnotator\MandatoryTypePropertyAnnotator;
-use SMW\PropertyAnnotator\NullPropertyAnnotator;
-use SMW\PropertyAnnotator\PredefinedPropertyAnnotator;
-use SMW\PropertyAnnotator\RedirectPropertyAnnotator;
-use SMW\PropertyAnnotator\SortKeyPropertyAnnotator;
+use SMW\PropertyAnnotators\CategoryPropertyAnnotator;
+use SMW\PropertyAnnotators\DisplayTitlePropertyAnnotator;
+use SMW\PropertyAnnotators\MandatoryTypePropertyAnnotator;
+use SMW\PropertyAnnotators\NullPropertyAnnotator;
+use SMW\PropertyAnnotators\PredefinedPropertyAnnotator;
+use SMW\PropertyAnnotators\RedirectPropertyAnnotator;
+use SMW\PropertyAnnotators\SortKeyPropertyAnnotator;
 use SMW\Store;
 
 /**

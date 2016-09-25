@@ -123,8 +123,8 @@ class ApplicationFactory {
 	 *
 	 * @return PropertyAnnotatorFactory
 	 */
-	public function newPropertyAnnotatorFactory() {
-		return new PropertyAnnotatorFactory();
+	public function getPropertyAnnotatorFactory() {
+		return $this->callbackLoader->singleton( 'PropertyAnnotatorFactory' );
 	}
 
 	/**

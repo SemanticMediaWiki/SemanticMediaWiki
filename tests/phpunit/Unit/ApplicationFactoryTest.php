@@ -109,7 +109,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\PropertyAnnotatorFactory',
-			$this->applicationFactory->newPropertyAnnotatorFactory()
+			$this->applicationFactory->getPropertyAnnotatorFactory()
 		);
 	}
 

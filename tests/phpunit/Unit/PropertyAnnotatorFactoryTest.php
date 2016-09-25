@@ -32,7 +32,7 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new PropertyAnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyAnnotator\NullPropertyAnnotator',
+			'\SMW\PropertyAnnotators\NullPropertyAnnotator',
 			$instance->newNullPropertyAnnotator( $semanticData )
 		);
 	}
@@ -50,7 +50,7 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new PropertyAnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyAnnotator\RedirectPropertyAnnotator',
+			'\SMW\PropertyAnnotators\RedirectPropertyAnnotator',
 			$instance->newRedirectPropertyAnnotator( $propertyAnnotator, $redirectTargetFinder )
 		);
 	}
@@ -68,7 +68,7 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new PropertyAnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyAnnotator\PredefinedPropertyAnnotator',
+			'\SMW\PropertyAnnotators\PredefinedPropertyAnnotator',
 			$instance->newPredefinedPropertyAnnotator( $propertyAnnotator, $pageInfo )
 		);
 	}
@@ -82,7 +82,7 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new PropertyAnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyAnnotator\SortKeyPropertyAnnotator',
+			'\SMW\PropertyAnnotators\SortKeyPropertyAnnotator',
 			$instance->newSortKeyPropertyAnnotator( $propertyAnnotator, 'Foo' )
 		);
 	}
@@ -96,7 +96,7 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new PropertyAnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyAnnotator\CategoryPropertyAnnotator',
+			'\SMW\PropertyAnnotators\CategoryPropertyAnnotator',
 			$instance->newCategoryPropertyAnnotator( $propertyAnnotator, array() )
 		);
 	}
@@ -110,7 +110,7 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new PropertyAnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyAnnotator\MandatoryTypePropertyAnnotator',
+			'\SMW\PropertyAnnotators\MandatoryTypePropertyAnnotator',
 			$instance->newMandatoryTypePropertyAnnotator( $propertyAnnotator )
 		);
 	}

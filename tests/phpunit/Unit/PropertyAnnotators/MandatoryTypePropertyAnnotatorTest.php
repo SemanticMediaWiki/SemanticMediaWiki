@@ -1,18 +1,18 @@
 <?php
 
-namespace SMW\Tests\PropertyAnnotator;
+namespace SMW\Tests\PropertyAnnotators;
 
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\PropertyAnnotator\MandatoryTypePropertyAnnotator;
-use SMW\PropertyAnnotator\NullPropertyAnnotator;
+use SMW\PropertyAnnotators\MandatoryTypePropertyAnnotator;
+use SMW\PropertyAnnotators\NullPropertyAnnotator;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
 use SMWDIUri as DIUri;
 
 /**
- * @covers \SMW\PropertyAnnotator\MandatoryTypePropertyAnnotator
+ * @covers \SMW\PropertyAnnotators\MandatoryTypePropertyAnnotator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -43,7 +43,7 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyAnnotator\MandatoryTypePropertyAnnotator',
+			'\SMW\PropertyAnnotators\MandatoryTypePropertyAnnotator',
 			$instance
 		);
 	}

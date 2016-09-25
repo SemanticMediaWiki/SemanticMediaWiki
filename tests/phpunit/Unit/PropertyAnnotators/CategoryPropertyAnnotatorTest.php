@@ -1,18 +1,17 @@
 <?php
 
-namespace SMW\Tests\PropertyAnnotator;
+namespace SMW\Tests\PropertyAnnotators;
 
 use ParserOutput;
-use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\ParserData;
-use SMW\PropertyAnnotator\CategoryPropertyAnnotator;
-use SMW\PropertyAnnotator\NullPropertyAnnotator;
+use SMW\PropertyAnnotators\CategoryPropertyAnnotator;
+use SMW\PropertyAnnotators\NullPropertyAnnotator;
 use SMW\Tests\Utils\Mock\MockTitle;
-use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\PropertyAnnotator\CategoryPropertyAnnotator
+ * @covers \SMW\PropertyAnnotators\CategoryPropertyAnnotator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -24,19 +23,19 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
-	private $applicationFactory;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
-		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
-		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->testEnvironment = new TestEnvironment();
+
+		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
+		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -52,7 +51,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyAnnotator\CategoryPropertyAnnotator',
+			'\SMW\PropertyAnnotators\CategoryPropertyAnnotator',
 			$instance
 		);
 	}
@@ -159,7 +158,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			->setSubject( new DIWikiPage( __METHOD__, $parameters['namespace'], '' ) )
 			->newEmptySemanticData();
 
-		$this->applicationFactory->registerObject(
+		$this->testEnvironment->registerObject(
 			'PageCreator',
 			$pageCreator
 		);
