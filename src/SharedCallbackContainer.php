@@ -224,7 +224,8 @@ class SharedCallbackContainer implements CallbackContainer {
 			$callbackLoader->registerExpectedReturnType( 'PropertySpecificationLookup', '\SMW\PropertySpecificationLookup' );
 
 			$propertySpecificationLookup = new PropertySpecificationLookup(
-				$callbackLoader->singleton( 'CachedPropertyValuesPrefetcher' )
+				$callbackLoader->singleton( 'CachedPropertyValuesPrefetcher' ),
+				$callbackLoader->singleton( 'InMemoryPoolCache' )->getPoolCacheById( PropertySpecificationLookup::POOLCACHE_ID )
 			);
 
 			// Uses the language object selected in user preferences. It is one
