@@ -479,7 +479,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 
 		//show|hide inline embed code
 		$result .= '<div id="inlinequeryembed" style="display: none"><div id="inlinequeryembedinstruct">' . wfMessage( 'smw_ask_embed_instr' )->escaped() . '</div><textarea id="inlinequeryembedarea" readonly="yes" cols="20" rows="6" onclick="this.select()">' .
-			'{{#ask:' . htmlspecialchars( $this->m_querystring ) . "\n";
+			'{{#ask: ' . htmlspecialchars( $this->m_querystring ) . "\n";
 
 		foreach ( $this->m_printouts as $printout ) {
 			$serialization = $printout->getSerialisation( true );
