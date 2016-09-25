@@ -7,6 +7,7 @@ use ParamProcessor\Processor;
 use SMW\Query\PrintRequest;
 use SMW\Query\PrintRequestFactory;
 use SMW\ApplicationFactory;
+use SMW\Message;
 
 /**
  * This file contains a static class for accessing functions to generate and execute
@@ -596,7 +597,7 @@ class SMWQueryProcessor {
 		);
 
 		$params['searchlabel'] = array(
-			'default' => wfMessage( 'smw_iq_moreresults' )->inContentLanguage()->text(),
+			'default' => Message::get( 'smw_iq_moreresults', Message::TEXT, Message::USER_LANGUAGE )
 		);
 
 		$params['default'] = array(

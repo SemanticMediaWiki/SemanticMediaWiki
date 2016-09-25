@@ -4,6 +4,7 @@ namespace SMW\Query;
 
 use SMWInfolink as Infolink;
 use SMWQuery as Query;
+use SMW\Message;
 
 /**
  * Representing a Special:Ask query link to further query results
@@ -31,7 +32,7 @@ class QueryLinker {
 		}
 
 		$link->setCaption(
-			' ' . wfMessage( 'smw_iq_moreresults' )->inContentLanguage()->text()
+			' ' . Message::get( 'smw_iq_moreresults', Message::TEXT, Message::USER_LANGUAGE )
 		);
 
 		return $link;
