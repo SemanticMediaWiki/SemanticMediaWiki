@@ -19,6 +19,11 @@ use SMWPropertyValue;
  */
 class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 
+	protected function tearDown() {
+		DataValueFactory::getInstance()->clear();
+		parent::tearDown();
+	}
+
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(

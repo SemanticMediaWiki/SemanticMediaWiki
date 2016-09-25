@@ -399,15 +399,16 @@ class DIProperty extends SMWDataItem {
 			$inverse = true;
 		}
 
-		$id = false;
-
 		// Special handling for when the user value contains a @LCODE marker
 		if ( ( $annotatedLanguageCode = Localizer::getAnnotatedLanguageCodeFrom( $label ) ) !== false ) {
 			$languageCode = $annotatedLanguageCode;
 		}
 
+		$id = false;
+		$label = str_replace( '_', ' ', $label );
+
 		if ( $languageCode ) {
-			$id = PropertyRegistry::getInstance()->findPropertyIdByLanguageCode(
+			$id = PropertyRegistry::getInstance()->findPropertyIdFromLabelByLanguageCode(
 				$label,
 				$languageCode
 			);
@@ -418,7 +419,7 @@ class DIProperty extends SMWDataItem {
 		}
 
 		$id = PropertyRegistry::getInstance()->findPropertyIdByLabel(
-			str_replace( '_', ' ', $label )
+			$label
 		);
 
 		if ( $id === false ) {
