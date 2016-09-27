@@ -418,6 +418,7 @@
 	"smw-datavalue-time-invalid-date-components-sequence": "«$1» містить послідовність, яку не можна інтерпретувати згідно з матрицею для компонентів дати.",
 	"smw-datavalue-time-invalid-ampm": "«$1» містить «$2» як елемент години, непридатний для 12-годинного формату часу.",
 	"smw-datavalue-time-invalid-jd": "Не вдалося інтерпретувати значення вводу «$1» як дійсне число (день за Юліанським календарем). Було видано «$2».",
+	"smw-datavalue-time-invalid-prehistoric": "Не вдалося інтерпретувати доісторичне значення вводу «$1». Наприклад, якщо вказати більше інформації, ніж роки чи календарну модель, це може вивести неочікувані результати у доісторичному контексті.",
 	"smw-datavalue-external-formatter-uri-missing-placeholder": "URI форматувальника не містить плейсхолдера «$1».",
 	"smw-datavalue-external-formatter-invalid-uri": "«$1» — неправильна URL-адреса.",
 	"smw-datavalue-external-identifier-formatter-missing": "Властивість відсутня в призначенні [[Property:External formatter uri|«URI зовнішнього форматувальника»]].",

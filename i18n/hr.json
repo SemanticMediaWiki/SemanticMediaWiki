@@ -7,7 +7,8 @@
 			"아라",
 			"SpeedyGonsales",
 			"Bugoslav",
-			"Kghbln"
+			"Kghbln",
+			"Ex13"
 		]
 	},
 	"smw-desc": "Čini Vaš wiki dostupnijim - za strojeve ''i'' ljude ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentacija])",
@@ -172,7 +173,7 @@
 	"smw_smwadmin_datarefreshprogress": "<strong>Osvježavanje je već u tijeku.</strong>\nNormalno je da osvježavanje napreduje sporo jer se podaci osvježavaju u malim obrocima svaki put kad korisnik pristupi wikiju.\nDa bi ovo osvježavanje završilo čim prije, možete pokrenuti MediaWiki skriptu za održavanje <code>runJobs.php</code> (koristite opciju <code>--maxjobs 1000</code> kako biste ograničili broj zasebnih osvježavanja po jednoj seriji).\nProcjena napretka osvježavanja:",
 	"smw_smwadmin_datarefreshbutton": "Pokreni osvježavanje podataka",
 	"smw_smwadmin_datarefreshstop": "Zaustavi ovo osvježavanje",
-	"smw_smwadmin_datarefreshstopconfirm": "Da, siguran sam.",
+	"smw_smwadmin_datarefreshstopconfirm": "Da, {{GENDER:$1|siguran|sigurna}} sam.",
 	"smw_smwadmin_support": "Zatražite pomoć",
 	"smw_smwadmin_supportdocu": "U slučaju problema poslužite se sljedećim izvorima:",
 	"smw_smwadmin_installfile": "U slučaju problema s Vašom instalacijom pogledajte naputke u datoteci <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">INSTALL</a>.",
@@ -182,7 +183,7 @@
 	"smw_adminlinks_datastructure": "Struktura podataka",
 	"smw_adminlinks_displayingdata": "Prikaz podataka",
 	"smw_adminlinks_inlinequerieshelp": "Pomoć za umetnute upite",
-	"smw_unknowntype": "Za svojstvo je definiran nepodržan tip \"$1\".",
+	"smw_unknowntype": "Tip ovog svojstva je neispravan",
 	"smw_concept_header": "Stranice koncepta \"$1\"",
 	"smw_conceptarticlecount": "Prikazano $1 {{PLURAL:$1|stranica koja pripada|stranice koje pripadaju|stranica koje pripadaju}} tom konceptu.",
 	"smw-livepreview-loading": "Učitavam…"
