@@ -428,5 +428,8 @@
 	"smw-datavalue-propertylist-invalid-property-key": "A lista de propiedades \"$1\" contén unha clave de propiedade \"$2\" inválida.",
 	"smw-datavalue-type-invalid-typeuri": "O tipo \"$1\" non pode ser transformado nunha representación URI válida.",
 	"smw-datavalue-wikipage-missing-fragment-context": "O valor de entrada da wikipáxina \"$1\" non ser usado sen unha páxina de contexto.",
-	"smw-datavalue-reference-outputformat": "$1 : $2"
+	"smw-datavalue-wikipage-invalid-title": "O valor de entrada \"$1\" da wikipáxina contén caracteres non válidos ou está incompleta e pode provocar resultados inesperados nunha busca ou nun proceso de anotación.",
+	"smw-datavalue-wikipage-empty": "O valor de entrada da wikipáxina está baleiro (p.ex. <code>[[SomeProperty::]], [[]]</code>) e non pode usarse como nome ou como parte dunha condición de busca.",
+	"smw-datavalue-reference-outputformat": "$1 : $2",
+	"smw-datavalue-reference-invalid-fields-definition": "O tipo [[Special:Types/Reference|Referencia]] espera unha lista de propiedades para ser declarado usando a propiedade [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields Ten campos]."
 }

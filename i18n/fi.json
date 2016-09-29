@@ -8,7 +8,8 @@
 			"Nike",
 			"Silvonen",
 			"Str4nd",
-			"VezonThunder"
+			"VezonThunder",
+			"Pyscowicz"
 		]
 	},
 	"smw-desc": "Lisää wikisi helppokäyttöisyyttä - niin koneille \"kuin\" ihmisillekin ([https://www.semantic-mediawiki.org/wiki/Help:User_manual käyttäjän opas])",
@@ -96,7 +97,7 @@
 	"smw_noqueryfeature": "Joitain kyselyn ehtoja ei tueta tässä wikissä ja siksi osa kyselystä jäi tekemättä ($1).",
 	"smw_noconjunctions": "Kyselyjen JA-toimituksia ei tueta tässä wikissä ja siksi osa kyselystä jäi tekemättä ($1).",
 	"smw_nodisjunctions": "Kyselyjen TAI-toimituksia ei tueta tässä wikissä ja siksi osa kyselystä jäi tekemättä ($1).",
-	"smw_querytoolarge": "Seuraavia kyselyehtoja ei voitu huomioida, koska wiki rajoittaa kyselyn kokoa tai syvyyttä: $1.",
+	"smw_querytoolarge": "Seuraavia kyselyehtoja <code>$1</code> ei voitu huomioida, koska wiki rajoittaa kyselyn kokoa tai syvyyttä.",
 	"smw_notemplategiven": "Parametri \"template\" on pakollinen, jotta tämä kyselymuoto toimisi.",
 	"smw_db_sparqlqueryproblem": "Kyselyn tulosta ei voitu noutaa SPARQL-tietokannasta. Virhe voi olla väliaikainen tai osoitus tietokannan ohjelmistovirheestä.",
 	"smw_db_sparqlqueryincomplete": "Kyselyyn vastaaminen osoittautui liian vaikeaksi ja kysely keskeytettiin. Jotkut tulokset voivat puuttua. Voit yrittää uudelleen yksinkertaisemmalla kyselyllä mikäli vain mahdollista.",
