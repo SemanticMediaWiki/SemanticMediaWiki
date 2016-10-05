@@ -22,7 +22,7 @@ if ( !class_exists( 'SemanticMediaWiki' ) || ( $version = SemanticMediaWiki::get
 }
 
 // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength.MaxExceeded
-print sprintf( "\n%-20s%s\n", "Semantic MediaWiki:", $version . ' ('. implode( ', ', SemanticMediaWiki::getStoreVersion() ) . ')' );
+print sprintf( "\n%-20s%s\n", "Semantic MediaWiki:", $version . ' ('. implode( ', ', SemanticMediaWiki::getEnvironment() ) . ')' );
 // @codingStandardsIgnoreEnd
 
 if ( is_readable( $path = __DIR__ . '/../vendor/autoload.php' ) ) {

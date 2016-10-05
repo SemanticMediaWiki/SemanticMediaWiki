@@ -1,9 +1,10 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use SMW\NamespaceManager;
 use SMW\Tests\TestEnvironment;
+use SMW\ExtraneousLanguage;
 
 /**
  * @covers \SMW\NamespaceManager
@@ -17,70 +18,59 @@ use SMW\Tests\TestEnvironment;
 class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
+	private $extraneousLanguage;
+	private $default;
 
 	protected function setUp() {
 		$this->testEnvironment = new TestEnvironment();
+
+		$this->extraneousLanguage = $this->getMockBuilder( '\SMW\ExtraneousLanguage\ExtraneousLanguage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->extraneousLanguage->expects( $this->any() )
+			->method( 'fetchByLanguageCode' )
+			->will( $this->returnSelf() );
+
+		$this->extraneousLanguage->expects( $this->any() )
+			->method( 'getNamespaces' )
+			->will( $this->returnValue( array() ) );
+
+		$this->extraneousLanguage->expects( $this->any() )
+			->method( 'getNamespaceAliases' )
+			->will( $this->returnValue( array() ) );
+
+		$this->default = array(
+			'smwgNamespacesWithSemanticLinks' => array(),
+			'wgNamespacesWithSubpages' => array(),
+			'wgExtraNamespaces'  => array(),
+			'wgNamespaceAliases' => array(),
+			'wgLanguageCode'     => 'en'
+		);
 	}
 
 	protected function tearDown() {
 		$this->testEnvironment->tearDown();
 	}
 
-	private function newInstance( &$test = array(), $langCode = 'en' ) {
-
-		$default = array(
-			'smwgNamespacesWithSemanticLinks' => array(),
-			'wgNamespacesWithSubpages' => array(),
-			'wgExtraNamespaces'  => array(),
-			'wgNamespaceAliases' => array(),
-			'wgLanguageCode'     => $langCode
-		);
-
-		$test = array_merge( $default, $test );
-
-		$smwBasePath = __DIR__ . '../../../..';
-
-		return new NamespaceManager( $test, $smwBasePath );
-	}
-
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			'\SMW\NamespaceManager',
-			$this->newInstance()
+			new NamespaceManager( $test, $this->extraneousLanguage )
 		);
 	}
 
-	public function testExecution() {
-
-		$test = array();
-
-		$this->newInstance( $test )->init();
-
-		$this->assertNotEmpty(
-			$test
-		);
-	}
 
 	public function testExecutionWithIncompleteConfiguration() {
 
-		$test = array(
-			'wgExtraNamespaces'  => '',
-			'wgNamespaceAliases' => ''
-		);
+		$test = $this->default + array(
+				'wgExtraNamespaces'  => '',
+				'wgNamespaceAliases' => ''
+			);
 
-		$this->newInstance( $test )->init();
-
-		$this->assertNotEmpty(
-			$test
-		);
-	}
-
-	public function testExecutionWithLanguageFallback() {
-
-		$test = array();
-
-		$this->newInstance( $test, 'foo' )->init();
+		$instance = new NamespaceManager( $test, $this->extraneousLanguage );
+		$instance->init();
 
 		$this->assertNotEmpty(
 			$test
@@ -136,14 +126,16 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testInitCustomNamespace() {
 
-		$test = array();
+		$test = array(
+			'wgLanguageCode' => 'en'
+		);
+
 		NamespaceManager::initCustomNamespace( $test );
 
 		$this->assertNotEmpty( $test );
 		$this->assertEquals(
 			100,
-			$test['smwgNamespaceIndex'],
-			'Asserts that smwgNamespaceIndex is being set to a default index'
+			$test['smwgNamespaceIndex']
 		);
 	}
 
