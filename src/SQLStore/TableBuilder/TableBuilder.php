@@ -29,6 +29,16 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	private $messageReporter;
 
 	/**
+	 * @var string|integer
+	 */
+	protected $dbName;
+
+	/**
+	 * @var array
+	 */
+	protected $tableOptions;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param DatabaseBase $connection
@@ -65,7 +75,28 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 			throw new RuntimeException( "Unknown DB type " . $connection->getType() );
 		}
 
+		$instance->setDbName( $GLOBALS['wgDBname'] );
+		$instance->setTableOptions( $GLOBALS['wgDBTableOptions'] );
+
 		return $instance;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string|integer $dbName
+	 */
+	public function setDbName( $dbName ) {
+		$this->dbName = $dbName;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param array $tableOptions
+	 */
+	public function setTableOptions( $tableOptions ) {
+		$this->tableOptions = $tableOptions;
 	}
 
 	/**

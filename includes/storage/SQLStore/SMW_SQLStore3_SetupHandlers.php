@@ -108,9 +108,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 					'smw_subobject' => $dbtypes['t'] . ' NOT NULL',
 					'smw_sortkey' => $dbtypes['t']  . ' NOT NULL',
 					'smw_proptable_hash' => $dbtypes['l']
-				),
-				'wgDBname' => $GLOBALS['wgDBname'],
-				'wgDBTableOptions' => $GLOBALS['wgDBTableOptions']
+				)
 			)
 		);
 
@@ -134,9 +132,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 				'fields' => array(
 					's_id' => $dbtypes['p'] . ' NOT NULL',
 					'o_id' => $dbtypes['p'] . ' NOT NULL'
-				),
-				'wgDBname' => $GLOBALS['wgDBname'],
-				'wgDBTableOptions' => $GLOBALS['wgDBTableOptions']
+				)
 			)
 		);
 
@@ -156,9 +152,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 				'fields' => array(
 					's_id' => $dbtypes['p'] . ' NOT NULL',
 					'o_id' => $dbtypes['p'] . ' NOT NULL'
-				),
-				'wgDBname' => $GLOBALS['wgDBname'],
-				'wgDBTableOptions' => $GLOBALS['wgDBTableOptions']
+				)
 			)
 		);
 
@@ -184,8 +178,6 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 					'o_text' => 'TEXT',
 					'o_sort' => $dbtypes['t'],
 				),
-				'wgDBname' => $GLOBALS['wgDBname'],
-				'wgDBTableOptions' => $GLOBALS['wgDBTableOptions'],
 				'ftSearchOptions'  => $GLOBALS['smwgFulltextSearchTableOptions']
 			)
 		);
@@ -210,9 +202,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 				'fields' => array(
 					'p_id' => $dbtypes['p'],
 					'usage_count' => $dbtypes['u']
-				),
-				'wgDBname' => $GLOBALS['wgDBname'],
-				'wgDBTableOptions' => $GLOBALS['wgDBTableOptions']
+				)
 			)
 		);
 
@@ -288,7 +278,11 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			foreach ( $diHandler->getTableFields() as $fieldname => $typeid ) {
 				// If the type signature is not recognized and the custom signatures have not been added, add them.
 				if ( !$addedCustomTypeSignatures && !array_key_exists( $typeid, $dbtypes ) ) {
+
+					// @Depreceated since 2.5
 					\Hooks::run( 'SMWCustomSQLStoreFieldType', array( &$dbtypes ) );
+
+					\Hooks::run( 'SMW::SQLStore::AddCustomDatabaseFieldType', array( &$dbtypes ) );
 					$addedCustomTypeSignatures = true;
 				}
 
@@ -301,9 +295,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			$tableBuilder->createTable(
 				$proptable->getName(),
 				array(
-					'fields' => $fieldarray,
-					'wgDBname' => $GLOBALS['wgDBname'],
-					'wgDBTableOptions' => $GLOBALS['wgDBTableOptions']
+					'fields' => $fieldarray
 				)
 			);
 
