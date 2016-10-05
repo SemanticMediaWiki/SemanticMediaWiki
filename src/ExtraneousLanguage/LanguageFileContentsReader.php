@@ -5,6 +5,7 @@ namespace SMW\ExtraneousLanguage;
 use RuntimeException;
 use Onoi\Cache\Cache;
 use Onoi\Cache\NullCache;
+use SMW\Libs\ErrorCode;
 
 /**
  * @license GNU GPL v2+
@@ -174,7 +175,7 @@ class LanguageFileContentsReader {
 			return $contents;
 		}
 
-		throw new RuntimeException( $this->getMessageForJsonErrorCode( json_last_error() ) );
+		throw new RuntimeException( ErrorCode::getMessageFromJsonErrorCode( json_last_error() ) );
 	}
 
 	private function getFileForLanguageCode( $languageCode ) {
@@ -186,22 +187,6 @@ class LanguageFileContentsReader {
 		}
 
 		throw new RuntimeException( "Expected a {$file} file" );
-	}
-
-	private function getMessageForJsonErrorCode( $errorCode ) {
-
-		$errorMessages = array(
-			JSON_ERROR_STATE_MISMATCH => 'Underflow or the modes mismatch, malformed JSON',
-			JSON_ERROR_CTRL_CHAR => 'Unexpected control character found, possibly incorrectly encoded',
-			JSON_ERROR_SYNTAX => 'Syntax error, malformed JSON',
-			JSON_ERROR_UTF8   => 'Malformed UTF-8 characters, possibly incorrectly encoded',
-			JSON_ERROR_DEPTH  => 'The maximum stack depth has been exceeded'
-		);
-
-		return sprintf(
-			"Expected a JSON compatible format but failed with '%s'",
-			$errorMessages[$errorCode]
-		);
 	}
 
 	private function getCacheKeyFrom( $languageCode ) {

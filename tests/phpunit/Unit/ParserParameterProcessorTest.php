@@ -280,6 +280,43 @@ class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
+		// {{#...:
+		// |@json={ "Foo": 123}
+		// }}
+		$provider[] = array(
+			array(
+				'@json={ "Foo": 123}'
+			),
+			array(
+				'Foo' => array( '123' )
+			)
+		);
+
+		// {{#...:
+		// |@json={ "Foo": [123, 456] }
+		// }}
+		$provider[] = array(
+			array(
+				'@json={ "Foo": [123, 456] }'
+			),
+			array(
+				'Foo' => array( '123', '456' )
+			)
+		);
+
+		// Error
+		// {{#...:
+		// |@json={ "Foo": [123, 456] }
+		// }}
+		$provider[] = array(
+			array(
+				'@json={ Foo: [123, 456] }'
+			),
+			array(
+				'@json' => array( '{ Foo: [123, 456] }' )
+			)
+		);
+
 		return $provider;
 	}
 

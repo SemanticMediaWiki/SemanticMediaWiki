@@ -106,6 +106,14 @@ class LanguageFileContentsReaderTest extends \PHPUnit_Framework_TestCase {
 		$instance->readByLanguageCode( 'bar', true );
 	}
 
+	public function testTryToReadInaccessibleFileByLanguageThrowsException() {
+
+		$instance = new LanguageFileContentsReader();
+
+		$this->setExpectedException( 'RuntimeException' );
+		$instance->readByLanguageCode( 'foo', true );
+	}
+
 	/**
 	 * This method is just for convenience so that one can quickly add contents to files
 	 * without requiring an extra class when extending the language content. Normally the
