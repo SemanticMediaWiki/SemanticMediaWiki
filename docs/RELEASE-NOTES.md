@@ -49,6 +49,7 @@ THIS IS NOT A RELEASE YET
 * #1775 Fixed time offset recognition 
 * #1817 Disabled `DataValue` constraint validation when used in a query context 
 * #1823 Fixed annotation of `Display title of` when `SMW_DV_WPV_DTITLE` is disabled
+* #1880 Fixed handling of the `bytea` type in `postgres` for a blob field
 
 ## Internal changes
 
