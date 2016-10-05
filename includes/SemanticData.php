@@ -614,7 +614,7 @@ class SemanticData {
 	 */
 	public function findSubSemanticData( $subobjectName ) {
 
-		if ( $this->hasSubSemanticData( $subobjectName ) ) {
+		if ( isset( $this->subSemanticData[$subobjectName] ) ) {
 			return $this->subSemanticData[$subobjectName];
 		}
 
