@@ -194,7 +194,6 @@
 	"settings": {},
 	"meta": {
 		"skip-on": {
-			"postgres": "Requires special \\ escape sequence on postgres",
 			"sqlite": "Requires special \\ escape sequence on sqlite"
 		},
 		"version": "0.1",
