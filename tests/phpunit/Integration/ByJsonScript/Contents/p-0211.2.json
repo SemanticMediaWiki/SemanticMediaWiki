@@ -1,0 +1,27 @@
+@source: http://www.simile-widgets.org/exhibit3/examples/other-versions/HEAD/icd/icd10-infectious.json
+
+{{#set:
+    |@json={
+    "kind": "block",
+    "code": "A00-A09",
+    "icdId": "http://id.who.int/icd/icd10/A00-A09",
+    "label": "Intestinal infectious diseases",
+    "link": "http://apps.who.int/classifications/icd10/browse/2010/en#/A00-A09",
+    "superclasses": [
+        "http://id.who.int/icd/icd10/I"
+    ],
+    "subclasses": [
+        "http://id.who.int/icd/icd10/A00",
+        "http://id.who.int/icd/icd10/A01",
+        "http://id.who.int/icd/icd10/A02",
+        "http://id.who.int/icd/icd10/A03",
+        "http://id.who.int/icd/icd10/A04",
+        "http://id.who.int/icd/icd10/A05",
+        "http://id.who.int/icd/icd10/A06",
+        "http://id.who.int/icd/icd10/A07",
+        "http://id.who.int/icd/icd10/A08",
+        "http://id.who.int/icd/icd10/A09"
+    ],
+    "id": "http://id.who.int/icd/icd10/A00-A09"
+}
+}}

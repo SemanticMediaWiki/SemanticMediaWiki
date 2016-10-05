@@ -1,0 +1,11 @@
+3+ depth is not permitted
+
+{{#set:
+    |@json={
+    "foo": {
+        "kind": {
+               "kind": "bar"
+           }
+    }
+}
+}}
