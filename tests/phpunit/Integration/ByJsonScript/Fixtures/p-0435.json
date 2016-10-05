@@ -1,0 +1,44 @@
+{
+	"description": "Test in-text annotation using '_txt' type with 255+ char (`wgContLang=en`, `wgLang=en`)",
+	"properties": [
+		{
+			"name": "Has text",
+			"contents": "[[Has type::Text]]"
+		}
+	],
+	"subjects": [
+		{
+			"name": "Example/P0435/1",
+			"contents": "[[Has text::TBgcHiQBTvpV3XkFiRpMcV1KQoZvQXFyiQUQMM2RoYUyJaRoSyKnsQTWwia3HATd4YVmd8BZgkL2LfL0Q6rP5E90A\\4IuV6u\/KdYjL3nxZvx0pbc3tbxwa6jMW1JDNxusaKQ52ftRS7DCEY1IPTRZnuRMLPgWYwLOsEAebOsxD7BBL9IK3Z2Osfh9s0FC1SUwCVdKcLkBgurXKGi99s61qnAU2zWFXBUCEzID6533LeaHCBKW8i2BgTK2tv65LHO6zB:;%&`^WithTextLongerThan255]]"
+		}
+	],
+	"parser-testcases": [
+		{
+			"about": "#0",
+			"subject": "Example/P0435/1",
+			"store": {
+				"clear-cache": true,
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [ "Has_text", "_SKEY", "_MDAT" ],
+					"propertyValues": [ "TBgcHiQBTvpV3XkFiRpMcV1KQoZvQXFyiQUQMM2RoYUyJaRoSyKnsQTWwia3HATd4YVmd8BZgkL2LfL0Q6rP5E90A\\4IuV6u\/KdYjL3nxZvx0pbc3tbxwa6jMW1JDNxusaKQ52ftRS7DCEY1IPTRZnuRMLPgWYwLOsEAebOsxD7BBL9IK3Z2Osfh9s0FC1SUwCVdKcLkBgurXKGi99s61qnAU2zWFXBUCEzID6533LeaHCBKW8i2BgTK2tv65LHO6zB:;%&`^WithTextLongerThan255" ]
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"TBgcHiQBTvpV3XkFiRpMcV1KQoZvQXFyiQUQMM2RoYUyJaRoSyKnsQTWwia3HATd4YVmd8BZgkL2LfL0Q6rP5E90A\\4IuV6u\/KdYjL3nxZvx0pbc3tbxwa6jMW1JDNxusaKQ52ftRS7DCEY1IPTRZnuRMLPgWYwLOsEAebOsxD7BBL9IK3Z2Osfh9s0FC1SUwCVdKcLkBgurXKGi99s61qnAU2zWFXBUCEzID6533LeaHCBKW8i2BgTK2tv65LHO6zB:;%&amp;`^WithTextLongerThan255"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "0.1",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

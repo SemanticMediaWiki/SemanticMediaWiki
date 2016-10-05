@@ -81,8 +81,9 @@ class SMWDIHandlerBlob extends SMWDataItemHandler {
 	 */
 	public function getInsertValues( SMWDataItem $dataItem ) {
 		$text = $dataItem->getString();
+
 		return array(
-			'o_blob' => strlen( $text ) <= self::MAX_HASH_LENGTH ? null : $text,
+			'o_blob' => strlen( $text ) <= self::MAX_HASH_LENGTH ? null : ( $GLOBALS['wgDBtype'] === 'postgres' ? pg_escape_bytea( $text ) : $text ),
 			'o_hash' => self::makeHash( $text ),
 		);
 	}
@@ -117,6 +118,11 @@ class SMWDIHandlerBlob extends SMWDataItemHandler {
 		if ( !is_array( $dbkeys ) || count( $dbkeys ) != 2 ) {
 			throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
 		}
+
+		if ( $GLOBALS['wgDBtype'] === 'postgres' ) {
+			$dbkeys[0] = pg_unescape_bytea( $dbkeys[0] );
+		}
+
 		if ( $dbkeys[0] == '' ) { // empty blob: use "hash" string
 			return new SMWDIBlob( $dbkeys[1] );
 		} else {
