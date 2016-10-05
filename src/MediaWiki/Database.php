@@ -399,19 +399,6 @@ class Database {
 	 * @since 1.9.1
 	 */
 	public function insert( $table, $rows, $fname = __METHOD__, $options = array() ) {
-
-		// Postgres can complain because of:
-		// Error: 22P02 ERROR:  invalid input syntax for type bytea LINE 1: ...ob" (s_id,p_id,o_blob,o_hash)
-		// when it contains something like "Has Url","http:\/\/example.org\/Foo","Example\/P0419\/1"]
-
-		if ( $this->isType( 'postgres' ) ) {
-			foreach ( $rows as &$row ) {
-				if ( isset( $row['o_blob'] ) ) {
-					$row['o_blob'] = str_replace( '\/', '/', $row['o_blob'] );
-				}
-			}
-		}
-
 		return $this->writeConnection()->insert( $table, $rows, $fname, $options );
 	}
 
