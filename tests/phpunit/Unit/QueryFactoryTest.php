@@ -98,4 +98,14 @@ class QueryFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructQueryCreator() {
+
+		$instance = new QueryFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Query\QueryCreator',
+			$instance->newQueryCreator()
+		);
+	}
+
 }

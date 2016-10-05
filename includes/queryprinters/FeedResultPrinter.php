@@ -341,4 +341,14 @@ final class FeedResultPrinter extends FileExportPrinter {
 
 		return $params;
 	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getDefaultSort() {
+		return 'DESC';
+	}
+
 }

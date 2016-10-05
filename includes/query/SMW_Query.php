@@ -3,6 +3,8 @@
 use SMW\DIWikiPage;
 use SMW\HashBuilder;
 use SMW\Query\PrintRequest;
+use SMW\Query\QueryContext;
+use SMW\Query\QueryUrlEncoder;
 use SMW\Message;
 
 /**
@@ -30,12 +32,7 @@ use SMW\Message;
  * additional settings).
  * @ingroup SMWQuery
  */
-class SMWQuery {
-
-	const MODE_INSTANCES = 1; // normal instance retrieval
-	const MODE_COUNT = 2; // find result count only
-	const MODE_DEBUG = 3; // prepare query, but show debug data instead of executing it
-	const MODE_NONE = 4;  // do nothing with the query
+class SMWQuery implements QueryContext {
 
 	/**
 	 * The time the QueryEngine required to answer a query condition
@@ -91,13 +88,34 @@ class SMWQuery {
 	 * @param $concept bool stating whether this query belongs to a concept; used to determine
 	 * proper default parameters (concepts usually have less restrictions)
 	 */
-	public function __construct( $description = null, $inline = false, $concept = false ) {
+	public function __construct( $description = null, $context = false ) {
 		global $smwgQMaxLimit, $smwgQMaxInlineLimit;
+
+		$inline = false;
+		$concept = false;
+
+		if ( $context === self::INLINE_QUERY ) {
+			$inline = true;
+		}
+
+		if ( $context === self::CONCEPT_DESC ) {
+			$concept = true;
+		}
+
 		$this->limit = $inline ? $smwgQMaxInlineLimit : $smwgQMaxLimit;
 		$this->isInline = $inline;
 		$this->isUsedInConcept = $concept;
 		$this->description = $description;
 		$this->applyRestrictions();
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param integer
+	 */
+	public function setQuerymode( $queryMode ) {
+		$this->querymode = $queryMode;
 	}
 
 	/**
@@ -398,6 +416,15 @@ class SMWQuery {
 	 */
 	public function getHash() {
 		return HashBuilder::createHashIdForContent( $this->toArray() );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getAsString() {
+		return QueryUrlEncoder::encode( $this );
 	}
 
 	/**
