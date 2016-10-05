@@ -58,7 +58,7 @@ class MySQLTableBuilder extends TableBuilder {
 
 		$tableName = $this->connection->tableName( $tableName );
 
-		$sql = 'CREATE TABLE ' . $this->getSQLFromDBName( $tableOptions ) . $tableName . ' (';
+		$sql = 'CREATE TABLE ' . "`$this->dbName`." . $tableName . ' (';
 
 		$fieldSql = array();
 		$fields = $tableOptions['fields'];
@@ -71,11 +71,6 @@ class MySQLTableBuilder extends TableBuilder {
 		$sql .= $this->getSQLFromDBTableOptions( $tableOptions );
 
 		$this->connection->query( $sql, __METHOD__ );
-	}
-
-	private function getSQLFromDBName( array $tableOptions ) {
-		global $wgDBname;
-		return "`$wgDBname`.";
 	}
 
 	private function getSQLFromDBTableOptions( array $tableOptions ) {
@@ -93,8 +88,8 @@ class MySQLTableBuilder extends TableBuilder {
 		}
 
 		// This replacement is needed for compatibility, see http://bugs.mysql.com/bug.php?id=17501
-		if ( isset( $tableOptions['wgDBTableOptions'] ) ) {
-			return str_replace( 'TYPE', 'ENGINE', $tableOptions['wgDBTableOptions'] );
+		if ( isset( $this->tableOptions ) ) {
+			return str_replace( 'TYPE', 'ENGINE', $this->tableOptions );
 		}
 	}
 
