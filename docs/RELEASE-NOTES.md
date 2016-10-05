@@ -36,6 +36,7 @@ THIS IS NOT A RELEASE YET
 * #1838 Added `Timezone` support for the `LOCL` output format 
 * #1854 Added unescaped output support for `format=json`
 * #1855 Added `@@@` as special annotation syntax to generate a property link (e.g `[[Foo::@@@]]`)
+* #1891 Added support for JSON typed annotation in `#set` and `#subobject` using the `@json` marker
 
 ## Bug fixes
 
