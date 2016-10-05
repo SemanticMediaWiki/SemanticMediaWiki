@@ -220,11 +220,6 @@ function smwfGetLinker() {
 function enableSemantics( $namespace = null, $complete = false ) {
 	global $smwgNamespace;
 
-	// $GLOBALS ought to be injected from the top-level but that would require
-	// to change the interface which would bring no benefits for the end user
-	// as enableSemantics() is only targeted to be included in LocalSettings
-	NamespaceManager::initCustomNamespace( $GLOBALS );
-
 	if ( !$complete && ( $smwgNamespace !== '' ) ) {
 		// The dot tells that the domain is not complete. It will be completed
 		// in the Export since we do not want to create a title object here when
