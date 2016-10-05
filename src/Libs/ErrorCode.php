@@ -36,7 +36,7 @@ class ErrorCode {
 			self::$constants = get_defined_constants( true );
 		}
 
-		if ( self::$jsonErrors === array() ) {
+		if ( isset( self::$constants["json"] ) && self::$jsonErrors === array() ) {
 			foreach ( self::$constants["json"] as $name => $value ) {
 				if ( !strncmp( $name, "JSON_ERROR_", 11 ) ) {
 					self::$jsonErrors[$value] = $name;
