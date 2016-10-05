@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use SMW\NamespaceManager;
 use SMW\Tests\TestEnvironment;
@@ -21,7 +21,6 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 	private $extraneousLanguage;
 	private $default;
 
-
 	protected function setUp() {
 		$this->testEnvironment = new TestEnvironment();
 
@@ -30,7 +29,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->extraneousLanguage->expects( $this->any() )
-			->method( 'setLanguageCode' )
+			->method( 'fetchByLanguageCode' )
 			->will( $this->returnSelf() );
 
 		$this->extraneousLanguage->expects( $this->any() )
@@ -62,16 +61,6 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testExecution() {
-		$test = $this->default;
-
-		$instance = new NamespaceManager( $test, $this->extraneousLanguage );
-		$instance->init();
-
-		$this->assertNotEmpty(
-			$test
-		);
-	}
 
 	public function testExecutionWithIncompleteConfiguration() {
 
@@ -137,7 +126,10 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testInitCustomNamespace() {
 
-		$test = array();
+		$test = array(
+			'wgLanguageCode' => 'en'
+		);
+
 		NamespaceManager::initCustomNamespace( $test );
 
 		$this->assertNotEmpty( $test );
