@@ -50,6 +50,7 @@ THIS IS NOT A RELEASE YET
 * #1817 Disabled `DataValue` constraint validation when used in a query context 
 * #1823 Fixed annotation of `Display title of` when `SMW_DV_WPV_DTITLE` is disabled
 * #1880 Fixed handling of the `bytea` type in `postgres` for a blob field
+* #1886 Fixed disappearance of the `Property` namespace in connection with extensions that use `wfLoadExtension`
 
 ## Internal changes
 
