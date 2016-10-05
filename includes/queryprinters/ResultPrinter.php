@@ -660,4 +660,13 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 		return false;
 	}
 
+	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getDefaultSort() {
+		return 'ASC';
+	}
+
 }

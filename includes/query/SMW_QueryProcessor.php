@@ -8,6 +8,7 @@ use SMW\Query\PrintRequest;
 use SMW\Query\PrintRequestFactory;
 use SMW\ApplicationFactory;
 use SMW\Message;
+use SMW\Query\QueryContext;
 
 /**
  * This file contains a static class for accessing functions to generate and execute
@@ -22,14 +23,7 @@ use SMW\Message;
  * and to serialise their results.
  * @ingroup SMWQuery
  */
-class SMWQueryProcessor {
-
-	// "query contexts" define restrictions during query parsing and
-	// are used to preconfigure query (e.g. special pages show no further
-	// results link):
-	const SPECIAL_PAGE = 0; // query for special page
-	const INLINE_QUERY = 1; // query for inline use
-	const CONCEPT_DESC = 2; // query for concept definition
+class SMWQueryProcessor implements QueryContext {
 
 	/**
 	 * Takes an array of unprocessed parameters, processes them using
@@ -102,69 +96,72 @@ class SMWQueryProcessor {
 	 * @return SMWQuery
 	 */
 	static public function createQuery( $queryString, array $params, $context = self::INLINE_QUERY, $format = '', array $extraPrintouts = array(), $contextPage = null ) {
-		global $smwgQDefaultNamespaces, $smwgQFeatures, $smwgQConceptFeatures;
-
-		// parse query:
-		$queryfeatures = ( $context == self::CONCEPT_DESC ) ? $smwgQConceptFeatures : $smwgQFeatures;
-		$qp = new SMWQueryParser( $queryfeatures );
-		$qp->setContextPage( $contextPage );
-		$qp->setDefaultNamespaces( $smwgQDefaultNamespaces );
-		$desc = $qp->getQueryDescription( $queryString );
 
 		if ( $format === '' || is_null( $format ) ) {
 			$format = $params['format']->getValue();
 		}
 
+		$defaultSort = 'ASC';
+
 		if ( $format == 'count' ) {
-			$querymode = SMWQuery::MODE_COUNT;
+			$queryMode = SMWQuery::MODE_COUNT;
 		} elseif ( $format == 'debug' ) {
-			$querymode = SMWQuery::MODE_DEBUG;
+			$queryMode = SMWQuery::MODE_DEBUG;
 		} else {
 			$printer = self::getResultPrinter( $format, $context );
-			$querymode = $printer->getQueryMode( $context );
+			$queryMode = $printer->getQueryMode( $context );
+			$defaultSort = $printer->getDefaultSort();
 		}
-
-		$query = new SMWQuery( $desc, ( $context != self::SPECIAL_PAGE ), ( $context == self::CONCEPT_DESC ) );
-		$query->setQueryString( $queryString );
-		$query->setContextPage( $contextPage );
-		$query->setExtraPrintouts( $extraPrintouts );
-		$query->setMainLabel( $params['mainlabel']->getValue() );
-		$query->addErrors( $qp->getErrors() ); // keep parsing errors for later output
-		$query->setQuerySource( $params['source']->getValue() );
 
 		// set mode, limit, and offset:
-		$query->querymode = $querymode;
+		$offset = 0;
+		$limit = $GLOBALS['smwgQDefaultLimit'];
+
 		if ( ( array_key_exists( 'offset', $params ) ) && ( is_int( $params['offset']->getValue() + 0 ) ) ) {
-			$query->setOffset( max( 0, trim( $params['offset']->getValue() ) + 0 ) );
+			$offset = $params['offset']->getValue();
 		}
 
-		if ( $query->querymode == SMWQuery::MODE_COUNT ) { // largest possible limit for "count", even inline
-			global $smwgQMaxLimit;
-			$query->setOffset( 0 );
-			$query->setLimit( $smwgQMaxLimit, false );
-		} else {
-			if ( ( array_key_exists( 'limit', $params ) ) && ( is_int( trim( $params['limit']->getValue() ) + 0 ) ) ) {
-				$query->setLimit( max( 0, trim( $params['limit']->getValue() ) + 0 ) );
-				if ( ( trim( $params['limit']->getValue() ) + 0 ) < 0 ) { // limit < 0: always show further results link only
-					$query->querymode = SMWQuery::MODE_NONE;
-				}
-			} else {
-				global $smwgQDefaultLimit;
-				$query->setLimit( $smwgQDefaultLimit );
+		if ( ( array_key_exists( 'limit', $params ) ) && ( is_int( trim( $params['limit']->getValue() ) + 0 ) ) ) {
+			$limit = $params['limit']->getValue();
+
+			// limit < 0: always show further results link only
+			if ( ( trim( $params['limit']->getValue() ) + 0 ) < 0 ) {
+				$queryMode = SMWQuery::MODE_NONE;
 			}
 		}
 
-		$defaultSort = $format === 'rss' ? 'DESC' : 'ASC';
-		$sort = self::getSortKeys( $params['sort']->getValue(), $params['order']->getValue(), $defaultSort );
+		// largest possible limit for "count", even inline
+		if ( $queryMode == SMWQuery::MODE_COUNT ) {
+			$offset = 0;
+			$limit = $GLOBALS['smwgQMaxLimit'];
+		}
 
-		$query->sortkeys = $sort['keys'];
-		$query->addErrors( $sort['errors'] );
-		$query->sort = count( $query->sortkeys ) > 0; // TODO: Why would we do this here?
+		$queryCreator = ApplicationFactory::getInstance()->getQueryFactory()->newQueryCreator();
 
-		return $query;
+		$queryCreator->withConfiguration(
+			array(
+				'extraPrintouts' => $extraPrintouts,
+				'queryMode'   => $queryMode,
+				'context'     => $context,
+				'contextPage' => $contextPage,
+				'offset'      => $offset,
+				'limit'       => $limit,
+				'querySource' => $params['source']->getValue(),
+				'mainLabel'   => $params['mainlabel']->getValue(),
+				'sort'        => $params['sort']->getValue(),
+				'order'       => $params['order']->getValue(),
+				'defaultSort' => $defaultSort
+			)
+		);
+
+		return $queryCreator->createFromString( $queryString );
 	}
 
 	/**
+	 * @deprecated since 2.5, This method should no longer be used but since it
+	 * was made protected (and therefore can be derived from) it will remain until
+	 * 3.0 to avoid a breaking BC.
+	 *
 	 * Takes the sort and order parameters and returns a list of sort keys and a list of errors.
 	 *
 	 * @since 1.7
@@ -176,55 +173,7 @@ class SMWQueryProcessor {
 	 * @return array ( keys => array(), errors => array() )
 	 */
 	protected static function getSortKeys( array $sortParam, array $orderParam, $defaultSort ) {
-		$orders = array();
-		$sortKeys = array();
-		$sortErros = array();
-
-		foreach ( $orderParam as $key => $order ) {
-			$order = strtolower( trim( $order ) );
-			if ( ( $order == 'descending' ) || ( $order == 'reverse' ) || ( $order == 'desc' ) ) {
-				$orders[$key] = 'DESC';
-			} elseif ( ( $order == 'random' ) || ( $order == 'rand' ) ) {
-				$orders[$key] = 'RANDOM';
-			} else {
-				$orders[$key] = 'ASC';
-			}
-		}
-
-		foreach ( $sortParam as $sort ) {
-			$sortKey = false;
-
-			// An empty string indicates we mean the page, such as element 0 on the next line.
-			// sort=,Some property
-			if ( trim( $sort ) === '' ) {
-				$sortKey = '';
-			}
-			else {
-
-				$sort = $GLOBALS['wgContLang']->getNsText( NS_CATEGORY ) == mb_convert_case( $sort, MB_CASE_TITLE ) ? '_INST' : $sort;
-
-				$propertyValue = SMWPropertyValue::makeUserProperty( trim( $sort ) );
-
-				if ( $propertyValue->isValid() ) {
-					$sortKey = $propertyValue->getDataItem()->getKey();
-				} else {
-					$sortErros = array_merge( $sortErros, $propertyValue->getErrors() );
-				}
-			}
-
-			if ( $sortKey !== false ) {
-				$order = empty( $orders ) ? $defaultSort : array_shift( $orders );
-				$sortKeys[$sortKey] = $order;
-			}
-		}
-
-		// If more sort arguments are provided then properties, assume the first one is for the page.
-		// TODO: we might want to add errors if there is more then one.
-		if ( !array_key_exists( '', $sortKeys ) && !empty( $orders ) ) {
-			$sortKeys[''] = array_shift( $orders );
-		}
-
-		return array( 'keys' => $sortKeys, 'errors' => $sortErros );
+		return ApplicationFactory::getInstance()->getQueryFactory()->newQueryCreator()->getSortKeys( $sortParam, $orderParam, $defaultSort );
 	}
 
 	/**

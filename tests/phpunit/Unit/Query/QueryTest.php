@@ -39,7 +39,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
-		$instance = new Query( $description, true, false );
+		$instance = new Query( $description, Query::INLINE_QUERY );
 
 		$lowerboundLimit = 1;
 
@@ -72,7 +72,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
-		$instance = new Query( $description, true, false );
+		$instance = new Query( $description, Query::INLINE_QUERY );
 
 		$upperboundLimit = 999999999;
 
@@ -105,7 +105,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
-		$instance = new Query( $description, true, false );
+		$instance = new Query( $description, Query::INLINE_QUERY );
 
 		$upperboundLimit = 999999999;
 
@@ -135,7 +135,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new Query( $description, true, false );
+		$instance = new Query( $description, Query::INLINE_QUERY );
 		$instance->setExtraPrintouts( array( $printRequest ) );
 
 		$serialized = $instance->toArray();
@@ -172,7 +172,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
-		$instance = new Query( $description, true, false );
+		$instance = new Query( $description, Query::INLINE_QUERY );
 		$instance->setLimit( 50 );
 
 		$hash = $instance->getHash();

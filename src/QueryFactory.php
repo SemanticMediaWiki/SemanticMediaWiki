@@ -6,6 +6,7 @@ use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\Description;
 use SMW\Query\PrintRequestFactory;
 use SMW\Query\ProfileAnnotatorFactory;
+use SMW\Query\QueryCreator;
 use SMWQuery as Query;
 use SMWQueryParser as QueryParser;
 
@@ -30,11 +31,12 @@ class QueryFactory {
 	 * @since 2.4
 	 *
 	 * @param Description $description
+	 * @param integer|false $context
 	 *
 	 * @return Query
 	 */
-	public function newQuery( Description $description ) {
-		return new Query( $description );
+	public function newQuery( Description $description, $context = false ) {
+		return new Query( $description, $context );
 	}
 
 	/**
@@ -80,10 +82,36 @@ class QueryFactory {
 	/**
 	 * @since 2.4
 	 *
+	 * @param integer|boolean $queryFeatures
+	 *
 	 * @return QueryParser
 	 */
-	public function newQueryParser() {
-		return new QueryParser();
+	public function newQueryParser( $queryFeatures = false ) {
+		return new QueryParser( $queryFeatures );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return QueryCreator
+	 */
+	public function newQueryCreator() {
+
+		$queryCreator = new QueryCreator(
+			$this,
+			$GLOBALS['smwgQDefaultNamespaces'],
+			$GLOBALS['smwgQDefaultLimit']
+		);
+
+		$queryCreator->setQFeatures(
+			$GLOBALS['smwgQFeatures']
+		);
+
+		$queryCreator->setQConceptFeatures(
+			$GLOBALS['smwgQConceptFeatures']
+		);
+
+		return $queryCreator;
 	}
 
 }
