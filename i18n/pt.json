@@ -280,5 +280,6 @@
 	"smw-pa-property-predefined-long_errc": "Erros recolhidos num [https://www.semantic-mediawiki.org/wiki/Help:Container container] podem incluir uma referencia à propriedade que causou a discrepância.",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|segundo|segundos}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|segundo|segundos}}",
+	"smw-datavalue-wikipage-invalid-title": "O valor de entrada \"$1\" da página wiki contém caracteres inválidos ou está incompleto e pode provocar resultados inesperados numa consulta ou num processo de anotação.",
 	"smw-datavalue-reference-outputformat": "$1: $2"
 }

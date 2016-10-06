@@ -21,6 +21,7 @@
 		]
 	},
 	"smw-desc": "Poprawia dostępność wiki zarówno dla automatów jak i ludzi ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentacja online])",
+	"smw-title": "Semantyczna MediaWiki",
 	"smw-semantics-not-enabled": "Funkcjonalność Semantycznej MediaWiki dla tej wiki nie została włączona.",
 	"smw_viewasrdf": "Kanał RDF",
 	"smw_finallistconjunct": " i",

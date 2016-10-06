@@ -12,7 +12,8 @@
 			"أحمد غربية Ahmad Gharbeia <ahmad@arabdigitalexpression.org>",
 			"Kghbln",
 			"Alaa",
-			"Moud hosny"
+			"Moud hosny",
+			"ديفيد"
 		]
 	},
 	"smw-desc": "تقرّب الويكي إلى كلٍّ من النّظم الحاسوبية  ''و'' البشر ([https://www.semantic-mediawiki.org/wiki/Help:User_manual دليل المستخدم])",
@@ -23,7 +24,7 @@
 	"smw_isspecprop": "هذه خصيصة مميَّزة في هذه الويكي.",
 	"smw_concept_description": "وصف المفهوم \"$1\"",
 	"smw_no_concept_namespace": "المفاهيم لا يمكن تعريفها إلا في الصفحات ضمن مفهوم : نطاق التسمية",
-	"smw_multiple_concepts": "كل صفحة مفهوم لا يمكن أن تضمّ أكثر من تعريف مفهوم واحد.",
+	"smw_multiple_concepts": "كل صفحة مفهوم لا يمكن أن تضم أكثر من تعريف مفهوم واحد.",
 	"smw_concept_cache_miss": "المبدأ \"$1\" لا يمكن استخدامه حاليا إذ أن كيفية ضبط الويكي تقضي بتعطيلها. إذا لم تنته المشكلة بعد برهة، فسَل إداري الموقع ليتيح هذا المبدأ.",
 	"smw_noinvannot": "لا يمكن تعيين قيم لخصائص معكوسة.",
 	"version-semantic": "ملحقات دلالية",
@@ -160,7 +161,7 @@
 	"smw_wantedproperty_template": "$1 ({{PLURAL:$2|استخدام|استخدامان|$2 استخدامات}})",
 	"smw_purge": "أنعش",
 	"types": "الأنواع",
-	"smw_types_docu": "فيما يلي قائمة تضمّ كل أنواع البيانات التي يمكن أن تسند إلى الخصائص.",
+	"smw_types_docu": "فيما يلي قائمة تضم كل أنواع البيانات التي يمكن أن تسند إلى الخصائص.",
 	"smw-special-types-no-such-type": "نوع البيانات المُعيّن غير موجود",
 	"semanticstatistics": "إحصائيات دلالية",
 	"smw_semstats_text": "هذه الويكي تحتوي على '''$1''' {{PLURAL:$1|قيمة}} لخصائص عددها الإجمالي '''$2''' [[Special:Properties|{{PLURAL:$2|خصيصة|خصيصة مختلفة}}]].\n'''$3''' {{PLURAL:$3|خصيصة}} منها لها صفحات، منها '''$4''' عُيّن لها نوع البيانات المقصود.\nبعض الخصائص الموجودة ربما تكون [[Special:UnusedProperties|غير مستخدمة]].\nالخصائص التي مازالت بلا صفحات مسرودة في [[Special:WantedProperties|قائمة الخصائص المطلوبة]].",
@@ -265,7 +266,7 @@
 	"smw-info-par-icon": "أيقونة تظهر، إما \"info\" أو \"warning\".",
 	"prefs-smw": "ميدياويكي الدلالية",
 	"prefs-ask-options": "خيارات البحث الدلالية",
-	"smw-prefs-intro-text": "الخيارات التالية تتيحها [https://www.semantic-mediawiki.org/ Semantic MediaWiki] )أو ملحقات ذات صلة( لتطويع بعض الوظائفز لمزيد من المعلومات طالع [https://www.semantic-mediawiki.org/wiki/Help:User_preferences قسم المساعدة].",
+	"smw-prefs-intro-text": "الخيارات التالية تتيحها [https://www.semantic-mediawiki.org/ Semantic MediaWiki] أو ملحقات ذات صلة لتطويع بعض الوظائف.لمزيد من المعلومات طالع [https://www.semantic-mediawiki.org/wiki/Help:User_preferences قسم المساعدة].",
 	"smw-prefs-ask-options-tooltip-display": "اعرض نص المعامل كبالون تلميحة",
 	"smw-prefs-ask-options-collapsed-default": "اطو صندوق الخيارات مبدئيا",
 	"smw-ui-tooltip-title-property": "الخصيصة",
