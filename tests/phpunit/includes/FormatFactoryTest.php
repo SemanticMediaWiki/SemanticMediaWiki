@@ -2,13 +2,13 @@
 
 namespace SMW\Tests;
 
-use SMW\QueryPrinterFactory;
+use SMW\FormatFactory;
 use SMW\QueryResultPrinter;
 use SMW\TableResultPrinter;
 use SMWListResultPrinter;
 
 /**
- * @covers \SMW\QueryPrinterFactory
+ * @covers \SMW\FormatFactory
  *
  * @group SMW
  * @group SMWExtension
@@ -17,13 +17,13 @@ use SMWListResultPrinter;
  * @license GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
+class FormatFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSingleton() {
-		$instance = QueryPrinterFactory::singleton();
+		$instance = FormatFactory::singleton();
 
-		$this->assertInstanceOf( QueryPrinterFactory::class, $instance );
-		$this->assertTrue( QueryPrinterFactory::singleton() === $instance );
+		$this->assertInstanceOf( FormatFactory::class, $instance );
+		$this->assertTrue( FormatFactory::singleton() === $instance );
 
 		global $smwgResultFormats, $smwgResultAliases;
 
@@ -43,7 +43,7 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterFormat() {
-		$factory = new QueryPrinterFactory();
+		$factory = new FormatFactory();
 
 		$factory->registerFormat( 'table', TableResultPrinter::class );
 		$factory->registerFormat( 'list', SMWListResultPrinter::class );
@@ -60,7 +60,7 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterAliases() {
-		$factory = new QueryPrinterFactory();
+		$factory = new FormatFactory();
 
 		$this->assertEquals( 'foo', $factory->getCanonicalName( 'foo' ) );
 
@@ -83,7 +83,7 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPrinter() {
-		$factory = QueryPrinterFactory::singleton();
+		$factory = FormatFactory::singleton();
 
 		foreach ( $factory->getFormats() as $format ) {
 			$printer = $factory->getPrinter( $format );
@@ -95,7 +95,7 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFormats() {
-		$factory = new QueryPrinterFactory();
+		$factory = new FormatFactory();
 
 		$this->assertInternalType( 'array', $factory->getFormats() );
 
@@ -115,7 +115,7 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasFormat() {
-		$factory = new QueryPrinterFactory();
+		$factory = new FormatFactory();
 
 		$this->assertFalse( $factory->hasFormat( 'ohi' ) );
 
@@ -126,7 +126,7 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue( $factory->hasFormat( 'there' ) );
 		$this->assertTrue( $factory->hasFormat( 'o_O' ) );
 
-		$factory = QueryPrinterFactory::singleton();
+		$factory = FormatFactory::singleton();
 
 		foreach ( $factory->getFormats() as $format ) {
 			$this->assertTrue( $factory->hasFormat( $format ) );
@@ -137,9 +137,9 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @test FormatFactory::getPrinter
 	 */
 	public function testGetPrinterException() {
-		$this->setExpectedException( 'MWException' );
+		$this->SetExpectedException( 'MWException' );
 
-		$factory = new QueryPrinterFactory();
+		$factory = new FormatFactory();
 		$factory->getPrinter( 'lula' );
 
 		$this->assertTrue( true );
@@ -149,9 +149,9 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @test FormatFactory::getCanonicalName
 	 */
 	public function testGetCanonicalNameException() {
-		$this->setExpectedException( 'MWException' );
+		$this->SetExpectedException( 'MWException' );
 
-		$factory = new QueryPrinterFactory();
+		$factory = new FormatFactory();
 		$factory->getCanonicalName( 9001 );
 
 		$this->assertTrue( true );
@@ -159,13 +159,25 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @test FormatFactory::registerFormat
-	 * @dataProvider registerFormatExceptioProvider
+	 * @dataProvider getRegisterFormatExceptioDataProvider
 	 */
 	public function testRegisterFormatException( $formatName, $class ) {
-		$this->setExpectedException( 'MWException' );
+		$this->SetExpectedException( 'MWException' );
 
-		$factory = new QueryPrinterFactory();
+		$factory = new FormatFactory();
 		$factory->registerFormat( $formatName, $class );
+		$this->assertTrue( true );
+	}
+
+	/**
+	 * @test FormatFactory::registerAliases
+	 * @dataProvider getRegisterAliasesExceptioDataProvider
+	 */
+	public function testRegisterAliasesException( $formatName, array $aliases ) {
+		$this->SetExpectedException( 'MWException' );
+
+		$factory = new FormatFactory();
+		$factory->registerAliases( $formatName, $aliases );
 		$this->assertTrue( true );
 	}
 
@@ -174,7 +186,7 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @return array
 	 */
-	public function registerFormatExceptioProvider() {
+	public function getRegisterFormatExceptioDataProvider() {
 		return array(
 			array( 1001, 'Foo' ),
 			array( 'Foo', 9001 ),
@@ -182,23 +194,11 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @test FormatFactory::registerAliases
-	 * @dataProvider registerAliasesExceptionProvider
-	 */
-	public function testRegisterAliasesException( $formatName, array $aliases ) {
-		$this->setExpectedException( 'MWException' );
-
-		$factory = new QueryPrinterFactory();
-		$factory->registerAliases( $formatName, $aliases );
-		$this->assertTrue( true );
-	}
-
-	/**
 	 * Register aliases exception data provider
 	 *
 	 * @return array
 	 */
-	public function registerAliasesExceptionProvider() {
+	public function getRegisterAliasesExceptioDataProvider() {
 		return array(
 			array( 1001, array( 'Foo' => 'Bar' ) ),
 			array( 'Foo', array( 'Foo' => 9001 ) ),
