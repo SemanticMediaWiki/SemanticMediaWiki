@@ -305,7 +305,7 @@ class Database {
 	 * @return array
 	 */
 	public function makeSelectOptions( $options ) {
-		return $this->readConnection()->makeSelectOptions( $options );
+		return DatabaseHelper::makeSelectOptions( $options );
 	}
 
 	/**
