@@ -81,7 +81,8 @@
 		],
 		"classmap": [
 			"includes/",
-			"languages/SMW_Language.php"
+			"languages/SMW_Language.php",
+			"tests/phpunit/"
 		]
 	},
 	"config": {
