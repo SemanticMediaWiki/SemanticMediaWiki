@@ -73,7 +73,7 @@ class DocumentationParserFunction implements HookHandler {
 	/**
 	 * @param string $format
 	 *
-	 * @return array of IParamDefinition
+	 * @return ParamDefinition[]
 	 */
 	private function getFormatParameters( $format ) {
 		if ( !array_key_exists( $format, $GLOBALS['smwgResultFormats'] ) ) {
