@@ -81,7 +81,7 @@
 		],
 		"classmap": [
 			"includes/",
-			"languages/SMW_Language.php"
+			"i18n/extra/SemanticMediaWiki.language.php"
 		]
 	},
 	"config": {
