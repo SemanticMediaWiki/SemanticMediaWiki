@@ -78,10 +78,6 @@
 			"src/GlobalFunctions.php",
 			"DefaultSettings.php",
 			"SemanticMediaWiki.php"
-		],
-		"classmap": [
-			"includes/",
-			"languages/SMW_Language.php"
 		]
 	},
 	"config": {
