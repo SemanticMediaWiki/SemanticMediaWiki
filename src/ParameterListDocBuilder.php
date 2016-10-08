@@ -33,14 +33,7 @@ class ParameterListDocBuilder {
 	 */
 	public function getParameterTable( array $paramDefinitions ) {
 		$tableRows = array();
-		$hasAliases = false;
-
-		foreach ( $paramDefinitions as $parameter ) {
-			$hasAliases = count( $parameter->getAliases() ) != 0;
-			if ( $hasAliases ) {
-				break;
-			}
-		}
+		$hasAliases = $this->containsAliases( $paramDefinitions );
 
 		foreach ( $paramDefinitions as $parameter ) {
 			if ( $parameter->getName() != 'format' ) {
@@ -48,26 +41,36 @@ class ParameterListDocBuilder {
 			}
 		}
 
-		$table = '';
-
-		if ( count( $tableRows ) > 0 ) {
-			$tableRows = array_merge( array(
-				'!' . $this->msg( 'validator-describe-header-parameter' ) ."\n" .
-				( $hasAliases ? '!' . $this->msg( 'validator-describe-header-aliases' ) ."\n" : '' ) .
-				'!' . $this->msg( 'validator-describe-header-type' ) ."\n" .
-				'!' . $this->msg( 'validator-describe-header-default' ) ."\n" .
-				'!' . $this->msg( 'validator-describe-header-description' )
-			), $tableRows );
-
-			$table = implode( "\n|-\n", $tableRows );
-
-			$table =
-				'{| class="wikitable sortable"' . "\n" .
-				$table .
-				"\n|}";
+		if ( empty( $tableRows ) ) {
+			return '';
 		}
 
-		return $table;
+		$tableRows = array_merge( array(
+			'!' . $this->msg( 'validator-describe-header-parameter' ) ."\n" .
+			( $hasAliases ? '!' . $this->msg( 'validator-describe-header-aliases' ) ."\n" : '' ) .
+			'!' . $this->msg( 'validator-describe-header-type' ) ."\n" .
+			'!' . $this->msg( 'validator-describe-header-default' ) ."\n" .
+			'!' . $this->msg( 'validator-describe-header-description' )
+		), $tableRows );
+
+		return '{| class="wikitable sortable"' . "\n" .
+			implode( "\n|-\n", $tableRows ) .
+			"\n|}";
+	}
+
+	/**
+	 * @param ParamDefinition[] $paramDefinitions
+	 *
+	 * @return boolean
+	 */
+	private function containsAliases( array $paramDefinitions ) {
+		foreach ( $paramDefinitions as $parameter ) {
+			if ( !empty( $parameter->getAliases() ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
