@@ -78,6 +78,9 @@
 			"src/GlobalFunctions.php",
 			"DefaultSettings.php",
 			"SemanticMediaWiki.php"
+		],
+		"classmap" : [
+			"includes/"
 		]
 	},
 	"config": {
