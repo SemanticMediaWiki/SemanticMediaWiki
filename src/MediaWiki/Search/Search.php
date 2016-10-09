@@ -45,64 +45,6 @@ class Search extends SearchEngine {
 	}
 
 	/**
-	 * @param $type
-	 */
-	private function assertValidFallbackSearchEngineType( $type ) {
-
-		if ( $type === null ) {
-			return;
-		}
-
-		if ( !class_exists( $type ) ) {
-			throw new RuntimeException( "$type does not exist." );
-		}
-
-		if ( !is_subclass_of( $type, 'SearchEngine' ) || $type === 'SMWSearch' ) {
-			throw new RuntimeException( "$type is not a valid fallback search engine type." );
-		}
-	}
-
-	/**
-	 * @param $db
-	 * @return string
-	 */
-	private function getDefaultSearchEngineTypeForDB( $db ) {
-
-		if ( method_exists( 'SearchEngineFactory', 'getSearchEngineClass' ) ) { // MW > 1.27
-
-			return \SearchEngineFactory::getSearchEngineClass( $db );
-
-		} else { // MW <= 1.27
-
-			return $db->getSearchEngine();
-
-		}
-	}
-
-	/**
-	 * @return SearchEngine
-	 */
-	public function getFallbackSearchEngine() {
-
-		if ( $this->fallbackSearch === null ) {
-
-			$type = ApplicationFactory::getInstance()->getSettings()->get( 'smwgFallbackSearchType' );
-
-			$this->assertValidFallbackSearchEngineType( $type );
-
-			$dbr = $this->getDB();
-
-			if ( $type === null ) {
-				$type = $this->getDefaultSearchEngineTypeForDB( $dbr );
-			}
-
-			$this->fallbackSearch = new $type( $dbr );
-		}
-
-		return $this->fallbackSearch;
-	}
-
-	/**
 	 * @param DatabaseBase $connection
 	 */
 	public function setDB( DatabaseBase $connection ) {
@@ -114,7 +56,6 @@ class Search extends SearchEngine {
 	 * @return DatabaseBase
 	 */
 	public function getDB() {
-
 		if ( $this->database === null ) {
 			$this->database = wfGetDB( defined( 'DB_REPLICA' ) ? DB_REPLICA : DB_SLAVE );
 		}
@@ -160,6 +101,52 @@ class Search extends SearchEngine {
 		$term = $f->replacePrefixes( $term );
 
 		return $fulltext ? $f->searchText( $term ) : $f->searchTitle( $term );
+	}
+
+	/**
+	 * @return SearchEngine
+	 */
+	public function getFallbackSearchEngine() {
+		if ( $this->fallbackSearch === null ) {
+			$type = ApplicationFactory::getInstance()->getSettings()->get( 'smwgFallbackSearchType' );
+
+			$dbr = $this->getDB();
+
+			if ( $type === null ) {
+				$type = $this->getDefaultSearchEngineTypeForDB( $dbr );
+			}
+
+			$this->assertIsSearchEngineClassName( $type );
+
+			$this->fallbackSearch = new $type( $dbr );
+		}
+
+		return $this->fallbackSearch;
+	}
+
+	/**
+	 * @param DatabaseBase $db
+	 * @return string
+	 */
+	private function getDefaultSearchEngineTypeForDB( DatabaseBase $db ) {
+		if ( method_exists( 'SearchEngineFactory', 'getSearchEngineClass' ) ) { // MW > 1.27
+			return \SearchEngineFactory::getSearchEngineClass( $db );
+		}
+
+		return $db->getSearchEngine();
+	}
+
+	/**
+	 * @param string $className
+	 */
+	private function assertIsSearchEngineClassName( $className ) {
+		if ( !class_exists( $className ) ) {
+			throw new RuntimeException( "$className does not exist." );
+		}
+
+		if ( !is_subclass_of( $className, 'SearchEngine' ) || $className === 'SMWSearch' ) {
+			throw new RuntimeException( "$className is not a valid fallback search engine type." );
+		}
 	}
 
 	/**
