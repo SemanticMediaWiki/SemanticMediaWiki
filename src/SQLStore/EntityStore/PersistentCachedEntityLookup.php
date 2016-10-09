@@ -1,17 +1,18 @@
 <?php
 
-namespace SMW\SQLStore\Lookup;
+namespace SMW\SQLStore\EntityStore;
 
 use Onoi\BlobStore\BlobStore;
-use SMW\CircularReferenceGuard;
+use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\HashBuilder;
-use SMW\SQLStore\ValueLookupStore;
+use SMW\EntityLookup;
 use SMW\Store;
 use SMW\Localizer;
 use SMWDataItem as DataItem;
-use SMWRequestOptions as RequestOptions;
+use SMW\SemanticData;
+use SMW\RequestOptions;
 
 /**
  * Intermediary (fast) access to serialized blob values to avoid DB access on
@@ -35,7 +36,7 @@ use SMWRequestOptions as RequestOptions;
  *
  * @author mwjames
  */
-class CachedValueLookupStore implements ValueLookupStore {
+class PersistentCachedEntityLookup implements EntityLookup {
 
 	/**
 	 * Update this version number when the serialization format
@@ -44,9 +45,14 @@ class CachedValueLookupStore implements ValueLookupStore {
 	const VERSION = '1.1';
 
 	/**
-	 * @var Store
+	 * @var EntityLookup
 	 */
-	private $store;
+	private $entityLookup;
+
+	/**
+	 * @var RedirectTargetLookup
+	 */
+	private $redirectTargetLookup;
 
 	/**
 	 * @var BlobStore
@@ -59,18 +65,15 @@ class CachedValueLookupStore implements ValueLookupStore {
 	private $valueLookupFeatures = 0;
 
 	/**
-	 * @var CircularReferenceGuard
-	 */
-	private $circularReferenceGuard;
-
-	/**
 	 * @since 2.3
 	 *
-	 * @param Store $store
+	 * @param EntityLookup $entityLookup
+	 * @param RedirectTargetLookup $redirectTargetLookup
 	 * @param BlobStore $blobStore
 	 */
-	public function __construct( Store $store, BlobStore $blobStore ) {
-		$this->store = $store;
+	public function __construct( EntityLookup $entityLookup, RedirectTargetLookup $redirectTargetLookup, BlobStore $blobStore ) {
+		$this->entityLookup = $entityLookup;
+		$this->redirectTargetLookup = $redirectTargetLookup;
 		$this->blobStore = $blobStore;
 	}
 
@@ -79,7 +82,7 @@ class CachedValueLookupStore implements ValueLookupStore {
 	 *
 	 * @param integer $valueLookupFeatures
 	 */
-	public function setValueLookupFeatures( $valueLookupFeatures ) {
+	public function setCachedLookupFeatures( $valueLookupFeatures ) {
 		$this->valueLookupFeatures = $valueLookupFeatures;
 	}
 
@@ -95,33 +98,21 @@ class CachedValueLookupStore implements ValueLookupStore {
 	}
 
 	/**
-	 * @since 2.3
+	 * @see EntityLookup::getSemanticData
 	 *
-	 * @param CircularReferenceGuard $circularReferenceGuard
-	 */
-	public function setCircularReferenceGuard( CircularReferenceGuard $circularReferenceGuard ) {
-		$this->circularReferenceGuard = $circularReferenceGuard;
-	}
-
-	/**
-	 * @see Store::getSemanticData
+	 * @since 2.5
 	 *
-	 * @since 2.3
-	 *
-	 * @param DIWikiPage $subject
-	 * @param RequestOptions $requestOptions = null
-	 *
-	 * @return array
+	 * {@inheritDoc}
 	 */
 	public function getSemanticData( DIWikiPage $subject, $filter = false ) {
 
 		if ( !$this->blobStore->canUse() || !$this->canUseValueLookupFeature( SMW_VL_SD ) ) {
-			return $this->store->getReader()->getSemanticData( $subject, $filter );
+			return $this->entityLookup->getSemanticData( $subject, $filter );
 		}
 
 		// Use a separate container otherwise large serializations of subobjects
 		// will decrease performance when combined with other lists
-		$sid = $this->getKeyForMainSubject(
+		$sid = $this->getHashFrom(
 			$subject,
 			$subject->getSubobjectName()
 		);
@@ -144,7 +135,7 @@ class CachedValueLookupStore implements ValueLookupStore {
 			return $container->get( $sdid );
 		}
 
-		$semanticData = $this->store->getReader()->getSemanticData(
+		$semanticData = $this->entityLookup->getSemanticData(
 			$subject,
 			$filter
 		);
@@ -163,23 +154,20 @@ class CachedValueLookupStore implements ValueLookupStore {
 	}
 
 	/**
-	 * @see Store::getProperties
+	 * @see EntityLookup::getProperties
 	 *
-	 * @since 2.3
+	 * @since 2.5
 	 *
-	 * @param DIWikiPage $subject
-	 * @param RequestOptions $requestOptions = null
-	 *
-	 * @return array
+	 * {@inheritDoc}
 	 */
-	public function getProperties( DIWikiPage $subject, $requestOptions = null ) {
+	public function getProperties( DIWikiPage $subject, RequestOptions $requestOptions = null ) {
 
 		if ( !$this->blobStore->canUse() || !$this->canUseValueLookupFeature( SMW_VL_PL ) ) {
-			return $this->store->getReader()->getProperties( $subject, $requestOptions );
+			return $this->entityLookup->getProperties( $subject, $requestOptions );
 		}
 
 		$container = $this->blobStore->read(
-			$this->getKeyForMainSubject( $subject )
+			$this->getHashFrom( $subject )
 		);
 
 		$plid = HashBuilder::createHashIdForContent(
@@ -195,7 +183,7 @@ class CachedValueLookupStore implements ValueLookupStore {
 			return $this->resolveRedirectTargets( $container->get( $plid ) );
 		}
 
-		$result = $this->store->getReader()->getProperties(
+		$result = $this->entityLookup->getProperties(
 			$subject,
 			$requestOptions
 		);
@@ -210,27 +198,23 @@ class CachedValueLookupStore implements ValueLookupStore {
 	}
 
 	/**
-	 * @see Store::getPropertyValues
+	 * @see EntityLookup::getPropertyValues
 	 *
-	 * @since 2.3
+	 * @since 2.5
 	 *
-	 * @param DIWikiPage|null $subject
-	 * @param DIProperty $property
-	 * @param RequestOptions $requestOptions = null
-	 *
-	 * @return array
+	 * {@inheritDoc}
 	 */
-	public function getPropertyValues( DIWikiPage $subject = null, DIProperty $property, $requestOptions = null ) {
+	public function getPropertyValues( DIWikiPage $subject = null, DIProperty $property, RequestOptions $requestOptions = null ) {
 
 		// The cache is not used for $subject === null (means all values for
 		// the given property are returned)
 		if ( $subject === null || !$this->blobStore->canUse() || !$this->canUseValueLookupFeature( SMW_VL_PV ) ) {
-			return $this->store->getReader()->getPropertyValues( $subject, $property, $requestOptions );
+			return $this->entityLookup->getPropertyValues( $subject, $property, $requestOptions );
 		}
 
 		// Too many subobjects in one list can kill the performance therefore split
 		// the container by subobject
-		$sid = $this->getKeyForMainSubject(
+		$sid = $this->getHashFrom(
 			$subject,
 			$subject->getSubobjectName()
 		);
@@ -251,7 +235,7 @@ class CachedValueLookupStore implements ValueLookupStore {
 			return $this->resolveRedirectTargets( $container->get( $pvid ) );
 		}
 
-		$result = $this->store->getReader()->getPropertyValues(
+		$result = $this->entityLookup->getPropertyValues(
 			$subject,
 			$property,
 			$requestOptions
@@ -269,27 +253,23 @@ class CachedValueLookupStore implements ValueLookupStore {
 	}
 
 	/**
-	 * @see Store::getPropertySubjects
+	 * @see EntityLookup::getPropertySubjects
 	 *
-	 * @since 2.3
+	 * @since 2.5
 	 *
-	 * @param DIWikiPage|null $subject
-	 * @param DIProperty $property
-	 * @param RequestOptions $requestOptions = null
-	 *
-	 * @return array
+	 * {@inheritDoc}
 	 */
-	public function getPropertySubjects( DIProperty $property, DataItem $dataItem = null, $requestOptions = null ) {
+	public function getPropertySubjects( DIProperty $property, DataItem $dataItem = null, RequestOptions $requestOptions = null ) {
 
 		// The cache is not used for $dataItem === null (means all values for
 		// the given property are returned)
 		if ( $dataItem === null || !$dataItem instanceof DIWikiPage || !$this->blobStore->canUse() || !$this->canUseValueLookupFeature( SMW_VL_PS ) ) {
-			return $this->store->getReader()->getPropertySubjects( $property, $dataItem, $requestOptions );
+			return $this->entityLookup->getPropertySubjects( $property, $dataItem, $requestOptions );
 		}
 
 		// Added as linked list as we keep the container ttl different from
 		// that of the main container
-		$sid = $this->getKeyForMainSubject(
+		$sid = $this->getHashFrom(
 			$dataItem,
 			'ps'
 		);
@@ -310,7 +290,7 @@ class CachedValueLookupStore implements ValueLookupStore {
 			return $container->get( $psid );
 		}
 
-		$result = $this->store->getReader()->getPropertySubjects(
+		$result = $this->entityLookup->getPropertySubjects(
 			$property,
 			$dataItem,
 			$requestOptions
@@ -333,16 +313,38 @@ class CachedValueLookupStore implements ValueLookupStore {
 	}
 
 	/**
+	 * @see EntityLookup::getAllPropertySubjects
+	 *
+	 * @since 2.5
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getAllPropertySubjects( DIProperty $property, RequestOptions $requestOptions = null  ) {
+		return $this->entityLookup->getAllPropertySubjects( $property, $requestOptions );
+	}
+
+	/**
+	 * @see EntityLookup::getInProperties
+	 *
+	 * @since 2.5
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getInProperties( DataItem $object, RequestOptions $requestOptions = null ) {
+		return $this->entityLookup->getInProperties( $object, $requestOptions );
+	}
+
+	/**
 	 * Remove a cache item that appears during an alteration action (update,
 	 * change, delete) to ensure that we always have the correct set of matches.
 	 *
 	 * @since 2.3
 	 *
-	 * @param DIWikiPage $subject
+	 * @param DIWikiPage|null $subject
 	 */
-	public function deleteFor( DIWikiPage $subject ) {
+	public function resetCacheBy( DIWikiPage $subject = null ) {
 
-		if ( !$this->blobStore->canUse() ) {
+		if ( !$this->blobStore->canUse() || $subject === null ) {
 			return null;
 		}
 
@@ -352,12 +354,12 @@ class CachedValueLookupStore implements ValueLookupStore {
 		);
 
 		foreach ( $redirects as $redirectTarget ) {
-			$this->blobStore->delete( $this->getKeyForMainSubject(
+			$this->blobStore->delete( $this->getHashFrom(
 				$redirectTarget
 			) );
 		}
 
-		$sid = $this->getKeyForMainSubject( $subject );
+		$sid = $this->getHashFrom( $subject );
 
 		// Remove all linked objects
 		$container = $this->blobStore->read( $sid );
@@ -381,30 +383,10 @@ class CachedValueLookupStore implements ValueLookupStore {
 		$dataItems =  array();
 
 		foreach ( $results as $dataItem ) {
-			$dataItems[] = $this->findRedirectTarget( $dataItem );
+			$dataItems[] = $this->redirectTargetLookup->findRedirectTarget( $dataItem );
 		}
 
 		return $dataItems;
-	}
-
-	private function findRedirectTarget( $dataItem ) {
-
-		if ( $this->circularReferenceGuard === null || ( !$dataItem instanceof DIWikiPage && !$dataItem instanceof DIProperty ) ) {
-			return $dataItem;
-		}
-
-		$hash = $dataItem->getSerialization();
-
-		// Guard against a dataItem that points to itself
-		$this->circularReferenceGuard->mark( $hash );
-
-		if ( !$this->circularReferenceGuard->isCircularByRecursionFor( $hash ) ) {
-			$dataItem = $this->store->getRedirectTarget( $dataItem );
-		}
-
-		$this->circularReferenceGuard->unmark( $hash );
-
-		return $dataItem;
 	}
 
 	/**
@@ -412,7 +394,7 @@ class CachedValueLookupStore implements ValueLookupStore {
 	 * identifier to allow it to be invalidated at once with all other subobjects
 	 * that relate to a subject
 	 */
-	private function getKeyForMainSubject( DIWikiPage $subject, $suffix = '' ) {
+	private function getHashFrom( DIWikiPage $subject, $suffix = '' ) {
 		return md5( HashBuilder::createHashIdFromSegments(
 			$subject->getDBkey(),
 			$subject->getNamespace(),
@@ -424,7 +406,7 @@ class CachedValueLookupStore implements ValueLookupStore {
 
 		// Store the id with the main subject
 		$container = $this->blobStore->read(
-			$this->getKeyForMainSubject( $subject )
+			$this->getHashFrom( $subject )
 		);
 
 		// Use the id as key to avoid unnecessary duplicate entries when

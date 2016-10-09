@@ -1,7 +1,12 @@
 <?php
-/**
- * @ingroup SMWDataItemsHandlers
- */
+
+namespace SMW\SQLStore\EntityStore\DIHandlers;
+
+use SMW\SQLStore\SQLStore;
+use SMWDataItem as DataItem;
+use SMW\SQLStore\EntityStore\DataItemHandler;
+use SMWDataItemException as DataItemException;
+use SMW\DIConcept;
 
 /**
  * This class implements Store access to Concept data items.
@@ -11,17 +16,17 @@
  * concept table to store extra cache data, but also due to the design of
  * concept DIs. This will be cleaned up at some point.
  *
+ * @license GNU GPL v2+
  * @since 1.8
  *
  * @author Nischay Nahata
- * @ingroup SMWDataItemsHandlers
  */
-class SMWDIHandlerConcept extends SMWDataItemHandler {
+class DIConceptHandler extends DataItemHandler {
 
 	/**
-	 * Method to return array of fields for a DI type
+	 * @since 1.8
 	 *
-	 * @return array
+	 * {@inheritDoc}
 	 */
 	public function getTableFields() {
 		return array(
@@ -36,10 +41,9 @@ class SMWDIHandlerConcept extends SMWDataItemHandler {
 	}
 
 	/**
-	 * @see SMWDataItemHandler::getFetchFields()
-	 *
 	 * @since 1.8
-	 * @return array
+	 *
+	 * {@inheritDoc}
 	 */
 	public function getFetchFields() {
 		return array(
@@ -52,15 +56,11 @@ class SMWDIHandlerConcept extends SMWDataItemHandler {
 	}
 
 	/**
-	 * Method to return an array of fields=>values for a DataItem
-	 *
 	 * @since 1.8
 	 *
-	 * @param SMWDataItem $dataItem
-	 *
-	 * @return array
+	 * {@inheritDoc}
 	 */
-	public function getWhereConds( SMWDataItem $dataItem ) {
+	public function getWhereConds( DataItem $dataItem ) {
 		return array(
 			'concept_txt' => $dataItem->getConceptQuery(),
 			'concept_docu' => $dataItem->getDocumentation(),
@@ -71,17 +71,11 @@ class SMWDIHandlerConcept extends SMWDataItemHandler {
 	}
 
 	/**
-	 * Method to return an array of fields=>values for a DataItem
-	 * This array is used to perform all insert operations into the DB
-	 * To optimize return minimum fields having indexes
-	 *
 	 * @since 1.8
 	 *
-	 * @param SMWDataItem $dataItem
-	 *
-	 * @return array
+	 * {@inheritDoc}
 	 */
-	public function getInsertValues( SMWDataItem $dataItem ) {
+	public function getInsertValues( DataItem $dataItem ) {
 		return array(
 			'concept_txt' => $dataItem->getConceptQuery(),
 			'concept_docu' => $dataItem->getDocumentation(),
@@ -92,37 +86,41 @@ class SMWDIHandlerConcept extends SMWDataItemHandler {
 	}
 
 	/**
-	 * Method to return the field used to select this type of DataItem
 	 * @since 1.8
-	 * @return string
+	 *
+	 * {@inheritDoc}
 	 */
 	public function getIndexField() {
 		return 'concept_txt';
 	}
 
 	/**
-	 * Method to return the field used to select this type of DataItem
-	 * using the label
 	 * @since 1.8
-	 * @return string
+	 *
+	 * {@inheritDoc}
 	 */
 	public function getLabelField() {
 		return 'concept_txt';
 	}
 
 	/**
-	 * Method to create a dataitem from an array of DB keys.
+	 * @since 1.8
 	 *
-	 * @param array|string $dbkeys expecting array here
-	 *
-	 * @return SMWDataItem
+	 * {@inheritDoc}
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
+
 		if ( is_array( $dbkeys) && count( $dbkeys ) == 5 ) {
-			return new \SMW\DIConcept( $dbkeys[0], smwfXMLContentEncode( $dbkeys[1] ),
-				$dbkeys[2], $dbkeys[3], $dbkeys[4] );
-		} else {
-			throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
+			return new DIConcept(
+				$dbkeys[0],
+				smwfXMLContentEncode( $dbkeys[1] ),
+				$dbkeys[2],
+				$dbkeys[3],
+				$dbkeys[4]
+			);
 		}
+
+		throw new DataItemException( 'Failed to create data item from DB keys.' );
 	}
+
 }

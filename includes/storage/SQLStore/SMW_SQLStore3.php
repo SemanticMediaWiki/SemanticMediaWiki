@@ -107,6 +107,16 @@ class SMWSQLStore3 extends SMWStore {
 	private $requestOptionsProcessor = null;
 
 	/**
+	 * @var DataItemHandlerDispatcher
+	 */
+	private $dataItemHandlerDispatcher;
+
+	/**
+	 * @var EntityLookup
+	 */
+	private $entityLookup;
+
+	/**
 	 * Object to access the SMW IDs table.
 	 *
 	 * @since 1.8
@@ -142,15 +152,6 @@ class SMWSQLStore3 extends SMWStore {
 	protected $setupHandler = false;
 
 	/**
-	 * Array of DIHandler objects used by this store. Initialized by getDIHandler(),
-	 * which is the only way in which it should be accessed.
-	 *
-	 * @since 1.8
-	 * @var array
-	 */
-	protected $diHandlers = array();
-
-	/**
 	 * Cache for SemanticData objects, indexed by SMW ID.
 	 *
 	 * @todo In the future, the cache should be managed by a helper class.
@@ -170,17 +171,11 @@ class SMWSQLStore3 extends SMWStore {
 	public $m_sdstate = array();
 
 	/**
-	 * @var CachedValueLookupStore
-	 */
-	private $cachedValueLookupStore = null;
-
-	/**
 	 * @since 1.8
 	 */
 	public function __construct() {
 		$this->factory = new SQLStoreFactory( $this );
 		$this->smwIds = $this->factory->newIdTableManager();
-		$this->cachedValueLookupStore = $this->factory->newCachedValueLookupStore();
 	}
 
 	/**
@@ -188,60 +183,17 @@ class SMWSQLStore3 extends SMWStore {
 	 *
 	 * @since 1.8
 	 * @param integer $diType
-	 * @throws MWException if no handler exists for the given type
-	 * @return SMWDataItemHandler
+	 *
+	 * @return SMWDIHandler
+	 * @throws RuntimeException if no handler exists for the given type
 	 */
 	public function getDataItemHandlerForDIType( $diType ) {
-		if( !array_key_exists( $diType, $this->diHandlers ) ) {
-			switch ( $diType ) {
-				case SMWDataItem::TYPE_NUMBER:
-					$this->diHandlers[$diType] = new SMWDIHandlerNumber( $this );
-					break;
-				case SMWDataItem::TYPE_BLOB:
-					$this->diHandlers[$diType] = new SMWDIHandlerBlob( $this );
-					break;
-				case SMWDataItem::TYPE_BOOLEAN:
-					$this->diHandlers[$diType] = new SMWDIHandlerBoolean( $this );
-					break;
-				case SMWDataItem::TYPE_URI:
-					$this->diHandlers[$diType] = new SMWDIHandlerUri( $this );
-					break;
-				case SMWDataItem::TYPE_TIME:
-					$this->diHandlers[$diType] = new SMWDIHandlerTime( $this );
-					break;
-				case SMWDataItem::TYPE_GEO:
-					$this->diHandlers[$diType] = new SMWDIHandlerGeoCoord( $this );
-					break;
-				case SMWDataItem::TYPE_WIKIPAGE:
-					$this->diHandlers[$diType] = new SMWDIHandlerWikiPage( $this );
-					break;
-				case SMWDataItem::TYPE_CONCEPT:
-					$this->diHandlers[$diType] = new SMWDIHandlerConcept( $this );
-					break;
-				case SMWDataItem::TYPE_PROPERTY:
-					throw new MWException( "There is no DI handler for SMWDataItem::TYPE_PROPERTY." );
-				case SMWDataItem::TYPE_CONTAINER:
-					throw new MWException( "There is no DI handler for SMWDataItem::TYPE_CONTAINER." );
-				case SMWDataItem::TYPE_ERROR:
-					throw new MWException( "There is no DI handler for SMWDataItem::TYPE_ERROR." );
-				default:
-					throw new MWException( "The value \"$diType\" is not a valid dataitem ID." );
-			}
-		}
-		return $this->diHandlers[$diType];
-	}
 
-	/**
-	 * Convenience method to get a dataitem handler for a datatype id.
-	 *
-	 * @since 1.8
-	 * @param string $typeid
-	 * @throws MWException if there is no handler for this type
-	 * @return SMWDataItemHandler
-	 */
-	public function getDataItemHandlerForDatatype( $typeid ) {
-		$dataItemId = DataTypeRegistry::getInstance()->getDataItemId( $typeid );
-		return $this->getDataItemHandlerForDIType( $dataItemId );
+		if ( $this->dataItemHandlerDispatcher === null ) {
+			$this->dataItemHandlerDispatcher = $this->factory->newDataItemHandlerDispatcher( $this );
+		}
+
+		return $this->dataItemHandlerDispatcher->getHandlerByType( $diType );
 	}
 
 ///// Reading methods /////
@@ -255,13 +207,7 @@ class SMWSQLStore3 extends SMWStore {
 	}
 
 	public function getSemanticData( DIWikiPage $subject, $filter = false ) {
-
-		$result = $this->cachedValueLookupStore->getSemanticData(
-			$subject,
-			$filter
-		);
-
-		return $result;
+		return $this->getEntityLookup()->getSemanticData( $subject, $filter );
 	}
 
 	/**
@@ -272,39 +218,19 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return SMWDataItem[]
 	 */
 	public function getPropertyValues( $subject, DIProperty $property, $requestOptions = null ) {
+		return $this->getEntityLookup()->getPropertyValues(	$subject, $property, $requestOptions );
+	}
 
-		$result = $this->cachedValueLookupStore->getPropertyValues(
-			$subject,
-			$property,
-			$requestOptions
-		);
-
-		return $result;
+	public function getProperties( DIWikiPage $subject, $requestOptions = null ) {
+		return $this->getEntityLookup()->getProperties( $subject, $requestOptions );
 	}
 
 	public function getPropertySubjects( DIProperty $property, $dataItem, $requestOptions = null ) {
-
-		$result = $this->cachedValueLookupStore->getPropertySubjects(
-			$property,
-			$dataItem,
-			$requestOptions
-		);
-
-		return $result;
+		return $this->getEntityLookup()->getPropertySubjects( $property, $dataItem, $requestOptions );
 	}
 
 	public function getAllPropertySubjects( DIProperty $property, $requestoptions = null ) {
 		return $this->getReader()->getAllPropertySubjects( $property, $requestoptions );
-	}
-
-	public function getProperties( DIWikiPage $subject, $requestOptions = null ) {
-
-		$result = $this->cachedValueLookupStore->getProperties(
-			$subject,
-			$requestOptions
-		);
-
-		return $result;
 	}
 
 	public function getInProperties( SMWDataItem $value, $requestoptions = null ) {
@@ -327,7 +253,7 @@ class SMWSQLStore3 extends SMWStore {
 
 		$subject = DIWikiPage::newFromTitle( $title );
 
-		$this->cachedValueLookupStore->deleteFor(
+		$this->getEntityLookup()->resetCacheBy(
 			$subject
 		);
 
@@ -340,7 +266,7 @@ class SMWSQLStore3 extends SMWStore {
 
 	protected function doDataUpdate( SemanticData $semanticData ) {
 
-		$this->cachedValueLookupStore->deleteFor(
+		$this->getEntityLookup()->resetCacheBy(
 			$semanticData->getSubject()
 		);
 
@@ -353,11 +279,11 @@ class SMWSQLStore3 extends SMWStore {
 
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
 
-		$this->cachedValueLookupStore->deleteFor(
+		$this->getEntityLookup()->resetCacheBy(
 			DIWikiPage::newFromTitle( $oldtitle )
 		);
 
-		$this->cachedValueLookupStore->deleteFor(
+		$this->getEntityLookup()->resetCacheBy(
 			DIWikiPage::newFromTitle( $newtitle )
 		);
 
@@ -519,7 +445,7 @@ class SMWSQLStore3 extends SMWStore {
 ///// Helper methods, mostly protected /////
 
 	/**
-	 * @see RequestOptionsProcessor::transformToSQLOptions
+	 * @see RequestOptionsProcessor::getSQLOptionsFrom
 	 *
 	 * @since 1.8
 	 *
@@ -529,11 +455,11 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return array
 	 */
 	public function getSQLOptions( SMWRequestOptions $requestOptions = null, $valueCol = '' ) {
-		return $this->getRequestOptionsProcessor()->transformToSQLOptions( $requestOptions, $valueCol );
+		return $this->getRequestOptionsProcessor()->getSQLOptionsFrom( $requestOptions, $valueCol );
 	}
 
 	/**
-	 * @see RequestOptionsProcessor::transformToSQLConditions
+	 * @see RequestOptionsProcessor::getSQLConditionsFrom
 	 *
 	 * @since 1.8
 	 *
@@ -545,7 +471,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return string
 	 */
 	public function getSQLConditions( SMWRequestOptions $requestOptions = null, $valueCol = '', $labelCol = '', $addAnd = true ) {
-		return $this->getRequestOptionsProcessor()->transformToSQLConditions( $requestOptions, $valueCol, $labelCol, $addAnd );
+		return $this->getRequestOptionsProcessor()->getSQLConditionsFrom( $requestOptions, $valueCol, $labelCol, $addAnd );
 	}
 
 	/**
@@ -724,7 +650,6 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	public function getPropertyTableInfoFetcher() {
 
-		// We want a cached instance here
 		if ( $this->propertyTableInfoFetcher === null ) {
 			$this->propertyTableInfoFetcher = $this->factory->newPropertyTableInfoFetcher();
 		}
@@ -751,12 +676,23 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	private function getRequestOptionsProcessor() {
 
-		// We want a cached instance here
 		if ( $this->requestOptionsProcessor === null ) {
 			$this->requestOptionsProcessor = $this->factory->newRequestOptionsProcessor();
 		}
 
 		return $this->requestOptionsProcessor;
+	}
+
+	/**
+	 * @return EntityLookup
+	 */
+	private function getEntityLookup() {
+
+		if ( $this->entityLookup === null ) {
+			$this->entityLookup = $this->factory->newEntityLookup();
+		}
+
+		return $this->entityLookup;
 	}
 
 }

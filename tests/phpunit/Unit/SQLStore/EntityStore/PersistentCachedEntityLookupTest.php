@@ -1,14 +1,14 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\SQLStore\EntityStore;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
-use SMW\SQLStore\Lookup\CachedValueLookupStore;
+use SMW\SQLStore\EntityStore\PersistentCachedEntityLookup;
 
 /**
- * @covers \SMW\SQLStore\Lookup\CachedValueLookupStore
+ * @covers \SMW\SQLStore\EntityStore\PersistentCachedEntityLookup
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,21 +16,33 @@ use SMW\SQLStore\Lookup\CachedValueLookupStore;
  *
  * @author mwjames
  */
-class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
+class PersistentCachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
-	public function testCanConstruct() {
+	private $entityLookup;
+	private $redirectTargetLookup;
+	private $blobStore;
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+	protected function setUp() {
+		parent::setUp();
 
-		$blobStore = $this->getMockBuilder( '\Onoi\BlobStore\BlobStore' )
+		$this->entityLookup = $this->getMockBuilder( '\SMW\EntityLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->redirectTargetLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\RedirectTargetLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->blobStore = $this->getMockBuilder( '\Onoi\BlobStore\BlobStore' )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
+	public function testCanConstruct() {
+
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\Lookup\CachedValueLookupStore',
-			new CachedValueLookupStore( $store, $blobStore )
+			'\SMW\SQLStore\EntityStore\PersistentCachedEntityLookup',
+			new PersistentCachedEntityLookup( $this->entityLookup, $this->redirectTargetLookup, $this->blobStore )
 		);
 	}
 
@@ -38,11 +50,7 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
-		$reader = $this->getMockBuilder( '\SMWSQLStore3Readers' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$reader->expects( $this->once() )
+		$this->entityLookup->expects( $this->once() )
 			->method( 'getSemanticData' )
 			->with(
 				$this->equalTo( $subject ),
@@ -53,25 +61,17 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 			->setMethods( array( 'getReader' ) )
 			->getMock();
 
-		$store->expects( $this->once() )
-			->method( 'getReader' )
-			->will( $this->returnValue( $reader ) );
-
-		$blobStore = $this->getMockBuilder( '\Onoi\BlobStore\BlobStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$blobStore->expects( $this->once() )
+		$this->blobStore->expects( $this->once() )
 			->method( 'canUse' )
 			->will( $this->returnValue( true ) );
 
-		$instance = new CachedValueLookupStore(
-			$store,
-			$blobStore
+		$instance = new PersistentCachedEntityLookup(
+			$this->entityLookup,
+			$this->redirectTargetLookup,
+			$this->blobStore
 		);
 
-		$instance->setValueLookupFeatures( SMW_VL_PL );
-
+		$instance->setCachedLookupFeatures( SMW_VL_PL );
 		$instance->getSemanticData( $subject );
 	}
 
@@ -79,36 +79,20 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
-		$reader = $this->getMockBuilder( '\SMWSQLStore3Readers' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$reader->expects( $this->once() )
+		$this->entityLookup->expects( $this->once() )
 			->method( 'getSemanticData' )
 			->with(
 				$this->equalTo( $subject ),
 				$this->anything() );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'getReader' ) )
-			->getMock();
-
-		$store->expects( $this->once() )
-			->method( 'getReader' )
-			->will( $this->returnValue( $reader ) );
-
-		$blobStore = $this->getMockBuilder( '\Onoi\BlobStore\BlobStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$blobStore->expects( $this->once() )
+		$this->blobStore->expects( $this->once() )
 			->method( 'canUse' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new CachedValueLookupStore(
-			$store,
-			$blobStore
+		$instance = new PersistentCachedEntityLookup(
+			$this->entityLookup,
+			$this->redirectTargetLookup,
+			$this->blobStore
 		);
 
 		$instance->getSemanticData( $subject );
@@ -125,25 +109,12 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 		$semanticData->expects( $this->once() )
 			->method( 'setLastModified' );
 
-		$reader = $this->getMockBuilder( '\SMWSQLStore3Readers' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$reader->expects( $this->once() )
+		$this->entityLookup->expects( $this->once() )
 			->method( 'getSemanticData' )
 			->with(
 				$this->equalTo( $subject ),
 				$this->anything() )
 			->will( $this->returnValue( $semanticData ) );
-
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'getReader' ) )
-			->getMock();
-
-		$store->expects( $this->once() )
-			->method( 'getReader' )
-			->will( $this->returnValue( $reader ) );
 
 		$container = $this->getMockBuilder( '\Onoi\BlobStore\Container' )
 			->disableOriginalConstructor()
@@ -153,28 +124,24 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'has' )
 			->will( $this->returnValue( false ) );
 
-		$blobStore = $this->getMockBuilder( '\Onoi\BlobStore\BlobStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$blobStore->expects( $this->once() )
+		$this->blobStore->expects( $this->once() )
 			->method( 'canUse' )
 			->will( $this->returnValue( true ) );
 
-		$blobStore->expects( $this->exactly( 2 ) )
+		$this->blobStore->expects( $this->exactly( 2 ) )
 			->method( 'read' )
 			->will( $this->returnValue( $container ) );
 
-		$blobStore->expects( $this->exactly( 2 ) )
+		$this->blobStore->expects( $this->exactly( 2 ) )
 			->method( 'save' );
 
-		$instance = new CachedValueLookupStore(
-			$store,
-			$blobStore
+		$instance = new PersistentCachedEntityLookup(
+			$this->entityLookup,
+			$this->redirectTargetLookup,
+			$this->blobStore
 		);
 
-		$instance->setValueLookupFeatures( SMW_VL_SD );
-
+		$instance->setCachedLookupFeatures( SMW_VL_SD );
 		$instance->getSemanticData( $subject );
 	}
 
@@ -182,10 +149,6 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 		$filter  = false;
-
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
 
 		$container = $this->getMockBuilder( '\Onoi\BlobStore\Container' )
 			->disableOriginalConstructor()
@@ -200,24 +163,21 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 			->with($this->stringContains( 'sd:' ) )
 			->will( $this->returnValue( 'Foo' ) );
 
-		$blobStore = $this->getMockBuilder( '\Onoi\BlobStore\BlobStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$blobStore->expects( $this->once() )
+		$this->blobStore->expects( $this->once() )
 			->method( 'canUse' )
 			->will( $this->returnValue( true ) );
 
-		$blobStore->expects( $this->once() )
+		$this->blobStore->expects( $this->once() )
 			->method( 'read' )
 			->will( $this->returnValue( $container ) );
 
-		$instance = new CachedValueLookupStore(
-			$store,
-			$blobStore
+		$instance = new PersistentCachedEntityLookup(
+			$this->entityLookup,
+			$this->redirectTargetLookup,
+			$this->blobStore
 		);
 
-		$instance->setValueLookupFeatures( SMW_VL_SD );
+		$instance->setCachedLookupFeatures( SMW_VL_SD );
 
 		$this->assertEquals(
 			'Foo',
@@ -233,20 +193,8 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$circularReferenceGuard->expects( $this->once() )
-			->method( 'isCircularByRecursionFor' )
-			->will( $this->returnValue( false ) );
-
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->once() )
-			->method( 'getRedirectTarget' )
+		$this->redirectTargetLookup->expects( $this->once() )
+			->method( 'findRedirectTarget' )
 			->will( $this->returnValue( new DIProperty( 'Bar' ) ) );
 
 		$container = $this->getMockBuilder( '\Onoi\BlobStore\Container' )
@@ -262,25 +210,21 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 			->with($this->stringContains( 'pl:' ) )
 			->will( $this->returnValue( $expected ) );
 
-		$blobStore = $this->getMockBuilder( '\Onoi\BlobStore\BlobStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$blobStore->expects( $this->once() )
+		$this->blobStore->expects( $this->once() )
 			->method( 'canUse' )
 			->will( $this->returnValue( true ) );
 
-		$blobStore->expects( $this->once() )
+		$this->blobStore->expects( $this->once() )
 			->method( 'read' )
 			->will( $this->returnValue( $container ) );
 
-		$instance = new CachedValueLookupStore(
-			$store,
-			$blobStore
+		$instance = new PersistentCachedEntityLookup(
+			$this->entityLookup,
+			$this->redirectTargetLookup,
+			$this->blobStore
 		);
 
-		$instance->setCircularReferenceGuard( $circularReferenceGuard );
-		$instance->setValueLookupFeatures( SMW_VL_PL );
+		$instance->setCachedLookupFeatures( SMW_VL_PL );
 
 		$this->assertEquals(
 			$expected,
@@ -296,20 +240,8 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$circularReferenceGuard->expects( $this->once() )
-			->method( 'isCircularByRecursionFor' )
-			->will( $this->returnValue( false ) );
-
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->once() )
-			->method( 'getRedirectTarget' )
+		$this->redirectTargetLookup->expects( $this->once() )
+			->method( 'findRedirectTarget' )
 			->will( $this->returnValue( new DIWikiPage( 'Bar', NS_MAIN ) ) );
 
 		$container = $this->getMockBuilder( '\Onoi\BlobStore\Container' )
@@ -325,25 +257,21 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 			->with($this->stringContains( 'pv:' ) )
 			->will( $this->returnValue( $expected ) );
 
-		$blobStore = $this->getMockBuilder( '\Onoi\BlobStore\BlobStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$blobStore->expects( $this->once() )
+		$this->blobStore->expects( $this->once() )
 			->method( 'canUse' )
 			->will( $this->returnValue( true ) );
 
-		$blobStore->expects( $this->once() )
+		$this->blobStore->expects( $this->once() )
 			->method( 'read' )
 			->will( $this->returnValue( $container ) );
 
-		$instance = new CachedValueLookupStore(
-			$store,
-			$blobStore
+		$instance = new PersistentCachedEntityLookup(
+			$this->entityLookup,
+			$this->redirectTargetLookup,
+			$this->blobStore
 		);
 
-		$instance->setCircularReferenceGuard( $circularReferenceGuard );
-		$instance->setValueLookupFeatures( SMW_VL_PV );
+		$instance->setCachedLookupFeatures( SMW_VL_PV );
 
 		$this->assertEquals(
 			$expected,
@@ -359,16 +287,8 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItem = new DIWikiPage( 'Foo', NS_MAIN );
 
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->never() )
-			->method( 'getRedirectTarget' );
+		$this->redirectTargetLookup->expects( $this->never() )
+			->method( 'findRedirectTarget' );
 
 		$container = $this->getMockBuilder( '\Onoi\BlobStore\Container' )
 			->disableOriginalConstructor()
@@ -383,25 +303,21 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 			->with($this->stringContains( 'ps:' ) )
 			->will( $this->returnValue( $expected ) );
 
-		$blobStore = $this->getMockBuilder( '\Onoi\BlobStore\BlobStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$blobStore->expects( $this->once() )
+		$this->blobStore->expects( $this->once() )
 			->method( 'canUse' )
 			->will( $this->returnValue( true ) );
 
-		$blobStore->expects( $this->once() )
+		$this->blobStore->expects( $this->once() )
 			->method( 'read' )
 			->will( $this->returnValue( $container ) );
 
-		$instance = new CachedValueLookupStore(
-			$store,
-			$blobStore
+		$instance = new PersistentCachedEntityLookup(
+			$this->entityLookup,
+			$this->redirectTargetLookup,
+			$this->blobStore
 		);
 
-		$instance->setCircularReferenceGuard( $circularReferenceGuard );
-		$instance->setValueLookupFeatures( SMW_VL_PS );
+		$instance->setCachedLookupFeatures( SMW_VL_PS );
 
 		$this->assertEquals(
 			$expected,
@@ -409,7 +325,7 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testDeleteFor() {
+	public function testResetCacheBy() {
 
 		$subject = new DIWikiPage( 'Foobar', NS_MAIN, '', 'abc' );
 
@@ -419,10 +335,6 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 			new DIProperty( '_REDI' ),
 			new DIWikiPage( 'Bar', NS_MAIN )
 		);
-
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
 
 		$container = $this->getMockBuilder( '\Onoi\BlobStore\Container' )
 			->disableOriginalConstructor()
@@ -448,29 +360,25 @@ class CachedValueLookupStoreTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->stringContains( 'list' ) )
 			->will( $this->returnValue( array( 'abc', '123' ) ) );
 
-		$blobStore = $this->getMockBuilder( '\Onoi\BlobStore\BlobStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$blobStore->expects( $this->any() )
+		$this->blobStore->expects( $this->any() )
 			->method( 'canUse' )
 			->will( $this->returnValue( true ) );
 
-		$blobStore->expects( $this->atLeastOnce() )
+		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'read' )
 			->will( $this->returnValue( $container ) );
 
-		$blobStore->expects( $this->exactly( 4 ) )
+		$this->blobStore->expects( $this->exactly( 4 ) )
 			->method( 'delete' );
 
-		$instance = new CachedValueLookupStore(
-			$store,
-			$blobStore
+		$instance = new PersistentCachedEntityLookup(
+			$this->entityLookup,
+			$this->redirectTargetLookup,
+			$this->blobStore
 		);
 
-		$instance->setValueLookupFeatures( SMW_VL_SD );
-
-		$instance->deleteFor( $subject );
+		$instance->setCachedLookupFeatures( SMW_VL_SD );
+		$instance->resetCacheBy( $subject );
 	}
 
 }

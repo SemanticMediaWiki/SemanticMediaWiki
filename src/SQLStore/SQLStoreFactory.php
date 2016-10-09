@@ -5,18 +5,21 @@ namespace SMW\SQLStore;
 use SMW\ApplicationFactory;
 use SMW\CircularReferenceGuard;
 use SMW\SQLStore\Lookup\CachedListLookup;
-use SMW\SQLStore\Lookup\CachedValueLookupStore;
 use SMW\SQLStore\Lookup\ListLookup;
 use SMW\SQLStore\Lookup\PropertyUsageListLookup;
 use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
 use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
 use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
+use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\SQLStore\QueryEngine\ConceptQueryResolver;
 use SMWRequestOptions as RequestOptions;
 use SMWSQLStore3;
 use SMW\SQLStore\TableBuilder\TableBuilder;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMWSql3SmwIds as IdTableManager;
+use SMW\SQLStore\EntityStore\DataItemHandlerDispatcher;
+use SMW\SQLStore\EntityStore\PersistentCachedEntityLookup;
+use SMW\SQLStore\EntityStore\DirectEntityLookup;
 
 /**
  * @license GNU GPL v2+
@@ -277,13 +280,18 @@ class SQLStoreFactory {
 	}
 
 	/**
-	 * @since 2.3
+	 * @since 2.5
 	 *
-	 * @return CachedValueLookupStore
+	 * @return EntityLookup
 	 */
-	public function newCachedValueLookupStore() {
+	public function newEntityLookup() {
 
 		$settings = $this->applicationFactory->getSettings();
+		$directEntityLookup = new DirectEntityLookup( $this->store );
+
+		if ( $settings->get( 'smwgValueLookupFeatures' ) === CACHE_NONE ) {
+			return $directEntityLookup;
+		}
 
 		$circularReferenceGuard = new CircularReferenceGuard( 'vl:store' );
 		$circularReferenceGuard->setMaxRecursionDepth( 2 );
@@ -296,20 +304,17 @@ class SQLStoreFactory {
 			$settings->get( 'smwgValueLookupCacheLifetime' )
 		);
 
-		$cachedValueLookupStore = new CachedValueLookupStore(
-			$this->store,
+		$persistentCachedEntityLookup = new PersistentCachedEntityLookup(
+			$directEntityLookup,
+			new RedirectTargetLookup( $this->store, $circularReferenceGuard ),
 			$blobStore
 		);
 
-		$cachedValueLookupStore->setValueLookupFeatures(
+		$persistentCachedEntityLookup->setCachedLookupFeatures(
 			$settings->get( 'smwgValueLookupFeatures' )
 		);
 
-		$cachedValueLookupStore->setCircularReferenceGuard(
-			$circularReferenceGuard
-		);
-
-		return $cachedValueLookupStore;
+		return $persistentCachedEntityLookup;
 	}
 
 	/**
@@ -377,6 +382,15 @@ class SQLStoreFactory {
 		);
 
 		return $tableBuilder;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return DataItemHandlerDispatcher
+	 */
+	public function newdataItemHandlerDispatcher() {
+		return new DataItemHandlerDispatcher( $this->store );
 	}
 
 	private function newPropertyStatisticsStore() {

@@ -1,17 +1,27 @@
 <?php
-/**
- * @ingroup SMWDataItemsHandlers
- */
+
+namespace SMW\SQLStore\EntityStore\DIHandlers;
+
+use SMW\SQLStore\SQLStore;
+use SMWDataItem as DataItem;
+use SMW\SQLStore\EntityStore\DataItemHandler;
+use SMWDataItemException as DataItemException;
+use SMWDIGeoCoord  as DIGeoCoord;
 
 /**
- * This class implements store access to SMWDIGeoCoord data items.
+ * This class implements store access to DIGeoCoord data items.
  *
+ * @note The table layout and behavior of this class is not coherent with the
+ * way that other DIs work. This is because of the unfortunate use of the
+ * concept table to store extra cache data, but also due to the design of
+ * concept DIs. This will be cleaned up at some point.
+ *
+ * @license GNU GPL v2+
  * @since 1.8
  *
  * @author Nischay Nahata
- * @ingroup SMWDataItemsHandlers
  */
-class SMWDIHandlerGeoCoord extends SMWDataItemHandler {
+class DIGeoCoordinateHandler extends DataItemHandler {
 
 	/**
 	 * Coordinates have three fields: a string version to keep the
@@ -20,46 +30,49 @@ class SMWDIHandlerGeoCoord extends SMWDataItemHandler {
 	 * Altitude is not stored in an extra column since no operation uses
 	 * this for anything so far.
 	 *
-	 * @see SMWDataItemHandler::getTableFields()
-	 * @return array
+	 * @since 1.8
+	 *
+	 * {@inheritDoc}
 	 */
 	public function getTableFields() {
 		return array( 'o_serialized' => 't', 'o_lat' => 'f', 'o_lon' => 'f' );
 	}
 
 	/**
-	 * @see SMWDataItemHandler::getFetchFields()
-	 *
 	 * @since 1.8
-	 * @return array
+	 *
+	 * {@inheritDoc}
 	 */
 	public function getFetchFields() {
 		return array( 'o_serialized' => 't' );
 	}
 
 	/**
-	 * @see SMWDataItemHandler::getTableIndexes()
-	 * @return array
+	 * @since 1.8
+	 *
+	 * {@inheritDoc}
 	 */
 	public function getTableIndexes() {
 		return array( 'o_lat,o_lon' );
 	}
 
 	/**
-	 * @see SMWDataItemHandler::getWhereConds()
-	 * @return array
+	 * @since 1.8
+	 *
+	 * {@inheritDoc}
 	 */
-	public function getWhereConds( SMWDataItem $dataItem ) {
+	public function getWhereConds( DataItem $dataItem ) {
 		return array(
 			'o_serialized' => $dataItem->getSerialization()
 		);
 	}
 
 	/**
-	 * @see SMWDataItemHandler::getInsertValues()
-	 * @return array
+	 * @since 1.8
+	 *
+	 * {@inheritDoc}
 	 */
-	public function getInsertValues( SMWDataItem $dataItem ) {
+	public function getInsertValues( DataItem $dataItem ) {
 		return array(
 			'o_serialized' => $dataItem->getSerialization(),
 			'o_lat' => (string)$dataItem->getLatitude(),
@@ -68,8 +81,9 @@ class SMWDIHandlerGeoCoord extends SMWDataItemHandler {
 	}
 
 	/**
-	 * @see SMWDataItemHandler::getIndexField()
-	 * @return string
+	 * @since 1.8
+	 *
+	 * {@inheritDoc}
 	 */
 	public function getIndexField() {
 		return 'o_serialized';
@@ -80,26 +94,26 @@ class SMWDIHandlerGeoCoord extends SMWDataItemHandler {
 	 * could be used for string search, so this method returns
 	 * no label column (empty string).
 	 *
-	 * @see SMWDataItemHandler::getLabelField()
 	 * @since 1.8
-	 * @return string
+	 *
+	 * {@inheritDoc}
 	 */
 	public function getLabelField() {
 		return '';
 	}
 
 	/**
-	 * @see SMWDataItemHandler::dataItemFromDBKeys()
 	 * @since 1.8
-	 * @param array|string $dbkeys expecting string here
 	 *
-	 * @return SMWDataItem
+	 * {@inheritDoc}
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
+
 		if ( is_string( $dbkeys ) ) {
-			return SMWDIGeoCoord::doUnserialize( $dbkeys );
-		} else {
-			throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
+			return DIGeoCoord::doUnserialize( $dbkeys );
 		}
+
+		throw new DataItemException( 'Failed to create data item from DB keys.' );
 	}
+
 }
