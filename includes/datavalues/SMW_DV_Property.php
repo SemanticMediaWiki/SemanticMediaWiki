@@ -370,7 +370,7 @@ class SMWPropertyValue extends SMWDataValue {
 
 		if ( ( $content = $propertySpecificationLookup->getPropertyDescriptionBy( $this->m_dataitem, $linker ) ) !== '' || !$this->m_dataitem->isUserDefined() ) {
 
-			$highlighter = Highlighter::factory( Highlighter::TYPE_PROPERTY );
+			$highlighter = Highlighter::factory( Highlighter::TYPE_PROPERTY, $this->getOptionBy( self::OPT_USER_LANGUAGE ) );
 			$highlighter->setContent( array (
 				'userDefined' => $this->m_dataitem->isUserDefined(),
 				'caption' => $text,
