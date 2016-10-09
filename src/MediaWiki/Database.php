@@ -31,6 +31,16 @@ class Database {
 	private $writeConnectionProvider = null;
 
 	/**
+	 * @var Database
+	 */
+	private $readConnection;
+
+	/**
+	 * @var Database
+	 */
+	private $writeConnection;
+
+	/**
 	 * @var array
 	 */
 	private $transactionQueue = array();
@@ -44,6 +54,11 @@ class Database {
 	 * @var string
 	 */
 	private $disabledTransactions = false;
+
+	/**
+	 * @var boolean
+	 */
+	private $resetTransactionProfiler = false;
 
 	/**
 	 * @since 1.9
@@ -305,7 +320,7 @@ class Database {
 	 * @return array
 	 */
 	public function makeSelectOptions( $options ) {
-		return $this->readConnection()->makeSelectOptions( $options );
+		return DatabaseHelper::makeSelectOptions( $options );
 	}
 
 	/**
@@ -337,11 +352,8 @@ class Database {
 	 *
 	 * @since 2.4
 	 */
-	function resetTransactionProfiler() {
-		// MW 1.27
-		if ( method_exists( $this->writeConnection(), 'setTransactionProfiler' ) ) {
-			$this->writeConnection()->setTransactionProfiler( new \TransactionProfiler() );
-		}
+	function resetTransactionProfiler( $resetTransactionProfiler ) {
+		$this->resetTransactionProfiler = $resetTransactionProfiler;
 	}
 
 	/**
@@ -558,16 +570,32 @@ class Database {
 	}
 
 	private function readConnection() {
-		return $this->readConnectionProvider->getConnection();
+
+		if ( $this->readConnection !== null ) {
+			return $this->readConnection;
+		}
+
+		return $this->readConnection = $this->readConnectionProvider->getConnection();
 	}
 
 	private function writeConnection() {
 
-		if ( $this->writeConnectionProvider instanceof DBConnectionProvider ) {
-			return $this->writeConnectionProvider->getConnection();
+		if ( $this->writeConnection !== null ) {
+			return $this->writeConnection;
 		}
 
-		throw new RuntimeException( 'Expected a DBConnectionProvider instance' );
+		if ( !$this->writeConnectionProvider instanceof DBConnectionProvider ) {
+			throw new RuntimeException( 'Expected a DBConnectionProvider instance' );
+		}
+
+		$this->writeConnection = $this->writeConnectionProvider->getConnection();
+
+		// MW 1.27 (only)
+		if ( $this->resetTransactionProfiler && method_exists( $this->writeConnection, 'setTransactionProfiler' ) ) {
+			$this->writeConnection->setTransactionProfiler( new \TransactionProfiler() );
+		}
+
+		return $this->writeConnection;
 	}
 
 }
