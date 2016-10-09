@@ -1,12 +1,11 @@
 {
 	"description": "Test #ask on moved redirected subject (#1086)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "HasPropertyForMove",
 			"contents": "[[Has type::Page]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Page/09/01/1",
 			"contents": "[[HasPropertyForMove::ABC]]"
@@ -18,8 +17,8 @@
 		{
 			"name": "Page/09/01/3",
 			"contents": "[[HasPropertyForMove::ABC]]",
-			"move-to":{
-				"target":"Move/09/01/4",
+			"move-to": {
+				"target": "Move/09/01/4",
 				"is-redirect": false
 			}
 		},
@@ -30,8 +29,8 @@
 		{
 			"name": "Redirect/09/01/1",
 			"contents": "[[HasPropertyForMove::123]]",
-			"move-to":{
-				"target":"Redirect/09/01/2",
+			"move-to": {
+				"target": "Redirect/09/01/2",
 				"is-redirect": true
 			}
 		},
@@ -44,15 +43,20 @@
 			"contents": "{{#ask:[[HasPropertyForMove::ABC]] OR [[HasPropertyForMove::123]] |format=ul |link=none |headers=show }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0 includes move",
 			"subject": "Move/09/01/Query",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_MDAT", "_SKEY", "_ASK" ]
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_ASK"
+					]
 				}
 			},
 			"expected-output": {
@@ -64,13 +68,18 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1 includes redirect",
 			"subject": "Redirect/09/01/Query",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_MDAT", "_SKEY", "_ASK" ]
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_ASK"
+					]
 				}
 			},
 			"expected-output": {
@@ -84,7 +93,9 @@
 		}
 	],
 	"settings": {
-		"smwgPageSpecialProperties": [ "_MDAT" ],
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,
 			"SMW_NS_PROPERTY": true
@@ -94,7 +105,7 @@
 		"skip-on": {
 			"mw-master": "Skipping because redirect/move causes a failure in 1.27 (#1376) with the DeferredUpdate blocking succeeding tests"
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

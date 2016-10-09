@@ -1,7 +1,6 @@
 {
 	"description": "Test `_wpg` namespace any value queries (#1301, en)",
-	"properties": [],
-	"subjects": [
+	"setup": [
 		{
 			"name": "Example/Q0611/1",
 			"namespace": "NS_HELP",
@@ -24,16 +23,17 @@
 			"do-delete": true
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0",
-			"store" : {
+			"store": {
 				"clear-cache": true
 			},
 			"condition": "[[Help:+]] [[Category:Q0611]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : 10
+			"printouts": [],
+			"parameters": {
+				"limit": 10
 			},
 			"queryresult": {
 				"count": 2,
@@ -55,7 +55,7 @@
 		"wgLang": "en"
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

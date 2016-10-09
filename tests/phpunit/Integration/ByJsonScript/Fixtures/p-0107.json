@@ -1,14 +1,14 @@
 {
 	"description": "Test #smwdoc parser output (#1019, en)",
-	"properties": [],
-	"subjects": [
+	"setup": [
 		{
 			"name": "smwdoc-table",
 			"contents": "{{#smwdoc: table|parameter=base }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0 (should contain more elements, I'm to lazy to check for the rest)",
 			"subject": "smwdoc-table",
 			"expected-output": {
@@ -25,7 +25,7 @@
 		"wgLang": "en"
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

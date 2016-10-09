@@ -290,7 +290,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 				'errors' => 1,
 				'identifier' => 'bar',
 				'propertyCount'  => 1,
-				'strict-mode-valuematch' => false,
+				'strictPropertyValueMatch' => false,
 				'propertyKeys' => array( '_ERRC' )
 			)
 		);
@@ -305,7 +305,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 				'errors' => 1,
 				'identifier' => 'bar',
 				'propertyCount'  => 1,
-				'strict-mode-valuematch' => false,
+				'strictPropertyValueMatch' => false,
 				'propertyKeys' => array( '_ERRC' )
 			)
 		);
@@ -319,7 +319,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'identifier' => 'bar',
 				'errors' => 1,
-				'strict-mode-valuematch' => false,
+				'strictPropertyValueMatch' => false,
 				'propertyCount'  => 1,
 				'propertyKeys' => array( '_ERRC' )
 			)

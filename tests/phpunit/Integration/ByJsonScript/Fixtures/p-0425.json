@@ -1,12 +1,11 @@
 {
 	"description": "Test in-text annotation on `_tem`/ `_num` with different page content language (#1591, `wgContLang=es`, `wgLang=en`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has temperature",
 			"contents": "[[Has type::Temperature]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0425/1",
 			"contentlanguage": "fr",
@@ -23,8 +22,9 @@
 			"contents": "[[Has temperature::310,928 K]]"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0 page content language FR and . do not match, uses `en` as display language",
 			"subject": "Example/P0425/1",
 			"expected-output": {
@@ -34,6 +34,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1 page content language EN and . do match",
 			"subject": "Example/P0425/2",
 			"expected-output": {
@@ -43,6 +44,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2 page content language FR and , do match",
 			"subject": "Example/P0425/3",
 			"expected-output": {
@@ -62,7 +64,7 @@
 		}
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

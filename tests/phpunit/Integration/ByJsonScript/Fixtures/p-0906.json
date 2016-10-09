@@ -1,7 +1,6 @@
 {
 	"description": "Test `#ask` on category/property hierarchy with circular reference (#1713, `wgContLang=en`, `wgLang=en`, 'smwgEnabledQueryDependencyLinksStore', skip virtuoso)",
-	"properties": [],
-	"subjects": [
+	"setup": [
 		{
 			"name": "CategoryWithCircularHierarchy",
 			"namespace": "NS_CATEGORY",
@@ -29,8 +28,9 @@
 			"contents": "{{#ask: [[PropertyWithCircularHierarchy::+]] |link=none }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0906/Q1",
 			"expected-output": {
@@ -40,6 +40,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0906/Q2",
 			"expected-output": {
@@ -53,13 +54,15 @@
 		"wgContLang": "en",
 		"wgLang": "en",
 		"smwgEnabledQueryDependencyLinksStore": true,
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
 		"skip-on": {
 			"virtuoso": "Virtuoso 6.1 rdfs / subproperty/property hierarchies are currently not implemented"
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

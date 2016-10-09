@@ -1,12 +1,11 @@
 {
 	"description": "Test in-text `_dat` annotation with time offset, time zone, am/pm (`wgContLang=en`, `wgLang=en`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has date",
 			"contents": "[[Has type::Date]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0429/1",
 			"contents": "[[Has date::1 Jan 1971 13:45:23-3:30]]"
@@ -48,20 +47,28 @@
 			"contents": "{{#show: Example/P0429/5 |?Has date#LOCL@ja#TZ }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0 timeoffset",
 			"subject": "Example/P0429/1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SKEY", "_MDAT", "Has_date" ],
-					"propertyValues": [ "1971-01-01T16:15:23" ]
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_date"
+					],
+					"propertyValues": [
+						"1971-01-01T16:15:23"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0429/Q.1",
 			"expected-output": {
@@ -71,18 +78,26 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2 timezone",
 			"subject": "Example/P0429/2",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SKEY", "_MDAT", "Has_date" ],
-					"propertyValues": [ "1971-01-01T18:45:23" ]
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_date"
+					],
+					"propertyValues": [
+						"1971-01-01T18:45:23"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#3",
 			"subject": "Example/P0429/Q.2",
 			"expected-output": {
@@ -93,6 +108,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#4 invalid am/pm",
 			"subject": "Example/P0429/3",
 			"expected-output": {
@@ -102,18 +118,26 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#5 valid am/pm",
 			"subject": "Example/P0429/4",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SKEY", "_MDAT", "Has_date" ],
-					"propertyValues": [ "1971-01-01T17:05:23" ]
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_date"
+					],
+					"propertyValues": [
+						"1971-01-01T17:05:23"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#6 valid am/pm",
 			"subject": "Example/P0429/4",
 			"expected-output": {
@@ -123,6 +147,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#7 long timezone name",
 			"subject": "Example/P0429/Q.5.1",
 			"expected-output": {
@@ -132,6 +157,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#8 long timezone name",
 			"subject": "Example/P0429/Q.5.2",
 			"expected-output": {
@@ -141,6 +167,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#9 long timezone name",
 			"subject": "Example/P0429/Q.5.3",
 			"expected-output": {
@@ -155,7 +182,7 @@
 		"wgLang": "en"
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

@@ -1,20 +1,21 @@
 {
 	"description": "Test `_INST`/ Nested category annotation (#1012, en, skip virtuoso) category hierarchy queries",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has trait",
 			"contents": "[[Has type::Text]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has breed trait",
 			"contents": "[[Has type::Text]] [[Subproperty of::Has trait]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has group",
 			"contents": "[[Has type::Text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Animal",
 			"namespace": "NS_CATEGORY",
@@ -61,13 +62,14 @@
 			"contents": "[[Category:Wolf]] [[Has trait::Hunting]]"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0 all (max 10) animals with herding traits",
 			"condition": "[[Category:Animal]] AND [[Has trait::Herding]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -77,11 +79,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1 all (max 10) animals with herding or hunting traits",
 			"condition": "[[Category:Animal]] <q>[[Has trait::Herding]] OR [[Has trait::Hunting]]</q>",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 4,
@@ -94,11 +97,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#2 all (max 10) animals with herding or hunting traits (compact OR notation)",
 			"condition": "[[Category:Animal]][[Has trait::Herding||Hunting]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 4,
@@ -125,7 +129,7 @@
 		"skip-on": {
 			"virtuoso": "Virtuoso 6.1 rdfs / subproperty/subcategory hierarchies are not supported"
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

@@ -1,20 +1,21 @@
 {
 	"description": "Test format=table on boolean table output formatting (#896, #1464)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has success state",
 			"contents": "[[Has type::Boolean]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has boolean",
 			"contents": "[[Has type::Boolean]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has project name",
 			"contents": "[[Has type::Text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Project one",
 			"contents": "[[Category:BoolProjects]] [[Has success state::true]] [[Has project name::One]]"
@@ -52,8 +53,9 @@
 			"contents": "{{#ask: [[Category:F0201]] |?Has boolean#<span style=\"color: green; font-size: 120%;\">&#10003;</span>,<span style=\"color: #AA0000; font-size: 120%;\">&#10005;</span>=Label on (&#10003;,&#10005;) }}"
 		}
 	],
-	"format-testcases": [
+	"tests": [
 		{
+			"type": "format",
 			"about": "#0 Check format#x output, see #896",
 			"subject": "Example/F0201/1",
 			"expected-output": {
@@ -66,6 +68,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#1 Check bool label output value label",
 			"subject": "BooleanTable-ToLabelBoolValue",
 			"expected-output": {
@@ -79,6 +82,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#2 Check bool/column label output",
 			"subject": "BooleanTable-ToLabelBoolValueAndColumn",
 			"expected-output": {
@@ -92,6 +96,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#3",
 			"subject": "Example/F0201/3a",
 			"expected-output": {
@@ -102,6 +107,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#4",
 			"subject": "Example/F0201/3b",
 			"expected-output": {
@@ -112,6 +118,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#5 (#1464)",
 			"subject": "Example/F0201/3c",
 			"expected-output": {
@@ -122,9 +129,9 @@
 			}
 		}
 	],
-	"settings": {},
+	"settings": [],
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

@@ -1,16 +1,16 @@
 {
 	"description": "Test `_CONC` queries (skip postgres, skip virtuoso)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Population",
 			"contents": "[[Has type::Number]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has concept description",
 			"contents": "[[Has type::Text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Page one",
 			"contents": "[[Population::1001]], [[Has concept description::Bar]]"
@@ -49,12 +49,13 @@
 			"contents": "{{#concept: [[Concept:Concept for any value selection]] OR [[Concept:Concept for distinct value selection]] }}"
 		}
 	],
-	"concept-testcases": [
+	"tests": [
 		{
+			"type": "concept",
 			"about": "#0 Simple concept member list",
 			"condition": "[[Concept:Concept for any value selection]]",
-			"parameters" : {
-				"limit" : "10"
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": "2"
@@ -67,10 +68,11 @@
 			]
 		},
 		{
+			"type": "concept",
 			"about": "#1 Simple concept distinct member list",
 			"condition": "[[Concept:Concept for distinct value selection]]",
-			"parameters" : {
-				"limit" : "10"
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": "1"
@@ -83,10 +85,11 @@
 			]
 		},
 		{
+			"type": "concept",
 			"about": "#2 Composite concept set by conjunctive conditions",
 			"condition": "[[Concept:Composite concept for a conjunctive condition]]",
-			"parameters" : {
-				"limit" : "10"
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": "1"
@@ -99,10 +102,11 @@
 			]
 		},
 		{
+			"type": "concept",
 			"about": "#3 Composite concept set by disjunctive conditions",
 			"condition": "[[Concept:Composite concept for a disjunctive condition]]",
-			"parameters" : {
-				"limit" : "10"
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": "2"
@@ -115,13 +119,13 @@
 			]
 		}
 	],
-	"settings": {},
+	"settings": [],
 	"meta": {
 		"skip-on": {
 			"postgres": "Unable to run concept tests on postgres, see #781",
 			"virtuoso": "Virtuoso reports 'SPARQL compiler: Blank node ... is not allowed in a constant clause', see https://github.com/openlink/virtuoso-opensource/issues/126"
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false
 	}
 }

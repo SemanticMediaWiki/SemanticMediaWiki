@@ -1,32 +1,36 @@
 {
 	"description": "Test _rec for non strict comparators queries (`smwStrictComparators=false`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has title",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has year",
 			"contents": "[[Has type::Date]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has population",
 			"contents": "[[Has type::Number]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has area",
 			"contents": "[[Has type::Quantity]] [[Corresponds to::1 km²]] [[Corresponds to::1000 m²]] [[Corresponds to::988.42153133973 rood]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Population density",
 			"contents": "[[Has type::Record]] [[Has fields::Has population;Has area]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Book record",
 			"contents": "[[Has type::Record]] [[Has fields::Has title;Has year]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/1101/City A",
 			"contents": "[[Category:Record example]] [[Population density::3900;1 km²]]"
@@ -52,13 +56,16 @@
 			"contents": "[[Category:Record example]] [[Book record::Book D;1900]]"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0 distinct value search",
 			"condition": "[[Category:Record example]] [[Population density::3900;1 km²]]",
-			"printouts" : [ "Population density" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"Population density"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -74,11 +81,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1, T23926 RecordsToContainSpecialCharactersCausedByHtmlEncoding",
 			"condition": "[[Category:Record example]] [[Book record::Title with $&%'\\;* special characters ; 2001]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -88,11 +96,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#2, T36019 RecordToContainFieldComparator",
 			"condition": "[[Category:Record example]] [[Book record::?;<30 Dec 2001]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 4,
@@ -105,11 +114,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#3",
 			"condition": "[[Category:Record example]] [[Book record::?;<1901]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -119,11 +129,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#4",
 			"condition": "[[Category:Record example]] [[Book record::?;>30 Dec 2001]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -133,11 +144,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#5",
 			"condition": "[[Category:Record example]] [[Book record::?;>1901]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 3,
@@ -149,11 +161,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#6",
 			"condition": "[[Category:Record example]] [[Book record::?;!2001]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 3,
@@ -169,8 +182,7 @@
 		"smwStrictComparators": false
 	},
 	"meta": {
-
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

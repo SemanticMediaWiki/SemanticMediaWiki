@@ -1,16 +1,16 @@
 {
 	"description": "Test conditions and constraint validations for allowed values `_LIST` and uniqueness `_PVUC` (#1207, `wgContLang=en`, `wgLang=en`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text",
 			"contents": "[[Has type::Text]] [[Allows value::open]], [[Allows value::closed]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has uniqueness",
 			"contents": "[[Has type::Text]] [[Has uniqueness constraint::true]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/Q1108/1",
 			"contents": "[[Category:Q1108]][[Has text::open]]"
@@ -36,13 +36,24 @@
 			"contents": "{{#ask: [[Category:Q1108]] [[Has uniqueness::Foo]] |link=none}}"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "parser",
+			"about": "#3 embedded query with uniqueness condition works without raising an issue due to different context page",
+			"subject": "Example/Q1108/Q1",
+			"expected-output": {
+				"to-contain": [
+					"Example/Q1108/4"
+				]
+			}
+		},
+		{
+			"type": "query",
 			"about": "#0 matches one with open",
 			"condition": "[[Category:Q1108]][[Has text::open]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : 10
+			"printouts": [],
+			"parameters": {
+				"limit": 10
 			},
 			"queryresult": {
 				"count": 1,
@@ -52,11 +63,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1 matches none",
 			"condition": "[[Category:Q1108]][[Has text::invalid]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : 10
+			"printouts": [],
+			"parameters": {
+				"limit": 10
 			},
 			"queryresult": {
 				"count": 0,
@@ -64,11 +76,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#2",
 			"condition": "[[Category:Q1108]] [[Has uniqueness::Foo]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : 10
+			"printouts": [],
+			"parameters": {
+				"limit": 10
 			},
 			"queryresult": {
 				"count": 1,
@@ -78,24 +91,15 @@
 			}
 		}
 	],
-	"parser-testcases": [
-		{
-			"about": "#3 embedded query with uniqueness condition works without raising an issue due to different context page",
-			"subject": "Example/Q1108/Q1",
-			"expected-output": {
-				"to-contain": [
-					"Example/Q1108/4"
-				]
-			}
-		}
-	],
 	"settings": {
-		"smwgDVFeatures": [ "SMW_DV_PVUC" ],
+		"smwgDVFeatures": [
+			"SMW_DV_PVUC"
+		],
 		"wgContLang": "en",
 		"wgLang": "en"
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

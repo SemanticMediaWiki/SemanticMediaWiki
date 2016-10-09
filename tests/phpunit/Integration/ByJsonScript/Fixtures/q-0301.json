@@ -1,7 +1,6 @@
 {
 	"description": "Test `_IMPO` queries for imported foaf vocabulary (#891, en)",
-	"properties": [],
-	"subjects": [
+	"setup": [
 		{
 			"name": "Smw import foaf",
 			"namespace": "NS_MEDIAWIKI",
@@ -36,13 +35,17 @@
 			"contents": "[[Foaf:name::Jane Doe]], [[Foaf:homepage::http://example.org/JaneDoe]] [[Foaf:knows::John Doe]]"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0",
 			"condition": "[[Foaf:name::John Doe]] OR [[Foaf:name::Jane Doe]]",
-			"printouts" : [ "Foaf:name", "Foaf:knows" ],
-			"parameters" : {
-			  "limit" : "10"
+			"printouts": [
+				"Foaf:name",
+				"Foaf:knows"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -71,11 +74,14 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1 check auto-property types, #891",
 			"condition": "[[Foaf:name::John Doe]] OR [[Foaf:name::Jane Doe]]",
-			"printouts" : [ "Foaf:homepage" ],
-			"parameters" : {
-			  "limit" : "10"
+			"printouts": [
+				"Foaf:homepage"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -96,11 +102,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#2 query on redirected property",
 			"condition": "[[Has name::John Doe]]",
-			"printouts" : [ ],
-			"parameters" : {
-			  "limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -120,7 +127,7 @@
 		}
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

@@ -1,12 +1,11 @@
 {
 	"description": "Test format=category and defaultsort (#699, en)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text",
 			"contents": "[[Has type::Text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Saaa",
 			"contents": "[[Has text::aaa]] [[Has text::aba]] [[Has text::abb]]"
@@ -44,8 +43,9 @@
 			"contents": "{{#ask:[[Has text::+]]\n |?Has text\n |format=category\n |order=desc\n |link=none\n |headers=plain\n |limit=0\n |columns=1\n}}"
 		}
 	],
-	"format-testcases": [
+	"tests": [
 		{
+			"type": "format",
 			"about": "#0",
 			"subject": "one-column-plainlist-output-asc",
 			"expected-output": {
@@ -63,6 +63,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#1",
 			"subject": "one-column-plainlist-output-desc",
 			"expected-output": {
@@ -80,6 +81,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#3 Further link",
 			"subject": "Example/0302/Further-link",
 			"expected-output": {
@@ -99,7 +101,7 @@
 		}
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

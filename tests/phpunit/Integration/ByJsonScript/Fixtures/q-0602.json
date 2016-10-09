@@ -1,25 +1,29 @@
 {
 	"description": "Test `_wpg` sort query with #subobject annotated @sortkey content",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Member of",
 			"contents": "[[Has type::Page]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Page-with-subobject",
 			"contents": "{{#subobject:|Member of=WXYZ|@sortkey=B}}\n {{#subobject:|Member of=ABCD|@sortkey=A}}\n {{#subobject:|Member of=ABCD|@sortkey=A}}\n {{#subobject:|Member of=ABCD|@sortkey=C}}"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0",
 			"condition": "[[Member of::+]]",
-			"printouts" : [ "Member of" ],
-			"parameters" : {
-				"limit" : "10",
-					"sort": { "Member_of": "DESC" }
+			"printouts": [
+				"Member of"
+			],
+			"parameters": {
+				"limit": "10",
+				"sort": {
+					"Member_of": "DESC"
+				}
 			},
 			"queryresult": {
 				"count": "3",
@@ -32,10 +36,12 @@
 		}
 	],
 	"settings": {
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

@@ -1,12 +1,11 @@
 {
 	"description": "Test format=template output using unnamed arguments (#885)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has page property",
 			"contents": "[[Has type::Page]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "TemplateOutputUsingUnnamedArgumentsForNonUnicode",
 			"namespace": "NS_TEMPLATE",
@@ -42,8 +41,9 @@
 			"contents": "{{#ask:[[Category:template-001]][[Has page property::ABC]]\n |?Has page property\n |format=template\n |order=desc\n |link=none\n |limit=3\n |searchlabel=furtherresults\n |userparam=[$%&*==42]\n |template=TemplateOutputUsingUnnamedArgumentsForNonUnicode\n |introtemplate=TemplateOutputUsingUnnamedArgumentsForNonUnicodeExtra\n |outrotemplate=TemplateOutputUsingUnnamedArgumentsForNonUnicodeExtra\n}}"
 		}
 	],
-	"format-testcases": [
+	"tests": [
 		{
+			"type": "format",
 			"about": "#0 asc template output using unnamed arguments, #885 further results link",
 			"subject": "template-001-asc-order-unnamed-args",
 			"expected-output": {
@@ -57,6 +57,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#1 desc template output using unnamed arguments",
 			"subject": "template-001-desc-order-unnamed-args",
 			"expected-output": {
@@ -77,7 +78,7 @@
 		}
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

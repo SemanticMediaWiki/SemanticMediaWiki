@@ -326,7 +326,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'hasErrors' => true,
 				'identifier' => 'Foo_bar_foo',
-				'strict-mode-valuematch' => false,
+				'strictPropertyValueMatch' => false,
 				'propertyCount'  => 2,
 				'propertyKeys'   => array( 'Bar', '_ERRC' ),
 				'propertyValues' => array( 'Foo Bar' )
@@ -342,7 +342,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'hasErrors' => true,
 				'identifier' => 'Foo_bar_foo',
-				'strict-mode-valuematch' => false,
+				'strictPropertyValueMatch' => false,
 				'propertyCount'  => 2,
 				'propertyKeys' => array( 'Bar', '_ERRC' ),
 				'propertyValues' => array( 'Foo Bar' )
@@ -359,7 +359,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'hasErrors' => true,
 				'identifier' => 'Foo_bar_foo',
-				'strict-mode-valuematch' => false,
+				'strictPropertyValueMatch' => false,
 				'propertyCount'  => 1,
 				'propertyKeys' => array( '_ERRC' )
 			)
@@ -377,7 +377,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'hasErrors' => true,
 				'identifier' => 'Foo_bar_foo',
-				'strict-mode-valuematch' => false,
+				'strictPropertyValueMatch' => false,
 				'propertyCount'  => 1,
 				'propertyKeys' => array( '_ERRC' )
 			)
@@ -392,7 +392,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'hasErrors' => false,
 				'identifier' => 'foobar.bar',
-				'strict-mode-valuematch' => false,
+				'strictPropertyValueMatch' => false,
 				'propertyCount'  => 1,
 				'propertyKeys' => array( 'Bar' ),
 				'propertyValues' => array( 'Foo Bar' )

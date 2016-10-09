@@ -1,12 +1,11 @@
 {
 	"description": "Test in-text annotation with DISPLAYTITLE (#1410, #1611, `wgRestrictDisplayTitle`, `wgContLang=en`, `wgLang=en`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Dwc:vernacularName",
 			"contents": "[[Has type::Text]] {{DISPLAYTITLE:dwc:vernacularName}}"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0416/1",
 			"contents": "{{DISPLAYTITLE:Foo}} {{#subobject:Bar|text=abc|Display title of=123}}"
@@ -80,32 +79,49 @@
 			"contents": "{{#ask: [[Display title of::Example/P0416/8'a]] |link=none |format=table |sort=# |order=asc}}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0416/1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
-					"propertyKeys": [ "_SKEY", "_MDAT", "_DTITLE", "_SOBJ" ],
-					"propertyValues": [ "Foo" ]
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_DTITLE",
+						"_SOBJ"
+					],
+					"propertyValues": [
+						"Foo"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0416/1#Bar",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_DTITLE", "_TEXT", "_SKEY" ],
-					"propertyValues": [ "abc", "123" ]
+					"propertyKeys": [
+						"_DTITLE",
+						"_TEXT",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"abc",
+						"123"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2",
 			"subject": "Example/P0416/Q1.1",
 			"expected-output": {
@@ -116,6 +132,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#3",
 			"subject": "Example/P0416/Q2.1",
 			"expected-output": {
@@ -126,6 +143,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#4",
 			"subject": "Example/P0416/Q3.1",
 			"expected-output": {
@@ -136,30 +154,44 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#5",
 			"subject": "Example/P0416/4",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_DTITLE", "_MDAT", "_SKEY" ],
-					"propertyValues": [ "Foo", "BAR" ]
+					"propertyKeys": [
+						"_DTITLE",
+						"_MDAT",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"Foo",
+						"BAR"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#6",
 			"subject": "Example/P0416/5#_47ab3a24a41d0687c9398e1886c38fe3",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 1,
-					"propertyKeys": [ "_SKEY" ],
-					"propertyValues": [ "SORT" ]
+					"propertyKeys": [
+						"_SKEY"
+					],
+					"propertyValues": [
+						"SORT"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#7",
 			"subject": "Example/P0416/5",
 			"expected-output": {
@@ -169,6 +201,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#8 (sortkey is copied from root)",
 			"subject": "Example/P0416/Q6.1",
 			"expected-output": {
@@ -180,6 +213,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#9 (sortkey is copied from root)",
 			"subject": "Example/P0416/Q6.2",
 			"expected-output": {
@@ -190,6 +224,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#10 (sobj sortkey)",
 			"subject": "Example/P0416/Q6.3",
 			"expected-output": {
@@ -199,6 +234,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#11 Display title/query includes &",
 			"subject": "Example/P0416/Q7.1",
 			"expected-output": {
@@ -208,6 +244,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#12 Display title/query includes '",
 			"subject": "Example/P0416/Q8.1",
 			"expected-output": {
@@ -223,7 +260,7 @@
 		"wgRestrictDisplayTitle": false
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

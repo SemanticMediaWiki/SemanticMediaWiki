@@ -1,41 +1,46 @@
 {
 	"description": "Test `_SUBP` to map DC imported vocabulary with MARC 21 bibliographic terms (#1003, http://www.loc.gov/marc/bibliographic/bd20x24x.html)",
-	"properties": [
+	"setup": [
 		{
-			"name": "Smw import dc",
 			"namespace": "NS_MEDIAWIKI",
+			"name": "Smw import dc",
 			"contents": "http://purl.org/dc/elements/1.1/|[http://purl.org/dc/elements/1.1/ dc]\n title|Type:Text\n type|Type:Text\n date|Type:Date\n description|Type:Text\n creator|Type:Page\n"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Dc:title",
 			"contents": "[[Imported from::dc:title]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Dc:creator",
 			"contents": "[[Imported from::dc:creator]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Marc:title",
 			"contents": "[[Has type::Text]] [[Subproperty of::Dc:title]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Marc:main entry personal name",
 			"contents": "[[Has type::Page]] [[Subproperty of::Dc:creator]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Marc:title statement",
 			"contents": "[[Has type::Text]] [[Subproperty of::Marc:title]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Marc:varying form of title",
 			"contents": "[[Has type::Text]] [[Subproperty of::Marc:title]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has author",
 			"contents": "#REDIRECT [[Property:Marc:main entry personal name]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Animal farm",
 			"contents": "[[Marc:title statement::George Orwell's Animal farm]] [[Has author::George Orwell]]"
@@ -57,16 +62,19 @@
 			"contents": "[[Marc:title::King Lear]] [[Has author::William Shakespeare]]"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0 any value for Marc:title statement",
 			"condition": "[[Marc:title statement::+]]",
-			"printouts" : [ "Has author" ],
-			"store" : {
-				"clear-cache" : true
+			"printouts": [
+				"Has author"
+			],
+			"store": {
+				"clear-cache": true
 			},
-			"parameters" : {
-				"limit" : 10
+			"parameters": {
+				"limit": 10
 			},
 			"queryresult": {
 				"count": 2,
@@ -87,14 +95,17 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1 any value for Marc:title on level one of the subproperty hierarchy",
 			"condition": "[[Marc:title::+]]",
-			"printouts" : [ "Has author" ],
-			"store" : {
-				"clear-cache" : true
+			"printouts": [
+				"Has author"
+			],
+			"store": {
+				"clear-cache": true
 			},
-			"parameters" : {
-				"limit" : 10
+			"parameters": {
+				"limit": 10
 			},
 			"queryresult": {
 				"count": 3,
@@ -120,14 +131,17 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#2 any value for Dc:title on level two of the subproperty hierarchy",
 			"condition": "[[Dc:title::+]]",
-			"printouts" : [ "Has author" ],
-			"store" : {
-				"clear-cache" : true
+			"printouts": [
+				"Has author"
+			],
+			"store": {
+				"clear-cache": true
 			},
-			"parameters" : {
-				"limit" : 10
+			"parameters": {
+				"limit": 10
 			},
 			"queryresult": {
 				"count": 3,
@@ -153,14 +167,17 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#3 distinct value for Dc:title on level two of the subproperty hierarchy",
 			"condition": "[[Dc:title::~*Animal*]]",
-			"printouts" : [ "Has author" ],
-			"store" : {
-				"clear-cache" : true
+			"printouts": [
+				"Has author"
+			],
+			"store": {
+				"clear-cache": true
 			},
-			"parameters" : {
-				"limit" : 10
+			"parameters": {
+				"limit": 10
 			},
 			"queryresult": {
 				"count": 1,
@@ -176,14 +193,15 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#4 distinct value for Has author / redirected value / subproperty level zero",
 			"condition": "[[Has author::Shakespeare]]",
-			"printouts" : [],
-			"store" : {
-				"clear-cache" : true
+			"printouts": [],
+			"store": {
+				"clear-cache": true
 			},
-			"parameters" : {
-				"limit" : 10
+			"parameters": {
+				"limit": 10
 			},
 			"queryresult": {
 				"count": 1,
@@ -193,14 +211,15 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#5 distinct value for Dc:creator / redirected value / subproperty level one",
 			"condition": "[[Dc:creator::Shakespeare]]",
-			"printouts" : [],
-			"store" : {
-				"clear-cache" : true
+			"printouts": [],
+			"store": {
+				"clear-cache": true
 			},
-			"parameters" : {
-				"limit" : 10
+			"parameters": {
+				"limit": 10
 			},
 			"queryresult": {
 				"count": 1,
@@ -217,7 +236,7 @@
 		"skip-on": {
 			"virtuoso": "Virtuoso 6.1 rdfs / subproperty/property hierarchies are currently not implemented"
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

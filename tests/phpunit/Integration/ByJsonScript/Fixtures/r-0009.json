@@ -1,21 +1,24 @@
 {
 	"description": "Test RDF output generation that contain a monolingual text annotations `_PDESC` (`wgContLang=en`, `wgLang=es`, syntax=rdf/turtle)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has number",
 			"contents": "[[Has type::Number]] [[Has property description::Is a number@en]] [[Has property description::数@ja]]"
 		}
 	],
-	"subjects": [],
-	"rdf-testcases": [
+	"tests": [
 		{
+			"type": "rdf",
 			"about": "#0",
-			"exportcontroller" : {
-				"print-pages": [ "Property:Has number" ],
-				"parameters" : {
-					"backlinks" : true,
-					"recursion" : "1",
-					"revisiondate" : false
+			"exportcontroller": {
+				"print-pages": [
+					"Property:Has number"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
 				}
 			},
 			"expected-output": {
@@ -35,14 +38,17 @@
 			}
 		},
 		{
+			"type": "rdf",
 			"about": "#0",
-			"exportcontroller" : {
+			"exportcontroller": {
 				"syntax": "turtle",
-				"print-pages": [ "Property:Has number" ],
-				"parameters" : {
-					"backlinks" : true,
-					"recursion" : "1",
-					"revisiondate" : false
+				"print-pages": [
+					"Property:Has number"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
 				}
 			},
 			"expected-output": {
@@ -72,7 +78,7 @@
 		"smwgNamespace": "http://example.org/id/"
 	},
 	"meta": {
-		"version": "0.2",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

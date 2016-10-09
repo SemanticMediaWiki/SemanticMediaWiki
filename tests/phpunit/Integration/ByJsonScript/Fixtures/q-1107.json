@@ -1,35 +1,37 @@
 {
 	"description": "Test `_rec`/`_mlt_rec`(`_PDESC`) to use property chaining (`wgContLang=en`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text",
 			"contents": "[[Has type::Text]] [[Has property description::Text property@en]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has number",
 			"contents": "[[Has type::Number]] [[Has property description::Number property@en]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has record text",
 			"contents": "[[Has type::Record]] [[Has fields::Has text;Has number]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/Q1107/1",
 			"contents": "{{#subobject: Test|Has text=Foo|Has record text=abc;222}}"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0",
-			"store" : {
-				"clear-cache" : true
+			"store": {
+				"clear-cache": true
 			},
 			"condition": "[[Has property description.Language code::en]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -40,11 +42,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1",
 			"condition": "[[Has subobject.Has record text.Has number::222]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -54,11 +57,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#2",
 			"condition": "[[Has record text.Has number::222]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -73,8 +77,7 @@
 		"wgLang": "en"
 	},
 	"meta": {
-
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

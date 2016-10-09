@@ -1,16 +1,16 @@
 {
 	"description": "Test printrequest property chaining `|?Foo.Bar` (#1824, `wgContLang=en`, `wgLang=en`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has population",
 			"contents": "[[Has type::Reference]] [[Has fields::Number;Date;URL]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Capital of",
 			"contents": "[[Has type::Page]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0434/1",
 			"contents": "[[Has population::123;1 Jan 1970;http://example.org/SomeSource]] {{#subobject:Has population=456;1 Jan 2000;http://example.org/SomeSource }} [[Category:P0434]]"
@@ -48,8 +48,9 @@
 			"contents": "{{#ask: [[Category:Country]] [[Category:P0434]] |?Located in.-Located in.-Located in.Capital of.Has subobject.Has population.Number |link=none }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0434/Q1.1",
 			"expected-output": {
@@ -59,6 +60,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0434/Q1.2",
 			"expected-output": {
@@ -68,6 +70,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2 on (?Capital of.Has population.Number)",
 			"subject": "Example/P0434/Q2.1",
 			"expected-output": {
@@ -80,6 +83,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#3 on (?Located in.-Located in.-Located in.Capital of)",
 			"subject": "Example/P0434/Q3.1",
 			"expected-output": {
@@ -89,6 +93,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#4 on (?Located in.-Located in.-Located in.Capital of=SomeOtherText)",
 			"subject": "Example/P0434/Q3.2",
 			"expected-output": {
@@ -99,6 +104,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#5 on (?Located in.-Located in.-Located in.Capital of.Has subobject.Has population.Number)",
 			"subject": "Example/P0434/Q3.3",
 			"expected-output": {
@@ -112,10 +118,12 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en",
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

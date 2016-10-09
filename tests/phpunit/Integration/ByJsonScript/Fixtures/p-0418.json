@@ -1,16 +1,16 @@
 {
 	"description": "Test in-text annotation using `_SERV` as provide service links (en)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "PropertyWithServiceLink",
 			"contents": "[[Has type::Text]] [[Provides service::some links]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "PropertyWithAnotherServiceLink",
 			"contents": "[[Has type::Text]] [[Provides service::some other links]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Smw_service_some_other_links",
 			"namespace": "NS_MEDIAWIKI",
@@ -25,22 +25,31 @@
 			"contents": " [[PropertyWithAnotherServiceLink::ABC]]"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "PropertyWithServiceLink",
 			"namespace": "SMW_NS_PROPERTY",
 			"store": {
 				"clear-cache": true,
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
-					"propertyKeys": [ "_TYPE", "_MDAT", "_SKEY", "_SERV" ],
-					"propertyValues": [ "some links" ]
+					"propertyKeys": [
+						"_TYPE",
+						"_MDAT",
+						"_SKEY",
+						"_SERV"
+					],
+					"propertyValues": [
+						"some links"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1",
 			"subject": "PropertyWithServiceLink",
 			"namespace": "SMW_NS_PROPERTY",
@@ -51,6 +60,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2",
 			"subject": "PropertyWithAnotherServiceLink",
 			"namespace": "SMW_NS_PROPERTY",
@@ -66,8 +76,7 @@
 		"wgLang": "en"
 	},
 	"meta": {
-
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

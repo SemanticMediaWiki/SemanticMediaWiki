@@ -1,16 +1,16 @@
 {
 	"description": "Test `_wpg` for property chain query queries",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Located in",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Member of",
 			"contents": "[[Has type::Page]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Europe",
 			"contents": "[[Member of::European Union]] {{#subobject:Member of=NATO}}"
@@ -28,13 +28,14 @@
 			"contents": "{{#subobject:Located in=Europe}}"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0",
 			"condition": "[[Located in.Member of::European Union]]",
-			"printouts" : [],
-			"parameters" : {
-			  "limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": "3",
@@ -46,11 +47,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1",
 			"condition": "[[Located in.Has subobject.Member of::NATO]]",
-			"printouts" : [],
-			"parameters" : {
-			  "limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": "3",
@@ -63,10 +65,12 @@
 		}
 	],
 	"settings": {
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

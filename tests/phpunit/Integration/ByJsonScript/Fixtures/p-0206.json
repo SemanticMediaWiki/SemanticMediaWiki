@@ -1,16 +1,16 @@
 {
 	"description": "Test #show parser on inverse printrequest (#1222, #1223)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "HasWorkManifested",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "HasWorkManifestedAsText",
 			"contents": "[[Has type::Text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/0206/1",
 			"contents": "[[HasWorkManifested::ABC]] + {{#show:{{FULLPAGENAME}}|?-HasWorkManifested|link=none}} + {{#show:{{FULLPAGENAME}}|?HasWorkManifested|link=none}}"
@@ -24,15 +24,21 @@
 			"contents": "[[HasWorkManifestedAsText::{{FULLPAGENAME}}]] + {{#show:{{FULLPAGENAME}}|?-HasWorkManifestedAsText|link=none}} + {{#show:{{FULLPAGENAME}}|?HasWorkManifestedAsText|link=none}}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0 where inverse is unknown and not displayed",
 			"subject": "Example/0206/1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
-					"propertyKeys": [ "_ASK", "_MDAT", "_SKEY", "HasWorkManifested" ]
+					"propertyKeys": [
+						"_ASK",
+						"_MDAT",
+						"_SKEY",
+						"HasWorkManifested"
+					]
 				}
 			},
 			"expected-output": {
@@ -42,13 +48,19 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1 inverse pointing to itself",
 			"subject": "Example/0206/2",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
-					"propertyKeys": [ "_ASK", "_MDAT", "_SKEY", "HasWorkManifested" ]
+					"propertyKeys": [
+						"_ASK",
+						"_MDAT",
+						"_SKEY",
+						"HasWorkManifested"
+					]
 				}
 			},
 			"expected-output": {
@@ -58,13 +70,19 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2, see #1222, inverse is not displayed compared to #1",
 			"subject": "Example/0206/3",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
-					"propertyKeys": [ "_ASK", "_MDAT", "_SKEY", "HasWorkManifestedAsText" ]
+					"propertyKeys": [
+						"_ASK",
+						"_MDAT",
+						"_SKEY",
+						"HasWorkManifestedAsText"
+					]
 				}
 			},
 			"expected-output": {
@@ -75,10 +93,12 @@
 		}
 	],
 	"settings": {
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

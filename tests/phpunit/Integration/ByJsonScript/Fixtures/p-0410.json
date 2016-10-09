@@ -1,56 +1,66 @@
 {
 	"description": "Test in-text annotation on `_num`/`_tem`/`_qty` type with denoted precision (`_PREC`) and/or `-p<num>` printout precision marker (#1335, en)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has temperature with prec4",
 			"contents": "[[Has type::Temperature]] [[Display precision of::4]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has temperature with prec2",
 			"contents": "[[Has type::Temperature]] [[Display precision of::2]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has temperature",
 			"contents": "[[Has type::Temperature]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has number with prec4",
 			"contents": "[[Has type::Number]] [[Display precision of::4]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has number with prec2",
 			"contents": "[[Has type::Number]] [[Display precision of::2]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has number",
 			"contents": "[[Has type::Number]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has area",
 			"contents": "[[Has type::Quantity]] [[Corresponds to::1 km²]] [[Corresponds to::0.38610 sq mi]] [[Corresponds to::1000 m²]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has area with prec4",
 			"contents": "[[Has type::Quantity]] [[Corresponds to::1 km²]] [[Corresponds to::0.38610 sq mi]] [[Corresponds to::1000 m²]] [[Display precision of::4]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has area with prec2",
 			"contents": "[[Has type::Quantity]] [[Corresponds to::1 km²]] [[Corresponds to::0.38610 sq mi]] [[Corresponds to::1000 m²]] [[Display precision of::2]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has area with prec0",
 			"contents": "[[Has type::Quantity]] [[Corresponds to::1 km²]] [[Corresponds to::0.38610 sq mi]] [[Corresponds to::1000 m²]] [[Display precision of::0]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has currency with prec2",
 			"contents": "[[Has type::Quantity]] [[Display units::€, ¥]] [[Corresponds to:: € 1.00]] [[Corresponds to::¥,JPY,Japanese Yen 114.2121]] [[Display precision of::2]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has currency with prec4",
 			"contents": "[[Has type::Quantity]] [[Display units::€, ¥]] [[Corresponds to:: € 1.00]] [[Corresponds to::¥,JPY,Japanese Yen 114.2121]] [[Display precision of::4]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0410/1",
 			"contents": "[[Has temperature with prec4::32 °F]] [[Has temperature with prec4::100 °C]]"
@@ -156,32 +166,49 @@
 			"contents": "{{#ask: [[~Example/P0410/8/*]] |?Has temperature#-n-p2 |format=table }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0410/1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_temperature_with_prec4", "_SKEY", "_MDAT" ],
-					"propertyValues": [ 273.15, 373.15 ]
+					"propertyKeys": [
+						"Has_temperature_with_prec4",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						273.15,
+						373.15
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0410/2",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_temperature_with_prec2", "_SKEY", "_MDAT" ],
-					"propertyValues": [ 273.15, 373.15 ]
+					"propertyKeys": [
+						"Has_temperature_with_prec2",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						273.15,
+						373.15
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2",
 			"subject": "Example/P0410/1/1",
 			"expected-output": {
@@ -199,6 +226,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#3",
 			"subject": "Example/P0410/2/1",
 			"expected-output": {
@@ -216,6 +244,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#4 Prec2 vs Prec4 incl. rounding on output for plain number",
 			"subject": "Example/P0410/3",
 			"expected-output": {
@@ -234,6 +263,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#5 Prec2 vs Prec4 vs Prc0 quantity output",
 			"subject": "Example/P0410/4",
 			"expected-output": {
@@ -254,6 +284,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#6 on currency output",
 			"subject": "Example/P0410/5",
 			"expected-output": {
@@ -274,6 +305,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#7 on number output without property defined precision, uses -p4 printout marker",
 			"subject": "Example/P0410/6a",
 			"expected-output": {
@@ -287,6 +319,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#8 on number output without property defined precision, uses -p4 printout marker",
 			"subject": "Example/P0410/6b",
 			"expected-output": {
@@ -300,6 +333,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#9 on number output without property defined precision, uses -p3-n printout marker",
 			"subject": "Example/P0410/6c",
 			"expected-output": {
@@ -313,6 +347,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#10 on quantity output without property defined precision, uses -p2 printout marker",
 			"subject": "Example/P0410/7a",
 			"expected-output": {
@@ -331,6 +366,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#11 on quantity output without property defined precision, uses m²-p3 printout marker",
 			"subject": "Example/P0410/7b",
 			"expected-output": {
@@ -349,6 +385,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#12 on quantity output without property defined precision, uses -n-p2 printout marker",
 			"subject": "Example/P0410/7c",
 			"expected-output": {
@@ -361,6 +398,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#13 on temperature output without property defined precision, uses -p2 printout marker",
 			"subject": "Example/P0410/8a",
 			"expected-output": {
@@ -378,6 +416,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#14 on temperature output without property defined precision, uses °C-p3 printout marker",
 			"subject": "Example/P0410/8b",
 			"expected-output": {
@@ -395,6 +434,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#15 on temperature output without property defined precision, uses -n-p2 printout marker",
 			"subject": "Example/P0410/8c",
 			"expected-output": {
@@ -411,8 +451,7 @@
 		"wgLang": "en"
 	},
 	"meta": {
-
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

@@ -1,12 +1,11 @@
 {
 	"description": "Test `format=table` on `|+align=`/`|+limit`/`|+order` extra printout parameters (T18571, en)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has number",
 			"contents": "[[Has type::Number]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/F0205/1/1",
 			"contents": "[[Has number::1]] [[Has number::42]] [[Has number::.02]]"
@@ -24,8 +23,9 @@
 			"contents": "{{#ask: [[~Example/F0205/1/*]] |?Has number |+align=left |+limit=2 |+order=desc |format=table |headers=plain }}"
 		}
 	],
-	"format-testcases": [
+	"tests": [
 		{
+			"type": "format",
 			"about": "#0",
 			"subject": "Example/F0205/1a",
 			"expected-output": {
@@ -36,6 +36,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#1",
 			"subject": "Example/F0205/1b",
 			"expected-output": {
@@ -55,7 +56,7 @@
 		}
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

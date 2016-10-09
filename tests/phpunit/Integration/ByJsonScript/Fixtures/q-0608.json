@@ -1,12 +1,11 @@
 {
 	"description": "Test `_wpg` for single value approximate (`~/!~`) queries (#1246)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has example page",
 			"contents": "[[Has type::Page]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/0608/1/1",
 			"contents": "[[Category:0608-1]]"
@@ -20,13 +19,14 @@
 			"contents": "[[Category:0608-3]] [[Has example page::Example/0608/3]]"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0",
 			"condition": "[[Example/0608/1/1]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -36,11 +36,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1",
 			"condition": "[[Example/0608/1/1]] OR [[Example/0608/3]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -51,11 +52,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#2",
 			"condition": "[[~Example/0608/*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 3,
@@ -67,11 +69,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#3",
 			"condition": "[[~Example/0608/*]][[!~Example/0608/1/*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -81,11 +84,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#4",
 			"condition": "[[~Example/0608/*]] [[Category:0608-2]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -95,11 +99,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#5",
 			"condition": "[[~Example/0608/*]] [[Has example page::Example/0608/3]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -109,9 +114,9 @@
 			}
 		}
 	],
-	"settings": {},
+	"settings": [],
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

@@ -1,12 +1,11 @@
 {
 	"description": "Test in-text annotation `_dat` on partial dates (en)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has date",
 			"contents": "[[Has type::Date]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0422/1",
 			"contents": "[[Has date::Jan 1990]], [[Has date::02 1990]], [[Has date::1782]], [[Has date::1990年6月]], [[Has date::1990年4月28日 7時01分]], [[Has date::１９９０年９月]]"
@@ -28,20 +27,33 @@
 			"contents": "{{#ask: [[Category:Partial dates]] |?Has date |sort=Has date|order=desc |link=none }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0422/1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SKEY", "_MDAT", "Has_date" ],
-					"propertyValues": [ "1990-01-01", "1990-02-01", "1782-01-01", "1990-06-01", "1990-04-28T07:01:00", "1990-09-01" ]
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_date"
+					],
+					"propertyValues": [
+						"1990-01-01",
+						"1990-02-01",
+						"1782-01-01",
+						"1990-06-01",
+						"1990-04-28T07:01:00",
+						"1990-09-01"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0422/Q/1",
 			"expected-output": {
@@ -56,6 +68,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2 (sort asc)",
 			"subject": "Example/P0422/Q/2/1",
 			"expected-output": {
@@ -67,6 +80,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#3 (sort desc)",
 			"subject": "Example/P0422/Q/2/2",
 			"expected-output": {
@@ -83,7 +97,7 @@
 		"wgLang": "en"
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

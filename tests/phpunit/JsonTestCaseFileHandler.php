@@ -126,8 +126,8 @@ class JsonTestCaseFileHandler {
 
 		$meta = $this->getFileContentsFor( 'meta' );
 
-		if ( version_compare( $version, $meta['version'], 'lt' ) ) {
-			$this->reasonToSkip = $meta['version'] . ' as file version is not supported';
+		if ( version_compare( $version, $meta['version'], 'ne' ) ) {
+			$this->reasonToSkip = $meta['version'] . " is not supported due to a required {$version} test case version.";
 		}
 
 		return $this->reasonToSkip !== '';
@@ -242,6 +242,15 @@ class JsonTestCaseFileHandler {
 	}
 
 	/**
+	 * @since 2.2
+	 *
+	 * @return array
+	 */
+	public function getPageCreationSetupList() {
+		return $this->getContentsFor( 'setup' );
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param string $key
@@ -268,6 +277,31 @@ class JsonTestCaseFileHandler {
 	 */
 	public function findTestCasesFor( $key ) {
 		return $this->getContentsFor( $key );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $type
+	 *
+	 * @return array
+	 */
+	public function findTaskBeforeTestExecutionByType( $type ) {
+		$contents = $this->getContentsFor( 'beforeTest' );
+		return isset( $contents[$type] ) ? $contents[$type] : array();
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $type
+	 *
+	 * @return array
+	 */
+	public function findTestCasesByType( $type ) {
+		return array_filter( $this->getContentsFor( 'tests' ), function( $contents ) use( $type ) {
+			return isset( $contents['type'] ) && $contents['type'] === $type;
+		} );
 	}
 
 	private function getFileContentsFor( $index ) {

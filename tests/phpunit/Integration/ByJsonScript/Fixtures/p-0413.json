@@ -1,12 +1,11 @@
 {
 	"description": "Test in-text annotation for different `_dat` input/output (en, skip virtuoso, `smwgDVFeatures`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has date",
 			"contents": "[[Has type::Date]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0413/1",
 			"contents": "[[Has date::Feb 11 2000 10:00:01]]"
@@ -178,16 +177,23 @@
 			"contents": "{{#ask: [[Example/P0413/19]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date |?Has date#JD=JD }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0 Complete date with time",
 			"subject": "Example/P0413/1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "2000-02-11T10:00:01" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"2000-02-11T10:00:01"
+					]
 				}
 			},
 			"expected-output": {
@@ -197,6 +203,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0413/1a",
 			"expected-output": {
@@ -209,14 +216,21 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2 Just a date",
 			"subject": "Example/P0413/2",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "2000-02-11" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"2000-02-11"
+					]
 				}
 			},
 			"expected-output": {
@@ -226,6 +240,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#3",
 			"subject": "Example/P0413/2a",
 			"expected-output": {
@@ -238,14 +253,21 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#4 Yearby itself",
 			"subject": "Example/P0413/3",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "2000-01-01" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"2000-01-01"
+					]
 				}
 			},
 			"expected-output": {
@@ -255,6 +277,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#5",
 			"subject": "Example/P0413/3a",
 			"expected-output": {
@@ -267,14 +290,21 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#6 Complete date with time, PM",
 			"subject": "Example/P0413/4",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "2000-02-11T22:00:01" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"2000-02-11T22:00:01"
+					]
 				}
 			},
 			"expected-output": {
@@ -284,6 +314,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#7",
 			"subject": "Example/P0413/4a",
 			"expected-output": {
@@ -296,14 +327,21 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#8 Complete date with 24h time",
 			"subject": "Example/P0413/5",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "2000-02-11T22:00:01" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"2000-02-11T22:00:01"
+					]
 				}
 			},
 			"expected-output": {
@@ -313,6 +351,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#9",
 			"subject": "Example/P0413/5a",
 			"expected-output": {
@@ -325,14 +364,21 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#10 ISO-style date",
 			"subject": "Example/P0413/6",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "2000-02-11T22:00:01" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"2000-02-11T22:00:01"
+					]
 				}
 			},
 			"expected-output": {
@@ -342,6 +388,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#11",
 			"subject": "Example/P0413/6a",
 			"expected-output": {
@@ -354,14 +401,21 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#12 ISO-style date with offset",
 			"subject": "Example/P0413/7",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "2000-02-11T20:00:01" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"2000-02-11T20:00:01"
+					]
 				}
 			},
 			"expected-output": {
@@ -371,6 +425,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#13",
 			"subject": "Example/P0413/7a",
 			"expected-output": {
@@ -383,14 +438,21 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#14 varying order of inputs",
 			"subject": "Example/P0413/8",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "2000-02-02" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"2000-02-02"
+					]
 				}
 			},
 			"expected-output": {
@@ -400,6 +462,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#15",
 			"subject": "Example/P0413/8a",
 			"expected-output": {
@@ -412,14 +475,21 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#16 preferred interpretation, month or day, sometimes depends on language settings",
 			"subject": "Example/P0413/9",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "2000-02-03" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"2000-02-03"
+					]
 				}
 			},
 			"expected-output": {
@@ -429,6 +499,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#17",
 			"subject": "Example/P0413/9a",
 			"expected-output": {
@@ -441,14 +512,21 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#18 various kinds of separators (/) are recognized in all languages",
 			"subject": "Example/P0413/10",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "2000-02-03" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"2000-02-03"
+					]
 				}
 			},
 			"expected-output": {
@@ -458,6 +536,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#19",
 			"subject": "Example/P0413/10a",
 			"expected-output": {
@@ -470,6 +549,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#20 Dates BC/Before common era",
 			"skip-on": {
 				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
@@ -477,10 +557,16 @@
 			"subject": "Example/P0413/11",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "--301-12-28" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"--301-12-28"
+					]
 				}
 			},
 			"expected-output": {
@@ -490,6 +576,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#21",
 			"skip-on": {
 				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
@@ -507,14 +594,21 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#24 Julian Calendar annotated date",
 			"subject": "Example/P0413/13",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "2000-02-24" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"2000-02-24"
+					]
 				}
 			},
 			"expected-output": {
@@ -524,6 +618,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#25",
 			"subject": "Example/P0413/13a",
 			"expected-output": {
@@ -538,14 +633,21 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#26 Gregorian Calendar annotated date",
 			"subject": "Example/P0413/14",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "1492-02-11" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"1492-02-11"
+					]
 				}
 			},
 			"expected-output": {
@@ -555,6 +657,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#27",
 			"subject": "Example/P0413/14a",
 			"expected-output": {
@@ -569,14 +672,21 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#28 Date with time zone shortcut",
 			"subject": "Example/P0413/15",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "2000-02-11T10:00:00" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"2000-02-11T10:00:00"
+					]
 				}
 			},
 			"expected-output": {
@@ -586,6 +696,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#29",
 			"subject": "Example/P0413/15a",
 			"expected-output": {
@@ -600,14 +711,21 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#30 MySQL date format",
 			"subject": "Example/P0413/16",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "2000-02-22" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"2000-02-22"
+					]
 				}
 			},
 			"expected-output": {
@@ -617,6 +735,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#31",
 			"subject": "Example/P0413/16a",
 			"expected-output": {
@@ -629,6 +748,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#32 Pre-history",
 			"skip-on": {
 				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
@@ -636,10 +756,16 @@
 			"subject": "Example/P0413/17",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "--11000-01-01" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"--11000-01-01"
+					]
 				}
 			},
 			"expected-output": {
@@ -649,6 +775,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#33",
 			"skip-on": {
 				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
@@ -664,14 +791,21 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#34 Direct JD input",
 			"subject": "Example/P0413/18",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "2100-10-04T13:55:55" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"2100-10-04T13:55:55"
+					]
 				}
 			},
 			"expected-output": {
@@ -681,6 +815,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#35",
 			"subject": "Example/P0413/18a",
 			"expected-output": {
@@ -694,14 +829,21 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#36 Direct MJD input",
 			"subject": "Example/P0413/19",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "8671-09-27T01:55:55" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"8671-09-27T01:55:55"
+					]
 				}
 			},
 			"expected-output": {
@@ -711,6 +853,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#37",
 			"subject": "Example/P0413/19a",
 			"expected-output": {
@@ -727,11 +870,12 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en",
-		"smwgDVFeatures": [ "SMW_DV_TIMEV_CM" ]
+		"smwgDVFeatures": [
+			"SMW_DV_TIMEV_CM"
+		]
 	},
 	"meta": {
-
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

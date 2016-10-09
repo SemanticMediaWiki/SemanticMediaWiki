@@ -1,12 +1,11 @@
 {
 	"description": "Test `_wpg` regex search (`!~/~*/~?`) queries (#679)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has regexpage",
 			"contents": "[[Has type::Page]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Page-1-with-spaces",
 			"contents": "[[Has regexpage::Annotation test with spaces]]"
@@ -20,13 +19,14 @@
 			"contents": "[[Has regexpage::AnnotationTestWithoutSpaces]]"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0",
 			"condition": "[[Has regexpage::~Annotation te*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -37,11 +37,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1",
 			"condition": "[[Has regexpage::~Annotation tes*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -51,11 +52,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#2",
 			"condition": "[[Has regexpage::~An??tation*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 3,
@@ -67,11 +69,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#3",
 			"condition": "[[Has regexpage::~Annotation*]] [[Has regexpage::!~Annotation tex*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -82,11 +85,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#4",
 			"condition": "[[Has regexpage::~Annotation tes*]] OR [[Has regexpage::~Annotation tex*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -97,11 +101,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#5",
 			"condition": "[[Has regexpage::~Annotation te?t with spaces]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -112,11 +117,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#6",
 			"condition": "[[Has regexpage::+]][[Has regexpage::!~Annotation te?t with spaces]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -126,9 +132,9 @@
 			}
 		}
 	],
-	"settings": {},
+	"settings": [],
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

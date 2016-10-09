@@ -1,7 +1,6 @@
 {
 	"description": "Test RDF output generation for `_INST`/`_SUBC` pages (#922, en)",
-	"properties": [],
-	"subjects": [
+	"setup": [
 		{
 			"name": "Rdf-1-category",
 			"namespace": "NS_CATEGORY",
@@ -18,15 +17,19 @@
 			"contents": "[[Category:Rdf-2-subcategory]]"
 		}
 	],
-	"rdf-testcases": [
+	"tests": [
 		{
+			"type": "rdf",
 			"about": "#0 cat-subcat export without backlinks",
-			"exportcontroller" : {
-				"print-pages": [ "Category:Rdf-1-category", "Category:Rdf-2-subcategory" ],
-				"parameters" : {
-					"backlinks" : false,
-					"recursion" : "1",
-					"revisiondate" : false
+			"exportcontroller": {
+				"print-pages": [
+					"Category:Rdf-1-category",
+					"Category:Rdf-2-subcategory"
+				],
+				"parameters": {
+					"backlinks": false,
+					"recursion": "1",
+					"revisiondate": false
 				}
 			},
 			"expected-output": {
@@ -40,13 +43,17 @@
 			}
 		},
 		{
+			"type": "rdf",
 			"about": "#1 cat-subcat export with backlinks (catches subsub-cat)",
-			"exportcontroller" : {
-				"print-pages": [ "Category:Rdf-1-category", "Category:Rdf-2-subcategory" ],
-				"parameters" : {
-					"backlinks" : true,
-					"recursion" : "1",
-					"revisiondate" : false
+			"exportcontroller": {
+				"print-pages": [
+					"Category:Rdf-1-category",
+					"Category:Rdf-2-subcategory"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
 				}
 			},
 			"expected-output": {
@@ -78,7 +85,7 @@
 		"smwgNamespace": "http://example.org/id/"
 	},
 	"meta": {
-		"version": "0.2",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

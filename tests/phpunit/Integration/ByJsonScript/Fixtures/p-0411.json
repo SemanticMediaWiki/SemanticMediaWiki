@@ -1,12 +1,11 @@
 {
 	"description": "Test in-text annotation (and #subobject) using a monolingual property (#1344, en)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text with language",
 			"contents": "[[Has type::Monolingual text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0411/1",
 			"contents": "[[Has text with language::example one@en]]"
@@ -44,15 +43,20 @@
 			"contents": "{{#ask: [[Has text with language::?@~zh*]] |?Has text with language=Text |+index=1 |?Has text with language=Code |+index=2 }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0411/1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_text_with_language", "_SKEY", "_MDAT" ],
+					"propertyKeys": [
+						"Has_text_with_language",
+						"_SKEY",
+						"_MDAT"
+					],
 					"propertyValues": []
 				}
 			},
@@ -63,6 +67,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1 match subject",
 			"subject": "Example/P0411/1/1",
 			"expected-output": {
@@ -73,6 +78,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2 inverse match",
 			"subject": "Example/P0411/1/2",
 			"expected-output": {
@@ -84,6 +90,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#3 match specific language",
 			"subject": "Example/P0411/2/1",
 			"expected-output": {
@@ -94,6 +101,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#4 match specific language",
 			"subject": "Example/P0411/2/2",
 			"expected-output": {
@@ -104,6 +112,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#5 match specific language with inverse printout",
 			"subject": "Example/P0411/2/3",
 			"expected-output": {
@@ -115,6 +124,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#6 using index display for columns",
 			"subject": "Example/P0411/3/1",
 			"expected-output": {
@@ -134,8 +144,7 @@
 		"wgLang": "en"
 	},
 	"meta": {
-
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

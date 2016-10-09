@@ -1,12 +1,11 @@
 {
 	"description": "Test `format=table` on formatted indent when using */#/: (en)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text",
 			"contents": "[[Has type::Text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/F0207/1/1",
 			"contents": "[[Has text::* 123 \n* 345]] [[Category:F0207]]"
@@ -52,8 +51,9 @@
 			"contents": "{{#show: Example/F0207/1/6 |?Has text }}"
 		}
 	],
-	"format-testcases": [
+	"tests": [
 		{
+			"type": "format",
 			"about": "#0",
 			"subject": "Example/F0207/1a",
 			"expected-output": {
@@ -75,6 +75,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#1",
 			"subject": "Example/F0207/1b",
 			"expected-output": {
@@ -86,6 +87,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#2",
 			"subject": "Example/F0207/3a",
 			"expected-output": {
@@ -97,6 +99,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#3",
 			"subject": "Example/F0207/5a",
 			"expected-output": {
@@ -106,6 +109,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#4",
 			"subject": "Example/F0207/6a",
 			"expected-output": {
@@ -127,7 +131,7 @@
 		}
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

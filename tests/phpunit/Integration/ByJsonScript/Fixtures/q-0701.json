@@ -1,12 +1,11 @@
 {
 	"description": "Test `_uri` with some annotation/search pattern (T45264, #679)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has url",
 			"contents": "[[Has type::URL]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Page-with-url-1",
 			"contents": "[[Has url::http://example.org/aaa/bbb#ccc]]"
@@ -20,13 +19,16 @@
 			"contents": "[[Has url::http://example.org/ようこそ#-{}]]"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0",
 			"condition": "[[Has url::http://example.org/aaa/bbb#ccc]]",
-			"printouts" : [ "Has url" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"Has url"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": "1",
@@ -42,11 +44,14 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1",
 			"condition": "[[Has url::http://acme.test/api?query=!_:;@* #Foo&=%20-3DBar]]",
-			"printouts" : [ "Has url" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"Has url"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": "1",
@@ -62,11 +67,14 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#2",
 			"condition": "[[Has url::~*example.org/*]]",
-			"printouts" : [ "Has url" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"Has url"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -77,11 +85,14 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#3",
 			"condition": "[[Has url::~*ccc*]]",
-			"printouts" : [ "Has url" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"Has url"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": "1",
@@ -91,11 +102,14 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#4",
 			"condition": "[[Has url::~http://*query=*]]",
-			"printouts" : [ "Has url" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"Has url"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": "1",
@@ -105,11 +119,14 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#5",
 			"condition": "[[Has url::~http://*query=*]] OR [[Has url::~*ccc*]]",
-			"printouts" : [ "Has url" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"Has url"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": "2",
@@ -120,11 +137,14 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#6",
 			"condition": "[[Has url::http://example.org/ようこそ#-{}]]",
-			"printouts" : [ "Has url" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"Has url"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": "1",
@@ -140,11 +160,14 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#7",
 			"condition": "[[Has url::http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D#-%7B%7D]]",
-			"printouts" : [ "Has url" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"Has url"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": "1",
@@ -154,9 +177,9 @@
 			}
 		}
 	],
-	"settings": {},
+	"settings": [],
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

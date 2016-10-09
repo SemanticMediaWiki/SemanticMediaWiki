@@ -1,12 +1,11 @@
 {
 	"description": "Test in-text annotation with DISPLAYTITLE / `foaf` to check on upper vs. lower case (`wgRestrictDisplayTitle`, `wgContLang=en`, `wgLang=en`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text",
 			"contents": "[[Has type::Text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Smw import foaf",
 			"namespace": "NS_MEDIAWIKI",
@@ -50,8 +49,9 @@
 			"contents": "{{#ask: [[Category:P0427]] [[!~AB C*]] |?Has text |link=none}}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0 match foaf:homepage to Property:Foaf:homepage",
 			"subject": "Example/P0427/Q0.1",
 			"expected-output": {
@@ -61,6 +61,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0427/Q0.2",
 			"expected-output": {
@@ -71,6 +72,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2 only match `abc*`",
 			"subject": "Example/P0427/Q1.1",
 			"expected-output": {
@@ -81,6 +83,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#3 only match `ABC*`",
 			"subject": "Example/P0427/Q1.2",
 			"expected-output": {
@@ -91,6 +94,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#4 same as #2",
 			"subject": "Example/P0427/Q1.3",
 			"expected-output": {
@@ -101,6 +105,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#5 to be reverse to #2",
 			"subject": "Example/P0427/Q1.4",
 			"expected-output": {
@@ -111,6 +116,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#6 to be reverse to #3",
 			"subject": "Example/P0427/Q1.5",
 			"expected-output": {
@@ -127,7 +133,7 @@
 		"wgRestrictDisplayTitle": false
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

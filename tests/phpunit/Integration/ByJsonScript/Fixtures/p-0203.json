@@ -1,20 +1,21 @@
 {
 	"description": "Test #set parser in combination with #subobject and template output (#1067, regression check)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Paragraph number",
 			"contents": "[[Has type::Number]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Paragraph",
 			"contents": "[[Has type::Text]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Paragraph backlink",
 			"contents": "[[Has type::Page]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "SimpleSetTemplate",
 			"namespace": "NS_TEMPLATE",
@@ -34,32 +35,52 @@
 			"contents": "{{#ask:[[Paragraph backlink::Transclude-Template]]|?Paragraph}}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Transclude-Template",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
-					"propertyKeys": [ "_MDAT", "_SKEY", "Reference", "_SOBJ" ],
-					"propertyValues": [ "Test", "Transclude-Template#_49c8abd563e00e4dcf6debf1d61b5408" ]
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"Reference",
+						"_SOBJ"
+					],
+					"propertyValues": [
+						"Test",
+						"Transclude-Template#_49c8abd563e00e4dcf6debf1d61b5408"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1 subobject check",
 			"subject": "Transclude-Template#_49c8abd563e00e4dcf6debf1d61b5408",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
-					"propertyKeys": [ "Paragraph", "Paragraph_backlink", "Paragraph_number", "_SKEY" ],
-					"propertyValues": [ "1", "Test1 Lorem ipsum.", "Transclude-Template" ]
+					"propertyKeys": [
+						"Paragraph",
+						"Paragraph_backlink",
+						"Paragraph_number",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"1",
+						"Test1 Lorem ipsum.",
+						"Transclude-Template"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2 check for the ask output",
 			"subject": "Ask-For-Transclude-Template",
 			"expected-output": {
@@ -71,10 +92,12 @@
 		}
 	],
 	"settings": {
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

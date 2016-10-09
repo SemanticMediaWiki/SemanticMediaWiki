@@ -1,12 +1,11 @@
 {
 	"description": "Test in-text annotation / `#ask` (#MEDIAWIKI, #LOCL) output for `_dat` datatype (#1545, `wgContLang=en`, `wgLang=ja`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has date",
 			"contents": "[[Has type::Date]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0423/1",
 			"contents": "[[Has date::12 Jan 1957 12:05]]"
@@ -49,17 +48,24 @@
 			"contents": "{{#ask: [[Example/P0423/3]] |?Has date#LOCL }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0423/1",
 			"store": {
 				"clear-cache": true,
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "1957-01-12T12:05:00" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"1957-01-12T12:05:00"
+					]
 				}
 			},
 			"expected-output": {
@@ -69,6 +75,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1 (#ask MEDIAWIKI)",
 			"subject": "Example/P0423/Q1.1",
 			"expected-output": {
@@ -79,6 +86,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2 (#show MEDIAWIKI)",
 			"subject": "Example/P0423/Q1.2",
 			"expected-output": {
@@ -89,6 +97,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#3 (#ask LOCL)",
 			"subject": "Example/P0423/Q1.3",
 			"expected-output": {
@@ -98,6 +107,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#4 (#show LOCL for user lang)",
 			"subject": "Example/P0423/Q1.4",
 			"expected-output": {
@@ -107,6 +117,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#5 (#show LOCL@fr for annotated fr lang and not for user lang)",
 			"subject": "Example/P0423/Q1.5",
 			"expected-output": {
@@ -116,6 +127,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#6 page vs global content language",
 			"subject": "Example/P0423/Q2.1",
 			"expected-output": {
@@ -128,6 +140,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#7 avoid a possible `DateTime ... Failed to parse time ...` on large dates, only checking some minor output since WINOS reports 784354016999.5, yet Linux returns 3652426721059.5 (float precision issue)",
 			"subject": "Example/P0423/Q3.1",
 			"expected-output": {
@@ -140,10 +153,12 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "ja",
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

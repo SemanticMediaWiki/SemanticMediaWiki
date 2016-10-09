@@ -1,12 +1,11 @@
 {
 	"description": "Test `_CONC` to use `CONCEPT_CACHE_ALL` (#1050, skip postgres + all SPARQL repository)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has description",
 			"contents": "[[Has type::Text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Page-one",
 			"contents": "[[Has description::Bar]]"
@@ -21,26 +20,26 @@
 			"contents": "{{#concept: [[Has description::+]] }}"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0 any value with CONCEPT_CACHE_ALL set (wiki configuration requires the cache to be computed off-line)",
 			"condition": "[[Concept:Concept-for-any-description]]",
-			"printouts" : [],
-			"parameters" : {
-			  "limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 0,
 				"error": 1
 			}
-		}
-	],
-	"concept-testcases": [
+		},
 		{
+			"type": "concept",
 			"about": "#1 Check cache",
 			"condition": "[[Concept:Concept-for-any-description]]",
-			"parameters" : {
-				"limit" : "10"
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 0,
@@ -65,7 +64,7 @@
 			"blazegraph": "CONCEPT_CACHE_ALL isn't implemented",
 			"postgres": "Unable to run concept tests on postgres, see #781"
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

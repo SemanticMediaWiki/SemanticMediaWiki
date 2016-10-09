@@ -1,12 +1,11 @@
 {
 	"description": "Test #set parser to use template for output (#1146, en)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has date",
 			"contents": "[[Has type::Date]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "SetParserTemplateToCreateAskLink",
 			"namespace": "NS_TEMPLATE",
@@ -21,31 +20,45 @@
 			"contents": "{{#set:Has date=NoTemplateForInvalidValue|+sep=;|template=SetParserTemplateToCreateAskLink}}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0 #set annotation/parser with template",
 			"subject": "Transclude-Template-Using-Set",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
-					"propertyKeys": [ "_ASK", "_MDAT", "_SKEY", "SetParserTemplateProperty" ],
-					"propertyValues": [ "SetParserTemplateValue" ]
+					"propertyKeys": [
+						"_ASK",
+						"_MDAT",
+						"_SKEY",
+						"SetParserTemplateProperty"
+					],
+					"propertyValues": [
+						"SetParserTemplateValue"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1 invalid property value declaration causes error",
 			"subject": "Try-To-Transclude-Template-For-Invalid-PropertyValue",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_MDAT", "_SKEY", "_ERRC" ]
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_ERRC"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#3 #ask link to be correctly parsed, #1146",
 			"subject": "Transclude-Template-Using-Set",
 			"expected-output": {
@@ -59,10 +72,12 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en",
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

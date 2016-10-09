@@ -1,28 +1,31 @@
 {
 	"description": "Test `_rec` to find correct target for redirected property (#1244, en)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has status",
 			"contents": "[[Has type::Text]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has date",
 			"contents": "[[Has type::Date]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Project",
 			"contents": "[[Has type::Record]] [[Has fields::Has status;Has date]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has project status",
 			"contents": "[[Has type::Text]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has status",
 			"contents": "#REDIRECT [[Property:Has project status]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/1103/1",
 			"contents": "[[Category:Record redirect example]] [[Project::closed;15 Jan 1970]]"
@@ -32,16 +35,29 @@
 			"contents": "{{#ask: [[Category:Record redirect example]] [[Project::closed;~1970]]|?Project=Status|+index=1|format=list}}"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "format",
+			"about": "#0 indexed output",
+			"subject": "Example/1103/2",
+			"expected-output": {
+				"to-contain": [
+					"title=\"Property:Project\">Status</a> closed"
+				]
+			}
+		},
+		{
+			"type": "query",
 			"about": "#0",
-			"store" : {
-				"clear-cache" : true
+			"store": {
+				"clear-cache": true
 			},
 			"condition": "[[Category:Record redirect example]] [[Project::closed;~1970]]",
-			"printouts" : [ "Project" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"Project"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -57,25 +73,13 @@
 			}
 		}
 	],
-	"format-testcases": [
-		{
-			"about": "#0 indexed output",
-			"subject": "Example/1103/2",
-			"expected-output": {
-				"to-contain": [
-					"title=\"Property:Project\">Status</a> closed"
-				]
-			}
-		}
-	],
 	"settings": {
 		"smwStrictComparators": false,
 		"wgContLang": "en",
 		"wgLang": "en"
 	},
 	"meta": {
-
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

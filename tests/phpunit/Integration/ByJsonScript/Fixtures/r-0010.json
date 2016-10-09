@@ -1,7 +1,6 @@
 {
 	"description": "Test RDF output on canonical entities (`wgContLang=fr`, `wgLang=es`, syntax=rdf/turtle)",
-	"properties": [],
-	"subjects": [
+	"setup": [
 		{
 			"name": "Example/R0010/1",
 			"contents": "[[Boolean::true]]"
@@ -15,15 +14,18 @@
 			"contents": "{{#ask: [[Booléen::+]] }}"
 		}
 	],
-	"rdf-testcases": [
+	"tests": [
 		{
+			"type": "rdf",
 			"about": "#0",
-			"exportcontroller" : {
-				"print-pages": [ "Example/R0010/1" ],
-				"parameters" : {
-					"backlinks" : true,
-					"recursion" : "1",
-					"revisiondate" : false
+			"exportcontroller": {
+				"print-pages": [
+					"Example/R0010/1"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
 				}
 			},
 			"expected-output": {
@@ -31,20 +33,23 @@
 					"Special:ExportRDF/Example/R0010/1",
 					"<property:Boolean rdf:datatype=\"http://www.w3.org/2001/XMLSchema#boolean\">true</property:Boolean>"
 				],
-				"not-contain":[
+				"not-contain": [
 					"Sp%C3%A9cial:ExportRDF/Example/R0010/1",
 					"<property:Booleano rdf:datatype=\"http://www.w3.org/2001/XMLSchema#boolean\">true</property:Booleano>"
 				]
 			}
 		},
 		{
+			"type": "rdf",
 			"about": "#1",
-			"exportcontroller" : {
-				"print-pages": [ "Example/R0010/2" ],
-				"parameters" : {
-					"backlinks" : true,
-					"recursion" : "1",
-					"revisiondate" : false
+			"exportcontroller": {
+				"print-pages": [
+					"Example/R0010/2"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
 				}
 			},
 			"expected-output": {
@@ -56,13 +61,16 @@
 			}
 		},
 		{
+			"type": "rdf",
 			"about": "#2",
-			"exportcontroller" : {
-				"print-pages": [ "Example/R0010/Q1" ],
-				"parameters" : {
-					"backlinks" : true,
-					"recursion" : "1",
-					"revisiondate" : false
+			"exportcontroller": {
+				"print-pages": [
+					"Example/R0010/Q1"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
 				}
 			},
 			"expected-output": {
@@ -70,7 +78,7 @@
 					"<swivt:wikiPageContentLanguage rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">fr</swivt:wikiPageContentLanguage>",
 					"<property:Has_query rdf:resource=\"&wiki;Example/R0010/Q1-23_QUERY3873375c1eb14b2382922133b97c8379\"/>"
 				],
-				"not-contain":[
+				"not-contain": [
 					"Sp%C3%A9cial:ExportRDF/Example/R0010/2",
 					"<property:Booleano rdf:datatype=\"http://www.w3.org/2001/XMLSchema#boolean\">true</property:Booleano>"
 				]
@@ -89,7 +97,7 @@
 		"smwgNamespace": "http://example.org/id/"
 	},
 	"meta": {
-		"version": "0.2",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

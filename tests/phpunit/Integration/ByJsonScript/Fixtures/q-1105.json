@@ -1,20 +1,21 @@
 {
 	"description": "Test `_rec` in combination with named subobject (T49472, #1300, en, `smwStrictComparators=false`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has number",
 			"contents": "[[Has type::Number]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has record text",
 			"contents": "[[Has type::Record]] [[Has fields::Has text;Has number]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/Q1105/1",
 			"contents": "{{#subobject: Test|Has text=Foo|Has record text=abc;123}} {{#subobject: Test|Has text=Bar}}"
@@ -28,16 +29,19 @@
 			"contents": "{{#subobject: Test|Has text=Foo|Has record text=def;456}}"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0 declaration order does not matter (oppose to T49472)",
-			"store" : {
-				"clear-cache" : true
+			"store": {
+				"clear-cache": true
 			},
 			"condition": "[[Has record text::abc;?]]",
-			"printouts" : [ "Has record text" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"Has record text"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -58,14 +62,15 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1 same as #0 only to use property chain notation",
-			"store" : {
-				"clear-cache" : true
+			"store": {
+				"clear-cache": true
 			},
 			"condition": "[[Has record text.Has text::abc]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -82,8 +87,7 @@
 		"wgLang": "en"
 	},
 	"meta": {
-
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

@@ -1,20 +1,21 @@
 {
 	"description": "Test in-text annotations being disabled for when Factbox contains extra `[[ ... ]]` (#1126)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has url",
 			"contents": "[[Has type::URL]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has page",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text",
 			"contents": "[[Has type::Text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "SetValue",
 			"namespace": "NS_TEMPLATE",
@@ -33,16 +34,24 @@
 			"contents": "{{#ask: [[Example/P0403/2]] |?Has text}}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0 don't expected to see a Modification date annotation due to %5B%5BModification%20date::%2B%5D%5D => [[Modification::+]]",
 			"subject": "Example/P0403/1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SKEY", "_MDAT", "Has_url" ],
-					"propertyValues": [ "Example/P0403/1", "http://example.org/api.php?action=ask&query=%5B%5BModification%20date::%2B%5D%5D%7C%3FModification%20date%7Csort%3DModification%20date%7Corder%3Ddesc" ]
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_url"
+					],
+					"propertyValues": [
+						"Example/P0403/1",
+						"http://example.org/api.php?action=ask&query=%5B%5BModification%20date::%2B%5D%5D%7C%3FModification%20date%7Csort%3DModification%20date%7Corder%3Ddesc"
+					]
 				}
 			},
 			"expected-output": {
@@ -52,25 +61,40 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1, refs #1314",
 			"subject": "Example/P0403/2",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
-					"propertyKeys": [ "_SKEY", "_MDAT", "Has_text", "Has_page" ],
-					"propertyValues": [ "Example/P0403/2", "ABC [[Has page::DEF]] 123", "DEF" ]
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_text",
+						"Has_page"
+					],
+					"propertyValues": [
+						"Example/P0403/2",
+						"ABC [[Has page::DEF]] 123",
+						"DEF"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2 does not contain any [[ :: ]] copied annotation values, refs #1314",
 			"subject": "Example/P0403/3",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SKEY", "_MDAT", "_ASK" ],
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ASK"
+					],
 					"propertyValues": []
 				}
 			},
@@ -82,10 +106,12 @@
 		}
 	],
 	"settings": {
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

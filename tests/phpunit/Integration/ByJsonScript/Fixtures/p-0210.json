@@ -1,12 +1,11 @@
 {
 	"description": "Test `#set_recurring_event` (`wgContLang=en`, `wgLang=en`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has date",
 			"contents": "[[Has type::Date]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0210/1",
 			"contents": "{{#set_recurring_event:property=Has date |start=01 Feb 1970 |Has title=Recurring event |unit=year |period=12 |limit=3 }}"
@@ -16,8 +15,9 @@
 			"contents": "{{#ask: [[Has title::Recurring event]] |?Has date |format=table |link=none }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0210/Q1",
 			"expected-output": {
@@ -33,10 +33,12 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en",
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

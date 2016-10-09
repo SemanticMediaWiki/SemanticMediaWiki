@@ -1,16 +1,16 @@
 {
 	"description": "Test `_txt` query for blob value assignments",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has blob property",
 			"contents": "[[Has type::Text]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has another blob property",
 			"contents": "[[Has type::Text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Simple blob subject",
 			"contents": "[[Has blob property::Value One]], [[Has another blob property::Value One]]"
@@ -21,13 +21,16 @@
 			"contents": "[[Has blob property::Value Two]], [[Has another blob property::Value Two]]"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "Simple disjunctive blob query",
 			"condition": "[[Has blob property::Value One]] OR [[Has another blob property::Value Two]]",
-			"printouts" : [ "Has blob property" ],
-			"parameters" : {
-			  "limit" : "10"
+			"printouts": [
+				"Has blob property"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -48,11 +51,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "Simple conjunctive blob query",
 			"condition": "[[Has blob property::Value One]][[Has another blob property::Value One]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -70,7 +74,7 @@
 		}
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

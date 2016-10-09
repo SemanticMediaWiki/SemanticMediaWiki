@@ -1,8 +1,6 @@
 {
 	"description": "Test single value (`~/!~`/`<`/`>`) queries on namespaced entity (#1652, `NS_HELP`, `smwStrictComparators=false`, skip-on virtuoso)",
-	"properties": [
-	],
-	"subjects": [
+	"setup": [
 		{
 			"name": "ABC",
 			"contents": "[[Category:0613]] (control group)"
@@ -27,13 +25,14 @@
 			"contents": "[[Category:0613]]"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0",
 			"condition": "[[Help:~A*B]] [[Category:0613]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -44,11 +43,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1",
 			"condition": "[[~Help:A*B]] [[Category:0613]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -59,11 +59,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#2",
 			"condition": "[[Help:!~A*B]] [[Category:0613]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -73,11 +74,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#3",
 			"condition": "[[!~Help:A*B]] [[Category:0613]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -87,11 +89,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#4",
 			"condition": "[[Help:>AB]] [[Category:0613]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -102,11 +105,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#5",
 			"condition": "[[>Help:AB]] [[Category:0613]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -117,11 +121,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#6",
 			"condition": "[[Help:<AB]] [[Category:0613]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -131,11 +136,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#7",
 			"condition": "[[<Help:AB]] [[Category:0613]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -145,11 +151,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#8",
 			"condition": "[[<Help:<AB]] [[Category:0613]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 0
@@ -157,7 +164,7 @@
 		}
 	],
 	"settings": {
-		"smwStrictComparators" : false,
+		"smwStrictComparators": false,
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,
 			"SMW_NS_PROPERTY": true,
@@ -168,7 +175,7 @@
 		"skip-on": {
 			"virtuoso": "Virtuoso 6.1 does not like this test"
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

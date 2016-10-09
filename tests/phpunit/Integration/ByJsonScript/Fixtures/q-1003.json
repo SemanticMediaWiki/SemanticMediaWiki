@@ -1,12 +1,11 @@
 {
 	"description": "Test `_dat` range for strict comparators (#285, `smwStrictComparators=true`, skip virtuoso)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has date",
 			"contents": "[[Has type::Date]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/1003/10-Jan",
 			"contents": "[[Category:Date range]] [[Has date::10 Jan 1970]]"
@@ -20,13 +19,14 @@
 			"contents": "[[Category:Date range]] [[Has date::20 Jan 1970]]"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0 greater than",
 			"condition": "[[Category:Date range]] [[Has date::>10 Jan 1970]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -37,11 +37,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1 greater than",
 			"condition": "[[Category:Date range]] [[Has date::>>10 Jan 1970]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -52,11 +53,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#2 greater than, equal to",
 			"condition": "[[Category:Date range]] [[Has date::≥10 Jan 1970]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 3,
@@ -68,11 +70,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#3",
 			"condition": "[[Category:Date range]] [[Has date::>11 Jan 1970]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -83,11 +86,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#4 smaller than",
 			"condition": "[[Category:Date range]] [[Has date::<20 Jan 1970]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -98,11 +102,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#5 smaller than",
 			"condition": "[[Category:Date range]] [[Has date::<<20 Jan 1970]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -113,11 +118,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#6 smaller than, equal to",
 			"condition": "[[Category:Date range]] [[Has date::≤20 Jan 1970]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 3,
@@ -129,11 +135,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#7",
 			"condition": "[[Category:Date range]] [[Has date::<19 Jan 1970]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -151,7 +158,7 @@
 		"skip-on": {
 			"virtuoso": "Virtuoso 6.1 somwhow fails for >/>>"
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

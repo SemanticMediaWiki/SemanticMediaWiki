@@ -1,12 +1,11 @@
 {
 	"description": "Test `_CONC` on predefined inverse query and subobject inverse query (#1096, skip virtuoso)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has page",
 			"contents": "[[Has type::Page]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Page/02/04-1",
 			"contents": "{{#subobject:|Has page=Page/02/04-1}}"
@@ -26,13 +25,14 @@
 			"contents": "{{#concept: [[-Has page.-Has page::Page/02/04-2]] }}"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0 inverse for pre-defined property",
 			"condition": "[[-Has page.-Has subobject::Page/02/04-1]]",
-			"printouts" : [],
-			"parameters" : {
-			  "limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -42,11 +42,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1 inverse for user-defined-property",
 			"condition": "[[-Has page.-Has page::Page/02/04-2]]",
-			"printouts" : [],
-			"parameters" : {
-			  "limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -54,14 +55,13 @@
 					"Page/02/04-2#0##"
 				]
 			}
-		}
-	],
-	"concept-testcases": [
+		},
 		{
+			"type": "concept",
 			"about": "#2",
 			"condition": "[[Concept:Concept-for-inverse-pre-defined-property]]",
-			"parameters" : {
-				"limit" : "10"
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -77,10 +77,11 @@
 			]
 		},
 		{
+			"type": "concept",
 			"about": "#3",
 			"condition": "[[Concept:Concept-for-inverse-user-defined-property]]",
-			"parameters" : {
-				"limit" : "10"
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -96,14 +97,13 @@
 			]
 		}
 	],
-	"settings": {
-	},
+	"settings": [],
 	"meta": {
 		"skip-on": {
 			"postgres": "Unable to run concept tests on postgres, see #781",
 			"virtuoso": "Virtuoso reports 'SPARQL compiler: Blank node ... is not allowed in a constant clause', see https://github.com/openlink/virtuoso-opensource/issues/126"
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

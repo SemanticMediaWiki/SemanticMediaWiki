@@ -5,6 +5,7 @@ namespace SMW\Tests\Integration\ByJsonScript;
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\EventHandler;
+use SMW\PropertySpecificationLookup;
 use SMW\Tests\ByJsonTestCaseProvider;
 use SMW\Tests\JsonTestCaseFileHandler;
 use SMW\Tests\Utils\UtilityFactory;
@@ -46,9 +47,9 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 	private $eventDispatcher;
 
 	/**
-	 * @see ByJsonTestCaseProvider::$deleteAfterState
+	 * @see ByJsonTestCaseProvider::$deletePagesOnTearDown
 	 */
-	protected $deleteAfterState = true;
+	protected $deletePagesOnTearDown = true;
 
 	protected function setUp() {
 		parent::setUp();
@@ -93,7 +94,7 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		$this->testEnvironment->resetMediaWikiService( '_MediaWikiTitleCodec' );
 		$this->testEnvironment->resetMediaWikiService( 'TitleParser' );
 
-		$this->testEnvironment->resetPoolCacheFor( \SMW\PropertySpecificationLookup::POOLCACHE_ID );
+		$this->testEnvironment->resetPoolCacheFor( PropertySpecificationLookup::POOLCACHE_ID );
 
 		// Make sure LocalSettings don't interfere with the default settings
 		$GLOBALS['smwgDVFeatures'] = $GLOBALS['smwgDVFeatures'] & ~SMW_DV_NUMV_USPACE;
@@ -104,6 +105,9 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 	 */
 	protected function canExecuteTestCasesFor( $file ) {
 
+		// Allows to filter specific files on-the-fly which can be helpful
+		// when desiging a new test case without having the run through all the
+		// existing tests.
 		$selectedFiles = array();
 
 		if ( $selectedFiles === array() ) {
@@ -127,6 +131,13 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 	}
 
 	/**
+	 * @see ByJsonTestCaseProvider::getTestCaseLocation
+	 */
+	protected function getRequiredJsonTestCaseMinVersion() {
+		return '2';
+	}
+
+	/**
 	 * @see ByJsonTestCaseProvider::runTestCaseFile
 	 *
 	 * @param JsonTestCaseFileHandler $jsonTestCaseFileHandler
@@ -135,13 +146,24 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 
 		$this->checkEnvironmentToSkipCurrentTest( $jsonTestCaseFileHandler );
 
+		// Setup
+		$this->doTestSetup( $jsonTestCaseFileHandler );
+
+		// Before test execution
+		$this->doRunBeforeTest( $jsonTestCaseFileHandler );
+
+		// Run test cases
+		$this->doRunParserTests( $jsonTestCaseFileHandler );
+		$this->doRunSpecialTests( $jsonTestCaseFileHandler );
+		$this->doRunRdfTests( $jsonTestCaseFileHandler );
+		$this->doRunQueryTests( $jsonTestCaseFileHandler );
+	}
+
+	private function doTestSetup( $jsonTestCaseFileHandler ) {
+
 		$permittedSettings = array(
 			'smwgNamespacesWithSemanticLinks',
 			'smwgPageSpecialProperties',
-			'wgLanguageCode',
-			'wgContLang',
-			'wgLang',
-			'wgCapitalLinks',
 			'smwgNamespace',
 			'smwgExportBCNonCanonicalFormUse',
 			'smwgExportBCAuxiliaryUse',
@@ -152,12 +174,18 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			'smwgQConceptCaching',
 			'smwgEnabledInTextAnnotationParserStrictMode',
 			'smwgMaxNonExpNumber',
-			'wgAllowDisplayTitle',
-			'wgRestrictDisplayTitle', // Restrict {{DISPLAYTITLE}} to titles ...
 			'smwgDVFeatures',
 			'smwgEnabledQueryDependencyLinksStore',
 			'smwgEnabledFulltextSearch',
-			'smwgFulltextDeferredUpdate'
+			'smwgFulltextDeferredUpdate',
+
+			// MW related
+			'wgLanguageCode',
+			'wgContLang',
+			'wgLang',
+			'wgCapitalLinks',
+			'wgAllowDisplayTitle',
+			'wgRestrictDisplayTitle'
 		);
 
 		foreach ( $permittedSettings as $key ) {
@@ -168,18 +196,16 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		}
 
 		$this->createPagesFor(
-			$jsonTestCaseFileHandler->getListOfProperties(),
-			SMW_NS_PROPERTY
-		);
-
-		$this->createPagesFor(
-			$jsonTestCaseFileHandler->getListOfSubjects(),
+			$jsonTestCaseFileHandler->getPageCreationSetupList(),
 			NS_MAIN
 		);
 
 		$this->testEnvironment->executePendingDeferredUpdates();
+	}
 
-		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'maintenance-run' ) as $runner => $options ) {
+	private function doRunBeforeTest( $jsonTestCaseFileHandler ) {
+
+		foreach ( $jsonTestCaseFileHandler->findTaskBeforeTestExecutionByType( 'maintenance-run' ) as $runner => $options ) {
 			$maintenanceRunner = UtilityFactory::getInstance()->newRunnerFactory()->newMaintenanceRunner(
 				$runner
 			);
@@ -191,27 +217,22 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			$maintenanceRunner->setQuiet()->run();
 		}
 
-		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'job-run' ) as $jobType ) {
+		foreach ( $jsonTestCaseFileHandler->findTaskBeforeTestExecutionByType( 'job-run' ) as $jobType ) {
 			$jobQueueRunner = UtilityFactory::getInstance()->newRunnerFactory()->newJobQueueRunner(
 				$jobType
 			);
 
 			$jobQueueRunner->run();
 		}
-
-		$this->tryToProcessParserTestCase( $jsonTestCaseFileHandler );
-		$this->tryToProcessSpecialPageTestCase( $jsonTestCaseFileHandler );
-		$this->tryToProcessRDFTestCase( $jsonTestCaseFileHandler );
-		$this->tryToProcessQueryTestCase( $jsonTestCaseFileHandler );
 	}
 
-	private function tryToProcessParserTestCase( $jsonTestCaseFileHandler ) {
+	private function doRunParserTests( $jsonTestCaseFileHandler ) {
 
 		$this->parserTestCaseProcessor->setDebugMode(
 			$jsonTestCaseFileHandler->getDebugMode()
 		);
 
-		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'parser-testcases' ) as $case ) {
+		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'parser' ) as $case ) {
 
 			if ( $jsonTestCaseFileHandler->requiredToSkipFor( $case, $this->connectorId ) ) {
 				continue;
@@ -221,13 +242,13 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		}
 	}
 
-	private function tryToProcessSpecialPageTestCase( $jsonTestCaseFileHandler ) {
+	private function doRunSpecialTests( $jsonTestCaseFileHandler ) {
 
 		$this->specialPageTestCaseProcessor->setDebugMode(
 			$jsonTestCaseFileHandler->getDebugMode()
 		);
 
-		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'special-testcases' ) as $case ) {
+		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'special' ) as $case ) {
 
 			if ( $jsonTestCaseFileHandler->requiredToSkipFor( $case, $this->connectorId ) ) {
 				continue;
@@ -237,7 +258,7 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		}
 	}
 
-	private function tryToProcessRDFTestCase( $jsonTestCaseFileHandler ) {
+	private function doRunRdfTests( $jsonTestCaseFileHandler ) {
 
 		// For some reason there are some random failures where
 		// the instance hasn't reset the cache in time to fetch the
@@ -252,12 +273,12 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			$jsonTestCaseFileHandler->getDebugMode()
 		);
 
-		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'rdf-testcases' ) as $case ) {
+		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'rdf' ) as $case ) {
 			$this->rdfTestCaseProcessor->process( $case );
 		}
 	}
 
-	private function tryToProcessQueryTestCase( $jsonTestCaseFileHandler ) {
+	private function doRunQueryTests( $jsonTestCaseFileHandler ) {
 
 		// Set query parser late to ensure that expected settings are adjusted
 		// (language etc.) because the __construct relies on the context language
@@ -269,7 +290,7 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			$jsonTestCaseFileHandler->getDebugMode()
 		);
 
-		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'query-testcases' ) as $case ) {
+		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'query' ) as $case ) {
 
 			if ( $jsonTestCaseFileHandler->requiredToSkipFor( $case, $this->connectorId ) ) {
 				continue;
@@ -278,11 +299,11 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			$this->queryTestCaseProcessor->processQueryCase( new QueryTestCaseInterpreter( $case ) );
 		}
 
-		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'concept-testcases' ) as $conceptCase ) {
+		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'concept' ) as $conceptCase ) {
 			$this->queryTestCaseProcessor->processConceptCase( new QueryTestCaseInterpreter( $conceptCase ) );
 		}
 
-		foreach ( $jsonTestCaseFileHandler->findTestCasesFor( 'format-testcases' ) as $formatCase ) {
+		foreach ( $jsonTestCaseFileHandler->findTestCasesByType( 'format' ) as $formatCase ) {
 			$this->queryTestCaseProcessor->processFormatCase( new QueryTestCaseInterpreter( $formatCase ) );
 		}
 	}

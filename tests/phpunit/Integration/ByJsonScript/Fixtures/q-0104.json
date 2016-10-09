@@ -1,12 +1,11 @@
 {
 	"description": "Test `_txt`/`~` with enabled full-text search support (only enabled for MySQL, SQLite)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text",
 			"contents": "[[Has type::Text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/Q0104/1",
 			"contents": "{{#subobject: |Has text=MySQL vs MariaDB database}} {{#subobject: |Has text=Oracle vs MariaDB database}} {{#subobject: |Has text=PostgreSQL vs MariaDB database and more of}} {{#subobject: |Has text=MariaDB overview}}"
@@ -24,16 +23,19 @@
 			"contents": "{{#subobject: |Has text=Text with a category|@category=Q0104}} {{#subobject: |Has text=Text without a category}}"
 		}
 	],
-	"job-run":[
-		"SMW\\SearchTableUpdateJob"
-	],
-	"query-testcases": [
+	"beforeTest": {
+		"job-run": [
+			"SMW\\SearchTableUpdateJob"
+		]
+	},
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0 with boolean include/not include",
 			"condition": "[[Has text::~+MariaDB -database]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -43,11 +45,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1",
 			"condition": "[[Has text::~+database]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 3,
@@ -59,12 +62,15 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#2 (plus sorting)",
 			"condition": "[[Has text::~DATA*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10",
-				"sort": { "Has_text": "DESC" }
+			"printouts": [],
+			"parameters": {
+				"limit": "10",
+				"sort": {
+					"Has_text": "DESC"
+				}
 			},
 			"queryresult": {
 				"count": 3,
@@ -76,12 +82,15 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#3 (plus sorting)",
 			"condition": "[[Has text::~sear*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10",
-				"sort": { "Has_text": "ASC" }
+			"printouts": [],
+			"parameters": {
+				"limit": "10",
+				"sort": {
+					"Has_text": "ASC"
+				}
 			},
 			"queryresult": {
 				"count": 2,
@@ -92,12 +101,15 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#4 include/not include",
 			"condition": "[[Has text::~sear*, -elas*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10",
-				"sort": { "Has_text": "DESC" }
+			"printouts": [],
+			"parameters": {
+				"limit": "10",
+				"sort": {
+					"Has_text": "DESC"
+				}
 			},
 			"queryresult": {
 				"count": 1,
@@ -107,11 +119,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#5 same as #4",
 			"condition": "[[Has text::!~elastic*, +sear*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -121,11 +134,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#6 phrase matching",
 			"condition": "[[Has text::~\"phrase that has special\"]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -135,11 +149,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#7 similar to #5 but not used in phrase matching mode",
 			"condition": "[[Has text::~phrase that has special]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -150,14 +165,15 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#8 free search (wide proximity)",
 			"skip-on": {
 				"sqlite": "works different in comparison to MySQL, see #9"
 			},
 			"condition": "[[~~with a category]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -168,11 +184,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#9 free search (wide proximity)",
 			"condition": "[[~~with* a category]] [[~Example/Q0104/*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -183,11 +200,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#10 free search (wide proximity)",
 			"condition": "[[~~with a category]] [[Category:Q0104]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -197,11 +215,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#11 retain spaces on +/- operators",
 			"condition": "[[Has text::~+*maria* -postgres*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 3,
@@ -225,7 +244,7 @@
 			"fuseki": "Not supported by SPARQLStore (Fuskei).",
 			"blazegraph": "Not supported by SPARQLStore (Blazegraph)."
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

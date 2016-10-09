@@ -1,16 +1,16 @@
 {
 	"description": "Test in-text annotation for `_num` on big/small numbers/scientific notation (`wgContLang=fr`, `wgLang=en`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has number",
 			"contents": "[[Has type::Number]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has number with precision 4",
 			"contents": "[[Has type::Number]] [[Display precision of::4]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0426/1",
 			"contentlanguage": "fr",
@@ -37,8 +37,9 @@
 			"contents": "{{#ask: [[Example/P0426/2]] |?Has number }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0 page content language FR, display in en",
 			"subject": "Example/P0426/Q1.1",
 			"expected-output": {
@@ -54,6 +55,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1 page content language EN, display in en",
 			"subject": "Example/P0426/Q2.1",
 			"expected-output": {
@@ -69,6 +71,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2 with precision display precision 5",
 			"subject": "Example/P0426/Q1.2",
 			"expected-output": {
@@ -94,7 +97,7 @@
 		}
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

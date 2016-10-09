@@ -1,12 +1,11 @@
 {
 	"description": "Test #ask with `format=table` on inverse property/printrquest (#1270, en)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has inverse prop",
 			"contents": "[[Has type::Page]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0702/1",
 			"contents": "{{#subobject:|Has inverse prop=InverseExample|Has number=4040}}"
@@ -20,8 +19,9 @@
 			"contents": "[[-Has inverse prop::Invalid in-text annotation]]"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0 table output using inverse property (label is inverse, link is to normal property)",
 			"subject": "Example/P0702/1/1",
 			"expected-output": {
@@ -34,13 +34,18 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1 in-text inverse annotation",
 			"subject": "Example/P0702/2",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SKEY", "_MDAT", "_ERRC" ],
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					],
 					"propertyValues": []
 				}
 			}
@@ -49,10 +54,12 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en",
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

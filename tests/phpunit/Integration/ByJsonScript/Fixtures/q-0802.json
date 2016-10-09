@@ -1,7 +1,6 @@
 {
 	"description": "Test `_INST`/`_SUBC` queries (#1005, en, skip virtuoso)",
-	"properties": [],
-	"subjects": [
+	"setup": [
 		{
 			"name": "Foo",
 			"namespace": "NS_CATEGORY",
@@ -30,13 +29,16 @@
 			"contents": "[[Category:Foo]] [[Category:Bam]]"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0 query pages with annotated category(subcategory)",
 			"condition": "[[Category:Bar]]",
-			"printouts" : [ "_INST" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"_INST"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -52,11 +54,14 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1 disjuntive query for two categories",
 			"condition": "[[Category:Bar]] OR [[Category:Bam]]",
-			"printouts" : [ "_INST" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"_INST"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 3,
@@ -68,11 +73,14 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#2 conjuntive query for two categories",
 			"condition": "[[Category:Bar]][[Category:Bam]]",
-			"printouts" : [ "_INST" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"_INST"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -82,11 +90,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#3 find list of subcategories for selected super",
 			"condition": "[[Subcategory of::Category:Foo]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -97,11 +106,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#4 find the super for a selected subcategory",
 			"condition": "[[-Subcategory of::Category:Bar]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -111,11 +121,14 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#5 disjuntive query for two categories",
 			"condition": "[[Category:Foo]] OR [[Category:Bam]]",
-			"printouts" : [ "_INST" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"_INST"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 3,
@@ -140,7 +153,7 @@
 		"skip-on": {
 			"virtuoso": "Virtuoso 6.1 rdfs / subproperty/subcategory hierarchies are not supported"
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

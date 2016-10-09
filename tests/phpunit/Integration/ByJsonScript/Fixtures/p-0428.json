@@ -1,27 +1,33 @@
 {
 	"description": "Test `_TYPE` annotations on different content language (`wgContLang=fr`, `wgLang=en`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text",
 			"contents": "[[A le type::Texte]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0428/1",
 			"contents": "[[Has text::#-Foo]]"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0428/1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SKEY", "_MDAT", "Has_text" ],
-					"propertyValues": [ "#-Foo" ]
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_text"
+					],
+					"propertyValues": [
+						"#-Foo"
+					]
 				}
 			}
 		}
@@ -29,10 +35,12 @@
 	"settings": {
 		"wgContLang": "fr",
 		"wgLang": "en",
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

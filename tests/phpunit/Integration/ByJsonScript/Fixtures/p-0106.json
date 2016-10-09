@@ -1,7 +1,6 @@
 {
 	"description": "Test #info parser output (#1019, `wgContLang=en`, `wgLang=en`, skip-on 1.25.6)",
-	"properties": [],
-	"subjects": [
+	"setup": [
 		{
 			"name": "Info-warning",
 			"contents": "{{#info: an error text | warning }}"
@@ -11,8 +10,9 @@
 			"contents": "{{#info: an info note | note }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Info-warning",
 			"expected-output": {
@@ -24,6 +24,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1",
 			"subject": "Info-note",
 			"expected-output": {
@@ -38,13 +39,12 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en"
-
 	},
 	"meta": {
 		"skip-on": {
 			"mw-1.25.6": "Somehow the content lang is not set correctly on Travis (locally works fine)."
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

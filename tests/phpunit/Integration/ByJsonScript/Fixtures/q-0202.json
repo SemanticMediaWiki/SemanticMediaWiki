@@ -1,12 +1,11 @@
 {
 	"description": "Test `_CONC` for guarding against circular/self-reference which otherwise would fail with 'Maximum function nesting level ... reached, aborting' (#945, skip postgres, skip virtuoso)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has concept description",
 			"contents": "[[Has type::Text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Page one",
 			"contents": "[[Has concept description::Bar]]"
@@ -31,12 +30,13 @@
 			"contents": "{{#concept: [[Has concept description::+]] [[Concept:Concept-is-circular-extra]] }}"
 		}
 	],
-	"concept-testcases": [
+	"tests": [
 		{
+			"type": "concept",
 			"about": "#0 Check simple concept list",
 			"condition": "[[Concept:Concept-is-not-circular]]",
-			"parameters" : {
-				"limit" : "10"
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": "2"
@@ -49,10 +49,11 @@
 			]
 		},
 		{
+			"type": "concept",
 			"about": "#1 Check for circular concept",
 			"condition": "[[Concept:Concept-is-circular]]",
-			"parameters" : {
-				"limit" : "10"
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 0,
@@ -66,10 +67,11 @@
 			]
 		},
 		{
+			"type": "concept",
 			"about": "#2 Check for circular concept",
 			"condition": "[[Concept:Concept-is-circular-extra]]",
-			"parameters" : {
-				"limit" : "10"
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 0,
@@ -83,13 +85,13 @@
 			]
 		}
 	],
-	"settings": {},
+	"settings": [],
 	"meta": {
 		"skip-on": {
 			"postgres": "Unable to run concept tests on postgres, see #781",
 			"virtuoso": "Virtuoso reports 'SPARQL compiler: Blank node ... is not allowed in a constant clause', see https://github.com/openlink/virtuoso-opensource/issues/126"
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false
 	}
 }
