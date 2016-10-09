@@ -117,7 +117,7 @@ class PropertySpecificationChangeNotifier {
 			$dispatchContext->set( 'subject', $this->semanticData->getSubject() );
 
 			EventHandler::getInstance()->getEventDispatcher()->dispatch(
-				'property.spec.change',
+				'property.specification.change',
 				$dispatchContext
 			);
 

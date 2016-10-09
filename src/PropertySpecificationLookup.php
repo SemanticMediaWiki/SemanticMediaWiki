@@ -275,7 +275,7 @@ class PropertySpecificationLookup {
 	/**
 	 * We try to cache anything to avoid unnecessary store connections or DB
 	 * lookups. For cases where a property was changed, the EventDipatcher will
-	 * receive a 'property.spec.change' event (emitted as soon as the content of
+	 * receive a 'property.specification.change' event (emitted as soon as the content of
 	 * a property page was altered) with PropertySpecificationLookup::resetCacheBy
 	 * being invoked to remove the cache entry for that specific property.
 	 *

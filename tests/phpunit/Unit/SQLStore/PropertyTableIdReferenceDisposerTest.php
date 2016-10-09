@@ -3,7 +3,7 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
-use Title;
+use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableIdReferenceDisposer
@@ -21,9 +21,22 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'getDataItemById' ) )
+			->getMock();
+
+		$idTable->expects( $this->any() )
+			->method( 'getDataItemById' )
+			->will( $this->returnValue( DIWikiPage::newFromText( 'Foo' ) ) );
+
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
 	}
 
 	public function testCanConstruct() {
@@ -72,7 +85,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$instance->tryToRemoveOutdatedIDFromEntityTables( 42 );
+		$instance->removeOutdatedEntityReferencesById( 42 );
 	}
 
 	public function testCleanUpTableEntriesFor() {
@@ -109,7 +122,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$instance->cleanUpTableEntriesFor( 42 );
+		$instance->cleanUpTableEntriesById( 42 );
 	}
 
 }
