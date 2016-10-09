@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Query;
 
-use SMW\Query\QueryUrlEncoder;
+use SMW\Query\QueryStringifier;
 
 /**
- * @covers \SMW\Query\QueryUrlEncoder
+ * @covers \SMW\Query\QueryStringifier
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,7 +13,7 @@ use SMW\Query\QueryUrlEncoder;
  *
  * @author mwjames
  */
-class QueryUrlEncoderTest extends \PHPUnit_Framework_TestCase {
+class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider queryProvider
@@ -22,12 +22,12 @@ class QueryUrlEncoderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertSame(
 			$expectedEncode,
-			QueryUrlEncoder::encode( $query )
+			QueryStringifier::get( $query )
 		);
 
 		$this->assertSame(
 			$expectedRawEncode,
-			QueryUrlEncoder::rawUrlEncode( $query )
+			QueryStringifier::rawUrlEncode( $query )
 		);
 	}
 

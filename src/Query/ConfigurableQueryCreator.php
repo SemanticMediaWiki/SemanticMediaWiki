@@ -15,7 +15,7 @@ use SMW\DataValueFactory;
  *
  * @author mwjames
  */
-class QueryCreator implements QueryContext {
+class ConfigurableQueryCreator implements QueryContext {
 
 	/**
 	 * @var QueryFactory
@@ -68,9 +68,12 @@ class QueryCreator implements QueryContext {
 	 * @since 2.5
 	 *
 	 * @param array $configuration
+	 *
+	 * @return self
 	 */
 	public function withConfiguration( array $configuration ) {
 		$this->configuration = $configuration;
+		return $this;
 	}
 
 	/**
@@ -171,6 +174,8 @@ class QueryCreator implements QueryContext {
 	}
 
 	/**
+	 * @note This method is expected to be private after QueryProcessor::getSortKeys has been removed!
+	 *
 	 * @since 2.5
 	 *
 	 * @param array $sortParameters
