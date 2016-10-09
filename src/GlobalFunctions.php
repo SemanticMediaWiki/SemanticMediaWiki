@@ -220,6 +220,11 @@ function smwfGetLinker() {
 function enableSemantics( $namespace = null, $complete = false ) {
 	global $smwgNamespace;
 
+	// Apparently this is required (1.28+) as the earliest possible execution
+	// point in order for settings that refer to the SMW_NS_PROPERTY namespace
+	// to be available in LocalSettings
+	NamespaceManager::initCustomNamespace( $GLOBALS );
+
 	if ( !$complete && ( $smwgNamespace !== '' ) ) {
 		// The dot tells that the domain is not complete. It will be completed
 		// in the Export since we do not want to create a title object here when
