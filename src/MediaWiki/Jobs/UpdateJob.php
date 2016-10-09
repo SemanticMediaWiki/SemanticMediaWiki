@@ -6,6 +6,7 @@ use LinkCache;
 use ParserOutput;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\DIProperty;
 use SMW\EventHandler;
 use Title;
 
@@ -100,7 +101,7 @@ class UpdateJob extends JobBase {
 			return false;
 		}
 
-		$lastModified = $this->applicationFactory->getStore()->getWikiPageLastModifiedTimestamp(
+		$lastModified = $this->getWikiPageLastModifiedTimestamp(
 			DIWikiPage::newFromTitle( $title )
 		);
 
@@ -171,6 +172,21 @@ class UpdateJob extends JobBase {
 		$parserData->updateStore();
 
 		return true;
+	}
+
+	/**
+	 * Convenience method to find last modified MW timestamp for a subject that
+	 * has been added using the storage-engine.
+	 */
+	private function getWikiPageLastModifiedTimestamp( DIWikiPage $wikiPage ) {
+
+		$dataItems = $this->applicationFactory->getStore()->getPropertyValues( $wikiPage, new DIProperty( '_MDAT' ) );
+
+		if ( $dataItems !== array() ) {
+			return end( $dataItems )->getMwTimestamp( TS_MW );
+		}
+
+		return 0;
 	}
 
 }
