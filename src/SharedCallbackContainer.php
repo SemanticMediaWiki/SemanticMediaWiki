@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use LBFactory;
+use MediaWiki\MediaWikiServices;
 use Onoi\BlobStore\BlobStore;
 use Onoi\CallbackContainer\CallbackContainer;
 use Onoi\CallbackContainer\CallbackLoader;
@@ -98,6 +100,27 @@ class SharedCallbackContainer implements CallbackContainer {
 
 		$callbackLoader->registerCallback( 'DeferredCallableUpdate', function( \Closure $callback ) {
 			return new DeferredCallableUpdate( $callback );
+		} );
+
+		$callbackLoader->registerExpectedReturnType( 'DBLoadBalancer', '\LoadBalancer' );
+
+		$callbackLoader->registerCallback( 'DBLoadBalancer', function() {
+			if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( '\MediaWiki\MediaWikiServices', 'getDBLoadBalancer' ) ) { // > MW 1.27
+				return MediaWikiServices::getInstance()->getDBLoadBalancer();
+			}
+
+			return LBFactory::singleton()->getMainLB();
+		} );
+
+		$callbackLoader->registerCallback( 'DefaultSearchEngineTypeForDB', function( \IDatabase $db ) use ( $callbackLoader ) {
+
+			if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( 'SearchEngineFactory', 'getSearchEngineClass' ) ) { // MW > 1.27
+
+				return MediaWikiServices::getInstance()->getSearchEngineFactory()->getSearchEngineClass( $db );
+
+			}
+
+			return $db->getSearchEngine();
 		} );
 
 		/**

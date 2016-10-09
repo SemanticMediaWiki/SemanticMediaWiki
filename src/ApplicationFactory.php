@@ -354,6 +354,26 @@ class ApplicationFactory {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @return \LoadBalancer
+	 */
+	public function getLoadBalancer() {
+		return $this->callbackLoader->singleton( 'DBLoadBalancer' );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param \IDatabase $db
+	 * @return string
+	 */
+	public function getDefaultSearchEngineTypeForDB( \IDatabase $db ) {
+		return $this->callbackLoader->create( 'DefaultSearchEngineTypeForDB', $db );
+
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param Closure $callback
