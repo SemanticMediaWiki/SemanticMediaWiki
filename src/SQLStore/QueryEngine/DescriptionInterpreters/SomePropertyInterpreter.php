@@ -14,7 +14,7 @@ use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMWDataItem as DataItem;
-use SMWDataItemHandler as DataItemHandler;
+use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMWSql3SmwIds;
 use SMWSQLStore3Table;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;

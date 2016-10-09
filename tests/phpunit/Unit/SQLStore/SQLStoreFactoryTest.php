@@ -5,6 +5,7 @@ namespace SMW\Tests\SQLStore;
 use SMW\SQLStore\SQLStoreFactory;
 use SMW\Store;
 use SMWSQLStore3;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\SQLStoreFactory
@@ -18,9 +19,12 @@ use SMWSQLStore3;
 class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
+
+		$this->testEnvironment = new TestEnvironment();
 
 		$this->store = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
@@ -149,13 +153,22 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstrucCachedValueLookupStore() {
+	public function testCanConstructEntityLookup() {
 
 		$instance = new SQLStoreFactory( $this->store );
 
+		$this->testEnvironment->addConfiguration( 'smwgValueLookupFeatures', CACHE_NONE );
+
 		$this->assertInstanceOf(
-			'SMW\SQLStore\Lookup\CachedValueLookupStore',
-			$instance->newCachedValueLookupStore()
+			'SMW\SQLStore\EntityStore\DirectEntityLookup',
+			$instance->newEntityLookup()
+		);
+
+		$this->testEnvironment->addConfiguration( 'smwgValueLookupFeatures', 'SomeCache' );
+
+		$this->assertInstanceOf(
+			'SMW\SQLStore\EntityStore\PersistentCachedEntityLookup',
+			$instance->newEntityLookup()
 		);
 	}
 
@@ -166,6 +179,16 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'SMW\SQLStore\PropertyTableIdReferenceFinder',
 			$instance->newPropertyTableIdReferenceFinder()
+		);
+	}
+
+	public function testCanConstructDataItemHandlerDispatcher() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'SMW\SQLStore\EntityStore\DataItemHandlerDispatcher',
+			$instance->newDataItemHandlerDispatcher()
 		);
 	}
 

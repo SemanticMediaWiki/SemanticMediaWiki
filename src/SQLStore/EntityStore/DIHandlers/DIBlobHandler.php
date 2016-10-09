@@ -1,17 +1,22 @@
 <?php
-/**
- * @ingroup SMWDataItemsHandlers
- */
+
+namespace SMW\SQLStore\EntityStore\DIHandlers;
+
+use SMW\SQLStore\SQLStore;
+use SMWDataItem as DataItem;
+use SMW\SQLStore\EntityStore\DataItemHandler;
+use SMWDataItemException as DataItemException;
+use SMWDIBlob as DIBlob;
 
 /**
  * This class implements Store access to blob (string) data items.
  *
+ * @license GNU GPL v2+
  * @since 1.8
  *
  * @author Nischay Nahata
- * @ingroup SMWDataItemsHandlers
  */
-class SMWDIHandlerBlob extends SMWDataItemHandler {
+class DIBlobHandler extends DataItemHandler {
 
 	/**
 	 * Maximal number of bytes (chars) to be stored in the hash field of
@@ -34,52 +39,47 @@ class SMWDIHandlerBlob extends SMWDataItemHandler {
 	const MAX_HASH_LENGTH = 72;
 
 	/**
-	 * Method to return array of fields for a DI type
+	 * @since 1.8
 	 *
-	 * @return array
+	 * {@inheritDoc}
 	 */
 	public function getTableFields() {
 		return array( 'o_blob' => 'l', 'o_hash' => 't' );
 	}
 
 	/**
-	 * @see SMWDataItemHandler::getFetchFields()
-	 *
 	 * @since 1.8
-	 * @return array
+	 *
+	 * {@inheritDoc}
 	 */
 	public function getFetchFields() {
 		return array( 'o_blob' => 'l', 'o_hash' => 't' );
 	}
 
 	/**
-	 * @see SMWDataItemHandler::getTableIndexes
+	 * @since 1.8
 	 *
-	 * @since 2.4
-	 *
-	 * @return array
+	 * {@inheritDoc}
 	 */
 	public function getTableIndexes() {
 		return array( 's_id,o_hash' );
 	}
 
 	/**
-	 * Method to return an array of fields=>values for a DataItem
+	 * @since 1.8
 	 *
-	 * @return array
+	 * {@inheritDoc}
 	 */
-	public function getWhereConds( SMWDataItem $dataItem ) {
+	public function getWhereConds( DataItem $dataItem ) {
 		return array( 'o_hash' => self::makeHash( $dataItem->getString() ) );
 	}
 
 	/**
-	 * Method to return an array of fields=>values for a DataItem
-	 * This array is used to perform all insert operations into the DB
-	 * To optimize return minimum fields having indexes
+	 * @since 1.8
 	 *
-	 * @return array
+	 * {@inheritDoc}
 	 */
-	public function getInsertValues( SMWDataItem $dataItem ) {
+	public function getInsertValues( DataItem $dataItem ) {
 		$text = $dataItem->getString();
 
 		return array(
@@ -89,34 +89,31 @@ class SMWDIHandlerBlob extends SMWDataItemHandler {
 	}
 
 	/**
-	 * Method to return the field used to select this type of DataItem
 	 * @since 1.8
-	 * @return string
+	 *
+	 * {@inheritDoc}
 	 */
 	public function getIndexField() {
 		return 'o_hash';
 	}
 
 	/**
-	 * Method to return the field used to select this type of DataItem
-	 * using the label
 	 * @since 1.8
-	 * @return string
+	 *
+	 * {@inheritDoc}
 	 */
 	public function getLabelField() {
 		return 'o_hash';
 	}
 
 	/**
-	 * @see SMWDataItemHandler::dataItemFromDBKeys()
 	 * @since 1.8
-	 * @param array|string $dbkeys expecting array here
 	 *
-	 * @return SMWDataItem
+	 * {@inheritDoc}
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
 		if ( !is_array( $dbkeys ) || count( $dbkeys ) != 2 ) {
-			throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
+			throw new DataItemException( 'Failed to create data item from DB keys.' );
 		}
 
 		if ( $GLOBALS['wgDBtype'] === 'postgres' ) {
@@ -124,9 +121,9 @@ class SMWDIHandlerBlob extends SMWDataItemHandler {
 		}
 
 		if ( $dbkeys[0] == '' ) { // empty blob: use "hash" string
-			return new SMWDIBlob( $dbkeys[1] );
+			return new DIBlob( $dbkeys[1] );
 		} else {
-			return new SMWDIBlob( $dbkeys[0] );
+			return new DIBlob( $dbkeys[0] );
 		}
 	}
 

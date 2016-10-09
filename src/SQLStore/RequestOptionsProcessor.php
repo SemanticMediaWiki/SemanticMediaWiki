@@ -42,7 +42,7 @@ class RequestOptionsProcessor {
 	 *
 	 * @return array
 	 */
-	public function transformToSQLOptions( RequestOptions $requestOptions = null, $valueCol = '' ) {
+	public function getSQLOptionsFrom( RequestOptions $requestOptions = null, $valueCol = '' ) {
 		$sqlConds = array();
 
 		if ( $requestOptions === null ) {
@@ -78,7 +78,7 @@ class RequestOptionsProcessor {
 	 *
 	 * @return string
 	 */
-	public function transformToSQLConditions( RequestOptions $requestOptions = null, $valueCol = '', $labelCol = '', $addAnd = true ) {
+	public function getSQLConditionsFrom( RequestOptions $requestOptions = null, $valueCol = '', $labelCol = '', $addAnd = true ) {
 		$sqlConds = '';
 
 		if ( $requestOptions === null ) {

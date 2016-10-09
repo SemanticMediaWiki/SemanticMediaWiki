@@ -187,7 +187,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testinterpretDescription( $description, $isFixedPropertyTable, $indexField, $sortKeys, $expected ) {
 
-		$dataItemHandler = $this->getMockBuilder( '\SMWDataItemHandler' )
+		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

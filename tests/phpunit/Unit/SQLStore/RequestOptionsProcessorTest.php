@@ -51,7 +51,7 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->transformToSQLOptions( $requestOptions, 'Foo' )
+			$instance->getSQLOptionsFrom( $requestOptions, 'Foo' )
 		);
 	}
 
@@ -76,7 +76,7 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->transformToSQLConditions( $requestOptions, $valueCol, $labelCol )
+			$instance->getSQLConditionsFrom( $requestOptions, $valueCol, $labelCol )
 		);
 	}
 
