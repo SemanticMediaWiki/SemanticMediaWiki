@@ -216,7 +216,7 @@ class JsonTestCaseFileHandler {
 		}
 
 		// Set default values
-		if ( isset( $GLOBALS[$key] ) ) {
+		if ( isset( $GLOBALS[$key] ) || array_key_exists( $key, $GLOBALS ) ) {
 			return $GLOBALS[$key];
 		}
 

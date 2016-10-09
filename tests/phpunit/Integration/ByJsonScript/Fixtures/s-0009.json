@@ -1,0 +1,43 @@
+{
+	"description": "Test output in `Special:Search` for SMWSearch (`wgLanguageCode=en`, `wgContLang=en`, `wgSearchType=SMWSearch`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"name": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"name": "Example/S0009/1",
+			"contents": "[[Has text::Some text to search]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 results matched by the SMWSearch extension",
+			"special-page": {
+				"page":"Search",
+				"query-parameters": "",
+				"request-parameters":{
+					"search": "[[Has text::~*Some text*]]"
+				}
+			},
+			"expected-output": {
+				"to-contain": [
+					"<ul class='mw-search-results'>",
+					"Example/S0009/1"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLanguageCode": "en",
+		"wgSearchType": "SMWSearch"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
