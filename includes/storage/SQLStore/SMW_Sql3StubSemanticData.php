@@ -4,6 +4,7 @@ use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\StoreFactory;
+use SMW\SQLStore\EntityStore\Exceptions\DataItemHandlerException;
 
 /**
  * This class provides a subclass of SMWSemanticData that can store
@@ -156,7 +157,7 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 					} else {
 						$this->mPropVals[$property->getKey()][] = $di;
 					}
-				} catch ( SMWDataItemException $e ) {
+				} catch ( DataItemHandlerException $e ) {
 					// ignore data
 				}
 			}

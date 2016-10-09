@@ -5,7 +5,7 @@ namespace SMW\SQLStore\EntityStore\DIHandlers;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
 use SMW\SQLStore\EntityStore\DataItemHandler;
-use SMWDataItemException as DataItemException;
+use SMW\SQLStore\EntityStore\Exceptions\DataItemHandlerException;
 use SMWDIBlob as DIBlob;
 
 /**
@@ -113,7 +113,7 @@ class DIBlobHandler extends DataItemHandler {
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
 		if ( !is_array( $dbkeys ) || count( $dbkeys ) != 2 ) {
-			throw new DataItemException( 'Failed to create data item from DB keys.' );
+			throw new DataItemHandlerException( 'Failed to create data item from DB keys.' );
 		}
 
 		if ( $GLOBALS['wgDBtype'] === 'postgres' ) {
