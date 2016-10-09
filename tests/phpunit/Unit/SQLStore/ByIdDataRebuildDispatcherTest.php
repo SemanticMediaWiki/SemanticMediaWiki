@@ -35,12 +35,12 @@ class ByIdDataRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getWikiPageLastModifiedTimestamp', 'getObjectIds' ) )
+			->setMethods( array( 'getObjectIds' ) )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )
-			->method( 'getWikiPageLastModifiedTimestamp' )
-			->will( $this->returnValue( 0 ) );
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( array() ) );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )

@@ -231,7 +231,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getPropertyValues', 'getWikiPageLastModifiedTimestamp', 'getObjectIds' ) )
+			->setMethods( array( 'getPropertyValues', 'getObjectIds' ) )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -241,10 +241,6 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
 			->will( $this->returnValue( array() ) );
-
-		$store->expects( $this->once() )
-			->method( 'getWikiPageLastModifiedTimestamp' )
-			->will( $this->returnValue( 0 ) );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
