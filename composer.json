@@ -79,9 +79,8 @@
 			"DefaultSettings.php",
 			"SemanticMediaWiki.php"
 		],
-		"classmap": [
-			"includes/",
-			"languages/SMW_Language.php"
+		"classmap" : [
+			"includes/"
 		]
 	},
 	"config": {
