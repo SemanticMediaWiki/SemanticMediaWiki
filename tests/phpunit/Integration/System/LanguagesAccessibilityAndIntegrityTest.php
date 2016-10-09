@@ -6,8 +6,6 @@ use RuntimeException;
 use SMW\ExtraneousLanguage\ExtraneousLanguage;
 
 /**
- * @covers \SMWLanguage
- *
  * @group SMW
  * @group SMWExtension
  *
