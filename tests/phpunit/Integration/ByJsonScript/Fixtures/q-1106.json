@@ -1,12 +1,11 @@
 {
 	"description": "Test `_rec` with `~/!~` comparators on allowed values (#1207, `smwStrictComparators=false`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has restricted status record",
 			"contents": "[[Has type::Text]] [[Allows value::open]], [[Allows value::closed]], [[Allows value::in progress]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/Q1106/1",
 			"contents": "[[Category:E-Q1106]][[Has restricted status record::open]]"
@@ -24,13 +23,14 @@
 			"contents": "[[Category:E-Q1106]][[Has restricted status record::none of the above]]"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0 like *en*",
 			"condition": "[[Category:E-Q1106]][[Has restricted status record::~*en*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -40,11 +40,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1 like cl*",
 			"condition": "[[Category:E-Q1106]][[Has restricted status record::~cl*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -54,11 +55,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#2 not like cl*",
 			"condition": "[[Category:E-Q1106]][[Has restricted status record::!~cl*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -69,11 +71,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#3 not like cl* AND *in*",
 			"condition": "[[Category:E-Q1106]]<q>[[Has restricted status record::!~cl*]] AND [[Has restricted status record::!~*in*]]</q>",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -83,11 +86,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#4 not like cl* OR *in* (doesn't make much sense, we test it anyway)",
 			"condition": "[[Category:E-Q1106]]<q>[[Has restricted status record::!~cl*]] OR [[Has restricted status record::!~*in*]]</q>",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 3,
@@ -105,7 +109,7 @@
 		"wgLang": "en"
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

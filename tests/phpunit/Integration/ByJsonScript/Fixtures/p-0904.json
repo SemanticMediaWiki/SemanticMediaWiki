@@ -1,19 +1,18 @@
 {
 	"description": "Test #ask with subject redirected to different NS (en)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has page",
 			"contents": "[[Has type::Page]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0904/1",
 			"contents": "[[Has page::P0904]]"
 		},
 		{
 			"name": "Example/P0904/1",
-			"namespace" : "NS_HELP",
+			"namespace": "NS_HELP",
 			"contents": "[[Has page::P0904]]"
 		},
 		{
@@ -29,22 +28,30 @@
 			"contents": "{{#ask: [[~Example/P0904*]] |?Has page |format=table |link=none }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0904/1",
-			"namespace" : "NS_HELP",
+			"namespace": "NS_HELP",
 			"store": {
 				"clear-cache": true,
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SKEY", "_MDAT", "Has_page" ],
-					"inproperty-keys":  [ "_REDI" ]
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_page"
+					],
+					"inproperty-keys": [
+						"_REDI"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0904/2",
 			"expected-output": {
@@ -54,6 +61,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2 (redirected subject does not appear in result list)",
 			"subject": "Example/P0904/3",
 			"expected-output": {
@@ -69,7 +77,9 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en",
-		"smwgPageSpecialProperties": [ "_MDAT" ],
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,
 			"NS_HELP": true,
@@ -77,7 +87,7 @@
 		}
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

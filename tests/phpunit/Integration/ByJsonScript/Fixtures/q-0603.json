@@ -1,12 +1,11 @@
 {
 	"description": "Test `_wpg` queries for various conditions using #set annotated content",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Member of",
 			"contents": "[[Has type::Page]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Page-with-set-1",
 			"contents": "{{#set:|Member of=Foo}}\n {{#set:|Member of=Bar}}"
@@ -16,13 +15,16 @@
 			"contents": "{{#set:|Member of=Foobaz}} {{#set:|Member of=Bar}}"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0",
 			"condition": "[[Member of::Foo]]",
-			"printouts" : [ "Member of" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"Member of"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": "1",
@@ -42,11 +44,14 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1",
 			"condition": "[[Member of::~*Foo*]]",
-			"printouts" : [ "Member of" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"Member of"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": "2",
@@ -71,11 +76,14 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#2",
 			"condition": "[[Member of::Foo]] OR [[Member of::Foobaz]]",
-			"printouts" : [ "Member of" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"Member of"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": "2",
@@ -100,11 +108,14 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#3",
 			"condition": "[[Member of::Foo||Foobaz]]",
-			"printouts" : [ "Member of" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"Member of"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": "2",
@@ -129,11 +140,14 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#4",
 			"condition": "[[Member of::Foobaz]] AND [[Member of::Bar]]",
-			"printouts" : [ "Member of" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"Member of"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": "1",
@@ -153,11 +167,14 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#5",
 			"condition": "[[Member of::Foobaz]] AND <q>[[Member of::Bar]] AND [[Member of::Foobaz]]</q>",
-			"printouts" : [ "Member of" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"Member of"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": "1",
@@ -177,11 +194,14 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#6",
 			"condition": "[[Member of::Foobaz]] AND <q>[[Member of::Bar]] AND <q>[[Member of::Bar]] OR [[Member of::Foobaz]]</q></q>",
-			"printouts" : [ "Member of" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"Member of"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": "1",
@@ -201,9 +221,9 @@
 			}
 		}
 	],
-	"settings": {},
+	"settings": [],
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

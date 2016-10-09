@@ -1,16 +1,16 @@
 {
 	"description": "Test RDF wiki-info output (#928, en)",
-	"properties": [],
-	"subjects": [],
-	"rdf-testcases": [
+	"setup": [],
+	"tests": [
 		{
+			"type": "rdf",
 			"about": "#0 simple output",
-			"exportcontroller" : {
+			"exportcontroller": {
 				"wiki-info": true,
-				"parameters" : {
-					"backlinks" : false,
-					"recursion" : "1",
-					"revisiondate" : false
+				"parameters": {
+					"backlinks": false,
+					"recursion": "1",
+					"revisiondate": false
 				}
 			},
 			"expected-output": {
@@ -40,7 +40,7 @@
 		"smwgNamespace": "http://example.org/id/"
 	},
 	"meta": {
-		"version": "0.2",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

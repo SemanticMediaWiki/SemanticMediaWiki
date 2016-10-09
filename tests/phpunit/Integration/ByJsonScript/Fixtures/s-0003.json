@@ -1,12 +1,11 @@
 {
 	"description": "Test `Special:Ask` output for `format=rdf`/`format=json`/DISPLAYTITLE (#1453, #1619, `wgRestrictDisplayTitle`, `wgContLang=en`, skip-on 1.19)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has boolean",
 			"contents": "[[Has type::Boolean]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/S0003/1",
 			"contents": "[[Has boolean::true]] [[Category:S0003]]"
@@ -20,15 +19,20 @@
 			"contents": "{{#ask: [[Category:S0003]] |?Category |?Has boolean=Text |link=none |format=rdf }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Example/S0003/Q1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": ["_MDAT", "_SKEY", "_ASK" ],
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_ASK"
+					],
 					"propertyValues": []
 				}
 			},
@@ -37,15 +41,14 @@
 					"-5B-5BCategory:S0003-5D-5D/-3FCategory/-3FHas-20boolean=Text/mainlabel=/limit=100/offset=0/format=rdf/link=none\">RDF</a>"
 				]
 			}
-		}
-	],
-	"special-testcases": [
+		},
 		{
+			"type": "special",
 			"about": "#1",
 			"special-page": {
-				"page":"Ask",
+				"page": "Ask",
 				"query-parameters": "-5B-5BCategory:S0003-5D-5D/-3FCategory/-3FHas-20boolean=Text/mainlabel=/limit=100/offset=0/format=rdf/link=none",
-				"request-parameters":{}
+				"request-parameters": []
 			},
 			"expected-output": {
 				"to-contain": [
@@ -56,15 +59,16 @@
 			}
 		},
 		{
+			"type": "special",
 			"about": "#2",
 			"skip-on": {
 				"mw-1.19.20": "Skipping because of spaces in output fields being different",
 				"mw-1.22.12": "Skipping because of spaces in output fields being different"
 			},
 			"special-page": {
-				"page":"Ask",
+				"page": "Ask",
 				"query-parameters": "-5B-5BCategory:S0003-5D-5D/-3FCategory/-3FHas-20boolean=Text/mainlabel=/limit=100/offset=0/format=json/unescape=true/prettyprint=true/link=none",
-				"request-parameters":{}
+				"request-parameters": []
 			},
 			"expected-output": {
 				"to-contain": [
@@ -75,11 +79,12 @@
 			}
 		},
 		{
+			"type": "special",
 			"about": "#3 (link=subject)",
 			"special-page": {
-				"page":"Ask",
+				"page": "Ask",
 				"query-parameters": "-5B-5BCategory:S0003-5D-5D/mainlabel=/offset=0/format=table/link=subject",
-				"request-parameters":{}
+				"request-parameters": []
 			},
 			"expected-output": {
 				"to-contain": [
@@ -88,11 +93,12 @@
 			}
 		},
 		{
+			"type": "special",
 			"about": "#4 (link=none)",
 			"special-page": {
-				"page":"Ask",
+				"page": "Ask",
 				"query-parameters": "-5B-5BCategory:S0003-5D-5D/mainlabel=/offset=0/format=table/link=none",
-				"request-parameters":{}
+				"request-parameters": []
 			},
 			"expected-output": {
 				"to-contain": [
@@ -109,14 +115,16 @@
 		"wgLanguageCode": "en",
 		"wgRestrictDisplayTitle": false,
 		"smwgNamespace": "http://example.org/id/",
-		"smwgPageSpecialProperties": [ "_MDAT" ],
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,
 			"SMW_NS_PROPERTY": true
 		}
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

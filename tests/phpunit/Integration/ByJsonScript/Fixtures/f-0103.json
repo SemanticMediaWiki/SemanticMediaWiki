@@ -1,16 +1,16 @@
 {
 	"description": "Test format=template with self reference (#988, guard against template self-reference in ask/show query)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has blob property",
 			"contents": "[[Has type::Text]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has page property",
 			"contents": "[[Has type::Page]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Page with annotation for template usage",
 			"contents": "[[Has blob property::Template one]] [[Has page property::Template two]]"
@@ -29,13 +29,18 @@
 			"contents": "[[Has page property::Template three]] {{TemplateWithReferenceToItself}}"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0 query profile (use invert query)",
 			"condition": "[[-Has query::PageContainsAskWithTemplateUsage]]",
-			"printouts" : [ "Query size", "Query string", "Query depth" ],
-			"parameters" : {
-			  "limit" : "10"
+			"printouts": [
+				"Query size",
+				"Query string",
+				"Query depth"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -72,11 +77,16 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1 query profile on page/template transcluded page (use invert query)",
 			"condition": "[[-Has query::PageContainsTemplateTransclusion]]",
-			"printouts" : [ "Query size", "Query string", "Query depth" ],
-			"parameters" : {
-			  "limit" : "10"
+			"printouts": [
+				"Query size",
+				"Query string",
+				"Query depth"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -110,7 +120,7 @@
 		"skip-on": {
 			"mw-1.22.12": "I have no idea why #1 fails on Travis/1.22.12."
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

@@ -1,40 +1,46 @@
 {
 	"description": "Test `_wpg`/`_dat`/`_num`/`_txt` subquery example",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has project",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has project manager",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has project pool",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has project assistant",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has project name",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has project due date",
 			"contents": "[[Has type::Date]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has project level access",
 			"contents": "[[Has type::Number]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has name",
 			"contents": "[[Has type::Text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "P-100",
 			"contents": "[[Category:Project]][[Has project name::P-100]][[Has project due date::10/30/2015]]"
@@ -56,13 +62,17 @@
 			"contents": "{{#subobject:|@category=Project pool |Has project=P-100 |Has project manager=John Doe |Has project pool={{PAGENAME}} }} {{#subobject:|@category=Project pool |Has project=P-200 |Has project manager=John Doe |Has project pool={{PAGENAME}} }}"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0 conjunctive/disjunctive subquery; What projects are due where Jon Doe is assigned (with either Clara Young or 山田一郎); Query-Size:15 / Query-Depth:2",
 			"condition": "[[Category:Project pool]] [[Has project::<q>[[Has project name::P-100]] [[Has project due date::>9/24/2015]]</q>]] [[Has project manager::<q>[[Has name::John Doe]] [[Has project assistant::山田一郎]] OR [[Has name::John Doe]] [[Has project assistant::Clara Young]]</q>]]",
-			"printouts" : [ "Has project manager", "Has project" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"Has project manager",
+				"Has project"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -82,11 +92,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1 conjunctive subquery; What projects are due where Jon Doe is assigned (together with a level 5 assistant); Query-Size:12 / Query-Depth:3",
 			"condition": "[[Category:Project pool]] [[Has project::<q>[[Has project name::P-100]] [[Has project due date::>9/24/2015]]</q>]] [[Has project manager::<q>[[Has name::John Doe]] [[Has project assistant.Has project level access::5]]</q>]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -96,9 +107,9 @@
 			}
 		}
 	],
-	"settings": {},
+	"settings": [],
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

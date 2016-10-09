@@ -1,12 +1,11 @@
 {
 	"description": "Test `format=table` to display extra property description `_PDESC` (en)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has number",
 			"contents": "[[Has type::Number]] [[Has property description::A number to display ....@en]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/F0206/1/1",
 			"contents": "[[Has number::1001]]"
@@ -16,8 +15,9 @@
 			"contents": "{{#ask: [[~Example/F0206/1/*]] |?Has number |format=table }}"
 		}
 	],
-	"format-testcases": [
+	"tests": [
 		{
+			"type": "format",
 			"about": "#0",
 			"subject": "Example/F0206/1a",
 			"expected-output": {
@@ -37,7 +37,7 @@
 		}
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

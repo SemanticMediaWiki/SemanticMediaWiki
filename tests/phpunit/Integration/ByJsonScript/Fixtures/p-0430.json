@@ -1,12 +1,11 @@
 {
 	"description": "Test in-text annotation for '_eid' type (`wgContLang=en`, `wgLang=en`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "NDL ID",
 			"contents": "[[Has type::External identifier]] [[External formatter uri::https://id.ndl.go.jp/auth/ndlna/$1]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0430/1",
 			"contents": "[[NDL ID::00564222]]"
@@ -20,17 +19,24 @@
 			"contents": "{{#ask: [[NDL ID::00564222]] |?NDL ID }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0430/1",
 			"store": {
 				"clear-cache": true,
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "NDL_ID", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "00564222" ]
+					"propertyKeys": [
+						"NDL_ID",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"00564222"
+					]
 				}
 			},
 			"expected-output": {
@@ -40,6 +46,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1 (link=none)",
 			"subject": "Example/P0430/Q1.1",
 			"expected-output": {
@@ -49,6 +56,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2",
 			"subject": "Example/P0430/Q1.2",
 			"expected-output": {
@@ -63,7 +71,7 @@
 		"wgLang": "en"
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

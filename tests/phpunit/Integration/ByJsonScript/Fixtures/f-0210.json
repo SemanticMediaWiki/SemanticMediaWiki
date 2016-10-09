@@ -1,12 +1,11 @@
 {
 	"description": "Test `format=table` on `_qty` for unit labels with spaces (#1718, `wgContLang=en`, `SMW_DV_NUMV_USPACE`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has area with spaces",
 			"contents": "[[Has type::Quantity]], [[Corresponds to::1 km², km ²]] [[Corresponds to::0.38610 sq mi, sqmi]] [[Corresponds to::1000 m², m ²]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/F0210/1",
 			"contents": "[[Has area with spaces::10 km ²]] [[Has area with spaces::3 sqmi]] [[Has area with spaces::50 m ²]] [[Category:F0210]]"
@@ -24,8 +23,9 @@
 			"contents": "{{#ask: [[Has area with spaces::10 km²]] |format=table |headers=plain |link=none }}"
 		}
 	],
-	"format-testcases": [
+	"tests": [
 		{
+			"type": "format",
 			"about": "#0",
 			"subject": "Example/F0210/Q1.1",
 			"expected-output": {
@@ -37,6 +37,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#1",
 			"subject": "Example/F0210/Q1.2",
 			"expected-output": {
@@ -46,6 +47,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#2",
 			"subject": "Example/F0210/Q1.3",
 			"expected-output": {
@@ -58,14 +60,16 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en",
-		"smwgDVFeatures": [ "SMW_DV_NUMV_USPACE" ],
+		"smwgDVFeatures": [
+			"SMW_DV_NUMV_USPACE"
+		],
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,
 			"SMW_NS_PROPERTY": true
 		}
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

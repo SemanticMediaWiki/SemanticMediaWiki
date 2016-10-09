@@ -1,12 +1,11 @@
 {
 	"description": "Test in-text annotation for `_dat` using JL/GR annotated values (en, `smwgDVFeatures`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has date",
 			"contents": "[[Has type::Date]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0420/1",
 			"contents": "[[Has date::21 March 1685 JL]]"
@@ -32,16 +31,23 @@
 			"contents": "{{#ask: [[Example/P0420/3]] |?Has date |?Has date#GR |?Has date#JL }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0 JL calendar date with time",
 			"subject": "Example/P0420/1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "1685-03-31" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"1685-03-31"
+					]
 				}
 			},
 			"expected-output": {
@@ -51,6 +57,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1 JL",
 			"subject": "Example/P0420/1a",
 			"expected-output": {
@@ -62,6 +69,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2 JL",
 			"subject": "Example/P0420/2a",
 			"expected-output": {
@@ -73,6 +81,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#3 GR",
 			"subject": "Example/P0420/3a",
 			"expected-output": {
@@ -87,11 +96,12 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en",
-		"smwgDVFeatures": [ "SMW_DV_TIMEV_CM" ]
+		"smwgDVFeatures": [
+			"SMW_DV_TIMEV_CM"
+		]
 	},
 	"meta": {
-
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

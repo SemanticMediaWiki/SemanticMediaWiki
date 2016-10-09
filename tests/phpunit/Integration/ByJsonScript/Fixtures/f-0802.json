@@ -1,20 +1,21 @@
 {
 	"description": "Test `format=template` [[SMW::on/off]] regression using `named args=yes` (#1453, skip-on 1.19)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has publication title",
 			"contents": "[[Has type::Text]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has publication author",
 			"contents": "[[Has type::Page]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/F0802/Cite publication/result format",
 			"namespace": "NS_TEMPLATE",
@@ -35,15 +36,21 @@
 			"contents": "{{#set: |Has text=Extra text by #set: {{Example/F0802/Cite publication|Example/F0802/A }} }} {{#ask: [[Example/F0802/B]] |?Has text=Text |link=none }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Example/F0802/B",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
-					"propertyKeys": ["_MDAT", "_SKEY", "_ASK", "Has_text" ],
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_ASK",
+						"Has_text"
+					],
 					"propertyValues": []
 				}
 			},
@@ -56,7 +63,9 @@
 		}
 	],
 	"settings": {
-		"smwgPageSpecialProperties": [ "_MDAT" ],
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,
 			"SMW_NS_PROPERTY": true
@@ -66,7 +75,7 @@
 		"skip-on": {
 			"mw-1.19.20": "<h1> contains an extra space"
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

@@ -1,27 +1,35 @@
 {
 	"description": "Test #set parser to produce error output (#870, en, verify that #set calls do not affect each other with previous errors)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has number",
 			"contents": "[[Has type::Number]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Set-number-with-error",
 			"contents": "{{#set:Has number=12}} {{#set:Has number=32a}} {{#set:Has number=66}} {{#set:Has number=88b}}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0 with error",
 			"subject": "Set-number-with-error",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
-					"propertyKeys": [ "Has_number", "_ERRC", "_SKEY", "_MDAT" ],
-					"propertyValues": [ 12, 66 ]
+					"propertyKeys": [
+						"Has_number",
+						"_ERRC",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						12,
+						66
+					]
 				}
 			},
 			"expected-output": {
@@ -34,10 +42,12 @@
 	],
 	"settings": {
 		"wgContLang": "en",
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

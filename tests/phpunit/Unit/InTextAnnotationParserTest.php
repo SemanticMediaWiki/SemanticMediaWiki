@@ -352,7 +352,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[foo::9001]] et Donec.',
 			array(
 				'resultText'     => 'class="smw-highlighter" data-type="4" data-state="inline"',
-				'strict-mode-valuematch' => false,
+				'strictPropertyValueMatch' => false,
 				'propertyCount'  => 3,
 				'propertyKeys' => array( 'Foo', 'Bar', '_ERRC' ),
 				'propertyValues' => array( 'Tincidunt semper', '9001' )
@@ -376,7 +376,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 					' 軽い cursus. Nisl sit condimentum Quisque facilisis' .
 					' Suspendisse [[:Tincidunt semper|tincidunt semper]] facilisi dolor Aenean. Ut' .
 					' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[:9001|9001]] et Donec.',
-				'strict-mode-valuematch' => false,
+				'strictPropertyValueMatch' => false,
 				'propertyCount'  => 3,
 				'propertyKeys  ' => array( 'Foo', 'Bar', '_ERRC' ),
 				'propertyValues' => array( 'Tincidunt semper', '9001' )

@@ -1,7 +1,6 @@
 {
 	"description": "Test `_INST` query (#1004, en)",
-	"properties": [],
-	"subjects": [
+	"setup": [
 		{
 			"name": "Foo",
 			"namespace": "NS_CATEGORY",
@@ -12,13 +11,16 @@
 			"contents": "[[Category:Foo]]"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0 query pages with annotated category",
 			"condition": "[[Category:Foo]]",
-			"printouts" : [ "_INST" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"_INST"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -38,7 +40,7 @@
 		"wgContLang": "en"
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

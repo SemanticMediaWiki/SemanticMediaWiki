@@ -1,16 +1,16 @@
 {
 	"description": "Test #ask on redirected printrequest (#1290, en)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has PAGE",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has page",
 			"contents": "#REDIRECT [[Property:Has PAGE]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0903/1",
 			"contents": "[[Has page::ABC]]"
@@ -24,16 +24,21 @@
 			"contents": "{{#ask:[[Has page::ABC]] |?Has page |?Has PAGE |format=table }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0903/3",
 			"store": {
 				"clear-cache": true,
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_MDAT", "_SKEY", "_ASK" ]
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_ASK"
+					]
 				}
 			},
 			"expected-output": {
@@ -47,14 +52,16 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en",
-		"smwgPageSpecialProperties": [ "_MDAT" ],
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,
 			"SMW_NS_PROPERTY": true
 		}
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

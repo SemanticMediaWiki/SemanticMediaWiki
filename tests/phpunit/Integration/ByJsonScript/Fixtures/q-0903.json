@@ -1,20 +1,21 @@
 {
 	"description": "Test `_wpg`/`_num`/`_txt` for disjunction OR || (T31866, #1059, en)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has page",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has number",
 			"contents": "[[Has type::Number]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text",
 			"contents": "[[Has type::Text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Sample/Number/1",
 			"contents": "[[Has number::1]]"
@@ -48,13 +49,14 @@
 			"contents": "[[Has text::FoO]] [[Has page::Sample/Title/2]]"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0",
 			"condition": "[[Has number::1]] OR [[Has number::2]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -65,11 +67,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1 same as #0",
 			"condition": "[[Has number::1||2]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -80,11 +83,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#2",
 			"condition": "[[Has text::~Foo*]][[Has page::123||ABC]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -95,11 +99,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#3 same as #2",
 			"condition": "[[Has page::123||ABC]][[Has text::~Foo*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -110,11 +115,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#4 same as #2",
 			"condition": "[[Has text::~Foo*]][[Has page::123]] OR [[Has page::ABC]][[Has text::~Foo*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -125,11 +131,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#5",
 			"condition": "[[Has text::+]][[Has text::~*oo*||~*OO*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 3,
@@ -141,11 +148,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#6 same as #5",
 			"condition": "[[Has text::+]][[Has text::~*OO*||~*oo*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 3,
@@ -157,11 +165,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#7",
 			"condition": "[[Has page::+]][[Has page::~*a*||~*A*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 4,
@@ -174,11 +183,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#8",
 			"condition": "[[Has page::+]][[Has page::~*B*]][[Has text::~*OO*||~*oo*||~*oO*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -189,11 +199,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#9",
 			"condition": "[[Has text::~*oO*]][[Has page::~*Bc*|| <q>[[Has page::~*a*||~*A*]]</q>]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -204,11 +215,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#10, see issue #19",
 			"condition": "[[Has page::~*b*||~*B*]] AND [[Has text::~*oO*||~*OO*||~*oo*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 3,
@@ -231,7 +243,7 @@
 		"smwgQSubcategoryDepth": 10
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

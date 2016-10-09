@@ -1,20 +1,21 @@
 {
 	"description": "Test `_wpg` queries to resolve property/values redirects (#467, skip virtuoso)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has firstPage",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has secondPage",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "PropertyToBeRedirected",
 			"contents": "#REDIRECT [[Property:Has firstPage]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "PageValueToBeRedirected",
 			"contents": "#REDIRECT [[PageRedirectTarget]]"
@@ -44,13 +45,17 @@
 			"contents": "[[PropertyToBeRedirected::PageValueToBeRedirected]]"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0 any value query for redirected property",
 			"condition": "[[PropertyToBeRedirected::+]]",
-			"printouts" : [ "PropertyToBeRedirected", "Has firstPage" ],
-			"parameters" : {
-			  "limit" : 10
+			"printouts": [
+				"PropertyToBeRedirected",
+				"Has firstPage"
+			],
+			"parameters": {
+				"limit": 10
 			},
 			"queryresult": {
 				"count": 3,
@@ -76,11 +81,14 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1 any value query for redirected value",
 			"condition": "[[Has secondPage::+]]",
-			"printouts" : [ "Has secondPage" ],
-			"parameters" : {
-			  "limit" : 10
+			"printouts": [
+				"Has secondPage"
+			],
+			"parameters": {
+				"limit": 10
 			},
 			"queryresult": {
 				"count": 2,
@@ -101,11 +109,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#2 disjunction query on discrete value search",
 			"condition": "[[PropertyToBeRedirected::One]] OR [[PropertyToBeRedirected::Two]] OR [[Has secondPage::PageValueToBeRedirected]]",
-			"printouts" : [],
-			"parameters" : {
-			  "limit" : 10
+			"printouts": [],
+			"parameters": {
+				"limit": 10
 			},
 			"queryresult": {
 				"count": 4,
@@ -118,11 +127,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#3 combined property/value redirect discrete value search",
 			"condition": "[[PropertyToBeRedirected::PageValueToBeRedirected]]",
-			"printouts" : [],
-			"parameters" : {
-			  "limit" : 10
+			"printouts": [],
+			"parameters": {
+				"limit": 10
 			},
 			"queryresult": {
 				"count": 1,
@@ -132,11 +142,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#4 single value search, refs #1007",
 			"condition": "[[:PageValueToBeRedirected]]",
-			"printouts" : [],
-			"parameters" : {
-			  "limit" : 10
+			"printouts": [],
+			"parameters": {
+				"limit": 10
 			},
 			"queryresult": {
 				"count": 1,
@@ -146,11 +157,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#5 disjunctive single value search, refs #1007",
 			"condition": "[[:PageValueToBeRedirected]] OR [[:AnotherPageValueToBeRedirected]] OR [[:Page-one]]",
-			"printouts" : [],
-			"parameters" : {
-			  "limit" : 10
+			"printouts": [],
+			"parameters": {
+				"limit": 10
 			},
 			"queryresult": {
 				"count": 3,
@@ -162,12 +174,12 @@
 			}
 		}
 	],
-	"settings": {},
+	"settings": [],
 	"meta": {
 		"skip-on": {
 			"virtuoso": "Virtuoso 6.1 does not support property paths / SPARQL compiler, line 0: Invalid character in SPARQL expression at '^'"
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

@@ -1,16 +1,16 @@
 {
 	"description": "Test `_wpg`/`_txt` conjunction queries (#1362, #1060)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has page",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text",
 			"contents": "[[Has type::Text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/Q0905/1",
 			"contents": "[[Category:Q0905]] [[Has page::123]] [[Has page::ABC]] [[Has text::123]] [[Has text::ABC]]"
@@ -20,13 +20,14 @@
 			"contents": "[[Category:Q0905]] [[Has page::1234]] [[Has page::ABCD]] [[Has text::1234]] [[Has text::ABCD]]"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0",
 			"condition": "[[Category:Q0905]] [[Has page::123]] [[Has page::!ABCD]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -36,11 +37,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1",
 			"condition": "[[Category:Q0905]] [[Has page::123]] [[Has page::ABCD]] [[Example/Q0905/1]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 0,
@@ -48,11 +50,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#2 regression case",
 			"condition": "[[Example/Q0905/1]] [[Has page::123]] [[Has page::ABCD]] [[Category:Q0905]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 0,
@@ -60,11 +63,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#3",
 			"condition": "[[Category:Q0905]] [[Has page::123]] [[Has text::ABCD]] [[Example/Q0905/1]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 0,
@@ -72,11 +76,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#4 regression case",
 			"condition": "[[Example/Q0905/1]] [[Has page::123]] [[Has text::ABCD]] [[Category:Q0905]] ",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 0,
@@ -84,11 +89,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#5, C AND (A OR B)",
 			"condition": "[[Category:Q0905]] [[!Example/Q0905/1]] <q>[[Has page::123]] OR [[Has page::!ABCD]]</q>",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -98,11 +104,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#6, (A OR B) AND C",
 			"condition": "<q>[[Has page::123]] OR [[Has page::!ABCD]]</q> [[!Example/Q0905/1]] [[Category:Q0905]] ",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -112,11 +119,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#7, (A OR B) AND (C OR D)",
 			"condition": "[[Category:Q0905]] <q>[[Has page::123]] OR [[Has text::1234]]</q> <q>[[Has page::ABCD]] OR [[Has text::ABC]]</q>",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -127,11 +135,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#8, (A OR B) AND (C OR D) AND E",
 			"condition": "[[Category:Q0905]] <q>[[Has page::123]] OR [[Has text::1234]]</q> <q>[[Has page::ABCD]] OR [[Has text::ABC]]</q> [[Has page::123]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -141,11 +150,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#9, E AND (A OR B) AND (C OR D)",
 			"condition": "[[Category:Q0905]] [[Has page::123]] <q>[[Has page::123]] OR [[Has text::1234]]</q> <q>[[Has page::ABCD]] OR [[Has text::ABC]]</q>",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -155,11 +165,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#10, (A OR B) AND (C OR D) AND !E AND F",
 			"condition": "<q>[[Has page::123]] OR [[Has page::ABCD]]</q><q>[[Has page::1234]] OR [[Has page::ABC]]</q>[[Has page::!123]][[Has page::ABCD]][[Category:Q0905]] ",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -169,11 +180,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#10, !E AND F AND (A OR B) AND (C OR D)",
 			"condition": "[[Category:Q0905]] [[Has page::!123]][[Has page::ABCD]]<q>[[Has page::123]] OR [[Has page::ABCD]]</q><q>[[Has page::1234]] OR [[Has page::ABC]]</q>",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -190,7 +202,7 @@
 		}
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

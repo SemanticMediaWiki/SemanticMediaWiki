@@ -1,16 +1,16 @@
 {
 	"description": "Test `#ask` query-in-query construct (`_sobj`/`_dat`/`_num`) (`wgContLang=en`, `wgLang=en`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Assessment year",
 			"contents": "[[Has type::Date]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Assessment value",
 			"contents": "[[Has type::Number]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0905/1",
 			"contents": "{{#subobject: |Assessment name=Assessment 1a |Assessment year=2005 |Assessment value=13 |@category=Assessment}}{{#subobject: |Assessment name=Assessment 1b |Assessment year=2006 |Assessment value=2 |@category=Assessment}}{{#subobject: |Assessment name=Assessment 1c |Assessment year=2005 |Assessment value=14 |@category=Assessment }}"
@@ -32,8 +32,9 @@
 			"contents": "{{#ask: [[Category:Assessment]] <q>[[Assessment value::{{#ask: [[Category:Assessment]] |?Assessment value|sort=Assessment value|order=asc|limit=1 |headers=hide|mainlabel=-|link=none|searchlabel=}}]] </q> |?Assessment name |?Assessment year |?Assessment value }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0905/Q1",
 			"expected-output": {
@@ -45,6 +46,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1 ony return highest Assessment value ",
 			"subject": "Example/P0905/Q2",
 			"expected-output": {
@@ -58,6 +60,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2 same as #1",
 			"subject": "Example/P0905/Q3",
 			"expected-output": {
@@ -71,6 +74,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#3 return only lowest Assessment value",
 			"subject": "Example/P0905/Q4",
 			"expected-output": {
@@ -87,10 +91,12 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en",
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

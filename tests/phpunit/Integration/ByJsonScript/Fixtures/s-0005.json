@@ -1,12 +1,11 @@
 {
 	"description": "Test `Special:Browse` output for `_dat`, '_REDI' (`wgContLang=en`, `wgLang=en`, `smwgDVFeatures=SMW_DV_TIMEV_CM | SMW_DV_WPV_DTITLE`, `wgRestrictDisplayTitle=false`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has date",
 			"contents": "[[Has type::Date]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/S0005/1",
 			"contents": "[[Has date::12 Jan 1991 8:56]] [[Has date::12 Jan 1345]] [[Category:S0004]]"
@@ -20,13 +19,14 @@
 			"contents": "{{DISPLAYTITLE:ABC}}"
 		}
 	],
-	"special-testcases": [
+	"tests": [
 		{
+			"type": "special",
 			"about": "#0",
 			"special-page": {
-				"page":"Browse",
+				"page": "Browse",
 				"query-parameters": "Example/S0005/1",
-				"request-parameters":{
+				"request-parameters": {
 					"output": "legacy"
 				}
 			},
@@ -39,11 +39,12 @@
 			}
 		},
 		{
+			"type": "special",
 			"about": "#1 (redirect to show source page instead of DISPLAYTITLE)",
 			"special-page": {
-				"page":"Browse",
+				"page": "Browse",
 				"query-parameters": "Example/S0005/3",
-				"request-parameters":{
+				"request-parameters": {
 					"output": "legacy"
 				}
 			},
@@ -60,7 +61,9 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en",
-		"smwgPageSpecialProperties": [ "_MDAT" ],
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,
 			"SMW_NS_PROPERTY": true
@@ -72,7 +75,7 @@
 		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

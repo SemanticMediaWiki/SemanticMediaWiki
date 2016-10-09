@@ -1,7 +1,6 @@
 {
 	"description": "Test to map `Foaf` property from back-end / using a localized predefined property `A le type@fr` (en)",
-	"properties": [],
-	"subjects": [
+	"setup": [
 		{
 			"name": "Smw import foaf",
 			"namespace": "NS_MEDIAWIKI",
@@ -13,13 +12,16 @@
 			"contents": "[[Imported from::foaf:homepage]] [[Category:Import]]"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0",
 			"condition": "[[Has type::+]] [[Category:Import]]",
-			"printouts" : [ "Has type" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"Has type"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -35,11 +37,14 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1 (A le type@fr == Has type)",
 			"condition": "[[A le type@fr::+]] [[Category:Import]]",
-			"printouts" : [ "A le type@fr" ],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [
+				"A le type@fr"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -65,7 +70,7 @@
 		}
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

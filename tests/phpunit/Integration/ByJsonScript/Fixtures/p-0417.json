@@ -1,7 +1,6 @@
 {
 	"description": "Test in-text annotation for `Allows pattern` to match regular expressions (en)",
-	"properties": [],
-	"subjects": [
+	"setup": [
 		{
 			"name": "Smw allows pattern",
 			"namespace": "NS_MEDIAWIKI",
@@ -34,20 +33,29 @@
 			"contents": "{{#ask: [[Example/P0417/2]] |?IPv4 |format=table }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0, value Foobar is not allowed",
 			"subject": "Example/P0417/1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
-					"propertyKeys": [ "_SKEY", "_MDAT", "Has_whitelist", "_ERRC" ],
-					"propertyValues": [ "FooOnWhitelist" ]
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_whitelist",
+						"_ERRC"
+					],
+					"propertyValues": [
+						"FooOnWhitelist"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0417/1a",
 			"expected-output": {
@@ -57,6 +65,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2",
 			"subject": "Example/P0417/2a",
 			"expected-output": {
@@ -71,9 +80,8 @@
 		"wgLang": "en"
 	},
 	"meta": {
-		"skip-on": {
-		},
-		"version": "0.1",
+		"skip-on": [],
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

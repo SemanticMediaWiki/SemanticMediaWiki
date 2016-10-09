@@ -1,16 +1,16 @@
 {
 	"description": "Test format=table with sep cell formatting, #495 (en, skip 1.19)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has page",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text",
 			"contents": "[[Has type::Text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Table-page",
 			"contents": "[[Has page::Foo]] [[Has page::42]] [[Has text::bar]] [[Has text::1001]]"
@@ -28,8 +28,9 @@
 			"contents": "{{#ask:[[Has page::Foo]] [[Has page::42]]\n |?Has page\n |?Has text\n |format=broadtable\n |sep=;\n |headers=plain\n |link=none\n }}"
 		}
 	],
-	"format-testcases": [
+	"tests": [
 		{
+			"type": "format",
 			"about": "#0 table without sep",
 			"subject": "Table-without-sep-parameter",
 			"expected-output": {
@@ -45,6 +46,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#1 table with sep",
 			"subject": "Table-with-sep-parameter",
 			"expected-output": {
@@ -60,6 +62,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#2 broadtable with sep",
 			"subject": "Broadtable-with-sep-parameter",
 			"expected-output": {
@@ -87,7 +90,7 @@
 		"skip-on": {
 			"mw-1.19.20": "Skipping because of style=\"width: 100%;\" vs width=\"100%\""
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

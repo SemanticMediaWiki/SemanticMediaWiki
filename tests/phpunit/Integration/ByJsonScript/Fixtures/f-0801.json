@@ -1,16 +1,16 @@
 {
 	"description": "Test `format=embedded` output (skip 1.19)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "HasSomePageProperty",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has another property",
 			"contents": "[[Has type::Page]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Format/Embedded/A/1",
 			"contents": "[[HasSomePageProperty::ABC]] {{#subobject:HasSomePageProperty=123}} [[Category:Embedded format/A]]"
@@ -44,16 +44,24 @@
 			"contents": "[[Has another property::A123]] {{#ask:[[Category:Embedded format]] |format=count/B}} {{#ask:[[Category:Embedded format/B]] [[!Format/Embedded/B]]|format=embedded |link=none |headers=show |embedformat=h1 }} {{#set:Has another property=ABCD}}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Format/Embedded/A",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
-					"propertyKeys": [ "_INST", "_MDAT", "_SKEY", "_ASK" ],
-					"propertyValues": [ "Embedded format/A" ]
+					"propertyKeys": [
+						"_INST",
+						"_MDAT",
+						"_SKEY",
+						"_ASK"
+					],
+					"propertyValues": [
+						"Embedded format/A"
+					]
 				}
 			},
 			"expected-output": {
@@ -67,14 +75,22 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1",
 			"subject": "Format/Embedded/B",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
-					"propertyKeys": [ "_INST", "_MDAT", "_SKEY", "_ASK" ],
-					"propertyValues": [ "Embedded format/B" ]
+					"propertyKeys": [
+						"_INST",
+						"_MDAT",
+						"_SKEY",
+						"_ASK"
+					],
+					"propertyValues": [
+						"Embedded format/B"
+					]
 				}
 			},
 			"expected-output": {
@@ -88,26 +104,47 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2 (manual embedded)",
 			"subject": "Format/Embedded/C",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 5,
-					"propertyKeys": [ "_INST", "_MDAT", "_SKEY", "_SOBJ", "HasSomePageProperty" ],
-					"propertyValues": [ "Embedded format/A", "ABC" ]
+					"propertyKeys": [
+						"_INST",
+						"_MDAT",
+						"_SKEY",
+						"_SOBJ",
+						"HasSomePageProperty"
+					],
+					"propertyValues": [
+						"Embedded format/A",
+						"ABC"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#3 (ensure that annotations for the target page are not disabled, exclude embbeded query from [[!Format/Embedded/B]] otherwise we point to ourselves)",
 			"subject": "Format/Embedded/D",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 5,
-					"propertyKeys": [ "_INST", "_MDAT", "_SKEY", "_ASK", "Has_another_property" ],
-					"propertyValues": [ "Embedded format/B", "A123", "ABCD" ]
+					"propertyKeys": [
+						"_INST",
+						"_MDAT",
+						"_SKEY",
+						"_ASK",
+						"Has_another_property"
+					],
+					"propertyValues": [
+						"Embedded format/B",
+						"A123",
+						"ABCD"
+					]
 				}
 			},
 			"expected-output": {
@@ -123,7 +160,9 @@
 		}
 	],
 	"settings": {
-		"smwgPageSpecialProperties": [ "_MDAT" ],
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
 		"smwgNamespacesWithSemanticLinks": {
 			"NS_MAIN": true,
 			"SMW_NS_PROPERTY": true
@@ -133,7 +172,7 @@
 		"skip-on": {
 			"mw-1.19.20": "<h1> contains an extra space"
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

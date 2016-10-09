@@ -1,7 +1,6 @@
 {
 	"description": "Test RDF output for imported dc/gna vocabulary, owl:AnnotationProperty, owl:DatatypeProperty, owl:ObjectProperty, Equivalent URI (#795, `wgRestrictDisplayTitle`, en)",
-	"properties": [],
-	"subjects": [
+	"setup": [
 		{
 			"name": "Smw import dc",
 			"namespace": "NS_MEDIAWIKI",
@@ -28,15 +27,18 @@
 			"contents": "[[Imported from::gna:Identifier]] {{DISPLAYTITLE:gna:Identifier}} [[Category:GNA]] [[Category:GBIF]]"
 		}
 	],
-	"rdf-testcases": [
+	"tests": [
 		{
+			"type": "rdf",
 			"about": "#0 (is owl:AnnotationProperty)",
-			"exportcontroller" : {
-				"print-pages": [ "Property:Dc:identifier" ],
-				"parameters" : {
-					"backlinks" : false,
-					"recursion" : "1",
-					"revisiondate" : false
+			"exportcontroller": {
+				"print-pages": [
+					"Property:Dc:identifier"
+				],
+				"parameters": {
+					"backlinks": false,
+					"recursion": "1",
+					"revisiondate": false
 				}
 			},
 			"expected-output": {
@@ -54,13 +56,16 @@
 			}
 		},
 		{
+			"type": "rdf",
 			"about": "#1 (is owl:DatatypeProperty, typed boolean)",
-			"exportcontroller" : {
-				"print-pages": [ "Property:Gna:isHybrid" ],
-				"parameters" : {
-					"backlinks" : false,
-					"recursion" : "1",
-					"revisiondate" : false
+			"exportcontroller": {
+				"print-pages": [
+					"Property:Gna:isHybrid"
+				],
+				"parameters": {
+					"backlinks": false,
+					"recursion": "1",
+					"revisiondate": false
 				}
 			},
 			"expected-output": {
@@ -76,13 +81,16 @@
 			}
 		},
 		{
+			"type": "rdf",
 			"about": "#2 (is owl:ObjectProperty, typed page)",
-			"exportcontroller" : {
-				"print-pages": [ "Property:Gna:Identifier" ],
-				"parameters" : {
-					"backlinks" : false,
-					"recursion" : "1",
-					"revisiondate" : false
+			"exportcontroller": {
+				"print-pages": [
+					"Property:Gna:Identifier"
+				],
+				"parameters": {
+					"backlinks": false,
+					"recursion": "1",
+					"revisiondate": false
 				}
 			},
 			"expected-output": {
@@ -110,7 +118,7 @@
 		}
 	},
 	"meta": {
-		"version": "0.2",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

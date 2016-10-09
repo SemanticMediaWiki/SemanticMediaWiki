@@ -1,12 +1,11 @@
 {
 	"description": "Test format=template output + unicode characters (#988, skip postgres)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has page property",
 			"contents": "[[Has type::Page]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "TemplateOutputUsingNamedArgumentsForUnicodeIncludedSubject",
 			"namespace": "NS_TEMPLATE",
@@ -35,9 +34,11 @@
 		{
 			"name": "template-002-desc-order-named-args",
 			"contents": "{{#ask:[[Category:template-002]]<q>[[Has page property:一二三]] OR [[Has page property::456]]</q>\n |?Has page property\n |format=template\n |order=desc\n |sep=;\n |link=none\n |limit=10\n |userparam=[$%&*==42]\n |template=TemplateOutputUsingNamedArgumentsForUnicodeIncludedSubject\n ||named args=yes\n}}"
-		}	],
-	"format-testcases": [
+		}
+	],
+	"tests": [
 		{
+			"type": "format",
 			"about": "#0 asc output order, without further links",
 			"subject": "template-002-asc-order-named-args",
 			"expected-output": {
@@ -50,6 +51,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#1 desc output order, without further links",
 			"subject": "template-002-desc-order-named-args",
 			"expected-output": {
@@ -72,7 +74,7 @@
 		"skip-on": {
 			"postgres": "Unicode needs special treatment in postgres"
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

@@ -1,36 +1,41 @@
 {
 	"description": "Test `_SUBP` on a simple 'family' subproperty hierarchy example query (#1003, skip virtuoso)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Family (http://www.cs.man.ac.uk/~stevensr/ontology/family.rdf.owl)",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Spouse",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has wife",
 			"contents": "[[Has type::Page]] [[Subproperty of::Spouse]] [[Subproperty of::Family]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has husband",
 			"contents": "[[Has type::Page]] [[Subproperty of::Spouse]] [[Subproperty of::Family]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has child",
 			"contents": "[[Has type::Page]] [[Subproperty of::Family]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has brother",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has sister",
 			"contents": "[[Has type::Page]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "John Doe",
 			"contents": "[[Has wife::Jane Doe]] [[Has child::Jonnie Doe]] [[Has child::Janie Doe]]"
@@ -48,13 +53,17 @@
 			"contents": "[[Has brother::Jonnie Doe]]"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0 Spouse to search any value",
 			"condition": "[[Spouse::+]]",
-			"printouts" : [ "Has wife", "Has husband" ],
-			"parameters" : {
-			  "limit" : "10"
+			"printouts": [
+				"Has wife",
+				"Has husband"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -75,11 +84,15 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1 Disjunctive query for distinct spouse value",
 			"condition": "[[Spouse::John Doe]] OR [[Spouse::Jane Doe]]",
-			"printouts" : [ "Has wife", "Has husband" ],
-			"parameters" : {
-			  "limit" : "10"
+			"printouts": [
+				"Has wife",
+				"Has husband"
+			],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -100,11 +113,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#2 find members of a super property",
 			"condition": "[[Subproperty of::Property:Spouse]]",
-			"printouts" : [],
-			"parameters" : {
-			  "limit" : 10
+			"printouts": [],
+			"parameters": {
+				"limit": 10
 			},
 			"queryresult": {
 				"count": 2,
@@ -115,11 +129,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#3 find the super properties (invert)",
 			"condition": "[[-Subproperty of::Property:Has wife]]",
-			"printouts" : [],
-			"parameters" : {
-			  "limit" : 10
+			"printouts": [],
+			"parameters": {
+				"limit": 10
 			},
 			"queryresult": {
 				"count": 2,
@@ -137,7 +152,7 @@
 		"skip-on": {
 			"virtuoso": "Virtuoso 6.1 rdfs / subproperty/property hierarchies are currently not implemented"
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

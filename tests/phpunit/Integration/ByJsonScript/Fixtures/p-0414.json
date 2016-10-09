@@ -1,12 +1,11 @@
 {
 	"description": "Test in-text annotation/free format for `_dat` datatype (#1389, #1401, en, `smwgDVFeatures`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has date",
 			"contents": "[[Has type::Date]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0414/1",
 			"contents": "[[Has date::Feb 11 1389 10:00:01]]"
@@ -80,16 +79,23 @@
 			"contents": "{{#ask: [[Example/P0414/9]]  |?Has date |?Has date#-F[Y年m月d日 H:i] }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0 JL calendar date with time",
 			"subject": "Example/P0414/1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "1389-02-19T10:00:01" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"1389-02-19T10:00:01"
+					]
 				}
 			},
 			"expected-output": {
@@ -99,6 +105,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0414/1a",
 			"expected-output": {
@@ -111,14 +118,21 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2 Prehistory",
 			"subject": "Example/P0414/2",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "--100000-01-01" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"--100000-01-01"
+					]
 				}
 			},
 			"expected-output": {
@@ -128,6 +142,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#3",
 			"subject": "Example/P0414/2a",
 			"expected-output": {
@@ -138,14 +153,21 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#4 year only",
 			"subject": "Example/P0414/3",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "1902-01-01" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"1902-01-01"
+					]
 				}
 			},
 			"expected-output": {
@@ -155,6 +177,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#5",
 			"subject": "Example/P0414/3a",
 			"expected-output": {
@@ -166,14 +189,21 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#6 timestamp input (TS_MW as 'YmdHis)",
 			"subject": "Example/P0414/4",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "1200-11-02T12:03:25" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"1200-11-02T12:03:25"
+					]
 				}
 			},
 			"expected-output": {
@@ -183,6 +213,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#7",
 			"subject": "Example/P0414/4a",
 			"expected-output": {
@@ -194,14 +225,21 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#8 negative year without BC",
 			"subject": "Example/P0414/5",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "--100000-01-01" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"--100000-01-01"
+					]
 				}
 			},
 			"expected-output": {
@@ -211,6 +249,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#9",
 			"subject": "Example/P0414/5a",
 			"expected-output": {
@@ -221,14 +260,21 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#10 positive year only with era marker",
 			"subject": "Example/P0414/6",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "AD 1902-01-01" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"AD 1902-01-01"
+					]
 				}
 			},
 			"expected-output": {
@@ -238,6 +284,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#11",
 			"subject": "Example/P0414/6a",
 			"expected-output": {
@@ -249,14 +296,21 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#12 micro sec",
 			"subject": "Example/P0414/7",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "2012-07-08T11:14:15" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"2012-07-08T11:14:15"
+					]
 				}
 			},
 			"expected-output": {
@@ -266,6 +320,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#13 `.888499949` is being rounded to `.888500`",
 			"subject": "Example/P0414/7a",
 			"expected-output": {
@@ -276,14 +331,21 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#14 Japanese date format",
 			"subject": "Example/P0414/8",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_date", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "2010-01-06T16:57:00" ]
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"2010-01-06T16:57:00"
+					]
 				}
 			},
 			"expected-output": {
@@ -293,6 +355,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#15",
 			"subject": "Example/P0414/8a",
 			"expected-output": {
@@ -303,6 +366,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#16",
 			"subject": "Example/P0414/9a",
 			"expected-output": {
@@ -316,11 +380,12 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en",
-		"smwgDVFeatures": [ "SMW_DV_TIMEV_CM" ]
+		"smwgDVFeatures": [
+			"SMW_DV_TIMEV_CM"
+		]
 	},
 	"meta": {
-
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

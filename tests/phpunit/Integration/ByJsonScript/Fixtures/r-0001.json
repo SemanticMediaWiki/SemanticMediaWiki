@@ -1,20 +1,21 @@
 {
 	"description": "Test RDF output for `_txt`/`_wpg`/`_dat` (#881)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text property for rdf",
 			"contents": "[[Has type::Text]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has page property for rdf",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has date property for rdf",
 			"contents": "[[Has type::Date]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Rdf-1",
 			"contents": "[[Has page property for rdf::Test one]] [[Has text property for rdf::Test one]]"
@@ -36,15 +37,18 @@
 			"contents": "Not permitted to use [[Has subobject::foo]] {{DEFAULTSORT:AA-BB-CC}}"
 		}
 	],
-	"rdf-testcases": [
+	"tests": [
 		{
+			"type": "rdf",
 			"about": "#0 Single subject output",
-			"exportcontroller" : {
-				"print-pages": [ "Rdf-1" ],
-				"parameters" : {
-					"backlinks" : false,
-					"recursion" : "1",
-					"revisiondate" : false
+			"exportcontroller": {
+				"print-pages": [
+					"Rdf-1"
+				],
+				"parameters": {
+					"backlinks": false,
+					"recursion": "1",
+					"revisiondate": false
 				}
 			},
 			"expected-output": {
@@ -58,13 +62,17 @@
 			}
 		},
 		{
+			"type": "rdf",
 			"about": "#1",
-			"exportcontroller" : {
-				"print-pages": [ "Rdf-1", "Rdf-2" ],
-				"parameters" : {
-					"backlinks" : false,
-					"recursion" : "1",
-					"revisiondate" : false
+			"exportcontroller": {
+				"print-pages": [
+					"Rdf-1",
+					"Rdf-2"
+				],
+				"parameters": {
+					"backlinks": false,
+					"recursion": "1",
+					"revisiondate": false
 				}
 			},
 			"expected-output": {
@@ -77,13 +85,16 @@
 			}
 		},
 		{
+			"type": "rdf",
 			"about": "#2 Output for anonymous and named subobject",
-			"exportcontroller" : {
-				"print-pages": [ "Rdf-3" ],
-				"parameters" : {
-					"backlinks" : false,
-					"recursion" : "1",
-					"revisiondate" : false
+			"exportcontroller": {
+				"print-pages": [
+					"Rdf-3"
+				],
+				"parameters": {
+					"backlinks": false,
+					"recursion": "1",
+					"revisiondate": false
 				}
 			},
 			"expected-output": {
@@ -100,13 +111,16 @@
 			}
 		},
 		{
+			"type": "rdf",
 			"about": "#3 Date output",
-			"exportcontroller" : {
-				"print-pages": [ "Rdf-4" ],
-				"parameters" : {
-					"backlinks" : false,
-					"recursion" : "1",
-					"revisiondate" : false
+			"exportcontroller": {
+				"print-pages": [
+					"Rdf-4"
+				],
+				"parameters": {
+					"backlinks": false,
+					"recursion": "1",
+					"revisiondate": false
 				}
 			},
 			"expected-output": {
@@ -123,13 +137,18 @@
 			}
 		},
 		{
+			"type": "rdf",
 			"about": "#4 Property output, see #795",
-			"exportcontroller" : {
-				"print-pages": [ "Property:Has text property for rdf", "Property:Has page property for rdf", "Property:Has date property for rdf" ],
-				"parameters" : {
-					"backlinks" : false,
-					"recursion" : "1",
-					"revisiondate" : false
+			"exportcontroller": {
+				"print-pages": [
+					"Property:Has text property for rdf",
+					"Property:Has page property for rdf",
+					"Property:Has date property for rdf"
+				],
+				"parameters": {
+					"backlinks": false,
+					"recursion": "1",
+					"revisiondate": false
 				}
 			},
 			"expected-output": {
@@ -148,13 +167,16 @@
 			}
 		},
 		{
+			"type": "rdf",
 			"about": "#5 Check for proper output despite the use of [[Has subobject:: ... ]] as annotation",
-			"exportcontroller" : {
-				"print-pages": [  "Rdf-5" ],
-				"parameters" : {
-					"backlinks" : false,
-					"recursion" : "1",
-					"revisiondate" : false
+			"exportcontroller": {
+				"print-pages": [
+					"Rdf-5"
+				],
+				"parameters": {
+					"backlinks": false,
+					"recursion": "1",
+					"revisiondate": false
 				}
 			},
 			"expected-output": {
@@ -176,7 +198,7 @@
 		}
 	},
 	"meta": {
-		"version": "0.2",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

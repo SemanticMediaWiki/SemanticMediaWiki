@@ -1,32 +1,36 @@
 {
 	"description": "Test `_wpg`/`_txt` disjunction in connection with property hierarchies (#1060, en, skip virtuoso)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has page-0",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has page-1",
 			"contents": "[[Has type::Page]] [[Subproperty of::Has page-0]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has page-2",
 			"contents": "[[Has type::Page]] [[Subproperty of::Has page-0]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text-1",
 			"contents": "[[Has type::Text]] [[Subproperty of::Has text]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text-2",
 			"contents": "[[Has type::Text]] [[Subproperty of::Has text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Sample/1/1",
 			"contents": "[[Has text-1::Value 1]] [[Has page-1::Value 1]]"
@@ -48,13 +52,14 @@
 			"contents": "[[Has text-2::Value 3]] [[Has page-2::Value 3]]"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0",
 			"condition": "[[Has text-1::Value 1||Value 2]] AND [[Has page-0::Value 1]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -64,11 +69,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1",
 			"condition": "[[Has text-1::Value 1||Value 2]] AND [[Has page-0::Value 1||Value 2]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -79,11 +85,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#2 equivalent to #1",
 			"condition": "<q>[[Has text-1::Value 1]] OR [[Has text-1::Value 2]]</q> AND <q>[[Has page-0::Value 1]] OR [[Has page-0::Value 2]]</q>",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -94,11 +101,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#3",
 			"condition": "<q>[[Has text-1::~*1*||~*2*]] OR [[Has text-2::Value 3]]</q> AND [[Has page-0::Value 1||Value 3]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 2,
@@ -123,7 +131,7 @@
 		"skip-on": {
 			"virtuoso": "Virtuoso 6.1 rdfs / subproperty/property hierarchies are currently not implemented"
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

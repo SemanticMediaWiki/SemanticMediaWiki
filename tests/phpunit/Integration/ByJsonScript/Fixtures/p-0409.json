@@ -1,36 +1,41 @@
 {
 	"description": "Test in-text annotation for `_rec`/`_mlt_rec` (+ subobject) for when record type points to another record type (`wgContLang=en`, `wgLang=en`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has monolingual text",
 			"contents": "[[Has type::Monolingual text]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has number",
 			"contents": "[[Has type::Number]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has record one",
 			"contents": "[[Has type::Record]] [[Has fields::Has text;Has number]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has record two",
 			"contents": "[[Has type::Record]] [[Has fields::Has text;Has record one]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has record one mlt",
 			"contents": "[[Has type::Record]] [[Has fields::Has monolingual text;Has number]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has record two mlt",
 			"contents": "[[Has type::Record]] [[Has fields::Has monolingual text;Has record one mlt]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0409/1/1",
 			"contents": "[[Has record two::Foo;abc\\;12]]"
@@ -64,80 +69,120 @@
 			"contents": "{{#ask: [[Has record two mlt::one@en;two@fr\\;123]] |?Has record two mlt|+index=1 |?Has record two mlt|+index=2}}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0409/1/1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_record_two", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "Foo; abc\\; 12" ]
+					"propertyKeys": [
+						"Has_record_two",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"Foo; abc\\; 12"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0409/1/2#_863c94681079337ad25674e3a7ce33e7",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 2,
-					"propertyKeys": [ "Has_record_two", "_SKEY" ],
-					"propertyValues": [ "Foo; abc\\; 12" ]
+					"propertyKeys": [
+						"Has_record_two",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"Foo; abc\\; 12"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2",
 			"subject": "Example/P0409/2/1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_record_one_mlt", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "test@en; 42" ]
+					"propertyKeys": [
+						"Has_record_one_mlt",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"test@en; 42"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#3",
 			"subject": "Example/P0409/2/2#_aa886e35ba32dd0c6e43a026230362f4",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 2,
-					"propertyKeys": [ "Has_record_one_mlt", "_SKEY" ],
-					"propertyValues": [ "test@en; 42" ]
+					"propertyKeys": [
+						"Has_record_one_mlt",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"test@en; 42"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#4",
 			"subject": "Example/P0409/3/1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_record_two_mlt", "_SKEY", "_MDAT" ],
-					"propertyValues": [ "one@en; two@fr\\; 123" ]
+					"propertyKeys": [
+						"Has_record_two_mlt",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"one@en; two@fr\\; 123"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#5",
 			"subject": "Example/P0409/3/2#_4d3b4405d3a60255e63cde196092a367",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 2,
-					"propertyKeys": [ "Has_record_two_mlt", "_SKEY" ],
-					"propertyValues": [ "one@en; two@fr\\; 123" ]
+					"propertyKeys": [
+						"Has_record_two_mlt",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"one@en; two@fr\\; 123"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#6 (edge case that will probably never surface but we verify that the description can be decoded without failing the parser)",
 			"subject": "Example/P0409/3/2a",
 			"expected-output": {
@@ -148,6 +193,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#7 same as #6 (query condition is identical, printoutput is different)",
 			"subject": "Example/P0409/3/2b",
 			"expected-output": {
@@ -164,8 +210,7 @@
 		"wgLang": "en"
 	},
 	"meta": {
-
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

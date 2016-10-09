@@ -1,16 +1,16 @@
 {
 	"description": "Test in-text annotation with combined constraint validation (`smwgDVFeatures`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has Url",
 			"contents": "[[Has type::URL]] [[Has uniqueness constraint::true]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text",
 			"contents": "[[Has type::Text]] [[Allows value::open]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0421/1",
 			"contents": "[[Has Url::http://example.org/Foo]] [[Has text::open]]"
@@ -20,26 +20,35 @@
 			"contents": "[[Has Url::http://example.org/Foo]] [[Has text::closed]]"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0 Fails on both constraints due to Example/P0421/1",
 			"subject": "Example/P0421/2",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SKEY", "_MDAT", "_ERRC" ],
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					],
 					"propertyValues": []
 				}
 			}
 		}
 	],
 	"settings": {
-		"smwgDVFeatures": [ "SMW_DV_PVUC" ],
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgDVFeatures": [
+			"SMW_DV_PVUC"
+		],
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

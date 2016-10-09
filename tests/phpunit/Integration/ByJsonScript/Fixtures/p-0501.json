@@ -1,15 +1,15 @@
 {
 	"description": "Test `#concept` on predefined property (`wgContLang=en`, `wgLang=es`)",
-	"properties": [],
-	"subjects": [
+	"setup": [
 		{
 			"name": "Example/P0501/1",
 			"namespace": "SMW_NS_CONCEPT",
 			"contents": "{{#concept: [[Modification date::+]] |Modification date}}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0 canonical representation, not userlang specific",
 			"subject": "Example/P0501/1",
 			"namespace": "SMW_NS_CONCEPT",
@@ -28,7 +28,7 @@
 		"wgLang": "es"
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

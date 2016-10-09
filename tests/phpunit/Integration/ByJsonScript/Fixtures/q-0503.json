@@ -1,12 +1,11 @@
 {
 	"description": "Test `_qty` on positional unit preference in query condition (#1329, `smwStrictComparators=false`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Currency",
 			"contents": "[[Has type::Quantity]], [[Display units::€,£,¥]] [[Corresponds to::€ 1]] [[Corresponds to::1.06 US, US$, $]] [[Corresponds to::0.70 British Pound,GBP,£]] [[Corresponds to::¥,JPY,Japanese Yen 114.2121]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/Q0503/1",
 			"contents": "[[Currency::12 €]] [[Currency::¥ 500]] [[Currency::2 £]]"
@@ -16,13 +15,14 @@
 			"contents": "[[Currency::€ 20]] [[Currency::2000 JPY]] [[Currency::0.5 GBP]]"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0",
 			"condition": "[[Currency::€ 20]]",
-			"printouts" : [],
-			"parameters" : {
-			  "limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -32,11 +32,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1",
 			"condition": "[[Currency::<¥300]]",
-			"printouts" : [],
-			"parameters" : {
-			  "limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -46,11 +47,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#2",
 			"condition": "[[Currency::≥1400 JPY]]",
-			"printouts" : [],
-			"parameters" : {
-			  "limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -60,11 +62,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#3",
 			"condition": "[[Currency::< € .8]]",
-			"printouts" : [],
-			"parameters" : {
-			  "limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"count": 1,
@@ -75,10 +78,10 @@
 		}
 	],
 	"settings": {
-		"smwStrictComparators" : false
+		"smwStrictComparators": false
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"debug": false
 	}
 }

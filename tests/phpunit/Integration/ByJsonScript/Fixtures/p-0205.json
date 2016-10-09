@@ -1,7 +1,6 @@
 {
 	"description": "Test #set/#ask recursive annotation support (#711, #1055, recursive annotation using import-annotation=true via template)",
-	"properties": [],
-	"subjects": [
+	"setup": [
 		{
 			"name": "AskTemplateToAddPropertyAnnotation",
 			"namespace": "NS_TEMPLATE",
@@ -24,46 +23,64 @@
 			"contents": "{{#ask:[[ByAskTemplateToSetProperty::1234]]|link=none|sep=|format=embedded|import-annotation=false}}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Example/0205/Ask/List",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
-					"propertyKeys": [ "_ASK", "_MDAT", "_SKEY", "ByAskTemplateToSetProperty" ]
+					"propertyKeys": [
+						"_ASK",
+						"_MDAT",
+						"_SKEY",
+						"ByAskTemplateToSetProperty"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1 embbeded with disabled recursive parse support",
 			"subject": "Example/0205/Ask/Embedded/1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_ASK", "_MDAT", "_SKEY" ]
+					"propertyKeys": [
+						"_ASK",
+						"_MDAT",
+						"_SKEY"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2 embbeded with disabled recursive parse support",
 			"subject": "Example/0205/Ask/Embedded/2",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_ASK", "_MDAT", "_SKEY" ]
+					"propertyKeys": [
+						"_ASK",
+						"_MDAT",
+						"_SKEY"
+					]
 				}
 			}
 		}
 	],
 	"settings": {
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

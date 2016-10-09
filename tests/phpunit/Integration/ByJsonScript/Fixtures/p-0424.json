@@ -1,12 +1,11 @@
 {
 	"description": "Test in-text annotation for `_boo` datatype using `LOCL` (`wgContLang=en`, `wgLang=fr`, skip-on 1.25.6)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has boolean",
 			"contents": "[[Has type::Boolean]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0424/1",
 			"contents": "[[Has boolean::true]] [[Category:P0424]]"
@@ -24,34 +23,51 @@
 			"contents": "{{#ask: [[Category:P0424]] |?Has boolean |?Has boolean#LOCL@ja}}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0 true",
 			"subject": "Example/P0424/1",
 			"store": {
 				"clear-cache": true,
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
-					"propertyKeys": [ "Has_boolean", "_SKEY", "_MDAT", "_INST" ],
-					"propertyValues": [ true ]
+					"propertyKeys": [
+						"Has_boolean",
+						"_SKEY",
+						"_MDAT",
+						"_INST"
+					],
+					"propertyValues": [
+						true
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1 false",
 			"subject": "Example/P0424/2",
 			"store": {
 				"clear-cache": true,
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
-					"propertyKeys": [ "Has_boolean", "_SKEY", "_MDAT", "_INST" ],
-					"propertyValues": [ false ]
+					"propertyKeys": [
+						"Has_boolean",
+						"_SKEY",
+						"_MDAT",
+						"_INST"
+					],
+					"propertyValues": [
+						false
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#3 LOCL used the user language",
 			"subject": "Example/P0424/Q1.1",
 			"expected-output": {
@@ -64,6 +80,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#4 LOCL@js uses a specific language",
 			"subject": "Example/P0424/Q1.2",
 			"expected-output": {
@@ -79,13 +96,15 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "fr",
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
 		"skip-on": {
 			"mw-1.25.6": "Somehow the content lang is not set correctly on Travis (locally works fine)."
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

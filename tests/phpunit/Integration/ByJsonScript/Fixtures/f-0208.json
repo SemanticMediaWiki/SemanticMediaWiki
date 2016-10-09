@@ -1,12 +1,11 @@
 {
 	"description": "Test `format=table` with `limit=0` (further result links) for user/predefined properties, `mainlabel=-`, `#show` (`wgContLang=en`, `wgLang=es`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text",
 			"contents": "[[Has type::Text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/F0208/1",
 			"contents": "[[Has text::F0208]] [[Category:F0208]]"
@@ -60,8 +59,9 @@
 			"contents": "{{#ask:[[Has page::Example/F0208/3]] |mainlabel=- |?Has page.Has subobject.Has text=SomeOtherText |format=table |headers=plain |link=none |limit=0 }}"
 		}
 	],
-	"format-testcases": [
+	"tests": [
 		{
+			"type": "format",
 			"about": "#0",
 			"subject": "Example/F0208/Q1.1",
 			"expected-output": {
@@ -74,6 +74,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#1 predefined properties linking to canonical properties",
 			"subject": "Example/F0208/Q2.1",
 			"expected-output": {
@@ -83,6 +84,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#2 predefined properties linking to canonical properties",
 			"subject": "Example/F0208/Q2.2",
 			"expected-output": {
@@ -92,6 +94,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#3",
 			"subject": "Example/F0208/Q3.1",
 			"expected-output": {
@@ -101,6 +104,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#4",
 			"subject": "Example/F0208/Q3.2",
 			"expected-output": {
@@ -110,6 +114,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#5",
 			"subject": "Example/F0208/Q3.3",
 			"expected-output": {
@@ -119,6 +124,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#6",
 			"subject": "Example/F0208/Q3.4",
 			"expected-output": {
@@ -128,6 +134,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#7 (#show)",
 			"subject": "Example/F0208/Q3.5",
 			"expected-output": {
@@ -137,6 +144,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#8 (property chain on printrequest)",
 			"subject": "Example/F0208/Q4.1",
 			"expected-output": {
@@ -146,6 +154,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#9 (property chain on printrequest)",
 			"subject": "Example/F0208/Q4.2",
 			"expected-output": {
@@ -164,7 +173,7 @@
 		}
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

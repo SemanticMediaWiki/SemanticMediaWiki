@@ -1,12 +1,11 @@
 {
 	"description": "Test `_txt` to correctly apply parentheses for somehting like (a OR b OR c) AND d (#556)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has conference type",
 			"contents": "[[Has type::Text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Conference-1",
 			"contents": "[[Has conference type::Presentation]], [[Has conference type::Tutorial]]"
@@ -16,13 +15,14 @@
 			"contents": "[[Has conference type::Tutorial]]"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0",
 			"condition": "[[Conference-1]] [[Has conference type::Presentation||Tutorial]]",
-			"printouts" : [],
-			"parameters" : {
-			  "limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -33,11 +33,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1",
 			"condition": "<q>[[Conference-1]] [[Has conference type::Presentation||Tutorial||Another]]</q> OR [[Has conference type::Presentation||Tutorial||Another]]",
-			"printouts" : [],
-			"parameters" : {
-			  "limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -57,7 +58,7 @@
 		}
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

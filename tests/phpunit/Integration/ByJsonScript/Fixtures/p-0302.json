@@ -1,12 +1,11 @@
 {
 	"description": "Test #subobject parser to use invalid assignments and create `_ERRC` (#1299, en)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has page",
 			"contents": "[[Has type::Page]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0302/1",
 			"contents": "{{#subobject:abc.name |@category=ABC;123|+sep=;}}"
@@ -24,51 +23,69 @@
 			"contents": "{{#set_recurring_event:some.foo|property=Has date |start=June 8, 2010 |unit=day |period=1 |limit=10 }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0 dot scheme not permitted for user-defined named identifiers",
 			"subject": "Example/P0302/1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_ERRC", "_SKEY", "_MDAT" ],
+					"propertyKeys": [
+						"_ERRC",
+						"_SKEY",
+						"_MDAT"
+					],
 					"propertyValues": []
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1 restricted property",
 			"subject": "Example/P0302/2#_a0017273b0d05dedf1e2ca22e2035490",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 2,
-					"propertyKeys": [ "_ERRC", "_SKEY" ],
+					"propertyKeys": [
+						"_ERRC",
+						"_SKEY"
+					],
 					"propertyValues": []
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2 invalid value",
 			"subject": "Example/P0302/3#_d1e1d8ef8b81b9275dee98ab6795b179",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 2,
-					"propertyKeys": [ "_ERRC", "_SKEY" ],
+					"propertyKeys": [
+						"_ERRC",
+						"_SKEY"
+					],
 					"propertyValues": []
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#3 recurring events invalid name",
 			"subject": "Example/P0302/4",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [  "_ERRC", "_SKEY", "_MDAT" ],
+					"propertyKeys": [
+						"_ERRC",
+						"_SKEY",
+						"_MDAT"
+					],
 					"propertyValues": []
 				}
 			}
@@ -77,10 +94,12 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en",
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

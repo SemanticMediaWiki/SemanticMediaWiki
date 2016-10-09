@@ -1,12 +1,11 @@
 {
 	"description": "Test in-text annotation on properties with invalid names/charaters (#1567, #1638, #1727 `wgContLang=en`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has #",
 			"contents": "[[Has type::Date]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0102/1",
 			"contents": "[[&#124; &#93;&#93;&lt;/td&gt;&lt;::123]]"
@@ -48,126 +47,186 @@
 			"contents": "[[Foo-<Bar>::abc]]"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0 do not allow #",
 			"subject": "Example/P0102/1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_ERRC", "_MDAT", "_SKEY" ]
+					"propertyKeys": [
+						"_ERRC",
+						"_MDAT",
+						"_SKEY"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1 strip tags",
 			"subject": "Example/P0102/2",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
-					"propertyKeys": [ "Has_property_a", "Has_property_b", "_MDAT", "_SKEY" ],
-					"propertyValues": [ "ABC", "DEF" ]
+					"propertyKeys": [
+						"Has_property_a",
+						"Has_property_b",
+						"_MDAT",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"ABC",
+						"DEF"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2 remove broken tags",
 			"subject": "Example/P0102/3",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
-					"propertyKeys": [ "Has_property_e", "Has_property_f", "_MDAT", "_SKEY" ],
-					"propertyValues": [ "ABC", "DEF" ]
+					"propertyKeys": [
+						"Has_property_e",
+						"Has_property_f",
+						"_MDAT",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"ABC",
+						"DEF"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#3 allow things like sort=#",
 			"subject": "Example/P0102/Q3.1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_ASK", "_MDAT", "_SKEY" ]
+					"propertyKeys": [
+						"_ASK",
+						"_MDAT",
+						"_SKEY"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#4 `[` to produce an error",
 			"subject": "Example/P0102/4",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_ERRC", "_MDAT", "_SKEY" ]
+					"propertyKeys": [
+						"_ERRC",
+						"_MDAT",
+						"_SKEY"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#5 `<>` to produce an error",
 			"subject": "Example/P0102/5",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_ERRC", "_MDAT", "_SKEY" ]
+					"propertyKeys": [
+						"_ERRC",
+						"_MDAT",
+						"_SKEY"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#6 `<>` to produce an error",
 			"subject": "Example/P0102/6",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_ERRC", "_MDAT", "_SKEY" ]
+					"propertyKeys": [
+						"_ERRC",
+						"_MDAT",
+						"_SKEY"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#7 `<>` to produce an error",
 			"subject": "Example/P0102/7",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_ERRC", "_MDAT", "_SKEY" ]
+					"propertyKeys": [
+						"_ERRC",
+						"_MDAT",
+						"_SKEY"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#8 to cut the name at `<`",
 			"subject": "Example/P0102/8",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Foo-", "_MDAT", "_SKEY" ]
+					"propertyKeys": [
+						"Foo-",
+						"_MDAT",
+						"_SKEY"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#9 to cut the name at `<`",
 			"subject": "Example/P0102/9",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Foo-", "_MDAT", "_SKEY" ]
+					"propertyKeys": [
+						"Foo-",
+						"_MDAT",
+						"_SKEY"
+					]
 				}
 			}
 		}
 	],
 	"settings": {
 		"wgContLang": "en",
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

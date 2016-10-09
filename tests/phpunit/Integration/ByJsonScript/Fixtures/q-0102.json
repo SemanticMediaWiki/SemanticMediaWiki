@@ -1,16 +1,16 @@
 {
 	"description": "Test `_txt` for `~*` regex queries to validate correct escape pattern as applied in the `QueryEngine`",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has FirstRegexBlobSearchProperty",
 			"contents": "[[Has type::Text]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has SecondRegexBlobSearchProperty",
 			"contents": "[[Has type::Text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "RegexTextAnnotationForCharactersThatRequireSpecialEscapePattern",
 			"namespace": "NS_MAIN",
@@ -27,13 +27,14 @@
 			"contents": "{{#set:|Has FirstRegexBlobSearchProperty=Foo(\"#^$&-/)-|}}"
 		}
 	],
-	"query-testcases": [
+	"tests": [
 		{
+			"type": "query",
 			"about": "#0 Left curly brackets",
 			"condition": "[[Has FirstRegexBlobSearchProperty::~*{*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -43,11 +44,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#1 Right curly brackets",
 			"condition": "[[Has FirstRegexBlobSearchProperty::~*}*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -57,11 +59,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#2 Left parenthesis",
 			"condition": "[[Has FirstRegexBlobSearchProperty::~*(*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -73,11 +76,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#3 Disjunctive left parenthesis",
 			"condition": "[[Has FirstRegexBlobSearchProperty::~*(*]] OR [[Has SecondRegexBlobSearchProperty::~*(*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -90,11 +94,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#4 Right parenthesis",
 			"condition": "[[Has FirstRegexBlobSearchProperty::~*)*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -106,11 +111,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#5 Disjunctive right parenthesis",
 			"condition": "[[Has FirstRegexBlobSearchProperty::~*)*]] OR [[Has SecondRegexBlobSearchProperty::~*)*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -123,11 +129,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#6 Left square brackets",
 			"condition": "[[Has FirstRegexBlobSearchProperty::~*[*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -137,11 +144,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#7 Right square brackets",
 			"condition": "[[Has FirstRegexBlobSearchProperty::~*]*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -151,11 +159,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#8",
 			"condition": "[[Has FirstRegexBlobSearchProperty::~*;?}]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -165,11 +174,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#9",
 			"condition": "[[Has SecondRegexBlobSearchProperty::~*+.*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -179,11 +189,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#10",
 			"condition": "[[Has FirstRegexBlobSearchProperty::~*=^*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -193,11 +204,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#11 Composite regex search",
 			"condition": "[[Has FirstRegexBlobSearchProperty::~*{*]][[Has FirstRegexBlobSearchProperty::~*}*]][[Has FirstRegexBlobSearchProperty::~*)*]] OR [[Has SecondRegexBlobSearchProperty::~*)*]] OR [[Has FirstRegexBlobSearchProperty::~*=^*]][[Has SecondRegexBlobSearchProperty::~*+.*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -208,11 +220,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#12 Pipe regex",
 			"condition": "[[Has FirstRegexBlobSearchProperty::~*-|*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -222,11 +235,12 @@
 			}
 		},
 		{
+			"type": "query",
 			"about": "#13 Requires special escaping effort",
 			"condition": "[[Has FirstRegexBlobSearchProperty::~*Foo(\"#^$&-/)-|*]]",
-			"printouts" : [],
-			"parameters" : {
-				"limit" : "10"
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
 			},
 			"queryresult": {
 				"results": [
@@ -237,10 +251,10 @@
 		}
 	],
 	"settings": {
-		"smwgQMaxSize" : "25"
+		"smwgQMaxSize": "25"
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false
 	}
 }

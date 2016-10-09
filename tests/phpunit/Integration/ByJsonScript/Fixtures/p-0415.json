@@ -1,12 +1,11 @@
 {
 	"description": "Test in-text annotation on `_tem` with display unit preference (en)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has temperature",
 			"contents": "[[Has type::Temperature]] [[Display unit::Celsius]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0415/1",
 			"contents": "[[Has temperature:: 32 °F]] [[Has temperature::100 °C]]"
@@ -16,20 +15,29 @@
 			"contents": "{{#ask: [[Example/P0415/1]] |?Has temperature |?Has temperature#-=- |?Has temperature#-u=-u |?Has temperature#-n=-n |?Has temperature#°R=°R |format=table }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0415/1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SKEY", "_MDAT", "Has_temperature" ],
-					"propertyValues": [ 273.15, 373.15 ]
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_temperature"
+					],
+					"propertyValues": [
+						273.15,
+						373.15
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2",
 			"subject": "Example/P0415/1a",
 			"expected-output": {
@@ -50,8 +58,7 @@
 		"wgLang": "en"
 	},
 	"meta": {
-
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

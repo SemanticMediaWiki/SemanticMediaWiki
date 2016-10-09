@@ -58,7 +58,7 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 	/**
 	 * @var boolean
 	 */
-	protected $deleteAfterState = true;
+	protected $deletePagesOnTearDown = true;
 
 	/**
 	 * @var string
@@ -85,7 +85,7 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 
 	protected function tearDown() {
 
-		if ( $this->deleteAfterState ) {
+		if ( $this->deletePagesOnTearDown ) {
 			UtilityFactory::getInstance()->newPageDeleter()->doDeletePoolOfPages( $this->itemsMarkedForDeletion );
 		}
 
@@ -195,9 +195,9 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 			$this->markTestIncomplete( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 
-	//	if ( $jsonTestCaseFileHandler->requiredToSkipForJsonVersion( $this->getRequiredJsonTestCaseMinVersion() ) ) {
-		//	$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
-	//	}
+		if ( $jsonTestCaseFileHandler->requiredToSkipForJsonVersion( $this->getRequiredJsonTestCaseMinVersion() ) ) {
+			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
+		}
 
 		if ( $jsonTestCaseFileHandler->requiredToSkipForMwVersion( $GLOBALS['wgVersion'] ) ) {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );

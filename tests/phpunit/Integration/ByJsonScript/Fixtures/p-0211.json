@@ -1,12 +1,11 @@
 {
 	"description": "Test `#set`/`#subobject` to import annotation via `@json` syntax (`wgContLang=en`, `wgLang=en`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has date",
 			"contents": "[[Has type::Date]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0211/1",
 			"contents": {
@@ -26,37 +25,59 @@
 			}
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0 #subobject",
 			"subject": "Example/P0211/1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SOBJ", "_SKEY", "_MDAT" ]
+					"propertyKeys": [
+						"_SOBJ",
+						"_SKEY",
+						"_MDAT"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1 #set",
 			"subject": "Example/P0211/2",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 10,
-					"propertyKeys": [ "Kind", "_cod", "IcdId", "Label", "Link", "Superclasses", "Subclasses", "Id", "_SKEY", "_MDAT" ]
+					"propertyKeys": [
+						"Kind",
+						"_cod",
+						"IcdId",
+						"Label",
+						"Link",
+						"Superclasses",
+						"Subclasses",
+						"Id",
+						"_SKEY",
+						"_MDAT"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#3 #set depth issue",
 			"subject": "Example/P0211/3",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_ERRC", "_SKEY", "_MDAT" ]
+					"propertyKeys": [
+						"_ERRC",
+						"_SKEY",
+						"_MDAT"
+					]
 				}
 			}
 		}
@@ -64,10 +85,12 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en",
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

@@ -1,12 +1,11 @@
 {
 	"description": "Test format=category with template usage (#699, en, skip postgres)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has page property",
 			"contents": "[[Has type::Page]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "UseNamedArgsTemplateForColumnOutput",
 			"namespace": "NS_TEMPLATE",
@@ -74,8 +73,9 @@
 			"contents": "{{#ask:[[Has page property::Test2]]\n |?Has page property\n |format=category\n |order=asc\n |link=none\n |limit=10\n |template=UseUnnamedArgsTemplateForColumnOutput\n ||named args=no\n}}"
 		}
 	],
-	"format-testcases": [
+	"tests": [
 		{
+			"type": "format",
 			"about": "#0",
 			"subject": "template-output-named-args-asc",
 			"expected-output": {
@@ -90,6 +90,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#1",
 			"subject": "template-output-named-args-desc",
 			"expected-output": {
@@ -104,6 +105,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#2",
 			"subject": "template-output-unnamed-args-asc",
 			"expected-output": {
@@ -118,6 +120,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#3",
 			"subject": "template-output-unnamed-args-desc",
 			"expected-output": {
@@ -132,6 +135,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#4",
 			"subject": "one-column-plainlist-output-asc",
 			"expected-output": {
@@ -146,6 +150,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#5",
 			"subject": "limited-two-column-plainlist-output-desc",
 			"expected-output": {
@@ -160,6 +165,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#6, refs #699",
 			"subject": "one-column-plainlist-output-with-default-sort-asc",
 			"expected-output": {
@@ -173,6 +179,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#7, refs #699",
 			"subject": "template-output-unnamed-args-with-default-sort-asc",
 			"expected-output": {
@@ -198,7 +205,7 @@
 		"skip-on": {
 			"postgres": "Unicode needs special treatment in postgres"
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

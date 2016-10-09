@@ -1,26 +1,28 @@
 {
 	"description": "Test RDF output generation on pages that contain incoming error annotations (`wgContLang=en`, `wgLang=es`, syntax=rdf/turtle)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has area without unit",
 			"contents": "[[Has type::Quantity]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/R0008/1",
 			"contents": "[[Has area without unit::1 m]]"
 		}
 	],
-	"rdf-testcases": [
+	"tests": [
 		{
+			"type": "rdf",
 			"about": "#0 incoming (error) is exported in canonical form (especially when user language is different)",
-			"exportcontroller" : {
-				"print-pages": [ "Property:Has area without unit" ],
-				"parameters" : {
-					"backlinks" : true,
-					"recursion" : "1",
-					"revisiondate" : false
+			"exportcontroller": {
+				"print-pages": [
+					"Property:Has area without unit"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
 				}
 			},
 			"expected-output": {
@@ -37,14 +39,17 @@
 			}
 		},
 		{
+			"type": "rdf",
 			"about": "#1 (turtle)",
-			"exportcontroller" : {
+			"exportcontroller": {
 				"syntax": "turtle",
-				"print-pages": [ "Property:Has area without unit" ],
-				"parameters" : {
-					"backlinks" : true,
-					"recursion" : "1",
-					"revisiondate" : false
+				"print-pages": [
+					"Property:Has area without unit"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
 				}
 			},
 			"expected-output": {
@@ -74,7 +79,7 @@
 		"smwgNamespace": "http://example.org/id/"
 	},
 	"meta": {
-		"version": "0.2",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

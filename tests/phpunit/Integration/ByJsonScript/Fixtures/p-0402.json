@@ -1,28 +1,31 @@
 {
 	"description": "Test in-text parsing for double colon annotation such as `::::` or `:::` (#1066, #1075, en)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has page",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has url",
 			"contents": "[[Has type::URL]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has date",
 			"contents": "[[Has type::Date]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has number",
 			"contents": "[[Has type::Number]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Double-single-colon",
 			"contents": "[[Has page:::Page/::Foo:Bar]] [[Has text:::Text/::Foo:Bar]] [[Has url::http://example.org/::Foo:Bar]]"
@@ -52,16 +55,27 @@
 			"contents": "[[Has date::-901 AD]]"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Double-single-colon",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 5,
-					"propertyKeys": [ "_SKEY", "_MDAT", "Has_page", "Has_text", "Has_url" ],
-					"propertyValues": [ "Page/::Foo:Bar", ":Text/::Foo:Bar", "http://example.org/::Foo:Bar" ]
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_page",
+						"Has_text",
+						"Has_url"
+					],
+					"propertyValues": [
+						"Page/::Foo:Bar",
+						":Text/::Foo:Bar",
+						"http://example.org/::Foo:Bar"
+					]
 				}
 			},
 			"expected-output": {
@@ -73,14 +87,23 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1 (: as leading text element to be converted to an indent)",
 			"subject": "Double-double-colon",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
-					"propertyKeys": [ "_SKEY", "_MDAT", "Has_text", "Has_url" ],
-					"propertyValues": [ "::Text/::Foo:Bar", "http://example.org/:::Foo:Bar" ]
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_text",
+						"Has_url"
+					],
+					"propertyValues": [
+						"::Text/::Foo:Bar",
+						"http://example.org/:::Foo:Bar"
+					]
 				}
 			},
 			"expected-output": {
@@ -91,14 +114,22 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2",
 			"subject": "Page-no-error",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SKEY", "_MDAT", "Has_page" ],
-					"propertyValues": [ "123", "Xyz" ]
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_page"
+					],
+					"propertyValues": [
+						"123",
+						"Xyz"
+					]
 				}
 			},
 			"expected-output": {
@@ -109,13 +140,18 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#3",
 			"subject": "Page-error",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SKEY", "_MDAT", "_ERRC" ]
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					]
 				}
 			},
 			"expected-output": {
@@ -126,13 +162,18 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#4",
 			"subject": "Example/P0402/3",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SKEY", "_MDAT", "Has_date" ]
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_date"
+					]
 				}
 			},
 			"expected-output": {
@@ -142,13 +183,18 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#5",
 			"subject": "Number-error",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SKEY", "_MDAT", "_ERRC" ]
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					]
 				}
 			},
 			"expected-output": {
@@ -158,13 +204,18 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#6 negative year with AD/CE era is not allowed",
 			"subject": "Example/P0402/7",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SKEY", "_MDAT", "_ERRC" ]
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					]
 				}
 			},
 			"expected-output": {
@@ -176,10 +227,12 @@
 	],
 	"settings": {
 		"wgContLang": "en",
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

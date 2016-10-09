@@ -1,12 +1,11 @@
 {
 	"description": "Test `#set` for various `_qty` values without explicit precision (3 digit implicit), with/without leading zero, and different printouts (#753, en, `smwgMaxNonExpNumber`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has area",
 			"contents": "[[Has type::Quantity]] [[Corresponds to::1 km²]] [[Corresponds to::0.38610 sq mi, sqmi]] [[Corresponds to::1000 m²]] [[Corresponds to::247.1054 acre]] [[Corresponds to::988.42155 rood]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0209/1",
 			"contents": "{{#set: Has area=25 sq mi;30 sqmi; 10 m ²|+sep=; }}"
@@ -56,34 +55,53 @@
 			"contents": "{{#ask: [[Example/P0209/2]] |?Has area#m²|+order=desc |format=table }}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0209/1",
 			"store": {
 				"clear-cache": true,
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_area","_SKEY", "_MDAT" ],
-					"propertyValues": [	"64.750064750065", "77.700077700078", "0.01" ]
+					"propertyKeys": [
+						"Has_area",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"64.750064750065",
+						"77.700077700078",
+						"0.01"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0209/2",
 			"store": {
 				"clear-cache": true,
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "Has_area","_SKEY", "_MDAT" ],
-					"propertyValues": [ "0.64750064750065", "0.77700077700078", "0.0001" ]
+					"propertyKeys": [
+						"Has_area",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"0.64750064750065",
+						"0.77700077700078",
+						"0.0001"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2 #ask quantity standard output",
 			"subject": "Example/P0209/1/1",
 			"expected-output": {
@@ -107,6 +125,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#3 #ask quantity plain output",
 			"subject": "Example/P0209/1/2",
 			"expected-output": {
@@ -119,6 +138,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#4 #ask quantity no unit output",
 			"subject": "Example/P0209/1/3",
 			"expected-output": {
@@ -131,6 +151,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#5 #ask quantity only unit output",
 			"subject": "Example/P0209/1/4",
 			"expected-output": {
@@ -141,6 +162,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#6 #ask quantity output specific unit",
 			"subject": "Example/P0209/1/5",
 			"expected-output": {
@@ -153,6 +175,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#7 #ask quantity standard output",
 			"subject": "Example/P0209/2/1",
 			"expected-output": {
@@ -165,6 +188,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#8 #ask quantity plain unit output",
 			"subject": "Example/P0209/2/2",
 			"expected-output": {
@@ -177,6 +201,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#9 #ask quantity number only output",
 			"subject": "Example/P0209/2/3",
 			"expected-output": {
@@ -189,6 +214,7 @@
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#10 #ask quantity output specific unit",
 			"subject": "Example/P0209/2/5",
 			"expected-output": {
@@ -204,11 +230,13 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en",
-		"smwgMaxNonExpNumber": 1000000000000000,
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgMaxNonExpNumber": 1.0e+15,
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

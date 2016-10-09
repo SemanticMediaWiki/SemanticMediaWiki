@@ -1,12 +1,11 @@
 {
 	"description": "Test in-text annotation `::` with left pipe (#1747, `wgContLang=en`)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text",
 			"contents": "[[Has type::Text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/P0433/1",
 			"contents": "[[Foo|Bar::Foobar]] [[File:Example.png|alt=Bar::Foobar|Caption]] [[File:Example.png|Bar::Foobar|link=Foo]]"
@@ -20,32 +19,45 @@
 			"contents": "{{#ask: [[Example/P0433/2]] |?Has text |link=none}}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0 no annotation due to left pipe",
 			"subject": "Example/P0433/1",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SKEY", "_MDAT", "_INST" ],
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_INST"
+					],
 					"propertyValues": []
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0433/2",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
-					"propertyKeys": [ "_SKEY", "_MDAT", "Has_text" ],
-					"propertyValues": [ "[[Foo|Bar::Foobar]] [[File:Example.png|alt=Bar::Foobar|Caption]] [[File:Example.png|Bar::Foobar|link=Foo]]" ]
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_text"
+					],
+					"propertyValues": [
+						"[[Foo|Bar::Foobar]] [[File:Example.png|alt=Bar::Foobar|Caption]] [[File:Example.png|Bar::Foobar|link=Foo]]"
+					]
 				}
 			}
 		},
 		{
+			"type": "parser",
 			"about": "#2",
 			"subject": "Example/P0433/Q.1",
 			"expected-output": {
@@ -58,10 +70,12 @@
 	],
 	"settings": {
 		"wgContLang": "en",
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

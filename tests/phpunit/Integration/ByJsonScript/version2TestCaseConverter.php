@@ -1,0 +1,180 @@
+<?php
+
+namespace SMW\Tests\Integration\ByJsonScript;
+
+/**
+ * @private
+ * @codeCoverageIgnore
+ *
+ * @license GNU GPL v2+
+ * @since 2.5
+ *
+ * @author mwjames
+ */
+class Version2TestCaseConverter {
+
+	/**
+	 * @var array
+	 */
+	private $options = array();
+
+	/**
+	 * @var string
+	 */
+	private $contents = '';
+
+	/**
+	 * @since 2.5
+	 */
+	public function run() {
+
+		// http://php.net/manual/en/function.getopt.php
+		$this->options = getopt( '', array( "file::", "test" ) ) ;
+
+		print "\nRunning Version2TestCaseConverter ..." . "\n\n";
+
+		foreach ( $this->findFilesFor( __DIR__ . '/Fixtures', 'json' ) as $file => $location ) {
+			$this->readAndConvertFile( $file, $location );
+		}
+	}
+
+	private function readAndConvertFile( $file, $location ) {
+
+		if ( isset( $this->options['file'] ) && $this->options['file'] !== $file ) {
+			return print "Skipping {$file} because it doesn't match " . $this->options['file'] . "\n";
+		}
+
+		$this->contents = json_decode( file_get_contents( $location ), true );
+
+		if ( isset( $this->contents['meta']['version'] ) && $this->contents['meta']['version'] === '2' ) {
+			return print "Skipping {$file} because it has already been tagged with version 2.\n";
+		}
+
+		$contents = $this->replaceSpaceIndent(
+			$this->doConvertToVersion2()
+		);
+
+		if ( !isset( $this->options['test'] ) ) {
+			file_put_contents( $location, $contents );
+			print "{$file} was converted to version 2.\n";
+		} else {
+			print $contents;
+		}
+	}
+
+	private function replaceSpaceIndent( $contents ) {
+
+		// Change the four-space indent to a tab indent
+		$contents = str_replace( "\n    ", "\n\t", $contents );
+
+		while ( strpos( $contents, "\t    " ) !== false ) {
+			$contents = str_replace( "\t    ", "\t\t", $contents );
+		}
+
+		return $contents;
+	}
+
+	private function doConvertToVersion2() {
+
+		$setup = array();
+		$tests = array();
+
+		// Replace and accordance with the new Version 2 structure
+		$this->findAndReplaceEntity( 'properties', $setup );
+		$this->findAndReplaceEntity( 'subjects', $setup );
+
+		// Replace and accordance with the new Version 2 structure
+		$this->findAndReplaceTestCases( 'format-testcases', 'format', $tests );
+		$this->findAndReplaceTestCases( 'parser-testcases', 'parser', $tests );
+		$this->findAndReplaceTestCases( 'rdf-testcases', 'rdf', $tests );
+		$this->findAndReplaceTestCases( 'special-testcases', 'special', $tests );
+		$this->findAndReplaceTestCases( 'query-testcases', 'query', $tests );
+		$this->findAndReplaceTestCases( 'concept-testcases', 'concept', $tests );
+
+		// Reorder
+		$contents = array(
+			'description' => $this->contents['description'],
+			'setup' => $setup,
+			'beforeTest' => array()
+		);
+
+		if ( isset( $this->contents['maintenance-run'] ) ) {
+			$contents['beforeTest']['maintenance-run'] = $this->contents['maintenance-run'];
+		}
+
+		if ( isset( $this->contents['job-run'] ) ) {
+			$contents['beforeTest']['job-run'] = $this->contents['job-run'];
+		}
+
+		if ( $contents['beforeTest'] === array() ) {
+			unset( $contents['beforeTest'] );
+		}
+
+		$contents['tests'] = $tests;
+		$contents['settings'] = $this->contents['settings'];
+		$contents['meta'] = $this->contents['meta'];
+		$contents['meta']['version'] = '2';
+
+		return json_encode( $contents, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+	}
+
+	private function findAndReplaceEntity( $name, &$entities ) {
+
+		if ( !isset( $this->contents[$name] ) || $this->contents[$name] === array() ) {
+			return;
+		}
+
+		foreach ( $this->contents[$name] as $values ) {
+
+			$entity = array();
+
+			if ( $name === 'properties' ) {
+				$entity['namespace'] = "SMW_NS_PROPERTY";
+			}
+
+			foreach ( $values as $key => $value ) {
+				$entity[$key] = $value;
+			}
+
+			$entities[] = $entity;
+		}
+	}
+
+	private function findAndReplaceTestCases( $name, $type, &$tests ) {
+
+		if ( !isset( $this->contents[$name] ) || $this->contents[$name] === array() ) {
+			return;
+		}
+
+		foreach ( $this->contents[$name] as $values ) {
+
+			$case = array();
+			$case['type'] = $type;
+
+			foreach ( $values as $key => $value ) {
+				$case[$key] = $value;
+			}
+
+			$tests[] = $case;
+		}
+	}
+
+	private function findFilesFor( $path, $extension ) {
+
+		$files = array();
+
+		$directoryIterator = new \RecursiveDirectoryIterator( $path );
+
+		foreach ( new \RecursiveIteratorIterator( $directoryIterator ) as $fileInfo ) {
+			if ( strtolower( substr( $fileInfo->getFilename(), -( strlen( $extension ) + 1 ) ) ) === ( '.' . $extension ) ) {
+				$files[$fileInfo->getFilename()] = $fileInfo->getPathname();
+			}
+		}
+
+		return $files;
+	}
+
+}
+
+$version2TestCaseConverter = new Version2TestCaseConverter();
+$version2TestCaseConverter->run();

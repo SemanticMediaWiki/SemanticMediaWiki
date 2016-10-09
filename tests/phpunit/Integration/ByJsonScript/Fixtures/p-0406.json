@@ -1,12 +1,11 @@
 {
 	"description": "Test in-text annotation for unrestricted template parse using `import-annotation=true` (#1055)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "HasUnrestrictedPage",
 			"contents": "[[Has type::Page]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "CreateAnnotationViaAskTemplate",
 			"namespace": "NS_TEMPLATE",
@@ -26,25 +25,35 @@
 			"contents": "{{TemplateForUnrestrictedParse|SearchPageWithAnnotation}}"
 		}
 	],
-	"parser-testcases": [
+	"tests": [
 		{
+			"type": "parser",
 			"about": "#0",
 			"subject": "Page-with-template",
 			"store": {
 				"semantic-data": {
-					"strict-mode-valuematch": false,
+					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
-					"propertyKeys": [ "_SKEY", "HasUnrestrictedPage", "_MDAT", "_ASK" ],
-					"propertyValues": [ "Page-with-annotation" ]
+					"propertyKeys": [
+						"_SKEY",
+						"HasUnrestrictedPage",
+						"_MDAT",
+						"_ASK"
+					],
+					"propertyValues": [
+						"Page-with-annotation"
+					]
 				}
 			}
 		}
 	],
 	"settings": {
-		"smwgPageSpecialProperties": [ "_MDAT" ]
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

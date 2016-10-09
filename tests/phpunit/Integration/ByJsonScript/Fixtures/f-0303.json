@@ -1,20 +1,21 @@
 {
 	"description": "Test `format=category` sort output using a template and DEFAULTSORT (#1459, en)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has surname",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has given name",
 			"contents": "[[Has type::Page]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has initials",
 			"contents": "[[Has type::Text]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "CategoryListTemplate",
 			"namespace": "NS_TEMPLATE",
@@ -66,8 +67,9 @@
 			"contents": "{{#ask: [[Category:SOBJSORT1459]] |?Has surname# |?Has given name# |?Has initials# |format=category |mainlabel=- |template=CategoryListTemplate |sort=Has surname,Has initials }}"
 		}
 	],
-	"format-testcases": [
+	"tests": [
 		{
+			"type": "format",
 			"about": "#0 using sobj",
 			"subject": "Example/F0303/1aq",
 			"expected-output": {
@@ -80,6 +82,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#1 using sobj",
 			"subject": "Example/F0303/1bq",
 			"expected-output": {
@@ -92,6 +95,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#2",
 			"subject": "Example/F0303/2aq",
 			"expected-output": {
@@ -104,6 +108,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#3",
 			"subject": "Example/F0303/2bq",
 			"expected-output": {
@@ -116,6 +121,7 @@
 			}
 		},
 		{
+			"type": "format",
 			"about": "#4 using sobj",
 			"subject": "Example/F0303/3aq",
 			"expected-output": {
@@ -137,7 +143,7 @@
 		}
 	},
 	"meta": {
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}

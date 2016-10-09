@@ -1,20 +1,21 @@
 {
 	"description": "Test output from `Special:SearchByProperty` for `_num`, `_txt`, `_tel` (#1728, `wgContLang=en`, `wgLang=en`, skip-on sqlite, postgres)",
-	"properties": [
+	"setup": [
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has number",
 			"contents": "[[Has type::Number]] [[Display precision of::2]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
 			"name": "Has telephone number",
 			"contents": "[[Has type::Telephone number]]"
-		}
-	],
-	"subjects": [
+		},
 		{
 			"name": "Example/S0002/1",
 			"contents": "[[Has text::S0002]]"
@@ -36,13 +37,14 @@
 			"contents": "[[Has telephone number::+1-201-555-0123]]"
 		}
 	],
-	"special-testcases": [
+	"tests": [
 		{
+			"type": "special",
 			"about": "#0 search for user-defined property to contain",
 			"special-page": {
-				"page":"SearchByProperty",
+				"page": "SearchByProperty",
 				"query-parameters": "",
-				"request-parameters":{
+				"request-parameters": {
 					"property": "Has text"
 				}
 			},
@@ -54,11 +56,12 @@
 			}
 		},
 		{
+			"type": "special",
 			"about": "#1 value to contain `_`",
 			"special-page": {
-				"page":"SearchByProperty",
+				"page": "SearchByProperty",
 				"query-parameters": "",
-				"request-parameters":{
+				"request-parameters": {
 					"property": "Has text",
 					"value": "foo_bar"
 				}
@@ -71,11 +74,12 @@
 			}
 		},
 		{
+			"type": "special",
 			"about": "#2 value to contain ` `",
 			"special-page": {
-				"page":"SearchByProperty",
+				"page": "SearchByProperty",
 				"query-parameters": "",
-				"request-parameters":{
+				"request-parameters": {
 					"property": "Has text",
 					"value": "foo bar"
 				}
@@ -88,11 +92,12 @@
 			}
 		},
 		{
+			"type": "special",
 			"about": "#3 value input not be constraint by precision",
 			"special-page": {
-				"page":"SearchByProperty",
+				"page": "SearchByProperty",
 				"query-parameters": "",
-				"request-parameters":{
+				"request-parameters": {
 					"property": "Has number",
 					"value": "3.555567"
 				}
@@ -108,11 +113,12 @@
 			}
 		},
 		{
+			"type": "special",
 			"about": "#4 do not encode e- for a number value",
 			"special-page": {
-				"page":"SearchByProperty",
+				"page": "SearchByProperty",
 				"query-parameters": "",
-				"request-parameters":{
+				"request-parameters": {
 					"property": "Has number",
 					"value": "1.2e-13"
 				}
@@ -125,11 +131,12 @@
 			}
 		},
 		{
+			"type": "special",
 			"about": "#5 same as 1.2e-13",
 			"special-page": {
-				"page":"SearchByProperty",
+				"page": "SearchByProperty",
 				"query-parameters": "",
-				"request-parameters":{
+				"request-parameters": {
 					"property": "Has number",
 					"value": "0.00000000000012"
 				}
@@ -142,11 +149,12 @@
 			}
 		},
 		{
+			"type": "special",
 			"about": "#6 telephone number",
 			"special-page": {
-				"page":"SearchByProperty",
+				"page": "SearchByProperty",
 				"query-parameters": "",
-				"request-parameters":{
+				"request-parameters": {
 					"property": "Has telephone number",
 					"value": "+1-201-555-0123"
 				}
@@ -159,11 +167,12 @@
 			}
 		},
 		{
+			"type": "special",
 			"about": "#6 telephone number",
 			"special-page": {
-				"page":"SearchByProperty",
+				"page": "SearchByProperty",
 				"query-parameters": "",
-				"request-parameters":{
+				"request-parameters": {
 					"property": "Has telephone number",
 					"value": "+1-201-555-0123"
 				}
@@ -176,11 +185,12 @@
 			}
 		},
 		{
+			"type": "special",
 			"about": "#7 invalid property and avoid a `...must be an instance of SMWDIProperty, instance of SMWDIError given...`",
 			"special-page": {
-				"page":"SearchByProperty",
+				"page": "SearchByProperty",
 				"query-parameters": "",
-				"request-parameters":{
+				"request-parameters": {
 					"property": ">[[Foo",
 					"value": ""
 				}
@@ -202,7 +212,7 @@
 			"sqlite": "Returns a `database is locked`",
 			"postgres": "The table update lacks behind"
 		},
-		"version": "0.1",
+		"version": "2",
 		"is-incomplete": false,
 		"debug": false
 	}
