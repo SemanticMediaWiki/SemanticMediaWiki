@@ -176,7 +176,7 @@ class Highlighter {
 				'data-content' => isset( $this->options['data-content'] ) ? $this->options['data-content'] : null,
 				'data-state'   => $this->options['state'],
 				'data-title'   => Message::get( $this->options['title'], Message::TEXT, $language ),
-				'title'        => strip_tags( htmlspecialchars_decode( $this->options['content'] ) )
+				'title'        => strip_tags( htmlspecialchars_decode( str_replace( "[", "&#x005B;", $this->options['content'] ) ) )
 			), Html::rawElement(
 					'span',
 					array(
