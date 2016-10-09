@@ -5,7 +5,6 @@ namespace SMW\SQLStore\EntityStore\DIHandlers;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
 use SMW\SQLStore\EntityStore\DataItemHandler;
-use SMWDataItemException as DataItemException;
 use SMWDIBoolean as DIBoolean;
 
 /**

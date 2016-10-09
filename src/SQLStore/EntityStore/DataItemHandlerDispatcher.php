@@ -12,7 +12,7 @@ use SMW\SQLStore\EntityStore\DIHandlers\DIUriHandler;
 use SMW\SQLStore\EntityStore\DIHandlers\DIWikiPageHandler;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
-use RuntimeException;
+use SMW\SQLStore\EntityStore\Exceptions\DataItemHandlerException;
 
 /**
  * @license GNU GPL v2+
@@ -86,13 +86,13 @@ class DataItemHandlerDispatcher {
 				$handler = new DIConceptHandler( $this->store );
 				break;
 			case DataItem::TYPE_PROPERTY:
-				throw new RuntimeException( "There is no DI handler for DataItem::TYPE_PROPERTY." );
+				throw new DataItemHandlerException( "There is no DI handler for DataItem::TYPE_PROPERTY." );
 			case DataItem::TYPE_CONTAINER:
-				throw new RuntimeException( "There is no DI handler for DataItem::TYPE_CONTAINER." );
+				throw new DataItemHandlerException( "There is no DI handler for DataItem::TYPE_CONTAINER." );
 			case DataItem::TYPE_ERROR:
-				throw new RuntimeException( "There is no DI handler for DataItem::TYPE_ERROR." );
+				throw new DataItemHandlerException( "There is no DI handler for DataItem::TYPE_ERROR." );
 			default:
-				throw new RuntimeException( "The value \"$type\" is not a valid dataitem ID." );
+				throw new DataItemHandlerException( "The value \"$type\" is not a valid dataitem ID." );
 		}
 
 		return $handler;

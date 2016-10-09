@@ -5,7 +5,7 @@ namespace SMW\SQLStore\EntityStore\DIHandlers;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
 use SMW\SQLStore\EntityStore\DataItemHandler;
-use SMWDataItemException as DataItemException;
+use SMW\SQLStore\EntityStore\Exceptions\DataItemHandlerException;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 
@@ -128,7 +128,7 @@ class DIWikiPageHandler extends DataItemHandler {
 			}
 		}
 
-		throw new DataItemException( 'Failed to create data item from DB keys.' );
+		throw new DataItemHandlerException( 'Failed to create data item from DB keys.' );
 	}
 
 	private function newDiWikiPage( $dbkeys ) {

@@ -4,6 +4,7 @@ use SMW\DataTypeRegistry;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\SQLStore\TableDefinition;
+use SMW\SQLStore\EntityStore\Exceptions\DataItemHandlerException;
 
 /**
  * Class to provide all basic read methods for SMWSQLStore3.
@@ -493,7 +494,7 @@ class SMWSQLStore3Readers {
 				if ( $row->smw_iw === '' || $row->smw_iw{0} != ':' ) { // filter special objects
 					$result[] = $diHandler->dataItemFromDBKeys( array_values( (array)$row ) );
 				}
-			} catch ( SMWDataItemException $e ) {
+			} catch ( DataItemHandlerException $e ) {
 				// silently drop data, should be extremely rare and will usually fix itself at next edit
 			}
 		}
