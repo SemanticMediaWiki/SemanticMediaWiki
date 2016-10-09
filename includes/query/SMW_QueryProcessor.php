@@ -136,25 +136,23 @@ class SMWQueryProcessor implements QueryContext {
 			$limit = $GLOBALS['smwgQMaxLimit'];
 		}
 
-		$queryCreator = ApplicationFactory::getInstance()->getQueryFactory()->newQueryCreator();
+		$queryCreator = ApplicationFactory::getInstance()->getQueryFactory()->newConfigurableQueryCreator();
 
-		$queryCreator->withConfiguration(
-			array(
-				'extraPrintouts' => $extraPrintouts,
-				'queryMode'   => $queryMode,
-				'context'     => $context,
-				'contextPage' => $contextPage,
-				'offset'      => $offset,
-				'limit'       => $limit,
-				'querySource' => $params['source']->getValue(),
-				'mainLabel'   => $params['mainlabel']->getValue(),
-				'sort'        => $params['sort']->getValue(),
-				'order'       => $params['order']->getValue(),
-				'defaultSort' => $defaultSort
-			)
+		$configuration = array(
+			'extraPrintouts' => $extraPrintouts,
+			'queryMode'   => $queryMode,
+			'context'     => $context,
+			'contextPage' => $contextPage,
+			'offset'      => $offset,
+			'limit'       => $limit,
+			'querySource' => $params['source']->getValue(),
+			'mainLabel'   => $params['mainlabel']->getValue(),
+			'sort'        => $params['sort']->getValue(),
+			'order'       => $params['order']->getValue(),
+			'defaultSort' => $defaultSort
 		);
 
-		return $queryCreator->createFromString( $queryString );
+		return $queryCreator->withConfiguration( $configuration )->createFromString( $queryString );
 	}
 
 	/**
@@ -173,7 +171,7 @@ class SMWQueryProcessor implements QueryContext {
 	 * @return array ( keys => array(), errors => array() )
 	 */
 	protected static function getSortKeys( array $sortParam, array $orderParam, $defaultSort ) {
-		return ApplicationFactory::getInstance()->getQueryFactory()->newQueryCreator()->getSortKeys( $sortParam, $orderParam, $defaultSort );
+		return ApplicationFactory::getInstance()->getQueryFactory()->newConfigurableQueryCreator()->getSortKeys( $sortParam, $orderParam, $defaultSort );
 	}
 
 	/**

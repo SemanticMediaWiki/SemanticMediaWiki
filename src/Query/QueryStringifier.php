@@ -10,7 +10,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class QueryUrlEncoder {
+class QueryStringifier {
 
 	/**
 	 * @since 2.5
@@ -20,7 +20,7 @@ class QueryUrlEncoder {
 	 * @return string
 	 */
 	public static function rawUrlEncode( Query $query ) {
-		return rawurlencode( self::encode( $query ) );
+		return rawurlencode( self::get( $query ) );
 	}
 
 	/**
@@ -30,7 +30,7 @@ class QueryUrlEncoder {
 	 *
 	 * @return string
 	 */
-	public static function encode( Query $query ) {
+	public static function get( Query $query ) {
 		$serialized = array();
 
 		$serialized['conditions'] = $query->getQueryString();

@@ -3,8 +3,9 @@
 use SMW\DIWikiPage;
 use SMW\HashBuilder;
 use SMW\Query\PrintRequest;
+use SMW\Query\Language\Description;
 use SMW\Query\QueryContext;
-use SMW\Query\QueryUrlEncoder;
+use SMW\Query\QueryStringifier;
 use SMW\Message;
 
 /**
@@ -81,28 +82,28 @@ class SMWQuery implements QueryContext {
 	private $options = array();
 
 	/**
-	 * Constructor.
-	 * @param $description SMWDescription object describing the query conditions
-	 * @param $inline bool stating whether this query runs in an inline context; used to determine
-	 * proper default parameters (e.g. the default limit)
-	 * @param $concept bool stating whether this query belongs to a concept; used to determine
-	 * proper default parameters (concepts usually have less restrictions)
+	 * @since 1.6
+	 *
+	 * @param Description $description
+	 * @param integer|boolean $context
 	 */
-	public function __construct( $description = null, $context = false ) {
-		global $smwgQMaxLimit, $smwgQMaxInlineLimit;
-
+	public function __construct( Description $description = null, $context = false ) {
 		$inline = false;
 		$concept = false;
 
+		// stating whether this query runs in an inline context; used to
+		// determine proper default parameters (e.g. the default limit)
 		if ( $context === self::INLINE_QUERY ) {
 			$inline = true;
 		}
 
+		// stating whether this query belongs to a concept; used to determine
+		// proper default parameters (concepts usually have less restrictions)
 		if ( $context === self::CONCEPT_DESC ) {
 			$concept = true;
 		}
 
-		$this->limit = $inline ? $smwgQMaxInlineLimit : $smwgQMaxLimit;
+		$this->limit = $inline ? $GLOBALS['smwgQMaxInlineLimit'] : $GLOBALS['smwgQMaxLimit'];
 		$this->isInline = $inline;
 		$this->isUsedInConcept = $concept;
 		$this->description = $description;
@@ -424,7 +425,7 @@ class SMWQuery implements QueryContext {
 	 * @return string
 	 */
 	public function getAsString() {
-		return QueryUrlEncoder::encode( $this );
+		return QueryStringifier::get( $this );
 	}
 
 	/**
