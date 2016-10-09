@@ -263,7 +263,7 @@ class ByIdDataRebuildDispatcher {
 				// leave subobjects alone; they ought to be changed with their pages
 				$this->dispatchedEntities[] = array( 's' => $row->smw_title . '#' . $row->smw_namespace . '#' .$row->smw_subobject );
 			} elseif ( $this->isPlainObjectValue( $row ) ) {
-				$this->propertyTableIdReferenceDisposer->tryToRemoveOutdatedIDFromEntityTables( $row->smw_id );
+				$this->propertyTableIdReferenceDisposer->removeOutdatedEntityReferencesById( $row->smw_id );
 			} elseif ( $row->smw_iw === '' && $titleKey != '' ) {
 				// objects representing pages
 				$title = Title::makeTitleSafe( $row->smw_namespace, $titleKey );
@@ -283,7 +283,7 @@ class ByIdDataRebuildDispatcher {
 					$updateJobs[] = $this->newUpdateJob( $title );
 				}
 			} elseif ( $row->smw_iw == SMW_SQL3_SMWIW_OUTDATED || $row->smw_iw == SMW_SQL3_SMWDELETEIW ) { // remove outdated internal object references
-				$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesFor( $row->smw_id );
+				$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $row->smw_id );
 			} elseif ( $titleKey != '' ) { // "normal" interwiki pages or outdated internal objects -- delete
 				$diWikiPage = new DIWikiPage( $titleKey, $row->smw_namespace, $row->smw_iw );
 				$emptySemanticData = new SemanticData( $diWikiPage );

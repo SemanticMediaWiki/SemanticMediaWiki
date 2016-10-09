@@ -125,7 +125,7 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'boolean',
-			$instance->hasResidualReferenceFor( 42 )
+			$instance->hasResidualReferenceForId( 42 )
 		);
 	}
 
@@ -136,7 +136,7 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertTrue(
-			$instance->hasResidualReferenceFor( SQLStore::FIXED_PROPERTY_ID_UPPERBOUND )
+			$instance->hasResidualReferenceForId( SQLStore::FIXED_PROPERTY_ID_UPPERBOUND )
 		);
 	}
 

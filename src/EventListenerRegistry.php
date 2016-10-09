@@ -42,7 +42,12 @@ class EventListenerRegistry implements EventListenerCollection {
 		$this->eventListenerCollection->registerCallback(
 			'factbox.cache.delete', function( $dispatchContext ) {
 
-				$title = $dispatchContext->get( 'title' );
+				if ( $dispatchContext->has( 'subject' ) ) {
+					$title = $dispatchContext->get( 'subject' )->getTitle();
+				} else{
+					$title = $dispatchContext->get( 'title' );
+				}
+
 				$applicationFactory = ApplicationFactory::getInstance();
 
 				$applicationFactory->getCache()->delete(
@@ -69,7 +74,12 @@ class EventListenerRegistry implements EventListenerCollection {
 		$this->eventListenerCollection->registerCallback(
 			'cached.propertyvalues.prefetcher.reset', function( $dispatchContext ) {
 
-				$subject = DIWikiPage::newFromTitle( $dispatchContext->get( 'title' ) );
+				if ( $dispatchContext->has( 'title' ) ) {
+					$subject = DIWikiPage::newFromTitle( $dispatchContext->get( 'title' ) );
+				} else{
+					$subject = $dispatchContext->get( 'subject' );
+				}
+
 				wfDebugLog( 'smw', 'Clear CachedPropertyValuesPrefetcher for ' . $subject->getHash() );
 
 				$applicationFactory = ApplicationFactory::getInstance();
@@ -93,7 +103,7 @@ class EventListenerRegistry implements EventListenerCollection {
 		 * Emitted during PropertySpecificationChangeNotifier::notifyDispatcher
 		 */
 		$this->eventListenerCollection->registerCallback(
-			'property.spec.change', function( $dispatchContext ) {
+			'property.specification.change', function( $dispatchContext ) {
 
 				$applicationFactory = ApplicationFactory::getInstance();
 				$subject = $dispatchContext->get( 'subject' );

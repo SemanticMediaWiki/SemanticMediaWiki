@@ -2,7 +2,12 @@
 
 namespace SMW\SQLStore;
 
+use SMW\EventHandler;
+use SMW\DIWikiPage;
+
 /**
+ * @private
+ *
  * Class responsible for the clean-up (aka disposal) of any outdated table entries
  * that are contained in either the ID_TABLE or related property tables with
  * reference to a matchable ID.
@@ -48,13 +53,13 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @param integer $id
 	 */
-	public function tryToRemoveOutdatedIDFromEntityTables( $id ) {
+	public function removeOutdatedEntityReferencesById( $id ) {
 
-		if ( $this->store->getPropertyTableIdReferenceFinder()->hasResidualReferenceFor( $id ) ) {
+		if ( $this->store->getPropertyTableIdReferenceFinder()->hasResidualReferenceForId( $id ) ) {
 			return null;
 		}
 
-		$this->removeIDFromEntityReferenceTables( $id );
+		$this->doRemoveEntityReferencesById( $id );
 	}
 
 	/**
@@ -65,7 +70,9 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @param integer $id
 	 */
-	public function cleanUpTableEntriesFor( $id ) {
+	public function cleanUpTableEntriesById( $id ) {
+
+		$this->triggerResetCacheEventBy( $id );
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
 			if ( $proptable->usesIdSubject() ) {
@@ -96,10 +103,10 @@ class PropertyTableIdReferenceDisposer {
 			}
 		}
 
-		$this->removeIDFromEntityReferenceTables( $id );
+		$this->doRemoveEntityReferencesById( $id );
 	}
 
-	private function removeIDFromEntityReferenceTables( $id ) {
+	private function doRemoveEntityReferencesById( $id ) {
 
 		$this->connection->delete(
 			SQLStore::ID_TABLE,
@@ -136,6 +143,35 @@ class PropertyTableIdReferenceDisposer {
 		} catch ( \DBError $e ) {
 			wfDebugLog( 'smw', __METHOD__ . ' reported: ' . $e->getMessage() );
 		}
+	}
+
+	private function triggerResetCacheEventBy( $id ) {
+
+		$subject = $this->store->getObjectIds()->getDataItemById( $id );
+
+		if ( !$subject instanceof DIWikiPage ) {
+			return;
+		}
+
+		$eventHandler = EventHandler::getInstance();
+
+		$dispatchContext = $eventHandler->newDispatchContext();
+		$dispatchContext->set( 'subject', $subject );
+
+		$eventHandler->getEventDispatcher()->dispatch(
+			'cached.propertyvalues.prefetcher.reset',
+			$dispatchContext
+		);
+
+		$eventHandler->getEventDispatcher()->dispatch(
+			'property.specification.change',
+			$dispatchContext
+		);
+
+		$eventHandler->getEventDispatcher()->dispatch(
+			'factbox.cache.delete',
+			$dispatchContext
+		);
 	}
 
 }
