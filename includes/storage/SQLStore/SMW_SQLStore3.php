@@ -230,11 +230,11 @@ class SMWSQLStore3 extends SMWStore {
 	}
 
 	public function getAllPropertySubjects( DIProperty $property, $requestoptions = null ) {
-		return $this->getReader()->getAllPropertySubjects( $property, $requestoptions );
+		return $this->getEntityLookup()->getAllPropertySubjects( $property, $requestoptions );
 	}
 
 	public function getInProperties( SMWDataItem $value, $requestoptions = null ) {
-		return $this->getReader()->getInProperties( $value, $requestoptions );
+		return $this->getEntityLookup()->getInProperties( $value, $requestoptions );
 	}
 
 
