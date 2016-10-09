@@ -185,7 +185,8 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			'wgLang',
 			'wgCapitalLinks',
 			'wgAllowDisplayTitle',
-			'wgRestrictDisplayTitle'
+			'wgRestrictDisplayTitle',
+			'wgSearchType'
 		);
 
 		foreach ( $permittedSettings as $key ) {
