@@ -121,6 +121,13 @@ class ReferenceValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'abc;12;3',
 			ReferenceValueFormatter::VALUE,
 			null,
+			'Abc'
+		);
+
+		$provider[] = array(
+			'abc;12;3',
+			ReferenceValueFormatter::VALUE,
+			false,
 			'Abc;12;3'
 		);
 
@@ -128,6 +135,13 @@ class ReferenceValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'abc',
 			ReferenceValueFormatter::WIKI_SHORT,
 			null,
+			'Abc'
+		);
+
+		$provider[] = array(
+			'abc',
+			ReferenceValueFormatter::WIKI_SHORT,
+			false,
 			array(
 				'Abc',
 				'class="smw-reference smw-reference-indicator smw-highlighter smwttinline"',
@@ -140,6 +154,13 @@ class ReferenceValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'abc',
 			ReferenceValueFormatter::HTML_SHORT,
 			null,
+			'Abc'
+		);
+
+		$provider[] = array(
+			'abc',
+			ReferenceValueFormatter::HTML_SHORT,
+			false,
 			array(
 				'Abc',
 				'class="smw-reference smw-reference-indicator smw-highlighter smwttinline"',
@@ -152,6 +173,13 @@ class ReferenceValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'abc',
 			ReferenceValueFormatter::WIKI_LONG,
 			null,
+			'Abc'
+		);
+
+		$provider[] = array(
+			'abc',
+			ReferenceValueFormatter::WIKI_LONG,
+			false,
 			array(
 				'Abc',
 				'class="smw-reference smw-reference-indicator smw-highlighter smwttinline"',
@@ -164,6 +192,13 @@ class ReferenceValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'abc',
 			ReferenceValueFormatter::HTML_LONG,
 			null,
+			'Abc'
+		);
+
+		$provider[] = array(
+			'abc',
+			ReferenceValueFormatter::HTML_LONG,
+			false,
 			array(
 				'Abc',
 				'class="smw-reference smw-reference-indicator smw-highlighter smwttinline"',

@@ -66,7 +66,7 @@ class ReferenceValueFormatter extends DataValueFormatter {
 			$this->dataValue->getPropertyDataItems()
 		);
 
-		if ( $type == self::VALUE ) {
+		if ( $type == self::VALUE || $linker === null ) {
 			return implode( ';', $results );
 		}
 
@@ -112,6 +112,11 @@ class ReferenceValueFormatter extends DataValueFormatter {
 				$output = $this->findValueOutputFor( $isValue, $type, $dataValue, $linker );
 			} else {
 				$output = '?';
+			}
+
+			// Return a plain value in case no linker object is available
+			if ( $linker === null ) {
+				return array( $dataValue->getWikiValue() );
 			}
 
 			$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
