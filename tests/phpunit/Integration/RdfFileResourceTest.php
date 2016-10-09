@@ -71,6 +71,8 @@ class RdfFileResourceTest extends MwDBaseUnitTestCase {
 			'[[HasFile::File:RdfLinkedFile.txt]]'
 		);
 
+		$this->testEnvironment->executePendingDeferredUpdates();
+
 		$exportController = new ExportController( new RDFXMLSerializer() );
 		$exportController->enableBacklinks( false );
 

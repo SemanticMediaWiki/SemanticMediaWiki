@@ -6,7 +6,6 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\InSemanticDataFetcher;
-use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**
@@ -35,12 +34,12 @@ class RedirectPageTest extends MwDBaseUnitTestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->runnerFactory  = UtilityFactory::getInstance()->newRunnerFactory();
-		$this->titleValidator = UtilityFactory::getInstance()->newValidatorFactory()->newTitleValidator();
-		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+		$this->runnerFactory  = $this->testEnvironment->getUtilityFactory()->newRunnerFactory();
+		$this->titleValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newTitleValidator();
+		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 
-		$this->pageRefresher = UtilityFactory::getInstance()->newPageRefresher();
-		$this->pageCreator = UtilityFactory::getInstance()->newPageCreator();
+		$this->pageRefresher = $this->testEnvironment->getUtilityFactory()->newPageRefresher();
+		$this->pageCreator = $this->testEnvironment->getUtilityFactory()->newPageCreator();
 
 		$importRunner = $this->runnerFactory->newXmlImportRunner(
 			__DIR__ . '/'. 'Fixtures/' . 'RedirectPageTest-Mw-1-19-7.xml'
@@ -53,10 +52,7 @@ class RedirectPageTest extends MwDBaseUnitTestCase {
 	}
 
 	protected function tearDown() {
-
-		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
-		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
-
+		$this->testEnvironment->flushPages( $this->importedTitles );
 		parent::tearDown();
 	}
 
@@ -100,16 +96,22 @@ class RedirectPageTest extends MwDBaseUnitTestCase {
 			'SimplePageRedirectRegressionTest'
 		);
 
+		$this->testEnvironment->executePendingDeferredUpdates();
+
 		$this->movePageToTargetRedirect(
 			$newRedirectPage,
 			'NewTargetPageRedirectRegressionTest'
 		);
+
+		$this->testEnvironment->executePendingDeferredUpdates();
 
 		$this->pageRefresher->doRefreshPoolOfPages( array(
 			$main,
 			$newRedirectPage,
 			'NewTargetPageRedirectRegressionTest'
 		) );
+
+		$this->testEnvironment->executePendingDeferredUpdates();
 
 		$semanticDataBatches = array(
 			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $main ) ),

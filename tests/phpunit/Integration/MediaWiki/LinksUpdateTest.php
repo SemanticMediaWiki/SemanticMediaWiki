@@ -31,18 +31,16 @@ class LinksUpdateTest extends MwDBaseUnitTestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
+		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
+		$this->mwHooksHandler->deregisterListedHooks();
+		$this->mwHooksHandler->invokeHooksFromRegistry();
 
-		$this->mwHooksHandler
-			->deregisterListedHooks()
-			->invokeHooksFromRegistry();
-
-		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
-		$this->pageCreator = UtilityFactory::getInstance()->newPageCreator();
-		$this->pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
+		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
+		$this->pageCreator = $this->testEnvironment->getUtilityFactory()->newPageCreator();
+		$this->pageDeleter = $this->testEnvironment->getUtilityFactory()->newPageDeleter();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
-		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', array( '_MDAT' ) );
+		$this->testEnvironment->addConfiguration( 'smwgPageSpecialProperties', array( '_MDAT' ) );
 
 		$this->title = Title::newFromText( __METHOD__ );
 	}
@@ -51,10 +49,8 @@ class LinksUpdateTest extends MwDBaseUnitTestCase {
 		$this->applicationFactory->clear();
 		$this->mwHooksHandler->restoreListedHooks();
 
-		if ( $this->title !== null ) {
-			$this->pageDeleter->deletePage( $this->title );
-		}
-
+		$this->testEnvironment->flushPages( array( $this->title ) );
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -119,6 +115,8 @@ class LinksUpdateTest extends MwDBaseUnitTestCase {
 		 */
 		$linksUpdate = new \LinksUpdate( $this->title, new \ParserOutput() );
 		$linksUpdate->doUpdate();
+
+		$this->testEnvironment->executePendingDeferredUpdates();
 
 		/**
 		 * Asserts that before and after the update, the SemanticData container

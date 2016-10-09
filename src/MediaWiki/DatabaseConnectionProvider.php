@@ -18,7 +18,7 @@ class DatabaseConnectionProvider implements DBConnectionProvider {
 	private $connection = null;
 
 	/**
-	 * @var Database
+	 * @var boolean
 	 */
 	private $resetTransactionProfiler = false;
 
@@ -64,11 +64,7 @@ class DatabaseConnectionProvider implements DBConnectionProvider {
 		);
 
 		$connection->setDBPrefix( $GLOBALS['wgDBprefix'] );
-
-		// #1695
-		if ( $this->resetTransactionProfiler ) {
-			$connection->resetTransactionProfiler();
-		}
+		$connection->resetTransactionProfiler( $this->resetTransactionProfiler );
 
 		return $connection;
 	}

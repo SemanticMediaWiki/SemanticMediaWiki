@@ -131,7 +131,6 @@ class UpdateJob extends JobBase {
 			);
 		}
 
-		$contentParser->forceToUseParser();
 		$contentParser->parse();
 
 		if ( !( $contentParser->getOutput() instanceof ParserOutput ) ) {
