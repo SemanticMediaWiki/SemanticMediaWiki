@@ -1,6 +1,9 @@
 {
     "@metadata": {
-        "authors": []
+        "authors": [
+            "Karsten Hoffmeyer",
+            "Markus Krötzsch"
+        ]
     },
     "fallbackLanguage": "en",
     "dataTypeLabels": {
@@ -20,7 +23,7 @@
         "_qty": "Maß",
         "_mlt_rec": "Einsprachiger Text",
         "_eid": "Externe Kennung",
-        "_ref_rec": "Reference"
+        "_ref_rec": "Referenzierung"
     },
     "dataTypeAliases": {
         "URI": "_uri",
