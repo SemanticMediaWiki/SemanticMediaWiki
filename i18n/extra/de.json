@@ -173,32 +173,32 @@
     ],
     "days": [
         [
-            "Monday",
-            "Mon"
+            "Montag",
+            "Mo"
         ],
         [
-            "Tuesday",
-            "Tue"
+            "Dienstag",
+            "Di"
         ],
         [
-            "Wednesday",
-            "Wed"
+            "Mittwoch",
+            "Mi"
         ],
         [
-            "Thursday",
-            "Thu"
+            "Donnerstag",
+            "Do"
         ],
         [
-            "Friday",
-            "Fri"
+            "Freitag",
+            "Fr"
         ],
         [
-            "Saturday",
-            "Sat"
+            "Samstag",
+            "Sa"
         ],
         [
-            "Sunday",
-            "Sun"
+            "Sonntag",
+            "So"
         ]
     ]
 }
