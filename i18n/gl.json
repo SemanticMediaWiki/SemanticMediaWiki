@@ -430,6 +430,8 @@
 	"smw-datavalue-wikipage-missing-fragment-context": "O valor de entrada da wikipáxina \"$1\" non ser usado sen unha páxina de contexto.",
 	"smw-datavalue-wikipage-invalid-title": "O valor de entrada \"$1\" da wikipáxina contén caracteres non válidos ou está incompleta e pode provocar resultados inesperados nunha busca ou nun proceso de anotación.",
 	"smw-datavalue-wikipage-empty": "O valor de entrada da wikipáxina está baleiro (p.ex. <code>[[SomeProperty::]], [[]]</code>) e non pode usarse como nome ou como parte dunha condición de busca.",
+	"smw-sp-types_ref_rec": "\"$1\" é un tipo de [https://www.semantic-mediawiki.org/wiki/Container contedor] que permite gardar información adicional (p.ex. procedencia dos datos) sobre a asignación dun valor.",
 	"smw-datavalue-reference-outputformat": "$1 : $2",
-	"smw-datavalue-reference-invalid-fields-definition": "O tipo [[Special:Types/Reference|Referencia]] espera unha lista de propiedades para ser declarado usando a propiedade [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields Ten campos]."
+	"smw-datavalue-reference-invalid-fields-definition": "O tipo [[Special:Types/Reference|Referencia]] espera unha lista de propiedades para ser declarado usando a propiedade [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields Ten campos].",
+	"smw-parser-invalid-json-format": "O analizador de JSON devolveu un \"$1\"."
 }

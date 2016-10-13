@@ -447,5 +447,6 @@
 	"smw-datavalue-wikipage-empty": "wiki页面输入值为空（例如<code>[[SomeProperty::]], [[]]</code>），并因此不能作为查询条件名称或其之一使用。",
 	"smw-sp-types_ref_rec": "“$1”是一个允许记录有关值分配的额外信息（例如来源数据）的[https://www.semantic-mediawiki.org/wiki/Container 容器]类型。",
 	"smw-datavalue-reference-outputformat": "$1：$2",
-	"smw-datavalue-reference-invalid-fields-definition": "[[Special:Types/Reference|参考文献]]类型应使用[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields 有字段]属性声明属性列表。"
+	"smw-datavalue-reference-invalid-fields-definition": "[[Special:Types/Reference|参考文献]]类型应使用[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields 有字段]属性声明属性列表。",
+	"smw-parser-invalid-json-format": "JSON解析器返回了“$1”。"
 }

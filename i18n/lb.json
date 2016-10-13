@@ -206,5 +206,6 @@
 	"smw-datavalue-time-invalid-date-components-three": "\"$1\" huet méi wéi dräi Komponenten, déi fir d'Interpretatioun vun engem Datum obligatoresch sinn.",
 	"smw-datavalue-time-invalid-ampm": "\"$1\" huet \"$2\" als Stonnenelement, dat ass fir eng 12-Stonne-Konventioun awer net valabel.",
 	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" ass keng valabel URL",
-	"smw-datavalue-reference-outputformat": "$1: $2"
+	"smw-datavalue-reference-outputformat": "$1: $2",
+	"smw-parser-invalid-json-format": "Den JSON-Parser huet mat engem \"$1\" geäntwert."
 }

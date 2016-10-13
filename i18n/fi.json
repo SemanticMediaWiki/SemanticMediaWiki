@@ -9,7 +9,8 @@
 			"Silvonen",
 			"Str4nd",
 			"VezonThunder",
-			"Pyscowicz"
+			"Pyscowicz",
+			"01miki10"
 		]
 	},
 	"smw-desc": "Lisää wikisi helppokäyttöisyyttä - niin koneille \"kuin\" ihmisillekin ([https://www.semantic-mediawiki.org/wiki/Help:User_manual käyttäjän opas])",
@@ -75,7 +76,7 @@
 	"smw_wrong_namespace": "Vain nimiavaruuden \"$1\" sivut sallitaan tässä.",
 	"smw_manytypes": "Ominaisuudelle on määritelty useampi kuin yksi tyyppi.",
 	"smw_emptystring": "Tyhjiä merkkijonoja ei hyväksytä.",
-	"smw_notinenum": "\"$1\" ei ole tämän ominaisuuden sallittujen arvojen luettelossa ($2).",
+	"smw_notinenum": "\"$1\" ei ole ominaisuuden \"$3\" [[Property:Allows value|sallittujen arvojen]] luettelossa ($2).",
 	"smw_noboolean": "”$1” ei ole tunnistettavissa totuusarvoksi.",
 	"smw_true_words": "kyllä,k,y",
 	"smw_false_words": "ei,e,n",
@@ -193,7 +194,7 @@
 	"smw_smwadmin_datarefreshprogress": "<strong>Päivitys on jo käynnissä.</strong>\nOn normaalia, että päivitys etenee hitaasti, sillä tietoja päivitetään pienissä osissa silloin kuin wikin sivuja ladataan.\nJos haluat päivityksen valmistuvan nopeammin, käytä MediaWikin ylläpitokomentosarjaa <code>runJobs.php</code> (käytä valitsinta <code>--maxjobs 1000</code> rajoittaaksesi yhdessä erässä tehtävien päivitysten määrää).\nNykyisen päivityksen arvioitu eteneminen:",
 	"smw_smwadmin_datarefreshbutton": "Aloita tietojen päivitys",
 	"smw_smwadmin_datarefreshstop": "Lopeta tämä päivitys",
-	"smw_smwadmin_datarefreshstopconfirm": "Kyllä, olen varma.",
+	"smw_smwadmin_datarefreshstopconfirm": "Kyllä, olen {{GENDER:$1|varma}}.",
 	"smw_smwadmin_support": "Tuen hankkiminen",
 	"smw_smwadmin_installfile": "Jos asennuksen kanssa on ongelmia, lue ensin <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">INSTALL-tiedoston</a> ohjeet.",
 	"smw_smwadmin_smwhomepage": "Semantic MediaWikin täydellinen käyttäjän opas löytyy osoitteesta <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",

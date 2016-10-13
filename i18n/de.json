@@ -452,5 +452,6 @@
 	"smw-datavalue-wikipage-empty": "Der Wikiseite-Eingabewert ist leer (z.&nbsp;B. <code>[[SomeProperty::]], [[]]</code>) und kann deshalb nicht als Name oder Teil einer Abfragebedingung verwendet werden.",
 	"smw-sp-types_ref_rec": "„$1“ ist ein [https://www.semantic-mediawiki.org/wiki/Container Containertyp], der die Aufnahme zusätzlicher Informationen erlaubt (z.&nbsp;B. Ursprungsdaten) über eine Wertzuweisung.",
 	"smw-datavalue-reference-outputformat": "$1: $2",
-	"smw-datavalue-reference-invalid-fields-definition": "Der [[Special:Types/Reference|Referenztyp]] erwartet eine Liste der erklärten Attribute, die das Attribut [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields „Hat Felder“] verwenden."
+	"smw-datavalue-reference-invalid-fields-definition": "Der [[Special:Types/Reference|Referenztyp]] erwartet eine Liste der erklärten Attribute, die das Attribut [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields „Hat Felder“] verwenden.",
+	"smw-parser-invalid-json-format": "Der JSON-Parser hat mit einem „$1“ geantwortet."
 }

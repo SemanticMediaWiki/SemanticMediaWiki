@@ -466,5 +466,6 @@
 	"smw-datavalue-wikipage-empty": "La valeur d’entrée wikipage est vide (par ex. <code>[[SomeProperty::]], [[]]</code>) et ne peut donc pas être utilisée comme nom ou partie d’une condition de requête.",
 	"smw-sp-types_ref_rec": "«$1» est un type de [https://www.semantic-mediawiki.org/wiki/Container conteneur] qui permet d'enregistrer des informations supplémentaires (par exemple, la provenance des données) lors d'une affectation de valeur.",
 	"smw-datavalue-reference-outputformat": "$1 : $2",
-	"smw-datavalue-reference-invalid-fields-definition": "Le type [[Special:Types/Reference|Référence]] attend la déclaration d'une liste de propriétés faite via l'attribut [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields possède  des champs]."
+	"smw-datavalue-reference-invalid-fields-definition": "Le type [[Special:Types/Reference|Référence]] attend la déclaration d'une liste de propriétés faite via l'attribut [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields possède  des champs].",
+	"smw-parser-invalid-json-format": "L’analyseur JSON a renvoyé un « $1 »."
 }
