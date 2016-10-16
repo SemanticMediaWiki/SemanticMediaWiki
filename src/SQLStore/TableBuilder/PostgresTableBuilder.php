@@ -2,6 +2,8 @@
 
 namespace SMW\SQLStore\TableBuilder;
 
+use SMW\SQLStore\SQLStore;
+
 /**
  * @license GNU GPL v2+
  * @since 2.5
@@ -15,35 +17,30 @@ class PostgresTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getStandardFieldType( $input ) {
+	public function getStandardFieldType( $key ) {
 
-		switch ( $input ) {
-			case 'id':
-			return 'SERIAL'; // like page_id in MW page table
-			case 'id primary':
-			return 'SERIAL' . ' NOT NULL PRIMARY KEY'; // like page_id in MW page table
-			case 'namespace':
-			return 'BIGINT'; // like page_namespace in MW page table
-			case 'title':
-			return 'TEXT'; // like page_title in MW page table
-			case 'iw':
-			return 'TEXT'; // like iw_prefix in MW interwiki table
-			case 'blob':
-			return 'BYTEA'; // larger blobs of character data, usually not subject to SELECT conditions
-			case 'boolean':
-			return 'BOOLEAN';
-			case 'double':
-			return 'DOUBLE PRECISION';
-			case 'integer':
-			case 'usage count':
-			return 'bigint';
-			case 'integer unsigned':
-			return 'INTEGER';
-			case 'sort':
-			return 'TEXT';
-		}
+		$fieldTypes = array(
+			 // like page_id in MW page table
+			'id' => 'SERIAL',
+			 // like page_id in MW page table
+			'id primary' => 'SERIAL' . ' NOT NULL PRIMARY KEY',
+			 // like page_namespace in MW page table
+			'namespace' => 'BIGINT',
+			 // like page_title in MW page table
+			'title' => 'TEXT',
+			 // like iw_prefix in MW interwiki table
+			'iw' => 'TEXT',
+			 // larger blobs of character data, usually not subject to SELECT conditions
+			'blob' => 'BYTEA',
+			'boolean'=> 'BOOLEAN',
+			'double' => 'DOUBLE PRECISION',
+			'integer' => 'bigint',
+			'usage count' => 'bigint',
+			'integer unsigned' => 'INTEGER',
+			'sort' => 'TEXT'
+		);
 
-		return false;
+		return isset( $fieldTypes[$key] ) ? $fieldTypes[$key] : false;
 	}
 
 	/** Create */
@@ -327,6 +324,33 @@ EOT;
 		// DETAIL:  default for table sunittest_smw_object_ids column smw_id depends on sequence smw_object_ids_smw_id_seq
 		// HINT:  Use DROP ... CASCADE to drop the dependent objects too.
 		$this->connection->query( 'DROP TABLE IF EXISTS ' . $this->connection->tableName( $tableName ) . ' CASCADE', __METHOD__ );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * {@inheritDoc}
+	 */
+	public function checkOn( $event ) {
+		if ( $event === self::EVENT_AFTER_TABLE_CREATE ) {
+			$this->doCheckOnAfterCreate();
+		}
+	}
+
+	public function doCheckOnAfterCreate() {
+
+		$this->reportMessage( "\nChecking consistency after table creation ...\n" );
+
+		// To avoid things like:
+		// "Error: 23505 ERROR:  duplicate key value violates unique constraint "smw_object_ids_pkey""
+		$sequenceIndex = SQLStore::ID_TABLE . '_smw_id_seq';
+		$max = $this->connection->selectField( SQLStore::ID_TABLE, 'max(smw_id)', array(), __METHOD__ );
+		$max += 1;
+
+		$this->reportMessage( "   ... updating {$sequenceIndex} sequence to {$max} accordingly.\n" );
+
+		$this->connection->query( "ALTER SEQUENCE {$sequenceIndex} RESTART WITH {$max}", __METHOD__ );
+		$this->reportMessage( "   ... done.\n" );
 	}
 
 }

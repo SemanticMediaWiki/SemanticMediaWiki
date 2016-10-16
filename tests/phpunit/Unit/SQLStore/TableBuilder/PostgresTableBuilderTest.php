@@ -153,4 +153,24 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->dropTable( 'foo' );
 	}
 
+	public function testDoCheckOnAfterCreate() {
+
+		$connection = $this->getMockBuilder( '\DatabaseBase' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'query' ) )
+			->getMockForAbstractClass();
+
+		$connection->expects( $this->any() )
+			->method( 'getType' )
+			->will( $this->returnValue( 'postgres' ) );
+
+		$connection->expects( $this->at( 3 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'ALTER SEQUENCE' ) );
+
+		$instance = PostgresTableBuilder::factory( $connection );
+
+		$instance->checkOn( $instance::EVENT_AFTER_TABLE_CREATE );
+	}
+
 }

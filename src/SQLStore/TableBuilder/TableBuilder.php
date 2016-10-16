@@ -182,6 +182,15 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param string $event
+	 */
+	public function checkOn( $event ) {
+		return false;
+	}
+
+	/**
 	 * @param string $tableName
 	 * @param array $tableOptions
 	 */
