@@ -1,10 +1,21 @@
 <?php
 
-namespace SMW;
+namespace SMW\ParserFunctions;
 
+use SMW\ParserData;
+use SMW\ParserParameterProcessor;
+use SMW\Subobject;
+use SMW\MessageFormatter;
+use SMW\Message;
+use SMW\HashBuilder;
+use SMW\DataValueFactory;
+use SMW\DIProperty;
 use Parser;
 
 /**
+ * @private This class should not be instantiated directly, please use
+ * ParserFunctionFactory::newSubobjectParserFunction
+ *
  * Provides the {{#subobject}} parser function
  *
  * @see http://www.semantic-mediawiki.org/wiki/Help:ParserFunction
@@ -31,6 +42,12 @@ class SubobjectParserFunction {
 	const PARAM_CATEGORY = '@category';
 
 	/**
+	 * Fixed identifier that describes a property by which a subobject is auto
+	 * linked to the an embededding subject
+	 */
+	const PARAM_LINKWITH = '@linkWith';
+
+	/**
 	 * @var ParserData
 	 */
 	protected $parserData;
@@ -48,7 +65,7 @@ class SubobjectParserFunction {
 	/**
 	 * @var boolean
 	 */
-	private $isEnabledFirstElementPropertyLabel = false;
+	private $isEnabledFirstElementAsPropertyLabel = false;
 
 	/**
 	 * @since 1.9
@@ -66,12 +83,12 @@ class SubobjectParserFunction {
 	/**
 	 * @since 1.9
 	 *
-	 * @param boolean $isEnabledFirstElementPropertyLabel
+	 * @param boolean $isEnabledFirstElementAsPropertyLabel
 	 *
 	 * @return SubobjectParserFunction
 	 */
-	public function setFirstElementForPropertyLabel( $isEnabledFirstElementPropertyLabel = true ) {
-		$this->isEnabledFirstElementPropertyLabel = (bool)$isEnabledFirstElementPropertyLabel;
+	public function setFirstElementAsPropertyLabel( $isEnabledFirstElementAsPropertyLabel = true ) {
+		$this->isEnabledFirstElementAsPropertyLabel = (bool)$isEnabledFirstElementAsPropertyLabel;
 		return $this;
 	}
 
@@ -93,11 +110,17 @@ class SubobjectParserFunction {
 
 		$this->parserData->pushSemanticDataToParserOutput();
 
-		return $this->messageFormatter
-			->addFromArray( $this->subobject->getErrors() )
+		$html = $this->messageFormatter->addFromArray( $this->subobject->getErrors() )
 			->addFromArray( $this->parserData->getErrors() )
 			->addFromArray( $parameters->getErrors() )
 			->getHtml();
+
+		// An empty output in MW forces an extra <br> element.
+		//if ( $html == '' ) {
+		//	$html = '<p></p>';
+		//}
+
+		return $html;
 	}
 
 	protected function addDataValuesToSubobject( ParserParameterProcessor $parserParameterProcessor ) {
@@ -157,14 +180,14 @@ class SubobjectParserFunction {
 		$id = $parserParameterProcessor->getFirst();
 		$isAnonymous = in_array( $id, array( null, '' ,'-' ) );
 
-		$this->isEnabledFirstElementPropertyLabel = $this->isEnabledFirstElementPropertyLabel && !$isAnonymous;
+		$this->isEnabledFirstElementAsPropertyLabel = $this->isEnabledFirstElementAsPropertyLabel && !$isAnonymous;
 
 		$parameters = $this->doPrepareParameters(
 			$parserParameterProcessor
 		);
 
 		// Reclaim the ID to be hash based on the content
-		if ( $this->isEnabledFirstElementPropertyLabel || $isAnonymous ) {
+		if ( $this->isEnabledFirstElementAsPropertyLabel || $isAnonymous ) {
 			$id = HashBuilder::createHashIdForContent( $parameters, '_' );
 		}
 
@@ -173,7 +196,17 @@ class SubobjectParserFunction {
 
 	private function doPrepareParameters( ParserParameterProcessor $parserParameterProcessor ) {
 
-		if ( $this->isEnabledFirstElementPropertyLabel ) {
+		if ( $parserParameterProcessor->hasParameter( self::PARAM_LINKWITH ) ) {
+			$val = $parserParameterProcessor->getParameterValuesByKey( self::PARAM_LINKWITH );
+			$parserParameterProcessor->addParameter(
+				end( $val ),
+				$this->parserData->getTitle()->getPrefixedText()
+			);
+
+			$parserParameterProcessor->removeParameterByKey( self::PARAM_LINKWITH );
+		}
+
+		if ( $this->isEnabledFirstElementAsPropertyLabel ) {
 			$parserParameterProcessor->addParameter(
 				$parserParameterProcessor->getFirst(),
 				$this->parserData->getTitle()->getPrefixedText()

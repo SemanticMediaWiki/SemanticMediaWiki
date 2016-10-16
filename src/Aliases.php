@@ -74,3 +74,5 @@ class_alias( 'SMW\DataValues\BooleanValue', 'SMWBoolValue' );
 
 // 2.5
 class_alias( 'SMW\QueryPrinterFactory', 'SMW\FormatFactory' );
+class_alias( 'SMW\ParserFunctions\SubobjectParserFunction', 'SMW\SubobjectParserFunction' );
+class_alias( 'SMW\ParserFunctions\RecurringEventsParserFunction', 'SMW\RecurringEventsParserFunction' );

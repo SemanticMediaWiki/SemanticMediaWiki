@@ -1,23 +1,19 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
 use ReflectionClass;
 use SMW\MessageFormatter;
 use SMW\ParserData;
-use SMW\ParserParameterFormatter;
-use SMW\RecurringEventsParserFunction;
-use SMW\Settings;
+use SMW\ParserParameterProcessor;
+use SMW\ParserFunctions\RecurringEventsParserFunction;
 use SMW\Subobject;
 use Title;
 
 /**
- * @covers \SMW\RecurringEventsParserFunction
- *
- *
- * @group SMW
- * @group SMWExtension
+ * @covers \SMW\ParserFunctions\RecurringEventsParserFunction
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -30,10 +26,6 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
 
-		$settings = $this->getMockBuilder( '\SMW\Settings' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -43,12 +35,11 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\RecurringEventsParserFunction',
+			'\SMW\ParserFunctions\RecurringEventsParserFunction',
 			new RecurringEventsParserFunction(
 				$parserData,
 				$subobject,
-				$messageFormatter,
-				$settings
+				$messageFormatter
 			)
 		);
 	}
@@ -58,17 +49,25 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParse( array $params, array $expected ) {
 
-		$instance = $this->acquireInstance(
-			Title::newFromText( __METHOD__ ),
-			new ParserOutput()
+		$title = Title::newFromText( __METHOD__ );
+
+		$instance = new RecurringEventsParserFunction(
+			new ParserData( $title, new ParserOutput() ),
+			new Subobject( $title ),
+			new MessageFormatter( \Language::factory( 'en' ) )
 		);
 
-		$result = $instance->parse( new ParserParameterFormatter( $params ) );
+		$instance->setDefaultNumRecurringEvents( 100 );
+		$instance->setMaxNumRecurringEvents( 100 );
+
+		$result = $instance->parse(
+			new ParserParameterProcessor( $params )
+		);
 
 		$this->assertTrue( $result !== '' ? $expected['errors'] : !$expected['errors'] );
 
-		$reflector = new ReflectionClass( '\SMW\RecurringEventsParserFunction' );
-		$events = $reflector->getProperty( 'events' );
+		$reflector = new ReflectionClass( '\SMW\ParserFunctions\RecurringEventsParserFunction' );
+		$events = $reflector->getProperty( 'recurringEvents' );
 		$events->setAccessible( true );
 
 		$this->assertEquals(
@@ -425,24 +424,6 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		return $provider;
-	}
-
-	/**
-	 * @return RecurringEventsParserFunction
-	 */
-	private function acquireInstance( Title $title, ParserOutput $parserOutput ) {
-
-		$settings = array(
-			'smwgDefaultNumRecurringEvents' => 100,
-			'smwgMaxNumRecurringEvents' => 100
-		);
-
-		return new RecurringEventsParserFunction(
-			new ParserData( $title, $parserOutput ),
-			new Subobject( $title ),
-			new MessageFormatter( \Language::factory( 'en' ) ),
-			Settings::newFromArray( $settings )
-		);
 	}
 
 }

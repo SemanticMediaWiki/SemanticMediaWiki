@@ -119,6 +119,15 @@ class ParserParameterProcessor {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param string $key
+	 */
+	public function removeParameterByKey( $key ) {
+		unset( $this->parameters[$key] );
+	}
+
+	/**
 	 * @deprecated since 2.5, use ParserParameterProcessor::getParameterValuesByKey
 	 * @since 2.3
 	 *

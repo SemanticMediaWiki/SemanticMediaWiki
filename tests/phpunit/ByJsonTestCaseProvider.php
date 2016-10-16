@@ -146,6 +146,10 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 			$namespace = isset( $page['namespace'] ) ? constant( $page['namespace'] ) : $defaultNamespace;
 			$pageContentLanguage = isset( $page['contentlanguage'] ) ? $page['contentlanguage'] : '';
 
+			if ( isset( $page['message-cache'] ) && $page['message-cache'] === 'clear' ) {
+				\SMW\Message::clear();
+			}
+
 			$title = Title::newFromText(
 				$page['name'],
 				$namespace

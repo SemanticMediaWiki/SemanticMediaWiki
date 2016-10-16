@@ -7,50 +7,35 @@ use SMW\RecurringEvents;
 
 /**
  * @covers \SMW\RecurringEvents
- *
- *
- * @group SMW
- * @group SMWExtension
- * @group medium
+ * @group semantic-mediawiki
  *
  * @licence GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class RecurringEventsTest extends SemanticMediaWikiTestCase {
+class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 
 	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\RecurringEvents';
-	}
-
-	/**
-	 * @since  1.9
-	 *
 	 * @return RecurringEvents
 	 */
 	private function newInstance( array $params ) {
 
 		$parameters = new ParserParameterFormatter( $params );
 
-		$settings = $this->newSettings( array(
-			'smwgDefaultNumRecurringEvents' => 10,
-			'smwgMaxNumRecurringEvents' => 50
-		) );
+		$instance = new RecurringEvents( $parameters->toArray() );
+		$instance->setDefaultNumRecurringEvents( 10 );
+		$instance->setMaxNumRecurringEvents( 50 );
 
-		return new RecurringEvents( $parameters->toArray(), $settings );
+		return $instance;
 	}
 
-	/**
-	 * @dataProvider getParametersDataProvider
-	 *
-	 * @since 1.9
-	 */
-	public function testConstructor( array $params ) {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance( $params ) );
+	public function testCanConstruct() {
+
+		$this->assertInstanceOf(
+			'\SMW\RecurringEvents',
+			new RecurringEvents( array() )
+		);
 	}
 
 	/**
