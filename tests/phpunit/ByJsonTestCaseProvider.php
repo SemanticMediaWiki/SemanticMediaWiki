@@ -4,6 +4,7 @@ namespace SMW\Tests;
 
 use SMW\ApplicationFactory;
 use SMW\Tests\Utils\UtilityFactory;
+use SMW\Message;
 use Title;
 
 /**
@@ -129,56 +130,6 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 		$this->runTestCaseFile( new JsonTestCaseFileHandler( $this->fileReader ) );
 	}
 
-	protected function createPagesFor( array $pages, $defaultNamespace ) {
-
-		foreach ( $pages as $page ) {
-
-			$skipOn = isset( $page['skip-on'] ) ? $page['skip-on'] : array();
-
-			if ( in_array( $this->connectorId, array_keys( $skipOn ) ) ) {
-				continue;
-			}
-
-			if ( !isset( $page['name'] ) || !isset( $page['contents'] ) ) {
-				continue;
-			}
-
-			$namespace = isset( $page['namespace'] ) ? constant( $page['namespace'] ) : $defaultNamespace;
-			$pageContentLanguage = isset( $page['contentlanguage'] ) ? $page['contentlanguage'] : '';
-
-			if ( isset( $page['message-cache'] ) && $page['message-cache'] === 'clear' ) {
-				\SMW\Message::clear();
-			}
-
-			$title = Title::newFromText(
-				$page['name'],
-				$namespace
-			);
-
-			if ( is_array( $page['contents'] ) && isset( $page['contents']['import-from'] ) ) {
-				$contents = file_get_contents( $this->getTestCaseLocation() . $page['contents']['import-from'] );
-			} else {
-				$contents = $page['contents'];
-			}
-
-			$this->pageCreator->createPage( $title, $contents, $pageContentLanguage );
-
-			$this->itemsMarkedForDeletion[] = $this->pageCreator->getPage();
-
-			if ( isset( $page['move-to'] ) ) {
-				$this->doMove( $page, $namespace );
-			}
-
-			if ( isset( $page['do-purge'] ) ) {
-				$this->pageCreator->getPage()->doPurge();
-			}
-
-			if ( isset( $page['do-delete'] ) && $page['do-delete'] ) {
-				$this->pageDeleter->deletePage( $title );
-			}
-		}
-	}
-
 	public function jsonFileProvider() {
 
 		$provider = array();
@@ -191,6 +142,24 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 		}
 
 		return $provider;
+	}
+
+	protected function changeGlobalSettingTo( $key, $value ) {
+
+		if ( $key === '' || $value === '' ) {
+			return;
+		}
+
+		$this->settings[$key] = $GLOBALS[$key];
+		$GLOBALS[$key] = $value;
+		ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
+	}
+
+	protected function restoreSettingsBeforeLocalChange() {
+		foreach ( $this->settings as $key => $value ) {
+			$GLOBALS[$key] = $value;
+			ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
+		}
 	}
 
 	protected function checkEnvironmentToSkipCurrentTest( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
@@ -216,25 +185,63 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 		}
 	}
 
-	protected function changeGlobalSettingTo( $key, $value ) {
+	protected function createPagesFor( array $pages, $defaultNamespace ) {
 
-		if ( $key === '' || $value === '' ) {
-			return;
+		foreach ( $pages as $page ) {
+
+			$skipOn = isset( $page['skip-on'] ) ? $page['skip-on'] : array();
+
+			if ( in_array( $this->connectorId, array_keys( $skipOn ) ) ) {
+				continue;
+			}
+
+			if ( !isset( $page['name'] ) || !isset( $page['contents'] ) ) {
+				continue;
+			}
+
+			$namespace = isset( $page['namespace'] ) ? constant( $page['namespace'] ) : $defaultNamespace;
+
+			$this->doCreatePage( $page, $namespace );
 		}
-
-		$this->settings[$key] = $GLOBALS[$key];
-		$GLOBALS[$key] = $value;
-		ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
 	}
 
-	protected function restoreSettingsBeforeLocalChange() {
-		foreach ( $this->settings as $key => $value ) {
-			$GLOBALS[$key] = $value;
-			ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
+	private function doCreatePage( $page, $namespace ) {
+
+		$pageContentLanguage = isset( $page['contentlanguage'] ) ? $page['contentlanguage'] : '';
+
+		if ( isset( $page['message-cache'] ) && $page['message-cache'] === 'clear' ) {
+			Message::clear();
+		}
+
+		$title = Title::newFromText(
+			$page['name'],
+			$namespace
+		);
+
+		if ( is_array( $page['contents'] ) && isset( $page['contents']['import-from'] ) ) {
+			$contents = file_get_contents( $this->getTestCaseLocation() . $page['contents']['import-from'] );
+		} else {
+			$contents = $page['contents'];
+		}
+
+		$this->pageCreator->createPage( $title, $contents, $pageContentLanguage );
+
+		$this->itemsMarkedForDeletion[] = $this->pageCreator->getPage();
+
+		if ( isset( $page['move-to'] ) ) {
+			$this->doMovePage( $page, $namespace );
+		}
+
+		if ( isset( $page['do-purge'] ) ) {
+			$this->pageCreator->getPage()->doPurge();
+		}
+
+		if ( isset( $page['do-delete'] ) && $page['do-delete'] ) {
+			$this->pageDeleter->deletePage( $title );
 		}
 	}
 
-	private function doMove( $page, $namespace ) {
+	private function doMovePage( $page, $namespace ) {
 		$target = Title::newFromText(
 			$page['move-to']['target'],
 			$namespace
