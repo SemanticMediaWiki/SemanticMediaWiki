@@ -77,11 +77,11 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$messageKeyLong = 'smw-pa-property-predefined-long' . strtolower( $key );
 		}
 
-		$message .= wfMessage( $messageKey )->exists() ? wfMessage( $messageKey, $propertyName )->parse() : wfMessage( 'smw-pa-property-predefined-default' )->parse();
+		$message .= wfMessage( $messageKey )->exists() ? wfMessage( $messageKey, $propertyName )->parse() : wfMessage( 'smw-pa-property-predefined-default', $propertyName )->parse();
 		$message .= wfMessage( $messageKeyLong )->exists() ? ' ' . wfMessage( $messageKeyLong )->parse() : '';
 		$message .= ' ' . wfMessage( 'smw-pa-property-predefined-common' )->parse();
 
-		return Html::rawElement( 'div', array( 'class' => 'smw-property-predefined-intro' ), $message );
+		return Html::rawElement( 'div', array( 'class' => 'smw-property-predefined-intro plainlinks' ), $message );
 	}
 
 	protected function getTopIndicator() {
@@ -122,14 +122,34 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 */
 	protected function getSubpropertyList() {
 
-		$options = new SMWRequestOptions();
-		$options->sort = true;
-		$options->ascending = true;
-		$subproperties = $this->store->getPropertySubjects( new SMW\DIProperty( '_SUBP' ), $this->getDataItem(), $options );
+		$more = false;
+		$requestOptions = new RequestOptions();
+		$requestOptions->sort = true;
+		$requestOptions->ascending = true;
+
+		// +1 look-ahead
+		$requestOptions->setLimit( $GLOBALS['smwgSubPropertyListLimit'] + 1 );
+		$subproperties = $this->store->getPropertySubjects( new DIProperty( '_SUBP' ), $this->getDataItem(), $requestOptions );
+
+		// Pop the +1 look-ahead from the list
+		if ( count( $subproperties ) > $GLOBALS['smwgSubPropertyListLimit'] ) {
+			array_pop( $subproperties );
+			$more = true;
+		}
 
 		$result = '';
-
 		$resultCount = count( $subproperties );
+
+		if ( $more ) {
+			$message = Html::rawElement(
+				'span',
+				array( 'class' => 'plainlinks' ),
+				wfMessage( 'smw-subpropertylist-count-with-restricted-note', $resultCount, $GLOBALS['smwgSubPropertyListLimit'] )->parse()
+			);
+		} else {
+			$message = wfMessage( 'smw-subpropertylist-count', $resultCount )->text();
+		}
+
 		if ( $resultCount > 0 ) {
 			$titleText = htmlspecialchars( $this->mTitle->getText() );
 			$result .= "<div id=\"mw-subcategories\">\n<h2>" . wfMessage( 'smw_subproperty_header', $titleText )->text() . "</h2>\n<p>";
@@ -138,7 +158,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 				$result .= wfMessage( 'smw_isspecprop' )->text() . ' ';
 			}
 
-			$result .= wfMessage( 'smw_subpropertyarticlecount' )->numParams( $resultCount )->text() . "</p>\n";
+			$result .= $message . "</p>"  ."\n";
 
 			if ( $resultCount < 6 ) {
 				$result .= SMWPageLister::getShortList( 0, $resultCount, $subproperties, null );
@@ -258,7 +278,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			      '&#160;' . $searchlink->getHTML( smwfGetLinker() ) . '</td><td class="smwprops">';
 
 			// Property values
-			$ropts = new SMWRequestOptions();
+			$ropts = new RequestOptions();
 			$ropts->limit = $smwgMaxPropertyValues + 1;
 			$values = $this->store->getPropertyValues( $diWikiPage, $this->mProperty, $ropts );
 			$i = 0;
