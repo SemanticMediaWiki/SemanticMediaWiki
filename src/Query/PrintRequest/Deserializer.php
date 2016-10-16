@@ -103,7 +103,7 @@ class Deserializer {
 
 	private static function getPartsFromText( $text ) {
 
-		// 1464
+		// #1464
 		// Temporary encode "=" within a <> entity (<span>...</span>)
 		$text = preg_replace_callback( "/(<(.*?)>(.*?)>)/u", function( $matches ) {
 			foreach ( $matches as $match ) {
@@ -115,6 +115,10 @@ class Deserializer {
 
 		// Restore temporary encoding
 		$parts[0] = str_replace( array( '-3D' ), array( '=' ), $parts[0] );
+
+		if ( isset( $parts[1] ) ) {
+			$parts[1] = str_replace( array( '-3D' ), array( '=' ), $parts[1] );
+		}
 
 		$propparts = explode( '#', $parts[0], 2 );
 		$printRequestLabel = trim( $propparts[0] );

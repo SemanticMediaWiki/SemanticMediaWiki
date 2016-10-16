@@ -143,6 +143,26 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			'foobar'
 		);
 
+		#9 ...
+		$provider[] = array(
+			'Foo = <span style="color: green; font-size: 120%;">Label</span>',
+			false,
+			'<span style="color: green; font-size: 120%;">Label</span>',
+			PrintRequest::PRINT_PROP,
+			PropertyValue::class,
+			''
+		);
+
+		#10 ...
+		$provider[] = array(
+			'Foo#Bar = <span style="color: green; font-size: 120%;">Label</span>',
+			false,
+			'<span style="color: green; font-size: 120%;">Label</span>',
+			PrintRequest::PRINT_PROP,
+			PropertyValue::class,
+			'Bar'
+		);
+
 		return $provider;
 	}
 
