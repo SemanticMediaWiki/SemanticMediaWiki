@@ -59,6 +59,7 @@ $autoloader->addClassMap( array(
 	'SMW\Tests\MwDBaseUnitTestCase'         => __DIR__ . '/phpunit/MwDBaseUnitTestCase.php',
 	'SMW\Tests\ByJsonTestCaseProvider'      => __DIR__ . '/phpunit/ByJsonTestCaseProvider.php',
 	'SMW\Tests\JsonTestCaseFileHandler'     => __DIR__ . '/phpunit/JsonTestCaseFileHandler.php',
+	'SMW\Tests\TestEnvironment'             => __DIR__ . '/phpunit/TestEnvironment.php',
 	'SMW\Test\QueryPrinterTestCase'         => __DIR__ . '/phpunit/QueryPrinterTestCase.php',
 	'SMW\Test\QueryPrinterRegistryTestCase' => __DIR__ . '/phpunit/QueryPrinterRegistryTestCase.php',
 ) );
