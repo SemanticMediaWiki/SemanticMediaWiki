@@ -4,7 +4,7 @@ namespace SMW\SPARQLStore\QueryEngine;
 
 use RuntimeException;
 use SMW\Exporter\Element;
-use SMW\Query\DebugOutputFormatter;
+use SMW\Query\DebugOutputFormatter as QueryDebugOutputFormatter;
 use SMW\Query\Language\ThingDescription;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
@@ -207,10 +207,9 @@ class QueryEngine implements QueryEngineInterface {
 			);
 		}
 
-		$sparql = str_replace( array( '[',':',' ' ), array( '&#x005B;', '&#x003A;', '&#x0020;' ), $sparql );
-		$entries['SPARQL Query'] = '<div class="smwpre">' . $sparql . '</div>';
+		$entries['SPARQL Query'] = QueryDebugOutputFormatter::doFormatSPARQLStatement( $sparql );
 
-		return DebugOutputFormatter::formatOutputFor( 'SPARQLStore', $entries, $query );
+		return QueryDebugOutputFormatter::getStringFrom( 'SPARQLStore', $entries, $query );
 	}
 
 	private function isSingletonConditionWithElementMatch( $condition ) {

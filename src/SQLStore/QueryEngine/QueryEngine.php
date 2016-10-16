@@ -5,7 +5,7 @@ namespace SMW\SQLStore\QueryEngine;
 use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\InvalidPredefinedPropertyException;
-use SMW\Query\DebugOutputFormatter;
+use SMW\Query\DebugOutputFormatter as QueryDebugOutputFormatter;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
@@ -165,6 +165,14 @@ class QueryEngine implements QueryEngineInterface {
 		QuerySegment::$qnum = 0;
 		$this->sortKeys = $query->sortkeys;
 
+		// Anchor IT_TABLE as root element
+		$rootSegmentNumber = QuerySegment::$qnum;
+		$rootSegment = new QuerySegment();
+		$rootSegment->joinTable = SMWSql3SmwIds::TABLE_NAME;
+		$rootSegment->joinfield = "$rootSegment->alias.smw_id";
+
+		$this->querySegmentListBuilder->addQuerySegment( $rootSegment );
+
 		// *** First compute abstract representation of the query (compilation) ***//
 		$this->querySegmentListBuilder->setSortKeys( $this->sortKeys );
 		$this->querySegmentListBuilder->getQuerySegmentFrom( $query->getDescription() ); // compile query, build query "plan"
@@ -174,27 +182,23 @@ class QueryEngine implements QueryEngineInterface {
 		$this->errors = $this->querySegmentListBuilder->getErrors();
 
 		if ( $qid < 0 ) { // no valid/supported condition; ensure that at least only proper pages are delivered
-			$qid = QuerySegment::$qnum;
-			$q = new QuerySegment();
-			$q->joinTable = SMWSql3SmwIds::TABLE_NAME;
-			$q->joinfield = "$q->alias.smw_id";
+			$q = $this->querySegmentList[$rootSegmentNumber];
 			$q->where = "$q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND $q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWREDIIW ) . " AND $q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWBORDERIW ) . " AND $q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWINTDEFIW );
-			$this->querySegmentList[$qid] = $q;
+			$this->querySegmentList[$rootSegmentNumber] = $q;
 		}
 
 		if ( isset( $this->querySegmentList[$qid]->joinTable ) && $this->querySegmentList[$qid]->joinTable != SMWSql3SmwIds::TABLE_NAME ) {
 			// manually make final root query (to retrieve namespace,title):
-			$rootid = QuerySegment::$qnum;
-			$qobj = new QuerySegment();
-			$qobj->joinTable  = SMWSql3SmwIds::TABLE_NAME;
-			$qobj->joinfield  = "$qobj->alias.smw_id";
+			$rootid = $rootSegmentNumber;
+			$qobj = $this->querySegmentList[$rootSegmentNumber];
 			$qobj->components = array( $qid => "$qobj->alias.smw_id" );
 			$qobj->sortfields = $this->querySegmentList[$qid]->sortfields;
-			$this->querySegmentList[$rootid] = $qobj;
+			$this->querySegmentList[$rootSegmentNumber] = $qobj;
 		} else { // not such a common case, but worth avoiding the additional inner join:
 			$rootid = $qid;
 		}
 
+		// var_dump( json_encode( $this->querySegmentList, JSON_PRETTY_PRINT ) );
 		// Include order conditions (may extend query if needed for sorting):
 		if ( $this->engineOptions->get( 'smwgQSortingSupport' ) ) {
 			$this->applyOrderConditions( $rootid );
@@ -254,12 +258,7 @@ class QueryEngine implements QueryEngineInterface {
 		$entries['SQL Query'] = '';
 		$entries['SQL Explain'] = '';
 
-		if ( isset( $qobj->joinfield ) && $qobj->joinfield !== '' ) {
-			$this->doPrepareDebugQueryResult( $qobj, $sqlOptions, $entries );
-		} else {
-			$entries['SQL Query'] = 'Empty result, no SQL query created.';
-		}
-
+		$this->doExecuteDebugQueryResult( $qobj, $sqlOptions, $entries );
 		$auxtables = '';
 
 		foreach ( $this->querySegmentListProcessor->getListOfResolvedQueries() as $table => $log ) {
@@ -271,59 +270,43 @@ class QueryEngine implements QueryEngineInterface {
 		}
 
 		if ( $auxtables ) {
-			$entries['Auxilliary Tables Used'] = "<ul>$auxtables</ul>";
+			$entries['Auxilliary Tables'] = "<ul>$auxtables</ul>";
 		} else {
-			$entries['Auxilliary Tables Used'] = 'No auxilliary tables used.';
+			$entries['Auxilliary Tables'] = 'No auxilliary tables used.';
 		}
 
-		return DebugOutputFormatter::formatOutputFor( 'SQLStore', $entries, $query );
+		return QueryDebugOutputFormatter::getStringFrom( 'SQLStore', $entries, $query );
 	}
 
-	private function doPrepareDebugQueryResult( $qobj, $sqlOptions, &$entries ) {
+	private function doExecuteDebugQueryResult( $qobj, $sqlOptions, &$entries ) {
+
+		if ( !isset( $qobj->joinfield ) || $qobj->joinfield === '' ) {
+			return $entries['SQL Query'] = 'Empty result, no SQL query created.';
+		}
 
 		$db = $this->store->getConnection( 'mw.db.queryengine' );
 		list( $startOpts, $useIndex, $tailOpts ) = $db->makeSelectOptions( $sqlOptions );
 
-		$entries['SQL Query'] =
-		           "SELECT DISTINCT $qobj->alias.smw_id AS id,$qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns,$qobj->alias.smw_iw AS iw,$qobj->alias.smw_subobject AS so,$qobj->alias.smw_sortkey AS sortkey FROM " .
-		           $db->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from .
-		           ( ( $qobj->where === '' ) ? '':' WHERE ' ) . $qobj->where . "$tailOpts $startOpts $useIndex LIMIT " .
-		           $sqlOptions['LIMIT'] . ' OFFSET ' . $sqlOptions['OFFSET'];
+		$sql = "SELECT DISTINCT ".
+			"$qobj->alias.smw_id AS id," .
+			"$qobj->alias.smw_title AS t," .
+			"$qobj->alias.smw_namespace AS ns," .
+			"$qobj->alias.smw_iw AS iw," .
+			"$qobj->alias.smw_subobject AS so," .
+			"$qobj->alias.smw_sortkey AS sortkey " .
+			"FROM " .
+			$db->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from .
+			( $qobj->where === '' ? '':' WHERE ' ) . $qobj->where . "$tailOpts $startOpts $useIndex ".
+			"LIMIT " . $sqlOptions['LIMIT'] . ' ' .
+			"OFFSET " . $sqlOptions['OFFSET'];
 
 		$res = $db->query(
-			'EXPLAIN '. $entries['SQL Query'],
+			'EXPLAIN '. $sql,
 			__METHOD__
 		);
 
-		// https://dev.mysql.com/doc/refman/5.0/en/explain-output.html
-		$entries['SQL Explain'] = "<table><tr><th>ID</th><th>select_type</th><th>table</th><th>type</th><th>possible_keys</th><th>key</th><th>key_len</th><th>ref</th><th>rows</th><th>Extra</th></tr>";
-
-		$hasEntry = false;
-		foreach ( $res as $row ) {
-
-			// sqlite doesn't support this, psql does something else
-			if ( !isset( $row->id ) ) {
-				continue;
-			}
-
-			$hasEntry = true;
-			$entries['SQL Explain'] .= "<tr><td>". $row->id . "</td><td>" . $row->select_type . "</td><td>" . $row->table . "</td><td>" . $row->type  . "</td><td>" . $row->possible_keys . "</td><td>" .
-			$row->key . "</td><td>" . $row->key_len . "</td><td>" . $row->ref . "</td><td>" . $row->rows .  "</td><td>" . $row->Extra . "</td></tr>";
-		}
-
-		if ( $hasEntry ) {
-			$entries['SQL Explain'] .= '</table>';
-		} else {
-			$entries['SQL Explain'] = 'Not supported.';
-		}
-
-		$entries['SQL Query'] = '<div class="smwpre">' . $entries['SQL Query'] . '</div>';
-
-		$entries['SQL Query'] =  str_replace(
-			array( "SELECT DISTINCT", "FROM", "INNER JOIN", "WHERE", "ORDER BY", "LIMIT", "OFFSET" ),
-			array( "SELECT DISTINCT<br>&nbsp;", "<br>FROM<br>&nbsp;", "<br>INNER JOIN<br>&nbsp;", "<br>WHERE<br>&nbsp;", "<br>ORDER BY<br>&nbsp;", "<br>LIMIT<br>&nbsp;", "<br>OFFSET<br>&nbsp;" ),
-			$entries['SQL Query']
-		);
+		$entries['SQL Explain'] = QueryDebugOutputFormatter::doFormatSQLExplainOutput( $db->getType(), $res );
+		$entries['SQL Query'] = QueryDebugOutputFormatter::doFormatSQLStatement( $sql, $qobj->alias );
 
 		$db->freeResult( $res );
 	}
