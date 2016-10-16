@@ -60,7 +60,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		}
 
 		if ( $type === self::WIKI_LONG ) {
-			$text = $wikiPageValue->getLongWikiText( $linker );
+			$text =  $this->doHighlightText( $wikiPageValue->getLongWikiText( $linker ) );
 		}
 
 		if ( $type === self::HTML_LONG ) {
