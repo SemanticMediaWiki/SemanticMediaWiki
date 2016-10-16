@@ -151,10 +151,12 @@ define( 'SMW_UJ_PM_CLASTMDATE', 4 ); // compare last modified
 define( 'SMW_DV_NONE', 0 );
 define( 'SMW_DV_PROV_REDI', 2 );  // PropertyValue to follow a property redirect target
 define( 'SMW_DV_MLTV_LCODE', 4 );  // MonolingualTextValue requires language code
+define( 'SMW_DV_NUMV_USPACE', 8 );  // Preserve spaces in unit labels
 define( 'SMW_DV_PVAP', 16 );  // Allows pattern
 define( 'SMW_DV_WPV_DTITLE', 32 );  // WikiPageValue to use an explicit display title
 define( 'SMW_DV_PROV_DTITLE', 64 );  // PropertyValue allow to find a property using the display title
 define( 'SMW_DV_PVUC', 128 );  // Delcares a uniqueness constraint
 define( 'SMW_DV_TIMEV_CM', 256 );  // TimeValue to indicate calendar model
-define( 'SMW_DV_NUMV_USPACE', 512 );  // Preserve spaces in unit labels
+define( 'SMW_DV_PPLB', 512 );  // Preferred property label
+define( 'SMW_DV_PROV_LHNT', 1024 );  // PropertyValue to output a hint in case of a preferred label usage
 /**@}*/

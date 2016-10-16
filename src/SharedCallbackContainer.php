@@ -265,6 +265,23 @@ class SharedCallbackContainer implements CallbackContainer {
 
 			return $propertyHierarchyLookup;
 		} );
+
+		/**
+		 * @var PropertyLabelFinder
+		 */
+		$callbackLoader->registerCallback( 'PropertyLabelFinder', function() use ( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'PropertyLabelFinder', '\SMW\PropertyLabelFinder' );
+
+			$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage();
+
+			$propertyLabelFinder = new PropertyLabelFinder(
+				$callbackLoader->load( 'Store' ),
+				$extraneousLanguage->getPropertyLabels(),
+				$extraneousLanguage->getCanonicalPropertyLabels()
+			);
+
+			return $propertyLabelFinder;
+		} );
 	}
 
 }

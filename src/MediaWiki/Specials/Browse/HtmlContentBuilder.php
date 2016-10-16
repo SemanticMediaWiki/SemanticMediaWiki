@@ -391,6 +391,19 @@ class HtmlContentBuilder {
 	 */
 	private function displayHead() {
 
+		if ( $this->subject->getDataItem()->getNamespace() === SMW_NS_PROPERTY ) {
+			$property = \SMWDIProperty::newFromUserLabel( $this->subject->getDataItem()->getDBKey() );
+			$caption = '';
+
+			$title = $property->getCanonicalDiWikiPage()->getTitle();
+
+			if ( ( $preferredLabel = $property->getPreferredLabel() ) !== '' && $title->getText() !== $preferredLabel ) {
+				$caption = wfMessage( 'smw-property-preferred-title-format', $title->getPrefixedText(), $preferredLabel )->text();
+			}
+
+			$this->subject->setCaption( $caption );
+		}
+
 		$html = "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n" .
 			"<tr class=\"smwb-title\"><td colspan=\"2\">\n" .
 			$this->subject->getLongHTMLText( smwfGetLinker() ) . "\n" .

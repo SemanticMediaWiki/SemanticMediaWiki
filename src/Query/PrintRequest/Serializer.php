@@ -81,15 +81,29 @@ class Serializer {
 
 		$printname = '';
 
-		if ( $printRequest->getData()->isVisible() ) {
+		$label = $printRequest->getLabel();
+		$data = $printRequest->getData();
+
+		if ( $data->isVisible() ) {
 			// #1564
 			// Use the canonical form for predefined properties to ensure
 			// that local representations are for display but points to
 			// the correct property
 			if ( $printRequest->isMode( PrintRequest::PRINT_CHAIN ) ) {
-				$printname = $printRequest->getData()->getDataItem()->getString();
+				$printname = $data->getDataItem()->getString();
+				// If the preferred label and invoked label are the same
+				// then no additional label is required as the label is
+				// recognized as being available by the system
+				if ( $label === $data->getLastPropertyChainValue()->getDataItem()->getPreferredLabel() ) {
+					$label = $printname;
+				}
 			} else {
+
 				$printname = $printRequest->getData()->getDataItem()->getCanonicalLabel();
+
+				if ( $label === $data->getDataItem()->getPreferredLabel() ) {
+					$label = $printname;
+				}
 			}
 		}
 
@@ -99,8 +113,8 @@ class Serializer {
 			$result .= '#' . $printRequest->getOutputFormat();
 		}
 
-		if ( $printname != $printRequest->getLabel() ) {
-			$result .= '=' . $printRequest->getLabel();
+		if ( $printname != $label ) {
+			$result .= '=' . $label;
 		}
 
 		return $result . $parameters;

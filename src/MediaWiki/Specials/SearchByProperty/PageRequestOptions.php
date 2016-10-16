@@ -109,7 +109,7 @@ class PageRequestOptions {
 			$this->value = null;
 			$this->valueString = $value;
 		} else {
-			$this->propertyString = $this->property->getWikiValue();
+			$this->propertyString = $this->property->getDataItem()->getLabel();
 			$this->setValue( $value );
 		}
 

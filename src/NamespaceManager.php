@@ -54,18 +54,6 @@ class NamespaceManager {
 	}
 
 	/**
-	 * @since 2.4
-	 *
-	 * @param string $languageCode
-	 *
-	 * @return array
-	 */
-	public static function getNamespacesByLanguageCode( $languageCode ) {
-		$GLOBALS['smwgContLang'] = ExtraneousLanguage::getInstance()->fetchByLanguageCode( $languageCode );
-		return $GLOBALS['smwgContLang']->getNamespaces();
-	}
-
-	/**
 	 * @see Hooks:CanonicalNamespaces
 	 * CanonicalNamespaces initialization
 	 *
@@ -221,6 +209,11 @@ class NamespaceManager {
 
 	protected function isDefinedConstant( $constant ) {
 		return defined( $constant );
+	}
+
+	protected function getNamespacesByLanguageCode( $languageCode ) {
+		$GLOBALS['smwgContLang'] = $this->extraneousLanguage->fetchByLanguageCode( $languageCode );
+		return $GLOBALS['smwgContLang']->getNamespaces();
 	}
 
 }

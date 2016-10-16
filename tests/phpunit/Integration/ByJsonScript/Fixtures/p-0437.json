@@ -1,0 +1,42 @@
+{
+	"description": "Test in-text annotation with preferred property label (`wgContLang=en`, `wgLang=ja`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"name": "P106",
+			"contents": {
+				"import-from": "/../Contents/p-0436.json"
+			}
+		},
+		{
+			"name": "Example/P0437/1",
+			"contents": "{{#subobject: |P106=Teacher }}{{#subobject: |P106=Actor }}"
+		},
+		{
+			"name": "Example/P0437/Q.1",
+			"contents": "{{#ask: [[P106::+]] |?P106 }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (ja)",
+			"subject": "Example/P0437/Q.1",
+			"expected-output": {
+				"to-contain": [
+					"data-title=\"プロパティ\" title=\"人物の職業。「専門分野」(Property:P101) も参照\">",
+					"title=\"Property:P106\">職業</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "ja"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

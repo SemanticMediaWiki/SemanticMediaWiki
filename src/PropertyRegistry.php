@@ -59,31 +59,25 @@ class PropertyRegistry {
 	 */
 	public static function getInstance() {
 
-		if ( self::$instance === null ) {
-
-			// DataTypeRegistry, resets to the User language
-			$dataTypeRegistry = DataTypeRegistry::getInstance();
-
-			$propertyLabelFinder = new PropertyLabelFinder(
-				ApplicationFactory::getInstance()->getStore(),
-				$GLOBALS['smwgContLang']->getPropertyLabels(),
-				$GLOBALS['smwgContLang']->getCanonicalPropertyLabels()
-			);
-
-			$propertyAliasFinder = new PropertyAliasFinder(
-				$GLOBALS['smwgContLang']->getPropertyAliases(),
-				$GLOBALS['smwgContLang']->getCanonicalPropertyAliases()
-			);
-
-			self::$instance = new self(
-				$dataTypeRegistry,
-				$propertyLabelFinder,
-				$propertyAliasFinder,
-				$GLOBALS['smwgDataTypePropertyExemptionList']
-			);
-
-			self::$instance->registerPredefinedProperties( $GLOBALS['smwgUseCategoryHierarchy'] );
+		if ( self::$instance !== null ) {
+			return self::$instance;
 		}
+
+		$propertyLabelFinder = ApplicationFactory::getInstance()->newPropertyLabelFinder();
+
+		$propertyAliasFinder = new PropertyAliasFinder(
+			$GLOBALS['smwgContLang']->getPropertyAliases(),
+			$GLOBALS['smwgContLang']->getCanonicalPropertyAliases()
+		);
+
+		self::$instance = new self(
+			DataTypeRegistry::getInstance(),
+			$propertyLabelFinder,
+			$propertyAliasFinder,
+			$GLOBALS['smwgDataTypePropertyExemptionList']
+		);
+
+		self::$instance->registerPredefinedProperties( $GLOBALS['smwgUseCategoryHierarchy'] );
 
 		return self::$instance;
 	}
@@ -373,6 +367,23 @@ class PropertyRegistry {
 		return false;
 	}
 
+ 	/**
+	 * @since 2.5
+	 *
+	 * @param string $id
+	 * @param string|null $languageCode
+	 *
+	 * @return string
+	 */
+	public function findPreferredPropertyLabelById( $id, $languageCode = '' ) {
+
+		if ( $languageCode === false || $languageCode === '' ) {
+			$languageCode = Localizer::getInstance()->getUserLanguage()->getCode();
+		}
+
+		return $this->propertyLabelFinder->findPreferredPropertyLabelByLanguageCode( $id, $languageCode );
+	}
+
 	/**
 	 * @deprecated since 2.1 use findPropertyIdByLabel instead
 	 */
@@ -468,6 +479,7 @@ class PropertyRegistry {
 			'_PVUC'  => array( '__pvuc', true, true ), // Uniqueness constraint
 			'_PEID'  => array( '_eid', true, true ), // External identifier
 			'_PEFU'  => array( '__pefu', true, true ), // External formatter uri
+			'_PPLB'  => array( '_mlt_rec', true, true ), // Preferred property label
 		);
 
 		foreach ( $this->datatypeLabels as $id => $label ) {

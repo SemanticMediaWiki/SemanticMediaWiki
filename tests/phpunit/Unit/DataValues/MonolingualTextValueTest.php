@@ -172,4 +172,14 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetTextWithLanguageTag() {
+
+		$instance = new MonolingualTextValue();
+
+		$this->assertSame(
+			'foo@zh-Hans',
+			$instance->getTextWithLanguageTag( 'foo', 'zh-hans' )
+		);
+	}
+
 }

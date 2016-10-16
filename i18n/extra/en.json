@@ -87,7 +87,8 @@
 		"_DTITLE": "Display title of",
 		"_PVUC": "Has uniqueness constraint",
 		"_PEID": "External identifier",
-		"_PEFU": "External formatter uri"
+		"_PEFU": "External formatter uri",
+		"_PPLB": "Has preferred property label"
 	},
 	"propertyAliases": {
 		"Display unit": "_UNIT",
@@ -126,7 +127,8 @@
 		"Has display title of": "_DTITLE",
 		"Has uniqueness constraint": "_PVUC",
 		"External identifier": "_PEID",
-		"External formatter uri": "_PEFU"
+		"External formatter uri": "_PEFU",
+		"Preferred property label": "_PPLB"
 	},
 	"namespaces":{
 		"SMW_NS_PROPERTY": "Property",

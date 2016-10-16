@@ -191,7 +191,7 @@ class SMWExportController {
 				$inprops = \SMW\StoreFactory::getStore()->getInProperties( $diWikiPage );
 
 				foreach ( $inprops as $inprop ) {
-					$propWikiPage = $inprop->getDiWikiPage();
+					$propWikiPage = $inprop->getCanonicalDiWikiPage();
 
 					if ( !is_null( $propWikiPage ) ) {
 						$this->queuePage( $propWikiPage, 0 ); // no real recursion along properties

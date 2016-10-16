@@ -327,6 +327,15 @@ class ApplicationFactory {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @return PropertyLabelFinder
+	 */
+	public function newPropertyLabelFinder() {
+		return $this->callbackLoader->create( 'PropertyLabelFinder' );
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @return CachedPropertyValuesPrefetcher

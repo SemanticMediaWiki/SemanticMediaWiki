@@ -524,7 +524,7 @@ $GLOBALS['smwgPageSpecialProperties'] = array( '_MDAT' );
 # setting is not normally changed by users but by extensions that add new
 # types that have their own additional declaration properties.
 ##
-$GLOBALS['smwgDeclarationProperties'] = array( '_PVAL', '_LIST', '_PVAP', '_PVUC' );
+$GLOBALS['smwgDeclarationProperties'] = array( '_PVAL', '_LIST', '_PVAP', '_PVUC', '_PDESC', '_PPLB' );
 ##
 
 ###
@@ -1007,9 +1007,14 @@ $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] = true;
 # - SMW_DV_NUMV_USPACE (Number/QuantityValue) to preserve spaces within
 # unit labels
 #
+# - SMW_DV_PPLB to support the use of preferred property labels
+#
+# - SMW_DV_PROV_LHNT (PropertyValue) to output a <sup>p</sup> hint marker on
+# properties that use a preferred label
+#
 # @since 2.4
 ##
-$GLOBALS['smwgDVFeatures'] = SMW_DV_PROV_REDI | SMW_DV_MLTV_LCODE | SMW_DV_PVAP | SMW_DV_WPV_DTITLE | SMW_DV_TIMEV_CM;
+$GLOBALS['smwgDVFeatures'] = SMW_DV_PROV_REDI | SMW_DV_MLTV_LCODE | SMW_DV_PVAP | SMW_DV_WPV_DTITLE | SMW_DV_TIMEV_CM | SMW_DV_PPLB | SMW_DV_PROV_LHNT;
 
 ##
 # Fulltext search support
