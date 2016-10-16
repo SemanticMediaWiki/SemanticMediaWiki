@@ -21,7 +21,7 @@ class DebugOutputFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			$instance->formatOutputFor( 'foo', array(), null )
+			$instance->getStringFrom( 'foo', array(), null )
 		);
 	}
 
@@ -47,8 +47,79 @@ class DebugOutputFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			$instance->formatOutputFor( 'foo', array(), $query )
+			$instance->getStringFrom( 'foo', array(), $query )
 		);
+	}
+
+	/**
+	 * @dataProvider sqlFormatProvider
+	 */
+	public function testFormatSQLExplainOutput( $type, $res ) {
+
+		$instance = new DebugOutputFormatter();
+
+		$this->assertInternalType(
+			'string',
+			$instance->doFormatSQLExplainOutput( $type, $res )
+		);
+	}
+
+	public function testFormatSPARQLStatement() {
+
+		$instance = new DebugOutputFormatter();
+
+		$sparql = '';
+
+		$this->assertInternalType(
+			'string',
+			$instance->doFormatSPARQLStatement( $sparql )
+		);
+	}
+
+	public function testFormatSQLStatement() {
+
+		$instance = new DebugOutputFormatter();
+
+		$sql = '';
+		$alias = '';
+
+		$this->assertInternalType(
+			'string',
+			$instance->doFormatSQLStatement( $sql, $alias )
+		);
+	}
+
+	public function sqlFormatProvider() {
+
+		$mysqlFormat = array(
+			'id' => '',
+			'select_type' => '',
+			'table' => '',
+			'type' => '',
+			'possible_keys' => '',
+			'key' => '',
+			'key_len' => '',
+			'ref' => '',
+			'rows' => '',
+			'Extra' => ''
+		);
+
+		$provider[] = array(
+			'mysql',
+			array( (object)$mysqlFormat )
+		);
+
+		$provider[] = array(
+			'postgres',
+			array( array( 'QUERY PLAN' => '' ) )
+		);
+
+		$provider[] = array(
+			'sqlite',
+			''
+		);
+
+		return $provider;
 	}
 
 }
