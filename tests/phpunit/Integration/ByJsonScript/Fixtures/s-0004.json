@@ -14,7 +14,7 @@
 	"tests": [
 		{
 			"type": "special",
-			"about": "#0",
+			"about": "#0 (output is localized, info link is in accordance with content lang.)",
 			"special-page": {
 				"page": "Browse",
 				"query-parameters": "Example/S0004/1",
@@ -25,7 +25,7 @@
 			"expected-output": {
 				"to-contain": [
 					"<span class=\"smwb-value\">1991年1月12日 (土) 08:56:00&#160;&#160;",
-					"title=\"Special:SearchByProperty/Has-20date/1991年1月12日-20(土)-2008:56:00\">+</a></span>"
+					"title=\"Special:SearchByProperty/Has-20date/12-20January-201991-2008:56:00\">+</a></span>"
 				]
 			}
 		}

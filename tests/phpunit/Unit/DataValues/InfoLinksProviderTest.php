@@ -3,6 +3,7 @@
 namespace SMW\Tests\DataValues;
 
 use SMW\DataItemFactory;
+use SMW\DataValueFactory;
 use SMW\DataValues\InfoLinksProvider;
 use SMW\Message;
 use SMW\Tests\TestEnvironment;
@@ -23,10 +24,12 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $dataItemFactory;
 	private $cachedPropertyValuesPrefetcher;
+	private $dataValueFactory;
 
 	protected function setUp() {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
+		$this->dataValueFactory = DataValueFactory::getInstance();
 
 		$this->cachedPropertyValuesPrefetcher = $this->getMockBuilder( '\SMW\CachedPropertyValuesPrefetcher' )
 			->disableOriginalConstructor()
@@ -107,6 +110,40 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			'/Foo/Text-20with-20-2D3A-2D3A-20content">+</a></span>',
+			$instance->getInfolinkText( SMW_OUTPUT_HTML )
+		);
+	}
+
+	public function testGetInfolinkTextOnTimeValueWithoutLocalizedOutput() {
+
+		$timeValue = $this->dataValueFactory->newDataValueByType( '_dat' );
+
+		$timeValue->setOption( $timeValue::OPT_USER_LANGUAGE, 'fr' );
+		$timeValue->setOption( $timeValue::OPT_CONTENT_LANGUAGE, 'en' );
+
+		// Forcibly set an output
+		$timeValue->setOutputFormat( 'LOCL' );
+
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
+		$property->setPropertyTypeId( '_dat' );
+
+		$timeValue->setProperty(
+			$property
+		);
+
+		$timeValue->setDataItem(
+			$this->dataItemFactory->newDITime( 1, 1970, 12, 12 )
+		);
+
+		$instance = new InfoLinksProvider( $timeValue );
+
+		$this->assertContains(
+			'/Foo/12-20December-201970|+]]</span>',
+			$instance->getInfolinkText( SMW_OUTPUT_WIKI )
+		);
+
+		$this->assertContains(
+			'/Foo/12-20December-201970">+</a></span>',
 			$instance->getInfolinkText( SMW_OUTPUT_HTML )
 		);
 	}

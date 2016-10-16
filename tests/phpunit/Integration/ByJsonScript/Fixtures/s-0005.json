@@ -33,8 +33,9 @@
 			"expected-output": {
 				"to-contain": [
 					"<span class=\"smwb-value\">08:56:00, 12 January 1991&#160;&#160;",
-					"title=\"Special:SearchByProperty/Has-20date/08:56:00,-2012-20January-201991\">+</a></span>",
-					"<span class=\"smwb-value\">January 12, 1345 <sup>JL</sup>&#160;&#160;"
+					"title=\"Special:SearchByProperty/Has-20date/12-20January-201991-2008:56:00\">+</a></span>",
+					"<span class=\"smwb-value\">January 12, 1345 <sup>JL</sup>&#160;&#160;",
+					"title=\"Special:SearchByProperty/Has-20date/12-20January-201345-20JL\">+</a></span>"
 				]
 			}
 		},
