@@ -15,7 +15,7 @@ matrix:
       php: 5.5
     - env: DB=postgres; MW=REL1_26;
       php: 5.5
-    - env: DB=postgres; MW=master;
+    - env: DB=postgres; MW=e31e0f4cbc7b196536809eba769e8938bd2b2039;
       php: 5.5
     - env: DB=mysql; MW=REL1_26; BLAZEGRAPH=1.5.2; PHPUNIT=4.8.*
       php: 5.6
