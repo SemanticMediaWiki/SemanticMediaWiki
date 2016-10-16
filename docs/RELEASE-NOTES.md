@@ -7,6 +7,7 @@ THIS IS NOT A RELEASE YET
 * #1481/#1801
 * #1808
 * #1824
+* #1879
 
 ## Compatibility changes
 
@@ -36,7 +37,10 @@ THIS IS NOT A RELEASE YET
 * #1838 Added `Timezone` support for the `LOCL` output format 
 * #1854 Added unescaped output support for `format=json`
 * #1855 Added `@@@` as special annotation syntax to generate a property link (e.g `[[Foo::@@@]]`)
+* #1875
+* #1879
 * #1891 Added support for JSON typed annotation in `#set` and `#subobject` using the `@json` marker
+* #1927
 
 ## Bug fixes
 
@@ -52,6 +56,8 @@ THIS IS NOT A RELEASE YET
 * #1823 Fixed annotation of `Display title of` when `SMW_DV_WPV_DTITLE` is disabled
 * #1880 Fixed handling of the `bytea` type in `postgres` for a blob field
 * #1886 Fixed disappearance of the `Property` namespace in connection with extensions that use `wfLoadExtension`
+* #1922
+* #1926 
 
 ## Internal changes
 
