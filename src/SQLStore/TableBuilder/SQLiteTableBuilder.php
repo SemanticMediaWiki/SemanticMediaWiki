@@ -15,36 +15,29 @@ class SQLiteTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getStandardFieldType( $input ) {
+	public function getStandardFieldType( $key ) {
 
-		switch ( $input ) {
-			case 'id':
-			return 'INTEGER'; // like page_id in MW page table
-			case 'id primary':
-			return 'INTEGER' . ' NOT NULL PRIMARY KEY AUTOINCREMENT'; // like page_id in MW page table
-			case 'namespace':
-			return 'INT(11)'; // like page_namespace in MW page table
-			case 'title':
-			return 'VARBINARY(255)'; // like page_title in MW page table
-			case 'iw':
-			return 'TEXT'; // like iw_prefix in MW interwiki table
-			case 'blob':
-			return 'MEDIUMBLOB'; // larger blobs of character data, usually not subject to SELECT conditions
-			case 'boolean':
-			return 'TINYINT(1)';
-			case 'double':
-			return 'DOUBLE';
-			case 'integer':
-			return 'INT(8)';
-			case 'usage count':
-			return 'INT(8)';
-			case 'integer unsigned':
-			return 'INTEGER';
-			case 'sort':
-			return 'VARCHAR(255)';
-		}
+		$standardFieldTypes = array(
+			 // like page_id in MW page table
+			'id'         => 'INTEGER',
+			'id primary' => 'INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT',
+			 // like page_namespace in MW page table
+			'namespace'  => 'INT(11)',
+			 // like page_title in MW page table
+			'title'      => 'VARBINARY(255)',
+			 // like iw_prefix in MW interwiki table
+			'iw'         => 'TEXT',
+			 // larger blobs of character data, usually not subject to SELECT conditions
+			'blob'       => 'MEDIUMBLOB',
+			'boolean'    => 'TINYINT(1)',
+			'double'     => 'DOUBLE',
+			'integer'    => 'INT(8)',
+			'sort'       => 'VARCHAR(255) NOT NULL COLLATE NOCASE',
+			'usage count'      =>'INT(8)',
+			'integer unsigned' => 'INTEGER',
+		);
 
-		return false;
+		return isset( $standardFieldTypes[$key] ) ? $standardFieldTypes[$key] : false;
 	}
 
 	/** Create */

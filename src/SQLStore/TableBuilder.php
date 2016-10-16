@@ -11,6 +11,16 @@ namespace SMW\SQLStore;
 interface TableBuilder {
 
 	/**
+	 * On after the creation of tables and indicies
+	 */
+	const EVENT_AFTER_TABLE_CREATE = 'event.after.table.create';
+
+	/**
+	 * On after dropping all tables
+	 */
+	const EVENT_AFTER_TABLE_DROP = 'event.after.table.drop';
+
+	/**
 	 * Generic creation and updating function for database tables. Ideally, it
 	 * would be able to modify a table's signature in arbitrary ways, but it will
 	 * fail for some changes. Its string-based interface is somewhat too
@@ -31,9 +41,7 @@ interface TableBuilder {
 	 * ```
 	 * $tableOptions = array(
 	 * 	'fields' => array(
-	 * 	),
-	 * 	'wgDBname' => $GLOBALS['$wgDBname'],
-	 * 	'wgDBTableOptions' => $GLOBALS['wgDBTableOptions']
+	 * 	)
 	 *  ...
 	 * )
 	 *```
@@ -86,5 +94,14 @@ interface TableBuilder {
 	 * @return string|false SQL type declaration
 	 */
 	public function getStandardFieldType( $input );
+
+	/**
+	 * Allows to check and validate the build on specific events
+	 *
+	 * @since 2.5
+	 *
+	 * @param string $event
+	 */
+	public function checkOn( $event );
 
 }

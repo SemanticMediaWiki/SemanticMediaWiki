@@ -15,36 +15,30 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getStandardFieldType( $input ) {
+	public function getStandardFieldType( $key ) {
 
-		switch ( $input ) {
-			case 'id':
-			return 'INT(8) UNSIGNED'; // like page_id in MW page table
-			case 'id primary':
-			return 'INT(8) UNSIGNED' . ' NOT NULL KEY AUTO_INCREMENT'; // like page_id in MW page table
-			case 'namespace':
-			return 'INT(11)'; // like page_namespace in MW page table
-			case 'title':
-			return 'VARBINARY(255)'; // like page_title in MW page table
-			case 'iw':
-			return 'VARBINARY(32)'; // like iw_prefix in MW interwiki table
-			case 'blob':
-			return 'MEDIUMBLOB'; // larger blobs of character data, usually not subject to SELECT conditions
-			case 'boolean':
-			return 'TINYINT(1)';
-			case 'double':
-			return 'DOUBLE';
-			case 'integer':
-			return 'INT(8)';
-			case 'usage count':
-			return 'INT(8) UNSIGNED';
-			case 'integer unsigned':
-			return 'INT(8) UNSIGNED';
-			case 'sort':
-			return 'VARCHAR(255)';
-		}
+		$fieldTypes = array(
+			 // like page_id in MW page table
+			'id' => 'INT(8) UNSIGNED',
+			 // like page_id in MW page table
+			'id primary' => 'INT(8) UNSIGNED' . ' NOT NULL KEY AUTO_INCREMENT',
+			 // like page_namespace in MW page table
+			'namespace' => 'INT(11)',
+			 // like page_title in MW page table
+			'title' => 'VARBINARY(255)',
+			 // like iw_prefix in MW interwiki table
+			'iw' => 'VARBINARY(32)',
+			 // larger blobs of character data, usually not subject to SELECT conditions
+			'blob' => 'MEDIUMBLOB',
+			'boolean'=> 'TINYINT(1)',
+			'double' => 'DOUBLE',
+			'integer' => 'INT(8)',
+			'usage count' => 'INT(8) UNSIGNED',
+			'integer unsigned' => 'INT(8) UNSIGNED',
+			'sort' => 'VARCHAR(255) CHARSET utf8 COLLATE utf8_general_ci'
+		);
 
-		return false;
+		return isset( $fieldTypes[$key] ) ? $fieldTypes[$key] : false;
 	}
 
 	/** Create */

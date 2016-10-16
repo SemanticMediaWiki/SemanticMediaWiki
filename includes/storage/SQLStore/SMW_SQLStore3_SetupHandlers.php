@@ -30,13 +30,26 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 	 */
 	protected $store;
 
+	/**
+	 * @var SQLStoreFactory
+	 */
 	private $factory;
 
+	/**
+	 * @since 1.8
+	 *
+	 * @param SMWSQLStore3 $parentstore
+	 */
 	public function __construct( SMWSQLStore3 $parentstore ) {
 		$this->store = $parentstore;
 		$this->factory = new SQLStoreFactory( $parentstore );
 	}
 
+	/**
+	 * @since 1.8
+	 *
+	 * @param  boolean $verbose
+	 */
 	public function setup( $verbose = true ) {
 
 		// If for some reason the enableSemantics was not yet enabled
@@ -50,27 +63,6 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 		$this->reportProgress( "Selected storage engine is \"SMWSQLStore3\" (or an extension thereof)\n\n", $verbose );
 
 		$db = $this->store->getConnection( DB_MASTER );
-
-		$this->setupTables( $verbose, $db );
-		$this->setupPredefinedProperties( $verbose, $db );
-
-		return true;
-	}
-
-	/**
-	 * Create required SQL tables. This function also performs upgrades of
-	 * table contents when required.
-	 *
-	 * @see SMWSql3SmwIds for documentation of the SMW IDs table.
-	 *
-	 * @since 1.8
-	 * @param boolean $verbose
-	 * @param DatabaseBase $db used for writing
-	 */
-	protected function setupTables( $verbose, $db ) {
-		global $wgDBtype;
-
-		$reportTo = $verbose ? $this : null; // Use $this to report back from static SMWSQLHelpers.
 
 		$tableBuilder = $this->factory->newTableBuilder();
 
@@ -95,6 +87,30 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			'n' => $tableBuilder->getStandardFieldType( 'namespace' ),
 			'w' => $tableBuilder->getStandardFieldType( 'iw' )
 		);
+
+		$this->setupTables( $tableBuilder, $dbtypes, $verbose );
+		$this->setupPropertyTables( $tableBuilder, $dbtypes );
+		$this->reportProgress( "Database initialized successfully.\n\n", $verbose );
+
+		$this->setupPredefinedProperties( $verbose, $db );
+		$this->reportProgress( "Internal properties initialized successfully.\n", $verbose );
+
+		$tableBuilder->checkOn( $tableBuilder::EVENT_AFTER_TABLE_CREATE );
+
+		return true;
+	}
+
+	/**
+	 * Create required SQL tables. This function also performs upgrades of
+	 * table contents when required.
+	 *
+	 * @see SMWSql3SmwIds for documentation of the SMW IDs table.
+	 *
+	 * @since 1.8
+	 * @param boolean $verbose
+	 * @param DatabaseBase $db used for writing
+	 */
+	protected function setupTables( $tableBuilder, $dbtypes, $verbose ) {
 
 		// Set up table for internal IDs used in this store:
 		$tableBuilder->createTable(
@@ -215,11 +231,6 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 				)
 			)
 		);
-
-		// Set up all property tables as defined:
-		$this->setupPropertyTables( $tableBuilder, $dbtypes );
-
-		$this->reportProgress( "Database initialized successfully.\n\n", $verbose );
 	}
 
 	/**
@@ -314,7 +325,6 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 	 * make sure that DB-based functions work as with all other properties.
 	 */
 	protected function setupPredefinedProperties( $verbose, DatabaseBase $db ) {
-		global $wgDBtype;
 
 		$this->checkPredefinedPropertyBorder( $verbose, $db );
 
@@ -335,19 +345,6 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 		}
 
 		$this->reportProgress( "   ... done.\n", $verbose );
-
-		if ( $wgDBtype == 'postgres' ) {
-			$sequenceIndex = SMWSQLStore3::ID_TABLE . '_smw_id_seq';
-
-			$this->reportProgress( " ... updating {$sequenceIndex} sequence accordingly.\n", $verbose );
-
-			$max = $db->selectField( SMWSQLStore3::ID_TABLE, 'max(smw_id)', array(), __METHOD__ );
-			$max += 1;
-
-			$db->query( "ALTER SEQUENCE {$sequenceIndex} RESTART WITH {$max}", __METHOD__ );
-		}
-
-		$this->reportProgress( "Internal properties initialized successfully.\n", $verbose );
 	}
 
 	public function drop( $verbose = true ) {
@@ -379,7 +376,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			$tableBuilder->dropTable( $tableName );
 		}
 
-		$this->reportProgress( "All data removed successfully.\n", $verbose );
+		$this->reportProgress( "Standard tables and data have been removed successfully.\n", $verbose );
 
 		\Hooks::run( 'SMW::SQLStore::AfterDropTablesComplete', array( $this->store, $tableBuilder ) );
 
