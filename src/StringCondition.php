@@ -31,7 +31,7 @@ class StringCondition {
 	 *
 	 * @var boolean
 	 */
-	public $asDisjunctiveCondition;
+	public $isDisjunctiveCondition;
 
 	/**
 	 * Condition. One of STRCOND_PRE (string matches prefix),
@@ -47,12 +47,12 @@ class StringCondition {
 	 *
 	 * @param srting $string
 	 * @param integer $condition
-	 * @param boolean $asDisjunctiveCondition
+	 * @param boolean $isDisjunctiveCondition
 	 */
-	public function __construct( $string, $condition, $asDisjunctiveCondition = false ) {
+	public function __construct( $string, $condition, $isDisjunctiveCondition = false ) {
 		$this->string = $string;
 		$this->condition = $condition;
-		$this->asDisjunctiveCondition = $asDisjunctiveCondition;
+		$this->isDisjunctiveCondition = $isDisjunctiveCondition;
 	}
 
 	/**
@@ -61,7 +61,7 @@ class StringCondition {
 	 * @return string
 	 */
 	public function getHash() {
-		return $this->string . '#' . $this->condition . '#' . $this->asDisjunctiveCondition;
+		return $this->string . '#' . $this->condition . '#' . $this->isDisjunctiveCondition;
 	}
 
 }

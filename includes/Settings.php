@@ -66,6 +66,7 @@ class Settings extends Options {
 			'smwgTypePagingLimit' => $GLOBALS['smwgTypePagingLimit'],
 			'smwgConceptPagingLimit' => $GLOBALS['smwgConceptPagingLimit'],
 			'smwgPropertyPagingLimit' => $GLOBALS['smwgPropertyPagingLimit'],
+			'smwgSubPropertyListLimit' => $GLOBALS['smwgSubPropertyListLimit'],
 			'smwgQEnabled' => $GLOBALS['smwgQEnabled'],
 			'smwgQMaxLimit' => $GLOBALS['smwgQMaxLimit'],
 			'smwgIgnoreQueryErrors' => $GLOBALS['smwgIgnoreQueryErrors'],

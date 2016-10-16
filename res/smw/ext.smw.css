@@ -496,7 +496,6 @@ label.smw-form-checkbox {
   -webkit-column-gap: 1em;
      -moz-column-gap: 1em;
           column-gap: 1em;
-          margin-bottom: -2em;
 }
 
 .smw-column[dir="rtl"] {
@@ -505,6 +504,10 @@ label.smw-form-checkbox {
 
 .smw-column-responsive[dir="rtl"] {
 	float: right;
+}
+
+.smw-columnlist-container .smw-column-responsive {
+	margin-bottom: -2em;
 }
 
 /* Thanks to the bootstrap css*/

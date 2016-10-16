@@ -302,6 +302,7 @@ $GLOBALS['smwgPropertyPagingLimit'] = 25; // use smaller value since property li
 # How many values should at most be displayed for a page on the Property page?
 ##
 $GLOBALS['smwgMaxPropertyValues'] = 3; // if large values are desired, consider reducing $smwgPropertyPagingLimit for better performance
+$GLOBALS['smwgSubPropertyListLimit'] = 25; // property page to limit the query request on subproperties
 ##
 
 ###

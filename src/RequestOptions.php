@@ -67,10 +67,10 @@ class RequestOptions {
 	 *
 	 * @param string $string to match
 	 * @param integer $condition one of STRCOND_PRE, STRCOND_POST, STRCOND_MID
-	 * @param boolean $asDisjunctiveCondition
+	 * @param boolean $isDisjunctiveCondition
 	 */
-	public function addStringCondition( $string, $condition, $asDisjunctiveCondition = false ) {
-		$this->stringConditions[] = new StringCondition( $string, $condition, $asDisjunctiveCondition );
+	public function addStringCondition( $string, $condition, $isDisjunctiveCondition = false ) {
+		$this->stringConditions[] = new StringCondition( $string, $condition, $isDisjunctiveCondition );
 	}
 
 	/**
@@ -138,7 +138,7 @@ class RequestOptions {
 			$this->sort . '#' .
 			$this->ascending . '#' .
 			$this->boundary . '#' .
-			$this->include_boundary .
+			$this->include_boundary . '#' .
 			( $stringConditions !== '' ? '|' . $stringConditions : '' );
 	}
 

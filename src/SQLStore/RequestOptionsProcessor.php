@@ -113,7 +113,7 @@ class RequestOptionsProcessor {
 					break;
 				}
 
-				$conditionOperator = $strcond->asDisjunctiveCondition ? ' OR ' : ' AND ';
+				$conditionOperator = $strcond->isDisjunctiveCondition ? ' OR ' : ' AND ';
 
 				$sqlConds .= ( ( $addAnd || ( $sqlConds !== '' ) ) ? $conditionOperator : '' ) . $labelCol . ' LIKE ' . $connection->addQuotes( $string );
 			}
