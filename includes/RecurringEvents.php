@@ -6,24 +6,22 @@ use SMWDITime;
 use SMWTimeValue;
 
 /**
+ * TODO This class needs some real refactoring!
+ *
+ * @private This class should not be instantiated directly.
+ *
  * This class determines recurring events based on invoked parameters
  *
  * @see http://semantic-mediawiki.org/wiki/Help:Recurring_events
  *
+ * @license GNU GPL v2+
  * @since 1.9
- *
- * @ingroup SMW
  *
  * @author Yaron Koren
  * @author Jeroen De Dauw
  * @author mwjames
  */
 class RecurringEvents {
-
-	/**
-	 * Represents Settings object
-	 */
-	private $settings;
 
 	/**
 	 * Defines the property used
@@ -46,14 +44,40 @@ class RecurringEvents {
 	private $errors = array();
 
 	/**
+	 * @var integer
+	 */
+	private $defaultNumRecurringEvents = 25;
+
+	/**
+	 * @var integer
+	 */
+	private $maxNumRecurringEvents = 25;
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param array $parameters
-	 * @param Settings $settings
 	 */
-	public function __construct( array $parameters, Settings $settings ) {
-		$this->settings = $settings;
+	public function __construct( array $parameters ) {
 		$this->parse( $parameters );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param integer $defaultNumRecurringEvents
+	 */
+	public function setDefaultNumRecurringEvents( $defaultNumRecurringEvents ) {
+		$this->defaultNumRecurringEvents = $defaultNumRecurringEvents;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param integer $maxNumRecurringEvents
+	 */
+	public function setMaxNumRecurringEvents( $maxNumRecurringEvents ) {
+		$this->maxNumRecurringEvents = $maxNumRecurringEvents;
 	}
 
 	/**
@@ -158,7 +182,7 @@ class RecurringEvents {
 						break;
 					case 'limit':
 						// Override default limit with query specific limit
-						$this->settings->set( 'smwgDefaultNumRecurringEvents', (int)$value );
+						$this->defaultNumRecurringEvents = (int)$value;
 						break;
 					case 'unit':
 						$unit = $value;
@@ -331,9 +355,9 @@ class RecurringEvents {
 
 			// should we stop?
 			if ( is_null( $end_date ) ) {
-				$reached_end_date = $i > $this->settings->get( 'smwgDefaultNumRecurringEvents' );
+				$reached_end_date = $i > $this->defaultNumRecurringEvents;
 			} else {
-				$reached_end_date = ( $cur_date_jd > $end_date_jd ) || ( $i > $this->settings->get( 'smwgMaxNumRecurringEvents' ) );
+				$reached_end_date = ( $cur_date_jd > $end_date_jd ) || ( $i > $this->maxNumRecurringEvents );
 			}
 		} while ( !$reached_end_date );
 

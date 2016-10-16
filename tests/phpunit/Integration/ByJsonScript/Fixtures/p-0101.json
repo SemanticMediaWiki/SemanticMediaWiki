@@ -12,7 +12,8 @@
 		},
 		{
 			"name": "Modification-date",
-			"contents": "[[Modification date::1 Jan 1970]] {{#set:|Modification date=1 Jan 1970}} {{#subobject:|Modification date=1 Jan 1970}}"
+			"contents": "[[Modification date::1 Jan 1970]] {{#set:|Modification date=1 Jan 1970}} {{#subobject:|Modification date=1 Jan 1970}}",
+			"message-cache": "clear"
 		},
 		{
 			"name": "Has-query",

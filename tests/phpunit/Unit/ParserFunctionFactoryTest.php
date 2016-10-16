@@ -94,22 +94,22 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function parserFunctionProvider() {
 
 		$provider[] = array(
-			'\SMW\RecurringEventsParserFunction',
+			'\SMW\ParserFunctions\RecurringEventsParserFunction',
 			'getRecurringEventsParser'
 		);
 
 		$provider[] = array(
-			'\SMW\SubobjectParserFunction',
+			'\SMW\ParserFunctions\SubobjectParserFunction',
 			'getSubobjectParser'
 		);
 
 		$provider[] = array(
-			'\SMW\RecurringEventsParserFunction',
+			'\SMW\ParserFunctions\RecurringEventsParserFunction',
 			'newRecurringEventsParserFunction'
 		);
 
 		$provider[] = array(
-			'\SMW\SubobjectParserFunction',
+			'\SMW\ParserFunctions\SubobjectParserFunction',
 			'newSubobjectParserFunction'
 		);
 

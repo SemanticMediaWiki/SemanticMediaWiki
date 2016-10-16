@@ -2,6 +2,9 @@
 
 namespace SMW;
 
+// Fatal error: Cannot use SMW\ParserFunctions\SubobjectParserFunction as SubobjectParserFunction because the name is already in use
+use SMW\ParserFunctions\SubobjectParserFunction as SubobjectParserFunc;
+use SMW\ParserFunctions\RecurringEventsParserFunction as RecurringEventsParserFunc;
 use Parser;
 
 /**
@@ -192,7 +195,7 @@ class ParserFunctionFactory {
 			$parser->getTargetLanguage()
 		);
 
-		$subobjectParserFunction = new SubobjectParserFunction(
+		$subobjectParserFunction = new SubobjectParserFunc(
 			$parserData,
 			$subobject,
 			$messageFormatter
@@ -221,7 +224,7 @@ class ParserFunctionFactory {
 			$parser->getTargetLanguage()
 		);
 
-		$recurringEventsParserFunction = new RecurringEventsParserFunction(
+		$recurringEventsParserFunction = new RecurringEventsParserFunc(
 			$parserData,
 			$subobject,
 			$messageFormatter,

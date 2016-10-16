@@ -55,7 +55,7 @@ class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testAddParameter() {
+	public function testAddAndRemoveParameter() {
 
 		$instance = new ParserParameterProcessor();
 
@@ -66,6 +66,12 @@ class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			array( 'Foo' => array( 'Bar' ) ),
 			$instance->toArray()
+		);
+
+		$instance->removeParameterByKey( 'Foo' );
+
+		$this->assertFalse(
+			$instance->hasParameter( 'Foo' )
 		);
 	}
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
 use SMW\DIProperty;
@@ -9,12 +9,12 @@ use SMW\MessageFormatter;
 use SMW\ParserData;
 use SMW\ParserParameterFormatter;
 use SMW\Subobject;
-use SMW\SubobjectParserFunction;
+use SMW\ParserFunctions\SubobjectParserFunction;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**
- * @covers \SMW\SubobjectParserFunction
+ * @covers \SMW\ParserFunctions\SubobjectParserFunction
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -45,7 +45,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SubobjectParserFunction',
+			'\SMW\ParserFunctions\SubobjectParserFunction',
 			new SubobjectParserFunction(
 				$parserData,
 				$subobject,
@@ -64,9 +64,9 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$instance = $this->acquireInstance( $subobject );
 		$result   = $instance->parse( new ParserParameterFormatter( $parameters ) );
 
-		$this->assertEquals(
-			$result !== '',
-			$expected['hasErrors']
+		$this->assertInternalType(
+			'string',
+			$result
 		);
 	}
 
@@ -96,7 +96,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$subobject    = new Subobject( $title );
 
 		$instance = $this->acquireInstance( $subobject, $parserOutput );
-		$instance->setFirstElementForPropertyLabel( $isEnabled  );
+		$instance->setFirstElementAsPropertyLabel( $isEnabled  );
 
 		$instance->parse( new ParserParameterFormatter( $parameters ) );
 
@@ -180,8 +180,10 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setupInstanceAndAssertSemanticData( array $parameters, array $expected ) {
 
+		$title = isset( $expected['embeddedTitle'] ) ? $expected['embeddedTitle'] : __METHOD__;
+
 		$parserOutput = new ParserOutput();
-		$title        = Title::newFromText( __METHOD__ );
+		$title        = Title::newFromText( $title );
 		$subobject    = new Subobject( $title );
 
 		$instance = $this->acquireInstance(
@@ -572,6 +574,26 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'propertyValues' => array(
 					'Foo',
 					'Bar'
+				)
+			)
+		);
+
+		// #5 `Bar` auto-linked with `LinkedToSubjectXY`
+		// {{#subobject:
+		// |@linkWith=Bar
+		// }}
+		$provider[] = array(
+			array(
+				'@linkWith=Bar'
+			),
+			array(
+				'embeddedTitle'  => 'LinkedToSubjectXY',
+				'propertyCount'  => 1,
+				'properties'     => array(
+					new DIProperty( 'Bar' )
+				),
+				'propertyValues' => array(
+					'LinkedToSubjectXY'
 				)
 			)
 		);
