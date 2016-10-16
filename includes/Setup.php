@@ -163,8 +163,10 @@ final class Setup {
 			if ( $language === Message::USER_LANGUAGE ) {
 				$language = Localizer::getInstance()->getUserLanguage();
 			}
-
-			return call_user_func_array( 'wfMessage', $arguments )->inLanguage( $language )->parse();
+			
+			// 1.27+
+			// [GlobalTitleFail] MessageCache::parse called by ... Message::parseText/MessageCache::parse with no title set.
+			return call_user_func_array( 'wfMessage', $arguments )->inLanguage( $language )->title( $GLOBALS['wgTitle'] )->parse();
 		} );
 	}
 
