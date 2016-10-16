@@ -245,6 +245,14 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructPropertyLabelFinder() {
+
+		$this->assertInstanceOf(
+			'\SMW\PropertyLabelFinder',
+			$this->applicationFactory->newPropertyLabelFinder()
+		);
+	}
+
 	public function testCanConstructDeferredCallableUpdate() {
 
 		$callback = function() {

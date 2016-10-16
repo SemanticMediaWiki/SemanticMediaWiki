@@ -209,6 +209,31 @@ class DIProperty extends SMWDataItem {
 	}
 
 	/**
+	 * Borrowing the skos:prefLabel definition where a preferred label is expected
+	 * to have only one label per given language (skos:altLabel can have many
+	 * alternative labels)
+	 *
+	 * An empty string signals that no preferred label is available in the current
+	 * user language.
+	 *
+	 * @since 2.5
+	 *
+	 * @param string $languageCode
+	 *
+	 * @return string
+	 */
+	public function getPreferredLabel( $languageCode = '' ) {
+
+		$label = PropertyRegistry::getInstance()->findPreferredPropertyLabelById( $this->m_key, $languageCode );
+
+		if ( $label !== '' ) {
+			return ( $this->m_inverse ? '-' : '' ) . $label;
+		}
+
+		return '';
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param string $interwiki

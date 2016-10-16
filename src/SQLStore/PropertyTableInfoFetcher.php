@@ -51,7 +51,7 @@ class PropertyTableInfoFetcher {
 	 */
 	private $fixedSpecialProperties = array(
 		// property declarations
-		'_TYPE', '_UNIT', '_CONV', '_PVAL', '_LIST', '_SERV', '_PREC',
+		'_TYPE', '_UNIT', '_CONV', '_PVAL', '_LIST', '_SERV', '_PREC', '_PPLB',
 		// query statistics (very frequently used)
 		'_ASK', '_ASKDE', '_ASKSI', '_ASKFO', '_ASKST', '_ASKDU',
 		// subproperties, classes, and instances

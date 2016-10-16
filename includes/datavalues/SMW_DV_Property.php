@@ -1,6 +1,7 @@
 <?php
 
 use SMW\ApplicationFactory;
+use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\Highlighter;
@@ -50,6 +51,11 @@ class SMWPropertyValue extends SMWDataValue {
 	protected $linkAttributes = array();
 
 	/**
+	 * @var string
+	 */
+	private $preferredLabel = '';
+
+	/**
 	 * Cache for type value of this property, or null if not calculated yet.
 	 * @var SMWTypesValue
 	 */
@@ -65,7 +71,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 *
 	 * @param string $typeid
 	 */
-	public function __construct( $typeid ) {
+	public function __construct( $typeid = '__pro' ) {
 		parent::__construct( $typeid );
 	}
 
@@ -136,10 +142,6 @@ class SMWPropertyValue extends SMWDataValue {
 		$this->mPropTypeValue = null;
 		$this->m_wikipage = null;
 
-		if ( $this->m_caption === false ) { // always use this as caption
-			$this->m_caption = $value;
-		}
-
 		list( $propertyName, $inverse ) = $this->doNormalizeUserValue(
 			$value
 		);
@@ -162,10 +164,23 @@ class SMWPropertyValue extends SMWDataValue {
 			$this->m_dataitem = $dataItem ? $dataItem : $this->m_dataitem;
 		}
 
+		// Copy the original DI to ensure we can compare it against a possible redirect
 		$this->inceptiveProperty = $this->m_dataitem;
 
 		if ( $this->isEnabledFeature( SMW_DV_PROV_REDI ) ) {
 			$this->m_dataitem = $this->m_dataitem->getRedirectTarget();
+		}
+
+		// If no external caption has been invoked then fetch a preferred label
+		if ( $this->m_caption === false || $this->m_caption === '' ) {
+			$this->preferredLabel = $this->m_dataitem->getPreferredLabel( $this->getOptionBy( self::OPT_USER_LANGUAGE ) );
+		}
+
+		// Use the preferred label as first choice for a caption, if available
+		if ( $this->preferredLabel !== '' ) {
+			$this->m_caption = $this->preferredLabel;
+		} elseif ( $this->m_caption === false ) {
+			$this->m_caption = $value;
 		}
 	}
 
@@ -182,13 +197,27 @@ class SMWPropertyValue extends SMWDataValue {
 
 		$this->inceptiveProperty = $dataItem;
 		$this->m_dataitem = $dataItem;
+		$this->preferredLabel = $this->m_dataitem->getPreferredLabel();
 
 		$this->mPropTypeValue = null;
 		unset( $this->m_wikipage );
 		$this->m_caption = false;
 		$this->linkAttributes = array();
 
+		if ( $this->preferredLabel !== '' ) {
+			$this->m_caption = $this->preferredLabel;
+		}
+
 		return true;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getPreferredLabel() {
+		return $this->preferredLabel;
 	}
 
 	/**
@@ -237,7 +266,7 @@ class SMWPropertyValue extends SMWDataValue {
 		$diWikiPage = $this->m_dataitem->getCanonicalDiWikiPage();
 
 		if ( $diWikiPage !== null ) {
-			$this->m_wikipage = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $diWikiPage, null, $this->m_caption );
+			$this->m_wikipage = DataValueFactory::getInstance()->newDataValueByItem( $diWikiPage, null, $this->m_caption );
 			$this->m_wikipage->setOutputFormat( $this->m_outformat );
 			$this->m_wikipage->setLinkAttributes( $this->linkAttributes );
 			$this->m_wikipage->setOptions( $this->getOptions() );
@@ -255,7 +284,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @note Every user defined property is necessarily visible.
 	 */
 	public function isVisible() {
-		return $this->isValid() && ( $this->m_dataitem->isUserDefined() || $this->m_dataitem->getLabel() !== '' );
+		return $this->isValid() && ( $this->m_dataitem->isUserDefined() || $this->m_dataitem->getCanonicalLabel() !== '' );
 	}
 
 	/**
@@ -267,57 +296,49 @@ class SMWPropertyValue extends SMWDataValue {
 		return $this->isValid() && $this->m_dataitem->isUnrestricted();
 	}
 
-	public function getShortWikiText( $linked = null ) {
-
-		if ( $this->isVisible() ) {
-			$wikiPageValue = $this->getWikiPageValue();
-			return is_null( $wikiPageValue ) ? '' : $this->highlightText( $wikiPageValue->getShortWikiText( $linked ) );
-		}
-
-		return '';
+	/**
+	 * @see DataValue::getShortWikiText
+	 *
+	 * @return string
+	 */
+	public function getShortWikiText( $linker = null ) {
+		return $this->getDataValueFormatter()->format( DataValueFormatter::WIKI_SHORT, $linker );
 	}
 
-	public function getShortHTMLText( $linked = null ) {
-
-		if ( $this->isVisible() ) {
-			$wikiPageValue = $this->getWikiPageValue();
-			return is_null( $wikiPageValue ) ? '' : $this->highlightText( $wikiPageValue->getShortHTMLText( $linked ), $linked );
-		}
-
-		return '';
+	/**
+	 * @see DataValue::getShortHTMLText
+	 *
+	 * @return string
+	 */
+	public function getShortHTMLText( $linker = null ) {
+		return $this->getDataValueFormatter()->format( DataValueFormatter::HTML_SHORT, $linker );
 	}
 
-	public function getLongWikiText( $linked = null ) {
-
-		if ( $this->isVisible() ) {
-			$wikiPageValue = $this->getWikiPageValue();
-			return is_null( $wikiPageValue ) ? '' : $this->highlightText( $wikiPageValue->getLongWikiText( $linked ) );
-		}
-
-		return '';
+	/**
+	 * @see DataValue::getLongWikiText
+	 *
+	 * @return string
+	 */
+	public function getLongWikiText( $linker = null ) {
+		return $this->getDataValueFormatter()->format( DataValueFormatter::WIKI_LONG, $linker );
 	}
 
-	public function getLongHTMLText( $linked = null ) {
-
-		if ( $this->isVisible() ) {
-			$wikiPageValue = $this->getWikiPageValue();
-			return is_null( $wikiPageValue ) ? '' : $this->highlightText( $wikiPageValue->getLongHTMLText( $linked ), $linked );
-		}
-
-		return '';
+	/**
+	 * @see DataValue::getLongHTMLText
+	 *
+	 * @return string
+	 */
+	public function getLongHTMLText( $linker = null ) {
+		return $this->getDataValueFormatter()->format( DataValueFormatter::HTML_LONG, $linker );
 	}
 
+	/**
+	 * @see DataValue::getWikiValue
+	 *
+	 * @return string
+	 */
 	public function getWikiValue() {
-
-		if ( !$this->isVisible() ) {
-			return '';
-		}
-
-		if ( $this->getWikiPageValue() !== null && $this->getWikiPageValue()->getDisplayTitle() !== '' ) {
-			return $this->getWikiPageValue()->getDisplayTitle();
-		}
-
-		return $this->m_dataitem->getLabel();
+		return $this->getDataValueFormatter()->format( DataValueFormatter::VALUE );
 	}
 
 	/**
@@ -355,32 +376,6 @@ class SMWPropertyValue extends SMWDataValue {
 		} else {
 			return '__err';
 		}
-	}
-
-	/**
-	 * Create special highlighting for hinting at special properties.
-	 */
-	protected function highlightText( $text, $linker = null ) {
-
-		if ( $this->getOptionBy( self::OPT_NO_HIGHLIGHT ) === true ) {
-			return $text;
-		}
-
-		$propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
-
-		if ( ( $content = $propertySpecificationLookup->getPropertyDescriptionBy( $this->m_dataitem, $linker ) ) !== '' || !$this->m_dataitem->isUserDefined() ) {
-
-			$highlighter = Highlighter::factory( Highlighter::TYPE_PROPERTY, $this->getOptionBy( self::OPT_USER_LANGUAGE ) );
-			$highlighter->setContent( array (
-				'userDefined' => $this->m_dataitem->isUserDefined(),
-				'caption' => $text,
-				'content' => $content !== '' ? $content : wfMessage( 'smw_isspecprop' )->text()
-			) );
-
-			return $highlighter->getHtml();
-		}
-
-		return $text;
 	}
 
 	/**

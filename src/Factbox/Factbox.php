@@ -358,7 +358,6 @@ class Factbox {
 				$attributes['property'] = array( 'class' => 'smwpropname' );
 				$attributes['values'] = array( 'class' => 'smwprops' );
 			} elseif ( $propertyDv->isVisible() ) {
-				$propertyDv->setCaption( $propertyDi->getLabel() );
 				// Predefined property
 				$attributes['property'] = array( 'class' => 'smwspecname' );
 				$attributes['values'] = array( 'class' => 'smwspecs' );

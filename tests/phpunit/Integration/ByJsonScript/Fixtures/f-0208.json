@@ -66,7 +66,7 @@
 			"subject": "Example/F0208/Q1.1",
 			"expected-output": {
 				"to-contain": [
-					"Special:Ask/-5B-5BHas-20text::F0208-5D-5D/-3FHas-20text/-3FModification-20date%3DFecha-20de-20modificaci%C3%B3n/mainlabel%3D/offset%3D0/format%3Dtable"
+					"Special:Ask/-5B-5BHas-20text::F0208-5D-5D/-3FHas-20text/-3FModification-20date/mainlabel%3D/offset%3D0/format%3Dtable"
 				],
 				"not-contain": [
 					"Special:Ask/-5B-5BHas-20text::F0208-5D-5D/-3FHas-20text-23/-3FModification-20date-23=Fecha-20de-20modificación/mainlabel=/offset=0/format=table"
@@ -79,7 +79,7 @@
 			"subject": "Example/F0208/Q2.1",
 			"expected-output": {
 				"to-contain": [
-					"Special:Ask/-5B-5BModification-20date::%2B-5D-5D/-3FModification-20date%3DFecha-20de-20modificaci%C3%B3n/mainlabel%3D/offset%3D0/format%3Dtable"
+					"Special:Ask/-5B-5BModification-20date::%2B-5D-5D/-3FModification-20date/mainlabel%3D/offset%3D0/format%3Dtable"
 				]
 			}
 		},
@@ -89,7 +89,7 @@
 			"subject": "Example/F0208/Q2.2",
 			"expected-output": {
 				"to-contain": [
-					"Special:Ask/-5B-5BModification-20date::%2B-5D-5D/-3FModification-20date%3DFecha-20de-20modificaci%C3%B3n/mainlabel%3D/offset%3D0/format%3Dtable"
+					"Special:Ask/-5B-5BModification-20date::%2B-5D-5D/-3FModification-20date/mainlabel%3D/offset%3D0/format%3Dtable"
 				]
 			}
 		},
@@ -139,7 +139,7 @@
 			"subject": "Example/F0208/Q3.5",
 			"expected-output": {
 				"to-contain": [
-					"Special:Ask/-5B-5B:Example-2FF0208-2F3-5D-5D/-3FHas-20page=/mainlabel=-2D/offset=0/format=table/link=none/headers=plain"
+					"Special:Ask/-5B-5B:Example-2FF0208-2F3-5D-5D/-3FHas-20page/mainlabel=-2D/offset=0/format=table/link=none/headers=plain"
 				]
 			}
 		},

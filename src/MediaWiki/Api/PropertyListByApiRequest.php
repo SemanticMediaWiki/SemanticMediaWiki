@@ -7,6 +7,8 @@ use SMW\PropertySpecificationLookup;
 use SMW\RequestOptions;
 use SMW\Store;
 use SMW\StringCondition;
+use SMW\Localizer;
+use SMW\ApplicationFactory;
 
 /**
  * @license GNU GPL v2+
@@ -155,6 +157,9 @@ class PropertyListByApiRequest {
 
 		$isFromCache = false;
 
+		//
+		$this->matchPropertiesToPreferredLabelBy( $property );
+
 		// Increase by one to look ahead
 		$requestOptions->limit++;
 
@@ -275,6 +280,23 @@ class PropertyListByApiRequest {
 		return array(
 			$this->propertySpecificationLookup->getLanguageCode() => $description
 		);
+	}
+
+	private function matchPropertiesToPreferredLabelBy( $label ) {
+
+		$propertyLabelFinder = ApplicationFactory::getInstance()->newPropertyLabelFinder();
+
+		// Use the proximity search on a text field
+		$label = '~*' . $label . '*';
+
+		$results = $propertyLabelFinder->findPropertyListFromLabelByLanguageCode(
+			$label,
+			Localizer::getInstance()->getUserLanguage()->getCode()
+		);
+
+		foreach ( $results as $result ) {
+			$this->addPropertyToList( array( $result, 0 ) );
+		}
 	}
 
 }

@@ -179,6 +179,7 @@ class SMWSql3SmwIds {
 		'_INST' => 4,
 		'_UNIT' => 7,
 		'_IMPO' => 8,
+		'_PPLB' => 9,
 		'_PDESC' => 10,
 		'_PREC' => 11,
 		'_CONV' => 12,

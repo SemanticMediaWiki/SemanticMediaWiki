@@ -73,6 +73,31 @@ class PropertySpecificationLookup {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param string $id
+	 *
+	 * @return string
+	 */
+	public function getPreferredPropertyLabelBy( $id ) {
+
+		$key = 'ppl:' . $id;
+
+		// Guard against high frequency lookup
+		if ( ( $preferredPropertyLabel = $this->intermediaryMemoryCache->fetch( $key ) ) !== false ) {
+			return $preferredPropertyLabel;
+		}
+
+		$preferredPropertyLabel = $this->findPreferredPropertyLabel(
+			new DIProperty( str_replace( ' ', '_', $id ) )
+		);
+
+		$this->intermediaryMemoryCache->save( $key, $preferredPropertyLabel );
+
+		return $preferredPropertyLabel;
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param string $displayTitle
@@ -125,7 +150,7 @@ class PropertySpecificationLookup {
 		}
 
 		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
-			$property->getDiWikiPage(),
+			$property->getCanonicalDiWikiPage(),
 			new DIProperty( '_PVUC' )
 		);
 
@@ -150,7 +175,7 @@ class PropertySpecificationLookup {
 		$dataItem = null;
 
 		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
-			$property->getDiWikiPage(),
+			$property->getCanonicalDiWikiPage(),
 			new DIProperty( '_PEFU' )
 		);
 
@@ -179,7 +204,7 @@ class PropertySpecificationLookup {
 		}
 
 		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
-			$property->getDiWikiPage(),
+			$property->getCanonicalDiWikiPage(),
 			new DIProperty( '_PVAP' )
 		);
 
@@ -210,7 +235,7 @@ class PropertySpecificationLookup {
 		}
 
 		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
-			$property->getDiWikiPage(),
+			$property->getCanonicalDiWikiPage(),
 			new DIProperty( '_PVAL' )
 		);
 
@@ -235,7 +260,7 @@ class PropertySpecificationLookup {
 		$displayPrecision = false;
 
 		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
-			$property->getDiWikiPage(),
+			$property->getCanonicalDiWikiPage(),
 			new DIProperty( '_PREC' )
 		);
 
@@ -259,7 +284,7 @@ class PropertySpecificationLookup {
 		$units = array();
 
 		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
-			$property->getDiWikiPage(),
+			$property->getCanonicalDiWikiPage(),
 			new DIProperty( '_UNIT' )
 		);
 
@@ -294,7 +319,7 @@ class PropertySpecificationLookup {
 		$blobStore = $this->cachedPropertyValuesPrefetcher->getBlobStore();
 
 		$container = $blobStore->read(
-			$this->cachedPropertyValuesPrefetcher->getRootHashFrom( $property->getDiWikiPage() )
+			$this->cachedPropertyValuesPrefetcher->getRootHashFrom( $property->getCanonicalDiWikiPage() )
 		);
 
 		if ( $container->has( $key ) ) {
@@ -345,21 +370,39 @@ class PropertySpecificationLookup {
 
 	private function tryToFindLocalPropertyDescription( $property, $linker ) {
 
-		$description = '';
+		$text = '';
+		$descriptionProperty = new DIProperty( '_PDESC' );
 
 		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
-			$property->getDiWikiPage(),
-			new DIProperty( '_PDESC' )
+			$property->getCanonicalDiWikiPage(),
+			$descriptionProperty
 		);
 
-		if ( ( $dataValue = $this->findDataValueByLanguage( $dataItems, $this->languageCode ) ) !== null ) {
-			$description = $dataValue->getShortWikiText( $linker );
+		if ( ( $dataValue = $this->findTextValueByLanguage( $dataItems, $descriptionProperty ) ) !== null ) {
+			$text = $dataValue->getShortWikiText( $linker );
 		}
 
-		return $description;
+		return $text;
 	}
 
-	private function findDataValueByLanguage( $dataItems, $languageCode ) {
+	private function findPreferredPropertyLabel( $property ) {
+
+		$text = '';
+		$preferredProperty = new DIProperty( '_PPLB' );
+
+		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
+			$property->getCanonicalDiWikiPage(),
+			$preferredProperty
+		);
+
+		if ( ( $dataValue = $this->findTextValueByLanguage( $dataItems, $preferredProperty ) ) !== null ) {
+			$text = $dataValue->getShortWikiText();
+		}
+
+		return $text;
+	}
+
+	private function findTextValueByLanguage( $dataItems, $property ) {
 
 		if ( $dataItems === null || $dataItems === array() ) {
 			return null;
@@ -369,12 +412,12 @@ class PropertySpecificationLookup {
 
 			$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 				$dataItem,
-				new DIProperty( '_PDESC' )
+				$property
 			);
 
 			// Here a MonolingualTextValue was retunred therefore the method
 			// can be called without validation
-			$dv = $dataValue->getTextValueByLanguage( $languageCode );
+			$dv = $dataValue->getTextValueByLanguage( $this->languageCode );
 
 			if ( $dv !== null ) {
 				return $dv;

@@ -284,6 +284,9 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
+		$pdesc = $this->dataItemFactory->newDIProperty( '_PDESC' );
+		$pdesc->setPropertyTypeId( '_mlt_rec' );
+
 		$container = $this->getMockBuilder( '\Onoi\BlobStore\Container' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -296,10 +299,10 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyValues' )
 			->with(
 				$this->equalTo( $property->getDiWikiPage() ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_PDESC' ) ),
+				$this->anything(),
 				$this->anything() )
 			->will( $this->returnValue( array(
-				 $this->dataItemFactory->newDIContainer( ContainerSemanticData::makeAnonymousContainer() ) ) ) );
+				$this->dataItemFactory->newDIContainer( ContainerSemanticData::makeAnonymousContainer() ) ) ) );
 
 		$this->cachedPropertyValuesPrefetcher->expects( $this->once() )
 			->method( 'getBlobStore' )

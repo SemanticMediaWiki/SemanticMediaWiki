@@ -9,6 +9,7 @@ use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Localizer;
+use SMW\StringCondition;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
@@ -70,6 +71,18 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 */
 	public function getProperties() {
 		self::$properties;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param $userValue
+	 * @param string $languageCode
+	 *
+	 * @return string
+	 */
+	public function getTextWithLanguageTag( $text, $languageCode ) {
+		return $text . '@' . Localizer::asBCP47FormattedLanguageCode( $languageCode );
 	}
 
 	/**

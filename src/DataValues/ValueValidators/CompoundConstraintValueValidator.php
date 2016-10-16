@@ -73,6 +73,7 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 		$this->registerConstraintValueValidator( new UniquenessConstraintValueValidator() );
 		$this->registerConstraintValueValidator( new PatternConstraintValueValidator() );
 		$this->registerConstraintValueValidator( new ListConstraintValueValidator() );
+		$this->registerConstraintValueValidator( new PropertySpecificationConstraintValueValidator() );
 	}
 
 }
