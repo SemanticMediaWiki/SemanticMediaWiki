@@ -114,6 +114,9 @@ class InfoLinksProvider {
 			return array();
 		}
 
+		// Avoid any localization when generating the value
+		$this->dataValue->setOutputFormat( '' );
+
 		$value = $this->dataValue->getWikiValue();
 
 		// InTextAnnotationParser will detect :: therefore avoid link
