@@ -289,7 +289,6 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 
 		$caption = $this->m_caption === false ? $this->getShortCaptionText() : $this->m_caption;
-		$caption = htmlspecialchars( $caption );
 
 		if ( $this->getNamespace() == NS_MEDIA ) { // this extra case *is* needed
 			return $linker->makeMediaLinkObj( $this->getTitle(), $caption );
@@ -375,7 +374,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		// all others use default linking, no embedding of images here
 		return $linker->link(
 			$this->getTitle(),
-			htmlspecialchars( $this->getLongCaptionText() ),
+			$this->getLongCaptionText(),
 			$this->linkAttributes
 		);
 	}
