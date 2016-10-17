@@ -135,7 +135,7 @@
 	"smw_attribute_header": "Páginas que utilizam a propriedade \"$1\"",
 	"smw_attributearticlecount": "Exibindo $1 {{PLURAL:$1|página que utiliza|páginas que utilizam}} esta propriedade.",
 	"smw_subproperty_header": "Subpropriedades",
-	"smw_subpropertyarticlecount": "Esta propriedade possui {{PLURAL:$1|a seguinte subpropriedade|as seguintes $1 subpropriedades}}:",
+	"smw-subpropertylist-count": "Esta propriedade possui {{PLURAL:$1|a seguinte subpropriedade|as seguintes $1 subpropriedades}}:",
 	"exportrdf": "Exportar páginas para RDF",
 	"smw_exportrdf_docu": "Esta página permite que você obtenha dados de uma página no formato RDF.\nPara exportar páginas, introduza os seus títulos na caixa de texto abaixo, um título por linha.",
 	"smw_exportrdf_recursive": "Exportar recursivamente todas as páginas relacionadas.\nNote que o resultado pode ser volumoso!",

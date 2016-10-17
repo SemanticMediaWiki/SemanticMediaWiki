@@ -100,7 +100,7 @@
 	"smw_attribute_header": "Halaman yang menggunakan properti \"$1\"",
 	"smw_attributearticlecount": "Menampilkan $1 {{PLURAL:$1|halaman|halaman}} yang menggunakan properti ini.",
 	"smw_subproperty_header": "Subproperti",
-	"smw_subpropertyarticlecount": "Properti ini memiliki $1 {{PLURAL:$1|subproperti|subproperti}} berikut:",
+	"smw-subpropertylist-count": "Properti ini memiliki $1 {{PLURAL:$1|subproperti|subproperti}} berikut:",
 	"exportrdf": "Ekspor halaman ke RDF",
 	"smw_exportrdf_docu": "Halaman ini mengizinkan Anda untuk mendapatkan data dari suatu halaman dalam format RDF.\nUntuk mengekspor halaman, masukkan judul di kotak teks di bawah, satu judul per baris.",
 	"smw_exportrdf_recursive": "Ekspor semua halaman yang terkait secara rekursif.\nPerhatikan bahwa hasilnya bisa besar!",

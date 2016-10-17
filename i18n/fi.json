@@ -107,7 +107,7 @@
 	"smw_attribute_header": "Ominaisuutta ”$1” käyttävät sivut",
 	"smw_attributearticlecount": "Näytetään $1 tätä ominaisuutta {{PLURAL:$1|käyttävä sivu|käyttävää sivua}}.",
 	"smw_subproperty_header": "Alaominaisuudet",
-	"smw_subpropertyarticlecount": "Tällä ominaisuudella on $1 {{PLURAL:$1|alaominaisuus|alaominaisuutta}}:",
+	"smw-subpropertylist-count": "Tällä ominaisuudella on $1 {{PLURAL:$1|alaominaisuus|alaominaisuutta}}:",
 	"exportrdf": "Vie sivut RDF:nä",
 	"smw_exportrdf_docu": "Tämän sivun avulla voit noutaa sivun tiedot RDF-muodossa.\nSyötä vietävien sivujen otsikot alla olevaan tekstiruutuun, yksi otsikko yhdellä rivillä.",
 	"smw_exportrdf_recursive": "Tee vienti rekursiivisesti kaikista liittyvistä sivuista.\nHuomioi, että tulos saattaa olla suuri.",

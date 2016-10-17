@@ -108,7 +108,7 @@
 	"smw_attribute_header": "Paginas que usa le proprietate \"$1\"",
 	"smw_attributearticlecount": "Presentation de $1 {{PLURAL:$1|pagina|paginas}} que usa iste proprietate.",
 	"smw_subproperty_header": "Subproprietates",
-	"smw_subpropertyarticlecount": "Iste proprietate ha le sequente $1 {{PLURAL:$1|subproprietate|subproprietates}}:",
+	"smw-subpropertylist-count": "Iste proprietate ha le sequente $1 {{PLURAL:$1|subproprietate|subproprietates}}:",
 	"specialpages-group-smw_group": "MediaWiki semantic",
 	"exportrdf": "Exportar paginas verso RDF",
 	"smw_exportrdf_docu": "Iste pagina permitte obtener le datos de un pagina in formato RDF.\nPro exportar pagina, entra le titulos in le quadro de texto in basso, un titulo per linea.",

@@ -128,7 +128,7 @@
 	"smw_attribute_header": "\"$1\" 유형을 사용한 문서",
 	"smw_attributearticlecount": "이 속성을 사용하여 {{PLURAL:$1|문서}} $1개를 보여줍니다.",
 	"smw_subproperty_header": "하위 속성",
-	"smw_subpropertyarticlecount": "이 속성은 다음 {{PLURAL:$1|하위 속성}} $1개가 있습니다:",
+	"smw-subpropertylist-count": "이 속성은 다음 {{PLURAL:$1|하위 속성}} $1개가 있습니다:",
 	"specialpages-group-smw_group": "시맨틱 미디어위키",
 	"exportrdf": "RDF로 문서 내보내기",
 	"smw_exportrdf_docu": "이 문서는 RDF 형식의 문서에서 데이터를 얻을 수 있습니다.\n문서를 내보내려면 아래 텍스트 상자에 줄마다 제목 하나를 입력하세요.",

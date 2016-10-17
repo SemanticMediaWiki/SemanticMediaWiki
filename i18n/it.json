@@ -115,7 +115,7 @@
 	"smw_attribute_header": "Pagine che usano la proprietà \"$1\"",
 	"smw_attributearticlecount": "Visualizzazione di $1 {{PLURAL:$1|pagina che usa|pagine che usano}} questa proprietà.",
 	"smw_subproperty_header": "Sottoproprietà",
-	"smw_subpropertyarticlecount": "Questa proprietà ha {{PLURAL:$1|la seguente|le seguenti $1}} sottoproprietà.",
+	"smw-subpropertylist-count": "Questa proprietà ha {{PLURAL:$1|la seguente|le seguenti $1}} sottoproprietà.",
 	"exportrdf": "Esporta le pagine in RDF",
 	"smw_exportrdf_docu": "Questa pagina consente di ottenere dati da una pagina in formato RDF. Per esportare delle pagine, inseritene i titoli nella casella di testo sottostante, un titolo per riga.",
 	"smw_exportrdf_recursive": "Esporta ricorsivamente tutte le pagine correlate. Nota: il risultato potrebbe essere molto grande!",
@@ -322,5 +322,6 @@
 	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" è un URL non valido.",
 	"smw-pa-property-predefined_eid": "\"$1\" è un [[Special:Types/External identifier|tipo]] e una proprietà predefinita fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] per rappresentare identificatori esterni.",
 	"smw-pa-property-predefined_peid": "\"$1\" è una proprietà predefinita che rappresenta un identificatore esterno ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
-	"smw-pa-property-predefined_pefu": "\"$1\" è una proprietà predefinita che rappresenta un URI ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]."
+	"smw-pa-property-predefined_pefu": "\"$1\" è una proprietà predefinita che rappresenta un URI ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-property-preferred-title-format": "$1 ($2)"
 }

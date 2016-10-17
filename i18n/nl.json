@@ -130,7 +130,7 @@
 	"smw_attribute_header": "Pagina's die de eigenschap \"$1\" gebruiken",
 	"smw_attributearticlecount": "Er {{PLURAL:$1|is $1 pagina die deze eigenschap gebruikt|zijn $1 pagina's die deze eigenschappen gebruiken}}.",
 	"smw_subproperty_header": "Subeigenschappen",
-	"smw_subpropertyarticlecount": "Deze eigenschap heeft de volgende $1 {{PLURAL:$1|subeigenschap|subeigenschappen}}:",
+	"smw-subpropertylist-count": "Deze eigenschap heeft de volgende $1 {{PLURAL:$1|subeigenschap|subeigenschappen}}:",
 	"exportrdf": "Pagina's exporteren naar RDF",
 	"smw_exportrdf_docu": "Deze pagina maakt het mogelijk gegevens te verkrijgen van een pagina in RDF-formaat.\nVoer in het onderstaande invoerveld paginanamen in om pagina's te exporteren.\nIedere paginanaam op een eigen regel.",
 	"smw_exportrdf_recursive": "Alle gerelateerde pagina's recursief exporteren.\nHet resultaat kan groot zijn!",

@@ -86,7 +86,7 @@
 	"smw_attribute_header": "Pajennoù a implij ar perzh « $1 »",
 	"smw_attributearticlecount": "Afficher {{PLURAL:$1|ar bajenn|an $1 pajenn}} a implij ar perzh-mañ.",
 	"smw_subproperty_header": "Isperzhioù",
-	"smw_subpropertyarticlecount": "Ar perzh he deus an {{PLURAL:$1||$1 }}is-perzh da-heul :",
+	"smw-subpropertylist-count": "Ar perzh he deus an {{PLURAL:$1||$1 }}is-perzh da-heul :",
 	"exportrdf": "Ezporzhiañ pajennoù en RDF",
 	"smw_exportrdf_lastdate": "Arabat ezporzhiañ ar pajennoù n'int ket bet kemmet abaoe ar c'houlz merket.",
 	"smw_exportrdf_submit": "Ezporzhiañ",

@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"AnakngAraw",
-			"아라"
+			"아라",
+			"Emem.calist"
 		]
 	},
 	"smw-desc": "Ginagawang mas napupuntahan ang wiki mo - para sa ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentasyon habang nasa Internet]) ng mga makina ''at'' mga tao",
@@ -111,7 +112,7 @@
 	"smw_attribute_header": "Mga pahinang gumagamit na pag-aaring \"$1\"",
 	"smw_attributearticlecount": "Nagpapakita ng $1 {{PLURAL:$1|pahina|mga pahina}}ng ginagamitan ng ganitong ari-arian.",
 	"smw_subproperty_header": "Kabahaging mga pag-aari",
-	"smw_subpropertyarticlecount": "Ang pag-aaring ito ay mayroong sumusunod na $1 {{PLURAL:$1|kabahaging ari-arian|kabahaging mga ari-arian}}:",
+	"smw-subpropertylist-count": "!!FUZZY!!Ang pag-aaring ito ay mayroong sumusunod na $1 {{PLURAL:$1|kabahaging ari-arian|kabahaging mga ari-arian}}:",
 	"specialpages-group-smw_group": "Semantikong MediaWiki",
 	"exportrdf": "Iluwas/Ipadala ang mga pahina patungo sa RDF",
 	"smw_exportrdf_docu": "Ipinapahintulot ng pahinang ito na makakuha ka ng dato mula sa isang pahinang nasa anyong RDF.\nUpang makapagluwas ng mga pahina, ipasok ang mga pamagat sa loob ng kahong pangtekstong nasa ibaba, isang pamagat bawat guhit/hanay.",
@@ -231,5 +232,6 @@
 	"smw_unknowntype": "Hindi katanggap-tanggap ang uri ng pag-aaring ito",
 	"smw_concept_header": "Mga pahina ng diwang \"$1\"",
 	"smw_conceptarticlecount": "Nagpapakita ng $1 {{PLURAL:$1|pahina|mga pahina}}ng kasali sa ganyang diwa.",
-	"smw-livepreview-loading": "Ikinakarga..."
+	"smw-livepreview-loading": "Ikinakarga...",
+	"smw-property-preferred-title-format": "Isang dolyar (dalawang dolyar)"
 }

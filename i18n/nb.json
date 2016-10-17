@@ -130,7 +130,7 @@
 	"smw_attribute_header": "Sider som bruker egenskapen «$1»",
 	"smw_attributearticlecount": "Viser {{PLURAL:$1|én side|$1 sider}} som bruker denne egenskapen.",
 	"smw_subproperty_header": "Underegenskaper",
-	"smw_subpropertyarticlecount": "Denne egenskapen har følgende {{PLURAL:$|underegenskap|$1 underegenskaper}}:",
+	"smw-subpropertylist-count": "Denne egenskapen har følgende {{PLURAL:$|underegenskap|$1 underegenskaper}}:",
 	"exportrdf": "Eksporter sider til RDF",
 	"smw_exportrdf_docu": "Denne siden lar deg skaffe data fra en side i RDF-format.\nSkriv inn titler i tekstboksten nedenfor for å eksportere sider, én tittel per linje.",
 	"smw_exportrdf_recursive": "Eksporter alle relaterte sider rekursivt.\nMerk at resultatet kan være stort.",

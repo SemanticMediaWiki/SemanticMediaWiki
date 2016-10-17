@@ -132,7 +132,7 @@
 	"smw_attribute_header": "Pàgines que fan servir la propietat \"$1\"",
 	"smw_attributearticlecount": "Es {{PLURAL:$1|mostra|mostren}} $1 {{PLURAL:$1|pàgina que fa servir|pàgines que fan servir}} aquesta propietat.",
 	"smw_subproperty_header": "Subpropietats",
-	"smw_subpropertyarticlecount": "Aquesta propietat té {{PLURAL:$1|la subpropietat següent|les $1 subpropietats següents}}:",
+	"smw-subpropertylist-count": "Aquesta propietat té {{PLURAL:$1|la subpropietat següent|les $1 subpropietats següents}}:",
 	"exportrdf": "Exporta les pàgines a RDF",
 	"smw_exportrdf_docu": "Aquesta pàgina permet obtenir dades en format RDF d'una pàgina del wiki.\nPer exportar pàgines, entra els títols a la caixa de text següent, un títol per línia.",
 	"smw_exportrdf_recursive": "Exporta recursivament totes les pàgines relacionades.\nTingueu en compte que el resultat pot ser molt gran!",
@@ -369,5 +369,6 @@
 	"smw-datavalue-uniqueness-constraint-error": "La propietat «$1» només permet assignacions de valor únic i «$2» ja estava anotada en el subjecte «$3».",
 	"smw-datavalue-time-invalid-date-components-common": "«$1» conté informació que no és interpretable.",
 	"smw-datavalue-time-invalid-date-components-three": "«$1» conté més de tres components.",
-	"smw-datavalue-external-formatter-invalid-uri": "«$1» és un URL no vàlid."
+	"smw-datavalue-external-formatter-invalid-uri": "«$1» és un URL no vàlid.",
+	"smw-datavalue-parse-error": "El valor donat «$1» no s'ha entès."
 }

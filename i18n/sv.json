@@ -138,7 +138,7 @@
 	"smw_attribute_header": "Sidor som använder egenskapen \"$1\"",
 	"smw_attributearticlecount": "Visar $1 {{PLURAL:$1|sida|sidor}} som använder den här egenskapen.",
 	"smw_subproperty_header": "Underegenskaper",
-	"smw_subpropertyarticlecount": "Denna egenskap har följande $1 {{PLURAL:$1|underegenskap|underegenskaper}}:",
+	"smw-subpropertylist-count": "Denna egenskap har följande $1 {{PLURAL:$1|underegenskap|underegenskaper}}:",
 	"exportrdf": "Exportera sidor till RDF",
 	"smw_exportrdf_docu": "Den här sidan låter dig hämta data från en sida i RDF-format.\nSkriv sidtitlar i textrutan härunder för att exportera sidor (en titel per rad).",
 	"smw_exportrdf_recursive": "Exportera alla relaterade sidor rekursivt.\nObservera att resultatet kan bli stort!",
@@ -320,5 +320,6 @@
 	"smw_allows_pattern": "Den här sidan är förväntad att innehålla en lista av referenser (följt av [https://en.wikipedia.org/wiki/Regular_expression regular expressions]) och att bli tillgänglig genom att använda [[Property:Allows pattern|Allows pattern]] egenskap.",
 	"smw-datavalue-time-invalid-date-components-empty": "\"$1\" innehåller några tomma komponenter.",
 	"smw-datavalue-time-invalid-date-components-three": "\"$1\" innehåller mer än tre komponenter.",
-	"smw-datavalue-reference-outputformat": "$1: $2"
+	"smw-datavalue-reference-outputformat": "$1: $2",
+	"smw-property-preferred-title-format": "$1 ($2)"
 }

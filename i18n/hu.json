@@ -104,7 +104,7 @@
 	"smw_attribute_header": "A(z) „$1” tulajdonságot használó lapok",
 	"smw_attributearticlecount": "{{PLURAL:$1|Egy|$1}} lap megjelenítése ezen tulajdonság használatával.",
 	"smw_subproperty_header": "Altulajdonságok",
-	"smw_subpropertyarticlecount": "Ez a tulajdonság a következő {{PLURAL:$1|egy|$1}} altulajdonsággal rendelkezik:",
+	"smw-subpropertylist-count": "Ez a tulajdonság a következő {{PLURAL:$1|egy|$1}} altulajdonsággal rendelkezik:",
 	"specialpages-group-smw_group": "Szemantikus MediaWiki",
 	"exportrdf": "Lapok exportálása RDF-be",
 	"smw_exportrdf_docu": "Ez a lap lehetőséget teremt adatok beszerzésére egy lapról RDF formátumban.\nA lapok exportálásához írd be a címeiket az alábbi szövegdobozba, soronként egyet.",

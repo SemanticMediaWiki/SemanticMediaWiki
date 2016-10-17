@@ -79,7 +79,7 @@
 	"smw_attribute_header": "Stranice koje koriste osobinu \"$1\"",
 	"smw_attributearticlecount": "Prikaz $1 {{PLURAL:$1|stranice|stranica}} koje koriste ovu osobinu.",
 	"smw_subproperty_header": "Podosobine",
-	"smw_subpropertyarticlecount": "Ova osobina sadrži {{PLURAL:$1|sledeću $1 podosobinu|sledeće $1 podosobine}}:",
+	"smw-subpropertylist-count": "Ova osobina sadrži {{PLURAL:$1|sledeću $1 podosobinu|sledeće $1 podosobine}}:",
 	"specialpages-group-smw_group": "Semantički Medijaviki",
 	"exportrdf": "Izvezi stranice u RDF",
 	"smw_exportrdf_docu": "Ova stranica omogućava preuzimanje podataka s neke stranice u formatu RDF.\nDa biste izvezli stranice, unesite naslove u kućicu ispod (po jedan naslov u svakom redu).",

@@ -84,7 +84,7 @@
 	"smw_attribute_header": "Stranice koje koriste svojstvo \"$1\".",
 	"smw_attributearticlecount": "Prikazano {{PLURAL:$1|$1 stranica koja koristi|$1 stranice koje koriste|$1 stranica koje koriste}} ovo svojstvo.",
 	"smw_subproperty_header": "Podsvojstva",
-	"smw_subpropertyarticlecount": "Ovo svojstvo ima {{PLURAL:$1|sljedeće podsvojstvo|sljedeća $1 podsvojstva|sljedećih $1 podsvojstava}}:",
+	"smw-subpropertylist-count": "Ovo svojstvo ima {{PLURAL:$1|sljedeće podsvojstvo|sljedeća $1 podsvojstva|sljedećih $1 podsvojstava}}:",
 	"exportrdf": "Izvezi stranice u RDF",
 	"smw_exportrdf_docu": "Na ovoj stranici možete dobiti podatke o nekoj stranici u RDF formatu.\nDa biste izvezli stranice unesite njihove naslove u prozor za uređivanje ispod, jedan naslov po retku.",
 	"smw_exportrdf_recursive": "Rekurzivno izvezi sve srodne stranice.\nImajte na umu da bi rezultat mogao biti velik!",

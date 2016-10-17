@@ -86,7 +86,7 @@
 	"smw_attribute_header": "Syte mit dr Eigeschaft „$1“",
 	"smw_attributearticlecount": "S {{PLURAL:$1|wird ei Syten|wäre $1 Syten}} aazeigt, wu die Eigeschaft {{PLURAL:$1|bruucht|bruuche}}:",
 	"smw_subproperty_header": "Untereigeschafte",
-	"smw_subpropertyarticlecount": "Die Eigeschaft het {{PLURAL:$1|die Untereigeschaft|die $1 Untereigeschafte}}:",
+	"smw-subpropertylist-count": "Die Eigeschaft het {{PLURAL:$1|die Untereigeschaft|die $1 Untereigeschafte}}:",
 	"exportrdf": "Syten as RDF exportiere",
 	"smw_exportrdf_docu": "Doo chenne Informationen iber einzelni Syten im RDF-Format abgruefe wäre. Bitte gib d Name vu dr Syte  <i>zyylewyys</i> yy.",
 	"smw_exportrdf_recursive": "Exportier au alli relevante Syte rekursiv. Dänk dra, ass d Ergebnis chenne arg groß syy!",

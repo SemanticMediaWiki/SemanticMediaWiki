@@ -126,7 +126,7 @@
 	"smw_attribute_header": "صفحات با استفاده از ویژگی \"$1\"",
 	"smw_attributearticlecount": "نمایش $1 {{PLURAL:$1|صفحه|صفحات}} با استفاده از این خاصیت.",
 	"smw_subproperty_header": "زیرخصوصیت‌ها",
-	"smw_subpropertyarticlecount": "این خاصیت $1 {{PLURAL:$1|خاصیت|خواص}}زیر را دارد:",
+	"smw-subpropertylist-count": "این خاصیت $1 {{PLURAL:$1|خاصیت|خواص}}زیر را دارد:",
 	"specialpages-group-smw_group": "مدیاویکی معنایی",
 	"exportrdf": "برون‌بری صفحات به آردی‌اف",
 	"smw_exportrdf_docu": "این صفحه به شما برای بدست آوردن داده‌ها از صفحه در فرمت آر‌دی‌اف اجازه می‌دهد.\nبرای انتقال صفحات، عناوین را در جعبه متن زیر وارد کنید، یک عنوان در هر خط.",

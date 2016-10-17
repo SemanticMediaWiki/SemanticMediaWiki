@@ -118,7 +118,8 @@
 	"smw_attribute_header": "Strony używające atrybutu “$1”",
 	"smw_attributearticlecount": "Pokazano $1 {{PLURAL:$1|stronę używającą|strony używające|stron używających}} tego atrybutu.",
 	"smw_subproperty_header": "Podwłasności",
-	"smw_subpropertyarticlecount": "Ta właściwość ma {{PLURAL:$1|podwłaściwość|$1 następujące podwłaściwości:|$1 następujących podwłaściwości:}}",
+	"smw-subpropertylist-count": "Ta właściwość ma {{PLURAL:$1|podwłaściwość|$1 następujące podwłaściwości:|$1 następujących podwłaściwości:}}",
+	"smw-subpropertylist-count-with-restricted-note": "Ta właściwość ma {{PLURAL:$1|następująca podwłaściwość|$1 następujące podwłaściwość|$1 następujących podwłaściwości}} (dostępnych jest więcej, ale wybór jest ograniczony do [https://www.semantic-mediawiki.org/wiki/Help:$smwgSubPropertyListLimit $2]):",
 	"specialpages-group-smw_group": "Semantyczna MediaWiki",
 	"exportrdf": "Eksport stron do RDF",
 	"smw_exportrdf_docu": "Ta strona pozwala eksportować fragmenty artykułu w formacie RDF.  Aby wyeksportować artykuły, wpisz ich tytuły w poniższym polu tekstowym, po jednym tytule w wierszu.",
@@ -133,6 +134,7 @@
 	"smw_propertylackspage": "Wszystkie właściwości powinny być opisane stroną!",
 	"smw_propertylackstype": "Nie określono żadnego typu dla tej właściwości (tymczasowo przypisano typ $1).",
 	"smw_propertyhardlyused": "Ta właściwość jest rzadko używana w przestrzeni wiki!",
+	"smw-property-name-invalid": "Właściwość $1 nie może być użyta (nieprawidłowa nazwa właściwości).",
 	"smw-sp-property-searchform": "Pokaż właściwości, które zawierają:",
 	"concepts": "Koncepty",
 	"smw-sp-concept-header": "Lista konceptów",
@@ -298,5 +300,7 @@
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|sekunda|sekundy|sekund}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|sekunda|sekundy|sekund}}",
 	"smw-datavalue-feature-not-supported": "Funkcja „$1” jest nieobsługiwana lub została wyłączona w tej wiki.",
-	"smw-datavalue-reference-outputformat": "$1: $2"
+	"smw-datavalue-external-formatter-invalid-uri": "„$1” jest nieprawidłowym adresem URL.",
+	"smw-datavalue-reference-outputformat": "$1: $2",
+	"smw-property-preferred-title-format": "$1 ($2)"
 }

@@ -93,7 +93,7 @@
 	"smw_attribute_header": "Sigge met dä Eijeschaff „$1“",
 	"smw_attributearticlecount": "{{PLURAL:$1|Hee kütt ein Sigg|Hee kumme $1 Sigge|Et jitt kei Sigge}} met dä Eijeschaff dren{{PLURAL:$1|:|:|.}}",
 	"smw_subproperty_header": "Unger-Eijeschaffte",
-	"smw_subpropertyarticlecount": "Di Eijeschaff hät {{PLURAL:$1|ein Onger-Eijeschaff:|$1 Onger-Eijeschaffte:|kein Onger-Eijeschaff.}}",
+	"smw-subpropertylist-count": "Di Eijeschaff hät {{PLURAL:$1|ein Onger-Eijeschaff:|$1 Onger-Eijeschaffte:|kein Onger-Eijeschaff.}}",
 	"specialpages-group-smw_group": "Semantesch MehdijaWikki",
 	"exportrdf": "Sigge em Fommaat RDF expoteere",
 	"smw_exportrdf_docu": "Hee di Sigg määd et müjjelesch, Daate vun en Sigg em <i lang=\"en\">RDF</i>-Fommaat ze krijje. Öm Sigge ze Expoteere, doon dänne ier Tittele, jeeder_ein en en Reih fö sesch, onge en dat Täx-Feld erin schriive.",

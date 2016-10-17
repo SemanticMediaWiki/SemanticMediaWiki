@@ -159,7 +159,8 @@
 	"smw_attribute_header": "Pages utilisant la propriété « $1 »",
 	"smw_attributearticlecount": "Afficher {{PLURAL:$1|la page|les $1 pages}} utilisant cette propriété.",
 	"smw_subproperty_header": "Sous-propriétés",
-	"smw_subpropertyarticlecount": "Cette propriété dispose {{PLURAL:$1|de la sous-propriété suivante|des $1 sous-propriétés suivantes}} :",
+	"smw-subpropertylist-count": "Cette propriété dispose {{PLURAL:$1|de la sous-propriété suivante|des $1 sous-propriétés suivantes}} :",
+	"smw-subpropertylist-count-with-restricted-note": "Cette propriété a {{PLURAL:$1|la sous-propriété suivante|les $1 sous-propriétés suivantes}} (davantage sont disponibles, mais la sélection est restreinte à [https://www.semantic-mediawiki.org/wiki/Help:$smwgSubPropertyListLimit $2]) :",
 	"specialpages-group-smw_group": "MediaWiki sémantique",
 	"exportrdf": "Exporter des pages en RDF",
 	"smw_exportrdf_docu": "Cette page permet d’obtenir des données d’une page au format RDF. Veuillez entrer le nom des pages souhaitées dans la boîte de texte ci-dessous, un nom par ligne.",
@@ -467,5 +468,7 @@
 	"smw-sp-types_ref_rec": "«$1» est un type de [https://www.semantic-mediawiki.org/wiki/Container conteneur] qui permet d'enregistrer des informations supplémentaires (par exemple, la provenance des données) lors d'une affectation de valeur.",
 	"smw-datavalue-reference-outputformat": "$1 : $2",
 	"smw-datavalue-reference-invalid-fields-definition": "Le type [[Special:Types/Reference|Référence]] attend la déclaration d'une liste de propriétés faite via l'attribut [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields possède  des champs].",
-	"smw-parser-invalid-json-format": "L’analyseur JSON a renvoyé un « $1 »."
+	"smw-parser-invalid-json-format": "L’analyseur JSON a renvoyé un « $1 ».",
+	"smw-property-preferred-title-format": "$1 ($2)",
+	"smw-property-preferred-label-language-combination-exists": "« $1 » ne peut pas être utilisé comme libellé préféré parce que la langue « $2 » est déjà affectée au libellé « $3 »."
 }

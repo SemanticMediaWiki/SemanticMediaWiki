@@ -109,7 +109,7 @@
 	"smw_attribute_header": "Stránek používajících vlastnost „$1“",
 	"smw_attributearticlecount": "Zobrazeno je $1 {{PLURAL:$1|stránka používající|stránky používající|stránek používajících}} tuto vlastnost.",
 	"smw_subproperty_header": "Podvlastnosti",
-	"smw_subpropertyarticlecount": "Této vlastnosti náleží $1 {{PLURAL:$1|podvlastnost|podvlastností}}.",
+	"smw-subpropertylist-count": "!!FUZZY!!Této vlastnosti náleží $1 {{PLURAL:$1|podvlastnost|podvlastností}}.",
 	"exportrdf": "Export stránek do RDF",
 	"smw_exportrdf_docu": "Tato stránka vám umožňuje exportovat části stránek do formátu RDF. Po zadaní názvů stránek do spodního textového pole (jeden název na řádek) můžete exportovat stránky.",
 	"smw_exportrdf_recursive": "Rekurzívně exportovat všechny související stránky. Pozor, výsledek může být velmi rozsáhlý!",

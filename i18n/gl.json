@@ -128,7 +128,8 @@
 	"smw_attribute_header": "Páxinas que usan a propiedade \"$1\"",
 	"smw_attributearticlecount": "Mostrando $1 {{PLURAL:$1|páxina|páxinas}} que {{PLURAL:$1|usa|usan}} esta propiedade.",
 	"smw_subproperty_header": "Subpropiedades",
-	"smw_subpropertyarticlecount": "Esta propiedade ten {{PLURAL:$1|a seguinte subpropiedade|as seguintes $1 subpropiedades}}:",
+	"smw-subpropertylist-count": "Esta propiedade ten {{PLURAL:$1|a seguinte subpropiedade|as seguintes $1 subpropiedades}}:",
+	"smw-subpropertylist-count-with-restricted-note": "Esta propiedade ten {{PLURAL:$1|a seguinte subpropiedade|as seguintes $1 subpropiedades}}  (hai máis dispoñibles pero a selección está restrinxida a [https://www.semantic-mediawiki.org/wiki/Help:$smwgSubPropertyListLimit $2]):",
 	"exportrdf": "Exportar páxinas a RDF",
 	"smw_exportrdf_docu": "Esta páxina permítelle obter datos dunha páxina en formato RDF.\nPara exportar páxinas, insira os títulos na caixa de embaixo (un título por liña).",
 	"smw_exportrdf_recursive": "Exportar igualmente todas as páxinas relacionadas.\nDéase conta de que o resultado pode ser longo!",
@@ -433,5 +434,7 @@
 	"smw-sp-types_ref_rec": "\"$1\" é un tipo de [https://www.semantic-mediawiki.org/wiki/Container contedor] que permite gardar información adicional (p.ex. procedencia dos datos) sobre a asignación dun valor.",
 	"smw-datavalue-reference-outputformat": "$1 : $2",
 	"smw-datavalue-reference-invalid-fields-definition": "O tipo [[Special:Types/Reference|Referencia]] espera unha lista de propiedades para ser declarado usando a propiedade [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields Ten campos].",
-	"smw-parser-invalid-json-format": "O analizador de JSON devolveu un \"$1\"."
+	"smw-parser-invalid-json-format": "O analizador de JSON devolveu un \"$1\".",
+	"smw-property-preferred-title-format": "$1 ($2)",
+	"smw-property-preferred-label-language-combination-exists": "\"$1\" non pode usarse como etiqueta preferida por a lingua \"$2\" xa está asignada á etiqueta \"$3\"."
 }

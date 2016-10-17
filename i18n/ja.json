@@ -129,7 +129,7 @@
 	"smw_attribute_header": "プロパティ「$1」を使用しているページ",
 	"smw_attributearticlecount": "このプロパティを使用している $1 {{PLURAL:$1|件のページ}}を表示しています。",
 	"smw_subproperty_header": "下位プロパティ",
-	"smw_subpropertyarticlecount": "このプロパティには以下の $1 {{PLURAL:$1|下位プロパティ}}があります:",
+	"smw-subpropertylist-count": "このプロパティには以下の $1 {{PLURAL:$1|下位プロパティ}}があります:",
 	"specialpages-group-smw_group": "Semantic MediaWiki",
 	"exportrdf": "ページを RDF に書き出し",
 	"smw_exportrdf_docu": "このページを使用すると、ページからデータを RDF 形式で取得できます。ページを書き出すには、下のテキストボックスに、ページ名を一行に一つずつ入力してください。",

@@ -114,7 +114,7 @@
 	"smw_attribute_header": "Pàgine ch'a deuvro la proprietà \"$1\".",
 	"smw_attributearticlecount": "Smon-e $1 {{PLURAL:$1|la pàgine|le pàgine}} ch'a deuvro sta proprietà-sì.",
 	"smw_subproperty_header": "Sot-proprietà",
-	"smw_subpropertyarticlecount": "Sta proprietà-sì a l'ha le $1 {{PLURAL:$1|sot-proprietà|sot-proprietà}} sì-dapress:",
+	"smw-subpropertylist-count": "Sta proprietà-sì a l'ha le $1 {{PLURAL:$1|sot-proprietà|sot-proprietà}} sì-dapress:",
 	"exportrdf": "Espòrta pàgine an RDF",
 	"smw_exportrdf_docu": "Sta pàgina-sì a-j përmët d'oten-e dat da na pàgina an formà RDF.\nPër esporté dle pàgine, ch'a anserissa ij tìtoj ant la casela ëd test sì-sota, un tìtol për linia.",
 	"smw_exportrdf_recursive": "Esporté ricorsivament tute le pàgine corelà.\nNoté che l'arzultà a podrìa esse motobin gròss!",

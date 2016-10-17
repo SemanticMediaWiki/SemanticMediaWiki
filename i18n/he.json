@@ -131,7 +131,7 @@
 	"smw_attribute_header": "דפים המשתמשים במאפיין \"$1\"",
 	"smw_attributearticlecount": "הצגת {{PLURAL:$1|דף אחד המשתמש|$1 דפים המשתמשים}} במאפיין זה.",
 	"smw_subproperty_header": "מאפייני־משנה",
-	"smw_subpropertyarticlecount": "למאפיין זה {{PLURAL:$1|קיים מאפיין־המשנה הבא|קיימים $1 מאפייני־המשנה הבאים}}:",
+	"smw-subpropertylist-count": "למאפיין זה {{PLURAL:$1|קיים מאפיין־המשנה הבא|קיימים $1 מאפייני־המשנה הבאים}}:",
 	"specialpages-group-smw_group": "מדיה־ויקי סמנטית",
 	"exportrdf": "ייצוא דפים ל־RDF",
 	"smw_exportrdf_docu": "דף זה מאפשר לכם לאחזר נתונים מדף בתסדיר RDF.\nכדי לייצא דפים, כתבו את כותרות הדפים בתיבת הטקסט שלהלן, כותרת אחת בכל שורה.",

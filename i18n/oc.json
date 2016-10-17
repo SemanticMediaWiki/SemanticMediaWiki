@@ -66,7 +66,7 @@
 	"smw_attribute_header": "Paginas utilizant l'atribut “$1”",
 	"smw_attributearticlecount": "Afichar {{PLURAL:$1|la pagina qu'utiliza|las $1 paginas qu'utilizan}} aquesta proprietat.",
 	"smw_subproperty_header": "Sosproprietats",
-	"smw_subpropertyarticlecount": "Aquesta proprietat dispausa {{PLURAL:$1|de la sosproprietat seguenta|de las $1 sosproprietats seguentas}} :",
+	"smw-subpropertylist-count": "Aquesta proprietat dispausa {{PLURAL:$1|de la sosproprietat seguenta|de las $1 sosproprietats seguentas}} :",
 	"exportrdf": "Exportar l'article en RDF",
 	"smw_exportrdf_docu": "Sus aquesta pagina, de partidas del contengut d'un article pòdon èsser exportadas dins lo format RDF. Picatz lo nom de las paginas desiradas dins la bóstia de tèxte çaijós, <i>un nom per linha </i>.",
 	"smw_exportrdf_recursive": "Exportar tanben totas las paginas pertinentas d'un biais recursiu. Aquesta possibilitat pòt abotir a un fòrt grand nombre de resultats !",

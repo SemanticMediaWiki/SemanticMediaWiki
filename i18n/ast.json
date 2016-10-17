@@ -124,7 +124,7 @@
 	"smw_attribute_header": "Páxines qu'usen la propiedá \"$1\"",
 	"smw_attributearticlecount": "Amosando $1 {{PLURAL:$1|páxina qu'usa|páxines qu'usen}} esta propiedá.",
 	"smw_subproperty_header": "Subpropiedaes",
-	"smw_subpropertyarticlecount": "Esta propiedá tien {{PLURAL:$1|la siguiente subpropiedá|les $1 siguientes subpropiedaes}}:",
+	"smw-subpropertylist-count": "Esta propiedá tien {{PLURAL:$1|la siguiente subpropiedá|les $1 siguientes subpropiedaes}}:",
 	"exportrdf": "Esportar les páxines a RDF",
 	"smw_exportrdf_docu": "Esta páxina permite algamar datos d'una páxina en formatu RDF.\nPa esportar les páxines, escriba los títulos nel cuadru de testu d'abaxo, un títulu por llinia.",
 	"smw_exportrdf_recursive": "Esportar recursivamente toles páxines rellacionaes.\n¡Tenga en cuenta que'l resultáu pue ser grande!",

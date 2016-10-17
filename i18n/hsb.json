@@ -115,7 +115,7 @@
 	"smw_attribute_header": "Strony, kotrež kajkosć \"$1\" wužiwaja",
 	"smw_attributearticlecount": "{{PLURAL:$1|Pokazuje so $1 strona, kotraž tutu kajkosć wužiwa|Pokazujetej $1 stronje, kotrejž tutu kajkosć wužiwatej|Pokazuja so $1 strony, kotrež tutu kajksć wužiwaja|Pokazuje so $1 stronow, kotrež tutu kajkosć wužiwa}}.",
 	"smw_subproperty_header": "Podkajkosće",
-	"smw_subpropertyarticlecount": "Tuta kajkosć ma {{PLURAL:$1|slědowacu podkajkosć|slědowacej $1 podkajkosći|slědowace $1 podkajkosće|slědowacych $1 podkajkosćow}}:",
+	"smw-subpropertylist-count": "Tuta kajkosć ma {{PLURAL:$1|slědowacu podkajkosć|slědowacej $1 podkajkosći|slědowace $1 podkajkosće|slědowacych $1 podkajkosćow}}:",
 	"exportrdf": "Do RDF eksportować",
 	"smw_exportrdf_docu": "Tuta strona ći zmóžnja daty ze strony we formaće RDF wotwołać. Zo by strony eksportował, zapodaj titule w slědowacym kašćiku, jedyn titul na linku.",
 	"smw_exportrdf_recursive": "Eksportuj wšě piwuzne strony.\nWobkedźbuj, zo wuslědk móhł wulki być!",
