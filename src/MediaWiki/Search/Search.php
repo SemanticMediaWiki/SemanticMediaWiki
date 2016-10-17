@@ -52,7 +52,11 @@ class Search extends SearchEngine {
 			throw new RuntimeException( "$type does not exist." );
 		}
 
-		if ( !is_subclass_of( $type, 'SearchEngine' ) || $type === 'SMWSearch' ) {
+		if ( $type === 'SMWSearch' ) {
+			throw new RuntimeException( 'SMWSearch is not a valid fallback search engine type.' );
+		}
+
+		if ( $type !== 'SearchEngine' && !is_subclass_of( $type, 'SearchEngine' ) ) {
 			throw new RuntimeException( "$type is not a valid fallback search engine type." );
 		}
 	}
