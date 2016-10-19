@@ -163,7 +163,7 @@ final class Setup {
 			if ( $language === Message::USER_LANGUAGE ) {
 				$language = Localizer::getInstance()->getUserLanguage();
 			}
-			
+
 			// 1.27+
 			// [GlobalTitleFail] MessageCache::parse called by ... Message::parseText/MessageCache::parse with no title set.
 			return call_user_func_array( 'wfMessage', $arguments )->inLanguage( $language )->title( $GLOBALS['wgTitle'] )->parse();
@@ -180,7 +180,6 @@ final class Setup {
 		$this->globalVars['wgMessagesDirs']['SemanticMediaWiki'] = $smwgIP . 'i18n';
 		$this->globalVars['wgExtensionMessagesFiles']['SemanticMediaWikiAlias'] = $smwgIP . 'i18n/extra/SemanticMediaWiki.alias.php';
 		$this->globalVars['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $smwgIP . 'i18n/extra/SemanticMediaWiki.magic.php';
-		$this->globalVars['wgExtensionMessagesFiles']['SemanticMediaWikiNamespaces'] = $smwgIP . 'i18n/extra/SemanticMediaWiki.namespace.php';
 	}
 
 	/**
