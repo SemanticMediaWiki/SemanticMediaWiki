@@ -13,6 +13,8 @@ matrix:
       php: 5.5
     - env: DB=sqlite; MW=REL1_27; SITELANG=ja
       php: 5.5
+    - env: DB=postgres; MW=master;
+      php: 5.5 
     - env: DB=postgres; MW=REL1_26;
       php: 5.5
     - env: DB=mysql; MW=REL1_26; BLAZEGRAPH=1.5.2; PHPUNIT=4.8.*
