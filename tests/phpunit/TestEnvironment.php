@@ -208,17 +208,17 @@ class TestEnvironment {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $ns
+	 * @param integer $index
 	 * @param string $url
 	 *
 	 * @return string
 	 */
-	public function getLocalizedTextByNamespace( $ns, $text ) {
+	public function getLocalizedTextByNamespace( $index, $text ) {
 
-		$namespace = Localizer::getInstance()->getNamespaceTextById( $ns );
+		$namespace = Localizer::getInstance()->getNamespaceTextById( $index );
 
 		return str_replace(
-			\MWNamespace::getCanonicalName( $ns ) . ':',
+			Localizer::getInstance()->getCanonicalNamespaceTextById( $index ) . ':',
 			$namespace . ':',
 			$text
 		);
