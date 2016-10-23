@@ -119,10 +119,12 @@ class DataTypeRegistry {
 
 		if ( self::$instance === null ) {
 
+			$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage();
+
 			self::$instance = new self(
-				$GLOBALS['smwgContLang']->getDatatypeLabels(),
-				$GLOBALS['smwgContLang']->getDatatypeAliases(),
-				$GLOBALS['smwgContLang']->getCanonicalDatatypeLabels()
+				$extraneousLanguage->getDatatypeLabels(),
+				$extraneousLanguage->getDatatypeAliases(),
+				$extraneousLanguage->getCanonicalDatatypeLabels()
 			);
 
 			self::$instance->initDatatypes();

@@ -64,10 +64,11 @@ class PropertyRegistry {
 		}
 
 		$propertyLabelFinder = ApplicationFactory::getInstance()->newPropertyLabelFinder();
+		$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage();
 
 		$propertyAliasFinder = new PropertyAliasFinder(
-			$GLOBALS['smwgContLang']->getPropertyAliases(),
-			$GLOBALS['smwgContLang']->getCanonicalPropertyAliases()
+			$extraneousLanguage->getPropertyAliases(),
+			$extraneousLanguage->getCanonicalPropertyAliases()
 		);
 
 		self::$instance = new self(
