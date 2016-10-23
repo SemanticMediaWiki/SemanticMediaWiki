@@ -182,6 +182,7 @@ class QueryEngine implements QueryEngineInterface {
 		$this->errors = $this->querySegmentListBuilder->getErrors();
 
 		if ( $qid < 0 ) { // no valid/supported condition; ensure that at least only proper pages are delivered
+			$qid = $rootSegmentNumber;
 			$q = $this->querySegmentList[$rootSegmentNumber];
 			$q->where = "$q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND $q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWREDIIW ) . " AND $q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWBORDERIW ) . " AND $q->alias.smw_iw!=" . $db->addQuotes( SMW_SQL3_SMWINTDEFIW );
 			$this->querySegmentList[$rootSegmentNumber] = $q;
