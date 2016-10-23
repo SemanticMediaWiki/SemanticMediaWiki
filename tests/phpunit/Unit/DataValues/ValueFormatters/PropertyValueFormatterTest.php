@@ -153,6 +153,27 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		\SMW\PropertyRegistry::clear();
 	}
 
+	/**
+	 * @dataProvider formattedLabelProvider
+	 */
+	public function testFormattedLabelLabel( $property, $linker, $expected ) {
+
+		$propertyValue = new PropertyValue();
+
+		$propertyValue->setOption( PropertyValue::OPT_CONTENT_LANGUAGE, 'en' );
+		$propertyValue->setOption( PropertyValue::OPT_USER_LANGUAGE, 'en' );
+
+		$propertyValue->setDataItem( $property );
+
+		$instance = new PropertyValueFormatter( $propertyValue );
+		$expected = $this->testEnvironment->getLocalizedTextByNamespace( SMW_NS_PROPERTY, $expected );
+
+		$this->assertEquals(
+			$expected,
+			$instance->format( PropertyValue::FORMAT_LABEL, $linker )
+		);
+	}
+
 	public function testTryToFormatOnMissingDataValueThrowsException() {
 
 		$instance = new PropertyValueFormatter();
@@ -246,6 +267,37 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			PropertyValueFormatter::HTML_LONG,
 			null,
 			'Property:Foo&nbsp;<span title="Foo"><sup>ᵖ</sup></span>'
+		);
+
+		return $provider;
+	}
+
+	public function formattedLabelProvider() {
+
+		$property = $this->getMockBuilder( '\SMW\DIProperty' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$property->expects( $this->any() )
+			->method( 'getDIType' )
+			->will( $this->returnValue( \SMWDataItem::TYPE_PROPERTY ) );
+
+		$property->expects( $this->any() )
+			->method( 'getPreferredLabel' )
+			->will( $this->returnValue( 'Bar' ) );
+
+		$property->expects( $this->any() )
+			->method( 'getLabel' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$property->expects( $this->any() )
+			->method( 'getCanonicalLabel' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$provider[] = array(
+			$property,
+			null,
+			' (Foo)'
 		);
 
 		return $provider;

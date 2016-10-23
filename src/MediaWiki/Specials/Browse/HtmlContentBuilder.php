@@ -11,6 +11,7 @@ use SMW\DIWikiPage;
 use SMW\Store;
 use Html;
 use SMWDataValue as DataValue;
+use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\RequestOptions;
 
 /**
@@ -394,13 +395,11 @@ class HtmlContentBuilder {
 		if ( $this->subject->getDataItem()->getNamespace() === SMW_NS_PROPERTY ) {
 			$caption = '';
 
-			$label = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getFormattedPropertyLabelFrom(
+			$dv = DataValueFactory::getInstance()->newDataValueByItem(
 				DIProperty::newFromUserLabel( $this->subject->getDataItem()->getDBKey() )
 			);
 
-			$this->subject->setCaption(
-				Localizer::getInstance()->createTextWithNamespacePrefix( SMW_NS_PROPERTY, $label )
-			);
+			$this->subject->setCaption( $dv->getFormattedLabel( DataValueFormatter::WIKI_LONG ) );
 		}
 
 		$html = "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n" .

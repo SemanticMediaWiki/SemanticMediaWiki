@@ -319,19 +319,4 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetFormattedPropertyLabelFrom() {
-
-		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
-
-		$instance = new PropertySpecificationLookup(
-			$this->cachedPropertyValuesPrefetcher,
-			$this->intermediaryMemoryCache
-		);
-
-		$this->assertInternalType(
-			'string',
-			$instance->getFormattedPropertyLabelFrom( $property )
-		);
-	}
-
 }

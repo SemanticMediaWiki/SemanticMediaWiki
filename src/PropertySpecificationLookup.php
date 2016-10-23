@@ -75,27 +75,6 @@ class PropertySpecificationLookup {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $property
-	 * @param string $languageCode
-	 *
-	 * @return string
-	 */
-	public function getFormattedPropertyLabelFrom( DIProperty $property, $languageCode = '' ) {
-
-		if ( ( $label = $property->getPreferredLabel( $languageCode ) ) === '' ) {
-			$label = $property->getLabel();
-		}
-
-		if ( $property->getCanonicalLabel() !== $label ) {
-			$label = Message::get( array( 'smw-property-preferred-title-format', $label, $property->getCanonicalLabel() ) );
-		}
-
-		return $label;
-	}
-
-	/**
-	 * @since 2.5
-	 *
 	 * @param string $id
 	 * @param string $languageCode
 	 *
@@ -386,8 +365,14 @@ class PropertySpecificationLookup {
 			return $description;
 		}
 
+		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
+			$property
+		);
+
+		$label = $dataValue->getFormattedLabel();
+
 		$message = Message::get(
-			array( $msgKey, $this->getFormattedPropertyLabelFrom( $property ) ),
+			array( $msgKey, $label ),
 			$linker === null ? Message::ESCAPED : Message::PARSE,
 			$languageCode
 		);

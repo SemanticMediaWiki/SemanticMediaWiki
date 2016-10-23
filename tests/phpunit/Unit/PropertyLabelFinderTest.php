@@ -168,10 +168,6 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( 'Foo' ) )
 			->will( $this->returnValue( 'ABC' ) );
 
-		$this->propertySpecificationLookup->expects( $this->once() )
-			->method( 'setLanguageCode' )
-			->with( $this->equalTo( 'fr' ) );
-
 		$instance = new PropertyLabelFinder(
 			$this->store
 		);

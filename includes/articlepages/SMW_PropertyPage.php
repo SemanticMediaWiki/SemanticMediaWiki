@@ -7,6 +7,7 @@ use SMW\RequestOptions;
 use SMW\StringCondition;
 use SMW\PropertyRegistry;
 use SMWDataValue as DataValue;
+use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
 
 /**
@@ -44,15 +45,12 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			return '';
 		}
 
-		$label = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getFormattedPropertyLabelFrom(
-			$this->propertyValue->getDataItem()
+		$dv = DataValueFactory::getInstance()->newDataValueByItem(
+			$this->mProperty
 		);
 
-		if ( $this->mTitle->getText() !== $label ) {
-			$this->getContext()->getOutput()->setPageTitle(
-				Localizer::getInstance()->createTextWithNamespacePrefix( SMW_NS_PROPERTY, $label )
-			);
-		}
+		$title = $dv->getFormattedLabel( DataValueFormatter::WIKI_LONG );
+		$this->getContext()->getOutput()->setPageTitle( $title );
 
 		$list = $this->getSubpropertyList() . $this->getPropertyValueList();
 		$result = ( $list !== '' ? Html::element( 'div', array( 'id' => 'smwfootbr' ) ) . $list : '' );
@@ -73,10 +71,11 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 */
 	protected function getIntroductoryText() {
 
-		$propertyName = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getFormattedPropertyLabelFrom(
-			$this->propertyValue->getDataItem()
+		$dv = DataValueFactory::getInstance()->newDataValueByItem(
+			$this->mProperty
 		);
 
+		$propertyName = $dv->getFormattedLabel();
 		$message = '';
 
 		if ( $this->mProperty->isUserDefined() ) {

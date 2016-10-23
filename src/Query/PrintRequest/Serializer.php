@@ -99,10 +99,16 @@ class Serializer {
 				}
 			} else {
 
-				$printname = $printRequest->getData()->getDataItem()->getCanonicalLabel();
+				$printname = $data->getDataItem()->getCanonicalLabel();
 
 				if ( $label === $data->getDataItem()->getPreferredLabel() ) {
 					$label = $printname;
+				}
+
+				// Don't carry a localized label for a predefined property
+				// (fetched via the wikiValue)
+				if ( !$data->getDataItem()->isUserDefined() && $label === $data->getWikiValue() ) {
+					$label = $data->getDataItem()->getCanonicalLabel();
 				}
 			}
 		}
@@ -113,7 +119,7 @@ class Serializer {
 			$result .= '#' . $printRequest->getOutputFormat();
 		}
 
-		if ( $printname != $label ) {
+		if ( $printname != $label && $label !== '' ) {
 			$result .= '=' . $label;
 		}
 

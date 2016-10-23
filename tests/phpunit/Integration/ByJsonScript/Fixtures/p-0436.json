@@ -87,16 +87,17 @@
 		},
 		{
 			"type": "parser",
-			"about": "#3 (en, different label)",
+			"about": "#3 (en, different label, does't contain a prefLabel marker)",
 			"subject": "Example/P0436/Q.4",
 			"expected-output": {
 				"to-contain": [
 					"<th class=\"with-a-different-Label\">",
 					"title=\"Property:P106\">with a different Label</a>",
-					"<div class=\"smwttcontent\">occupation of a person; see also field of work (Property:P101)</div></span>&#160;<span title=\"P106\"><sup>ᵖ</sup></span>"
+					"<div class=\"smwttcontent\">occupation of a person; see also field of work (Property:P101)</div></span>"
 				],
 				"not-contain": [
-					"<th class=\"occupation\">occupation</th>"
+					"<th class=\"occupation\">occupation</th>",
+					"&#160;<span title=\"P106\"><sup>ᵖ</sup></span>"
 				]
 			}
 		}
