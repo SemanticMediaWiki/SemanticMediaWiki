@@ -2,6 +2,7 @@
 
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\Libs\Time\Timezone;
+use SMW\Localizer;
 
 /**
  * @ingroup SMWDataValues
@@ -372,13 +373,10 @@ class SMWTimeValue extends SMWDataValue {
 	 * @param $monthname string with standard 3-letter English month abbreviation
 	 * @return boolean stating whether a month was found
 	 */
-	protected static function parseMonthString( $string, &$monthname ) {
-		/**
-		 * @var SMWLanguage $smwgContLang
-		 */
-		global $smwgContLang;
+	private function parseMonthString( $string, &$monthname ) {
 
-		$monthnum = $smwgContLang->findMonth( $string ); // takes precedence over English month names!
+		// takes precedence over English month names!
+		$monthnum = Localizer::getInstance()->getExtraneousLanguage( $this->getOptionBy( self::OPT_CONTENT_LANGUAGE ) )->findMonthNumberByLabel( $string );
 
 		if ( $monthnum !== false ) {
 			$monthnum -= 1;
@@ -411,7 +409,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * @return boolean stating if successful
 	 */
 	protected function interpretDateComponents( $datecomponents, &$date ) {
-		global $smwgContLang;
+
 		// The following code segment creates a bit vector to encode
 		// which role each digit of the entered date can take (day,
 		// year, month). The vector starts with 1 and contains three
@@ -461,7 +459,7 @@ class SMWTimeValue extends SMWDataValue {
 		}
 
 		// Now use the bitvector to find the preferred interpretation of the date components:
-		$dateformats = $smwgContLang->getDateFormats();
+		$dateformats = Localizer::getInstance()->getExtraneousLanguage( $this->getOptionBy( self::OPT_CONTENT_LANGUAGE ) )->getDateFormats();
 		$date = array( 'y' => false, 'm' => false, 'd' => false );
 		foreach ( $dateformats[count( $propercomponents ) - 1] as $formatvector ) {
 			if ( !( ~$datevector & $formatvector ) ) { // check if $formatvector => $datevector ("the input supports the format")
