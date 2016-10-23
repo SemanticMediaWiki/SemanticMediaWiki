@@ -325,10 +325,14 @@ class ExtraneousLanguage {
 			'propertyAliases'
 		);
 
-		$canonicalPropertyAliases += $this->languageContents->getFromLanguageWithIndex(
-			$this->languageCode,
-			'propertyAliases'
+		// Add standard property lables from the canonical language as
+		// aliases
+		$propertyLabels = $this->languageContents->getFromLanguageWithIndex(
+			$this->languageContents->getCanonicalFallbackLanguageCode(),
+			'propertyLabels'
 		);
+
+		$canonicalPropertyAliases += array_flip( $propertyLabels );
 
 		return $canonicalPropertyAliases;
 	}
@@ -344,13 +348,15 @@ class ExtraneousLanguage {
 
 		$propertyAliases = $this->languageContents->getFromLanguageWithIndex(
 			$this->languageCode,
+			'propertyAliases'
+		);
+
+		$propertyLabels = $this->languageContents->getFromLanguageWithIndex(
+			$this->languageCode,
 			'propertyLabels'
 		);
 
-		$propertyAliases += $this->languageContents->getFromLanguageWithIndex(
-			$this->languageContents->getCanonicalFallbackLanguageCode(),
-			'propertyLabels'
-		);
+		$propertyAliases += array_flip( $propertyLabels );
 
 		return $propertyAliases;
 	}
