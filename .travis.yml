@@ -1,3 +1,5 @@
+sudo: false
+
 language: php
 
 matrix:
@@ -50,8 +52,8 @@ matrix:
 # Aug 12, 2016: (incident:2p40l49r3yxd) Travis support asks to add `sudo sysctl ...`
 # After investigation, removed the lines from Dec 16, 2015 as it emptied the hosts file
 before_install:
-  - sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
-  - sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
+  - sysctl -w net.ipv6.conf.all.disable_ipv6=1
+  - sysctl -w net.ipv6.conf.default.disable_ipv6=1
   - ip addr # for confirmation. can be skipped
   - cat /etc/hosts # optionally check the content *before*
 
