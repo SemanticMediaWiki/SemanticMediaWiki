@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\SQLStore\TableDefinition;
+use SMW\SQLStore\PropertyTableDefinition;
 use SMW\StoreFactory;
 use SMWDataItem;
 
 /**
- * @covers \SMW\SQLStore\TableDefinition
+ * @covers \SMW\SQLStore\PropertyTableDefinition
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,13 +15,13 @@ use SMWDataItem;
  *
  * @author mwjames
  */
-class TableDefinitionTest extends \PHPUnit_Framework_TestCase {
+class PropertyTableDefinitionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableDefinition',
-			new TableDefinition( 'foo', 'bar' )
+			'\SMW\SQLStore\PropertyTableDefinition',
+			new PropertyTableDefinition( 'foo', 'bar' )
 		);
 	}
 
@@ -30,7 +30,7 @@ class TableDefinitionTest extends \PHPUnit_Framework_TestCase {
 		$diType = SMWDataItem::TYPE_NUMBER;
 		$name   = 'smw_di_number';
 
-		$instance = new TableDefinition( $diType, $name );
+		$instance = new PropertyTableDefinition( $diType, $name );
 
 		$this->assertInternalType(
 			'array',
@@ -50,7 +50,7 @@ class TableDefinitionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testIdSubject() {
 
-		$instance = new TableDefinition( 'foo', 'bar' );
+		$instance = new PropertyTableDefinition( 'foo', 'bar' );
 		$instance->setUsesIdSubject( false );
 
 		$this->assertFalse(
@@ -60,7 +60,7 @@ class TableDefinitionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetFixedProperty() {
 
-		$instance = new TableDefinition( 'foo', 'bar' );
+		$instance = new PropertyTableDefinition( 'foo', 'bar' );
 
 		$this->setExpectedException( 'OutOfBoundsException' );
 		$instance->getFixedProperty();
