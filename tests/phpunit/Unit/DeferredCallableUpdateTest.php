@@ -111,7 +111,7 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->enabledDeferredUpdate( false );
-		$instance->pushUpdate();
+		$instance->pushToUpdateQueue();
 	}
 
 	public function testOrigin() {

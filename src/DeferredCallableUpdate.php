@@ -121,16 +121,16 @@ class DeferredCallableUpdate implements DeferrableUpdate {
 
 	/**
 	 * @since 2.4
-	 * @deprecated since 2.5, use DeferredCallableUpdate::pushUpdate
+	 * @deprecated since 2.5, use DeferredCallableUpdate::pushToUpdateQueue
 	 */
 	public function pushToDeferredUpdateList() {
-		$this->pushUpdate();
+		$this->pushToUpdateQueue();
 	}
 
 	/**
 	 * @since 2.5
 	 */
-	public function pushUpdate() {
+	public function pushToUpdateQueue() {
 
 		if ( $this->isPending && $this->enabledDeferredUpdate ) {
 			wfDebugLog( 'smw', $this->origin . ' (as pending DeferredCallableUpdate)' );

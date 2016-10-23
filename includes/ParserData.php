@@ -302,7 +302,7 @@ class ParserData {
 			$enabledDeferredUpdate
 		);
 
-		$deferredCallableUpdate->pushUpdate();
+		$deferredCallableUpdate->pushToUpdateQueue();
 
 		return true;
 	}
