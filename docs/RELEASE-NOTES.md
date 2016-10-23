@@ -57,16 +57,18 @@ THIS IS NOT A RELEASE YET
 * #1880 Fixed handling of the `bytea` type in `postgres` for a blob field
 * #1886 Fixed disappearance of the `Property` namespace in connection with extensions that use `wfLoadExtension`
 * #1922
-* #1926 
+* #1926
+* #1935
 
 ## Internal changes
 
 * #1511 Removed I18n shim originally required for MediaWiki < 1.23
 * #1726 Allows `QueryDependencyLinksStore` to execute `getDependencyListByLateRetrieval` even in cases of an intial empty list
-* #1750 Added `RdbmsTableBuilder` to replace `SMWSQLHelpers`
+* #1750 Added `TableBuilder` to replace `SMWSQLHelpers`
 * #1780 Added `ResourceBuilder` and `DispatchingResourceBuilder`
 * #1791 Added `PropertyRegistry::registerPropertyDescriptionByMsgKey`
 * #1776 Added `QueryEngine` and `StoreAware` interface
+* #1940 Added `Installer` and `TableSchemaManager` to replace `SMWSQLStore3SetupHandlers`
 
 ## Contributors
 
