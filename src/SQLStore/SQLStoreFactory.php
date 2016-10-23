@@ -273,10 +273,10 @@ class SQLStoreFactory {
 	/**
 	 * @since 2.3
 	 *
-	 * @return ByIdDataRebuildDispatcher
+	 * @return EntityRebuildDispatcher
 	 */
-	public function newByIdDataRebuildDispatcher() {
-		return new ByIdDataRebuildDispatcher( $this->store );
+	public function newEntityRebuildDispatcher() {
+		return new EntityRebuildDispatcher( $this->store );
 	}
 
 	/**

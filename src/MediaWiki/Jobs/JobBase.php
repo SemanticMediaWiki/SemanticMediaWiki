@@ -50,7 +50,7 @@ abstract class JobBase extends Job {
 	 *
 	 * @return JobBase
 	 */
-	public function setJobQueueEnabledState( $enableJobQueue = true ) {
+	public function setEnabledJobQueue( $enableJobQueue = true ) {
 		$this->enabledJobQueue = (bool)$enableJobQueue;
 		return $this;
 	}

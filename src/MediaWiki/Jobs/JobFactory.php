@@ -13,6 +13,15 @@ use Title;
 class JobFactory {
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param array $jobs
+	 */
+	public function batchInsert( array $jobs ) {
+		JobBase::batchInsert( $jobs );
+	}
+
+	/**
 	 * @since 2.0
 	 *
 	 * @param Title $title

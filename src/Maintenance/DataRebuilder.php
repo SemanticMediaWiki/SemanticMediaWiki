@@ -211,18 +211,18 @@ class DataRebuilder {
 
 	private function doRebuildAll() {
 
-		$byIdDataRebuildDispatcher = $this->store->refreshData(
+		$entityRebuildDispatcher = $this->store->refreshData(
 			$this->start,
 			1
 		);
 
-		$byIdDataRebuildDispatcher->setIterationLimit( 1 );
+		$entityRebuildDispatcher->setDispatchRangeLimit( 1 );
 
-		$byIdDataRebuildDispatcher->setUpdateJobParseMode(
+		$entityRebuildDispatcher->setUpdateJobParseMode(
 			$this->options->has( 'shallow-update' ) ? SMW_UJ_PM_CLASTMDATE : false
 		);
 
-		$byIdDataRebuildDispatcher->setUpdateJobToUseJobQueueScheduler( false );
+		$entityRebuildDispatcher->useJobQueueScheduler( false );
 		$this->doDisposeMarkedOutdatedEntities();
 
 		if ( !$this->options->has( 'skip-properties' ) ) {
@@ -242,7 +242,7 @@ class DataRebuilder {
 			" refresh). Continue this until all pages have been refreshed.\n---\n"
 		);
 
-		$total = $this->end && $this->end - $this->start > 0 ? $this->end - $this->start : $byIdDataRebuildDispatcher->getMaxId();
+		$total = $this->end && $this->end - $this->start > 0 ? $this->end - $this->start : $entityRebuildDispatcher->getMaxId();
 		$id = $this->start;
 
 		$this->reportMessage(
@@ -251,7 +251,7 @@ class DataRebuilder {
 
 		$this->reportMessage(
 			"Processing all IDs from $this->start to " .
-			( $this->end ? "$this->end" : $byIdDataRebuildDispatcher->getMaxId() ) . " ...\n"
+			( $this->end ? "$this->end" : $entityRebuildDispatcher->getMaxId() ) . " ...\n"
 		);
 
 		$this->rebuildCount = 0;
@@ -263,13 +263,13 @@ class DataRebuilder {
 			$this->rebuildCount++;
 			$this->exceptionLog = array();
 
-			$this->doExecuteFor( $byIdDataRebuildDispatcher, $id );
+			$this->doExecuteFor( $entityRebuildDispatcher, $id );
 
 			if ( $this->rebuildCount % 60 === 0 ) {
-				$progress = round( ( $this->end - $this->start > 0 ? $this->rebuildCount / $total : $byIdDataRebuildDispatcher->getEstimatedProgress() ) * 100 ) . "%";
+				$progress = round( ( $this->end - $this->start > 0 ? $this->rebuildCount / $total : $entityRebuildDispatcher->getEstimatedProgress() ) * 100 ) . "%";
 			}
 
-			foreach ( $byIdDataRebuildDispatcher->getDispatchedEntities() as $value ) {
+			foreach ( $entityRebuildDispatcher->getDispatchedEntities() as $value ) {
 
 				$text = $this->getHumanReadableTextFrom( $id, $value );
 
@@ -301,14 +301,14 @@ class DataRebuilder {
 		return true;
 	}
 
-	private function doExecuteFor( $byIdDataRebuildDispatcher, &$id ) {
+	private function doExecuteFor( $entityRebuildDispatcher, &$id ) {
 
 		if ( !$this->options->has( 'ignore-exceptions' ) ) {
-			$byIdDataRebuildDispatcher->dispatchRebuildFor( $id );
+			$entityRebuildDispatcher->startRebuildWith( $id );
 		} else {
 
 			try {
-				$byIdDataRebuildDispatcher->dispatchRebuildFor( $id );
+				$entityRebuildDispatcher->startRebuildWith( $id );
 			} catch ( \Exception $e ) {
 				$this->exceptionLog[$id] = array(
 					'msg'   => $e->getMessage(),

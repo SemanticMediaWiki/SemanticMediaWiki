@@ -77,19 +77,19 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testRebuildAllWithoutOptions() {
 
-		$byIdDataRebuildDispatcher = $this->getMockBuilder( '\SMW\SQLStore\ByIdDataRebuildDispatcher' )
+		$entityRebuildDispatcher = $this->getMockBuilder( '\SMW\SQLStore\EntityRebuildDispatcher' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$byIdDataRebuildDispatcher->expects( $this->once() )
-			->method( 'dispatchRebuildFor' )
+		$entityRebuildDispatcher->expects( $this->once() )
+			->method( 'startRebuildWith' )
 			->will( $this->returnCallback( array( $this, 'refreshDataOnMockCallback' ) ) );
 
-		$byIdDataRebuildDispatcher->expects( $this->any() )
+		$entityRebuildDispatcher->expects( $this->any() )
 			->method( 'getMaxId' )
 			->will( $this->returnValue( 1000 ) );
 
-		$byIdDataRebuildDispatcher->expects( $this->any() )
+		$entityRebuildDispatcher->expects( $this->any() )
 			->method( 'getDispatchedEntities' )
 			->will( $this->returnValue( array() ) );
 
@@ -100,7 +100,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'refreshData' )
-			->will( $this->returnValue( $byIdDataRebuildDispatcher ) );
+			->will( $this->returnValue( $entityRebuildDispatcher ) );
 
 		$store->setConnectionManager( $this->connectionManager );
 
@@ -123,19 +123,19 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testRebuildAllWithFullDelete() {
 
-		$byIdDataRebuildDispatcher = $this->getMockBuilder( '\SMW\SQLStore\ByIdDataRebuildDispatcher' )
+		$entityRebuildDispatcher = $this->getMockBuilder( '\SMW\SQLStore\EntityRebuildDispatcher' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$byIdDataRebuildDispatcher->expects( $this->atLeastOnce() )
-			->method( 'dispatchRebuildFor' )
+		$entityRebuildDispatcher->expects( $this->atLeastOnce() )
+			->method( 'startRebuildWith' )
 			->will( $this->returnCallback( array( $this, 'refreshDataOnMockCallback' ) ) );
 
-		$byIdDataRebuildDispatcher->expects( $this->any() )
+		$entityRebuildDispatcher->expects( $this->any() )
 			->method( 'getMaxId' )
 			->will( $this->returnValue( 1000 ) );
 
-		$byIdDataRebuildDispatcher->expects( $this->any() )
+		$entityRebuildDispatcher->expects( $this->any() )
 			->method( 'getDispatchedEntities' )
 			->will( $this->returnValue( array() ) );
 
@@ -148,7 +148,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'refreshData' )
-			->will( $this->returnValue( $byIdDataRebuildDispatcher ) );
+			->will( $this->returnValue( $entityRebuildDispatcher ) );
 
 		$store->expects( $this->once() )
 			->method( 'drop' );
@@ -175,19 +175,19 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testRebuildAllWithStopRangeOption() {
 
-		$byIdDataRebuildDispatcher = $this->getMockBuilder( '\SMW\SQLStore\ByIdDataRebuildDispatcher' )
+		$entityRebuildDispatcher = $this->getMockBuilder( '\SMW\SQLStore\EntityRebuildDispatcher' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$byIdDataRebuildDispatcher->expects( $this->exactly( 6 ) )
-			->method( 'dispatchRebuildFor' )
+		$entityRebuildDispatcher->expects( $this->exactly( 6 ) )
+			->method( 'startRebuildWith' )
 			->will( $this->returnCallback( array( $this, 'refreshDataOnMockCallback' ) ) );
 
-		$byIdDataRebuildDispatcher->expects( $this->any() )
+		$entityRebuildDispatcher->expects( $this->any() )
 			->method( 'getMaxId' )
 			->will( $this->returnValue( 1000 ) );
 
-		$byIdDataRebuildDispatcher->expects( $this->any() )
+		$entityRebuildDispatcher->expects( $this->any() )
 			->method( 'getDispatchedEntities' )
 			->will( $this->returnValue( array() ) );
 
@@ -198,7 +198,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'refreshData' )
-			->will( $this->returnValue( $byIdDataRebuildDispatcher ) );
+			->will( $this->returnValue( $entityRebuildDispatcher ) );
 
 		$store->setConnectionManager( $this->connectionManager );
 

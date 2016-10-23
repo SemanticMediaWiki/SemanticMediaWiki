@@ -81,14 +81,14 @@ class RefreshJob extends JobBase {
 
 		$run  = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ) : 1;
 
-		$byIdDataRebuildDispatcher = ApplicationFactory::getInstance()->getStore()->refreshData(
+		$entityRebuildDispatcher = ApplicationFactory::getInstance()->getStore()->refreshData(
 			$spos,
 			20,
 			$this->getNamespace( $run )
 		);
 
-		$byIdDataRebuildDispatcher->dispatchRebuildFor( $spos );
-		$prog = $byIdDataRebuildDispatcher->getEstimatedProgress();
+		$entityRebuildDispatcher->startRebuildWith( $spos );
+		$prog = $entityRebuildDispatcher->getEstimatedProgress();
 
 		if ( $spos > 0 ) {
 
@@ -115,7 +115,7 @@ class RefreshJob extends JobBase {
 
 	protected function createNextJob( array $parameters ) {
 		$nextjob = new self( $this->getTitle(), $parameters );
-		$nextjob->setJobQueueEnabledState( $this->enabledJobQueue )->insert();
+		$nextjob->setEnabledJobQueue( $this->enabledJobQueue )->insert();
 	}
 
 	protected function getNamespace( $run ) {
