@@ -162,7 +162,7 @@ class EventListenerRegistry implements EventListenerCollection {
 					} );
 
 					$deferredCallableUpdate->setOrigin( 'Event on.after.semanticdata.update.complete doPurgeParserCache for ' . $subject->getHash() );
-					$deferredCallableUpdate->pushUpdate();
+					$deferredCallableUpdate->pushToUpdateQueue();
 				}
 
 				$dispatchContext->set( 'propagationstop', true );

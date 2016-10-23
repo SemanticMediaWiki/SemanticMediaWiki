@@ -305,7 +305,7 @@ class QueryDependencyLinksStore {
 		// Indicates whether MW is running in command-line mode.
 		$deferredCallableUpdate->markAsPending( $GLOBALS['wgCommandLineMode'] );
 		$deferredCallableUpdate->enabledDeferredUpdate( true );
-		$deferredCallableUpdate->pushUpdate();
+		$deferredCallableUpdate->pushToUpdateQueue();
 
 		wfDebugLog( 'smw', __METHOD__ . ' procTime (sec): ' . round( ( microtime( true ) - $start ), 7 ) );
 	}
