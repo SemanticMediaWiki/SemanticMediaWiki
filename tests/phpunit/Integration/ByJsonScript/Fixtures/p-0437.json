@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation with preferred property label (`wgContLang=en`, `wgLang=ja`)",
+	"description": "Test in-text annotation with preferred property label (#1879, `wgContLang=en`, `wgLang=ja`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",

@@ -1,0 +1,11 @@
+@source http://www.gutenberg.org/files/34811/34811-h/34811-h.htm
+
+Title: Buddenbrooks - Verfall einer Familie
+
+Author: Thomas Mann
+
+Release Date: January 1, 2011 [EBook #34811]
+
+Language: German
+
+[[Has text::Und die kleine Antonie, achtjährig und zartgebaut, in einem Kleidchen aus ganz leichter changierender Seide, den hübschen Blondkopf ein wenig vom Gesichte des Großvaters abgewandt, blickte aus ihren graublauen Augen angestrengt nachdenkend und ohne etwas zu sehen ins Zimmer hinein, wiederholte noch einmal: »Was ist das«, sprach darauf langsam: »Ich glaube, daß mich Gott«, fügte, während ihr Gesicht sich aufklärte, rasch hinzu: »– geschaffen hat samt allen Kreaturen« ...]]

@@ -219,7 +219,7 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 		);
 
 		if ( is_array( $page['contents'] ) && isset( $page['contents']['import-from'] ) ) {
-			$contents = file_get_contents( $this->getTestCaseLocation() . $page['contents']['import-from'] );
+			$contents = $this->getFileContentsWithEncodingDetection( $this->getTestCaseLocation() . $page['contents']['import-from'] );
 		} else {
 			$contents = $page['contents'];
 		}
@@ -253,6 +253,12 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 		);
 
 		$this->itemsMarkedForDeletion[] = $target;
+	}
+
+	// http://php.net/manual/en/function.file-get-contents.php
+	private function getFileContentsWithEncodingDetection( $file ) {
+		$content = file_get_contents( $file );
+		return mb_convert_encoding( $content, 'UTF-8', mb_detect_encoding( $content, 'UTF-8, ISO-8859-1, ISO-8859-2', true ) );
 	}
 
 }
