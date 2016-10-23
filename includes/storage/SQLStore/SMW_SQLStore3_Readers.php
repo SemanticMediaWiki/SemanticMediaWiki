@@ -359,6 +359,13 @@ class SMWSQLStore3Readers {
 			$valuecount += 1;
 		}
 
+		// Postgres
+		// Function: SMWSQLStore3Readers::fetchSemanticData
+		// Error: 42P10 ERROR: for SELECT DISTINCT, ORDER BY expressions must appear in select list
+		if ( strpos( $select, $valueField ) === false ) {
+			$select .= ", $valueField AS v" . ( $valuecount + 1 );
+		}
+
 		if ( !$isSubject ) { // Apply sorting/string matching; only with given property
 			$where .= $this->store->getSQLConditions( $requestOptions, $valueField, $labelField, $where !== '' );
 		} else {
