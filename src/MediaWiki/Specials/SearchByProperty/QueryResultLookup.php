@@ -96,13 +96,15 @@ class QueryResultLookup {
 		if ( $pageRequestOptions->valueString === '' || $pageRequestOptions->valueString === null ) {
 			$description = $descriptionFactory->newThingDescription();
 		} else {
-
-			$pageRequestOptions->value->setProperty(
-				$pageRequestOptions->property->getDataItem()
+			$description = $descriptionFactory->newValueDescription(
+				$pageRequestOptions->value->getDataItem(),
+				$pageRequestOptions->property->getDataItem(),
+				$comparator
 			);
 
-			$description = $descriptionFactory->newFromDataValue(
-				$pageRequestOptions->value
+			$description = $descriptionFactory->newSomeProperty(
+				$pageRequestOptions->property->getDataItem(),
+				$description
 			);
 		}
 
