@@ -207,6 +207,14 @@ class ReferenceValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
+		// Notice: Undefined variable: dataValue in
+		$provider[] = array(
+			'?;12;3',
+			ReferenceValueFormatter::VALUE,
+			null,
+			''
+		);
+
 		return $provider;
 	}
 

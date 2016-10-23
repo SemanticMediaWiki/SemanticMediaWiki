@@ -106,6 +106,7 @@ class ReferenceValueFormatter extends DataValueFormatter {
 			// By definition the first element in the list is the VALUE other
 			// members are referencing to
 			$isValue = $results === array();
+			$dataValue = null;
 
 			if ( $dataItem !== false ) {
 				$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $dataItem, $propertyDataItem );
@@ -115,7 +116,7 @@ class ReferenceValueFormatter extends DataValueFormatter {
 			}
 
 			// Return a plain value in case no linker object is available
-			if ( $linker === null ) {
+			if ( $dataValue !== null && $linker === null ) {
 				return array( $dataValue->getWikiValue() );
 			}
 
