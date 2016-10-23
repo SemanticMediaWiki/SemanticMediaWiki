@@ -291,4 +291,23 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetCanonicalName() {
+
+		$language = $this->getMockBuilder( '\Language' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new Localizer( $language );
+
+		$this->assertEquals(
+			'Property',
+			$instance->getCanonicalNamespaceTextById( SMW_NS_PROPERTY )
+		);
+
+		$this->assertEquals(
+			'Help',
+			$instance->getCanonicalNamespaceTextById( NS_HELP )
+		);
+	}
+
 }

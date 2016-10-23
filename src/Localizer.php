@@ -156,12 +156,30 @@ class Localizer {
 	/**
 	 * @since 2.1
 	 *
-	 * @param integer $namespaceId
+	 * @param integer $index
 	 *
 	 * @return string
 	 */
-	public function getNamespaceTextById( $namespaceId ) {
-		return str_replace( '_', ' ', $this->contentLanguage->getNsText( $namespaceId ) );
+	public function getNamespaceTextById( $index ) {
+		return str_replace( '_', ' ', $this->contentLanguage->getNsText( $index ) );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param integer $index
+	 *
+	 * @return string
+	 */
+	public function getCanonicalNamespaceTextById( $index ) {
+
+		$canonicalNames = NamespaceManager::getCanonicalNames();
+
+		if ( isset( $canonicalNames[$index] ) ) {
+			return $canonicalNames[$index];
+		}
+
+		return \MWNamespace::getCanonicalName( $index );
 	}
 
 	/**
@@ -222,21 +240,21 @@ class Localizer {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $ns
+	 * @param integer $index
 	 * @param string $url
 	 *
 	 * @return string
 	 */
-	public function getCanonicalizedUrlByNamespace( $ns, $url ) {
+	public function getCanonicalizedUrlByNamespace( $index, $url ) {
 
-		$namespace = $this->getNamespaceTextById( $ns );
+		$namespace = $this->getNamespaceTextById( $index );
 
 		return str_replace(
 			array(
 				wfUrlencode( '/' . $namespace .':' ),
 				'/' . $namespace .':'
 			),
-			'/' . \MWNamespace::getCanonicalName( $ns ) . ':',
+			'/' . $this->getCanonicalNamespaceTextById( $index ) . ':',
 			$url
 		);
 	}
