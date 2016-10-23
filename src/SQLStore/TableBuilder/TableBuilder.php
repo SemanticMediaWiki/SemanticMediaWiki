@@ -3,6 +3,7 @@
 namespace SMW\SQLStore\TableBuilder;
 
 use Onoi\MessageReporter\MessageReporter;
+use Onoi\MessageReporter\MessageReporterAware;
 use SMW\SQLStore\TableBuilder as TableBuilderInterface;
 use DatabaseBase;
 use RuntimeException;
@@ -140,6 +141,26 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	 *
 	 * {@inheritDoc}
 	 */
+	public function create( Table $table ) {
+		$this->createTable( $table->getName(), $table->getConfiguration() );
+		$this->createIndex( $table->getName(), $table->getConfiguration() );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * {@inheritDoc}
+	 */
+	public function drop( Table $table ) {
+		$this->dropTable( $table->getName() );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $tableName
+	 * @param array|null $tableOptions
+	 */
 	public function createTable( $tableName, array $tableOptions = null ) {
 
 		$this->reportMessage( "Checking table $tableName ...\n" );
@@ -158,7 +179,8 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	/**
 	 * @since 2.5
 	 *
-	 * {@inheritDoc}
+	 * @param string $tableName
+	 * @param array|null $indexOptions
 	 */
 	public function createIndex( $tableName, array $indexOptions = null ) {
 		$this->reportMessage( "Checking index structures for table $tableName ...\n" );
@@ -169,7 +191,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	/**
 	 * @since 2.5
 	 *
-	 * {@inheritDoc}
+	 * @param string $tableName
 	 */
 	public function dropTable( $tableName ) {
 

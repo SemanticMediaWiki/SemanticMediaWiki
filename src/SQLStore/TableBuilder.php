@@ -2,23 +2,32 @@
 
 namespace SMW\SQLStore;
 
+use SMW\SQLStore\TableBuilder\Table;
+use Onoi\MessageReporter\MessageReporterAware;
+
 /**
+ * @private
+ *
+ * Provides generic creation and updating function for database tables. A builder
+ * that implements this interface is expected to define Database specific
+ * operations and allowing it to be executed on specific RDBMS backend.
+ *
  * @license GNU GPL v2+
  * @since 2.5
  *
  * @author mwjames
  */
-interface TableBuilder {
+interface TableBuilder extends MessageReporterAware {
 
 	/**
 	 * On after the creation of tables and indicies
 	 */
-	const EVENT_AFTER_TABLE_CREATE = 'event.after.table.create';
+	const PRE_CREATION = 'pre.creation';
 
 	/**
 	 * On after dropping all tables
 	 */
-	const EVENT_AFTER_TABLE_DROP = 'event.after.table.drop';
+	const POST_CREATION = 'post.creation';
 
 	/**
 	 * Generic creation and updating function for database tables. Ideally, it
@@ -38,46 +47,20 @@ interface TableBuilder {
 	 * @note The function partly ignores the order in which fields are set up.
 	 * Only if the type of some field changes will its order be adjusted explicitly.
 	 *
-	 * ```
-	 * $tableOptions = array(
-	 * 	'fields' => array(
-	 * 	)
-	 *  ...
-	 * )
-	 *```
 	 * @since 2.5
 	 *
-	 * @param string $tableName
-	 * @param array|null $tableOptions
+	 * @param Table $table
 	 */
-	public function createTable( $tableName, array $tableOptions = null );
+	public function create( Table $table );
 
 	/**
 	 * Removes a table from the RDBMS backend.
 	 *
 	 * @since 2.5
 	 *
-	 * @param string $tableName
+	 * @param Table $table
 	 */
-	public function dropTable( $tableName );
-
-	/**
-	 * Generic method to create or update index information of a table
-	 *
-	 * ```
-	 * $indexOptions = array(
-	 * 	'indicies' => array(
-	 * 	)
-	 *  ...
-	 * )
-	 *```
-	 *
-	 * @since 2.5
-	 *
-	 * @param string $indexName
-	 * @param array|null $indexOptions
-	 */
-	public function createIndex( $tableName, array $indexOptions = null );
+	public function drop( Table $table );
 
 	/**
 	 * Database backends often have different types that need to be used
@@ -93,7 +76,7 @@ interface TableBuilder {
 	 *
 	 * @return string|false SQL type declaration
 	 */
-	public function getStandardFieldType( $input );
+	public function getStandardFieldType( $key );
 
 	/**
 	 * Allows to check and validate the build on specific events

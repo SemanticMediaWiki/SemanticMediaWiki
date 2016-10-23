@@ -433,6 +433,15 @@ class Database {
 	}
 
 	/**
+	 * @see DatabaseBase::replace
+	 *
+	 * @since 2.5
+	 */
+	public function replace( $table, $uniqueIndexes, $rows, $fname = __METHOD__ ) {
+		return $this->writeConnection()->replace( $table, $uniqueIndexes, $rows, $fname );
+	}
+
+	/**
 	 * @see DatabaseBase::makeList
 	 *
 	 * @since 1.9.1

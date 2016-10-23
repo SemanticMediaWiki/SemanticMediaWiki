@@ -113,7 +113,7 @@ class HierarchyTempTableBuilder {
 	 */
 	public function createHierarchyTempTableFor( $type, $tablename, $valueComposite ) {
 
-		$this->temporaryTableBuilder->createTable( $tablename );
+		$this->temporaryTableBuilder->create( $tablename );
 
 		list( $smwtable, $depth ) = $this->getHierarchyTableDefinitionForType( $type );
 
@@ -143,8 +143,8 @@ class HierarchyTempTableBuilder {
 		$tmpnew = 'smw_new';
 		$tmpres = 'smw_res';
 
-		$this->temporaryTableBuilder->createTable( $tmpnew );
-		$this->temporaryTableBuilder->createTable( $tmpres );
+		$this->temporaryTableBuilder->create( $tmpnew );
+		$this->temporaryTableBuilder->create( $tmpres );
 
 		// Adding multiple values for the same column in sqlite is not supported
 		foreach ( explode( ',', $values ) as $value ) {
@@ -192,8 +192,8 @@ class HierarchyTempTableBuilder {
 
 		$this->hierarchyCache[$values] = $tablename;
 
-		$this->temporaryTableBuilder->dropTable( $tmpnew );
-		$this->temporaryTableBuilder->dropTable( $tmpres );
+		$this->temporaryTableBuilder->drop( $tmpnew );
+		$this->temporaryTableBuilder->drop( $tmpres );
 	}
 
 }

@@ -143,15 +143,6 @@ class SMWSQLStore3 extends SMWStore {
 	protected $writer = false;
 
 	/**
-	 * The SetupHandler object used by this store. Initialized by getSetupHandler(),
-	 * which is the only way in which it should be accessed.
-	 *
-	 * @since 1.8
-	 * @var SMWSQLStore3SetupHandlers
-	 */
-	protected $setupHandler = false;
-
-	/**
 	 * Cache for SemanticData objects, indexed by SMW ID.
 	 *
 	 * @todo In the future, the cache should be managed by a helper class.
@@ -373,20 +364,23 @@ class SMWSQLStore3 extends SMWStore {
 
 ///// Setup store /////
 
-	public function getSetupHandler() {
-		if( $this->setupHandler == false ) {
-			$this->setupHandler = new SMWSQLStore3SetupHandlers( $this );//Initialize if not done already
-		}
 
-		return $this->setupHandler;
-	}
-
+	/**
+	 * @since 1.8
+	 *
+	 * {@inheritDoc}
+	 */
 	public function setup( $verbose = true ) {
-		return $this->getSetupHandler()->setup( $verbose );
+		return $this->factory->newInstaller()->install( $verbose );
 	}
 
+	/**
+	 * @since 1.8
+	 *
+	 * {@inheritDoc}
+	 */
 	public function drop( $verbose = true ) {
-		return $this->getSetupHandler()->drop( $verbose );
+		return $this->factory->newInstaller()->uninstall( $verbose );
 	}
 
 	public function refreshData( &$id, $count, $namespaces = false, $usejobs = true ) {

@@ -369,19 +369,35 @@ class SQLStoreFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @return TableBuilder
+	 * @return Installer
 	 */
-	public function newTableBuilder() {
+	public function newInstaller() {
+
+		$messageReporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 
 		$tableBuilder = TableBuilder::factory(
 			$this->store->getConnection( DB_MASTER )
 		);
 
 		$tableBuilder->setMessageReporter(
-			MessageReporterFactory::getInstance()->newNullMessageReporter()
+			$messageReporter
 		);
 
-		return $tableBuilder;
+		$tableIntegrityChecker = new TableIntegrityChecker(
+			$this->store
+		);
+
+		$tableBuilder->setMessageReporter(
+			$messageReporter
+		);
+
+		$tableSchemaManager = new TableSchemaManager(
+			$this->store,
+			$tableBuilder,
+			$tableIntegrityChecker
+		);
+
+		return new Installer( $tableSchemaManager );
 	}
 
 	/**
