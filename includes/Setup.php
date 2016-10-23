@@ -163,7 +163,7 @@ final class Setup {
 			if ( $language === Message::USER_LANGUAGE ) {
 				$language = Localizer::getInstance()->getUserLanguage();
 			}
-			
+
 			// 1.27+
 			// [GlobalTitleFail] MessageCache::parse called by ... Message::parseText/MessageCache::parse with no title set.
 			return call_user_func_array( 'wfMessage', $arguments )->inLanguage( $language )->title( $GLOBALS['wgTitle'] )->parse();
@@ -203,15 +203,23 @@ final class Setup {
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgJobClasses
 	 */
 	private function registerJobClasses() {
-		$this->globalVars['wgJobClasses']['SMW\UpdateJob']  = 'SMW\MediaWiki\Jobs\UpdateJob';
-		$this->globalVars['wgJobClasses']['SMW\RefreshJob'] = 'SMW\MediaWiki\Jobs\RefreshJob';
-		$this->globalVars['wgJobClasses']['SMW\UpdateDispatcherJob'] = 'SMW\MediaWiki\Jobs\UpdateDispatcherJob';
-		$this->globalVars['wgJobClasses']['SMW\ParserCachePurgeJob'] = 'SMW\MediaWiki\Jobs\ParserCachePurgeJob';
-		$this->globalVars['wgJobClasses']['SMW\SearchTableUpdateJob'] = 'SMW\MediaWiki\Jobs\SearchTableUpdateJob';
 
-		// Legacy definition to be removed with 1.10
-		$this->globalVars['wgJobClasses']['SMWUpdateJob']  = 'SMW\MediaWiki\Jobs\UpdateJob';
-		$this->globalVars['wgJobClasses']['SMWRefreshJob'] = 'SMW\MediaWiki\Jobs\RefreshJob';
+		$jobClasses = array(
+			'SMW\UpdateJob' => 'SMW\MediaWiki\Jobs\UpdateJob',
+			'SMW\RefreshJob' => 'SMW\MediaWiki\Jobs\RefreshJob',
+			'SMW\UpdateDispatcherJob' => 'SMW\MediaWiki\Jobs\UpdateDispatcherJob',
+			'SMW\ParserCachePurgeJob' => 'SMW\MediaWiki\Jobs\ParserCachePurgeJob',
+			'SMW\SearchTableUpdateJob' => 'SMW\MediaWiki\Jobs\SearchTableUpdateJob',
+			'SMW\EntityIdDisposerJob' => 'SMW\MediaWiki\Jobs\EntityIdDisposerJob',
+
+			// Legacy definition to be removed with 1.10
+			'SMWUpdateJob'  => 'SMW\MediaWiki\Jobs\UpdateJob',
+			'SMWRefreshJob' => 'SMW\MediaWiki\Jobs\RefreshJob'
+		);
+
+		foreach ( $jobClasses as $job => $class ) {
+			$this->globalVars['wgJobClasses'][$job] = $class;
+		}
 	}
 
 	/**

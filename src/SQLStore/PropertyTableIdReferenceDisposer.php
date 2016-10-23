@@ -4,6 +4,7 @@ namespace SMW\SQLStore;
 
 use SMW\EventHandler;
 use SMW\DIWikiPage;
+use SMW\Iterators\ResultIterator;
 
 /**
  * @private
@@ -63,6 +64,37 @@ class PropertyTableIdReferenceDisposer {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @return ResultIterator
+	 */
+	public function newOutdatedEntitiesResultIterator() {
+
+		$res = $this->connection->select(
+			SQLStore::ID_TABLE,
+			array( 'smw_id' ),
+			array( 'smw_iw' => SMW_SQL3_SMWDELETEIW ),
+			__METHOD__
+		);
+
+		return new ResultIterator( $res );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param stdClass $row
+	 */
+	public function cleanUpTableEntriesByRow( $row ) {
+
+		if ( !isset( $row->smw_id ) ) {
+			return;
+		}
+
+		$this->cleanUpTableEntriesById( $row->smw_id );
+	}
+
+	/**
 	 * @note This method does not make any assumption about the ID state and therefore
 	 * has to be validated before this method is called.
 	 *
@@ -71,6 +103,8 @@ class PropertyTableIdReferenceDisposer {
 	 * @param integer $id
 	 */
 	public function cleanUpTableEntriesById( $id ) {
+
+		$this->connection->beginAtomicTransaction( __METHOD__ );
 
 		$this->triggerResetCacheEventBy( $id );
 
@@ -104,6 +138,7 @@ class PropertyTableIdReferenceDisposer {
 		}
 
 		$this->doRemoveEntityReferencesById( $id );
+		$this->connection->endAtomicTransaction( __METHOD__ );
 	}
 
 	private function doRemoveEntityReferencesById( $id ) {

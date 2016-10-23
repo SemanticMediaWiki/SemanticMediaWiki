@@ -4,7 +4,6 @@ use SMW\ApplicationFactory;
 use SMW\MediaWiki\Jobs\RefreshJob;
 use SMW\MediaWiki\ManualEntryLogger;
 use SMW\Settings;
-use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\Store;
 use SMW\StoreFactory;
 
@@ -150,7 +149,7 @@ class SMWAdmin extends SpecialPage {
 		}
 
 		if ( $this->getRequest()->getText( 'action' ) === 'iddispose' ) {
-			$this->doIdDispose( (int)$this->getRequest()->getVal( 'id' ) );
+			$this->doDisposeById( (int)$this->getRequest()->getVal( 'id' ) );
 		}
 
 		$id = (int)$this->getRequest()->getText( 'id' );
@@ -342,17 +341,17 @@ class SMWAdmin extends SpecialPage {
 		} );
 	}
 
-	protected function doIdDispose( $id ) {
+	protected function doDisposeById( $id ) {
 
 		if ( $GLOBALS['wgRequest']->getText( 'dispose' ) !== 'yes' || $id < 1 ) {
 			return $id;
 		}
 
-		$propertyTableIdReferenceDisposer = new PropertyTableIdReferenceDisposer(
-			ApplicationFactory::getInstance()->getStore( '\SMW\SQLStore\SQLStore' )
+		$entityIdDisposerJob = ApplicationFactory::getInstance()->newJobFactory()->newEntityIdDisposerJob(
+			Title::newFromText( __METHOD__ )
 		);
 
-		$propertyTableIdReferenceDisposer->cleanupTableEntriesFor( $id );
+		$entityIdDisposerJob->executeWith( $id );
 
 		$manualEntryLogger = new ManualEntryLogger();
 		$manualEntryLogger->registerLoggableEventType( 'admin' );

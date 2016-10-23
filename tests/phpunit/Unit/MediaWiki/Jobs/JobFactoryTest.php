@@ -64,4 +64,14 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructEntityIdDisposerJob() {
+
+		$instance = new JobFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\Jobs\EntityIdDisposerJob',
+			$instance->newEntityIdDisposerJob( Title::newFromText( __METHOD__ ) )
+		);
+	}
+
 }
