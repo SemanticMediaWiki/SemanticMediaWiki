@@ -3,16 +3,10 @@
 namespace SMW\Query;
 
 /**
- * Static class for functions related to the SMW query language.
- *
- * Note: the query language "definition" is located at various places in the SMW codebase.
- * SMWQueryParser defines most of the actual query syntax.
- * SMWDescription defines the semantic elements of the query language.
- * This class is an attempt to gradualy migrate to having all the stuff at one location,
- * clearly distinguised from non-language code.
- *
+ * @license GNU GPL v2+
  * @since 1.5.3
  *
+ * @author mwjames
  * @author Jeroen De Dauw
  */
 class QueryComparator {
@@ -96,6 +90,18 @@ class QueryComparator {
 		}
 
 		return array_key_exists( $string, $this->comparators ) ? $this->comparators[$string] : $defaultComparator;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $value
+	 * @param integer $comparator
+	 *
+	 * @return boolean
+	 */
+	public function containsComparator( $value, $comparator = SMW_CMP_EQ ) {
+		return $this->extractComparatorFromString( $value ) === $comparator;
 	}
 
 	/**
