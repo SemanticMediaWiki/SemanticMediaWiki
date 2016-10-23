@@ -55,7 +55,7 @@ class SMWTypesValue extends SMWDataValue {
 			}
 		}
 
-		if ( $value{0} === '_' ) {
+		if ( $value !== '' && $value{0} === '_' ) {
 			$this->m_typeId = $value;
 		} else {
 			$this->m_givenLabel = smwfNormalTitleText( $value );
