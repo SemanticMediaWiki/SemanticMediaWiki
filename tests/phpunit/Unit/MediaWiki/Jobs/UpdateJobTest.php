@@ -84,7 +84,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( true ) );
 
 		$instance = new UpdateJob( $title );
-		$instance->setJobQueueEnabledState( false );
+		$instance->setEnabledJobQueue( false );
 
 		$this->assertFalse(	$instance->run() );
 	}
@@ -110,7 +110,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'ContentParser', null );
 
 		$instance = new UpdateJob( $title );
-		$instance->setJobQueueEnabledState( false );
+		$instance->setEnabledJobQueue( false );
 
 		$this->assertTrue( $instance->run() );
 	}
@@ -136,7 +136,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'ContentParser', $contentParser );
 
 		$instance = new UpdateJob( $title );
-		$instance->setJobQueueEnabledState( false );
+		$instance->setEnabledJobQueue( false );
 
 		$this->assertFalse( $instance->run() );
 	}
@@ -192,7 +192,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$instance = new UpdateJob( $title );
-		$instance->setJobQueueEnabledState( false );
+		$instance->setEnabledJobQueue( false );
 
 		$this->assertTrue( $instance->run() );
 	}
@@ -245,7 +245,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$instance = new UpdateJob( $title, array( 'pm' => SMW_UJ_PM_CLASTMDATE ) );
-		$instance->setJobQueueEnabledState( false );
+		$instance->setEnabledJobQueue( false );
 
 		$this->assertTrue( $instance->run() );
 	}

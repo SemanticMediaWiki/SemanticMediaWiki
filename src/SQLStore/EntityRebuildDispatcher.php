@@ -3,15 +3,16 @@
 namespace SMW\SQLStore;
 
 use Hooks;
+use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\MediaWiki\Jobs\JobBase;
-use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\SemanticData;
 use SMW\Store;
 use Title;
 
 /**
+ * @private
+ *
  * @license GNU GPL v2+
  * @since 2.3
  *
@@ -20,17 +21,22 @@ use Title;
  * @author Nischay Nahata
  * @author mwjames
  */
-class ByIdDataRebuildDispatcher {
+class EntityRebuildDispatcher {
 
 	/**
 	 * @var SQLStore
 	 */
-	private $store = null;
+	private $store;
 
 	/**
 	 * @var PropertyTableIdReferenceDisposer
 	 */
-	private $propertyTableIdReferenceDisposer = null;
+	private $propertyTableIdReferenceDisposer;
+
+	/**
+	 * @var JobFactory
+	 */
+	private $jobFactory;
 
 	/**
 	 * @var integer
@@ -70,6 +76,7 @@ class ByIdDataRebuildDispatcher {
 	public function __construct( SQLStore $store ) {
 		$this->store = $store;
 		$this->propertyTableIdReferenceDisposer = new PropertyTableIdReferenceDisposer( $store );
+		$this->jobFactory = ApplicationFactory::getInstance()->newJobFactory();
 	}
 
 	/**
@@ -86,7 +93,7 @@ class ByIdDataRebuildDispatcher {
 	 *
 	 * @param boolean $useJobQueueScheduler
 	 */
-	public function setUpdateJobToUseJobQueueScheduler( $useJobQueueScheduler ) {
+	public function useJobQueueScheduler( $useJobQueueScheduler ) {
 		$this->useJobQueueScheduler = (bool)$useJobQueueScheduler;
 	}
 
@@ -95,7 +102,7 @@ class ByIdDataRebuildDispatcher {
 	 *
 	 * @param array|false $namespaces
 	 */
-	public function setNamespacesTo( $namespaces ) {
+	public function setRestrictionToNamespaces( $namespaces ) {
 		$this->namespaces = $namespaces;
 	}
 
@@ -104,7 +111,7 @@ class ByIdDataRebuildDispatcher {
 	 *
 	 * @param integer $iterationLimit
 	 */
-	public function setIterationLimit( $iterationLimit ) {
+	public function setDispatchRangeLimit( $iterationLimit ) {
 		$this->iterationLimit = (int)$iterationLimit;
 	}
 
@@ -163,7 +170,7 @@ class ByIdDataRebuildDispatcher {
 	 *
 	 * @param integer &$id
 	 */
-	public function dispatchRebuildFor( &$id ) {
+	public function startRebuildWith( &$id ) {
 
 		$updateJobs = array();
 		$this->dispatchedEntities = array();
@@ -185,7 +192,7 @@ class ByIdDataRebuildDispatcher {
 		Hooks::run( 'SMW::SQLStore::BeforeDataRebuildJobInsert', array( $this->store, &$updateJobs ) );
 
 		if ( $this->useJobQueueScheduler ) {
-			JobBase::batchInsert( $updateJobs );
+			$this->jobFactory->batchInsert( $updateJobs );
 		} else {
 			foreach ( $updateJobs as $job ) {
 				$job->run();
@@ -390,7 +397,7 @@ class ByIdDataRebuildDispatcher {
 	}
 
 	private function newUpdateJob( $title ) {
-		return new UpdateJob( $title, array( 'pm' => $this->updateJobParseMode ) );
+		return $this->jobFactory->newUpdateJob( $title, array( 'pm' => $this->updateJobParseMode ) );
 	}
 
 }

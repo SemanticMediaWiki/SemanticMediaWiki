@@ -3,11 +3,11 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\ApplicationFactory;
-use SMW\SQLStore\ByIdDataRebuildDispatcher;
+use SMW\SQLStore\EntityRebuildDispatcher;
 use SMW\SQLStore\SQLStore;
 
 /**
- * @covers \SMW\SQLStore\ByIdDataRebuildDispatcher
+ * @covers \SMW\SQLStore\EntityRebuildDispatcher
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,7 +15,7 @@ use SMW\SQLStore\SQLStore;
  *
  * @author mwjames
  */
-class ByIdDataRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
+class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 	private $applicationFactory;
 
@@ -64,8 +64,8 @@ class ByIdDataRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\ByIdDataRebuildDispatcher',
-			new ByIdDataRebuildDispatcher( $store )
+			'\SMW\SQLStore\EntityRebuildDispatcher',
+			new EntityRebuildDispatcher( $store )
 		);
 	}
 
@@ -95,13 +95,13 @@ class ByIdDataRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new ByIdDataRebuildDispatcher( $store );
+		$instance = new EntityRebuildDispatcher( $store );
 
-		$instance->setIterationLimit( 1 );
+		$instance->setDispatchRangeLimit( 1 );
 		$instance->setUpdateJobParseMode( SMW_UJ_PM_CLASTMDATE );
 
-		$instance->setUpdateJobToUseJobQueueScheduler( false );
-		$instance->dispatchRebuildFor( $id );
+		$instance->useJobQueueScheduler( false );
+		$instance->startRebuildWith( $id );
 
 		$this->assertSame(
 			$expected,

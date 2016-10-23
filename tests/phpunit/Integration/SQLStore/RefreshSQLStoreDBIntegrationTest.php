@@ -79,18 +79,18 @@ class RefreshSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 	protected function assertStoreHasDataToRefresh( $useJobs ) {
 		$refreshPosition = $this->title->getArticleID();
 
-		$byIdDataRebuildDispatcher = $this->getStore()->refreshData(
+		$entityRebuildDispatcher = $this->getStore()->refreshData(
 			$refreshPosition,
 			1,
 			false,
 			$useJobs
 		);
 
-		$byIdDataRebuildDispatcher->dispatchRebuildFor( $refreshPosition );
+		$entityRebuildDispatcher->startRebuildWith( $refreshPosition );
 
 		$this->assertGreaterThan(
 			0,
-			$byIdDataRebuildDispatcher->getEstimatedProgress()
+			$entityRebuildDispatcher->getEstimatedProgress()
 		);
 	}
 
