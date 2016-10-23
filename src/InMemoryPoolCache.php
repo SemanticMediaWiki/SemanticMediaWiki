@@ -14,6 +14,21 @@ namespace SMW;
 class InMemoryPoolCache {
 
 	/**
+	 * Stats as plain string
+	 */
+	const FORMAT_PLAIN = 'plain';
+
+	/**
+	 * Stats as JSON output
+	 */
+	const FORMAT_JSON = 'json';
+
+	/**
+	 * Stats as HTML list output
+	 */
+	const FORMAT_HTML = 'html';
+
+	/**
 	 * @var InMemoryPoolCache
 	 */
 	private static $instance = null;
@@ -90,40 +105,42 @@ class InMemoryPoolCache {
 	/**
 	 * @since 2.4
 	 *
+	 * @param string $format
+	 *
 	 * @return string
 	 */
-	public function getFormattedStats() {
+	public function getFormattedStats( $format = self::FORMAT_PLAIN ) {
 
-		$stats = '';
-		ksort( $this->poolCacheList );
+		$stats = $this->computeStats();
+		$output = '';
 
-		foreach ( $this->poolCacheList as $key => $value ) {
-			$stats .= '- ' . $key . "\n";
+		if ( $format === self::FORMAT_PLAIN ) {
+			foreach ( $stats as $key => $value ) {
+				$output .= '- ' . $key . "\n";
 
-			$hits = 0;
-			$misses = 0;
-
-			foreach ( $value->getStats() as $k => $v ) {
-				$stats .= '  - ' . $k . ' ' . $v . "\n";
-
-				if ( $k === 'hits' ) {
-					$hits = $v;
-				}
-
-				if ( $k === 'inserts' ) {
-					$misses = $v;
-				}
-
-				if ( $k === 'misses' && $v > 0 ) {
-					$misses = $v;
+				foreach ( $value as $k => $v ) {
+					$output .= '  - ' . $k . ': ' . $v . "\n" ;
 				}
 			}
-
-			$hitRatio = $hits > 0 ? round( $hits / ( $hits + $misses ), 4 ) : 0;
-			$stats .= '  - ' . 'hit ratio ' . $hitRatio . ', miss ratio ' . round( 1 - $hitRatio, 4 ) . "\n";
 		}
 
-		return $stats;
+		if ( $format === self::FORMAT_HTML ) {
+			$output .= '<ul>';
+			foreach ( $stats as $key => $value ) {
+				$output .= '<li>' . $key . '<ul>';
+				foreach ( $value as $k => $v ) {
+					$output .= '<li>' . $k . ': ' . $v . "</li>" ;
+				}
+				$output .= '</ul></li>';
+			}
+			$output .= '</ul>';
+		}
+
+		if ( $format === self::FORMAT_JSON ) {
+			$output .= json_encode( $stats, JSON_PRETTY_PRINT );
+		}
+
+		return $output;
 	}
 
 	/**
@@ -153,6 +170,42 @@ class InMemoryPoolCache {
 		}
 
 		return $this->poolCacheList[$poolCacheId];
+	}
+
+	private function computeStats() {
+
+		ksort( $this->poolCacheList );
+		$stats = array();
+
+		foreach ( $this->poolCacheList as $key => $value ) {
+			$stats[$key] = array();
+
+			$hits = 0;
+			$misses = 0;
+
+			foreach ( $value->getStats() as $k => $v ) {
+				$stats[$key][$k] = $v;
+
+				if ( $k === 'hits' ) {
+					$hits = $v;
+				}
+
+				if ( $k === 'inserts' ) {
+					$misses = $v;
+				}
+
+				if ( $k === 'misses' && $v > 0 ) {
+					$misses = $v;
+				}
+			}
+
+			$hitRatio = $hits > 0 ? round( $hits / ( $hits + $misses ), 4 ) : 0;
+
+			$stats[$key]['hit ratio'] = $hitRatio;
+			$stats[$key]['miss ratio'] = $hitRatio > 0 ? round( 1 - $hitRatio, 4 ) : 0;
+		}
+
+		return $stats;
 	}
 
 }

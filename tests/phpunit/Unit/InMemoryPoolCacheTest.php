@@ -53,20 +53,39 @@ class InMemoryPoolCacheTest extends \PHPUnit_Framework_TestCase {
 			$instance->getPoolCacheFor( 'Foo' )->fetch( 'Bar' )
 		);
 
+		$instance->resetPoolCacheFor( 'Foo' );
+
+		$this->assertEmpty(
+			$instance->getStats()
+		);
+	}
+
+	public function testGetFormattedStats() {
+
+		$instance = InMemoryPoolCache::getInstance();
+
+		$instance->getPoolCacheFor( 'Foo' )->save( 'Bar', 42 );
+
 		$this->assertNotEmpty(
 			$instance->getStats()
 		);
 
 		$this->assertInternalType(
 			'string',
-			$instance->getFormattedStats()
+			$instance->getFormattedStats( InMemoryPoolCache::FORMAT_PLAIN )
+		);
+
+		$this->assertContains(
+			'ul',
+			$instance->getFormattedStats( InMemoryPoolCache::FORMAT_HTML )
+		);
+
+		$this->assertInternalType(
+			'string',
+			$instance->getFormattedStats( InMemoryPoolCache::FORMAT_JSON )
 		);
 
 		$instance->resetPoolCacheFor( 'Foo' );
-
-		$this->assertEmpty(
-			$instance->getStats()
-		);
 	}
 
 }
