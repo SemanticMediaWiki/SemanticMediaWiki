@@ -80,6 +80,21 @@ class QueryComparatorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider containsComparatorProvider
+	 */
+	public function testContainsComparator( $string, $comparator, $expected ) {
+
+		$comparatorList = '';
+
+		$instance = new QueryComparator( $comparatorList, true );
+
+		$this->assertEquals(
+			$expected,
+			$instance->containsComparator( $string, $comparator )
+		);
+	}
+
 	public function stringComparatorProvider() {
 
 		$provider[] = array(
@@ -102,6 +117,47 @@ class QueryComparatorTest extends \PHPUnit_Framework_TestCase {
 			'<Foo',
 			'Foo',
 			SMW_CMP_LESS
+		);
+
+		return $provider;
+	}
+
+	public function containsComparatorProvider() {
+
+		$provider[] = array(
+			'~someThing',
+			SMW_CMP_EQ,
+			false
+		);
+
+		$provider[] = array(
+			'someThing',
+			SMW_CMP_EQ,
+			true
+		);
+
+		$provider[] = array(
+			'!~someThing',
+			SMW_CMP_NLKE,
+			true
+		);
+
+		$provider[] = array(
+			'!~someThing',
+			SMW_CMP_LIKE,
+			false
+		);
+
+		$provider[] = array(
+			'>>someThing',
+			SMW_CMP_LESS,
+			false
+		);
+
+		$provider[] = array(
+			'<<someThing',
+			SMW_CMP_LESS,
+			true
 		);
 
 		return $provider;
