@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation using '_txt' type with 255+ char (`wgContLang=en`, `wgLang=en`)",
+	"description": "Test in-text annotation using '_txt' type with 255+ char (#1878, `wgContLang=en`, `wgLang=en`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
