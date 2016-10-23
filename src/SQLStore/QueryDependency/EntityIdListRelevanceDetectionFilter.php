@@ -106,7 +106,7 @@ class EntityIdListRelevanceDetectionFilter {
 			array_keys( $affiliateEntityList )
 		);
 
-		wfDebugLog( 'smw', __METHOD__ . ' processing (sec): ' . round( ( microtime( true ) - $start ), 6 )  );
+		wfDebugLog( 'smw', __METHOD__ . ' procTime (sec): ' . round( ( microtime( true ) - $start ), 6 )  );
 
 		return $filteredIdList;
 	}

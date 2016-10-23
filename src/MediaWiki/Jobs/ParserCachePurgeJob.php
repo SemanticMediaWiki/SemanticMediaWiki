@@ -6,6 +6,7 @@ use Hooks;
 use SMW\ApplicationFactory;
 use SMW\HashBuilder;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
+use SMW\RequestOptions;
 use Title;
 
 /**
@@ -103,11 +104,15 @@ class ParserCachePurgeJob extends JobBase {
 			$this->store
 		);
 
+		$requestOptions = new RequestOptions();
+
 		// +1 to look ahead
-		$hashList = $queryDependencyLinksStore->findPartialEmbeddedQueryTargetLinksHashListFor(
+		$requestOptions->setLimit( $this->limit + 1 );
+		$requestOptions->setOffset( $this->offset );
+
+		$hashList = $queryDependencyLinksStore->findEmbeddedQueryTargetLinksHashListFor(
 			$idList,
-			$this->limit + 1,
-			$this->offset
+			$requestOptions
 		);
 
 		if ( $hashList === array() ) {

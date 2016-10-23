@@ -63,6 +63,11 @@ class RequestOptions {
 	private $stringConditions = array();
 
 	/**
+	 * An array extra conditions
+	 */
+	private $extraConditions = array();
+
+	/**
 	 * @since 1.0
 	 *
 	 * @param string $string to match
@@ -82,6 +87,24 @@ class RequestOptions {
 	 */
 	public function getStringConditions() {
 		return $this->stringConditions;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param mixed $extraCondition
+	 */
+	public function addExtraCondition( $extraCondition ) {
+		$this->extraConditions[] = $extraCondition;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param array
+	 */
+	public function getExtraConditions() {
+		return $this->extraConditions;
 	}
 
 	/**
@@ -140,6 +163,7 @@ class RequestOptions {
 			$this->boundary . '#' .
 			$this->include_boundary . '#' .
 			( $stringConditions !== '' ? '|' . $stringConditions : '' );
+			( $this->extraConditions !== array() ? implode( '#', $this->extraConditions ): '' );
 	}
 
 }
