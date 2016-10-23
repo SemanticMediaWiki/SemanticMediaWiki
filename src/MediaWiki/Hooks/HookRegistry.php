@@ -499,7 +499,10 @@ class HookRegistry {
 				$store
 			);
 
+			$subject = $semanticData->getSubject();
+
 			$queryDependencyLinksStore->pruneOutdatedTargetLinks(
+				$subject,
 				$compositePropertyTableDiffIterator
 			);
 
@@ -513,7 +516,7 @@ class HookRegistry {
 			);
 
 			$deferredRequestDispatchManager->dispatchParserCachePurgeJobFor(
-				$semanticData->getSubject()->getTitle(),
+				$subject->getTitle(),
 				$jobParameters
 			);
 
@@ -524,13 +527,14 @@ class HookRegistry {
 			);
 
 			$textByChangeUpdater->pushUpdates(
-				$semanticData->getSubject(),
+				$subject,
 				$compositePropertyTableDiffIterator,
 				$deferredRequestDispatchManager
 			);
 
 			return true;
 		};
+
 
 		/**
 		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Store::AfterQueryResultLookupComplete

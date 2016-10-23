@@ -65,7 +65,7 @@ class QueryDependencyLinksStoreFactory {
 			new DependencyLinksTableUpdater( $store )
 		);
 
-		$queryDependencyLinksStore->setEnabledState(
+		$queryDependencyLinksStore->setEnabled(
 			$this->applicationFactory->getSettings()->get( 'smwgEnabledQueryDependencyLinksStore' )
 		);
 

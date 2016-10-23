@@ -84,6 +84,10 @@ class SpecialDeferredRequestDispatcher extends SpecialPage {
 
 		$this->getOutput()->disable();
 
+		if ( wfReadOnly() ) {
+			return $this->modifyHttpHeader( "HTTP/1.0 423 Locked", 'Wiki is in read-only mode.' );
+		}
+
 		if ( !$this->isHttpRequestMethod( 'HEAD' ) && !$this->isHttpRequestMethod( 'POST' ) ) {
 			return $this->modifyHttpHeader( "HTTP/1.0 400 Bad Request", 'The special page requires a POST/HEAD request.' );
 		}

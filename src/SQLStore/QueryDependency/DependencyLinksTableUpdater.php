@@ -117,7 +117,7 @@ class DependencyLinksTableUpdater {
 	 * @param integer $sid
 	 * @param array $dependencyList
 	 */
-	public function updateDependencyList( $sid, array $dependencyList ) {
+	private function updateDependencyList( $sid, array $dependencyList ) {
 
 		$this->connection->beginAtomicTransaction( __METHOD__ );
 
@@ -144,14 +144,14 @@ class DependencyLinksTableUpdater {
 				continue;
 			}
 
-			$oid = $this->getIdForSubject( $dependency );
+			$oid = $this->getId( $dependency );
 
 			// If the ID_TABLE didn't contained an valid ID then we create one ourselves
 			// to ensure that object entities are tracked from the start
 			// This can happen when a query is added with object reference that have not
 			// yet been referenced as annotation and therefore do not recognized as
 			// value annotation
-			if ( $oid < 1 && ( ( $oid = $this->tryToMakeIdForSubject( $dependency ) ) < 1 ) ) {
+			if ( $oid < 1 && ( ( $oid = $this->createId( $dependency ) ) < 1 ) ) {
 				continue;
 			}
 
@@ -186,7 +186,16 @@ class DependencyLinksTableUpdater {
 	 * @param DIWikiPage $subject, $subobjectName
 	 * @param string $subobjectName
 	 */
-	public function getIdForSubject( DIWikiPage $subject, $subobjectName = '' ) {
+	public function getId( DIWikiPage $subject, $subobjectName = '' ) {
+
+		if ( $subobjectName !== '' ) {
+			$subject = new DIWikiPage(
+				$subject->getDBkey(),
+				$subject->getNamespace(),
+				$subject->getInterwiki(),
+				$subobjectName
+			);
+		}
 
 		$id = $this->store->getObjectIds()->getIDFor(
 			$subject
@@ -201,11 +210,7 @@ class DependencyLinksTableUpdater {
 	 * @param DIWikiPage $subject, $subobjectName
 	 * @param string $subobjectName
 	 */
-	public function tryToMakeIdForSubject( DIWikiPage $subject, $subobjectName = '' ) {
-
-		if ( $subject->getNamespace() !== NS_CATEGORY && $subject->getNamespace() !== SMW_NS_PROPERTY ) {
-			return 0;
-		}
+	public function createId( DIWikiPage $subject, $subobjectName = '' ) {
 
 		$id = $this->store->getObjectIds()->makeSMWPageID(
 			$subject->getDBkey(),
@@ -215,7 +220,7 @@ class DependencyLinksTableUpdater {
 			false
 		);
 
-		wfDebugLog( 'smw', __METHOD__ . " add new {$id} ID for " . $subject->getHash() . " \n" );
+		wfDebugLog( 'smw', __METHOD__ . " add new {$id} ID for " . $subject->getHash() . " {$subobjectName}" );
 
 		return $id;
 	}

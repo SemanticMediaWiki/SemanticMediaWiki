@@ -8,6 +8,7 @@ use SMW\DIWikiPage;
 use SMW\EventHandler;
 use SMW\SQLStore\CompositePropertyTableDiffIterator;
 use SMW\Store;
+use SMW\RequestOptions;
 use SMWSQLStore3;
 
 /**
@@ -73,7 +74,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @param boolean $isEnabled
 	 */
-	public function setEnabledState( $isEnabled ) {
+	public function setEnabled( $isEnabled ) {
 		$this->isEnabled = (bool)$isEnabled;
 	}
 
@@ -86,12 +87,13 @@ class QueryDependencyLinksStore {
 	 *
 	 * @param CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator
 	 */
-	public function pruneOutdatedTargetLinks( CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator ) {
+	public function pruneOutdatedTargetLinks( DIWikiPage $subject, CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator ) {
 
 		if ( !$this->isEnabled() ) {
 			return null;
 		}
 
+		$start = microtime( true );
 		$tableName = $this->store->getPropertyTableInfoFetcher()->findTableIdForProperty(
 			new DIProperty( '_ASK' )
 		);
@@ -114,15 +116,7 @@ class QueryDependencyLinksStore {
 			$this->dependencyLinksTableUpdater->deleteDependenciesFromList( $deleteIdList );
 		}
 
-		// Dispatch any event registered earlier during the QueryResult processing
-		// that didn't match a sid
-		EventHandler::getInstance()->getEventDispatcher()->dispatch(
-			'deferred.embedded.query.dep.update'
-		);
-
-		EventHandler::getInstance()->getEventDispatcher()->removeListener(
-			'deferred.embedded.query.dep.update'
-		);
+		wfDebugLog( 'smw', __METHOD__ . ' finished on ' . $subject->getHash() . ' with procTime (sec): ' . round( ( microtime( true ) - $start ) ,7 ) );
 
 		return true;
 	}
@@ -149,6 +143,31 @@ class QueryDependencyLinksStore {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param DIWikiPage $subject
+	 * @param RequestOptions|null $requestOptions
+	 *
+	 * @return array
+	 */
+	public function findEmbeddedQueryIdListBySubject( DIWikiPage $subject, RequestOptions $requestOptions = null ) {
+
+		$embeddedQueryIdList = array();
+
+		$dataItems = $this->store->getPropertyValues(
+			$subject,
+			new DIProperty( '_ASK' ),
+			$requestOptions
+		);
+
+		foreach ( $dataItems as $dataItem ) {
+			$embeddedQueryIdList[$dataItem->getHash()] = $this->dependencyLinksTableUpdater->getId( $dataItem );
+		}
+
+		return $embeddedQueryIdList;
+	}
+
+	/**
 	 * Finds a partial list (given limit and offset) of registered subjects that
 	 * that represent a dependency on something like a subject in a query list,
 	 * a property, or a printrequest.
@@ -167,31 +186,36 @@ class QueryDependencyLinksStore {
 	 * @since 2.3
 	 *
 	 * @param array $idlist
-	 * @param integer $limit
-	 * @param integer $offset
+	 * @param RequestOptions $requestOptions
 	 *
 	 * @return array
 	 */
-	public function findPartialEmbeddedQueryTargetLinksHashListFor( array $idlist, $limit, $offset ) {
+	public function findEmbeddedQueryTargetLinksHashListFor( array $idlist, RequestOptions $requestOptions ) {
 
 		if ( $idlist === array() || !$this->isEnabled() ) {
 			return array();
 		}
 
 		$options = array(
-			'LIMIT'     => $limit,
-			'OFFSET'    => $offset,
+			'LIMIT'     => $requestOptions->getLimit(),
+			'OFFSET'    => $requestOptions->getOffset(),
 			'GROUP BY'  => 's_id',
 			'ORDER BY'  => 's_id',
 			'DISTINCT'  => true
 		);
 
+		$conditions = array(
+			'o_id' => $idlist
+		);
+
+		foreach ( $requestOptions->getExtraConditions() as $extraCondition ) {
+			$conditions += $extraCondition;
+		}
+
 		$rows = $this->connection->select(
 			SMWSQLStore3::QUERY_LINKS_TABLE,
 			array( 's_id' ),
-			array(
-				'o_id' => $idlist
-			),
+			$conditions,
 			__METHOD__,
 			$options
 		);
@@ -226,10 +250,12 @@ class QueryDependencyLinksStore {
 			return null;
 		}
 
+		$start = microtime( true );
+
 		$subject = $queryResultDependencyListResolver->getSubject();
 		$hash = $queryResultDependencyListResolver->getQueryId();
 
-		$sid = $this->getIdForSubject(
+		$sid = $this->dependencyLinksTableUpdater->getId(
 			$subject,
 			$hash
 		);
@@ -238,21 +264,36 @@ class QueryDependencyLinksStore {
 			return wfDebugLog( 'smw', __METHOD__ . " suppressed (skewed time) for SID " . $sid . "\n" );
 		}
 
-		$dependencyList = $queryResultDependencyListResolver->getDependencyList();
-
 		$dependencyLinksTableUpdater = $this->dependencyLinksTableUpdater;
-		$dependencyLinksTableUpdater->addToUpdateList( $sid, $dependencyList );
 
-		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $sid, $hash, $dependencyLinksTableUpdater, $queryResultDependencyListResolver ) {
-			wfDebugLog( 'smw', 'DeferredCallableUpdate on QueryDependencyLinksStore::doUpdateDependenciesBy for ' . $hash );
+		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $subject, $sid, $hash, $dependencyLinksTableUpdater, $queryResultDependencyListResolver ) {
+
+			$dependencyList = $queryResultDependencyListResolver->getDependencyList();
 
 			// Add extra dependencies which we only get "late" after the QueryResult
 			// object as been resolved by the ResultPrinter, this is done to
 			// avoid having to process the QueryResult recursively on its own
 			// (which would carry a performance penalty)
+			$dependencyListByLateRetrieval = $queryResultDependencyListResolver->getDependencyListByLateRetrieval();
+
+			if ( $dependencyList === array() && $dependencyListByLateRetrieval === array() ) {
+				return wfDebugLog( 'smw', 'No dependency list available ' . $hash );
+			}
+
+			// SID < 0 means the storage update/process has not been finalized
+			// (new object hasn't been registered)
+			if ( $sid < 1 || ( $sid = $dependencyLinksTableUpdater->getId( $subject, $hash ) ) < 1 ) {
+				$sid = $dependencyLinksTableUpdater->createId( $subject, $hash );
+			}
+
 			$dependencyLinksTableUpdater->addToUpdateList(
 				$sid,
-				$queryResultDependencyListResolver->getDependencyListByLateRetrieval()
+				$dependencyList
+			);
+
+			$dependencyLinksTableUpdater->addToUpdateList(
+				$sid,
+				$dependencyListByLateRetrieval
 			);
 
 			$dependencyLinksTableUpdater->doUpdate();
@@ -264,53 +305,15 @@ class QueryDependencyLinksStore {
 		// Indicates whether MW is running in command-line mode.
 		$deferredCallableUpdate->markAsPending( $GLOBALS['wgCommandLineMode'] );
 		$deferredCallableUpdate->enabledDeferredUpdate( true );
+		$deferredCallableUpdate->pushUpdate();
 
-		if ( $sid > 0 ) {
-			return $deferredCallableUpdate->pushUpdate();
-		}
-
-		// SID == 0 means the storage update/process has not been finalized
-		// (new object hasn't been registered) hence an event is registered to
-		// update the list after the update process has been completed
-		EventHandler::getInstance()->addCallbackListener( 'deferred.embedded.query.dep.update', function() use ( $subject, $hash, $dependencyList, $deferredCallableUpdate, $dependencyLinksTableUpdater, $queryResultDependencyListResolver ) {
-			$sid = $dependencyLinksTableUpdater->getIdForSubject( $subject, $hash );
-
-			$dependencyLinksTableUpdater->addToUpdateList(
-				$sid,
-				$dependencyList
-			);
-
-			$dependencyLinksTableUpdater->addToUpdateList(
-				$sid,
-				$queryResultDependencyListResolver->getDependencyListByLateRetrieval()
-			);
-
-			$deferredCallableUpdate->setOrigin( 'QueryDependencyLinksStore::doUpdateDependenciesBy as deferred.embedded.query.dep.update for ' . $hash );
-			$deferredCallableUpdate->pushUpdate();
-		} );
-	}
-
-	/**
-	 * @since 2.3
-	 *
-	 * @param DIWikiPage $subject, $subobjectName
-	 * @param string $subobjectName
-	 */
-	public function getIdForSubject( DIWikiPage $subject, $subobjectName = '' ) {
-		return $this->store->getObjectIds()->getSMWPageID(
-			$subject->getDBkey(),
-			$subject->getNamespace(),
-			$subject->getInterwiki(),
-			$subobjectName,
-			false
-		);
+		wfDebugLog( 'smw', __METHOD__ . ' procTime (sec): ' . round( ( microtime( true ) - $start ), 7 ) );
 	}
 
 	private function canSuppressUpdateOnSkewFactorFor( $sid, $subject ) {
 
 		static $suppressUpdateCache = array();
 		$hash = $subject->getHash();
-
 		if ( $sid < 1 ) {
 			return false;
 		}
