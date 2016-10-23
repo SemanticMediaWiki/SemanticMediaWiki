@@ -33,7 +33,7 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testcreateTableWithoutAutoCommit() {
+	public function testcreateWithoutAutoCommit() {
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' );
@@ -42,10 +42,10 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->connection
 		);
 
-		$instance->createTable( 'Foo' );
+		$instance->create( 'Foo' );
 	}
 
-	public function testcreateTableWithoutAutoCommitOnPostgres() {
+	public function testcreateWithoutAutoCommitOnPostgres() {
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' );
@@ -59,10 +59,10 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->connection
 		);
 
-		$instance->createTable( 'Foo' );
+		$instance->create( 'Foo' );
 	}
 
-	public function testcreateTableWithAutoCommit() {
+	public function testcreateWithAutoCommit() {
 
 		$this->connection->expects( $this->once() )
 			->method( 'queryWithAutoCommit' );
@@ -72,7 +72,7 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->WithAutoCommit( true );
-		$instance->createTable( 'Foo' );
+		$instance->create( 'Foo' );
 	}
 
 	public function testDropWithoutAutoCommit() {
@@ -84,7 +84,7 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->connection
 		);
 
-		$instance->dropTable( 'Foo' );
+		$instance->drop( 'Foo' );
 	}
 
 	public function testDropWithAutoCommit() {
@@ -97,7 +97,7 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->WithAutoCommit( true );
-		$instance->dropTable( 'Foo' );
+		$instance->drop( 'Foo' );
 	}
 
 }

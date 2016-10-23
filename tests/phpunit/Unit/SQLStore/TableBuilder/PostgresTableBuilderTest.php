@@ -170,7 +170,7 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = PostgresTableBuilder::factory( $connection );
 
-		$instance->checkOn( $instance::EVENT_AFTER_TABLE_CREATE );
+		$instance->checkOn( $instance::POST_CREATION );
 	}
 
 }

@@ -47,7 +47,7 @@ class TemporaryTableBuilder {
 	 *
 	 * @param string $tableName
 	 */
-	public function createTable( $tableName ) {
+	public function create( $tableName ) {
 
 		$sql = $this->getSQLCodeFor( $tableName );
 
@@ -66,7 +66,7 @@ class TemporaryTableBuilder {
 	 *
 	 * @param string $tableName
 	 */
-	public function dropTable( $tableName ) {
+	public function drop( $tableName ) {
 
 		$sql = "DROP TEMPORARY TABLE " . $tableName;
 

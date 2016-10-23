@@ -332,12 +332,12 @@ EOT;
 	 * {@inheritDoc}
 	 */
 	public function checkOn( $event ) {
-		if ( $event === self::EVENT_AFTER_TABLE_CREATE ) {
-			$this->doCheckOnAfterCreate();
+		if ( $event === self::POST_CREATION ) {
+			$this->doCheckOn_POST_CREATION();
 		}
 	}
 
-	public function doCheckOnAfterCreate() {
+	private function doCheckOn_POST_CREATION() {
 
 		$this->reportMessage( "\nChecking consistency after table creation ...\n" );
 
