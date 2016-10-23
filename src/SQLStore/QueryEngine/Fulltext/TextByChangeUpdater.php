@@ -113,11 +113,14 @@ class TextByChangeUpdater {
 	/**
 	 * @see SearchTableUpdateJob::run
 	 *
+	 * Parameters can be boolean in case of "Notice: unserialize(): Error at offset
+	 * 65504 of 65535 bytes in ... JobQueueDB.php on line 817"
+	 *
 	 * @since 2.5
 	 *
-	 * @param array $parameters
+	 * @param array|boolan $parameters
 	 */
-	public function pushUpdatesFromJobParameters( array $parameters ) {
+	public function pushUpdatesFromJobParameters( $parameters ) {
 
 		if ( !$this->searchTableUpdater->isEnabled() || !isset( $parameters['diff'] ) || $parameters['diff'] === false ) {
 			return;

@@ -36,7 +36,6 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
-
 	}
 
 	public function testCanConstruct() {
@@ -106,7 +105,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'selectRow' )
 			->will( $this->returnValue( false ) );
 
-		$connection->expects( $this->at( 2 ) )
+		$connection->expects( $this->at( 3 ) )
 			->method( 'delete' )
 			->with( $this->equalTo( \SMW\SQLStore\SQLStore::ID_TABLE ) );
 
@@ -123,6 +122,57 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->cleanUpTableEntriesById( 42 );
+	}
+
+	public function testCanConstructOutdatedEntitiesResultIterator() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'select' )
+			->will( $this->returnValue( array() ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new PropertyTableIdReferenceDisposer(
+			$this->store
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\Iterators\ResultIterator',
+			$instance->newOutdatedEntitiesResultIterator()
+		);
+	}
+
+	public function testcCleanUpTableEntriesByRow() {
+
+		$row = new \stdClass;
+		$row->smw_id = 42;
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'delete' );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( array() ) );
+
+		$instance = new PropertyTableIdReferenceDisposer(
+			$this->store
+		);
+
+		$instance->cleanUpTableEntriesByRow( $row );
 	}
 
 }

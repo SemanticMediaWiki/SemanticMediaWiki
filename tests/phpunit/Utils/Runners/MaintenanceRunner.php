@@ -4,6 +4,7 @@ namespace SMW\Tests\Utils\Runners;
 
 use DomainException;
 use RuntimeException;
+use SMW\ApplicationFactory;
 
 /**
  * Running maintenance scripts via phpunit is not really possible but instead
@@ -71,6 +72,8 @@ class MaintenanceRunner {
 			throw new RuntimeException( "Expected a valid {$this->maintenanceClass} class" );
 		}
 
+		// Avoid outdated reference to invoked store instance
+		ApplicationFactory::getInstance()->clear();
 		$maintenance = new $this->maintenanceClass;
 
 		if ( !( $maintenance instanceof \Maintenance ) ) {
