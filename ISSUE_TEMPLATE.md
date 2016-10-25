@@ -2,6 +2,7 @@
 
 - SMW version:
 - MW version:
+- PHP version:
 - DB (MySQL etc.):
 
 ### Issue
