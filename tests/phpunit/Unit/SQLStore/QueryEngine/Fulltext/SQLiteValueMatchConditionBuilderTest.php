@@ -16,12 +16,17 @@ use SMW\DataItemFactory;
  */
 class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
+	private $textSanitizer;
 	private $searchTable;
 	private $dataItemFactory;
 
 	protected function setUp() {
 
 		$this->dataItemFactory = new DataItemFactory();
+
+		$this->textSanitizer = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->searchTable = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\SearchTable' )
 			->disableOriginalConstructor()
@@ -32,7 +37,7 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Fulltext\SQLiteValueMatchConditionBuilder',
-			new SQLiteValueMatchConditionBuilder( $this->searchTable )
+			new SQLiteValueMatchConditionBuilder( $this->textSanitizer, $this->searchTable )
 		);
 	}
 
@@ -43,6 +48,7 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( true ) );
 
 		$instance = new SQLiteValueMatchConditionBuilder(
+			$this->textSanitizer,
 			$this->searchTable
 		);
 
@@ -58,6 +64,7 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'Foo' ) );
 
 		$instance = new SQLiteValueMatchConditionBuilder(
+			$this->textSanitizer,
 			$this->searchTable
 		);
 
@@ -74,6 +81,7 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 4 ) );
 
 		$instance = new SQLiteValueMatchConditionBuilder(
+			$this->textSanitizer,
 			$this->searchTable
 		);
 
@@ -97,6 +105,7 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 's_id' ) );
 
 		$instance = new SQLiteValueMatchConditionBuilder(
+			$this->textSanitizer,
 			$this->searchTable
 		);
 
@@ -117,6 +126,7 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( false ) );
 
 		$instance = new SQLiteValueMatchConditionBuilder(
+			$this->textSanitizer,
 			$this->searchTable
 		);
 
@@ -143,17 +153,9 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetWhereConditionWithPropertyOnTempTable() {
 
-		$textSanitizer = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$textSanitizer->expects( $this->once() )
+		$this->textSanitizer->expects( $this->once() )
 			->method( 'sanitize' )
 			->will( $this->returnValue( 'Foo' ) );
-
-		$this->searchTable->expects( $this->once() )
-			->method( 'getTextSanitizer' )
-			->will( $this->returnValue( $textSanitizer ) );
 
 		$this->searchTable->expects( $this->once() )
 			->method( 'getIndexField' )
@@ -164,6 +166,7 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnArgument( 0 ) );
 
 		$instance = new SQLiteValueMatchConditionBuilder(
+			$this->textSanitizer,
 			$this->searchTable
 		);
 
@@ -194,21 +197,13 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetWhereConditionWithoutProperty( $text, $indexField, $expected ) {
 
-		$textSanitizer = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$textSanitizer->expects( $this->once() )
+		$this->textSanitizer->expects( $this->once() )
 			->method( 'sanitize' )
 			->will( $this->returnValue( $text ) );
 
 		$this->searchTable->expects( $this->any() )
 			->method( 'isEnabled' )
 			->will( $this->returnValue( true ) );
-
-		$this->searchTable->expects( $this->once() )
-			->method( 'getTextSanitizer' )
-			->will( $this->returnValue( $textSanitizer ) );
 
 		$this->searchTable->expects( $this->once() )
 			->method( 'getIndexField' )
@@ -219,6 +214,7 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnArgument( 0 ) );
 
 		$instance = new SQLiteValueMatchConditionBuilder(
+			$this->textSanitizer,
 			$this->searchTable
 		);
 

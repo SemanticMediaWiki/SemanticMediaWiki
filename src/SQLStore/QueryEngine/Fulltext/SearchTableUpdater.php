@@ -13,24 +13,31 @@ use SMW\MediaWiki\Database;
 class SearchTableUpdater {
 
 	/**
-	 * @var SearchTable
-	 */
-	private $searchTable;
-
-	/**
 	 * @var Database
 	 */
 	private $connection;
 
 	/**
+	 * @var SearchTable
+	 */
+	private $searchTable;
+
+	/**
+	 * @var TextSanitizer
+	 */
+	private $textSanitizer;
+
+	/**
 	 * @since 2.5
 	 *
-	 * @param SearchTable $searchTable
 	 * @param Database $connection
+	 * @param SearchTable $searchTable
+	 * @param TextSanitizer $textSanitizer
 	 */
-	public function __construct( SearchTable $searchTable, Database $connection ) {
-		$this->searchTable = $searchTable;
+	public function __construct( Database $connection, SearchTable $searchTable, TextSanitizer $textSanitizer ) {
 		$this->connection = $connection;
+		$this->searchTable = $searchTable;
+		$this->textSanitizer = $textSanitizer;
 	}
 
 	/**
@@ -83,7 +90,7 @@ class SearchTableUpdater {
 			return false;
 		}
 
-		return $this->searchTable->getTextSanitizer()->sanitize( $row->o_text );
+		return $this->textSanitizer->sanitize( $row->o_text );
 	}
 
 	/**
@@ -102,7 +109,7 @@ class SearchTableUpdater {
 		$this->connection->update(
 			$this->searchTable->getTableName(),
 			array(
-				'o_text' => $this->searchTable->getTextSanitizer()->sanitize( $text ),
+				'o_text' => $this->textSanitizer->sanitize( $text ),
 				'o_sort' => mb_substr( $text, 0, 32 )
 			),
 			array(

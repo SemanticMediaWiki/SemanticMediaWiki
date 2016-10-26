@@ -17,14 +17,19 @@ use SMW\DIWikiPage;
 class TextByChangeUpdater {
 
 	/**
+	 * @var Database
+	 */
+	private $connection;
+
+	/**
 	 * @var SearchTableUpdater
 	 */
 	private $searchTableUpdater;
 
 	/**
-	 * @var Database
+	 * @var TextSanitizer
 	 */
-	private $connection;
+	private $textSanitizer;
 
 	/**
 	 * @var boolean
@@ -39,12 +44,14 @@ class TextByChangeUpdater {
 	/**
 	 * @since 2.5
 	 *
-	 * @param SearchTableUpdater $searchTableUpdater
 	 * @param Database $connection
+	 * @param SearchTableUpdater $searchTableUpdater
+	 * @param TextSanitizer $textSanitizer
 	 */
-	public function __construct( SearchTableUpdater $searchTableUpdater, Database $connection ) {
-		$this->searchTableUpdater = $searchTableUpdater;
+	public function __construct( Database $connection, SearchTableUpdater $searchTableUpdater, TextSanitizer $textSanitizer ) {
 		$this->connection = $connection;
+		$this->searchTableUpdater = $searchTableUpdater;
+		$this->textSanitizer = $textSanitizer;
 	}
 
 	/**
@@ -222,7 +229,7 @@ class TextByChangeUpdater {
 		if ( $type === TableChangeOp::OP_INSERT ) {
 			$aggregate[$key] = trim( $aggregate[$key] . ' ' . trim( $text ) );
 		} elseif ( $type === TableChangeOp::OP_DELETE ) {
-			$aggregate[$key][] = $searchTable->getTextSanitizer()->sanitize( $text );
+			$aggregate[$key][] = $this->textSanitizer->sanitize( $text );
 		}
 	}
 

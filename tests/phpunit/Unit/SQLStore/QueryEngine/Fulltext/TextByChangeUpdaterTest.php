@@ -16,19 +16,24 @@ use SMW\DataItemFactory;
  */
 class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
-	private $searchTableUpdater;
-	private $connection;
 	private $dataItemFactory;
+	private $connection;
+	private $searchTableUpdater;
+	private $textSanitizer;
 
 	protected function setUp() {
 
 		$this->dataItemFactory = new DataItemFactory();
 
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->searchTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->textSanitizer = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -37,7 +42,7 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Fulltext\TextByChangeUpdater',
-			new TextByChangeUpdater( $this->searchTableUpdater, $this->connection )
+			new TextByChangeUpdater( $this->connection, $this->searchTableUpdater, $this->textSanitizer )
 		);
 	}
 
@@ -60,8 +65,9 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new TextByChangeUpdater(
+			$this->connection,
 			$this->searchTableUpdater,
-			$this->connection
+			$this->textSanitizer
 		);
 
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
@@ -96,8 +102,9 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( array( 'diff' => null ) ) );
 
 		$instance = new TextByChangeUpdater(
+			$this->connection,
 			$this->searchTableUpdater,
-			$this->connection
+			$this->textSanitizer
 		);
 
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
@@ -130,8 +137,9 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new TextByChangeUpdater(
+			$this->connection,
 			$this->searchTableUpdater,
-			$this->connection
+			$this->textSanitizer
 		);
 
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );

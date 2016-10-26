@@ -20,9 +20,11 @@ class SQLiteValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	/**
 	 * @since 2.5
 	 *
+	 * @param TextSanitizer $textSanitizer
 	 * @param SearchTable $searchTable
 	 */
-	public function __construct( SearchTable $searchTable ) {
+	public function __construct( TextSanitizer $textSanitizer, SearchTable $searchTable ) {
+		parent::__construct( $textSanitizer );
 		$this->searchTable = $searchTable;
 	}
 
@@ -110,7 +112,7 @@ class SQLiteValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 			$description
 		);
 
-		$value = $this->searchTable->getTextSanitizer()->sanitize(
+		$value = $this->textSanitizer->sanitize(
 			$matchableText,
 			true
 		);

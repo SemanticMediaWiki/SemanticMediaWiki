@@ -48,7 +48,7 @@ class RebuildFulltextSearchTable extends \Maintenance {
 			$applicationFactory->getStore( '\SMW\SQLStore\SQLStore' )
 		);
 
-		$searchTableRebuilder->reportWithVerbosity(
+		$searchTableRebuilder->reportVerbose(
 			$this->hasOption( 'v' )
 		);
 
@@ -61,8 +61,9 @@ class RebuildFulltextSearchTable extends \Maintenance {
 		);
 
 		$searchTable = $searchTableRebuilder->getSearchTable();
+		$textSanitizer = $fulltextSearchTableFactory->newTextSanitizer();
 
-		foreach ( $searchTable->getTextSanitizer()->getVersions() as $key => $value ) {
+		foreach ( $textSanitizer->getVersions() as $key => $value ) {
 			$this->reportMessage( "\r". sprintf( "%-35s%s", "- {$key}", $value )  . "\n" );
 		}
 
@@ -123,7 +124,7 @@ class RebuildFulltextSearchTable extends \Maintenance {
 	/**
 	 * @see Maintenance::reportMessage
 	 *
-	 * @since 1.9
+	 * @since 2.5
 	 *
 	 * @param string $message
 	 */

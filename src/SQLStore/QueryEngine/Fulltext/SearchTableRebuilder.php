@@ -18,14 +18,14 @@ use SMWDIBlob as DIBlob;
 class SearchTableRebuilder {
 
 	/**
-	 * @var SearchTableUpdater
-	 */
-	private $searchTableUpdater;
-
-	/**
 	 * @var Database
 	 */
 	private $connection;
+
+	/**
+	 * @var SearchTableUpdater
+	 */
+	private $searchTableUpdater;
 
 	/**
 	 * @var MessageReporter
@@ -48,9 +48,9 @@ class SearchTableRebuilder {
 	 * @param SearchTableUpdater $searchTableUpdater
 	 * @param Database $connection
 	 */
-	public function __construct( SearchTableUpdater $searchTableUpdater, Database $connection ) {
-		$this->searchTableUpdater = $searchTableUpdater;
+	public function __construct( Database $connection, SearchTableUpdater $searchTableUpdater ) {
 		$this->connection = $connection;
+		$this->searchTableUpdater = $searchTableUpdater;
 		$this->messageReporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 	}
 
@@ -77,7 +77,7 @@ class SearchTableRebuilder {
 	 *
 	 * @param boolean $reportVerbose
 	 */
-	public function reportWithVerbosity( $reportVerbose ) {
+	public function reportVerbose( $reportVerbose ) {
 		$this->reportVerbose = (bool)$reportVerbose;
 	}
 

@@ -91,24 +91,12 @@ class TextSanitizer {
 		$start = microtime( true );
 		$text = rawurldecode( trim( $text ) );
 
-		$affix = '';
 		$exemptionList = '';
 
 		// Those have special meaning when running a match search against
 		// the fulltext index (wildcard, phrase matching markers etc.)
 		if ( $isSearchTerm ) {
 			$exemptionList = array( '*', '"', '+', '-', '&', ',', '@' );
-		}
-
-		// MySQLValueMatchConditionBuilder::getQuerySearchModifier
-		// Any query modifier? Take care of it before any tokenizer or ngrams
-		// distort the marker
-		if ( $isSearchTerm &&
-			( $pos = strrpos( $text, '&BOL' ) ) !== false ||
-			( $pos = strrpos( $text, '&INL' ) ) !== false ||
-			( $pos = strrpos( $text, '&QEX' ) ) !== false ) {
-			$affix = mb_strcut( $text, $pos );
-			$text = str_replace( $affix, '', $text );
 		}
 
 		$sanitizer = $this->sanitizerFactory->newSanitizer( $text );
@@ -154,7 +142,7 @@ class TextSanitizer {
 			array( ' *', '* ', ' "', '" ', '+ ', '- ', '@ ' ),
 			array( '*', '*', '"', '"', ' +', ' -', '@' ),
 			$text
-		) . $affix;
+		);
 
 		//var_dump( $language, $text, (microtime( true ) - $start ) );
 		return $text;

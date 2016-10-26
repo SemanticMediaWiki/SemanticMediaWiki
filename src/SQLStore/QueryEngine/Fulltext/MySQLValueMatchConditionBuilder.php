@@ -20,9 +20,11 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	/**
 	 * @since 2.5
 	 *
+	 * @param TextSanitizer $textSanitizer
 	 * @param SearchTable $searchTable
 	 */
-	public function __construct( SearchTable $searchTable ) {
+	public function __construct( TextSanitizer $textSanitizer, SearchTable $searchTable ) {
+		parent::__construct( $textSanitizer );
 		$this->searchTable = $searchTable;
 	}
 
@@ -112,14 +114,27 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 */
 	public function getWhereCondition( ValueDescription $description, $temporaryTable = '' ) {
 
+		$affix = '';
 		$matchableText = $this->getMatchableTextFromDescription(
 			$description
 		);
 
-		$value = $this->searchTable->getTextSanitizer()->sanitize(
+		// Any query modifier? Take care of it before any tokenizer or ngrams
+		// distort the marker
+		if (
+			( $pos = strrpos( $matchableText, '&BOL' ) ) !== false ||
+			( $pos = strrpos( $matchableText, '&INL' ) ) !== false ||
+			( $pos = strrpos( $matchableText, '&QEX' ) ) !== false ) {
+			$affix = mb_strcut( $matchableText, $pos );
+			$matchableText = str_replace( $affix, '', $matchableText );
+		}
+
+		$value = $this->textSanitizer->sanitize(
 			$matchableText,
 			true
 		);
+
+		$value .= $affix;
 
 		// A leading or trailing minus sign indicates that this word must not
 		// be present in any of the rows that are returned.

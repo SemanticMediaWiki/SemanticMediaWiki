@@ -23,11 +23,11 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 
-		$this->searchTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->searchTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -38,7 +38,7 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder',
-			new SearchTableRebuilder( $this->searchTableUpdater, $this->connection )
+			new SearchTableRebuilder( $this->connection, $this->searchTableUpdater )
 		);
 	}
 
@@ -61,8 +61,8 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( array( $tableDefinition ) ) );
 
 		$instance = new SearchTableRebuilder(
-			$this->searchTableUpdater,
-			$this->connection
+			$this->connection,
+			$this->searchTableUpdater
 		);
 
 		$instance->run();
@@ -116,11 +116,11 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( $row->s_id ) );
 
 		$instance = new SearchTableRebuilder(
-			$this->searchTableUpdater,
-			$this->connection
+			$this->connection,
+			$this->searchTableUpdater
 		);
 
-		$instance->reportWithVerbosity( true );
+		$instance->reportVerbose( true );
 		$instance->run();
 	}
 
