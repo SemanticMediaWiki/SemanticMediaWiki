@@ -164,6 +164,21 @@ class TestEnvironment {
 	/**
 	 * @since 2.5
 	 *
+	 * @param callable $callback
+	 *
+	 * @return string
+	 */
+	public function executeAndFetchOutputBufferContents( callable $callback ) {
+		ob_start();
+		call_user_func( $callback );
+		$output = ob_get_contents();
+		ob_end_clean();
+		return $output;
+	}
+
+	/**
+	 * @since 2.5
+	 *
 	 * @param $originalClassName
 	 * @param array $configuration
 	 *
