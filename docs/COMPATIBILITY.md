@@ -1,5 +1,6 @@
 For a full list of changes in each release, see the [release notes](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/docs/releasenotes). For instructions
-on how to install the latest version of SMW, see the [installation instructions](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md).
+on how to install the latest version of Semantic MediaWiki (SMW), see the [installation instructions](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md).
+
 
 ## Release versions
 
@@ -30,7 +31,7 @@ on how to install the latest version of SMW, see the [installation instructions]
 	</tr>
 	<tr>
 		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.3.0">SMW 2.3.x</a></th>
-		<td>Stable release</td>
+		<td>Obsolete release</td>
 		<td>2015-10-25</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.3.x">2.3.x</a></td>
 	</tr>
@@ -84,6 +85,7 @@ on how to install the latest version of SMW, see the [installation instructions]
 	</tr>
 </table>
 
+
 ## Platform compatibility
 
 The PHP and MediaWiki version ranges listed are those in which SMW is known to work. It might also
@@ -127,7 +129,7 @@ Note that HHVM is only required if you do not use PHP.
 		<th>SMW 2.2.x</th>
 		<td>5.3.2 - 5.6.x</td>
 		<td>3.3.0 - 3.9.x</td>
-		<td>1.19 - 1.25</sup></td>
+		<td>1.19 - 1.25</td>
 	</tr>
 	<tr>
 		<th>SMW 2.1.x</th>
@@ -174,6 +176,7 @@ Note that HHVM is only required if you do not use PHP.
 		<td>0.4.13 or 0.4.14</td>
 	</tr>
 </table>
+
 
 ## Database compatibility
 
@@ -249,34 +252,34 @@ Note that HHVM is only required if you do not use PHP.
 	</tr>
 	<tr>
 		<th>SMW 2.4.x</th>
-		<td>Full support (1.x >=1.1) + 2.4.0</td>
-		<td>Full support (6.x >=6.1) + 7.2<sup>[t.1]</sup></td>
-		<td>Beta support (1.x >=1.1)<sup>[t.2]</sup></td>
-		<td>Full support (2.8.x)</td>
-		<td>Full support (1.5.2) + 2.1.0<sup>[t.3]</sup></td>
+		<td>Full support<br />(1.x >=1.1) + 2.4.0</td>
+		<td>Full support<br />(6.x >=6.1) + 7.2<sup>[t.1]</sup></td>
+		<td>Beta support<br />(1.x >=1.1)<sup>[t.2]</sup></td>
+		<td>Full support<br />(2.8.x)</td>
+		<td>Full support<br />(1.5.2) + 2.1.0<sup>[t.3]</sup></td>
 	</tr>
 	<tr>
 		<th>SMW 2.3.x</th>
-		<td>Full support (1.x >=1.1)</td>
-		<td>Full support (6.x >=6.1) + 7.1<sup>[t.1]</sup></td>
-		<td>Beta support (1.x >=1.1)<sup>[t.2]</sup></td>
-		<td>Full support (2.7.x)</td>
-		<td>Full support (1.5.2)</td>
+		<td>Full support<br />(1.x >=1.1)</td>
+		<td>Full support<br />(6.x >=6.1) + 7.1<sup>[t.1]</sup></td>
+		<td>Beta support<br />(1.x >=1.1)<sup>[t.2]</sup></td>
+		<td>Full support<br />(2.7.x)</td>
+		<td>Full support<br />(1.5.2)</td>
 	</tr>
 	<tr>
 		<th>SMW 2.2.x</th>
-		<td>Full support (1.x >=1.1)</td>
-		<td>Full support (6.x >=6.1) + 7.1<sup>[t.1]</sup></td>
-		<td>Beta support (1.x >=1.1)<sup>[t.2]</sup></td>
-		<td>Full support (2.7.x)</td>
-		<td>Beta support (1.5.2)</td>
+		<td>Full support<br />(1.x >=1.1)</td>
+		<td>Full support<br />(6.x >=6.1) + 7.1<sup>[t.1]</sup></td>
+		<td>Beta support<br />(1.x >=1.1)<sup>[t.2]</sup></td>
+		<td>Full support<br />(2.7.x)</td>
+		<td>Beta support<br />(1.5.2)</td>
 	</tr>
 	<tr>
 		<th>SMW 2.1.x</th>
-		<td>Full support (1.x >=1.1)</td>
-		<td>Full support (6.x >=6.1)</td>
-		<td>Beta support (1.x >=1.1)</td>
-		<td>Full support (2.7.x)</td>
+		<td>Full support<br />(1.x >=1.1)</td>
+		<td>Full support<br />(6.x >=6.1)</td>
+		<td>Beta support<br />(1.x >=1.1)</td>
+		<td>Full support<br />(2.7.x)</td>
 		<td>Not tested</td>
 	</tr>
 	<tr>
@@ -305,9 +308,9 @@ Note that HHVM is only required if you do not use PHP.
 	</tr>
 </table>
 
-- `Full support` means that all functionality has been verified to work and that it can be used in production
-- `Beta support` means that most functionality has been verified to work, though stability is still low, and things might be buggy
-- `Experimental support` means there is some preliminary support which is still much too immature for use in production
+- "Full support" means that all functionality has been verified to work and that it can be used in production
+- "Beta support" means that most functionality has been verified to work, though stability is still low, and things might be buggy
+- "Experimental support" means there is some preliminary support which is still much too immature for use in production
 
 The information in brackets denotes the versions with which SMW is known to work. SMW might also
 work with different versions, especially more recent ones, though this is not guaranteed.
