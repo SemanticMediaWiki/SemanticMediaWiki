@@ -286,6 +286,11 @@ class ExtraneousLanguage {
 			'propertyAliases'
 		);
 
+		$canonicalPropertyLabels += $this->languageContents->getFromLanguageWithIndex(
+			$this->languageContents->getCanonicalFallbackLanguageCode(),
+			'dataTypeAliases'
+		);
+
 		return $canonicalPropertyLabels;
 	}
 
