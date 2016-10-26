@@ -1,0 +1,56 @@
+{
+	"description": "Test `#ask` sanitization of printrequest labels to avoid XSS injection (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Example/P0704/1",
+			"contents": "[[Has text::P0704]]"
+		},
+		{
+			"page": "Example/P0704/Q.1",
+			"contents": "{{#ask: [[Has text::P0704]] |?Has text=Some <div onmouseover=\"alert('<?php echo htmlspecialchars($xss) ?>')\"> |format=table |limit=1 }}"
+		},
+		{
+			"page": "Example/P0704/Q.2",
+			"contents": "{{#ask: [[Has text::P0704]] |?Has text=Some <a href=\"javascript:alert('<?php echo htmlspecialchars($xss) ?>')\"> |format=table |limit=1 }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (avoid XSS through sanitization)",
+			"subject": "Example/P0704/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Property:Has text\">Some &lt;div onmouseover=\"alert('&lt;?php echo htmlspecialchars($xss) ?&gt;')\"&gt;"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (avoid XSS through sanitization)",
+			"subject": "Example/P0704/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Property:Has text\">Some &lt;a href=\"javascript:alert('&lt;?php echo htmlspecialchars($xss) ?&gt;')\"&gt;"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
