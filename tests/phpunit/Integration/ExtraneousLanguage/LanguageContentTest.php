@@ -91,6 +91,12 @@ class LanguageContent extends \PHPUnit_Framework_TestCase {
 			'_boo'
 		);
 
+		$provider[] = array(
+			'en',
+			'Float',
+			'_num'
+		);
+
 		return $provider;
 	}
 
