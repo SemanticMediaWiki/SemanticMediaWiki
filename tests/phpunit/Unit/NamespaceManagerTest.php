@@ -24,7 +24,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->extraneousLanguage = $this->getMockBuilder( '\SMW\ExtraneousLanguage\ExtraneousLanguage' )
+		$this->extraneousLanguage = $this->getMockBuilder( '\SMW\ExtraneousLanguage' )
 			->disableOriginalConstructor()
 			->getMock();
 

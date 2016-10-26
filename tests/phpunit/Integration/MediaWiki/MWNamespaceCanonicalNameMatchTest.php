@@ -48,8 +48,7 @@ class MWNamespaceCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
 		$instance = $this->getMock( '\SMW\NamespaceManager',
 			array( 'isDefinedConstant' ),
 			array(
-				&$default,
-				$smwBasePath
+				&$default
 			)
 		);
 
