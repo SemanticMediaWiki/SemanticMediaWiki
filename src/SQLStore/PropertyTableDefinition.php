@@ -3,7 +3,6 @@
 namespace SMW\SQLStore;
 
 use OutOfBoundsException;
-use SMWSQLStore3;
 
 /**
  * Simple data container for storing information about property tables. A
@@ -12,16 +11,15 @@ use SMWSQLStore3;
  * value, but also in whether the property is explicitly named (or fixed),
  * and in the way subject pages are referred to.
  *
+ *
+ * @license GNU GPL v2+
  * @since 1.8
  *
- * @ingroup SMWStore
- *
- * @licence GNU GPL v2+
  * @author Nischay Nahata
  * @author Markus Krötzsch
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class TableDefinition {
+class PropertyTableDefinition {
 
 	/**
 	 * Name of the table in the DB.
@@ -87,11 +85,11 @@ class TableDefinition {
 	*
 	* @since 1.8
 	*
-	* @param SMWSQLStore3 $store
+	* @param SQLStore $store
 	*
 	* @return array
 	*/
-	public function getFields( SMWSQLStore3 $store ) {
+	public function getFields( SQLStore $store ) {
 		$diHandler = $store->getDataItemHandlerForDIType( $this->diType );
 		return $diHandler->getTableFields();
 	}
