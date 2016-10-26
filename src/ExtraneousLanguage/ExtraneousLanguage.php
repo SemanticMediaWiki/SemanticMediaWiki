@@ -238,10 +238,15 @@ class ExtraneousLanguage {
 	 * @return array
 	 */
 	public function getCanonicalDatatypeLabels() {
-		return $this->languageContents->getFromLanguageWithIndex(
+
+		$datatypeLabels = $this->languageContents->getFromLanguageWithIndex(
 			$this->languageContents->getCanonicalFallbackLanguageCode(),
-			'dataTypeAliases'
+			'dataTypeLabels'
 		);
+
+		$canonicalPropertyLabels = array_flip( $datatypeLabels );
+
+		return $canonicalPropertyLabels;
 	}
 
 	/**
