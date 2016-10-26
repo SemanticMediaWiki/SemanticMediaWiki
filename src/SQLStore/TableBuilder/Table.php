@@ -61,11 +61,11 @@ class Table {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string $column
-	 * @param string $type
+	 * @param string $fieldName
+	 * @param string|array $fieldType
 	 */
-	public function addColumn( $column, $type ) {
-		$this->configuration['fields'][$column] = $type;
+	public function addColumn( $fieldName, $fieldType ) {
+		$this->configuration['fields'][$fieldName] = $fieldType;
 	}
 
 	/**
@@ -91,7 +91,7 @@ class Table {
 	 * @since 2.5
 	 *
 	 * @param string $key
-	 * @param string $option
+	 * @param string|array $option
 	 *
 	 * @throws RuntimeException
 	 */

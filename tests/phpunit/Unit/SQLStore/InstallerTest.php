@@ -80,7 +80,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function tesReportMessage() {
+	public function testReportMessage() {
 
 		$tableSchemaManager = $this->getMockBuilder( '\SMW\SQLStore\TableSchemaManager' )
 			->disableOriginalConstructor()

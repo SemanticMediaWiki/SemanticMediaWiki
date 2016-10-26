@@ -7,6 +7,7 @@ use SMWDataItem as DataItem;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exceptions\DataItemHandlerException;
 use SMWDIGeoCoord  as DIGeoCoord;
+use SMW\SQLStore\TableBuilder\FieldType;
 
 /**
  * This class implements store access to DIGeoCoord data items.
@@ -35,7 +36,11 @@ class DIGeoCoordinateHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableFields() {
-		return array( 'o_serialized' => 't', 'o_lat' => 'f', 'o_lon' => 'f' );
+		return array(
+			'o_serialized' => FieldType::FIELD_TITLE,
+			'o_lat' => FieldType::TYPE_DOUBLE,
+			'o_lon' => FieldType::TYPE_DOUBLE
+		);
 	}
 
 	/**
@@ -44,7 +49,9 @@ class DIGeoCoordinateHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getFetchFields() {
-		return array( 'o_serialized' => 't' );
+		return array(
+			'o_serialized' => FieldType::FIELD_TITLE
+		);
 	}
 
 	/**

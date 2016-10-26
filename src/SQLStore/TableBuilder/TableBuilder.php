@@ -132,7 +132,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getStandardFieldType( $input ) {
+	public function getStandardFieldType( $fieldType ) {
 		return false;
 	}
 

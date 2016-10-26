@@ -21,7 +21,7 @@ use SMWSql3SmwIds;
  *
  * @author mwjames
  */
-class TableIntegrityChecker implements MessageReporterAware {
+class TableIntegrityExaminer implements MessageReporterAware {
 
 	/**
 	 * @var SQLStore

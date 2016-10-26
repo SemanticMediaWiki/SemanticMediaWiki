@@ -7,6 +7,7 @@ use SMWDataItem as DataItem;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exceptions\DataItemHandlerException;
 use SMW\DIConcept;
+use SMW\SQLStore\TableBuilder\FieldType;
 
 /**
  * This class implements Store access to Concept data items.
@@ -30,14 +31,14 @@ class DIConceptHandler extends DataItemHandler {
 	 */
 	public function getTableFields() {
 		return array(
-				'concept_txt' => 'l',
-				'concept_docu' => 'l',
-				'concept_features' => 'n',
-				'concept_size' => 'n',
-				'concept_depth' => 'n',
-				'cache_date' => 'j',
-				'cache_count' => 'j'
-			);
+			'concept_txt'  => FieldType::TYPE_BLOB,
+			'concept_docu' => FieldType::TYPE_BLOB,
+			'concept_features' => FieldType::FIELD_NAMESPACE,
+			'concept_size'  => FieldType::FIELD_NAMESPACE,
+			'concept_depth' => FieldType::FIELD_NAMESPACE,
+			'cache_date'    => FieldType::TYPE_INT_UNSIGNED,
+			'cache_count'   => FieldType::TYPE_INT_UNSIGNED
+		);
 	}
 
 	/**
@@ -47,12 +48,12 @@ class DIConceptHandler extends DataItemHandler {
 	 */
 	public function getFetchFields() {
 		return array(
-				'concept_txt' => 'l',
-				'concept_docu' => 'l',
-				'concept_features' => 'n',
-				'concept_size' => 'n',
-				'concept_depth' => 'n'
-			);
+			'concept_txt'  => FieldType::TYPE_BLOB,
+			'concept_docu' => FieldType::TYPE_BLOB,
+			'concept_features' => FieldType::FIELD_NAMESPACE,
+			'concept_size'  => FieldType::FIELD_NAMESPACE,
+			'concept_depth' => FieldType::FIELD_NAMESPACE,
+		);
 	}
 
 	/**

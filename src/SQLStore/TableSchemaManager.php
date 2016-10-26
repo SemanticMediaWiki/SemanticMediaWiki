@@ -6,6 +6,7 @@ use Onoi\MessageReporter\NullMessageReporter;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAware;
 use SMW\SQLStore\TableBuilder\Table;
+use SMW\SQLStore\TableBuilder\FieldType;
 use SMWDataItem as DataItem;
 
 /**
@@ -31,9 +32,9 @@ class TableSchemaManager implements MessageReporterAware {
 	private $tableBuilder;
 
 	/**
-	 * @var TableIntegrityChecker
+	 * @var TableIntegrityExaminer
 	 */
-	private $tableIntegrityChecker;
+	private $tableIntegrityExaminer;
 
 	/**
 	 * @var MessageReporter
@@ -50,12 +51,12 @@ class TableSchemaManager implements MessageReporterAware {
 	 *
 	 * @param SQLStore $store
 	 * @param TableBuilder $tableBuilder
-	 * @param TableIntegrityChecker $tableIntegrityChecker
+	 * @param TableIntegrityExaminer $tableIntegrityExaminer
 	 */
-	public function __construct( SQLStore $store, TableBuilder $tableBuilder, TableIntegrityChecker $tableIntegrityChecker ) {
+	public function __construct( SQLStore $store, TableBuilder $tableBuilder, TableIntegrityExaminer $tableIntegrityExaminer ) {
 		$this->store = $store;
 		$this->tableBuilder = $tableBuilder;
-		$this->tableIntegrityChecker = $tableIntegrityChecker;
+		$this->tableIntegrityExaminer = $tableIntegrityExaminer;
 		$this->messageReporter = new NullMessageReporter();
 	}
 
@@ -79,7 +80,7 @@ class TableSchemaManager implements MessageReporterAware {
 			$this->messageReporter
 		);
 
-		$this->tableIntegrityChecker->setMessageReporter(
+		$this->tableIntegrityExaminer->setMessageReporter(
 			$this->messageReporter
 		);
 
@@ -87,7 +88,7 @@ class TableSchemaManager implements MessageReporterAware {
 			$this->tableBuilder->create( $table );
 		}
 
-		$this->tableIntegrityChecker->checkOnPostCreation( $this->tableBuilder );
+		$this->tableIntegrityExaminer->checkOnPostCreation( $this->tableBuilder );
 	}
 
 	/**
@@ -114,21 +115,6 @@ class TableSchemaManager implements MessageReporterAware {
 		$this->addTable( $this->newFulltextSearchTable() );
 		$this->addTable( $this->newPropertyStatisticsTable() );
 
-		// TODO Replace listed types with something like FieldType::BOOLEAN ...
-		$dbTypes = array(
-			'b' => $this->tableBuilder->getStandardFieldType( 'boolean' ),
-			't' => $this->tableBuilder->getStandardFieldType( 'title' ),
-			's' => $this->tableBuilder->getStandardFieldType( 'sort' ),
-			'l' => $this->tableBuilder->getStandardFieldType( 'blob' ),
-			'f' => $this->tableBuilder->getStandardFieldType( 'double' ),
-			'i' => $this->tableBuilder->getStandardFieldType( 'integer' ),
-			'j' => $this->tableBuilder->getStandardFieldType( 'integer unsigned' ),
-			'u' => $this->tableBuilder->getStandardFieldType( 'usage count' ),
-			'p' => $this->tableBuilder->getStandardFieldType( 'id' ),
-			'n' => $this->tableBuilder->getStandardFieldType( 'namespace' ),
-			'w' => $this->tableBuilder->getStandardFieldType( 'iw' )
-		);
-
 		foreach ( $this->store->getPropertyTables() as $propertyTable ) {
 
 			// Only extensions that aren't setup correctly can force an exception
@@ -140,7 +126,7 @@ class TableSchemaManager implements MessageReporterAware {
 				continue;
 			}
 
-			$this->addTable( $this->newPropertyTable( $propertyTable, $diHandler, $dbTypes ) );
+			$this->addTable( $this->newPropertyTable( $propertyTable, $diHandler ) );
 		}
 
 		return $this->tables;
@@ -151,13 +137,13 @@ class TableSchemaManager implements MessageReporterAware {
 		// ID_TABLE
 		$table = new Table( SQLStore::ID_TABLE );
 
-		$table->addColumn( 'smw_id', $this->tableBuilder->getStandardFieldType( 'id primary' ) );
-		$table->addColumn( 'smw_namespace', $this->tableBuilder->getStandardFieldType( 'namespace' ) . ' NOT NULL' );
-		$table->addColumn( 'smw_title', $this->tableBuilder->getStandardFieldType( 'title' ) . ' NOT NULL' );
-		$table->addColumn( 'smw_iw', $this->tableBuilder->getStandardFieldType( 'iw' ) . ' NOT NULL' );
-		$table->addColumn( 'smw_subobject', $this->tableBuilder->getStandardFieldType( 'title' ) . ' NOT NULL' );
-		$table->addColumn( 'smw_sortkey', $this->tableBuilder->getStandardFieldType( 'title' ) . ' NOT NULL' );
-		$table->addColumn( 'smw_proptable_hash', $this->tableBuilder->getStandardFieldType( 'blob' ) );
+		$table->addColumn( 'smw_id', FieldType::FIELD_ID_PRIMARY );
+		$table->addColumn( 'smw_namespace', array( FieldType::FIELD_NAMESPACE, 'NOT NULL' ) );
+		$table->addColumn( 'smw_title', array( FieldType::FIELD_TITLE, 'NOT NULL' ) );
+		$table->addColumn( 'smw_iw', array( FieldType::FIELD_INTERWIKI, 'NOT NULL' ) );
+		$table->addColumn( 'smw_subobject', array( FieldType::FIELD_TITLE, 'NOT NULL' ) );
+		$table->addColumn( 'smw_sortkey', array( FieldType::FIELD_TITLE, 'NOT NULL' ) );
+		$table->addColumn( 'smw_proptable_hash', FieldType::TYPE_BLOB );
 
 		$table->addIndex( 'smw_id' );
 		$table->addIndex( 'smw_id,smw_sortkey' );
@@ -173,8 +159,8 @@ class TableSchemaManager implements MessageReporterAware {
 		// CONCEPT_CACHE_TABLE (member elements (s)->concepts (o) )
 		$table = new Table( SQLStore::CONCEPT_CACHE_TABLE );
 
-		$table->addColumn( 's_id', $this->tableBuilder->getStandardFieldType( 'id' ) . ' NOT NULL' );
-		$table->addColumn( 'o_id', $this->tableBuilder->getStandardFieldType( 'id' ) . ' NOT NULL' );
+		$table->addColumn( 's_id', array( FieldType::FIELD_ID, 'NOT NULL' ) );
+		$table->addColumn( 'o_id', array( FieldType::FIELD_ID, 'NOT NULL' ) );
 
 		$table->addIndex( 'o_id' );
 
@@ -186,8 +172,8 @@ class TableSchemaManager implements MessageReporterAware {
 		// QUERY_LINKS_TABLE
 		$table = new Table( SQLStore::QUERY_LINKS_TABLE );
 
-		$table->addColumn( 's_id', $this->tableBuilder->getStandardFieldType( 'id' ) . ' NOT NULL' );
-		$table->addColumn( 'o_id', $this->tableBuilder->getStandardFieldType( 'id' ) . ' NOT NULL' );
+		$table->addColumn( 's_id', array( FieldType::FIELD_ID, 'NOT NULL' ) );
+		$table->addColumn( 'o_id', array( FieldType::FIELD_ID, 'NOT NULL' ) );
 
 		$table->addIndex( 's_id' );
 		$table->addIndex( 'o_id' );
@@ -203,10 +189,10 @@ class TableSchemaManager implements MessageReporterAware {
 		// VARCHAR is stored inline with the table
 		$table = new Table( SQLStore::FT_SEARCH_TABLE );
 
-		$table->addColumn( 's_id', $this->tableBuilder->getStandardFieldType( 'id' ) . ' NOT NULL' );
-		$table->addColumn( 'p_id', $this->tableBuilder->getStandardFieldType( 'id' ) . ' NOT NULL' );
-		$table->addColumn( 'o_text', 'TEXT' );
-		$table->addColumn( 'o_sort', $this->tableBuilder->getStandardFieldType( 'title' ) );
+		$table->addColumn( 's_id', array( FieldType::FIELD_ID, 'NOT NULL' ) );
+		$table->addColumn( 'p_id', array( FieldType::FIELD_ID, 'NOT NULL' ) );
+		$table->addColumn( 'o_text', FieldType::TYPE_TEXT );
+		$table->addColumn( 'o_sort', FieldType::FIELD_TITLE );
 
 		$table->addIndex( 's_id' );
 		$table->addIndex( 'p_id' );
@@ -226,8 +212,8 @@ class TableSchemaManager implements MessageReporterAware {
 		// PROPERTY_STATISTICS_TABLE
 		$table = new Table( SQLStore::PROPERTY_STATISTICS_TABLE );
 
-		$table->addColumn( 'p_id', $this->tableBuilder->getStandardFieldType( 'id' ) );
-		$table->addColumn( 'usage_count', $this->tableBuilder->getStandardFieldType( 'usage count' ) );
+		$table->addColumn( 'p_id', FieldType::FIELD_ID );
+		$table->addColumn( 'usage_count', FieldType::FIELD_USAGE_COUNT );
 
 		$table->addIndex( array( 'p_id', 'UNIQUE INDEX' ) );
 		$table->addIndex( 'usage_count' );
@@ -235,8 +221,7 @@ class TableSchemaManager implements MessageReporterAware {
 		return $table;
 	}
 
-	private function newPropertyTable( $propertyTable, $diHandler, $dbTypes ) {
-		$addedCustomTypeSignatures = false;
+	private function newPropertyTable( $propertyTable, $diHandler ) {
 
 		// Prepare indexes. By default, property-value tables
 		// have the following indexes:
@@ -248,14 +233,14 @@ class TableSchemaManager implements MessageReporterAware {
 		$indexes = array();
 		if ( $propertyTable->usesIdSubject() ) {
 			$fieldarray = array(
-				's_id' => $this->tableBuilder->getStandardFieldType( 'id' ) . ' NOT NULL'
+				's_id' => array( FieldType::FIELD_ID, 'NOT NULL' )
 			);
 
 			$indexes['sp'] = 's_id';
 		} else {
 			$fieldarray = array(
-				's_title' => $this->tableBuilder->getStandardFieldType( 'title' ) . ' NOT NULL',
-				's_namespace' => $this->tableBuilder->getStandardFieldType( 'namespace' ) . ' NOT NULL'
+				's_title' => array( FieldType::FIELD_TITLE, 'NOT NULL' ),
+				's_namespace' => array( FieldType::FIELD_NAMESPACE, 'NOT NULL' )
 			);
 
 			$indexes['sp'] = 's_title,s_namespace';
@@ -264,7 +249,7 @@ class TableSchemaManager implements MessageReporterAware {
 		$indexes['po'] = $diHandler->getIndexField();
 
 		if ( !$propertyTable->isFixedPropertyTable() ) {
-			$fieldarray['p_id'] = $this->tableBuilder->getStandardFieldType( 'id' ) . ' NOT NULL';
+			$fieldarray['p_id'] = array( FieldType::FIELD_ID, 'NOT NULL' );
 			$indexes['po'] = 'p_id,' . $indexes['po'];
 			$indexes['sp'] = $indexes['sp'] . ',p_id';
 		}
@@ -278,27 +263,14 @@ class TableSchemaManager implements MessageReporterAware {
 		$indexes = array_merge( $indexes, $diHandler->getTableIndexes() );
 		$indexes = array_unique( $indexes );
 
-		foreach ( $diHandler->getTableFields() as $fieldname => $typeid ) {
-			// If the type signature is not recognized and the custom signatures have not been added, add them.
-			if ( !$addedCustomTypeSignatures && !array_key_exists( $typeid, $dbTypes ) ) {
-
-				// @Depreceated since 2.5
-				\Hooks::run( 'SMWCustomSQLStoreFieldType', array( &$dbTypes ) );
-
-				\Hooks::run( 'SMW::SQLStore::AddCustomDatabaseFieldType', array( &$dbTypes ) );
-				$addedCustomTypeSignatures = true;
-			}
-
-			// Only add the type when the signature was recognized, otherwise ignore it silently.
-			if ( array_key_exists( $typeid, $dbTypes ) ) {
-				$fieldarray[$fieldname] = $dbTypes[$typeid];
-			}
+		foreach ( $diHandler->getTableFields() as $fieldname => $fieldType ) {
+			$fieldarray[$fieldname] = $fieldType;
 		}
 
 		$table = new Table( $propertyTable->getName() );
 
-		foreach ( $fieldarray as $key => $value ) {
-			$table->addColumn( $key, $value );
+		foreach ( $fieldarray as $fieldName => $fieldType ) {
+			$table->addColumn( $fieldName, $fieldType );
 		}
 
 		foreach ( $indexes as $key => $index ) {

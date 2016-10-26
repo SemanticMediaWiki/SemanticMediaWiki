@@ -17,30 +17,33 @@ class PostgresTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getStandardFieldType( $key ) {
+	public function getStandardFieldType( $fieldType ) {
 
 		$fieldTypes = array(
 			 // like page_id in MW page table
-			'id' => 'SERIAL',
+			'id'         => 'SERIAL',
 			 // like page_id in MW page table
-			'id primary' => 'SERIAL' . ' NOT NULL PRIMARY KEY',
+			'id primary' => 'SERIAL NOT NULL PRIMARY KEY',
 			 // like page_namespace in MW page table
-			'namespace' => 'BIGINT',
+			'namespace'  => 'BIGINT',
 			 // like page_title in MW page table
-			'title' => 'TEXT',
+			'title'      => 'TEXT',
 			 // like iw_prefix in MW interwiki table
-			'iw' => 'TEXT',
+			'interwiki'  => 'TEXT',
+			'iw'         => 'TEXT',
 			 // larger blobs of character data, usually not subject to SELECT conditions
-			'blob' => 'BYTEA',
-			'boolean'=> 'BOOLEAN',
-			'double' => 'DOUBLE PRECISION',
-			'integer' => 'bigint',
-			'usage count' => 'bigint',
-			'integer unsigned' => 'INTEGER',
-			'sort' => 'TEXT'
+			'blob'       => 'BYTEA',
+			'text'       => 'TEXT',
+			'boolean'    => 'BOOLEAN',
+			'double'     => 'DOUBLE PRECISION',
+			'integer'    => 'bigint',
+			// Requires citext extension
+			'char nocase'      => 'citext NOT NULL',
+			'usage count'      => 'bigint',
+			'integer unsigned' => 'INTEGER'
 		);
 
-		return isset( $fieldTypes[$key] ) ? $fieldTypes[$key] : false;
+		return FieldType::mapType( $fieldType, $fieldTypes );
 	}
 
 	/** Create */
@@ -58,7 +61,7 @@ class PostgresTableBuilder extends TableBuilder {
 		$fields = $tableOptions['fields'];
 
 		foreach ( $fields as $fieldName => $fieldType ) {
-			$fieldSql[] = "$fieldName  $fieldType";
+			$fieldSql[] = "$fieldName " . $this->getStandardFieldType( $fieldType );
 		}
 
 		$this->connection->query( 'CREATE TABLE ' . $tableName . ' (' . implode( ',', $fieldSql ) . ') ', __METHOD__ );
@@ -157,6 +160,7 @@ EOT;
 
 	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $tableOptions ) {
 
+		$fieldType = $this->getStandardFieldType( $fieldType );
 		$keypos = strpos( $fieldType, ' PRIMARY KEY' );
 
 		if ( $keypos > 0 ) {
