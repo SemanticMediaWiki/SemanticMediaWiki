@@ -64,6 +64,16 @@ class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructTextSanitizer() {
+
+		$instance = new FulltextSearchTableFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer',
+			$instance->newTextSanitizer()
+		);
+	}
+
 	public function testCanConstructSearchTable() {
 
 		$instance = new FulltextSearchTableFactory();

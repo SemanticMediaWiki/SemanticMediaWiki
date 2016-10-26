@@ -17,7 +17,6 @@ use SMW\DataItemFactory;
 class SearchTableTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
-	private $textSanitizer;
 	private $dataItemFactory;
 
 	protected function setUp() {
@@ -27,25 +26,20 @@ class SearchTableTest extends \PHPUnit_Framework_TestCase {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->textSanitizer = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer' )
-			->disableOriginalConstructor()
-			->getMock();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Fulltext\SearchTable',
-			new SearchTable( $this->store, $this->textSanitizer )
+			new SearchTable( $this->store )
 		);
 	}
 
 	public function testIsEnabled() {
 
 		$instance = new SearchTable(
-			$this->store,
-			$this->textSanitizer
+			$this->store
 		);
 
 		$instance->setEnabled( true );
@@ -58,8 +52,7 @@ class SearchTableTest extends \PHPUnit_Framework_TestCase {
 	public function testGetPropertyExemptionList() {
 
 		$instance = new SearchTable(
-			$this->store,
-			$this->textSanitizer
+			$this->store
 		);
 
 		$instance->setPropertyExemptionList(
@@ -75,8 +68,7 @@ class SearchTableTest extends \PHPUnit_Framework_TestCase {
 	public function testIsExemptedProperty() {
 
 		$instance = new SearchTable(
-			$this->store,
-			$this->textSanitizer
+			$this->store
 		);
 
 		$instance->setPropertyExemptionList(

@@ -15,6 +15,20 @@ use SMWDIUri as DIUri;
 class ValueMatchConditionBuilder {
 
 	/**
+	 * @var TextSanitizer
+	 */
+	protected $textSanitizer;
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param TextSanitizer $textSanitizer
+	 */
+	public function __construct( TextSanitizer $textSanitizer ) {
+		$this->textSanitizer = $textSanitizer;
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @return boolean

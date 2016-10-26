@@ -23,18 +23,6 @@ use Onoi\Tesa\SanitizerFactory;
 class FulltextSearchTableFactory {
 
 	/**
-	 * @var ApplicationFactory
-	 */
-	private $applicationFactory;
-
-	/**
-	 * @since 2.5
-	 */
-	public function __construct() {
-		$this->applicationFactory = ApplicationFactory::getInstance();
-	}
-
-	/**
 	 * @since 2.5
 	 *
 	 * @param SQLStore $store
@@ -48,17 +36,19 @@ class FulltextSearchTableFactory {
 		switch ( $type ) {
 			case 'mysql':
 				return new MySQLValueMatchConditionBuilder(
+					$this->newTextSanitizer(),
 					$this->newSearchTable( $store )
 				);
 				break;
 			case 'sqlite':
 				return new SQLiteValueMatchConditionBuilder(
+					$this->newTextSanitizer(),
 					$this->newSearchTable( $store )
 				);
 				break;
 		}
 
-		return new ValueMatchConditionBuilder();
+		return new ValueMatchConditionBuilder( $this->newTextSanitizer() );
 	}
 
 	/**
@@ -68,9 +58,9 @@ class FulltextSearchTableFactory {
 	 *
 	 * @return SearchTable
 	 */
-	public function newSearchTable( SQLStore $store ) {
+	public function newTextSanitizer() {
 
-		$settings = $this->applicationFactory->getSettings();
+		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$textSanitizer = new TextSanitizer(
 			new SanitizerFactory()
@@ -84,9 +74,22 @@ class FulltextSearchTableFactory {
 			$settings->get( 'smwgFulltextSearchMinTokenSize' )
 		);
 
+		return $textSanitizer;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param SQLStore $store
+	 *
+	 * @return SearchTable
+	 */
+	public function newSearchTable( SQLStore $store ) {
+
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
 		$searchTable = new SearchTable(
-			$store,
-			$textSanitizer
+			$store
 		);
 
 		$searchTable->setEnabled(
@@ -113,8 +116,9 @@ class FulltextSearchTableFactory {
 	 */
 	public function newSearchTableUpdater( SQLStore $store ) {
 		return new SearchTableUpdater(
+			$store->getConnection( 'mw.db' ),
 			$this->newSearchTable( $store ),
-			$store->getConnection( 'mw.db' )
+			$this->newTextSanitizer()
 		);
 	}
 
@@ -127,11 +131,12 @@ class FulltextSearchTableFactory {
 	 */
 	public function newTextByChangeUpdater( SQLStore $store ) {
 
-		$settings = $this->applicationFactory->getSettings();
+		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$textByChangeUpdater = new TextByChangeUpdater(
+			$store->getConnection( 'mw.db' ),
 			$this->newSearchTableUpdater( $store ),
-			$store->getConnection( 'mw.db' )
+			$this->newTextSanitizer()
 		);
 
 		$textByChangeUpdater->asDeferredUpdate(
@@ -155,8 +160,8 @@ class FulltextSearchTableFactory {
 	 */
 	public function newSearchTableRebuilder( SQLStore $store ) {
 		return new SearchTableRebuilder(
-			$this->newSearchTableUpdater( $store ),
-			$store->getConnection( 'mw.db' )
+			$store->getConnection( 'mw.db' ),
+			$this->newSearchTableUpdater( $store )
 		);
 	}
 

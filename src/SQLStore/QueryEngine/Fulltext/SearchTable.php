@@ -28,11 +28,6 @@ class SearchTable {
 	private $connection;
 
 	/**
-	 * @var TextSanitizer
-	 */
-	private $textSanitizer;
-
-	/**
 	 * @var boolean
 	 */
 	private $isEnabled = false;
@@ -51,11 +46,9 @@ class SearchTable {
 	 * @since 2.5
 	 *
 	 * @param SQLStore $store
-	 * @param TextSanitizer $textSanitizer
 	 */
-	public function __construct( SQLStore $store, TextSanitizer $textSanitizer ) {
+	public function __construct( SQLStore $store ) {
 		$this->store = $store;
-		$this->textSanitizer = $textSanitizer;
 		$this->connection = $store->getConnection( 'mw.db.queryengine' );
 	}
 
@@ -183,15 +176,6 @@ class SearchTable {
 	 */
 	public function setMinTokenSize( $minTokenSize ) {
 		$this->minTokenSize = (int)$minTokenSize;
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @return TextSanitizer
-	 */
-	public function getTextSanitizer() {
-		return $this->textSanitizer;
 	}
 
 	/**

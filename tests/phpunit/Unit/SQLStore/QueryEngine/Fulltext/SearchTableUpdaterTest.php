@@ -15,16 +15,21 @@ use SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater;
  */
 class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 
-	private $searchTable;
 	private $connection;
+	private $searchTable;
+	private $textSanitizer;
 
 	protected function setUp() {
+
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->searchTable = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\SearchTable' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->textSanitizer = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -33,19 +38,11 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater',
-			new SearchTableUpdater( $this->searchTable, $this->connection )
+			new SearchTableUpdater( $this->connection, $this->searchTable, $this->textSanitizer )
 		);
 	}
 
 	public function testRead() {
-
-		$textSanitizer = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->searchTable->expects( $this->once() )
-			->method( 'getTextSanitizer' )
-			->will( $this->returnValue( $textSanitizer ) );
 
 		$row = new \stdClass;
 		$row->o_text = 'Foo';
@@ -59,8 +56,9 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $row ) );
 
 		$instance = new SearchTableUpdater(
+			$this->connection,
 			$this->searchTable,
-			$this->connection
+			$this->textSanitizer
 		);
 
 		$instance->read( 12, 42 );
@@ -68,20 +66,13 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testUpdateWithText() {
 
-		$textSanitizer = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->searchTable->expects( $this->once() )
-			->method( 'getTextSanitizer' )
-			->will( $this->returnValue( $textSanitizer ) );
-
 		$this->connection->expects( $this->once() )
 			->method( 'update' );
 
 		$instance = new SearchTableUpdater(
+			$this->connection,
 			$this->searchTable,
-			$this->connection
+			$this->textSanitizer
 		);
 
 		$instance->update( 12, 42, 'foo' );
@@ -96,8 +87,9 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'update' );
 
 		$instance = new SearchTableUpdater(
+			$this->connection,
 			$this->searchTable,
-			$this->connection
+			$this->textSanitizer
 		);
 
 		$instance->update( 12, 42, ' ' );
@@ -115,8 +107,9 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 					'o_text' => '' ) ) );
 
 		$instance = new SearchTableUpdater(
+			$this->connection,
 			$this->searchTable,
-			$this->connection
+			$this->textSanitizer
 		);
 
 		$instance->insert( 12, 42 );
@@ -133,8 +126,9 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 					'p_id' => 42 ) ) );
 
 		$instance = new SearchTableUpdater(
+			$this->connection,
 			$this->searchTable,
-			$this->connection
+			$this->textSanitizer
 		);
 
 		$instance->delete( 12, 42 );
@@ -149,8 +143,9 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( '*' ) );
 
 		$instance = new SearchTableUpdater(
+			$this->connection,
 			$this->searchTable,
-			$this->connection
+			$this->textSanitizer
 		);
 
 		$instance->flushTable();
