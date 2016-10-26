@@ -31,9 +31,14 @@ class EntitySubobjectListIterator implements IteratorAggregate {
 	private $iteratorFactory;
 
 	/**
-	 * @var MappingIterator
+	 * @var DIWikiPage
 	 */
-	private $mappingIterator;
+	private $subject;
+
+	/**
+	 * @var string|null
+	 */
+	private $skipOn = array();
 
 	/**
 	 * @since 2.5
@@ -47,6 +52,25 @@ class EntitySubobjectListIterator implements IteratorAggregate {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param string $skipOn
+	 */
+	public function skipOn( $skipOn ) {
+		$this->skipOn[] = $skipOn;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param DIWikiPage $subject
+	 */
+	public function setSubject( DIWikiPage $subject ) {
+		$this->skipOn = array();
+		$this->subject = $subject;
+	}
+
+	/**
 	 * @see IteratorAggregate::getIterator
 	 *
 	 * @since 2.5
@@ -55,11 +79,11 @@ class EntitySubobjectListIterator implements IteratorAggregate {
 	 */
 	public function getIterator() {
 
-		if ( $this->mappingIterator === null ) {
-			throw new RuntimeException( "MappingIterator is not initialized" );
+		if ( $this->subject === null ) {
+			throw new RuntimeException( "Subject is not initialized" );
 		}
 
-		return $this->mappingIterator;
+		return $this->newMappingIterator( $this->subject );
 	}
 
 	/**
@@ -72,28 +96,30 @@ class EntitySubobjectListIterator implements IteratorAggregate {
 	 *
 	 * @return MappingIterator
 	 */
-	public function newMappingIterator( DIWikiPage $subject ) {
+	private function newMappingIterator( DIWikiPage $subject ) {
 
-		$diHandler = $this->store->getDataItemHandlerForDIType(
-			DataItem::TYPE_WIKIPAGE
-		);
+		$callback = function( $row ) use ( $subject ) {
 
-		$callback = function( $row ) use ( $subject, $diHandler ) {
+			// #1955
+			if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
+				$property = new DIProperty( $subject->getDBkey() );
+				$subobject = $property->getCanonicalDiWikiPage( $row->smw_subobject );
+			} else {
+				$subobject = new DIWikiPage(
+					$subject->getDBkey(),
+					$subject->getNamespace(),
+					$subject->getInterwiki(),
+					$row->smw_subobject
+				);
+			}
 
-			$subobject = $diHandler->dataItemFromDBKeys( array(
-				$subject->getDBkey(),
-				$subject->getNamespace(),
-				$subject->getInterwiki(),
-				$row->smw_sortkey,
-				$row->smw_subobject
-			) );
-
+			$subobject->setSortKey( $row->smw_sortkey );
 			$subobject->setId( $row->smw_id );
 
 			return $subobject;
 		};
 
-		return $this->mappingIterator = $this->iteratorFactory->newMappingIterator(
+		return $this->iteratorFactory->newMappingIterator(
 			$this->newResultIterator( $subject ),
 			$callback
 		);
@@ -101,7 +127,7 @@ class EntitySubobjectListIterator implements IteratorAggregate {
 
 	private function newResultIterator( DIWikiPage $subject ) {
 
-		$connection = $this->store->getConnection();
+		$connection = $this->store->getConnection( 'mw.db' );
 		$dbKey = $subject->getDBkey();
 
 		// #1955 Ensure to match a possible predefined property
@@ -110,13 +136,24 @@ class EntitySubobjectListIterator implements IteratorAggregate {
 			$dbKey = DIProperty::newFromUserLabel( $subject->getDBkey() )->getKey();
 		}
 
-		$res = $connection->select(
-			$connection->tablename( SQLStore::ID_TABLE ),
-			array( 'smw_id' , 'smw_subobject' , 'smw_sortkey' ),
-			'smw_title = ' . $connection->addQuotes( $dbKey ) . ' AND ' .
+		$condition = 'smw_title = ' . $connection->addQuotes( $dbKey ) . ' AND ' .
 			'smw_namespace = ' . $connection->addQuotes( $subject->getNamespace() ) . ' AND ' .
 			'smw_iw = ' . $connection->addQuotes( $subject->getInterwiki() ) . ' AND ' .
-			'smw_subobject != ' . $connection->addQuotes( '' ), // The "!=" is why we cannot use MW array syntax here
+			// The "!=" is why we cannot use MW array syntax here
+			'smw_subobject != ' . $connection->addQuotes( '' );
+
+		foreach ( $this->skipOn as $skipOn ) {
+			$condition .= ' AND smw_subobject != ' . $connection->addQuotes( $skipOn );
+		}
+
+		$res = $connection->select(
+			$connection->tablename( SQLStore::ID_TABLE ),
+			array(
+				'smw_id',
+				'smw_subobject',
+				'smw_sortkey'
+			),
+			$condition,
 			__METHOD__
 		);
 

@@ -80,14 +80,16 @@ class SMWSQLStore3Writers {
 		$subject = DIWikiPage::newFromTitle( $title );
 		$emptySemanticData = new SemanticData( $subject );
 
-		$subobjects = $this->entitySubobjectListIterator->newMappingIterator(
+		$this->entitySubobjectListIterator->setSubject(
 			$emptySemanticData->getSubject()
 		);
+
+		$subobjects = $this->entitySubobjectListIterator->getIterator();
 
 		$this->doDataUpdate( $emptySemanticData );
 
 		foreach ( $ids as $id ) {
-			$this->doDeleteFor( $id, $subject, $subobjects );
+			$this->doDelete( $id, $subject, $subobjects );
 		}
 
 		// @deprecated since 2.1, use 'SMW::SQLStore::AfterDeleteSubjectComplete'
@@ -96,7 +98,7 @@ class SMWSQLStore3Writers {
 		\Hooks::run( 'SMW::SQLStore::AfterDeleteSubjectComplete', array( $this->store, $title ) );
 	}
 
-	private function doDeleteFor( $id, $subject, $subobjects ) {
+	private function doDelete( $id, $subject, $subobjects ) {
 
 		if ( $subject->getNamespace() === SMW_NS_CONCEPT ) { // make sure to clear caches
 			$db = $this->store->getConnection();
@@ -142,6 +144,9 @@ class SMWSQLStore3Writers {
 
 		$subject = $semanticData->getSubject();
 
+		$this->entitySubobjectListIterator->setSubject(
+			$subject
+		);
 
 		// Reset diff before starting the update
 		$this->propertyTableRowDiffer->resetCompositePropertyTableDiff();
@@ -151,14 +156,11 @@ class SMWSQLStore3Writers {
 
 		// Update data about our subobjects
 		$subSemanticData = $semanticData->getSubSemanticData();
+		$subobjects = $this->entitySubobjectListIterator->getIterator();
 
 		foreach( $subSemanticData as $subobjectData ) {
 			$this->doFlatDataUpdate( $subobjectData );
 		}
-
-		$subobjects = $this->entitySubobjectListIterator->newMappingIterator(
-			$subject
-		);
 
 		// Mark subobjects without reference to be deleted
 		foreach( $subobjects as $subobject ) {

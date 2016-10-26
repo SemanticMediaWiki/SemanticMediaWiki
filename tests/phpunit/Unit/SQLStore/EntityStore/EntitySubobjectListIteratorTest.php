@@ -38,10 +38,6 @@ class EntitySubobjectListIteratorTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testNewMappingIterator( $subject ) {
 
-		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -52,29 +48,30 @@ class EntitySubobjectListIteratorTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getConnection', 'getDataItemHandlerForDIType' ) )
+			->setMethods( array( 'getConnection' ) )
 			->getMock();
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$store->expects( $this->atLeastOnce() )
-			->method( 'getDataItemHandlerForDIType' )
-			->will( $this->returnValue( $dataItemHandler ) );
-
 		$instance = new EntitySubobjectListIterator(
 			$store,
 			ApplicationFactory::getInstance()->getIteratorFactory()
 		);
 
+		$instance->setSubject( $subject );
+
 		$this->assertInstanceOf(
 			'\SMW\Iterators\MappingIterator',
-			$instance->newMappingIterator( $subject )
+			$instance->getIterator()
 		);
 	}
 
-	public function testIterateOn() {
+	/**
+	 * @dataProvider subjectProvider
+	 */
+	public function testIterateOn( $subject ) {
 
 		$row = new \stdClass;
 		$row->smw_id = 42;
@@ -84,15 +81,6 @@ class EntitySubobjectListIteratorTest extends \PHPUnit_Framework_TestCase {
 		$expected = array(
 			'Foo', 0, '', 'sort', '10000000001'
 		);
-
-		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$dataItemHandler->expects( $this->atLeastOnce() )
-			->method( 'dataItemFromDBKeys' )
-			->with( $this->equalTo( $expected ) )
-			->will( $this->returnValue( DIWikiPage::newFromText( 'Foo' ) ) );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -111,18 +99,12 @@ class EntitySubobjectListIteratorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$store->expects( $this->atLeastOnce() )
-			->method( 'getDataItemHandlerForDIType' )
-			->will( $this->returnValue( $dataItemHandler ) );
-
 		$instance = new EntitySubobjectListIterator(
 			$store,
 			ApplicationFactory::getInstance()->getIteratorFactory()
 		);
 
-		$instance->newMappingIterator(
-			DIWikiPage::newFromText( 'Foo' )
-		);
+		$instance->setSubject( $subject );
 
 		foreach ( $instance as $v ) {
 			$this->assertEquals( 42, $v->getId() );
