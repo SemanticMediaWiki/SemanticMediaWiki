@@ -59,6 +59,7 @@ THIS IS NOT A RELEASE YET
 * #1922
 * #1926
 * #1935
+* 1957
 
 ## Internal changes
 
