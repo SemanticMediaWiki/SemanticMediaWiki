@@ -84,6 +84,14 @@ class SerializerTest extends \PHPUnit_Framework_TestCase {
 			'?Bar#foobar=Foo|+index=2'
 		);
 
+		$data = DataValueFactory::getInstance()->newPropertyValueByLabel( 'Modification date' );
+
+		$provider['predefined-property'] = array(
+			new PrintRequest( PrintRequest::PRINT_PROP, '', $data ),
+			false,
+			'?Modification date#'
+		);
+
 		return $provider;
 	}
 

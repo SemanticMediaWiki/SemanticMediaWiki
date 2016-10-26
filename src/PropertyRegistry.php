@@ -63,7 +63,7 @@ class PropertyRegistry {
 			return self::$instance;
 		}
 
-		$propertyLabelFinder = ApplicationFactory::getInstance()->newPropertyLabelFinder();
+		$propertyLabelFinder = ApplicationFactory::getInstance()->getPropertyLabelFinder();
 		$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage();
 
 		$propertyAliasFinder = new PropertyAliasFinder(

@@ -203,7 +203,7 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
-			$parserData->getSemanticData()->findSubSemanticData( '_QUERYc685f41368e6d9c59dfc9d8d69ef557f' )
+			$parserData->getSemanticData()->findSubSemanticData( '_QUERYda9bddddc9907eafb60792ca4bed3008' )
 		);
 
 		$expected = array(

@@ -1,0 +1,61 @@
+{
+	"description": "Test in-text annotation with preferred property label/DISPLAYTITLE on user/predefined properties (`wgContLang=es`, `wgLang=de`, `wgRestrictDisplayTitle=false`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"name": "Modification date",
+			"contents": "[[Has preferred property label::prefLabel-123@de]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"name": "Has query",
+			"contents": "{{DISPLAYTITLE:query-displaytitle}}"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"name": "Has keyword",
+			"contents": "[[Has preferred property label::prefLabel-456@de]]"
+		},
+		{
+			"name": "Example/P0438/1",
+			"contents": "[[Category:P0438]] [[Has keyword::some keyword]]"
+		},
+		{
+			"name": "Example/P0438/2",
+			"contents": "[[Category:P0438]] [[Has keyword::another keyword]]"
+		},
+		{
+			"name": "Example/P0438/Q.1",
+			"contents": "{{#ask: [[Category:P0438]] |?Modification date |?Modification date=ModificationSomeLabel |?Has keyword |?Has keyword=KeywordCaption |?Has query |?Has query=QueryCaption |limit=1 }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (combination of prefLabel, DISPLAYTITLE, local caption)",
+			"subject": "Example/P0438/Q.1",
+			"expected-output": {
+				"to-contain": [
+					"title=\"Property:Modification date\">prefLabel-123</a></span><div class=\"smwttcontent\">„prefLabel-123 (Modification date)“",
+					"title=\"Property:Modification date\">ModificationSomeLabel</a></span><div class=\"smwttcontent\">„prefLabel-123 (Modification date)“",
+					"&#160;<span title=\"Modification date\"><sup>ᵖ</sup></span>",
+					"title=\"Property:Has keyword\">prefLabel-456</a>&#160;<span title=\"Has keyword\"><sup>ᵖ</sup>",
+					"title=\"Property:Has keyword\">KeywordCaption</a>",
+					"title=\"Property:Has query\">query-displaytitle</a></span><div class=\"smwttcontent\">„query-displaytitle“",
+					"title=\"Property:Has query\">QueryCaption</a></span><div class=\"smwttcontent\">„query-displaytitle“",
+					"title=\"Especial:Ask/-5B-5BCategoría:P0438-5D-5D/-3FModification-20date/-3FModification-20date=ModificationSomeLabel/-3FHas-20keyword/-3FHas-20keyword=KeywordCaption/-3FHas-20query/-3FHas-20query=QueryCaption/mainlabel=/limit=1/offset=1/format=table\">"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "es",
+		"wgLang": "de",
+		"wgRestrictDisplayTitle": false
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

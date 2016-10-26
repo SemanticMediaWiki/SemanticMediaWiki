@@ -249,7 +249,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\PropertyLabelFinder',
-			$this->applicationFactory->newPropertyLabelFinder()
+			$this->applicationFactory->getPropertyLabelFinder()
 		);
 	}
 

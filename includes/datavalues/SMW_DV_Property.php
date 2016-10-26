@@ -39,6 +39,16 @@ class SMWPropertyValue extends SMWDataValue {
 	const OPT_NO_HIGHLIGHT = 'no.highlight';
 
 	/**
+	 * Avoid the display of a preferred label marker
+	 */
+	const OPT_NO_PREF_LHNT = 'no.preflabel.marker';
+
+	/**
+	 * Special formatting of the label/preferred label
+	 */
+	const FORMAT_LABEL = 'format.label';
+
+	/**
 	 * Cache for wiki page value object associated to this property, or
 	 * null if no such page exists. Use getWikiPageValue() to get the data.
 	 * @var SMWWikiPageValue
@@ -339,6 +349,27 @@ class SMWPropertyValue extends SMWDataValue {
 	 */
 	public function getWikiValue() {
 		return $this->getDataValueFormatter()->format( DataValueFormatter::VALUE );
+	}
+
+	/**
+	 * Outputs a formatted property label that takes into account preferred/
+	 * canonical label characteristics
+	 *
+	 * @param integer|string $format
+	 * @param Linker|null $linker
+	 *
+	 * @return string
+	 */
+	public function getFormattedLabel( $format = DataValueFormatter::VALUE, $linker = null ) {
+
+		$dataValueFormatter = $this->getDataValueFormatter();
+
+		$dataValueFormatter->setOption(
+			self::FORMAT_LABEL,
+			$format
+		);
+
+		return $dataValueFormatter->format( self::FORMAT_LABEL, $linker );
 	}
 
 	/**

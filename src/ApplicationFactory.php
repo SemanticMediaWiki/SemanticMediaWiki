@@ -331,8 +331,8 @@ class ApplicationFactory {
 	 *
 	 * @return PropertyLabelFinder
 	 */
-	public function newPropertyLabelFinder() {
-		return $this->callbackLoader->create( 'PropertyLabelFinder' );
+	public function getPropertyLabelFinder() {
+		return $this->callbackLoader->singleton( 'PropertyLabelFinder' );
 	}
 
 	/**

@@ -5,6 +5,7 @@ namespace SMW;
 use Html;
 use SMWDIError;
 use SMWTypesValue;
+use SMW\DataValues\ValueFormatters\DataValueFormatter;
 
 /**
  * Query class that provides content for the Special:Properties page
@@ -205,27 +206,26 @@ class PropertiesQueryPage extends QueryPage {
 			$linkAttributes['title'] = 'ID: ' . $property->id;
 		}
 
-		if ( $title->exists() ) {
+		$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $property );
+		$dataValue->setLinkAttributes( $linkAttributes );
 
-			$typeProperty = new DIProperty( '_TYPE' );
-			$types = $this->store->getPropertyValues( $property->getDiWikiPage(), $typeProperty );
+		$proplink = $dataValue->getFormattedLabel(
+			DataValueFormatter::HTML_SHORT,
+			$this->getLinker()
+		);
 
-			if ( count( $types ) >= 1 ) {
-
-				$typeDataValue = DataValueFactory::getInstance()->newDataValueByItem( current( $types ), $typeProperty );
-				$typestring = $typeDataValue->getLongHTMLText( $this->getLinker() );
-
-			} else {
-
-				$this->getMessageFormatter()->addFromKey( 'smw_propertylackstype', $typestring );
-			}
-
-			$proplink = $this->getLinker()->link( $title, $label, $linkAttributes );
-
-		} else {
-
+		if ( !$title->exists() ) {
 			$this->getMessageFormatter()->addFromKey( 'smw_propertylackspage' );
-			$proplink = $this->getLinker()->link( $title, $label, $linkAttributes, array( 'action' => 'view' ) );
+		}
+
+		$typeProperty = new DIProperty( '_TYPE' );
+		$types = $this->store->getPropertyValues( $property->getDiWikiPage(), $typeProperty );
+
+		if ( count( $types ) >= 1 ) {
+			$typeDataValue = DataValueFactory::getInstance()->newDataValueByItem( current( $types ), $typeProperty );
+			$typestring = $typeDataValue->getLongHTMLText( $this->getLinker() );
+		} else {
+			$this->getMessageFormatter()->addFromKey( 'smw_propertylackstype', $typestring );
 		}
 
 		return array( $typestring, $proplink );
@@ -242,16 +242,20 @@ class PropertiesQueryPage extends QueryPage {
 	 */
 	private function getPredefinedPropertyInfo( DIProperty $property ) {
 
-		$dv = DataValueFactory::getInstance()->newDataValueByItem( $property, null );
-		$dv->setCaption( $property->getLabel() );
+		$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $property, null );
 
-		$dv->setLinkAttributes( array(
+		$dataValue->setLinkAttributes( array(
 			'title' => 'ID: ' . ( isset( $property->id ) ? $property->id : 'N/A' ) . ' (' . $property->getKey() . ')'
 		) );
 
+		$label = $dataValue->getFormattedLabel(
+			DataValueFormatter::HTML_SHORT,
+			$this->getLinker()
+		);
+
 		return array(
 			SMWTypesValue::newFromTypeId( $property->findPropertyTypeID() )->getLongHTMLText( $this->getLinker() ),
-			$dv->getShortHtmlText( $this->getLinker() )
+			$label
 		);
 	}
 

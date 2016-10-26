@@ -284,7 +284,7 @@ class PropertyListByApiRequest {
 
 	private function matchPropertiesToPreferredLabelBy( $label ) {
 
-		$propertyLabelFinder = ApplicationFactory::getInstance()->newPropertyLabelFinder();
+		$propertyLabelFinder = ApplicationFactory::getInstance()->getPropertyLabelFinder();
 
 		// Use the proximity search on a text field
 		$label = '~*' . $label . '*';

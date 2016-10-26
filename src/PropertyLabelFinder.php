@@ -134,16 +134,11 @@ class PropertyLabelFinder {
 
 		// Lookup is cached in PropertySpecificationLookup
 		$propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
-		$propertySpecificationLookup->setLanguageCode( $languageCode );
 
-		$preferredPropertyLabel = $propertySpecificationLookup->getPreferredPropertyLabelBy( $id );
-
-		// In case someone tried a preferred label on a predefined property like
-		// _MDAT => '[[Has preferred property label::Foo@en]]' but ensure to find
-		// a "standard" via extraneousLanguage
-		if ( $id{0} === '_' && $preferredPropertyLabel === '' ) {
-			$preferredPropertyLabel = $this->findPropertyLabelByLanguageCode( $id, $languageCode );
-		}
+		$preferredPropertyLabel = $propertySpecificationLookup->getPreferredPropertyLabelBy(
+			$id,
+			$languageCode
+		);
 
 		return $preferredPropertyLabel;
 	}

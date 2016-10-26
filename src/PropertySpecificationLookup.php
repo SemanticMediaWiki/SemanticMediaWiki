@@ -76,12 +76,14 @@ class PropertySpecificationLookup {
 	 * @since 2.5
 	 *
 	 * @param string $id
+	 * @param string $languageCode
 	 *
 	 * @return string
 	 */
-	public function getPreferredPropertyLabelBy( $id ) {
+	public function getPreferredPropertyLabelBy( $id, $languageCode = '' ) {
 
-		$key = 'ppl:' . $id;
+		$languageCode = $languageCode === '' ? $this->languageCode : $languageCode;
+		$key = 'ppl:' . $languageCode  . ':'. $id;
 
 		// Guard against high frequency lookup
 		if ( ( $preferredPropertyLabel = $this->intermediaryMemoryCache->fetch( $key ) ) !== false ) {
@@ -89,7 +91,8 @@ class PropertySpecificationLookup {
 		}
 
 		$preferredPropertyLabel = $this->findPreferredPropertyLabel(
-			new DIProperty( str_replace( ' ', '_', $id ) )
+			new DIProperty( str_replace( ' ', '_', $id ) ),
+			$languageCode
 		);
 
 		$this->intermediaryMemoryCache->save( $key, $preferredPropertyLabel );
@@ -308,13 +311,15 @@ class PropertySpecificationLookup {
 	 *
 	 * @param DIProperty $property
 	 * @param mixed|null $linker
+	 * @param string $languageCode
 	 *
 	 * @return string
 	 */
-	public function getPropertyDescriptionBy( DIProperty $property, $linker = null ) {
+	public function getPropertyDescriptionBy( DIProperty $property, $linker = null, $languageCode = '' ) {
 
 		// Take the linker into account (Special vs. in page rendering etc.)
-		$key = '--pdesc:' . $this->languageCode . ':' . ( $linker === null ? '0' : '1' );
+		$languageCode = $languageCode === '' ? $this->languageCode : $languageCode;
+		$key = '--pdesc:' . $languageCode . ':' . ( $linker === null ? '0' : '1' );
 
 		$blobStore = $this->cachedPropertyValuesPrefetcher->getBlobStore();
 
@@ -328,13 +333,14 @@ class PropertySpecificationLookup {
 
 		$localPropertyDescription = $this->tryToFindLocalPropertyDescription(
 			$property,
-			$linker
+			$linker,
+			$languageCode
 		);
 
 		// If a local property description wasn't available for a predefined property
 		// the try to find a system translation
 		if ( trim( $localPropertyDescription ) === '' && !$property->isUserDefined() ) {
-			$localPropertyDescription = $this->getPredefinedPropertyDescription( $property, $linker );
+			$localPropertyDescription = $this->getPredefinedPropertyDescription( $property, $linker, $languageCode );
 		}
 
 		$container->set( $key, $localPropertyDescription );
@@ -346,7 +352,7 @@ class PropertySpecificationLookup {
 		return $localPropertyDescription;
 	}
 
-	private function getPredefinedPropertyDescription( $property, $linker ) {
+	private function getPredefinedPropertyDescription( $property, $linker, $languageCode ) {
 
 		$description = '';
 		$key = $property->getKey();
@@ -359,16 +365,22 @@ class PropertySpecificationLookup {
 			return $description;
 		}
 
+		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
+			$property
+		);
+
+		$label = $dataValue->getFormattedLabel();
+
 		$message = Message::get(
-			array( $msgKey, $property->getLabel() ),
+			array( $msgKey, $label ),
 			$linker === null ? Message::ESCAPED : Message::PARSE,
-			$this->languageCode
+			$languageCode
 		);
 
 		return $message;
 	}
 
-	private function tryToFindLocalPropertyDescription( $property, $linker ) {
+	private function tryToFindLocalPropertyDescription( $property, $linker, $languageCode ) {
 
 		$text = '';
 		$descriptionProperty = new DIProperty( '_PDESC' );
@@ -378,14 +390,14 @@ class PropertySpecificationLookup {
 			$descriptionProperty
 		);
 
-		if ( ( $dataValue = $this->findTextValueByLanguage( $dataItems, $descriptionProperty ) ) !== null ) {
+		if ( ( $dataValue = $this->findTextValueByLanguage( $dataItems, $descriptionProperty, $languageCode ) ) !== null ) {
 			$text = $dataValue->getShortWikiText( $linker );
 		}
 
 		return $text;
 	}
 
-	private function findPreferredPropertyLabel( $property ) {
+	private function findPreferredPropertyLabel( $property, $languageCode ) {
 
 		$text = '';
 		$preferredProperty = new DIProperty( '_PPLB' );
@@ -395,14 +407,14 @@ class PropertySpecificationLookup {
 			$preferredProperty
 		);
 
-		if ( ( $dataValue = $this->findTextValueByLanguage( $dataItems, $preferredProperty ) ) !== null ) {
+		if ( ( $dataValue = $this->findTextValueByLanguage( $dataItems, $preferredProperty, $languageCode ) ) !== null ) {
 			$text = $dataValue->getShortWikiText();
 		}
 
 		return $text;
 	}
 
-	private function findTextValueByLanguage( $dataItems, $property ) {
+	private function findTextValueByLanguage( $dataItems, $property, $languageCode ) {
 
 		if ( $dataItems === null || $dataItems === array() ) {
 			return null;
@@ -417,7 +429,7 @@ class PropertySpecificationLookup {
 
 			// Here a MonolingualTextValue was retunred therefore the method
 			// can be called without validation
-			$dv = $dataValue->getTextValueByLanguage( $this->languageCode );
+			$dv = $dataValue->getTextValueByLanguage( $languageCode );
 
 			if ( $dv !== null ) {
 				return $dv;
