@@ -279,8 +279,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 		$modules = array(
 			'SemanticMediaWikiAlias',
-			'SemanticMediaWikiMagic',
-			'SemanticMediaWikiNamespaces'
+			'SemanticMediaWikiMagic'
 		);
 
 		return $this->buildDataProvider( 'wgExtensionMessagesFiles', $modules, '' );
