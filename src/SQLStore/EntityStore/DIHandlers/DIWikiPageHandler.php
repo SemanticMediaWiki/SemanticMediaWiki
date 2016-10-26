@@ -8,6 +8,7 @@ use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exceptions\DataItemHandlerException;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\SQLStore\TableBuilder\FieldType;
 
 /**
  * DataItemHandler for dataitems of type DIWikiPage.
@@ -33,7 +34,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableFields() {
-		return array( 'o_id' => 'p' );
+		return array( 'o_id' => FieldType::FIELD_ID );
 	}
 
 	/**
@@ -42,7 +43,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getFetchFields() {
-		return array( 'o_id' => 'p' );
+		return array( 'o_id' => FieldType::FIELD_ID );
 	}
 
 	/**

@@ -15,9 +15,9 @@ class SQLiteTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getStandardFieldType( $key ) {
+	public function getStandardFieldType( $fieldType ) {
 
-		$standardFieldTypes = array(
+		$fieldTypes = array(
 			 // like page_id in MW page table
 			'id'         => 'INTEGER',
 			'id primary' => 'INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT',
@@ -26,18 +26,20 @@ class SQLiteTableBuilder extends TableBuilder {
 			 // like page_title in MW page table
 			'title'      => 'VARBINARY(255)',
 			 // like iw_prefix in MW interwiki table
+			'interwiki'  => 'TEXT',
 			'iw'         => 'TEXT',
 			 // larger blobs of character data, usually not subject to SELECT conditions
 			'blob'       => 'MEDIUMBLOB',
+			'text'       => 'TEXT',
 			'boolean'    => 'TINYINT(1)',
 			'double'     => 'DOUBLE',
 			'integer'    => 'INT(8)',
-			'sort'       => 'VARCHAR(255) NOT NULL COLLATE NOCASE',
+			'char nocase'      => 'VARCHAR(255) NOT NULL COLLATE NOCASE',
 			'usage count'      =>'INT(8)',
-			'integer unsigned' => 'INTEGER',
+			'integer unsigned' => 'INTEGER'
 		);
 
-		return isset( $standardFieldTypes[$key] ) ? $standardFieldTypes[$key] : false;
+		return FieldType::mapType( $fieldType, $fieldTypes );
 	}
 
 	/** Create */
@@ -72,7 +74,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		$fields = $tableOptions['fields'];
 
 		foreach ( $fields as $fieldName => $fieldType ) {
-			$fieldSql[] = "$fieldName  $fieldType";
+			$fieldSql[] = "$fieldName " . $this->getStandardFieldType( $fieldType );
 		}
 
 		if ( $mode === '' ) {
@@ -143,6 +145,8 @@ class SQLiteTableBuilder extends TableBuilder {
 	}
 
 	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $tableOptions ) {
+
+		$fieldType = $this->getStandardFieldType( $fieldType );
 
 		if ( !array_key_exists( $fieldName, $currentFields ) ) {
 			$this->doCreateField( $tableName, $fieldName, $position, $fieldType );

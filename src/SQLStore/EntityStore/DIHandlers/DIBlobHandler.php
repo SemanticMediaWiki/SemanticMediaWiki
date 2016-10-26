@@ -7,6 +7,7 @@ use SMWDataItem as DataItem;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exceptions\DataItemHandlerException;
 use SMWDIBlob as DIBlob;
+use SMW\SQLStore\TableBuilder\FieldType;
 
 /**
  * This class implements Store access to blob (string) data items.
@@ -44,7 +45,10 @@ class DIBlobHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableFields() {
-		return array( 'o_blob' => 'l', 'o_hash' => 't' );
+		return array(
+			'o_blob' => FieldType::TYPE_BLOB,
+			'o_hash' => FieldType::FIELD_TITLE
+		);
 	}
 
 	/**
@@ -53,7 +57,10 @@ class DIBlobHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getFetchFields() {
-		return array( 'o_blob' => 'l', 'o_hash' => 't' );
+		return array(
+			'o_blob' => FieldType::TYPE_BLOB,
+			'o_hash' => FieldType::FIELD_TITLE
+		);
 	}
 
 	/**

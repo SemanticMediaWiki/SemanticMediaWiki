@@ -383,7 +383,7 @@ class SQLStoreFactory {
 			$messageReporter
 		);
 
-		$tableIntegrityChecker = new TableIntegrityChecker(
+		$tableIntegrityExaminer = new TableIntegrityExaminer(
 			$this->store
 		);
 
@@ -394,7 +394,7 @@ class SQLStoreFactory {
 		$tableSchemaManager = new TableSchemaManager(
 			$this->store,
 			$tableBuilder,
-			$tableIntegrityChecker
+			$tableIntegrityExaminer
 		);
 
 		return new Installer( $tableSchemaManager );

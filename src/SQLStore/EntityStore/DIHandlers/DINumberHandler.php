@@ -7,6 +7,7 @@ use SMWDataItem as DataItem;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exceptions\DataItemHandlerException;
 use SMWDINumber as DINumber;
+use SMW\SQLStore\TableBuilder\FieldType;
 
 /**
  * This class implements Store access to Number data items.
@@ -24,7 +25,10 @@ class DINumberHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableFields() {
-		return array( 'o_serialized' => 't', 'o_sortkey' => 'f' );
+		return array(
+			'o_serialized' => FieldType::FIELD_TITLE,
+			'o_sortkey' => FieldType::TYPE_DOUBLE
+		);
 	}
 
 	/**
@@ -33,7 +37,9 @@ class DINumberHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getFetchFields() {
-		return array( 'o_serialized' => 't' );
+		return array(
+			'o_serialized' => FieldType::FIELD_TITLE
+		);
 	}
 
 	/**

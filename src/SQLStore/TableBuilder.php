@@ -72,11 +72,11 @@ interface TableBuilder extends MessageReporterAware {
 	 *
 	 * @since 2.5
 	 *
-	 * @param string $input
+	 * @param string|FieldType $fieldType
 	 *
 	 * @return string|false SQL type declaration
 	 */
-	public function getStandardFieldType( $key );
+	public function getStandardFieldType( $fieldType );
 
 	/**
 	 * Allows to check and validate the build on specific events

@@ -6,6 +6,7 @@ use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMWDIBoolean as DIBoolean;
+use SMW\SQLStore\TableBuilder\FieldType;
 
 /**
  * This class implements Store access to Boolean data items.
@@ -23,7 +24,9 @@ class DIBooleanHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableFields() {
-		return array( 'o_value' => 'b' );
+		return array(
+			'o_value' => FieldType::TYPE_BOOL
+		);
 	}
 
 	/**
@@ -32,7 +35,9 @@ class DIBooleanHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getFetchFields() {
-		return array( 'o_value' => 'b' );
+		return array(
+			'o_value' => FieldType::TYPE_BOOL
+		);
 	}
 
 	/**

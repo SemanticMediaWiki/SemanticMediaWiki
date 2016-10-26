@@ -8,6 +8,7 @@ use SMW\SemanticData;
 use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\SQLStore\PropertyTableRowDiffer;
 use SMW\SQLStore\EntityStore\EntitySubobjectListIterator;
+use SMW\SQLStore\TableBuilder\FieldType;
 
 /**
  * Class Handling all the write and update methods for SMWSQLStore3.
@@ -812,13 +813,13 @@ class SMWSQLStore3Writers {
 						$db->freeResult( $res );
 					}
 
-					foreach ( $proptable->getFields( $this->store ) as $fieldname => $type ) {
-						if ( $type == 'p' ) {
+					foreach ( $proptable->getFields( $this->store ) as $fieldName => $fieldType ) {
+						if ( $fieldType === FieldType::FIELD_ID ) {
 
 							$res = $db->select(
 								$from,
 								$select,
-								array( $fieldname => $old_tid ),
+								array( $fieldName => $old_tid ),
 								__METHOD__
 							);
 

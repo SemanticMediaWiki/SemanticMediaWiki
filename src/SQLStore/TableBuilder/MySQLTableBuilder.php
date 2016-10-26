@@ -15,30 +15,32 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getStandardFieldType( $key ) {
+	public function getStandardFieldType( $fieldType ) {
 
 		$fieldTypes = array(
 			 // like page_id in MW page table
-			'id' => 'INT(8) UNSIGNED',
+			'id'         => 'INT(8) UNSIGNED',
 			 // like page_id in MW page table
-			'id primary' => 'INT(8) UNSIGNED' . ' NOT NULL KEY AUTO_INCREMENT',
+			'id primary' => 'INT(8) UNSIGNED NOT NULL KEY AUTO_INCREMENT',
 			 // like page_namespace in MW page table
-			'namespace' => 'INT(11)',
+			'namespace'  => 'INT(11)',
 			 // like page_title in MW page table
-			'title' => 'VARBINARY(255)',
+			'title'      => 'VARBINARY(255)',
 			 // like iw_prefix in MW interwiki table
-			'iw' => 'VARBINARY(32)',
+			'interwiki'  => 'VARBINARY(32)',
+			'iw'         => 'VARBINARY(32)',
 			 // larger blobs of character data, usually not subject to SELECT conditions
-			'blob' => 'MEDIUMBLOB',
-			'boolean'=> 'TINYINT(1)',
-			'double' => 'DOUBLE',
-			'integer' => 'INT(8)',
-			'usage count' => 'INT(8) UNSIGNED',
-			'integer unsigned' => 'INT(8) UNSIGNED',
-			'sort' => 'VARCHAR(255) CHARSET utf8 COLLATE utf8_general_ci'
+			'blob'       => 'MEDIUMBLOB',
+			'text'       => 'TEXT',
+			'boolean'    => 'TINYINT(1)',
+			'double'     => 'DOUBLE',
+			'integer'    => 'INT(8)',
+			'char nocase'      => 'VARCHAR(255) CHARSET utf8 COLLATE utf8_general_ci',
+			'usage count'      => 'INT(8) UNSIGNED',
+			'integer unsigned' => 'INT(8) UNSIGNED'
 		);
 
-		return isset( $fieldTypes[$key] ) ? $fieldTypes[$key] : false;
+		return FieldType::mapType( $fieldType, $fieldTypes );
 	}
 
 	/** Create */
@@ -58,7 +60,7 @@ class MySQLTableBuilder extends TableBuilder {
 		$fields = $tableOptions['fields'];
 
 		foreach ( $fields as $fieldName => $fieldType ) {
-			$fieldSql[] = "$fieldName  $fieldType";
+			$fieldSql[] = "$fieldName " . $this->getStandardFieldType( $fieldType );
 		}
 
 		$sql .= implode( ',', $fieldSql ) . ') ';
@@ -152,6 +154,8 @@ class MySQLTableBuilder extends TableBuilder {
 	}
 
 	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $tableOptions ) {
+
+		$fieldType = $this->getStandardFieldType( $fieldType );
 
 		if ( !array_key_exists( $fieldName, $currentFields ) ) {
 			$this->doCreateField( $tableName, $fieldName, $position, $fieldType );

@@ -8,6 +8,7 @@ use SMW\SemanticData;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\SQLStoreFactory;
 use SMW\SQLStore\TableDefinition;
+use SMW\SQLStore\TableBuilder\FieldType;
 
 /**
  * SQL-based implementation of SMW's storage abstraction layer.
@@ -558,9 +559,9 @@ class SMWSQLStore3 extends SMWStore {
 					}
 				}
 
-				foreach ( $proptable->getFields( $this ) as $fieldname => $type ) {
-					if ( $type == 'p' ) {
-						$db->update( $proptable->getName(), array( $fieldname => $newid ), array( $fieldname => $oldid ), __METHOD__ );
+				foreach ( $proptable->getFields( $this ) as $fieldName => $fieldType ) {
+					if ( $fieldType === FieldType::FIELD_ID ) {
+						$db->update( $proptable->getName(), array( $fieldName => $newid ), array( $fieldName => $oldid ), __METHOD__ );
 					}
 				}
 			}

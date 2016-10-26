@@ -7,6 +7,7 @@ use SMWDataItem as DataItem;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exceptions\DataItemHandlerException;
 use SMWDIUri as DIUri;
+use SMW\SQLStore\TableBuilder\FieldType;
 
 /**
  * This class implements Store access to Uri data items.
@@ -24,7 +25,7 @@ class DIUriHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableFields() {
-		return array( 'o_serialized' => 't' );
+		return array( 'o_serialized' => FieldType::FIELD_TITLE );
 	}
 
 	/**
@@ -33,7 +34,7 @@ class DIUriHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getFetchFields() {
-		return array( 'o_serialized' => 't' );
+		return array( 'o_serialized' => FieldType::FIELD_TITLE );
 	}
 
 	/**

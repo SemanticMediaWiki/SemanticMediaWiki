@@ -5,6 +5,7 @@ use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\SQLStore\TableDefinition;
 use SMW\SQLStore\EntityStore\Exceptions\DataItemHandlerException;
+use SMW\SQLStore\TableBuilder\FieldType;
 
 /**
  * Class to provide all basic read methods for SMWSQLStore3.
@@ -332,8 +333,8 @@ class SMWSQLStore3Readers {
 		$valueField = $diHandler->getIndexField();
 		$labelField = $diHandler->getLabelField();
 		$fields = $diHandler->getFetchFields();
-		foreach ( $fields as $fieldname => $typeid ) { // select object column(s)
-			if ( $typeid == 'p' ) { // get data from ID table
+		foreach ( $fields as $fieldname => $fieldType ) { // select object column(s)
+			if ( $fieldType === FieldType::FIELD_ID ) { // get data from ID table
 				$from .= ' INNER JOIN ' . $db->tableName( SMWSql3SmwIds::TABLE_NAME ) . " AS o$valuecount ON $fieldname=o$valuecount.smw_id";
 				$select .= ( ( $select !== '' ) ? ',' : '' ) .
 					"$fieldname AS id$valuecount" .
@@ -409,8 +410,10 @@ class SMWSQLStore3Readers {
 			$valueHash = $valuecount > 1 ? md5( $valueHash . implode( '#', $valuekeys ) ) : md5( $valueHash . $valuekeys );
 
 			// Filter out any accidentally retrieved internal things (interwiki starts with ":"):
-			if ( $valuecount < 3 || implode( '', $fields ) != 'p' ||
-			     $valuekeys[2] === '' || $valuekeys[2]{0} != ':' ) {
+			if ( $valuecount < 3 ||
+				implode( '', $fields ) !== FieldType::FIELD_ID ||
+				$valuekeys[2] === '' ||
+				$valuekeys[2]{0} != ':' ) {
 
 				if ( isset( $result[$valueHash] ) ) {
 					wfDebugLog( 'smw', __METHOD__ . " Duplicate entry for {$propertykey} with " . ( is_array( $valuekeys ) ? implode( ',', $valuekeys ) : $valuekeys ) . "\n" );

@@ -33,13 +33,13 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$tableIntegrityChecker = $this->getMockBuilder( '\SMW\SQLStore\TableIntegrityChecker' )
+		$tableIntegrityExaminer = $this->getMockBuilder( '\SMW\SQLStore\TableIntegrityExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\TableSchemaManager',
-			new TableSchemaManager( $store, $tableBuilder, $tableIntegrityChecker )
+			new TableSchemaManager( $store, $tableBuilder, $tableIntegrityExaminer )
 		);
 	}
 
@@ -73,14 +73,14 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$tableIntegrityChecker = $this->getMockBuilder( '\SMW\SQLStore\TableIntegrityChecker' )
+		$tableIntegrityExaminer = $this->getMockBuilder( '\SMW\SQLStore\TableIntegrityExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new TableSchemaManager(
 			$store,
 			$tableBuilder,
-			$tableIntegrityChecker
+			$tableIntegrityExaminer
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
@@ -117,14 +117,14 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$tableIntegrityChecker = $this->getMockBuilder( '\SMW\SQLStore\TableIntegrityChecker' )
+		$tableIntegrityExaminer = $this->getMockBuilder( '\SMW\SQLStore\TableIntegrityExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new TableSchemaManager(
 			$store,
 			$tableBuilder,
-			$tableIntegrityChecker
+			$tableIntegrityExaminer
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );

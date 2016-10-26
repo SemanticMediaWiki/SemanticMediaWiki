@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\SQLStore\TableIntegrityChecker;
+use SMW\SQLStore\TableIntegrityExaminer;
 use Onoi\MessageReporter\MessageReporterFactory;
 
 /**
- * @covers \SMW\SQLStore\TableIntegrityChecker
+ * @covers \SMW\SQLStore\TableIntegrityExaminer
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use Onoi\MessageReporter\MessageReporterFactory;
  *
  * @author mwjames
  */
-class TableIntegrityCheckerTest extends \PHPUnit_Framework_TestCase {
+class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 
 	private $spyMessageReporter;
 
@@ -30,8 +30,8 @@ class TableIntegrityCheckerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableIntegrityChecker',
-			new TableIntegrityChecker( $store )
+			'\SMW\SQLStore\TableIntegrityExaminer',
+			new TableIntegrityExaminer( $store )
 		);
 	}
 
@@ -76,7 +76,7 @@ class TableIntegrityCheckerTest extends \PHPUnit_Framework_TestCase {
 		$tableBuilder->expects( $this->once() )
 			->method( 'checkOn' );
 
-		$instance = new TableIntegrityChecker(
+		$instance = new TableIntegrityExaminer(
 			$store
 		);
 
