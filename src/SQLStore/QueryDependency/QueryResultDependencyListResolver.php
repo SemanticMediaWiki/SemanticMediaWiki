@@ -172,7 +172,11 @@ class QueryResultDependencyListResolver {
 
 	private function doResolveDependenciesFromDescription( &$subjects, $description ) {
 
-		if ( $description instanceof ValueDescription && $description->getDataItem() instanceof DIWikiPage ) {
+		// Ignore entities that use a comparator other than SMW_CMP_EQ
+		// [[Has page::~Foo*]] or similar is going to be ignored
+		if ( $description instanceof ValueDescription &&
+			$description->getDataItem() instanceof DIWikiPage &&
+			$description->getComparator() === SMW_CMP_EQ ) {
 			$subjects[] = $description->getDataItem();
 		}
 

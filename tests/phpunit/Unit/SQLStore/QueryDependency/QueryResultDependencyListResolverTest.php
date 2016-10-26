@@ -573,6 +573,41 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			)
 		);
 
+		#9 SMW_CMP_EQ comparator
+		$description = new SomeProperty(
+			new DIProperty( 'Foobar' ),
+			new ValueDescription( DIWikiPage::newFromText( 'EQ_Comparator' ), null, SMW_CMP_EQ )
+		);
+
+		$query = new Query( $description );
+		$query->setContextPage( $subject );
+
+		$provider[] = array(
+			$query,
+			array(
+				DIWikiPage::newFromText( 'Foo' ),
+				DIWikiPage::newFromText( 'EQ_Comparator' ),
+				'Foobar#102#' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
+			)
+		);
+
+		#10 Ignore entity with SMW_CMP_EQ comparator
+		$description = new SomeProperty(
+			new DIProperty( 'Foobar' ),
+			new ValueDescription( DIWikiPage::newFromText( 'LIKE_Comparator' ), null, SMW_CMP_LIKE )
+		);
+
+		$query = new Query( $description );
+		$query->setContextPage( $subject );
+
+		$provider[] = array(
+			$query,
+			array(
+				DIWikiPage::newFromText( 'Foo' ),
+				'Foobar#102#' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
+			)
+		);
+
 		return $provider;
 	}
 
