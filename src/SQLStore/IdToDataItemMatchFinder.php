@@ -117,37 +117,47 @@ class IdToDataItemMatchFinder {
 
 		$poolCache = $this->inMemoryPoolCache->getPoolCacheFor( self::POOLCACHE_ID );
 
-		if ( !$poolCache->contains( $id ) ) {
-
-			$row = $this->connection->selectRow(
-				\SMWSQLStore3::ID_TABLE,
-				array(
-					'smw_title',
-					'smw_namespace',
-					'smw_iw',
-					'smw_subobject'
-				),
-				array( 'smw_id' => $id ),
-				__METHOD__
-			);
-
-			if ( $row === false ) {
-				return null;
-			}
-
-			$hash = HashBuilder::createHashIdFromSegments(
-				$row->smw_title,
-				$row->smw_namespace,
-				$row->smw_iw,
-				$row->smw_subobject
-			);
-
-			$this->saveToCache( $id, $hash );
+		if ( !$poolCache->contains( $id ) && !$this->canMatchById( $id ) ) {
+			return null;
 		}
 
-		return HashBuilder::newDiWikiPageFromHash(
+		$wikiPage = HashBuilder::newDiWikiPageFromHash(
 			$poolCache->fetch( $id )
 		);
+
+		$wikiPage->setId( $id );
+
+		return $wikiPage;
+	}
+
+	private function canMatchById( $id ) {
+
+		$row = $this->connection->selectRow(
+			\SMWSQLStore3::ID_TABLE,
+			array(
+				'smw_title',
+				'smw_namespace',
+				'smw_iw',
+				'smw_subobject'
+			),
+			array( 'smw_id' => $id ),
+			__METHOD__
+		);
+
+		if ( $row === false ) {
+			return false;
+		}
+
+		$hash = HashBuilder::createHashIdFromSegments(
+			$row->smw_title,
+			$row->smw_namespace,
+			$row->smw_iw,
+			$row->smw_subobject
+		);
+
+		$this->saveToCache( $id, $hash );
+
+		return true;
 	}
 
 }

@@ -56,6 +56,11 @@ class DIWikiPage extends SMWDataItem {
 	private $pageLanguage = null;
 
 	/**
+	 * @var integer
+	 */
+	private $id = 0;
+
+	/**
 	 * Contructor. We do not bother with too much detailed validation here,
 	 * regarding the known namespaces, canonicity of the dbkey (namespace
 	 * exrtacted?), validity of interwiki prefix (known?), and general use
@@ -168,6 +173,24 @@ class DIWikiPage extends SMWDataItem {
 		}
 
 		return $this->pageLanguage;
+	}
+
+	/**
+	 * @since  2.5
+	 *
+	 * @param integer $id
+	 */
+	public function setId( $id ) {
+		$this->id = (int)$id;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getId() {
+		return $this->id;
 	}
 
 	/**

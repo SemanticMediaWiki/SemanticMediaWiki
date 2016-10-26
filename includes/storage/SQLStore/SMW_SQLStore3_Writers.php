@@ -7,6 +7,7 @@ use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\SemanticData;
 use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\SQLStore\PropertyTableRowDiffer;
+use SMW\SQLStore\EntityStore\EntitySubobjectListIterator;
 
 /**
  * Class Handling all the write and update methods for SMWSQLStore3.
@@ -38,6 +39,11 @@ class SMWSQLStore3Writers {
 	private $propertyTableRowDiffer = null;
 
 	/**
+	 * @var EntitySubobjectListIterator
+	 */
+	private $entitySubobjectListIterator;
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 1.8
@@ -46,6 +52,7 @@ class SMWSQLStore3Writers {
 	public function __construct( SMWSQLStore3 $parentStore ) {
 		$this->store = $parentStore;
 		$this->propertyTableRowDiffer = new PropertyTableRowDiffer( $this->store );
+		$this->entitySubobjectListIterator = new EntitySubobjectListIterator( $this->store, ApplicationFactory::getInstance()->getIteratorFactory() );
 	}
 
 	/**
@@ -72,7 +79,7 @@ class SMWSQLStore3Writers {
 		$subject = DIWikiPage::newFromTitle( $title );
 		$emptySemanticData = new SemanticData( $subject );
 
-		$subobjects = $this->getSubobjects(
+		$subobjects = $this->entitySubobjectListIterator->newMappingIterator(
 			$emptySemanticData->getSubject()
 		);
 
@@ -114,9 +121,9 @@ class SMWSQLStore3Writers {
 			SMW_SQL3_SMWDELETEIW
 		);
 
-		foreach( $subobjects as $smw_id => $subobject ) {
+		foreach( $subobjects as $subobject ) {
 			$this->store->getObjectIds()->updateInterwikiField(
-				$smw_id,
+				$subobject->getId(),
 				$subobject,
 				SMW_SQL3_SMWDELETEIW
 			);
@@ -148,15 +155,17 @@ class SMWSQLStore3Writers {
 			$this->doFlatDataUpdate( $subobjectData );
 		}
 
-		// Delete data about other subobjects no longer used
-		$subobjects = $this->getSubobjects( $subject );
+		$subobjects = $this->entitySubobjectListIterator->newMappingIterator(
+			$subject
+		);
 
-		foreach( $subobjects as $smw_id => $subobject ) {
+		// Mark subobjects without reference to be deleted
+		foreach( $subobjects as $subobject ) {
 			if( !$semanticData->hasSubSemanticData( $subobject->getSubobjectName() ) ) {
 				$this->doFlatDataUpdate( new SMWSemanticData( $subobject ) );
 
 				$this->store->getObjectIds()->updateInterwikiField(
-					$smw_id,
+					$subobject->getId(),
 					$subobject,
 					SMW_SQL3_SMWDELETEIW
 				);
@@ -268,46 +277,6 @@ class SMWSQLStore3Writers {
 		// This can only be done here, since the $deleteRows/$insertRows
 		// alone do not have enough information to compute this later (sortkey
 		// and redirects may also change).
-	}
-
-	/**
-	 * Method to get all subobjects for a given subject.
-	 *
-	 * @since 1.8
-	 * @param SMWDIWikiPage $subject
-	 *
-	 * @return array of smw_id => SMWDIWikiPage
-	 */
-	protected function getSubobjects( SMWDIWikiPage $subject ) {
-
-		$db = $this->store->getConnection();
-
-		$res = $db->select(
-			$db->tablename( SMWSql3SmwIds::TABLE_NAME ),
-			'smw_id,smw_subobject,smw_sortkey',
-			'smw_title = ' . $db->addQuotes( $subject->getDBkey() ) . ' AND ' .
-			'smw_namespace = ' . $db->addQuotes( $subject->getNamespace() ) . ' AND ' .
-			'smw_iw = ' . $db->addQuotes( $subject->getInterwiki() ) . ' AND ' .
-			'smw_subobject != ' . $db->addQuotes( '' ), // The "!=" is why we cannot use MW array syntax here
-			__METHOD__
-		);
-
-		$diHandler = $this->store->getDataItemHandlerForDIType( SMWDataItem::TYPE_WIKIPAGE );
-
-		$subobjects = array();
-		foreach ( $res as $row ) {
-			$subobjects[$row->smw_id] = $diHandler->dataItemFromDBKeys( array(
-				$subject->getDBkey(),
-				$subject->getNamespace(),
-				$subject->getInterwiki(),
-				$row->smw_sortkey,
-				$row->smw_subobject
-			) );
-		}
-
-		$db->freeResult( $res );
-
-		return $subobjects;
 	}
 
 	/**
