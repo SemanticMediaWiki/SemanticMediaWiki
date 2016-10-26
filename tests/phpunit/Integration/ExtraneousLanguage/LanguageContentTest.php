@@ -54,6 +54,23 @@ class LanguageContent extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider canonicalPropertyLabelsProvider
+	 */
+	public function testGetCanonicalPropertyLabels( $languageCode, $aliasMatch, $expected ) {
+
+		$extraneousLanguage = ExtraneousLanguage::getInstance()->fetchByLanguageCode(
+			$languageCode
+		);
+
+		$propertyLabels = $extraneousLanguage->getCanonicalPropertyLabels();
+
+		$this->assertEquals(
+			$expected,
+			$propertyLabels[$aliasMatch]
+		);
+	}
+
 	public function canonicalPropertyAliasesProvider() {
 
 		$provider[] = array(
@@ -61,6 +78,17 @@ class LanguageContent extends \PHPUnit_Framework_TestCase {
 			'Query size',
 			'Taille de la requête',
 			'_ASKSI'
+		);
+
+		return $provider;
+	}
+
+	public function canonicalPropertyLabelsProvider() {
+
+		$provider[] = array(
+			'fr',
+			'Boolean',
+			'_boo'
 		);
 
 		return $provider;
