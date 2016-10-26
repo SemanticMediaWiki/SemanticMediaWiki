@@ -409,7 +409,7 @@ class DataRebuilder {
 		foreach ( $matches as $id ) {
 			$this->rebuildCount++;
 			$this->doPrintDotProgressIndicator( false, round( $this->rebuildCount / $matchesCount * 100 ) . ' %' );
-			$byIdDataRebuildDispatcher->dispatchRebuildFor( $id );
+			$this->doExecuteFor( $byIdDataRebuildDispatcher, $id );
 		}
 
 		$this->rebuildCount = 0;
