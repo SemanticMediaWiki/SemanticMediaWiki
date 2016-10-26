@@ -114,8 +114,6 @@ class SetupStore extends \Maintenance {
 			$this->error( "\nError: There is no backend class \"$storeClass\". Aborting.", 1 );
 		}
 
-		$this->output( "\nSelected storage \"$smwgDefaultStore\" for update!\n\n" );
-
 		return StoreFactory::getStore();
 	}
 

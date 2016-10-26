@@ -3,6 +3,8 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\SQLStore\Installer;
+use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\Installer
@@ -14,6 +16,15 @@ use SMW\SQLStore\Installer;
  * @author mwjames
  */
 class InstallerTest extends \PHPUnit_Framework_TestCase {
+
+	private $spyMessageReporter;
+	private $testEnvironment;
+
+	protected function setUp() {
+		parent::setUp();
+		$this->testEnvironment = new TestEnvironment();
+		$this->spyMessageReporter = MessageReporterFactory::getInstance()->newSpyMessageReporter();
+	}
 
 	public function testCanConstruct() {
 
@@ -34,6 +45,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new Installer( $tableSchemaManager );
+		$instance->setMessageReporter( $this->spyMessageReporter );
 
 		$this->assertTrue(
 			$instance->install()
@@ -47,6 +59,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new Installer( $tableSchemaManager );
+		$instance->setMessageReporter( $this->spyMessageReporter );
 
 		$this->assertTrue(
 			$instance->install( false )
@@ -60,9 +73,28 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new Installer( $tableSchemaManager );
+		$instance->setMessageReporter( $this->spyMessageReporter );
 
 		$this->assertTrue(
 			$instance->uninstall()
+		);
+	}
+
+	public function tesReportMessage() {
+
+		$tableSchemaManager = $this->getMockBuilder( '\SMW\SQLStore\TableSchemaManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new Installer( $tableSchemaManager );
+
+		$callback = function() use( $instance ) {
+			$instance->reportMessage( 'Foo' );
+		};
+
+		$this->assertEquals(
+			'Foo',
+			$this->testEnvironment->executeAndFetchOutputBufferContents( $callback )
 		);
 	}
 
