@@ -269,7 +269,7 @@ EOT;
 		}
 		
 		if ( version_compare( $GLOBALS['wgVersion'], '1.28c', '>' ) ) {
-			$tableName = $this->connection->remappedTableName( $tableName );
+			$tableName = $this->connection->tableName( $tableName );
 		} else {
 			$tableName = $this->connection->tableName( $tableName, 'raw' );
 		}
@@ -331,12 +331,7 @@ EOT;
 		// Error: 2BP01 ERROR:  cannot drop table smw_object_ids because other objects depend on it
 		// DETAIL:  default for table sunittest_smw_object_ids column smw_id depends on sequence smw_object_ids_smw_id_seq
 		// HINT:  Use DROP ... CASCADE to drop the dependent objects too.
-		if ( version_compare( $GLOBALS['wgVersion'], '1.28c', '>' ) ) {
-			$tableNames = $this->connection->remappedTableName( $tableName );
-		} else {
-			$tableNames = $this->connection->tableName( $tableName, 'raw' );
-		}
-		$this->connection->query( 'DROP TABLE IF EXISTS ' . $tableNames . ' CASCADE', __METHOD__ );
+		$this->connection->query( 'DROP TABLE IF EXISTS ' . $this->connection->tableName( $tableName ) . ' CASCADE', __METHOD__ );
 	}
 
 	/**
