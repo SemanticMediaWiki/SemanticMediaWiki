@@ -245,7 +245,7 @@ EOT;
 	private function doDropObsoleteIndicies( $tableName, array &$indicies ) {
 
 		if ( version_compare( $GLOBALS['wgVersion'], '1.28c', '>' ) ) {
-			$tableName = $this->connection->remappedTableName( $tableName );
+			$tableName = $this->connection->tableName( $tableName );
 		} else {
 			$tableName = $this->connection->tableName( $tableName, 'raw' );
 		}
