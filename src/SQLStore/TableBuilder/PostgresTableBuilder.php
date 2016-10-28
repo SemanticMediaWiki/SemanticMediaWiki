@@ -244,7 +244,11 @@ EOT;
 
 	private function doDropObsoleteIndicies( $tableName, array &$indicies ) {
 
-		$tableName = $this->connection->tableName( $tableName, 'raw' );
+		if ( version_compare( $GLOBALS['wgVersion'], '1.28c', '>' ) ) {
+			$tableName = $this->connection->remappedTableName( $tableName );
+		} else {
+			$tableName = $this->connection->tableName( $tableName, 'raw' );
+		}
 		$currentIndicies = $this->getIndexInfo( $tableName );
 
 		foreach ( $currentIndicies as $indexName => $indexColumn ) {
