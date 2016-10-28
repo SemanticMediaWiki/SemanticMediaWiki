@@ -269,7 +269,7 @@ EOT;
 		}
 		
 		if ( version_compare( $GLOBALS['wgVersion'], '1.28c', '>' ) ) {
-			$tableName = $this->connection->tableName( $tableName );
+			$tableName = $this->connection->remappedTableName( $tableName );
 		} else {
 			$tableName = $this->connection->tableName( $tableName, 'raw' );
 		}
