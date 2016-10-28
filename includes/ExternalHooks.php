@@ -81,4 +81,24 @@ final class SMWExternalHooks {
 		// @codeCoverageIgnoreEnd
 	}
 
+	/**
+	 * Registers lua library.
+	 * @since 2.5
+	 *
+	 * @param $engine String script engine we're using (eg: lua)
+	 * @param $extraLibraries Array List of external librarys added to lua
+	 *
+	 * @uses \SMW\LuaLibrary::LUA_RESULT_FORMAT
+	 *
+	 * @return bool true
+	 */
+	public static function addLuaLibrary( $engine, &$extraLibraries ) {
+		$extraLibraries['mw.ext.smw'] = '\\SMW\\LuaLibrary';
+
+		# if there already is another result printer like the one we use, don't register it
+		if ( !isset($GLOBALS['smwgResultFormats'][\SMW\LuaLibrary::LUA_RESULT_FORMAT]) ) {
+			$GLOBALS['smwgResultFormats'][\SMW\LuaLibrary::LUA_RESULT_FORMAT] = 'SMW\LuaResultPrinter';
+		}
+		return true;
+	}
 }
