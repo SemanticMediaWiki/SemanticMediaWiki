@@ -454,5 +454,6 @@
 	"smw-sp-types_ref_rec": "This informatory message describes a [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes datatype].\n\nParameter:\n* $1 holds the name of the datatype.",
 	"smw-datavalue-reference-outputformat": "{{notranslate}}",
 	"smw-datavalue-reference-invalid-fields-definition": "This is an error message.",
-	"smw-parser-invalid-json-format": "This is an error message.\n\nParameter:\n* $1 holds the error output."
+	"smw-parser-invalid-json-format": "This is an error message.\n\nParameter:\n* $1 holds the error output.",
+	"smw-luaresultprinter-error": "This is an error/warning message. Parameters:\n* $1 holds the name of the print result wrongly used."
 }

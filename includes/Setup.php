@@ -378,6 +378,7 @@ final class Setup {
 		// Old-style registration
 		$this->globalVars['wgHooks']['AdminLinks'][] = 'SMWExternalHooks::addToAdminLinks';
 		$this->globalVars['wgHooks']['PageSchemasRegisterHandlers'][] = 'SMWExternalHooks::onPageSchemasRegistration';
+		$this->globalVars['wgHooks']['ScribuntoExternalLibraries'][] = 'SMWExternalHooks::addLuaLibrary';
 	}
 
 }
