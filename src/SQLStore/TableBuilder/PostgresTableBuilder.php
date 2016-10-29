@@ -63,8 +63,12 @@ class PostgresTableBuilder extends TableBuilder {
 		foreach ( $fields as $fieldName => $fieldType ) {
 			$fieldSql[] = "$fieldName " . $this->getStandardFieldType( $fieldType );
 		}
-
-		$this->connection->query( 'CREATE TABLE ' . $tableName . ' (' . implode( ',', $fieldSql ) . ') ', __METHOD__ );
+		
+		try {
+			$this->connection->query( 'CREATE TABLE ' . $tableName . ' (' . implode( ',', $fieldSql ) . ') ', __METHOD__ );
+		} catch ( Exception $ex ) {
+			$this->connection->output( "...table $tableName already exists.\n" );
+		}
 	}
 
 	/** Update */
