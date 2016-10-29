@@ -104,12 +104,12 @@ class SMWSQLStore3Readers {
 		// hence no entry in $this->store->m_sdstate[$sid] is made.
 		self::$in_getSemanticData++;
 		$this->initSemanticDataCache( $sid, $subject );
-		
+
 		// Avoid adding a sortkey for an already extended stub
 		if ( !$this->store->m_semdata[$sid]->hasProperty( new DIProperty( '_SKEY' ) ) ) {
 			$this->store->m_semdata[$sid]->addPropertyStubValue( '_SKEY', array( '', $sortKey ) );
 		}
-		
+
 		self::$in_getSemanticData--;
 
 		return $this->store->m_semdata[$sid];

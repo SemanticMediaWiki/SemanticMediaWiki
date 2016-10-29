@@ -157,7 +157,7 @@ class ExtraneousLanguage {
 		);
 
 		foreach ( $namespaces as $key => $value ) {
-			unset( $namespaces[ $key ] );
+			unset( $namespaces[$key] );
 			$namespaces[constant($key)] = $value;
 		}
 

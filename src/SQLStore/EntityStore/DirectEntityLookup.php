@@ -102,6 +102,7 @@ class DirectEntityLookup implements EntityLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function resetCacheBy( DIWikiPage $subject = null ) {}
+	public function resetCacheBy( DIWikiPage $subject = null ) {
+	}
 
 }

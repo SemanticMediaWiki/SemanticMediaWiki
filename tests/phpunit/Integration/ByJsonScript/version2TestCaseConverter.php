@@ -29,7 +29,7 @@ class Version2TestCaseConverter {
 	public function run() {
 
 		// http://php.net/manual/en/function.getopt.php
-		$this->options = getopt( '', array( "file::", "test" ) ) ;
+		$this->options = getopt( '', array( "file::", "test" ) );
 
 		print "\nRunning Version2TestCaseConverter ..." . "\n\n";
 

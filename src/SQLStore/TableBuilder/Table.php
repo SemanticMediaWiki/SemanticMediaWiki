@@ -52,7 +52,7 @@ class Table {
 	public function getConfiguration( $key = null ) {
 
 		if ( isset( $this->configuration[$key] ) ) {
-			return  $this->configuration[$key];
+			return $this->configuration[$key];
 		}
 
 		return $this->configuration;

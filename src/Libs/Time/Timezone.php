@@ -356,21 +356,21 @@ class Timezone {
 	 */
 	public static function getTimezoneLiteralWithModifiedDateTime( DateTime &$dateTime, $identifer = 0 ) {
 
-		if ( ( $timezoneLiteral = Timezone::getTimezoneLiteralById( $identifer ) ) === false ) {
+		if ( ( $timezoneLiteral = self::getTimezoneLiteralById( $identifer ) ) === false ) {
 			return '';
 		}
 
 		$dateTimeZone = null;
 
-		if ( !Timezone::isMilitary( $timezoneLiteral ) && Timezone::getOffsetByAbbreviation( $timezoneLiteral ) != 0 ) {
-			$dateTimeZone = Timezone::newDateTimeZone( $timezoneLiteral );
+		if ( !self::isMilitary( $timezoneLiteral ) && self::getOffsetByAbbreviation( $timezoneLiteral ) != 0 ) {
+			$dateTimeZone = self::newDateTimeZone( $timezoneLiteral );
 		}
 
 		// DI is stored in UTC time therefore find and add the offset
 		if ( !$dateTimeZone instanceof DateTimeZone ) {
-			$dateInterval = Timezone::newDateIntervalWithOffsetBy( $timezoneLiteral );
+			$dateInterval = self::newDateIntervalWithOffsetBy( $timezoneLiteral );
 
-			if ( Timezone::getOffsetByAbbreviation( $timezoneLiteral ) > 0 ) {
+			if ( self::getOffsetByAbbreviation( $timezoneLiteral ) > 0 ) {
 				$dateTime->add( $dateInterval );
 			} else {
 				$dateTime->sub( $dateInterval );

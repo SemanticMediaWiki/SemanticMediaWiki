@@ -119,7 +119,7 @@ class InMemoryPoolCache {
 				$output .= '- ' . $key . "\n";
 
 				foreach ( $value as $k => $v ) {
-					$output .= '  - ' . $k . ': ' . $v . "\n" ;
+					$output .= '  - ' . $k . ': ' . $v . "\n";
 				}
 			}
 		}
@@ -129,7 +129,7 @@ class InMemoryPoolCache {
 			foreach ( $stats as $key => $value ) {
 				$output .= '<li>' . $key . '<ul>';
 				foreach ( $value as $k => $v ) {
-					$output .= '<li>' . $k . ': ' . $v . "</li>" ;
+					$output .= '<li>' . $k . ': ' . $v . "</li>";
 				}
 				$output .= '</ul></li>';
 			}
