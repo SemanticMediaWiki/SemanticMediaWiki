@@ -258,7 +258,7 @@
 	"grouppage-smwcurator": "{{ns:project}}:Curatori (Semantic MediaWiki)",
 	"smw-pa-property-predefined_ask": "\"$1\" è una proprietà predefinita che rappresenta meta informazioni (sotto forma di [https://www.semantic-mediawiki.org/wiki/Subobject sottoggetto]) su singole interrogazioni ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_asksi": "\"$1\" è una proprietà predefinita che contiene il numero delle condizioni usate in una interrogazione ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
-	"smw-pa-property-predefined_askde": "\"$1\" è una proprietà predefinita che informa sulla profondità (valore numerico calcolato sulla base di sottoquery nidificate e catene di proprietà risolte) di un'interrogazione la quale durante la sua esecuzione è stata limitata dall'impostazione [https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth $smwgQMaxDepth] ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_askde": "\"$1\" è una proprietà predefinita che informa sulla profondità di un'interrogazione ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-sp-properties-header-label": "Elenco delle proprietà",
 	"smw-sp-admin-iddispose-title": "Smaltimento di ID oggetto",
 	"smw-sp-admin-iddispose-docu": "L'operazione di smaltimento non ha restrizioni e rimuove l'ID di un oggetto interno dal motore di archiviazione, se confermata. Avvia questa attività con '''cautela''' e solo dopo aver consultato la [https://www.semantic-mediawiki.org/wiki/Help:Object_ID_disposal documentazione].",
@@ -323,5 +323,6 @@
 	"smw-pa-property-predefined_eid": "\"$1\" è un [[Special:Types/External identifier|tipo]] e una proprietà predefinita fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] per rappresentare identificatori esterni.",
 	"smw-pa-property-predefined_peid": "\"$1\" è una proprietà predefinita che rappresenta un identificatore esterno ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_pefu": "\"$1\" è una proprietà predefinita che rappresenta un URI ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
-	"smw-property-preferred-title-format": "$1 ($2)"
+	"smw-property-preferred-title-format": "$1 ($2)",
+	"smw-property-preferred-label-language-combination-exists": "\"$1\" non può essere utilizzato come etichetta preferita perché la lingua \"$2\" è già stata assegnata all'etichetta \"$3\"."
 }

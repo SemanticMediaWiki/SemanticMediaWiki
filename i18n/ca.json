@@ -209,6 +209,7 @@
 	"smw-ask-format-selection-help": "Per a una descripció detallada, visiteu la pàgina d'ajuda de $1.",
 	"smw-ask-query-search-info": "La consulta <code><nowiki>$1</nowiki></code> va ser resposta per <code>$2</code> en $3 {{PLURAL:$3|segon|segons}}.",
 	"searchbyproperty": "Cerca per propietat",
+	"processingerrorlist": "Llista de processament d'errors",
 	"smw_sbv_docu": "Cerca totes les pàgines que tenen una propietat i valor donats.",
 	"smw_sbv_novalue": "Introduïu un valor vàlid per a la propietat, o vegeu tots els valors de la propietat «$1».",
 	"smw_sbv_displayresult": "Una llista de totes les pàgines que tenen la propietat «$1» amb el valor «$2»",
@@ -288,6 +289,7 @@
 	"smw-ui-tooltip-title-event": "Esdeveniment",
 	"smw-ui-tooltip-title-note": "Nota",
 	"smw-ui-tooltip-title-legend": "Llegenda",
+	"smw-ui-tooltip-title-reference": "Referència",
 	"smw_unknowntype": "El tipus d'aquesta propietat no és vàlid",
 	"smw-concept-cache-text": "El concepte té un total {{PLURAL:$1|d'$1 pàgina|de $1 pàgines}} i es va actualitzar per darrera vegada el $3, $2.",
 	"smw_concept_header": "Pàgines del concepte \"$1\"",
@@ -368,7 +370,13 @@
 	"smw-datavalue-feature-not-supported": "La característica «$1» no és compatible amb el wiki o bé se n'ha inhabilitat.",
 	"smw-datavalue-uniqueness-constraint-error": "La propietat «$1» només permet assignacions de valor únic i «$2» ja estava anotada en el subjecte «$3».",
 	"smw-datavalue-time-invalid-date-components-common": "«$1» conté informació que no és interpretable.",
-	"smw-datavalue-time-invalid-date-components-three": "«$1» conté més de tres components.",
+	"smw-datavalue-time-invalid-date-components-empty": "«$1» conté alguns components buits.",
+	"smw-datavalue-time-invalid-date-components-three": "«$1» conté més que no tres components necessaris per a la interpretació de les dates.",
+	"smw-datavalue-time-invalid-ampm": "«$1» conté «$2» com element d'hora, que no és vàlid per a la convenció de 12 hores.",
 	"smw-datavalue-external-formatter-invalid-uri": "«$1» és un URL no vàlid.",
-	"smw-datavalue-parse-error": "El valor donat «$1» no s'ha entès."
+	"smw-datavalue-parse-error": "El valor donat «$1» no s'ha entès.",
+	"smw-datavalue-reference-outputformat": "$1: $2",
+	"smw-parser-invalid-json-format": "L'analitzador de JSON ha retornat amb «$1».",
+	"smw-property-preferred-title-format": "$1 ($2)",
+	"smw-property-preferred-label-language-combination-exists": "No es pot utilitzar «$1» com etiqueta preferida perquè la llengua «$2» ja està assignada a l'etiqueta «$3»."
 }

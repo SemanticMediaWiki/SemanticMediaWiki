@@ -21,7 +21,8 @@
 			"Macofe",
 			"Alexandr Efremov",
 			"Mailman",
-			"Туллук"
+			"Туллук",
+			"Irus"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -317,7 +318,7 @@
 	"smw-pa-property-predefined-common": "Это предварительно развернутое свойство (также известное как [https://www.semantic-mediawiki.org/wiki/Help:Special_properties специальное свойство]) и несет дополнительные административные привилегии, но может быть использовано, как любое другое [https://www.semantic-mediawiki.org/wiki/Property определенное пользователем свойство].",
 	"smw-pa-property-predefined_ask": "«$1» — это предопределённое свойство, которое представляет мета-данные (в форме [https://www.semantic-mediawiki.org/wiki/Subobject подобъекта]) об индивидуальных запросах и предоставляется [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_asksi": "«$1» — это предопределённое свойство, которое собирает количество условий, используемых в запросе и предоставляется [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
-	"smw-pa-property-predefined_askde": "«$1» - было получено свойство, которое информирует о глубине (числовом значение, рассчитанном на базе вложенных подзапросов и решенных цепочек свойств) запроса, в то время как выполнение запроса ограничено настройкой [https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth $smwgQMaxDepth], и обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_askde": "«$1» — предварительно определенное свойство, которое информирует о глубине запроса и обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-sp-properties-docu": "На этой странице перечислены доступные [https://www.semantic-mediawiki.org/wiki/Property свойства] и количество их использований в этой вики. Для получения актуальной статистики рекомендуется, чтоб сервисный скрипт [https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics статистики свойст] запускался на регулярной основе. Для дифференцированного представления см. служебные страницы со списком [[Special:UnusedProperties|неиспользованных]] или [[Special:WantedProperties|требуемых свойств]].",
 	"smw-sp-properties-cache-info": "Перечисленные данные были получены из [https://www.semantic-mediawiki.org/wiki/Caching кэша] и были последний раз обновлены $1.",
 	"smw-sp-properties-header-label": "Список свойств",
@@ -402,8 +403,11 @@
 	"smw-pa-property-predefined_pvuc": "«$1» — это предварительно определенное свойство, которое означает, что присвоение значений свойств должны быть уникальными. Оно обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined-long_pvuc": "Уникальность устанавливается, когда два значения являются неодинаковыми в своей символьной репрезентации, и любое нарушение этого ограничения будет квалифицировано как ошибка.",
 	"smw-datavalue-uniqueness-constraint-error": "Свойство «$1» позволяет только уникальные присвоенные значения, а «$2» уже было аннотировано в теме «$3».",
+	"smw-datavalue-time-invalid-date-components-empty": "«$1» содержит некоторые пустые компоненты.",
 	"smw-datavalue-external-formatter-invalid-uri": "«$1» — недопустимый URL-адрес.",
 	"smw-datavalue-parse-error": "Переданное значение «$1» не было понято.",
 	"smw-datavalue-propertylist-invalid-property-key": "Список свойств «$1» содержит недопустимый ключ свойства «$2».",
-	"smw-datavalue-reference-outputformat": "$1: $2"
+	"smw-datavalue-reference-outputformat": "$1: $2",
+	"smw-parser-invalid-json-format": "JSON-парсер вернул ошибку «$1».",
+	"smw-property-preferred-title-format": "$1 ($2)"
 }

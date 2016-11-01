@@ -10,7 +10,8 @@
 			"ערן",
 			"아라",
 			"MojoMann",
-			"Guycn2"
+			"Guycn2",
+			"Or"
 		]
 	},
 	"smw-desc": "הופכת את הוויקי שלכם לנגיש יותר – עבור מכונות וגם עבור בני אדם ([https://www.semantic-mediawiki.org/wiki/Help:User_manual תיעוד מקוון])",
@@ -406,5 +407,6 @@
 	"smw-pa-property-predefined_dat": "\"$1\" הוא [[Special:Types/Date|סוג]] ומאפיין מוגדר מראש שמסופק על־ידי [https://www.semantic-mediawiki.org/wiki/Help:Special_properties מדיה־ויקי סמנטית] כדי לייצג ערכי תאריכים.",
 	"smw-pa-property-predefined_uri": "\"$1\" הוא [[Special:Types/URL|סוג]] ומאפיין מוגדר מראש שמסופק על־ידי [https://www.semantic-mediawiki.org/wiki/Help:Special_properties מדיה־ויקי סמנטית] כדי לייצג ערכי URI/URL.",
 	"smw-pa-property-predefined_qty": "\"$1\" הוא [[Special:Types/Quantity|סוג]] ומאפיין מוגדר מראש שמסופק על־ידי [https://www.semantic-mediawiki.org/wiki/Help:Special_properties מדיה־ויקי סמנטית] כדי לייצג ערכי כמות.",
-	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" אינה כתובת URL תקינה."
+	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" אינה כתובת URL תקינה.",
+	"smw-property-preferred-title-format": "$1 ($2)"
 }

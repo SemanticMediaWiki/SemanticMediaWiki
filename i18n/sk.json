@@ -2,13 +2,14 @@
 	"@metadata": {
 		"authors": [
 			"Helix84",
-			"아라"
+			"아라",
+			"Kghbln"
 		]
 	},
 	"smw-desc": "Sprístupnenie vašej wiki pre stroje ''aj'' ľudí ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentácia])",
 	"smw_viewasrdf": "RDF kanál",
 	"smw_finallistconjunct": " a",
-	"smw_factbox_head": "Skutočnosti o $1 &mdash; Kliknutím na <span class=\"smwsearchicon\">+</span> vyhľadáte podobné stránky.",
+	"smw_factbox_head": "Skutočnosti o $1",
 	"smw_isspecprop": "Táto vlastnosť je špeciálna vlastnosť na tejto wiki.",
 	"smw_concept_description": "Popis pojmu „$1”",
 	"smw_no_concept_namespace": "Pojmy je možné definovať iba na stránkach v mennom priestore Concept:",

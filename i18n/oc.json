@@ -2,13 +2,14 @@
 	"@metadata": {
 		"authors": [
 			"Cedric31",
-			"아라"
+			"아라",
+			"Kghbln"
 		]
 	},
 	"smw-desc": "Rendre lo wiki mai accessible - per las maquinas ''e'' los umans ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentacion en linha])",
 	"smw_viewasrdf": "Veire coma RDF",
 	"smw_finallistconjunct": " e",
-	"smw_factbox_head": "Faits relatius a $1 &mdash; Recèrca de paginas similaras amb <span class=\"smwsearchicon\">+</span>.",
+	"smw_factbox_head": "Faits relatius a $1",
 	"smw_isspecprop": "Aquesta proprietat es una proprietat especiala sus aqueste wiki.",
 	"smw_concept_description": "Descripcion del concèpte « $1 »",
 	"smw_no_concept_namespace": "Los concèptes pòt unicament èsser definits dins la pagina dins lo Concèpte : espaci de nom.",

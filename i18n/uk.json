@@ -132,6 +132,7 @@
 	"smw_attributearticlecount": "{{PLURAL:$1|Показується|Показуються|Показується}} $1 {{PLURAL:$1|сторінка, що використовує|сторінки, що використовують|сторінок, що використовують}} цю властивість.",
 	"smw_subproperty_header": "Підвластивості",
 	"smw-subpropertylist-count": "Ця властивість має $1 {{PLURAL:$1|підвластивість|підвластивості|підвластивостей}}",
+	"smw-subpropertylist-count-with-restricted-note": "Ця властивість має  {{PLURAL:$1|таку $1 підвластивість|такі $1 підвластивості|таких $1 підвластивостей}} (доступно більше, але вибірка обмежена до [https://www.semantic-mediawiki.org/wiki/Help:$smwgSubPropertyListLimit $2]):",
 	"exportrdf": "Експорт сторінок у RDF",
 	"smw_exportrdf_docu": "Ця сторінка дозволяє отримати дані із сторінки у форматі RDF. Введіть назви сторінок, по одній у рядку, в текстовому полі, що знаходиться нижче.",
 	"smw_exportrdf_recursive": "Рекурсивно експортувати усі пов’язані сторінки. Зауважте: результат може бути об’ємним.",
@@ -426,5 +427,8 @@
 	"smw-pa-property-predefined_peid": "«$1» — це попередньо визначена властивість, що зазначає зовнішній ідентифікатор і надається [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Семантичною MediaWiki].",
 	"smw-pa-property-predefined_pefu": "«$1» — це попередньо визначена властивість, що зазначає URI і надається [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Семантичною MediaWiki].",
 	"smw-pa-property-predefined-long_pefu": "URI має містити плейсхолдер, щоб зовнішні ідентифікатори коректно форматувалися та позиціювалися.",
-	"smw-sp-types_eid": "«$1» — це обмежений тип [https://www.semantic-mediawiki.org/wiki/Type_String рядка], що вимагає призначених властивостей для оголошення [[Property:External formatter uri|URI зовнішнього форматувальника]]."
+	"smw-sp-types_eid": "«$1» — це обмежений тип [https://www.semantic-mediawiki.org/wiki/Type_String рядка], що вимагає призначених властивостей для оголошення [[Property:External formatter uri|URI зовнішнього форматувальника]].",
+	"smw-datavalue-reference-outputformat": "$1: $2",
+	"smw-property-preferred-title-format": "$1 ($2)",
+	"smw-property-preferred-label-language-combination-exists": "«$1» не можна використати як бажану назву, оскільки мова «$2» вже закріплена за назвою «$3»."
 }

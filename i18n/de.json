@@ -194,7 +194,7 @@
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Konzept|Konzepte}}]]",
 	"smw-statistics-subobject-count": "[[Property:Has subobject|{{PLURAL:$1|Unterobjekt|Unterobjekte}}]]",
 	"smw-statistics-datatype-count": "[[Special:Types|{{PLURAL:$1|Datentyp|Datentypen}}]]",
-	"smw-statistics-error-count": "{{PLURAL:$1|Attributwert|Attributwerte}} (fehlerhafte [[Special:ProcessingErrorList|{{PLURAL:$1|Annotation|Annotationen}}]])",
+	"smw-statistics-error-count": "{{PLURAL:$1|Attributwert|Attributwerte}} (mit [[Special:ProcessingErrorList|{{PLURAL:$1|fehlerhafter Annotation|fehlerhaften Annotationen}}]])",
 	"smw-statistics-delete-count": "{{PLURAL:$1|Veraltetes Objekt|Veraltete Objekte}} (zur Entfernung markiert)",
 	"smw_uri_doc": "Der URI-Auflöser setzt die Empfehlungen „[$1 W3C TAG finding on httpRange-14]“ um. Er sorgt dafür, dass Menschen nicht zu Webseiten werden.",
 	"ask": "Semantische Suche",
@@ -326,7 +326,8 @@
 	"smw-pa-property-predefined-common": "Dieses Attribut ist softwareseitig fest definiert und auch bekannt als [https://www.semantic-mediawiki.org/wiki/Help:Spezialattribute Spezialattribut]. Es erfüllt eine besondere Funktion, kann aber wie jedes andere [https://www.semantic-mediawiki.org/wiki/Help:Attribut benutzerdefinierte Attribut] verwendet werden.",
 	"smw-pa-property-predefined_ask": "„$1“ ist ein softwareseitig fest definiertes Attribut, das Metainformationen zu einzelnen Abfragen als [https://www.semantic-mediawiki.org/wiki/Subobject Subobjekt] speichert und von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt wird.",
 	"smw-pa-property-predefined_asksi": "„$1“ ist ein softwareseitig fest definiertes Attribut, das die Anzahl der von einer Abfrage verwendeten Bedingungen speichert und von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt wird.",
-	"smw-pa-property-predefined_askde": "„$1“ ist ein softwareseitig fest definiertes Attribut, das über die Tiefe einer Abfrage während dessen Ausführung informiert (numerischer Wert, berechnet auf der Basis der Anzahl von Unterabfragen sowie der verarbeiteten Attributketten). Sie wird durch den mit dem Konfigurationsparameter [https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth <code>$smwgQMaxDepth</code>] angegebenen Wert beschränkt. Dieses Attribut wird von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt.",
+	"smw-pa-property-predefined_askde": "„$1“ ist ein softwareseitig fest definiertes Attribut, das über die Tiefe einer Abfrage informiert. Dieses Attribut wird von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt.",
+	"smw-pa-property-predefined-long_askde": "Es handelt sich um einen numerischen Wert, der der Summe verschachtelter Unterabfragen, verarbeiteten Attributketten sowie vorhandenen Elementen zur Beschreibung einer Abfrage entspricht. Er wird durch den mit dem Konfigurationsparameter [https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth <code>$smwgQMaxDepth</code>] angegebenen Wert beschränkt.",
 	"smw-sp-properties-docu": "Diese Spezialseite listet die [https://www.semantic-mediawiki.org/wiki/Property Attribute] und den Umfang ihrer Nutzung in diesem Wiki auf. Es wird empfohlen regelmäßig das [https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics Wartungsskript zur Aktualisierung der Nutzungsstatistik] auszuführen, um stets eine aktuelle Übersicht zu haben. Für eine differenzierte Ansicht gibt es zudem die Spezialseiten für [[Special:UnusedProperties|nicht genutzte]] und [[Special:WantedProperties|gewünschte]] Attribute.",
 	"smw-sp-properties-cache-info": "Die aufgelisteten Daten stammen aus dem [https://www.semantic-mediawiki.org/wiki/Caching Zwischenspeicher]. Letzte Aktualisierung: $1.",
 	"smw-sp-properties-header-label": "Attributliste",
@@ -456,5 +457,5 @@
 	"smw-datavalue-reference-invalid-fields-definition": "Der Datentyp [[Special:Types/Reference|Referenzierung]] muss aus einer Folge von Attributen bestehen, die das Spezialattribut [https://www.semantic-mediawiki.org/wiki/Help:Spezialattribut_Hat_Komponenten „Hat Komponenten“] verwenden.",
 	"smw-parser-invalid-json-format": "Der JSON-Parser hat den Fehler „$1“ ausgegeben.",
 	"smw-property-preferred-title-format": "$1 ($2)",
-	"smw-property-preferred-label-language-combination-exists": "„$1“ kann nicht als bevorzugte Bezeichnung verwendet werden, da die Sprache „$2“ bereits der Bezeichnung „$3“ zugewiesen ist."
+	"smw-property-preferred-label-language-combination-exists": "„$1“ kann nicht als bevorzugte Bezeichnung verwendet werden, da der Sprache „$2“ bereits die Bezeichnung „$3“ zugewiesen wurde."
 }

@@ -325,6 +325,7 @@
 	"smw-pa-property-predefined_ask": "This informatory message describes a [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\nParameter:\n* $1 - name of predefined property",
 	"smw-pa-property-predefined_asksi": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property] holding the [https://semantic-mediawiki.org/wiki/Help:Special_property_Query_size size] of a query.\n\nParameter:\n* $1 - name of predefined property",
 	"smw-pa-property-predefined_askde": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property] holding the [https://semantic-mediawiki.org/wiki/Help:Special_property_Query_depth depth] of a query.\n\nParameter:\n* $1 - name of predefined property",
+	"smw-pa-property-predefined-long_askde": "This informatory message describes the value added to a [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].",
 	"smw-sp-properties-docu": "Extended introductory text for the [[Special:Properties]] page.",
 	"smw-sp-properties-cache-info": "Information about the current cache status on a special page\n\nParameters:\n* $1 - Accommodates a user formatted date",
 	"smw-sp-properties-header-label": "A header label",
@@ -454,5 +455,7 @@
 	"smw-sp-types_ref_rec": "This informatory message describes a [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes datatype].\n\nParameter:\n* $1 holds the name of the datatype.",
 	"smw-datavalue-reference-outputformat": "{{notranslate}}",
 	"smw-datavalue-reference-invalid-fields-definition": "This is an error message.",
-	"smw-parser-invalid-json-format": "This is an error message.\n\nParameter:\n* $1 holds the error output."
+	"smw-parser-invalid-json-format": "This is an error message.\n\nParameter:\n* $1 holds the error output.",
+	"smw-property-preferred-title-format": "{{Notranslate}}",
+	"smw-property-preferred-label-language-combination-exists": "This is an error message.\n\nParameters:\n* $1 name of the property label used\n* $2 language of the property label\n* $3 name of the already exixting property label in use"
 }

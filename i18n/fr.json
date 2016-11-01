@@ -35,7 +35,8 @@
 			"Orlodrim",
 			"Lbayle",
 			"Macofe",
-			"Yasten"
+			"Yasten",
+			"Kghbln"
 		]
 	},
 	"smw-desc": "Rendre votre wiki plus accessible - pour les machines ''et'' les humains ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentation en ligne])",
@@ -43,7 +44,7 @@
 	"smw-semantics-not-enabled": "La fonctionnalité MédiaWiki Sémantique n’est pas activée sur ce wiki.",
 	"smw_viewasrdf": "Voir comme RDF",
 	"smw_finallistconjunct": " et",
-	"smw_factbox_head": "Faits relatifs à $1 &mdash; Recherche de pages similaires avec <span class=\"smwsearchicon\">+</span>.",
+	"smw_factbox_head": "Faits relatifs à $1",
 	"smw_isspecprop": "Cette propriété est une propriété spéciale dans ce wiki.",
 	"smw-concept-cache-header": "Utilisation du cache",
 	"smw-concept-cache-count": "Le [https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count cache de concept] contient {{PLURAL:$1|'''une''' entité|'''$1''' entités}} ($2).",
@@ -340,7 +341,8 @@
 	"smw-pa-property-predefined-common": "Cette propriété est pré-déployée (appelée aussi [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propriété spéciale]) et est accompagnée de droits d’administration supplémentaires, mais peut être utilisée exactement comme une autre [https://www.semantic-mediawiki.org/wiki/Property propriété définie par l’utilisateur].",
 	"smw-pa-property-predefined_ask": "« $1 » est une propriété prédéfinie qui représente les méta-informations (sous la forme d'un [https://www.semantic-mediawiki.org/wiki/Subobject sous-objet]) sur les requêtes individuelles et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
 	"smw-pa-property-predefined_asksi": "« $1 » est une propriété prédéfinie qui recueille le nombre de conditions utilisées dans une requête et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
-	"smw-pa-property-predefined_askde": "« $1 » est une propriété prédéfinie qui informe sur la profondeur (valeur numérique calculée sur la base des sous-requêtes incluses et des chaînes de propriétés résolues) d’une requête quand l’exécution d’une requête est restreinte par le paramètre [https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth $smwgQMaxDepth] et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
+	"smw-pa-property-predefined_askde": "« $1 » est une propriété prédéfinie qui informe sur la profondeur d’une requête et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
+	"smw-pa-property-predefined-long_askde": "C’est une valeur numérique calculée d’après une sous-requête incluse, des chaînes de propriétés, et les éléments de description disponibles avec l’exécution d’une requête basée sur le paramètre <code>[https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth $smwgQMaxDepth]</code>.",
 	"smw-sp-properties-docu": "Cette page liste [https://www.semantic-mediawiki.org/wiki/Property les propriétés] et leur compteur d’utilisation disponible pour ce wiki. Pour avoir des statistiques de comptage à jour, il est recommandé que le script de maintenance [https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics des statistiques de propriété] soit lancé régulièrement. Pour un affichage différencié, voyez les pages spéciales [[Special:UnusedProperties|propriétés non utilisées]] ou [[Special:WantedProperties|propriétés souhaitées]].",
 	"smw-sp-properties-cache-info": "Les données listées ont été récupérées depuis [https://www.semantic-mediawiki.org/wiki/Caching le cache], et ont été mises à jour le $1.",
 	"smw-sp-properties-header-label": "Liste des propriétés",
