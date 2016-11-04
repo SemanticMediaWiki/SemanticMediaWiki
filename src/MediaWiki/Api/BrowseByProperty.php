@@ -163,7 +163,7 @@ class BrowseByProperty extends ApiBase {
 	 *
 	 * @return array
 	 */
-	protected function getExamples() {
+	public function getExamples() {
 		return array(
 			'api.php?action=browsebyproperty&property=Modification_date',
 			'api.php?action=browsebyproperty&limit=50',
