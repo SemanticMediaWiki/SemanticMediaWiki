@@ -3,7 +3,7 @@
 namespace SMW\Tests\SQLStore\TableBuilder;
 
 use SMW\SQLStore\TableBuilder\SQLiteTableBuilder;
-use SMW\Tests\TestEnvironment;
+use SMW\SQLStore\TableBuilder\Table;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\SQLiteTableBuilder
@@ -15,12 +15,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
-
-	private $testEnvironment;
-
-	protected function setUp() {
-		$this->testEnvironment = new TestEnvironment();
-	}
 
 	public function testCanConstruct() {
 
@@ -59,11 +53,10 @@ class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = SQLiteTableBuilder::factory( $connection );
 
-		$tableOptions = array(
-			'fields' => array( 'bar' => 'text' )
-		);
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
 
-		$instance->createTable( 'foo', $tableOptions );
+		$instance->create( $table );
 	}
 
 	public function testUpdateTableOnOldTable() {
@@ -92,11 +85,10 @@ class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = SQLiteTableBuilder::factory( $connection );
 
-		$tableOptions = array(
-			'fields' => array( 'bar' => 'text' )
-		);
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
 
-		$instance->createTable( 'foo', $tableOptions );
+		$instance->create( $table );
 	}
 
 	public function testCreateIndex() {
@@ -114,22 +106,22 @@ class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'tableExists' )
 			->will( $this->returnValue( false ) );
 
-		$connection->expects( $this->at( 1 ) )
+		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'PRAGMA index_list("foo")' ) )
 			->will( $this->returnValue( array() ) );
 
-		$connection->expects( $this->at( 2 ) )
+		$connection->expects( $this->at( 4 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'CREATE INDEX "foo"_index0' ) );
 
 		$instance = SQLiteTableBuilder::factory( $connection );
 
-		$indexOptions = array(
-			'indicies' => array( 'bar' )
-		);
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
+		$table->addIndex( 'bar' );
 
-		$instance->createIndex( 'foo', $indexOptions );
+		$instance->create( $table );
 	}
 
 	public function testDropTable() {
@@ -153,7 +145,8 @@ class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = SQLiteTableBuilder::factory( $connection );
 
-		$instance->dropTable( 'foo' );
+		$table = new Table( 'foo' );
+		$instance->drop( $table );
 	}
 
 }
