@@ -3,6 +3,7 @@
 namespace SMW\Maintenance;
 
 use SMW\MediaWiki\ManualEntryLogger;
+use RuntimeException;
 
 /**
  * @license GNU GPL v2+
@@ -23,6 +24,11 @@ class MaintenanceLogger {
 	private $manualEntryLogger;
 
 	/**
+	 * @var integer
+	 */
+	private $maxNameChars = 255;
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param string $performer
@@ -35,6 +41,15 @@ class MaintenanceLogger {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param integer $maxNameChars
+	 */
+	public function setMaxNameChars( $maxNameChars ) {
+		$this->maxNameChars = $maxNameChars;
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param string $message
@@ -44,6 +59,11 @@ class MaintenanceLogger {
 
 		if ( $target === '' ) {
 			$target = $this->performer;
+		}
+
+		// #1983
+		if ( $this->maxNameChars < strlen( $target ) ) {
+			throw new RuntimeException( 'wgMaxNameChars requires at least ' . strlen( $target ) );
 		}
 
 		$this->manualEntryLogger->log( 'maintenance', $this->performer, $target, $message );

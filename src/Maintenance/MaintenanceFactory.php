@@ -117,7 +117,11 @@ class MaintenanceFactory {
 	 * @return MaintenanceLogger
 	 */
 	public function newMaintenanceLogger( $performer ) {
-		return new MaintenanceLogger( $performer, new ManualEntryLogger() );
+
+		$maintenanceLogger = new MaintenanceLogger( $performer, new ManualEntryLogger() );
+		$maintenanceLogger->setMaxNameChars( $GLOBALS['wgMaxNameChars'] );
+
+		return $maintenanceLogger;
 	}
 
 }
