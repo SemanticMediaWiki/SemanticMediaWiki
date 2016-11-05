@@ -7,11 +7,11 @@ THIS IS NOT A RELEASE YET
 * #1481/#1801
 * #1808
 * #1824
-* #1879
+* #1865
 
 ## Compatibility changes
 
-* ...
+* Requires to run `update.php` to add an extra table column for the URI table (#1872) and a new table for the preferred label property (#1865).
 
 ## New features and enhancements
 
@@ -41,6 +41,7 @@ THIS IS NOT A RELEASE YET
 * #1879
 * #1891 Added support for JSON typed annotation in `#set` and `#subobject` using the `@json` marker
 * #1927
+* #1872 Added support for retrieving URI's longer than 255 chars from the database
 
 ## Bug fixes
 
