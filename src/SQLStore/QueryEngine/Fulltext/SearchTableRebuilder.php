@@ -124,7 +124,7 @@ class SearchTableRebuilder {
 		$searchTable = $this->getSearchTable();
 
 		if ( $proptable->getDiType() === DataItem::TYPE_URI ) {
-			$fetchFields = array( 's_id', 'p_id', 'o_serialized' );
+			$fetchFields = array( 's_id', 'p_id', 'o_blob', 'o_serialized' );
 		} else {
 			$fetchFields = array( 's_id', 'p_id', 'o_blob', 'o_hash' );
 		}
@@ -177,7 +177,7 @@ class SearchTableRebuilder {
 
 			// Uri or blob?
 			if ( isset( $row->o_serialized ) ) {
-				$indexableText = $row->o_serialized;
+				$indexableText = $row->o_blob === null ? $row->o_serialized : $row->o_blob;
 			} else {
 				$indexableText = $row->o_blob === null ? $row->o_hash : $row->o_blob;
 			}
