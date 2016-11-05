@@ -5,10 +5,10 @@ namespace SMW\Tests\SQLStore\EntityStore;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
-use SMW\SQLStore\EntityStore\PersistentCachedEntityLookup;
+use SMW\SQLStore\EntityStore\CachedEntityLookup;
 
 /**
- * @covers \SMW\SQLStore\EntityStore\PersistentCachedEntityLookup
+ * @covers \SMW\SQLStore\EntityStore\CachedEntityLookup
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,7 +16,7 @@ use SMW\SQLStore\EntityStore\PersistentCachedEntityLookup;
  *
  * @author mwjames
  */
-class PersistentCachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
+class CachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 	private $entityLookup;
 	private $redirectTargetLookup;
@@ -41,8 +41,8 @@ class PersistentCachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\EntityStore\PersistentCachedEntityLookup',
-			new PersistentCachedEntityLookup( $this->entityLookup, $this->redirectTargetLookup, $this->blobStore )
+			'\SMW\SQLStore\EntityStore\CachedEntityLookup',
+			new CachedEntityLookup( $this->entityLookup, $this->redirectTargetLookup, $this->blobStore )
 		);
 	}
 
@@ -65,7 +65,7 @@ class PersistentCachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'canUse' )
 			->will( $this->returnValue( true ) );
 
-		$instance = new PersistentCachedEntityLookup(
+		$instance = new CachedEntityLookup(
 			$this->entityLookup,
 			$this->redirectTargetLookup,
 			$this->blobStore
@@ -89,7 +89,7 @@ class PersistentCachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'canUse' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new PersistentCachedEntityLookup(
+		$instance = new CachedEntityLookup(
 			$this->entityLookup,
 			$this->redirectTargetLookup,
 			$this->blobStore
@@ -135,7 +135,7 @@ class PersistentCachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->blobStore->expects( $this->exactly( 2 ) )
 			->method( 'save' );
 
-		$instance = new PersistentCachedEntityLookup(
+		$instance = new CachedEntityLookup(
 			$this->entityLookup,
 			$this->redirectTargetLookup,
 			$this->blobStore
@@ -171,7 +171,7 @@ class PersistentCachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'read' )
 			->will( $this->returnValue( $container ) );
 
-		$instance = new PersistentCachedEntityLookup(
+		$instance = new CachedEntityLookup(
 			$this->entityLookup,
 			$this->redirectTargetLookup,
 			$this->blobStore
@@ -218,7 +218,7 @@ class PersistentCachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'read' )
 			->will( $this->returnValue( $container ) );
 
-		$instance = new PersistentCachedEntityLookup(
+		$instance = new CachedEntityLookup(
 			$this->entityLookup,
 			$this->redirectTargetLookup,
 			$this->blobStore
@@ -265,7 +265,7 @@ class PersistentCachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'read' )
 			->will( $this->returnValue( $container ) );
 
-		$instance = new PersistentCachedEntityLookup(
+		$instance = new CachedEntityLookup(
 			$this->entityLookup,
 			$this->redirectTargetLookup,
 			$this->blobStore
@@ -311,7 +311,7 @@ class PersistentCachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'read' )
 			->will( $this->returnValue( $container ) );
 
-		$instance = new PersistentCachedEntityLookup(
+		$instance = new CachedEntityLookup(
 			$this->entityLookup,
 			$this->redirectTargetLookup,
 			$this->blobStore
@@ -371,7 +371,7 @@ class PersistentCachedEntityLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->blobStore->expects( $this->exactly( 4 ) )
 			->method( 'delete' );
 
-		$instance = new PersistentCachedEntityLookup(
+		$instance = new CachedEntityLookup(
 			$this->entityLookup,
 			$this->redirectTargetLookup,
 			$this->blobStore
