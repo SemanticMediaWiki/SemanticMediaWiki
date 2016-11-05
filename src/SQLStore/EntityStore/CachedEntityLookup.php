@@ -36,7 +36,7 @@ use SMW\RequestOptions;
  *
  * @author mwjames
  */
-class PersistentCachedEntityLookup implements EntityLookup {
+class CachedEntityLookup implements EntityLookup {
 
 	/**
 	 * Update this version number when the serialization format

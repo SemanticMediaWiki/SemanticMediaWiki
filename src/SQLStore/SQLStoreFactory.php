@@ -18,7 +18,7 @@ use SMW\SQLStore\TableBuilder\TableBuilder;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMWSql3SmwIds as IdTableManager;
 use SMW\SQLStore\EntityStore\DataItemHandlerDispatcher;
-use SMW\SQLStore\EntityStore\PersistentCachedEntityLookup;
+use SMW\SQLStore\EntityStore\CachedEntityLookup;
 use SMW\SQLStore\EntityStore\DirectEntityLookup;
 
 /**
@@ -289,7 +289,7 @@ class SQLStoreFactory {
 		$settings = $this->applicationFactory->getSettings();
 		$directEntityLookup = new DirectEntityLookup( $this->store );
 
-		if ( $settings->get( 'smwgValueLookupFeatures' ) === CACHE_NONE ) {
+		if ( $settings->get( 'smwgValueLookupCacheType' ) === CACHE_NONE ) {
 			return $directEntityLookup;
 		}
 
@@ -304,17 +304,17 @@ class SQLStoreFactory {
 			$settings->get( 'smwgValueLookupCacheLifetime' )
 		);
 
-		$persistentCachedEntityLookup = new PersistentCachedEntityLookup(
+		$cachedEntityLookup = new CachedEntityLookup(
 			$directEntityLookup,
 			new RedirectTargetLookup( $this->store, $circularReferenceGuard ),
 			$blobStore
 		);
 
-		$persistentCachedEntityLookup->setCachedLookupFeatures(
+		$cachedEntityLookup->setCachedLookupFeatures(
 			$settings->get( 'smwgValueLookupFeatures' )
 		);
 
-		return $persistentCachedEntityLookup;
+		return $cachedEntityLookup;
 	}
 
 	/**
@@ -420,6 +420,5 @@ class SQLStoreFactory {
 
 		return $propertyStatisticsTable;
 	}
-
 
 }

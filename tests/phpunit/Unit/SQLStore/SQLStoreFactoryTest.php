@@ -157,17 +157,17 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SQLStoreFactory( $this->store );
 
-		$this->testEnvironment->addConfiguration( 'smwgValueLookupFeatures', CACHE_NONE );
+		$this->testEnvironment->addConfiguration( 'smwgValueLookupCacheType', CACHE_NONE );
 
 		$this->assertInstanceOf(
 			'SMW\SQLStore\EntityStore\DirectEntityLookup',
 			$instance->newEntityLookup()
 		);
 
-		$this->testEnvironment->addConfiguration( 'smwgValueLookupFeatures', 'SomeCache' );
+		$this->testEnvironment->addConfiguration( 'smwgValueLookupCacheType', 'hash' );
 
 		$this->assertInstanceOf(
-			'SMW\SQLStore\EntityStore\PersistentCachedEntityLookup',
+			'SMW\SQLStore\EntityStore\CachedEntityLookup',
 			$instance->newEntityLookup()
 		);
 	}
