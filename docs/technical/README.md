@@ -6,11 +6,19 @@ If you are new to SMW development, have a look at the [Programmer's guide to SMW
 
 ## Overview
 
-- [SQLStore](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SQLStore/README.md) and [SPARQLStore](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SPARQLStore/README.md) overview
-- [SQLStore::QueryEngine](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SQLStore/QueryEngine/README.md)
 - [List of hooks](hooks.md) provided by Semantic MediaWiki
 - Running [unit](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/README.md) and integration tests
 - Using the [api.php](api.md) modules provided by Semantic MediaWiki
+
+### SQLStore
+
+- [Overview](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SQLStore/README.md) about related SQLStore classes
+- [QueryEngine](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SQLStore/QueryEngine/README.md)
+- [Installer](sqlstore.installer.md) contains a simplified schema about the `Installer` and `TableBuilder` interface
+
+### SPARQLStore
+
+- [Overview](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SPARQLStore/README.md)
 
 ## Code snippets
 

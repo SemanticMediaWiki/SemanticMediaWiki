@@ -411,9 +411,7 @@ abstract class Store implements QueryEngine {
 	 * @return boolean Success indicator
 	 */
 	public static function setupStore( $verbose = true ) {
-		$result = StoreFactory::getStore()->setup( $verbose );
-		\Hooks::run( 'smwInitializeTables' );
-		return $result;
+		return StoreFactory::getStore()->setup( $verbose );
 	}
 
 	/**

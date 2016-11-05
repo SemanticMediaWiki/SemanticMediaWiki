@@ -2,9 +2,6 @@
 
 namespace SMW\SQLStore;
 
-use Onoi\MessageReporter\NullMessageReporter;
-use Onoi\MessageReporter\MessageReporter;
-use Onoi\MessageReporter\MessageReporterAware;
 use SMW\SQLStore\TableBuilder\Table;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMWDataItem as DataItem;
@@ -12,29 +9,19 @@ use SMWDataItem as DataItem;
 /**
  * @private
  *
- * Database type agnostic schema installer
+ * Database type agnostic table/schema definition manager
  *
  * @license GNU GPL v2+
  * @since 2.5
  *
  * @author mwjames
  */
-class TableSchemaManager implements MessageReporterAware {
+class TableSchemaManager {
 
 	/**
 	 * @var SQLStore
 	 */
 	private $store;
-
-	/**
-	 * @var TableBuilder
-	 */
-	private $tableBuilder;
-
-	/**
-	 * @var TableIntegrityExaminer
-	 */
-	private $tableIntegrityExaminer;
 
 	/**
 	 * @var MessageReporter
@@ -50,64 +37,17 @@ class TableSchemaManager implements MessageReporterAware {
 	 * @since 2.5
 	 *
 	 * @param SQLStore $store
-	 * @param TableBuilder $tableBuilder
-	 * @param TableIntegrityExaminer $tableIntegrityExaminer
 	 */
-	public function __construct( SQLStore $store, TableBuilder $tableBuilder, TableIntegrityExaminer $tableIntegrityExaminer ) {
+	public function __construct( SQLStore $store ) {
 		$this->store = $store;
-		$this->tableBuilder = $tableBuilder;
-		$this->tableIntegrityExaminer = $tableIntegrityExaminer;
-		$this->messageReporter = new NullMessageReporter();
 	}
 
 	/**
-	 * @see MessageReporterAware::setMessageReporter
-	 *
 	 * @since 2.5
 	 *
-	 * @param MessageReporter $messageReporter
+	 * @return Table[]
 	 */
-	public function setMessageReporter( MessageReporter $messageReporter ) {
-		$this->messageReporter = $messageReporter;
-	}
-
-	/**
-	 * @since 2.5
-	 */
-	public function create() {
-
-		$this->tableBuilder->setMessageReporter(
-			$this->messageReporter
-		);
-
-		$this->tableIntegrityExaminer->setMessageReporter(
-			$this->messageReporter
-		);
-
-		foreach ( $this->getTables() as $table ) {
-			$this->tableBuilder->create( $table );
-		}
-
-		$this->tableIntegrityExaminer->checkOnPostCreation( $this->tableBuilder );
-	}
-
-	/**
-	 * @since 2.5
-	 */
-	public function drop() {
-
-		$this->tableBuilder->setMessageReporter(
-			$this->messageReporter
-		);
-
-		foreach ( $this->getTables() as $table ) {
-			$this->tableBuilder->drop( $table );
-		}
-
-		\Hooks::run( 'SMW::SQLStore::AfterDropTablesComplete', array( $this->store, $this->tableBuilder ) );
-	}
-
-	private function getTables() {
+	public function getTables() {
 
 		$this->addTable( $this->newEntityIdTable() );
 		$this->addTable( $this->newConceptCacheTable() );
