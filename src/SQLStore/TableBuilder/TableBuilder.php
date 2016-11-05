@@ -142,8 +142,30 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	 * {@inheritDoc}
 	 */
 	public function create( Table $table ) {
-		$this->createTable( $table->getName(), $table->getConfiguration() );
-		$this->createIndex( $table->getName(), $table->getConfiguration() );
+
+		$configuration = $table->getConfiguration();
+		$tableName = $table->getName();
+
+		$this->reportMessage( "Checking table $tableName ...\n" );
+
+		if ( $this->connection->tableExists( $tableName ) === false ) { // create new table
+			$this->reportMessage( "   Table not found, now creating...\n" );
+			$this->doCreateTable( $tableName, $configuration );
+		} else {
+			$this->reportMessage( "   Table already exists, checking structure ...\n" );
+			$this->doUpdateTable( $tableName, $configuration );
+		}
+
+		$this->reportMessage( "   ... done.\n" );
+
+		if ( !isset( $configuration['indicies'] ) ) {
+			return $this->reportMessage( "No index structures for table $tableName ...\n" );
+		}
+
+		$this->reportMessage( "Checking index structures for table $tableName ...\n" );
+		$this->doCreateIndicies( $tableName, $configuration );
+
+		$this->reportMessage( "   ... done.\n" );
 	}
 
 	/**
@@ -152,48 +174,8 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	 * {@inheritDoc}
 	 */
 	public function drop( Table $table ) {
-		$this->dropTable( $table->getName() );
-	}
 
-	/**
-	 * @since 2.5
-	 *
-	 * @param string $tableName
-	 * @param array|null $tableOptions
-	 */
-	public function createTable( $tableName, array $tableOptions = null ) {
-
-		$this->reportMessage( "Checking table $tableName ...\n" );
-
-		if ( $this->connection->tableExists( $tableName ) === false ) { // create new table
-			$this->reportMessage( "   Table not found, now creating...\n" );
-			$this->doCreateTable( $tableName, $tableOptions );
-		} else {
-			$this->reportMessage( "   Table already exists, checking structure ...\n" );
-			$this->doUpdateTable( $tableName, $tableOptions );
-		}
-
-		$this->reportMessage( "   ... done.\n" );
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param string $tableName
-	 * @param array|null $indexOptions
-	 */
-	public function createIndex( $tableName, array $indexOptions = null ) {
-		$this->reportMessage( "Checking index structures for table $tableName ...\n" );
-		$this->doCreateIndicies( $tableName, $indexOptions );
-		$this->reportMessage( "   ... done.\n" );
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param string $tableName
-	 */
-	public function dropTable( $tableName ) {
+		$tableName = $table->getName();
 
 		if ( $this->connection->tableExists( $tableName ) === false ) { // create new table
 			return $this->reportMessage( " ... $tableName not found, skipping removal.\n" );
@@ -235,4 +217,16 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	 */
 	abstract protected function doDropTable( $tableName );
 
+	// http://php.net/manual/en/function.array-search.php
+	protected function recursive_array_search( $needle, $haystack ) {
+		foreach( $haystack as $key => $value ) {
+			$current_key = $key;
+
+			if ( $needle === $value OR ( is_array( $value ) && $this->recursive_array_search( $needle, $value ) !== false ) ) {
+				return $current_key;
+			}
+		}
+
+		return false;
+	}
 }

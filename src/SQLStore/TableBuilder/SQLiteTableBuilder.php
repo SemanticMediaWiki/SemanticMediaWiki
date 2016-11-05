@@ -163,8 +163,20 @@ class SQLiteTableBuilder extends TableBuilder {
 			return $this->reportMessage( "   ... virtual tables can not be altered in SQLite ...\n" );
 		}
 
+		// @see https://www.sqlite.org/lang_altertable.html states that
+		// "If a NOT NULL constraint is specified, then the column must have a default value other than NULL."
+		$default = "DEFAULT NULL";
+
+		// Add DEFAULT '' to avoid
+		// Query: ALTER TABLE sunittest_rdbms_test ADD `t_num` INT(8) NOT NULL
+		// Function: SMW\SQLStore\TableBuilder\SQLiteTableBuilder::doCreateField
+		// Error: 1 Cannot add a NOT NULL column with default value NULL
+		if ( strpos( $fieldType, 'NOT NULL' ) !== false ) {
+			$default = "DEFAULT ''";
+		}
+
 		$this->reportMessage( "   ... creating field $fieldName ... " );
-		$this->connection->query( "ALTER TABLE $tableName ADD `$fieldName` $fieldType", __METHOD__ );
+		$this->connection->query( "ALTER TABLE $tableName ADD `$fieldName` $fieldType $default", __METHOD__ );
 		$this->reportMessage( "done.\n" );
 	}
 
@@ -175,7 +187,7 @@ class SQLiteTableBuilder extends TableBuilder {
 
 	private function doDropField( $tableName, $fieldName ) {
 		$this->reportMessage( "   ... deleting obsolete field $fieldName is not possible in SQLite.\n" );
-		$this->reportMessage( "       Please could delete and reinitialize the tables to remove obsolete data, or just keep it.\n" );
+		$this->reportMessage( "       Please delete and reinitialize the tables to remove obsolete data, or just keep it.\n" );
 		$this->reportMessage( "done.\n" );
 	}
 

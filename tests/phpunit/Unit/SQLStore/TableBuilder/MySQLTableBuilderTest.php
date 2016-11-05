@@ -3,6 +3,7 @@
 namespace SMW\Tests\SQLStore\TableBuilder;
 
 use SMW\SQLStore\TableBuilder\MySQLTableBuilder;
+use SMW\SQLStore\TableBuilder\Table;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\MySQLTableBuilder
@@ -31,7 +32,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCreateTableOnNewTable() {
+	public function testcreateOnNewTable() {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
@@ -52,11 +53,10 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = MySQLTableBuilder::factory( $connection );
 
-		$tableOptions = array(
-			'fields' => array( 'bar' => 'text' )
-		);
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
 
-		$instance->createTable( 'foo', $tableOptions );
+		$instance->create( $table );
 	}
 
 	public function testUpdateTableOnOldTable() {
@@ -85,11 +85,10 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = MySQLTableBuilder::factory( $connection );
 
-		$tableOptions = array(
-			'fields' => array( 'bar' => 'text' )
-		);
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
 
-		$instance->createTable( 'foo', $tableOptions );
+		$instance->create( $table );
 	}
 
 	public function testCreateIndex() {
@@ -107,22 +106,22 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'tableExists' )
 			->will( $this->returnValue( false ) );
 
-		$connection->expects( $this->at( 1 ) )
+		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'SHOW INDEX' ) )
 			->will( $this->returnValue( array() ) );
 
-		$connection->expects( $this->at( 2 ) )
+		$connection->expects( $this->at( 4 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'ALTER TABLE "foo" ADD INDEX (bar)' ) );
 
 		$instance = MySQLTableBuilder::factory( $connection );
 
-		$indexOptions = array(
-			'indicies' => array( 'bar' )
-		);
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
+		$table->addIndex( 'bar' );
 
-		$instance->createIndex( 'foo', $indexOptions );
+		$instance->create( $table );
 	}
 
 	public function testDropTable() {
@@ -146,7 +145,8 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = MySQLTableBuilder::factory( $connection );
 
-		$instance->dropTable( 'foo' );
+		$table = new Table( 'foo' );
+		$instance->drop( $table );
 	}
 
 }

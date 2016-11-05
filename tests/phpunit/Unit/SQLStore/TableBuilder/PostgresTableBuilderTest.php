@@ -3,6 +3,7 @@
 namespace SMW\Tests\SQLStore\TableBuilder;
 
 use SMW\SQLStore\TableBuilder\PostgresTableBuilder;
+use SMW\SQLStore\TableBuilder\Table;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\PostgresTableBuilder
@@ -52,11 +53,10 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = PostgresTableBuilder::factory( $connection );
 
-		$tableOptions = array(
-			'fields' => array( 'bar' => 'text' )
-		);
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
 
-		$instance->createTable( 'foo', $tableOptions );
+		$instance->create( $table );
 	}
 
 	public function testUpdateTableOnOldTable() {
@@ -85,11 +85,10 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = PostgresTableBuilder::factory( $connection );
 
-		$tableOptions = array(
-			'fields' => array( 'bar' => 'text' )
-		);
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
 
-		$instance->createTable( 'foo', $tableOptions );
+		$instance->create( $table );
 	}
 
 	public function testCreateIndex() {
@@ -111,22 +110,22 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'indexInfo' )
 			->will( $this->returnValue( false ) );
 
-		$connection->expects( $this->at( 1 ) )
+		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'SELECT  i.relname AS indexname' ) )
 			->will( $this->returnValue( array() ) );
 
-		$connection->expects( $this->at( 3 ) )
+		$connection->expects( $this->at( 5 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'CREATE INDEX foo_index0 ON foo (bar)' ) );
 
 		$instance = PostgresTableBuilder::factory( $connection );
 
-		$indexOptions = array(
-			'indicies' => array( 'bar' )
-		);
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
+		$table->addIndex( 'bar' );
 
-		$instance->createIndex( 'foo', $indexOptions );
+		$instance->create( $table );
 	}
 
 	public function testDropTable() {
@@ -150,7 +149,8 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = PostgresTableBuilder::factory( $connection );
 
-		$instance->dropTable( 'foo' );
+		$table = new Table( 'foo' );
+		$instance->drop( $table );
 	}
 
 	public function testDoCheckOnAfterCreate() {

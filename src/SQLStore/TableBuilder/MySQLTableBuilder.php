@@ -233,7 +233,8 @@ class MySQLTableBuilder extends TableBuilder {
 		$currentIndicies = $this->getIndexInfo( $tableName );
 
 		foreach ( $currentIndicies as $indexName => $indexColumn ) {
-			$id = array_search( $indexColumn, $indicies );
+			// Indicies may contain something like array( 'id', 'UNIQUE INDEX' )
+			$id = $this->recursive_array_search( $indexColumn, $indicies );
 			if ( $id !== false || $indexName == 'PRIMARY' ) {
 				$this->reportMessage( "   ... index $indexColumn is fine.\n" );
 
