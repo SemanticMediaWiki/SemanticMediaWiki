@@ -1,14 +1,14 @@
 ## Fixtures
-Contains 151 files:
+Contains 155 files:
 
 ### F
 * [f-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0001.json) Test `format=debug` output
-* [f-0101.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0101.json) Test format=template output using unnamed arguments (#885)
-* [f-0102.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0102.json) Test format=template output + unicode characters (#988, skip postgres)
-* [f-0103.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0103.json) Test format=template with self reference (#988, guard against template self-reference in ask/show query)
-* [f-0201.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0201.json) Test format=table on boolean table output formatting (#896, #1464)
-* [f-0202.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0202.json) Test format=table with sep cell formatting, #495 (en, skip 1.19)
-* [f-0203.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0203.json) Test format=table to sort by category (#1286)
+* [f-0101.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0101.json) Test `format=template` output using unnamed arguments (#885)
+* [f-0102.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0102.json) Test `format=template` output + unicode characters (#988, skip postgres)
+* [f-0103.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0103.json) Test `format=template` with self reference (#988, guard against template self-reference in ask/show query)
+* [f-0201.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0201.json) Test `format=table` on boolean table output formatting (#896, #1464)
+* [f-0202.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0202.json) Test `format=table` with sep cell formatting, #495 (`wgContLang=en`,`wgLang=en`)
+* [f-0203.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0203.json) Test `format=table` to sort by category (#1286)
 * [f-0204.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0204.json) Test `format=table` on `_qty` for different positional unit preference (#1329, en)
 * [f-0205.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0205.json) Test `format=table` on `|+align=`/`|+limit`/`|+order` extra printout parameters (T18571, en)
 * [f-0206.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0206.json) Test `format=table` to display extra property description `_PDESC` (en)
@@ -16,8 +16,8 @@ Contains 151 files:
 * [f-0208.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0208.json) Test `format=table` with `limit=0` (further result links) for user/predefined properties, `mainlabel=-`, `#show` (`wgContLang=en`, `wgLang=es`)
 * [f-0209.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0209.json) Test `format=table` on `_tem`/ `_num` with `LOCAL@...` output (#1591, `wgContLang=es`, `wgLang=en`)
 * [f-0210.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0210.json) Test `format=table` on `_qty` for unit labels with spaces (#1718, `wgContLang=en`, `SMW_DV_NUMV_USPACE`)
-* [f-0301.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0301.json) Test format=category with template usage (#699, en, skip postgres)
-* [f-0302.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0302.json) Test format=category and defaultsort (#699, en)
+* [f-0301.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0301.json) Test `format=category` with template usage (#699, en, skip postgres)
+* [f-0302.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0302.json) Test `format=category` and defaultsort (#699, en)
 * [f-0303.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0303.json) Test `format=category` sort output using a template and DEFAULTSORT (#1459, en)
 * [f-0801.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0801.json) Test `format=embedded` output (skip 1.19)
 * [f-0802.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/f-0802.json) Test `format=template` [[SMW::on/off]] regression using `named args=yes` (#1453, skip-on 1.19)
@@ -71,12 +71,14 @@ Contains 151 files:
 * [p-0429.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0429.json) Test in-text `_dat` annotation with time offset, time zone, am/pm (`wgContLang=en`, `wgLang=en`)
 * [p-0430.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0430.json) Test in-text annotation for '_eid' type (`wgContLang=en`, `wgLang=en`)
 * [p-0431.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0431.json) Test in-text annotation `_rec` and `|+index` (`wgContLang=en`, `wgLang=en`)
-* [p-0432.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0432.json) Test in-text annotation for '_ref_rec' type (#1808, `wgContLang=en`, `wgLang=en`)
+* [p-0432.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0432.json) Test in-text annotation for `_ref_rec` type (#1808, `wgContLang=en`, `wgLang=en`)
 * [p-0433.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0433.json) Test in-text annotation `::` with left pipe (#1747, `wgContLang=en`)
 * [p-0434.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0434.json) Test printrequest property chaining `|?Foo.Bar` (#1824, `wgContLang=en`, `wgLang=en`)
-* [p-0435.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0435.json) Test in-text annotation using '_txt' type with 255+ char (`wgContLang=en`, `wgLang=en`)
-* [p-0436.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0436.json) Test in-text annotation with preferred property label (`wgContLang=en`, `wgLang=en`)
-* [p-0437.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0437.json) Test in-text annotation with preferred property label (`wgContLang=en`, `wgLang=ja`)
+* [p-0435.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0435.json) Test in-text annotation using `_txt` type with 255+ char (#1878, `wgContLang=en`, `wgLang=en`)
+* [p-0436.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0436.json) Test in-text annotation with `_PPLB` [preferred property label] (#1879, `wgContLang=en`, `wgLang=en`)
+* [p-0437.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0437.json) Test in-text annotation with `_PPLB` [preferred property label] (#1879, `wgContLang=en`, `wgLang=ja`)
+* [p-0438.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0438.json) Test in-text annotation with preferred property label/DISPLAYTITLE on user/predefined properties (`wgContLang=es`, `wgLang=de`, `wgRestrictDisplayTitle=false`)
+* [p-0439.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0439.json) Test in-text annotation using '_txt'/'_wpg' type / UTF encoding (`wgContLang=en`, `wgLang=en`)
 * [p-0501.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0501.json) Test `#concept` on predefined property (`wgContLang=en`, `wgLang=es`)
 * [p-0701.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0701.json) Test to create inverted annotation using a #ask/template combination (#711, `import-annotation=true`)
 * [p-0702.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/p-0702.json) Test #ask with `format=table` on inverse property/printrquest (#1270, en)
@@ -119,6 +121,7 @@ Contains 151 files:
 * [q-0701.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0701.json) Test `_uri` with some annotation/search pattern (T45264, #679)
 * [q-0702.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0702.json) Test `_uri` with additional annotation/search (#1129)
 * [q-0703.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0703.json) Test to map `Foaf` property from back-end / using a localized predefined property `A le type@fr` (en)
+* [q-0704.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0704.json) Test `_uri` long URL (255+) (#1872)
 * [q-0801.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0801.json) Test `_INST` query (#1004, en)
 * [q-0802.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0802.json) Test `_INST`/`_SUBC` queries (#1005, en, skip virtuoso)
 * [q-0803.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/q-0803.json) Test `_INST`/ Nested category annotation (#1012, en, skip virtuoso) category hierarchy queries
@@ -152,7 +155,7 @@ Contains 151 files:
 * [r-0010.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/r-0010.json) Test RDF output on canonical entities (`wgContLang=fr`, `wgLang=es`, syntax=rdf/turtle)
 
 ### S
-* [s-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0001.json) Test output of `Special:Properties` (en, skip-on sqlite, 1.19)
+* [s-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0001.json) Test output of `Special:Properties` (`wgContLang=en`, skip-on sqlite)
 * [s-0002.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0002.json) Test output from `Special:SearchByProperty` for `_num`, `_txt`, `_tel` (#1728, `wgContLang=en`, `wgLang=en`, skip-on sqlite, postgres)
 * [s-0003.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0003.json) Test `Special:Ask` output for `format=rdf`/`format=json`/DISPLAYTITLE (#1453, #1619, `wgRestrictDisplayTitle`, `wgContLang=en`, skip-on 1.19)
 * [s-0004.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0004.json) Test `Special:Browse` output for `_dat` (`wgContLang=en`, `wgLang=ja`)
@@ -161,5 +164,6 @@ Contains 151 files:
 * [s-0007.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0007.json) Test output of `Special:UnusedProperties` (`wgContLang=en`, `wgLang=en`, skip-on sqlite, 1.19)
 * [s-0008.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0008.json) Test `Special:Browse` output for `_dat`, `_boo`, `_sobj`, `_uri` (`wgContLang=en`, `wgLang=es`, skip-on 1.25.6)
 * [s-0009.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0009.json) Test output in `Special:Search` for SMWSearch (`wgLanguageCode=en`, `wgContLang=en`, `wgSearchType=SMWSearch`)
+* [s-0010.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures/s-0010.json) Test output from `Special:SearchByProperty` / `_dat` (#1922, `wgContLang=en`, `wgLang=es`, skip-on sqlite)
 
--- Last updated on 2016-10-16 by `readmeContentsBuilder.php`
+-- Last updated on 2016-11-05 by `readmeContentsBuilder.php`
