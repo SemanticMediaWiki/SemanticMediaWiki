@@ -45,4 +45,20 @@ class MaintenanceLoggerTest extends \PHPUnit_Framework_TestCase {
 		$instance->log( 'bar' );
 	}
 
+	public function testLogWithInvalidNameLengthThrowsException() {
+
+		$manualEntryLogger = $this->getMockBuilder( '\SMW\MediaWiki\ManualEntryLogger' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$manualEntryLogger->expects( $this->never() )
+			->method( 'log' );
+
+		$instance = new MaintenanceLogger( 'Foo', $manualEntryLogger );
+		$instance->setMaxNameChars( 2 );
+
+		$this->setExpectedException( 'RuntimeException' );
+		$instance->log( 'bar' );
+	}
+
 }
