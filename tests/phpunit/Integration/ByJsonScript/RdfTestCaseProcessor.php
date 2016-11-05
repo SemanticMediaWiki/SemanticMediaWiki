@@ -90,17 +90,17 @@ class RdfTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			print_r( $output );
 		}
 
-		if ( isset( $case['expected-output']['to-contain'] ) ) {
+		if ( isset( $case['assert-output']['to-contain'] ) ) {
 			$this->stringValidator->assertThatStringContains(
-				$case['expected-output']['to-contain'],
+				$case['assert-output']['to-contain'],
 				$output,
 				$case['about']
 			);
 		}
 
-		if ( isset( $case['expected-output']['not-contain'] ) ) {
+		if ( isset( $case['assert-output']['not-contain'] ) ) {
 			$this->stringValidator->assertThatStringNotContains(
-				$case['expected-output']['not-contain'],
+				$case['assert-output']['not-contain'],
 				$output,
 				$case['about']
 			);

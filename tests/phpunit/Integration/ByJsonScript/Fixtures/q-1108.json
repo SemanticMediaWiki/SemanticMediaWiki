@@ -3,36 +3,36 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text",
+			"page": "Has text",
 			"contents": "[[Has type::Text]] [[Allows value::open]], [[Allows value::closed]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has uniqueness",
+			"page": "Has uniqueness",
 			"contents": "[[Has type::Text]] [[Has uniqueness constraint::true]]"
 		},
 		{
-			"name": "Example/Q1108/1",
+			"page": "Example/Q1108/1",
 			"contents": "[[Category:Q1108]][[Has text::open]]"
 		},
 		{
-			"name": "Example/Q1108/2",
+			"page": "Example/Q1108/2",
 			"contents": "[[Category:Q1108]][[Has text::close]]"
 		},
 		{
-			"name": "Example/Q1108/3",
+			"page": "Example/Q1108/3",
 			"contents": "[[Category:Q1108]][[Has text::invalid]]"
 		},
 		{
-			"name": "Example/Q1108/4",
+			"page": "Example/Q1108/4",
 			"contents": "[[Category:Q1108]] [[Has uniqueness::Foo]]"
 		},
 		{
-			"name": "Example/Q1108/5",
+			"page": "Example/Q1108/5",
 			"contents": "[[Category:Q1108]] [[Has uniqueness::Foo]]"
 		},
 		{
-			"name": "Example/Q1108/Q1",
+			"page": "Example/Q1108/Q1",
 			"contents": "{{#ask: [[Category:Q1108]] [[Has uniqueness::Foo]] |link=none}}"
 		}
 	],
@@ -41,7 +41,7 @@
 			"type": "parser",
 			"about": "#3 embedded query with uniqueness condition works without raising an issue due to different context page",
 			"subject": "Example/Q1108/Q1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Example/Q1108/4"
 				]

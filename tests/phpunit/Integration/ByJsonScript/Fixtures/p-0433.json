@@ -3,19 +3,19 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text",
+			"page": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"name": "Example/P0433/1",
+			"page": "Example/P0433/1",
 			"contents": "[[Foo|Bar::Foobar]] [[File:Example.png|alt=Bar::Foobar|Caption]] [[File:Example.png|Bar::Foobar|link=Foo]]"
 		},
 		{
-			"name": "Example/P0433/2",
+			"page": "Example/P0433/2",
 			"contents": "{{#set:Has text=[[Foo|Bar::Foobar]] [[File:Example.png|alt=Bar::Foobar|Caption]] [[File:Example.png|Bar::Foobar|link=Foo]] }}"
 		},
 		{
-			"name": "Example/P0433/Q.1",
+			"page": "Example/P0433/Q.1",
 			"contents": "{{#ask: [[Example/P0433/2]] |?Has text |link=none}}"
 		}
 	],
@@ -24,7 +24,7 @@
 			"type": "parser",
 			"about": "#0 no annotation due to left pipe",
 			"subject": "Example/P0433/1",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -41,7 +41,7 @@
 			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0433/2",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -60,7 +60,7 @@
 			"type": "parser",
 			"about": "#2",
 			"subject": "Example/P0433/Q.1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"title=\"File:Example.png\">Caption</a>",
 					"title=\"File:Example.png\">Bar::Foobar</a>"

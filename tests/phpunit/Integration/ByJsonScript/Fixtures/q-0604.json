@@ -3,45 +3,45 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has firstPage",
+			"page": "Has firstPage",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has secondPage",
+			"page": "Has secondPage",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "PropertyToBeRedirected",
+			"page": "PropertyToBeRedirected",
 			"contents": "#REDIRECT [[Property:Has firstPage]]"
 		},
 		{
-			"name": "PageValueToBeRedirected",
+			"page": "PageValueToBeRedirected",
 			"contents": "#REDIRECT [[PageRedirectTarget]]"
 		},
 		{
-			"name": "AnotherPageValueToBeRedirected",
+			"page": "AnotherPageValueToBeRedirected",
 			"contents": "#REDIRECT [[AnotherPageRedirectTarget]]"
 		},
 		{
-			"name": "Page-one",
+			"page": "Page-one",
 			"contents": "[[PropertyToBeRedirected::One]]"
 		},
 		{
-			"name": "Page-two",
+			"page": "Page-two",
 			"contents": "{{#subobject:PropertyToBeRedirected=Two}}"
 		},
 		{
-			"name": "Page-three",
+			"page": "Page-three",
 			"contents": "[[Has secondPage::PageValueToBeRedirected]]"
 		},
 		{
-			"name": "Page-four",
+			"page": "Page-four",
 			"contents": "{{#subobject:Has secondPage=PageValueToBeRedirected}}"
 		},
 		{
-			"name": "Page-five-combined",
+			"page": "Page-five-combined",
 			"contents": "[[PropertyToBeRedirected::PageValueToBeRedirected]]"
 		}
 	],

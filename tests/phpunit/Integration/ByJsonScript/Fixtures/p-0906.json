@@ -2,29 +2,29 @@
 	"description": "Test `#ask` on category/property hierarchy with circular reference (#1713, `wgContLang=en`, `wgLang=en`, 'smwgEnabledQueryDependencyLinksStore', skip virtuoso)",
 	"setup": [
 		{
-			"name": "CategoryWithCircularHierarchy",
 			"namespace": "NS_CATEGORY",
+			"page": "CategoryWithCircularHierarchy",
 			"contents": "[[Category:CategoryWithCircularHierarchy]]"
 		},
 		{
-			"name": "PropertyWithCircularHierarchy",
 			"namespace": "SMW_NS_PROPERTY",
+			"page": "PropertyWithCircularHierarchy",
 			"contents": "[[Subproperty of::PropertyWithCircularHierarchy]]"
 		},
 		{
-			"name": "Example/P0906/1",
+			"page": "Example/P0906/1",
 			"contents": "[[Category:CategoryWithCircularHierarchy]]"
 		},
 		{
-			"name": "Example/P0906/Q1",
+			"page": "Example/P0906/Q1",
 			"contents": "{{#ask: [[Category:CategoryWithCircularHierarchy]] |link=none }}"
 		},
 		{
-			"name": "Example/P0906/2",
+			"page": "Example/P0906/2",
 			"contents": "[[PropertyWithCircularHierarchy::123]]"
 		},
 		{
-			"name": "Example/P0906/Q2",
+			"page": "Example/P0906/Q2",
 			"contents": "{{#ask: [[PropertyWithCircularHierarchy::+]] |link=none }}"
 		}
 	],
@@ -33,7 +33,7 @@
 			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0906/Q1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Example/P0906/1"
 				]
@@ -43,7 +43,7 @@
 			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0906/Q2",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Example/P0906/2"
 				]

@@ -2,26 +2,26 @@
 	"description": "Test single value (`~/!~`/`<`/`>`) queries on namespaced entity (#1652, `NS_HELP`, `smwStrictComparators=false`, skip-on virtuoso)",
 	"setup": [
 		{
-			"name": "ABC",
+			"page": "ABC",
 			"contents": "[[Category:0613]] (control group)"
 		},
 		{
-			"name": "ABB",
+			"page": "ABB",
 			"contents": "[[Category:0613]] (control group)"
 		},
 		{
-			"name": "ABC",
 			"namespace": "NS_HELP",
+			"page": "ABC",
 			"contents": "[[Category:0613]]"
 		},
 		{
-			"name": "ABB",
 			"namespace": "NS_HELP",
+			"page": "ABB",
 			"contents": "[[Category:0613]]"
 		},
 		{
-			"name": "AAB",
 			"namespace": "NS_HELP",
+			"page": "AAB",
 			"contents": "[[Category:0613]]"
 		}
 	],

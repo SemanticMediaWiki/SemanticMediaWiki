@@ -2,30 +2,30 @@
 	"description": "Test `_INST`/`_SUBC` queries (#1005, en, skip virtuoso)",
 	"setup": [
 		{
-			"name": "Foo",
 			"namespace": "NS_CATEGORY",
+			"page": "Foo",
 			"contents": ""
 		},
 		{
-			"name": "Bar",
 			"namespace": "NS_CATEGORY",
+			"page": "Bar",
 			"contents": "[[Category:Foo]]"
 		},
 		{
-			"name": "Bam",
 			"namespace": "NS_CATEGORY",
+			"page": "Bam",
 			"contents": "[[Category:Foo]]"
 		},
 		{
-			"name": "Page-annotated-with-subcategory",
+			"page": "Page-annotated-with-subcategory",
 			"contents": "[[Category:Bar]] [[Category:Bam]]"
 		},
 		{
-			"name": "Page-annotated-with-another-subcategory",
+			"page": "Page-annotated-with-another-subcategory",
 			"contents": "[[Category:Bam]]"
 		},
 		{
-			"name": "Page-annotated-with-supercategory-subcategory",
+			"page": "Page-annotated-with-supercategory-subcategory",
 			"contents": "[[Category:Foo]] [[Category:Bam]]"
 		}
 	],

@@ -3,20 +3,20 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "HasPropertyForUse",
+			"page": "HasPropertyForUse",
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"name": "Example/0407/1",
+			"page": "Example/0407/1",
 			"contents": "#REDIRECT [[Example/0407/2]]"
 		},
 		{
-			"name": "Example/0407/2",
-			"contents": "[[HasPropertyForUse::ABC]]",
-			"do-delete": true
+			"do-delete": true,
+			"page": "Example/0407/2",
+			"contents": "[[HasPropertyForUse::ABC]]"
 		},
 		{
-			"name": "Example/0407/3",
+			"page": "Example/0407/3",
 			"contents": "[[HasPropertyForUse::Example/0407/1]]"
 		}
 	],
@@ -26,7 +26,9 @@
 			"about": "#0 check annotation for a deleted redirected target subject",
 			"subject": "Example/0407/3",
 			"store": {
-				"clear-cache": true,
+				"clear-cache": true
+			},
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,

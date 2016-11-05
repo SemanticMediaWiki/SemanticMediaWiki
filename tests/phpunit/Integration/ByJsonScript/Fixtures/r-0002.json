@@ -3,25 +3,25 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text property for rdf",
+			"page": "Has text property for rdf",
 			"contents": "[[Has type::Text]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has page property for rdf",
+			"page": "Has page property for rdf",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has date property for rdf",
+			"page": "Has date property for rdf",
 			"contents": "[[Has type::Date]]"
 		},
 		{
-			"name": "Rdf-1-redirect",
+			"page": "Rdf-1-redirect",
 			"contents": "[[Has page property for rdf::Test one]] [[Has text property for rdf::Test one]] [[Has date property for rdf::1 Jan 1970]]"
 		},
 		{
-			"name": "Rdf-2-redirect",
+			"page": "Rdf-2-redirect",
 			"contents": "#REDIRECT [[Rdf-1-redirect]]"
 		}
 	],
@@ -40,7 +40,7 @@
 					"revisiondate": false
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D1-2Dredirect\">",
 					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D2-2Dredirect\">",
@@ -64,7 +64,7 @@
 					"revisiondate": false
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D1-2Dredirect\">",
 					"<swivt:Subject rdf:about=\"http://example.org/id/Rdf-2D2-2Dredirect\">",

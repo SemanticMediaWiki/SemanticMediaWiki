@@ -3,48 +3,48 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has population",
+			"page": "Has population",
 			"contents": "[[Has type::Reference]] [[Has fields::Number;Date;URL]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Capital of",
+			"page": "Capital of",
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"name": "Example/P0434/1",
+			"page": "Example/P0434/1",
 			"contents": "[[Has population::123;1 Jan 1970;http://example.org/SomeSource]] {{#subobject:Has population=456;1 Jan 2000;http://example.org/SomeSource }} [[Category:P0434]]"
 		},
 		{
-			"name": "Example/P0434/Q1.1",
+			"page": "Example/P0434/Q1.1",
 			"contents": "{{#ask: [[Has population::+]] [[Category:P0434]] |?Has population.Number |link=none}}"
 		},
 		{
-			"name": "Example/P0434/Q1.2",
+			"page": "Example/P0434/Q1.2",
 			"contents": "{{#ask: [[Has population::+]] [[Category:P0434]] |?Has population.Date |link=none}}"
 		},
 		{
-			"name": "Example/P0434/2",
+			"page": "Example/P0434/2",
 			"contents": "[[Capital of::Example/P0434/1]] [[Located in::Example/P0434/3]] [[Category:City]] [[Category:P0434]]"
 		},
 		{
-			"name": "Example/P0434/Q2.1",
+			"page": "Example/P0434/Q2.1",
 			"contents": "{{#ask: [[Category:City]] [[Category:P0434]] |?Capital of.Has population.Number |link=none}}"
 		},
 		{
-			"name": "Example/P0434/3",
+			"page": "Example/P0434/3",
 			"contents": "[[Located in::Example/P0434/4]] [[Category:Country]] [[Category:P0434]]"
 		},
 		{
-			"name": "Example/P0434/Q3.1",
+			"page": "Example/P0434/Q3.1",
 			"contents": "{{#ask: [[Category:Country]] [[Category:P0434]] |?Located in.-Located in.-Located in.Capital of |link=subject }}"
 		},
 		{
-			"name": "Example/P0434/Q3.2",
+			"page": "Example/P0434/Q3.2",
 			"contents": "{{#ask: [[Category:Country]] [[Category:P0434]] |?Located in.-Located in.-Located in.Capital of=SomeOtherText |link=none }}"
 		},
 		{
-			"name": "Example/P0434/Q3.3",
+			"page": "Example/P0434/Q3.3",
 			"contents": "{{#ask: [[Category:Country]] [[Category:P0434]] |?Located in.-Located in.-Located in.Capital of.Has subobject.Has population.Number |link=none }}"
 		}
 	],
@@ -53,7 +53,7 @@
 			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0434/Q1.1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td class=\"smwtype_wpg\">Example/P0434/1</td><td data-sort-value=\"123\" class=\"Number smwtype_num\">123</td>"
 				]
@@ -63,7 +63,7 @@
 			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0434/Q1.2",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td class=\"smwtype_wpg\">Example/P0434/1</td><td data-sort-value=\"2440587.5\" class=\"Date smwtype_dat\">1 January 1970</td></tr></table>"
 				]
@@ -73,7 +73,7 @@
 			"type": "parser",
 			"about": "#2 on (?Capital of.Has population.Number)",
 			"subject": "Example/P0434/Q2.1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td class=\"smwtype_wpg\">Example/P0434/2</td><td data-sort-value=\"123\" class=\"Number smwtype_num\">123</td>"
 				],
@@ -86,7 +86,7 @@
 			"type": "parser",
 			"about": "#3 on (?Located in.-Located in.-Located in.Capital of)",
 			"subject": "Example/P0434/Q3.1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td class=\"Capital-of smwtype_wpg\">Example/P0434/1</td>"
 				]
@@ -96,7 +96,7 @@
 			"type": "parser",
 			"about": "#4 on (?Located in.-Located in.-Located in.Capital of=SomeOtherText)",
 			"subject": "Example/P0434/Q3.2",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"SomeOtherText</a>&#160;<span title=\"Located in.-Located in.-Located in.Capital of\">⠉</span>",
 					"<td class=\"SomeOtherText smwtype_wpg\">Example/P0434/1</td>"
@@ -107,7 +107,7 @@
 			"type": "parser",
 			"about": "#5 on (?Located in.-Located in.-Located in.Capital of.Has subobject.Has population.Number)",
 			"subject": "Example/P0434/Q3.3",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<span title=\"Located in.-Located in.-Located in.Capital of.Has subobject.Has population.Number\">⠉</span>",
 					"<td class=\"smwtype_wpg\">Example/P0434/3</td><td data-sort-value=\"456\" class=\"Number smwtype_num\">456</td>"

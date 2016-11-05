@@ -3,66 +3,66 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has page-1",
+			"page": "Has page-1",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has page-2",
+			"page": "Has page-2",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text-1",
+			"page": "Has text-1",
 			"contents": "[[Has type::Text]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text-2",
+			"page": "Has text-2",
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"name": "Sample-1",
-			"namespace": "NS_CATEGORY"
+			"namespace": "NS_CATEGORY",
+			"page": "Sample-1"
 		},
 		{
-			"name": "Sample-2",
-			"namespace": "NS_CATEGORY"
+			"namespace": "NS_CATEGORY",
+			"page": "Sample-2"
 		},
 		{
-			"name": "Sample/1",
+			"page": "Sample/1",
 			"contents": "[[Category:Sample-1]] [[Has page-1::Value 1]][[Has text-1::Value 1]] [[Has text-1::Value 3]]"
 		},
 		{
-			"name": "Sample/1/1",
+			"page": "Sample/1/1",
 			"contents": "[[Category:Sample-1]] [[Has page-1::Value 1]][[Has page-2::Value 2]][[Has text-1::Value 1]][[Has text-2::Value 2]]"
 		},
 		{
-			"name": "Sample/1/2",
+			"page": "Sample/1/2",
 			"contents": "[[Category:Sample-1]] [[Has page-1::Value 1]][[Has page-1::Value 2]][[Has text-1::Value 1]][[Has text-1::Value 2]]"
 		},
 		{
-			"name": "Sample/2",
+			"page": "Sample/2",
 			"contents": "[[Category:Sample-1]] [[Has page-2::Value 1]][[Has text-2::Value 1]] [[Has page-1::Value 3]]"
 		},
 		{
-			"name": "Sample/2/1",
+			"page": "Sample/2/1",
 			"contents": "[[Category:Sample-1]] [[Has page-2::Value 1]][[Has page-2::Value 2]][[Has text-2::Value 1]][[Has text-2::Value 2]]"
 		},
 		{
-			"name": "Sample/3/1",
+			"page": "Sample/3/1",
 			"contents": "[[Category:Sample-1]] [[Has page-2::Sample/1/2]]"
 		},
 		{
-			"name": "Sample/3/2",
+			"page": "Sample/3/2",
 			"contents": "[[Category:Sample-2]] [[Has page-2::Sample/2/1]]"
 		},
 		{
-			"name": "Sample/4/1",
+			"page": "Sample/4/1",
 			"contents": "[[Category:Sample-1]] [[Has page-1::Sample/3/2]]"
 		},
 		{
-			"name": "Sample/4/2",
+			"page": "Sample/4/2",
 			"contents": "[[Category:Sample-2]] [[Has page-1::Sample/3/2]]"
 		}
 	],

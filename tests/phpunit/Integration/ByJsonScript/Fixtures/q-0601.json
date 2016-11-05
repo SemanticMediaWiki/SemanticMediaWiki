@@ -3,28 +3,28 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Located in",
+			"page": "Located in",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Member of",
+			"page": "Member of",
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"name": "Europe",
+			"page": "Europe",
 			"contents": "[[Member of::European Union]] {{#subobject:Member of=NATO}}"
 		},
 		{
-			"name": "France",
+			"page": "France",
 			"contents": "[[Located in::Europe]]"
 		},
 		{
-			"name": "Germany",
+			"page": "Germany",
 			"contents": "{{#set:Located in=Europe}}"
 		},
 		{
-			"name": "Italy",
+			"page": "Italy",
 			"contents": "{{#subobject:Located in=Europe}}"
 		}
 	],

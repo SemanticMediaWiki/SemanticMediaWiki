@@ -3,24 +3,24 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has PAGE",
+			"page": "Has PAGE",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has page",
+			"page": "Has page",
 			"contents": "#REDIRECT [[Property:Has PAGE]]"
 		},
 		{
-			"name": "Example/P0903/1",
+			"page": "Example/P0903/1",
 			"contents": "[[Has page::ABC]]"
 		},
 		{
-			"name": "Example/P0903/2",
+			"page": "Example/P0903/2",
 			"contents": "[[Has PAGE::ABC]]"
 		},
 		{
-			"name": "Example/P0903/3",
+			"page": "Example/P0903/3",
 			"contents": "{{#ask:[[Has page::ABC]] |?Has page |?Has PAGE |format=table }}"
 		}
 	],
@@ -30,7 +30,9 @@
 			"about": "#0",
 			"subject": "Example/P0903/3",
 			"store": {
-				"clear-cache": true,
+				"clear-cache": true
+			},
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -41,7 +43,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Example/P0903/1",
 					"Example/P0903/2"

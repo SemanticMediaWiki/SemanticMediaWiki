@@ -3,22 +3,22 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has temperature",
+			"page": "Has temperature",
 			"contents": "[[Has type::Temperature]]"
 		},
 		{
-			"name": "Example/P0425/1",
 			"contentlanguage": "fr",
+			"page": "Example/P0425/1",
 			"contents": "[[Has temperature::310.928 K]]"
 		},
 		{
-			"name": "Example/P0425/2",
 			"contentlanguage": "en",
+			"page": "Example/P0425/2",
 			"contents": "[[Has temperature::310.928 K]]"
 		},
 		{
-			"name": "Example/P0425/3",
 			"contentlanguage": "fr",
+			"page": "Example/P0425/3",
 			"contents": "[[Has temperature::310,928 K]]"
 		}
 	],
@@ -27,7 +27,7 @@
 			"type": "parser",
 			"about": "#0 page content language FR and . do not match, uses `en` as display language",
 			"subject": "Example/P0425/1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<div class=\"smwttcontent\">&quot;.928K&quot; is not declared as a valid unit of measurement for this property.</div>"
 				]
@@ -37,7 +37,7 @@
 			"type": "parser",
 			"about": "#1 page content language EN and . do match",
 			"subject": "Example/P0425/2",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<span class=\"smwtext\">310.928 K</span><div class=\"smwttcontent\">37.778&#160;°C <br />100&#160;°F <br />559.67&#160;°R <br /></div></span>"
 				]
@@ -47,7 +47,7 @@
 			"type": "parser",
 			"about": "#2 page content language FR and , do match",
 			"subject": "Example/P0425/3",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<span class=\"smwtext\">310,928 K</span><div class=\"smwttcontent\">37.778&#160;°C <br />100&#160;°F <br />559.67&#160;°R <br /></div></span>"
 				]

@@ -3,11 +3,11 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has page",
+			"page": "Has page",
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"name": "Example/0301/1",
+			"page": "Example/0301/1",
 			"contents": "{{#subobject:|Has page={{PAGENAME}}|@category=ABC;123|+sep=;}}"
 		}
 	],
@@ -16,7 +16,7 @@
 			"type": "parser",
 			"about": "#0 #subobject with category annotation",
 			"subject": "Example/0301/1#_033037fca2311e746bf1871d3be6984c",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,

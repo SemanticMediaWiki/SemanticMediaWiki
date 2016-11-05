@@ -3,177 +3,177 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has date",
+			"page": "Has date",
 			"contents": "[[Has type::Date]]"
 		},
 		{
-			"name": "Example/P0413/1",
+			"page": "Example/P0413/1",
 			"contents": "[[Has date::Feb 11 2000 10:00:01]]"
 		},
 		{
-			"name": "Example/P0413/1a",
+			"page": "Example/P0413/1a",
 			"contents": "{{#ask: [[Example/P0413/1]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date }}"
 		},
 		{
-			"name": "Example/P0413/2",
+			"page": "Example/P0413/2",
 			"contents": "[[Has date::Feb 11 2000]]"
 		},
 		{
-			"name": "Example/P0413/2a",
+			"page": "Example/P0413/2a",
 			"contents": "{{#ask: [[Example/P0413/2]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date }}"
 		},
 		{
-			"name": "Example/P0413/3",
+			"page": "Example/P0413/3",
 			"contents": "[[Has date::2000]]"
 		},
 		{
-			"name": "Example/P0413/3a",
+			"page": "Example/P0413/3a",
 			"contents": "{{#ask: [[Example/P0413/3]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date }}"
 		},
 		{
-			"name": "Example/P0413/4",
+			"page": "Example/P0413/4",
 			"contents": "[[Has date::Feb 11 2000 10:00:01 PM]]"
 		},
 		{
-			"name": "Example/P0413/4a",
+			"page": "Example/P0413/4a",
 			"contents": "{{#ask: [[Example/P0413/4]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date }}"
 		},
 		{
-			"name": "Example/P0413/5",
+			"page": "Example/P0413/5",
 			"contents": "[[Has date::Feb 11 2000 22:00:01]]"
 		},
 		{
-			"name": "Example/P0413/5a",
+			"page": "Example/P0413/5a",
 			"contents": "{{#ask: [[Example/P0413/5]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date }}"
 		},
 		{
-			"name": "Example/P0413/6",
+			"page": "Example/P0413/6",
 			"contents": "[[Has date::2000-02-11T22:00:01]]"
 		},
 		{
-			"name": "Example/P0413/6a",
+			"page": "Example/P0413/6a",
 			"contents": "{{#ask: [[Example/P0413/6]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date }}"
 		},
 		{
-			"name": "Example/P0413/7",
+			"page": "Example/P0413/7",
 			"contents": "[[Has date::2000-02-11T22:00:01+02:00]]"
 		},
 		{
-			"name": "Example/P0413/7a",
+			"page": "Example/P0413/7a",
 			"contents": "{{#ask: [[Example/P0413/7]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date }}"
 		},
 		{
-			"name": "Example/P0413/8",
+			"page": "Example/P0413/8",
 			"contents": "[[Has date::2000 February 2]]"
 		},
 		{
-			"name": "Example/P0413/8a",
+			"page": "Example/P0413/8a",
 			"contents": "{{#ask: [[Example/P0413/8]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date }}"
 		},
 		{
-			"name": "Example/P0413/9",
+			"page": "Example/P0413/9",
 			"contents": "[[Has date::2-3-2000]]"
 		},
 		{
-			"name": "Example/P0413/9a",
+			"page": "Example/P0413/9a",
 			"contents": "{{#ask: [[Example/P0413/9]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date }}"
 		},
 		{
-			"name": "Example/P0413/10",
+			"page": "Example/P0413/10",
 			"contents": "[[Has date::2/3/2000]]"
 		},
 		{
-			"name": "Example/P0413/10a",
+			"page": "Example/P0413/10a",
 			"contents": "{{#ask: [[Example/P0413/10]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date }}"
 		},
 		{
-			"name": "Example/P0413/11",
-			"contents": "[[Has date::Jan 1 300 BC]]",
 			"skip-on": {
 				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
-			}
+			},
+			"page": "Example/P0413/11",
+			"contents": "[[Has date::Jan 1 300 BC]]"
 		},
 		{
-			"name": "Example/P0413/11a",
-			"contents": "{{#ask: [[Example/P0413/11]] |?Has date |?Has date#GR |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date |?Has date#JD=JD }}",
 			"skip-on": {
 				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
-			}
+			},
+			"page": "Example/P0413/11a",
+			"contents": "{{#ask: [[Example/P0413/11]] |?Has date |?Has date#GR |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date |?Has date#JD=JD }}"
 		},
 		{
-			"name": "Example/P0413/12",
-			"contents": "[[Has date::14000000000 BC]] (WIN-OS only allows 2147483647)",
 			"skip-on": {
 				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
-			}
+			},
+			"page": "Example/P0413/12",
+			"contents": "[[Has date::14000000000 BC]] (WIN-OS only allows 2147483647)"
 		},
 		{
-			"name": "Example/P0413/12a",
-			"contents": "{{#ask: [[Example/P0413/12]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date }}",
 			"skip-on": {
 				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
-			}
+			},
+			"page": "Example/P0413/12a",
+			"contents": "{{#ask: [[Example/P0413/12]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date }}"
 		},
 		{
-			"name": "Example/P0413/13",
+			"page": "Example/P0413/13",
 			"contents": "[[Has date::Feb 11 2000 Jl]]"
 		},
 		{
-			"name": "Example/P0413/13a",
+			"page": "Example/P0413/13a",
 			"contents": "{{#ask: [[Example/P0413/13]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date |?Has date#JL=JL Date |?Has date#GR=GR Date }}"
 		},
 		{
-			"name": "Example/P0413/14",
+			"page": "Example/P0413/14",
 			"contents": "[[Has date::Feb 11 1492 Gr]]"
 		},
 		{
-			"name": "Example/P0413/14a",
+			"page": "Example/P0413/14a",
 			"contents": "{{#ask: [[Example/P0413/14]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date |?Has date#JL=JL Date |?Has date#GR=GR Date }}"
 		},
 		{
-			"name": "Example/P0413/15",
+			"page": "Example/P0413/15",
 			"contents": "[[Has date::Feb 11 2000 10:00 GMT]]"
 		},
 		{
-			"name": "Example/P0413/15a",
+			"page": "Example/P0413/15a",
 			"contents": "{{#ask: [[Example/P0413/15]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date |?Has date#JL=JL Date |?Has date#GR=GR Date }}"
 		},
 		{
-			"name": "Example/P0413/16",
+			"page": "Example/P0413/16",
 			"contents": "[[Has date::2000-02-22]]"
 		},
 		{
-			"name": "Example/P0413/16a",
+			"page": "Example/P0413/16a",
 			"contents": "{{#ask: [[Example/P0413/16]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date }}"
 		},
 		{
-			"name": "Example/P0413/17",
-			"contents": "[[Has date::11000 BC]]",
 			"skip-on": {
 				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
-			}
+			},
+			"page": "Example/P0413/17",
+			"contents": "[[Has date::11000 BC]]"
 		},
 		{
-			"name": "Example/P0413/17a",
-			"contents": "{{#ask: [[Example/P0413/17]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date }}",
 			"skip-on": {
 				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
-			}
+			},
+			"page": "Example/P0413/17a",
+			"contents": "{{#ask: [[Example/P0413/17]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date }}"
 		},
 		{
-			"name": "Example/P0413/18",
+			"page": "Example/P0413/18",
 			"contents": "[[Has date::2488346.0804977 JD]]"
 		},
 		{
-			"name": "Example/P0413/18a",
+			"page": "Example/P0413/18a",
 			"contents": "{{#ask: [[Example/P0413/18]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date |?Has date#JD=JD }}"
 		},
 		{
-			"name": "Example/P0413/19",
+			"page": "Example/P0413/19",
 			"contents": "[[Has date::2488346.0804977 MJD]]"
 		},
 		{
-			"name": "Example/P0413/19a",
+			"page": "Example/P0413/19a",
 			"contents": "{{#ask: [[Example/P0413/19]] |?Has date |?Has date#- |?Has date#ISO=ISO Date |?Has date#MEDIAWIKI=MW Date |?Has date#JD=JD }}"
 		}
 	],
@@ -182,7 +182,7 @@
 			"type": "parser",
 			"about": "#0 Complete date with time",
 			"subject": "Example/P0413/1",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -196,7 +196,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Feb 11 2000 10:00:01"
 				]
@@ -206,7 +206,7 @@
 			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0413/1a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td data-sort-value=\"2451585.9166782\" class=\"Has-date smwtype_dat\">11 February 2000 10:00:01</td>",
 					"<td data-sort-value=\"2451585.9166782\" class=\"Has-date smwtype_dat\">2000-02-11T10:00:01</td>",
@@ -219,7 +219,7 @@
 			"type": "parser",
 			"about": "#2 Just a date",
 			"subject": "Example/P0413/2",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -233,7 +233,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Feb 11 2000"
 				]
@@ -243,7 +243,7 @@
 			"type": "parser",
 			"about": "#3",
 			"subject": "Example/P0413/2a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td data-sort-value=\"2451585.5\" class=\"Has-date smwtype_dat\">11 February 2000</td>",
 					"<td data-sort-value=\"2451585.5\" class=\"Has-date smwtype_dat\">2000-02-11</td>",
@@ -256,7 +256,7 @@
 			"type": "parser",
 			"about": "#4 Yearby itself",
 			"subject": "Example/P0413/3",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -270,7 +270,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"2000"
 				]
@@ -280,7 +280,7 @@
 			"type": "parser",
 			"about": "#5",
 			"subject": "Example/P0413/3a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td data-sort-value=\"2451544.5\" class=\"Has-date smwtype_dat\">2000</td>",
 					"<td data-sort-value=\"2451544.5\" class=\"Has-date smwtype_dat\">2000-01-01</td>",
@@ -293,7 +293,7 @@
 			"type": "parser",
 			"about": "#6 Complete date with time, PM",
 			"subject": "Example/P0413/4",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -307,7 +307,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Feb 11 2000 10:00:01 PM"
 				]
@@ -317,7 +317,7 @@
 			"type": "parser",
 			"about": "#7",
 			"subject": "Example/P0413/4a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td data-sort-value=\"2451586.4166782\" class=\"Has-date smwtype_dat\">11 February 2000 22:00:01</td>",
 					"<td data-sort-value=\"2451586.4166782\" class=\"Has-date smwtype_dat\">2000-02-11T22:00:01</td>",
@@ -330,7 +330,7 @@
 			"type": "parser",
 			"about": "#8 Complete date with 24h time",
 			"subject": "Example/P0413/5",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -344,7 +344,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Feb 11 2000 22:00:01"
 				]
@@ -354,7 +354,7 @@
 			"type": "parser",
 			"about": "#9",
 			"subject": "Example/P0413/5a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td data-sort-value=\"2451586.4166782\" class=\"Has-date smwtype_dat\">11 February 2000 22:00:01</td>",
 					"<td data-sort-value=\"2451586.4166782\" class=\"Has-date smwtype_dat\">2000-02-11T22:00:01</td>",
@@ -367,7 +367,7 @@
 			"type": "parser",
 			"about": "#10 ISO-style date",
 			"subject": "Example/P0413/6",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -381,7 +381,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"2000-02-11T22:00:01"
 				]
@@ -391,7 +391,7 @@
 			"type": "parser",
 			"about": "#11",
 			"subject": "Example/P0413/6a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td data-sort-value=\"2451586.4166782\" class=\"Has-date smwtype_dat\">11 February 2000 22:00:01</td>",
 					"<td data-sort-value=\"2451586.4166782\" class=\"Has-date smwtype_dat\">2000-02-11T22:00:01</td>",
@@ -404,7 +404,7 @@
 			"type": "parser",
 			"about": "#12 ISO-style date with offset",
 			"subject": "Example/P0413/7",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -418,7 +418,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"2000-02-11T22:00:01+02:00"
 				]
@@ -428,7 +428,7 @@
 			"type": "parser",
 			"about": "#13",
 			"subject": "Example/P0413/7a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td data-sort-value=\"2451586.3333449\" class=\"Has-date smwtype_dat\">11 February 2000 20:00:01</td>",
 					"<td data-sort-value=\"2451586.3333449\" class=\"Has-date smwtype_dat\">2000-02-11T20:00:01</td>",
@@ -441,7 +441,7 @@
 			"type": "parser",
 			"about": "#14 varying order of inputs",
 			"subject": "Example/P0413/8",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -455,7 +455,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"2000 February 2"
 				]
@@ -465,7 +465,7 @@
 			"type": "parser",
 			"about": "#15",
 			"subject": "Example/P0413/8a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td data-sort-value=\"2451576.5\" class=\"Has-date smwtype_dat\">2 February 2000</td>",
 					"<td data-sort-value=\"2451576.5\" class=\"Has-date smwtype_dat\">2000-02-02</td>",
@@ -478,7 +478,7 @@
 			"type": "parser",
 			"about": "#16 preferred interpretation, month or day, sometimes depends on language settings",
 			"subject": "Example/P0413/9",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -492,7 +492,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"2-3-2000"
 				]
@@ -502,7 +502,7 @@
 			"type": "parser",
 			"about": "#17",
 			"subject": "Example/P0413/9a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td data-sort-value=\"2451577.5\" class=\"Has-date smwtype_dat\">3 February 2000</td>",
 					"<td data-sort-value=\"2451577.5\" class=\"Has-date smwtype_dat\">2000-02-03</td>",
@@ -515,7 +515,7 @@
 			"type": "parser",
 			"about": "#18 various kinds of separators (/) are recognized in all languages",
 			"subject": "Example/P0413/10",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -529,7 +529,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"2/3/2000"
 				]
@@ -539,7 +539,7 @@
 			"type": "parser",
 			"about": "#19",
 			"subject": "Example/P0413/10a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td data-sort-value=\"2451577.5\" class=\"Has-date smwtype_dat\">3 February 2000</td>",
 					"<td data-sort-value=\"2451577.5\" class=\"Has-date smwtype_dat\">2000-02-03</td>",
@@ -555,7 +555,7 @@
 				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
 			},
 			"subject": "Example/P0413/11",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -569,7 +569,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Jan 1 300 BC"
 				]
@@ -582,7 +582,7 @@
 				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
 			},
 			"subject": "Example/P0413/11a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td data-sort-value=\"1611848.5\" class=\"Has-date smwtype_dat\">1 January 300 BC <sup>JL</sup></td>",
 					"<td data-sort-value=\"1611848.5\" class=\"Has-date smwtype_dat\">28 December 301 BC</td>",
@@ -597,7 +597,7 @@
 			"type": "parser",
 			"about": "#24 Julian Calendar annotated date",
 			"subject": "Example/P0413/13",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -611,7 +611,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Feb 11 2000 Jl"
 				]
@@ -621,7 +621,7 @@
 			"type": "parser",
 			"about": "#25",
 			"subject": "Example/P0413/13a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td data-sort-value=\"2451598.5\" class=\"Has-date smwtype_dat\">11 February 2000 <sup>JL</sup></td>",
 					"<td data-sort-value=\"2451598.5\" class=\"Has-date smwtype_dat\">2000-02-24</td>",
@@ -636,7 +636,7 @@
 			"type": "parser",
 			"about": "#26 Gregorian Calendar annotated date",
 			"subject": "Example/P0413/14",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -650,7 +650,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Feb 11 1492 Gr"
 				]
@@ -660,7 +660,7 @@
 			"type": "parser",
 			"about": "#27",
 			"subject": "Example/P0413/14a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td data-sort-value=\"2266042.5\" class=\"Has-date smwtype_dat\">2 February 1492 <sup>JL</sup></td>",
 					"<td data-sort-value=\"2266042.5\" class=\"Has-date smwtype_dat\">1492-02-11</td>",
@@ -675,7 +675,7 @@
 			"type": "parser",
 			"about": "#28 Date with time zone shortcut",
 			"subject": "Example/P0413/15",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -689,7 +689,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Feb 11 2000 10:00 GMT"
 				]
@@ -699,7 +699,7 @@
 			"type": "parser",
 			"about": "#29",
 			"subject": "Example/P0413/15a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td data-sort-value=\"2451585.9166667\" class=\"Has-date smwtype_dat\">11 February 2000 10:00:00</td>",
 					"<td data-sort-value=\"2451585.9166667\" class=\"Has-date smwtype_dat\">2000-02-11T10:00:00</td>",
@@ -714,7 +714,7 @@
 			"type": "parser",
 			"about": "#30 MySQL date format",
 			"subject": "Example/P0413/16",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -728,7 +728,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"2000-02-22"
 				]
@@ -738,7 +738,7 @@
 			"type": "parser",
 			"about": "#31",
 			"subject": "Example/P0413/16a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td data-sort-value=\"2451596.5\" class=\"Has-date smwtype_dat\">22 February 2000</td>",
 					"<td data-sort-value=\"2451596.5\" class=\"Has-date smwtype_dat\">2000-02-22</td>",
@@ -754,7 +754,7 @@
 				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
 			},
 			"subject": "Example/P0413/17",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -768,7 +768,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"11000 BC"
 				]
@@ -781,7 +781,7 @@
 				"virtuoso": "Virtuoso 6.1 does not support BC/BCE dates"
 			},
 			"subject": "Example/P0413/17a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td data-sort-value=\"-11001\" class=\"Has-date smwtype_dat\">11000 BC</td>",
 					"<td data-sort-value=\"-11001\" class=\"Has-date smwtype_dat\">--11000-01-01</td>",
@@ -794,7 +794,7 @@
 			"type": "parser",
 			"about": "#34 Direct JD input",
 			"subject": "Example/P0413/18",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -808,7 +808,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"2488346.0804977 JD"
 				]
@@ -818,7 +818,7 @@
 			"type": "parser",
 			"about": "#35",
 			"subject": "Example/P0413/18a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td data-sort-value=\"2488346.0804977\" class=\"Has-date smwtype_dat\">4 October 2100 13:55:55</td>",
 					"<td data-sort-value=\"2488346.0804977\" class=\"Has-date smwtype_dat\">2100-10-04T13:55:55</td>",
@@ -832,7 +832,7 @@
 			"type": "parser",
 			"about": "#36 Direct MJD input",
 			"subject": "Example/P0413/19",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -846,7 +846,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"2488346.0804977 MJD"
 				]
@@ -856,7 +856,7 @@
 			"type": "parser",
 			"about": "#37",
 			"subject": "Example/P0413/19a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td data-sort-value=\"4888346.5804977\" class=\"Has-date smwtype_dat\">27 September 8671 01:55:55</td>",
 					"<td data-sort-value=\"4888346.5804977\" class=\"Has-date smwtype_dat\">8671-09-27T01:55:55</td>",

@@ -3,37 +3,37 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has number",
+			"page": "Has number",
 			"contents": "[[Has type::Number]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has number with precision 4",
+			"page": "Has number with precision 4",
 			"contents": "[[Has type::Number]] [[Display precision of::4]]"
 		},
 		{
-			"name": "Example/P0426/1",
 			"contentlanguage": "fr",
+			"page": "Example/P0426/1",
 			"contents": "[[Has number::0,00000000000012]] [[Has number::1,000000000000123]] [[Has number::72,769482308]] [[Has number::5000,769482308]] [[Has number::-0,000000000004566]] [[Has number::0,2123456e+3]] [[Has number::1,334e-13]]"
 		},
 		{
-			"name": "Example/P0426/2",
 			"contentlanguage": "en",
+			"page": "Example/P0426/2",
 			"contents": "[[Has number::0.00000000000012]] [[Has number::1.000000000000123]] [[Has number::72.769482308]] [[Has number::5000.769482308]] [[Has number::-0.000000000004566]] [[Has number::0.2123456e+3]] [[Has number::1.334e-13]]"
 		},
 		{
-			"name": "Example/P0426/Q1.1",
 			"contentlanguage": "fr",
+			"page": "Example/P0426/Q1.1",
 			"contents": "{{#ask: [[Example/P0426/1]] |?Has number }}"
 		},
 		{
-			"name": "Example/P0426/Q1.2",
 			"contentlanguage": "fr",
+			"page": "Example/P0426/Q1.2",
 			"contents": "{{#ask: [[Example/P0426/1]] |?Has number#-p5 }}"
 		},
 		{
-			"name": "Example/P0426/Q2.1",
 			"contentlanguage": "fr",
+			"page": "Example/P0426/Q2.1",
 			"contents": "{{#ask: [[Example/P0426/2]] |?Has number }}"
 		}
 	],
@@ -42,7 +42,7 @@
 			"type": "parser",
 			"about": "#0 page content language FR, display in en",
 			"subject": "Example/P0426/Q1.1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"1.2e-13",
 					"1",
@@ -58,7 +58,7 @@
 			"type": "parser",
 			"about": "#1 page content language EN, display in en",
 			"subject": "Example/P0426/Q2.1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"1.2e-13",
 					"1",
@@ -74,7 +74,7 @@
 			"type": "parser",
 			"about": "#2 with precision display precision 5",
 			"subject": "Example/P0426/Q1.2",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"0.00000",
 					"1.00000",

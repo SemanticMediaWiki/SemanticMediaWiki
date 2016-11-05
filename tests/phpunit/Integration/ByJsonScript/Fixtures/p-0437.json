@@ -1,19 +1,19 @@
 {
-	"description": "Test in-text annotation with preferred property label (#1879, `wgContLang=en`, `wgLang=ja`)",
+	"description": "Test in-text annotation with `_PPLB` [preferred property label] (#1879, `wgContLang=en`, `wgLang=ja`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "P106",
+			"page": "P106",
 			"contents": {
 				"import-from": "/../Contents/p-0436.json"
 			}
 		},
 		{
-			"name": "Example/P0437/1",
+			"page": "Example/P0437/1",
 			"contents": "{{#subobject: |P106=Teacher }}{{#subobject: |P106=Actor }}"
 		},
 		{
-			"name": "Example/P0437/Q.1",
+			"page": "Example/P0437/Q.1",
 			"contents": "{{#ask: [[P106::+]] |?P106 }}"
 		}
 	],
@@ -22,7 +22,7 @@
 			"type": "parser",
 			"about": "#0 (ja)",
 			"subject": "Example/P0437/Q.1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"data-title=\"プロパティ\" title=\"人物の職業。「専門分野」(Property:P101) も参照\">",
 					"title=\"Property:P106\">職業</a>"

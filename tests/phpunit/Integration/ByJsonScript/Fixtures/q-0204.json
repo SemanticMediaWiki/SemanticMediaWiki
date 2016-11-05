@@ -3,25 +3,25 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has page",
+			"page": "Has page",
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"name": "Page/02/04-1",
+			"page": "Page/02/04-1",
 			"contents": "{{#subobject:|Has page=Page/02/04-1}}"
 		},
 		{
-			"name": "Page/02/04-2",
+			"page": "Page/02/04-2",
 			"contents": "[[Has page::Page/02/04-2]]"
 		},
 		{
-			"name": "Concept-for-inverse-pre-defined-property",
 			"namespace": "SMW_NS_CONCEPT",
+			"page": "Concept-for-inverse-pre-defined-property",
 			"contents": "{{#concept: [[-Has page.-Has subobject::Page/02/04-1]] }}"
 		},
 		{
-			"name": "Concept-for-inverse-user-defined-property",
 			"namespace": "SMW_NS_CONCEPT",
+			"page": "Concept-for-inverse-user-defined-property",
 			"contents": "{{#concept: [[-Has page.-Has page::Page/02/04-2]] }}"
 		}
 	],

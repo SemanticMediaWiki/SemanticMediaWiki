@@ -3,19 +3,19 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has example page",
+			"page": "Has example page",
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"name": "Example/0608/1/1",
+			"page": "Example/0608/1/1",
 			"contents": "[[Category:0608-1]]"
 		},
 		{
-			"name": "Example/0608/1/2",
+			"page": "Example/0608/1/2",
 			"contents": "[[Category:0608-2]]"
 		},
 		{
-			"name": "Example/0608/3",
+			"page": "Example/0608/3",
 			"contents": "[[Category:0608-3]] [[Has example page::Example/0608/3]]"
 		}
 	],

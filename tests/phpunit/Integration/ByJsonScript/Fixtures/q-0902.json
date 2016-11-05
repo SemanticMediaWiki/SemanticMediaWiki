@@ -3,15 +3,15 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has conference type",
+			"page": "Has conference type",
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"name": "Conference-1",
+			"page": "Conference-1",
 			"contents": "[[Has conference type::Presentation]], [[Has conference type::Tutorial]]"
 		},
 		{
-			"name": "Conference-2",
+			"page": "Conference-2",
 			"contents": "[[Has conference type::Tutorial]]"
 		}
 	],

@@ -3,20 +3,20 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has description",
+			"page": "Has description",
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"name": "Page-one",
+			"page": "Page-one",
 			"contents": "[[Has description::Bar]]"
 		},
 		{
-			"name": "Page-two",
+			"page": "Page-two",
 			"contents": "[[Has description::Foo]]"
 		},
 		{
-			"name": "Concept-for-any-description",
 			"namespace": "SMW_NS_CONCEPT",
+			"page": "Concept-for-any-description",
 			"contents": "{{#concept: [[Has description::+]] }}"
 		}
 	],

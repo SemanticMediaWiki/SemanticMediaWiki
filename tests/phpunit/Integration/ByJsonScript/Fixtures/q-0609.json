@@ -2,21 +2,21 @@
 	"description": "Test `_wpg` for single value approximate (`~/!~`) queries with conjunctive category hierarchy (#1246, en, skip virtuoso)",
 	"setup": [
 		{
-			"name": "Example/0609/1",
+			"page": "Example/0609/1",
 			"contents": "[[Category:0609-1]]"
 		},
 		{
-			"name": "Example/0609/2",
+			"page": "Example/0609/2",
 			"contents": "[[Category:0609-2]]"
 		},
 		{
-			"name": "0609-1",
 			"namespace": "NS_CATEGORY",
+			"page": "0609-1",
 			"contents": "[[Category:0609]]"
 		},
 		{
-			"name": "0609-2",
 			"namespace": "NS_CATEGORY",
+			"page": "0609-2",
 			"contents": "[[Category:0609]]"
 		}
 	],

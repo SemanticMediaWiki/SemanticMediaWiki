@@ -3,28 +3,28 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has regexblob property",
+			"page": "Has regexblob property",
 			"contents": "[[Has type::Text]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has simple text",
+			"page": "Has simple text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"name": "Escape character blob subject-a",
+			"page": "Escape character blob subject-a",
 			"contents": "{{#set:|Has regexblob property=[(+*. \\.)']}} {{#subobject:FixedSubobjectName|Has regexblob property=[(+* \\:)]\\\\\"}}"
 		},
 		{
-			"name": "Escape character blob subject-b",
+			"page": "Escape character blob subject-b",
 			"contents": "{{#set:|Has regexblob property=[(+*. \\;)\\\\']\\\"}} {{#subobject:FixedSubobjectName|Has regexblob property=[(+* \\=)]\\\\\"\\\"}}"
 		},
 		{
-			"name": "Escape character blob subject-c",
+			"page": "Escape character blob subject-c",
 			"contents": "[[Has regexblob property::Foo(\\\"'#^$&-/)]]"
 		},
 		{
-			"name": "BlobValue with whitespaces",
+			"page": "BlobValue with whitespaces",
 			"contents": "[[Has simple text:: +/-nuclear atypia ]]"
 		}
 	],

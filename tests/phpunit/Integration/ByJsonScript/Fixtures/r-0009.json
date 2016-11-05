@@ -3,7 +3,7 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has number",
+			"page": "Has number",
 			"contents": "[[Has type::Number]] [[Has property description::Is a number@en]] [[Has property description::数@ja]]"
 		}
 	],
@@ -21,7 +21,7 @@
 					"revisiondate": false
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<owl:DatatypeProperty rdf:about=\"http://example.org/id/Property-3AHas_number\">",
 					"<skos:scopeNote xml:lang=\"en\">Is a number</skos:scopeNote>",
@@ -51,7 +51,7 @@
 					"revisiondate": false
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"rdfs:label  \"Has number\" ;",
 					"skos:scopeNote  \"Is a number\"@en ,  \"数\"@ja ;",

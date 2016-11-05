@@ -3,19 +3,19 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has date",
+			"page": "Has date",
 			"contents": "[[Has type::Date]]"
 		},
 		{
-			"name": "Example/S0005/1",
+			"page": "Example/S0005/1",
 			"contents": "[[Has date::12 Jan 1991 8:56]] [[Has date::12 Jan 1345]] [[Category:S0004]]"
 		},
 		{
-			"name": "Example/S0005/2",
+			"page": "Example/S0005/2",
 			"contents": "#REDIRECT [[Example/S0005/3]]"
 		},
 		{
-			"name": "Example/S0005/3",
+			"page": "Example/S0005/3",
 			"contents": "{{DISPLAYTITLE:ABC}}"
 		}
 	],
@@ -30,7 +30,7 @@
 					"output": "legacy"
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<span class=\"smwb-value\">08:56:00, 12 January 1991&#160;&#160;",
 					"title=\"Special:SearchByProperty/Has-20date/12-20January-201991-2008:56:00\">+</a></span>",
@@ -49,7 +49,7 @@
 					"output": "legacy"
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"class=\"mw-redirect\" title=\"Example/S0005/2\">Example/S0005/2"
 				],

@@ -3,34 +3,34 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has url",
+			"page": "Has url",
 			"contents": "[[Has type::URL]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has page",
+			"page": "Has page",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text",
+			"page": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"name": "SetValue",
 			"namespace": "NS_TEMPLATE",
+			"page": "SetValue",
 			"contents": "<includeonly>{{{value}}}</includeonly>"
 		},
 		{
-			"name": "Example/P0403/1",
+			"page": "Example/P0403/1",
 			"contents": "[[Has url::http://example.org/api.php?action=ask&query=%5B%5BModification%20date::%2B%5D%5D%7C%3FModification%20date%7Csort%3DModification%20date%7Corder%3Ddesc|api.php?action=ask&query=]] __SHOWFACTBOX__"
 		},
 		{
-			"name": "Example/P0403/2",
+			"page": "Example/P0403/2",
 			"contents": "{{#set:|Has text=ABC [[Has page::DEF]] 123|template=SetValue}}"
 		},
 		{
-			"name": "Example/P0403/3",
+			"page": "Example/P0403/3",
 			"contents": "{{#ask: [[Example/P0403/2]] |?Has text}}"
 		}
 	],
@@ -39,7 +39,7 @@
 			"type": "parser",
 			"about": "#0 don't expected to see a Modification date annotation due to %5B%5BModification%20date::%2B%5D%5D => [[Modification::+]]",
 			"subject": "Example/P0403/1",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -54,7 +54,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"href=\"http://example.org/api.php?action=ask&amp;query=%5B%5BModification%20date::%2B%5D%5D%7C%3FModification%20date%7Csort%3DModification%20date%7Corder%3Ddesc\">api.php?action=ask&amp;query=</a>"
 				]
@@ -64,7 +64,7 @@
 			"type": "parser",
 			"about": "#1, refs #1314",
 			"subject": "Example/P0403/2",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
@@ -86,7 +86,7 @@
 			"type": "parser",
 			"about": "#2 does not contain any [[ :: ]] copied annotation values, refs #1314",
 			"subject": "Example/P0403/3",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -98,7 +98,7 @@
 					"propertyValues": []
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"ABC DEF 123"
 				]

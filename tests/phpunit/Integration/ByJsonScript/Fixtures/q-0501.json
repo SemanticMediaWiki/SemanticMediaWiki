@@ -3,24 +3,24 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Area",
+			"page": "Area",
 			"contents": "[[Has type::Quantity]] [[Corresponds to::1 km²]][[Corresponds to::1000 m²]][[Corresponds to::0.38610 sq mi]][[Corresponds to::247.1054 acre]][[Corresponds to::988.4215 rood]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has average high temperature",
+			"page": "Has average high temperature",
 			"contents": "[[Has type::Temperature]]"
 		},
 		{
-			"name": "Berlin",
+			"page": "Berlin",
 			"contents": "[[Area::891.85 km²]], [[Has average high temperature::13.4 °C]]"
 		},
 		{
-			"name": "Paris",
+			"page": "Paris",
 			"contents": "[[Area::105.40 km²]], [[Has average high temperature::16.0 °C]]"
 		},
 		{
-			"name": "東京都",
+			"page": "東京都",
 			"contents": "[[Area::845 sq mi]], [[Has average high temperature::26.0 °C]]"
 		}
 	],

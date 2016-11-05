@@ -3,166 +3,166 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has temperature with prec4",
+			"page": "Has temperature with prec4",
 			"contents": "[[Has type::Temperature]] [[Display precision of::4]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has temperature with prec2",
+			"page": "Has temperature with prec2",
 			"contents": "[[Has type::Temperature]] [[Display precision of::2]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has temperature",
+			"page": "Has temperature",
 			"contents": "[[Has type::Temperature]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has number with prec4",
+			"page": "Has number with prec4",
 			"contents": "[[Has type::Number]] [[Display precision of::4]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has number with prec2",
+			"page": "Has number with prec2",
 			"contents": "[[Has type::Number]] [[Display precision of::2]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has number",
+			"page": "Has number",
 			"contents": "[[Has type::Number]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has area",
+			"page": "Has area",
 			"contents": "[[Has type::Quantity]] [[Corresponds to::1 km²]] [[Corresponds to::0.38610 sq mi]] [[Corresponds to::1000 m²]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has area with prec4",
+			"page": "Has area with prec4",
 			"contents": "[[Has type::Quantity]] [[Corresponds to::1 km²]] [[Corresponds to::0.38610 sq mi]] [[Corresponds to::1000 m²]] [[Display precision of::4]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has area with prec2",
+			"page": "Has area with prec2",
 			"contents": "[[Has type::Quantity]] [[Corresponds to::1 km²]] [[Corresponds to::0.38610 sq mi]] [[Corresponds to::1000 m²]] [[Display precision of::2]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has area with prec0",
+			"page": "Has area with prec0",
 			"contents": "[[Has type::Quantity]] [[Corresponds to::1 km²]] [[Corresponds to::0.38610 sq mi]] [[Corresponds to::1000 m²]] [[Display precision of::0]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has currency with prec2",
+			"page": "Has currency with prec2",
 			"contents": "[[Has type::Quantity]] [[Display units::€, ¥]] [[Corresponds to:: € 1.00]] [[Corresponds to::¥,JPY,Japanese Yen 114.2121]] [[Display precision of::2]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has currency with prec4",
+			"page": "Has currency with prec4",
 			"contents": "[[Has type::Quantity]] [[Display units::€, ¥]] [[Corresponds to:: € 1.00]] [[Corresponds to::¥,JPY,Japanese Yen 114.2121]] [[Display precision of::4]]"
 		},
 		{
-			"name": "Example/P0410/1",
+			"page": "Example/P0410/1",
 			"contents": "[[Has temperature with prec4::32 °F]] [[Has temperature with prec4::100 °C]]"
 		},
 		{
-			"name": "Example/P0410/2",
+			"page": "Example/P0410/2",
 			"contents": "[[Has temperature with prec2::32 °F]] [[Has temperature with prec2::100 °C]]"
 		},
 		{
-			"name": "Example/P0410/1/1",
+			"page": "Example/P0410/1/1",
 			"contents": "{{#ask: [[Has temperature with prec4::32 °F]] |?Has temperature with prec4 |format=table }}"
 		},
 		{
-			"name": "Example/P0410/2/1",
+			"page": "Example/P0410/2/1",
 			"contents": "{{#ask: [[Has temperature with prec2::32 °F]] |?Has temperature with prec2 |format=table }}"
 		},
 		{
-			"name": "Example/P0410/3/1",
+			"page": "Example/P0410/3/1",
 			"contents": "[[Has number with prec4::.001]] [[Has number with prec2::.001]] [[Has number::.003]]"
 		},
 		{
-			"name": "Example/P0410/3/2",
+			"page": "Example/P0410/3/2",
 			"contents": "[[Has number with prec4::.005]] [[Has number with prec2::.005]] [[Has number::.008]]"
 		},
 		{
-			"name": "Example/P0410/3/3",
+			"page": "Example/P0410/3/3",
 			"contents": "[[Has number with prec2::42]] [[Has number::42]]"
 		},
 		{
-			"name": "Example/P0410/3/4",
+			"page": "Example/P0410/3/4",
 			"contents": "[[Has number with prec2::10,000]] [[Has number::10,000]]"
 		},
 		{
-			"name": "Example/P0410/3",
+			"page": "Example/P0410/3",
 			"contents": "{{#ask: [[~Example/P0410/3/*]] |?Has number with prec4 |?Has number with prec2 |?Has number |format=table }}"
 		},
 		{
-			"name": "Example/P0410/4/1",
+			"page": "Example/P0410/4/1",
 			"contents": "[[Has area with prec2::10,000 m²]] [[Has area with prec4::0.02 km²]] [[Has area with prec0::3.33 km²]]"
 		},
 		{
-			"name": "Example/P0410/4",
+			"page": "Example/P0410/4",
 			"contents": "{{#ask: [[~Example/P0410/4/*]] |?Has area with prec4 |?Has area with prec2 |?Has area with prec0 |format=table }}"
 		},
 		{
-			"name": "Example/P0410/5/1",
+			"page": "Example/P0410/5/1",
 			"contents": "[[Has currency with prec2::€ 5]] [[Has currency with prec4::¥ 100]]"
 		},
 		{
-			"name": "Example/P0410/5/2",
+			"page": "Example/P0410/5/2",
 			"contents": "[[Has currency with prec2::€ 5,000]] [[Has currency with prec4::¥ 0.50]]"
 		},
 		{
-			"name": "Example/P0410/5",
+			"page": "Example/P0410/5",
 			"contents": "{{#ask: [[~Example/P0410/5/*]] |?Has currency with prec4 |?Has currency with prec2 |format=table }}"
 		},
 		{
-			"name": "Example/P0410/6/1",
+			"page": "Example/P0410/6/1",
 			"contents": "[[Has number::10,000]] [[Has number::.005]] [[Has number::42.005]] [[Has number::1001]]"
 		},
 		{
-			"name": "Example/P0410/6a",
+			"page": "Example/P0410/6a",
 			"contents": "{{#ask: [[~Example/P0410/6/*]] |?Has number#-p2 |format=table }}"
 		},
 		{
-			"name": "Example/P0410/6b",
+			"page": "Example/P0410/6b",
 			"contents": "{{#ask: [[~Example/P0410/6/*]] |?Has number#-p4 |format=table }}"
 		},
 		{
-			"name": "Example/P0410/6c",
+			"page": "Example/P0410/6c",
 			"contents": "{{#ask: [[~Example/P0410/6/*]] |?Has number#-p3-n |format=table }}"
 		},
 		{
-			"name": "Example/P0410/7/1",
+			"page": "Example/P0410/7/1",
 			"contents": "[[Has area::10,000 m²]] [[Has area::0.02 km²]] [[Has area::3.33 km²]]"
 		},
 		{
-			"name": "Example/P0410/7a",
+			"page": "Example/P0410/7a",
 			"contents": "{{#ask: [[~Example/P0410/7/*]] |?Has area#-p2 |format=table }}"
 		},
 		{
-			"name": "Example/P0410/7b",
+			"page": "Example/P0410/7b",
 			"contents": "{{#ask: [[~Example/P0410/7/*]] |?Has area#m²-p3 |format=table }}"
 		},
 		{
-			"name": "Example/P0410/7c",
+			"page": "Example/P0410/7c",
 			"contents": "{{#ask: [[~Example/P0410/7/*]] |?Has area#-n-p2 |format=table }}"
 		},
 		{
-			"name": "Example/P0410/8/1",
+			"page": "Example/P0410/8/1",
 			"contents": "[[Has temperature::32 °F]] [[Has temperature::100 °C]]"
 		},
 		{
-			"name": "Example/P0410/8a",
+			"page": "Example/P0410/8a",
 			"contents": "{{#ask: [[~Example/P0410/8/*]] |?Has temperature#-p2 |format=table }}"
 		},
 		{
-			"name": "Example/P0410/8b",
+			"page": "Example/P0410/8b",
 			"contents": "{{#ask: [[~Example/P0410/8/*]] |?Has temperature#°C-p3 |format=table }}"
 		},
 		{
-			"name": "Example/P0410/8c",
+			"page": "Example/P0410/8c",
 			"contents": "{{#ask: [[~Example/P0410/8/*]] |?Has temperature#-n-p2 |format=table }}"
 		}
 	],
@@ -171,7 +171,7 @@
 			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0410/1",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -191,7 +191,7 @@
 			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0410/2",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -211,7 +211,7 @@
 			"type": "parser",
 			"about": "#2",
 			"subject": "Example/P0410/1/1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"data-sort-value=\"273.15\"",
 					"<span class=\"smwtext\">273.1500&#160;K</span>",
@@ -229,7 +229,7 @@
 			"type": "parser",
 			"about": "#3",
 			"subject": "Example/P0410/2/1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"data-sort-value=\"273.15\"",
 					"<span class=\"smwtext\">273.15&#160;K</span>",
@@ -247,7 +247,7 @@
 			"type": "parser",
 			"about": "#4 Prec2 vs Prec4 incl. rounding on output for plain number",
 			"subject": "Example/P0410/3",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"data-sort-value=\"0.001\" class=\"Has-number-with-prec4 smwtype_num\">0.0010",
 					"data-sort-value=\"0.001\" class=\"Has-number-with-prec2 smwtype_num\">0.00",
@@ -266,7 +266,7 @@
 			"type": "parser",
 			"about": "#5 Prec2 vs Prec4 vs Prc0 quantity output",
 			"subject": "Example/P0410/4",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"data-sort-value=\"0.02\" class=\"Has-area-with-prec4 smwtype_qty\"",
 					"0.0200&#160;km²",
@@ -287,7 +287,7 @@
 			"type": "parser",
 			"about": "#6 on currency output",
 			"subject": "Example/P0410/5",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"data-sort-value=\"0.87556397264388\" class=\"Has-currency-with-prec4 smwtype_qty\"",
 					"€&#160;0.8756",
@@ -308,7 +308,7 @@
 			"type": "parser",
 			"about": "#7 on number output without property defined precision, uses -p4 printout marker",
 			"subject": "Example/P0410/6a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"data-sort-value=\"10000\" class=\"Has-number smwtype_num\"",
 					"10,000.00",
@@ -322,7 +322,7 @@
 			"type": "parser",
 			"about": "#8 on number output without property defined precision, uses -p4 printout marker",
 			"subject": "Example/P0410/6b",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"data-sort-value=\"10000\" class=\"Has-number smwtype_num\"",
 					"10,000.0000",
@@ -336,7 +336,7 @@
 			"type": "parser",
 			"about": "#9 on number output without property defined precision, uses -p3-n printout marker",
 			"subject": "Example/P0410/6c",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"data-sort-value=\"10000\" class=\"Has-number smwtype_num\"",
 					"10000.000",
@@ -350,7 +350,7 @@
 			"type": "parser",
 			"about": "#10 on quantity output without property defined precision, uses -p2 printout marker",
 			"subject": "Example/P0410/7a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"data-sort-value=\"10\" class=\"Has-area smwtype_qty\"",
 					"10.00&#160;km²",
@@ -369,7 +369,7 @@
 			"type": "parser",
 			"about": "#11 on quantity output without property defined precision, uses m²-p3 printout marker",
 			"subject": "Example/P0410/7b",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"data-sort-value=\"10\" class=\"Has-area smwtype_qty\"",
 					"10,000.000&#160;m²",
@@ -388,7 +388,7 @@
 			"type": "parser",
 			"about": "#12 on quantity output without property defined precision, uses -n-p2 printout marker",
 			"subject": "Example/P0410/7c",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"data-sort-value=\"10\" class=\"Has-area smwtype_qty\"",
 					"10.00",
@@ -401,7 +401,7 @@
 			"type": "parser",
 			"about": "#13 on temperature output without property defined precision, uses -p2 printout marker",
 			"subject": "Example/P0410/8a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"data-sort-value=\"273.15\" class=\"Has-temperature smwtype_tem\"",
 					"class=\"smwtext\">273.15&#160;K",
@@ -419,7 +419,7 @@
 			"type": "parser",
 			"about": "#14 on temperature output without property defined precision, uses °C-p3 printout marker",
 			"subject": "Example/P0410/8b",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"data-sort-value=\"273.15\" class=\"Has-temperature smwtype_tem\"",
 					"class=\"smwtext\">0.000&#160;°C",
@@ -437,7 +437,7 @@
 			"type": "parser",
 			"about": "#15 on temperature output without property defined precision, uses -n-p2 printout marker",
 			"subject": "Example/P0410/8c",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"data-sort-value=\"273.15\" class=\"Has-temperature smwtype_tem\"",
 					"273.15",

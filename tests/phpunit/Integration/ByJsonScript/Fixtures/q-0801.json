@@ -2,12 +2,12 @@
 	"description": "Test `_INST` query (#1004, en)",
 	"setup": [
 		{
-			"name": "Foo",
 			"namespace": "NS_CATEGORY",
+			"page": "Foo",
 			"contents": ""
 		},
 		{
-			"name": "Page-with-category",
+			"page": "Page-with-category",
 			"contents": "[[Category:Foo]]"
 		}
 	],

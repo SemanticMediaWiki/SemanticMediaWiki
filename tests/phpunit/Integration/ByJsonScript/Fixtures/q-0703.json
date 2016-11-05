@@ -2,13 +2,13 @@
 	"description": "Test to map `Foaf` property from back-end / using a localized predefined property `A le type@fr` (en)",
 	"setup": [
 		{
-			"name": "Smw import foaf",
 			"namespace": "NS_MEDIAWIKI",
+			"page": "Smw import foaf",
 			"contents": "http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n name|Type:Text\n homepage|Type:URL\n mbox|Type:Email\n mbox_sha1sum|Type:Text\n depiction|Type:URL\n phone|Type:Text\n Person|Category\n Organization|Category\n knows|Type:Page\n member|Type:Page\n"
 		},
 		{
-			"name": "Foaf:homepage",
 			"namespace": "SMW_NS_PROPERTY",
+			"page": "Foaf:homepage",
 			"contents": "[[Imported from::foaf:homepage]] [[Category:Import]]"
 		}
 	],

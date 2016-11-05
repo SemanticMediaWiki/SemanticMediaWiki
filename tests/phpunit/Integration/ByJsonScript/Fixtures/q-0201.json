@@ -3,49 +3,49 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Population",
+			"page": "Population",
 			"contents": "[[Has type::Number]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has concept description",
+			"page": "Has concept description",
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"name": "Page one",
+			"page": "Page one",
 			"contents": "[[Population::1001]], [[Has concept description::Bar]]"
 		},
 		{
-			"name": "Page two",
+			"page": "Page two",
 			"contents": "[[Has concept description::Foo]], [[Population::9999]]"
 		},
 		{
-			"name": "Page three",
+			"page": "Page three",
 			"contents": "[[Has concept description::Bar]]"
 		},
 		{
-			"name": "Concept for any value selection",
 			"namespace": "SMW_NS_CONCEPT",
+			"page": "Concept for any value selection",
 			"contents": "{{#concept: [[Population::+]][[Has concept description::+]] }}"
 		},
 		{
-			"name": "Concept for any broader value selection",
 			"namespace": "SMW_NS_CONCEPT",
+			"page": "Concept for any broader value selection",
 			"contents": "{{#concept: [[Has concept description::+]] }}"
 		},
 		{
-			"name": "Concept for distinct value selection",
 			"namespace": "SMW_NS_CONCEPT",
+			"page": "Concept for distinct value selection",
 			"contents": "{{#concept: [[Has concept description::Foo]] }}"
 		},
 		{
-			"name": "Composite concept for a conjunctive condition",
 			"namespace": "SMW_NS_CONCEPT",
+			"page": "Composite concept for a conjunctive condition",
 			"contents": "{{#concept: [[Concept:Concept for any value selection]][[Concept:Concept for distinct value selection]] }}"
 		},
 		{
-			"name": "Composite concept for a disjunctive condition",
 			"namespace": "SMW_NS_CONCEPT",
+			"page": "Composite concept for a disjunctive condition",
 			"contents": "{{#concept: [[Concept:Concept for any value selection]] OR [[Concept:Concept for distinct value selection]] }}"
 		}
 	],

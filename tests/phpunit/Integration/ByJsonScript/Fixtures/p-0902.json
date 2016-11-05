@@ -3,11 +3,11 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "HasPropertyForMove",
+			"page": "HasPropertyForMove",
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"name": "Example/P0902/1",
+			"page": "Example/P0902/1",
 			"contents": "{{#ask:[[Help:]] |format=ul |link=none |headers=show }}"
 		}
 	],
@@ -16,7 +16,7 @@
 			"type": "parser",
 			"about": "#0 failed NS query",
 			"subject": "Example/P0902/1",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
@@ -33,7 +33,7 @@
 			"type": "parser",
 			"about": "#1 error record on empty Help:",
 			"subject": "Example/P0902/1#_ERRaefa648d070f2edc4b171586eae9b1b0",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,

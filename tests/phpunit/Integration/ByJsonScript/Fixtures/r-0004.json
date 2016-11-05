@@ -2,18 +2,18 @@
 	"description": "Test RDF output generation for `_INST`/`_SUBC` pages (#922, en)",
 	"setup": [
 		{
-			"name": "Rdf-1-category",
 			"namespace": "NS_CATEGORY",
+			"page": "Rdf-1-category",
 			"contents": "empty"
 		},
 		{
-			"name": "Rdf-2-subcategory",
 			"namespace": "NS_CATEGORY",
+			"page": "Rdf-2-subcategory",
 			"contents": "[[Category:Rdf-1-category]]"
 		},
 		{
-			"name": "Rdf-3-subsubcategory",
 			"namespace": "NS_CATEGORY",
+			"page": "Rdf-3-subsubcategory",
 			"contents": "[[Category:Rdf-2-subcategory]]"
 		}
 	],
@@ -32,7 +32,7 @@
 					"revisiondate": false
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<owl:Class rdf:about=\"http://example.org/id/Category-3ARdf-2D1-2Dcategory\">",
 					"<rdfs:label>Rdf-1-category</rdfs:label>",
@@ -56,7 +56,7 @@
 					"revisiondate": false
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<!ENTITY category 'http://example.org/id/Category-3A'>",
 					"<!ENTITY property 'http://example.org/id/Property-3A'>",

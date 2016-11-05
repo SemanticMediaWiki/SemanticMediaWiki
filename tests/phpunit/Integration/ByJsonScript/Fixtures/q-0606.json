@@ -3,51 +3,51 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Located in",
+			"page": "Located in",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Member of",
+			"page": "Member of",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has arbitrary number",
+			"page": "Has arbitrary number",
 			"contents": "[[Has type::Number]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has arbitrary text",
+			"page": "Has arbitrary text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has area",
+			"page": "Has area",
 			"contents": "[[Has type::Quantity]] [[Corresponds to::1 km²]] [[Corresponds to::1000 m²]]"
 		},
 		{
-			"name": "City-A",
+			"page": "City-A",
 			"contents": "[[Located in::Country-A]] {{#subobject:|Has arbitrary number=42|Has arbitrary text=abc}}"
 		},
 		{
-			"name": "City-B",
+			"page": "City-B",
 			"contents": "[[Located in::Country-B]] {{#subobject:|Has arbitrary number=1001|Has arbitrary text=def}}"
 		},
 		{
-			"name": "City-C",
+			"page": "City-C",
 			"contents": "[[Located in::Country-C]] {{#subobject:|Has area=891.85 km ²}}"
 		},
 		{
-			"name": "Country-A",
+			"page": "Country-A",
 			"contents": "[[Member of::EconomicUnion-A]] {{#subobject:|Member of=DefenseUnion-A}}"
 		},
 		{
-			"name": "Country-B",
+			"page": "Country-B",
 			"contents": "{{#subobject:|Member of=EconomicUnion-B}}"
 		},
 		{
-			"name": "EconomicUnion-A",
+			"page": "EconomicUnion-A",
 			"contents": "[[Is part of::Community-A]]"
 		}
 	],

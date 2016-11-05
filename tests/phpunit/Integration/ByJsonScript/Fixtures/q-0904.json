@@ -3,52 +3,52 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has page-0",
+			"page": "Has page-0",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has page-1",
+			"page": "Has page-1",
 			"contents": "[[Has type::Page]] [[Subproperty of::Has page-0]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has page-2",
+			"page": "Has page-2",
 			"contents": "[[Has type::Page]] [[Subproperty of::Has page-0]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text",
+			"page": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text-1",
+			"page": "Has text-1",
 			"contents": "[[Has type::Text]] [[Subproperty of::Has text]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text-2",
+			"page": "Has text-2",
 			"contents": "[[Has type::Text]] [[Subproperty of::Has text]]"
 		},
 		{
-			"name": "Sample/1/1",
+			"page": "Sample/1/1",
 			"contents": "[[Has text-1::Value 1]] [[Has page-1::Value 1]]"
 		},
 		{
-			"name": "Sample/1/2",
+			"page": "Sample/1/2",
 			"contents": "[[Has text-2::Value 1]] [[Has page-2::Value 1]]"
 		},
 		{
-			"name": "Sample/2/1",
+			"page": "Sample/2/1",
 			"contents": "[[Has text-1::Value 2]] [[Has page-1::Value 2]]"
 		},
 		{
-			"name": "Sample/2/2",
+			"page": "Sample/2/2",
 			"contents": "[[Has text-2::Value 2]] [[Has page-2::Value 2]]"
 		},
 		{
-			"name": "Sample/2/3",
+			"page": "Sample/2/3",
 			"contents": "[[Has text-2::Value 3]] [[Has page-2::Value 3]]"
 		}
 	],

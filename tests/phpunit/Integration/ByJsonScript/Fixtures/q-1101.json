@@ -3,56 +3,56 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has title",
+			"page": "Has title",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has year",
+			"page": "Has year",
 			"contents": "[[Has type::Date]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has population",
+			"page": "Has population",
 			"contents": "[[Has type::Number]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has area",
+			"page": "Has area",
 			"contents": "[[Has type::Quantity]] [[Corresponds to::1 km²]] [[Corresponds to::1000 m²]] [[Corresponds to::988.42153133973 rood]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Population density",
+			"page": "Population density",
 			"contents": "[[Has type::Record]] [[Has fields::Has population;Has area]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Book record",
+			"page": "Book record",
 			"contents": "[[Has type::Record]] [[Has fields::Has title;Has year]]"
 		},
 		{
-			"name": "Example/1101/City A",
+			"page": "Example/1101/City A",
 			"contents": "[[Category:Record example]] [[Population density::3900;1 km²]]"
 		},
 		{
-			"name": "Example/1101/City B",
+			"page": "Example/1101/City B",
 			"contents": "[[Category:Record example]] [[Population density::20169;1 km²]]"
 		},
 		{
-			"name": "Example/1101/Book A",
+			"page": "Example/1101/Book A",
 			"contents": "[[Category:Record example]] [[Book record::Title with $&%'\\;* special characters ; 2001]]"
 		},
 		{
-			"name": "Example/1101/Book B",
+			"page": "Example/1101/Book B",
 			"contents": "[[Category:Record example]] [[Book record::Book B; 2000]]"
 		},
 		{
-			"name": "Example/1101/Book C",
+			"page": "Example/1101/Book C",
 			"contents": "[[Category:Record example]] [[Book record::Book C;30 Dec 2001]]"
 		},
 		{
-			"name": "Example/1101/Book D",
+			"page": "Example/1101/Book D",
 			"contents": "[[Category:Record example]] [[Book record::Book D;1900]]"
 		}
 	],

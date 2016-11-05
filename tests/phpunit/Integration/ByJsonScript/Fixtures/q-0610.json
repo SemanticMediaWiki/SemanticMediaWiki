@@ -2,27 +2,27 @@
 	"description": "Test `_wpg` range queries (#1291, `smwStrictComparators=false`, skip virtuoso)",
 	"setup": [
 		{
-			"name": "Example/Q0610-A",
+			"page": "Example/Q0610-A",
 			"contents": "[[Category:Q0610]]"
 		},
 		{
-			"name": "Example/Q0610-AAA",
+			"page": "Example/Q0610-AAA",
 			"contents": "[[Category:Q0610]]"
 		},
 		{
-			"name": "Example/Q0610-BBB",
+			"page": "Example/Q0610-BBB",
 			"contents": "[[Category:Q0610]]"
 		},
 		{
-			"name": "Example/Q0610-CCC",
+			"page": "Example/Q0610-CCC",
 			"contents": "[[Category:Q0610]]"
 		},
 		{
-			"name": "Example/Q0610-DDD",
+			"page": "Example/Q0610-DDD",
 			"contents": "[[Category:Q0610]]"
 		},
 		{
-			"name": "Example/Q0610-ZZZ",
+			"page": "Example/Q0610-ZZZ",
 			"contents": "[[Category:Q0610-Z]] {{DEFAULTSORT:Example/Q0610-CCC}}"
 		}
 	],

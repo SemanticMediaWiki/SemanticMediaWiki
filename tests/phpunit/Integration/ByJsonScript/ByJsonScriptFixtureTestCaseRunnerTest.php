@@ -178,6 +178,7 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			'smwgEnabledQueryDependencyLinksStore',
 			'smwgEnabledFulltextSearch',
 			'smwgFulltextDeferredUpdate',
+			'smwgPropertyZeroCountDisplay',
 
 			// MW related
 			'wgLanguageCode',

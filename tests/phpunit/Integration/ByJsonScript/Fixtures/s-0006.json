@@ -2,7 +2,7 @@
 	"description": "Test output of `Special:WantedProperties` (`wgContLang=en`, `wgLang=en`, skip-on sqlite, 1.19)",
 	"setup": [
 		{
-			"name": "Example/S0006/1",
+			"page": "Example/S0006/1",
 			"contents": "[[Has property without type::123]]"
 		}
 	],
@@ -20,7 +20,7 @@
 				"query-parameters": [],
 				"request-parameters": []
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Property:Has property without type (page does not exist)"
 				]

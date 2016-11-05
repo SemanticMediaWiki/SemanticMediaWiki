@@ -3,20 +3,20 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has date",
+			"page": "Has date",
 			"contents": "[[Has type::Date]]"
 		},
 		{
-			"name": "SetParserTemplateToCreateAskLink",
 			"namespace": "NS_TEMPLATE",
+			"page": "SetParserTemplateToCreateAskLink",
 			"contents": "<includeonly>{{#ask: [[{{{property}}}::{{{value}}}]]|limit=0|searchlabel={{{value}}} }}</includeonly>"
 		},
 		{
-			"name": "Transclude-Template-Using-Set",
+			"page": "Transclude-Template-Using-Set",
 			"contents": "{{#set:SetParserTemplateProperty=SetParserTemplateValue|+sep=;|template=SetParserTemplateToCreateAskLink}}"
 		},
 		{
-			"name": "Try-To-Transclude-Template-For-Invalid-PropertyValue",
+			"page": "Try-To-Transclude-Template-For-Invalid-PropertyValue",
 			"contents": "{{#set:Has date=NoTemplateForInvalidValue|+sep=;|template=SetParserTemplateToCreateAskLink}}"
 		}
 	],
@@ -25,7 +25,7 @@
 			"type": "parser",
 			"about": "#0 #set annotation/parser with template",
 			"subject": "Transclude-Template-Using-Set",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
@@ -45,7 +45,7 @@
 			"type": "parser",
 			"about": "#1 invalid property value declaration causes error",
 			"subject": "Try-To-Transclude-Template-For-Invalid-PropertyValue",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -61,7 +61,7 @@
 			"type": "parser",
 			"about": "#3 #ask link to be correctly parsed, #1146",
 			"subject": "Transclude-Template-Using-Set",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<span class=\"smw-list-furtherresults\">",
 					"Special:Ask/-5B-5BSetParserTemplateProperty::SetParserTemplateValue-5D-5D/mainlabel=/offset=0/format=list/searchlabel=SetParserTemplateValue\">SetParserTemplateValue</a>"

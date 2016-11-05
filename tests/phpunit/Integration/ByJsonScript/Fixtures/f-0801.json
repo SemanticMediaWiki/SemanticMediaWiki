@@ -3,44 +3,44 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "HasSomePageProperty",
+			"page": "HasSomePageProperty",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has another property",
+			"page": "Has another property",
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"name": "Format/Embedded/A/1",
+			"page": "Format/Embedded/A/1",
 			"contents": "[[HasSomePageProperty::ABC]] {{#subobject:HasSomePageProperty=123}} [[Category:Embedded format/A]]"
 		},
 		{
-			"name": "Format/Embedded/A/2",
+			"page": "Format/Embedded/A/2",
 			"contents": "[[HasSomePageProperty::DEF]] {{#subobject:HasSomePageProperty=456}} [[Category:Embedded format/A]]"
 		},
 		{
-			"name": "Format/Embedded/B/1",
+			"page": "Format/Embedded/B/1",
 			"contents": "[[HasSomePageProperty::ABC]] {{#subobject:HasSomePageProperty=123}} [[Category:Embedded format/B]]"
 		},
 		{
-			"name": "Format/Embedded/B/2",
+			"page": "Format/Embedded/B/2",
 			"contents": "[[HasSomePageProperty::DEF]] {{#subobject:HasSomePageProperty=456}} [[Category:Embedded format/B]]"
 		},
 		{
-			"name": "Format/Embedded/A",
+			"page": "Format/Embedded/A",
 			"contents": "{{#ask:[[Category:Embedded format/A]] |format=embedded |link=none |headers=show |embedformat=h1 }}"
 		},
 		{
-			"name": "Format/Embedded/B",
+			"page": "Format/Embedded/B",
 			"contents": "{{#ask:[[Category:Embedded format]] |format=count/B}} {{#ask:[[Category:Embedded format/B]] |format=embedded |link=none |headers=show |embedformat=h1 }}"
 		},
 		{
-			"name": "Format/Embedded/C",
+			"page": "Format/Embedded/C",
 			"contents": "{{:Format/Embedded/A/1}}"
 		},
 		{
-			"name": "Format/Embedded/D",
+			"page": "Format/Embedded/D",
 			"contents": "[[Has another property::A123]] {{#ask:[[Category:Embedded format]] |format=count/B}} {{#ask:[[Category:Embedded format/B]] [[!Format/Embedded/B]]|format=embedded |link=none |headers=show |embedformat=h1 }} {{#set:Has another property=ABCD}}"
 		}
 	],
@@ -49,7 +49,7 @@
 			"type": "parser",
 			"about": "#0",
 			"subject": "Format/Embedded/A",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
@@ -64,7 +64,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<h1><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FA\"><strong class=\"selflink\">Format/Embedded/A</strong></span></h1>",
 					"<h1><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FA.2F1\">",
@@ -78,7 +78,7 @@
 			"type": "parser",
 			"about": "#1",
 			"subject": "Format/Embedded/B",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
@@ -93,7 +93,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<h1><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FB\"><strong class=\"selflink\">Format/Embedded/B</strong></span></h1>",
 					"<h1><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FB.2F1\">",
@@ -107,7 +107,7 @@
 			"type": "parser",
 			"about": "#2 (manual embedded)",
 			"subject": "Format/Embedded/C",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 5,
@@ -129,7 +129,7 @@
 			"type": "parser",
 			"about": "#3 (ensure that annotations for the target page are not disabled, exclude embbeded query from [[!Format/Embedded/B]] otherwise we point to ourselves)",
 			"subject": "Format/Embedded/D",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 5,
@@ -147,7 +147,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<h1><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FD\"><strong class=\"selflink\">Format/Embedded/D</strong></span></h1>",
 					"<h1><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FB.2F1\">",

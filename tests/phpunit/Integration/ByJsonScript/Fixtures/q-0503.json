@@ -3,15 +3,15 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Currency",
+			"page": "Currency",
 			"contents": "[[Has type::Quantity]], [[Display units::€,£,¥]] [[Corresponds to::€ 1]] [[Corresponds to::1.06 US, US$, $]] [[Corresponds to::0.70 British Pound,GBP,£]] [[Corresponds to::¥,JPY,Japanese Yen 114.2121]]"
 		},
 		{
-			"name": "Example/Q0503/1",
+			"page": "Example/Q0503/1",
 			"contents": "[[Currency::12 €]] [[Currency::¥ 500]] [[Currency::2 £]]"
 		},
 		{
-			"name": "Example/Q0503/2",
+			"page": "Example/Q0503/2",
 			"contents": "[[Currency::€ 20]] [[Currency::2000 JPY]] [[Currency::0.5 GBP]]"
 		}
 	],

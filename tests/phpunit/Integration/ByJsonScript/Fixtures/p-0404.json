@@ -2,7 +2,7 @@
 	"description": "Test in-text annonation on different category colon identifier",
 	"setup": [
 		{
-			"name": "Page-with-category",
+			"page": "Page-with-category",
 			"contents": "[[Category:SingleColonNotion]], [[Category::DoubleColonNotion]]"
 		}
 	],
@@ -11,7 +11,7 @@
 			"type": "parser",
 			"about": "#0 : vs. ::",
 			"subject": "Page-with-category",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 4,

@@ -3,30 +3,30 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has concept description",
+			"page": "Has concept description",
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"name": "Page one",
+			"page": "Page one",
 			"contents": "[[Has concept description::Bar]]"
 		},
 		{
-			"name": "Page two",
+			"page": "Page two",
 			"contents": "[[Has concept description::Foo]]"
 		},
 		{
-			"name": "Concept-is-not-circular",
 			"namespace": "SMW_NS_CONCEPT",
+			"page": "Concept-is-not-circular",
 			"contents": "{{#concept: [[Has concept description::+]] }}"
 		},
 		{
-			"name": "Concept-is-circular",
 			"namespace": "SMW_NS_CONCEPT",
+			"page": "Concept-is-circular",
 			"contents": "{{#concept: [[Concept:Concept-is-circular]] }}"
 		},
 		{
-			"name": "Concept-is-circular-extra",
 			"namespace": "SMW_NS_CONCEPT",
+			"page": "Concept-is-circular-extra",
 			"contents": "{{#concept: [[Has concept description::+]] [[Concept:Concept-is-circular-extra]] }}"
 		}
 	],

@@ -3,53 +3,53 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Family (http://www.cs.man.ac.uk/~stevensr/ontology/family.rdf.owl)",
+			"page": "Family (http://www.cs.man.ac.uk/~stevensr/ontology/family.rdf.owl)",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Spouse",
+			"page": "Spouse",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has wife",
+			"page": "Has wife",
 			"contents": "[[Has type::Page]] [[Subproperty of::Spouse]] [[Subproperty of::Family]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has husband",
+			"page": "Has husband",
 			"contents": "[[Has type::Page]] [[Subproperty of::Spouse]] [[Subproperty of::Family]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has child",
+			"page": "Has child",
 			"contents": "[[Has type::Page]] [[Subproperty of::Family]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has brother",
+			"page": "Has brother",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has sister",
+			"page": "Has sister",
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"name": "John Doe",
+			"page": "John Doe",
 			"contents": "[[Has wife::Jane Doe]] [[Has child::Jonnie Doe]] [[Has child::Janie Doe]]"
 		},
 		{
-			"name": "Jane Doe",
+			"page": "Jane Doe",
 			"contents": "[[Has husband::John Doe]]"
 		},
 		{
-			"name": "Jonnie Doe",
+			"page": "Jonnie Doe",
 			"contents": "[[Has sister::Janie Doe]]"
 		},
 		{
-			"name": "Janie Doe",
+			"page": "Janie Doe",
 			"contents": "[[Has brother::Jonnie Doe]]"
 		}
 	],

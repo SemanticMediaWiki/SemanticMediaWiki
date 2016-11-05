@@ -3,23 +3,23 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has restricted status record",
+			"page": "Has restricted status record",
 			"contents": "[[Has type::Text]] [[Allows value::open]], [[Allows value::closed]], [[Allows value::in progress]]"
 		},
 		{
-			"name": "Example/Q1106/1",
+			"page": "Example/Q1106/1",
 			"contents": "[[Category:E-Q1106]][[Has restricted status record::open]]"
 		},
 		{
-			"name": "Example/Q1106/2",
+			"page": "Example/Q1106/2",
 			"contents": "[[Category:E-Q1106]]{{#set:Has restricted status record=closed}}"
 		},
 		{
-			"name": "Example/Q1106/3",
+			"page": "Example/Q1106/3",
 			"contents": "{{#subobject:Has restricted status record=in progress|@category=E-Q1106}}"
 		},
 		{
-			"name": "Example/Q1106/4",
+			"page": "Example/Q1106/4",
 			"contents": "[[Category:E-Q1106]][[Has restricted status record::none of the above]]"
 		}
 	],

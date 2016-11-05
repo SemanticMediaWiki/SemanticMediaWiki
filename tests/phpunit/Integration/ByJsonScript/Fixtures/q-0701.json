@@ -3,19 +3,19 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has url",
+			"page": "Has url",
 			"contents": "[[Has type::URL]]"
 		},
 		{
-			"name": "Page-with-url-1",
+			"page": "Page-with-url-1",
 			"contents": "[[Has url::http://example.org/aaa/bbb#ccc]]"
 		},
 		{
-			"name": "Page-with-url-2",
+			"page": "Page-with-url-2",
 			"contents": "[[Has url::http://acme.test/api?query=!_:;@* #Foo&=%20-3DBar]]"
 		},
 		{
-			"name": "Page-with-url-3",
+			"page": "Page-with-url-3",
 			"contents": "[[Has url::http://example.org/ようこそ#-{}]]"
 		}
 	],

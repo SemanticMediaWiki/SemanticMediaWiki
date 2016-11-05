@@ -3,37 +3,37 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text",
+			"page": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has number",
+			"page": "Has number",
 			"contents": "[[Has type::Number]] [[Display precision of::2]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has telephone number",
+			"page": "Has telephone number",
 			"contents": "[[Has type::Telephone number]]"
 		},
 		{
-			"name": "Example/S0002/1",
+			"page": "Example/S0002/1",
 			"contents": "[[Has text::S0002]]"
 		},
 		{
-			"name": "Example/S0002/2",
+			"page": "Example/S0002/2",
 			"contents": "[[Has text::foo bar]]"
 		},
 		{
-			"name": "Example/S0002/3",
+			"page": "Example/S0002/3",
 			"contents": "[[Has number::3.555567]]"
 		},
 		{
-			"name": "Example/S0002/4",
+			"page": "Example/S0002/4",
 			"contents": "[[Has number::1.2e-13]]"
 		},
 		{
-			"name": "Example/S0002/5",
+			"page": "Example/S0002/5",
 			"contents": "[[Has telephone number::+1-201-555-0123]]"
 		}
 	],
@@ -48,7 +48,7 @@
 					"property": "Has text"
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<ul><li>S0002&#160;&#160;",
 					"title=\"Special:SearchByProperty/Has-20text/S0002\">+</a></span>"
@@ -66,7 +66,7 @@
 					"value": "foo_bar"
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Example-2FS0002-2F2",
 					"<small>(foo bar)</small>"
@@ -84,7 +84,7 @@
 					"value": "foo bar"
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Example-2FS0002-2F2",
 					"<small>(foo bar)</small>"
@@ -102,7 +102,7 @@
 					"value": "3.555567"
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Example-2FS0002-2F3",
 					"<small>(3.556)</small>"
@@ -123,7 +123,7 @@
 					"value": "1.2e-13"
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Example-2FS0002-2F4",
 					"<small>(1.2e-13)</small>"
@@ -141,7 +141,7 @@
 					"value": "0.00000000000012"
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Example-2FS0002-2F4",
 					"<small>(1.2e-13)</small>"
@@ -159,7 +159,7 @@
 					"value": "+1-201-555-0123"
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Example-2FS0002-2F5",
 					"+1-201-555-0123"
@@ -177,7 +177,7 @@
 					"value": "+1-201-555-0123"
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Example-2FS0002-2F5",
 					"+1-201-555-0123"
@@ -195,7 +195,7 @@
 					"value": ""
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"&gt;[[Foo"
 				]

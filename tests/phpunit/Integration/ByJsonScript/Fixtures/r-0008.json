@@ -3,11 +3,11 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has area without unit",
+			"page": "Has area without unit",
 			"contents": "[[Has type::Quantity]]"
 		},
 		{
-			"name": "Example/R0008/1",
+			"page": "Example/R0008/1",
 			"contents": "[[Has area without unit::1 m]]"
 		}
 	],
@@ -25,7 +25,7 @@
 					"revisiondate": false
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<owl:DatatypeProperty rdf:about=\"http://example.org/id/Property-3AHas_area_without_unit\">",
 					"<rdfs:label>Has area without unit</rdfs:label>",
@@ -52,7 +52,7 @@
 					"revisiondate": false
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"property:Has_area_without_unit",
 					"rdf:type  owl:DatatypeProperty ;",

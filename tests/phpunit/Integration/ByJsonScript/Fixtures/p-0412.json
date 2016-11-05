@@ -3,15 +3,15 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has boolean",
+			"page": "Has boolean",
 			"contents": "[[Has type::Boolean]]"
 		},
 		{
-			"name": "Example/P0412/1",
+			"page": "Example/P0412/1",
 			"contents": "[[Has boolean::真]]"
 		},
 		{
-			"name": "Example/P0412/2",
+			"page": "Example/P0412/2",
 			"contents": "{{#set:Has boolean=偽}}"
 		}
 	],
@@ -21,7 +21,9 @@
 			"about": "#0 true",
 			"subject": "Example/P0412/1",
 			"store": {
-				"clear-cache": true,
+				"clear-cache": true
+			},
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -41,7 +43,9 @@
 			"about": "#1 false",
 			"subject": "Example/P0412/2",
 			"store": {
-				"clear-cache": true,
+				"clear-cache": true
+			},
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,

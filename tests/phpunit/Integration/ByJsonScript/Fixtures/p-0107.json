@@ -2,7 +2,7 @@
 	"description": "Test #smwdoc parser output (#1019, en)",
 	"setup": [
 		{
-			"name": "smwdoc-table",
+			"page": "smwdoc-table",
 			"contents": "{{#smwdoc: table|parameter=base }}"
 		}
 	],
@@ -11,7 +11,7 @@
 			"type": "parser",
 			"about": "#0 (should contain more elements, I'm to lazy to check for the rest)",
 			"subject": "smwdoc-table",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<table class=\"wikitable sortable\">",
 					"</td></tr></table>"
