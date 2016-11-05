@@ -146,15 +146,7 @@ class CacheFactory {
 	 * @return BlobStore
 	 */
 	public function newBlobStore( $namespace, $cacheType = null, $cacheLifetime = 0 ) {
-
-		$blobStore = $this->callbackInstantiator->load( 'BlobStore', $namespace, $cacheType, $cacheLifetime );
-
-		// If CACHE_NONE is selected, disable the usage
-		$blobStore->setUsageState(
-			$cacheType !== CACHE_NONE
-		);
-
-		return $blobStore;
+		return $this->callbackInstantiator->load( 'BlobStore', $namespace, $cacheType, $cacheLifetime );
 	}
 
 }

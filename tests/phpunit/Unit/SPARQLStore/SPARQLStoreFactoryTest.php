@@ -56,7 +56,7 @@ class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SPARQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\QueryEngine',
+			'\SMW\QueryEngine',
 			$instance->newMasterQueryEngine()
 		);
 	}

@@ -148,6 +148,10 @@ class Settings extends Options {
 			'smwgFulltextSearchMinTokenSize' => $GLOBALS['smwgFulltextSearchMinTokenSize'],
 			'smwgFulltextLanguageDetection' => $GLOBALS['smwgFulltextLanguageDetection'],
 			'smwgQTemporaryTablesAutoCommitMode' => $GLOBALS['smwgQTemporaryTablesAutoCommitMode'],
+			'smwgQueryResultCacheType' => $GLOBALS['smwgQueryResultCacheType'],
+			'smwgQueryResultCacheLifetime' => $GLOBALS['smwgQueryResultCacheLifetime'],
+			'smwgQueryResultNonEmbeddedCacheLifetime' => $GLOBALS['smwgQueryResultNonEmbeddedCacheLifetime'],
+			'smwgQueryResultCacheRefreshOnPurge' => $GLOBALS['smwgQueryResultCacheRefreshOnPurge'],
 		);
 
 		$settings = $settings + array(

@@ -211,6 +211,11 @@ class JsonTestCaseFileHandler {
 			return constant( $settings[$key] );
 		}
 
+		// Needs special attention due to constant usage
+		if ( strpos( $key, 'CacheType' ) !== false && isset( $settings[$key] ) ) {
+			return $settings[$key] === false ? CACHE_NONE : defined( $settings[$key] ) ? constant( $settings[$key] ) : $settings[$key];
+		}
+
 		if ( isset( $settings[$key] ) ) {
 			return $settings[$key];
 		}

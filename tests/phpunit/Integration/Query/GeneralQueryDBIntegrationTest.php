@@ -41,6 +41,8 @@ class GeneralQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->dataValueFactory = DataValueFactory::getInstance();
 		$this->queryResultValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator();
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
+
+		$this->testEnvironment->addConfiguration( 'smwgQueryResultCacheType', false );
 	}
 
 	protected function tearDown() {
@@ -126,9 +128,7 @@ class GeneralQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		);
 
 		$query = new Query(
-			$description,
-			false,
-			false
+			$description
 		);
 
 		$query->querymode = Query::MODE_INSTANCES;

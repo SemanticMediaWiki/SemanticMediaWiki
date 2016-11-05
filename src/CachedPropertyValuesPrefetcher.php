@@ -31,6 +31,11 @@ class CachedPropertyValuesPrefetcher {
 	const VERSION = '0.4.1';
 
 	/**
+	 * Namespace occupied by the BlobStore
+	 */
+	const CACHE_NAMESPACE = 'smw:pvp:store';
+
+	/**
 	 * @var Store
 	 */
 	private $store;

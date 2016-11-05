@@ -237,6 +237,14 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructCachedQueryResultPrefetcher() {
+
+		$this->assertInstanceOf(
+			'\SMW\CachedQueryResultPrefetcher',
+			$this->applicationFactory->getCachedQueryResultPrefetcher()
+		);
+	}
+
 	public function testCanConstructQueryFactory() {
 
 		$this->assertInstanceOf(

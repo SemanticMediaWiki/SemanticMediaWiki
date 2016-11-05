@@ -166,6 +166,15 @@ class ApplicationFactory {
 	}
 
 	/**
+	 * @since 2.2
+	 *
+	 * @return CacheFactory
+	 */
+	public function getCacheFactory() {
+		return $this->callbackLoader->singleton( 'CacheFactory', $this->getSettings()->get( 'smwgCacheType' ) );
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param string|null $source
@@ -345,6 +354,15 @@ class ApplicationFactory {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @return CachedQueryResultPrefetcher
+	 */
+	public function getCachedQueryResultPrefetcher() {
+		return $this->callbackLoader->singleton( 'CachedQueryResultPrefetcher' );
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @return MediaWikiNsContentReader
@@ -429,6 +447,15 @@ class ApplicationFactory {
 	 */
 	public function getQueryFactory() {
 		return $this->callbackLoader->singleton( 'QueryFactory' );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return LoggerInterface
+	 */
+	public function getMediaWikiLogger() {
+		return $this->callbackLoader->singleton( 'MediaWikiLogger' );
 	}
 
 	private static function registerBuilder( CallbackLoader $callbackLoader = null ) {

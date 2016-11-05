@@ -13,6 +13,8 @@ use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\TitleCreator;
 use SMW\Query\QuerySourceFactory;
+use MediaWiki\Logger\LoggerFactory;
+use Psr\Log\NullLogger;
 
 /**
  * @license GNU GPL v2+
@@ -29,6 +31,7 @@ class SharedCallbackContainer implements CallbackContainer {
 	 */
 	public function register( CallbackLoader $callbackLoader ) {
 		$this->registerCallbackHandlers( $callbackLoader );
+		$this->registerCallbackHandlersByMediaWikiServcies( $callbackLoader );
 		$this->registerCallbackHandlersByFactory( $callbackLoader );
 		$this->registerCallbackHandlersByConstructedInstance( $callbackLoader );
 	}
@@ -84,12 +87,6 @@ class SharedCallbackContainer implements CallbackContainer {
 			return new TitleCreator();
 		} );
 
-		$callbackLoader->registerExpectedReturnType( 'WikiPage', '\WikiPage' );
-
-		$callbackLoader->registerCallback( 'WikiPage', function( \Title $title ) {
-			return \WikiPage::factory( $title );
-		} );
-
 		$callbackLoader->registerExpectedReturnType( 'ContentParser', '\SMW\ContentParser' );
 
 		$callbackLoader->registerCallback( 'ContentParser', function( \Title $title ) {
@@ -100,27 +97,6 @@ class SharedCallbackContainer implements CallbackContainer {
 
 		$callbackLoader->registerCallback( 'DeferredCallableUpdate', function( \Closure $callback ) {
 			return new DeferredCallableUpdate( $callback );
-		} );
-
-		$callbackLoader->registerExpectedReturnType( 'DBLoadBalancer', '\LoadBalancer' );
-
-		$callbackLoader->registerCallback( 'DBLoadBalancer', function() {
-			if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( '\MediaWiki\MediaWikiServices', 'getDBLoadBalancer' ) ) { // > MW 1.27
-				return MediaWikiServices::getInstance()->getDBLoadBalancer();
-			}
-
-			return LBFactory::singleton()->getMainLB();
-		} );
-
-		$callbackLoader->registerCallback( 'DefaultSearchEngineTypeForDB', function( \IDatabase $db ) use ( $callbackLoader ) {
-
-			if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( 'SearchEngineFactory', 'getSearchEngineClass' ) ) { // MW > 1.27
-
-				return MediaWikiServices::getInstance()->getSearchEngineFactory()->getSearchEngineClass( $db );
-
-			}
-
-			return $db->getSearchEngine();
 		} );
 
 		/**
@@ -137,6 +113,42 @@ class SharedCallbackContainer implements CallbackContainer {
 		$callbackLoader->registerCallback( 'PropertyAnnotatorFactory', function() use( $callbackLoader ) {
 			$callbackLoader->registerExpectedReturnType( 'PropertyAnnotatorFactory', '\SMW\PropertyAnnotatorFactory' );
 			return new PropertyAnnotatorFactory();
+		} );
+	}
+
+	private function registerCallbackHandlersByMediaWikiServcies( $callbackLoader ) {
+
+		$callbackLoader->registerExpectedReturnType( 'WikiPage', '\WikiPage' );
+
+		$callbackLoader->registerCallback( 'WikiPage', function( \Title $title ) {
+			return \WikiPage::factory( $title );
+		} );
+
+		$callbackLoader->registerExpectedReturnType( 'DBLoadBalancer', '\LoadBalancer' );
+
+		$callbackLoader->registerCallback( 'DBLoadBalancer', function() {
+			if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( '\MediaWiki\MediaWikiServices', 'getDBLoadBalancer' ) ) { // > MW 1.27
+				return MediaWikiServices::getInstance()->getDBLoadBalancer();
+			}
+
+			return LBFactory::singleton()->getMainLB();
+		} );
+
+		$callbackLoader->registerCallback( 'DefaultSearchEngineTypeForDB', function( \IDatabase $db ) use ( $callbackLoader ) {
+			if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( 'SearchEngineFactory', 'getSearchEngineClass' ) ) { // MW > 1.27
+				return MediaWikiServices::getInstance()->getSearchEngineFactory()->getSearchEngineClass( $db );
+			}
+
+			return $db->getSearchEngine();
+		} );
+
+		$callbackLoader->registerCallback( 'MediaWikiLogger', function() use ( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'MediaWikiLogger', '\Psr\Log\LoggerInterface' );
+			if ( class_exists( '\MediaWiki\Logger\LoggerFactory' ) ) {
+				return LoggerFactory::getInstance( 'smw' );
+			}
+
+			return new NullLogger();
 		} );
 	}
 
@@ -230,18 +242,48 @@ class SharedCallbackContainer implements CallbackContainer {
 				$ttl
 			);
 
+			$blobStore->setUsageState(
+				$cacheType !== CACHE_NONE && $cacheType !== false
+			);
+
 			return $blobStore;
+		} );
+
+		/**
+		 * @var CachedQueryResultPrefetcher
+		 */
+		$callbackLoader->registerCallback( 'CachedQueryResultPrefetcher', function( $cacheType = null ) use ( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'CachedQueryResultPrefetcher', CachedQueryResultPrefetcher::class );
+
+			$settings = $callbackLoader->load( 'Settings' );
+			$cacheType = $cacheType === null ? $settings->get( 'smwgQueryResultCacheType' ) : $cacheType;
+
+			$cachedQueryResultPrefetcher = new CachedQueryResultPrefetcher(
+				$callbackLoader->load( 'Store' ),
+				$callbackLoader->singleton( 'QueryFactory' ),
+				$callbackLoader->create( 'BlobStore', CachedQueryResultPrefetcher::CACHE_NAMESPACE, $cacheType, $settings->get( 'smwgQueryResultCacheLifetime' ) )
+			);
+
+			$cachedQueryResultPrefetcher->setLogger(
+				$callbackLoader->singleton( 'MediaWikiLogger' )
+			);
+
+			$cachedQueryResultPrefetcher->setNonEmbeddedCacheLifetime(
+				$settings->get( 'smwgQueryResultNonEmbeddedCacheLifetime' )
+			);
+
+			return $cachedQueryResultPrefetcher;
 		} );
 
 		/**
 		 * @var CachedPropertyValuesPrefetcher
 		 */
 		$callbackLoader->registerCallback( 'CachedPropertyValuesPrefetcher', function( $cacheType = null, $ttl = 604800 ) use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'CachedPropertyValuesPrefetcher', '\SMW\CachedPropertyValuesPrefetcher' );
+			$callbackLoader->registerExpectedReturnType( 'CachedPropertyValuesPrefetcher', CachedPropertyValuesPrefetcher::class );
 
 			$cachedPropertyValuesPrefetcher = new CachedPropertyValuesPrefetcher(
 				$callbackLoader->load( 'Store' ),
-				$callbackLoader->load( 'BlobStore', 'smw:pvp:store', $cacheType, $ttl )
+				$callbackLoader->load( 'BlobStore', CachedPropertyValuesPrefetcher::CACHE_NAMESPACE, $cacheType, $ttl )
 			);
 
 			return $cachedPropertyValuesPrefetcher;

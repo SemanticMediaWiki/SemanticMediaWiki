@@ -88,6 +88,24 @@ class QueryTestCaseInterpreter {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @return DIWikiPage|null
+	 */
+	public function getSubject() {
+		return isset( $this->contents['subject'] ) ? DIWikiPage::newFromText( $this->contents['subject'] ) : null;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return boolean
+	 */
+	public function isFromCache() {
+		return isset( $this->contents['queryresult']['isFromCache'] ) ? (bool)$this->contents['queryresult']['isFromCache'] : null;
+	}
+
+	/**
 	 * @since 2.2
 	 *
 	 * @return array

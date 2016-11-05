@@ -44,7 +44,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SQLStoreFactory( new SMWSQLStore3() );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\QueryEngine',
+			'\SMW\QueryEngine',
 			$instance->newSlaveQueryEngine()
 		);
 	}
@@ -54,7 +54,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SQLStoreFactory( new SMWSQLStore3() );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\QueryEngine',
+			'\SMW\QueryEngine',
 			$instance->newMasterQueryEngine()
 		);
 	}

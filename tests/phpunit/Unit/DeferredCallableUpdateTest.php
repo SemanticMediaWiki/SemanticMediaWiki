@@ -131,4 +131,39 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testFilterDuplicateQueueEntryByFingerprint() {
+
+		$this->testEnvironment->clearPendingDeferredUpdates();
+
+		$test = $this->getMockBuilder( '\stdClass' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'doTest' ) )
+			->getMock();
+
+		$test->expects( $this->once() )
+			->method( 'doTest' );
+
+		$callback = function() use ( $test ) {
+			$test->doTest();
+		};
+
+		$instance = new DeferredCallableUpdate(
+			$callback
+		);
+
+		$instance->setFingerprint( __METHOD__ );
+		$instance->markAsPending( true );
+		$instance->pushToUpdateQueue();
+
+		$instance = new DeferredCallableUpdate(
+			$callback
+		);
+
+		$instance->setFingerprint( __METHOD__ );
+		$instance->markAsPending( true );
+		$instance->pushToUpdateQueue();
+
+		$this->testEnvironment->executePendingDeferredUpdates();
+	}
+
 }
