@@ -99,16 +99,7 @@ class PropertiesQueryPage extends QueryPage {
 		list ( $dataItem, $useCount ) = $result;
 
 		if ( $dataItem instanceof DIProperty ) {
-			$infoLink = '';
-
-			// Add a link to SearchByProperty to hopefully identify the
-			// "hidden" reference
-			if ( $useCount < 1 && $dataItem->isUserDefined() ) {
-				$infoLink = '&#160;' . \SMWInfolink::newPropertySearchLink( '+', $dataItem->getLabel(), '' )->getHTML( $this->getLinker() );
-			}
-
-			return $this->formatPropertyItem( $dataItem, $useCount ) . $infoLink;
-
+			return $this->formatPropertyItem( $dataItem, $useCount );
 		} elseif ( $dataItem instanceof SMWDIError ) {
 			return $this->getMessageFormatter()->clear()
 				->setType( 'warning' )
@@ -143,7 +134,7 @@ class PropertiesQueryPage extends QueryPage {
 
 		if ( $property->isUserDefined() ) {
 
-			if (  $title === null ) {
+			if ( $title === null ) {
 				// Show even messed up property names.
 				$typestring = '';
 				$proplink = $property->getLabel();
@@ -153,6 +144,16 @@ class PropertiesQueryPage extends QueryPage {
 			} else {
 				list( $typestring, $proplink ) = $this->getUserDefinedPropertyInfo( $title, $property, $useCount );
 			}
+
+			$infoLink = '';
+
+			// Add a link to SearchByProperty to hopefully identify the
+			// "hidden" reference
+			if ( $useCount < 1 ) {
+				$infoLink = '&#160;' . \SMWInfolink::newPropertySearchLink( '+', $property->getLabel(), '' )->getHTML( $this->getLinker() );
+			}
+
+			$proplink .= $infoLink;
 
 		} else {
 			list( $typestring, $proplink ) = $this->getPredefinedPropertyInfo( $property );
