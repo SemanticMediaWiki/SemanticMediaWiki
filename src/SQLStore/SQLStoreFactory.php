@@ -392,12 +392,14 @@ class SQLStoreFactory {
 		);
 
 		$tableSchemaManager = new TableSchemaManager(
-			$this->store,
+			$this->store
+		);
+
+		return new Installer(
+			$tableSchemaManager,
 			$tableBuilder,
 			$tableIntegrityExaminer
 		);
-
-		return new Installer( $tableSchemaManager );
 	}
 
 	/**

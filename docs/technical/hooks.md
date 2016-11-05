@@ -39,6 +39,13 @@ Implementing a hook should be made in consideration of the expected performance 
 
 - `SMW::FileUpload::BeforeUpdate` to add extra annotations before the store update is triggered
 
+### 2.5
+
+`SMW\SQLStore\Installer` defines:
+
+- `SMW::SQLStore::AfterCreateTablesComplete` to add extra tables after the create process as been finalized
+- `SMW::SQLStore::AfterDropTablesComplete` to removed extra tables after the drop process as been finalized
+
 For implementation details and examples, see the [integration test](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/SemanticMediaWikiProvidedHookInterfaceIntegrationTest.php).
 
 ## Other available hooks
@@ -49,11 +56,7 @@ Subsequent hooks should be renamed to follow a common naming practice that help 
 * `SMWParamFormat`, SMWResultFormat
 * `\SMW\Store`, SMWStore::updateDataBefore (SMW::Store::BeforeDataUpdateComplete)
 * `\SMW\Store`, SMWStore::updateDataAfter (SMW::Store::AfterDataUpdateComplete)
-* `\SMW\Store`, smwInitializeTables (SMW::Store::initTables)
-* `SMWSQLStore3SetupHandlers`, SMWCustomSQLStoreFieldType
 * `SMWSQLStore3SetupHandlers`, smwRefreshDataJobs (SMW::SQLStore::AfterRefreshDataJob)
 * `SMWSQLStore3Writers`, SMWSQLStore3::updateDataBefore (SMW::SQLStore::BeforeDataUpdateComplete)
-* `SMWSetupScript`, smwDropTables (SMW::Store::dropTables)
-* `SMW_refreshData`, smwDropTables (SMW::Store::dropTables)
 
 [hooks]: https://www.mediawiki.org/wiki/Hooks "Manual:Hooks"

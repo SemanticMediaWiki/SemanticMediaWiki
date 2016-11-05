@@ -4,8 +4,9 @@ The `SQLStore` consists of a storage and query engine to manage semantic data st
 
 ## Overview
 
-![image](https://cloud.githubusercontent.com/assets/1245473/9708119/80ff497e-5517-11e5-936c-d56b22e7bfde.png)
+![image](https://cloud.githubusercontent.com/assets/1245473/20031413/49b336f6-a377-11e6-90f5-9fbe25b27812.png)
 
 ## See also
 
-- A short introduction to the [QueryEngine](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SQLStore/QueryEngine/README.md)
+- [Installer](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/sqlstore.installer.md)
+- [QueryEngine](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SQLStore/QueryEngine/README.md)
