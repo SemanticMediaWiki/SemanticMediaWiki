@@ -13,7 +13,7 @@ use SMW\Libs\ErrorCode;
  *
  * @author mwjames
  */
-class LanguageFileContentsReader {
+class LanguageJsonFileContentsReader {
 
 	/**
 	 * @var array
