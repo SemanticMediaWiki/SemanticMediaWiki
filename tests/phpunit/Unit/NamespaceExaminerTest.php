@@ -1,14 +1,12 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use SMW\NamespaceExaminer;
 
 /**
  * @covers \SMW\NamespaceExaminer
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since   1.9
@@ -50,15 +48,12 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testNoNumberException() {
+	public function testNoNumberExceptionThrowsException() {
 
 		$instance = new NamespaceExaminer( array( NS_MAIN => true ) );
 
 		$this->setExpectedException( '\SMW\InvalidNamespaceException' );
-
-		$this->assertTrue(
-			$instance->isSemanticEnabled( 'ichi' )
-		);
+		$instance->isSemanticEnabled( 'ichi' );
 	}
 
 	/**

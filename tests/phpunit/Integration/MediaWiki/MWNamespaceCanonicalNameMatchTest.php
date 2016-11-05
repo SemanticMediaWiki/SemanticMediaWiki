@@ -5,22 +5,17 @@ namespace SMW\Tests\Integration\MediaWiki;
 use MWNamespace;
 use SMW\NamespaceManager;
 use SMW\Settings;
-use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\MwHooksHandler;
 
 /**
- *
- * @group SMW
- * @group SMWExtension
- * @group semantic-mediawiki-integration
- * @group mediawiki-database
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class NamespaceRegistrationDBIntegrationTest extends MwDBaseUnitTestCase {
+class MWNamespaceCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
 
 	private $mwHooksHandler;
 
@@ -53,18 +48,15 @@ class NamespaceRegistrationDBIntegrationTest extends MwDBaseUnitTestCase {
 		$instance = $this->getMock( '\SMW\NamespaceManager',
 			array( 'isDefinedConstant' ),
 			array(
-				&$default,
-				$smwBasePath
+				&$default
 			)
 		);
 
-		$instance->expects( $this->any() )
+		$instance->expects( $this->atLeastOnce() )
 			->method( 'isDefinedConstant' )
 			->will( $this->returnValue( false ) );
 
-		$this->assertTrue(
-			$instance->init()
-		);
+		$instance->init();
 	}
 
 	public function testCanonicalNames() {

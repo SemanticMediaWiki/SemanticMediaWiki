@@ -302,17 +302,6 @@ class HookRegistry {
 		};
 
 		/**
-		 * Hook: For extensions adding their own namespaces or altering the defaults
-		 *
-		 * @Bug 34383
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/CanonicalNamespaces
-		 */
-		$this->handlers['CanonicalNamespaces'] = function ( &$list ) {
-			$list = $list + NamespaceManager::getCanonicalNames();
-			return true;
-		};
-
-		/**
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/FileUpload
 		 *
 		 * @since 1.9.1

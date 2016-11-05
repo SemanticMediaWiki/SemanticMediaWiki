@@ -138,7 +138,6 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->doTestExecutionForArticleDelete( $instance );
 		$this->doTestExecutionForLinksUpdateConstructed( $instance );
 		$this->doTestExecutionForSpecialStatsAddExtra( $instance );
-		$this->doTestExecutionForCanonicalNamespaces( $instance );
 		$this->doTestExecutionForFileUpload( $instance );
 		$this->doTestExecutionForResourceLoaderGetConfigVars( $instance );
 		$this->doTestExecutionForGetPreferences( $instance );
@@ -553,26 +552,6 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			array( &$extraStats )
-		);
-	}
-
-	public function doTestExecutionForCanonicalNamespaces( $instance ) {
-
-		$handler = 'CanonicalNamespaces';
-
-		$list = array();
-
-		$this->assertTrue(
-			$instance->isRegistered( $handler )
-		);
-
-		$this->assertThatHookIsExcutable(
-			$instance->getHandlerFor( $handler ),
-			array( &$list )
-		);
-
-		$this->assertNotEmpty(
-			$list
 		);
 	}
 

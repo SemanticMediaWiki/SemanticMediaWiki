@@ -210,9 +210,9 @@ function smwfGetLinker() {
 function enableSemantics( $namespace = null, $complete = false ) {
 	global $smwgNamespace;
 
-	// $GLOBALS ought to be injected from the top-level but that would require
-	// to change the interface which would bring no benefits for the end user
-	// as enableSemantics() is only targeted to be included in LocalSettings
+	// Apparently this is required (1.28+) as the earliest possible execution
+	// point in order for settings that refer to the SMW_NS_PROPERTY namespace
+	// to be available in LocalSettings
 	NamespaceManager::initCustomNamespace( $GLOBALS );
 
 	if ( !$complete && ( $smwgNamespace !== '' ) ) {
