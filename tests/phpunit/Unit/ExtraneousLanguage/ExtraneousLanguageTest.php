@@ -48,7 +48,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$languageContents->expects( $this->atLeastOnce() )
-			->method( 'getFromLanguageWithIndex' )
+			->method( 'getContentsByLanguageWithIndex' )
 			->with(
 				$this->anything(),
 				$this->equalTo( 'namespaces' ) )
@@ -75,7 +75,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$languageContents->expects( $this->atLeastOnce() )
-			->method( 'getFromLanguageWithIndex' )
+			->method( 'getContentsByLanguageWithIndex' )
 			->with(
 				$this->anything(),
 				$this->equalTo( 'namespaceAliases' ) )
@@ -102,7 +102,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$languageContents->expects( $this->atLeastOnce() )
-			->method( 'getFromLanguageWithIndex' )
+			->method( 'getContentsByLanguageWithIndex' )
 			->with(
 				$this->anything(),
 				$this->equalTo( 'dateFormatsByPrecision' ) )
@@ -129,7 +129,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$languageContents->expects( $this->atLeastOnce() )
-			->method( 'getFromLanguageWithIndex' )
+			->method( 'getContentsByLanguageWithIndex' )
 			->with(
 				$this->anything(),
 				$this->equalTo( 'dateFormatsByPrecision' ) )
@@ -156,7 +156,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$languageContents->expects( $this->atLeastOnce() )
-			->method( 'getFromLanguageWithIndex' )
+			->method( 'getContentsByLanguageWithIndex' )
 			->with(
 				$this->anything(),
 				$this->equalTo( 'dataTypeLabels' ) )
@@ -179,18 +179,18 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$languageContents->expects( $this->at( 0 ) )
-			->method( 'getFromLanguageWithIndex' )
+			->method( 'getContentsByLanguageWithIndex' )
 			->with(
 				$this->anything(),
 				$this->equalTo( 'propertyLabels' ) )
 			->will( $this->returnValue( array( "_FOO" => "Foo" ) ) );
 
 		$languageContents->expects( $this->at( 2 ) )
-			->method( 'getFromLanguageWithIndex' )
+			->method( 'getContentsByLanguageWithIndex' )
 			->will( $this->returnValue( array() ) );
 
 //		$languageContents->expects( $this->at( 5 ) )
-//			->method( 'getFromLanguageWithIndex' )
+//			->method( 'getContentsByLanguageWithIndex' )
 //			->with(
 //				$this->anything(),
 //				$this->equalTo( 'propertyAliases' ) )
@@ -218,7 +218,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$languageContents->expects( $this->atLeastOnce() )
-			->method( 'getFromLanguageWithIndex' )
+			->method( 'getContentsByLanguageWithIndex' )
 			->with(
 				$this->anything(),
 				$this->equalTo( 'dateFormats' ) )
@@ -247,7 +247,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$languageContents->expects( $this->atLeastOnce() )
-			->method( 'getFromLanguageWithIndex' )
+			->method( 'getContentsByLanguageWithIndex' )
 			->with(
 				$this->anything(),
 				$this->equalTo( 'months' ) )
@@ -276,7 +276,7 @@ class ExtraneousLanguageTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$languageContents->expects( $this->atLeastOnce() )
-			->method( 'getFromLanguageWithIndex' )
+			->method( 'getContentsByLanguageWithIndex' )
 			->with(
 				$this->anything(),
 				$this->equalTo( 'months' ) )

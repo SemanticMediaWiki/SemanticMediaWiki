@@ -13,9 +13,9 @@ use RuntimeException;
 class LanguageFallbackFinder {
 
 	/**
-	 * @var languageFileContentsReader
+	 * @var LanguageJsonFileContentsReader
 	 */
-	private $languageFileContentsReader;
+	private $languageJsonFileContentsReader;
 
 	/**
 	 * @var string
@@ -30,10 +30,10 @@ class LanguageFallbackFinder {
 	/**
 	 * @since 2.5
 	 *
-	 * @param languageFileContentsReader $languageFileContentsReader
+	 * @param LanguageJsonFileContentsReader $LanguageJsonFileContentsReader
 	 */
-	public function __construct( LanguageFileContentsReader $languageFileContentsReader ) {
-		$this->languageFileContentsReader = $languageFileContentsReader;
+	public function __construct( LanguageJsonFileContentsReader $languageJsonFileContentsReader ) {
+		$this->languageJsonFileContentsReader = $languageJsonFileContentsReader;
 	}
 
 	/**
@@ -75,7 +75,7 @@ class LanguageFallbackFinder {
 		}
 
 		try {
-			$contents = $this->languageFileContentsReader->readByLanguageCode( $languageCode );
+			$contents = $this->languageJsonFileContentsReader->readByLanguageCode( $languageCode );
 		} catch ( RuntimeException $e ) {
 			$this->fallbackLanguages[$languageCode] = $this->canonicalFallbackLanguageCode;
 		}
