@@ -19,13 +19,18 @@ use SMW\SQLStore\TableBuilder\FieldType;
  */
 class DIUriHandler extends DataItemHandler {
 
+	const MAX_LENGTH = 255;
+
 	/**
 	 * @since 1.8
 	 *
 	 * {@inheritDoc}
 	 */
 	public function getTableFields() {
-		return array( 'o_serialized' => FieldType::FIELD_TITLE );
+		return array(
+			'o_blob' => FieldType::TYPE_BLOB,
+			'o_serialized' => FieldType::FIELD_TITLE
+		);
 	}
 
 	/**
@@ -34,7 +39,10 @@ class DIUriHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getFetchFields() {
-		return array( 'o_serialized' => FieldType::FIELD_TITLE );
+		return array(
+			'o_blob' => FieldType::TYPE_BLOB,
+			'o_serialized' => FieldType::FIELD_TITLE
+		);
 	}
 
 	/**
@@ -43,7 +51,7 @@ class DIUriHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getWhereConds( DataItem $dataItem ) {
-		return array( 'o_serialized' => $dataItem->getSerialization() );
+		return array( 'o_serialized' => rawurldecode( $dataItem->getSerialization() ) );
 	}
 
 	/**
@@ -52,7 +60,19 @@ class DIUriHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getInsertValues( DataItem $dataItem ) {
-		return array( 'o_serialized' => $dataItem->getSerialization() );
+
+		$serialization = rawurldecode( $dataItem->getSerialization() );
+		$text = mb_strlen( $serialization ) <= self::MAX_LENGTH ? null : $serialization;
+
+		// bytea type handling
+		if ( $text !== null && $GLOBALS['wgDBtype'] === 'postgres' ) {
+			$text = pg_escape_bytea( $text );
+		}
+
+		return array(
+			'o_blob' => $text,
+			'o_serialized' => $serialization,
+		);
 	}
 
 	/**
@@ -80,11 +100,15 @@ class DIUriHandler extends DataItemHandler {
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
 
-		if ( is_string( $dbkeys ) ) {
-			return DIUri::doUnserialize( $dbkeys );
+		if ( !is_array( $dbkeys ) || count( $dbkeys ) != 2 ) {
+			throw new DataItemHandlerException( 'Failed to create data item from DB keys.' );
 		}
 
-		throw new DataItemHandlerException( 'Failed to create data item from DB keys.' );
+		if ( $GLOBALS['wgDBtype'] === 'postgres' ) {
+			$dbkeys[0] = pg_unescape_bytea( $dbkeys[0] );
+		}
+
+		return DIUri::doUnserialize( $dbkeys[0] == '' ? $dbkeys[1] : $dbkeys[0] );
 	}
 
 }

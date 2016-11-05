@@ -72,6 +72,7 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$row = new \stdClass;
 		$row->o_serialized = 'Foo';
+		$row->o_blob = null;
 		$row->s_id = 42;
 
 		$resultWrapper = $this->iteratorMockBuilder->setClass( '\ResultWrapper' )
