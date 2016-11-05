@@ -146,7 +146,7 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 			array( $property, 0 )
 		);
 
-		$this->assertNotEmpty(
+		$this->assertEmpty(
 			$result
 		);
 	}
