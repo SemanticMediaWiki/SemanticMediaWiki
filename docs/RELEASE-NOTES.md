@@ -59,7 +59,8 @@ THIS IS NOT A RELEASE YET
 * #1922
 * #1926
 * #1935
-* 1957
+* #1957
+* #1978 Fixed `Tablebuilder` to avoid index creation on an unaltered schema definition
 
 ## Internal changes
 
