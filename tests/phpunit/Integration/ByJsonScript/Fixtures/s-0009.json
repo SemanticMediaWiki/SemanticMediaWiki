@@ -3,11 +3,11 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text",
+			"page": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"name": "Example/S0009/1",
+			"page": "Example/S0009/1",
 			"contents": "[[Has text::Some text to search]]"
 		}
 	],
@@ -16,13 +16,13 @@
 			"type": "special",
 			"about": "#0 results matched by the SMWSearch extension",
 			"special-page": {
-				"page":"Search",
+				"page": "Search",
 				"query-parameters": "",
-				"request-parameters":{
+				"request-parameters": {
 					"search": "[[Has text::~*Some text*]]"
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<ul class='mw-search-results'>",
 					"Example/S0009/1"

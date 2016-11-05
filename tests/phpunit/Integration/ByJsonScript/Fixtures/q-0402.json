@@ -3,62 +3,62 @@
 	"setup": [
 		{
 			"namespace": "NS_MEDIAWIKI",
-			"name": "Smw import dc",
+			"page": "Smw import dc",
 			"contents": "http://purl.org/dc/elements/1.1/|[http://purl.org/dc/elements/1.1/ dc]\n title|Type:Text\n type|Type:Text\n date|Type:Date\n description|Type:Text\n creator|Type:Page\n"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Dc:title",
+			"page": "Dc:title",
 			"contents": "[[Imported from::dc:title]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Dc:creator",
+			"page": "Dc:creator",
 			"contents": "[[Imported from::dc:creator]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Marc:title",
+			"page": "Marc:title",
 			"contents": "[[Has type::Text]] [[Subproperty of::Dc:title]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Marc:main entry personal name",
+			"page": "Marc:main entry personal name",
 			"contents": "[[Has type::Page]] [[Subproperty of::Dc:creator]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Marc:title statement",
+			"page": "Marc:title statement",
 			"contents": "[[Has type::Text]] [[Subproperty of::Marc:title]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Marc:varying form of title",
+			"page": "Marc:varying form of title",
 			"contents": "[[Has type::Text]] [[Subproperty of::Marc:title]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has author",
+			"page": "Has author",
 			"contents": "#REDIRECT [[Property:Marc:main entry personal name]]"
 		},
 		{
-			"name": "Animal farm",
+			"page": "Animal farm",
 			"contents": "[[Marc:title statement::George Orwell's Animal farm]] [[Has author::George Orwell]]"
 		},
 		{
-			"name": "War and Peace",
+			"page": "War and Peace",
 			"contents": "[[Marc:title statement::War and Peace]] [[Has author::Leo Tolstoy]]"
 		},
 		{
-			"name": "King Lear",
+			"page": "King Lear",
 			"contents": "#REDIRECT [[Shakespeare's King Lear]]"
 		},
 		{
-			"name": "Shakespeare",
+			"page": "Shakespeare",
 			"contents": "#REDIRECT [[William Shakespeare]]"
 		},
 		{
-			"name": "Shakespeare's King Lear",
+			"page": "Shakespeare's King Lear",
 			"contents": "[[Marc:title::King Lear]] [[Has author::William Shakespeare]]"
 		}
 	],
@@ -70,9 +70,6 @@
 			"printouts": [
 				"Has author"
 			],
-			"store": {
-				"clear-cache": true
-			},
 			"parameters": {
 				"limit": 10
 			},
@@ -92,6 +89,9 @@
 						"value": "George Orwell"
 					}
 				]
+			},
+			"store": {
+				"clear-cache": true
 			}
 		},
 		{
@@ -101,9 +101,6 @@
 			"printouts": [
 				"Has author"
 			],
-			"store": {
-				"clear-cache": true
-			},
 			"parameters": {
 				"limit": 10
 			},
@@ -128,6 +125,9 @@
 						"value": "William Shakespeare"
 					}
 				]
+			},
+			"store": {
+				"clear-cache": true
 			}
 		},
 		{
@@ -137,9 +137,6 @@
 			"printouts": [
 				"Has author"
 			],
-			"store": {
-				"clear-cache": true
-			},
 			"parameters": {
 				"limit": 10
 			},
@@ -164,6 +161,9 @@
 						"value": "William Shakespeare"
 					}
 				]
+			},
+			"store": {
+				"clear-cache": true
 			}
 		},
 		{
@@ -173,9 +173,6 @@
 			"printouts": [
 				"Has author"
 			],
-			"store": {
-				"clear-cache": true
-			},
 			"parameters": {
 				"limit": 10
 			},
@@ -190,6 +187,9 @@
 						"value": "George Orwell"
 					}
 				]
+			},
+			"store": {
+				"clear-cache": true
 			}
 		},
 		{
@@ -197,9 +197,6 @@
 			"about": "#4 distinct value for Has author / redirected value / subproperty level zero",
 			"condition": "[[Has author::Shakespeare]]",
 			"printouts": [],
-			"store": {
-				"clear-cache": true
-			},
 			"parameters": {
 				"limit": 10
 			},
@@ -208,6 +205,9 @@
 				"results": [
 					"Shakespeare's King Lear#0##"
 				]
+			},
+			"store": {
+				"clear-cache": true
 			}
 		},
 		{
@@ -215,9 +215,6 @@
 			"about": "#5 distinct value for Dc:creator / redirected value / subproperty level one",
 			"condition": "[[Dc:creator::Shakespeare]]",
 			"printouts": [],
-			"store": {
-				"clear-cache": true
-			},
 			"parameters": {
 				"limit": 10
 			},
@@ -226,6 +223,9 @@
 				"results": [
 					"Shakespeare's King Lear#0##"
 				]
+			},
+			"store": {
+				"clear-cache": true
 			}
 		}
 	],

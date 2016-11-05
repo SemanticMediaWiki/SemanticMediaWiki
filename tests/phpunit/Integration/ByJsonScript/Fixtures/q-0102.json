@@ -3,27 +3,27 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has FirstRegexBlobSearchProperty",
+			"page": "Has FirstRegexBlobSearchProperty",
 			"contents": "[[Has type::Text]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has SecondRegexBlobSearchProperty",
+			"page": "Has SecondRegexBlobSearchProperty",
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"name": "RegexTextAnnotationForCharactersThatRequireSpecialEscapePattern",
 			"namespace": "NS_MAIN",
+			"page": "RegexTextAnnotationForCharactersThatRequireSpecialEscapePattern",
 			"contents": "[[Has FirstRegexBlobSearchProperty::{(+*. \\;)}]]"
 		},
 		{
-			"name": "RegexParserAnnotationForCharactersThatRequireSpecialEscapePattern",
 			"namespace": "NS_MAIN",
+			"page": "RegexParserAnnotationForCharactersThatRequireSpecialEscapePattern",
 			"contents": "{{#set:|Has FirstRegexBlobSearchProperty=[(*. \\=^)\"]}} {{#subobject:|Has SecondRegexBlobSearchProperty=[(+. \\:)]-|}}"
 		},
 		{
-			"name": "RequiresSuperSpecialEscapePattern",
 			"namespace": "NS_MAIN",
+			"page": "RequiresSuperSpecialEscapePattern",
 			"contents": "{{#set:|Has FirstRegexBlobSearchProperty=Foo(\"#^$&-/)-|}}"
 		}
 	],

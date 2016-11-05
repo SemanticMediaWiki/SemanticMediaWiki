@@ -261,12 +261,11 @@ class QueryTestCaseInterpreter {
 
 		$output = array();
 
-		if ( !isset( $this->contents['expected-output'] ) || !isset( $this->contents['expected-output'][$id] )  ) {
+		if ( !isset( $this->contents['assert-output'] ) || !isset( $this->contents['assert-output'][$id] )  ) {
 			return $output;
 		}
 
-
-		return $this->contents['expected-output'][$id];
+		return $this->contents['assert-output'][$id];
 	}
 
 	/**

@@ -1,30 +1,30 @@
 {
-	"description": "Test format=table with sep cell formatting, #495 (en, skip 1.19)",
+	"description": "Test `format=table` with sep cell formatting, #495 (`wgContLang=en`,`wgLang=en`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has page",
+			"page": "Has page",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text",
+			"page": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"name": "Table-page",
+			"page": "Table-page",
 			"contents": "[[Has page::Foo]] [[Has page::42]] [[Has text::bar]] [[Has text::1001]]"
 		},
 		{
-			"name": "Table-without-sep-parameter",
+			"page": "Table-without-sep-parameter",
 			"contents": "{{#ask:[[Has page::Foo]] [[Has page::42]]\n |?Has page\n |?Has text\n |format=table\n |headers=plain\n |link=none\n }}"
 		},
 		{
-			"name": "Table-with-sep-parameter",
+			"page": "Table-with-sep-parameter",
 			"contents": "{{#ask:[[Has page::Foo]] [[Has page::42]]\n |?Has page\n |?Has text\n |format=table\n |sep=;\n |headers=plain\n |link=none\n }}"
 		},
 		{
-			"name": "Broadtable-with-sep-parameter",
+			"page": "Broadtable-with-sep-parameter",
 			"contents": "{{#ask:[[Has page::Foo]] [[Has page::42]]\n |?Has page\n |?Has text\n |format=broadtable\n |sep=;\n |headers=plain\n |link=none\n }}"
 		}
 	],
@@ -33,7 +33,7 @@
 			"type": "format",
 			"about": "#0 table without sep",
 			"subject": "Table-without-sep-parameter",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<table class=\"sortable wikitable smwtable\">",
 					"<th>&#160;</th><th class=\"Has-page\">Has page</th>",
@@ -49,7 +49,7 @@
 			"type": "format",
 			"about": "#1 table with sep",
 			"subject": "Table-with-sep-parameter",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<table class=\"sortable wikitable smwtable\">",
 					"<th>&#160;</th><th class=\"Has-page\">Has page</th>",
@@ -65,7 +65,7 @@
 			"type": "format",
 			"about": "#2 broadtable with sep",
 			"subject": "Broadtable-with-sep-parameter",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<table class=\"sortable wikitable smwtable\" width=\"100%\">",
 					"<th>&#160;</th><th class=\"Has-page\">Has page</th>",
@@ -87,9 +87,6 @@
 		}
 	},
 	"meta": {
-		"skip-on": {
-			"mw-1.19.20": "Skipping because of style=\"width: 100%;\" vs width=\"100%\""
-		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false

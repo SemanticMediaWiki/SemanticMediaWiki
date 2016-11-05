@@ -3,11 +3,11 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Member of",
+			"page": "Member of",
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"name": "Page-with-subobject",
+			"page": "Page-with-subobject",
 			"contents": "{{#subobject:|Member of=WXYZ|@sortkey=B}}\n {{#subobject:|Member of=ABCD|@sortkey=A}}\n {{#subobject:|Member of=ABCD|@sortkey=A}}\n {{#subobject:|Member of=ABCD|@sortkey=C}}"
 		}
 	],

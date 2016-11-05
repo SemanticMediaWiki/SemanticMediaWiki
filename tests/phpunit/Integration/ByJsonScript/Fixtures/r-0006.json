@@ -3,29 +3,29 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has number",
+			"page": "Has number",
 			"contents": "[[Has type::Number]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text",
+			"page": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "HasTextNumberRecord",
+			"page": "HasTextNumberRecord",
 			"contents": "[[Has type::Record]] [[Has fields::Has text;Has number]]"
 		},
 		{
-			"name": "Example/R0006/1",
+			"page": "Example/R0006/1",
 			"contents": "[[Category:R0006]] [[HasTextNumberRecord::Foo;123]]"
 		},
 		{
-			"name": "Example/R0006/2",
+			"page": "Example/R0006/2",
 			"contents": "[[Category:R0006]] {{#subobject:|HasTextNumberRecord=Foo;123}}"
 		},
 		{
-			"name": "Example/R0006/3",
+			"page": "Example/R0006/3",
 			"contents": "[[Category:R0006]] [[HasTextNumberRecord::Foo;123]] {{#subobject:A1|Has number=123|HasTextNumberRecord=Foo;123}} {{#subobject:A2|Has number=456|HasTextNumberRecord=Foo;123}}"
 		}
 	],
@@ -43,7 +43,7 @@
 					"revisiondate": false
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<property:HasTextNumberRecord rdf:resource=\"&wiki;Example/R0006/1-23_e594fde0f37d237549009d2ecebce80e\"/>",
 					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0006/1-23_e594fde0f37d237549009d2ecebce80e\">",
@@ -66,7 +66,7 @@
 					"revisiondate": false
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0006/2\">",
 					"<rdf:type rdf:resource=\"http://example.org/id/Category-3AR0006\"/>",
@@ -84,9 +84,6 @@
 		{
 			"type": "rdf",
 			"about": "#2 multiple subobject record annotation, test statement uniqueness (statement order is important)",
-			"store": {
-				"clear-cache": true
-			},
 			"exportcontroller": {
 				"print-pages": [
 					"Example/R0006/3"
@@ -97,7 +94,10 @@
 					"revisiondate": false
 				}
 			},
-			"expected-output": {
+			"store": {
+				"clear-cache": true
+			},
+			"assert-output": {
 				"to-contain": [
 					"<property:HasTextNumberRecord rdf:resource=\"&wiki;Example/R0006/3-23_e594fde0f37d237549009d2ecebce80e\"/>",
 					"<property:Has_subobject rdf:resource=\"&wiki;Example/R0006/3-23A1\"/>",

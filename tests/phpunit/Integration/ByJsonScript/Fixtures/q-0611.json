@@ -2,34 +2,31 @@
 	"description": "Test `_wpg` namespace any value queries (#1301, en)",
 	"setup": [
 		{
-			"name": "Example/Q0611/1",
 			"namespace": "NS_HELP",
+			"page": "Example/Q0611/1",
 			"contents": "[[Category:Q0611]]"
 		},
 		{
-			"name": "Example/Q0611/2",
 			"namespace": "NS_HELP",
+			"page": "Example/Q0611/2",
 			"contents": "[[Category:Q0611]]"
 		},
 		{
-			"name": "Example/Q0611/3",
 			"namespace": "NS_HELP",
+			"page": "Example/Q0611/3",
 			"contents": "#REDIRECT [[Example/Q0611/4]]"
 		},
 		{
-			"name": "Example/Q0611/4",
 			"namespace": "NS_HELP",
-			"contents": "[[Category:Q0611]]",
-			"do-delete": true
+			"do-delete": true,
+			"page": "Example/Q0611/4",
+			"contents": "[[Category:Q0611]]"
 		}
 	],
 	"tests": [
 		{
 			"type": "query",
 			"about": "#0",
-			"store": {
-				"clear-cache": true
-			},
 			"condition": "[[Help:+]] [[Category:Q0611]]",
 			"printouts": [],
 			"parameters": {
@@ -41,6 +38,9 @@
 					"Example/Q0611/1#12##",
 					"Example/Q0611/2#12##"
 				]
+			},
+			"store": {
+				"clear-cache": true
 			}
 		}
 	],

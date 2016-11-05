@@ -3,51 +3,51 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text",
+			"page": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"name": "Example/F0207/1/1",
+			"page": "Example/F0207/1/1",
 			"contents": "[[Has text::* 123 \n* 345]] [[Category:F0207]]"
 		},
 		{
-			"name": "Example/F0207/1/2",
+			"page": "Example/F0207/1/2",
 			"contents": "{{#subobject:|Has text=* 一二三 \n* 四五六 \nsome text without indent|@category=F0207}}"
 		},
 		{
-			"name": "Example/F0207/1/3",
+			"page": "Example/F0207/1/3",
 			"contents": "[[Has text::# abc \n# def]] [[Category:F0207]]"
 		},
 		{
-			"name": "Example/F0207/1/4",
+			"page": "Example/F0207/1/4",
 			"contents": "[[Has text::: ABC \n:: DEF]] [[Category:F0207]]"
 		},
 		{
-			"name": "Example/F0207/1/5",
+			"page": "Example/F0207/1/5",
 			"contents": "[[Has text::Some text * without indent]]"
 		},
 		{
-			"name": "Example/F0207/1/6",
+			"page": "Example/F0207/1/6",
 			"contents": "[[Has text::*Without space\n#123]]"
 		},
 		{
-			"name": "Example/F0207/1a",
+			"page": "Example/F0207/1a",
 			"contents": "{{#ask: [[Category:F0207]] |?Has text |format=table |link=none}}"
 		},
 		{
-			"name": "Example/F0207/1b",
+			"page": "Example/F0207/1b",
 			"contents": "{{#show: Example/F0207/1/1 |?Has text }}"
 		},
 		{
-			"name": "Example/F0207/3a",
+			"page": "Example/F0207/3a",
 			"contents": "{{#show: Example/F0207/1/3 |?Has text }}"
 		},
 		{
-			"name": "Example/F0207/5a",
+			"page": "Example/F0207/5a",
 			"contents": "{{#show: Example/F0207/1/5 |?Has text }}"
 		},
 		{
-			"name": "Example/F0207/6a",
+			"page": "Example/F0207/6a",
 			"contents": "{{#show: Example/F0207/1/6 |?Has text }}"
 		}
 	],
@@ -56,7 +56,7 @@
 			"type": "format",
 			"about": "#0",
 			"subject": "Example/F0207/1a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td class=\"smwtype_wpg\">Example/F0207/1/1</td><td class=\"Has-text smwtype_txt\">",
 					"<li> 123",
@@ -78,7 +78,7 @@
 			"type": "format",
 			"about": "#1",
 			"subject": "Example/F0207/1b",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<ul>",
 					"<li> 123",
@@ -90,7 +90,7 @@
 			"type": "format",
 			"about": "#2",
 			"subject": "Example/F0207/3a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<ol>",
 					"<li> abc",
@@ -102,7 +102,7 @@
 			"type": "format",
 			"about": "#3",
 			"subject": "Example/F0207/5a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<p>Some text * without indent"
 				]
@@ -112,7 +112,7 @@
 			"type": "format",
 			"about": "#4",
 			"subject": "Example/F0207/6a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<ul>",
 					"<li>Without space",

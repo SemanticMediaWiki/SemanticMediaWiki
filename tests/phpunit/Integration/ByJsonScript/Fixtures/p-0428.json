@@ -3,11 +3,11 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text",
+			"page": "Has text",
 			"contents": "[[A le type::Texte]]"
 		},
 		{
-			"name": "Example/P0428/1",
+			"page": "Example/P0428/1",
 			"contents": "[[Has text::#-Foo]]"
 		}
 	],
@@ -16,7 +16,7 @@
 			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0428/1",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,

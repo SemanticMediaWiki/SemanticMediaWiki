@@ -1,31 +1,31 @@
 {
-	"description": "Test format=template with self reference (#988, guard against template self-reference in ask/show query)",
+	"description": "Test `format=template` with self reference (#988, guard against template self-reference in ask/show query)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has blob property",
+			"page": "Has blob property",
 			"contents": "[[Has type::Text]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has page property",
+			"page": "Has page property",
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"name": "Page with annotation for template usage",
+			"page": "Page with annotation for template usage",
 			"contents": "[[Has blob property::Template one]] [[Has page property::Template two]]"
 		},
 		{
-			"name": "TemplateWithReferenceToItself",
 			"namespace": "NS_TEMPLATE",
+			"page": "TemplateWithReferenceToItself",
 			"contents": "<includeonly>{{#ask: [[Has page property::Template two]] OR [[Has page property::Template three]]|format=template|template=TemplateWithReferenceToItself}}</includeonly>"
 		},
 		{
-			"name": "PageContainsAskWithTemplateUsage",
+			"page": "PageContainsAskWithTemplateUsage",
 			"contents": "{{#ask: [[Has blob property::Template one]]|format=template|template=TemplateWithReferenceToItself|import-annotation=true}}"
 		},
 		{
-			"name": "PageContainsTemplateTransclusion",
+			"page": "PageContainsTemplateTransclusion",
 			"contents": "[[Has page property::Template three]] {{TemplateWithReferenceToItself}}"
 		}
 	],

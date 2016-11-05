@@ -3,29 +3,29 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Modification date",
+			"page": "Modification date",
 			"contents": "[[Has preferred property label::prefLabel-123@de]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has query",
+			"page": "Has query",
 			"contents": "{{DISPLAYTITLE:query-displaytitle}}"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has keyword",
+			"page": "Has keyword",
 			"contents": "[[Has preferred property label::prefLabel-456@de]]"
 		},
 		{
-			"name": "Example/P0438/1",
+			"page": "Example/P0438/1",
 			"contents": "[[Category:P0438]] [[Has keyword::some keyword]]"
 		},
 		{
-			"name": "Example/P0438/2",
+			"page": "Example/P0438/2",
 			"contents": "[[Category:P0438]] [[Has keyword::another keyword]]"
 		},
 		{
-			"name": "Example/P0438/Q.1",
+			"page": "Example/P0438/Q.1",
 			"contents": "{{#ask: [[Category:P0438]] |?Modification date |?Modification date=ModificationSomeLabel |?Has keyword |?Has keyword=KeywordCaption |?Has query |?Has query=QueryCaption |limit=1 }}"
 		}
 	],
@@ -34,7 +34,7 @@
 			"type": "parser",
 			"about": "#0 (combination of prefLabel, DISPLAYTITLE, local caption)",
 			"subject": "Example/P0438/Q.1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"title=\"Property:Modification date\">prefLabel-123</a></span><div class=\"smwttcontent\">„prefLabel-123 (Modification date)“",
 					"title=\"Property:Modification date\">ModificationSomeLabel</a></span><div class=\"smwttcontent\">„prefLabel-123 (Modification date)“",

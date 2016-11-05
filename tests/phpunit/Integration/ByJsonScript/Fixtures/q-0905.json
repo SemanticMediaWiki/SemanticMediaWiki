@@ -3,20 +3,20 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has page",
+			"page": "Has page",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text",
+			"page": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"name": "Example/Q0905/1",
+			"page": "Example/Q0905/1",
 			"contents": "[[Category:Q0905]] [[Has page::123]] [[Has page::ABC]] [[Has text::123]] [[Has text::ABC]]"
 		},
 		{
-			"name": "Example/Q0905/2",
+			"page": "Example/Q0905/2",
 			"contents": "[[Category:Q0905]] [[Has page::1234]] [[Has page::ABCD]] [[Has text::1234]] [[Has text::ABCD]]"
 		}
 	],

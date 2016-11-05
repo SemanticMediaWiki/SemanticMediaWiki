@@ -47,11 +47,15 @@ class Version2TestCaseConverter {
 		$this->contents = json_decode( file_get_contents( $location ), true );
 
 		if ( isset( $this->contents['meta']['version'] ) && $this->contents['meta']['version'] === '2' ) {
-			return print "Skipping {$file} because it has already been tagged with version 2.\n";
+		//	return print "Skipping {$file} because it has already been tagged with version 2.\n";
 		}
 
+	//	$contents = $this->replaceSpaceIndent(
+	//		$this->doConvertToVersion2()
+	//	);
+
 		$contents = $this->replaceSpaceIndent(
-			$this->doConvertToVersion2()
+			$this->doConvertToVersion2Assert()
 		);
 
 		if ( !isset( $this->options['test'] ) ) {
@@ -72,6 +76,44 @@ class Version2TestCaseConverter {
 		}
 
 		return $contents;
+	}
+
+	private function doConvertToVersion2Assert() {
+
+		$contents = $this->contents;
+
+		foreach ( $contents['tests'] as $key => $value ) {
+
+			if ( isset( $value['store'] ) ) {
+				$value['assert-store'] = $value['store'];
+				unset( $value['store'] );
+			}
+
+			if ( isset( $value['expected-output'] ) ) {
+				$value['assert-output'] = $value['expected-output'];
+				unset( $value['expected-output'] );
+			}
+
+			$contents['tests'][$key] = $value;
+		}
+
+		foreach ( $contents['setup'] as $key => $value ) {
+
+			if ( isset( $value['name'] ) ) {
+				$value['page'] = $value['name'];
+				unset( $value['name'] );
+			}
+
+			if ( isset( $value['contents'] ) ) {
+				$v = $value['contents'];
+				unset( $value['contents'] );
+				$value['contents'] = $v;
+			}
+
+			$contents['setup'][$key] = $value;
+		}
+
+		return json_encode( $contents, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 	}
 
 	private function doConvertToVersion2() {

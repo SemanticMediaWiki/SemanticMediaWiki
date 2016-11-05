@@ -3,48 +3,48 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text",
+			"page": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has page",
+			"page": "Has page",
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"name": "Example/P0439/1",
+			"page": "Example/P0439/1",
 			"contents": "[[Has text::ö/ä/ü]]"
 		},
 		{
-			"name": "Example/P0439/2",
+			"page": "Example/P0439/2",
 			"contents": {
 				"import-from": "/../Contents/p-0439.de.txt"
 			}
 		},
 		{
-			"name": "Example/P0439/3",
+			"page": "Example/P0439/3",
 			"contents": {
 				"import-from": "/../Contents/p-0439.fr.txt"
 			}
 		},
 		{
-			"name": "Example/P0439/ö/ä/ü",
+			"page": "Example/P0439/ö/ä/ü",
 			"contents": "[[Has page::Some ö/ä/ü]]"
 		},
 		{
-			"name": "Example/P0439/Q.1",
+			"page": "Example/P0439/Q.1",
 			"contents": "{{#ask: [[Has text::ö/ä/ü]] |?Has text }}"
 		},
 		{
-			"name": "Example/P0439/Q.2",
+			"page": "Example/P0439/Q.2",
 			"contents": "{{#ask: [[Example/P0439/2]] |?Has text }}"
 		},
 		{
-			"name": "Example/P0439/Q.3",
+			"page": "Example/P0439/Q.3",
 			"contents": "{{#ask: [[Example/P0439/3]] |?Has text }}"
 		},
 		{
-			"name": "Example/P0439/Q.4",
+			"page": "Example/P0439/Q.4",
 			"contents": "{{#ask: [[Has page::Some ö/ä/ü]] |?Has page }}"
 		}
 	],
@@ -53,7 +53,7 @@
 			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0439/1",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -72,7 +72,7 @@
 			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0439/Q.1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td class=\"Has-text smwtype_txt\">ö/ä/ü</td>"
 				]
@@ -82,7 +82,7 @@
 			"type": "parser",
 			"about": "#2 (long text, de)",
 			"subject": "Example/P0439/Q.2",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"fügte, während ihr Gesicht sich aufklärte"
 				]
@@ -92,7 +92,7 @@
 			"type": "parser",
 			"about": "#3 (long text, fr)",
 			"subject": "Example/P0439/Q.3",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"nous avons annoncé le chef-d'oeuvre du poëte"
 				]
@@ -102,7 +102,7 @@
 			"type": "parser",
 			"about": "#4",
 			"subject": "Example/P0439/Q.4",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"title=\"Example/P0439/ö/ä/ü\">Example/P0439/ö/ä/ü</a>",
 					"Some ö/ä/ü"

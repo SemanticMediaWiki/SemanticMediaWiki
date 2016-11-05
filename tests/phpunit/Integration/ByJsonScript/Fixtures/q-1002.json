@@ -3,19 +3,19 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has date",
+			"page": "Has date",
 			"contents": "[[Has type::Date]]"
 		},
 		{
-			"name": "Example/1002/10-Jan",
+			"page": "Example/1002/10-Jan",
 			"contents": "[[Category:Date range]] [[Has date::10 Jan 1970]]"
 		},
 		{
-			"name": "Example/1002/12-Jan",
+			"page": "Example/1002/12-Jan",
 			"contents": "[[Category:Date range]] [[Has date::12 Jan 1970]]"
 		},
 		{
-			"name": "Example/1002/20-Jan",
+			"page": "Example/1002/20-Jan",
 			"contents": "[[Category:Date range]] [[Has date::20 Jan 1970]]"
 		}
 	],

@@ -3,19 +3,19 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "NDL ID",
+			"page": "NDL ID",
 			"contents": "[[Has type::External identifier]] [[External formatter uri::https://id.ndl.go.jp/auth/ndlna/$1]]"
 		},
 		{
-			"name": "Example/P0430/1",
+			"page": "Example/P0430/1",
 			"contents": "[[NDL ID::00564222]]"
 		},
 		{
-			"name": "Example/P0430/Q1.1",
+			"page": "Example/P0430/Q1.1",
 			"contents": "{{#ask: [[NDL ID::00564222]] |?NDL ID |link=none}}"
 		},
 		{
-			"name": "Example/P0430/Q1.2",
+			"page": "Example/P0430/Q1.2",
 			"contents": "{{#ask: [[NDL ID::00564222]] |?NDL ID }}"
 		}
 	],
@@ -25,7 +25,9 @@
 			"about": "#0",
 			"subject": "Example/P0430/1",
 			"store": {
-				"clear-cache": true,
+				"clear-cache": true
+			},
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -39,7 +41,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<span class=\"plainlinks smw-eid\"><a rel=\"nofollow\" class=\"external text\" href=\"https://id.ndl.go.jp/auth/ndlna/00564222\">00564222</a>"
 				]
@@ -49,7 +51,7 @@
 			"type": "parser",
 			"about": "#1 (link=none)",
 			"subject": "Example/P0430/Q1.1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td data-sort-value=\"00564222\" class=\"NDL-ID smwtype_eid\">00564222</td>"
 				]
@@ -59,7 +61,7 @@
 			"type": "parser",
 			"about": "#2",
 			"subject": "Example/P0430/Q1.2",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td data-sort-value=\"00564222\" class=\"NDL-ID smwtype_eid\"><span class=\"plainlinks smw-eid\"><a rel=\"nofollow\" class=\"external text\" href=\"https://id.ndl.go.jp/auth/ndlna/00564222\">00564222</a></span></td>"
 				]

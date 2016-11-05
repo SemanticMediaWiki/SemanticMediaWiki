@@ -3,29 +3,29 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text",
+			"page": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has number",
+			"page": "Has number",
 			"contents": "[[Has type::Number]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has record text",
+			"page": "Has record text",
 			"contents": "[[Has type::Record]] [[Has fields::Has text;Has number]]"
 		},
 		{
-			"name": "Example/Q1105/1",
+			"page": "Example/Q1105/1",
 			"contents": "{{#subobject: Test|Has text=Foo|Has record text=abc;123}} {{#subobject: Test|Has text=Bar}}"
 		},
 		{
-			"name": "Example/Q1105/2",
+			"page": "Example/Q1105/2",
 			"contents": "{{#subobject: Test|Has text=Bar}} {{#subobject: Test|Has text=Foo|Has record text=abc;456}}"
 		},
 		{
-			"name": "Example/Q1105/3",
+			"page": "Example/Q1105/3",
 			"contents": "{{#subobject: Test|Has text=Foo|Has record text=def;456}}"
 		}
 	],
@@ -33,9 +33,6 @@
 		{
 			"type": "query",
 			"about": "#0 declaration order does not matter (oppose to T49472)",
-			"store": {
-				"clear-cache": true
-			},
 			"condition": "[[Has record text::abc;?]]",
 			"printouts": [
 				"Has record text"
@@ -59,14 +56,14 @@
 						"value": "abc;456"
 					}
 				]
+			},
+			"store": {
+				"clear-cache": true
 			}
 		},
 		{
 			"type": "query",
 			"about": "#1 same as #0 only to use property chain notation",
-			"store": {
-				"clear-cache": true
-			},
 			"condition": "[[Has record text.Has text::abc]]",
 			"printouts": [],
 			"parameters": {
@@ -78,6 +75,9 @@
 					"Example/Q1105/1#0##Test",
 					"Example/Q1105/2#0##Test"
 				]
+			},
+			"store": {
+				"clear-cache": true
 			}
 		}
 	],

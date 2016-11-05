@@ -3,43 +3,43 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text with language",
+			"page": "Has text with language",
 			"contents": "[[Has type::Monolingual text]]"
 		},
 		{
-			"name": "Example/P0411/1",
+			"page": "Example/P0411/1",
 			"contents": "[[Has text with language::example one@en]]"
 		},
 		{
-			"name": "Example/P0411/1/1",
+			"page": "Example/P0411/1/1",
 			"contents": "{{#ask: [[Has text with language::example one@en]] |?Has text with language }}"
 		},
 		{
-			"name": "Example/P0411/1/2",
+			"page": "Example/P0411/1/2",
 			"contents": "{{#ask: [[-Has text with language::Example/P0411/1]] |?Language code |?Text }}"
 		},
 		{
-			"name": "Example/P0411/2",
+			"page": "Example/P0411/2",
 			"contents": "{{#subobject: |Has text with language=例の一@ja }}　{{#subobject: |Has text with language=pour l'exemple@fr }}"
 		},
 		{
-			"name": "Example/P0411/2/1",
+			"page": "Example/P0411/2/1",
 			"contents": "{{#ask: [[Has text with language::?@ja]] |?Has text with language }}"
 		},
 		{
-			"name": "Example/P0411/2/2",
+			"page": "Example/P0411/2/2",
 			"contents": "{{#ask: [[Language code::ja]] |?Text }}"
 		},
 		{
-			"name": "Example/P0411/2/3",
+			"page": "Example/P0411/2/3",
 			"contents": "{{#ask: [[Language code::ja]] |?-Has text with language }}"
 		},
 		{
-			"name": "Example/P0411/3",
+			"page": "Example/P0411/3",
 			"contents": "{{#subobject: |Has text with language=国@zh-hans }}　{{#subobject: |Has text with language=國@zh-hant }}"
 		},
 		{
-			"name": "Example/P0411/3/1",
+			"page": "Example/P0411/3/1",
 			"contents": "{{#ask: [[Has text with language::?@~zh*]] |?Has text with language=Text |+index=1 |?Has text with language=Code |+index=2 }}"
 		}
 	],
@@ -48,7 +48,7 @@
 			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0411/1",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -60,7 +60,7 @@
 					"propertyValues": []
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"example one (en)"
 				]
@@ -70,7 +70,7 @@
 			"type": "parser",
 			"about": "#1 match subject",
 			"subject": "Example/P0411/1/1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Example/P0411/1",
 					"class=\"Has-text-with-language smwtype_mlt_rec\">example one (en)"
@@ -81,7 +81,7 @@
 			"type": "parser",
 			"about": "#2 inverse match",
 			"subject": "Example/P0411/1/2",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Example/P0411/1#_ML3c1364d804527cd1594b4817b01c29f0",
 					"class=\"Language-code smwtype&#95;_lcode\">en",
@@ -93,7 +93,7 @@
 			"type": "parser",
 			"about": "#3 match specific language",
 			"subject": "Example/P0411/2/1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Example/P0411/2#_b88331e53ca614aea6f7c8b5f0d6f876",
 					"class=\"Has-text-with-language smwtype_mlt_rec\">例の一 (ja)"
@@ -104,7 +104,7 @@
 			"type": "parser",
 			"about": "#4 match specific language",
 			"subject": "Example/P0411/2/2",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Example/P0411/2#_ML13e9d4c2ba826927d7210acab7def9ec",
 					"class=\"Text smwtype_txt\">例の一"
@@ -115,7 +115,7 @@
 			"type": "parser",
 			"about": "#5 match specific language with inverse printout",
 			"subject": "Example/P0411/2/3",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Example/P0411/2#_ML13e9d4c2ba826927d7210acab7def9ec",
 					"title=\"Property:Has text with language\">-Has text with language",
@@ -127,7 +127,7 @@
 			"type": "parser",
 			"about": "#6 using index display for columns",
 			"subject": "Example/P0411/3/1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Example/P0411/3#_a52273132da28d0c1fad5819e44958ab",
 					"class=\"Text smwtype_txt\">国",

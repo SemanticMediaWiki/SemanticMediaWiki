@@ -3,25 +3,25 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "HasUnrestrictedPage",
+			"page": "HasUnrestrictedPage",
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"name": "CreateAnnotationViaAskTemplate",
 			"namespace": "NS_TEMPLATE",
+			"page": "CreateAnnotationViaAskTemplate",
 			"contents": "<includeonly>[[HasUnrestrictedPage::{{{1}}}]]</includeonly>"
 		},
 		{
-			"name": "TemplateForUnrestrictedParse",
 			"namespace": "NS_TEMPLATE",
+			"page": "TemplateForUnrestrictedParse",
 			"contents": "<includeonly>{{#ask: [[HasUnrestrictedPage::{{{1}}}]]|?HasUnrestrictedPage|link=none|format=template|template=CreateAnnotationViaAskTemplate|import-annotation=true}}</includeonly>"
 		},
 		{
-			"name": "Page-with-annotation",
+			"page": "Page-with-annotation",
 			"contents": "[[HasUnrestrictedPage::SearchPageWithAnnotation]]"
 		},
 		{
-			"name": "Page-with-template",
+			"page": "Page-with-template",
 			"contents": "{{TemplateForUnrestrictedParse|SearchPageWithAnnotation}}"
 		}
 	],
@@ -30,7 +30,7 @@
 			"type": "parser",
 			"about": "#0",
 			"subject": "Page-with-template",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 4,

@@ -3,19 +3,19 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has regexpage",
+			"page": "Has regexpage",
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"name": "Page-1-with-spaces",
+			"page": "Page-1-with-spaces",
 			"contents": "[[Has regexpage::Annotation test with spaces]]"
 		},
 		{
-			"name": "Page-2-with-spaces",
+			"page": "Page-2-with-spaces",
 			"contents": "[[Has regexpage::Annotation text with spaces]]"
 		},
 		{
-			"name": "Page-3-without-spaces",
+			"page": "Page-3-without-spaces",
 			"contents": "[[Has regexpage::AnnotationTestWithoutSpaces]]"
 		}
 	],

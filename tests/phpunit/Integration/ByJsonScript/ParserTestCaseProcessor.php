@@ -66,7 +66,13 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
 	private function assertSemanticDataForCase( $case ) {
 
-		if ( !isset( $case['store'] ) || !isset( $case['store']['semantic-data'] ) ) {
+		// Allows for data to be re-read from the DB instead of being fetched
+		// from the store-id-cache
+		if ( isset( $case['store']['clear-cache'] ) && $case['store']['clear-cache'] ) {
+			$this->store->clear();
+		}
+
+		if ( !isset( $case['assert-store'] ) || !isset( $case['assert-store']['semantic-data'] ) ) {
 			return;
 		}
 
@@ -74,12 +80,6 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			$case['subject'],
 			isset( $case['namespace'] ) ? constant( $case['namespace'] ) : NS_MAIN
 		);
-
-		// Allows for data to be re-read from the DB instead of being fetched
-		// from the store-id-cache
-		if ( isset( $case['store']['clear-cache'] ) && $case['store']['clear-cache'] ) {
-			$this->store->clear();
-		}
 
 		$semanticData = $this->store->getSemanticData( $subject );
 
@@ -94,21 +94,21 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 		}
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
-			$case['store']['semantic-data'],
+			$case['assert-store']['semantic-data'],
 			$semanticData,
 			$case['about']
 		);
 
 		$this->assertInProperties(
 			$subject,
-			$case['store']['semantic-data'],
+			$case['assert-store']['semantic-data'],
 			$case['about']
 		);
 	}
 
 	private function assertParserOutputForCase( $case ) {
 
-		if ( !isset( $case['expected-output'] ) ) {
+		if ( !isset( $case['assert-output'] ) ) {
 			return;
 		}
 
@@ -119,17 +119,17 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
 		$parserOutput = UtilityFactory::getInstance()->newPageReader()->getEditInfo( $subject->getTitle() )->output;
 
-		if ( isset( $case['expected-output']['to-contain'] ) ) {
+		if ( isset( $case['assert-output']['to-contain'] ) ) {
 			$this->stringValidator->assertThatStringContains(
-				$case['expected-output']['to-contain'],
+				$case['assert-output']['to-contain'],
 				$parserOutput->getText(),
 				$case['about']
 			);
 		}
 
-		if ( isset( $case['expected-output']['not-contain'] ) ) {
+		if ( isset( $case['assert-output']['not-contain'] ) ) {
 			$this->stringValidator->assertThatStringNotContains(
-				$case['expected-output']['not-contain'],
+				$case['assert-output']['not-contain'],
 				$parserOutput->getText(),
 				$case['about']
 			);

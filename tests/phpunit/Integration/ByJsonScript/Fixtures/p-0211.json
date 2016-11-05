@@ -3,23 +3,23 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has date",
+			"page": "Has date",
 			"contents": "[[Has type::Date]]"
 		},
 		{
-			"name": "Example/P0211/1",
+			"page": "Example/P0211/1",
 			"contents": {
 				"import-from": "/../Contents/p-0211.1.json"
 			}
 		},
 		{
-			"name": "Example/P0211/2",
+			"page": "Example/P0211/2",
 			"contents": {
 				"import-from": "/../Contents/p-0211.2.json"
 			}
 		},
 		{
-			"name": "Example/P0211/3",
+			"page": "Example/P0211/3",
 			"contents": {
 				"import-from": "/../Contents/p-0211.3.json"
 			}
@@ -30,7 +30,7 @@
 			"type": "parser",
 			"about": "#0 #subobject",
 			"subject": "Example/P0211/1",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -46,7 +46,7 @@
 			"type": "parser",
 			"about": "#1 #set",
 			"subject": "Example/P0211/2",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 10,
@@ -69,7 +69,7 @@
 			"type": "parser",
 			"about": "#3 #set depth issue",
 			"subject": "Example/P0211/3",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,

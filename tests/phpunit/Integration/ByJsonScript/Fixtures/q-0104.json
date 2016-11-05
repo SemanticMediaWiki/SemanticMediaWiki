@@ -3,23 +3,23 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text",
+			"page": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"name": "Example/Q0104/1",
+			"page": "Example/Q0104/1",
 			"contents": "{{#subobject: |Has text=MySQL vs MariaDB database}} {{#subobject: |Has text=Oracle vs MariaDB database}} {{#subobject: |Has text=PostgreSQL vs MariaDB database and more of}} {{#subobject: |Has text=MariaDB overview}}"
 		},
 		{
-			"name": "Example/Q0104/2",
+			"page": "Example/Q0104/2",
 			"contents": "{{#subobject: |Has text=Elastic search}} {{#subobject: |Has text=Sphinx search}}"
 		},
 		{
-			"name": "Example/Q0104/3",
+			"page": "Example/Q0104/3",
 			"contents": "{{#subobject: |Has text=...a hyphenated phrase that has special significance when it appears at the beginning of text...}} {{#subobject: |Has text=...a hyphenated phrase that has NOT any special significance when it appears at the beginning of text...}}"
 		},
 		{
-			"name": "Example/Q0104/4",
+			"page": "Example/Q0104/4",
 			"contents": "{{#subobject: |Has text=Text with a category|@category=Q0104}} {{#subobject: |Has text=Text without a category}}"
 		}
 	],

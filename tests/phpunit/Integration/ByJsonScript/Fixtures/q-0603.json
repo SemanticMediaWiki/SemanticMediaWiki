@@ -3,15 +3,15 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Member of",
+			"page": "Member of",
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"name": "Page-with-set-1",
+			"page": "Page-with-set-1",
 			"contents": "{{#set:|Member of=Foo}}\n {{#set:|Member of=Bar}}"
 		},
 		{
-			"name": "Page-with-set-2",
+			"page": "Page-with-set-2",
 			"contents": "{{#set:|Member of=Foobaz}} {{#set:|Member of=Bar}}"
 		}
 	],

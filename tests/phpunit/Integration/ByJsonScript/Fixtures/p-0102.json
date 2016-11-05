@@ -3,47 +3,47 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has #",
+			"page": "Has #",
 			"contents": "[[Has type::Date]]"
 		},
 		{
-			"name": "Example/P0102/1",
+			"page": "Example/P0102/1",
 			"contents": "[[&#124; &#93;&#93;&lt;/td&gt;&lt;::123]]"
 		},
 		{
-			"name": "Example/P0102/2",
+			"page": "Example/P0102/2",
 			"contents": "[[<code>Has property a</code>::ABC]] {{#set: <code>Has property b</code>=DEF }}"
 		},
 		{
-			"name": "Example/P0102/3",
+			"page": "Example/P0102/3",
 			"contents": "[[<code>Has property e::ABC]] {{#set: <code>Has property f=DEF }}"
 		},
 		{
-			"name": "Example/P0102/4",
+			"page": "Example/P0102/4",
 			"contents": "[[File:[[Picture:: Foo.png ]]"
 		},
 		{
-			"name": "Example/P0102/Q3.1",
+			"page": "Example/P0102/Q3.1",
 			"contents": "{{#ask: [[<code>Has property e::ABC]] |link=none |format=table |sort=# |order=asc}}"
 		},
 		{
-			"name": "Example/P0102/5",
+			"page": "Example/P0102/5",
 			"contents": "[[<Foo>::abc]]"
 		},
 		{
-			"name": "Example/P0102/6",
+			"page": "Example/P0102/6",
 			"contents": "[[<Foo-<Bar>::abc]]"
 		},
 		{
-			"name": "Example/P0102/7",
+			"page": "Example/P0102/7",
 			"contents": "[[-<Foo>-<Bar>::abc]]"
 		},
 		{
-			"name": "Example/P0102/8",
+			"page": "Example/P0102/8",
 			"contents": "[[Foo-<Bar::abc]]"
 		},
 		{
-			"name": "Example/P0102/9",
+			"page": "Example/P0102/9",
 			"contents": "[[Foo-<Bar>::abc]]"
 		}
 	],
@@ -52,7 +52,7 @@
 			"type": "parser",
 			"about": "#0 do not allow #",
 			"subject": "Example/P0102/1",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -68,7 +68,7 @@
 			"type": "parser",
 			"about": "#1 strip tags",
 			"subject": "Example/P0102/2",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
@@ -89,7 +89,7 @@
 			"type": "parser",
 			"about": "#2 remove broken tags",
 			"subject": "Example/P0102/3",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
@@ -110,7 +110,7 @@
 			"type": "parser",
 			"about": "#3 allow things like sort=#",
 			"subject": "Example/P0102/Q3.1",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -126,7 +126,7 @@
 			"type": "parser",
 			"about": "#4 `[` to produce an error",
 			"subject": "Example/P0102/4",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -142,7 +142,7 @@
 			"type": "parser",
 			"about": "#5 `<>` to produce an error",
 			"subject": "Example/P0102/5",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -158,7 +158,7 @@
 			"type": "parser",
 			"about": "#6 `<>` to produce an error",
 			"subject": "Example/P0102/6",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -174,7 +174,7 @@
 			"type": "parser",
 			"about": "#7 `<>` to produce an error",
 			"subject": "Example/P0102/7",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -190,7 +190,7 @@
 			"type": "parser",
 			"about": "#8 to cut the name at `<`",
 			"subject": "Example/P0102/8",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -206,7 +206,7 @@
 			"type": "parser",
 			"about": "#9 to cut the name at `<`",
 			"subject": "Example/P0102/9",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,

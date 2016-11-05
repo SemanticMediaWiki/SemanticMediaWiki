@@ -3,7 +3,7 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Unused typed property",
+			"page": "Unused typed property",
 			"contents": "[[Has type::Page]] [[Has property description::Typed property@en]]"
 		}
 	],
@@ -21,7 +21,7 @@
 				"query-parameters": [],
 				"request-parameters": []
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Property:Unused typed property"
 				]

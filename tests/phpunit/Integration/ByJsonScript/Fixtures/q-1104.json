@@ -3,35 +3,35 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has status",
+			"page": "Has status",
 			"contents": "[[Has type::Text]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has date",
+			"page": "Has date",
 			"contents": "[[Has type::Date]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Project",
+			"page": "Project",
 			"contents": "[[Has type::Record]] [[Has fields::Has status;Has date]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has project status",
+			"page": "Has project status",
 			"contents": "[[Has type::Text]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has status",
+			"page": "Has status",
 			"contents": "#REDIRECT [[Property:Has project status]]"
 		},
 		{
-			"name": "Example/1103/1",
+			"page": "Example/1103/1",
 			"contents": "[[Category:Record redirect example]] [[Project::closed;15 Jan 1970]]"
 		},
 		{
-			"name": "Example/1103/2",
+			"page": "Example/1103/2",
 			"contents": "{{#ask: [[Category:Record redirect example]] [[Project::closed;~1970]]|?Project=Status|+index=1|format=list}}"
 		}
 	],
@@ -40,7 +40,7 @@
 			"type": "format",
 			"about": "#0 indexed output",
 			"subject": "Example/1103/2",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"title=\"Property:Project\">Status</a> closed"
 				]
@@ -49,9 +49,6 @@
 		{
 			"type": "query",
 			"about": "#0",
-			"store": {
-				"clear-cache": true
-			},
 			"condition": "[[Category:Record redirect example]] [[Project::closed;~1970]]",
 			"printouts": [
 				"Project"
@@ -70,6 +67,9 @@
 						"value": "closed;15 Jan 1970"
 					}
 				]
+			},
+			"store": {
+				"clear-cache": true
 			}
 		}
 	],

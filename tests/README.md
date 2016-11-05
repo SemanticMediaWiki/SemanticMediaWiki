@@ -110,7 +110,7 @@ define an expected output in terms of:
 		"type": "format",
 		"about": "#0 this case is expected to output ...",
 		"subject": "Example/Test/1",
-		"expected-output": {
+		"assert-output": {
 			"to-contain": [
 				"abc",
 				"123"

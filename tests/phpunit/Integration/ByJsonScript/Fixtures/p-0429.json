@@ -3,47 +3,47 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has date",
+			"page": "Has date",
 			"contents": "[[Has type::Date]]"
 		},
 		{
-			"name": "Example/P0429/1",
+			"page": "Example/P0429/1",
 			"contents": "[[Has date::1 Jan 1971 13:45:23-3:30]]"
 		},
 		{
-			"name": "Example/P0429/Q.1",
+			"page": "Example/P0429/Q.1",
 			"contents": "{{#show: Example/P0429/1 |?Has date }}"
 		},
 		{
-			"name": "Example/P0429/2",
+			"page": "Example/P0429/2",
 			"contents": "[[Has date::1 Jan 1971 13:45:23 EST]]"
 		},
 		{
-			"name": "Example/P0429/Q.2",
+			"page": "Example/P0429/Q.2",
 			"contents": "{{#show: Example/P0429/2 |?Has date }} {{#show: Example/P0429/2 |?Has date#LOCL#TZ }}"
 		},
 		{
-			"name": "Example/P0429/3",
+			"page": "Example/P0429/3",
 			"contents": "[[Has date::1 Jan 1971 13:45:23 am]]"
 		},
 		{
-			"name": "Example/P0429/4",
+			"page": "Example/P0429/4",
 			"contents": "[[Has date::1 Jan 1971 5:05:23 pm]]"
 		},
 		{
-			"name": "Example/P0429/5",
+			"page": "Example/P0429/5",
 			"contents": "[[Has date::1 Jan 1971 13:45:23 America/New_York]]"
 		},
 		{
-			"name": "Example/P0429/Q.5.1",
+			"page": "Example/P0429/Q.5.1",
 			"contents": "{{#show: Example/P0429/5 |?Has date#LOCL#TZ }}"
 		},
 		{
-			"name": "Example/P0429/Q.5.2",
+			"page": "Example/P0429/Q.5.2",
 			"contents": "{{#show: Example/P0429/5 |?Has date#LOCL#TZ@ja }}"
 		},
 		{
-			"name": "Example/P0429/Q.5.3",
+			"page": "Example/P0429/Q.5.3",
 			"contents": "{{#show: Example/P0429/5 |?Has date#LOCL@ja#TZ }}"
 		}
 	],
@@ -52,7 +52,7 @@
 			"type": "parser",
 			"about": "#0 timeoffset",
 			"subject": "Example/P0429/1",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -71,7 +71,7 @@
 			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0429/Q.1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"1 January 1971 16:15:23"
 				]
@@ -81,7 +81,7 @@
 			"type": "parser",
 			"about": "#2 timezone",
 			"subject": "Example/P0429/2",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -100,7 +100,7 @@
 			"type": "parser",
 			"about": "#3",
 			"subject": "Example/P0429/Q.2",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"1 January 1971 18:45:23",
 					"13:45:23 EST, 1 January 1971"
@@ -111,7 +111,7 @@
 			"type": "parser",
 			"about": "#4 invalid am/pm",
 			"subject": "Example/P0429/3",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"&quot;1 Jan 1971 13:45:23 am&quot; contains &quot;13&quot; as hour element that is invalid for a 12-hour convention."
 				]
@@ -121,7 +121,7 @@
 			"type": "parser",
 			"about": "#5 valid am/pm",
 			"subject": "Example/P0429/4",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -140,7 +140,7 @@
 			"type": "parser",
 			"about": "#6 valid am/pm",
 			"subject": "Example/P0429/4",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"1 Jan 1971 5:05:23 pm"
 				]
@@ -150,7 +150,7 @@
 			"type": "parser",
 			"about": "#7 long timezone name",
 			"subject": "Example/P0429/Q.5.1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"13:45:23 America/New_York, 1 January 1971"
 				]
@@ -160,7 +160,7 @@
 			"type": "parser",
 			"about": "#8 long timezone name",
 			"subject": "Example/P0429/Q.5.2",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"1971年1月1日 (金) 13:45:23 America/New_York"
 				]
@@ -170,7 +170,7 @@
 			"type": "parser",
 			"about": "#9 long timezone name",
 			"subject": "Example/P0429/Q.5.3",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"1971年1月1日 (金) 13:45:23 America/New_York"
 				]

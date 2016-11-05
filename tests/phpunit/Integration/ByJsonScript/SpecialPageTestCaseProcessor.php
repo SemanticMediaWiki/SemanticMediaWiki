@@ -110,17 +110,17 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
 	private function assertOutputForCase( $case, $text ) {
 
-		if ( isset( $case['expected-output']['to-contain'] ) ) {
+		if ( isset( $case['assert-output']['to-contain'] ) ) {
 			$this->stringValidator->assertThatStringContains(
-				$case['expected-output']['to-contain'],
+				$case['assert-output']['to-contain'],
 				$text,
 				$case['about']
 			);
 		}
 
-		if ( isset( $case['expected-output']['not-contain'] ) ) {
+		if ( isset( $case['assert-output']['not-contain'] ) ) {
 			$this->stringValidator->assertThatStringNotContains(
-				$case['expected-output']['not-contain'],
+				$case['assert-output']['not-contain'],
 				$text,
 				$case['about']
 			);

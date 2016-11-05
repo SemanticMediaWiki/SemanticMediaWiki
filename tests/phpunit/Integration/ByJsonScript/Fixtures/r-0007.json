@@ -2,28 +2,28 @@
 	"description": "Test RDF output for imported dc/gna vocabulary, owl:AnnotationProperty, owl:DatatypeProperty, owl:ObjectProperty, Equivalent URI (#795, `wgRestrictDisplayTitle`, en)",
 	"setup": [
 		{
-			"name": "Smw import dc",
 			"namespace": "NS_MEDIAWIKI",
+			"page": "Smw import dc",
 			"contents": "http://purl.org/dc/elements/1.1/|[http://dublincore.org/documents/dces/ Dublin Core Metadata Element Set, Version 1.1] \n contributor|Type:Text \n coverage|Type:Page \n creator|Type:Text \n date|Type:Text \n description|Type:Text \n format|Type:Page \n identifier|Type:Annotation URI \n language|Type:Text \n publisher|Type:Text \n relation|Type:Page \n rights|Type:Text \n source|Type:Text \n subject|Type:Text \n title|Type:Text \n type|Type:Text \n"
 		},
 		{
-			"name": "Smw import gna",
 			"namespace": "NS_MEDIAWIKI",
+			"page": "Smw import gna",
 			"contents": "http://rs.gbif.org/terms/1.0/|[http://rs.gbif.org/extension/gbif/1.0/ GBIF Global Names Architecture (GNA)] \n Identifier|Type:Page \n isHybrid|Type:Boolean"
 		},
 		{
-			"name": "Dc:identifier",
 			"namespace": "SMW_NS_PROPERTY",
+			"page": "Dc:identifier",
 			"contents": "[[Imported from::dc:identifier]] [[Equivalent URI::http://purl.org/dc/elements/1.1/identifier]] {{DISPLAYTITLE:dc:identifier}} [[Category:Dublin Core]]"
 		},
 		{
-			"name": "Gna:isHybrid",
 			"namespace": "SMW_NS_PROPERTY",
+			"page": "Gna:isHybrid",
 			"contents": "[[Imported from::gna:isHybrid]] [[dc:identifier::http://rs.gbif.org/terms/1.0/isHybrid]] {{DISPLAYTITLE:gna:isHybrid}} [[Category:GNA]] [[Category:GBIF]]"
 		},
 		{
-			"name": "Gna:Identifier",
 			"namespace": "SMW_NS_PROPERTY",
+			"page": "Gna:Identifier",
 			"contents": "[[Imported from::gna:Identifier]] {{DISPLAYTITLE:gna:Identifier}} [[Category:GNA]] [[Category:GBIF]]"
 		}
 	],
@@ -41,7 +41,7 @@
 					"revisiondate": false
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<owl:AnnotationProperty rdf:about=\"http://purl.org/dc/elements/1.1/identifier\">",
 					"<owl:equivalentProperty rdf:resource=\"http://purl.org/dc/elements/1.1/identifier\"/>",
@@ -68,7 +68,7 @@
 					"revisiondate": false
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<owl:DatatypeProperty rdf:about=\"http://rs.gbif.org/terms/1.0/isHybrid\">",
 					"<rdfs:label>gna:isHybrid</rdfs:label>",
@@ -93,7 +93,7 @@
 					"revisiondate": false
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<owl:ObjectProperty rdf:about=\"http://rs.gbif.org/terms/1.0/Identifier\">",
 					"<rdfs:label>gna:Identifier</rdfs:label>",

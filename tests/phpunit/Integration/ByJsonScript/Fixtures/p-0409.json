@@ -3,69 +3,69 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text",
+			"page": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has monolingual text",
+			"page": "Has monolingual text",
 			"contents": "[[Has type::Monolingual text]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has number",
+			"page": "Has number",
 			"contents": "[[Has type::Number]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has record one",
+			"page": "Has record one",
 			"contents": "[[Has type::Record]] [[Has fields::Has text;Has number]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has record two",
+			"page": "Has record two",
 			"contents": "[[Has type::Record]] [[Has fields::Has text;Has record one]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has record one mlt",
+			"page": "Has record one mlt",
 			"contents": "[[Has type::Record]] [[Has fields::Has monolingual text;Has number]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has record two mlt",
+			"page": "Has record two mlt",
 			"contents": "[[Has type::Record]] [[Has fields::Has monolingual text;Has record one mlt]]"
 		},
 		{
-			"name": "Example/P0409/1/1",
+			"page": "Example/P0409/1/1",
 			"contents": "[[Has record two::Foo;abc\\;12]]"
 		},
 		{
-			"name": "Example/P0409/1/2",
+			"page": "Example/P0409/1/2",
 			"contents": "{{#subobject: |Has record two=Foo;abc\\;12 }}"
 		},
 		{
-			"name": "Example/P0409/2/1",
+			"page": "Example/P0409/2/1",
 			"contents": "[[Has record one mlt::test@en;42]]"
 		},
 		{
-			"name": "Example/P0409/2/2",
+			"page": "Example/P0409/2/2",
 			"contents": "{{#subobject: |Has record one mlt=test@en;42}}"
 		},
 		{
-			"name": "Example/P0409/3/1",
+			"page": "Example/P0409/3/1",
 			"contents": "[[Has record two mlt::one@en;two@fr\\;123]]"
 		},
 		{
-			"name": "Example/P0409/3/2",
+			"page": "Example/P0409/3/2",
 			"contents": "{{#subobject: |Has record two mlt=one@en;two@fr\\;123}}"
 		},
 		{
-			"name": "Example/P0409/3/2a",
+			"page": "Example/P0409/3/2a",
 			"contents": "{{#ask: [[Has record two mlt::one@en;two@fr\\;123]] |?Has record two mlt}}"
 		},
 		{
-			"name": "Example/P0409/3/2b",
+			"page": "Example/P0409/3/2b",
 			"contents": "{{#ask: [[Has record two mlt::one@en;two@fr\\;123]] |?Has record two mlt|+index=1 |?Has record two mlt|+index=2}}"
 		}
 	],
@@ -74,7 +74,7 @@
 			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0409/1/1",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -93,7 +93,7 @@
 			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0409/1/2#_863c94681079337ad25674e3a7ce33e7",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 2,
@@ -111,7 +111,7 @@
 			"type": "parser",
 			"about": "#2",
 			"subject": "Example/P0409/2/1",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -130,7 +130,7 @@
 			"type": "parser",
 			"about": "#3",
 			"subject": "Example/P0409/2/2#_aa886e35ba32dd0c6e43a026230362f4",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 2,
@@ -148,7 +148,7 @@
 			"type": "parser",
 			"about": "#4",
 			"subject": "Example/P0409/3/1",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -167,7 +167,7 @@
 			"type": "parser",
 			"about": "#5",
 			"subject": "Example/P0409/3/2#_4d3b4405d3a60255e63cde196092a367",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 2,
@@ -185,7 +185,7 @@
 			"type": "parser",
 			"about": "#6 (edge case that will probably never surface but we verify that the description can be decoded without failing the parser)",
 			"subject": "Example/P0409/3/2a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Example/P0409/3/2#_4d3b4405d3a60255e63cde196092a367",
 					"<td class=\"Has-record-two-mlt smwtype_rec\">one (en) (two (fr) (123))</td>"
@@ -196,7 +196,7 @@
 			"type": "parser",
 			"about": "#7 same as #6 (query condition is identical, printoutput is different)",
 			"subject": "Example/P0409/3/2b",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Example/P0409/3/2#_4d3b4405d3a60255e63cde196092a367",
 					"<td class=\"Has-record-two-mlt smwtype_mlt_rec\">one (en)</td>",

@@ -1,14 +1,14 @@
 {
-	"description": "Test output of `Special:Properties` (en, skip-on sqlite, 1.19)",
+	"description": "Test output of `Special:Properties` (`wgContLang=en`, skip-on sqlite)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has test blob property",
+			"page": "Has test blob property",
 			"contents": "[[Has type::Text]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Is restricted property",
+			"page": "Is restricted property",
 			"contents": "[[Has type::Text]] [[Allows value::open]] [[Allows value::closed]]"
 		}
 	],
@@ -28,7 +28,7 @@
 					"property": "test blob"
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Property:Has_test_blob_property\" title=\"ID:",
 					"Has test blob property"
@@ -45,7 +45,7 @@
 					"property": "Allow"
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Property:Allows_value\" title=\"ID: 14 (_PVAL)\">Allows value</a>"
 				]
@@ -54,12 +54,12 @@
 	],
 	"settings": {
 		"wgContLang": "en",
-		"wgLanguageCode": "en"
+		"wgLanguageCode": "en",
+		"smwgPropertyZeroCountDisplay": true
 	},
 	"meta": {
 		"skip-on": {
-			"sqlite": "Returns a `database is locked`",
-			"mw-1.19.20": "The table update on 1.19 lacks behind"
+			"sqlite": "Returns a `database is locked`"
 		},
 		"version": "2",
 		"is-incomplete": false,

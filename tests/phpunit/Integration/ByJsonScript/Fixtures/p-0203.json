@@ -3,35 +3,35 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Paragraph number",
+			"page": "Paragraph number",
 			"contents": "[[Has type::Number]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Paragraph",
+			"page": "Paragraph",
 			"contents": "[[Has type::Text]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Paragraph backlink",
+			"page": "Paragraph backlink",
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"name": "SimpleSetTemplate",
 			"namespace": "NS_TEMPLATE",
+			"page": "SimpleSetTemplate",
 			"contents": "<includeonly>Lorem ipsum.{{#set:Reference=Test}}</includeonly>"
 		},
 		{
-			"name": "CreateParagraphAsSubobject",
 			"namespace": "NS_TEMPLATE",
+			"page": "CreateParagraphAsSubobject",
 			"contents": "<includeonly><div style=\"display:none;\">{{#subobject:|Paragraph number={{{Paragraph number|}}}|Paragraph={{{Paragraph|}}}|Paragraph backlink={{PAGENAME}} }}</div></includeonly>"
 		},
 		{
-			"name": "Transclude-Template",
+			"page": "Transclude-Template",
 			"contents": "{{CreateParagraphAsSubobject|Paragraph number=1|Paragraph=Test1 {{SimpleSetTemplate}} }} {{SimpleSetTemplate}}"
 		},
 		{
-			"name": "Ask-For-Transclude-Template",
+			"page": "Ask-For-Transclude-Template",
 			"contents": "{{#ask:[[Paragraph backlink::Transclude-Template]]|?Paragraph}}"
 		}
 	],
@@ -40,7 +40,7 @@
 			"type": "parser",
 			"about": "#0",
 			"subject": "Transclude-Template",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
@@ -61,7 +61,7 @@
 			"type": "parser",
 			"about": "#1 subobject check",
 			"subject": "Transclude-Template#_49c8abd563e00e4dcf6debf1d61b5408",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
@@ -83,7 +83,7 @@
 			"type": "parser",
 			"about": "#2 check for the ask output",
 			"subject": "Ask-For-Transclude-Template",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"title=\"Transclude-Template\">Transclude-Template</a>",
 					"<td class=\"Paragraph smwtype_txt\">Test1 Lorem ipsum.</td>"

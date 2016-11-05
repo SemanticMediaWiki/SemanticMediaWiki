@@ -1,42 +1,42 @@
 {
-	"description": "Test in-text annotation for '_ref_rec' type (#1808, `wgContLang=en`, `wgLang=en`)",
+	"description": "Test in-text annotation for `_ref_rec` type (#1808, `wgContLang=en`, `wgLang=en`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has number with ref",
+			"page": "Has number with ref",
 			"contents": "[[Has type::Reference]] [[Has fields::Number;Date;URL]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has mlt with ref",
+			"page": "Has mlt with ref",
 			"contents": "[[Has type::Reference]] [[Has fields::Monolingual text;Date;Number]]"
 		},
 		{
-			"name": "Example/P0432/1",
+			"page": "Example/P0432/1",
 			"contents": "[[Has number with ref::123;1.1.2000;http://example.org]]"
 		},
 		{
-			"name": "Example/P0432/Q1.1",
+			"page": "Example/P0432/Q1.1",
 			"contents": "{{#ask: [[Has number with ref::123]] |?Has number with ref|+index=Date|?Has number with ref|+index=URL |link=none}}"
 		},
 		{
-			"name": "Example/P0432/2",
+			"page": "Example/P0432/2",
 			"contents": "{{#subobject: |Has number with ref=456;12-04-1637;http://example.org }}"
 		},
 		{
-			"name": "Example/P0432/Q2.1",
+			"page": "Example/P0432/Q2.1",
 			"contents": "{{#ask: [[Has number with ref::456]] |?Has number with ref|+index=Date|?Has number with ref|+index=URL |link=none}}"
 		},
 		{
-			"name": "Example/P0432/3",
+			"page": "Example/P0432/3",
 			"contents": "[[Has mlt with ref::Test@en;01.01.1800;123]] {{#subobject: |Has mlt with ref::テスト@ja;01.01.1800;456 }}"
 		},
 		{
-			"name": "Example/P0432/Q3.1",
+			"page": "Example/P0432/Q3.1",
 			"contents": "{{#ask: [[Has mlt with ref::?@en]] |?Has mlt with ref|+index=Monolingual text|?Has mlt with ref|+index=Number |link=none}}"
 		},
 		{
-			"name": "Example/P0432/4",
+			"page": "Example/P0432/4",
 			"contents": "[[Has number with ref:: {{#show: Example/P0432/1 |?Has number with ref |link=none }}]]"
 		}
 	],
@@ -46,7 +46,9 @@
 			"about": "#0",
 			"subject": "Example/P0432/1",
 			"store": {
-				"clear-cache": true,
+				"clear-cache": true
+			},
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -60,7 +62,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"123<span class=\"smw-reference smw-reference-indicator smw-highlighter smwttinline\" data-title=\"Reference\"",
 					"January 1, 2000",
@@ -73,7 +75,7 @@
 			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0432/Q1.1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0432/1</td>",
 					"<td data-sort-value=\"2451544.5\" class=\"Has-number-with-ref smwtype_dat\">1 January 2000</td>",
@@ -85,7 +87,7 @@
 			"type": "parser",
 			"about": "#2",
 			"subject": "Example/P0432/Q2.1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0432/2#_7b5db4a4195b1843f9a25639c0d7ff5c</td>",
 					"<td data-sort-value=\"2319299.5\" class=\"Has-number-with-ref smwtype_dat\">4 December 1637</td>",
@@ -97,7 +99,7 @@
 			"type": "parser",
 			"about": "#3 (Monolingual text, number index output)",
 			"subject": "Example/P0432/Q3.1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0432/3</td>",
 					"<td class=\"Has-mlt-with-ref smwtype_mlt_rec\">Test (en)</td>",
@@ -109,15 +111,24 @@
 			"about": "#4 (#show + link=none)",
 			"subject": "Example/P0432/4",
 			"store": {
-				"clear-cache": true,
+				"clear-cache": true
+			},
+			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
 					"propertyCount": 4,
-					"propertyKeys": [ "Has_number_with_ref", "_SKEY", "_MDAT", "_ASK" ],
-					"propertyValues": [ "123;?;?" ]
+					"propertyKeys": [
+						"Has_number_with_ref",
+						"_SKEY",
+						"_MDAT",
+						"_ASK"
+					],
+					"propertyValues": [
+						"123;?;?"
+					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"123<span class=\"smw-reference smw-reference-indicator smw-highlighter smwttinline\" data-title=\"Reference\""
 				]

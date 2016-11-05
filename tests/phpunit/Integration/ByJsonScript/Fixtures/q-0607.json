@@ -3,62 +3,62 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has project",
+			"page": "Has project",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has project manager",
+			"page": "Has project manager",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has project pool",
+			"page": "Has project pool",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has project assistant",
+			"page": "Has project assistant",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has project name",
+			"page": "Has project name",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has project due date",
+			"page": "Has project due date",
 			"contents": "[[Has type::Date]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has project level access",
+			"page": "Has project level access",
 			"contents": "[[Has type::Number]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has name",
+			"page": "Has name",
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"name": "P-100",
+			"page": "P-100",
 			"contents": "[[Category:Project]][[Has project name::P-100]][[Has project due date::10/30/2015]]"
 		},
 		{
-			"name": "山田一郎",
+			"page": "山田一郎",
 			"contents": "[[Category:Project assistant]] [[Has name::{{PAGENAME}}]] [[Has project level access::5]]"
 		},
 		{
-			"name": "Clara Young",
+			"page": "Clara Young",
 			"contents": "[[Category:Project assistant]] [[Has name::{{PAGENAME}}]] [[Has project level access::6]]"
 		},
 		{
-			"name": "John Doe",
+			"page": "John Doe",
 			"contents": "[[Category:Person]] [[Category:Project manager]] [[Has name::{{PAGENAME}}]] [[Has project assistant::Clara Young]] [[Has project assistant::山田一郎]]"
 		},
 		{
-			"name": "Example/0607/PP-100",
+			"page": "Example/0607/PP-100",
 			"contents": "{{#subobject:|@category=Project pool |Has project=P-100 |Has project manager=John Doe |Has project pool={{PAGENAME}} }} {{#subobject:|@category=Project pool |Has project=P-200 |Has project manager=John Doe |Has project pool={{PAGENAME}} }}"
 		}
 	],

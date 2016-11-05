@@ -195,7 +195,7 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 				continue;
 			}
 
-			if ( !isset( $page['name'] ) || !isset( $page['contents'] ) ) {
+			if ( ( !isset( $page['page'] ) && !isset( $page['name'] ) ) || !isset( $page['contents'] ) ) {
 				continue;
 			}
 
@@ -213,8 +213,10 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 			Message::clear();
 		}
 
+		$name = ( isset( $page['name'] ) ? $page['name'] : $page['page'] );
+
 		$title = Title::newFromText(
-			$page['name'],
+			$name,
 			$namespace
 		);
 

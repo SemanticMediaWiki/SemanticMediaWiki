@@ -3,21 +3,21 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has blob property",
+			"page": "Has blob property",
 			"contents": "[[Has type::Text]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has another blob property",
+			"page": "Has another blob property",
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"name": "Simple blob subject",
+			"page": "Simple blob subject",
 			"contents": "[[Has blob property::Value One]], [[Has another blob property::Value One]]"
 		},
 		{
-			"name": "Another blob subject",
 			"namespace": "NS_HELP",
+			"page": "Another blob subject",
 			"contents": "[[Has blob property::Value Two]], [[Has another blob property::Value Two]]"
 		}
 	],

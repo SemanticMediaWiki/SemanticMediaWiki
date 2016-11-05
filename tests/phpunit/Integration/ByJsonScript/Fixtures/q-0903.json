@@ -3,49 +3,49 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has page",
+			"page": "Has page",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has number",
+			"page": "Has number",
 			"contents": "[[Has type::Number]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text",
+			"page": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"name": "Sample/Number/1",
+			"page": "Sample/Number/1",
 			"contents": "[[Has number::1]]"
 		},
 		{
-			"name": "Sample/Number/2",
+			"page": "Sample/Number/2",
 			"contents": "[[Has number::2]]"
 		},
 		{
-			"name": "Sample/Number/3",
+			"page": "Sample/Number/3",
 			"contents": "[[Has number::3]]"
 		},
 		{
-			"name": "Sample/Title/1",
+			"page": "Sample/Title/1",
 			"contents": "[[Has text::Foo]] [[Has page::123]]"
 		},
 		{
-			"name": "Sample/Title/2",
+			"page": "Sample/Title/2",
 			"contents": "[[Has text::Foobar]] [[Has page::ABC]]"
 		},
 		{
-			"name": "Sample/Title/3",
+			"page": "Sample/Title/3",
 			"contents": "[[Has text::FOO]] [[Has page::abc]]"
 		},
 		{
-			"name": "Sample/Title/4",
+			"page": "Sample/Title/4",
 			"contents": "[[Has text::FoO]] [[Has page::aBc]]"
 		},
 		{
-			"name": "Sample/Title/5",
+			"page": "Sample/Title/5",
 			"contents": "[[Has text::FoO]] [[Has page::Sample/Title/2]]"
 		}
 	],

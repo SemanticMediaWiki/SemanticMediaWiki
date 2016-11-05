@@ -3,15 +3,15 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has page",
+			"page": "Has page",
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"name": "Example/Q0612/1(=)",
+			"page": "Example/Q0612/1(=)",
 			"contents": "[[Category:Q0612]] [[Has page::{{FULLPAGENAME}}]]"
 		},
 		{
-			"name": "Example/Q0612/Q1",
+			"page": "Example/Q0612/Q1",
 			"contents": "{{#show: Example/Q0612/1(=) |?Has page |link=none }}"
 		}
 	],
@@ -20,7 +20,7 @@
 			"type": "parser",
 			"about": "#2 #show not be disturbed by `=`",
 			"subject": "Example/Q0612/Q1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Example/Q0612/1(=)"
 				],
@@ -32,9 +32,6 @@
 		{
 			"type": "query",
 			"about": "#0",
-			"store": {
-				"clear-cache": true
-			},
 			"condition": "[[Category:Q0612]] [[Example/Q0612/1(=)]]",
 			"printouts": [],
 			"parameters": {
@@ -45,6 +42,9 @@
 				"results": [
 					"Example/Q0612/1(=)#0##"
 				]
+			},
+			"store": {
+				"clear-cache": true
 			}
 		},
 		{

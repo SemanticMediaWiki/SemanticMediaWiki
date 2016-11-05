@@ -2,14 +2,14 @@
 	"description": "Test #info parser output (#1019, `wgContLang=en`, `wgLang=en`)",
 	"setup": [
 		{
-			"name": "Info-warning",
-			"contents": "{{#info: an error text | warning }}",
-			"message-cache": "clear"
+			"message-cache": "clear",
+			"page": "Info-warning",
+			"contents": "{{#info: an error text | warning }}"
 		},
 		{
-			"name": "Info-note",
-			"contents": "{{#info: an info note | note }}",
-			"message-cache": "clear"
+			"message-cache": "clear",
+			"page": "Info-note",
+			"contents": "{{#info: an info note | note }}"
 		}
 	],
 	"tests": [
@@ -17,7 +17,7 @@
 			"type": "parser",
 			"about": "#0",
 			"subject": "Info-warning",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Error\" title=\"an error text\">",
 					"<span class=\"smwtticon warning\">",
@@ -29,7 +29,7 @@
 			"type": "parser",
 			"about": "#1",
 			"subject": "Info-note",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<span class=\"smw-highlighter\" data-type=\"7\" data-state=\"inline\" data-title=\"Note\" title=\"an info note\">",
 					"<span class=\"smwtticon note\">",

@@ -3,47 +3,47 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has date",
+			"page": "Has date",
 			"contents": "[[Has type::Date]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has boolean",
+			"page": "Has boolean",
 			"contents": "[[Has type::Boolean]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has number",
+			"page": "Has number",
 			"contents": "[[Has type::Number]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has atomic mass unit",
+			"page": "Has atomic mass unit",
 			"contents": "[[Has type::Quantity]] [[Corresponds to::1 u]] [[Corresponds to::1.660539040e-27 kg]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has url",
+			"page": "Has url",
 			"contents": "[[Has type::URL]]"
 		},
 		{
-			"name": "Example/S0008/1",
+			"page": "Example/S0008/1",
 			"contents": "[[Has date::12 Jan 1991 8:56]] [[Has boolean::true]] [[Category:S0008]]"
 		},
 		{
-			"name": "Example/S0008/2",
+			"page": "Example/S0008/2",
 			"contents": "[[Has number::0.00000000000012]] [[Has number::72.769482308]] [[Has number::1.334e-13]] [[Category:S0008]]"
 		},
 		{
-			"name": "Example/S0008/3 (Hydrogen-1 atom)",
+			"page": "Example/S0008/3 (Hydrogen-1 atom)",
 			"contents": "[[Has atomic mass unit::1.007825 u]] [[Category:S0008]]"
 		},
 		{
-			"name": "Example/S0008/4",
+			"page": "Example/S0008/4",
 			"contents": "{{#subobject:ABC::DEF|Has number=123}}"
 		},
 		{
-			"name": "Example/S0008/5",
+			"page": "Example/S0008/5",
 			"contents": "[[Has url::http://example.org/some1::23:334/::56]]"
 		}
 	],
@@ -58,7 +58,7 @@
 					"output": "legacy"
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<span class=\"smwb-value\">verdadero&#160;&#160;",
 					"SearchByProperty/Has-20boolean/true",
@@ -76,7 +76,7 @@
 					"output": "legacy"
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<span class=\"smwb-value\">1,2e-13&#160;&#160;",
 					"<span class=\"smwb-value\">72,769&#160;&#160;",
@@ -97,7 +97,7 @@
 					"output": "legacy"
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<span class=\"smwb-value\">1,008&#160;u (1,673533e-27&#160;kg)&#160;&#160;",
 					"Special:SearchByProperty/Has-20atomic-20mass-20unit/1.007825-20u"
@@ -114,7 +114,7 @@
 					"output": "legacy"
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<span class=\"smwb-value\">123&#160;&#160;",
 					"Special:SearchByProperty/Has-20number/123"
@@ -131,7 +131,7 @@
 					"output": "legacy"
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"href=\"http://example.org/some1::23:334/::56\">http://example.org/some1::23:334/::56</a>&#160;&#160;",
 					"Special:SearchByProperty/Has-20url/http-2D3A-2F-2Fexample.org-2Fsome1-2D3A-2D3A23-2D3A334-2F-2D3A-2D3A56"

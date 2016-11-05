@@ -3,62 +3,62 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has trait",
+			"page": "Has trait",
 			"contents": "[[Has type::Text]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has breed trait",
+			"page": "Has breed trait",
 			"contents": "[[Has type::Text]] [[Subproperty of::Has trait]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has group",
+			"page": "Has group",
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"name": "Animal",
 			"namespace": "NS_CATEGORY",
+			"page": "Animal",
 			"contents": "..."
 		},
 		{
-			"name": "Canis",
 			"namespace": "NS_CATEGORY",
+			"page": "Canis",
 			"contents": "is a genus containing ... and is part of the [[Category:Animal]] kingdom."
 		},
 		{
-			"name": "Domestic dog",
 			"namespace": "NS_CATEGORY",
+			"page": "Domestic dog",
 			"contents": "[[Category:Canis]]"
 		},
 		{
-			"name": "Dog",
 			"namespace": "NS_CATEGORY",
+			"page": "Dog",
 			"contents": "#REDIRECT [[:Category:Domestic dog]]"
 		},
 		{
-			"name": "Wolf",
 			"namespace": "NS_CATEGORY",
+			"page": "Wolf",
 			"contents": "[[Category:Canis]]"
 		},
 		{
-			"name": "German Shepherd",
+			"page": "German Shepherd",
 			"contents": "[[Category:Dog]] [[Has breed trait::Herding]] [[Has group::Herding group]]"
 		},
 		{
-			"name": "Dachshund",
+			"page": "Dachshund",
 			"contents": "[[Category:Dog]] [[Has breed trait::Hunting]] [[Has group::Hound group]]"
 		},
 		{
-			"name": "Scottish Terrier",
+			"page": "Scottish Terrier",
 			"contents": "[[Category:Dog]] [[Has breed trait::Hunting]] [[Has group::Terrier group]]"
 		},
 		{
-			"name": "Irish Setter",
+			"page": "Irish Setter",
 			"contents": "[[Category:Dog]] [[Has breed trait::Sporting]] [[Has group::Sporting group]]"
 		},
 		{
-			"name": "Gray wolf",
+			"page": "Gray wolf",
 			"contents": "[[Category:Wolf]] [[Has trait::Hunting]]"
 		}
 	],

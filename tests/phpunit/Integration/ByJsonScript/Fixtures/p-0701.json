@@ -3,39 +3,39 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Located in",
+			"page": "Located in",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Location of",
+			"page": "Location of",
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"name": "Location",
 			"namespace": "NS_TEMPLATE",
+			"page": "Location",
 			"contents": "<includeonly>[[Located in::{{{Located in}}}]]</includeonly>"
 		},
 		{
-			"name": "InvertPropertySetter",
 			"namespace": "NS_TEMPLATE",
+			"page": "InvertPropertySetter",
 			"contents": "<includeonly>{{#set:|{{{userparam}}}={{{1}}} }}</includeonly>"
 		},
 		{
-			"name": "InvertPropertyDeclarator",
 			"namespace": "NS_TEMPLATE",
+			"page": "InvertPropertyDeclarator",
 			"contents": "<includeonly>{{#ask:[[{{{1}}}::{{PAGENAME}}]]|link=none|sep=|template=InvertPropertySetter|userparam={{{2}}}|format=template|import-annotation=true}}</includeonly>"
 		},
 		{
-			"name": "Belgium",
+			"page": "Belgium",
 			"contents": "{{Location|Located in=Europe}}"
 		},
 		{
-			"name": "Italy",
+			"page": "Italy",
 			"contents": "{{Location|Located in=Europe}}"
 		},
 		{
-			"name": "Europe",
+			"page": "Europe",
 			"contents": "{{InvertPropertyDeclarator|Located in|Location of}}"
 		}
 	],
@@ -44,7 +44,7 @@
 			"type": "parser",
 			"about": "#0 inverse annotation",
 			"subject": "Europe",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 4,

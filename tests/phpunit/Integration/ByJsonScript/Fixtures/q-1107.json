@@ -3,21 +3,21 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text",
+			"page": "Has text",
 			"contents": "[[Has type::Text]] [[Has property description::Text property@en]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has number",
+			"page": "Has number",
 			"contents": "[[Has type::Number]] [[Has property description::Number property@en]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has record text",
+			"page": "Has record text",
 			"contents": "[[Has type::Record]] [[Has fields::Has text;Has number]]"
 		},
 		{
-			"name": "Example/Q1107/1",
+			"page": "Example/Q1107/1",
 			"contents": "{{#subobject: Test|Has text=Foo|Has record text=abc;222}}"
 		}
 	],
@@ -25,9 +25,6 @@
 		{
 			"type": "query",
 			"about": "#0",
-			"store": {
-				"clear-cache": true
-			},
 			"condition": "[[Has property description.Language code::en]]",
 			"printouts": [],
 			"parameters": {
@@ -39,6 +36,9 @@
 					"Has text#102##",
 					"Has number#102##"
 				]
+			},
+			"store": {
+				"clear-cache": true
 			}
 		},
 		{

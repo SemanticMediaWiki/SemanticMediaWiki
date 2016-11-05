@@ -3,28 +3,28 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has telephone number",
+			"page": "Has telephone number",
 			"contents": "[[Has type::Telephone number]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has email",
+			"page": "Has email",
 			"contents": "[[Has type::Email]]"
 		},
 		{
-			"name": "Page/07/02/1",
+			"page": "Page/07/02/1",
 			"contents": "[[Has telephone number::+1-2012-555-0123]]"
 		},
 		{
-			"name": "Page/07/02/2",
+			"page": "Page/07/02/2",
 			"contents": "[[Has telephone number::+1-2012-555-5555]]"
 		},
 		{
-			"name": "Page/07/02/3",
+			"page": "Page/07/02/3",
 			"contents": "[[Has email::Lorem@ipsum.org]]"
 		},
 		{
-			"name": "Page/07/02/4",
+			"page": "Page/07/02/4",
 			"contents": "[[Has email::Lorem@123.org]]"
 		}
 	],

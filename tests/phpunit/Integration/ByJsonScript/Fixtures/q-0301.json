@@ -2,36 +2,36 @@
 	"description": "Test `_IMPO` queries for imported foaf vocabulary (#891, en)",
 	"setup": [
 		{
-			"name": "Smw import foaf",
 			"namespace": "NS_MEDIAWIKI",
+			"page": "Smw import foaf",
 			"contents": "http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n name|Type:Text\n homepage|Type:URL\n mbox|Type:Email\n mbox_sha1sum|Type:Text\n depiction|Type:URL\n phone|Type:Text\n Person|Category\n Organization|Category\n knows|Type:Page\n member|Type:Page\n"
 		},
 		{
-			"name": "Foaf:homepage",
 			"namespace": "SMW_NS_PROPERTY",
+			"page": "Foaf:homepage",
 			"contents": "[[Imported from::foaf:homepage]]"
 		},
 		{
-			"name": "Foaf:name",
 			"namespace": "SMW_NS_PROPERTY",
+			"page": "Foaf:name",
 			"contents": "[[Imported from::foaf:name]]"
 		},
 		{
-			"name": "Foaf:knows",
 			"namespace": "SMW_NS_PROPERTY",
+			"page": "Foaf:knows",
 			"contents": "[[Imported from::foaf:knows]]"
 		},
 		{
-			"name": "Has name",
 			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has name",
 			"contents": "#REDIRECT [[Property:Foaf:name]]"
 		},
 		{
-			"name": "John Doe",
+			"page": "John Doe",
 			"contents": "[[Foaf:name::John Doe]], [[Foaf:homepage::http://example.org/JohnDoe]] [[Foaf:knows::Jane Doe]]"
 		},
 		{
-			"name": "Jane Doe",
+			"page": "Jane Doe",
 			"contents": "[[Foaf:name::Jane Doe]], [[Foaf:homepage::http://example.org/JaneDoe]] [[Foaf:knows::John Doe]]"
 		}
 	],

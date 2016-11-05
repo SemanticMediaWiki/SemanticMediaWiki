@@ -3,11 +3,11 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has number",
+			"page": "Has number",
 			"contents": "[[Has type::Number]]"
 		},
 		{
-			"name": "Example/0207",
+			"page": "Example/0207",
 			"contents": "{{#set:Has number=12}} {{#set:Undeclared property=abc}} [[Undeclared prop::0207]]"
 		}
 	],
@@ -22,7 +22,9 @@
 			"about": "#0 Rebuild + clear cache to verify that the disposer (#1216) didn't remove undeclared properties that still contain references",
 			"subject": "Example/0207",
 			"store": {
-				"clear-cache": true,
+				"clear-cache": true
+			},
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 5,

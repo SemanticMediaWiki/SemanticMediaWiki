@@ -3,25 +3,25 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "PropertyWithServiceLink",
+			"page": "PropertyWithServiceLink",
 			"contents": "[[Has type::Text]] [[Provides service::some links]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "PropertyWithAnotherServiceLink",
+			"page": "PropertyWithAnotherServiceLink",
 			"contents": "[[Has type::Text]] [[Provides service::some other links]]"
 		},
 		{
-			"name": "Smw_service_some_other_links",
 			"namespace": "NS_MEDIAWIKI",
+			"page": "Smw_service_some_other_links",
 			"contents": " label text1|http://someurl.com"
 		},
 		{
-			"name": "Example/P0418/1",
+			"page": "Example/P0418/1",
 			"contents": " [[PropertyWithServiceLink::123]]"
 		},
 		{
-			"name": "Example/P0418/2",
+			"page": "Example/P0418/2",
 			"contents": " [[PropertyWithAnotherServiceLink::ABC]]"
 		}
 	],
@@ -32,7 +32,9 @@
 			"subject": "PropertyWithServiceLink",
 			"namespace": "SMW_NS_PROPERTY",
 			"store": {
-				"clear-cache": true,
+				"clear-cache": true
+			},
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
@@ -53,7 +55,7 @@
 			"about": "#1",
 			"subject": "PropertyWithServiceLink",
 			"namespace": "SMW_NS_PROPERTY",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"some links"
 				]
@@ -64,7 +66,7 @@
 			"about": "#2",
 			"subject": "PropertyWithAnotherServiceLink",
 			"namespace": "SMW_NS_PROPERTY",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"some other links"
 				]

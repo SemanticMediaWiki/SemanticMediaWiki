@@ -3,15 +3,15 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has number",
+			"page": "Has number",
 			"contents": "[[Has type::Number]] [[Has property description::A number to display ....@en]]"
 		},
 		{
-			"name": "Example/F0206/1/1",
+			"page": "Example/F0206/1/1",
 			"contents": "[[Has number::1001]]"
 		},
 		{
-			"name": "Example/F0206/1a",
+			"page": "Example/F0206/1a",
 			"contents": "{{#ask: [[~Example/F0206/1/*]] |?Has number |format=table }}"
 		}
 	],
@@ -20,7 +20,7 @@
 			"type": "format",
 			"about": "#0",
 			"subject": "Example/F0206/1a",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<div class=\"smwttcontent\">A number to display ....</div>",
 					"<td data-sort-value=\"1001\" class=\"Has-number smwtype_num\">1,001</td>"

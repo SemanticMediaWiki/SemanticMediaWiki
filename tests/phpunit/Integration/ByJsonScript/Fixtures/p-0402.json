@@ -3,55 +3,55 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has page",
+			"page": "Has page",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text",
+			"page": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has url",
+			"page": "Has url",
 			"contents": "[[Has type::URL]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has date",
+			"page": "Has date",
 			"contents": "[[Has type::Date]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has number",
+			"page": "Has number",
 			"contents": "[[Has type::Number]]"
 		},
 		{
-			"name": "Double-single-colon",
+			"page": "Double-single-colon",
 			"contents": "[[Has page:::Page/::Foo:Bar]] [[Has text:::Text/::Foo:Bar]] [[Has url::http://example.org/::Foo:Bar]]"
 		},
 		{
-			"name": "Double-double-colon",
+			"page": "Double-double-colon",
 			"contents": "//::Page/::Foo:Bar is not allowed as title; [[Has text::::Text/::Foo:Bar]] [[Has url::http://example.org/:::Foo:Bar]]"
 		},
 		{
-			"name": "Example/P0402/3",
+			"page": "Example/P0402/3",
 			"contents": "[[Has date:::1 Jan 1970]]"
 		},
 		{
-			"name": "Number-error",
+			"page": "Number-error",
 			"contents": "[[Has number:::123]]"
 		},
 		{
-			"name": "Page-no-error",
+			"page": "Page-no-error",
 			"contents": "[[Has page:::123|abc]] [[Has page:::xyz]]"
 		},
 		{
-			"name": "Page-error",
+			"page": "Page-error",
 			"contents": "[[Has page::::123|abc]] [[Has page::::xyz]]"
 		},
 		{
-			"name": "Example/P0402/7",
+			"page": "Example/P0402/7",
 			"contents": "[[Has date::-901 AD]]"
 		}
 	],
@@ -60,7 +60,7 @@
 			"type": "parser",
 			"about": "#0",
 			"subject": "Double-single-colon",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 5,
@@ -78,7 +78,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"Page/::Foo:Bar",
 					"Text/::Foo:Bar",
@@ -90,7 +90,7 @@
 			"type": "parser",
 			"about": "#1 (: as leading text element to be converted to an indent)",
 			"subject": "Double-double-colon",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 4,
@@ -106,7 +106,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<dd>Text/::Foo:Bar",
 					"http://example.org/:::Foo:Bar"
@@ -117,7 +117,7 @@
 			"type": "parser",
 			"about": "#2",
 			"subject": "Page-no-error",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -132,7 +132,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"abc",
 					"xyz"
@@ -143,7 +143,7 @@
 			"type": "parser",
 			"about": "#3",
 			"subject": "Page-error",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -154,7 +154,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"abc",
 					"&#58;&#58;xyz"
@@ -165,7 +165,7 @@
 			"type": "parser",
 			"about": "#4",
 			"subject": "Example/P0402/3",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -176,7 +176,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"1 Jan 1970"
 				]
@@ -186,7 +186,7 @@
 			"type": "parser",
 			"about": "#5",
 			"subject": "Number-error",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -197,7 +197,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"&#58;123"
 				]
@@ -207,7 +207,7 @@
 			"type": "parser",
 			"about": "#6 negative year with AD/CE era is not allowed",
 			"subject": "Example/P0402/7",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -218,7 +218,7 @@
 					]
 				}
 			},
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"&quot;-901 AD&quot; contains an extrinsic dash or other characters that are invalid for a date interpretation."
 				]

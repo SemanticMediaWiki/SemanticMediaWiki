@@ -3,23 +3,23 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has date",
+			"page": "Has date",
 			"contents": "[[Has type::Date]]"
 		},
 		{
-			"name": "Example/1004/15-Jun",
+			"page": "Example/1004/15-Jun",
 			"contents": "{{#subobject:|@category=E-1004|Has date=15 Jun 2011 17:59:59}}{{#subobject:|@category=E-1004|Has date=15 Jun 2011 18:53}}{{#subobject:|@category=E-1004|Has date=15 Jun 2011 18:43}}{{#subobject:|@category=E-1004|Has date=15 Jun 2011 19:53}}"
 		},
 		{
-			"name": "Example/1004/16-Jun",
+			"page": "Example/1004/16-Jun",
 			"contents": "{{#subobject:|@category=E-1004|Has date=16 Jul 2011 19:53}}"
 		},
 		{
-			"name": "Example/1004/17-Jun",
+			"page": "Example/1004/17-Jun",
 			"contents": "{{#subobject:|@category=E-1004|Has date=17 Jun 2011 19:53:05}}{{#subobject:|@category=E-1004|Has date=17 Jun 2011 19:53:15}}{{#subobject:|@category=E-1004|Has date=17 Jun 2011 19:53:07}}{{#subobject:|@category=E-1004|Has date=17 Jun 2011 19:54:07}}"
 		},
 		{
-			"name": "Example/1004/17-Jun-1356",
+			"page": "Example/1004/17-Jun-1356",
 			"contents": "{{#subobject:|@category=E-1004|Has date=17 Jun 1356 19:53:05}}{{#subobject:|@category=E-1004|Has date=17 Jun 1356 19:53:15}}{{#subobject:|@category=E-1004|Has date=17 Jun 1356 19:53:07}}{{#subobject:|@category=E-1004|Has date=17 Jun 1356 19:54:07}}"
 		}
 	],

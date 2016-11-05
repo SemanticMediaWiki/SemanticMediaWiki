@@ -3,21 +3,21 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text",
+			"page": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"name": "Example/P0703/1",
+			"page": "Example/P0703/1",
 			"contents": "[[Has text::P0703]]"
 		},
 		{
-			"name": "Example/P0703/Q.1",
+			"page": "Example/P0703/Q.1",
 			"contents": "{{#ask: [[Has text::P0703]] |?Has text=<span style=\"color: green; font-size: 120%;\">Label</span> |format=table }}"
 		},
 		{
-			"name": "Example/P0703/Q.2",
-			"contents": "{{#ask: [[Has text::P0703]] |?Has text=Label {{#info:Text info.}} |format=table }}",
-			"message-cache": "clear"
+			"message-cache": "clear",
+			"page": "Example/P0703/Q.2",
+			"contents": "{{#ask: [[Has text::P0703]] |?Has text=Label {{#info:Text info.}} |format=table }}"
 		}
 	],
 	"tests": [
@@ -25,7 +25,7 @@
 			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0703/Q.1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"title=\"Property:Has text\"><span style=\"color: green; font-size: 120%;\">Label</span>"
 				]
@@ -35,7 +35,7 @@
 			"type": "parser",
 			"about": "#1 with #info parser",
 			"subject": "Example/P0703/Q.2",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"title=\"Property:Has text\">Label <span class=\"smw-highlighter\" data-type=\"5\" data-state=\"persistent\" data-title=\"Information\" title=\"Text info.\">",
 					"<span class=\"smwtticon info\"></span><div class=\"smwttcontent\">Text info.</div></span>"

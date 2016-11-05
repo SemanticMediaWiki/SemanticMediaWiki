@@ -2,8 +2,8 @@
 	"description": "Test `#concept` on predefined property (`wgContLang=en`, `wgLang=es`)",
 	"setup": [
 		{
-			"name": "Example/P0501/1",
 			"namespace": "SMW_NS_CONCEPT",
+			"page": "Example/P0501/1",
 			"contents": "{{#concept: [[Modification date::+]] |Modification date}}"
 		}
 	],
@@ -13,7 +13,7 @@
 			"about": "#0 canonical representation, not userlang specific",
 			"subject": "Example/P0501/1",
 			"namespace": "SMW_NS_CONCEPT",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<p class=\"concept-documenation\">Modification date</p><pre>&#x5b;&#x5b;Modification date::+]]</pre>"
 				],

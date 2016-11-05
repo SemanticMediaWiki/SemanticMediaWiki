@@ -3,24 +3,24 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "has number",
+			"page": "has number",
 			"contents": "[[has type::number]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "set-non-capital-property",
+			"page": "set-non-capital-property",
 			"contents": "{{#set:|has type=boolean}} [[Category:Foo]]"
 		},
 		{
-			"name": "Empty",
+			"page": "Empty",
 			"contents": "no annotation"
 		},
 		{
-			"name": "Single-category",
+			"page": "Single-category",
 			"contents": "[[Category:Foo]]"
 		},
 		{
-			"name": "Default-sort-with-non-capital-property",
+			"page": "Default-sort-with-non-capital-property",
 			"contents": "{{DEFAULTSORTKEY:Bar}} [[has number::42]]"
 		}
 	],
@@ -29,7 +29,7 @@
 			"type": "parser",
 			"about": "#0",
 			"subject": "Empty",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 2,
@@ -47,7 +47,7 @@
 			"type": "parser",
 			"about": "#1",
 			"subject": "Single-category",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -67,7 +67,7 @@
 			"type": "parser",
 			"about": "#2",
 			"subject": "Default-sort-with-non-capital-property",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,
@@ -88,7 +88,7 @@
 			"about": "#3 check has type despite wgCapitalLinks setting",
 			"subject": "set-non-capital-property",
 			"namespace": "SMW_NS_PROPERTY",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 4,

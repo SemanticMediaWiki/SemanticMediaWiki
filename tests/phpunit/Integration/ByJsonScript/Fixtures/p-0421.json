@@ -3,20 +3,20 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has Url",
+			"page": "Has Url",
 			"contents": "[[Has type::URL]] [[Has uniqueness constraint::true]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has text",
+			"page": "Has text",
 			"contents": "[[Has type::Text]] [[Allows value::open]]"
 		},
 		{
-			"name": "Example/P0421/1",
+			"page": "Example/P0421/1",
 			"contents": "[[Has Url::http://example.org/Foo]] [[Has text::open]]"
 		},
 		{
-			"name": "Example/P0421/2",
+			"page": "Example/P0421/2",
 			"contents": "[[Has Url::http://example.org/Foo]] [[Has text::closed]]"
 		}
 	],
@@ -25,7 +25,7 @@
 			"type": "parser",
 			"about": "#0 Fails on both constraints due to Example/P0421/1",
 			"subject": "Example/P0421/2",
-			"store": {
+			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
 					"propertyCount": 3,

@@ -3,15 +3,15 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"name": "Has date",
+			"page": "Has date",
 			"contents": "[[Has type::Date]]"
 		},
 		{
-			"name": "Example/P0210/1",
+			"page": "Example/P0210/1",
 			"contents": "{{#set_recurring_event:property=Has date |start=01 Feb 1970 |Has title=Recurring event |unit=year |period=12 |limit=3 }}"
 		},
 		{
-			"name": "Example/P0210/Q1",
+			"page": "Example/P0210/Q1",
 			"contents": "{{#ask: [[Has title::Recurring event]] |?Has date |format=table |link=none }}"
 		}
 	],
@@ -20,7 +20,7 @@
 			"type": "parser",
 			"about": "#0",
 			"subject": "Example/P0210/Q1",
-			"expected-output": {
+			"assert-output": {
 				"to-contain": [
 					"<td class=\"smwtype_wpg\">Example/P0210/1#_de6907a285b0c316fd3caa77a932d0ae</td><td data-sort-value=\"2453767.5\" class=\"Has-date smwtype_dat\">1 February 2006</td>",
 					"<td class=\"smwtype_wpg\">Example/P0210/1#_5c90cef15e8ecbb3662fe10e6cb50bb7</td><td data-sort-value=\"2440618.5\" class=\"Has-date smwtype_dat\">1 February 1970</td>",
