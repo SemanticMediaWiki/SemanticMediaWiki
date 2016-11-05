@@ -5,7 +5,7 @@ namespace SMW\Tests\MediaWiki\Hooks;
 use SMW\ApplicationFactory;
 use SMW\Factbox\FactboxCache;
 use SMW\MediaWiki\Hooks\ArticlePurge;
-use SMW\Settings;
+use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 use WikiPage;
 
@@ -21,6 +21,7 @@ use WikiPage;
 class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 
 	private $applicationFactory;
+	private $testEnvironment;
 	private $cache;
 
 	protected function setUp() {
@@ -28,14 +29,14 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		$settings = Settings::newFromArray( array(
+		$settings = array(
 			'smwgFactboxUseCache' => true,
 			'smwgCacheType'       => 'hash',
 			'smwgLinksInValues'   => false,
 			'smwgInlineErrors'    => true
-		) );
+		);
 
-		$this->applicationFactory->registerObject( 'Settings', $settings );
+		$this->testEnvironment = new TestEnvironment( $settings );
 
 		$this->cache = $this->applicationFactory->newCacheFactory()->newFixedInMemoryCache();
 		$this->applicationFactory->registerObject( 'Cache', $this->cache );
@@ -43,6 +44,7 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 
 	public function tearDown() {
 		$this->applicationFactory->clear();
+		$this->testEnvironment->tearDown();
 
 		parent::tearDown();
 	}
@@ -67,14 +69,19 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 		$wikiPage = new WikiPage( $setup['title'] );
 		$pageId   = $wikiPage->getTitle()->getArticleID();
 
-		$this->applicationFactory->getSettings()->set(
+		$this->testEnvironment->addConfiguration(
 			'smwgAutoRefreshOnPurge',
 			$setup['smwgAutoRefreshOnPurge']
 		);
 
-		$this->applicationFactory->getSettings()->set(
+		$this->testEnvironment->addConfiguration(
 			'smwgFactboxCacheRefreshOnPurge',
 			$setup['smwgFactboxCacheRefreshOnPurge']
+		);
+
+		$this->testEnvironment->addConfiguration(
+			'smwgQueryResultCacheRefreshOnPurge',
+			$setup['smwgQueryResultCacheRefreshOnPurge']
 		);
 
 		$instance = new ArticlePurge();
@@ -136,7 +143,8 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'title'  => $validIdTitle,
 				'smwgAutoRefreshOnPurge'         => true,
-				'smwgFactboxCacheRefreshOnPurge' => true
+				'smwgFactboxCacheRefreshOnPurge' => true,
+				'smwgQueryResultCacheRefreshOnPurge' => false
 			),
 			array(
 				'factboxPreProcess'      => false,
@@ -157,7 +165,8 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'title'  => $validIdTitle,
 				'smwgAutoRefreshOnPurge'         => false,
-				'smwgFactboxCacheRefreshOnPurge' => false
+				'smwgFactboxCacheRefreshOnPurge' => false,
+				'smwgQueryResultCacheRefreshOnPurge' => false
 			),
 			array(
 				'factboxPreProcess'      => false,
@@ -178,7 +187,8 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'title'  => $nullIdTitle,
 				'smwgAutoRefreshOnPurge'         => true,
-				'smwgFactboxCacheRefreshOnPurge' => true
+				'smwgFactboxCacheRefreshOnPurge' => true,
+				'smwgQueryResultCacheRefreshOnPurge' => false
 			),
 			array(
 				'factboxPreProcess'      => false,
@@ -193,7 +203,8 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'title'  => $nullIdTitle,
 				'smwgAutoRefreshOnPurge'         => true,
-				'smwgFactboxCacheRefreshOnPurge' => false
+				'smwgFactboxCacheRefreshOnPurge' => false,
+				'smwgQueryResultCacheRefreshOnPurge' => false
 			),
 			array(
 				'factboxPreProcess'      => false,

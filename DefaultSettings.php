@@ -1030,18 +1030,20 @@ $GLOBALS['smwgDVFeatures'] = SMW_DV_PROV_REDI | SMW_DV_MLTV_LCODE | SMW_DV_PVAP 
 $GLOBALS['smwgEnabledFulltextSearch'] = false;
 
 ##
-# Throttle the amount of expected index updates.
+# Throttle index updates
 #
-# It can be of advantage to postpone the update using a deferred job execution to
-# decouple changes to the storage back-end and the fulltext index table.
+# The objective is to postpone an update by relying on a deferred process that
+# runs the index update decoupled from the storage back-end update.
 #
 # In case `smwgFulltextDeferredUpdate` and `$GLOBALS['smwgEnabledDeferredUpdate']` are
-# enabled then the updater will try to open a new process for posting instructions
-# to execute the `SearchTableUpdateJob` immediately otherwise `SearchTableUpdateJob`
-# will be enqueued and `runJobs.php` is required to be schedule for execution.
+# both enabled then the updater will try to open a new request and posting instructions
+# to execute the `SearchTableUpdateJob` immediately in background. If the request
+# cannot be executed then the `SearchTableUpdateJob` will be enqueued and requires
+# `runJobs.php` to schedule the index table update.
 #
-# If a user wants to avoid the JobQueue for executing updates via `SearchTableUpdateJob`
-# then this setting should be disabled.
+# If a user wants to push updates to the updater immediately then this setting needs
+# to be disabled but by disabling this setting update lag may increase due to having
+# the process being executed synchronously to the wikipage, store-backend storage.
 #
 # @since 2.5
 # @default true
@@ -1051,10 +1053,10 @@ $GLOBALS['smwgFulltextDeferredUpdate'] = true;
 ##
 # Fulltext search table options
 #
-# This setting directly influences how a ft table is created therefore please
-# change the content with caution.
+# This setting directly influences how a ft table is created therefore change
+# the content with caution.
 #
-# - MySQL version 5.6 or later with only MyISAM and InnoDB storage engines
+# - MySQL version 5.5 or later with only MyISAM and InnoDB storage engines
 # to support full-text search (according to sources)
 #
 # - MariaDB full-text indexes can be used only with MyISAM and Aria tables,
@@ -1138,3 +1140,60 @@ $GLOBALS['smwgFulltextLanguageDetection'] = array(
 # @default false
 ##
 $GLOBALS['smwgQTemporaryTablesAutoCommitMode'] = false;
+
+###
+# Support to store a computed subject list that were fetched from the QueryEngine
+# (not the string result generated from a result printer) and improve general
+# page-loading time for articles that contain embedded queries and decrease
+# server load on query requests.
+#
+# It is recommended that `smwgEnabledQueryDependencyLinksStore` is enabled to make
+# use of automatic query results cache eviction.
+#
+# @since 2.5 (experimental)
+#
+# @default: CACHE_NONE (== that this feature is disabled)
+##
+$GLOBALS['smwgQueryResultCacheType'] = CACHE_NONE;
+##
+
+###
+# Specifies the lifetime of embedded query and their results fetched from a
+# QueryEngine for when `smwgQueryResultCacheType` is enabled.
+#
+# @since 2.5
+##
+$GLOBALS['smwgQueryResultCacheLifetime'] = 60 * 60 * 24; // a day
+##
+
+###
+# Specifies the lifetime of non-embedded queries (Special:Ask, API etc.) and their
+# results that are fetched from a QueryEngine for when `smwgQueryResultCacheType` is
+# enabled.
+#
+# This setting can also be used to minimize a possible DoS vector by preventing
+# an advisory to make unlimited query requests from either Special:Ask or the
+# API that may lock the DB due to complex query answering and instead being
+# rerouted to the cache once a result has been computed.
+#
+# @note Non-embedded queries cannot not be tracked using the `QueryDependencyLinksStore`
+# (subject is being missing that would identify the entity) therefore
+# an auto-purge mechanism as in case of an embedded entity is not possible hence
+# the lifetime should be carefully selected to provide the necessary means for a
+# user and the application.
+#
+# 0/false as setting to disable caching of non-embedded queries.
+#
+# @since 2.5
+##
+$GLOBALS['smwgQueryResultNonEmbeddedCacheLifetime'] = 60 * 10; // 10 min
+##
+
+###
+# Enables the manual refresh for embedded queries when the action=purge event is
+# triggered.
+#
+# @since 2.5
+##
+$GLOBALS['smwgQueryResultCacheRefreshOnPurge'] = true;
+##

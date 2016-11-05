@@ -62,7 +62,14 @@ class SQLStoreFactory {
 	 * @return QueryEngine
 	 */
 	public function newMasterQueryEngine() {
-		return $this->queryEngineFactory->newQueryEngine();
+
+		$cachedQueryResultPrefetcher = ApplicationFactory::getInstance()->getCachedQueryResultPrefetcher();
+
+		$cachedQueryResultPrefetcher->setQueryEngine(
+			$this->queryEngineFactory->newQueryEngine()
+		);
+
+		return $cachedQueryResultPrefetcher;
 	}
 
 	/**
@@ -71,7 +78,7 @@ class SQLStoreFactory {
 	 * @return QueryEngine
 	 */
 	public function newSlaveQueryEngine() {
-		return $this->queryEngineFactory->newQueryEngine();
+		return $this->newMasterQueryEngine();
 	}
 
 	/**
@@ -97,7 +104,7 @@ class SQLStoreFactory {
 	public function newMasterConceptCache() {
 
 		$conceptQueryResolver = new ConceptQueryResolver(
-			$this->newMasterQueryEngine()
+			$this->queryEngineFactory->newQueryEngine()
 		);
 
 		$conceptQueryResolver->setConceptFeatures(

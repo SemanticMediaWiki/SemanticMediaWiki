@@ -122,6 +122,8 @@ class QueryResultDependencyListResolver {
 			$id
 		);
 
+		wfDebugLog( 'smw', 'getDependencyListByLateRetrieval ' . count( $dependencyList ) );
+
 		// Avoid a possible memory-leak by clearing the retrieved list
 		$entityListAccumulator->pruneEntityList(
 			$id

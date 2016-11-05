@@ -10,7 +10,7 @@ use SMWQueryResult as QueryResult;
  * provide the filtering and matching process for specific conditions against a
  * select back-end.
  *
- * @license GNU GPL v2
+ * @license GNU GPL v2+
  * @since 2.5
  *
  * @author mwjames

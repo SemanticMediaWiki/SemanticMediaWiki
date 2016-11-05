@@ -67,6 +67,7 @@
        <var name="smwgEnabledFulltextSearch" value="false"/>
        <var name="smwgEnabledHttpDeferredJobRequest" value="false"/>
        <var name="smwgEnabledQueryDependencyLinksStore" value="true"/>
+       <var name="smwgQueryResultCacheType" value="hash"/>
        <var name="benchmarkQueryRepetitionExecutionThreshold" value="5"/>
        <var name="benchmarkQueryLimit" value="500"/>
        <var name="benchmarkQueryOffset" value="0"/>

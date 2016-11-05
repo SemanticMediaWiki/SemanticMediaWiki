@@ -41,6 +41,16 @@ class DeferredCallableUpdate implements DeferrableUpdate {
 	private static $pendingUpdates = array();
 
 	/**
+	 * @var string|null
+	 */
+	private $fingerprint = null;
+
+	/**
+	 * @var array
+	 */
+	private static $queueList = array();
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param Closure $callback
@@ -73,9 +83,23 @@ class DeferredCallableUpdate implements DeferrableUpdate {
 	 * by using an internal waitableUpdate list and release them at convenience.
 	 *
 	 * @since 2.4
+	 *
+	 * @param booloan $isPending
 	 */
 	public function markAsPending( $isPending = false ) {
 		$this->isPending = $isPending;
+	}
+
+	/**
+	 * @note Set a fingerprint allowing it to track and detect duplicate update
+	 * requests while being unprocessed.
+	 *
+	 * @since 2.5
+	 *
+	 * @param string|null $queue
+	 */
+	public function setFingerprint( $fingerprint = null ) {
+		$this->fingerprint = $fingerprint;
 	}
 
 	/**
@@ -117,6 +141,7 @@ class DeferredCallableUpdate implements DeferrableUpdate {
 	public function doUpdate() {
 		wfDebugLog( 'smw', $this->origin . ' doUpdate' );
 		call_user_func( $this->callback );
+		unset( self::$queueList[$this->fingerprint] );
 	}
 
 	/**
@@ -131,6 +156,13 @@ class DeferredCallableUpdate implements DeferrableUpdate {
 	 * @since 2.5
 	 */
 	public function pushToUpdateQueue() {
+
+		if ( $this->fingerprint !== null && isset( self::$queueList[$this->fingerprint] ) ) {
+			wfDebugLog( 'smw', $this->origin . ' (already in the queue hence avoid DeferredCallableUpdate)' );
+			return;
+		}
+
+		self::$queueList[$this->fingerprint] = true;
 
 		if ( $this->isPending && $this->enabledDeferredUpdate ) {
 			wfDebugLog( 'smw', $this->origin . ' (as pending DeferredCallableUpdate)' );

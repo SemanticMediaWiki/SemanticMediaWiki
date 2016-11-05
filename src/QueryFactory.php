@@ -9,6 +9,7 @@ use SMW\Query\ProfileAnnotatorFactory;
 use SMW\Query\ConfigurableQueryCreator;
 use SMWQuery as Query;
 use SMWQueryParser as QueryParser;
+use SMWQueryResult as QueryResult;
 
 /**
  * @license GNU GPL v2+
@@ -88,6 +89,29 @@ class QueryFactory {
 	 */
 	public function newQueryParser( $queryFeatures = false ) {
 		return new QueryParser( $queryFeatures );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param Store $store
+	 * @param Query $query
+	 * @param DIWikiPage[]|[] $results = array()
+	 * @param boolean $continue
+	 *
+	 * @return QueryResult
+	 */
+	public function newQueryResult( Store $store, Query $query, $results = array(), $continue = false ) {
+
+		$queryResult =  new QueryResult(
+			$query->getDescription()->getPrintrequests(),
+			$query,
+			$results,
+			$store,
+			$continue
+		);
+
+		return $queryResult;
 	}
 
 	/**

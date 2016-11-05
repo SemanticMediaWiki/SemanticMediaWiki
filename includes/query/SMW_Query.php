@@ -35,6 +35,8 @@ use SMW\Message;
  */
 class SMWQuery implements QueryContext {
 
+	const ID_PREFIX = '_QUERY';
+
 	/**
 	 * The time the QueryEngine required to answer a query condition
 	 */
@@ -396,7 +398,7 @@ class SMWQuery implements QueryContext {
 		// @2.4 Keep the queryID stable with previous versions unless
 		// a query source is selected. The "same" query executed on different
 		// remote systems requires a different queryID
-		if ( $this->querySource !== '' ) {
+		if ( $this->querySource !== null && $this->querySource !== '' ) {
 			$serialized['parameters']['source'] = $this->querySource;
 		}
 
@@ -411,12 +413,44 @@ class SMWQuery implements QueryContext {
 	}
 
 	/**
+	 * @note Before 2.5, toArray was used to generate the content, as of 2.5
+	 * only parameters that influence the result of an query is included.
+	 *
 	 * @since 2.1
 	 *
 	 * @return string
 	 */
 	public function getHash() {
-		return HashBuilder::createHashIdForContent( $this->toArray() );
+
+		// FIXME 3.0 Leave the hash unchanged to avoid unnecessary BC issues in
+		// case the cache is not used.
+		if ( $GLOBALS['smwgQueryResultCacheType'] === false ||
+			$GLOBALS['smwgQueryResultCacheType'] === CACHE_NONE ||
+			$GLOBALS['smwgQueryResultCacheType'] === 'hash' ) {
+			return HashBuilder::createFromArray( $this->toArray() );
+		}
+
+		// For an optimal (less fragmentation) use of the cache, only use
+		// elements that directly influence the result list
+		$serialized = array();
+
+		$serialized['conditions'] = $this->getQueryString();
+		$serialized['parameters'] = array(
+			'limit'     => $this->limit,
+			'offset'    => $this->offset,
+			'sortkeys'  => $this->sortkeys,
+			'querymode' => $this->querymode
+		);
+
+		if ( $this->querySource !== null && $this->querySource !== '' ) {
+			$serialized['parameters']['source'] = $this->querySource;
+		}
+
+		// printouts are avoided as part of the hash as they not influence the
+		// match process and are only resolved after the query result has been
+		// retrieved
+
+		return HashBuilder::createFromArray( $serialized );
 	}
 
 	/**
@@ -434,7 +468,7 @@ class SMWQuery implements QueryContext {
 	 * @return string
 	 */
 	public function getQueryId() {
-		return '_QUERY' . $this->getHash();
+		return self::ID_PREFIX . $this->getHash();
 	}
 
 }

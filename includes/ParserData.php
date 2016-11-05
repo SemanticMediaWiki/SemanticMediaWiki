@@ -296,7 +296,7 @@ class ParserData {
 			$storeUpdater->doUpdate();
 		} );
 
-		$deferredCallableUpdate->setOrigin( __METHOD__ );
+		$deferredCallableUpdate->setOrigin( __METHOD__ . ' :: ' . $this->semanticData->getSubject()->getHash() );
 
 		$deferredCallableUpdate->enabledDeferredUpdate(
 			$enabledDeferredUpdate

@@ -95,9 +95,12 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
 		$query->querymode = $queryTestCaseInterpreter->getQueryMode();
 		$query->setLimit( $queryTestCaseInterpreter->getLimit() );
+
 		$query->setOffset( $queryTestCaseInterpreter->getOffset() );
 		$query->setExtraPrintouts( $queryTestCaseInterpreter->getExtraPrintouts() );
+
 		$query->setSortKeys( $queryTestCaseInterpreter->getSortKeys() );
+		$query->setContextPage( $queryTestCaseInterpreter->getSubject() );
 
 		if ( $queryTestCaseInterpreter->isRequiredToClearStoreCache() ) {
 			$this->getStore()->clear();
@@ -125,6 +128,14 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
 		if ( $queryTestCaseInterpreter->getExpectedErrorCount() > 0 ) {
 			return null;
+		}
+
+		if ( $queryTestCaseInterpreter->isFromCache() !== null ) {
+			$this->assertEquals(
+				$queryTestCaseInterpreter->isFromCache(),
+				$queryResult->isFromCache(),
+				'Failed asserting isFromCache for ' . $queryTestCaseInterpreter->isAbout()
+			);
 		}
 
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(

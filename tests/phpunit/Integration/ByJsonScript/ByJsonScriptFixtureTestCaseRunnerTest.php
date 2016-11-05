@@ -98,6 +98,7 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 
 		// Make sure LocalSettings don't interfere with the default settings
 		$GLOBALS['smwgDVFeatures'] = $GLOBALS['smwgDVFeatures'] & ~SMW_DV_NUMV_USPACE;
+		$this->testEnvironment->addConfiguration( 'smwgQueryResultCacheType', false );
 	}
 
 	/**
@@ -179,6 +180,7 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			'smwgEnabledFulltextSearch',
 			'smwgFulltextDeferredUpdate',
 			'smwgPropertyZeroCountDisplay',
+			'smwgQueryResultCacheType',
 
 			// MW related
 			'wgLanguageCode',

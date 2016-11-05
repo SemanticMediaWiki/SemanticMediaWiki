@@ -3,6 +3,8 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\ApplicationFactory;
+use SMW\Cache\CacheFactory;
+use SMW\DIWikiPage;
 use WikiPage;
 
 /**
@@ -46,6 +48,11 @@ class ArticlePurge {
 			$cache->delete(
 				$cacheFactory->getFactboxCacheKey( $pageId )
 			);
+		}
+
+		if ( $settings->get( 'smwgQueryResultCacheRefreshOnPurge' ) ) {
+			$cachedQueryResultPrefetcher = $applicationFactory->getCachedQueryResultPrefetcher();
+			$cachedQueryResultPrefetcher->resetCacheBy( DIWikiPage::newFromTitle( $wikiPage->getTitle() ) );
 		}
 
 		return true;
