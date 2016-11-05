@@ -7,6 +7,7 @@ use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\Deserializers\DVDescriptionDeserializer\DescriptionDeserializer;
 use SMW\Deserializers\DVDescriptionDeserializerRegistry;
 use SMWDataItem as DataItem;
+use SMW\ExtraneousLanguage\ExtraneousLanguage;
 
 /**
  * DataTypes registry class
@@ -117,23 +118,22 @@ class DataTypeRegistry {
 	 */
 	public static function getInstance() {
 
-		if ( self::$instance === null ) {
-
-			$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage();
-
-			self::$instance = new self(
-				$extraneousLanguage->getDatatypeLabels(),
-				$extraneousLanguage->getDatatypeAliases(),
-				$extraneousLanguage->getCanonicalDatatypeLabels()
-			);
-
-			self::$instance->initDatatypes();
-
-			self::$instance->setOption(
-				'smwgDVFeatures',
-				ApplicationFactory::getInstance()->getSettings()->get( 'smwgDVFeatures' )
-			);
+		if ( self::$instance !== null ) {
+			return self::$instance;
 		}
+
+		$extraneousLanguage = Localizer::getInstance()->getExtraneousLanguage();
+
+		self::$instance = new self(
+			$extraneousLanguage
+		);
+
+		self::$instance->initDatatypes();
+
+		self::$instance->setOption(
+			'smwgDVFeatures',
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgDVFeatures' )
+		);
 
 		return self::$instance;
 	}
@@ -152,10 +152,13 @@ class DataTypeRegistry {
 	/**
 	 * @since 1.9.0.2
 	 *
-	 * @param array $typeLabels
-	 * @param array $typeAliases
+	 * @param ExtraneousLanguage $extraneousLanguage
 	 */
-	public function __construct( array $typeLabels = array() , array $typeAliases = array(), array $canonicalLabels = array() ) {
+	public function __construct( ExtraneousLanguage $extraneousLanguage ) {
+		$typeLabels = $extraneousLanguage->getDatatypeLabels();
+		$typeAliases = $extraneousLanguage->getDatatypeAliases();
+		$canonicalLabels = $extraneousLanguage->getCanonicalDatatypeLabels();
+
 		foreach ( $typeLabels as $typeId => $typeLabel ) {
 			$this->registerTypeLabel( $typeId, $typeLabel );
 		}
