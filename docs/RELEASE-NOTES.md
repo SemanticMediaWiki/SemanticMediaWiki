@@ -62,6 +62,7 @@ THIS IS NOT A RELEASE YET
 * #1935
 * #1957
 * #1978 Fixed `Tablebuilder` to avoid index creation on an unaltered schema definition
+* #1985 Fixed a potential fatal error in `MaintenanceLogger` for when `$wgMaxNameChars` doesn't match an expected name length
 
 ## Internal changes
 
