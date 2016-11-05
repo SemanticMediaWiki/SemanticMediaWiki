@@ -368,7 +368,7 @@ class PropertyRegistry {
 		return false;
 	}
 
- 	/**
+	/**
 	 * @since 2.5
 	 *
 	 * @param string $id

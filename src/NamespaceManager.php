@@ -67,7 +67,7 @@ class NamespaceManager {
 	 * @since 2.5
 	 */
 	public static function initCanonicalNamespaces( array &$namespaces ) {
-		$namespaces += NamespaceManager::initCustomNamespace( $GLOBALS )->getCanonicalNames();
+		$namespaces += self::initCustomNamespace( $GLOBALS )->getCanonicalNames();
 		return true;
 	}
 

@@ -129,7 +129,7 @@ class LanguageFileContentsReader {
 
 		file_put_contents(
 			$this->getFileForLanguageCode( $languageCode ),
-			json_encode( $contents , JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE )
+			json_encode( $contents, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE )
 		);
 	}
 

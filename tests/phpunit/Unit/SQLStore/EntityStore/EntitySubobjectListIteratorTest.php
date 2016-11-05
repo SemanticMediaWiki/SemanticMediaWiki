@@ -145,7 +145,8 @@ class EntitySubobjectListIteratorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->setExpectedException( 'RuntimeException' );
-		foreach ( $instance as $v ) {}
+		foreach ( $instance as $v ) {
+		}
 	}
 
 	public function subjectProvider() {

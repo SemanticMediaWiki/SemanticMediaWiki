@@ -116,7 +116,7 @@ class QueryDependencyLinksStore {
 			$this->dependencyLinksTableUpdater->deleteDependenciesFromList( $deleteIdList );
 		}
 
-		wfDebugLog( 'smw', __METHOD__ . ' finished on ' . $subject->getHash() . ' with procTime (sec): ' . round( ( microtime( true ) - $start ) ,7 ) );
+		wfDebugLog( 'smw', __METHOD__ . ' finished on ' . $subject->getHash() . ' with procTime (sec): ' . round( ( microtime( true ) - $start ), 7 ) );
 
 		return true;
 	}
