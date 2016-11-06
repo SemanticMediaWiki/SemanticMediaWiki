@@ -11,6 +11,7 @@ use SMW\QueryEngine;
 use SMW\QueryFactory;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
+use RuntimeException;
 
 /**
  * The prefetcher only contains cached subject list from a computed a query
@@ -147,7 +148,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 			throw new RuntimeException( "Missing a QueryEngine instance." );
 		}
 
-		if ( !$this->isEnabled( $query ) || $query->getLimit() < 1 ) {
+		if ( !$this->isEnabled( $query ) || $query->getLimit() < 1 || $query->getOptionBy( Query::NO_CACHE ) === true ) {
 			return $this->queryEngine->getQueryResult( $query );
 		}
 
