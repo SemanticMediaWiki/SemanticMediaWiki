@@ -53,6 +53,11 @@ class PropertyRegistry {
 	private $propertyAliasFinder;
 
 	/**
+	 * @var string[]
+	 */
+	private $dataTypePropertyExemptionList = array();
+
+	/**
 	 * @since 2.1
 	 *
 	 * @return PropertyRegistry
@@ -98,11 +103,11 @@ class PropertyRegistry {
 		$this->propertyAliasFinder = $propertyAliasFinder;
 
 		// To get an index access
-		$dataTypePropertyExemptionList = array_flip( $dataTypePropertyExemptionList );
+		$this->dataTypePropertyExemptionList = array_flip( $dataTypePropertyExemptionList );
 
 		foreach ( $this->datatypeLabels as $id => $label ) {
 
-			if ( isset( $dataTypePropertyExemptionList[$label] ) ) {
+			if ( isset( $this->dataTypePropertyExemptionList[$label] ) ) {
 				continue;
 			}
 
@@ -111,7 +116,7 @@ class PropertyRegistry {
 
 		foreach ( $datatypeRegistry->getKnownTypeAliases() as $alias => $id ) {
 
-			if ( isset( $dataTypePropertyExemptionList[$alias] ) ) {
+			if ( isset( $this->dataTypePropertyExemptionList[$alias] ) ) {
 				continue;
 			}
 
@@ -351,9 +356,9 @@ class PropertyRegistry {
 		);
 
 		// Language dep. stored as aliases
-		$aliases = $extraneousLanguage->getPropertyLabels();
+		$aliases = $extraneousLanguage->getPropertyLabels() + $extraneousLanguage->getDatatypeLabels();
 
-		if ( ( $id = array_search( $label, $aliases ) ) !== false ) {
+		if ( ( $id = array_search( $label, $aliases ) ) !== false && !isset( $this->dataTypePropertyExemptionList[$label] ) ) {
 			return $id;
 		}
 
