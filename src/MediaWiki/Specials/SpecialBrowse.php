@@ -53,6 +53,7 @@ class SpecialBrowse extends SpecialPage {
 
 		// get the GET parameters
 		$articletext = $webRequest->getVal( 'article' );
+		$isEmptyRequest = $query === null && $webRequest->getVal( 'article' ) === '';
 
 		// @see SMWInfolink::encodeParameters
 		if ( $query === null && $this->getRequest()->getCheck( 'x' ) ) {
@@ -84,13 +85,17 @@ class SpecialBrowse extends SpecialPage {
 		) );
 
 		$out->addHTML(
-			$this->getHtml( $webRequest )
+			$this->getHtml( $webRequest, $isEmptyRequest )
 		);
 
 		$this->addExternalHelpLinks();
 	}
 
-	private function getHtml( $webRequest ) {
+	private function getHtml( $webRequest, $isEmptyRequest ) {
+
+		if ( $isEmptyRequest ) {
+			return HtmlContentBuilder::getPageSearchQuickForm();
+		}
 
 		if ( !$this->subjectDV->isValid() ) {
 
@@ -98,13 +103,15 @@ class SpecialBrowse extends SpecialPage {
 				$error = Message::decode( $error );
 			}
 
-			return Html::rawElement(
-					'div',
-					array(
-						'class' => 'smw-callout smw-callout-error'
-					),
-					Message::get( array( 'smw-browse-invalid-subject', $error ) )
-				) . HtmlContentBuilder::getPageSearchQuickForm();
+			$html = Html::rawElement(
+				'div',
+				array(
+					'class' => 'smw-callout smw-callout-error'
+				),
+				Message::get( array( 'smw-browse-invalid-subject', $error ) )
+			);
+
+			return $html . HtmlContentBuilder::getPageSearchQuickForm();
 		}
 
 		$htmlContentBuilder = $this->newHtmlContentBuilder( $webRequest );
