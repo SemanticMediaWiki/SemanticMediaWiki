@@ -96,8 +96,8 @@ class BooleanValue extends DataValue {
 		} else { // format "truelabel, falselabel" (hopefully)
 			$captions = explode( ',', $formatstring, 2 );
 			if ( count( $captions ) == 2 ) { // note: escaping needed to be safe; MW-sanitising would be an alternative
-				$this->trueCaption = htmlspecialchars_decode( htmlspecialchars( trim( $captions[0] ) ) );
-				$this->falseCaption = htmlspecialchars_decode( htmlspecialchars( trim( $captions[1] ) ) );
+				$this->trueCaption = \Sanitizer::removeHTMLtags( trim( $captions[0] ) );
+				$this->falseCaption = \Sanitizer::removeHTMLtags( trim( $captions[1] ) );
 			} // else: no format that is recognised, ignore
 		}
 

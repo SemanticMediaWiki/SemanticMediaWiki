@@ -235,7 +235,8 @@ class SMWWikiPageValue extends SMWDataValue {
 
 		if ( $this->m_dataitem->getNamespace() == NS_FILE && $this->m_dataitem->getInterwiki() === '' ) {
 			$linkEscape = '';
-			$defaultCaption = '|' . $this->getShortCaptionText() . '|frameless|border|text-top';
+			$options = $this->m_outformat !== '' ? str_replace( ';', '|', \Sanitizer::removeHTMLtags( $this->m_outformat ) ) : 'frameless|border|text-top|';
+			$defaultCaption = '|' . $this->getShortCaptionText() . '|' . $options;
 		} else {
 			$linkEscape = ':';
 			$defaultCaption = '|' . $this->getShortCaptionText();
@@ -285,11 +286,11 @@ class SMWWikiPageValue extends SMWDataValue {
 				$this->m_outformat == '-' || $this->m_caption === '' ) {
 
 			$caption = $this->m_caption === false ? $this->getWikiValue() : $this->m_caption;
-			return htmlspecialchars( $caption );
+			return \Sanitizer::removeHTMLtags( $caption );
 		}
 
 		$caption = $this->m_caption === false ? $this->getShortCaptionText() : $this->m_caption;
-		$caption = htmlspecialchars( $caption );
+		$caption =  \Sanitizer::removeHTMLtags( $caption );
 
 		if ( $this->getNamespace() == NS_MEDIA ) { // this extra case *is* needed
 			return $linker->makeMediaLinkObj( $this->getTitle(), $caption );
@@ -366,16 +367,16 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 
 		if ( is_null( $linker ) || $this->m_outformat == '-' ) {
-			return htmlspecialchars( $this->getWikiValue() );
+			return  \Sanitizer::removeHTMLtags( $this->getWikiValue() );
 		} elseif ( $this->getNamespace() == NS_MEDIA ) { // this extra case is really needed
 			return $linker->makeMediaLinkObj( $this->getTitle(),
-				htmlspecialchars( $this->getLongCaptionText() ) );
+				 \Sanitizer::removeHTMLtags( $this->getLongCaptionText() ) );
 		}
 
 		// all others use default linking, no embedding of images here
 		return $linker->link(
 			$this->getTitle(),
-			htmlspecialchars( $this->getLongCaptionText() ),
+			 \Sanitizer::removeHTMLtags( $this->getLongCaptionText() ),
 			$this->linkAttributes
 		);
 	}
