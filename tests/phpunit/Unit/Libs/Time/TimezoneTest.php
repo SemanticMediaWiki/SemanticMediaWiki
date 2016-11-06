@@ -139,6 +139,8 @@ class TimezoneTest extends \PHPUnit_Framework_TestCase {
 			32400
 		);
 
+		// Maybe return PST or PDT during Daylight Savings Time
+		/*
 		$provider[] = array(
 			'America/Los Angeles',
 			-25200
@@ -148,7 +150,7 @@ class TimezoneTest extends \PHPUnit_Framework_TestCase {
 			'America/Los_Angeles',
 			-25200
 		);
-
+		*/
 		return $provider;
 	}
 
