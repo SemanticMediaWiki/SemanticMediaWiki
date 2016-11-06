@@ -167,6 +167,9 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 
 		$queryResult = $this->queryEngine->getQueryResult( $query );
 
+		$time = round( ( microtime( true ) - $this->start ), 5 );
+		$this->log( __METHOD__ . ' from backend in (sec): ' . $time . " ($queryId)" );
+
 		if ( $this->isEnabled( $query ) && $queryResult instanceof QueryResult ) {
 			$this->addQueryResultToCache( $queryResult, $queryId, $container, $query );
 		}
@@ -214,7 +217,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 
 		$time = round( ( microtime( true ) - $this->start ), 5 );
 
-		$this->log( 'QueryResult from cache in (sec): ' . $time . " ($queryId) " );
+		$this->log( __METHOD__ . ' (sec): ' . $time . " ($queryId)" );
 
 		return $queryResult;
 	}
@@ -264,7 +267,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 			$container
 		);
 
-		$this->log( 'QueryResult from backend in (sec): ' . $time . " ($queryId) " . $hash );
+		$this->log( __METHOD__ . ' cache storage (sec): ' . $time . " ($queryId)" );
 
 		return $queryResult;
 	}

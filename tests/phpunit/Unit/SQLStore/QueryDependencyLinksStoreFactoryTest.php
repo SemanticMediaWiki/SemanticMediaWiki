@@ -29,7 +29,7 @@ class QueryDependencyLinksStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver',
-			$instance->newQueryResultDependencyListResolver( '' )
+			$instance->newQueryResultDependencyListResolver()
 		);
 	}
 
