@@ -125,6 +125,7 @@
 	"smw_attributearticlecount": "Amosando $1 {{PLURAL:$1|páxina qu'usa|páxines qu'usen}} esta propiedá.",
 	"smw_subproperty_header": "Subpropiedaes",
 	"smw-subpropertylist-count": "Esta propiedá tien {{PLURAL:$1|la siguiente subpropiedá|les $1 siguientes subpropiedaes}}:",
+	"smw-subpropertylist-count-with-restricted-note": "Esta propiedá tien {{PLURAL:$1|la siguiente subpropiedá|les siguientes $1 subpropiedaes}}  (hai más disponibles pero la selección ta llendada a [https://www.semantic-mediawiki.org/wiki/Help:$smwgSubPropertyListLimit $2]):",
 	"exportrdf": "Esportar les páxines a RDF",
 	"smw_exportrdf_docu": "Esta páxina permite algamar datos d'una páxina en formatu RDF.\nPa esportar les páxines, escriba los títulos nel cuadru de testu d'abaxo, un títulu por llinia.",
 	"smw_exportrdf_recursive": "Esportar recursivamente toles páxines rellacionaes.\n¡Tenga en cuenta que'l resultáu pue ser grande!",
@@ -201,6 +202,7 @@
 	"smw-ask-query-search-info": "{{PLURAL:$3|1=<code>$2</code> (de la caché) respondió|<code>$2</code> (de la caché) respondieron|<code>$2</code> respondió}} la consulta <code><nowiki>$1</nowiki></code> en $4 {{PLURAL:$4|segundu|segundos}}.",
 	"searchbyproperty": "Buscar por propiedá",
 	"processingerrorlist": "Procesando la llista d'errores",
+	"smw-processingerrorlist-intro": "La llista siguiente ufre una güeyada de los errores de procesáu qu'apaecieron venceyaos con [https://www.semantic-mediawiki.org/ Semantic MediaWiki]. Recomiéndase vixilar esta llista de manera regular y correxir les anotaciones de valor inválidu.",
 	"smw_sbv_docu": "Buscar toles páxines que tienen una propiedá y valor daos.",
 	"smw_sbv_novalue": "Escriba un valor válidu pa la propiedá, o vea tolos valores de les propiedaes pa \"$1\".",
 	"smw_sbv_displayresult": "Una llista de toles páxines que tienen la propiedá \"$1\" col valor \"$2\"",
@@ -218,6 +220,7 @@
 	"smw_browse_no_incoming": "Nun hai propiedaes qu'enllacen a esta páxina.",
 	"smw-browse-invalid-subject": "La validación del asuntu devolvió l'error «$1».",
 	"smw-browse-api-subject-serialization-invalid": "L'asuntu tien un formatu de serialización inválidu.",
+	"smw-browse-js-disabled": "Albídrase que JavaScript ta desactiváu o nun ta disponible, y recomendamos usar un navegador que tenga encontu. Otres opciones pueden comentase na páxina de configuración [https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi $smwgBrowseByApi].",
 	"smw_inverse_label_default": "$1 de",
 	"smw_inverse_label_property": "Etiqueta de propiedá inversa",
 	"pageproperty": "Gueta de propiedá de paxina",
@@ -301,7 +304,7 @@
 	"smw-pa-property-predefined-common": "Esta propiedá ta pre-encadarmada (tamién conocida como [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propiedá especial]) y vien con otros privilexos alministrativos más pero puede usase como cualquier otra [https://www.semantic-mediawiki.org/wiki/Property propiedá definida pol usuariu].",
 	"smw-pa-property-predefined_ask": "«$1» ye una propiedá predefinida que representa metainformación (en forma d'un [https://www.semantic-mediawiki.org/wiki/Subobject suboxetu]) sobro consultes individuales y que ta proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_asksi": "«$1» ye una propiedá predefinida que recueye'l númberu de condiciones utilizaes nuna consulta y que ta proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
-	"smw-pa-property-predefined_askde": "\"$1\" ye una propiedá predefinida qu'informa sobre la fondura (valor numbéricu calculáu en base al añeramientu de subconsultes y cadenes de propiedaes resueltes) d'una consulta, mientres la execución de consultes tea siendo acutada pola opción [https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth $smwgQMaxDepth] y que ta proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_askde": "\"$1\" ye una propiedá predefinida qu'informa sobre la fondura d'una consulta, y que ta proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-sp-properties-docu": "Esta páxina amuesa les [https://www.semantic-mediawiki.org/wiki/Property propiedaes] y la cuenta d'usos disponible pa esta Wiki. Pa unes estadístiques actualizaes de cuentes recomiéndase executar el script de mantenimientu d'[https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics estadístiques de propiedá] de mou regular . Pa una vista diferenciada, mira la páxina especial [[Special:UnusedProperties|propiedaes ensin usu]] o [[Special:WantedProperties|propiedaes buscaes]].",
 	"smw-sp-properties-cache-info": "Los datos de la llista recuperaronse de la [https://www.semantic-mediawiki.org/wiki/Caching cache], y anovaronse por última vez el $1.",
 	"smw-sp-properties-header-label": "Llista de propiedaes",
@@ -376,5 +379,7 @@
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|segundu|segundos}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|segundu|segundos}}",
 	"smw_allows_pattern": "Espérase qu'esta páxina contenga una llista de referencies (siguía por [https://en.wikipedia.org/wiki/Regular_expression espresiones regulares]) y que s'ufra pola propiedá [[Property:Allows pattern|Permite patrón]]. Pa editar esta páxina, ríquese'l permisu <code>smw-patternedit</code>.",
-	"smw-datavalue-allows-pattern-mismatch": "La espresión regular «$2» clasificó a «$1» como inválida."
+	"smw-datavalue-allows-pattern-mismatch": "La espresión regular «$2» clasificó a «$1» como inválida.",
+	"smw-datavalue-reference-outputformat": "$1: $2",
+	"smw-property-preferred-title-format": "$1 ($2)"
 }
