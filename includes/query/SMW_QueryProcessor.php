@@ -254,9 +254,10 @@ class SMWQueryProcessor implements QueryContext {
 				$rawParam
 			);
 
+			// #1258 (named_args -> named args)
 			// accept 'name' => 'value' just as '' => 'name=value':
 			if ( is_string( $name ) && ( $name !== '' ) ) {
-				$rawParam = $name . '=' . $rawParam;
+				$rawParam = str_replace( "_", " ", $name ) . '=' . $rawParam;
 			}
 
 			if ( $rawParam === '' ) {
