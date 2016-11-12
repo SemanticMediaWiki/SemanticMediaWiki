@@ -6,6 +6,7 @@ use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use Title;
+use Hooks;
 
 /**
  * Dispatcher to find and create individual UpdateJob instances for a specific
@@ -24,11 +25,6 @@ class UpdateDispatcherJob extends JobBase {
 	const CHUNK_SIZE = 500;
 
 	/**
-	 * @var ApplicationFactory
-	 */
-	private $applicationFactory = null;
-
-	/**
 	 * @since  1.9
 	 *
 	 * @param Title $title
@@ -38,9 +34,14 @@ class UpdateDispatcherJob extends JobBase {
 	public function __construct( Title $title, $params = array(), $id = 0 ) {
 		parent::__construct( 'SMW\UpdateDispatcherJob', $title, $params, $id );
 		$this->removeDuplicates = true;
-		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		$this->setStore( $this->applicationFactory->getStore() );
+		$this->setStore(
+			ApplicationFactory::getInstance()->getStore()
+		);
+
+		$this->isEnabledJobQueue(
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgEnableUpdateJobs' )
+		);
 	}
 
 	/**
@@ -53,7 +54,7 @@ class UpdateDispatcherJob extends JobBase {
 	public function run() {
 
 		if ( $this->hasParameter( 'job-list' ) ) {
-			return $this->createUpdateJobsFromListBySecondaryRun(
+			return $this->createUpdateJobsFromSecondaryDispatchRunJobList(
 				$this->getParameter( 'job-list' )
 			);
 		}
@@ -70,32 +71,25 @@ class UpdateDispatcherJob extends JobBase {
 
 		// Push generated job list into a secondary dispatch run
 		if ( $this->jobs !== array() ) {
-
-			foreach ( array_chunk( $this->jobs, self::CHUNK_SIZE, true ) as $jobs ) {
-
-				$hash = md5( json_encode( $jobs ) );
-
-				$updateDispatcherJob = new self(
-					Title::newFromText( 'ChunkedUpdateDispatcherJob-'. $hash ),
-					array( 'job-list' => $jobs )
-				);
-
-				$updateDispatcherJob->insert();
-			}
+			$this->createSecondaryDispatchRunWithChunkedJobList();
 		}
+
+		Hooks::run( 'SMW::Job::AfterUpdateDispatcherJobComplete', array( $this ) );
 
 		return true;
 	}
 
-	/**
-	 * @see Job::insert
-	 *
-	 * @since 1.9
-	 * @codeCoverageIgnore
-	 */
-	public function insert() {
-		if ( $this->applicationFactory->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
-			parent::insert();
+	private function createSecondaryDispatchRunWithChunkedJobList() {
+		foreach ( array_chunk( $this->jobs, self::CHUNK_SIZE, true ) as $jobList ) {
+
+			$hash = md5( json_encode( $jobList ) );
+
+			$job = new self(
+				Title::newFromText( 'UpdateDispatcherChunkedJobList::' . $hash ),
+				array( 'job-list' => $jobList )
+			);
+
+			$job->insert();
 		}
 	}
 
@@ -113,15 +107,7 @@ class UpdateDispatcherJob extends JobBase {
 	}
 
 	private function dispatchUpdateForProperty( DIProperty $property ) {
-
 		$this->addUpdateJobsForProperties( array( $property ) );
-
-		// Hook deprecated with SMW 1.9 and will vanish with SMW 1.11
-		\Hooks::run( 'smwUpdatePropertySubjects', array( &$this->jobs ) );
-
-		// Hook since 1.9
-		\Hooks::run( 'SMW::Job::updatePropertyJobs', array( &$this->jobs, $property ) );
-
 		$this->addUpdateJobsForSubjectsThatContainTypeError();
 		$this->addUpdateJobsFromDeserializedSemanticData();
 	}
@@ -157,7 +143,7 @@ class UpdateDispatcherJob extends JobBase {
 			return;
 		}
 
-		$semanticData = $this->applicationFactory->newSerializerFactory()->newSemanticDataDeserializer()->deserialize(
+		$semanticData = ApplicationFactory::getInstance()->newSerializerFactory()->newSemanticDataDeserializer()->deserialize(
 			$this->getParameter( 'semanticData' )
 		);
 
@@ -189,7 +175,7 @@ class UpdateDispatcherJob extends JobBase {
 		}
 	}
 
-	private function createUpdateJobsFromListBySecondaryRun( array $listOfSubjects ) {
+	private function createUpdateJobsFromSecondaryDispatchRunJobList( array $listOfSubjects ) {
 
 		$subjects = array_keys( $listOfSubjects );
 

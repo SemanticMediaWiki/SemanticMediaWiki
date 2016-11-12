@@ -46,6 +46,10 @@ class UpdateJob extends JobBase {
 	function __construct( Title $title, $params = array() ) {
 		parent::__construct( 'SMW\UpdateJob', $title, $params );
 		$this->removeDuplicates = true;
+
+		$this->isEnabledJobQueue(
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgEnableUpdateJobs' )
+		);
 	}
 
 	/**
@@ -55,23 +59,6 @@ class UpdateJob extends JobBase {
 	 */
 	public function run() {
 		return $this->doUpdate();
-	}
-
-	/**
-	 * @see Job::insert
-	 *
-	 * This actually files the job. This is prevented if the configuration of SMW
-	 * disables jobs.
-	 *
-	 * @note Any method that inserts jobs with Job::batchInsert or otherwise must
-	 * implement this check individually. The below is not called in these cases.
-	 *
-	 * @codeCoverageIgnore
-	 */
-	public function insert() {
-		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
-			parent::insert();
-		}
 	}
 
 	private function doUpdate() {

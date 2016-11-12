@@ -69,7 +69,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new UpdateDispatcherJob( $title, array() );
-		$instance->setEnabledJobQueue( false );
+		$instance->isEnabledJobQueue( false );
 
 		$this->assertNull( $instance->pushToJobQueue() );
 	}
@@ -96,7 +96,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$instance = new UpdateDispatcherJob( $title, array() );
-		$instance->setEnabledJobQueue( false );
+		$instance->isEnabledJobQueue( false );
 
 		$this->assertTrue( $instance->run() );
 	}
@@ -133,7 +133,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$instance = new UpdateDispatcherJob( $title, array() );
-		$instance->setEnabledJobQueue( false );
+		$instance->isEnabledJobQueue( false );
 
 		$this->assertTrue( $instance->run() );
 	}
@@ -174,7 +174,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$instance = new UpdateDispatcherJob( $setup['title'], array() );
-		$instance->setEnabledJobQueue( false );
+		$instance->isEnabledJobQueue( false );
 		$instance->run();
 
 		$this->assertEquals(
@@ -227,7 +227,7 @@ class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$instance = new UpdateDispatcherJob( $setup['title'], $additionalJobQueueParameters );
-		$instance->setEnabledJobQueue( false );
+		$instance->isEnabledJobQueue( false );
 		$instance->run();
 
 		$this->assertEquals(

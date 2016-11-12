@@ -107,27 +107,7 @@ class SpecialDeferredRequestDispatcher extends SpecialPage {
 			return;
 		}
 
-		$type = $parameters['async-job']['type'];
-		$title = Title::newFromDBkey( $parameters['async-job']['title'] );
-
-		if ( $title === null ) {
-			wfDebugLog( 'smw', __METHOD__  . " invalid title" . "\n" );
-			return;
-		}
-
-		switch ( $type ) {
-			case 'SMW\ParserCachePurgeJob':
-				$this->runParserCachePurgeJob( $title, $parameters );
-				break;
-			case 'SMW\SearchTableUpdateJob':
-				$this->runSearchTableUpdateJob( $title, $parameters );
-				break;
-			case 'SMW\UpdateJob':
-				$this->runUpdateJob( $title, $parameters );
-				break;
-		}
-
-		return true;
+		return $this->doRunJob( $parameters );
 	}
 
 	private function modifyHttpHeader( $header, $message = '' ) {
@@ -154,40 +134,27 @@ class SpecialDeferredRequestDispatcher extends SpecialPage {
 		} );
 	}
 
-	private function runParserCachePurgeJob( $title, $parameters ) {
+	private function doRunJob( $parameters ) {
 
-		if ( !isset( $parameters['idlist'] ) || $parameters['idlist'] === array() ) {
+		$type = $parameters['async-job']['type'];
+		$title = Title::newFromDBkey( $parameters['async-job']['title'] );
+
+		if ( $title === null ) {
+			wfDebugLog( 'smw', __METHOD__  . " invalid title" . "\n" );
 			return;
 		}
 
-		$purgeParserCacheJob = ApplicationFactory::getInstance()->newJobFactory()->newParserCachePurgeJob(
+		wfDebugLog( 'smw', __METHOD__ . ' ' . $type . ' :: ' .  $title->getPrefixedDBkey() . '#' . $title->getNamespace() );
+
+		$job = ApplicationFactory::getInstance()->newJobFactory()->newByType(
+			$type,
 			$title,
 			$parameters
 		);
 
-		$purgeParserCacheJob->run();
-	}
+		$job->run();
 
-	private function runSearchTableUpdateJob( $title, $parameters ) {
-
-		$searchTableUpdateJob = ApplicationFactory::getInstance()->newJobFactory()->newSearchTableUpdateJob(
-			$title,
-			$parameters
-		);
-
-		$searchTableUpdateJob->run();
-	}
-
-	private function runUpdateJob( $title, $parameters ) {
-
-		wfDebugLog( 'smw', __METHOD__ . ' dispatched for '.  $title->getPrefixedDBkey() . "\n" );
-
-		$updateJob = ApplicationFactory::getInstance()->newJobFactory()->newUpdateJob(
-			$title,
-			$parameters
-		);
-
-		$updateJob->run();
+		return true;
 	}
 
 	// 1.19 doesn't have a getMethod
