@@ -287,9 +287,8 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 
 		// Apply intro parameter
 		if ( ( $this->mIntro ) && ( $results->getCount() > 0 ) ) {
-			if ( $outputmode == SMW_OUTPUT_HTML && $wgParser->getTitle() instanceof Title ) {
-				global $wgParser;
-				$result = $wgParser->recursiveTagParse( $this->mIntro ) . $result;
+			if ( $outputmode == SMW_OUTPUT_HTML ) {
+				$result = Message::get( array( 'smw-parse', $this->mIntro ), Message::PARSE ) . $result;
 			} else {
 				$result = $this->mIntro . $result;
 			}
@@ -297,8 +296,8 @@ abstract class ResultPrinter extends \ContextSource implements QueryResultPrinte
 
 		// Apply outro parameter
 		if ( ( $this->mOutro ) && ( $results->getCount() > 0 ) ) {
-			if ( $outputmode == SMW_OUTPUT_HTML && $wgParser->getTitle() instanceof Title ) {
-				$result = $result . $wgParser->recursiveTagParse( $this->mOutro );
+			if ( $outputmode == SMW_OUTPUT_HTML ) {
+				$result = $result . Message::get( array( 'smw-parse', $this->mOutro ), Message::PARSE );
 			} else {
 				$result = $result . $this->mOutro;
 			}
