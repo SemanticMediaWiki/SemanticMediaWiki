@@ -1,5 +1,5 @@
 {
-	"description": "Test `_txt` query for blob value assignments",
+	"description": "Test `_txt` query for simple assignments, NS_HELP, and special chars",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -12,19 +12,37 @@
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"page": "Simple blob subject",
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "abc-123&^*%",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Examples/Q0101/1",
 			"contents": "[[Has blob property::Value One]], [[Has another blob property::Value One]]"
 		},
 		{
+			"page": "Examples/Q0101/2",
 			"namespace": "NS_HELP",
-			"page": "Another blob subject",
 			"contents": "[[Has blob property::Value Two]], [[Has another blob property::Value Two]]"
+		},
+		{
+			"page": "Examples/Q0101/3",
+			"contents": "[[Has text::foo-123#&^*%<1?=/->\"']]"
+		},
+		{
+			"page": "Examples/Q0101/4",
+			"contents": "[[abc-123&^*%::foo-123#&^*%<1?=/->\"']]"
 		}
 	],
 	"tests": [
 		{
 			"type": "query",
-			"about": "Simple disjunctive blob query",
+			"about": "#0 Simple disjunctive blob query",
 			"condition": "[[Has blob property::Value One]] OR [[Has another blob property::Value Two]]",
 			"printouts": [
 				"Has blob property"
@@ -34,8 +52,8 @@
 			},
 			"queryresult": {
 				"results": [
-					"Simple blob subject#0##",
-					"Another blob subject#12##"
+					"Examples/Q0101/1#0##",
+					"Examples/Q0101/2#12##"
 				],
 				"count": "2",
 				"dataitems": [
@@ -52,7 +70,7 @@
 		},
 		{
 			"type": "query",
-			"about": "Simple conjunctive blob query",
+			"about": "#1 Simple conjunctive blob query",
 			"condition": "[[Has blob property::Value One]][[Has another blob property::Value One]]",
 			"printouts": [],
 			"parameters": {
@@ -60,9 +78,37 @@
 			},
 			"queryresult": {
 				"results": [
-					"Simple blob subject#0##"
+					"Examples/Q0101/1#0##"
 				],
 				"count": "1"
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 with special chars",
+			"condition": "[[Has text::foo-123#&^*%<1?=/->\"']]",
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"Examples/Q0101/3#0##"
+				],
+				"count": 1
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3 with special chars",
+			"condition": "[[abc-123&^*%::foo-123#&^*%<1?=/->\"']]",
+			"parameters" : {
+				"limit" : "10"
+			},
+			"queryresult": {
+				"results": [
+					"Examples/Q0101/4#0##"
+				],
+				"count": 1
 			}
 		}
 	],

@@ -216,6 +216,40 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
+		#12
+		$provider[] = array(
+			'',
+			array(
+				'property' => 'Text',
+				'value'    => 'abc-123',
+				'nearbySearchForType' => array( '_txt' )
+			),
+			array(
+				'limit'  => 20,
+				'offset' => 0,
+				'nearbySearch' => true,
+				'propertyString' => 'Text',
+				'valueString'    => 'abc-123',
+			)
+		);
+
+		#13
+		$provider[] = array(
+			'',
+			array(
+				'property' => 'Text',
+				'value'    => 'foo-123#&^*%<1?=/->"\'',
+				'nearbySearchForType' => array( '_txt' )
+			),
+			array(
+				'limit'  => 20,
+				'offset' => 0,
+				'nearbySearch' => true,
+				'propertyString' => 'Text',
+				'valueString'    => 'foo-123#&^*%<1?=/->"\'',
+			)
+		);
+
 		return $provider;
 	}
 

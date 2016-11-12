@@ -46,7 +46,7 @@ class UrlEncoderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$output,
-			UrlEncoder::decode( UrlEncoder::encode( UrlEncoder::replace( $output ) ) )
+			UrlEncoder::decode( UrlEncoder::encode( UrlEncoder::escape( $output ) ) )
 		);
 	}
 

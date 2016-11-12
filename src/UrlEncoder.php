@@ -36,11 +36,31 @@ class UrlEncoder {
 	 *
 	 * @return string
 	 */
-	public static function replace( $string ) {
+	public static function escape( $string ) {
 
 		$value = str_replace(
-			array( '-', '#', "\n", ' ', '/', '[', ']', '<', '>', '&lt;', '&gt;', '&amp;', '\'\'', '|', '&', '%', '?', '$', "\\", ";" ),
-			array( '-2D', '-23', '-0A', '-20', '-2F', '-5B', '-5D', '-3C', '-3E', '-3C', '-3E', '-26', '-27-27', '-7C', '-26', '-25', '-3F', '-24', '-5C', "-3B" ),
+			array( '-', '#', "\n", ' ', '/', '[', ']', '<', '>', '&lt;', '&gt;', '&amp;', '\'\'', '|', '&', '%', '?', '$', "\\", ";", '_' ),
+			array( '-2D', '-23', '-0A', '-20', '-2F', '-5B', '-5D', '-3C', '-3E', '-3C', '-3E', '-26', '-27-27', '-7C', '-26', '-25', '-3F', '-24', '-5C', "-3B", '-5F' ),
+			$string
+		);
+
+		return $value;
+	}
+
+	/**
+	 * Reverse of self::escape
+	 *
+	 * @since 2.5
+	 *
+	 * @param $string
+	 *
+	 * @return string
+	 */
+	public static function unescape( $string ) {
+
+		$value = str_replace(
+			array( '-2D', '-23', '-0A', '-20', '-2F', '-5B', '-5D', '-3C', '-3E', '-3C', '-3E', '-26', '-27-27', '-7C', '-26', '-25', '-3F', '-24', '-5C', "-3B", "-3A", '-5F' ),
+			array( '-', '#', "\n", ' ', '/', '[', ']', '<', '>', '&lt;', '&gt;', '&', '\'\'', '|', '&', '%', '?', '$', "\\", ";", ":", "_" ),
 			$string
 		);
 
