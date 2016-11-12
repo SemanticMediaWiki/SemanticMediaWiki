@@ -41,6 +41,8 @@ Implementing a hook should be made in consideration of the expected performance 
 
 ### 2.5
 
+- `SMW::Job::AfterUpdateDispatcherJobComplete`
+
 `SMW\SQLStore\Installer` defines:
 
 - `SMW::SQLStore::AfterCreateTablesComplete` to add extra tables after the create process as been finalized

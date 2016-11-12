@@ -15,6 +15,7 @@ use SMW\MediaWiki\TitleCreator;
 use SMW\Query\QuerySourceFactory;
 use MediaWiki\Logger\LoggerFactory;
 use Psr\Log\NullLogger;
+use SMW\SQLStore\TransitionalDiffStore;
 
 /**
  * @license GNU GPL v2+
@@ -346,6 +347,27 @@ class SharedCallbackContainer implements CallbackContainer {
 			);
 
 			return $propertyLabelFinder;
+		} );
+
+		/**
+		 * @var TransitionalDiffStore
+		 */
+		$callbackLoader->registerCallback( 'TransitionalDiffStore', function() use ( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'TransitionalDiffStore', '\SMW\SQLStore\TransitionalDiffStore' );
+
+			$cacheFactory = $callbackLoader->load( 'CacheFactory' );
+			$cacheType = null;
+
+			$transitionalDiffStore = new TransitionalDiffStore(
+				$cacheFactory->newMediaWikiCompositeCache( $cacheType ),
+				$cacheFactory->getCachePrefix()
+			);
+
+			$transitionalDiffStore->setLogger(
+				$callbackLoader->singleton( 'MediaWikiLogger' )
+			);
+
+			return $transitionalDiffStore;
 		} );
 	}
 

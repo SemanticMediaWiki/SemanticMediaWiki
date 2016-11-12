@@ -90,14 +90,17 @@ class ApplicationFactory {
 	}
 
 	/**
-	 * @private
-	 *
-	 * @since 2.4
-	 *
-	 * @return CallbackLoader
+	 * @since 2.5
 	 */
-	public function getCallbackInstantiator() {
-		return $this->callbackLoader;
+	public function singleton( $serviceName ) {
+		return call_user_func_array( array( $this->callbackLoader, 'singleton' ), func_get_args() );
+	}
+
+	/**
+	 * @since 2.5
+	 */
+	public function create( $serviceName ) {
+		return call_user_func_array( array( $this->callbackLoader, 'create' ), func_get_args() );
 	}
 
 	/**

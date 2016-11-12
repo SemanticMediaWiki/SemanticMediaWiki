@@ -4,6 +4,7 @@ namespace SMW\SQLStore;
 
 use ArrayIterator;
 use IteratorAggregate;
+use SMW\DIWikiPage;
 use SMW\SQLStore\ChangeOp\TableChangeOp;
 
 /**
@@ -20,6 +21,16 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 	private $diff = array();
 
 	/**
+	 * @var DIWikiPage
+	 */
+	private $subject;
+
+	/**
+	 * @var string
+	 */
+	private $hash = '';
+
+	/**
 	 * @var array
 	 */
 	private $fixedPropertyRecords = array();
@@ -34,6 +45,24 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @return DIWikiPage $subject
+	 */
+	public function setSubject( DIWikiPage $subject ) {
+		$this->subject = $subject;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return DIWikiPage
+	 */
+	public function getSubject() {
+		return $this->subject;
+	}
+
+	/**
 	 * @since 2.3
 	 *
 	 * @return ArrayIterator
@@ -43,16 +72,30 @@ class CompositePropertyTableDiffIterator implements IteratorAggregate {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getHash() {
+		return md5( $this->hash . ( $this->subject !== null ? $this->subject->getHash() : '' ) );
+	}
+
+	/**
 	 * @since 2.3
 	 *
 	 * @param array $insertRecord
 	 * @param array $deleteRecord
 	 */
 	public function addTableRowsToCompositeDiff( array $insertRecord, array $deleteRecord ) {
-		$this->diff[] = array(
+
+		$diff = array(
 			'insert' => $insertRecord,
 			'delete' => $deleteRecord
 		);
+
+		$this->diff[] = $diff;
+
+		$this->hash .= json_encode( $diff );
 	}
 
 	/**

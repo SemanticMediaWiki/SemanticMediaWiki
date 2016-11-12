@@ -70,6 +70,10 @@ class PropertyTableRowDiffer {
 
 		$newHashes = array();
 
+		$this->getCompositePropertyTableDiff()->setSubject(
+			$semanticData->getSubject()
+		);
+
 		$newData = $this->mapToInsertValueFormat(
 			$sid,
 			$semanticData

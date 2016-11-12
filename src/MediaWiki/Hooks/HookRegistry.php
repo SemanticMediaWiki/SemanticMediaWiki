@@ -500,13 +500,19 @@ class HookRegistry {
 			$applicationFactory->getStore()
 		);
 
+		$transitionalDiffStore = $applicationFactory->singleton( 'TransitionalDiffStore' );
+
 		/**
 		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::SQLStore::AfterDataUpdateComplete
 		 */
-		$this->handlers['SMW::SQLStore::AfterDataUpdateComplete'] = function ( $store, $semanticData, $compositePropertyTableDiffIterator ) use ( $queryDependencyLinksStoreFactory, $queryDependencyLinksStore, $deferredRequestDispatchManager ) {
+		$this->handlers['SMW::SQLStore::AfterDataUpdateComplete'] = function ( $store, $semanticData, $compositePropertyTableDiffIterator ) use ( $queryDependencyLinksStoreFactory, $queryDependencyLinksStore, $deferredRequestDispatchManager, $transitionalDiffStore ) {
 
 			$queryDependencyLinksStore->setStore( $store );
 			$subject = $semanticData->getSubject();
+
+			$slot = $transitionalDiffStore->createSlotFrom(
+				$compositePropertyTableDiffIterator
+			);
 
 			$queryDependencyLinksStore->pruneOutdatedTargetLinks(
 				$subject,
@@ -534,9 +540,17 @@ class HookRegistry {
 			);
 
 			$textByChangeUpdater->pushUpdates(
-				$subject,
 				$compositePropertyTableDiffIterator,
-				$deferredRequestDispatchManager
+				$deferredRequestDispatchManager,
+				$slot
+			);
+
+			// Since we cannot predict as to when the slot is used and by whom,
+			// schedule a job to ensure to be the last in-line to clean-up
+			// any remaining slots for this transaction
+			$deferredRequestDispatchManager->addSequentialCachePurgeJobWith(
+				$subject->getTitle(),
+				array( 'slot:id' => $slot )
 			);
 
 			return true;

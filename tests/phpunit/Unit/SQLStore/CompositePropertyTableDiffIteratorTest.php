@@ -3,6 +3,7 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\SQLStore\CompositePropertyTableDiffIterator;
+use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\SQLStore\CompositePropertyTableDiffIterator
@@ -112,6 +113,24 @@ class CompositePropertyTableDiffIteratorTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertEmpty(
 			$instance->getTableChangeOps( 'smw_di_number' )
+		);
+	}
+
+	public function testGetHash() {
+
+		$diff = array();
+
+		$instance = new CompositePropertyTableDiffIterator(
+			$diff
+		);
+
+		$instance->setSubject(
+			DIWikiPage::newFromText( __METHOD__ )
+		);
+
+		$this->assertInternalType(
+			'string',
+			$instance->getHash()
 		);
 	}
 

@@ -20,6 +20,8 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 	private $searchTableUpdater;
 	private $textSanitizer;
+	private $transitionalDiffStore;
+	private $slot;
 
 	protected function setUp() {
 
@@ -36,13 +38,19 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$this->textSanitizer = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->transitionalDiffStore = $this->getMockBuilder( '\SMW\SQLStore\TransitionalDiffStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->slot = '';
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Fulltext\TextByChangeUpdater',
-			new TextByChangeUpdater( $this->connection, $this->searchTableUpdater, $this->textSanitizer )
+			new TextByChangeUpdater( $this->connection, $this->searchTableUpdater, $this->textSanitizer, $this->transitionalDiffStore )
 		);
 	}
 
@@ -60,6 +68,9 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTableChangeOps' )
 			->will( $this->returnValue( array() ) );
 
+		$compositePropertyTableDiffIterator->expects( $this->never() )
+			->method( 'getSubject' );
+
 		$deferredRequestDispatchManager = $this->getMockBuilder( '\SMW\DeferredRequestDispatchManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -67,21 +78,22 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$instance = new TextByChangeUpdater(
 			$this->connection,
 			$this->searchTableUpdater,
-			$this->textSanitizer
+			$this->textSanitizer,
+			$this->transitionalDiffStore
 		);
-
-		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
 
 		$instance->asDeferredUpdate( false );
 
 		$instance->pushUpdates(
-			$subject,
 			$compositePropertyTableDiffIterator,
-			$deferredRequestDispatchManager
+			$deferredRequestDispatchManager,
+			$this->slot
 		);
 	}
 
 	public function testPushUpdatesAsDeferredUpdate() {
+
+		$this->slot = 42;
 
 		$this->searchTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'isEnabled' )
@@ -91,6 +103,10 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$compositePropertyTableDiffIterator->expects( $this->once() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) ) );
+
 		$deferredRequestDispatchManager = $this->getMockBuilder( '\SMW\DeferredRequestDispatchManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -99,22 +115,21 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'addSearchTableUpdateJobWith' )
 			->with(
 				$this->anything(),
-				$this->equalTo( array( 'diff' => null ) ) );
+				$this->equalTo( array( 'slot:id' => $this->slot ) ) );
 
 		$instance = new TextByChangeUpdater(
 			$this->connection,
 			$this->searchTableUpdater,
-			$this->textSanitizer
+			$this->textSanitizer,
+			$this->transitionalDiffStore
 		);
-
-		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
 
 		$instance->asDeferredUpdate( true );
 
 		$instance->pushUpdates(
-			$subject,
 			$compositePropertyTableDiffIterator,
-			$deferredRequestDispatchManager
+			$deferredRequestDispatchManager,
+			$this->slot
 		);
 	}
 
@@ -132,6 +147,9 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTableChangeOps' )
 			->will( $this->returnValue( array() ) );
 
+		$compositePropertyTableDiffIterator->expects( $this->never() )
+			->method( 'getSubject' );
+
 		$deferredRequestDispatchManager = $this->getMockBuilder( '\SMW\DeferredRequestDispatchManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -139,18 +157,17 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$instance = new TextByChangeUpdater(
 			$this->connection,
 			$this->searchTableUpdater,
-			$this->textSanitizer
+			$this->textSanitizer,
+			$this->transitionalDiffStore
 		);
-
-		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
 
 		$instance->asDeferredUpdate( true );
 		$instance->isCommandLineMode( true );
 
 		$instance->pushUpdates(
-			$subject,
 			$compositePropertyTableDiffIterator,
-			$deferredRequestDispatchManager
+			$deferredRequestDispatchManager,
+			$this->slot
 		);
 	}
 

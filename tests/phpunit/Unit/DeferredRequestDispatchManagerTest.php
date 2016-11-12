@@ -106,6 +106,11 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$provider[] = array(
+			'SMW\SequentialCachePurgeJob',
+			true
+		);
+
+		$provider[] = array(
 			'SMW\ParserCachePurgeJob',
 			false,
 			array( 'idlist' => '1|2' )

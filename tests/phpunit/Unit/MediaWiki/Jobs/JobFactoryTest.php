@@ -77,6 +77,11 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 			'\SMW\MediaWiki\Jobs\EntityIdDisposerJob'
 		);
 
+		$provider[] = array(
+			'SMW\SequentialCachePurgeJob',
+			'\SMW\MediaWiki\Jobs\SequentialCachePurgeJob'
+		);
+
 		return $provider;
 	}
 
