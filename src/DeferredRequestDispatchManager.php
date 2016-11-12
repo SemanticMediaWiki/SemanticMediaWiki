@@ -44,12 +44,17 @@ class DeferredRequestDispatchManager {
 	 *
 	 * @var boolean
 	 */
-	private $enabledHttpDeferredRequest = true;
+	private $isEnabledHttpDeferredRequest = true;
 
 	/**
 	 * @var boolean
 	 */
-	private $preferredWithJobQueue = false;
+	private $isPreferredWithJobQueue = false;
+
+	/**
+	 * @var boolean
+	 */
+	private $isCommandLineMode = false;
 
 	/**
 	 * @since 2.3
@@ -65,16 +70,18 @@ class DeferredRequestDispatchManager {
 	 */
 	public function reset() {
 		self::$canConnectToUrl = null;
-		$this->enabledHttpDeferredRequest = true;
+		$this->isEnabledHttpDeferredRequest = true;
+		$this->isPreferredWithJobQueue = false;
+		$this->isCommandLineMode = false;
 	}
 
 	/**
 	 * @since 2.3
 	 *
-	 * @param boolean $enabledHttpDeferredRequest
+	 * @param boolean $isEnabledHttpDeferredRequest
 	 */
-	public function setEnabledHttpDeferredRequest( $enabledHttpDeferredRequest ) {
-		$this->enabledHttpDeferredRequest = (bool)$enabledHttpDeferredRequest;
+	public function isEnabledHttpDeferredRequest( $isEnabledHttpDeferredRequest ) {
+		$this->isEnabledHttpDeferredRequest = (bool)$isEnabledHttpDeferredRequest;
 	}
 
 	/**
@@ -84,10 +91,22 @@ class DeferredRequestDispatchManager {
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $preferredWithJobQueue
+	 * @param boolean $isPreferredWithJobQueue
 	 */
-	public function setPreferredWithJobQueue( $preferredWithJobQueue ) {
-		$this->preferredWithJobQueue = (bool)$preferredWithJobQueue;
+	public function isPreferredWithJobQueue( $isPreferredWithJobQueue ) {
+		$this->isPreferredWithJobQueue = (bool)$isPreferredWithJobQueue;
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:$wgCommandLineMode
+	 * Indicates whether MW is running in command-line mode.
+	 *
+	 * @since 2.5
+	 *
+	 * @param boolean $isCommandLineMode
+	 */
+	public function isCommandLineMode( $isCommandLineMode ) {
+		$this->isCommandLineMode = $isCommandLineMode;
 	}
 
 	/**
@@ -106,8 +125,18 @@ class DeferredRequestDispatchManager {
 	 * @param Title $title
 	 * @param array $parameters
 	 */
-	public function dispatchSearchTableUpdateJobFor( Title $title, $parameters = array() ) {
+	public function addSearchTableUpdateJobWith( Title $title, $parameters = array() ) {
 		return $this->dispatchJobRequestFor( 'SMW\SearchTableUpdateJob', $title, $parameters );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param Title $title
+	 * @param array $parameters
+	 */
+	public function addSequentialCachePurgeJobWith( Title $title, $parameters = array() ) {
+		return $this->dispatchJobRequestFor( 'SMW\SequentialCachePurgeJob', $title, $parameters );
 	}
 
 	/**
@@ -119,7 +148,7 @@ class DeferredRequestDispatchManager {
 	 */
 	public function dispatchJobRequestFor( $type, Title $title, $parameters = array() ) {
 
-		if ( !$this->doPreliminaryCheckForType( $type, $parameters ) ) {
+		if ( !$this->isAllowedJobType( $type ) ) {
 			return null;
 		}
 
@@ -128,13 +157,9 @@ class DeferredRequestDispatchManager {
 			SpecialDeferredRequestDispatcher::getTargetURL()
 		);
 
-		$dispatchableCallbackJob = $this->getDispatchableCallbackJobFor( $type );
+		$dispatchableCallbackJob = $this->createDispatchableCallbackJob( $type );
 
-		// Build requestToken as source verification during the POST request
-		$parameters['timestamp'] = time();
-		$parameters['requestToken'] = SpecialDeferredRequestDispatcher::getRequestToken( $parameters['timestamp'] );
-
-		if ( !$this->preferredWithJobQueue && $this->enabledHttpDeferredRequest && $this->canConnectToUrl() ) {
+		if ( $this->canUseDeferredRequest() ) {
 			return $this->doPostJobWith( $type, $title, $parameters, $dispatchableCallbackJob );
 		}
 
@@ -146,59 +171,35 @@ class DeferredRequestDispatchManager {
 		return true;
 	}
 
-	private function getDispatchableCallbackJobFor( $type ) {
+	private function canUseDeferredRequest() {
+		return !$this->isCommandLineMode && !$this->isPreferredWithJobQueue && $this->isEnabledHttpDeferredRequest && $this->canConnectToUrl();
+	}
 
-		$jobFactory = ApplicationFactory::getInstance()->newJobFactory();
+	private function createDispatchableCallbackJob( $type ) {
 
-		if ( $type === 'SMW\ParserCachePurgeJob' ) {
-			$callback = function ( $title, $parameters ) use ( $jobFactory ) {
+		$callback = function ( $title, $parameters ) use ( $type ) {
 
-				$purgeParserCacheJob = $jobFactory->newParserCachePurgeJob(
-					$title,
-					$parameters
-				);
+			$job = ApplicationFactory::getInstance()->newJobFactory()->newByType(
+				$type,
+				$title,
+				$parameters
+			);
 
-				$purgeParserCacheJob->insert();
-			};
-		}
-
-		if ( $type === 'SMW\SearchTableUpdateJob' ) {
-			$callback = function ( $title, $parameters ) use ( $jobFactory ) {
-
-				$purgeParserCacheJob = $jobFactory->newSearchTableUpdateJob(
-					$title,
-					$parameters
-				);
-
-				$purgeParserCacheJob->insert();
-			};
-		}
-
-		if ( $type === 'SMW\UpdateJob' ) {
-			$callback = function ( $title, $parameters ) use ( $jobFactory ) {
-				$updateJob = $jobFactory->newUpdateJob(
-					$title,
-					$parameters
-				);
-
-				$updateJob->run();
-			};
-		}
+			$this->isCommandLineMode ? $job->run() : $job->insert();
+		};
 
 		return $callback;
 	}
 
-	private function doPreliminaryCheckForType( $type, array $parameters ) {
+	private function isAllowedJobType( $type ) {
 
-		if ( $type !== 'SMW\ParserCachePurgeJob' && $type !== 'SMW\UpdateJob' && $type !== 'SMW\SearchTableUpdateJob' ) {
-			return false;
-		}
+		$allowedJobs = array(
+			'SMW\ParserCachePurgeJob',
+			'SMW\UpdateJob',
+			'SMW\SearchTableUpdateJob'
+		);
 
-		if ( $type === 'SMW\ParserCachePurgeJob' && ( !isset( $parameters['idlist'] ) || $parameters['idlist'] === array() ) ) {
-			return false;
-		}
-
-		return true;
+		return in_array( $type, $allowedJobs );
 	}
 
 	private function canConnectToUrl() {
@@ -213,6 +214,10 @@ class DeferredRequestDispatchManager {
 	}
 
 	private function doPostJobWith( $type, $title, $parameters, $dispatchableCallbackJob ) {
+
+		// Build requestToken as source verification during the POST request
+		$parameters['timestamp'] = time();
+		$parameters['requestToken'] = SpecialDeferredRequestDispatcher::getRequestToken( $parameters['timestamp'] );
 
 		$parameters['async-job'] = array(
 			'type'  => $type,

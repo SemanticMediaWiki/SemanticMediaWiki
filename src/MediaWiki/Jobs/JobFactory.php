@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Jobs;
 
 use Title;
+use RuntimeException;
 
 /**
  * @license GNU GPL v2+
@@ -19,6 +20,48 @@ class JobFactory {
 	 */
 	public function batchInsert( array $jobs ) {
 		JobBase::batchInsert( $jobs );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $type
+	 * @param Title $title
+	 * @param array $parameters
+	 *
+	 * @return Job
+	 * @throws RuntimeException
+	 */
+	public function newByType( $type, Title $title, array $parameters = array() ) {
+
+		switch ( $type ) {
+			case 'SMW\RefreshJob':
+				return $this->newRefreshJob( $title, $parameters );
+			case 'SMW\UpdateJob':
+				return $this->newUpdateJob( $title, $parameters );
+			case 'SMW\UpdateDispatcherJob':
+				return $this->newUpdateDispatcherJob( $title, $parameters );
+			case 'SMW\ParserCachePurgeJob':
+				return $this->newParserCachePurgeJob( $title, $parameters );
+			case 'SMW\SearchTableUpdateJob':
+				return $this->newSearchTableUpdateJob( $title, $parameters );
+			case 'SMW\EntityIdDisposerJob':
+				return $this->newEntityIdDisposerJob( $title, $parameters );
+		}
+
+		throw new RuntimeException( "Cannot match $type to a valid Job type" );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param Title $title
+	 * @param array $parameters
+	 *
+	 * @return RefreshJob
+	 */
+	public function newRefreshJob( Title $title, array $parameters = array() ) {
+		return new RefreshJob( $title, $parameters );
 	}
 
 	/**

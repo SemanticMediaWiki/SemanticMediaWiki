@@ -87,7 +87,7 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$instance = new RefreshJob( $title, $parameters );
-		$instance->setEnabledJobQueue( false );
+		$instance->isEnabledJobQueue( false );
 
 		$this->assertTrue( $instance->run() );
 

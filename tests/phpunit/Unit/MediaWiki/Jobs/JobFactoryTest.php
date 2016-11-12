@@ -24,54 +24,60 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testUpdateJob() {
+	/**
+	 * @dataProvider typeProvider
+	 */
+	public function testNewByType( $type, $expected ) {
 
 		$instance = new JobFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Jobs\UpdateJob',
-			$instance->newUpdateJob( Title::newFromText( __METHOD__ ) )
+			$expected,
+			$instance->newByType( $type, Title::newFromText( __METHOD__ ) )
 		);
 	}
 
-	public function testUpdateDispatcherJob() {
+	public function testNewByTypeOnUnknownJobThrowsException() {
 
 		$instance = new JobFactory();
 
-		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Jobs\UpdateDispatcherJob',
-			$instance->newUpdateDispatcherJob( Title::newFromText( __METHOD__ ) )
-		);
+		$this->setExpectedException( 'RuntimeException' );
+		$instance->newByType( 'Foo', Title::newFromText( __METHOD__ ) );
 	}
 
-	public function testParserCachePurgeJob() {
+	public function typeProvider() {
 
-		$instance = new JobFactory();
-
-		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Jobs\ParserCachePurgeJob',
-			$instance->newParserCachePurgeJob( Title::newFromText( __METHOD__ ) )
+		$provider[] = array(
+			'SMW\RefreshJob',
+			'\SMW\MediaWiki\Jobs\RefreshJob'
 		);
-	}
 
-	public function testCanConstructSearchTableUpdateJob() {
-
-		$instance = new JobFactory();
-
-		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Jobs\SearchTableUpdateJob',
-			$instance->newSearchTableUpdateJob( Title::newFromText( __METHOD__ ) )
+		$provider[] = array(
+			'SMW\UpdateJob',
+			'\SMW\MediaWiki\Jobs\UpdateJob'
 		);
-	}
 
-	public function testCanConstructEntityIdDisposerJob() {
-
-		$instance = new JobFactory();
-
-		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Jobs\EntityIdDisposerJob',
-			$instance->newEntityIdDisposerJob( Title::newFromText( __METHOD__ ) )
+		$provider[] = array(
+			'SMW\UpdateDispatcherJob',
+			'\SMW\MediaWiki\Jobs\UpdateDispatcherJob'
 		);
+
+		$provider[] = array(
+			'SMW\ParserCachePurgeJob',
+			'\SMW\MediaWiki\Jobs\ParserCachePurgeJob'
+		);
+
+		$provider[] = array(
+			'SMW\SearchTableUpdateJob',
+			'\SMW\MediaWiki\Jobs\SearchTableUpdateJob'
+		);
+
+		$provider[] = array(
+			'SMW\EntityIdDisposerJob',
+			'\SMW\MediaWiki\Jobs\EntityIdDisposerJob'
+		);
+
+		return $provider;
 	}
 
 }

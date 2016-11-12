@@ -98,7 +98,7 @@ class TextByChangeUpdater {
 			return $this->pushUpdatesFromPropertyTableDiff( $compositePropertyTableDiffIterator );
 		}
 
-		$deferredRequestDispatchManager->dispatchSearchTableUpdateJobFor(
+		$deferredRequestDispatchManager->addSearchTableUpdateJobWith(
 			$subject->getTitle(),
 			$this->buildSearchTableUpdateJobParametersFrom( $compositePropertyTableDiffIterator )
 		);

@@ -43,7 +43,7 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DeferredRequestDispatchManager( $httpRequest );
 		$instance->reset();
-		$instance->setEnabledHttpDeferredRequest( $deferredJobRequestState );
+		$instance->isEnabledHttpDeferredRequest( $deferredJobRequestState );
 
 		$this->assertTrue(
 			$instance->dispatchJobRequestFor( $type, DIWikiPage::newFromText( __METHOD__ )->getTitle(), $parameters )
@@ -62,7 +62,7 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DeferredRequestDispatchManager( $httpRequest );
 		$instance->reset();
-		$instance->setEnabledHttpDeferredRequest( true );
+		$instance->isEnabledHttpDeferredRequest( true );
 
 		$parameters = array( 'idlist' => '1|2' );
 		$title = DIWikiPage::newFromText( __METHOD__ )->getTitle();
@@ -121,12 +121,6 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function preliminaryCheckProvider() {
-
-		$provider[] = array(
-			'SMW\ParserCachePurgeJob',
-			array()
-		);
-
 
 		$provider[] = array(
 			'UnknownJob'

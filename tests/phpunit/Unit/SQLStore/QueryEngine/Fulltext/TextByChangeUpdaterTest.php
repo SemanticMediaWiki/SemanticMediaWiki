@@ -96,7 +96,7 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$deferredRequestDispatchManager->expects( $this->once() )
-			->method( 'dispatchSearchTableUpdateJobFor' )
+			->method( 'addSearchTableUpdateJobWith' )
 			->with(
 				$this->anything(),
 				$this->equalTo( array( 'diff' => null ) ) );

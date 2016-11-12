@@ -20,7 +20,7 @@ abstract class JobBase extends Job {
 	/**
 	 * @var boolean
 	 */
-	protected $enabledJobQueue = true;
+	protected $isEnabledJobQueue = true;
 
 	/**
 	 * @var Job
@@ -50,8 +50,8 @@ abstract class JobBase extends Job {
 	 *
 	 * @return JobBase
 	 */
-	public function setEnabledJobQueue( $enableJobQueue = true ) {
-		$this->enabledJobQueue = (bool)$enableJobQueue;
+	public function isEnabledJobQueue( $enableJobQueue = true ) {
+		$this->isEnabledJobQueue = (bool)$enableJobQueue;
 		return $this;
 	}
 
@@ -62,7 +62,7 @@ abstract class JobBase extends Job {
 	 * @since 1.9
 	 */
 	public function pushToJobQueue() {
-		$this->enabledJobQueue ? self::batchInsert( $this->jobs ) : null;
+		$this->isEnabledJobQueue ? self::batchInsert( $this->jobs ) : null;
 	}
 
 	/**
@@ -95,8 +95,6 @@ abstract class JobBase extends Job {
 	}
 
 	/**
-	 * Whether the parameters contain an element for a given key
-	 *
 	 * @since  1.9
 	 *
 	 * @param mixed $key
@@ -114,8 +112,6 @@ abstract class JobBase extends Job {
 	}
 
 	/**
-	 * Returns a parameter value for a given key
-	 *
 	 * @since  1.9
 	 *
 	 * @param mixed $key
@@ -130,6 +126,8 @@ abstract class JobBase extends Job {
 	 * @see https://gerrit.wikimedia.org/r/#/c/162009
 	 *
 	 * @param self[] $jobs
+	 *
+	 * @return boolean
 	 */
 	public static function batchInsert( $jobs ) {
 
@@ -139,6 +137,15 @@ abstract class JobBase extends Job {
 		}
 
 		return parent::batchInsert( $jobs );
+	}
+
+	/**
+	 * @see Job::insert
+	 */
+	public function insert() {
+		if ( $this->isEnabledJobQueue ) {
+			return self::batchInsert( array( $this ) );
+		}
 	}
 
 }
