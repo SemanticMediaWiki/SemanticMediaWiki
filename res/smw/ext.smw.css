@@ -796,20 +796,20 @@ a.smw-ask-action-btn-lblue:hover {
 
 /* http://stackoverflow.com/questions/6091253/overlay-with-spinner */
 
-.spinner.small{
+.smw-overlay-spinner.small{
 	height: 20px;
 	width: 20px;
 }
-.spinner.medium{
+.smw-overlay-spinner.medium{
 	height: 40px;
 	width: 40px;
 }
-.spinner.large{
+.smw-overlay-spinner.large{
 	height: 60px;
 	width: 60px;
 }
 
-.spinner {
+.smw-overlay-spinner {
 	position: absolute;
 	left: 47%;
 	top: 30%;
@@ -827,7 +827,7 @@ a.smw-ask-action-btn-lblue:hover {
 	border-radius:100%;
 }
 
-.skin-vector .spinner {
+.skin-vector .smw-overlay-spinner {
 	left: 45%;
 	top: 30%;
 }
@@ -851,4 +851,3 @@ a.smw-ask-action-btn-lblue:hover {
 	from {transform: rotate(0deg);}
 	to {transform: rotate(359deg);}
 }
-

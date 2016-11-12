@@ -160,7 +160,7 @@ class SpecialBrowse extends SpecialPage {
 				Html::rawElement(
 					'span',
 					array(
-						'class' => 'spinner large inline'
+						'class' => 'smw-overlay-spinner large inline'
 					)
 				) . $htmlContentBuilder->getEmptyHtml()
 			)
