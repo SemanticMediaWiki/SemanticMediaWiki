@@ -1,5 +1,5 @@
 {
-	"description": "Test `Special:Ask` output for `format=rdf`/`format=json`/DISPLAYTITLE (#1453, #1619, `wgRestrictDisplayTitle`, `wgContLang=en`, skip-on 1.19)",
+	"description": "Test `Special:Ask` output for `format=rdf`/`format=json`/DISPLAYTITLE (#1453, #1619, `wgRestrictDisplayTitle`, `wgContLang=en`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
