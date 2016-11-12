@@ -89,7 +89,7 @@ class SpecialSearchByPropertyTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expected = array(
-			'property=Has+subobject', 'value=Foo%23%7B%7D'
+			'property=Has+subobject', 'value=Foo%23%257B%257D'
 		);
 
 		$instance = new SpecialSearchByProperty();
@@ -121,7 +121,7 @@ class SpecialSearchByPropertyTest extends \PHPUnit_Framework_TestCase {
 		#2
 		$provider[] = array(
 			'Has-20foo/http:-2F-2Fexample.org-2Fid-2FCurly-2520Brackets-257B-257D',
-			array( 'property=Has+foo', 'value=http%3A%2F%2Fexample.org%2Fid%2FCurly+Brackets%7B%7D' )
+			array( 'property=Has+foo', 'value=http%3A%2F%2Fexample.org%2Fid%2FCurly%2520Brackets%257B%257D' )
 		);
 
 		return $provider;

@@ -35,6 +35,18 @@
 		{
 			"page": "Example/S0002/5",
 			"contents": "[[Has telephone number::+1-201-555-0123]]"
+		},
+		{
+			"page": "Example/S0002/6",
+			"contents": "[[Has text::foo-bar]]"
+		},
+		{
+			"page": "Example/S0002/7",
+			"contents": "[[Has text::foo-123#&^*%<1?=/->\"']]"
+		},
+		{
+			"page": "Example/S0002/8",
+			"contents": "[[Has text::foo-123_abc']]"
 		}
 	],
 	"tests": [
@@ -63,7 +75,7 @@
 				"query-parameters": "",
 				"request-parameters": {
 					"property": "Has text",
-					"value": "foo_bar"
+					"value": "foo bar"
 				}
 			},
 			"assert-output": {
@@ -198,6 +210,78 @@
 			"assert-output": {
 				"to-contain": [
 					"&gt;[[Foo"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#8 text with dash",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "",
+				"request-parameters":{
+					"property": "Has text",
+					"value": "foo-bar"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example-2FS0002-2F6",
+					"foo-bar"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#9 text with dash",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "",
+				"request-parameters":{
+					"property": "Has text",
+					"value": "foo-2Dbar"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example-2FS0002-2F6",
+					"foo-bar"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#10 text with special html chars",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "",
+				"request-parameters":{
+					"property": "Has text",
+					"value": "foo-123#&^*%<1?=/->\"'"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example-2FS0002-2F7",
+					"foo-123#&amp;^*%&lt;1?=/-&gt;\"'"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#11 text with -/_",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "",
+				"request-parameters":{
+					"property": "Has text",
+					"value": "foo-123_abc'"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example-2FS0002-2F8",
+					"<small>(foo-123_abc')</small>"
 				]
 			}
 		}

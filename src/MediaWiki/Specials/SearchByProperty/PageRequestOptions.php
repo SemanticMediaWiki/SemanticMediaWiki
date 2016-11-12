@@ -4,9 +4,11 @@ namespace SMW\MediaWiki\Specials\SearchByProperty;
 
 use SMW\DataValueFactory;
 use SMW\DataValues\TelephoneUriValue;
+use SMWUriValue as UriValue;
 use SMW\UrlEncoder;
 use SMWNumberValue as NumberValue;
 use SMWPropertyValue as PropertyValue;
+use SMWStringValue as TextValue;
 
 /**
  * @license GNU GPL v2+
@@ -92,13 +94,13 @@ class PageRequestOptions {
 		$property = isset( $this->requestOptions['property'] ) ? $this->requestOptions['property'] : current( $params );
 		$value = isset( $this->requestOptions['value'] ) ? $this->requestOptions['value'] : next( $params );
 
-		$property = $this->urlEncoder->decode(
+		$property = $this->urlEncoder->unescape(
 			str_replace( array( '_' ), array( ' ' ), $property )
 		);
 
 		$value = str_replace(
-			array( '-25', '_', '-2D' ),
-			array( '%', ' ', '-' ),
+			array( '-25', '-2D' ),
+			array( '%', '-' ),
 			$value
 		);
 
@@ -125,15 +127,17 @@ class PageRequestOptions {
 		);
 
 		if ( $this->value instanceof NumberValue ) {
-			$value = str_replace( array(  '-20' ), array( ' ' ), $value);
+			$value = str_replace( array( '-20' ), array( ' ' ), $value );
 			// Do not try to decode things like 1.2e-13
 			// Signals that we don't want any precision limitation
 			$this->value->setOption( 'no.displayprecision', true );
 		} elseif ( $this->value instanceof TelephoneUriValue ) {
 			// No encoding to avoid turning +1-201-555-0123
 			// into +1 1U523 or further obfuscate %2B1-2D201-2D555-2D0123 ...
+		} elseif ( $this->value instanceof TextValue || $this->value instanceof UriValue ) {
+			$value = $this->urlEncoder->unescape( $value );
 		} else {
-			$value = $this->urlEncoder->decode( $value );
+			$value = $this->urlEncoder->unescape( $value );
 		}
 
 		$this->value->setUserValue( $value );
