@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Utils\Fixtures\File;
+namespace SMW\Tests\Utils\File;
 
 use RuntimeException;
 
@@ -53,7 +53,7 @@ class DummyFileCreator {
 	 * @return string
 	 */
 	public function createFileByCopyContentOf( $contentCopyPath ) {
-		$this->file = $this->createFile( file_get_contents( $this->canReadFile( $contentCopyPath ) ) );
+		$this->file = $this->createFile( file_get_contents( $this->getFile( $contentCopyPath ) ) );
 	}
 
 	/**
@@ -86,14 +86,14 @@ class DummyFileCreator {
 
 		fclose( $fh );
 
-		return $this->canReadFile( $filename );
+		return $this->getFile( $filename );
 	}
 
 	private function getLocationForTemporaryFile() {
 		return sys_get_temp_dir() . '/' . $this->desiredDestName;
 	}
 
-	private function canReadFile( $path ) {
+	private function getFile( $path ) {
 
 		$path = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $path );
 

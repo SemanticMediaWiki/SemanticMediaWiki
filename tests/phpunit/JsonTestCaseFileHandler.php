@@ -206,6 +206,10 @@ class JsonTestCaseFileHandler {
 			return $smwgDVFeatures;
 		}
 
+		if ( $key === 'wgDefaultUserOptions' && isset( $settings[$key] ) ) {
+			return array_merge( $GLOBALS['wgDefaultUserOptions'], $settings[$key] );
+		}
+
 		// Needs special attention due to constant usage
 		if ( $key === 'smwgQConceptCaching' && isset( $settings[$key] ) ) {
 			return constant( $settings[$key] );

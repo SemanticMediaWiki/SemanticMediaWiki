@@ -190,7 +190,10 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			'wgCapitalLinks',
 			'wgAllowDisplayTitle',
 			'wgRestrictDisplayTitle',
-			'wgSearchType'
+			'wgSearchType',
+			'wgEnableUploads',
+			'wgFileExtensions',
+			'wgDefaultUserOptions'
 		);
 
 		foreach ( $permittedSettings as $key ) {

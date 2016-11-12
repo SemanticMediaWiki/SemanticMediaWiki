@@ -3,7 +3,7 @@
 namespace SMW\Tests\Utils\Fixtures;
 
 use SMW\Tests\Utils\File\LocalFileUpload;
-use SMW\Tests\Utils\Fixtures\File\DummyFileCreator;
+use SMW\Tests\Utils\File\DummyFileCreator;
 
 /**
  * @license GNU GPL v2+

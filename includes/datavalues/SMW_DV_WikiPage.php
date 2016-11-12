@@ -235,7 +235,7 @@ class SMWWikiPageValue extends SMWDataValue {
 
 		if ( $this->m_dataitem->getNamespace() == NS_FILE && $this->m_dataitem->getInterwiki() === '' ) {
 			$linkEscape = '';
-			$options = $this->m_outformat !== '' ? str_replace( ';', '|', \Sanitizer::removeHTMLtags( $this->m_outformat ) ) : 'frameless|border|text-top|';
+			$options = $this->m_outformat === false ? 'frameless|border|text-top|' : str_replace( ';', '|', \Sanitizer::removeHTMLtags( $this->m_outformat ) );
 			$defaultCaption = '|' . $this->getShortCaptionText() . '|' . $options;
 		} else {
 			$linkEscape = ':';
