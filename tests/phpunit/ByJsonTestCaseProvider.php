@@ -220,6 +220,10 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 			$namespace
 		);
 
+		if ( $namespace === NS_FILE && isset( $page['contents']['upload'] ) ) {
+			return $this->doUploadFile( $title, $page['contents']['upload'] );
+		}
+
 		if ( is_array( $page['contents'] ) && isset( $page['contents']['import-from'] ) ) {
 			$contents = $this->getFileContentsWithEncodingDetection( $this->getTestCaseLocation() . $page['contents']['import-from'] );
 		} else {
@@ -261,6 +265,19 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 	private function getFileContentsWithEncodingDetection( $file ) {
 		$content = file_get_contents( $file );
 		return mb_convert_encoding( $content, 'UTF-8', mb_detect_encoding( $content, 'UTF-8, ISO-8859-1, ISO-8859-2', true ) );
+	}
+
+	private function doUploadFile( $title, $contents ) {
+
+		$localFileUpload = UtilityFactory::getInstance()->newLocalFileUploadWithCopy(
+			$this->getTestCaseLocation() . $contents['file'],
+			$title->getText()
+		);
+
+		$localFileUpload->doUpload( $contents['text'] );
+
+		$this->testEnvironment->executePendingDeferredUpdates();
+		$this->itemsMarkedForDeletion[] = $title;
 	}
 
 }

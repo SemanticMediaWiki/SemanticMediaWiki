@@ -4,6 +4,8 @@ namespace SMW\Tests\Utils;
 
 use SMW\JsonFileReader;
 use SMW\Tests\Utils\File\BulkFileProvider;
+use SMW\Tests\Utils\File\LocalFileUpload;
+use SMW\Tests\Utils\File\DummyFileCreator;
 use SMW\Tests\Utils\Fixtures\FixturesFactory;
 use SMW\Tests\Utils\Page\PageEditor;
 use SMW\Tests\Utils\Runners\RunnerFactory;
@@ -173,6 +175,27 @@ class UtilityFactory {
 	 */
 	public function newBulkFileProvider( $path ) {
 		return new BulkFileProvider( $path );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $localUploadPath
+	 * @param $desiredDestName
+	 *
+	 * @return LocalFileUpload
+	 */
+	public function newLocalFileUploadWithCopy( $localUploadPath, $desiredDestName ) {
+
+		// Use to create a copy to avoid having the orginal file being
+		// deleted after the upload
+		$dummyFileCreator = new DummyFileCreator( $desiredDestName );
+		$dummyFileCreator->createFileByCopyContentOf( $localUploadPath );
+
+		return new LocalFileUpload(
+			$dummyFileCreator->getPath(),
+			$desiredDestName
+		);
 	}
 
 }
