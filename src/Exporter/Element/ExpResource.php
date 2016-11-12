@@ -28,6 +28,11 @@ class ExpResource extends ExpElement {
 	private $uri;
 
 	/**
+	 * @var boolean
+	 */
+	public $isImported = false;
+
+	/**
 	 * @note The given URI must not contain serialization-specific
 	 * abbreviations or escapings, such as XML entities.
 	 *
@@ -54,6 +59,15 @@ class ExpResource extends ExpElement {
 	 */
 	public function isBlankNode() {
 		return $this->uri === '' || $this->uri{0} == '_';
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return boolean
+	 */
+	public function isImported() {
+		return $this->isImported;
 	}
 
 	/**

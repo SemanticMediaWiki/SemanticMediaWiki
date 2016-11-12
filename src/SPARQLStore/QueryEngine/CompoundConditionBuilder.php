@@ -365,7 +365,7 @@ class CompoundConditionBuilder {
 		$redirectExpElement = Exporter::getInstance()->getResourceElementForWikiPage( $dataItem );
 
 		// If the resource was matched to an imported vocab then no redirect is required
-		if ( isset( $redirectExpElement->wasMatchedToImportVocab ) && $redirectExpElement->wasMatchedToImportVocab ) {
+		if ( $redirectExpElement->isImported() ) {
 			return null;
 		}
 
