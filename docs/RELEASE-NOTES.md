@@ -15,6 +15,7 @@ THIS IS NOT A RELEASE YET
 
 ## New features and enhancements
 
+* #1418
 * #1481 Enhanced the `SQLStore` to support full-text searches provided by the `MySQL`/`MariaDB` back-end (see #1481 for limitations and features supported)
 * #1652 Added support for approximate queries that contain a namespace `[[Help:~Abc*]]`
 * #1708 Added the [External identifier](https://www.semantic-mediawiki.org/wiki/Help:Type_External_identifier) type
@@ -42,9 +43,12 @@ THIS IS NOT A RELEASE YET
 * #1891 Added support for JSON typed annotation in `#set` and `#subobject` using the `@json` marker
 * #1927
 * #1872 Added support for retrieving URI's longer than 255 chars from the database
+* #2000
+* #2007
 
 ## Bug fixes
 
+* #1258
 * #1328 Fixed a "Undefined index: language" error in `#smwdoc` parser function
 * #1713 Fixed a "Segmentation fault" when `QueryResultDependencyListResolver` tries to resolve a category/property hierarchy with a circular reference
 * #1715 Fixed decoding of a single quotation mark in `DisplayTitlePropertyAnnotator`
@@ -52,6 +56,7 @@ THIS IS NOT A RELEASE YET
 * #1727 Fixed an issue when property names contain `<` or `>` symbols 
 * #1728 Fixed fatal error in `Special:SearchByProperty` on when the property name contains invalid characters
 * #1731 Fixed possible error in the `SkinAfterContent` hook when a null object is used
+* #1744
 * #1775 Fixed time offset recognition 
 * #1817 Disabled `DataValue` constraint validation when used in a query context 
 * #1823 Fixed annotation of `Display title of` when `SMW_DV_WPV_DTITLE` is disabled
