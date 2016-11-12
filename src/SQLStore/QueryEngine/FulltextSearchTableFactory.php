@@ -13,6 +13,7 @@ use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder;
 use Onoi\Tesa\SanitizerFactory;
+use SMW\SQLStore\TransitionalTableDiffStore;
 
 /**
  * @license GNU GPL v2+
@@ -136,7 +137,8 @@ class FulltextSearchTableFactory {
 		$textByChangeUpdater = new TextByChangeUpdater(
 			$store->getConnection( 'mw.db' ),
 			$this->newSearchTableUpdater( $store ),
-			$this->newTextSanitizer()
+			$this->newTextSanitizer(),
+			ApplicationFactory::getInstance()->singleton( 'TransitionalDiffStore' )
 		);
 
 		$textByChangeUpdater->asDeferredUpdate(

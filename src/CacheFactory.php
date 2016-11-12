@@ -20,17 +20,11 @@ class CacheFactory {
 	private $mainCacheType;
 
 	/**
-	 * @var CallbackInstantiator
-	 */
-	private $callbackInstantiator;
-
-	/**
 	 * @since 2.2
 	 *
 	 * @param string|integer|null $mainCacheType
 	 */
 	public function __construct( $mainCacheType = null ) {
-		$this->callbackInstantiator = ApplicationFactory::getInstance()->getCallbackInstantiator();
 		$this->mainCacheType = $mainCacheType;
 
 		if ( $this->mainCacheType === null ) {
@@ -146,7 +140,7 @@ class CacheFactory {
 	 * @return BlobStore
 	 */
 	public function newBlobStore( $namespace, $cacheType = null, $cacheLifetime = 0 ) {
-		return $this->callbackInstantiator->load( 'BlobStore', $namespace, $cacheType, $cacheLifetime );
+		return ApplicationFactory::getInstance()->create( 'BlobStore', $namespace, $cacheType, $cacheLifetime );
 	}
 
 }

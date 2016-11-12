@@ -47,9 +47,11 @@ class JobFactory {
 				return $this->newSearchTableUpdateJob( $title, $parameters );
 			case 'SMW\EntityIdDisposerJob':
 				return $this->newEntityIdDisposerJob( $title, $parameters );
+			case 'SMW\SequentialCachePurgeJob':
+				return $this->newSequentialCachePurgeJob( $title, $parameters );
 		}
 
-		throw new RuntimeException( "Cannot match $type to a valid Job type" );
+		throw new RuntimeException( "Unable to match $type to a valid Job type" );
 	}
 
 	/**
@@ -122,6 +124,18 @@ class JobFactory {
 	 */
 	public function newEntityIdDisposerJob( Title $title, array $parameters = array() ) {
 		return new EntityIdDisposerJob( $title, $parameters );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param Title $title
+	 * @param array $parameters
+	 *
+	 * @return SequentialCachePurgeJob
+	 */
+	public function newSequentialCachePurgeJob( Title $title, array $parameters = array() ) {
+		return new SequentialCachePurgeJob( $title, $parameters );
 	}
 
 }

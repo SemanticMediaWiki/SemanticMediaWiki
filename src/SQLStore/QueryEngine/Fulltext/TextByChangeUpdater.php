@@ -7,6 +7,7 @@ use SMW\SQLStore\ChangeOp\TableChangeOp;
 use SMW\MediaWiki\Database;
 use SMW\DeferredRequestDispatchManager;
 use SMW\DIWikiPage;
+use SMW\SQLStore\TransitionalDiffStore;
 
 /**
  * @license GNU GPL v2+
@@ -32,6 +33,11 @@ class TextByChangeUpdater {
 	private $textSanitizer;
 
 	/**
+	 * @var TransitionalDiffStore
+	 */
+	private $transitionalDiffStore;
+
+	/**
 	 * @var boolean
 	 */
 	private $asDeferredUpdate = true;
@@ -47,11 +53,13 @@ class TextByChangeUpdater {
 	 * @param Database $connection
 	 * @param SearchTableUpdater $searchTableUpdater
 	 * @param TextSanitizer $textSanitizer
+	 * @param TransitionalDiffStore $transitionalDiffStore
 	 */
-	public function __construct( Database $connection, SearchTableUpdater $searchTableUpdater, TextSanitizer $textSanitizer ) {
+	public function __construct( Database $connection, SearchTableUpdater $searchTableUpdater, TextSanitizer $textSanitizer, TransitionalDiffStore $transitionalDiffStore ) {
 		$this->connection = $connection;
 		$this->searchTableUpdater = $searchTableUpdater;
 		$this->textSanitizer = $textSanitizer;
+		$this->transitionalDiffStore = $transitionalDiffStore;
 	}
 
 	/**
@@ -83,13 +91,15 @@ class TextByChangeUpdater {
 	 *
 	 * @since 2.5
 	 *
-	 * @param DIWikiPage $subject
 	 * @param CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator
 	 * @param DeferredRequestDispatchManager $deferredRequestDispatchManager
+	 * @param string|null $slot
 	 */
-	public function pushUpdates( DIWikiPage $subject, CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator, DeferredRequestDispatchManager $deferredRequestDispatchManager ) {
+	public function pushUpdates( CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator, DeferredRequestDispatchManager $deferredRequestDispatchManager, $slot = null ) {
 
-		if ( !$this->searchTableUpdater->isEnabled() ) {
+		// slot === null indicates that the CompositePropertyTableDiffIterator
+		// for the current transaction is empty
+		if ( !$this->searchTableUpdater->isEnabled() || $slot === null ) {
 			return;
 		}
 
@@ -99,29 +109,15 @@ class TextByChangeUpdater {
 		}
 
 		$deferredRequestDispatchManager->addSearchTableUpdateJobWith(
-			$subject->getTitle(),
-			$this->buildSearchTableUpdateJobParametersFrom( $compositePropertyTableDiffIterator )
-		);
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator
-	 *
-	 * @return array
-	 */
-	public function buildSearchTableUpdateJobParametersFrom( CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator ) {
-		return array(
-			'diff' => $compositePropertyTableDiffIterator->getOrderedDiffByTable()
+			$compositePropertyTableDiffIterator->getSubject()->getTitle(),
+			array(
+				'slot:id' => $slot
+			)
 		);
 	}
 
 	/**
 	 * @see SearchTableUpdateJob::run
-	 *
-	 * Parameters can be boolean in case of "Notice: unserialize(): Error at offset
-	 * 65504 of 65535 bytes in ... JobQueueDB.php on line 817"
 	 *
 	 * @since 2.5
 	 *
@@ -129,14 +125,17 @@ class TextByChangeUpdater {
 	 */
 	public function pushUpdatesFromJobParameters( $parameters ) {
 
-		if ( !$this->searchTableUpdater->isEnabled() || !isset( $parameters['diff'] ) || $parameters['diff'] === false ) {
+		if ( !$this->searchTableUpdater->isEnabled() || !isset( $parameters['slot:id'] ) || $parameters['slot:id'] === false ) {
 			return;
 		}
 
 		$start = microtime( true );
+		$tableChangeOps = $this->transitionalDiffStore->newTableChangeOpsFrom(
+			$parameters['slot:id']
+		);
 
-		foreach ( $parameters['diff'] as $tableName => $changeOp ) {
-			$this->doUpdateFromTableChangeOp( new TableChangeOp( $tableName, $changeOp ) );
+		foreach ( $tableChangeOps as $tableChangeOp ) {
+			$this->doUpdateFromTableChangeOp( $tableChangeOp );
 		}
 
 		wfDebugLog( 'smw', __METHOD__ . ' procTime (sec): '. round( ( microtime( true ) - $start ), 5 ) );

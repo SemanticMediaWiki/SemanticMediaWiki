@@ -196,7 +196,8 @@ class DeferredRequestDispatchManager {
 		$allowedJobs = array(
 			'SMW\ParserCachePurgeJob',
 			'SMW\UpdateJob',
-			'SMW\SearchTableUpdateJob'
+			'SMW\SearchTableUpdateJob',
+			'SMW\SequentialCachePurgeJob'
 		);
 
 		return in_array( $type, $allowedJobs );
