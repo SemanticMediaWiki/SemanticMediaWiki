@@ -1,6 +1,6 @@
 # Semantic MediaWiki 2.4.2
 
-Released on November 12nd, 2016.
+Released on November 13th, 2016.
 
 ## Bug fixes
 
