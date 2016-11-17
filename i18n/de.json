@@ -457,5 +457,6 @@
 	"smw-datavalue-reference-invalid-fields-definition": "Der Datentyp [[Special:Types/Reference|Referenzierung]] muss aus einer Folge von Attributen bestehen, die das Spezialattribut [https://www.semantic-mediawiki.org/wiki/Help:Spezialattribut_Hat_Komponenten „Hat Komponenten“] verwenden.",
 	"smw-parser-invalid-json-format": "Der JSON-Parser hat den Fehler „$1“ ausgegeben.",
 	"smw-property-preferred-title-format": "$1 ($2)",
-	"smw-property-preferred-label-language-combination-exists": "„$1“ kann nicht als bevorzugte Bezeichnung verwendet werden, da der Sprache „$2“ bereits die Bezeichnung „$3“ zugewiesen wurde."
+	"smw-property-preferred-label-language-combination-exists": "„$1“ kann nicht als bevorzugte Bezeichnung verwendet werden, da der Sprache „$2“ bereits die Bezeichnung „$3“ zugewiesen wurde.",
+	"smw-parse": "$1"
 }

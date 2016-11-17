@@ -322,5 +322,6 @@
 	"smw-datavalue-time-invalid-date-components-three": "\"$1\" innehåller mer än tre komponenter.",
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-property-preferred-title-format": "$1 ($2)",
-	"smw-property-preferred-label-language-combination-exists": "\"$1\" kan inte användas som en föredragen etikett eftersom språket \"$2\" är redan tilldelat till etiketten \"$3\"."
+	"smw-property-preferred-label-language-combination-exists": "\"$1\" kan inte användas som en föredragen etikett eftersom språket \"$2\" är redan tilldelat till etiketten \"$3\".",
+	"smw-parse": "$1"
 }

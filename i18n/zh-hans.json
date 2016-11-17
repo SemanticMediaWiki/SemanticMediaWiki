@@ -452,5 +452,6 @@
 	"smw-datavalue-reference-invalid-fields-definition": "[[Special:Types/Reference|参考文献]]类型应使用[https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields 有字段]属性声明属性列表。",
 	"smw-parser-invalid-json-format": "JSON解析器返回了“$1”。",
 	"smw-property-preferred-title-format": "$1（$2）",
-	"smw-property-preferred-label-language-combination-exists": "“$1”不能用作首选标签，因为语言“$2”已分配给“$3”标签。"
+	"smw-property-preferred-label-language-combination-exists": "“$1”不能用作首选标签，因为语言“$2”已分配给“$3”标签。",
+	"smw-parse": "$1"
 }

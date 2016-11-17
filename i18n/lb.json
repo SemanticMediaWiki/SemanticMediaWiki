@@ -212,5 +212,6 @@
 	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" ass keng valabel URL",
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-parser-invalid-json-format": "Den JSON-Parser huet mat engem \"$1\" geäntwert.",
-	"smw-property-preferred-title-format": "$1 ($2)"
+	"smw-property-preferred-title-format": "$1 ($2)",
+	"smw-parse": "$1"
 }

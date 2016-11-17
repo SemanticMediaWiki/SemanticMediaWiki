@@ -339,5 +339,6 @@
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1{{PLURAL:$1|秒}}",
 	"smw-datavalue-external-formatter-invalid-uri": "「$1」は無効な URL です。",
 	"smw-datavalue-propertylist-invalid-property-key": "プロパティリスト「$1」は無効なプロパティキー「$2」を含んでいました。",
-	"smw-datavalue-reference-outputformat": "$1: $2"
+	"smw-datavalue-reference-outputformat": "$1: $2",
+	"smw-parse": "$1"
 }

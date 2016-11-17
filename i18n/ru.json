@@ -22,7 +22,8 @@
 			"Alexandr Efremov",
 			"Mailman",
 			"Туллук",
-			"Irus"
+			"Irus",
+			"Kareyac"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -409,5 +410,6 @@
 	"smw-datavalue-propertylist-invalid-property-key": "Список свойств «$1» содержит недопустимый ключ свойства «$2».",
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-parser-invalid-json-format": "JSON-парсер вернул ошибку «$1».",
-	"smw-property-preferred-title-format": "$1 ($2)"
+	"smw-property-preferred-title-format": "$1 ($2)",
+	"smw-parse": "$1"
 }

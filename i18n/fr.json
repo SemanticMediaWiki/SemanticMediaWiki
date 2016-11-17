@@ -472,5 +472,6 @@
 	"smw-datavalue-reference-invalid-fields-definition": "Le type [[Special:Types/Reference|Référence]] attend la déclaration d'une liste de propriétés faite via l'attribut [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields possède  des champs].",
 	"smw-parser-invalid-json-format": "L’analyseur JSON a renvoyé un « $1 ».",
 	"smw-property-preferred-title-format": "$1 ($2)",
-	"smw-property-preferred-label-language-combination-exists": "« $1 » ne peut pas être utilisé comme libellé préféré parce que la langue « $2 » est déjà affectée au libellé « $3 »."
+	"smw-property-preferred-label-language-combination-exists": "« $1 » ne peut pas être utilisé comme libellé préféré parce que la langue « $2 » est déjà affectée au libellé « $3 ».",
+	"smw-parse": "$1"
 }

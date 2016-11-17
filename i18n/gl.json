@@ -310,6 +310,7 @@
 	"smw-pa-property-predefined_ask": "\"$1\" é unha propiedade predefinida que representa meta información (na forma dun [https://www.semantic-mediawiki.org/wiki/Subobject subobxecto]) sobre pescudas individuais. E está proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
 	"smw-pa-property-predefined_asksi": "\"$1\" é unha propiedade predefinida que  recolle o número de condicións utilizadas nunha pescuda. E está proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
 	"smw-pa-property-predefined_askde": "\"$1\" é unha propiedade predefinida que informa sobre a profundidade (valor numérico calculado na base dun aniñamento de consultas e  a resolución de cadeas de propiedade) dunha consulta, fornecida por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semántica].",
+	"smw-pa-property-predefined-long_askde": "É un valor numérico calculado en base a aniñamento de subconsultas, cadeas de propiedades, e os elementos de descrición dispoñibles coa execución dunha consulta baseada no parámetro <code>[https://www.semantic-mediawiki.org/wiki/Help:$smwgQMaxDepth $smwgQMaxDepth]</code>.",
 	"smw-sp-properties-docu": "Esta páxina lista as [https://www.semantic-mediawiki.org/wiki/Property propiedades] e o número de usos dispoñible para este wiki. Para ver as estatísticas actualizadas recoméndase que o script de mantemento das [https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics estatísticas das propiedades] se execute de forma regular. Para ver unha vista diferenciada, consulte a páxina especial das [[Special:UnusedProperties|propiedades sen uso]] ou as [[Special:WantedProperties|propiedades requiridas]].",
 	"smw-sp-properties-cache-info": "Os datos da lista obtivéronse da [https://www.semantic-mediawiki.org/wiki/Caching caché], e actualizáronse o $1.",
 	"smw-sp-properties-header-label": "Lista de propiedades",
@@ -436,5 +437,6 @@
 	"smw-datavalue-reference-invalid-fields-definition": "O tipo [[Special:Types/Reference|Referencia]] espera unha lista de propiedades para ser declarado usando a propiedade [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields Ten campos].",
 	"smw-parser-invalid-json-format": "O analizador de JSON devolveu un \"$1\".",
 	"smw-property-preferred-title-format": "$1 ($2)",
-	"smw-property-preferred-label-language-combination-exists": "\"$1\" non pode usarse como etiqueta preferida por a lingua \"$2\" xa está asignada á etiqueta \"$3\"."
+	"smw-property-preferred-label-language-combination-exists": "\"$1\" non pode usarse como etiqueta preferida por a lingua \"$2\" xa está asignada á etiqueta \"$3\".",
+	"smw-parse": "$1"
 }

@@ -295,5 +295,6 @@
 	"smw-sp-admin-settings-docu": "نمایش فهرست همه default و localized settings که به محیط مدیاویکی معنایی مربوط هستند. برای اطلاعات در  تنظیمات فردی، لطفاً به صفحه راهنما [https://www.semantic-mediawiki.org/wiki/Help:Configuration configuration] مراجعه کنید.",
 	"smw-sp-admin-settings-button": "ایجاد فهرست تنظیمات",
 	"smw-livepreview-loading": "در حال بارگیری…",
-	"smw-sp-searchbyproperty-resultlist-header": "فهرست نتایج"
+	"smw-sp-searchbyproperty-resultlist-header": "فهرست نتایج",
+	"smw-parse": "$1"
 }

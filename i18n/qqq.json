@@ -457,5 +457,6 @@
 	"smw-datavalue-reference-invalid-fields-definition": "This is an error message.",
 	"smw-parser-invalid-json-format": "This is an error message.\n\nParameter:\n* $1 holds the error output.",
 	"smw-property-preferred-title-format": "{{Notranslate}}",
-	"smw-property-preferred-label-language-combination-exists": "This is an error message.\n\nParameters:\n* $1 name of the property label used\n* $2 language of the property label\n* $3 name of the already exixting property label in use"
+	"smw-property-preferred-label-language-combination-exists": "This is an error message.\n\nParameters:\n* $1 name of the property label used\n* $2 language of the property label\n* $3 name of the already exixting property label in use",
+	"smw-parse": "{{Notranslate}}"
 }
