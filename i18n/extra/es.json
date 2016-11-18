@@ -18,9 +18,9 @@
         "_tel": "Número de teléfono",
         "_rec": "Registro",
         "_qty": "Cantidad",
-        "_mlt_rec": "Monolingual text",
-        "_eid": "External identifier",
-        "_ref_rec": "Reference"
+        "_mlt_rec": "Texto monolingüe",
+        "_eid": "Identificador externo",
+        "_ref_rec": "Referencia"
     },
     "dataTypeAliases": {
         "URI": "_uri",
@@ -54,17 +54,17 @@
         "_ASKDU": "Duración de consulta",
         "_MEDIA": "Tipo Media",
         "_MIME": "Tipo MIME",
-        "_ERRC": "Has processing error",
-        "_ERRT": "Has processing error text",
-        "_PREC": "Display precision of",
-        "_LCODE": "Language code",
-        "_TEXT": "Text",
-        "_PDESC": "Has property description",
-        "_PVAP": "Allows pattern",
-        "_DTITLE": "Display title of",
-        "_PVUC": "Has uniqueness constraint",
-        "_PEID": "External identifier",
-        "_PEFU": "External formatter uri"
+        "_ERRC": "Tiene error de procesamiento",
+        "_ERRT": "Tiene texto de error procesamiento",
+        "_PREC": "Mostrar precisión de",
+        "_LCODE": "Código de lenguaje",
+        "_TEXT": "Texto",
+        "_PDESC": "Tiene descripción de propiedad",
+        "_PVAP": "Permite patrón",
+        "_DTITLE": "Mostrar título de",
+        "_PVUC": "Tiene restricción de unicidad",
+        "_PEID": "Identificador externo",
+        "_PEFU": "Formateador de uri externo"
     },
     "propertyAliases": {
         "Unidad de medida": "_UNIT"
@@ -93,8 +93,8 @@
             "SMW_YM"
         ],
         [
-            "SMW_MDY",
             "SMW_DMY",
+            "SMW_MDY",
             "SMW_YMD",
             "SMW_YDM"
         ]
@@ -151,32 +151,32 @@
     ],
     "days": [
         [
-            "Monday",
-            "Mon"
+            "Lunes",
+            "Lun"
         ],
         [
-            "Tuesday",
-            "Tue"
+            "Martes",
+            "Mar"
         ],
         [
-            "Wednesday",
-            "Wed"
+            "Miércoles",
+            "Mie"
         ],
         [
-            "Thursday",
-            "Thu"
+            "Jueves",
+            "Jue"
         ],
         [
-            "Friday",
-            "Fri"
+            "Viernes",
+            "Vie"
         ],
         [
-            "Saturday",
-            "Sat"
+            "Sábado",
+            "Sab"
         ],
         [
-            "Sunday",
-            "Sun"
+            "Domingo",
+            "Dom"
         ]
     ]
 }
