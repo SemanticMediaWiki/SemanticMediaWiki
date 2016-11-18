@@ -103,7 +103,7 @@ Note that HHVM is only required if you do not use PHP.
 	</tr>
 	<tr>
 		<th>SMW 3.0.x</th>
-		<td><strong>5.6.0</strong> - latest (possibly 5.5.x)</td>
+		<td><strong>5.6.0</strong> - latest</td>
 		<td>3.5.0 - latest</td>
 		<td><strong>1.27</strong> - latest</td>
 	</tr>
