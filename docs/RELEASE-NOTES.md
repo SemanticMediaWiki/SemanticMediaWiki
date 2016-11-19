@@ -45,6 +45,7 @@ THIS IS NOT A RELEASE YET
 * #1872 Added support for retrieving URI's longer than 255 chars from the database
 * #2000
 * #2007
+* #2024
 
 ## Bug fixes
 
