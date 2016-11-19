@@ -54,7 +54,7 @@ class MySQLTableBuilder extends TableBuilder {
 
 		$tableName = $this->connection->tableName( $tableName );
 
-		$sql = 'CREATE TABLE ' . "`$this->dbName`." . $tableName . ' (';
+		$sql = '';
 
 		$fieldSql = array();
 		$fields = $tableOptions['fields'];
@@ -63,7 +63,7 @@ class MySQLTableBuilder extends TableBuilder {
 			$fieldSql[] = "$fieldName " . $this->getStandardFieldType( $fieldType );
 		}
 
-		$sql .= implode( ',', $fieldSql ) . ') ';
+		$sql .= 'CREATE TABLE ' . "`$this->dbName`." . $tableName . ' (' . implode( ',', $fieldSql ) . ') ';
 		$sql .= $this->getSQLFromDBTableOptions( $tableOptions );
 
 		$this->connection->query( $sql, __METHOD__ );
