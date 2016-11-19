@@ -35,7 +35,7 @@ class StringConditionTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			StringCondition::STRCOND_PRE,
+			StringCondition::COND_PRE,
 			$instance->condition
 		);
 

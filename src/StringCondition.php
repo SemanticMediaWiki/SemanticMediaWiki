@@ -14,9 +14,28 @@ namespace SMW;
  */
 class StringCondition {
 
-	const STRCOND_PRE = 0;
-	const STRCOND_POST = 1;
-	const STRCOND_MID = 2;
+	/**
+	 * String matches prefix
+	 */
+	const COND_PRE = 0;
+	const STRCOND_PRE = self::COND_PRE; // Deprecated
+
+	/**
+	 * String matches postfix
+	 */
+	const COND_POST = 1;
+	const STRCOND_POST = self::COND_POST; // Deprecated
+
+	/**
+	 * String matches to some inner part
+	 */
+	const COND_MID = 2;
+	const STRCOND_MID = self::COND_MID; // Deprecated
+
+	/**
+	 * String matches as equal
+	 */
+	const COND_EQ = 3;
 
 	/**
 	 * String to match.
@@ -34,10 +53,6 @@ class StringCondition {
 	public $isDisjunctiveCondition;
 
 	/**
-	 * Condition. One of STRCOND_PRE (string matches prefix),
-	 * STRCOND_POST (string matches postfix), STRCOND_MID
-	 * (string matches to some inner part).
-	 *
 	 * @var integer
 	 */
 	public $condition;
