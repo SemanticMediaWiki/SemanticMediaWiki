@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore;
 
 use SMW\SQLStore\SQLStoreFactory;
 use SMW\Store;
+use SMW\Options;
 use SMWSQLStore3;
 use SMW\Tests\TestEnvironment;
 
@@ -215,6 +216,10 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$store->expects( $this->once() )
+			->method( 'getOptions' )
+			->will( $this->returnValue( new Options() ) );
 
 		$store->expects( $this->once() )
 			->method( 'getConnection' )

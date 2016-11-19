@@ -39,6 +39,11 @@ class Installer implements MessageReporter, MessageReporterAware {
 	private $messageReporter;
 
 	/**
+	 * @var boolean
+	 */
+	private $isExtensionSchemaUpdate = false;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param TableSchemaManager $tableSchemaManager
@@ -49,6 +54,15 @@ class Installer implements MessageReporter, MessageReporterAware {
 		$this->tableSchemaManager = $tableSchemaManager;
 		$this->tableBuilder = $tableBuilder;
 		$this->tableIntegrityExaminer = $tableIntegrityExaminer;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param boolean $isExtensionSchemaUpdate
+	 */
+	public function isExtensionSchemaUpdate( $isExtensionSchemaUpdate ) {
+		$this->isExtensionSchemaUpdate = (bool)$isExtensionSchemaUpdate;
 	}
 
 	/**
@@ -97,7 +111,9 @@ class Installer implements MessageReporter, MessageReporterAware {
 
 		Hooks::run( 'SMW::SQLStore::AfterCreateTablesComplete', array( $this->tableBuilder ) );
 
-		$messageReporter->reportMessage( "\nDatabase initialized successfully.\n\n" );
+		$messageReporter->reportMessage(
+			"\nDatabase initialized completed.\n"  . ( $this->isExtensionSchemaUpdate ? "\n" : '' )
+		);
 
 		return true;
 	}
@@ -124,7 +140,7 @@ class Installer implements MessageReporter, MessageReporterAware {
 
 		Hooks::run( 'SMW::SQLStore::AfterDropTablesComplete', array( $this->tableBuilder ) );
 
-		$messageReporter->reportMessage( "\nStandard and auxiliary tables with its data have been removed successfully.\n" );
+		$messageReporter->reportMessage( "\nStandard and auxiliary tables with corresponding data have been removed successfully.\n" );
 
 		return true;
 	}

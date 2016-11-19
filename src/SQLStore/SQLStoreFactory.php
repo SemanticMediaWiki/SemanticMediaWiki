@@ -381,6 +381,7 @@ class SQLStoreFactory {
 	public function newInstaller() {
 
 		$messageReporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
+		$options = $this->store->getOptions();
 
 		$tableBuilder = TableBuilder::factory(
 			$this->store->getConnection( DB_MASTER )
@@ -402,11 +403,17 @@ class SQLStoreFactory {
 			$this->store
 		);
 
-		return new Installer(
+		$installer = new Installer(
 			$tableSchemaManager,
 			$tableBuilder,
 			$tableIntegrityExaminer
 		);
+
+		$installer->isExtensionSchemaUpdate(
+			( $options->has( 'isExtensionSchemaUpdate' ) ? $options->get( 'isExtensionSchemaUpdate' ) : false )
+		);
+
+		return $installer;
 	}
 
 	/**
