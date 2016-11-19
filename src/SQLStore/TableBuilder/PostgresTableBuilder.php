@@ -64,7 +64,9 @@ class PostgresTableBuilder extends TableBuilder {
 			$fieldSql[] = "$fieldName " . $this->getStandardFieldType( $fieldType );
 		}
 
-		$this->connection->query( 'CREATE TABLE ' . $tableName . ' (' . implode( ',', $fieldSql ) . ') ', __METHOD__ );
+		$sql = 'CREATE TABLE ' . $tableName . ' (' . implode( ',', $fieldSql ) . ') ';
+
+		$this->connection->query( $sql, __METHOD__ );
 	}
 
 	/** Update */
