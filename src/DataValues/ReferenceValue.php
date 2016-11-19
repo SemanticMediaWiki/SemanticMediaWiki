@@ -7,6 +7,7 @@ use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Message;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
@@ -154,7 +155,7 @@ class ReferenceValue extends AbstractMultiValue {
 			$this->properties = $this->findPropertyDataItems( $this->getProperty() );
 
 			if ( count( $this->properties ) == 0 ) {
-				$this->addErrorMsg( 'smw-datavalue-reference-invalid-fields-definition' );
+				$this->addErrorMsg( array( 'smw-datavalue-reference-invalid-fields-definition' ), Message::PARSE );
 			}
 		}
 
