@@ -40,10 +40,12 @@ class SpecialStatsAddExtra {
 	 */
 	protected $legacyMessageMapper = array(
 		'PROPUSES'   => 'smw-statistics-property-instance',
+		'ERRORUSES'   => 'smw-statistics-error-count-legacy',
 		'USEDPROPS'  => 'smw-statistics-property-total-legacy',
 		'OWNPAGE'    => 'smw-statistics-property-page',
 		'DECLPROPS'  => 'smw-statistics-property-type',
-		'SUBOBJECTS' => 'smw-statistics-subobject-count',
+		'DELETECOUNT' => 'smw-statistics-delete-count',
+		'SUBOBJECTS' => 'smw-statistics-subobject-count-legacy',
 		'QUERY'      => 'smw-statistics-query-inline-legacy',
 		'CONCEPTS'   => 'smw-statistics-concept-count-legacy'
 	);
