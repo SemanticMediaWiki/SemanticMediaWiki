@@ -101,11 +101,12 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	protected function getTopIndicator() {
 
 		$propertyName = htmlspecialchars( $this->mTitle->getText() );
-
 		$usageCountHtml = '';
+
 		$requestOptions = new RequestOptions();
-		$requestOptions->limit = 1;
-		$requestOptions->addStringCondition( $propertyName, StringCondition::STRCOND_PRE );
+		$requestOptions->setLimit( 1 );
+		$requestOptions->addStringCondition( $propertyName, StringCondition::COND_EQ );
+
 		$cachedLookupList = $this->store->getPropertiesSpecial( $requestOptions );
 		$usageList = $cachedLookupList->fetchList();
 
