@@ -165,11 +165,10 @@ class HookRegistry {
 		$this->handlers['SkinAfterContent'] = function ( &$data, $skin = null ) {
 
 			$skinAfterContent = new SkinAfterContent(
-				$data,
 				$skin
 			);
 
-			return $skinAfterContent->process();
+			return $skinAfterContent->performUpdate( $data );
 		};
 
 		/**

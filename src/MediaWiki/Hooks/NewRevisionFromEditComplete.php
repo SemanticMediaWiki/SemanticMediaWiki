@@ -120,7 +120,7 @@ class NewRevisionFromEditComplete {
 			$this->user
 		);
 
-		$propertyAnnotatorFactory = $applicationFactory->getPropertyAnnotatorFactory();
+		$propertyAnnotatorFactory = $applicationFactory->singleton( 'PropertyAnnotatorFactory' );
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
 			$parserData->getSemanticData()

@@ -73,7 +73,7 @@ class Search extends SearchEngine {
 			$dbr = $this->getDB();
 
 			if ( $type === null ) {
-				$type = ApplicationFactory::getInstance()->getDefaultSearchEngineTypeForDB( $dbr );
+				$type = ApplicationFactory::getInstance()->create( 'DefaultSearchEngineTypeForDB', $dbr );
 			}
 
 			$this->assertValidFallbackSearchEngineType( $type );
@@ -98,9 +98,7 @@ class Search extends SearchEngine {
 	public function getDB() {
 
 		if ( $this->database === null ) {
-
 			$this->database = ApplicationFactory::getInstance()->getLoadBalancer()->getConnection( defined( 'DB_REPLICA' ) ? DB_REPLICA : DB_SLAVE );
-
 		}
 
 		return $this->database;

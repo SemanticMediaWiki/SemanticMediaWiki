@@ -29,11 +29,6 @@ class ParserAfterTidy {
 	private $text;
 
 	/**
-	 * @var ApplicationFactory
-	 */
-	private $applicationFactory = null;
-
-	/**
 	 * @since  1.9
 	 *
 	 * @param Parser $parser
@@ -74,15 +69,15 @@ class ParserAfterTidy {
 
 	protected function performUpdate() {
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
+		$applicationFactory = ApplicationFactory::getInstance();
 
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = $applicationFactory->newParserData(
 			$this->parser->getTitle(),
 			$this->parser->getOutput()
 		);
 
 		$this->updateAnnotationsForAfterParse(
-			$this->applicationFactory->getPropertyAnnotatorFactory(),
+			$applicationFactory->singleton( 'PropertyAnnotatorFactory' ),
 			$parserData->getSemanticData()
 		);
 
@@ -140,10 +135,10 @@ class ParserAfterTidy {
 			return true;
 		}
 
-		$cache = $this->applicationFactory->getCache();
+		$cache = ApplicationFactory::getInstance()->getCache();
 		$start = microtime( true );
 
-		$key = $this->applicationFactory->newCacheFactory()->getPurgeCacheKey(
+		$key = ApplicationFactory::getInstance()->getCacheFactory()->getPurgeCacheKey(
 			$this->parser->getTitle()->getArticleID()
 		);
 

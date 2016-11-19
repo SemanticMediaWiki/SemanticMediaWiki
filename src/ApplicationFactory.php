@@ -7,7 +7,6 @@ use Onoi\CallbackContainer\CallbackLoader;
 use Onoi\CallbackContainer\DeferredCallbackLoader;
 use Parser;
 use ParserOutput;
-use SMW\Factbox\FactboxFactory;
 use SMW\Maintenance\MaintenanceFactory;
 use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\MediaWiki\MwCollaboratorFactory;
@@ -90,14 +89,32 @@ class ApplicationFactory {
 	}
 
 	/**
+	 * @private
+	 *
+	 * @note Services called via this functions are for internal use only and
+	 * not to be relied upon for external access.
+	 *
 	 * @since 2.5
+	 *
+	 * @param string $serviceName
+	 *
+	 * @return mixed
 	 */
 	public function singleton( $serviceName ) {
 		return call_user_func_array( array( $this->callbackLoader, 'singleton' ), func_get_args() );
 	}
 
 	/**
+	 * @private
+	 *
+	 * @note Services called via this functions are for internal use only and
+	 * not to be relied upon for external access.
+	 *
 	 * @since 2.5
+	 *
+	 * @param string $serviceName
+	 *
+	 * @return mixed
 	 */
 	public function create( $serviceName ) {
 		return call_user_func_array( array( $this->callbackLoader, 'create' ), func_get_args() );
@@ -110,24 +127,6 @@ class ApplicationFactory {
 	 */
 	public function newSerializerFactory() {
 		return new SerializerFactory();
-	}
-
-	/**
-	 * @since 2.0
-	 *
-	 * @return FactboxFactory
-	 */
-	public function newFactboxFactory() {
-		return $this->callbackLoader->load( 'FactboxFactory' );
-	}
-
-	/**
-	 * @since 2.0
-	 *
-	 * @return PropertyAnnotatorFactory
-	 */
-	public function getPropertyAnnotatorFactory() {
-		return $this->callbackLoader->singleton( 'PropertyAnnotatorFactory' );
 	}
 
 	/**
@@ -247,8 +246,8 @@ class ApplicationFactory {
 	 *
 	 * @return Cache
 	 */
-	public function getCache() {
-		return $this->callbackLoader->singleton( 'Cache' );
+	public function getCache( $cacheType = null ) {
+		return $this->callbackLoader->singleton( 'Cache', $cacheType );
 	}
 
 	/**
@@ -357,15 +356,6 @@ class ApplicationFactory {
 	}
 
 	/**
-	 * @since 2.5
-	 *
-	 * @return CachedQueryResultPrefetcher
-	 */
-	public function getCachedQueryResultPrefetcher() {
-		return $this->callbackLoader->singleton( 'CachedQueryResultPrefetcher' );
-	}
-
-	/**
 	 * @since 2.4
 	 *
 	 * @return MediaWikiNsContentReader
@@ -390,17 +380,6 @@ class ApplicationFactory {
 	 */
 	public function getLoadBalancer() {
 		return $this->callbackLoader->singleton( 'DBLoadBalancer' );
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param \IDatabase $db
-	 * @return string
-	 */
-	public function getDefaultSearchEngineTypeForDB( \IDatabase $db ) {
-		return $this->callbackLoader->create( 'DefaultSearchEngineTypeForDB', $db );
-
 	}
 
 	/**

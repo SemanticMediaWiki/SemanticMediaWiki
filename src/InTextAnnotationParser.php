@@ -128,8 +128,11 @@ class InTextAnnotationParser {
 
 		$this->doStripMagicWordsFromText( $text );
 
-		$this->isSemanticEnabled( $title );
-		$this->addRedirectTargetAnnotation( $text );
+		$this->isEnabledNamespace = $this->isSemanticEnabledForNamespace( $title );
+
+		$this->addRedirectTargetAnnotationFromText(
+			$text
+		);
 
 		$linksInValues = $this->settings->get( 'smwgLinksInValues' );
 
@@ -199,25 +202,26 @@ class InTextAnnotationParser {
 		$this->redirectTargetFinder->setRedirectTarget( $redirectTarget );
 	}
 
-	protected function addRedirectTargetAnnotation( $text ) {
+	protected function addRedirectTargetAnnotationFromText( $text ) {
 
-		if ( $this->isEnabledNamespace ) {
-
-			$this->redirectTargetFinder->findRedirectTargetFromText( $text );
-
-			$propertyAnnotatorFactory = $this->applicationFactory->getPropertyAnnotatorFactory();
-
-			$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
-				$this->parserData->getSemanticData()
-			);
-
-			$redirectPropertyAnnotator = $propertyAnnotatorFactory->newRedirectPropertyAnnotator(
-				$propertyAnnotator,
-				$this->redirectTargetFinder
-			);
-
-			$redirectPropertyAnnotator->addAnnotation();
+		if ( !$this->isEnabledNamespace ) {
+			return;
 		}
+
+		$this->redirectTargetFinder->findRedirectTargetFromText( $text );
+
+		$propertyAnnotatorFactory = $this->applicationFactory->singleton( 'PropertyAnnotatorFactory' );
+
+		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
+			$this->parserData->getSemanticData()
+		);
+
+		$redirectPropertyAnnotator = $propertyAnnotatorFactory->newRedirectPropertyAnnotator(
+			$propertyAnnotator,
+			$this->redirectTargetFinder
+		);
+
+		$redirectPropertyAnnotator->addAnnotation();
 	}
 
 	/**
@@ -446,8 +450,8 @@ class InTextAnnotationParser {
 		return $words;
 	}
 
-	private function isSemanticEnabled( Title $title ) {
-		$this->isEnabledNamespace = $this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
+	private function isSemanticEnabledForNamespace( Title $title ) {
+		return $this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
 	}
 
 	private function getPropertyLink( $subject, $properties, $value, $valueCaption ) {

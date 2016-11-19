@@ -24,18 +24,12 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 	private $applicationFactory;
 	private $memoryCache;
-	private $cacheOptions;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->memoryCache = $this->applicationFactory->newCacheFactory()->newFixedInMemoryCache();
-
-		$this->cacheOptions = $this->applicationFactory->newCacheFactory()->newCacheOptions( array(
-			'useCache' => true,
-			'ttl' => 0
-		) );
 
 		$settings = array(
 			'smwgFactboxUseCache' => true,
@@ -86,7 +80,8 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$outputPage = $parameters['outputPage'];
 
-		$instance = new CachedFactbox( $this->memoryCache, $this->cacheOptions );
+		$instance = new CachedFactbox( $this->memoryCache );
+		$instance->isEnabled( true );
 
 		$this->assertEmpty(
 			$instance->retrieveContent( $outputPage )

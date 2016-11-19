@@ -63,7 +63,7 @@ class SQLStoreFactory {
 	 */
 	public function newMasterQueryEngine() {
 
-		$cachedQueryResultPrefetcher = ApplicationFactory::getInstance()->getCachedQueryResultPrefetcher();
+		$cachedQueryResultPrefetcher = ApplicationFactory::getInstance()->singleton( 'CachedQueryResultPrefetcher' );
 
 		$cachedQueryResultPrefetcher->setQueryEngine(
 			$this->queryEngineFactory->newQueryEngine()

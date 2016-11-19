@@ -136,6 +136,11 @@ class DeferredRequestDispatchManager {
 	 * @param array $parameters
 	 */
 	public function addSequentialCachePurgeJobWith( Title $title, $parameters = array() ) {
+
+		if ( $parameters === array() || !isset( $parameters['slot:id'] ) || $parameters['slot:id'] === null ) {
+			return;
+		}
+
 		return $this->dispatchJobRequestFor( 'SMW\SequentialCachePurgeJob', $title, $parameters );
 	}
 

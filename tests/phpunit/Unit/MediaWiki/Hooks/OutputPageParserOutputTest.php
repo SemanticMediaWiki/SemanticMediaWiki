@@ -85,7 +85,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new OutputPageParserOutput( $outputPage, $parserOutput );
 
-		$cachedFactbox = $this->applicationFactory->newFactboxFactory()->newCachedFactbox();
+		$cachedFactbox = $this->applicationFactory->create( 'FactboxFactory' )->newCachedFactbox();
 
 		$factboxFactory = $this->getMockBuilder( '\SMW\Factbox\FactboxFactory' )
 			->disableOriginalConstructor()

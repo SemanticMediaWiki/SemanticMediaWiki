@@ -204,7 +204,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = $this->applicationFactory->newFactboxFactory()->newFactbox( $parserData, $contextSource );
+		$instance = $this->applicationFactory->singleton( 'FactboxFactory' )->newFactbox( $parserData, $contextSource );
 		$instance->doBuild();
 
 		$this->assertEquals(

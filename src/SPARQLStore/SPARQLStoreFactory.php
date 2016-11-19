@@ -82,7 +82,7 @@ class SPARQLStoreFactory {
 			$engineOptions
 		);
 
-		$cachedQueryResultPrefetcher = ApplicationFactory::getInstance()->getCachedQueryResultPrefetcher();
+		$cachedQueryResultPrefetcher = ApplicationFactory::getInstance()->singleton( 'CachedQueryResultPrefetcher' );
 
 		$cachedQueryResultPrefetcher->setQueryEngine(
 			$queryEngine
