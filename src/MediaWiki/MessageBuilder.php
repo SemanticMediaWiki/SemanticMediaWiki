@@ -114,7 +114,7 @@ class MessageBuilder {
 
 		$message = new Message( $key, $params );
 
-		return $message->inLanguage( $this->getLanguage() );
+		return $message->inLanguage( $this->getLanguage() )->title( $GLOBALS['wgTitle'] );
 	}
 
 	private function getLanguage() {
