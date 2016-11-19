@@ -18,12 +18,13 @@
         "_tel": "Número de telefone",
         "_rec": "Registro",
         "_qty": "Quantidade",
-        "_mlt_rec": "Monolingual text",
-        "_eid": "External identifier",
-        "_ref_rec": "Reference"
+        "_mlt_rec": "Texto monolingue",
+        "_eid": "Identificador externo",
+        "_ref_rec": "Referência"
     },
     "dataTypeAliases": {
         "Entidade": "_wpg",
+        "Recurso": "_wpg",
         "Ponto flutuante": "_num",
         "Inteiro": "_num",
         "Coordenadas": "_geo",
@@ -34,48 +35,52 @@
         "Número inteiro": "_num",
         "Folga": "_num",
         "Variável Booléen": "_boo",
+        "Valor booleano": "_boo",
         "Enumeração": "_txt",
-        "Cadeia": "_txt"
+        "Cadeia": "_txt",
+        "ID externo": "_eid"
     },
     "propertyLabels": {
         "_TYPE": "Possui tipo",
-        "_URI": "URI equivalente ",
+        "_URI": "URI equivalente",
         "_SUBP": "Subpropriedade de",
         "_SUBC": "Subcategoria de",
         "_UNIT": "Unidades de exibição",
         "_IMPO": "Importada de",
         "_CONV": "Corresponde a",
         "_SERV": "Fornece serviço",
-        "_PVAL": "Perminte valor",
+        "_PVAL": "Permite valor",
         "_MDAT": "Data de modificação",
         "_CDAT": "Data de criação",
         "_NEWP": "É uma nova página",
-        "_LEDT": "O ultimo editor é",
+        "_LEDT": "Último editor",
         "_ERRP": "Possui valor impróprio para",
         "_LIST": "Possui campos",
         "_SOBJ": "Possui subobjeto",
         "_ASK": "Possui consulta",
-        "_ASKST": "Consulta",
+        "_ASKST": "Texto da consulta",
         "_ASKFO": "Formato da consulta",
         "_ASKSI": "Tamanho da consulta",
         "_ASKDE": "Profundidade da consulta",
-        "_ASKDU": "Query duration",
-        "_MEDIA": "Media type",
-        "_MIME": "Mime type",
-        "_ERRC": "Has processing error",
-        "_ERRT": "Has processing error text",
-        "_PREC": "Display precision of",
-        "_LCODE": "Language code",
-        "_TEXT": "Text",
-        "_PDESC": "Has property description",
-        "_PVAP": "Allows pattern",
-        "_DTITLE": "Display title of",
-        "_PVUC": "Has uniqueness constraint",
-        "_PEID": "External identifier",
-        "_PEFU": "External formatter uri"
+        "_ASKDU": "Duração da consulta",
+        "_MEDIA": "Tipo de mídia",
+        "_MIME": "Tipo MIME",
+        "_ERRC": "Possui erro de processamento",
+        "_ERRT": "Possui texto de erro de processamento",
+        "_PREC": "Exibe a precisão de",
+        "_LCODE": "Código de idioma",
+        "_TEXT": "Texto",
+        "_PDESC": "Possui a descrição da propriedade",
+        "_PVAP": "Permite o padrão",
+        "_DTITLE": "Possui título de exibição",
+        "_PVUC": "Possui restrição de unicidade",
+        "_PEID": "Identificador externo",
+        "_PEFU": "Formato de URI externo",
+        "_PPLB": "Rótulo preferido para a propriedade"
     },
     "propertyAliases": {
         "Exibe unidade": "_UNIT",
+        "Exibe unidades": "_UNIT",
         "É do tipo": "_TYPE",
         "Possui URI equivalente": "_URI",
         "Importado de": "_IMPO",
@@ -87,7 +92,8 @@
         "SMW_PREC_Y": "Y",
         "SMW_PREC_YM": "F Y",
         "SMW_PREC_YMD": "F j, Y",
-        "SMW_PREC_YMDT": "H:i:s, j F Y"
+        "SMW_PREC_YMDT": "H:i:s, j F Y",
+        "SMW_PREC_YMDTZ": "H:i:s T, j F Y"
     },
     "namespaces": {
         "SMW_NS_PROPERTY": "Propriedade",
@@ -165,32 +171,32 @@
     ],
     "days": [
         [
-            "Monday",
-            "Mon"
+            "Segunda-feira",
+            "Seg"
         ],
         [
-            "Tuesday",
-            "Tue"
+            "Terça-feira",
+            "Ter"
         ],
         [
-            "Wednesday",
-            "Wed"
+            "Quarta-feira",
+            "Qua"
         ],
         [
-            "Thursday",
-            "Thu"
+            "Quinta-feira",
+            "Qui"
         ],
         [
-            "Friday",
-            "Fri"
+            "Sexta-feira",
+            "Sex"
         ],
         [
-            "Saturday",
-            "Sat"
+            "Sábado",
+            "Sáb"
         ],
         [
-            "Sunday",
-            "Sun"
+            "Domingo",
+            "Dom"
         ]
     ]
 }
