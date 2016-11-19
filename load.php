@@ -57,7 +57,7 @@ class SemanticMediaWiki {
 		require_once __DIR__ . '/src/Defines.php';
 
 		// Temporary measure to ease Composer/MW 1.22 migration
-		require_once __DIR__ . '/includes/NamespaceManager.php';
+		require_once __DIR__ . '/src/NamespaceManager.php';
 
 		// Load global functions
 		require_once __DIR__ . '/src/GlobalFunctions.php';
