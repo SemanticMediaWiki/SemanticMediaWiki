@@ -45,9 +45,32 @@ class TableSchemaManager {
 	/**
 	 * @since 2.5
 	 *
+	 * @return string
+	 */
+	public function getHash() {
+
+		$hash = array();
+
+		foreach ( $this->getTables() as $table ) {
+			$hash[$table->getName()] = $table->getHash();
+		}
+
+		// Avoid by-chance sorting with an eventual differing hash
+		sort( $hash );
+
+		return md5( json_encode( $hash ) );
+	}
+
+	/**
+	 * @since 2.5
+	 *
 	 * @return Table[]
 	 */
 	public function getTables() {
+
+		if ( $this->tables !== array() ) {
+			return $this->tables;
+		}
 
 		$this->addTable( $this->newEntityIdTable() );
 		$this->addTable( $this->newConceptCacheTable() );

@@ -53,7 +53,6 @@ class MySQLTableBuilder extends TableBuilder {
 	protected function doCreateTable( $tableName, array $tableOptions = null ) {
 
 		$tableName = $this->connection->tableName( $tableName );
-
 		$sql = '';
 
 		$fieldSql = array();

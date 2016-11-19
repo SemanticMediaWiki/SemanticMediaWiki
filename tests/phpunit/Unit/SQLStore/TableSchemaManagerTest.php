@@ -62,6 +62,11 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 			'array',
 			$instance->getTables()
 		);
+
+		$this->assertInternalType(
+			'string',
+			$instance->getHash()
+		);
 	}
 
 }
