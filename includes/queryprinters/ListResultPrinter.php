@@ -224,7 +224,7 @@ class ListResultPrinter extends ResultPrinter {
 		}
 
 		// Define separators for list items
-		if ( $this->params['format'] !== 'template' ){
+		if ( $this->params['sep'] !== '' ){
 			if ( $this->params['format'] === 'list' && $this->params['sep'] === ',' ){
 				// Make default list ", , , and "
 				$this->listsep = ', ';

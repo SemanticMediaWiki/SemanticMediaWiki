@@ -1,0 +1,47 @@
+{
+	"description": "Test `format=template` and `sep`/`named args` (...)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Example/F0803/Sep",
+			"contents": "<includeonly>{{{?Has text}}}</includeonly>"
+		},
+		{
+			"page": "Example/F0803/1",
+			"contents": "{{#subobject: |@category=F0803 |Has text=123 |Has text=456 }} {{#subobject: |@category=F0803 |Has text=abc }}"
+		},
+		{
+			"page": "Example/F0803/Q.1",
+			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Sep |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/F0803/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"123&#32;&#8226;&#32; 456&#32;&#8226;&#32;abc"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [ "_MDAT" ],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
