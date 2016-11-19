@@ -8,11 +8,15 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	die( 'Not an entry point.' );
 }
 
-SemanticMediaWiki::initExtension();
-
-$GLOBALS['wgExtensionFunctions'][] = function() {
-	SemanticMediaWiki::onExtensionFunction();
-};
+/**
+ * ExtensionRegistry only maps classes and functions after all extensions have
+ * been queued from the LocalSettings.php resulting in DefaultSettings not being
+ * loaded in-time.
+ *
+ * When changing the load order, please ensure that this function is run either
+ * via Composer's autoloading or as part of your internal registration.
+ */
+SemanticMediaWiki::load();
 
 /**
  * @codeCoverageIgnore
@@ -20,13 +24,43 @@ $GLOBALS['wgExtensionFunctions'][] = function() {
 class SemanticMediaWiki {
 
 	/**
-	 * @since 2.4
+	 * @since 2.5
+	 *
+	 * @note It is expected that this function is loaded before LocalSettings.php
+	 * to ensure that settings and global functions are available by the time
+	 * the extension is activated.
 	 */
-	public static function initExtension() {
+	public static function load() {
 
 		if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 			include_once __DIR__ . '/vendor/autoload.php';
 		}
+
+		include_once __DIR__ . '/src/Aliases.php';
+		include_once __DIR__ . '/src/Defines.php';
+		include_once __DIR__ . '/src/GlobalFunctions.php';
+
+		$settings = include __DIR__ . '/DefaultSettings.php';
+
+		foreach ( $settings as $key => $value ) {
+			$GLOBALS[$key] = $value;
+		}
+
+		unset( $settings );
+
+		// In case extension.json is being used, the the succeeding steps will
+		// be handled by the ExtensionRegistry
+		self::initExtension();
+
+		$GLOBALS['wgExtensionFunctions'][] = function() {
+			self::onExtensionFunction();
+		};
+	}
+
+	/**
+	 * @since 2.4
+	 */
+	public static function initExtension() {
 
 		define( 'SMW_VERSION', '2.5.0-alpha' );
 
