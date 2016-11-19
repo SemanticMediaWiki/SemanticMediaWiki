@@ -50,6 +50,21 @@ class SemanticMediaWiki {
 		// @deprecated, removal in SMW 3.0
 		define( 'SEMANTIC_EXTENSION_TYPE', true );
 
+		// Load class_alias
+		require_once __DIR__ . '/src/Aliases.php';
+
+		// Load global constants
+		require_once __DIR__ . '/src/Defines.php';
+
+		// Temporary measure to ease Composer/MW 1.22 migration
+		require_once __DIR__ . '/includes/NamespaceManager.php';
+
+		// Load global functions
+		require_once __DIR__ . '/src/GlobalFunctions.php';
+
+		// Load default settings
+		require_once __DIR__ . '/DefaultSettings.php';
+
 		$GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] = $GLOBALS['smwgIP'] . 'i18n';
 		$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWiki'] = $GLOBALS['smwgIP'] . 'languages/SMW_Messages.php';
 		$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiAlias'] = $GLOBALS['smwgIP'] . 'languages/SMW_Aliases.php';
