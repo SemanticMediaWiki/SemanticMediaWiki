@@ -22,7 +22,7 @@ class DatabaseHelper {
 		$preLimitTail = $postLimitTail = '';
 		$startOpts = '';
 
-		$noKeyOptions = [];
+		$noKeyOptions = array();
 
 		foreach ( $options as $key => $option ) {
 			if ( is_numeric( $key ) ) {
