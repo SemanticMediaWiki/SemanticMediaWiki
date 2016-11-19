@@ -33,9 +33,6 @@ return array(
 		'styles' => array(
 			'smw/ext.smw.css'
 		),
-		'dependencies' => array(
-			'ext.smw.tooltip.styles'
-		),
 		'position' => 'top',
 		'targets' => array( 'mobile', 'desktop' )
 	),
@@ -130,9 +127,6 @@ return array(
 	// Tooltip qtip2 resources
 	'ext.jquery.qtip' => $moduleTemplate + array(
 		'scripts' => 'jquery/jquery.qtip.js',
-		'dependencies' => array(
-			'ext.jquery.qtip.styles'
-		),
 		'targets' => array( 'mobile', 'desktop' )
 	),
 
