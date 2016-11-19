@@ -61,7 +61,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<span class=\"smwb-value\">verdadero&#160;&#160;",
-					"SearchByProperty/Has-20boolean/true",
+					"SearchByProperty/:Has-20boolean/true",
 					"<span class=\"smwb-value\">08:56:00 12 ene 1991&#160;&#160;"
 				]
 			}
@@ -81,9 +81,9 @@
 					"<span class=\"smwb-value\">1,2e-13&#160;&#160;",
 					"<span class=\"smwb-value\">72,769&#160;&#160;",
 					"<span class=\"smwb-value\">1,334e-13&#160;&#160;",
-					"Special:SearchByProperty/Has-20number/1.2e-2D13",
-					"Special:SearchByProperty/Has-20number/72.769482308",
-					"Special:SearchByProperty/Has-20number/1.334e-2D13"
+					"Special:SearchByProperty/:Has-20number/1.2e-2D13",
+					"Special:SearchByProperty/:Has-20number/72.769482308",
+					"Special:SearchByProperty/:Has-20number/1.334e-2D13"
 				]
 			}
 		},
@@ -100,7 +100,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<span class=\"smwb-value\">1,008&#160;u (1,673533e-27&#160;kg)&#160;&#160;",
-					"Special:SearchByProperty/Has-20atomic-20mass-20unit/1.007825-20u"
+					"Special:SearchByProperty/:Has-20atomic-20mass-20unit/1.007825-20u"
 				]
 			}
 		},
@@ -117,7 +117,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<span class=\"smwb-value\">123&#160;&#160;",
-					"Special:SearchByProperty/Has-20number/123"
+					"Special:SearchByProperty/:Has-20number/123"
 				]
 			}
 		},
@@ -134,7 +134,7 @@
 			"assert-output": {
 				"to-contain": [
 					"href=\"http://example.org/some1::23:334/::56\">http://example.org/some1::23:334/::56</a>&#160;&#160;",
-					"Special:SearchByProperty/Has-20url/http-2D3A-2F-2Fexample.org-2Fsome1-2D3A-2D3A23-2D3A334-2F-2D3A-2D3A56"
+					"Special:SearchByProperty/:Has-20url/http-2D3A-2F-2Fexample.org-2Fsome1-2D3A-2D3A23-2D3A334-2F-2D3A-2D3A56"
 				]
 			}
 		}

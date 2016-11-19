@@ -74,12 +74,12 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new InfoLinksProvider( $numberValue );
 
 		$this->assertContains(
-			'/Foo/1000.42|+]]</span>',
+			'/:Foo/1000.42|+]]</span>',
 			$instance->getInfolinkText( SMW_OUTPUT_WIKI )
 		);
 
 		$this->assertContains(
-			'/Foo/1000.42">+</a></span>',
+			'/:Foo/1000.42">+</a></span>',
 			$instance->getInfolinkText( SMW_OUTPUT_HTML )
 		);
 	}
@@ -104,12 +104,12 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new InfoLinksProvider( $stringValue );
 
 		$this->assertContains(
-			'/Foo/Text-20with-20-2D3A-2D3A-20content|+]]</span>',
+			'/:Foo/Text-20with-20-2D3A-2D3A-20content|+]]</span>',
 			$instance->getInfolinkText( SMW_OUTPUT_WIKI )
 		);
 
 		$this->assertContains(
-			'/Foo/Text-20with-20-2D3A-2D3A-20content">+</a></span>',
+			'/:Foo/Text-20with-20-2D3A-2D3A-20content">+</a></span>',
 			$instance->getInfolinkText( SMW_OUTPUT_HTML )
 		);
 	}
@@ -138,12 +138,12 @@ class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new InfoLinksProvider( $timeValue );
 
 		$this->assertContains(
-			'/Foo/12-20December-201970|+]]</span>',
+			'/:Foo/12-20December-201970|+]]</span>',
 			$instance->getInfolinkText( SMW_OUTPUT_WIKI )
 		);
 
 		$this->assertContains(
-			'/Foo/12-20December-201970">+</a></span>',
+			'/:Foo/12-20December-201970">+</a></span>',
 			$instance->getInfolinkText( SMW_OUTPUT_HTML )
 		);
 	}

@@ -86,7 +86,7 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 
 		#3 @see 516
 		$provider[] = array(
-			'Foo("#^$&--2F)/("#^$&-)Bar',
+			':Foo("#^$&--2F)/("#^$&-)Bar',
 			array(),
 			array(
 				'limit'  => 20,
@@ -101,7 +101,7 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'Foo("#^$&--2F)/("#^$&-)Bar',
 			array(
-				'property' => '("#^$&--2F)李秀英',
+				'property' => '("#^$&-/)李秀英',
 				'value'    => '田中("#^$&-)',
 				'nearbySearchForType' => true
 			),
@@ -187,7 +187,22 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 			'',
 			array(
 				'property' => 'Temperature',
-				'value'    => '373,15-20K',
+				'value'    => '373,15 K',
+				'nearbySearchForType' => array( '_wpg' )
+			),
+			array(
+				'limit'  => 20,
+				'offset' => 0,
+				'nearbySearch' => false,
+				'propertyString' => 'Temperature',
+				'valueString'    => '373,15 K',
+			)
+		);
+
+		#10
+		$provider[] = array(
+			':Temperature/373,15-20K',
+			array(
 				'nearbySearchForType' => array( '_wpg' )
 			),
 			array(
@@ -204,7 +219,22 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 			'',
 			array(
 				'property' => 'Telephone number',
-				'value'    => '%2B1-2D201-2D555-2D0123',
+				'value'    => '%2B1-201-555-0123',
+				'nearbySearchForType' => array( '_tel' )
+			),
+			array(
+				'limit'  => 20,
+				'offset' => 0,
+				'nearbySearch' => true,
+				'propertyString' => 'Telephone number',
+				'valueString'    => '%2B1-201-555-0123',
+			)
+		);
+
+		#11
+		$provider[] = array(
+			':Telephone number/%2B1-2D201-2D555-2D0123',
+			array(
 				'nearbySearchForType' => array( '_tel' )
 			),
 			array(
