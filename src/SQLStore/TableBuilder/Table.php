@@ -45,6 +45,15 @@ class Table {
 	/**
 	 * @since 2.5
 	 *
+	 * @param string
+	 */
+	public function getHash() {
+		return json_encode( $this->configuration );
+	}
+
+	/**
+	 * @since 2.5
+	 *
 	 * @param string|null $key
 	 *
 	 * @param array

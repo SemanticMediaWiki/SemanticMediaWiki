@@ -57,6 +57,11 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 			$expected,
 			$instance->getConfiguration()
 		);
+
+		$this->assertInternalType(
+			'string',
+			$instance->getHash()
+		);
 	}
 
 	public function testAddIndexWithKey() {
