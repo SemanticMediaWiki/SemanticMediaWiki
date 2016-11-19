@@ -64,7 +64,8 @@ class SMWAdmin extends SpecialPage {
 	public function execute( $par ) {
 
 		if ( !$this->userCanExecute( $this->getUser() ) ) {
-			throw new ExtendedPermissionsError( $this->mRestriction, array( 'smw-smwadmin-permission-missing' ) );
+			// $this->mRestriction is private MW 1.23-
+			throw new ExtendedPermissionsError( 'smw-admin', array( 'smw-smwadmin-permission-missing' ) );
 		}
 
 		$this->setHeaders();
