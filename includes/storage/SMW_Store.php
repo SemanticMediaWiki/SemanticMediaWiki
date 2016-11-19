@@ -9,6 +9,7 @@ use SMWRequestOptions;
 use SMWSemanticData;
 use Title;
 use SMW\QueryEngine;
+use SMW\Options;
 
 /**
  * This group contains all parts of SMW that relate to storing and retrieving
@@ -40,6 +41,11 @@ abstract class Store implements QueryEngine {
 	 * @var ConnectionManager
 	 */
 	protected $connectionManager = null;
+
+	/**
+	 * @var Options
+	 */
+	protected $options = null;
 
 ///// Reading methods /////
 
@@ -407,11 +413,16 @@ abstract class Store implements QueryEngine {
 	 * @since 1.8
 	 *
 	 * @param bool $verbose
+	 * @param bool $isExtensionSchemaUpdate
 	 *
 	 * @return boolean Success indicator
 	 */
-	public static function setupStore( $verbose = true ) {
-		return StoreFactory::getStore()->setup( $verbose );
+	public static function setupStore( $verbose = true, $isExtensionSchemaUpdate = false ) {
+
+		$store = StoreFactory::getStore();
+		$store->getOptions()->set( 'isExtensionSchemaUpdate', $isExtensionSchemaUpdate );
+
+		return $store->setup( $verbose );
 	}
 
 	/**
@@ -425,6 +436,20 @@ abstract class Store implements QueryEngine {
 	 */
 	public function getParserTestTables() {
 		return array();
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return Options
+	 */
+	public function getOptions() {
+
+		if ( $this->options === null ) {
+			$this->options = new Options();
+		}
+
+		return $this->options;
 	}
 
 	/**
