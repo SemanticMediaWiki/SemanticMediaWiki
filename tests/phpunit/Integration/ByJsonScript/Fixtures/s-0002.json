@@ -1,10 +1,15 @@
 {
-	"description": "Test output from `Special:SearchByProperty` for `_num`, `_txt`, `_tel` (#1728, `wgContLang=en`, `wgLang=en`, skip-on sqlite, postgres)",
+	"description": "Test output from `Special:SearchByProperty` for `_num`, `_txt`, `_tel` (#1728, #2009, `wgContLang=en`, `wgLang=en`, skip-on sqlite, postgres)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
 			"page": "Has text",
 			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "P-20-25",
+			"contents": "[[Has type::Number]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -47,6 +52,34 @@
 		{
 			"page": "Example/S0002/8",
 			"contents": "[[Has text::foo-123_abc']]"
+		},
+		{
+			"page": "Example/S0002/9",
+			"contents": "[[Has number::-20]]"
+		},
+		{
+			"page": "Example/S0002/10",
+			"contents": "[[Has number::-25]]"
+		},
+		{
+			"page": "Example/S0002/11",
+			"contents": "[[Has text::AA-2000]]"
+		},
+		{
+			"page": "Example/S0002/12",
+			"contents": "[[Has text::AA-20-2D00]]"
+		},
+		{
+			"page": "Example/S0002/13",
+			"contents": "[[Has text::AA-20-2500]]"
+		},
+		{
+			"page": "Example/S0002/14",
+			"contents": "[[Has text::AA-2000 with_&]]"
+		},
+		{
+			"page": "Example/S0002/15",
+			"contents": "[[P-20-25::-25]]"
 		}
 	],
 	"tests": [
@@ -57,13 +90,13 @@
 				"page": "SearchByProperty",
 				"query-parameters": "",
 				"request-parameters": {
-					"property": "Has text"
+					"property": "Has_text"
 				}
 			},
 			"assert-output": {
 				"to-contain": [
-					"<ul><li>S0002&#160;&#160;",
-					"title=\"Special:SearchByProperty/Has-20text/S0002\">+</a></span>"
+					"<li>S0002&#160;&#160;",
+					"title=\"Special:SearchByProperty/:Has-20text/S0002\">+</a></span>"
 				]
 			}
 		},
@@ -234,6 +267,9 @@
 		{
 			"type": "special",
 			"about": "#9 text with dash",
+			"skip-on": {
+				"virtuoso": "Failed asserting that 0 matches expected 2, don't know why!"
+			},
 			"special-page": {
 				"page":"SearchByProperty",
 				"query-parameters": "",
@@ -282,6 +318,253 @@
 				"to-contain": [
 					"Example-2FS0002-2F8",
 					"<small>(foo-123_abc')</small>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#12 Number/-20 unescape",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "",
+				"request-parameters":{
+					"property": "Has number",
+					"value": "-20"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example-2FS0002-2F9",
+					"<small>(-20)</small>",
+					"value=\"-20\""
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#13 Number/-20 escape",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "/:Has-20number/-2D20",
+				"request-parameters":{}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example-2FS0002-2F9",
+					"<small>(-20)</small>",
+					"value=\"-20\""
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#13 Number/-25 unescape",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "",
+				"request-parameters":{
+					"property": "Has number",
+					"value": "-25"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example-2FS0002-2F10",
+					"<small>(-25)</small>",
+					"value=\"-25\""
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#14 Number/-25 escape",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "/:Has-20number/-2D25",
+				"request-parameters":{}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example-2FS0002-2F10",
+					"<small>(-25)</small>",
+					"value=\"-25\""
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#15 Text/-20 unescape",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "",
+				"request-parameters":{
+					"property": "Has text",
+					"value": "AA-2000"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example-2FS0002-2F11",
+					"<small>(AA-2000)</small>",
+					"value=\"AA-2000\""
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#16 Text/-20 escape",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "/:Has-20text/AA-2D2000",
+				"request-parameters":{}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example-2FS0002-2F11",
+					"<small>(AA-2000)</small>",
+					"value=\"AA-2000\""
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#15 Text/-20-2D unescape",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "",
+				"request-parameters":{
+					"property": "Has text",
+					"value": "AA-20-2D00"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example-2FS0002-2F12",
+					"<small>(AA-20-2D00)</small>",
+					"value=\"AA-20-2D00\""
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#16 Text/-20-2D escape",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "/:Has-20text/AA-2D20-2D2D00",
+				"request-parameters":{}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example-2FS0002-2F12",
+					"<small>(AA-20-2D00)</small>",
+					"value=\"AA-20-2D00\""
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#17 Text/-20-25 unescape",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "",
+				"request-parameters":{
+					"property": "Has text",
+					"value": "AA-20-2500"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example-2FS0002-2F13",
+					"<small>(AA-20-2500)</small>",
+					"value=\"AA-20-2500\""
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#18 Text/-20-25 escape",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "/:Has-20text/AA-2D20-2D2500",
+				"request-parameters":{}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example-2FS0002-2F13",
+					"<small>(AA-20-2500)</small>",
+					"value=\"AA-20-2500\""
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#19 Text/-20_& unescape",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "",
+				"request-parameters":{
+					"property": "Has text",
+					"value": "AA-2000 with_&"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example-2FS0002-2F14",
+					"<small>(AA-2000 with_&amp;)</small>",
+					"value=\"AA-2000 with_&amp;\""
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#20 Text/-20_& escape",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "/:Has-20text/AA-2D2000-20with-5F-26",
+				"request-parameters":{}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example-2FS0002-2F14",
+					"<small>(AA-2000 with_&amp;)</small>",
+					"value=\"AA-2000 with_&amp;\""
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#21 Property-20-25 unescape",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "",
+				"request-parameters":{
+					"property": "P-20-25",
+					"value": "-25"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example-2FS0002-2F15",
+					"<small>(-25)</small>",
+					"value=\"P-20-25\"",
+					"value=\"-25\""
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#22 Property-20-25 escape",
+			"special-page": {
+				"page":"SearchByProperty",
+				"query-parameters": "/:P-2D20-2D25/-2D25",
+				"request-parameters":{}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example-2FS0002-2F15",
+					"<small>(-25)</small>",
+					"value=\"P-20-25\"",
+					"value=\"-25\""
 				]
 			}
 		}

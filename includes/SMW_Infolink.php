@@ -116,7 +116,7 @@ class SMWInfolink {
 			$caption,
 			$wgContLang->getNsText( NS_SPECIAL ) . ':SearchByProperty',
 			$style,
-			array( $propertyName, $propertyValue )
+			array( ':' . $propertyName, $propertyValue ) // `:` is marking that the link was auto-generated
 		);
 	}
 
