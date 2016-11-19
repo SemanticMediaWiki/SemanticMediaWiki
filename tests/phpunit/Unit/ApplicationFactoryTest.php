@@ -105,22 +105,6 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructPropertyAnnotatorFactory() {
-
-		$this->assertInstanceOf(
-			'\SMW\PropertyAnnotatorFactory',
-			$this->applicationFactory->getPropertyAnnotatorFactory()
-		);
-	}
-
-	public function testCanConstructFactboxFactory() {
-
-		$this->assertInstanceOf(
-			'SMW\Factbox\FactboxFactory',
-			$this->applicationFactory->newFactboxFactory()
-		);
-	}
-
 	public function testCanConstructInTextAnnotationParser() {
 
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
@@ -237,14 +221,6 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructCachedQueryResultPrefetcher() {
-
-		$this->assertInstanceOf(
-			'\SMW\CachedQueryResultPrefetcher',
-			$this->applicationFactory->getCachedQueryResultPrefetcher()
-		);
-	}
-
 	public function testCanConstructQueryFactory() {
 
 		$this->assertInstanceOf(
@@ -271,6 +247,42 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 			'\SMW\DeferredCallableUpdate',
 			$this->applicationFactory->newDeferredCallableUpdate( $callback )
 		);
+	}
+
+	/**
+	 * @dataProvider callbackContainerProvider
+	 */
+	public function testCanConstructFromCallbackContainer( $service, $arguments, $expected ) {
+
+		array_unshift( $arguments, $service );
+
+		$this->assertInstanceOf(
+			$expected,
+			call_user_func_array( array( $this->applicationFactory, 'create' ), $arguments )
+		);
+	}
+
+	public function callbackContainerProvider() {
+
+		$provider[] = array(
+			'CachedQueryResultPrefetcher',
+			array(),
+			'\SMW\CachedQueryResultPrefetcher'
+		);
+
+		$provider[] = array(
+			'FactboxFactory',
+			array(),
+			'SMW\Factbox\FactboxFactory'
+		);
+
+		$provider[] = array(
+			'PropertyAnnotatorFactory',
+			array(),
+			'SMW\PropertyAnnotatorFactory'
+		);
+
+		return $provider;
 	}
 
 }

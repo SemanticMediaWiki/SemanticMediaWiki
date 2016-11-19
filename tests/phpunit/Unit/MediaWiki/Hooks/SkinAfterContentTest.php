@@ -42,41 +42,39 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$data = '';
-
 		$skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Hooks\SkinAfterContent',
-			new SkinAfterContent( $data, $skin )
+			new SkinAfterContent( $skin )
 		);
 	}
 
-	public function testTryToProcessOnNullSkin() {
+	public function testTryToPerformUpdateOnNullSkin() {
 
 		$data = '';
-		$instance = new SkinAfterContent( $data, null );
+		$instance = new SkinAfterContent( null );
 
 		$this->assertTrue(
-			$instance->process()
+			$instance->performUpdate( $data )
 		);
 	}
 
 	/**
 	 * @dataProvider outputDataProvider
 	 */
-	public function testProcessFactboxPresenterIntegration( $parameters, $expected ) {
+	public function testperformUpdateFactboxPresenterIntegration( $parameters, $expected ) {
 
 		$data = '';
 
-		$instance = new SkinAfterContent( $data, $parameters['skin'] );
+		$instance = new SkinAfterContent( $parameters['skin'] );
 
 		// Replace CachedFactbox instance
 		if ( isset( $parameters['title'] ) ) {
 
-			$cachedFactbox = $this->applicationFactory->newFactboxFactory()->newCachedFactbox();
+			$cachedFactbox = $this->applicationFactory->create( 'FactboxFactory' )->newCachedFactbox();
 
 			$cachedFactbox->addContentToCache(
 				$this->applicationFactory->newCacheFactory()->getFactboxCacheKey( $parameters['title']->getArticleID() ),
@@ -95,7 +93,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 		}
 
 		$this->assertTrue(
-			$instance->process()
+			$instance->performUpdate( $data )
 		);
 
 		$this->assertEquals(

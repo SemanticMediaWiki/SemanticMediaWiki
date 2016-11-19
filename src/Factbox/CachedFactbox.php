@@ -38,6 +38,16 @@ class CachedFactbox {
 	private $isCached = false;
 
 	/**
+	 * @var boolean
+	 */
+	private $isEnabled = true;
+
+	/**
+	 * @var integer
+	 */
+	private $expiryInSeconds = 0;
+
+	/**
 	 * @var integer
 	 */
 	private $timestamp;
@@ -46,12 +56,11 @@ class CachedFactbox {
 	 * @since 1.9
 	 *
 	 * @param Cache|null $cache
-	 * @param stdClass $cacheOptions
 	 */
-	public function __construct( Cache $cache = null, \stdClass $cacheOptions ) {
+	public function __construct( Cache $cache = null ) {
 		$this->cache = $cache;
-		$this->cacheOptions = $cacheOptions;
-		$this->cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
+
+		$this->cacheFactory = ApplicationFactory::getInstance()->getCacheFactory();
 
 		if ( $this->cache === null ) {
 			$this->cache = $this->cacheFactory->newNullCache();
@@ -65,6 +74,24 @@ class CachedFactbox {
 	 */
 	public function isCached() {
 		return $this->isCached;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return boolean
+	 */
+	public function setExpiryInSeconds( $expiryInSeconds ) {
+		$this->expiryInSeconds = $expiryInSeconds;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return boolean
+	 */
+	public function isEnabled( $isEnabled ) {
+		$this->isEnabled = $isEnabled;
 	}
 
 	/**
@@ -199,7 +226,7 @@ class CachedFactbox {
 		$text = null;
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$factbox = $applicationFactory->newFactboxFactory()->newFactbox(
+		$factbox = $applicationFactory->singleton( 'FactboxFactory' )->newFactbox(
 			$applicationFactory->newParserData( $title, $parserOutput ),
 			$requestContext
 		);
@@ -238,7 +265,7 @@ class CachedFactbox {
 
 	private function retrieveFromCache( $key ) {
 
-		if ( !$this->cache->contains( $key ) || !$this->cacheOptions->useCache ) {
+		if ( !$this->cache->contains( $key ) || !$this->isEnabled ) {
 			return array();
 		}
 
@@ -264,7 +291,7 @@ class CachedFactbox {
 			'content' => serialize( $content )
 		);
 
-		$this->cache->save( $key, $data, $this->cacheOptions->ttl );
+		$this->cache->save( $key, $data, $this->expiryInSeconds );
 	}
 
 }

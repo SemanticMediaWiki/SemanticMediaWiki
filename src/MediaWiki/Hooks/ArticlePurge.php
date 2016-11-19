@@ -51,8 +51,9 @@ class ArticlePurge {
 		}
 
 		if ( $settings->get( 'smwgQueryResultCacheRefreshOnPurge' ) ) {
-			$cachedQueryResultPrefetcher = $applicationFactory->getCachedQueryResultPrefetcher();
-			$cachedQueryResultPrefetcher->resetCacheBy( DIWikiPage::newFromTitle( $wikiPage->getTitle() ) );
+			$applicationFactory->singleton( 'CachedQueryResultPrefetcher' )->resetCacheBy(
+				DIWikiPage::newFromTitle( $wikiPage->getTitle() )
+			);
 		}
 
 		return true;

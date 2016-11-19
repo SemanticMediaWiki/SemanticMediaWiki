@@ -29,7 +29,7 @@ class StoreUpdater {
 	/**
 	 * @var boolean|null
 	 */
-	private $updateJobsEnabledState = null;
+	private $enabledWithUpdateJobs = null;
 
 	/**
 	 * @var boolean|null
@@ -64,10 +64,10 @@ class StoreUpdater {
 	/**
 	 * @since 1.9
 	 *
-	 * @param boolean $status
+	 * @param boolean $enabledWithUpdateJobs
 	 */
-	public function setUpdateJobsEnabledState( $status ) {
-		$this->updateJobsEnabledState = (bool)$status;
+	public function enabledWithUpdateJobs( $enabledWithUpdateJobs ) {
+		$this->enabledWithUpdateJobs = (bool)$enabledWithUpdateJobs;
 		return $this;
 	}
 
@@ -113,8 +113,8 @@ class StoreUpdater {
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		if ( $this->updateJobsEnabledState === null ) {
-			$this->setUpdateJobsEnabledState( $this->applicationFactory->getSettings()->get( 'smwgEnableUpdateJobs' ) );
+		if ( $this->enabledWithUpdateJobs === null ) {
+			$this->enabledWithUpdateJobs( $this->applicationFactory->getSettings()->get( 'smwgEnableUpdateJobs' ) );
 		}
 
 		$title = $this->getSubject()->getTitle();
@@ -142,7 +142,7 @@ class StoreUpdater {
 			User::newFromId( $revision->getUser() )
 		);
 
-		$propertyAnnotatorFactory = $this->applicationFactory->getPropertyAnnotatorFactory();
+		$propertyAnnotatorFactory = $this->applicationFactory->singleton( 'PropertyAnnotatorFactory' );
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
 			$this->semanticData
@@ -162,7 +162,7 @@ class StoreUpdater {
 	 */
 	private function inspectPropertySpecification() {
 
-		if ( !$this->updateJobsEnabledState ) {
+		if ( !$this->enabledWithUpdateJobs ) {
 			return;
 		}
 
@@ -180,7 +180,7 @@ class StoreUpdater {
 
 	private function doRealUpdate() {
 
-		$this->store->setUpdateJobsEnabledState( $this->updateJobsEnabledState );
+		$this->store->setUpdateJobsEnabledState( $this->enabledWithUpdateJobs );
 
 		$semanticData = $this->checkForRequiredRedirectUpdate(
 			$this->semanticData
@@ -209,7 +209,7 @@ class StoreUpdater {
 
 		// Check only during online-mode so that when a user operates Special:MovePage
 		// or #redirect the same process is applied
-		if ( !$this->updateJobsEnabledState ) {
+		if ( !$this->enabledWithUpdateJobs ) {
 			return $semanticData;
 		}
 

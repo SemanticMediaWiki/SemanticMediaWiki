@@ -41,9 +41,9 @@ class ParserData {
 	private $errors = array();
 
 	/**
-	 * @var $updateJobs
+	 * @var $enabledUpdateJobs
 	 */
-	private $updateJobs = true;
+	private $enabledUpdateJobs = true;
 
 	/**
 	 * @since 1.9
@@ -92,7 +92,7 @@ class ParserData {
 	 * @since 1.9
 	 */
 	public function disableBackgroundUpdateJobs() {
-		$this->updateJobs = false;
+		$this->enabledUpdateJobs = false;
 		return $this;
 	}
 
@@ -119,15 +119,8 @@ class ParserData {
 	 *
 	 * @return boolean
 	 */
-	public function getUpdateJobState() {
-		return $this->updateJobs;
-	}
-
-	/**
-	 * @deprecated since 2.1, use getUpdateJobState
-	 */
-	public function getUpdateStatus() {
-		return $this->updateJobs;
+	public function isEnabledWithUpdateJobs() {
+		return $this->enabledUpdateJobs;
 	}
 
 	/**
@@ -286,8 +279,8 @@ class ParserData {
 
 		$storeUpdater = $applicationFactory->newStoreUpdater( $this->semanticData );
 
-		$storeUpdater->setUpdateJobsEnabledState(
-			$this->updateJobs
+		$storeUpdater->enabledWithUpdateJobs(
+			$this->enabledUpdateJobs
 		);
 
 		DeferredCallableUpdate::releasePendingUpdates();

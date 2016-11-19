@@ -53,8 +53,8 @@ class SharedCallbackContainer implements CallbackContainer {
 
 		$callbackLoader->registerExpectedReturnType( 'Cache', '\Onoi\Cache\Cache' );
 
-		$callbackLoader->registerCallback( 'Cache', function() use ( $callbackLoader ) {
-			return $callbackLoader->load( 'CacheFactory' )->newMediaWikiCompositeCache();
+		$callbackLoader->registerCallback( 'Cache', function( $cacheType = null ) use ( $callbackLoader ) {
+			return $callbackLoader->load( 'CacheFactory' )->newMediaWikiCompositeCache( $cacheType );
 		} );
 
 		$callbackLoader->registerCallback( 'NamespaceExaminer', function() use ( $callbackLoader ) {

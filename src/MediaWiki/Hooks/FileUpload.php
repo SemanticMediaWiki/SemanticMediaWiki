@@ -8,6 +8,7 @@ use SMW\ApplicationFactory;
 use SMW\Localizer;
 use Title;
 use User;
+use Hooks;
 
 /**
  * Fires when a local file upload occurs
@@ -27,11 +28,6 @@ class FileUpload {
 	private $file = null;
 
 	/**
-	 * @var ApplicationFactory
-	 */
-	private $applicationFactory = null;
-
-	/**
 	 * @var boolean
 	 */
 	private $fileReUploadStatus = false;
@@ -45,7 +41,6 @@ class FileUpload {
 	public function __construct( File $file, $fileReUploadStatus = false ) {
 		$this->file = $file;
 		$this->fileReUploadStatus = $fileReUploadStatus;
-		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	/**
@@ -68,18 +63,19 @@ class FileUpload {
 
 	private function performUpdate() {
 
+		$applicationFactory = ApplicationFactory::getInstance();
 		$filePage = $this->makeFilePage();
 
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = $applicationFactory->newParserData(
 			$this->file->getTitle(),
 			$filePage->getParserOutput( $this->makeCanonicalParserOptions() )
 		);
 
-		$pageInfoProvider = $this->applicationFactory->newMwCollaboratorFactory()->newPageInfoProvider(
+		$pageInfoProvider = $applicationFactory->newMwCollaboratorFactory()->newPageInfoProvider(
 			$filePage
 		);
 
-		$propertyAnnotatorFactory = $this->applicationFactory->getPropertyAnnotatorFactory();
+		$propertyAnnotatorFactory = $applicationFactory->singleton( 'PropertyAnnotatorFactory' );
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
 			$parserData->getSemanticData()
@@ -93,7 +89,7 @@ class FileUpload {
 		$propertyAnnotator->addAnnotation();
 
 		// 2.4+
-		\Hooks::run( 'SMW::FileUpload::BeforeUpdate', array( $filePage, $parserData->getSemanticData() ) );
+		Hooks::run( 'SMW::FileUpload::BeforeUpdate', array( $filePage, $parserData->getSemanticData() ) );
 
 		$parserData->pushSemanticDataToParserOutput();
 		$parserData->updateStore( true );
@@ -103,7 +99,7 @@ class FileUpload {
 
 	private function makeFilePage() {
 
-		$filePage = $this->applicationFactory->newPageCreator()->createFilePage(
+		$filePage = ApplicationFactory::getInstance()->newPageCreator()->createFilePage(
 			$this->file->getTitle()
 		);
 
@@ -125,7 +121,7 @@ class FileUpload {
 	}
 
 	private function isSemanticEnabledNamespace( Title $title ) {
-		return $this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
+		return ApplicationFactory::getInstance()->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
 	}
 
 }

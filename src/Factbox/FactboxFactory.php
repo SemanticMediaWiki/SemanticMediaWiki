@@ -22,16 +22,19 @@ class FactboxFactory {
 	 */
 	public function newCachedFactbox() {
 
-		$cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
-
-		$cacheOptions = $cacheFactory->newCacheOptions( array(
-			'useCache' => ApplicationFactory::getInstance()->getSettings()->get( 'smwgFactboxUseCache' ),
-			'ttl'      => 0
-		) );
+		$applicationFactory = ApplicationFactory::getInstance();
 
 		$cachedFactbox = new CachedFactbox(
-			$cacheFactory->newMediaWikiCompositeCache( $cacheFactory->getMainCacheType() ),
-			$cacheOptions
+			$applicationFactory->getCache(
+				$applicationFactory->getSettings()->get( 'smwgCacheType' )
+			)
+		);
+
+		// Month = 30 * 24 * 3600
+		$cachedFactbox->setExpiryInSeconds( 2592000 );
+
+		$cachedFactbox->isEnabled(
+			$applicationFactory->getSettings()->get( 'smwgFactboxUseCache' )
 		);
 
 		return $cachedFactbox;
