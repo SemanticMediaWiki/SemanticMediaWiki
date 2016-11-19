@@ -6,6 +6,7 @@ use SMW\MediaWiki\ManualEntryLogger;
 use SMW\Settings;
 use SMW\Store;
 use SMW\StoreFactory;
+use SMW\MediaWiki\Exception\ExtendedPermissionsError;
 
 /**
  * @defgroup SMWSpecialPage
@@ -42,6 +43,9 @@ class SMWAdmin extends SpecialPage {
 		$this->store = StoreFactory::getStore();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public function doesWrites() {
 		return true;
 	}
@@ -54,12 +58,13 @@ class SMWAdmin extends SpecialPage {
 		return $this->store;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public function execute( $par ) {
 
 		if ( !$this->userCanExecute( $this->getUser() ) ) {
-			// If the user is not authorized, show an error.
-			$this->displayRestrictionError();
-			return;
+			throw new ExtendedPermissionsError( $this->mRestriction, array( 'smw-smwadmin-permission-missing' ) );
 		}
 
 		$this->setHeaders();
