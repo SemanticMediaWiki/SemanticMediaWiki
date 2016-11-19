@@ -403,11 +403,18 @@ class ListResultPrinter extends ResultPrinter {
 			$value = '';
 			$fieldName = '';
 
-			if ( $this->mNamedArgs ) {
+			// {{{?Foo}}}
+			if ( $this->mNamedArgs || $this->params['template arguments'] === 'legacy' ) {
 				$fieldName = '?' . $field->getPrintRequest()->getLabel();
 			}
 
-			if ( $fieldName === '' || $fieldName === '?' ) {
+			// {{{Foo}}}
+			if ( $fieldName === '' && $this->params['template arguments'] === 'named' ) {
+				$fieldName = $field->getPrintRequest()->getLabel();
+			}
+
+			// {{{1}}}
+			if ( $fieldName === '' || $fieldName === '?' || $this->params['template arguments'] === 'numbered' ) {
 				$fieldName = $fieldName . $i + 1;
 			}
 
@@ -473,6 +480,12 @@ class ListResultPrinter extends ResultPrinter {
 		$params['template'] = array(
 			'message' => 'smw-paramdesc-template',
 			'default' => '',
+		);
+
+		$params['template arguments'] = array(
+			'message' => 'smw-paramdesc-template-arguments',
+			'default' => '',
+			'values' => array( 'numbered', 'named', 'legacy' ),
 		);
 
 		$params['named args'] = array(
