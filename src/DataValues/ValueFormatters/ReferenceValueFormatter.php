@@ -169,9 +169,9 @@ class ReferenceValueFormatter extends DataValueFormatter {
 			case self::HTML_SHORT:
 				return $dataValue->getShortHTMLText( $linker );
 			case self::WIKI_LONG:
-				return $dataValue->getShortWikiText( $linker );
+				return $dataValue->getLongWikiText( $linker );
 			case self::HTML_LONG:
-				return $dataValue->getShortHTMLText( $linker );
+				return $dataValue->getLongHTMLText( $linker );
 		}
 	}
 

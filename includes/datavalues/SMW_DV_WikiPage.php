@@ -366,7 +366,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			return $this->getErrorText();
 		}
 
-		if ( is_null( $linker ) || $this->m_outformat == '-' ) {
+		if ( $linker === null|| $linker === false || $this->m_outformat == '-' ) {
 			return  \Sanitizer::removeHTMLtags( $this->getWikiValue() );
 		} elseif ( $this->getNamespace() == NS_MEDIA ) { // this extra case is really needed
 			return $linker->makeMediaLinkObj( $this->getTitle(),
