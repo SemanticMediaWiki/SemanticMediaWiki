@@ -19,6 +19,11 @@ use Hooks;
 class Installer implements MessageReporter, MessageReporterAware {
 
 	/**
+	 * MessageReport option
+	 */
+	const OPT_MESSAGEREPORTER = 'installer.messagereporter';
+
+	/**
 	 * @var TableSchemaManager
 	 */
 	private $tableSchemaManager;

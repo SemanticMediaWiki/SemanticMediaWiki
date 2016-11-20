@@ -10,8 +10,11 @@ use Onoi\CallbackContainer\CallbackLoader;
 use SMW\Factbox\FactboxFactory;
 use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\MediaWiki\MediaWikiNsContentReader;
+use SMW\MediaWiki\ManualEntryLogger;
+use SMW\MediaWiki\Database;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\TitleCreator;
+use SMW\MediaWiki\JobQueueLookup;
 use SMW\Query\QuerySourceFactory;
 use MediaWiki\Logger\LoggerFactory;
 use Psr\Log\NullLogger;
@@ -80,6 +83,16 @@ class SharedCallbackContainer implements CallbackContainer {
 
 		$callbackLoader->registerCallback( 'PageCreator', function() {
 			return new PageCreator();
+		} );
+
+		$callbackLoader->registerCallback( 'JobQueueLookup', function( Database $connection ) use ( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'JobQueueLookup', '\SMW\MediaWiki\JobQueueLookup' );
+			return new JobQueueLookup( $connection );
+		} );
+
+		$callbackLoader->registerCallback( 'ManualEntryLogger', function() use ( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'ManualEntryLogger', '\SMW\MediaWiki\ManualEntryLogger' );
+			return new ManualEntryLogger();
 		} );
 
 		$callbackLoader->registerExpectedReturnType( 'TitleCreator', '\SMW\MediaWiki\TitleCreator' );

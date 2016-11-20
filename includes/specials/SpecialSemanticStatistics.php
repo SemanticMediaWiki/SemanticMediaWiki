@@ -25,7 +25,7 @@ class SpecialSemanticStatistics extends SpecialPage {
 	 * @codeCoverageIgnore
 	 */
 	public function __construct() {
-		parent::__construct( 'SemanticStatistics' );
+		parent::__construct( 'SemanticStatistics', '', false );
 	}
 
 	/**

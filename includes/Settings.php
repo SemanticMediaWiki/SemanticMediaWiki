@@ -48,6 +48,8 @@ class Settings extends Options {
 			'smwgSparqlUpdateEndpoint' => $GLOBALS['smwgSparqlUpdateEndpoint'],
 			'smwgSparqlDataEndpoint' => $GLOBALS['smwgSparqlDataEndpoint'],
 			'smwgSparqlDefaultGraph' => $GLOBALS['smwgSparqlDefaultGraph'],
+			'smwgSparqlRepositoryConnectorForcedHttpVersion' => $GLOBALS['smwgSparqlRepositoryConnectorForcedHttpVersion'],
+			'smwgSparqlQFeatures' => $GLOBALS['smwgSparqlQFeatures'],
 			'smwgHistoricTypeNamespace' => $GLOBALS['smwgHistoricTypeNamespace'],
 			'smwgNamespaceIndex' => $GLOBALS['smwgNamespaceIndex'],
 			'smwgShowFactbox' => $GLOBALS['smwgShowFactbox'],
@@ -71,12 +73,14 @@ class Settings extends Options {
 			'smwgQMaxLimit' => $GLOBALS['smwgQMaxLimit'],
 			'smwgIgnoreQueryErrors' => $GLOBALS['smwgIgnoreQueryErrors'],
 			'smwgQSubcategoryDepth' => $GLOBALS['smwgQSubcategoryDepth'],
+			'smwgQSubpropertyDepth' => $GLOBALS['smwgQSubpropertyDepth'],
 			'smwgQEqualitySupport' => $GLOBALS['smwgQEqualitySupport'],
 			'smwgQSortingSupport' => $GLOBALS['smwgQSortingSupport'],
 			'smwgQRandSortingSupport' => $GLOBALS['smwgQRandSortingSupport'],
 			'smwgQDefaultNamespaces' => $GLOBALS['smwgQDefaultNamespaces'],
 			'smwgQComparators' => $GLOBALS['smwgQComparators'],
 			'smwStrictComparators' => $GLOBALS['smwStrictComparators'],
+			'smwgStrictComparators' => $GLOBALS['smwgStrictComparators'],
 			'smwgQMaxSize' => $GLOBALS['smwgQMaxSize'],
 			'smwgQMaxDepth' => $GLOBALS['smwgQMaxDepth'],
 			'smwgQFeatures' => $GLOBALS['smwgQFeatures'],
@@ -90,9 +94,9 @@ class Settings extends Options {
 			'smwgQConceptMaxDepth' => $GLOBALS['smwgQConceptMaxDepth'],
 			'smwgQConceptFeatures' => $GLOBALS['smwgQConceptFeatures'],
 			'smwgQConceptCacheLifetime' => $GLOBALS['smwgQConceptCacheLifetime'],
+			'smwgQuerySources' => $GLOBALS['smwgQuerySources'],
 			'smwgResultFormats' => $GLOBALS['smwgResultFormats'],
 			'smwgResultAliases' => $GLOBALS['smwgResultAliases'],
-			'smwgQuerySources' => $GLOBALS['smwgQuerySources'],
 			'smwgPDefaultType' => $GLOBALS['smwgPDefaultType'],
 			'smwgAllowRecursiveExport' => $GLOBALS['smwgAllowRecursiveExport'],
 			'smwgExportBacklinks' => $GLOBALS['smwgExportBacklinks'],
@@ -110,7 +114,6 @@ class Settings extends Options {
 			'smwgAutoRefreshOnPageMove' => $GLOBALS['smwgAutoRefreshOnPageMove'],
 			'smwgContLang' => isset( $GLOBALS['smwgContLang'] ) ? $GLOBALS['smwgContLang'] : '',
 			'smwgMaxPropertyValues' => $GLOBALS['smwgMaxPropertyValues'],
-			'smwgQSubpropertyDepth' => $GLOBALS['smwgQSubpropertyDepth'],
 			'smwgNamespace' => $GLOBALS['smwgNamespace'],
 			'smwgMasterStore' => isset( $GLOBALS['smwgMasterStore'] ) ? $GLOBALS['smwgMasterStore'] : '',
 			'smwgIQRunningNumber' => isset( $GLOBALS['smwgIQRunningNumber'] ) ? $GLOBALS['smwgIQRunningNumber'] : 0,
@@ -130,7 +133,6 @@ class Settings extends Options {
 			'smwgEnabledSpecialPage' => $GLOBALS['smwgEnabledSpecialPage'],
 			'smwgFallbackSearchType' => $GLOBALS['smwgFallbackSearchType'],
 			'smwgEnabledEditPageHelp' => $GLOBALS['smwgEnabledEditPageHelp'],
-			'smwgSparqlQFeatures' => $GLOBALS['smwgSparqlQFeatures'],
 			'smwgEnabledDeferredUpdate' => $GLOBALS['smwgEnabledDeferredUpdate'],
 			'smwgEnabledHttpDeferredJobRequest' => $GLOBALS['smwgEnabledHttpDeferredJobRequest'],
 			'smwgEnabledQueryDependencyLinksStore' => $GLOBALS['smwgEnabledQueryDependencyLinksStore'],
@@ -139,7 +141,6 @@ class Settings extends Options {
 			'smwgExportBCNonCanonicalFormUse' => $GLOBALS['smwgExportBCNonCanonicalFormUse'],
 			'smwgExportBCAuxiliaryUse' => $GLOBALS['smwgExportBCAuxiliaryUse'],
 			'smwgEnabledInTextAnnotationParserStrictMode' => $GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'],
-			'smwgSparqlRepositoryConnectorForcedHttpVersion' => $GLOBALS['smwgSparqlRepositoryConnectorForcedHttpVersion'],
 			'smwgDVFeatures' => $GLOBALS['smwgDVFeatures'],
 			'smwgEnabledFulltextSearch' => $GLOBALS['smwgEnabledFulltextSearch'],
 			'smwgFulltextDeferredUpdate' => $GLOBALS['smwgFulltextDeferredUpdate'],
@@ -152,10 +153,6 @@ class Settings extends Options {
 			'smwgQueryResultCacheLifetime' => $GLOBALS['smwgQueryResultCacheLifetime'],
 			'smwgQueryResultNonEmbeddedCacheLifetime' => $GLOBALS['smwgQueryResultNonEmbeddedCacheLifetime'],
 			'smwgQueryResultCacheRefreshOnPurge' => $GLOBALS['smwgQueryResultCacheRefreshOnPurge'],
-		);
-
-		$settings = $settings + array(
-			'smwgCanonicalNames' => NamespaceManager::getCanonicalNames()
 		);
 
 		if ( self::$instance === null ) {

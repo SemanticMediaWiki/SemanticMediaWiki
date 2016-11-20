@@ -35,6 +35,7 @@ class JobFactory {
 	public function newByType( $type, Title $title, array $parameters = array() ) {
 
 		switch ( $type ) {
+			case 'RefreshJob':
 			case 'SMW\RefreshJob':
 				return $this->newRefreshJob( $title, $parameters );
 			case 'SMW\UpdateJob':
