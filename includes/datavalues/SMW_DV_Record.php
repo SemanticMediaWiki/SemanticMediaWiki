@@ -81,6 +81,7 @@ class SMWRecordValue extends AbstractMultiValue {
 		}
 
 		$containerSemanticData = $this->newContainerSemanticData( $value );
+		$sortKeys = array();
 
 		$values = $this->getValuesFromString( $value );
 		$valueIndex = 0; // index in value array
@@ -106,6 +107,7 @@ class SMWRecordValue extends AbstractMultiValue {
 
 				if ( $dataValue->isValid() ) { // valid DV: keep
 					$containerSemanticData->addPropertyObjectValue( $diProperty, $dataValue->getDataItem() );
+					$sortKeys[] = $dataValue->getDataItem()->getSortKey();
 
 					$valueIndex++;
 					$empty = false;
@@ -123,6 +125,10 @@ class SMWRecordValue extends AbstractMultiValue {
 		}
 
 		$this->m_dataitem = new DIContainer( $containerSemanticData );
+
+		// Composite sortkey is to ensure that Store::getPropertyValues can
+		// apply sorting during value selection
+		$this->m_dataitem->addCompositeSortKey( implode( ';', $sortKeys ) );
 	}
 
 	/**

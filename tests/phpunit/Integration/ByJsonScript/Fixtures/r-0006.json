@@ -102,7 +102,7 @@
 					"<property:HasTextNumberRecord rdf:resource=\"&wiki;Example/R0006/3-23_e594fde0f37d237549009d2ecebce80e\"/>",
 					"<property:Has_subobject rdf:resource=\"&wiki;Example/R0006/3-23A1\"/>",
 					"<property:Has_subobject rdf:resource=\"&wiki;Example/R0006/3-23A2\"/>",
-					"<property:Has_number rdf:datatype=\"http://www.w3.org/2001/XMLSchema#double\">123</property:Has_number>\n\t\t<property:Has_text rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Foo</property:Has_text>\n\t\t<swivt:wikiPageSortKey rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Example/R0006/3</swivt:wikiPageSortKey>",
+					"<property:Has_number rdf:datatype=\"http://www.w3.org/2001/XMLSchema#double\">123</property:Has_number>\n\t\t<property:Has_text rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Foo</property:Has_text>\n\t\t<swivt:wikiPageSortKey rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Example/R0006/3#Foo;123</swivt:wikiPageSortKey>",
 					"<property:HasTextNumberRecord rdf:resource=\"&wiki;Example/R0006/3-23_e594fde0f37d237549009d2ecebce80e\"/>\n\t\t<property:Has_number rdf:datatype=\"http://www.w3.org/2001/XMLSchema#double\">123</property:Has_number>",
 					"<property:HasTextNumberRecord rdf:resource=\"&wiki;Example/R0006/3-23_e594fde0f37d237549009d2ecebce80e\"/>\n\t\t<property:Has_number rdf:datatype=\"http://www.w3.org/2001/XMLSchema#double\">456</property:Has_number>"
 				]

@@ -4,6 +4,8 @@
  */
 
 use SMW\DataItemException;
+use SMW\DIProperty;
+use SMWDIBlob as DIBlob;
 
 /**
  * Subclass of SMWSemanticData that is used to store the data in SMWDIContainer
@@ -178,6 +180,18 @@ class SMWDIContainer extends SMWDataItem {
 
 	public function getSortKey() {
 		return '';
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $sortKey
+	 */
+	public function addCompositeSortKey( $sortKey ) {
+		$this->m_semanticData->addPropertyObjectValue(
+			new DIProperty( '_SKEY' ),
+			new DIBlob( $this->m_semanticData->getSubject()->getSortKey() . '#' . $sortKey )
+		);
 	}
 
 	public function getSerialization() {

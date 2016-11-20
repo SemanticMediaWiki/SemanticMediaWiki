@@ -141,6 +141,10 @@ class MonolingualTextValue extends AbstractMultiValue {
 		}
 
 		$this->m_dataitem = new DIContainer( $containerSemanticData );
+
+		// Composite sortkey is to ensure that Store::getPropertyValues can
+		// apply sorting during value selection
+		$this->m_dataitem->addCompositeSortKey( implode( ';', array( $text, $languageCode ) ) );
 	}
 
 	/**
