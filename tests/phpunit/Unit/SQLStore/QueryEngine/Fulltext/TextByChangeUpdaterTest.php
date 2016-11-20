@@ -112,7 +112,7 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$deferredRequestDispatchManager->expects( $this->once() )
-			->method( 'addSearchTableUpdateJobWith' )
+			->method( 'scheduleSearchTableUpdateJobWith' )
 			->with(
 				$this->anything(),
 				$this->equalTo( array( 'slot:id' => $this->slot ) ) );

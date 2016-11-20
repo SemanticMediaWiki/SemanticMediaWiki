@@ -46,7 +46,7 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 		$instance->isEnabledHttpDeferredRequest( $deferredJobRequestState );
 
 		$this->assertTrue(
-			$instance->dispatchJobRequestFor( $type, DIWikiPage::newFromText( __METHOD__ )->getTitle(), $parameters )
+			$instance->dispatchJobRequestWith( $type, DIWikiPage::newFromText( __METHOD__ )->getTitle(), $parameters )
 		);
 	}
 
@@ -68,7 +68,7 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 		$title = DIWikiPage::newFromText( __METHOD__ )->getTitle();
 
 		$this->assertTrue(
-			$instance->dispatchParserCachePurgeJobFor( $title, $parameters )
+			$instance->scheduleParserCachePurgeJobWith( $title, $parameters )
 		);
 	}
 
@@ -89,7 +89,7 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 		$instance->reset();
 
 		$this->assertNull(
-			$instance->dispatchJobRequestFor( $type, DIWikiPage::newFromText( __METHOD__ )->getTitle(), $parameters )
+			$instance->dispatchJobRequestWith( $type, DIWikiPage::newFromText( __METHOD__ )->getTitle(), $parameters )
 		);
 	}
 
@@ -106,7 +106,7 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$provider[] = array(
-			'SMW\SequentialCachePurgeJob',
+			'SMW\ChronologyPurgeJob',
 			true
 		);
 

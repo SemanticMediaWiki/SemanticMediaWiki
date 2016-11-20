@@ -115,8 +115,8 @@ class DeferredRequestDispatchManager {
 	 * @param Title $title
 	 * @param array $parameters
 	 */
-	public function dispatchParserCachePurgeJobFor( Title $title, $parameters = array() ) {
-		return $this->dispatchJobRequestFor( 'SMW\ParserCachePurgeJob', $title, $parameters );
+	public function scheduleParserCachePurgeJobWith( Title $title, $parameters = array() ) {
+		return $this->dispatchJobRequestWith( 'SMW\ParserCachePurgeJob', $title, $parameters );
 	}
 
 	/**
@@ -125,8 +125,8 @@ class DeferredRequestDispatchManager {
 	 * @param Title $title
 	 * @param array $parameters
 	 */
-	public function addSearchTableUpdateJobWith( Title $title, $parameters = array() ) {
-		return $this->dispatchJobRequestFor( 'SMW\SearchTableUpdateJob', $title, $parameters );
+	public function scheduleSearchTableUpdateJobWith( Title $title, $parameters = array() ) {
+		return $this->dispatchJobRequestWith( 'SMW\SearchTableUpdateJob', $title, $parameters );
 	}
 
 	/**
@@ -135,13 +135,13 @@ class DeferredRequestDispatchManager {
 	 * @param Title $title
 	 * @param array $parameters
 	 */
-	public function addSequentialCachePurgeJobWith( Title $title, $parameters = array() ) {
+	public function scheduleChronologyPurgeJobWith( Title $title, $parameters = array() ) {
 
 		if ( $parameters === array() || !isset( $parameters['slot:id'] ) || $parameters['slot:id'] === null ) {
 			return;
 		}
 
-		return $this->dispatchJobRequestFor( 'SMW\SequentialCachePurgeJob', $title, $parameters );
+		return $this->dispatchJobRequestWith( 'SMW\ChronologyPurgeJob', $title, $parameters );
 	}
 
 	/**
@@ -151,7 +151,7 @@ class DeferredRequestDispatchManager {
 	 * @param Title $title
 	 * @param array $parameters
 	 */
-	public function dispatchJobRequestFor( $type, Title $title, $parameters = array() ) {
+	public function dispatchJobRequestWith( $type, Title $title, $parameters = array() ) {
 
 		if ( !$this->isAllowedJobType( $type ) ) {
 			return null;
@@ -202,7 +202,7 @@ class DeferredRequestDispatchManager {
 			'SMW\ParserCachePurgeJob',
 			'SMW\UpdateJob',
 			'SMW\SearchTableUpdateJob',
-			'SMW\SequentialCachePurgeJob'
+			'SMW\ChronologyPurgeJob'
 		);
 
 		return in_array( $type, $allowedJobs );

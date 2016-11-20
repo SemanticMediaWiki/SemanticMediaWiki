@@ -527,7 +527,7 @@ class HookRegistry {
 				$entityIdListRelevanceDetectionFilter
 			);
 
-			$deferredRequestDispatchManager->dispatchParserCachePurgeJobFor(
+			$deferredRequestDispatchManager->scheduleParserCachePurgeJobWith(
 				$subject->getTitle(),
 				$jobParameters
 			);
@@ -547,7 +547,7 @@ class HookRegistry {
 			// Since we cannot predict as to when the slot is used and by whom,
 			// schedule a job to ensure to be the last in-line to clean-up
 			// any remaining slots for this transaction
-			$deferredRequestDispatchManager->addSequentialCachePurgeJobWith(
+			$deferredRequestDispatchManager->scheduleChronologyPurgeJobWith(
 				$subject->getTitle(),
 				array( 'slot:id' => $slot )
 			);

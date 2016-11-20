@@ -210,7 +210,7 @@ final class Setup {
 			'SMW\ParserCachePurgeJob' => 'SMW\MediaWiki\Jobs\ParserCachePurgeJob',
 			'SMW\SearchTableUpdateJob' => 'SMW\MediaWiki\Jobs\SearchTableUpdateJob',
 			'SMW\EntityIdDisposerJob' => 'SMW\MediaWiki\Jobs\EntityIdDisposerJob',
-			'SMW\SequentialCachePurgeJob' => 'SMW\MediaWiki\Jobs\SequentialCachePurgeJob',
+			'SMW\ChronologyPurgeJob' => 'SMW\MediaWiki\Jobs\ChronologyPurgeJob',
 
 			// Legacy definition to be removed with 1.10
 			'SMWUpdateJob'  => 'SMW\MediaWiki\Jobs\UpdateJob',

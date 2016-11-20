@@ -12,7 +12,7 @@ use Title;
  *
  * @author mwjames
  */
-class SequentialCachePurgeJob extends JobBase {
+class ChronologyPurgeJob extends JobBase {
 
 	/**
 	 * @since 2.5
@@ -21,7 +21,7 @@ class SequentialCachePurgeJob extends JobBase {
 	 * @param array $params job parameters
 	 */
 	public function __construct( Title $title, $params = array() ) {
-		parent::__construct( 'SMW\SequentialCachePurgeJob', $title, $params );
+		parent::__construct( 'SMW\ChronologyPurgeJob', $title, $params );
 	}
 
 	/**
