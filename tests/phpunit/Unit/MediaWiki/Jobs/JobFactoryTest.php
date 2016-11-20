@@ -78,8 +78,8 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$provider[] = array(
-			'SMW\SequentialCachePurgeJob',
-			'\SMW\MediaWiki\Jobs\SequentialCachePurgeJob'
+			'SMW\ChronologyPurgeJob',
+			'\SMW\MediaWiki\Jobs\ChronologyPurgeJob'
 		);
 
 		return $provider;
