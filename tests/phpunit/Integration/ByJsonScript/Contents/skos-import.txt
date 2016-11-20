@@ -1,0 +1,33 @@
+http://www.w3.org/2004/02/skos/core#|[http://www.w3.org/TR/skos-reference/skos.rdf Simple Knowledge Organization System (SKOS)]
+ altLabel|Type:Monolingual text
+ broader|Type:Annotation URI
+ broaderTransitive|Type:Annotation URI
+ broadMatch|Type:Annotation URI
+ changeNote|Type:Text
+ closeMatch|Type:Annotation URI
+ Collection|Class
+ Concept|Class
+ ConceptScheme|Class
+ definition|Type:Text
+ editorialNote|Type:Text
+ exactMatch|Type:Annotation URI
+ example|Type:Text
+ hasTopConcept|Type:Page
+ hiddenLabel|Type:String
+ historyNote|Type:Text
+ inScheme|Type:Page
+ mappingRelation|Type:Page
+ member|Type:Page
+ memberList|Type:Page
+ narrower|Type:Annotation URI
+ narrowerTransitive|Type:Annotation URI
+ narrowMatch|Type:Annotation URI
+ notation|Type:Text
+ note|Type:Text
+ OrderedCollection|Class
+ prefLabel|Type:String
+ related|Type:Annotation URI
+ relatedMatch|Type:Annotation URI
+ scopeNote|Type:Text
+ semanticRelation|Type:Page
+ topConceptOf|Type:Page
