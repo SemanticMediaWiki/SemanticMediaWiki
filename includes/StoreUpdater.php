@@ -171,11 +171,9 @@ class StoreUpdater {
 			$this->semanticData
 		);
 
-		$propertySpecificationChangeNotifier->setPropertiesToCompare(
+		$propertySpecificationChangeNotifier->compareWith(
 			$this->applicationFactory->getSettings()->get( 'smwgDeclarationProperties' )
 		);
-
-		$propertySpecificationChangeNotifier->compareForListedSpecification();
 	}
 
 	private function doRealUpdate() {
