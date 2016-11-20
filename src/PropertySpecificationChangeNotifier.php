@@ -33,11 +33,6 @@ class PropertySpecificationChangeNotifier {
 	private $hasDiff = false;
 
 	/**
-	 * @var array
-	 */
-	private $propertiesToCompare =  array();
-
-	/**
 	 * @since 1.9
 	 *
 	 * @param Store $store
@@ -46,18 +41,6 @@ class PropertySpecificationChangeNotifier {
 	public function __construct( Store $store, SemanticData $semanticData ) {
 		$this->store = $store;
 		$this->semanticData = $semanticData;
-	}
-
-	/**
-	 * Invoke properties (e.g '_PLIST', see $smwgDeclarationProperties ) to
-	 * compare and find a possible specification change
-	 *
-	 * @since 2.2
-	 *
-	 * @param array $declarationProperties
-	 */
-	public function setPropertiesToCompare( array $propertiesToCompare ) {
-		$this->propertiesToCompare = $propertiesToCompare;
 	}
 
 	/**
@@ -73,26 +56,31 @@ class PropertySpecificationChangeNotifier {
 	 * Compare and compute the difference between invoked semantic data
 	 * and the current store data
 	 *
+	 * @note Compare on extra properties from `smwgDeclarationProperties`
+	 * (e.g '_PLIST', see $ ) to find a possible specification change
+	 *
 	 * @since 1.9
+	 *
+	 * @param array $propertiesToCompare
 	 */
-	public function compareForListedSpecification() {
+	public function compareWith( array $propertiesToCompare ) {
 
 		if ( $this->semanticData->getSubject()->getNamespace() !== SMW_NS_PROPERTY ) {
 			return;
 		}
 
-		$this->compareFor( '_TYPE' );
-		$this->compareFor( '_CONV' );
-		$this->compareFor( '_UNIT' );
-		$this->compareFor( '_PREC' );
-		$this->compareFor( '_PDESC' );
+		$this->compareWithKey( '_TYPE' );
+		$this->compareWithKey( '_CONV' );
+		$this->compareWithKey( '_UNIT' );
+		$this->compareWithKey( '_PREC' );
+		$this->compareWithKey( '_PDESC' );
 
-		foreach ( $this->propertiesToCompare as $propertyKey ) {
-			$this->compareFor( $propertyKey );
+		foreach ( $propertiesToCompare as $propertyKey ) {
+			$this->compareWithKey( $propertyKey );
 		}
 	}
 
-	private function compareFor( $propertyKey ) {
+	private function compareWithKey( $propertyKey ) {
 
 		if ( $this->hasDiff() ) {
 			return;

@@ -117,9 +117,12 @@ class PropertySpecificationChangeNotifierTest extends \PHPUnit_Framework_TestCas
 			->method( 'getPropertyValues' )
 			->will( $this->returnValue( $dataValues ) );
 
-		$instance = new PropertySpecificationChangeNotifier( $store, $semanticData );
-		$instance->setPropertiesToCompare( $propertiesToCompare );
-		$instance->compareForListedSpecification();
+		$instance = new PropertySpecificationChangeNotifier(
+			$store,
+			$semanticData
+		);
+
+		$instance->compareWith( $propertiesToCompare );
 
 		$this->assertEquals(
 			$expected['diff'],
