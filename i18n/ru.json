@@ -23,7 +23,8 @@
 			"Mailman",
 			"Туллук",
 			"Irus",
-			"Kareyac"
+			"Kareyac",
+			"Zpizza"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -328,6 +329,8 @@
 	"smw-sp-admin-settings-button": "Создать список настроек",
 	"smw-sp-admin-idlookup-title": "Поиск ID объекта",
 	"smw-sp-admin-idlookup-docu": "Отображает сведения об идентификаторе внутреннего объекта, который представляет отдельные сущности (вики-страницу, подобъект и т.д.) в Семантической МедиаВики.",
+	"smw-sp-admin-iddispose-title": "Поиск ID удаление",
+	"smw-sp-admin-iddispose-docu": "Операция утилизации неограниченной и удалит внутренний идентификатор объекта от движка хранения при подтверждении. Пожалуйста, выполнить эту задачу с '''осторожностью''' и только после того, как [https://www.semantic-mediawiki.org/wiki/Help:Object_ID_disposal documentation] были проведены консультации.",
 	"smw-sp-admin-iddispose-done": "Идентификатор «$1» был удален из хранилища",
 	"smw-sp-admin-objectid": "Идентификатор объекта:",
 	"smw-livepreview-loading": "Загрузка…",

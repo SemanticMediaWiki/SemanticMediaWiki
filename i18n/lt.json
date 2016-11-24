@@ -130,6 +130,7 @@
 	"smw_result_next": "Paskesnis",
 	"smw_result_results": "Rezultatai",
 	"smw_result_noresults": "Nėra rezultatų.",
+	"smw-smwadmin-permission-missing": "Prieiga prie šio puslapio buvo užblokuota dėl teisių nebuvimo, prašome peržiūrėti [https://www.semantic-mediawiki.org/wiki/Help:Permissions teisių] pagalbinį puslapį, kur rasite informaciją apie reikiamus nustatymus.",
 	"smw_smwadmin_return": "Grįžti į $1",
 	"smw_smwadmin_updatestopped": "Visi egzistuojantys atnaujinimo procesai buvo sustabdyti.\n\nGrįžti į $1.",
 	"smw_smwadmin_announce": "Paskelbti savo viki",

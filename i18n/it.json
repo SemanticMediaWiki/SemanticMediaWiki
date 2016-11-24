@@ -204,6 +204,7 @@
 	"smw_result_results": "Risultati",
 	"smw_result_noresults": "Spiacenti, nessun risultato.",
 	"smwadmin": "Funzioni amministrative per Semantic MediaWiki",
+	"smw-smwadmin-permission-missing": "L'accesso a questa pagina è stato bloccato a causa di autorizzazioni mancanti, consulta la pagina di aiuto sulle [https://www.semantic-mediawiki.org/wiki/Help:Permissions autorizzazioni] per i dettagli sulle impostazioni necessarie.",
 	"smw_smwadmin_setupsuccess": "Il motore di storage è stato installato correttamente.",
 	"smw_smwadmin_return": "Torna a $1",
 	"smw_smwadmin_updatestarted": "È iniziato un nuovo processo di aggiornamento per ricaricare i dati semantici.\nTutti i dati registrati saranno ricostruiti o riparati se necessario.\nPuoi seguire i progressi dell'aggiornamento in questa pagina speciale.\n\nTorna a $1.",

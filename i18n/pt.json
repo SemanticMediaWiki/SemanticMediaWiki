@@ -285,6 +285,7 @@
 	"smw-sp-types_mlt_rec": "\"$1\" é um tipo de dados [https://www.semantic-mediawiki.org/wiki/Help:Container recipiente] (<i>container</i>) que associa um valor em texto a um [[Property:Language code|código de língua]] específico.",
 	"smw-sp-types-mlt-lcode": "O tipo de dados {{PLURAL:$2|necessita|não necessita}} de um código de língua (ou seja, uma anotação de valor sem um código de língua {{PLURAL:$2|não é|é}} aceite).",
 	"smw-pa-property-predefined_pdesc": "\"$1\" é uma propriedade predefinida que permite descrever uma propriedade no contexto de uma língua e é fornecida pelo [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-limitreport-intext-parsertime": "[SMW] Tempo de análise sintática das anotações no texto",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|segundo|segundos}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|segundo|segundos}}",
 	"smw-datavalue-wikipage-invalid-title": "O valor de entrada \"$1\" da página wiki contém caracteres inválidos ou está incompleto e pode provocar resultados inesperados numa consulta ou num processo de anotação.",
