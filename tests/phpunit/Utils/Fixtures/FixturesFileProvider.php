@@ -23,7 +23,7 @@ class FixturesFileProvider {
 	public function newDummyJsonFile( $desiredDestName ) {
 
 		$dummyFileCreator = new DummyFileCreator( $desiredDestName );
-		$dummyFileCreator->createFileByCopyContentOf( __DIR__ . '/File/' . 'LoremIpsum.json' );
+		$dummyFileCreator->createFileWithCopyFrom( __DIR__ . '/File/' . 'LoremIpsum.json' );
 
 		return $dummyFileCreator;
 	}
@@ -38,7 +38,7 @@ class FixturesFileProvider {
 	public function newDummyTextFile( $desiredDestName ) {
 
 		$dummyFileCreator = new DummyFileCreator( $desiredDestName );
-		$dummyFileCreator->createFileByCopyContentOf( __DIR__ . '/File/' . 'LoremIpsum.txt' );
+		$dummyFileCreator->createFileWithCopyFrom( __DIR__ . '/File/' . 'LoremIpsum.txt' );
 
 		return $dummyFileCreator;
 	}

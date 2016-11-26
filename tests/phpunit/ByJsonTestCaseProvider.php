@@ -49,11 +49,6 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 	/**
 	 * @var array
 	 */
-	private $settings = array();
-
-	/**
-	 * @var array
-	 */
 	private $itemsMarkedForDeletion = array();
 
 	/**
@@ -69,7 +64,7 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$utilityFactory = UtilityFactory::getInstance();
+		$utilityFactory = $this->testEnvironment->getUtilityFactory();
 		$utilityFactory->newMwHooksHandler()->deregisterListedHooks();
 		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
 
@@ -87,10 +82,10 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 	protected function tearDown() {
 
 		if ( $this->deletePagesOnTearDown ) {
-			UtilityFactory::getInstance()->newPageDeleter()->doDeletePoolOfPages( $this->itemsMarkedForDeletion );
+			$this->testEnvironment->flushPages( $this->itemsMarkedForDeletion );
 		}
 
-		$this->restoreSettingsBeforeLocalChange();
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -134,7 +129,10 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 
 		$provider = array();
 
-		$bulkFileProvider = UtilityFactory::getInstance()->newBulkFileProvider( $this->getTestCaseLocation() );
+		$bulkFileProvider = UtilityFactory::getInstance()->newBulkFileProvider(
+			$this->getTestCaseLocation()
+		);
+
 		$bulkFileProvider->searchByFileExtension( 'json' );
 
 		foreach ( $bulkFileProvider->getFiles() as $file ) {
@@ -145,21 +143,7 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 	}
 
 	protected function changeGlobalSettingTo( $key, $value ) {
-
-		if ( $key === '' || $value === '' ) {
-			return;
-		}
-
-		$this->settings[$key] = $GLOBALS[$key];
-		$GLOBALS[$key] = $value;
-		ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
-	}
-
-	protected function restoreSettingsBeforeLocalChange() {
-		foreach ( $this->settings as $key => $value ) {
-			$GLOBALS[$key] = $value;
-			ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
-		}
+		$this->testEnvironment->addConfiguration( $key, $value );
 	}
 
 	protected function checkEnvironmentToSkipCurrentTest( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
@@ -269,7 +253,7 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 
 	private function doUploadFile( $title, $contents ) {
 
-		$localFileUpload = UtilityFactory::getInstance()->newLocalFileUploadWithCopy(
+		$localFileUpload = $this->testEnvironment->getUtilityFactory()->newLocalFileUploadWithCopy(
 			$this->getTestCaseLocation() . $contents['file'],
 			$title->getText()
 		);
