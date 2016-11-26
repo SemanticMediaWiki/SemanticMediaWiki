@@ -243,11 +243,15 @@ class SMWInfolink {
 					if ( $outputformat == SMW_OUTPUT_WIKI ) {
 						$link = '[' . $title->getFullURL( self::encodeParameters( $this->mParams, false ) ) . " $this->mCaption]";
 					} else { // SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
+
+						// #511, requires an array
+						$query = wfCgiToArray( self::encodeParameters( $this->mParams, false ) );
+
 						$link = $this->getLinker( $linker )->link(
 							$title,
 							$this->mCaption,
 							array(),
-							self::encodeParameters( $this->mParams, false )
+							$query
 						);
 					}
 				} else {
