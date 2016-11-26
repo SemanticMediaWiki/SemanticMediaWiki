@@ -254,7 +254,7 @@ class SharedCallbackContainer implements CallbackContainer {
 		 * @var CachedQueryResultPrefetcher
 		 */
 		$callbackLoader->registerCallback( 'CachedQueryResultPrefetcher', function( $cacheType = null ) use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'CachedQueryResultPrefetcher', CachedQueryResultPrefetcher::class );
+			$callbackLoader->registerExpectedReturnType( 'CachedQueryResultPrefetcher', '\SMW\CachedQueryResultPrefetcher' );
 
 			$settings = $callbackLoader->load( 'Settings' );
 			$cacheType = $cacheType === null ? $settings->get( 'smwgQueryResultCacheType' ) : $cacheType;
@@ -280,7 +280,7 @@ class SharedCallbackContainer implements CallbackContainer {
 		 * @var CachedPropertyValuesPrefetcher
 		 */
 		$callbackLoader->registerCallback( 'CachedPropertyValuesPrefetcher', function( $cacheType = null, $ttl = 604800 ) use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'CachedPropertyValuesPrefetcher', CachedPropertyValuesPrefetcher::class );
+			$callbackLoader->registerExpectedReturnType( 'CachedPropertyValuesPrefetcher', '\SMW\CachedPropertyValuesPrefetcher' );
 
 			$cachedPropertyValuesPrefetcher = new CachedPropertyValuesPrefetcher(
 				$callbackLoader->load( 'Store' ),
