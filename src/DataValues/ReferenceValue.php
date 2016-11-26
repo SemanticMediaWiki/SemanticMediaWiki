@@ -185,6 +185,7 @@ class ReferenceValue extends AbstractMultiValue {
 		}
 
 		$containerSemanticData = $this->newContainerSemanticData( $value );
+		$sortKeys = array();
 
 		$values = $this->getValuesFromString( $value );
 		$index = 0; // index in value array
@@ -211,6 +212,7 @@ class ReferenceValue extends AbstractMultiValue {
 
 				if ( $dataValue->isValid() ) { // valid DV: keep
 					$containerSemanticData->addPropertyObjectValue( $property, $dataValue->getDataItem() );
+					$sortKeys[] = $dataValue->getDataItem()->getSortKey();
 
 					$index++;
 					$empty = false;
@@ -228,6 +230,10 @@ class ReferenceValue extends AbstractMultiValue {
 		}
 
 		$this->m_dataitem = new DIContainer( $containerSemanticData );
+
+		// Composite sortkey is to ensure that Store::getPropertyValues can
+		// apply sorting during value selection
+		$this->m_dataitem->addCompositeSortKey( implode( ';', $sortKeys ) );
 	}
 
 	/**

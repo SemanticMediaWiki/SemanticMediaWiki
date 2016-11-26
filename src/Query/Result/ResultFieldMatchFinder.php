@@ -10,6 +10,7 @@ use SMW\DIWikiPage;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWDIBoolean as DIBoolean;
+use SMW\DataValues\MonolingualTextValue;
 
 /**
  * Returns the result content (DI objects) for a single PrintRequest represented
@@ -114,43 +115,7 @@ class ResultFieldMatchFinder {
 
 		// Request all property values of a certain attribute of the current element.
 		if ( $this->printRequest->isMode( PrintRequest::PRINT_PROP ) || $this->printRequest->isMode( PrintRequest::PRINT_CHAIN ) ) {
-
-			$content = $this->getResultContent(
-				$dataItem
-			);
-
-			if ( !$this->isMultiValueWithIndex() ) {
-				return $content;
-			}
-
-			// Print one component of a multi-valued string.
-			// Known limitation: the printrequest still is of type _rec, so if printers check
-			// for this then they will not recognize that it returns some more concrete type.
-
-			if ( $this->printRequest->isMode( PrintRequest::PRINT_CHAIN ) ) {
-				$propertyValue = $this->printRequest->getData()->getLastPropertyChainValue();
-			} else {
-				$propertyValue = $this->printRequest->getData();
-			}
-
-			$index = $this->printRequest->getParameter( 'index' );
-			$newcontent = array();
-
-			foreach ( $content as $diContainer ) {
-
-				/* SMWRecordValue */
-				$recordValue = DataValueFactory::getInstance()->newDataValueByItem(
-					$diContainer,
-					$propertyValue->getDataItem()
-				);
-
-				if ( ( $dataItemByRecord = $recordValue->getDataItemByIndex( $index ) ) !== null ) {
-					$newcontent[] = $dataItemByRecord;
-				}
-			}
-
-			$content = $newcontent;
-			unset( $newcontent );
+			return $this->getResultsForProperty( $dataItem );
 		}
 
 		return $content;
@@ -191,8 +156,64 @@ class ResultFieldMatchFinder {
 		return $options;
 	}
 
-	private function isMultiValueWithIndex() {
-		return strpos( $this->printRequest->getTypeID(), '_rec' ) !== false && $this->printRequest->getParameter( 'index' ) !== false;
+	private function getResultsForProperty( $dataItem ) {
+
+		$content = $this->getResultContent(
+			$dataItem
+		);
+
+		if ( !$this->isMultiValueWithParameter( 'index' ) && !$this->isMultiValueWithParameter( 'lang' ) ) {
+			return $content;
+		}
+
+		// Print one component of a multi-valued string.
+		//
+		// Known limitation: the printrequest still is of type _rec, so if
+		// printers check for this then they will not recognize that it returns
+		// some more concrete type.
+		if ( $this->printRequest->isMode( PrintRequest::PRINT_CHAIN ) ) {
+			$propertyValue = $this->printRequest->getData()->getLastPropertyChainValue();
+		} else {
+			$propertyValue = $this->printRequest->getData();
+		}
+
+		$index = $this->printRequest->getParameter( 'index' );
+		$lang = $this->printRequest->getParameter( 'lang' );
+		$newcontent = array();
+
+		// Replace content with specific content from a Container/MultiValue
+		foreach ( $content as $diContainer ) {
+
+			/* AbstractMultiValue */
+			$multiValue = DataValueFactory::getInstance()->newDataValueByItem(
+				$diContainer,
+				$propertyValue->getDataItem()
+			);
+
+			if ( $multiValue instanceof MonolingualTextValue && $lang !== false && ( $textValue = $multiValue->getTextValueByLanguage( $lang ) ) !== null ) {
+
+				// Return the text representation without a language reference
+				// (tag) since the value has been filtered hence only matches
+				// that language
+				$newcontent[] = $textValue->getDataItem();
+
+				// Set the index so ResultArray::getNextDataValue can
+				// find the correct PropertyDataItem (_TEXT;_LCODE) position
+				// to match the DI
+				$this->printRequest->setParameter( 'index', 1 );
+			} elseif ( ( $dataItemByRecord = $multiValue->getDataItemByIndex( $index ) ) !== null ) {
+				$newcontent[] = $dataItemByRecord;
+			}
+		}
+
+		$content = $newcontent;
+		unset( $newcontent );
+
+		return $content;
+	}
+
+	private function isMultiValueWithParameter( $parameter ) {
+		return strpos( $this->printRequest->getTypeID(), '_rec' ) !== false && $this->printRequest->getParameter( $parameter ) !== false;
 	}
 
 	private function getResultContent( DataItem $dataItem ) {

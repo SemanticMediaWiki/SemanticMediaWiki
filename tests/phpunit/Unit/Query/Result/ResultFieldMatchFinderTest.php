@@ -197,6 +197,10 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->with($this->equalTo( PrintRequest::PRINT_PROP ) )
 			->will( $this->returnValue( true ) );
 
+		$printRequest->expects( $this->any() )
+			->method( 'getParameter' )
+			->will( $this->returnValue( false ) );
+
 		$printRequest->expects( $this->once() )
 			->method( 'getData' )
 			->will( $this->returnValue( $this->dataValueFactory->newPropertyValueByLabel( 'Prop' ) ) );
