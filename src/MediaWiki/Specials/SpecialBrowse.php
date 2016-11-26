@@ -108,7 +108,7 @@ class SpecialBrowse extends SpecialPage {
 				array(
 					'class' => 'smw-callout smw-callout-error'
 				),
-				Message::get( array( 'smw-browse-invalid-subject', $error ) )
+				Message::get( array( 'smw-browse-invalid-subject', $error ), Message::ESCAPED )
 			);
 
 			return $html . HtmlContentBuilder::getPageSearchQuickForm();
