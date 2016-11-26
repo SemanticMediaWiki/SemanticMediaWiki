@@ -112,7 +112,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 
 		if ( $value === '' ) {
-			return $this->addErrorMsg( array( 'smw-datavalue-wikipage-empty' ) );
+			return $this->addErrorMsg( array( 'smw-datavalue-wikipage-empty' ), Message::ESCAPED );
 		}
 
 		// #1701 If the DV is part of a Description and an approximate search
