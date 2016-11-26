@@ -81,6 +81,10 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
 
+		$this->store->expects( $this->any() )
+			->method( 'getOptions' )
+			->will( $this->returnValue( new \SMW\Options() ) );
+
 		$instance = new SMWSQLStore3Writers( $this->store );
 		$instance->deleteSubject( $title );
 	}
@@ -133,6 +137,10 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->exactly( 4 ) )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getOptions' )
+			->will( $this->returnValue( new \SMW\Options() ) );
 
 		$instance = new SMWSQLStore3Writers( $this->store );
 		$instance->deleteSubject( $title );

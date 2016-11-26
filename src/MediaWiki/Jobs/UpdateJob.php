@@ -154,6 +154,18 @@ class UpdateJob extends JobBase {
 		// TODO
 		// Rebuild the factbox
 
+		// Signal to succeeding processes that the update was
+		// run from the CommandLine/JobQueue
+		$this->applicationFactory->getStore()->getOptions()->set(
+			'isCommandLineMode',
+			true
+		);
+
+		$this->applicationFactory->getStore()->getOptions()->set(
+			'isFromJob',
+			true
+		);
+
 		$parserData->disableBackgroundUpdateJobs();
 		$parserData->updateStore();
 
