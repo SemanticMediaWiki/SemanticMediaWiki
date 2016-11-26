@@ -161,36 +161,38 @@ class TransientStatsdCollector {
 
 	private function recordStats() {
 
-		$container = $this->blobStore->read(
-			md5( $this->statsdId . self::VERSION )
-		);
+		return function() {
 
-		foreach ( $this->stats as $key => $value ) {
+			$container = $this->blobStore->read(
+				md5( $this->statsdId . self::VERSION )
+			);
 
-			$old = $container->has( $key ) ? $container->get( $key ) : 0;
+			foreach ( $this->stats as $key => $value ) {
 
-			if ( $this->operations[$key] === self::STATS_INIT && $old != 0 ) {
-				$value = $old;
+				$old = $container->has( $key ) ? $container->get( $key ) : 0;
+
+				if ( $this->operations[$key] === self::STATS_INIT && $old != 0 ) {
+					$value = $old;
+				}
+
+				if ( $this->operations[$key] === self::STATS_INCR ) {
+					$value = $old + $value;
+				}
+
+				// Use as-is
+				// $this->operations[$key] === self::STATS_SET
+
+				if ( $this->operations[$key] === self::STATS_MEDIAN ) {
+					$value = $old > 0 ? ( $old + $value ) / 2 : $value;
+				}
+
+				$container->set( $key, $value );
 			}
 
-			if ( $this->operations[$key] === self::STATS_INCR ) {
-				$value = $old + $value;
-			}
-
-			if ( $this->operations[$key] === self::STATS_SET ) {
-				$value = $value;
-			}
-
-			if ( $this->operations[$key] === self::STATS_MEDIAN ) {
-				$value = $old > 0 ? ( $old + $value ) / 2 : $value;
-			}
-
-			$container->set( $key, $value );
-		}
-
-		$this->blobStore->save(
-			$container
-		);
+			$this->blobStore->save(
+				$container
+			);
+		};
 	}
 
 	// http://stackoverflow.com/questions/10123604/multstatsdIdimensional-array-from-string
@@ -217,7 +219,7 @@ class TransientStatsdCollector {
 	 */
 	function __destruct() {
 		if ( $this->shouldRecord ) {
-			$this->recordStats();
+			call_user_func( $this->recordStats() );
 		}
 	}
 
