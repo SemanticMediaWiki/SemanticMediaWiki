@@ -28,7 +28,7 @@ use SpecialPageFactory;
  * @covers \SMW\SpecialConcepts
  * @covers \SMW\SpecialPage
  * @covers SMWAskPage
- * @covers SMWAdmin
+ * @covers \SMW\MediaWiki\Specials\SpecialAdmin
  * @covers \SMW\MediaWiki\Specials\SpecialBrowse
  * @covers \SMW\MediaWiki\Specials\SpecialSearchByProperty
  *
