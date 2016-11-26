@@ -91,6 +91,10 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
 
+		$parentStore->expects( $this->any() )
+			->method( 'getOptions' )
+			->will( $this->returnValue( new \SMW\Options() ) );
+
 		$instance = new SMWSQLStore3Writers( $parentStore );
 		$instance->doDataUpdate( $semanticData );
 	}
@@ -156,6 +160,10 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
 
+		$parentStore->expects( $this->any() )
+			->method( 'getOptions' )
+			->will( $this->returnValue( new \SMW\Options() ) );
+
 		$instance = new SMWSQLStore3Writers( $parentStore );
 		$instance->doDataUpdate( $semanticData );
 	}
@@ -212,6 +220,10 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 		$parentStore->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
+
+		$parentStore->expects( $this->any() )
+			->method( 'getOptions' )
+			->will( $this->returnValue( new \SMW\Options() ) );
 
 		$instance = new SMWSQLStore3Writers( $parentStore );
 		$instance->doDataUpdate( $semanticData );
@@ -275,6 +287,10 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 		$parentStore->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
+
+		$parentStore->expects( $this->any() )
+			->method( 'getOptions' )
+			->will( $this->returnValue( new \SMW\Options() ) );
 
 		$instance = new SMWSQLStore3Writers( $parentStore );
 		$instance->doDataUpdate( $semanticData );

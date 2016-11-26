@@ -884,6 +884,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
+		$store->expects( $this->any() )
+			->method( 'getOptions' )
+			->will( $this->returnValue( new \SMW\Options() ) );
+
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
