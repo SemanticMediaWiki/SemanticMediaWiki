@@ -5,7 +5,7 @@ namespace SMW\SQLStore\EntityStore\DIHandlers;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
 use SMW\SQLStore\EntityStore\DataItemHandler;
-use SMW\SQLStore\EntityStore\Exceptions\DataItemHandlerException;
+use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMWDIBlob as DIBlob;
 use SMW\SQLStore\TableBuilder\FieldType;
 

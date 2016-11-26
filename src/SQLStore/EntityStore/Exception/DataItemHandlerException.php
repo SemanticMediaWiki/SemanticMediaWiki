@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\SQLStore\EntityStore\Exceptions;
+namespace SMW\SQLStore\EntityStore\Exception;
 
 use RuntimeException;
 

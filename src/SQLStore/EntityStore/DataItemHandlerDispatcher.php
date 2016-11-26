@@ -12,7 +12,7 @@ use SMW\SQLStore\EntityStore\DIHandlers\DIUriHandler;
 use SMW\SQLStore\EntityStore\DIHandlers\DIWikiPageHandler;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
-use SMW\SQLStore\EntityStore\Exceptions\DataItemHandlerException;
+use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 
 /**
  * @license GNU GPL v2+

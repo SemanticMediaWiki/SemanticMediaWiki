@@ -4,7 +4,7 @@ use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\StoreFactory;
-use SMW\SQLStore\EntityStore\Exceptions\DataItemHandlerException;
+use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 
 /**
  * This class provides a subclass of SMWSemanticData that can store

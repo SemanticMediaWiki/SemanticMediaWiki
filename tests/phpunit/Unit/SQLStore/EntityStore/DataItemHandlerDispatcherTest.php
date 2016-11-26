@@ -56,7 +56,7 @@ class DataItemHandlerDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataItemHandlerDispatcher( $store );
 
-		$this->setExpectedException( 'SMW\SQLStore\EntityStore\Exceptions\DataItemHandlerException' );
+		$this->setExpectedException( 'SMW\SQLStore\EntityStore\Exception\DataItemHandlerException' );
 		$instance->getHandlerByType( $type );
 	}
 
