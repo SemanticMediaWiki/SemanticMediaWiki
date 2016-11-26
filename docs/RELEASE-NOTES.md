@@ -47,6 +47,8 @@ THIS IS NOT A RELEASE YET
 * #2007
 * #2024
 * #2027
+* #2036
+* #2037
 
 ## Bug fixes
 
