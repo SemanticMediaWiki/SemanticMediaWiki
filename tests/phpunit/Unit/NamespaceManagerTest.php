@@ -92,7 +92,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertCount(
-			4,
+			6,
 			$result
 		);
 	}
