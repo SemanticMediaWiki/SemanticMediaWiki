@@ -42,24 +42,24 @@ class LinkSection {
 	 * @return string
 	 */
 	public function getForm() {
-		$html =	Html::rawElement( 'h2', array(), Message::get( array( 'smw-smwadmin-information-section-title' ), Message::TEXT, Message::USER_LANGUAGE ) );
-		$html .= Html::rawElement( 'p', array(), Message::get( array( 'smw-smwadmin-information-section-intro' ), Message::TEXT, Message::USER_LANGUAGE ) );
-		$html .= Html::rawElement( 'div', array( 'class' => 'smw-column-twofold-responsive' ),
+		$html =	Html::rawElement( 'h2', array(), $this->getMessage( array( 'smw-smwadmin-information-section-title' ) ) );
+		$html .= Html::rawElement( 'p', array(), $this->getMessage( array( 'smw-smwadmin-information-section-intro' ) ) );
+		$html .= Html::rawElement( 'div', array( 'class' => 'smw-admin-supplementary-linksection' ),
 			Html::rawElement( 'ul', array(),
 				Html::rawElement(
 					'li',
 					array(),
-					Message::get( array( 'smw-smwadmin-operational-statistics-intro', $this->outputFormatter->getSpecialPageLinkWith( Message::get( 'smw-smwadmin-operational-statistics-title' ), array( 'action' => 'stats' ) ) ), Message::TEXT, Message::USER_LANGUAGE )
+					$this->getMessage( array( 'smw-smwadmin-operational-statistics-intro', $this->outputFormatter->getSpecialPageLinkWith( $this->getMessage( 'smw-smwadmin-operational-statistics-title' ), array( 'action' => 'stats' ) ) ) )
 				) .
 				Html::rawElement(
 					'li',
 					array(),
-					Message::get( array( 'smw-smwadmin-settings-intro', $this->outputFormatter->getSpecialPageLinkWith( Message::get( 'smw-smwadmin-settings-title' ), array( 'action' => 'settings' ) ) ), Message::TEXT, Message::USER_LANGUAGE )
+					$this->getMessage( array( 'smw-smwadmin-settings-intro', $this->outputFormatter->getSpecialPageLinkWith( $this->getMessage( 'smw-smwadmin-settings-title' ), array( 'action' => 'settings' ) ) ) )
 				) .
 				Html::rawElement(
 					'li',
 					array(),
-					Message::get( array( 'smw-smwadmin-idlookup-intro', $this->outputFormatter->getSpecialPageLinkWith( Message::get( 'smw-smwadmin-idlookup-title' ), array( 'action' => 'idlookup' ) ) ), Message::TEXT, Message::USER_LANGUAGE )
+					$this->getMessage( array( 'smw-smwadmin-idlookup-intro', $this->outputFormatter->getSpecialPageLinkWith( $this->getMessage( 'smw-smwadmin-idlookup-title' ), array( 'action' => 'idlookup' ) ) ) )
 				)
 			)
 		);
@@ -72,11 +72,11 @@ class LinkSection {
 	 */
 	public function outputConfigurationList() {
 
-		$this->outputFormatter->setPageTitle( Message::get( 'smw-smwadmin-settings-title', Message::TEXT, Message::USER_LANGUAGE ) );
+		$this->outputFormatter->setPageTitle( $this->getMessage( 'smw-smwadmin-settings-title' ) );
 		$this->outputFormatter->addParentLink();
 
 		$this->outputFormatter->addHtml(
-			Html::rawElement( 'p', array(), Message::get( 'smw-sp-admin-settings-docu', Message::PARSE, Message::USER_LANGUAGE ) )
+			Html::rawElement( 'p', array(), $this->getMessage( 'smw-sp-admin-settings-docu', Message::PARSE ) )
 		);
 
 		$this->outputFormatter->addHtml(
@@ -93,17 +93,17 @@ class LinkSection {
 	 */
 	public function outputStatistics() {
 
-		$this->outputFormatter->setPageTitle( 'Statistics' );
+		$this->outputFormatter->setPageTitle( $this->getMessage( 'smw-smwadmin-operational-statistics-title' ) );
 		$this->outputFormatter->addParentLink();
 
 		$semanticStatistics = ApplicationFactory::getInstance()->getStore()->getStatistics();
 
 		$this->outputFormatter->addHTML(
-			Html::rawElement( 'p', array(), Message::get( array( 'smw-smwadmin-operational-statistics' ), Message::PARSE, Message::USER_LANGUAGE ) )
+			Html::rawElement( 'p', array(), $this->getMessage( array( 'smw-smwadmin-operational-statistics' ), Message::PARSE ) )
 		);
 
 		$this->outputFormatter->addHTML(
-			Html::element( 'h2', array(),  Message::get( 'semanticstatistics', Message::TEXT, Message::USER_LANGUAGE ) )
+			Html::element( 'h2', array(), $this->getMessage( 'semanticstatistics' ) )
 		);
 
 		$this->outputFormatter->addHTML( '<pre>' . $this->outputFormatter->encodeAsJson(
@@ -121,23 +121,26 @@ class LinkSection {
 		);
 
 		$this->outputFormatter->addHTML(
-			Html::element( 'h2', array(),  Message::get( 'smw-smwadmin-statistics-querycache-title', Message::TEXT, Message::USER_LANGUAGE ) )
+			Html::element( 'h2', array(),  $this->getMessage( 'smw-smwadmin-statistics-querycache-title' ) )
 		);
 
 		$cachedQueryResultPrefetcher = ApplicationFactory::getInstance()->singleton( 'CachedQueryResultPrefetcher' );
 
 		if ( !$cachedQueryResultPrefetcher->isEnabled() ) {
 			return $this->outputFormatter->addHTML(
-				Html::rawElement( 'p', array(), Message::get( array( 'smw-smwadmin-statistics-querycache-disabled' ), Message::PARSE, Message::USER_LANGUAGE ) )
+				Html::rawElement( 'p', array(), $this->getMessage( array( 'smw-smwadmin-statistics-querycache-disabled' ), Message::PARSE ) )
 			);
 		}
 
 		$this->outputFormatter->addHTML(
-			Html::rawElement( 'p', array(), Message::get( array( 'smw-smwadmin-statistics-querycache-explain' ), Message::PARSE, Message::USER_LANGUAGE ) )
+			Html::rawElement( 'p', array(), $this->getMessage( array( 'smw-smwadmin-statistics-querycache-explain' ), Message::PARSE ) )
 		);
 
 		$this->outputFormatter->addHTML( '<pre>' . $this->outputFormatter->encodeAsJson( $cachedQueryResultPrefetcher->getStats() ) . '</pre>' );
+	}
 
+	private function getMessage( $key, $type = Message::TEXT ) {
+		return Message::get( $key, $type, Message::USER_LANGUAGE );
 	}
 
 }

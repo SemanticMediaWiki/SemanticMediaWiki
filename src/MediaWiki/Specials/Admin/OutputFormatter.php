@@ -129,7 +129,7 @@ class OutputFormatter {
 			Html::rawElement(
 				'a',
 				array( 'href' => \SpecialPage::getTitleFor( 'SMWAdmin')->getFullURL() ),
-				'Administrative functions'
+				Message::get( 'smwadmin', Message::TEXT, Message::USER_LANGUAGE )
 		) );
 	}
 

@@ -110,6 +110,8 @@ class Settings extends Options {
 			'smwgAdminRefreshStore' => $GLOBALS['smwgAdminRefreshStore'],
 			'smwgAutocompleteInSpecialAsk' => $GLOBALS['smwgAutocompleteInSpecialAsk'],
 			'smwgAutoRefreshSubject' => $GLOBALS['smwgAutoRefreshSubject'],
+			'smwgAdminSetupStore' => $GLOBALS['smwgAdminSetupStore'],
+			'smwgAdminIdDisposal' => $GLOBALS['smwgAdminIdDisposal'],
 			'smwgAutoRefreshOnPurge' => $GLOBALS['smwgAutoRefreshOnPurge'],
 			'smwgAutoRefreshOnPageMove' => $GLOBALS['smwgAutoRefreshOnPageMove'],
 			'smwgContLang' => isset( $GLOBALS['smwgContLang'] ) ? $GLOBALS['smwgContLang'] : '',

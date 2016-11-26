@@ -80,8 +80,13 @@ class DataRepairSection {
 			->setName( 'refreshwiki' )
 			->setMethod( 'post' )
 			->addHiddenField( 'action', 'refreshstore' )
-			->addHeader( 'h2', Message::get( 'smw_smwadmin_datarefresh', Message::TEXT, Message::USER_LANGUAGE ) )
-			->addParagraph( Message::get( 'smw_smwadmin_datarefreshdocu', Message::TEXT, Message::USER_LANGUAGE ) );
+			->addHeader( 'h2', $this->getMessage( 'smw_smwadmin_datarefresh' ) );
+
+		if ( !$this->enabledRefreshStore ) {
+			$this->htmlFormRenderer->addParagraph( $this->getMessage( 'smw-smwadmin-datarefresh-disabled' ) );
+		} else {
+			$this->htmlFormRenderer->addParagraph( $this->getMessage( 'smw_smwadmin_datarefreshdocu' ) );
+		}
 
 		if ( $refreshjob !== null ) {
 			$prog = $refreshjob->getProgress();
@@ -93,15 +98,15 @@ class DataRepairSection {
 			);
 
 			$this->htmlFormRenderer
-				->addParagraph( Message::get( 'smw_smwadmin_datarefreshprogress' ) )
+				->addParagraph( $this->getMessage( 'smw_smwadmin_datarefreshprogress' ) )
 				->addParagraph( $progressBar . '&#160;' . round( $prog * 100, 4 ) . '%' )
 				->addLineBreak();
 
 			if ( $this->enabledRefreshStore ) {
 				$this->htmlFormRenderer
-					->addSubmitButton( Message::get( 'smw_smwadmin_datarefreshstop', Message::TEXT, Message::USER_LANGUAGE ) )
+					->addSubmitButton( $this->getMessage( 'smw_smwadmin_datarefreshstop' ) )
 					->addCheckbox(
-						Message::get( 'smw_smwadmin_datarefreshstopconfirm', Message::ESCAPED, Message::USER_LANGUAGE ),
+						$this->getMessage( 'smw_smwadmin_datarefreshstopconfirm' ),
 						'rfsure',
 						'stop'
 					);
@@ -110,7 +115,7 @@ class DataRepairSection {
 		} elseif ( $this->enabledRefreshStore ) {
 			$this->htmlFormRenderer
 				->addHiddenField( 'rfsure', 'yes' )
-				->addSubmitButton( Message::get( 'smw_smwadmin_datarefreshbutton', Message::TEXT, Message::USER_LANGUAGE ) );
+				->addSubmitButton( $this->getMessage( 'smw_smwadmin_datarefreshbutton' ) );
 		}
 
 		return $this->htmlFormRenderer->getForm() . Html::element( 'p', array(), '' );
@@ -123,7 +128,7 @@ class DataRepairSection {
 	 */
 	public function doRefresh( WebRequest $webRequest ) {
 
-		$this->outputFormatter->setPageTitle( Message::get( 'smw_smwadmin_datarefresh', Message::TEXT, Message::USER_LANGUAGE ) );
+		$this->outputFormatter->setPageTitle( $this->getMessage( 'smw_smwadmin_datarefresh' ) );
 		$this->outputFormatter->addParentLink();
 
 		if ( !$this->enabledRefreshStore ) {
@@ -163,8 +168,12 @@ class DataRepairSection {
 		}
 	}
 
+	private function getMessage( $key, $type = Message::TEXT ) {
+		return Message::get( $key, $type, Message::USER_LANGUAGE );
+	}
+
 	private function outputMessage( $message ) {
-		$this->outputFormatter->addHTML( '<p>' . Message::get( $message, Message::TEXT, Message::USER_LANGUAGE ) . '</p>' );
+		$this->outputFormatter->addHTML( '<p>' . $this->getMessage( $message ) . '</p>' );
 	}
 
 	private function getRefreshJob() {

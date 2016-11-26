@@ -98,6 +98,7 @@ class TableSchemaUpdaterSectionTest extends \PHPUnit_Framework_TestCase {
 			$this->outputFormatter
 		);
 
+		$instance->enabledSetupStore( true );
 		$instance->doUpdate( $webRequest );
 	}
 
