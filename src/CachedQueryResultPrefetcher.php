@@ -124,6 +124,22 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 			return $key !== false;
 		} );
 
+		if ( !isset( $stats['misses'] ) || ! isset( $stats['hits'] ) ) {
+			return $stats;
+		}
+
+		// hits.embedded + hits.nonEmbedded
+		$hits = array_sum( $stats['hits'] );
+		$stats['ratio'] = array();
+
+		$stats['ratio']['hit'] = $hits > 0 ? round( $hits / ( $hits + $stats['misses'] ), 4 ) : 0;
+		$stats['ratio']['miss'] = $hits > 0 ? round( 1 - $stats['ratio']['hit'], 4 ) : 0;
+
+		// Move to last
+		$meta = $stats['meta'];
+		unset( $stats['meta'] );
+		$stats['meta'] = $meta;
+
 		return $stats;
 	}
 
