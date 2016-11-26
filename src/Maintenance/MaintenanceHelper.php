@@ -2,6 +2,8 @@
 
 namespace SMW\Maintenance;
 
+use SMW\ApplicationFactory;
+
 /**
  * @license GNU GPL v2+
  * @since 2.2
@@ -80,6 +82,7 @@ class MaintenanceHelper {
 
 		$this->globals[$key] = $GLOBALS[$key];
 		$GLOBALS[$key] = $value;
+		ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
 	}
 
 	/**
@@ -89,6 +92,7 @@ class MaintenanceHelper {
 
 		foreach ( $this->globals as $key => $value ) {
 			$GLOBALS[$key] = $value;
+			ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
 		}
 
 		$this->runtime['start'] = 0;

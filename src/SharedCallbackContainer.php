@@ -275,7 +275,15 @@ class SharedCallbackContainer implements CallbackContainer {
 			$cachedQueryResultPrefetcher = new CachedQueryResultPrefetcher(
 				$callbackLoader->load( 'Store' ),
 				$callbackLoader->singleton( 'QueryFactory' ),
-				$callbackLoader->create( 'BlobStore', CachedQueryResultPrefetcher::CACHE_NAMESPACE, $cacheType, $settings->get( 'smwgQueryResultCacheLifetime' ) )
+				$callbackLoader->create(
+					'BlobStore',
+					CachedQueryResultPrefetcher::CACHE_NAMESPACE, $cacheType,
+					$settings->get( 'smwgQueryResultCacheLifetime' )
+				),
+				$callbackLoader->create(
+					'TransientStatsdCollector',
+					CachedQueryResultPrefetcher::STATSD_ID
+				)
 			);
 
 			$cachedQueryResultPrefetcher->setLogger(
@@ -301,6 +309,24 @@ class SharedCallbackContainer implements CallbackContainer {
 			);
 
 			return $cachedPropertyValuesPrefetcher;
+		} );
+
+		/**
+		 * @var TransientStatsdCollector
+		 */
+		$callbackLoader->registerCallback( 'TransientStatsdCollector', function( $id ) use ( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'TransientStatsdCollector', '\SMW\TransientStatsdCollector' );
+
+			// Explicitly use the DB to access a SqlBagOstuff instance
+			$cacheType = CACHE_DB;
+			$ttl = 0;
+
+			$transientStatsdCollector = new TransientStatsdCollector(
+				$callbackLoader->load( 'BlobStore', TransientStatsdCollector::CACHE_NAMESPACE, $cacheType, $ttl ),
+				$id
+			);
+
+			return $transientStatsdCollector;
 		} );
 
 		/**

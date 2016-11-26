@@ -119,6 +119,25 @@ class LinkSection {
 				'concepts' => $semanticStatistics['CONCEPTS'],
 			) ) . '</pre>'
 		);
+
+		$this->outputFormatter->addHTML(
+			Html::element( 'h2', array(),  Message::get( 'smw-smwadmin-statistics-querycache-title', Message::TEXT, Message::USER_LANGUAGE ) )
+		);
+
+		$cachedQueryResultPrefetcher = ApplicationFactory::getInstance()->singleton( 'CachedQueryResultPrefetcher' );
+
+		if ( !$cachedQueryResultPrefetcher->isEnabled() ) {
+			return $this->outputFormatter->addHTML(
+				Html::rawElement( 'p', array(), Message::get( array( 'smw-smwadmin-statistics-querycache-disabled' ), Message::PARSE, Message::USER_LANGUAGE ) )
+			);
+		}
+
+		$this->outputFormatter->addHTML(
+			Html::rawElement( 'p', array(), Message::get( array( 'smw-smwadmin-statistics-querycache-explain' ), Message::PARSE, Message::USER_LANGUAGE ) )
+		);
+
+		$this->outputFormatter->addHTML( '<pre>' . $this->outputFormatter->encodeAsJson( $cachedQueryResultPrefetcher->getStats() ) . '</pre>' );
+
 	}
 
 }

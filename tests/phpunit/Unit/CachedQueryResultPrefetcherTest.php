@@ -4,6 +4,7 @@ namespace SMW\Tests;
 
 use SMW\CachedQueryResultPrefetcher;
 use SMW\DIWikiPage;
+use SMW\TransientStatsdCollector;
 use Onoi\BlobStore\BlobStore;
 
 /**
@@ -17,39 +18,39 @@ use Onoi\BlobStore\BlobStore;
  */
 class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 
-	public function testCanConstruct() {
+	private $store;
+	private $queryFactory;
+	private $blobStore;
+	private $transientStatsdCollector;
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+	protected function setUp() {
+
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$queryFactory = $this->getMockBuilder( '\SMW\QueryFactory' )
+		$this->queryFactory = $this->getMockBuilder( '\SMW\QueryFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$blobStore = $this->getMockBuilder( BlobStore::class )
+		$this->blobStore = $this->getMockBuilder( BlobStore::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->transientStatsdCollector = $this->getMockBuilder( TransientStatsdCollector::class )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
+	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			CachedQueryResultPrefetcher::class,
-			new CachedQueryResultPrefetcher( $store, $queryFactory, $blobStore )
+			new CachedQueryResultPrefetcher( $this->store, $this->queryFactory, $this->blobStore, $this->transientStatsdCollector )
 		);
 	}
 
 	public function testGetQueryResultForEmptyQuery() {
-
-		$queryFactory = $this->getMockBuilder( '\SMW\QueryFactory' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$blobStore = $this->getMockBuilder( BlobStore::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -64,9 +65,10 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 			->with($this->identicalTo( $query ) );
 
 		$instance = new CachedQueryResultPrefetcher(
-			$store,
-			$queryFactory,
-			$blobStore
+			$this->store,
+			$this->queryFactory,
+			$this->blobStore,
+			$this->transientStatsdCollector
 		);
 
 		$instance->setQueryEngine( $queryEngine );
@@ -76,25 +78,14 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 
 	public function testPurgeCacheByQueryList() {
 
-		$queryFactory = $this->getMockBuilder( '\SMW\QueryFactory' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$blobStore = $this->getMockBuilder( BlobStore::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$blobStore->expects( $this->atLeastOnce() )
+		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'delete' );
 
 		$instance = new CachedQueryResultPrefetcher(
-			$store,
-			$queryFactory,
-			$blobStore
+			$this->store,
+			$this->queryFactory,
+			$this->blobStore,
+			$this->transientStatsdCollector
 		);
 
 		$instance->resetCacheBy( array( 'Foo' ) );
@@ -102,22 +93,10 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNoCache() {
 
-		$queryFactory = $this->getMockBuilder( '\SMW\QueryFactory' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$blobStore = $this->getMockBuilder( BlobStore::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$blobStore->expects( $this->never() )
+		$this->blobStore->expects( $this->never() )
 			->method( 'read' );
 
-		$blobStore->expects( $this->atLeastOnce() )
+		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'canUse' )
 			->will( $this->returnValue( true ) );
 
@@ -143,9 +122,10 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new CachedQueryResultPrefetcher(
-			$store,
-			$queryFactory,
-			$blobStore
+			$this->store,
+			$this->queryFactory,
+			$this->blobStore,
+			$this->transientStatsdCollector
 		);
 
 		$instance->setQueryEngine( $queryEngine );
@@ -154,26 +134,15 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 
 	public function testMissingQueryEngineThrowsException() {
 
-		$queryFactory = $this->getMockBuilder( '\SMW\QueryFactory' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$blobStore = $this->getMockBuilder( BlobStore::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new CachedQueryResultPrefetcher(
-			$store,
-			$queryFactory,
-			$blobStore
+			$this->store,
+			$this->queryFactory,
+			$this->blobStore,
+			$this->transientStatsdCollector
 		);
 
 		$this->setExpectedException( 'RuntimeException' );
@@ -184,29 +153,37 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$queryFactory = $this->getMockBuilder( '\SMW\QueryFactory' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$blobStore = $this->getMockBuilder( BlobStore::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$blobStore->expects( $this->atLeastOnce() )
+		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'delete' )
 			->with( $this->equalTo( '39e2606942246606c5daa2ddfec4ace8' ) );
 
 		$instance = new CachedQueryResultPrefetcher(
-			$store,
-			$queryFactory,
-			$blobStore
+			$this->store,
+			$this->queryFactory,
+			$this->blobStore,
+			$this->transientStatsdCollector
 		);
 
 		$instance->resetCacheBy( $subject );
+	}
+
+	public function testGetStats() {
+
+		$this->transientStatsdCollector->expects( $this->once() )
+			->method( 'getStats' )
+			->will( $this->returnValue( array() ) );
+
+		$instance = new CachedQueryResultPrefetcher(
+			$this->store,
+			$this->queryFactory,
+			$this->blobStore,
+			$this->transientStatsdCollector
+		);
+
+		$this->assertInternalType(
+			'array',
+			$instance->getStats()
+		);
 	}
 
 }
