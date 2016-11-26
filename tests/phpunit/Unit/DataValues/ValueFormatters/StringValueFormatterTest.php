@@ -71,6 +71,32 @@ class StringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testFormatWithReducedLength() {
+
+		// > 255 / Reduced length
+		$text = 'Lorem ipsum dolor sit amet consectetuer justo Nam quis lobortis vel. Sapien nulla enim Lorem enim pede ' .
+		'lorem nulla justo diam wisi. Libero Nam turpis neque leo scelerisque nec habitasse a lacus mattis. Accumsan ' .
+		'tincidunt Sed adipiscing nec facilisis tortor Nunc Sed ipsum tellus';
+
+		$expected = 'Lorem ipsum dolor sit amet consectetuer …';
+
+		$stringValue = new StringValue( '_txt' );
+		$stringValue->setUserValue( $text );
+		$stringValue->setOutputFormat( 40 );
+
+		$instance = new StringValueFormatter( $stringValue );
+
+		$this->assertEquals(
+			$expected,
+			$instance->format( StringValueFormatter::HTML_LONG )
+		);
+
+		$this->assertEquals(
+			$expected,
+			$instance->format( StringValueFormatter::WIKI_SHORT )
+		);
+	}
+
 	public function testTryToFormatOnMissingDataValueThrowsException() {
 
 		$instance = new StringValueFormatter();

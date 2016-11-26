@@ -6,6 +6,7 @@ use RuntimeException;
 use SMW\Highlighter;
 use SMWDataValue as DataValue;
 use SMWStringValue as StringValue;
+use Onoi\Tesa\Normalizer;
 
 /**
  * @license GNU GPL v2+
@@ -56,12 +57,15 @@ class StringValueFormatter extends DataValueFormatter {
 
 	protected function doFormatFinalOutputFor( $type, $linker ) {
 
+		$text = $this->dataValue->getDataItem()->getString();
+		$length = mb_strlen( $text );
+
 		// Make a possibly shortened printout string for displaying the value.
 		// The result is only escaped to be HTML-safe if this is requested
 		// explicitly. The result will contain mark-up that must not be escaped
 		// again.
 		$abbreviate = $type === self::WIKI_LONG || $type === self::HTML_LONG;
-		$text = $this->dataValue->getDataItem()->getString();
+		$requestedLength = intval( $this->dataValue->getOutputFormat() );
 
 		// Appease the MW parser to correctly apply formatting on the
 		// first indent
@@ -69,11 +73,14 @@ class StringValueFormatter extends DataValueFormatter {
 			$text = "\n" . $text . "\n";
 		}
 
+		if ( $requestedLength > 0 && $requestedLength < $length ) {
+			// Reduces the length and finish it with a whole word
+			return Normalizer::reduceLengthTo( $text, $requestedLength ) . ' …';
+		}
+
 		if ( $type === self::HTML_SHORT || $type === self::HTML_LONG ) {
 			$text = smwfXMLContentEncode( $text );
 		}
-
-		$length = mb_strlen( $text );
 
 		return $abbreviate && $length > 255 ? $this->getAbbreviatedText( $text, $length, $linker ) : $text;
 	}
