@@ -409,8 +409,8 @@ class SQLStoreFactory {
 			$installer->setMessageReporter( $options->get( Installer::OPT_MESSAGEREPORTER ) );
 		}
 
-		$installer->isExtensionSchemaUpdate(
-			( $options->has( 'isExtensionSchemaUpdate' ) ? $options->get( 'isExtensionSchemaUpdate' ) : false )
+		$installer->isFromExtensionSchemaUpdate(
+			( $options->has( 'isFromExtensionSchemaUpdate' ) ? $options->get( 'isFromExtensionSchemaUpdate' ) : false )
 		);
 
 		return $installer;

@@ -81,7 +81,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
-		$instance->isExtensionSchemaUpdate( true );
+		$instance->isFromExtensionSchemaUpdate( true );
 
 		$this->assertTrue(
 			$instance->install()
