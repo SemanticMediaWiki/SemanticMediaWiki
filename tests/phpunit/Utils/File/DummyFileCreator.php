@@ -52,7 +52,7 @@ class DummyFileCreator {
 	 *
 	 * @return string
 	 */
-	public function createFileByCopyContentOf( $contentCopyPath ) {
+	public function createFileWithCopyFrom( $contentCopyPath ) {
 		$this->file = $this->createFile( file_get_contents( $this->getFile( $contentCopyPath ) ) );
 	}
 

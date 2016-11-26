@@ -54,7 +54,7 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 	protected function setUp() {
 		parent::setUp();
 
-		$validatorFactory = UtilityFactory::getInstance()->newValidatorFactory();
+		$validatorFactory = $this->testEnvironment->getUtilityFactory()->newValidatorFactory();
 
 		$stringValidator = $validatorFactory->newStringValidator();
 		$semanticDataValidator = $validatorFactory->newSemanticDataValidator();
@@ -148,7 +148,7 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		$this->checkEnvironmentToSkipCurrentTest( $jsonTestCaseFileHandler );
 
 		// Setup
-		$this->doTestSetup( $jsonTestCaseFileHandler );
+		$this->prepareTest( $jsonTestCaseFileHandler );
 
 		// Before test execution
 		$this->doRunBeforeTest( $jsonTestCaseFileHandler );
@@ -160,7 +160,7 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		$this->doRunQueryTests( $jsonTestCaseFileHandler );
 	}
 
-	private function doTestSetup( $jsonTestCaseFileHandler ) {
+	private function prepareTest( $jsonTestCaseFileHandler ) {
 
 		$permittedSettings = array(
 			'smwgNamespacesWithSemanticLinks',
@@ -213,10 +213,10 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 
 	private function doRunBeforeTest( $jsonTestCaseFileHandler ) {
 
+		$runnerFactory = $this->testEnvironment->getUtilityFactory()->newRunnerFactory();
+
 		foreach ( $jsonTestCaseFileHandler->findTaskBeforeTestExecutionByType( 'maintenance-run' ) as $runner => $options ) {
-			$maintenanceRunner = UtilityFactory::getInstance()->newRunnerFactory()->newMaintenanceRunner(
-				$runner
-			);
+			$maintenanceRunner = $runnerFactory->newMaintenanceRunner( $runner );
 
 			$maintenanceRunner->setOptions(
 				(array)$options
@@ -226,10 +226,7 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 		}
 
 		foreach ( $jsonTestCaseFileHandler->findTaskBeforeTestExecutionByType( 'job-run' ) as $jobType ) {
-			$jobQueueRunner = UtilityFactory::getInstance()->newRunnerFactory()->newJobQueueRunner(
-				$jobType
-			);
-
+			$jobQueueRunner = $runnerFactory->newJobQueueRunner( $jobType );
 			$jobQueueRunner->run();
 		}
 	}
