@@ -498,6 +498,15 @@ label.smw-form-checkbox {
           column-gap: 1em;
 }
 
+.smw-column-twofold-responsive {
+  -webkit-columns: 2 20em;
+     -moz-columns: 2 20em;
+          columns: 2 20em;
+  -webkit-column-gap: 1em;
+     -moz-column-gap: 1em;
+          column-gap: 1em;
+}
+
 .smw-column[dir="rtl"] {
 	float: right;
 }

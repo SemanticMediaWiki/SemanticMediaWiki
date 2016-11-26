@@ -281,7 +281,7 @@ final class Setup {
 				'group' => 'smw_group'
 			),
 			'SMWAdmin' => array(
-				'page' => 'SMWAdmin',
+				'page' => 'SMW\MediaWiki\Specials\SpecialAdmin',
 				'group' => 'smw_group'
 			),
 			'SemanticStatistics' => array(

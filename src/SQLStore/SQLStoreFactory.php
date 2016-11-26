@@ -395,10 +395,6 @@ class SQLStoreFactory {
 			$this->store
 		);
 
-		$tableBuilder->setMessageReporter(
-			$messageReporter
-		);
-
 		$tableSchemaManager = new TableSchemaManager(
 			$this->store
 		);
@@ -408,6 +404,10 @@ class SQLStoreFactory {
 			$tableBuilder,
 			$tableIntegrityExaminer
 		);
+
+		if ( $options->has( Installer::OPT_MESSAGEREPORTER ) ) {
+			$installer->setMessageReporter( $options->get( Installer::OPT_MESSAGEREPORTER ) );
+		}
 
 		$installer->isExtensionSchemaUpdate(
 			( $options->has( 'isExtensionSchemaUpdate' ) ? $options->get( 'isExtensionSchemaUpdate' ) : false )

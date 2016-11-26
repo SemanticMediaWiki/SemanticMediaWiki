@@ -356,6 +356,9 @@ return array(
 	# values that are equal will not be accepted.
 	##
 	'smwStrictComparators' => false,
+
+	// To be used starting with 3.x (due to misspelling)
+	'smwgStrictComparators' => false,
 	##
 
 	###
