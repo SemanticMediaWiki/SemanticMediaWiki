@@ -336,7 +336,7 @@ class HtmlContentBuilder {
 
 		if ( $noresult ) {
 			$html .= "<tr class=\"smwb-propvalue\"><th> &#160; </th><td><em>" .
-				wfMessage( $incoming ? 'smw_browse_no_incoming':'smw_browse_no_outgoing' )->text() . "</em></td></tr>\n";
+				wfMessage( $incoming ? 'smw_browse_no_incoming':'smw_browse_no_outgoing' )->escaped() . "</em></td></tr>\n";
 		}
 		$html .= "</table>\n";
 		return $html;
@@ -438,13 +438,13 @@ class HtmlContentBuilder {
 		if ( !$this->getOption( 'showAll' ) ) {
 			if ( ( $this->offset > 0 ) || $more ) {
 				$offset = max( $this->offset - $this->incomingPropertiesCount + 1, 0 );
-				$html .= ( $this->offset == 0 ) ? wfMessage( 'smw_result_prev' )->text():
+				$html .= ( $this->offset == 0 ) ? wfMessage( 'smw_result_prev' )->escaped():
 					     $this->linkHere( wfMessage( 'smw_result_prev' )->text(), $this->showoutgoing, true, $offset );
 				$offset = $this->offset + $this->incomingPropertiesCount - 1;
 				// @todo FIXME: i18n patchwork.
-				$html .= " &#160;&#160;&#160;  <strong>" . wfMessage( 'smw_result_results' )->text() . " " . ( $this->offset + 1 ) .
+				$html .= " &#160;&#160;&#160;  <strong>" . wfMessage( 'smw_result_results' )->escaped() . " " . ( $this->offset + 1 ) .
 						 " – " . ( $offset ) . "</strong>  &#160;&#160;&#160; ";
-				$html .= $more ? $this->linkHere( wfMessage( 'smw_result_next' )->text(), $this->showoutgoing, true, $offset ):wfMessage( 'smw_result_next' )->text();
+				$html .= $more ? $this->linkHere( wfMessage( 'smw_result_next' )->text(), $this->showoutgoing, true, $offset ) : wfMessage( 'smw_result_next' )->escaped();
 			}
 		}
 
@@ -560,9 +560,9 @@ class HtmlContentBuilder {
 
 		$html .= '  <form name="smwbrowse" action="' . htmlspecialchars( $title->getLocalURL() ) . '" method="get">' . "\n" .
 			'    <input type="hidden" name="title" value="' . $title->getPrefixedText() . '"/>' .
-			wfMessage( 'smw_browse_article' )->text() . "<br />\n" .
+			wfMessage( 'smw_browse_article' )->escaped() . "<br />\n" .
 		    ' <div class="browse-input-resp"> <div class="input-field"><input type="text"  dir="' . $dir . '" name="article" size="40" id="smwb-page-search" class="input mw-ui-input" value="' . htmlspecialchars( $articletext ) . '" /></div>' .
-		    ' <div class="button-field"><input type="submit" class="input-button mw-ui-button" value="' . wfMessage( 'smw_browse_go' )->text() . "\"/></div></div>\n" .
+		    ' <div class="button-field"><input type="submit" class="input-button mw-ui-button" value="' . wfMessage( 'smw_browse_go' )->escaped() . "\"/></div></div>\n" .
 		    "  </form>\n";
 
 		return $html;
