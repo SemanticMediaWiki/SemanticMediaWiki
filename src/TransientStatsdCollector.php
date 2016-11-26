@@ -56,6 +56,15 @@ class TransientStatsdCollector {
 	private $stats = array();
 
 	/**
+	 * Identifies an update fingerprint to compare invoked deferred updates
+	 * against each other and filter those with the same print to avoid recording
+	 * duplicate stats.
+	 *
+	 * @var string
+	 */
+	private $fingerprint = null;
+
+	/**
 	 * @var array
 	 */
 	private $operations = array();
@@ -69,6 +78,7 @@ class TransientStatsdCollector {
 	public function __construct( BlobStore $blobStore, $statsdId ) {
 		$this->blobStore = $blobStore;
 		$this->statsdId = $statsdId;
+		$this->fingerprint = $statsdId . uniqid();
 	}
 
 	/**
@@ -159,44 +169,74 @@ class TransientStatsdCollector {
 		$this->operations[$key] = self::STATS_MEDIAN;
 	}
 
-	private function recordStats() {
+	/**
+	 * @since 2.5
+	 */
+	public function saveStats() {
 
-		return function() {
+		$container = $this->blobStore->read(
+			md5( $this->statsdId . self::VERSION )
+		);
 
-			$container = $this->blobStore->read(
-				md5( $this->statsdId . self::VERSION )
-			);
+		foreach ( $this->stats as $key => $value ) {
 
-			foreach ( $this->stats as $key => $value ) {
+			$old = $container->has( $key ) ? $container->get( $key ) : 0;
 
-				$old = $container->has( $key ) ? $container->get( $key ) : 0;
-
-				if ( $this->operations[$key] === self::STATS_INIT && $old != 0 ) {
-					$value = $old;
-				}
-
-				if ( $this->operations[$key] === self::STATS_INCR ) {
-					$value = $old + $value;
-				}
-
-				// Use as-is
-				// $this->operations[$key] === self::STATS_SET
-
-				if ( $this->operations[$key] === self::STATS_MEDIAN ) {
-					$value = $old > 0 ? ( $old + $value ) / 2 : $value;
-				}
-
-				$container->set( $key, $value );
+			if ( $this->operations[$key] === self::STATS_INIT && $old != 0 ) {
+				$value = $old;
 			}
 
-			$this->blobStore->save(
-				$container
-			);
-		};
+			if ( $this->operations[$key] === self::STATS_INCR ) {
+				$value = $old + $value;
+			}
+
+			// Use as-is
+			// $this->operations[$key] === self::STATS_SET
+
+			if ( $this->operations[$key] === self::STATS_MEDIAN ) {
+				$value = $old > 0 ? ( $old + $value ) / 2 : $value;
+			}
+
+			$container->set( $key, $value );
+		}
+
+		$this->blobStore->save(
+			$container
+		);
+
+		$this->stats = array();
+	}
+
+	/**
+	 * @since 2.5
+	 */
+	public function recordStats() {
+
+		if ( $this->shouldRecord === false ) {
+			return $this->stats = array();
+		}
+
+		// #2046
+		// __destruct as event trigger has shown to be unreliable in a MediaWiki
+		// environment therefore rely on the deferred update and any caller
+		// that invokes the recordStats method
+
+		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate(
+			function() { $this->saveStats(); }
+		);
+
+		$deferredCallableUpdate->setOrigin( __METHOD__ );
+
+		$deferredCallableUpdate->setFingerprint(
+			__METHOD__ . $this->fingerprint
+		);
+
+		$deferredCallableUpdate->pushToUpdateQueue();
 	}
 
 	// http://stackoverflow.com/questions/10123604/multstatsdIdimensional-array-from-string
 	private function stringToArray( $path, $value ) {
+
 		$separator = '.';
 		$pos = strpos( $path, $separator );
 
@@ -212,15 +252,6 @@ class TransientStatsdCollector {
 		);
 
 		return $result;
-	}
-
-	/**
-	 * Trigger the storage when the class leaves scope
-	 */
-	function __destruct() {
-		if ( $this->shouldRecord ) {
-			call_user_func( $this->recordStats() );
-		}
 	}
 
 }

@@ -280,7 +280,7 @@ class SharedCallbackContainer implements CallbackContainer {
 					CachedQueryResultPrefetcher::CACHE_NAMESPACE, $cacheType,
 					$settings->get( 'smwgQueryResultCacheLifetime' )
 				),
-				$callbackLoader->create(
+				$callbackLoader->singleton(
 					'TransientStatsdCollector',
 					CachedQueryResultPrefetcher::STATSD_ID
 				)
@@ -322,7 +322,7 @@ class SharedCallbackContainer implements CallbackContainer {
 			$ttl = 0;
 
 			$transientStatsdCollector = new TransientStatsdCollector(
-				$callbackLoader->load( 'BlobStore', TransientStatsdCollector::CACHE_NAMESPACE, $cacheType, $ttl ),
+				$callbackLoader->create( 'BlobStore', TransientStatsdCollector::CACHE_NAMESPACE, $cacheType, $ttl ),
 				$id
 			);
 

@@ -79,6 +79,10 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 	public function testPurgeCacheByQueryList() {
 
 		$this->blobStore->expects( $this->atLeastOnce() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'delete' );
 
 		$instance = new CachedQueryResultPrefetcher(
@@ -154,8 +158,15 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
 		$this->blobStore->expects( $this->atLeastOnce() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'delete' )
 			->with( $this->equalTo( '39e2606942246606c5daa2ddfec4ace8' ) );
+
+		$this->transientStatsdCollector->expects( $this->once() )
+			->method( 'recordStats' );
 
 		$instance = new CachedQueryResultPrefetcher(
 			$this->store,
