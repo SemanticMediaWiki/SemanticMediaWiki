@@ -413,14 +413,14 @@ abstract class Store implements QueryEngine {
 	 * @since 1.8
 	 *
 	 * @param bool $verbose
-	 * @param bool $isExtensionSchemaUpdate
+	 * @param bool $isFromExtensionSchemaUpdate
 	 *
 	 * @return boolean Success indicator
 	 */
-	public static function setupStore( $verbose = true, $isExtensionSchemaUpdate = false ) {
+	public static function setupStore( $verbose = true, $isFromExtensionSchemaUpdate = false ) {
 
 		$store = StoreFactory::getStore();
-		$store->getOptions()->set( 'isExtensionSchemaUpdate', $isExtensionSchemaUpdate );
+		$store->getOptions()->set( 'isFromExtensionSchemaUpdate', $isFromExtensionSchemaUpdate );
 
 		return $store->setup( $verbose );
 	}

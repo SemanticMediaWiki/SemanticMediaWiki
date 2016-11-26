@@ -46,7 +46,7 @@ class Installer implements MessageReporter, MessageReporterAware {
 	/**
 	 * @var boolean
 	 */
-	private $isExtensionSchemaUpdate = false;
+	private $isFromExtensionSchemaUpdate = false;
 
 	/**
 	 * @since 2.5
@@ -64,10 +64,10 @@ class Installer implements MessageReporter, MessageReporterAware {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $isExtensionSchemaUpdate
+	 * @param boolean $isFromExtensionSchemaUpdate
 	 */
-	public function isExtensionSchemaUpdate( $isExtensionSchemaUpdate ) {
-		$this->isExtensionSchemaUpdate = (bool)$isExtensionSchemaUpdate;
+	public function isFromExtensionSchemaUpdate( $isFromExtensionSchemaUpdate ) {
+		$this->isFromExtensionSchemaUpdate = (bool)$isFromExtensionSchemaUpdate;
 	}
 
 	/**
@@ -117,7 +117,7 @@ class Installer implements MessageReporter, MessageReporterAware {
 		Hooks::run( 'SMW::SQLStore::AfterCreateTablesComplete', array( $this->tableBuilder ) );
 
 		$messageReporter->reportMessage(
-			"\nDatabase initialized completed.\n"  . ( $this->isExtensionSchemaUpdate ? "\n" : '' )
+			"\nDatabase initialized completed.\n"  . ( $this->isFromExtensionSchemaUpdate ? "\n" : '' )
 		);
 
 		return true;
