@@ -134,9 +134,6 @@ return array(
 	'ext.smw.tooltip.styles' => $moduleTemplate + array(
 		'styles' => 'smw/util/ext.smw.util.tooltip.css',
 		'position' => 'top',
-		'dependencies' => array(
-			'ext.jquery.qtip.styles'
-		),
 		'targets' => array( 'mobile', 'desktop' )
 	),
 
