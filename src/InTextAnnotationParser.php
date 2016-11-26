@@ -456,8 +456,8 @@ class InTextAnnotationParser {
 
 	private function getPropertyLink( $subject, $properties, $value, $valueCaption ) {
 
-		// #...
-		if ( strlen( $value ) == 3 && $value === '@@@' ) {
+		// #1855
+		if ( substr( $value, 0, 3 ) === '@@@' ) {
 			$property = end( $properties );
 
 			$dataValue = $this->dataValueFactory->newPropertyValueByLabel(
@@ -466,7 +466,14 @@ class InTextAnnotationParser {
 				$subject
 			);
 
-			return $dataValue->getShortWikitext( true );
+			if ( ( $lang = Localizer::getAnnotatedLanguageCodeFrom( $value ) ) !== false ) {
+				$dataValue->setOption( $dataValue::OPT_USER_LANGUAGE, $lang );
+				$dataValue->setCaption(
+					$valueCaption === false ? $dataValue->getWikiValue() : $valueCaption
+				);
+			}
+
+			return $dataValue->getShortWikitext( smwfGetLinker() );
 		}
 
 		return '';

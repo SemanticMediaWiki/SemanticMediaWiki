@@ -558,7 +558,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 				'smwgInlineErrors'  => true,
 				'smwgEnabledInTextAnnotationParserStrictMode' => true
 			),
-			'[[Foo::@@@]] [[Bar::@@@|Foobar]]',
+			'[[Foo::@@@]] [[Bar::@@@en|Foobar]]',
 			array(
 				'resultText'     => $testEnvironment->getLocalizedTextByNamespace( SMW_NS_PROPERTY, '[[:Property:Foo|Foo]] [[:Property:Bar|Foobar]]' ),
 				'propertyCount'  => 0

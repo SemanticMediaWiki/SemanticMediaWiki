@@ -7,12 +7,25 @@
 			"contents": "[[Has type::Date]] {{#set: Has property description=Some text with a link to [http://example.org/ foo] and <li>stripped `li` in title element</li>@en}}"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "P106",
+			"contents": "[[Has type::Text]] [[Has preferred property label::occupation@en]] [[Has preferred property label::직업@ko]] [[Has preferred property label::職業@ja]] [[Has property description::人物の職業。「専門分野」@ja]] [[Has property description::대상 인물의 직업@ko]]"
+		},
+		{
 			"page": "Example/P0212/1",
 			"contents": "[[Has date::@@@]]"
 		},
 		{
 			"page": "Example/P0212/2",
 			"contents": "[[Has date::@@@|With extra caption]]"
+		},
+		{
+			"page": "Example/P0212/3",
+			"contents": "[[P106::@@@ja]]"
+		},
+		{
+			"page": "Example/P0212/4",
+			"contents": "[[P106::@@@ko|WithCaption]]"
 		}
 	],
 	"tests": [
@@ -37,6 +50,26 @@
 					"<span class=\"smw-highlighter\" data-type=\"1\" data-state=\"inline\" data-title=\"Property\" title=\"Some text with a link to &amp;#x005B;http://example.org/ foo] and stripped `li` in title element\">",
 					"<div class=\"smwttcontent\">Some text with a link to <a rel=\"nofollow\" class=\"external text\" href=\"http://example.org/\">foo</a> and <li>stripped `li` in title element</li></div>",
 					"title=\"Property:Has date\">With extra caption</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2",
+			"subject": "Example/P0212/3",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Property:P106\">職業</a></span><div class=\"smwttcontent\">人物の職業。「専門分野」</div></span>&#160;<span title=\"P106\"><sup>ᵖ</sup>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3",
+			"subject": "Example/P0212/4",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Property:P106\">WithCaption</a></span><div class=\"smwttcontent\">대상 인물의 직업</div></span>"
 				]
 			}
 		}
