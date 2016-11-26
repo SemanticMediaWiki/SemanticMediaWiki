@@ -4,7 +4,7 @@ use SMW\DataTypeRegistry;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\SQLStore\TableDefinition;
-use SMW\SQLStore\EntityStore\Exceptions\DataItemHandlerException;
+use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\TableBuilder\FieldType;
 
 /**
