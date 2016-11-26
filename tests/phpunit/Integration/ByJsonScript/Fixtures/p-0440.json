@@ -8,6 +8,16 @@
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
+			"page": "SomeProperty",
+			"contents": " [[Category:P0440]] [[Has property description::Something ...@en]] [[Has property description::何かあるもの。。。@ja]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "AnotherProperty",
+			"contents": " [[Category:P0440]] [[Has property description::Something else ...@en]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
 			"page": "Has alternative record",
 			"contents": "[[Has type::Record]] [[Has fields::Text;Number]]"
 		},
@@ -46,6 +56,10 @@
 		{
 			"page": "Example/P0440/Q.7",
 			"contents": "{{#ask: [[Has alternative record::+]] |?Has alternative record|+lang=en }}"
+		},
+		{
+			"page": "Example/P0440/Q.8",
+			"contents": "{{#ask: [[Category:P0440]] [[Has property description::+]] |?Has property description|+lang=en }}"
 		}
 	],
 	"tests": [
@@ -126,6 +140,20 @@
 			"assert-output": {
 				"to-contain": [
 					"title=\"Example/P0440/Triacylglycerol lipase\">Example/P0440/Triacylglycerol lipase</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8",
+			"subject": "Example/P0440/Q.8",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-property-description smwtype_txt\">Something else ...</td>",
+					"<td class=\"Has-property-description smwtype_txt\">Something ...</td>"
+				],
+				"not-contain": [
+					"<td class=\"Has-property-description smwtype_txt\">Something ...<br />何かあるもの。。。</td>"
 				]
 			}
 		}

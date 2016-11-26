@@ -201,7 +201,7 @@ class ResultFieldMatchFinder {
 				// find the correct PropertyDataItem (_TEXT;_LCODE) position
 				// to match the DI
 				$this->printRequest->setParameter( 'index', 1 );
-			} elseif ( ( $dataItemByRecord = $multiValue->getDataItemByIndex( $index ) ) !== null ) {
+			} elseif ( $lang === false && $index !== false && ( $dataItemByRecord = $multiValue->getDataItemByIndex( $index ) ) !== null ) {
 				$newcontent[] = $dataItemByRecord;
 			}
 		}
