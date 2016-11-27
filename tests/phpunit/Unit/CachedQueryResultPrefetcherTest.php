@@ -180,9 +180,15 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetStats() {
 
+		$stats = array(
+			'misses' => 1,
+			'hits' => array( 2 ),
+			'meta' => 'foo'
+		);
+
 		$this->transientStatsdCollector->expects( $this->once() )
 			->method( 'getStats' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( $stats ) );
 
 		$instance = new CachedQueryResultPrefetcher(
 			$this->store,
