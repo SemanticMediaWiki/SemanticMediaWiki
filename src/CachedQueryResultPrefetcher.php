@@ -50,7 +50,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	 *
 	 * PHP 5.6 can do self::CACHE_NAMESPACE . ':' . self::VERSION
 	 */
-	const STATSD_ID = 'smw:query:store:0.2' . 'a';
+	const STATSD_ID = 'smw:query:store:0.2a';
 
 	/**
 	 * @var Store
