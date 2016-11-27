@@ -132,7 +132,13 @@ return array(
 
 	// Tooltip
 	'ext.smw.tooltip.styles' => $moduleTemplate + array(
-		'styles' => 'smw/util/ext.smw.util.tooltip.css',
+		'styles' => array(
+			// Style dependencies don't work 
+			// therefore make sure to load it
+			// together
+			'jquery/jquery.qtip.css',
+			'smw/util/ext.smw.util.tooltip.css'
+		),
 		'position' => 'top',
 		'targets' => array( 'mobile', 'desktop' )
 	),
