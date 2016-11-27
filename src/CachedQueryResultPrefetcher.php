@@ -45,11 +45,12 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	const CACHE_NAMESPACE = 'smw:query:store';
 
 	/**
-	 * ID used by the TransientStatsdCollector
+	 * ID used by the TransientStatsdCollector, requires to be changed in case
+	 * the data schema is modified
 	 *
 	 * PHP 5.6 can do self::CACHE_NAMESPACE . ':' . self::VERSION
 	 */
-	const STATSD_ID = 'smw:query:store:0.2';
+	const STATSD_ID = 'smw:query:store:0.2' . 'a';
 
 	/**
 	 * @var Store
@@ -133,7 +134,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 		$stats['ratio'] = array();
 
 		$stats['ratio']['hit'] = $hits > 0 ? round( $hits / ( $hits + $stats['misses'] ), 4 ) : 0;
-		$stats['ratio']['miss'] = $hits > 0 ? round( 1 - $stats['ratio']['hit'], 4 ) : 0;
+		$stats['ratio']['miss'] = $hits > 0 ? round( 1 - $stats['ratio']['hit'], 4 ) : 1;
 
 		// Move to last
 		$meta = $stats['meta'];
@@ -211,7 +212,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 		}
 
 		if ( !$this->canUse( $query ) || $query->getLimit() < 1 || $query->getOptionBy( Query::NO_CACHE ) === true ) {
-			$this->transientStatsdCollector->incr( 'noCache' );
+			$this->transientStatsdCollector->incr( $this->getNoCacheId( $query ) );
 			return $this->queryEngine->getQueryResult( $query );
 		}
 
@@ -402,18 +403,37 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 		$this->logger->info( $message, $context );
 	}
 
+	private function getNoCacheId( $query ) {
+
+		$id = 'noCache.misc';
+
+		if ( !$this->canUse( $query ) ) {
+			$id = 'noCache.disabled';
+		}
+
+		if ( $query->getLimit() < 1 ) {
+			$id = 'noCache.byLimit';
+		}
+
+		if ( $query->getOptionBy( Query::NO_CACHE ) === true ) {
+			$id = 'noCache.byOption';
+		}
+
+		return $id;
+	}
+
 	private function initStats( $date ) {
 
 		$this->transientStatsdCollector->shouldRecord( $this->isEnabled() );
 
 		$this->transientStatsdCollector->init( 'misses', 0 );
 		$this->transientStatsdCollector->init( 'deletes', 0 );
-		$this->transientStatsdCollector->init( 'noCache', 0 );
 		$this->transientStatsdCollector->init( 'hits', array() );
 		$this->transientStatsdCollector->init( 'medianRetrievalResponseTime', array() );
+		$this->transientStatsdCollector->init( 'noCache', array() );
 		$this->transientStatsdCollector->set( 'meta.version', self::VERSION );
 		$this->transientStatsdCollector->set( 'meta.cacheLifetime.embedded', $GLOBALS['smwgQueryResultCacheLifetime'] );
-		$this->transientStatsdCollector->set( 'meta.cacheLifetime.nonEmbedded', $GLOBALS['smwgQueryResultNonEmbeddedCacheLifetime']  );
+		$this->transientStatsdCollector->set( 'meta.cacheLifetime.nonEmbedded', $GLOBALS['smwgQueryResultNonEmbeddedCacheLifetime'] );
 		$this->transientStatsdCollector->init( 'meta.collectionDate.start', $date );
 		$this->transientStatsdCollector->set(  'meta.collectionDate.update', $date );
 	}
