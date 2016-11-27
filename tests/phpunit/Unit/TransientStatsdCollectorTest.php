@@ -30,7 +30,7 @@ class TransientStatsdCollectorTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->blobStore->expects( $this->atLeastOnce() )
+		$this->blobStore->expects( $this->any() )
 			->method( 'read' )
 			->will( $this->returnValue( $this->container ) );
 	}
@@ -40,17 +40,6 @@ class TransientStatsdCollectorTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			TransientStatsdCollector::class,
 			new TransientStatsdCollector( $this->blobStore, 42 )
-		);
-	}
-
-	public function testSaveOnDestruct() {
-
-		$this->blobStore->expects( $this->once() )
-			->method( 'save' );
-
-		$instance = new TransientStatsdCollector(
-			$this->blobStore,
-			42
 		);
 	}
 
@@ -79,6 +68,7 @@ class TransientStatsdCollectorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->incr( 'Foo.bar' );
+		$instance->saveStats();
 	}
 
 	public function testSet() {
@@ -104,7 +94,9 @@ class TransientStatsdCollectorTest extends \PHPUnit_Framework_TestCase {
 			$this->blobStore,
 			42
 		);
+
 		$instance->set( 'Foo.bar', 10 );
+		$instance->saveStats();
 	}
 
 	public function testCalcMedian() {
@@ -132,6 +124,7 @@ class TransientStatsdCollectorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->calcMedian( 'Foo.bar', 5 );
+		$instance->saveStats();
 	}
 
 	public function testStats_Simple() {

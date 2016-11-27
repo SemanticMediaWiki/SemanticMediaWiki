@@ -167,6 +167,13 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 
 	/**
 	 * @since 2.5
+	 */
+	public function recordStats() {
+		$this->transientStatsdCollector->recordStats();
+	}
+
+	/**
+	 * @since 2.5
 	 *
 	 * @param integer|boolean $nonEmbeddedCacheLifetime
 	 */
@@ -229,9 +236,20 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 			$item = array( $item );
 		}
 
+		$recordStats = false;
+
 		foreach ( $item as $id ) {
-			$this->transientStatsdCollector->incr( 'deletes' );
-			$this->blobStore->delete( $this->getHashFrom( $id ) );
+			$id = $this->getHashFrom( $id );
+
+			if ( $this->blobStore->exists( $id ) ) {
+				$recordStats = true;
+				$this->transientStatsdCollector->incr( 'deletes' );
+				$this->blobStore->delete( $id );
+			}
+		}
+
+		if ( $recordStats ) {
+			$this->recordStats();
 		}
 	}
 

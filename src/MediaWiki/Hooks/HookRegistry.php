@@ -558,10 +558,12 @@ class HookRegistry {
 		/**
 		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Store::AfterQueryResultLookupComplete
 		 */
-		$this->handlers['SMW::Store::AfterQueryResultLookupComplete'] = function ( $store, &$result ) use ( $queryDependencyLinksStore ) {
+		$this->handlers['SMW::Store::AfterQueryResultLookupComplete'] = function ( $store, &$result ) use ( $queryDependencyLinksStore, $applicationFactory ) {
 
 			$queryDependencyLinksStore->setStore( $store );
 			$queryDependencyLinksStore->doUpdateDependenciesFrom( $result );
+
+			$applicationFactory->singleton( 'CachedQueryResultPrefetcher' )->recordStats();
 
 			return true;
 		};
