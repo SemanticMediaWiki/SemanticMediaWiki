@@ -586,6 +586,24 @@ return array(
 	##
 
 	###
+	# Allows to restrict access to the "Database installation and upgrade"
+	# feature in the Special:SemanticMediaWiki (or Special:SMWAdmin)
+	#
+	# @sine 2.5
+	##
+	'smwgAdminSetupStore' => true,
+	##
+
+	###
+	# Allows to restrict access to the "Object ID lookup and disposal"
+	# feature in the Special:SemanticMediaWiki (or Special:SMWAdmin)
+	#
+	# @sine 2.5
+	##
+	'smwgAdminIdDisposal' => true,
+	##
+
+	###
 	# Sets whether or not the 'printouts' textarea should have autocompletion
 	# on property names.
 	##

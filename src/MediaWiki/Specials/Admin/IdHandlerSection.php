@@ -36,6 +36,11 @@ class IdHandlerSection {
 	private $outputFormatter;
 
 	/**
+	 * @var boolean
+	 */
+	private $enabledIdDisposal = false;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param Database $connection
@@ -51,17 +56,26 @@ class IdHandlerSection {
 	/**
 	 * @since 2.5
 	 *
+	 * @param boolean $enabledIdDisposal
+	 */
+	public function enabledIdDisposal( $enabledIdDisposal ) {
+		$this->enabledIdDisposal = (bool)$enabledIdDisposal;
+	}
+
+	/**
+	 * @since 2.5
+	 *
 	 * @param WebRequest $webRequest
 	 * @param User|null $user
 	 */
 	public function outputActionForm( WebRequest $webRequest, User $user = null ) {
 
-		$this->outputFormatter->setPageTitle( Message::get( 'smw-smwadmin-idlookup-title', Message::TEXT, Message::USER_LANGUAGE ) );
+		$this->outputFormatter->setPageTitle( $this->getMessage( 'smw-smwadmin-idlookup-title' ) );
 		$this->outputFormatter->addParentLink();
 
 		$id = (int)$webRequest->getText( 'id' );
 
-		if ( $id > 0 && $webRequest->getText( 'dispose' ) === 'yes' ) {
+		if ( $this->enabledIdDisposal && $id > 0 && $webRequest->getText( 'dispose' ) === 'yes' ) {
 			$this->doDispose( $id, $user );
 		}
 
@@ -87,7 +101,7 @@ class IdHandlerSection {
 
 	private function getForm( $webRequest, $id ) {
 
-		$message = $this->getMessage( $webRequest, $id );
+		$message = $this->getIdInfoAsJson( $webRequest, $id );
 
 		if ( $id < 1 ) {
 			$id = null;
@@ -98,22 +112,26 @@ class IdHandlerSection {
 			->setMethod( 'get' )
 			->addHiddenField( 'action', 'idlookup' )
 			->addHiddenField( 'id', $id )
-			->addParagraph( Message::get( 'smw-sp-admin-idlookup-docu', Message::TEXT, Message::USER_LANGUAGE ) )
+			->addParagraph( $this->getMessage( 'smw-sp-admin-idlookup-docu' ) )
 			->addInputField(
-				Message::get( 'smw-sp-admin-objectid' ),
+				$this->getMessage( 'smw-sp-admin-objectid' ),
 				'id',
 				$id
 			)
 			->addNonBreakingSpace()
-			->addSubmitButton( Message::get( 'allpagessubmit', Message::TEXT, Message::USER_LANGUAGE ) )
+			->addSubmitButton( $this->getMessage( 'allpagessubmit' ) )
 			->addParagraph( $message )
 			->getForm();
 
 		$html .= Html::element( 'p', array(), '' );
 
 		if ( $id > 0 && $webRequest->getText( 'dispose' ) == 'yes' ) {
-			$message = Message::get( array ('smw-sp-admin-iddispose-done', $id ), Message::TEXT, Message::USER_LANGUAGE );
+			$message = $this->getMessage( array ('smw-sp-admin-iddispose-done', $id ) );
 			$id = null;
+		}
+
+		if ( !$this->enabledIdDisposal ) {
+			return $html;
 		}
 
 		$html .= $this->htmlFormRenderer
@@ -121,10 +139,10 @@ class IdHandlerSection {
 			->setMethod( 'get' )
 			->addHiddenField( 'action', 'idlookup' )
 			->addHiddenField( 'id', $id )
-			->addHeader( 'h3', Message::get( 'smw-sp-admin-iddispose-title', Message::TEXT, Message::USER_LANGUAGE ) )
-			->addParagraph( Message::get( 'smw-sp-admin-iddispose-docu', Message::PARSE, Message::USER_LANGUAGE ) )
+			->addHeader( 'h3', $this->getMessage( 'smw-sp-admin-iddispose-title' ) )
+			->addParagraph( $this->getMessage( 'smw-sp-admin-iddispose-docu', Message::PARSE ) )
 			->addInputField(
-				Message::get( 'smw-sp-admin-objectid', Message::TEXT, Message::USER_LANGUAGE ),
+				$this->getMessage( 'smw-sp-admin-objectid' ),
 				'id',
 				$id,
 				null,
@@ -133,9 +151,9 @@ class IdHandlerSection {
 				true
 			)
 			->addNonBreakingSpace()
-			->addSubmitButton( Message::get( 'allpagessubmit', Message::TEXT, Message::USER_LANGUAGE ) )
+			->addSubmitButton( $this->getMessage( 'allpagessubmit' ) )
 			->addCheckbox(
-				Message::get( 'smw_smwadmin_datarefreshstopconfirm', Message::ESCAPED, Message::USER_LANGUAGE ),
+				$this->getMessage( 'smw_smwadmin_datarefreshstopconfirm', Message::ESCAPED ),
 				'dispose',
 				'yes'
 			)
@@ -144,7 +162,7 @@ class IdHandlerSection {
 		return $html . Html::element( 'p', array(), '' );
 	}
 
-	private function getMessage( $webRequest, $id ) {
+	private function getIdInfoAsJson( $webRequest, $id ) {
 
 		if ( $id < 1 || $webRequest->getText( 'action' ) !== 'idlookup' ) {
 			return '';
@@ -164,6 +182,10 @@ class IdHandlerSection {
 		);
 
 		return '<pre>' . $this->outputFormatter->encodeAsJson( array( $id, $row ) ) . '</pre>';
+	}
+
+	private function getMessage( $key, $type = Message::TEXT ) {
+		return Message::get( $key, $type, Message::USER_LANGUAGE );
 	}
 
 }

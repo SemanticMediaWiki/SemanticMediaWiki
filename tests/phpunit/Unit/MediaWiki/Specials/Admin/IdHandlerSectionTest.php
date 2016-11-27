@@ -163,6 +163,7 @@ class IdHandlerSectionTest extends \PHPUnit_Framework_TestCase {
 			$this->outputFormatter
 		);
 
+		$instance->enabledIdDisposal( true );
 		$instance->outputActionForm( $webRequest, $user );
 	}
 

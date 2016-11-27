@@ -89,10 +89,18 @@ class SpecialAdmin extends SpecialPage {
 			$outputFormatter
 		);
 
+		$tableSchemaUpdaterSection->enabledSetupStore(
+			$applicationFactory->getSettings()->get( 'smwgAdminSetupStore' )
+		);
+
 		$idHandlerSection = new IdHandlerSection(
 			$connection,
 			$htmlFormRenderer,
 			$outputFormatter
+		);
+
+		$idHandlerSection->enabledIdDisposal(
+			$applicationFactory->getSettings()->get( 'smwgAdminIdDisposal' )
 		);
 
 		$supportSection = new SupportSection( $htmlFormRenderer );

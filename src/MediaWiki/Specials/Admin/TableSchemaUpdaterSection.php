@@ -30,6 +30,11 @@ class TableSchemaUpdaterSection {
 	private $htmlFormRenderer;
 
 	/**
+	 * @var boolean
+	 */
+	private $enabledSetupStore = false;
+
+	/**
 	 * @var OutputFormatter
 	 */
 	private $outputFormatter;
@@ -50,21 +55,36 @@ class TableSchemaUpdaterSection {
 	/**
 	 * @since 2.5
 	 *
+	 * @param boolean $enabledSetupStore
+	 */
+	public function enabledSetupStore( $enabledSetupStore ) {
+		$this->enabledSetupStore = (bool)$enabledSetupStore;
+	}
+
+	/**
+	 * @since 2.5
+	 *
 	 * @return string
 	 */
 	public function getForm() {
 
-		$html = $this->htmlFormRenderer
+		$this->htmlFormRenderer
 			->setName( 'buildtables' )
 			->setMethod( 'get' )
 			->addHiddenField( 'action', 'updatetables' )
-			->addHeader( 'h2', Message::get( 'smw_smwadmin_db', Message::TEXT, Message::USER_LANGUAGE ) )
-			->addParagraph( Message::get( 'smw_smwadmin_dbdocu', Message::TEXT, Message::USER_LANGUAGE ) )
-			->addHiddenField( 'udsure', 'yes' )
-			->addSubmitButton( Message::get( 'smw_smwadmin_dbbutton', Message::TEXT, Message::USER_LANGUAGE ) )
-			->getForm();
+			->addHeader( 'h2', $this->getMessage( 'smw_smwadmin_db' ) );
 
-		return $html . Html::element( 'p', array(), '' );
+		if ( $this->enabledSetupStore ) {
+			$this->htmlFormRenderer
+				->addParagraph( $this->getMessage( 'smw_smwadmin_dbdocu' ) )
+				->addHiddenField( 'udsure', 'yes' )
+				->addSubmitButton( $this->getMessage( 'smw_smwadmin_dbbutton' ) );
+		} else {
+			$this->htmlFormRenderer
+				->addParagraph( $this->getMessage( 'smw-smwadmin-dbsetup-disabled' ) );
+		}
+
+		return $this->htmlFormRenderer->getForm() . Html::element( 'p', array(), '' );
 	}
 
 	/**
@@ -76,15 +96,19 @@ class TableSchemaUpdaterSection {
 	 */
 	public function doUpdate( WebRequest $webRequest ) {
 
+		if ( !$this->enabledSetupStore ) {
+			return;
+		}
+
 		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
 		$messageReporter->registerReporterCallback( array( $this, 'reportMessage' ) );
 
-		$this->outputFormatter->setPageTitle( Message::get( 'smw_smwadmin_db' ) );
+		$this->outputFormatter->setPageTitle( $this->getMessage( 'smw_smwadmin_db' ) );
 		$this->outputFormatter->addParentLink();
 
 		$this->store->getOptions()->set( Installer::OPT_MESSAGEREPORTER, $messageReporter );
 
-		$this->outputFormatter->addHTML( Html::rawElement( 'p', array(), Message::get( 'smw_smwadmin_permissionswarn', Message::TEXT, Message::USER_LANGUAGE ) ) );
+		$this->outputFormatter->addHTML( Html::rawElement( 'p', array(), $this->getMessage( 'smw_smwadmin_permissionswarn' ) ) );
 
 		$this->outputFormatter->addHTML( '<pre>' );
 
@@ -94,7 +118,7 @@ class TableSchemaUpdaterSection {
 		$this->outputFormatter->addHTML( '</pre>' );
 
 		if ( $result === true && $webRequest->getText( 'udsure' ) == 'yes' ) {
-			$this->outputFormatter->addWikiText( '<p><b>' . Message::get( 'smw_smwadmin_setupsuccess', Message::TEXT, Message::USER_LANGUAGE ) . "</b></p>" );
+			$this->outputFormatter->addWikiText( '<p><b>' . $this->getMessage( 'smw_smwadmin_setupsuccess' ) . "</b></p>" );
 		}
 	}
 
@@ -105,6 +129,10 @@ class TableSchemaUpdaterSection {
 	 */
 	public function reportMessage( $message ) {
 		$this->outputFormatter->addHTML( $message );
+	}
+
+	private function getMessage( $key, $type = Message::TEXT ) {
+		return Message::get( $key, $type, Message::USER_LANGUAGE );
 	}
 
 }
