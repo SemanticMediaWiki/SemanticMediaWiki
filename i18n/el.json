@@ -291,7 +291,6 @@
 	"smw-sp-properties-docu": "Αυτή η ειδική σελίδα απαριθμεί τις διαθέσιμες [https://www.semantic-mediawiki.org/wiki/Property ιδιότητες] και τις μετρήσεις χρήσης τους για αυτό το wiki. Για πιο επικαιροποιημένα στατιστικά μετρήσεων συνιστάται η εκτέλεση της δέσμης ενεργειών συντήρησης [https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics rebuildPropertyStatistics] σε τακτική βάση. Για μια διαφοροποιημένη προβολή, δείτε τις ειδικές σελίδες με τις [[Special:UnusedProperties|μη χρησιμοποιούμενες]] ή τις [[Special:WantedProperties|ζητούμενες ιδιότητες]].",
 	"smw-sp-properties-cache-info": "Τα δεδομένα που παρατίθενται έχουν ανακτηθεί από την [https://www.semantic-mediawiki.org/wiki/Caching προσωρινή μνήμη] και ενημερώθηκαν τελευταία φορά στις $1.",
 	"smw-sp-properties-header-label": "Κατάλογος ιδιοτήτων",
-	"smw-sp-admin-settings-title": "Ρυθμίσεις διαμόρφωσης",
 	"smw-sp-admin-settings-docu": "Παρουσιάζει μια λίστα όλων προεπιλεγμένων και τοπικοποιημένων ρυθμίσεων που αφορούν στο περιβάλλον του Σημασιολογικού MediaWiki. Για λεπτομέρειες σχετικά με συγκεκριμένες ρυθμίσεις, συμβουλευθείτε τη σελίδα βοήθειας περί [https://www.semantic-mediawiki.org/wiki/Help:Configuration διαμόρφωσης].",
 	"smw-sp-admin-settings-button": "Δημιουργία λίστας ρυθμίσεων",
 	"smw-sp-admin-idlookup-title": "Αναζήτηση αναγνωριστικού αντικειμένου",

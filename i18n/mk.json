@@ -304,7 +304,6 @@
 	"smw-sp-properties-docu": "На оваа страница се наведени [https://www.semantic-mediawiki.org/wiki/Property?uselang=mk својствата] и бројот на употреби достапен на ова вики. За најнови статистики за бројот на употреби се препорачува редовно пуштање на скриптата за [https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics статистики за својства]. Друг преглед можете да добиете на службените страници [[Special:UnusedProperties|неискористени својства]] и [[Special:WantedProperties|потребни својства]].",
 	"smw-sp-properties-cache-info": "Наведените податоци се преземени од [https://www.semantic-mediawiki.org/wiki/Caching?uselang=mk меѓускладот], a последен пат изменети на $1.",
 	"smw-sp-properties-header-label": "Список на својства",
-	"smw-sp-admin-settings-title": "Нагодувања за поставките",
 	"smw-sp-admin-settings-docu": "Прикажува список на сите стандардни и местоприлагодени и преведени поставки што се однесуваат на дадената околина во Семантички МедијВики. Повеќе за поединечните поставки ќе најдете на страницата за [https://www.semantic-mediawiki.org/wiki/Help:Configuration помош со поставки].",
 	"smw-sp-admin-settings-button": "Создај список на поставки",
 	"smw-sp-admin-idlookup-title": "Проверка на објектна назнака",

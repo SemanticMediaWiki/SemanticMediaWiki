@@ -305,7 +305,6 @@
 	"smw-sp-properties-docu": "Denna sida visar  [https://www.semantic-mediawiki.org/wiki/Property egenskaper] som är tillgängliga och när filtrerad, visas endast användardefinierade egenskaper som matchar villkoret. För en differentierad vy, se specialsidan [[Special:UnusedProperties|oanvända egenskaper]] eller [[Special:WantedProperties|önskade egenskaper]].",
 	"smw-sp-properties-cache-info": "Listad data har hämtats från [https://www.semantic-mediawiki.org/wiki/Caching cache], och uppdaterades sist $1.",
 	"smw-sp-properties-header-label": "Lista med egenskaper",
-	"smw-sp-admin-settings-title": "Konfigurationsinställningar",
 	"smw-sp-admin-settings-docu": "Visar en lista över alla standard- och lokaliserade inställningar som är relevanta för den semantiska MediaWiki-miljön. För detaljer om individuella inställningar, rådfråga hjälpsidan för [https://www.semantic-mediawiki.org/wiki/Help:Configuration konfiguration].",
 	"smw-sp-admin-settings-button": "Generera lista med inställningar",
 	"smw-sp-admin-idlookup-title": "Kolla upp objekt-ID",

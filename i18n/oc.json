@@ -202,7 +202,6 @@
 	"grouppage-smwadministrator": "{{ns:project}}:Administrators (Semantic MediaWiki)",
 	"group-smwcurator": "Conservadors (Mediawiki Semantica)",
 	"smw-sp-properties-header-label": "Lista de las proprietats",
-	"smw-sp-admin-settings-title": "Paramètres de configuracion",
 	"smw-sp-admin-settings-button": "Generar la lista dels paramètres",
 	"smw-sp-admin-objectid": "Id d’objècte :",
 	"smw-livepreview-loading": "Cargament…",

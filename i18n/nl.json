@@ -309,7 +309,6 @@
 	"smw-sp-properties-docu": "Op deze pagina wordt een lijst van [https://www.semantic-mediawiki.org/wiki/Property eigenschappen] getoond die beschikbaar zijn op deze wiki, met tellingen van het aantal keren dat die gebruikt worden. Voor actuele tellingsstatistieken wordt het aangeraden om het onderhoudsscript voor [https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics eigenschapsstatistieken] regelmatig uit te voeren. Voor een onderscheiden weergave, zie de speciale pagina's [[Special:UnusedProperties|ongebruikte eigenschappen]] of [[Special:WantedProperties|gewenste eigenschappen]].",
 	"smw-sp-properties-cache-info": "Deze gegevens zijn overgenomen uit een [https://www.semantic-mediawiki.org/wiki/Caching cache] en zijn voor het laatst bijgewerkt op $1.",
 	"smw-sp-properties-header-label": "Lijst met eigenschappen",
-	"smw-sp-admin-settings-title": "Configuratie-instellingen",
 	"smw-sp-admin-settings-docu": "Geeft een lijst van alle default en localized settings die relevant zijn voor de Semantic MediaWiki omgeving. Raadpleeg de help-pagina [https://www.semantic-mediawiki.org/wiki/Help:Configuration configuratie] voor meer informatie over afzonderlijke instellingen.",
 	"smw-sp-admin-settings-button": "Genereren van de lijst met instellingen",
 	"smw-sp-admin-idlookup-title": "Object-ID opzoeken",

@@ -316,7 +316,6 @@
 	"smw-sp-properties-docu": "הדף הזה מציג רשימת [https://www.semantic-mediawiki.org/wiki/Property מאפיינים] ומניין השימוש בהם כפי שזמין בוויקי הזה. לסטטיסטיקת ספירה מעודכנת מומלץ שתסריט התחזוקה ל[https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics סטטיסטיקות מאפיינים] יורץ באופן קבוע. לתצוגה מבודלת נא לראות את הדף המיוחד [[Special:UnusedProperties|מאפיינים שאינם בשימוש]] או [[Special:WantedProperties|מאפיינים מבוקשים]].",
 	"smw-sp-properties-cache-info": "הנתונים האשומים אוחזרו מ[https://www.semantic-mediawiki.org/wiki/Caching מטמון] ועודכנו לאחרונה $1.",
 	"smw-sp-properties-header-label": "רשימת מאפיינים",
-	"smw-sp-admin-settings-title": "הגדרות תצורה",
 	"smw-sp-admin-settings-docu": "רשימה של כל ההגדרות ההתחלתיות והמקומיות שרלוונטיות לסביבת מדיה־ויקי סמנטית. לפרטים על הגדרות פרטניות נא לקרוא את דף העזרה על [https://www.semantic-mediawiki.org/wiki/Help:Configuration הגדרות].",
 	"smw-sp-admin-settings-button": "יצירת רשימת הגדרות",
 	"smw-sp-admin-idlookup-title": "חיפוש לפי מזהה עצם:",

@@ -233,6 +233,5 @@
 	"group-smwadministrator": "Adminisztrátorok (Szemantikus MediaWiki)",
 	"grouppage-smwadministrator": "{{ns:project}}:Adminisztrátorok (Szemantikus MediaWiki)",
 	"smw-sp-properties-header-label": "Tulajdonságok listája",
-	"smw-sp-admin-settings-title": "Konfigurációs beállítások",
 	"smw-livepreview-loading": "Betöltés…"
 }

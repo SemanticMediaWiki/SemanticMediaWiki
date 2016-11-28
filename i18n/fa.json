@@ -291,7 +291,6 @@
 	"smw-sp-properties-docu": "این صفحه نشان می‌دهد [https://www.semantic-mediawiki.org/wiki/خاصیت خواص] که در دسترس هستند و هنگامی که فیلتر شده، تنها خواص تعریف شده کاربر است که منطبق با شرایط، نمایش داده می‌شود. برای یک نمای متفاوت، صفحه ویژه [[Special:UnusedProperties|unused properties]] یا [[Special:WantedProperties|wanted properties]] را مشاهده کنید.",
 	"smw-sp-properties-cache-info": "داده‌های فهرست شده از [https://www.semantic-mediawiki.org/wiki/Caching cache] بازیابی شده‌اند، و آخرین به روز شده بودند $1.",
 	"smw-sp-properties-header-label": "فهرست ویژگی‌ها",
-	"smw-sp-admin-settings-title": "تنظیمات پیکربندی",
 	"smw-sp-admin-settings-docu": "نمایش فهرست همه default و localized settings که به محیط مدیاویکی معنایی مربوط هستند. برای اطلاعات در  تنظیمات فردی، لطفاً به صفحه راهنما [https://www.semantic-mediawiki.org/wiki/Help:Configuration configuration] مراجعه کنید.",
 	"smw-sp-admin-settings-button": "ایجاد فهرست تنظیمات",
 	"smw-livepreview-loading": "در حال بارگیری…",

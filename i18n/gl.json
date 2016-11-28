@@ -316,7 +316,6 @@
 	"smw-sp-properties-docu": "Esta páxina lista as [https://www.semantic-mediawiki.org/wiki/Property propiedades] e o número de usos dispoñible para este wiki. Para ver as estatísticas actualizadas recoméndase que o script de mantemento das [https://www.semantic-mediawiki.org/wiki/rebuildPropertyStatistics estatísticas das propiedades] se execute de forma regular. Para ver unha vista diferenciada, consulte a páxina especial das [[Special:UnusedProperties|propiedades sen uso]] ou as [[Special:WantedProperties|propiedades requiridas]].",
 	"smw-sp-properties-cache-info": "Os datos da lista obtivéronse da [https://www.semantic-mediawiki.org/wiki/Caching caché], e actualizáronse o $1.",
 	"smw-sp-properties-header-label": "Lista de propiedades",
-	"smw-sp-admin-settings-title": "Opcións de configuración",
 	"smw-sp-admin-settings-docu": "Mostra unha lista de todos os parámetros predeterminados e localizados relevantes para o contorno de Semantic MediaWiki. Para obter os detalles de configuración individuais, consulte a páxina de axuda sobre a [https://www.semantic-mediawiki.org/wiki/Help:Configuration configuración].",
 	"smw-sp-admin-settings-button": "Xerar a lista de opcións",
 	"smw-sp-admin-idlookup-title": "Pescuda do identificador de obxecto",

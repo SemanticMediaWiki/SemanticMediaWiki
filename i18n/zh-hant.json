@@ -291,7 +291,6 @@
 	"action-smw-admin": "存取語意 MediaWiki 的管理工作項目",
 	"smw-pa-property-predefined-default": "\"$1\"　為預定的屬性。",
 	"smw-sp-properties-header-label": "屬性清單",
-	"smw-sp-admin-settings-title": "配置設定",
 	"smw-sp-admin-settings-button": "產生設定清單",
 	"smw-sp-admin-idlookup-title": "ObjectId 查詢",
 	"smw-sp-admin-objectid": "物件 Id：",
