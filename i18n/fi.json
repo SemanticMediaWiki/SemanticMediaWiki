@@ -120,6 +120,7 @@
 	"smw_propertylackspage": "Jokaisella ominaisuudella pitäisi olla kuvaussivu.",
 	"smw_propertylackstype": "Ominaisuuden tyyppiä ei ole määritelty (oletetaan tyypiksi $1).",
 	"smw_propertyhardlyused": "Tätä ominaisuutta ei juurikaan käytetä.",
+	"concepts": "Konseptit",
 	"unusedproperties": "Käyttämättömät ominaisuudet",
 	"smw_unusedproperties_docu": "Seuraavat ominaisuudet ovat olemassa, vaikka mikään muu sivu ei käytä niitä.",
 	"smw_unusedproperty_template": "$1 on tyypiltään $2",
