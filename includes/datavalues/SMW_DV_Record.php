@@ -234,47 +234,18 @@ class SMWRecordValue extends AbstractMultiValue {
 	 * @return array of DIProperty
 	 */
 	public function getPropertyDataItems() {
-		if ( is_null( $this->m_diProperties ) ) {
-			$this->m_diProperties = $this->findPropertyDataItems( $this->m_property );
 
-			if ( count( $this->m_diProperties ) == 0 ) { // TODO internalionalize
-				$this->addError( 'The list of properties to be used for the data fields has not been specified properly.' );
-			}
+		if ( $this->m_diProperties !== null ) {
+			return $this->m_diProperties;
+		}
+
+		$this->m_diProperties = $this->getFieldProperties( $this->m_property );
+
+		if ( $this->m_diProperties  === array() ) { // TODO internalionalize
+			$this->addError( 'The list of properties to be used for the data fields has not been specified properly.' );
 		}
 
 		return $this->m_diProperties;
-	}
-
-	/**
-	 * Return the array (list) of properties that the individual entries of
-	 * this datatype consist of.
-	 *
-	 * @since 1.6
-	 *
-	 * @param $diProperty mixed null or DIProperty object for which to retrieve the types
-	 *
-	 * @return array of DIProperty
-	 */
-	protected function findPropertyDataItems( $diProperty ) {
-		if ( !is_null( $diProperty ) ) {
-			$propertyDiWikiPage = $diProperty->getDiWikiPage();
-
-			if ( !is_null( $propertyDiWikiPage ) ) {
-				$listDiProperty = new DIProperty( '_LIST' );
-				$dataItems = ApplicationFactory::getInstance()->getStore()->getPropertyValues( $propertyDiWikiPage, $listDiProperty );
-
-				if ( count( $dataItems ) == 1 ) {
-					$propertyListValue = new PropertyListValue( '__pls' );
-					$propertyListValue->setDataItem( reset( $dataItems ) );
-
-					if ( $propertyListValue->isValid() ) {
-						return $propertyListValue->getPropertyDataItems();
-					}
-				}
-			}
-		}
-
-		return array();
 	}
 
 ////// Internal helper functions

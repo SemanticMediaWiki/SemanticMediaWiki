@@ -75,6 +75,37 @@ class PropertySpecificationLookup {
 	/**
 	 * @since 2.5
 	 *
+	 * @param DIProperty $property
+	 *
+	 * @return false|DataItem
+	 */
+	public function getFieldListBy( DIProperty $property ) {
+
+		$fieldList = false;
+		$key = 'list:'. $property->getKey();
+
+		// Guard against high frequency lookup
+		if ( $this->intermediaryMemoryCache->contains( $key ) ) {
+			return $this->intermediaryMemoryCache->fetch( $key );
+		}
+
+		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
+			$property->getCanonicalDiWikiPage(),
+			new DIProperty( '_LIST' )
+		);
+
+		if ( is_array( $dataItems ) && $dataItems !== array() ) {
+			$fieldList = end( $dataItems );
+		}
+
+		$this->intermediaryMemoryCache->save( $key, $fieldList );
+
+		return $fieldList;
+	}
+
+	/**
+	 * @since 2.5
+	 *
 	 * @param string $id
 	 * @param string $languageCode
 	 *
@@ -331,7 +362,7 @@ class PropertySpecificationLookup {
 			return $container->get( $key );
 		}
 
-		$localPropertyDescription = $this->tryToFindLocalPropertyDescription(
+		$localPropertyDescription = $this->findLocalPropertyDescription(
 			$property,
 			$linker,
 			$languageCode
@@ -380,7 +411,7 @@ class PropertySpecificationLookup {
 		return $message;
 	}
 
-	private function tryToFindLocalPropertyDescription( $property, $linker, $languageCode ) {
+	private function findLocalPropertyDescription( $property, $linker, $languageCode ) {
 
 		$text = '';
 		$descriptionProperty = new DIProperty( '_PDESC' );

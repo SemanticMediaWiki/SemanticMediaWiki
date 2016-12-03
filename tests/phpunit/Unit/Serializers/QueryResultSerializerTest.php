@@ -29,6 +29,12 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
+
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}
 
 	protected function tearDown() {
@@ -93,9 +99,9 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSemanticData' )
 			->will( $this->returnValue( $semanticData ) );
 
-		$store->expects( $this->at( 1 ) )
-			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array( $this->dataItemFactory->newDIBlob( 'BarList1;BarList2' ) ) ) );
+		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
+			->method( 'getFieldListBy' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'BarList1;BarList2' ) ) );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 

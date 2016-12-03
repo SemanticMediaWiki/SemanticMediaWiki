@@ -39,7 +39,7 @@
 		},
 		{
 			"page": "Example/P0440/Q.3",
-			"contents": "{{#ask: [[Has alternative label::+]] |?Has alternative label|+lang=en|+limit=1 }}"
+			"contents": "{{#ask: [[Has alternative label::+]] |?Has alternative label|+lang=en|+limit=1|+order=asc }}"
 		},
 		{
 			"page": "Example/P0440/Q.4",
@@ -47,7 +47,7 @@
 		},
 		{
 			"page": "Example/P0440/Q.5",
-			"contents": "{{#ask: [[Has alternative label::+]] |?Has alternative label|+lang=foo }}"
+			"contents": "{{#ask: [[Has alternative label::+]] |?Has alternative label|+lang=foo|+order=asc }}"
 		},
 		{
 			"page": "Example/P0440/Q.6",

@@ -58,9 +58,9 @@ class ReferenceValueTest extends \PHPUnit_Framework_TestCase {
 			->setMethods( array( 'getRedirectTarget' ) )
 			->getMockForAbstractClass();
 
-		$store->expects( $this->atLeastOnce() )
-			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) ) ) );
+		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
+			->method( 'getFieldListBy' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) ) );
 
 		$store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
@@ -91,9 +91,9 @@ class ReferenceValueTest extends \PHPUnit_Framework_TestCase {
 			->setMethods( array( 'getRedirectTarget' ) )
 			->getMockForAbstractClass();
 
-		$store->expects( $this->atLeastOnce() )
-			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) ) ) );
+		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
+			->method( 'getFieldListBy' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) ) );
 
 		$store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
@@ -143,9 +143,9 @@ class ReferenceValueTest extends \PHPUnit_Framework_TestCase {
 			->setMethods( array( 'getRedirectTarget' ) )
 			->getMockForAbstractClass();
 
-		$store->expects( $this->atLeastOnce() )
-			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) ) ) );
+		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
+			->method( 'getFieldListBy' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) ) );
 
 		$store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
