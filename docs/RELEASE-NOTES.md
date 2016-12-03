@@ -49,6 +49,7 @@ THIS IS NOT A RELEASE YET
 * #2027
 * #2036
 * #2037
+* #2047 `$smwgAdminSetupStore` and `$smwgAdminIdDisposal`
 
 ## Bug fixes
 
@@ -74,6 +75,7 @@ THIS IS NOT A RELEASE YET
 * #1978 Fixed `Tablebuilder` to avoid index creation on an unaltered schema definition
 * #1985 Fixed a potential fatal error in `MaintenanceLogger` for when `$wgMaxNameChars` doesn't match an expected name length
 * #2022
+* #2061 Fixed strict comparison `===` for strings in `PropertyTableRowDiffer`
 
 ## Internal changes
 
