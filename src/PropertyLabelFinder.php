@@ -59,13 +59,6 @@ class PropertyLabelFinder {
 	 * @return string|boolean
 	 */
 	public function findCanonicalPropertyLabelById( $id ) {
-
-		// This is fixed otherwise the `_txt` assignment interferes with the label
-		// declaration
-		if ( $id === '_TEXT' ) {
-			return 'Text';
-		}
-
 		return array_search( $id, $this->canonicalPropertyLabels );
 	}
 
@@ -211,6 +204,13 @@ class PropertyLabelFinder {
 	 * @param string $label
 	 */
 	public function registerPropertyLabel( $id, $label, $asCanonical = true ) {
+
+		// Prevent an extension from overriding an already registered
+		// canonical label that may point to a different ID
+		if ( isset( $this->canonicalPropertyLabels[$label] ) && $this->canonicalPropertyLabels[$label] !== $id ) {
+			return;
+		}
+
 		$this->languageDependentPropertyLabels[$id] = $label;
 
 		// This is done so extensions can register the property id/label as being

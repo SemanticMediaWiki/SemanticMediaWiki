@@ -2,8 +2,6 @@
 
 namespace SMW;
 
-namespace SMW;
-
 /**
  * @license GNU GPL v2
  * @since 2.4
@@ -69,6 +67,12 @@ class PropertyAliasFinder {
 	 * @param string $label
 	 */
 	public function registerAliasByFixedLabel( $id, $label ) {
+
+		// Prevent an extension to register an already known
+		// label
+		if ( isset( $this->canonicalPropertyAliases[$label] ) && $this->canonicalPropertyAliases[$label] !== $id ) {
+			return;
+		}
 
 		// Indicates an untranslated MW message key
 		if ( $label !== '' && $label{0} === '<' ) {

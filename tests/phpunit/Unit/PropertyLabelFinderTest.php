@@ -106,6 +106,32 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testPreventKnownPropertyLabelToBeRegisteredAsCanonicalWithDifferentId() {
+
+		$languageIndependentPropertyLabels = array();
+
+		$canonicalPropertyLabels = array(
+			'Foo' => '_foo'
+		);
+
+		$instance = new PropertyLabelFinder(
+			$this->store,
+			$languageIndependentPropertyLabels,
+			$canonicalPropertyLabels
+		);
+
+		$instance->registerPropertyLabel(
+			'_bar',
+			'Foo',
+			true
+		);
+
+		$this->assertEquals(
+			'Foo',
+			$instance->findCanonicalPropertyLabelById( '_foo' )
+		);
+	}
+
 	public function testSearchPropertyIdForNonRegisteredLabel() {
 
 		$languageIndependentPropertyLabels = array();
