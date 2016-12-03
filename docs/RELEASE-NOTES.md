@@ -76,6 +76,7 @@ THIS IS NOT A RELEASE YET
 * #1985 Fixed a potential fatal error in `MaintenanceLogger` for when `$wgMaxNameChars` doesn't match an expected name length
 * #2022
 * #2061 Fixed strict comparison `===` for strings in `PropertyTableRowDiffer`
+* #2070
 
 ## Internal changes
 
