@@ -69,7 +69,10 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 		$this->applicationFactory->registerObject( 'Settings', Settings::newFromArray( array(
 			'smwgCacheType'             => 'hash',
 			'smwgAutoRefreshOnPageMove' => true,
-			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true )
+			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+			'smwgQueryResultCacheType' => 'hash',
+			'smwgQueryResultCacheLifetime' => 60,
+			'smwgQueryResultNonEmbeddedCacheLifetime' => 60
 		) ) );
 
 		$this->applicationFactory->registerObject( 'Store', $store );
@@ -104,7 +107,10 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 		$this->applicationFactory->registerObject( 'Settings', Settings::newFromArray( array(
 			'smwgCacheType'             => 'hash',
 			'smwgAutoRefreshOnPageMove' => true,
-			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true, NS_HELP => false )
+			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true, NS_HELP => false ),
+			'smwgQueryResultCacheType' => 'hash',
+			'smwgQueryResultCacheLifetime' => 60,
+			'smwgQueryResultNonEmbeddedCacheLifetime' => 60
 		) ) );
 
 		$this->applicationFactory->registerObject( 'Store', $store );

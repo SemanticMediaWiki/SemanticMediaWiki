@@ -79,7 +79,7 @@ class ArticleDelete {
 			$dispatchContext->set( 'title', $title );
 
 			$eventHandler->getEventDispatcher()->dispatch(
-				'cached.propertyvalues.prefetcher.reset',
+				'cached.prefetcher.reset',
 				$dispatchContext
 			);
 		} );

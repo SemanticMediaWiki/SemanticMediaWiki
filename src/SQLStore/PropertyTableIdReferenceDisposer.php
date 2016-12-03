@@ -188,13 +188,21 @@ class PropertyTableIdReferenceDisposer {
 			return;
 		}
 
+		// Use the subject without an internal 'smw-delete' iw marker
+		$subject = new DIWikiPage(
+			$subject->getDBKey(),
+			$subject->getNamespace(),
+			'',
+			$subject->getSubobjectName()
+		);
+
 		$eventHandler = EventHandler::getInstance();
 
 		$dispatchContext = $eventHandler->newDispatchContext();
 		$dispatchContext->set( 'subject', $subject );
 
 		$eventHandler->getEventDispatcher()->dispatch(
-			'cached.propertyvalues.prefetcher.reset',
+			'cached.prefetcher.reset',
 			$dispatchContext
 		);
 

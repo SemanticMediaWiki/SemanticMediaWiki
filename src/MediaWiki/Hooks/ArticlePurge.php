@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\ApplicationFactory;
-use SMW\Cache\CacheFactory;
+use SMW\EventHandler;
 use SMW\DIWikiPage;
 use WikiPage;
 
@@ -44,15 +44,20 @@ class ArticlePurge {
 			);
 		}
 
+		$dispatchContext = EventHandler::getInstance()->newDispatchContext();
+		$dispatchContext->set( 'title', $wikiPage->getTitle() );
+
 		if ( $settings->get( 'smwgFactboxCacheRefreshOnPurge' ) ) {
-			$cache->delete(
-				$cacheFactory->getFactboxCacheKey( $pageId )
+			EventHandler::getInstance()->getEventDispatcher()->dispatch(
+				'factbox.cache.delete',
+				$dispatchContext
 			);
 		}
 
 		if ( $settings->get( 'smwgQueryResultCacheRefreshOnPurge' ) ) {
-			$applicationFactory->singleton( 'CachedQueryResultPrefetcher' )->resetCacheBy(
-				DIWikiPage::newFromTitle( $wikiPage->getTitle() )
+			EventHandler::getInstance()->getEventDispatcher()->dispatch(
+				'cached.prefetcher.reset',
+				$dispatchContext
 			);
 		}
 
