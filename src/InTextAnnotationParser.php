@@ -457,26 +457,28 @@ class InTextAnnotationParser {
 	private function getPropertyLink( $subject, $properties, $value, $valueCaption ) {
 
 		// #1855
-		if ( substr( $value, 0, 3 ) === '@@@' ) {
-			$property = end( $properties );
-
-			$dataValue = $this->dataValueFactory->newPropertyValueByLabel(
-				$property,
-				$valueCaption,
-				$subject
-			);
-
-			if ( ( $lang = Localizer::getAnnotatedLanguageCodeFrom( $value ) ) !== false ) {
-				$dataValue->setOption( $dataValue::OPT_USER_LANGUAGE, $lang );
-				$dataValue->setCaption(
-					$valueCaption === false ? $dataValue->getWikiValue() : $valueCaption
-				);
-			}
-
-			return $dataValue->getShortWikitext( smwfGetLinker() );
+		if ( substr( $value, 0, 3 ) !== '@@@' ) {
+			return '';
 		}
 
-		return '';
+		$property = end( $properties );
+
+		$dataValue = $this->dataValueFactory->newPropertyValueByLabel(
+			$property,
+			$valueCaption,
+			$subject
+		);
+
+		if ( ( $lang = Localizer::getAnnotatedLanguageCodeFrom( $value ) ) !== false ) {
+			$dataValue->setOption( $dataValue::OPT_USER_LANGUAGE, $lang );
+			$dataValue->setCaption(
+				$valueCaption === false ? $dataValue->getWikiValue() : $valueCaption
+			);
+		}
+
+		$dataValue->setOption( $dataValue::OPT_HIGHLIGHT_LINKER, true );
+
+		return $dataValue->getShortWikitext( smwfGetLinker() );
 	}
 
 }

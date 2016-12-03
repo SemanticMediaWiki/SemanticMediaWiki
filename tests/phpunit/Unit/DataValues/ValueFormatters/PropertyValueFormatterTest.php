@@ -20,6 +20,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	private $dataItemFactory;
 	private $propertyLabelFinder;
+	private $propertySpecificationLookup;
 
 	protected function setUp() {
 		parent::setUp();
@@ -32,6 +33,13 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'PropertyLabelFinder', $this->propertyLabelFinder );
+
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
+
 	}
 
 	public function testCanConstruct() {
@@ -59,6 +67,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyValue = new PropertyValue();
 		$propertyValue->setDataItem( $this->dataItemFactory->newDIProperty( 'Foo' ) );
+		$propertyValue->setOption( PropertyValue::OPT_NO_HIGHLIGHT, true );
 
 		$instance = new PropertyValueFormatter( $propertyValue );
 
@@ -73,6 +82,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$propertyValue = new PropertyValue();
 		$propertyValue->setDataItem( $this->dataItemFactory->newDIProperty( 'Foo' ) );
 		$propertyValue->setCaption( 'ABC[<>]' );
+		$propertyValue->setOption( PropertyValue::OPT_NO_HIGHLIGHT, true );
 
 		$instance = new PropertyValueFormatter( $propertyValue );
 
@@ -87,6 +97,27 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testFormatWithCaptionOutputAndHighlighter() {
+
+		$propertyValue = new PropertyValue();
+		$propertyValue->setOption( PropertyValue::OPT_NO_HIGHLIGHT, false );
+
+		$propertyValue->setDataItem( $this->dataItemFactory->newDIProperty( 'Foo' ) );
+		$propertyValue->setCaption( 'ABC[<>]' );
+
+		$instance = new PropertyValueFormatter( $propertyValue );
+
+		$this->assertContains(
+			'<span class="smwtext">ABC[<>]</span><div class="smwttcontent"></div>',
+			$instance->format( PropertyValueFormatter::WIKI_SHORT )
+		);
+
+		$this->assertContains(
+			'<span class="smwtext">ABC[&lt;&gt;]</span><div class="smwttcontent"></div>',
+			$instance->format( PropertyValueFormatter::HTML_SHORT )
+		);
+	}
+
 	/**
 	 * @dataProvider propertyValueProvider
 	 */
@@ -97,6 +128,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyValue->setOption( PropertyValue::OPT_CONTENT_LANGUAGE, 'en' );
 		$propertyValue->setOption( PropertyValue::OPT_USER_LANGUAGE, 'en' );
+		$propertyValue->setOption( PropertyValue::OPT_NO_HIGHLIGHT, true );
 
 		$instance = new PropertyValueFormatter( $propertyValue );
 		$expected = $this->testEnvironment->getLocalizedTextByNamespace( SMW_NS_PROPERTY, $expected );
@@ -139,6 +171,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$propertyValue->setOption( 'smwgDVFeatures', SMW_DV_PROV_LHNT );
 		$propertyValue->setOption( PropertyValue::OPT_CONTENT_LANGUAGE, 'en' );
 		$propertyValue->setOption( PropertyValue::OPT_USER_LANGUAGE, 'en' );
+		$propertyValue->setOption( PropertyValue::OPT_NO_HIGHLIGHT, true );
 
 		$propertyValue->setUserValue( $property );
 
@@ -162,6 +195,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyValue->setOption( PropertyValue::OPT_CONTENT_LANGUAGE, 'en' );
 		$propertyValue->setOption( PropertyValue::OPT_USER_LANGUAGE, 'en' );
+		$propertyValue->setOption( PropertyValue::OPT_NO_HIGHLIGHT, true );
 
 		$propertyValue->setDataItem( $property );
 
