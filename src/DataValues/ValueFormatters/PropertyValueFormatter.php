@@ -59,7 +59,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		}
 
 		if ( $type === self::WIKI_SHORT ) {
-			$text = $this->doHighlightText( $wikiPageValue->getShortWikiText( $linker ) );
+			$text = $this->doHighlightText( $wikiPageValue->getShortWikiText( $linker ), $linker );
 		}
 
 		if ( $type === self::HTML_SHORT ) {
@@ -218,7 +218,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		$propertyDescription = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getPropertyDescriptionBy(
 			$dataItem,
 			$this->dataValue->getOptionBy( PropertyValue::OPT_USER_LANGUAGE ),
-			$linker
+			$this->dataValue->getOptionBy( PropertyValue::OPT_HIGHLIGHT_LINKER ) ? $linker : null
 		);
 
 		return !$dataItem->isUserDefined() || $propertyDescription !== '';

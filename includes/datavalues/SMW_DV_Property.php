@@ -39,6 +39,11 @@ class SMWPropertyValue extends SMWDataValue {
 	const OPT_NO_HIGHLIGHT = 'no.highlight';
 
 	/**
+	 * Use linker with the highlighter
+	 */
+	const OPT_HIGHLIGHT_LINKER = 'highlight.linker';
+
+	/**
 	 * Avoid the display of a preferred label marker
 	 */
 	const OPT_NO_PREF_LHNT = 'no.preflabel.marker';
