@@ -17,7 +17,8 @@
 		},
 		{
 			"page": "Example/S0011/Q.1",
-			"contents": "{{#ask: [[Category:S0011]] |?Has text |limit=0 |link=none |format=table |intro=with [[intro parameter]] {{#info:intro bubble}} |outro=with [[outro parameter]] {{#info:outro bubble}} }}"
+			"contents": "{{#ask: [[Category:S0011]] |?Has text |limit=0 |link=none |format=table |intro=with [[intro parameter]] {{#info:intro bubble}} |outro=with [[outro parameter]] {{#info:outro bubble}} }}",
+			"message-cache": "clear"
 		}
 	],
 	"tests": [

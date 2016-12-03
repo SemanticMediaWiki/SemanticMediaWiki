@@ -9,6 +9,7 @@ use SMW\DIProperty;
 use SMW\SemanticData;
 use SMW\Store;
 use SMWDIError as DIError;
+use SMWDataItem as DataItem;
 
 /**
  * @license GNU GPL v2+
@@ -123,7 +124,8 @@ class PropertyTableRowDiffer {
 				} else { // Table contains no data or contains data that is different from the new
 					list( $tablesInsertRows[$tableName], $tablesDeleteRows[$tableName] ) = $this->arrayDeleteMatchingValues(
 						$this->fetchCurrentContentsForPropertyTable( $sid, $propertyTable ),
-						$newData[$tableName]
+						$newData[$tableName],
+						$propertyTable
 					);
 
 					if ( $fixedProperty ) {
@@ -252,17 +254,29 @@ class PropertyTableRowDiffer {
 	 *
 	 * @param array $oldValues
 	 * @param array $newValues
+	 * @param PropertyTableDefinition $propertyTable
+	 *
 	 * @return array
 	 */
-	private function arrayDeleteMatchingValues( $oldValues, $newValues ) {
+	private function arrayDeleteMatchingValues( $oldValues, $newValues, $propertyTable ) {
 
-		// cycle through old values
+		$isString = $propertyTable->getDIType() === DataItem::TYPE_BLOB;
+
+		// Cycle through old values
 		foreach ( $oldValues as $oldKey => $oldValue ) {
 
-			// cycle through new values
+			// Cycle through new values
 			foreach ( $newValues as $newKey => $newValue ) {
 
-				// delete matching values;
+				// #2061
+				// Loose comparison on a string will fail for cases like 011 == 0011
+				// therefore use the strict comparison and have the values
+				// remain if they don't match
+				if ( $isString && $newValue !== $oldValue ) {
+					continue;
+				}
+
+				// Delete matching values
 				// use of == is intentional to account for oldValues only
 				// containing strings while new values might also contain other
 				// types
@@ -273,7 +287,7 @@ class PropertyTableRowDiffer {
 			}
 		};
 
-		// arrays have to be renumbered because database functions expect an
+		// Arrays have to be renumbered because database functions expect an
 		// element with index 0 to be present in the array
 		return array( array_values( $newValues ), array_values( $oldValues ) );
 	}
