@@ -16,17 +16,17 @@ class InMemoryPoolCache {
 	/**
 	 * Stats as plain string
 	 */
-	const FORMAT_PLAIN = 'plain';
+	const FORMAT_PLAIN = StatsFormatter::FORMAT_PLAIN;
 
 	/**
 	 * Stats as JSON output
 	 */
-	const FORMAT_JSON = 'json';
+	const FORMAT_JSON = StatsFormatter::FORMAT_JSON;
 
 	/**
 	 * Stats as HTML list output
 	 */
-	const FORMAT_HTML = 'html';
+	const FORMAT_HTML = StatsFormatter::FORMAT_HTML;
 
 	/**
 	 * @var InMemoryPoolCache
@@ -87,60 +87,14 @@ class InMemoryPoolCache {
 	}
 
 	/**
-	 * @since 2.3
-	 *
-	 * @return array
-	 */
-	public function getStats() {
-
-		$stats = array();
-
-		foreach ( $this->poolCacheList as $key => $value ) {
-			$stats[$key] = $value->getStats();
-		}
-
-		return $stats;
-	}
-
-	/**
 	 * @since 2.4
 	 *
-	 * @param string $format
+	 * @param string|null $format
 	 *
-	 * @return string
+	 * @return string|array
 	 */
-	public function getFormattedStats( $format = self::FORMAT_PLAIN ) {
-
-		$stats = $this->computeStats();
-		$output = '';
-
-		if ( $format === self::FORMAT_PLAIN ) {
-			foreach ( $stats as $key => $value ) {
-				$output .= '- ' . $key . "\n";
-
-				foreach ( $value as $k => $v ) {
-					$output .= '  - ' . $k . ': ' . $v . "\n";
-				}
-			}
-		}
-
-		if ( $format === self::FORMAT_HTML ) {
-			$output .= '<ul>';
-			foreach ( $stats as $key => $value ) {
-				$output .= '<li>' . $key . '<ul>';
-				foreach ( $value as $k => $v ) {
-					$output .= '<li>' . $k . ': ' . $v . "</li>";
-				}
-				$output .= '</ul></li>';
-			}
-			$output .= '</ul>';
-		}
-
-		if ( $format === self::FORMAT_JSON ) {
-			$output .= json_encode( $stats, JSON_PRETTY_PRINT );
-		}
-
-		return $output;
+	public function getStats( $format = null ) {
+		return StatsFormatter::format( $this->computeStats(), $format );
 	}
 
 	/**

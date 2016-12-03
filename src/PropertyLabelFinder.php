@@ -136,7 +136,7 @@ class PropertyLabelFinder {
 		$propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
 
 		$preferredPropertyLabel = $propertySpecificationLookup->getPreferredPropertyLabelBy(
-			$id,
+			new DIProperty( str_replace( ' ', '_', $id ) ),
 			$languageCode
 		);
 

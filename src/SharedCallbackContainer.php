@@ -340,12 +340,6 @@ class SharedCallbackContainer implements CallbackContainer {
 				$callbackLoader->singleton( 'InMemoryPoolCache' )->getPoolCacheById( PropertySpecificationLookup::POOLCACHE_ID )
 			);
 
-			// Uses the language object selected in user preferences. It is one
-			// of two global language objects
-			$propertySpecificationLookup->setLanguageCode(
-				Localizer::getInstance()->getUserLanguage()->getCode()
-			);
-
 			return $propertySpecificationLookup;
 		} );
 
