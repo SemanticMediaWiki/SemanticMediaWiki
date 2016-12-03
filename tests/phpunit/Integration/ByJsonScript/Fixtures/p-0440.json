@@ -35,7 +35,7 @@
 		},
 		{
 			"page": "Example/P0440/Q.2",
-			"contents": "{{#ask: [[Has alternative label::+]] |?Has alternative label|+lang=en }}"
+			"contents": "{{#ask: [[Has alternative label::+]] |?Has alternative label|+lang=en|+order=asc }}"
 		},
 		{
 			"page": "Example/P0440/Q.3",
