@@ -55,6 +55,7 @@ class ConceptPage extends \SMWOrderedListPage {
 
 			$query->setLimit( $wgRequest->getVal( 'limit', $smwgConceptPagingLimit ) );
 			$query->setOffset( $wgRequest->getVal( 'offset', '0' ) );
+			$query->setContextPage( $this->getDataItem() );
 
 			$queryResult = ApplicationFactory::getInstance()->getStore()->getQueryResult( $query );
 
@@ -102,7 +103,11 @@ class ConceptPage extends \SMWOrderedListPage {
 			'h2',
 			array(),
 			$this->getContext()->msg( 'smw-concept-cache-header' )->text()
-		) . $cacheInformation;
+		) . Html::rawElement(
+			'span',
+			array( 'class' => 'plainlinks' ),
+			$cacheInformation
+		);
 	}
 
 	private function getFormattedColumns( array $diWikiPages ) {
