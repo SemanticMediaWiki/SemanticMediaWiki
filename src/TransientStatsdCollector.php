@@ -101,18 +101,7 @@ class TransientStatsdCollector {
 			md5( $this->statsdId . self::VERSION )
 		);
 
-		$data = $container->getData();
-		$stats = array();
-
-		foreach ( $data as $key => $value ) {
-			if ( strpos( $key, '.' ) !== false ) {
-				$stats = array_merge_recursive( $stats, $this->stringToArray( $key, $value ) );
-			} else {
-				$stats[$key] = $value;
-			}
-		}
-
-		return $stats;
+		return StatsFormatter::getStatsFromFlatKey( $container->getData(), '.' );
 	}
 
 	/**
@@ -232,26 +221,6 @@ class TransientStatsdCollector {
 		);
 
 		$deferredCallableUpdate->pushToUpdateQueue();
-	}
-
-	// http://stackoverflow.com/questions/10123604/multstatsdIdimensional-array-from-string
-	private function stringToArray( $path, $value ) {
-
-		$separator = '.';
-		$pos = strpos( $path, $separator );
-
-		if ( $pos === false ) {
-			return array( $path => $value );
-		}
-
-		$key = substr( $path, 0, $pos );
-		$path = substr( $path, $pos + 1 );
-
-		$result = array(
-			$key => $this->stringToArray( $path, $value )
-		);
-
-		return $result;
 	}
 
 }

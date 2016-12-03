@@ -66,6 +66,10 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 					$this->dataItemFactory->newDIBlob( 'Foo' ),
 					$this->dataItemFactory->newDIBlob( 'abc;123' ) ) ) );
 
+		$this->intermediaryMemoryCache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( false ) );
+
 		$instance = new PropertySpecificationLookup(
 			$this->cachedPropertyValuesPrefetcher,
 			$this->intermediaryMemoryCache
@@ -325,11 +329,9 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->intermediaryMemoryCache
 		);
 
-		$instance->setLanguageCode( 'en' );
-
 		$this->assertEquals(
 			1001,
-			$instance->getPropertyDescriptionBy( $property )
+			$instance->getPropertyDescriptionBy( $property, 'en' )
 		);
 	}
 

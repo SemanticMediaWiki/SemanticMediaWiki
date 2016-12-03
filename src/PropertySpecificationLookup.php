@@ -12,6 +12,9 @@ use SMWQuery as Query;
  * This class should be accessed via ApplicationFactory::getPropertySpecificationLookup
  * to ensure a singleton instance.
  *
+ * Changes to a property should trigger a PropertySpecificationLookup::resetCacheBy to
+ * evict all cached item store to that property.
+ *
  * @license GNU GPL v2+
  * @since 2.4
  *
@@ -19,6 +22,9 @@ use SMWQuery as Query;
  */
 class PropertySpecificationLookup {
 
+	/**
+	 * Reference used in InMemoryPoolCache
+	 */
 	const POOLCACHE_ID = 'property.specification.lookup';
 
 	/**
@@ -45,31 +51,16 @@ class PropertySpecificationLookup {
 	public function __construct( CachedPropertyValuesPrefetcher $cachedPropertyValuesPrefetcher, Cache $intermediaryMemoryCache ) {
 		$this->cachedPropertyValuesPrefetcher = $cachedPropertyValuesPrefetcher;
 		$this->intermediaryMemoryCache = $intermediaryMemoryCache;
+		$this->languageCode = Localizer::getInstance()->getContentLanguage()->getCode();
 	}
 
 	/**
 	 * @since 2.4
+	 *
+	 * @param DIWikiPage $subject
 	 */
 	public function resetCacheBy( DIWikiPage $subject ) {
 		$this->cachedPropertyValuesPrefetcher->resetCacheBy( $subject );
-	}
-
-	/**
-	 * @since 2.4
-	 *
-	 * @param string
-	 */
-	public function getLanguageCode() {
-		return $this->languageCode;
-	}
-
-	/**
-	 * @since 2.4
-	 *
-	 * @param string $languageCode
-	 */
-	public function setLanguageCode( $languageCode ) {
-		$this->languageCode = Localizer::asBCP47FormattedLanguageCode( $languageCode );
 	}
 
 	/**
@@ -85,8 +76,8 @@ class PropertySpecificationLookup {
 		$key = 'list:'. $property->getKey();
 
 		// Guard against high frequency lookup
-		if ( $this->intermediaryMemoryCache->contains( $key ) ) {
-			return $this->intermediaryMemoryCache->fetch( $key );
+		if ( ( $fieldList = $this->intermediaryMemoryCache->fetch( $key ) ) !== false ) {
+			return $fieldList;
 		}
 
 		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
@@ -106,15 +97,15 @@ class PropertySpecificationLookup {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string $id
+	 * @param DIProperty $property
 	 * @param string $languageCode
 	 *
 	 * @return string
 	 */
-	public function getPreferredPropertyLabelBy( $id, $languageCode = '' ) {
+	public function getPreferredPropertyLabelBy( DIProperty $property, $languageCode = '' ) {
 
 		$languageCode = $languageCode === '' ? $this->languageCode : $languageCode;
-		$key = 'ppl:' . $languageCode  . ':'. $id;
+		$key = 'ppl:' . $languageCode  . ':'. $property->getKey();
 
 		// Guard against high frequency lookup
 		if ( ( $preferredPropertyLabel = $this->intermediaryMemoryCache->fetch( $key ) ) !== false ) {
@@ -122,7 +113,7 @@ class PropertySpecificationLookup {
 		}
 
 		$preferredPropertyLabel = $this->findPreferredPropertyLabel(
-			new DIProperty( str_replace( ' ', '_', $id ) ),
+			$property,
 			$languageCode
 		);
 
@@ -341,12 +332,12 @@ class PropertySpecificationLookup {
 	 * @since 2.4
 	 *
 	 * @param DIProperty $property
-	 * @param mixed|null $linker
 	 * @param string $languageCode
+	 * @param mixed|null $linker
 	 *
 	 * @return string
 	 */
-	public function getPropertyDescriptionBy( DIProperty $property, $linker = null, $languageCode = '' ) {
+	public function getPropertyDescriptionBy( DIProperty $property, $languageCode = '', $linker = null ) {
 
 		// Take the linker into account (Special vs. in page rendering etc.)
 		$languageCode = $languageCode === '' ? $this->languageCode : $languageCode;
