@@ -3,6 +3,9 @@
 namespace SMW\DataValues;
 
 use SMWDataValue as DataValue;
+use SMWPropertyListValue as PropertyListValue;
+use SMW\DIProperty;
+use SMW\ApplicationFactory;
 
 /**
  * @private
@@ -131,6 +134,38 @@ abstract class AbstractMultiValue extends DataValue {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Return the array (list) of properties that the individual entries of
+	 * this datatype consist of.
+	 *
+	 * @since 2.5
+	 *
+	 * @param DIProperty|null $property
+	 *
+	 * @return DIProperty[]|[]
+	 */
+	protected function getFieldProperties( DIProperty $property = null ) {
+
+		if ( $property === null || $property->getDiWikiPage() === null ) {
+			return array();
+		}
+
+		$dataItem = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getFieldListBy( $property );
+
+		if ( !$dataItem ) {
+			return array();
+		}
+
+		$propertyListValue = new PropertyListValue( '__pls' );
+		$propertyListValue->setDataItem( $dataItem );
+
+		if ( !$propertyListValue->isValid() ) {
+			return array();
+		}
+
+		return $propertyListValue->getPropertyDataItems();
 	}
 
 }

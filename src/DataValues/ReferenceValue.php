@@ -152,7 +152,7 @@ class ReferenceValue extends AbstractMultiValue {
 	public function getPropertyDataItems() {
 
 		if ( $this->properties === null ) {
-			$this->properties = $this->findPropertyDataItems( $this->getProperty() );
+			$this->properties = $this->getFieldProperties( $this->getProperty() );
 
 			if ( count( $this->properties ) == 0 ) {
 				$this->addErrorMsg( array( 'smw-datavalue-reference-invalid-fields-definition' ), Message::PARSE );
@@ -252,33 +252,6 @@ class ReferenceValue extends AbstractMultiValue {
 		}
 
 		return false;
-	}
-
-	private function findPropertyDataItems( DIProperty $property = null ) {
-
-		if ( $property === null ) {
-			return array();
-		}
-
-		$propertyDiWikiPage = $property->getDiWikiPage();
-
-		if ( $propertyDiWikiPage === null ) {
-			return array();
-		}
-
-		$listDiProperty = new DIProperty( '_LIST' );
-		$dataItems = ApplicationFactory::getInstance()->getStore()->getPropertyValues( $propertyDiWikiPage, $listDiProperty );
-
-		if ( count( $dataItems ) == 1 ) {
-			$propertyListValue = new PropertyListValue( '__pls' );
-			$propertyListValue->setDataItem( reset( $dataItems ) );
-
-			if ( $propertyListValue->isValid() ) {
-				return $propertyListValue->getPropertyDataItems();
-			}
-		}
-
-		return array();
 	}
 
 	private function newContainerSemanticData( $value ) {

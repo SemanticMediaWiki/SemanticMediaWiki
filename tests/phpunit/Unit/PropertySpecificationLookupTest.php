@@ -51,6 +51,59 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetFieldList() {
+
+		$property = $this->dataItemFactory->newDIProperty( 'RecordProperty' );
+
+		$this->cachedPropertyValuesPrefetcher->expects( $this->once() )
+			->method( 'getPropertyValues' )
+			->with(
+				$this->equalTo( $property->getDiWikiPage() ),
+				$this->equalTo( $this->dataItemFactory->newDIProperty( '_LIST' ) ),
+				$this->anything() )
+			->will(
+				$this->returnValue( array(
+					$this->dataItemFactory->newDIBlob( 'Foo' ),
+					$this->dataItemFactory->newDIBlob( 'abc;123' ) ) ) );
+
+		$instance = new PropertySpecificationLookup(
+			$this->cachedPropertyValuesPrefetcher,
+			$this->intermediaryMemoryCache
+		);
+
+		$this->assertEquals(
+			'abc;123',
+			$instance->getFieldListBy( $property )
+		);
+	}
+
+	public function testGetPreferredPropertyLabel() {
+
+		$property = $this->dataItemFactory->newDIProperty( 'SomeProperty' );
+		$property->setPropertyTypeId( '_mlt_rec' );
+
+		$this->cachedPropertyValuesPrefetcher->expects( $this->once() )
+			->method( 'getPropertyValues' )
+			->with(
+				$this->equalTo( $property->getDiWikiPage() ),
+				$this->equalTo( $this->dataItemFactory->newDIProperty( '_PPLB' ) ),
+				$this->anything() );
+
+		$this->intermediaryMemoryCache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( false ) );
+
+		$instance = new PropertySpecificationLookup(
+			$this->cachedPropertyValuesPrefetcher,
+			$this->intermediaryMemoryCache
+		);
+
+		$this->assertEquals(
+			'',
+			$instance->getPreferredPropertyLabelBy( $property )
+		);
+	}
+
 	public function testGetPropertyFromDisplayTitle() {
 
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
