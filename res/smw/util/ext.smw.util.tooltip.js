@@ -263,6 +263,15 @@
 			 self.initFromContext( opts.context );
 		} );
 
+		// SemanticForms/PageForms instance trigger
+		mw.hook( 'sf.addTemplateInstance' ).add( function( context ) {
+			self.initFromContext( context );
+		} );
+
+		mw.hook( 'pf.addTemplateInstance' ).add( function( context ) {
+			self.initFromContext( context );
+		} );
+
 		return self;
 	};
 
