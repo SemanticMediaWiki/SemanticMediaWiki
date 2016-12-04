@@ -59,7 +59,8 @@ class DataRepairSectionTest extends \PHPUnit_Framework_TestCase {
 			'setMethod',
 			'addHiddenField',
 			'addHeader',
-			'addParagraph'
+			'addParagraph',
+			'addSubmitButton'
 		);
 
 		foreach ( $methods as $method ) {
@@ -147,6 +148,39 @@ class DataRepairSectionTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->enabledRefreshStore( true );
 		$instance->doRefresh( $webRequest );
+	}
+
+	public function testDoDispose() {
+
+		$entityIdDisposerJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\EntityIdDisposerJob' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$entityIdDisposerJob->expects( $this->once() )
+			->method( 'insert' );
+
+		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$jobFactory->expects( $this->once() )
+			->method( 'newByType' )
+			->will( $this->returnValue( $entityIdDisposerJob ) );
+
+		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
+
+		$webRequest = $this->getMockBuilder( '\WebRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new DataRepairSection(
+			$this->connection,
+			$this->htmlFormRenderer,
+			$this->outputFormatter
+		);
+
+		$instance->enabledIdDisposal( true );
+		$instance->doDispose( $webRequest );
 	}
 
 }

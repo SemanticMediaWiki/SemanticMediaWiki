@@ -78,6 +78,10 @@ class SpecialAdmin extends SpecialPage {
 			$applicationFactory->getSettings()->get( 'smwgAdminRefreshStore' )
 		);
 
+		$dataRepairSection->enabledIdDisposal(
+			$applicationFactory->getSettings()->get( 'smwgAdminIdDisposal' )
+		);
+
 		$linkSection = new LinkSection(
 			$htmlFormRenderer,
 			$outputFormatter
@@ -117,6 +121,8 @@ class SpecialAdmin extends SpecialPage {
 				return $idHandlerSection->outputActionForm( $this->getRequest(), $this->getUser() );
 			case 'refreshstore':
 				return $dataRepairSection->doRefresh( $this->getRequest() );
+			case 'dispose':
+				return $dataRepairSection->doDispose( $this->getRequest() );
 		}
 
 		// General intro

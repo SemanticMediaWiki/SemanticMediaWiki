@@ -66,7 +66,7 @@ class JobQueueLookupTest extends \PHPUnit_Framework_TestCase {
 		$instance = new JobQueueLookup( $connection );
 
 		$this->assertFalse(
-			$instance->selectJobRowFor( 'Foo' )
+			$instance->selectJobRowBy( 'Foo' )
 		);
 	}
 

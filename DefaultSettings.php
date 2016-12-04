@@ -596,7 +596,8 @@ return array(
 
 	###
 	# Allows to restrict access to the "Object ID lookup and disposal"
-	# feature in the Special:SemanticMediaWiki (or Special:SMWAdmin)
+	# feature and the "Disposal of outdated entities" in the
+	# Special:SemanticMediaWiki (or Special:SMWAdmin)
 	#
 	# @sine 2.5
 	##
