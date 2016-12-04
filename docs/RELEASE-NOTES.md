@@ -37,12 +37,12 @@ THIS IS NOT A RELEASE YET
 * #1824 Added support for the property chain syntax in printrequests
 * #1838 Added `Timezone` support for the `LOCL` output format 
 * #1854 Added unescaped output support for `format=json`
-* #1855 Added `@@@` as special annotation syntax to generate a property link (e.g `[[Foo::@@@]]`)
+* #1855 Added `@@@` as special annotation syntax to generate a property link (e.g `[[Foo::@@@]]` or `[[Foo::@@@en]]`)
 * #1875
 * #1879
 * #1891 Added support for JSON typed annotation in `#set` and `#subobject` using the `@json` marker
 * #1927
-* #1872 Added support for retrieving URI's longer than 255 chars from the database
+* #1872 Added support for retrieving and store URI's longer than 255 chars
 * #2000
 * #2007
 * #2024
@@ -50,6 +50,7 @@ THIS IS NOT A RELEASE YET
 * #2036
 * #2037
 * #2047 `$smwgAdminSetupStore` and `$smwgAdminIdDisposal`
+* #2068 Added support for the `sf.addTemplateInstance`/`pf.addTemplateInstance` JS hook in the tooltip
 
 ## Bug fixes
 
@@ -76,7 +77,8 @@ THIS IS NOT A RELEASE YET
 * #1985 Fixed a potential fatal error in `MaintenanceLogger` for when `$wgMaxNameChars` doesn't match an expected name length
 * #2022
 * #2061 Fixed strict comparison `===` for strings in `PropertyTableRowDiffer`
-* #2070
+* #2070 Filter invalid entity display from `Special:Concepts`
+* #2071 Prevent extensions to register already known canonical property labels and herby avoid a possible ID mismatch
 
 ## Internal changes
 
