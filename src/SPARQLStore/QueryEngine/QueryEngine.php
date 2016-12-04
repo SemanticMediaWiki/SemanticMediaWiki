@@ -26,7 +26,9 @@ use SMW\QueryEngine as QueryEngineInterface;
  */
 class QueryEngine implements QueryEngineInterface {
 
-	/// The name of the SPARQL variable that represents the query result.
+	/**
+	 * The name of the SPARQL variable that represents the query result.
+	 */
 	const RESULT_VARIABLE = 'result';
 
 	/**
@@ -48,6 +50,11 @@ class QueryEngine implements QueryEngineInterface {
 	 * @var EngineOptions
 	 */
 	private $engineOptions;
+
+	/**
+	 * @var array
+	 */
+	private $sortKeys = array();
 
 	/**
 	 * @since  2.0
@@ -91,7 +98,8 @@ class QueryEngine implements QueryEngineInterface {
 			return $this->queryResultFactory->newEmptyQueryResult( $query, true );
 		}
 
-		$this->compoundConditionBuilder->setSortKeys( $query->sortkeys );
+		$this->sortKeys = $query->sortkeys;
+		$this->compoundConditionBuilder->setSortKeys( $this->sortKeys );
 
 		$compoundCondition = $this->compoundConditionBuilder->getConditionFrom(
 			$query->getDescription()
@@ -128,6 +136,7 @@ class QueryEngine implements QueryEngineInterface {
 
 		$condition = $this->compoundConditionBuilder->convertConditionToString( $compoundCondition );
 		$namespaces = $compoundCondition->namespaces;
+		$this->sortKeys = $this->compoundConditionBuilder->getSortKeys();
 
 		$options = $this->getOptions( $query, $compoundCondition );
 		$options['DISTINCT'] = true;
@@ -163,6 +172,7 @@ class QueryEngine implements QueryEngineInterface {
 		} else {
 			$condition = $this->compoundConditionBuilder->convertConditionToString( $compoundCondition );
 			$namespaces = $compoundCondition->namespaces;
+			$this->sortKeys = $this->compoundConditionBuilder->getSortKeys();
 
 			$options = $this->getOptions( $query, $compoundCondition );
 			$options['DISTINCT'] = true;
@@ -195,6 +205,7 @@ class QueryEngine implements QueryEngineInterface {
 		} else {
 			$condition = $this->compoundConditionBuilder->convertConditionToString( $compoundCondition );
 			$namespaces = $compoundCondition->namespaces;
+			$this->sortKeys = $this->compoundConditionBuilder->getSortKeys();
 
 			$options = $this->getOptions( $query, $compoundCondition );
 			$options['DISTINCT'] = true;
@@ -226,32 +237,36 @@ class QueryEngine implements QueryEngineInterface {
 	 */
 	protected function getOptions( Query $query, Condition $compoundCondition ) {
 
-		$result = array( 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() );
+		$options = array(
+			'LIMIT' => $query->getLimit() + 1,
+			'OFFSET' => $query->getOffset()
+		);
 
 		// Build ORDER BY options using discovered sorting fields.
-		if ( $this->engineOptions->get( 'smwgQSortingSupport' ) ) {
+		if ( !$this->engineOptions->get( 'smwgQSortingSupport' ) || !is_array( $this->sortKeys ) ) {
+			return $options;
+		}
 
-			$orderByString = '';
+		$orderByString = '';
 
-			foreach ( $query->sortkeys as $propkey => $order ) {
+		foreach ( $this->sortKeys as $propkey => $order ) {
 
-				if ( !is_string( $propkey ) ) {
-					throw new RuntimeException( "Expected a string value as sortkey" );
-				}
-
-				if ( ( $order != 'RANDOM' ) && array_key_exists( $propkey, $compoundCondition->orderVariables ) ) {
-					$orderByString .= "$order(?" . $compoundCondition->orderVariables[$propkey] . ") ";
-				} elseif ( ( $order == 'RANDOM' ) && $this->engineOptions->get( 'smwgQRandSortingSupport' ) ) {
-					// not supported in SPARQL; might be possible via function calls in some stores
-				}
+			if ( !is_string( $propkey ) ) {
+				throw new RuntimeException( "Expected a string value as sortkey" );
 			}
 
-			if ( $orderByString !== '' ) {
-				$result['ORDER BY'] = $orderByString;
+			if ( ( $order != 'RANDOM' ) && array_key_exists( $propkey, $compoundCondition->orderVariables ) ) {
+				$orderByString .= "$order(?" . $compoundCondition->orderVariables[$propkey] . ") ";
+			} elseif ( ( $order == 'RANDOM' ) && $this->engineOptions->get( 'smwgQRandSortingSupport' ) ) {
+				// not supported in SPARQL; might be possible via function calls in some stores
 			}
 		}
 
-		return $result;
+		if ( $orderByString !== '' ) {
+			$options['ORDER BY'] = $orderByString;
+		}
+
+		return $options;
 	}
 
 }

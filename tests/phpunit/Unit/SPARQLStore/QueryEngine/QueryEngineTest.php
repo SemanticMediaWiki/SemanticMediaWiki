@@ -167,6 +167,8 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 	public function testInvalidSorkeyThrowsException() {
 
+		$sortKeys = array( 'Foo', 'Bar' );
+
 		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -190,15 +192,23 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $compoundConditionBuilder ) );
 
 		$compoundConditionBuilder->expects( $this->atLeastOnce() )
+			->method( 'getSortKeys' )
+			->will( $this->returnValue( $sortKeys ) );
+
+		$compoundConditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'getConditionFrom' )
 			->will( $this->returnValue( $condition ) );
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
-		$instance = new QueryEngine( $connection, $compoundConditionBuilder, new QueryResultFactory( $store ) );
+		$instance = new QueryEngine(
+			$connection,
+			$compoundConditionBuilder,
+			new QueryResultFactory( $store )
+		);
 
 		$query = new Query( $description );
-		$query->sortkeys = array( 'Foo', 'Bar' );
+		$query->setSortKeys( $sortKeys );
 
 		$this->setExpectedException( 'RuntimeException' );
 		$instance->getQueryResult( $query );

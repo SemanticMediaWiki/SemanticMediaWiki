@@ -115,6 +115,12 @@ class OrderConditionsComplementorTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
+		$provider[] = array(
+			array(
+				'Foo.bar' => 'ASC'
+			)
+		);
+
 		return $provider;
 	}
 

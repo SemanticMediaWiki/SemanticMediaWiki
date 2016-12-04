@@ -157,6 +157,32 @@ class OrderConditionsComplementor {
 			// using # as indicator to search for additional fields if
 			// no specific property is given (see test cases in #1534)
 			$querySegment->sortfields[$label] = "$querySegment->alias.smw_sortkey,$querySegment->alias.smw_title,$querySegment->alias.smw_subobject";
+		} elseif ( PropertyChainValue::isChained( $label ) ) { // Try to extend query.
+			$propertyChainValue = new PropertyChainValue();
+			$propertyChainValue->setUserValue( $label );
+
+			if ( !$propertyChainValue->isValid() ) {
+				return $description;
+			}
+
+			$lastDataItem = $propertyChainValue->getLastPropertyChainValue()->getDataItem();
+
+			$description = $this->descriptionFactory->newSomeProperty(
+				$lastDataItem,
+				$this->descriptionFactory->newThingDescription()
+			);
+
+			foreach ( $propertyChainValue->getPropertyChainValues() as $val ) {
+				$description = $this->descriptionFactory->newSomeProperty(
+					$val->getDataItem(),
+					$description
+				);
+			}
+
+			// Add and replace Foo.Bar=asc with Bar=asc as we ultimately only
+			// order to the result of the last element
+			$this->sortKeys[$lastDataItem->getKey()] = $order;
+			unset( $this->sortKeys[$label] );
 		} else { // Try to extend query.
 			$sortprop = DataValueFactory::getInstance()->newPropertyValueByLabel( $label );
 

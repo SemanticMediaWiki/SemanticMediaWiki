@@ -46,7 +46,28 @@
 		{
 			"page": "Example/P0434/Q3.3",
 			"contents": "{{#ask: [[Category:Country]] [[Category:P0434]] |?Located in.-Located in.-Located in.Capital of.Has subobject.Has population.Number |link=none }}"
+		},
+		{
+			"page": "Example/P0434/4",
+			"contents": "{{#subobject:Has population=123;1 Jan 2000;http://example.org/SomeSource |@category=P0434-sort }} {{#subobject:Has population=456;1 Jan 1900;http://example.org/SomeSource |@category=P0434-sort}} {{#subobject:Has population=789;1 Jan 1999;http://example.org/SomeSource |@category=P0434-sort}}"
+		},
+		{
+			"page": "Example/P0434/Q4.1",
+			"contents": "{{#ask: [[Category:P0434-sort]] |?Has population.Date |sort=Has population.Date |order=asc |link=none}}"
+		},
+		{
+			"page": "Example/P0434/Q4.2",
+			"contents": "{{#ask: [[Category:P0434-sort]] |?Has population.Date |sort=Has population.Date |order=desc |link=none}}"
+		},
+		{
+			"page": "Example/P0434/Q4.3",
+			"contents": "{{#ask: [[Category:P0434-sort]] |?Has population.Date |sort=Has population.Date,Has population.Number |order=asc,desc |link=none}}"
+		},
+		{
+			"page": "Example/P0434/Q4.4",
+			"contents": "{{#ask: [[Category:P0434-sort]] |?Has population.Date |sort=Has population.Date,Has population.Number |order=desc,asc |link=none}}"
 		}
+
 	],
 	"tests": [
 		{
@@ -111,6 +132,50 @@
 				"to-contain": [
 					"<span title=\"Located in.-Located in.-Located in.Capital of.Has subobject.Has population.Number\">⠉</span>",
 					"<td class=\"smwtype_wpg\">Example/P0434/3</td><td data-sort-value=\"456\" class=\"Number smwtype_num\">456</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6 (sort=Has population.Date, order=asc) ",
+			"subject": "Example/P0434/Q4.1",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_fb1dd749d7117fe311c13da0f5088d88</td><td data-sort-value=\"2415020.5\" class=\"Date smwtype_dat\">1 January 1900</td>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0434/4#_c7fd595ef59775763dd517dc39dc27a1</td><td data-sort-value=\"2451179.5\" class=\"Date smwtype_dat\">1 January 1999</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7 (sort=Has population.Date, order=desc) ",
+			"subject": "Example/P0434/Q4.2",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_b839bc3327e104d1aad75903fbc5a278</td><td data-sort-value=\"2451544.5\" class=\"Date smwtype_dat\">1 January 2000</td>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0434/4#_c7fd595ef59775763dd517dc39dc27a1</td><td data-sort-value=\"2451179.5\" class=\"Date smwtype_dat\">1 January 1999</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 (Has population.Date,Has population.Number, order=asc,desc) ",
+			"subject": "Example/P0434/Q4.3",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_fb1dd749d7117fe311c13da0f5088d88</td><td data-sort-value=\"2415020.5\" class=\"Date smwtype_dat\">1 January 1900</td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0434/4#_c7fd595ef59775763dd517dc39dc27a1</td><td data-sort-value=\"2451179.5\" class=\"Date smwtype_dat\">1 January 1999</td></tr>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#9 (Has population.Date,Has population.Number, order=desc,asc) ",
+			"subject": "Example/P0434/Q4.4",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_b839bc3327e104d1aad75903fbc5a278</td><td data-sort-value=\"2451544.5\" class=\"Date smwtype_dat\">1 January 2000</td>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0434/4#_c7fd595ef59775763dd517dc39dc27a1</td><td data-sort-value=\"2451179.5\" class=\"Date smwtype_dat\">1 January 1999</td>"
 				]
 			}
 		}
