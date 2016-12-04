@@ -69,6 +69,11 @@ class QuerySegment {
 	/**
 	 * @var string
 	 */
+	public $joinType = '';
+
+	/**
+	 * @var string
+	 */
 	public $joinTable = '';
 
 	/**
