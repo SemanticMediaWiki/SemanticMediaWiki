@@ -198,8 +198,10 @@ class TransientStatsdCollector {
 
 	/**
 	 * @since 2.5
+	 *
+	 * @param boolean $asPending
 	 */
-	public function recordStats() {
+	public function recordStats( $asPending = false ) {
 
 		if ( $this->shouldRecord === false ) {
 			return $this->stats = array();
@@ -220,6 +222,7 @@ class TransientStatsdCollector {
 			__METHOD__ . $this->fingerprint
 		);
 
+		$deferredCallableUpdate->markAsPending( $asPending );
 		$deferredCallableUpdate->pushToUpdateQueue();
 	}
 
