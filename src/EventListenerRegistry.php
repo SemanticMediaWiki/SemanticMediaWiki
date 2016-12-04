@@ -39,6 +39,9 @@ class EventListenerRegistry implements EventListenerCollection {
 
 	private function addListenersToCollection() {
 
+		/**
+		 * Emitted during UpdateJob, ArticlePurge
+		 */
 		$this->eventListenerCollection->registerCallback(
 			'factbox.cache.delete', function( $dispatchContext ) {
 
@@ -69,7 +72,7 @@ class EventListenerRegistry implements EventListenerCollection {
 		);
 
 		/**
-		 * Emitted during NewRevisionFromEditComplete, UpdateJob, ArticleDelete
+		 * Emitted during UpdateJob
 		 */
 		$this->eventListenerCollection->registerCallback(
 			'cached.propertyvalues.prefetcher.reset', function( $dispatchContext ) {
@@ -80,11 +83,38 @@ class EventListenerRegistry implements EventListenerCollection {
 					$subject = $dispatchContext->get( 'subject' );
 				}
 
-				wfDebugLog( 'smw', 'Clear CachedPropertyValuesPrefetcher for ' . $subject->getHash() );
+				$applicationFactory = ApplicationFactory::getInstance();
+				$applicationFactory->getMediaWikiLogger()->info( 'Event: cached.propertyvalues.prefetcher.reset :: ' . $subject->getHash() );
+
+				$applicationFactory->singleton( 'CachedPropertyValuesPrefetcher' )->resetCacheBy(
+					$subject
+				);
+
+				$dispatchContext->set( 'propagationstop', true );
+			}
+		);
+
+		/**
+		 * Emitted during NewRevisionFromEditComplete, ArticleDelete, TitleMoveComplete,
+		 * PropertyTableIdReferenceDisposer, ArticlePurge
+		 */
+		$this->eventListenerCollection->registerCallback(
+			'cached.prefetcher.reset', function( $dispatchContext ) {
+
+				if ( $dispatchContext->has( 'title' ) ) {
+					$subject = DIWikiPage::newFromTitle( $dispatchContext->get( 'title' ) );
+				} else{
+					$subject = $dispatchContext->get( 'subject' );
+				}
 
 				$applicationFactory = ApplicationFactory::getInstance();
+				$applicationFactory->getMediaWikiLogger()->info( 'Event: cached.prefetcher.reset :: ' . $subject->getHash() );
 
-				$applicationFactory->getCachedPropertyValuesPrefetcher()->resetCacheBy(
+				$applicationFactory->singleton( 'CachedPropertyValuesPrefetcher' )->resetCacheBy(
+					$subject
+				);
+
+				$applicationFactory->singleton( 'CachedQueryResultPrefetcher' )->resetCacheBy(
 					$subject
 				);
 
@@ -161,7 +191,7 @@ class EventListenerRegistry implements EventListenerCollection {
 						$pageUpdater->doPurgeHtmlCache();
 					} );
 
-					$deferredCallableUpdate->setOrigin( 'Event on.after.semanticdata.update.complete doPurgeParserCache for ' . $subject->getHash() );
+					$deferredCallableUpdate->setOrigin( 'Event: on.after.semanticdata.update.complete :: ' . $subject->getHash() );
 					$deferredCallableUpdate->pushToUpdateQueue();
 				}
 

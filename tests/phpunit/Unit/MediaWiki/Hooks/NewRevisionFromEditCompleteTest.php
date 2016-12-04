@@ -158,7 +158,10 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 				'revision' => $this->newRevisionStub(),
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MODIFICATION_DATE ),
-					'smwgDVFeatures' => ''
+					'smwgDVFeatures' => '',
+					'smwgQueryResultCacheType' => 'hash',
+					'smwgQueryResultCacheLifetime' => 60,
+					'smwgQueryResultNonEmbeddedCacheLifetime' => 60
 				)
 			),
 			array(
