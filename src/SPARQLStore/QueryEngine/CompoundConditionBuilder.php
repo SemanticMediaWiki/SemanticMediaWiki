@@ -20,6 +20,8 @@ use SMWExpElement as ExpElement;
 use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
+use SMW\Query\DescriptionFactory;
+use SMW\DataValues\PropertyChainValue;
 
 /**
  * Build an internal representation for a SPARQL condition from individual query
@@ -36,22 +38,27 @@ class CompoundConditionBuilder {
 	/**
 	 * @var EngineOptions
 	 */
-	private $engineOptions = null;
+	private $engineOptions;
 
 	/**
 	 * @var DispatchingDescriptionInterpreter
 	 */
-	private $dispatchingDescriptionInterpreter = null;
+	private $dispatchingDescriptionInterpreter;
 
 	/**
 	 * @var CircularReferenceGuard
 	 */
-	private $circularReferenceGuard = null;
+	private $circularReferenceGuard;
 
 	/**
 	 * @var PropertyHierarchyLookup
 	 */
-	private $propertyHierarchyLookup = null;
+	private $propertyHierarchyLookup;
+
+	/**
+	 * @var DescriptionFactory
+	 */
+	private $descriptionFactory;
 
 	/**
 	 * @var array
@@ -65,10 +72,10 @@ class CompoundConditionBuilder {
 	private $variableCounter = 0;
 
 	/**
-	 * Sortkeys that are being used while building the query conditions
+	 * sortKeys that are being used while building the query conditions
 	 * @var array
 	 */
-	private $sortkeys = array();
+	private $sortKeys = array();
 
 	/**
 	 * The name of the SPARQL variable that represents the query result
@@ -104,6 +111,8 @@ class CompoundConditionBuilder {
 		if ( $this->engineOptions === null ) {
 			$this->engineOptions = new EngineOptions();
 		}
+
+		$this->descriptionFactory = new DescriptionFactory();
 	}
 
 	/**
@@ -128,10 +137,10 @@ class CompoundConditionBuilder {
 	/**
 	 * @since 2.0
 	 *
-	 * @param array $sortkeys
+	 * @param array $sortKeys
 	 */
-	public function setSortKeys( $sortkeys ) {
-		$this->sortkeys = $sortkeys;
+	public function setSortKeys( $sortKeys ) {
+		$this->sortKeys = $sortKeys;
 		return $this;
 	}
 
@@ -141,7 +150,7 @@ class CompoundConditionBuilder {
 	 * @return array
 	 */
 	public function getSortKeys() {
-		return $this->sortkeys;
+		return $this->sortKeys;
 	}
 
 	/**
@@ -246,7 +255,7 @@ class CompoundConditionBuilder {
 	 *
 	 * If property value variables should be recorded for ordering results
 	 * later on, the keys of the respective properties need to be given in
-	 * sortkeys earlier.
+	 * sortKeys earlier.
 	 *
 	 * @param Description $description
 	 *
@@ -461,13 +470,13 @@ class CompoundConditionBuilder {
 	/**
 	 * Extend the given Condition with additional conditions to
 	 * ensure that it can be ordered by all requested properties. After
-	 * this operation, every key in sortkeys is assigned to a query
+	 * this operation, every key in sortKeys is assigned to a query
 	 * variable by $sparqlCondition->orderVariables.
 	 *
 	 * @param Condition $condition condition to modify
 	 */
 	protected function addMissingOrderByConditions( Condition &$condition ) {
-		foreach ( $this->sortkeys as $propertyKey => $order ) {
+		foreach ( $this->sortKeys as $propertyKey => $order ) {
 
 			if ( !is_string( $propertyKey ) ) {
 				throw new RuntimeException( "Expected a string value as sortkey" );
@@ -478,12 +487,12 @@ class CompoundConditionBuilder {
 			}
 
 			if ( !array_key_exists( $propertyKey, $condition->orderVariables ) ) { // Find missing property to sort by.
-				$this->addOrderForUnknownPropertyKey( $condition, $propertyKey );
+				$this->addOrderForUnknownPropertyKey( $condition, $propertyKey, $order );
 			}
 		}
 	}
 
-	private function addOrderForUnknownPropertyKey( Condition &$condition, $propertyKey ) {
+	private function addOrderForUnknownPropertyKey( Condition &$condition, $propertyKey, $order ) {
 
 		if ( $propertyKey === '' || $propertyKey === '#' ) { // order by result page sortkey
 
@@ -495,12 +504,41 @@ class CompoundConditionBuilder {
 
 			$condition->orderVariables[$propertyKey] = $condition->orderByVariable;
 			return;
-		}
+		} elseif ( PropertyChainValue::isChained( $propertyKey ) ) { // Try to extend query.
+			$propertyChainValue = new PropertyChainValue();
+			$propertyChainValue->setUserValue( $propertyKey );
 
-		$auxDescription = new SomeProperty(
-			new DIProperty( $propertyKey ),
-			new ThingDescription()
-		);
+			if ( !$propertyChainValue->isValid() ) {
+				return $description;
+			}
+
+			$lastDataItem = $propertyChainValue->getLastPropertyChainValue()->getDataItem();
+
+			$description = $this->descriptionFactory->newSomeProperty(
+				$lastDataItem,
+				$this->descriptionFactory->newThingDescription()
+			);
+
+			foreach ( $propertyChainValue->getPropertyChainValues() as $val ) {
+				$description = $this->descriptionFactory->newSomeProperty(
+					$val->getDataItem(),
+					$description
+				);
+			}
+
+			// Add and replace Foo.Bar=asc with Bar=asc as we ultimately only
+			// order to the result of the last element
+			$this->sortKeys[$lastDataItem->getKey()] = $order;
+			unset( $this->sortKeys[$propertyKey] );
+			$propertyKey = $lastDataItem->getKey();
+
+			$auxDescription = $description;
+		} else {
+			$auxDescription = $this->descriptionFactory->newSomeProperty(
+				new DIProperty( $propertyKey ),
+				$this->descriptionFactory->newThingDescription()
+			);
+		}
 
 		$this->setJoinVariable( $this->resultVariable );
 		$this->setOrderByProperty( null );
