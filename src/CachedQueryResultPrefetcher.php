@@ -266,7 +266,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 		}
 
 		if ( $recordStats ) {
-			$this->recordStats();
+			$this->transientStatsdCollector->recordStats( true );
 		}
 	}
 
@@ -388,7 +388,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	private function getHashFrom( $subject ) {
 
 		if ( $subject instanceof DIWikiPage ) {
-			$subject = $subject->getHash();
+			$subject = $subject->asBase()->getHash();
 		}
 
 		return md5( $subject . self::VERSION );
