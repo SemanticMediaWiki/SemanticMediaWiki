@@ -41,6 +41,11 @@ class DataRepairSection {
 	private $enabledRefreshStore = false;
 
 	/**
+	 * @var boolean
+	 */
+	private $enabledIdDisposal = false;
+
+	/**
 	 * @var null|Job
 	 */
 	private $refreshjob = null;
@@ -70,6 +75,15 @@ class DataRepairSection {
 	/**
 	 * @since 2.5
 	 *
+	 * @param boolean $enabledIdDisposal
+	 */
+	public function enabledIdDisposal( $enabledIdDisposal ) {
+		$this->enabledIdDisposal = (bool)$enabledIdDisposal;
+	}
+
+	/**
+	 * @since 2.5
+	 *
 	 * @return string
 	 */
 	public function getForm() {
@@ -78,47 +92,56 @@ class DataRepairSection {
 
 		$this->htmlFormRenderer
 			->setName( 'refreshwiki' )
-			->setMethod( 'post' )
-			->addHiddenField( 'action', 'refreshstore' )
-			->addHeader( 'h2', $this->getMessage( 'smw_smwadmin_datarefresh' ) );
+			->addHeader( 'h2', $this->getMessage( 'smw-smwadmin-refresh-title' ) )
+			->addHeader( 'h3', $this->getMessage( 'smw_smwadmin_datarefresh' ) )
+			->addParagraph( $this->getMessage( 'smw_smwadmin_datarefreshdocu' ) );
 
 		if ( !$this->enabledRefreshStore ) {
 			$this->htmlFormRenderer->addParagraph( $this->getMessage( 'smw-smwadmin-datarefresh-disabled' ) );
-		} else {
-			$this->htmlFormRenderer->addParagraph( $this->getMessage( 'smw_smwadmin_datarefreshdocu' ) );
-		}
-
-		if ( $refreshjob !== null ) {
-			$prog = $refreshjob->getProgress();
-
-			$progressBar = Html::rawElement(
-				'div',
-				array( 'style' => 'float: left; background: #DDDDDD; border: 1px solid grey; width: 300px;' ),
-				Html::rawElement( 'div', array( 'style' => 'background: #AAF; width: ' . round( $prog * 300 ) . 'px; height: 20px; ' ), '' )
-			);
-
+		} elseif ( $refreshjob !== null ) {
 			$this->htmlFormRenderer
+				->setMethod( 'post' )
+				->addHiddenField( 'action', 'refreshstore' )
 				->addParagraph( $this->getMessage( 'smw_smwadmin_datarefreshprogress' ) )
-				->addParagraph( $progressBar . '&#160;' . round( $prog * 100, 4 ) . '%' )
-				->addLineBreak();
-
-			if ( $this->enabledRefreshStore ) {
-				$this->htmlFormRenderer
-					->addSubmitButton( $this->getMessage( 'smw_smwadmin_datarefreshstop' ) )
-					->addCheckbox(
-						$this->getMessage( 'smw_smwadmin_datarefreshstopconfirm' ),
-						'rfsure',
-						'stop'
-					);
-			}
-
-		} elseif ( $this->enabledRefreshStore ) {
+				->addParagraph( $this->getProgressBar(  $refreshjob->getProgress() ) )
+				->addLineBreak()
+				->addSubmitButton( $this->getMessage( 'smw_smwadmin_datarefreshstop' ) )
+				->addCheckbox(
+					$this->getMessage( 'smw_smwadmin_datarefreshstopconfirm' ),
+					'rfsure',
+					'stop'
+				);
+		} elseif ( $refreshjob === null ) {
 			$this->htmlFormRenderer
+				->setMethod( 'post' )
+				->addHiddenField( 'action', 'refreshstore' )
 				->addHiddenField( 'rfsure', 'yes' )
 				->addSubmitButton( $this->getMessage( 'smw_smwadmin_datarefreshbutton' ) );
 		}
 
-		return $this->htmlFormRenderer->getForm() . Html::element( 'p', array(), '' );
+		$html = $this->htmlFormRenderer->getForm() . Html::element( 'p', array(), '' );
+
+		// smw-smwadmin-outdateddisposal
+		$this->htmlFormRenderer
+				->addHeader( 'h3', $this->getMessage( 'smw-smwadmin-outdateddisposal-title' ) )
+				->addParagraph( $this->getMessage( 'smw-smwadmin-outdateddisposal-intro', Message::PARSE ) );
+
+		if ( $this->enabledIdDisposal && !$this->hasEntityIdDisposerJob() ) {
+			$this->htmlFormRenderer
+				->setMethod( 'post' )
+				->addHiddenField( 'action', 'dispose' )
+				->addSubmitButton( $this->getMessage( 'smw-smwadmin-outdateddisposal-button' ) );
+		} elseif ( $this->enabledIdDisposal ) {
+			$this->htmlFormRenderer
+				->addParagraph( $this->getMessage( 'smw-smwadmin-outdateddisposal-active' ), array( 'style' => 'font-style:italic;' ) );
+		} else {
+			$this->htmlFormRenderer
+				->addParagraph( $this->getMessage( 'smw-smwadmin-outdateddisposal-disabled' ) );
+		}
+
+		$html .= $this->htmlFormRenderer->getForm();
+
+		return $html;
 	}
 
 	/**
@@ -132,7 +155,7 @@ class DataRepairSection {
 		$this->outputFormatter->addParentLink();
 
 		if ( !$this->enabledRefreshStore ) {
-			return $this->outputMessage( 'smw_smwadmin_return' );
+			return $this->outputMessage( 'smw-smwadmin-datarefresh-disabled' );
 		}
 
 		$refreshjob = $this->getRefreshJob();
@@ -168,12 +191,46 @@ class DataRepairSection {
 		}
 	}
 
+	/**
+	 * @since 2.5
+	 *
+	 * @param WebRequest $webRequest
+	 */
+	public function doDispose( WebRequest $webRequest ) {
+
+		$this->outputFormatter->setPageTitle( $this->getMessage( 'smw-smwadmin-outdateddisposal-title' ) );
+		$this->outputFormatter->addParentLink();
+
+		if ( !$this->enabledIdDisposal ) {
+			return $this->outputMessage( 'smw-smwadmin-outdateddisposal-disabled' );
+		}
+
+		if ( !$this->hasEntityIdDisposerJob() ) {
+			$newjob = ApplicationFactory::getInstance()->newJobFactory()->newByType(
+				'SMW\EntityIdDisposerJob',
+				\SpecialPage::getTitleFor( 'SMWAdmin' )
+			);
+
+			$newjob->insert();
+		}
+
+		$this->outputMessage( 'smw-smwadmin-outdateddisposal-active' );
+	}
+
 	private function getMessage( $key, $type = Message::TEXT ) {
 		return Message::get( $key, $type, Message::USER_LANGUAGE );
 	}
 
 	private function outputMessage( $message ) {
 		$this->outputFormatter->addHTML( '<p>' . $this->getMessage( $message ) . '</p>' );
+	}
+
+	private function getProgressBar( $prog ) {
+		return Html::rawElement(
+			'div',
+			array( 'style' => 'float: left; background: #DDDDDD; border: 1px solid grey; width: 300px;' ),
+			Html::rawElement( 'div', array( 'style' => 'background: #AAF; width: ' . round( $prog * 300 ) . 'px; height: 20px; ' ), '' )
+		) . '&#160;' . round( $prog * 100, 4 ) . '%';
 	}
 
 	private function getRefreshJob() {
@@ -189,7 +246,7 @@ class DataRepairSection {
 		$this->refreshjob = null;
 
 		$jobQueueLookup = ApplicationFactory::getInstance()->create( 'JobQueueLookup', $this->connection );
-		$row = $jobQueueLookup->selectJobRowFor( 'SMW\RefreshJob' );
+		$row = $jobQueueLookup->selectJobRowBy( 'SMW\RefreshJob' );
 
 		if ( $row !== null && $row !== false ) { // similar to Job::pop_type, but without deleting the job
 			$title = Title::makeTitleSafe( $row->job_namespace, $row->job_title );
@@ -198,6 +255,21 @@ class DataRepairSection {
 		}
 
 		return $this->refreshjob;
+	}
+
+	private function hasEntityIdDisposerJob() {
+
+		if ( !$this->enabledIdDisposal ) {
+			return false;
+		}
+
+		$jobQueueLookup = ApplicationFactory::getInstance()->create( 'JobQueueLookup', $this->connection );
+
+		$row = $jobQueueLookup->selectJobRowBy(
+			'SMW\EntityIdDisposerJob'
+		);
+
+		return $row !== null && $row !== false;
 	}
 
 }

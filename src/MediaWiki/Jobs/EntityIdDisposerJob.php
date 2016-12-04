@@ -67,13 +67,13 @@ class EntityIdDisposerJob extends JobBase {
 		if ( $this->hasParameter( 'id' ) ) {
 			$this->executeWith( $this->getParameter( 'id' ) );
 		} else {
-			$this->doDisposeMarkedEnitites();
+			$this->doDisposeAllMarkedEntities();
 		}
 
 		return true;
 	}
 
-	private function doDisposeMarkedEnitites() {
+	private function doDisposeAllMarkedEntities() {
 
 		$outdatedEntitiesResultIterator = $this->newOutdatedEntitiesResultIterator();
 

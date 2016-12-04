@@ -55,7 +55,7 @@ class JobQueueLookup {
 	 *
 	 * @return boolean
 	 */
-	public function selectJobRowFor( $jobName ) {
+	public function selectJobRowBy( $jobName ) {
 
 		$row = $this->connection->selectRow(
 			$this->tablename,
