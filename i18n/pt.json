@@ -16,7 +16,8 @@
 			"Jkb8",
 			"Diniscoelho",
 			"Fúlvio",
-			"Fitoschido"
+			"Fitoschido",
+			"Ngl2016"
 		]
 	},
 	"smw-desc": "Tornar a sua wiki mais inteligível - para máquinas ''e'' seres humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
@@ -267,8 +268,9 @@
 	"smw_smwadmin_dbbutton": "Inicializar ou atualizar tabelas",
 	"smw_smwadmin_announce": "Anuncie a sua wiki",
 	"smw_smwadmin_announce_text": "Se a sua wiki é pública, pode registá-la na <a href=\"https://wikiapiary.com\">Wiki Apiário</a>, a wiki que regista wikis.",
-	"smw_smwadmin_datarefresh": "Reparação de dados e atualização",
 	"smw-smwadmin-datarefresh-disabled": "Esta funcionalidade foi desativada nesta wiki. Para mais detalhes, consulte a respetiva <a href=\"https://www.semantic-mediawiki.org/Help:$smwgAdminRefreshStore\">página de ajuda</a>.",
+	"smw-smwadmin-refresh-title": "Reparação e atualização de dados",
+	"smw_smwadmin_datarefresh": "Reconstrução de dados",
 	"smw_smwadmin_datarefreshdocu": "É possível restaurar todos os dados do MediaWiki Semântico baseado no conteúdo atual da wiki.\nIsto pode ser útil para reparar dados corrompidos ou para refrescar os dados se o formato interno tiver sido alterado devido a alguma evolução do ''software''.\nA atualização é executada página a página e não ficará completa de imediato.\nO seguinte mostra se uma atualização está a decorrer e permite-lhe iniciar ou parar atualizações (a menos que esta funcionalidade tenha sido desativada pelo administrador do ''site'').",
 	"smw_smwadmin_datarefreshprogress": "<strong>Já se encontra em progresso uma atualização.</strong>\nÉ normal que a atualização progrida lentamente, já que apenas refresca dados em pequenos blocos de cada vez que um utilizador acede à wiki.\nPara terminar esta atualização mais rapidamente, pode executar o ''script'' de manutenção do MediaWiki <code>runJobs.php</code> (use a opção <code>--maxjobs 1000</code> para restringir o número de atualizações feitas em cada bloco).\nProgresso estimado da atualização em curso:",
 	"smw_smwadmin_datarefreshbutton": "Iniciar a atualização dos dados",
