@@ -46,6 +46,7 @@ class ArticlePurge {
 
 		$dispatchContext = EventHandler::getInstance()->newDispatchContext();
 		$dispatchContext->set( 'title', $wikiPage->getTitle() );
+		$dispatchContext->set( 'context', 'ArticlePurge' );
 
 		if ( $settings->get( 'smwgFactboxCacheRefreshOnPurge' ) ) {
 			EventHandler::getInstance()->getEventDispatcher()->dispatch(

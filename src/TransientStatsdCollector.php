@@ -163,6 +163,10 @@ class TransientStatsdCollector {
 	 */
 	public function saveStats() {
 
+		if ( $this->stats === array() ) {
+			return;
+		}
+
 		$container = $this->blobStore->read(
 			md5( $this->statsdId . self::VERSION )
 		);
