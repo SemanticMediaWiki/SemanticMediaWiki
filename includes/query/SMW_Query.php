@@ -365,7 +365,8 @@ class SMWQuery implements QueryContext {
 			if ( count( $log ) > 0 ) {
 				$this->errors[] = Message::encode( array(
 					'smw_querytoolarge',
-					str_replace( '[', '&#x005B;', implode( ', ', $log ) )
+					str_replace( '[', '&#x005B;', implode( ', ', $log ) ),
+					count( $log )
 				) );
 			}
 		}
