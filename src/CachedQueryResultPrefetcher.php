@@ -313,6 +313,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 		// - hits.nonEmbedded.Undefined
 		$this->transientStatsdCollector->incr(
 			$this->tempCache->contains( $queryId ) ? 'hits.tempCache' : ( $query->getContextPage() !== null ? 'hits.embedded' : 'hits.nonEmbedded.' . $nonEmbeddedContext )
+
 		);
 
 		$this->transientStatsdCollector->calcMedian(
