@@ -109,8 +109,10 @@ class SpecialAdmin extends SpecialPage {
 
 		$supportSection = new SupportSection( $htmlFormRenderer );
 
+		$action = $query !== null ? $query : $this->getRequest()->getText( 'action' );
+
 		// Actions
-		switch ( $this->getRequest()->getText( 'action' ) ) {
+		switch ( $action ) {
 			case 'settings':
 				return $linkSection->outputConfigurationList();
 			case 'stats':
