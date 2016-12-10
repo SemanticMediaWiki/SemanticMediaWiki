@@ -40,7 +40,11 @@ class SemanticMediaWiki {
 		include_once __DIR__ . '/src/Defines.php';
 		include_once __DIR__ . '/src/GlobalFunctions.php';
 
-		self::loadSettings();
+		foreach ( include __DIR__ . '/DefaultSettings.php' as $key => $value ) {
+			if ( !isset( $GLOBALS[$key] ) ) {
+				$GLOBALS[$key] = $value;
+			}
+		}
 
 		// In case extension.json is being used, the the succeeding steps will
 		// be handled by the ExtensionRegistry
@@ -49,12 +53,6 @@ class SemanticMediaWiki {
 		$GLOBALS['wgExtensionFunctions'][] = function() {
 			self::onExtensionFunction();
 		};
-	}
-	
-	private static function loadSettings() {
-		foreach ( include __DIR__ . '/DefaultSettings.php' as $key => $value ) {
-			$GLOBALS[$key] = $value;
-		}	
 	}
 
 	/**
