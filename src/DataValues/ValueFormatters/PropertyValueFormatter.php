@@ -240,7 +240,15 @@ class PropertyValueFormatter extends DataValueFormatter {
 			$this->dataValue->getOptionBy( PropertyValue::OPT_USER_LANGUAGE )
 		);
 
-		if ( $preferredLabel === '' || $this->dataValue->getCaption() !== $preferredLabel ) {
+		// When comparing with a caption set from the "outside", normalize
+		// the string to avoid a false negative in case of a non-breaking space
+		$caption = str_replace(
+			array( "&#160;", "&nbsp;", html_entity_decode( '&#160;', ENT_NOQUOTES, 'UTF-8' ) ),
+			" ",
+			$this->dataValue->getCaption()
+		);
+
+		if ( $preferredLabel === '' || $caption !== $preferredLabel ) {
 			return '';
 		}
 

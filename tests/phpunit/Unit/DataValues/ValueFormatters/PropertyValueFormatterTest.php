@@ -187,6 +187,54 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * @dataProvider preferredLabelAndCaptionValueProvider
+	 */
+	public function testFormatWithPreferredLabelAndCaption( $property, $caption, $preferredLabel, $type, $linker, $expected ) {
+
+		// Ensures the mocked instance is injected and registered with the
+		// PropertyRegistry instance
+		\SMW\PropertyRegistry::clear();
+
+		$this->propertyLabelFinder = $this->getMockBuilder( '\SMW\PropertyLabelFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->propertyLabelFinder->expects( $this->any() )
+			->method( 'findPropertyListByLabelAndLanguageCode' )
+			->will( $this->returnValue( array() ) );
+
+		$this->propertyLabelFinder->expects( $this->any() )
+			->method( 'findPreferredPropertyLabelByLanguageCode' )
+			->will( $this->returnValue( $preferredLabel ) );
+
+		$this->propertyLabelFinder->expects( $this->any() )
+			->method( 'searchPropertyIdByLabel' )
+			->will( $this->returnValue( false ) );
+
+		$this->testEnvironment->registerObject( 'PropertyLabelFinder', $this->propertyLabelFinder );
+
+		$propertyValue = new PropertyValue();
+
+		$propertyValue->setOption( 'smwgDVFeatures', SMW_DV_PROV_LHNT );
+		$propertyValue->setOption( PropertyValue::OPT_CONTENT_LANGUAGE, 'en' );
+		$propertyValue->setOption( PropertyValue::OPT_USER_LANGUAGE, 'en' );
+		$propertyValue->setOption( PropertyValue::OPT_NO_HIGHLIGHT, true );
+
+		$propertyValue->setUserValue( $property );
+		$propertyValue->setCaption( $caption );
+
+		$instance = new PropertyValueFormatter( $propertyValue );
+		$expected = $this->testEnvironment->getLocalizedTextByNamespace( SMW_NS_PROPERTY, $expected );
+
+		$this->assertEquals(
+			$expected,
+			$instance->format( $type, $linker )
+		);
+
+		\SMW\PropertyRegistry::clear();
+	}
+
+	/**
 	 * @dataProvider formattedLabelProvider
 	 */
 	public function testFormattedLabelLabel( $property, $linker, $expected ) {
@@ -260,7 +308,6 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function preferredLabelValueProvider() {
 
-		$dataItemFactory = new DataItemFactory();
 		$linker = 'some';
 
 		$provider[] = array(
@@ -301,6 +348,57 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			PropertyValueFormatter::HTML_LONG,
 			null,
 			'Property:Foo&nbsp;<span title="Foo"><sup>ᵖ</sup></span>'
+		);
+
+		$provider[] = array(
+			'Foo',
+			'Bar with',
+			PropertyValueFormatter::HTML_SHORT,
+			null,
+			'Bar with&nbsp;<span title="Foo"><sup>ᵖ</sup></span>'
+		);
+
+		return $provider;
+	}
+
+	public function preferredLabelAndCaptionValueProvider() {
+
+		$linker = 'some';
+
+		$provider[] = array(
+			'Foo',
+			false,
+			'Bar',
+			PropertyValueFormatter::VALUE,
+			null,
+			'Bar'
+		);
+
+		$provider[] = array(
+			'Foo',
+			false,
+			'Bar',
+			PropertyValueFormatter::HTML_SHORT,
+			null,
+			'Bar'
+		);
+
+		$provider[] = array(
+			'Foo',
+			'Bar with',
+			'Bar with',
+			PropertyValueFormatter::HTML_SHORT,
+			null,
+			'Bar with&nbsp;<span title="Foo"><sup>ᵖ</sup></span>'
+		);
+
+		$provider[] = array(
+			'Foo',
+			'Bar&nbsp;with',
+			'Bar with',
+			PropertyValueFormatter::HTML_SHORT,
+			null,
+			'Bar&nbsp;with&nbsp;<span title="Foo"><sup>ᵖ</sup></span>'
 		);
 
 		return $provider;
