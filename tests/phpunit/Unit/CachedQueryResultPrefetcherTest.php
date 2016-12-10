@@ -163,7 +163,7 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'delete' )
-			->with( $this->equalTo( '39e2606942246606c5daa2ddfec4ace8' ) );
+			->with( $this->equalTo( '063682d55f277990d70fa8213e5eccd8' ) );
 
 		$this->transientStatsdCollector->expects( $this->once() )
 			->method( 'recordStats' );

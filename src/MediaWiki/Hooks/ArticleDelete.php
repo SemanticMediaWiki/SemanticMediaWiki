@@ -77,6 +77,7 @@ class ArticleDelete {
 
 			$dispatchContext = $eventHandler->newDispatchContext();
 			$dispatchContext->set( 'title', $title );
+			$dispatchContext->set( 'context', 'ArticleDelete' );
 
 			$eventHandler->getEventDispatcher()->dispatch(
 				'cached.prefetcher.reset',

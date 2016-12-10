@@ -107,6 +107,8 @@ class EventListenerRegistry implements EventListenerCollection {
 					$subject = $dispatchContext->get( 'subject' );
 				}
 
+				$context = $dispatchContext->has( 'context' ) ? $dispatchContext->get( 'context' ) : '';
+
 				$applicationFactory = ApplicationFactory::getInstance();
 				$applicationFactory->getMediaWikiLogger()->info( 'Event: cached.prefetcher.reset :: ' . $subject->getHash() );
 
@@ -115,7 +117,8 @@ class EventListenerRegistry implements EventListenerCollection {
 				);
 
 				$applicationFactory->singleton( 'CachedQueryResultPrefetcher' )->resetCacheBy(
-					$subject
+					$subject,
+					$context
 				);
 
 				$dispatchContext->set( 'propagationstop', true );

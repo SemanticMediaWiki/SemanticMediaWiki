@@ -148,7 +148,8 @@ class ParserCachePurgeJob extends JobBase {
 		);
 
 		$this->applicationFactory->singleton( 'CachedQueryResultPrefetcher' )->resetCacheBy(
-			$queryList
+			$queryList,
+			'ParserCachePurgeJob'
 		);
 
 		$this->addPagesToUpdater( $hashList );

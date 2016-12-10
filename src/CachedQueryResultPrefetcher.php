@@ -14,13 +14,13 @@ use Psr\Log\LoggerAwareInterface;
 use RuntimeException;
 
 /**
- * The prefetcher only contains cached subject list from a computed a query
- * condition. The result is processed before an individual
- * query printer has access to the query result hence it does not interfere
- * with the final string output manipulation.
+ * The prefetcher only caches the subject list from a computed a query
+ * condition. The result is processed before an individual query printer has
+ * access to the query result hence it does not interfere with the final string
+ * output manipulation.
  *
  * The main objective is to avoid unnecessary computing of results for queries
- * that represent the same query signature. PrintRequests as part of a QueryResult
+ * that have the same query signature. PrintRequests as part of a QueryResult
  * object are not cached and are not part of a query signature.
  *
  * Cache eviction is carried out either manually (action=purge) or executed
@@ -37,7 +37,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	 * Update this version number when the serialization format
 	 * changes.
 	 */
-	const VERSION = '0.2';
+	const VERSION = '1';
 
 	/**
 	 * Namespace occupied by the BlobStore
@@ -50,7 +50,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	 *
 	 * PHP 5.6 can do self::CACHE_NAMESPACE . ':' . self::VERSION
 	 */
-	const STATSD_ID = 'smw:query:store:0.2a';
+	const STATSD_ID = 'smw:query:store:1:a:';
 
 	/**
 	 * @var Store
@@ -93,7 +93,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	private $enabledCache = true;
 
 	/**
-	 * loggerInterface
+	 * @var loggerInterface
 	 */
 	private $logger;
 
@@ -199,11 +199,10 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	}
 
 	/**
+	 * @see QueryEngine::getQueryResult
 	 * @since 2.5
 	 *
-	 * @param Query $query
-	 *
-	 * @return QueryResult|string
+	 * {@inheritDoc}
 	 */
 	public function getQueryResult( Query $query ) {
 
@@ -246,8 +245,9 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	 * @since 2.5
 	 *
 	 * @param DIWikiPage|array $list
+	 * @param string $context
 	 */
-	public function resetCacheBy( $item ) {
+	public function resetCacheBy( $item, $context = 'Undefined' ) {
 
 		if ( !is_array( $item ) ) {
 			$item = array( $item );
@@ -260,13 +260,13 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 
 			if ( $this->blobStore->exists( $id ) ) {
 				$recordStats = true;
-				$this->transientStatsdCollector->incr( 'deletes' );
+				$this->transientStatsdCollector->incr( 'deletes.on' . $context );
 				$this->blobStore->delete( $id );
 			}
 		}
 
 		if ( $recordStats ) {
-			$this->transientStatsdCollector->recordStats( true );
+			$this->transientStatsdCollector->recordStats();
 		}
 	}
 
@@ -427,7 +427,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 		$this->transientStatsdCollector->shouldRecord( $this->isEnabled() );
 
 		$this->transientStatsdCollector->init( 'misses', 0 );
-		$this->transientStatsdCollector->init( 'deletes', 0 );
+		$this->transientStatsdCollector->init( 'deletes', array() );
 		$this->transientStatsdCollector->init( 'hits', array() );
 		$this->transientStatsdCollector->init( 'medianRetrievalResponseTime', array() );
 		$this->transientStatsdCollector->init( 'noCache', array() );
