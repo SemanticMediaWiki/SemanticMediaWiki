@@ -6,6 +6,7 @@ use SMW\CachedQueryResultPrefetcher;
 use SMW\DIWikiPage;
 use SMW\TransientStatsdCollector;
 use Onoi\BlobStore\BlobStore;
+use Onoi\BlobStore\Container;
 
 /**
  * @covers \SMW\CachedQueryResultPrefetcher
@@ -34,6 +35,10 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->blobStore = $this->getMockBuilder( BlobStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->container = $this->getMockBuilder( Container::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -73,6 +78,55 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setQueryEngine( $queryEngine );
 
+		$instance->getQueryResult( $query );
+	}
+
+	public function testGetQueryResultFromTempCache() {
+
+		$this->blobStore->expects( $this->atLeastOnce() )
+			->method( 'canUse' )
+			->will( $this->returnValue( true ) );
+
+		$this->blobStore->expects( $this->atLeastOnce() )
+			->method( 'read' )
+			->will( $this->returnValue( $this->container ) );
+
+		$query = $this->getMockBuilder( '\SMWQuery' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query->expects( $this->atLeastOnce() )
+			->method( 'getQueryId' )
+			->will( $this->returnValue( __METHOD__ ) );
+
+		$query->expects( $this->atLeastOnce() )
+			->method( 'getLimit' )
+			->will( $this->returnValue( 100 ) );
+
+		$query->expects( $this->atLeastOnce() )
+			->method( 'getContextPage' )
+			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+
+		$queryEngine = $this->getMockBuilder( '\SMW\QueryEngine' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryEngine->expects( $this->once() )
+			->method( 'getQueryResult' )
+			->with($this->identicalTo( $query ) );
+
+		$instance = new CachedQueryResultPrefetcher(
+			$this->store,
+			$this->queryFactory,
+			$this->blobStore,
+			$this->transientStatsdCollector
+		);
+
+		$instance->setQueryEngine( $queryEngine );
+
+		$instance->getQueryResult( $query );
+
+		// Second time called from tempCache
 		$instance->getQueryResult( $query );
 	}
 
