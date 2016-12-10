@@ -1,0 +1,48 @@
+{
+	"description": "Test `Special:Browse` output preferred label (`wgContLang=en`, `wgLang=es`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "SomeProperty",
+			"contents": "[[Has type::Text]] [[Has preferred property label::Label with spaces@es]]"
+		},
+		{
+			"page": "Example/S0013/1",
+			"contents": "[[SomeProperty::abc]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 verify preferred label display",
+			"special-page": {
+				"page": "Browse",
+				"query-parameters": "Example/S0013/1",
+				"request-parameters": {
+					"output": "legacy"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					">Label with spaces</a>&nbsp;<span title=\"SomeProperty\"><sup>ᵖ</sup>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "es",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
