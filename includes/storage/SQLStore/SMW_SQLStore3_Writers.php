@@ -614,9 +614,8 @@ class SMWSQLStore3Writers {
 		} else { // General move method: should always be correct
 			// (equality support respected when updating redirects)
 
-			// Delete any existing data (including redirects) from new title
-			// ($newtitle should not have data, but let's be sure)
-			$emptyNewSemanticData = new SMWSemanticData( SMWDIWikiPage::newFromTitle( $newTitle ) );
+			// Delete any existing data (including redirects) from old title
+			$emptyNewSemanticData = new SMWSemanticData( SMWDIWikiPage::newFromTitle( $oldTitle ) );
 			$this->doDataUpdate( $emptyNewSemanticData );
 
 			// Move all data of old title to new position:
