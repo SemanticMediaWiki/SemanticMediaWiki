@@ -223,19 +223,22 @@ class ListResultPrinter extends ResultPrinter {
 			$this->rowend = '';
 		}
 
-		// Define separators for list items
-		if ( $this->params['sep'] !== '' ){
-			if ( $this->params['format'] === 'list' && $this->params['sep'] === ',' ){
-				// Make default list ", , , and "
-				$this->listsep = ', ';
-				$this->finallistsep = $this->getContext()->msg( 'smw_finallistconjunct' )->inContentLanguage()->text() . ' ';
-			} else {
-				// Allow "_" for encoding spaces, as documented
-				$this->listsep = str_replace( '_', ' ', $this->params['sep'] );
-				$this->finallistsep = $this->listsep;
-			}
+		// #2022, #2090 The system defines no default sep in order for it to decide
+		// how to apply a separator and avoiding a regression for users who did
+		// not choose a sep in the first place, if no separator is selected then
+		// the list, ul, ol will use , as default
+		if ( $this->params['format'] === 'list' && $this->params['sep'] === ',' ) {
+			// Make default list ", , , and "
+			$this->listsep = ', ';
+			$this->finallistsep = $this->getContext()->msg( 'smw_finallistconjunct' )->inContentLanguage()->text() . ' ';
+		} elseif ( $this->params['format'] !== 'template' && $this->params['sep'] === '' ) {
+			$this->listsep = ', ';
+			$this->finallistsep = $this->listsep;
+		} elseif ( $this->params['sep'] !== '' ) {
+			// Allow "_" for encoding spaces, as documented
+			$this->listsep = str_replace( '_', ' ', $this->params['sep'] );
+			$this->finallistsep = $this->listsep;
 		} else {
-			// No default separators for format "template"
 			$this->listsep = '';
 			$this->finallistsep = '';
 		}
@@ -474,7 +477,7 @@ class ListResultPrinter extends ResultPrinter {
 
 		$params['sep'] = array(
 			'message' => 'smw-paramdesc-sep',
-			'default' => ',',
+			'default' => '',
 		);
 
 		$params['template'] = array(

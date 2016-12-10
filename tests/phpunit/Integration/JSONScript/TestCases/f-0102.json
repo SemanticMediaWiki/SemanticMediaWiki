@@ -29,11 +29,11 @@
 		},
 		{
 			"page": "template-002-asc-order-named-args",
-			"contents": "{{#ask:[[Category:template-002]]<q>[[Has page property:一二三]] OR [[Has page property::456]]</q>\n |?Has page property\n |format=template\n |order=asc\n |sep=;\n |link=none\n |limit=10\n |userparam=[$%&*==42]\n |template=TemplateOutputUsingNamedArgumentsForUnicodeIncludedSubject\n ||named args=yes\n}}"
+			"contents": "{{#ask:[[Category:template-002]]<q>[[Has page property:一二三]] OR [[Has page property::456]]</q> |?Has page property |format=template |order=asc |sep=; |link=none |limit=10 |userparam=[$%&*==42] |template=TemplateOutputUsingNamedArgumentsForUnicodeIncludedSubject ||named args=yes}}"
 		},
 		{
 			"page": "template-002-desc-order-named-args",
-			"contents": "{{#ask:[[Category:template-002]]<q>[[Has page property:一二三]] OR [[Has page property::456]]</q>\n |?Has page property\n |format=template\n |order=desc\n |sep=;\n |link=none\n |limit=10\n |userparam=[$%&*==42]\n |template=TemplateOutputUsingNamedArgumentsForUnicodeIncludedSubject\n ||named args=yes\n}}"
+			"contents": "{{#ask:[[Category:template-002]]<q>[[Has page property:一二三]] OR [[Has page property::456]]</q> |?Has page property |format=template |order=desc |sep=; |link=none |limit=10 |userparam=[$%&*==42] |template=TemplateOutputUsingNamedArgumentsForUnicodeIncludedSubject ||named args=yes}}"
 		}
 	],
 	"tests": [
