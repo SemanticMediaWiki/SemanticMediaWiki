@@ -40,13 +40,18 @@ class SMWQuery implements QueryContext {
 	/**
 	 * The time the QueryEngine required to answer a query condition
 	 */
-	const PROC_QUERY_TIME = 'query.time';
+	const PROC_QUERY_TIME = 'proc.query.time';
 
 	/**
 	 * The time a ResultPrinter required to build the final result including all
 	 * PrintRequests
 	 */
-	const PROC_PRINT_TIME = 'print.time';
+	const PROC_PRINT_TIME = 'proc.print.time';
+
+	/**
+	 * The processing context in which the query is being executed
+	 */
+	const PROC_CONTEXT = 'proc.context';
 
 	/**
 	 * Suppress a possible cache request
