@@ -295,6 +295,8 @@ class SMWQueryResult {
 	}
 
 	/**
+	 * @deprecated since 2.5, use QueryResult::getQueryLink
+	 *
 	 * Returns an SMWInfolink object with the QueryResults print requests as parameters.
 	 *
 	 * @since 1.8
@@ -302,20 +304,7 @@ class SMWQueryResult {
 	 * @return SMWInfolink
 	 */
 	public function getLink() {
-		$params = array( trim( $this->mQuery->getQueryString() ) );
-
-		foreach ( $this->mQuery->getExtraPrintouts() as $printout ) {
-			$serialization = $printout->getSerialisation();
-
-			// TODO: this is a hack to get rid of the mainlabel param in case it was automatically added
-			// by SMWQueryProcessor::addThisPrintout. Should be done nicer when this link creation gets redone.
-			if ( $serialization !== '?#' ) {
-				$params[] = $serialization;
-			}
-		}
-
-		// Note: the initial : prevents SMW from reparsing :: in the query string.
-		return SMWInfolink::newInternalLink( '', ':Special:Ask', false, $params );
+		return $this->getQueryLink();
 	}
 
 	/**
