@@ -80,6 +80,7 @@ THIS IS NOT A RELEASE YET
 * #2070 Filter invalid entity display from `Special:Concepts`
 * #2071 Prevent extensions to register already known canonical property labels and herby avoid a possible ID mismatch
 * #2078
+* #2089
 
 ## Internal changes
 
