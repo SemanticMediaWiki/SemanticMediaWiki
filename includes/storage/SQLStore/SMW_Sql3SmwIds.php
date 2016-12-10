@@ -644,6 +644,9 @@ class SMWSql3SmwIds {
 			$sortkey = $sortkey ? $sortkey : ( str_replace( '_', ' ', $title ) );
 			$sequenceValue = $db->nextSequenceValue( $this->getIdTable() . '_smw_id_seq' ); // Bug 42659
 
+			// #2089 (MySQL 5.7 complained with "Data too long for column")
+			$sortkey = substr( $sortkey, 0, 254 );
+
 			$db->insert(
 				self::TABLE_NAME,
 				array(
@@ -677,6 +680,10 @@ class SMWSql3SmwIds {
 			}
 
 		} elseif ( $sortkey !== '' && $sortkey != $oldsort ) {
+
+			// #2089 (MySQL 5.7 complained with "Data too long for column")
+			$sortkey = substr( $sortkey, 0, 254 );
+
 			$db->update(
 				self::TABLE_NAME,
 				array( 'smw_sortkey' => $sortkey ),
