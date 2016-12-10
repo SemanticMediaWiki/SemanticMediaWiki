@@ -53,6 +53,11 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	const STATSD_ID = 'smw:query:store:1:a:';
 
 	/**
+	 * ID for the tempCache
+	 */
+	const POOLCACHE_ID = 'queryresult.prefetcher';
+
+	/**
 	 * @var Store
 	 */
 	private $store;
@@ -98,6 +103,18 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	private $logger;
 
 	/**
+	 * Keep a temp cache to hold on query results that aren't stored yet.
+	 *
+	 * If for example the retrieval is executed in deferred mode then a request
+	 * may occur in the same transaction cycle without being stored to the actual
+	 * back-end, yet queries with the same signature may have been retrieved
+	 * already therefore allow to recall the result from tempCache.
+	 *
+	 * @var InMemoryCache
+	 */
+	private $tempCache;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param Store $store
@@ -110,6 +127,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 		$this->queryFactory = $queryFactory;
 		$this->blobStore = $blobStore;
 		$this->transientStatsdCollector = $transientStatsdCollector;
+		$this->tempCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheById( self::POOLCACHE_ID );
 
 		$this->initStats( date( 'Y-m-d H:i:s' ) );
 	}
@@ -129,7 +147,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 			return $stats;
 		}
 
-		// hits.embedded + hits.nonEmbedded
+		// hits.embedded + hits.nonEmbedded + hits.tempCache
 		$hits = array_sum( $stats['hits'] );
 		$stats['ratio'] = array();
 
@@ -216,23 +234,26 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 		}
 
 		$this->start = microtime( true );
-
-		// Use the queryId without a subject to reuse the content among other
-		// entities that may have embedded a query with the same query signature
-		$queryId = $query->getQueryId();
+		$queryId = $this->getHashFrom( $query->getQueryId() );
 
 		$container = $this->blobStore->read(
-			$this->getHashFrom( $queryId )
+			$queryId
 		);
 
-		if ( $container->has( 'results' ) ) {
+		if ( $this->tempCache->contains( $queryId ) || $container->has( 'results' ) ) {
 			return $this->newQueryResultFromCache( $queryId, $query, $container );
 		}
 
 		$queryResult = $this->queryEngine->getQueryResult( $query );
 
-		$time = round( ( microtime( true ) - $this->start ), 5 );
-		$this->log( __METHOD__ . ' from backend in (sec): ' . $time . " ($queryId)" );
+		$this->tempCache->save(
+			$queryId,
+			$queryResult
+		);
+
+		$this->log(
+			__METHOD__ . ' from backend in (sec): ' . round( ( microtime( true ) - $this->start ), 5 ) . " ($queryId)"
+		);
 
 		if ( $this->canUse( $query ) && $queryResult instanceof QueryResult ) {
 			$this->addQueryResultToCache( $queryResult, $queryId, $container, $query );
@@ -257,6 +278,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 
 		foreach ( $item as $id ) {
 			$id = $this->getHashFrom( $id );
+			$this->tempCache->delete( $id );
 
 			if ( $this->blobStore->exists( $id ) ) {
 				$recordStats = true;
@@ -278,14 +300,29 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 
 		$results = array();
 
+		// Record a hit which can be either:
+		// - hits.tempCache
+		// - hits.embedded
+		// - hits.nonEmbedded
 		$this->transientStatsdCollector->incr(
-			( $query->getContextPage() !== null ? 'hits.embedded' : 'hits.nonEmbedded' )
+			$this->tempCache->contains( $queryId ) ? 'hits.tempCache' : ( $query->getContextPage() !== null ? 'hits.embedded' : 'hits.nonEmbedded' )
 		);
 
 		$this->transientStatsdCollector->calcMedian(
 			'medianRetrievalResponseTime.cached',
 			round( ( microtime( true ) - $this->start ), 5 )
 		);
+
+		// Check if the tempCache is available for result that have not yet been
+		// stored to the cache back-end
+		if ( ( $queryResult = $this->tempCache->fetch( $queryId ) ) !== false ) {
+			if ( $queryResult instanceof QueryResult ) {
+				$queryResult->reset();
+			}
+
+			$this->log( __METHOD__ . ' using tempCache ' . "($queryId)" );
+			return $queryResult;
+		}
 
 		foreach ( $container->get( 'results' ) as $hash ) {
 			$results[] = DIWikiPage::doUnserialize( $hash );
@@ -359,9 +396,11 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 			$container
 		);
 
-		$time = round( ( microtime( true ) - $this->start ), 5 );
+		$this->tempCache->delete( $queryId );
 
-		$this->log( __METHOD__ . ' cache storage (sec): ' . $time . " ($queryId)" );
+		$this->log(
+			__METHOD__ . ' cache storage (sec): ' . round( ( microtime( true ) - $this->start ), 5 ) . " ($queryId)"
+		);
 
 		return $queryResult;
 	}
@@ -374,11 +413,9 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 			$this->getHashFrom( $contextPage )
 		);
 
-		// If a subject gets purged the the linked list of queries associated
+		// If a subject gets purged then the linked list of queries associated
 		// with that subject allows for an immediate associated removal
-		$container->addToLinkedList(
-			$this->getHashFrom( $queryId )
-		);
+		$container->addToLinkedList( $queryId );
 
 		$this->blobStore->save(
 			$container
@@ -435,7 +472,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 		$this->transientStatsdCollector->set( 'meta.cacheLifetime.embedded', $GLOBALS['smwgQueryResultCacheLifetime'] );
 		$this->transientStatsdCollector->set( 'meta.cacheLifetime.nonEmbedded', $GLOBALS['smwgQueryResultNonEmbeddedCacheLifetime'] );
 		$this->transientStatsdCollector->init( 'meta.collectionDate.start', $date );
-		$this->transientStatsdCollector->set(  'meta.collectionDate.update', $date );
+		$this->transientStatsdCollector->set( 'meta.collectionDate.update', $date );
 	}
 
 }
