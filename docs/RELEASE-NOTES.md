@@ -81,6 +81,7 @@ THIS IS NOT A RELEASE YET
 * #2071 Prevent extensions to register already known canonical property labels and herby avoid a possible ID mismatch
 * #2078
 * #2089
+* #2093
 
 ## Internal changes
 
