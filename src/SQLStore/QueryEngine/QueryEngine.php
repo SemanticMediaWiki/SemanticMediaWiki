@@ -353,13 +353,17 @@ class QueryEngine implements QueryEngineInterface {
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
 		list( $startOpts, $useIndex, $tailOpts ) = $connection->makeSelectOptions( $sqlOptions );
 
+		$sortfields = implode( $qobj->sortfields, ',' );
+		$sortfields = $sortfields ? ', ' . $sortfields : '';
+
 		$sql = "SELECT DISTINCT ".
 			"$qobj->alias.smw_id AS id," .
 			"$qobj->alias.smw_title AS t," .
 			"$qobj->alias.smw_namespace AS ns," .
 			"$qobj->alias.smw_iw AS iw," .
 			"$qobj->alias.smw_subobject AS so," .
-			"$qobj->alias.smw_sortkey AS sortkey " .
+			"$qobj->alias.smw_sortkey AS sortkey" .
+			"$sortfields " .
 			"FROM " .
 			$connection->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from .
 			( $qobj->where === '' ? '':' WHERE ' ) . $qobj->where . "$tailOpts $startOpts $useIndex ".
@@ -462,7 +466,7 @@ class QueryEngine implements QueryEngineInterface {
 
 		// Selecting those is required in standard SQL (but MySQL does not require it).
 		$sortfields = implode( $qobj->sortfields, ',' );
-		$sortfields = $connection->isType( 'postgres' ) ? ( ( $sortfields ? ',' : '' ) . $sortfields ) : '';
+		$sortfields = $sortfields ? ',' . $sortfields : '';
 
 		$res = $connection->select(
 			$connection->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from,
