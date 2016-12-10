@@ -73,7 +73,7 @@ class DeferredCallableUpdate implements DeferrableUpdate {
 	 * @since 2.4
 	 */
 	public function enabledDeferredUpdate( $enabledDeferredUpdate = true ) {
-		$this->enabledDeferredUpdate = $enabledDeferredUpdate;
+		$this->enabledDeferredUpdate = (bool)$enabledDeferredUpdate;
 	}
 
 	/**
@@ -87,7 +87,7 @@ class DeferredCallableUpdate implements DeferrableUpdate {
 	 * @param booloan $isPending
 	 */
 	public function markAsPending( $isPending = false ) {
-		$this->isPending = $isPending;
+		$this->isPending = (bool)$isPending;
 	}
 
 	/**
@@ -139,7 +139,7 @@ class DeferredCallableUpdate implements DeferrableUpdate {
 	 * @since 2.4
 	 */
 	public function doUpdate() {
-		wfDebugLog( 'smw', $this->origin . ' doUpdate (' . $this->fingerprint . ')' );
+		wfDebugLog( 'smw', $this->origin . ' doUpdate' . ( $this->fingerprint ? ' (' . $this->fingerprint . ')' : '' ) );
 		call_user_func( $this->callback );
 		unset( self::$queueList[$this->fingerprint] );
 	}
@@ -158,7 +158,7 @@ class DeferredCallableUpdate implements DeferrableUpdate {
 	public function pushToUpdateQueue() {
 
 		if ( $this->fingerprint !== null && isset( self::$queueList[$this->fingerprint] ) ) {
-			wfDebugLog( 'smw', $this->origin . '  (fingerprint: ' . $this->fingerprint .' is already listed therefore skip)' );
+			wfDebugLog( 'smw', $this->origin . ' (fingerprint: ' . $this->fingerprint .' is already listed therefore skip)' );
 			return;
 		}
 
