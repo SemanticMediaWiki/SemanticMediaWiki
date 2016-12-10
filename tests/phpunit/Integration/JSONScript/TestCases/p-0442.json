@@ -1,0 +1,50 @@
+{
+	"description": "Test in-text `#REDIRECT` to verify target subobject isn't removed (#, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]] [[Has property description::Some text that should remain@en]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has another text",
+			"contents": "#REDIRECT [[Property:Has text]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (verify redirect doesn't delete the subobjects of a target; if it fails then propertyValues will be empty and cause an error in this test)",
+			"namespace": "SMW_NS_PROPERTY",
+			"subject": "Has text",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_PDESC",
+						"_TYPE"
+					],
+					"propertyValues": [
+						"Some text that should remain@en"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

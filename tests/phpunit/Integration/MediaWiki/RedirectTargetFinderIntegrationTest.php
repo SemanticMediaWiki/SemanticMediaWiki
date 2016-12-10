@@ -228,7 +228,7 @@ class RedirectTargetFinderIntegrationTest extends MwDBaseUnitTestCase {
 
 		// Store will point towards the correct target
 		$expectedRedirect = DIWikiPage::newFromTitle(
-			Title::newFromText( 'DeepRedirectTargetResolverToDetectCircularTarget/2' )
+			Title::newFromText( 'DeepRedirectTargetResolverToDetectCircularTarget/1' )
 		);
 
 		$this->assertEquals(
