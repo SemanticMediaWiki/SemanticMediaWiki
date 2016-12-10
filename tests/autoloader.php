@@ -38,6 +38,8 @@ print sprintf( "%-20s%s\n", "Site language:", $GLOBALS['wgLanguageCode'] );
 $dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
 print sprintf( "\n%-20s%s\n", "Execution time:", $dateTimeUtc->format( 'Y-m-d h:i' ) );
 
+print sprintf( "%-20s%s\n", "Debug logs:", $GLOBALS['wgDebugLogGroups'] !== array() || $GLOBALS['wgDebugLogFile'] !== '' ? 'Enabled' : 'Disabled' );
+
 if ( extension_loaded('xdebug') && xdebug_is_enabled() ) {
 	print sprintf( "%-20s%s\n\n", "Xdebug:", phpversion('xdebug') . ' (enabled)' );
 } else {
