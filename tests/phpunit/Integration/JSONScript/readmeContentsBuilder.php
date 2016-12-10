@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Integration\ByJsonScript;
+namespace SMW\Tests\Integration\JSONScript;
 
 /**
  * Build contents from a selected folder and replaces the content of the
@@ -17,7 +17,7 @@ class ReadmeContentsBuilder {
 	 * @var array
 	 */
 	private $urlLocationMap = array(
-		'Fixtures' => 'https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/Fixtures'
+		'TestCases' => 'https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases'
 	);
 
 	/**
@@ -28,7 +28,7 @@ class ReadmeContentsBuilder {
 		$output = '';
 		$dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
 
-		$output .= $this->doGenerateContentFor( 'Fixtures', __DIR__ . '/Fixtures' );
+		$output .= $this->doGenerateContentFor( 'TestCases', __DIR__ . '/TestCases' );
 		$output .= "\n-- Last updated on " .  $dateTimeUtc->format( 'Y-m-d' )  . " by `readmeContentsBuilder.php`". "\n";
 
 		file_put_contents(  __DIR__ . '/README.md', $output );
@@ -40,6 +40,7 @@ class ReadmeContentsBuilder {
 		$urlLocation = $this->urlLocationMap[$title];
 
 		$counter = 0;
+		$tests = 0;
 		$previousFirstKey = '';
 
 		foreach ( $this->findFilesFor( $path, 'json' ) as $key => $location ) {
@@ -60,12 +61,16 @@ class ReadmeContentsBuilder {
 				$output .= " " . $contents['description'];
 			}
 
+			if ( isset( $contents['tests'] ) ) {
+				$tests += count( $contents['tests'] );
+			}
+
 			$output .= "\n";
 			$counter++;
 			$previousFirstKey = $key{0};
 		}
 
-		return "## $title\n" . "Contains $counter files:\n" . $output;
+		return "## $title\n" . "Contains $counter files with a total of $tests tests:\n" . $output ;
 	}
 
 	private function findFilesFor( $path, $extension ) {

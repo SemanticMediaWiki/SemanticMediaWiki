@@ -31,29 +31,23 @@ class DummyFileCreator {
 	 * @since 2.1
 	 *
 	 * @param string $desiredDestName
-	 */
-	public function __construct( $desiredDestName ) {
-		$this->desiredDestName = $desiredDestName;
-	}
-
-	/**
-	 * @since 2.1
 	 *
 	 * @return string
 	 */
-	public function createEmptyFile() {
-		$this->file = $this->createFile();
+	public function createEmptyFile( $desiredDestName ) {
+		$this->file = $this->createFile( $desiredDestName );
 	}
 
 	/**
 	 * @since 2.1
 	 *
+	 * @param string $desiredDestName
 	 * @param string $contentCopyPath
 	 *
 	 * @return string
 	 */
-	public function createFileWithCopyFrom( $contentCopyPath ) {
-		$this->file = $this->createFile( file_get_contents( $this->getFile( $contentCopyPath ) ) );
+	public function createFileWithCopyFrom( $desiredDestName, $contentCopyPath ) {
+		$this->file = $this->createFile( $desiredDestName, file_get_contents( $this->getFile( $contentCopyPath ) ) );
 	}
 
 	/**
@@ -72,9 +66,9 @@ class DummyFileCreator {
 		unlink( $this->file );
 	}
 
-	private function createFile( $content = '' ) {
+	private function createFile( $desiredDestName, $content = '' ) {
 
-		$filename = $this->getLocationForTemporaryFile();
+		$filename = $this->getLocationForTemporaryFile( $desiredDestName );
 
 		$fh = fopen( $filename, 'w' );
 
@@ -89,8 +83,8 @@ class DummyFileCreator {
 		return $this->getFile( $filename );
 	}
 
-	private function getLocationForTemporaryFile() {
-		return sys_get_temp_dir() . '/' . $this->desiredDestName;
+	private function getLocationForTemporaryFile( $desiredDestName ) {
+		return sys_get_temp_dir() . '/' . $desiredDestName;
 	}
 
 	private function getFile( $path ) {

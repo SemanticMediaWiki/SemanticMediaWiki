@@ -1,11 +1,11 @@
 {
-	"description": "Test in-text annotation with `_PPLB` [preferred property label] (#1879, `wgContLang=en`, `wgLang=ja`)",
+	"description": "Test in-text annotation with preferred property label/`_PPLB` (#1879, `wgContLang=en`, `wgLang=ja`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
 			"page": "P106",
 			"contents": {
-				"import-from": "/../Contents/p-0436.json"
+				"import-from": "/../Fixtures/P106.txt"
 			}
 		},
 		{

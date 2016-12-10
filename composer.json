@@ -87,8 +87,9 @@
 		"phpunit": "php ../../tests/phpunit/phpunit.php -c phpunit.xml.dist",
 		"unit": [
 			"composer dump-autoload",
-			"php ../../tests/phpunit/phpunit.php -c phpunit.xml.dist --testsuite=semantic-mediawiki-unit"
+			"composer phpunit -- --testsuite=semantic-mediawiki-unit"
 		],
+		"integration": "composer phpunit -- --testsuite=semantic-mediawiki-integration",
 		"cs-standalone": [
 			"composer validate --no-interaction",
 			"vendor/bin/phpcs src/* includes/* tests/* --standard=phpcs.xml --extensions=php -sp"

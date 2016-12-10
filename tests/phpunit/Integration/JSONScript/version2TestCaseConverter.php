@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Integration\ByJsonScript;
+namespace SMW\Tests\Integration\JSONScript;
 
 /**
  * @private

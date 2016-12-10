@@ -50,14 +50,20 @@ For a short introduction on "How to write a test for Semantic MediaWiki", have a
 
 ### Test cases
 
-The use of `MediaWikiTestCase` is discouraged as its binds tests and the test environment to MediaWiki. Generally it is best to use `PHPUnit_Framework_TestCase` and in case where a MW database connection is required `MwDBaseUnitTestCase` should be used instead.
+The use of `MediaWikiTestCase` is discouraged as its binds tests and the test
+environment to MediaWiki. Generally it is best to use `PHPUnit_Framework_TestCase`
+and in case where a MW database connection is required `MwDBaseUnitTestCase`
+should be used instead.
 
 * `QueryPrinterTestCase` base class for all query and result printers
 * `SpecialPageTestCase` derives from `SemanticMediaWikiTestCase`
 
 ## Integration tests
 
-Integration tests are vital to confirm expected behaviour of a component from an integrative perspective that occurs through the interplay with its surroundings. `SMW\Tests\Integration\` contains most of the tests that target the validation of reciprocity with MediaWiki and/or other services such as:
+Integration tests are vital to confirm expected behaviour of a component from an
+integrative perspective that occurs through the interplay with its surroundings.
+`SMW\Tests\Integration\` contains most of the tests that target the validation of
+reciprocity with MediaWiki and/or other services such as:
 
 - `SPARQLStore` ( `fuseki`, `virtuoso`, `blazegraph`, or `sesame` )
 - Extensions such as `SM`, `SESP`, `SBL` etc.
@@ -72,7 +78,7 @@ down process for each test execution.
 
 The script like test definition was introduced to lower the barrier of understanding
 of what is being tested by using a wikitext notation (internally PHPUnit is used
-by the `ByJsonTestCaseProvider` to run/provide the actually test).
+by the `JsonTestCaseScriptRunner` to run/provide the actually test).
 
 A new test file (with different test cases) is automatically added by a `TestCaseRunner`
 as soon as it is placed within the location expected by the runner.
@@ -142,7 +148,7 @@ it is recommended to fix the settings for a  test by adding something like:
 }
 </pre>
 
-A complete list of available `json` test files can be found [here](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/ByJsonScript/README.md).
+A complete list of available `json` test files can be found [here](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/README.md).
 
 ## Benchmark tests
 
@@ -150,7 +156,9 @@ For details, please have a look at the [benchmark guide](phpunit/Benchmark/READM
 
 # JavaScript (QUnit)
 
-Running qunit tests in connection with MediaWiki requires to execute [Special:JavaScriptTest][mw-qunit-testing]. QUnit tests are currently not executed on Travis (see [#136][issue-136]).
+Running qunit tests in connection with MediaWiki requires to execute
+[Special:JavaScriptTest][mw-qunit-testing]. QUnit tests are currently not
+executed on Travis (see [#136][issue-136]).
 
 # Miscellaneous
 * [Writing testable code](https://semantic-mediawiki.org/wiki/Help:Writing_testable_code)

@@ -18,13 +18,13 @@
 		{
 			"page": "Example/P0439/2",
 			"contents": {
-				"import-from": "/../Contents/p-0439.de.txt"
+				"import-from": "/../Fixtures/p-0439.de.txt"
 			}
 		},
 		{
 			"page": "Example/P0439/3",
 			"contents": {
-				"import-from": "/../Contents/p-0439.fr.txt"
+				"import-from": "/../Fixtures/p-0439.fr.txt"
 			}
 		},
 		{
