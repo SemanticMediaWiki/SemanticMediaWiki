@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Integration\ByJsonScript;
+namespace SMW\Tests\Integration\JSONScript;
 
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\EventHandler;
 use SMW\PropertySpecificationLookup;
-use SMW\Tests\ByJsonTestCaseProvider;
+use SMW\Tests\JsonTestCaseScriptRunner;
 use SMW\Tests\JsonTestCaseFileHandler;
 use SMW\Tests\Utils\UtilityFactory;
 
@@ -19,7 +19,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
+class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 
 	/**
 	 * @var QueryTestCaseProcessor
@@ -47,7 +47,7 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 	private $eventDispatcher;
 
 	/**
-	 * @see ByJsonTestCaseProvider::$deletePagesOnTearDown
+	 * @see JsonTestCaseScriptRunner::$deletePagesOnTearDown
 	 */
 	protected $deletePagesOnTearDown = true;
 
@@ -102,44 +102,28 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 	}
 
 	/**
-	 * @see ByJsonTestCaseProvider::canExecuteTestCasesFor
-	 */
-	protected function canExecuteTestCasesFor( $file ) {
-
-		// Allows to filter specific files on-the-fly which can be helpful
-		// when desiging a new test case without having the run through all the
-		// existing tests.
-		$selectedFiles = array();
-
-		if ( $selectedFiles === array() ) {
-			return true;
-		}
-
-		foreach ( $selectedFiles as $f ) {
-			if ( strpos( $file, $f ) !== false ) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * @see ByJsonTestCaseProvider::getTestCaseLocation
+	 * @see JsonTestCaseScriptRunner::getTestCaseLocation
 	 */
 	protected function getTestCaseLocation() {
-		return __DIR__ . '/Fixtures';
+		return __DIR__ . '/TestCases';
 	}
 
 	/**
-	 * @see ByJsonTestCaseProvider::getTestCaseLocation
+	 * @see JsonTestCaseScriptRunner::getTestCaseLocation
 	 */
 	protected function getRequiredJsonTestCaseMinVersion() {
 		return '2';
 	}
 
 	/**
-	 * @see ByJsonTestCaseProvider::runTestCaseFile
+	 * @see JsonTestCaseScriptRunner::getAllowedTestCaseFiles
+	 */
+	protected function getAllowedTestCaseFiles() {
+		return array();
+	}
+
+	/**
+	 * @see JsonTestCaseScriptRunner::runTestCaseFile
 	 *
 	 * @param JsonTestCaseFileHandler $jsonTestCaseFileHandler
 	 */
@@ -203,12 +187,10 @@ class ByJsonScriptFixtureTestCaseRunnerTest extends ByJsonTestCaseProvider {
 			);
 		}
 
-		$this->createPagesFor(
+		$this->createPagesFrom(
 			$jsonTestCaseFileHandler->getPageCreationSetupList(),
 			NS_MAIN
 		);
-
-		$this->testEnvironment->executePendingDeferredUpdates();
 	}
 
 	private function doRunBeforeTest( $jsonTestCaseFileHandler ) {

@@ -5,7 +5,7 @@
 			"namespace": "NS_MEDIAWIKI",
 			"page": "Smw import skos",
 			"contents": {
-				"import-from": "/../Contents/skos-import.txt"
+				"import-from": "/../Fixtures/skos-import.txt"
 			}
 		},
 		{

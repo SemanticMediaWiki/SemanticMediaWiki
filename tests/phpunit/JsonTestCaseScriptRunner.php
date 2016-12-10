@@ -8,15 +8,15 @@ use SMW\Message;
 use Title;
 
 /**
- * The JsonTestCase provider is a convenience provider for `Json` formatted
+ * The JsonTestCaseScriptRunner is a convenience provider for `Json` formatted
  * integration tests to allow writing tests quicker without the need to setup
  * or tear down specific data structures.
  *
- * The json format should make it also possible for novice user to understand
+ * The JSON format should make it also possible for novice user to understand
  * what sort of tests are run as the content is based on wikitext rather than
  * native PHP.
  *
- * @group semantic-mediawiki-integration
+ * @group semantic-mediawiki
  * @group medium
  *
  * @license GNU GPL v2+
@@ -24,7 +24,7 @@ use Title;
  *
  * @author mwjames
  */
-abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
+abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 
 	/**
 	 * @var FileReader
@@ -32,19 +32,14 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 	private $fileReader;
 
 	/**
-	 * @var PageCreator
-	 */
-	private $pageCreator;
-
-	/**
-	 * @var PageDeleter
-	 */
-	private $pageDeleter;
-
-	/**
 	 * @var JsonTestCaseFileHandler
 	 */
 	private $jsonTestCaseFileHandler;
+
+	/**
+	 * @var JsonTestCaseContentHandler
+	 */
+	private $jsonTestCaseContentHandler;
 
 	/**
 	 * @var array
@@ -68,9 +63,13 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 		$utilityFactory->newMwHooksHandler()->deregisterListedHooks();
 		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
 
-		$this->fileReader = $utilityFactory->newJsonFileReader( null );
-		$this->pageCreator = $utilityFactory->newPageCreator();
-		$this->pageDeleter = $utilityFactory->newPageDeleter();
+		$this->fileReader = $utilityFactory->newJsonFileReader();
+
+		$this->jsonTestCaseContentHandler = new JsonTestCaseContentHandler(
+			$utilityFactory->newPageCreator(),
+			$utilityFactory->newPageDeleter(),
+			$utilityFactory->newLocalFileUpload()
+		);
 
 		if ( $this->getStore() instanceof \SMWSparqlStore ) {
 			$this->connectorId = strtolower( $GLOBALS['smwgSparqlDatabaseConnector'] );
@@ -89,6 +88,9 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 		parent::tearDown();
 	}
 
+	/**
+	 * @return string
+	 */
 	abstract protected function getTestCaseLocation();
 
 	/**
@@ -104,27 +106,58 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 	}
 
 	/**
+	 * @return array
+	 */
+	protected function getAllowedTestCaseFiles() {
+		return array();
+	}
+
+	/**
+	 * Normally returns TRUE but can act on the list retrieved from
+	 * JsonTestCaseScriptRunner::getAllowedTestCaseFiles (or hereof) to filter
+	 * selected files and help fine tune a setup or debug a potential issue
+	 * without having to run all test files at once.
+	 *
 	 * @param string $file
+	 *
 	 * @return boolean
 	 */
 	protected function canExecuteTestCasesFor( $file ) {
-		return true;
+
+		// Filter specific files on-the-fly
+		$allowedTestCaseFiles = $this->getAllowedTestCaseFiles();
+
+		if ( $allowedTestCaseFiles === array() ) {
+			return true;
+		}
+
+		// Doesn't require the exact name
+		foreach ( $allowedTestCaseFiles as $fileName ) {
+			if ( strpos( $file, $fileName ) !== false ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
 	 * @test
 	 * @dataProvider jsonFileProvider
 	 */
-	public function executeTestCasesFor( $file ) {
+	public function executeTestCases( $file ) {
 
 		if ( !$this->canExecuteTestCasesFor( $file ) ) {
-			$this->markTestSkipped( $file . ' excluded from test run' );
+			$this->markTestSkipped( $file . ' excluded from the test run' );
 		}
 
 		$this->fileReader->setFile( $file );
 		$this->runTestCaseFile( new JsonTestCaseFileHandler( $this->fileReader ) );
 	}
 
+	/**
+	 * @return array
+	 */
 	public function jsonFileProvider() {
 
 		$provider = array();
@@ -142,10 +175,21 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 		return $provider;
 	}
 
+	/**
+	 * @since 2.2
+	 *
+	 * @param mixed $key
+	 * @param mixed $value
+	 */
 	protected function changeGlobalSettingTo( $key, $value ) {
 		$this->testEnvironment->addConfiguration( $key, $value );
 	}
 
+	/**
+	 * @since 2.2
+	 *
+	 * @param JsonTestCaseFileHandler $jsonTestCaseFileHandler
+	 */
 	protected function checkEnvironmentToSkipCurrentTest( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
 
 		if ( $jsonTestCaseFileHandler->isIncomplete() ) {
@@ -169,99 +213,37 @@ abstract class ByJsonTestCaseProvider extends MwDBaseUnitTestCase {
 		}
 	}
 
-	protected function createPagesFor( array $pages, $defaultNamespace ) {
+	/**
+	 * @since 2.5
+	 *
+	 * @param array $pages
+	 * @param integer $defaultNamespace
+	 */
+	protected function createPagesFrom( array $pages, $defaultNamespace = NS_MAIN ) {
 
-		foreach ( $pages as $page ) {
-
-			$skipOn = isset( $page['skip-on'] ) ? $page['skip-on'] : array();
-
-			if ( in_array( $this->connectorId, array_keys( $skipOn ) ) ) {
-				continue;
-			}
-
-			if ( ( !isset( $page['page'] ) && !isset( $page['name'] ) ) || !isset( $page['contents'] ) ) {
-				continue;
-			}
-
-			$namespace = isset( $page['namespace'] ) ? constant( $page['namespace'] ) : $defaultNamespace;
-
-			$this->doCreatePage( $page, $namespace );
-		}
-	}
-
-	private function doCreatePage( $page, $namespace ) {
-
-		$pageContentLanguage = isset( $page['contentlanguage'] ) ? $page['contentlanguage'] : '';
-
-		if ( isset( $page['message-cache'] ) && $page['message-cache'] === 'clear' ) {
-			Message::clear();
-		}
-
-		$name = ( isset( $page['name'] ) ? $page['name'] : $page['page'] );
-
-		$title = Title::newFromText(
-			$name,
-			$namespace
+		$this->jsonTestCaseContentHandler->skipOn(
+			$this->connectorId
 		);
 
-		if ( $namespace === NS_FILE && isset( $page['contents']['upload'] ) ) {
-			return $this->doUploadFile( $title, $page['contents']['upload'] );
-		}
-
-		if ( is_array( $page['contents'] ) && isset( $page['contents']['import-from'] ) ) {
-			$contents = $this->getFileContentsWithEncodingDetection( $this->getTestCaseLocation() . $page['contents']['import-from'] );
-		} else {
-			$contents = $page['contents'];
-		}
-
-		$this->pageCreator->createPage( $title, $contents, $pageContentLanguage );
-
-		$this->itemsMarkedForDeletion[] = $this->pageCreator->getPage();
-
-		if ( isset( $page['move-to'] ) ) {
-			$this->doMovePage( $page, $namespace );
-		}
-
-		if ( isset( $page['do-purge'] ) ) {
-			$this->pageCreator->getPage()->doPurge();
-		}
-
-		if ( isset( $page['do-delete'] ) && $page['do-delete'] ) {
-			$this->pageDeleter->deletePage( $title );
-		}
-	}
-
-	private function doMovePage( $page, $namespace ) {
-		$target = Title::newFromText(
-			$page['move-to']['target'],
-			$namespace
+		$this->jsonTestCaseContentHandler->setTestCaseLocation(
+			$this->getTestCaseLocation()
 		);
 
-		$this->pageCreator->doMoveTo(
-			$target,
-			$page['move-to']['is-redirect']
+		$this->jsonTestCaseContentHandler->createPagesFrom(
+			$pages,
+			$defaultNamespace
 		);
-
-		$this->itemsMarkedForDeletion[] = $target;
-	}
-
-	// http://php.net/manual/en/function.file-get-contents.php
-	private function getFileContentsWithEncodingDetection( $file ) {
-		$content = file_get_contents( $file );
-		return mb_convert_encoding( $content, 'UTF-8', mb_detect_encoding( $content, 'UTF-8, ISO-8859-1, ISO-8859-2', true ) );
-	}
-
-	private function doUploadFile( $title, $contents ) {
-
-		$localFileUpload = $this->testEnvironment->getUtilityFactory()->newLocalFileUploadWithCopy(
-			$this->getTestCaseLocation() . $contents['file'],
-			$title->getText()
-		);
-
-		$localFileUpload->doUpload( $contents['text'] );
 
 		$this->testEnvironment->executePendingDeferredUpdates();
-		$this->itemsMarkedForDeletion[] = $title;
+
+		$this->itemsMarkedForDeletion = $this->jsonTestCaseContentHandler->getPages();
+	}
+
+	/**
+	 * @deprecated 2.5
+	 */
+	protected function createPagesFor( array $pages, $defaultNamespace ) {
+		$this->createPagesFrom( $pages, $defaultNamespace );
 	}
 
 }

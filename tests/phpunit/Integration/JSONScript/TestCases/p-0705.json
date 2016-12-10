@@ -11,7 +11,7 @@
 			"page": "P0705.png",
 			"contents": {
 				"upload": {
-					"file" : "/../Contents/test-file-480.png",
+					"file" : "/../Fixtures/image-upload-480.png",
 					"text" : "[[Has file::{{FULLPAGENAME}}]] [[Has caption::123]]"
 				}
 			}

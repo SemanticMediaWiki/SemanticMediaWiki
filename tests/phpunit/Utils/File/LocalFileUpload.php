@@ -29,6 +29,14 @@ class LocalFileUpload extends UploadBase {
 	 */
 	private $desiredDestName;
 
+	/**
+	 * @var DummyFileCreator
+	 */
+	private $dummyFileCreator;
+
+	/**
+	 * @var string
+	 */
 	private $error = '';
 
 	/**
@@ -37,9 +45,18 @@ class LocalFileUpload extends UploadBase {
 	 * @param string $localUploadPath
 	 * @param string $desiredDestName
 	 */
-	public function __construct( $localUploadPath, $desiredDestName ) {
+	public function __construct( $localUploadPath = '', $desiredDestName = '' ) {
 		$this->localUploadPath = $localUploadPath;
 		$this->desiredDestName = $desiredDestName;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param DummyFileCreator $dummyFileCreator
+	 */
+	public function setDummyFileCreator( DummyFileCreator $dummyFileCreator ) {
+		$this->dummyFileCreator = $dummyFileCreator;
 	}
 
 	/**
@@ -59,19 +76,50 @@ class LocalFileUpload extends UploadBase {
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 2.5
 	 *
+	 * @param string $localUploadPath
+	 * @param string $desiredDestName
 	 * @param string $pageText
 	 * @param string $comment
 	 *
 	 * @return boolean
 	 */
-	public function doUpload( $pageText = '', $comment = '' ) {
+	public function doUploadCopyFromLocation( $localUploadPath, $desiredDestName, $pageText = '', $comment = '' ) {
 
-		$localUploadPath = $this->canRead( $this->localUploadPath );
+		if ( !$this->dummyFileCreator instanceof DummyFileCreator ) {
+			throw new RuntimeException( "Expected a DummyFileCreator instance." );
+		}
+
+		$this->dummyFileCreator->createFileWithCopyFrom(
+			$desiredDestName,
+			$localUploadPath
+		);
+
+		$this->doUploadFromLocation(
+			$this->dummyFileCreator->getPath(),
+			$desiredDestName,
+			$pageText,
+			$comment
+		);
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $localUploadPath
+	 * @param string $desiredDestName
+	 * @param string $pageText
+	 * @param string $comment
+	 *
+	 * @return boolean
+	 */
+	public function doUploadFromLocation( $localUploadPath, $desiredDestName, $pageText = '', $comment = '' ) {
+
+		$localUploadPath = $this->createReadablePath( $localUploadPath );
 
 		$this->initializePathInfo(
-			$this->desiredDestName,
+			$desiredDestName,
 			$localUploadPath,
 			filesize( $localUploadPath ),
 			$this->removeTemporaryFile
@@ -93,6 +141,18 @@ class LocalFileUpload extends UploadBase {
 	}
 
 	/**
+	 * @since 2.1
+	 *
+	 * @param string $pageText
+	 * @param string $comment
+	 *
+	 * @return boolean
+	 */
+	public function doUpload( $pageText = '', $comment = '' ) {
+		return $this->doUploadFromLocation( $this->localUploadPath, $this->desiredDestName, $pageText, $comment );
+	}
+
+	/**
 	 * @see UploadBase::initializeFromRequest
 	 */
 	public function initializeFromRequest( &$request ) {
@@ -105,7 +165,7 @@ class LocalFileUpload extends UploadBase {
 		return 'file';
 	}
 
-	private function canRead( $path ) {
+	private function createReadablePath( $path ) {
 
 		$path = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $path );
 

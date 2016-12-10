@@ -189,13 +189,29 @@ class UtilityFactory {
 
 		// Use to create a copy to avoid having the orginal file being
 		// deleted after the upload
-		$dummyFileCreator = new DummyFileCreator( $desiredDestName );
-		$dummyFileCreator->createFileWithCopyFrom( $localUploadPath );
+		$dummyFileCreator = new DummyFileCreator();
+		$dummyFileCreator->createFileWithCopyFrom(  $desiredDestName, $localUploadPath );
 
 		return new LocalFileUpload(
 			$dummyFileCreator->getPath(),
 			$desiredDestName
 		);
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return LocalFileUpload
+	 */
+	public function newLocalFileUpload() {
+
+		$localFileUpload = new LocalFileUpload();
+
+		$localFileUpload->setDummyFileCreator(
+			new DummyFileCreator()
+		);
+
+		return $localFileUpload;
 	}
 
 }
