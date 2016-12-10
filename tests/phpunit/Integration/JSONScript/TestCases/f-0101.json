@@ -34,11 +34,11 @@
 		},
 		{
 			"page": "template-001-asc-order-unnamed-args",
-			"contents": "{{#ask:[[Category:template-001]][[Has page property::ABC]]\n |?Has page property\n |format=template\n |order=asc\n |link=none\n |limit=3\n |searchlabel=furtherresults\n |userparam=[$%&*==42]\n |template=TemplateOutputUsingUnnamedArgumentsForNonUnicode\n |introtemplate=TemplateOutputUsingUnnamedArgumentsForNonUnicodeExtra\n |outrotemplate=TemplateOutputUsingUnnamedArgumentsForNonUnicodeExtra\n}}"
+			"contents": "{{#ask:[[Category:template-001]][[Has page property::ABC]] |?Has page property |sep=, |format=template |order=asc |link=none |limit=3 |searchlabel=furtherresults |userparam=[$%&*==42] |template=TemplateOutputUsingUnnamedArgumentsForNonUnicode |introtemplate=TemplateOutputUsingUnnamedArgumentsForNonUnicodeExtra |outrotemplate=TemplateOutputUsingUnnamedArgumentsForNonUnicodeExtra}}"
 		},
 		{
 			"page": "template-001-desc-order-unnamed-args",
-			"contents": "{{#ask:[[Category:template-001]][[Has page property::ABC]]\n |?Has page property\n |format=template\n |order=desc\n |link=none\n |limit=3\n |searchlabel=furtherresults\n |userparam=[$%&*==42]\n |template=TemplateOutputUsingUnnamedArgumentsForNonUnicode\n |introtemplate=TemplateOutputUsingUnnamedArgumentsForNonUnicodeExtra\n |outrotemplate=TemplateOutputUsingUnnamedArgumentsForNonUnicodeExtra\n}}"
+			"contents": "{{#ask:[[Category:template-001]][[Has page property::ABC]] |?Has page property |sep=, |format=template |order=desc |link=none |limit=3 |searchlabel=furtherresults |userparam=[$%&*==42] |template=TemplateOutputUsingUnnamedArgumentsForNonUnicode |introtemplate=TemplateOutputUsingUnnamedArgumentsForNonUnicodeExtra |outrotemplate=TemplateOutputUsingUnnamedArgumentsForNonUnicodeExtra}}"
 		}
 	],
 	"tests": [
