@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation `_dat` on partial dates (en)",
+	"description": "Test in-text annotation `_dat` on partial dates (#2076, `wgContLang=en`, `wgLang=en`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -25,6 +25,10 @@
 		{
 			"page": "Example/P0422/Q/2/2",
 			"contents": "{{#ask: [[Category:Partial dates]] |?Has date |sort=Has date|order=desc |link=none }}"
+		},
+		{
+			"page": "Example/P0422/3",
+			"contents": "[[Has date::0]]"
 		}
 	],
 	"tests": [
@@ -89,6 +93,22 @@
 					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0422/2#_a9167ae46aa815bb052650683c4719d6</td><td data-sort-value=\"2423420.5\" class=\"Has-date smwtype_dat\">January 1923</td></tr>",
 					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0422/2#_519df0ee370ade5d506e5dd769a14b26</td><td data-sort-value=\"2321884.5\" class=\"Has-date smwtype_dat\">1645</td></tr>"
 				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (#2076, output an error instead of an exception)",
+			"subject": "Example/P0422/3",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					]
+				}
 			}
 		}
 	],

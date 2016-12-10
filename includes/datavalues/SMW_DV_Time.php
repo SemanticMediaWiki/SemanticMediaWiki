@@ -129,7 +129,11 @@ class SMWTimeValue extends SMWDataValue {
 		$datecomponents = array();
 		$calendarmodel = $era = $hours = $minutes = $seconds = $microseconds = $timeoffset = $timezone = false;
 		if ( $this->isInterpretableAsYearOnly( $value ) ) {
-			$this->m_dataitem = new SMWDITime( $this->getCalendarModel( null, $value, null, null ), $value );
+			try {
+				$this->m_dataitem = new SMWDITime( $this->getCalendarModel( null, $value, null, null ), $value );
+			} catch ( SMWDataItemException $e ) {
+				$this->addErrorMsg( array( 'smw-datavalue-time-invalid', $value, $e->getMessage() ) );
+			}
 		} elseif ( $this->isInterpretableAsTimestamp( $value ) ) {
 			$this->m_dataitem = SMWDITime::newFromTimestamp( $value );
 		} elseif ( $this->parseDateString( $value, $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $microseconds, $timeoffset, $timezone ) ) {
