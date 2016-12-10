@@ -84,8 +84,11 @@ class PageCreator {
 	 */
 	public function doEdit( $pageContent = '', $editMessage = '' ) {
 
-		if ( class_exists( 'WikitextContent' ) ) {
-			$content = new \WikitextContent( $pageContent );
+		if ( class_exists( 'ContentHandler' ) ) {
+			$content = \ContentHandler::makeContent(
+				$pageContent,
+				$this->getPage()->getTitle()
+			);
 
 			$this->getPage()->doEditContent(
 				$content,
@@ -125,7 +128,7 @@ class PageCreator {
 	 */
 	public function getEditInfo() {
 
-		if ( class_exists( 'WikitextContent' ) ) {
+		if ( class_exists( 'ContentHandler' ) ) {
 
 			$content = $this->getPage()->getRevision()->getContent();
 			$format  = $content->getContentHandler()->getDefaultFormat();
@@ -143,6 +146,7 @@ class PageCreator {
 		} else {
 			$text = $this->getPage()->getRevision()->getRawText();
 		}
+
 		return $this->getPage()->prepareTextForEdit(
 			$text,
 			null,
@@ -151,6 +155,3 @@ class PageCreator {
 	}
 
 }
-
-// FIXME SemanticGlossary usage
-class_alias( 'SMW\Tests\Utils\PageCreator', 'SMW\Tests\Util\PageCreator' );
