@@ -464,7 +464,7 @@
 	"smw-datavalue-propertylist-invalid-property-key": "The property list \"$1\" contained an invalid property key \"$2\".",
 	"smw-datavalue-type-invalid-typeuri": "The \"$1\" type could not be transformed into a valid URI representation.",
 	"smw-datavalue-wikipage-missing-fragment-context": "The wikipage input value \"$1\" cannot be used without a context page.",
-	"smw-datavalue-wikipage-invalid-title": "The wikipage input value \"$1\" contains invalid characters or is incomplete and therefore it cannot cause unexpected results during a query or annotation process.",
+	"smw-datavalue-wikipage-invalid-title": "The wikipage input value \"$1\" contains invalid characters or is incomplete and therefore can cause unexpected results during a query or annotation process.",
 	"smw-datavalue-wikipage-empty": "The wikipage input value is empty (e.g. <code>[[SomeProperty::]], [[]]</code>) and therefore it cannot be used as a name or as part of a query condition.",
 	"smw-sp-types_ref_rec": "\"$1\" is a [https://www.semantic-mediawiki.org/wiki/Container container] type that allows to record additional information (e.g. provenance data) about a value assignment.",
 	"smw-datavalue-reference-outputformat": "$1: $2",
