@@ -200,6 +200,7 @@ class PropertyTableIdReferenceDisposer {
 
 		$dispatchContext = $eventHandler->newDispatchContext();
 		$dispatchContext->set( 'subject', $subject );
+		$dispatchContext->set( 'context', 'PropertyTableIdReferenceDisposal' );
 
 		$eventHandler->getEventDispatcher()->dispatch(
 			'cached.prefetcher.reset',
