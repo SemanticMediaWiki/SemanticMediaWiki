@@ -56,6 +56,24 @@ class ConceptDescriptionTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( 4, $instance->getQueryFeatures() );
 	}
 
+	public function testGetHash() {
+
+		$instance = new ConceptDescription(
+			new DIWikiPage( 'Foo', SMW_NS_CONCEPT )
+		);
+
+		$expected = $instance->getHash();
+
+		$instance = new ConceptDescription(
+			new DIWikiPage( 'Bar', SMW_NS_CONCEPT )
+		);
+
+		$this->assertNotSame(
+			$expected,
+			$instance->getHash()
+		);
+	}
+
 	public function testPrune() {
 
 		$instance = new ConceptDescription( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) );

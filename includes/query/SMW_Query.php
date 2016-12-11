@@ -445,21 +445,25 @@ class SMWQuery implements QueryContext {
 		// elements that directly influence the result list
 		$serialized = array();
 
-		$serialized['conditions'] = $this->getQueryString();
+		// Don't use the QueryString, use the canonized hash to ensure that
+		// [[Foo::123]][[Bar::abc]] returns the same ID as [[Bar::abc]][[Foo::123]]
+		// given that limit, offset, and sort/order are the same
+		$serialized['hash'] = $this->description->getHash();
 		$serialized['parameters'] = array(
 			'limit'     => $this->limit,
 			'offset'    => $this->offset,
 			'sortkeys'  => $this->sortkeys,
-			'querymode' => $this->querymode
+			'querymode' => $this->querymode // COUNT, DEBUG ...
 		);
 
+		// Make to sure to distinguish queries and results from a foreign repository
 		if ( $this->querySource !== null && $this->querySource !== '' ) {
 			$serialized['parameters']['source'] = $this->querySource;
 		}
 
-		// printouts are avoided as part of the hash as they not influence the
-		// match process and are only resolved after the query result has been
-		// retrieved
+		// Printouts are avoided as part of the hash as they not influence the
+		// result match process and are only resolved after the query result has
+		// been retrieved
 
 		return HashBuilder::createFromArray( $serialized );
 	}

@@ -48,6 +48,24 @@ class ClassDescription extends Description {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getHash() {
+
+		$hash = array();
+
+		foreach ( $this->m_diWikiPages as $subject ) {
+			$hash[$subject->getHash()] = true;
+		}
+
+		ksort( $hash );
+
+		return 'Cl:' . md5( implode( '|', array_keys( $hash ) ) );
+	}
+
+	/**
 	 * @return array of DIWikiPage
 	 */
 	public function getCategories() {

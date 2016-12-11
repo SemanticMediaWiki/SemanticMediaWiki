@@ -2,7 +2,7 @@
 
 namespace SMW\Query\Language;
 
-use SMW\Query\PrintRequest as PrintRequest;
+use SMW\Query\PrintRequest;
 
 /**
  * Abstract base class for all descriptions
@@ -15,7 +15,7 @@ use SMW\Query\PrintRequest as PrintRequest;
 abstract class Description {
 
 	/**
-	 * @var \SMW\Query\PrintRequest[]
+	 * @var PrintRequest[]
 	 */
 	protected $m_printreqs = array();
 
@@ -23,7 +23,7 @@ abstract class Description {
 	 * Get the (possibly empty) array of all print requests that
 	 * exist for the entities that fit this description.
 	 *
-	 * @return array of SMW\Query\PrintRequest
+	 * @return PrintRequest[]
 	 */
 	public function getPrintRequests() {
 		return $this->m_printreqs;
@@ -41,7 +41,7 @@ abstract class Description {
 	/**
 	 * Add a single SMW\Query\PrintRequest.
 	 *
-	 * @param \SMW\Query\PrintRequest $printRequest
+	 * @param PrintRequest $printRequest
 	 */
 	public function addPrintRequest( PrintRequest $printRequest ) {
 		$this->m_printreqs[] = $printRequest;
@@ -56,6 +56,20 @@ abstract class Description {
 	public function prependPrintRequest( PrintRequest $printRequest ) {
 		array_unshift( $this->m_printreqs, $printRequest );
 	}
+
+	/**
+	 * Returns a compound hash that represents the canonized description with
+	 * the order being normalized as well so that [[Foo::123]][[Bar::abc]]
+	 * returns the same ID as for [[Bar::abc]][[Foo::123]].
+	 *
+	 * One can not rely on the query string to filter equal descriptions when
+	 * only comparing the string representation.
+	 *
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	abstract public function getHash();
 
 	/**
 	 * Return a string expressing this query.

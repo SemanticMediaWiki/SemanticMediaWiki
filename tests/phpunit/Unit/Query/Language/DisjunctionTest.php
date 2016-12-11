@@ -42,17 +42,90 @@ class DisjunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Disjunction( $descriptions );
 
-		$this->assertEquals( $expected['descriptions'], $instance->getDescriptions() );
+		$this->assertEquals(
+			$expected['descriptions'],
+			$instance->getDescriptions()
+		);
 
-		$this->assertEquals( $expected['queryString'], $instance->getQueryString() );
-		$this->assertEquals( $expected['queryStringAsValue'], $instance->getQueryString( true ) );
+		$this->assertEquals(
+			$expected['queryString'],
+			$instance->getQueryString()
+		);
 
-		$this->assertEquals( $expected['isSingleton'], $instance->isSingleton() );
-		$this->assertEquals( array(), $instance->getPrintRequests() );
+		$this->assertEquals(
+			$expected['queryStringAsValue'],
+			$instance->getQueryString( true )
+		);
 
-		$this->assertEquals( $expected['size'], $instance->getSize() );
-		$this->assertEquals( $expected['depth'], $instance->getDepth() );
-		$this->assertEquals( $expected['queryFeatures'], $instance->getQueryFeatures() );
+		$this->assertEquals(
+			$expected['isSingleton'],
+			$instance->isSingleton()
+		);
+
+		$this->assertEquals(
+			array(),
+			$instance->getPrintRequests()
+		);
+
+		$this->assertEquals(
+			$expected['size'],
+			$instance->getSize()
+		);
+
+		$this->assertEquals(
+			$expected['depth'],
+			$instance->getDepth()
+		);
+
+		$this->assertEquals(
+			$expected['queryFeatures'],
+			$instance->getQueryFeatures()
+		);
+	}
+
+	public function testGetHash() {
+
+		$descriptions = array(
+			new NamespaceDescription( NS_MAIN ),
+			new NamespaceDescription( NS_HELP )
+		);
+
+		$instance = new Disjunction(
+			$descriptions
+		);
+
+		$expected = $instance->getHash();
+
+		// Different order, same hash
+		$descriptions = array(
+			new NamespaceDescription( NS_HELP ),
+			new NamespaceDescription( NS_MAIN )
+		);
+
+		$instance = new Disjunction(
+			$descriptions
+		);
+
+		$this->assertSame(
+			$expected,
+			$instance->getHash()
+		);
+
+		// Different signature, different hash
+		$descriptions = array(
+			new NamespaceDescription( NS_HELP ),
+			new NamespaceDescription( NS_MAIN ),
+			new ThingDescription()
+		);
+
+		$instance = new Disjunction(
+			$descriptions
+		);
+
+		$this->assertNotSame(
+			$expected,
+			$instance->getHash()
+		);
 	}
 
 	public function disjunctionProvider() {

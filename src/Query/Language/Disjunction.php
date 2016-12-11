@@ -21,6 +21,11 @@ class Disjunction extends Description {
 	private $descriptions;
 
 	/**
+	 * @var string|null
+	 */
+	private $hash = null;
+
+	/**
 	 * contains a single class description if any such disjunct was given;
 	 * disjunctive classes are aggregated therei
 	 * n
@@ -41,11 +46,37 @@ class Disjunction extends Description {
 		}
 	}
 
+	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getHash() {
+
+		// Avoid a recursive tree
+		if ( $this->hash !== null ) {
+			return $this->hash;
+		}
+
+		$hash = array();
+
+		foreach ( $this->descriptions as $description ) {
+			$hash[$description->getHash()] = true;
+		}
+
+		ksort( $hash );
+
+		return $this->hash = 'D:' . md5( implode( '|', array_keys( $hash ) ) );
+	}
+
 	public function getDescriptions() {
 		return $this->descriptions;
 	}
 
 	public function addDescription( Description $description ) {
+
+		$this->hash = null;
+
 		if ( $description instanceof ThingDescription ) {
 			$this->isTrue = true;
 			$this->descriptions = array(); // no conditions any more
