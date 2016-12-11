@@ -50,7 +50,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	 *
 	 * PHP 5.6 can do self::CACHE_NAMESPACE . ':' . self::VERSION
 	 */
-	const STATSD_ID = 'smw:query:store:1:b:';
+	const STATSD_ID = 'smw:query:store:1:c:';
 
 	/**
 	 * ID for the tempCache
@@ -300,53 +300,61 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	private function newQueryResultFromCache( $queryId, $query, $container ) {
 
 		$results = array();
+		$incrStats = 'hits.Undefined';
 
 		if ( ( $nonEmbeddedContext = $query->getOptionBy( Query::PROC_CONTEXT ) ) === false ) {
 			$nonEmbeddedContext = 'Undefined';
 		}
 
-		// Record a hit which can be either:
-		// - hits.tempCache
-		// - hits.embedded
-		// - hits.nonEmbedded.SpecialAsk
-		// - hits.nonEmbedded.API
-		// - hits.nonEmbedded.Undefined
-		$this->transientStatsdCollector->incr(
-			$this->tempCache->contains( $queryId ) ? 'hits.tempCache' : ( $query->getContextPage() !== null ? 'hits.embedded' : 'hits.nonEmbedded.' . $nonEmbeddedContext )
-
-		);
-
-		$this->transientStatsdCollector->calcMedian(
-			'medianRetrievalResponseTime.cached',
-			round( ( microtime( true ) - $this->start ), 5 )
-		);
-
 		// Check if the tempCache is available for result that have not yet been
 		// stored to the cache back-end
 		if ( ( $queryResult = $this->tempCache->fetch( $queryId ) ) !== false ) {
-			if ( $queryResult instanceof QueryResult ) {
-				$queryResult->reset();
+			$this->log( __METHOD__ . ' using tempCache ' . "($queryId)" );
+
+			if ( !$queryResult instanceof QueryResult ) {
+				return $queryResult;
 			}
 
-			$this->log( __METHOD__ . ' using tempCache ' . "($queryId)" );
-			return $queryResult;
-		}
+			$incrStats = 'hits.tempCache.' . ( $query->getContextPage() !== null ? 'embedded' : 'nonEmbedded' );
 
-		foreach ( $container->get( 'results' ) as $hash ) {
-			$results[] = DIWikiPage::doUnserialize( $hash );
+			$queryResult->reset();
+			$results = $queryResult->getResults();
+
+			$hasFurtherResults = $queryResult->hasFurtherResults();
+			$countValue = $queryResult->getCountValue();
+		} else {
+
+			// - hits.nonEmbedded.SpecialAsk
+			// - hits.nonEmbedded.API
+			// - hits.nonEmbedded.Undefined
+			$incrStats = $query->getContextPage() !== null ? 'hits.embedded' : 'hits.nonEmbedded.' . $nonEmbeddedContext;
+
+			foreach ( $container->get( 'results' ) as $hash ) {
+				$results[] = DIWikiPage::doUnserialize( $hash );
+			}
+
+			$hasFurtherResults = $container->get( 'continue' );
+			$countValue = $container->get( 'count' );
 		}
 
 		$queryResult = $this->queryFactory->newQueryResult(
 			$this->store,
 			$query,
 			$results,
-			$container->get( 'continue' )
+			$hasFurtherResults
 		);
 
-		$queryResult->setCountValue( $container->get( 'count' ) );
+		$queryResult->setCountValue( $countValue );
 		$queryResult->setFromCache( true );
 
 		$time = round( ( microtime( true ) - $this->start ), 5 );
+
+		$this->transientStatsdCollector->incr( $incrStats );
+
+		$this->transientStatsdCollector->calcMedian(
+			'medianRetrievalResponseTime.cached',
+			$time
+		);
 
 		$this->log( __METHOD__ . ' (sec): ' . $time . " ($queryId)" );
 
