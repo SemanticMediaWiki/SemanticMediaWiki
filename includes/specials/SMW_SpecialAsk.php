@@ -285,6 +285,8 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			 * @var SMWQueryResult $res
 			 */
 
+			$queryobj->setOption( SMWQuery::PROC_CONTEXT, 'SpecialAsk' );
+
 			// Determine query results
 			$duration = microtime( true );
 			$res = $this->getStoreFromParams( $params )->getQueryResult( $queryobj );

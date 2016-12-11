@@ -268,13 +268,14 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	 * @param DIWikiPage|array $list
 	 * @param string $context
 	 */
-	public function resetCacheBy( $item, $context = 'Undefined' ) {
+	public function resetCacheBy( $item, $context = '' ) {
 
 		if ( !is_array( $item ) ) {
 			$item = array( $item );
 		}
 
 		$recordStats = false;
+		$context = $context === '' ? 'Undefined' : $context;
 
 		foreach ( $item as $id ) {
 			$id = $this->getHashFrom( $id );
@@ -300,12 +301,19 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 
 		$results = array();
 
+		if ( ( $nonEmbeddedContext = $query->getOptionBy( Query::PROC_CONTEXT ) ) === false ) {
+			$nonEmbeddedContext = 'Undefined';
+		}
+
 		// Record a hit which can be either:
 		// - hits.tempCache
 		// - hits.embedded
-		// - hits.nonEmbedded
+		// - hits.nonEmbedded.SpecialAsk
+		// - hits.nonEmbedded.API
+		// - hits.nonEmbedded.Undefined
 		$this->transientStatsdCollector->incr(
-			$this->tempCache->contains( $queryId ) ? 'hits.tempCache' : ( $query->getContextPage() !== null ? 'hits.embedded' : 'hits.nonEmbedded' )
+			$this->tempCache->contains( $queryId ) ? 'hits.tempCache' : ( $query->getContextPage() !== null ? 'hits.embedded' : 'hits.nonEmbedded.' . $nonEmbeddedContext )
+
 		);
 
 		$this->transientStatsdCollector->calcMedian(
