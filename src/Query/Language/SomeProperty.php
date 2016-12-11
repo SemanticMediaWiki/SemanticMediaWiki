@@ -35,6 +35,15 @@ class SomeProperty extends Description {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getHash() {
+		return 'S:' . md5( $this->property->getKey() . '|' . $this->description->getHash() );
+	}
+
+	/**
 	 * @return DIProperty
 	 */
 	public function getProperty() {

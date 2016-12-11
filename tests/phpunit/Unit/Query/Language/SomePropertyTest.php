@@ -8,6 +8,7 @@ use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
+use SMW\Query\Language\Conjunction;
 
 /**
  * @covers \SMW\Query\Language\SomeProperty
@@ -49,18 +50,71 @@ class SomePropertyTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SomeProperty( $property, $description );
 
-		$this->assertEquals( $expected['property'], $instance->getProperty() );
-		$this->assertEquals( $expected['description'], $instance->getDescription() );
+		$this->assertEquals(
+			$expected['property'],
+			$instance->getProperty()
+		);
 
-		$this->assertEquals( $expected['queryString'], $instance->getQueryString() );
-		$this->assertEquals( $expected['queryStringAsValue'], $instance->getQueryString( true ) );
+		$this->assertEquals(
+			$expected['description'],
+			$instance->getDescription()
+		);
 
-		$this->assertEquals( $expected['isSingleton'], $instance->isSingleton() );
-		$this->assertEquals( array(), $instance->getPrintRequests() );
+		$this->assertEquals(
+			$expected['queryString'],
+			$instance->getQueryString()
+		);
 
-		$this->assertEquals( $expected['size'], $instance->getSize() );
-		$this->assertEquals( $expected['depth'], $instance->getDepth() );
-		$this->assertEquals( $expected['queryFeatures'], $instance->getQueryFeatures() );
+		$this->assertEquals(
+			$expected['queryStringAsValue'],
+			$instance->getQueryString( true )
+		);
+
+		$this->assertEquals(
+			$expected['isSingleton'],
+			$instance->isSingleton()
+		);
+
+		$this->assertEquals(
+			array(),
+			$instance->getPrintRequests()
+		);
+
+		$this->assertEquals(
+			$expected['size'],
+			$instance->getSize()
+		);
+
+		$this->assertEquals(
+			$expected['depth'],
+			$instance->getDepth()
+		);
+
+		$this->assertEquals(
+			$expected['queryFeatures'],
+			$instance->getQueryFeatures()
+		);
+	}
+
+	public function testGetHash() {
+
+		$instance = new SomeProperty(
+			new DIProperty( 'Foo' ),
+			new NamespaceDescription( NS_HELP )
+		);
+
+		$expected = $instance->getHash();
+
+		// Same property, different description === different hash
+		$instance = new SomeProperty(
+			new DIProperty( 'Foo' ),
+			new NamespaceDescription( NS_MAIN )
+		);
+
+		$this->assertNotSame(
+			$expected,
+			$instance->getHash()
+		);
 	}
 
 	public function somePropertyProvider() {

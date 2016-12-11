@@ -41,17 +41,94 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Conjunction( $descriptions );
 
-		$this->assertEquals( $expected['descriptions'], $instance->getDescriptions() );
+		$this->assertEquals(
+			$expected['descriptions'],
+			$instance->getDescriptions()
+		);
 
-		$this->assertEquals( $expected['queryString'], $instance->getQueryString() );
-		$this->assertEquals( $expected['queryStringAsValue'], $instance->getQueryString( true ) );
+		$this->assertEquals(
+			$expected['queryString'],
+			$instance->getQueryString()
+		);
 
-		$this->assertEquals( $expected['isSingleton'], $instance->isSingleton() );
-		$this->assertEquals( array(), $instance->getPrintRequests() );
+		$this->assertEquals(
+			$expected['queryStringAsValue'],
+			$instance->getQueryString( true )
+		);
 
-		$this->assertEquals( $expected['size'], $instance->getSize() );
-		$this->assertEquals( $expected['depth'], $instance->getDepth() );
-		$this->assertEquals( $expected['queryFeatures'], $instance->getQueryFeatures() );
+		$this->assertEquals(
+			$expected['isSingleton'],
+			$instance->isSingleton()
+		);
+
+		$this->assertEquals(
+			array(),
+			$instance->getPrintRequests()
+		);
+
+		$this->assertEquals(
+			$expected['size'],
+			$instance->getSize()
+		);
+
+		$this->assertEquals(
+			$expected['depth'],
+			$instance->getDepth()
+		);
+
+		$this->assertEquals(
+			$expected['queryFeatures'],
+			$instance->getQueryFeatures()
+		);
+	}
+
+	public function testGetHash() {
+
+		$descriptions = array(
+			new NamespaceDescription( NS_MAIN ),
+			new NamespaceDescription( NS_HELP )
+		);
+
+		$instance = new Conjunction(
+			$descriptions
+		);
+
+		$expected = $instance->getHash();
+
+		// Different order, same hash
+		$descriptions = array(
+			new NamespaceDescription( NS_HELP ),
+			new NamespaceDescription( NS_MAIN ) // Changed position
+		);
+
+		$instance = new Conjunction(
+			$descriptions
+		);
+
+		$this->assertSame(
+			$expected,
+			$instance->getHash()
+		);
+
+		// ThingDescription is neglected
+		$instance->addDescription(
+			new ThingDescription()
+		);
+
+		$this->assertSame(
+			$expected,
+			$instance->getHash()
+		);
+
+		// Adds description === different signature === different hash
+		$instance->addDescription(
+			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) )
+		);
+
+		$this->assertNotSame(
+			$expected,
+			$instance->getHash()
+		);
 	}
 
 	public function conjunctionProvider() {
@@ -84,10 +161,16 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 			) )
 		);
 
+		$description = array(
+			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) ),
+			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) ),
+			new ValueDescription( new DIWikiPage( 'Yim', NS_MAIN ) )
+		);
+
 		$provider[] = array(
 			$descriptions,
 			array(
-				'descriptions'  => $descriptions,
+				'descriptions'  => $description,
 				'queryString' => '[[:Foo]] [[:Bar]] [[:Yim]]',
 				'queryStringAsValue' => ' <q>[[:Foo]] [[:Bar]] [[:Yim]]</q> ',
 				'isSingleton' => true,

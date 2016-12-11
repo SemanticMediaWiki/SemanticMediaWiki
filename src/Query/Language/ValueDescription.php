@@ -50,6 +50,19 @@ class ValueDescription extends Description {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getHash() {
+		return 'V:' . md5(
+			$this->comparator . '|' .
+			$this->dataItem->getHash() . '|' .
+			( $this->property !== null ? $this->property->getKey() : null )
+		);
+	}
+
+	/**
 	 * @deprecated Use getDataItem() and \SMW\DataValueFactory::getInstance()->newDataValueByItem() if needed. Vanishes before SMW 1.7
 	 * @return DataItem
 	 */

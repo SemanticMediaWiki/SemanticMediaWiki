@@ -30,6 +30,17 @@ class NamespaceDescription extends Description {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getHash() {
+		// Avoid a simple `int` which may interfere with an associative array
+		// when compounding hash strings from different descriptions
+		return 'N:' . md5( $this->namespace );
+	}
+
+	/**
 	 * @return integer
 	 */
 	public function getNamespace() {

@@ -81,6 +81,45 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetHash() {
+
+		$ns = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
+
+		$instance = new ClassDescription(
+			new DIWikiPage( 'Foo', NS_CATEGORY )
+		);
+
+		$instance->addDescription(
+			new ClassDescription( new DIWikiPage( 'Bar', NS_CATEGORY ) )
+		);
+
+		$expected = $instance->getHash();
+
+		// Different position, same hash
+		$instance = new ClassDescription(
+			new DIWikiPage( 'Bar', NS_CATEGORY )
+		);
+
+		$instance->addDescription(
+			new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) )
+		);
+
+		$this->assertSame(
+			$expected,
+			$instance->getHash()
+		);
+
+		// Adds extra description, changes hash
+		$instance->addDescription(
+			new ClassDescription( new DIWikiPage( 'Foobar', NS_CATEGORY ) )
+		);
+
+		$this->assertNotSame(
+			$expected,
+			$instance->getHash()
+		);
+	}
+
 	public function testPrune() {
 
 		$instance = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );

@@ -18,24 +18,62 @@ class Conjunction extends Description {
 	/**
 	 * @var Description[]
 	 */
-	protected $m_descriptions;
+	protected $descriptions = array();
 
+	/**
+	 * @var string|null
+	 */
+	private $hash = null;
+
+	/**
+	 * @since 1.6
+	 *
+	 * @param array $descriptions
+	 */
 	public function __construct( array $descriptions = array() ) {
-		$this->m_descriptions = $descriptions;
+		foreach ( $descriptions as $description ) {
+			$this->addDescription( $description );
+		}
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getHash() {
+
+		// Avoid a recursive tree
+		if ( $this->hash !== null ) {
+			return $this->hash;
+		}
+
+		$hash = array();
+
+		foreach ( $this->descriptions as $description ) {
+			$hash[$description->getHash()] = true;
+		}
+
+		ksort( $hash );
+
+		return $this->hash = 'C:' . md5( implode( '|', array_keys( $hash ) ) );
 	}
 
 	public function getDescriptions() {
-		return $this->m_descriptions;
+		return $this->descriptions;
 	}
 
 	public function addDescription( Description $description ) {
+
+		$this->hash = null;
+
 		if ( ! ( $description instanceof ThingDescription ) ) {
 			if ( $description instanceof Conjunction ) { // absorb sub-conjunctions
 				foreach ( $description->getDescriptions() as $subdesc ) {
-					$this->m_descriptions[] = $subdesc;
+					$this->descriptions[] = $subdesc;
 				}
 			} else {
-				$this->m_descriptions[] = $description;
+				$this->descriptions[] = $description;
 			}
 
 			// move print descriptions downwards
@@ -48,7 +86,7 @@ class Conjunction extends Description {
 	public function getQueryString( $asvalue = false ) {
 		$result = '';
 
-		foreach ( $this->m_descriptions as $desc ) {
+		foreach ( $this->descriptions as $desc ) {
 			$result .= ( $result ? ' ' : '' ) . $desc->getQueryString( false );
 		}
 
@@ -61,7 +99,7 @@ class Conjunction extends Description {
 	}
 
 	public function isSingleton() {
-		foreach ( $this->m_descriptions as $d ) {
+		foreach ( $this->descriptions as $d ) {
 			if ( $d->isSingleton() ) {
 				return true;
 			}
@@ -72,7 +110,7 @@ class Conjunction extends Description {
 	public function getSize() {
 		$size = 0;
 
-		foreach ( $this->m_descriptions as $desc ) {
+		foreach ( $this->descriptions as $desc ) {
 			$size += $desc->getSize();
 		}
 
@@ -82,7 +120,7 @@ class Conjunction extends Description {
 	public function getDepth() {
 		$depth = 0;
 
-		foreach ( $this->m_descriptions as $desc ) {
+		foreach ( $this->descriptions as $desc ) {
 			$depth = max( $depth, $desc->getDepth() );
 		}
 
@@ -92,7 +130,7 @@ class Conjunction extends Description {
 	public function getQueryFeatures() {
 		$result = SMW_CONJUNCTION_QUERY;
 
-		foreach ( $this->m_descriptions as $desc ) {
+		foreach ( $this->descriptions as $desc ) {
 			$result = $result | $desc->getQueryFeatures();
 		}
 
@@ -109,7 +147,7 @@ class Conjunction extends Description {
 		$newdepth = $maxdepth;
 		$result = new Conjunction();
 
-		foreach ( $this->m_descriptions as $desc ) {
+		foreach ( $this->descriptions as $desc ) {
 			$restdepth = $maxdepth;
 			$result->addDescription( $desc->prune( $maxsize, $restdepth, $prunelog ) );
 			$newdepth = min( $newdepth, $restdepth );

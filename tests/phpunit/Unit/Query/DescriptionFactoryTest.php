@@ -125,11 +125,19 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$description->expects( $this->once() )
+			->method( 'getPrintRequests' )
+			->will( $this->returnValue( array() ) );
+
 		$descriptions[] = $description;
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$description->expects( $this->once() )
+			->method( 'getPrintRequests' )
+			->will( $this->returnValue( array() ) );
 
 		$descriptions[] = $description;
 

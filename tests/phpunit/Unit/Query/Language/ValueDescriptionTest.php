@@ -43,20 +43,82 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ValueDescription( $dataItem, $property, $comparator );
 
-		$this->assertEquals( $expected['comparator'], $instance->getComparator() );
-		$this->assertEquals( $expected['dataItem'], $instance->getDataItem() );
+		$this->assertEquals(
+			$expected['comparator'],
+			$instance->getComparator()
+		);
 
-		$this->assertEquals( $expected['property'], $instance->getProperty() );
+		$this->assertEquals(
+			$expected['dataItem'],
+			$instance->getDataItem()
+		);
 
-		$this->assertEquals( $expected['queryString'], $instance->getQueryString() );
-		$this->assertEquals( $expected['queryStringAsValue'], $instance->getQueryString( true ) );
+		$this->assertEquals(
+			$expected['property'],
+			$instance->getProperty()
+		);
 
-		$this->assertEquals( $expected['isSingleton'], $instance->isSingleton() );
-		$this->assertEquals( array(), $instance->getPrintRequests() );
+		$this->assertEquals(
+			$expected['queryString'],
+			$instance->getQueryString()
+		);
 
-		$this->assertEquals( 1, $instance->getSize() );
-		$this->assertEquals( 0, $instance->getDepth() );
-		$this->assertEquals( 0, $instance->getQueryFeatures() );
+		$this->assertEquals(
+			$expected['queryStringAsValue'],
+			$instance->getQueryString( true )
+		);
+
+		$this->assertEquals(
+			$expected['isSingleton'],
+			$instance->isSingleton()
+		);
+
+		$this->assertEquals(
+			array(),
+			$instance->getPrintRequests()
+		);
+
+		$this->assertEquals(
+			1,
+			$instance->getSize()
+		);
+
+		$this->assertEquals(
+			0,
+			$instance->getDepth()
+		);
+
+		$this->assertEquals(
+			0,
+			$instance->getQueryFeatures()
+		);
+	}
+
+	public function testGetHash() {
+
+		$instance = new ValueDescription(
+			new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ
+		);
+
+		$expected = $instance->getHash();
+
+		$instance = new ValueDescription(
+			new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_LEQ
+		);
+
+		$this->assertNotSame(
+			$expected,
+			$instance->getHash()
+		);
+
+		$instance = new ValueDescription(
+			new DIWikiPage( 'Foo', NS_MAIN ), new DIProperty( 'Bar' ), SMW_CMP_EQ
+		);
+
+		$this->assertNotSame(
+			$expected,
+			$instance->getHash()
+		);
 	}
 
 	public function valueDescriptionProvider() {

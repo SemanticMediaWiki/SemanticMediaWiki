@@ -30,6 +30,15 @@ class ConceptDescription extends Description {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getHash() {
+		return 'Co:' . md5( $this->concept->getHash() );
+	}
+
+	/**
 	 * @return DIWikiPage
 	 */
 	public function getConcept() {
