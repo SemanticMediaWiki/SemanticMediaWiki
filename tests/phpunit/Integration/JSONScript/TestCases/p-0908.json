@@ -1,0 +1,48 @@
+{
+	"description": "Test the QueryResult cache feature with different `|+lang`/`|+order` prinrequest parameters (#1251, `wgContLang=en`, `wgLang=en`, `smwgQueryResultCacheType=true`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has alternative label",
+			"contents": "[[Has type::Monolingual text]]"
+		},
+		{
+			"page": "Example/P0908/1",
+			"contents": "[[Category:P0908]] [[Has page::{{FULLPAGENAME}}]] [[Has alternative label::Lipase@en]], [[Has alternative label::Tributyrase@en]], [[Has alternative label::Triglyceride lipase@en]], [[Has alternative label::トリアシルグリセロールリパーゼ@ja]], [[Has alternative label::ليباز ثلاثي اسيل الغليسيرول@ar]], [[Has alternative label::Triacylglycérol lipase@fr]], [[Has alternative label::Triacilglicerol lipaza@sh]], [[Has alternative label::Triacilglicerol lipaza@sr]]"
+		},
+		{
+			"page": "Example/P0908/Q.1",
+			"contents": "{{#ask: [[Category:P0908]] |?Has alternative label|+lang=en|+order=asc |link=none }} {{#ask: [[Category:P0908]] |?Has alternative label|+lang=ja|+order=asc |link=none }} "
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (query with same signature on same page but different prinrequest parameter outputs correct content)",
+			"subject": "Example/P0908/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0908/1</td><td class=\"Has-alternative-label smwtype_txt\">Lipase<br />Tributyrase<br />Triglyceride lipase</td></tr>",
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0908/1</td><td class=\"Has-alternative-label smwtype_txt\">トリアシルグリセロールリパーゼ</td></tr>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgQueryResultCacheType": "hash",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
