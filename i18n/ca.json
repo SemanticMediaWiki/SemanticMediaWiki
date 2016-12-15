@@ -245,7 +245,7 @@
 	"smw_smwadmin_updatestarted": "S'ha iniciat un nou procés d'actualització per a refrescar les dades semàntiques.\nEs reconstruiran totes les dades emmagatzemades o bé es repararan quan calgui.\nPodeu seguir el progrés de l'actualització en aquesta pàgina especial.\n\nTorna a $1.",
 	"smw_smwadmin_updatenotstarted": "Ja hi ha un procés d'actualització executant-se.\nNo es crearà cap altre.\n\nTorna a $1.",
 	"smw_smwadmin_updatestopped": "S'han aturat tots els processos d'actualització existents.\n\nTorna a $1.",
-	"smw_smwadmin_updatenotstopped": "Per a aturar l'execució del procés d'actualització, heu de marcar la casella per a indicar que n'esteu plenament segur.\n\nTorna a $1.",
+	"smw_smwadmin_updatenotstopped": "Per a aturar l'execució del procés d'actualització, heu de marcar la casella per a indicar que n'esteu plenament segur.",
 	"smw_smwadmin_docu": "Aquesta pàgina especial us ajuda durant la instal·lació i l'actualització del <a href=\"https://www.semantic-mediawiki.org\">Semantic MediaWiki</a>.\nRecordeu fer una còpia de seguretat de les dades importants abans d'executar cap funció administrativa.",
 	"smw_smwadmin_db": "Instal·lació de la base de dades i actualització",
 	"smw_smwadmin_dbdocu": "El Semantic MediaWiki necessita algunes extensions a la base de dades del MediaWiki per a poder emmagatzemar les dades semàntiques.\nLa funció a continuació garanteix que la vostra base de dades està configurada correctament.\nEls canvis fets en aquest pas no afecten la resta de la base de dades del MediaWiki, i poden desfer-se fàcilment si així es vol.\nLa funció de configuració pot executar-se moltes vegades sense que es faci cap mal, però només cal una vegada per a la instal·lació o l'actualització.",
@@ -253,7 +253,8 @@
 	"smw_smwadmin_dbbutton": "Inicialitza o actualitza les taules",
 	"smw_smwadmin_announce": "Feu conèixer el vostre wiki",
 	"smw_smwadmin_announce_text": "Si el vostre wiki és públic, el podeu registrar a <a href=\"https://wikiapiary.com\">WikiApiary</a>, el catàleg wiki de wikis.",
-	"smw_smwadmin_datarefresh": "Reparació de les dades i actualització",
+	"smw-smwadmin-refresh-title": "Reparació de les dades i actualització",
+	"smw_smwadmin_datarefresh": "Reconstrucció de les dades",
 	"smw_smwadmin_datarefreshdocu": "És possible restaurar totes les dades del Semantic MediaWiki a partir dels continguts actuals del wiki.\nAixò pot ser útil per a reparar dades inconsistents o refrescar les dades si el format intern ha canviat per alguna actualització de programari.\nL'actualització s'executa pàgina per pàgina i no es completarà immediatament.\nA continuació és mostra si l'actualització és en curs i us permet iniciar o aturar les actualitzacions (a menys que aquesta característica estigui inhabilitada per l'administrador del lloc).",
 	"smw_smwadmin_datarefreshprogress": "<strong>Ja hi ha una actualització en curs.</strong>\nÉs normal que l'actualització progressi només lentament perquè només refresca les dades en trossos petits cada vegada que l'usuari accedeix al wiki.\nPer a finalitzar l'actualització més ràpidament, podeu cridar l'script de manteniment del MediaWiki <code>runJobs.php</code> (empreu l'opció <code>--maxjobs 1000</code> per a restringir el nombre d'actualitzacions en un lot).\nProgrés estimat de l'actualització actual:",
 	"smw_smwadmin_datarefreshbutton": "Inicia l'actualització de dades",
@@ -381,9 +382,12 @@
 	"smw-datavalue-time-invalid-ampm": "«$1» conté «$2» com element d'hora, que no és vàlid per a la convenció de 12 hores.",
 	"smw-datavalue-external-formatter-invalid-uri": "«$1» és un URL no vàlid.",
 	"smw-datavalue-parse-error": "El valor donat «$1» no s'ha entès.",
+	"smw-datavalue-propertylist-invalid-property-key": "La llista de propietats «$1» contenia una clau de propietat «$2» no vàlida.",
+	"smw-datavalue-type-invalid-typeuri": "El tipus «$1» no s'ha pogut transformar en una representació URI vàlida.",
 	"smw-datavalue-wikipage-missing-fragment-context": "No es pot utilitzar el valor d'entrada wikipage «$1» sense una pàgina de context.",
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-parser-invalid-json-format": "L'analitzador de JSON ha retornat amb «$1».",
 	"smw-property-preferred-title-format": "$1 ($2)",
-	"smw-property-preferred-label-language-combination-exists": "No es pot utilitzar «$1» com etiqueta preferida perquè la llengua «$2» ja està assignada a l'etiqueta «$3»."
+	"smw-property-preferred-label-language-combination-exists": "No es pot utilitzar «$1» com etiqueta preferida perquè la llengua «$2» ja està assignada a l'etiqueta «$3».",
+	"smw-parse": "$1"
 }
