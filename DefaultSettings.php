@@ -1209,7 +1209,7 @@ return array(
 	#
 	# @since 2.5
 	##
-	'smwgQueryResultCacheLifetime' => 60 * 60 * 24, // a day
+	'smwgQueryResultCacheLifetime' => 60 * 60 * 24 * 7, // a week
 	##
 
 	###
