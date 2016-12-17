@@ -157,6 +157,43 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCreateSameIdForNormalizedParametersWithEnabledCapitalLinks() {
+
+		$title = Title::newFromText( __METHOD__ );
+
+		$parametersOne = array(
+			'Foo=Bar',
+			'Has foo=Foo'
+		);
+
+		$parametersTwo = array(
+			'foo=Bar',
+			'has foo=Foo'
+		);
+
+		$subobject = new Subobject( $title );
+
+		$instance = $this->acquireInstance( $subobject );
+
+		$instance->enabledNormalization();
+		$instance->usesCapitalLinks( true );
+
+		$instance->parse(
+			new ParserParameterFormatter( $parametersOne )
+		);
+
+		$id = $subobject->getSubobjectId();
+
+		$instance->parse(
+			new ParserParameterFormatter( $parametersTwo )
+		);
+
+		$this->assertEquals(
+			$id,
+			$subobject->getSubobjectId()
+		);
+	}
+
 	public function testRestrictionOnTooShortFirstPartWhenDotIsUsedForUserNamedSubobject() {
 
 		// #1299, #1302

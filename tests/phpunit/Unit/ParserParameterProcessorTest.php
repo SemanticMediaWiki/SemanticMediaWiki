@@ -323,6 +323,20 @@ class ParserParameterProcessorTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
+		// Avoid spaces on individual values
+		// {{#...:
+		// |Has test=One; Two|+sep=;
+		// }}
+		$provider[] = array(
+			array(
+				'Has test=One; Two',
+				'+sep=;'
+			),
+			array(
+				'Has test' => array( 'One', 'Two' )
+			)
+		);
+
 		return $provider;
 	}
 

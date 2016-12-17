@@ -44,7 +44,7 @@
 		{
 			"type": "parser",
 			"about": "#1 restricted property",
-			"subject": "Example/P0302/2#_a0017273b0d05dedf1e2ca22e2035490",
+			"subject": "Example/P0302/2#_6bcfd8f29c79e61086605597e7f2a8d4",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -60,7 +60,7 @@
 		{
 			"type": "parser",
 			"about": "#2 invalid value",
-			"subject": "Example/P0302/3#_d1e1d8ef8b81b9275dee98ab6795b179",
+			"subject": "Example/P0302/3#_d22883317b11ebaf00a39aaffc1d30fa",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
