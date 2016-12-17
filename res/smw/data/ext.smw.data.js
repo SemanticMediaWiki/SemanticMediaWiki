@@ -131,7 +131,7 @@
 						case '_dat':
 							$.map( value, function( t ) {
 								// API 2.4+
-								if ( t.hasOwnProperty( 'timestamp' ) ) {
+								if ( t.hasOwnProperty( 'raw' ) ) {
 									var time = new smw.dataItem.time( t.timestamp, t.raw );
 								} else {
 									var time = new smw.dataItem.time( t, undefined );
