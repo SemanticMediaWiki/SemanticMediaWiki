@@ -311,6 +311,9 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	private function assertContainsPropertyKeys( $keys, DIProperty $property ) {
+
+		$keys = str_replace( " " , "_", $keys );
+
 		$this->assertContains(
 			$property->getKey(),
 			$keys,

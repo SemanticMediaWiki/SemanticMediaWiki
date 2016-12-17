@@ -1,0 +1,72 @@
+{
+	"description": "Test conditions and strict constraint validations for uniqueness `_PVUC` (#1463, `wgContLang=en`, `wgLang=en`, `smwgDVFeatures`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has uniqueness one",
+			"contents": "[[Has type::Text]] [[Has uniqueness constraint::true]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has uniqueness two",
+			"contents": "[[Has type::Text]] [[Has uniqueness constraint::true]]"
+		},
+		{
+			"page": "Example/P0443/1",
+			"contents": "[[Has uniqueness one::Allowed one]] [[Has uniqueness one::Not permitted]] [[Has uniqueness two::Allowed two]] [[Has uniqueness two::Not permitted]]"
+		},
+		{
+			"page": "Example/P0443/2",
+			"contents": "[[Has uniqueness one::1111]] {{#ask: [[Has uniqueness one::1111]] |link=none }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (verify uniqueness for only one assignment per property)",
+			"subject": "Example/P0443/1",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_ERRC",
+						"Has uniqueness one",
+						"Has uniqueness two"
+					],
+					"propertyValues": [
+						"Allowed one",
+						"Allowed two"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (verify declared unique value doesn't interfere with #ask within the same page)",
+			"subject": "Example/P0443/2",
+			"assert-output": {
+				"to-contain": [
+					"<p>1111 Example/P0443/2"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgDVFeatures": [
+			"SMW_DV_PVUC"
+		],
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
