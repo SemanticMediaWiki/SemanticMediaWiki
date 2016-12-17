@@ -55,7 +55,7 @@ class MaintenanceHelper {
 	 *
 	 * @return string
 	 */
-	public function transformRuntimeValuesForOutput() {
+	public function getFormattedRuntimeValues() {
 
 		$runtimeValues = $this->getRuntimeValues();
 

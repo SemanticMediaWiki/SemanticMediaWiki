@@ -50,7 +50,7 @@ class RebuildPropertyStatistics extends \Maintenance {
 
 		if ( $this->hasOption( 'with-maintenance-log' ) ) {
 			$maintenanceLogger = $maintenanceFactory->newMaintenanceLogger( 'RebuildPropertyStatisticsLogger' );
-			$maintenanceLogger->log( $maintenanceHelper->transformRuntimeValuesForOutput() );
+			$maintenanceLogger->log( $maintenanceHelper->getFormattedRuntimeValues() );
 		}
 	}
 
