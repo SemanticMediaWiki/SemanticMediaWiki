@@ -68,6 +68,16 @@ class SubobjectParserFunction {
 	private $isEnabledFirstElementAsPropertyLabel = false;
 
 	/**
+	 * @var boolean
+	 */
+	private $usesCapitalLinks = true;
+
+	/**
+	 * @var boolean
+	 */
+	private $enabledNormalization = false;
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
@@ -78,6 +88,33 @@ class SubobjectParserFunction {
 		$this->parserData = $parserData;
 		$this->subobject = $subobject;
 		$this->messageFormatter = $messageFormatter;
+	}
+
+	/**
+	 * @note If $wgCapitalLinks is set false then it will avoid forcing the first
+	 * letter of page titles (including included pages, images and categories)
+	 * to capitals
+	 *
+	 * @since 2.5
+	 *
+	 * @param booelan $usesCapitalLinks
+	 */
+	public function usesCapitalLinks( $usesCapitalLinks ) {
+		$this->usesCapitalLinks = $usesCapitalLinks;
+	}
+
+	/**
+	 * FIXME 3.0, make sorting default with 3.0
+	 *
+	 * Ensures that unordered parameters is ordered and normalized and will
+	 * produce the same ID even if elements are placed differently
+	 *
+	 * @since 2.5
+	 *
+	 * @param booelan $enabledNormalization
+	 */
+	public function enabledNormalization( $enabledNormalization = true ) {
+		$this->enabledNormalization = (bool)$enabledNormalization;
 	}
 
 	/**
@@ -215,15 +252,25 @@ class SubobjectParserFunction {
 
 		$parameters = $parserParameterProcessor->toArray();
 
-		// FIXME 3.0 make sorting default by 3.0
-		// Only sort for a modified sobj otherwise existing ID will change
-		$sort = false;
-
-		// This ensures that an unordered array is ordered and will produce
-		// the same ID even if elements are placed differently
-		if ( $sort ) {
-			ksort( $parameters );
+		if ( !$this->enabledNormalization ) {
+			return $parameters;
 		}
+
+		// Normalize property names to generate the same hash for when
+		// CapitalLinks is enabled (has foo === Has foo)
+		foreach ( $parameters as $property => $values ) {
+
+			if ( $property{0} === '@' || !$this->usesCapitalLinks ) {
+				continue;
+			}
+
+			$prop = mb_strtoupper( mb_substr( $property, 0, 1 ) ) . mb_substr( $property, 1 );
+
+			unset( $parameters[$property] );
+			$parameters[$prop] = $values;
+		}
+
+		ksort( $parameters );
 
 		return $parameters;
 	}

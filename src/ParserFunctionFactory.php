@@ -201,6 +201,10 @@ class ParserFunctionFactory {
 			$messageFormatter
 		);
 
+		$subobjectParserFunction->usesCapitalLinks(
+			$GLOBALS['wgCapitalLinks']
+		);
+
 		return $subobjectParserFunction;
 	}
 
