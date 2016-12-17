@@ -209,7 +209,6 @@
 			// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
 			// Use the precision from the raw date
 			if ( this.precision > 0 ) {
-				console.log( this.date.getMonth(),  this.date );
 				return '' +
 					( ( this.precision & FLAG_DAY ) ? ( this.date.getDate() ) + ' ' + ( monthNames[(this.date.getMonth())] ) + ' ' : '' ) +
 					( ( this.precision & FLAG_YEAR ) ? ( this.date.getFullYear() ) + ' ' : '' ) +
