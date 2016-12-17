@@ -435,6 +435,7 @@
 	"smw-pa-property-predefined_pvuc": "\"$1\" is a predefined property indicating that value assignments to a property are expected to be unique and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined-long_pvuc": "Uniqueness is established when two values are not equal in their literal representation and any violation of this constraint will be categorized as error.",
 	"smw-datavalue-uniqueness-constraint-error": "Property \"$1\" only permits unique value assignments and ''$2'' was already annotated in subject \"$3\".",
+	"smw-datavalue-uniqueness-constraint-isknown": "Property \"$1\" only permits unique value annotations, ''$2'' has already been assigned to \"$3\".",
 	"smw-pa-property-predefined_boo": "\"$1\" is a [[Special:Types/Boolean|type]] and predefined property provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] to represent boolean values.",
 	"smw-pa-property-predefined_num": "\"$1\" is a [[Special:Types/Number|type]] and predefined property provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] to represent numeric values.",
 	"smw-pa-property-predefined_dat": "\"$1\" is a [[Special:Types/Date|type]] and predefined property provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] to represent date values.",
