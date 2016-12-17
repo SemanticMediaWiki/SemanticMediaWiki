@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
-use SMW\MediaWiki\Specials\Ask\HtmlContentBuilder;
+use SMW\MediaWiki\Specials\Ask\ErrorFormWidget;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Ask\HtmlContentBuilder
+ * @covers \SMW\MediaWiki\Specials\Ask\ErrorFormWidget
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,20 +13,20 @@ use SMW\MediaWiki\Specials\Ask\HtmlContentBuilder;
  *
  * @author mwjames
  */
-class HtmlContentBuilderTest extends \PHPUnit_Framework_TestCase {
+class ErrorFormWidgetTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Ask\HtmlContentBuilder',
-			new HtmlContentBuilder()
+			'\SMW\MediaWiki\Specials\Ask\ErrorFormWidget',
+			new ErrorFormWidget()
 		);
 	}
 
 	/**
 	 * @dataProvider queryErrorProvider
 	 */
-	public function testGetFormattedErrorString( $errors, $expected ) {
+	public function testGetFormattedQueryErrorElement( $errors, $expected ) {
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -36,11 +36,11 @@ class HtmlContentBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getErrors' )
 			->will( $this->returnValue( $errors ) );
 
-		$instance = new HtmlContentBuilder();
+		$instance = new ErrorFormWidget();
 
 		$this->assertEquals(
 			$expected,
-			$instance->getFormattedErrorString( $query )
+			$instance->getFormattedQueryErrorElement( $query )
 		);
 	}
 

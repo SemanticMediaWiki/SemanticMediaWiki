@@ -13,7 +13,7 @@ use Html;
  *
  * @author mwjames
  */
-class HtmlContentBuilder {
+class ErrorFormWidget {
 
 	/**
 	 * @since 2.5
@@ -22,7 +22,18 @@ class HtmlContentBuilder {
 	 *
 	 * @return string
 	 */
-	public function getFormattedErrorString( Query $query = null ) {
+	public function createNoResultFormElement() {
+		return Html::element( 'div', array( 'class' => 'smw-callout smw-callout-info' ), wfMessage( 'smw_result_noresults' )->escaped() );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param Query|null $query
+	 *
+	 * @return string
+	 */
+	public function getFormattedQueryErrorElement( Query $query = null ) {
 
 		if ( $query === null || !is_array( $query->getErrors() ) || $query->getErrors() === array() ) {
 			return '';

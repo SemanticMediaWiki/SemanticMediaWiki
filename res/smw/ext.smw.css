@@ -672,6 +672,20 @@ label.smw-form-checkbox {
     border-radius: 4px;
 }
 
+.smw-ask-action-btn-lgrey, a.smw-ask-action-btn-lgrey:visited {
+	color: #222;
+	background-color: #eee;
+	border-color: #ddd;
+	text-decoration:none;
+}
+
+a.smw-ask-action-btn-lgrey:hover {
+	color: #222;
+	background-color: #ddd;
+	border-color: #ddd;
+	text-decoration:none;
+}
+
 .smw-ask-action-btn-lblue, a.smw-ask-action-btn-lblue:visited {
 	color: #fff;
 	background-color: #5bc0de;
