@@ -137,7 +137,7 @@ class PageRequestOptions {
 			$value = $escaped ? str_replace( array( '-20', '-2D' ), array( ' ', '-' ), $value ) : $value;
 			// Do not try to decode things like 1.2e-13
 			// Signals that we don't want any precision limitation
-			$this->value->setOption( 'no.displayprecision', true );
+			$this->value->setOption( NumberValue::NO_DISP_PRECISION_LIMIT, true );
 		} elseif ( $this->value instanceof TelephoneUriValue ) {
 			$value = $escaped ? str_replace( array( '-20', '-2D' ), array( ' ', '-' ), $value ) : $value;
 			// No encoding to avoid turning +1-201-555-0123

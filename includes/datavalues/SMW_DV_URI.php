@@ -24,6 +24,11 @@ define( 'SMW_URI_MODE_TEL', 5 );
 class SMWURIValue extends SMWDataValue {
 
 	/**
+	 * Raw value without encoding
+	 */
+	const VALUE_RAW = 'uri.value.raw';
+
+	/**
 	 * The value as returned by getWikitext() and getLongText().
 	 * @var string
 	 */
@@ -271,6 +276,11 @@ class SMWURIValue extends SMWDataValue {
 	}
 
 	public function getWikiValue() {
+
+		if ( $this->getOptionBy( self::VALUE_RAW ) ) {
+			return rawurldecode( $this->m_wikitext );
+		}
+
 		return $this->m_wikitext;
 	}
 

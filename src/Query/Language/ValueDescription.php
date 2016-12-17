@@ -6,6 +6,8 @@ use SMW\DataValueFactory;
 use SMw\DIProperty;
 use SMW\Query\QueryComparator;
 use SMWDataItem as DataItem;
+use SMWURIValue as UriValue;
+use SMWNumberValue as NumberValue;
 
 /**
  * Description of one data value, or of a range of data values.
@@ -100,11 +102,20 @@ class ValueDescription extends Description {
 	 * @return string
 	 */
 	public function getQueryString( $asValue = false ) {
-		$comparator = QueryComparator::getInstance()->getStringForComparator( $this->comparator );
-		$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $this->dataItem, $this->property );
 
-		// Signals that we don't want any precision limitation
-		$dataValue->setOption( 'value.description', true );
+		$comparator = QueryComparator::getInstance()->getStringForComparator(
+			$this->comparator
+		);
+
+		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
+			$this->dataItem,
+			$this->property
+		);
+
+		// Set option to ensure that the output doesn't alter the display
+		// characteristics of a value
+		$dataValue->setOption( UriValue::VALUE_RAW, true );
+		$dataValue->setOption( NumberValue::NO_DISP_PRECISION_LIMIT, true );
 
 		if ( $asValue ) {
 			return $comparator . $dataValue->getWikiValue();
