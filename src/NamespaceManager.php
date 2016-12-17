@@ -49,6 +49,8 @@ class NamespaceManager {
 		if ( empty( $this->globalVars['smwgContLang'] ) ) {
 			$this->globalVars['smwgContLang'] = $this->extraneousLanguage->fetchByLanguageCode( $this->globalVars['wgLanguageCode'] );
 		}
+
+		$this->addNamespaceSettings();
 	}
 
 	/**
@@ -203,6 +205,12 @@ class NamespaceManager {
 			SMW_NS_CONCEPT => true,
 			SMW_NS_CONCEPT_TALK => false,
 		);
+
+		if ( !array_key_exists( 'smwgHistoricTypeNamespace', $GLOBALS ) || !$GLOBALS['smwgHistoricTypeNamespace'] ) {
+			unset( $smwNamespacesSettings[SMW_NS_TYPE] );
+			unset( $smwNamespacesSettings[SMW_NS_TYPE_TALK] );
+			unset( $this->globalVars['wgNamespacesWithSubpages'][SMW_NS_TYPE_TALK] );
+		}
 
 		// Combine default values with values specified in other places
 		// (LocalSettings etc.)
