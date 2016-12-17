@@ -84,7 +84,7 @@ class MaintenanceHelperTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			'sec',
-			$instance->transformRuntimeValuesForOutput()
+			$instance->getFormattedRuntimeValues()
 		);
 
 		$instance->reset();
