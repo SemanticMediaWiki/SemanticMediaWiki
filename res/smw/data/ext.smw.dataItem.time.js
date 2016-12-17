@@ -27,21 +27,63 @@
 	 * @since  1.9
 	 *
 	 * @param {string|number}
+	 * @param {string|number}
 	 *
 	 * @return {this}
 	 */
-	var time = function ( timestamp ) {
+	var time = function ( timestamp, raw ) {
+		var FLAG_YEAR  = 1;
+		var FLAG_MONTH = 2;
+		var FLAG_DAY   = 4;
+		var FLAG_TIME  = 8;
+
 		this.timestamp = timestamp !== '' && timestamp !== undefined ? timestamp : null;
+		this.raw = raw !== '' && raw !== undefined ? raw : null;
+		this.precision = 0;
 
 		// Returns a normalized timestamp as JS date object
 		if ( typeof this.timestamp === 'number' ) {
 			this.date = new Date( this.timestamp * 1000 );
 		}
+
 		if ( typeof this.timestamp === 'string' ) {
 			if ( this.timestamp.match(/^\d+(\.\d+)?$/) ) {
 				this.date = new Date( parseFloat( this.timestamp ) * 1000 );
 			}
 		}
+
+		// SMW seralization format with:
+		// - [0] contains the calendar model
+		if ( this.raw !== null ) {
+			var date = this.raw.split( '/' );
+
+			this.date = new Date( date[1] );
+			this.precision = FLAG_YEAR;
+
+			// Note: January is 0, February is 1, and so on
+			if ( typeof date[2] !== 'undefined' ) {
+				this.date.setMonth( ( date[2] - 1 ) );
+				this.precision = this.precision | FLAG_MONTH;
+			};
+
+			if ( typeof date[3] !== 'undefined' ) {
+				this.date.setDate( date[3] );
+				this.precision = this.precision | FLAG_DAY;
+			};
+
+			if ( typeof date[4] !== 'undefined' ) {
+				this.date.setHours( date[4] );
+				this.precision = this.precision | FLAG_TIME;
+			};
+
+			if ( typeof date[5] !== 'undefined' ) {
+				this.date.setMinutes( date[5] );
+			};
+
+			if ( typeof date[6] !== 'undefined' ) {
+				this.date.setSeconds( date[6] );
+			};
+		};
 
 		return this;
 	};
@@ -52,7 +94,7 @@
 	 */
 	var monthNames = [];
 	$.map ( mw.config.get( 'wgMonthNames' ), function( index ) {
-		if( index !== '' ){
+		if( index !== '' ) {
 			monthNames.push( index );
 		}
 	} );
@@ -62,9 +104,9 @@
 	 *
 	 * @type object
 	 */
-	smw.dataItem.time = function( timestamp ) {
+	smw.dataItem.time = function( timestamp, raw ) {
 		if ( $.type( timestamp ) === 'string' || 'number' ) {
-			this.constructor( timestamp );
+			this.constructor( timestamp, raw );
 		} else {
 			throw new Error( 'smw.dataItem.time: timestamp must be a string or number' );
 		}
@@ -137,12 +179,12 @@
 		 */
 		getTimeString: function() {
 			var d = this.date;
-			if ( d.getUTCHours() + d.getUTCMinutes() + d.getUTCSeconds() === 0 ){
+			if ( d.getHours() + d.getMinutes() + d.getSeconds() === 0 ){
 				return '00:00:00';
 			}
-			return ( d.getUTCHours() < 10 ? '0' + d.getUTCHours() : d.getUTCHours() ) +
-				':' + ( d.getUTCMinutes() < 10 ? '0' + d.getUTCMinutes() : d.getUTCMinutes() ) +
-				':' + ( d.getUTCSeconds() < 10 ? '0' + d.getUTCSeconds() : d.getUTCSeconds() );
+			return ( d.getHours() < 10 ? '0' + d.getHours() : d.getHours() ) +
+				':' + ( d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes() ) +
+				':' + ( d.getSeconds() < 10 ? '0' + d.getSeconds() : d.getSeconds() );
 		},
 
 		/**
@@ -153,6 +195,27 @@
 		 * @return {string}
 		 */
 		getMediaWikiDate: function() {
+
+			var FLAG_YEAR  = 1;
+			var FLAG_MONTH = 2;
+			var FLAG_DAY   = 4;
+			var FLAG_TIME  = 8;
+
+			// Fallback
+			if ( this.date === undefined ) {
+				return '';
+			};
+
+			// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
+			// Use the precision from the raw date
+			if ( this.precision > 0 ) {
+				console.log( this.date.getMonth(),  this.date );
+				return '' +
+					( ( this.precision & FLAG_DAY ) ? ( this.date.getDate() ) + ' ' + ( monthNames[(this.date.getMonth())] ) + ' ' : '' ) +
+					( ( this.precision & FLAG_YEAR ) ? ( this.date.getFullYear() ) + ' ' : '' ) +
+					( ( this.precision & FLAG_TIME ) && this.getTimeString() !== '00:00:00' ? ( this.getTimeString() ) : '' );
+			};
+
 			return this.date.getDate() + ' ' +
 				monthNames[this.date.getMonth()] + ' ' +
 				this.date.getFullYear() +
