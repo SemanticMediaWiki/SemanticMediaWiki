@@ -33,9 +33,14 @@ class QueryLinkerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getExtraPrintouts' )
 			->will( $this->returnValue( array() ) );
 
+		$parameters = array(
+			'Foo' => 'Bar',
+			'Foobar'
+		);
+
 		$this->assertInstanceOf(
 			'SMWInfolink',
-			QueryLinker::get( $query )
+			QueryLinker::get( $query, $parameters )
 		);
 	}
 
