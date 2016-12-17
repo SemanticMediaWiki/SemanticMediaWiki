@@ -27,6 +27,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 	private $m_params = array();
 	private $m_printouts = array();
 	private $m_editquery = false;
+	private $queryLinker = null;
 
 	/**
 	 * @var Param[]
@@ -54,20 +55,22 @@ class SMWAskPage extends SMWQuerySpecialPage {
 	public function execute( $p ) {
 		global $wgOut, $wgRequest, $smwgQEnabled;
 
-		$wgOut->addModules( 'ext.smw.style' );
-		$wgOut->addModules( 'ext.smw.ask' );
-		$wgOut->addModules( 'ext.smw.property' );
+		$out = $this->getOutput();
+
+		$out->addModules( 'ext.smw.style' );
+		$out->addModules( 'ext.smw.ask' );
+		$out->addModules( 'ext.smw.property' );
 
 		$this->setHeaders();
 
 		if ( !$smwgQEnabled ) {
-			$wgOut->addHTML( '<br />' . wfMessage( 'smw_iq_disabled' )->escaped() );
+			$out->addHTML( '<br />' . wfMessage( 'smw_iq_disabled' )->escaped() );
 		} else {
 			if ( $wgRequest->getCheck( 'showformatoptions' ) ) {
 				// handle Ajax action
 				$format = $wgRequest->getVal( 'showformatoptions' );
 				$params = $wgRequest->getArray( 'params' );
-				$wgOut->disable();
+				$out->disable();
 				echo $this->showFormatOptions( $format, $params );
 			} else {
 				$this->extractQueryParameters( $p );
@@ -77,7 +80,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 
 		$this->addExternalHelpLinkFor( 'smw_ask_doculink' );
 
-		SMWOutputs::commitToOutputPage( $wgOut ); // make sure locally collected output data is pushed to the output!
+		SMWOutputs::commitToOutputPage( $out ); // make sure locally collected output data is pushed to the output!
 	}
 
 	/**
@@ -155,6 +158,8 @@ class SMWAskPage extends SMWQuerySpecialPage {
 				}
 			}
 		}
+
+		unset( $rawparams['title'] );
 
 		// Now parse parameters and rebuilt the param strings for URLs.
 		list( $this->m_querystring, $this->m_params, $this->m_printouts ) = SMWQueryProcessor::getComponentsFromFunctionParams( $rawparams, false );
@@ -286,6 +291,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			 */
 
 			$queryobj->setOption( SMWQuery::PROC_CONTEXT, 'SpecialAsk' );
+			$this->queryLinker = QueryLinker::get( $queryobj, $this->m_params );
 
 			// Determine query results
 			$duration = microtime( true );
@@ -325,6 +331,21 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			global $wgRequest;
 
 			$hidequery = $wgRequest->getVal( 'eq' ) == 'no';
+			$debug = '';
+
+			// Allow to generate a debug output
+			if ( $this->getRequest()->getVal( 'debug' ) ) {
+
+				$queryobj = SMWQueryProcessor::createQuery(
+					$this->m_querystring,
+					$params,
+					SMWQueryProcessor::SPECIAL_PAGE,
+					'debug',
+					$this->m_printouts
+				);
+
+				$debug = $this->getStoreFromParams( $params )->getQueryResult( $queryobj );
+			}
 
 			if ( !$printer->isExportFormat() ) {
 				if ( $res->getCount() > 0 ) {
@@ -344,8 +365,10 @@ class SMWAskPage extends SMWQuerySpecialPage {
 						$result .= $query_result;
 					}
 
+					$result .= $debug;
 				} else {
 					$result = Html::element( 'div', array( 'class' => 'smw-callout smw-callout-info' ), wfMessage( 'smw_result_noresults' )->escaped() );
+					$result .= $debug;
 				}
 			}
 		}
@@ -731,46 +754,37 @@ class SMWAskPage extends SMWQuerySpecialPage {
 
 		$downloadLinks = '';
 
-		if ( $this->m_querystring === '' ) {
+		if ( $this->queryLinker === null ) {
 			return $downloadLinks;
 		}
 
-		$params = $this->m_params;
-		$params = SMWQueryProcessor::getProcessedParams( $params, $this->m_printouts );
+		$queryLinker = clone $this->queryLinker;
 
-		$query = SMWQueryProcessor::createQuery(
-			$this->m_querystring,
-			$params,
-			SMWQueryProcessor::SPECIAL_PAGE,
-			'',
-			$this->m_printouts
-		);
+		$queryLinker->setParameter( 'true', 'prettyprint' );
+		$queryLinker->setParameter( 'true', 'unescape' );
+		$queryLinker->setParameter( 'json', 'format' );
+		$queryLinker->setParameter( 'JSON', 'searchlabel' );
+		$queryLinker->setCaption( 'JSON' );
 
-		$link = QueryLinker::get( $query );
-		$link->setParameter( 'true', 'prettyprint' );
-		$link->setParameter( 'true', 'unescape' );
-		$link->setParameter( 'json', 'format' );
-		$link->setCaption( 'JSON' );
+		$downloadLinks .= $queryLinker->getHtml();
 
-		$downloadLinks .= $link->getHtml();
+		$queryLinker->setCaption( 'CSV' );
+		$queryLinker->setParameter( 'csv', 'format' );
+		$queryLinker->setParameter( 'CSV', 'searchlabel' );
 
-		$link = QueryLinker::get( $query );
-		$link->setCaption( 'CSV' );
-		$link->setParameter( 'csv', 'format' );
+		$downloadLinks .= ' | ' . $queryLinker->getHtml();
 
-		$downloadLinks .= ' | ' . $link->getHtml();
+		$queryLinker->setCaption( 'RSS' );
+		$queryLinker->setParameter( 'rss', 'format' );
+		$queryLinker->setParameter( 'RSS', 'searchlabel' );
 
-		$link = QueryLinker::get( $query );
-		$link->setCaption( 'RSS' );
-		$link->setParameter( 'rss', 'format' );
+		$downloadLinks .= ' | ' . $queryLinker->getHtml();
 
-		$downloadLinks .= ' | ' . $link->getHtml();
+		$queryLinker->setCaption( 'RDF' );
+		$queryLinker->setParameter( 'rdf', 'format' );
+		$queryLinker->setParameter( 'RDF', 'searchlabel' );
 
-		$link = QueryLinker::get( $query );
-		$link->setCaption( 'RDF' );
-		$link->setParameter( 'rdf', 'format' );
-
-		$downloadLinks .= ' | ' . $link->getHtml();
+		$downloadLinks .= ' | ' . $queryLinker->getHtml();
 
 		return '(' . $downloadLinks . ')';
 	}
@@ -784,11 +798,11 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		$borrowedMessage = $this->getRequest()->getVal( 'bMsg' );
 
 		$searchInfoText = '';
-		$html = "\n<fieldset><p>" . ( wfMessage( $borrowedMessage )->exists() ? wfMessage( $borrowedMessage )->parse() : '' ) . "</p>";
+		$html = "\n<fieldset><p>" . ( $borrowedMessage !== null && wfMessage( $borrowedMessage )->exists() ? wfMessage( $borrowedMessage )->parse() : '' ) . "</p>";
 
 		$borrowedTitle = $this->getRequest()->getVal( 'bTitle' );
 
-		if ( wfMessage( $borrowedTitle )->exists() ) {
+		if ( $borrowedTitle !== null && wfMessage( $borrowedTitle )->exists() ) {
 			$this->getOutput()->setPageTitle( wfMessage( $borrowedTitle )->text() );
 		}
 	}

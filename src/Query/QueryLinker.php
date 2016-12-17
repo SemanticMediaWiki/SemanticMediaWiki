@@ -19,12 +19,23 @@ class QueryLinker {
 	 * @since 2.4
 	 *
 	 * @param Query $query
+	 * @param array $parameters
 	 *
 	 * @return Infolink
 	 */
-	public static function get( Query $query ) {
+	public static function get( Query $query, array $parameters = array() ) {
 
 		$link = Infolink::newInternalLink( '', ':Special:Ask', false, array() );
+
+		foreach ( $parameters as $key => $value ) {
+
+			if ( !is_string( $key ) ) {
+				continue;
+			}
+
+			$link->setParameter( $value, $key );
+		}
+
 		$params = self::getParameters( $query );
 
 		foreach ( $params as $key => $param ) {
