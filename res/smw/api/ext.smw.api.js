@@ -140,7 +140,16 @@
 							TTL: $.type( useCache ) === 'number' ? useCache : 900000
 						} );
 					}
-					var results = self.parse( data );
+
+					var results;
+
+					try {
+						results = self.parse( data );
+					} catch ( e ) {
+						console.log( e );
+						throw e;
+					}
+
 					results.isCached = false;
 					return results;
 				} }
