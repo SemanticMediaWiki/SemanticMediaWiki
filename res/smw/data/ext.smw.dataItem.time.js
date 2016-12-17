@@ -53,9 +53,11 @@
 		}
 
 		// SMW seralization format with:
-		// - [0] contains the calendar model
 		if ( this.raw !== null ) {
 			var date = this.raw.split( '/' );
+
+			// [0] contains the calendar model
+			this.calendarModel = date[0];
 
 			this.date = new Date( date[1] );
 			this.precision = FLAG_YEAR;
@@ -201,6 +203,9 @@
 			var FLAG_DAY   = 4;
 			var FLAG_TIME  = 8;
 
+			var CM_GREGORIAN  = 1;
+			var CM_JULIAN  = 2;
+
 			// Fallback
 			if ( this.date === undefined ) {
 				return '';
@@ -209,10 +214,12 @@
 			// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
 			// Use the precision from the raw date
 			if ( this.precision > 0 ) {
+				var calendarModel = this.calendarModel !== undefined && this.calendarModel == CM_JULIAN ? ' <sup>JL</sup>' : '';
+
 				return '' +
 					( ( this.precision & FLAG_DAY ) ? ( this.date.getDate() ) + ' ' + ( monthNames[(this.date.getMonth())] ) + ' ' : '' ) +
 					( ( this.precision & FLAG_YEAR ) ? ( this.date.getFullYear() ) + ' ' : '' ) +
-					( ( this.precision & FLAG_TIME ) && this.getTimeString() !== '00:00:00' ? ( this.getTimeString() ) : '' );
+					( ( this.precision & FLAG_TIME ) && this.getTimeString() !== '00:00:00' ? ( this.getTimeString() ) : '' ) + calendarModel;
 			};
 
 			return this.date.getDate() + ' ' +
