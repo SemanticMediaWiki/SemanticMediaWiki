@@ -156,7 +156,7 @@ class SMWInfolink {
 			$caption,
 			$wgContLang->getNsText( NS_SPECIAL ) . ':Browse',
 			$style,
-			array( $titleText )
+			array( ':' . $titleText )
 		);
 	}
 

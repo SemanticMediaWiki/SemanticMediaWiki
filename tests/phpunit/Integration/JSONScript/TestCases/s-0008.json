@@ -106,10 +106,10 @@
 		},
 		{
 			"type": "special",
-			"about": "#3 named subobject contains :: (encoded with -3A)",
+			"about": "#3 named subobject contains ::",
 			"special-page": {
 				"page": "Browse",
-				"query-parameters": "Example-2FS0008-2F4-23ABC-2D3A-2D3ADEF",
+				"query-parameters": ":Example-2FS0008-2F4-23ABC::DEF",
 				"request-parameters": {
 					"output": "legacy"
 				}

@@ -69,7 +69,7 @@ class BaseTemplateToolbox {
 
 		$this->toolbox['smw-browse'] = array(
 			'text' => wfMessage( 'smw_browselink' )->text(),
-			'href' => SpecialPage::getTitleFor( 'Browse', $this->encodePrefixedDBkey() )->getLocalUrl(),
+			'href' => SpecialPage::getTitleFor( 'Browse', ':' . $this->encodePrefixedDBkey() )->getLocalUrl(),
 			'id'   => 't-smwbrowselink',
 			'rel'  => 'smw-browse'
 		);
