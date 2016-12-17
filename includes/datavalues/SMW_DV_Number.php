@@ -43,6 +43,11 @@ use SMW\ApplicationFactory;
 class SMWNumberValue extends SMWDataValue {
 
 	/**
+	 * Internal state to ensure no precision limitation is applied to an output
+	 */
+	const NO_DISP_PRECISION_LIMIT = 'num.no.displayprecision.limit';
+
+	/**
 	 * Array with entries unit=>value, mapping a normalized unit to the
 	 * converted value. Used for conversion tooltips.
 	 * @var array
@@ -299,10 +304,10 @@ class SMWNumberValue extends SMWDataValue {
 
 		// When generating an infoLink, use the normalized value without any
 		// precision limitation
-		$this->setOption( 'no.displayprecision', true );
+		$this->setOption( self::NO_DISP_PRECISION_LIMIT, true );
 		$this->setOption( 'content.language', Message::CONTENT_LANGUAGE );
 		$infoLinks = parent::getInfolinks();
-		$this->setOption( 'no.displayprecision', false );
+		$this->setOption( self::NO_DISP_PRECISION_LIMIT, false );
 
 		return $infoLinks;
 	}
@@ -453,8 +458,8 @@ class SMWNumberValue extends SMWDataValue {
 
 	protected function getPreferredDisplayPrecision() {
 
-		// In case of a value description, don't restrict the value with a display precision
-		if ( $this->getProperty() === null || $this->getOptionBy( 'value.description' ) || $this->getOptionBy( 'no.displayprecision' ) ) {
+		// Don't restrict the value with a display precision
+		if ( $this->getProperty() === null || $this->getOptionBy( self::NO_DISP_PRECISION_LIMIT ) ) {
 			return false;
 		}
 
