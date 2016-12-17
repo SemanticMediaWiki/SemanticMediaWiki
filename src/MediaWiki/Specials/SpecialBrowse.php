@@ -60,9 +60,15 @@ class SpecialBrowse extends SpecialPage {
 			$query = $this->getRequest()->getVal( 'x' );
 		}
 
+		// Auto-generated link is marked with a leading :
+		if ( $query !== '' && $query{0} === ':' ) {
+			$articletext = UrlEncoder::unescape( $query );
+		} elseif ( $articletext === null ) {
+			$articletext = $query;
+		}
+
 		// no GET parameters? Then try the URL
 		if ( $articletext === null ) {
-			$articletext = UrlEncoder::decode( $query );
 		}
 
 		$this->subjectDV = DataValueFactory::getInstance()->newTypeIDValue(

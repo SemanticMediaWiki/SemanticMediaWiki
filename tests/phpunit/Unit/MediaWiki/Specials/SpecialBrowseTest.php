@@ -71,7 +71,7 @@ class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
 
 		#1
 		$provider[] = array(
-			'Has-20foo/http:-2F-2Fexample.org-2Fid-2FCurly-2520Brackets-257B-257D',
+			':Has-20foo/http:-2F-2Fexample.org-2Fid-2FCurly-2520Brackets-257B-257D',
 			array( 'smw-callout smw-callout-error' )
 		);
 
@@ -86,7 +86,7 @@ class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
 
 		#3
 		$provider[] = array(
-			'Main-20Page-23_QUERY140d50d705e9566904fc4a877c755964',
+			':Main-20Page-23_QUERY140d50d705e9566904fc4a877c755964',
 			array(
 				'data-subject="Main_Page#0##_QUERY140d50d705e9566904fc4a877c755964"',
 				'data-options="{&quot;dir&quot;:null,&quot;offset&quot;:null,&quot;printable&quot;:null,&quot;showInverse&quot;:false,&quot;showAll&quot;:true}"'
