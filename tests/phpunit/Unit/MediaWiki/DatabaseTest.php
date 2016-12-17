@@ -281,7 +281,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 		$databaseException = new \DBError( $database, 'foo' );
 
-		$database->expects( $this->any() )
+		$database->expects( $this->once() )
 			->method( 'query' )
 			->will( $this->throwException( $databaseException ) );
 
@@ -289,18 +289,17 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connectionProvider->expects( $this->atLeastOnce() )
+		$connectionProvider->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
-		$instance = new Database( $connectionProvider );
-
-		$this->setExpectedException( 'RuntimeException' );
-
-		$this->assertInstanceOf(
-			'ResultWrapper',
-			$instance->query( 'Foo', __METHOD__ )
+		$instance = new Database(
+			$connectionProvider,
+			$connectionProvider
 		);
+
+		$this->setExpectedException( 'Exception' );
+		$instance->query( 'Foo', __METHOD__ );
 	}
 
 	public function testBeginTransaction() {
@@ -406,7 +405,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			$writeConnectionProvider
 		);
 
-		$instance->queryWithAutoCommit( 'foo' );
+		$instance->query( 'foo', __METHOD__, false, true );
 	}
 
 	public function testMissingWriteConnectionThrowsException() {

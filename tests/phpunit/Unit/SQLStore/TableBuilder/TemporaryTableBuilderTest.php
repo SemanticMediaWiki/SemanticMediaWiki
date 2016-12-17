@@ -48,7 +48,12 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testcreateWithoutAutoCommitOnPostgres() {
 
 		$this->connection->expects( $this->once() )
-			->method( 'query' );
+			->method( 'query' )
+			->with(
+				$this->anything(),
+				$this->anything(),
+				$this->anything(),
+				$this->equalTo( false ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'isType' )
@@ -62,10 +67,15 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->create( 'Foo' );
 	}
 
-	public function testcreateWithAutoCommit() {
+	public function testCreateWithAutoCommit() {
 
 		$this->connection->expects( $this->once() )
-			->method( 'queryWithAutoCommit' );
+			->method( 'query' )
+			->with(
+				$this->anything(),
+				$this->anything(),
+				$this->anything(),
+				$this->equalTo( true ) );
 
 		$instance = new TemporaryTableBuilder(
 			$this->connection
@@ -78,7 +88,12 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testDropWithoutAutoCommit() {
 
 		$this->connection->expects( $this->once() )
-			->method( 'query' );
+			->method( 'query' )
+			->with(
+				$this->anything(),
+				$this->anything(),
+				$this->anything(),
+				$this->equalTo( false ) );
 
 		$instance = new TemporaryTableBuilder(
 			$this->connection
@@ -90,7 +105,12 @@ class TemporaryTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testDropWithAutoCommit() {
 
 		$this->connection->expects( $this->once() )
-			->method( 'queryWithAutoCommit' );
+			->method( 'query' )
+			->with(
+				$this->anything(),
+				$this->anything(),
+				$this->anything(),
+				$this->equalTo( true ) );
 
 		$instance = new TemporaryTableBuilder(
 			$this->connection

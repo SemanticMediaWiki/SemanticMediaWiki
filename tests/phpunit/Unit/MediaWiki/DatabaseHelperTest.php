@@ -27,9 +27,13 @@ class DatabaseHelperTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testMakeSelectOptions( $options ) {
 
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->assertInternalType(
 			'array',
-			DatabaseHelper::makeSelectOptions( $options )
+			DatabaseHelper::makeSelectOptions( $connection, $options )
 		);
 	}
 
