@@ -79,6 +79,7 @@ class NewRevisionFromEditComplete {
 
 		$dispatchContext = EventHandler::getInstance()->newDispatchContext();
 		$dispatchContext->set( 'title', $title );
+		$dispatchContext->set( 'context', 'NewRevisionFromEditComplete' );
 
 		EventHandler::getInstance()->getEventDispatcher()->dispatch(
 			'cached.prefetcher.reset',
