@@ -7,6 +7,9 @@ namespace SMW\SQLStore\TableBuilder;
  * @since 2.5
  *
  * @author mwjames
+ * @author Markus Krötzsch
+ * @author Marcel Gsteiger
+ * @author Jeroen De Dauw
  */
 class SQLiteTableBuilder extends TableBuilder {
 
@@ -57,12 +60,16 @@ class SQLiteTableBuilder extends TableBuilder {
 		$ftsOptions = null;
 		$tableName = $this->connection->tableName( $tableName );
 
-		if ( isset( $tableOptions['ftSearchOptions']['sqlite'] ) ) {
-			$ftsOptions = $tableOptions['ftSearchOptions']['sqlite'];
+		if ( isset( $tableOptions['fulltextSearchTableOptions']['sqlite'] ) ) {
+			$ftsOptions = $tableOptions['fulltextSearchTableOptions']['sqlite'];
 		}
 
 		// Filter extra module options
 		// @see https://www.sqlite.org/fts3.html#fts4_options
+		//
+		// $smwgFulltextSearchTableOptions can define:
+		// - 'sqlite' => array( 'FTS4' )
+		// - 'sqlite' => array( 'FTS4', 'tokenize=porter' )
 		if ( $ftsOptions !== null && is_array( $ftsOptions ) ) {
 			$mode = isset( $ftsOptions[0] ) ? $ftsOptions[0] : '';
 			$option = isset( $ftsOptions[1] ) ? $ftsOptions[1] : '';

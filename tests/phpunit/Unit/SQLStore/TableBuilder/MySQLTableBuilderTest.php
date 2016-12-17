@@ -32,7 +32,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testcreateOnNewTable() {
+	public function testCreateNewTable() {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
@@ -49,9 +49,10 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'query' )
-			->with( $this->stringContains( 'CREATE TABLE' ) );
+			->with( $this->stringContains( 'CREATE TABLE `xyz`."foo"' ) );
 
 		$instance = MySQLTableBuilder::factory( $connection );
+		$instance->addConfiguration( 'wgDBname', 'xyz' );
 
 		$table = new Table( 'foo' );
 		$table->addColumn( 'bar', 'text' );
@@ -59,7 +60,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->create( $table );
 	}
 
-	public function testUpdateTableOnOldTable() {
+	public function testUpdateExistingTable() {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()

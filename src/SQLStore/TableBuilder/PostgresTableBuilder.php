@@ -9,6 +9,9 @@ use SMW\SQLStore\SQLStore;
  * @since 2.5
  *
  * @author mwjames
+ * @author Markus Krötzsch
+ * @author Marcel Gsteiger
+ * @author Jeroen De Dauw
  */
 class PostgresTableBuilder extends TableBuilder {
 
@@ -84,7 +87,7 @@ class PostgresTableBuilder extends TableBuilder {
 		$fields = $tableOptions['fields'];
 		$position = 'FIRST';
 
-		// Loop through all the field definitions, and handle each definition for either postgres or MySQL.
+		// Loop through all the field definitions, and handle each definition
 		foreach ( $fields as $fieldName => $fieldType ) {
 			$this->doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, $tableOptions );
 
@@ -340,11 +343,11 @@ EOT;
 	 */
 	public function checkOn( $event ) {
 		if ( $event === self::POST_CREATION ) {
-			$this->doCheckOn_POST_CREATION();
+			$this->doCheckOnPostCreation();
 		}
 	}
 
-	private function doCheckOn_POST_CREATION() {
+	private function doCheckOnPostCreation() {
 
 		$this->reportMessage( "\nChecking consistency after table creation ...\n" );
 
