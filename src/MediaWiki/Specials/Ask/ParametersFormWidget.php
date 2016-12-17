@@ -1,23 +1,37 @@
 <?php
 
+namespace SMW\MediaWiki\Specials\Ask;
+
 use ParamProcessor\ParamDefinition;
 use SMW\ParameterInput;
+use SMWQueryProcessor as QueryProcessor;
+use Html;
 
 /**
- * Base class for special pages with ask query interfaces.
+ * @private
  *
- * Currently contains code that was duplicated in Special:Ask and Special:QueryUI.
- * Probably there is more such code to put here.
+ * @license GNU GPL v2+
+ * @since   1.8
  *
- * @since 1.8
- *
- * @ingroup SMW
- *
- * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author mwjames
  */
-abstract class SMWQuerySpecialPage extends SpecialPage {
+class ParametersFormWidget {
+
+	/**
+	 * @var boolean
+	 */
+	private $isTooltipDisplay = false;
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param boolean $isTooltipDisplay
+	 */
+	public function setTooltipDisplay( $isTooltipDisplay ) {
+		$this->isTooltipDisplay = (bool)$isTooltipDisplay;
+	}
+
 	/**
 	 * Display a form section showing the options for a given format,
 	 * based on the getParameters() value for that format's query printer.
@@ -29,8 +43,9 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	protected function showFormatOptions( $format, array $paramValues ) {
-		$definitions = SMWQueryProcessor::getFormatParameters( $format );
+	public function createParametersForm( $format, array $paramValues ) {
+
+		$definitions = QueryProcessor::getFormatParameters( $format );
 
 		$optionsHtml = array();
 
@@ -56,13 +71,13 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 			}
 
 			$currentValue = array_key_exists( $name, $paramValues ) ? $paramValues[$name] : false;
-			$dataInfo = $definition->getMessage() !== null ? $this->msg( $definition->getMessage() )->text() : '';
+			$dataInfo = $definition->getMessage() !== null ? wfMessage( $definition->getMessage() )->text() : '';
 
 			$optionsHtml[] =
 				'<td>' .
 				Html::rawElement( 'span',
 					array(
-						'class'     => $this->isTooltipDisplay() == true ? 'smw-ask-info' : '',
+						'class'     => $this->isTooltipDisplay == true ? 'smw-ask-info' : '',
 						'word-wrap' => 'break-word',
 						'data-info' => $dataInfo
 					),
@@ -77,7 +92,7 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 		$resultHtml = '';
 
 		// Top info text for a collapsed option box
-		if ( $this->isTooltipDisplay() == true ){
+		if ( $this->isTooltipDisplay == true ){
 			$resultHtml .= Html::element('div', array(
 				'style' => 'margin-bottom:10px;'
 				), wfMessage( 'smw-ask-otheroptions-info')->text()
@@ -131,7 +146,7 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	protected function showFormatOption( ParamDefinition $definition, $currentValue ) {
+	private function showFormatOption( ParamDefinition $definition, $currentValue ) {
 		// Init
 		$description = '';
 
@@ -144,8 +159,8 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 		}
 
 		// Parameter description text
-		if ( !$this->isTooltipDisplay() ) {
-			$tooltipInfo = $definition->getMessage() !== null ? $this->msg( $definition->getMessage() )->parse() : '';
+		if ( !$this->isTooltipDisplay ) {
+			$tooltipInfo = $definition->getMessage() !== null ? wfMessage( $definition->getMessage() )->parse() : '';
 
 			$description =  Html::rawElement( 'span', array(
 				'class' => 'smw-ask-parameter-description'
@@ -159,18 +174,4 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 		);
 	}
 
-	/**
-	 * Getting Special:Ask user tooltip preference
-	 *
-	 * @since 1.8
-	 *
-	 *
-	 * @return boolean
-	 */
-	protected function isTooltipDisplay() {
-		// @TODO global
-		// In case of RequestContext, switch to
-		// $this->getUser()->getOption( 'smw-prefs-ask-options-tooltip-display' );
-		return $GLOBALS['wgUser']->getOption( 'smw-prefs-ask-options-tooltip-display' );
-	}
 }

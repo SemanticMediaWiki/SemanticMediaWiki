@@ -50,7 +50,8 @@
 		"onoi/blob-store": "~1.2",
 		"onoi/http-request": "~1.1",
 		"onoi/callback-container": "~1.0",
-		"onoi/tesa": "~0.1"
+		"onoi/tesa": "~0.1",
+		"onoi/shared-resources": "~0.3"
 	},
 	"require-dev": {
 		"squizlabs/php_codesniffer": "~2.1",
@@ -60,8 +61,7 @@
 		"mediawiki/semantic-mediawiki": "*"
 	},
 	"suggest": {
-		"mediawiki/semantic-result-formats": "Additional result formats for SMW queries",
-		"mediawiki/semantic-forms": "Easy creation of forms to add semantic data"
+		"mediawiki/semantic-result-formats": "Additional result formats for SMW queries"
 	},
 	"extra": {
 		"branch-alias": {
