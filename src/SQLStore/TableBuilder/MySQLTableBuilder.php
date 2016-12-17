@@ -7,6 +7,9 @@ namespace SMW\SQLStore\TableBuilder;
  * @since 2.5
  *
  * @author mwjames
+ * @author Markus Krötzsch
+ * @author Marcel Gsteiger
+ * @author Jeroen De Dauw
  */
 class MySQLTableBuilder extends TableBuilder {
 
@@ -62,17 +65,23 @@ class MySQLTableBuilder extends TableBuilder {
 			$fieldSql[] = "$fieldName " . $this->getStandardFieldType( $fieldType );
 		}
 
-		$sql .= 'CREATE TABLE ' . "`$this->dbName`." . $tableName . ' (' . implode( ',', $fieldSql ) . ') ';
-		$sql .= $this->getSQLFromDBTableOptions( $tableOptions );
+		// @see $wgDBname
+		$dbName = isset( $this->configurations['wgDBname'] ) ? "`". $this->configurations['wgDBname'] . "`." : '';
+
+		$sql .= 'CREATE TABLE ' . $dbName . $tableName . ' (' . implode( ',', $fieldSql ) . ') ';
+		$sql .= $this->createExtraSQLFromTableOptions( $tableOptions );
 
 		$this->connection->query( $sql, __METHOD__ );
 	}
 
-	private function getSQLFromDBTableOptions( array $tableOptions ) {
+	private function createExtraSQLFromTableOptions( array $tableOptions ) {
 
-		if ( isset( $tableOptions['ftSearchOptions']['mysql'] ) ) {
+		// $smwgFulltextSearchTableOptions can define:
+		// - 'mysql' => array( 'ENGINE=MyISAM, DEFAULT CHARSET=utf8' )
+		// - 'mysql' => array( 'ENGINE=MyISAM, DEFAULT CHARSET=utf8', 'WITH PARSER ngram' )
+		if ( isset( $tableOptions['fulltextSearchTableOptions']['mysql'] ) ) {
 
-			$tableOption = $tableOptions['ftSearchOptions']['mysql'];
+			$tableOption = $tableOptions['fulltextSearchTableOptions']['mysql'];
 
 			// By convention the first index has table specific relevance
 			if ( is_array( $tableOption ) ) {
@@ -82,9 +91,10 @@ class MySQLTableBuilder extends TableBuilder {
 			return $tableOption;
 		}
 
-		// This replacement is needed for compatibility, see http://bugs.mysql.com/bug.php?id=17501
-		if ( isset( $this->tableOptions ) ) {
-			return str_replace( 'TYPE', 'ENGINE', $this->tableOptions );
+		// @see $wgDBTableOptions, This replacement is needed for compatibility,
+		// http://bugs.mysql.com/bug.php?id=17501
+		if ( isset( $this->configurations['wgDBTableOptions'] ) ) {
+			return str_replace( 'TYPE', 'ENGINE', $this->configurations['wgDBTableOptions'] );
 		}
 	}
 
@@ -103,7 +113,7 @@ class MySQLTableBuilder extends TableBuilder {
 		$fields = $tableOptions['fields'];
 		$position = 'FIRST';
 
-		// Loop through all the field definitions, and handle each definition for either postgres or MySQL.
+		// Loop through all the field definitions, and handle each definition
 		foreach ( $fields as $fieldName => $fieldType ) {
 			$this->doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, $tableOptions );
 
@@ -288,8 +298,10 @@ class MySQLTableBuilder extends TableBuilder {
 
 		$this->reportMessage( "   ... creating new index $columns ..." );
 
-		if ( isset( $indexOptions['ftSearchOptions']['mysql'] ) ) {
-			$indexOption = $indexOptions['ftSearchOptions']['mysql'];
+		// @see MySQLTableBuilder::createExtraSQLFromTableOptions
+		// @see https://dev.mysql.com/doc/refman/5.7/en/fulltext-search-ngram.html
+		if ( isset( $indexOptions['fulltextSearchTableOptions']['mysql'] ) ) {
+			$indexOption = $indexOptions['fulltextSearchTableOptions']['mysql'];
 
 			// By convention the second index has index specific relevance
 			if ( is_array( $indexOption ) ) {

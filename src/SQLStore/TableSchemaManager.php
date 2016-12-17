@@ -163,7 +163,7 @@ class TableSchemaManager {
 		$table->addIndex( array( 'o_text', 'FULLTEXT' ) );
 
 		$table->addOption(
-			'ftSearchOptions',
+			'fulltextSearchTableOptions',
 			$GLOBALS['smwgFulltextSearchTableOptions']
 		);
 

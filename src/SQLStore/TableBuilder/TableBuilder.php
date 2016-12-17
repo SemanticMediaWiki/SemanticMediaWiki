@@ -12,9 +12,6 @@ use RuntimeException;
  * @license GNU GPL v2+
  * @since 2.5
  *
- * @author Markus Krötzsch
- * @author Marcel Gsteiger
- * @author Jeroen De Dauw
  * @author mwjames
  */
 abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
@@ -30,14 +27,9 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	private $messageReporter;
 
 	/**
-	 * @var string|integer
-	 */
-	protected $dbName;
-
-	/**
 	 * @var array
 	 */
-	protected $tableOptions;
+	protected $configurations = array();
 
 	/**
 	 * @since 2.5
@@ -73,11 +65,11 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 		}
 
 		if ( $instance === null ) {
-			throw new RuntimeException( "Unknown DB type " . $connection->getType() );
+			throw new RuntimeException( "Unknown or unsupported DB type " . $connection->getType() );
 		}
 
-		$instance->setDbName( $GLOBALS['wgDBname'] );
-		$instance->setTableOptions( $GLOBALS['wgDBTableOptions'] );
+		$instance->addConfiguration( 'wgDBname', $GLOBALS['wgDBname'] );
+		$instance->addConfiguration( 'wgDBTableOptions', $GLOBALS['wgDBTableOptions'] );
 
 		return $instance;
 	}
@@ -85,19 +77,11 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|integer $dbName
+	 * @param string|integer $key
+	 * @param mixed
 	 */
-	public function setDbName( $dbName ) {
-		$this->dbName = $dbName;
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param array $tableOptions
-	 */
-	public function setTableOptions( $tableOptions ) {
-		$this->tableOptions = $tableOptions;
+	public function addConfiguration( $key, $value ) {
+		$this->configurations[$key] = $value;
 	}
 
 	/**
@@ -217,6 +201,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	 */
 	abstract protected function doDropTable( $tableName );
 
+	// #1978
 	// http://php.net/manual/en/function.array-search.php
 	protected function recursive_array_search( $needle, $haystack ) {
 		foreach( $haystack as $key => $value ) {
@@ -229,4 +214,5 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 
 		return false;
 	}
+
 }
