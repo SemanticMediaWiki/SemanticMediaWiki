@@ -41,6 +41,10 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testFetchContentInfo( $parameters, $expected ) {
 
+		if ( !method_exists( '\WikiPage', 'prepareTextForEdit' ) ) {
+			$this->markTestSkipped( 'WikiPage::prepareTextForEdit is no longer accessible (MW 1.29+)' );
+		}
+
 		$instance = new EditInfoProvider(
 			$parameters['wikiPage'],
 			$parameters['revision']
@@ -56,6 +60,10 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider wikiPageDataProvider
 	 */
 	public function testFetchContentInfoWithDisabledContentHandler( $parameters, $expected ) {
+
+		if ( !method_exists( '\WikiPage', 'prepareTextForEdit' ) ) {
+			$this->markTestSkipped( 'WikiPage::prepareTextForEdit is no longer accessible (MW 1.29+)' );
+		}
 
 		$instance = $this->getMock( '\SMW\MediaWiki\EditInfoProvider',
 			array( 'hasContentForEditMethod' ),
