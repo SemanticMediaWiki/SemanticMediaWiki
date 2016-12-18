@@ -1151,13 +1151,13 @@ return array(
 	# - SMW_FT_WIKIPAGE property values of type Page
 	#
 	# SMW_FT_WIKIPAGE has not been added as default value as no performance
-	# impact analysis is available as to how indexing and search performance is
-	# impacted by a wiki with a large pool of pages (10K+) or an extended page
-	# type value assignments.
+	# impact analysis is available as to how indexing and search performance would
+	# be affected by a wiki with a large pool of pages (10K+) or extended page
+	# type value assignments on a full-text index.
 	#
 	# Enabling SMW_FT_WIKIPAGE will support the same search features (case
 	# insensitivity, phrase matching etc.) as available for Text or URI values
-	# when searches are executed using the the ~/!~.
+	# when searches are executed using the ~/!~.
 	#
 	# @since 2.5
 	# @default: SMW_FT_BLOB | SMW_FT_URI
