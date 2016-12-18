@@ -115,6 +115,16 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	private $tempCache;
 
 	/**
+	 * An internal change to the query execution may occur without being detected
+	 * by the Description hash (which is the desired behaviour) and to avoid a
+	 * stalled cache on an altered execution plan, use this modifier to generate
+	 * a new hash.
+	 *
+	 * @var string/integer
+	 */
+	private $hashModifier = '';
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param Store $store
@@ -160,6 +170,15 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 		$stats['meta'] = $meta;
 
 		return $stats;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string|integer $hashModifier
+	 */
+	public function setHashModifier( $hashModifier ) {
+		$this->hashModifier = $hashModifier;
 	}
 
 	/**
@@ -444,7 +463,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 			$subject = $subject->asBase()->getHash();
 		}
 
-		return md5( $subject . self::VERSION );
+		return md5( $subject . self::VERSION . $this->hashModifier );
 	}
 
 	private function log( $message, $context = array() ) {
@@ -480,8 +499,8 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 		$this->transientStatsdCollector->shouldRecord( $this->isEnabled() );
 
 		$this->transientStatsdCollector->init( 'misses', 0 );
-		$this->transientStatsdCollector->init( 'deletes', array() );
 		$this->transientStatsdCollector->init( 'hits', array() );
+		$this->transientStatsdCollector->init( 'deletes', array() );
 		$this->transientStatsdCollector->init( 'medianRetrievalResponseTime', array() );
 		$this->transientStatsdCollector->init( 'noCache', array() );
 		$this->transientStatsdCollector->set( 'meta.version', self::VERSION );
