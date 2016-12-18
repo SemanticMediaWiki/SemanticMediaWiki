@@ -68,6 +68,32 @@ class SearchTableUpdater {
 	}
 
 	/**
+	 * @see http://dev.mysql.com/doc/refman/5.7/en/fulltext-fine-tuning.html
+	 * @see http://dev.mysql.com/doc/refman/5.7/en/optimize-table.html
+	 *
+	 * "Running OPTIMIZE TABLE on a table with a full-text index rebuilds the
+	 * full-text index, removing deleted Document IDs and consolidating multiple
+	 * entries for the same word, where possible."
+	 *
+	 * @since 2.5
+	 *
+	 * @return boolean
+	 */
+	public function optimize() {
+
+		if ( !$this->connection->isType( 'mysql' ) ) {
+			return false;
+		}
+
+		$this->connection->query(
+			"OPTIMIZE TABLE " . $this->searchTable->getTableName(),
+			__METHOD__
+		);
+
+		return true;
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param integer $sid

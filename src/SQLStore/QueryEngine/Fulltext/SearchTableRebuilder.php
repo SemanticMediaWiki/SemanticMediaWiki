@@ -38,6 +38,11 @@ class SearchTableRebuilder {
 	private $reportVerbose = false;
 
 	/**
+	 * @var boolean
+	 */
+	private $optimization = false;
+
+	/**
 	 * @var array
 	 */
 	private $skippedTables = array();
@@ -82,6 +87,15 @@ class SearchTableRebuilder {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param boolean $optimization
+	 */
+	public function requestOptimization( $optimization ) {
+		$this->optimization = (bool)$optimization;
+	}
+
+	/**
 	 * @see RebuildFulltextSearchTable::execute
 	 *
 	 * @since 2.5
@@ -91,32 +105,80 @@ class SearchTableRebuilder {
 	public function run() {
 
 		if ( !$this->searchTableUpdater->isEnabled() ) {
-			return $this->reportMessage( "\n" . "FullText search indexing is not enabled or supported." ."\n\n" );
+			return $this->reportMessage( "\n" . "FullText search indexing is not enabled or supported." ."\n" );
 		}
+
+		if ( $this->optimization ) {
+			return $this->doOptimize();
+		}
+
+		$this->doRebuild();
+
+		return true;
+	}
+
+	private function doOptimize() {
+
+		$this->reportMessage(
+			"\n## Optimization\n"
+		);
+
+		$this->reportMessage(
+			"\nRunning table optimization (Depending on the SQL back-end " .
+			"\nthis operation may lock the table and suspend any inserts or" .
+			"\ndeletes during the process.)\n"
+		);
+
+		if ( $this->searchTableUpdater->optimize() ) {
+			$this->reportMessage( "\nOptimization has finished.\n" );
+		} else {
+			$this->reportMessage( "\nThe SQL back-end does not support this operation.\n" );
+		}
+
+		return true;
+	}
+
+	private function doRebuild() {
+
+		$this->reportMessage(
+			"\n## Indexing\n"
+		);
+
+		$this->reportMessage(
+			"\nThe entire index table is going to be purged first and \n" .
+			"it may take a moment before the rebuild is completed due to\n" .
+			"dependencies on table content including varying options.\n"
+		);
 
 		$this->searchTableUpdater->flushTable();
 
 		$this->reportMessage( "\n" . "The index table was purged." ."\n" );
-		$this->reportMessage( "\n" . "Rebuilding the text index from (rows finished/expected):" ."\n\n" );
+		$this->reportMessage( "\n" . "Rebuilding the content from (rows finished/expected):" ."\n\n" );
 
 		foreach ( $this->searchTableUpdater->getPropertyTables() as $proptable ) {
 
 			// Only care for Blob/Uri tables
 			if ( $proptable->getDiType() !== DataItem::TYPE_BLOB && $proptable->getDiType() !== DataItem::TYPE_URI ) {
-				$this->skippedTables[$proptable->getName()] = 'Not a blob or URI table type.';
+				$this->skippedTables[$proptable->getName()] = 'Not a valid DI type.';
 				continue;
 			}
 
 			$this->doRebuildByPropertyTable( $proptable );
 		}
 
-		$this->reportMessage( "\n" . "Table(s) not used for indexing:" ."\n\n", $this->reportVerbose );
+		$this->reportMessage(
+			"\n## Notes\n",
+			$this->reportVerbose
+		);
+
+		$this->reportMessage(
+			"\n" . "Table(s) not used for indexing:" ."\n\n",
+			$this->reportVerbose
+		);
 
 		foreach ( $this->skippedTables as $tableName => $reason ) {
 			$this->reportMessage( "\r". sprintf( "%-36s%s", "- {$tableName}", $reason . "\n" ), $this->reportVerbose );
 		}
-
-		return true;
 	}
 
 	private function doRebuildByPropertyTable( $proptable ) {
