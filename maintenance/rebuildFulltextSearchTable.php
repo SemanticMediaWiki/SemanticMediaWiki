@@ -50,6 +50,8 @@ class RebuildFulltextSearchTable extends \Maintenance {
 			$applicationFactory->getStore( '\SMW\SQLStore\SQLStore' )
 		);
 
+		$textSanitizer = $fulltextSearchTableFactory->newTextSanitizer();
+
 		$searchTableRebuilder->reportVerbose(
 			$this->hasOption( 'v' )
 		);
@@ -66,11 +68,47 @@ class RebuildFulltextSearchTable extends \Maintenance {
 			"with the rules set forth by the SQL back-end or Sanitizer.\n"
 		);
 
+		$this->reportConfiguration(
+			$searchTableRebuilder,
+			$textSanitizer
+		);
+
+		if ( !$this->hasOption( 'quick' ) ) {
+			$this->reportMessage( "\n" . 'Abort the rebuild with control-c in the next five seconds ...  ' );
+			wfCountDown( 5 );
+		}
+
+		$maintenanceHelper = $maintenanceFactory->newMaintenanceHelper();
+		$maintenanceHelper->initRuntimeValues();
+
+		// Need to instantiate an extra object here since we cannot make this class itself
+		// into a MessageReporter since the maintenance script does not load the interface in time.
+		$reporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
+		$reporter->registerReporterCallback( array( $this, 'reportMessage' ) );
+
+		$searchTableRebuilder->setMessageReporter( $reporter );
+		$result = $searchTableRebuilder->run();
+
+		if ( $result && $this->hasOption( 'report-runtime' ) ) {
+			$this->reportMessage(
+				"\n" . $maintenanceHelper->getFormattedRuntimeValues() . "\n"
+			);
+		}
+
+		if ( $this->hasOption( 'with-maintenance-log' ) ) {
+			$maintenanceLogger = $maintenanceFactory->newMaintenanceLogger( 'RebuildFulltextSearchTableLogger' );
+			$maintenanceLogger->log( $maintenanceHelper->getFormattedRuntimeValues() );
+		}
+
+		$maintenanceHelper->reset();
+		return $result;
+	}
+
+	private function reportConfiguration( $searchTableRebuilder, $textSanitizer ) {
+
 		$this->reportMessage(
 			"\n## Configuration\n\n"
 		);
-
-		$textSanitizer = $fulltextSearchTableFactory->newTextSanitizer();
 
 		foreach ( $textSanitizer->getVersions() as $key => $value ) {
 			$this->reportMessage( "\r". sprintf( "%-35s%s", "- {$key}", $value )  . "\n" );
@@ -111,36 +149,6 @@ class RebuildFulltextSearchTable extends \Maintenance {
 		}
 
 		$this->reportMessage( "\n- " . $exemptionList . "\n" );
-
-		if ( !$this->hasOption( 'quick' ) ) {
-			$this->reportMessage( "\n" . 'Abort the rebuild with control-c in the next five seconds ...  ' );
-			wfCountDown( 5 );
-		}
-
-		$maintenanceHelper = $maintenanceFactory->newMaintenanceHelper();
-		$maintenanceHelper->initRuntimeValues();
-
-		// Need to instantiate an extra object here since we cannot make this class itself
-		// into a MessageReporter since the maintenance script does not load the interface in time.
-		$reporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
-		$reporter->registerReporterCallback( array( $this, 'reportMessage' ) );
-
-		$searchTableRebuilder->setMessageReporter( $reporter );
-		$result = $searchTableRebuilder->run();
-
-		if ( $result && $this->hasOption( 'report-runtime' ) ) {
-			$this->reportMessage(
-				"\n" . $maintenanceHelper->getFormattedRuntimeValues() . "\n"
-			);
-		}
-
-		if ( $this->hasOption( 'with-maintenance-log' ) ) {
-			$maintenanceLogger = $maintenanceFactory->newMaintenanceLogger( 'RebuildFulltextSearchTableLogger' );
-			$maintenanceLogger->log( $maintenanceHelper->getFormattedRuntimeValues() );
-		}
-
-		$maintenanceHelper->reset();
-		return $result;
 	}
 
 	/**
