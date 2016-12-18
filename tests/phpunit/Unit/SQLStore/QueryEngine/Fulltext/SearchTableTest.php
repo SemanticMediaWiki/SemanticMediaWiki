@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\QueryEngine\Fulltext;
 
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
 use SMW\DataItemFactory;
+use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Fulltext\SearchTable
@@ -71,6 +72,10 @@ class SearchTableTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
+		$instance->setIndexableDataTypes(
+			SMW_FT_BLOB | SMW_FT_URI
+		);
+
 		$instance->setPropertyExemptionList(
 			array( '_TEXT' )
 		);
@@ -86,6 +91,46 @@ class SearchTableTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertFalse(
 			$instance->isExemptedProperty( $property )
+		);
+	}
+
+	public function testIsValidType() {
+
+		$instance = new SearchTable(
+			$this->store
+		);
+
+		$instance->setIndexableDataTypes(
+			SMW_FT_BLOB | SMW_FT_URI
+		);
+
+		$this->assertTrue(
+			$instance->isValidByType( DataItem::TYPE_BLOB )
+		);
+
+		$this->assertFalse(
+			$instance->isValidByType( DataItem::TYPE_WIKIPAGE )
+		);
+	}
+
+	public function testHasMinTokenLength() {
+
+		$instance = new SearchTable(
+			$this->store
+		);
+
+		$instance->setMinTokenSize( 4 );
+
+		$this->assertFalse(
+			$instance->hasMinTokenLength( 'bar' )
+		);
+
+		$this->assertFalse(
+			$instance->hasMinTokenLength( 'テスト' )
+		);
+
+		$this->assertTrue(
+			$instance->hasMinTokenLength( 'test' )
 		);
 	}
 

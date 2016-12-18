@@ -5,6 +5,7 @@ namespace SMW\Maintenance;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\ApplicationFactory;
+use SMWDataItem as DataItem;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
@@ -62,18 +63,40 @@ class RebuildFulltextSearchTable extends \Maintenance {
 			"support a fulltext search. Any change of the index rules (altered\n".
 			"stopwords, new stemmer etc.) and/or a newly added or altered table\n".
 			"requires to run this script again to ensure that the index complies\n".
-			"with the rules set forth by the DB or Sanitizer.\n\n"
+			"with the rules set forth by the SQL back-end or Sanitizer.\n"
 		);
 
-		$searchTable = $searchTableRebuilder->getSearchTable();
+		$this->reportMessage(
+			"\n## Configuration\n\n"
+		);
+
 		$textSanitizer = $fulltextSearchTableFactory->newTextSanitizer();
 
 		foreach ( $textSanitizer->getVersions() as $key => $value ) {
 			$this->reportMessage( "\r". sprintf( "%-35s%s", "- {$key}", $value )  . "\n" );
 		}
 
+		$searchTable = $searchTableRebuilder->getSearchTable();
+		$indexableDataTypes = array();
+
+		$dataTypes = array(
+			DataItem::TYPE_BLOB => 'BLOB',
+			DataItem::TYPE_URI  => 'URI',
+			DataItem::TYPE_WIKIPAGE => 'WIKIPAGE'
+		);
+
+		foreach ( $dataTypes as $key => $value ) {
+			if ( $searchTable->isValidByType( $key ) ) {
+				$indexableDataTypes[] = $value;
+			}
+		}
+
 		$this->reportMessage(
-			"\nThe following properties are exempted from the fulltext search index.\n"
+			"\r". sprintf( "%-35s%s", "- DataTypes (Indexable)", implode( ', ', $indexableDataTypes ) )  . "\n"
+		);
+
+		$this->reportMessage(
+			"\nThe following properties are exempted from the indexing process.\n"
 		);
 
 		$exemptionList = '';
@@ -87,13 +110,7 @@ class RebuildFulltextSearchTable extends \Maintenance {
 			}
 		}
 
-		$this->reportMessage( "\n- " . $exemptionList . "\n\n" );
-
-		$this->reportMessage(
-			"The entire index table is going to be purged first and \n" .
-			"it may take a moment before the rebuild is completed due to\n" .
-			"dependencies on table content and selected options.\n"
-		);
+		$this->reportMessage( "\n- " . $exemptionList . "\n" );
 
 		if ( !$this->hasOption( 'quick' ) ) {
 			$this->reportMessage( "\n" . 'Abort the rebuild with control-c in the next five seconds ...  ' );

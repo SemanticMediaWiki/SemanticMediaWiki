@@ -75,14 +75,16 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		}
 
 		$comparator = $description->getComparator();
+		$property = $description->getProperty();
 		$value = $description->getDataItem()->getSortKey();
 
 		// A simple value match using the `~~Foo` will initiate a fulltext
 		// search without being bound to a property allowing a broad match
 		// search
-		if ( ( $comparator === SMW_CMP_LIKE || $comparator === SMW_CMP_NLKE ) && strpos( $value, '~' ) !== false ) {
+		if ( ( $comparator === SMW_CMP_LIKE || $comparator === SMW_CMP_NLKE ) ) {
 
 			$fulltextSearchSupport = $this->addFulltextSearchCondition(
+				$description,
 				$query,
 				$comparator,
 				$value
@@ -121,10 +123,23 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		return $query;
 	}
 
-	private function addFulltextSearchCondition( $query, $comparator, &$value ) {
+	private function addFulltextSearchCondition( $description, $query, $comparator, &$value ) {
 
-		// Remove remaining ~ from the search string
-		$value = str_replace( '~', '', $value );
+		// Uses ~~ wide proximity?
+		$usesWidePromixity = false;
+
+		// If a remaining ~ is present then the user searched with a ~~ string
+		// where the Comparator already matched/removed the first one
+		if ( substr( $value, 0, 1 ) === '~' ) {
+			$value = str_replace( '~', '', $value );
+			$usesWidePromixity = true;
+		}
+
+		// If it is not a wide proximity search and it doesn't have a property then
+		// don't try to match using the fulltext index (redirect [[~Foo]] to LIKE)
+		if ( !$usesWidePromixity && $description->getProperty() === null ) {
+			return false;
+		}
 
 		$valueMatchConditionBuilder = $this->fulltextSearchTableFactory->newValueMatchConditionBuilderByType(
 			$this->querySegmentListBuilder->getStore()
@@ -134,8 +149,13 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 			return false;
 		}
 
+		if ( !$usesWidePromixity && !$valueMatchConditionBuilder->canApplyFulltextSearchMatchCondition( $description ) ) {
+			return false;
+		}
+
 		$query->joinTable = $valueMatchConditionBuilder->getTableName();
 		$query->joinfield = "{$query->alias}.s_id";
+		$query->indexField = 's_id';
 		$query->components = array();
 
 		$query->where = $valueMatchConditionBuilder->getWhereCondition(

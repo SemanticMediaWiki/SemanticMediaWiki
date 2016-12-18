@@ -158,7 +158,7 @@ class SearchTableRebuilder {
 		foreach ( $this->searchTableUpdater->getPropertyTables() as $proptable ) {
 
 			// Only care for Blob/Uri tables
-			if ( $proptable->getDiType() !== DataItem::TYPE_BLOB && $proptable->getDiType() !== DataItem::TYPE_URI ) {
+			if ( !$this->getSearchTable()->isValidByType( $proptable->getDiType() ) ) {
 				$this->skippedTables[$proptable->getName()] = 'Not a valid DI type.';
 				continue;
 			}
@@ -187,6 +187,8 @@ class SearchTableRebuilder {
 
 		if ( $proptable->getDiType() === DataItem::TYPE_URI ) {
 			$fetchFields = array( 's_id', 'p_id', 'o_blob', 'o_serialized' );
+		} elseif ( $proptable->getDiType() === DataItem::TYPE_WIKIPAGE ) {
+			$fetchFields = array( 's_id', 'p_id', 'o_id' );
 		} else {
 			$fetchFields = array( 's_id', 'p_id', 'o_blob', 'o_hash' );
 		}
@@ -199,8 +201,14 @@ class SearchTableRebuilder {
 		if ( $proptable->isFixedPropertyTable() ) {
 			unset( $fetchFields[1] ); // p_id
 
+			$property = new DIProperty( $proptable->getFixedProperty() );
+
+			if ( $property->getLabel() === '' ) {
+				return $this->skippedTables[$table] = 'Fixed property is ' . $property->getKey() . ' invalid.';
+			}
+
 			$pid = $searchTable->getPropertyIdBy(
-				new DIProperty( $proptable->getFixedProperty() )
+				$property
 			);
 
 			if ( $searchTable->isExemptedPropertyById( $pid ) ) {
@@ -237,14 +245,12 @@ class SearchTableRebuilder {
 			$sid = $row->s_id;
 			$pid = !isset( $row->p_id ) ? $pid : $row->p_id;
 
-			// Uri or blob?
-			if ( isset( $row->o_serialized ) ) {
-				$indexableText = $row->o_blob === null ? $row->o_serialized : $row->o_blob;
-			} else {
-				$indexableText = $row->o_blob === null ? $row->o_hash : $row->o_blob;
-			}
+			$indexableText = $this->getIndexableTextFromRow(
+				$searchTable,
+				$row
+			);
 
-			if ( $searchTable->isExemptedPropertyById( $pid ) ) {
+			if ( $searchTable->isExemptedPropertyById( $pid ) || !$searchTable->hasMinTokenLength( $indexableText ) ) {
 				continue;
 			}
 
@@ -259,7 +265,7 @@ class SearchTableRebuilder {
 				$this->searchTableUpdater->insert( $sid, $pid );
 			}
 
-			$this->searchTableUpdater->update( $sid, $pid, trim( $text ) . ' ' . trim( $indexableText ) );
+			$this->searchTableUpdater->update( $sid, $pid, trim( $text ) . ' ' . $indexableText );
 		}
 
 		$this->reportMessage( "\n" );
@@ -269,6 +275,23 @@ class SearchTableRebuilder {
 		if ( $verbose ) {
 			$this->messageReporter->reportMessage( $message );
 		}
+	}
+
+	private function getIndexableTextFromRow( $searchTable, $row ) {
+
+		$indexableText = '';
+
+		// Page, Uri, or blob?
+		if ( isset( $row->o_id ) ) {
+			$dataItem = $searchTable->getDataItemById( $row->o_id );
+			$indexableText = $dataItem !== false ? $dataItem->getSortKey() : '';
+		} elseif ( isset( $row->o_serialized ) ) {
+			$indexableText = $row->o_blob === null ? $row->o_serialized : $row->o_blob;
+		} else {
+			$indexableText = $row->o_blob === null ? $row->o_hash : $row->o_blob;
+		}
+
+		return trim( $indexableText );
 	}
 
 }

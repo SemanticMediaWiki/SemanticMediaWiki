@@ -3,6 +3,7 @@
 namespace SMW\SQLStore\QueryEngine\Fulltext;
 
 use SMW\Query\Language\ValueDescription;
+use SMW\DIProperty;
 
 /**
  * @license GNU GPL v2+
@@ -54,7 +55,18 @@ class SQLiteValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 * @return boolean
 	 */
 	public function hasMinTokenLength( $value ) {
-		return mb_strlen( $value ) >= $this->searchTable->getMinTokenSize();
+		return $this->searchTable->hasMinTokenLength( $value );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $property
+	 *
+	 * @return boolean
+	 */
+	public function isExemptedProperty( DIProperty $property ) {
+		return $this->searchTable->isExemptedProperty( $property );
 	}
 
 	/**
@@ -77,11 +89,15 @@ class SQLiteValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 */
 	public function canApplyFulltextSearchMatchCondition( ValueDescription $description ) {
 
-		if ( !$this->isEnabled() || $description->getProperty() === null ) {
+		if ( !$this->isEnabled() ) {
 			return false;
 		}
 
-		if ( $this->searchTable->isExemptedProperty( $description->getProperty() ) ) {
+		if ( $description->getProperty() !== null && $this->isExemptedProperty( $description->getProperty() ) ) {
+			return false;
+		}
+
+		if ( !$this->searchTable->isValidByType( $description->getDataItem()->getDiType() ) ) {
 			return false;
 		}
 

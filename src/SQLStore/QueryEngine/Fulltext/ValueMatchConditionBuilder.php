@@ -5,6 +5,7 @@ namespace SMW\SQLStore\QueryEngine\Fulltext;
 use SMW\Query\Language\ValueDescription;
 use SMWDIBlob as DIBlob;
 use SMWDIUri as DIUri;
+use SMW\DIWikiPage;
 
 /**
  * @license GNU GPL v2+
@@ -99,7 +100,7 @@ class ValueMatchConditionBuilder {
 			$matchableText = $description->getDataItem()->getString();
 		}
 
-		if ( $description->getDataItem() instanceof DIUri ) {
+		if ( $description->getDataItem() instanceof DIUri || $description->getDataItem() instanceof DIWikiPage ) {
 			$matchableText = $description->getDataItem()->getSortKey();
 		}
 

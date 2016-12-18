@@ -277,13 +277,18 @@ class SharedCallbackContainer implements CallbackContainer {
 				$callbackLoader->singleton( 'QueryFactory' ),
 				$callbackLoader->create(
 					'BlobStore',
-					CachedQueryResultPrefetcher::CACHE_NAMESPACE, $cacheType,
+					CachedQueryResultPrefetcher::CACHE_NAMESPACE,
+					$cacheType,
 					$settings->get( 'smwgQueryResultCacheLifetime' )
 				),
 				$callbackLoader->singleton(
 					'TransientStatsdCollector',
 					CachedQueryResultPrefetcher::STATSD_ID
 				)
+			);
+
+			$cachedQueryResultPrefetcher->setHashModifier(
+				$settings->get( 'smwgFulltextSearchIndexableDataTypes' )
 			);
 
 			$cachedQueryResultPrefetcher->setLogger(

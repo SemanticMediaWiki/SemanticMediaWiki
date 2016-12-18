@@ -911,6 +911,8 @@ return array(
 	##
 
 	###
+	# Query dependency and parser cache invalidation
+	#
 	# If enabled it will store dependencies for queries allowing it to purge
 	# the ParserCache on subjects with embedded queries that contain altered entities.
 	#
@@ -948,7 +950,7 @@ return array(
 	# Listed properties are marked as affiliate, meaning that when an alteration to
 	# a property value occurs query dependencies for the related entity are recorded
 	# as well. For example, _DTITLE is most likely such property where a change would
-	# normally not be reflected in query results (as it not directlty linked to a
+	# normally not be reflected in query results (as it not directly linked to a
 	# query) but when added as an affiliated, changes to its content will be
 	# handled as if it is linked to an embedded entity.
 	#
@@ -959,7 +961,7 @@ return array(
 
 	###
 	# The setting is introduced the keep backwards compatibility with existing Rdf/Turtle
-	# exports. The `aux` marker is epxected only used to be used for selected properties
+	# exports. The `aux` marker is expected only used to be used for selected properties
 	# to generate a helper value and not for any other predefined property.
 	#
 	# Any property that does not explicitly require an auxiliary value (such `_dat`/
@@ -1058,13 +1060,15 @@ return array(
 	##
 	# Fulltext search support
 	#
-	# If enabled, it will store text elements using a separate table in order for the
-	# DB back-end to use special fulltext index operations.
+	# If enabled, it will store text elements using a separate table in order for
+	# the SQL back-end to use the special fulltext index operations provided by
+	# the SQL engine.
 	#
 	# - Tested with MySQL/MariaDB
 	# - Tested with SQLite
 	#
 	# @since 2.5
+	# @default: false
 	##
 	'smwgEnabledFulltextSearch' => false,
 	##
@@ -1083,10 +1087,10 @@ return array(
 	#
 	# If a user wants to push updates to the updater immediately then this setting needs
 	# to be disabled but by disabling this setting update lag may increase due to having
-	# the process being executed synchronously to the wikipage, store-backend storage.
+	# the process being executed synchronously to the wikipage update.
 	#
 	# @since 2.5
-	# @default true
+	# @default: true
 	##
 	'smwgFulltextDeferredUpdate' => true,
 	##
@@ -1109,7 +1113,7 @@ return array(
 	# sources), The setting allows to specify extra arguments after the module
 	# engine such as array( 'FTS4', 'tokenize=porter' ).
 	#
-	# It is possible to extend the option decription (MySQL 5.7+)  with
+	# It is possible to extend the option description (MySQL 5.7+)  with
 	# 'mysql' => array( 'ENGINE=MyISAM, DEFAULT CHARSET=utf8', 'WITH PARSER ngram' )
 	#
 	# @since 2.5
@@ -1121,19 +1125,44 @@ return array(
 	##
 
 	##
-	# List of property keys for which value assignments are being exempted from the
-	# fulltext indexing process because there are either insignificant or mostly
-	# represent single terms which are not required to be searched via a FT or a
-	# proximity.
+	# Exempted properties
 	#
-	# Listed properties will use the standard LIKE/NLIKE expression when used in
-	# connection with the ~/!~ operator.
+	# List of property keys for which index and fulltext match operations are
+	# exempted because there are either insignificant, mostly represent single
+	# terms, or contain other characteristics that make them non preferable when
+	# searching via the fulltext index.
+	#
+	# Listed properties will use the standard LIKE/NLIKE match operation when used
+	# in connection with the ~/!~ expression.
 	#
 	# @since 2.5
 	##
 	'smwgFulltextSearchPropertyExemptionList' => array(
-		'_ASKFO', '_ASKST', '_IMPO', '_LCODE', '_UNIT', '_CONV', '_TYPE', '_ERRT'
+		'_ASKFO', '_ASKST', '_IMPO', '_LCODE', '_UNIT', '_CONV',
+		'_TYPE', '_ERRT', '_INST', '_ASK', '_INST', '_SOBJ'
 	),
+	##
+
+	##
+	# List of indexable DataTypes
+	#
+	# - SMW_FT_BLOB property values of type Blob (Text)
+	# - SMW_FT_URI property values of type URI
+	# - SMW_FT_WIKIPAGE property values of type Page
+	#
+	# SMW_FT_WIKIPAGE has not been added as default value as no performance
+	# impact analysis is available as to how indexing and search performance is
+	# impacted by a wiki with a large pool of pages (10K+) or an extended page
+	# type value assignments.
+	#
+	# Enabling SMW_FT_WIKIPAGE will support the same search features (case
+	# insensitivity, phrase matching etc.) as available for Text or URI values
+	# when searches are executed using the the ~/!~.
+	#
+	# @since 2.5
+	# @default: SMW_FT_BLOB | SMW_FT_URI
+	##
+	'smwgFulltextSearchIndexableDataTypes' => SMW_FT_BLOB | SMW_FT_URI,
 	##
 
 	##
@@ -1168,18 +1197,21 @@ return array(
 	##
 
 	##
-	# Using MySQL's "Global Transaction Identifier" will create issues when executing
+	# MySQL's "Global Transaction Identifier" will create issues when executing
 	# queries that rely on temporary tables, according to the documentation "... the
 	# operations listed here cannot be used ... CREATE TEMPORARY TABLE statements
 	# inside transactions".
 	#
-	# MySQL Global transaction identifier is a unique transaction ID assigned to every
-	# transaction that happens in MySQL database.
+	# MySQL Global transaction identifier is a unique transaction ID assigned to
+	# every transaction that happens in the MySQL database.
 	#
 	# Issue is encountered when @@GLOBAL.ENFORCE_GTID_CONSISTENCY = 1
 	#
 	# @see https://dev.mysql.com/doc/refman/5.6/en/replication-options-gtids.html
 	# @see https://support.software.dell.com/kb/184275
+	#
+	# This setting (if enabled) will force an auto commit operation for temporary
+	# tables to avoid the described limitation.
 	#
 	# @since 2.5
 	# @default false

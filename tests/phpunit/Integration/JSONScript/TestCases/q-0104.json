@@ -234,7 +234,11 @@
 	],
 	"settings": {
 		"smwgEnabledFulltextSearch": true,
-		"smwgFulltextDeferredUpdate": false
+		"smwgFulltextDeferredUpdate": false,
+		"smwgFulltextSearchIndexableDataTypes": [
+			"SMW_FT_BLOB",
+			"SMW_FT_URI"
+		]
 	},
 	"meta": {
 		"skip-on": {

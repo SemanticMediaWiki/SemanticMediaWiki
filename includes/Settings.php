@@ -150,6 +150,7 @@ class Settings extends Options {
 			'smwgFulltextSearchPropertyExemptionList' => $GLOBALS['smwgFulltextSearchPropertyExemptionList'],
 			'smwgFulltextSearchMinTokenSize' => $GLOBALS['smwgFulltextSearchMinTokenSize'],
 			'smwgFulltextLanguageDetection' => $GLOBALS['smwgFulltextLanguageDetection'],
+			'smwgFulltextSearchIndexableDataTypes' => $GLOBALS['smwgFulltextSearchIndexableDataTypes'],
 			'smwgQTemporaryTablesAutoCommitMode' => $GLOBALS['smwgQTemporaryTablesAutoCommitMode'],
 			'smwgQueryResultCacheType' => $GLOBALS['smwgQueryResultCacheType'],
 			'smwgQueryResultCacheLifetime' => $GLOBALS['smwgQueryResultCacheLifetime'],

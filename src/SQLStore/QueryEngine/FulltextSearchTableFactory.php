@@ -105,6 +105,10 @@ class FulltextSearchTableFactory {
 			$settings->get( 'smwgFulltextSearchMinTokenSize' )
 		);
 
+		$searchTable->setIndexableDataTypes(
+			$settings->get( 'smwgFulltextSearchIndexableDataTypes' )
+		);
+
 		return $searchTable;
 	}
 
