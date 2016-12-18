@@ -68,6 +68,32 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->run();
 	}
 
+	public function testNeverRebuildOnOptimization() {
+
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->searchTableUpdater->expects( $this->once() )
+			->method( 'isEnabled' )
+			->will( $this->returnValue( true ) );
+
+		$this->searchTableUpdater->expects( $this->never() )
+			->method( 'getPropertyTables' );
+
+		$this->searchTableUpdater->expects( $this->once() )
+			->method( 'optimize' );
+
+		$instance = new SearchTableRebuilder(
+			$this->connection,
+			$this->searchTableUpdater
+		);
+
+		$instance->requestOptimization( true );
+
+		$instance->run();
+	}
+
 	public function testRunWithUpdateOnBlob() {
 
 		$row = new \stdClass;

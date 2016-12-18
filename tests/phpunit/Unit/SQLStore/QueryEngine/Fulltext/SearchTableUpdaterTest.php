@@ -64,6 +64,47 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$instance->read( 12, 42 );
 	}
 
+	public function testOptimizeOnEnabledType() {
+
+		$this->connection->expects( $this->once() )
+			->method( 'isType' )
+			->with( $this->equalTo( 'mysql' ) )
+			->will( $this->returnValue( true ) );
+
+		$this->connection->expects( $this->once() )
+			->method( 'query' );
+
+		$instance = new SearchTableUpdater(
+			$this->connection,
+			$this->searchTable,
+			$this->textSanitizer
+		);
+
+		$this->assertTrue(
+			$instance->optimize()
+		);
+	}
+
+	public function testOptimizeOnDisabledType() {
+
+		$this->connection->expects( $this->once() )
+			->method( 'isType' )
+			->will( $this->returnValue( false ) );
+
+		$this->connection->expects( $this->never() )
+			->method( 'query' );
+
+		$instance = new SearchTableUpdater(
+			$this->connection,
+			$this->searchTable,
+			$this->textSanitizer
+		);
+
+		$this->assertFalse(
+			$instance->optimize()
+		);
+	}
+
 	public function testUpdateWithText() {
 
 		$this->connection->expects( $this->once() )
