@@ -36,7 +36,7 @@ class Settings extends Options {
 	 */
 	public static function newFromGlobals() {
 
-		$settings = array(
+		$configuration = array(
 			'smwgScriptPath' => isset( $GLOBALS['smwgScriptPath'] ) ? $GLOBALS['smwgScriptPath'] : '',
 			'smwgIP' => $GLOBALS['smwgIP'],
 			'smwgExtraneousLanguageFileDir' => $GLOBALS['smwgExtraneousLanguageFileDir'],
@@ -157,8 +157,10 @@ class Settings extends Options {
 			'smwgQueryResultCacheRefreshOnPurge' => $GLOBALS['smwgQueryResultCacheRefreshOnPurge'],
 		);
 
+		\Hooks::run( 'SMW::Config::BeforeCompletion', array( &$configuration ) );
+
 		if ( self::$instance === null ) {
-			self::$instance = self::newFromArray( $settings );
+			self::$instance = self::newFromArray( $configuration );
 		}
 
 		return self::$instance;
