@@ -7,8 +7,7 @@ use Revision;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\MediaWiki\Hooks\NewRevisionFromEditComplete;
-use SMW\Settings;
-use SMW\Tests\Utils\Validators\SemanticDataValidator;
+use SMW\Tests\TestEnvironment;
 use Title;
 use WikiPage;
 
@@ -23,25 +22,25 @@ use WikiPage;
  */
 class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 
-	private $applicationFactory;
 	private $semanticDataValidator;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
-		$this->semanticDataValidator = new SemanticDataValidator();
+		$this->testEnvironment = new TestEnvironment();
+
+		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -70,9 +69,8 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testProcess( $parameters, $expected ) {
 
-		$this->applicationFactory->registerObject(
-			'Settings',
-			Settings::newFromArray( $parameters['settings'] )
+		$this->testEnvironment->withConfiguration(
+			$parameters['settings']
 		);
 
 		$instance = new NewRevisionFromEditComplete(
@@ -87,7 +85,7 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		if ( $editInfo && $editInfo->output instanceof ParserOutput ) {
 
-			$parserData = $this->applicationFactory->newParserData(
+			$parserData = ApplicationFactory::getInstance()->newParserData(
 				$parameters['wikiPage']->getTitle(),
 				$editInfo->output
 			);
@@ -158,10 +156,7 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 				'revision' => $this->newRevisionStub(),
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MODIFICATION_DATE ),
-					'smwgDVFeatures' => '',
-					'smwgQueryResultCacheType' => 'hash',
-					'smwgQueryResultCacheLifetime' => 60,
-					'smwgQueryResultNonEmbeddedCacheLifetime' => 60
+					'smwgDVFeatures' => ''
 				)
 			),
 			array(
