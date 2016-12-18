@@ -178,6 +178,11 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			);
 
 			if ( $sub >= 0 ) {
+				$subQuery = $this->querySegmentListBuilder->findQuerySegment(
+					$sub
+				);
+
+				$o_id = $subQuery->indexField !== '' ? $subQuery->indexField : $o_id;
 				$query->components[$sub] = "{$query->alias}.{$o_id}";
 			}
 
@@ -191,7 +196,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			}
 		} else { // non-page value description
 			$query->joinfield = "{$query->alias}.s_id";
-			$this->interpretInnerValueDescription( $query, $description->getDescription(), $proptable, $diHandler, 'AND' );
+			$this->compilePropertyValueDescription( $query, $description->getDescription(), $proptable, $diHandler, 'AND' );
 			if ( array_key_exists( $sortkey, $this->querySegmentListBuilder->getSortKeys() ) ) {
 				$query->sortfields[$sortkey] = isset( $query->sortIndexField ) ? $query->sortIndexField : "{$query->alias}.{$indexField}";
 			}
@@ -209,7 +214,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 * @param DataItemHandler $diHandler for that table
 	 * @param string $operator SQL operator "AND" or "OR"
 	 */
-	private function interpretInnerValueDescription(
+	private function compilePropertyValueDescription(
 			$query, Description $description, SMWSQLStore3Table $proptable, DataItemHandler $diHandler, $operator ) {
 
 		if ( $description instanceof ValueDescription ) {
@@ -227,7 +232,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$query->where .= "(";
 
 			foreach ( $description->getDescriptions() as $subdesc ) {
-				$this->interpretInnerValueDescription( $query, $subdesc, $proptable, $diHandler, $op );
+				$this->compilePropertyValueDescription( $query, $subdesc, $proptable, $diHandler, $op );
 			}
 
 			$query->where .= ")";

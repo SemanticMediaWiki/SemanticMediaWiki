@@ -38,6 +38,11 @@ class SearchTable {
 	private $minTokenSize = 3;
 
 	/**
+	 * @var integer
+	 */
+	private $indexableDataTypes = 0;
+
+	/**
 	 * @var array
 	 */
 	private $propertyExemptionList = array();
@@ -66,6 +71,15 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
+	 * @param integer $indexableDataTypes
+	 */
+	public function setIndexableDataTypes( $indexableDataTypes ) {
+		$this->indexableDataTypes = $indexableDataTypes;
+	}
+
+	/**
+	 * @since 2.5
+	 *
 	 * @return array
 	 */
 	public function getPropertyExemptionList() {
@@ -81,9 +95,7 @@ class SearchTable {
 	 */
 	public function isExemptedPropertyById( $id ) {
 
-		$dataItem = $this->store->getObjectIds()->getDataItemById(
-			$id
-		);
+		$dataItem = $this->getDataItemById( $id );
 
 		if ( !$dataItem instanceof DIWikiPage || $dataItem->getDBKey() === '' ) {
 			return false;
@@ -107,12 +119,38 @@ class SearchTable {
 			$property->findPropertyTypeID()
 		);
 
-		// Is neither therefore is exempted
-		if ( $dataItemTypeId !== DataItem::TYPE_BLOB && $dataItemTypeId !== DataItem::TYPE_URI ) {
+		// Property does not belong to a valid type which means to be exempted
+		if ( !$this->isValidByType( $dataItemTypeId ) ) {
 			return true;
 		}
 
 		return isset( $this->propertyExemptionList[$property->getKey()] );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param DIProperty $property
+	 *
+	 * @return boolean
+	 */
+	public function isValidByType( $type ) {
+
+		$indexType = SMW_FT_NONE;
+
+		if ( $type === DataItem::TYPE_BLOB ) {
+			$indexType = SMW_FT_BLOB;
+		}
+
+		if ( $type === DataItem::TYPE_URI ) {
+			$indexType = SMW_FT_URI;
+		}
+
+		if ( $type === DataItem::TYPE_WIKIPAGE ) {
+			$indexType = SMW_FT_WIKIPAGE;
+		}
+
+		return ( $this->indexableDataTypes & $indexType ) != 0;
 	}
 
 	/**
@@ -181,12 +219,34 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
+	 * @param string $token
+	 *
+	 * @return boolean
+	 */
+	public function hasMinTokenLength( $token ) {
+		return mb_strlen( $token ) >= $this->minTokenSize;
+	}
+
+	/**
+	 * @since 2.5
+	 *
 	 * @param DIProperty $property
 	 *
 	 * @return integer
 	 */
 	public function getPropertyIdBy( DIProperty $property ) {
 		return $this->store->getObjectIds()->getIDFor( $property->getCanonicalDiWikiPage() );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param integer $id
+	 *
+	 * @return DIWikiPage|null
+	 */
+	public function getDataItemById( $id ) {
+		return $this->store->getObjectIds()->getDataItemById( $id );
 	}
 
 	/**

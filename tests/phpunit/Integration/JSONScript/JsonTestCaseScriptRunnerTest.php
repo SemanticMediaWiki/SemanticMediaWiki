@@ -163,6 +163,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'smwgEnabledQueryDependencyLinksStore',
 			'smwgEnabledFulltextSearch',
 			'smwgFulltextDeferredUpdate',
+			'smwgFulltextSearchIndexableDataTypes',
 			'smwgPropertyZeroCountDisplay',
 			'smwgQueryResultCacheType',
 			'smwgLinksInValues',

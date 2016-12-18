@@ -206,6 +206,16 @@ class JsonTestCaseFileHandler {
 			return $smwgDVFeatures;
 		}
 
+		if ( $key === 'smwgFulltextSearchIndexableDataTypes' && isset( $settings[$key] ) ) {
+			$smwgFulltextSearchIndexableDataTypes = '';
+
+			foreach ( $settings[$key] as $value ) {
+				$smwgFulltextSearchIndexableDataTypes = constant( $value ) | $smwgFulltextSearchIndexableDataTypes;
+			}
+
+			return $smwgFulltextSearchIndexableDataTypes;
+		}
+
 		if ( $key === 'wgDefaultUserOptions' && isset( $settings[$key] ) ) {
 			return array_merge( $GLOBALS['wgDefaultUserOptions'], $settings[$key] );
 		}

@@ -160,3 +160,12 @@ define( 'SMW_DV_TIMEV_CM', 256 );  // TimeValue to indicate calendar model
 define( 'SMW_DV_PPLB', 512 );  // Preferred property label
 define( 'SMW_DV_PROV_LHNT', 1024 );  // PropertyValue to output a hint in case of a preferred label usage
 /**@}*/
+
+/**@{
+  * Constants for Fulltext types
+  */
+define( 'SMW_FT_NONE', 0 );
+define( 'SMW_FT_BLOB', 2 ); // DataItem::TYPE_BLOB
+define( 'SMW_FT_URI', 4 ); // DataItem::TYPE_URI
+define( 'SMW_FT_WIKIPAGE', 8 ); // DataItem::TYPE_WIKIPAGE
+/**@}*/

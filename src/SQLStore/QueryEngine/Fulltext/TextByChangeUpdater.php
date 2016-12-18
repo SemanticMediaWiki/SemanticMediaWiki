@@ -198,14 +198,19 @@ class TextByChangeUpdater {
 			return;
 		}
 
-		// Only text components
-		if ( !$fieldChangeOp->has( 'o_blob' ) && !$fieldChangeOp->has( 'o_hash' ) && !$fieldChangeOp->has( 'o_serialized' ) ) {
+		if ( !$fieldChangeOp->has( 'o_blob' ) && !$fieldChangeOp->has( 'o_hash' ) && !$fieldChangeOp->has( 'o_serialized' ) && !$fieldChangeOp->has( 'o_id' ) ) {
 			return;
 		}
 
 		// Re-map (url type)
 		if ( $fieldChangeOp->has( 'o_serialized' ) ) {
 			$fieldChangeOp->set( 'o_blob', $fieldChangeOp->get( 'o_serialized' ) );
+		}
+
+		// Re-map (wpg type)
+		if ( $fieldChangeOp->has( 'o_id' ) ) {
+			$dataItem = $searchTable->getDataItemById( $fieldChangeOp->get( 'o_id' ) );
+			$fieldChangeOp->set( 'o_blob', $dataItem !== null ? $dataItem->getSortKey() : 'NO_TEXT' );
 		}
 
 		// Build a temporary stable key for the diff match

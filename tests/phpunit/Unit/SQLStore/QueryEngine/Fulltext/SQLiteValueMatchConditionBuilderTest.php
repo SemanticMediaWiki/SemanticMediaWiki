@@ -74,30 +74,6 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testHasMinTokenLength() {
-
-		$this->searchTable->expects( $this->any() )
-			->method( 'getMinTokenSize' )
-			->will( $this->returnValue( 4 ) );
-
-		$instance = new SQLiteValueMatchConditionBuilder(
-			$this->textSanitizer,
-			$this->searchTable
-		);
-
-		$this->assertFalse(
-			$instance->hasMinTokenLength( 'bar' )
-		);
-
-		$this->assertFalse(
-			$instance->hasMinTokenLength( 'テスト' )
-		);
-
-		$this->assertTrue(
-			$instance->hasMinTokenLength( 'test' )
-		);
-	}
-
 	public function testGetSortIndexField() {
 
 		$this->searchTable->expects( $this->any() )
@@ -119,6 +95,14 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->searchTable->expects( $this->once() )
 			->method( 'isEnabled' )
+			->will( $this->returnValue( true ) );
+
+		$this->searchTable->expects( $this->once() )
+			->method( 'isValidByType' )
+			->will( $this->returnValue( true ) );
+
+		$this->searchTable->expects( $this->once() )
+			->method( 'hasMinTokenLength' )
 			->will( $this->returnValue( true ) );
 
 		$this->searchTable->expects( $this->once() )

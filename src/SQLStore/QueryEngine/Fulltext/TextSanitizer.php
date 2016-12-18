@@ -47,14 +47,14 @@ class TextSanitizer {
 	 */
 	public function getVersions() {
 
-		$languageDetector = '(disabled)';
+		$languageDetector = '(Disabled)';
 
 		if ( isset( $this->languageDetection['TextCatLanguageDetector'] ) ) {
 			$languageDetector = 'TextCatLanguageDetector (' . implode(', ', $this->languageDetection['TextCatLanguageDetector'] ) . ')';
 		}
 
 		return array(
-			'ICU (Intl) PHP-extension' => ( extension_loaded( 'intl' ) ? INTL_ICU_VERSION : '(disabled)' ),
+			'ICU (Intl) PHP-extension' => ( extension_loaded( 'intl' ) ? INTL_ICU_VERSION : '(Disabled)' ),
 			'Tesa::Sanitizer'  => Sanitizer::VERSION,
 			'Tesa::Transliterator' => Transliterator::VERSION,
 			'Tesa::LanguageDetector' => $languageDetector

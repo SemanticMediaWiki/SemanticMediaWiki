@@ -128,14 +128,14 @@ class SearchTableUpdater {
 	 */
 	public function update( $sid, $pid, $text ) {
 
-		if ( trim( $text ) === '' ) {
+		if ( trim( $text ) === '' || ( $indexableText = $this->textSanitizer->sanitize( $text ) ) === '' ) {
 			return $this->delete( $sid, $pid );
 		}
 
 		$this->connection->update(
 			$this->searchTable->getTableName(),
 			array(
-				'o_text' => $this->textSanitizer->sanitize( $text ),
+				'o_text' => $indexableText,
 				'o_sort' => mb_substr( $text, 0, 32 )
 			),
 			array(

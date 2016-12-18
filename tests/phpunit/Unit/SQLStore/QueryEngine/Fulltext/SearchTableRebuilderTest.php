@@ -18,6 +18,7 @@ use SMW\Tests\Utils\Mock\IteratorMockBuilder;
 class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $searchTableUpdater;
+	private $searchTable;
 	private $connection;
 	private $iteratorMockBuilder;
 
@@ -27,9 +28,17 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->searchTable = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\SearchTable' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->searchTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->searchTableUpdater->expects( $this->any() )
+			->method( 'getSearchTable' )
+			->will( $this->returnValue( $this->searchTable ) );
 
 		$this->iteratorMockBuilder = new IteratorMockBuilder();
 	}
@@ -122,13 +131,13 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDiType' )
 			->will( $this->returnValue( DataItem::TYPE_BLOB ) );
 
-		$searchTable = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\SearchTable' )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->searchTable->expects( $this->any() )
+			->method( 'isValidByType' )
+			->will( $this->returnValue( true ) );
 
-		$this->searchTableUpdater->expects( $this->atLeastOnce() )
-			->method( 'getSearchTable' )
-			->will( $this->returnValue( $searchTable ) );
+		$this->searchTable->expects( $this->any() )
+			->method( 'hasMinTokenLength' )
+			->will( $this->returnValue( true ) );
 
 		$this->searchTableUpdater->expects( $this->once() )
 			->method( 'isEnabled' )
