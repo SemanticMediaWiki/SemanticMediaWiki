@@ -129,7 +129,7 @@
 	"smw_noqueryfeature": "För någon frågefunktion saknades det stöd i denna wikin och delar av frågan hoppades över ($1).",
 	"smw_noconjunctions": "För konjunktioner i frågor saknas det stöd i denna wikin och delar av frågan hoppades över ($1).",
 	"smw_nodisjunctions": "För disjunktioner i frågor saknas det stöd i denna wikin och delar av frågan hoppades över ($1).",
-	"smw_querytoolarge": "Följande frågevillkor kunde inte tas hänsyn till på grund av wikins begränsningar i frågestorlek eller -djup: $1.",
+	"smw_querytoolarge": "Följande {{PLURAL:$2|frågevillkor|$2 frågevillkor}} kunde inte tas hänsyn till på grund av wikins begränsningar i frågestorlek eller -djup: <code>$1</code>.",
 	"smw_notemplategiven": "För att den här frågan ska fungera behöver du ange ett värde på parametern \"template\".",
 	"smw_db_sparqlqueryproblem": "Svaren på frågan kunde inte fås från SPARQL-databasen. Det här felet kan vara tillfälligt eller också så kan det bero på ett permanent fel med databasen.",
 	"smw_db_sparqlqueryincomplete": "Den här frågan visade sig vara för komplex, och har arbetet med att besvara den har avbrutits. En del resultat kan saknas. Försök om möjligt med en enklare fråga.",

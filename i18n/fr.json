@@ -152,7 +152,7 @@
 	"smw_noqueryfeature": "Quelques fonctionnalités de requêtes ne sont pas prises en charge sur ce wiki et une partie d’entre elles ont été retirées ($1).",
 	"smw_noconjunctions": "Les conjonctions dans les requêtes ne sont pas prises en charge sur ce wiki et une partie d’entres elles ont été retirées ($1).",
 	"smw_nodisjunctions": "Les disjonctions dans les requêtes ne sont pas prises en charge sur ce wiki et des parties de la requête ont été ignorées ($1).",
-	"smw_querytoolarge": "Les conditions suivantes de la requête <code>$1</code> n’ont pas pu être évaluées en raison des restrictions de ce wiki sur la taille ou la profondeur de cette requête.",
+	"smw_querytoolarge": "{{PLURAL:$2|La condition suivante de la requête n'a pas pu être évaluée|Les $2 conditions suivantes de la requête n'ont pas pu être évaluées}} en raison des restrictions de ce wiki concernant la taille ou la profondeur de cette requête: <code>$1</code>.",
 	"smw_notemplategiven": "Veuillez fournir une valeur pour le paramètre « modèle » pour ce format de requête afin de travailler.",
 	"smw_db_sparqlqueryproblem": "Le résultat de la requête n'a pas pu être obtenu à partir de la base de données SPARQL. Cette erreur peut être temporaire ou indiquer un bogue dans le logiciel de la base de données.",
 	"smw_db_sparqlqueryincomplete": "Il s’est avéré trop difficile de répondre à la requête et celle-ci a été abandonnée. Certains résultats pourraient manquer. Si possible, essayez plutôt d’utiliser une requête plus simple.",
@@ -496,5 +496,6 @@
 	"smw-parser-invalid-json-format": "L’analyseur JSON a renvoyé un « $1 ».",
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "« $1 » ne peut pas être utilisé comme libellé préféré parce que la langue « $2 » est déjà affectée au libellé « $3 ».",
-	"smw-parse": "$1"
+	"smw-parse": "$1",
+	"smw-clipboard-copy-link": "Copier le lien dans le presse-papiers"
 }

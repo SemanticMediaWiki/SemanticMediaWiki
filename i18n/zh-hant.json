@@ -242,7 +242,7 @@
 	"smw_smwadmin_dbdocu": "Semantic MediaWiki 將 MediaWiki 資料庫做一些擴充套件，以儲存語意資料。\n以下功能可幫助你正確設定資料庫。\n這個步驟所做的修改不會影響 MediaWiki 資料庫的其他部分，如果需要，可以方便地還原所做的修改。\n這個定射功能可多次執行，不會造成任何危害。但是只需在安裝或升級時執行一次即可。",
 	"smw_smwadmin_permissionswarn": "如果操作因 SQL 錯誤而失敗，可能是維基的資歷庫使用者 (檢查您的 LocalSettings.php) 沒有相應權限。你可以向該使用者賦予建立和刪除表格的權限，或臨時將資料庫根使用者的登入資訊輸入 LocalSettings.php，或使用維護腳本<code>setupStore.php</code>，這個腳本可以使用 LocalSettings.php 中的資訊。",
 	"smw_smwadmin_dbbutton": "初始化或升級表格",
-	"smw_smwadmin_announce": "發布 wiki",
+	"smw_smwadmin_announce": "發佈 wiki",
 	"smw_smwadmin_announce_text": "若您的 wiki 是公開的，您可於 <a href=\"https://wikiapiary.com\">WikiApiary</a> 註冊，用 wiki 來追蹤 wiki。",
 	"smw_smwadmin_datarefresh": "資料修復和升級",
 	"smw_smwadmin_datarefreshdocu": "可以基於維基先有內容對所有 Semantic MediaWki 資料進行重置。\n這個功能對修復損壞的資料，或者在軟體升級，內部格式改變時更新資料非常有用。\n更新時逐頁面執行的，需要一段時間。\n下方將顯示更新是否正在進行，並允許你開始或終止更新。 (此功能可以被網站管理員停用)",

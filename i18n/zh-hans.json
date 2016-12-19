@@ -131,7 +131,7 @@
 	"smw_noqueryfeature": "此维基不支持一些查询功能，查询被部分停止（$1）。",
 	"smw_noconjunctions": "此维基不支持查询中的合取，查询被部分停止（$1）。",
 	"smw_nodisjunctions": "此维基不支持查询中的析取，查询被部分停止（$1）。",
-	"smw_querytoolarge": "由于wiki对查询大小或深度的限制，下列查询条件<code>$1</code>无法考虑。",
+	"smw_querytoolarge": "由于此wiki在查询大小或深度上的限制，下列{{PLURAL:$2|查询条件}}无法考虑：<code>$1</code>。",
 	"smw_notemplategiven": "为使查询格式正常工作，请为参数“模板”赋值。",
 	"smw_db_sparqlqueryproblem": "无法从SPARQL数据库获得查询结果。这个错误可能是暂时的，也可能是数据库软件的错误造成的。",
 	"smw_db_sparqlqueryincomplete": "本查询太过复杂因而被中止，可能会因此丢失部分结果。如果可能，请尝试改用一个较简单的查询。",
@@ -438,6 +438,7 @@
 	"smw-pa-property-predefined_pvuc": "“$1”是一个表明分配至属性的值预计唯一的预定义属性，并由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]提供。",
 	"smw-pa-property-predefined-long_pvuc": "当两个值的文字表示不等时独特性就会被确定，并且任何此约束的违例将被归类为错误。",
 	"smw-datavalue-uniqueness-constraint-error": "属性“$1”只允许单一值分配，且“$2”已注释于主题“$3”中。",
+	"smw-datavalue-uniqueness-constraint-isknown": "属性“$1”只允许唯一值释文，“$2”已被分配给“$3”。",
 	"smw-pa-property-predefined_boo": "“$1”是一种由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供，代表布尔值的[[Special:Types/Boolean|类型]]和预定义属性。",
 	"smw-pa-property-predefined_num": "“$1”是一种由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供，代表数值的[[Special:Types/Number|类型]]和预定义属性。",
 	"smw-pa-property-predefined_dat": "“$1”是一种由语义MediaWiki提供，代表日期值的[[Special:Types/Date|类型]]和预定义属性。",
@@ -475,5 +476,6 @@
 	"smw-parser-invalid-json-format": "JSON解析器返回了“$1”。",
 	"smw-property-preferred-title-format": "$1（$2）",
 	"smw-property-preferred-label-language-combination-exists": "“$1”不能用作首选标签，因为语言“$2”已分配给“$3”标签。",
-	"smw-parse": "$1"
+	"smw-parse": "$1",
+	"smw-clipboard-copy-link": "复制链接到剪贴板"
 }

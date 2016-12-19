@@ -278,6 +278,7 @@
 	"smw_smwadmin_smwhomepage": "La documentación de usuario completa a Semantic MediaWiki está en <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw_smwadmin_mediazilla": "Los defectos pueden ser reportados a <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
 	"smw_smwadmin_questions": "Si tienes preguntas o sugerencias adicionales, únete a la discusión en <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">Foro de usuarios de Semantic MediaWiki\n</a>.",
+	"smw-smwadmin-settings-title": "Opciones de configuración",
 	"smw-smwadmin-operational-statistics-title": "Estadísticas de funcionamiento",
 	"smw_adminlinks_datastructure": "Estructura de datos",
 	"smw_adminlinks_displayingdata": "Mostrando datos",
@@ -323,7 +324,7 @@
 	"action-smw-admin": "acceder a tareas de administración de Semantic MediaWiki",
 	"smw-pa-property-predefined-default": "\"$1\" es una propiedad predefinida.",
 	"smw-pa-property-predefined-common": "Esta propiedad está preconfigurada (también llamada [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propiedad especial]) y viene con privilegios administrativos adicionales, pero puede usarse como cualquier otra [https://www.semantic-mediawiki.org/wiki/Property propiedad definida por usuario].",
-	"smw-pa-property-predefined_ask": "\"$1\" es una propiedad predefinida que representa meta información (en la forma de un [https://www.semantic-mediawiki.org/wiki/Subobject subobjecto]) sobre consultas individuales. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-pa-property-predefined_ask": "\"$1\" es una propiedad predefinida, proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki], que representa metainformación (en forma de un [https://www.semantic-mediawiki.org/wiki/Subobject subobjeto]) sobre consultas individuales.",
 	"smw-pa-property-predefined_asksi": "\"$1\" es una propiedad predefinida que recopila el número de condiciones usadas en una consulta. Y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-pa-property-predefined_askde": "«$1» es una propiedad predefinida que informa sobre la profundidad de una consulta y la proporciona [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-sp-properties-cache-info": "Los datos listados se han obtenido de la [https://www.semantic-mediawiki.org/wiki/Caching caché], y fueron actualizados por última vez el $1.",
@@ -405,5 +406,7 @@
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-parser-invalid-json-format": "El analizador de JSON devolvió «$1».",
 	"smw-property-preferred-title-format": "$1 ($2)",
-	"smw-property-preferred-label-language-combination-exists": "No se puede utilizar «$1» como etiqueta preferida porque el idioma «$2» ya se ha asignado a la etiqueta «$3»."
+	"smw-property-preferred-label-language-combination-exists": "No se puede utilizar «$1» como etiqueta preferida porque el idioma «$2» ya se ha asignado a la etiqueta «$3».",
+	"smw-parse": "$1",
+	"smw-clipboard-copy-link": "Copiar enlace al portapapeles"
 }
