@@ -443,6 +443,9 @@ class SMWQuery implements QueryContext {
 
 		// For an optimal (less fragmentation) use of the cache, only use
 		// elements that directly influence the result list
+		if ( $this->description === null ) {
+			return '';
+		}
 		$serialized = array();
 
 		// Don't use the QueryString, use the canonized hash to ensure that
