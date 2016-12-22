@@ -459,6 +459,7 @@
 	"smw-pa-property-predefined_pvuc": "« $1 » est une propriété prédéfinie indiquant que les affectations de cette valeur à une propriété doivent être uniques, et elle est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
 	"smw-pa-property-predefined-long_pvuc": "L’unicité est établie quand deux valeurs n’ont pas la même représentation littérale, et toute violation de cette contrainte sera catégorisée comme une erreur.",
 	"smw-datavalue-uniqueness-constraint-error": "La propriété « $1 » ne permet que des affectations de valeurs uniques, et « $2 » a déjà été annoté dans le sujet « $3 ».",
+	"smw-datavalue-uniqueness-constraint-isknown": "La propriété « $1 » ne permet que des annotations à valeur unique, « $2 » a déjà été affecté à « $3 ».",
 	"smw-pa-property-predefined_boo": "« $1 » est un [[Special:Types/Boolean|type]] et une propriété prédéfinie par fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique] pour représenter les valeurs booléennes.",
 	"smw-pa-property-predefined_num": "« $1 » est un [[Special:Types/Number|type]] et une propriété prédéfinie fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique] pour représenter des valeurs numériques.",
 	"smw-pa-property-predefined_dat": "« $1 » est un [[Special:Types/Date|type]] et une propriété prédéfinie fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique] pour représenter des valeurs de date.",

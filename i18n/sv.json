@@ -324,5 +324,6 @@
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "\"$1\" kan inte användas som en föredragen etikett eftersom språket \"$2\" är redan tilldelat till etiketten \"$3\".",
-	"smw-parse": "$1"
+	"smw-parse": "$1",
+	"smw-clipboard-copy-link": "Kopiera länk till urklipp"
 }
