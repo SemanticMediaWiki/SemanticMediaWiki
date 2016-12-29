@@ -3,7 +3,8 @@
 		"authors": [
 			"Cedric31",
 			"아라",
-			"Kghbln"
+			"Kghbln",
+			"Nicolas Eynaud"
 		]
 	},
 	"smw-desc": "Rendre lo wiki mai accessible - per las maquinas ''e'' los umans ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentacion en linha])",
@@ -194,6 +195,7 @@
 	"smw-ui-tooltip-title-event": "Eveniment",
 	"smw-ui-tooltip-title-note": "Nòta",
 	"smw-ui-tooltip-title-legend": "Legenda",
+	"smw-ui-tooltip-title-reference": "Referéncia",
 	"smw_unknowntype": "Lo tipe d'aquesta proprietat es invalid",
 	"smw_concept_header": "Paginas del concèpte « $1 »",
 	"smw_conceptarticlecount": "Afichar çaijós $1 {{PLURAL:$1|pagina|paginas}}.",
@@ -201,6 +203,7 @@
 	"group-smwadministrator-member": "{{GENDER:$1|administrator|administratritz}} (Semantic MediaWiki)",
 	"grouppage-smwadministrator": "{{ns:project}}:Administrators (Semantic MediaWiki)",
 	"group-smwcurator": "Conservadors (Mediawiki Semantica)",
+	"smw-pa-property-predefined-default": "$1 es una proprietat predefinida.",
 	"smw-sp-properties-header-label": "Lista de las proprietats",
 	"smw-sp-admin-settings-button": "Generar la lista dels paramètres",
 	"smw-sp-admin-objectid": "Id d’objècte :",
@@ -209,5 +212,9 @@
 	"log-name-smw": "Semantica del jornal MediaWiki",
 	"smw-sp-types-list": "Lista dels tipes de donadas",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|segonda|segondas}}",
-	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|segonda|segondas}}"
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|segonda|segondas}}",
+	"smw-datavalue-external-formatter-invalid-uri": "$1 es una URL invalida.",
+	"smw-datavalue-reference-outputformat": "$1: $2",
+	"smw-property-preferred-title-format": "$1 ($2)",
+	"smw-parse": "$1"
 }
