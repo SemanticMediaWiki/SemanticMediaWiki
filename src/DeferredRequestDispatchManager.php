@@ -116,6 +116,11 @@ class DeferredRequestDispatchManager {
 	 * @param array $parameters
 	 */
 	public function scheduleParserCachePurgeJobWith( Title $title, $parameters = array() ) {
+
+		if ( $parameters === array() || !isset( $parameters['idlist'] ) ) {
+			return;
+		}
+		
 		return $this->dispatchJobRequestWith( 'SMW\ParserCachePurgeJob', $title, $parameters );
 	}
 
