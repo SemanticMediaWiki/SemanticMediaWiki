@@ -366,7 +366,7 @@ class SQLStoreFactory {
 			$this->store
 		);
 
-		$propertyTableIdReferenceFinder->usesCapitalLinks(
+		$propertyTableIdReferenceFinder->isCapitalLinks(
 			$GLOBALS['wgCapitalLinks']
 		);
 

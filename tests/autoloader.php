@@ -18,7 +18,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 }
 
 if ( !class_exists( 'SemanticMediaWiki' ) || ( $version = SemanticMediaWiki::getVersion() ) === null ) {
-	die( "\Semantic MediaWiki is not available, please check your LocalSettings or Composer settings.\n" );
+	die( "\nSemantic MediaWiki is not available, please check your LocalSettings or Composer settings.\n" );
 }
 
 // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength.MaxExceeded
@@ -30,14 +30,13 @@ if ( is_readable( $path = __DIR__ . '/../vendor/autoload.php' ) ) {
 } elseif ( is_readable( $path = __DIR__ . '/../../../vendor/autoload.php' ) ) {
 	print sprintf( "%-20s%s\n", "MediaWiki:", $GLOBALS['wgVersion'] . " (MediaWiki vendor autoloader)" );
 } else {
-	die( 'To run tests it is required that packages are installed using Composer.' );
+	die( 'To run the test suite it is required that packages are installed using Composer.' );
 }
 
 print sprintf( "%-20s%s\n", "Site language:", $GLOBALS['wgLanguageCode'] );
 
 $dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
 print sprintf( "\n%-20s%s\n", "Execution time:", $dateTimeUtc->format( 'Y-m-d h:i' ) );
-
 print sprintf( "%-20s%s\n", "Debug logs:", $GLOBALS['wgDebugLogGroups'] !== array() || $GLOBALS['wgDebugLogFile'] !== '' ? 'Enabled' : 'Disabled' );
 
 if ( extension_loaded('xdebug') && xdebug_is_enabled() ) {
@@ -65,13 +64,5 @@ $autoloader->addClassMap( array(
 	'SMW\Test\QueryPrinterTestCase'         => __DIR__ . '/phpunit/QueryPrinterTestCase.php',
 	'SMW\Test\QueryPrinterRegistryTestCase' => __DIR__ . '/phpunit/QueryPrinterRegistryTestCase.php',
 ) );
-
-/**
- * @since 2.5
- *
- * Shoudl be removed once all external references have been renamed.
- */
-class_alias( 'SMW\Tests\JsonTestCaseScriptRunner', 'SMW\Tests\ByJsonTestCaseProvider' );
-
 
 return $autoloader;

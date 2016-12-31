@@ -114,27 +114,27 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$provider[] = array(
-			'\SMW\AskParserFunction',
+			'\SMW\ParserFunctions\AskParserFunction',
 			'newAskParserFunction'
 		);
 
 		$provider[] = array(
-			'\SMW\ShowParserFunction',
+			'\SMW\ParserFunctions\ShowParserFunction',
 			'newShowParserFunction'
 		);
 
 		$provider[] = array(
-			'\SMW\SetParserFunction',
+			'\SMW\ParserFunctions\SetParserFunction',
 			'newSetParserFunction'
 		);
 
 		$provider[] = array(
-			'\SMW\ConceptParserFunction',
+			'\SMW\ParserFunctions\ConceptParserFunction',
 			'newConceptParserFunction'
 		);
 
 		$provider[] = array(
-			'\SMW\DeclareParserFunction',
+			'\SMW\ParserFunctions\DeclareParserFunction',
 			'newDeclareParserFunction'
 		);
 

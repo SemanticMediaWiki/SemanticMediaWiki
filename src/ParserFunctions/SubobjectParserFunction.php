@@ -33,17 +33,16 @@ class SubobjectParserFunction {
 	const PARAM_SORTKEY = '@sortkey';
 
 	/**
-	 * Fixed identifier that describes the subobject category parameter.
+	 * Fixed identifier that describes a category parameter
 	 *
-	 * We keep it as a @ fixed parameter since the standard annotation would
-	 * require special attention (Category:;instead of ::) when annotating a
-	 * category
+	 * Those will not be visible by the "standard" category list as the handling
+	 * of assigned categories is SMW specific for subobjects.
 	 */
 	const PARAM_CATEGORY = '@category';
 
 	/**
-	 * Fixed identifier that describes a property by which a subobject is auto
-	 * linked to the an embededding subject
+	 * Fixed identifier that describes a property that can auto-linked the
+	 * embededding subject
 	 */
 	const PARAM_LINKWITH = '@linkWith';
 
@@ -65,12 +64,12 @@ class SubobjectParserFunction {
 	/**
 	 * @var boolean
 	 */
-	private $isEnabledFirstElementAsPropertyLabel = false;
+	private $useFirstElementAsPropertyLabel = false;
 
 	/**
 	 * @var boolean
 	 */
-	private $usesCapitalLinks = true;
+	private $isCapitalLinks = true;
 
 	/**
 	 * @var boolean
@@ -91,27 +90,25 @@ class SubobjectParserFunction {
 	}
 
 	/**
-	 * @note If $wgCapitalLinks is set false then it will avoid forcing the first
-	 * letter of page titles (including included pages, images and categories)
-	 * to capitals
+	 * @see $wgCapitalLinks
 	 *
 	 * @since 2.5
 	 *
-	 * @param booelan $usesCapitalLinks
+	 * @param boolean $isCapitalLinks
 	 */
-	public function usesCapitalLinks( $usesCapitalLinks ) {
-		$this->usesCapitalLinks = $usesCapitalLinks;
+	public function isCapitalLinks( $isCapitalLinks ) {
+		$this->isCapitalLinks = $isCapitalLinks;
 	}
 
 	/**
 	 * FIXME 3.0, make sorting default with 3.0
 	 *
-	 * Ensures that unordered parameters is ordered and normalized and will
-	 * produce the same ID even if elements are placed differently
+	 * Ensures that unordered parameters and property names are normalized in
+	 * order to produce the same has even if elements are placed differently
 	 *
 	 * @since 2.5
 	 *
-	 * @param booelan $enabledNormalization
+	 * @param boolean $enabledNormalization
 	 */
 	public function enabledNormalization( $enabledNormalization = true ) {
 		$this->enabledNormalization = (bool)$enabledNormalization;
@@ -120,12 +117,12 @@ class SubobjectParserFunction {
 	/**
 	 * @since 1.9
 	 *
-	 * @param boolean $isEnabledFirstElementAsPropertyLabel
+	 * @param boolean $useFirstElementAsPropertyLabel
 	 *
 	 * @return SubobjectParserFunction
 	 */
-	public function setFirstElementAsPropertyLabel( $isEnabledFirstElementAsPropertyLabel = true ) {
-		$this->isEnabledFirstElementAsPropertyLabel = (bool)$isEnabledFirstElementAsPropertyLabel;
+	public function useFirstElementAsPropertyLabel( $useFirstElementAsPropertyLabel = true ) {
+		$this->useFirstElementAsPropertyLabel = (bool)$useFirstElementAsPropertyLabel;
 		return $this;
 	}
 
@@ -162,10 +159,10 @@ class SubobjectParserFunction {
 
 	protected function addDataValuesToSubobject( ParserParameterProcessor $parserParameterProcessor ) {
 
-		// Named subobjects containing a "." in the first five characters are reserved to be
-		// used by extensions only in order to separate them from user land and avoid having
-		// them accidentally to refer to the same named ID
-		// (i.e. different access restrictions etc.)
+		// Named subobjects containing a "." in the first five characters are
+		// reserved to be used by extensions only in order to separate them from
+		// user land and avoid having them accidentally to refer to the same
+		// named ID (i.e. different access restrictions etc.)
 		if ( strpos( mb_substr( $parserParameterProcessor->getFirst(), 0, 5 ), '.' ) !== false ) {
 			return $this->parserData->addError(
 				Message::encode( array( 'smw-subobject-parser-invalid-naming-scheme', $parserParameterProcessor->getFirst() ) )
@@ -205,7 +202,7 @@ class SubobjectParserFunction {
 			}
 		}
 
-		$this->doAugmentSortKeyForWhenDisplayTitleIsAccessible(
+		$this->doAugmentSortKeyOnAccessibleDisplayTitle(
 			$this->subobject->getSemanticData()
 		);
 
@@ -217,21 +214,22 @@ class SubobjectParserFunction {
 		$id = $parserParameterProcessor->getFirst();
 		$isAnonymous = in_array( $id, array( null, '' ,'-' ) );
 
-		$this->isEnabledFirstElementAsPropertyLabel = $this->isEnabledFirstElementAsPropertyLabel && !$isAnonymous;
+		$useFirstElementAsPropertyLabel = $this->useFirstElementAsPropertyLabel && !$isAnonymous;
 
 		$parameters = $this->doPrepareParameters(
-			$parserParameterProcessor
+			$parserParameterProcessor,
+			$useFirstElementAsPropertyLabel
 		);
 
-		// Reclaim the ID to be hash based on the content
-		if ( $this->isEnabledFirstElementAsPropertyLabel || $isAnonymous ) {
-			$id = HashBuilder::createHashIdForContent( $parameters, '_' );
+		// Reclaim the ID to be content hash based
+		if ( $useFirstElementAsPropertyLabel || $isAnonymous ) {
+			$id = HashBuilder::createFromContent( $parameters, '_' );
 		}
 
 		return array( $parameters, $id );
 	}
 
-	private function doPrepareParameters( ParserParameterProcessor $parserParameterProcessor ) {
+	private function doPrepareParameters( ParserParameterProcessor $parserParameterProcessor, $useFirstElementAsPropertyLabel ) {
 
 		if ( $parserParameterProcessor->hasParameter( self::PARAM_LINKWITH ) ) {
 			$val = $parserParameterProcessor->getParameterValuesByKey( self::PARAM_LINKWITH );
@@ -243,7 +241,7 @@ class SubobjectParserFunction {
 			$parserParameterProcessor->removeParameterByKey( self::PARAM_LINKWITH );
 		}
 
-		if ( $this->isEnabledFirstElementAsPropertyLabel ) {
+		if ( $useFirstElementAsPropertyLabel ) {
 			$parserParameterProcessor->addParameter(
 				$parserParameterProcessor->getFirst(),
 				$this->parserData->getTitle()->getPrefixedText()
@@ -260,22 +258,27 @@ class SubobjectParserFunction {
 		// CapitalLinks is enabled (has foo === Has foo)
 		foreach ( $parameters as $property => $values ) {
 
-			if ( $property{0} === '@' || !$this->usesCapitalLinks ) {
-				continue;
+			$prop = $property;
+
+			// Order of the values is not guaranteed
+			rsort( $values );
+
+			if ( $property{0} !== '@' && $this->isCapitalLinks ) {
+				$property = mb_strtoupper( mb_substr( $property, 0, 1 ) ) . mb_substr( $property, 1 );
 			}
 
-			$prop = mb_strtoupper( mb_substr( $property, 0, 1 ) ) . mb_substr( $property, 1 );
-
-			unset( $parameters[$property] );
-			$parameters[$prop] = $values;
+			unset( $parameters[$prop] );
+			$parameters[$property] = $values;
 		}
 
+		// Sort the array by property name to ensure that a different order would
+		// always create the same hash
 		ksort( $parameters );
 
 		return $parameters;
 	}
 
-	private function doAugmentSortKeyForWhenDisplayTitleIsAccessible( $semanticData ) {
+	private function doAugmentSortKeyOnAccessibleDisplayTitle( $semanticData ) {
 
 		$sortkey = new DIProperty( DIProperty::TYPE_SORTKEY );
 		$displayTitle = new DIProperty( DIProperty::TYPE_DISPLAYTITLE );

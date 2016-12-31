@@ -73,7 +73,7 @@ class HashBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testContentHashId() {
 
-		$hash = HashBuilder::createHashIdForContent( 'Foo' );
+		$hash = HashBuilder::createFromContent( 'Foo' );
 
 		$this->assertInternalType(
 			'string',
@@ -82,12 +82,12 @@ class HashBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertSame(
 			$hash,
-			HashBuilder::createHashIdForContent( array( 'Foo' ) )
+			HashBuilder::createFromContent( array( 'Foo' ) )
 		);
 
 		$this->assertContains(
 			'Bar',
-			HashBuilder::createHashIdForContent( array( 'Foo' ), 'Bar' )
+			HashBuilder::createFromContent( array( 'Foo' ), 'Bar' )
 		);
 	}
 

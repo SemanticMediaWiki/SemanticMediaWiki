@@ -1,18 +1,16 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
 use SMW\ApplicationFactory;
-use SMW\ConceptParserFunction;
+use SMW\ParserFunctions\ConceptParserFunction;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**
- * @covers \SMW\ConceptParserFunction
- *
- * @group SMW
- * @group SMWExtension
+ * @covers \SMW\ParserFunctions\ConceptParserFunction
+ * @group semantic-mediawiki
  * @group medium
  *
  * @license GNU GPL v2+
@@ -47,7 +45,7 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\ConceptParserFunction',
+			'\SMW\ParserFunctions\ConceptParserFunction',
 			new ConceptParserFunction( $parserData, $messageFormatter )
 		);
 	}
