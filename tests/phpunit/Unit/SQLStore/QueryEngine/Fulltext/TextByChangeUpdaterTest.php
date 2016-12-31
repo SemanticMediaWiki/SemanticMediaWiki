@@ -20,7 +20,7 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 	private $searchTableUpdater;
 	private $textSanitizer;
-	private $transitionalDiffStore;
+	private $tempChangeOpStore;
 	private $slot;
 
 	protected function setUp() {
@@ -39,7 +39,7 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->transitionalDiffStore = $this->getMockBuilder( '\SMW\SQLStore\TransitionalDiffStore' )
+		$this->tempChangeOpStore = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\TempChangeOpStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -50,7 +50,7 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Fulltext\TextByChangeUpdater',
-			new TextByChangeUpdater( $this->connection, $this->searchTableUpdater, $this->textSanitizer, $this->transitionalDiffStore )
+			new TextByChangeUpdater( $this->connection, $this->searchTableUpdater, $this->textSanitizer, $this->tempChangeOpStore )
 		);
 	}
 
@@ -79,7 +79,7 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			$this->connection,
 			$this->searchTableUpdater,
 			$this->textSanitizer,
-			$this->transitionalDiffStore
+			$this->tempChangeOpStore
 		);
 
 		$instance->asDeferredUpdate( false );
@@ -121,7 +121,7 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			$this->connection,
 			$this->searchTableUpdater,
 			$this->textSanitizer,
-			$this->transitionalDiffStore
+			$this->tempChangeOpStore
 		);
 
 		$instance->asDeferredUpdate( true );
@@ -158,7 +158,7 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			$this->connection,
 			$this->searchTableUpdater,
 			$this->textSanitizer,
-			$this->transitionalDiffStore
+			$this->tempChangeOpStore
 		);
 
 		$instance->asDeferredUpdate( true );

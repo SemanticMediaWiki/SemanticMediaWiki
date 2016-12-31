@@ -1,10 +1,11 @@
 <?php
 
-namespace SMW\SQLStore;
+namespace SMW\SQLStore\ChangeOp;
 
 use Onoi\Cache\Cache;
 use SMW\DIWikiPage;
 use SMW\SQLStore\ChangeOp\TableChangeOp;
+use SMW\SQLStore\CompositePropertyTableDiffIterator;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
 
@@ -20,14 +21,14 @@ use Psr\Log\LoggerAwareInterface;
  * to retrieve it at a later point without relying on the JobQueueDB as storage
  * medium.
  *
- * The slot can be removed using a reference and the SequentialCachePurgeJob.
+ * It is expected that the ChronologyPurgeJob is removing inactive slots.
  *
  * @license GNU GPL v2+
  * @since 2.5
  *
  * @author mwjames
  */
-class TransitionalDiffStore implements LoggerAwareInterface {
+class TempChangeOpStore implements LoggerAwareInterface {
 
 	const CACHE_NAMESPACE = ':smw:diff:';
 
