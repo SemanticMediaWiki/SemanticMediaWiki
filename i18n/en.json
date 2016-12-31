@@ -475,5 +475,6 @@
 	"smw-property-preferred-title-format":"$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "\"$1\" cannot be used as preferred label because the language \"$2\" is already assigned to the \"$3\" label.",
 	"smw-parse": "$1",
-	"smw-clipboard-copy-link": "Copy link to clipboard"
+	"smw-clipboard-copy-link": "Copy link to clipboard",
+	"smw-property-userdefined-fixedtable": "\"$1\" was configured as [https://semantic-mediawiki.org/wiki/Fixed_properties fixed property] and any modification to its [https://semantic-mediawiki.org/wiki/Type_declaration type declaration] requires to either run <code>setupStore.php</code> or to complete the special [[Special:SemanticMediaWiki|\"Database installation and upgrade\"]] task."
 }

@@ -15,6 +15,11 @@ use SMWDataItem as DataItem;
 class PropertyTableInfoFetcher {
 
 	/**
+	 * @var PropertyTypeFinder
+	 */
+	private $propertyTypeFinder;
+
+	/**
 	 * Array for keeping property table table data, indexed by table id.
 	 * Access this only by calling getPropertyTables().
 	 *
@@ -92,6 +97,15 @@ class PropertyTableInfoFetcher {
 	);
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param PropertyTypeFinder $propertyTypeFinder
+	 */
+	public function __construct( PropertyTypeFinder $propertyTypeFinder ) {
+		$this->propertyTypeFinder = $propertyTypeFinder;
+	}
+
+	/**
 	 * @since 2.2
 	 *
 	 * @param array $customFixedProperties
@@ -144,6 +158,22 @@ class PropertyTableInfoFetcher {
 		}
 
 		return '';
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param DIProperty $property
+	 *
+	 * @return boolean
+	 */
+	public function isFixedTableProperty( DIProperty $property ) {
+
+		if ( $this->fixedPropertyTableIds === null ) {
+			$this->buildDefinitionsForPropertyTables();
+		}
+
+		return array_key_exists( $property->getKey(), $this->fixedPropertyTableIds );
 	}
 
 	/**
@@ -212,12 +242,14 @@ class PropertyTableInfoFetcher {
 		}
 
 		$definitionBuilder = new PropertyTableDefinitionBuilder(
+			$this->propertyTypeFinder
+		);
+
+		$definitionBuilder->doBuild(
 			$this->defaultDiTypeTableIdMap,
 			$enabledSpecialProperties,
 			$this->customFixedPropertyList
 		);
-
-		$definitionBuilder->doBuild();
 
 		$this->propertyTableDefinitions = $definitionBuilder->getTableDefinitions();
 		$this->fixedPropertyTableIds = $definitionBuilder->getFixedPropertyTableIds();

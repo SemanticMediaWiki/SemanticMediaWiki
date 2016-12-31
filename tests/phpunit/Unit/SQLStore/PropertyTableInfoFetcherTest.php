@@ -17,17 +17,29 @@ use SMWDataItem as DataItem;
  */
 class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 
+	private $propertyTypeFinder;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->propertyTypeFinder = $this->getMockBuilder( '\SMW\SQLStore\PropertyTypeFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\PropertyTableInfoFetcher',
-			new PropertyTableInfoFetcher()
+			new PropertyTableInfoFetcher( $this->propertyTypeFinder )
 		);
 	}
 
 	public function testGetPropertyTableDefinitions() {
 
-		$instance = new PropertyTableInfoFetcher();
+		$instance = new PropertyTableInfoFetcher(
+			$this->propertyTypeFinder
+		);
 
 		$this->assertInternalType(
 			'array',
@@ -44,7 +56,9 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$property = DIProperty::newFromUserLabel( $property );
 
-		$instance = new PropertyTableInfoFetcher();
+		$instance = new PropertyTableInfoFetcher(
+			$this->propertyTypeFinder
+		);
 
 		$instance->setCustomSpecialPropertyList(
 			array( '_MDAT', '_MEDIA', '_MIME' )
@@ -61,7 +75,9 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testFindTableIdForDataItemTypeId( $diType, $expected ) {
 
-		$instance = new PropertyTableInfoFetcher();
+		$instance = new PropertyTableInfoFetcher(
+			$this->propertyTypeFinder
+		);
 
 		$instance->setCustomSpecialPropertyList(
 			array( '_MDAT', '_MEDIA', '_MIME' )
@@ -78,7 +94,9 @@ class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testFindTableIdForDataTypeTypeId( $dataType, $expected ) {
 
-		$instance = new PropertyTableInfoFetcher();
+		$instance = new PropertyTableInfoFetcher(
+			$this->propertyTypeFinder
+		);
 
 		$instance->setCustomSpecialPropertyList(
 			array( '_MDAT', '_MEDIA', '_MIME' )
