@@ -509,10 +509,6 @@ class HookRegistry {
 			$queryDependencyLinksStore->setStore( $store );
 			$subject = $semanticData->getSubject();
 
-			$slot = $tempChangeOpStore->createSlotFrom(
-				$compositePropertyTableDiffIterator
-			);
-
 			$queryDependencyLinksStore->pruneOutdatedTargetLinks(
 				$subject,
 				$compositePropertyTableDiffIterator
@@ -540,16 +536,7 @@ class HookRegistry {
 
 			$textByChangeUpdater->pushUpdates(
 				$compositePropertyTableDiffIterator,
-				$deferredRequestDispatchManager,
-				$slot
-			);
-
-			// Since we cannot predict as to when the slot is used and by whom,
-			// schedule a job to ensure to be the last in-line to clean-up
-			// any remaining slots for this transaction
-			$deferredRequestDispatchManager->scheduleChronologyPurgeJobWith(
-				$subject->getTitle(),
-				array( 'slot:id' => $slot )
+				$deferredRequestDispatchManager
 			);
 
 			return true;

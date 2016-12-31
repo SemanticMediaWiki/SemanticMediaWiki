@@ -93,13 +93,10 @@ class TextByChangeUpdater {
 	 *
 	 * @param CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator
 	 * @param DeferredRequestDispatchManager $deferredRequestDispatchManager
-	 * @param string|null $slot
 	 */
-	public function pushUpdates( CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator, DeferredRequestDispatchManager $deferredRequestDispatchManager, $slot = null ) {
+	public function pushUpdates( CompositePropertyTableDiffIterator $compositePropertyTableDiffIterator, DeferredRequestDispatchManager $deferredRequestDispatchManager ) {
 
-		// slot === null indicates that the CompositePropertyTableDiffIterator
-		// for the current transaction is empty
-		if ( !$this->searchTableUpdater->isEnabled() || $slot === null ) {
+		if ( !$this->searchTableUpdater->isEnabled() ) {
 			return;
 		}
 
@@ -108,7 +105,15 @@ class TextByChangeUpdater {
 			return $this->pushUpdatesFromPropertyTableDiff( $compositePropertyTableDiffIterator );
 		}
 
-		$deferredRequestDispatchManager->scheduleSearchTableUpdateJobWith(
+		if ( !$this->canPostUpdate( $compositePropertyTableDiffIterator ) ) {
+			return;
+		}
+
+		$slot = $this->tempChangeOpStore->createSlotFrom(
+			$compositePropertyTableDiffIterator
+		);
+
+		$deferredRequestDispatchManager->scheduleFulltextSearchTableUpdateJobWith(
 			$compositePropertyTableDiffIterator->getSubject()->getTitle(),
 			array(
 				'slot:id' => $slot
@@ -137,6 +142,8 @@ class TextByChangeUpdater {
 		foreach ( $tableChangeOps as $tableChangeOp ) {
 			$this->doUpdateFromTableChangeOp( $tableChangeOp );
 		}
+
+		$this->tempChangeOpStore->delete( $parameters['slot:id'] );
 
 		wfDebugLog( 'smw', __METHOD__ . ' procTime (sec): '. round( ( microtime( true ) - $start ), 5 ) );
 	}
@@ -289,6 +296,24 @@ class TextByChangeUpdater {
 
 			$this->searchTableUpdater->update( $sid, $pid, $text . ' ' . $value );
 		}
+	}
+
+	private function canPostUpdate( $compositePropertyTableDiffIterator ) {
+
+		$searchTable = $this->searchTableUpdater->getSearchTable();
+		$canPostUpdate = false;
+
+		// Find out whether we should actual initiate an update
+		foreach ( $compositePropertyTableDiffIterator->getCombinedIdListOfChangedEntities() as $id ) {
+			if ( ( $dataItem = $searchTable->getDataItemById( $id ) ) instanceof DIWikiPage && $dataItem->getNamespace() === SMW_NS_PROPERTY ) {
+				if ( !$searchTable->isExemptedPropertyById( $id ) ) {
+					$canPostUpdate = true;
+					break;
+				}
+			}
+		}
+
+		return $canPostUpdate;
 	}
 
 }

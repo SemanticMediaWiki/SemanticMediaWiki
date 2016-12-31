@@ -86,22 +86,41 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->pushUpdates(
 			$compositePropertyTableDiffIterator,
-			$deferredRequestDispatchManager,
-			$this->slot
+			$deferredRequestDispatchManager
 		);
 	}
 
 	public function testPushUpdatesAsDeferredUpdate() {
 
-		$this->slot = 42;
+		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
+
+		$this->tempChangeOpStore->expects( $this->once() )
+			->method( 'createSlotFrom' )
+			->will( $this->returnValue( 42 ) );
+
+		$searchTable = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\SearchTable' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$searchTable->expects( $this->atLeastOnce() )
+			->method( 'getDataItemById' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( 'Bar', SMW_NS_PROPERTY ) ) );
 
 		$this->searchTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'isEnabled' )
 			->will( $this->returnValue( true ) );
 
+		$this->searchTableUpdater->expects( $this->atLeastOnce() )
+			->method( 'getSearchTable' )
+			->will( $this->returnValue( $searchTable ) );
+
 		$compositePropertyTableDiffIterator = $this->getMockBuilder( '\SMW\SQLStore\CompositePropertyTableDiffIterator' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$compositePropertyTableDiffIterator->expects( $this->once() )
+			->method( 'getCombinedIdListOfChangedEntities' )
+			->will( $this->returnValue( array( '42' ) ) );
 
 		$compositePropertyTableDiffIterator->expects( $this->once() )
 			->method( 'getSubject' )
@@ -112,10 +131,10 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$deferredRequestDispatchManager->expects( $this->once() )
-			->method( 'scheduleSearchTableUpdateJobWith' )
+			->method( 'scheduleFulltextSearchTableUpdateJobWith' )
 			->with(
 				$this->anything(),
-				$this->equalTo( array( 'slot:id' => $this->slot ) ) );
+				$this->equalTo( array( 'slot:id' => 42 ) ) );
 
 		$instance = new TextByChangeUpdater(
 			$this->connection,
@@ -128,8 +147,7 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->pushUpdates(
 			$compositePropertyTableDiffIterator,
-			$deferredRequestDispatchManager,
-			$this->slot
+			$deferredRequestDispatchManager
 		);
 	}
 
@@ -166,8 +184,7 @@ class TextByChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->pushUpdates(
 			$compositePropertyTableDiffIterator,
-			$deferredRequestDispatchManager,
-			$this->slot
+			$deferredRequestDispatchManager
 		);
 	}
 

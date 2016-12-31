@@ -3,11 +3,11 @@
 namespace SMW\Tests\MediaWiki\Jobs;
 
 use SMW\DIWikiPage;
-use SMW\MediaWiki\Jobs\ChronologyPurgeJob;
+use SMW\MediaWiki\Jobs\TempChangeOpPurgeJob;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\MediaWiki\Jobs\ChronologyPurgeJob
+ * @covers \SMW\MediaWiki\Jobs\TempChangeOpPurgeJob
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ChronologyPurgeJobTest extends \PHPUnit_Framework_TestCase {
+class TempChangeOpPurgeJobTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $tempChangeOpStore;
@@ -44,8 +44,8 @@ class ChronologyPurgeJobTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'SMW\MediaWiki\Jobs\ChronologyPurgeJob',
-			new ChronologyPurgeJob( $title )
+			'SMW\MediaWiki\Jobs\TempChangeOpPurgeJob',
+			new TempChangeOpPurgeJob( $title )
 		);
 	}
 
@@ -60,7 +60,7 @@ class ChronologyPurgeJobTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
-		$instance = new ChronologyPurgeJob(
+		$instance = new TempChangeOpPurgeJob(
 			$subject->getTitle(),
 			$parameters
 		);

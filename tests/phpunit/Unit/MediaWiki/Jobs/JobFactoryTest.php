@@ -68,8 +68,8 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$provider[] = array(
-			'SMW\SearchTableUpdateJob',
-			'\SMW\MediaWiki\Jobs\SearchTableUpdateJob'
+			'SMW\FulltextSearchTableUpdateJob',
+			'\SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob'
 		);
 
 		$provider[] = array(
@@ -78,8 +78,8 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$provider[] = array(
-			'SMW\ChronologyPurgeJob',
-			'\SMW\MediaWiki\Jobs\ChronologyPurgeJob'
+			'SMW\TempChangeOpPurgeJob',
+			'\SMW\MediaWiki\Jobs\TempChangeOpPurgeJob'
 		);
 
 		return $provider;
