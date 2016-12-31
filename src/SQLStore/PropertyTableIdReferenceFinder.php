@@ -99,6 +99,32 @@ class PropertyTableIdReferenceFinder {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param integer $id
+	 *
+	 * @return array
+	 */
+	public function searchAllTablesToFindAtLeastOneReferenceById( $id ) {
+
+		$references = array();
+
+		foreach ( $this->store->getPropertyTables() as $proptable ) {
+			$reference = false;
+
+			if ( ( $reference = $this->findReferenceByPropertyTable( $proptable, $id ) ) !== false ) {
+				$references[$proptable->getName()] = $reference;
+			}
+		}
+
+		if ( ( $reference = $this->findReferenceByQueryLinksTable( $id ) ) !== false ) {
+			$references[SQLStore::QUERY_LINKS_TABLE] = $reference;
+		}
+
+		return $references;
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param integer $id
@@ -113,6 +139,10 @@ class PropertyTableIdReferenceFinder {
 			if ( ( $reference = $this->findReferenceByPropertyTable( $proptable, $id ) ) !== false ) {
 				break;
 			}
+		}
+
+		if ( !isset( $reference->s_id ) ) {
+			$reference = $this->findReferenceByQueryLinksTable( $id );
 		}
 
 		// If null is returned it means that a reference was found bu no DI could
@@ -173,17 +203,20 @@ class PropertyTableIdReferenceFinder {
 			);
 		}
 
+		return $row;
+	}
+
+	private function findReferenceByQueryLinksTable( $id ) {
+
 		// If the query table contains a reference then we keep the object (could
 		// be a subject, property, or printrequest) where in case the query is
 		// removed the object will also loose its reference
-		if ( $row === false ) {
-			$row = $this->connection->selectRow(
-				SQLStore::QUERY_LINKS_TABLE,
-				array( 's_id' ),
-				array( 'o_id' => $id ),
-				__METHOD__
-			);
-		}
+		$row = $this->connection->selectRow(
+			SQLStore::QUERY_LINKS_TABLE,
+			array( 's_id' ),
+			array( 'o_id' => $id ),
+			__METHOD__
+		);
 
 		return $row;
 	}

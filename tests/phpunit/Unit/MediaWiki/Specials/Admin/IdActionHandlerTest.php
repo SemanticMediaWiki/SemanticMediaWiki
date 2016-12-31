@@ -3,10 +3,10 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
 use SMW\Tests\TestEnvironment;
-use SMW\MediaWiki\Specials\Admin\IdHandlerSection;
+use SMW\MediaWiki\Specials\Admin\IdActionHandler;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Admin\IdHandlerSection
+ * @covers \SMW\MediaWiki\Specials\Admin\IdActionHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,9 +14,10 @@ use SMW\MediaWiki\Specials\Admin\IdHandlerSection;
  *
  * @author mwjames
  */
-class IdHandlerSectionTest extends \PHPUnit_Framework_TestCase {
+class IdActionHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
+	private $store;
 	private $connection;
 	private $htmlFormRenderer;
 	private $outputFormatter;
@@ -29,6 +30,14 @@ class IdHandlerSectionTest extends \PHPUnit_Framework_TestCase {
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $this->connection ) );
 
 		$this->htmlFormRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlFormRenderer' )
 			->disableOriginalConstructor()
@@ -47,12 +56,12 @@ class IdHandlerSectionTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Admin\IdHandlerSection',
-			new IdHandlerSection( $this->connection, $this->htmlFormRenderer, $this->outputFormatter )
+			'\SMW\MediaWiki\Specials\Admin\IdActionHandler',
+			new IdActionHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter )
 		);
 	}
 
-	public function testOutputActionForm() {
+	public function testPerformAction() {
 
 		$methods = array(
 			'setName',
@@ -75,8 +84,8 @@ class IdHandlerSectionTest extends \PHPUnit_Framework_TestCase {
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
 			->method( 'getForm' );
 
-		$instance = new IdHandlerSection(
-			$this->connection,
+		$instance = new IdActionHandler(
+			$this->store,
 			$this->htmlFormRenderer,
 			$this->outputFormatter
 		);
@@ -85,10 +94,10 @@ class IdHandlerSectionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance->outputActionForm( $webRequest );
+		$instance->performActionWith( $webRequest );
 	}
 
-	public function testOutputActionFormWithId() {
+	public function testPerformActionWithId() {
 
 		$manualEntryLogger = $this->getMockBuilder( '\SMW\MediaWiki\ManualEntryLogger' )
 			->disableOriginalConstructor()
@@ -157,14 +166,14 @@ class IdHandlerSectionTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( 'action' ) )
 			->will( $this->returnValue( 'idlookup' ) );
 
-		$instance = new IdHandlerSection(
-			$this->connection,
+		$instance = new IdActionHandler(
+			$this->store,
 			$this->htmlFormRenderer,
 			$this->outputFormatter
 		);
 
 		$instance->enabledIdDisposal( true );
-		$instance->outputActionForm( $webRequest, $user );
+		$instance->performActionWith( $webRequest, $user );
 	}
 
 }
