@@ -43,7 +43,9 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DeferredRequestDispatchManager( $httpRequest );
 		$instance->reset();
+
 		$instance->isEnabledHttpDeferredRequest( $deferredJobRequestState );
+		$instance->isEnabledJobQueue( false );
 
 		$this->assertTrue(
 			$instance->dispatchJobRequestWith( $type, DIWikiPage::newFromText( __METHOD__ )->getTitle(), $parameters )
@@ -62,13 +64,39 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DeferredRequestDispatchManager( $httpRequest );
 		$instance->reset();
+
 		$instance->isEnabledHttpDeferredRequest( true );
+		$instance->isEnabledJobQueue( false );
 
 		$parameters = array( 'idlist' => '1|2' );
 		$title = DIWikiPage::newFromText( __METHOD__ )->getTitle();
 
 		$this->assertTrue(
 			$instance->scheduleParserCachePurgeJobWith( $title, $parameters )
+		);
+	}
+
+	public function testDispatchFulltextSearchTableUpdateJob() {
+
+		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\SocketRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$httpRequest->expects( $this->once() )
+			->method( 'ping' )
+			->will( $this->returnValue( true ) );
+
+		$instance = new DeferredRequestDispatchManager( $httpRequest );
+		$instance->reset();
+
+		$instance->isEnabledHttpDeferredRequest( true );
+		$instance->isEnabledJobQueue( false );
+
+		$parameters = array();
+		$title = DIWikiPage::newFromText( __METHOD__ )->getTitle();
+
+		$this->assertTrue(
+			$instance->scheduleFulltextSearchTableUpdateJobWith( $title, $parameters )
 		);
 	}
 
@@ -88,6 +116,8 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new DeferredRequestDispatchManager( $httpRequest );
 		$instance->reset();
 
+		$instance->isEnabledJobQueue( false );
+
 		$this->assertNull(
 			$instance->dispatchJobRequestWith( $type, DIWikiPage::newFromText( __METHOD__ )->getTitle(), $parameters )
 		);
@@ -106,7 +136,7 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$provider[] = array(
-			'SMW\ChronologyPurgeJob',
+			'SMW\TempChangeOpPurgeJob',
 			true
 		);
 

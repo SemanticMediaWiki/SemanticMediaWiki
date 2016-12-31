@@ -43,12 +43,12 @@ class JobFactory {
 				return $this->newUpdateDispatcherJob( $title, $parameters );
 			case 'SMW\ParserCachePurgeJob':
 				return $this->newParserCachePurgeJob( $title, $parameters );
-			case 'SMW\SearchTableUpdateJob':
-				return $this->newSearchTableUpdateJob( $title, $parameters );
+			case 'SMW\FulltextSearchTableUpdateJob':
+				return $this->newFulltextSearchTableUpdateJob( $title, $parameters );
 			case 'SMW\EntityIdDisposerJob':
 				return $this->newEntityIdDisposerJob( $title, $parameters );
-			case 'SMW\ChronologyPurgeJob':
-				return $this->newChronologyPurgeJob( $title, $parameters );
+			case 'SMW\TempChangeOpPurgeJob':
+				return $this->newTempChangeOpPurgeJob( $title, $parameters );
 		}
 
 		throw new RuntimeException( "Unable to match $type to a valid Job type" );
@@ -108,10 +108,10 @@ class JobFactory {
 	 * @param Title $title
 	 * @param array $parameters
 	 *
-	 * @return SearchTableUpdateJob
+	 * @return FulltextSearchTableUpdateJob
 	 */
-	public function newSearchTableUpdateJob( Title $title, array $parameters = array() ) {
-		return new SearchTableUpdateJob( $title, $parameters );
+	public function newFulltextSearchTableUpdateJob( Title $title, array $parameters = array() ) {
+		return new FulltextSearchTableUpdateJob( $title, $parameters );
 	}
 
 	/**
@@ -132,10 +132,10 @@ class JobFactory {
 	 * @param Title $title
 	 * @param array $parameters
 	 *
-	 * @return ChronologyPurgeJob
+	 * @return TempChangeOpPurgeJob
 	 */
-	public function newChronologyPurgeJob( Title $title, array $parameters = array() ) {
-		return new ChronologyPurgeJob( $title, $parameters );
+	public function newTempChangeOpPurgeJob( Title $title, array $parameters = array() ) {
+		return new TempChangeOpPurgeJob( $title, $parameters );
 	}
 
 }

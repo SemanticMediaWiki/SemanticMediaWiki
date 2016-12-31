@@ -13,7 +13,7 @@ use Title;
  *
  * @author mwjames
  */
-class SearchTableUpdateJob extends JobBase {
+class FulltextSearchTableUpdateJob extends JobBase {
 
 	/**
 	 * @since 2.5
@@ -22,7 +22,7 @@ class SearchTableUpdateJob extends JobBase {
 	 * @param array $params job parameters
 	 */
 	public function __construct( Title $title, $params = array() ) {
-		parent::__construct( 'SMW\SearchTableUpdateJob', $title, $params );
+		parent::__construct( 'SMW\FulltextSearchTableUpdateJob', $title, $params );
 	}
 
 	/**
@@ -42,7 +42,7 @@ class SearchTableUpdateJob extends JobBase {
 			$this->params
 		);
 
-		Hooks::run( 'SMW::Job::AfterSearchTableUpdateComplete', array( $this ) );
+		Hooks::run( 'SMW::Job::AfterFulltextSearchTableUpdateComplete', array( $this ) );
 
 		return true;
 	}

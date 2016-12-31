@@ -57,6 +57,11 @@ class DeferredRequestDispatchManager {
 	private $isCommandLineMode = false;
 
 	/**
+	 * @var boolean
+	 */
+	private $isEnabledJobQueue = true;
+
+	/**
 	 * @since 2.3
 	 *
 	 * @param HttpRequest $httpRequest
@@ -73,6 +78,7 @@ class DeferredRequestDispatchManager {
 		$this->isEnabledHttpDeferredRequest = true;
 		$this->isPreferredWithJobQueue = false;
 		$this->isCommandLineMode = false;
+		$this->isEnabledJobQueue = true;
 	}
 
 	/**
@@ -110,6 +116,15 @@ class DeferredRequestDispatchManager {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param boolean $isEnabledJobQueue
+	 */
+	public function isEnabledJobQueue( $isEnabledJobQueue ) {
+		$this->isEnabledJobQueue = $isEnabledJobQueue;
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param Title $title
@@ -120,7 +135,7 @@ class DeferredRequestDispatchManager {
 		if ( $parameters === array() || !isset( $parameters['idlist'] ) ) {
 			return;
 		}
-		
+
 		return $this->dispatchJobRequestWith( 'SMW\ParserCachePurgeJob', $title, $parameters );
 	}
 
@@ -130,8 +145,8 @@ class DeferredRequestDispatchManager {
 	 * @param Title $title
 	 * @param array $parameters
 	 */
-	public function scheduleSearchTableUpdateJobWith( Title $title, $parameters = array() ) {
-		return $this->dispatchJobRequestWith( 'SMW\SearchTableUpdateJob', $title, $parameters );
+	public function scheduleFulltextSearchTableUpdateJobWith( Title $title, $parameters = array() ) {
+		return $this->dispatchJobRequestWith( 'SMW\FulltextSearchTableUpdateJob', $title, $parameters );
 	}
 
 	/**
@@ -140,13 +155,13 @@ class DeferredRequestDispatchManager {
 	 * @param Title $title
 	 * @param array $parameters
 	 */
-	public function scheduleChronologyPurgeJobWith( Title $title, $parameters = array() ) {
+	public function scheduleTempChangeOpPurgeJobWith( Title $title, $parameters = array() ) {
 
 		if ( $parameters === array() || !isset( $parameters['slot:id'] ) || $parameters['slot:id'] === null ) {
 			return;
 		}
 
-		return $this->dispatchJobRequestWith( 'SMW\ChronologyPurgeJob', $title, $parameters );
+		return $this->dispatchJobRequestWith( 'SMW\TempChangeOpPurgeJob', $title, $parameters );
 	}
 
 	/**
@@ -167,7 +182,10 @@ class DeferredRequestDispatchManager {
 			SpecialDeferredRequestDispatcher::getTargetURL()
 		);
 
-		$dispatchableCallbackJob = $this->createDispatchableCallbackJob( $type );
+		$dispatchableCallbackJob = $this->createDispatchableCallbackJob(
+			$type,
+			$this->isEnabledJobQueue
+		);
 
 		if ( $this->canUseDeferredRequest() ) {
 			return $this->doPostJobWith( $type, $title, $parameters, $dispatchableCallbackJob );
@@ -185,9 +203,9 @@ class DeferredRequestDispatchManager {
 		return !$this->isCommandLineMode && !$this->isPreferredWithJobQueue && $this->isEnabledHttpDeferredRequest && $this->canConnectToUrl();
 	}
 
-	private function createDispatchableCallbackJob( $type ) {
+	private function createDispatchableCallbackJob( $type, $isEnabledJobQueue ) {
 
-		$callback = function ( $title, $parameters ) use ( $type ) {
+		$callback = function ( $title, $parameters ) use ( $type, $isEnabledJobQueue ) {
 
 			$job = ApplicationFactory::getInstance()->newJobFactory()->newByType(
 				$type,
@@ -195,6 +213,11 @@ class DeferredRequestDispatchManager {
 				$parameters
 			);
 
+			// Only relevant when jobs are executed during a test (PHPUnit)
+			$job->isEnabledJobQueue( $isEnabledJobQueue );
+
+			// When initiate from the commandLine, directly run the job and avoid
+			// the scheduler
 			$this->isCommandLineMode ? $job->run() : $job->insert();
 		};
 
@@ -206,8 +229,8 @@ class DeferredRequestDispatchManager {
 		$allowedJobs = array(
 			'SMW\ParserCachePurgeJob',
 			'SMW\UpdateJob',
-			'SMW\SearchTableUpdateJob',
-			'SMW\ChronologyPurgeJob'
+			'SMW\FulltextSearchTableUpdateJob',
+			'SMW\TempChangeOpPurgeJob'
 		);
 
 		return in_array( $type, $allowedJobs );
@@ -250,7 +273,7 @@ class DeferredRequestDispatchManager {
 			$requestResponse->set( 'type', $parameters['async-job']['type'] );
 			$requestResponse->set( 'title', $parameters['async-job']['title'] );
 
-			wfDebugLog( 'smw', "SMW\DeferredRequestDispatchManager: Connection to SpecialDeferredRequestDispatcher failed on {$type} with " . json_encode( $requestResponse->getList(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ). " " . $title->getPrefixedDBkey() . "\n" );
+			wfDebugLog( 'smw', "SMW\DeferredRequestDispatchManager: Connection to SpecialDeferredRequestDispatcher failed, schedule a {$type}.\n" );
 			call_user_func_array( $dispatchableCallbackJob, array( $title, $parameters ) );
 		} );
 

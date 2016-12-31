@@ -208,9 +208,9 @@ final class Setup {
 			'SMW\RefreshJob' => 'SMW\MediaWiki\Jobs\RefreshJob',
 			'SMW\UpdateDispatcherJob' => 'SMW\MediaWiki\Jobs\UpdateDispatcherJob',
 			'SMW\ParserCachePurgeJob' => 'SMW\MediaWiki\Jobs\ParserCachePurgeJob',
-			'SMW\SearchTableUpdateJob' => 'SMW\MediaWiki\Jobs\SearchTableUpdateJob',
+			'SMW\FulltextSearchTableUpdateJob' => 'SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob',
 			'SMW\EntityIdDisposerJob' => 'SMW\MediaWiki\Jobs\EntityIdDisposerJob',
-			'SMW\ChronologyPurgeJob' => 'SMW\MediaWiki\Jobs\ChronologyPurgeJob',
+			'SMW\TempChangeOpPurgeJob' => 'SMW\MediaWiki\Jobs\TempChangeOpPurgeJob',
 
 			// Legacy definition to be removed with 1.10
 			'SMWUpdateJob'  => 'SMW\MediaWiki\Jobs\UpdateJob',

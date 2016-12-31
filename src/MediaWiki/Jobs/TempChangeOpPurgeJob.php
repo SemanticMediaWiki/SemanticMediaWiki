@@ -11,7 +11,7 @@ use Title;
  *
  * @author mwjames
  */
-class ChronologyPurgeJob extends JobBase {
+class TempChangeOpPurgeJob extends JobBase {
 
 	/**
 	 * @var LoggerInterface
@@ -25,7 +25,7 @@ class ChronologyPurgeJob extends JobBase {
 	 * @param array $params job parameters
 	 */
 	public function __construct( Title $title, $params = array() ) {
-		parent::__construct( 'SMW\ChronologyPurgeJob', $title, $params );
+		parent::__construct( 'SMW\TempChangeOpPurgeJob', $title, $params );
 		$this->logger = ApplicationFactory::getInstance()->getMediaWikiLogger();
 	}
 

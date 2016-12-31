@@ -4,10 +4,10 @@ namespace SMW\Tests\MediaWiki\Jobs;
 
 use SMW\Tests\TestEnvironment;
 use SMW\DIWikiPage;
-use SMW\MediaWiki\Jobs\SearchTableUpdateJob;
+use SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob;
 
 /**
- * @covers \SMW\MediaWiki\Jobs\SearchTableUpdateJob
+ * @covers \SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,7 +15,7 @@ use SMW\MediaWiki\Jobs\SearchTableUpdateJob;
  *
  * @author mwjames
  */
-class SearchTableUpdateJobTest extends \PHPUnit_Framework_TestCase {
+class FulltextSearchTableUpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 
@@ -42,8 +42,8 @@ class SearchTableUpdateJobTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'SMW\MediaWiki\Jobs\SearchTableUpdateJob',
-			new SearchTableUpdateJob( $title )
+			'SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob',
+			new FulltextSearchTableUpdateJob( $title )
 		);
 	}
 
@@ -54,7 +54,7 @@ class SearchTableUpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
-		$instance = new SearchTableUpdateJob(
+		$instance = new FulltextSearchTableUpdateJob(
 			$subject->getTitle(),
 			$parameters
 		);
