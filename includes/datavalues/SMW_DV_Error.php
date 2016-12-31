@@ -66,7 +66,12 @@ class SMWErrorValue extends SMWDataValue {
 	}
 
 	public function getWikiValue() {
-		return $this->m_dataitem->getString();
+
+		if ( $this->m_dataitem !== null ) {
+			return $this->m_dataitem->getString();
+		}
+
+		return $this->getErrorText();
 	}
 
 	public function isValid() {
