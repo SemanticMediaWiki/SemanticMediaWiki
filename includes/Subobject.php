@@ -86,7 +86,14 @@ class Subobject {
 	 * @param array|string $error
 	 */
 	public function addError( $error ) {
-		$this->errors = array_merge( $this->errors, (array)$error );
+
+		if ( is_string( $error ) ) {
+			$error = array( md5( $error ) => $error );
+		}
+
+		// Preserve the keys, avoid using array_merge to avert a possible
+		// Fatal error: Allowed memory size of ... bytes exhausted ... Subobject.php on line 89
+		$this->errors += $error;
 	}
 
 	/**

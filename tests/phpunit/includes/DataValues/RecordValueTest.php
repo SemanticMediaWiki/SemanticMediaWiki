@@ -165,9 +165,9 @@ class RecordValueTest extends \PHPUnit_Framework_TestCase {
 			$instance->getDataItem()
 		);
 
-		$this->assertEquals(
-			array( '[2,"smw-datavalue-wikipage-invalid-title","<>Foo"]' ),
-			$instance->getErrors()
+		$this->assertContains(
+			"smw-datavalue-wikipage-invalid-title",
+			implode( ' ', $instance->getErrors() )
 		);
 	}
 

@@ -430,7 +430,7 @@ abstract class SMWDataValue {
 	 * @param integer|null $language
 	 */
 	public function addErrorMsg( $parameters, $type = null ) {
-		$this->mErrors[] = Message::encode( $parameters, $type );
+		$this->mErrors[Message::getHash( $parameters, $type )] = Message::encode( $parameters, $type );
 		$this->mHasErrors = true;
 	}
 
