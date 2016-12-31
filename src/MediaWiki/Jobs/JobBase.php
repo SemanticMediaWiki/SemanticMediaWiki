@@ -148,4 +148,18 @@ abstract class JobBase extends Job {
 		}
 	}
 
+	/**
+	 * @since 2.5
+	 *
+	 * @return array
+	 */
+	public static function getQueueSizes() {
+
+		if ( class_exists( 'JobQueueGroup' ) ) {
+			return JobQueueGroup::singleton()->getQueueSizes();
+		}
+
+		return array();
+	}
+
 }
