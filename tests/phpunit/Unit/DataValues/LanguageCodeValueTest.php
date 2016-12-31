@@ -71,4 +71,28 @@ class LanguageCodeValueTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testInvalidLanguageCode() {
+
+		$instance = new LanguageCodeValue();
+		$instance->setUserValue( 'Foo' );
+
+		$this->assertContains(
+			'[2,"smw-datavalue-languagecode-invalid","foo"]',
+			$instance->getDataItem()->getString()
+		);
+	}
+
+	public function testInvalidLanguageCodeIsAllowedInQueryContext() {
+
+		$instance = new LanguageCodeValue();
+		$instance->setOption( LanguageCodeValue::OPT_QUERY_CONTEXT, true );
+
+		$instance->setUserValue( 'Foo' );
+
+		$this->assertEquals(
+			'foo',
+			$instance->getDataItem()->getString()
+		);
+	}
+
 }
