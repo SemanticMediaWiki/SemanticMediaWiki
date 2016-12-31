@@ -38,8 +38,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	}
 
 	/**
-	 * Returns alist of statistical information as an associative array
-	 * with the following keys:
+	 * Returns a list with statistical information where keys are matched to:
 	 *
 	 * - 'PROPUSES': Number of property instances (value assignments) in the connection
 	 * - 'USEDPROPS': Number of properties that are used with at least one value
@@ -50,6 +49,9 @@ class UsageStatisticsListLookup implements ListLookup {
 	 * - 'CONCEPTS': Number of declared concepts
 	 * - 'SUBOBJECTS': Number of declared subobjects
 	 * - 'QUERYFORMATS': Array of used formats and its usage count
+	 * - 'TOTALPROPS': Total number of registered properties
+	 * - 'ERRORUSES': Number of annotations with an error
+	 * - 'DELETECOUNT': Number of "marked for deletion"
 	 *
 	 * @since 2.2
 	 *
@@ -66,6 +68,7 @@ class UsageStatisticsListLookup implements ListLookup {
 			'DECLPROPS' => $this->getDeclaredPropertiesCount(),
 			'PROPUSES' => $this->getPropertyUsageCount(),
 			'USEDPROPS' => $this->getUsedPropertiesCount(),
+			'TOTALPROPS' => $this->getTotalPropertiesCount(),
 			'ERRORUSES' => $this->getImproperValueForCount(),
 			'DELETECOUNT' => $this->getDeleteCount()
 		);
@@ -195,6 +198,7 @@ class UsageStatisticsListLookup implements ListLookup {
 		$conditions = array(
 			'smw_namespace' => SMW_NS_PROPERTY,
 			'smw_iw' => '',
+			'smw_subobject'  => '',
 			'smw_proptable_hash IS NOT NULL'
 		);
 
@@ -240,23 +244,63 @@ class UsageStatisticsListLookup implements ListLookup {
 	}
 
 	/**
-	 * @since 1.9
+	 * @since 2.5
 	 *
 	 * @return number
 	 */
-	public function getUsedPropertiesCount() {
+	public function getTotalPropertiesCount() {
+
 		$count = 0;
 
+		$conditions = array(
+			'smw_namespace' => SMW_NS_PROPERTY,
+			'smw_iw' => '',
+			'smw_subobject'  => ''
+		);
+
 		$row = $this->store->getConnection()->selectRow(
-			array( $this->store->getStatisticsTable() ),
+			SQLStore::ID_TABLE,
 			'Count( * ) AS count',
-			array( 'usage_count > 0' ),
+			$conditions,
 			__METHOD__
 		);
 
 		$count = $row ? $row->count : $count;
 
 		return (int)$count;
+	}
+
+	/**
+	 * @since 1.9
+	 *
+	 * @return number
+	 */
+	public function getUsedPropertiesCount() {
+
+		$options = array();
+
+		$conditions = array(
+			'smw_namespace' => SMW_NS_PROPERTY,
+			'smw_iw' => '',
+			'smw_subobject'  => '',
+			'usage_count > 0'
+		);
+
+		$db = $this->store->getConnection( 'mw.db' );
+
+		// Select object ID's against known property ID's that match the conditions
+		$res = $db->select(
+			array( $db->tableName( SQLStore::ID_TABLE ), $db->tableName( SQLStore::PROPERTY_STATISTICS_TABLE ) ),
+			'smw_id',
+			$conditions,
+			__METHOD__,
+			$options,
+			array(
+				$db->tableName( SQLStore::ID_TABLE ) => array( 'INNER JOIN', array( 'smw_id=p_id' ) )
+			)
+		);
+
+		return $res->numRows();
 	}
 
 	/**

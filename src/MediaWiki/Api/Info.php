@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Api;
 
 use ApiBase;
 use SMW\ApplicationFactory;
+use SMW\MediaWiki\Jobs\JobBase;
 
 /**
  * API module to obtain info about the SMW install, primarily targeted at
@@ -25,11 +26,14 @@ class Info extends ApiBase {
 
 		$params = $this->extractRequestParams();
 		$requestedInfo = $params['info'];
-		$resultInfo = array();
+
+		$map = array();
+		$semanticStats = array();
 
 		if ( in_array( 'propcount', $requestedInfo )
 			|| in_array( 'errorcount', $requestedInfo )
 			|| in_array( 'deletecount', $requestedInfo )
+			|| in_array( 'totalpropcount', $requestedInfo )
 			|| in_array( 'usedpropcount', $requestedInfo )
 			|| in_array( 'proppagecount', $requestedInfo )
 			|| in_array( 'querycount', $requestedInfo )
@@ -46,6 +50,7 @@ class Info extends ApiBase {
 				'errorcount' => 'ERRORUSES',
 				'deletecount' => 'DELETECOUNT',
 				'usedpropcount' => 'USEDPROPS',
+				'totalpropcount' => 'TOTALPROPS',
 				'declaredpropcount' => 'DECLPROPS',
 				'proppagecount' => 'OWNPAGE',
 				'querycount' => 'QUERY',
@@ -53,22 +58,13 @@ class Info extends ApiBase {
 				'conceptcount' => 'CONCEPTS',
 				'subobjectcount' => 'SUBOBJECTS',
 			);
-
-			foreach ( $map as $apiName => $smwName ) {
-				if ( in_array( $apiName, $requestedInfo ) ) {
-					$resultInfo[$apiName] = $semanticStats[$smwName];
-				}
-			}
-
-			if ( in_array( 'formatcount', $requestedInfo ) ) {
-				$resultInfo['formatcount'] = array();
-				foreach ( $semanticStats['QUERYFORMATS'] as $name => $count ) {
-					$resultInfo['formatcount'][$name] = $count;
-				}
-			}
 		}
 
-		$this->getResult()->addValue( null, 'info', $resultInfo );
+		$this->getResult()->addValue(
+			null,
+			'info',
+			$this->doMapResultInfoFrom( $map, $requestedInfo, $semanticStats )
+		);
 	}
 
 	/**
@@ -87,6 +83,7 @@ class Info extends ApiBase {
 					'errorcount',
 					'deletecount',
 					'usedpropcount',
+					'totalpropcount',
 					'declaredpropcount',
 					'proppagecount',
 					'querycount',
@@ -143,6 +140,27 @@ class Info extends ApiBase {
 	 */
 	public function getVersion() {
 		return __CLASS__ . ': $Id$';
+	}
+
+	private function doMapResultInfoFrom( $map, $requestedInfo, $semanticStats ) {
+
+		$resultInfo = array();
+
+		foreach ( $map as $apiName => $smwName ) {
+			if ( in_array( $apiName, $requestedInfo ) ) {
+				$resultInfo[$apiName] = $semanticStats[$smwName];
+			}
+		}
+
+		if ( in_array( 'formatcount', $requestedInfo ) ) {
+			$resultInfo['formatcount'] = array();
+
+			foreach ( $semanticStats['QUERYFORMATS'] as $name => $count ) {
+				$resultInfo['formatcount'][$name] = $count;
+			}
+		}
+
+		return $resultInfo;
 	}
 
 }
