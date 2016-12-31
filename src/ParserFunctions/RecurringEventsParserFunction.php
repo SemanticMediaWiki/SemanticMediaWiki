@@ -114,7 +114,7 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 
 	private function initRecurringEvents( $parameters ) {
 
-		$this->setFirstElementAsPropertyLabel( true );
+		$this->useFirstElementAsPropertyLabel( true );
 
 		if ( $this->recurringEvents !== null ) {
 			return $this->recurringEvents;

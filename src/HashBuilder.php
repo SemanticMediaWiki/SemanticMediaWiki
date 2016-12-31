@@ -51,7 +51,7 @@ class HashBuilder {
 	 *
 	 * @return string
 	 */
-	public static function createHashIdForContent( $hashableContent, $prefix = '' ) {
+	public static function createFromContent( $hashableContent, $prefix = '' ) {
 
 		if ( is_string( $hashableContent ) ) {
 			$hashableContent = array( $hashableContent );

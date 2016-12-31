@@ -346,7 +346,7 @@ class SMWQueryResult {
 
 		return array_merge( $serializeArray, array(
 			'meta'=> array(
-				'hash'   => HashBuilder::createHashIdForContent( $serializeArray ),
+				'hash'   => HashBuilder::createFromContent( $serializeArray ),
 				'count'  => $this->getCount(),
 				'offset' => $this->mQuery->getOffset(),
 				'source' => $this->mQuery->getQuerySource(),
@@ -364,7 +364,7 @@ class SMWQueryResult {
 	 * @return string
 	 */
 	public function getHash() {
-		return HashBuilder::createHashIdForContent( $this->serializeToArray() );
+		return HashBuilder::createFromContent( $this->serializeToArray() );
 	}
 
 }

@@ -84,8 +84,12 @@ class TestEnvironment {
 	public function withConfiguration( array $configuration = array() ) {
 
 		foreach ( $configuration as $key => $value ) {
-			$this->configuration[$key] = $GLOBALS[$key];
-			$GLOBALS[$key] = $value;
+
+			if ( isset( $GLOBALS[$key] ) || array_key_exists( $key, $GLOBALS ) ) {
+				$this->configuration[$key] = $GLOBALS[$key];
+				$GLOBALS[$key] = $value;
+			}
+
 			$this->applicationFactory->getSettings()->set( $key, $value );
 		}
 

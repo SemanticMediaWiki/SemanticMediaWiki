@@ -1,6 +1,10 @@
 <?php
 
-namespace SMW;
+namespace SMW\ParserFunctions;
+
+use SMW\ParserData;
+use SMW\MessageFormatter;
+use SMW\CircularReferenceGuard;
 
 /**
  * Class that provides the {{#show}} parser function

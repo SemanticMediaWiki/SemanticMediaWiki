@@ -1,18 +1,16 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
 use SMW\ApplicationFactory;
-use SMW\ShowParserFunction;
-use SMW\Tests\Utils\UtilityFactory;
+use SMW\ParserFunctions\ShowParserFunction;
+use SMW\Tests\TestEnvironment;
 use Title;
 
 /**
- * @covers \SMW\ShowParserFunction
- *
- * @group SMW
- * @group SMWExtension
+ * @covers \SMW\ParserFunctions\ShowParserFunction
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -21,21 +19,20 @@ use Title;
  */
 class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
-	private $applicationFactory;
+	private $testEnvironment;
 	private $semanticDataValidator;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+		$this->testEnvironment = new TestEnvironment();
+		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
-		$this->applicationFactory->getSettings()->set( 'smwgQueryDurationEnabled', false );
+		$this->testEnvironment->addConfiguration( 'smwgQueryDurationEnabled', false );
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -54,7 +51,7 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\ShowParserFunction',
+			'\SMW\ParserFunctions\ShowParserFunction',
 			new ShowParserFunction( $parserData, $messageFormatter, $circularReferenceGuard )
 		);
 	}
@@ -64,7 +61,7 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParse( array $params, array $expected ) {
 
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
@@ -127,7 +124,7 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testInstantiatedQueryData( array $params, array $expected ) {
 
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
@@ -160,7 +157,7 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testQueryWithErroneousData() {
 
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
 		);

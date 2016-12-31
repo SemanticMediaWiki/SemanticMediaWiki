@@ -1,9 +1,15 @@
 <?php
 
-namespace SMW;
+namespace SMW\ParserFunctions;
 
+use SMW\ParserData;
+use SMW\MessageFormatter;
+use SMW\CircularReferenceGuard;
+use SMW\ApplicationFactory;
+use SMW\ProcessingErrorMsgHandler;
+use SMW\DIProperty;
 use Parser;
-use SMWQueryProcessor;
+use SMWQueryProcessor as QueryProcessor;
 use SMWQuery as Query;
 
 /**
@@ -87,7 +93,7 @@ class AskParserFunction {
 	 *
 	 * FIXME $rawParams use IParameterFormatter -> QueryParameterFormatter class
 	 * Parse parameters and return query results to the ParserOutput
-	 * object and output result data from the SMWQueryProcessor
+	 * object and output result data from the QueryProcessor
 	 *
 	 * @todo $rawParams should be of IParameterFormatter
 	 * QueryParameterFormatter class
@@ -157,10 +163,10 @@ class AskParserFunction {
 
 		$contextPage = $this->parserData->getSubject();
 
-		list( $query, $this->params ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
+		list( $query, $this->params ) = QueryProcessor::getQueryAndParamsFromFunctionParams(
 			$rawParams,
 			SMW_OUTPUT_WIKI,
-			SMWQueryProcessor::INLINE_QUERY,
+			QueryProcessor::INLINE_QUERY,
 			$this->showMode,
 			$contextPage
 		);
@@ -180,11 +186,11 @@ class AskParserFunction {
 			return '';
 		}
 
-		$result = SMWQueryProcessor::getResultFromQuery(
+		$result = QueryProcessor::getResultFromQuery(
 			$query,
 			$this->params,
 			SMW_OUTPUT_WIKI,
-			SMWQueryProcessor::INLINE_QUERY
+			QueryProcessor::INLINE_QUERY
 		);
 
 		$format = $this->params['format']->getValue();

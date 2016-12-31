@@ -1,17 +1,17 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use SMW\ParameterFormatterFactory;
-use SMW\SetParserFunction;
-use SMW\Tests\Utils\UtilityFactory;
+use SMW\ParserFunctions\SetParserFunction;
+use SMW\Tests\TestEnvironment;
 use Title;
 
 /**
- * @covers \SMW\SetParserFunction
+ * @covers \SMW\ParserFunctions\SetParserFunction
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -21,19 +21,18 @@ use Title;
  */
 class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
-	private $applicationFactory;
+	private $testEnvironment;
 	private $semanticDataValidator;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
-		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->testEnvironment = new TestEnvironment();
+		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -52,7 +51,7 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SetParserFunction',
+			'\SMW\ParserFunctions\SetParserFunction',
 			new SetParserFunction( $parserData, $messageFormatter, $templateRenderer )
 		);
 	}
@@ -62,7 +61,7 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParse( array $params ) {
 
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
@@ -100,7 +99,7 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testInstantiatedPropertyValues( array $params, array $expected ) {
 
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
@@ -142,7 +141,7 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			'propertyValues' => array( 'Bar', '9001', 'Foobar' )
 		);
 
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
 		);

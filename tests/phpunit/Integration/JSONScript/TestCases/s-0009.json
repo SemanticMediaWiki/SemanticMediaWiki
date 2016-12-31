@@ -13,8 +13,27 @@
 	],
 	"tests": [
 		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/S0009/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_text"
+					],
+					"propertyValues": [
+						"Some text to search"
+					]
+				}
+			}
+		},
+		{
 			"type": "special",
-			"about": "#0 results matched by the SMWSearch extension",
+			"about": "#1 results matched by the SMWSearch extension",
 			"special-page": {
 				"page": "Search",
 				"query-parameters": "",
@@ -33,7 +52,12 @@
 	"settings": {
 		"wgContLang": "en",
 		"wgLanguageCode": "en",
-		"wgSearchType": "SMWSearch"
+		"wgSearchType": "SMWSearch",
+		"wgCapitalLinks" : true,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
 	},
 	"meta": {
 		"version": "2",

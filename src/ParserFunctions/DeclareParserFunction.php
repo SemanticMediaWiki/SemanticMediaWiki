@@ -1,7 +1,9 @@
 <?php
 
-namespace SMW;
+namespace SMW\ParserFunctions;
 
+use SMW\ParserData;
+use SMW\DataValueFactory;
 use Parser;
 use PPFrame;
 use SMWPropertyValue as PropertyValue;
@@ -66,7 +68,7 @@ class DeclareParserFunction {
 					$argumentname = $parts[1];
 				}
 
-				$propertyValue = PropertyValue::makeUserProperty( $propertystring );
+				$propertyValue = DataValueFactory::getInstance()->newPropertyValueByLabel( $propertystring );
 				$argument = $frame->getArgument( $argumentname );
 				$valuestring = $frame->expand( $argument );
 

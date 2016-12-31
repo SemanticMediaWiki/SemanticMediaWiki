@@ -1,8 +1,12 @@
 <?php
 
-namespace SMW;
+namespace SMW\ParserFunctions;
 
 use Parser;
+use SMW\ParserData;
+use SMW\MessageFormatter;
+use SMW\DataValueFactory;
+use SMW\ParserParameterProcessor;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 
 /**

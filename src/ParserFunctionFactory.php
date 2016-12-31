@@ -5,6 +5,11 @@ namespace SMW;
 // Fatal error: Cannot use SMW\ParserFunctions\SubobjectParserFunction as SubobjectParserFunction because the name is already in use
 use SMW\ParserFunctions\SubobjectParserFunction as SubobjectParserFunc;
 use SMW\ParserFunctions\RecurringEventsParserFunction as RecurringEventsParserFunc;
+use SMW\ParserFunctions\AskParserFunction;
+use SMW\ParserFunctions\ShowParserFunction;
+use SMW\ParserFunctions\SetParserFunction;
+use SMW\ParserFunctions\ConceptParserFunction;
+use SMW\ParserFunctions\DeclareParserFunction;
 use Parser;
 
 /**
@@ -201,7 +206,7 @@ class ParserFunctionFactory {
 			$messageFormatter
 		);
 
-		$subobjectParserFunction->usesCapitalLinks(
+		$subobjectParserFunction->isCapitalLinks(
 			$GLOBALS['wgCapitalLinks']
 		);
 

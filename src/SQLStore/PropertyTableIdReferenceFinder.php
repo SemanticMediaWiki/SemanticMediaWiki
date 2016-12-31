@@ -25,7 +25,7 @@ class PropertyTableIdReferenceFinder {
 	/**
 	 * @var boolean
 	 */
-	private $usesCapitalLinks = true;
+	private $isCapitalLinks = true;
 
 	/**
 	 * @since 2.4
@@ -44,10 +44,10 @@ class PropertyTableIdReferenceFinder {
 	 *
 	 * @since 2.4
 	 *
-	 * @param booelan $usesCapitalLinks
+	 * @param booelan $isCapitalLinks
 	 */
-	public function usesCapitalLinks( $usesCapitalLinks ) {
-		$this->usesCapitalLinks = $usesCapitalLinks;
+	public function isCapitalLinks( $isCapitalLinks ) {
+		$this->isCapitalLinks = $isCapitalLinks;
 	}
 
 	/**
@@ -70,7 +70,7 @@ class PropertyTableIdReferenceFinder {
 
 		// Lets see if we have some lower/upper case matching for
 		// when wgCapitalLinks setting was involved
-		if ( !$this->usesCapitalLinks && $sid == 0 ) {
+		if ( !$this->isCapitalLinks && $sid == 0 ) {
 			$sid = $this->store->getObjectIds()->getSMWPageID(
 				lcfirst( $dataItem->getDBkey() ),
 				$dataItem->getNamespace(),

@@ -89,14 +89,14 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider firstElementDataProvider
 	 */
-	public function testFirstElementForPropertyLabel( $isEnabled , array $parameters, array $expected ) {
+	public function testFirstElementAsPropertyLabel( $isEnabled , array $parameters, array $expected ) {
 
 		$parserOutput = new ParserOutput();
 		$title        = Title::newFromText( __METHOD__ );
 		$subobject    = new Subobject( $title );
 
 		$instance = $this->acquireInstance( $subobject, $parserOutput );
-		$instance->setFirstElementAsPropertyLabel( $isEnabled  );
+		$instance->useFirstElementAsPropertyLabel( $isEnabled  );
 
 		$instance->parse( new ParserParameterFormatter( $parameters ) );
 
@@ -163,12 +163,14 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$parametersOne = array(
 			'Foo=Bar',
-			'Has foo=Foo'
+			'Has foo=bar,Foo',
+			'+sep=,'
 		);
 
 		$parametersTwo = array(
 			'foo=Bar',
-			'has foo=Foo'
+			'has foo=Foo,bar',
+			'+sep=,'
 		);
 
 		$subobject = new Subobject( $title );
@@ -176,7 +178,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$instance = $this->acquireInstance( $subobject );
 
 		$instance->enabledNormalization();
-		$instance->usesCapitalLinks( true );
+		$instance->isCapitalLinks( true );
 
 		$instance->parse(
 			new ParserParameterFormatter( $parametersOne )

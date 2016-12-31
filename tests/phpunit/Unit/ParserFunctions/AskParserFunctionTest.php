@@ -1,20 +1,18 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
 use ReflectionClass;
 use SMW\ApplicationFactory;
-use SMW\AskParserFunction;
+use SMW\ParserFunctions\AskParserFunction;
 use SMW\Localizer;
-use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\TestEnvironment;
 use Title;
 
 /**
- * @covers \SMW\AskParserFunction
- *
- * @group SMW
- * @group SMWExtension
+ * @covers \SMW\ParserFunctions\AskParserFunction
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -23,27 +21,21 @@ use Title;
  */
 class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
-	private $applicationFactory;
+	private $testEnvironment;
 	private $semanticDataValidator;
-	private $smwgQMaxLimit;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+		$this->testEnvironment = new TestEnvironment();
+		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
-		$this->applicationFactory->getSettings()->set( 'smwgQueryDurationEnabled', false );
-
-		// FIXME in the Query do not use global scope
-		$this->smwgQMaxLimit = $GLOBALS['smwgQMaxLimit'];
-		$GLOBALS['smwgQMaxLimit'] = 1000;
+		$this->testEnvironment->addConfiguration( 'smwgQueryDurationEnabled', false );
+		$this->testEnvironment->addConfiguration( 'smwgQMaxLimit', 1000 );
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-		$GLOBALS['smwgQMaxLimit'] = $this->smwgQMaxLimit;
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -62,7 +54,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\AskParserFunction',
+			'\SMW\ParserFunctions\AskParserFunction',
 			new AskParserFunction( $parserData, $messageFormatter, $circularReferenceGuard )
 		);
 	}
@@ -72,7 +64,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParse( array $params ) {
 
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
@@ -147,7 +139,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			$circularReferenceGuard
 		);
 
-		$reflector = new ReflectionClass( '\SMW\AskParserFunction' );
+		$reflector = new ReflectionClass( '\SMW\ParserFunctions\AskParserFunction' );
 		$showMode = $reflector->getProperty( 'showMode' );
 		$showMode->setAccessible( true );
 
@@ -159,7 +151,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCircularGuard() {
 
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
@@ -197,7 +189,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testQueryIdStabilityForFixedSetOfParameters() {
 
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
@@ -251,10 +243,10 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	public function testInstantiatedQueryData( array $params, array $expected, array $settings ) {
 
 		foreach ( $settings as $key => $value ) {
-			$this->applicationFactory->getSettings()->set( $key, $value );
+			$this->testEnvironment->addConfiguration( $key, $value );
 		}
 
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
@@ -297,7 +289,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			'propertyKeys'   => array( '_ASK', '_ERRC' ),
 		);
 
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
@@ -335,9 +327,9 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			'propertyCount'  => 0
 		);
 
-		$this->applicationFactory->getSettings()->set( 'smwgQueryProfiler', false );
+		$this->testEnvironment->addConfiguration( 'smwgQueryProfiler', false );
 
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
 		);

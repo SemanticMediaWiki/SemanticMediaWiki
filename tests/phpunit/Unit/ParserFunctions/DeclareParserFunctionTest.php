@@ -1,18 +1,16 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
 use SMW\ApplicationFactory;
-use SMW\DeclareParserFunction;
-use SMW\Tests\Utils\UtilityFactory;
+use SMW\ParserFunctions\DeclareParserFunction;
+use SMW\Tests\TestEnvironment;
 use Title;
 
 /**
- * @covers \SMW\DeclareParserFunction
- *
- * @group SMW
- * @group SMWExtension
+ * @covers \SMW\ParserFunctions\DeclareParserFunction
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since   2.1
@@ -21,20 +19,18 @@ use Title;
  */
 class DeclareParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
-	private $applicationFactory;
+	private $testEnvironment;
 	private $semanticDataValidator;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
-
-		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->testEnvironment = new TestEnvironment();
+		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -45,7 +41,7 @@ class DeclareParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\DeclareParserFunction',
+			'\SMW\ParserFunctions\DeclareParserFunction',
 			new DeclareParserFunction( $parserData )
 		);
 	}
@@ -55,7 +51,7 @@ class DeclareParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParse( $args, $expected ) {
 
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
 		);

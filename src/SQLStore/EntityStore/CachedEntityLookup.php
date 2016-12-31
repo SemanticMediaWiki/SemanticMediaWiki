@@ -123,7 +123,7 @@ class CachedEntityLookup implements EntityLookup {
 		// are appropriately generated
 		$userLang = Localizer::getInstance()->getUserLanguage()->getCode();
 
-		$sdid = HashBuilder::createHashIdForContent(
+		$sdid = HashBuilder::createFromContent(
 			array(
 				(array)$filter,
 				self::VERSION
@@ -170,7 +170,7 @@ class CachedEntityLookup implements EntityLookup {
 			$this->getHashFrom( $subject )
 		);
 
-		$plid = HashBuilder::createHashIdForContent(
+		$plid = HashBuilder::createFromContent(
 			array(
 				$subject->getSubobjectName(),
 				(array)$requestOptions,
@@ -221,7 +221,7 @@ class CachedEntityLookup implements EntityLookup {
 
 		$container = $this->blobStore->read( $sid );
 
-		$pvid = HashBuilder::createHashIdForContent(
+		$pvid = HashBuilder::createFromContent(
 			array(
 				$property->getKey(),
 				$property->isInverse(),
@@ -276,7 +276,7 @@ class CachedEntityLookup implements EntityLookup {
 
 		$container = $this->blobStore->read( $sid );
 
-		$psid = HashBuilder::createHashIdForContent(
+		$psid = HashBuilder::createFromContent(
 			array(
 				$property->getKey(),
 				$property->isInverse(),
