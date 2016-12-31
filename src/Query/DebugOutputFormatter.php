@@ -183,7 +183,7 @@ class DebugOutputFormatter {
 				",$alias.smw_",
 				"AND (",
 				"))",
-				"((MATCH"
+				"(("
 			),
 			array(
 				"SELECT DISTINCT<br>&nbsp;",
@@ -200,7 +200,7 @@ class DebugOutputFormatter {
 				",<br>&nbsp;&nbsp;$alias.smw_",
 				"<br>&nbsp;&nbsp;&nbsp;AND (",
 				")<br>&nbsp;&nbsp;)",
-				"(<br>&nbsp;&nbsp;&nbsp;(MATCH"
+				"(<br>&nbsp;&nbsp;&nbsp;("
 			),
 			$sql
 		);
