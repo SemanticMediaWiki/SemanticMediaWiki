@@ -102,7 +102,7 @@ class SearchTableRebuilder {
 	 *
 	 * @return boolean
 	 */
-	public function run() {
+	public function rebuild() {
 
 		if ( !$this->searchTableUpdater->isEnabled() ) {
 			return $this->reportMessage( "\n" . "FullText search indexing is not enabled or supported." ."\n" );
@@ -115,6 +115,44 @@ class SearchTableRebuilder {
 		$this->doRebuild();
 
 		return true;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return array
+	 */
+	public function getQualifiedTableList() {
+
+		$tableList = array();
+
+		if ( !$this->searchTableUpdater->isEnabled() ) {
+			return $tableList;
+		}
+
+		foreach ( $this->searchTableUpdater->getPropertyTables() as $proptable ) {
+
+			if ( !$this->getSearchTable()->isValidByType( $proptable->getDiType() ) ) {
+				continue;
+			}
+
+			$tableList[] = $proptable->getName();
+		}
+
+		return $tableList;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $tableName
+	 */
+	public function rebuildByTable( $tableName ) {
+		foreach ( $this->searchTableUpdater->getPropertyTables() as $proptable ) {
+			if ( $proptable->getName() === $tableName && $this->getSearchTable()->isValidByType( $proptable->getDiType() ) ) {
+				$this->doRebuildByPropertyTable( $proptable );
+			}
+		}
 	}
 
 	private function doOptimize() {

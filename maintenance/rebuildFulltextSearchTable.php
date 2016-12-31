@@ -87,7 +87,7 @@ class RebuildFulltextSearchTable extends \Maintenance {
 		$reporter->registerReporterCallback( array( $this, 'reportMessage' ) );
 
 		$searchTableRebuilder->setMessageReporter( $reporter );
-		$result = $searchTableRebuilder->run();
+		$result = $searchTableRebuilder->rebuild();
 
 		if ( $result && $this->hasOption( 'report-runtime' ) ) {
 			$this->reportMessage(
