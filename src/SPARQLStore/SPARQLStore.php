@@ -371,6 +371,15 @@ class SPARQLStore extends Store {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @return PropertyTableInfoFetcher
+	 */
+	public function getPropertyTableInfoFetcher() {
+		return $this->baseStore->getPropertyTableInfoFetcher();
+	}
+
+	/**
 	 * @since 2.0
 	 */
 	public function getPropertyTables() {

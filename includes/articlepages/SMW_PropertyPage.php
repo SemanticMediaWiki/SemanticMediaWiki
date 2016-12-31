@@ -79,6 +79,11 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$message = '';
 
 		if ( $this->mProperty->isUserDefined() ) {
+
+			if ( $this->store->getPropertyTableInfoFetcher()->isFixedTableProperty( $this->mProperty ) ) {
+				$message = Html::rawElement( 'div', array( 'class' => 'plainlinks' ), wfMessage( 'smw-property-userdefined-fixedtable', $propertyName )->parse() );
+			}
+
 			return $message;
 		}
 

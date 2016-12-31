@@ -731,39 +731,26 @@ return array(
 	##
 
 	##
-	# These are fixed properties, i.e. user defined properties having a
-	# dedicated table for them. Entries in this array have the following format:
+	# List of user-defined fixed properties
 	#
-	# 		property_key => property_type.
+	# Listed properties are managed by its own fixed table (instad of a
+	# shared one) to allow for sharding large datasets with value assignments.
 	#
-	# The 'property_key' is the title of the property (with underscores instead
-	# of _ and capital first letter).
-	# The 'property_type' denotes the type of the property and has to be one of the following:
-	#		SMWDataItem::TYPE_BLOB
-	#		SMWDataItem::TYPE_URI
-	#		SMWDataItem::TYPE_WIKIPAGE
-	#		SMWDataItem::TYPE_NUMBER
-	#		SMWDataItem::TYPE_TIME
-	#		SMWDataItem::TYPE_BOOLEAN
-	#		SMWDataItem::TYPE_CONTAINER
-	#		SMWDataItem::TYPE_GEO
-	#		SMWDataItem::TYPE_CONCEPT
-	#		SMWDataItem::TYPE_PROPERTY
+	# The type definition is talen from the property page `[[Has type::...]]` and
+	# by default (if no type is defined) then the `smwgPDefaultType` is returned.
 	#
-	# A run of setup using SMWAdmin is needed to create these tables. If an already used property is assigned a new table all old data for this property will
-	# become inaccessible for SMW. This can be repaired by either migrating it to the new table (repair data) or will eventually be updated on page edits.
+	# Any change to the property type requires to run the `setupStore.php` script
+	# or `Special:SMWAdmin` table update.
 	#
-	# Example: If you have a property named 'Age' which is of type 'Number' then add in LocalSettings:
+	# 'smwgFixedProperties' => array(
+	#		'Age',
+	#		'Has population'
+	# ),
 	#
-	# 		'smwgFixedProperties' => array(
-	#		'Age' => SMWDataItem::TYPE_NUMBER
-	#  	),
-	#
-	# @see http://semantic-mediawiki.org/wiki/Fixed_properties
-	#
+	# @see https://semantic-mediawiki.org/wiki/Fixed_properties
 	# @since 1.9
 	#
-	# @var array
+	# @default array()
 	##
 	'smwgFixedProperties' => array(),
 

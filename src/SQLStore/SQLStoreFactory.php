@@ -342,7 +342,9 @@ class SQLStoreFactory {
 
 		$settings = $this->applicationFactory->getSettings();
 
-		$propertyTableInfoFetcher = new PropertyTableInfoFetcher();
+		$propertyTableInfoFetcher = new PropertyTableInfoFetcher(
+			new PropertyTypeFinder( $this->store->getConnection( 'mw.db' ) )
+		);
 
 		$propertyTableInfoFetcher->setCustomFixedPropertyList(
 			$settings->get( 'smwgFixedProperties' )
