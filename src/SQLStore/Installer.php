@@ -143,9 +143,12 @@ class Installer implements MessageReporter, MessageReporterAware {
 			$this->tableBuilder->drop( $table );
 		}
 
+		$this->tableIntegrityExaminer->checkOnPostDestruction( $this->tableBuilder );
+
 		Hooks::run( 'SMW::SQLStore::AfterDropTablesComplete', array( $this->tableBuilder ) );
 
-		$messageReporter->reportMessage( "\nStandard and auxiliary tables with corresponding data have been removed successfully.\n" );
+		$messageReporter->reportMessage( "\nStandard and auxiliary tables with all corresponding data\n" );
+		$messageReporter->reportMessage( "have been removed successfully.\n" );
 
 		return true;
 	}

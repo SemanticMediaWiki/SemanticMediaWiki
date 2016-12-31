@@ -133,8 +133,8 @@ class SetupStore extends \Maintenance {
 			ob_end_flush();
 		}
 
-		$this->output( "\nAll storage structures for $storeName have been deleted." );
-		$this->output( "You can recreate them with this script followed by the use of the rebuildData.php script to rebuild their contents.\n\n");
+		$this->output( "\nYou can recreate them with this script followed by the use\n");
+		$this->output( "of the rebuildData.php script to rebuild their contents.\n");
 	}
 
 	/**

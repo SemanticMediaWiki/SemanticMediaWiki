@@ -10,7 +10,7 @@ use Onoi\MessageReporter\MessageReporterAware;
  *
  * Provides generic creation and updating function for database tables. A builder
  * that implements this interface is expected to define Database specific
- * operations and allowing it to be executed on specific RDBMS backend.
+ * operations and allowing it to be executed on a specific RDBMS back-end.
  *
  * @license GNU GPL v2+
  * @since 2.5
@@ -20,14 +20,24 @@ use Onoi\MessageReporter\MessageReporterAware;
 interface TableBuilder extends MessageReporterAware {
 
 	/**
-	 * On after the creation of tables and indicies
+	 * Common prefix used by all Semantic MediaWiki tables
+	 */
+	const TABLE_PREFIX = 'smw_';
+
+	/**
+	 * On before the creation of tables and indicies
 	 */
 	const PRE_CREATION = 'pre.creation';
 
 	/**
-	 * On after dropping all tables
+	 * On after creation of all tables
 	 */
 	const POST_CREATION = 'post.creation';
+
+	/**
+	 * On after dropping all tables
+	 */
+	const POST_DESTRUCTION = 'post.destruction';
 
 	/**
 	 * Generic creation and updating function for database tables. Ideally, it
