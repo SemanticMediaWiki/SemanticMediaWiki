@@ -171,6 +171,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 			array( 'SUBOBJECTS',   'integer' ),
 			array( 'DECLPROPS',    'integer' ),
 			array( 'USEDPROPS',    'integer' ),
+			array( 'TOTALPROPS',   'integer' ),
 			array( 'PROPUSES',     'integer' ),
 			array( 'ERRORUSES',    'integer' ),
 			array( 'DELETECOUNT',  'integer' )
