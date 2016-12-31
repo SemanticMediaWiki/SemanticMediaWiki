@@ -493,12 +493,12 @@ class HookRegistry {
 			$applicationFactory->getStore()
 		);
 
-		$transitionalDiffStore = $applicationFactory->singleton( 'TransitionalDiffStore' );
+		$tempChangeOpStore = $applicationFactory->singleton( 'TempChangeOpStore' );
 
 		/**
 		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::SQLStore::AfterDataUpdateComplete
 		 */
-		$this->handlers['SMW::SQLStore::AfterDataUpdateComplete'] = function ( $store, $semanticData, $compositePropertyTableDiffIterator ) use ( $queryDependencyLinksStoreFactory, $queryDependencyLinksStore, $deferredRequestDispatchManager, $transitionalDiffStore ) {
+		$this->handlers['SMW::SQLStore::AfterDataUpdateComplete'] = function ( $store, $semanticData, $compositePropertyTableDiffIterator ) use ( $queryDependencyLinksStoreFactory, $queryDependencyLinksStore, $deferredRequestDispatchManager, $tempChangeOpStore ) {
 
 			// When in commandLine mode avoid deferred execution and run a process
 			// within the same transaction
@@ -509,7 +509,7 @@ class HookRegistry {
 			$queryDependencyLinksStore->setStore( $store );
 			$subject = $semanticData->getSubject();
 
-			$slot = $transitionalDiffStore->createSlotFrom(
+			$slot = $tempChangeOpStore->createSlotFrom(
 				$compositePropertyTableDiffIterator
 			);
 

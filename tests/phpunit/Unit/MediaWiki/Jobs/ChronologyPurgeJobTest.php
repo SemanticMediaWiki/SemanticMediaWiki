@@ -18,18 +18,18 @@ use SMW\Tests\TestEnvironment;
 class ChronologyPurgeJobTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
-	private $transitionalDiffStore;
+	private $tempChangeOpStore;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->transitionalDiffStore = $this->getMockBuilder( '\SMW\SQLStore\TransitionalDiffStore' )
+		$this->tempChangeOpStore = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\TempChangeOpStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->testEnvironment->registerObject( 'TransitionalDiffStore', $this->transitionalDiffStore );
+		$this->testEnvironment->registerObject( 'TempChangeOpStore', $this->tempChangeOpStore );
 	}
 
 	protected function tearDown() {
@@ -55,7 +55,7 @@ class ChronologyPurgeJobTest extends \PHPUnit_Framework_TestCase {
 			'slot:id' => 42
 		);
 
-		$this->transitionalDiffStore->expects( $this->once() )
+		$this->tempChangeOpStore->expects( $this->once() )
 			->method( 'delete' );
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );

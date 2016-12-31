@@ -142,7 +142,7 @@ class FulltextSearchTableFactory {
 			$store->getConnection( 'mw.db' ),
 			$this->newSearchTableUpdater( $store ),
 			$this->newTextSanitizer(),
-			ApplicationFactory::getInstance()->singleton( 'TransitionalDiffStore' )
+			ApplicationFactory::getInstance()->singleton( 'TempChangeOpStore' )
 		);
 
 		$textByChangeUpdater->asDeferredUpdate(

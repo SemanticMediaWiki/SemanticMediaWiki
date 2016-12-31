@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\SQLStore\ChangeOp;
 
-use SMW\SQLStore\TransitionalDiffStore;
+use SMW\SQLStore\ChangeOp\TempChangeOpStore;
 use Onoi\MessageReporter\MessageReporterFactory;
 
 /**
- * @covers \SMW\SQLStore\TransitionalDiffStore
+ * @covers \SMW\SQLStore\ChangeOp\TempChangeOpStore
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use Onoi\MessageReporter\MessageReporterFactory;
  *
  * @author mwjames
  */
-class TransitionalDiffStoreTest extends \PHPUnit_Framework_TestCase {
+class TempChangeOpStoreTest extends \PHPUnit_Framework_TestCase {
 
 	private $cache;
 	private $compositePropertyTableDiffIterator;
@@ -33,14 +33,14 @@ class TransitionalDiffStoreTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TransitionalDiffStore',
-			new TransitionalDiffStore( $this->cache )
+			'\SMW\SQLStore\ChangeOp\TempChangeOpStore',
+			new TempChangeOpStore( $this->cache )
 		);
 	}
 
 	public function testGetSlot() {
 
-		$instance = new TransitionalDiffStore(
+		$instance = new TempChangeOpStore(
 			$this->cache
 		);
 
@@ -60,7 +60,7 @@ class TransitionalDiffStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOrderedDiffByTable' )
 			->will( $this->returnValue( array( 'Foo' => 'Bar' ) ) );
 
-		$instance = new TransitionalDiffStore(
+		$instance = new TempChangeOpStore(
 			$this->cache
 		);
 
@@ -79,7 +79,7 @@ class TransitionalDiffStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOrderedDiffByTable' )
 			->will( $this->returnValue( array() ) );
 
-		$instance = new TransitionalDiffStore(
+		$instance = new TempChangeOpStore(
 			$this->cache
 		);
 
@@ -93,7 +93,7 @@ class TransitionalDiffStoreTest extends \PHPUnit_Framework_TestCase {
 		$this->cache->expects( $this->once() )
 			->method( 'delete' );
 
-		$instance = new TransitionalDiffStore(
+		$instance = new TempChangeOpStore(
 			$this->cache
 		);
 
@@ -112,7 +112,7 @@ class TransitionalDiffStoreTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( 'Foo:bar' ) )
 			->will( $this->returnValue( $res ) );
 
-		$instance = new TransitionalDiffStore(
+		$instance = new TempChangeOpStore(
 			$this->cache
 		);
 
@@ -127,7 +127,7 @@ class TransitionalDiffStoreTest extends \PHPUnit_Framework_TestCase {
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' );
 
-		$instance = new TransitionalDiffStore(
+		$instance = new TempChangeOpStore(
 			$this->cache
 		);
 

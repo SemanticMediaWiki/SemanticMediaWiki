@@ -18,7 +18,7 @@ use SMW\MediaWiki\JobQueueLookup;
 use SMW\Query\QuerySourceFactory;
 use MediaWiki\Logger\LoggerFactory;
 use Psr\Log\NullLogger;
-use SMW\SQLStore\TransitionalDiffStore;
+use SMW\SQLStore\ChangeOp\TempChangeOpStore;
 
 /**
  * @license GNU GPL v2+
@@ -388,24 +388,24 @@ class SharedCallbackContainer implements CallbackContainer {
 		} );
 
 		/**
-		 * @var TransitionalDiffStore
+		 * @var TempChangeOpStore
 		 */
-		$callbackLoader->registerCallback( 'TransitionalDiffStore', function() use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'TransitionalDiffStore', '\SMW\SQLStore\TransitionalDiffStore' );
+		$callbackLoader->registerCallback( 'TempChangeOpStore', function() use ( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'TempChangeOpStore', '\SMW\SQLStore\ChangeOp\TempChangeOpStore' );
 
 			$cacheFactory = $callbackLoader->load( 'CacheFactory' );
 			$cacheType = null;
 
-			$transitionalDiffStore = new TransitionalDiffStore(
+			$tempChangeOpStore = new TempChangeOpStore(
 				$cacheFactory->newMediaWikiCompositeCache( $cacheType ),
 				$cacheFactory->getCachePrefix()
 			);
 
-			$transitionalDiffStore->setLogger(
+			$tempChangeOpStore->setLogger(
 				$callbackLoader->singleton( 'MediaWikiLogger' )
 			);
 
-			return $transitionalDiffStore;
+			return $tempChangeOpStore;
 		} );
 	}
 

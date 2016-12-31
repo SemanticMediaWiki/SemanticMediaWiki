@@ -7,7 +7,7 @@ use SMW\SQLStore\ChangeOp\TableChangeOp;
 use SMW\MediaWiki\Database;
 use SMW\DeferredRequestDispatchManager;
 use SMW\DIWikiPage;
-use SMW\SQLStore\TransitionalDiffStore;
+use SMW\SQLStore\ChangeOp\TempChangeOpStore;
 
 /**
  * @license GNU GPL v2+
@@ -33,9 +33,9 @@ class TextByChangeUpdater {
 	private $textSanitizer;
 
 	/**
-	 * @var TransitionalDiffStore
+	 * @var TempChangeOpStore
 	 */
-	private $transitionalDiffStore;
+	private $tempChangeOpStore;
 
 	/**
 	 * @var boolean
@@ -53,13 +53,13 @@ class TextByChangeUpdater {
 	 * @param Database $connection
 	 * @param SearchTableUpdater $searchTableUpdater
 	 * @param TextSanitizer $textSanitizer
-	 * @param TransitionalDiffStore $transitionalDiffStore
+	 * @param TempChangeOpStore $tempChangeOpStore
 	 */
-	public function __construct( Database $connection, SearchTableUpdater $searchTableUpdater, TextSanitizer $textSanitizer, TransitionalDiffStore $transitionalDiffStore ) {
+	public function __construct( Database $connection, SearchTableUpdater $searchTableUpdater, TextSanitizer $textSanitizer, TempChangeOpStore $tempChangeOpStore ) {
 		$this->connection = $connection;
 		$this->searchTableUpdater = $searchTableUpdater;
 		$this->textSanitizer = $textSanitizer;
-		$this->transitionalDiffStore = $transitionalDiffStore;
+		$this->tempChangeOpStore = $tempChangeOpStore;
 	}
 
 	/**
@@ -130,7 +130,7 @@ class TextByChangeUpdater {
 		}
 
 		$start = microtime( true );
-		$tableChangeOps = $this->transitionalDiffStore->newTableChangeOpsFrom(
+		$tableChangeOps = $this->tempChangeOpStore->newTableChangeOpsFrom(
 			$parameters['slot:id']
 		);
 
