@@ -49,6 +49,10 @@ class JobFactory {
 				return $this->newEntityIdDisposerJob( $title, $parameters );
 			case 'SMW\TempChangeOpPurgeJob':
 				return $this->newTempChangeOpPurgeJob( $title, $parameters );
+			case 'SMW\PropertyStatisticsRebuildJob':
+				return $this->newPropertyStatisticsRebuildJob( $title, $parameters );
+			case 'SMW\FulltextSearchTableRebuildJob':
+				return $this->newFulltextSearchTableRebuildJob( $title, $parameters );
 		}
 
 		throw new RuntimeException( "Unable to match $type to a valid Job type" );
@@ -136,6 +140,30 @@ class JobFactory {
 	 */
 	public function newTempChangeOpPurgeJob( Title $title, array $parameters = array() ) {
 		return new TempChangeOpPurgeJob( $title, $parameters );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param Title $title
+	 * @param array $parameters
+	 *
+	 * @return PropertyStatisticsRebuildJob
+	 */
+	public function newPropertyStatisticsRebuildJob( Title $title, array $parameters = array() ) {
+		return new PropertyStatisticsRebuildJob( $title, $parameters );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param Title $title
+	 * @param array $parameters
+	 *
+	 * @return FulltextSearchTableRebuildJob
+	 */
+	public function newFulltextSearchTableRebuildJob( Title $title, array $parameters = array() ) {
+		return new FulltextSearchTableRebuildJob( $title, $parameters );
 	}
 
 }

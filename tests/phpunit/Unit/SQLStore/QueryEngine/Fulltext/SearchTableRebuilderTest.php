@@ -51,7 +51,7 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testRunWithoutUpdate() {
+	public function testRebuildWithoutUpdate() {
 
 		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
 			->disableOriginalConstructor()
@@ -74,7 +74,7 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->searchTableUpdater
 		);
 
-		$instance->run();
+		$instance->rebuild();
 	}
 
 	public function testNeverRebuildOnOptimization() {
@@ -100,10 +100,10 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->requestOptimization( true );
 
-		$instance->run();
+		$instance->rebuild();
 	}
 
-	public function testRunWithUpdateOnBlob() {
+	public function testRebuildWithUpdateOnBlob() {
 
 		$row = new \stdClass;
 		$row->o_serialized = 'Foo';
@@ -157,7 +157,62 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->reportVerbose( true );
-		$instance->run();
+		$instance->rebuild();
+	}
+
+	public function testgetQualifiedTableList() {
+
+		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyTableDefinition->expects( $this->atLeastOnce() )
+			->method( 'getDiType' )
+			->will( $this->returnValue( DataItem::TYPE_BLOB ) );
+
+		$this->searchTableUpdater->expects( $this->once() )
+			->method( 'isEnabled' )
+			->will( $this->returnValue( true ) );
+
+		$this->searchTableUpdater->expects( $this->atLeastOnce() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( array( $propertyTableDefinition ) ) );
+
+		$instance = new SearchTableRebuilder(
+			$this->connection,
+			$this->searchTableUpdater
+		);
+
+		$this->assertInternalType(
+			'array',
+			$instance->getQualifiedTableList()
+		);
+	}
+
+	public function testRebuildByTable() {
+
+		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyTableDefinition->expects( $this->atLeastOnce() )
+			->method( 'getName' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$propertyTableDefinition->expects( $this->atLeastOnce() )
+			->method( 'getDiType' )
+			->will( $this->returnValue( DataItem::TYPE_BLOB ) );
+
+		$this->searchTableUpdater->expects( $this->atLeastOnce() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( array( $propertyTableDefinition ) ) );
+
+		$instance = new SearchTableRebuilder(
+			$this->connection,
+			$this->searchTableUpdater
+		);
+
+		$instance->rebuildByTable( 'Foo' );
 	}
 
 }
