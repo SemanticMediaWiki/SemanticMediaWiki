@@ -62,7 +62,8 @@
         "_DTITLE": "Display title of",
         "_PVUC": "Has uniqueness constraint",
         "_PEID": "External identifier",
-        "_PEFU": "External formatter uri"
+        "_PEFU": "External formatter uri",
+        "_ASKSC": "Query source"
     },
     "propertyAliases": {
         "Unit tampilan": "_UNIT"

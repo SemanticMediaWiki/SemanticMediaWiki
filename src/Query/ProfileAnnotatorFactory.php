@@ -60,9 +60,14 @@ class ProfileAnnotatorFactory {
 			$format
 		);
 
-		$profileAnnotator = $this->mergeWithDurationProfileAnnotator(
+		$profileAnnotator = $this->newDurationProfileAnnotator(
 			$profileAnnotator,
-			$query
+			$query->getOptionBy( Query::PROC_QUERY_TIME )
+		);
+
+		$profileAnnotator = $this->newSourceProfileAnnotator(
+			$profileAnnotator,
+			$query->getQuerySource()
 		);
 
 		return $profileAnnotator;
@@ -72,21 +77,17 @@ class ProfileAnnotatorFactory {
 		return new FormatProfileAnnotator( $profileAnnotator, $format );
 	}
 
-	private function mergeWithDurationProfileAnnotator( $profileAnnotator, $query ) {
+	private function newDurationProfileAnnotator( $profileAnnotator, $duration ) {
+		return new DurationProfileAnnotator( $profileAnnotator, $duration );
+	}
 
-		if ( $query->getOptionBy( 'smwgQueryDurationEnabled' ) === false ) {
+	private function newSourceProfileAnnotator( $profileAnnotator, $querySource ) {
+
+		if ( $querySource === '' ) {
 			return $profileAnnotator;
 		}
 
-		if ( ( $duration = $query->getOptionBy( Query::PROC_QUERY_TIME ) ) > 0 ) {
-			$profileAnnotator = new DurationProfileAnnotator( $profileAnnotator, $duration );
-		}
-
-		if ( ( $duration = $query->getOptionBy( Query::PROC_PRINT_TIME ) ) > 0 ) {
-			$profileAnnotator = new DurationProfileAnnotator( $profileAnnotator, $duration );
-		}
-
-		return $profileAnnotator;
+		return new SourceProfileAnnotator( $profileAnnotator, $querySource );
 	}
 
 	/**

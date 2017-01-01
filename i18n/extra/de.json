@@ -68,7 +68,8 @@
         "_DTITLE": "Anzeigetitel",
         "_PVUC": "Erlaubt Wert einmal",
         "_PEID": "Kennung zur externen URI",
-        "_PEFU": "Formatierungsanweisung zur externen URI"
+        "_PEFU": "Formatierungsanweisung zur externen URI",
+        "_ASKSC": "Query source"
     },
     "propertyAliases": {
         "Hat Datentyp": "_TYPE",

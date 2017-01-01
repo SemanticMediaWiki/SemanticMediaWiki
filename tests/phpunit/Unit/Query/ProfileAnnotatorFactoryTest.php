@@ -76,6 +76,36 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testConstructCombinedWithOtherMergableProfileAnnotators() {
+
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query = $this->getMockBuilder( '\SMWQuery' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query->expects( $this->atLeastOnce() )
+			->method( 'getContextPage' )
+			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+
+		$query->expects( $this->once() )
+			->method( 'getDescription' )
+			->will( $this->returnValue( $description ) );
+
+		$query->expects( $this->once() )
+			->method( 'getQuerySource' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$instance = new ProfileAnnotatorFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Query\ProfileAnnotators\SourceProfileAnnotator',
+			$instance->newCombinedProfileAnnotator( $query, 'SomeFormat' )
+		);
+	}
+
 	public function testConstructCombinedProfileAnnotatorOnNullContextPage() {
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
