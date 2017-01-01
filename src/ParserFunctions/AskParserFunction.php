@@ -100,11 +100,11 @@ class AskParserFunction {
 	 *
 	 * @since 1.9
 	 *
-	 * @param array $params
+	 * @param array $functionParams
 	 *
 	 * @return string|null
 	 */
-	public function parse( array $rawParams ) {
+	public function parse( array $functionParams ) {
 
 		// Do we still need this?
 		// Reference found in SRF_Exhibit.php, SRF_Ploticus.php, SRF_Timeline.php, SRF_JitGraph.php
@@ -113,12 +113,12 @@ class AskParserFunction {
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		$rawParams = $this->prepareRawParameters(
-			$rawParams
+		$functionParams = $this->prepareFunctionParameters(
+			$functionParams
 		);
 
-		$result = $this->doFetchResultsForRawParameters(
-			$rawParams
+		$result = $this->doFetchResultsFromFunctionParameters(
+			$functionParams
 		);
 
 		$this->parserData->pushSemanticDataToParserOutput();
@@ -134,15 +134,15 @@ class AskParserFunction {
 		return $result;
 	}
 
-	private function prepareRawParameters( array $rawParams ) {
+	private function prepareFunctionParameters( array $functionParams ) {
 
 		// Remove parser object from parameters array
-		if( isset( $rawParams[0] ) && $rawParams[0] instanceof Parser ) {
-			array_shift( $rawParams );
+		if( isset( $functionParams[0] ) && $functionParams[0] instanceof Parser ) {
+			array_shift( $functionParams );
 		}
 
 		// Filter invalid parameters
-		foreach ( $rawParams as $key => $value ) {
+		foreach ( $functionParams as $key => $value ) {
 
 			// First and marked printrequests
 			if (  $key == 0 || ( $value !== '' && $value{0} === '?' ) ) {
@@ -152,19 +152,19 @@ class AskParserFunction {
 			// Filter parameters that can not be split into
 			// argument=value
 			if ( strpos( $value, '=' ) === false ) {
-				unset( $rawParams[$key] );
+				unset( $functionParams[$key] );
 			}
 		}
 
-		return $rawParams;
+		return $functionParams;
 	}
 
-	private function doFetchResultsForRawParameters( array $rawParams ) {
+	private function doFetchResultsFromFunctionParameters( array $functionParams ) {
 
 		$contextPage = $this->parserData->getSubject();
 
 		list( $query, $this->params ) = QueryProcessor::getQueryAndParamsFromFunctionParams(
-			$rawParams,
+			$functionParams,
 			SMW_OUTPUT_WIKI,
 			QueryProcessor::INLINE_QUERY,
 			$this->showMode,
@@ -208,11 +208,9 @@ class AskParserFunction {
 		// In case of an query error add a marker to the subject for discoverability
 		// of a failed query, don't bail-out as we can have results and errors
 		// at the same time
-		if ( $query->getErrors() !== array() ) {
-			$this->addProcessingError( $query->getErrors() );
-		}
+		$this->addProcessingError( $query->getErrors() );
 
-		$this->createQueryProfile(
+		$this->addQueryProfile(
 			$query,
 			$format
 		);
@@ -220,7 +218,7 @@ class AskParserFunction {
 		return $result;
 	}
 
-	private function createQueryProfile( $query, $format ) {
+	private function addQueryProfile( $query, $format ) {
 
 		// If the smwgQueryProfiler is marked with FALSE then just don't create a profile.
 		if ( $this->applicationFactory->getSettings()->get( 'smwgQueryProfiler' ) === false ) {
@@ -228,8 +226,8 @@ class AskParserFunction {
 		}
 
 		$query->setOption(
-			'smwgQueryDurationEnabled',
-			$this->applicationFactory->getSettings()->get( 'smwgQueryDurationEnabled' )
+			Query::PROC_QUERY_TIME,
+			$this->applicationFactory->getSettings()->get( 'smwgQueryDurationEnabled' ) ? $query->getOptionBy( Query::PROC_QUERY_TIME ) : 0
 		);
 
 		$profileAnnotatorFactory = $this->applicationFactory->getQueryFactory()->newProfileAnnotatorFactory();
@@ -245,6 +243,10 @@ class AskParserFunction {
 	}
 
 	private function addProcessingError( $errors ) {
+
+		if ( $errors === array() ) {
+			return;
+		}
 
 		$processingErrorMsgHandler = new ProcessingErrorMsgHandler(
 			$this->parserData->getSubject()

@@ -76,7 +76,8 @@
         "_PVUC": "Possui restrição de unicidade",
         "_PEID": "Identificador externo",
         "_PEFU": "Formato de URI externo",
-        "_PPLB": "Rótulo preferido para a propriedade"
+        "_PPLB": "Rótulo preferido para a propriedade",
+        "_ASKSC": "Query source"
     },
     "propertyAliases": {
         "Exibe unidade": "_UNIT",

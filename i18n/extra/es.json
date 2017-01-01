@@ -64,7 +64,8 @@
         "_DTITLE": "Mostrar título de",
         "_PVUC": "Tiene restricción de unicidad",
         "_PEID": "Identificador externo",
-        "_PEFU": "Formateador de uri externo"
+        "_PEFU": "Formateador de uri externo",
+        "_ASKSC": "Query source"
     },
     "propertyAliases": {
         "Unidad de medida": "_UNIT"
