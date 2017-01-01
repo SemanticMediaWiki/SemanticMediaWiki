@@ -199,6 +199,23 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * @dataProvider errorProvider
+	 */
+	public function testErrorHandlingOnErrors( $errors, $expected ) {
+
+		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
+
+		foreach ( $errors as $error ) {
+			$instance->addError( $error );
+		}
+
+		$this->assertCount(
+			$expected,
+			$instance->getErrors()
+		);
+	}
+
+	/**
 	 * @dataProvider getDataProvider
 	 */
 	public function testGetContainer( array $parameters ) {
@@ -213,9 +230,6 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	/**
-	 * @return array
-	 */
 	public function getDataProvider() {
 
 		$provider = array();
@@ -372,6 +386,49 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 		$instance->setEmptyContainerForId( $id );
 
 		return $instance;
+	}
+
+	public function errorProvider() {
+
+		$provider = array();
+
+		#0
+		$provider[] = array(
+			array(
+				'Foo',
+				'Foo'
+			),
+			1
+		);
+
+		#1
+		$provider[] = array(
+			array(
+				'Foo',
+				'Bar'
+			),
+			2
+		);
+
+		#2
+		$provider[] = array(
+			array(
+				array( 'Foo' => 'Bar' ),
+				array( 'Foo' => 'Bar' ),
+			),
+			1
+		);
+
+		#3
+		$provider[] = array(
+			array(
+				array( 'Foo' => 'Bar' ),
+				array( 'Bar' => 'Foo' ),
+			),
+			2
+		);
+
+		return $provider;
 	}
 
 }
