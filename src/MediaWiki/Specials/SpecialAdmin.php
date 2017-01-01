@@ -10,7 +10,8 @@ use SMW\MediaWiki\Specials\Admin\TableSchemaUpdaterSection;
 use SMW\MediaWiki\Specials\Admin\IdActionHandler;
 use SMW\MediaWiki\Specials\Admin\SupportSection;
 use SMW\MediaWiki\Specials\Admin\DataRepairSection;
-use SMW\MediaWiki\Specials\Admin\LinkSection;
+use SMW\MediaWiki\Specials\Admin\SupplementaryLinksActionHandler;
+use SMW\MediaWiki\Specials\Admin\SupplementaryLinksWidget;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Exception\ExtendedPermissionsError;
 use SMW\Message;
@@ -50,11 +51,11 @@ class SpecialAdmin extends SpecialPage {
 
 		if ( !$this->userCanExecute( $this->getUser() ) ) {
 			// $this->mRestriction is private MW 1.23-
-			throw new ExtendedPermissionsError( 'smw-admin', array( 'smw-smwadmin-permission-missing' ) );
+			throw new ExtendedPermissionsError( 'smw-admin', array( 'smw-admin-permission-missing' ) );
 		}
 
 		$output = $this->getOutput();
-		$output->setPageTitle( Message::get('smwadmin', Message::TEXT, Message::USER_LANGUAGE ) );
+		$output->setPageTitle( Message::get( 'smwadmin', Message::TEXT, Message::USER_LANGUAGE ) );
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
@@ -63,6 +64,10 @@ class SpecialAdmin extends SpecialPage {
 			$this->getContext()->getTitle(),
 			$this->getLanguage()
 		);
+
+		$output->addModules( array(
+			'ext.smw.admin'
+		) );
 
 		$store = $applicationFactory->getStore();
 		$connection = $store->getConnection( 'mw.db' );
@@ -82,8 +87,11 @@ class SpecialAdmin extends SpecialPage {
 			$applicationFactory->getSettings()->get( 'smwgAdminIdDisposal' )
 		);
 
-		$linkSection = new LinkSection(
-			$htmlFormRenderer,
+		$supplementaryLinksWidget = new SupplementaryLinksWidget(
+			$outputFormatter
+		);
+
+		$supplementaryLinksActionHandler = new SupplementaryLinksActionHandler(
 			$outputFormatter
 		);
 
@@ -114,9 +122,9 @@ class SpecialAdmin extends SpecialPage {
 		// Actions
 		switch ( $action ) {
 			case 'settings':
-				return $linkSection->outputConfigurationList();
+				return $supplementaryLinksActionHandler->doOutputConfigurationList();
 			case 'stats':
-				return $linkSection->outputStatistics();
+				return $supplementaryLinksActionHandler->doOutputStatistics();
 			case 'updatetables':
 				return $tableSchemaUpdaterSection->doUpdate( $this->getRequest() );
 			case 'idlookup':
@@ -128,10 +136,10 @@ class SpecialAdmin extends SpecialPage {
 		}
 
 		// General intro
-		$html = Message::get( 'smw_smwadmin_docu', Message::TEXT, Message::USER_LANGUAGE );
+		$html = Message::get( 'smw-admin-docu', Message::TEXT, Message::USER_LANGUAGE );
 		$html .= $tableSchemaUpdaterSection->getForm();
 		$html .= $dataRepairSection->getForm();
-		$html .= $linkSection->getForm();
+		$html .= $supplementaryLinksWidget->getForm();
 		$html .= $supportSection->getForm();
 
 		$output->addHTML( $html );

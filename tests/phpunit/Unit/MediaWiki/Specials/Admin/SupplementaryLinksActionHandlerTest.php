@@ -3,10 +3,10 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
 use SMW\Tests\TestEnvironment;
-use SMW\MediaWiki\Specials\Admin\LinkSection;
+use SMW\MediaWiki\Specials\Admin\SupplementaryLinksActionHandler;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Admin\LinkSection
+ * @covers \SMW\MediaWiki\Specials\Admin\SupplementaryLinksActionHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,11 +14,10 @@ use SMW\MediaWiki\Specials\Admin\LinkSection;
  *
  * @author mwjames
  */
-class LinkSectionTest extends \PHPUnit_Framework_TestCase {
+class SupplementaryLinksActionHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $store;
-	private $htmlFormRenderer;
 	private $outputFormatter;
 
 	protected function setUp() {
@@ -29,10 +28,6 @@ class LinkSectionTest extends \PHPUnit_Framework_TestCase {
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
-
-		$this->htmlFormRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlFormRenderer' )
-			->disableOriginalConstructor()
-			->getMock();
 
 		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
 			->disableOriginalConstructor()
@@ -49,21 +44,8 @@ class LinkSectionTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Admin\LinkSection',
-			new LinkSection( $this->htmlFormRenderer, $this->outputFormatter )
-		);
-	}
-
-	public function testGetForm() {
-
-		$instance = new LinkSection(
-			$this->htmlFormRenderer,
-			$this->outputFormatter
-		);
-
-		$this->assertInternalType(
-			'string',
-			$instance->getForm()
+			'\SMW\MediaWiki\Specials\Admin\SupplementaryLinksActionHandler',
+			new SupplementaryLinksActionHandler( $this->outputFormatter )
 		);
 	}
 
@@ -72,12 +54,11 @@ class LinkSectionTest extends \PHPUnit_Framework_TestCase {
 		$this->outputFormatter->expects( $this->atLeastOnce() )
 			->method( 'addHtml' );
 
-		$instance = new LinkSection(
-			$this->htmlFormRenderer,
+		$instance = new SupplementaryLinksActionHandler(
 			$this->outputFormatter
 		);
 
-		$instance->outputConfigurationList();
+		$instance->doOutputConfigurationList();
 	}
 
 	public function testOutputStatistics() {
@@ -86,6 +67,7 @@ class LinkSectionTest extends \PHPUnit_Framework_TestCase {
 			'PROPUSES' => 0,
 			'ERRORUSES' => 0,
 			'USEDPROPS' => 0,
+			'TOTALPROPS' => 0,
 			'OWNPAGE' => 0,
 			'DECLPROPS' => 0,
 			'DELETECOUNT' => 0,
@@ -101,12 +83,11 @@ class LinkSectionTest extends \PHPUnit_Framework_TestCase {
 		$this->outputFormatter->expects( $this->atLeastOnce() )
 			->method( 'addHtml' );
 
-		$instance = new LinkSection(
-			$this->htmlFormRenderer,
+		$instance = new SupplementaryLinksActionHandler(
 			$this->outputFormatter
 		);
 
-		$instance->outputStatistics();
+		$instance->doOutputStatistics();
 	}
 
 }

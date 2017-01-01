@@ -210,6 +210,22 @@ return array(
 		)
 	),
 
+	// Special:Admin/SemanticMediaWiki
+	'ext.smw.admin' => $moduleTemplate + array(
+		'scripts' => 'smw/special/ext.smw.special.admin.js',
+		'dependencies' => array(
+			'mediawiki.api'
+		),
+		'messages' => array(
+			'smw-no-data-available'
+		),
+		'position' => 'top',
+		'targets' => array(
+			'mobile',
+			'desktop'
+		)
+	),
+
 	// Special:SearchByProperty
 	'ext.smw.property' => $moduleTemplate + array(
 		'scripts' => 'smw/special/ext.smw.special.property.js',
