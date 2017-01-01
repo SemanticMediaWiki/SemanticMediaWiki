@@ -6,7 +6,7 @@ use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\Description;
 use SMW\Query\PrintRequestFactory;
 use SMW\Query\ProfileAnnotatorFactory;
-use SMW\Query\ConfigurableQueryCreator;
+use SMW\Query\QueryCreator;
 use SMWQuery as Query;
 use SMWQueryParser as QueryParser;
 use SMWQueryResult as QueryResult;
@@ -117,11 +117,11 @@ class QueryFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @return ConfigurableQueryCreator
+	 * @return QueryCreator
 	 */
-	public function newConfigurableQueryCreator() {
+	public function newQueryCreator() {
 
-		$queryCreator = new ConfigurableQueryCreator(
+		$queryCreator = new QueryCreator(
 			$this,
 			$GLOBALS['smwgQDefaultNamespaces'],
 			$GLOBALS['smwgQDefaultLimit']

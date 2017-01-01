@@ -136,9 +136,9 @@ class SMWQueryProcessor implements QueryContext {
 			$limit = $GLOBALS['smwgQMaxLimit'];
 		}
 
-		$queryCreator = ApplicationFactory::getInstance()->getQueryFactory()->newConfigurableQueryCreator();
+		$queryCreator = ApplicationFactory::getInstance()->getQueryFactory()->newQueryCreator();
 
-		$configuration = array(
+		$queryCreator->setConfiguration(  array(
 			'extraPrintouts' => $extraPrintouts,
 			'queryMode'   => $queryMode,
 			'context'     => $context,
@@ -150,9 +150,9 @@ class SMWQueryProcessor implements QueryContext {
 			'sort'        => $params['sort']->getValue(),
 			'order'       => $params['order']->getValue(),
 			'defaultSort' => $defaultSort
-		);
+		) );
 
-		return $queryCreator->withConfiguration( $configuration )->createFromString( $queryString );
+		return $queryCreator->create( $queryString );
 	}
 
 	/**

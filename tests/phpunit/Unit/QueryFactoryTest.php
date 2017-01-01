@@ -124,13 +124,13 @@ class QueryFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructConfigurableQueryCreator() {
+	public function testCanConstructQueryCreator() {
 
 		$instance = new QueryFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\ConfigurableQueryCreator',
-			$instance->newConfigurableQueryCreator()
+			'\SMW\Query\QueryCreator',
+			$instance->newQueryCreator()
 		);
 	}
 

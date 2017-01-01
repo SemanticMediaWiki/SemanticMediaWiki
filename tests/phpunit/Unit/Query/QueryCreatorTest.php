@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\Query;
 
-use SMW\Query\ConfigurableQueryCreator;
+use SMW\Query\QueryCreator;
 use SMW\ApplicationFactory;
 
 /**
- * @covers SMW\Query\ConfigurableQueryCreator
+ * @covers SMW\Query\QueryCreator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\ApplicationFactory;
  *
  * @author mwjames
  */
-class ConfigurableQueryCreatorTest extends \PHPUnit_Framework_TestCase {
+class QueryCreatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -23,21 +23,21 @@ class ConfigurableQueryCreatorTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'SMW\Query\ConfigurableQueryCreator',
-			new ConfigurableQueryCreator( $queryFactory )
+			'SMW\Query\QueryCreator',
+			new QueryCreator( $queryFactory )
 		);
 	}
 
 	/**
 	 * @dataProvider queryStringProvider
 	 */
-	public function testCreateFromString( $queryString, $configuration, $expected ) {
+	public function testCreate( $queryString, $configuration, $expected ) {
 
-		$instance = new ConfigurableQueryCreator(
+		$instance = new QueryCreator(
 			ApplicationFactory::getInstance()->getQueryFactory()
 		);
 
-		$query = $instance->withConfiguration( $configuration )->createFromString( $queryString );
+		$query = $instance->setConfiguration( $configuration )->create( $queryString );
 
 		$this->assertInstanceOf(
 			'\SMWQuery',
