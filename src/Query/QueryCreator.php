@@ -15,7 +15,7 @@ use SMW\DataValueFactory;
  *
  * @author mwjames
  */
-class ConfigurableQueryCreator implements QueryContext {
+class QueryCreator implements QueryContext {
 
 	/**
 	 * @var QueryFactory
@@ -71,7 +71,7 @@ class ConfigurableQueryCreator implements QueryContext {
 	 *
 	 * @return self
 	 */
-	public function withConfiguration( array $configuration ) {
+	public function setConfiguration( array $configuration ) {
 		$this->configuration = $configuration;
 		return $this;
 	}
@@ -106,16 +106,16 @@ class ConfigurableQueryCreator implements QueryContext {
 	 *
 	 * @return Query
 	 */
-	public function createFromString( $queryString ) {
+	public function create( $queryString ) {
 
-		$context = $this->getFromConfigurationWith( 'context', self::INLINE_QUERY );
+		$context = $this->getConfiguration( 'context', self::INLINE_QUERY );
 
 		$queryParser = $this->queryFactory->newQueryParser(
 			$context == self::CONCEPT_DESC ? $this->conceptFeatures : $this->queryFeatures
 		);
 
-		$contextPage = $this->getFromConfigurationWith( 'contextPage', null );
-		$queryMode = $this->getFromConfigurationWith( 'queryMode', self::MODE_INSTANCES );
+		$contextPage = $this->getConfiguration( 'contextPage', null );
+		$queryMode = $this->getConfiguration( 'queryMode', self::MODE_INSTANCES );
 
 		$queryParser->setContextPage( $contextPage );
 		$queryParser->setDefaultNamespaces( $this->defaultNamespaces );
@@ -130,15 +130,15 @@ class ConfigurableQueryCreator implements QueryContext {
 		$query->setQuerymode( $queryMode );
 
 		$query->setExtraPrintouts(
-			$this->getFromConfigurationWith( 'extraPrintouts', array() )
+			$this->getConfiguration( 'extraPrintouts', array() )
 		);
 
 		$query->setMainLabel(
-			$this->getFromConfigurationWith( 'mainLabel', '' )
+			$this->getConfiguration( 'mainLabel', '' )
 		);
 
 		$query->setQuerySource(
-			$this->getFromConfigurationWith( 'querySource', null )
+			$this->getConfiguration( 'querySource', null )
 		);
 
 		// keep parsing or other errors for later output
@@ -148,18 +148,18 @@ class ConfigurableQueryCreator implements QueryContext {
 
 		// set sortkeys, limit, and offset
 		$query->setOffset(
-			max( 0, trim( $this->getFromConfigurationWith( 'offset', 0 ) ) + 0 )
+			max( 0, trim( $this->getConfiguration( 'offset', 0 ) ) + 0 )
 		);
 
 		$query->setLimit(
-			max( 0, trim( $this->getFromConfigurationWith( 'limit', $this->defaultLimit ) ) + 0 ),
+			max( 0, trim( $this->getConfiguration( 'limit', $this->defaultLimit ) ) + 0 ),
 			$queryMode != self::MODE_COUNT
 		);
 
 		$sortKeys = $this->getSortKeys(
-			$this->getFromConfigurationWith( 'sort', array() ),
-			$this->getFromConfigurationWith( 'order', array() ),
-			$this->getFromConfigurationWith( 'defaultSort', 'ASC' )
+			$this->getConfiguration( 'sort', array() ),
+			$this->getConfiguration( 'order', array() ),
+			$this->getConfiguration( 'defaultSort', 'ASC' )
 		);
 
 		$query->addErrors(
@@ -247,7 +247,7 @@ class ConfigurableQueryCreator implements QueryContext {
 		return Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY ) == mb_convert_case( $sort, MB_CASE_TITLE ) ? '_INST' : $sort;
 	}
 
-	private function getFromConfigurationWith( $key, $default ) {
+	private function getConfiguration( $key, $default ) {
 		return isset( $this->configuration[$key] ) ? $this->configuration[$key] : $default;
 	}
 
