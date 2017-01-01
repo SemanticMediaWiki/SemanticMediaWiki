@@ -106,7 +106,7 @@ class PropertyTableIdReferenceDisposer {
 
 		$this->connection->beginAtomicTransaction( __METHOD__ );
 
-		$this->triggerResetCacheEventBy( $id );
+		$this->triggerCleanUpEvents( $id );
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
 			if ( $proptable->usesIdSubject() ) {
@@ -180,7 +180,7 @@ class PropertyTableIdReferenceDisposer {
 		}
 	}
 
-	private function triggerResetCacheEventBy( $id ) {
+	private function triggerCleanUpEvents( $id ) {
 
 		$subject = $this->store->getObjectIds()->getDataItemById( $id );
 
@@ -208,14 +208,16 @@ class PropertyTableIdReferenceDisposer {
 		);
 
 		$eventHandler->getEventDispatcher()->dispatch(
-			'property.specification.change',
-			$dispatchContext
-		);
-
-		$eventHandler->getEventDispatcher()->dispatch(
 			'factbox.cache.delete',
 			$dispatchContext
 		);
+
+		if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
+			$eventHandler->getEventDispatcher()->dispatch(
+				'property.specification.change',
+				$dispatchContext
+			);
+		}
 	}
 
 }

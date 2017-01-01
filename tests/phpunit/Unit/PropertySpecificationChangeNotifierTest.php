@@ -91,7 +91,7 @@ class PropertySpecificationChangeNotifierTest extends \PHPUnit_Framework_TestCas
 			->getMock();
 
 		$jobFactory->expects( $this->any() )
-			->method( 'newUpdateDispatcherJob' )
+			->method( 'newByType' )
 			->will( $this->returnValue( $updateDispatcherJob ) );
 
 		$this->applicationFactory->registerObject( 'JobFactory', $jobFactory );
