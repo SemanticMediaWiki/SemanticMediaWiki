@@ -3,10 +3,10 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
 use SMW\Tests\TestEnvironment;
-use SMW\MediaWiki\Specials\Admin\DataRepairSection;
+use SMW\MediaWiki\Specials\Admin\DataRepairActionHandler;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Admin\DataRepairSection
+ * @covers \SMW\MediaWiki\Specials\Admin\DataRepairActionHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\MediaWiki\Specials\Admin\DataRepairSection;
  *
  * @author mwjames
  */
-class DataRepairSectionTest extends \PHPUnit_Framework_TestCase {
+class DataRepairActionHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $connection;
@@ -47,8 +47,8 @@ class DataRepairSectionTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Admin\DataRepairSection',
-			new DataRepairSection( $this->connection, $this->htmlFormRenderer, $this->outputFormatter )
+			'\SMW\MediaWiki\Specials\Admin\DataRepairActionHandler',
+			new DataRepairActionHandler( $this->connection, $this->htmlFormRenderer, $this->outputFormatter )
 		);
 	}
 
@@ -72,7 +72,7 @@ class DataRepairSectionTest extends \PHPUnit_Framework_TestCase {
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
 			->method( 'getForm' );
 
-		$instance = new DataRepairSection(
+		$instance = new DataRepairActionHandler(
 			$this->connection,
 			$this->htmlFormRenderer,
 			$this->outputFormatter
@@ -111,13 +111,13 @@ class DataRepairSectionTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getText' )
 			->will( $this->returnValue( 'yes' ) );
 
-		$instance = new DataRepairSection(
+		$instance = new DataRepairActionHandler(
 			$this->connection,
 			$this->htmlFormRenderer,
 			$this->outputFormatter
 		);
 
-		$instance->enabledRefreshStore( true );
+		$instance->setEnabledFeatures( SMW_ADM_REFRESH );
 		$instance->doRefresh( $webRequest );
 	}
 
@@ -140,13 +140,13 @@ class DataRepairSectionTest extends \PHPUnit_Framework_TestCase {
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'delete' );
 
-		$instance = new DataRepairSection(
+		$instance = new DataRepairActionHandler(
 			$this->connection,
 			$this->htmlFormRenderer,
 			$this->outputFormatter
 		);
 
-		$instance->enabledRefreshStore( true );
+		$instance->setEnabledFeatures( SMW_ADM_REFRESH );
 		$instance->doRefresh( $webRequest );
 	}
 
@@ -173,13 +173,13 @@ class DataRepairSectionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new DataRepairSection(
+		$instance = new DataRepairActionHandler(
 			$this->connection,
 			$this->htmlFormRenderer,
 			$this->outputFormatter
 		);
 
-		$instance->enabledIdDisposal( true );
+		$instance->setEnabledFeatures( SMW_ADM_DISPOSAL );
 		$instance->doDispose( $webRequest );
 	}
 

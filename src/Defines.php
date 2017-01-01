@@ -169,3 +169,14 @@ define( 'SMW_FT_BLOB', 2 ); // DataItem::TYPE_BLOB
 define( 'SMW_FT_URI', 4 ); // DataItem::TYPE_URI
 define( 'SMW_FT_WIKIPAGE', 8 ); // DataItem::TYPE_WIKIPAGE
 /**@}*/
+
+/**@{
+  * Constants for admin features
+  */
+define( 'SMW_ADM_NONE', 0 );
+define( 'SMW_ADM_REFRESH', 2 ); // RefreshStore
+define( 'SMW_ADM_DISPOSAL', 4 ); // IDDisposal
+define( 'SMW_ADM_SETUP', 8 ); // SetupStore
+define( 'SMW_ADM_PSTATS', 16 ); // Property statistics update
+define( 'SMW_ADM_FULLT', 32 ); // Fulltext update
+/**@}*/

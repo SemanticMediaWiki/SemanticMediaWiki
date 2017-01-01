@@ -3,10 +3,10 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
 use SMW\Tests\TestEnvironment;
-use SMW\MediaWiki\Specials\Admin\TableSchemaUpdaterSection;
+use SMW\MediaWiki\Specials\Admin\TableSchemaActionHandler;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Admin\TableSchemaUpdaterSection
+ * @covers \SMW\MediaWiki\Specials\Admin\TableSchemaActionHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\MediaWiki\Specials\Admin\TableSchemaUpdaterSection;
  *
  * @author mwjames
  */
-class TableSchemaUpdaterSectionTest extends \PHPUnit_Framework_TestCase {
+class TableSchemaActionHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -49,8 +49,8 @@ class TableSchemaUpdaterSectionTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Admin\TableSchemaUpdaterSection',
-			new TableSchemaUpdaterSection( $this->store, $this->htmlFormRenderer, $this->outputFormatter )
+			'\SMW\MediaWiki\Specials\Admin\TableSchemaActionHandler',
+			new TableSchemaActionHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter )
 		);
 	}
 
@@ -74,7 +74,7 @@ class TableSchemaUpdaterSectionTest extends \PHPUnit_Framework_TestCase {
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
 			->method( 'getForm' );
 
-		$instance = new TableSchemaUpdaterSection(
+		$instance = new TableSchemaActionHandler(
 			$this->store,
 			$this->htmlFormRenderer,
 			$this->outputFormatter
@@ -92,13 +92,13 @@ class TableSchemaUpdaterSectionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new TableSchemaUpdaterSection(
+		$instance = new TableSchemaActionHandler(
 			$this->store,
 			$this->htmlFormRenderer,
 			$this->outputFormatter
 		);
 
-		$instance->enabledSetupStore( true );
+		$instance->setEnabledFeatures( SMW_ADM_SETUP );
 		$instance->doUpdate( $webRequest );
 	}
 

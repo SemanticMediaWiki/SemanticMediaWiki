@@ -36,9 +36,9 @@ class IdActionHandler {
 	private $outputFormatter;
 
 	/**
-	 * @var boolean
+	 * @var integer
 	 */
-	private $enabledIdDisposal = false;
+	private $enabledFeatures = 0;
 
 	/**
 	 * @since 2.5
@@ -56,10 +56,21 @@ class IdActionHandler {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $enabledIdDisposal
+	 * @param integer $feature
+	 *
+	 * @return boolean
 	 */
-	public function enabledIdDisposal( $enabledIdDisposal ) {
-		$this->enabledIdDisposal = (bool)$enabledIdDisposal;
+	public function isEnabledFeature( $feature ) {
+		return ( $this->enabledFeatures & $feature ) != 0;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param integer $enabledFeatures
+	 */
+	public function setEnabledFeatures( $enabledFeatures ) {
+		$this->enabledFeatures = $enabledFeatures;
 	}
 
 	/**
@@ -75,7 +86,7 @@ class IdActionHandler {
 
 		$id = (int)$webRequest->getText( 'id' );
 
-		if ( $this->enabledIdDisposal && $id > 0 && $webRequest->getText( 'dispose' ) === 'yes' ) {
+		if ( $this->isEnabledFeature( SMW_ADM_DISPOSAL ) && $id > 0 && $webRequest->getText( 'dispose' ) === 'yes' ) {
 			$this->doDispose( $id, $user );
 		}
 
@@ -130,7 +141,7 @@ class IdActionHandler {
 			$id = null;
 		}
 
-		if ( !$this->enabledIdDisposal ) {
+		if ( !$this->isEnabledFeature( SMW_ADM_DISPOSAL ) ) {
 			return $html;
 		}
 

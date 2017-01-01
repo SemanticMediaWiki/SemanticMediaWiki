@@ -17,7 +17,7 @@ use WebRequest;
  *
  * @author mwjames
  */
-class TableSchemaUpdaterSection {
+class TableSchemaActionHandler {
 
 	/**
 	 * @var Store
@@ -30,9 +30,9 @@ class TableSchemaUpdaterSection {
 	private $htmlFormRenderer;
 
 	/**
-	 * @var boolean
+	 * @var integer
 	 */
-	private $enabledSetupStore = false;
+	private $enabledFeatures = 0;
 
 	/**
 	 * @var OutputFormatter
@@ -55,10 +55,21 @@ class TableSchemaUpdaterSection {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $enabledSetupStore
+	 * @param integer $feature
+	 *
+	 * @return boolean
 	 */
-	public function enabledSetupStore( $enabledSetupStore ) {
-		$this->enabledSetupStore = (bool)$enabledSetupStore;
+	public function isEnabledFeature( $feature ) {
+		return ( $this->enabledFeatures & $feature ) != 0;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param integer $enabledFeatures
+	 */
+	public function setEnabledFeatures( $enabledFeatures ) {
+		$this->enabledFeatures = $enabledFeatures;
 	}
 
 	/**
@@ -72,19 +83,24 @@ class TableSchemaUpdaterSection {
 			->setName( 'buildtables' )
 			->setMethod( 'get' )
 			->addHiddenField( 'action', 'updatetables' )
-			->addHeader( 'h2', $this->getMessage( 'smw_smwadmin_db' ) );
+			->addHeader( 'h2', $this->getMessage( 'smw-admin-db' ) )
+			->addParagraph( $this->getMessage( 'smw-admin-dbdocu' ) );
 
-		if ( $this->enabledSetupStore ) {
+		if ( $this->isEnabledFeature( SMW_ADM_SETUP ) ) {
 			$this->htmlFormRenderer
-				->addParagraph( $this->getMessage( 'smw_smwadmin_dbdocu' ) )
 				->addHiddenField( 'udsure', 'yes' )
-				->addSubmitButton( $this->getMessage( 'smw_smwadmin_dbbutton' ) );
+				->addSubmitButton(
+					$this->getMessage( 'smw-admin-dbbutton' ),
+					array(
+						'class' => ''
+					)
+				);
 		} else {
 			$this->htmlFormRenderer
-				->addParagraph( $this->getMessage( 'smw-smwadmin-dbsetup-disabled' ) );
+				->addParagraph( $this->getMessage( 'smw-admin-feature-disabled' ) );
 		}
 
-		return $this->htmlFormRenderer->getForm() . Html::element( 'p', array(), '' );
+		return Html::rawElement( 'div', array(), $this->htmlFormRenderer->getForm() );
 	}
 
 	/**
@@ -96,19 +112,19 @@ class TableSchemaUpdaterSection {
 	 */
 	public function doUpdate( WebRequest $webRequest ) {
 
-		if ( !$this->enabledSetupStore ) {
+		if ( !$this->isEnabledFeature( SMW_ADM_SETUP ) ) {
 			return;
 		}
 
 		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
 		$messageReporter->registerReporterCallback( array( $this, 'reportMessage' ) );
 
-		$this->outputFormatter->setPageTitle( $this->getMessage( 'smw_smwadmin_db' ) );
+		$this->outputFormatter->setPageTitle( $this->getMessage( 'smw-admin-db' ) );
 		$this->outputFormatter->addParentLink();
 
 		$this->store->getOptions()->set( Installer::OPT_MESSAGEREPORTER, $messageReporter );
 
-		$this->outputFormatter->addHTML( Html::rawElement( 'p', array(), $this->getMessage( 'smw_smwadmin_permissionswarn' ) ) );
+		$this->outputFormatter->addHTML( Html::rawElement( 'p', array(), $this->getMessage( 'smw-admin-permissionswarn' ) ) );
 
 		$this->outputFormatter->addHTML( '<pre>' );
 
@@ -118,7 +134,7 @@ class TableSchemaUpdaterSection {
 		$this->outputFormatter->addHTML( '</pre>' );
 
 		if ( $result === true && $webRequest->getText( 'udsure' ) == 'yes' ) {
-			$this->outputFormatter->addWikiText( '<p><b>' . $this->getMessage( 'smw_smwadmin_setupsuccess' ) . "</b></p>" );
+			$this->outputFormatter->addWikiText( '<p><b>' . $this->getMessage( 'smw-admin-setupsuccess' ) . "</b></p>" );
 		}
 	}
 
