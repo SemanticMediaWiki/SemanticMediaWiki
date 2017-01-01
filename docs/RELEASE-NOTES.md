@@ -56,6 +56,9 @@ THIS IS NOT A RELEASE YET
 * #2113 
 * #2118
 * #2135
+* #2137
+* #2139
+* #2142
 
 ## Bug fixes
 
