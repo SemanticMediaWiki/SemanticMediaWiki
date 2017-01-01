@@ -18,12 +18,12 @@ use User;
  *
  * @author mwjames
  */
-class IdHandlerSection {
+class IdActionHandler {
 
 	/**
-	 * @var Database
+	 * @var Store
 	 */
-	private $connection;
+	private $store;
 
 	/**
 	 * @var HtmlFormRenderer
@@ -43,12 +43,12 @@ class IdHandlerSection {
 	/**
 	 * @since 2.5
 	 *
-	 * @param Database $connection
+	 * @param Store $store
 	 * @param HtmlFormRenderer $htmlFormRenderer
 	 * @param OutputFormatter $outputFormatter
 	 */
-	public function __construct( Database $connection, HtmlFormRenderer $htmlFormRenderer, OutputFormatter $outputFormatter ) {
-		$this->connection = $connection;
+	public function __construct( Store $store, HtmlFormRenderer $htmlFormRenderer, OutputFormatter $outputFormatter ) {
+		$this->store = $store;
 		$this->htmlFormRenderer = $htmlFormRenderer;
 		$this->outputFormatter = $outputFormatter;
 	}
@@ -68,9 +68,9 @@ class IdHandlerSection {
 	 * @param WebRequest $webRequest
 	 * @param User|null $user
 	 */
-	public function outputActionForm( WebRequest $webRequest, User $user = null ) {
+	public function performActionWith( WebRequest $webRequest, User $user = null ) {
 
-		$this->outputFormatter->setPageTitle( $this->getMessage( 'smw-smwadmin-idlookup-title' ) );
+		$this->outputFormatter->setPageTitle( $this->getMessage( 'smw-admin-supplementary-idlookup-title' ) );
 		$this->outputFormatter->addParentLink();
 
 		$id = (int)$webRequest->getText( 'id' );
@@ -112,9 +112,9 @@ class IdHandlerSection {
 			->setMethod( 'get' )
 			->addHiddenField( 'action', 'idlookup' )
 			->addHiddenField( 'id', $id )
-			->addParagraph( $this->getMessage( 'smw-sp-admin-idlookup-docu' ) )
+			->addParagraph( $this->getMessage( 'smw-admin-idlookup-docu' ) )
 			->addInputField(
-				$this->getMessage( 'smw-sp-admin-objectid' ),
+				$this->getMessage( 'smw-admin-objectid' ),
 				'id',
 				$id
 			)
@@ -126,7 +126,7 @@ class IdHandlerSection {
 		$html .= Html::element( 'p', array(), '' );
 
 		if ( $id > 0 && $webRequest->getText( 'dispose' ) == 'yes' ) {
-			$message = $this->getMessage( array ('smw-sp-admin-iddispose-done', $id ) );
+			$message = $this->getMessage( array ('smw-admin-iddispose-done', $id ) );
 			$id = null;
 		}
 
@@ -139,10 +139,10 @@ class IdHandlerSection {
 			->setMethod( 'get' )
 			->addHiddenField( 'action', 'idlookup' )
 			->addHiddenField( 'id', $id )
-			->addHeader( 'h3', $this->getMessage( 'smw-sp-admin-iddispose-title' ) )
-			->addParagraph( $this->getMessage( 'smw-sp-admin-iddispose-docu', Message::PARSE ) )
+			->addHeader( 'h2', $this->getMessage( 'smw-admin-iddispose-title' ) )
+			->addParagraph( $this->getMessage( 'smw-admin-iddispose-docu', Message::PARSE ) )
 			->addInputField(
-				$this->getMessage( 'smw-sp-admin-objectid' ),
+				$this->getMessage( 'smw-admin-objectid' ),
 				'id',
 				$id,
 				null,
@@ -168,7 +168,8 @@ class IdHandlerSection {
 			return '';
 		}
 
-		$row = $this->connection->selectRow(
+		$references = false;
+		$row = $this->store->getConnection( 'mw.db' )->selectRow(
 				\SMWSql3SmwIds::TABLE_NAME,
 				array(
 					'smw_title',
@@ -181,7 +182,20 @@ class IdHandlerSection {
 				__METHOD__
 		);
 
-		return '<pre>' . $this->outputFormatter->encodeAsJson( array( $id, $row ) ) . '</pre>';
+		if ( $row !== false ) {
+			$references = $this->store->getPropertyTableIdReferenceFinder()->searchAllTablesToFindAtLeastOneReferenceById(
+				$id
+			);
+		}
+
+		$output = '<pre>' . $this->outputFormatter->encodeAsJson( array( $id, $row ) ) . '</pre>';
+
+		if ( $references ) {
+			$output .= Html::element( 'p', array(), $this->getMessage( array( 'smw-admin-iddispose-references', $id, count( $references ) ) ) );
+			$output .= '<pre>' . $this->outputFormatter->encodeAsJson( $references ) . '</pre>';
+		}
+
+		return $output;
 	}
 
 	private function getMessage( $key, $type = Message::TEXT ) {

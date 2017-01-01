@@ -7,7 +7,7 @@ use SMW\Store;
 use SpecialPage;
 use SMW\MediaWiki\Specials\Admin\Configuration;
 use SMW\MediaWiki\Specials\Admin\TableSchemaUpdaterSection;
-use SMW\MediaWiki\Specials\Admin\IdHandlerSection;
+use SMW\MediaWiki\Specials\Admin\IdActionHandler;
 use SMW\MediaWiki\Specials\Admin\SupportSection;
 use SMW\MediaWiki\Specials\Admin\DataRepairSection;
 use SMW\MediaWiki\Specials\Admin\LinkSection;
@@ -97,13 +97,13 @@ class SpecialAdmin extends SpecialPage {
 			$applicationFactory->getSettings()->get( 'smwgAdminSetupStore' )
 		);
 
-		$idHandlerSection = new IdHandlerSection(
-			$connection,
+		$idActionHandler = new IdActionHandler(
+			$store,
 			$htmlFormRenderer,
 			$outputFormatter
 		);
 
-		$idHandlerSection->enabledIdDisposal(
+		$idActionHandler->enabledIdDisposal(
 			$applicationFactory->getSettings()->get( 'smwgAdminIdDisposal' )
 		);
 
@@ -120,7 +120,7 @@ class SpecialAdmin extends SpecialPage {
 			case 'updatetables':
 				return $tableSchemaUpdaterSection->doUpdate( $this->getRequest() );
 			case 'idlookup':
-				return $idHandlerSection->outputActionForm( $this->getRequest(), $this->getUser() );
+				return $idActionHandler->performActionWith( $this->getRequest(), $this->getUser() );
 			case 'refreshstore':
 				return $dataRepairSection->doRefresh( $this->getRequest() );
 			case 'dispose':
