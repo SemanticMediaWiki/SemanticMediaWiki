@@ -172,7 +172,7 @@ class IdActionHandlerTest extends \PHPUnit_Framework_TestCase {
 			$this->outputFormatter
 		);
 
-		$instance->enabledIdDisposal( true );
+		$instance->setEnabledFeatures( SMW_ADM_DISPOSAL );
 		$instance->performActionWith( $webRequest, $user );
 	}
 

@@ -3,10 +3,10 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
 use SMW\Tests\TestEnvironment;
-use SMW\MediaWiki\Specials\Admin\SupportSection;
+use SMW\MediaWiki\Specials\Admin\SupportWidget;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Admin\SupportSection
+ * @covers \SMW\MediaWiki\Specials\Admin\SupportWidget
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\MediaWiki\Specials\Admin\SupportSection;
  *
  * @author mwjames
  */
-class SupportSectionTest extends \PHPUnit_Framework_TestCase {
+class SupportWidgetTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $htmlFormRenderer;
@@ -37,8 +37,8 @@ class SupportSectionTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Admin\SupportSection',
-			new SupportSection( $this->htmlFormRenderer )
+			'\SMW\MediaWiki\Specials\Admin\SupportWidget',
+			new SupportWidget( $this->htmlFormRenderer )
 		);
 	}
 
@@ -63,7 +63,7 @@ class SupportSectionTest extends \PHPUnit_Framework_TestCase {
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
 			->method( 'getForm' );
 
-		$instance = new SupportSection(
+		$instance = new SupportWidget(
 			$this->htmlFormRenderer
 		);
 

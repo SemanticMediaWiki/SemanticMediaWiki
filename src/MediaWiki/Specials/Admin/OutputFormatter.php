@@ -67,6 +67,19 @@ class OutputFormatter {
 	/**
 	 * @since 2.5
 	 *
+	 * @param string $fragment
+	 */
+	public function redirectToRootPage( $fragment = '' ) {
+
+		$title = \SpecialPage::getTitleFor( 'SMWAdmin' );
+		$title->setFragment( ' ' . $fragment );
+
+		$this->outputPage->redirect( $title->getFullURL() );
+	}
+
+	/**
+	 * @since 2.5
+	 *
 	 * @param string $caption
 	 * @param array $query
 	 */

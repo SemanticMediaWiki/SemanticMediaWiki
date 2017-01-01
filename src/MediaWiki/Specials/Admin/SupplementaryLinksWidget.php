@@ -55,7 +55,7 @@ class SupplementaryLinksWidget {
 			)
 		);
 
-		return $html . Html::element( 'p', array(), '' );
+		return Html::rawElement( 'div', array(), $html );
 	}
 
 	private function getMessage( $key, $type = Message::TEXT ) {

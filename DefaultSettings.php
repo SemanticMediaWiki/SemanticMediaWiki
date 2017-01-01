@@ -581,27 +581,25 @@ return array(
 	###
 	# If the following is set to true, it is possible to initiate the repairing
 	# or updating of all wiki data using the interface on Special:SMWAdmin.
+	#
+	# @deprecated since 2.5, use $smwgAdminFeatures
 	##
 	'smwgAdminRefreshStore' => true,
 	##
 
 	###
-	# Allows to restrict access to the "Database installation and upgrade"
-	# feature in the Special:SemanticMediaWiki (or Special:SMWAdmin)
+	# List of Special:SemanticMediaWiki (or Special:SMWAdmin) features
+	#
+	# - SMW_ADM_REFRESH: to initiate the repairing or updating of all wiki data
+	# - SMW_ADM_SETUP: restrict to "Database installation and upgrade"
+	# - SMW_ADM_DISPOSAL: restrict access to the "Object ID lookup and disposal"
+	#   feature and the "Outdated entities disposal"
+	# - SMW_ADM_PSTATS: Property statistics update
+	# - SMW_ADM_FULLT:
 	#
 	# @sine 2.5
 	##
-	'smwgAdminSetupStore' => true,
-	##
-
-	###
-	# Allows to restrict access to the "Object ID lookup and disposal"
-	# feature and the "Disposal of outdated entities" in the
-	# Special:SemanticMediaWiki (or Special:SMWAdmin)
-	#
-	# @sine 2.5
-	##
-	'smwgAdminIdDisposal' => true,
+	'smwgAdminFeatures' => SMW_ADM_REFRESH | SMW_ADM_SETUP | SMW_ADM_DISPOSAL | SMW_ADM_PSTATS | SMW_ADM_FULLT,
 	##
 
 	###

@@ -6,10 +6,10 @@ use SMW\ApplicationFactory;
 use SMW\Store;
 use SpecialPage;
 use SMW\MediaWiki\Specials\Admin\Configuration;
-use SMW\MediaWiki\Specials\Admin\TableSchemaUpdaterSection;
+use SMW\MediaWiki\Specials\Admin\TableSchemaActionHandler;
 use SMW\MediaWiki\Specials\Admin\IdActionHandler;
-use SMW\MediaWiki\Specials\Admin\SupportSection;
-use SMW\MediaWiki\Specials\Admin\DataRepairSection;
+use SMW\MediaWiki\Specials\Admin\SupportWidget;
+use SMW\MediaWiki\Specials\Admin\DataRepairActionHandler;
 use SMW\MediaWiki\Specials\Admin\SupplementaryLinksActionHandler;
 use SMW\MediaWiki\Specials\Admin\SupplementaryLinksWidget;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
@@ -57,65 +57,30 @@ class SpecialAdmin extends SpecialPage {
 		$output = $this->getOutput();
 		$output->setPageTitle( Message::get( 'smwadmin', Message::TEXT, Message::USER_LANGUAGE ) );
 
-		$applicationFactory = ApplicationFactory::getInstance();
-		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
-
-		$htmlFormRenderer = $mwCollaboratorFactory->newHtmlFormRenderer(
-			$this->getContext()->getTitle(),
-			$this->getLanguage()
-		);
+		$output->addModuleStyles( array(
+			'mediawiki.ui',
+			'mediawiki.ui.button',
+			'mediawiki.ui.input'
+		) );
 
 		$output->addModules( array(
 			'ext.smw.admin'
 		) );
 
-		$store = $applicationFactory->getStore();
-		$connection = $store->getConnection( 'mw.db' );
-		$outputFormatter = new OutputFormatter( $output );
+		$applicationFactory = ApplicationFactory::getInstance();
 
-		$dataRepairSection = new DataRepairSection(
-			$connection,
-			$htmlFormRenderer,
-			$outputFormatter
+		list(
+			$dataRepairActionHandler,
+			$supplementaryLinksWidget,
+			$supplementaryLinksActionHandler,
+			$tableSchemaActionHandler,
+			$idActionHandler,
+			$supportWidget
+		) = $this->getHandlers(
+			$applicationFactory->getStore(),
+			$applicationFactory->getSettings(),
+			$applicationFactory->newMwCollaboratorFactory()
 		);
-
-		$dataRepairSection->enabledRefreshStore(
-			$applicationFactory->getSettings()->get( 'smwgAdminRefreshStore' )
-		);
-
-		$dataRepairSection->enabledIdDisposal(
-			$applicationFactory->getSettings()->get( 'smwgAdminIdDisposal' )
-		);
-
-		$supplementaryLinksWidget = new SupplementaryLinksWidget(
-			$outputFormatter
-		);
-
-		$supplementaryLinksActionHandler = new SupplementaryLinksActionHandler(
-			$outputFormatter
-		);
-
-		$tableSchemaUpdaterSection = new TableSchemaUpdaterSection(
-			$store,
-			$htmlFormRenderer,
-			$outputFormatter
-		);
-
-		$tableSchemaUpdaterSection->enabledSetupStore(
-			$applicationFactory->getSettings()->get( 'smwgAdminSetupStore' )
-		);
-
-		$idActionHandler = new IdActionHandler(
-			$store,
-			$htmlFormRenderer,
-			$outputFormatter
-		);
-
-		$idActionHandler->enabledIdDisposal(
-			$applicationFactory->getSettings()->get( 'smwgAdminIdDisposal' )
-		);
-
-		$supportSection = new SupportSection( $htmlFormRenderer );
 
 		$action = $query !== null ? $query : $this->getRequest()->getText( 'action' );
 
@@ -126,21 +91,25 @@ class SpecialAdmin extends SpecialPage {
 			case 'stats':
 				return $supplementaryLinksActionHandler->doOutputStatistics();
 			case 'updatetables':
-				return $tableSchemaUpdaterSection->doUpdate( $this->getRequest() );
+				return $tableSchemaActionHandler->doUpdate( $this->getRequest() );
 			case 'idlookup':
 				return $idActionHandler->performActionWith( $this->getRequest(), $this->getUser() );
 			case 'refreshstore':
-				return $dataRepairSection->doRefresh( $this->getRequest() );
+				return $dataRepairActionHandler->doRefresh( $this->getRequest() );
 			case 'dispose':
-				return $dataRepairSection->doDispose( $this->getRequest() );
+				return $dataRepairActionHandler->doDispose();
+			case 'pstatsrebuild':
+				return $dataRepairActionHandler->doPropertyStatsRebuild();
+			case 'fulltrebuild':
+				return $dataRepairActionHandler->doFulltextSearchTableRebuild();
 		}
 
 		// General intro
 		$html = Message::get( 'smw-admin-docu', Message::TEXT, Message::USER_LANGUAGE );
-		$html .= $tableSchemaUpdaterSection->getForm();
-		$html .= $dataRepairSection->getForm();
+		$html .= $tableSchemaActionHandler->getForm();
+		$html .= $dataRepairActionHandler->getForm();
 		$html .= $supplementaryLinksWidget->getForm();
-		$html .= $supportSection->getForm();
+		$html .= $supportWidget->getForm();
 
 		$output->addHTML( $html );
 	}
@@ -150,6 +119,78 @@ class SpecialAdmin extends SpecialPage {
 	 */
 	protected function getGroupName() {
 		return 'smw_group';
+	}
+
+	private function getHandlers( $store, $settings, $mwCollaboratorFactory ) {
+
+		$htmlFormRenderer = $mwCollaboratorFactory->newHtmlFormRenderer(
+			$this->getContext()->getTitle(),
+			$this->getLanguage()
+		);
+
+		$connection = $store->getConnection( 'mw.db' );
+		$outputFormatter = new OutputFormatter( $this->getOutput() );
+
+		$adminFeatures = $settings->get( 'smwgAdminFeatures' );
+
+		// Disable the feature in case the function is not supported
+		if ( $settings->get( 'smwgEnabledFulltextSearch' ) === false ) {
+			$adminFeatures = $adminFeatures & ~SMW_ADM_FULLT;
+		}
+
+		// Ensure BC for a deprecated setting
+		if ( $settings->get( 'smwgAdminRefreshStore' ) === false ) {
+			$adminFeatures = $adminFeatures & ~SMW_ADM_REFRESH;
+		}
+
+		$dataRepairActionHandler = new DataRepairActionHandler(
+			$connection,
+			$htmlFormRenderer,
+			$outputFormatter
+		);
+
+		$dataRepairActionHandler->setEnabledFeatures(
+			$adminFeatures
+		);
+
+		$supplementaryLinksWidget = new SupplementaryLinksWidget(
+			$outputFormatter
+		);
+
+		$supplementaryLinksActionHandler = new SupplementaryLinksActionHandler(
+			$outputFormatter
+		);
+
+		$tableSchemaActionHandler = new TableSchemaActionHandler(
+			$store,
+			$htmlFormRenderer,
+			$outputFormatter
+		);
+
+		$tableSchemaActionHandler->setEnabledFeatures(
+			$adminFeatures
+		);
+
+		$idActionHandler = new IdActionHandler(
+			$store,
+			$htmlFormRenderer,
+			$outputFormatter
+		);
+
+		$idActionHandler->setEnabledFeatures(
+			$adminFeatures
+		);
+
+		$supportWidget = new SupportWidget( $htmlFormRenderer );
+
+		return array(
+			$dataRepairActionHandler,
+			$supplementaryLinksWidget,
+			$supplementaryLinksActionHandler,
+			$tableSchemaActionHandler,
+			$idActionHandler,
+			$supportWidget
+		);
 	}
 
 }
