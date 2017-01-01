@@ -37,6 +37,19 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider typeProvider
+	 */
+	public function testNewByTypeWithNullTitle( $type ) {
+
+		$instance = new JobFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\Jobs\NullJob',
+			$instance->newByType( $type, null )
+		);
+	}
+
 	public function testNewByTypeOnUnknownJobThrowsException() {
 
 		$instance = new JobFactory();

@@ -141,7 +141,8 @@ class EventListenerRegistry implements EventListenerCollection {
 				$applicationFactory = ApplicationFactory::getInstance();
 				$subject = $dispatchContext->get( 'subject' );
 
-				$updateDispatcherJob = $applicationFactory->newJobFactory()->newUpdateDispatcherJob(
+				$updateDispatcherJob = $applicationFactory->newJobFactory()->newByType(
+					'SMW\UpdateDispatcherJob',
 					$subject->getTitle()
 				);
 

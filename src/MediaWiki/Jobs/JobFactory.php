@@ -26,13 +26,17 @@ class JobFactory {
 	 * @since 2.5
 	 *
 	 * @param string $type
-	 * @param Title $title
+	 * @param Title|null $title
 	 * @param array $parameters
 	 *
 	 * @return Job
 	 * @throws RuntimeException
 	 */
-	public function newByType( $type, Title $title, array $parameters = array() ) {
+	public function newByType( $type, Title $title = null, array $parameters = array() ) {
+
+		if ( $title === null ) {
+			return new NullJob( null );
+		}
 
 		switch ( $type ) {
 			case 'SMW\RefreshJob':
@@ -43,14 +47,14 @@ class JobFactory {
 				return $this->newUpdateDispatcherJob( $title, $parameters );
 			case 'SMW\ParserCachePurgeJob':
 				return $this->newParserCachePurgeJob( $title, $parameters );
-			case 'SMW\FulltextSearchTableUpdateJob':
-				return $this->newFulltextSearchTableUpdateJob( $title, $parameters );
 			case 'SMW\EntityIdDisposerJob':
 				return $this->newEntityIdDisposerJob( $title, $parameters );
 			case 'SMW\TempChangeOpPurgeJob':
 				return $this->newTempChangeOpPurgeJob( $title, $parameters );
 			case 'SMW\PropertyStatisticsRebuildJob':
 				return $this->newPropertyStatisticsRebuildJob( $title, $parameters );
+			case 'SMW\FulltextSearchTableUpdateJob':
+				return $this->newFulltextSearchTableUpdateJob( $title, $parameters );
 			case 'SMW\FulltextSearchTableRebuildJob':
 				return $this->newFulltextSearchTableRebuildJob( $title, $parameters );
 		}
