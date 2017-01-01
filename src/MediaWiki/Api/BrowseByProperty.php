@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Api;
 use ApiBase;
 use SMW\ApplicationFactory;
 use SMW\NamespaceUriFinder;
+use SMW\Localizer;
 
 /**
  * @license GNU GPL v2+
@@ -35,8 +36,12 @@ class BrowseByProperty extends ApiBase {
 			$params['listonly']
 		);
 
+		if ( ( $lang = $params['lang'] ) === null ) {
+			$lang = Localizer::getInstance()->getUserLanguage()->getCode();
+		}
+
 		$propertyListByApiRequest->setLanguageCode(
-			$params['lang']
+			$lang
 		);
 
 		$propertyListByApiRequest->findPropertyListBy(

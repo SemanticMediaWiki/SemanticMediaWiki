@@ -265,12 +265,9 @@ class PropertyListByApiRequest {
 
 	private function findPropertyDescriptionBy( DIProperty $property ) {
 
-		if ( $this->languageCode !== '' ) {
-			$this->propertySpecificationLookup->setLanguageCode( $this->languageCode );
-		}
-
 		$description = $this->propertySpecificationLookup->getPropertyDescriptionBy(
-			$property
+			$property,
+			$this->languageCode
 		);
 
 		if ( $description === '' || $description === null ) {
@@ -278,7 +275,7 @@ class PropertyListByApiRequest {
 		}
 
 		return array(
-			$this->propertySpecificationLookup->getLanguageCode() => $description
+			$this->languageCode => $description
 		);
 	}
 
@@ -291,7 +288,7 @@ class PropertyListByApiRequest {
 
 		$results = $propertyLabelFinder->findPropertyListFromLabelByLanguageCode(
 			$label,
-			Localizer::getInstance()->getUserLanguage()->getCode()
+			$this->languageCode
 		);
 
 		foreach ( $results as $result ) {
