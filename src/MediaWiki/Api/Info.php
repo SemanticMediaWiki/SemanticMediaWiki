@@ -31,6 +31,7 @@ class Info extends ApiBase {
 		$semanticStats = array();
 
 		if ( in_array( 'propcount', $requestedInfo )
+			|| in_array( 'jobcount', $requestedInfo )
 			|| in_array( 'errorcount', $requestedInfo )
 			|| in_array( 'deletecount', $requestedInfo )
 			|| in_array( 'totalpropcount', $requestedInfo )
@@ -90,7 +91,8 @@ class Info extends ApiBase {
 					'querysize',
 					'formatcount',
 					'conceptcount',
-					'subobjectcount'
+					'subobjectcount',
+					'jobcount'
 				)
 			),
 		);
@@ -157,6 +159,16 @@ class Info extends ApiBase {
 
 			foreach ( $semanticStats['QUERYFORMATS'] as $name => $count ) {
 				$resultInfo['formatcount'][$name] = $count;
+			}
+		}
+
+		if ( in_array( 'jobcount', $requestedInfo ) ) {
+			$resultInfo['jobcount'] = array();
+
+			foreach ( JobBase::getQueueSizes() as $job => $count ) {
+				if ( strpos( $job, 'SMW' ) !== false ) {
+					$resultInfo['jobcount'][$job] = $count;
+				}
 			}
 		}
 
