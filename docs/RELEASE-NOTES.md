@@ -8,6 +8,7 @@ THIS IS NOT A RELEASE YET
 * #1808
 * #1824
 * #1865
+* #2135
 
 ## Compatibility changes
 
@@ -49,7 +50,6 @@ THIS IS NOT A RELEASE YET
 * #2027
 * #2036
 * #2037
-* #2047 `$smwgAdminSetupStore` and `$smwgAdminIdDisposal`
 * #2068 Added support for the `sf.addTemplateInstance`/`pf.addTemplateInstance` JS hook in the tooltip
 * #2108
 * #2109
@@ -58,7 +58,7 @@ THIS IS NOT A RELEASE YET
 * #2135
 * #2137
 * #2139
-* #2142
+* #2142 `$smwgAdminFeatures`
 
 ## Bug fixes
 
@@ -92,6 +92,7 @@ THIS IS NOT A RELEASE YET
 * #2089
 * #2093
 * #2107
+* #2127
 
 ## Internal changes
 
