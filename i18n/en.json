@@ -260,7 +260,7 @@
 	"smw_smwadmin_updatenotstarted": "There is already an update process running.\nNot creating another one.",
 	"smw_smwadmin_updatestopped": "All existing update processes have been stopped.",
 	"smw_smwadmin_updatenotstopped": "To stop the running update process, you must activate the checkbox to indicate that you are really sure.",
-	"smw-admin-docu": "This special page helps you during installation and upgrade of <a href=\"https://www.semantic-mediawiki.org\">Semantic MediaWiki</a>.\nRemember to back up valuable data before executing administrative functions.",
+	"smw-admin-docu": "This special page helps you during installation, upgrade, maintenance and usage of <a href=\"https://www.semantic-mediawiki.org\">Semantic MediaWiki</a> and also provides further administrative functions and tasks as well as statistics.\nRemember to back up valuable data before executing administrative functions.",
 	"smw-admin-db": "Database installation and upgrade",
 	"smw-admin-dbdocu": "Semantic MediaWiki requires some extensions to the MediaWiki database in order to store the semantic data.\nThe below function ensures that your database is set up properly.\nThe changes made in this step do not affect the rest of the MediaWiki database, and can easily be undone if desired.\nThis setup function can be executed multiple times without doing any harm, but it is needed only once on installation or upgrade.",
 	"smw-admin-permissionswarn": "If the operation fails with SQL errors, the database user employed by your wiki (check your \"LocalSettings.php\" file) probably does not have sufficient permissions.\nEither grant this user additional permissions to create and delete tables, temporarily enter the login of your database root in the \"LocalSettings.php\" file, or use the maintenance script <code>setupStore.php</code>, which can use the credentials of an administrator.",
@@ -488,7 +488,7 @@
 	"smw-property-preferred-label-language-combination-exists": "\"$1\" cannot be used as preferred label because the language \"$2\" is already assigned to the \"$3\" label.",
 	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Copy link to clipboard",
-	"smw-property-userdefined-fixedtable": "\"$1\" was configured as [https://semantic-mediawiki.org/wiki/Fixed_properties fixed property] and any modification to its [https://semantic-mediawiki.org/wiki/Type_declaration type declaration] requires to either run <code>setupStore.php</code> or to complete the special [[Special:SemanticMediaWiki|\"Database installation and upgrade\"]] task.",
+	"smw-property-userdefined-fixedtable": "\"$1\" was configured as [https://www.semantic-mediawiki.org/wiki/Fixed_properties fixed property] and any modification to its [https://www.semantic-mediawiki.org/wiki/Type_declaration type declaration] requires to either run <code>setupStore.php</code> or to complete the special [[Special:SemanticMediaWiki|\"Database installation and upgrade\"]] task.",
 	"smw-data-lookup": "Fetching data ...",
 	"smw-no-data-available": "No data available."
 }
