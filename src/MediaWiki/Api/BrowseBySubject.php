@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Api;
 use ApiBase;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\MediaWiki\Specials\Browse\HtmlContentBuilder;
+use SMW\MediaWiki\Specials\Browse\HtmlContentsBuilder;
 
 /**
  * Browse a subject api module
@@ -54,14 +54,14 @@ class BrowseBySubject extends ApiBase {
 			$params['subobject']
 		);
 
-		$htmlContentBuilder = new HtmlContentBuilder(
+		$HtmlContentsBuilder = new HtmlContentsBuilder(
 			ApplicationFactory::getInstance()->getStore(),
 			$subject
 		);
 
-		$htmlContentBuilder->setOptionsFromJsonFormat( $params['options'] );
+		$HtmlContentsBuilder->setOptionsFromJsonFormat( $params['options'] );
 
-		return $htmlContentBuilder->getHtml();
+		return $HtmlContentsBuilder->getHtml();
 	}
 
 	protected function getRawFormat( $params ) {

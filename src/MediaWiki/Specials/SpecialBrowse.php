@@ -8,7 +8,7 @@ use SMW\DIProperty;
 use SMW\Localizer;
 use SMW\SemanticData;
 use SMW\UrlEncoder;
-use SMW\MediaWiki\Specials\Browse\HtmlContentBuilder;
+use SMW\MediaWiki\Specials\Browse\HtmlContentsBuilder;
 use SMW\Message;
 use SpecialPage;
 use Html;
@@ -99,8 +99,8 @@ class SpecialBrowse extends SpecialPage {
 
 	private function getHtml( $webRequest, $isEmptyRequest ) {
 
-		if ( $isEmptyRequest ) {
-			return HtmlContentBuilder::getPageSearchQuickForm();
+		if ( $isEmptyRequest && !$this->including() ) {
+			return HtmlContentsBuilder::getPageSearchQuickForm();
 		}
 
 		if ( !$this->subjectDV->isValid() ) {
@@ -117,21 +117,29 @@ class SpecialBrowse extends SpecialPage {
 				Message::get( array( 'smw-browse-invalid-subject', $error ), Message::ESCAPED )
 			);
 
-			return $html . HtmlContentBuilder::getPageSearchQuickForm();
+			if ( !$this->including() ) {
+				$html . HtmlContentsBuilder::getPageSearchQuickForm();
+			}
+
+			return $html;
 		}
 
-		$htmlContentBuilder = $this->newHtmlContentBuilder( $webRequest );
+		$HtmlContentsBuilder = $this->newHtmlContentsBuilder(
+			$webRequest,
+			$this->applicationFactory->getSettings()
+		);
 
-		if ( $webRequest->getVal( 'output' ) === 'legacy' || !$htmlContentBuilder->getOption( 'byApi' ) ) {
-			return $htmlContentBuilder->getHtml();
+		if ( $webRequest->getVal( 'output' ) === 'legacy' || !$HtmlContentsBuilder->getOption( 'byApi' ) ) {
+			return $HtmlContentsBuilder->getHtml();
 		}
 
 		$options = array(
-			'dir'         => $htmlContentBuilder->getOption( 'dir' ),
-			'offset'      => $htmlContentBuilder->getOption( 'offset' ),
-			'printable'   => $htmlContentBuilder->getOption( 'printable' ),
-			'showInverse' => $htmlContentBuilder->getOption( 'showInverse' ),
-			'showAll'     => $htmlContentBuilder->getOption( 'showAll' )
+			'dir'         => $HtmlContentsBuilder->getOption( 'dir' ),
+			'offset'      => $HtmlContentsBuilder->getOption( 'offset' ),
+			'printable'   => $HtmlContentsBuilder->getOption( 'printable' ),
+			'showInverse' => $HtmlContentsBuilder->getOption( 'showInverse' ),
+			'showAll'     => $HtmlContentsBuilder->getOption( 'showAll' ),
+			'including'   => $HtmlContentsBuilder->getOption( 'including' )
 		);
 
 		// Ajax/API is doing the data fetch
@@ -168,51 +176,56 @@ class SpecialBrowse extends SpecialPage {
 					array(
 						'class' => 'smw-overlay-spinner large inline'
 					)
-				) . $htmlContentBuilder->getEmptyHtml()
+				) . $HtmlContentsBuilder->getEmptyHtml()
 			)
 		);
 
 		return $html;
 	}
 
-	private function newHtmlContentBuilder( $webRequest ) {
+	private function newHtmlContentsBuilder( $webRequest, $settings ) {
 
-		$htmlContentBuilder = new HtmlContentBuilder(
+		$HtmlContentsBuilder = new HtmlContentsBuilder(
 			$this->applicationFactory->getStore(),
 			$this->subjectDV->getDataItem()
 		);
 
-		$htmlContentBuilder->setOption(
+		$HtmlContentsBuilder->setOption(
 			'dir',
 			$webRequest->getVal( 'dir' )
 		);
 
-		$htmlContentBuilder->setOption(
+		$HtmlContentsBuilder->setOption(
 			'printable',
 			$webRequest->getVal( 'printable' )
 		);
 
-		$htmlContentBuilder->setOption(
+		$HtmlContentsBuilder->setOption(
 			'offset',
 			$webRequest->getVal( 'offset' )
 		);
 
-		$htmlContentBuilder->setOption(
+		$HtmlContentsBuilder->setOption(
+			'including',
+			$this->including()
+		);
+
+		$HtmlContentsBuilder->setOption(
 			'showInverse',
-			$this->applicationFactory->getSettings()->get( 'smwgBrowseShowInverse' )
+			$settings->get( 'smwgBrowseShowInverse' )
 		);
 
-		$htmlContentBuilder->setOption(
+		$HtmlContentsBuilder->setOption(
 			'showAll',
-			$this->applicationFactory->getSettings()->get( 'smwgBrowseShowAll' )
+			$settings->get( 'smwgBrowseShowAll' )
 		);
 
-		$htmlContentBuilder->setOption(
+		$HtmlContentsBuilder->setOption(
 			'byApi',
-			$this->applicationFactory->getSettings()->get( 'smwgBrowseByApi' )
+			$settings->get( 'smwgBrowseByApi' )
 		);
 
-		return $htmlContentBuilder;
+		return $HtmlContentsBuilder;
 	}
 
 	private function addExternalHelpLinks() {

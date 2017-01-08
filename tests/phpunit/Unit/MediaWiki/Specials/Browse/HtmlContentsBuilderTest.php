@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Browse;
 
-use SMW\MediaWiki\Specials\Browse\HtmlContentBuilder;
+use SMW\MediaWiki\Specials\Browse\HtmlContentsBuilder;
 use SMW\Tests\TestEnvironment;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Browse\HtmlContentBuilder
+ * @covers \SMW\MediaWiki\Specials\Browse\HtmlContentsBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,7 +16,7 @@ use SMW\SemanticData;
  *
  * @author mwjames
  */
-class HtmlContentBuilderTest extends \PHPUnit_Framework_TestCase {
+class HtmlContentsBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -40,20 +40,20 @@ class HtmlContentBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$instance = new HtmlContentBuilder(
+		$instance = new HtmlContentsBuilder(
 			$this->store,
 			DIWikiPage::newFromText( 'Foo' )
 		);
 
 		$this->assertInstanceOf(
-			HtmlContentBuilder::class,
+			HtmlContentsBuilder::class,
 			$instance
 		);
 	}
 
 	public function testGetEmptyHtml() {
 
-		$instance = new HtmlContentBuilder(
+		$instance = new HtmlContentsBuilder(
 			$this->store,
 			DIWikiPage::newFromText( 'Foo' )
 		);
@@ -68,7 +68,7 @@ class HtmlContentBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			HtmlContentBuilder::getPageSearchQuickForm()
+			HtmlContentsBuilder::getPageSearchQuickForm()
 		);
 	}
 
@@ -80,7 +80,7 @@ class HtmlContentBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSemanticData' )
 			->will( $this->returnValue( new SemanticData( $subject ) ) );
 
-		$instance = new HtmlContentBuilder(
+		$instance = new HtmlContentsBuilder(
 			$this->store,
 			$subject
 		);
@@ -103,7 +103,7 @@ class HtmlContentBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getInProperties' )
 			->will( $this->returnValue( array() ) );
 
-		$instance = new HtmlContentBuilder(
+		$instance = new HtmlContentsBuilder(
 			$this->store,
 			$subject
 		);
@@ -130,7 +130,7 @@ class HtmlContentBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
-		$instance = new HtmlContentBuilder(
+		$instance = new HtmlContentsBuilder(
 			$this->store,
 			$subject
 		);
