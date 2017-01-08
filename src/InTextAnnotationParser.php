@@ -3,6 +3,7 @@
 namespace SMW;
 
 use Hooks;
+use SMW\Parser\Obfuscator;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMWOutputs;
@@ -79,7 +80,12 @@ class InTextAnnotationParser {
 	/**
 	 * @var boolean
 	 */
-	private $strictModeState = true;
+	private $isStrictMode = true;
+
+	/**
+	 * @var boolean|integer
+	 */
+	private $enabledLinksInValues = false;
 
 	/**
 	 * @since 1.9
@@ -103,10 +109,19 @@ class InTextAnnotationParser {
 	 *
 	 * @since 2.3
 	 *
-	 * @param boolean $strictModeState
+	 * @param boolean $isStrictMode
 	 */
-	public function setStrictModeState( $strictModeState ) {
-		$this->strictModeState = (bool)$strictModeState;
+	public function isStrictMode( $isStrictMode ) {
+		$this->isStrictMode = (bool)$isStrictMode;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param boolean $enabledLinksInValues
+	 */
+	public function enabledLinksInValues( $enabledLinksInValues ) {
+		$this->enabledLinksInValues = $enabledLinksInValues;
 	}
 
 	/**
@@ -134,13 +149,23 @@ class InTextAnnotationParser {
 			$text
 		);
 
-		$linksInValues = $this->settings->get( 'smwgLinksInValues' );
+		// Obscure [/] to find a set of [[ :: ... ]] while those in-between are left for
+		// decoding for a later processing so that the regex can split the text
+		// appropriately
+		if ( ( $this->enabledLinksInValues & SMW_LINV_OBFU ) != 0 ) {
+			$text = Obfuscator::obfuscateLinks( $text, $this );
+		}
+
+		$linksInValuesPcre = ( $this->enabledLinksInValues & SMW_LINV_PCRE ) != 0;
 
 		$text = preg_replace_callback(
-			$this->getRegexpPattern( $linksInValues ),
-			$linksInValues ? 'self::process' : 'self::preprocess',
+			$this->getRegexpPattern( $linksInValuesPcre ),
+			$linksInValuesPcre ? 'self::process' : 'self::preprocess',
 			$text
 		);
+
+		// Ensure remaining encoded entities are decoded again
+		$text = Obfuscator::removeLinkObfuscation( $text );
 
 		if ( $this->isEnabledNamespace ) {
 			$this->parserData->getOutput()->addModules( $this->getModules() );
@@ -168,7 +193,7 @@ class InTextAnnotationParser {
 	 * @return text
 	 */
 	public static function decodeSquareBracket( $text ) {
-		return InTextAnnotationSanitizer::decodeSquareBracket( $text );
+		return Obfuscator::decodeSquareBracket( $text );
 	}
 
 	/**
@@ -178,8 +203,8 @@ class InTextAnnotationParser {
 	 *
 	 * @return text
 	 */
-	public static function obscureAnnotation( $text ) {
-		return InTextAnnotationSanitizer::obscureAnnotation( $text );
+	public static function obfuscateAnnotation( $text ) {
+		return Obfuscator::obfuscateAnnotation( $text );
 	}
 
 	/**
@@ -190,7 +215,7 @@ class InTextAnnotationParser {
 	 * @return text
 	 */
 	public static function removeAnnotation( $text ) {
-		return InTextAnnotationSanitizer::removeAnnotation( $text );
+		return Obfuscator::removeAnnotation( $text );
 	}
 
 	/**
@@ -286,7 +311,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return string
 	 */
-	protected function preprocess( array $semanticLink ) {
+	public function preprocess( array $semanticLink ) {
 		$value = '';
 		$caption = false;
 
@@ -342,7 +367,7 @@ class InTextAnnotationParser {
 			// In case a colon appears (in what is expected to be a string without a colon)
 			// then concatenate the string again and split for the first :: occurrence
 			// only
-			if ( $this->strictModeState && strpos( $semanticLink[1], ':' ) !== false && isset( $semanticLink[2] ) ) {
+			if ( $this->isStrictMode && strpos( $semanticLink[1], ':' ) !== false && isset( $semanticLink[2] ) ) {
 				list( $semanticLink[1], $semanticLink[2] ) = explode( '::', $semanticLink[1] . '::' . $semanticLink[2], 2 );
 			}
 
@@ -352,6 +377,8 @@ class InTextAnnotationParser {
 		if ( array_key_exists( 2, $semanticLink ) ) {
 			$value = $semanticLink[2];
 		}
+
+		$value = Obfuscator::removeLinkObfuscation( $value );
 
 		if ( $value === '' ) { // silently ignore empty values
 			return '';

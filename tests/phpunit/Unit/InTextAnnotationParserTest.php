@@ -114,8 +114,12 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			new RedirectTargetFinder()
 		);
 
-		$instance->setStrictModeState(
+		$instance->isStrictMode(
 			isset( $settings['smwgEnabledInTextAnnotationParserStrictMode'] ) ? $settings['smwgEnabledInTextAnnotationParserStrictMode'] : true
+		);
+
+		$instance->enabledLinksInValues(
+			isset( $settings['smwgLinksInValues'] ) ? $settings['smwgLinksInValues'] : true
 		);
 
 		$this->testEnvironment->registerObject(
@@ -268,7 +272,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expectedObscuration,
-			InTextAnnotationParser::obscureAnnotation( $text )
+			InTextAnnotationParser::obfuscateAnnotation( $text )
 		);
 	}
 
@@ -318,7 +322,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			NS_MAIN,
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
-				'smwgLinksInValues' => true,
+				'smwgLinksInValues' => SMW_LINV_PCRE,
 				'smwgInlineErrors'  => true,
 			),
 			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
@@ -562,6 +566,24 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			array(
 				'resultText'     => $testEnvironment->getLocalizedTextByNamespace( SMW_NS_PROPERTY, '[[:Property:Foo|Foo]] [[:Property:Bar|Foobar]]' ),
 				'propertyCount'  => 0
+			)
+		);
+
+		#14 [ ... ] in-text link
+		$provider[] = array(
+			NS_MAIN,
+			array(
+				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+				'smwgLinksInValues' => SMW_LINV_OBFU,
+				'smwgInlineErrors'  => true,
+				'smwgEnabledInTextAnnotationParserStrictMode' => true
+			),
+			'[[Text::Bar [http:://example.org/Foo]]] [[Code::Foo[1] Foobar]]',
+			array(
+				'resultText'     => 'Bar [http:://example.org/Foo] <div class="smwpre">Foo&#x005B;1]&#160;Foobar</div>',
+				'propertyCount'  => 2,
+				'propertyLabels' => array( 'Text', 'Code' ),
+				'propertyValues' => array( 'Bar [http:://example.org/Foo]', 'Foo[1] Foobar' )
 			)
 		);
 
