@@ -110,8 +110,27 @@ class TextSanitizerTest extends \PHPUnit_Framework_TestCase {
 			'*foo*'
 		);
 
+		$provider[] = array(
+			'*foo* bar',
+			'*foo*bar'
+		);
+
+		$provider[] = array(
+			'+foo*, *bar',
+			'+foo*,*bar'
+		);
+
+		$provider[] = array(
+			'+foo* -bar',
+			'+foo* -bar'
+		);
+
+		$provider[] = array(
+			'+foo* ~ bar',
+			'+foo* ~bar'
+		);
+
 		return $provider;
 	}
-
 
 }

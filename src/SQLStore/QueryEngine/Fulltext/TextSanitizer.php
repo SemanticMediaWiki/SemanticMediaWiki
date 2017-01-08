@@ -96,7 +96,7 @@ class TextSanitizer {
 		// Those have special meaning when running a match search against
 		// the fulltext index (wildcard, phrase matching markers etc.)
 		if ( $isSearchTerm ) {
-			$exemptionList = array( '*', '"', '+', '-', '&', ',', '@' );
+			$exemptionList = array( '*', '"', '+', '-', '&', ',', '@', '~' );
 		}
 
 		$sanitizer = $this->sanitizerFactory->newSanitizer( $text );
@@ -139,8 +139,8 @@ class TextSanitizer {
 
 		// Remove possible spaces added by the tokenizer
 		$text = str_replace(
-			array( ' *', '* ', ' "', '" ', '+ ', '- ', '@ ' ),
-			array( '*', '*', '"', '"', ' +', ' -', '@' ),
+			array( ' *', '* ', ' "', '" ', '+ ', '- ', '@ ', '~ ', '*+', '*-', '*~' ),
+			array( '*', '*', '"', '"', '+', '-', '@', '~' ,'* +', '* -', '* ~' ),
 			$text
 		);
 

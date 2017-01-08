@@ -131,7 +131,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		// If a remaining ~ is present then the user searched with a ~~ string
 		// where the Comparator already matched/removed the first one
 		if ( substr( $value, 0, 1 ) === '~' ) {
-			$value = str_replace( '~', '', $value );
+			$value = substr( $value, 1 );
 			$usesWidePromixity = true;
 		}
 
