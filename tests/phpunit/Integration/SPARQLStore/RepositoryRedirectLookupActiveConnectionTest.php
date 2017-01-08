@@ -6,41 +6,37 @@ use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
-use SMW\SPARQLStore\RedirectLookup;
+use SMW\SPARQLStore\RepositoryRedirectLookup;
 use SMW\SPARQLStore\SPARQLStore;
-use SMW\StoreFactory;
+use SMW\ApplicationFactory;
 use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
 
 /**
- *
- * @group SMW
- * @group SMWExtension
- * @group semantic-mediawiki-integration
- * @group semantic-mediawiki-sparql
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 2.0
  *
  * @author mwjames
  */
-class RedirectLookupIntegrationTest extends \PHPUnit_Framework_TestCase {
+class RepositoryRepositoryRedirectLookupActiveConnectionTest extends \PHPUnit_Framework_TestCase {
 
-	private $sparqlDatabase;
+	private $repositoryConnection;
 	private $store;
 
 	protected function setUp() {
 
-		$this->store = StoreFactory::getStore();
+		$this->store = ApplicationFactory::getInstance()->getStore();
 
 		if ( !$this->store instanceof SPARQLStore ) {
-			$this->markTestSkipped( "Requires a SPARQLStore instance" );
+			$this->markTestSkipped( "Skipping test because a SPARQLStore instance is required." );
 		}
 
-		$this->sparqlDatabase = $this->store->getConnection();
+		$this->repositoryConnection = $this->store->getConnection( 'sparql' );
 
-		if ( !$this->sparqlDatabase->setConnectionTimeoutInSeconds( 5 )->ping() ) {
-			$this->markTestSkipped( "Can't connect to the SparlDatabase" );
+		if ( !$this->repositoryConnection->setConnectionTimeoutInSeconds( 5 )->ping() ) {
+			$this->markTestSkipped( "Can't connect to the RepositoryConnector" );
 		}
 	}
 
@@ -49,7 +45,7 @@ class RedirectLookupIntegrationTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testRedirectTragetLookupForNonExistingEntry( $expNsResource ) {
 
-		$instance = new RedirectLookup( $this->sparqlDatabase );
+		$instance = new RepositoryRedirectLookup( $this->repositoryConnection );
 		$instance->reset();
 
 		$exists = null;
@@ -64,20 +60,23 @@ class RedirectLookupIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRedirectTragetLookupForExistingEntry() {
 
-		$property = new DIProperty( 'RedirectLookupForExistingEntry' );
+		$property = new DIProperty( 'TestRepositoryRedirectLookup' );
 
-		$semanticData = new SemanticData( new DIWikiPage( __METHOD__, NS_MAIN, '' ) );
-		$semanticData->addDataValue( DataValueFactory::getInstance()->newDataValueByProperty( $property, 'Bar' ) );
+		$semanticData = new SemanticData( new DIWikiPage( __METHOD__, NS_MAIN ) );
+
+		$semanticData->addDataValue(
+			DataValueFactory::getInstance()->newDataValueByProperty( $property, 'Bar' )
+		);
 
 		$this->store->doSparqlDataUpdate( $semanticData );
 
 		$expNsResource = new ExpNsResource(
-			'RedirectLookupForExistingEntry',
+			'TestRepositoryRedirectLookup',
 			Exporter::getInstance()->getNamespaceUri( 'property' ),
 			'property'
 		);
 
-		$instance = new RedirectLookup( $this->sparqlDatabase );
+		$instance = new RepositoryRedirectLookup( $this->repositoryConnection );
 		$instance->reset();
 
 		$exists = null;
@@ -98,10 +97,10 @@ class RedirectLookupIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = array(
 			new ExpNsResource(
-				'FooRedirectLookup',
+				'FooRepositoryRedirectLookup',
 				Exporter::getInstance()->getNamespaceUri( 'property' ),
 				'property',
-				new DIWikiPage( 'FooRedirectLookup', SMW_NS_PROPERTY, '' )
+				new DIWikiPage( 'FooRepositoryRedirectLookup', SMW_NS_PROPERTY, '' )
 			)
 		);
 

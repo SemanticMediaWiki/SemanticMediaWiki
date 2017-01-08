@@ -17,7 +17,12 @@ use SMWTurtleSerializer as TurtleSerializer;
  * @author Markus Krötzsch
  * @author mwjames
  */
-class RedirectLookup {
+class RepositoryRedirectLookup {
+
+	/**
+	 * ID used for the InMemoryPoolCache
+	 */
+	const POOLCACHE_ID = 'sparql.repository.redirectLookup';
 
 	/**
 	 * @var RepositoryConnection
@@ -37,7 +42,7 @@ class RedirectLookup {
 	 * @since 2.1
 	 */
 	public static function reset() {
-		InMemoryPoolCache::getInstance()->resetPoolCacheFor( 'sparql.store.redirectlookup' );
+		InMemoryPoolCache::getInstance()->resetPoolCacheFor( self::POOLCACHE_ID );
 	}
 
 	/**
@@ -86,7 +91,7 @@ class RedirectLookup {
 
 	private function doLookupResourceUriTargetFor( ExpNsResource $expNsResource ) {
 
-		$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheFor( 'sparql.store.redirectlookup' );
+		$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheFor( self::POOLCACHE_ID );
 
 		if ( !$poolCache->contains( $expNsResource->getUri() ) ) {
 			$poolCache->save(

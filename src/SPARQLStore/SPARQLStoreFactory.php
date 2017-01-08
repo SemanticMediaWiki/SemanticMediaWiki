@@ -92,6 +92,15 @@ class SPARQLStoreFactory {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @return RepositoryRedirectLookup
+	 */
+	public function newRepositoryRedirectLookup() {
+		return new RepositoryRedirectLookup( $this->store->getConnection( 'sparql' ) );
+	}
+
+	/**
 	 * @since 2.2
 	 *
 	 * @return ConnectionManager
