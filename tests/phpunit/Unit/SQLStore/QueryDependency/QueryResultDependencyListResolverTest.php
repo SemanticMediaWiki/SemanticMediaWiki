@@ -504,7 +504,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			$query,
 			array(
 				DIWikiPage::newFromText( 'Foo' ),
-				DIWikiPage::newFromText( 'FooConcept', SMW_NS_CONCEPT )
+				'FooConcept#108#' => DIWikiPage::newFromText( 'FooConcept', SMW_NS_CONCEPT )
 			)
 		);
 
