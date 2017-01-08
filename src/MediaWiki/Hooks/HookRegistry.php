@@ -543,6 +543,26 @@ class HookRegistry {
 		};
 
 		/**
+		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Store::BeforeQueryResultLookupComplete
+		 */
+		$this->handlers['SMW::Store::BeforeQueryResultLookupComplete'] = function ( $store, $query, &$result, $queryEngine ) use ( $applicationFactory ) {
+
+			$cachedQueryResultPrefetcher = $applicationFactory->singleton( 'CachedQueryResultPrefetcher' );
+
+			$cachedQueryResultPrefetcher->setQueryEngine(
+				$queryEngine
+			);
+
+			if ( !$cachedQueryResultPrefetcher->isEnabled() ) {
+				return true;
+			}
+
+			$result = $cachedQueryResultPrefetcher->getQueryResult( $query );
+
+			return false;
+		};
+
+		/**
 		 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Store::AfterQueryResultLookupComplete
 		 */
 		$this->handlers['SMW::Store::AfterQueryResultLookupComplete'] = function ( $store, &$result ) use ( $queryDependencyLinksStore, $applicationFactory ) {

@@ -19,6 +19,7 @@ use SMW\Query\QuerySourceFactory;
 use MediaWiki\Logger\LoggerFactory;
 use Psr\Log\NullLogger;
 use SMW\SQLStore\ChangeOp\TempChangeOpStore;
+use SMW\Query\Result\CachedQueryResultPrefetcher;
 
 /**
  * @license GNU GPL v2+
@@ -267,7 +268,7 @@ class SharedCallbackContainer implements CallbackContainer {
 		 * @var CachedQueryResultPrefetcher
 		 */
 		$callbackLoader->registerCallback( 'CachedQueryResultPrefetcher', function( $cacheType = null ) use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'CachedQueryResultPrefetcher', '\SMW\CachedQueryResultPrefetcher' );
+			$callbackLoader->registerExpectedReturnType( 'CachedQueryResultPrefetcher', '\SMW\Query\Result\CachedQueryResultPrefetcher' );
 
 			$settings = $callbackLoader->load( 'Settings' );
 			$cacheType = $cacheType === null ? $settings->get( 'smwgQueryResultCacheType' ) : $cacheType;

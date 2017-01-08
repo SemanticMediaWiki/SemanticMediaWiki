@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW;
+namespace SMW\Query\Result;
 
 use Onoi\BlobStore\BlobStore;
 use SMWQuery as Query;
@@ -11,6 +11,8 @@ use SMW\QueryEngine;
 use SMW\QueryFactory;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
+use SMW\TransientStatsdCollector;
+use SMW\ApplicationFactory;
 use RuntimeException;
 
 /**
