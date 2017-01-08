@@ -102,7 +102,7 @@ class MessageFormatter {
 	 */
 	public function addFromArray( array $messages ) {
 
-		$messages = ProcessingErrorMsgHandler::normalizeMessages( $messages );
+		$messages = ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $messages );
 
 		foreach ( $messages as $message ) {
 			if ( is_string( $message ) ) {

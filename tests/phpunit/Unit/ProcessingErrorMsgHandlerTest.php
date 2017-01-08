@@ -51,7 +51,7 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			ProcessingErrorMsgHandler::normalizeMessages( $messages, null, 'en' )
+			ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $messages, null, 'en' )
 		);
 
 		$this->assertInternalType(
@@ -78,7 +78,7 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'addPropertyObjectValue' )
 			->with( $this->equalTo( $this->dataItemFactory->newDIProperty( '_ERRC' ) ) );
 
-		$instance->pushTo(
+		$instance->addToSemanticData(
 			$semanticData,
 			$container
 		);
@@ -91,7 +91,7 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$property = $this->dataItemFactory->newDIProperty( 'Bar' );
-		$container = $instance->getErrorContainerFromMsg( 'foo', $property );
+		$container = $instance->newErrorContainerFromMsg( 'foo', $property );
 
 		$this->assertInstanceOf(
 			'\SMWDIContainer',
@@ -115,7 +115,7 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::newFromText( __METHOD__ )
 		);
 
-		$container = $instance->getErrorContainerFromMsg( 'foo' );
+		$container = $instance->newErrorContainerFromMsg( 'foo' );
 
 		$expected = array(
 			'propertyCount' => 1,
@@ -147,7 +147,7 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getProperty' )
 			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Bar' ) ) );
 
-		$container = $instance->getErrorContainerFromDataValue( $dataValue );
+		$container = $instance->newErrorContainerFromDataValue( $dataValue );
 
 		$this->assertInstanceOf(
 			'\SMWDIContainer',

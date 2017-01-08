@@ -405,9 +405,9 @@ class SemanticData {
 				$this->getSubject()
 			);
 
-			$processingErrorMsgHandler->pushTo(
+			$processingErrorMsgHandler->addToSemanticData(
 				$this,
-				$processingErrorMsgHandler->getErrorContainerFromDataValue( $dataValue )
+				$processingErrorMsgHandler->newErrorContainerFromDataValue( $dataValue )
 			);
 
 			return $this->addError( $dataValue->getErrors() );
