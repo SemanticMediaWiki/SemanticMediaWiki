@@ -21,7 +21,7 @@ use SMW\RequestOptions;
  * @author Denny Vrandecic
  * @author mwjames
  */
-class HtmlContentBuilder {
+class HtmlContentsBuilder {
 
 	/**
 	 * @var Store
@@ -172,7 +172,7 @@ class HtmlContentBuilder {
 		$html .= $this->displayData( $semanticData, $leftside, true );
 		$html .= $this->displayBottom( false );
 
-		if ( $this->getOption( 'printable' ) !== 'yes' ) {
+		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
 			$html .= $this->queryForm( $this->articletext );
 		}
 
@@ -227,7 +227,7 @@ class HtmlContentBuilder {
 			\Hooks::run( 'SMW::Browse::AfterDataLookupComplete', array( $this->store, $semanticData, &$html, &$this->extraModules ) );
 		}
 
-		if ( $this->getOption( 'printable' ) !== 'yes' ) {
+		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
 			$html .= $this->queryForm( $this->articletext );
 		}
 
