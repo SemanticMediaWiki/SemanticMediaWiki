@@ -158,13 +158,15 @@ class QueryResultDependencyListResolver {
 			$subjects[] = $description->getDataItem();
 		}
 
-		if ( $description instanceof ConceptDescription ) {
-			$subjects[] = $description->getConcept();
-			$this->doResolveDependenciesFromDescription(
-				$subjects,
-				$store,
-				$this->getConceptDescription( $store, $description->getConcept() )
-			);
+		if ( $description instanceof ConceptDescription && $concept = $description->getConcept() ) {
+			if ( $concept === null || !isset( $subjects[$concept->getHash()] ) ) {
+				$subjects[$concept->getHash()] = $concept;
+				$this->doResolveDependenciesFromDescription(
+					$subjects,
+					$store,
+					$this->getConceptDescription( $store, $concept )
+				);
+			}
 		}
 
 		if ( $description instanceof ClassDescription ) {
