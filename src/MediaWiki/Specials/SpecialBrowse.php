@@ -124,22 +124,22 @@ class SpecialBrowse extends SpecialPage {
 			return $html;
 		}
 
-		$HtmlContentsBuilder = $this->newHtmlContentsBuilder(
+		$htmlContentsBuilder = $this->newHtmlContentsBuilder(
 			$webRequest,
 			$this->applicationFactory->getSettings()
 		);
 
-		if ( $webRequest->getVal( 'output' ) === 'legacy' || !$HtmlContentsBuilder->getOption( 'byApi' ) ) {
-			return $HtmlContentsBuilder->getHtml();
+		if ( $webRequest->getVal( 'output' ) === 'legacy' || !$htmlContentsBuilder->getOption( 'byApi' ) ) {
+			return $htmlContentsBuilder->getHtml();
 		}
 
 		$options = array(
-			'dir'         => $HtmlContentsBuilder->getOption( 'dir' ),
-			'offset'      => $HtmlContentsBuilder->getOption( 'offset' ),
-			'printable'   => $HtmlContentsBuilder->getOption( 'printable' ),
-			'showInverse' => $HtmlContentsBuilder->getOption( 'showInverse' ),
-			'showAll'     => $HtmlContentsBuilder->getOption( 'showAll' ),
-			'including'   => $HtmlContentsBuilder->getOption( 'including' )
+			'dir'         => $htmlContentsBuilder->getOption( 'dir' ),
+			'offset'      => $htmlContentsBuilder->getOption( 'offset' ),
+			'printable'   => $htmlContentsBuilder->getOption( 'printable' ),
+			'showInverse' => $htmlContentsBuilder->getOption( 'showInverse' ),
+			'showAll'     => $htmlContentsBuilder->getOption( 'showAll' ),
+			'including'   => $htmlContentsBuilder->getOption( 'including' )
 		);
 
 		// Ajax/API is doing the data fetch
@@ -176,7 +176,7 @@ class SpecialBrowse extends SpecialPage {
 					array(
 						'class' => 'smw-overlay-spinner large inline'
 					)
-				) . $HtmlContentsBuilder->getEmptyHtml()
+				) . $htmlContentsBuilder->getEmptyHtml()
 			)
 		);
 
@@ -185,47 +185,47 @@ class SpecialBrowse extends SpecialPage {
 
 	private function newHtmlContentsBuilder( $webRequest, $settings ) {
 
-		$HtmlContentsBuilder = new HtmlContentsBuilder(
+		$htmlContentsBuilder = new HtmlContentsBuilder(
 			$this->applicationFactory->getStore(),
 			$this->subjectDV->getDataItem()
 		);
 
-		$HtmlContentsBuilder->setOption(
+		$htmlContentsBuilder->setOption(
 			'dir',
 			$webRequest->getVal( 'dir' )
 		);
 
-		$HtmlContentsBuilder->setOption(
+		$htmlContentsBuilder->setOption(
 			'printable',
 			$webRequest->getVal( 'printable' )
 		);
 
-		$HtmlContentsBuilder->setOption(
+		$htmlContentsBuilder->setOption(
 			'offset',
 			$webRequest->getVal( 'offset' )
 		);
 
-		$HtmlContentsBuilder->setOption(
+		$htmlContentsBuilder->setOption(
 			'including',
 			$this->including()
 		);
 
-		$HtmlContentsBuilder->setOption(
+		$htmlContentsBuilder->setOption(
 			'showInverse',
 			$settings->get( 'smwgBrowseShowInverse' )
 		);
 
-		$HtmlContentsBuilder->setOption(
+		$htmlContentsBuilder->setOption(
 			'showAll',
 			$settings->get( 'smwgBrowseShowAll' )
 		);
 
-		$HtmlContentsBuilder->setOption(
+		$htmlContentsBuilder->setOption(
 			'byApi',
 			$settings->get( 'smwgBrowseByApi' )
 		);
 
-		return $HtmlContentsBuilder;
+		return $htmlContentsBuilder;
 	}
 
 	private function addExternalHelpLinks() {
