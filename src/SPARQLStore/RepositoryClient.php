@@ -72,7 +72,7 @@ class RepositoryClient {
 	/**
 	 * @since 2.2
 	 *
-	 * @return string
+	 * @return string|false
 	 */
 	public function getQueryEndpoint() {
 		return $this->queryEndpoint;

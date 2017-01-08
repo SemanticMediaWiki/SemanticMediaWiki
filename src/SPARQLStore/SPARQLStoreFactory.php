@@ -44,10 +44,12 @@ class SPARQLStoreFactory {
 	/**
 	 * @since 2.2
 	 *
+	 * @param string $storeClass
+	 *
 	 * @return Store
 	 */
-	public function newBaseStore( $storeId ) {
-		return StoreFactory::getStore( $storeId );
+	public function getBaseStore( $storeClass ) {
+		return StoreFactory::getStore( $storeClass );
 	}
 
 	/**

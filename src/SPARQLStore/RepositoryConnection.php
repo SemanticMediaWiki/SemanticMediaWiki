@@ -12,6 +12,16 @@ namespace SMW\SPARQLStore;
 interface RepositoryConnection {
 
 	/**
+	 * The function returns connection details required for establishing an active
+	 * repository connection.
+	 *
+	 * @since 2.5
+	 *
+	 * @return RepositoryClient
+	 */
+	public function getRepositoryClient();
+
+	/**
 	 * The function declares the standard namespaces wiki, swivt, rdf, owl,
 	 * rdfs, property, xsd, so these do not have to be included in
 	 * $extraNamespaces.

@@ -61,7 +61,7 @@ class SPARQLStore extends Store {
 		$this->baseStore = $baseStore;
 
 		if ( $this->baseStore === null ) {
-			$this->baseStore = $this->factory->newBaseStore( self::$baseStoreClass );
+			$this->baseStore = $this->factory->getBaseStore( self::$baseStoreClass );
 		}
 	}
 
@@ -273,6 +273,11 @@ class SPARQLStore extends Store {
 	 */
 	public function getQueryResult( Query $query ) {
 
+		// Use a fallback QueryEngine in case the QueryEndpoint is inaccessible
+		if ( !$this->isEnabledQueryEndpoint() ) {
+			return $this->baseStore->getQueryResult( $query );
+		}
+
 		$result = null;
 		$start = microtime( true );
 
@@ -432,6 +437,10 @@ class SPARQLStore extends Store {
 		}
 
 		return parent::getConnection( $connectionTypeId );
+	}
+
+	private function isEnabledQueryEndpoint() {
+		return $this->getConnection( 'sparql' )->getRepositoryClient()->getQueryEndpoint() !== false;
 	}
 
 }

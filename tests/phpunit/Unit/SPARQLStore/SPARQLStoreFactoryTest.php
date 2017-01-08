@@ -47,7 +47,7 @@ class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMWSQLStore3',
-			$instance->newBaseStore( 'SMWSQLStore3' )
+			$instance->getBaseStore( 'SMWSQLStore3' )
 		);
 	}
 
