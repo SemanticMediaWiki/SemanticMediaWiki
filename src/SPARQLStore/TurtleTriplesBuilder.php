@@ -3,6 +3,7 @@
 namespace SMW\SPARQLStore;
 
 use SMW\DIWikiPage;
+use SMW\ApplicationFactory;
 use SMW\Exporter\Element;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpNsResource;
@@ -22,14 +23,19 @@ use SMWTurtleSerializer as TurtleSerializer;
 class TurtleTriplesBuilder {
 
 	/**
+	 * ID used for the InMemoryPoolCache
+	 */
+	const POOLCACHE_ID = 'sparql.turtle.triplesbuilder';
+
+	/**
 	 * @var SemanticData
 	 */
 	private $semanticData = null;
 
 	/**
-	 * @var RedirectLookup
+	 * @var RepositoryRedirectLookup
 	 */
-	private $redirectLookup = null;
+	private $repositoryRedirectLookup = null;
 
 	/**
 	 * @var null|string
@@ -54,17 +60,18 @@ class TurtleTriplesBuilder {
 	/**
 	 * @var array
 	 */
-	private static $dataItemExportCache = array();
+	private $dataItemExportCache;
 
 	/**
 	 * @since 2.0
 	 *
 	 * @param SemanticData $semanticData
-	 * @param RedirectLookup $redirectLookup
+	 * @param RepositoryRedirectLookup $repositoryRedirectLookup
 	 */
-	public function __construct( SemanticData $semanticData, RedirectLookup $redirectLookup ) {
+	public function __construct( SemanticData $semanticData, RepositoryRedirectLookup $repositoryRedirectLookup ) {
 		$this->semanticData = $semanticData;
-		$this->redirectLookup = $redirectLookup;
+		$this->repositoryRedirectLookup = $repositoryRedirectLookup;
+		$this->dataItemExportCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheById( self::POOLCACHE_ID );
 	}
 
 	/**
@@ -274,7 +281,7 @@ class TurtleTriplesBuilder {
 		$exists = true;
 
 		if ( $expResource instanceof ExpNsResource ) {
-			$elementTarget = $this->redirectLookup->findRedirectTargetResource( $expResource, $exists );
+			$elementTarget = $this->repositoryRedirectLookup->findRedirectTargetResource( $expResource, $exists );
 		} else {
 			$elementTarget = $expResource;
 		}
@@ -284,11 +291,11 @@ class TurtleTriplesBuilder {
 			$diWikiPage = $elementTarget->getDataItem();
 			$hash = $diWikiPage->getHash();
 
-			if ( !isset( self::$dataItemExportCache[$hash] ) ) {
-				self::$dataItemExportCache[$hash] = Exporter::getInstance()->makeExportDataForSubject( $diWikiPage, true );
+			if ( !$this->dataItemExportCache->contains( $hash ) ) {
+				$this->dataItemExportCache->save( $hash, Exporter::getInstance()->makeExportDataForSubject( $diWikiPage, true ) );
 			}
 
-			$auxiliaryExpData[$hash] = self::$dataItemExportCache[$hash];
+			$auxiliaryExpData[$hash] = $this->dataItemExportCache->fetch( $hash );
 		}
 
 		return $elementTarget;

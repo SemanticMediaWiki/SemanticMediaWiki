@@ -25,13 +25,13 @@ class TurtleTriplesBuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$redirectLookup = $this->getMockBuilder( '\SMW\SPARQLStore\RedirectLookup' )
+		$repositoryRedirectLookup = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryRedirectLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\TurtleTriplesBuilder',
-			new TurtleTriplesBuilder( $semanticData, $redirectLookup )
+			new TurtleTriplesBuilder( $semanticData, $repositoryRedirectLookup )
 		);
 	}
 
@@ -45,15 +45,15 @@ class TurtleTriplesBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData = new SemanticData( new DIWikiPage( 'Foo', NS_MAIN, '' ) );
 
-		$redirectLookup = $this->getMockBuilder( '\SMW\SPARQLStore\RedirectLookup' )
+		$repositoryRedirectLookup = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryRedirectLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$redirectLookup->expects( $this->atLeastOnce() )
+		$repositoryRedirectLookup->expects( $this->atLeastOnce() )
 			->method( 'findRedirectTargetResource' )
 			->will( $this->returnValue( $expNsResource ) );
 
-		$instance = new TurtleTriplesBuilder( $semanticData, $redirectLookup );
+		$instance = new TurtleTriplesBuilder( $semanticData, $repositoryRedirectLookup );
 
 		$this->assertTrue( $instance->doBuild()->hasTriplesForUpdate() );
 
@@ -73,17 +73,17 @@ class TurtleTriplesBuilderTest extends \PHPUnit_Framework_TestCase {
 			new DIWikiPage( 'Foo', NS_MAIN )
 		);
 
-		$redirectLookup = $this->getMockBuilder( '\SMW\SPARQLStore\RedirectLookup' )
+		$repositoryRedirectLookup = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryRedirectLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$redirectLookup->expects( $this->atLeastOnce() )
+		$repositoryRedirectLookup->expects( $this->atLeastOnce() )
 			->method( 'findRedirectTargetResource' )
 			->will( $this->returnValue( $expNsResource ) );
 
 		$instance = new TurtleTriplesBuilder(
 			$semanticData,
-			$redirectLookup
+			$repositoryRedirectLookup
 		);
 
 		$instance->setTriplesChunkSize( 1 );

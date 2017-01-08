@@ -227,7 +227,6 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'insertData' );
 
 		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
-			->disableOriginalConstructor()
 			->setMethods( array( 'doSparqlDataDelete', 'getConnection' ) )
 			->getMock();
 

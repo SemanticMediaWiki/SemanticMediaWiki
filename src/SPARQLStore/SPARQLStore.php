@@ -179,10 +179,11 @@ class SPARQLStore extends Store {
 	 */
 	public function doSparqlDataUpdate( SemanticData $semanticData ) {
 
-		$this->doSparqlFlatDataUpdate( $semanticData );
+		$repositoryRedirectLookup = $this->factory->newRepositoryRedirectLookup();
+		$this->doSparqlFlatDataUpdate( $semanticData, $repositoryRedirectLookup );
 
 		foreach( $semanticData->getSubSemanticData() as $subSemanticData ) {
-			 $this->doSparqlFlatDataUpdate( $subSemanticData );
+			 $this->doSparqlFlatDataUpdate( $subSemanticData, $repositoryRedirectLookup );
 		}
 
 		//wfDebugLog( 'smw', ' InMemoryPoolCache: ' . json_encode( \SMW\InMemoryPoolCache::getInstance()->getStats() ) );
@@ -195,12 +196,13 @@ class SPARQLStore extends Store {
 	 * Update the Sparql back-end, without taking any subobject data into account.
 	 *
 	 * @param SemanticData $semanticData
+	 * @param RepositoryRedirectLookup $repositoryRedirectLookup
 	 */
-	private function doSparqlFlatDataUpdate( SemanticData $semanticData ) {
+	private function doSparqlFlatDataUpdate( SemanticData $semanticData, RepositoryRedirectLookup $repositoryRedirectLookup ) {
 
 		$turtleTriplesBuilder = new TurtleTriplesBuilder(
 			$semanticData,
-			new RedirectLookup( $this->getConnection() )
+			$repositoryRedirectLookup
 		);
 
 		$turtleTriplesBuilder->setTriplesChunkSize( 80 );

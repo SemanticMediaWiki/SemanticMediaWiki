@@ -71,4 +71,14 @@ class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructRepositoryRedirectLookup() {
+
+		$instance = new SPARQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\RepositoryRedirectLookup',
+			$instance->newRepositoryRedirectLookup()
+		);
+	}
+
 }
