@@ -105,7 +105,7 @@ function smwfNumberFormat( $value, $decplaces = 3 ) {
  */
 function smwfEncodeMessages( array $messages, $type = 'warning', $seperator = ' <!--br-->', $escape = true ) {
 
-	$messages = ProcessingErrorMsgHandler::normalizeMessages( $messages );
+	$messages = ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $messages );
 
 	if (  $messages !== array() ) {
 

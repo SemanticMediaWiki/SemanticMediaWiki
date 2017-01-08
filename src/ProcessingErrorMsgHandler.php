@@ -9,9 +9,8 @@ use SMWDIContainer as DIContainer;
 use SMWDIBlob as DIBlob;
 
 /**
- * The handler reformats an error(s) into a representation that can be retrieved from
- * the back-end and turn it into a string at a convenient time, allowing it to
- * display a language dep. message without requiring a context.
+ * The handler encodes errors into a representation that can be retrieved from
+ * the back-end and turn it into a string representation at a convenient time.
  *
  * @license GNU GPL v2+
  * @since 2.5
@@ -35,8 +34,8 @@ class ProcessingErrorMsgHandler {
 	}
 
 	/**
-	 * Turns encoded array of messages or text elements into a flattened array
-	 * with msg keys and arguments being transformed into a string representation.
+	 * Turns an encoded array of messages or text elements into a compacted array
+	 * with msg keys and arguments.
 	 *
 	 * @since 2.5
 	 *
@@ -46,9 +45,9 @@ class ProcessingErrorMsgHandler {
 	 *
 	 * @return array
 	 */
-	public static function normalizeMessages( array $messages, $type = null, $language = null ) {
+	public static function normalizeAndDecodeMessages( array $messages, $type = null, $language = null ) {
 
-		$normalizeMessages = array();
+		$normalizedMessages = array();
 
 		if ( $type === null ) {
 			$type = Message::TEXT;
@@ -61,11 +60,11 @@ class ProcessingErrorMsgHandler {
 		foreach ( $messages as $message ) {
 
 			if ( is_array( $message ) ) {
-				foreach ( self::normalizeMessages( $message ) as $msg ) {
+				foreach ( self::normalizeAndDecodeMessages( $message ) as $msg ) {
 					if ( is_string( $msg ) ) {
-						$normalizeMessages[md5($msg)] = $msg;
+						$normalizedMessages[md5($msg)] = $msg;
 					} else {
-						$normalizeMessages[] = $msg;
+						$normalizedMessages[] = $msg;
 					}
 				}
 				continue;
@@ -83,13 +82,13 @@ class ProcessingErrorMsgHandler {
 			}
 
 			if ( is_string( $message ) ) {
-				$normalizeMessages[md5($message)] = $message;
+				$normalizedMessages[md5($message)] = $message;
 			} else {
-				$normalizeMessages[] = $message;
+				$normalizedMessages[] = $message;
 			}
 		}
 
-		return array_values( $normalizeMessages );
+		return array_values( $normalizedMessages );
 	}
 
 	/**
@@ -103,10 +102,10 @@ class ProcessingErrorMsgHandler {
 	 */
 	public static function getMessagesAsString( array $messages, $type = null, $language = null ) {
 
-		$normalizeMessages = self::normalizeMessages( $messages, $type, $language );
+		$normalizedMessages = self::normalizeAndDecodeMessages( $messages, $type, $language );
 		$msg = array();
 
-		foreach ( $normalizeMessages as $message ) {
+		foreach ( $normalizedMessages as $message ) {
 
 			if ( !is_string( $message ) ) {
 				continue;
@@ -124,7 +123,7 @@ class ProcessingErrorMsgHandler {
 	 * @param SemanticData $semanticData
 	 * @param DIContainer|null $container
 	 */
-	public function pushTo( SemanticData $semanticData, DIContainer $container = null ) {
+	public function addToSemanticData( SemanticData $semanticData, DIContainer $container = null ) {
 
 		if ( $container === null ) {
 			return;
@@ -142,9 +141,9 @@ class ProcessingErrorMsgHandler {
 	 * @param array|string $errorMsg
 	 * @param DIProperty|null $property
 	 *
-	 * @return DIContainer|null
+	 * @return DIContainer
 	 */
-	public function getErrorContainerFromMsg( $error, DIProperty $property = null ) {
+	public function newErrorContainerFromMsg( $error, DIProperty $property = null ) {
 
 		if ( $property !== null && $property->isInverse() ) {
 			$property = new DIProperty( $property->getKey() );
@@ -175,7 +174,7 @@ class ProcessingErrorMsgHandler {
 	 *
 	 * @return DIContainer|null
 	 */
-	public function getErrorContainerFromDataValue( DataValue $dataValue ) {
+	public function newErrorContainerFromDataValue( DataValue $dataValue ) {
 
 		if ( $dataValue->getErrors() === array() ) {
 			return null;

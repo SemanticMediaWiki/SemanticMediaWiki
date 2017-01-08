@@ -41,7 +41,7 @@ class ErrorFormWidget {
 
 		$errors = array();
 
-		foreach ( ProcessingErrorMsgHandler::normalizeMessages( $query->getErrors() ) as $value ) {
+		foreach ( ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $query->getErrors() ) as $value ) {
 
 			if ( $value === '' ) {
 				continue;

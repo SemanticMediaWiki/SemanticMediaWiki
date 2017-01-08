@@ -37,7 +37,7 @@ class DebugOutputFormatter {
 						'Query-Depth:' . $query->getDescription()->getDepth();
 			$errors = '';
 
-			$queryErrors = ProcessingErrorMsgHandler::normalizeMessages(
+			$queryErrors = ProcessingErrorMsgHandler::normalizeAndDecodeMessages(
 				$query->getErrors()
 			);
 
