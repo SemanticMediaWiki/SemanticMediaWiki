@@ -1,15 +1,15 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Query\Result;
 
-use SMW\CachedQueryResultPrefetcher;
+use SMW\Query\Result\CachedQueryResultPrefetcher;
 use SMW\DIWikiPage;
 use SMW\TransientStatsdCollector;
 use Onoi\BlobStore\BlobStore;
 use Onoi\BlobStore\Container;
 
 /**
- * @covers \SMW\CachedQueryResultPrefetcher
+ * @covers \SMW\Query\Result\CachedQueryResultPrefetcher
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

@@ -267,7 +267,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'CachedQueryResultPrefetcher',
 			array(),
-			'\SMW\CachedQueryResultPrefetcher'
+			'\SMW\Query\Result\CachedQueryResultPrefetcher'
 		);
 
 		$provider[] = array(
