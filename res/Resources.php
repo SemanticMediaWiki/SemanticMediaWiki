@@ -108,6 +108,7 @@ return array(
 	'ext.smw.api' => $moduleTemplate + array(
 		'scripts' => 'smw/api/ext.smw.api.js',
 		'dependencies' => array(
+			'mediawiki.util',
 			'ext.smw.data',
 			'ext.smw.query',
 			'ext.jquery.jStorage',
@@ -206,7 +207,10 @@ return array(
 	// Special:SearchByProperty
 	'ext.smw.property' => $moduleTemplate + array(
 		'scripts' => 'smw/special/ext.smw.special.property.js',
-		'dependencies' => 'ext.jquery.autocomplete',
+		'dependencies' => array(
+			'mediawiki.util',
+			'ext.jquery.autocomplete'
+			),
 		'position' => 'bottom',
 		'targets' => array( 'mobile', 'desktop' )
 	)
