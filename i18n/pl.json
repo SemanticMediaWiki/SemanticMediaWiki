@@ -327,5 +327,6 @@
 	"smw-parser-invalid-json-format": "Parser JSON zwrócił błąd „$1”.",
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-parse": "$1",
-	"smw-clipboard-copy-link": "Kopiuj link do schowka"
+	"smw-clipboard-copy-link": "Kopiuj link do schowka",
+	"smw-no-data-available": "Brak dostępnych danych."
 }

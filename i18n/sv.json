@@ -309,6 +309,7 @@
 	"smw-sp-admin-settings-button": "Generera lista med inställningar",
 	"smw-admin-idlookup-title": "Kolla upp objekt-ID",
 	"smw-admin-idlookup-docu": "Visar detaljer om ett internt objekt-Id som representerar enskilda enheter (wikisida, underobjekt etc.) i Semantisk MediaWiki.",
+	"smw-admin-iddispose-references": "{{PLURAL:$2|Tabell|Tabeller}} med minst en aktiv referens till ID \"$1\".",
 	"smw-admin-objectid": "Objekt-ID:",
 	"smw-livepreview-loading": "Laddar…",
 	"smw-sp-searchbyproperty-description": "Denna sida erbjuder ett enkelt [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces navigeringsgränssnitt] för att hitta entiteter som beskrivs av en egenskap och ett namngivet värde. Andra tillgängliga sökgränssnitt inkluderar [[Special:PageProperty|sidegenskapssök]] och [[Special:Ask|ask-förfrågningsbyggare]].",
@@ -325,5 +326,7 @@
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "\"$1\" kan inte användas som en föredragen etikett eftersom språket \"$2\" är redan tilldelat till etiketten \"$3\".",
 	"smw-parse": "$1",
-	"smw-clipboard-copy-link": "Kopiera länk till urklipp"
+	"smw-clipboard-copy-link": "Kopiera länk till urklipp",
+	"smw-data-lookup": "Hämtar data...",
+	"smw-no-data-available": "Ingen tillgänglig data."
 }

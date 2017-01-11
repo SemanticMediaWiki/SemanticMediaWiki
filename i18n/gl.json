@@ -239,6 +239,7 @@
 	"smw_result_results": "Resultados",
 	"smw_result_noresults": "Non hai resultados.",
 	"smwadmin": "Funcións de administrador",
+	"smw-admin-statistics-job-title": "Estatísticas de tarefas",
 	"smw-admin-statistics-querycache-title": "Estatísticas da caché das buscas",
 	"smw-admin-permission-missing": "Debido á falta dos permisos necesarios, bloqueouse o acceso a esta páxina, por favor, consulte a páxina de axuda sobre os [https://www.semantic-mediawiki.org/wiki/Help:Permissions permisos] para obter detalles das configuracións necesarias.",
 	"smw-admin-setupsuccess": "O motor de almacenamento foi configurado correctamente.",

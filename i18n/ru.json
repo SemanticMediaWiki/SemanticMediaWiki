@@ -420,5 +420,6 @@
 	"smw-parser-invalid-json-format": "JSON-парсер вернул ошибку «$1».",
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-parse": "$1",
-	"smw-clipboard-copy-link": "Скопировать ссылку в буфер обмена"
+	"smw-clipboard-copy-link": "Скопировать ссылку в буфер обмена",
+	"smw-no-data-available": "Нет доступных данных."
 }
