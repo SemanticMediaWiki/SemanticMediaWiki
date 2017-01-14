@@ -6,6 +6,8 @@ use Closure;
 use DeferrableUpdate;
 use DeferredUpdates;
 use RuntimeException;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
 
 /**
  * @see MWCallableUpdate
@@ -13,7 +15,7 @@ use RuntimeException;
  * @license GNU GPL v2+
  * @since 2.4
  */
-class DeferredCallableUpdate implements DeferrableUpdate {
+class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 
 	/**
 	 * @var Closure|callable
@@ -51,6 +53,11 @@ class DeferredCallableUpdate implements DeferrableUpdate {
 	private static $queueList = array();
 
 	/**
+	 * LoggerInterface
+	 */
+	private $logger;
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param Closure $callback
@@ -63,6 +70,17 @@ class DeferredCallableUpdate implements DeferrableUpdate {
 		}
 
 		$this->callback = $callback;
+	}
+
+	/**
+	 * @see LoggerAwareInterface::setLogger
+	 *
+	 * @since 2.5
+	 *
+	 * @param LoggerInterface $logger
+	 */
+	public function setLogger( LoggerInterface $logger ) {
+		$this->logger = $logger;
 	}
 
 	/**
@@ -139,42 +157,43 @@ class DeferredCallableUpdate implements DeferrableUpdate {
 	 * @since 2.4
 	 */
 	public function doUpdate() {
-		wfDebugLog( 'smw', $this->origin . ' doUpdate' . ( $this->fingerprint ? ' (' . $this->fingerprint . ')' : '' ) );
+		$this->log( $this->origin . ' doUpdate' . ( $this->fingerprint ? ' (' . $this->fingerprint . ')' : '' ) );
 		call_user_func( $this->callback );
 		unset( self::$queueList[$this->fingerprint] );
 	}
 
 	/**
-	 * @since 2.4
-	 * @deprecated since 2.5, use DeferredCallableUpdate::pushToUpdateQueue
-	 */
-	public function pushToDeferredUpdateList() {
-		$this->pushToUpdateQueue();
-	}
-
-	/**
 	 * @since 2.5
 	 */
-	public function pushToUpdateQueue() {
+	public function pushUpdate() {
 
 		if ( $this->fingerprint !== null && isset( self::$queueList[$this->fingerprint] ) ) {
-			wfDebugLog( 'smw', $this->origin . ' (fingerprint: ' . $this->fingerprint .' is already listed therefore skip)' );
+			$this->log( $this->origin . ' (fingerprint: ' . $this->fingerprint .' is already listed therefore skip)' );
 			return;
 		}
 
 		self::$queueList[$this->fingerprint] = true;
 
 		if ( $this->isPending && $this->enabledDeferredUpdate ) {
-			wfDebugLog( 'smw', $this->origin . ' (as pending DeferredCallableUpdate)' );
+			$this->log( $this->origin . ' (as pending DeferredCallableUpdate)' );
 			return self::$pendingUpdates[] = $this;
 		}
 
 		if ( $this->enabledDeferredUpdate ) {
-			wfDebugLog( 'smw', $this->origin . ' (as DeferredCallableUpdate)' );
+			$this->log( $this->origin . ' (as DeferredCallableUpdate)' );
 			return DeferredUpdates::addUpdate( $this );
 		}
 
 		$this->doUpdate();
+	}
+
+	private function log( $message, $context = array() ) {
+
+		if ( $this->logger === null ) {
+			return;
+		}
+
+		$this->logger->info( $message, $context );
 	}
 
 }

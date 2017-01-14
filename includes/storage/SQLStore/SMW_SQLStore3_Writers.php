@@ -968,7 +968,7 @@ class SMWSQLStore3Writers {
 			} );
 
 			$deferredCallableUpdate->setOrigin( __METHOD__ . ' for ' . $title->getPrefixedDBKey() );
-			$deferredCallableUpdate->pushToUpdateQueue();
+			$deferredCallableUpdate->pushUpdate();
 		}
 
 		$title = $newTitle;
@@ -977,7 +977,7 @@ class SMWSQLStore3Writers {
 		} );
 
 		$deferredCallableUpdate->setOrigin( __METHOD__ . ' for ' . $title->getPrefixedDBKey() );
-		$deferredCallableUpdate->pushToUpdateQueue();
+		$deferredCallableUpdate->pushUpdate();
 	}
 
 }

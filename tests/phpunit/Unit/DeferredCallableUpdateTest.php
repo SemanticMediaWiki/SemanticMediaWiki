@@ -16,13 +16,16 @@ use SMW\DeferredCallableUpdate;
 class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
+	private $spyLogger;
 
 	protected function setUp() {
 		parent::setUp();
 		$this->testEnvironment = new TestEnvironment();
+		$this->spyLogger = $this->testEnvironment->getUtilityFactory()->newSpyLogger();
 	}
 
 	protected function tearDown() {
+		$this->testEnvironment->clearPendingDeferredUpdates();
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
@@ -41,8 +44,6 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 
 	public function testUpdate() {
 
-		$this->testEnvironment->clearPendingDeferredUpdates();
-
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->setMethods( array( 'doTest' ) )
@@ -59,14 +60,13 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 			$callback
 		);
 
-		$instance->pushToDeferredUpdateList();
+		$instance->setLogger( $this->spyLogger );
+		$instance->pushUpdate();
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 	}
 
 	public function testWaitableUpdate() {
-
-		$this->testEnvironment->clearPendingDeferredUpdates();
 
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
@@ -85,7 +85,7 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->markAsPending( true );
-		$instance->pushToDeferredUpdateList();
+		$instance->pushUpdate();
 
 		$instance->releasePendingUpdates();
 
@@ -111,7 +111,7 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->enabledDeferredUpdate( false );
-		$instance->pushToUpdateQueue();
+		$instance->pushUpdate();
 	}
 
 	public function testOrigin() {
@@ -133,8 +133,6 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 
 	public function testFilterDuplicateQueueEntryByFingerprint() {
 
-		$this->testEnvironment->clearPendingDeferredUpdates();
-
 		$test = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->setMethods( array( 'doTest' ) )
@@ -153,7 +151,7 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setFingerprint( __METHOD__ );
 		$instance->markAsPending( true );
-		$instance->pushToUpdateQueue();
+		$instance->pushUpdate();
 
 		$instance = new DeferredCallableUpdate(
 			$callback
@@ -161,7 +159,7 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setFingerprint( __METHOD__ );
 		$instance->markAsPending( true );
-		$instance->pushToUpdateQueue();
+		$instance->pushUpdate();
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 	}

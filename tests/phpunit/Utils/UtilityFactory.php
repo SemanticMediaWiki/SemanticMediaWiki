@@ -226,4 +226,13 @@ class UtilityFactory {
 		return $prefix . ( $prefix ? '-' : '' ) . substr( str_shuffle( "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" ), 0, $length );
 	}
 
+	/**
+	 * @since 2.5
+	 *
+	 * @return SpyLogger
+	 */
+	public function newSpyLogger() {
+		return new SpyLogger();
+	}
+
 }

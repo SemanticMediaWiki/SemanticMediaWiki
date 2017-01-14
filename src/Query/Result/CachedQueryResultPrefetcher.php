@@ -398,7 +398,7 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 
 		$deferredCallableUpdate->setOrigin( __METHOD__ );
 		$deferredCallableUpdate->setFingerprint( __METHOD__ . $queryId );
-		$deferredCallableUpdate->pushToUpdateQueue();
+		$deferredCallableUpdate->pushUpdate();
 	}
 
 	private function doCacheQueryResult( $queryResult, $queryId, $container, $query ) {

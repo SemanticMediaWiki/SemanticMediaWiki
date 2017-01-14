@@ -294,7 +294,7 @@ class SMWSQLStore3 extends SMWStore {
 
 		$deferredCallableUpdate = $this->factory->newDeferredCallableCachedListLookupUpdate();
 		$deferredCallableUpdate->setOrigin( __METHOD__ );
-		$deferredCallableUpdate->pushToUpdateQueue();
+		$deferredCallableUpdate->pushUpdate();
 	}
 
 ///// Query answering /////

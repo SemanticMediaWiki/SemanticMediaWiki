@@ -113,7 +113,7 @@ class TextByChangeUpdater {
 			$compositePropertyTableDiffIterator
 		);
 
-		$deferredRequestDispatchManager->scheduleFulltextSearchTableUpdateJobWith(
+		$deferredRequestDispatchManager->dispatchFulltextSearchTableUpdateJobWith(
 			$compositePropertyTableDiffIterator->getSubject()->getTitle(),
 			array(
 				'slot:id' => $slot
