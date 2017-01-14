@@ -171,8 +171,14 @@ class QueryDependencyLinksStore {
 			return array();
 		}
 
+		$filteredIdList = $entityIdListRelevanceDetectionFilter->getFilteredIdList();
+
+		if ( $filteredIdList === array() ) {
+			return array();
+		}
+
 		return array(
-			'idlist' => $entityIdListRelevanceDetectionFilter->getFilteredIdList()
+			'idlist' => $filteredIdList
 		);
 	}
 
