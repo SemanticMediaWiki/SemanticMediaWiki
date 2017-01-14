@@ -241,7 +241,7 @@ class SMWAskPage extends SpecialPage {
 	}
 
 	private function getStoreFromParams( array $params ) {
-		return ApplicationFactory::getInstance()->getQuerySource( $params['source']->getValue() );
+		return ApplicationFactory::getInstance()->getQuerySourceFactory()->get( $params['source']->getValue() );
 	}
 
 	/**
@@ -452,16 +452,12 @@ class SMWAskPage extends SpecialPage {
 		// Deprecated: Use of SpecialPage::getTitle was deprecated in MediaWiki 1.23
 		$title = method_exists( $this, 'getPageTitle') ? $this->getPageTitle() : $this->getTitle();
 
-		$storeName = get_class( \SMW\StoreFactory::getStore() );
+		$querySource = ApplicationFactory::getInstance()->getQuerySourceFactory()->getAsString(
+			isset( $this->m_params['source'] ) ? $this->m_params['source'] : null
+		);
 
-		if ( strpos( $storeName, "\\") !== false ) {
-			$storeName = explode("\\", $storeName );
-			$storeName = end( $storeName );
-		}
-
-		$environment = isset( $this->m_params['source'] ) ? $this->m_params['source'] : $storeName;
 		$downloadLink = $this->getExtraDownloadLinks();
-		$searchInfoText = $duration > 0 ? wfMessage( 'smw-ask-query-search-info', $this->m_querystring, $environment, $isFromCache, $duration )->parse() : '';
+		$searchInfoText = $duration > 0 ? wfMessage( 'smw-ask-query-search-info', $this->m_querystring, $querySource, $isFromCache, $duration )->parse() : '';
 		$hideForm = false;
 
 		$result .= Html::openElement( 'form',

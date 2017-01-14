@@ -56,7 +56,24 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\QueryEngine',
-			$instance->getWithLocalFallback( 'foo' )
+			$instance->get( 'foo' )
+		);
+	}
+
+	public function testGetAsString() {
+
+		$store = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new QuerySourceFactory(
+			$store,
+			array()
+		);
+
+		$this->assertContains(
+			'(SMWSQLStore3)',
+			$instance->getAsString()
 		);
 	}
 
@@ -80,7 +97,7 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\QueryEngine',
-			$instance->getWithLocalFallback( 'bar' )
+			$instance->get( 'bar' )
 		);
 	}
 }

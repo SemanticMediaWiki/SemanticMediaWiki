@@ -28,14 +28,21 @@ class QuerySourceFactory {
 	private $querySources = array();
 
 	/**
+	 * @var string|false
+	 */
+	private $queryEndpoint = false;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param Store $store
 	 * @param array $querySources
+	 * @param boolean|string $queryEndpoint
 	 */
-	public function __construct( Store $store, $querySources = array() ) {
+	public function __construct( Store $store, $querySources = array(), $queryEndpoint = false ) {
 		$this->store = $store;
 		$this->querySources = $querySources;
+		$this->queryEndpoint = $queryEndpoint;
 	}
 
 	/**
@@ -48,7 +55,7 @@ class QuerySourceFactory {
 	 * @return QueryEngine|Store
 	 * @throws RuntimeException
 	 */
-	public function getWithLocalFallback( $source = null ) {
+	public function get( $source = null ) {
 
 		if ( $source !== '' && isset( $this->querySources[$source] ) ) {
 			$source = $this->querySources[$source];
@@ -66,6 +73,34 @@ class QuerySourceFactory {
 
 		if ( $source instanceof StoreAware ) {
 			$source->setStore( $this->store );
+		}
+
+		return $source;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string|null $source
+	 *
+	 * @return string
+	 */
+	public function getAsString( $source = null ) {
+
+		if ( $source !== '' && $source !== null ) {
+			return $source;
+		}
+
+		$source = get_class( $this->store );
+		$store = $this->store;
+
+		if ( strpos( $source, "\\") !== false ) {
+			$source = explode("\\", $source );
+			$source = end( $source );
+		}
+
+		if ( strpos( strtolower( $source ), 'sparql' ) !== false && $this->queryEndpoint === false ) {
+			$source .=  ' (' . $store::$baseStoreClass . ')';
 		}
 
 		return $source;
