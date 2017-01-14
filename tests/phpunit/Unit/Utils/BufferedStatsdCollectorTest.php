@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Utils;
 
-use SMW\TransientStatsdCollector;
+use SMW\Utils\BufferedStatsdCollector;
 use Onoi\BlobStore\BlobStore;
 use Onoi\BlobStore\Container;
 
 /**
- * @covers \SMW\TransientStatsdCollector
+ * @covers \SMW\Utils\BufferedStatsdCollector
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,7 +15,7 @@ use Onoi\BlobStore\Container;
  *
  * @author mwjames
  */
-class TransientStatsdCollectorTest extends \PHPUnit_Framework_TestCase {
+class BufferedStatsdCollectorTest extends \PHPUnit_Framework_TestCase {
 
 	private $blobStore;
 	private $container;
@@ -38,8 +38,8 @@ class TransientStatsdCollectorTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			TransientStatsdCollector::class,
-			new TransientStatsdCollector( $this->blobStore, 42 )
+			BufferedStatsdCollector::class,
+			new BufferedStatsdCollector( $this->blobStore, 42 )
 		);
 	}
 
@@ -62,7 +62,7 @@ class TransientStatsdCollectorTest extends \PHPUnit_Framework_TestCase {
 		$this->blobStore->expects( $this->once() )
 			->method( 'save' );
 
-		$instance = new TransientStatsdCollector(
+		$instance = new BufferedStatsdCollector(
 			$this->blobStore,
 			42
 		);
@@ -90,7 +90,7 @@ class TransientStatsdCollectorTest extends \PHPUnit_Framework_TestCase {
 		$this->blobStore->expects( $this->once() )
 			->method( 'save' );
 
-		$instance = new TransientStatsdCollector(
+		$instance = new BufferedStatsdCollector(
 			$this->blobStore,
 			42
 		);
@@ -118,7 +118,7 @@ class TransientStatsdCollectorTest extends \PHPUnit_Framework_TestCase {
 		$this->blobStore->expects( $this->once() )
 			->method( 'save' );
 
-		$instance = new TransientStatsdCollector(
+		$instance = new BufferedStatsdCollector(
 			$this->blobStore,
 			42
 		);
@@ -138,7 +138,7 @@ class TransientStatsdCollectorTest extends \PHPUnit_Framework_TestCase {
 			'Bar' => 1
 		);
 
-		$instance = new TransientStatsdCollector(
+		$instance = new BufferedStatsdCollector(
 			$this->blobStore,
 			42
 		);
@@ -160,7 +160,7 @@ class TransientStatsdCollectorTest extends \PHPUnit_Framework_TestCase {
 			'Bar' => 1
 		);
 
-		$instance = new TransientStatsdCollector(
+		$instance = new BufferedStatsdCollector(
 			$this->blobStore,
 			42
 		);
@@ -182,7 +182,7 @@ class TransientStatsdCollectorTest extends \PHPUnit_Framework_TestCase {
 			'Bar' => 1
 		);
 
-		$instance = new TransientStatsdCollector(
+		$instance = new BufferedStatsdCollector(
 			$this->blobStore,
 			42
 		);

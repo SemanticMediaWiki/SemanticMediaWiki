@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Libs;
+namespace SMW\Utils;
 
 /**
  * Convenience method to retrieved stringified error codes.
@@ -10,7 +10,7 @@ namespace SMW\Libs;
  *
  * @author mwjames
  */
-class ErrorCode {
+class ErrorCodeFormatter {
 
 	/**
 	 * @var array

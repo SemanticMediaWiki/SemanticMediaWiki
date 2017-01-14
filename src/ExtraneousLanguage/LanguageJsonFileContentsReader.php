@@ -5,7 +5,7 @@ namespace SMW\ExtraneousLanguage;
 use RuntimeException;
 use Onoi\Cache\Cache;
 use Onoi\Cache\NullCache;
-use SMW\Libs\ErrorCode;
+use SMW\Utils\ErrorCodeFormatter;
 
 /**
  * @license GNU GPL v2+
@@ -175,7 +175,7 @@ class LanguageJsonFileContentsReader {
 			return $contents;
 		}
 
-		throw new RuntimeException( ErrorCode::getMessageFromJsonErrorCode( json_last_error() ) );
+		throw new RuntimeException( ErrorCodeFormatter::getMessageFromJsonErrorCode( json_last_error() ) );
 	}
 
 	private function getFileForLanguageCode( $languageCode ) {

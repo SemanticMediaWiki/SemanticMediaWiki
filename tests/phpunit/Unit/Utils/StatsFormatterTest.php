@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Utils;
 
-use SMW\StatsFormatter;
+use SMW\Utils\StatsFormatter;
 
 /**
- * @covers \SMW\StatsFormatter
+ * @covers \SMW\Utils\StatsFormatter
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

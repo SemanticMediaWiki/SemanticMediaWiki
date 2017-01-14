@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use SMW\Libs\ErrorCode;
+use SMW\Utils\ErrorCodeFormatter;
 
 /**
  * @license GNU GPL v2+
@@ -290,7 +290,7 @@ class ParserParameterProcessor {
 			$this->addError( Message::encode(
 				array(
 					'smw-parser-invalid-json-format',
-					ErrorCode::getStringFromJsonErrorCode( json_last_error() )
+					ErrorCodeFormatter::getStringFromJsonErrorCode( json_last_error() )
 				)
 			) );
 			return $results;

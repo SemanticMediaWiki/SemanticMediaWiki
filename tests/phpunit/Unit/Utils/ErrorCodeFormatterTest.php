@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Libs;
+namespace SMW\Tests\Utils;
 
-use SMW\Libs\ErrorCode;
+use SMW\Utils\ErrorCodeFormatter;
 
 /**
- * @covers \SMW\Libs\ErrorCode
+ * @covers \SMW\Utils\ErrorCodeFormatter
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,20 +13,20 @@ use SMW\Libs\ErrorCode;
  *
  * @author mwjames
  */
-class ErrorCodeTest extends \PHPUnit_Framework_TestCase {
+class ErrorCodeFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetStringFromJsonErrorCode() {
 
 		$this->assertInternalType(
 			'string',
-			ErrorCode::getStringFromJsonErrorCode( 'Foo' )
+			ErrorCodeFormatter::getStringFromJsonErrorCode( 'Foo' )
 		);
 
 		$contents = json_decode( '{ Foo: Bar }' );
 
 		$this->assertInternalType(
 			'string',
-			ErrorCode::getStringFromJsonErrorCode( json_last_error() )
+			ErrorCodeFormatter::getStringFromJsonErrorCode( json_last_error() )
 		);
 	}
 
@@ -34,14 +34,14 @@ class ErrorCodeTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			ErrorCode::getMessageFromJsonErrorCode( 'Foo' )
+			ErrorCodeFormatter::getMessageFromJsonErrorCode( 'Foo' )
 		);
 
 		$contents = json_decode( '{ Foo: Bar }' );
 
 		$this->assertInternalType(
 			'string',
-			ErrorCode::getMessageFromJsonErrorCode( json_last_error() )
+			ErrorCodeFormatter::getMessageFromJsonErrorCode( json_last_error() )
 		);
 	}
 
