@@ -220,11 +220,10 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new QueryDependencyLinksStore(
-			$queryResultDependencyListResolver,
 			$dependencyLinksTableUpdater
 		);
 
-		$instance->setEnabled( true );
+		$instance->setEnabledState( true );
 
 		$this->assertEmpty(
 			$instance->buildParserCachePurgeJobParametersFrom( $entityIdListRelevanceDetectionFilter )
