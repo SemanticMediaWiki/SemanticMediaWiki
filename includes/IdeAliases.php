@@ -14,7 +14,7 @@
 
 throw new Exception( 'Not an actual source file' );
 
-class SMWDataItemException extends SMW\DataItemException {
+class SMWDataItemException extends SMW\Exception\DataItemException {
 }
 
 abstract class SMWStore extends SMW\Store {

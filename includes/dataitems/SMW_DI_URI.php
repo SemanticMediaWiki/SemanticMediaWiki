@@ -1,6 +1,6 @@
 <?php
 
-use SMW\DataItemException;
+use SMW\Exception\DataItemException;
 
 /**
  * This class implements URI data items.

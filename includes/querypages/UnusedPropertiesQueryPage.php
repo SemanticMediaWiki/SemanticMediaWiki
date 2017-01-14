@@ -5,6 +5,7 @@ namespace SMW;
 use Html;
 use SMWDIError;
 use SMWTypesValue;
+use SMW\Exception\PropertyNotFoundExeption;
 
 /**
  * Query page that provides content to Special:UnusedProperties
@@ -93,9 +94,9 @@ class UnusedPropertiesQueryPage extends QueryPage {
 				->setType( 'warning' )
 				->addFromArray( array( $result->getErrors() ) )
 				->getHtml();
-		} else {
-			throw new InvalidResultException( 'UnusedPropertiesQueryPage expects results that are properties or errors.' );
 		}
+
+		throw new PropertyNotFoundExeption( 'UnusedPropertiesQueryPage expects results that are properties or errors.' );
 	}
 
 	/**

@@ -1,6 +1,6 @@
 <?php
 
-use SMW\DataItemException;
+use SMW\Exception\DataItemException;
 
 /**
  * Implementation of dataitems that are geographic coordinates.

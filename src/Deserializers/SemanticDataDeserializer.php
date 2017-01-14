@@ -4,6 +4,7 @@ namespace SMW\Deserializers;
 
 use Deserializers\Deserializer;
 use OutOfBoundsException;
+use RuntimeException;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -33,6 +34,7 @@ class SemanticDataDeserializer implements Deserializer {
 	 *
 	 * @return SemanticData
 	 * @throws OutOfBoundsException
+	 * @throws RuntimeException
 	 */
 	public function deserialize( $data ) {
 
@@ -47,7 +49,7 @@ class SemanticDataDeserializer implements Deserializer {
 		}
 
 		if ( !$semanticData instanceof SemanticData ) {
-			throw new OutOfBoundsException( 'SemanticData could not be created probably due to a missing subject' );
+			throw new RuntimeException( 'SemanticData could not be created probably due to a missing subject' );
 		}
 
 		$this->doDeserialize( $data, $semanticData );

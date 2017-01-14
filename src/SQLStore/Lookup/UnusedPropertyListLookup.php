@@ -4,7 +4,7 @@ namespace SMW\SQLStore\Lookup;
 
 use RuntimeException;
 use SMW\DIProperty;
-use SMW\InvalidPropertyException;
+use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Store\PropertyStatisticsStore;
@@ -138,7 +138,7 @@ class UnusedPropertyListLookup implements ListLookup {
 
 		try {
 			$property = new DIProperty( $title );
-		} catch ( InvalidPropertyException $e ) {
+		} catch ( PropertyLabelNotResolvedException $e ) {
 			$property = new DIError( new \Message( 'smw_noproperty', array( $title ) ) );
 		}
 

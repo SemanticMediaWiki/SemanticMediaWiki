@@ -98,14 +98,14 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testInvalidResultException() {
+	public function testInvalidResultThrowsException() {
 
 		$instance = new UnusedPropertiesQueryPage(
 			$this->store,
 			$this->settings
 		);
 
-		$this->setExpectedException( '\SMW\InvalidResultException' );
+		$this->setExpectedException( '\SMW\Exception\PropertyNotFoundExeption' );
 		$instance->formatResult( $this->skin, null );
 	}
 

@@ -9,7 +9,7 @@ use SMW\SQLStore\TableBuilder\Table;
 use SMWDataItem as DataItem;
 use SMW\DIProperty;
 use SMWSql3SmwIds;
-use SMW\InvalidPredefinedPropertyException;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
 
 /**
  * @private
@@ -130,7 +130,7 @@ class TableIntegrityExaminer implements MessageReporterAware {
 
 			try{
 				$property = new DIProperty( $prop );
-			} catch ( InvalidPredefinedPropertyException $e ) {
+			} catch ( PredefinedPropertyLabelMismatchException $e ) {
 				$property = null;
 				$this->messageReporter->reportMessage( "   ... skipping {$prop} due to invalid registration ...\n" );
 			}

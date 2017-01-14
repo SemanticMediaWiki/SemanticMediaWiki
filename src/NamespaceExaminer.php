@@ -3,6 +3,7 @@
 namespace SMW;
 
 use MWNamespace;
+use InvalidArgumentException;
 
 /**
  * Examines if a specific namespace is enabled for the usage of the
@@ -86,12 +87,12 @@ class NamespaceExaminer {
 	 * @param integer $namespace
 	 *
 	 * @return boolean
-	 * @throws InvalidNamespaceException
+	 * @throws InvalidArgumentException
 	 */
 	public function isSemanticEnabled( $namespace ) {
 
 		if ( !is_int( $namespace ) ) {
-			throw new InvalidNamespaceException( "{$namespace} is not a number" );
+			throw new InvalidArgumentException( "{$namespace} is not a number" );
 		}
 
 		if ( !in_array( $namespace, MWNamespace::getValidNamespaces() ) ) {

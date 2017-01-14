@@ -8,6 +8,8 @@ use SMWDataItem;
 use SMWDataValue;
 use SMWDIContainer;
 use SMWPropertyValue;
+use SMW\Exception\SemanticDataImportException;
+use SMW\Exception\SubSemanticDataException;
 
 /**
  * Class for representing chunks of semantic data for one given
@@ -518,12 +520,12 @@ class SemanticData {
 	 *
 	 * @param SemanticData $semanticData object to copy from
 	 *
-	 * @throws MWException if subjects do not match
+	 * @throws SemanticDataImportException
 	 */
 	public function importDataFrom( SemanticData $semanticData ) {
 
 		if( !$this->mSubject->equals( $semanticData->getSubject() ) ) {
-			throw new MWException( "SMWSemanticData can only represent data about one subject. Importing data for another subject is not possible." );
+			throw new SemanticDataImportException( "SemanticData can only represent data about one subject. Importing data for another subject is not possible." );
 		}
 
 		$this->hash = null;
@@ -632,7 +634,7 @@ class SemanticData {
 	 *
 	 * @param SemanticData $semanticData
 	 *
-	 * @throws MWException if not adding data about a subobject of this data
+	 * @throws SubSemanticDataException if not adding data about a subobject of this data
 	 */
 	public function addSubSemanticData( SemanticData $semanticData ) {
 
@@ -640,17 +642,17 @@ class SemanticData {
 		$this->hash = null;
 
 		if ( $this->subContainerDepthCounter > $this->subContainerMaxDepth ) {
-			throw new MWException( "Cannot add further subdata. You are trying to add data beyond the max depth of {$this->subContainerMaxDepth} to an SemanticData object." );
+			throw new SubSemanticDataException( "Cannot add further subdata. You are trying to add data beyond the max depth of {$this->subContainerMaxDepth} to an SemanticData object." );
 		}
 
 		$subobjectName = $semanticData->getSubject()->getSubobjectName();
 
 		if ( $subobjectName == '' ) {
-			throw new MWException( "Cannot add data that is not about a subobject." );
+			throw new SubSemanticDataException( "Cannot add data that is not about a subobject." );
 		}
 
 		if( $semanticData->getSubject()->getDBkey() !== $this->getSubject()->getDBkey() ) {
-			throw new MWException( "Data for a subobject of {$semanticData->getSubject()->getDBkey()} cannot be added to {$this->getSubject()->getDBkey()}." );
+			throw new SubSemanticDataException( "Data for a subobject of {$semanticData->getSubject()->getDBkey()} cannot be added to {$this->getSubject()->getDBkey()}." );
 		}
 
 		if( $this->hasSubSemanticData( $subobjectName ) ) {

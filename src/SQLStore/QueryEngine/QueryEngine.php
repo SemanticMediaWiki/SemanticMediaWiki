@@ -4,7 +4,7 @@ namespace SMW\SQLStore\QueryEngine;
 
 use RuntimeException;
 use SMW\DIWikiPage;
-use SMW\InvalidPredefinedPropertyException;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Query\DebugOutputFormatter as QueryDebugOutputFormatter;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
@@ -511,7 +511,7 @@ class QueryEngine implements QueryEngineInterface {
 						'',
 						$row->so
 					) );
-				} catch ( InvalidPredefinedPropertyException $e ) {
+				} catch ( PredefinedPropertyLabelMismatchException $e ) {
 					$logToTable[$row->t] = "issue creating a {$row->t} dataitem from a database row";
 					wfDebugLog( 'smw', __METHOD__ . ' ' . $e->getMessage() . "\n" );
 					$dataItem = '';

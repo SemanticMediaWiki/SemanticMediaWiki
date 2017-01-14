@@ -3,6 +3,7 @@
 namespace SMW;
 
 use RuntimeException;
+use SMW\Exception\StoreNotFoundException;
 
 /**
  * Factory method that returns an instance of the default store, or an
@@ -18,10 +19,14 @@ use RuntimeException;
  */
 class StoreFactory {
 
-	/** @var Store[] */
+	/**
+	 * @var array
+	 */
 	private static $instance = array();
 
-	/** @var string */
+	/**
+	 * @var null
+	 */
 	private static $defaultStore = null;
 
 	/**
@@ -31,7 +36,7 @@ class StoreFactory {
 	 *
 	 * @return Store
 	 * @throws RuntimeException
-	 * @throws InvalidStoreException
+	 * @throws StoreNotFoundException
 	 */
 	public static function getStore( $store = null ) {
 
@@ -71,7 +76,7 @@ class StoreFactory {
 		$instance = new $store;
 
 		if ( !( $instance instanceof Store ) ) {
-			throw new InvalidStoreException( "{$store} can not be used as a store instance" );
+			throw new StoreNotFoundException( "{$store} can not be used as a store instance" );
 		}
 
 		return $instance;

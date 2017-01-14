@@ -4,6 +4,7 @@ namespace SMW;
 
 use SMWDataItem;
 use Title;
+use SMW\Exception\DataItemDeserializationException;
 
 /**
  * This class implements wiki page data items.
@@ -248,7 +249,7 @@ class DIWikiPage extends SMWDataItem {
 	 * @param string $serialization
 	 *
 	 * @return DIWikiPage
-	 * @throws DataItemException
+	 * @throws DataItemDeserializationException
 	 */
 	public static function doUnserialize( $serialization ) {
 		$parts = explode( '#', $serialization, 4 );
@@ -258,7 +259,7 @@ class DIWikiPage extends SMWDataItem {
 		} elseif ( count( $parts ) == 4 ) {
 			return new self( $parts[0], intval( $parts[1] ), $parts[2], $parts[3] );
 		} else {
-			throw new DataItemException( "Unserialization failed: the string \"$serialization\" was not understood." );
+			throw new DataItemDeserializationException( "Unserialization failed: the string \"$serialization\" was not understood." );
 		}
 	}
 

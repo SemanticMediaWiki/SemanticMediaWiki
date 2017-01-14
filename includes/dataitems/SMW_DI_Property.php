@@ -6,6 +6,9 @@ use InvalidArgumentException;
 use RuntimeException;
 use SMWDataItem;
 use SMWDIUri;
+use SMW\Exception\PropertyLabelNotResolvedException;
+use SMW\Exception\PropertyDataTypeLookupExeption;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
 
 /**
  * This class implements Property data items.
@@ -78,13 +81,14 @@ class DIProperty extends SMWDataItem {
 	 * @param $inverse boolean states if the inverse of the property is constructed
 	 */
 	public function __construct( $key, $inverse = false ) {
+
 		if ( ( $key === '' ) || ( $key{0} == '-' ) ) {
-			throw new InvalidPropertyException( "Illegal property key \"$key\"." );
+			throw new PropertyLabelNotResolvedException( "Illegal property key \"$key\"." );
 		}
 
 		if ( $key{0} == '_' ) {
 			if ( !PropertyRegistry::getInstance()->isKnownPropertyId( $key ) ) {
-				throw new InvalidPredefinedPropertyException( "There is no predefined property with \"$key\"." );
+				throw new PredefinedPropertyLabelMismatchException( "There is no predefined property with \"$key\"." );
 			}
 		}
 
@@ -304,13 +308,13 @@ class DIProperty extends SMWDataItem {
 	 * @since  2.0
 	 *
 	 * @return self
-	 * @throws RuntimeException
+	 * @throws PropertyDataTypeLookupExeption
 	 * @throws InvalidArgumentException
 	 */
 	public function setPropertyTypeId( $propertyTypeId ) {
 
 		if ( !DataTypeRegistry::getInstance()->isKnownTypeId( $propertyTypeId ) ) {
-			throw new RuntimeException( "{$propertyTypeId} is an unknown type id" );
+			throw new PropertyDataTypeLookupExeption( "{$propertyTypeId} is an unknown type id" );
 		}
 
 		if ( $this->isUserDefined() && $this->m_proptypeid === null ) {
@@ -323,7 +327,7 @@ class DIProperty extends SMWDataItem {
 			return $this;
 		}
 
-		throw new InvalidArgumentException( 'Property type can not be altered for a predefined object' );
+		throw new RuntimeException( 'Property type can not be altered for a predefined object' );
 	}
 
 	/**
