@@ -48,7 +48,7 @@ class EntityIdDisposerJob extends JobBase {
 	 *
 	 * @param integer|stdClass $id
 	 */
-	public function executeWith( $id ) {
+	public function dispose( $id ) {
 
 		if ( is_int( $id ) ) {
 			return $this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $id );
@@ -65,20 +65,17 @@ class EntityIdDisposerJob extends JobBase {
 	public function run() {
 
 		if ( $this->hasParameter( 'id' ) ) {
-			$this->executeWith( $this->getParameter( 'id' ) );
+			$this->dispose( $this->getParameter( 'id' ) );
 		} else {
-			$this->doDisposeAllMarkedEntities();
+			$this->doDisposeAll( $this->newOutdatedEntitiesResultIterator() );
 		}
 
 		return true;
 	}
 
-	private function doDisposeAllMarkedEntities() {
-
-		$outdatedEntitiesResultIterator = $this->newOutdatedEntitiesResultIterator();
-
+	private function doDisposeAll( $outdatedEntitiesResultIterator ) {
 		foreach ( $outdatedEntitiesResultIterator as $row ) {
-			$this->executeWith( $row );
+			$this->dispose( $row );
 		}
 	}
 

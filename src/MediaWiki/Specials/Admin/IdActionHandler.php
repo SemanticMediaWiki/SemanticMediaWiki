@@ -103,7 +103,7 @@ class IdActionHandler {
 			\Title::newFromText( __METHOD__ )
 		);
 
-		$entityIdDisposerJob->executeWith( $id );
+		$entityIdDisposerJob->dispose( $id );
 
 		$manualEntryLogger = ApplicationFactory::getInstance()->create( 'ManualEntryLogger' );
 		$manualEntryLogger->registerLoggableEventType( 'admin' );
