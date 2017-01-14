@@ -27,6 +27,11 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	private $semanticDataValidator;
 
 	/**
+	 * @var IncomingSemanticDataValidator
+	 */
+	private $incomingSemanticDataValidator;
+
+	/**
 	 * @var StringValidator
 	 */
 	private $stringValidator;
@@ -39,11 +44,13 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @param Store
 	 * @param SemanticDataValidator
+	 * @param IncomingSemanticDataValidator
 	 * @param StringValidator
 	 */
-	public function __construct( $store, $semanticDataValidator, $stringValidator ) {
+	public function __construct( $store, $semanticDataValidator, $incomingSemanticDataValidator, $stringValidator ) {
 		$this->store = $store;
 		$this->semanticDataValidator = $semanticDataValidator;
+		$this->incomingSemanticDataValidator = $incomingSemanticDataValidator;
 		$this->stringValidator = $stringValidator;
 	}
 
@@ -99,9 +106,13 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			$case['about']
 		);
 
-		$this->assertInProperties(
+		if ( !isset( $case['assert-store']['semantic-data']['incoming'] ) ) {
+			return;
+		}
+
+		$this->incomingSemanticDataValidator->assertThatIncomingDataAreSet(
+			$case['assert-store']['semantic-data']['incoming'],
 			$subject,
-			$case['assert-store']['semantic-data'],
 			$case['about']
 		);
 	}
@@ -132,50 +143,6 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 				$case['assert-output']['not-contain'],
 				$parserOutput->getText(),
 				$case['about']
-			);
-		}
-	}
-
-	private function assertInProperties( DIWikiPage $subject, array $semanticdata, $about ) {
-
-		if ( !isset( $semanticdata['inproperty-keys'] ) ) {
-			return;
-		}
-
-		$inProperties = $this->store->getInProperties( $subject );
-
-		$this->assertCount(
-			count( $semanticdata['inproperty-keys'] ),
-			$inProperties,
-			'Failed asserting count for "inproperty-keys" in ' . $about . ' ' . implode( ',', $inProperties )
-		);
-
-		$inpropertyValues = array();
-
-		foreach ( $inProperties as $property ) {
-
-			$this->assertContains(
-				$property->getKey(),
-				$semanticdata['inproperty-keys'],
-				'Failed asserting key for "inproperty-keys" in ' . $about
-			);
-
-			if ( !isset( $semanticdata['inproperty-values'] ) ) {
-				continue;
-			}
-
-			$values = $this->store->getPropertySubjects( $property, $subject );
-
-			foreach ( $values as $value ) {
-				$inpropertyValues[] = $value->getSerialization();
-			}
-		}
-
-		foreach ( $inpropertyValues as $value ) {
-			$this->assertContains(
-				$value,
-				$semanticdata['inproperty-values'],
-				'Failed asserting values for "inproperty-values" in ' . $about
 			);
 		}
 	}

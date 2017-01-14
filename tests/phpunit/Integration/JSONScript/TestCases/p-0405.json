@@ -64,12 +64,14 @@
 					"propertyKeys": [
 						"_SKEY"
 					],
-					"inproperty-keys": [
-						"_REDI"
-					],
-					"inproperty-values": [
-						"Page-with-template-for-unknown-redirect-target#0#"
-					]
+					"incoming": {
+						"propertyKeys": [
+							"_REDI"
+						],
+						"propertyValues": [
+							"Page-with-template-for-unknown-redirect-target#0#"
+						]
+					}
 				}
 			}
 		},
@@ -84,12 +86,14 @@
 					"propertyKeys": [
 						"_SKEY"
 					],
-					"inproperty-keys": [
-						"_REDI"
-					],
-					"inproperty-values": [
-						"Page-with-template-for-unknown-redirect-target#0#"
-					]
+					"incoming": {
+						"propertyKeys": [
+							"_REDI"
+						],
+						"propertyValues": [
+							"Page-with-template-for-unknown-redirect-target#0#"
+						]
+					}
 				}
 			}
 		},
@@ -107,14 +111,16 @@
 						"_SOBJ",
 						"Has_page"
 					],
-					"inproperty-keys": [
-						"_REDI",
-						"Has_page"
-					],
-					"inproperty-values": [
-						"Page-with-template-for-known-redirect-target#0#",
-						"To-be-known-template-redirect-target#0#"
-					]
+					"incoming": {
+						"propertyKeys": [
+							"_REDI",
+							"Has_page"
+						],
+						"propertyValues": [
+							"Page-with-template-for-known-redirect-target#0#",
+							"To-be-known-template-redirect-target#0#"
+						]
+					}
 				}
 			}
 		},
@@ -132,14 +138,16 @@
 						"_SOBJ",
 						"Has_page"
 					],
-					"inproperty-keys": [
-						"_REDI",
-						"Has_page"
-					],
-					"inproperty-values": [
-						"Page-with-template-for-known-redirect-target#0#",
-						"To-be-known-template-redirect-target#0#"
-					]
+					"incoming": {
+						"propertyKeys": [
+							"_REDI",
+							"Has_page"
+						],
+						"propertyValues": [
+							"Page-with-template-for-known-redirect-target#0#",
+							"To-be-known-template-redirect-target#0#"
+						]
+					}
 				}
 			}
 		},
@@ -154,12 +162,14 @@
 					"propertyKeys": [
 						"_SKEY"
 					],
-					"inproperty-keys": [
-						"_REDI"
-					],
-					"inproperty-values": [
-						"Page-with-annotation-for-unknown-redirect-target#0#"
-					]
+					"incoming": {
+						"propertyKeys": [
+							"_REDI"
+						],
+						"propertyValues": [
+							"Page-with-annotation-for-unknown-redirect-target#0#"
+						]
+					}
 				}
 			}
 		},
@@ -177,12 +187,14 @@
 						"Has_page",
 						"_SOBJ"
 					],
-					"inproperty-keys": [
-						"Has_page"
-					],
-					"inproperty-values": [
-						"Page-with-template-was-redirected-now-restored#0#"
-					]
+					"incoming": {
+						"propertyKeys": [
+							"Has_page"
+						],
+						"propertyValues": [
+							"Page-with-template-was-redirected-now-restored#0#"
+						]
+					}
 				}
 			}
 		}
