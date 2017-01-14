@@ -1,8 +1,9 @@
 <?php
 
-namespace SMW;
+namespace SMW\Utils;
 
 use Onoi\BlobStore\BlobStore;
+use SMW\ApplicationFactory;
 use RuntimeException;
 
 /**
@@ -14,7 +15,7 @@ use RuntimeException;
  *
  * @author mwjames
  */
-class TransientStatsdCollector {
+class BufferedStatsdCollector {
 
 	/**
 	 * Update this version number when the serialization format

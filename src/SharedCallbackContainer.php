@@ -20,6 +20,7 @@ use MediaWiki\Logger\LoggerFactory;
 use Psr\Log\NullLogger;
 use SMW\SQLStore\ChangeOp\TempChangeOpStore;
 use SMW\Query\Result\CachedQueryResultPrefetcher;
+use SMW\Utils\BufferedStatsdCollector;
 
 /**
  * @license GNU GPL v2+
@@ -283,7 +284,7 @@ class SharedCallbackContainer implements CallbackContainer {
 					$settings->get( 'smwgQueryResultCacheLifetime' )
 				),
 				$callbackLoader->singleton(
-					'TransientStatsdCollector',
+					'BufferedStatsdCollector',
 					CachedQueryResultPrefetcher::STATSD_ID
 				)
 			);
@@ -318,17 +319,17 @@ class SharedCallbackContainer implements CallbackContainer {
 		} );
 
 		/**
-		 * @var TransientStatsdCollector
+		 * @var BufferedStatsdCollector
 		 */
-		$callbackLoader->registerCallback( 'TransientStatsdCollector', function( $id ) use ( $callbackLoader ) {
-			$callbackLoader->registerExpectedReturnType( 'TransientStatsdCollector', '\SMW\TransientStatsdCollector' );
+		$callbackLoader->registerCallback( 'BufferedStatsdCollector', function( $id ) use ( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'BufferedStatsdCollector', '\SMW\Utils\BufferedStatsdCollector' );
 
 			// Explicitly use the DB to access a SqlBagOstuff instance
 			$cacheType = CACHE_DB;
 			$ttl = 0;
 
-			$transientStatsdCollector = new TransientStatsdCollector(
-				$callbackLoader->create( 'BlobStore', TransientStatsdCollector::CACHE_NAMESPACE, $cacheType, $ttl ),
+			$transientStatsdCollector = new BufferedStatsdCollector(
+				$callbackLoader->create( 'BlobStore', BufferedStatsdCollector::CACHE_NAMESPACE, $cacheType, $ttl ),
 				$id
 			);
 

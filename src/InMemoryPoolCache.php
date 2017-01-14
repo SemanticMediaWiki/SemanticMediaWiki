@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMW\Utils\StatsFormatter;
+
 /**
  * A multipurpose non-persistent static pool cache to keep selected items for
  * the duration of a request cacheable.
