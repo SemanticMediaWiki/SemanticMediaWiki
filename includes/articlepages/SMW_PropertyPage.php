@@ -52,7 +52,31 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$title = $dv->getFormattedLabel( DataValueFormatter::WIKI_LONG );
 		$this->getContext()->getOutput()->setPageTitle( $title );
 
-		$list = $this->getSubpropertyList() . $this->getPropertyValueList();
+		$requestOptions = new RequestOptions();
+		$requestOptions->sort = true;
+		$requestOptions->ascending = true;
+
+		// +1 look ahead
+		$requestOptions->setLimit( $GLOBALS['smwgRedirectPropertyListLimit'] + 1 );
+
+		$list = $this->getPropertyList(
+			new DIProperty( '_REDI' ),
+			$requestOptions,
+			$GLOBALS['smwgRedirectPropertyListLimit'],
+			'smw-propertylist-redirect'
+		);
+
+		$requestOptions->setLimit( $GLOBALS['smwgSubPropertyListLimit'] + 1 );
+
+		$list .= $this->getPropertyList(
+			new DIProperty( '_SUBP' ),
+			$requestOptions,
+			$GLOBALS['smwgSubPropertyListLimit'],
+			'smw-propertylist-subproperty'
+		);
+
+		$list .= $this->getPropertyValueList();
+
 		$result = ( $list !== '' ? Html::element( 'div', array( 'id' => 'smwfootbr' ) ) . $list : '' );
 
 		return $result;
@@ -140,50 +164,49 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 *
 	 * @return string
 	 */
-	protected function getSubpropertyList() {
+	protected function getPropertyList( $property, $requestOptions, $listLimit, $header ) {
+
+		$propertyList =  $this->store->getPropertySubjects(
+			$property,
+			$this->getDataItem(),
+			$requestOptions
+		);
 
 		$more = false;
-		$requestOptions = new RequestOptions();
-		$requestOptions->sort = true;
-		$requestOptions->ascending = true;
 
-		// +1 look-ahead
-		$requestOptions->setLimit( $GLOBALS['smwgSubPropertyListLimit'] + 1 );
-		$subproperties = $this->store->getPropertySubjects( new DIProperty( '_SUBP' ), $this->getDataItem(), $requestOptions );
-
-		// Pop the +1 look-ahead from the list
-		if ( count( $subproperties ) > $GLOBALS['smwgSubPropertyListLimit'] ) {
-			array_pop( $subproperties );
+		// Pop the +1 look ahead from the list
+		if ( count( $propertyList ) > $listLimit ) {
+			array_pop( $propertyList );
 			$more = true;
 		}
 
 		$result = '';
-		$resultCount = count( $subproperties );
+		$resultCount = count( $propertyList );
 
 		if ( $more ) {
 			$message = Html::rawElement(
 				'span',
 				array( 'class' => 'plainlinks' ),
-				wfMessage( 'smw-subpropertylist-count-with-restricted-note', $resultCount, $GLOBALS['smwgSubPropertyListLimit'] )->parse()
+				wfMessage( 'smw-propertylist-count-with-restricted-note', $resultCount, $listLimit )->parse()
 			);
 		} else {
-			$message = wfMessage( 'smw-subpropertylist-count', $resultCount )->text();
+			$message = wfMessage( 'smw-propertylist-count', $resultCount )->text();
 		}
 
 		if ( $resultCount > 0 ) {
 			$titleText = htmlspecialchars( $this->mTitle->getText() );
-			$result .= "<div id=\"mw-subcategories\">\n<h2>" . wfMessage( 'smw_subproperty_header', $titleText )->text() . "</h2>\n<p>";
+			$result .= "<div id=\"{$header}\">" . Html::rawElement( 'h2' , array(), wfMessage( $header . '-header', $titleText )->text() ) . "\n<p>";
 
 			if ( !$this->mProperty->isUserDefined() ) {
 				$result .= wfMessage( 'smw_isspecprop' )->text() . ' ';
 			}
 
-			$result .= $message . "</p>"  ."\n";
+			$result .= $message . "</p>";
 
 			if ( $resultCount < 6 ) {
-				$result .= SMWPageLister::getShortList( 0, $resultCount, $subproperties, null );
+				$result .= SMWPageLister::getShortList( 0, $resultCount, $propertyList, null );
 			} else {
-				$result .= SMWPageLister::getColumnList( 0, $resultCount, $subproperties, null );
+				$result .= SMWPageLister::getColumnList( 0, $resultCount, $propertyList, null );
 			}
 
 			$result .= "\n</div>";

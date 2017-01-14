@@ -40,6 +40,15 @@ return array(
 	##
 
 	###
+	# CompatibilityMode is to force SMW to work with other extensions that may impact
+	# performance in an unanticipated way or may contain potential incompatibilities.
+	#
+	# @since 2.4
+	##
+	'smwgEnabledCompatibilityMode' => false,
+	##
+
+	###
 	# Use another storage backend for Semantic MediaWiki. The default is suitable
 	# for most uses of SMW.
 	##
@@ -153,6 +162,8 @@ return array(
 	# into your LocalSettings.php *before* including this file. The number ??? must
 	# be the smallest even namespace number that is not in use yet. However, it
 	# must not be smaller than 100.
+	##
+	# 'smwgNamespaceIndex' => 100,
 	##
 
 	###
@@ -277,6 +288,8 @@ return array(
 
 	###
 	# Whether the browse display is to be generated using an API request or not.
+	#
+	# @since 2.5
 	##
 	'smwgBrowseByApi' => true,
 	##
@@ -303,14 +316,35 @@ return array(
 	##
 
 	###
-	# How many values should at most be displayed for a page on the Property page?
+	# Property page to limit the query request for individual values
+	#
+	# How many values should at most be displayed for a page on the  Property
+	# page and if large values are desired, consider reducing
+	# $smwgPropertyPagingLimit for better performance.
+	#
+	# @since 1.3
 	##
-	'smwgMaxPropertyValues' => 3, // if large values are desired, consider reducing $smwgPropertyPagingLimit for better performance
-	'smwgSubPropertyListLimit' => 25, // property page to limit the query request on subproperties
+	'smwgMaxPropertyValues' => 3,
 	##
 
 	###
-	# Settings for inline queries ({{	#ask:...}}) and for semantic queries in
+	# Property page to limit the query request on subproperties
+	#
+	# @since 2.5
+	##
+	'smwgSubPropertyListLimit' => 25,
+	##
+
+	###
+	# Property page to limit the query request on redirects
+	#
+	# @since 2.5
+	##
+	'smwgRedirectPropertyListLimit' => 25,
+	##
+
+	###
+	# Settings for inline queries ({{#ask:...}}) and for semantic queries in
 	# general. This can especially be used to prevent overly high server-load due
 	# to complex queries. The following settings affect all queries, wherever they
 	# occur.

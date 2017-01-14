@@ -277,19 +277,17 @@ class SMWPageLister {
 	 * @return string
 	 */
 	public static function getShortList( $start, $end, array $diWikiPages, $diProperty ) {
-		global $wgContLang;
 
 		$startDv = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$start], $diProperty );
-		$sortkey = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $diWikiPages[$start] );
-		$startChar = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
+		$startChar = self::getFirstChar( $diWikiPages[$start] );
+
 		$r = '<h3>' . htmlspecialchars( $startChar ) . "</h3>\n" .
 		     '<ul><li>' . $startDv->getLongHTMLText( smwfGetLinker() ) . '</li>';
 
 		$prevStartChar = $startChar;
 		for ( $index = $start + 1; $index < $end; $index++ ) {
 			$dataValue = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$index], $diProperty );
-			$sortkey = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $diWikiPages[$index] );
-			$startChar = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
+			$startChar = self::getFirstChar( $diWikiPages[$index] );
 
 			if ( $startChar != $prevStartChar ) {
 				$r .= "</ul><h3>" . htmlspecialchars( $startChar ) . "</h3>\n<ul>";
@@ -302,6 +300,18 @@ class SMWPageLister {
 		$r .= '</ul>';
 
 		return $r;
+	}
+
+	private static function getFirstChar( $dataItem ) {
+		global $wgContLang;
+
+		$sortkey = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $dataItem );
+
+		if ( $sortkey === '' ) {
+			$sortkey = $dataItem->getDBKey();
+		}
+
+		return $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
 	}
 
 }
