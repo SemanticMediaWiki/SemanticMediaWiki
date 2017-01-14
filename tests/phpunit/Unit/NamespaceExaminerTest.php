@@ -48,11 +48,11 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testNoNumberExceptionThrowsException() {
+	public function testNoNumberNamespaceThrowsException() {
 
 		$instance = new NamespaceExaminer( array( NS_MAIN => true ) );
 
-		$this->setExpectedException( '\SMW\InvalidNamespaceException' );
+		$this->setExpectedException( 'InvalidArgumentException' );
 		$instance->isSemanticEnabled( 'ichi' );
 	}
 

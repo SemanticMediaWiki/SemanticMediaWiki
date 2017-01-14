@@ -13,7 +13,7 @@ class_alias( 'SMW\DIWikiPage', 'SMWDIWikiPage' );
 class_alias( 'SMW\DIProperty', 'SMWDIProperty' );
 class_alias( 'SMW\Serializers\QueryResultSerializer', 'SMWDISerializer' );
 class_alias( 'SMW\DataValueFactory', 'SMWDataValueFactory' );
-class_alias( 'SMW\DataItemException', 'SMWDataItemException' );
+class_alias( 'SMW\Exception\DataItemException', 'SMWDataItemException' );
 class_alias( 'SMW\SQLStore\PropertyTableDefinition', 'SMWSQLStore3Table' );
 class_alias( 'SMW\DIConcept', 'SMWDIConcept' );
 class_alias( 'SMW\TableResultPrinter', 'SMWTableResultPrinter' );

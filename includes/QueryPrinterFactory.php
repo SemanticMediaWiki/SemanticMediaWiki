@@ -2,16 +2,15 @@
 
 namespace SMW;
 
-use MWException;
+use SMW\Query\Exception\ResultFormatNotFoundException;
+use InvalidArgumentException;
 
 /**
  * Factory for "result formats", ie classes implementing QueryResultPrinter.
  *
+ * @license GNU GPL v2+
  * @since 2.5 (since 1.9, renamed in 2.5)
  *
- * @ingroup SMW
- *
- * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 final class QueryPrinterFactory {
@@ -71,15 +70,16 @@ final class QueryPrinterFactory {
 	 * @param string $formatName
 	 * @param string $class
 	 *
-	 * @throws MWException
+	 * @throws InvalidArgumentException
 	 */
 	public function registerFormat( $formatName, $class ) {
+
 		if ( !is_string( $formatName ) ) {
-			throw new MWException( 'Format names can only be of type string' );
+			throw new InvalidArgumentException( 'Format names can only be of type string' );
 		}
 
 		if ( !is_string( $class ) ) {
-			throw new MWException( 'Format class names can only be of type string' );
+			throw new InvalidArgumentException( 'Format class names can only be of type string' );
 		}
 
 		$this->formats[$formatName] = $class;
@@ -95,16 +95,17 @@ final class QueryPrinterFactory {
 	 * @param string $formatName
 	 * @param array $aliases
 	 *
-	 * @throws MWException
+	 * @throws InvalidArgumentException
 	 */
 	public function registerAliases( $formatName, array $aliases ) {
+
 		if ( !is_string( $formatName ) ) {
-			throw new MWException( 'Format names can only be of type string' );
+			throw new InvalidArgumentException( 'Format names can only be of type string' );
 		}
 
 		foreach ( $aliases as $alias ) {
 			if ( !is_string( $alias ) ) {
-				throw new MWException( 'Format aliases can only be of type string' );
+				throw new InvalidArgumentException( 'Format aliases can only be of type string' );
 			}
 
 			$this->aliases[$alias] = $formatName;
@@ -144,7 +145,7 @@ final class QueryPrinterFactory {
 	 * @param string $formatName
 	 *
 	 * @return QueryResultPrinter
-	 * @throws MWException
+	 * @throws ResultFormatNotFoundException
 	 */
 	public function getPrinter( $formatName ) {
 		$class = $this->getPrinterClass( $formatName );
@@ -157,13 +158,13 @@ final class QueryPrinterFactory {
 	 * @param string $formatName Format name or alias
 	 *
 	 * @return string
-	 * @throws MWException
+	 * @throws ResultFormatNotFoundException
 	 */
 	private function getPrinterClass( $formatName ) {
 		$formatName = $this->getCanonicalName( $formatName );
 
 		if ( !array_key_exists( $formatName, $this->formats ) ) {
-			throw new MWException( 'Unknown format name "' . $formatName . '" has no associated printer class' );
+			throw new ResultFormatNotFoundException( 'Unknown format name "' . $formatName . '" has no associated printer class' );
 		}
 
 		return $this->formats[$formatName];
@@ -177,11 +178,12 @@ final class QueryPrinterFactory {
 	 * @param string $formatName Format name or alias
 	 *
 	 * @return string
-	 * @throws MWException
+	 * @throws InvalidArgumentException
 	 */
 	public function getCanonicalName( $formatName ) {
+
 		if ( !is_string( $formatName ) ) {
-			throw new MWException( 'Format names can only be of type string' );
+			throw new InvalidArgumentException( 'Format names can only be of type string' );
 		}
 
 		if ( array_key_exists( $formatName, $this->aliases ) ) {

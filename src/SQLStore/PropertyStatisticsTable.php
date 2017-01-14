@@ -5,16 +5,15 @@ namespace SMW\SQLStore;
 use MWException;
 use SMW\MediaWiki\Database;
 use SMW\Store\PropertyStatisticsStore;
+use SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException;
 
 /**
  * Simple implementation of PropertyStatisticsTable using MediaWikis
  * database abstraction layer and a single table.
  *
+ * @license GNU GPL v2+
  * @since 1.9
  *
- * @ingroup SMWStore
- *
- * @license GNU GPL v2 or later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author Nischay Nahata
  */
@@ -65,15 +64,16 @@ class PropertyStatisticsTable implements PropertyStatisticsStore {
 	 * @param integer $value
 	 *
 	 * @return boolean Success indicator
-	 * @throws MWException
+	 * @throws PropertyStatisticsInvalidArgumentException
 	 */
 	public function addToUsageCount( $propertyId, $value ) {
+
 		if ( !is_int( $value ) ) {
-			throw new MWException( 'The value to add must be an integer' );
+			throw new PropertyStatisticsInvalidArgumentException( 'The value to add must be an integer' );
 		}
 
 		if ( !is_int( $propertyId ) || $propertyId <= 0 ) {
-			throw new MWException( 'The property id to add must be a positive integer' );
+			throw new PropertyStatisticsInvalidArgumentException( 'The property id to add must be a positive integer' );
 		}
 
 		if ( $value == 0 ) {
@@ -121,15 +121,16 @@ class PropertyStatisticsTable implements PropertyStatisticsStore {
 	 * @param integer $value
 	 *
 	 * @return boolean Success indicator
-	 * @throws MWException
+	 * @throws PropertyStatisticsInvalidArgumentException
 	 */
 	public function setUsageCount( $propertyId, $value ) {
+
 		if ( !is_int( $value ) || $value < 0 ) {
-			throw new MWException( 'The value to add must be a positive integer' );
+			throw new PropertyStatisticsInvalidArgumentException( 'The value to add must be a positive integer' );
 		}
 
 		if ( !is_int( $propertyId ) || $propertyId <= 0 ) {
-			throw new MWException( 'The property id to add must be a positive integer' );
+			throw new PropertyStatisticsInvalidArgumentException( 'The property id to add must be a positive integer' );
 		}
 
 		return $this->dbConnection->update(
@@ -153,15 +154,16 @@ class PropertyStatisticsTable implements PropertyStatisticsStore {
 	 * @param integer $value
 	 *
 	 * @return boolean Success indicator
-	 * @throws MWException
+	 * @throws PropertyStatisticsInvalidArgumentException
 	 */
 	public function insertUsageCount( $propertyId, $value ) {
+
 		if ( !is_int( $value ) || $value < 0 ) {
-			throw new MWException( 'The value to add must be a positive integer' );
+			throw new PropertyStatisticsInvalidArgumentException( 'The value to add must be a positive integer' );
 		}
 
 		if ( !is_int( $propertyId ) || $propertyId <= 0 ) {
-			throw new MWException( 'The property id to add must be a positive integer' );
+			throw new PropertyStatisticsInvalidArgumentException( 'The property id to add must be a positive integer' );
 		}
 
 		return $this->dbConnection->insert(

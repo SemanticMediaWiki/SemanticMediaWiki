@@ -97,6 +97,36 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 		);
 	}
 
+	public function testAddToUsageCountWithInvalidCountThrowsException() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new PropertyStatisticsTable(
+			$connection,
+			'foo'
+		);
+
+		$this->setExpectedException( '\SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException');
+		$instance->addToUsageCount( 12, 'foo' );
+	}
+
+	public function testAddToUsageCountWithInvalidIdThrowsException() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new PropertyStatisticsTable(
+			$connection,
+			'foo'
+		);
+
+		$this->setExpectedException( '\SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException');
+		$instance->addToUsageCount( 'Foo', 12 );
+	}
+
 	/**
 	 * @dataProvider usageCountProvider
 	 *

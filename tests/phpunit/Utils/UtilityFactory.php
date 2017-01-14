@@ -214,4 +214,16 @@ class UtilityFactory {
 		return $localFileUpload;
 	}
 
+	/**
+	 * @since 2.5
+	 *
+	 * @param $length
+	 * @param $prefix identify a specific random string during testing
+	 *
+	 * @return string
+	 */
+	public function createRandomString( $length = 10, $prefix = null ) {
+		return $prefix . ( $prefix ? '-' : '' ) . substr( str_shuffle( "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" ), 0, $length );
+	}
+
 }

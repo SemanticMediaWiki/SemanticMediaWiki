@@ -38,7 +38,7 @@ class SemanticDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SemanticDataDeserializer();
 
-		$this->setExpectedException( '\SMW\DataItemException' );
+		$this->setExpectedException( '\SMW\Exception\DataItemDeserializationException' );
 
 		$instance->deserialize(
 			array( 'subject' => '--#Foo' )
@@ -49,7 +49,7 @@ class SemanticDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SemanticDataDeserializer();
 
-		$this->setExpectedException( 'OutOfBoundsException' );
+		$this->setExpectedException( 'RuntimeException' );
 		$instance->deserialize( array() );
 	}
 

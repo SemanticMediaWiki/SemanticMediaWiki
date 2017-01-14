@@ -949,11 +949,12 @@ class SMWSql3SmwIds {
 	 * @param string $sortkey
 	 */
 	public function setCache( $title, $namespace, $interwiki, $subobject, $id, $sortkey ) {
+
 		if ( strpos( $title, ' ' ) !== false ) {
-			throw new MWException("Somebody tried to use spaces in a cache title! ($title)");
+			throw new RuntimeException( "Somebody tried to use spaces in a cache title! ($title)");
 		}
 
-		$hashKey = HashBuilder::createHashIdFromSegments( $title, $namespace, $interwiki, $subobject );
+		$hashKey = HashBuilder::createFromSegments( $title, $namespace, $interwiki, $subobject );
 
 		if ( $namespace == SMW_NS_PROPERTY && $interwiki === '' && $subobject === '' ) {
 			$this->checkPropertySizeLimit();
@@ -1015,7 +1016,7 @@ class SMWSql3SmwIds {
 				return false;
 			}
 		} else {
-			$hashKey = HashBuilder::createHashIdFromSegments( $title, $namespace, $interwiki, $subobject );
+			$hashKey = HashBuilder::createFromSegments( $title, $namespace, $interwiki, $subobject );
 			if ( array_key_exists( $hashKey, $this->regular_ids ) ) {
 				$this->reghit_debug++;
 				return (int)$this->regular_ids[$hashKey];
@@ -1044,7 +1045,7 @@ class SMWSql3SmwIds {
 				return false;
 			}
 		} else {
-			$hashKey = HashBuilder::createHashIdFromSegments( $title, $namespace, $interwiki, $subobject );
+			$hashKey = HashBuilder::createFromSegments( $title, $namespace, $interwiki, $subobject );
 			if ( array_key_exists( $hashKey, $this->regular_sortkeys ) ) {
 				return $this->regular_sortkeys[$hashKey];
 			} else {
@@ -1066,7 +1067,7 @@ class SMWSql3SmwIds {
 	 */
 	public function deleteCache( $title, $namespace, $interwiki, $subobject ) {
 
-		$hashKey = HashBuilder::createHashIdFromSegments( $title, $namespace, $interwiki, $subobject );
+		$hashKey = HashBuilder::createFromSegments( $title, $namespace, $interwiki, $subobject );
 
 		if ( $namespace == SMW_NS_PROPERTY && $interwiki === '' && $subobject === '' ) {
 			$id =  isset( $this->prop_ids[$title] ) ?  $this->prop_ids[$title] : 0;

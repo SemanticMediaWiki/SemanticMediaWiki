@@ -3,7 +3,7 @@
  * @ingroup SMWDataItems
  */
 
-use SMW\DataItemException;
+use SMW\Exception\DataItemException;
 
 /**
  * This class implements number data items.

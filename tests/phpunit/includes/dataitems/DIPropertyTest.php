@@ -64,7 +64,7 @@ class DIPropertyTest extends DataItemTest {
 
 		$property = new DIProperty( 'SomeUnknownTypeIdProperty' );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->setExpectedException( '\SMW\Exception\PropertyDataTypeLookupExeption' );
 		$property->setPropertyTypeId( '_unknownTypeId' );
 	}
 
@@ -72,7 +72,7 @@ class DIPropertyTest extends DataItemTest {
 
 		$property = new DIProperty( '_MDAT' );
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->setExpectedException( 'RuntimeException' );
 		$property->setPropertyTypeId( '_txt' );
 	}
 

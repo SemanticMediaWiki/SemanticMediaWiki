@@ -1,6 +1,6 @@
 <?php
 
-use SMW\DataItemException;
+use SMW\Exception\DataItemException;
 use SMW\Libs\Time\JulianDay;
 use SMW\Libs\Time\CalendarModel;
 

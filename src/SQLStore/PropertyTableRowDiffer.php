@@ -4,7 +4,7 @@ namespace SMW\SQLStore;
 
 use InvalidArgumentException;
 use RuntimeException;
-use SMW\DataItemException;
+use SMW\Exception\DataItemException;
 use SMW\DIProperty;
 use SMW\SemanticData;
 use SMW\Store;

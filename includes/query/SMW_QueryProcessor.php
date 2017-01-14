@@ -9,6 +9,7 @@ use SMW\Query\PrintRequestFactory;
 use SMW\ApplicationFactory;
 use SMW\Message;
 use SMW\Query\QueryContext;
+use SMW\Query\ResultFormatNotFoundException;
 
 /**
  * This file contains a static class for accessing functions to generate and execute
@@ -454,13 +455,13 @@ class SMWQueryProcessor implements QueryContext {
 	 * @param $context
 	 *
 	 * @return SMWResultPrinter
-	 * @throws MWException if no printer is known for the given format
+	 * @throws MissingResultFormatException
 	 */
 	static public function getResultPrinter( $format, $context = self::SPECIAL_PAGE ) {
 		global $smwgResultFormats;
 
 		if ( !array_key_exists( $format, $smwgResultFormats ) ) {
-			throw new MWException( "There is no result format for '$format'." );
+			throw new ResultFormatNotFoundException( "There is no result format for '$format'." );
 		}
 
 		$formatClass = $smwgResultFormats[$format];

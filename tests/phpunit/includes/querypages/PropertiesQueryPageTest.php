@@ -76,14 +76,14 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testInvalidResultException() {
+	public function testInvalidResultThrowsException() {
 
 		$instance = new PropertiesQueryPage(
 			$this->store,
 			$this->settings
 		);
 
-		$this->setExpectedException( '\SMW\InvalidResultException' );
+		$this->setExpectedException( '\SMW\Exception\PropertyNotFoundExeption' );
 		$instance->formatResult( $this->skin, null );
 	}
 

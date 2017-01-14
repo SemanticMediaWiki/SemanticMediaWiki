@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMW\Exception\SettingNotFoundException;
+
 /**
  * Encapsulate Semantic MediaWiki settings to access values through a
  * specified interface
@@ -227,7 +229,7 @@ class Settings extends Options {
 	 * @param string $key
 	 *
 	 * @return mixed
-	 * @throws InvalidSettingsArgumentException
+	 * @throws SettingNotFoundException
 	 */
 	public function get( $key ) {
 
@@ -240,7 +242,7 @@ class Settings extends Options {
 				return $value;
 			}
 
-			throw new InvalidSettingsArgumentException( "'{$key}' is not a valid settings key" );
+			throw new SettingNotFoundException( "'{$key}' is not a valid settings key" );
 		}
 
 		return parent::get( $key );

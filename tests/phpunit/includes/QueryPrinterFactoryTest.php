@@ -9,12 +9,11 @@ use SMWListResultPrinter;
 
 /**
  * @covers \SMW\QueryPrinterFactory
- *
- * @group SMW
- * @group SMWExtension
- * @group SMWQueries
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
+ * @since 1.9
+ *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
@@ -133,40 +132,31 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
-	/**
-	 * @test FormatFactory::getPrinter
-	 */
-	public function testGetPrinterException() {
-		$this->setExpectedException( 'MWException' );
+	public function testGetPrinterThrowsException() {
 
 		$factory = new QueryPrinterFactory();
+
+		$this->setExpectedException( '\SMW\Query\Exception\ResultFormatNotFoundException' );
 		$factory->getPrinter( 'lula' );
-
-		$this->assertTrue( true );
 	}
 
-	/**
-	 * @test FormatFactory::getCanonicalName
-	 */
-	public function testGetCanonicalNameException() {
-		$this->setExpectedException( 'MWException' );
+	public function testGetCanonicalNameThrowsException() {
 
 		$factory = new QueryPrinterFactory();
-		$factory->getCanonicalName( 9001 );
 
-		$this->assertTrue( true );
+		$this->setExpectedException( 'InvalidArgumentException' );
+		$factory->getCanonicalName( 9001 );
 	}
 
 	/**
-	 * @test FormatFactory::registerFormat
 	 * @dataProvider registerFormatExceptioProvider
 	 */
-	public function testRegisterFormatException( $formatName, $class ) {
-		$this->setExpectedException( 'MWException' );
+	public function testRegisterFormatThrowsException( $formatName, $class ) {
 
 		$factory = new QueryPrinterFactory();
+
+		$this->setExpectedException( 'InvalidArgumentException' );
 		$factory->registerFormat( $formatName, $class );
-		$this->assertTrue( true );
 	}
 
 	/**
@@ -182,15 +172,14 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @test FormatFactory::registerAliases
 	 * @dataProvider registerAliasesExceptionProvider
 	 */
-	public function testRegisterAliasesException( $formatName, array $aliases ) {
-		$this->setExpectedException( 'MWException' );
+	public function testRegisterAliasesThrowsException( $formatName, array $aliases ) {
 
 		$factory = new QueryPrinterFactory();
+
+		$this->setExpectedException( 'InvalidArgumentException' );
 		$factory->registerAliases( $formatName, $aliases );
-		$this->assertTrue( true );
 	}
 
 	/**
