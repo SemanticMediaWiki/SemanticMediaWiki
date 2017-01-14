@@ -400,7 +400,7 @@ class DataRebuilder {
 		foreach ( $outdatedEntitiesResultIterator as $row ) {
 			$counter++;
 			$this->doPrintDotProgressIndicator( false, $counter, round( $counter / $matchesCount * 100 ) . ' %' );
-			$entityIdDisposerJob->executeWith( $row );
+			$entityIdDisposerJob->dispose( $row );
 		}
 
 		$this->reportMessage( "\n\n{$matchesCount} IDs removed.\n\n" );
