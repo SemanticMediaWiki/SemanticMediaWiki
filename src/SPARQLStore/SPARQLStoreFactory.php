@@ -3,7 +3,7 @@
 namespace SMW\SPARQLStore;
 
 use SMW\ApplicationFactory;
-use SMW\CircularReferenceGuard;
+use SMW\Utils\CircularReferenceGuard;
 use SMW\ConnectionManager;
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;

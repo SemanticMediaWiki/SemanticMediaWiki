@@ -4,7 +4,7 @@ namespace SMW\ParserFunctions;
 
 use SMW\ParserData;
 use SMW\MessageFormatter;
-use SMW\CircularReferenceGuard;
+use SMW\Utils\CircularReferenceGuard;
 
 /**
  * Class that provides the {{#show}} parser function

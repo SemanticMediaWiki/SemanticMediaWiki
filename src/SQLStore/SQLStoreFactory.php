@@ -3,7 +3,7 @@
 namespace SMW\SQLStore;
 
 use SMW\ApplicationFactory;
-use SMW\CircularReferenceGuard;
+use SMW\Utils\CircularReferenceGuard;
 use SMW\SQLStore\Lookup\CachedListLookup;
 use SMW\SQLStore\Lookup\ListLookup;
 use SMW\SQLStore\Lookup\PropertyUsageListLookup;

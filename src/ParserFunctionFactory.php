@@ -10,6 +10,7 @@ use SMW\ParserFunctions\ShowParserFunction;
 use SMW\ParserFunctions\SetParserFunction;
 use SMW\ParserFunctions\ConceptParserFunction;
 use SMW\ParserFunctions\DeclareParserFunction;
+use SMW\Utils\CircularReferenceGuard;
 use Parser;
 
 /**

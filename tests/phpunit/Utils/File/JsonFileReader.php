@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW;
+namespace SMW\Tests\Utils\File;
 
 use RuntimeException;
 
@@ -10,7 +10,7 @@ use RuntimeException;
  *
  * @author mwjames
  */
-class JsonFileReader implements FileReader {
+class JsonFileReader {
 
 	/**
 	 * @var string|null
@@ -49,7 +49,7 @@ class JsonFileReader implements FileReader {
 	 */
 	public function read() {
 
-		if ( $this->contents === null && $this->canRead() ) {
+		if ( $this->contents === null && $this->isReadable() ) {
 			$this->contents = $this->decodeJsonFileContentsToArray( $this->file );
 		}
 
@@ -65,7 +65,7 @@ class JsonFileReader implements FileReader {
 	 *
 	 * @return boolean
 	 */
-	public function canRead() {
+	public function isReadable() {
 		return is_file( $this->file ) && is_readable( $this->file );
 	}
 
@@ -77,7 +77,7 @@ class JsonFileReader implements FileReader {
 	 */
 	public function getModificationTime() {
 
-		if ( $this->canRead() ) {
+		if ( $this->isReadable() ) {
 			return filemtime( $this->file );
 		}
 

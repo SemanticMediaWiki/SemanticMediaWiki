@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore\Lookup;
 
-use SMW\CircularReferenceGuard;
+use SMW\Utils\CircularReferenceGuard;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Store;
