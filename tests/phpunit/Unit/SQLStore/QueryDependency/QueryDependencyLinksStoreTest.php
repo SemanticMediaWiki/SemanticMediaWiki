@@ -193,6 +193,44 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testBuildParserCachePurgeJobParametersOnEmptyList() {
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dependencyLinksTableUpdater->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $store ) );
+
+		$entityIdListRelevanceDetectionFilter = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\EntityIdListRelevanceDetectionFilter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$entityIdListRelevanceDetectionFilter->expects( $this->once() )
+			->method( 'getFilteredIdList' )
+			->will( $this->returnValue( array() ) );
+
+		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new QueryDependencyLinksStore(
+			$queryResultDependencyListResolver,
+			$dependencyLinksTableUpdater
+		);
+
+		$instance->setEnabled( true );
+
+		$this->assertEmpty(
+			$instance->buildParserCachePurgeJobParametersFrom( $entityIdListRelevanceDetectionFilter )
+		);
+	}
+
 	public function testFindPartialEmbeddedQueryTargetLinksHashListFor() {
 
 		$row = new \stdClass;
@@ -466,15 +504,10 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$instance->doUpdateDependenciesBy( $queryResultDependencyListResolver );
 	}
 
-	public function testTryDoUpdateDependenciesByWithinSkewedTime() {
-
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$title->expects( $this->once() )
-			->method( 'getTouched' )
-			->will( $this->returnValue( wfTimestamp( TS_MW ) + 60 ) );
+	/**
+	 * @dataProvider titleProvider
+	 */
+	public function testTryDoUpdateDependenciesByWithinSkewedTime( $title ) {
 
 		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
@@ -540,6 +573,27 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->doUpdateDependenciesBy( $queryResultDependencyListResolver );
+	}
+
+	public function titleProvider() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'getTouched' )
+			->will( $this->returnValue( wfTimestamp( TS_MW ) + 60 ) );
+
+		$provider[] = array(
+			$title
+		);
+
+		$provider[] = array(
+			null
+		);
+
+		return $provider;
 	}
 
 }

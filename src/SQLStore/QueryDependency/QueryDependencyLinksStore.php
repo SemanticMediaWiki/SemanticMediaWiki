@@ -46,7 +46,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @var integer
 	 */
-	private $skewFactorForDepedencyUpdateInSeconds = 10;
+	private $skewFactorForDependencyUpdateInSeconds = 10;
 
 	/**
 	 * @since 2.3
@@ -329,8 +329,10 @@ class QueryDependencyLinksStore {
 			__METHOD__
 		);
 
-		if ( !isset( $suppressUpdateCache[$hash] ) ) {
-			$suppressUpdateCache[$hash] = $subject->getTitle()->getTouched() + $this->skewFactorForDepedencyUpdateInSeconds;
+		$title = $subject->getTitle();
+
+		if ( !isset( $suppressUpdateCache[$hash] ) && $title !== null ) {
+			$suppressUpdateCache[$hash] = $title->getTouched() + $this->skewFactorForDependencyUpdateInSeconds;
 		}
 
 		// Check whether the query has already been registered and only then
