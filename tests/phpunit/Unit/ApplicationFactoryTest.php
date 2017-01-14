@@ -65,11 +65,11 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructQuerySource() {
+	public function testCanConstructQuerySourceFactory() {
 
 		$this->assertInstanceOf(
-			'\SMW\QueryEngine',
-			$this->applicationFactory->getQuerySource()
+			'\SMW\Query\QuerySourceFactory',
+			$this->applicationFactory->getQuerySourceFactory()
 		);
 	}
 

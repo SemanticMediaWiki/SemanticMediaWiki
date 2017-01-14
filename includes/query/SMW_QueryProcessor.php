@@ -440,7 +440,7 @@ class SMWQueryProcessor implements QueryContext {
 	}
 
 	private static function getStoreFromParams( array $params ) {
-		return ApplicationFactory::getInstance()->getQuerySource( $params['source']->getValue() );
+		return ApplicationFactory::getInstance()->getQuerySourceFactory()->get( $params['source']->getValue() );
 	}
 
 	/**

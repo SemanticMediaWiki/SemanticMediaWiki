@@ -213,7 +213,8 @@ class SharedCallbackContainer implements CallbackContainer {
 
 			return new QuerySourceFactory(
 				$callbackLoader->load( 'Store' ),
-				$callbackLoader->load( 'Settings' )->get( 'smwgQuerySources' )
+				$callbackLoader->load( 'Settings' )->get( 'smwgQuerySources' ),
+				$callbackLoader->load( 'Settings' )->get( 'smwgSparqlQueryEndpoint' )
 			);
 		} );
 

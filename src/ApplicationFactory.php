@@ -181,10 +181,10 @@ class ApplicationFactory {
 	 *
 	 * @param string|null $source
 	 *
-	 * @return QueryEngine
+	 * @return QuerySourceFactory
 	 */
-	public function getQuerySource( $source = null ) {
-		return $this->callbackLoader->singleton( 'QuerySourceFactory' )->getWithLocalFallback( $source );
+	public function getQuerySourceFactory( $source = null ) {
+		return $this->callbackLoader->singleton( 'QuerySourceFactory' );
 	}
 
 	/**
