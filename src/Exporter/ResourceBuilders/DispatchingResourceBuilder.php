@@ -100,6 +100,8 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 
 	private function initResourceBuilders() {
 
+		$this->addResourceBuilder( new UniquenessConstraintPropertyValueResourceBuilder() );
+
 		$this->addResourceBuilder( new PropertyDescriptionValueResourceBuilder() );
 		$this->addResourceBuilder( new PreferredPropertyLabelResourceBuilder() );
 

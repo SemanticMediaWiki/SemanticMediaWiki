@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Exporter\ResourceBuilders;
 
-use SMW\Exporter\ResourceBuilders\PreferredPropertyLabelResourceBuilder;
+use SMW\Exporter\ResourceBuilders\UniquenessConstraintPropertyValueResourceBuilder;
 use SMW\DataItemFactory;
 use SMW\DataValueFactory;
 use SMW\Tests\TestEnvironment;
@@ -10,7 +10,7 @@ use SMWExpData as ExpData;
 use SMW\Exporter\Element\ExpNsResource;
 
 /**
- * @covers \SMW\Exporter\ResourceBuilders\PreferredPropertyLabelResourceBuilder
+ * @covers \SMW\Exporter\ResourceBuilders\UniquenessConstraintPropertyValueResourceBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -18,7 +18,7 @@ use SMW\Exporter\Element\ExpNsResource;
  *
  * @author mwjames
  */
-class PreferredPropertyLabelResourceBuilderTest extends \PHPUnit_Framework_TestCase {
+class UniquenessConstraintPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $dataItemFactory;
 	private $dataValueFactory;
@@ -41,16 +41,16 @@ class PreferredPropertyLabelResourceBuilderTest extends \PHPUnit_Framework_TestC
 	public function testCanConstruct() {
 
 		$this->assertInstanceof(
-			PreferredPropertyLabelResourceBuilder::class,
-			new PreferredPropertyLabelResourceBuilder()
+			UniquenessConstraintPropertyValueResourceBuilder::class,
+			new UniquenessConstraintPropertyValueResourceBuilder()
 		);
 	}
 
-	public function testIsNotResourceBuilderForNonPreferredPropertyLabelProperty() {
+	public function testIsNotResourceBuilderForNonUniquenessConstraintProperty() {
 
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
-		$instance = new PreferredPropertyLabelResourceBuilder();
+		$instance = new UniquenessConstraintPropertyValueResourceBuilder();
 
 		$this->assertFalse(
 			$instance->isResourceBuilderFor( $property )
@@ -59,23 +59,18 @@ class PreferredPropertyLabelResourceBuilderTest extends \PHPUnit_Framework_TestC
 
 	public function testAddResourceValueForValidProperty() {
 
-		$property = $this->dataItemFactory->newDIProperty( '_PPLB' );
-
-		$monolingualTextValue = $this->dataValueFactory->newDataValueByProperty(
-			$property,
-			'Bar@en'
-		);
+		$property = $this->dataItemFactory->newDIProperty( '_PVUC' );
 
 		$expData = new ExpData(
 			new ExpNsResource( 'Foobar', 'Bar', 'Mo', null )
 		);
 
-		$instance = new PreferredPropertyLabelResourceBuilder();
+		$instance = new UniquenessConstraintPropertyValueResourceBuilder();
 
 		$instance->addResourceValue(
 			$expData,
 			$property,
-			$monolingualTextValue->getDataItem()
+			$this->dataItemFactory->newDIBoolean( true )
 		);
 
 		$this->assertTrue(
