@@ -36,7 +36,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"RegexTextAnnotationForCharactersThatRequireSpecialEscapePattern#0##"
 				],
@@ -51,7 +51,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"RegexTextAnnotationForCharactersThatRequireSpecialEscapePattern#0##"
 				],
@@ -66,7 +66,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"RegexTextAnnotationForCharactersThatRequireSpecialEscapePattern#0##",
 					"RequiresSuperSpecialEscapePattern#0##",
@@ -83,7 +83,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"RegexTextAnnotationForCharactersThatRequireSpecialEscapePattern#0##",
 					"RegexParserAnnotationForCharactersThatRequireSpecialEscapePattern#0##",
@@ -101,7 +101,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"RegexTextAnnotationForCharactersThatRequireSpecialEscapePattern#0##",
 					"RequiresSuperSpecialEscapePattern#0##",
@@ -118,7 +118,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"RegexTextAnnotationForCharactersThatRequireSpecialEscapePattern#0##",
 					"RegexParserAnnotationForCharactersThatRequireSpecialEscapePattern#0##",
@@ -136,7 +136,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"RegexParserAnnotationForCharactersThatRequireSpecialEscapePattern#0##"
 				],
@@ -151,7 +151,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"RegexParserAnnotationForCharactersThatRequireSpecialEscapePattern#0##"
 				],
@@ -166,7 +166,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"RegexTextAnnotationForCharactersThatRequireSpecialEscapePattern#0##"
 				],
@@ -181,7 +181,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"RegexParserAnnotationForCharactersThatRequireSpecialEscapePattern#0##_4726701f0e7d838d922ac6b9414558dc"
 				],
@@ -196,7 +196,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"RegexParserAnnotationForCharactersThatRequireSpecialEscapePattern#0##"
 				],
@@ -211,7 +211,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"RegexTextAnnotationForCharactersThatRequireSpecialEscapePattern#0##",
 					"RegexParserAnnotationForCharactersThatRequireSpecialEscapePattern#0##_4726701f0e7d838d922ac6b9414558dc"
@@ -227,7 +227,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"RequiresSuperSpecialEscapePattern#0##"
 				],
@@ -242,7 +242,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"RequiresSuperSpecialEscapePattern#0##"
 				],

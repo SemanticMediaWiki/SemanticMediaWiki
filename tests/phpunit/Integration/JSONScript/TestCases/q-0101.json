@@ -50,7 +50,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"Examples/Q0101/1#0##",
 					"Examples/Q0101/2#12##"
@@ -76,7 +76,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"Examples/Q0101/1#0##"
 				],
@@ -90,7 +90,7 @@
 			"parameters" : {
 				"limit" : "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"Examples/Q0101/3#0##"
 				],
@@ -104,7 +104,7 @@
 			"parameters" : {
 				"limit" : "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"Examples/Q0101/4#0##"
 				],

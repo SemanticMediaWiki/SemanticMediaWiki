@@ -102,7 +102,7 @@ class QueryTestCaseInterpreter {
 	 * @return boolean
 	 */
 	public function isFromCache() {
-		return isset( $this->contents['queryresult']['isFromCache'] ) ? (bool)$this->contents['queryresult']['isFromCache'] : null;
+		return isset( $this->contents['assert-queryresult']['isFromCache'] ) ? (bool)$this->contents['assert-queryresult']['isFromCache'] : null;
 	}
 
 	/**
@@ -170,7 +170,7 @@ class QueryTestCaseInterpreter {
 	 * @return integer
 	 */
 	public function getExpectedCount() {
-		return isset( $this->contents['queryresult']['count'] ) ? (int)$this->contents['queryresult']['count'] : 0;
+		return isset( $this->contents['assert-queryresult']['count'] ) ? (int)$this->contents['assert-queryresult']['count'] : 0;
 	}
 
 	/**
@@ -182,11 +182,11 @@ class QueryTestCaseInterpreter {
 
 		$subjects = array();
 
-		if ( !isset( $this->contents['queryresult']['results'] )  ) {
+		if ( !isset( $this->contents['assert-queryresult']['results'] )  ) {
 			return $subjects;
 		}
 
-		foreach ( $this->contents['queryresult']['results'] as $hashName ) {
+		foreach ( $this->contents['assert-queryresult']['results'] as $hashName ) {
 			$subjects[] = DIWikiPage::doUnserialize( str_replace( ' ', '_', $hashName ) );
 		}
 
@@ -202,11 +202,11 @@ class QueryTestCaseInterpreter {
 
 		$dataItems = array();
 
-		if ( !isset( $this->contents['queryresult']['dataitems'] )  ) {
+		if ( !isset( $this->contents['assert-queryresult']['dataitems'] )  ) {
 			return $dataItems;
 		}
 
-		foreach ( $this->contents['queryresult']['dataitems'] as $dataitem ) {
+		foreach ( $this->contents['assert-queryresult']['dataitems'] as $dataitem ) {
 			$dataItems[] = DataItem::newFromSerialization(
 				DataTypeRegistry::getInstance()->getDataItemId( $dataitem['type'] ),
 				$dataitem['value']
@@ -225,11 +225,11 @@ class QueryTestCaseInterpreter {
 
 		$dataValues = array();
 
-		if ( !isset( $this->contents['queryresult']['datavalues'] )  ) {
+		if ( !isset( $this->contents['assert-queryresult']['datavalues'] )  ) {
 			return $dataValues;
 		}
 
-		foreach ( $this->contents['queryresult']['datavalues'] as $datavalue ) {
+		foreach ( $this->contents['assert-queryresult']['datavalues'] as $datavalue ) {
 			$dataValues[] = DataValueFactory::getInstance()->newDataValueByProperty(
 				DIProperty::newFromUserLabel( $datavalue['property'] ),
 				$datavalue['value']
@@ -246,11 +246,11 @@ class QueryTestCaseInterpreter {
 	 */
 	public function getExpectedErrorCount() {
 
-		if ( !isset( $this->contents['queryresult']['error'] )  ) {
+		if ( !isset( $this->contents['assert-queryresult']['error'] )  ) {
 			return 0;
 		}
 
-		return (int)$this->contents['queryresult']['error'];
+		return (int)$this->contents['assert-queryresult']['error'];
 	}
 
 	/**

@@ -27,7 +27,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"Home appliance#0##MicrowaveOven",
 					"Home appliance#0##Refrigerator"
@@ -56,7 +56,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"Home appliance#0##Refrigerator"
 				],

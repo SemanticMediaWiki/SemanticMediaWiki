@@ -52,7 +52,7 @@
 					"Has_page": "ASC"
 				}
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"isFromCache": true,
 				"count": 1,
 				"results": [

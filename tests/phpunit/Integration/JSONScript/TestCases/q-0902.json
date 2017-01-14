@@ -24,7 +24,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"Conference-1#0##"
 				],
@@ -40,7 +40,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"Conference-1#0##",
 					"Conference-2#0##"

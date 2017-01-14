@@ -37,7 +37,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"Escape character blob subject-a#0##",
 					"Escape character blob subject-b#0##"
@@ -53,7 +53,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"Escape character blob subject-b#0##"
 				],
@@ -68,7 +68,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"Escape character blob subject-b#0##",
 					"Escape character blob subject-a#0##",
@@ -85,7 +85,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"Escape character blob subject-b#0##"
 				],
@@ -102,7 +102,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"Escape character blob subject-a#0##FixedSubobjectName",
 					"Escape character blob subject-b#0##FixedSubobjectName"
@@ -120,7 +120,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"Escape character blob subject-b#0##FixedSubobjectName"
 				],
@@ -137,7 +137,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"Escape character blob subject-a#0##FixedSubobjectName",
 					"Escape character blob subject-b#0##",
@@ -155,7 +155,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"Escape character blob subject-a#0##"
 				],
@@ -170,7 +170,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"Escape character blob subject-a#0##FixedSubobjectName"
 				],
@@ -185,7 +185,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"Escape character blob subject-c#0##"
 				],
@@ -200,7 +200,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"BlobValue with whitespaces#0##"
 				],
