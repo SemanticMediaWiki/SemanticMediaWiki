@@ -54,20 +54,15 @@ class EntitySubobjectListIterator implements IteratorAggregate {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string $skipOn
-	 */
-	public function skipOn( $skipOn ) {
-		$this->skipOn[] = $skipOn;
-	}
-
-	/**
-	 * @since 2.5
-	 *
 	 * @param DIWikiPage $subject
+	 *
+	 * @return Iterator
 	 */
-	public function setSubject( DIWikiPage $subject ) {
-		$this->skipOn = array();
+	public function newListIteratorFor( DIWikiPage $subject, $skipOn = array() ) {
+		$this->skipOn = $skipOn;
 		$this->subject = $subject;
+
+		return $this->getIterator();
 	}
 
 	/**

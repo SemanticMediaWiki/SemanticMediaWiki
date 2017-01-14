@@ -60,7 +60,7 @@ class EntitySubobjectListIteratorTest extends \PHPUnit_Framework_TestCase {
 			ApplicationFactory::getInstance()->getIteratorFactory()
 		);
 
-		$instance->setSubject( $subject );
+		$instance->newListIteratorFor( $subject );
 
 		$this->assertInstanceOf(
 			'\SMW\Iterators\MappingIterator',
@@ -104,7 +104,7 @@ class EntitySubobjectListIteratorTest extends \PHPUnit_Framework_TestCase {
 			ApplicationFactory::getInstance()->getIteratorFactory()
 		);
 
-		$instance->setSubject( $subject );
+		$instance->newListIteratorFor( $subject );
 
 		foreach ( $instance as $v ) {
 			$this->assertEquals( 42, $v->getId() );
