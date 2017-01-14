@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Parser;
 
-use SMW\InTextAnnotationSanitizer;
+use SMW\Parser\Obfuscator;
 
 /**
- * @covers \SMW\InTextAnnotationSanitizer
+ * @covers \SMW\Parser\Obfuscator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,7 +13,35 @@ use SMW\InTextAnnotationSanitizer;
  *
  * @author mwjames
  */
-class InTextAnnotationSanitizerTest extends \PHPUnit_Framework_TestCase {
+class ObfuscatorTest extends \PHPUnit_Framework_TestCase {
+
+	/**
+	 * @dataProvider obfuscateProvider
+	 */
+	public function testRoundTripLinkObfuscation( $text ) {
+
+		$newText = Obfuscator::encodeLinks( $text );
+
+		$this->assertEquals(
+			$text,
+			Obfuscator::removeLinkObfuscation( $newText )
+		);
+	}
+
+	/**
+	 * @dataProvider obfuscateProvider
+	 */
+	public function testObfuscateLinks( $text, $expected ) {
+
+		$inTextAnnotationParser = $this->getMockBuilder( 'SMW\InTextAnnotationParser' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertEquals(
+			$expected,
+			Obfuscator::obfuscateLinks( $text, $inTextAnnotationParser )
+		);
+	}
 
 	/**
 	 * @dataProvider stripTextWithAnnotationProvider
@@ -22,12 +50,12 @@ class InTextAnnotationSanitizerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expectedRemoval,
-			InTextAnnotationSanitizer::removeAnnotation( $text )
+			Obfuscator::removeAnnotation( $text )
 		);
 
 		$this->assertEquals(
 			$expectedObscuration,
-			InTextAnnotationSanitizer::obscureAnnotation( $text )
+			Obfuscator::obfuscateAnnotation( $text )
 		);
 	}
 
@@ -88,6 +116,33 @@ class InTextAnnotationSanitizerTest extends \PHPUnit_Framework_TestCase {
 			'Suspendisse [[SMW::off]][[Bar::tincidunt semper|abc]] facilisi[[SMW::on]] [[Bar:::ABC|DEF]]',
 			'Suspendisse abc facilisi DEF',
 			'Suspendisse &#x005B;&#x005B;SMW::off]]&#x005B;&#x005B;Bar::tincidunt semper|abc]] facilisi&#x005B;&#x005B;SMW::on]] &#x005B;&#x005B;Bar:::ABC|DEF]]'
+		);
+
+		return $provider;
+	}
+
+	public function obfuscateProvider() {
+
+		$provider = array();
+
+		$provider[] = array(
+			'Foo',
+			'Foo'
+		);
+
+		$provider[] = array(
+			'[[Foo]]',
+			'&#91;&#91;Foo&#93;&#93;'
+		);
+
+		$provider[] = array(
+			'[[Foo|Bar]]',
+			'&#91;&#91;Foo&#124;Bar&#93;&#93;'
+		);
+
+		$provider[] = array(
+			'[[Foo::[[Bar]]]]',
+			'[[Foo::&#91;&#91;Bar&#93;&#93;]]'
 		);
 
 		return $provider;

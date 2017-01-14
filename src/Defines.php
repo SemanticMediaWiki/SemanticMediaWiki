@@ -180,3 +180,10 @@ define( 'SMW_ADM_SETUP', 8 ); // SetupStore
 define( 'SMW_ADM_PSTATS', 16 ); // Property statistics update
 define( 'SMW_ADM_FULLT', 32 ); // Fulltext update
 /**@}*/
+
+/**@{
+  * Constants for LinksInValue features
+  */
+define( 'SMW_LINV_PCRE', 2 ); // Using the PCRE approach
+define( 'SMW_LINV_OBFU', 4 ); // Using the Obfuscator approach
+/**@}*/
