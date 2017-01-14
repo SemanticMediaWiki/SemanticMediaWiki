@@ -407,6 +407,10 @@ class ApplicationFactory {
 			$this->getSettings()->get( 'smwgEnabledDeferredUpdate' )
 		);
 
+		$deferredCallableUpdate->setLogger(
+			$this->getMediaWikiLogger()
+		);
+
 		return $deferredCallableUpdate;
 	}
 

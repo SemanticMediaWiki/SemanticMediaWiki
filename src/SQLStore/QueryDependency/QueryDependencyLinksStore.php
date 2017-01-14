@@ -344,7 +344,7 @@ class QueryDependencyLinksStore {
 
 		$deferredCallableUpdate->markAsPending( $this->isCommandLineMode );
 		$deferredCallableUpdate->enabledDeferredUpdate( true );
-		$deferredCallableUpdate->pushToUpdateQueue();
+		$deferredCallableUpdate->pushUpdate();
 
 		wfDebugLog( 'smw', __METHOD__ . ' procTime (sec): ' . round( ( microtime( true ) - $start ), 7 ) );
 

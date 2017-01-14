@@ -4,6 +4,7 @@ namespace SMW\Tests;
 
 use SMW\DeferredRequestDispatchManager;
 use SMW\DIWikiPage;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DeferredRequestDispatchManager
@@ -15,6 +16,15 @@ use SMW\DIWikiPage;
  * @author mwjames
  */
 class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
+
+	private $spyLogger;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$testEnvironment = new TestEnvironment();
+		$this->spyLogger = $testEnvironment->getUtilityFactory()->newSpyLogger();
+	}
 
 	public function testCanConstruct() {
 
@@ -46,6 +56,7 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->isEnabledHttpDeferredRequest( $deferredJobRequestState );
 		$instance->isEnabledJobQueue( false );
+		$instance->setLogger( $this->spyLogger );
 
 		$this->assertTrue(
 			$instance->dispatchJobRequestWith( $type, DIWikiPage::newFromText( __METHOD__ )->getTitle(), $parameters )
@@ -72,7 +83,7 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 		$title = DIWikiPage::newFromText( __METHOD__ )->getTitle();
 
 		$this->assertTrue(
-			$instance->scheduleParserCachePurgeJobWith( $title, $parameters )
+			$instance->dispatchParserCachePurgeJobWith( $title, $parameters )
 		);
 	}
 
@@ -96,7 +107,7 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 		$title = DIWikiPage::newFromText( __METHOD__ )->getTitle();
 
 		$this->assertTrue(
-			$instance->scheduleFulltextSearchTableUpdateJobWith( $title, $parameters )
+			$instance->dispatchFulltextSearchTableUpdateJobWith( $title, $parameters )
 		);
 	}
 

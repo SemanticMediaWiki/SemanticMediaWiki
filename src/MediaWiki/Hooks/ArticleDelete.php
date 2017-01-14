@@ -86,7 +86,7 @@ class ArticleDelete {
 		} );
 
 		$deferredCallableUpdate->setOrigin( __METHOD__ );
-		$deferredCallableUpdate->pushToUpdateQueue();
+		$deferredCallableUpdate->pushUpdate();
 
 		return true;
 	}

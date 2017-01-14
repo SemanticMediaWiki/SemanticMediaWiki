@@ -228,7 +228,7 @@ class BufferedStatsdCollector {
 		);
 
 		$deferredCallableUpdate->markAsPending( $asPending );
-		$deferredCallableUpdate->pushToUpdateQueue();
+		$deferredCallableUpdate->pushUpdate();
 	}
 
 }

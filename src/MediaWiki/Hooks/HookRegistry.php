@@ -106,6 +106,10 @@ class HookRegistry {
 			$httpRequestFactory->newSocketRequest()
 		);
 
+		$deferredRequestDispatchManager->setLogger(
+			$applicationFactory->getMediaWikiLogger()
+		);
+
 		$deferredRequestDispatchManager->isEnabledHttpDeferredRequest(
 			$applicationFactory->getSettings()->get( 'smwgEnabledHttpDeferredJobRequest' )
 		);
@@ -523,7 +527,7 @@ class HookRegistry {
 				$entityIdListRelevanceDetectionFilter
 			);
 
-			$deferredRequestDispatchManager->scheduleParserCachePurgeJobWith(
+			$deferredRequestDispatchManager->dispatchParserCachePurgeJobWith(
 				$subject->getTitle(),
 				$jobParameters
 			);

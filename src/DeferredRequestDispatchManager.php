@@ -4,14 +4,17 @@ namespace SMW;
 
 use Onoi\HttpRequest\HttpRequest;
 use SMW\MediaWiki\Specials\SpecialDeferredRequestDispatcher;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
 use Title;
 
 /**
- * During the storage of a page, sometimes it is necessary the create extra
+ * During the storage of a page, sometimes it is necessary to create extra
  * processing requests that should be executed asynchronously (due to large DB
- * processing time) but without delay of the current transaction. This class
- * initiates and creates a separate request to be handled by the receiving
- * `SpecialDeferredRequestDispatcher` endpoint (if it can connect).
+ * processing time or is a secondary update) but without delay of the current
+ * transaction. This class initiates and creates a separate request to be handled
+ * by the receiving `SpecialDeferredRequestDispatcher` endpoint (if it can
+ * connect).
  *
  * `DeferredRequestDispatchManager` allows to invoke jobs independent from the job
  * scheduler with the objective to be run timely to the current transaction
@@ -23,7 +26,7 @@ use Title;
  *
  * @author mwjames
  */
-class DeferredRequestDispatchManager {
+class DeferredRequestDispatchManager implements LoggerAwareInterface {
 
 	/**
 	 * @var HttpRequest
@@ -62,6 +65,11 @@ class DeferredRequestDispatchManager {
 	private $isEnabledJobQueue = true;
 
 	/**
+	 * LoggerInterface
+	 */
+	private $logger;
+
+	/**
 	 * @since 2.3
 	 *
 	 * @param HttpRequest $httpRequest
@@ -79,6 +87,17 @@ class DeferredRequestDispatchManager {
 		$this->isPreferredWithJobQueue = false;
 		$this->isCommandLineMode = false;
 		$this->isEnabledJobQueue = true;
+	}
+
+	/**
+	 * @see LoggerAwareInterface::setLogger
+	 *
+	 * @since 2.5
+	 *
+	 * @param LoggerInterface $logger
+	 */
+	public function setLogger( LoggerInterface $logger ) {
+		$this->logger = $logger;
 	}
 
 	/**
@@ -130,7 +149,7 @@ class DeferredRequestDispatchManager {
 	 * @param Title $title
 	 * @param array $parameters
 	 */
-	public function scheduleParserCachePurgeJobWith( Title $title, $parameters = array() ) {
+	public function dispatchParserCachePurgeJobWith( Title $title, $parameters = array() ) {
 
 		if ( $parameters === array() || !isset( $parameters['idlist'] ) ) {
 			return;
@@ -145,7 +164,7 @@ class DeferredRequestDispatchManager {
 	 * @param Title $title
 	 * @param array $parameters
 	 */
-	public function scheduleFulltextSearchTableUpdateJobWith( Title $title, $parameters = array() ) {
+	public function dispatchFulltextSearchTableUpdateJobWith( Title $title, $parameters = array() ) {
 		return $this->dispatchJobRequestWith( 'SMW\FulltextSearchTableUpdateJob', $title, $parameters );
 	}
 
@@ -155,7 +174,7 @@ class DeferredRequestDispatchManager {
 	 * @param Title $title
 	 * @param array $parameters
 	 */
-	public function scheduleTempChangeOpPurgeJobWith( Title $title, $parameters = array() ) {
+	public function dispatchTempChangeOpPurgeJobWith( Title $title, $parameters = array() ) {
 
 		if ( $parameters === array() || !isset( $parameters['slot:id'] ) || $parameters['slot:id'] === null ) {
 			return;
@@ -216,8 +235,10 @@ class DeferredRequestDispatchManager {
 			// Only relevant when jobs are executed during a test (PHPUnit)
 			$job->isEnabledJobQueue( $isEnabledJobQueue );
 
-			// When initiate from the commandLine, directly run the job and avoid
-			// the scheduler
+			// A `run` action would executed the job with the current transaction
+			// defying the idea of a deferred process therefore only directly
+			// have the job run when initiate from the commandLine as transactions
+			// are expected without delay and are separated
 			$this->isCommandLineMode ? $job->run() : $job->insert();
 		};
 
@@ -266,20 +287,29 @@ class DeferredRequestDispatchManager {
 		$this->httpRequest->setOption( ONOI_HTTP_REQUEST_ON_COMPLETED_CALLBACK, function( $requestResponse ) use ( $parameters ) {
 			$requestResponse->set( 'type', $parameters['async-job']['type'] );
 			$requestResponse->set( 'title', $parameters['async-job']['title'] );
-			wfDebugLog( 'smw', 'SMW\DeferredRequestDispatchManager: ' . json_encode( $requestResponse->getList(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) . "\n" );
+			$this->log( 'SMW\DeferredRequestDispatchManager: ' . json_encode( $requestResponse->getList(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) );
 		} );
 
 		$this->httpRequest->setOption( ONOI_HTTP_REQUEST_ON_FAILED_CALLBACK, function( $requestResponse ) use ( $dispatchableCallbackJob, $title, $type, $parameters ) {
 			$requestResponse->set( 'type', $parameters['async-job']['type'] );
 			$requestResponse->set( 'title', $parameters['async-job']['title'] );
 
-			wfDebugLog( 'smw', "SMW\DeferredRequestDispatchManager: Connection to SpecialDeferredRequestDispatcher failed, schedule a {$type}.\n" );
+			$this->log( "SMW\DeferredRequestDispatchManager: Connection to SpecialDeferredRequestDispatcher failed, schedule a {$type}" );
 			call_user_func_array( $dispatchableCallbackJob, array( $title, $parameters ) );
 		} );
 
 		$this->httpRequest->execute();
 
 		return true;
+	}
+
+	private function log( $message, $context = array() ) {
+
+		if ( $this->logger === null ) {
+			return;
+		}
+
+		$this->logger->info( $message, $context );
 	}
 
 }
