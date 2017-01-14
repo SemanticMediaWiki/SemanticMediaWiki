@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Utils\Validators;
 
+use SMW\Store;
+
 /**
  * @license GNU GPL v2+
  * @since   2.1
@@ -9,25 +11,6 @@ namespace SMW\Tests\Utils\Validators;
  * @author mwjames
  */
 class ValidatorFactory {
-
-	/**
-	 * @var ValidatorFactory
-	 */
-	private static $instance = null;
-
-	/**
-	 * @since 2.1
-	 *
-	 * @return ValidatorFactory
-	 */
-	public static function getInstance() {
-
-		if ( self::$instance === null ) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
-	}
 
 	/**
 	 * @since 2.1
@@ -45,6 +28,17 @@ class ValidatorFactory {
 	 */
 	public function newSemanticDataValidator() {
 		return new SemanticDataValidator();
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param Store $store
+	 *
+	 * @return IncomingSemanticDataValidator
+	 */
+	public function newIncomingSemanticDataValidator( Store $store ) {
+		return new IncomingSemanticDataValidator( $store );
 	}
 
 	/**

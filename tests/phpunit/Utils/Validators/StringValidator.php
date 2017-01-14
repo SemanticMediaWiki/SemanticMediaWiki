@@ -17,14 +17,17 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 	 * @param string $actual
 	 */
 	public function assertThatStringContains( $expected, $actual, $message = '' ) {
-		$this->doAssertFor( $expected, $actual, $message, 'StringContains', function( $actual, &$expected, &$actualCounted ) {
+
+		$callback = function( &$expected, $actual, &$actualCounted ) {
 			foreach ( $expected as $key => $string ) {
 				if ( strpos( $actual, $string ) !== false ) {
 					$actualCounted++;
 					unset( $expected[$key] );
 				}
 			}
-		} );
+		};
+
+		$this->doAssertWith( $expected, $actual, $message, 'StringContains', $callback );
 	}
 
 	/**
@@ -34,17 +37,20 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 	 * @param string $actual
 	 */
 	public function assertThatStringNotContains( $expected, $actual, $message = '' ) {
-		$this->doAssertFor( $expected, $actual, $message, 'StringNotContains', function( $actual, &$expected, &$actualCounted ) {
+
+		$callback = function( &$expected, $actual, &$actualCounted ) {
 			foreach ( $expected as $key => $string ) {
 				if ( strpos( $actual, $string ) === false ) {
 					$actualCounted++;
 					unset( $expected[$key] );
 				}
 			}
-		} );
+		};
+
+		$this->doAssertWith( $expected, $actual, $message, 'StringNotContains', $callback );
 	}
 
-	private function doAssertFor( $expected, $actual, $message = '', $method = '', $callback ) {
+	private function doAssertWith( $expected, $actual, $message = '', $method = '', $callback ) {
 
 		if ( !is_array( $expected ) ) {
 			$expected = array( $expected );
@@ -66,7 +72,7 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 
 		call_user_func_array(
 			$callback,
-			array( $actual, &$expected, &$actualCounted )
+			array( &$expected, $actual, &$actualCounted )
 		);
 
 		self::assertEquals(

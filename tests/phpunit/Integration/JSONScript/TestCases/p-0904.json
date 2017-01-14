@@ -46,9 +46,11 @@
 						"_MDAT",
 						"Has_page"
 					],
-					"inproperty-keys": [
-						"_REDI"
-					]
+					"incoming": {
+						"propertyKeys": [
+							"_REDI"
+						]
+					}
 				}
 			}
 		},

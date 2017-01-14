@@ -55,14 +55,11 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		parent::setUp();
 
 		$validatorFactory = $this->testEnvironment->getUtilityFactory()->newValidatorFactory();
-
 		$stringValidator = $validatorFactory->newStringValidator();
-		$semanticDataValidator = $validatorFactory->newSemanticDataValidator();
-		$queryResultValidator = $validatorFactory->newQueryResultValidator();
 
 		$this->queryTestCaseProcessor = new QueryTestCaseProcessor(
 			$this->getStore(),
-			$queryResultValidator,
+			$validatorFactory->newQueryResultValidator(),
 			$stringValidator
 		);
 
@@ -73,7 +70,8 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 
 		$this->parserTestCaseProcessor = new ParserTestCaseProcessor(
 			$this->getStore(),
-			$semanticDataValidator,
+			$validatorFactory->newSemanticDataValidator(),
+			$validatorFactory->newIncomingSemanticDataValidator( $this->getStore() ),
 			$stringValidator
 		);
 
