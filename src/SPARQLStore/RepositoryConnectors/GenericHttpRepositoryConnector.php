@@ -76,6 +76,15 @@ class GenericHttpRepositoryConnector implements RepositoryConnection {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @return RepositoryClient
+	 */
+	public function getRepositoryClient() {
+		return $this->repositoryClient;
+	}
+
+	/**
 	 * Get the URI of the default graph that this database connector is
 	 * using, or the empty string if none is used (no graph related
 	 * statements in queries/updates).
