@@ -24,6 +24,15 @@ class ValidatorFactory {
 	/**
 	 * @since 2.1
 	 *
+	 * @return NumberValidator
+	 */
+	public function newNumberValidator() {
+		return new NumberValidator();
+	}
+
+	/**
+	 * @since 2.1
+	 *
 	 * @return SemanticDataValidator
 	 */
 	public function newSemanticDataValidator() {

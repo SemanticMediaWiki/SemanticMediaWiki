@@ -5,6 +5,7 @@ namespace SMW\SQLStore;
 use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\ProcessingErrorMsgHandler;
 use SMW\SQLStore\QueryEngine\ConceptQueryResolver;
 use SMWSQLStore3;
 use SMWWikiPageValue;
@@ -61,11 +62,15 @@ class ConceptCache {
 	 * @return array of error strings (empty if no errors occurred)
 	 */
 	public function refreshConceptCache( Title $concept ) {
-		$errors = $this->refresh( $concept );
+
+		$errors = array_merge(
+			$this->conceptQueryResolver->getErrors(),
+			$this->refresh( $concept )
+		);
 
 		$this->conceptQueryResolver->cleanUp();
 
-		return array_merge( $this->conceptQueryResolver->getErrors(), $errors );
+		return ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $errors );
 	}
 
 	/**

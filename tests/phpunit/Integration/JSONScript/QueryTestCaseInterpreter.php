@@ -246,8 +246,8 @@ class QueryTestCaseInterpreter {
 	 */
 	public function getExpectedErrorCount() {
 
-		if ( !isset( $this->contents['assert-queryresult']['error'] )  ) {
-			return 0;
+		if ( !isset( $this->contents['assert-queryresult']['error'] ) ) {
+			return -1;
 		}
 
 		return (int)$this->contents['assert-queryresult']['error'];

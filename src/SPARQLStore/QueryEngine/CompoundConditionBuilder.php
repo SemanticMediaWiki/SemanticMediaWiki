@@ -7,6 +7,7 @@ use SMW\CircularReferenceGuard;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Message;
 use SMW\PropertyHierarchyLookup;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\SomeProperty;
@@ -167,8 +168,8 @@ class CompoundConditionBuilder {
 	 *
 	 * @param string $error
 	 */
-	public function addError( $error ) {
-		$this->errors[] = $error;
+	public function addError( $error, $type = Message::TEXT ) {
+		$this->errors[Message::getHash( $error, $type )] = Message::encode( $error, $type );
 	}
 
 	/**
