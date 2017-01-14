@@ -67,14 +67,14 @@ class CodeStringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'foo',
 			CodeStringValueFormatter::WIKI_LONG,
 			null,
-			'<div class="smwpre"><div style="height:5em; overflow:auto;">foo</div></div>'
+			'<div class="smwpre"><div style="min-height:5em; overflow:auto;">foo</div></div>'
 		);
 
 		$provider[] = array(
 			'foo',
 			CodeStringValueFormatter::HTML_LONG,
 			null,
-			'<div class="smwpre"><div style="height:5em; overflow:auto;">foo</div></div>'
+			'<div class="smwpre"><div style="min-height:5em; overflow:auto;">foo</div></div>'
 		);
 
 		// > 255
@@ -82,7 +82,7 @@ class CodeStringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		'lorem nulla justo diam wisi. Libero Nam turpis neque leo scelerisque nec habitasse a lacus mattis. Accumsan ' .
 		'tincidunt Sed adipiscing nec facilisis tortor Nunc Sed ipsum tellus';
 
-		$expected = '<div class="smwpre"><div style="height:5em; overflow:auto;">Lorem&#160;ipsum&#160;dolor&#160;sit&#160;amet&#160;' .
+		$expected = '<div class="smwpre"><div style="min-height:5em; overflow:auto;">Lorem&#160;ipsum&#160;dolor&#160;sit&#160;amet&#160;' .
 		'consectetuer&#160;justo&#160;Nam&#160;quis&#160;lobortis&#160;vel.&#160;Sapien&#160;nulla&#160;enim&#160;Lorem&#160;enim&#160;' .
 		'pede&#160;lorem&#160;nulla&#160;justo&#160;diam&#160;wisi.&#160;Libero&#160;Nam&#160;turpis&#160;neque&#160;leo&#160;' .
 		'scelerisque&#160;nec&#160;habitasse&#160;a&#160;lacus&#160;mattis.&#160;Accumsan&#160;tincidunt&#160;Sed&#160;adipiscing&#160;' .
@@ -107,7 +107,7 @@ class CodeStringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'<foo>',
 			CodeStringValueFormatter::HTML_LONG,
 			null,
-			'<div class="smwpre"><div style="height:5em; overflow:auto;">&lt;foo&gt;</div></div>'
+			'<div class="smwpre"><div style="min-height:5em; overflow:auto;">&lt;foo&gt;</div></div>'
 		);
 
 		$provider[] = array(
@@ -121,7 +121,16 @@ class CodeStringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'*Foo',
 			CodeStringValueFormatter::WIKI_LONG,
 			null,
-			'<div class="smwpre"><div style="height:5em; overflow:auto;">*Foo</div></div>'
+			'<div class="smwpre"><div style="min-height:5em; overflow:auto;">*Foo</div></div>'
+		);
+
+		// JSON
+		$jsonString = '{"limit": 50,"offset": 0,"sort": [],"order": [],"mode": 1}';
+		$provider[] = array(
+			$jsonString,
+			CodeStringValueFormatter::WIKI_LONG,
+			null,
+			'<div class="smwpre"><div style="min-height:5em; overflow:auto;">' . CodeStringValueFormatter::formatAsPrettyJson( $jsonString ) . '</div></div>'
 		);
 
 		return $provider;

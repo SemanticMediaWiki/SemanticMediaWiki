@@ -36,17 +36,45 @@ class CodeStringValueFormatter extends StringValueFormatter {
 
 		Outputs::requireResource( 'ext.smw.style' );
 
-		// This disables all active wiki and HTML markup:
-		$result = str_replace(
-			array( '<', '>', ' ', '[', '{', '=', "'", ':', "\n" ),
-			array( '&lt;', '&gt;', '&#160;', '&#x005B;', '&#x007B;', '&#x003D;', '&#x0027;', '&#58;', "<br />" ),
-			$text );
+		if ( $this->isJson( $text ) ) {
+			$result = self::formatAsPrettyJson( $text );
+		} else {
+			// This disables all active wiki and HTML markup:
+			$result = str_replace(
+				array( '<', '>', ' ', '[', '{', '=', "'", ':', "\n" ),
+				array( '&lt;', '&gt;', '&#160;', '&#x005B;', '&#x007B;', '&#x003D;', '&#x0027;', '&#58;', "<br />" ),
+				$text
+			);
+		}
 
 		if ( $abbreviate ) {
-			$result = "<div style=\"height:5em; overflow:auto;\">$result</div>";
+			$result = "<div style=\"min-height:5em; overflow:auto;\">$result</div>";
 		}
 
 		return "<div class=\"smwpre\">$result</div>";
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $string
+	 *
+	 * @return string
+	 */
+	public static function formatAsPrettyJson( $string ) {
+		return defined( 'JSON_PRETTY_PRINT' ) ? json_encode( json_decode( $string ), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) : $string;
+	}
+
+	private function isJson( $string ) {
+
+		// Don't bother
+		if ( substr( $string, 0, 1 ) !== '{' ) {
+			return false;
+		}
+
+		json_decode( $string );
+
+		return ( json_last_error() == JSON_ERROR_NONE );
 	}
 
 }
