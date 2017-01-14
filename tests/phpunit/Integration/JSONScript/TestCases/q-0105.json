@@ -37,7 +37,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 1,
 				"results": [
 					"Example/Q0105/1#0##_13bfd7da17ee73035f210b926e671c83"
@@ -52,7 +52,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 3,
 				"results": [
 					"Example/Q0105/1#0##_d1e52a56041afb2795ebc6683f9a5229",
@@ -72,7 +72,7 @@
 					"Has_page": "DESC"
 				}
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 3,
 				"results": [
 					"Example/Q0105/1#0##_d1e52a56041afb2795ebc6683f9a5229",
@@ -92,7 +92,7 @@
 					"Has_page": "ASC"
 				}
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 2,
 				"results": [
 					"Example/Q0105/2#0##_4e8a7e81b361d0e14670809d9a1ff614",
@@ -111,7 +111,7 @@
 					"Has_page": "DESC"
 				}
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 1,
 				"results": [
 					"Example/Q0105/2#0##_7927dc49ee111e0929a91a1f357d9906"
@@ -126,7 +126,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 1,
 				"results": [
 					"Example/Q0105/2#0##_7927dc49ee111e0929a91a1f357d9906"
@@ -141,7 +141,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 1,
 				"results": [
 					"Example/Q0105/3#0##_6b717d3124b3d294797a43ed5064374c"
@@ -156,7 +156,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 2,
 				"results": [
 					"Example/Q0105/3#0##_6b717d3124b3d294797a43ed5064374c",
@@ -175,7 +175,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 2,
 				"results": [
 					"Example/Q0105/4#0##_c77b6e54b1b4d59500b7d4232b30a0fb",
@@ -191,7 +191,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 2,
 				"results": [
 					"Example/Q0105/4#0##_c77b6e54b1b4d59500b7d4232b30a0fb",
@@ -207,7 +207,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 1,
 				"results": [
 					"Example/Q0105/4#0##_c77b6e54b1b4d59500b7d4232b30a0fb"
@@ -222,7 +222,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 3,
 				"results": [
 					"Example/Q0105/1#0##_d1e52a56041afb2795ebc6683f9a5229",
@@ -239,7 +239,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 3,
 				"results": [
 					"Example/Q0105/1#0##_d1e52a56041afb2795ebc6683f9a5229",

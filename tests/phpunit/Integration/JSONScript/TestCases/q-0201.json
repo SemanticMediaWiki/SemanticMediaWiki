@@ -57,7 +57,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": "2"
 			},
 			"conceptcache": [
@@ -74,7 +74,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": "1"
 			},
 			"conceptcache": [
@@ -91,7 +91,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": "1"
 			},
 			"conceptcache": [
@@ -108,7 +108,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": "2"
 			},
 			"conceptcache": [

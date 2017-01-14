@@ -73,7 +73,7 @@
 			"parameters": {
 				"limit": 10
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 2,
 				"results": [
 					"Animal farm#0##",
@@ -104,7 +104,7 @@
 			"parameters": {
 				"limit": 10
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 3,
 				"results": [
 					"Animal farm#0##",
@@ -140,7 +140,7 @@
 			"parameters": {
 				"limit": 10
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 3,
 				"results": [
 					"Animal farm#0##",
@@ -176,7 +176,7 @@
 			"parameters": {
 				"limit": 10
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 1,
 				"results": [
 					"Animal farm#0##"
@@ -200,7 +200,7 @@
 			"parameters": {
 				"limit": 10
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 1,
 				"results": [
 					"Shakespeare's King Lear#0##"
@@ -218,7 +218,7 @@
 			"parameters": {
 				"limit": 10
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 1,
 				"results": [
 					"Shakespeare's King Lear#0##"

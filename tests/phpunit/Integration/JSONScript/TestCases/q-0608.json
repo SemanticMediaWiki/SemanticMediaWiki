@@ -28,7 +28,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 1,
 				"results": [
 					"Example/0608/1/1#0##"
@@ -43,7 +43,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 2,
 				"results": [
 					"Example/0608/1/1#0##",
@@ -59,7 +59,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 3,
 				"results": [
 					"Example/0608/1/1#0##",
@@ -76,7 +76,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 1,
 				"results": [
 					"Example/0608/3#0##"
@@ -91,7 +91,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 1,
 				"results": [
 					"Example/0608/1/2#0##"
@@ -106,7 +106,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 1,
 				"results": [
 					"Example/0608/3#0##"

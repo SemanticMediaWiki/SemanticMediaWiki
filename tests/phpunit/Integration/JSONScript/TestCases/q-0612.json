@@ -37,7 +37,7 @@
 			"parameters": {
 				"limit": 10
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 1,
 				"results": [
 					"Example/Q0612/1(=)#0##"
@@ -55,7 +55,7 @@
 			"parameters": {
 				"limit": 10
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 1,
 				"results": [
 					"Example/Q0612/1(=)#0##"

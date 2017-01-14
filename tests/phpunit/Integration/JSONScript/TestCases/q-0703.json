@@ -23,7 +23,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 1,
 				"results": [
 					"Foaf:homepage#102##"
@@ -46,7 +46,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 1,
 				"results": [
 					"Foaf:homepage#102##"

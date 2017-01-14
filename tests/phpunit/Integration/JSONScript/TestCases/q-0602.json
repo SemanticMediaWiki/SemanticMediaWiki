@@ -25,7 +25,7 @@
 					"Member_of": "DESC"
 				}
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": "3",
 				"results": [
 					"Page-with-subobject#0##_5ca349b39ebfdc3ca49b0eda4c934a45",

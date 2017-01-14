@@ -71,7 +71,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 1,
 				"results": [
 					"German Shepherd#0##"
@@ -86,7 +86,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 4,
 				"results": [
 					"German Shepherd#0##",
@@ -104,7 +104,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 4,
 				"results": [
 					"German Shepherd#0##",

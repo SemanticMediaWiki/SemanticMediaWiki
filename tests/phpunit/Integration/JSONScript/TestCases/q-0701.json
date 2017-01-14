@@ -30,7 +30,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": "1",
 				"results": [
 					"Page-with-url-1#0##"
@@ -53,7 +53,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": "1",
 				"results": [
 					"Page-with-url-2#0##"
@@ -76,7 +76,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 2,
 				"results": [
 					"Page-with-url-1#0##",
@@ -94,7 +94,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": "1",
 				"results": [
 					"Page-with-url-1#0##"
@@ -111,7 +111,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": "1",
 				"results": [
 					"Page-with-url-2#0##"
@@ -128,7 +128,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": "2",
 				"results": [
 					"Page-with-url-1#0##",
@@ -146,7 +146,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": "1",
 				"results": [
 					"Page-with-url-3#0##"
@@ -169,7 +169,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": "1",
 				"results": [
 					"Page-with-url-3#0##"

@@ -74,7 +74,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 1,
 				"results": [
 					"Example/0607/PP-100#0##_43aaa7182890fb917e6cc82bf6083abb"
@@ -99,7 +99,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 1,
 				"results": [
 					"Example/0607/PP-100#0##_43aaa7182890fb917e6cc82bf6083abb"

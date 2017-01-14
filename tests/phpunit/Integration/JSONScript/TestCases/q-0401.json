@@ -65,7 +65,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"John Doe#0##",
 					"Jane Doe#0##"
@@ -94,7 +94,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"John Doe#0##",
 					"Jane Doe#0##"
@@ -120,7 +120,7 @@
 			"parameters": {
 				"limit": 10
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 2,
 				"results": [
 					"Has wife#102##",
@@ -136,7 +136,7 @@
 			"parameters": {
 				"limit": 10
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": 2,
 				"results": [
 					"Spouse#102##",

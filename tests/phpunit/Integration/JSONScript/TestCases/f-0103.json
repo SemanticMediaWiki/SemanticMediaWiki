@@ -42,7 +42,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"PageContainsAskWithTemplateUsage#0##_QUERY79869d791f05c5123300513f7746bdd9",
 					"PageContainsAskWithTemplateUsage#0##_QUERYce80902a7df821d01b8f9c6f06ad9d6c"
@@ -88,7 +88,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"PageContainsTemplateTransclusion#0##_QUERY79869d791f05c5123300513f7746bdd9"
 				],

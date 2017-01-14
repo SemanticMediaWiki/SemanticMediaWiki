@@ -41,7 +41,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"results": [
 					"Example/0301/1#0##_033037fca2311e746bf1871d3be6984c"
 				],

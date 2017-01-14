@@ -37,7 +37,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": "3",
 				"results": [
 					"Germany#0##",
@@ -54,7 +54,7 @@
 			"parameters": {
 				"limit": "10"
 			},
-			"queryresult": {
+			"assert-queryresult": {
 				"count": "3",
 				"results": [
 					"Germany#0##",
