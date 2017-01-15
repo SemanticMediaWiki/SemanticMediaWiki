@@ -89,7 +89,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$resultVariable = 'result';
 
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -116,7 +116,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testConceptDescriptionInterpreterForAnyValueConceptUsingMockedStore() {
 
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
 			->disableOriginalConstructor()
 			->getMock();
 

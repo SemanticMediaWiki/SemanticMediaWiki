@@ -3,7 +3,7 @@
 namespace SMW\Tests;
 
 use RuntimeException;
-use SMW\FileReader;
+use SMW\Tests\Utils\File\JsonFileReader;
 use SMW\Localizer;
 
 /**
@@ -15,7 +15,7 @@ use SMW\Localizer;
 class JsonTestCaseFileHandler {
 
 	/**
-	 * @var FileReader
+	 * @var JsonFileReader
 	 */
 	private $fileReader;
 
@@ -27,9 +27,9 @@ class JsonTestCaseFileHandler {
 	/**
 	 * @since 2.2
 	 *
-	 * @param FileReader $fileReader
+	 * @param JsonFileReader $fileReader
 	 */
-	public function __construct( FileReader $fileReader ) {
+	public function __construct( JsonFileReader $fileReader ) {
 		$this->fileReader = $fileReader;
 	}
 

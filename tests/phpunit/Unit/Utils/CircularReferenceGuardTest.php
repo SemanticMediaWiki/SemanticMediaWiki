@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Utils;
 
-use SMW\CircularReferenceGuard;
+use SMW\Utils\CircularReferenceGuard;
 
 /**
- * @covers \SMW\CircularReferenceGuard
+ * @covers \SMW\Utils\CircularReferenceGuard
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -18,7 +18,7 @@ class CircularReferenceGuardTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\CircularReferenceGuard',
+			'\SMW\Utils\CircularReferenceGuard',
 			new CircularReferenceGuard()
 		);
 	}

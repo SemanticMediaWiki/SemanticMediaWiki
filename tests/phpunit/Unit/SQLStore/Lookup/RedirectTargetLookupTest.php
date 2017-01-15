@@ -22,7 +22,7 @@ class RedirectTargetLookupTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -42,7 +42,7 @@ class RedirectTargetLookupTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getRedirectTarget' );
 
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -68,7 +68,7 @@ class RedirectTargetLookupTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->never() )
 			->method( 'getRedirectTarget' );
 
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -93,7 +93,7 @@ class RedirectTargetLookupTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->never() )
 			->method( 'getRedirectTarget' );
 
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
 			->disableOriginalConstructor()
 			->getMock();
 

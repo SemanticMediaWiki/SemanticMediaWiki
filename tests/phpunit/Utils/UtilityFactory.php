@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\JsonFileReader;
+use SMW\Tests\Utils\File\JsonFileReader;
 use SMW\Tests\Utils\File\BulkFileProvider;
 use SMW\Tests\Utils\File\LocalFileUpload;
 use SMW\Tests\Utils\File\DummyFileCreator;

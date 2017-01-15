@@ -4,7 +4,7 @@ namespace SMW\SQLStore\QueryEngine;
 
 use InvalidArgumentException;
 use OutOfBoundsException;
-use SMW\CircularReferenceGuard;
+use SMW\Utils\CircularReferenceGuard;
 use SMW\Query\Language\Description;
 use SMW\Store;
 

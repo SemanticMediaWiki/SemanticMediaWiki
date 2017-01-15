@@ -53,7 +53,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCheckForCircularReference() {
 
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
 			->disableOriginalConstructor()
 			->getMock();
 

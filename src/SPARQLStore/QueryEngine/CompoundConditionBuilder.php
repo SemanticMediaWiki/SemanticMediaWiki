@@ -3,7 +3,7 @@
 namespace SMW\SPARQLStore\QueryEngine;
 
 use RuntimeException;
-use SMW\CircularReferenceGuard;
+use SMW\Utils\CircularReferenceGuard;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;

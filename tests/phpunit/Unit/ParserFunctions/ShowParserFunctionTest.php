@@ -46,7 +46,7 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -70,7 +70,7 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -106,7 +106,7 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$messageFormatter->expects( $this->once() )
 			->method( 'getHtml' );
 
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -133,7 +133,7 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -166,7 +166,7 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\CircularReferenceGuard' )
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
 			->disableOriginalConstructor()
 			->getMock();
 
