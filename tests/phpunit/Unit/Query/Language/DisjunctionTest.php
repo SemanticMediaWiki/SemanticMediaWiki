@@ -83,48 +83,18 @@ class DisjunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetHash() {
-
-		$descriptions = array(
-			new NamespaceDescription( NS_MAIN ),
-			new NamespaceDescription( NS_HELP )
-		);
+	/**
+	 * @dataProvider comparativeHashProvider
+	 */
+	public function testGetFingerprint( $descriptions, $compareTo, $expected ) {
 
 		$instance = new Disjunction(
 			$descriptions
 		);
 
-		$expected = $instance->getHash();
-
-		// Different order, same hash
-		$descriptions = array(
-			new NamespaceDescription( NS_HELP ),
-			new NamespaceDescription( NS_MAIN )
-		);
-
-		$instance = new Disjunction(
-			$descriptions
-		);
-
-		$this->assertSame(
+		$this->assertEquals(
 			$expected,
-			$instance->getHash()
-		);
-
-		// Different signature, different hash
-		$descriptions = array(
-			new NamespaceDescription( NS_HELP ),
-			new NamespaceDescription( NS_MAIN ),
-			new ThingDescription()
-		);
-
-		$instance = new Disjunction(
-			$descriptions
-		);
-
-		$this->assertNotSame(
-			$expected,
-			$instance->getHash()
+			$instance->getFingerprint() === $compareTo->getFingerprint()
 		);
 	}
 
@@ -133,8 +103,8 @@ class DisjunctionTest extends \PHPUnit_Framework_TestCase {
 		$nsHelp = Localizer::getInstance()->getNamespaceTextById( NS_HELP );
 
 		$descriptions = array(
-			new NamespaceDescription( NS_MAIN ),
-			new NamespaceDescription( NS_HELP )
+			'N:cfcd208495d565ef66e7dff9f98764da' => new NamespaceDescription( NS_MAIN ),
+			'N:c20ad4d76fe97759aa27a0c99bff6710' => new NamespaceDescription( NS_HELP )
 		);
 
 		$provider[] = array(
@@ -159,9 +129,9 @@ class DisjunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expectedDescriptions = array(
-			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) ),
-			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) ),
-			new ValueDescription( new DIWikiPage( 'Yim', NS_MAIN ) )
+			'V:03e5f313638479d132c1aeabd1eacc24' => new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) ),
+			'V:26116b41f908d8ba2ce60d4f455c8d4d' => new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) ),
+			'V:f47714f302b181e713015c02c48cf86f' => new ValueDescription( new DIWikiPage( 'Yim', NS_MAIN ) )
 		);
 
 		$provider[] = array(
@@ -178,8 +148,8 @@ class DisjunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$descriptions = array(
-			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) ),
-			new Conjunction( array(
+			'V:03e5f313638479d132c1aeabd1eacc24' => new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) ),
+			'C:52a399e1faa619c79ecec246102125b8' => new Conjunction( array(
 				new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) ),
 				new ValueDescription( new DIWikiPage( 'Yim', NS_MAIN ) )
 			) )
@@ -227,6 +197,72 @@ class DisjunctionTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription(),
 			$instance->prune( $maxsize, $maxDepth, $log )
 		);
+	}
+
+	public function comparativeHashProvider() {
+
+		$descriptions = array(
+			new NamespaceDescription( NS_MAIN ),
+			new NamespaceDescription( NS_HELP )
+		);
+
+		$disjunction = new Disjunction(
+			$descriptions
+		);
+
+		$provider[] = array(
+			$descriptions,
+			$disjunction,
+			true
+		);
+
+		// Different order, same hash
+		$descriptions = array(
+			new NamespaceDescription( NS_HELP ),
+			new NamespaceDescription( NS_MAIN ) // Changed position
+		);
+
+		$disjunction = new Disjunction(
+			$descriptions
+		);
+
+		$provider[] = array(
+			$descriptions,
+			$disjunction,
+			true
+		);
+
+		// ThingDescription forces a different hash
+		$disjunction = new Disjunction(
+			$descriptions
+		);
+
+		$disjunction->addDescription(
+			new ThingDescription()
+		);
+
+		$provider[] = array(
+			$descriptions,
+			$disjunction,
+			false
+		);
+
+		// Adds description === different signature === different hash
+		$disjunction = new Disjunction(
+			$descriptions
+		);
+
+		$disjunction->addDescription(
+			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) )
+		);
+
+		$provider[] = array(
+			$descriptions,
+			$disjunction,
+			false
+		);
+
+		return $provider;
 	}
 
 }

@@ -1,0 +1,267 @@
+{
+	"description": "Test the description optimization (`wgContLang=en`, `wgLang=en`, `smwgQueryResultCacheType=true`, `smwgQFilterDuplicates=true`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Example/P0909/1",
+			"contents": "[[Has page::Example/P0909/1]]"
+		},
+		{
+			"page": "Example/P0909/Q.1",
+			"contents": "{{#ask: [[Has page::Example/P0909/1]] [[Has page::Example/P0909/1]] |limit=50 |offset=0 }}"
+		},
+		{
+			"page": "Example/P0909/Q.2",
+			"contents": "{{#ask: [[Has page::Example/P0909/1]] OR [[Has page::Example/P0909/1]] |limit=50 |offset=0 }}"
+		},
+		{
+			"page": "Example/P0909/Q.3",
+			"contents": "{{#ask: [[Has page::Example/P0909/1]] [[Has page::Example/P0909/1]] OR [[Has page::Example/P0909/1]] [[Has page::<q>[[Has page::+]]</q>]] [[Has page::+]] |limit=50 |offset=0 }}"
+		},
+		{
+			"page": "Example/P0909/Q.4",
+			"contents": "{{#ask: [[Has page.Has page::Example/P0909/1]] OR [[Has page::Example/P0909/1]] |limit=50 |offset=0 }}"
+		},
+		{
+			"page": "Example/P0909/Q.5",
+			"contents": "{{#ask: [[Has page.Has page::Example/P0909/1]] [[Has page.Has page.Has page::Example/P0909/1]] |limit=50 |offset=0 }}"
+		},
+		{
+			"page": "Example/P0909/Q.6",
+			"contents": "{{#ask: [[Has page.Has page::Example/P0909/1]] [[Has page.Has page.Has page::Example/P0909/1]] OR [[Has page.Has page.Has page::Example/P0909/1]] [[Has page.Has page.Has page::Example/P0909/1]] |limit=50 |offset=0 }}"
+		},
+		{
+			"page": "Example/P0909/Q.7",
+			"contents": "{{#ask: [[Has page.Has page::Example/P0909/1]] [[Has page.-Has page::Example/P0909/1]] |limit=50 |offset=0 }}"
+		},
+		{
+			"page": "Example/P0909/Q.8",
+			"contents": "{{#ask: [[Has page.Has page::Example/P0909/1]] [[-Has page.Has page::Example/P0909/1]] |limit=50 |offset=0 }}"
+		},
+		{
+			"page": "Example/P0909/Q.9",
+			"contents": "{{#ask: [[Has page.Has page::Example/P0909/1]] [[-Has page.Has page::Example/P0909/1]] OR [[Has page.-Has page::Example/P0909/1]] |limit=50 |offset=0 }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0909/Q.1#_QUERY68dcb8216fabceb5e68b48e29f7a507f",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"_ASKST",
+						"_ASKFO",
+						"_ASKSI",
+						"_ASKDE",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"[[Has page::Example/P0909/1]]"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "Example/P0909/Q.2#_QUERY68dcb8216fabceb5e68b48e29f7a507f",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"_ASKST",
+						"_ASKFO",
+						"_ASKSI",
+						"_ASKDE",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"[[Has page::Example/P0909/1]]"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2",
+			"subject": "Example/P0909/Q.3#_QUERYd86ef53760e21dc939ac35e8ba96cbe9",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"_ASKST",
+						"_ASKFO",
+						"_ASKSI",
+						"_ASKDE",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"<q> <q>[[Has page::Example/P0909/1]]</q>  OR [[Has page::Example/P0909/1]] [[Has page.Has page::+]] [[Has page::+]]</q>"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3",
+			"subject": "Example/P0909/Q.4#_QUERY83e07614d84828b684e2f82618a6b0a3",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"_ASKST",
+						"_ASKFO",
+						"_ASKSI",
+						"_ASKDE",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"<q> <q>[[Has page.Has page::Example/P0909/1]]</q>  OR  <q>[[Has page::Example/P0909/1]]</q> </q>"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4",
+			"subject": "Example/P0909/Q.5#_QUERY2d77e744274cc4d8a102dfaf9ff3825d",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"_ASKST",
+						"_ASKFO",
+						"_ASKSI",
+						"_ASKDE",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"[[Has page.Has page::Example/P0909/1]] [[Has page.Has page.Has page::Example/P0909/1]]"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5",
+			"subject": "Example/P0909/Q.6#_QUERY9842313cc7d4e02ae3e26d9e3c7a69bc",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"_ASKST",
+						"_ASKFO",
+						"_ASKSI",
+						"_ASKDE",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"<q>[[Has page.Has page::Example/P0909/1]] [[Has page.Has page.Has page::Example/P0909/1]] OR  <q>[[Has page.Has page.Has page::Example/P0909/1]]</q> </q>"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6",
+			"subject": "Example/P0909/Q.7#_QUERY5a9ddfda092ddc2a398e4f92c2052387",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"_ASKST",
+						"_ASKFO",
+						"_ASKSI",
+						"_ASKDE",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"[[Has page.Has page::Example/P0909/1]] [[Has page.-Has page::Example/P0909/1]]"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7",
+			"subject": "Example/P0909/Q.8#_QUERY36189e7306ea60137006a12b6d887930",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"_ASKST",
+						"_ASKFO",
+						"_ASKSI",
+						"_ASKDE",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"[[Has page.Has page::Example/P0909/1]] [[-Has page.Has page::Example/P0909/1]]"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8",
+			"subject": "Example/P0909/Q.9#_QUERY24970035b091ffcb344b52db4e53a16b",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"_ASKST",
+						"_ASKFO",
+						"_ASKSI",
+						"_ASKDE",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"<q>[[Has page.Has page::Example/P0909/1]] [[-Has page.Has page::Example/P0909/1]] OR  <q>[[Has page.-Has page::Example/P0909/1]]</q> </q>"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgQFilterDuplicates": true,
+		"smwgQueryProfiler" : {
+			"smwgQueryDurationEnabled": false
+		},
+		"smwgQueryResultCacheType": "hash",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

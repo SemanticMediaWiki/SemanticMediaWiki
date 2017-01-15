@@ -19,7 +19,8 @@ class EngineOptions extends Options {
 		parent::__construct( array(
 			'smwgIgnoreQueryErrors'   => $GLOBALS['smwgIgnoreQueryErrors'],
 			'smwgQSortingSupport'     => $GLOBALS['smwgQSortingSupport'],
-			'smwgQRandSortingSupport' => $GLOBALS['smwgQRandSortingSupport']
+			'smwgQRandSortingSupport' => $GLOBALS['smwgQRandSortingSupport'],
+			'smwgQFilterDuplicates'   => $GLOBALS['smwgQFilterDuplicates']
 		) );
 	}
 

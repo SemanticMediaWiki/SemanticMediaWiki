@@ -33,11 +33,12 @@ class ThingDescription extends Description {
 	}
 
 	/**
+	 * @see Description::getFingerprint
 	 * @since 2.5
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getFingerprint() {
 		// Avoid a simple 0 which may interfere with an associative array
 		// when compounding hash strings from different descriptions
 		return 'T:' . md5( 0 );

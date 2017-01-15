@@ -114,6 +114,11 @@ class QueryEngine implements QueryEngineInterface {
 	 * @return QuerySegmentListBuilder
 	 */
 	public function getQuerySegmentListBuilder() {
+
+		$this->querySegmentListBuilder->isFilterDuplicates(
+			$this->engineOptions->get( 'smwgQFilterDuplicates' )
+		);
+
 		return $this->querySegmentListBuilder;
 	}
 
@@ -248,6 +253,10 @@ class QueryEngine implements QueryEngineInterface {
 
 		$this->querySegmentListBuilder->addQuerySegment(
 			$rootSegment
+		);
+
+		$this->querySegmentListBuilder->isFilterDuplicates(
+			$this->engineOptions->get( 'smwgQFilterDuplicates' )
 		);
 
 		$this->querySegmentListBuilder->setSortKeys(

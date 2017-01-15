@@ -52,16 +52,22 @@ class ValueDescription extends Description {
 	}
 
 	/**
+	 * @see Description::getFingerprint
 	 * @since 2.5
 	 *
 	 * @return string
 	 */
-	public function getHash() {
-		return 'V:' . md5(
-			$this->comparator . '|' .
-			$this->dataItem->getHash() . '|' .
-			( $this->property !== null ? $this->property->getKey() : null )
-		);
+	public function getFingerprint() {
+
+		$property = null;
+
+		if ( $this->property !== null ) {
+			$property = $this->property->getSerialization();
+		}
+
+		// A change to the order does also change the signature and renders a
+		// different query ID
+		return 'V:' . md5( $this->comparator . '|' . $this->dataItem->getHash() . '|' . $property );
 	}
 
 	/**

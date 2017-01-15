@@ -56,13 +56,13 @@ class ConceptDescriptionTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( 4, $instance->getQueryFeatures() );
 	}
 
-	public function testGetHash() {
+	public function testGetFingerprint() {
 
 		$instance = new ConceptDescription(
 			new DIWikiPage( 'Foo', SMW_NS_CONCEPT )
 		);
 
-		$expected = $instance->getHash();
+		$expected = $instance->getFingerprint();
 
 		$instance = new ConceptDescription(
 			new DIWikiPage( 'Bar', SMW_NS_CONCEPT )
@@ -70,7 +70,7 @@ class ConceptDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertNotSame(
 			$expected,
-			$instance->getHash()
+			$instance->getFingerprint()
 		);
 	}
 

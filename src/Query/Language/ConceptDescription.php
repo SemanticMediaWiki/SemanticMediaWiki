@@ -30,11 +30,12 @@ class ConceptDescription extends Description {
 	}
 
 	/**
+	 * @see Description::getFingerprint
 	 * @since 2.5
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getFingerprint() {
 		return 'Co:' . md5( $this->concept->getHash() );
 	}
 

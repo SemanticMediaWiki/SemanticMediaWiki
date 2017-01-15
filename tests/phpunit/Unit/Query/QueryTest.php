@@ -170,7 +170,10 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetHash() {
 
-		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getFingerprint' ) )
+			->getMockForAbstractClass();
 
 		$instance = new Query( $description, Query::INLINE_QUERY );
 		$instance->setLimit( 50 );

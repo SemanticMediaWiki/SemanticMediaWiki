@@ -3,6 +3,7 @@
 namespace SMW\Query\Language;
 
 use SMW\Query\PrintRequest;
+use SMW\Query\Exception\FingerprintNotFoundException;
 
 /**
  * Abstract base class for all descriptions
@@ -18,6 +19,16 @@ abstract class Description {
 	 * @var PrintRequest[]
 	 */
 	protected $m_printreqs = array();
+
+	/**
+	 * @var string|null
+	 */
+	protected $fingerprint = null;
+
+	/**
+	 * @var string
+	 */
+	private $membership = '';
 
 	/**
 	 * Get the (possibly empty) array of all print requests that
@@ -58,18 +69,48 @@ abstract class Description {
 	}
 
 	/**
-	 * Returns a compound hash that represents the canonized description with
-	 * the order being normalized as well so that [[Foo::123]][[Bar::abc]]
-	 * returns the same ID as for [[Bar::abc]][[Foo::123]].
+	 * Returns a compound signature that identifies the canonized
+	 * description. It builds a fingerrint so that [[Foo::123]][[Bar::abc]]
+	 * returns the same signature as for [[Bar::abc]][[Foo::123]].
 	 *
-	 * One can not rely on the query string to filter equal descriptions when
-	 * only comparing the string representation.
+	 * @note An extension to a description should not rely on the query string
+	 * as sole representation for a fingerprint.
+	 *
+	 * @since 2.5
+	 *
+	 * @return string
+	 * @throws FingerprintNotFoundException
+	 */
+	public function getFingerprint() {
+
+		if ( $this->fingerprint !== null ) {
+			return $this->fingerprint;
+		}
+
+		throw new FingerprintNotFoundException( "Missing a fingerprint, a signature was expected for the current description instance." );
+	}
+
+	/**
+	 * Identifies an arbitrary membership to a wider circle of descriptions that
+	 * mostly occurs in connection with a Conjunction, Disjunction, or
+	 * SomeProperty.
 	 *
 	 * @since 2.5
 	 *
 	 * @return string
 	 */
-	abstract public function getHash();
+	public function getMembership() {
+		return $this->membership;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $membership
+	 */
+	public function setMembership( $membership ) {
+		$this->membership = $membership;
+	}
 
 	/**
 	 * Return a string expressing this query.

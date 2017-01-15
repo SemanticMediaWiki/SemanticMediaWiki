@@ -81,7 +81,7 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetHash() {
+	public function testGetFingerprint() {
 
 		$ns = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
 
@@ -93,7 +93,7 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 			new ClassDescription( new DIWikiPage( 'Bar', NS_CATEGORY ) )
 		);
 
-		$expected = $instance->getHash();
+		$expected = $instance->getFingerprint();
 
 		// Different position, same hash
 		$instance = new ClassDescription(
@@ -106,7 +106,7 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertSame(
 			$expected,
-			$instance->getHash()
+			$instance->getFingerprint()
 		);
 
 		// Adds extra description, changes hash
@@ -116,7 +116,7 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertNotSame(
 			$expected,
-			$instance->getHash()
+			$instance->getFingerprint()
 		);
 	}
 

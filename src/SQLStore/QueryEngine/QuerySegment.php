@@ -69,6 +69,11 @@ class QuerySegment {
 	/**
 	 * @var string
 	 */
+	public $fingerprint = '';
+
+	/**
+	 * @var string
+	 */
 	public $joinType = '';
 
 	/**
