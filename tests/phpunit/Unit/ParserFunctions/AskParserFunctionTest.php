@@ -189,6 +189,9 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testQueryIdStabilityForFixedSetOfParameters() {
 
+		$this->testEnvironment->addConfiguration( 'smwgQueryResultCacheType', false );
+		$this->testEnvironment->addConfiguration( 'smwgQFilterDuplicates', false );
+
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -234,6 +237,59 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue(
 			$parserData->getSemanticData()->hasSubSemanticData( '_QUERYf161b0f405d169d1f038812484619c1f' )
+		);
+	}
+
+	public function testQueryIdStabilityForFixedSetOfParametersWithFingerprintMethod() {
+
+		$this->testEnvironment->addConfiguration( 'smwgQueryResultCacheType', false );
+		$this->testEnvironment->addConfiguration( 'smwgQFilterDuplicates', true );
+
+		$parserData = ApplicationFactory::getInstance()->newParserData(
+			Title::newFromText( __METHOD__ ),
+			new ParserOutput()
+		);
+
+		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new AskParserFunction(
+			$parserData,
+			$messageFormatter,
+			$circularReferenceGuard
+		);
+
+		$params = array(
+			'[[Modification date::+]]',
+			'?Modification date',
+			'format=list'
+		);
+
+		$instance->parse( $params );
+
+		$this->assertTrue(
+			$parserData->getSemanticData()->hasSubSemanticData( '_QUERYaa38249db4bc6d3e8133588fb08d0f0d' )
+		);
+
+		// Limit is a factor that influences the query id, count uses the
+		// max limit available in $GLOBALS['smwgQMaxLimit'] therefore we set
+		// the limit to make the test independent from possible other settings
+
+		$params = array(
+			'[[Modification date::+]]',
+			'?Modification date',
+			'format=count'
+		);
+
+		$instance->parse( $params );
+
+		$this->assertTrue(
+			$parserData->getSemanticData()->hasSubSemanticData( '_QUERYaa38249db4bc6d3e8133588fb08d0f0d' )
 		);
 	}
 

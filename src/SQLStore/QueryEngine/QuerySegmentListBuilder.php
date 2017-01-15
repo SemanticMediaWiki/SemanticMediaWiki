@@ -6,7 +6,9 @@ use InvalidArgumentException;
 use OutOfBoundsException;
 use SMW\Utils\CircularReferenceGuard;
 use SMW\Query\Language\Description;
+use SMW\Query\Language\Conjuncton;
 use SMW\Store;
+use SMW\Message;
 
 /**
  * @license GNU GPL v2+
@@ -27,6 +29,11 @@ class QuerySegmentListBuilder {
 	 * @var DispatchingDescriptionInterpreter
 	 */
 	private $dispatchingDescriptionInterpreter = null;
+
+	/**
+	 * @var boolean
+	 */
+	private $isFilterDuplicates = true;
 
 	/**
 	 * Array of generated QueryContainer query descriptions (index => object).
@@ -67,6 +74,18 @@ class QuerySegmentListBuilder {
 		$this->circularReferenceGuard->setMaxRecursionDepth( 2 );
 
 		QuerySegment::$qnum = 0;
+	}
+
+	/**
+	 * Filter dulicate segments that represent the same query and to be identified
+	 * by the same hash.
+	 *
+	 * @since 2.5
+	 *
+	 * @param boolean $isFilterDuplicates
+	 */
+	public function isFilterDuplicates( $isFilterDuplicates ) {
+		$this->isFilterDuplicates = (bool)$isFilterDuplicates;
 	}
 
 	/**
@@ -171,8 +190,8 @@ class QuerySegmentListBuilder {
 	 *
 	 * @param string $error
 	 */
-	public function addError( $error ) {
-		$this->errors[] = $error;
+	public function addError( $error, $type = Message::TEXT ) {
+		$this->errors[Message::getHash( $error, $type )] = Message::encode( $error, $type );
 	}
 
 	/**
@@ -187,11 +206,28 @@ class QuerySegmentListBuilder {
 	 */
 	public function getQuerySegmentFrom( Description $description ) {
 
+		$fingerprint = $description->getFingerprint();
+
+		// Get membership of descriptions that are resolved recursively
+		if ( $description->getMembership() !== '' ) {
+			$fingerprint = $fingerprint . $description->getMembership();
+		}
+
+		if ( ( $querySegment = $this->findDuplicates( $fingerprint ) ) ) {
+			return $querySegment;
+		}
+
 		$querySegment = $this->dispatchingDescriptionInterpreter->interpretDescription(
 			$description
 		);
 
-		$this->lastQuerySegmentId = $this->registerQuerySegment( $querySegment );
+		$querySegment->fingerprint = $fingerprint;
+		//$querySegment->membership = $description->getMembership();
+		//$querySegment->queryString = $description->getQueryString();
+
+		$this->lastQuerySegmentId = $this->registerQuerySegment(
+			$querySegment
+		);
 
 		return $this->lastQuerySegmentId;
 	}
@@ -220,6 +256,21 @@ class QuerySegmentListBuilder {
 		}
 
 		return $query->queryNumber;
+	}
+
+	private function findDuplicates( $fingerprint ) {
+
+		if ( $this->errors !== array() || $this->isFilterDuplicates === false ) {
+			return false;
+		}
+
+		foreach ( $this->querySegments as $querySegment ) {
+			if ( $querySegment->fingerprint === $fingerprint ) {
+				return $querySegment->queryNumber;
+			};
+		}
+
+		return false;
 	}
 
 }

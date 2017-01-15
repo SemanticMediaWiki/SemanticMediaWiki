@@ -21,11 +21,6 @@ class Conjunction extends Description {
 	protected $descriptions = array();
 
 	/**
-	 * @var string|null
-	 */
-	private $hash = null;
-
-	/**
 	 * @since 1.6
 	 *
 	 * @param array $descriptions
@@ -37,26 +32,29 @@ class Conjunction extends Description {
 	}
 
 	/**
+	 * @see Description::getFingerprint
 	 * @since 2.5
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getFingerprint() {
 
-		// Avoid a recursive tree
-		if ( $this->hash !== null ) {
-			return $this->hash;
+		if ( $this->fingerprint !== null ) {
+			return $this->fingerprint;
 		}
 
-		$hash = array();
+		$fingerprint = array();
 
+		// Filter equal signatures
 		foreach ( $this->descriptions as $description ) {
-			$hash[$description->getHash()] = true;
+			$fingerprint[$description->getFingerprint()] = true;
 		}
 
-		ksort( $hash );
+		// Sorting to generate a constant fingerprint independent of its
+		// position within a conjunction ( [Foo]][[Bar]], [[Bar]][[Foo]])
+		ksort( $fingerprint );
 
-		return $this->hash = 'C:' . md5( implode( '|', array_keys( $hash ) ) );
+		return $this->fingerprint = 'C:' . md5( implode( '|', array_keys( $fingerprint ) ) );
 	}
 
 	public function getDescriptions() {
@@ -65,21 +63,27 @@ class Conjunction extends Description {
 
 	public function addDescription( Description $description ) {
 
-		$this->hash = null;
+		$this->fingerprint = null;
 
 		if ( ! ( $description instanceof ThingDescription ) ) {
 			if ( $description instanceof Conjunction ) { // absorb sub-conjunctions
 				foreach ( $description->getDescriptions() as $subdesc ) {
-					$this->descriptions[] = $subdesc;
+					$this->descriptions[$subdesc->getFingerprint()] = $subdesc;
 				}
 			} else {
-				$this->descriptions[] = $description;
+				$this->descriptions[$description->getFingerprint()] = $description;
 			}
 
 			// move print descriptions downwards
 			///TODO: This may not be a good solution, since it does modify $description and since it does not react to future changes
 			$this->m_printreqs = array_merge( $this->m_printreqs, $description->getPrintRequests() );
 			$description->setPrintRequests( array() );
+		}
+
+		$fingerprint = $this->getFingerprint();
+
+		foreach ( $this->descriptions as $description ) {
+			$description->setMembership( $fingerprint );
 		}
 	}
 

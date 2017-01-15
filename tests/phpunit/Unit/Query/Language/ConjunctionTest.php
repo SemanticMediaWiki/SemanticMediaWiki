@@ -82,52 +82,18 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetHash() {
-
-		$descriptions = array(
-			new NamespaceDescription( NS_MAIN ),
-			new NamespaceDescription( NS_HELP )
-		);
+	/**
+	 * @dataProvider comparativeHashProvider
+	 */
+	public function testGetFingerprint( $descriptions, $compareTo, $expected ) {
 
 		$instance = new Conjunction(
 			$descriptions
 		);
 
-		$expected = $instance->getHash();
-
-		// Different order, same hash
-		$descriptions = array(
-			new NamespaceDescription( NS_HELP ),
-			new NamespaceDescription( NS_MAIN ) // Changed position
-		);
-
-		$instance = new Conjunction(
-			$descriptions
-		);
-
-		$this->assertSame(
+		$this->assertEquals(
 			$expected,
-			$instance->getHash()
-		);
-
-		// ThingDescription is neglected
-		$instance->addDescription(
-			new ThingDescription()
-		);
-
-		$this->assertSame(
-			$expected,
-			$instance->getHash()
-		);
-
-		// Adds description === different signature === different hash
-		$instance->addDescription(
-			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) )
-		);
-
-		$this->assertNotSame(
-			$expected,
-			$instance->getHash()
+			$instance->getFingerprint() === $compareTo->getFingerprint()
 		);
 	}
 
@@ -136,8 +102,8 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 		$nsHelp = Localizer::getInstance()->getNamespaceTextById( NS_HELP );
 
 		$descriptions = array(
-			new NamespaceDescription( NS_MAIN ),
-			new NamespaceDescription( NS_HELP )
+			'N:cfcd208495d565ef66e7dff9f98764da' => new NamespaceDescription( NS_MAIN ),
+			'N:c20ad4d76fe97759aa27a0c99bff6710' => new NamespaceDescription( NS_HELP )
 		);
 
 		$provider[] = array(
@@ -153,18 +119,22 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
+		$valueDescriptionFoo = new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) );
+		$valueDescriptionBar = new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) );
+		$valueDescriptionYim = new ValueDescription( new DIWikiPage( 'Yim', NS_MAIN ) );
+
 		$descriptions = array(
-			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) ),
+			$valueDescriptionFoo,
 			new Conjunction( array(
-				new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) ),
-				new ValueDescription( new DIWikiPage( 'Yim', NS_MAIN ) )
+				$valueDescriptionBar,
+				$valueDescriptionYim
 			) )
 		);
 
 		$description = array(
-			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) ),
-			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) ),
-			new ValueDescription( new DIWikiPage( 'Yim', NS_MAIN ) )
+			'V:03e5f313638479d132c1aeabd1eacc24' => $valueDescriptionFoo,
+			'V:26116b41f908d8ba2ce60d4f455c8d4d' => $valueDescriptionBar,
+			'V:f47714f302b181e713015c02c48cf86f' => $valueDescriptionYim
 		);
 
 		$provider[] = array(
@@ -186,9 +156,12 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testPrune() {
 
+		$valueDescriptionFoo = new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) );
+		$valueDescriptionBar = new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) );
+
 		$descriptions = array(
-			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) ),
-			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) ),
+			$valueDescriptionFoo,
+			$valueDescriptionBar,
 		);
 
 		$instance = new Conjunction( $descriptions );
@@ -198,7 +171,7 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 		$log      = array();
 
 		$this->assertEquals(
-			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) ),
+			$valueDescriptionFoo,
 			$instance->prune( $maxsize, $maxDepth, $log )
 		);
 
@@ -210,6 +183,72 @@ class ConjunctionTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription(),
 			$instance->prune( $maxsize, $maxDepth, $log )
 		);
+	}
+
+	public function comparativeHashProvider() {
+
+		$descriptions = array(
+			new NamespaceDescription( NS_MAIN ),
+			new NamespaceDescription( NS_HELP )
+		);
+
+		$conjunction = new Conjunction(
+			$descriptions
+		);
+
+		$provider[] = array(
+			$descriptions,
+			$conjunction,
+			true
+		);
+
+		// Different order, same hash
+		$descriptions = array(
+			new NamespaceDescription( NS_HELP ),
+			new NamespaceDescription( NS_MAIN ) // Changed position
+		);
+
+		$conjunction = new Conjunction(
+			$descriptions
+		);
+
+		$provider[] = array(
+			$descriptions,
+			$conjunction,
+			true
+		);
+
+		// ThingDescription is neglected
+		$conjunction = new Conjunction(
+			$descriptions
+		);
+
+		$conjunction->addDescription(
+			new ThingDescription()
+		);
+
+		$provider[] = array(
+			$descriptions,
+			$conjunction,
+			true
+		);
+
+		// Adds description === different signature === different hash
+		$conjunction = new Conjunction(
+			$descriptions
+		);
+
+		$conjunction->addDescription(
+			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) )
+		);
+
+		$provider[] = array(
+			$descriptions,
+			$conjunction,
+			false
+		);
+
+		return $provider;
 	}
 
 }

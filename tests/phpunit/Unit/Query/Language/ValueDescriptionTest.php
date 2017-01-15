@@ -94,30 +94,14 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetHash() {
+	/**
+	 * @dataProvider comparativeHashProvider
+	 */
+	public function testGetFingerprint( $description, $compareTo, $expected ) {
 
-		$instance = new ValueDescription(
-			new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ
-		);
-
-		$expected = $instance->getHash();
-
-		$instance = new ValueDescription(
-			new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_LEQ
-		);
-
-		$this->assertNotSame(
+		$this->assertEquals(
 			$expected,
-			$instance->getHash()
-		);
-
-		$instance = new ValueDescription(
-			new DIWikiPage( 'Foo', NS_MAIN ), new DIProperty( 'Bar' ), SMW_CMP_EQ
-		);
-
-		$this->assertNotSame(
-			$expected,
-			$instance->getHash()
+			$description->getFingerprint() === $compareTo->getFingerprint()
 		);
 	}
 
@@ -185,6 +169,52 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 				'queryStringAsValue' => '≥9001.356',
 				'isSingleton' => false
 			)
+		);
+
+		return $provider;
+	}
+
+	public function comparativeHashProvider() {
+
+		$provider[] = array(
+			new ValueDescription(
+				new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ
+			),
+			new ValueDescription(
+				new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ
+			),
+			true
+		);
+
+		$provider[] = array(
+			new ValueDescription(
+				new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ
+			),
+			new ValueDescription(
+				new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_LEQ
+			),
+			false
+		);
+
+		$provider[] = array(
+			new ValueDescription(
+				new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ
+			),
+			new ValueDescription(
+				new DIWikiPage( 'Foo', NS_MAIN ), new DIProperty( 'Bar' ), SMW_CMP_EQ
+			),
+			false
+		);
+
+		// Inverse case
+		$provider[] = array(
+			new ValueDescription(
+				new DIWikiPage( 'Foo', NS_MAIN ), new DIProperty( 'Bar', true ), SMW_CMP_EQ
+			),
+			new ValueDescription(
+				new DIWikiPage( 'Foo', NS_MAIN ), new DIProperty( 'Bar' ), SMW_CMP_EQ
+			),
+			false
 		);
 
 		return $provider;

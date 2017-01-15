@@ -48,11 +48,12 @@ class ClassDescription extends Description {
 	}
 
 	/**
+	 * @see Description::getFingerprint
 	 * @since 2.5
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getFingerprint() {
 
 		$hash = array();
 

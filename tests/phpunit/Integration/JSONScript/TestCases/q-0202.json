@@ -110,6 +110,7 @@
 	],
 	"settings": {
 		"smwgQueryResultCacheType": false,
+		"smwgQFilterDuplicates": false,
 		"smwgQConceptCaching": "CONCEPT_CACHE_NONE"
 	},
 	"meta": {

@@ -98,6 +98,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		// Make sure LocalSettings don't interfere with the default settings
 		$GLOBALS['smwgDVFeatures'] = $GLOBALS['smwgDVFeatures'] & ~SMW_DV_NUMV_USPACE;
 		$this->testEnvironment->addConfiguration( 'smwgQueryResultCacheType', false );
+		$this->testEnvironment->addConfiguration( 'smwgQFilterDuplicates', false );
 	}
 
 	/**
@@ -166,6 +167,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'smwgPropertyZeroCountDisplay',
 			'smwgQueryResultCacheType',
 			'smwgLinksInValues',
+			'smwgQFilterDuplicates',
 
 			// MW related
 			'wgLanguageCode',

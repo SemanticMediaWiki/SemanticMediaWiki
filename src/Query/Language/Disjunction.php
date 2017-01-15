@@ -18,12 +18,7 @@ class Disjunction extends Description {
 	/**
 	 * @var Description[]
 	 */
-	private $descriptions;
-
-	/**
-	 * @var string|null
-	 */
-	private $hash = null;
+	private $descriptions = array();
 
 	/**
 	 * contains a single class description if any such disjunct was given;
@@ -47,26 +42,27 @@ class Disjunction extends Description {
 	}
 
 	/**
+	 * @see Description::getFingerprint
 	 * @since 2.5
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getFingerprint() {
 
 		// Avoid a recursive tree
-		if ( $this->hash !== null ) {
-			return $this->hash;
+		if ( $this->fingerprint !== null ) {
+			return $this->fingerprint;
 		}
 
-		$hash = array();
+		$fingerprint = array();
 
 		foreach ( $this->descriptions as $description ) {
-			$hash[$description->getHash()] = true;
+			$fingerprint[$description->getFingerprint()] = true;
 		}
 
-		ksort( $hash );
+		ksort( $fingerprint );
 
-		return $this->hash = 'D:' . md5( implode( '|', array_keys( $hash ) ) );
+		return $this->fingerprint = 'D:' . md5( implode( '|', array_keys( $fingerprint ) ) );
 	}
 
 	public function getDescriptions() {
@@ -75,7 +71,8 @@ class Disjunction extends Description {
 
 	public function addDescription( Description $description ) {
 
-		$this->hash = null;
+		$this->fingerprint = null;
+		$fingerprint = $description->getFingerprint();
 
 		if ( $description instanceof ThingDescription ) {
 			$this->isTrue = true;
@@ -87,18 +84,18 @@ class Disjunction extends Description {
 			if ( $description instanceof ClassDescription ) { // combine class descriptions
 				if ( is_null( $this->classDescription ) ) { // first class description
 					$this->classDescription = $description;
-					$this->descriptions[] = $description;
+					$this->descriptions[$description->getFingerprint()] = $description;
 				} else {
 					$this->classDescription->addDescription( $description );
 				}
 			} elseif ( $description instanceof Disjunction ) { // absorb sub-disjunctions
 				foreach ( $description->getDescriptions() as $subdesc ) {
-					$this->descriptions[] = $subdesc;
+					$this->descriptions[$subdesc->getFingerprint()] = $subdesc;
 				}
 			// } elseif ($description instanceof SMWSomeProperty) {
 			   ///TODO: use subdisjunct. for multiple SMWSomeProperty descs with same property
 			} else {
-				$this->descriptions[] = $description;
+				$this->descriptions[$fingerprint] = $description;
 			}
 		}
 

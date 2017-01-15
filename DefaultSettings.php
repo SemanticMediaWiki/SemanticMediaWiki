@@ -407,7 +407,7 @@ return array(
 	'smwStrictComparators' => false,
 
 	// To be used starting with 3.x (due to misspelling)
-	'smwgStrictComparators' => false,
+	'smwgQStrictComparators' => false,
 	##
 
 	###
@@ -420,7 +420,10 @@ return array(
 	'smwgQMaxDepth' => 4, // Maximal property depth of queries, e.g. [[rel::<q>[[rel2::Test]]</q>]] has depth 2
 	##
 
-	### The below setting defines which query features should be available by default.
+	###
+	# The below setting defines which query features should be available by
+	# default.
+	#
 	# Examples:
 	# only cateory intersections: 	'smwgQFeatures' => SMW_CATEGORY_QUERY | SMW_CONJUNCTION_QUERY,
 	# only single concepts:       	'smwgQFeatures' => SMW_CONCEPT_QUERY,
@@ -428,6 +431,19 @@ return array(
 	# The default is to support all basic features.
 	##
 	'smwgQFeatures' => SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEPT_QUERY | SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY,
+	##
+
+	###
+	# Filter duplicate query segments
+	#
+	# Experimental feature that allows to filter duplicate query segments from the
+	# query build process to eliminate computational effort for segments that
+	# represent that same query signature.
+	#
+	# @since 2.5
+	# @default: false
+	##
+	'smwgQFilterDuplicates' => false,
 	##
 
 	###
@@ -1259,12 +1275,15 @@ return array(
 	# page-loading time for articles that contain embedded queries and decrease
 	# server load on query requests.
 	#
-	# It is recommended that `smwgEnabledQueryDependencyLinksStore` is enabled to make
-	# use of automatic query results cache eviction.
+	# It is recommended that `smwgEnabledQueryDependencyLinksStore` is enabled
+	# to make use of automatic query results cache eviction.
+	#
+	# Enabling this option will render queries with a new ID to optimize queries
+	# that result in the same signature (fingerprint) to lower the rate of cache
+	# fragmentation.
 	#
 	# @since 2.5 (experimental)
-	#
-	# @default: CACHE_NONE (== that this feature is disabled)
+	# @default: CACHE_NONE (== feature is disabled)
 	##
 	'smwgQueryResultCacheType' => CACHE_NONE,
 	##
