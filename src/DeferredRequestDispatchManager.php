@@ -42,9 +42,6 @@ class DeferredRequestDispatchManager implements LoggerAwareInterface {
 	private static $canConnectToUrl = null;
 
 	/**
-	 * During unit tests, this parameter is set false to ensure that test execution
-	 * does match expected results.
-	 *
 	 * @var boolean
 	 */
 	private $isEnabledHttpDeferredRequest = true;
@@ -146,12 +143,12 @@ class DeferredRequestDispatchManager implements LoggerAwareInterface {
 	/**
 	 * @since 2.4
 	 *
-	 * @param Title $title
+	 * @param Title|null $title
 	 * @param array $parameters
 	 */
-	public function dispatchParserCachePurgeJobWith( Title $title, $parameters = array() ) {
+	public function dispatchParserCachePurgeJobWith( Title $title = null , $parameters = array() ) {
 
-		if ( $parameters === array() || !isset( $parameters['idlist'] ) ) {
+		if ( $title === null || $parameters === array() || !isset( $parameters['idlist'] ) ) {
 			return;
 		}
 
@@ -161,22 +158,31 @@ class DeferredRequestDispatchManager implements LoggerAwareInterface {
 	/**
 	 * @since 2.5
 	 *
-	 * @param Title $title
+	 * @param Title|null $title
 	 * @param array $parameters
 	 */
-	public function dispatchFulltextSearchTableUpdateJobWith( Title $title, $parameters = array() ) {
+	public function dispatchFulltextSearchTableUpdateJobWith( Title $title = null, $parameters = array() ) {
+
+		if ( $title === null ) {
+			return;
+		}
+
 		return $this->dispatchJobRequestWith( 'SMW\FulltextSearchTableUpdateJob', $title, $parameters );
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param Title $title
+	 * @param Title|null $title
 	 * @param array $parameters
 	 */
-	public function dispatchTempChangeOpPurgeJobWith( Title $title, $parameters = array() ) {
+	public function dispatchTempChangeOpPurgeJobWith( Title $title = null, $parameters = array() ) {
 
-		if ( $parameters === array() || !isset( $parameters['slot:id'] ) || $parameters['slot:id'] === null ) {
+		if ( $title === null || $parameters === array() ) {
+			return;
+		}
+
+		if ( !isset( $parameters['slot:id'] ) || $parameters['slot:id'] === null ) {
 			return;
 		}
 
@@ -187,12 +193,12 @@ class DeferredRequestDispatchManager implements LoggerAwareInterface {
 	 * @since 2.3
 	 *
 	 * @param string $type
-	 * @param Title $title
+	 * @param Title|null $title
 	 * @param array $parameters
 	 */
-	public function dispatchJobRequestWith( $type, Title $title, $parameters = array() ) {
+	public function dispatchJobRequestWith( $type, Title $title = null, $parameters = array() ) {
 
-		if ( !$this->isAllowedJobType( $type ) ) {
+		if ( $title === null || !$this->isAllowedJobType( $type ) ) {
 			return null;
 		}
 

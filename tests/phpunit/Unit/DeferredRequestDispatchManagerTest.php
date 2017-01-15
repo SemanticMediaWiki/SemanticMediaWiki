@@ -39,6 +39,27 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * @dataProvider nullTitleProvider
+	 */
+	public function testDispatchOnNullTitle( $method ) {
+
+		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\SocketRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$httpRequest->expects( $this->never() )
+			->method( 'ping' );
+
+		$instance = new DeferredRequestDispatchManager( $httpRequest );
+		$instance->reset();
+
+		$instance->isEnabledHttpDeferredRequest( true );
+		$instance->isEnabledJobQueue( false );
+
+		call_user_func_array( array( $instance, $method ), array( null, array() ) );
+	}
+
+	/**
 	 * @dataProvider dispatchableJobProvider
 	 */
 	public function testDispatchJobFor( $type, $deferredJobRequestState, $parameters = array() ) {
@@ -161,6 +182,23 @@ class DeferredRequestDispatchManagerTest extends \PHPUnit_Framework_TestCase {
 			'SMW\ParserCachePurgeJob',
 			true,
 			array( 'idlist' => '1|2' )
+		);
+
+		return $provider;
+	}
+
+	public function nullTitleProvider() {
+
+		$provider[] = array(
+			'dispatchParserCachePurgeJobWith'
+		);
+
+		$provider[] = array(
+			'dispatchFulltextSearchTableUpdateJobWith'
+		);
+
+		$provider[] = array(
+			'dispatchTempChangeOpPurgeJobWith'
 		);
 
 		return $provider;
