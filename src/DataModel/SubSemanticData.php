@@ -116,6 +116,18 @@ class SubSemanticData {
 	}
 
 	/**
+	 * This is used as contingency where the serialized SementicData still
+	 * has an array object reference.
+	 *
+	 * @since 2.5
+	 *
+	 * @return ContainerSemanticData[]
+	 */
+	public function copyDataFrom( array $subSemanticData ) {
+		$this->subSemanticData = $subSemanticData;
+	}
+
+	/**
 	 * Return the array of subSemanticData objects in form of
 	 * subobjectName => ContainerSemanticData
 	 *
