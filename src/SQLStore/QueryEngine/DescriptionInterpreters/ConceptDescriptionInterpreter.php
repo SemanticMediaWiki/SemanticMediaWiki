@@ -4,6 +4,8 @@ namespace SMW\SQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Description;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Disjunction;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
@@ -53,9 +55,10 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	public function interpretDescription( Description $description ) {
 
 		$query = new QuerySegment();
+		$concept = $description->getConcept();
 
 		$conceptId = $this->querySegmentListBuilder->getStore()->getObjectIds()->getSMWPageID(
-			$description->getConcept()->getDBkey(),
+			$concept->getDBkey(),
 			SMW_NS_CONCEPT,
 			'',
 			''
@@ -68,7 +71,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 		if ( $this->querySegmentListBuilder->getCircularReferenceGuard()->isCircularByRecursionFor( $hash ) ) {
 
 			$this->querySegmentListBuilder->addError(
-				wfMessage( 'smw-query-condition-circular', $description->getQueryString() )->text()
+				array( 'smw-query-condition-circular', $description->getQueryString() )
 			);
 
 			return $query;
@@ -101,16 +104,23 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 			$query->where = "$query->alias.o_id=" . $db->addQuotes( $conceptId );
 		} elseif ( $row->concept_txt ) { // Parse description and process it recursively.
 			if ( $may_be_computed ) {
-				$qid = $this->querySegmentListBuilder->getQuerySegmentFrom( $this->getConceptQueryDescriptionFrom( $row->concept_txt ) );
+				$description = $this->getConceptQueryDescriptionFrom( $row->concept_txt );
+
+				$this->findCircularDescription(
+					$concept,
+					$description
+				);
+
+				$qid = $this->querySegmentListBuilder->getQuerySegmentFrom( $description );
 
 				if ($qid != -1) {
 					$query = $this->querySegmentListBuilder->findQuerySegment( $qid );
 				} else { // somehow the concept query is no longer valid; maybe some syntax changed (upgrade) or global settings were modified since storing it
-					$this->querySegmentListBuilder->addError( wfMessage( 'smw_emptysubquery' )->text() ); // not the right message, but this case is very rare; let us not make detailed messages for this
+					$this->querySegmentListBuilder->addError( 'smw_emptysubquery' ); // not the right message, but this case is very rare; let us not make detailed messages for this
 				}
 			} else {
 				$this->querySegmentListBuilder->addError(
-					wfMessage( 'smw_concept_cache_miss', $description->getConcept()->getTitle()->getText() )->text()
+					array( 'smw_concept_cache_miss', $concept->getDBkey() )
 				);
 			}
 		} // else: no cache, no description (this may happen); treat like empty concept
@@ -146,6 +156,24 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 		return $queryParser->getQueryDescription(
 			str_replace( array( '&lt;', '&gt;', '&amp;' ), array( '<', '>', '&' ), $conceptQuery )
 		);
+	}
+
+	private function findCircularDescription( $concept, &$description ) {
+
+		if ( $description instanceof ConceptDescription ) {
+			if ( $description->getConcept()->equals( $concept ) ) {
+				$this->querySegmentListBuilder->addError(
+					array( 'smw-query-condition-circular', $description->getQueryString() )
+				);
+				return;
+			}
+		}
+
+		if ( $description instanceof Conjunction || $description instanceof Disjunction ) {
+			foreach ( $description->getDescriptions() as $desc ) {
+				$this->findCircularDescription( $concept, $desc );
+			}
+		}
 	}
 
 }

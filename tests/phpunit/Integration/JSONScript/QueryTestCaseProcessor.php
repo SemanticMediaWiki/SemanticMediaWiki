@@ -29,6 +29,11 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	private $fileReader;
 
 	/**
+	 * @var NumberValidator
+	 */
+	private $numberValidator;
+
+	/**
 	 * @var boolean
 	 */
 	private $debug = false;
@@ -38,10 +43,11 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @param Store $store
 	 */
-	public function __construct( Store $store, $queryResultValidator, $stringValidator ) {
+	public function __construct( Store $store, $queryResultValidator, $stringValidator, $numberValidator ) {
 		$this->store = $store;
 		$this->queryResultValidator = $queryResultValidator;
 		$this->stringValidator = $stringValidator;
+		$this->numberValidator = $numberValidator;
 	}
 
 	/**
@@ -120,11 +126,13 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			'Failed asserting query result count on ' . $queryTestCaseInterpreter->isAbout()
 		);
 
-		$this->assertCount(
-			$queryTestCaseInterpreter->getExpectedErrorCount(),
-			$queryResult->getErrors(),
-			'Failed asserting error count ' . $queryTestCaseInterpreter->isAbout()
-		);
+		if ( $queryTestCaseInterpreter->getExpectedErrorCount() > -1 ) {
+			$this->numberValidator->assertThatCountComparesTo(
+				$queryTestCaseInterpreter->getExpectedErrorCount(),
+				$queryResult->getErrors(),
+				'Failed asserting error count ' . $queryTestCaseInterpreter->isAbout()
+			);
+		}
 
 		if ( $queryTestCaseInterpreter->getExpectedErrorCount() > 0 ) {
 			return null;
@@ -176,8 +184,7 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
 		$query = new Query(
 			$description,
-			false,
-			true
+			Query::CONCEPT_DESC
 		);
 
 		$query->querymode = $queryTestCaseInterpreter->getQueryMode();
@@ -194,11 +201,13 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			'Failed asserting query result count on ' . $queryTestCaseInterpreter->isAbout()
 		);
 
-		$this->assertCount(
-			$queryTestCaseInterpreter->getExpectedErrorCount(),
-			$queryResult->getErrors(),
-			'Failed asserting error count ' . $queryTestCaseInterpreter->isAbout()
-		);
+		if ( $queryTestCaseInterpreter->getExpectedErrorCount() > -1 ) {
+			$this->numberValidator->assertThatCountComparesTo(
+				$queryTestCaseInterpreter->getExpectedErrorCount(),
+				$queryResult->getErrors(),
+				'Failed asserting error count ' . $queryTestCaseInterpreter->isAbout()
+			);
+		}
 
 		foreach ( $queryTestCaseInterpreter->getExpectedConceptCache() as $expectedConceptCache ) {
 

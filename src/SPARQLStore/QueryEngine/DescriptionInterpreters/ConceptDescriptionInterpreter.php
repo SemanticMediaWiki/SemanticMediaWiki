@@ -7,6 +7,8 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Description;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Disjunction;
 use SMW\SPARQLStore\QueryEngine\CompoundConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
@@ -75,7 +77,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 		if ( $this->compoundConditionBuilder->getCircularReferenceGuard()->isCircularByRecursionFor( $hash ) ) {
 
 			$this->compoundConditionBuilder->addError(
-				wfMessage( 'smw-query-condition-circular', $conceptDescription->getQueryString() )->text()
+				array( 'smw-query-condition-circular', $description->getQueryString() )
 			);
 
 			return new FalseCondition();
@@ -107,9 +109,31 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 
 		$value = end( $value );
 
-		return $applicationFactory->newQueryParser()->getQueryDescription(
+		$description = $applicationFactory->newQueryParser()->getQueryDescription(
 			$value->getConceptQuery()
 		);
+
+		$this->findCircularDescription( $concept, $description );
+
+		return $description;
+	}
+
+	private function findCircularDescription( $concept, $description ) {
+
+		if ( $description instanceof ConceptDescription ) {
+			if ( $description->getConcept()->equals( $concept ) ) {
+				$this->compoundConditionBuilder->addError(
+					array( 'smw-query-condition-circular', $description->getQueryString() )
+				);
+				return;
+			}
+		}
+
+		if ( $description instanceof Conjunction || $description instanceof Disjunction ) {
+			foreach ( $description->getDescriptions() as $desc ) {
+				$this->findCircularDescription( $concept, $desc );
+			}
+		}
 	}
 
 }

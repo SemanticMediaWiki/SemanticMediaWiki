@@ -60,7 +60,8 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		$this->queryTestCaseProcessor = new QueryTestCaseProcessor(
 			$this->getStore(),
 			$validatorFactory->newQueryResultValidator(),
-			$stringValidator
+			$stringValidator,
+			$validatorFactory->newNumberValidator()
 		);
 
 		$this->rdfTestCaseProcessor = new RdfTestCaseProcessor(
