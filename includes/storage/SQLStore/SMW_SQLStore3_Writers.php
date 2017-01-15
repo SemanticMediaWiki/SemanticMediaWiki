@@ -78,13 +78,12 @@ class SMWSQLStore3Writers {
 		);
 
 		$subject = DIWikiPage::newFromTitle( $title );
+
 		$emptySemanticData = new SemanticData( $subject );
 
-		$this->entitySubobjectListIterator->setSubject(
+		$subobjects = $this->entitySubobjectListIterator->newListIteratorFor(
 			$emptySemanticData->getSubject()
 		);
-
-		$subobjects = $this->entitySubobjectListIterator->getIterator();
 
 		$this->doDataUpdate( $emptySemanticData );
 
@@ -144,7 +143,7 @@ class SMWSQLStore3Writers {
 
 		$subject = $semanticData->getSubject();
 
-		$this->entitySubobjectListIterator->setSubject(
+		$subobjects = $this->entitySubobjectListIterator->newListIteratorFor(
 			$subject
 		);
 
@@ -156,7 +155,6 @@ class SMWSQLStore3Writers {
 
 		// Update data about our subobjects
 		$subSemanticData = $semanticData->getSubSemanticData();
-		$subobjects = $this->entitySubobjectListIterator->getIterator();
 
 		foreach( $subSemanticData as $subobjectData ) {
 			$this->doFlatDataUpdate( $subobjectData );
