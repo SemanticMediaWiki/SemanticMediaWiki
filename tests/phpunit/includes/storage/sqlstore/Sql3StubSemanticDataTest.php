@@ -66,7 +66,9 @@ class Sql3StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	public function testNotToResolveSubobjectsForRedirect() {
 
 		$instance = $this->getMockBuilder( '\SMWSql3StubSemanticData' )
-			->disableOriginalConstructor()
+			->setConstructorArgs( array(
+				DIWikiPage::newFromText( __METHOD__ ),
+				$this->store ) )
 			->setMethods( array(
 				'getProperties',
 				'isRedirect',

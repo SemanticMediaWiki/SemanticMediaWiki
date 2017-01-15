@@ -10,6 +10,7 @@ use SMWDIContainer;
 use SMWPropertyValue;
 use SMW\Exception\SemanticDataImportException;
 use SMW\Exception\SubSemanticDataException;
+use SMW\DataModel\SubSemanticData;
 
 /**
  * Class for representing chunks of semantic data for one given
@@ -108,9 +109,9 @@ class SemanticData {
 	 * These key-value pairs of subObjectName (string) =>SMWSemanticData.
 	 *
 	 * @since 1.8
-	 * @var SemanticData[]
+	 * @var SubSemanticData
 	 */
-	protected $subSemanticData = array();
+	protected $subSemanticData;
 
 	/**
 	 * Internal flag that indicates if this semantic data will accept
@@ -142,15 +143,12 @@ class SemanticData {
 	private $lastModified = null;
 
 	/**
-	 * Maximum depth for an recursive sub data assignment
+	 * This is kept public to keep track of the depth during a recursive processing
+	 * when accessed through the SubSemanticData instance.
+	 *
 	 * @var integer
 	 */
-	private $subContainerMaxDepth = 2;
-
-	/**
-	 * @var integer
-	 */
-	private $subContainerDepthCounter = 0;
+	public $subContainerDepthCounter = 0;
 
 	/**
 	 * Constructor.
@@ -162,6 +160,7 @@ class SemanticData {
 		$this->clear();
 		$this->mSubject = $subject;
 		$this->mNoDuplicates = $noDuplicates;
+		$this->subSemanticData = new SubSemanticData( $subject, $noDuplicates );
 	}
 
 	/**
@@ -280,7 +279,16 @@ class SemanticData {
 	 * @return SMWContainerSemanticData[] subobject => SMWContainerSemanticData
 	 */
 	public function getSubSemanticData() {
-		return $this->subSemanticData;
+		return $this->subSemanticData->getSubSemanticData();
+	}
+
+	/**
+	 * Return the array of subSemanticData objects for this SemanticData
+	 *
+	 * @since 2.5
+	 */
+	public function clearSubSemanticData() {
+		$this->subSemanticData !== null ? $this->subSemanticData->clear() : '';
 	}
 
 	/**
@@ -356,7 +364,7 @@ class SemanticData {
 
 		// Inherit the sortkey from the root if not explicitly given
 		if ( $this->mSubject->getSubobjectName() === '' && $property->getKey() === DIProperty::TYPE_SORTKEY ) {
-			foreach ( $this->subSemanticData as $subSemanticData ) {
+			foreach ( $this->getSubSemanticData() as $subSemanticData ) {
 				if ( !$subSemanticData->hasProperty( $property ) ) {
 					$subSemanticData->addPropertyObjectValue( $property, $dataItem );
 				}
@@ -494,7 +502,7 @@ class SemanticData {
 		$this->mHasVisibleProps = false;
 		$this->mHasVisibleSpecs = false;
 		$this->stubObject = false;
-		$this->subSemanticData = array();
+		$this->clearSubSemanticData();
 		$this->hash = null;
 	}
 
@@ -587,9 +595,7 @@ class SemanticData {
 	}
 
 	/**
-	 * Whether the SemanticData has a SubSemanticData container and if
-	 * specified has a particular subobject using its name as identifier
-	 *
+	 * @see SubSemanticData::hasSubSemanticData
 	 * @since 1.9
 	 *
 	 * @param string $subobjectName|null
@@ -597,17 +603,11 @@ class SemanticData {
 	 * @return boolean
 	 */
 	public function hasSubSemanticData( $subobjectName = null ) {
-
-		if ( $this->subSemanticData === array() || $subobjectName === '' ) {
-			return false;
-		}
-
-		return $subobjectName !== null ? isset( $this->subSemanticData[$subobjectName] ) : true;
+		return $this->subSemanticData->hasSubSemanticData( $subobjectName );
 	}
 
 	/**
-	 * Find a particular subobject container using its name as identifier
-	 *
+	 * @see SubSemanticData::findSubSemanticData
 	 * @since 1.9
 	 *
 	 * @param string $subobjectName
@@ -615,92 +615,30 @@ class SemanticData {
 	 * @return SMWContainerSemanticData|[]
 	 */
 	public function findSubSemanticData( $subobjectName ) {
-
-		if ( $this->hasSubSemanticData( $subobjectName ) && isset( $this->subSemanticData[$subobjectName] ) ) {
-			return $this->subSemanticData[$subobjectName];
-		}
-
-		return array();
+		return $this->subSemanticData->findSubSemanticData( $subobjectName );
 	}
 
 	/**
-	 * Add data about subobjects.
-	 * Will only work if the data that is added is about a subobject of
-	 * this SMWSemanticData's subject. Otherwise an exception is thrown.
-	 * The SMWSemanticData object that is given will belong to this object
-	 * after the operation; it should not be modified further by the caller.
-	 *
+	 * @see SubSemanticData::addSubSemanticData
 	 * @since 1.8
 	 *
 	 * @param SemanticData $semanticData
-	 *
-	 * @throws SubSemanticDataException if not adding data about a subobject of this data
+	 * @throws SubSemanticDataException
 	 */
 	public function addSubSemanticData( SemanticData $semanticData ) {
-
-		$semanticData->setLastModified( $this->getLastModified() );
 		$this->hash = null;
-
-		if ( $this->subContainerDepthCounter > $this->subContainerMaxDepth ) {
-			throw new SubSemanticDataException( "Cannot add further subdata. You are trying to add data beyond the max depth of {$this->subContainerMaxDepth} to an SemanticData object." );
-		}
-
-		$subobjectName = $semanticData->getSubject()->getSubobjectName();
-
-		if ( $subobjectName == '' ) {
-			throw new SubSemanticDataException( "Cannot add data that is not about a subobject." );
-		}
-
-		if( $semanticData->getSubject()->getDBkey() !== $this->getSubject()->getDBkey() ) {
-			throw new SubSemanticDataException( "Data for a subobject of {$semanticData->getSubject()->getDBkey()} cannot be added to {$this->getSubject()->getDBkey()}." );
-		}
-
-		if( $this->hasSubSemanticData( $subobjectName ) ) {
-			$this->subSemanticData[$subobjectName]->importDataFrom( $semanticData );
-
-			foreach ( $semanticData->getSubSemanticData() as $subsubdata ) {
-				$this->addSubSemanticData( $subsubdata );
-			}
-		} else {
-			$semanticData->subContainerDepthCounter++;
-			foreach ( $semanticData->getSubSemanticData() as $subsubdata ) {
-
-				// Skip container that are known to be registered (avoids recursive statement extension)
-				if ( $this->hasSubSemanticData( $subsubdata->getSubject()->getSubobjectName() ) ) {
-					continue;
-				}
-
-				$this->addSubSemanticData( $subsubdata );
-			}
-			$semanticData->subSemanticData = array();
-			$this->subSemanticData[$subobjectName] = $semanticData;
-		}
+		$this->subSemanticData->addSubSemanticData( $semanticData );
 	}
 
 	/**
-	* Remove data about a subobject.
-	* If the removed data is not about a subobject of this object,
-	* it will silently be ignored (nothing to remove). Likewise,
-	* removing data that is not present does not change anything.
-	*
-	* @since 1.8
-	* @param SMWSemanticData
+	 * @see SubSemanticData::removeSubSemanticData
+	 * @since 1.8
+	 *
+	 * @param SemanticData $semanticData
 	*/
 	public function removeSubSemanticData( SemanticData $semanticData ) {
-		if( $semanticData->getSubject()->getDBkey() !== $this->getSubject()->getDBkey() ) {
-			return;
-		}
-
 		$this->hash = null;
-		$subobjectName = $semanticData->getSubject()->getSubobjectName();
-
-		if( $this->hasSubSemanticData( $subobjectName ) ) {
-			$this->subSemanticData[$subobjectName]->removeDataFrom( $semanticData );
-
-			if( $this->subSemanticData[$subobjectName]->isEmpty() ) {
-				unset( $this->subSemanticData[$subobjectName] );
-			}
-		}
+		$this->subSemanticData->removeSubSemanticData( $semanticData );
 	}
 
 	/**
