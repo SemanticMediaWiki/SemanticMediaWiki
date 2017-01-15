@@ -13,6 +13,7 @@ THIS IS NOT A RELEASE YET
 ## Compatibility changes
 
 * Requires to run `update.php` to add an extra table column for the URI table (#1872) and a new table for the preferred label property (#1865).
+* 1.29+ adjustments which includes #2149
 
 ## New features and enhancements
 
@@ -59,6 +60,10 @@ THIS IS NOT A RELEASE YET
 * #2137
 * #2139
 * #2142 `$smwgAdminFeatures`
+* #2153
+* #2157
+* #2173 
+* #2176
 
 ## Bug fixes
 
