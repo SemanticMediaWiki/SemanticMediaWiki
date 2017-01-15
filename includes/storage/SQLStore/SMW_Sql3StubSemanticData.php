@@ -55,7 +55,7 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	 *
 	 * @var boolean
 	 */
-	private $subSemanticDataInitialized = false;
+	private $subSemanticDataInit = false;
 
 	/**
 	 * Constructor.
@@ -178,11 +178,11 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	 */
 	public function getSubSemanticData() {
 
-		if ( $this->subSemanticDataInitialized ) {
+		if ( $this->subSemanticDataInit ) {
 			return parent::getSubSemanticData();
 		}
 
-		$this->subSemanticDataInitialized = true;
+		$this->subSemanticDataInit = true;
 
 		foreach ( $this->getProperties() as $property ) {
 
@@ -191,7 +191,7 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 				continue;
 			}
 
-			$this->addSubSemanticDataToInternalCache( $property );
+			$this->initSubSemanticData( $property );
 		}
 
 		return parent::getSubSemanticData();
@@ -207,11 +207,25 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	 */
 	public function hasSubSemanticData( $subobjectName = null ) {
 
-		if ( !$this->subSemanticDataInitialized ) {
+		if ( !$this->subSemanticDataInit ) {
 			$this->getSubSemanticData();
 		}
 
 		return parent::hasSubSemanticData( $subobjectName );
+	}
+
+	/**
+	 * @see SemanticData::findSubSemanticData
+	 *
+	 * @since 2.5
+	 */
+	public function findSubSemanticData( $subobjectName ) {
+
+		if ( !$this->subSemanticDataInit ) {
+			$this->getSubSemanticData();
+		}
+
+		return parent::findSubSemanticData( $subobjectName );
 	}
 
 	/**
@@ -340,12 +354,18 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 		return $this->store->getObjectIds()->checkIsRedirect( $this->mSubject );
 	}
 
-	private function addSubSemanticDataToInternalCache( DIProperty $property ) {
-
+	private function initSubSemanticData( DIProperty $property ) {
 		foreach ( $this->getPropertyValues( $property ) as $value ) {
-			if ( $value instanceof DIWikiPage && $value->getSubobjectName() !== '' && !$this->hasSubSemanticData( $value->getSubobjectName() ) ) {
-				$this->addSubSemanticData( $this->store->getSemanticData( $value ) );
+
+			if ( !$value instanceof DIWikiPage || $value->getSubobjectName() === '' ) {
+				continue;
 			}
+
+			if ( $this->hasSubSemanticData( $value->getSubobjectName() ) ) {
+				continue;
+			}
+
+			$this->addSubSemanticData( $this->store->getSemanticData( $value ) );
 		}
 	}
 

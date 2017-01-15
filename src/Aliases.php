@@ -77,3 +77,4 @@ class_alias( 'SMW\QueryPrinterFactory', 'SMW\FormatFactory' );
 class_alias( 'SMW\ParserFunctions\SubobjectParserFunction', 'SMW\SubobjectParserFunction' );
 class_alias( 'SMW\ParserFunctions\RecurringEventsParserFunction', 'SMW\RecurringEventsParserFunction' );
 class_alias( 'SMW\SQLStore\PropertyTableDefinition', 'SMW\SQLStore\TableDefinition' );
+class_alias( 'SMW\DataModel\ContainerSemanticData', 'SMWContainerSemanticData' );
