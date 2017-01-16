@@ -22,7 +22,8 @@
 			"Wikitoni",
 			"Macofe",
 			"Urielejh",
-			"Matteocng"
+			"Matteocng",
+			"Samuele2002"
 		]
 	},
 	"smw-desc": "Rende la tua wiki più accessibile - per le macchine ''e'' per gli umani ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentazione in linea])",
@@ -114,8 +115,7 @@
 	"smw_typearticlecount": "Visualizzazione di $1 {{PLURAL:$1|proprietà|proprietà}} che usano questo tipo.",
 	"smw_attribute_header": "Pagine che usano la proprietà \"$1\"",
 	"smw_attributearticlecount": "Visualizzazione di $1 {{PLURAL:$1|pagina che usa|pagine che usano}} questa proprietà.",
-	"smw_subproperty_header": "Sottoproprietà",
-	"smw-subpropertylist-count": "Questa proprietà ha {{PLURAL:$1|la seguente|le seguenti $1}} sottoproprietà.",
+	"smw-propertylist-redirect-header": "Sinonimi",
 	"exportrdf": "Esporta le pagine in RDF",
 	"smw_exportrdf_docu": "Questa pagina consente di ottenere dati da una pagina in formato RDF. Per esportare delle pagine, inseritene i titoli nella casella di testo sottostante, un titolo per riga.",
 	"smw_exportrdf_recursive": "Esporta ricorsivamente tutte le pagine correlate. Nota: il risultato potrebbe essere molto grande!",

@@ -131,8 +131,8 @@
 	"smw_typearticlecount": "Es {{PLURAL:$1|mostra|mostren}} $1 {{PLURAL:$1|propietat que fa servir|propietats que fan servir}} aquesta propietat.",
 	"smw_attribute_header": "Pàgines que fan servir la propietat \"$1\"",
 	"smw_attributearticlecount": "Es {{PLURAL:$1|mostra|mostren}} $1 {{PLURAL:$1|pàgina que fa servir|pàgines que fan servir}} aquesta propietat.",
-	"smw_subproperty_header": "Subpropietats",
-	"smw-subpropertylist-count": "Aquesta propietat té {{PLURAL:$1|la subpropietat següent|les $1 subpropietats següents}}:",
+	"smw-propertylist-subproperty-header": "Subpropietats",
+	"smw-propertylist-redirect-header": "Sinònims",
 	"exportrdf": "Exporta les pàgines a RDF",
 	"smw_exportrdf_docu": "Aquesta pàgina permet obtenir dades en format RDF d'una pàgina del wiki.\nPer exportar pàgines, entra els títols a la caixa de text següent, un títol per línia.",
 	"smw_exportrdf_recursive": "Exporta recursivament totes les pàgines relacionades.\nTingueu en compte que el resultat pot ser molt gran!",
@@ -327,7 +327,7 @@
 	"smw-sp-admin-settings-button": "Genera la llista de paràmetres",
 	"smw-admin-idlookup-title": "Consulta de l'Object ID",
 	"smw-admin-idlookup-docu": "Mostra els detalls d'un Id d'objecte intern que representa entitats individuals (pàgina wiki, subobjecte, etc.) a Semantic MediaWiki.",
-	"smw-admin-objectid": "Id d'objecte:",
+	"smw-admin-objectid": "Id de l'objecte:",
 	"smw-livepreview-loading": "S'està carregant…",
 	"smw-sp-searchbyproperty-description": "Aquesta pàgina proporciona una simple [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces interfície de navegació] per trobar entitats descrites per una propietat i un valor anomenat. Altres interfícies de cerca disponibles inclouen la [[Special:PageProperty|cerca de propietats de pàgina]] i el [[Special:Ask|generador de consultes ask]].",
 	"smw-sp-searchbyproperty-resultlist-header": "Llista de resultats",
@@ -394,6 +394,7 @@
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "No es pot utilitzar «$1» com etiqueta preferida perquè la llengua «$2» ja està assignada a l'etiqueta «$3».",
 	"smw-parse": "$1",
+	"smw-clipboard-copy-link": "Copia l'enllaç al porta-retalls",
 	"smw-data-lookup": "Recuperant les dades ...",
 	"smw-no-data-available": "No hi ha cap dada disponible."
 }
