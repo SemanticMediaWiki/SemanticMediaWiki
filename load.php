@@ -28,7 +28,7 @@ class SemanticMediaWiki {
 			include_once __DIR__ . '/vendor/autoload.php';
 		}
 
-		define( 'SMW_VERSION', '2.4.4' );
+		define( 'SMW_VERSION', '2.4.5' );
 
 		// Registration of the extension credits, see Special:Version.
 		$GLOBALS['wgExtensionCredits']['semantic'][] = array(
