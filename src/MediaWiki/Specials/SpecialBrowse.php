@@ -53,7 +53,7 @@ class SpecialBrowse extends SpecialPage {
 
 		// get the GET parameters
 		$articletext = $webRequest->getVal( 'article' );
-		$isEmptyRequest = $query === null && $webRequest->getVal( 'article' ) === '';
+		$isEmptyRequest = $query === null && ( $webRequest->getVal( 'article' ) === '' || $webRequest->getVal( 'article' ) === null );
 
 		// @see SMWInfolink::encodeParameters
 		if ( $query === null && $this->getRequest()->getCheck( 'x' ) ) {
