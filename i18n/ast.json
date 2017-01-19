@@ -123,6 +123,10 @@
 	"smw_typearticlecount": "Amosando $1 {{PLURAL:$1|propiedá qu'usa|propiedaes qu'usen}} esti tipu.",
 	"smw_attribute_header": "Páxines qu'usen la propiedá \"$1\"",
 	"smw_attributearticlecount": "Amosando $1 {{PLURAL:$1|páxina qu'usa|páxines qu'usen}} esta propiedá.",
+	"smw-propertylist-subproperty-header": "Subpropiedaes",
+	"smw-propertylist-redirect-header": "Sinónimos",
+	"smw-propertylist-count": "S'{{PLURAL:$1|amuesa $1 propiedá rellacionada|amuesen $1 propiedaes rellacionaes}}.",
+	"smw-propertylist-count-with-restricted-note": "S'{{PLURAL:$1|amuesa $1 propiedá rellacionada|amuesen $1 propiedaes rellacionaes}} (hai más disponibles, pero la salida ta llendada a «$2»).",
 	"exportrdf": "Esportar les páxines a RDF",
 	"smw_exportrdf_docu": "Esta páxina permite algamar datos d'una páxina en formatu RDF.\nPa esportar les páxines, escriba los títulos nel cuadru de testu d'abaxo, un títulu por llinia.",
 	"smw_exportrdf_recursive": "Esportar recursivamente toles páxines rellacionaes.\n¡Tenga en cuenta que'l resultáu pue ser grande!",
@@ -160,6 +164,7 @@
 	"smw-statistics-property-instance": "{{PLURAL:$1|Valor|Valores}} de propiedá (total)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|Propiedá|Propiedaes}}]] (total)",
 	"smw-statistics-property-total-legacy": "{{PLURAL:$1|Propiedá|Propiedaes}} (total)",
+	"smw-statistics-property-used": "[[Special:Properties|{{PLURAL:$1|Propiedá|Propiedaes}}]] (úsase con un valor polo menos)",
 	"smw-statistics-property-page": "{{PLURAL:$1|Propiedá|Propiedaes}} ({{PLURAL:$1|rexistrada|rexistraes}} con una páxina)",
 	"smw-statistics-property-type": "{{PLURAL:$1|Propiedá|Propiedaes}} ({{PLURAL:$1|asociada|asociaes}} a un tipu de datos)",
 	"smw-statistics-query-inline-legacy": "{{PLURAL:$1|Consulta|Consultes}}",
@@ -242,7 +247,7 @@
 	"smw_smwadmin_updatenotstarted": "Yá ta executando un procesu d'actualización.\nNun se creará otru.",
 	"smw_smwadmin_updatestopped": "Pararon tolos procesos d'actualización esistentes.",
 	"smw_smwadmin_updatenotstopped": "Pa parar el procesu d'actualización n'execución, tienes d'activar el cuadru de marca pa indicar que daveres tas seguru.",
-	"smw-admin-docu": "Esta páxina especial ayudaráte demientres la instalación y anovamientu de <a href=\"https://www.semantic-mediawiki.org\">Semantic MediaWiki</a>.\nRecuerda facer copia de seguridá de los datos importantes antes d'executar funciones alministratives.",
+	"smw-admin-docu": "Esta páxina especial ayudaráte demientres la instalación, anovamientu, mantenimientu y usu de <a href=\"https://www.semantic-mediawiki.org\">Semantic MediaWiki</a> y ufre tamién otres funciones y xeres alministratives, lo mesmo qu'estadístiques.\nRecuerda facer copia de seguridá de los datos importantes antes d'executar funciones alministratives.",
 	"smw-admin-db": "Instalación y anovamientu de la base de datos",
 	"smw-admin-dbdocu": "Semantic MediaWiki rique dalgunes estensiones de la base de datos de MediaWiki pa poder almacenar los datos semánticos.\nLa función d'abaxo asegura que la base de datos ta correutamente configurada.\nLos cambios fechos nesti pasu nun afeuten al restu de la base de datos de MediaWiki, y puen desfacese fácilmente si se quier.\nEsta función de configuración pue executase múltiples veces ensin peligru, pero namái ye necesaria una vez na instalación o anovamientu.",
 	"smw-admin-permissionswarn": "Si la operación falla con errores SQL, probablemente l'usuariu de la base de datos qu'emplega la wiki (comprueba'l ficheru LocalSettings.php) nun tien permisos bastantes.\nO bien da-y a esti usuariu más permisos pa crear y desaniciar tables, o pon temporalmente los datos de conexón del usuariu root de la base de datos nel ficheru LocalSettings.php, o usa'l script de mantenimientu <code>setupStore.php</code>, que pué usar les credenciales d'un alministrador.",
@@ -396,5 +401,7 @@
 	"smw-datavalue-allows-pattern-mismatch": "La espresión regular «$2» clasificó a «$1» como inválida.",
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-property-preferred-title-format": "$1 ($2)",
-	"smw-parse": "$1"
+	"smw-parse": "$1",
+	"smw-data-lookup": "Recuperando los datos...",
+	"smw-no-data-available": "Nun hai datos disponibles."
 }
