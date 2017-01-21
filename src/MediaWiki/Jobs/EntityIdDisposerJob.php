@@ -64,6 +64,9 @@ class EntityIdDisposerJob extends JobBase {
 	 */
 	public function run() {
 
+		// MW 1.29+ Avoid transaction collisions during Job execution
+		$this->propertyTableIdReferenceDisposer->waitOnTransactionIdle();
+
 		if ( $this->hasParameter( 'id' ) ) {
 			$this->dispose( $this->getParameter( 'id' ) );
 		} else {

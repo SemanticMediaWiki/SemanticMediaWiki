@@ -8,6 +8,7 @@ use DeferredUpdates;
 use RuntimeException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
+use SMW\MediaWiki\Database;
 
 /**
  * @see MWCallableUpdate
@@ -21,6 +22,11 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	 * @var Closure|callable
 	 */
 	private $callback;
+
+	/**
+	 * @var Database|null
+	 */
+	private $connection;
 
 	/**
 	 * @var boolean
@@ -48,6 +54,16 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	private $fingerprint = null;
 
 	/**
+	 * @var boolean
+	 */
+	private $onTransactionIdle = false;
+
+	/**
+	 * @var boolean
+	 */
+	private $isCommandLineMode = false;
+
+	/**
 	 * @var array
 	 */
 	private static $queueList = array();
@@ -61,15 +77,30 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	 * @since 2.4
 	 *
 	 * @param Closure $callback
+	 * @param Database|null $connection
+	 *
 	 * @throws RuntimeException
 	 */
-	public function __construct( Closure $callback ) {
+	public function __construct( Closure $callback, Database $connection = null ) {
 
 		if ( !is_callable( $callback ) ) {
 			throw new RuntimeException( 'Expected a valid callback/closure!' );
 		}
 
 		$this->callback = $callback;
+		$this->connection = $connection;
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:$wgCommandLineMode
+	 * Indicates whether MW is running in command-line mode.
+	 *
+	 * @since 2.5
+	 *
+	 * @param boolean $isCommandLineMode
+	 */
+	public function isCommandLineMode( $isCommandLineMode ) {
+		$this->isCommandLineMode = $isCommandLineMode;
 	}
 
 	/**
@@ -106,6 +137,23 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	 */
 	public function markAsPending( $isPending = false ) {
 		$this->isPending = (bool)$isPending;
+	}
+
+	/**
+	 * @note MW 1.29+ showed transaction collisions (Exception thrown with
+	 * an uncommited database transaction), use 'onTransactionIdle' to isolate
+	 * the update execution.
+	 *
+	 * @since 2.5
+	 */
+	public function waitOnTransactionIdle() {
+
+		if ( $this->connection === null ) {
+			$this->log( __METHOD__ . ' is missing an active connection therefore `onTransactionIdle` cannot be used.' );
+			return $this->onTransactionIdle = false;
+		}
+
+		$this->onTransactionIdle = true;
 	}
 
 	/**
@@ -157,7 +205,17 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	 * @since 2.4
 	 */
 	public function doUpdate() {
+
 		$this->log( $this->origin . ' doUpdate' . ( $this->fingerprint ? ' (' . $this->fingerprint . ')' : '' ) );
+
+		if ( $this->onTransactionIdle ) {
+			return $this->connection->onTransactionIdle( function() {
+				$this->log( $this->origin . ' doUpdate (onTransactionIdle)' );
+				$this->onTransactionIdle = false;
+				$this->doUpdate();
+			} );
+		}
+
 		call_user_func( $this->callback );
 		unset( self::$queueList[$this->fingerprint] );
 	}
@@ -179,8 +237,8 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 			return self::$pendingUpdates[] = $this;
 		}
 
-		if ( $this->enabledDeferredUpdate ) {
-			$this->log( $this->origin . ' (as DeferredCallableUpdate)' );
+		if ( !$this->isCommandLineMode && $this->enabledDeferredUpdate ) {
+			$this->log( $this->origin . ' (as DeferredCallableUpdate' . ( $this->fingerprint ? ' ' . $this->fingerprint : '' ) . ')' );
 			return DeferredUpdates::addUpdate( $this );
 		}
 

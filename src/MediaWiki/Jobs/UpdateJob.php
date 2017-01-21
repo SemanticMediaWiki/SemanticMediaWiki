@@ -95,6 +95,7 @@ class UpdateJob extends JobBase {
 		if ( $lastModified === \WikiPage::factory( $title )->getTimestamp() ) {
 			$pageUpdater = $this->applicationFactory->newPageUpdater();
 			$pageUpdater->addPage( $title );
+			$pageUpdater->waitOnTransactionIdle();
 			$pageUpdater->doPurgeParserCache();
 			return true;
 		}

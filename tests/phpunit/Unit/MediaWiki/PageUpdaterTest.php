@@ -15,6 +15,16 @@ use SMW\MediaWiki\PageUpdater;
  */
 class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 
+	private $connection;
+
+	protected function setUp() {
+		parent::setup();
+
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
@@ -108,6 +118,118 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$instance->addPage( $title );
 
 		$instance->doPurgeParserCache();
+	}
+
+	public function testPurgeParserCacheOnTransactionIdle() {
+
+		$this->connection->expects( $this->once() )
+			->method( 'onTransactionIdle' )
+			->will( $this->returnCallback( function( $callback ) {
+				return call_user_func( $callback ); }
+			) );
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'getPrefixedDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$title->expects( $this->once() )
+			->method( 'invalidateCache' );
+
+		$instance = new PageUpdater( $this->connection );
+		$instance->addPage( $title );
+
+		$instance->waitOnTransactionIdle();
+		$instance->doPurgeParserCache();
+	}
+
+	public function testPurgeParserCacheOnTransactionIdleWithMissingConnection() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'getPrefixedDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$title->expects( $this->once() )
+			->method( 'invalidateCache' );
+
+		$instance = new PageUpdater();
+		$instance->addPage( $title );
+
+		$instance->waitOnTransactionIdle();
+		$instance->doPurgeParserCache();
+	}
+
+	public function testPurgeHtmlCacheOnTransactionIdle() {
+
+		$this->connection->expects( $this->once() )
+			->method( 'onTransactionIdle' )
+			->will( $this->returnCallback( function( $callback ) {
+				return call_user_func( $callback ); }
+			) );
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'getPrefixedDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$title->expects( $this->once() )
+			->method( 'touchLinks' );
+
+		$instance = new PageUpdater( $this->connection );
+		$instance->addPage( $title );
+
+		$instance->waitOnTransactionIdle();
+		$instance->doPurgeHtmlCache();
+	}
+
+	public function testPurgeWebCacheOnTransactionIdle() {
+
+		$this->connection->expects( $this->once() )
+			->method( 'onTransactionIdle' )
+			->will( $this->returnCallback( function( $callback ) {
+				return call_user_func( $callback ); }
+			) );
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'getPrefixedDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$title->expects( $this->once() )
+			->method( 'purgeSquid' );
+
+		$instance = new PageUpdater( $this->connection );
+		$instance->addPage( $title );
+
+		$instance->waitOnTransactionIdle();
+		$instance->doPurgeWebCache();
+	}
+
+	public function testAddNullPage() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->never() )
+			->method( 'getPrefixedDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$instance = new PageUpdater();
+		$instance->addPage( null );
 	}
 
 }

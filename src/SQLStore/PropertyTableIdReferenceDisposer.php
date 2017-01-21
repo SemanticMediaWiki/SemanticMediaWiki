@@ -31,6 +31,11 @@ class PropertyTableIdReferenceDisposer {
 	private $connection = null;
 
 	/**
+	 * @var boolean
+	 */
+	private $onTransactionIdle = false;
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param SQLStore $store
@@ -38,6 +43,17 @@ class PropertyTableIdReferenceDisposer {
 	public function __construct( SQLStore $store ) {
 		$this->store = $store;
 		$this->connection = $this->store->getConnection( 'mw.db' );
+	}
+
+	/**
+	 * @note MW 1.29+ showed transaction collisions when executed using the
+	 * JobQueue in connection with purging the BagOStuff cache, use
+	 * 'onTransactionIdle' to isolate the execution for some of the tasks.
+	 *
+	 * @since 2.5
+	 */
+	public function waitOnTransactionIdle() {
+		$this->onTransactionIdle = true;
 	}
 
 	/**
@@ -104,9 +120,21 @@ class PropertyTableIdReferenceDisposer {
 	 */
 	public function cleanUpTableEntriesById( $id ) {
 
-		$this->connection->beginAtomicTransaction( __METHOD__ );
+		$subject = $this->store->getObjectIds()->getDataItemById( $id );
 
-		$this->triggerCleanUpEvents( $id );
+		if ( $subject instanceof DIWikiPage ) {
+			// Use the subject without an internal 'smw-delete' iw marker
+			$subject = new DIWikiPage(
+				$subject->getDBKey(),
+				$subject->getNamespace(),
+				'',
+				$subject->getSubobjectName()
+			);
+		}
+
+		$this->triggerCleanUpEvents( $subject, $this->onTransactionIdle );
+
+		$this->connection->beginAtomicTransaction( __METHOD__ );
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
 			if ( $proptable->usesIdSubject() ) {
@@ -180,21 +208,17 @@ class PropertyTableIdReferenceDisposer {
 		}
 	}
 
-	private function triggerCleanUpEvents( $id ) {
-
-		$subject = $this->store->getObjectIds()->getDataItemById( $id );
+	private function triggerCleanUpEvents( $subject, $onTransactionIdle ) {
 
 		if ( !$subject instanceof DIWikiPage ) {
 			return;
 		}
 
-		// Use the subject without an internal 'smw-delete' iw marker
-		$subject = new DIWikiPage(
-			$subject->getDBKey(),
-			$subject->getNamespace(),
-			'',
-			$subject->getSubobjectName()
-		);
+		if ( $onTransactionIdle ) {
+			return $this->connection->onTransactionIdle( function() use( $subject ) {
+				$this->triggerCleanUpEvents( $subject, false );
+			} );
+		}
 
 		$eventHandler = EventHandler::getInstance();
 

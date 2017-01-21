@@ -148,7 +148,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testcCleanUpTableEntriesByRow() {
+	public function testCleanUpTableEntriesByRow() {
 
 		$row = new \stdClass;
 		$row->smw_id = 42;
@@ -173,6 +173,37 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->cleanUpTableEntriesByRow( $row );
+	}
+
+	public function testCleanUpOnTransactionIdle() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'onTransactionIdle' )
+			->will( $this->returnCallback( function( $callback ) {
+				return call_user_func( $callback ); }
+			) );
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'delete' );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( array() ) );
+
+		$instance = new PropertyTableIdReferenceDisposer(
+			$this->store
+		);
+
+		$instance->waitOnTransactionIdle();
+		$instance->cleanUpTableEntriesById( 42 );
 	}
 
 }

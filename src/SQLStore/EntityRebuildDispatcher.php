@@ -240,6 +240,10 @@ class EntityRebuildDispatcher {
 		// update by internal SMW id --> make sure we get all objects in SMW
 		$db = $this->store->getConnection( 'mw.db' );
 
+		// MW 1.29+ "Exception thrown with an uncommited database transaction ...
+		// MWCallableUpdate::doUpdate: transaction round 'SMW\MediaWiki\Jobs\RefreshJob::run' already started"
+		$this->propertyTableIdReferenceDisposer->waitOnTransactionIdle();
+
 		$res = $db->select(
 			\SMWSql3SmwIds::TABLE_NAME,
 			array( 'smw_id', 'smw_title', 'smw_namespace', 'smw_iw', 'smw_subobject', 'smw_sortkey', 'smw_proptable_hash' ),
