@@ -216,7 +216,7 @@ class SMWURIValue extends SMWDataValue {
 
 	public function getShortWikiText( $linked = null ) {
 
-		list( $url, $caption ) = $this->decodeUriContext( $this->m_caption );
+		list( $url, $caption ) = $this->decodeUriContext( $this->m_caption, $linked );
 
 		if ( is_null( $linked ) || ( $linked === false ) || ( $url === '' ) ||
 			( $this->m_outformat == '-' ) || ( $this->m_caption === '' ) ) {
@@ -230,11 +230,11 @@ class SMWURIValue extends SMWDataValue {
 
 	public function getShortHTMLText( $linker = null ) {
 
-		list( $url, $caption ) = $this->decodeUriContext( $this->m_caption );
+		list( $url, $caption ) = $this->decodeUriContext( $this->m_caption, $linker );
 
 		if ( is_null( $linker ) || ( !$this->isValid() ) || ( $url === '' ) ||
 			( $this->m_outformat == '-' ) || ( $this->m_outformat == 'nowiki' ) ||
-			( $this->m_caption === '' ) || is_bool( $linker ) ) {
+			( $this->m_caption === '' ) || $linker === false ) {
 			return $caption;
 		} else {
 			return $linker->makeExternalLink( $url, $caption );
@@ -247,10 +247,10 @@ class SMWURIValue extends SMWDataValue {
 			return $this->getErrorText();
 		}
 
-		list( $url, $wikitext ) = $this->decodeUriContext( $this->m_wikitext );
+		list( $url, $wikitext ) = $this->decodeUriContext( $this->m_wikitext, $linked );
 
 		if ( is_null( $linked ) || ( $linked === false ) || ( $url === '' ) ||
-			( $this->m_outformat == '-' ) || is_bool( $linked ) ) {
+			( $this->m_outformat == '-' ) || $linked === false ) {
 			return $wikitext;
 		} elseif ( $this->m_outformat == 'nowiki' ) {
 			return $this->makeNonlinkedWikiText( $wikitext );
@@ -265,10 +265,10 @@ class SMWURIValue extends SMWDataValue {
 			return $this->getErrorText();
 		}
 
-		list( $url, $wikitext ) = $this->decodeUriContext( $this->m_wikitext );
+		list( $url, $wikitext ) = $this->decodeUriContext( $this->m_wikitext, $linker );
 
 		if ( is_null( $linker ) || ( !$this->isValid() ) || ( $url === '' ) ||
-			( $this->m_outformat == '-' ) || ( $this->m_outformat == 'nowiki' ) || is_bool( $linker ) ) {
+			( $this->m_outformat == '-' ) || ( $this->m_outformat == 'nowiki' ) || $linker === false ) {
 			return $wikitext;
 		} else {
 			return $linker->makeExternalLink( $url, $wikitext );
@@ -340,7 +340,7 @@ class SMWURIValue extends SMWDataValue {
 		return str_replace( ':', '&#58;', $url );
 	}
 
-	private function decodeUriContext( $context ) {
+	private function decodeUriContext( $context, $linker ) {
 
 		// Prior to decoding turn any `-` into an internal representation to avoid
 		// potential breakage
@@ -348,6 +348,13 @@ class SMWURIValue extends SMWDataValue {
 			$context = UrlEncoder::decode( str_replace( '-', '-2D', $context ) );
 		}
 
+		if ( $this->m_mode !== SMW_URI_MODE_EMAIL && $linker !== null ) {
+			$context = str_replace( '_', ' ', $context );
+		}
+
+		// Allow the display without `_` so that URIs can be split
+		// during the outout by the browser without breaking the URL itself
+		// as it contains the `_` for spaces
 		return array( $this->getURL(), $context );
 	}
 

@@ -328,16 +328,17 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
+		#15
 		$provider[] = array(
 			'http://example.org/api?query=!_:;@* #Foo&=%20-3DBar',
 			false,
 			$linker,
 			array(
 				'wikiValue'     => 'http://example.org/api?query=!_:;@* #Foo&=%20-3DBar', // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
-				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=%21_:%3B@%2A%20#Foo&amp;=%20-3DBar">http://example.org/api?query=!_:;@* #Foo&amp;=%20-3DBar</a>', // @codingStandardsIgnoreEnd
-				'longWikiText'  => '[http://example.org/api?query=%21_:%3B@%2A%20#Foo&=%20-3DBar http://example.org/api?query=!_:;@* #Foo&=%20-3DBar]', // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
-				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=%21_:%3B@%2A%20#Foo&amp;=%20-3DBar">http://example.org/api?query=!_:;@* #Foo&amp;=%20-3DBar</a>', // @codingStandardsIgnoreEnd
-				'shortWikiText' => '[http://example.org/api?query=%21_:%3B@%2A%20#Foo&=%20-3DBar http://example.org/api?query=!_:;@* #Foo&=%20-3DBar]'
+				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=%21_:%3B@%2A_#Foo&amp;=_-3DBar">http://example.org/api?query=! :;@* #Foo&amp;=%20-3DBar</a>', // @codingStandardsIgnoreEnd
+				'longWikiText'  => '[http://example.org/api?query=%21_:%3B@%2A_#Foo&=_-3DBar http://example.org/api?query=! :;@* #Foo&=%20-3DBar]', // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
+				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=%21_:%3B@%2A_#Foo&amp;=_-3DBar">http://example.org/api?query=! :;@* #Foo&amp;=%20-3DBar</a>', // @codingStandardsIgnoreEnd
+				'shortWikiText' => '[http://example.org/api?query=%21_:%3B@%2A_#Foo&=_-3DBar http://example.org/api?query=! :;@* #Foo&=%20-3DBar]'
 			)
 		);
 
@@ -347,10 +348,10 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 			$linker,
 			array(
 				'wikiValue'     => 'http://example.org/api?query=!_:;@* #Foo&=%20-3DBar', // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
-				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=%21_:%3B@%2A%20#Foo&amp;=%20-3DBar">http://example.org/api?query=!_:;@* #Foo&amp;=%20-3DBar</a>', // @codingStandardsIgnoreEnd
-				'longWikiText'  => '[http://example.org/api?query=%21_:%3B@%2A%20#Foo&=%20-3DBar http://example.org/api?query=!_:;@* #Foo&=%20-3DBar]',
-				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=%21_:%3B@%2A%20#Foo&amp;=%20-3DBar">&amp;!_:;@* #Foo</a>',
-				'shortWikiText' => '[http://example.org/api?query=%21_:%3B@%2A%20#Foo&=%20-3DBar &!_:;@* #Foo]'
+				'longHTMLText'  => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=%21_:%3B@%2A_#Foo&amp;=_-3DBar">http://example.org/api?query=! :;@* #Foo&amp;=%20-3DBar</a>', // @codingStandardsIgnoreEnd
+				'longWikiText'  => '[http://example.org/api?query=%21_:%3B@%2A_#Foo&=_-3DBar http://example.org/api?query=! :;@* #Foo&=%20-3DBar]',
+				'shortHTMLText' => '<a class="external"' . $noFollowAttribute . ' href="http://example.org/api?query=%21_:%3B@%2A_#Foo&amp;=_-3DBar">&amp;! :;@* #Foo</a>',
+				'shortWikiText' => '[http://example.org/api?query=%21_:%3B@%2A_#Foo&=_-3DBar &! :;@* #Foo]'
 			)
 		);
 

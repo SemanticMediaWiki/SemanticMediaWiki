@@ -1,0 +1,105 @@
+{
+	"description": "Test RDF output generation `_uri`/`_ema`/`_tel` with spaces/underscore (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has url",
+			"contents": "[[Has type::URL]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has telephone number",
+			"contents": "[[Has type::Telephone number]]"
+		},
+		{
+			"page": "Example/R0013/1",
+			"contents": "[[Has url::http://example.org/Foo bar]] [[Has url::http://example.org/Foo%20bar]] [[Has url::http://example.org/Foo_bar]]"
+		},
+		{
+			"page": "Example/R0013/2",
+			"contents": "[[Email::john_doe@example.org]]"
+		},
+		{
+			"page": "Example/R0013/3",
+			"contents": "[[Has telephone number::+1 201 555 5555]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "rdf",
+			"about": "#0 url with underscore",
+			"exportcontroller": {
+				"print-pages": [
+					"Example/R0013/1"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<property:Has_url rdf:resource=\"http://example.org/Foo_bar\"/>"
+				],
+				"not-contain": [
+					"<property:Has_url rdf:resource=\"http://example.org/Foo bar\"/>",
+					"<property:Has_url rdf:resource=\"http://example.org/Foo%20bar\"/>"
+				]
+			}
+		},
+		{
+			"type": "rdf",
+			"about": "#1 email with underscore",
+			"exportcontroller": {
+				"print-pages": [
+					"Example/R0013/2"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<property:Email rdf:resource=\"mailto:john_doe@example.org\"/>"
+				]
+			}
+		},
+		{
+			"type": "rdf",
+			"about": "#2 tle with spaces",
+			"exportcontroller": {
+				"print-pages": [
+					"Example/R0013/3"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<property:Has_telephone_number rdf:resource=\"tel:+1-201-555-5555\"/>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgExportBCNonCanonicalFormUse": false,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"smwgNamespace": "http://example.org/id/"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
