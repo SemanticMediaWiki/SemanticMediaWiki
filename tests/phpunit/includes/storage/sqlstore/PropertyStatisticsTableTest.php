@@ -195,4 +195,37 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 		);
 	}
 
+	public function testAddToUsageCountsOnTransactionIdle() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'onTransactionIdle' )
+			->will( $this->returnCallback( function( $callback ) {
+				return call_user_func( $callback ); }
+			) );
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'update' );
+
+		$instance = new PropertyStatisticsTable(
+			$connection,
+			\SMWSQLStore3::PROPERTY_STATISTICS_TABLE
+		);
+
+		$additions = array(
+			2 => 42,
+			9001 => -9000,
+			9003 => 0,
+		);
+
+		$instance->waitOnTransactionIdle();
+
+		$this->assertTrue(
+			$instance->addToUsageCounts( $additions )
+		);
+	}
+
 }

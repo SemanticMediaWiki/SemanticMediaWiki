@@ -136,7 +136,7 @@ class SQLStoreFactory {
 
 		$usageStatisticsListLookup = new UsageStatisticsListLookup(
 			$this->store,
-			$this->newPropertyStatisticsStore()
+			$this->newPropertyStatisticsTable()
 		);
 
 		return $this->newCachedListLookup(
@@ -159,7 +159,7 @@ class SQLStoreFactory {
 
 		$propertyUsageListLookup = new PropertyUsageListLookup(
 			$this->store,
-			$this->newPropertyStatisticsStore(),
+			$this->newPropertyStatisticsTable(),
 			$requestOptions
 		);
 
@@ -183,7 +183,7 @@ class SQLStoreFactory {
 
 		$unusedPropertyListLookup = new UnusedPropertyListLookup(
 			$this->store,
-			$this->newPropertyStatisticsStore(),
+			$this->newPropertyStatisticsTable(),
 			$requestOptions
 		);
 
@@ -416,15 +416,24 @@ class SQLStoreFactory {
 	 *
 	 * @return DataItemHandlerDispatcher
 	 */
-	public function newdataItemHandlerDispatcher() {
+	public function newDataItemHandlerDispatcher() {
 		return new DataItemHandlerDispatcher( $this->store );
 	}
 
-	private function newPropertyStatisticsStore() {
+	/**
+	 * @since 2.5
+	 *
+	 * @return PropertyStatisticsTable
+	 */
+	public function newPropertyStatisticsTable() {
 
 		$propertyStatisticsTable = new PropertyStatisticsTable(
 			$this->store->getConnection( 'mw.db' ),
 			SMWSQLStore3::PROPERTY_STATISTICS_TABLE
+		);
+
+		$propertyStatisticsTable->setLogger(
+			ApplicationFactory::getInstance()->getMediaWikiLogger()
 		);
 
 		return $propertyStatisticsTable;

@@ -21,6 +21,23 @@ use Title;
  */
 class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 
+	private $factory;
+
+	protected function setUp() {
+
+		$propertyStatisticsTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsTable' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->factory->expects( $this->any() )
+			->method( 'newPropertyStatisticsTable' )
+			->will( $this->returnValue( $propertyStatisticsTable ) );
+	}
+
 	public function testCanConstruct() {
 
 		$parentStore = $this->getMockBuilder( '\SMWSQLStore3' )
@@ -29,7 +46,7 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMWSQLStore3Writers',
-			new SMWSQLStore3Writers( $parentStore )
+			new SMWSQLStore3Writers( $parentStore, $this->factory )
 		);
 	}
 
@@ -94,7 +111,7 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOptions' )
 			->will( $this->returnValue( new \SMW\Options() ) );
 
-		$instance = new SMWSQLStore3Writers( $parentStore );
+		$instance = new SMWSQLStore3Writers( $parentStore, $this->factory );
 
 		$instance->changeTitle(
 			Title::newFromText( __METHOD__ . '-old', NS_MAIN ),
@@ -157,7 +174,7 @@ class ChangeTitleTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOptions' )
 			->will( $this->returnValue( new \SMW\Options() ) );
 
-		$instance = new SMWSQLStore3Writers( $parentStore );
+		$instance = new SMWSQLStore3Writers( $parentStore, $this->factory );
 
 		$instance->changeTitle(
 			Title::newFromText( __METHOD__ . '-old', NS_MAIN ),
