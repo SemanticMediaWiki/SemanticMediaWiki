@@ -105,8 +105,8 @@ class TextSanitizer {
 		$sanitizer->convertDoubleWidth();
 
 		$sanitizer->replace(
-			array( 'http://', 'https://', 'mailto:', '%2A', '_', '&#x005B;', "\n", "\t" ),
-			array( '', '', '', '*', ' ', '[', "", "" )
+			array( 'http://', 'https://', 'mailto:', '%2A', '_', '&#x005B;', '&#91;', "\n", "\t" ),
+			array( '', '', '', '*', ' ', '[', '[', "", "" )
 		);
 
 		$language = $this->predictLanguage( $text );

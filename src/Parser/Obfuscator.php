@@ -22,12 +22,16 @@ class Obfuscator {
 	 */
 	public static function obfuscateLinks( $text, InTextAnnotationParser $parser ) {
 
+		// Use &#x005B; instead of &#91; to distinguish it from the MW's Sanitizer
+		// who uses the same decode sequence and avoid issues when removing links
+		// obfuscation
+
 		// Filter simple [ ... ] from [[ ... ]] links
 		// Ensure to find the correct start and end in case of
 		// [[Foo::[[Bar]]]] or [[Foo::[http://example.org/foo]]]
 		$text = str_replace(
-			array( '[', ']', '&#91;&#91;', '&#93;&#93;&#93;&#93;', '&#93;&#93;&#93;', '&#93;&#93;' ),
-			array( '&#91;', '&#93;', '[[', ']]]]', '&#93;]]', ']]' ),
+			array( '[', ']', '&#x005B;&#x005B;', '&#93;&#93;&#93;&#93;', '&#93;&#93;&#93;', '&#93;&#93;' ),
+			array( '&#x005B;', '&#93;', '[[', ']]]]', '&#93;]]', ']]' ),
 			$text
 		);
 
@@ -43,7 +47,7 @@ class Obfuscator {
 	 */
 	public static function removeLinkObfuscation( $text ) {
 		return str_replace(
-			array( '&#91;', '&#93;', '&#124;' ),
+			array( '&#x005B;', '&#93;', '&#124;' ),
 			array( '[', ']', '|' ),
 			$text
 		);
@@ -59,7 +63,7 @@ class Obfuscator {
 	public static function encodeLinks( $text ) {
 		return str_replace(
 			array( '[', ']', '|' ),
-			array( '&#91;', '&#93;', '&#124;' ),
+			array( '&#x005B;', '&#93;', '&#124;' ),
 			$text
 		);
 	}
@@ -86,7 +90,7 @@ class Obfuscator {
 		return preg_replace_callback(
 			InTextAnnotationParser::getRegexpPattern( false ),
 			function( array $matches ) {
-				return str_replace( '[', '&#x005B;', $matches[0] );
+				return str_replace( '[', '&#91;', $matches[0] );
 			},
 			self::decodeSquareBracket( $text )
 		);
@@ -176,7 +180,7 @@ class Obfuscator {
 				// [[Text::Some [[abc]]
 				// Forget about about the first position
 				$replace = str_replace( $match, self::encodeLinks( $match ), $match );
-				$replace = substr_replace( $replace, '[[', 0, 10 );
+				$replace = substr_replace( $replace, '[[', 0, 16 );
 				$text = str_replace( $match, $replace, $text );
 			} elseif ( $openNum === $closeNum && $markerNum == 1 ) {
 				// [[Foo::Bar]] annotation therefore run a pattern match and

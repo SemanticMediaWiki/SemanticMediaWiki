@@ -66,13 +66,13 @@ class ObfuscatorTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'Suspendisse [[Bar::tincidunt semper|abc]] facilisi',
 			'Suspendisse abc facilisi',
-			'Suspendisse &#x005B;&#x005B;Bar::tincidunt semper|abc]] facilisi'
+			'Suspendisse &#91;&#91;Bar::tincidunt semper|abc]] facilisi'
 		);
 
 		$provider[] = array(
 			'Suspendisse [[Bar::tincidunt semper]] facilisi',
 			'Suspendisse tincidunt semper facilisi',
-			'Suspendisse &#x005B;&#x005B;Bar::tincidunt semper]] facilisi'
+			'Suspendisse &#91;&#91;Bar::tincidunt semper]] facilisi'
 		);
 
 		$provider[] = array(
@@ -84,13 +84,13 @@ class ObfuscatorTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'[[Foo::Foobar::テスト]] [[Bar:::ABC|DEF]] [[Foo:::0049 30 12345678/::Foo]]',
 			'Foobar::テスト DEF :0049 30 12345678/::Foo',
-			'&#x005B;&#x005B;Foo::Foobar::テスト]] &#x005B;&#x005B;Bar:::ABC|DEF]] &#x005B;&#x005B;Foo:::0049 30 12345678/::Foo]]'
+			'&#91;&#91;Foo::Foobar::テスト]] &#91;&#91;Bar:::ABC|DEF]] &#91;&#91;Foo:::0049 30 12345678/::Foo]]'
 		);
 
 		$provider[] = array(
 			'%5B%5BFoo%20Bar::foobaz%5D%5D',
 			'foobaz',
-			'&#x005B;&#x005B;Foo%20Bar::foobaz]]'
+			'&#91;&#91;Foo%20Bar::foobaz]]'
 		);
 
 		$provider[] = array(
@@ -103,19 +103,19 @@ class ObfuscatorTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'[[Foo|Bar::Foobar]] [[File:Example.png|alt=Bar::Foobar|Caption]] [[File:Example.png|Bar::Foobar|link=Foo]]',
 			'[[Foo|Bar::Foobar]] [[File:Example.png|alt=Bar::Foobar|Caption]] [[File:Example.png|Bar::Foobar|link=Foo]]',
-			'&#x005B;&#x005B;Foo|Bar::Foobar]] &#x005B;&#x005B;File:Example.png|alt=Bar::Foobar|Caption]] &#x005B;&#x005B;File:Example.png|Bar::Foobar|link=Foo]]'
+			'&#91;&#91;Foo|Bar::Foobar]] &#91;&#91;File:Example.png|alt=Bar::Foobar|Caption]] &#91;&#91;File:Example.png|Bar::Foobar|link=Foo]]'
 		);
 
 		$provider[] = array(
 			'[[Foo::@@@]] [[Bar::@@@|123]]',
 			' 123',
-			'&#x005B;&#x005B;Foo::@@@]] &#x005B;&#x005B;Bar::@@@|123]]'
+			'&#91;&#91;Foo::@@@]] &#91;&#91;Bar::@@@|123]]'
 		);
 
 		$provider[] = array(
 			'Suspendisse [[SMW::off]][[Bar::tincidunt semper|abc]] facilisi[[SMW::on]] [[Bar:::ABC|DEF]]',
 			'Suspendisse abc facilisi DEF',
-			'Suspendisse &#x005B;&#x005B;SMW::off]]&#x005B;&#x005B;Bar::tincidunt semper|abc]] facilisi&#x005B;&#x005B;SMW::on]] &#x005B;&#x005B;Bar:::ABC|DEF]]'
+			'Suspendisse &#91;&#91;SMW::off]]&#91;&#91;Bar::tincidunt semper|abc]] facilisi&#91;&#91;SMW::on]] &#91;&#91;Bar:::ABC|DEF]]'
 		);
 
 		return $provider;
@@ -132,17 +132,17 @@ class ObfuscatorTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = array(
 			'[[Foo]]',
-			'&#91;&#91;Foo&#93;&#93;'
+			'&#x005B;&#x005B;Foo&#93;&#93;'
 		);
 
 		$provider[] = array(
 			'[[Foo|Bar]]',
-			'&#91;&#91;Foo&#124;Bar&#93;&#93;'
+			'&#x005B;&#x005B;Foo&#124;Bar&#93;&#93;'
 		);
 
 		$provider[] = array(
 			'[[Foo::[[Bar]]]]',
-			'[[Foo::&#91;&#91;Bar&#93;&#93;]]'
+			'[[Foo::&#x005B;&#x005B;Bar&#93;&#93;]]'
 		);
 
 		return $provider;
