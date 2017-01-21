@@ -429,6 +429,9 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
 
+		$store->getOptions()->set( 'smwgSemanticsEnabled', true );
+		$store->getOptions()->set( 'smwgAutoRefreshSubject', true );
+
 		$this->mwHooksHandler->register( 'SMW::SQLStore::AfterDataUpdateComplete', function( $store, $semanticData, $compositePropertyTableDiffIterator ) use ( $test ){
 			$test->is( $compositePropertyTableDiffIterator->getCombinedIdListOfChangedEntities() );
 

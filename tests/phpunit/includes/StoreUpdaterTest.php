@@ -273,6 +273,9 @@ class StoreUpdaterTest  extends \PHPUnit_Framework_TestCase {
 				$this->anything(),
 				$this->anything() );
 
+		$store->getOptions()->set( 'smwgSemanticsEnabled', true );
+		$store->getOptions()->set( 'smwgAutoRefreshSubject', true );
+
 		$semanticData = new SemanticData( $subject );
 
 		$semanticData->addPropertyObjectValue(

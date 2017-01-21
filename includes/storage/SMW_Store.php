@@ -198,19 +198,17 @@ abstract class Store implements QueryEngine {
 	 */
 	public function updateData( SemanticData $semanticData ) {
 
-		if ( !ApplicationFactory::getInstance()->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
+		if ( !$this->getOptions()->get( 'smwgSemanticsEnabled' ) ) {
 			return;
 		}
 
+		$applicationFactory = ApplicationFactory::getInstance();
+
 		$subject = $semanticData->getSubject();
+		$hash = $subject->getHash();
 
-		$dispatchContext = EventHandler::getInstance()->newDispatchContext();
-		$dispatchContext->set( 'subject', $subject );
-
-		EventHandler::getInstance()->getEventDispatcher()->dispatch(
-			'on.before.semanticdata.update.complete',
-			$dispatchContext
-		);
+		// @see Store::getRedirectTarget
+		$applicationFactory->getInMemoryPoolCache()->getPoolCacheById( 'store.redirectTarget.lookup' )->delete( $hash );
 
 		/**
 		 * @since 1.6
@@ -224,10 +222,16 @@ abstract class Store implements QueryEngine {
 		 */
 		\Hooks::run( 'SMWStore::updateDataAfter', array( $this, $semanticData ) );
 
-		EventHandler::getInstance()->getEventDispatcher()->dispatch(
-			'on.after.semanticdata.update.complete',
-			$dispatchContext
-		);
+		$pageUpdater = $applicationFactory->newPageUpdater();
+
+		if ( !$this->getOptions()->get( 'smwgAutoRefreshSubject' ) || !$pageUpdater->canUpdate() ) {
+			return;
+		}
+
+		$pageUpdater->addPage( $subject->getTitle() );
+
+		$pageUpdater->doPurgeParserCache();
+		$pageUpdater->doPurgeHtmlCache();
 	}
 
 	/**

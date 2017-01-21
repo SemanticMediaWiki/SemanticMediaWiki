@@ -3,6 +3,8 @@
 namespace SMW\MediaWiki;
 
 use Title;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
 
 /**
  * @license GNU GPL v2+
@@ -10,12 +12,28 @@ use Title;
  *
  * @author mwjames
  */
-class PageUpdater {
+class PageUpdater implements LoggerAwareInterface {
 
 	/**
 	 * @var Title[]
 	 */
 	private $titles = array();
+
+	/**
+	 * LoggerInterface
+	 */
+	private $logger;
+
+	/**
+	 * @see LoggerAwareInterface::setLogger
+	 *
+	 * @since 2.5
+	 *
+	 * @param LoggerInterface $logger
+	 */
+	public function setLogger( LoggerInterface $logger ) {
+		$this->logger = $logger;
+	}
 
 	/**
 	* @since 2.1
@@ -70,6 +88,15 @@ class PageUpdater {
 		foreach ( $this->titles as $title ) {
 			$title->purgeSquid();
 		}
+	}
+
+	private function log( $message, $context = array() ) {
+
+		if ( $this->logger === null ) {
+			return;
+		}
+
+		$this->logger->info( $message, $context );
 	}
 
 }

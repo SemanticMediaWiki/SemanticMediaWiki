@@ -105,6 +105,14 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructPageUpdater() {
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\PageUpdater',
+			$this->applicationFactory->newPageUpdater()
+		);
+	}
+
 	public function testCanConstructInTextAnnotationParser() {
 
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
