@@ -15,10 +15,10 @@
 			"namespace": "SMW_NS_CONCEPT",
 			"assert-output": {
 				"to-contain": [
-					"<p class=\"concept-documenation\">Modification date</p><pre>&#x5b;&#x5b;Modification date::+]]</pre>"
+					"<p class=\"concept-documenation\">Modification date</p><pre>&#91;&#91;Modification date::+]]</pre>"
 				],
 				"not-contain": [
-					"<p class=\"concept-documenation\">Modification date</p><pre>&#x5b;&#x5b;Fecha de modificación::+]]</pre>"
+					"<p class=\"concept-documenation\">Modification date</p><pre>&#91;&#91;Fecha de modificación::+]]</pre>"
 				]
 			}
 		}

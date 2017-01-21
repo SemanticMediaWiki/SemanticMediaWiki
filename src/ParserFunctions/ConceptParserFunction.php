@@ -116,7 +116,7 @@ class ConceptParserFunction {
 			Html::rawElement( 'span', array( 'class' => 'smwrdflink' ), $this->getRdfLink( $title )->getWikiText() ) .
 			Html::element( 'br', array() ) .
 			Html::element( 'p', array( 'class' => 'concept-documenation' ), $documentation ? $documentation : '' ) .
-			Html::rawElement( 'pre', array(), str_replace( '[', '&#x005B;', $queryString ) ) .
+			Html::rawElement( 'pre', array(), str_replace( '[', '&#91;', $queryString ) ) .
 			Html::element( 'br', array() )
 		);
 	}

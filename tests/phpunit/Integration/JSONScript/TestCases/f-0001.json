@@ -40,7 +40,7 @@
 			"subject": "Example/0001/1",
 			"assert-output": {
 				"to-contain": [
-					"&#x5b;&#x5b;Has page::Foo]] &#x5b;&#x5b;Has page::42]]",
+					"&#91;&#91;Has page::Foo]] &#91;&#91;Has page::42]]",
 					"Query-Size:4",
 					"Query-Depth:1",
 					"None"
@@ -53,7 +53,7 @@
 			"subject": "Example/F0001/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"<div class=\"smwpre\">&#x5b;&#x5b;Has number::3.555567]]</div>"
+					"<div class=\"smwpre\">&#91;&#91;Has number::3.555567]]</div>"
 				]
 			}
 		}

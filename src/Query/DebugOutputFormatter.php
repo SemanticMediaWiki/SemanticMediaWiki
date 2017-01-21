@@ -31,7 +31,7 @@ class DebugOutputFormatter {
 
 		if ( $query instanceof Query ) {
 			$preEntries = array();
-			$preEntries['ASK Query'] = '<div class="smwpre">' . str_replace( '[', '&#x005B;', $query->getDescription()->getQueryString() ) . '</div>';
+			$preEntries['ASK Query'] = '<div class="smwpre">' . str_replace( '[', '&#91;', $query->getDescription()->getQueryString() ) . '</div>';
 			$entries = array_merge( $preEntries, $entries );
 			$entries['Query Metrics'] = 'Query-Size:' . $query->getDescription()->getSize() . '<br />' .
 						'Query-Depth:' . $query->getDescription()->getDepth();
@@ -147,7 +147,7 @@ class DebugOutputFormatter {
 				' '
 			),
 			array(
-				'&#x005B;',
+				'&#91;',
 				'&#x003A;',
 				'&#x0020;'
 			),

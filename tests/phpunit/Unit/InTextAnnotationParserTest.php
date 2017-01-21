@@ -283,7 +283,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			'Suspendisse [[Bar::tincidunt semper|abc]] facilisi',
 			'Suspendisse abc facilisi',
-			'Suspendisse &#x005B;&#x005B;Bar::tincidunt semper|abc]] facilisi'
+			'Suspendisse &#91;&#91;Bar::tincidunt semper|abc]] facilisi'
 		);
 
 		return $provider;
@@ -578,12 +578,12 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 				'smwgInlineErrors'  => true,
 				'smwgEnabledInTextAnnotationParserStrictMode' => true
 			),
-			'[[Text::Bar [http:://example.org/Foo]]] [[Code::Foo[1] Foobar]]',
+			'[[Text::Bar [http://example.org/Foo Foo]]] [[Code::Foo[1] Foobar]]',
 			array(
-				'resultText'     => 'Bar [http:://example.org/Foo] <div class="smwpre">Foo&#x005B;1]&#160;Foobar</div>',
+				'resultText'     => 'Bar [http://example.org/Foo Foo] <div class="smwpre">Foo&#91;1]&#160;Foobar</div>',
 				'propertyCount'  => 2,
 				'propertyLabels' => array( 'Text', 'Code' ),
-				'propertyValues' => array( 'Bar [http:://example.org/Foo]', 'Foo[1] Foobar' )
+				'propertyValues' => array( 'Bar [http://example.org/Foo Foo]', 'Foo[1] Foobar' )
 			)
 		);
 
