@@ -73,14 +73,9 @@ class SubSemanticData {
 	private $subContainerMaxDepth = 3;
 
 	/**
-	 * @var integer
-	 */
-	private $subContainerDepthCounter = 0;
-
-	/**
-	 * Constructor.
+	 * @since 2.5
 	 *
-	 * @param DIWikiPage $subject to which this data refers
+	 * @param DIWikiPage $subject
 	 * @param boolean $noDuplicates stating if duplicate data should be avoided
 	 */
 	public function __construct( DIWikiPage $subject, $noDuplicates = true ) {
@@ -196,9 +191,6 @@ class SubSemanticData {
 	 */
 	public function addSubSemanticData( SemanticData $semanticData ) {
 
-	//	$semanticData->setLastModified( $this->getLastModified() );
-		$this->hash = null;
-
 		if ( $semanticData->subContainerDepthCounter > $this->subContainerMaxDepth ) {
 			throw new SubSemanticDataException( "Cannot add further subdata with the depth of {$semanticData->subContainerDepthCounter}. You are trying to add data beyond the max depth of {$this->subContainerMaxDepth} to an SemanticData object." );
 		}
@@ -213,27 +205,7 @@ class SubSemanticData {
 			throw new SubSemanticDataException( "Data for a subobject of {$semanticData->getSubject()->getDBkey()} cannot be added to {$this->getSubject()->getDBkey()}." );
 		}
 
-		if ( $this->hasSubSemanticData( $subobjectName ) ) {
-			$this->subSemanticData[$subobjectName]->importDataFrom( $semanticData );
-
-			foreach ( $semanticData->getSubSemanticData() as $containerSemanticData ) {
-				$this->addSubSemanticData( $containerSemanticData );
-			}
-		} else {
-			$semanticData->subContainerDepthCounter++;
-			foreach ( $semanticData->getSubSemanticData() as $containerSemanticData ) {
-
-				// Skip container that are known to be registered (avoids recursive statement extension)
-				if ( $this->hasSubSemanticData( $containerSemanticData->getSubject()->getSubobjectName() ) ) {
-					continue;
-				}
-
-				$this->addSubSemanticData( $containerSemanticData );
-			}
-
-			$semanticData->clearSubSemanticData();
-			$this->subSemanticData[$subobjectName] = $semanticData;
-		}
+		$this->appendSubSemanticData( $semanticData, $subobjectName );
 	}
 
 	/**
@@ -262,6 +234,34 @@ class SubSemanticData {
 				unset( $this->subSemanticData[$subobjectName] );
 			}
 		}
+	}
+
+	private function appendSubSemanticData( $semanticData, $subobjectName ) {
+
+		if ( $this->hasSubSemanticData( $subobjectName ) ) {
+			$this->subSemanticData[$subobjectName]->importDataFrom( $semanticData );
+
+			foreach ( $semanticData->getSubSemanticData() as $containerSemanticData ) {
+				$this->addSubSemanticData( $containerSemanticData );
+			}
+
+			return;
+		}
+
+		$semanticData->subContainerDepthCounter++;
+
+		foreach ( $semanticData->getSubSemanticData() as $containerSemanticData ) {
+
+			// Skip container that are known to be registered (avoids recursive statement extension)
+			if ( $this->hasSubSemanticData( $containerSemanticData->getSubject()->getSubobjectName() ) ) {
+				continue;
+			}
+
+			$this->addSubSemanticData( $containerSemanticData );
+		}
+
+		$semanticData->clearSubSemanticData();
+		$this->subSemanticData[$subobjectName] = $semanticData;
 	}
 
 }
