@@ -1,0 +1,100 @@
+{
+	"description": "Test RDF output generation on SubSemanticData traversal (#2177, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "DeepExportRecord",
+			"contents": "[[Has type::Record]] [[Has fields::Monolingual text;Number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "DeepDeepExportReference",
+			"contents": "[[Has type::Reference]] [[Has fields::Monolingual text;Date]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "DeepDeepExportRecord",
+			"contents": "[[Has type::Record]] [[Has fields::DeepDeepExportReference]]"
+		},
+		{
+			"page": "Example/R0012/1",
+			"contents": "{{#subobject: |DeepExportRecord=Test@en;12  |DeepExportRecord=Test@en;123 |DeepExportRecord=Test@en;1234 }}"
+		},
+		{
+			"page": "Example/R0012/2",
+			"contents": "{{#subobject: |DeepDeepExportRecord=Test@en\\;1 Jan 1970  |DeepDeepExportRecord=Test@fr\\;1 Jan 1971 }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "rdf",
+			"about": "#0 does not cause a SubSemanticDataException during the export",
+			"exportcontroller": {
+				"print-pages": [
+					"Example/R0012/1"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0012/1-23_ML2c4c5edb170b331e395a01005cb65358\">",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0012/1-23_d5f308a6235110d394024f55f16835f7\">",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0012/1-23_6779e00256727fef98705300a8a7a73b\">",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0012/1-23_f6e5c74170e0046a78d2712a90970310\">",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0012/1-23_04ddc57f1473b963c04af38df2e994a4\">",
+					"<property:Language_code rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">en</property:Language_code>",
+					"<property:Text rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Test</property:Text>",
+					"<property:Monolingual_text-23aux xml:lang=\"en\">Test</property:Monolingual_text-23aux>"
+				]
+			}
+		},
+		{
+			"type": "rdf",
+			"about": "#1 stable IDs and `subobject->record->reference->monolingual text` traversal",
+			"exportcontroller": {
+				"print-pages": [
+					"Example/R0012/2"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0012/2-23_ML2c4c5edb170b331e395a01005cb65358\">",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0012/2-23_REF1940cba4db3a967bc1d8e0c0a96bbc2e\">",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0012/2-23_7d9ab26348dedff9e03af7e8bc8d440d\">",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0012/2-23_ML18e8304d117e9f958205000e055d12f3\">",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0012/2-23_REFd17d8d8ba79f00d64f5b9c51f92e0867\">",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0012/2-23_797f86a0718f4fdec776197cf5adea93\">",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0012/2-23_7f24e1a1c0ee4de54d6344daae7375b5\">",
+					"<property:Date rdf:datatype=\"http://www.w3.org/2001/XMLSchema#date\">1971-01-01Z</property:Date>",
+					"<property:Date rdf:datatype=\"http://www.w3.org/2001/XMLSchema#date\">1970-01-01Z</property:Date>",
+					"<property:Monolingual_text-23aux xml:lang=\"en\">Test</property:Monolingual_text-23aux>",
+					"<property:Monolingual_text-23aux xml:lang=\"fr\">Test</property:Monolingual_text-23aux>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgExportBCNonCanonicalFormUse": false,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"smwgNamespace": "http://example.org/id/"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -295,11 +295,14 @@ class SemanticData {
 	}
 
 	/**
-	 * Return the array of subSemanticData objects for this SemanticData
-	 *
 	 * @since 2.5
 	 */
 	public function clearSubSemanticData() {
+
+		if ( $this->subContainerDepthCounter > 0 ) {
+			$this->subContainerDepthCounter--;
+		}
+
 		$this->subSemanticData !== null ? $this->subSemanticData->clear() : '';
 	}
 
