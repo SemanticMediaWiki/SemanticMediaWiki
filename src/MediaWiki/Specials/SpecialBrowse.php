@@ -243,10 +243,10 @@ class SpecialBrowse extends SpecialPage {
 			$link = SpecialPage::getTitleFor( 'ExportRDF', $this->subjectDV->getTitle()->getPrefixedText() );
 
 			$this->getOutput()->setIndicators( array(
-				Html::rawElement(
+				'browse' => Html::rawElement(
 					'div',
 					array(
-						'class' => 'mw-indicator smw-page-indicator-rdflink'
+						'class' => 'smw-page-indicator-rdflink'
 					),
 					Html::rawElement(
 						'a',
