@@ -10,8 +10,6 @@ use SMWDataItem as DataItem;
  * A single datatype literal for export. Defined by a literal value and a
  * datatype URI.
  *
- * @todo Currently no support for language tags.
- *
  * @license GNU GPL v2+
  * @since 2.2
  *

@@ -17,7 +17,7 @@ use SMWExporter as Exporter;
  * @author mwjames
  * @author Markus Krötzsch
  */
-class DataItemToElementEncoder {
+class ElementFactory {
 
 	/**
 	 * @var array
@@ -49,7 +49,7 @@ class DataItemToElementEncoder {
 	 * @return Element|null
 	 * @throws RuntimeException
 	 */
-	public function mapDataItemToElement( DataItem $dataItem ) {
+	public function newByDataItem( DataItem $dataItem ) {
 
 		if ( $this->dataItemEncoderMap === array() ) {
 			$this->initDataItemEncoderMap();
@@ -59,7 +59,7 @@ class DataItemToElementEncoder {
 			$this->initDataItemToElementMapper();
 		}
 
-		$element = $this->tryToMapDataItem( $dataItem );
+		$element = $this->findElementByDataItem( $dataItem );
 
 		if ( $element instanceof Element || $element === null ) {
 			return $element;
@@ -68,7 +68,7 @@ class DataItemToElementEncoder {
 		throw new RuntimeException( 'Encoder did not return a valid element' );
 	}
 
-	private function tryToMapDataItem( $dataItem ) {
+	private function findElementByDataItem( $dataItem ) {
 
 		foreach ( $this->dataItemToElementMapper as $dataItemToElementMapper ) {
 			if ( $dataItemToElementMapper->isMapperFor( $dataItem ) ) {
