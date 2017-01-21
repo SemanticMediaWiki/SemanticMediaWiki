@@ -101,6 +101,7 @@ class UnusedPropertyListLookup implements ListLookup {
 		}
 
 		$conditions = array(
+			"smw_title NOT LIKE '\_%'", // #2182, exclude predefined properties
 			'smw_id > ' . SQLStore::FIXED_PROPERTY_ID_UPPERBOUND,
 			'smw_namespace' => SMW_NS_PROPERTY,
 			'smw_iw' => '',
