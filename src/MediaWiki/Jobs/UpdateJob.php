@@ -63,6 +63,11 @@ class UpdateJob extends JobBase {
 
 	private function doUpdate() {
 
+		// #2199 ("Invalid or virtual namespace -1 given")
+		if ( $this->getTitle()->isSpecialPage() ) {
+			return true;
+		}
+		
 		LinkCache::singleton()->clear();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
