@@ -69,8 +69,6 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->verifyFactboxCacheDeleteEvent( $instance );
 		$this->verifyCachedPropertyValuesPrefetcherResetEvent( $instance );
 		$this->verifyCachedPrefetcherResetEvent( $instance );
-		$this->verifyOnBeforeSemanticDataUpdateCompleteEvent( $instance );
-		$this->verifyOnAfterSemanticDataUpdateCompleteEvent( $instance );
 	}
 
 	public function verifyExporterResetEvent( EventListenerCollection $instance ) {
@@ -176,38 +174,6 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertListenerExecuteFor(
 			'cached.prefetcher.reset',
-			$instance,
-			$dispatchContext
-		);
-	}
-
-	public function verifyOnBeforeSemanticDataUpdateCompleteEvent( EventListenerCollection $instance ) {
-
-		$dispatchContext = EventDispatcherFactory::getInstance()->newDispatchContext();
-
-		$dispatchContext->set(
-			'subject',
-			new DIWikiPage( 'Foo', NS_MAIN )
-		);
-
-		$this->assertListenerExecuteFor(
-			'on.before.semanticdata.update.complete',
-			$instance,
-			$dispatchContext
-		);
-	}
-
-	public function verifyOnAfterSemanticDataUpdateCompleteEvent( EventListenerCollection $instance ) {
-
-		$dispatchContext = EventDispatcherFactory::getInstance()->newDispatchContext();
-
-		$dispatchContext->set(
-			'subject',
-			new DIWikiPage( 'Foo', NS_MAIN )
-		);
-
-		$this->assertListenerExecuteFor(
-			'on.after.semanticdata.update.complete',
 			$instance,
 			$dispatchContext
 		);

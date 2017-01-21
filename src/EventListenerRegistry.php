@@ -154,54 +154,6 @@ class EventListenerRegistry implements EventListenerCollection {
 				$dispatchContext->set( 'propagationstop', true );
 			}
 		);
-
-		/**
-		 * Emitted during Store::updateData
-		 */
-		$this->eventListenerCollection->registerCallback(
-			'on.before.semanticdata.update.complete', function( $dispatchContext ) {
-
-				$subject = $dispatchContext->get( 'subject' );
-				$hash = $subject->getHash();
-
-				$applicationFactory = ApplicationFactory::getInstance();
-
-				$poolCache = $applicationFactory->getInMemoryPoolCache()->getPoolCacheFor(
-					'store.redirectTarget.lookup'
-				);
-
-				$poolCache->delete( $hash );
-
-				$dispatchContext->set( 'propagationstop', true );
-			}
-		);
-
-		/**
-		 * Emitted during Store::updateData
-		 */
-		$this->eventListenerCollection->registerCallback(
-			'on.after.semanticdata.update.complete', function( $dispatchContext ) {
-
-				$applicationFactory = ApplicationFactory::getInstance();
-				$subject = $dispatchContext->get( 'subject' );
-
-				$pageUpdater = $applicationFactory->newMwCollaboratorFactory()->newPageUpdater();
-
-				if ( $GLOBALS['smwgAutoRefreshSubject'] && $pageUpdater->canUpdate() ) {
-					$pageUpdater->addPage( $subject->getTitle() );
-
-					$deferredCallableUpdate = $applicationFactory->newDeferredCallableUpdate( function() use( $pageUpdater ) {
-						$pageUpdater->doPurgeParserCache();
-						$pageUpdater->doPurgeHtmlCache();
-					} );
-
-					$deferredCallableUpdate->setOrigin( 'Event: on.after.semanticdata.update.complete :: ' . $subject->getHash() );
-					$deferredCallableUpdate->pushUpdate();
-				}
-
-				$dispatchContext->set( 'propagationstop', true );
-			}
-		);
 	}
 
 }

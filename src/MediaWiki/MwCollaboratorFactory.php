@@ -155,15 +155,6 @@ class MwCollaboratorFactory {
 	}
 
 	/**
-	 * @since 2.1
-	 *
-	 * @return PageUpdater
-	 */
-	public function newPageUpdater() {
-		return new PageUpdater();
-	}
-
-	/**
 	 * @since 2.2
 	 *
 	 * @return WikitextTemplateRenderer

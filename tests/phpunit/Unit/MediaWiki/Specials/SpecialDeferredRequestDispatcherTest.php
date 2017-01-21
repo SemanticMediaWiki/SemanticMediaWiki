@@ -34,6 +34,9 @@ class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertySubjects' )
 			->will( $this->returnValue( array() ) );
 
+		$store->getOptions()->set( 'smwgSemanticsEnabled', true );
+		$store->getOptions()->set( 'smwgAutoRefreshSubject', true );
+
 		$this->applicationFactory->registerObject( 'Store', $store );
 
 		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();

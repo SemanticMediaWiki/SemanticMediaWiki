@@ -13,6 +13,7 @@ use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\Database;
 use SMW\MediaWiki\PageCreator;
+use SMW\MediaWiki\PageUpdater;
 use SMW\MediaWiki\TitleCreator;
 use SMW\MediaWiki\JobQueueLookup;
 use SMW\Query\QuerySourceFactory;
@@ -50,10 +51,21 @@ class SharedCallbackContainer implements CallbackContainer {
 			return Settings::newFromGlobals();
 		} );
 
-		$callbackLoader->registerExpectedReturnType( 'Store', '\SMW\Store' );
+		$callbackLoader->registerCallback( 'Store', function( $storeClass = null ) use ( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'Store', '\SMW\Store' );
 
-		$callbackLoader->registerCallback( 'Store', function( $store = null ) use ( $callbackLoader ) {
-			return StoreFactory::getStore( $store !== null ? $store : $callbackLoader->singleton( 'Settings' )->get( 'smwgDefaultStore' ) );
+			$settings = $callbackLoader->singleton( 'Settings' );
+			$storeClass = $storeClass !== null ? $storeClass : $settings->get( 'smwgDefaultStore' );
+
+			$store = StoreFactory::getStore( $storeClass );
+
+			$options = $store->getOptions();
+			$options->set( 'smwgDefaultStore', $settings->get( 'smwgDefaultStore' ) );
+			$options->set( 'smwgSemanticsEnabled', $settings->get( 'smwgSemanticsEnabled' ) );
+			$options->set( 'smwgAutoRefreshSubject', $settings->get( 'smwgAutoRefreshSubject' ) );
+			$options->set( 'smwgEnableUpdateJobs', $settings->get( 'smwgEnableUpdateJobs' ) );
+
+			return $store;
 		} );
 
 		$callbackLoader->registerExpectedReturnType( 'Cache', '\Onoi\Cache\Cache' );
@@ -85,6 +97,11 @@ class SharedCallbackContainer implements CallbackContainer {
 
 		$callbackLoader->registerCallback( 'PageCreator', function() {
 			return new PageCreator();
+		} );
+
+		$callbackLoader->registerCallback( 'PageUpdater', function() use ( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'PageUpdater', '\SMW\MediaWiki\PageUpdater' );
+			return new PageUpdater();
 		} );
 
 		$callbackLoader->registerCallback( 'JobQueueLookup', function( Database $connection ) use ( $callbackLoader ) {

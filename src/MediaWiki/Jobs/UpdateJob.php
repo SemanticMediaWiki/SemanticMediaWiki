@@ -93,7 +93,7 @@ class UpdateJob extends JobBase {
 		);
 
 		if ( $lastModified === \WikiPage::factory( $title )->getTimestamp() ) {
-			$pageUpdater = $this->applicationFactory->newMwCollaboratorFactory()->newPageUpdater();
+			$pageUpdater = $this->applicationFactory->newPageUpdater();
 			$pageUpdater->addPage( $title );
 			$pageUpdater->doPurgeParserCache();
 			return true;

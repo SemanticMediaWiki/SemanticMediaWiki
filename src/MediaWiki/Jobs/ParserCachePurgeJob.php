@@ -62,7 +62,7 @@ class ParserCachePurgeJob extends JobBase {
 	 */
 	public function run() {
 
-		$this->pageUpdater = $this->applicationFactory->newMwCollaboratorFactory()->newPageUpdater();
+		$this->pageUpdater = $this->applicationFactory->newPageUpdater();
 		$this->store = $this->applicationFactory->getStore();
 
 		if ( $this->hasParameter( 'limit' ) ) {

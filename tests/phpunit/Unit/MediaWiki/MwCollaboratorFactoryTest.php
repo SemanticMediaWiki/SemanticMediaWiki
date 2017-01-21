@@ -196,20 +196,6 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructPageUpdater() {
-
-		$applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new MwCollaboratorFactory( $applicationFactory );
-
-		$this->assertInstanceOf(
-			'\SMW\MediaWiki\PageUpdater',
-			$instance->newPageUpdater()
-		);
-	}
-
 	public function testCanConstructWikitextTemplateRenderer() {
 
 		$applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )

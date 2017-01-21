@@ -32,6 +32,9 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
+		$store->getOptions()->set( 'smwgSemanticsEnabled', true );
+		$store->getOptions()->set( 'smwgAutoRefreshSubject', true );
+
 		$this->testEnvironment = new TestEnvironment();
 		$this->testEnvironment->registerObject( 'Store', $store );
 

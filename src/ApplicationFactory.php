@@ -226,6 +226,24 @@ class ApplicationFactory {
 	/**
 	 * @since 2.5
 	 *
+	 * @return PageUpdater
+	 */
+	public function newPageUpdater() {
+
+		$pageUpdater = $this->callbackLoader->create(
+			'PageUpdater'
+		);
+
+		$pageUpdater->setLogger(
+			$this->getMediaWikiLogger()
+		);
+
+		return $pageUpdater;
+	}
+
+	/**
+	 * @since 2.5
+	 *
 	 * @return IteratorFactory
 	 */
 	public function getIteratorFactory() {
