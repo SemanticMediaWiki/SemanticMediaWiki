@@ -7,7 +7,7 @@ use SMW\DIProperty;
 use SMW\Localizer;
 use SMW\NamespaceUriFinder;
 use SMW\Exporter\DataItemByExpElementMatchFinder;
-use SMW\Exporter\DataItemToElementEncoder;
+use SMW\Exporter\ElementFactory;
 use SMW\Exporter\DataItemToExpResourceEncoder;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
@@ -37,9 +37,9 @@ class SMWExporter {
 	private static $dataItemToExpResourceEncoder = null;
 
 	/**
-	 * @var DataItemToElementEncoder
+	 * @var ElementFactory
 	 */
-	private static $dataItemToElementEncoder = null;
+	private static $elementFactory = null;
 
 	/**
 	 * @var DataItemByExpElementMatchFinder
@@ -76,7 +76,7 @@ class SMWExporter {
 
 			// FIXME with 3.x
 			// There is no better way of getting around the static use without BC
-			self::$dataItemToElementEncoder = new DataItemToElementEncoder();
+			self::$elementFactory = new ElementFactory();
 
 			self::$dispatchingResourceBuilder = new DispatchingResourceBuilder();
 
@@ -574,10 +574,10 @@ class SMWExporter {
 	}
 
 	/**
-	 * @see DataItemToElementEncoder::mapDataItemToElement
+	 * @see ElementFactory::mapDataItemToElement
 	 */
 	static public function getDataItemExpElement( SMWDataItem $dataItem ) {
-		return self::$dataItemToElementEncoder->mapDataItemToElement( $dataItem );
+		return self::$elementFactory->newByDataItem( $dataItem );
 	}
 
 	/**
