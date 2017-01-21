@@ -105,7 +105,8 @@ class UnusedPropertyListLookup implements ListLookup {
 			'smw_id > ' . SQLStore::FIXED_PROPERTY_ID_UPPERBOUND,
 			'smw_namespace' => SMW_NS_PROPERTY,
 			'smw_iw' => '',
-			'smw_subobject' => ''
+			'smw_subobject' => '',
+			'smw_proptable_hash IS NOT NULL'
 		);
 
 		$conditions['usage_count'] = 0;
