@@ -99,9 +99,9 @@ class SharedCallbackContainer implements CallbackContainer {
 			return new PageCreator();
 		} );
 
-		$callbackLoader->registerCallback( 'PageUpdater', function() use ( $callbackLoader ) {
+		$callbackLoader->registerCallback( 'PageUpdater', function( Database $connection = null ) use ( $callbackLoader ) {
 			$callbackLoader->registerExpectedReturnType( 'PageUpdater', '\SMW\MediaWiki\PageUpdater' );
-			return new PageUpdater();
+			return new PageUpdater( $connection );
 		} );
 
 		$callbackLoader->registerCallback( 'JobQueueLookup', function( Database $connection ) use ( $callbackLoader ) {
@@ -128,8 +128,8 @@ class SharedCallbackContainer implements CallbackContainer {
 
 		$callbackLoader->registerExpectedReturnType( 'DeferredCallableUpdate', '\SMW\DeferredCallableUpdate' );
 
-		$callbackLoader->registerCallback( 'DeferredCallableUpdate', function( \Closure $callback ) {
-			return new DeferredCallableUpdate( $callback );
+		$callbackLoader->registerCallback( 'DeferredCallableUpdate', function( \Closure $callback, Database $connection = null ) {
+			return new DeferredCallableUpdate( $callback, $connection );
 		} );
 
 		/**

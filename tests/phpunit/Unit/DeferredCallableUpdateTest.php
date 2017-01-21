@@ -164,4 +164,67 @@ class DeferredCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->executePendingDeferredUpdates();
 	}
 
+	public function testUpdateOnTransactionIdle() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'onTransactionIdle' )
+			->will( $this->returnCallback( function( $callback ) {
+				return call_user_func( $callback ); }
+			) );
+
+		$this->testEnvironment->clearPendingDeferredUpdates();
+
+		$test = $this->getMockBuilder( '\stdClass' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'doTest' ) )
+			->getMock();
+
+		$test->expects( $this->once() )
+			->method( 'doTest' );
+
+		$callback = function() use ( $test ) {
+			$test->doTest();
+		};
+
+		$instance = new DeferredCallableUpdate(
+			$callback,
+			$connection
+		);
+
+		$instance->waitOnTransactionIdle();
+		$instance->pushUpdate();
+
+		$this->testEnvironment->executePendingDeferredUpdates();
+	}
+
+	public function testUpdateOnTransactionIdleWithMissingConnection() {
+
+		$this->testEnvironment->clearPendingDeferredUpdates();
+
+		$test = $this->getMockBuilder( '\stdClass' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'doTest' ) )
+			->getMock();
+
+		$test->expects( $this->once() )
+			->method( 'doTest' );
+
+		$callback = function() use ( $test ) {
+			$test->doTest();
+		};
+
+		$instance = new DeferredCallableUpdate(
+			$callback
+		);
+
+		$instance->waitOnTransactionIdle();
+		$instance->pushUpdate();
+
+		$this->testEnvironment->executePendingDeferredUpdates();
+	}
+
 }

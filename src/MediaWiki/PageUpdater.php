@@ -15,6 +15,11 @@ use Psr\Log\LoggerAwareInterface;
 class PageUpdater implements LoggerAwareInterface {
 
 	/**
+	 * @var Database
+	 */
+	private $connection;
+
+	/**
 	 * @var Title[]
 	 */
 	private $titles = array();
@@ -23,6 +28,20 @@ class PageUpdater implements LoggerAwareInterface {
 	 * LoggerInterface
 	 */
 	private $logger;
+
+	/**
+	 * @var boolean
+	 */
+	private $onTransactionIdle = false;
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param Database|null $connection
+	 */
+	public function __construct( Database $connection = null ) {
+		$this->connection = $connection;
+	}
 
 	/**
 	 * @see LoggerAwareInterface::setLogger
@@ -36,43 +55,90 @@ class PageUpdater implements LoggerAwareInterface {
 	}
 
 	/**
-	* @since 2.1
-	*
-	* @param Title $title
-	*/
-	public function addPage( Title $title ) {
+	 * @since 2.1
+	 *
+	 * @param Title|null $title
+	 */
+	public function addPage( Title $title = null ) {
+
+		if ( $title === null ) {
+			return;
+		}
+
 		$this->titles[$title->getPrefixedDBKey()] = $title;
 	}
 
 	/**
-	* @since 2.1
-	*/
+	 * @note MW 1.29+ runs Title::invalidateCache in AutoCommitUpdate which has
+	 * been shown to cause transaction issues when executed while a transaction
+	 * hasn't finished therefore use 'onTransactionIdle' to isolate the
+	 * execution.
+	 *
+	 * @since 2.5
+	 */
+	public function waitOnTransactionIdle() {
+
+		if ( $this->connection === null ) {
+			$this->log( __METHOD__ . ' is missing an active connection therefore `onTransactionIdle` cannot be used.' );
+			return $this->onTransactionIdle = false;
+		}
+
+		$this->onTransactionIdle = true;
+	}
+
+	/**
+	 * @since 2.1
+	 */
 	public function clear() {
 		$this->titles = array();
 	}
 
 	/**
-	* @since 2.1
-	*
-	* @return boolean
-	*/
+	 * @since 2.1
+	 *
+	 * @return boolean
+	 */
 	public function canUpdate() {
 		return !wfReadOnly();
 	}
 
 	/**
-	* @since 2.1
-	*/
+	 * @since 2.1
+	 */
 	public function doPurgeParserCache() {
+
+		$method = __METHOD__;
+
+		if ( $this->onTransactionIdle ) {
+			return $this->connection->onTransactionIdle( function () use( $method ) {
+				$this->log( $method . ' (onTransactionIdle)' );
+				$this->onTransactionIdle = false;
+				$this->doPurgeParserCache();
+				$this->onTransactionIdle = true;
+			} );
+		}
+
 		foreach ( $this->titles as $title ) {
 			$title->invalidateCache();
 		}
 	}
 
 	/**
-	* @since 2.1
-	*/
+	 * @since 2.1
+	 */
 	public function doPurgeHtmlCache() {
+
+		$method = __METHOD__;
+
+		if ( $this->onTransactionIdle ) {
+			return $this->connection->onTransactionIdle( function () use ( $method ) {
+				$this->log( $method . ' (onTransactionIdle)' );
+				$this->onTransactionIdle = false;
+				$this->doPurgeHtmlCache();
+				$this->onTransactionIdle = true;
+			} );
+		}
+
 		foreach ( $this->titles as $title ) {
 			$title->touchLinks();
 
@@ -82,9 +148,21 @@ class PageUpdater implements LoggerAwareInterface {
 	}
 
 	/**
-	* @since 2.1
-	*/
+	 * @since 2.1
+	 */
 	public function doPurgeWebCache() {
+
+		$method = __METHOD__;
+
+		if ( $this->onTransactionIdle ) {
+			return $this->connection->onTransactionIdle( function () use ( $method ) {
+				$this->log( $method . ' (onTransactionIdle)' );
+				$this->onTransactionIdle = false;
+				$this->doPurgeWebCache();
+				$this->onTransactionIdle = true;
+			} );
+		}
+
 		foreach ( $this->titles as $title ) {
 			$title->purgeSquid();
 		}

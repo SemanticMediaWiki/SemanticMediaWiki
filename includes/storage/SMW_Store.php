@@ -229,6 +229,7 @@ abstract class Store implements QueryEngine {
 		}
 
 		$pageUpdater->addPage( $subject->getTitle() );
+		$pageUpdater->waitOnTransactionIdle();
 
 		$pageUpdater->doPurgeParserCache();
 		$pageUpdater->doPurgeHtmlCache();

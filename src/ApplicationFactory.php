@@ -231,7 +231,8 @@ class ApplicationFactory {
 	public function newPageUpdater() {
 
 		$pageUpdater = $this->callbackLoader->create(
-			'PageUpdater'
+			'PageUpdater',
+			$this->getStore()->getConnection( 'mw.db' )
 		);
 
 		$pageUpdater->setLogger(
@@ -416,9 +417,12 @@ class ApplicationFactory {
 	 */
 	public function newDeferredCallableUpdate( Closure $callback ) {
 
+		$store = $this->getStore();
+
 		$deferredCallableUpdate = $this->callbackLoader->create(
 			'DeferredCallableUpdate',
-			$callback
+			$callback,
+			$store->getConnection( 'mw.db' )
 		);
 
 		$deferredCallableUpdate->enabledDeferredUpdate(
@@ -427,6 +431,10 @@ class ApplicationFactory {
 
 		$deferredCallableUpdate->setLogger(
 			$this->getMediaWikiLogger()
+		);
+
+		$deferredCallableUpdate->isCommandLineMode(
+			$store->getOptions()->has( 'isCommandLineMode' ) ? $store->getOptions()->get( 'isCommandLineMode' ) : $GLOBALS['wgCommandLineMode']
 		);
 
 		return $deferredCallableUpdate;

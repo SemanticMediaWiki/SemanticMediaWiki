@@ -258,8 +258,6 @@ class SQLStoreFactory {
 		$factory = $this;
 
 		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $factory ) {
-			wfDebugLog( 'smw', 'DeferredCachedListLookupUpdate' );
-
 			$factory->newPropertyUsageCachedListLookup()->deleteCache();
 			$factory->newUnusedPropertyCachedListLookup()->deleteCache();
 			$factory->newUndeclaredPropertyCachedListLookup()->deleteCache();
