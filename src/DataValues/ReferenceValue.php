@@ -8,17 +8,16 @@ use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Message;
-use SMWContainerSemanticData as ContainerSemanticData;
+use SMW\DataModel\ContainerSemanticData;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIContainer as DIContainer;
-use SMWPropertyListValue as PropertyListValue;
 
 /**
  * ReferenceValue allows to define additional DV to describe the state of a
  * SourceValue in terms of provenance or referential evidence. ReferenceValue is
  * stored as separate entity to the original subject in order to encapsulate the
- * SourceValue from the remaining annotations kept in reference to a subject.
+ * SourceValue from the remaining annotations with reference to a subject.
  *
  * Defining which fields are required can vary and therefore is left to the user
  * to specify such requirements using the `'Has fields' property.
@@ -32,9 +31,10 @@ use SMWPropertyListValue as PropertyListValue;
  * - ... any other property the users expects to require when making a value
  *   annotation of this type
  *
- * An annotation `[[SomeProperty::Foo;12-12-1212;http://example.org]]` is expected
- * to be a concatenated string and be separated by ';' to indicate the next value
- * string which will corespondent to the index of the `Has fields` declaration.
+ * An annotation like `[[SomeProperty::Foo;12-12-1212;http://example.org]]` is
+ * expected to be a concatenated string and to be separated by ';' to indicate
+ * the next value string and will corespondent to the index of the `Has fields`
+ * declaration.
  *
  * @license GNU GPL v2+
  * @since 2.5
@@ -216,12 +216,13 @@ class ReferenceValue extends AbstractMultiValue {
 
 					$index++;
 					$empty = false;
-				} elseif ( ( count( $values ) - $index ) == ( count( $this->properties ) - $propertyIndex ) ) {
+				} elseif ( $index == 0 || ( count( $values ) - $index ) == ( count( $this->properties ) - $propertyIndex ) ) {
 					$containerSemanticData->addPropertyObjectValue( $property, $dataValue->getDataItem() );
 					$this->addError( $dataValue->getErrors() );
 					++$index;
 				}
 			}
+
 			++$propertyIndex;
 		}
 
