@@ -46,7 +46,7 @@
 		{
 			"type": "query",
 			"about": "#1",
-			"condition": "[[Has url::http://acme.test/api?query=!_:;@* #Foo&=%20-3DBar]]",
+			"condition": "[[Has url::http://acme.test/api?query=!_:;@*_#Foo&=_-3DBar]]",
 			"printouts": [
 				"Has url"
 			],
@@ -61,7 +61,7 @@
 				"datavalues": [
 					{
 						"property": "Has url",
-						"value": "http://acme.test/api?query=%21_:%3B@%2A%20#Foo&=%20-3DBar"
+						"value": "http://acme.test/api?query=%21_:%3B@%2A_#Foo&=_-3DBar"
 					}
 				]
 			}

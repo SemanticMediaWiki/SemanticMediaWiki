@@ -1,0 +1,257 @@
+{
+	"description": "Test in-text annotation `_uri`/`_ema`/`_tel` with spaces/underscore (`wgContLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has url",
+			"contents": "[[Has type::URL]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has telephone number",
+			"contents": "[[Has type::Telephone number]]"
+		},
+		{
+			"page": "Example/P0446/1",
+			"contents": "[[Has url::http://example.org/Foo bar]] [[Has url::http://example.org/Foo%20bar]] [[Has url::http://example.org/Foo_bar]] [[Category:P0446]]"
+		},
+		{
+			"page": "Example/P0446/Q.1.0",
+			"contents": "{{#ask: [[Has url::http://example.org/Foo bar]] [[Category:P0446]] |?Has url }}"
+		},
+		{
+			"page": "Example/P0446/Q.1.1",
+			"contents": "{{#ask: [[Has url::http://example.org/Foo bar]] [[Category:P0446]] |?Has url |link=none }}"
+		},
+		{
+			"page": "Example/P0446/2",
+			"contents": "[[Has url::http://example.org/Foo bar|Foo bar]] [[Has url::http://example.org/Foo_bar|Foo bar]] __SHOWFACTBOX__"
+		},
+		{
+			"page": "Example/P0446/3",
+			"contents": "[[Email::john_doe@example.org]]"
+		},
+		{
+			"page": "Example/P0446/Q.3",
+			"contents": "{{#ask: [[Email::john_doe@example.org]] |?Email }}"
+		},
+		{
+			"page": "Example/P0446/4",
+			"contents": "[[Has telephone number::+1 201 555 5555]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 spaces (_, , %20) produce only one URL not three",
+			"subject": "Example/P0446/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_INST",
+						"Has url"
+					],
+					"propertyValues": [
+						"http://example.org/Foo_bar"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"href=\"http://example.org/Foo_bar\">http://example.org/Foo bar</a>",
+					"href=\"http://example.org/Foo_bar\">http://example.org/Foo%20bar</a>",
+					"href=\"http://example.org/Foo_bar\">http://example.org/Foo bar</a>"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 different space encoding dont't disort the condition/result",
+			"condition": "[[Has url::http://example.org/Foo bar]] [[Category:P0446]]",
+			"printouts": [
+				"Has url"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": "1",
+				"results": [
+					"Example/P0446/1#0##"
+				],
+				"datavalues": [
+					{
+						"property": "Has url",
+						"value": "http://example.org/Foo_bar"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 (same as #1)",
+			"condition": "[[Has url::http://example.org/Foo_bar]] [[Category:P0446]]",
+			"printouts": [
+				"Has url"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": "1",
+				"results": [
+					"Example/P0446/1#0##"
+				],
+				"datavalues": [
+					{
+						"property": "Has url",
+						"value": "http://example.org/Foo_bar"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3 (same as #1)",
+			"condition": "[[Has url::http://example.org/Foo%20bar]] [[Category:P0446]]",
+			"printouts": [
+				"Has url"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": "1",
+				"results": [
+					"Example/P0446/1#0##"
+				],
+				"datavalues": [
+					{
+						"property": "Has url",
+						"value": "http://example.org/Foo_bar"
+					}
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 #ask output (url with underscore)",
+			"subject": "Example/P0446/Q.1.0",
+			"assert-output": {
+				"to-contain": [
+					"smwtype_uri\"><a rel=\"nofollow\" class=\"external text\" href=\"http://example.org/Foo_bar\">http://example.org/Foo bar</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 #ask output (url with underscore + link=none)",
+			"subject": "Example/P0446/Q.1.1",
+			"assert-output": {
+				"to-contain": [
+					"smwtype_uri\"><a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/Foo_bar\">http://example.org/Foo_bar</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6",
+			"subject": "Example/P0446/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has url"
+					],
+					"propertyValues": [
+						"http://example.org/Foo_bar"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"href=\"http://example.org/Foo_bar\">Foo bar</a>"
+				],
+				"not-contain": [
+					"href=\"http://example.org/Foo_bar\">http://example.org/Foo bar</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7 (email with underscore)",
+			"subject": "Example/P0446/3",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ema"
+					],
+					"propertyValues": [
+						"john_doe@example.org"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"href=\"mailto:john_doe@example.org\">john_doe@example.org</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 #ask output (email with underscore)",
+			"subject": "Example/P0446/Q.3",
+			"assert-output": {
+				"to-contain": [
+					"href=\"mailto:john_doe@example.org\">john_doe@example.org</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 (tel with blank spaces)",
+			"subject": "Example/P0446/4",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has telephone number"
+					],
+					"propertyValues": [
+						"+1-201-555-5555"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"href=\"tel:+1-201-555-5555\">+1 201 555 5555</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
