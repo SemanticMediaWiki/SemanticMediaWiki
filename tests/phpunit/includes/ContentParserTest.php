@@ -243,28 +243,31 @@ class ContentParserTest extends SemanticMediaWikiTestCase {
 		);
 
 		// #1 Valid revision
-		$title = $this->newMockBuilder()->newObject( 'Title', array(
-			'getDBkey'        => 'Lula',
-			'exists'          => true,
-			'getPageLanguage' => $this->getLanguage()
-		) );
+		// Required by MW 1.29, method got removed
+		if ( method_exists( 'Revision', 'getText' ) ) {
+			$title = $this->newMockBuilder()->newObject( 'Title', array(
+				'getDBkey'        => 'Lula',
+				'exists'          => true,
+				'getPageLanguage' => $this->getLanguage()
+			) );
 
-		$revision = $this->newMockBuilder()->newObject( 'Revision', array(
-			'getId'      => 9001,
-			'getUser'    => 'Lala',
-			'getContent' => new TextContent( $text )
-		) );
+			$revision = $this->newMockBuilder()->newObject( 'Revision', array(
+				'getId'   => 9001,
+				'getUser' => 'Lala',
+				'getText' => $text,
+			) );
 
-		$provider[] = array(
-			array(
-				'title'    => $title,
-				'revision' => $revision,
-			),
-			array(
-				'error'    => false,
-				'text'     => $text
-			)
-		);
+			$provider[] = array(
+				array(
+					'title'    => $title,
+					'revision' => $revision,
+				),
+				array(
+					'error'    => false,
+					'text'     => $expected
+				)
+			);
+		}
 
 		// #1 Empty content
 		$title = $this->newMockBuilder()->newObject( 'Title', array(
