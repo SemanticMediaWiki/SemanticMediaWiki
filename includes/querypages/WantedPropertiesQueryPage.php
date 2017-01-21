@@ -65,10 +65,37 @@ class WantedPropertiesQueryPage extends QueryPage {
 
 	/**
 	 * @codeCoverageIgnore
+	 * Returns available cache information (takes into account user preferences)
+	 *
+	 * @since 1.9
+	 *
+	 * @return string
+	 */
+	public function getCacheInfo() {
+
+		if ( $this->listLookup->isFromCache() ) {
+			return $this->msg( 'smw-sp-properties-cache-info', $this->getLanguage()->userTimeAndDate( $this->listLookup->getTimestamp(), $this->getUser() ) )->parse();
+		}
+
+		return '';
+	}
+
+	/**
+	 * @codeCoverageIgnore
 	 * @return string
 	 */
 	function getPageHeader() {
-		return Html::element( 'p', array(), $this->msg( 'smw_wantedproperties_docu' )->text() );
+
+		return Html::rawElement(
+			'p',
+			array( 'class' => 'smw-wantedproperties-docu' ),
+			$this->msg( 'smw-wantedproperties-docu' )->parse()
+		) . $this->getSearchForm( $this->getRequest()->getVal( 'property' ), $this->getCacheInfo(), false ) .
+		Html::element(
+			'h2',
+			array(),
+			$this->msg( 'smw-sp-properties-header-label' )->text()
+		);
 	}
 
 	/**
@@ -98,7 +125,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 			array( 'action' => 'view' )
 		);
 
-		return $this->msg( 'smw_wantedproperty_template' )
+		return $this->msg( 'smw-wantedproperty-template' )
 			->rawParams( $proplink )
 			->params( $result[1] )
 			->escaped();
