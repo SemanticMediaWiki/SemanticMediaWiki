@@ -128,7 +128,7 @@ class SMWRecordValue extends AbstractMultiValue {
 
 		// Composite sortkey is to ensure that Store::getPropertyValues can
 		// apply sorting during value selection
-		$this->m_dataitem->addCompositeSortKey( implode( ';', $sortKeys ) );
+		$this->m_dataitem->setSortKey( implode( ';', $sortKeys ) );
 	}
 
 	/**
