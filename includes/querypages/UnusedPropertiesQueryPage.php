@@ -68,10 +68,37 @@ class UnusedPropertiesQueryPage extends QueryPage {
 
 	/**
 	 * @codeCoverageIgnore
+	 * Returns available cache information (takes into account user preferences)
+	 *
+	 * @since 1.9
+	 *
+	 * @return string
+	 */
+	public function getCacheInfo() {
+
+		if ( $this->listLookup->isFromCache() ) {
+			return $this->msg( 'smw-sp-properties-cache-info', $this->getLanguage()->userTimeAndDate( $this->listLookup->getTimestamp(), $this->getUser() ) )->parse();
+		}
+
+		return '';
+	}
+
+	/**
+	 * @codeCoverageIgnore
 	 * @return string
 	 */
 	function getPageHeader() {
-		return Html::element( 'p', array(), $this->msg( 'smw_unusedproperties_docu' )->text() );
+
+		return Html::rawElement(
+			'p',
+			array( 'class' => 'smw-unusedproperties-docu' ),
+			$this->msg( 'smw-unusedproperties-docu' )->parse()
+		) . $this->getSearchForm( $this->getRequest()->getVal( 'property' ), $this->getCacheInfo() ) .
+		Html::element(
+			'h2',
+			array(),
+			$this->msg( 'smw-sp-properties-header-label' )->text()
+		);
 	}
 
 	/**
@@ -142,7 +169,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 			$propertyLink  = DataValueFactory::getInstance()->newDataValueByItem( $property, null )->getShortHtmlText( $this->getLinker() );
 		}
 
-		return $this->msg( 'smw_unusedproperty_template', $propertyLink, $typeDataValue->getLongHTMLText( $this->getLinker() )	)->text() . ' ' .
+		return $this->msg( 'smw-unusedproperty-template', $propertyLink, $typeDataValue->getLongHTMLText( $this->getLinker() )	)->text() . ' ' .
 			$this->getMessageFormatter()->getHtml();
 	}
 
