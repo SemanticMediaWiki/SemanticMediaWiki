@@ -98,8 +98,13 @@ class SMWDIUri extends SMWDataItem {
 		return $this->m_fragment;
 	}
 
+	/**
+	 * @since 1.6
+	 *
+	 * @return string
+	 */
 	public function getSortKey() {
-		return $this->getURI();
+		return urldecode( $this->getURI() );
 	}
 
 	public function getSerialization() {

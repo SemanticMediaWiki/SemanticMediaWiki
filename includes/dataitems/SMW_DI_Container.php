@@ -70,7 +70,7 @@ class SMWDIContainer extends SMWDataItem {
 	 *
 	 * @param string $sortKey
 	 */
-	public function addCompositeSortKey( $sortKey ) {
+	public function setSortKey( $sortKey ) {
 		$this->m_semanticData->addPropertyObjectValue(
 			new DIProperty( '_SKEY' ),
 			new DIBlob( $this->m_semanticData->getSubject()->getSortKey() . '#' . $sortKey )
