@@ -1,0 +1,77 @@
+{
+	"description": "Test RDF output generation on non-latin URI/IRI export (#2188, `smwgExportResourcesAsIri=true`, `wgContLang=ru`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Заголовок",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Тип публикации",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Журнал",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Год",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/R0015/Заголовок",
+			"contents": "[[Заголовок::Pollen Limitation]] [[Журнал::Arctic, Antarctic and Alpine Research]] [[Год::2009]] [[Тип публикации::Статья]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "rdf",
+			"about": "#0",
+			"exportcontroller": {
+				"print-pages": [
+					"Example/R0015/Заголовок"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0015/Заголовок\">",
+					"<rdfs:label>Example/R0015/Заголовок</rdfs:label>",
+					"<property:Год rdf:datatype=\"http://www.w3.org/2001/XMLSchema#gYear\">2009</property:Год>",
+					"<property:Год-23aux rdf:datatype=\"http://www.w3.org/2001/XMLSchema#double\">2454832.5</property:Год-23aux>",
+					"<property:Журнал rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Arctic, Antarctic and Alpine Research</property:Журнал>",
+					"<property:Заголовок rdf:resource=\"&wiki;Pollen_Limitation\"/>",
+					"<property:Тип_публикации rdf:resource=\"&wiki;Статья\"/>",
+					"<owl:DatatypeProperty rdf:about=\"http://example.org/id/Property-3AГод\" />",
+					"<owl:DatatypeProperty rdf:about=\"http://example.org/id/Property-3AГод-23aux\" />",
+					"<owl:DatatypeProperty rdf:about=\"http://example.org/id/Property-3AЖурнал\" />",
+					"<owl:ObjectProperty rdf:about=\"http://example.org/id/Property-3AЗаголовок\" />",
+					"<owl:ObjectProperty rdf:about=\"http://example.org/id/Property-3AТип_публикации\" />"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "ru",
+		"wgLang": "en",
+		"smwgExportBCNonCanonicalFormUse": false,
+		"smwgExportResourcesAsIri": true,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"smwgNamespace": "http://example.org/id/"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

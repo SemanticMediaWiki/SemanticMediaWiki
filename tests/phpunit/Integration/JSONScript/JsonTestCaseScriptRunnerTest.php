@@ -99,6 +99,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		$GLOBALS['smwgDVFeatures'] = $GLOBALS['smwgDVFeatures'] & ~SMW_DV_NUMV_USPACE;
 		$this->testEnvironment->addConfiguration( 'smwgQueryResultCacheType', false );
 		$this->testEnvironment->addConfiguration( 'smwgQFilterDuplicates', false );
+		$this->testEnvironment->addConfiguration( 'smwgExportResourcesAsIri', false );
 	}
 
 	/**
@@ -152,6 +153,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'smwgNamespace',
 			'smwgExportBCNonCanonicalFormUse',
 			'smwgExportBCAuxiliaryUse',
+			'smwgExportResourcesAsIri',
 			'smwgQMaxSize',
 			'smwStrictComparators',
 			'smwgQSubpropertyDepth',

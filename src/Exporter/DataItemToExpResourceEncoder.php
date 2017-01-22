@@ -231,13 +231,13 @@ class DataItemToExpResourceEncoder {
 		if ( $diWikiPage->getNamespace() === NS_CATEGORY ) {
 			$namespace = Exporter::getInstance()->getNamespaceUri( 'category' );
 			$namespaceId = 'category';
-			$localName = Escaper::encodeUri( rawurlencode( $diWikiPage->getDBkey() ) );
+			$localName = Escaper::encodeUri( $diWikiPage->getDBkey() );
 		}
 
 		if ( $diWikiPage->getNamespace() === SMW_NS_PROPERTY ) {
 			$namespace = Exporter::getInstance()->getNamespaceUri( 'property' );
 			$namespaceId = 'property';
-			$localName = Escaper::encodeUri( rawurlencode( $diWikiPage->getDBkey() ) );
+			$localName = Escaper::encodeUri( $diWikiPage->getDBkey() );
 		}
 
 		if ( ( $localName === '' ) ||
@@ -250,7 +250,7 @@ class DataItemToExpResourceEncoder {
 		// "-23$modifier" where "-23" is the URI encoding of "#" (a symbol not
 	 	// occuring in MW titles).
 		if ( $modifier !== '' ) {
-			$localName .=  '-23' . Escaper::encodeUri( rawurlencode(  $modifier ) );
+			$localName .=  '-23' . Escaper::encodeUri( $modifier );
 		}
 
 		return array(
