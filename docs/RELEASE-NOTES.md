@@ -13,7 +13,7 @@ THIS IS NOT A RELEASE YET
 ## Compatibility changes
 
 * Requires to run `update.php` to add an extra table column for the URI table (#1872) and a new table for the preferred label property (#1865).
-* 1.29+ adjustments which includes #2149
+* 1.29+ adjustments which includes #2149, #2198
 
 ## New features and enhancements
 
@@ -64,11 +64,14 @@ THIS IS NOT A RELEASE YET
 * #2157
 * #2173 
 * #2176
+* #2182
+* #2183
 
 ## Bug fixes
 
 * #1258
 * #1328 Fixed a "Undefined index: language" error in `#smwdoc` parser function
+* #1709
 * #1713 Fixed a "Segmentation fault" when `QueryResultDependencyListResolver` tries to resolve a category/property hierarchy with a circular reference
 * #1715 Fixed decoding of a single quotation mark in `DisplayTitlePropertyAnnotator`
 * #1724 Fixed a possible `InvalidArgumentException` in connection with `SMW_DV_PVUC` by updating the `CachedPropertyValuesPrefetcher` version number
@@ -98,6 +101,8 @@ THIS IS NOT A RELEASE YET
 * #2093
 * #2107
 * #2127
+* #2202
+* #2188
 
 ## Internal changes
 
@@ -108,6 +113,7 @@ THIS IS NOT A RELEASE YET
 * #1791 Added `PropertyRegistry::registerPropertyDescriptionByMsgKey`
 * #1776 Added `QueryEngine` and `StoreAware` interface
 * #1940 Added `Installer` and `TableSchemaManager` to replace `SMWSQLStore3SetupHandlers`
+* #2201
 
 ## Contributors
 
