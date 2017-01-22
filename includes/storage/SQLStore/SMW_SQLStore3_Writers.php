@@ -35,9 +35,14 @@ class SMWSQLStore3Writers {
 	protected $store;
 
 	/**
-	 * @var PropertyTableRowDiffer|null
+	 * @var SQLStoreFactory
 	 */
-	private $propertyTableRowDiffer = null;
+	private $factory;
+
+	/**
+	 * @var PropertyTableRowDiffer
+	 */
+	private $propertyTableRowDiffer;
 
 	/**
 	 * @var EntitySubobjectListIterator
@@ -45,13 +50,14 @@ class SMWSQLStore3Writers {
 	private $entitySubobjectListIterator;
 
 	/**
-	 * Constructor.
-	 *
 	 * @since 1.8
+	 *
 	 * @param SMWSQLStore3 $parentStore
+	 * @param SQLStoreFactory $factory
 	 */
-	public function __construct( SMWSQLStore3 $parentStore ) {
+	public function __construct( SMWSQLStore3 $parentStore, $factory ) {
 		$this->store = $parentStore;
+		$this->factory = $factory;
 		$this->propertyTableRowDiffer = new PropertyTableRowDiffer( $this->store );
 		$this->entitySubobjectListIterator = new EntitySubobjectListIterator( $this->store, ApplicationFactory::getInstance()->getIteratorFactory() );
 	}
@@ -344,10 +350,8 @@ class SMWSQLStore3Writers {
 			$this->store->smwIds->setPropertyTableHashes( $sid, $newHashes );
 		}
 
-		$statsTable = new PropertyStatisticsTable(
-			$this->store->getConnection(),
-			SMWSQLStore3::PROPERTY_STATISTICS_TABLE
-		);
+		$statsTable = $this->factory->newPropertyStatisticsTable();
+		$statsTable->waitOnTransactionIdle();
 
 		$statsTable->addToUsageCounts( $propertyUseIncrements );
 	}
@@ -593,10 +597,8 @@ class SMWSQLStore3Writers {
 				$oldTitle->getNamespace()
 			);
 
-			$statsTable = new PropertyStatisticsTable(
-				$db,
-				SMWSQLStore3::PROPERTY_STATISTICS_TABLE
-			);
+			$statsTable = $this->factory->newPropertyStatisticsTable();
+			$statsTable->waitOnTransactionIdle();
 
 			$statsTable->addToUsageCount(
 				$this->store->getObjectIds()->getSMWPropertyID( new SMW\DIProperty( '_REDI' ) ),
@@ -942,10 +944,8 @@ class SMWSQLStore3Writers {
 		unset( $this->store->m_sdstate[$old_tid] );
 
 		// *** Update reference count for _REDI property ***//
-		$statsTable = new PropertyStatisticsTable(
-			$db,
-			SMWSQLStore3::PROPERTY_STATISTICS_TABLE
-		);
+		$statsTable = $this->factory->newPropertyStatisticsTable();
+		$statsTable->waitOnTransactionIdle();
 
 		$statsTable->addToUsageCount(
 			$this->store->getObjectIds()->getSMWPropertyID( new SMW\DIProperty( '_REDI' ) ),

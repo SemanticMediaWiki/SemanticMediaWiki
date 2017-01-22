@@ -6,6 +6,8 @@ use MWException;
 use SMW\MediaWiki\Database;
 use SMW\Store\PropertyStatisticsStore;
 use SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
 
 /**
  * Simple implementation of PropertyStatisticsTable using MediaWikis
@@ -17,33 +19,57 @@ use SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException;
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author Nischay Nahata
  */
-class PropertyStatisticsTable implements PropertyStatisticsStore {
+class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInterface {
 
 	/**
-	 * @since 1.9
 	 * @var string
 	 */
-	protected $table;
+	private $table;
 
 	/**
-	 * @since 1.9
-	 * @var DatabaseBase
+	 * @var Database
 	 */
-	protected $dbConnection;
+	private $connection;
 
 	/**
-	 * Constructor.
-	 *
+	 * @var LoggerInterface
+	 */
+	private $logger;
+
+	/**
+	 * @var boolean
+	 */
+	private $onTransactionIdle = false;
+
+	/**
 	 * @since 1.9
 	 *
-	 * @param Database $dbConnection
+	 * @param Database $connection
 	 * @param string $table
 	 */
-	public function __construct( Database $dbConnection, $table ) {
+	public function __construct( Database $connection, $table ) {
 		assert( is_string( $table ) );
 
-		$this->dbConnection = $dbConnection;
+		$this->connection = $connection;
 		$this->table = $table;
+	}
+
+	/**
+	 * @see LoggerAwareInterface::setLogger
+	 *
+	 * @since 2.5
+	 *
+	 * @param LoggerInterface $logger
+	 */
+	public function setLogger( LoggerInterface $logger ) {
+		$this->logger = $logger;
+	}
+
+	/**
+	 * @since 2.5
+	 */
+	public function waitOnTransactionIdle() {
+		$this->onTransactionIdle = true;
 	}
 
 	/**
@@ -80,10 +106,10 @@ class PropertyStatisticsTable implements PropertyStatisticsStore {
 			return true;
 		}
 
-		return $this->dbConnection->update(
+		return $this->connection->update(
 			$this->table,
 			array(
-				'usage_count = usage_count ' . ( $value > 0 ? '+ ' : '- ' ) . $this->dbConnection->addQuotes( abs( $value ) ),
+				'usage_count = usage_count ' . ( $value > 0 ? '+ ' : '- ' ) . $this->connection->addQuotes( abs( $value ) ),
 			),
 			array(
 				'p_id' => $propertyId
@@ -102,7 +128,24 @@ class PropertyStatisticsTable implements PropertyStatisticsStore {
 	 * @return boolean Success indicator
 	 */
 	public function addToUsageCounts( array $additions ) {
+
 		$success = true;
+
+		if ( $additions === array() ) {
+			return $success;
+		}
+
+		$method = __METHOD__;
+
+		if ( $this->onTransactionIdle ) {
+			$this->connection->onTransactionIdle( function () use( $method, $additions ) {
+				$this->log( $method . ' (onTransactionIdle)' );
+				$this->onTransactionIdle = false;
+				$this->addToUsageCounts( $additions );
+			} );
+
+			return $success;
+		}
 
 		// TODO: properly implement this
 		foreach ( $additions as $propertyId => $addition ) {
@@ -133,7 +176,7 @@ class PropertyStatisticsTable implements PropertyStatisticsStore {
 			throw new PropertyStatisticsInvalidArgumentException( 'The property id to add must be a positive integer' );
 		}
 
-		return $this->dbConnection->update(
+		return $this->connection->update(
 			$this->table,
 			array(
 				'usage_count' => $value,
@@ -166,7 +209,7 @@ class PropertyStatisticsTable implements PropertyStatisticsStore {
 			throw new PropertyStatisticsInvalidArgumentException( 'The property id to add must be a positive integer' );
 		}
 
-		return $this->dbConnection->insert(
+		return $this->connection->insert(
 			$this->table,
 			array(
 				'usage_count' => $value,
@@ -189,7 +232,7 @@ class PropertyStatisticsTable implements PropertyStatisticsStore {
 			return 0;
 		}
 
-		$row = $this->dbConnection->selectRow(
+		$row = $this->connection->selectRow(
 			$this->table,
 			array(
 				'usage_count'
@@ -217,8 +260,8 @@ class PropertyStatisticsTable implements PropertyStatisticsStore {
 			return array();
 		}
 
-		$propertyStatistics = $this->dbConnection->select(
-			$this->dbConnection->tablename( $this->table ),
+		$propertyStatistics = $this->connection->select(
+			$this->connection->tablename( $this->table ),
 			array(
 				'usage_count',
 				'p_id',
@@ -249,11 +292,20 @@ class PropertyStatisticsTable implements PropertyStatisticsStore {
 	 * @return boolean Success indicator
 	 */
 	public function deleteAll() {
-		return $this->dbConnection->delete(
+		return $this->connection->delete(
 			$this->table,
 			'*',
 			__METHOD__
 		);
+	}
+
+	private function log( $message, $context = array() ) {
+
+		if ( $this->logger === null ) {
+			return;
+		}
+
+		$this->logger->info( $message, $context );
 	}
 
 }

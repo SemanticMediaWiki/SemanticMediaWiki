@@ -235,7 +235,7 @@ class SMWSQLStore3 extends SMWStore {
 
 	public function getWriter() {
 		if( $this->writer == false ) {
-			$this->writer = new SMWSQLStore3Writers( $this );//Initialize if not done already
+			$this->writer = new SMWSQLStore3Writers( $this, $this->factory );
 		}
 
 		return $this->writer;
