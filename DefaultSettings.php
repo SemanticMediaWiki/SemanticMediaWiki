@@ -545,19 +545,6 @@ return array(
 	##
 
 	###
-	# Settings for OWL/RDF export
-	##
-	'smwgAllowRecursiveExport' => false, // can normal users request recursive export?
-	'smwgExportBacklinks' => true, // should backlinks be included by default?
-	// global $smwgNamespace,                     // The Namespace of exported URIs.
-	// 	'smwgNamespace' => "http://example.org/id/", // Will be set automatically if
-	// nothing is given, but in order to make pretty URIs you will need to set this
-	// to something nice and adapt your Apache configuration appropriately. This is
-	// done, e.g., on semanticweb.org, where URIs are of the form
-	// http://semanticweb.org/id/FOAF
-	##
-
-	###
 	# The maximal number that SMW will normally display without using scientific exp
 	# notation. The deafult is rather large since some users have problems understanding
 	# exponents. Scineitfic applications may prefer a smaller value for concise display.
@@ -1010,6 +997,45 @@ return array(
 	##
 
 	###
+	# Settings for OWL/RDF export
+	#
+	# Whether or not "normal" users can request an recursive export.
+	#
+	# @since ??
+	# @default = false
+	##
+	'smwgAllowRecursiveExport' => false,
+	##
+
+	###
+	# Settings for OWL/RDF export
+	#
+	# Whether or not backlinks should be included by default.
+	#
+	# @since ??
+	# @default = true
+	##
+	'smwgExportBacklinks' => true,
+	##
+
+	###
+	# OWL/RDF export namespace for URIs/IRIs
+	#
+	# Will be set automatically if nothing is given, but in order to make pretty
+	# URIs you will need to set this to something nice and adapt your Apache
+	# configuration appropriately.
+	#
+	# @see https://www.semantic-mediawiki.org/wiki/Help:$smwgNamespace
+	# @see https://www.semantic-mediawiki.org/wiki/Help:EnableSemantics
+	# @see https://www.semantic-mediawiki.org/wiki/Help:Pretty_URIs
+	#
+	# @since ??
+	# @default = ''
+	##
+	// 	'smwgNamespace' => "http://example.org/id/",
+	##
+
+	###
 	# The setting is introduced the keep backwards compatibility with existing Rdf/Turtle
 	# exports. The `aux` marker is expected only used to be used for selected properties
 	# to generate a helper value and not for any other predefined property.
@@ -1038,6 +1064,22 @@ return array(
 	# @since 2.3
 	##
 	'smwgExportBCNonCanonicalFormUse' => false,
+	##
+
+	##
+	# Export resources using IRIs
+	#
+	# Instead of ASCII encoded URI's, allow resources to be exported as IRI's (RFC
+	# 3987).
+	#
+	# @see https://www.w3.org/TR/rdf11-concepts/#section-IRIs
+	#
+	# This setting should be set TRUE with beginning of 3.x.
+	#
+	# @since 2.5
+	# @default false (to avoid any BC break for exsiting systems)
+	##
+	'smwgExportResourcesAsIri' => false,
 	##
 
 	##

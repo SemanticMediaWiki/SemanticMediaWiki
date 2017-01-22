@@ -4,6 +4,7 @@ namespace SMW\Tests\Exporter;
 
 use SMW\DIWikiPage;
 use SMW\Exporter\Escaper;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Exporter\Escaper
@@ -15,6 +16,20 @@ use SMW\Exporter\Escaper;
  * @author mwjames
  */
 class EscaperTest extends \PHPUnit_Framework_TestCase {
+
+	private $testEnvironment;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->testEnvironment = new TestEnvironment();
+		$this->testEnvironment->addConfiguration( 'smwgExportResourcesAsIri', false );
+	}
+
+	protected function setU() {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
+	}
 
 	/**
 	 * @dataProvider encodePageProvider
@@ -64,7 +79,7 @@ class EscaperTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = array(
 			'Foo:"&+!%#',
-			'Foo-3A-22-26-2B-21--23'
+			'Foo-3A-22-26-2B-21-25-23'
 		);
 
 		$provider[] = array(
@@ -77,7 +92,7 @@ class EscaperTest extends \PHPUnit_Framework_TestCase {
 	public function decodeUriProvider() {
 
 		$provider[] = array(
-			'Foo-3A-22-26-2B-21--23',
+			'Foo-3A-22-26-2B-21-25-23',
 			'Foo:"&+!%#'
 		);
 
@@ -119,6 +134,24 @@ class EscaperTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			new DIWikiPage( 'Foo', NS_MAIN, 'bar', 'yuu' ),
 			'bar-3AFoo'
+		);
+
+		#5
+		$provider[] = array(
+			new DIWikiPage( 'Fooºr', NS_MAIN, '', '' ),
+			'Foo-C2-BAr'
+		);
+
+		#6
+		$provider[] = array(
+			new DIWikiPage( 'Fooºr', SMW_NS_PROPERTY, '', '' ),
+			'Property-3AFoo-C2-BAr'
+		);
+
+		#7
+		$provider[] = array(
+			new DIWikiPage( 'Fooºr', NS_CATEGORY, '', '' ),
+			'Category-3AFoo-C2-BAr'
 		);
 
 		return $provider;

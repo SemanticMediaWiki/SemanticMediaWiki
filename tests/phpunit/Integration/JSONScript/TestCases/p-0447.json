@@ -1,0 +1,78 @@
+{
+	"description": "Test in-text annotation with IRI export (#2188, `smwgExportResourcesAsIri=true`, `wgContLang=ru`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Заголовок",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Тип публикации",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Журнал",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Год",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/P0447/1",
+			"contents": "[[Заголовок::Pollen Limitation]] [[Журнал::Arctic, Antarctic and Alpine Research]] [[Год::2009]] [[Тип публикации::Статья]]"
+		},
+		{
+			"page": "Example/P0447/Q.1.1",
+			"contents": "{{#ask: [[Заголовок::Pollen Limitation]] |?Заголовок }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0447/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 6,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Заголовок",
+						"Журнал",
+						"Год",
+						"Тип публикации"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "Example/P0447/Q.1.1",
+			"assert-output": {
+				"to-contain": [
+					"Property:%D0%97%D0%B0%D0%B3%D0%BE%D0%BB%D0%BE%D0%B2%D0%BE%D0%BA\" title=\"Property:Заголовок\">Заголовок</a>",
+					"Pollen Limitation</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "ru",
+		"wgLang": "en",
+		"smwgExportResourcesAsIri": true,
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

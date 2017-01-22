@@ -139,7 +139,7 @@ class SpecialCharactersQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$provider[] = array(
 			'Caractères spéciaux',
-			'Caractères spéciaux',
+			'Caractères_spéciaux',
 			DIProperty::newFromUserLabel( 'Caractères spéciaux' )->setPropertyTypeId( '_wpg' ),
 			new DIWikiPage( 'âêîôûëïçé', NS_MAIN )
 		);

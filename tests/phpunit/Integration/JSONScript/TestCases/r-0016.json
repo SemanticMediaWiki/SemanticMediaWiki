@@ -1,0 +1,105 @@
+{
+	"description": "Test RDF output generation with special characters (#2188, `smwgExportResourcesAsIri=false`, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"page": "Example/R0016/1/特殊字符",
+			"contents": "{{#subobject: ^[0-9]*$  |特殊字符=^[0-9]*$ }}"
+		},
+		{
+			"page": "Example/R0016/2/特殊字符",
+			"contents": "{{#subobject: {({[[&,,;-.]]})} |特殊字符={({[[&,,;-]]})} }}"
+		},
+		{
+			"page": "Example/R0016/3/特殊 字符",
+			"contents": "{{#subobject: <> |特殊字符=<>\\'/\" }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "rdf",
+			"about": "#0",
+			"exportcontroller": {
+				"print-pages": [
+					"Example/R0016/1/特殊字符"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0016/1/-E7-89-B9-E6-AE-8A-E5-AD-97-E7-AC-A6\">",
+					"<rdfs:label>Example/R0016/1/特殊字符</rdfs:label>",
+					"<property:Has_subobject rdf:resource=\"&wiki;Example/R0016/1/-E7-89-B9-E6-AE-8A-E5-AD-97-E7-AC-A6-23-5E-5B0-2D9-5D-2A-24\"/>",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0016/1/-E7-89-B9-E6-AE-8A-E5-AD-97-E7-AC-A6-23_ERRb4cc1ce66e816f93b716adeeddb0fa46\">",
+					"<property:Has_improper_value_for rdf:resource=\"&wiki;Property-3A-E7-89-B9-E6-AE-8A-E5-AD-97-E7-AC-A6\"/>",
+					"<swivt:wikiPageSortKey rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Example/R0016/1/特殊字符</swivt:wikiPageSortKey>"
+				]
+			}
+		},
+		{
+			"type": "rdf",
+			"about": "#1",
+			"exportcontroller": {
+				"print-pages": [
+					"Example/R0016/2/特殊字符"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0016/2/-E7-89-B9-E6-AE-8A-E5-AD-97-E7-AC-A6\">",
+					"<rdfs:label>Example/R0016/2/特殊字符</rdfs:label>",
+					"<property:Has_subobject rdf:resource=\"&wiki;Example/R0016/2/-E7-89-B9-E6-AE-8A-E5-AD-97-E7-AC-A6-23-7B-28-7B-5B-5B-26-2C-2C-3B-2D.-5D-5D-7D-29-7D\"/>",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0016/2/-E7-89-B9-E6-AE-8A-E5-AD-97-E7-AC-A6-23_ERRb4cc1ce66e816f93b716adeeddb0fa46\">",
+					"<property:Has_improper_value_for rdf:resource=\"&wiki;Property-3A-E7-89-B9-E6-AE-8A-E5-AD-97-E7-AC-A6\"/>"
+				]
+			}
+		},
+		{
+			"type": "rdf",
+			"about": "#2",
+			"exportcontroller": {
+				"print-pages": [
+					"Example/R0016/3/特殊 字符"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0016/3/-E7-89-B9-E6-AE-8A_-E5-AD-97-E7-AC-A6\">",
+					"<rdfs:label>Example/R0016/3/特殊 字符</rdfs:label>",
+					"<property:Has_subobject rdf:resource=\"&wiki;Example/R0016/3/-E7-89-B9-E6-AE-8A_-E5-AD-97-E7-AC-A6-23-3C-3E\"/>",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0016/3/-E7-89-B9-E6-AE-8A_-E5-AD-97-E7-AC-A6-23_ERRb4cc1ce66e816f93b716adeeddb0fa46\">",
+					"<property:Has_improper_value_for rdf:resource=\"&wiki;Property-3A-E7-89-B9-E6-AE-8A-E5-AD-97-E7-AC-A6\"/>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgExportBCNonCanonicalFormUse": false,
+		"smwgExportResourcesAsIri": false,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"smwgNamespace": "http://example.org/id/"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
