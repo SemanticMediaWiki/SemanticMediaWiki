@@ -65,7 +65,10 @@ class PropertyStatisticsRebuilder {
 		$res = $this->store->getConnection( 'mw.db' )->select(
 			\SMWSql3SmwIds::TABLE_NAME,
 			array( 'smw_id', 'smw_title' ),
-			array( 'smw_namespace' => SMW_NS_PROPERTY  ),
+			array(
+				'smw_namespace' => SMW_NS_PROPERTY,
+				'smw_subobject' => ''
+			),
 			__METHOD__
 		);
 
