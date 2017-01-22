@@ -66,6 +66,37 @@ class PropertySpecificationLookup {
 	/**
 	 * @since 2.5
 	 *
+	 * @param DIProperty $source
+	 * @param DIProperty $target
+	 *
+	 * @return []|DataItem[]
+	 */
+	public function getSpecification( DIProperty $source, DIProperty $target ) {
+
+		$definition = false;
+		$key = '-spec:'. $source->getKey() . $target->getKey();
+
+		if ( ( $definition = $this->intermediaryMemoryCache->fetch( $key ) ) !== false ) {
+			return $definition;
+		}
+
+		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
+			$source->getCanonicalDiWikiPage(),
+			$target
+		);
+
+		if ( !is_array( $dataItems ) ) {
+			$dataItems = array();
+		}
+
+		$this->intermediaryMemoryCache->save( $key, $dataItems );
+
+		return $dataItems;
+	}
+
+	/**
+	 * @since 2.5
+	 *
 	 * @param DIProperty $property
 	 *
 	 * @return false|DataItem
@@ -73,23 +104,11 @@ class PropertySpecificationLookup {
 	public function getFieldListBy( DIProperty $property ) {
 
 		$fieldList = false;
-		$key = 'list:'. $property->getKey();
-
-		// Guard against high frequency lookup
-		if ( ( $fieldList = $this->intermediaryMemoryCache->fetch( $key ) ) !== false ) {
-			return $fieldList;
-		}
-
-		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
-			$property->getCanonicalDiWikiPage(),
-			new DIProperty( '_LIST' )
-		);
+		$dataItems = $this->getSpecification( $property, new DIProperty( '_LIST' ) );
 
 		if ( is_array( $dataItems ) && $dataItems !== array() ) {
 			$fieldList = end( $dataItems );
 		}
-
-		$this->intermediaryMemoryCache->save( $key, $fieldList );
 
 		return $fieldList;
 	}
@@ -167,23 +186,11 @@ class PropertySpecificationLookup {
 	public function hasUniquenessConstraintBy( DIProperty $property ) {
 
 		$hasUniquenessConstraint = false;
-		$key = 'uc:'. $property->getKey();
-
-		// Guard against high frequency lookup
-		if ( $this->intermediaryMemoryCache->contains( $key ) ) {
-			return $this->intermediaryMemoryCache->fetch( $key );
-		}
-
-		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
-			$property->getCanonicalDiWikiPage(),
-			new DIProperty( '_PVUC' )
-		);
+		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVUC' ) );
 
 		if ( is_array( $dataItems ) && $dataItems !== array() ) {
 			$hasUniquenessConstraint = end( $dataItems )->getBoolean();
 		}
-
-		$this->intermediaryMemoryCache->save( $key, $hasUniquenessConstraint );
 
 		return $hasUniquenessConstraint;
 	}
@@ -198,11 +205,7 @@ class PropertySpecificationLookup {
 	public function getExternalFormatterUriBy( DIProperty $property ) {
 
 		$dataItem = null;
-
-		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
-			$property->getCanonicalDiWikiPage(),
-			new DIProperty( '_PEFU' )
-		);
+		$dataItems = $this->getSpecification( $property, new DIProperty( '_PEFU' ) );
 
 		if ( is_array( $dataItems ) && $dataItems !== array() ) {
 			$dataItem = end( $dataItems );
@@ -221,23 +224,11 @@ class PropertySpecificationLookup {
 	public function getAllowedPatternBy( DIProperty $property ) {
 
 		$allowsPattern = '';
-		$key = 'ap:'. $property->getKey();
-
-		// Guard against high frequency lookup
-		if ( $this->intermediaryMemoryCache->contains( $key ) ) {
-			return $this->intermediaryMemoryCache->fetch( $key );
-		}
-
-		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
-			$property->getCanonicalDiWikiPage(),
-			new DIProperty( '_PVAP' )
-		);
+		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVAP' ) );
 
 		if ( is_array( $dataItems ) && $dataItems !== array() ) {
 			$allowsPattern = end( $dataItems )->getString();
 		}
-
-		$this->intermediaryMemoryCache->save( $key, $allowsPattern );
 
 		return $allowsPattern;
 	}
@@ -247,28 +238,16 @@ class PropertySpecificationLookup {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return integer|false
+	 * @return array
 	 */
 	public function getAllowedValuesBy( DIProperty $property ) {
 
 		$allowsValues = array();
-		$key = 'al:'. $property->getKey();
-
-		// Guard against high frequency lookup
-		if ( $this->intermediaryMemoryCache->contains( $key ) ) {
-			return $this->intermediaryMemoryCache->fetch( $key );
-		}
-
-		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
-			$property->getCanonicalDiWikiPage(),
-			new DIProperty( '_PVAL' )
-		);
+		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVAL' ) );
 
 		if ( is_array( $dataItems ) && $dataItems !== array() ) {
 			$allowsValues = $dataItems;
 		}
-
-		$this->intermediaryMemoryCache->save( $key, $allowsValues );
 
 		return $allowsValues;
 	}
@@ -283,11 +262,7 @@ class PropertySpecificationLookup {
 	public function getDisplayPrecisionBy( DIProperty $property ) {
 
 		$displayPrecision = false;
-
-		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
-			$property->getCanonicalDiWikiPage(),
-			new DIProperty( '_PREC' )
-		);
+		$dataItems = $this->getSpecification( $property, new DIProperty( '_PREC' ) );
 
 		if ( $dataItems !== false && $dataItems !== array() ) {
 			$dataItem = end( $dataItems );
