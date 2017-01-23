@@ -17,7 +17,8 @@
 			"Diniscoelho",
 			"Fúlvio",
 			"Fitoschido",
-			"Ngl2016"
+			"Ngl2016",
+			"Jaideraf"
 		]
 	},
 	"smw-desc": "Tornar a sua wiki mais inteligível - para máquinas ''e'' seres humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
@@ -138,6 +139,8 @@
 	"smw_typearticlecount": "A apresentar {{PLURAL:$1|uma propriedade que usa|$1 propriedades que usam}} este tipo.",
 	"smw_attribute_header": "Páginas que usam a propriedade “$1”",
 	"smw_attributearticlecount": "A apresentar {{PLURAL:$1|uma página que usa|$1 páginas que usam}} esta propriedade.",
+	"smw-propertylist-subproperty-header": "Subpropriedades",
+	"smw-propertylist-redirect-header": "Sinônimos",
 	"exportrdf": "Exportar páginas para RDF",
 	"smw_exportrdf_docu": "Esta página permite-lhe obter dados de uma página com o formato RDF.\nPara exportar páginas, introduza os seus títulos na caixa de texto abaixo, um título por linha.",
 	"smw_exportrdf_recursive": "Exportar recursivamente todas as páginas relacionadas.\nNote que o resultado pode ser volumoso!",
@@ -160,11 +163,11 @@
 	"smw-sp-concept-count": "{{PLURAL:$1|O seguinte conceito está a ser incluído|Os $1 conceitos seguintes estão a ser incluídos}} na lista.",
 	"smw-sp-concept-empty": "Não foi encontrado nenhum conceito.",
 	"unusedproperties": "Propriedades não usadas",
-	"smw_unusedproperties_docu": "As seguintes propriedades existem, apesar de nenhuma outra página as utilizar.",
-	"smw_unusedproperty_template": "$1 do tipo $2",
+	"smw-unusedproperties-docu": "As seguintes propriedades existem, apesar de nenhuma outra página as utilizar.",
+	"smw-unusedproperty-template": "$1 do tipo $2",
 	"wantedproperties": "Propriedades em falta",
-	"smw_wantedproperties_docu": "As seguintes propriedades são usadas na wiki, mas ainda não têm uma página que as descreva.",
-	"smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|uso|usos}})",
+	"smw-wantedproperties-docu": "As seguintes propriedades são usadas na wiki, mas ainda não têm uma página que as descreva.",
+	"smw-wantedproperty-template": "$1 ($2 {{PLURAL:$2|uso|usos}})",
 	"smw_purge": "Atualizar",
 	"types": "Tipos",
 	"smw_types_docu": "Lista dos [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes tipos de dados disponíveis] em que cada [https://www.semantic-mediawiki.org/wiki/Help:Datatype tipo] representa um conjunto único de atributos, para descrever um valor em termos das características de armazenamento e apresentação que são hereditárias para uma propriedade atribuída.",
@@ -468,5 +471,8 @@
 	"smw-parser-invalid-json-format": "O analisador JSON terminou com \"$1\".",
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "\"$1\" não pode ser usado como etiqueta preferida porque a língua \"$2\" já está atribuída à etiqueta \"$3\".",
-	"smw-parse": "$1"
+	"smw-parse": "$1",
+	"smw-clipboard-copy-link": "Copiar link para a área de transferência",
+	"smw-data-lookup": "Obtendo dados...",
+	"smw-no-data-available": "Nenhum dado disponível."
 }
