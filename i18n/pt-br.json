@@ -20,7 +20,8 @@
 			"He7d3r",
 			"Rhcastilhos",
 			"Opraco",
-			"Macofe"
+			"Macofe",
+			"Eduardo Addad de Oliveira"
 		]
 	},
 	"smw-desc": "Tornando seu wiki mais acessível - para máquinas ''e'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
@@ -325,6 +326,7 @@
 	"smw_conceptarticlecount": "Exibindo {{PLURAL:$1|uma página|$1 páginas}}.",
 	"smw-qp-empty-data": "Os dados requisitados não puderam ser exibidos devido a algum critério de seleção insuficiente.",
 	"right-smw-admin": "Acessar as tarefas de administração (Semantic MediaWiki)",
+	"action-smw-patternedit": "editar expressões regulares usadas pelo MediaWiki Semântico",
 	"group-smwadministrator": "Administradores (Semantic MediaWiki)",
 	"group-smwadministrator-member": "{{GENDER:$1|administrador|administradora|administrador(a)}} (Semantic MediaWiki)",
 	"grouppage-smwadministrator": "{{ns:project}}:Administradores (Semantic MediaWiki)",
@@ -361,6 +363,7 @@
 	"log-name-smw": "Log do Semantic MediaWiki",
 	"log-show-hide-smw": "$1 o registo do Semantic MediaWiki",
 	"log-description-smw": "Atividades para [https://www.semantic-mediawiki.org/wiki/Help:Logging tipos de eventos habilitados] que são reportados pelo Semantic MediaWiki e seus componentes.",
+	"logentry-smw-maintenance": "Ocorrências relacionadas com manutenção, emitidas pelo MediaWiki Semântico",
 	"smw-datavalue-import-unknown-namespace": "O namespace \"$1\" a ser importado é desconhecido. Por favor, tenha certeza de que os detalhes da importação OWL estão disponíveis via [[MediaWiki:Smw import $1]]",
 	"smw-datavalue-import-missing-namespace-uri": "Não foi possível encontrar um URI de namespace \"$1\" na [[MediaWiki:Smw import $1|página de importação $1]].",
 	"smw-datavalue-import-missing-type": "Nenhuma definição de tipo foi encontrada para \"$1\" na [[MediaWiki:Smw import $2|página de importação $2]].",
@@ -404,6 +407,7 @@
 	"smw-datavalue-time-invalid-date-components-dash": "\"$1\" contém um travessão, traço de ligação extrínseco ou outros caracteres que são inválidos para a interpretação de uma data.",
 	"smw-datavalue-time-invalid-date-components-empty": "\"$1\" contém alguns componentes vazios.",
 	"smw-datavalue-time-invalid-date-components-three": "\"$1\" contém mais de três componentes necessários para a interpretação de uma data.",
+	"smw-datavalue-external-formatter-uri-missing-placeholder": "Falta o espaço reservado \"$1\" no URI do formatador.",
 	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" é um URL inválido.",
 	"smw-datavalue-parse-error": "O valor fornecido \"$1\" não foi compreendido.",
 	"smw-datavalue-reference-outputformat": "$1: $2",

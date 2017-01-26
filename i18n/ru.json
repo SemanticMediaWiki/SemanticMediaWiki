@@ -24,7 +24,8 @@
 			"Туллук",
 			"Irus",
 			"Kareyac",
-			"Zpizza"
+			"Zpizza",
+			"Alex Great"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -171,7 +172,7 @@
 	"smw-unusedproperties-docu": "Следующие свойства определены, но не используются ни в одной из статей.",
 	"smw-unusedproperty-template": "$1 имеет тип $2",
 	"wantedproperties": "Неописанные свойства",
-	"smw-wantedproperties-docu": "Следующие свойства используются в статьях данного сайта, но не имеют соответствующих им страниц описаний.",
+	"smw-wantedproperties-docu": "На этой странице перечислены [https://www.semantic-mediawiki.org/wiki/Wanted_properties необходимые свойства], которые используются на вики, но не имеют страницу с их описанием. Для дифференцированного подхода, см. служебные страницы с [[Special:Properties|заполненными]] или [[Special:UnusedProperties|неиспользуемыми свойствами]].",
 	"smw-wantedproperty-template": "$1 ($2 {{PLURAL:$2|использование|использования|использований}})",
 	"smw_purge": "Обновить",
 	"types": "Типы",

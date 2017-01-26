@@ -131,7 +131,7 @@
 	"smw-unusedproperty-template": "$1 ng uring $2",
 	"wantedproperties": "Ninanais na mga ari-arian",
 	"smw-wantedproperties-docu": "Ginagamit sa loob ng wiki ang sumusunod na mga pag-aari ngunit wala pang isang pahinang naglalarawan sa kanila.",
-	"smw-wantedproperty-template": "!!FUZZY!!$1 ($2 {{PLURAL:$2|gamit|mga gamit}})",
+	"smw-wantedproperty-template": "$1 ($2 {{PLURAL:$2|gamit|mga gamit}})",
 	"smw_purge": "Sariwain",
 	"types": "Mga uri",
 	"smw_types_docu": "Ang sumusunod ay isang talaan ng lahat ng mga uri ng dato na maaaring italaga sa mga pag-aari.",

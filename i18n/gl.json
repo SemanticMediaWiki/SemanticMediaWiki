@@ -127,6 +127,8 @@
 	"smw_typearticlecount": "Mostrando $1 {{PLURAL:$1|propiedade|propiedades}} que {{PLURAL:$1|usa|usan}} este tipo.",
 	"smw_attribute_header": "Páxinas que usan a propiedade \"$1\"",
 	"smw_attributearticlecount": "Mostrando $1 {{PLURAL:$1|páxina|páxinas}} que {{PLURAL:$1|usa|usan}} esta propiedade.",
+	"smw-propertylist-subproperty-header": "Subpropiedades",
+	"smw-propertylist-redirect-header": "Sinónimos",
 	"exportrdf": "Exportar páxinas a RDF",
 	"smw_exportrdf_docu": "Esta páxina permítelle obter datos dunha páxina en formato RDF.\nPara exportar páxinas, insira os títulos na caixa de embaixo (un título por liña).",
 	"smw_exportrdf_recursive": "Exportar igualmente todas as páxinas relacionadas.\nDéase conta de que o resultado pode ser longo!",
@@ -250,7 +252,7 @@
 	"smw-admin-dbdocu": "Semantic MediaWiki require algunhas extensións da base de datos MediaWiki para almacenar os datos semánticos.\nA función de embaixo asegúrase de que a súa base de datos está configurada apropiadamente.\nOs cambios feitos neste paso non afectarán ao resto da base de datos MediaWiki, e poden ser desfeitos de xeito sinxelo se se desexa.\nEsta función de configuración pode ser executada múltiples veces sen facer ningún dano, pero só é necesaria unha vez na instalación ou actualización.",
 	"smw-admin-permissionswarn": "Se a operación falla con erros SQL, probablemente a base de datos empregada polo seu wiki (comprobe o seu ficheiro \"LocalSettings.php\") non teña os permisos suficientes.\nFai falla conceder a este usuario os permisos para crear e eliminar táboas; temporalmente insira o rexistro da súa base de datos no ficheiro \"LocalSettings.php\", ou use a escritura de mantemento <code>setupStore.php</code>, que pode usar as credenciais dun administrador.",
 	"smw-admin-dbbutton": "Inicialice ou actualice as táboas",
-	"smw-admin-announce": "Anunciar o seu wiki",
+	"smw-admin-announce": "Anuncia o teu wiki",
 	"smw-admin-announce-text": "Se a súa wiki é pública, pode rexistrarse en <a href=\"https://wikiapiary.com\">WikiApiary</a>, o catálogo wiki de wikis.",
 	"smw_smwadmin_datarefresh": "Reparación dos datos",
 	"smw_smwadmin_datarefreshdocu": "É posible restaurar todos os datos de Semantic MediaWiki baseados nos contidos actuais do wiki.\nIsto pode ser útil para reparar datos rotos ou para refrescar os datos se o formato interno cambiou debido a actualizacións do software.\nEsta actualización é executada páxina a páxina e non será completada inmediatamente.\nO seguinte amosa se unha actualización está en curso e permítelle comezalas ou detelas (a non ser que esta característica fose deshabilitada polo administrador do sitio).",
@@ -446,5 +448,6 @@
 	"smw-parser-invalid-json-format": "O analizador de JSON devolveu un \"$1\".",
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "\"$1\" non pode usarse como etiqueta preferida por a lingua \"$2\" xa está asignada á etiqueta \"$3\".",
-	"smw-parse": "$1"
+	"smw-parse": "$1",
+	"smw-clipboard-copy-link": "Copiar ligazón no portapapeis"
 }
