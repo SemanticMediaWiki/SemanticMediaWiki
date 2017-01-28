@@ -228,4 +228,33 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 		);
 	}
 
+	public function testAddToUsageCountsWillNotWaitOnTransactionIdleWhenCommandLineModeIsActive() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->never() )
+			->method( 'onTransactionIdle' );
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'update' );
+
+		$instance = new PropertyStatisticsTable(
+			$connection,
+			\SMWSQLStore3::PROPERTY_STATISTICS_TABLE
+		);
+
+		$additions = array(
+			2 => 42,
+			9001 => -9000,
+			9003 => 0,
+		);
+
+		$instance->isCommandLineMode( true );
+		$instance->waitOnTransactionIdle();
+
+		$instance->addToUsageCounts( $additions );
+	}
+
 }

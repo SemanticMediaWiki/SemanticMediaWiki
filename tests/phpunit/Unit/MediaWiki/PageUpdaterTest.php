@@ -146,7 +146,7 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$instance->doPurgeParserCache();
 	}
 
-	public function testPurgeParserCacheOnTransactionIdleWithMissingConnection() {
+	public function testPurgeParserCacheWillNotWaitOnTransactionIdleWithMissingConnection() {
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -161,6 +161,30 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PageUpdater();
 		$instance->addPage( $title );
+
+		$instance->waitOnTransactionIdle();
+		$instance->doPurgeParserCache();
+	}
+
+	public function testPurgeParserCacheWillNotWaitOnTransactionIdleWhenCommandLineModeIsActive() {
+
+		$this->connection->expects( $this->never() )
+			->method( 'onTransactionIdle' );
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'getPrefixedDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$title->expects( $this->once() )
+			->method( 'invalidateCache' );
+
+		$instance = new PageUpdater( $this->connection );
+		$instance->addPage( $title );
+		$instance->isCommandLineMode( true );
 
 		$instance->waitOnTransactionIdle();
 		$instance->doPurgeParserCache();

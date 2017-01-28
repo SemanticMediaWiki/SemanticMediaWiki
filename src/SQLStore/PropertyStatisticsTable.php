@@ -39,6 +39,11 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 	/**
 	 * @var boolean
 	 */
+	private $isCommandLineMode = false;
+
+	/**
+	 * @var boolean
+	 */
 	private $onTransactionIdle = false;
 
 	/**
@@ -66,10 +71,22 @@ class PropertyStatisticsTable implements PropertyStatisticsStore, LoggerAwareInt
 	}
 
 	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:$wgCommandLineMode
+	 * Indicates whether MW is running in command-line mode or not.
+	 *
+	 * @since 2.5
+	 *
+	 * @param boolean $isCommandLineMode
+	 */
+	public function isCommandLineMode( $isCommandLineMode ) {
+		$this->isCommandLineMode = $isCommandLineMode;
+	}
+
+	/**
 	 * @since 2.5
 	 */
 	public function waitOnTransactionIdle() {
-		$this->onTransactionIdle = true;
+		$this->onTransactionIdle = !$this->isCommandLineMode;
 	}
 
 	/**

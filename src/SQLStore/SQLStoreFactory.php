@@ -434,6 +434,10 @@ class SQLStoreFactory {
 			ApplicationFactory::getInstance()->getMediaWikiLogger()
 		);
 
+		$propertyStatisticsTable->isCommandLineMode(
+			$GLOBALS['wgCommandLineMode']
+		);
+
 		return $propertyStatisticsTable;
 	}
 

@@ -239,6 +239,10 @@ class ApplicationFactory {
 			$this->getMediaWikiLogger()
 		);
 
+		$pageUpdater->isCommandLineMode(
+			$GLOBALS['wgCommandLineMode']
+		);
+
 		return $pageUpdater;
 	}
 
