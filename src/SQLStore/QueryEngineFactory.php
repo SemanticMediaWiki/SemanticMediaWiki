@@ -12,6 +12,8 @@ use SMW\SQLStore\QueryEngine\QueryEngine;
 use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
 use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
+use SMW\SQLStore\QueryEngine\OrderConditionsComplementor;
+use SMW\SQLStore\QueryEngine\QuerySegmentListBuildManager;
 
 /**
  * @license GNU GPL v2+
@@ -101,9 +103,25 @@ class QueryEngineFactory {
 	 */
 	public function newQueryEngine() {
 
+		$querySegmentListBuilder = $this->newQuerySegmentListBuilder();
+
+		$orderConditionsComplementor = new OrderConditionsComplementor(
+			$querySegmentListBuilder
+		);
+
+		$orderConditionsComplementor->isSupported(
+			$this->applicationFactory->getSettings()->get( 'smwgQSortingSupport' )
+		);
+
+		$querySegmentListBuildManager = new QuerySegmentListBuildManager(
+			$this->store->getConnection( 'mw.db.queryengine' ),
+			$querySegmentListBuilder,
+			$orderConditionsComplementor
+		);
+
 		$queryEngine = new QueryEngine(
 			$this->store,
-			$this->newQuerySegmentListBuilder(),
+			$querySegmentListBuildManager,
 			$this->newQuerySegmentListProcessor(),
 			new EngineOptions()
 		);
