@@ -32,6 +32,11 @@ class PageUpdater implements LoggerAwareInterface {
 	/**
 	 * @var boolean
 	 */
+	private $isCommandLineMode = false;
+
+	/**
+	 * @var boolean
+	 */
 	private $onTransactionIdle = false;
 
 	/**
@@ -52,6 +57,18 @@ class PageUpdater implements LoggerAwareInterface {
 	 */
 	public function setLogger( LoggerInterface $logger ) {
 		$this->logger = $logger;
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:$wgCommandLineMode
+	 * Indicates whether MW is running in command-line mode or not.
+	 *
+	 * @since 2.5
+	 *
+	 * @param boolean $isCommandLineMode
+	 */
+	public function isCommandLineMode( $isCommandLineMode ) {
+		$this->isCommandLineMode = $isCommandLineMode;
 	}
 
 	/**
@@ -83,7 +100,7 @@ class PageUpdater implements LoggerAwareInterface {
 			return $this->onTransactionIdle = false;
 		}
 
-		$this->onTransactionIdle = true;
+		$this->onTransactionIdle = !$this->isCommandLineMode;
 	}
 
 	/**
