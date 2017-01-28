@@ -74,7 +74,10 @@ class ParserCachePurgeJob extends JobBase {
 		}
 
 		if ( $this->hasParameter( 'idlist' ) ) {
-			$this->findEmbeddedQueryTargetLinksBatches( $this->getParameter( 'idlist' ) );
+			$this->findEmbeddedQueryTargetLinksBatches(
+				$this->getParameter( 'idlist' ),
+				$this->applicationFactory->getMediaWikiLogger()
+			);
 		}
 
 		$this->pageUpdater->addPage( $this->getTitle() );
@@ -96,7 +99,7 @@ class ParserCachePurgeJob extends JobBase {
 	 *
 	 * @param array|string $idList
 	 */
-	private function findEmbeddedQueryTargetLinksBatches( $idList ) {
+	private function findEmbeddedQueryTargetLinksBatches( $idList, $logger ) {
 
 		if ( is_string( $idList ) && strpos( $idList, '|') !== false ) {
 			$idList = explode( '|', $idList );
@@ -142,7 +145,7 @@ class ParserCachePurgeJob extends JobBase {
 			$job->run();
 		}
 
-		wfDebugLog( 'smw', __METHOD__  . " counted: {$countedHashListEntries} | offset: {$this->offset}  for " . $this->getTitle()->getPrefixedDBKey() . "\n" );
+		$logger->info( __METHOD__  . " counted: {$countedHashListEntries} | offset: {$this->offset}  for " . $this->getTitle()->getPrefixedDBKey() );
 
 		list( $hashList, $queryList ) = $this->doBuildUniqueTargetLinksHashList(
 			$hashList

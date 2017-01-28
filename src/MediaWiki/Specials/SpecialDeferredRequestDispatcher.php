@@ -107,7 +107,7 @@ class SpecialDeferredRequestDispatcher extends SpecialPage {
 			return;
 		}
 
-		return $this->doRunJob( $parameters );
+		return $this->doRunJob( $parameters, ApplicationFactory::getInstance()->getMediaWikiLogger() );
 	}
 
 	private function modifyHttpHeader( $header, $message = '' ) {
@@ -134,17 +134,16 @@ class SpecialDeferredRequestDispatcher extends SpecialPage {
 		} );
 	}
 
-	private function doRunJob( $parameters ) {
+	private function doRunJob( $parameters, $logger ) {
 
 		$type = $parameters['async-job']['type'];
 		$title = Title::newFromDBkey( $parameters['async-job']['title'] );
 
 		if ( $title === null ) {
-			wfDebugLog( 'smw', __METHOD__  . " invalid title" . "\n" );
-			return;
+			return $logger->info( __METHOD__  . " invalid title" );
 		}
 
-		wfDebugLog( 'smw', __METHOD__ . ' ' . $type . ' :: ' .  $title->getPrefixedDBkey() . '#' . $title->getNamespace() );
+		$logger->info( __METHOD__ . ' ' . $type . ' :: ' .  $title->getPrefixedDBkey() . '#' . $title->getNamespace() );
 
 		$job = ApplicationFactory::getInstance()->newJobFactory()->newByType(
 			$type,

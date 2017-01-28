@@ -8,6 +8,9 @@ use SMW\MediaWiki\Database;
 use SMW\DeferredRequestDispatchManager;
 use SMW\DIWikiPage;
 use SMW\SQLStore\ChangeOp\TempChangeOpStore;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
+use SMW\Utils\Timer;
 
 /**
  * @license GNU GPL v2+
@@ -15,7 +18,7 @@ use SMW\SQLStore\ChangeOp\TempChangeOpStore;
  *
  * @author mwjames
  */
-class TextByChangeUpdater {
+class TextByChangeUpdater implements LoggerAwareInterface {
 
 	/**
 	 * @var Database
@@ -36,6 +39,11 @@ class TextByChangeUpdater {
 	 * @var TempChangeOpStore
 	 */
 	private $tempChangeOpStore;
+
+	/**
+	 * @var LoggerInterface
+	 */
+	private $logger;
 
 	/**
 	 * @var boolean
@@ -60,6 +68,17 @@ class TextByChangeUpdater {
 		$this->searchTableUpdater = $searchTableUpdater;
 		$this->textSanitizer = $textSanitizer;
 		$this->tempChangeOpStore = $tempChangeOpStore;
+	}
+
+	/**
+	 * @see LoggerAwareInterface::setLogger
+	 *
+	 * @since 2.5
+	 *
+	 * @param LoggerInterface $logger
+	 */
+	public function setLogger( LoggerInterface $logger ) {
+		$this->logger = $logger;
 	}
 
 	/**
@@ -134,7 +153,8 @@ class TextByChangeUpdater {
 			return;
 		}
 
-		$start = microtime( true );
+		Timer::start( __METHOD__ );
+
 		$tableChangeOps = $this->tempChangeOpStore->newTableChangeOpsFrom(
 			$parameters['slot:id']
 		);
@@ -145,7 +165,7 @@ class TextByChangeUpdater {
 
 		$this->tempChangeOpStore->delete( $parameters['slot:id'] );
 
-		wfDebugLog( 'smw', __METHOD__ . ' procTime (sec): '. round( ( microtime( true ) - $start ), 5 ) );
+		$this->log( __METHOD__ . ' procTime (sec): '. Timer::getElapsedTime( __METHOD__, 5 ) );
 	}
 
 	/**
@@ -159,13 +179,13 @@ class TextByChangeUpdater {
 			return;
 		}
 
-		$start = microtime( true );
+		Timer::start( __METHOD__ );
 
 		foreach ( $compositePropertyTableDiffIterator->getTableChangeOps() as $tableChangeOp ) {
 			$this->doUpdateFromTableChangeOp( $tableChangeOp );
 		}
 
-		wfDebugLog( 'smw', __METHOD__ . ' procTime (sec): '. round( ( microtime( true ) - $start ), 5 ) );
+		$this->log( __METHOD__ . ' procTime (sec): '. Timer::getElapsedTime( __METHOD__, 5 ) );
 	}
 
 	private function doUpdateFromTableChangeOp( TableChangeOp $tableChangeOp ) {
@@ -268,7 +288,7 @@ class TextByChangeUpdater {
 				$text = str_replace( $value, '', $text );
 			}
 
-			//wfDebugLog( 'smw', "Delete update on $sid with $pid" );
+			//$this->log( "Delete update on $sid with $pid" );
 
 			$this->searchTableUpdater->update( $sid, $pid, $text );
 		}
@@ -292,7 +312,7 @@ class TextByChangeUpdater {
 				$this->searchTableUpdater->insert( $sid, $pid );
 			}
 
-			//wfDebugLog( 'smw', "Insert update on $sid with $pid " );
+			//$this->log( "Insert update on $sid with $pid " );
 
 			$this->searchTableUpdater->update( $sid, $pid, $text . ' ' . $value );
 		}
@@ -314,6 +334,15 @@ class TextByChangeUpdater {
 		}
 
 		return $canPostUpdate;
+	}
+
+	private function log( $message, $context = array() ) {
+
+		if ( $this->logger === null ) {
+			return;
+		}
+
+		$this->logger->info( $message, $context );
 	}
 
 }

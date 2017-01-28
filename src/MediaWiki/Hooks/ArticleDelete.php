@@ -5,44 +5,48 @@ namespace SMW\MediaWiki\Hooks;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\EventHandler;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleDelete
- *
- * @ingroup FunctionHook
  *
  * @license GNU GPL v2+
  * @since 2.0
  *
  * @author mwjames
  */
-class ArticleDelete {
+class ArticleDelete implements LoggerAwareInterface {
 
 	/**
-	 * @var Wikipage
+	 * @var LoggerInterface
 	 */
-	private $wikiPage = null;
+	private $logger;
 
 	/**
-	 * @since  2.0
+	 * @see LoggerAwareInterface::setLogger
 	 *
-	 * @param Wikipage $wikiPage
+	 * @since 2.5
+	 *
+	 * @param LoggerInterface $logger
 	 */
-	public function __construct( &$wikiPage, &$user, &$reason, &$error ) {
-		$this->wikiPage = $wikiPage;
+	public function setLogger( LoggerInterface $logger ) {
+		$this->logger = $logger;
 	}
 
 	/**
 	 * @since 2.0
 	 *
+	 * @param Wikipage $wikiPage
+	 *
 	 * @return true
 	 */
-	public function process() {
+	public function process( $wikiPage ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$eventHandler = EventHandler::getInstance();
 
-		$title = $this->wikiPage->getTitle();
+		$title = $wikiPage->getTitle();
 		$store = $applicationFactory->getStore();
 
 		$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
@@ -51,7 +55,7 @@ class ArticleDelete {
 		$deferredCallableUpdate = $applicationFactory->newDeferredCallableUpdate( function() use( $store, $title, $semanticDataSerializer, $jobFactory, $eventHandler ) {
 
 			$subject = DIWikiPage::newFromTitle( $title );
-			wfDebugLog( 'smw', 'DeferredCallableUpdate on delete for ' . $subject->getHash() );
+			$this->log( 'DeferredCallableUpdate on delete for ' . $subject->getHash() );
 
 			$parameters['semanticData'] = $semanticDataSerializer->serialize(
 				$store->getSemanticData( $subject )
@@ -89,6 +93,15 @@ class ArticleDelete {
 		$deferredCallableUpdate->pushUpdate();
 
 		return true;
+	}
+
+	private function log( $message, $context = array() ) {
+
+		if ( $this->logger === null ) {
+			return;
+		}
+
+		$this->logger->info( $message, $context );
 	}
 
 }

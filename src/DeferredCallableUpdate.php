@@ -29,6 +29,11 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	private $connection;
 
 	/**
+	 * @var LoggerInterface
+	 */
+	private $logger;
+
+	/**
 	 * @var boolean
 	 */
 	private $enabledDeferredUpdate = true;
@@ -67,11 +72,6 @@ class DeferredCallableUpdate implements DeferrableUpdate, LoggerAwareInterface {
 	 * @var array
 	 */
 	private static $queueList = array();
-
-	/**
-	 * LoggerInterface
-	 */
-	private $logger;
 
 	/**
 	 * @since 2.4

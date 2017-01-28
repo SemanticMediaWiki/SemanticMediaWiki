@@ -5,6 +5,8 @@ namespace SMW\SQLStore\QueryDependency;
 use SMW\DIWikiPage;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
 
 /**
  * @license GNU GPL v2+
@@ -12,7 +14,7 @@ use SMW\Store;
  *
  * @author mwjames
  */
-class DependencyLinksTableUpdater {
+class DependencyLinksTableUpdater implements LoggerAwareInterface {
 
 	/**
 	 * @var array
@@ -30,6 +32,11 @@ class DependencyLinksTableUpdater {
 	private $connection = null;
 
 	/**
+	 * @var LoggerInterface
+	 */
+	private $logger;
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param Store $store
@@ -37,6 +44,17 @@ class DependencyLinksTableUpdater {
 	public function __construct( Store $store ) {
 		$this->store = $store;
 		$this->connection = $this->store->getConnection( 'mw.db' );
+	}
+
+	/**
+	 * @see LoggerAwareInterface::setLogger
+	 *
+	 * @since 2.5
+	 *
+	 * @param LoggerInterface $logger
+	 */
+	public function setLogger( LoggerInterface $logger ) {
+		$this->logger = $logger;
 	}
 
 	/**
@@ -96,7 +114,7 @@ class DependencyLinksTableUpdater {
 	 */
 	public function deleteDependenciesFromList( array $deleteIdList ) {
 
-		wfDebugLog( 'smw', __METHOD__ . ' ' . implode( ' ,', $deleteIdList ) . "\n" );
+		$this->log( __METHOD__ . ' ' . implode( ' ,', $deleteIdList ) );
 
 		$this->connection->beginAtomicTransaction( __METHOD__ );
 
@@ -169,7 +187,7 @@ class DependencyLinksTableUpdater {
 		// was used with a hash to avoid duplicate entries hence the re-copy
 		$inserts = array_values( $inserts );
 
-		wfDebugLog( 'smw', __METHOD__ . ' insert for SID ' . $sid . "\n" );
+		$this->log( __METHOD__ . ' insert for SID ' . $sid );
 
 		$this->connection->insert(
 			SQLStore::QUERY_LINKS_TABLE,
@@ -220,9 +238,18 @@ class DependencyLinksTableUpdater {
 			false
 		);
 
-		wfDebugLog( 'smw', __METHOD__ . " add new {$id} ID for " . $subject->getHash() . " {$subobjectName}" );
+		$this->log( __METHOD__ . " add new {$id} ID for " . $subject->getHash() . " {$subobjectName}" );
 
 		return $id;
+	}
+
+	private function log( $message, $context = array() ) {
+
+		if ( $this->logger === null ) {
+			return;
+		}
+
+		$this->logger->info( $message, $context );
 	}
 
 }

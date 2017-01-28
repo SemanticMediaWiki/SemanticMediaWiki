@@ -5,6 +5,7 @@ namespace SMW\SQLStore;
 use SMW\EventHandler;
 use SMW\DIWikiPage;
 use SMW\Iterators\ResultIterator;
+use SMW\ApplicationFactory;
 
 /**
  * @private
@@ -204,7 +205,7 @@ class PropertyTableIdReferenceDisposer {
 				__METHOD__
 			);
 		} catch ( \DBError $e ) {
-			wfDebugLog( 'smw', __METHOD__ . ' reported: ' . $e->getMessage() );
+			ApplicationFactory::getInstance()->getMediaWikiLogger()->info( __METHOD__ . ' reported: ' . $e->getMessage() );
 		}
 	}
 

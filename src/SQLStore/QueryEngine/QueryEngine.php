@@ -17,6 +17,8 @@ use SMWSql3SmwIds;
 use SMWSQLStore3 as SQLStore;
 use SMW\QueryEngine as QueryEngineInterface;
 use SMW\QueryFactory;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
 
 /**
  * Class that implements query answering for SQLStore.
@@ -28,12 +30,17 @@ use SMW\QueryFactory;
  * @author Jeroen De Dauw
  * @author mwjames
  */
-class QueryEngine implements QueryEngineInterface {
+class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 	/**
 	 * @var SQLStore
 	 */
 	private $store;
+
+	/**
+	 * @var LoggerInterface
+	 */
+	private $logger;
 
 	/**
 	 * Query mode copied from given query. Some submethods act differently when
@@ -106,6 +113,17 @@ class QueryEngine implements QueryEngineInterface {
 		$this->engineOptions = $engineOptions;
 		$this->orderConditionsComplementor = new OrderConditionsComplementor( $querySegmentListBuilder );
 		$this->queryFactory = new QueryFactory();
+	}
+
+	/**
+	 * @see LoggerAwareInterface::setLogger
+	 *
+	 * @since 2.5
+	 *
+	 * @param LoggerInterface $logger
+	 */
+	public function setLogger( LoggerInterface $logger ) {
+		$this->logger = $logger;
 	}
 
 	/**
@@ -526,7 +544,7 @@ class QueryEngine implements QueryEngineInterface {
 					) );
 				} catch ( PredefinedPropertyLabelMismatchException $e ) {
 					$logToTable[$row->t] = "issue creating a {$row->t} dataitem from a database row";
-					wfDebugLog( 'smw', __METHOD__ . ' ' . $e->getMessage() . "\n" );
+					$this->log( __METHOD__ . ' ' . $e->getMessage() );
 					$dataItem = '';
 				}
 
@@ -551,7 +569,7 @@ class QueryEngine implements QueryEngineInterface {
 		}
 
 		if ( $logToTable !== array() ) {
-			wfDebugLog( 'smw', __METHOD__ . ' ' . implode( ',', $logToTable ) . "\n" );
+			$this->log( __METHOD__ . ' ' . implode( ',', $logToTable ) );
 		}
 
 		if ( $count > $query->getLimit() || ( $count + $missedCount ) > $query->getLimit() ) {
@@ -631,6 +649,15 @@ class QueryEngine implements QueryEngineInterface {
 		}
 
 		return $result;
+	}
+
+	private function log( $message, $context = array() ) {
+
+		if ( $this->logger === null ) {
+			return;
+		}
+
+		$this->logger->info( $message, $context );
 	}
 
 }
