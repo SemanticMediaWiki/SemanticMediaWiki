@@ -75,15 +75,16 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testNonProcessForInterfaceMessageOnNonSpecialPage() {
+	public function testDisableProcessOfInterfaceMessageOnNonSpecialPage() {
 
 		$text = 'Foo';
 
-		$title = MockTitle::buildMockForMainNamespace();
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'isSpecialPage' )
-			->will( $this->returnValue( false ) );
+		$title = $this->testEnvironment->createConfiguredStub(
+			'\Title',
+			array(
+				'isSpecialPage' => false
+			)
+		);
 
 		$parserOptions = $this->getMockBuilder( '\ParserOptions' )
 			->disableOriginalConstructor()
@@ -112,6 +113,63 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue(
 			$instance->process( $text )
 		);
+	}
+
+	public function testProcessOfInterfaceMessageOnEnabledSpecialPage() {
+
+		$text = 'Foo';
+
+		$title = $this->testEnvironment->createConfiguredStub(
+			'\Title',
+			array(
+				'getDBKey'      => __METHOD__,
+				'getNamespace'  => NS_MAIN,
+				'isSpecialPage' => true
+			)
+		);
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'isSpecial' )
+			->with( $this->equalTo( 'Bar' ) )
+			->will( $this->returnValue( true ) );
+
+		$parserOptions = $this->getMockBuilder( '\ParserOptions' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parserOptions->expects( $this->once() )
+			->method( 'getInterfaceMessage' )
+			->will( $this->returnValue( true ) );
+
+		$parser = $this->getMockBuilder( 'Parser' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parser->expects( $this->atLeastOnce() )
+			->method( 'getOptions' )
+			->will( $this->returnValue( $parserOptions ) );
+
+		$parser->expects( $this->atLeastOnce() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( $parserOutput ) );
+
+		$parser->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$instance = new InternalParseBeforeLinks(
+			$parser
+		);
+
+		$instance->setEnabledSpecialPage(
+			array( 'Bar' )
+		);
+
+		$instance->process( $text );
 	}
 
 	/**

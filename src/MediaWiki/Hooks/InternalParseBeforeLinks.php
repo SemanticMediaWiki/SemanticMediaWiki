@@ -67,7 +67,7 @@ class InternalParseBeforeLinks {
 			return true;
 		}
 
-		return  $this->performUpdate( $text ) ;
+		return $this->performUpdate( $text ) ;
 	}
 
 	private function canPerformUpdate( $text, $title ) {
@@ -79,13 +79,13 @@ class InternalParseBeforeLinks {
 		// ParserOptions::getInterfaceMessage is being used to identify whether a
 		// parse was initiated by `Message::parse`
 		//
-		// If the text was a `InterfaceMessage` send from a SpecialPage such as
+		// #2209 If the text was a `InterfaceMessage` send from a SpecialPage such as
 		// Special:Booksources we allow to proceed
 		if ( $text === '' || ( $this->parser->getOptions()->getInterfaceMessage() && !$title->isSpecialPage() ) ) {
 			return false;
 		}
 
-		if ( ! $title->isSpecialPage() ) {
+		if ( !$title->isSpecialPage() ) {
 			return true;
 		}
 
