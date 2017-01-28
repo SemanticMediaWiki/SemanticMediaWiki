@@ -74,9 +74,9 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	private $errors = array();
 
 	/**
-	 * @var QuerySegmentListBuilder
+	 * @var QuerySegmentListBuildManager
 	 */
-	private $querySegmentListBuilder;
+	private $querySegmentListBuildManager;
 
 	/**
 	 * @var QuerySegmentListProcessor
@@ -101,17 +101,16 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	/**
 	 * @since 2.2
 	 *
-	 * @param SQLStore $parentStore
-	 * @param QuerySegmentListBuilder $querySegmentListBuilder
+	 * @param SQLStore $store
+	 * @param QuerySegmentListBuildManager $querySegmentListBuildManager
 	 * @param QuerySegmentListProcessor $querySegmentListProcessor
 	 * @param EngineOptions $engineOptions
 	 */
-	public function __construct( SQLStore $parentStore, QuerySegmentListBuilder $querySegmentListBuilder, QuerySegmentListProcessor $querySegmentListProcessor, EngineOptions $engineOptions ) {
-		$this->store = $parentStore;
-		$this->querySegmentListBuilder = $querySegmentListBuilder;
+	public function __construct( SQLStore $store, QuerySegmentListBuildManager $querySegmentListBuildManager, QuerySegmentListProcessor $querySegmentListProcessor, EngineOptions $engineOptions ) {
+		$this->store = $store;
+		$this->querySegmentListBuildManager = $querySegmentListBuildManager;
 		$this->querySegmentListProcessor = $querySegmentListProcessor;
 		$this->engineOptions = $engineOptions;
-		$this->orderConditionsComplementor = new OrderConditionsComplementor( $querySegmentListBuilder );
 		$this->queryFactory = new QueryFactory();
 	}
 
@@ -178,10 +177,13 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		QuerySegment::$qnum = 0;
 		$this->sortKeys = $query->sortkeys;
 
-		$rootid = $this->getQuerySegmentFrom(
-			$connection,
+		$rootid = $this->querySegmentListBuildManager->getQuerySegmentFrom(
 			$query
 		);
+
+		$this->querySegmentList = $this->querySegmentListBuildManager->getQuerySegmentList();
+		$this->sortKeys = $this->querySegmentListBuildManager->getSortKeys();
+		$this->errors = $this->querySegmentListBuildManager->getErrors();
 
 		// Possibly stop if new errors happened:
 		if ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) &&
@@ -228,85 +230,6 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$query->addErrors( $this->errors );
 
 		return $result;
-	}
-
-	/**
-	 * Compute abstract representation of the query (compilation)
-	 *
-	 * @param Database $connection
-	 * @param Query $query
-	 *
-	 * @return integer
-	 */
-	private function getQuerySegmentFrom( $connection, $query ) {
-
-		// Anchor IT_TABLE as root element
-		$rootSegmentNumber = QuerySegment::$qnum;
-		$rootSegment = new QuerySegment();
-		$rootSegment->joinTable = SQLStore::ID_TABLE;
-		$rootSegment->joinfield = "$rootSegment->alias.smw_id";
-
-		$this->querySegmentListBuilder->addQuerySegment(
-			$rootSegment
-		);
-
-		$this->querySegmentListBuilder->isFilterDuplicates(
-			$this->engineOptions->get( 'smwgQFilterDuplicates' )
-		);
-
-		$this->querySegmentListBuilder->setSortKeys(
-			$this->sortKeys
-		);
-
-		// compile query, build query "plan"
-		$this->querySegmentListBuilder->getQuerySegmentFrom(
-			$query->getDescription()
-		);
-
-		$qid = $this->querySegmentListBuilder->getLastQuerySegmentId();
-		$this->querySegmentList = $this->querySegmentListBuilder->getQuerySegmentList();
-		$this->errors = $this->querySegmentListBuilder->getErrors();
-
-		// no valid/supported condition; ensure that at least only proper pages
-		// are delivered
-		if ( $qid < 0 ) {
-			$qid = $rootSegmentNumber;
-			$qobj = $this->querySegmentList[$rootSegmentNumber];
-			$qobj->where = "$qobj->alias.smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) .
-				" AND $qobj->alias.smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWREDIIW ) .
-				" AND $qobj->alias.smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWBORDERIW ) .
-				" AND $qobj->alias.smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWINTDEFIW );
-			$this->querySegmentListBuilder->addQuerySegment( $qobj );
-		}
-
-		if ( isset( $this->querySegmentList[$qid]->joinTable ) && $this->querySegmentList[$qid]->joinTable != SQLStore::ID_TABLE ) {
-			// manually make final root query (to retrieve namespace,title):
-			$rootid = $rootSegmentNumber;
-			$qobj = $this->querySegmentList[$rootSegmentNumber];
-			$qobj->components = array( $qid => "$qobj->alias.smw_id" );
-			$qobj->sortfields = $this->querySegmentList[$qid]->sortfields;
-			$this->querySegmentListBuilder->addQuerySegment( $qobj );
-		} else { // not such a common case, but worth avoiding the additional inner join:
-			$rootid = $qid;
-		}
-
-		// Include order conditions (may extend query if needed for sorting):
-		$this->orderConditionsComplementor->isSupported(
-			$this->engineOptions->get( 'smwgQSortingSupport' )
-		);
-
-		$this->orderConditionsComplementor->setSortKeys(
-			$this->sortKeys
-		);
-
-		$this->querySegmentList = $this->orderConditionsComplementor->applyOrderConditions(
-			$rootid
-		);
-
-		$this->sortKeys = $this->orderConditionsComplementor->getSortKeys();
-		$this->errors = $this->orderConditionsComplementor->getErrors();
-
-		return $rootid;
 	}
 
 	/**
