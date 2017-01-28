@@ -77,9 +77,15 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue( $instance->process() );
 	}
 
-	public function testNonProcessForInterfaceMessage() {
+	public function testNonProcessForInterfaceMessageOnNonSpecialPage() {
 
 		$text = 'Foo';
+
+		$title = MockTitle::buildMockForMainNamespace();
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'isSpecialPage' )
+			->will( $this->returnValue( false ) );
 
 		$parserOptions = $this->getMockBuilder( '\ParserOptions' )
 			->disableOriginalConstructor()
@@ -97,8 +103,9 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOptions' )
 			->will( $this->returnValue( $parserOptions ) );
 
-		$parser->expects( $this->never() )
-			->method( 'getTitle' );
+		$parser->expects( $this->once() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
 
 		$instance = new InternalParseBeforeLinks(
 			$parser,

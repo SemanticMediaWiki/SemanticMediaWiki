@@ -59,10 +59,10 @@ class InternalParseBeforeLinks {
 	 * @return true
 	 */
 	public function process() {
-		return $this->canPerformUpdate() ? $this->performUpdate() : true;
+		return $this->canPerformUpdate( $this->parser->getTitle() ) ? $this->performUpdate() : true;
 	}
 
-	private function canPerformUpdate() {
+	private function canPerformUpdate( $title ) {
 
 		if ( $this->getRedirectTarget() !== null ) {
 			return true;
@@ -70,18 +70,21 @@ class InternalParseBeforeLinks {
 
 		// ParserOptions::getInterfaceMessage is being used to identify whether a
 		// parse was initiated by `Message::parse`
-		if ( $this->text === '' || $this->parser->getOptions()->getInterfaceMessage() ) {
+		//
+		// #2209 If the text was an `InterfaceMessage` send from a SpecialPage such as
+		// Special:Booksources we allow to proceed
+		if ( $this->text === '' || ( $this->parser->getOptions()->getInterfaceMessage() && !$title->isSpecialPage() ) ) {
 			return false;
 		}
 
-		if ( !$this->parser->getTitle()->isSpecialPage() ) {
+		if ( !$title->isSpecialPage() ) {
 			return true;
 		}
 
 		$isEnabledSpecialPage = $this->applicationFactory->getSettings()->get( 'smwgEnabledSpecialPage' );
 
 		foreach ( $isEnabledSpecialPage as $specialPage ) {
-			if ( $this->parser->getTitle()->isSpecial( $specialPage ) ) {
+			if ( $title->isSpecial( $specialPage ) ) {
 				return true;
 			}
 		}
