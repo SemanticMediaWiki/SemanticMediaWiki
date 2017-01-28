@@ -29,40 +29,48 @@ class InternalParseBeforeLinks {
 	/**
 	 * @var Parser
 	 */
-	private $parser = null;
+	private $parser;
 
 	/**
-	 * @var string
+	 * @var array
 	 */
-	private $text;
-
-	/**
-	 * @var ApplicationFactory
-	 */
-	private $applicationFactory;
+	private $enabledSpecialPage = array();
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param Parser $parser
-	 * @param string $text
 	 */
-	public function __construct( Parser &$parser, &$text ) {
+	public function __construct( Parser &$parser ) {
 		$this->parser = $parser;
-		$this->text =& $text;
-		$this->applicationFactory = ApplicationFactory::getInstance();
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param array $enabledSpecialPage
+	 */
+	public function setEnabledSpecialPage( array $enabledSpecialPage ) {
+		$this->enabledSpecialPage = $enabledSpecialPage;
 	}
 
 	/**
 	 * @since 1.9
 	 *
+	 * @param string $text
+	 *
 	 * @return true
 	 */
-	public function process() {
-		return $this->canPerformUpdate( $this->parser->getTitle() ) ? $this->performUpdate() : true;
+	public function process( &$text ) {
+
+		if ( !$this->canPerformUpdate( $text, $this->parser->getTitle() ) ) {
+			return true;
+		}
+
+		return  $this->performUpdate( $text ) ;
 	}
 
-	private function canPerformUpdate( $title ) {
+	private function canPerformUpdate( $text, $title ) {
 
 		if ( $this->getRedirectTarget() !== null ) {
 			return true;
@@ -71,19 +79,17 @@ class InternalParseBeforeLinks {
 		// ParserOptions::getInterfaceMessage is being used to identify whether a
 		// parse was initiated by `Message::parse`
 		//
-		// #2209 If the text was an `InterfaceMessage` send from a SpecialPage such as
+		// If the text was a `InterfaceMessage` send from a SpecialPage such as
 		// Special:Booksources we allow to proceed
-		if ( $this->text === '' || ( $this->parser->getOptions()->getInterfaceMessage() && !$title->isSpecialPage() ) ) {
+		if ( $text === '' || ( $this->parser->getOptions()->getInterfaceMessage() && !$title->isSpecialPage() ) ) {
 			return false;
 		}
 
-		if ( !$title->isSpecialPage() ) {
+		if ( ! $title->isSpecialPage() ) {
 			return true;
 		}
 
-		$isEnabledSpecialPage = $this->applicationFactory->getSettings()->get( 'smwgEnabledSpecialPage' );
-
-		foreach ( $isEnabledSpecialPage as $specialPage ) {
+		foreach ( $this->enabledSpecialPage as $specialPage ) {
 			if ( $title->isSpecial( $specialPage ) ) {
 				return true;
 			}
@@ -92,12 +98,14 @@ class InternalParseBeforeLinks {
 		return false;
 	}
 
-	private function performUpdate() {
+	private function performUpdate( &$text ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
 
 		/**
 		 * @var ParserData $parserData
 		 */
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = $applicationFactory->newParserData(
 			$this->parser->getTitle(),
 			$this->parser->getOutput()
 		);
@@ -108,9 +116,12 @@ class InternalParseBeforeLinks {
 		 *
 		 * @var InTextAnnotationParser
 		 */
-		$inTextAnnotationParser = $this->applicationFactory->newInTextAnnotationParser( $parserData );
+		$inTextAnnotationParser = $applicationFactory->newInTextAnnotationParser(
+			$parserData
+		);
+
 		$inTextAnnotationParser->setRedirectTarget( $this->getRedirectTarget() );
-		$inTextAnnotationParser->parse( $this->text );
+		$inTextAnnotationParser->parse( $text );
 
 		$parserData->setSemanticDataStateToParserOutputProperty();
 
