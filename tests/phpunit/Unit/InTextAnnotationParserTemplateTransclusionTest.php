@@ -4,9 +4,7 @@ namespace SMW\Tests;
 
 use ParserOutput;
 use SMW\InTextAnnotationParser;
-use SMW\MediaWiki\MagicWordsFinder;
-use SMW\MediaWiki\RedirectTargetFinder;
-use SMW\ParserData;
+use SMW\ApplicationFactory;
 use Title;
 
 /**
@@ -22,6 +20,7 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 
 	private $semanticDataValidator;
 	private $testEnvironment;
+	private $applicationFactory;
 
 	protected function setUp() {
 		parent::setUp();
@@ -34,6 +33,8 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 			->getMockForAbstractClass();
 
 		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	protected function tearDown() {
@@ -82,15 +83,13 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 
 		$this->testEnvironment->withConfiguration( $settings );
 
-		$parserData = new ParserData(
+		$parserData = $this->applicationFactory->newParserData(
 			$title,
 			$parserOutput
 		);
 
-		$instance = new InTextAnnotationParser(
-			$parserData,
-			new MagicWordsFinder(),
-			new RedirectTargetFinder()
+		$instance = $this->applicationFactory->newInTextAnnotationParser(
+			$parserData
 		);
 
 		$instance->parse( $outputText );
@@ -100,7 +99,10 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 			$outputText
 		);
 
-		$parserData = new ParserData( $title, $parserOutput );
+		$parserData = $this->applicationFactory->newParserData(
+			$title,
+			$parserOutput
+		);
 
 		$this->assertInstanceOf(
 			'\SMW\SemanticData',

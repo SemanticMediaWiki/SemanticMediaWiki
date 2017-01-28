@@ -6,6 +6,7 @@ use ParserOutput;
 use ReflectionClass;
 use SMW\DIProperty;
 use SMW\InTextAnnotationParser;
+use SMW\Parser\LinksProcessor;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\ParserData;
@@ -26,6 +27,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
 	private $testEnvironment;
+	private $linksProcessor;
 
 	protected function setUp() {
 		parent::setUp();
@@ -38,6 +40,8 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 
 		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$this->LinksProcessor = new LinksProcessor();
 	}
 
 	protected function tearDown() {
@@ -62,6 +66,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$instance =	new InTextAnnotationParser(
 			new ParserData( $title, $parserOutput ),
+			$this->LinksProcessor,
 			new MagicWordsFinder(),
 			$redirectTargetFinder
 		);
@@ -86,6 +91,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new InTextAnnotationParser(
 			$parserData,
+			$this->LinksProcessor,
 			$magicWordsFinder,
 			new RedirectTargetFinder()
 		);
@@ -108,14 +114,15 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			new ParserOutput()
 		);
 
-		$instance = new InTextAnnotationParser(
-			$parserData,
-			new MagicWordsFinder(),
-			new RedirectTargetFinder()
+		$this->LinksProcessor->isStrictMode(
+			isset( $settings['smwgEnabledInTextAnnotationParserStrictMode'] ) ? $settings['smwgEnabledInTextAnnotationParserStrictMode'] : true
 		);
 
-		$instance->isStrictMode(
-			isset( $settings['smwgEnabledInTextAnnotationParserStrictMode'] ) ? $settings['smwgEnabledInTextAnnotationParserStrictMode'] : true
+		$instance = new InTextAnnotationParser(
+			$parserData,
+			$this->LinksProcessor,
+			new MagicWordsFinder(),
+			new RedirectTargetFinder()
 		);
 
 		$instance->enabledLinksInValues(
@@ -172,6 +179,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new InTextAnnotationParser(
 			$parserData,
+			$this->LinksProcessor,
 			new MagicWordsFinder(),
 			$redirectTargetFinder
 		);
@@ -216,6 +224,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new InTextAnnotationParser(
 			$parserData,
+			$this->LinksProcessor,
 			new MagicWordsFinder(),
 			$redirectTargetFinder
 		);
@@ -238,6 +247,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new InTextAnnotationParser(
 			$parserData,
+			$this->LinksProcessor,
 			new MagicWordsFinder(),
 			new RedirectTargetFinder()
 		);

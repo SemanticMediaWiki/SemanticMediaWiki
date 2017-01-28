@@ -22,6 +22,7 @@ use Psr\Log\NullLogger;
 use SMW\SQLStore\ChangeOp\TempChangeOpStore;
 use SMW\Query\Result\CachedQueryResultPrefetcher;
 use SMW\Utils\BufferedStatsdCollector;
+use SMW\Parser\LinksProcessor;
 
 /**
  * @license GNU GPL v2+
@@ -82,6 +83,11 @@ class SharedCallbackContainer implements CallbackContainer {
 
 		$callbackLoader->registerCallback( 'ParserData', function( \Title $title, \ParserOutput $parserOutput ) {
 			return new ParserData( $title, $parserOutput );
+		} );
+
+		$callbackLoader->registerCallback( 'LinksProcessor', function() use ( $callbackLoader ) {
+			$callbackLoader->registerExpectedReturnType( 'LinksProcessor', '\SMW\Parser\LinksProcessor' );
+			return new LinksProcessor();
 		} );
 
 		$callbackLoader->registerCallback( 'MessageFormatter', function( \Language $language ) {

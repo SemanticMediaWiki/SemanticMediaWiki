@@ -372,12 +372,16 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 				$this->anything() )
 			->will( $this->returnValue( array() ) );
 
+		$linksProcessor = $this->getMockBuilder( '\SMW\Parser\LinksProcessor' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$redirectTargetFinder = $this->getMockBuilder( '\SMW\MediaWiki\RedirectTargetFinder' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$inTextAnnotationParser = $this->getMockBuilder( '\SMW\InTextAnnotationParser' )
-			->setConstructorArgs( array( $parserData, $magicWordsFinder, $redirectTargetFinder ) )
+			->setConstructorArgs( array( $parserData, $linksProcessor, $magicWordsFinder, $redirectTargetFinder ) )
 			->setMethods( null )
 			->getMock();
 
